@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-07-10 07:51+0000\n"
+"POT-Creation-Date: 2017-07-20 14:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: needforszpit <needforszpit@gmail.com>, 2017\n"
 "Language-Team: Hungarian (Hungary) (https://www.transifex.com/i-mscp/teams/576/hu_HU/)\n"
@@ -95,14 +95,6 @@ msgstr "%1$s / %2$s / %3$s"
 #, php-format
 msgid "%1$s / %2$s of unlimited"
 msgstr "%1$s / %2$s"
-
-#, php-format
-msgid "%1$s of %2$s"
-msgstr "%1$s / %2$s"
-
-#, php-format
-msgid "%1$s of <b>unlimited</b>"
-msgstr "%1$s - <b>korlátlan</b>"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -897,10 +889,6 @@ msgstr "Váratlan hiba történt"
 msgid "An unexpected error occurred."
 msgstr "Váratlan hiba történt."
 
-msgid ""
-"An unexpected error occurred. Go to the debugger interface for more details."
-msgstr "Váratlan hiba történt. Részletekért menj a hibakereső felületre. ."
-
 msgid "An unexpected error occurred. Please contact your administrator."
 msgstr "Váratlan hiba történt. Kérjük, fordulj a rendszergazdához!"
 
@@ -986,10 +974,6 @@ msgid "Are you sure you want to delete the %s menu?"
 msgstr "Biztosan szeretné törölni a(z) %s menüt?"
 
 #, php-format
-msgid "Are you sure you want to delete the %s user?"
-msgstr "Biztosan törölni szeretné a(z) %s felhasználót?"
-
-#, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Biztosan szeretné törölni a(z) %s hibajegyet?"
 
@@ -1007,6 +991,9 @@ msgstr "Biztosan törölni akarod a(z) `%%s` védett területet?"
 
 msgid "Are you sure you want to delete this DNS record?"
 msgstr "Biztosan törli ezt a DNS rekordot?"
+
+msgid "Are you sure you want to delete this account?"
+msgstr ""
 
 msgid "Are you sure you want to delete this domain alias?"
 msgstr "Biztosan törli ezt a domain álnevet?"
@@ -1295,14 +1282,14 @@ msgstr ""
 "A \"Visszaállítás\" gomb megnyomásával igényelhető az utolsó napi mentés "
 "visszaállítása"
 
-msgid "Click to activate"
-msgstr "Kattints az aktiváláshoz"
-
-msgid "Click to deactivate"
-msgstr "Kattints a deaktiváláshoz"
-
 msgid "Click to edit"
 msgstr "Kattintson a szerkeszteni"
+
+msgid "Click to suspend this customer account."
+msgstr ""
+
+msgid "Click to unsuspend this customer account."
+msgstr ""
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "Ügyfél / Adatbázisok / SQL adatbázis létrehozása"
@@ -1610,6 +1597,9 @@ msgstr "Alapértelmezett postafiókok létrehozása"
 
 msgid "Created by"
 msgstr "Létrehozta"
+
+msgid "Created on"
+msgstr ""
 
 msgid "Creation date"
 msgstr "Létrehozva"
@@ -2179,6 +2169,9 @@ msgstr "Bővítmény törlése"
 msgid "Delete ticket"
 msgstr "Hibajegy törlése"
 
+msgid "Delete user"
+msgstr ""
+
 msgid "Deletion in progress"
 msgstr "Törlés folyamatban"
 
@@ -2564,9 +2557,6 @@ msgstr "Engedélyezve"
 msgid "Enabled for: %s"
 msgstr "%s számára engedélyezve"
 
-msgid "Error"
-msgstr "Hiba"
-
 msgid "Error details"
 msgstr "Hiba részletei"
 
@@ -2587,9 +2577,6 @@ msgstr "Alapértelmezett fiókok nélkül"
 
 msgid "Execute tasks"
 msgstr "Feladatok végrehajtása"
-
-msgid "Expire date"
-msgstr "Lejárati dátum"
 
 msgid "Ext. mail server"
 msgstr "Külső levelező szerver"
@@ -2701,6 +2688,9 @@ msgstr "Fájlrendszer adatok"
 
 msgid "Fill out a message text."
 msgstr "Üzenet szövege nem lehet üres"
+
+msgid "Filter customers by"
+msgstr ""
 
 msgid "First name"
 msgstr "Vezetéknév"
@@ -2826,8 +2816,8 @@ msgstr "HSTS max-érvényesség érték"
 msgid "HTTP traffic"
 msgstr "HTTP forgalom"
 
-msgid "Hide aliases"
-msgstr "Álnevek elrejtése"
+msgid "Hide domain aliases"
+msgstr ""
 
 msgid "High"
 msgstr "Magas"
@@ -3350,9 +3340,6 @@ msgstr "SSL tanúsítvány kezelése"
 msgid "Manage htaccess users and groups"
 msgstr "Védett területek, felhasználók és csoportok kezelése"
 
-msgid "Manage users"
-msgstr "Felhasználók kezelése"
-
 msgid "Manage users and groups"
 msgstr "Felhasználók és csoportok kezelése"
 
@@ -3421,6 +3408,9 @@ msgstr "perc"
 
 msgid "Minutes"
 msgstr "perc"
+
+msgid "Missing search criteria."
+msgstr ""
 
 msgid "Model"
 msgstr "Modell:"
@@ -3499,8 +3489,8 @@ msgstr "Nem"
 msgid "No IP address found."
 msgstr "IP-cím nem található"
 
-msgid "No administrator accounts found."
-msgstr "Adminisztrátor nem található"
+msgid "No account found."
+msgstr ""
 
 msgid "No anti-rootkits logs"
 msgstr "Nincs anti-rootkits napló"
@@ -3510,9 +3500,6 @@ msgstr "Nem elérhető"
 
 msgid "No custom menu found."
 msgstr "Nem található egyéni menü"
-
-msgid "No customer accounts found."
-msgstr "Nincsenek ügyfelek"
 
 msgid "No database update available."
 msgstr "Nincs elérhető adatbázis frissítés"
@@ -3531,12 +3518,6 @@ msgstr "Nem található csoport"
 
 msgid "No hosting plan available."
 msgstr "Nincs elérhető tárhely csomag."
-
-msgid "No records found matching the search criteria."
-msgstr "A keresési feltételek alapján nem találhatók rekordok."
-
-msgid "No reseller accounts found."
-msgstr "Nincsenek viszonteladók"
 
 msgid "No reseller available to add the permissions."
 msgstr "Nincs elérhető viszonteladó a jogosultságok hozzáadásához."
@@ -3601,9 +3582,6 @@ msgstr "Felhasználó"
 msgid "Not Found"
 msgstr "Nem található"
 
-msgid "Not Set"
-msgstr "-"
-
 msgid "Not found."
 msgstr "Nem található."
 
@@ -3628,9 +3606,6 @@ msgstr "Semmi sem változott."
 
 msgid "Notices, Warnings and Errors"
 msgstr "Értesítések, Figyelmeztetések és Hibák"
-
-msgid "OK"
-msgstr "OK"
 
 msgid "Ok"
 msgstr "OK"
@@ -4758,6 +4733,9 @@ msgstr "Viszonteladó részletes statisztikájának megjelenítése"
 msgid "Show detailed statistics for this user"
 msgstr "Felhasználó részletes statisztikájának megjelenítése"
 
+msgid "Show domain aliases"
+msgstr ""
+
 msgid "Show in"
 msgstr "Megjelenik"
 
@@ -4873,9 +4851,6 @@ msgstr "Megye"
 msgid "Statistics"
 msgstr "Statisztika"
 
-msgid "Stats"
-msgstr "Statisztikák"
-
 msgid "Status"
 msgstr "Állapot"
 
@@ -4976,9 +4951,6 @@ msgstr "Ügyfélszolgálat"
 
 msgid "Support system"
 msgstr "Ügyfélszolgálat"
-
-msgid "Suspended"
-msgstr "Felfüggesztve"
 
 msgid "Swap"
 msgstr "Lapozófájl"
@@ -5621,9 +5593,6 @@ msgstr "Megjelenítés"
 msgid "View SSL certificate"
 msgstr "SSL tanúsítvány megjelenítése"
 
-msgid "View aliases"
-msgstr "Domain álnevek megjelenítése"
-
 msgid "View ticket"
 msgstr "Hibajegy megnézése"
 
@@ -6052,20 +6021,16 @@ msgstr ""
 "aldomain SSL-en keresztül van kiszolgálva. A bekapcsolástül függetlenül a "
 "HSTS funkció nem aktiválódik automatikusan az aldomainek számára."
 
-msgid "Your account has expired."
-msgstr "Az Ön hozzáférése - fiókja - lejárt."
+msgid "Your account has been disabled. Please, contact your reseller."
+msgstr ""
 
 msgid "Your account has expired. Please renew your subscription."
 msgstr ""
 "Az Ön hozzáférése (fiókja) lejárt. Meghosszabbításához kérjük előfizetésének"
 " megújítását."
 
-msgid ""
-"Your account is currently under maintenance or disabled. Please, contact "
-"your reseller."
+msgid "Your account has expired. Please, contact your reseller."
 msgstr ""
-"A fiókod jelenleg karbantartás alatt áll vagy le van tiltva. Kérjük, vedd "
-"fel a kapcsolatot a viszonteladóval!"
 
 msgid "Your consumption"
 msgstr "Ügyfél felhasználás"
@@ -6170,6 +6135,24 @@ msgstr "Adminisztrátor"
 msgid "and"
 msgstr "és"
 
+msgid "anything"
+msgstr ""
+
+msgid "city"
+msgstr ""
+
+msgid "compagny"
+msgstr ""
+
+msgid "country"
+msgstr ""
+
+msgid "created by"
+msgstr ""
+
+msgid "customer ID"
+msgstr ""
+
 msgid "day"
 msgstr "nap"
 
@@ -6197,6 +6180,9 @@ msgstr "domain álnevek"
 msgid "domain data"
 msgstr "Domain adatai"
 
+msgid "domain name"
+msgstr ""
+
 msgid "domains"
 msgstr "domainek"
 
@@ -6209,8 +6195,14 @@ msgstr "postafiókok"
 msgid "enabled"
 msgstr "engedélyezett"
 
+msgid "error"
+msgstr ""
+
 msgid "everything"
 msgstr "mindent"
+
+msgid "first name"
+msgstr ""
 
 msgid "from other browser"
 msgstr "másik böngészőből"
@@ -6275,6 +6267,9 @@ msgstr "kB"
 msgid "kiB"
 msgstr "kB"
 
+msgid "last name"
+msgstr ""
+
 msgid "mail"
 msgstr "e-mail"
 
@@ -6302,6 +6297,9 @@ msgstr "nem elérhető"
 msgid "not required"
 msgstr "nem szükséges"
 
+msgid "ok"
+msgstr ""
+
 msgid "older than 1 month"
 msgstr "egy hónapnál régebbi"
 
@@ -6327,14 +6325,26 @@ msgstr "árva bejegyzés"
 msgid "required"
 msgstr "szükséges"
 
+msgid "reseller name"
+msgstr ""
+
+msgid "state/province"
+msgstr ""
+
 msgid "subdomain"
 msgstr "aldomain"
 
 msgid "subdomains"
 msgstr "aldomainok"
 
+msgid "suspended"
+msgstr ""
+
 msgid "tcp"
 msgstr "TCP"
+
+msgid "that match with"
+msgstr ""
 
 msgid "traffic"
 msgstr "Forgalom"
@@ -6348,11 +6358,11 @@ msgstr "korlátlan"
 msgid "update"
 msgstr "frissítés"
 
-msgid "view aliases"
-msgstr "álnevek mutatása"
-
 msgid "waiting for activation"
 msgstr "aktiválásra vár"
+
+msgid "which status is"
+msgstr ""
 
 msgid "yes"
 msgstr "igen"

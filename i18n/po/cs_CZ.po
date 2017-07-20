@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-07-10 07:51+0000\n"
+"POT-Creation-Date: 2017-07-20 14:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jiří Vírava <appukonrad@gmail.com>, 2017\n"
 "Language-Team: Czech (Czech Republic) (https://www.transifex.com/i-mscp/teams/576/cs_CZ/)\n"
@@ -91,14 +91,6 @@ msgstr "%1$s / %2$s z %3$s"
 #, php-format
 msgid "%1$s / %2$s of unlimited"
 msgstr "%1$s / %2$s z neomezeno"
-
-#, php-format
-msgid "%1$s of %2$s"
-msgstr "%1$s z %2$s"
-
-#, php-format
-msgid "%1$s of <b>unlimited</b>"
-msgstr "%1$s z <b>neomezeno</b>"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -836,10 +828,6 @@ msgstr ""
 msgid "An unexpected error occurred."
 msgstr ""
 
-msgid ""
-"An unexpected error occurred. Go to the debugger interface for more details."
-msgstr ""
-
 msgid "An unexpected error occurred. Please contact your administrator."
 msgstr ""
 
@@ -923,10 +911,6 @@ msgid "Are you sure you want to delete the %s menu?"
 msgstr ""
 
 #, php-format
-msgid "Are you sure you want to delete the %s user?"
-msgstr ""
-
-#, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Opravdu chcete smazat tiket '%s'?"
 
@@ -943,6 +927,9 @@ msgid "Are you sure you want to delete the `%%s` protected area?"
 msgstr ""
 
 msgid "Are you sure you want to delete this DNS record?"
+msgstr ""
+
+msgid "Are you sure you want to delete this account?"
 msgstr ""
 
 msgid "Are you sure you want to delete this domain alias?"
@@ -1213,13 +1200,13 @@ msgid ""
 "Click the Restore button and the system will restore the last daily backup"
 msgstr "Kliknutím na tlačítko Obnovit systém obnoví poslední denní zálohu"
 
-msgid "Click to activate"
-msgstr ""
-
-msgid "Click to deactivate"
-msgstr ""
-
 msgid "Click to edit"
+msgstr ""
+
+msgid "Click to suspend this customer account."
+msgstr ""
+
+msgid "Click to unsuspend this customer account."
 msgstr ""
 
 msgid "Client / Databases / Add SQL Database"
@@ -1513,6 +1500,9 @@ msgstr "Vytvořit standardní E-mailové adresy"
 
 msgid "Created by"
 msgstr "Vytvořil"
+
+msgid "Created on"
+msgstr ""
 
 msgid "Creation date"
 msgstr "Vytvořeno dne"
@@ -1935,6 +1925,9 @@ msgstr ""
 msgid "Delete ticket"
 msgstr "Smazat ticket"
 
+msgid "Delete user"
+msgstr ""
+
 msgid "Deletion in progress"
 msgstr ""
 
@@ -2318,9 +2311,6 @@ msgstr "Zapnuto"
 msgid "Enabled for: %s"
 msgstr ""
 
-msgid "Error"
-msgstr "Chyba"
-
 msgid "Error details"
 msgstr ""
 
@@ -2341,9 +2331,6 @@ msgstr ""
 
 msgid "Execute tasks"
 msgstr ""
-
-msgid "Expire date"
-msgstr "Datum expirace"
 
 msgid "Ext. mail server"
 msgstr ""
@@ -2454,6 +2441,9 @@ msgid "Filesystem system Info"
 msgstr "Informace o souborovém systému"
 
 msgid "Fill out a message text."
+msgstr ""
+
+msgid "Filter customers by"
 msgstr ""
 
 msgid "First name"
@@ -2579,8 +2569,8 @@ msgstr ""
 msgid "HTTP traffic"
 msgstr ""
 
-msgid "Hide aliases"
-msgstr "Skrýt aliasy"
+msgid "Hide domain aliases"
+msgstr ""
 
 msgid "High"
 msgstr "Vysoká"
@@ -3088,9 +3078,6 @@ msgstr ""
 msgid "Manage htaccess users and groups"
 msgstr ""
 
-msgid "Manage users"
-msgstr "Správa uživatelů"
-
 msgid "Manage users and groups"
 msgstr "Správa uživatelů a skupin"
 
@@ -3157,6 +3144,9 @@ msgstr "Minuta"
 
 msgid "Minutes"
 msgstr "Minuty"
+
+msgid "Missing search criteria."
+msgstr ""
 
 msgid "Model"
 msgstr ""
@@ -3233,8 +3223,8 @@ msgstr "Ne"
 msgid "No IP address found."
 msgstr ""
 
-msgid "No administrator accounts found."
-msgstr "Nenalezeny žádné účty administrátora."
+msgid "No account found."
+msgstr ""
 
 msgid "No anti-rootkits logs"
 msgstr ""
@@ -3244,9 +3234,6 @@ msgstr ""
 
 msgid "No custom menu found."
 msgstr "Uživatelské menu nenalezeno."
-
-msgid "No customer accounts found."
-msgstr "Nenalezeny žádné účty zákazníka."
 
 msgid "No database update available."
 msgstr ""
@@ -3265,12 +3252,6 @@ msgstr ""
 
 msgid "No hosting plan available."
 msgstr ""
-
-msgid "No records found matching the search criteria."
-msgstr ""
-
-msgid "No reseller accounts found."
-msgstr "Nenalezeny účty partnera."
 
 msgid "No reseller available to add the permissions."
 msgstr ""
@@ -3335,9 +3316,6 @@ msgstr "Běžný uživatel"
 msgid "Not Found"
 msgstr "Nenealezno"
 
-msgid "Not Set"
-msgstr "Nenastaveno"
-
 msgid "Not found."
 msgstr "Nenealezno."
 
@@ -3362,9 +3340,6 @@ msgstr ""
 
 msgid "Notices, Warnings and Errors"
 msgstr "Upozornění, varování a chyby"
-
-msgid "OK"
-msgstr "OK"
 
 msgid "Ok"
 msgstr "Ok"
@@ -4460,6 +4435,9 @@ msgstr ""
 msgid "Show detailed statistics for this user"
 msgstr ""
 
+msgid "Show domain aliases"
+msgstr ""
+
 msgid "Show in"
 msgstr "Zobrazit v"
 
@@ -4575,9 +4553,6 @@ msgstr "Okres"
 msgid "Statistics"
 msgstr "Statistiky"
 
-msgid "Stats"
-msgstr "Statistiky"
-
 msgid "Status"
 msgstr "Stav"
 
@@ -4676,9 +4651,6 @@ msgstr "Podpora"
 
 msgid "Support system"
 msgstr "Systém podpory"
-
-msgid "Suspended"
-msgstr "Pozastaveno"
 
 msgid "Swap"
 msgstr "Swap"
@@ -5283,9 +5255,6 @@ msgstr "Náhled"
 msgid "View SSL certificate"
 msgstr ""
 
-msgid "View aliases"
-msgstr "Zobrazit aliasy"
-
 msgid "View ticket"
 msgstr "Prohlédnout tiket"
 
@@ -5691,18 +5660,14 @@ msgid ""
 "automatically activate the HSTS feature for the subdomains of this domain."
 msgstr ""
 
-msgid "Your account has expired."
-msgstr "Platnost Vašeho účtu vypršela."
+msgid "Your account has been disabled. Please, contact your reseller."
+msgstr ""
 
 msgid "Your account has expired. Please renew your subscription."
 msgstr "Platnost vašeho účtu vypršela. Prosím, obnovte si své předplatné."
 
-msgid ""
-"Your account is currently under maintenance or disabled. Please, contact "
-"your reseller."
+msgid "Your account has expired. Please, contact your reseller."
 msgstr ""
-"Účet se momentálně opravuje nebo je zablokovaný. Prosím kontaktujte vašeho "
-"prodejce."
 
 msgid "Your consumption"
 msgstr ""
@@ -5801,6 +5766,24 @@ msgstr ""
 msgid "and"
 msgstr "a"
 
+msgid "anything"
+msgstr ""
+
+msgid "city"
+msgstr ""
+
+msgid "compagny"
+msgstr ""
+
+msgid "country"
+msgstr ""
+
+msgid "created by"
+msgstr ""
+
+msgid "customer ID"
+msgstr ""
+
 msgid "day"
 msgstr "den"
 
@@ -5828,6 +5811,9 @@ msgstr "alias domény"
 msgid "domain data"
 msgstr ""
 
+msgid "domain name"
+msgstr ""
+
 msgid "domains"
 msgstr "domény"
 
@@ -5840,8 +5826,14 @@ msgstr "poštovní účty"
 msgid "enabled"
 msgstr "povoleno"
 
+msgid "error"
+msgstr ""
+
 msgid "everything"
 msgstr "všechno"
+
+msgid "first name"
+msgstr ""
 
 msgid "from other browser"
 msgstr "z jiného prohlížeče"
@@ -5906,6 +5898,9 @@ msgstr "kB"
 msgid "kiB"
 msgstr "kiB"
 
+msgid "last name"
+msgstr ""
+
 msgid "mail"
 msgstr "mail"
 
@@ -5933,6 +5928,9 @@ msgstr "není k dispozici"
 msgid "not required"
 msgstr "není požadováno"
 
+msgid "ok"
+msgstr ""
+
 msgid "older than 1 month"
 msgstr "starší než 1 měsíc"
 
@@ -5958,14 +5956,26 @@ msgstr ""
 msgid "required"
 msgstr "požadováno"
 
+msgid "reseller name"
+msgstr ""
+
+msgid "state/province"
+msgstr ""
+
 msgid "subdomain"
 msgstr "subdoména"
 
 msgid "subdomains"
 msgstr "subdomény"
 
+msgid "suspended"
+msgstr ""
+
 msgid "tcp"
 msgstr "tcp"
+
+msgid "that match with"
+msgstr ""
 
 msgid "traffic"
 msgstr "provoz"
@@ -5979,11 +5989,11 @@ msgstr "bez omezení"
 msgid "update"
 msgstr ""
 
-msgid "view aliases"
-msgstr "zobrazit aliasy"
-
 msgid "waiting for activation"
 msgstr "čekání na aktivaci"
+
+msgid "which status is"
+msgstr ""
 
 msgid "yes"
 msgstr "ano"

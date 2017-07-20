@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-07-10 07:51+0000\n"
+"POT-Creation-Date: 2017-07-20 14:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: David Bancells <el_slaughter@yahoo.es>, 2017\n"
 "Language-Team: Catalan (Spain) (https://www.transifex.com/i-mscp/teams/576/ca_ES/)\n"
@@ -95,14 +95,6 @@ msgstr "%1$s / %2$s de %3$s"
 #, php-format
 msgid "%1$s / %2$s of unlimited"
 msgstr "%1$s / %2$s de il·limitat"
-
-#, php-format
-msgid "%1$s of %2$s"
-msgstr "%1$s de %2$s"
-
-#, php-format
-msgid "%1$s of <b>unlimited</b>"
-msgstr "%1$s de <b>il·limitat</b>"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -855,10 +847,6 @@ msgstr ""
 msgid "An unexpected error occurred."
 msgstr ""
 
-msgid ""
-"An unexpected error occurred. Go to the debugger interface for more details."
-msgstr ""
-
 msgid "An unexpected error occurred. Please contact your administrator."
 msgstr ""
 
@@ -942,10 +930,6 @@ msgid "Are you sure you want to delete the %s menu?"
 msgstr "Esteu segurs que voleu eliminar l'entrada de menú %s?"
 
 #, php-format
-msgid "Are you sure you want to delete the %s user?"
-msgstr ""
-
-#, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Esteu segurs que voleu eliminar el tiquet '%s'?"
 
@@ -962,6 +946,9 @@ msgid "Are you sure you want to delete the `%%s` protected area?"
 msgstr ""
 
 msgid "Are you sure you want to delete this DNS record?"
+msgstr ""
+
+msgid "Are you sure you want to delete this account?"
 msgstr ""
 
 msgid "Are you sure you want to delete this domain alias?"
@@ -1235,13 +1222,13 @@ msgid ""
 msgstr ""
 "Faci click sobre Restaurar i el sistema restaurarà el darrer backup diari"
 
-msgid "Click to activate"
-msgstr ""
-
-msgid "Click to deactivate"
-msgstr ""
-
 msgid "Click to edit"
+msgstr ""
+
+msgid "Click to suspend this customer account."
+msgstr ""
+
+msgid "Click to unsuspend this customer account."
 msgstr ""
 
 msgid "Client / Databases / Add SQL Database"
@@ -1539,6 +1526,9 @@ msgstr "Crear les adreces per defecte"
 
 msgid "Created by"
 msgstr "Creat per"
+
+msgid "Created on"
+msgstr ""
 
 msgid "Creation date"
 msgstr "Data de creació"
@@ -1961,6 +1951,9 @@ msgstr ""
 msgid "Delete ticket"
 msgstr ""
 
+msgid "Delete user"
+msgstr ""
+
 msgid "Deletion in progress"
 msgstr "Eliminació en progrés"
 
@@ -2344,9 +2337,6 @@ msgstr "Activat"
 msgid "Enabled for: %s"
 msgstr ""
 
-msgid "Error"
-msgstr "Error"
-
 msgid "Error details"
 msgstr ""
 
@@ -2367,9 +2357,6 @@ msgstr ""
 
 msgid "Execute tasks"
 msgstr ""
-
-msgid "Expire date"
-msgstr "Data de caducitat"
 
 msgid "Ext. mail server"
 msgstr ""
@@ -2481,6 +2468,9 @@ msgstr "Informació del sistema de fitxers"
 
 msgid "Fill out a message text."
 msgstr "Omplir un missatge de text."
+
+msgid "Filter customers by"
+msgstr ""
 
 msgid "First name"
 msgstr "Nom"
@@ -2605,7 +2595,7 @@ msgstr ""
 msgid "HTTP traffic"
 msgstr "Tràfic Http"
 
-msgid "Hide aliases"
+msgid "Hide domain aliases"
 msgstr ""
 
 msgid "High"
@@ -3116,9 +3106,6 @@ msgstr ""
 msgid "Manage htaccess users and groups"
 msgstr "Administrar usuaris i grups htaccess "
 
-msgid "Manage users"
-msgstr "Administrar Usuaris"
-
 msgid "Manage users and groups"
 msgstr "Administrar usuaris i grups"
 
@@ -3187,6 +3174,9 @@ msgstr "Minut"
 
 msgid "Minutes"
 msgstr "Minuts"
+
+msgid "Missing search criteria."
+msgstr ""
 
 msgid "Model"
 msgstr ""
@@ -3264,8 +3254,8 @@ msgstr "No"
 msgid "No IP address found."
 msgstr "Adreça IP no trobada"
 
-msgid "No administrator accounts found."
-msgstr "No s'han trobat comptes d'administrador"
+msgid "No account found."
+msgstr ""
 
 msgid "No anti-rootkits logs"
 msgstr ""
@@ -3275,9 +3265,6 @@ msgstr ""
 
 msgid "No custom menu found."
 msgstr "Menú personalitzat no trobat"
-
-msgid "No customer accounts found."
-msgstr "No s'han trobat comptes de client."
 
 msgid "No database update available."
 msgstr ""
@@ -3296,12 +3283,6 @@ msgstr "Grup no trobat"
 
 msgid "No hosting plan available."
 msgstr ""
-
-msgid "No records found matching the search criteria."
-msgstr ""
-
-msgid "No reseller accounts found."
-msgstr "No s'han trobat comptes de distribuïdor."
 
 msgid "No reseller available to add the permissions."
 msgstr ""
@@ -3369,9 +3350,6 @@ msgstr "Usuaris normals"
 msgid "Not Found"
 msgstr ""
 
-msgid "Not Set"
-msgstr "No definit"
-
 msgid "Not found."
 msgstr ""
 
@@ -3396,9 +3374,6 @@ msgstr ""
 
 msgid "Notices, Warnings and Errors"
 msgstr "Notificacions, Alertes i Errors"
-
-msgid "OK"
-msgstr "OK"
 
 msgid "Ok"
 msgstr "Ok"
@@ -4500,6 +4475,9 @@ msgstr "Mostrar estadístiques detallades per aquest distribuidor"
 msgid "Show detailed statistics for this user"
 msgstr ""
 
+msgid "Show domain aliases"
+msgstr ""
+
 msgid "Show in"
 msgstr "Mostrar a"
 
@@ -4615,9 +4593,6 @@ msgstr "Estat/Província"
 msgid "Statistics"
 msgstr "Estadístiques"
 
-msgid "Stats"
-msgstr "Estadístiques"
-
 msgid "Status"
 msgstr "Estat"
 
@@ -4716,9 +4691,6 @@ msgstr "Suport"
 
 msgid "Support system"
 msgstr "Sistema de suport"
-
-msgid "Suspended"
-msgstr "Suspès"
 
 msgid "Swap"
 msgstr "Swap"
@@ -5337,9 +5309,6 @@ msgstr "Veure"
 msgid "View SSL certificate"
 msgstr "Veure el certificat SSL"
 
-msgid "View aliases"
-msgstr "Veure àlies"
-
 msgid "View ticket"
 msgstr "Veure Ticket"
 
@@ -5744,15 +5713,13 @@ msgid ""
 "automatically activate the HSTS feature for the subdomains of this domain."
 msgstr ""
 
-msgid "Your account has expired."
+msgid "Your account has been disabled. Please, contact your reseller."
 msgstr ""
 
 msgid "Your account has expired. Please renew your subscription."
 msgstr "El seu compte ha expirat. Sisplau renoveu la vostra subscripció."
 
-msgid ""
-"Your account is currently under maintenance or disabled. Please, contact "
-"your reseller."
+msgid "Your account has expired. Please, contact your reseller."
 msgstr ""
 
 msgid "Your consumption"
@@ -5852,6 +5819,24 @@ msgstr ""
 msgid "and"
 msgstr ""
 
+msgid "anything"
+msgstr ""
+
+msgid "city"
+msgstr ""
+
+msgid "compagny"
+msgstr ""
+
+msgid "country"
+msgstr ""
+
+msgid "created by"
+msgstr ""
+
+msgid "customer ID"
+msgstr ""
+
 msgid "day"
 msgstr "dia"
 
@@ -5879,6 +5864,9 @@ msgstr "àlies de domini"
 msgid "domain data"
 msgstr ""
 
+msgid "domain name"
+msgstr ""
+
 msgid "domains"
 msgstr "dominis"
 
@@ -5891,8 +5879,14 @@ msgstr ""
 msgid "enabled"
 msgstr "activat"
 
+msgid "error"
+msgstr ""
+
 msgid "everything"
 msgstr "tot"
+
+msgid "first name"
+msgstr ""
 
 msgid "from other browser"
 msgstr "es d'unaltre navegador"
@@ -5957,6 +5951,9 @@ msgstr "kB"
 msgid "kiB"
 msgstr "kiB"
 
+msgid "last name"
+msgstr ""
+
 msgid "mail"
 msgstr "correu electrònic"
 
@@ -5984,6 +5981,9 @@ msgstr "no disponible"
 msgid "not required"
 msgstr "no es requereix"
 
+msgid "ok"
+msgstr ""
+
 msgid "older than 1 month"
 msgstr "més antic d'un mes"
 
@@ -6009,14 +6009,26 @@ msgstr "entrada orfe"
 msgid "required"
 msgstr "es requereix"
 
+msgid "reseller name"
+msgstr ""
+
+msgid "state/province"
+msgstr ""
+
 msgid "subdomain"
 msgstr "subdomini"
 
 msgid "subdomains"
 msgstr "subdominis"
 
+msgid "suspended"
+msgstr ""
+
 msgid "tcp"
 msgstr "tcp"
+
+msgid "that match with"
+msgstr ""
 
 msgid "traffic"
 msgstr "tràfic"
@@ -6030,11 +6042,11 @@ msgstr "il·limitat"
 msgid "update"
 msgstr ""
 
-msgid "view aliases"
-msgstr "veure àlies"
-
 msgid "waiting for activation"
 msgstr "esperant activació"
+
+msgid "which status is"
+msgstr ""
 
 msgid "yes"
 msgstr "sí"

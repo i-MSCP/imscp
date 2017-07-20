@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-07-10 07:51+0000\n"
+"POT-Creation-Date: 2017-07-20 14:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Asterios Dimitriou <steve@pci.gr>, 2017\n"
 "Language-Team: Greek (https://www.transifex.com/i-mscp/teams/576/el/)\n"
@@ -93,14 +93,6 @@ msgstr "%1$s / %2$s από %3$s"
 #, php-format
 msgid "%1$s / %2$s of unlimited"
 msgstr "%1$s / %2$s από χωρίς όριο"
-
-#, php-format
-msgid "%1$s of %2$s"
-msgstr "%1$s από %2$s"
-
-#, php-format
-msgid "%1$s of <b>unlimited</b>"
-msgstr "%1$s από <b>χωρίς όριο</b>"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -849,12 +841,6 @@ msgstr "Προέκυψε ένα μη αναμενόμενο σφάλμα"
 msgid "An unexpected error occurred."
 msgstr "Προέκυψε ένα μη αναμενόμενο σφάλμα."
 
-msgid ""
-"An unexpected error occurred. Go to the debugger interface for more details."
-msgstr ""
-"Προέκυψε ένα μη αναμενόμενο σφάλμα. Πηγαίνετε στη διεπαφή εντοπισμού "
-"σφαλμάτων για περισσότερες λεπτομέρειες."
-
 msgid "An unexpected error occurred. Please contact your administrator."
 msgstr ""
 "Προέκυψε ένα μη αναμενόμενο σφάλμα. Παρακαλούμε επικοινωνήστε  με το "
@@ -942,10 +928,6 @@ msgid "Are you sure you want to delete the %s menu?"
 msgstr ""
 
 #, php-format
-msgid "Are you sure you want to delete the %s user?"
-msgstr ""
-
-#, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr ""
 
@@ -962,6 +944,9 @@ msgid "Are you sure you want to delete the `%%s` protected area?"
 msgstr ""
 
 msgid "Are you sure you want to delete this DNS record?"
+msgstr ""
+
+msgid "Are you sure you want to delete this account?"
 msgstr ""
 
 msgid "Are you sure you want to delete this domain alias?"
@@ -1232,13 +1217,13 @@ msgid ""
 "Click the Restore button and the system will restore the last daily backup"
 msgstr ""
 
-msgid "Click to activate"
-msgstr ""
-
-msgid "Click to deactivate"
-msgstr ""
-
 msgid "Click to edit"
+msgstr ""
+
+msgid "Click to suspend this customer account."
+msgstr ""
+
+msgid "Click to unsuspend this customer account."
 msgstr ""
 
 msgid "Client / Databases / Add SQL Database"
@@ -1532,6 +1517,9 @@ msgid "Create default email addresses"
 msgstr ""
 
 msgid "Created by"
+msgstr ""
+
+msgid "Created on"
 msgstr ""
 
 msgid "Creation date"
@@ -1983,6 +1971,9 @@ msgstr "Διαγραφή αυτού του πρόσθετου"
 msgid "Delete ticket"
 msgstr ""
 
+msgid "Delete user"
+msgstr ""
+
 msgid "Deletion in progress"
 msgstr "Διαγραφή σε εξέλιξη"
 
@@ -2366,9 +2357,6 @@ msgstr "Ενεργοποιημένο"
 msgid "Enabled for: %s"
 msgstr "Ενεργοποιημένο για: %s"
 
-msgid "Error"
-msgstr ""
-
 msgid "Error details"
 msgstr ""
 
@@ -2388,9 +2376,6 @@ msgid "Excl. default mails"
 msgstr ""
 
 msgid "Execute tasks"
-msgstr ""
-
-msgid "Expire date"
 msgstr ""
 
 msgid "Ext. mail server"
@@ -2502,6 +2487,9 @@ msgid "Filesystem system Info"
 msgstr ""
 
 msgid "Fill out a message text."
+msgstr ""
+
+msgid "Filter customers by"
 msgstr ""
 
 msgid "First name"
@@ -2627,8 +2615,8 @@ msgstr ""
 msgid "HTTP traffic"
 msgstr "Κίνηση HTTP"
 
-msgid "Hide aliases"
-msgstr "Απόκρυψη ψευδωνύμων"
+msgid "Hide domain aliases"
+msgstr ""
 
 msgid "High"
 msgstr "Υψηλή"
@@ -3138,9 +3126,6 @@ msgstr ""
 msgid "Manage htaccess users and groups"
 msgstr ""
 
-msgid "Manage users"
-msgstr ""
-
 msgid "Manage users and groups"
 msgstr ""
 
@@ -3207,6 +3192,9 @@ msgstr "Λεπτό"
 
 msgid "Minutes"
 msgstr "Λεπτά"
+
+msgid "Missing search criteria."
+msgstr ""
 
 msgid "Model"
 msgstr ""
@@ -3283,7 +3271,7 @@ msgstr ""
 msgid "No IP address found."
 msgstr ""
 
-msgid "No administrator accounts found."
+msgid "No account found."
 msgstr ""
 
 msgid "No anti-rootkits logs"
@@ -3293,9 +3281,6 @@ msgid "No available"
 msgstr ""
 
 msgid "No custom menu found."
-msgstr ""
-
-msgid "No customer accounts found."
 msgstr ""
 
 msgid "No database update available."
@@ -3314,12 +3299,6 @@ msgid "No group found."
 msgstr ""
 
 msgid "No hosting plan available."
-msgstr ""
-
-msgid "No records found matching the search criteria."
-msgstr ""
-
-msgid "No reseller accounts found."
 msgstr ""
 
 msgid "No reseller available to add the permissions."
@@ -3385,9 +3364,6 @@ msgstr ""
 msgid "Not Found"
 msgstr ""
 
-msgid "Not Set"
-msgstr ""
-
 msgid "Not found."
 msgstr "Δεν βρέθηκε."
 
@@ -3412,9 +3388,6 @@ msgstr "Δεν έχει γίνει καμία διαγραφή."
 
 msgid "Notices, Warnings and Errors"
 msgstr ""
-
-msgid "OK"
-msgstr "Εντάξει"
 
 msgid "Ok"
 msgstr "Εντάξει"
@@ -4510,6 +4483,9 @@ msgstr ""
 msgid "Show detailed statistics for this user"
 msgstr ""
 
+msgid "Show domain aliases"
+msgstr ""
+
 msgid "Show in"
 msgstr ""
 
@@ -4625,9 +4601,6 @@ msgstr "Νομός/Επαρχία"
 msgid "Statistics"
 msgstr "Στατιστικά"
 
-msgid "Stats"
-msgstr "Στατιστικά"
-
 msgid "Status"
 msgstr "Κατάσταση"
 
@@ -4725,9 +4698,6 @@ msgid "Support"
 msgstr ""
 
 msgid "Support system"
-msgstr ""
-
-msgid "Suspended"
 msgstr ""
 
 msgid "Swap"
@@ -5333,9 +5303,6 @@ msgstr ""
 msgid "View SSL certificate"
 msgstr ""
 
-msgid "View aliases"
-msgstr ""
-
 msgid "View ticket"
 msgstr ""
 
@@ -5740,18 +5707,14 @@ msgid ""
 "automatically activate the HSTS feature for the subdomains of this domain."
 msgstr ""
 
-msgid "Your account has expired."
+msgid "Your account has been disabled. Please, contact your reseller."
 msgstr ""
 
 msgid "Your account has expired. Please renew your subscription."
 msgstr ""
 
-msgid ""
-"Your account is currently under maintenance or disabled. Please, contact "
-"your reseller."
+msgid "Your account has expired. Please, contact your reseller."
 msgstr ""
-"Ο λογαριασμός σας είναι είτε υπό συντήρηση είτε απενεργοποιημένος. "
-"Παρακαλούμε, επικοινωνήστε με τον μεταπωλητή σας."
 
 msgid "Your consumption"
 msgstr ""
@@ -5850,6 +5813,24 @@ msgstr "διαχειριστής"
 msgid "and"
 msgstr "και"
 
+msgid "anything"
+msgstr ""
+
+msgid "city"
+msgstr ""
+
+msgid "compagny"
+msgstr ""
+
+msgid "country"
+msgstr ""
+
+msgid "created by"
+msgstr ""
+
+msgid "customer ID"
+msgstr ""
+
 msgid "day"
 msgstr "ημέρα"
 
@@ -5877,6 +5858,9 @@ msgstr ""
 msgid "domain data"
 msgstr ""
 
+msgid "domain name"
+msgstr ""
+
 msgid "domains"
 msgstr ""
 
@@ -5889,7 +5873,13 @@ msgstr ""
 msgid "enabled"
 msgstr "ενεργοποιημένο"
 
+msgid "error"
+msgstr ""
+
 msgid "everything"
+msgstr ""
+
+msgid "first name"
 msgstr ""
 
 msgid "from other browser"
@@ -5955,6 +5945,9 @@ msgstr "kB"
 msgid "kiB"
 msgstr "kiB"
 
+msgid "last name"
+msgstr ""
+
 msgid "mail"
 msgstr ""
 
@@ -5982,6 +5975,9 @@ msgstr "μη διαθέσιμο"
 msgid "not required"
 msgstr "προαιρετικό"
 
+msgid "ok"
+msgstr ""
+
 msgid "older than 1 month"
 msgstr ""
 
@@ -6007,14 +6003,26 @@ msgstr ""
 msgid "required"
 msgstr "απαιτούμενο"
 
+msgid "reseller name"
+msgstr ""
+
+msgid "state/province"
+msgstr ""
+
 msgid "subdomain"
 msgstr "subdomain"
 
 msgid "subdomains"
 msgstr "subdomains"
 
+msgid "suspended"
+msgstr ""
+
 msgid "tcp"
 msgstr "tcp"
+
+msgid "that match with"
+msgstr ""
 
 msgid "traffic"
 msgstr "κίνηση"
@@ -6028,11 +6036,11 @@ msgstr "χωρίς όριο"
 msgid "update"
 msgstr "ενημέρωση"
 
-msgid "view aliases"
-msgstr ""
-
 msgid "waiting for activation"
 msgstr "αναμονή ενεργοποίησης"
+
+msgid "which status is"
+msgstr ""
 
 msgid "yes"
 msgstr "ναι"

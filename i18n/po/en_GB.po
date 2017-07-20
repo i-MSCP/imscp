@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-07-10 07:51+0000\n"
+"POT-Creation-Date: 2017-07-20 14:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Torsten Widmann <info@goover.de>, 2017\n"
 "Language-Team: English (United Kingdom) (https://www.transifex.com/i-mscp/teams/576/en_GB/)\n"
@@ -93,14 +93,6 @@ msgstr "%1$s / %2$s of %3$s"
 #, php-format
 msgid "%1$s / %2$s of unlimited"
 msgstr "%1$s / %2$s of unlimited"
-
-#, php-format
-msgid "%1$s of %2$s"
-msgstr "%1$s of %2$s"
-
-#, php-format
-msgid "%1$s of <b>unlimited</b>"
-msgstr "%1$s of <b>unlimited</b>"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -888,11 +880,6 @@ msgstr "An unexpected error occurred"
 msgid "An unexpected error occurred."
 msgstr "An unexpected error occurred."
 
-msgid ""
-"An unexpected error occurred. Go to the debugger interface for more details."
-msgstr ""
-"An unexpected error occurred. Go to the debugger interface for more details."
-
 msgid "An unexpected error occurred. Please contact your administrator."
 msgstr "An unexpected error occurred. Please contact your administrator."
 
@@ -976,10 +963,6 @@ msgid "Are you sure you want to delete the %s menu?"
 msgstr "Are you sure you want to delete the %s menu?"
 
 #, php-format
-msgid "Are you sure you want to delete the %s user?"
-msgstr "Are you sure you want to delete the %s user?"
-
-#, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Are you sure you want to delete the '%s' ticket?"
 
@@ -997,6 +980,9 @@ msgstr "Are you sure you want to delete the `%%s` protected area?"
 
 msgid "Are you sure you want to delete this DNS record?"
 msgstr "Are you sure you want to delete this DNS record?"
+
+msgid "Are you sure you want to delete this account?"
+msgstr ""
 
 msgid "Are you sure you want to delete this domain alias?"
 msgstr "Are you sure you want to delete this domain alias?"
@@ -1285,14 +1271,14 @@ msgid ""
 msgstr ""
 "Click the Restore button and the system will restore the last daily backup"
 
-msgid "Click to activate"
-msgstr "Click to activate"
-
-msgid "Click to deactivate"
-msgstr "Click to deactivate"
-
 msgid "Click to edit"
 msgstr "Click to edit"
+
+msgid "Click to suspend this customer account."
+msgstr ""
+
+msgid "Click to unsuspend this customer account."
+msgstr ""
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "Client / Databases / Add SQL Database"
@@ -1590,6 +1576,9 @@ msgstr "Create default email addresses"
 
 msgid "Created by"
 msgstr "Created by"
+
+msgid "Created on"
+msgstr ""
 
 msgid "Creation date"
 msgstr "Creation date"
@@ -2160,6 +2149,9 @@ msgstr "Delete this plugin"
 msgid "Delete ticket"
 msgstr "Delete ticket"
 
+msgid "Delete user"
+msgstr ""
+
 msgid "Deletion in progress"
 msgstr "Deletion in progress"
 
@@ -2545,9 +2537,6 @@ msgstr "Enabled"
 msgid "Enabled for: %s"
 msgstr "Enabled for: %s"
 
-msgid "Error"
-msgstr "Error"
-
 msgid "Error details"
 msgstr "Error details"
 
@@ -2568,9 +2557,6 @@ msgstr "Excl. default mails"
 
 msgid "Execute tasks"
 msgstr "Execute tasks"
-
-msgid "Expire date"
-msgstr "Expire date"
 
 msgid "Ext. mail server"
 msgstr "Ext. mail server"
@@ -2682,6 +2668,9 @@ msgstr "Filesystem system Info"
 
 msgid "Fill out a message text."
 msgstr "Fill out a message text."
+
+msgid "Filter customers by"
+msgstr ""
 
 msgid "First name"
 msgstr "First name"
@@ -2808,8 +2797,8 @@ msgstr "HSTS max-age directive value"
 msgid "HTTP traffic"
 msgstr "HTTP traffic"
 
-msgid "Hide aliases"
-msgstr "Hide aliases"
+msgid "Hide domain aliases"
+msgstr ""
 
 msgid "High"
 msgstr "High"
@@ -3328,9 +3317,6 @@ msgstr "Manage SSL certificate"
 msgid "Manage htaccess users and groups"
 msgstr "Manage htaccess users and groups"
 
-msgid "Manage users"
-msgstr "Manage users"
-
 msgid "Manage users and groups"
 msgstr "Manage users and groups"
 
@@ -3398,6 +3384,9 @@ msgstr "Minute"
 
 msgid "Minutes"
 msgstr "Minutes"
+
+msgid "Missing search criteria."
+msgstr ""
 
 msgid "Model"
 msgstr "Model"
@@ -3474,8 +3463,8 @@ msgstr "No"
 msgid "No IP address found."
 msgstr "No IP address found."
 
-msgid "No administrator accounts found."
-msgstr "No administrator accounts found."
+msgid "No account found."
+msgstr ""
 
 msgid "No anti-rootkits logs"
 msgstr "No anti-rootkits logs"
@@ -3485,9 +3474,6 @@ msgstr "No available"
 
 msgid "No custom menu found."
 msgstr "No custom menu found."
-
-msgid "No customer accounts found."
-msgstr "No customer accounts found."
 
 msgid "No database update available."
 msgstr "No database update available."
@@ -3506,12 +3492,6 @@ msgstr "No group found."
 
 msgid "No hosting plan available."
 msgstr "No hosting plan available."
-
-msgid "No records found matching the search criteria."
-msgstr "No records found matching the search criteria."
-
-msgid "No reseller accounts found."
-msgstr "No reseller accounts found."
 
 msgid "No reseller available to add the permissions."
 msgstr "No reseller available to add the permissions."
@@ -3576,9 +3556,6 @@ msgstr "Normal users"
 msgid "Not Found"
 msgstr "Not Found"
 
-msgid "Not Set"
-msgstr "Not Set"
-
 msgid "Not found."
 msgstr "Not found."
 
@@ -3604,9 +3581,6 @@ msgstr "Nothing has been deleted."
 
 msgid "Notices, Warnings and Errors"
 msgstr "Notices, Warnings and Errors"
-
-msgid "OK"
-msgstr "OK"
 
 msgid "Ok"
 msgstr "Ok"
@@ -4720,6 +4694,9 @@ msgstr "Show detailed statistics for this reseller"
 msgid "Show detailed statistics for this user"
 msgstr "Show detailed statistics for this user"
 
+msgid "Show domain aliases"
+msgstr ""
+
 msgid "Show in"
 msgstr "Show in"
 
@@ -4835,9 +4812,6 @@ msgstr "State/Province"
 msgid "Statistics"
 msgstr "Statistics"
 
-msgid "Stats"
-msgstr "Stats"
-
 msgid "Status"
 msgstr "Status"
 
@@ -4942,9 +4916,6 @@ msgstr "Support"
 
 msgid "Support system"
 msgstr "Support system"
-
-msgid "Suspended"
-msgstr "Suspended"
 
 msgid "Swap"
 msgstr "Swap"
@@ -5584,9 +5555,6 @@ msgstr "View"
 msgid "View SSL certificate"
 msgstr "View SSL certificate"
 
-msgid "View aliases"
-msgstr "View aliases"
-
 msgid "View ticket"
 msgstr "View ticket"
 
@@ -5597,7 +5565,7 @@ msgid "Warning traffic"
 msgstr "Warning traffic"
 
 msgid "Warning!"
-msgstr "Warning!javascript:;"
+msgstr "Warning!"
 
 msgid "Warnings and Errors"
 msgstr "Warnings and Errors"
@@ -6032,18 +6000,14 @@ msgstr ""
 "served through SSL. Note that even if you add this directive, this will not "
 "automatically activate the HSTS feature for the subdomains of this domain."
 
-msgid "Your account has expired."
-msgstr "Your account has expired."
+msgid "Your account has been disabled. Please, contact your reseller."
+msgstr ""
 
 msgid "Your account has expired. Please renew your subscription."
 msgstr "Your account has expired. Please renew your subscription."
 
-msgid ""
-"Your account is currently under maintenance or disabled. Please, contact "
-"your reseller."
+msgid "Your account has expired. Please, contact your reseller."
 msgstr ""
-"Your account is currently under maintenance or disabled. Please, contact "
-"your reseller."
 
 msgid "Your consumption"
 msgstr "Your consumption"
@@ -6151,6 +6115,24 @@ msgstr "administrator"
 msgid "and"
 msgstr "and"
 
+msgid "anything"
+msgstr ""
+
+msgid "city"
+msgstr ""
+
+msgid "compagny"
+msgstr ""
+
+msgid "country"
+msgstr ""
+
+msgid "created by"
+msgstr ""
+
+msgid "customer ID"
+msgstr ""
+
 msgid "day"
 msgstr "day"
 
@@ -6178,6 +6160,9 @@ msgstr "domain aliases"
 msgid "domain data"
 msgstr "domain data"
 
+msgid "domain name"
+msgstr ""
+
 msgid "domains"
 msgstr "domains"
 
@@ -6190,8 +6175,14 @@ msgstr "email accounts"
 msgid "enabled"
 msgstr "enabled"
 
+msgid "error"
+msgstr ""
+
 msgid "everything"
 msgstr "everything"
+
+msgid "first name"
+msgstr ""
 
 msgid "from other browser"
 msgstr "from other browser"
@@ -6256,6 +6247,9 @@ msgstr "kB"
 msgid "kiB"
 msgstr "kiB"
 
+msgid "last name"
+msgstr ""
+
 msgid "mail"
 msgstr "mail"
 
@@ -6283,6 +6277,9 @@ msgstr "not available"
 msgid "not required"
 msgstr "not required"
 
+msgid "ok"
+msgstr ""
+
 msgid "older than 1 month"
 msgstr "older than 1 month"
 
@@ -6308,14 +6305,26 @@ msgstr "orphan entry"
 msgid "required"
 msgstr "required"
 
+msgid "reseller name"
+msgstr ""
+
+msgid "state/province"
+msgstr ""
+
 msgid "subdomain"
 msgstr "subdomain"
 
 msgid "subdomains"
 msgstr "subdomains"
 
+msgid "suspended"
+msgstr ""
+
 msgid "tcp"
 msgstr "tcp"
+
+msgid "that match with"
+msgstr ""
 
 msgid "traffic"
 msgstr "traffic"
@@ -6329,11 +6338,11 @@ msgstr "unlimited"
 msgid "update"
 msgstr "update"
 
-msgid "view aliases"
-msgstr "view aliases"
-
 msgid "waiting for activation"
 msgstr "waiting for activation"
+
+msgid "which status is"
+msgstr ""
 
 msgid "yes"
 msgstr "yes"

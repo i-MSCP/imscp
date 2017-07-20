@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-07-10 07:51+0000\n"
+"POT-Creation-Date: 2017-07-20 14:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Torsten Widmann <info@goover.de>, 2017\n"
 "Language-Team: Danish (Denmark) (https://www.transifex.com/i-mscp/teams/576/da_DK/)\n"
@@ -93,14 +93,6 @@ msgstr "%1$s / %2$s af %3$s"
 #, php-format
 msgid "%1$s / %2$s of unlimited"
 msgstr "%1$s / %2$s af ubegrænset"
-
-#, php-format
-msgid "%1$s of %2$s"
-msgstr "%1$s af %2$s"
-
-#, php-format
-msgid "%1$s of <b>unlimited</b>"
-msgstr "%1$s af <b>ubegrænset</b> MB"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -888,11 +880,6 @@ msgstr "En uventet fejl opstod"
 msgid "An unexpected error occurred."
 msgstr "En uventet fejl opstod."
 
-msgid ""
-"An unexpected error occurred. Go to the debugger interface for more details."
-msgstr ""
-"En uventet fejl opstod. Gå til debugger grænseflade for flere detaljer."
-
 msgid "An unexpected error occurred. Please contact your administrator."
 msgstr "Der opstod en uventet fejl. Kontakt venligst din administrator."
 
@@ -976,10 +963,6 @@ msgid "Are you sure you want to delete the %s menu?"
 msgstr "Er du sikker på at du vil slette %s menuen?"
 
 #, php-format
-msgid "Are you sure you want to delete the %s user?"
-msgstr ""
-
-#, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Er du sikker på du vil slette '%s' fejlrapporten?"
 
@@ -996,6 +979,9 @@ msgid "Are you sure you want to delete the `%%s` protected area?"
 msgstr ""
 
 msgid "Are you sure you want to delete this DNS record?"
+msgstr ""
+
+msgid "Are you sure you want to delete this account?"
 msgstr ""
 
 msgid "Are you sure you want to delete this domain alias?"
@@ -1270,13 +1256,13 @@ msgid ""
 msgstr ""
 "Klik på Gendan knappen og systemet vil gendanne den seneste daglige backup"
 
-msgid "Click to activate"
-msgstr "Klik for at aktivere"
-
-msgid "Click to deactivate"
-msgstr "Klik for at deaktivere"
-
 msgid "Click to edit"
+msgstr ""
+
+msgid "Click to suspend this customer account."
+msgstr ""
+
+msgid "Click to unsuspend this customer account."
 msgstr ""
 
 msgid "Client / Databases / Add SQL Database"
@@ -1577,6 +1563,9 @@ msgstr "Opret standard e-mail adresser"
 
 msgid "Created by"
 msgstr "Oprettet af"
+
+msgid "Created on"
+msgstr ""
 
 msgid "Creation date"
 msgstr "Oprettelsesdato"
@@ -2001,6 +1990,9 @@ msgstr "Slet dette plugin"
 msgid "Delete ticket"
 msgstr "Slet ticket"
 
+msgid "Delete user"
+msgstr ""
+
 msgid "Deletion in progress"
 msgstr "Sletning i gang"
 
@@ -2386,9 +2378,6 @@ msgstr "Aktiveret"
 msgid "Enabled for: %s"
 msgstr "Aktiveret for: %s"
 
-msgid "Error"
-msgstr "Fejl"
-
 msgid "Error details"
 msgstr "Fejl detaljer"
 
@@ -2409,9 +2398,6 @@ msgstr "Ekskl. standard mails"
 
 msgid "Execute tasks"
 msgstr ""
-
-msgid "Expire date"
-msgstr "Udløbsdato"
 
 msgid "Ext. mail server"
 msgstr "Ekst. mail server"
@@ -2523,6 +2509,9 @@ msgstr "Filsystem info"
 
 msgid "Fill out a message text."
 msgstr "Udfyld en besked tekst."
+
+msgid "Filter customers by"
+msgstr ""
 
 msgid "First name"
 msgstr "Fornavn"
@@ -2647,8 +2636,8 @@ msgstr ""
 msgid "HTTP traffic"
 msgstr "HTTP trafik"
 
-msgid "Hide aliases"
-msgstr "Skjul aliases"
+msgid "Hide domain aliases"
+msgstr ""
 
 msgid "High"
 msgstr "Høj"
@@ -3164,9 +3153,6 @@ msgstr ""
 msgid "Manage htaccess users and groups"
 msgstr "Administrer htaccess brugere og grupper"
 
-msgid "Manage users"
-msgstr "Håndtér brugere"
-
 msgid "Manage users and groups"
 msgstr "Håndtér brugere og grupper"
 
@@ -3234,6 +3220,9 @@ msgstr "Minut"
 
 msgid "Minutes"
 msgstr "Minutter"
+
+msgid "Missing search criteria."
+msgstr ""
 
 msgid "Model"
 msgstr "Model"
@@ -3311,8 +3300,8 @@ msgstr "Nej"
 msgid "No IP address found."
 msgstr "Ingen IP adresse fundet."
 
-msgid "No administrator accounts found."
-msgstr "Ingen administrator konti fundet."
+msgid "No account found."
+msgstr ""
 
 msgid "No anti-rootkits logs"
 msgstr "Ingen anti-rootkits logs"
@@ -3322,9 +3311,6 @@ msgstr "Ikke tilgængelig"
 
 msgid "No custom menu found."
 msgstr "Ingen brugerdefineret menu fundet."
-
-msgid "No customer accounts found."
-msgstr "Ingen kundekonti fundet."
 
 msgid "No database update available."
 msgstr "Ingen database opdateringer tilgængelige."
@@ -3343,12 +3329,6 @@ msgstr "Ingen gruppe fundet."
 
 msgid "No hosting plan available."
 msgstr "Ingen hosting plan til rådighed."
-
-msgid "No records found matching the search criteria."
-msgstr "Har ikke fundet records, der matcher søgekriterierne."
-
-msgid "No reseller accounts found."
-msgstr "Ingen forhandler konti fundet."
 
 msgid "No reseller available to add the permissions."
 msgstr "Ingen forhandler tilgængelig til at tilføje tilladelserne"
@@ -3414,9 +3394,6 @@ msgstr "Normal brugere"
 msgid "Not Found"
 msgstr "Ikke fundet"
 
-msgid "Not Set"
-msgstr "Ikke indstillet"
-
 msgid "Not found."
 msgstr "Ikke fundet."
 
@@ -3441,9 +3418,6 @@ msgstr "Intet er blevet slettet."
 
 msgid "Notices, Warnings and Errors"
 msgstr "Meddelelser, advarsler og fejl"
-
-msgid "OK"
-msgstr "OK"
 
 msgid "Ok"
 msgstr "Ok"
@@ -4551,6 +4525,9 @@ msgstr "Vis detaljerede statistik for denne forhandler"
 msgid "Show detailed statistics for this user"
 msgstr "Vis detaljerede statistikker for denne bruger"
 
+msgid "Show domain aliases"
+msgstr ""
+
 msgid "Show in"
 msgstr "Vis i"
 
@@ -4666,9 +4643,6 @@ msgstr "Kommune"
 msgid "Statistics"
 msgstr "Statistiker"
 
-msgid "Stats"
-msgstr "Statistik"
-
 msgid "Status"
 msgstr "Status"
 
@@ -4769,9 +4743,6 @@ msgstr "Support"
 
 msgid "Support system"
 msgstr "Support system"
-
-msgid "Suspended"
-msgstr "Suspenderet"
 
 msgid "Swap"
 msgstr "Swap"
@@ -5397,9 +5368,6 @@ msgstr "Se"
 msgid "View SSL certificate"
 msgstr "Se SSL certifikat"
 
-msgid "View aliases"
-msgstr "Vis aliaser"
-
 msgid "View ticket"
 msgstr "Se ticket"
 
@@ -5807,18 +5775,14 @@ msgid ""
 "automatically activate the HSTS feature for the subdomains of this domain."
 msgstr ""
 
-msgid "Your account has expired."
-msgstr "Din konto er udløbet."
+msgid "Your account has been disabled. Please, contact your reseller."
+msgstr ""
 
 msgid "Your account has expired. Please renew your subscription."
 msgstr "Din konto er udløbet. Venligst forny dit abonnement."
 
-msgid ""
-"Your account is currently under maintenance or disabled. Please, contact "
-"your reseller."
+msgid "Your account has expired. Please, contact your reseller."
 msgstr ""
-"Din konto er i øjeblikket under vedligeholdelse eller deaktiveret. Kontakt "
-"venligst din forhandler."
 
 msgid "Your consumption"
 msgstr "Dit forbrug"
@@ -5919,6 +5883,24 @@ msgstr ""
 msgid "and"
 msgstr "og"
 
+msgid "anything"
+msgstr ""
+
+msgid "city"
+msgstr ""
+
+msgid "compagny"
+msgstr ""
+
+msgid "country"
+msgstr ""
+
+msgid "created by"
+msgstr ""
+
+msgid "customer ID"
+msgstr ""
+
 msgid "day"
 msgstr "dag"
 
@@ -5946,6 +5928,9 @@ msgstr "domæne aliases"
 msgid "domain data"
 msgstr "domæne data"
 
+msgid "domain name"
+msgstr ""
+
 msgid "domains"
 msgstr "domæner"
 
@@ -5958,8 +5943,14 @@ msgstr "E-mail konti"
 msgid "enabled"
 msgstr "aktiveret"
 
+msgid "error"
+msgstr ""
+
 msgid "everything"
 msgstr "alt"
+
+msgid "first name"
+msgstr ""
 
 msgid "from other browser"
 msgstr "fra anden browser"
@@ -6024,6 +6015,9 @@ msgstr "kB"
 msgid "kiB"
 msgstr "kiB"
 
+msgid "last name"
+msgstr ""
+
 msgid "mail"
 msgstr "mail"
 
@@ -6051,6 +6045,9 @@ msgstr "ikke tilgængelig"
 msgid "not required"
 msgstr "ikke påkrævet"
 
+msgid "ok"
+msgstr ""
+
 msgid "older than 1 month"
 msgstr "ældre end 1 måned"
 
@@ -6076,14 +6073,26 @@ msgstr "orphan indtastning"
 msgid "required"
 msgstr "kræves"
 
+msgid "reseller name"
+msgstr ""
+
+msgid "state/province"
+msgstr ""
+
 msgid "subdomain"
 msgstr "subdomæne"
 
 msgid "subdomains"
 msgstr "subdomæner"
 
+msgid "suspended"
+msgstr ""
+
 msgid "tcp"
 msgstr "tcp"
+
+msgid "that match with"
+msgstr ""
 
 msgid "traffic"
 msgstr "trafik"
@@ -6097,11 +6106,11 @@ msgstr "ubegrænset"
 msgid "update"
 msgstr "opdater"
 
-msgid "view aliases"
-msgstr "Se Aliaser"
-
 msgid "waiting for activation"
 msgstr "venter på aktivering"
+
+msgid "which status is"
+msgstr ""
 
 msgid "yes"
 msgstr "ja"

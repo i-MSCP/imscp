@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-07-10 07:51+0000\n"
+"POT-Creation-Date: 2017-07-20 14:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jari <info@jkwebdesign.fi>, 2017\n"
 "Language-Team: Finnish (Finland) (https://www.transifex.com/i-mscp/teams/576/fi_FI/)\n"
@@ -91,14 +91,6 @@ msgstr "%1$s / %2$s (%3$s)"
 #, php-format
 msgid "%1$s / %2$s of unlimited"
 msgstr "%1$s / %2$s / rajoittamaton"
-
-#, php-format
-msgid "%1$s of %2$s"
-msgstr "%1$s / %2$s"
-
-#, php-format
-msgid "%1$s of <b>unlimited</b>"
-msgstr "%1$s / <b>rajoittamaton</b>"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -843,10 +835,6 @@ msgstr "Tapahtui odottamaton virhe"
 msgid "An unexpected error occurred."
 msgstr "Tapahtui odottamaton virhe"
 
-msgid ""
-"An unexpected error occurred. Go to the debugger interface for more details."
-msgstr ""
-
 msgid "An unexpected error occurred. Please contact your administrator."
 msgstr "Tapahtui odottamaton virhe. Ota yhteyttä ylläpitäjään."
 
@@ -930,10 +918,6 @@ msgid "Are you sure you want to delete the %s menu?"
 msgstr "Oletko varma, että haluat poistaa %s valikon?"
 
 #, php-format
-msgid "Are you sure you want to delete the %s user?"
-msgstr ""
-
-#, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Oletko varma, että haluat poistaa '%s' tukipyynnön?"
 
@@ -951,6 +935,9 @@ msgstr ""
 
 msgid "Are you sure you want to delete this DNS record?"
 msgstr "Haluatko varmasti poistaa tämän DNS-tietueen?"
+
+msgid "Are you sure you want to delete this account?"
+msgstr ""
 
 msgid "Are you sure you want to delete this domain alias?"
 msgstr "Haluatko varmasti poistaa tämän verkkotunnusaliaksen?"
@@ -1221,13 +1208,13 @@ msgid ""
 msgstr ""
 "Paina Palautus nappia ja järjestelmä palauttaa edellisen varmuuskopion"
 
-msgid "Click to activate"
-msgstr "Paina tästä aktivoidaksesi"
-
-msgid "Click to deactivate"
-msgstr "Paina tästä poistaaksesi käytöstä"
-
 msgid "Click to edit"
+msgstr ""
+
+msgid "Click to suspend this customer account."
+msgstr ""
+
+msgid "Click to unsuspend this customer account."
 msgstr ""
 
 msgid "Client / Databases / Add SQL Database"
@@ -1529,6 +1516,9 @@ msgstr "Luo oletussähköpostitilit"
 
 msgid "Created by"
 msgstr "Luonut"
+
+msgid "Created on"
+msgstr ""
 
 msgid "Creation date"
 msgstr "Luontiaika"
@@ -1951,6 +1941,9 @@ msgstr "Poista liitännäinen"
 msgid "Delete ticket"
 msgstr "Poista tukipyyntö"
 
+msgid "Delete user"
+msgstr ""
+
 msgid "Deletion in progress"
 msgstr "Poisto käynnissä"
 
@@ -2338,9 +2331,6 @@ msgstr "Käytössä"
 msgid "Enabled for: %s"
 msgstr "Käytössä: %s"
 
-msgid "Error"
-msgstr "Virhe"
-
 msgid "Error details"
 msgstr "Virheen tiedot"
 
@@ -2361,9 +2351,6 @@ msgstr "Poislukien oletussähköpostit"
 
 msgid "Execute tasks"
 msgstr "Suorita tehtävät"
-
-msgid "Expire date"
-msgstr "Vanhenemispäivä"
 
 msgid "Ext. mail server"
 msgstr "Ulkoinen sähköpostipalvelin"
@@ -2475,6 +2462,9 @@ msgstr "Tiedostojärjestelmän tiedot"
 
 msgid "Fill out a message text."
 msgstr "Täytä viesti."
+
+msgid "Filter customers by"
+msgstr ""
 
 msgid "First name"
 msgstr "Etunimi"
@@ -2599,8 +2589,8 @@ msgstr "HSTS max-age directive value"
 msgid "HTTP traffic"
 msgstr "HTTP-liikenne"
 
-msgid "Hide aliases"
-msgstr "Piilota aliakset"
+msgid "Hide domain aliases"
+msgstr ""
 
 msgid "High"
 msgstr "Suuri"
@@ -3120,9 +3110,6 @@ msgstr "Hallitse SSL-sertifikaattia"
 msgid "Manage htaccess users and groups"
 msgstr "Hallitse htaccess käyttäjiä ja ryhmiä"
 
-msgid "Manage users"
-msgstr "Hallitse käyttäjiä"
-
 msgid "Manage users and groups"
 msgstr "Hallitse käyttäjiä ja ryhmiä"
 
@@ -3189,6 +3176,9 @@ msgstr "Minuttia"
 
 msgid "Minutes"
 msgstr "Minuttia"
+
+msgid "Missing search criteria."
+msgstr ""
 
 msgid "Model"
 msgstr "Malli"
@@ -3267,8 +3257,8 @@ msgstr "Ei"
 msgid "No IP address found."
 msgstr "IP-osoitteita ei löytynyt."
 
-msgid "No administrator accounts found."
-msgstr "Ylläpitäjän tiliä ei löytynyt."
+msgid "No account found."
+msgstr ""
 
 msgid "No anti-rootkits logs"
 msgstr "Ei merkintöjä"
@@ -3278,9 +3268,6 @@ msgstr "Ei saatavilla"
 
 msgid "No custom menu found."
 msgstr "Ei valinnaisia valikoita"
-
-msgid "No customer accounts found."
-msgstr "Asiakkaiden tilejä ei löytynyt."
 
 msgid "No database update available."
 msgstr "Tietokantapäivityksiä ei saatavilla."
@@ -3299,12 +3286,6 @@ msgstr "Ei ryhmiä"
 
 msgid "No hosting plan available."
 msgstr "Ei palvelupaketteja saatavilla"
-
-msgid "No records found matching the search criteria."
-msgstr "Hakuehtoihin vastaavia tietueita ei löytynyt."
-
-msgid "No reseller accounts found."
-msgstr "Jälleenmyyjän tilejä ei löytynyt."
 
 msgid "No reseller available to add the permissions."
 msgstr ""
@@ -3369,9 +3350,6 @@ msgstr "Tavalliset käyttäjät"
 msgid "Not Found"
 msgstr "Ei löydy"
 
-msgid "Not Set"
-msgstr "Ei asetettu"
-
 msgid "Not found."
 msgstr "Ei löydy."
 
@@ -3396,9 +3374,6 @@ msgstr "Mitään ei poistettu."
 
 msgid "Notices, Warnings and Errors"
 msgstr "Huomiot, varoitukset ja virheet"
-
-msgid "OK"
-msgstr "OK"
 
 msgid "Ok"
 msgstr "Ok"
@@ -4511,6 +4486,9 @@ msgstr "Näytä yksityiskohtaiset tiedot tälle jälleenmyyjälle"
 msgid "Show detailed statistics for this user"
 msgstr "Näytä yksityiskohtaiset liikennetiedot"
 
+msgid "Show domain aliases"
+msgstr ""
+
 msgid "Show in"
 msgstr "Näytä"
 
@@ -4626,9 +4604,6 @@ msgstr "Osavaltio/lääni"
 msgid "Statistics"
 msgstr "Tilastot"
 
-msgid "Stats"
-msgstr "Tilastot"
-
 msgid "Status"
 msgstr "Tila"
 
@@ -4734,9 +4709,6 @@ msgstr "Tuki"
 
 msgid "Support system"
 msgstr "Tukijärjestelmä"
-
-msgid "Suspended"
-msgstr "Pysäytetty"
 
 msgid "Swap"
 msgstr "SWAP"
@@ -5348,9 +5320,6 @@ msgstr "Katsele"
 msgid "View SSL certificate"
 msgstr "Katso SSL-sertifikaattia"
 
-msgid "View aliases"
-msgstr "Näytä aliakset"
-
 msgid "View ticket"
 msgstr "Katso tukipyyntö"
 
@@ -5778,18 +5747,14 @@ msgid ""
 "automatically activate the HSTS feature for the subdomains of this domain."
 msgstr ""
 
-msgid "Your account has expired."
-msgstr "Käyttäjätunnuksesi on vanhentunut."
+msgid "Your account has been disabled. Please, contact your reseller."
+msgstr ""
 
 msgid "Your account has expired. Please renew your subscription."
 msgstr "Käyttäjätunnuksesi on vanhentunut. Ole hyvä ja uudista tilauksesi."
 
-msgid ""
-"Your account is currently under maintenance or disabled. Please, contact "
-"your reseller."
+msgid "Your account has expired. Please, contact your reseller."
 msgstr ""
-"Käyttäjätunnuksesi on tällä hetkellä huollossa tai pois käytöstä. Ota "
-"yhteyttä jälleenmyyjääsi."
 
 msgid "Your consumption"
 msgstr "Käyttösi"
@@ -5893,6 +5858,24 @@ msgstr ""
 msgid "and"
 msgstr "ja"
 
+msgid "anything"
+msgstr ""
+
+msgid "city"
+msgstr ""
+
+msgid "compagny"
+msgstr ""
+
+msgid "country"
+msgstr ""
+
+msgid "created by"
+msgstr ""
+
+msgid "customer ID"
+msgstr ""
+
 msgid "day"
 msgstr "päivä"
 
@@ -5920,6 +5903,9 @@ msgstr "domainien aliakset"
 msgid "domain data"
 msgstr ""
 
+msgid "domain name"
+msgstr ""
+
 msgid "domains"
 msgstr "domainit"
 
@@ -5932,8 +5918,14 @@ msgstr "Sähköpostitilit"
 msgid "enabled"
 msgstr "päällä"
 
+msgid "error"
+msgstr ""
+
 msgid "everything"
 msgstr "kaikki"
+
+msgid "first name"
+msgstr ""
 
 msgid "from other browser"
 msgstr "Muut selaimesta"
@@ -5998,6 +5990,9 @@ msgstr "kB"
 msgid "kiB"
 msgstr "kiB"
 
+msgid "last name"
+msgstr ""
+
 msgid "mail"
 msgstr "sähköposti"
 
@@ -6025,6 +6020,9 @@ msgstr "Ei saatavilla"
 msgid "not required"
 msgstr "ei vaadittu"
 
+msgid "ok"
+msgstr ""
+
 msgid "older than 1 month"
 msgstr "yli 1 kk:tta vanha"
 
@@ -6050,14 +6048,26 @@ msgstr "puuttuva merkintä"
 msgid "required"
 msgstr "pakollinen"
 
+msgid "reseller name"
+msgstr ""
+
+msgid "state/province"
+msgstr ""
+
 msgid "subdomain"
 msgstr "Alidomain"
 
 msgid "subdomains"
 msgstr "alidomainit"
 
+msgid "suspended"
+msgstr ""
+
 msgid "tcp"
 msgstr "tcp"
+
+msgid "that match with"
+msgstr ""
 
 msgid "traffic"
 msgstr "Liikenne"
@@ -6071,11 +6081,11 @@ msgstr "rajoittamaton"
 msgid "update"
 msgstr "päivitä"
 
-msgid "view aliases"
-msgstr "näytä aliakset"
-
 msgid "waiting for activation"
 msgstr "odottaa aktivointia"
+
+msgid "which status is"
+msgstr ""
 
 msgid "yes"
 msgstr "kyllä"

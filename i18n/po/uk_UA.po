@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-07-10 07:51+0000\n"
+"POT-Creation-Date: 2017-07-20 14:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Aleksandr Sidenko <fox4ua@ya.ru>, 2017\n"
 "Language-Team: Ukrainian (Ukraine) (https://www.transifex.com/i-mscp/teams/576/uk_UA/)\n"
@@ -93,14 +93,6 @@ msgstr "%1$s / %2$s из %3$s"
 #, php-format
 msgid "%1$s / %2$s of unlimited"
 msgstr "%1$s / %2$s із не обмежено"
-
-#, php-format
-msgid "%1$s of %2$s"
-msgstr "%1$s из %2$s"
-
-#, php-format
-msgid "%1$s of <b>unlimited</b>"
-msgstr "%1$s из <b>не ограничено</b>"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -879,12 +871,6 @@ msgstr "Произошла неожиданная ошибка."
 msgid "An unexpected error occurred."
 msgstr "Произошла неожиданная ошибка."
 
-msgid ""
-"An unexpected error occurred. Go to the debugger interface for more details."
-msgstr ""
-"Произошла неожиданная ошибка. Перейдите в отладчик, чтобы получить "
-"подробности"
-
 msgid "An unexpected error occurred. Please contact your administrator."
 msgstr ""
 "Обнаружена непредвиденная ошибка. Пожалуйста свяжитесь с Вашим "
@@ -971,10 +957,6 @@ msgid "Are you sure you want to delete the %s menu?"
 msgstr "Вы уверены, что хотите удалить меню %s ?"
 
 #, php-format
-msgid "Are you sure you want to delete the %s user?"
-msgstr ""
-
-#, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
 msgstr "Вы уверены, что хотите удалить тикет %s ?"
 
@@ -992,6 +974,9 @@ msgstr "Вы уверены, что хотите удалить защищённ
 
 msgid "Are you sure you want to delete this DNS record?"
 msgstr "Вы уверены, что хотите удалить эту DNS запись?"
+
+msgid "Are you sure you want to delete this account?"
+msgstr ""
 
 msgid "Are you sure you want to delete this domain alias?"
 msgstr "Вы уверены, что хотите удалить этот алиас домена?"
@@ -1275,14 +1260,14 @@ msgid ""
 msgstr ""
 "Натисніть на кнопку Відновити і система відновить останню резервну копію"
 
-msgid "Click to activate"
-msgstr "Щелкните для активации"
-
-msgid "Click to deactivate"
-msgstr "Щелкните для деактивации"
-
 msgid "Click to edit"
 msgstr "Щелкните для изменения"
+
+msgid "Click to suspend this customer account."
+msgstr ""
+
+msgid "Click to unsuspend this customer account."
+msgstr ""
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "Клиент / Базы данных / Добавить БД"
@@ -1587,6 +1572,9 @@ msgstr "Создать email адреса по умолчанию"
 
 msgid "Created by"
 msgstr "Створив"
+
+msgid "Created on"
+msgstr ""
 
 msgid "Creation date"
 msgstr "Дата створення"
@@ -2159,6 +2147,9 @@ msgstr "Удалить этот плагин"
 msgid "Delete ticket"
 msgstr "Удалить тикет"
 
+msgid "Delete user"
+msgstr ""
+
 msgid "Deletion in progress"
 msgstr "Удаление в процессе"
 
@@ -2546,9 +2537,6 @@ msgstr "Увімкнено"
 msgid "Enabled for: %s"
 msgstr "Включено для: %s"
 
-msgid "Error"
-msgstr "Помилка"
-
 msgid "Error details"
 msgstr "Данные об ошибке"
 
@@ -2569,9 +2557,6 @@ msgstr "Кроме ящиков по умолчанию"
 
 msgid "Execute tasks"
 msgstr "Выполнить задачи"
-
-msgid "Expire date"
-msgstr "Дата закінчення терміну дії"
 
 msgid "Ext. mail server"
 msgstr "Внешние почтовые сервера"
@@ -2683,6 +2668,9 @@ msgstr "Системна інформація - Файлова система"
 
 msgid "Fill out a message text."
 msgstr "Заполните текст сообщения. "
+
+msgid "Filter customers by"
+msgstr ""
 
 msgid "First name"
 msgstr "Ім'я"
@@ -2807,8 +2795,8 @@ msgstr "HSTS значение директивы max-age"
 msgid "HTTP traffic"
 msgstr "HTTP трафик"
 
-msgid "Hide aliases"
-msgstr "Скрыть алиасы"
+msgid "Hide domain aliases"
+msgstr ""
 
 msgid "High"
 msgstr "Высокий"
@@ -3327,9 +3315,6 @@ msgstr "Управление сертификат SSL"
 msgid "Manage htaccess users and groups"
 msgstr "Управление htaccess пользователями и группами"
 
-msgid "Manage users"
-msgstr "Управлення користувачами"
-
 msgid "Manage users and groups"
 msgstr "Управление пользователями и группами"
 
@@ -3399,6 +3384,9 @@ msgstr "Хвилина"
 
 msgid "Minutes"
 msgstr "Хвилин"
+
+msgid "Missing search criteria."
+msgstr ""
 
 msgid "Model"
 msgstr "Модель"
@@ -3477,8 +3465,8 @@ msgstr "Ні"
 msgid "No IP address found."
 msgstr "Не найдено IP адресов."
 
-msgid "No administrator accounts found."
-msgstr "Не найдено учетных записей администраторов."
+msgid "No account found."
+msgstr ""
 
 msgid "No anti-rootkits logs"
 msgstr "Логи руткитов отсутствуют"
@@ -3488,9 +3476,6 @@ msgstr "Недоступно"
 
 msgid "No custom menu found."
 msgstr "Не найдены пользовательские меню."
-
-msgid "No customer accounts found."
-msgstr "Не найдено учетных записей клиентов."
 
 msgid "No database update available."
 msgstr "Нет обновлений базы данных."
@@ -3509,12 +3494,6 @@ msgstr "Не найдено групп."
 
 msgid "No hosting plan available."
 msgstr "Нет доступных хостинг-планов."
-
-msgid "No records found matching the search criteria."
-msgstr "Не найдено записей, удовлетворяющих критерию."
-
-msgid "No reseller accounts found."
-msgstr "Не найдено учетных записей реселлеров"
 
 msgid "No reseller available to add the permissions."
 msgstr "Нет доступного реселлера для добавления прав"
@@ -3580,9 +3559,6 @@ msgstr "Користувачі"
 msgid "Not Found"
 msgstr "Не найдено"
 
-msgid "Not Set"
-msgstr "Не задано"
-
 msgid "Not found."
 msgstr "Не найдено"
 
@@ -3609,9 +3585,6 @@ msgstr "Ничего не было удалено"
 
 msgid "Notices, Warnings and Errors"
 msgstr "Повідомлення, попередження та помилки"
-
-msgid "OK"
-msgstr "Ок"
 
 msgid "Ok"
 msgstr "Ok"
@@ -4727,6 +4700,9 @@ msgstr "Показать детальную статистику для этог
 msgid "Show detailed statistics for this user"
 msgstr "Показать детальную статистику для этого реселлера"
 
+msgid "Show domain aliases"
+msgstr ""
+
 msgid "Show in"
 msgstr "Показати в"
 
@@ -4842,9 +4818,6 @@ msgstr "Область / Район"
 msgid "Statistics"
 msgstr "Статистика"
 
-msgid "Stats"
-msgstr "Статистика"
-
 msgid "Status"
 msgstr "Статус"
 
@@ -4951,9 +4924,6 @@ msgstr "Поддержка"
 
 msgid "Support system"
 msgstr "Служба підтримки"
-
-msgid "Suspended"
-msgstr "Призупинений"
 
 msgid "Swap"
 msgstr "Розділ підкачки"
@@ -5599,9 +5569,6 @@ msgstr "Перегляд"
 msgid "View SSL certificate"
 msgstr "Просмотреть SSL сертификат"
 
-msgid "View aliases"
-msgstr "Показать алиасы"
-
 msgid "View ticket"
 msgstr "Просмотр тикета"
 
@@ -6038,18 +6005,14 @@ msgstr ""
 "обслуживаются с использованием SSL. Учтите, что включение директивы не "
 "включит функцию HSTS для поддоменов данного домена."
 
-msgid "Your account has expired."
-msgstr "Ваша учетная запись истекла."
+msgid "Your account has been disabled. Please, contact your reseller."
+msgstr ""
 
 msgid "Your account has expired. Please renew your subscription."
 msgstr "Ваша учетная запись истекла. Пожалуйста обновите подписку."
 
-msgid ""
-"Your account is currently under maintenance or disabled. Please, contact "
-"your reseller."
+msgid "Your account has expired. Please, contact your reseller."
 msgstr ""
-"Ваша учетная запись находится на техобслуживании или отключена, пожалуйста, "
-"свяжитесь с Вашим реселлером."
 
 msgid "Your consumption"
 msgstr "Ваши затраты"
@@ -6153,6 +6116,24 @@ msgstr "Администратор"
 msgid "and"
 msgstr "и"
 
+msgid "anything"
+msgstr ""
+
+msgid "city"
+msgstr ""
+
+msgid "compagny"
+msgstr ""
+
+msgid "country"
+msgstr ""
+
+msgid "created by"
+msgstr ""
+
+msgid "customer ID"
+msgstr ""
+
 msgid "day"
 msgstr "день"
 
@@ -6180,6 +6161,9 @@ msgstr "алиасы домена"
 msgid "domain data"
 msgstr "данные домена"
 
+msgid "domain name"
+msgstr ""
+
 msgid "domains"
 msgstr "домены"
 
@@ -6192,8 +6176,14 @@ msgstr "почтовые ящики"
 msgid "enabled"
 msgstr "Включено"
 
+msgid "error"
+msgstr ""
+
 msgid "everything"
 msgstr "усе"
+
+msgid "first name"
+msgstr ""
 
 msgid "from other browser"
 msgstr "из другого браузера"
@@ -6258,6 +6248,9 @@ msgstr "КБ"
 msgid "kiB"
 msgstr "Кб"
 
+msgid "last name"
+msgstr ""
+
 msgid "mail"
 msgstr "почта"
 
@@ -6285,6 +6278,9 @@ msgstr "недоступно"
 msgid "not required"
 msgstr "не требуется"
 
+msgid "ok"
+msgstr ""
+
 msgid "older than 1 month"
 msgstr "старше місяця"
 
@@ -6310,14 +6306,26 @@ msgstr "одинарний вхід"
 msgid "required"
 msgstr "требуется"
 
+msgid "reseller name"
+msgstr ""
+
+msgid "state/province"
+msgstr ""
+
 msgid "subdomain"
 msgstr "поддомен"
 
 msgid "subdomains"
 msgstr "поддомены"
 
+msgid "suspended"
+msgstr ""
+
 msgid "tcp"
 msgstr "tcp"
+
+msgid "that match with"
+msgstr ""
 
 msgid "traffic"
 msgstr "трафик"
@@ -6331,11 +6339,11 @@ msgstr "не обмежено"
 msgid "update"
 msgstr "обновить"
 
-msgid "view aliases"
-msgstr "показати аліаси"
-
 msgid "waiting for activation"
 msgstr "ожидание активации"
+
+msgid "which status is"
+msgstr ""
 
 msgid "yes"
 msgstr "так"
