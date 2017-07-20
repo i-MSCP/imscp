@@ -69,16 +69,20 @@ sub process
 
     local $@;
     my $row = eval {
-        my $dbh = iMSCP::Database->factory( )->getRawDb;
+        my $dbh = iMSCP::Database->factory( )->getRawDb( );
         local $dbh->{'RaiseError'} = 1;
-        $dbh->selectrow_hasref( "SELECT 1 FROM plugin WHERE plugin_status <> 'uninstalled'", 1 );
+        $dbh->selectrow_hashref( "SELECT 1 FROM plugin WHERE plugin_status <> 'uninstalled'");
     };
     if ($@) {
         error( $@ );
         return 1;
     } elsif ($row) {
-        error( 'You must first uninstall all i-MSCP plugins through the control panel interface.' );
-        return 1;
+        iMSCP::Dialog->getInstance()->infobox( <<'EOF' );
+\Z1Uninstallation aborted.\Zn
+
+You must first uninstall all i-MSCP plugins through the control panel interface.
+EOF
+        exit 0;
     }
 
     undef $row;
@@ -109,9 +113,9 @@ sub process
 sub shutDown
 {
 
-    iMSCP::Dialog->getInstance()->infobox( <<"EOF" );
+    iMSCP::Dialog->getInstance()->infobox( <<'EOF' );
 
-\\Z1Congratulations\\Zn
+\Z1Congratulations\Zn
 
 iMSCP has been successfully uninstalled.
 
@@ -288,11 +292,11 @@ sub _removeSqlData
         $sqlServer->dropUser( $rows->{$_}->{'sqlu_name'}, $rows->{$_}->{'sqlu_host'} ) for keys %{$rows};
 
         # Remove customer's sql databases
-        $rows = $database->selectall_hashref( 'SELECT sqld_name FROM sql_database', 'sqld_name' );
+        $rows = $dbh->selectall_hashref( 'SELECT sqld_name FROM sql_database', 'sqld_name' );
         $dbh->do( 'DROP DATABASE IF EXISTS '.$dbh->quote_identifier( $rows->{$_}->{'sqld_name'}) ) for keys %{$rows};
 
         # Remove i-MSCP sql database
-        $database->do( 'DROP DATABASE IF EXISTS '.$dbh->quote_identifier( $main::imscpConfig{'DATABASE_NAME'} ) );
+        $dbh->do( 'DROP DATABASE IF EXISTS '.$dbh->quote_identifier( $main::imscpConfig{'DATABASE_NAME'} ) );
 
         # Drop i-MSCP master SQL user
         $sqlServer->dropUser( $main::imscpConfig{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'} );
