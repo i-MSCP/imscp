@@ -200,9 +200,12 @@ sub build
     );
 
     # Write configuration
-    local $UMASK = 027;
     while( my ($name, $config) = each %confmap ) {
-        iMSCP::File->new( filename => "$main::{'SYSTEM_CONF'}/$name.conf" )->save( );
+        if ($name eq 'imscpOld') {
+            local $UMASK = 027;
+            iMSCP::File->new( filename => "$main::{'SYSTEM_CONF'}/$name.conf" )->save( );
+        }
+
         tie my %config, 'iMSCP::Config', fileName => "$main::{'SYSTEM_CONF'}/$name.conf";
         @config{ keys %{$config} } = values %{$config};
         untie %config;
