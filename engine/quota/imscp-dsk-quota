@@ -76,7 +76,7 @@ sub quotaFiles
 
             # Get list of all child domains (sub|als|alssub)
             my $rows2 = eval {
-                $db->selectall_hashref(
+                $dbh->selectall_hashref(
                     "
                         SELECT alias_name AS domain_name
                         FROM domain_aliasses
@@ -184,7 +184,7 @@ sub quotaSql
 
         my $databases = $dbh->selectcol_arrayref( 'SHOW DATABASES' );
 
-        while(my ($dmnId, $dmnData) = each( %{$data} )) {
+        while(my ($dmnId, $dmnData) = each( %{$rows} )) {
             my ($size, $sqlSize) = (0, 0);
 
             my $customerDatabases = $dbh->selectall_hashref(
@@ -194,7 +194,7 @@ sub quotaSql
             for my $sqlDbName (keys %{$customerDatabases}) {
                 next unless grep($_ eq $sqlDbName, @{$databases});
 
-                my $sqlDbTables = $db->selectall_hashref(
+                my $sqlDbTables = $dbh->selectall_hashref(
                     "SHOW TABLE STATUS FROM ".$dbh->quote_identifier( $sqlDbName ), 1
                 );
 
@@ -219,7 +219,7 @@ sub quotaSql
                 $dbh->commit( );
             };
             if ($@) {
-                $dbi->rollback( );
+                $dbh->rollback( );
                 error( $@ );
             }
         }

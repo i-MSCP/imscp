@@ -114,23 +114,23 @@ sub connect
     $self->{'connection'}->{'RaiseError'} = 0;
 }
 
-=item useDatabase( $database )
+=item useDatabase( $dbName )
 
  Change database for the current connection
 
- Param string $database Database name
+ Param string $dbName Database name
  Return string Old database on success, die on failure
 
 =cut
 
 sub useDatabase
 {
-    my ($self, $database) = @_;
+    my ($self, $dbName) = @_;
 
-    defined $database && $database ne '' or die( '$database parameter is not defined or invalid' );
+    defined $dbName && $dbName ne '' or die( '$dbName parameter is not defined or invalid' );
 
-    my $oldDatabase = $self->{'db'}->{'DATABASE_NAME'};
-    return $oldDatabase if $database eq $oldDatabase;
+    my $oldDbName = $self->{'db'}->{'DATABASE_NAME'};
+    return $oldDbName if $dbName eq $oldDbName;
 
     my $dbh = $self->getRawDb( );
     unless ($dbh->ping( )) {
@@ -140,11 +140,11 @@ sub useDatabase
 
     {
         local $dbh->{'RaiseError'} = 1;
-        $dbh->do( 'USE '.$self->quoteIdentifier( $database ) );
+        $dbh->do( 'USE '.$self->quoteIdentifier( $dbName ) );
     }
 
-    $self->{'db'}->{'DATABASE_NAME'} = $database;
-    $oldDatabase;
+    $self->{'db'}->{'DATABASE_NAME'} = $dbName;
+    $oldDbName;
 }
 
 =item startTransaction( )
