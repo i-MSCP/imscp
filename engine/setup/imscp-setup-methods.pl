@@ -36,6 +36,7 @@ use iMSCP::Service;
 use iMSCP::Stepper;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
+use iMSCP::Umask;
 
 sub setupInstallFiles
 {
@@ -67,8 +68,9 @@ sub setupBoot
     untie( %main::imscpOldConfig ) if %main::imscpOldConfig;
 
     unless (-f "$main::imscpConfig{'CONF_DIR'}/imscpOld.conf") {
+        local $UMASK = 027;
         my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp.conf" )->copyFile(
-            "$main::imscpConfig{'CONF_DIR'}/imscpOld.conf"
+            "$main::imscpConfig{'CONF_DIR'}/imscpOld.conf", { preserve => 'no' }
         );
         return $rs if $rs;
     }
