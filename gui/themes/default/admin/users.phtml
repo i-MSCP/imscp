@@ -2,7 +2,7 @@
 <script>
     function action_delete(link) {
         return jQuery.imscp.confirmOnclick(
-            link, "<?= tojs(tr('Are you sure you want to delete this user?')); ?>"
+            link, "<?= tojs(tr('Are you sure you want to delete this account?')); ?>"
         );
     }
 
@@ -20,7 +20,7 @@
 <h3 class="user_yellow"><span><?= tohtml(tr('Administrator')); ?></span></h3>
 
 <!-- BDP: administrator_message -->
-<div class="static_info"><?= tohtml(tr('No user found.')); ?></div>
+<div class="static_info"><?= tohtml(tr('No account found.')); ?></div>
 <!-- EDP: administrator_message -->
 
 <!-- BDP: administrator_list -->
@@ -40,9 +40,9 @@
         <td>{ADMINISTRATOR_CREATED_ON}</td>
         <td>{ADMINISTRATPR_CREATED_BY}</td>
         <td>
-            <a href="{ADMINISTRATOR_EDIT_URL}" class="icon i_user" title="<?= tohtml(tr('Edit user'), 'htmlAttr'); ?>"><?= tohtml(tr('Edit user')); ?></a>
+            <a href="user_edit.php?edit_id={ADMINISTRATOR_ID}" class="icon i_user" title="<?= tohtml(tr('Edit user'), 'htmlAttr'); ?>"><?= tohtml(tr('Edit user')); ?></a>
             <!-- BDP: administrator_delete_link -->
-            <a href="{ADMINISTRATOR_DELETE_URL}" class="icon i_delete" onclick="return action_delete(this)" title="<?= tohtml(tr('Delete user'), 'htmlAttr'); ?>"><?= tohtml(tr('Delete user')); ?></a>
+            <a href="user_delete.php?delete_id={ADMINISTRATOR_ID}" class="icon i_delete" onclick="return action_delete(this)" title="<?= tohtml(tr('Delete user'), 'htmlAttr'); ?>"><?= tohtml(tr('Delete user')); ?></a>
             <!-- EDP: administrator_delete_link -->
         </td>
     </tr>
@@ -54,7 +54,7 @@
 <h3 class="user_green"><span><?= tohtml(tr('Resellers')); ?></span></h3>
 
 <!-- BDP: reseller_message -->
-<div class="static_info"><?= tohtml(tr('No user found.')); ?></div>
+<div class="static_info"><?= tohtml(tr('No account found.')); ?></div>
 <!-- EDP: reseller_message -->
 
 <!-- BDP: reseller_list -->
@@ -70,13 +70,13 @@
     <tbody>
     <!-- BDP: reseller_item -->
     <tr>
-        <td>{RESELLER_NAME}</td>
+        <td>{RESELLER_USERNAME}</td>
         <td>{RESELLER_CREATED_ON}</td>
         <td>{RESELLER_CREATED_BY}</td>
         <td>
-            <a class="icon i_details" href="{RESELLER_SWITCH_INTERFACE_URL}" title="<?= tohtml(tr('Switch to user interface'), 'htmlAttr'); ?>"><?= tohtml(tr('Switch')); ?></a>
-            <a href="{RESELLER_EDIT_URL}" class="icon i_user" title="<?= tohtml(tr('Edit user'), 'htmlAttr'); ?>"><?= tohtml(tr('Edit user')); ?></a>
-            <a href="{RESELLER_DELETE_URL}" class="icon i_delete" title="<?= tohtml(tr('Delete user'), 'htmlAttr'); ?>" onclick="return action_delete(this)"><?= tohtml(tr('Delete user')); ?></a>
+            <a class="icon i_details" href="change_user_interface.php?to_id={RESELLER_ID}" title="<?= tohtml(tr('Switch to user interface'), 'htmlAttr'); ?>"><?= tohtml(tr('Switch')); ?></a>
+            <a href="reseller_edit.php?edit_id={RESELLER_ID}" class="icon i_user" title="<?= tohtml(tr('Edit user'), 'htmlAttr'); ?>"><?= tohtml(tr('Edit user')); ?></a>
+            <a href="user_delete.php?delete_id={RESELLER_ID}" class="icon i_delete" title="<?= tohtml(tr('Delete user'), 'htmlAttr'); ?>" onclick="return action_delete(this)"><?= tohtml(tr('Delete user')); ?></a>
         </td>
     </tr>
     <!-- EDP: reseller_item -->

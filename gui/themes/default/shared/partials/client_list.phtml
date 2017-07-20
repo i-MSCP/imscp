@@ -5,7 +5,7 @@
 <? if($_SESSION['user_type'] == 'reseller'): ?>
     function action_delete(link) {
         return jQuery.imscp.confirmOnclick(
-            link, "<?= tojs(tr('Are you sure you want to delete this user?')); ?>"
+            link, "<?= tojs(tr('Are you sure you want to delete this account?')); ?>"
         );
     }
 <? endif; ?>
@@ -27,7 +27,7 @@
                 return true;
             }
 
-            alert("<?= tojs(tr('Missing search criteria')); ?>");
+            alert("<?= tojs(tr('Missing search criteria.')); ?>");
             return false;
         });
 
@@ -87,7 +87,7 @@
 </form>
 <!-- EDP: client_search_form -->
 <!-- BDP: client_message -->
-<div class="static_info"><?= tohtml(tr('No user found.')); ?></div>
+<div class="static_info"><?= tohtml(tr('No account found.')); ?></div>
 <!-- EDP: client_message -->
 <!-- BDP: client_list -->
 <table class="datatable" id="users_table">

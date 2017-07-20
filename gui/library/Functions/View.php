@@ -358,10 +358,9 @@ function getCustomMenus($userLevel)
  */
 function gen_admin_list($tpl)
 {
-    $cfg = iMSCP_Registry::get('config');
     $stmt = execute_query(
         "
-          SELECT t1.admin_id, t1.admin_name, t1.domain_created, IFNULL(t2.admin_name, '') AS created_by
+          SELECT t1.admin_id, t1.admin_name, t1.domain_created, t2.admin_name AS created_by
           FROM admin AS t1
           LEFT JOIN admin AS t2 ON (t1.created_by = t2.admin_id)
           WHERE t1.admin_type = 'admin'
@@ -371,42 +370,31 @@ function gen_admin_list($tpl)
 
     if (!$stmt->rowCount()) {
         $tpl->assign('ADMINISTRATOR_LIST', '');
-        $tpl->parse('ADMINISTRATOR_MESSAGE', 'administrator_message');
         return;
     }
 
+    $tpl->assign('ADMINISTRATOR_MESSAGE', '');
+
+    $cfg = iMSCP_Registry::get('config');
+
     while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-        $adminCreated = $row['domain_created'];
-
-        if ($adminCreated == 0) {
-            $adminCreated = tr('N/A');
-        } else {
-            $dateFormat = $cfg['DATE_FORMAT'];
-            $adminCreated = date($dateFormat, $adminCreated);
-        }
-
-        if (empty($row['created_by']) || $row['admin_id'] == $_SESSION['user_id']) {
-            $tpl->assign('ADMINISTRATOR_DELETE_LINK', '');
-        } else {
-            $tpl->assign([
-                'ADMINISTRATOR_USERNAME' => tohtml($row['admin_name']),
-                'ADMINISTRATOR_EDIT_URL' => 'user_delete.php?delete_id=' . $row['admin_id'],
-
-            ]);
-            $tpl->parse('ADMIN_DELETE_LINK', 'admin_delete_link');
-        }
-
         $tpl->assign([
             'ADMINISTRATOR_USERNAME'   => tohtml($row['admin_name']),
-            'ADMINISTRATOR_CREATED_ON' => tohtml($adminCreated),
-            'ADMINISTRATPR_CREATED_BY' => ($row['created_by'] != '') ? tohtml($row['created_by']) : tr('System'),
-            'ADMINISTRATOR_EDIT_URL'   => 'user_edit.php?edit_id=' . $row['admin_id']
+            'ADMINISTRATOR_CREATED_ON' => tohtml(($row['domain_created'] == 0)
+                ? tr('N/A') : date($cfg['DATE_FORMAT'], $row['domain_created'])
+            ),
+            'ADMINISTRATPR_CREATED_BY' => tohtml(is_null($row['created_by']) ? tr('System') : $row['created_by']),
+            'ADMINISTRATOR_ID'         => $row['admin_id']
         ]);
+
+        if (is_null($row['created_by']) || $row['admin_id'] == $_SESSION['user_id']) {
+            $tpl->assign('ADMINISTRATOR_DELETE_LINK', '');
+        } else {
+            $tpl->parse('ADMINISTRATOR_DELETE_LINK', 'administrator_delete_link');
+        }
+
         $tpl->parse('ADMINISTRATOR_ITEM', '.administrator_item');
     }
-
-    $tpl->parse('ADMINISRATOR_LIST', 'administrator_list');
-    $tpl->assign('ADMINISTRATOR_MESSAGE', '');
 }
 
 /**
@@ -417,11 +405,9 @@ function gen_admin_list($tpl)
  */
 function gen_reseller_list($tpl)
 {
-    $cfg = iMSCP_Registry::get('config');
-
     $stmt = execute_query(
         "
-          SELECT t1.admin_id, t1.admin_name, t1.domain_created, IFNULL(t2.admin_name, '') AS created_by
+          SELECT t1.admin_id, t1.admin_name, t1.domain_created, t2.admin_name AS created_by
           FROM admin AS t1
           LEFT JOIN admin AS t2 ON (t1.created_by = t2.admin_id)
           WHERE t1.admin_type = 'reseller'
@@ -431,35 +417,24 @@ function gen_reseller_list($tpl)
 
     if (!$stmt->rowCount()) {
         $tpl->assign('RESELLER_LIST', '');
-        $tpl->parse('RESELLER_MESSAGE', 'reseller_message');
         return;
     }
 
+    $tpl->assign('RESELLER_MESSAGE', '');
+
+    $cfg = iMSCP_Registry::get('config');
+
     while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
         $tpl->assign([
-            'RESELLER_SWITCH_INTERFACE_URL' => 'change_user_interface.php?to_id=' . $row['admin_id'],
-            'RESELLER_DELETE_URL'           => 'user_delete.php?delete_id=' . $row['admin_id']
-        ]);
-
-        $resellerCreated = $row['domain_created'];
-
-        if ($resellerCreated == 0) {
-            $resellerCreated = tr('N/A');
-        } else {
-            $resellerCreated = date($cfg['DATE_FORMAT'], $resellerCreated);
-        }
-
-        $tpl->assign([
-            'RESELLER_NAME'       => tohtml($row['admin_name']),
-            'RESELLER_CREATED_ON' => tohtml($resellerCreated),
-            'RESELLER_CREATED_BY' => ($row['created_by'] != '') ? tohtml($row['created_by']) : tr('Unknown'),
-            'RESELLER_EDIT_URL'   => 'reseller_edit.php?edit_id=' . $row['admin_id']
+            'RESELLER_USERNAME'   => tohtml($row['admin_name']),
+            'RESELLER_CREATED_ON' => tohtml(($row['domain_created'] == 0)
+                ? tr('N/A') : date($cfg['DATE_FORMAT'], $row['domain_created'])
+            ),
+            'RESELLER_CREATED_BY' => tohtml(is_null($row['created_by']) ? tr('Unknown') : $row['created_by']),
+            'RESELLER_ID'         => $row['admin_id']
         ]);
         $tpl->parse('RESELER_ITEM', '.reseller_item');
     }
-
-    $tpl->parse('RESELLER_LIST', 'reseller_list');
-    $tpl->assign('RESELLER_MESSAGE', '');
 }
 
 /**
@@ -488,7 +463,7 @@ function gen_user_domain_aliases_list($tpl, $domainId)
     while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
         $tpl->assign([
             'CLIENT_DOMAIN_ALIAS_URL' => tohtml($row['alias_name'], 'htmlAttr'),
-            'CLIENT_DOMAIN_ALIAS', tohtml(decode_idna($row['alias_name']))
+            'CLIENT_DOMAIN_ALIAS'     => tohtml(decode_idna($row['alias_name']))
         ]);
         $tpl->parse('CLIENT_DOMAIN_ALIAS_BLK', '.client_domain_alias_blk');
     }
@@ -534,6 +509,20 @@ function gen_user_list($tpl)
         gen_search_user_fields($tpl);
     }
 
+    if (isset($_SESSION['client_domain_aliases_switch'])) {
+        $tpl->assign([
+            'CLIENT_DOMAIN_ALIASES_SWITCH_VALUE' => $_SESSION['client_domain_aliases_switch'],
+            ($_SESSION['client_domain_aliases_switch'] == 'show')
+                ? 'CLIENT_DOMAIN_ALIASES_SHOW'
+                : 'CLIENT_DOMAIN_ALIASES_HIDE'   => ''
+        ]);
+    } else {
+        $tpl->assign([
+            'CLIENT_DOMAIN_ALIASES_SWITCH_VALUE' => 'hide',
+            'CLIENT_DOMAIN_ALIASES_HIDE'         => ''
+        ]);
+    }
+
     $rowCount = execute_query($cQuery)->fetchRow(PDO::FETCH_COLUMN);
 
     if ($rowCount == 0) {
@@ -548,20 +537,7 @@ function gen_user_list($tpl)
                 'CLIENT_LIST'        => ''
             ]);
         }
-
-        $tpl->parse('CLIENT_MESSAGE', 'client_message');
         return;
-    } elseif (isset($_SESSION['client_domain_aliases_switch'])) {
-        $tpl->assign([
-            'CLIENT_DOMAIN_ALIASES_SWITCH_VALUE' => $_SESSION['client_domain_aliases_switch'],
-            ($_SESSION['client_domain_aliases_switch'] == 'show')
-                ? 'CLIENT_DOMAIN_ALIASES_SHOW' : 'CLIENT_DOMAIN_ALIASES_HIDE'   => ''
-        ]);
-    } else {
-        $tpl->assign([
-            'CLIENT_DOMAIN_ALIASES_SWITCH_VALUE' => 'hide',
-            'CLIENT_DOMAIN_ALIASES_HIDE'         => ''
-        ]);
     }
 
     if ($sLimit == 0) {
@@ -585,6 +561,8 @@ function gen_user_list($tpl)
             'CLIENT_NEXT_PSI'         => $nextSi
         ]);
     }
+
+    $tpl->assign('CLIENT_MESSAGE', '');
 
     $stmt = execute_query($sQuery);
 
@@ -642,9 +620,6 @@ function gen_user_list($tpl)
         gen_user_domain_aliases_list($tpl, $row['domain_id']);
         $tpl->parse('CLIENT_ITEM', '.client_item');
     }
-
-    $tpl->parse('CLIENT_LIST', 'client_list');
-    $tpl->assign('CLIENT_MESSAGE', '');
 }
 
 /**
