@@ -260,10 +260,10 @@ sub _bkpConfFile
         my ($filename, undef, $suffix) = fileparse( $cfgFile );
 
         unless (-f "$self->{'bkpDir'}/$filename$suffix.system") {
-            $rs = $file->copyFile( "$self->{'bkpDir'}/$filename$suffix.system" );
+            $rs = $file->copyFile( "$self->{'bkpDir'}/$filename$suffix.system", { preserve => 'no' } );
             return $rs if $rs;
         } else {
-            $rs = $file->copyFile( "$self->{'bkpDir'}/$filename$suffix.".time );
+            $rs = $file->copyFile( "$self->{'bkpDir'}/$filename$suffix.".time, { preserve => 'no' } );
             return $rs if $rs;
         }
     }

@@ -350,10 +350,10 @@ sub _bkpConfFile
     if (-f "$self->{'config'}->{'DOVECOT_CONF_DIR'}/$cfgFile") {
         my $file = iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/$cfgFile" );
         unless (-f "$self->{'bkpDir'}/$cfgFile.system") {
-            $rs = $file->copyFile( "$self->{'bkpDir'}/$cfgFile.system" );
+            $rs = $file->copyFile( "$self->{'bkpDir'}/$cfgFile.system", { preserve => 'no' } );
             return $rs if $rs;
         } else {
-            $rs = $file->copyFile( "$self->{'bkpDir'}/$cfgFile.".time );
+            $rs = $file->copyFile( "$self->{'bkpDir'}/$cfgFile.".time, { preserve => 'no' } );
             return $rs if $rs;
         }
     }

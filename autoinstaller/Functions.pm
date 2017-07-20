@@ -39,6 +39,8 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::LsbRelease;
+use iMSCP::Umask;
+use iMSCP::Rights;
 use version;
 use parent 'Exporter';
 
@@ -203,7 +205,7 @@ sub build
         @config{ keys %{$config} } = values %{$config};
         untie %config;
     }
-    undef %confmap;
+    undef % confmap;
 
     endDebug( );
 }
@@ -635,7 +637,7 @@ sub _buildEngineFiles
 
 sub _buildFrontendFiles
 {
-    iMSCP::Dir->new( dirname => "$FindBin::Bin/gui" )->rcopy( "$main::{'SYSTEM_ROOT'}/gui" );
+    iMSCP::Dir->new( dirname => "$FindBin::Bin/gui" )->rcopy( "$main::{'SYSTEM_ROOT'}/gui", { preserve => 'no' } );
     0;
 }
 
@@ -657,7 +659,17 @@ sub _compileDaemon
     return $rs if $rs;
 
     iMSCP::Dir->new( dirname => "$main::{'SYSTEM_ROOT'}/daemon" )->make( );
-    iMSCP::File->new( filename => 'imscp_daemon' )->copyFile( "$main::{'SYSTEM_ROOT'}/daemon" );
+    $rs = iMSCP::File->new( filename => 'imscp_daemon' )->copyFile(
+        "$main::{'SYSTEM_ROOT'}/daemon", { preserve => 'no' }
+    );
+    $rs ||= iMSCP::Rights::setRights(
+        "$main::{'SYSTEM_ROOT'}/daemon/imscp_daemon",
+        {
+            user  => $main::imscpConfig{'ROOT_GROUP'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
+            mode  => '0750'
+        }
+    )
 }
 
 =item _savePersistentData( )
@@ -674,46 +686,46 @@ sub _savePersistentData
 
     # Move old skel directory to new location
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/apache/skel" )->rcopy(
-        "$main::imscpConfig{'CONF_DIR'}/skel"
+        "$main::imscpConfig{'CONF_DIR'}/skel", { preserve => 'no' }
     ) if -d "$main::imscpConfig{'CONF_DIR'}/apache/skel";
 
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/skel" )->rcopy(
-        "$destdir$main::imscpConfig{'CONF_DIR'}/skel"
+        "$destdir$main::imscpConfig{'CONF_DIR'}/skel", { preserve => 'no' }
     ) if -d "$main::imscpConfig{'CONF_DIR'}/skel";
 
     # Move old listener files to new location
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/hooks.d" )->rcopy(
-        "$main::imscpConfig{'CONF_DIR'}/listeners.d"
+        "$main::imscpConfig{'CONF_DIR'}/listeners.d", { preserve => 'no' }
     ) if -d "$main::imscpConfig{'CONF_DIR'}/hooks.d";
 
     # Save ISP logos (older location)
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/themes/user_logos" )->rcopy(
-        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/ispLogos"
+        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/ispLogos", { preserve => 'no' }
     ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/themes/user_logos";
 
     # Save ISP logos (new location)
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/data/ispLogos" )->rcopy(
-        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/ispLogos"
+        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/ispLogos", { preserve => 'no' }
     ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/data/ispLogos";
 
     # Save GUI logs
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/data/logs" )->rcopy(
-        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/logs"
+        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/logs", { preserve => 'no' }
     ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/data/logs";
 
     # Save persistent data
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent" )->rcopy(
-        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent"
+        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent", { preserve => 'no' }
     ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent";
 
     # Save software (older path ./gui/data/softwares) to new path (./gui/data/persistent/softwares)
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/data/softwares" )->rcopy(
-        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/softwares"
+        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/softwares", { preserve => 'no' }
     ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/data/softwares";
 
     # Save plugins
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'PLUGINS_DIR'}" )->rcopy(
-        "$destdir$main::imscpConfig{'PLUGINS_DIR'}"
+        "$destdir$main::imscpConfig{'PLUGINS_DIR'}", { preserve => 'no' }
     ) if -d $main::imscpConfig{'PLUGINS_DIR'};
 
     # Quick fix for #IP-1340 (Removes old filemanager directory which is no longer used)
@@ -721,7 +733,7 @@ sub _savePersistentData
 
     # Save tools
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools" )->rcopy(
-        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/public/tools"
+        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/public/tools", { preserve => 'no' }
     ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools";
 
     0;
@@ -821,6 +833,9 @@ sub _processXmlFile
         error( $@ );
         return 1;
     }
+
+    # Permissions hardening
+    local $UMASK = 027;
 
     # Process xml 'folders' nodes if any
     for (@{$data->{'folders'}}) {
@@ -952,9 +967,9 @@ sub _copyConfig
     my $source = -f $name ? $name : "$alternativeFolder/$name";
 
     if (-d $source) {
-        iMSCP::Dir->new( dirname => $source )->rcopy( "$path/$name" );
+        iMSCP::Dir->new( dirname => $source )->rcopy( "$path/$name", { preserve => 'no' } );
     } else {
-        my $rs = iMSCP::File->new( filename => $source )->copyFile($path);
+        my $rs = iMSCP::File->new( filename => $source )->copyFile( $path, { preserve => 'no' } );
         return $rs if $rs;
     }
 
@@ -991,9 +1006,9 @@ sub _copy
     my ($name, $path) = fileparse( $data->{'content'} );
 
     if (-d $name) {
-        iMSCP::Dir->new( dirname => $name )->rcopy( "$path/$name" );
+        iMSCP::Dir->new( dirname => $name )->rcopy( "$path/$name", { preserve => 'no' } );
     } else {
-        my $rs = iMSCP::File->new( filename => $name )->copyFile($path);
+        my $rs = iMSCP::File->new( filename => $name )->copyFile( $path, { preserve => 'no' } );
         return $rs if $rs;
     }
 

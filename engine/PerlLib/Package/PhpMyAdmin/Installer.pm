@@ -266,7 +266,9 @@ sub _backupConfigFile
     my ($self, $cfgFile) = @_;
 
     return 0 unless -f $cfgFile && -d $self->{'bkpDir'};
-    iMSCP::File->new( filename => $cfgFile )->copyFile( $self->{'bkpDir'}.'/'.fileparse( $cfgFile ).'.'.time );
+    iMSCP::File->new( filename => $cfgFile )->copyFile(
+        $self->{'bkpDir'}.'/'.fileparse( $cfgFile ).'.'.time, { preserve => 'no' }
+    );
 }
 
 =item _installFiles( )
@@ -287,7 +289,9 @@ sub _installFiles
     }
 
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma" )->remove( );
-    iMSCP::Dir->new( dirname => "$packageDir" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma" );
+    iMSCP::Dir->new( dirname => "$packageDir" )->rcopy(
+        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma", { preserve => 'no' }
+    );
     0;
 }
 

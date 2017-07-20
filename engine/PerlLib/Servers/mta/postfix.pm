@@ -35,6 +35,7 @@ use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute executeNoWait /;
 use iMSCP::File;
 use iMSCP::Getopt;
+use iMSCP::Rights;
 use iMSCP::Service;
 use Tie::File;
 use parent 'Common::SingletonClass';
@@ -173,7 +174,75 @@ sub setEnginePermissions
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaSetEnginePermissions' );
-    $rs ||= Servers::mta::postfix::installer->getInstance( )->setEnginePermissions( );
+    # eg. /etc/postfix/main.cf
+    $rs ||= setRights(
+        $self->{'config'}->{'POSTFIX_CONF_FILE'},
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
+            mode  => '0644'
+        }
+    );
+    # eg. /etc/postfix/master.cf
+    $rs ||= setRights(
+        $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'},
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
+            mode  => '0644'
+        }
+    );
+    # eg. /etc/aliases
+    $rs ||= setRights(
+        $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'},
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
+            mode  => '0644'
+        }
+    );
+    # eg. /etc/postfix/imscp
+    $rs ||= setRights(
+        $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'},
+        {
+            user      => $main::imscpConfig{'ROOT_USER'},
+            group     => $main::imscpConfig{'ROOT_GROUP'},
+            dirmode   => '0750',
+            filemode  => '0640',
+            recursive => 1
+        }
+    );
+    # eg. /var/www/imscp/engine/messenger
+    $rs ||= setRights(
+        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/messenger",
+        {
+            user      => $main::imscpConfig{'ROOT_USER'},
+            group     => $main::imscpConfig{'IMSCP_GROUP'},
+            dirmode   => '0750',
+            filemode  => '0750',
+            recursive => 1
+        }
+    );
+    # eg. /var/mail/virtual
+    $rs ||= setRights(
+        $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
+        {
+            user      => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+            group     => $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+            dirmode   => '0750',
+            filemode  => '0640',
+            recursive => iMSCP::Getopt->fixPermissions
+        }
+    );
+    # eg. /usr/sbin/maillogconvert.pl
+    $rs ||= setRights(
+        $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'},
+        {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
+            mode  => '0750'
+        }
+    );
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaSetEnginePermissions' );
 }
 

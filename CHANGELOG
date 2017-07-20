@@ -11,6 +11,7 @@ BACKEND
     Deprecated: iMSCP::Database::mysql::startTransaction() method -- Will be removed in version 1.5.0
     Fixed: Can't use an undefined value as a HASH reference (iMSCP::EventManager)
     Fixed: Couldn't remove IP address: Unknown action requested for server IP (Modules::ServerIP)
+    Fixed: Permissions on files are always preverved when copying directory recursively (iMSCP::Dir::rcopy)
     Fixed: Set the `group_concat_max_len' SESSION variable once per connect (iMSCP::Database::mysql)
     Removed: `FETCH_MODE' option from iMSCP::Database::mysql
 
@@ -24,6 +25,7 @@ FRONTEND
 INSTALLER
     Fixed: Hide notice about user/group changes (Courier)
     Fixed: Missing LOGROTATE(8) configuration file for RSYSLOGD(8) (Debian 9/Stretch; Ubuntu 16.04/Xenial)
+    Securiry: Permissions hardening - Files and folders are now copied with UMASK(2) 027 instead of 022
     
 PACKAGES
     Fixed: Can't locate Package/FileManager/Net2FTP/Net2FTP.pm when upgrading from some older versions (Package::FileManager)
@@ -67,7 +69,7 @@ BACKEND
     Fixed: Prevent releasing locks in child processes (iMSCP::LockFile)
     Rewritten: iMSCP::SystemUser and iMSCP::SystemGroup libraries
     Rewritten: Module::User module
-    Safety: Prevent modification/deletion of root user/group (iMSCP::SystemUser, iMSCP::SystemGroup)
+    Security: Prevent modification/deletion of root user/group (iMSCP::SystemUser, iMSCP::SystemGroup)
 
 CONFIG
     Added: `BIND_DB_ROOT_DIR' configuration parameter (Bind9)

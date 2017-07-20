@@ -1674,7 +1674,7 @@ sub _addFiles
 
     # Copy skeleton in tmp dir
     my $tmpDir = File::Temp->newdir( );
-    iMSCP::Dir->new( dirname => $skelDir )->rcopy( $tmpDir );
+    iMSCP::Dir->new( dirname => $skelDir )->rcopy( $tmpDir, { preserve => 'no' } );
 
     # Build default page if needed (if htdocs doesn't exists or is empty)
     if (!-d "$data->{'WEB_DIR'}/htdocs" || iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/htdocs" )->isEmpty( )) {
@@ -1738,7 +1738,7 @@ sub _addFiles
     clearImmutable( $data->{'WEB_DIR'} ) if -d $data->{'WEB_DIR'};
 
     # Copy Web folder
-    iMSCP::Dir->new( dirname => $tmpDir )->rcopy( $data->{'WEB_DIR'} );
+    iMSCP::Dir->new( dirname => $tmpDir )->rcopy( $data->{'WEB_DIR'}, { preserve => 'no' } );
 
     # Cleanup (Transitional)
     if ($data->{'DOMAIN_TYPE'} eq 'dmn') {

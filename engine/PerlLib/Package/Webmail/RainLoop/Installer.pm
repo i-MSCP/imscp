@@ -264,9 +264,9 @@ sub _installFiles
     }
 
     # Install new files
-    iMSCP::Dir->new( dirname => "$srcDir/src" )->rcopy( $destDir );
-    iMSCP::Dir->new( dirname => "$srcDir/iMSCP/src" )->rcopy( $destDir );
-    iMSCP::Dir->new( dirname => "$srcDir/iMSCP/config" )->rcopy( $self->{'cfgDir'} );
+    iMSCP::Dir->new( dirname => "$srcDir/src" )->rcopy( $destDir, { preserve => 'no' } );
+    iMSCP::Dir->new( dirname => "$srcDir/iMSCP/src" )->rcopy( $destDir, { preserve => 'no' } );
+    iMSCP::Dir->new( dirname => "$srcDir/iMSCP/config" )->rcopy( $self->{'cfgDir'}, { preserve => 'no' } );
     0;
 }
 

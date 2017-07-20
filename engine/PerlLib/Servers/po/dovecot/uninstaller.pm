@@ -140,7 +140,7 @@ sub _removeConfig
         next unless -f "$self->{'bkpDir'}/$_.system";
 
         my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$_.system" )->copyFile(
-            "$self->{'config'}->{'DOVECOT_CONF_DIR'}/$_"
+            "$self->{'config'}->{'DOVECOT_CONF_DIR'}/$_", { preserve => 'no' }
         );
         return $rs if $rs;
     }

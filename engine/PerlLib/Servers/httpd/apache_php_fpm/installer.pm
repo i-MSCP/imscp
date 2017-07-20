@@ -301,7 +301,7 @@ sub _makeDirs
 sub _copyDomainDisablePages
 {
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/skel/domain_disabled_pages" )->rcopy(
-        "$main::imscpConfig{'USER_WEB_DIR'}/domain_disabled_pages"
+        "$main::imscpConfig{'USER_WEB_DIR'}/domain_disabled_pages", { preserve => 'no' }
     );
     0;
 }

@@ -249,7 +249,7 @@ sub owner
 
  Param string $destination Destination path (either a directory or file path)
  Param hash $options Options
-    - preserve (yes|no): preserve permissions and ownership (default yes)
+  - preserve (yes|no): preserve ownership and permissions (default yes)
  Return int 0 on success, 1 on failure
 
 =cut

@@ -323,10 +323,10 @@ sub _bkpConfFile
         my $file = iMSCP::File->new( filename => $cfgFile );
         my $filename = basename( $cfgFile );
         unless (-f "$self->{'bkpDir'}/$filename.system") {
-            $rs = $file->copyFile( "$self->{'bkpDir'}/$filename.system" );
+            $rs = $file->copyFile( "$self->{'bkpDir'}/$filename.system", { preserve => 'no' } );
             return $rs if $rs;
         } else {
-            $rs = $file->copyFile( "$self->{'bkpDir'}/$filename.".time );
+            $rs = $file->copyFile( "$self->{'bkpDir'}/$filename.".time, { preserve => 'no' } );
             return $rs if $rs;
         }
     }
