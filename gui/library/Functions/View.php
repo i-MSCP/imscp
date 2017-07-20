@@ -437,6 +437,153 @@ function gen_reseller_list($tpl)
     }
 }
 
+// Admin/reseller
+
+/**
+ * Get count and search queries for users search
+ *
+ * @param int $sLimit Start limit
+ * @param int $eLimit End limit
+ * @param string|null $searchField Field to search
+ * @param string|null $searchValue Value to search
+ * @param string|null $searchStatus Status to search
+ * @return array Array containing count and search queries
+ */
+function get_search_user_queries($sLimit, $eLimit, $searchField = NULL, $searchValue = NULL, $searchStatus = NULL)
+{
+    $sLimit = intval($sLimit);
+    $eLimit = intval($eLimit);
+    $where = '';
+
+    if ($_SESSION['user_type'] == 'reseller') {
+        $where .= 'WHERE t2.created_by = ' . intval($_SESSION['user_id']);
+    }
+
+    if ($searchStatus !== NULL && $searchStatus != 'anything') {
+        $where .= (($where == '') ? 'WHERE ' : ' ') . 't1.domain_status' . (
+            ($searchStatus == 'ok' || $searchStatus == 'disabled')
+                ? ' = ' . quoteValue($searchStatus)
+                : " NOT IN ('ok', 'toadd', 'tochange', 'toenable', 'torestore', 'todisable', 'todelete')"
+            );
+    }
+
+    if ($searchField !== NULL && $searchField != 'anything') {
+        if ($searchField == 'domain_name') {
+            $where .= (($where == '') ? 'WHERE ' : ' AND ') . 't1.domain_name';
+        } elseif ($_SESSION['user_type'] == 'admin' && $searchField == 'reseller_name') {
+            $where .= (($where == '') ? 'WHERE ' : ' AND ') . 't3.admin_name';
+        } elseif (in_array(
+            $searchField, ['customer_id', 'fname', 'lname', 'firm', 'city', 'state', 'country'], true
+        )) {
+            $where .= (($where == '') ? 'WHERE ' : ' AND ') . "t2.$searchField";
+        } else {
+            showBadRequestErrorPage();
+        }
+
+        $searchValue = str_replace(['!', '_', '%'], ['!!!', '!_', '!%'], $searchValue);
+        $where .= ' LIKE ' . quoteValue(
+                '%' . (($searchField == 'domain_name') ? encode_idna($searchValue) : $searchValue) . '%'
+            ) . " ESCAPE '!'";
+    }
+
+    return [
+        "
+            SELECT COUNT(t1.domain_id)
+            FROM domain AS t1
+            JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
+            JOIN admin AS t3 ON(t3.admin_id = t2.created_by)
+            $where
+        ",
+        "
+            SELECT t1.domain_id, t1.domain_name, t1.domain_created, t1.domain_status, t1.domain_disk_limit,
+                t1.domain_disk_usage, t2.admin_id, t2.admin_status, t3.admin_name AS reseller_name
+            FROM domain AS t1
+            JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
+            JOIN admin AS t3 ON(t3.admin_id = t2.created_by)
+            $where
+            ORDER BY t1.domain_name ASC
+            LIMIT $sLimit, $eLimit
+        "
+    ];
+}
+
+/**
+ * Generate user search fields
+ *
+ * @param iMSCP_pTemplate $tpl iMSCP_pTemplate instance
+ * @param string|null $searchField Field to search
+ * @param string|null $searchValue Value to search
+ * @param string|null $searchStatus Status to search
+ * @return void
+ */
+function gen_search_user_fields($tpl, $searchField = NULL, $searchValue = NULL, $searchStatus = NULL)
+{
+    $none = $domain = $customerId = $firstname = $lastname = $company = $city = $state = $country = $resellerName =
+    $anything = $ok = $suspended = $error = '';
+
+    if ($searchField === NULL && $searchValue === NULL && $searchStatus === NULL) {
+        $none = $anything = ' selected';
+        $tpl->assign('SEARCH_VALUE', '');
+    } else {
+        if ($searchField == NULL || $searchField == 'anything') {
+            $none = ' selected';
+        } elseif ($searchField == 'domain_name') {
+            $domain = ' selected';
+        } elseif ($searchField == 'customer_id') {
+            $customerId = ' selected';
+        } elseif ($searchField == 'fname') {
+            $firstname = ' selected';
+        } elseif ($searchField == 'lname') {
+            $lastname = ' selected';
+        } elseif ($searchField == 'firm') {
+            $company = ' selected';
+        } elseif ($searchField == 'city') {
+            $city = ' selected';
+        } elseif ($searchField == 'state') {
+            $state = ' selected';
+        } elseif ($searchField == 'country') {
+            $country = ' selected';
+        } elseif ($_SESSION['user_type'] == 'admin' && $searchField == 'reseller_name') {
+            $resellerName = ' selected';
+        } else {
+            showBadRequestErrorPage();
+        }
+
+        if ($searchStatus === NULL || $searchStatus == 'anything') {
+            $anything = 'selected ';
+        } elseif ($searchStatus == 'ok') {
+            $ok = ' selected';
+        } elseif ($searchStatus == 'disabled') {
+            $suspended = ' selected';
+        } elseif (($searchStatus == 'error')) {
+            $error = ' selected';
+        } else {
+            showBadRequestErrorPage();
+        }
+
+        $tpl->assign('SEARCH_VALUE', ($searchValue !== NULL) ? tohtml($searchValue) : '');
+    }
+
+    $tpl->assign([
+        # search_field select
+        'CLIENT_NONE_SELECTED'          => $none,
+        'CLIENT_DOMAIN_NAME_SELECTED'   => $domain,
+        'CLIENT_CUSTOMER_ID_SELECTED'   => $customerId,
+        'CLIENT_FIRST_NAME_SELECTED'    => $firstname,
+        'CLIENT_LAST_NAME_SELECTED'     => $lastname,
+        'CLIENT_COMPANY_SELECTED'       => $company,
+        'CLIENT_CITY_SELECTED'          => $city,
+        'CLIENT_STATE_SELECTED'         => $state,
+        'CLIENT_COUNTRY_SELECTED'       => $country,
+        'CLIENT_RESELLER_NAME_SELECTED' => $resellerName,
+        # search_status select
+        'CLIENT_ANYTHING_SELECTED'      => $anything,
+        'CLIENT_OK_SELECTED'            => $ok,
+        'CLIENT_DISABLED_SELECTED'      => $suspended,
+        'CLIENT_ERROR_SELECTED'         => $error
+    ]);
+}
+
 /**
  * Generates user domain_aliases_list
  *
@@ -446,17 +593,19 @@ function gen_reseller_list($tpl)
  */
 function gen_user_domain_aliases_list($tpl, $domainId)
 {
-    if (!isset($_SESSION['client_domain_aliases_switch']) || $_SESSION['client_domain_aliases_switch'] != 'show') {
-        $tpl->assign('CLIENT_DOMAIN_ALIAS_BLK', '');
+    $tpl->assign('CLIENT_DOMAIN_ALIAS_BLK', '');
+
+    if (!isset($_SESSION['client_domain_aliases_switch'])
+        || $_SESSION['client_domain_aliases_switch'] != 'show'
+    ) {
         return;
     }
 
     $stmt = exec_query(
-        'SELECT alias_name FROM domain_aliasses WHERE domain_id = ? ORDER BY alias_id DESC', $domainId
+        'SELECT alias_name FROM domain_aliasses WHERE domain_id = ? ORDER BY alias_name ASC', $domainId
     );
 
     if (!$stmt->rowCount()) {
-        $tpl->assign('CLIENT_DOMAIN_ALIAS_BLK', '');
         return;
     }
 
@@ -633,153 +782,6 @@ function get_admin_manage_users($tpl)
     gen_admin_list($tpl);
     gen_reseller_list($tpl);
     gen_user_list($tpl);
-}
-
-// Admin/reseller
-
-/**
- * Get count and search queries for users search
- *
- * @param int $sLimit Start limit
- * @param int $eLimit End limit
- * @param string|null $searchField Field to search
- * @param string|null $searchValue Value to search
- * @param string|null $searchStatus Status to search
- * @return array Array containing count and search queries
- */
-function get_search_user_queries($sLimit, $eLimit, $searchField = NULL, $searchValue = NULL, $searchStatus = NULL)
-{
-    $sLimit = intval($sLimit);
-    $eLimit = intval($eLimit);
-    $where = '';
-
-    if ($_SESSION['user_type'] == 'reseller') {
-        $where .= 'WHERE t2.created_by = ' . intval($_SESSION['user_id']);
-    }
-
-    if ($searchStatus !== NULL && $searchStatus != 'anything') {
-        $where .= (($where == '') ? 'WHERE ' : ' ') . 't1.domain_status' . (
-            ($searchStatus == 'ok' || $searchStatus == 'disabled')
-                ? ' = ' . quoteValue($searchStatus)
-                : " NOT IN ('ok', 'toadd', 'tochange', 'toenable', 'torestore', 'todisable', 'todelete')"
-            );
-    }
-
-    if ($searchField !== NULL && $searchField != 'anything') {
-        if ($searchField == 'domain_name') {
-            $where .= (($where == '') ? 'WHERE ' : ' AND ') . 't1.domain_name';
-        } elseif ($_SESSION['user_type'] == 'admin' && $searchField == 'reseller_name') {
-            $where .= (($where == '') ? 'WHERE ' : ' AND ') . 't3.admin_name';
-        } elseif (in_array(
-            $searchField, ['customer_id', 'fname', 'lname', 'firm', 'city', 'state', 'country'], true
-        )) {
-            $where .= (($where == '') ? 'WHERE ' : ' AND ') . "t2.$searchField";
-        } else {
-            showBadRequestErrorPage();
-        }
-
-        $searchValue = str_replace(['!', '_', '%'], ['!!!', '!_', '!%'], $searchValue);
-        $where .= ' LIKE ' . quoteValue(
-                '%' . (($searchField == 'domain_name') ? encode_idna($searchValue) : $searchValue) . '%'
-            ) . " ESCAPE '!'";
-    }
-
-    return [
-        "
-            SELECT COUNT(t1.domain_id)
-            FROM domain AS t1
-            JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
-            JOIN admin AS t3 ON(t3.admin_id = t2.created_by)
-            $where
-        ",
-        "
-            SELECT t1.domain_id, t1.domain_name, t1.domain_created, t1.domain_status, t1.domain_disk_limit,
-                t1.domain_disk_usage, t2.admin_id, t2.admin_status, t3.admin_name AS reseller_name
-            FROM domain AS t1
-            JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
-            JOIN admin AS t3 ON(t3.admin_id = t2.created_by)
-            $where
-            ORDER BY t1.domain_name ASC
-            LIMIT $sLimit, $eLimit
-        "
-    ];
-}
-
-/**
- * Generate user search fields
- *
- * @param iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param string|null $searchField Field to search
- * @param string|null $searchValue Value to search
- * @param string|null $searchStatus Status to search
- * @return void
- */
-function gen_search_user_fields($tpl, $searchField = NULL, $searchValue = NULL, $searchStatus = NULL)
-{
-    $none = $domain = $customerId = $firstname = $lastname = $company = $city = $state = $country = $resellerName =
-    $anything = $ok = $suspended = $error = '';
-
-    if ($searchField === NULL && $searchValue === NULL && $searchStatus === NULL) {
-        $none = $anything = ' selected';
-        $tpl->assign('SEARCH_VALUE', '');
-    } else {
-        if ($searchField == NULL || $searchField == 'anything') {
-            $none = ' selected';
-        } elseif ($searchField == 'domain_name') {
-            $domain = ' selected';
-        } elseif ($searchField == 'customer_id') {
-            $customerId = ' selected';
-        } elseif ($searchField == 'fname') {
-            $firstname = ' selected';
-        } elseif ($searchField == 'lname') {
-            $lastname = ' selected';
-        } elseif ($searchField == 'firm') {
-            $company = ' selected';
-        } elseif ($searchField == 'city') {
-            $city = ' selected';
-        } elseif ($searchField == 'state') {
-            $state = ' selected';
-        } elseif ($searchField == 'country') {
-            $country = ' selected';
-        } elseif ($_SESSION['user_type'] == 'admin' && $searchField == 'reseller_name') {
-            $resellerName = ' selected';
-        } else {
-            showBadRequestErrorPage();
-        }
-
-        if ($searchStatus === NULL || $searchStatus == 'anything') {
-            $anything = 'selected ';
-        } elseif ($searchStatus == 'ok') {
-            $ok = ' selected';
-        } elseif ($searchStatus == 'disabled') {
-            $suspended = ' selected';
-        } elseif (($searchStatus == 'error')) {
-            $error = ' selected';
-        } else {
-            showBadRequestErrorPage();
-        }
-
-        $tpl->assign('SEARCH_VALUE', ($searchValue !== NULL) ? tohtml($searchValue) : '');
-    }
-
-    $tpl->assign([
-        # search_field select
-        'CLIENT_NONE_SELECTED'          => $none,
-        'CLIENT_DOMAIN_NAME_SELECTED'   => $domain,
-        'CLIENT_CUSTOMER_ID_SELECTED'   => $customerId,
-        'CLIENT_FIRST_NAME_SELECTED'    => $firstname,
-        'CLIENT_LAST_NAME_SELECTED'     => $lastname,
-        'CLIENT_COMPANY_SELECTED'       => $company,
-        'CLIENT_CITY_SELECTED'          => $city,
-        'CLIENT_STATE_SELECTED'         => $state,
-        'CLIENT_COUNTRY_SELECTED'       => $country,
-        'CLIENT_RESELLER_NAME_SELECTED' => $resellerName,
-        # search_status select
-        'CLIENT_ANYTHING_SELECTED'      => $anything,
-        'CLIENT_OK_SELECTED'            => $ok,
-        'CLIENT_DISABLED_SELECTED'      => $suspended,
-        'CLIENT_ERROR_SELECTED'         => $error
-    ]);
 }
 
 // Reseller
