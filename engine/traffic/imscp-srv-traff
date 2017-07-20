@@ -154,7 +154,7 @@ $bootstrapper->boot(
 
 @EXECS = (
     iMSCP::ProgramFinder::find( 'iptables' ),
-        $main::imscpConfig{'IPV6_SUPPORT'} ? iMSCP::ProgramFinder::find( 'ip6tables' ) : undef
+    ($main::imscpConfig{'IPV6_SUPPORT'} ? iMSCP::ProgramFinder::find( 'ip6tables' ) : undef)
 );
 
 exit run();

@@ -230,12 +230,12 @@ sub _setDbSettings
     require iMSCP::Database;
     require iMSCP::Crypt;
 
-    my $database = iMSCP::Database->factory( );
-    $database->set( 'DATABASE_HOST', $main::imscpConfig{'DATABASE_HOST'} );
-    $database->set( 'DATABASE_PORT', $main::imscpConfig{'DATABASE_PORT'} );
-    $database->set( 'DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'} );
-    $database->set( 'DATABASE_USER', $main::imscpConfig{'DATABASE_USER'} );
-    $database->set(
+    my $db = iMSCP::Database->factory( );
+    $db->set( 'DATABASE_HOST', $main::imscpConfig{'DATABASE_HOST'} );
+    $db->set( 'DATABASE_PORT', $main::imscpConfig{'DATABASE_PORT'} );
+    $db->set( 'DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'} );
+    $db->set( 'DATABASE_USER', $main::imscpConfig{'DATABASE_USER'} );
+    $db->set(
         'DATABASE_PASSWORD',
         iMSCP::Crypt::decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'} )
     );

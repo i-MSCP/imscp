@@ -46,7 +46,7 @@ sub run
     eval {
         local $dbh->{'RaiseError'} = 1;
 
-        my $row = $db->selectrow_hashref( "SELECT value FROM config WHERE name = 'HARD_MAIL_SUSPENSION'" );
+        my $row = $dbh->selectrow_hashref( "SELECT value FROM config WHERE name = 'HARD_MAIL_SUSPENSION'" );
         $row = { value => 0 } unless $row;
 
         my $rows = $dbh->selectall_hashref(
@@ -83,7 +83,7 @@ sub run
                         UPDATE subdomain_alias SET subdomain_alias_status = ?
                         WHERE alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
                     ',
-                    undef, 'todisable', $domainId
+                    undef, 'todisable', $_
                 );
                 $dbh->commit( );
             };
