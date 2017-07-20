@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-07-20 14:04+0000\n"
+"POT-Creation-Date: 2017-07-20 16:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Dutch (Netherlands) (https://www.transifex.com/i-mscp/teams/576/nl_NL/)\n"
@@ -1005,7 +1005,7 @@ msgid "Are you sure you want to delete this DNS record?"
 msgstr "Weet u zeker dat u deze DNS-record wilt verwijderen?"
 
 msgid "Are you sure you want to delete this account?"
-msgstr ""
+msgstr "Weet u zeker dat u dit account wilt verwijderen?"
 
 msgid "Are you sure you want to delete this domain alias?"
 msgstr "Weet u zeker dat u deze domeinalias wilt verwijderen?"
@@ -1297,10 +1297,10 @@ msgid "Click to edit"
 msgstr "Klik om te bewerken"
 
 msgid "Click to suspend this customer account."
-msgstr ""
+msgstr "Klik om deze klant op te schorten."
 
 msgid "Click to unsuspend this customer account."
-msgstr ""
+msgstr "Klik om dit account niet langer op te schorten."
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "Klant / Databanken / Voeg SQL-databank toe"
@@ -1614,7 +1614,7 @@ msgid "Created by"
 msgstr "Gemaakt door"
 
 msgid "Created on"
-msgstr ""
+msgstr "Aangemaakt op"
 
 msgid "Creation date"
 msgstr "Aanmaakdatum"
@@ -2174,7 +2174,7 @@ msgid "Delete ticket"
 msgstr "Verwijder ticket"
 
 msgid "Delete user"
-msgstr ""
+msgstr "Verwijder gebruiker"
 
 msgid "Deletion in progress"
 msgstr "Verwijderen bezig"
@@ -2695,7 +2695,7 @@ msgid "Fill out a message text."
 msgstr "Vul een bericht in."
 
 msgid "Filter customers by"
-msgstr ""
+msgstr "Filter klanten"
 
 msgid "First name"
 msgstr "Voornaam"
@@ -2823,7 +2823,7 @@ msgid "HTTP traffic"
 msgstr "HTTP-verkeer"
 
 msgid "Hide domain aliases"
-msgstr ""
+msgstr "Verberg domeinaliassen"
 
 msgid "High"
 msgstr "Hoog"
@@ -3419,7 +3419,7 @@ msgid "Minutes"
 msgstr "Minuten"
 
 msgid "Missing search criteria."
-msgstr ""
+msgstr "Missende zoekcriteria"
 
 msgid "Model"
 msgstr "Model"
@@ -3498,7 +3498,7 @@ msgid "No IP address found."
 msgstr "Geen IP-adres gevonden"
 
 msgid "No account found."
-msgstr ""
+msgstr "Geen account gevonden"
 
 msgid "No anti-rootkits logs"
 msgstr "Geen anti-rootkit log"
@@ -4748,7 +4748,7 @@ msgid "Show detailed statistics for this user"
 msgstr "Gedetailleerde statistieken voor deze gebruiker bekijken"
 
 msgid "Show domain aliases"
-msgstr ""
+msgstr "Toon domeinaliassen"
 
 msgid "Show in"
 msgstr "Toon in"
@@ -6077,13 +6077,13 @@ msgstr ""
 "te schakelen."
 
 msgid "Your account has been disabled. Please, contact your reseller."
-msgstr ""
+msgstr "Uw account is opgeschort, neem contact op met uw wederverkoper."
 
 msgid "Your account has expired. Please renew your subscription."
 msgstr "Uw account is verlopen. Gelieve uw abonnement te vernieuwen."
 
 msgid "Your account has expired. Please, contact your reseller."
-msgstr ""
+msgstr "Uw account is verlopen, neem contact op met uw wederverkoper."
 
 msgid "Your consumption"
 msgstr "Uw verbruik"
@@ -6191,22 +6191,22 @@ msgid "and"
 msgstr "en"
 
 msgid "anything"
-msgstr ""
+msgstr "alle"
 
 msgid "city"
-msgstr ""
+msgstr "plaats"
 
-msgid "compagny"
+msgid "company"
 msgstr ""
 
 msgid "country"
-msgstr ""
+msgstr "land"
 
 msgid "created by"
-msgstr ""
+msgstr "aangemaakt door"
 
 msgid "customer ID"
-msgstr ""
+msgstr "klantnummer"
 
 msgid "day"
 msgstr "dag"
@@ -6236,7 +6236,7 @@ msgid "domain data"
 msgstr "domeindata"
 
 msgid "domain name"
-msgstr ""
+msgstr "domeinnaam"
 
 msgid "domains"
 msgstr "domeinen"
@@ -6251,13 +6251,13 @@ msgid "enabled"
 msgstr "ingeschakeld"
 
 msgid "error"
-msgstr ""
+msgstr "foutmelding"
 
 msgid "everything"
 msgstr "alles"
 
 msgid "first name"
-msgstr ""
+msgstr "voornaam"
 
 msgid "from other browser"
 msgstr "vanaf andere browser"
@@ -6323,7 +6323,7 @@ msgid "kiB"
 msgstr "kB"
 
 msgid "last name"
-msgstr ""
+msgstr "achternaam"
 
 msgid "mail"
 msgstr "E-mail"
@@ -6353,7 +6353,7 @@ msgid "not required"
 msgstr "niet verplicht"
 
 msgid "ok"
-msgstr ""
+msgstr "ok"
 
 msgid "older than 1 month"
 msgstr "ouder dan 1 maand"
@@ -6381,10 +6381,10 @@ msgid "required"
 msgstr "verplicht"
 
 msgid "reseller name"
-msgstr ""
+msgstr "wederverkoper"
 
 msgid "state/province"
-msgstr ""
+msgstr "staat/provincie"
 
 msgid "subdomain"
 msgstr "subdomein"
@@ -6393,13 +6393,13 @@ msgid "subdomains"
 msgstr "subdomeinen"
 
 msgid "suspended"
-msgstr ""
+msgstr "opgeschort"
 
 msgid "tcp"
 msgstr "TCP"
 
 msgid "that match with"
-msgstr ""
+msgstr "die overeenkomen met"
 
 msgid "traffic"
 msgstr "Verkeer"
@@ -6417,7 +6417,7 @@ msgid "waiting for activation"
 msgstr "wachten op activering"
 
 msgid "which status is"
-msgstr ""
+msgstr "welke status heeft"
 
 msgid "yes"
 msgstr "ja"
