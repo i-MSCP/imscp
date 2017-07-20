@@ -1137,7 +1137,9 @@ sub _rebuildAndInstallPackage
                 for my $patch(sort { $a cmp $b } iMSCP::Dir->new( dirname => $patchesDir )->getFiles( )) {
                     next if grep($_ eq $patch, @{$patchesToDiscard});
                     $serieFileContent .= "$patch\n";
-                    $rs = iMSCP::File->new( filename => "$patchesDir/$patch" )->copyFile( "debian/patches/$patch" );
+                    $rs = iMSCP::File->new( filename => "$patchesDir/$patch" )->copyFile(
+                        "debian/patches/$patch", { preserve => 'no' }
+                    );
                     return $rs if $rs;
                 }
 

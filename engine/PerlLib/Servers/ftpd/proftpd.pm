@@ -399,7 +399,7 @@ sub getTraffic
 
     # Create snapshot of traffic data source file
     my $snapshotFH = File::Temp->new( UNLINK => 1 );
-    iMSCP::File->new( filename => $logFile )->copyFile( $snapshotFH->filename ) == 0 or die(
+    iMSCP::File->new( filename => $logFile )->copyFile( $snapshotFH->filename, { preserve => 'no' } ) == 0 or die(
         getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
     );
 

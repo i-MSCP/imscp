@@ -168,6 +168,16 @@ sub setEnginePermissions
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdSetEnginePermissions' );
     $rs ||= setRights(
+        $self->{'config'}->{'FTPD_USER_CONF_DIR'},
+        {
+            user      => $main::imscpConfig{'ROOT_USER'},
+            group     => $main::imscpConfig{'ROOT_GROUP'},
+            dirmode   => '0750',
+            filemode  => '0640',
+            recursive => 1
+        }
+    );
+    $rs ||= setRights(
         $self->{'config'}->{'FTPD_CONF_FILE'},
         {
             user  => $main::imscpConfig{'ROOT_USER'},
@@ -399,7 +409,7 @@ sub getTraffic
 
     # Create snapshot of traffic data source file
     my $snapshotFH = File::Temp->new( UNLINK => 1 );
-    iMSCP::File->new( filename => $logFile )->copyFile( $snapshotFH->filename ) == 0 or die(
+    iMSCP::File->new( filename => $logFile )->copyFile( $snapshotFH->filename, { preserve => 'no' } ) == 0 or die(
         getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
     );
 

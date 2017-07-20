@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders export="ROOT_APACHE_CONF" mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_CONF}/apache2</folders>
-    <folders mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_APACHE_CONF}/imscp</folders>
-    <folders mode="0755" user="${ROOT_USER}" group="${ROOT_GROUP}">${ROOT_APACHE_CONF}/imscp/before</folders>
-    <folders>${INST_PREF}/var/log/apache2/backup</folders>
+    <folders export="ROOT_APACHE_CONF">${ROOT_CONF}/apache2</folders>
+    <folders>${ROOT_APACHE_CONF}/imscp</folders>
+    <folders>${ROOT_APACHE_CONF}/imscp/before</folders>
     <folders>${SYSTEM_CONF}/apache</folders>
     <copy_config>${SYSTEM_CONF}/apache/parts</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/00_imscp.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/00_nameserver.conf</copy_config>
-    <copy_config mode="0640">${SYSTEM_CONF}/apache/apache.data.dist</copy_config>
+    <copy_config>${SYSTEM_CONF}/apache/apache.data.dist</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/logrotate.conf</copy_config>
-    <copy_config mode="0750" user="${ROOT_USER}" group="${ROOT_GROUP}">/usr/local/sbin/vlogger</copy_config>
+    <copy_config mode="0750">/usr/local/sbin/vlogger</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/vlogger.conf.tpl</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/vlogger.sql</copy_config>
 </install>

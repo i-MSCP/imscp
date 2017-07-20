@@ -117,6 +117,16 @@ $rs |= setRights(
         mode  => '0755'
     }
 );
+# e.g: /var/www/imscp/daemon
+$rs |= setRights(
+    "$rootDir/daemon",
+    {
+        user      => $rootUName,
+        group     => $imscpGName,
+        mode      => '0750',
+        recursive => 1
+    }
+);
 # e.g: /var/www/imscp/engine
 $rs |= setRights(
     "$rootDir/engine",
@@ -142,8 +152,7 @@ $rs |= setRights(
     {
         user  => $rootUName,
         group => $imscpGName,
-        mode  =>
-        '0750'
+        mode  => '0750'
     }
 );
 

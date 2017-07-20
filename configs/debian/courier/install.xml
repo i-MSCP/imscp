@@ -2,7 +2,7 @@
 <install>
     <folders>${SYSTEM_CONF}/courier</folders>
     <copy_config>${SYSTEM_CONF}/courier/authmysqlrc</copy_config>
-    <copy_config mode="0640">${SYSTEM_CONF}/courier/courier.data.dist</copy_config>
+    <copy_config>${SYSTEM_CONF}/courier/courier.data.dist</copy_config>
     <copy_config>${SYSTEM_CONF}/courier/imapd.local</copy_config>
     <copy_config>${SYSTEM_CONF}/courier/quota-warning</copy_config>
     <copy_config>${SYSTEM_CONF}/courier/sasl</copy_config>

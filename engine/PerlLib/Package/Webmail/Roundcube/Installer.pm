@@ -269,7 +269,9 @@ sub _backupConfigFile
 
     return 0 unless -f $cfgFile && -d $self->{'bkpDir'};
 
-    iMSCP::File->new( filename => $cfgFile )->copyFile( $self->{'bkpDir'}.'/'.fileparse( $cfgFile ).'.'.time );
+    iMSCP::File->new( filename => $cfgFile)->copyFile(
+        $self->{'bkpDir'}.'/'.fileparse( $cfgFile ).'.'.time, { preserve => 'no' }
+    );
 }
 
 =item _installFiles( )
@@ -294,8 +296,8 @@ sub _installFiles
     my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
 
     iMSCP::Dir->new( dirname => $destDir )->remove( );
-    iMSCP::Dir->new( dirname => "$packageDir/iMSCP/config" )->rcopy( $self->{'cfgDir'} );
-    iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( $destDir );
+    iMSCP::Dir->new( dirname => "$packageDir/iMSCP/config" )->rcopy( $self->{'cfgDir'}, { preserve => 'no' } );
+    iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( $destDir, { preserve => 'no' } );
     0;
 }
 
@@ -561,7 +563,7 @@ sub _buildHttpdConfig
 
     if (-f "$self->{'wrkDir'}/imscp_roundcube.conf") {
         my $rs = iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp_roundcube.conf" )->copyFile(
-            "$self->{'bkpDir'}/imscp_roundcube.conf.".time
+            "$self->{'bkpDir'}/imscp_roundcube.conf.".time, , { preserve => 'no' }
         );
         return $rs if $rs;
     }
@@ -577,7 +579,7 @@ sub _buildHttpdConfig
         }
     );
     $rs ||= iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp_roundcube.conf" )->copyFile(
-        "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf"
+        "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf", { preserve => 'no' }
     );
 }
 

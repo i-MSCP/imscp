@@ -329,7 +329,7 @@ sub remove
 
  Param string $destDir Destination directory
  Param hash \%options OPTIONAL Options:
-   preserve: If true, preserve permissions and ownership
+  - preserve (yes|no): preserve ownership and permissions (default yes)
  Return int 0 on success, die on failure
 
 =cut
@@ -345,7 +345,7 @@ sub rcopy
 
     unless (-d $destDir) {
         my $opts = { };
-        if ($options->{'preserve'}) {
+        unless (defined $options->{'preserve'} && $options->{'preserve'} eq 'no') {
             @{$opts}{ qw / mode user group /} = (stat( $self->{'dirname'} ))[2, 4, 5];
             $opts->{'mode'} &= 07777;
         }

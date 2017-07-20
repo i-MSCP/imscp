@@ -480,10 +480,10 @@ sub _bkpConfFile
         my $basename = basename( $cfgFile );
 
         unless (-f "$self->{'bkpDir'}/$basename.system") {
-            $rs = $file->copyFile( "$self->{'bkpDir'}/$basename.system" );
+            $rs = $file->copyFile( "$self->{'bkpDir'}/$basename.system", { preserve => 'no' } );
             return $rs if $rs;
         } else {
-            $rs = $file->copyFile( "$self->{'bkpDir'}/$basename.".time );
+            $rs = $file->copyFile( "$self->{'bkpDir'}/$basename.".time, { preserve => 'no' } );
             return $rs if $rs;
         }
     }

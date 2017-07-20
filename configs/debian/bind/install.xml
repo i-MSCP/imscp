@@ -4,7 +4,7 @@
     <folders>${SYSTEM_CONF}/bind/backup</folders>
     <folders>${SYSTEM_CONF}/bind/working</folders>
     <copy_config>${SYSTEM_CONF}/bind/parts</copy_config>
-    <copy_config mode="0640">${SYSTEM_CONF}/bind/bind.data.dist</copy_config>
+    <copy_config>${SYSTEM_CONF}/bind/bind.data.dist</copy_config>
     <copy_config>${SYSTEM_CONF}/bind/named.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/bind/named.conf.local</copy_config>
     <copy_config>${SYSTEM_CONF}/bind/named.conf.options</copy_config>
