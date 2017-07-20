@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-07-20 14:04+0000\n"
+"POT-Creation-Date: 2017-07-20 16:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: krok <krok@totalynet.fr>, 2017\n"
 "Language-Team: French (France) (https://www.transifex.com/i-mscp/teams/576/fr_FR/)\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 msgid " Admin / Support / Open Tickets"
-msgstr "Admininistrateur / Support / Tickets ouvertsr"
+msgstr "Admininistrateur / Support / Tickets ouverts"
 
 msgid " Client / Webtools / Custom Error Pages / Edit Custom Error Page"
 msgstr ""
@@ -1014,7 +1014,7 @@ msgid "Are you sure you want to delete this DNS record?"
 msgstr "Etes-vous certain de vouloir supprimer cet enregistrement DNS?"
 
 msgid "Are you sure you want to delete this account?"
-msgstr ""
+msgstr "Êtes-vous certain de vouloir supprimer ce compte?"
 
 msgid "Are you sure you want to delete this domain alias?"
 msgstr "Etes-vous certain de vouloir supprimer cet alias de domaine?"
@@ -1312,10 +1312,10 @@ msgid "Click to edit"
 msgstr "Cliquez pour éditer"
 
 msgid "Click to suspend this customer account."
-msgstr ""
+msgstr "Cliquez pour suspendre ce compte client."
 
 msgid "Click to unsuspend this customer account."
-msgstr ""
+msgstr "Cliquez pour ré-activer ce compte."
 
 msgid "Client / Databases / Add SQL Database"
 msgstr "Client / Bases de données / Ajouter une base de données SQL"
@@ -1637,7 +1637,7 @@ msgid "Created by"
 msgstr "Créé par"
 
 msgid "Created on"
-msgstr ""
+msgstr "Créé le"
 
 msgid "Creation date"
 msgstr "Date de création"
@@ -2206,7 +2206,7 @@ msgid "Delete ticket"
 msgstr "Supprimer le ticket"
 
 msgid "Delete user"
-msgstr ""
+msgstr "Supprimer l'utilisateur"
 
 msgid "Deletion in progress"
 msgstr "Suppression en cours"
@@ -2734,7 +2734,7 @@ msgid "Fill out a message text."
 msgstr "Veuillez fournir un message."
 
 msgid "Filter customers by"
-msgstr ""
+msgstr "Filtrer les clients par"
 
 msgid "First name"
 msgstr "Prénom"
@@ -2862,7 +2862,7 @@ msgid "HTTP traffic"
 msgstr "Trafic HTTP"
 
 msgid "Hide domain aliases"
-msgstr ""
+msgstr "Cacher les aliases de domaine"
 
 msgid "High"
 msgstr "Haute"
@@ -3461,7 +3461,7 @@ msgid "Minutes"
 msgstr "Minutes"
 
 msgid "Missing search criteria."
-msgstr ""
+msgstr "Critère de recherche manquant."
 
 msgid "Model"
 msgstr "Modèle"
@@ -3543,7 +3543,7 @@ msgid "No IP address found."
 msgstr "Aucun adresse IP trouvé."
 
 msgid "No account found."
-msgstr ""
+msgstr "Aucun compte trouvé."
 
 msgid "No anti-rootkits logs"
 msgstr "Aucun journal anti-Rootkits"
@@ -4805,7 +4805,7 @@ msgid "Show detailed statistics for this user"
 msgstr "Afficher les statistiques détaillées pour cet utilisateur"
 
 msgid "Show domain aliases"
-msgstr ""
+msgstr "Afficher les aliases de domaine"
 
 msgid "Show in"
 msgstr "Afficher dans"
@@ -6143,13 +6143,13 @@ msgstr ""
 "pour les sous-domaines de ce domaine."
 
 msgid "Your account has been disabled. Please, contact your reseller."
-msgstr ""
+msgstr "Votre compte a été désactivé. Veuillez contacter votre revendeur."
 
 msgid "Your account has expired. Please renew your subscription."
 msgstr "Votre compte est expiré. Veuillez renouveler votre abonnement."
 
 msgid "Your account has expired. Please, contact your reseller."
-msgstr ""
+msgstr "Votre compte a expiré. Veuillez contacter votre revendeur."
 
 msgid "Your consumption"
 msgstr "Votre consommation"
@@ -6260,22 +6260,22 @@ msgid "and"
 msgstr "et"
 
 msgid "anything"
-msgstr ""
+msgstr "n'importe quoi"
 
 msgid "city"
-msgstr ""
+msgstr "ville"
 
-msgid "compagny"
+msgid "company"
 msgstr ""
 
 msgid "country"
-msgstr ""
+msgstr "pays"
 
 msgid "created by"
-msgstr ""
+msgstr "Créé par"
 
 msgid "customer ID"
-msgstr ""
+msgstr "client ID"
 
 msgid "day"
 msgstr "jour"
@@ -6305,7 +6305,7 @@ msgid "domain data"
 msgstr "Données du domaine"
 
 msgid "domain name"
-msgstr ""
+msgstr "nom de domaine"
 
 msgid "domains"
 msgstr "domaines"
@@ -6320,13 +6320,13 @@ msgid "enabled"
 msgstr "activé"
 
 msgid "error"
-msgstr ""
+msgstr "erreur"
 
 msgid "everything"
 msgstr "toutes"
 
 msgid "first name"
-msgstr ""
+msgstr "prénom"
 
 msgid "from other browser"
 msgstr "a partir d'un autre navigateur"
@@ -6392,7 +6392,7 @@ msgid "kiB"
 msgstr "kiB"
 
 msgid "last name"
-msgstr ""
+msgstr "nom"
 
 msgid "mail"
 msgstr "e-mail"
@@ -6422,7 +6422,7 @@ msgid "not required"
 msgstr "Non requis"
 
 msgid "ok"
-msgstr ""
+msgstr "ok"
 
 msgid "older than 1 month"
 msgstr "de plus d'1 mois"
@@ -6450,10 +6450,10 @@ msgid "required"
 msgstr "requis"
 
 msgid "reseller name"
-msgstr ""
+msgstr "nom du revendeur"
 
 msgid "state/province"
-msgstr ""
+msgstr "état/province"
 
 msgid "subdomain"
 msgstr "sous domaine"
@@ -6462,13 +6462,13 @@ msgid "subdomains"
 msgstr "Sous-domaines"
 
 msgid "suspended"
-msgstr ""
+msgstr "suspendu"
 
 msgid "tcp"
 msgstr "TCP"
 
 msgid "that match with"
-msgstr ""
+msgstr "qui correspond à"
 
 msgid "traffic"
 msgstr "trafic"
@@ -6486,7 +6486,7 @@ msgid "waiting for activation"
 msgstr "en attente d'activation"
 
 msgid "which status is"
-msgstr ""
+msgstr "pour lesquels le statut est"
 
 msgid "yes"
 msgstr "oui"
