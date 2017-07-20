@@ -119,7 +119,6 @@
             <a class="icon i_identity" href="domain_details.php?domain_id={CLIENT_DOMAIN_ID}" title="<?= tohtml(tr('Details'), 'htmlAttr'); ?>"><?= tohtml(tr('Details')); ?></a>
             <a class="icon i_details" href="change_user_interface.php?to_id={CLIENT_ID}" title="<?= tohtml(tr('Switch to user interface'), 'htmlAttr'); ?>"><?= tohtml(tr('Switch')); ?></a>
             <a class="icon i_user" href="user_edit.php?edit_id={CLIENT_ID}" title="<?= tohtml(tr('Edit user'), 'htmlAttr'); ?>"><?= tohtml(tr('Edit user')); ?></a>
-            
             <!-- BDP: client_restricted_links -->
 <? if($_SESSION['user_type'] == 'reseller'): ?>
             <a class="icon i_domain_icon" href="domain_edit.php?edit_id={CLIENT_DOMAIN_ID}" title="<?= tohtml(tr('Edit domain'), 'htmlAttr'); ?>"><?= tohtml(tr('Edit domain')); ?></a>

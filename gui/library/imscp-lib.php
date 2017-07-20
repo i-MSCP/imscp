@@ -78,7 +78,6 @@ require_once LIBRARY_PATH . '/Functions/Shared.php';
 require_once LIBRARY_PATH . '/Functions/SoftwareInstaller.php';
 require_once LIBRARY_PATH . '/Functions/Reseller.php';
 require_once LIBRARY_PATH . '/Functions/View.php';
-#require_once LIBRARY_PATH . '/vendor/idna_convert/idna_convert.class.php';
 
 /** @var $config iMSCP_Config_Handler_File */
 if (is_readable(CONFIG_CACHE_FILE_PATH)) {

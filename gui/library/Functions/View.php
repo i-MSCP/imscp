@@ -561,7 +561,7 @@ function gen_search_user_fields($tpl, $searchField = NULL, $searchValue = NULL, 
             showBadRequestErrorPage();
         }
 
-        $tpl->assign('SEARCH_VALUE', ($searchValue !== NULL) ? tohtml($searchValue) : '');
+        $tpl->assign('SEARCH_VALUE', ($searchValue !== NULL) ? tohtml($searchValue, 'htmlAttr') : '');
     }
 
     $tpl->assign([
