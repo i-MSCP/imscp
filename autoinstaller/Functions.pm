@@ -205,7 +205,7 @@ sub build
         @config{ keys %{$config} } = values %{$config};
         untie %config;
     }
-    undef % confmap;
+    undef %confmap;
 
     endDebug( );
 }
