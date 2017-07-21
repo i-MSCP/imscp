@@ -139,11 +139,6 @@ return [
                 'uri' => '/admin/imscp_updates.php',
                 'title_class' => 'update'
             ],
-            'database_updates' => [
-                'label' => tr('Database update'),
-                'uri' => '/admin/database_update.php',
-                'title_class' => 'update'
-            ],
             'debugger' => [
                 'label' => tr('Debugger'),
                 'uri' => '/admin/imscp_debugger.php',

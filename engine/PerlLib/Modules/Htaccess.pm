@@ -128,14 +128,16 @@ sub _loadData
                     t4.domain_name, t4.domain_admin_id
                 FROM (SELECT * FROM htaccess, (SELECT IFNULL(
                     (
-                        SELECT group_concat(uname SEPARATOR ' ') FROM htaccess_users
+                        SELECT group_concat(uname SEPARATOR ' ')
+                        FROM htaccess_users
                         WHERE id regexp (
                             CONCAT('^(', (SELECT REPLACE((SELECT user_id FROM htaccess WHERE id = ?), ',', '|')), ')\$')
                         )
                         GROUP BY dmn_id
                     ), '') AS users) AS t1, (SELECT IFNULL(
                         (
-                            SELECT group_concat(ugroup SEPARATOR ' ') FROM htaccess_groups
+                            SELECT group_concat(ugroup SEPARATOR ' ')
+                            FROM htaccess_groups
                             WHERE id regexp (
                                 CONCAT(
                                     '^(',

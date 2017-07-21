@@ -12,14 +12,19 @@ BACKEND
     Fixed: Can't use an undefined value as a HASH reference (iMSCP::EventManager)
     Fixed: Couldn't remove IP address: Unknown action requested for server IP (Modules::ServerIP)
     Fixed: Permissions on files are always preverved when copying directory recursively (iMSCP::Dir::rcopy)
-    Fixed: Set the `group_concat_max_len' SESSION variable once per connect (iMSCP::Database::mysql)
+    Fixed: Sets the `group_concat_max_len' variable on a per session basis (iMSCP::Database::mysql)
+    Fixed: Sets the SQL modes on a per session basis to `NO_AUTO_CREATE_USER' for BC reasons (iMSCP::Database::mysql)
     Removed: `FETCH_MODE' option from iMSCP::Database::mysql
 
 FRONTEND
+    Fixed: All SQL queries must be compatible with the `ONLY_FULL_GROUP_BY' SQL mode
     Fixed: Cannot edit mailbox quota due to integer type casting (i386 arch)
     Fixed: Cannot set value bigger than 2 GB for mailbox quota due to integer type casting (i386 arch)
     Fixed: Customers must stay able to login when their password or their main domain is being modified
+    Fixed: Sets the `group_concat_max_len' variable on a per session basis
+    Fixed: Sets the SQL modes on a per session basis to 'NO_AUTO_CREATE_USER' for BC reasons
     Fixed: Several integer type casting issues
+    Removed: Database update interface (Useless since database update are done through installer)
     Review: Make usage of short syntax for arrays
 
 INSTALLER
@@ -45,6 +50,7 @@ SERVERS
     Fixed: SASL authentication failure: cannot connect to courier-authdaemon: No such file or directory (Postfix/Cyrus-SASL)
     Fixed: Several warnings raised by POSTFIX(1) when files located inside its directories are not owned by the `postfix' user (Postfix)
     Fixed: Unwanted leading character in server alias names - Alternative URLs feature (httpd servers)
+    Removed: sql_mode parameter from the mysql/imscp.cnf configuration file (it is now set on a per session basis) (SQL servers)
 
 VENDOR
     Updated: Zend Framework libraries to version 1.12.20

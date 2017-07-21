@@ -112,7 +112,6 @@ class iMSCP_Initializer
         $this->initializeLayout();
         $this->initializeNavigation();
         $this->initializeOutputBuffering();
-        $this->checkForDatabaseUpdate();
         $this->initializePlugins();
         // Trigger the onAfterInitialize event
         $this->eventManager->dispatch(iMSCP_Events::onAfterInitialize, ['context' => $this]);
@@ -495,39 +494,6 @@ class iMSCP_Initializer
             'disableNotices' => true,
             'tag'            => 'iMSCP'
         ]));
-    }
-
-    /**
-     * Check for database update
-     *
-     * @return void
-     */
-    protected function checkForDatabaseUpdate()
-    {
-        $this->eventManager->registerListener(
-            [iMSCP_Events::onLoginScriptStart, iMSCP_Events::onBeforeSetIdentity],
-            function ($event) {
-                if (!iMSCP_Update_Database::getInstance()->isAvailableUpdate()) {
-                    return;
-                }
-
-                iMSCP_Registry::get('config')->MAINTENANCEMODE = true;
-
-                /** @var $event iMSCP_Events_Event */
-                $identity = $event->getParam('identity', NULL);
-
-                if (NULL === $identity) {
-                    return;
-                }
-
-                if ($identity->admin_type != 'admin' &&
-                    (!isset($_SESSION['logged_from_type']) || $_SESSION['logged_from_type'] != 'admin')
-                ) {
-                    set_page_message(tr('Only administrators can login when maintenance mode is activated.'), 'error');
-                    redirectTo('index.php?admin=1');
-                }
-            }
-        );
     }
 
     /**

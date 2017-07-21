@@ -104,59 +104,59 @@
  */
 class iMSCP_Config_Handler_File extends iMSCP_Config_Handler
 {
-	/**
-	 * Configuration file path
-	 *
-	 * @var string
-	 */
-	protected $_pathFile;
+    /**
+     * Configuration file path
+     *
+     * @var string
+     */
+    protected $_pathFile;
 
-	/**
-	 * Loads all configuration parameters from a flat file
-	 *
-	 * <b>Note:</b> Default file path is set to {/usr/local}/etc/imscp/imscp.conf depending of distribution.
-	 *
-	 * @param string $pathFile Configuration file path
-	 */
-	public function __construct($pathFile = null)
-	{
-		if(is_null($pathFile)) {
-			if(getenv('IMSCP_CONF')) {
-				$pathFile = getenv('IMSCP_CONF');
-			} else {
-				switch(PHP_OS) {
-					case 'FreeBSD':
-					case 'OpenBSD':
-					case 'NetBSD':
-						$pathFile = '/usr/local/etc/imscp/imscp.conf';
-						break;
-					default:
-						$pathFile = '/etc/imscp/imscp.conf';
-				}
-			}
-		}
+    /**
+     * Loads all configuration parameters from a flat file
+     *
+     * <b>Note:</b> Default file path is set to {/usr/local}/etc/imscp/imscp.conf depending of distribution.
+     *
+     * @param string $pathFile Configuration file path
+     */
+    public function __construct($pathFile = NULL)
+    {
+        if (is_null($pathFile)) {
+            if (getenv('IMSCP_CONF')) {
+                $pathFile = getenv('IMSCP_CONF');
+            } else {
+                switch (PHP_OS) {
+                    case 'FreeBSD':
+                    case 'OpenBSD':
+                    case 'NetBSD':
+                        $pathFile = '/usr/local/etc/imscp/imscp.conf';
+                        break;
+                    default:
+                        $pathFile = '/etc/imscp/imscp.conf';
+                }
+            }
+        }
 
-		$this->_pathFile = $pathFile;
-		$this->_parseFile();
-	}
+        $this->_pathFile = $pathFile;
+        $this->_parseFile();
+    }
 
-	/**
-	 * Opens a configuration file and parses its Key = Value pairs
-	 *
-	 * @throws iMSCP_Exception
-	 * @return void
-	 */
-	protected function _parseFile()
-	{
-		if(($fd = @file_get_contents($this->_pathFile)) == false) {
-			throw new iMSCP_Exception(sprintf('Unable to open the configuration file `%s`', $this->_pathFile));
-		}
+    /**
+     * Opens a configuration file and parses its Key = Value pairs
+     *
+     * @throws iMSCP_Exception
+     * @return void
+     */
+    protected function _parseFile()
+    {
+        if (($fd = @file_get_contents($this->_pathFile)) == false) {
+            throw new iMSCP_Exception(sprintf("Couldn't open the configuration file `%s`", $this->_pathFile));
+        }
 
-		foreach(explode(PHP_EOL, $fd) as $line) {
-			if(!empty($line) && $line[0] != '#' && strpos($line, '=')) {
-				list($key, $value) = explode('=', $line, 2);
-				$this[trim($key)] = trim($value);
-			}
-		}
-	}
+        foreach (explode(PHP_EOL, $fd) as $line) {
+            if (!empty($line) && $line[0] != '#' && strpos($line, '=')) {
+                list($key, $value) = explode('=', $line, 2);
+                $this[trim($key)] = trim($value);
+            }
+        }
+    }
 }

@@ -51,10 +51,6 @@ function admin_generateUpdateMessages()
 {
     $cfg = iMSCP_Registry::get('config');
 
-    if (iMSCP_Update_Database::getInstance()->isAvailableUpdate()) {
-        set_page_message('<a href="database_update.php" class="link">' . tr('A database update is available') . '</a>', 'static_info');
-    }
-
     if (!$cfg['CHECK_FOR_UPDATES']) {
         return;
     }

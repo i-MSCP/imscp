@@ -89,7 +89,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     public static function getInstance()
     {
-        if (null === self::$instance) {
+        if (NULL === self::$instance) {
             self::$instance = new self();
         }
 
@@ -144,8 +144,8 @@ class iMSCP_Update_Database extends iMSCP_Update
     public function applyUpdates()
     {
         ignore_user_abort(true);
-
         $pdo = iMSCP_Database::getRawInstance();
+
         while ($this->isAvailableUpdate()) {
             $revision = $this->getNextUpdate();
 
@@ -159,15 +159,25 @@ class iMSCP_Update_Database extends iMSCP_Update
                 }
 
                 $pdo->beginTransaction();
+
                 foreach ($queries as $query) {
                     if (!empty($query)) {
-                        $pdo->query($query);
+                        $stmt = $pdo->prepare($query);
+                        $stmt->execute();
+                        while ($stmt->nextRowset()) {/* https://bugs.php.net/bug.php?id=61613 */};
                     }
                 }
 
                 $this->dbConfig['DATABASE_REVISION'] = $revision;
-                $pdo->commit();
+
+                # Make sure that we are still in transaction due to possible implicite commit
+                # See https://dev.mysql.com/doc/refman/5.7/en/implicit-commit.html
+                if ($pdo->inTransaction()) {
+                    $pdo->commit();
+                }
             } catch (Exception $e) {
+                # Make sure that we are still in transaction due to possible implicite commit
+                # See https://dev.mysql.com/doc/refman/5.7/en/implicit-commit.html
                 if ($pdo->inTransaction()) {
                     $pdo->rollBack();
                 }
@@ -182,46 +192,6 @@ class iMSCP_Update_Database extends iMSCP_Update
         }
 
         return true;
-    }
-
-    /**
-     * Returns database update(s) details
-     *
-     * @return array
-     */
-    public function getDatabaseUpdatesDetails()
-    {
-        $updatesDetails = [];
-        $reflection = new ReflectionClass(__CLASS__);
-
-        foreach (range($this->getNextUpdate(), $this->lastUpdate) as $revision) {
-            $methodName = "r$revision";
-
-            if (!$reflection->hasMethod($methodName)) {
-                continue;
-            }
-
-            $method = $reflection->getMethod($methodName);
-            $details = explode("\n", $method->getDocComment());
-            $normalizedDetails = '';
-            array_shift($details);
-
-            foreach ($details as $detail) {
-                if (!preg_match('/^(?: |\t)*\*(?: |\t)+([^@]*)$/', $detail, $matches)) {
-                    break;
-                }
-
-                if (empty($normalizedDetails)) {
-                    $normalizedDetails = $matches[1];
-                } else {
-                    $normalizedDetails .= '<br>' . $matches[1];
-                }
-            }
-
-            $updatesDetails[$revision] = $normalizedDetails;
-        }
-
-        return $updatesDetails;
     }
 
     /**
@@ -250,35 +220,6 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Remove any duplicate rows in the given table for the given column(s)
-     *
-     * @throws iMSCP_Exception_Database
-     * @param string $table Table name
-     * @param string|array $columns Column(s)
-     * @return array SQL statements to be executed
-     */
-    protected function removeDuplicateRowsOnColumns($table, $columns)
-    {
-        $originTable = $table;
-        $tableWithDup = $table . '_tmp1';
-        $tableWithoutDup = $table . '_tmp2';
-
-        return [
-            sprintf(
-                "CREATE TABLE %s LIKE %s; INSERT %s SELECT * FROM %s GROUP BY %s;",
-                quoteIdentifier($tableWithoutDup),
-                quoteIdentifier($originTable),
-                quoteIdentifier($tableWithoutDup),
-                quoteIdentifier($originTable),
-                implode(',', array_map('quoteIdentifier', (array)$columns))
-            ),
-            sprintf('ALTER TABLE %s RENAME TO %s', $originTable, quoteIdentifier($tableWithDup)),
-            sprintf('ALTER TABLE %s RENAME TO %s', $tableWithoutDup, quoteIdentifier($originTable)),
-            $this->dropTable($tableWithDup)
-        ];
-    }
-
-    /**
      * Rename table
      *
      * @param string $table Table name
@@ -290,11 +231,12 @@ class iMSCP_Update_Database extends iMSCP_Update
     {
         $table = quoteIdentifier($table);
         $stmt = exec_query('SHOW TABLES LIKE ?', $table);
+
         if ($stmt->rowCount()) {
             return sprintf('ALTER TABLE %s RENAME TO %s', $table, quoteIdentifier($newTableName));
         }
 
-        return null;
+        return NULL;
     }
 
     /**
@@ -320,11 +262,12 @@ class iMSCP_Update_Database extends iMSCP_Update
     {
         $table = quoteIdentifier($table);
         $stmt = exec_query("SHOW COLUMNS FROM $table LIKE ?", $column);
+
         if (!$stmt->rowCount()) {
             return sprintf('ALTER TABLE %s ADD %s %s', $table, quoteIdentifier($column), $columnDefinition);
         }
 
-        return null;
+        return NULL;
     }
 
     /**
@@ -339,11 +282,12 @@ class iMSCP_Update_Database extends iMSCP_Update
     {
         $table = quoteIdentifier($table);
         $stmt = exec_query("SHOW COLUMNS FROM $table LIKE ?", $column);
+
         if ($stmt->rowCount()) {
             return sprintf('ALTER TABLE %s CHANGE %s %s', $table, quoteIdentifier($column), $columnDefinition);
         }
 
-        return null;
+        return NULL;
     }
 
     /**
@@ -357,11 +301,12 @@ class iMSCP_Update_Database extends iMSCP_Update
     {
         $table = quoteIdentifier($table);
         $stmt = exec_query("SHOW COLUMNS FROM $table LIKE ?", $column);
+
         if ($stmt->rowCount()) {
             return sprintf('ALTER TABLE %s DROP %s', $table, quoteIdentifier($column));
         }
 
-        return null;
+        return NULL;
     }
 
     /**
@@ -371,7 +316,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      * sure to remove duplicate rows first. We don't make usage of the IGNORE clause for the following reasons:
      *
      * - The IGNORE clause is no standard and do not work with Fast Index Creation (MySQL #Bug #40344)
-     * - The IGNORE clause will be removed in MySQL 5.7
+     * - The IGNORE clause has been removed in MySQL 5.7
      *
      * @param string $table Database table name
      * @param array|string $columns Column name(s) with OPTIONAL key length
@@ -398,6 +343,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
         $indexName = $indexType == 'PRIMARY KEY' ? 'PRIMARY' : ($indexName == '' ? key($columns) : $indexName);
         $stmt = exec_query("SHOW INDEX FROM $table WHERE KEY_NAME = ?", $indexName);
+
         if (!$stmt->rowCount()) {
             $columnsStr = '';
             foreach ($columns as $column => $length) {
@@ -409,23 +355,22 @@ class iMSCP_Update_Database extends iMSCP_Update
             return sprintf('ALTER TABLE %s ADD %s %s (%s)', $table, $indexType, $indexName, rtrim($columnsStr, ','));
         }
 
-        return null;
+        return NULL;
     }
 
     /**
      * Drop any index which belong to the given column in the given table
      *
-     * Be aware that no check is made for duplicate rows. Thus, if by remove an index, this can result to du
-     *
      * @param string $table Table name
      * @param string $column Column name
-     * @return array SQL statements to be executed
+     * @return array|null SQL statements to be executed
      */
     protected function dropIndexByColumn($table, $column)
     {
         $sqlQueries = [];
         $table = quoteIdentifier($table);
         $stmt = exec_query("SHOW INDEX FROM $table WHERE COLUMN_NAME = ?", $column);
+
         if ($stmt->rowCount()) {
             while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
                 $row = array_change_key_case($row, CASE_UPPER);
@@ -447,11 +392,12 @@ class iMSCP_Update_Database extends iMSCP_Update
     {
         $table = quoteIdentifier($table);
         $stmt = exec_query("SHOW INDEX FROM $table WHERE KEY_NAME = ?", $indexName);
+
         if ($stmt->rowCount()) {
             return sprintf('ALTER TABLE %s DROP INDEX %s', $table, quoteIdentifier($indexName));
         }
 
-        return null;
+        return NULL;
     }
 
     /**
@@ -468,7 +414,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             throw new iMSCP_Update_Exception(sprintf('%s is not a valid database update method', $updateMethod));
         }
 
-        return null;
+        return NULL;
     }
 
     /**
@@ -576,8 +522,9 @@ class iMSCP_Update_Database extends iMSCP_Update
     {
         $sqlQueries = [];
         $stmt = execute_query('SELECT cert_id, password, `key` FROM ssl_certs');
+
         if (!$stmt->rowCount()) {
-            return null;
+            return NULL;
         }
 
         while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
@@ -709,7 +656,7 @@ class iMSCP_Update_Database extends iMSCP_Update
         $stmt = execute_query('SELECT cert_id, private_key, certificate, ca_bundle FROM ssl_certs');
 
         if (!$stmt->rowCount()) {
-            return null;
+            return NULL;
         }
 
         while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
@@ -738,7 +685,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             unset($this->dbConfig['WEB_FOLDER_PROTECTION']);
         }
 
-        return null;
+        return NULL;
     }
 
     /**
@@ -804,7 +751,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             unset($this->dbConfig['MAIL_WRITER_EXPIRY_TIME']);
         }
 
-        return null;
+        return NULL;
     }
 
     /**
@@ -818,7 +765,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             unset($this->dbConfig['MAIL_BODY_FOOTPRINTS']);
         }
 
-        return null;
+        return NULL;
     }
 
     /**
@@ -836,7 +783,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             unset($this->dbConfig['PORT_POLICYD-WEIGHT']);
         }
 
-        return null;
+        return NULL;
     }
 
     /**
@@ -866,11 +813,11 @@ class iMSCP_Update_Database extends iMSCP_Update
             "VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL AFTER plugin_config"
         );
 
-        if ($sql !== null) {
+        if ($sql !== NULL) {
             return [$sql, 'UPDATE plugin SET plugin_config_prev = plugin_config'];
         }
 
-        return null;
+        return NULL;
     }
 
     /**
@@ -897,11 +844,14 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r202()
     {
-
-        $sqlQueries = $this->removeDuplicateRowsOnColumns('mail_users', 'mail_addr');
-        $sqlQueries[] = $this->dropIndexByName('mail_users', 'mail_addr');
-        $sqlQueries[] = $this->addIndex('mail_users', 'mail_addr', 'UNIQUE', 'mail_addr');
-        return $sqlQueries;
+        return [
+            $this->renameTable('mail_users', 'old_mail_users'),
+            'CREATE TABLE mail_users LIKE old_mail_users',
+            $this->dropIndexByName('mail_users', 'mail_addr'),
+            $this->addIndex('mail_users', 'mail_addr', 'UNIQUE', 'mail_addr'),
+            'INSERT IGNORE INTO mail_users SELECT * FROM old_mail_users',
+            $this->dropTable('old_mail_users')
+        ];
     }
 
     /**
@@ -933,7 +883,7 @@ class iMSCP_Update_Database extends iMSCP_Update
         $stmt = exec_query('SELECT id, props FROM hosting_plans');
 
         if (!$stmt->rowCount()) {
-            return null;
+            return NULL;
         }
         while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
             $needUpdate = true;
@@ -987,9 +937,13 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r210()
     {
-        $sqlQueries = $this->removeDuplicateRowsOnColumns('server_traffic', 'traff_time');
-        $sqlQueries[] = $this->addIndex('server_traffic', 'traff_time', 'UNIQUE', 'traff_time');
-        return $sqlQueries;
+        return [
+            $this->renameTable('server_traffic', 'old_server_traffic'),
+            'CREATE TABLE server_traffic LIKE old_server_traffic',
+            $this->addIndex('server_traffic', 'traff_time', 'UNIQUE', 'traff_time'),
+            'INSERT IGNORE INTO server_traffic SELECT * FROM old_server_traffic',
+            $this->dropTable('old_server_traffic')
+        ];
     }
 
     /**
@@ -1205,7 +1159,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             ]);
         }
 
-        return null;
+        return NULL;
     }
 
     /**
@@ -1220,7 +1174,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                 ? constant($this->dbConfig['LOG_LEVEL']) : E_USER_ERROR;
         }
 
-        return null;
+        return NULL;
     }
 
     /**
@@ -1252,7 +1206,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             "VARCHAR(5) COLLATE utf8_unicode_ci DEFAULT NULL AFTER url_forward"
         );
 
-        if ($sql !== null) {
+        if ($sql !== NULL) {
             $sqlQueries[] = $sql;
             $sqlQueries[] = "UPDATE domain_aliasses SET type_forward = '302' WHERE url_forward <> 'no'";
         }
@@ -1263,7 +1217,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             "VARCHAR(5) COLLATE utf8_unicode_ci DEFAULT NULL AFTER subdomain_url_forward"
         );
 
-        if ($sql !== null) {
+        if ($sql !== NULL) {
             $sqlQueries[] = $sql;
             $sqlQueries[] = "UPDATE subdomain SET subdomain_type_forward = '302' WHERE subdomain_url_forward <> 'no'";
         }
@@ -1274,7 +1228,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             "VARCHAR(5) COLLATE utf8_unicode_ci DEFAULT NULL AFTER subdomain_alias_url_forward"
         );
 
-        if ($sql !== null) {
+        if ($sql !== NULL) {
             $sqlQueries[] = $sql;
             $sqlQueries[] = "UPDATE subdomain_alias SET subdomain_alias_type_forward = '302' WHERE subdomain_alias_url_forward <> 'no'";
         }
@@ -1494,7 +1448,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             }
         }
 
-        return null;
+        return NULL;
     }
 
     /**
@@ -1504,11 +1458,21 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r234()
     {
-        $sqlQueries = $this->removeDuplicateRowsOnColumns('php_ini', ['admin_id', 'domain_id', 'domain_type']);
-        $sqlQueries = array_merge($sqlQueries, $this->dropIndexByColumn('php_ini', 'admin_id'));
-        $sqlQueries = array_merge($sqlQueries, $this->dropIndexByColumn('php_ini', 'domain_id'));
-        $sqlQueries = array_merge($sqlQueries, $this->dropIndexByColumn('php_ini', 'domain_type'));
-        $sqlQueries[] = $this->addIndex('php_ini', ['admin_id', 'domain_id', 'domain_type'], 'UNIQUE', 'unique_php_ini');
+        $sqlQueries = [
+            $this->renameTable('php_ini', 'old_php_ini'),
+            'CREATE TABLE php_ini LIKE old_php_ini',
+        ];
+        $sqlQueries = array_merge(
+            $sqlQueries,
+            $this->dropIndexByColumn('php_ini', 'admin_id'),
+            $this->dropIndexByColumn('php_ini', 'domain_id'),
+            $this->dropIndexByColumn('php_ini', 'domain_type'),
+            [
+                $this->addIndex('php_ini', ['admin_id', 'domain_id', 'domain_type'], 'UNIQUE', 'unique_php_ini'),
+                'INSERT IGNORE INTO php_ini SELECT * FROM old_php_ini',
+                $this->dropTable('old_php_ini')
+            ]
+        );
         return $sqlQueries;
     }
 
@@ -1573,9 +1537,13 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r237()
     {
-        $sqlQueries = $this->removeDuplicateRowsOnColumns('domain_traffic', ['domain_id', 'dtraff_time']);
-        $sqlQueries[] = $this->addIndex('domain_traffic', ['domain_id', 'dtraff_time'], 'UNIQUE', 'i_unique_timestamp');
-        return $sqlQueries;
+        return [
+            $this->renameTable('domain_traffic', 'old_domain_traffic'),
+            'CREATE TABLE domain_traffic LIKE old_domain_traffic',
+            $this->addIndex('domain_traffic', ['domain_id', 'dtraff_time'], 'UNIQUE', 'i_unique_timestamp'),
+            'INSERT IGNORE INTO domain_traffic SELECT * FROM old_domain_traffic',
+            $this->dropTable('old_domain_traffic')
+        ];
     }
 
     /**
@@ -1616,12 +1584,16 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected function r240()
     {
         if (!$this->isKnownTable('httpd_vlogger')) {
-            return null;
+            return NULL;
         }
 
-        $sqlQueries = $this->removeDuplicateRowsOnColumns('httpd_vlogger', ['vhost', 'ldate']);
-        $sqlQueries[] = $this->addIndex('httpd_vlogger', ['vhost', 'ldate']);
-        return $sqlQueries;
+        return [
+            $this->renameTable('httpd_vlogger', 'old_httpd_vlogger'),
+            'CREATE TABLE httpd_vlogger LIKE old_httpd_vlogger',
+            $this->addIndex('httpd_vlogger', ['vhost', 'ldate']),
+            'INSERT IGNORE INTO httpd_vlogger SELECT * FROM old_httpd_vlogger',
+            $this->dropTable('old_httpd_vlogger')
+        ];
     }
 
     /**
@@ -1667,12 +1639,12 @@ class iMSCP_Update_Database extends iMSCP_Update
             exec_query('UPDATE server_ips SET ip_netmask = ? WHERE ip_id = ?', [$netmask, $row['ip_id']]);
         }
 
-        return null;
+        return NULL;
     }
 
     /**
      * Renamed plugin.plugin_lock table to plugin.plugin_lockers and set default value
-     * 
+     *
      * @return array SQL statements to be executed
      */
     protected function r244()
@@ -1692,7 +1664,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      * - Add the subdomain.subdomain_document_root column
      * - Add the domain_aliasses.alias_document_root column
      * - Add the subdomain_alias.subdomain_alias_document_root column
-     * 
+     *
      * @return array SQL statements to be executed
      */
     protected function r245()
@@ -1822,14 +1794,14 @@ class iMSCP_Update_Database extends iMSCP_Update
 
     /**
      * Remove any virtual mailbox that was added for Postfix canonical domain (SERVER_HOSTNAME)
-     * 
+     *
      * SERVER_HOSTNAME is a Postfix canonical domain (local domain) which
      * cannot be listed in both `mydestination' and `virtual_mailbox_domains'
      * Postfix parameters. This necessarily means that Postfix canonical
      * domains cannot have virtual mailboxes, hence their deletion.
-     * 
+     *
      * See http://www.postfix.org/VIRTUAL_README.html#canonical
-     * 
+     *
      * @return null
      */
     protected function r254()

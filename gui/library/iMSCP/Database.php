@@ -22,6 +22,14 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
+use iMSCP_Database_Events_Database as DatabaseEvents;
+use iMSCP_Database_Events_Statement as DatabaseEventsStatement;
+use iMSCP_Database_ResultSet as ResultSet;
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsAggregator;
+use iMSCP_Events_Manager as EventsManager;
+use iMSCP_Exception_Database as DatabaseException;
+
 /**
  * Class iMSCP_Database
  */
@@ -40,7 +48,7 @@ class iMSCP_Database
     /**
      * @var PDO PDO instance.
      */
-    protected $_db = null;
+    protected $_db = NULL;
 
     /**
      * @var int Error code from last error occurred
@@ -70,7 +78,7 @@ class iMSCP_Database
      * According the PDO implementation, a PDOException is raised on error
      * See {@link http://www.php.net/manual/en/pdo.construct.php} for more information about this issue.
      *
-     * @throws PDOException
+     * @throws PDOException|iMSCP_Exception
      * @param string $user Sql username
      * @param string $pass Sql password
      * @param string $type PDO driver
@@ -80,14 +88,18 @@ class iMSCP_Database
      */
     private function __construct($user, $pass, $type, $host, $name, $driverOptions = [])
     {
-        $driverOptions[PDO::MYSQL_ATTR_INIT_COMMAND] = "SET NAMES 'utf8'";
-        $driverOptions[PDO::ATTR_EMULATE_PREPARES] = true; # TODO should be FALSE but we must first update code (including plugins)
-        $driverOptions[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
-        $this->_db = new PDO($type . ':host=' . $host . ';dbname=' . $name, $user, $pass, $driverOptions);
-        $this->_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $this->_db->setAttribute(PDO::ATTR_CASE, PDO::CASE_NATURAL);
-        $this->_db->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
-        $this->_db->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
+        $driverOptions += [
+            PDO::ATTR_CASE                     => PDO::CASE_NATURAL,
+            PDO::ATTR_DEFAULT_FETCH_MODE       => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES         => true, # FIXME should be FALSE but we must first review all SQL queries
+            PDO::ATTR_ERRMODE                  => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_STRINGIFY_FETCHES        => false, # Useless as long PDO::ATTR_EMULATE_PREPARES is true
+            PDO::MYSQL_ATTR_INIT_COMMAND       =>
+                "SET SESSION sql_mode = 'NO_AUTO_CREATE_USER,ONLY_FULL_GROUP_BY', SESSION group_concat_max_len = 16384",
+            PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true # FIXME should be FALSE but we must first review all SQL queries
+        ];
+
+        $this->_db = new PDO("$type:host=$host;dbname=$name;charset=utf8", $user, $pass, $driverOptions);
     }
 
     /**
@@ -104,12 +116,12 @@ class iMSCP_Database
      * @param iMSCP_Events_Manager $events
      * @return iMSCP_Events_Manager
      */
-    public function events(iMSCP_Events_Manager $events = null)
+    public function events(EventsManager $events = NULL)
     {
-        if (null !== $events) {
+        if (NULL !== $events) {
             $this->_events = $events;
-        } elseif (null === $this->_events) {
-            $this->_events = iMSCP_Events_Aggregator::getInstance();
+        } elseif (NULL === $this->_events) {
+            $this->_events = EventsAggregator::getInstance();
         }
 
         return $this->_events;
@@ -131,7 +143,7 @@ class iMSCP_Database
      * @param array $options OPTIONAL Driver options
      * @return iMSCP_Database An iMSCP_Database instance that represents the connection to the database
      */
-    public static function connect($user, $pass, $type, $host, $name, $connection = 'default', $options = null)
+    public static function connect($user, $pass, $type, $host, $name, $connection = 'default', $options = NULL)
     {
         if (is_array($connection)) {
             $options = $connection;
@@ -139,7 +151,7 @@ class iMSCP_Database
         }
 
         if (isset(self::$_instances[$connection])) {
-            self::$_instances[$connection] = null;
+            self::$_instances[$connection] = NULL;
         }
 
         return self::$_instances[$connection] = new self($user, $pass, $type, $host, $name, (array)$options);
@@ -151,7 +163,7 @@ class iMSCP_Database
      * Each database connection object are referenced by an unique identifier. The default identifier, if not one is
      * provided, is 'default'.
      *
-     * @throws iMSCP_Exception_Database
+     * @throws DatabaseException
      * @param string $connection Connection key name
      * @return iMSCP_Database A Database instance that represents the connection to the database
      * @todo Rename the method name to 'getConnection' (Sounds better)
@@ -159,7 +171,7 @@ class iMSCP_Database
     public static function getInstance($connection = 'default')
     {
         if (!isset(self::$_instances[$connection])) {
-            throw new iMSCP_Exception_Database(sprintf("The Database connection %s doesn't exist.", $connection));
+            throw new DatabaseException(sprintf("The Database connection %s doesn't exist.", $connection));
         }
 
         return self::$_instances[$connection];
@@ -175,7 +187,7 @@ class iMSCP_Database
     public static function getRawInstance($connection = 'default')
     {
         if (!isset(self::$_instances[$connection])) {
-            throw new iMSCP_Exception_Database(sprintf("The Database connection %s doesn't exist.", $connection));
+            throw new DatabaseException(sprintf("The Database connection %s doesn't exist.", $connection));
         }
 
         return self::$_instances[$connection]->_db;
@@ -191,15 +203,13 @@ class iMSCP_Database
      *
      * @param string $sql Sql statement to prepare
      * @param array $options OPTIONAL Attribute values for the PDOStatement object
-     * @return PDOStatement A PDOStatement instance or FALSE on failure. If prepared statements are emulated by PDO,
+     * @return PDOStatement|false A PDOStatement instance or FALSE on failure. If prepared statements are emulated by PDO,
      *                        FALSE is never returned.
      */
-    public function prepare($sql, $options = null)
+    public function prepare($sql, $options = NULL)
     {
         $this->events()->dispatch(
-            new iMSCP_Database_Events_Database(
-                iMSCP_Events::onBeforeQueryPrepare, ['context' => $this, 'query' => $sql]
-            )
+            new DatabaseEvents(Events::onBeforeQueryPrepare, ['context' => $this, 'query' => $sql])
         );
 
         if (is_array($options)) {
@@ -209,9 +219,7 @@ class iMSCP_Database
         }
 
         $this->events()->dispatch(
-            new iMSCP_Database_Events_Statement(
-                iMSCP_Events::onAfterQueryPrepare, ['context' => $this, 'statement' => $stmt]
-            )
+            new DatabaseEventsStatement(Events::onAfterQueryPrepare, ['context' => $this, 'statement' => $stmt])
         );
 
         if (!$stmt) {
@@ -229,28 +237,24 @@ class iMSCP_Database
      *
      * @param PDOStatement|string $stmt
      * @param null $parameters
-     * @return bool|iMSCP_Database_ResultSet
+     * @return bool|ResultSet
      * @throws iMSCP_Exception_Database
      */
-    public function execute($stmt, $parameters = null)
+    public function execute($stmt, $parameters = NULL)
     {
         if ($stmt instanceof PDOStatement) {
             $this->events()->dispatch(
-                new iMSCP_Database_Events_Statement(
-                    iMSCP_Events::onBeforeQueryExecute, ['context' => $this, 'statement' => $stmt]
-                )
+                new DatabaseEventsStatement(Events::onBeforeQueryExecute, ['context' => $this, 'statement' => $stmt])
             );
 
-            if (null === $parameters) {
+            if (NULL === $parameters) {
                 $rs = $stmt->execute();
             } else {
                 $rs = $stmt->execute((array)$parameters);
             }
         } elseif (is_string($stmt)) {
             $this->events()->dispatch(
-                new iMSCP_Database_Events_Database(
-                    iMSCP_Events::onBeforeQueryExecute, ['context' => $this, 'query' => $stmt]
-                )
+                new DatabaseEvents(Events::onBeforeQueryExecute, ['context' => $this, 'query' => $stmt])
             );
 
             if (is_null($parameters)) {
@@ -260,16 +264,16 @@ class iMSCP_Database
                 $rs = call_user_func_array([$this->_db, 'query'], $parameters);
             }
         } else {
-            throw new iMSCP_Exception_Database('Wrong parameter. Expects either a string or PDOStatement object');
+            throw new DatabaseException('Wrong parameter. Expects either a string or PDOStatement object');
         }
 
         if ($rs) {
             $stmt = ($rs === true) ? $stmt : $rs;
-            $this->events()->dispatch(new iMSCP_Database_Events_Statement(
-                iMSCP_Events::onAfterQueryExecute, ['context' => $this, 'statement' => $stmt]
+            $this->events()->dispatch(new DatabaseEventsStatement(
+                Events::onAfterQueryExecute, ['context' => $this, 'statement' => $stmt]
             ));
 
-            return new iMSCP_Database_ResultSet($stmt);
+            return new ResultSet($stmt);
         } else {
             $errorInfo = is_string($stmt) ? $this->errorInfo() : $stmt->errorInfo();
             if (isset($errorInfo[2])) {
@@ -290,7 +294,7 @@ class iMSCP_Database
      * @param string|null $like
      * @return array An array which hold list of database tables
      */
-    public function getTables($like = null)
+    public function getTables($like = NULL)
     {
         if ($like) {
             $stmt = $this->_db->prepare('SHOW TABLES LIKE ?');
@@ -330,7 +334,7 @@ class iMSCP_Database
      * @param null|int $parameterType Provides a data type hint for drivers that have alternate quoting styles.
      * @return string A quoted string that is theoretically safe to pass into an SQL statement
      */
-    public function quote($string, $parameterType = null)
+    public function quote($string, $parameterType = NULL)
     {
         return $this->_db->quote($string, $parameterType);
     }
@@ -364,7 +368,7 @@ class iMSCP_Database
      * Initiates a transaction
      *
      * @link http://php.net/manual/en/pdo.begintransaction.php
-     * @return bool Returns true on success or false on failure.
+     * @return void
      */
     public function beginTransaction()
     {
@@ -381,36 +385,41 @@ class iMSCP_Database
      * Commits a transaction
      *
      * @link http://php.net/manual/en/pdo.commit.php
-     * @return bool Returns true on success or false on failure.
+     * @return void
      */
     public function commit()
     {
         $this->transactionCounter--;
+
         if ($this->transactionCounter == 0) {
             $this->_db->commit();
-        } else {
-            $this->_db->exec("RELEASE SAVEPOINT TRANSACTION{$this->transactionCounter}");
+            return;
         }
+
+        $this->_db->exec("RELEASE SAVEPOINT TRANSACTION{$this->transactionCounter}");
     }
 
     /**
      * Rolls back a transaction
      *
      * @link http://php.net/manual/en/pdo.rollback.php
-     * @return bool Returns true on success or false on failure.
+     * @return void
      */
     public function rollBack()
     {
         $this->transactionCounter--;
+
         if ($this->transactionCounter == 0) {
             try {
                 $this->_db->rollBack();
             } catch (PDOException $e) {
                 // Ignore rollback exception
             }
-        } else {
-            $this->_db->exec("ROLLBACK TO SAVEPOINT TRANSACTION{$this->transactionCounter}");
+
+            return;
         }
+
+        $this->_db->exec("ROLLBACK TO SAVEPOINT TRANSACTION{$this->transactionCounter}");
     }
 
     /**

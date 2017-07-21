@@ -74,29 +74,28 @@ function client_checkSqlUserPermissions($tpl, $databaseId)
  */
 function client_generateSqlUserList($tpl, $customerId, $databaseId)
 {
-    // Select all SQL users of the current domain except those which are already assigned to the database on which we
-    // want operate on
+    // Select all SQL users that are owned by $customerId except those that are
+    // already assigned to $databaseId
     $stmt = exec_query(
         "
-            SELECT sqlu_id, sqlu_name, sqlu_host FROM sql_user
-            JOIN sql_database USING(sqld_id)
-            WHERE domain_id = :domain_id
-            AND sqld_id != :sqld_id
-            AND CONCAT(sqlu_name, sqlu_host) NOT IN(
-                SELECT CONCAT(sqlu_name, sqlu_host)
-                FROM sql_user
-                WHERE sqld_id = :sqld_id
-            ) GROUP BY sqlu_name, sqlu_host
+            SELECT MAX(t1.sqlu_id) AS sqlu_id, t1.sqlu_name, t1.sqlu_host
+            FROM sql_user AS t1
+            JOIN sql_database AS t2 USING(sqld_id)
+            WHERE t2.sqld_id <> ?
+            AND t2.domain_id = ?
+            AND CONCAT(t1.sqlu_name, t1.sqlu_host) NOT IN(
+                SELECT CONCAT(sqlu_name, sqlu_host) FROM sql_user WHERE sqld_id = ?
+            )
+            GROUP BY t1.sqlu_name, t1.sqlu_host
         ",
-        ['domain_id' => get_user_domain_id($customerId), 'sqld_id' => $databaseId]
+        [$databaseId, get_user_domain_id($customerId), $databaseId]
     );
 
     if ($stmt->rowCount()) {
         while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
             $tpl->assign([
-                'SQLUSER_ID' => intval($row['sqlu_id']),
-                'SQLUSER_NAME' => tohtml($row['sqlu_name']),
-                'SQLUSER_HOST' => tohtml(decode_idna($row['sqlu_host'])),
+                'SQLUSER_ID' => $row['sqlu_id'],
+                'SQLUSER_IDN'   => tohtml($row['sqlu_name'] . '@' . decode_idna($row['sqlu_host'])),
             ]);
             $tpl->parse('SQLUSER_LIST', '.sqluser_list');
         }
@@ -114,8 +113,9 @@ function client_generateSqlUserList($tpl, $customerId, $databaseId)
  */
 function client_isSqlUser($sqlUser, $sqlUserHost)
 {
-    $stmt = exec_query('SELECT User FROM mysql.user WHERE User = ? AND Host = ?', [$sqlUser, $sqlUserHost]);
-    return (bool)($stmt->rowCount());
+    return (bool) exec_query(
+        'SELECT COUNT(User) FROM mysql.user WHERE User = ? AND Host = ?', [$sqlUser, $sqlUserHost]
+    )->fetchRow(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -124,10 +124,10 @@ function client_isSqlUser($sqlUser, $sqlUserHost)
  * @throws Exception
  * @throws iMSCP_Exception_Database
  * @param int $customerId Customer unique identifier
- * @param int $dbId
+ * @param int $databaseId Database unique identifier
  * @return void
  */
-function client_addSqlUser($customerId, $dbId)
+function client_addSqlUser($customerId, $databaseId)
 {
     if (empty($_POST)) {
         return;
@@ -139,7 +139,7 @@ function client_addSqlUser($customerId, $dbId)
 
     $dmnId = get_user_domain_id($customerId);
 
-    if (!isset($_POST['Add_Exist'])) {
+    if (!isset($_POST['reuse_sqluser'])) {
         $needUserCreate = true;
 
         if (!isset($_POST['user_name'])
@@ -216,8 +216,17 @@ function client_addSqlUser($customerId, $dbId)
         }
     } elseif (isset($_POST['sqluser_id'])) { // Using existing SQL user as specified in input data
         $needUserCreate = false;
-        $userId = intval($_POST['sqluser_id']);
-        $stmt = exec_query('SELECT sqlu_name, sqlu_host FROM sql_user WHERE sqlu_id = ?', $userId);
+        $stmt = exec_query(
+            '
+                SELECT t1.sqlu_name, t1.sqlu_host
+                FROM sql_user AS t1
+                JOIN sql_database as t2 USING(sqld_id)
+                WHERE t1.sqlu_id = ?
+                AND t1.sqld_id <> ?
+                AND t2.domain_id = ?
+            ',
+            [intval($_POST['sqluser_id']), $databaseId, $dmnId]
+        );
 
         if (!$stmt->rowCount()) {
             showBadRequestErrorPage();
@@ -232,11 +241,12 @@ function client_addSqlUser($customerId, $dbId)
     }
 
     # Retrieve database to which SQL user should be assigned
-    $stmt = exec_query('SELECT sqld_name FROM sql_database WHERE sqld_id = ? AND domain_id = ?', [$dbId, $dmnId]);
+    $stmt = exec_query('SELECT sqld_name FROM sql_database WHERE sqld_id = ? AND domain_id = ?', [$databaseId, $dmnId]);
 
     if (!$stmt->rowCount()) {
         showBadRequestErrorPage();
     }
+
     $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
     $dbName = $row['sqld_name'];
     $config = iMSCP_Registry::get('config');
@@ -248,7 +258,7 @@ function client_addSqlUser($customerId, $dbId)
     // those statements first to let the i-MSCP database in clean state if one of them fails.
     // See https://dev.mysql.com/doc/refman/5.7/en/implicit-commit.html for more details
 
-    if($needUserCreate && isset($password)) {
+    if ($needUserCreate && isset($password)) {
         if ($mysqlConfig['SQLD_TYPE'] == 'mariadb' || version_compare($mysqlConfig['SQLD_VERSION'], '5.7.6', '<')) {
             exec_query('CREATE USER ?@? IDENTIFIED BY ?', [$user, $host, $password]);
         } else {
@@ -267,7 +277,7 @@ function client_addSqlUser($customerId, $dbId)
 
     exec_query(sprintf('GRANT ALL PRIVILEGES ON %s.* to ?@?', quoteIdentifier($dbName)), [$user, $host]);
     exec_query('INSERT INTO sql_user (sqld_id, sqlu_name, sqlu_host) VALUES (?, ?, ?)', [
-        $dbId, $user, $host
+        $databaseId, $user, $host
     ]);
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlUser);
@@ -300,33 +310,36 @@ function client_generatePage($tpl, $databaseId)
             $tpl->parse('MYSQL_PREFIX_INFRONT', 'mysql_prefix_infront');
             $tpl->assign([
                 'MYSQL_PREFIX_BEHIND' => '',
-                'MYSQL_PREFIX_ALL' => ''
+                'MYSQL_PREFIX_ALL'    => ''
             ]);
         }
     } else {
         $tpl->assign([
-            'MYSQL_PREFIX_NO' => '',
+            'MYSQL_PREFIX_NO'      => '',
             'MYSQL_PREFIX_INFRONT' => '',
-            'MYSQL_PREFIX_BEHIND' => ''
+            'MYSQL_PREFIX_BEHIND'  => ''
         ]);
         $tpl->parse('MYSQL_PREFIX_ALL', 'mysql_prefix_all');
     }
 
     if (isset($_POST['uaction']) && $_POST['uaction'] == 'add_user') {
         $tpl->assign([
-            'USER_NAME' => isset($_POST['user_name']) ? tohtml($_POST['user_name'], true) : '',
-            'USER_HOST' => isset($_POST['user_host']) ? tohtml($_POST['user_host'], true) : '',
-            'USE_DMN_ID' => isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' ? ' checked' : '',
+            'USER_NAME'             => isset($_POST['user_name']) ? tohtml($_POST['user_name'], true) : '',
+            'USER_HOST'             => isset($_POST['user_host']) ? tohtml($_POST['user_host'], true) : '',
+            'USE_DMN_ID'            => isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' ? ' checked' : '',
             'START_ID_POS_SELECTED' => isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end' ? ' selected' : '',
-            'END_ID_POS_SELECTED' => isset($_POST['id_pos']) && $_POST['id_pos'] === 'end' ? ' selected' : ''
+            'END_ID_POS_SELECTED'   => isset($_POST['id_pos']) && $_POST['id_pos'] === 'end' ? ' selected' : ''
         ]);
     } else {
         $tpl->assign([
-            'USER_NAME' => '',
-            'USER_HOST' => tohtml($cfg['DATABASE_USER_HOST'] == '127.0.0.1' ? 'localhost' : decode_idna($cfg['DATABASE_USER_HOST'])),
-            'USE_DMN_ID' => '',
+            'USER_NAME'             => '',
+            'USER_HOST'             => tohtml(
+                $cfg['DATABASE_USER_HOST'] == '127.0.0.1'
+                    ? 'localhost' : decode_idna($cfg['DATABASE_USER_HOST'])
+            ),
+            'USE_DMN_ID'            => '',
             'START_ID_POS_SELECTED' => ' selected',
-            'END_ID_POS_SELECTED' => ''
+            'END_ID_POS_SELECTED'   => ''
         ]);
     }
 
@@ -352,36 +365,36 @@ client_addSqlUser($_SESSION['user_id'], $databaseId);
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'client/sql_user_add.tpl',
-    'page_message' => 'layout',
-    'mysql_prefix_no' => 'page',
-    'mysql_prefix_yes' => 'page',
+    'layout'               => 'shared/layouts/ui.tpl',
+    'page'                 => 'client/sql_user_add.tpl',
+    'page_message'         => 'layout',
+    'mysql_prefix_no'      => 'page',
+    'mysql_prefix_yes'     => 'page',
     'mysql_prefix_infront' => 'page',
-    'mysql_prefix_behind' => 'page',
-    'mysql_prefix_all' => 'page',
-    'sqluser_list' => 'page',
-    'show_sqluser_list' => 'page',
-    'create_sqluser' => 'page'
+    'mysql_prefix_behind'  => 'page',
+    'mysql_prefix_all'     => 'page',
+    'sqluser_list'         => 'page',
+    'show_sqluser_list'    => 'page',
+    'create_sqluser'       => 'page'
 ]);
 
 $tpl->assign([
-    'TR_PAGE_TITLE' => tr('Client / Databases / Overview / Add SQL User'),
-    'TR_ADD_SQL_USER' => tr('Add SQL user'),
-    'TR_USER_NAME' => tr('SQL user name'),
-    'TR_USER_HOST' => tr('SQL user host'),
-    'TR_USER_HOST_TIP' => tr("This is the host from which this SQL user must be allowed to connect to the SQL server. Enter the %s wildcard character to allow this SQL user to connect from any host.", '%'),
-    'TR_USE_DMN_ID' => tr('SQL user prefix/suffix'),
-    'TR_START_ID_POS' => tr('In front'),
-    'TR_END_ID_POS' => tr('Behind'),
-    'TR_ADD' => tr('Add'),
-    'TR_CANCEL' => tr('Cancel'),
-    'TR_ADD_EXIST' => tr('Assign'),
-    'TR_PASS' => tr('Password'),
-    'TR_PASS_REP' => tr('Repeat password'),
-    'TR_SQL_USER_NAME' => tr('SQL users'),
+    'TR_PAGE_TITLE'               => tr('Client / Databases / Overview / Add SQL User'),
+    'TR_ADD_SQL_USER'             => tr('Add SQL user'),
+    'TR_USER_NAME'                => tr('SQL user name'),
+    'TR_USER_HOST'                => tr('SQL user host'),
+    'TR_USER_HOST_TIP'            => tr("This is the host from which this SQL user must be allowed to connect to the SQL server. Enter the %s wildcard character to allow this SQL user to connect from any host.", '%'),
+    'TR_USE_DMN_ID'               => tr('SQL user prefix/suffix'),
+    'TR_START_ID_POS'             => tr('In front'),
+    'TR_END_ID_POS'               => tr('Behind'),
+    'TR_ADD'                      => tr('Add'),
+    'TR_CANCEL'                   => tr('Cancel'),
+    'TR_ADD_EXIST'                => tr('Assign'),
+    'TR_PASS'                     => tr('Password'),
+    'TR_PASS_REP'                 => tr('Repeat password'),
+    'TR_SQL_USER_NAME'            => tr('SQL users'),
     'TR_ASSIGN_EXISTING_SQL_USER' => tr('Assign existing SQL user'),
-    'TR_NEW_SQL_USER_DATA' => tr('New SQL user data')
+    'TR_NEW_SQL_USER_DATA'        => tr('New SQL user data')
 ]);
 
 client_checkSqlUserPermissions($tpl, $databaseId);

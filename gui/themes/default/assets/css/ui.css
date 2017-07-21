@@ -737,7 +737,7 @@ small {
 /* Tables */
 table {
     width: 100%;
-    margin: 1em 0;
+    margin: 0.5em 0;
     font-family: Geneva, Arial, Helvetica, sans-serif;
     font-size: 1em;
     text-align: left;

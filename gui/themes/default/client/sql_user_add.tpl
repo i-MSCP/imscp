@@ -14,7 +14,7 @@
                 <!--email_off-->
                 <select name="sqluser_id" id="sqluser_id">
                     <!-- BDP: sqluser_list -->
-                    <option value="{SQLUSER_ID}">{SQLUSER_NAME}@{SQLUSER_HOST}</option>
+                    <option value="{SQLUSER_ID}">{SQLUSER_IDN}</option>
                     <!-- EDP: sqluser_list -->
                 </select>
                 <!--/email_off-->
@@ -25,7 +25,7 @@
     <div class="buttons">
         <input type="hidden" name="uaction" value="add_user">
         <input type="hidden" name="id" value="{ID}">
-        <input name="Add_Exist" type="submit" id="Add_Exist" value="{TR_ADD_EXIST}">
+        <input name="reuse_sqluser" type="submit" id="reuse_sqluser" value="{TR_ADD_EXIST}">
     </div>
 </form>
 <!-- EDP: show_sqluser_list -->
