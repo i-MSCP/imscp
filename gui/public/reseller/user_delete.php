@@ -31,13 +31,13 @@ require 'imscp-lib.php';
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 check_login('reseller');
 
-if (!isset($_GET['id'])) {
+if (!isset($_GET['user_id'])) {
     showBadRequestErrorPage();
 }
 
-try {
-    $customerId = intval($_GET['id']);
+$customerId = intval($_GET['user_id']);
 
+try {
     if (!deleteCustomer($customerId, true)) {
         showBadRequestErrorPage();
     }
