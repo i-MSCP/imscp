@@ -87,7 +87,7 @@ sub _init
     $self;
 }
 
-=item _removeSqlUser()
+=item _removeSqlUser( )
 
  Remove SQL user
 
@@ -128,9 +128,8 @@ sub _removeSqlDatabase
     eval {
         my $dbh = $self->{'db'}->getRawDb( );
         $dbh->{'RaiseError'} = 1;
-        $self->{'db'}->do(
-            'DROP DATABASE IF EXISTS '
-                .$self->{'db'}->quote_identifier( $main::imscpConfig{'DATABASE_NAME'}.'_rainloop' )
+        $dbh->do(
+            'DROP DATABASE IF EXISTS '.$dbh->quote_identifier( $main::imscpConfig{'DATABASE_NAME'}.'_rainloop' )
         );
     };
     if ($@) {
@@ -185,13 +184,15 @@ sub _removeFiles
     my ($self) = @_;
 
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop" )->remove( );
+
+    if(-f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf") {
+        my $rs = iMSCP::File->new(
+            filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf"
+        )->delFile( );
+        return $rs if $rs;
+    }
+
     iMSCP::Dir->new( dirname => $self->{'rainloop'}->{'cfgDir'} )->remove( );
-
-    return 0 unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf";
-
-    iMSCP::File->new(
-        filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf"
-    )->delFile( );
 }
 
 =back

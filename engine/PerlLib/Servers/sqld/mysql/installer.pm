@@ -656,8 +656,6 @@ sub _updateServerConfig
         }
     }
 
-    my $db = iMSCP::Database->factory( );
-
     if (!($main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::mariadb'
         && version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '10.0' ))
         && !(version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.6.6' ))
@@ -666,7 +664,7 @@ sub _updateServerConfig
     }
 
     eval {
-        my $dbh = $db->getRawDb( );
+        my $dbh = iMSCP::Database->factory( )->getRawDb( );
         local $dbh->{'RaiseError'};
 
         # Disable unwanted plugins (bc reasons)
@@ -753,7 +751,7 @@ sub _setupSecureInstallation
 
     eval {
         my $db = iMSCP::Database->factory( );
-        my $oldDatabase = $db->useDatabase( 'mysql' );
+        my $oldDbName = $db->useDatabase( 'mysql' );
 
         my $dbh = $db->getRawDb( );
         local $dbh->{'RaiseError'};
@@ -773,7 +771,7 @@ sub _setupSecureInstallation
         }
 
         $dbh->do( 'FLUSH PRIVILEGES' );
-        $db->useDatabase( $oldDatabase ) if $oldDatabase;
+        $db->useDatabase( $oldDbName ) if $oldDbName;
     };
     if ($@) {
         error( $@ );
@@ -806,16 +804,11 @@ sub _setupDatbase
         eval {
             my $dbh = $db->getRawDb( );
             local $dbh->{'RaiseError'} = 1;
-            my $qdbName = $db->quote_identifier( $dbName );
+            my $qdbName = $dbh->quote_identifier( $dbName );
             $dbh->do( "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;" );
         };
         if ($@) {
             error( $@ );
-            return 1;
-        }
-
-        if (ref $rs ne 'HASH') {
-            error( sprintf( "Couldn't create the `%s' SQL database: %s", $dbName, $rs ) );
             return 1;
         }
 

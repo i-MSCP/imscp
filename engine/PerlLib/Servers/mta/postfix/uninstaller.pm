@@ -25,6 +25,7 @@ package Servers::mta::postfix::uninstaller;
 
 use strict;
 use warnings;
+use File::Basename;
 use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
 use iMSCP::Execute qw/ execute /;
@@ -96,7 +97,7 @@ sub _restoreConffiles
 
     for ('/usr/share/postfix/main.cf.debian', '/usr/share/postfix/master.cf.dist') {
         next unless -f;
-        my $rs = iMSCP::File->new( filename => $_ )->copyFile( "/etc/postfix/$_", { preserve => 'no' } );
+        my $rs = iMSCP::File->new( filename => $_ )->copyFile( '/etc/postfix/'.basename( $_ ), { preserve => 'no' } );
         return $rs if $rs;
     }
 

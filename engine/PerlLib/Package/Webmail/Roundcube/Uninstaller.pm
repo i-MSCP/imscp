@@ -132,8 +132,7 @@ sub _removeSqlDatabase
         my $dbh = $self->{'db'}->getRawDb( );
         $dbh->{'RaiseError'} = 1;
         $dbh->do(
-            'DROP DATABASE IF EXISTS '
-                .$self->{'db'}->quoteIdentifier( $main::imscpConfig{'DATABASE_NAME'}.'_roundcube' )
+            'DROP DATABASE IF EXISTS '.$dbh->quote_identifier( $main::imscpConfig{'DATABASE_NAME'}.'_roundcube' )
         );
     };
     if ($@) {
@@ -188,13 +187,15 @@ sub _removeFiles
     my ($self) = @_;
 
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail" )->remove( );
+
+    if (-f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf") {
+        my $rs = iMSCP::File->new(
+            filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf"
+        )->delFile( );
+        return $rs if $rs;
+    };
+
     iMSCP::Dir->new( dirname => $self->{'cfgDir'} )->remove( );
-
-    return 0 unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf";
-
-    iMSCP::File->new(
-        filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf"
-    )->delFile( );
 }
 
 =back

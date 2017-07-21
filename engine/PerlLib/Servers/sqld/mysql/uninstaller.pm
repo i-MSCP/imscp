@@ -86,13 +86,9 @@ sub _removeConfig
 {
     my ($self) = @_;
 
-    my $filepath = "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf";
+    return 0 unless -f "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf";
 
-    if (-f $filepath) {
-        return iMSCP::File->new( filename => $filepath )->delFile( );
-    }
-
-    0;
+    iMSCP::File->new( filename => "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf" )->delFile( );
 }
 
 =back

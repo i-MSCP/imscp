@@ -146,19 +146,17 @@ sub _removeConfig
             my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->delFile( );
             return $rs if $rs;
         }
-    } else {
-        my $dirname = dirname( $self->{'config'}->{'FTPD_CONF_FILE'} );
-        my $filename = basename( $self->{'config'}->{'FTPD_CONF_FILE'} );
-
-        if (-d $dirname && -f "$self->{'bkpDir'}/$filename.system") {
-            my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
-                $self->{'config'}->{'FTPD_CONF_FILE'}, { preserve => 'no' }
-            );
-            return $rs if $rs;
-        }
+        return 0;
     }
 
-    0;
+    my $dirname = dirname( $self->{'config'}->{'FTPD_CONF_FILE'} );
+    my $filename = basename( $self->{'config'}->{'FTPD_CONF_FILE'} );
+
+    return 0 unless -d $dirname && -f "$self->{'bkpDir'}/$filename.system";
+
+    iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
+        $self->{'config'}->{'FTPD_CONF_FILE'}, { preserve => 'no' }
+    );
 }
 
 =back

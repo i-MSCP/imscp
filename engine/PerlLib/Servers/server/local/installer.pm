@@ -404,19 +404,19 @@ sub _setupPrimaryIP
         defined $netCard or die( sprintf( "Couldn't find network card for the `%s' IP address", $primaryIP ) );
 
         my $db = iMSCP::Database->factory( );
-        my $oldDatabase = $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) );
+        my $oldDbName = $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) );
 
         my $dbh = $db->getRawDb( );
         local $dbh->{'RaiseError'} = 1;
 
         $dbh->selectrow_hashref('SELECT 1 FROM server_ips WHERE ip_number = ?', undef, $primaryIP )
-            ? $dbh->do( 'UPDATE server_ips SET ip_card = ? WHERE ip_number = ?', undef, $netCard, $primaryIP ) 
+            ? $dbh->do( 'UPDATE server_ips SET ip_card = ? WHERE ip_number = ?', undef, $netCard, $primaryIP )
             : $dbh->do(
             'INSERT INTO server_ips (ip_number, ip_card, ip_config_mode, ip_status) VALUES(?, ?, ?, ?)',
             undef, $primaryIP, $netCard, 'manual', 'ok'
         );
 
-        $db->useDatabase( $oldDatabase ) if $oldDatabase;
+        $db->useDatabase( $oldDbName ) if $oldDbName;
     };
     if ($@) {
         error( $@ );

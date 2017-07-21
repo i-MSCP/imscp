@@ -76,7 +76,7 @@ sub preinstall
     Package::Webmail::RainLoop::Installer->getInstance( )->preinstall( );
 }
 
-=item install()
+=item install( )
 
  Process install tasks
 
@@ -86,10 +86,10 @@ sub preinstall
 
 sub install
 {
-    Package::Webmail::RainLoop::Installer->getInstance()->install();
+    Package::Webmail::RainLoop::Installer->getInstance( )->install( );
 }
 
-=item uninstall()
+=item uninstall( )
 
  Process uninstall tasks
 
@@ -99,10 +99,14 @@ sub install
 
 sub uninstall
 {
-    Package::Webmail::RainLoop::Uninstaller->getInstance()->uninstall();
+    my ($self) = @_;
+
+    return 0 if $self->{'skip_uninstall'};
+
+    Package::Webmail::RainLoop::Uninstaller->getInstance( )->uninstall( );
 }
 
-=item setGuiPermissions()
+=item setGuiPermissions( )
 
  Set gui permissions
 
@@ -137,7 +141,7 @@ sub setGuiPermissions
     );
 }
 
-=item deleteMail(\%data)
+=item deleteMail( \%data )
 
  Process deleteMail tasks
 
@@ -159,13 +163,13 @@ sub deleteMail
         $dbh->{'RaiseError'} = 1;
 
         unless ($dbInitialized) {
-            my $quotedRainLoopDbName = ${$dbh}->quote_identifier( $main::imscpConfig{'DATABASE_NAME'}.'_rainloop' );
-            my $row = $db->selectrow_hashref( "SHOW TABLES FROM $quotedRainLoopDbName" );
+            my $quotedRainLoopDbName = $dbh->quote_identifier( $main::imscpConfig{'DATABASE_NAME'}.'_rainloop' );
+            my $row = $dbh->selectrow_hashref( "SHOW TABLES FROM $quotedRainLoopDbName" );
             $dbInitialized = 1 if $row;
         }
 
         if ($dbInitialized) {
-            my $oldDatabase = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'}.'_rainloop' );
+            my $oldDbName = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'}.'_rainloop' );
             $dbh->do(
                 '
                     DELETE u, c, p
@@ -176,7 +180,7 @@ sub deleteMail
                 ',
                 undef, $data->{'MAIL_ADDR'}
             );
-            $db->useDatabase( $oldDatabase ) if $oldDatabase;
+            $db->useDatabase( $oldDbName ) if $oldDbName;
         }
     };
     if ($@) {
@@ -223,6 +227,7 @@ sub _init
         tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/rainloop.data", readonly => 1;
     } else {
         $self->{'config'} = { };
+        $self->{'skip_uninstall'} = 1;
     }
 
     $self;

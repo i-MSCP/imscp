@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::Dir;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::EventManager;
 use parent 'Common::SingletonClass';
 
@@ -412,6 +413,8 @@ sub _installPackages
 sub _removePackages
 {
     my (undef, @packages) = @_;
+
+    return 0 unless @packages;
 
     # Do not try to remove packages that are not available
     my $rs = execute( "dpkg-query -W -f='\${Package}\\n' @packages 2>/dev/null", \ my $stdout );

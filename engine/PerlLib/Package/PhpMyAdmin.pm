@@ -118,6 +118,10 @@ sub install
 
 sub uninstall
 {
+    my ($self) = @_;
+
+    return 0 if $self->{'skip_uninstall'};
+
     Package::PhpMyAdmin::Uninstaller->getInstance( )->uninstall( );
 }
 
@@ -189,11 +193,17 @@ sub _init
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->_mergeConfig( ) if -f "$self->{'cfgDir'}/phpmyadmin.data.dist";
-    tie %{$self->{'config'}},
-        'iMSCP::Config',
-        fileName    => "$self->{'cfgDir'}/phpmyadmin.data",
-        readonly    => !(defined $main::execmode && $main::execmode eq 'setup'),
-        nodeferring => (defined $main::execmode && $main::execmode eq 'setup');
+    eval {
+        tie %{$self->{'config'}},
+            'iMSCP::Config',
+            fileName    => "$self->{'cfgDir'}/phpmyadmin.data",
+            readonly    => !(defined $main::execmode && $main::execmode eq 'setup'),
+            nodeferring => (defined $main::execmode && $main::execmode eq 'setup');
+    };
+    if ($@) {
+        die unless defined $main::execmode && $main::execmode eq 'uninstall';
+        $self->{'skip_uninstall'} = 1;
+    }
     $self;
 }
 

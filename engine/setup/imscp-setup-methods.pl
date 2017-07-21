@@ -318,7 +318,7 @@ sub setupDbTasks
             my $aditionalCondition;
 
             my $db = iMSCP::Database->factory( );
-            my $oldDatabase = $db->useDatabase( setupGetQuestion( 'DATABASE_NAME' ) );
+            my $oldDbName = $db->useDatabase( setupGetQuestion( 'DATABASE_NAME' ) );
 
             my $dbh = $db->getRawDb( );
             local $dbh->{'RaiseError'};
@@ -352,7 +352,7 @@ sub setupDbTasks
                 "
             );
 
-            $db->useDatabase( $oldDatabase ) if $oldDatabase;
+            $db->useDatabase( $oldDbName ) if $oldDbName;
         }
 
         startDetail( );
@@ -372,32 +372,35 @@ sub setupRegisterPluginListeners
     my $rs = iMSCP::EventManager->getInstance( )->trigger( 'beforeSetupRegisterPluginListeners' );
     return $rs if $rs;
 
-    my $pluginNames;
+    my ($db, $pluginNames) = (iMSCP::Database->factory( ), undef);
 
     local $@;
+
+    my $oldDbName = eval { $db->useDatabase( setupGetQuestion( 'DATABASE_NAME' ) ); };
+    return 0 if $@; # Fresh install case
+
     eval {
-        my $db = iMSCP::Database->factory( );
-        my $oldDatabase = $db->useDatabase( setupGetQuestion( 'DATABASE_NAME' ) );
         my $dbh = $db->getRawDb( );
         $dbh->{'RaiseError'} = 1;
         $pluginNames = $dbh->selectcol_arrayref( "SELECT plugin_name FROM plugin WHERE plugin_status = 'enabled'" );
-        $db->useDatabase( $oldDatabase ) if $oldDatabase;
+        $db->useDatabase( $oldDbName ) if $oldDbName;
     };
     if ($@) {
         error( $@ );
         return 1;
     }
 
-    my $eventManager = iMSCP::EventManager->getInstance( );
+    if (@{$pluginNames}) {
+        my $eventManager = iMSCP::EventManager->getInstance( );
+        my $plugins = iMSCP::Plugins->getInstance( );
 
-    my $plugins = iMSCP::Plugins->getInstance( );
-    for my $pluginName($plugins->getList( )) {
-        next unless grep( $_ eq $pluginName, @{$pluginNames} );
-
-        my $pluginClass = $plugins->getClass( $pluginName );
-        (my $subref = $pluginClass->can( 'registerSetupListeners') ) or next;
-        $rs = $subref->( $pluginClass, $eventManager );
-        last if $rs;
+        for my $pluginName($plugins->getList( )) {
+            next unless grep( $_ eq $pluginName, @{$pluginNames} );
+            my $pluginClass = $plugins->getClass( $pluginName );
+            (my $subref = $pluginClass->can( 'registerSetupListeners') ) or next;
+            $rs = $subref->( $pluginClass, $eventManager );
+            last if $rs;
+        }
     }
 
     $rs ||= iMSCP::EventManager->getInstance( )->trigger( 'afterSetupRegisterPluginListeners' );

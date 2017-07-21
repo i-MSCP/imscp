@@ -634,15 +634,13 @@ sub _setupMasterAdmin
 
     local $@;
     eval {
-        my $oldDatabase = $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) );
+        my $oldDbName = $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) );
 
         {
             local $dbh->{'AutoCommit'} = 0;
             local $dbh->{'RaiseError'} = 1;
 
-            my $row = $dbh->selectrow_hashref(
-                "SELECT admin_id FROM admin WHERE admin_name = ?", 'admin_name', undef, $loginOld
-            );
+            my $row = $dbh->selectrow_hashref( "SELECT admin_id FROM admin WHERE admin_name = ?", undef, $loginOld );
 
             if ($row) {
                 $dbh->do(
@@ -669,7 +667,7 @@ sub _setupMasterAdmin
             $dbh->commit( );
         }
 
-        $db->useDatabase( $oldDatabase ) if $oldDatabase;
+        $db->useDatabase( $oldDbName ) if $oldDbName;
     };
     if ($@) {
         $dbh->rollback( );

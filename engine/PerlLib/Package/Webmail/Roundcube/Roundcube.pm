@@ -100,6 +100,10 @@ sub install
 
 sub uninstall
 {
+    my ($self) = @_;
+
+    return 0 if $self->{'skip_uninstall'};
+
     Package::Webmail::Roundcube::Uninstaller->getInstance( )->uninstall( );
 }
 
@@ -159,11 +163,11 @@ sub deleteMail
     local $@;
     eval {
         my $db = iMSCP::Database->factory( );
-        my $oldDatabase = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'}.'_roundcube' );
+        my $oldDbName = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'}.'_roundcube' );
         my $dbh = $db->getRawDb( );
         local $dbh->{'RaiseError'} = 1;
-        $db->do( 'DELETE FROM users WHERE username = ?', undef, $data->{'MAIL_ADDR'} );
-        $db->useDatabase( $oldDatabase ) if $oldDatabase;
+        $dbh->do( 'DELETE FROM users WHERE username = ?', undef, $data->{'MAIL_ADDR'} );
+        $db->useDatabase( $oldDbName ) if $oldDbName;
     };
     if ($@) {
         error( $@ );
@@ -199,6 +203,7 @@ sub _init
         tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/roundcube.data", readonly => 1;
     } else {
         $self->{'config'} = { };
+        $self->{'skip_uninstall'} = 1;
     }
 
     $self;

@@ -162,7 +162,6 @@ sub _removeConfig
     }
 
     iMSCP::Dir->new( dirname => $self->{'config'}->{'FTPD_USER_CONF_DIR'} )->remove( );
-    0;
 }
 
 =back

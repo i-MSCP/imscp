@@ -366,11 +366,11 @@ sub _setupDatabase
         ) {
             $dbh->do( "CREATE DATABASE IF NOT EXISTS $quotedDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci" );
 
-            my $oldDatabase = $db->useDatabase( $roundcubeDbName );
+            my $oldDbName = $db->useDatabase( $roundcubeDbName );
             main::setupImportSqlSchema( $db, "$roundcubeDir/SQL/mysql.initial.sql" ) == 0 or die(
                 getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
             );
-            $db->useDatabase( $oldDatabase ) if $oldDatabase;
+            $db->useDatabase( $oldDbName ) if $oldDbName;
         } else {
             $self->{'newInstall'} = 0;
         }
@@ -504,7 +504,7 @@ sub _updateDatabase
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
-        my $oldDatabase = $db->useDatabase($roundcubeDbName);
+        my $oldDbName = $db->useDatabase( $roundcubeDbName );
 
         {
             local $dbh->{'AutoCommit'} = 0;
@@ -515,7 +515,7 @@ sub _updateDatabase
             $dbh->commit( );
         }
 
-        $db->useDatabase( $oldDatabase ) if $oldDatabase;
+        $db->useDatabase( $oldDbName ) if $oldDbName;
     };
     if ($@) {
         $dbh->rollback( );

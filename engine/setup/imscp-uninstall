@@ -162,7 +162,7 @@ sub _removeCustomers
             my $aditionalCondition;
 
             my $db = iMSCP::Database->factory( );
-            my $oldDatabase = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'} );
+            my $oldDbName = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'} );
 
             my $dbh = $db->getRawDb( );
             local $dbh->{'RaiseError'};
@@ -179,7 +179,7 @@ sub _removeCustomers
                 $dbh->do( "UPDATE $table SET $field = 'todelete' $aditionalCondition" );
             }
 
-            $db->useDatabase( $oldDatabase ) if $oldDatabase;
+            $db->useDatabase( $oldDbName ) if $oldDbName;
         }
 
         startDetail( );
