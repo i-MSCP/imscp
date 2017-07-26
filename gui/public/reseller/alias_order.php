@@ -98,23 +98,24 @@ try {
     $db->beginTransaction();
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddDomainAlias, [
-        'domainId' => $row['domain_id'],
+        'domainId'        => $row['domain_id'],
         'domainAliasName' => $row['alias_name']
     ]);
 
     exec_query('UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', ['toadd', $id]);
 
     $cfg = iMSCP_Registry::get('config');
+
     if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
-        client_mail_add_default_accounts($row['domain_id'], $row['email'], $row['alias_name'], 'alias', $id);
+        createDefaultMailAccounts($row['domain_id'], $row['email'], $row['alias_name'], MT_ALIAS_FORWARD, $id);
     }
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddDomainAlias, [
-        'domainId' => $row['domain_id'],
+        'domainId'        => $row['domain_id'],
         'domainAliasName' => $row['alias_name'],
-        'domainAliasId' => $id
+        'domainAliasId'   => $id
     ]);
-    
+
     $db->commit();
     send_request();
     write_log(sprintf('An alias order has been processed by %s.', $_SESSION['user_logged']), E_USER_NOTICE);

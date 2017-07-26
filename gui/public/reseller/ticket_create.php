@@ -25,27 +25,19 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
-/************************************************************************************
- * Main script
+/***********************************************************************************************************************
+ * Main
  */
 
-// Include core library
 require_once 'imscp-lib.php';
 require_once LIBRARY_PATH . '/Functions/Tickets.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
-
 check_login('reseller');
 
 resellerHasFeature('support') or showBadRequestErrorPage();
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
-$userId = $_SESSION['user_id'];
-
-// Checks if support ticket system is activated and if the reseller can access to it
-if (!hasTicketSystem($userId)) {
+if (!hasTicketSystem($_SESSION['user_id'])) {
     redirectTo('index.php');
 }
 
@@ -55,8 +47,8 @@ if (isset($_POST['uaction'])) {
     } elseif (empty($_POST['user_message'])) {
         set_page_message(tr('You must specify a message.'), 'error');
     } else {
-        createTicket($userId, $_SESSION['user_created_by'],
-                     $_POST['urgency'], $_POST['subject'], $_POST['user_message'], 2);
+        createTicket($_SESSION['user_id'], $_SESSION['user_created_by'],
+            $_POST['urgency'], $_POST['subject'], $_POST['user_message'], 2);
         redirectTo('ticket_system.php');
     }
 }
@@ -75,43 +67,42 @@ if (isset($_POST['urgency'])) {
 
 switch ($userdata['URGENCY']) {
     case 1:
-        $userdata['OPT_URGENCY_1'] = $cfg->HTML_SELECTED;
+        $userdata['OPT_URGENCY_1'] = ' selected';
         break;
     case 3:
-        $userdata['OPT_URGENCY_3'] = $cfg->HTML_SELECTED;
+        $userdata['OPT_URGENCY_3'] = ' selected';
         break;
     case 4:
-        $userdata['OPT_URGENCY_4'] = $cfg->HTML_SELECTED;
+        $userdata['OPT_URGENCY_4'] = ' selected';
         break;
     default:
-        $userdata['OPT_URGENCY_2'] = $cfg->HTML_SELECTED;
+        $userdata['OPT_URGENCY_2'] = ' selected';
 }
 
 $userdata['SUBJECT'] = isset($_POST['subject']) ? clean_input($_POST['subject']) : '';
 $userdata['USER_MESSAGE'] = isset($_POST['user_message']) ? clean_input($_POST['user_message']) : '';
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	[
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'reseller/ticket_create.tpl',
-		'page_message' => 'layout']);
-
+$tpl->define_dynamic([
+    'layout'       => 'shared/layouts/ui.tpl',
+    'page'         => 'reseller/ticket_create.tpl',
+    'page_message' => 'layout'
+]);
 $tpl->assign(
-	[
-		'TR_PAGE_TITLE' => tr('Reseller / Support / New Ticket'),
-		'TR_NEW_TICKET' => tr('New ticket'),
-		'TR_LOW' => tr('Low'),
-		'TR_MEDIUM' => tr('Medium'),
-		'TR_HIGH' => tr('High'),
-		'TR_VERY_HIGH' => tr('Very high'),
-		'TR_URGENCY' => tr('Priority'),
-		'TR_EMAIL' => tr('Email'),
-		'TR_SUBJECT' => tr('Subject'),
-		'TR_YOUR_MESSAGE' => tr('Message'),
-		'TR_CREATE' => tr('Create'),
-		'TR_OPEN_TICKETS' => tr('Open tickets'),
-		'TR_CLOSED_TICKETS' => tr('Closed tickets')]);
+    [
+        'TR_PAGE_TITLE'     => tr('Reseller / Support / New Ticket'),
+        'TR_NEW_TICKET'     => tr('New ticket'),
+        'TR_LOW'            => tr('Low'),
+        'TR_MEDIUM'         => tr('Medium'),
+        'TR_HIGH'           => tr('High'),
+        'TR_VERY_HIGH'      => tr('Very high'),
+        'TR_URGENCY'        => tr('Priority'),
+        'TR_EMAIL'          => tr('Email'),
+        'TR_SUBJECT'        => tr('Subject'),
+        'TR_YOUR_MESSAGE'   => tr('Message'),
+        'TR_CREATE'         => tr('Create'),
+        'TR_OPEN_TICKETS'   => tr('Open tickets'),
+        'TR_CLOSED_TICKETS' => tr('Closed tickets')]);
 
 $tpl->assign($userdata);
 
@@ -119,8 +110,7 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
-
 $tpl->prnt();
+
 unsetMessages();

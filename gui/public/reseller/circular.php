@@ -39,15 +39,15 @@ function reseller_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToD
     }
 
     $ret = send_mail([
-        'mail_id' => 'admin-circular',
-        'fname' => $rcptToData['fname'],
-        'lname' => $rcptToData['lname'],
-        'username' => $rcptToData['admin_name'],
-        'email' => $rcptToData['email'],
-        'sender_name' => $senderName,
+        'mail_id'      => 'admin-circular',
+        'fname'        => $rcptToData['fname'],
+        'lname'        => $rcptToData['lname'],
+        'username'     => $rcptToData['admin_name'],
+        'email'        => $rcptToData['email'],
+        'sender_name'  => $senderName,
         'sender_email' => encode_idna($senderEmail),
-        'subject' => $subject,
-        'message' => $body
+        'subject'      => $subject,
+        'message'      => $body
     ]);
 
     if (!$ret) {
@@ -137,11 +137,11 @@ function reseller_sendCircular()
     }
 
     $responses = iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeSendCircular, [
-        'sender_name' => $senderName,
+        'sender_name'  => $senderName,
         'sender_email' => $senderEmail,
-        'rcpt_to' => 'customers',
-        'subject' => $subject,
-        'body' => $body
+        'rcpt_to'      => 'customers',
+        'subject'      => $subject,
+        'body'         => $body
     ]);
 
     if ($responses->isStopped()) {
@@ -152,11 +152,11 @@ function reseller_sendCircular()
     ignore_user_abort(true);
     reseller_sendToCustomers($senderName, $senderEmail, $subject, $body);
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterSendCircular, [
-        'sender_name' => $senderName,
+        'sender_name'  => $senderName,
         'sender_email' => $senderEmail,
-        'rcpt_to' => 'customers',
-        'subject' => $subject,
-        'body' => $body
+        'rcpt_to'      => 'customers',
+        'subject'      => $subject,
+        'body'         => $body
     ]);
     set_page_message(tr('Circular successfully sent.'), 'success');
     write_log(sprintf('A circular has been sent by a reseller: %s', $_SESSION['user_logged']), E_USER_NOTICE);
@@ -203,10 +203,10 @@ function reseller_generatePageData($tpl)
     }
 
     $tpl->assign([
-        'SENDER_NAME' => tohtml($senderName),
+        'SENDER_NAME'  => tohtml($senderName),
         'SENDER_EMAIL' => tohtml($senderEmail),
-        'SUBJECT' => tohtml($subject),
-        'BODY' => tohtml($body)
+        'SUBJECT'      => tohtml($subject),
+        'BODY'         => tohtml($body)
     ]);
 }
 
@@ -229,20 +229,20 @@ if (!empty($_POST) && reseller_sendCircular()) {
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'reseller/circular.tpl',
+    'layout'       => 'shared/layouts/ui.tpl',
+    'page'         => 'reseller/circular.tpl',
     'page_message' => 'layout'
 ]);
 $tpl->assign([
-    'TR_PAGE_TITLE' => tr('Reseller / Customers / Circular'),
-    'TR_CIRCULAR' => tr('Circular'),
-    'TR_SEND_TO' => tr('Send to'),
-    'TR_SUBJECT' => tr('Subject'),
-    'TR_BODY' => tr('Body'),
-    'TR_SENDER_EMAIL' => tr('Sender email'),
-    'TR_SENDER_NAME' => tr('Sender name'),
+    'TR_PAGE_TITLE'    => tr('Reseller / Customers / Circular'),
+    'TR_CIRCULAR'      => tr('Circular'),
+    'TR_SEND_TO'       => tr('Send to'),
+    'TR_SUBJECT'       => tr('Subject'),
+    'TR_BODY'          => tr('Body'),
+    'TR_SENDER_EMAIL'  => tr('Sender email'),
+    'TR_SENDER_NAME'   => tr('Sender name'),
     'TR_SEND_CIRCULAR' => tr('Send circular'),
-    'TR_CANCEL' => tr('Cancel')
+    'TR_CANCEL'        => tr('Cancel')
 ]);
 
 generateNavigation($tpl);
@@ -252,3 +252,5 @@ reseller_generatePageData($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

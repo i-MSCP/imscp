@@ -23,126 +23,126 @@
  */
 class iMSCP_Events_Listener_PriorityQueue implements Countable, IteratorAggregate
 {
-	/**
-	 * Actual items aggregated in the priority queue. Each item is an array with keys "listener" and "priority"
-	 *
-	 * @var array
-	 */
-	protected $items = [];
+    /**
+     * Actual items aggregated in the priority queue. Each item is an array with keys "listener" and "priority"
+     *
+     * @var array
+     */
+    protected $items = [];
 
-	/**
-	 * @var iMSCP_Events_Listener_SplPriorityQueue Inner queue object
-	 */
-	protected $queue;
+    /**
+     * @var iMSCP_Events_Listener_SplPriorityQueue Inner queue object
+     */
+    protected $queue;
 
-	/**
-	 * Constructor
-	 *
-	 * @return iMSCP_Events_Listener_PriorityQueue
-	 */
-	public function __construct()
-	{
-		$this->queue = new iMSCP_Events_Listener_SplPriorityQueue();
-	}
+    /**
+     * Constructor
+     *
+     * @return iMSCP_Events_Listener_PriorityQueue
+     */
+    public function __construct()
+    {
+        $this->queue = new iMSCP_Events_Listener_SplPriorityQueue();
+    }
 
-	/**
-	 * Add the given listener into the queue
-	 *
-	 * Priority defaults to 1 (low priority) if none provided.
-	 *
-	 * @param iMSCP_Events_Listener $listener Listener
-	 * @param int $priority Listener priority
-	 * @return iMSCP_Events_Listener_PriorityQueue
-	 */
-	public function addListener(iMSCP_Events_Listener $listener, $priority = 1)
-	{
-		$priority = (int) $priority;
-		$this->items[] = ['listener' => $listener, 'priority' => $priority];
-		$this->queue->insert($listener, $priority);
+    /**
+     * Add the given listener into the queue
+     *
+     * Priority defaults to 1 (low priority) if none provided.
+     *
+     * @param iMSCP_Events_Listener $listener Listener
+     * @param int $priority Listener priority
+     * @return iMSCP_Events_Listener_PriorityQueue
+     */
+    public function addListener(iMSCP_Events_Listener $listener, $priority = 1)
+    {
+        $priority = (int)$priority;
+        $this->items[] = ['listener' => $listener, 'priority' => $priority];
+        $this->queue->insert($listener, $priority);
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Remove the given listener from the queue
-	 *
-	 * Note: This removes the first listener matching the provided listener found. If the same listener item has been
-	 * added multiple times, it will not remove other instances.
-	 *
-	 * @param iMSCP_Events_Listener $listener Listener to remove from the queue
-	 * @return bool FALSE if the item was not found, TRUE otherwise.
-	 */
-	public function removeListener(iMSCP_Events_Listener $listener)
-	{
-		$key = false;
+    /**
+     * Remove the given listener from the queue
+     *
+     * Note: This removes the first listener matching the provided listener found. If the same listener item has been
+     * added multiple times, it will not remove other instances.
+     *
+     * @param iMSCP_Events_Listener $listener Listener to remove from the queue
+     * @return bool FALSE if the item was not found, TRUE otherwise.
+     */
+    public function removeListener(iMSCP_Events_Listener $listener)
+    {
+        $key = false;
 
-		foreach ($this->items as $key => $item) {
-			if ($item['listener'] === $listener) {
-				break;
-			}
-		}
+        foreach ($this->items as $key => $item) {
+            if ($item['listener'] === $listener) {
+                break;
+            }
+        }
 
-		if ($key) {
-			unset($this->items[$key]);
-				$this->queue = new iMSCP_Events_Listener_SplPriorityQueue();
+        if ($key) {
+            unset($this->items[$key]);
+            $this->queue = new iMSCP_Events_Listener_SplPriorityQueue();
 
-				foreach ($this->items as $item) {
-					$this->queue->insert($item['listener'], $item['priority']);
-				}
+            foreach ($this->items as $item) {
+                $this->queue->insert($item['listener'], $item['priority']);
+            }
 
-			return true;
-		}
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * Is the queue empty?
-	 *
-	 * @return bool TRUE if the queue is empty, FALSE otherwise
-	 */
-	public function isEmpty()
-	{
-		return (0 === $this->count());
-	}
+    /**
+     * Is the queue empty?
+     *
+     * @return bool TRUE if the queue is empty, FALSE otherwise
+     */
+    public function isEmpty()
+    {
+        return (0 === $this->count());
+    }
 
-	/**
-	 * How many items are in the queue?
-	 *
-	 * @return int
-	 */
-	public function count()
-	{
-		return count($this->items);
-	}
+    /**
+     * How many items are in the queue?
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return count($this->items);
+    }
 
-	/**
-	 * Retrieve the inner iterator
-	 *
-	 * SplPriorityQueue acts as a heap, which typically implies that as items are iterated, they are also removed. This
-	 * method retrieves the inner queue object, and clones it for purposes of iteration.
-	 *
-	 * @return iMSCP_Events_Listener_SplPriorityQueue
-	 */
-	public function getIterator()
-	{
-		return clone $this->queue;
-	}
+    /**
+     * Retrieve the inner iterator
+     *
+     * SplPriorityQueue acts as a heap, which typically implies that as items are iterated, they are also removed. This
+     * method retrieves the inner queue object, and clones it for purposes of iteration.
+     *
+     * @return iMSCP_Events_Listener_SplPriorityQueue
+     */
+    public function getIterator()
+    {
+        return clone $this->queue;
+    }
 
-	/**
-	 * Does the queue have a listener with the given priority?
-	 *
-	 * @param  int $priority
-	 * @return bool
-	 */
-	public function hasPriority($priority)
-	{
-		foreach ($this->items as $item) {
-			if ($item['priority'] === $priority) {
-				return true;
-			}
-		}
+    /**
+     * Does the queue have a listener with the given priority?
+     *
+     * @param  int $priority
+     * @return bool
+     */
+    public function hasPriority($priority)
+    {
+        foreach ($this->items as $item) {
+            if ($item['priority'] === $priority) {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

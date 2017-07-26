@@ -37,30 +37,30 @@
  */
 function debugger_getUserErrors($tpl)
 {
-    $stmt = exec_query(
+    $stmt = execute_query(
         "
-            SELECT `admin_name`, `admin_status`, `admin_id`
-            FROM `admin`
-            WHERE `admin_type` = 'user'
-            AND `admin_status` NOT IN (?, ?, ?, ?, ?)
-        ",
-        ['ok', 'toadd', 'tochange', 'tochangepwd', 'todelete']
+            SELECT admin_name, admin_status, admin_id
+            FROM admin
+            WHERE admin_type = 'user'
+            AND admin_status NOT IN ('ok', 'toadd', 'tochange', 'tochangepwd', 'todelete')
+        "
     );
 
     if (!$stmt->rowCount()) {
         $tpl->assign(['USER_ITEM' => '', 'TR_USER_MESSAGE' => tr('No error found')]);
         $tpl->parse('USER_MESSAGE', 'user_message');
-    } else {
-        while ($row = $stmt->fetchRow()) {
-            $tpl->assign([
-                'USER_MESSAGE' => '',
-                'USER_NAME'    => tohtml(decode_idna($row['admin_name'])),
-                'USER_ERROR'   => tohtml($row['admin_status']),
-                'CHANGE_ID'    => tohtml($row['admin_id']),
-                'CHANGE_TYPE'  => 'user'
-            ]);
-            $tpl->parse('USER_ITEM', '.user_item');
-        }
+        return;
+    }
+
+    while ($row = $stmt->fetchRow()) {
+        $tpl->assign([
+            'USER_MESSAGE' => '',
+            'USER_NAME'    => tohtml(decode_idna($row['admin_name'])),
+            'USER_ERROR'   => tohtml($row['admin_status']),
+            'CHANGE_ID'    => tohtml($row['admin_id']),
+            'CHANGE_TYPE'  => 'user'
+        ]);
+        $tpl->parse('USER_ITEM', '.user_item');
     }
 }
 
@@ -72,30 +72,30 @@ function debugger_getUserErrors($tpl)
  */
 function debugger_getDmnErrors($tpl)
 {
-    $stmt = exec_query(
-        '
-            SELECT `domain_name`, `domain_status`, `domain_id`
-            FROM `domain`
-            WHERE `domain_status`
-            NOT IN (?, ?, ?, ?, ?, ?, ?, ?)
-        ',
-        ['ok', 'disabled', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete']
+    $stmt = execute_query(
+        "
+            SELECT domain_name, domain_status, domain_id
+            FROM domain
+            WHERE domain_status
+            NOT IN ('ok', 'disabled', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete')
+        "
     );
 
     if (!$stmt->rowCount()) {
         $tpl->assign(['DMN_ITEM' => '', 'TR_DMN_MESSAGE' => tr('No error found')]);
         $tpl->parse('DMN_MESSAGE', 'dmn_message');
-    } else {
-        while ($row = $stmt->fetchRow()) {
-            $tpl->assign([
-                'DMN_MESSAGE' => '',
-                'DMN_NAME'    => tohtml(decode_idna($row['domain_name'])),
-                'DMN_ERROR'   => tohtml($row['domain_status']),
-                'CHANGE_ID'   => tohtml($row['domain_id']),
-                'CHANGE_TYPE' => 'domain'
-            ]);
-            $tpl->parse('DMN_ITEM', '.dmn_item');
-        }
+        return;
+    }
+
+    while ($row = $stmt->fetchRow()) {
+        $tpl->assign([
+            'DMN_MESSAGE' => '',
+            'DMN_NAME'    => tohtml(decode_idna($row['domain_name'])),
+            'DMN_ERROR'   => tohtml($row['domain_status']),
+            'CHANGE_ID'   => tohtml($row['domain_id']),
+            'CHANGE_TYPE' => 'domain'
+        ]);
+        $tpl->parse('DMN_ITEM', '.dmn_item');
     }
 }
 
@@ -107,29 +107,31 @@ function debugger_getDmnErrors($tpl)
  */
 function debugger_getAlsErrors($tpl)
 {
-    $stmt = exec_query(
-        '
-            SELECT `alias_name`, `alias_status`, `alias_id`
-            FROM `domain_aliasses`
-            WHERE `alias_status` NOT IN (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ',
-        ['ok', 'disabled', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete', 'ordered']
+    $stmt = execute_query(
+        "
+            SELECT alias_name, alias_status, alias_id
+            FROM domain_aliasses
+            WHERE alias_status NOT IN (
+                'ok', 'disabled', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete', 'ordered'
+            )
+        "
     );
 
     if (!$stmt->rowCount()) {
         $tpl->assign(['ALS_ITEM' => '', 'TR_ALS_MESSAGE' => tr('No error found')]);
         $tpl->parse('ALS_MESSAGE', 'als_message');
-    } else {
-        while ($row = $stmt->fetchRow()) {
-            $tpl->assign([
-                'ALS_MESSAGE' => '',
-                'ALS_NAME'    => tohtml(decode_idna($row['alias_name'])),
-                'ALS_ERROR'   => tohtml($row['alias_status']),
-                'CHANGE_ID'   => $row['alias_id'],
-                'CHANGE_TYPE' => 'alias',
-            ]);
-            $tpl->parse('ALS_ITEM', '.als_item');
-        }
+        return;
+    }
+
+    while ($row = $stmt->fetchRow()) {
+        $tpl->assign([
+            'ALS_MESSAGE' => '',
+            'ALS_NAME'    => tohtml(decode_idna($row['alias_name'])),
+            'ALS_ERROR'   => tohtml($row['alias_status']),
+            'CHANGE_ID'   => $row['alias_id'],
+            'CHANGE_TYPE' => 'alias',
+        ]);
+        $tpl->parse('ALS_ITEM', '.als_item');
     }
 }
 
@@ -141,30 +143,32 @@ function debugger_getAlsErrors($tpl)
  */
 function debugger_getSubErrors($tpl)
 {
-    $stmt = exec_query(
-        '
-            SELECT `subdomain_name`, `subdomain_status`, `subdomain_id`, `domain_name`
-            FROM `subdomain`
-            LEFT JOIN `domain` ON (`subdomain`.`domain_id` = `domain`.`domain_id`)
-            WHERE `subdomain_status` NOT IN (?, ?, ?, ?, ?, ?, ?, ?)
-        ',
-        ['ok', 'disabled', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete']
+    $stmt = execute_query(
+        "
+            SELECT subdomain_name, subdomain_status, subdomain_id, domain_name
+            FROM subdomain
+            LEFT JOIN domain ON (subdomain.domain_id = domain.domain_id)
+            WHERE subdomain_status NOT IN (
+                'ok', 'disabled', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete'                
+            )
+        "
     );
 
     if (!$stmt->rowCount()) {
         $tpl->assign(['SUB_ITEM' => '', 'TR_SUB_MESSAGE' => tr('No error found')]);
         $tpl->parse('SUB_MESSAGE', 'sub_message');
-    } else {
-        while ($row = $stmt->fetchRow()) {
-            $tpl->assign([
-                'SUB_MESSAGE' => '',
-                'SUB_NAME'    => tohtml(decode_idna($row['subdomain_name'] . '.' . $row['domain_name'])),
-                'SUB_ERROR'   => tohtml($row['subdomain_status']),
-                'CHANGE_ID'   => $row['subdomain_id'],
-                'CHANGE_TYPE' => 'subdomain'
-            ]);
-            $tpl->parse('SUB_ITEM', '.sub_item');
-        }
+        return;
+    }
+
+    while ($row = $stmt->fetchRow()) {
+        $tpl->assign([
+            'SUB_MESSAGE' => '',
+            'SUB_NAME'    => tohtml(decode_idna($row['subdomain_name'] . '.' . $row['domain_name'])),
+            'SUB_ERROR'   => tohtml($row['subdomain_status']),
+            'CHANGE_ID'   => $row['subdomain_id'],
+            'CHANGE_TYPE' => 'subdomain'
+        ]);
+        $tpl->parse('SUB_ITEM', '.sub_item');
     }
 }
 
@@ -176,30 +180,32 @@ function debugger_getSubErrors($tpl)
  */
 function debugger_getAlssubErrors($tpl)
 {
-    $stmt = exec_query(
-        '
-            SELECT `subdomain_alias_name`, `subdomain_alias_status`, `subdomain_alias_id`, `alias_name`
-            FROM `subdomain_alias`
-            LEFT JOIN `domain_aliasses` ON (`subdomain_alias_id` = `domain_aliasses`.`alias_id`)
-            WHERE `subdomain_alias_status` NOT IN (?, ?, ?, ?, ?, ?, ?, ?)
-        ',
-        ['ok', 'disabled', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete']
+    $stmt = execute_query(
+        "
+            SELECT subdomain_alias_name, subdomain_alias_status, subdomain_alias_id, alias_name
+            FROM subdomain_alias
+            LEFT JOIN domain_aliasses ON (subdomain_alias_id = domain_aliasses.alias_id)
+            WHERE subdomain_alias_status NOT IN (
+                'ok', 'disabled', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete'
+            )
+        "
     );
 
     if (!$stmt->rowCount()) {
         $tpl->assign(['ALSSUB_ITEM' => '', 'TR_ALSSUB_MESSAGE' => tr('No error found')]);
         $tpl->parse('ALSSUB_MESSAGE', 'alssub_message');
-    } else {
-        while ($row = $stmt->fetchRow()) {
-            $tpl->assign([
-                'ALSSUB_MESSAGE' => '',
-                'ALSSUB_NAME'    => tohtml(decode_idna($row['subdomain_alias_name'] . '.' . $row['alias_name'])),
-                'ALSSUB_ERROR'   => tohtml($row['subdomain_alias_status']),
-                'CHANGE_ID'      => $row['subdomain_alias_id'],
-                'CHANGE_TYPE'    => 'subdomain_alias'
-            ]);
-            $tpl->parse('ALSSUB_ITEM', '.alssub_item');
-        }
+        return;
+    }
+
+    while ($row = $stmt->fetchRow()) {
+        $tpl->assign([
+            'ALSSUB_MESSAGE' => '',
+            'ALSSUB_NAME'    => tohtml(decode_idna($row['subdomain_alias_name'] . '.' . $row['alias_name'])),
+            'ALSSUB_ERROR'   => tohtml($row['subdomain_alias_status']),
+            'CHANGE_ID'      => $row['subdomain_alias_id'],
+            'CHANGE_TYPE'    => 'subdomain_alias'
+        ]);
+        $tpl->parse('ALSSUB_ITEM', '.alssub_item');
     }
 }
 
@@ -211,29 +217,31 @@ function debugger_getAlssubErrors($tpl)
  */
 function debugger_getCustomDNSErrors($tpl)
 {
-    $stmt = exec_query(
-        '
-            SELECT `domain_dns`, `domain_dns_status`, `domain_dns_id`
-            FROM `domain_dns`
-            WHERE `domain_dns_status` NOT IN (?, ?, ?, ?, ?, ?, ?, ?)
-        ',
-        ['ok', 'disabled', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete']
+    $stmt = execute_query(
+        "
+            SELECT domain_dns, domain_dns_status, domain_dns_id
+            FROM domain_dns
+            WHERE domain_dns_status NOT IN (
+                'ok', 'disabled', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete'
+            )
+        "
     );
 
     if (!$stmt->rowCount()) {
         $tpl->assign(['CUSTOM_DNS_ITEM' => '', 'TR_CUSTOM_DNS_MESSAGE' => tr('No error found')]);
         $tpl->parse('CUSTOM_DNS_MESSAGE', 'custom_dns_message');
-    } else {
-        while ($row = $stmt->fetchRow()) {
-            $tpl->assign([
-                'CUSTOM_DNS_MESSAGE' => '',
-                'CUSTOM_DNS_NAME'    => tohtml(decode_idna($row['domain_dns'])),
-                'CUSTOM_DNS_ERROR'   => tohtml($row['domain_dns_status']),
-                'CHANGE_ID'          => tohtml($row['domain_dns_id']),
-                'CHANGE_TYPE'        => 'custom_dns'
-            ]);
-            $tpl->parse('CUSTOM_DNS_ITEM', '.custom_dns_item');
-        }
+        return;
+    }
+
+    while ($row = $stmt->fetchRow()) {
+        $tpl->assign([
+            'CUSTOM_DNS_MESSAGE' => '',
+            'CUSTOM_DNS_NAME'    => tohtml(decode_idna($row['domain_dns'])),
+            'CUSTOM_DNS_ERROR'   => tohtml($row['domain_dns_status']),
+            'CHANGE_ID'          => tohtml($row['domain_dns_id']),
+            'CHANGE_TYPE'        => 'custom_dns'
+        ]);
+        $tpl->parse('CUSTOM_DNS_ITEM', '.custom_dns_item');
     }
 }
 
@@ -245,44 +253,38 @@ function debugger_getCustomDNSErrors($tpl)
  */
 function debugger_getHtaccessErrors($tpl)
 {
-    $stmt = exec_query(
+    $stmt = execute_query(
         "
-            SELECT `id`, `dmn_id`, `auth_name` AS `name`, `status`, 'htaccess' AS `type`
-            FROM `htaccess`
-            WHERE `status` NOT IN (:ok, :disabled, :toadd, :tochange, :todelete)
-            UNION
-            SELECT `id`, `dmn_id`, `ugroup` AS `name`, `status`, 'htgroup' AS `type`
-            FROM `htaccess_groups`
-            WHERE `status` NOT IN (:ok, :disabled, :toadd, :tochange, :todelete)
-            UNION
-            SELECT `id`, `dmn_id`, `uname` AS `name`, `status`, 'htpasswd' AS `type`
-            FROM `htaccess_users`
-            WHERE `status` NOT IN (:ok, :disabled, :toadd, :tochange, :todelete)
-        ",
-        [
-            'ok'       => 'ok',
-            'disabled' => 'disabled',
-            'toadd'    => 'toadd',
-            'tochange' => 'tochange',
-            'todelete' => 'todelete'
-        ]
+            SELECT id, dmn_id, auth_name AS name, status, 'htaccess' AS type
+            FROM htaccess
+            WHERE status NOT IN ('ok', 'disabled', 'toadd', 'tochange', 'todelete')
+            UNION ALL
+            SELECT id, dmn_id, ugroup AS name, status, 'htgroup' AS type
+            FROM htaccess_groups
+            WHERE status NOT IN ('ok', 'disabled', 'toadd', 'tochange', 'todelete')
+            UNION ALL
+            SELECT id, dmn_id, uname AS name, status, 'htpasswd' AS type
+            FROM htaccess_users
+            WHERE status NOT IN ('ok', 'disabled', 'toadd', 'tochange', 'todelete')
+        "
     );
 
     if (!$stmt->rowCount()) {
         $tpl->assign(['HTACCESS_ITEM' => '', 'TR_HTACCESS_MESSAGE' => tr('No error found')]);
         $tpl->parse('HTACCESS_MESSAGE', 'htaccess_message');
-    } else {
-        while ($row = $stmt->fetchRow()) {
-            $tpl->assign([
-                'HTACCESS_MESSAGE' => '',
-                'HTACCESS_NAME'    => tohtml($row['name']),
-                'HTACCESS_TYPE'    => tohtml($row['type']),
-                'HTACCESS_ERROR'   => tohtml($row['status']),
-                'CHANGE_ID'        => $row['id'],
-                'CHANGE_TYPE'      => $row['type']
-            ]);
-            $tpl->parse('HTACCESS_ITEM', '.htaccess_item');
-        }
+        return;
+    }
+
+    while ($row = $stmt->fetchRow()) {
+        $tpl->assign([
+            'HTACCESS_MESSAGE' => '',
+            'HTACCESS_NAME'    => tohtml($row['name']),
+            'HTACCESS_TYPE'    => tohtml($row['type']),
+            'HTACCESS_ERROR'   => tohtml($row['status']),
+            'CHANGE_ID'        => $row['id'],
+            'CHANGE_TYPE'      => $row['type']
+        ]);
+        $tpl->parse('HTACCESS_ITEM', '.htaccess_item');
     }
 }
 
@@ -294,24 +296,31 @@ function debugger_getHtaccessErrors($tpl)
  */
 function debugger_getFtpUserErrors($tpl)
 {
-    $stmt = exec_query(
-        'SELECT `userid`, `status` FROM `ftp_users` WHERE `status` NOT IN (?, ?, ?, ?, ?, ?, ?)',
-        ['ok', 'disabled', 'toadd', 'tochange', 'toenable', 'todisable', 'todelete']
+    $stmt = execute_query(
+        "
+            SELECT userid, status
+            FROM ftp_users
+            WHERE status NOT IN (
+                'ok', 'disabled', 'toadd', 'tochange', 'toenable', 'todisable', 'todelete'
+            )
+        "
     );
+
     if (!$stmt->rowCount()) {
         $tpl->assign(['FTP_ITEM' => '', 'TR_FTP_MESSAGE' => tr('No error found')]);
         $tpl->parse('FTP_MESSAGE', 'ftp_message');
-    } else {
-        while ($row = $stmt->fetchRow()) {
-            $tpl->assign([
-                'FTP_MESSAGE' => '',
-                'FTP_NAME'    => tohtml(decode_idna($row['userid'])),
-                'FTP_ERROR'   => tohtml($row['status']),
-                'CHANGE_ID'   => tohtml($row['userid']),
-                'CHANGE_TYPE' => 'ftp'
-            ]);
-            $tpl->parse('FTP_ITEM', '.ftp_item');
-        }
+        return;
+    }
+
+    while ($row = $stmt->fetchRow()) {
+        $tpl->assign([
+            'FTP_MESSAGE' => '',
+            'FTP_NAME'    => tohtml(decode_idna($row['userid'])),
+            'FTP_ERROR'   => tohtml($row['status']),
+            'CHANGE_ID'   => tohtml($row['userid']),
+            'CHANGE_TYPE' => 'ftp'
+        ]);
+        $tpl->parse('FTP_ITEM', '.ftp_item');
     }
 }
 
@@ -324,95 +333,85 @@ function debugger_getFtpUserErrors($tpl)
  */
 function debugger_getMailsErrors($tpl)
 {
-    $stmt = exec_query(
-        '
-            SELECT `mail_acc`, `domain_id`, `mail_type`, `status`, `mail_id` FROM `mail_users`
-            WHERE `status` NOT IN (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ',
-        ['ok', 'disabled', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete', 'ordered']
+    $stmt = execute_query(
+        "
+            SELECT mail_acc, domain_id, mail_type, status, mail_id FROM mail_users
+            WHERE status NOT IN (
+                'ok', 'disabled', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete', 'ordered'
+            )
+        "
     );
 
     if (!$stmt->rowCount()) {
         $tpl->assign(['MAIL_ITEM' => '', 'TR_MAIL_MESSAGE' => tr('No error found')]);
         $tpl->parse('MAIL_MESSAGE', 'mail_message');
-    } else {
-        while ($row = $stmt->fetchRow()) {
-            $searchedId = $row['domain_id'];
-            $mailAcc = $row['mail_acc'];
-            $mailType = $row['mail_type'];
-            $mailId = $row['mail_id'];
-            $mailStatus = $row['status'];
+        return;
+    }
 
-            switch ($mailType) {
-                case 'normal_mail':
-                case 'normal_forward':
-                case 'normal_mail,normal_forward':
-                    $query = "SELECT CONCAT('@', `domain_name`) AS `domain_name` FROM `domain` WHERE `domain_id` = ?";
-                    break;
-                case 'subdom_mail':
-                case 'subdom_forward':
-                case 'subdom_mail,subdom_forward':
-                    $query = "
-                    SELECT
-                            CONCAT(
-                                '@', `subdomain_name`, '.', IF(`t2`.`domain_name` IS NULL,'" . tr('missing domain') . "',
-                                `t2`.`domain_name`)
-                            ) AS 'domain_name'
-                        FROM
-                            `subdomain` AS `t1`
-                        LEFT JOIN
-                            `domain` AS `t2` ON (`t1`.`domain_id` = `t2`.`domain_id`)
-                        WHERE
-                            `subdomain_id` = ?
-                    ";
-                    break;
-                case 'alssub_mail':
-                case 'alssub_forward':
-                case 'alssub_mail,alssub_forward':
-                    $query = "
-                        SELECT
-                            CONCAT(
-                                '@', `t1`.`subdomain_alias_name`, '.', IF(`t2`.`alias_name` IS NULL,'" .
-                        tr('missing alias') . "',`t2`.`alias_name`)
-                            ) AS `domain_name`
-                        FROM
-                            `subdomain_alias` AS `t1`
-                        LEFT JOIN
-                            `domain_aliasses` AS `t2` ON (`t1`.`alias_id` = `t2`.`alias_id`)
-                        WHERE
-                            `subdomain_alias_id` = ?
-                    ";
-                    break;
-                case 'normal_catchall':
-                case 'alias_catchall':
-                case 'alssub_catchall':
-                case 'subdom_catchall':
-                    $query = "SELECT `mail_addr` AS `domain_name` FROM `mail_users` WHERE `mail_id` = ?";
-                    $searchedId = $mailId;
-                    $mailAcc = '';
-                    break;
-                case 'alias_mail':
-                case 'alias_forward':
-                case 'alias_mail,alias_forward':
-                    $query = "SELECT CONCAT('@', `alias_name`) AS `domain_name` FROM `domain_aliasses` WHERE `alias_id` = ?";
-                    break;
-                default:
-                    throw new iMSCP_Exception('FIXME: ' . __FILE__ . ':' . __LINE__ . $mailType);
-            }
+    while ($row = $stmt->fetchRow()) {
+        $searchedId = $row['domain_id'];
+        $mailAcc = $row['mail_acc'];
+        $mailType = $row['mail_type'];
+        $mailId = $row['mail_id'];
+        $mailStatus = $row['status'];
 
-            $stmt2 = exec_query($query, $searchedId);
-            $domainName = $stmt2->fields['domain_name'];
-            $domainName = ltrim($domainName, '@');
-
-            $tpl->assign([
-                'MAIL_MESSAGE' => '',
-                'MAIL_NAME'    => tohtml($mailAcc . '@' . ($domainName == '' ? ' ' . tr('orphan entry') : decode_idna($domainName))),
-                'MAIL_ERROR'   => tohtml($mailStatus),
-                'CHANGE_ID'    => $mailId,
-                'CHANGE_TYPE'  => 'mail'
-            ]);
-            $tpl->parse('MAIL_ITEM', '.mail_item');
+        switch ($mailType) {
+            case MT_NORMAL_MAIL:
+            case MT_NORMAL_FORWARD:
+            case MT_NORMAL_MAIL . ',' . MT_NORMAL_FORWARD:
+                $query = "SELECT CONCAT('@', domain_name) AS domain_name FROM domain WHERE domain_id = ?";
+                break;
+            case MT_SUBDOM_MAIL:
+            case MT_SUBDOM_FORWARD:
+            case MT_SUBDOM_MAIL . ',' . MT_SUBDOM_FORWARD:
+                $query = "
+                    SELECT CONCAT(
+                        '@', subdomain_name, '.', IF(t2.domain_name IS NULL,'" . tr('missing domain') . "',t2.domain_name)
+                    ) AS 'domain_name'
+                    FROM subdomain AS t1
+                    LEFT JOIN domain AS t2 ON (t1.domain_id = t2.domain_id)
+                    WHERE subdomain_id = ?
+                ";
+                break;
+            case MT_ALSSUB_MAIL:
+            case MT_ALSSUB_FORWARD:
+            case MT_ALSSUB_MAIL . ',' . MT_ALSSUB_FORWARD:
+                $query = "
+                    SELECT CONCAT('@', t1.subdomain_alias_name, '.', IF(t2.alias_name IS NULL,'" . tr('missing alias')
+                        . "',t2.alias_name) ) AS domain_name
+                    FROM subdomain_alias AS t1
+                    LEFT JOIN domain_aliasses AS t2 ON (t1.alias_id = t2.alias_id)
+                    WHERE subdomain_alias_id = ?
+                ";
+                break;
+            case MT_NORMAL_CATCHALL:
+            case MT_ALIAS_CATCHALL:
+            case MT_ALSSUB_CATCHALL:
+            case MT_SUBDOM_CATCHALL:
+                $query = 'SELECT mail_addr AS domain_name FROM mail_users WHERE mail_id = ?';
+                $searchedId = $mailId;
+                $mailAcc = '';
+                break;
+            case MT_ALIAS_MAIL:
+            case MT_ALIAS_FORWARD:
+            case MT_ALIAS_MAIL . ',' . MT_ALIAS_FORWARD:
+                $query = "SELECT CONCAT('@', alias_name) AS domain_name FROM domain_aliasses WHERE alias_id = ?";
+                break;
+            default:
+                throw new iMSCP_Exception('FIXME: ' . __FILE__ . ':' . __LINE__ . $mailType);
         }
+
+        $domainName = ltrim(exec_query($query, $searchedId)->fetchRow(PDO::FETCH_COLUMN), '@');
+        $tpl->assign([
+            'MAIL_MESSAGE' => '',
+            'MAIL_NAME'    => tohtml($mailAcc . '@' . (
+                $domainName == '' ? ' ' . tr('orphan entry') : decode_idna($domainName))
+            ),
+            'MAIL_ERROR'   => tohtml($mailStatus),
+            'CHANGE_ID'    => $mailId,
+            'CHANGE_TYPE'  => 'mail'
+        ]);
+        $tpl->parse('MAIL_ITEM', '.mail_item');
     }
 }
 
@@ -424,27 +423,31 @@ function debugger_getMailsErrors($tpl)
  */
 function debugger_getIpErrors($tpl)
 {
-    $stmt = exec_query(
-        'SELECT `ip_id`, `ip_number`, `ip_card`, `ip_status` FROM `server_ips` WHERE `ip_status` NOT IN (?, ?, ?, ?)',
-        ['ok', 'toadd', 'tochange', 'todelete']
+    $stmt = execute_query(
+        "
+            SELECT ip_id, ip_number, ip_card, ip_status
+            FROM server_ips
+            WHERE ip_status NOT IN ('ok', 'toadd', 'tochange', 'todelete')
+        "
     );
 
     if (!$stmt->rowCount()) {
         $tpl->assign(['IP_ITEM' => '', 'TR_IP_MESSAGE' => tr('No error found')]);
         $tpl->parse('IP_MESSAGE', 'ip_message');
-    } else {
-        while ($row = $stmt->fetchRow()) {
-            $tpl->assign([
-                'IP_MESSAGE'  => '',
-                'IP_NAME'     => tohtml((($row['ip_number'] == '0.0.0.0') ? tr('Any') : $row['ip_number'])
-                    . ' ' . '(' . $row['ip_card'] . (strpos($row['ip_number'], ':') == FALSE ? ':'
-                        . ($row['ip_id'] + 1000) : '') . ')'),
-                'IP_ERROR'    => tohtml($row['ip_status']),
-                'CHANGE_ID'   => tohtml($row['ip_id']),
-                'CHANGE_TYPE' => 'ip'
-            ]);
-            $tpl->parse('IP_ITEM', '.ip_item');
-        }
+        return;
+    }
+
+    while ($row = $stmt->fetchRow()) {
+        $tpl->assign([
+            'IP_MESSAGE'  => '',
+            'IP_NAME'     => tohtml((($row['ip_number'] == '0.0.0.0') ? tr('Any') : $row['ip_number'])
+                . ' ' . '(' . $row['ip_card'] . (strpos($row['ip_number'], ':') == FALSE ? ':'
+                    . ($row['ip_id'] + 1000) : '') . ')'),
+            'IP_ERROR'    => tohtml($row['ip_status']),
+            'CHANGE_ID'   => tohtml($row['ip_id']),
+            'CHANGE_TYPE' => 'ip'
+        ]);
+        $tpl->parse('IP_ITEM', '.ip_item');
     }
 }
 
@@ -523,29 +526,33 @@ function debugger_changePluginItemStatus($pluginName, $table, $field, $itemId)
 function debugger_countRequests($statusField = NULL, $tableName = NULL)
 {
     if ($statusField && $tableName) {
-        $query = "SELECT `$statusField` FROM `$tableName` WHERE `$statusField` IN (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = exec_query($query, [
-            'toinstall', 'toupdate', 'touninstall', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable',
-            'todelete',
-        ]);
-
+        $stmt = execute_query(
+            "
+                SELECT `$statusField`
+                FROM `$tableName`
+                WHERE `$statusField` IN (
+                    'toinstall', 'toupdate', 'touninstall', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable',
+                    'todelete'
+                )
+            "
+        );
         return $stmt->rowCount();
-    } else {
-        /** @var iMSCP_Plugin_Manager $pluginManager */
-        $pluginManager = iMSCP_Registry::get('pluginManager');
-
-        /** @var iMSCP_Plugin[] $plugins */
-        $plugins = $pluginManager->pluginGetLoaded();
-        $nbRequests = 0;
-
-        if (!empty($plugins)) {
-            foreach ($plugins as $plugin) {
-                $nbRequests += $plugin->getCountRequests();
-            }
-        }
-
-        return $nbRequests;
     }
+
+    /** @var iMSCP_Plugin_Manager $pluginManager */
+    $pluginManager = iMSCP_Registry::get('pluginManager');
+
+    /** @var iMSCP_Plugin[] $plugins */
+    $plugins = $pluginManager->pluginGetLoaded();
+    $nbRequests = 0;
+
+    if (!empty($plugins)) {
+        foreach ($plugins as $plugin) {
+            $nbRequests += $plugin->getCountRequests();
+        }
+    }
+
+    return $nbRequests;
 }
 
 /***********************************************************************************************************************
@@ -560,8 +567,6 @@ check_login('admin');
 
 /** @var iMSCP_Plugin_Manager $plugingManager */
 $plugingManager = iMSCP_Registry::get('pluginManager');
-
-$cfg = iMSCP_Registry::get('config');
 
 $rqstCount = debugger_countRequests('admin_status', 'admin');
 $rqstCount += debugger_countRequests('domain_status', 'domain');
@@ -588,47 +593,48 @@ if (isset($_GET['action'])) {
         } else {
             set_page_message(tr('There is no pending task. Operation canceled.'), 'warning');
         }
+
         redirectTo('imscp_debugger.php');
     } elseif ($_GET['action'] == 'change' && (isset($_GET['id']) && isset($_GET['type']))) {
         switch ($_GET['type']) {
             case 'user':
-                $query = "UPDATE `admin` SET `admin_status` = ? WHERE `admin_id` = ?";
+                $query = "UPDATE admin SET admin_status = ? WHERE admin_id = ?";
                 break;
             case 'domain':
-                $query = "UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?";
+                $query = "UPDATE domain SET domain_status = ? WHERE domain_id = ?";
                 break;
             case 'alias':
-                $query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?";
+                $query = "UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?";
                 break;
             case 'subdomain':
-                $query = "UPDATE `subdomain` SET `subdomain_status` = ? WHERE `subdomain_id` = ?";
+                $query = "UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?";
                 break;
             case 'subdomain_alias':
-                $query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `subdomain_alias_id` = ?";
+                $query = "UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE subdomain_alias_id = ?";
                 break;
             case 'custom_dns':
-                $query = "UPDATE `domain_dns` SET `domain_dns_status` = ? WHERE `domain_dns_id` = ?";
+                $query = "UPDATE domain_dns SET domain_dns_status = ? WHERE domain_dns_id = ?";
                 break;
             case 'ftp':
-                $query = "UPDATE `ftp_users` SET `status` = ? WHERE `userid` = ?";
+                $query = "UPDATE ftp_users SET status = ? WHERE userid = ?";
                 break;
             case 'mail':
-                $query = "UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?";
+                $query = "UPDATE mail_users SET status = ? WHERE mail_id = ?";
                 break;
             case 'htaccess':
-                $query = 'UPDATE `htaccess` SET `status` = ? WHERE `id` = ?';
+                $query = 'UPDATE htaccess SET status = ? WHERE id = ?';
                 break;
             case 'htgroup':
-                $query = 'UPDATE `htaccess_groups` SET `status` = ? WHERE `id` = ?';
+                $query = 'UPDATE htaccess_groups SET status = ? WHERE id = ?';
                 break;
             case 'htpasswd':
-                $query = 'UPDATE `htaccess_users` SET `status` = ? WHERE `id` = ?';
+                $query = 'UPDATE htaccess_users SET status = ? WHERE id = ?';
                 break;
             case 'ip':
-                $query = 'UPDATE `server_ips` SET `ip_status` = ? WHERE `ip_id` = ?';
+                $query = 'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?';
                 break;
             case 'plugin':
-                $query = "UPDATE `plugin` SET `plugin_status` = ? WHERE `plugin_id` = ?";
+                $query = "UPDATE plugin SET plugin_status = ? WHERE plugin_id = ?";
                 break;
             default:
                 if (isset($_GET['table']) && isset($_GET['field'])) {
@@ -709,7 +715,7 @@ $tpl->assign([
     'TR_ALSSUB_ERRORS'      => tr('Subdomain alias errors'),
     'TR_CUSTOM_DNS_ERRORS'  => tr('Custom DNS errors'),
     'TR_FTP_ERRORS'         => tr('FTP user errors'),
-    'TR_MAIL_ERRORS'        => tr('Email account errors'),
+    'TR_MAIL_ERRORS'        => tr('Mail account errors'),
     'TR_IP_ERRORS'          => tr('IP errors'),
     'TR_HTACCESS_ERRORS'    => tr('Htaccess, htgroups and htpasswd errors'),
     'TR_PLUGINS_ERRORS'     => tr('Plugin errors'),
@@ -726,3 +732,5 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

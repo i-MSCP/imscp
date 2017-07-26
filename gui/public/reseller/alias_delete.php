@@ -32,21 +32,22 @@ if (!resellerHasFeature('domain_aliases') || !isset($_GET['id'])) {
 }
 
 $îd = intval($_GET['id']);
+
 $stmt = exec_query(
     '
-        SELECT alias_name
-        FROM domain_aliasses
-        JOIN domain USING (domain_id)
-        JOIN admin ON(admin_id = domain_admin_id)
-        WHERE alias_id = ?
-        AND created_by = ?
+        SELECT t1.domain_id, t1.alias_name, t1.alias_mount
+        FROM domain_aliasses AS t1
+        JOIN domain AS t2 USING (domain_id)
+        JOIN admin AS t3 ON(t3.admin_id = t2.domain_admin_id)
+        WHERE t1.alias_id = ?
+        AND t3.created_by = ?
     ',
     [$îd, $_SESSION['user_id']]
 );
 
 if ($stmt->rowCount()) {
     $row = $stmt->fetchRow();
-    deleteDomainAlias($îd, $row['alias_name']);
+    deleteDomainAlias($row['domain_id'], $id, $row['alias_name'], $row['alias_mount']);
     redirectTo('alias.php');
 }
 

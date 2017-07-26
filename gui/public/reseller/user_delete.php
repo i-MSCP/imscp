@@ -25,7 +25,6 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
-
 require 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);

@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,37 +24,35 @@
  * Note, this function doesn't make any difference between sub domains and the
  * aliasses subdomains. The result is simply the sum of both.
  *
- * @param  int $mainDomainId Main domain identifier unique identifier
+ * @param  int $domainId Domain identifier unique identifier
  * @return int Total number of subdomains
  */
-function get_domain_running_sub_cnt($mainDomainId)
+function get_domain_running_sub_cnt($domainId)
 {
     return exec_query(
-            'SELECT COUNT(subdomain_id) FROM subdomain WHERE domain_id = ?', $mainDomainId
+            'SELECT COUNT(subdomain_id) FROM subdomain WHERE domain_id = ?', $domainId
         )->fetchRow(
             PDO::FETCH_COLUMN
         ) + exec_query(
             '
-                SELECT COUNT(subdomain_alias_id) FROM subdomain_alias
+                SELECT COUNT(subdomain_alias_id)
+                FROM subdomain_alias
                 WHERE alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
             ',
-            $mainDomainId
-        )->fetchRow(
-            PDO::FETCH_COLUMN
-        );
+            $domainId
+        )->fetchRow(PDO::FETCH_COLUMN);
 }
 
 /**
  * Returns number of domain aliases that belong to a specific domain
  *
- * @param  int $domain_id Domain unique identifier
+ * @param  int $domainId Domain unique identifier
  * @return int Total number of domain aliases
  */
-function get_domain_running_als_cnt($domain_id)
+function get_domain_running_als_cnt($domainId)
 {
     return exec_query(
-        'SELECT COUNT(alias_id) FROM domain_aliasses WHERE domain_id = ? AND alias_status <> ?',
-        [$domain_id, 'ordered']
+        "SELECT COUNT(alias_id) FROM domain_aliasses WHERE domain_id = ? AND alias_status = 'ordered'", $domainId
     )->fetchRow(PDO::FETCH_COLUMN);
 }
 
@@ -67,30 +65,36 @@ function get_domain_running_als_cnt($domain_id)
  */
 function get_domain_running_mail_acc_cnt($domainId)
 {
-    $cfg = iMSCP_Registry::get('config');
-    $query = "
-        SELECT COUNT(mail_id)
-        FROM mail_users
-        WHERE domain_id = ?
-        AND mail_type RLIKE ?
-        AND mail_type NOT LIKE ?
-    ";
+    $query = "SELECT COUNT(mail_id) FROM mail_users WHERE domain_id = ? AND mail_type RLIKE ?";
 
-    if ($cfg['COUNT_DEFAULT_EMAIL_ADDRESSES'] == 0) {
-        $query .= " AND mail_acc NOT IN('abuse', 'postmaster', 'webmaster')";
+    if (!iMSCP_Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
+        # A default mail account is composed of a name matching with:
+        # - abuse, hostmaster, postmaster or webmaster for a domain
+        # - webmaster for a subdomain
+        # and is set as forward mail account. If the customeer turn a default
+        # mail account into a normal mail account, it is no longer seen as
+        # default mail account.
+        $query .= "
+            AND ! (
+                (
+                    mail_acc IN('abuse', 'hostmaster', 'postmaster', 'webmaster')
+                    AND
+                    mail_type IN('" . MT_NORMAL_FORWARD . "', '" . MT_ALIAS_FORWARD . "')
+                )    
+                OR
+                (
+                    mail_acc = 'webmaster'
+                    AND
+                    mail_type IN('" . MT_SUBDOM_FORWARD . "', '" . MT_ALSSUB_FORWARD . "')
+                )
+            )
+        ";
     }
 
-    $stmt = exec_query($query, [$domainId, 'normal_', 'normal_catchall']);
-    $dmnMailAcc = $stmt->fetchRow(PDO::FETCH_COLUMN);
-
-    $stmt = exec_query($query, [$domainId, 'alias_', 'alias_catchall']);
-    $alsMailAcc = $stmt->fetchRow(PDO::FETCH_COLUMN);
-
-    $stmt = exec_query($query, [$domainId, 'subdom_', 'subdom_catchall']);
-    $subMailAcc = $stmt->fetchRow(PDO::FETCH_COLUMN);
-
-    $stmt = exec_query($query, [$domainId, 'alssub_', 'alssub_catchall']);
-    $alssubMailAcc = $stmt->fetchRow(PDO::FETCH_COLUMN);
+    $dmnMailAcc = exec_query($query, [$domainId, MT_NORMAL_MAIL . '|' . MT_NORMAL_FORWARD])->fetchRow(PDO::FETCH_COLUMN);
+    $alsMailAcc = exec_query($query, [$domainId, MT_ALIAS_MAIL . '|' . MT_ALIAS_FORWARD])->fetchRow(PDO::FETCH_COLUMN);
+    $subMailAcc = exec_query($query, [$domainId, MT_SUBDOM_MAIL . '|' . MT_SUBDOM_FORWARD])->fetchRow(PDO::FETCH_COLUMN);
+    $alssubMailAcc = exec_query($query, [$domainId, MT_ALSSUB_MAIL . '|' . MT_ALSSUB_FORWARD])->fetchRow(PDO::FETCH_COLUMN);
 
     return [
         $dmnMailAcc + $alsMailAcc + $subMailAcc + $alssubMailAcc, $dmnMailAcc, $alsMailAcc, $subMailAcc, $alssubMailAcc
@@ -107,9 +111,7 @@ function get_customer_running_ftp_acc_cnt($customerId)
 {
     return exec_query(
         'SELECT COUNT(userid) FROM ftp_users WHERE admin_id = ?', $customerId
-    )->fetchRow(
-        PDO::FETCH_COLUMN
-    );
+    )->fetchRow(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -122,9 +124,7 @@ function get_domain_running_sqld_acc_cnt($domainId)
 {
     return exec_query(
         'SELECT COUNT(sqld_id) FROM sql_database WHERE domain_id = ?', $domainId
-    )->fetchRow(
-        PDO::FETCH_COLUMN
-    );
+    )->fetchRow(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -135,12 +135,10 @@ function get_domain_running_sqld_acc_cnt($domainId)
  */
 function get_domain_running_sqlu_acc_cnt($domainId)
 {
-    $stmt = exec_query(
-        'SELECT DISTINCT sqlu_name FROM sql_user JOIN sql_database USING(sqld_id) WHERE domain_id = ?',
+    return exec_query(
+        'SELECT COUNT(DISTINCT sqlu_name) FROM sql_user JOIN sql_database USING(sqld_id) WHERE domain_id = ?',
         $domainId
-    );
-
-    return $stmt->rowCount();
+    )->fetchRow(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -168,9 +166,11 @@ function get_domain_running_props_cnt($domainId)
     list($mailAccCount) = get_domain_running_mail_acc_cnt($domainId);
 
     // Transitional query - Will be removed asap
-    $stmt = exec_query('SELECT domain_admin_id FROM domain WHERE domain_id = ?', $domainId);
+    $adminId = exec_query(
+        'SELECT domain_admin_id FROM domain WHERE domain_id = ?', $domainId
+    )->fetchRow(PDO::FETCH_COLUMN);
 
-    $ftpAccCount = get_customer_running_ftp_acc_cnt($stmt->fields['domain_admin_id']);
+    $ftpAccCount = get_customer_running_ftp_acc_cnt($adminId);
     list($sqlDbCount, $sqlUserCount) = get_domain_running_sql_acc_cnt($domainId);
     return [$subCount, $alsCount, $mailAccCount, $ftpAccCount, $sqlDbCount, $sqlUserCount];
 }
@@ -178,46 +178,43 @@ function get_domain_running_props_cnt($domainId)
 /**
  * Translate mail type
  *
- * @param  string $mailType
- * @return string Translated mail type
+ * @param string $mailAcc Mail account name
+ * @param  string $mailType Mail account type
+ * @return string Translated mail account type
  */
-function user_trans_mail_type($mailType)
+function user_trans_mail_type($mailAcc, $mailType)
 {
     switch ($mailType) {
         case MT_NORMAL_MAIL:
-            return tr('Domain mail');
-        case MT_NORMAL_FORWARD:
-            return tr('Email forward');
         case MT_ALIAS_MAIL:
-            return tr('Alias mail');
-        case MT_ALIAS_FORWARD:
-            return tr('Alias forward');
         case MT_SUBDOM_MAIL:
-            return tr('Subdomain mail');
-        case MT_SUBDOM_FORWARD:
-            return tr('Subdomain forward');
         case MT_ALSSUB_MAIL:
-            return tr('Alias subdomain mail');
+            return tr('Normal account');
+        case MT_NORMAL_FORWARD:
+        case MT_ALIAS_FORWARD:
+            return tr('Forward account') . (
+                in_array($mailAcc, ['abuse', 'hostmaster', 'postmaster', 'webmaster']) ? ' ' . tr('(default)') : ''
+                );
+        case MT_SUBDOM_FORWARD:
         case MT_ALSSUB_FORWARD:
-            return tr('Alias subdomain forward');
+            return tr('Forward account') . (
+                $mailAcc == 'webmaster' ? ' ' . tr('(default)') : ''
+                );
+        case MT_NORMAL_MAIL . ',' . MT_NORMAL_FORWARD:
+        case MT_ALIAS_MAIL . ',' . MT_ALIAS_FORWARD:
+        case MT_SUBDOM_MAIL . ',' . MT_SUBDOM_FORWARD:
+        case MT_ALSSUB_MAIL . ',' . MT_ALSSUB_FORWARD:
+            return tr('Normal & forward account');
+            break;
         case MT_NORMAL_CATCHALL:
-            return tr('Domain mail');
         case MT_ALIAS_CATCHALL:
-            return tr('Domain mail');
+        case MT_SUBDOM_CATCHALL:
+        case MT_ALSSUB_CATCHALL:
+            return tr('Catch-all account');
+
         default:
             return tr('Unknown type.');
     }
-}
-
-/**
- * Checks if an user has permissions on a specific SQL user
- *
- * @param  int $sqlUserId SQL user unique identifier
- * @return bool TRUE if the logged in user has permission on SQL user, FALSE otherwise
- */
-function check_user_sql_perms($sqlUserId)
-{
-    return (who_owns_this($sqlUserId, 'sqlu_id') == $_SESSION['user_id']);
 }
 
 /**
@@ -352,7 +349,8 @@ function customerHasDomain($domainName, $customerId)
     // Check in domain_aliasses table
     $stmt = exec_query(
         "
-            SELECT 'found' FROM domain AS t1
+            SELECT 1
+            FROM domain AS t1
             JOIN domain_aliasses AS t2 ON(t2.domain_id = t1.domain_id)
             WHERE t1.domain_admin_id = ?
             AND t2.alias_name = ?
@@ -367,9 +365,11 @@ function customerHasDomain($domainName, $customerId)
     // Check in subdomain table
     $stmt = exec_query(
         "
-            SELECT 'found' FROM domain AS t1
+            SELECT 1
+            FROM domain AS t1
             JOIN subdomain AS t2 ON (t2.domain_id = t1.domain_id)
-            WHERE t1.domain_admin_id = ? AND CONCAT(t2.subdomain_name, '.', t1.domain_name) = ?
+            WHERE t1.domain_admin_id = ?
+            AND CONCAT(t2.subdomain_name, '.', t1.domain_name) = ?
         ",
         [$customerId, $domainName]
     );
@@ -381,7 +381,7 @@ function customerHasDomain($domainName, $customerId)
     // Check in subdomain_alias table
     $stmt = exec_query(
         "
-            SELECT 'found' FROM domain AS t1
+            SELECT 1 FROM domain AS t1
             JOIN domain_aliasses AS t2 ON(t2.domain_id = t1.domain_id)
             JOIN subdomain_alias AS t3 ON(t3.alias_id = t2.alias_id)
             WHERE t1.domain_admin_id = ? AND CONCAT(t3.subdomain_alias_name, '.', t2.alias_name) = ?
@@ -394,16 +394,6 @@ function customerHasDomain($domainName, $customerId)
     }
 
     return false;
-}
-
-/**
- * Delete all autoreplies log for which not mail address is found in the mail_users database table
- *
- * @return void
- */
-function delete_autoreplies_log_entries()
-{
-    exec_query("DELETE FROM autoreplies_log WHERE `from` NOT IN (SELECT mail_addr FROM mail_users)");
 }
 
 /**
@@ -496,41 +486,6 @@ function getDomainMountpoint($domainId, $domainType, $ownerId)
 }
 
 /**
- * Send alias order email
- *
- * @param  string $aliasName
- * @return bool TRUE on success, FALSE on failure
- */
-function send_alias_order_email($aliasName)
-{
-    $userId = $_SESSION['user_id'];
-    $resellerId = who_owns_this($userId, 'user');
-    $stmt = exec_query('SELECT admin_name, fname, lname, email FROM admin WHERE admin_id = ?', $userId);
-    $row = $stmt->fetchRow();
-    $data = get_alias_order_email($resellerId);
-    $ret = send_mail([
-        'mail_id'      => 'alias-order-msg',
-        'fname'        => $row['fname'],
-        'lname'        => $row['lname'],
-        'username'     => $row['admin_name'],
-        'email'        => $row['email'],
-        'subject'      => $data['subject'],
-        'message'      => $data['message'],
-        'placeholders' => [
-            '{CUSTOMER}' => decode_idna($row['admin_name']),
-            '{ALIAS}'    => $aliasName
-        ]
-    ]);
-
-    if (!$ret) {
-        write_log(sprintf("Couldn't send alias order to %s", $row['admin_name']), E_USER_ERROR);
-        return false;
-    }
-
-    return true;
-}
-
-/**
  * Parse data from the given maildirsize file
  *
  * Because processing several maildirsize files can be time consuming, the data are stored in session for next 5 minutes.
@@ -557,11 +512,11 @@ function parseMaildirsize($maildirsizeFilePath, $refreshData = FALSE)
     }
 
     $maildirsize = [
-        'QUOTA_BYTES'    => 0,
-        'QUOTA_MESSAGES' => 0,
-        'BYTE_COUNT'     => 0,
-        'FILE_COUNT'     => 0,
-        'TIMESTAMP'      => time()
+        'quota_bytes'    => 0,
+        'quota_messages' => 0,
+        'byte_count'     => 0,
+        'file_count'     => 0,
+        'timestamp'      => time()
     ];
 
     // Parse quota definition
@@ -579,18 +534,18 @@ function parseMaildirsize($maildirsizeFilePath, $refreshData = FALSE)
         return false;
     }
 
-    $maildirsize['QUOTA_BYTES'] = $m[1];
+    $maildirsize['quota_bytes'] = $m[1];
 
     if (isset($quotaDefinition[1]) && preg_match('/(\d+)C/i', $quotaDefinition[1], $m)) {
-        $maildirsize['QUOTA_MESSAGES'] = $m[1];
+        $maildirsize['quota_messages'] = $m[1];
     }
 
     // Parse byte and file counts
 
     while (($line = fgets($fh)) !== false) {
         if (preg_match('/^\s*(-?\d+)\s+(-?\d+)\s*$/', $line, $m)) {
-            $maildirsize['BYTE_COUNT'] += $m[1];
-            $maildirsize['FILE_COUNT'] += $m[2];
+            $maildirsize['byte_count'] += $m[1];
+            $maildirsize['file_count'] += $m[2];
         }
     }
 

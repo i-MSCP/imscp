@@ -1,28 +1,21 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 use iMSCP\Crypt as Crypt;
@@ -55,7 +48,8 @@ function createImage($strSessionVar)
 
     $string = Crypt::randomStr($nbLetters, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
     for ($i = 0; $i < $nbLetters; $i++) {
-        $fontFile = LIBRARY_PATH . '/Resources/Fonts/' . $cfg['LOSTPASSWORD_CAPTCHA_FONTS'][mt_rand(0, count($cfg['LOSTPASSWORD_CAPTCHA_FONTS']) - 1)];
+        $fontFile = LIBRARY_PATH . '/Resources/Fonts/'
+            . $cfg['LOSTPASSWORD_CAPTCHA_FONTS'][mt_rand(0, count($cfg['LOSTPASSWORD_CAPTCHA_FONTS']) - 1)];
         imagettftext($image, 17, rand(-30, 30), $x, $y, $textColor, $fontFile, $string[$i]);
         $x += 20;
         $y = mt_rand(15, 25);
@@ -150,8 +144,9 @@ function setPassword($userType, $uniqueKey, $userPassword)
  */
 function uniqueKeyExists($uniqueKey)
 {
-    $stmt = exec_query('SELECT uniqkey FROM admin WHERE uniqkey = ?', $uniqueKey);
-    return (bool)$stmt->rowCount();
+    return (bool)exec_query(
+        'SELECT COUNT(admin_id) FROM admin WHERE uniqkey = ?', $uniqueKey
+    )->fetchRow(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -177,10 +172,12 @@ function uniqkeygen()
 function sendPasswordRequestValidation($adminName)
 {
     $stmt = exec_query('SELECT admin_id, created_by, fname, lname, email FROM admin WHERE admin_name = ?', $adminName);
+
     if (!$stmt->rowCount()) {
         set_page_message(tr('Wrong username.'), 'error');
         return false;
     }
+
     $row = $stmt->fetchRow();
 
     $createdBy = $row['created_by'];

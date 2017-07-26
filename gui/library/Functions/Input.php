@@ -1,29 +1,21 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * @license
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 $ESCAPER = new Zend_Escaper_Escaper('UTF-8');
@@ -195,7 +187,10 @@ function checkPasswordSyntax($password, $unallowedChars = '/[^\x21-\x7e]/', $noE
 
     if ($cfg['PASSWD_STRONG'] && !(preg_match('/[0-9]/', $password) && preg_match('/[a-zA-Z]/', $password))) {
         if (!$noErrorMsg) {
-            set_page_message(tr('Password must be at least %s characters long and contain letters and numbers to be valid.', $cfg['PASSWD_CHARS']), 'error');
+            set_page_message(
+                tr('Password must be at least %s characters long and contain letters and numbers to be valid.', $cfg['PASSWD_CHARS']),
+                'error'
+            );
         }
 
         $ret = false;
@@ -332,274 +327,6 @@ function imscp_limit_check($data, $extra = -1)
     }
 
     return (bool)preg_match("/^(${extra}0|[1-9][0-9]*)$/D", $data);
-}
-
-/**
- * All in one function to check who owns what.
- *
- * @throws iMSCP_Exception
- * @param mixed $id FTP/mail/domain/alias/subdomain/etc id to check
- * @param string $type What kind of id $id is
- * @param boolean $forcefinal Ignore the resolver's is_final value (force as yes)
- * @return int The id of the admin who owns the id $id of $type type
- */
-function who_owns_this($id, $type = 'dmn', $forcefinal = false)
-{
-    $who = NULL;
-    // Fix $type according to type or by alias
-    switch ($type) {
-        case 'dmn_id':
-            $type = 'domain_id';
-            break;
-        case 'sub_id':
-            $type = 'subdomain_id';
-            break;
-        case 'als_id':
-            $type = 'alias_id';
-            break;
-        case 'user':
-            $type = 'client';
-            break;
-        case 'admin_sys_uid':
-            $type = 'uid';
-            break;
-        case 'ticket':
-            $type = 'ticket_id';
-            break;
-        case 'admin_sys_gid':
-            $type = 'gid';
-            break;
-        case 'sqlu_id':
-        case 'sqluser_id':
-            $type = 'sql_user_id';
-            break;
-        case 'sqld_id':
-        case 'sqldatabase_id':
-            $type = 'sql_database_id';
-            break;
-        case 'ftpuser':
-        case 'ftpuserid':
-        case 'ftp_userid':
-            $type = 'ftp_user';
-            break;
-        case 'sqluser':
-        case 'sqlu':
-        case 'sqlu_name':
-            // Can't guess by type
-            $type = 'sql_user';
-            break;
-        case 'sqldatabase':
-        case 'sqld':
-        case 'sqld_name':
-            // Can't guess by type
-            $type = 'sql_database';
-            break;
-        case 'dmn':
-        case 'normal':
-        case 'domain':
-            if (!is_numeric($id)) {
-                $type = 'domain';
-            } else {
-                $type = 'domain_id';
-            }
-            break;
-        case 'als':
-        case 'alias':
-        case 'domain_alias':
-            if (!is_numeric($id)) {
-                $type = 'alias';
-            } else {
-                $type = 'alias_id';
-            }
-            break;
-        case 'sub':
-        case 'subdom':
-        case 'subdomain':
-            if (!is_numeric($id)) {
-                $type = 'subdomain';
-            } else {
-                $type = 'subdomain_id';
-            }
-            break;
-        case 'alssub':
-            if (!is_numeric($id)) {
-                $type = 'subdomain_alias';
-            } else {
-                $type = 'subdomain_alias_id';
-            }
-            break;
-    }
-
-    /**
-     * $resolvers is a multi-dimensional array.
-     * Its elements keys are the value that will be matched by $type.
-     * Each element is an array, containing at least two elements:
-     * 'query' and 'is_final'
-     * The former is the SQL query that should only SELECT one item; or false in case a query isn't used.
-     * The latter is a boolean which specifies whether the result of that 'resolver' is an admin id or not
-     *
-     * Other elements might be:
-     * 'next', 'separator', 'pos'
-     *
-     * 'next' is the $type value for the next call to who_owns_this (only used when 'is_final' is false)
-     * 'separator' is the separator to be used when exploding the $id (only used when 'query' is false)
-     * 'post' is the position in the array/result of exploding $id (only used when 'query' is false)
-     *
-     * NOTE: 'query' MUST be formated like: 'SELECT something FROM...' in order to correctly detect the field being selected
-     */
-    $resolvers = [];
-
-    $resolvers['domain_id'] = [];
-    $resolvers['domain_id']['query'] = 'SELECT `domain_admin_id` FROM `domain` WHERE `domain_id` = ? LIMIT 1;';
-    $resolvers['domain_id']['is_final'] = true;
-
-    $resolvers['alias_id'] = [];
-    $resolvers['alias_id']['query'] = 'SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_id` = ? LIMIT 1;';
-    $resolvers['alias_id']['is_final'] = false;
-    $resolvers['alias_id']['next'] = 'dmn';
-
-    $resolvers['alias'] = [];
-    $resolvers['alias']['query'] = 'SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name` = ? LIMIT 1;';
-    $resolvers['alias']['is_final'] = false;
-    $resolvers['alias']['next'] = 'dmn';
-
-    $resolvers['subdomain_id'] = [];
-    $resolvers['subdomain_id']['query'] = 'SELECT `domain_id` FROM `subdomain` WHERE `subdomain_id` = ? LIMIT 1;';
-    $resolvers['subdomain_id']['is_final'] = false;
-    $resolvers['subdomain_id']['next'] = 'dmn';
-
-    $resolvers['subdomain'] = [];
-    $resolvers['subdomain']['query'] = false;
-    $resolvers['subdomain']['separator'] = '.';
-    $resolvers['subdomain']['pos'] = 1;
-    $resolvers['subdomain']['is_final'] = false;
-    $resolvers['subdomain']['next'] = 'dmn';
-
-    $resolvers['subdomain_alias_id'] = [];
-    $resolvers['subdomain_alias_id']['query'] = 'SELECT `alias_id` FROM `subdomain_alias` WHERE `subdomain_alias_id` = ? LIMIT 1;';
-    $resolvers['subdomain_alias_id']['is_final'] = false;
-    $resolvers['subdomain_alias_id']['next'] = 'alias';
-
-    $resolvers['subdomain_alias'] = [];
-    $resolvers['subdomain_alias']['query'] = false;
-    $resolvers['subdomain_alias']['separator'] = '.';
-    $resolvers['subdomain_alias']['pos'] = 1;
-    $resolvers['subdomain_alias']['is_final'] = false;
-    $resolvers['subdomain_alias']['next'] = 'alias';
-
-    $resolvers['client'] = [];
-    $resolvers['client']['query'] = 'SELECT `created_by` FROM `admin` WHERE `admin_id` = ? LIMIT 1;';
-    $resolvers['client']['is_final'] = true;
-
-    $resolvers['reseller'] = $resolvers['admin'] = $resolvers['client'];
-
-    $resolvers['domain'] = [];
-    $resolvers['domain']['query'] = 'SELECT `domain_admin_id` FROM `domain` WHERE `domain` = ? LIMIT 1;';
-    $resolvers['domain']['is_final'] = true;
-
-    $resolvers['ticket_id'] = [];
-    $resolvers['ticket_id']['query'] = 'SELECT `ticket_from` FROM `ticket` WHERE `ticket_id` = ? LIMIT 1;';
-    $resolvers['ticket_id']['is_final'] = true;
-
-    $resolvers['uid'] = [];
-    $resolvers['uid']['query'] = 'SELECT `admin_id` FROM `admin` WHERE `admin_sys_uid` = ? LIMIT 1;';
-    $resolvers['uid']['is_final'] = true;
-
-    $resolvers['gid'] = [];
-    $resolvers['gid']['query'] = 'SELECT `admin_id` FROM `admin` WHERE `admin_sys_gid` = ? LIMIT 1;';
-    $resolvers['gid']['is_final'] = true;
-
-    $resolvers['ftp_user'] = [];
-    $resolvers['ftp_user']['query'] = 'SELECT `admin_id` FROM `ftp_users` WHERE `userid` = ? LIMIT 1;';
-    $resolvers['ftp_user']['is_final'] = true;
-
-    $resolvers['sql_user_id'] = [];
-    $resolvers['sql_user_id']['query'] = 'SELECT `sqld_id` FROM `sql_user` WHERE `sqlu_id` = ? LIMIT 1;';
-    $resolvers['sql_user_id']['is_final'] = false;
-    $resolvers['sql_user_id']['next'] = 'sqld_id';
-
-    $resolvers['sql_database_id'] = [];
-    $resolvers['sql_database_id']['query'] = 'SELECT `domain_id` FROM `sql_database` WHERE `sqld_id` = ? LIMIT 1;';
-    $resolvers['sql_database_id']['is_final'] = false;
-    $resolvers['sql_database_id']['next'] = 'dmn';
-
-    $resolvers['sql_user'] = [];
-    $resolvers['sql_user']['query'] = 'SELECT sqld_id FROM sql_user WHERE sqlu_name = ? LIMIT 1;';
-    $resolvers['sql_user']['is_final'] = false;
-    $resolvers['sql_user']['next'] = 'sqld_id';
-
-    $resolvers['sql_database'] = [];
-    $resolvers['sql_database']['query'] = 'SELECT `domain_id` FROM `sql_database` WHERE `sqld_name` = ? LIMIT 1;';
-    $resolvers['sql_database']['is_final'] = false;
-    $resolvers['sql_database']['next'] = 'dmn';
-
-    $resolvers['mail_id'] = [];
-    $resolvers['mail_id']['query'] = 'SELECT `domain_id` FROM `mail_users` WHERE `mail_id` = ? LIMIT 1;';
-    $resolvers['mail_id']['is_final'] = false;
-    $resolvers['mail_id']['next'] = 'dmn';
-
-    $resolvers['mail'] = [];
-    $resolvers['mail']['query'] = false;
-    $resolvers['mail']['separator'] = '@';
-    $resolvers['mail']['post'] = 1;
-    $resolvers['mail']['is_final'] = false;
-    $resolvers['mail']['next'] = 'dmn';
-
-    $resolvers['htaccess_id'] = [];
-    $resolvers['htaccess_id']['query'] = 'SELECT `dmn_id` FROM `htaccess` WHERE `id` = ? LIMIT 1;';
-    $resolvers['htaccess_id']['is_final'] = false;
-    $resolvers['htaccess_id']['next'] = 'dmn';
-
-    $resolvers['htaccess_group_id'] = [];
-    $resolvers['htaccess_group_id']['query'] = 'SELECT `dmn_id` FROM `htaccess_groups` WHERE `id` = ? LIMIT 1;';
-    $resolvers['htaccess_group_id']['is_final'] = false;
-    $resolvers['htaccess_group_id']['next'] = 'dmn';
-
-    $resolvers['htaccess_user_id'] = [];
-    $resolvers['htaccess_user_id']['query'] = 'SELECT `dmn_id` FROM `htaccess_users` WHERE `id` = ? LIMIT 1;';
-    $resolvers['htaccess_user_id']['is_final'] = false;
-    $resolvers['htaccess_user_id']['next'] = 'dmn';
-
-    $resolvers['hosting_plan_id'] = [];
-    $resolvers['hosting_plan_id']['query'] = 'SELECT `reseller_id` FROM `hosting_plans` WHERE `id` = ? LIMIT 1;';
-    $resolvers['hosting_plan_id']['is_final'] = true;
-
-    if (isset($resolvers[$type])) {
-        $r = $resolvers[$type];
-
-        if ($r['query']) {
-            $matches = [];
-
-            if (!preg_match('/SELECT[ \t]+`([\w]+)`[ \t]+FROM/i', $r['query'], $matches)) {
-                throw new iMSCP_Exception(tr('Malformed resolver SQL query'));
-            }
-
-            $select = $matches[1];
-            $stmt = exec_query($r['query'], $id);
-
-            if ($stmt->rowCount()) {
-                if ($r['is_final'] || $forcefinal) {
-                    $who = $stmt->fields[$select];
-                } else {
-                    $who = who_owns_this($stmt->fields[$select], $r['next']);
-                }
-            }
-        } else {
-            $ex = explode($r['separator'], $id);
-
-            if (!$r['is_final'] && !$forcefinal) {
-                $who = who_owns_this($r['pos'], $r['next']);
-            } else {
-                $who = $ex[$r['pos']];
-            }
-        }
-    }
-
-    if ($type != 'admin' && (empty($who) || $who <= 0)) {
-        $who = NULL;
-    }
-
-    return $who;
 }
 
 /**

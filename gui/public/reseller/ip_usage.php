@@ -19,7 +19,7 @@
  */
 
 /***********************************************************************************************************************
- * Script functions
+ * Functions
  */
 
 /**
@@ -30,17 +30,17 @@
  */
 function listIPDomains($tpl)
 {
-	$resellerId = $_SESSION['user_id'];
+    $resellerId = $_SESSION['user_id'];
 
-	$stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', $resellerId);
-	$data = $stmt->fetchRow();
-	$resellerIps = explode(';', substr($data['reseller_ips'], 0, -1));
+    $stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', $resellerId);
+    $data = $stmt->fetchRow();
+    $resellerIps = explode(';', substr($data['reseller_ips'], 0, -1));
 
-	$stmt = execute_query('SELECT ip_id, ip_number FROM server_ips WHERE ip_id IN (' . implode(',', $resellerIps) . ')');
+    $stmt = execute_query('SELECT ip_id, ip_number FROM server_ips WHERE ip_id IN (' . implode(',', $resellerIps) . ')');
 
-	while ($ip = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-		$stmt2 = exec_query(
-			'
+    while ($ip = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+        $stmt2 = exec_query(
+            '
 				SELECT
 					domain_name
 				FROM
@@ -65,79 +65,70 @@ function listIPDomains($tpl)
 				AND
 					created_by = :reseller_id
 			',
-			['ip_id' => $ip['ip_id'], 'reseller_id' => $resellerId]
-		);
+            ['ip_id' => $ip['ip_id'], 'reseller_id' => $resellerId]
+        );
 
-		$domainsCount = $stmt2->rowCount();
+        $domainsCount = $stmt2->rowCount();
 
-		$tpl->assign(
-			[
-				'IP' => tohtml(($ip['ip_number'] == '0.0.0.0') ? tr('Any') : $ip['ip_number']),
-				'RECORD_COUNT' => tr('Total Domains') . ': ' . ($domainsCount)
+        $tpl->assign(
+            [
+                'IP'           => tohtml(($ip['ip_number'] == '0.0.0.0') ? tr('Any') : $ip['ip_number']),
+                'RECORD_COUNT' => tr('Total Domains') . ': ' . ($domainsCount)
             ]
-		);
+        );
 
-		if ($domainsCount) {
-			while ($data = $stmt2->fetchRow(PDO::FETCH_ASSOC)) {
-				$tpl->assign('DOMAIN_NAME', tohtml(idn_to_utf8($data['domain_name'])));
-				$tpl->parse('DOMAIN_ROW', '.domain_row');
-			}
-		} else {
-			$tpl->assign('DOMAIN_NAME', tr('No used yet'));
-			$tpl->parse('DOMAIN_ROW', 'domain_row');
-		}
+        if ($domainsCount) {
+            while ($data = $stmt2->fetchRow(PDO::FETCH_ASSOC)) {
+                $tpl->assign('DOMAIN_NAME', tohtml(idn_to_utf8($data['domain_name'])));
+                $tpl->parse('DOMAIN_ROW', '.domain_row');
+            }
+        } else {
+            $tpl->assign('DOMAIN_NAME', tr('No used yet'));
+            $tpl->parse('DOMAIN_ROW', 'domain_row');
+        }
 
-		$tpl->parse('IP_ROW', '.ip_row');
-		$tpl->assign('DOMAIN_ROW', '');
-	}
+        $tpl->parse('IP_ROW', '.ip_row');
+        $tpl->assign('DOMAIN_ROW', '');
+    }
 }
 
 /***********************************************************************************************************************
- * Main script
+ * Main
  */
 
-// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
-
 check_login('reseller');
 
-if (resellerHasCustomers()) {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	/** @var $tpl iMSCP_pTemplate */
-	$tpl = new iMSCP_pTemplate();
-
-	$tpl->define_dynamic([
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'reseller/ip_usage.tpl',
-		'page_message' => 'layout',
-		'ip_row' => 'page',
-		'domain_row' => 'ip_row'
-    ]);
-
-	$reseller_id = $_SESSION['user_id'];
-
-	$tpl->assign([
-		'TR_PAGE_TITLE' => tr('Reseller / Statistics / IP Usage'),
-		'TR_DOMAIN_STATISTICS' => tr('Domain statistics'),
-		'TR_IP_RESELLER_USAGE_STATISTICS' => tr('Reseller/IP usage statistics'),
-		'TR_DOMAIN_NAME' => tr('Domain Name')
-    ]);
-
-	generateNavigation($tpl);
-	generatePageMessage($tpl);
-	listIPDomains($tpl);
-
-	$tpl->parse('LAYOUT_CONTENT', 'page');
-
-	iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
-
-	$tpl->prnt();
-
-	unsetMessages();
-} else {
-	showBadRequestErrorPage();
+if (!resellerHasCustomers()) {
+    showBadRequestErrorPage();
 }
+
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic([
+    'layout'       => 'shared/layouts/ui.tpl',
+    'page'         => 'reseller/ip_usage.tpl',
+    'page_message' => 'layout',
+    'ip_row'       => 'page',
+    'domain_row'   => 'ip_row'
+]);
+
+$reseller_id = $_SESSION['user_id'];
+
+$tpl->assign([
+    'TR_PAGE_TITLE'                   => tr('Reseller / Statistics / IP Usage'),
+    'TR_DOMAIN_STATISTICS'            => tr('Domain statistics'),
+    'TR_IP_RESELLER_USAGE_STATISTICS' => tr('Reseller/IP usage statistics'),
+    'TR_DOMAIN_NAME'                  => tr('Domain Name')
+]);
+
+generateNavigation($tpl);
+generatePageMessage($tpl);
+listIPDomains($tpl);
+
+$tpl->parse('LAYOUT_CONTENT', 'page');
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+$tpl->prnt();
+
+unsetMessages();

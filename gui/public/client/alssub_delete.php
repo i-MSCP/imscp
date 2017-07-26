@@ -38,10 +38,15 @@ if (!customerHasFeature('domain_aliases') || !isset($_GET['id'])) {
     showBadRequestErrorPage();
 }
 
+ignore_user_abort(true);
+set_time_limit(0);
+
 $id = clean_input($_GET['id']);
+
 $stmt = exec_query(
     "
-        SELECT t1.subdomain_alias_id, CONCAT(t1.subdomain_alias_name, '.', t2.alias_name) AS subdomain_alias_name
+        SELECT t1.subdomain_alias_id, CONCAT(t1.subdomain_alias_name, '.', t2.alias_name) AS subdomain_alias_name,
+            t1.subdomain_alias_mount
         FROM subdomain_alias AS t1
         JOIN domain_aliasses AS t2 ON(t2.alias_id = t1.alias_id)
         WHERE t2.domain_id = ?
@@ -62,13 +67,13 @@ $stmt = exec_query(
 );
 
 if ($stmt->rowCount()) {
-    set_page_message(tr('Subdomain you are trying to remove has email accounts. Please remove them first.'), 'error');
+    set_page_message(tr('Subdomain you are trying to remove has mail accounts. Please remove them first.'), 'error');
     redirectTo('domains_manage.php');
 }
 
 $stmt = exec_query('SELECT userid FROM ftp_users WHERE userid LIKE ? LIMIT 1', "%@$name");
 if ($stmt->rowCount()) {
-    set_page_message(tr('Subdomain alias you are trying to remove has Ftp accounts. Please remove them first.'), 'error');
+    set_page_message(tr('The subdomain alias you are trying to remove has FTP accounts. Please remove them first.'), 'error');
     redirectTo('domains_manage.php');
 }
 
@@ -78,26 +83,30 @@ try {
     $db->beginTransaction();
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSubdomain, [
-        'subdomainId' => $id,
+        'subdomainId'   => $id,
         'subdomainName' => $name,
-        'type' => 'alssub'
+        'type'          => 'alssub'
     ]);
 
-    exec_query('DELETE FROM php_ini WHERE domain_id = ? AND domain_type = ?', [$id, 'subals']);
-    exec_query('UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE subdomain_alias_id = ?', ['todelete', $id]);
-    exec_query('UPDATE ssl_certs SET status = ? WHERE domain_id = ? AND domain_type = ?', ['todelete', $id, 'alssub']);
+    exec_query("DELETE FROM php_ini WHERE domain_id = ? AND domain_type = 'subals'", $id);
+    exec_query("UPDATE ssl_certs SET status = 'todelete' WHERE domain_id = ? AND domain_type = 'alssub'", $id);
+    exec_query(
+        "UPDATE htaccess SET status = 'todelete' WHERE dmn_id = ? AND path LIKE ?",
+        [$row['domain_id'], utils_normalizePath($row['subdomain_alias_mount']) . '%']
+    );
+    exec_query("UPDATE subdomain_alias SET subdomain_alias_status = 'todelete' WHERE subdomain_alias_id = ?", $id);
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSubdomain, [
-        'subdomainId' => $id,
+        'subdomainId'   => $id,
         'subdomainName' => $name,
-        'type' => 'alssub'
+        'type'          => 'alssub'
     ]);
 
     $db->commit();
 } catch (iMSCP_Exception $e) {
     $db->rollBack();
     write_log(sprintf('System was unable to remove a subdomain: %s', $e->getMessage()), E_ERROR);
-    set_page_message('Could not remove subdomain. An unexpected error occurred.', 'error');
+    set_page_message(tr("Couldn't delete subdomain. An unexpected error occurred."), 'error');
     redirectTo('domains_manage.php');
 }
 

@@ -18,65 +18,39 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
-
 check_login('admin');
 
-if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
-	$query="
-		SELECT
-			`software_id`,
-			`software_archive`,
-			`reseller_id`
-		FROM
-			`web_software`
-		WHERE
-			`software_id` = ?
-		AND
-			`software_active` = 0
-	";
-	$rs = exec_query($query, $_GET['id']);
-	if ($rs->recordCount() != 1) {
-		set_page_message(tr('Wrong software id.'), 'error');
-		redirectTo('software_manage.php');
-	} else {
-		$update="
-			UPDATE
-				`web_software`
-			SET
-				`software_active` = 1
-			WHERE
-				`software_id` = ?
-		";
-		$res = exec_query($update, $_GET['id']);
-		$query="
-			SELECT
-				`software_id`,
-				`software_name`,
-				`software_version`,
-				`software_language`,
-				`reseller_id`,
-				`software_archive`
-			FROM
-				`web_software`
-			WHERE
-				`software_id` = ?
-		";
-		$res = exec_query($query, $_GET['id']);
-		
-		send_activated_sw (
-			$res->fields['reseller_id'],
-			$res->fields['software_archive'].".tar.gz",
-			$res->fields['software_id']
-		);
-		
-		set_page_message(tr('Software was activated.'), 'success');
-		redirectTo('software_manage.php');
-	}
-} else {
-	set_page_message(tr('Wrong software id.'), 'error');
-	redirectTo('software_manage.php');
+if (!isset($_GET['id'])) {
+    showBadRequestErrorPage();
 }
+
+$softwareId = intval($_GET['id']);
+
+$stmt = exec_query(
+    'SELECT software_id, software_archive, reseller_id FROM web_software WHERE software_id = ? AND software_active = 0',
+    intval($softwareId)
+);
+if (!$stmt->rowCount()) {
+    set_page_message(tr('Wrong software id.'), 'error');
+    redirectTo('software_manage.php');
+}
+
+$db = iMSCP_Database::getInstance();
+
+exec_query('UPDATE web_software SET software_active = 1 WHERE software_id = ?', $softwareId);
+$stmt = exec_query(
+    '
+        SELECT software_id, software_name, software_version, software_language, reseller_id, software_archive
+        FROM web_software
+        WHERE software_id = ?
+    ',
+    $softwareId
+);
+$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+
+send_activated_sw($row['reseller_id'], $row['software_archive'] . '.tar.gz', $row['software_id']);
+set_page_message(tr('Software was activated.'), 'success');
+redirectTo('software_manage.php');

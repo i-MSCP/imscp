@@ -1,43 +1,22 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
-// Available mail types
-define('MT_NORMAL_MAIL', 'normal_mail');
-define('MT_NORMAL_FORWARD', 'normal_forward');
-define('MT_ALIAS_MAIL', 'alias_mail');
-define('MT_ALIAS_FORWARD', 'alias_forward');
-define('MT_SUBDOM_MAIL', 'subdom_mail');
-define('MT_SUBDOM_FORWARD', 'subdom_forward');
-define('MT_ALSSUB_MAIL', 'alssub_mail');
-define('MT_ALSSUB_FORWARD', 'alssub_forward');
-define('MT_NORMAL_CATCHALL', 'normal_catchall');
-define('MT_SUBDOM_CATCHALL', 'subdom_catchall');
-define('MT_ALIAS_CATCHALL', 'alias_catchall');
-define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
 
 /**
  * Generates user's properties
@@ -154,9 +133,6 @@ function generate_reseller_user_props($resellerId)
  */
 function get_user_props($adminId)
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
-
     $stmt = exec_query('SELECT * FROM domain WHERE domain_id = ?', $adminId);
 
     if (!$stmt->rowCount()) {
@@ -169,8 +145,8 @@ function get_user_props($adminId)
     $als_current = records_count('domain_aliasses', 'domain_id', $adminId);
     $als_max = $data['domain_alias_limit'];
 
-    if ($cfg['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
-        // Catch all is not a mailbox and haven't to be count
+    if (iMSCP_Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
+        // Catch-all is not a mailbox and haven't to be count
         $mail_current = records_count('mail_users', "mail_type NOT RLIKE '_catchall' AND domain_id", $adminId);
     } else {
         $where = "
@@ -186,11 +162,11 @@ function get_user_props($adminId)
 
     $mail_max = $data['domain_mailacc_limit'];
     $ftp_current = sub_records_rlike_count(
-        'domain_name', 'domain', 'domain_id', $adminId, 'userid', 'ftp_users', 'userid', '@', ''
+        'domain_name', 'domain', 'domain_id', $adminId, 'ftp_users', 'userid', '@', ''
     );
 
     $ftp_current += sub_records_rlike_count(
-        'alias_name', 'domain_aliasses', 'domain_id', $adminId, 'userid', 'ftp_users', 'userid', '@', ''
+        'alias_name', 'domain_aliasses', 'domain_id', $adminId, 'ftp_users', 'userid', '@', ''
     );
     $ftp_max = $data['domain_ftpacc_limit'];
     $sql_db_current = records_count('sql_database', 'domain_id', $adminId);
@@ -260,56 +236,56 @@ function reseller_limits_check($resellerId, $hp)
     $maxDiskspaceLimit = $data['max_disk_amnt'];
 
     if ($maxDmnLimit != 0 && $currentDmnLimit + 1 > $maxDmnLimit) {
-        set_page_message(tr('You have reached your domain limit. You cannot add more domains.'), 'error');
+        set_page_message(tr('You have reached your domains limit. You cannot add more domains.'), 'error');
     }
 
     if ($maxSubLimit != 0 && $newSubLimit != -1) {
         if ($newSubLimit == 0) {
-            set_page_message(tr('You have a subdomain limit. You cannot add a user with unlimited subdomains.'), 'error');
+            set_page_message(tr('You have a subdomains limit. You cannot add a user with unlimited subdomains.'), 'error');
         } else if ($currentSubLimit + $newSubLimit > $maxSubLimit) {
-            set_page_message(tr('You are exceeding your subdomain limit.'), 'error');
+            set_page_message(tr('You are exceeding your subdomains limit.'), 'error');
         }
     }
 
     if ($maxAlsLimit != 0 && $newAlsLimit != -1) {
         if ($newAlsLimit == 0) {
-            set_page_message(tr('You have a domain alias limit. You cannot add a user with unlimited domain aliases.'), 'error');
+            set_page_message(tr('You have a domain aliases limit. You cannot add a user with unlimited domain aliases.'), 'error');
         } else if ($currentAlsLimit + $newAlsLimit > $maxAlsLimit) {
-            set_page_message(tr('You are exceeding you domain alias limit.'), 'error');
+            set_page_message(tr('You are exceeding you domain aliases limit.'), 'error');
         }
     }
 
     if ($maxMailLimit != 0) {
         if ($newMailLimit == 0) {
-            set_page_message(tr('You have a mail account limit. You cannot add a user with unlimited email accounts.'), 'error');
+            set_page_message(tr('You have a mail accounts limit. You cannot add a user with unlimited mail accounts.'), 'error');
         } else if ($currentMailLimit + $newMailLimit > $maxMailLimit) {
-            set_page_message(tr('You are exceeding your email account limit.'), 'error');
+            set_page_message(tr('You are exceeding your mail accounts limit.'), 'error');
         }
     }
 
     if ($ftpMaxLimit != 0) {
         if ($newFtpLimit == 0) {
-            set_page_message(tr('You have a FTP account limit. You cannot add a user with unlimited FTP accounts.'), 'error');
+            set_page_message(tr('You have a FTP accounts limit. You cannot add a user with unlimited FTP accounts.'), 'error');
         } else if ($currentFtpLimit + $newFtpLimit > $ftpMaxLimit) {
-            set_page_message(tr('You are exceeding your FTP account limit.'), 'error');
+            set_page_message(tr('You are exceeding your FTP accounts limit.'), 'error');
         }
     }
 
     if ($maxSqlDbLimit != 0 && $newSqlDbLimit != -1) {
         if ($newSqlDbLimit == 0) {
-            set_page_message(tr('You have a SQL database limit. You cannot add a user with unlimited SQL databases.'), 'error');
+            set_page_message(tr('You have a SQL databases limit. You cannot add a user with unlimited SQL databases.'), 'error');
         } else if ($currentSqlDbLimit + $newSqlDbLimit > $maxSqlDbLimit) {
-            set_page_message(tr('You are exceeding your SQL database limit.'), 'error');
+            set_page_message(tr('You are exceeding your SQL databases limit.'), 'error');
         }
     }
 
     if ($maxSqlUserLimit != 0 && $newSqlUserLimit != -1) {
         if ($newSqlUserLimit == 0) {
-            set_page_message(tr('You have a SQL user limit. You cannot add a user with unlimited SQL users.'), 'error');
+            set_page_message(tr('You have a SQL users limit. You cannot add a user with unlimited SQL users.'), 'error');
         } else if ($newSqlDbLimit == -1) {
             set_page_message(tr('You have disabled SQL databases for this user. You cannot have SQL users here.'), 'error');
         } else if ($currentSqlUserLimit + $newSqlUserLimit > $maxSqlUserLimit) {
-            set_page_message(tr('You are exceeding your SQL user limit.'), 'error');
+            set_page_message(tr('You are exceeding your SQL users limit.'), 'error');
         }
     }
 
@@ -334,62 +310,6 @@ function reseller_limits_check($resellerId, $hp)
     }
 
     return true;
-}
-
-/**
- * Add default emails accounts for domain or domain alias.
- *
- * @throws iMSCP_Exception_Database
- * @param int $dmnId Domain unique identifier
- * @param string $userEmail User email
- * @param string $dmnName Domain name
- * @param string $dmnType Domain type
- * @param int $subId
- * @return void
- */
-function client_mail_add_default_accounts($dmnId, $userEmail, $dmnName, $dmnType = 'domain', $subId = 0)
-{
-    $forwardType = ($dmnType == 'alias') ? 'alias_forward' : 'normal_forward';
-    $resellerEmail = $_SESSION['user_email'] ?: NULL;
-    $userEmail = $userEmail ?: NULL;
-
-    $db = iMSCP_Database::getInstance();
-
-    try {
-        $db->beginTransaction();
-        $stmt = $db->getRawInstance()->prepare(
-            '
-                INSERT INTO mail_users (
-                    mail_acc, mail_pass, mail_forward, domain_id, mail_type, sub_id, status, po_active,
-                    mail_auto_respond, quota, mail_addr
-                ) VALUES (
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-                )
-            '
-        );
-
-        foreach ([
-                     'abuse'      => $resellerEmail,
-                     'hostmaster' => $resellerEmail,
-                     'postmaster' => $resellerEmail,
-                     'webmaster'  => $userEmail
-                 ] as $email => $forwardTo
-        ) {
-            if ($forwardTo !== NULL) {
-                $stmt->execute(
-                    [
-                        $email, '_no_', $forwardTo, $dmnId, $forwardType, $subId, 'toadd', 'no', 0, NULL,
-                        $email . '@' . $dmnName
-                    ]
-                );
-            }
-        }
-
-        $db->commit();
-    } catch (PDOException $e) {
-        $db->rollBack();
-        throw new iMSCP_Exception_Database($e->getMessage(), $e->getCode(), NULL, $e);
-    }
 }
 
 /**
@@ -460,12 +380,15 @@ function resellerHasCustomers($minNbCustomers = 1)
     static $customerCount = NULL;
 
     if (NULL === $customerCount) {
-        $stmt = exec_query(
-            "SELECT COUNT(admin_id) FROM admin WHERE admin_type = 'user' AND created_by = ? AND admin_status <> 'todelete'",
+        $customerCount = exec_query(
+            "
+                SELECT COUNT(admin_id)
+                FROM admin
+                WHERE admin_type = 'user'
+                AND created_by = ?
+                AND admin_status <> 'todelete'",
             $_SESSION['user_id']
-        );
-
-        $customerCount = $stmt->fetchRow(PDO::FETCH_COLUMN);
+        )->fetchRow(PDO::FETCH_COLUMN);
     }
 
     return ($customerCount >= $minNbCustomers);

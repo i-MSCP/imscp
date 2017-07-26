@@ -22,20 +22,20 @@
             fixQuotaField();
         } else {
             $("input[name='account_type']").on('change', function () {
-                    if ($(this).val() == '1') { // Normal email account
+                    if ($(this).val() === '1') { // Normal mail account
                         $("#tr_password, #tr_password_rep, #tr_quota").show();
                         $("#tr_forward_list").hide();
                         fixQuotaField();
                         return;
                     }
 
-                    if ($(this).val() == '2') { // Forward only email account
+                    if ($(this).val() === '2') { // Forward only mail account
                         $("#tr_forward_list").show();
                         $("#tr_password, #tr_password_rep, #tr_quota").hide();
                         return;
                     }
 
-                    // Normal + Forward email account
+                    // Normal + Forward mail account
                     $("#tr_password, #tr_password_rep, #tr_quota").show();
                     $("#tr_forward_list").show();
                 }

@@ -94,8 +94,8 @@ function client_generateSqlUserList($tpl, $customerId, $databaseId)
     if ($stmt->rowCount()) {
         while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
             $tpl->assign([
-                'SQLUSER_ID' => $row['sqlu_id'],
-                'SQLUSER_IDN'   => tohtml($row['sqlu_name'] . '@' . decode_idna($row['sqlu_host'])),
+                'SQLUSER_ID'  => $row['sqlu_id'],
+                'SQLUSER_IDN' => tohtml($row['sqlu_name'] . '@' . decode_idna($row['sqlu_host'])),
             ]);
             $tpl->parse('SQLUSER_LIST', '.sqluser_list');
         }
@@ -113,7 +113,7 @@ function client_generateSqlUserList($tpl, $customerId, $databaseId)
  */
 function client_isSqlUser($sqlUser, $sqlUserHost)
 {
-    return (bool) exec_query(
+    return (bool)exec_query(
         'SELECT COUNT(User) FROM mysql.user WHERE User = ? AND Host = ?', [$sqlUser, $sqlUserHost]
     )->fetchRow(PDO::FETCH_COLUMN);
 }
@@ -282,8 +282,8 @@ function client_addSqlUser($customerId, $databaseId)
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlUser);
 
+    write_log(sprintf('A SQL user has been added by %s', decode_idna($_SESSION['user_logged'])), E_USER_NOTICE);
     set_page_message(tr('SQL user successfully added.'), 'success');
-    write_log(sprintf("%s added new SQL user: %s", $_SESSION['user_logged'], tohtml($user)), E_USER_NOTICE);
     redirectTo('sql_manage.php');
 }
 

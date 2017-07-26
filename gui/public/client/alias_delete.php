@@ -32,14 +32,21 @@ if (!customerHasFeature('domain_aliases') || !isset($_GET['id'])) {
 }
 
 $id = intval($_GET['id']);
+
 $stmt = exec_query(
-    'SELECT alias_name FROM domain_aliasses JOIN domain USING(domain_id) WHERE alias_id = ? AND domain_admin_id = ?',
+    '
+        SELECT t1.domain_id, t1.alias_name, t1.alias_mount
+        FROM domain_aliasses AS t1
+        JOIN domain AS t2 USING(domain_id)
+        WHERE t1.alias_id = ?
+        AND t2.domain_admin_id = ?
+    ',
     [$id, $_SESSION['user_id']]
 );
 
 if ($stmt->rowCount()) {
     $row = $stmt->fetchRow();
-    deleteDomainAlias($id, $row['alias_name']);
+    deleteDomainAlias($row['domain_id'], $id, $row['alias_name'], $row['alias_mount']);
     redirectTo('domains_manage.php');
 }
 

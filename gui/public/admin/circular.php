@@ -39,15 +39,15 @@ function admin_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData
     }
 
     $ret = send_mail([
-        'mail_id' => 'admin-circular',
-        'fname' => $rcptToData['fname'],
-        'lname' => $rcptToData['lname'],
-        'username' => $rcptToData['admin_name'],
-        'email' => $rcptToData['email'],
-        'sender_name' => $senderName,
+        'mail_id'      => 'admin-circular',
+        'fname'        => $rcptToData['fname'],
+        'lname'        => $rcptToData['lname'],
+        'username'     => $rcptToData['admin_name'],
+        'email'        => $rcptToData['email'],
+        'sender_name'  => $senderName,
         'sender_email' => encode_idna($senderEmail),
-        'subject' => $subject,
-        'message' => $body
+        'subject'      => $subject,
+        'message'      => $body
     ]);
 
     if (!$ret) {
@@ -186,11 +186,11 @@ function admin_sendCircular()
     }
 
     $responses = iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeSendCircular, [
-        'sender_name' => $senderName,
+        'sender_name'  => $senderName,
         'sender_email' => $senderEmail,
-        'rcpt_to' => $rcptTo,
-        'subject' => $subject,
-        'body' => $body
+        'rcpt_to'      => $rcptTo,
+        'subject'      => $subject,
+        'body'         => $body
     ]);
 
     if ($responses->isStopped()) {
@@ -225,11 +225,11 @@ function admin_sendCircular()
     }
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterSendCircular, [
-        'sender_name' => $senderName,
+        'sender_name'  => $senderName,
         'sender_email' => $senderEmail,
-        'rcpt_to' => $rcptTo,
-        'subject' => $subject,
-        'body' => $body
+        'rcpt_to'      => $rcptTo,
+        'subject'      => $subject,
+        'body'         => $body
     ]);
     set_page_message(tr('Circular successfully sent.'), 'success');
     write_log(sprintf('A circular has been sent by an administrator: %s', $_SESSION['user_logged']), E_USER_NOTICE);
@@ -279,10 +279,10 @@ function generatePage($tpl)
     }
 
     $tpl->assign([
-        'SENDER_NAME' => tohtml($senderName),
+        'SENDER_NAME'  => tohtml($senderName),
         'SENDER_EMAIL' => tohtml($senderEmail),
-        'SUBJECT' => tohtml($subject),
-        'BODY' => tohtml($body)
+        'SUBJECT'      => tohtml($subject),
+        'BODY'         => tohtml($body)
     ]);
 
     $rcptToOptions = [
@@ -315,9 +315,9 @@ function generatePage($tpl)
 
     foreach ($rcptToOptions as $option) {
         $tpl->assign([
-            'RCPT_TO' => $option[0],
+            'RCPT_TO'    => $option[0],
             'TR_RCPT_TO' => $option[1],
-            'SELECTED' => $rcptTo == $option[0] ? ' selected="selected"' : ''
+            'SELECTED'   => $rcptTo == $option[0] ? ' selected="selected"' : ''
         ]);
         $tpl->parse('RCPT_TO_OPTION', '.rcpt_to_option');
     }
@@ -342,21 +342,21 @@ if (!empty($_POST) && admin_sendCircular()) {
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'admin/circular.tpl',
-    'page_message' => 'layout',
+    'layout'         => 'shared/layouts/ui.tpl',
+    'page'           => 'admin/circular.tpl',
+    'page_message'   => 'layout',
     'rcpt_to_option' => 'page'
 ]);
 $tpl->assign([
-    'TR_PAGE_TITLE' => tr('Admin / Users / Circular'),
-    'TR_CIRCULAR' => tr('Circular'),
-    'TR_SEND_TO' => tr('Send to'),
-    'TR_SUBJECT' => tr('Subject'),
-    'TR_BODY' => tr('Body'),
-    'TR_SENDER_EMAIL' => tr('Sender email'),
-    'TR_SENDER_NAME' => tr('Sender name'),
+    'TR_PAGE_TITLE'    => tr('Admin / Users / Circular'),
+    'TR_CIRCULAR'      => tr('Circular'),
+    'TR_SEND_TO'       => tr('Send to'),
+    'TR_SUBJECT'       => tr('Subject'),
+    'TR_BODY'          => tr('Body'),
+    'TR_SENDER_EMAIL'  => tr('Sender email'),
+    'TR_SENDER_NAME'   => tr('Sender name'),
     'TR_SEND_CIRCULAR' => tr('Send circular'),
-    'TR_CANCEL' => tr('Cancel')
+    'TR_CANCEL'        => tr('Cancel')
 ]);
 
 generateNavigation($tpl);
@@ -367,3 +367,4 @@ $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
+unsetMessages();

@@ -146,7 +146,7 @@ function addCustomer()
         $phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniDisableFunctions, $phpMailFunction, $phpiniPostMaxSize,
         $phpiniUploadMaxFileSize, $phpiniMaxExecutionTime, $phpiniMaxInputTime, $phpiniMemoryLimit, $extMailServer,
         $webFolderProtection, $mailQuota
-    ) = explode(';', $props);
+        ) = explode(';', $props);
 
     $php = str_replace('_', '', $php);
     $cgi = str_replace('_', '', $cgi);
@@ -223,7 +223,7 @@ function addCustomer()
         $phpini->saveDomainIni($adminId, $dmnId, 'dmn');
 
         if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
-            client_mail_add_default_accounts($dmnId, $email, $dmnName);
+            createDefaultMailAccounts($dmnId, $email, $dmnName);
         }
 
         send_add_user_auto_msg($_SESSION['user_id'], $adminName, $password, $email, $firstName, $lastName, tr('Customer'));

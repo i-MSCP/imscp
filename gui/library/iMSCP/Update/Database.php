@@ -1755,7 +1755,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Delete invalid default email accounts
+     * Delete invalid default mail accounts
      *
      * @return string SQL statement to be executed
      */
@@ -1837,7 +1837,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Fixed: mail_users.po_active column of forward only and catchall accounts must be set to 'no'
+     * Fixed: mail_users.po_active column of forward only and catch-all accounts must be set to 'no'
      *
      * @return string SQL statement to be executed
      */

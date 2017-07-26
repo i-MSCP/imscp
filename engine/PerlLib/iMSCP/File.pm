@@ -67,7 +67,7 @@ sub get
 
     local $/;
     $self->{'fileContent'} = <$fh>;
-    close($fh);
+    close( $fh );
     $self->{'fileContent'}
 }
 
@@ -134,7 +134,7 @@ sub save
 
     $self->{'fileContent'} //= '';
     print {$fh} $self->{'fileContent'};
-    close($fh);
+    close( $fh );
     0;
 }
 

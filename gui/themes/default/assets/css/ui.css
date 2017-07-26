@@ -745,6 +745,7 @@ table {
 
 table input,
 table select,
+table select[multiple],
 table textarea,
 table button {
     font-family: Geneva, Arial, Helvetica, sans-serif;
@@ -1201,7 +1202,10 @@ table input[type="password"] {
     min-width: 200px;
 }
 
-input, select, textarea {
+input,
+select,
+select[multiple],
+textarea {
     vertical-align: middle;
 }
 
@@ -1215,6 +1219,7 @@ input[type="number"],
 input[type="search"],
 input[type="password"],
 select,
+select[multiple],
 textarea {
     padding: 4px;
     border: 1px solid;
@@ -1309,6 +1314,7 @@ table .graph {
     max-width: 90%;
     text-wrap: none;
     word-wrap:break-word;
+    white-space:pre
 }
 .ui-tooltip.ui-tooltip-notice {
     padding-left: 45px;

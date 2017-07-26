@@ -169,7 +169,7 @@ sub _getData
             MAIL_HAS_AUTO_RESPONDER => $self->{'mail_auto_respond'},
             MAIL_STATUS             => $self->{'status'},
             MAIL_ADDR               => $self->{'mail_addr'},
-            MAIL_CATCHALL           => (index( $self->{'mail_type'}, '_catchall' ) != -1) ? $self->{'mail_acc'} : ''
+            MAIL_CATCHALL           => (index( $self->{'mail_type'}, 'catchall' ) != -1) ? $self->{'mail_acc'} : undef
         }
     } unless %{$self->{'_data'}};
 

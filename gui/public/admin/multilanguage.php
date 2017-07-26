@@ -44,7 +44,7 @@ function admin_generateLanguagesList($tpl)
             'NUMBER_TRANSLATED_STRINGS' => ($language['locale'] == 'auto')
                 ? $language['translatedStrings'] : tohtml(tr('%d strings translated', $language['translatedStrings'])),
             'LANGUAGE_REVISION'         => tohtml($language['revision']),
-            'LAST_TRANSLATOR'           => tohtml($language['lastTranslator']), 
+            'LAST_TRANSLATOR'           => tohtml($language['lastTranslator']),
             'LOCALE_CHECKED'            => ($language['locale'] == $defaultLanguage) ? 'checked' : '',
             'LOCALE'                    => tohtml($language['locale'], 'htmlAttr')
         ]);
@@ -113,3 +113,5 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 EventManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

@@ -26,62 +26,62 @@
  */
 class iMSCP_I18n_Adapter_Zend extends Zend_Translate_Adapter
 {
-	/**
-	 * Constructor.
-	 *
-	 * We do no want use Zend translation feature. This constructor is only intended
-	 * to discard the Zend_Translate_Adapter::_constructor() call.
-	 */
-	public function __construct()
-	{
+    /**
+     * Constructor.
+     *
+     * We do no want use Zend translation feature. This constructor is only intended
+     * to discard the Zend_Translate_Adapter::_constructor() call.
+     */
+    public function __construct()
+    {
 
-	}
+    }
 
-	/**
-	 * Pure compatibility issue - Always return FALSE.
-	 *
-	 * @param $messageId
-	 * @param bool $original
-	 * @param null $locale
-	 * @return bool
-	 */
-	public function isTranslated($messageId, $original = false, $locale = null)
-	{
-		return false;
-	}
+    /**
+     * Pure compatibility issue - Always return FALSE.
+     *
+     * @param $messageId
+     * @param bool $original
+     * @param null $locale
+     * @return bool
+     */
+    public function isTranslated($messageId, $original = false, $locale = NULL)
+    {
+        return false;
+    }
 
-	/**
-	 * Translates the given string by using i-MSCP translation system.
-	 *
-	 * @param $messageId $messageId Translation string
-	 * @param null $locale UNUSED HERE
-	 * @return string
-	 */
-	public function translate($messageId, $locale = null)
-	{
-		return tr($messageId);
-	}
+    /**
+     * Translates the given string by using i-MSCP translation system.
+     *
+     * @param $messageId $messageId Translation string
+     * @param null $locale UNUSED HERE
+     * @return string
+     */
+    public function translate($messageId, $locale = NULL)
+    {
+        return tr($messageId);
+    }
 
-	/**
-	 * Returns the adapter name
-	 *
-	 * @return string
-	 */
-	public function toString()
-	{
-		// TODO: Implement toString() method.
-	}
+    /**
+     * Returns the adapter name
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        // TODO: Implement toString() method.
+    }
 
-	/**
-	 * Load translation data
-	 *
-	 * @param  mixed $data
-	 * @param  string|Zend_Locale $locale
-	 * @param  array $options (optional)
-	 * @return array
-	 */
-	protected function _loadTranslationData($data, $locale, array $options = [])
-	{
-		// TODO: Implement _loadTranslationData() method.
-	}
+    /**
+     * Load translation data
+     *
+     * @param  mixed $data
+     * @param  string|Zend_Locale $locale
+     * @param  array $options (optional)
+     * @return array
+     */
+    protected function _loadTranslationData($data, $locale, array $options = [])
+    {
+        // TODO: Implement _loadTranslationData() method.
+    }
 }

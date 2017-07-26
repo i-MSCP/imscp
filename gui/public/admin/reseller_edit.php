@@ -31,9 +31,9 @@
  */
 function &admin_getData($resellerId, $forUpdate = false)
 {
-    static $data = null;
+    static $data = NULL;
 
-    if (null !== $data) {
+    if (NULL !== $data) {
         return $data;
     }
 
@@ -197,14 +197,14 @@ function &admin_getData($resellerId, $forUpdate = false)
 function _admin_generateAccountForm($tpl, &$data)
 {
     $tpl->assign([
-        'TR_ACCOUNT_DATA' => tr('Account data'),
-        'TR_RESELLER_NAME' => tr('Name'),
-        'RESELLER_NAME' => tohtml($data['admin_name']),
-        'TR_PASSWORD' => tr('Password'),
+        'TR_ACCOUNT_DATA'          => tr('Account data'),
+        'TR_RESELLER_NAME'         => tr('Name'),
+        'RESELLER_NAME'            => tohtml($data['admin_name']),
+        'TR_PASSWORD'              => tr('Password'),
         'TR_PASSWORD_CONFIRMATION' => tr('Password confirmation'),
-        'PASSWORD_CONFIRMATION' => tohtml($data['password_confirmation']),
-        'TR_EMAIL' => tr('Email'),
-        'EMAIL' => tohtml($data['email'])
+        'PASSWORD_CONFIRMATION'    => tohtml($data['password_confirmation']),
+        'TR_EMAIL'                 => tr('Email'),
+        'EMAIL'                    => tohtml($data['email'])
     ]);
 }
 
@@ -222,9 +222,9 @@ function _admin_generateIpListForm($tpl, &$data)
 
     $tpl->assign([
         'TR_IP_ADDRESS' => tr('IP address'),
-        'TR_IP_LABEL' => tr('Label'),
-        'TR_ASSIGN' => tr('Assign'),
-        'TR_STATUS' => tr('Usage status')
+        'TR_IP_LABEL'   => tr('Label'),
+        'TR_ASSIGN'     => tr('Assign'),
+        'TR_STATUS'     => tr('Usage status')
     ]);
 
     iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
@@ -236,10 +236,10 @@ function _admin_generateIpListForm($tpl, &$data)
         $resellerHasIp = in_array($ipData['ip_id'], $data['reseller_ips']);
         $isUsedIp = in_array($ipData['ip_id'], $data['used_ips']);
         $tpl->assign([
-            'IP_ID' => tohtml($ipData['ip_id']),
-            'IP_NUMBER' => tohtml(($ipData['ip_number'] == '0.0.0.0') ? tr('Any') : $ipData['ip_number']),
+            'IP_ID'       => tohtml($ipData['ip_id']),
+            'IP_NUMBER'   => tohtml(($ipData['ip_number'] == '0.0.0.0') ? tr('Any') : $ipData['ip_number']),
             'IP_ASSIGNED' => $resellerHasIp ? ' checked' : '',
-            'IP_STATUS' => $isUsedIp ? $assignedTranslation : $unusedTranslation,
+            'IP_STATUS'   => $isUsedIp ? $assignedTranslation : $unusedTranslation,
             'IP_READONLY' => $isUsedIp ? ' title="' . tohtml(tr('You cannot unassign an IP address already in use.'), 'htmlAttr') . '" readonly' : ''
         ]);
         $tpl->parse('IP_BLOCK', '.ip_block');
@@ -256,25 +256,25 @@ function _admin_generateIpListForm($tpl, &$data)
 function _admin_generateLimitsForm($tpl, &$data)
 {
     $tpl->assign([
-        'TR_ACCOUNT_LIMITS' => tr('Account limits'),
-        'TR_MAX_DMN_CNT' => tr('Domain limit') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
-        'MAX_DMN_CNT' => tohtml($data['max_dmn_cnt']),
-        'TR_MAX_SUB_CNT' => tr('Subdomain limit') . '<br><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
-        'MAX_SUB_CNT' => tohtml($data['max_sub_cnt']),
-        'TR_MAX_ALS_CNT' => tr('Domain alias limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
-        'MAX_ALS_CNT' => tohtml($data['max_als_cnt']),
-        'TR_MAX_MAIL_CNT' => tr('Email account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
-        'MAX_MAIL_CNT' => tohtml($data['max_mail_cnt']),
-        'TR_MAX_FTP_CNT' => tr('FTP account limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
-        'MAX_FTP_CNT' => tohtml($data['max_ftp_cnt']),
-        'TR_MAX_SQL_DB_CNT' => tr('SQL database limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
-        'MAX_SQL_DB_CNT' => tohtml($data['max_sql_db_cnt']),
-        'TR_MAX_SQL_USER_CNT' => tr('SQL user limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ' . tr('unlimited') . ')</i>',
-        'MAX_SQL_USER_CNT' => tohtml($data['max_sql_user_cnt']),
-        'TR_MAX_TRAFF_AMNT' => tr('Monthly traffic limit [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
-        'MAX_TRAFF_AMNT' => tohtml($data['max_traff_amnt']),
-        'TR_MAX_DISK_AMNT' => tr('Disk space limit [MiB]') . '<br/><i>(0 ' . tr('unlimited') . ')</i>',
-        'MAX_DISK_AMNT' => tohtml($data['max_disk_amnt'])
+        'TR_ACCOUNT_LIMITS'   => tr('Account limits'),
+        'TR_MAX_DMN_CNT'      => tr('Domains limit') . '<br/><i>(0 ∞)</i>',
+        'MAX_DMN_CNT'         => tohtml($data['max_dmn_cnt']),
+        'TR_MAX_SUB_CNT'      => tr('Subdomains limit') . '<br><i>(-1 ' . tr('disabled') . ', 0 ∞)</i>',
+        'MAX_SUB_CNT'         => tohtml($data['max_sub_cnt']),
+        'TR_MAX_ALS_CNT'      => tr('Domain aliases limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ∞)</i>',
+        'MAX_ALS_CNT'         => tohtml($data['max_als_cnt']),
+        'TR_MAX_MAIL_CNT'     => tr('Mail accounts limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ∞)</i>',
+        'MAX_MAIL_CNT'        => tohtml($data['max_mail_cnt']),
+        'TR_MAX_FTP_CNT'      => tr('FTP accounts limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ∞)</i>',
+        'MAX_FTP_CNT'         => tohtml($data['max_ftp_cnt']),
+        'TR_MAX_SQL_DB_CNT'   => tr('SQL databases limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ∞)</i>',
+        'MAX_SQL_DB_CNT'      => tohtml($data['max_sql_db_cnt']),
+        'TR_MAX_SQL_USER_CNT' => tr('SQL users limit') . '<br/><i>(-1 ' . tr('disabled') . ', 0 ∞)</i>',
+        'MAX_SQL_USER_CNT'    => tohtml($data['max_sql_user_cnt']),
+        'TR_MAX_TRAFF_AMNT'   => tr('Monthly traffic limit [MiB]') . '<br/><i>(0 ∞)</i>',
+        'MAX_TRAFF_AMNT'      => tohtml($data['max_traff_amnt']),
+        'TR_MAX_DISK_AMNT'    => tr('Disk space limit [MiB]') . '<br/><i>(0 ∞)</i>',
+        'MAX_DISK_AMNT'       => tohtml($data['max_disk_amnt'])
     ]);
 }
 
@@ -287,54 +287,53 @@ function _admin_generateLimitsForm($tpl, &$data)
  */
 function _admin_generateFeaturesForm($tpl, &$data)
 {
-    $cfg = iMSCP_Registry::get('config');
     $tpl->assign([
-        'TR_FEATURES' => tr('Features'),
-        'TR_SETTINGS' => tr('PHP Settings'),
-        'TR_PHP_EDITOR' => tr('PHP Editor'),
-        'TR_PHP_EDITOR_SETTINGS' => tr('PHP Settings'),
-        'TR_PERMISSIONS' => tr('PHP Permissions'),
-        'TR_DIRECTIVES_VALUES' => tr('PHP directives values'),
-        'TR_FIELDS_OK' => tr('All fields are valid.'),
-        'PHP_INI_SYSTEM_YES' => $data['php_ini_system'] == 'yes' ? ' checked' : '',
-        'PHP_INI_SYSTEM_NO' => $data['php_ini_system'] != 'yes' ? ' checked' : '',
-        'TR_PHP_INI_AL_ALLOW_URL_FOPEN' => tr('Can edit the PHP %s configuration option', '<b>allow_url_fopen</b>'),
-        'PHP_INI_AL_ALLOW_URL_FOPEN_YES' => $data['php_ini_al_allow_url_fopen'] == 'yes' ? ' checked' : '',
-        'PHP_INI_AL_ALLOW_URL_FOPEN_NO' => $data['php_ini_al_allow_url_fopen'] != 'yes' ? ' checked' : '',
-        'TR_PHP_INI_AL_DISPLAY_ERRORS' => tr('Can edit the PHP %s configuration option', '<b>display_errors</b>'),
-        'PHP_INI_AL_DISPLAY_ERRORS_YES' => $data['php_ini_al_display_errors'] == 'yes' ? ' checked' : '',
-        'PHP_INI_AL_DISPLAY_ERRORS_NO' => $data['php_ini_al_display_errors'] != 'yes' ? ' checked' : '',
-        'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s configuration option', '<b>disable_functions</b>'),
+        'TR_FEATURES'                      => tr('Features'),
+        'TR_SETTINGS'                      => tr('PHP Settings'),
+        'TR_PHP_EDITOR'                    => tr('PHP Editor'),
+        'TR_PHP_EDITOR_SETTINGS'           => tr('PHP Settings'),
+        'TR_PERMISSIONS'                   => tr('PHP Permissions'),
+        'TR_DIRECTIVES_VALUES'             => tr('PHP directives values'),
+        'TR_FIELDS_OK'                     => tr('All fields are valid.'),
+        'PHP_INI_SYSTEM_YES'               => $data['php_ini_system'] == 'yes' ? ' checked' : '',
+        'PHP_INI_SYSTEM_NO'                => $data['php_ini_system'] != 'yes' ? ' checked' : '',
+        'TR_PHP_INI_AL_ALLOW_URL_FOPEN'    => tr('Can edit the PHP %s configuration option', '<b>allow_url_fopen</b>'),
+        'PHP_INI_AL_ALLOW_URL_FOPEN_YES'   => $data['php_ini_al_allow_url_fopen'] == 'yes' ? ' checked' : '',
+        'PHP_INI_AL_ALLOW_URL_FOPEN_NO'    => $data['php_ini_al_allow_url_fopen'] != 'yes' ? ' checked' : '',
+        'TR_PHP_INI_AL_DISPLAY_ERRORS'     => tr('Can edit the PHP %s configuration option', '<b>display_errors</b>'),
+        'PHP_INI_AL_DISPLAY_ERRORS_YES'    => $data['php_ini_al_display_errors'] == 'yes' ? ' checked' : '',
+        'PHP_INI_AL_DISPLAY_ERRORS_NO'     => $data['php_ini_al_display_errors'] != 'yes' ? ' checked' : '',
+        'TR_PHP_INI_AL_DISABLE_FUNCTIONS'  => tr('Can edit the PHP %s configuration option', '<b>disable_functions</b>'),
         'PHP_INI_AL_DISABLE_FUNCTIONS_YES' => $data['php_ini_al_disable_functions'] == 'yes' ? ' checked' : '',
-        'PHP_INI_AL_DISABLE_FUNCTIONS_NO' => $data['php_ini_al_disable_functions'] != 'yes' ? ' checked' : '',
-        'TR_MEMORY_LIMIT' => tr('PHP %s configuration option', '<b>memory_limit</b>'),
-        'MEMORY_LIMIT' => tohtml($data['memory_limit']),
-        'TR_UPLOAD_MAX_FILESIZE' => tr('PHP %s configuration option', '<b>upload_max_filesize</b>'),
-        'UPLOAD_MAX_FILESIZE' => tohtml($data['upload_max_filesize']),
-        'TR_POST_MAX_SIZE' => tr('PHP %s configuration option', '<b>post_max_size</b>'),
-        'POST_MAX_SIZE' => tohtml($data['post_max_size']),
-        'TR_MAX_EXECUTION_TIME' => tr('PHP %s configuration option', '<b>max_execution_time</b>'),
-        'MAX_EXECUTION_TIME' => tohtml($data['max_execution_time']),
-        'TR_MAX_INPUT_TIME' => tr('PHP %s configuration option', '<b>max_input_time</b>'),
-        'MAX_INPUT_TIME' => tohtml($data['max_input_time']),
-        'TR_SOFTWARES_INSTALLER' => tr('Software installer'),
-        'SOFTWARES_INSTALLER_YES' => $data['software_allowed'] == 'yes' ? ' checked' : '',
-        'SOFTWARES_INSTALLER_NO' => $data['software_allowed'] != 'yes' ? ' checked' : '',
-        'TR_SOFTWARES_REPOSITORY' => tr('Software repository'),
-        'SOFTWARES_REPOSITORY_YES' => $data['softwaredepot_allowed'] == 'yes' ? ' checked' : '',
-        'SOFTWARES_REPOSITORY_NO' => $data['softwaredepot_allowed'] != 'yes' ? ' checked' : '',
-        'TR_WEB_SOFTWARES_REPOSITORY' => tr('Web software repository'),
-        'WEB_SOFTWARES_REPOSITORY_YES' => $data['websoftwaredepot_allowed'] == 'yes' ? ' checked' : '',
-        'WEB_SOFTWARES_REPOSITORY_NO' => $data['websoftwaredepot_allowed'] != 'yes' ? ' checked' : '',
-        'TR_SUPPORT_SYSTEM' => tr('Support system'),
-        'SUPPORT_SYSTEM_YES' => $data['support_system'] == 'yes' ? ' checked' : '',
-        'SUPPORT_SYSTEM_NO' => $data['support_system'] != 'yes' ? ' checked' : '',
-        'TR_PHP_INI_PERMISSION_HELP' => tohtml(tr('If set to `yes`, the reseller can allows his customers to edit this PHP configuration option.'), 'htmlAttr'),
+        'PHP_INI_AL_DISABLE_FUNCTIONS_NO'  => $data['php_ini_al_disable_functions'] != 'yes' ? ' checked' : '',
+        'TR_MEMORY_LIMIT'                  => tr('PHP %s configuration option', '<b>memory_limit</b>'),
+        'MEMORY_LIMIT'                     => tohtml($data['memory_limit']),
+        'TR_UPLOAD_MAX_FILESIZE'           => tr('PHP %s configuration option', '<b>upload_max_filesize</b>'),
+        'UPLOAD_MAX_FILESIZE'              => tohtml($data['upload_max_filesize']),
+        'TR_POST_MAX_SIZE'                 => tr('PHP %s configuration option', '<b>post_max_size</b>'),
+        'POST_MAX_SIZE'                    => tohtml($data['post_max_size']),
+        'TR_MAX_EXECUTION_TIME'            => tr('PHP %s configuration option', '<b>max_execution_time</b>'),
+        'MAX_EXECUTION_TIME'               => tohtml($data['max_execution_time']),
+        'TR_MAX_INPUT_TIME'                => tr('PHP %s configuration option', '<b>max_input_time</b>'),
+        'MAX_INPUT_TIME'                   => tohtml($data['max_input_time']),
+        'TR_SOFTWARES_INSTALLER'           => tr('Software installer'),
+        'SOFTWARES_INSTALLER_YES'          => $data['software_allowed'] == 'yes' ? ' checked' : '',
+        'SOFTWARES_INSTALLER_NO'           => $data['software_allowed'] != 'yes' ? ' checked' : '',
+        'TR_SOFTWARES_REPOSITORY'          => tr('Software repository'),
+        'SOFTWARES_REPOSITORY_YES'         => $data['softwaredepot_allowed'] == 'yes' ? ' checked' : '',
+        'SOFTWARES_REPOSITORY_NO'          => $data['softwaredepot_allowed'] != 'yes' ? ' checked' : '',
+        'TR_WEB_SOFTWARES_REPOSITORY'      => tr('Web software repository'),
+        'WEB_SOFTWARES_REPOSITORY_YES'     => $data['websoftwaredepot_allowed'] == 'yes' ? ' checked' : '',
+        'WEB_SOFTWARES_REPOSITORY_NO'      => $data['websoftwaredepot_allowed'] != 'yes' ? ' checked' : '',
+        'TR_SUPPORT_SYSTEM'                => tr('Support system'),
+        'SUPPORT_SYSTEM_YES'               => $data['support_system'] == 'yes' ? ' checked' : '',
+        'SUPPORT_SYSTEM_NO'                => $data['support_system'] != 'yes' ? ' checked' : '',
+        'TR_PHP_INI_PERMISSION_HELP'       => tohtml(tr('If set to `yes`, the reseller can allows his customers to edit this PHP configuration option.'), 'htmlAttr'),
         'TR_PHP_INI_AL_MAIL_FUNCTION_HELP' => tohtml(tr('If set to `yes`, the reseller can enable/disable the PHP mail function for his customers, else, the PHP mail function is disabled.'), 'htmlAttr'),
-        'TR_YES' => tr('Yes'),
-        'TR_NO' => tr('No'),
-        'TR_MIB' => tr('MiB'),
-        'TR_SEC' => tr('Sec.')
+        'TR_YES'                           => tr('Yes'),
+        'TR_NO'                            => tr('No'),
+        'TR_MIB'                           => tr('MiB'),
+        'TR_SEC'                           => tr('Sec.')
     ]);
 
     iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
@@ -348,15 +347,15 @@ function _admin_generateFeaturesForm($tpl, &$data)
             ? iMSCP_Registry::get('errFieldsStack') : [];
     });
 
-    if ($cfg['HTTPD_PACKAGE'] != 'Servers::httpd::apache_itk') {
+    if (iMSCP_Registry::get('config')['HTTPD_PACKAGE'] != 'Servers::httpd::apache_itk') {
         $tpl->assign([
-            'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s configuration option', '<b>disable_functions</b>'),
+            'TR_PHP_INI_AL_DISABLE_FUNCTIONS'  => tr('Can edit the PHP %s configuration option', '<b>disable_functions</b>'),
             'PHP_INI_AL_DISABLE_FUNCTIONS_YES' => $data['php_ini_al_disable_functions'] == 'yes' ? ' checked' : '',
-            'PHP_INI_AL_DISABLE_FUNCTIONS_NO' => $data['php_ini_al_disable_functions'] != 'yes' ? ' checked' : '',
+            'PHP_INI_AL_DISABLE_FUNCTIONS_NO'  => $data['php_ini_al_disable_functions'] != 'yes' ? ' checked' : '',
 
-            'TR_PHP_INI_AL_MAIL_FUNCTION' => tr('Can use the PHP %s function', '<b>mail</b>'),
+            'TR_PHP_INI_AL_MAIL_FUNCTION'  => tr('Can use the PHP %s function', '<b>mail</b>'),
             'PHP_INI_AL_MAIL_FUNCTION_YES' => $data['php_ini_al_mail_function'] == 'yes' ? ' checked' : '',
-            'PHP_INI_AL_MAIL_FUNCTION_NO' => $data['php_ini_al_mail_function'] != 'yes' ? ' checked' : '',
+            'PHP_INI_AL_MAIL_FUNCTION_NO'  => $data['php_ini_al_mail_function'] != 'yes' ? ' checked' : '',
         ]);
     } else {
         $tpl->assign('PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK', '');
@@ -371,41 +370,41 @@ function _admin_generateFeaturesForm($tpl, &$data)
  * @param array $data Domain data
  * @return void
  */
-function  _admin_generatePersonalDataFrom($tpl, &$data)
+function _admin_generatePersonalDataFrom($tpl, &$data)
 {
     $tpl->assign([
         'TR_PERSONAL_DATA' => tr('Personal data'),
-        'TR_CUSTOMER_ID' => tr('Customer ID'),
-        'CUSTOMER_ID' => tohtml($data['customer_id']),
-        'TR_FNAME' => tr('First name'),
-        'FNAME' => tohtml($data['fname']),
-        'TR_LNAME' => tr('Last name'),
-        'LNAME' => tohtml($data['lname']),
-        'TR_GENDER' => tr('Gender'),
-        'TR_MALE' => tr('Male'),
-        'MALE' => $data['gender'] == 'M' ? ' selected' : '',
-        'TR_FEMALE' => tr('Female'),
-        'FEMALE' => $data['gender'] == 'F' ? ' selected' : '',
-        'TR_UNKNOWN' => tr('Unknown'),
-        'UNKNOWN' => $data['gender'] != 'M' && $data['gender'] != 'F' ? ' selected' : '',
-        'TR_FIRM' => tr('Company'),
-        'FIRM' => tohtml($data['firm']),
-        'TR_STREET1' => tr('Street 1'),
-        'STREET1' => tohtml($data['street1']),
-        'TR_STREET2' => tr('Street 2'),
-        'STREET2' => tohtml($data['street2']),
-        'TR_ZIP' => tr('Zip code'),
-        'ZIP' => tohtml($data['zip']),
-        'TR_CITY' => tr('City'),
-        'CITY' => tohtml($data['city']),
-        'TR_STATE' => tr('State'),
-        'STATE' => tohtml($data['state']),
-        'TR_COUNTRY' => tr('Country'),
-        'COUNTRY' => tohtml($data['country']),
-        'TR_PHONE' => tr('Phone'),
-        'PHONE' => tohtml($data['phone']),
-        'TR_FAX' => tr('Fax'),
-        'FAX' => tohtml($data['fax'])
+        'TR_CUSTOMER_ID'   => tr('Customer ID'),
+        'CUSTOMER_ID'      => tohtml($data['customer_id']),
+        'TR_FNAME'         => tr('First name'),
+        'FNAME'            => tohtml($data['fname']),
+        'TR_LNAME'         => tr('Last name'),
+        'LNAME'            => tohtml($data['lname']),
+        'TR_GENDER'        => tr('Gender'),
+        'TR_MALE'          => tr('Male'),
+        'MALE'             => $data['gender'] == 'M' ? ' selected' : '',
+        'TR_FEMALE'        => tr('Female'),
+        'FEMALE'           => $data['gender'] == 'F' ? ' selected' : '',
+        'TR_UNKNOWN'       => tr('Unknown'),
+        'UNKNOWN'          => $data['gender'] != 'M' && $data['gender'] != 'F' ? ' selected' : '',
+        'TR_FIRM'          => tr('Company'),
+        'FIRM'             => tohtml($data['firm']),
+        'TR_STREET1'       => tr('Street 1'),
+        'STREET1'          => tohtml($data['street1']),
+        'TR_STREET2'       => tr('Street 2'),
+        'STREET2'          => tohtml($data['street2']),
+        'TR_ZIP'           => tr('Zip code'),
+        'ZIP'              => tohtml($data['zip']),
+        'TR_CITY'          => tr('City'),
+        'CITY'             => tohtml($data['city']),
+        'TR_STATE'         => tr('State'),
+        'STATE'            => tohtml($data['state']),
+        'TR_COUNTRY'       => tr('Country'),
+        'COUNTRY'          => tohtml($data['country']),
+        'TR_PHONE'         => tr('Phone'),
+        'PHONE'            => tohtml($data['phone']),
+        'TR_FAX'           => tr('Fax'),
+        'FAX'              => tohtml($data['fax'])
     ]);
 }
 
@@ -478,7 +477,7 @@ function admin_checkAndUpdateData($resellerId)
         }
 
         // Check for max domains limit
-        if (imscp_limit_check($data['max_dmn_cnt'], null)) {
+        if (imscp_limit_check($data['max_dmn_cnt'], NULL)) {
             $rs = admin_checkResellerLimit($data['max_dmn_cnt'], $data['current_dmn_cnt'], $data['nbDomains'], '0', tr('domains'));
         } else {
             set_page_message(tr('Incorrect limit for %s.', tr('domain')), 'error');
@@ -513,7 +512,7 @@ function admin_checkAndUpdateData($resellerId)
         if (imscp_limit_check($data['max_mail_cnt'])) {
             $rs = admin_checkResellerLimit($data['max_mail_cnt'], $data['current_mail_cnt'], $data['nbMailAccounts'], $data['unlimitedMailAccounts'], tr('mail'));
         } else {
-            set_page_message(tr('Incorrect limit for %s.', tr('email accounts')), 'error');
+            set_page_message(tr('Incorrect limit for %s.', tr('mail accounts')), 'error');
             $rs = false;
         }
 
@@ -560,7 +559,7 @@ function admin_checkAndUpdateData($resellerId)
         }
 
         // Check for max monthly traffic limit
-        if (imscp_limit_check($data['max_traff_amnt'], null)) {
+        if (imscp_limit_check($data['max_traff_amnt'], NULL)) {
             $rs = admin_checkResellerLimit($data['max_traff_amnt'], $data['current_traff_amnt'], $data['totalTraffic'] / 1048576, $data['unlimitedTraffic'], tr('traffic'));
         } else {
             set_page_message(tr('Incorrect limit for %s.', tr('traffic')), 'error');
@@ -572,7 +571,7 @@ function admin_checkAndUpdateData($resellerId)
         }
 
         // Check for max disk space limit
-        if (imscp_limit_check($data['max_disk_amnt'], null)) {
+        if (imscp_limit_check($data['max_disk_amnt'], NULL)) {
             $rs = admin_checkResellerLimit($data['max_disk_amnt'], $data['current_disk_amnt'], $data['totalDiskspace'] / 1048576, $data['unlimitedDiskspace'], tr('disk space'));
         } else {
             set_page_message(tr('Incorrect limit for %s.', tr('disk space')), 'error');
@@ -685,7 +684,7 @@ function admin_checkAndUpdateData($resellerId)
             );
 
             // Sync client PHP permissions with reseller PHP permissions
-            if($needPHPiniChange && $phpini->syncClientPermissionsWithResellerPermissions($resellerId)) {
+            if ($needPHPiniChange && $phpini->syncClientPermissionsWithResellerPermissions($resellerId)) {
                 $needDaemonRequest = true;
             } else {
                 $needDaemonRequest = false;
@@ -726,7 +725,7 @@ function admin_checkAndUpdateData($resellerId)
             iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, [
                 'userId' => $resellerId
             ]);
-            
+
             $db->commit();
 
             // Send mail to reseller for new password
@@ -737,7 +736,7 @@ function admin_checkAndUpdateData($resellerId)
                 );
             }
 
-            if($needDaemonRequest) {
+            if ($needDaemonRequest) {
                 send_request();
             }
 
@@ -760,7 +759,7 @@ function admin_checkAndUpdateData($resellerId)
 /**
  * Check reseller limit
  *
- * @param int $newLimit New limit (-1 for deactivation, 0 for unlimited, $newLimit > 0 to limit items quantity)
+ * @param int $newLimit New limit (-1 for deactivation, 0 for ∞, $newLimit > 0 to limit items quantity)
  * @param int $assignedByReseller How many items are already assigned to reseller's customers
  * @param int $consumedByCustomers How many items are already consumed by reseller's customers.
  * @param bool $unlimitedService Tells whether or not the service is set as unlimited for a reseller's customer
@@ -828,21 +827,20 @@ if (!empty($_POST) && admin_checkAndUpdateData($resellerId)) {
 $data =& admin_getData($resellerId);
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'admin/reseller_edit.tpl',
-    'page_message' => 'layout',
-    'ips_block' => 'page',
-    'ip_block' => 'ips_block',
+    'layout'                             => 'shared/layouts/ui.tpl',
+    'page'                               => 'admin/reseller_edit.tpl',
+    'page_message'                       => 'layout',
+    'ips_block'                          => 'page',
+    'ip_block'                           => 'ips_block',
     'php_editor_disable_functions_block' => 'page',
-    'php_editor_mail_function_block' => 'page'
+    'php_editor_mail_function_block'     => 'page'
 ]);
-
 $tpl->assign([
-    'TR_PAGE_TITLE' => tr('Admin / Users / Edit Reseller'),
-    'EDIT_ID' => $resellerId,
+    'TR_PAGE_TITLE'    => tr('Admin / Users / Edit Reseller'),
+    'EDIT_ID'          => $resellerId,
     'TR_EDIT_RESELLER' => tr('Edit reseller'),
-    'TR_UPDATE' => tr('Update'),
-    'TR_CANCEL' => tr('Cancel')
+    'TR_UPDATE'        => tr('Update'),
+    'TR_CANCEL'        => tr('Cancel')
 ]);
 
 generateNavigation($tpl);

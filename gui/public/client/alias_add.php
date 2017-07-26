@@ -23,6 +23,41 @@
  */
 
 /**
+ * Send alias order email
+ *
+ * @param  string $aliasName
+ * @return bool TRUE on success, FALSE on failure
+ */
+function send_alias_order_email($aliasName)
+{
+    $stmt = exec_query(
+        'SELECT admin_name, created_by, fname, lname, email FROM admin WHERE admin_id = ?', $_SESSION['user_id']
+    );
+    $row = $stmt->fetchRow();
+    $data = get_alias_order_email($row['created_by']);
+    $ret = send_mail([
+        'mail_id'      => 'alias-order-msg',
+        'fname'        => $row['fname'],
+        'lname'        => $row['lname'],
+        'username'     => $row['admin_name'],
+        'email'        => $row['email'],
+        'subject'      => $data['subject'],
+        'message'      => $data['message'],
+        'placeholders' => [
+            '{CUSTOMER}' => decode_idna($row['admin_name']),
+            '{ALIAS}'    => $aliasName
+        ]
+    ]);
+
+    if (!$ret) {
+        write_log(sprintf("Couldn't send alias order to %s", $row['admin_name']), E_USER_ERROR);
+        return false;
+    }
+
+    return true;
+}
+
+/**
  * Get domains list
  *
  * @return array Domains list
@@ -253,7 +288,6 @@ function addDomainAlias()
     }
 
     $isSuUser = isset($_SESSION['logged_from_type']); # See http://youtrack.i-mscp.net/issue/IP-1486
-    $userEmail = (isset($_SESSION['user_email'])) ? $_SESSION['user_email'] : '';
     $db = iMSCP_Database::getInstance();
 
     try {
@@ -295,8 +329,11 @@ function addDomainAlias()
 
         if ($isSuUser) {
             $cfg = iMSCP_Registry::get('config');
+
             if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
-                client_mail_add_default_accounts($mainDmnProps['domain_id'], $userEmail, $domainAliasNameAscii, 'alias', $id);
+                createDefaultMailAccounts(
+                    $mainDmnProps['domain_id'], $_SESSION['user_email'], $domainAliasNameAscii, MT_ALIAS_FORWARD, $id
+                );
             }
         }
 
@@ -394,3 +431,5 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

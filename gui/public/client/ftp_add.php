@@ -191,7 +191,7 @@ function addAccount()
     $username .= '@' . encode_idna($dmnName);
     $encryptedPassword = \iMSCP\Crypt::sha512($passwd);
     $shell = '/bin/sh';
-    $homeDir = utils_normalizePath( '/' . $cfg['USER_WEB_DIR'] . '/' . $mainDmnProps['domain_name'] . '/' . $homeDir);
+    $homeDir = utils_normalizePath('/' . $cfg['USER_WEB_DIR'] . '/' . $mainDmnProps['domain_name'] . '/' . $homeDir);
     $stmt = exec_query(
         '
             SELECT t1.admin_name, t1.admin_sys_uid, t1.admin_sys_gid, t2.domain_disk_limit,
@@ -211,12 +211,12 @@ function addAccount()
         $db->beginTransaction();
 
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddFtp, [
-            'ftpUserId'      => $username,
-            'ftpPassword'    => $encryptedPassword,
-            'ftpUserUid'     => $row1['admin_sys_uid'],
-            'ftpUserGid'     => $row1['admin_sys_gid'],
-            'ftpUserShell'   => $shell,
-            'ftpUserHome'    => $homeDir
+            'ftpUserId'    => $username,
+            'ftpPassword'  => $encryptedPassword,
+            'ftpUserUid'   => $row1['admin_sys_uid'],
+            'ftpUserGid'   => $row1['admin_sys_gid'],
+            'ftpUserShell' => $shell,
+            'ftpUserHome'  => $homeDir
         ]);
 
         exec_query(
@@ -264,12 +264,12 @@ function addAccount()
         }
 
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddFtp, [
-            'ftpUserId'      => $username,
-            'ftpPassword'    => $encryptedPassword,
-            'ftpUserUid'     => $row1['admin_sys_uid'],
-            'ftpUserGid'     => $row1['admin_sys_gid'],
-            'ftpUserShell'   => $shell,
-            'ftpUserHome'    => $homeDir
+            'ftpUserId'    => $username,
+            'ftpPassword'  => $encryptedPassword,
+            'ftpUserUid'   => $row1['admin_sys_uid'],
+            'ftpUserGid'   => $row1['admin_sys_gid'],
+            'ftpUserShell' => $shell,
+            'ftpUserHome'  => $homeDir
         ]);
 
         $db->commit();
@@ -335,9 +335,9 @@ function generatePage($tpl)
 
 require_once 'imscp-lib.php';
 
-$eventManager = iMSCP_Events_Aggregator::getInstance();
-$eventManager->dispatch(iMSCP_Events::onClientScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 check_login('user');
+
 customerHasFeature('ftp') or showBadRequestErrorPage();
 
 $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
@@ -382,7 +382,7 @@ $tpl->assign([
     'TR_CANCEL'            => tr('Cancel')
 ]);
 
-$eventManager->registerListener('onGetJsTranslations', function ($e) {
+iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e iMSCP_Events_Event */
     $translations = $e->getParam('translations');
     $translations['core']['close'] = tr('Close');
@@ -394,5 +394,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-$eventManager->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

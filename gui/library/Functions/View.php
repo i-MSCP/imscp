@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -601,9 +601,7 @@ function gen_user_domain_aliases_list($tpl, $domainId)
         return;
     }
 
-    $stmt = exec_query(
-        'SELECT alias_name FROM domain_aliasses WHERE domain_id = ? ORDER BY alias_name ASC', $domainId
-    );
+    $stmt = exec_query('SELECT alias_name FROM domain_aliasses WHERE domain_id = ? ORDER BY alias_name ASC', $domainId);
 
     if (!$stmt->rowCount()) {
         return;

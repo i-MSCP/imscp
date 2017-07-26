@@ -57,9 +57,9 @@ function generatePage($tpl)
 
 require_once 'imscp-lib.php';
 
-$eventManager = iMSCP_Events_Aggregator::getInstance();
-$eventManager->dispatch(iMSCP_Events::onClientScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 check_login('user');
+
 customerHasFeature('ftp') or showBadRequestErrorPage();
 
 $tpl = new iMSCP_pTemplate();
@@ -82,7 +82,7 @@ $tpl->assign([
     'TR_MESSAGE_DELETE'     => tr('Are you sure you want to delete the %s FTP user?', '%s'),
 ]);
 
-$eventManager->registerListener('onGetJsTranslations', function ($e) {
+iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
     /* @var $e iMSCP_Events_Event */
     $translations = $e->getParam('translations');
     $translations['core']['dataTable'] = getDataTablesPluginTranslations();
@@ -94,5 +94,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-$eventManager->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

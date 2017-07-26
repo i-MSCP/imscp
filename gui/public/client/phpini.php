@@ -252,10 +252,10 @@ function generatePage($tpl, $phpini, $config, $configLevel)
     if ($configLevel != 'per_user') {
         foreach ($dmnsData as $dmnData) {
             $tpl->assign([
-                'DOMAIN_ID' => tohtml($dmnData['domain_id'], 'htmlAttr'),
-                'DOMAIN_TYPE' => tohtml($dmnData['domain_type'], 'htmlAttr'),
+                'DOMAIN_ID'           => tohtml($dmnData['domain_id'], 'htmlAttr'),
+                'DOMAIN_TYPE'         => tohtml($dmnData['domain_type'], 'htmlAttr'),
                 'DOMAIN_NAME_UNICODE' => tohtml(decode_idna($dmnData['domain_name'])),
-                'SELECTED' => ($dmnData['domain_id'] == $dmnId && $dmnData['domain_type'] == $dmnType) ? ' selected' : ''
+                'SELECTED'            => ($dmnData['domain_id'] == $dmnId && $dmnData['domain_type'] == $dmnType) ? ' selected' : ''
             ]);
 
             $tpl->parse('DOMAIN_NAME_BLOCK', '.domain_name_block');
@@ -270,8 +270,8 @@ function generatePage($tpl, $phpini, $config, $configLevel)
         $tpl->assign('ALLOW_URL_FOPEN_BLOCK', '');
     } else {
         $tpl->assign([
-            'TR_ALLOW_URL_FOPEN' => tr('Allow URL fopen'),
-            'ALLOW_URL_FOPEN_ON' => $phpini->getDomainIni('phpiniAllowUrlFopen') == 'on' ? ' checked' : '',
+            'TR_ALLOW_URL_FOPEN'  => tr('Allow URL fopen'),
+            'ALLOW_URL_FOPEN_ON'  => $phpini->getDomainIni('phpiniAllowUrlFopen') == 'on' ? ' checked' : '',
             'ALLOW_URL_FOPEN_OFF' => $phpini->getDomainIni('phpiniAllowUrlFopen') == 'off' ? ' checked' : ''
         ]);
     }
@@ -280,8 +280,8 @@ function generatePage($tpl, $phpini, $config, $configLevel)
         $tpl->assign('DISPLAY_ERRORS_BLOCK', '');
     } else {
         $tpl->assign([
-            'TR_DISPLAY_ERRORS' => tr('Display errors'),
-            'DISPLAY_ERRORS_ON' => $phpini->getDomainIni('phpiniDisplayErrors') == 'on' ? ' checked' : '',
+            'TR_DISPLAY_ERRORS'  => tr('Display errors'),
+            'DISPLAY_ERRORS_ON'  => $phpini->getDomainIni('phpiniDisplayErrors') == 'on' ? ' checked' : '',
             'DISPLAY_ERRORS_OFF' => $phpini->getDomainIni('phpiniDisplayErrors') == 'off' ? ' checked' : ''
         ]);
     }
@@ -291,30 +291,30 @@ function generatePage($tpl, $phpini, $config, $configLevel)
     } else {
         $errorReporting = $phpini->getDomainIni('phpiniErrorReporting');
         $tpl->assign([
-            'TR_ERROR_REPORTING' => tohtml(tr('Error reporting')),
-            'TR_ERROR_REPORTING_DEFAULT' => tohtml(tr('All errors, except E_NOTICES, E_STRICT AND E_DEPRECATED (Default)')),
+            'TR_ERROR_REPORTING'              => tohtml(tr('Error reporting')),
+            'TR_ERROR_REPORTING_DEFAULT'      => tohtml(tr('All errors, except E_NOTICES, E_STRICT AND E_DEPRECATED (Default)')),
             'TR_ERROR_REPORTING_DEVELOPEMENT' => tohtml(tr('All errors (Development)')),
-            'TR_ERROR_REPORTING_PRODUCTION' => tohtml(tr('All errors, except E_DEPRECATED and E_STRICT (Production)')),
-            'ERROR_REPORTING_0' => $errorReporting == 'E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED' ? ' selected' : '',
-            'ERROR_REPORTING_1' => $errorReporting == 'E_ALL & ~E_DEPRECATED & ~E_STRICT' ? ' selected' : '',
-            'ERROR_REPORTING_2' => $errorReporting == '-1' ? ' selected' : ''
+            'TR_ERROR_REPORTING_PRODUCTION'   => tohtml(tr('All errors, except E_DEPRECATED and E_STRICT (Production)')),
+            'ERROR_REPORTING_0'               => $errorReporting == 'E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED' ? ' selected' : '',
+            'ERROR_REPORTING_1'               => $errorReporting == 'E_ALL & ~E_DEPRECATED & ~E_STRICT' ? ' selected' : '',
+            'ERROR_REPORTING_2'               => $errorReporting == '-1' ? ' selected' : ''
         ]);
     }
 
     if ($config['HTTPD_SERVER'] == 'apache_itk' || !$phpini->clientHasPermission('phpiniDisableFunctions')) {
         $tpl->assign([
             'DISABLE_FUNCTIONS_BLOCK' => '',
-            'DISABLE_EXEC_BLOCK' => ''
+            'DISABLE_EXEC_BLOCK'      => ''
         ]);
     } elseif ($phpini->getClientPermission('phpiniDisableFunctions') == 'exec') {
         $disableFunctions = explode(',', $phpini->getDomainIni('phpiniDisableFunctions'));
         $execYes = in_array('exec', $disableFunctions) ? false : true;
         $tpl->assign([
             'TR_DISABLE_FUNCTIONS_EXEC' => tohtml(tr('PHP exec() function')),
-            'TR_EXEC_HELP' => tohtml(tr("When set to 'yes', your PHP scripts can call the PHP exec() function."), 'htmlAttr'),
-            'EXEC_YES' => $execYes ? ' checked' : '',
-            'EXEC_NO' => $execYes ? '' : ' checked',
-            'DISABLE_FUNCTIONS_BLOCK' => ''
+            'TR_EXEC_HELP'              => tohtml(tr("When set to 'yes', your PHP scripts can call the PHP exec() function."), 'htmlAttr'),
+            'EXEC_YES'                  => $execYes ? ' checked' : '',
+            'EXEC_NO'                   => $execYes ? '' : ' checked',
+            'DISABLE_FUNCTIONS_BLOCK'   => ''
         ]);
     } else {
         $disableableFunctions = [
@@ -334,14 +334,14 @@ function generatePage($tpl, $phpini, $config, $configLevel)
 
         $tpl->assign([
             'TR_DISABLE_FUNCTIONS' => tohtml(tr('Disabled functions')),
-            'DISABLE_EXEC_BLOCK' => ''
+            'DISABLE_EXEC_BLOCK'   => ''
         ]);
     }
 
     $tpl->assign([
         'TR_PHP_SETTINGS' => tohtml(tr('PHP Settings')),
-        'TR_YES' => tohtml(tr('Yes')),
-        'TR_NO' => tohtml(tr('No'))
+        'TR_YES'          => tohtml(tr('Yes')),
+        'TR_NO'           => tohtml(tr('No'))
     ]);
 }
 
@@ -370,26 +370,26 @@ if (!empty($_POST)) {
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'client/phpini.tpl',
-    'page_message' => 'layout',
-    'domain_list_block' => 'page',
-    'domain_name_block' => 'domain_list_block',
-    'allow_url_fopen_block' => 'page',
-    'display_errors_block' => 'page',
+    'layout'                  => 'shared/layouts/ui.tpl',
+    'page'                    => 'client/phpini.tpl',
+    'page_message'            => 'layout',
+    'domain_list_block'       => 'page',
+    'domain_name_block'       => 'domain_list_block',
+    'allow_url_fopen_block'   => 'page',
+    'display_errors_block'    => 'page',
     'disable_functions_block' => 'page',
-    'mail_function_block' => 'disable_functions_block',
-    'disable_exec_block' => 'page',
-    'error_reporting_block' => 'page'
+    'mail_function_block'     => 'disable_functions_block',
+    'disable_exec_block'      => 'page',
+    'error_reporting_block'   => 'page'
 ]);
 
 $tpl->assign([
-    'TR_PAGE_TITLE' => tohtml(tr('Client / Domains / PHP Settings'), 'htmlAttr'),
-    'TR_MENU_PHPINI' => tohtml(tr('PHP Editor')),
-    'TR_DOMAIN' => tohtml(tr('Domain')),
+    'TR_PAGE_TITLE'     => tohtml(tr('Client / Domains / PHP Settings'), 'htmlAttr'),
+    'TR_MENU_PHPINI'    => tohtml(tr('PHP Editor')),
+    'TR_DOMAIN'         => tohtml(tr('Domain')),
     'TR_DOMAIN_TOOLTIP' => tohtml(tr('Domain for which PHP Editor must act.'), 'htmlAttr'),
-    'TR_UPDATE' => tohtml(tr('Update'), 'htmlAttr'),
-    'TR_CANCEL' => tohtml(tr('Cancel'))
+    'TR_UPDATE'         => tohtml(tr('Update'), 'htmlAttr'),
+    'TR_CANCEL'         => tohtml(tr('Cancel'))
 ]);
 
 generateNavigation($tpl);
@@ -399,3 +399,5 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

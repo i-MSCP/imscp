@@ -60,9 +60,9 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout'         => 'shared/layouts/ui.tpl',
-    'page'           => 'admin/settings_lostpassword.tpl',
-    'page_message'   => 'layout'
+    'layout'       => 'shared/layouts/ui.tpl',
+    'page'         => 'admin/settings_lostpassword.tpl',
+    'page_message' => 'layout'
 ]);
 $tpl->assign([
     'TR_PAGE_TITLE'               => tr('Admin / Settings / Lost Password Email'),
@@ -97,4 +97,5 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
 unsetMessages();

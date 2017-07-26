@@ -30,7 +30,6 @@
  */
 function generatePage($tpl)
 {
-    $cfg = iMSCP_Registry::get('config');
     $stmt = exec_query('SELECT domain_created FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
     $row = $stmt->fetchRow();
     $tpl->assign([
@@ -41,7 +40,7 @@ function generatePage($tpl)
         'ACCOUNT_TYPE'         => tr('Administrator'),
         'TR_REGISTRATION_DATE' => tr('Registration date'),
         'REGISTRATION_DATE'    => ($row['domain_created'] != 0)
-            ? tohtml(date($cfg['DATE_FORMAT'], $row['domain_created'])) : tr('N/A')
+            ? tohtml(date(iMSCP_Registry::get('config')['DATE_FORMAT'], $row['domain_created'])) : tr('N/A')
     ]);
 }
 
@@ -69,3 +68,5 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

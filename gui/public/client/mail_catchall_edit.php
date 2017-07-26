@@ -28,54 +28,16 @@ use iMSCP_pTemplate as TemplateEngine;
  */
 
 /**
- * Check catch-all domain owner
+ * Check catch-all owner
  *
- * @param int $catchAllDomainId Domain unique identifier
- * @param int $catchalType Catch-all type
- * @return string Catch-all domain name if owner is verified, FALSE otherwise
+ * @param int $catchallId Catch-all unique identifier
+ * @return string Catch-all domain name if owner is verified
  */
-function checkCatchallDomainOwner($catchAllDomainId, $catchalType)
+function checkCatchallOwner($catchallId)
 {
-    switch ($catchalType) {
-        case MT_NORMAL_CATCHALL:
-            $stmt = exec_query(
-                'SELECT domain_name FROM domain WHERE domain_id = ? AND domain_admin_id = ?',
-                [$catchAllDomainId, $_SESSION['user_id']]
-            );
-            break;
-        case MT_SUBDOM_CATCHALL:
-            $stmt = exec_query(
-                "
-                    SELECT CONCAT(subdomain_name, '.', domain_name) FROM subdomain
-                    JOIN domain USING(domain_id)
-                    WHERE subdomain_id = ? AND domain_admin_id = ?
-                ",
-                [$catchAllDomainId, $_SESSION['user_id']]
-            )->fetchRow(PDO::FETCH_COLUMN);
-            break;
-        case MT_ALIAS_CATCHALL:
-            $stmt = exec_query(
-                "
-                    SELECT alias_name FROM domain_aliasses
-                    JOIN domain USING(domain_id)
-                    WHERE alias_id = ? AND domain_admin_id = ?
-                ",
-                [$catchAllDomainId, $_SESSION['user_id']]
-            );
-            break;
-        case MT_ALSSUB_CATCHALL:
-            $stmt = exec_query(
-                "
-                    SELECT CONCAT(subdomain_alias_name, '.', alias_name) FROM subdomain_alias
-                    JOIN domain_aliasses USING(alias_id)
-                    JOIN domain USING(domain_id)
-                    WHERE subdomain_alias_id = ? AND domain_admin_id = ?
-                ",
-                [$catchAllDomainId, $_SESSION['user_id']]
-            );
-            break;
-        default:
-            return false;
+
+    if (!$stmt->rowCount()) {
+        showBadRequestErrorPage();
     }
 
     return $stmt->fetchRow(PDO::FETCH_COLUMN);
@@ -89,54 +51,83 @@ function checkCatchallDomainOwner($catchAllDomainId, $catchalType)
  * @param string $catchallType Catch-all type
  * @return void
  */
-function addCatchallAccount($catchAllDomainId, $catchAllDomain, $catchallType)
+function editCatchallAccount($catchAllDomainId, $catchAllDomain, $catchallType)
 {
-    if (!isset($_POST['catchall_addresses_type'])
-        || !in_array($_POST['catchall_addresses_type'], ['auto', 'manual'])
-        || ($_POST['catchall_addresses_type'] == 'manual' && !isset($_POST['manual_catchall_addresses']))
+    if (!isset($_POST['catchall_address_type'])
+        || !in_array($_POST['catchall_address_type'], ['auto', 'manual'])
+        || ($_POST['catchall_address_type'] == 'auto' && !isset($_POST['automatic_catchall_address_id']))
+        || ($_POST['catchall_address_type'] == 'manual' && !isset($_POST['manual_catchall_addresses']))
     ) {
         showBadRequestErrorPage();
     }
 
-    if ($_POST['catchall_addresses_type'] == 'auto') {
-        if (!isset($_POST['automatic_catchall_addresses'])
-            || empty($_POST['automatic_catchall_addresses'])
-        ) {
-            set_page_message(tr('You must select at least one catch-all addresses.'), 'error');
-            return;
-        } elseif (!is_array($_POST['automatic_catchall_addresses'])) {
+    if ($_POST['catchall_address_type'] == 'auto') {
+        $stmt = exec_query(
+            '
+                SELECT sub_id, mail_addr FROM mail_users
+                JOIN domain USING(domain_id)
+                WHERE mail_id = ? AND domain_admin_id = ?
+            ',
+            [intval($_POST['automatic_catchall_address_id']), $_SESSION['user_id']]
+        );
+
+        if (!$stmt->rowCount()) {
             showBadRequestErrorPage();
         }
 
-        $catchallAddresses = [];
+        $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
-        foreach ($_POST['automatic_catchall_addresses'] as $catchallAddressId) {
-            $stmt = exec_query('SELECT mail_addr FROM mail_users WHERE mail_id = ? AND domain_id = ?', [
-                intval($catchallAddressId), get_user_domain_id($_SESSION['user_id'])
-            ]);
-
-            if (!$stmt->rowCount()) {
-                showBadRequestErrorPage();
-            }
-
-            $catchallAddresses[] = $stmt->fetchRow(PDO::FETCH_COLUMN);
-        }
+        EventsManager::getInstance()->dispatch(Events::onBeforeAddMailCatchall, [
+            'mailCatchallDomain'    => $catchAllDomain,
+            'mailCatchallAddresses' => [$row['mail_addr']]
+        ]);
+        exec_query(
+            "
+                INSERT INTO mail_users (
+                    mail_acc, mail_forward, domain_id, mail_type, sub_id, status, po_active, mail_addr
+                ) VALUES (
+                    ?, '_no_', ?, ?, ?, 'toadd', 'no', ?
+                )
+            ",
+            [$row['mail_addr'], $catchAllDomainId, $catchallType, $row['sub_id'], '@' . $catchAllDomain]
+        );
+        EventsManager::getInstance()->dispatch(Events::onAfterAddMailCatchall, [
+            'mailCatchallId'        => Database::getInstance()->insertId(),
+            'mailCatchallDomain'    => $catchAllDomain,
+            'mailCatchallAddresses' => [$row['mail_addr']]
+        ]);
     } else {
+        switch ($catchallType) {
+            case MT_NORMAL_CATCHALL:
+                $domainId = $catchAllDomainId;
+                $subId = '0';
+                break;
+            case MT_ALIAS_CATCHALL:
+            case MT_SUBDOM_CATCHALL:
+            case MT_ALSSUB_CATCHALL:
+                $domainId = get_user_domain_id($_SESSION['user_id']);
+                $subId = $catchAllDomainId;
+                break;
+            default:
+                showBadRequestErrorPage();
+                exit;
+        }
+
         $catchallAddresses = clean_input($_POST['manual_catchall_addresses']);
 
-        if ($catchallAddresses === '') {
+        if ($catchallAddresses == '') {
             set_page_message(tr('Catch-all addresses field cannot be empty.'), 'error');
             return;
         }
 
-        $catchallAddresses = preg_split("/[\n, ]+/", $catchallAddresses);
+        $catchallAddresses = preg_split("/[\n,]+/", $catchallAddresses);
 
-        foreach ($catchallAddresses as $key => &$catchallAddress) {
-            $catchallAddress = encode_idna(mb_strtolower(trim($catchallAddress)));
+        foreach ($catchallAddresses as $key => &$forwardEmailAddr) {
+            $forwardEmailAddr = encode_idna(mb_strtolower(trim($forwardEmailAddr)));
 
-            if ($catchallAddress == '') {
+            if ($forwardEmailAddr == '') {
                 unset($catchallAddresses[$key]);
-            } elseif (!chk_email($catchallAddress)) {
+            } elseif (!chk_email($forwardEmailAddr)) {
                 set_page_message(tr('Bad email address in catch-all addresses field.'), 'error');
                 return;
             }
@@ -148,43 +139,28 @@ function addCatchallAccount($catchAllDomainId, $catchAllDomain, $catchallType)
             set_page_message(tr('Catch-all addresses field cannot be empty.'), 'error');
             return;
         }
-    }
 
-    $domainId = get_user_domain_id($_SESSION['user_id']);
-
-    switch ($catchallType) {
-        case MT_NORMAL_CATCHALL:
-            $subId = '0';
-            break;
-        case MT_ALIAS_CATCHALL:
-        case MT_SUBDOM_CATCHALL:
-        case MT_ALSSUB_CATCHALL:
-            $subId = $catchAllDomainId;
-            break;
-        default:
-            showBadRequestErrorPage();
-            exit;
-    }
-
-    EventsManager::getInstance()->dispatch(Events::onBeforeAddMailCatchall, [
-        'mailCatchallDomain'    => $catchAllDomain,
-        'mailCatchallAddresses' => $catchallAddresses
-    ]);
-    exec_query(
-        "
+        EventsManager::getInstance()->dispatch(Events::onBeforeAddMailCatchall, [
+            'mailCatchallDomain'    => $catchAllDomain,
+            'mailCatchallAddresses' => $catchallAddresses
+        ]);
+        exec_query(
+            "
             INSERT INTO mail_users (
                 mail_acc, mail_forward, domain_id, mail_type, sub_id, status, po_active, mail_addr
             ) VALUES (
                 ?, '_no_', ?, ?, ?, 'toadd', 'no', ?
             )
         ",
-        [implode(',', $catchallAddresses), $domainId, $catchallType, $subId, '@' . $catchAllDomain]
-    );
-    EventsManager::getInstance()->dispatch(Events::onAfterAddMailCatchall, [
-        'mailCatchallId'        => Database::getInstance()->insertId(),
-        'mailCatchallDomain'    => $catchAllDomain,
-        'mailCatchallAddresses' => $catchallAddresses
-    ]);
+            [implode(',', $catchallAddresses), '_no_', $domainId, $catchallType, $subId, '@' . $catchAllDomain]
+        );
+        EventsManager::getInstance()->dispatch(Events::onAfterAddMailCatchall, [
+            'mailCatchallId'        => Database::getInstance()->insertId(),
+            'mailCatchallDomain'    => $catchAllDomain,
+            'mailCatchallAddresses' => $catchallAddresses
+        ]);
+    }
+
     send_request();
     write_log(sprintf('A catch-all account has been created by %s', decode_idna($_SESSION['user_logged'])), E_USER_NOTICE);
     set_page_message(tr('Catch-all successfully scheduled for addition.'), 'success');
@@ -210,18 +186,18 @@ function generatePage($tpl, $catchAllDomainId, $catchallType)
 
             if (!$stmt->rowCount()) {
                 $tpl->assign([
-                    'AUTOMATIC_CATCHALL_ADDRESSES_BLK'  => '',
+                    'AUTOMATIC_CATCHALL_ADDRESSES'      => '',
                     'MANUAL_CATCHALL_ADDRESSES_CHECKED' => ' checked',
                     'MANUAL_CATCHALL_ADDRESSES'         => isset($_POST['manual_catchall_addresses'])
                         ? tohtml($_POST['manual_catchall_addresses']) : ''
                 ]);
             } else {
                 $tpl->assign([
-                    'AUTOMATIC_CATCHALL_ADDRESSES_CHECKED' => isset($_POST['catchall_addresses_type'])
-                    && $_POST['catchall_addresses_type'] == 'manual' ? '' : ' checked',
-                    'MANUAL_CATCHALL_ADDRESSES_CHECKED'    => isset($_POST['catchall_addresses_type'])
-                    && $_POST['catchall_addresses_type'] == 'manual' ? ' checked' : '',
-                    'MANUAL_CATCHALL_ADDRESSES'            => isset($_POST['manual_catchall_addresses'])
+                    'AUTOMATIC_CATCHALL_ADDRESS_CHECKED' => isset($_POST['catchall_address_type'])
+                    && $_POST['catchall_address_type'] == 'manual' ? '' : ' checked',
+                    'MANUAL_CATCHALL_ADDRESSES_CHECKED'  => isset($_POST['catchall_address_type'])
+                    && $_POST['catchall_address_type'] == 'manual' ? ' checked' : '',
+                    'MANUAL_CATCHALL_ADDRESSES'          => isset($_POST['manual_catchall_addresses'])
                         ? tohtml($_POST['manual_catchall_addresses']) : ''
                 ]);
 
@@ -244,7 +220,7 @@ function generatePage($tpl, $catchAllDomainId, $catchallType)
 
             if (!$stmt->rowCount()) {
                 $tpl->assign([
-                    'AUTOMATIC_CATCHALL_ADDRESSES_BLK'  => '',
+                    'AUTOMATIC_CATCHALL_ADDRESSES'      => '',
                     'MANUAL_CATCHALL_ADDRESSES_CHECKED' => ' checked',
                     'MANUAL_CATCHALL_ADDRESSES'         => isset($_POST['manual_catchall_addresses'])
                         ? tohtml($_POST['manual_catchall_addresses']) : ''
@@ -252,11 +228,11 @@ function generatePage($tpl, $catchAllDomainId, $catchallType)
                 ]);
             } else {
                 $tpl->assign([
-                    'AUTOMATIC_CATCHALL_ADDRESSES_CHECKED' => isset($_POST['catchall_addresses_type'])
-                    && $_POST['catchall_addresses_type'] == 'manual' ? '' : ' checked',
-                    'MANUAL_CATCHALL_ADDRESSES_CHECKED'    => isset($_POST['catchall_addresses_type'])
-                    && $_POST['catchall_addresses_type'] == 'manual' ? ' checked' : '',
-                    'MANUAL_CATCHALL_ADDRESSES'            => isset($_POST['manual_catchall_addresses'])
+                    'AUTOMATIC_CATCHALL_ADDRESS_CHECKED' => isset($_POST['catchall_address_type'])
+                    && $_POST['catchall_address_type'] == 'manual' ? '' : ' checked',
+                    'MANUAL_CATCHALL_ADDRESSES_CHECKED'  => isset($_POST['catchall_address_type'])
+                    && $_POST['catchall_address_type'] == 'manual' ? ' checked' : '',
+                    'MANUAL_CATCHALL_ADDRESSES'          => isset($_POST['manual_catchall_addresses'])
                         ? tohtml($_POST['manual_catchall_addresses']) : ''
                 ]);
 
@@ -280,7 +256,7 @@ function generatePage($tpl, $catchAllDomainId, $catchallType)
 
             if (!$stmt->rowCount()) {
                 $tpl->assign([
-                    'AUTOMATIC_CATCHALL_ADDRESSES_BLK'  => '',
+                    'AUTOMATIC_CATCHALL_ADDRESSES'      => '',
                     'MANUAL_CATCHALL_ADDRESSES_CHECKED' => ' checked',
                     'MANUAL_CATCHALL_ADDRESSES'         => isset($_POST['manual_catchall_addresses'])
                         ? tohtml($_POST['manual_catchall_addresses']) : ''
@@ -288,11 +264,11 @@ function generatePage($tpl, $catchAllDomainId, $catchallType)
                 ]);
             } else {
                 $tpl->assign([
-                    'AUTOMATIC_CATCHALL_ADDRESSES_CHECKED' => isset($_POST['catchall_addresses_type'])
-                    && $_POST['catchall_addresses_type'] == 'manual' ? '' : ' checked',
-                    'MANUAL_CATCHALL_ADDRESSES_CHECKED'    => isset($_POST['catchall_addresses_type'])
-                    && $_POST['catchall_addresses_type'] == 'manual' ? ' checked' : '',
-                    'MANUAL_CATCHALL_ADDRESSES'            => isset($_POST['manual_catchall_addresses'])
+                    'AUTOMATIC_CATCHALL_ADDRESS_CHECKED' => isset($_POST['catchall_address_type'])
+                    && $_POST['catchall_address_type'] == 'manual' ? '' : ' checked',
+                    'MANUAL_CATCHALL_ADDRESSES_CHECKED'  => isset($_POST['catchall_address_type'])
+                    && $_POST['catchall_address_type'] == 'manual' ? ' checked' : '',
+                    'MANUAL_CATCHALL_ADDRESSES'          => isset($_POST['manual_catchall_addresses'])
                         ? tohtml($_POST['manual_catchall_addresses']) : ''
                 ]);
 
@@ -316,18 +292,18 @@ function generatePage($tpl, $catchAllDomainId, $catchallType)
 
             if (!$stmt->rowCount()) {
                 $tpl->assign([
-                    'AUTOMATIC_CATCHALL_ADDRESSES_BLK'  => '',
+                    'AUTOMATIC_CATCHALL_ADDRESSES'      => '',
                     'MANUAL_CATCHALL_ADDRESSES_CHECKED' => ' checked',
                     'MANUAL_CATCHALL_ADDRESSES'         => isset($_POST['forward_list'])
                         ? tohtml($_POST['manual_catchall_addresses']) : ''
                 ]);
             } else {
                 $tpl->assign([
-                    'AUTOMATIC_CATCHALL_ADDRESSES_CHECKED' => isset($_POST['catchall_addresses_type'])
-                    && $_POST['catchall_addresses_type'] == 'manual' ? '' : ' checked',
-                    'MANUAL_CATCHALL_ADDRESSES_CHECKED'    => isset($_POST['catchall_addresses_type'])
-                    && $_POST['catchall_addresses_type'] == 'manual' ? ' checked' : '',
-                    'MANUAL_CATCHALL_ADDRESSES'            => isset($_POST['forward_list'])
+                    'AUTOMATIC_CATCHALL_ADDRESS_CHECKED' => isset($_POST['catchall_address_type'])
+                    && $_POST['catchall_address_type'] == 'manual' ? '' : ' checked',
+                    'MANUAL_CATCHALL_ADDRESSES_CHECKED'  => isset($_POST['catchall_address_type'])
+                    && $_POST['catchall_address_type'] == 'manual' ? ' checked' : '',
+                    'MANUAL_CATCHALL_ADDRESSES'          => isset($_POST['forward_list'])
                         ? tohtml($_POST['manual_catchall_addresses']) : ''
                 ]);
 
@@ -355,28 +331,21 @@ EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 check_login('user');
 
 if (!customerHasFeature('mail')
-    || !isset($_GET['id'])
+    || !isset($_REQUEST['id'])
 ) {
     showBadRequestErrorPage();
 }
 
-$catchallId = clean_input($_GET['id']);
+$catchallId = clean_input($_REQUEST['id']);
 
-if (!preg_match(
-        '/^(?P<catchallDomainId>\d+);(?P<catchallType>(?:'
-        . MT_NORMAL_CATCHALL . '|' . MT_SUBDOM_CATCHALL . '|' . MT_ALIAS_CATCHALL . '|' . MT_ALSSUB_CATCHALL
-        . '))$/',
-        $catchallId,
-        $matches
-    )
-    || !($catchAllDomainName = checkCatchallDomainOwner($matches['catchallDomainId'], $matches['catchallType']))
+if (!($catchAllDomainName = checkCatchallOwner($catchallId))
 ) {
     showBadRequestErrorPage();
     exit;
 }
 
 if (!empty($_POST)) {
-    addCatchallAccount($matches['catchallDomainId'], $catchAllDomainName, $matches['catchallType']);
+    editCatchallAccount($catchallId);
 }
 
 $tpl = new TemplateEngine();
@@ -384,18 +353,18 @@ $tpl->define_dynamic([
     'layout'                            => 'shared/layouts/ui.tpl',
     'page'                              => 'client/mail_catchall_add.phtml',
     'page_message'                      => 'layout',
-    'automatic_catchall_addresses_blk'  => 'page',
-    'automatic_catchall_address_option' => 'automatic_catchall_addresses_blk'
+    'automatic_catchall_addresses'      => 'page',
+    'automatic_catchall_address_option' => 'automatic_catchall_addresses'
 ]);
 $tpl->assign([
-    'TR_PAGE_TITLE'        => tohtml(tr('Client / Mail / Catch-all Accounts / Add Catch-all account')),
+    'TR_PAGE_TITLE'        => tohtml(tr('Client / Mail / Catch-all Accounts / Edit Catch-all account')),
     'CATCHALL_DOMAIN_NAME' => tohtml(decode_idna($catchAllDomainName)),
     'CATCHALL_ID'          => tohtml($catchallId, 'htmlAttr')
 ]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
-generatePage($tpl, $matches['catchallDomainId'], $matches['catchallType']);
+generatePage($tpl, $catchallId);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);

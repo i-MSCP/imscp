@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,10 +25,10 @@ use iMSCP\Crypt as Crypt;
  */
 
 /**
- * Get Email account data
+ * Get mail account data
  *
  * @param int $mailId Mail account unique identifier
- * @return array Email account data
+ * @return array mail account data
  */
 function client_getEmailAccountData($mailId)
 {
@@ -135,18 +135,12 @@ function client_editMailAccount()
 
         if ($customerEmailQuotaLimitBytes > 0) {
             if ($mailQuotaLimitBytes < 1) {
-                set_page_message(tr('Incorrect Email quota.'), 'error');
+                set_page_message(tr('Incorrect mail quota.'), 'error');
                 return false;
             }
 
             $stmt = exec_query(
-                '
-                  SELECT IFNULL(SUM(quota), 0)
-                  FROM mail_users
-                  WHERE mail_id <> ?
-                  AND domain_id = ?
-                  AND quota IS NOT NULL
-                ',
+                'SELECT SUM(quota) FROM mail_users WHERE mail_id <> ? AND domain_id = ? AND quota IS NOT NULL',
                 [$mailData['mail_id'], $mainDmnProps['domain_id']]
             );
 
@@ -158,7 +152,7 @@ function client_editMailAccount()
 
             if ($mailQuotaLimitBytes > floor($customerEmailQuotaLimitBytes - $customerMailboxesQuotaSumBytes)) {
                 set_page_message(
-                    tr('Email quota cannot be bigger than %s', bytesHuman($mailQuotaLimitBytes, NULL, 0)), 'error'
+                    tr('Mail quota cannot be bigger than %s', bytesHuman($mailQuotaLimitBytes, NULL, 0)), 'error'
                 );
                 return false;
             }
@@ -181,18 +175,21 @@ function client_editMailAccount()
 
     if ($mailTypeForward) {
         $forwardList = clean_input($_POST['forward_list']);
+
         if ($forwardList == '') {
             set_page_message(tr('Forward list is empty.'), 'error');
             return false;
         }
 
-        $forwardList = preg_split("/[\n,]+/", $forwardList);
+        $forwardList = preg_split("/[\n, ]+/", $forwardList);
+
         foreach ($forwardList as $key => &$forwardEmailAddr) {
             $forwardEmailAddr = encode_idna(mb_strtolower(trim($forwardEmailAddr)));
+
             if ($forwardEmailAddr == '') {
                 unset($forwardList[$key]);
             } elseif (!chk_email($forwardEmailAddr)) {
-                set_page_message(tr('Wrong mail syntax in forward list.'), 'error');
+                set_page_message(tr('Bad email address in forward list field.'), 'error');
                 return false;
             } elseif ($forwardEmailAddr == $mailAddr) {
                 set_page_message(tr('You cannot forward %s on itself.', $mailAddr), 'error');
@@ -200,7 +197,15 @@ function client_editMailAccount()
             }
         }
 
-        $forwardList = implode(',', array_unique($forwardList));
+        $forwardList = array_unique($forwardList);
+
+        if (empty($forwardList)) {
+            set_page_message(tr('Forward list is empty.'), 'error');
+            return false;
+        }
+
+        $forwardList = implode(',', $forwardList);
+
         switch ($domainType) {
             case 'normal':
                 $mailType .= (($mailType != '') ? ',' : '') . MT_NORMAL_FORWARD;
@@ -242,8 +247,13 @@ function client_editMailAccount()
         'mailId' => $mailData['mail_id']
     ]);
     send_request();
-    write_log("{$_SESSION['user_logged']}: Updated Email account: $mailAddr", E_USER_NOTICE);
-    set_page_message(tr('Email account successfully scheduled for update.'), 'success');
+    write_log(
+        sprintf(
+            'A mail account (%s) has been edited by %s', decode_idna($mailAddr), decode_idna($_SESSION['user_logged'])
+        ),
+        E_USER_NOTICE
+    );
+    set_page_message(tr('Mail account successfully scheduled for update.'), 'success');
     return true;
 }
 
@@ -260,13 +270,7 @@ function client_generatePage($tpl)
     list($username, $domainName) = explode('@', $mailData['mail_addr']);
 
     $stmt = exec_query(
-        '
-          SELECT IFNULL(SUM(quota), 0)
-          FROM mail_users
-          WHERE mail_id <> ?
-          AND domain_id = ?
-          AND quota IS NOT NULL
-        ',
+        'SELECT SUM(quota) FROM mail_users WHERE mail_id <> ? AND domain_id = ? AND quota IS NOT NULL',
         [$mailId, $mainDmnProps['domain_id']]
     );
 
@@ -275,7 +279,7 @@ function client_generatePage($tpl)
 
     if ($customerEmailQuotaLimitBytes < 1) {
         $tpl->assign([
-            'TR_QUOTA'  => tohtml(tr('Quota in MiB (0 for unlimited)')),
+            'TR_QUOTA'  => tohtml(tr('Quota in MiB (0 ∞')),
             'MIN_QUOTA' => 0,
             'MAX_QUOTA' => tohtml(floor(PHP_INT_MAX), 'htmlAttr'),
             'QUOTA'     => isset($_POST['quota'])
@@ -292,9 +296,9 @@ function client_generatePage($tpl)
                 : min(10, $mailMaxQuotaLimitMib);
             $mailTypeForwardOnly = false;
         } else {
-            set_page_message(tr('You cannot change this account to normal email account because you have already assigned all your email quota to other mailboxes. If you want to change this account to normal email account, you must first lower the quota assigned to one of your other mailboxes.'), 'static_info');
-            set_page_message(tr('For the time being, you can only edit your forwarded email account.'), 'static_info');
-            $mailQuotaLimitBytes = 1048576; // Only for sanity. Customer won't be able to switch to normal email account
+            set_page_message(tr('You cannot change this account to normal mail account because you have already assigned all your mail quota to other mail accounts. If you want to change this account to normal mail account, you must first lower the quota assigned to one of your other mail accounts.'), 'static_info');
+            set_page_message(tr('For the time being, you can only edit your forwarded mail account.'), 'static_info');
+            $mailQuotaLimitBytes = 1048576; // Only for sanity. Customer won't be able to switch to normal mail account
             $mailMaxQuotaLimitMib = 1;
             $mailQuotaLimitMiB = 1;
             $mailTypeForwardOnly = true;
@@ -305,8 +309,7 @@ function client_generatePage($tpl)
             'MIN_QUOTA' => 1,
             'MAX_QUOTA' => tohtml($mailMaxQuotaLimitMib, 'htmlAttr'),
             'QUOTA'     => isset($_POST['quota'])
-                ? tohtml(filter_digits($_POST['quota']), 'htmlAttr')
-                : tohtml($mailQuotaLimitMiB, 'htmlAttr')
+                ? tohtml(filter_digits($_POST['quota']), 'htmlAttr') : tohtml($mailQuotaLimitMiB, 'htmlAttr')
         ]);
     }
 
@@ -336,11 +339,7 @@ function client_generatePage($tpl)
         'PASSWORD_REP'           => isset($_POST['password_rep']) ? tohtml($_POST['password_rep']) : '',
         'FORWARD_LIST'           => isset($_POST['forward_list'])
             ? tohtml($_POST['forward_list'])
-            : (
-            $mailData['mail_forward'] != '_no_'
-                ? tohtml($mailData['mail_forward'])
-                : ''
-            ),
+            : ($mailData['mail_forward'] != '_no_' ? tohtml($mailData['mail_forward']) : ''),
         'DOMAIN_NAME'            => tohtml($domainName),
         'DOMAIN_NAME_UNICODE'    => tohtml(decode_idna($domainName)),
         'DOMAIN_NAME_SELECTED'   => ' selected'
@@ -364,7 +363,9 @@ require 'imscp-lib.php';
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 check_login('user');
 
-if (!isset($_GET['id']) || !customerHasFeature('mail')) {
+if (!customerHasFeature('mail') ||
+    !isset($_GET['id'])
+) {
     showBadRequestErrorPage();
 }
 
@@ -379,8 +380,8 @@ $tpl->define_dynamic([
     'page_message' => 'layout'
 ]);
 $tpl->assign([
-    'TR_PAGE_TITLE'          => tr('Client / Email / Edit Email Account'),
-    'TR_MAIl_ACCOUNT_DATA'   => tr('Email account data'),
+    'TR_PAGE_TITLE'          => tr('Client / Mail / Edit Mail Account'),
+    'TR_MAIl_ACCOUNT_DATA'   => tr('Mail account data'),
     'TR_USERNAME'            => tr('Username'),
     'TR_DOMAIN_NAME'         => tr('Domain name'),
     'TR_MAIL_ACCOUNT_TYPE'   => tr('Mail account type'),
@@ -390,7 +391,7 @@ $tpl->assign([
     'TR_PASSWORD'            => tr('Password'),
     'TR_PASSWORD_REPEAT'     => tr('Password confirmation'),
     'TR_FORWARD_TO'          => tr('Forward to'),
-    'TR_FWD_HELP'            => tr('Separate multiple email addresses by comma or a line-break.'),
+    'TR_FWD_HELP'            => tr('Separate addresses by a comma, line-break or space.'),
     'TR_UPDATE'              => tr('Update'),
     'TR_CANCEL'              => tr('Cancel')
 ]);
@@ -402,3 +403,5 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

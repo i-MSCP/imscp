@@ -31,9 +31,9 @@
  */
 function _client_getDomainName($domainId, $domainType)
 {
-    static $domainName = null;
+    static $domainName = NULL;
 
-    if ($domainName === null) {
+    if ($domainName === NULL) {
         switch ($domainType) {
             case 'dmn':
                 $query = 'SELECT domain_name FROM domain WHERE domain_id = ? AND domain_admin_id = ?';
@@ -124,11 +124,11 @@ DNS.1 = {DOMAIN_NAME}
 DNS.2 = www.{DOMAIN_NAME}
 EOF;
 
-    if($domainType == 'dmn') {
+    if ($domainType == 'dmn') {
         $altNames .= "\nDNS.3 = {ADMIN_SYS_NAME}.{BASE_SERVER_VHOST}\n";
-    } elseif($domainType == 'als') {
+    } elseif ($domainType == 'als') {
         $altNames .= "\nDNS.3 = {ADMIN_SYS_NAME}als$domainId.{BASE_SERVER_VHOST}\n";
-    } elseif($domainType == 'sub') {
+    } elseif ($domainType == 'sub') {
         $altNames .= "\nDNS.3 = {ADMIN_SYS_NAME}sub$domainId.{BASE_SERVER_VHOST}\n";
     } else {
         $altNames .= "\nDNS.3 = {ADMIN_SYS_NAME}alssub$domainId.{BASE_SERVER_VHOST}\n";
@@ -138,11 +138,11 @@ EOF;
     $sslTpl->setRootDir($config['CONF_DIR'] . '/openssl');
     $sslTpl->define('tpl', 'openssl.cnf.tpl');
     $sslTpl->assign([
-        'COMMON_NAME' => $data['domain_name'],
-        'EMAIL_ADDRESS' => $data['email'],
-        'DOMAIN_NAME' => $data['domain_name'],
-        'ALT_NAMES' => $altNames,
-        'ADMIN_SYS_NAME' => $data['admin_sys_name'],
+        'COMMON_NAME'       => $data['domain_name'],
+        'EMAIL_ADDRESS'     => $data['email'],
+        'DOMAIN_NAME'       => $data['domain_name'],
+        'ALT_NAMES'         => $altNames,
+        'ADMIN_SYS_NAME'    => $data['admin_sys_name'],
         'BASE_SERVER_VHOST' => $config['BASE_SERVER_VHOST']
     ]);
     $sslTpl->parse('TPL', 'tpl');
@@ -189,12 +189,12 @@ function client_generateSelfSignedCert($domainName)
     }
 
     $distinguishedName = [
-        'countryName' => 'US', //  TODO map of country names to ISO-3166 codes
+        'countryName'         => 'US', //  TODO map of country names to ISO-3166 codes
         'stateOrProvinceName' => !empty($row['state']) ? $row['state'] : 'N/A',
-        'localityName' => !empty($row['city']) ? $row['city'] : 'N/A',
-        'organizationName' => !empty($row['firm']) ? $row['firm'] : 'N/A',
-        'commonName' => $domainName,
-        'emailAddress' => $row['email']
+        'localityName'        => !empty($row['city']) ? $row['city'] : 'N/A',
+        'organizationName'    => !empty($row['firm']) ? $row['firm'] : 'N/A',
+        'commonName'          => $domainName,
+        'emailAddress'        => $row['email']
     ];
 
     $sslConfig = ['config' => $sslConfigFilePath];
@@ -204,12 +204,12 @@ function client_generateSelfSignedCert($domainName)
         return false;
     }
 
-    if (@openssl_pkey_export($pkey, $pkeyStr, null, $sslConfig) !== true) {
+    if (@openssl_pkey_export($pkey, $pkeyStr, NULL, $sslConfig) !== true) {
         write_log(sprintf('Could not export private key: %s', openssl_error_string()), E_USER_ERROR);
         return false;
     }
 
-    $cert = @openssl_csr_sign($csr, null, $pkeyStr, 365, $sslConfig, $_SESSION['user_id'] . time());
+    $cert = @openssl_csr_sign($csr, NULL, $pkeyStr, 365, $sslConfig, $_SESSION['user_id'] . time());
     if (!is_resource($cert)) {
         write_log(sprintf('Could not generate SSL certificate: %s', openssl_error_string()));
         return false;
@@ -247,7 +247,7 @@ function client_addSslCert($domainId, $domainType)
     $allowHSTS = (isset($_POST['allow_hsts']) && in_array($_POST['allow_hsts'], ['on', 'off'], true))
         ? $_POST['allow_hsts'] : 'off';
     $hstsMaxAge = ($allowHSTS == 'on' && isset($_POST['hsts_max_age']) && is_number($_POST['hsts_max_age'])
-        &&  $_POST['hsts_max_age'] >= 0) ? intval($_POST['hsts_max_age']) : '31536000';
+        && $_POST['hsts_max_age'] >= 0) ? intval($_POST['hsts_max_age']) : '31536000';
     $hstsIncludeSubDomains = ($allowHSTS == 'on' && isset($_POST['hsts_include_subdomains'])
         && in_array($_POST['hsts_include_subdomains'], ['on', 'off'], true))
         ? $_POST['hsts_include_subdomains'] : 'off';
@@ -324,7 +324,7 @@ function client_addSslCert($domainId, $domainType)
             }
 
             // Note: Here we also add the certificate in the trusted chain to support self-signed certificates
-            if(@openssl_x509_checkpurpose($certificate, X509_PURPOSE_SSL_SERVER, [$config['DISTRO_CA_BUNDLE'], $tmpfname]) !== true) {
+            if (@openssl_x509_checkpurpose($certificate, X509_PURPOSE_SSL_SERVER, [$config['DISTRO_CA_BUNDLE'], $tmpfname]) !== true) {
                 set_page_message(tr('At least one intermediate certificate is invalid or missing.'), 'error');
                 return;
             }
@@ -503,7 +503,7 @@ function client_generatePage($tpl, $domainId, $domainType)
         $hstsIncludeSubDomains = false;
         $tpl->assign(
             [
-                'SSL_CERTIFICATE_STATUS' => '',
+                'SSL_CERTIFICATE_STATUS'        => '',
                 'SSL_CERTIFICATE_ACTION_DELETE' => ''
             ]
         );
@@ -528,20 +528,20 @@ function client_generatePage($tpl, $domainId, $domainType)
     }
 
     $tpl->assign([
-        'TR_DYNAMIC_TITLE' => $dynTitle,
-        'DOMAIN_NAME' => tohtml(decode_idna($domainName)),
-        'HSTS_CHECKED_ON' => $allowHSTS ? ' checked' : '',
-        'HSTS_CHECKED_OFF' => !$allowHSTS ? ' checked' : '',
-        'HSTS_MAX_AGE' => tohtml(trim($hstsMaxAge)),
-        'HSTS_INCLUDE_SUBDOMAIN_ON' => $hstsIncludeSubDomains ? ' checked' : '',
+        'TR_DYNAMIC_TITLE'           => $dynTitle,
+        'DOMAIN_NAME'                => tohtml(decode_idna($domainName)),
+        'HSTS_CHECKED_ON'            => $allowHSTS ? ' checked' : '',
+        'HSTS_CHECKED_OFF'           => !$allowHSTS ? ' checked' : '',
+        'HSTS_MAX_AGE'               => tohtml(trim($hstsMaxAge)),
+        'HSTS_INCLUDE_SUBDOMAIN_ON'  => $hstsIncludeSubDomains ? ' checked' : '',
         'HSTS_INCLUDE_SUBDOMAIN_OFF' => !$hstsIncludeSubDomains ? ' checked' : '',
-        'KEY_CERT' => tohtml(trim($privateKey)),
-        'CERTIFICATE' => tohtml(trim($certificate)),
-        'CA_BUNDLE' => tohtml(trim($caBundle)),
-        'CERT_ID' => tohtml(trim($certId)),
-        'TR_ACTION' => $trAction,
-        'TR_YES' => tr('Yes'),
-        'TR_NO' => tr('No')
+        'KEY_CERT'                   => tohtml(trim($privateKey)),
+        'CERTIFICATE'                => tohtml(trim($certificate)),
+        'CA_BUNDLE'                  => tohtml(trim($caBundle)),
+        'CERT_ID'                    => tohtml(trim($certId)),
+        'TR_ACTION'                  => $trAction,
+        'TR_YES'                     => tr('Yes'),
+        'TR_NO'                      => tr('No')
     ]);
 
     if (!customerHasFeature('ssl') || isset($status) && in_array($status, ['toadd', 'tochange', 'todelete'])) {
@@ -563,10 +563,10 @@ check_login('user');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'client/cert_view.tpl',
-    'page_message' => 'layout',
-    'ssl_certificate_status' => 'page',
+    'layout'                  => 'shared/layouts/ui.tpl',
+    'page'                    => 'client/cert_view.tpl',
+    'page_message'            => 'layout',
+    'ssl_certificate_status'  => 'page',
     'ssl_certificate_actions' => 'page'
 ]);
 
@@ -591,24 +591,24 @@ if (customerHasFeature('ssl') && !empty($_POST)) {
 
 
 $tpl->assign([
-    'TR_PAGE_TITLE' => tr('Client / Domains / SSL Certificate'),
-    'TR_CERTIFICATE_DATA' => tr('Certificate data'),
-    'TR_CERT_FOR' => tr('Common name'),
-    'TR_STATUS' => tr('Status'),
-    'TR_ALLOW_HSTS' => tr('HSTS (HTTP Strict Transport Security)'),
-    'TR_HSTS_MAX_AGE' => tr('HSTS max-age directive value'),
-    'TR_SEC' => tr('Sec.'),
-    'TR_HSTS_INCLUDE_SUBDOMAINS' => tr('HSTS includeSubDomains directive'),
+    'TR_PAGE_TITLE'                      => tr('Client / Domains / SSL Certificate'),
+    'TR_CERTIFICATE_DATA'                => tr('Certificate data'),
+    'TR_CERT_FOR'                        => tr('Common name'),
+    'TR_STATUS'                          => tr('Status'),
+    'TR_ALLOW_HSTS'                      => tr('HSTS (HTTP Strict Transport Security)'),
+    'TR_HSTS_MAX_AGE'                    => tr('HSTS max-age directive value'),
+    'TR_SEC'                             => tr('Sec.'),
+    'TR_HSTS_INCLUDE_SUBDOMAINS'         => tr('HSTS includeSubDomains directive'),
     'TR_HSTS_INCLUDE_SUBDOMAINS_TOOLTIP' => tr("You should enable this directive only if all subdomains of this domain are served through SSL. Note that even if you add this directive, this will not automatically activate the HSTS feature for the subdomains of this domain."),
-    'TR_GENERATE_SELFSIGNED_CERTIFICAT' => tr('Generate a self-signed certificate'),
-    'TR_PASSWORD' => tr('Private key passphrase if any'),
-    'TR_PRIVATE_KEY' => tr('Private key'),
-    'TR_CERTIFICATE' => tr('Certificate'),
-    'TR_CA_BUNDLE' => tr('Intermediate certificate(s)'),
-    'TR_DELETE' => tr('Delete'),
-    'TR_CANCEL' => tr('Cancel'),
-    'DOMAIN_ID' => tohtml($domainId),
-    'DOMAIN_TYPE' => tohtml($domainType)
+    'TR_GENERATE_SELFSIGNED_CERTIFICAT'  => tr('Generate a self-signed certificate'),
+    'TR_PASSWORD'                        => tr('Private key passphrase if any'),
+    'TR_PRIVATE_KEY'                     => tr('Private key'),
+    'TR_CERTIFICATE'                     => tr('Certificate'),
+    'TR_CA_BUNDLE'                       => tr('Intermediate certificate(s)'),
+    'TR_DELETE'                          => tr('Delete'),
+    'TR_CANCEL'                          => tr('Cancel'),
+    'DOMAIN_ID'                          => tohtml($domainId),
+    'DOMAIN_TYPE'                        => tohtml($domainType)
 ]);
 
 generateNavigation($tpl);
@@ -618,3 +618,5 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

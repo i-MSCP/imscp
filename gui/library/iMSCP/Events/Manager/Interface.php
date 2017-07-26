@@ -30,63 +30,63 @@
  */
 interface iMSCP_Events_Manager_Interface
 {
-	/**
-	 * Dispatches an event to all registered listeners
-	 *
-	 * @throws iMSCP_Events_Manager_Exception When an listener is an object that do not implement the listener method or
-	 *                              when the listener is not a valid PHP callback
-	 * @param string $event The name of the event to dispatch
-	 * @param mixed $arguments OPTIONAL The data to pass to the event listener method
-	 * @return iMSCP_Events_Listener_ResponseCollection
-	 */
-	public function dispatch($event, $arguments = []);
+    /**
+     * Dispatches an event to all registered listeners
+     *
+     * @throws iMSCP_Events_Manager_Exception When an listener is an object that do not implement the listener method or
+     *                              when the listener is not a valid PHP callback
+     * @param string $event The name of the event to dispatch
+     * @param mixed $arguments OPTIONAL The data to pass to the event listener method
+     * @return iMSCP_Events_Listener_ResponseCollection
+     */
+    public function dispatch($event, $arguments = []);
 
-	/**
-	 * Registers an event listener that listens on the specified events
-	 *
-	 * @param string|array $event The event(s) to listen on
-	 * @param callable|object $listener PHP callback or object which implement method with same name as event
-	 * @param int $priority Higher values have higher priority
-	 * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
-	 */
-	public function registerListener($event, $listener, $priority = 1);
+    /**
+     * Registers an event listener that listens on the specified events
+     *
+     * @param string|array $event The event(s) to listen on
+     * @param callable|object $listener PHP callback or object which implement method with same name as event
+     * @param int $priority Higher values have higher priority
+     * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
+     */
+    public function registerListener($event, $listener, $priority = 1);
 
-	/**
-	 * Unregister an event listener from an event
-	 *
-	 * @param iMSCP_Events_Listener $listener The listener object to remove
-	 * @return bool TRUE if $listener is found and unregistered, FALSE otherwise
-	 */
-	public function unregisterListener(iMSCP_Events_Listener $listener);
+    /**
+     * Unregister an event listener from an event
+     *
+     * @param iMSCP_Events_Listener $listener The listener object to remove
+     * @return bool TRUE if $listener is found and unregistered, FALSE otherwise
+     */
+    public function unregisterListener(iMSCP_Events_Listener $listener);
 
-	/**
-	 * Retrieve all registered events
-	 *
-	 * @return array
-	 */
-	public function getEvents();
+    /**
+     * Retrieve all registered events
+     *
+     * @return array
+     */
+    public function getEvents();
 
-	/**
-	 * Retrieve all listener which listen to a particular event
-	 *
-	 * @param string|null $event Event name
-	 * @return SplPriorityQueue
-	 */
-	public function getListeners($event);
+    /**
+     * Retrieve all listener which listen to a particular event
+     *
+     * @param string|null $event Event name
+     * @return SplPriorityQueue
+     */
+    public function getListeners($event);
 
-	/**
-	 * Clear all listeners for a given event
-	 *
-	 * @param string $event Event name
-	 * @return void
-	 */
-	public function clearListeners($event);
+    /**
+     * Clear all listeners for a given event
+     *
+     * @param string $event Event name
+     * @return void
+     */
+    public function clearListeners($event);
 
-	/**
-	 * Checks whether an event has any registered listeners
-	 *
-	 * @param string $event The name of the event.
-	 * @return bool TRUE if the specified event has any listeners, FALSE otherwise.
-	 */
-	public function hasListener($event);
+    /**
+     * Checks whether an event has any registered listeners
+     *
+     * @param string $event The name of the event.
+     * @return bool TRUE if the specified event has any listeners, FALSE otherwise.
+     */
+    public function hasListener($event);
 }

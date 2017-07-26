@@ -12,8 +12,8 @@
     <thead>
     <tr>
         <th>{TR_RESELLER_NAME}</th>
-        <th>{TR_TRAFFIC_USAGE}</th>
         <th>{TR_DISK_USAGE}</th>
+        <th>{TR_TRAFFIC_USAGE}</th>
         <th>{TR_DOMAINS}</th>
         <th>{TR_SUBDOMAINS}</th>
         <th>{TR_DOMAIN_ALIASES}</th>
@@ -26,8 +26,8 @@
     <tfoot>
     <tr>
         <td>{TR_RESELLER_NAME}</td>
-        <td>{TR_TRAFFIC_USAGE}</td>
         <td>{TR_DISK_USAGE}</td>
+        <td>{TR_TRAFFIC_USAGE}</td>
         <td>{TR_DOMAINS}</td>
         <td>{TR_SUBDOMAINS}</td>
         <td>{TR_DOMAIN_ALIASES}</td>
@@ -45,17 +45,17 @@
         </td>
         <td>
             <div class="graph">
-                <span style="width: {TRAFF_PERCENT}%"></span>
-                <strong>{TRAFFIC_PERCENT}%</strong>
-            </div>
-            {TRAFFIC_MSG}
-        </td>
-        <td>
-            <div class="graph">
                 <span style="width: {DISK_PERCENT}%"></span>
                 <strong>{DISK_PERCENT}%</strong>
             </div>
             {DISK_MSG}
+        </td>
+        <td>
+            <div class="graph">
+                <span style="width: {TRAFF_PERCENT}%"></span>
+                <strong>{TRAFFIC_PERCENT}%</strong>
+            </div>
+            {TRAFFIC_MSG}
         </td>
         <td>{DMN_MSG}</td>
         <td>{SUB_MSG}</td>

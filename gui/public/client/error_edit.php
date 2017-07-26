@@ -96,16 +96,16 @@ if (!empty($_POST) && editErrorPage($eid)) {
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'client/error_edit.tpl',
+    'layout'       => 'shared/layouts/ui.tpl',
+    'page'         => 'client/error_edit.tpl',
     'page_message' => 'layout'
 ]);
 $tpl->assign([
-    'TR_PAGE_TITLE' => tr(' Client / Webtools / Custom Error Pages / Edit Custom Error Page'),
+    'TR_PAGE_TITLE'      => tr(' Client / Webtools / Custom Error Pages / Edit Custom Error Page'),
     'TR_ERROR_EDIT_PAGE' => tr('Edit error page'),
-    'TR_SAVE' => tr('Save'),
-    'TR_CANCEL' => tr('Cancel'),
-    'EID' => $eid
+    'TR_SAVE'            => tr('Save'),
+    'TR_CANCEL'          => tr('Cancel'),
+    'EID'                => $eid
 ]);
 
 generateNavigation($tpl);
@@ -115,3 +115,5 @@ generatePage($tpl, $eid);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

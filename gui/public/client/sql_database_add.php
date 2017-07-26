@@ -50,14 +50,14 @@ function client_generatePage($tpl)
             $tpl->parse('MYSQL_PREFIX_INFRONT', 'mysql_prefix_infront');
             $tpl->assign([
                 'MYSQL_PREFIX_BEHIND' => '',
-                'MYSQL_PREFIX_ALL' => ''
+                'MYSQL_PREFIX_ALL'    => ''
             ]);
         }
     } else {
         $tpl->assign([
-            'MYSQL_PREFIX_NO' => '',
+            'MYSQL_PREFIX_NO'      => '',
             'MYSQL_PREFIX_INFRONT' => '',
-            'MYSQL_PREFIX_BEHIND' => ''
+            'MYSQL_PREFIX_BEHIND'  => ''
         ]);
         $tpl->parse('MYSQL_PREFIX_ALL', 'mysql_prefix_all');
     }
@@ -66,19 +66,19 @@ function client_generatePage($tpl)
         && $_POST['uaction'] == 'add_db'
     ) {
         $tpl->assign([
-            'DB_NAME' => clean_input($_POST['db_name']),
-            'USE_DMN_ID' => isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' ? ' checked' : '',
+            'DB_NAME'               => clean_input($_POST['db_name']),
+            'USE_DMN_ID'            => isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' ? ' checked' : '',
             'START_ID_POS_SELECTED' => isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end' ? ' checked' : '',
-            'END_ID_POS_SELECTED' => isset($_POST['id_pos']) && $_POST['id_pos'] === 'end' ? ' checked' : ''
+            'END_ID_POS_SELECTED'   => isset($_POST['id_pos']) && $_POST['id_pos'] === 'end' ? ' checked' : ''
         ]);
         return;
     }
 
     $tpl->assign([
-        'DB_NAME' => '',
-        'USE_DMN_ID' => '',
+        'DB_NAME'               => '',
+        'USE_DMN_ID'            => '',
         'START_ID_POS_SELECTED' => $cfg['HTML_SELECTED'],
-        'END_ID_POS_SELECTED' => ''
+        'END_ID_POS_SELECTED'   => ''
     ]);
 }
 
@@ -190,25 +190,25 @@ client_addSqlDb($_SESSION['user_id']);
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'client/sql_database_add.tpl',
-    'page_message' => 'layout',
-    'mysql_prefix_no' => 'page',
-    'mysql_prefix_yes' => 'page',
+    'layout'               => 'shared/layouts/ui.tpl',
+    'page'                 => 'client/sql_database_add.tpl',
+    'page_message'         => 'layout',
+    'mysql_prefix_no'      => 'page',
+    'mysql_prefix_yes'     => 'page',
     'mysql_prefix_infront' => 'page',
-    'mysql_prefix_behind' => 'page',
-    'mysql_prefix_all' => 'page'
+    'mysql_prefix_behind'  => 'page',
+    'mysql_prefix_all'     => 'page'
 ]);
 
 $tpl->assign([
-    'TR_PAGE_TITLE' => tr('Client / Databases / Add SQL Database'),
-    'TR_DATABASE' => tr('Database'),
-    'TR_DB_NAME' => tr('Database name'),
-    'TR_USE_DMN_ID' => tr('Database prefix/suffix'),
+    'TR_PAGE_TITLE'   => tr('Client / Databases / Add SQL Database'),
+    'TR_DATABASE'     => tr('Database'),
+    'TR_DB_NAME'      => tr('Database name'),
+    'TR_USE_DMN_ID'   => tr('Database prefix/suffix'),
     'TR_START_ID_POS' => tr('In front'),
-    'TR_END_ID_POS' => tr('Behind'),
-    'TR_ADD' => tr('Add'),
-    'TR_CANCEL' => tr('Cancel')
+    'TR_END_ID_POS'   => tr('Behind'),
+    'TR_ADD'          => tr('Add'),
+    'TR_CANCEL'       => tr('Cancel')
 ]);
 
 client_generatePage($tpl);
@@ -218,3 +218,5 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

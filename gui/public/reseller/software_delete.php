@@ -18,66 +18,37 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
-
 check_login('reseller');
 
-resellerHasFeature('aps') or showBadRequestErrorPage();
-
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
-if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
-	$query="
-		SELECT
-			`software_id`,
-			`software_archive`,
-			`software_depot`
-		FROM
-			`web_software`
-		WHERE
-			`software_id` = ?
-		AND
-			`reseller_id` = ?
-	";
-	$rs = exec_query($query, [$_GET['id'], $_SESSION['user_id']]);
-
-	if ($rs->recordCount() != 1) {
-		set_page_message(tr('Wrong software id.'), 'error');
-		redirectTo('software_upload.php');
-	} else {
-		if ($rs->fields['software_depot'] == "no") {
-			$del_path = $cfg->GUI_APS_DIR."/".$_SESSION['user_id']."/".$rs->fields['software_archive']."-".$rs->fields['software_id'].".tar.gz";
-			@unlink($del_path);
-		}
-
-		$update = "
-			UPDATE
-				`web_software_inst`
-			SET
-				`software_res_del` = 1
-			WHERE
-				`software_id` = ?
-		";
-		$res = exec_query($update, $rs->fields['software_id']);
-
-		$delete="
-			DELETE FROM
-				`web_software`
-			WHERE
-				`software_id` = ?
-			AND
-				`reseller_id` = ?
-		";
-		$res = exec_query($delete, [$_GET['id'], $_SESSION['user_id']]);
-
-		set_page_message(tr('Software successfully scheduled for deletion.'), 'success');
-		redirectTo('software_upload.php');
-	}
-} else {
-	set_page_message(tr('Wrong software id.'), 'error');
-	redirectTo('software_upload.php');
+if (!resellerHasFeature('aps') || !isset($_GET['id'])) {
+    showBadRequestErrorPage();
 }
+
+$softwareId = intval($_GET['id']);
+$stmt = exec_query(
+    '
+        SELECT software_id, software_archive, software_depot
+        FROM web_software
+        WHERE software_id = ?
+        AND reseller_id = ?
+    ',
+    [$softwareId, $_SESSION['user_id']]
+);
+
+if (!$stmt->rowCount()) {
+    showBadRequestErrorPage();
+}
+
+if ($stmt->fields['software_depot'] == 'no') {
+    $del_path = iMSCP_Registry::get('config')['GUI_APS_DIR'] . '/' . $_SESSION['user_id'] . '/'
+        . $rs->fields['software_archive'] . '-' . $rs->fields['software_id'] . '.tar.gz';
+    @unlink($del_path);
+}
+
+exec_query('UPDATE web_software_inst SET software_res_del = 1 WHERE software_id = ?', $rs->fields['software_id']);
+exec_query('DELETE FROM web_software WHERE software_id = ? AND reseller_id = ?', [$softwareId, $_SESSION['user_id']]);
+set_page_message(tr('Software successfully scheduled for deletion.'), 'success');
+redirectTo('software_upload.php');

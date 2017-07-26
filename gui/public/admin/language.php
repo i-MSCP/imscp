@@ -48,9 +48,7 @@ $adminCurrentLanguage = $_SESSION['user_def_lang'];
 if (!empty($_POST)) {
     $adminNewLanguage = clean_input($_POST['def_language']);
     if ($adminCurrentLanguage != $adminNewLanguage) {
-        exec_query('UPDATE user_gui_props SET lang = ? WHERE user_id = ?', [
-            $adminNewLanguage, $_SESSION['user_id']
-        ]);
+        exec_query('UPDATE user_gui_props SET lang = ? WHERE user_id = ?', [$adminNewLanguage, $_SESSION['user_id']]);
         $_SESSION['user_def_lang'] = $adminNewLanguage;
         set_page_message(tr('Language successfully updated.'), 'success');
     } else {
@@ -74,3 +72,5 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

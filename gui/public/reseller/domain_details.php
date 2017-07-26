@@ -39,14 +39,14 @@ function reseller_gen_mail_quota_limit_mgs($customerId)
 {
     $mainDmnProps = get_domain_default_props($customerId, $_SESSION['user_id']);
     $stmt = exec_query(
-        'SELECT IFNULL(SUM(quota), 0) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
+        'SELECT SUM(quota) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
         $mainDmnProps['domain_id']
     );
 
     $row = $stmt->fetchRow();
     return [
         bytesHuman($row['quota']),
-        $mainDmnProps['mail_quota'] == 0 ? tr('Unlimited') : bytesHuman($mainDmnProps['mail_quota'])
+        $mainDmnProps['mail_quota'] == 0 ? '∞' : bytesHuman($mainDmnProps['mail_quota'])
     ];
 }
 
@@ -116,36 +116,36 @@ function reseller_generatePage($tpl, $domainId)
     $trEnabled = '<span style="color:green">' . tr('Enabled') . '</span>';
     $trDisabled = '<span style="color:red">' . tr('Disabled') . '</span>';
     $tpl->assign([
-        'DOMAIN_ID' => $domainId,
-        'VL_DOMAIN_NAME' => tohtml(decode_idna($domainData['domain_name'])),
-        'VL_DOMAIN_IP' => tohtml(($domainIpAddr == '0.0.0.0') ? tr('Any') : $domainIpAddr),
-        'VL_STATUS' => $domainStatus,
-        'VL_PHP_SUPP' => ($domainData['domain_php'] == 'yes') ? $trEnabled : $trDisabled,
-        'VL_PHP_EDITOR_SUPP' => ($domainData['phpini_perm_system'] == 'yes') ? $trEnabled : $trDisabled,
-        'VL_CGI_SUPP' => ($domainData['domain_cgi'] == 'yes') ? $trEnabled : $trDisabled,
-        'VL_DNS_SUPP' => ($domainData['domain_dns'] == 'yes') ? $trEnabled : $trDisabled,
-        'VL_EXT_MAIL_SUPP' => ($domainData['domain_external_mail'] == 'yes') ? $trEnabled : $trDisabled,
-        'VL_SOFTWARE_SUPP' => ($domainData['domain_software_allowed'] == 'yes') ? $trEnabled : $trDisabled,
-        'VL_BACKUP_SUP' => translate_limit_value($domainData['allowbackup']),
-        'VL_TRAFFIC_PERCENT' => $trafficUsagePercent,
-        'VL_TRAFFIC_USED' => bytesHuman($trafficUsageBytes),
-        'VL_TRAFFIC_LIMIT' => bytesHuman($trafficLimitBytes),
-        'VL_DISK_PERCENT' => $diskspaceUsagePercent,
-        'VL_DISK_USED' => bytesHuman($domainData['domain_disk_usage']),
-        'VL_DISK_LIMIT' => bytesHuman($diskspaceLimitBytes),
-        'VL_MAIL_ACCOUNTS_USED' => get_domain_running_mail_acc_cnt($domainId),
-        'VL_MAIL_ACCOUNTS_LIMIT' => translate_limit_value($domainData['domain_mailacc_limit']),
-        'VL_MAIL_QUOTA_USED' => $quota,
-        'VL_MAIL_QUOTA_LIMIT' => ($domainData['domain_mailacc_limit'] != '-1') ? $quotaLimit : tr('Disabled'),
-        'VL_FTP_ACCOUNTS_USED' => get_customer_running_ftp_acc_cnt($domainData['domain_admin_id']),
-        'VL_FTP_ACCOUNTS_LIMIT' => translate_limit_value($domainData['domain_ftpacc_limit']),
-        'VL_SQL_DB_ACCOUNTS_USED' => get_domain_running_sqld_acc_cnt($domainId),
-        'VL_SQL_DB_ACCOUNTS_LIMIT' => translate_limit_value($domainData['domain_sqld_limit']),
-        'VL_SQL_USER_ACCOUNTS_USED' => get_domain_running_sqlu_acc_cnt($domainId),
+        'DOMAIN_ID'                  => $domainId,
+        'VL_DOMAIN_NAME'             => tohtml(decode_idna($domainData['domain_name'])),
+        'VL_DOMAIN_IP'               => tohtml(($domainIpAddr == '0.0.0.0') ? tr('Any') : $domainIpAddr),
+        'VL_STATUS'                  => $domainStatus,
+        'VL_PHP_SUPP'                => ($domainData['domain_php'] == 'yes') ? $trEnabled : $trDisabled,
+        'VL_PHP_EDITOR_SUPP'         => ($domainData['phpini_perm_system'] == 'yes') ? $trEnabled : $trDisabled,
+        'VL_CGI_SUPP'                => ($domainData['domain_cgi'] == 'yes') ? $trEnabled : $trDisabled,
+        'VL_DNS_SUPP'                => ($domainData['domain_dns'] == 'yes') ? $trEnabled : $trDisabled,
+        'VL_EXT_MAIL_SUPP'           => ($domainData['domain_external_mail'] == 'yes') ? $trEnabled : $trDisabled,
+        'VL_SOFTWARE_SUPP'           => ($domainData['domain_software_allowed'] == 'yes') ? $trEnabled : $trDisabled,
+        'VL_BACKUP_SUP'              => translate_limit_value($domainData['allowbackup']),
+        'VL_TRAFFIC_PERCENT'         => $trafficUsagePercent,
+        'VL_TRAFFIC_USED'            => bytesHuman($trafficUsageBytes),
+        'VL_TRAFFIC_LIMIT'           => bytesHuman($trafficLimitBytes),
+        'VL_DISK_PERCENT'            => $diskspaceUsagePercent,
+        'VL_DISK_USED'               => bytesHuman($domainData['domain_disk_usage']),
+        'VL_DISK_LIMIT'              => bytesHuman($diskspaceLimitBytes),
+        'VL_MAIL_ACCOUNTS_USED'      => get_domain_running_mail_acc_cnt($domainId),
+        'VL_MAIL_ACCOUNTS_LIMIT'     => translate_limit_value($domainData['domain_mailacc_limit']),
+        'VL_MAIL_QUOTA_USED'         => $quota,
+        'VL_MAIL_QUOTA_LIMIT'        => ($domainData['domain_mailacc_limit'] != '-1') ? $quotaLimit : tr('Disabled'),
+        'VL_FTP_ACCOUNTS_USED'       => get_customer_running_ftp_acc_cnt($domainData['domain_admin_id']),
+        'VL_FTP_ACCOUNTS_LIMIT'      => translate_limit_value($domainData['domain_ftpacc_limit']),
+        'VL_SQL_DB_ACCOUNTS_USED'    => get_domain_running_sqld_acc_cnt($domainId),
+        'VL_SQL_DB_ACCOUNTS_LIMIT'   => translate_limit_value($domainData['domain_sqld_limit']),
+        'VL_SQL_USER_ACCOUNTS_USED'  => get_domain_running_sqlu_acc_cnt($domainId),
         'VL_SQL_USER_ACCOUNTS_LIMIT' => translate_limit_value($domainData['domain_sqlu_limit']),
-        'VL_SUBDOM_ACCOUNTS_USED' => get_domain_running_sub_cnt($domainId),
-        'VL_SUBDOM_ACCOUNTS_LIMIT' => translate_limit_value($domainData['domain_subd_limit']),
-        'VL_DOMALIAS_ACCOUNTS_USED' => get_domain_running_als_cnt($domainId),
+        'VL_SUBDOM_ACCOUNTS_USED'    => get_domain_running_sub_cnt($domainId),
+        'VL_SUBDOM_ACCOUNTS_LIMIT'   => translate_limit_value($domainData['domain_subd_limit']),
+        'VL_DOMALIAS_ACCOUNTS_USED'  => get_domain_running_als_cnt($domainId),
         'VL_DOMALIAS_ACCOUNTS_LIMIT' => translate_limit_value($domainData['domain_alias_limit'])
     ]);
 }
@@ -165,38 +165,38 @@ if (!isset($_GET['domain_id'])) {
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'reseller/domain_details.tpl',
+    'layout'        => 'shared/layouts/ui.tpl',
+    'page'          => 'reseller/domain_details.tpl',
     'page_messages' => 'layout'
 ]);
 $tpl->assign([
-    'TR_PAGE_TITLE' => tr('Reseller / Customers / Overview / Domain Details'),
-    'TR_DOMAIN_DETAILS' => tr('Domain details'),
-    'TR_DOMAIN_NAME' => tr('Domain name'),
-    'TR_DOMAIN_IP' => tr('Domain IP'),
-    'TR_STATUS' => tr('Status'),
-    'TR_PHP_SUPP' => tr('PHP'),
-    'TR_PHP_EDITOR_SUPP' => tr('PHP Editor'),
-    'TR_CGI_SUPP' => tr('CGI'),
-    'TR_DNS_SUPP' => tr('Custom DNS records'),
-    'TR_EXT_MAIL_SUPP' => tr('Ext. mail server'),
-    'TR_BACKUP_SUPP' => tr('Backup'),
-    'TR_TRAFFIC' => tr('Traffic'),
-    'TR_DISK' => tr('Disk'),
-    'TR_FEATURE' => tr('Feature'),
-    'TR_USED' => tr('Used'),
-    'TR_LIMIT' => tr('Limit'),
-    'TR_SUBDOM_ACCOUNTS' => tr('Subdomains'),
+    'TR_PAGE_TITLE'        => tr('Reseller / Customers / Overview / Domain Details'),
+    'TR_DOMAIN_DETAILS'    => tr('Domain details'),
+    'TR_DOMAIN_NAME'       => tr('Domain name'),
+    'TR_DOMAIN_IP'         => tr('Domain IP'),
+    'TR_STATUS'            => tr('Status'),
+    'TR_PHP_SUPP'          => tr('PHP'),
+    'TR_PHP_EDITOR_SUPP'   => tr('PHP Editor'),
+    'TR_CGI_SUPP'          => tr('CGI'),
+    'TR_DNS_SUPP'          => tr('Custom DNS records'),
+    'TR_EXT_MAIL_SUPP'     => tr('Ext. mail server'),
+    'TR_BACKUP_SUPP'       => tr('Backup'),
+    'TR_TRAFFIC'           => tr('Traffic'),
+    'TR_DISK'              => tr('Disk'),
+    'TR_FEATURE'           => tr('Feature'),
+    'TR_USED'              => tr('Used'),
+    'TR_LIMIT'             => tr('Limit'),
+    'TR_SUBDOM_ACCOUNTS'   => tr('Subdomains'),
     'TR_DOMALIAS_ACCOUNTS' => tr('Domain aliases'),
-    'TR_MAIL_ACCOUNTS' => tr('Email accounts'),
-    'TR_MAIL_QUOTA' => tr('Email quota'),
-    'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
-    'TR_SQL_DB_ACCOUNTS' => tr('SQL databases'),
+    'TR_MAIL_ACCOUNTS'     => tr('Mail accounts'),
+    'TR_MAIL_QUOTA'        => tr('Mail quota'),
+    'TR_FTP_ACCOUNTS'      => tr('FTP accounts'),
+    'TR_SQL_DB_ACCOUNTS'   => tr('SQL databases'),
     'TR_SQL_USER_ACCOUNTS' => tr('SQL users'),
-    'TR_UPDATE_DATA' => tr('Submit changes'),
-    'TR_SOFTWARE_SUPP' => tr('Software installer'),
-    'TR_EDIT' => tr('Edit'),
-    'TR_BACK' => tr('Back')
+    'TR_UPDATE_DATA'       => tr('Submit changes'),
+    'TR_SOFTWARE_SUPP'     => tr('Software installer'),
+    'TR_EDIT'              => tr('Edit'),
+    'TR_BACK'              => tr('Back')
 ]);
 
 generateNavigation($tpl);

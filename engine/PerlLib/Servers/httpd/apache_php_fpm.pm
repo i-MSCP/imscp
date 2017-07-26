@@ -45,6 +45,7 @@ use iMSCP::ProgramFinder;
 use iMSCP::Rights;
 use iMSCP::Service;
 use iMSCP::TemplateParser;
+use iMSCP::Umask;
 use List::MoreUtils qw/ uniq /;
 use version;
 use parent 'Common::SingletonClass';
@@ -605,8 +606,7 @@ sub addHtpasswd
     clearImmutable( $data->{'WEB_DIR'} );
 
     my $file = iMSCP::File->new( filename => $filePath );
-    my $fileContent = $file->get( ) if -f $filePath;
-    $fileContent = '' unless defined $fileContent;
+    my $fileContent = -f $filePath ? $file->get( ) : '';
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdAddHtpasswd', \$fileContent, $data );
     return $rs if $rs;
@@ -618,6 +618,8 @@ sub addHtpasswd
     return $rs if $rs;
 
     $file->set( $fileContent );
+
+    local $UMASK = 027;
 
     $rs = $file->save( );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
@@ -644,11 +646,12 @@ sub deleteHtpasswd
     my $fileName = $self->{'config'}->{'HTACCESS_USERS_FILENAME'};
     my $filePath = "$data->{'WEB_DIR'}/$fileName";
 
+    return 0 unless -f $filePath;
+
     clearImmutable( $data->{'WEB_DIR'} );
 
     my $file = iMSCP::File->new( filename => $filePath );
-    my $fileContent = $file->get( ) if -f $filePath;
-    $fileContent = '' unless defined $fileContent;
+    my $fileContent = $file->get( ) // '';
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdDelHtpasswd', \$fileContent, $data );
     return $rs if $rs;
@@ -688,8 +691,7 @@ sub addHtgroup
     clearImmutable( $data->{'WEB_DIR'} );
 
     my $file = iMSCP::File->new( filename => $filePath );
-    my $fileContent = $file->get( ) if -f $filePath;
-    $fileContent = '' unless defined $fileContent;
+    my $fileContent = -f $filePath ? $file->get( ) : '';
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdAddHtgroup', \$fileContent, $data );
     return $rs if $rs;
@@ -701,6 +703,8 @@ sub addHtgroup
     return $rs if $rs;
 
     $file->set( $fileContent );
+
+    local $UMASK = 027;
 
     $rs = $file->save( );
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
@@ -727,11 +731,12 @@ sub deleteHtgroup
     my $fileName = $self->{'config'}->{'HTACCESS_GROUPS_FILENAME'};
     my $filePath = "$data->{'WEB_DIR'}/$fileName";
 
+    return 0 unless -f $filePath;
+
     clearImmutable( $data->{'WEB_DIR'} );
 
     my $file = iMSCP::File->new( filename => $filePath );
-    my $fileContent = $file->get( ) if -f $filePath;
-    $fileContent = '' unless defined $fileContent;
+    my $fileContent = $file->get( ) // '';
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdDelHtgroup', \$fileContent, $data );
     return $rs if $rs;
@@ -777,8 +782,7 @@ sub addHtaccess
     clearImmutable( $data->{'AUTH_PATH'} ) if $isImmutable;
 
     my $file = iMSCP::File->new( filename => $filePath );
-    my $fileContent = $file->get( ) if -f $filePath;
-    $fileContent = '' unless defined $fileContent;
+    my $fileContent = -f $filePath ? $file->get( ) : '';
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdAddHtaccess', \$fileContent, $data );
     return $rs if $rs;
@@ -800,6 +804,8 @@ sub addHtaccess
     return $rs if $rs;
 
     $file->set( $fileContent );
+
+    local $UMASK = 027;
 
     $rs = $file->save( );
     $rs ||= $file->owner( $data->{'USER'}, $data->{'GROUP'} );
@@ -829,20 +835,21 @@ sub deleteHtaccess
 
     my $filePath = "$data->{'AUTH_PATH'}/.htaccess";
 
+    return 0 unless -f $filePath;
+
     my $isImmutable = isImmutable( $data->{'AUTH_PATH'} );
     clearImmutable( $data->{'AUTH_PATH'} ) if $isImmutable;
 
     my $file = iMSCP::File->new( filename => $filePath );
-    my $fileContent = $file->get( ) if -f $filePath;
+    my $fileContent = $file->get( ) // '';
     $fileContent = '' unless defined $fileContent;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdDelHtaccess', \$fileContent, $data );
     return $rs if $rs;
 
-    my $bTag = "### START i-MSCP PROTECTION ###\n";
-    my $eTag = "### END i-MSCP PROTECTION ###\n";
-
-    $fileContent = replaceBloc( $bTag, $eTag, '', $fileContent );
+    $fileContent = replaceBloc(
+        "### START i-MSCP PROTECTION ###\n", "### END i-MSCP PROTECTION ###\n", '', $fileContent
+    );
 
     $rs = $self->{'eventManager'}->trigger( 'afterHttpdDelHtaccess', \$fileContent, $data );
     return $rs if $rs;
@@ -1798,16 +1805,14 @@ sub _addFiles
     my @files = iMSCP::Dir->new( dirname => $skelDir )->getAll( );
 
     # Set ownership for first Web folder depth, e.g:
-    # 00_private vuxxx:vuxxx (recursive with --fix-permissions)
-    # backups    vuxxx:vuxxx (recursive with --fix-permissions)
-    # cgi-bin    vuxxx:vuxxx (recursive with --fix-permissions)
-    # error      vuxxx:vuxxx (recursive with --fix-permissions)
+    # 00_private vuxxx:vuxxx (recursive with --fix-permissions) -- main domain Web folder only
+    # backups    vuxxx:vuxxx (recursive with --fix-permissions) -- main domain Web folder only
+    # cgi-bin    vuxxx:vuxxx (recursive with --fix-permissions) -- main domain Web folder only
+    # error      vuxxx:vuxxx (recursive with --fix-permissions) -- main domain Web folder only
     # htdocs     vuxxx:vuxxx (recursive with --fix-permissions)
-    # .htgroup   skipped
-    # .htpasswd  skipped
-    # logs       skipped
-    # phptmp     vuxxx:vuxxx (recursive with --fix-permissions)
-    for my $file(grep( !/^(?:\.(?:htgroup|htpasswd)|logs)$/, @files )) {
+    # logs       skipped -- main domain Web folder only
+    # phptmp     vuxxx:vuxxx (recursive with --fix-permissions) -- main domain Web folder only
+    for my $file(grep( $_ ne 'logs', @files )) {
         next unless -e "$data->{'WEB_DIR'}/$file";
 
         $rs = setRights(
@@ -1822,22 +1827,23 @@ sub _addFiles
     }
 
     if ($data->{'DOMAIN_TYPE'} eq 'dmn') {
-        # Set ownership for .htgroup and .htpasswd files
+        # Set ownership and permissions for .htgroup and .htpasswd files if any
         # .htgroup  root:www-data
         # .htpasswd root:www-data
         for my $file(qw/ .htgroup .htpasswd /) {
-            next unless -e "$data->{'WEB_DIR'}/$file";
+            next unless -f "$data->{'WEB_DIR'}/$file";
             $rs = setRights(
                 "$data->{'WEB_DIR'}/$file",
                 {
                     user  => $main::imscpConfig{'ROOT_USER'},
-                    group => $self->{'config'}->{'HTTPD_GROUP'}
+                    group => $self->{'config'}->{'HTTPD_GROUP'},
+                    mode  => '0640'
                 }
             );
             return $rs if $rs;
         }
 
-        # Set ownership for logs directory
+        # Set ownership for logs directory if any
         # logs root:vuxxx (no recursive)
         if (-d "$data->{'WEB_DIR'}/logs") {
             $rs = setRights(
@@ -1852,15 +1858,13 @@ sub _addFiles
     }
 
     # Set permissions for first Web folder depth, e.g:
-    # 00_private 0750 (no recursive)
-    # backups    0750 (recursive with --fix-permissions)
-    # cgi-bin    0750 (no recursive)
-    # error      0750 (recursive with --fix-permissions)
+    # 00_private 0750 (no recursive) -- main domain Web folder only
+    # backups    0750 (recursive with --fix-permissions) -- main domain Web folder only
+    # cgi-bin    0750 (no recursive) -- main domain Web folder only
+    # error      0750 (recursive with --fix-permissions) -- main domain Web folder only
     # htdocs     0750 (no recursive)
-    # .htgroup   0640
-    # .htpasswd  0640
-    # logs       0750 (no recursive)
-    # phptmp     0750 (recursive with --fix-permissions)
+    # logs       0750 (no recursive) -- main domain Web folder only
+    # phptmp     0750 (recursive with --fix-permissions) -- main domain Web folder only
     for my $file (@files) {
         next unless -e "$data->{'WEB_DIR'}/$file";
 

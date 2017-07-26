@@ -204,20 +204,14 @@ return [
                         'visible' => '0',
                         'title_class' => 'email'
                     ],
-                    'mail_account_quota_link' => [
-                        'label' => tr('Edit mail quota'),
-                        'uri' => '/client/mail_quota.php',
-                        'visible' => '0',
-                        'title_class' => 'email'
-                    ],
                     'enable_autoresponder_link' => [
-                        'label' => tr('Enable auto responder'),
+                        'label' => tr('Activate autoresponder'),
                         'uri' => '/client/mail_autoresponder_enable.php',
                         'visible' => '0',
                         'title_class' => 'email'
                     ],
                     'edit_autoresponder_link' => [
-                        'label' => tr('Edit auto responder'),
+                        'label' => tr('Edit autoresponder'),
                         'uri' => '/client/mail_autoresponder_edit.php',
                         'visible' => '0',
                         'title_class' => 'email'
@@ -225,7 +219,7 @@ return [
                 ]
             ],
             'add_email_account' => [
-                'label' => tr('Add email account'),
+                'label' => tr('Add mail account'),
                 'uri' => '/client/mail_add.php',
                 'title_class' => 'email',
                 'privilege_callback' => [
@@ -234,7 +228,7 @@ return [
                 ],
             ],
             'catchall' => [
-                'label' => tr('Catchall'),
+                'label' => tr('Catch-all accounts'),
                 'uri' => '/client/mail_catchall.php',
                 'title_class' => 'email',
                 'privilege_callback' => [
@@ -243,7 +237,7 @@ return [
                 ],
                 'pages' => [
                     'add_catchall_link' => [
-                        'label' => tr('Add catchall'),
+                        'label' => tr('Add catch-all account'),
                         'uri' => '/client/mail_catchall_add.php',
                         'visible' => '0',
                         'title_class' => 'email'
@@ -251,7 +245,7 @@ return [
                 ]
             ],
             'external_mail_servers' => [
-                'label' => tr('External mail servers'),
+                'label' => tr('External mail feature'),
                 'uri' => '/client/mail_external.php',
                 'title_class' => 'email',
                 'privilege_callback' => [

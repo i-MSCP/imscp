@@ -23,14 +23,14 @@
             fixQuotaField();
         } else {
             $("input[name='account_type']").on('change', function () {
-                    if ($(this).val() == '1') { // Normal email account
+                    if ($(this).val() === '1') { // Normal email account
                         $("#tr_password, #tr_password_rep, #tr_quota").show();
                         $("#tr_forward_list").hide();
                         fixQuotaField();
                         return;
                     }
 
-                    if ($(this).val() == '2') { // Forward email account
+                    if ($(this).val() === '2') { // Forward email account
                         $("#tr_forward_list").show();
                         $("#tr_password, #tr_password_rep, #tr_quota").hide();
                         return;
@@ -69,12 +69,12 @@
         </tr>
         <tr>
             <td><label for="username">{TR_USERNAME}</label></td>
-            <td><input type="text" name="username" id="username" value="{USERNAME}" disabled="disabled"></td>
+            <td><input type="text" name="username" id="username" value="{USERNAME}" disabled></td>
         </tr>
         <tr>
             <td><label for="domain_name">{TR_DOMAIN_NAME}</label></td>
             <td>
-                <select name="domain_name" id="domain_name" disabled="disabled">
+                <select name="domain_name" id="domain_name" disabled>
                     <option value="{DOMAIN_NAME}"{DOMAIN_NAME_SELECTED}>{DOMAIN_NAME_UNICODE}</option>
                 </select>
             </td>

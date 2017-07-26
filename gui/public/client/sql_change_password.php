@@ -30,6 +30,27 @@
  */
 
 /**
+ * Checks if an user has permissions on a specific SQL user
+ *
+ * @param  int $sqlUserId SQL user unique identifier
+ * @return bool TRUE if the logged in user has permission on SQL user, FALSE otherwise
+ */
+function check_user_sql_perms($sqlUserId)
+{
+    return (bool)exec_query(
+        '
+            SELECT COUNT(t1.sqlu_id)
+            FROM sql_user AS t1
+            JOIN sql_database AS t2 USING(sqld_id)
+            JOIN domain AS t3 USING(domain_id)
+            WHERE t1.sqlu_id = ?
+            AND t2.domain_admin_id = ?
+        ',
+        [$sqlUserId, $_SESSION['user_id']]
+    )->fetchRow(PDO::FETCH_COLUMN);
+}
+
+/**
  * Generate page
  *
  * @param iMSCP_pTemplate $tpl
@@ -47,7 +68,7 @@ function client_generatePage($tpl, $id)
     $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
     $tpl->assign([
         'USER_NAME' => tohtml($row['sqlu_name']),
-        'ID' => tohtml($id)
+        'ID'        => tohtml($id)
     ]);
 
     return [$row['sqlu_name'], $row['sqlu_host']];
@@ -67,7 +88,7 @@ function client_updateSqlUserPassword($id, $user, $host)
         return;
     }
 
-    if(!isset($_POST['password']) || !isset($_POST['password_confirmation'])) {
+    if (!isset($_POST['password']) || !isset($_POST['password_confirmation'])) {
         showBadRequestErrorPage();
     }
 
@@ -138,18 +159,18 @@ if (!check_user_sql_perms($id)) {
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'client/sql_change_password.tpl',
+    'layout'       => 'shared/layouts/ui.tpl',
+    'page'         => 'client/sql_change_password.tpl',
     'page_message' => 'layout'
 ]);
 
 $tpl->assign([
-    'TR_PAGE_TITLE' => tr('Client / Databases / Overview / Update SQL User Password'),
-    'TR_DB_USER' => tr('User'),
-    'TR_PASSWORD' => tr('Password'),
+    'TR_PAGE_TITLE'            => tr('Client / Databases / Overview / Update SQL User Password'),
+    'TR_DB_USER'               => tr('User'),
+    'TR_PASSWORD'              => tr('Password'),
     'TR_PASSWORD_CONFIRMATION' => tr('Password confirmation'),
-    'TR_CHANGE' => tr('Update'),
-    'TR_CANCEL' => tr('Cancel')
+    'TR_CHANGE'                => tr('Update'),
+    'TR_CANCEL'                => tr('Cancel')
 ]);
 
 list($user, $host) = client_generatePage($tpl, $id);

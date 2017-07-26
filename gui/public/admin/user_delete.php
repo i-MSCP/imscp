@@ -26,7 +26,7 @@
  */
 
 /***********************************************************************************************************************
- * Script functions
+ * Functions
  */
 
 /**
@@ -57,9 +57,9 @@ function admin_deleteUser($userId)
 
     // Users (admins/resellers) common items to delete
     $itemsToDelete = [
-        'admin' => 'admin_id = ?',
-        'email_tpls' => 'owner_id = ?',
-        'tickets' => 'ticket_from = ? OR ticket_to = ?',
+        'admin'          => 'admin_id = ?',
+        'email_tpls'     => 'owner_id = ?',
+        'tickets'        => 'ticket_from = ? OR ticket_to = ?',
         'user_gui_props' => 'user_id = ?'
     ];
 
@@ -76,9 +76,9 @@ function admin_deleteUser($userId)
         // Add specific reseller items to remove
         $itemsToDelete = array_merge(
             [
-                'hosting_plans' => 'reseller_id = ?',
+                'hosting_plans'  => 'reseller_id = ?',
                 'reseller_props' => 'reseller_id = ?',
-                'web_software' => 'reseller_id = ?'
+                'web_software'   => 'reseller_id = ?'
             ],
             $itemsToDelete
         );
@@ -203,14 +203,12 @@ function admin_validateUserDeletion($userId)
 }
 
 /***********************************************************************************************************************
- * Main script
+ * Main
  */
 
 require 'imscp-lib.php';
 
-$eventManager = iMSCP_Events_Aggregator::getInstance();
-$eventManager->dispatch(iMSCP_Events::onAdminScriptStart);
-
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 check_login('admin');
 
 if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) { # admin/reseller deletion

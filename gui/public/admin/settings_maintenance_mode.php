@@ -25,69 +25,61 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
-// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
-
 check_login('admin');
 
-/** @var $cfg iMSCP_Config_Handler_File */
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic([
+    'layout'       => 'shared/layouts/ui.tpl',
+    'page'         => 'admin/settings_maintenance_mode.tpl',
+    'page_message' => 'layout'
+]);
+
 $cfg = iMSCP_Registry::get('config');
 
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	[
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'admin/settings_maintenance_mode.tpl',
-		'page_message' => 'layout']);
-
 if (isset($_POST['uaction']) and $_POST['uaction'] == 'apply') {
-	$maintenancemode = $_POST['maintenancemode'];
-	$maintenancemode_message = clean_input($_POST['maintenancemode_message']);
-
-	$db_cfg = iMSCP_Registry::get('dbConfig');
-	$db_cfg->MAINTENANCEMODE = $maintenancemode;
-	$db_cfg->MAINTENANCEMODE_MESSAGE = $maintenancemode_message;
-
-	$cfg->merge($db_cfg);
-
-	set_page_message(tr('Settings saved.'), 'success');
+    $maintenancemode = $_POST['maintenancemode'];
+    $maintenancemode_message = clean_input($_POST['maintenancemode_message']);
+    $db_cfg = iMSCP_Registry::get('dbConfig');
+    $db_cfg->MAINTENANCEMODE = $maintenancemode;
+    $db_cfg->MAINTENANCEMODE_MESSAGE = $maintenancemode_message;
+    $cfg->merge($db_cfg);
+    set_page_message(tr('Settings saved.'), 'success');
 }
 
 $selected_on = '';
 $selected_off = '';
 
-if ($cfg->MAINTENANCEMODE) {
-	$selected_on = $cfg->HTML_SELECTED;
-	set_page_message(tr('Maintenance mode is activated. In this mode, only administrators can login.'), 'static_info');
+if ($cfg['MAINTENANCEMODE']) {
+    $selected_on = ' selected';
+    set_page_message(tr('Maintenance mode is activated. In this mode, only administrators can login.'), 'static_info');
 } else {
-	$selected_off = $cfg->HTML_SELECTED;
-	set_page_message(tr('In maintenance mode, only administrators can login.'), 'static_info');
+    $selected_off = ' selected';
+    set_page_message(tr('In maintenance mode, only administrators can login.'), 'static_info');
 }
 
-$tpl->assign(
-	[
-		'TR_PAGE_TITLE' => tr('Admin / System Tools / Maintenance Settings'),
-		'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
-		'TR_MESSAGE' => tr('Message'),
-		'MESSAGE_VALUE' => (isset($cfg['MAINTENANCEMODE_MESSAGE']))
-			? tohtml($cfg['MAINTENANCEMODE_MESSAGE'])
-			: tr("We are sorry, but the system is currently under maintenance.\nPlease try again later."),
-		'SELECTED_ON' => $selected_on,
-		'SELECTED_OFF' => $selected_off,
-		'TR_ENABLED' => tr('Enabled'),
-		'TR_DISABLED' => tr('Disabled'),
-		'TR_APPLY' => tr('Apply'),
-		'TR_MAINTENANCE_MESSAGE' => tr('Maintenance message')]);
+$tpl->assign([
+    'TR_PAGE_TITLE'          => tr('Admin / System Tools / Maintenance Settings'),
+    'TR_MAINTENANCEMODE'     => tr('Maintenance mode'),
+    'TR_MESSAGE'             => tr('Message'),
+    'MESSAGE_VALUE'          => (isset($cfg['MAINTENANCEMODE_MESSAGE']))
+        ? tohtml($cfg['MAINTENANCEMODE_MESSAGE'])
+        : tr("We are sorry, but the system is currently under maintenance.\nPlease try again later."),
+    'SELECTED_ON'            => $selected_on,
+    'SELECTED_OFF'           => $selected_off,
+    'TR_ENABLED'             => tr('Enabled'),
+    'TR_DISABLED'            => tr('Disabled'),
+    'TR_APPLY'               => tr('Apply'),
+    'TR_MAINTENANCE_MESSAGE' => tr('Maintenance message')
+]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
-
 $tpl->prnt();
 
 unsetMessages();

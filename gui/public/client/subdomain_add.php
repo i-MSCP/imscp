@@ -357,6 +357,15 @@ function addSubdomain()
         $phpini->loadDomainIni($_SESSION['user_id'], $mainDmnProps['domain_id'], 'dmn'); // Load main domain PHP configuration options
         $phpini->saveDomainIni($_SESSION['user_id'], $subdomainId, $domainType == 'dmn' ? 'sub' : 'subals');
 
+        $cfg = iMSCP_Registry::get('config');
+
+        if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
+            createDefaultMailAccounts(
+                $mainDmnProps['domain_id'], $_SESSION['user_email'], $subdomainNameAscii,
+                ($domainType == 'dmn') ? MT_SUBDOM_FORWARD : MT_ALSSUB_FORWARD, $subdomainId
+            );
+        }
+
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddSubdomain, [
             'subdomainName'  => $subdomainName,
             'subdomainType'  => $domainType,
@@ -446,3 +455,5 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

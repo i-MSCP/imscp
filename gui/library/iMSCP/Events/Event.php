@@ -25,157 +25,157 @@
  */
 class iMSCP_Events_Event implements iMSCP_Events_Description
 {
-	/**
-	 * @var string Event name
-	 */
-	protected $name;
+    /**
+     * @var string Event name
+     */
+    protected $name;
 
-	/**
-	 * @var array|ArrayAccess|object The event parameters
-	 */
-	protected $params = [];
+    /**
+     * @var array|ArrayAccess|object The event parameters
+     */
+    protected $params = [];
 
-	/**
-	 * @var bool Whether or not to stop propagation
-	 */
-	protected $stopPropagation = false;
+    /**
+     * @var bool Whether or not to stop propagation
+     */
+    protected $stopPropagation = false;
 
-	/**
-	 * Constructor
-	 *
-	 * @param string $name Event name
-	 * @param array|ArrayAccess $params
-	 */
-	public function __construct($name = null, $params = null)
-	{
-		if (null !== $name) {
-			$this->setName($name);
-		}
+    /**
+     * Constructor
+     *
+     * @param string $name Event name
+     * @param array|ArrayAccess $params
+     */
+    public function __construct($name = NULL, $params = NULL)
+    {
+        if (NULL !== $name) {
+            $this->setName($name);
+        }
 
-		if (null !== $params) {
-			$this->setParams($params);
-		}
-	}
+        if (NULL !== $params) {
+            $this->setParams($params);
+        }
+    }
 
-	/**
-	 * Returns event name
-	 *
-	 * @return string
-	 */
-	public function getName()
-	{
-		return $this->name;
-	}
+    /**
+     * Returns event name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * Set parameters
-	 *
-	 * Overwrites parameters
-	 *
-	 * @throws iMSCP_Events_Exception
-	 * @param  array|ArrayAccess|object $params
-	 * @return iMSCP_Events_Event Provides fluent interface, returns self
-	 */
-	public function setParams($params)
-	{
-		if (!is_array($params) && !is_object($params)) {
-			throw new iMSCP_Events_Exception('Event parameters must be an array or object');
-		}
+    /**
+     * Set parameters
+     *
+     * Overwrites parameters
+     *
+     * @throws iMSCP_Events_Exception
+     * @param  array|ArrayAccess|object $params
+     * @return iMSCP_Events_Event Provides fluent interface, returns self
+     */
+    public function setParams($params)
+    {
+        if (!is_array($params) && !is_object($params)) {
+            throw new iMSCP_Events_Exception('Event parameters must be an array or object');
+        }
 
-		$this->params = $params;
+        $this->params = $params;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Returns all parameters
-	 *
-	 * @return array|object|ArrayAccess
-	 */
-	public function getParams()
-	{
-		return $this->params;
-	}
+    /**
+     * Returns all parameters
+     *
+     * @return array|object|ArrayAccess
+     */
+    public function getParams()
+    {
+        return $this->params;
+    }
 
-	/**
-	 * Return an individual parameter
-	 *
-	 * If the parameter does not exist, the $default value will be returned.
-	 *
-	 * @param  string|int $name Parameter name
-	 * @param  mixed $default Default value to be returned if $name doesn't exist
-	 * @return mixed
-	 */
-	public function getParam($name, $default = null)
-	{
-		// Check in params that are arrays or implement array access
-		if (is_array($this->params) || $this->params instanceof ArrayAccess) {
-			if (!isset($this->params[$name])) {
-				return $default;
-			}
+    /**
+     * Return an individual parameter
+     *
+     * If the parameter does not exist, the $default value will be returned.
+     *
+     * @param  string|int $name Parameter name
+     * @param  mixed $default Default value to be returned if $name doesn't exist
+     * @return mixed
+     */
+    public function getParam($name, $default = NULL)
+    {
+        // Check in params that are arrays or implement array access
+        if (is_array($this->params) || $this->params instanceof ArrayAccess) {
+            if (!isset($this->params[$name])) {
+                return $default;
+            }
 
-			return $this->params[$name];
-		}
+            return $this->params[$name];
+        }
 
-		// Check in normal objects
-		if (!isset($this->params->{$name})) {
-			return $default;
-		}
+        // Check in normal objects
+        if (!isset($this->params->{$name})) {
+            return $default;
+        }
 
-		return $this->params->{$name};
-	}
+        return $this->params->{$name};
+    }
 
-	/**
-	 * Set the event name
-	 *
-	 * @param  string $name Event Name
-	 * @return iMSCP_Events_Event Provides fluent interface, returns self
-	 */
-	public function setName($name)
-	{
-		$this->name = (string)$name;
+    /**
+     * Set the event name
+     *
+     * @param  string $name Event Name
+     * @return iMSCP_Events_Event Provides fluent interface, returns self
+     */
+    public function setName($name)
+    {
+        $this->name = (string)$name;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Set an individual parameter to a value
-	 *
-	 * @param string|int $name Parameter name
-	 * @param mixed $value Parameter value
-	 * @return iMSCP_Events_Event
-	 */
-	public function setParam($name, $value)
-	{
-		if (is_array($this->params) || $this->params instanceof ArrayAccess) {
-			// Arrays or objects implementing array access
-			$this->params[$name] = $value;
-		} else {
-			// Objects
-			$this->params->{$name} = $value;
-		}
+    /**
+     * Set an individual parameter to a value
+     *
+     * @param string|int $name Parameter name
+     * @param mixed $value Parameter value
+     * @return iMSCP_Events_Event
+     */
+    public function setParam($name, $value)
+    {
+        if (is_array($this->params) || $this->params instanceof ArrayAccess) {
+            // Arrays or objects implementing array access
+            $this->params[$name] = $value;
+        } else {
+            // Objects
+            $this->params->{$name} = $value;
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Stop further event propagation
-	 *
-	 * @param  bool $flag TRUE to stop propagation, FALSE otherwise
-	 * @return void
-	 */
-	public function stopPropagation($flag = true)
-	{
-		$this->stopPropagation = (bool)$flag;
-	}
+    /**
+     * Stop further event propagation
+     *
+     * @param  bool $flag TRUE to stop propagation, FALSE otherwise
+     * @return void
+     */
+    public function stopPropagation($flag = true)
+    {
+        $this->stopPropagation = (bool)$flag;
+    }
 
-	/**
-	 * Is propagation stopped?
-	 *
-	 * @return bool TRUE if propagation is stopped, FALSE otherwise
-	 */
-	public function propagationIsStopped()
-	{
-		return $this->stopPropagation;
-	}
+    /**
+     * Is propagation stopped?
+     *
+     * @return bool TRUE if propagation is stopped, FALSE otherwise
+     */
+    public function propagationIsStopped()
+    {
+        return $this->stopPropagation;
+    }
 }

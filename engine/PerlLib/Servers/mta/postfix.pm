@@ -515,7 +515,7 @@ sub addMail
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddMail', $data );
     return $rs if $rs;
 
-    if ($data->{'MAIL_CATCHALL'} ne '') {
+    if ($data->{'MAIL_CATCHALL'}) {
         $rs = $self->addMapEntry(
             $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, "$data->{'MAIL_ADDR'}\t$data->{'MAIL_CATCHALL'}"
         );
@@ -615,7 +615,7 @@ sub disableMail
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDisableMail', $data );
     return $rs if $rs;
 
-    if ($data->{'MAIL_CATCHALL'} ne '') {
+    if ($data->{'MAIL_CATCHALL'}) {
         $rs ||= $self->deleteMapEntry(
             $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+\Q$data->{'MAIL_CATCHALL'}/
         );
@@ -651,7 +651,7 @@ sub deleteMail
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDelMail', $data );
     return $rs if $rs;
 
-    if ($data->{'MAIL_CATCHALL'} ne '') {
+    if ($data->{'MAIL_CATCHALL'}) {
         $rs ||= $self->deleteMapEntry(
             $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+\Q$data->{'MAIL_CATCHALL'}/
         );

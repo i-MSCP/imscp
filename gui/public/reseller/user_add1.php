@@ -36,8 +36,6 @@
  */
 function reseller_checkData()
 {
-    $cfg = iMSCP_Registry::get('config');
-
     if (!isset($_POST['dmn_name']) || $_POST['dmn_name'] === '') {
         set_page_message(tr('Domain name cannot be empty.'), 'error');
         return;

@@ -42,11 +42,11 @@ function reseller_loadUserData($adminId)
 
     $stmt = exec_query(
         '
-          SELECT admin_name, created_by, fname, lname, firm, zip, city, state, country, email, phone, fax, street1,
-            street2, customer_id, gender
-          FROM admin
-          WHERE admin_id = ?
-          AND created_by = ?
+            SELECT admin_name, created_by, fname, lname, firm, zip, city, state, country, email, phone, fax, street1,
+                street2, customer_id, gender
+            FROM admin
+            WHERE admin_id = ?
+            AND created_by = ?
         ',
         [$adminId, $_SESSION['user_id']]
     );
@@ -243,3 +243,5 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

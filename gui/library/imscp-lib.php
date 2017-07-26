@@ -205,17 +205,22 @@ if (is_readable(CONFIG_CACHE_FILE_PATH)) {
      */
     $config['LOG_LEVEL'] = E_USER_ERROR;
 
-    // Creation of abuse, hostmaster, postmaster and webmaster aliases
+    // Creation of abuse, hostmaster, postmaster and webmaster defaut mail account
     $config['CREATE_DEFAULT_EMAIL_ADDRESSES'] = 1;
 
-    // Count default email accounts (abuse, hostmaster, postmaster and webmaster aliases) in user limit
-    // 1: default email accounts are counted
-    // 0: default email accounts are NOT counted
-    $config['COUNT_DEFAULT_EMAIL_ADDRESSES'] = 1;
+    // Count default abuse, hostmaster, postmaster and webmaster mail accounts
+    // in user mail accounts limit
+    // 1: default mail accounts are counted
+    // 0: default mail accounts are NOT counted
+    $config['COUNT_DEFAULT_EMAIL_ADDRESSES'] = 0;
+    
+    // Protectdefault abuse, hostmaster, postmaster and webmaster mail accounts
+    // against change and deletion
+    $config['PROTECT_DEFAULT_EMAIL_ADDRESSES'] = 1;
 
     // Use hard mail suspension when suspending a domain:
-    // 1: email accounts are hard suspended (completely unreachable)
-    // 0: email accounts are soft suspended (passwords are modified so user can't access the accounts)
+    // 1: mail accounts are hard suspended (completely unreachable)
+    // 0: mail accounts are soft suspended (passwords are modified so user can't access the accounts)
     $config['HARD_MAIL_SUSPENSION'] = 1;
 
     // Prevent external login (i.e. check for valid local referer) separated in admin, reseller and client.

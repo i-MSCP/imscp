@@ -21,7 +21,7 @@
         });
     }
 </script>
-<table class="datatable">
+<table>
     <thead>
     <tr>
         <th>{TR_SOFTWARE_NAME}</th>

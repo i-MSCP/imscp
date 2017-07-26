@@ -30,21 +30,21 @@ customerHasFeature('custom_error_pages') or showBadRequestErrorPage();
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'client/error_pages.tpl',
+    'layout'       => 'shared/layouts/ui.tpl',
+    'page'         => 'client/error_pages.tpl',
     'page_message' => 'layout'
 ]);
 $tpl->assign([
-    'TR_PAGE_TITLE' => tr('Client / Webtools / Custom Error Pages'),
-    'DOMAIN' => tohtml('http://www.' . $_SESSION['user_logged'], 'htmlAttr'),
-    'TR_ERROR_401' => tr('Unauthorized'),
-    'TR_ERROR_403' => tr('Forbidden'),
-    'TR_ERROR_404' => tr('Not Found'),
-    'TR_ERROR_500' => tr('Internal Server Error'),
-    'TR_ERROR_503' => tr('Service Unavailable'),
+    'TR_PAGE_TITLE'  => tr('Client / Webtools / Custom Error Pages'),
+    'DOMAIN'         => tohtml('http://www.' . $_SESSION['user_logged'], 'htmlAttr'),
+    'TR_ERROR_401'   => tr('Unauthorized'),
+    'TR_ERROR_403'   => tr('Forbidden'),
+    'TR_ERROR_404'   => tr('Not Found'),
+    'TR_ERROR_500'   => tr('Internal Server Error'),
+    'TR_ERROR_503'   => tr('Service Unavailable'),
     'TR_ERROR_PAGES' => tr('Custom error pages'),
-    'TR_EDIT' => tr('Edit'),
-    'TR_VIEW' => tr('View')
+    'TR_EDIT'        => tr('Edit'),
+    'TR_VIEW'        => tr('View')
 ]);
 
 generateNavigation($tpl);
@@ -53,3 +53,5 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

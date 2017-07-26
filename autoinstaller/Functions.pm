@@ -156,8 +156,8 @@ sub build
         [ \&_checkRequirements, 'Checking for requirements' ],
         [ \&_buildDistributionFiles, 'Building distribution files' ],
         [ \&_compileDaemon, 'Compiling daemon' ],
-        [ \&_savePersistentData, 'Saving persistent data' ],
-        [ \&_cleanup, 'Processing cleanup tasks' ]
+        [ \&_removeObsoleteFiles, 'Removing obsolete files' ],
+        [ \&_savePersistentData, 'Saving persistent data' ]
     );
 
     unshift @steps, [ \&_installDistroPackages, 'Installing distribution packages' ] unless $main::skippackages;
@@ -744,15 +744,15 @@ sub _savePersistentData
     0;
 }
 
-=item _cleanup( )
+=item _removeObsoleteFiles( )
 
- Process cleanup tasks
+ Removes obsolete files
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _cleanup
+sub _removeObsoleteFiles
 {
     for("$main::imscpConfig{'CACHE_DATA_DIR'}/addons",
         "$main::imscpConfig{'CONF_DIR'}/apache/backup",
@@ -795,6 +795,8 @@ sub _cleanup
         "$main::imscpConfig{'CONF_DIR'}/frontend/nginx.conf",
         "$main::imscpConfig{'CONF_DIR'}/frontend/php-fcgi-starter",
         "$main::imscpConfig{'CONF_DIR'}/listeners.d/README",
+        "$main::imscpConfig{'CONF_DIR'}/skel/domain/.htgroup",
+        "$main::imscpConfig{'CONF_DIR'}/skel/domain/.htpasswd",
         "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/composer.phar",
         '/usr/sbin/maillogconvert.pl',
         # Due to a mistake in previous i-MSCP versions (Upstart conffile copied into systemd confdir)

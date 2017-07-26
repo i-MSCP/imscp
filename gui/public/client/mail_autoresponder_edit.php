@@ -1,100 +1,95 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_pTemplate as TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
  */
 
 /**
- * Checks that the given mail account is owned by current customer and its responder is active
+ * Checks the given mail account
  *
- * @param int $mailAccountId Mail account id to check
- * @return bool TRUE if the mail account is owned by the current customer, FALSE otherwise
+ * - Mail account must exists
+ * - Mail account must be owned by customer
+ * - Mail account must be of type normal, forward or normal & forward
+ * - Mail account must be in consistent state
+ *
+ * @param int $mailAccountId Mail account unique identifier
+ * @return bool TRUE if all conditions are meet, FALSE otherwise
  */
-function checkMailAccountOwner($mailAccountId)
+function checkMailAccount($mailAccountId)
 {
-    $domainProps = get_domain_default_props($_SESSION['user_id']);
-    $stmt = exec_query(
-        '
-            SELECT `t1`.*, `t2`.`domain_id`, `t2`.`domain_name` FROM `mail_users` AS `t1`, `domain` AS `t2`
-            WHERE `t1`.`mail_id` = ? AND `t2`.`domain_id` = `t1`.`domain_id` AND `t2`.`domain_id` = ?
-            AND `t1`.`mail_auto_respond` = ?
-            AND `t1`.`status` = ?
-        ',
-        [$mailAccountId, $domainProps['domain_id'], 1, 'ok']);
-
-    return (bool)$stmt->rowCount();
+    return (bool)exec_query(
+        "
+            SELECT COUNT(t1.mail_id) FROM mail_users AS t1
+            JOIN domain AS t2 USING(domain_id)
+            WHERE t1.mail_id = ? AND t2.domain_admin_id = ? AND t1.mail_type NOT RLIKE ? AND t1.status = 'ok'
+        ",
+        [
+            $mailAccountId,
+            $_SESSION['user_id'],
+            MT_NORMAL_CATCHALL . '|' . MT_SUBDOM_CATCHALL . '|' . MT_ALIAS_CATCHALL . '|' . MT_ALSSUB_CATCHALL
+        ]
+    )->fetchRow(PDO::FETCH_COLUMN);
 }
 
 /**
  * Update autoresponder of the given mail account
  *
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  * @param int $mailAccountId Mail account id
  * @param string $autoresponderMessage Auto-responder message
+ * @return void
  */
-function updateAutoresponder($mailAccountId, $autoresponderMessage)
+function updateAutoresponderMessage($mailAccountId, $autoresponderMessage)
 {
-    $autoresponderMessage = clean_input($autoresponderMessage);
-    if ($autoresponderMessage == '') {
-        set_page_message(tr('Auto-responder message cannot be empty.'), 'error');
+    if ($autoresponderMessage === '') {
+        set_page_message(tr('Autoresponder message cannot be empty.'), 'error');
         redirectTo("mail_autoresponder_enable.php?mail_account_id=$mailAccountId");
     }
 
-    $db = iMSCP_Database::getInstance();
-
-    try {
-        $db->beginTransaction();
-        exec_query('UPDATE `mail_users` SET `status` = ?, `mail_auto_respond_text` = ? WHERE `mail_id` = ?', [
-            'tochange', $autoresponderMessage, $mailAccountId
-        ]);
-        delete_autoreplies_log_entries();
-        $db->commit();
-        send_request();
-        set_page_message(tr('Auto-responder successfully scheduled for update.'), 'success');
-    } catch (iMSCP_Exception $e) {
-        $db->rollBack();
-        throw $e;
-    }
+    exec_query(
+        "
+            UPDATE mail_users
+            SET status = IF(mail_auto_respond, 'tochange', status), mail_auto_respond_text = ?
+            WHERE mail_id = ?
+        ",
+        [$autoresponderMessage, $mailAccountId]
+    );
+    send_request();
+    write_log(sprintf('A mail autoresponder has been edited by %s', decode_idna($_SESSION['user_logged'])), E_USER_NOTICE);
+    set_page_message(tr('Autoresponder has been edited.'), 'success');
 }
 
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @param int $mailAccountId Mail account id
  * @return void
  */
 function generatePage($tpl, $mailAccountId)
 {
-    $stmt = exec_query(
-        'SELECT `mail_auto_respond_text`, `mail_acc` FROM `mail_users` WHERE `mail_id` = ?', $mailAccountId
-    );
+    $stmt = exec_query('SELECT mail_auto_respond_text, mail_acc FROM mail_users WHERE mail_id = ?', $mailAccountId);
     $row = $stmt->fetchRow();
     $tpl->assign('AUTORESPONDER_MESSAGE', tohtml($row['mail_auto_respond_text']));
 }
@@ -105,31 +100,34 @@ function generatePage($tpl, $mailAccountId)
 
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 check_login('user');
 
-if (!customerHasFeature('mail') || !(isset($_REQUEST['mail_account_id']) && is_numeric($_REQUEST['mail_account_id']))) {
+if (!customerHasFeature('mail')
+    || !isset($_REQUEST['id'])
+) {
     showBadRequestErrorPage();
 }
 
-$mailAccountId = intval($_REQUEST['mail_account_id']);
-if (!checkMailAccountOwner($mailAccountId)) {
+$mailAccountId = intval($_REQUEST['id']);
+
+if (!checkMailAccount($mailAccountId)) {
     showBadRequestErrorPage();
 }
 
-if (!isset($_POST['mail_account_id'])) {
-    $tpl = new iMSCP_pTemplate();
+if (!isset($_POST['id'])) {
+    $tpl = new TemplateEngine();
     $tpl->define_dynamic([
-        'layout' => 'shared/layouts/ui.tpl',
-        'page' => 'client/mail_autoresponder.tpl',
+        'layout'       => 'shared/layouts/ui.tpl',
+        'page'         => 'client/mail_autoresponder.tpl',
         'page_message' => 'layout'
     ]);
     $tpl->assign([
-        'TR_PAGE_TITLE' => tr('Client / Email / Overview / Edit Auto Responder'),
-        'TR_AUTORESPONDER_MESSAGE' => tr('Please enter your auto-responder message below'),
-        'TR_ACTION' => tr('Update'),
-        'TR_CANCEL' => tr('Cancel'),
-        'MAIL_ACCOUNT_ID' => $mailAccountId
+        'TR_PAGE_TITLE'            => tohtml(tr('Client / Mail / Overview / Edit Autoresponder')),
+        'TR_AUTORESPONDER_MESSAGE' => tohtml(tr('Please edit your autoresponder message below')),
+        'TR_ACTION'                => tohtml(tr('Update')),
+        'TR_CANCEL'                => tohtml(tr('Cancel')),
+        'MAIL_ACCOUNT_ID'          => tohtml($mailAccountId)
     ]);
 
     generateNavigation($tpl);
@@ -137,12 +135,12 @@ if (!isset($_POST['mail_account_id'])) {
     generatePageMessage($tpl);
 
     $tpl->parse('LAYOUT_CONTENT', 'page');
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+    EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
     $tpl->prnt();
 
     unsetMessages();
 } elseif (isset($_POST['autoresponder_message'])) {
-    updateAutoresponder($mailAccountId, $_POST['autoresponder_message']);
+    updateAutoresponderMessage($mailAccountId, clean_input($_POST['autoresponder_message']));
     redirectTo('mail_accounts.php');
 } else {
     showBadRequestErrorPage();

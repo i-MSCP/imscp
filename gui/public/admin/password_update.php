@@ -31,8 +31,9 @@ use iMSCP\Crypt as Crypt;
  */
 function admin_updatePassword()
 {
-    if (empty($_POST))
+    if (empty($_POST)) {
         return;
+    }
 
     if (!isset($_POST['password']) || !isset($_POST['password_confirmation'])) {
         showBadRequestErrorPage();
@@ -96,3 +97,5 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

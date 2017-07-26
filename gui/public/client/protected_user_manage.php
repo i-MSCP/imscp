@@ -83,7 +83,7 @@ function client_generateUsersList($tpl)
     while ($row = $stmt->fetchRow()) {
         list(
             $userDeleteTranslation, $userDeleteJsScript, $userEditTranslation, $htuserEditJsScript
-        ) = _client_generateUserAction($row['status']);
+            ) = _client_generateUserAction($row['status']);
 
         $tpl->assign([
             'UNAME'              => tohtml($row['uname']),
@@ -134,7 +134,7 @@ function client_generateGroupsList($tpl)
             $tpl->assign('MEMBER', '');
         } else {
             $stmt2 = execute_query(
-                'SELECT uname FROM htaccess_users WHERE id IN(' . implode(', ', array_map('quoteValue', explode(',', $row['members']))) .')'
+                'SELECT uname FROM htaccess_users WHERE id IN(' . implode(', ', array_map('quoteValue', explode(',', $row['members']))) . ')'
             );
             $tpl->assign('MEMBER', tohtml(implode(', ', $stmt2->fetchAll(PDO::FETCH_COLUMN))));
         }
@@ -191,3 +191,5 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

@@ -144,8 +144,7 @@ function generatePage($tpl, $ftpUserId)
 
 require_once 'imscp-lib.php';
 
-$eventManager = iMSCP_Events_Aggregator::getInstance();
-$eventManager->dispatch(iMSCP_Events::onClientScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 check_login('user');
 
 if (!customerHasFeature('ftp') || !isset($_GET['id'])) {
@@ -153,7 +152,11 @@ if (!customerHasFeature('ftp') || !isset($_GET['id'])) {
 }
 
 $userid = clean_input($_GET['id']);
-if (who_owns_this($userid, 'ftpuser') != $_SESSION['user_id']) {
+$stmt = exec_query('SELECT COUNT(admin_id) FROM ftp_user WHERE userid = ? AND admin_id = ?', [
+    $userid, $_SESSION['user_id']
+]);
+
+if ($stmt->fetchRow(PDO::FETCH_COLUMN) == 0) {
     showBadRequestErrorPage();
 }
 
@@ -181,7 +184,7 @@ $tpl->assign([
     'TR_CANCEL'          => tr('Cancel')
 ]);
 
-$eventManager->registerListener('onGetJsTranslations', function ($e) {
+iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e iMSCP_Events_Event */
     $translations = $e->getParam('translations');
     $translations['core']['close'] = tr('Close');
@@ -194,5 +197,7 @@ generatePage($tpl, $userid);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-$eventManager->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

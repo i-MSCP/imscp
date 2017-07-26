@@ -49,7 +49,7 @@ a:hover.link_as_button {
     color: #ffffff;
 }
 
-span.clickable:hover {
+.clickable:hover {
 	color:#5cbada;
 	cursor: pointer;
 }
@@ -152,6 +152,7 @@ input[type="number"],
 input[type="password"],
 input[type="search"],
 select,
+select[multiple],
 textarea {
     background: #ffffff;
     border-color: #cccccc;
@@ -162,11 +163,20 @@ input[type="number"]:focus,
 input[type="password"]:focus,
 input[type="search"]:focus,
 textarea:focus,
-select:focus {
+select:focus,
+select[multiple]:focus {
     border: 1px solid #000000;
     -webkit-box-shadow: 0 0 5px #000000;
     -moz-box-shadow: 0 0 5px #000000;
     box-shadow: 0 0 5px #000000;
+}
+
+select[multiple]{
+    width: auto !important;;
+    height: auto !important;
+    min-height: 1px;
+    padding: 0;
+    margin: 0;
 }
 
 input[readonly="readonly"],
@@ -175,6 +185,7 @@ input[type="text"]:disabled,
 input[type="number"]:disabled,
 input[type="password"]:disabled,
 select:disabled,
+select[multiple]:disabled,
 textarea[readonly],
 textarea:disabled,
 .disabled {
@@ -188,6 +199,7 @@ input[type="text"]:disabled:focus,
 input[type="number"]:disabled:focus,
 input[type="password"]:disabled:focus,
 select:disabled:focus,
+select[multiple]:disabled:focus,
 textarea[readonly]:focus,
 textarea:disabled:focus,
 .disabled:focus {

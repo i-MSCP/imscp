@@ -35,7 +35,8 @@ function get_email_tpl_data($userId, $tplName)
     $stmt = exec_query(
         "
             SELECT admin_name, fname, lname, email, IFNULL(subject, '') AS subject, IFNULL(message, '') AS message
-            FROM admin LEFT JOIN email_tpls ON(owner_id = IF(admin_type = 'admin', 0, admin_id) AND name = ?)
+            FROM admin
+            LEFT JOIN email_tpls ON(owner_id = IF(admin_type = 'admin', 0, admin_id) AND name = ?)
             WHERE admin_id = ?
         ", [$tplName, $userId]
     );
@@ -73,9 +74,7 @@ function get_email_tpl_data($userId, $tplName)
  */
 function set_email_tpl_data($userId, $tplName, $data)
 {
-    $stmt = exec_query('SELECT subject, message FROM email_tpls WHERE owner_id = ? AND name = ?', [
-        $userId, $tplName
-    ]);
+    $stmt = exec_query('SELECT subject, message FROM email_tpls WHERE owner_id = ? AND name = ?', [$userId, $tplName]);
 
     if ($stmt->rowCount()) {
         $query = 'UPDATE email_tpls SET subject = ?, message = ? WHERE owner_id = ? AND name = ?';

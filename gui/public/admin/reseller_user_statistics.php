@@ -46,38 +46,26 @@ function _generateUserStatistics($tpl, $adminId)
     $diskspaceUsagePercent = make_usage_vals($diskspaceUsageBytes, $diskspaceLimitBytes);
 
     $tpl->assign([
-        'USER_NAME' => tohtml(decode_idna($adminName)),
-        'USER_ID' => tohtml($adminId),
+        'USER_NAME'     => tohtml(decode_idna($adminName)),
+        'USER_ID'       => tohtml($adminId),
         'TRAFF_PERCENT' => tohtml($trafficUsagePercent),
-        'TRAFF_MSG' => ($trafficLimitBytes)
-            ? tohtml(tr('%s of %s', bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes)))
-            : tohtml(tr('%s of unlimited', bytesHuman($trafficUsageBytes))),
-        'DISK_PERCENT' => tohtml($diskspaceUsagePercent),
-        'DISK_MSG' => ($diskspaceLimitBytes)
-            ? tohtml(tr('%s of %s', bytesHuman($diskspaceUsageBytes), bytesHuman($diskspaceLimitBytes)))
-            : tohtml(tr('%s of unlimited', bytesHuman($diskspaceUsageBytes))),
-        'WEB' => tohtml(bytesHuman($web)),
-        'FTP' => tohtml(bytesHuman($ftp)),
-        'SMTP' => tohtml(bytesHuman($smtp)),
-        'POP3' => tohtml(bytesHuman($pop3)),
-        'SUB_MSG' => ($usub_max)
-            ? tohtml(tr('%d of %s', $usub_current, translate_limit_value($usub_max)))
-            : tohtml(translate_limit_value($usub_max)),
-        'ALS_MSG' => ($uals_max)
-            ? tohtml(tr('%d of %s', $uals_current, translate_limit_value($uals_max)))
-            : tohtml(translate_limit_value($uals_max)),
-        'MAIL_MSG' => ($umail_max)
-            ? tohtml(tr('%d of %s', $umail_current, translate_limit_value($umail_max)))
-            : tohtml(translate_limit_value($umail_max)),
-        'FTP_MSG' => ($uftp_max)
-            ? tohtml(tr('%d of %s', $uftp_current, translate_limit_value($uftp_max)))
-            : tohtml(translate_limit_value($uftp_max)),
-        'SQL_DB_MSG' => ($usql_db_max)
-            ? tohtml(tr('%d of %s', $usql_db_current, translate_limit_value($usql_db_max)))
-            : tohtml(translate_limit_value($usql_db_max)),
-        'SQL_USER_MSG' => ($usql_user_max)
-            ? tohtml(tr('%1$d of %2$d', $usql_user_current, translate_limit_value($usql_user_max)))
-            : tohtml(translate_limit_value($usql_user_max))
+        'TRAFF_MSG'     => ($trafficLimitBytes)
+            ? tohtml(tr('%s / %s', bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes)))
+            : tohtml(tr('%s / ∞', bytesHuman($trafficUsageBytes))),
+        'DISK_PERCENT'  => tohtml($diskspaceUsagePercent),
+        'DISK_MSG'      => ($diskspaceLimitBytes)
+            ? tohtml(tr('%s / %s', bytesHuman($diskspaceUsageBytes), bytesHuman($diskspaceLimitBytes)))
+            : tohtml(tr('%s / ∞', bytesHuman($diskspaceUsageBytes))),
+        'WEB'           => tohtml(bytesHuman($web)),
+        'FTP'           => tohtml(bytesHuman($ftp)),
+        'SMTP'          => tohtml(bytesHuman($smtp)),
+        'POP3'          => tohtml(bytesHuman($pop3)),
+        'SUB_MSG'       => tohtml(tr('%s / %s', $usub_current, translate_limit_value($usub_max))),
+        'ALS_MSG'       => tohtml(tr('%s / %s', $uals_current, translate_limit_value($uals_max))),
+        'MAIL_MSG'      => tohtml(tr('%s / %s', $umail_current, translate_limit_value($umail_max))),
+        'FTP_MSG'       => tohtml(tr('%s / %s', $uftp_current, translate_limit_value($uftp_max))),
+        'SQL_DB_MSG'    => tohtml(tr('%s / %s', $usql_db_current, translate_limit_value($usql_db_max))),
+        'SQL_USER_MSG'  => tohtml(tr('%s / %s', $usql_user_current, translate_limit_value($usql_user_max)))
     ]);
 }
 
@@ -108,9 +96,7 @@ function generatePage($tpl, $resellerId)
 
 require 'imscp-lib.php';
 
-$eventManager = iMSCP_Events_Aggregator::getInstance();
-$eventManager->dispatch(iMSCP_Events::onAdminScriptStart);
-
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 check_login('admin');
 
 if (isset($_GET['reseller_id'])) {
@@ -124,35 +110,32 @@ if (isset($_GET['reseller_id'])) {
     exit;
 }
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'admin/reseller_user_statistics.tpl',
-    'page_message' => 'layout',
+    'layout'                         => 'shared/layouts/ui.tpl',
+    'page'                           => 'admin/reseller_user_statistics.tpl',
+    'page_message'                   => 'layout',
     'reseller_user_statistics_block' => 'page'
 ]);
 $tpl->assign([
-    'TR_PAGE_TITLE' => tohtml(tr('Admin / Statistics / Reseller Statistics / User Statistics')),
-    'TR_USERNAME' => tohtml(tr('User')),
-    'TR_TRAFF' => tohtml(tr('Traffic usage')),
-    'TR_DISK' => tohtml(tr('Disk usage')),
-    'TR_WEB' => tohtml(tr('HTTP traffic')),
-    'TR_FTP_TRAFF' => tohtml(tr('FTP traffic')),
-    'TR_SMTP' => tohtml(tr('SMTP traffic')),
-    'TR_POP3' => tohtml(tr('POP3/IMAP traffic')),
-    'TR_SUBDOMAIN' => tohtml(tr('Subdomains')),
-    'TR_ALIAS' => tohtml(tr('Aliases')),
-    'TR_MAIL' => tohtml(tr('Email accounts')),
-    'TR_FTP' => tohtml(tr('FTP accounts')),
-    'TR_SQL_DB' => tohtml(tr('SQL databases')),
-    'TR_SQL_USER' => tohtml(tr('SQL users')),
+    'TR_PAGE_TITLE'             => tohtml(tr('Admin / Statistics / Reseller Statistics / User Statistics')),
+    'TR_USERNAME'               => tohtml(tr('User')),
+    'TR_TRAFF'                  => tohtml(tr('Monthly traffic usage')),
+    'TR_DISK'                   => tohtml(tr('Disk usage')),
+    'TR_WEB'                    => tohtml(tr('HTTP traffic')),
+    'TR_FTP_TRAFF'              => tohtml(tr('FTP traffic')),
+    'TR_SMTP'                   => tohtml(tr('SMTP traffic')),
+    'TR_POP3'                   => tohtml(tr('POP3/IMAP traffic')),
+    'TR_SUBDOMAIN'              => tohtml(tr('Subdomains')),
+    'TR_ALIAS'                  => tohtml(tr('Domain aliases')),
+    'TR_MAIL'                   => tohtml(tr('Mail accounts')),
+    'TR_FTP'                    => tohtml(tr('FTP accounts')),
+    'TR_SQL_DB'                 => tohtml(tr('SQL databases')),
+    'TR_SQL_USER'               => tohtml(tr('SQL users')),
     'TR_DETAILED_STATS_TOOLTIP' => tohtml(tr('Show detailed statistics for this user'), 'htmlAttr')
 ]);
 
-$eventManager->registerListener('onGetJsTranslations', function ($e) {
+iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e \iMSCP_Events_Event */
     $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
 });
@@ -162,7 +145,7 @@ generatePage($tpl, $resellerId);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-$eventManager->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

@@ -23,67 +23,67 @@
  */
 interface iMSCP_Events_Description
 {
-	/**
-	 * Returns event name
-	 *
-	 * @return string
-	 */
-	public function getName();
+    /**
+     * Returns event name
+     *
+     * @return string
+     */
+    public function getName();
 
-	/**
-	 * Returns parameters passed to the event
-	 *
-	 * @return array|ArrayAccess
-	 */
-	public function getParams();
+    /**
+     * Returns parameters passed to the event
+     *
+     * @return array|ArrayAccess
+     */
+    public function getParams();
 
-	/**
-	 * Returns a single parameter by name
-	 *
-	 * @param string $name
-	 * @param mixed $default Default value to return if parameter does not exist
-	 * @return mixed
-	 */
-	public function getParam($name, $default = null);
+    /**
+     * Returns a single parameter by name
+     *
+     * @param string $name
+     * @param mixed $default Default value to return if parameter does not exist
+     * @return mixed
+     */
+    public function getParam($name, $default = NULL);
 
-	/**
-	 * Set the event name
-	 *
-	 * @param string $name Event name
-	 * @return iMSCP_Events_Description Provides fluent interface, return self
-	 */
-	public function setName($name);
+    /**
+     * Set the event name
+     *
+     * @param string $name Event name
+     * @return iMSCP_Events_Description Provides fluent interface, return self
+     */
+    public function setName($name);
 
-	/**
-	 * Set event parameters.
-	 *
-	 * @param  string $params
-	 * @return iMSCP_Events_Description Provides fluent interface, return self
-	 */
-	public function setParams($params);
+    /**
+     * Set event parameters.
+     *
+     * @param  string $params
+     * @return iMSCP_Events_Description Provides fluent interface, return self
+     */
+    public function setParams($params);
 
-	/**
-	 * Set a single parameter by name
-	 *
-	 * @param  string $name Parameter name
-	 * @param  mixed $value Parameter value
-	 * @return iMSCP_Events_Description Provides fluent interface, return self
-	 */
-	public function setParam($name, $value);
+    /**
+     * Set a single parameter by name
+     *
+     * @param  string $name Parameter name
+     * @param  mixed $value Parameter value
+     * @return iMSCP_Events_Description Provides fluent interface, return self
+     */
+    public function setParam($name, $value);
 
-	/**
-	 * Indicate whether or not the parent iMSCP_Events_Manager_Interface should stop propagating events
-	 *
-	 * @param  bool $flag
-	 * @return void
-	 */
-	public function stopPropagation($flag = true);
+    /**
+     * Indicate whether or not the parent iMSCP_Events_Manager_Interface should stop propagating events
+     *
+     * @param  bool $flag
+     * @return void
+     */
+    public function stopPropagation($flag = true);
 
-	/**
-	 * Has this event indicated event propagation should stop?
-	 *
-	 * @return bool
-	 */
-	public function propagationIsStopped();
+    /**
+     * Has this event indicated event propagation should stop?
+     *
+     * @return bool
+     */
+    public function propagationIsStopped();
 
 }

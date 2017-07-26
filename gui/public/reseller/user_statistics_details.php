@@ -34,9 +34,11 @@ function _getDomainTraffic($domainId, $beginTime, $endTime)
 {
     $stmt = exec_query(
         '
-          SELECT SUM(dtraff_web) AS web_traffic, SUM(dtraff_ftp) AS ftp_traffic,
-            SUM(dtraff_mail) AS mail_traffic, SUM(dtraff_pop) AS pop_traffic
-          FROM domain_traffic WHERE domain_id = ? AND dtraff_time BETWEEN ? AND ?
+          SELECT SUM(dtraff_web) AS web_traffic, SUM(dtraff_ftp) AS ftp_traffic, SUM(dtraff_mail) AS mail_traffic,
+            SUM(dtraff_pop) AS pop_traffic
+          FROM domain_traffic
+          WHERE domain_id = ?
+          AND dtraff_time BETWEEN ? AND ?
         ',
         [$domainId, $beginTime, $endTime]
     );
@@ -120,12 +122,12 @@ function generatePage($tpl, $userId)
             );
 
             $tpl->assign([
-                'DATE' => date($dateFormat, strtotime($year . '-' . $month . '-' . $fromDay)),
-                'WEB_TRAFFIC' => bytesHuman($webTraffic),
-                'FTP_TRAFFIC' => bytesHuman($ftpTraffic),
+                'DATE'         => date($dateFormat, strtotime($year . '-' . $month . '-' . $fromDay)),
+                'WEB_TRAFFIC'  => bytesHuman($webTraffic),
+                'FTP_TRAFFIC'  => bytesHuman($ftpTraffic),
                 'SMTP_TRAFFIC' => bytesHuman($smtpTraffic),
                 'POP3_TRAFFIC' => bytesHuman($popTraffic),
-                'ALL_TRAFFIC' => bytesHuman($webTraffic + $ftpTraffic + $smtpTraffic + $popTraffic),
+                'ALL_TRAFFIC'  => bytesHuman($webTraffic + $ftpTraffic + $smtpTraffic + $popTraffic),
             ]);
 
             $all[0] += $webTraffic;
@@ -137,19 +139,19 @@ function generatePage($tpl, $userId)
         }
 
         $tpl->assign([
-            'USER_ID' => tohtml($userId),
-            'USERNAME' => tohtml($adminName),
-            'ALL_WEB_TRAFFIC' => tohtml(bytesHuman($all[0])),
-            'ALL_FTP_TRAFFIC' => tohtml(bytesHuman($all[1])),
+            'USER_ID'          => tohtml($userId),
+            'USERNAME'         => tohtml($adminName),
+            'ALL_WEB_TRAFFIC'  => tohtml(bytesHuman($all[0])),
+            'ALL_FTP_TRAFFIC'  => tohtml(bytesHuman($all[1])),
             'ALL_SMTP_TRAFFIC' => tohtml(bytesHuman($all[2])),
             'ALL_POP3_TRAFFIC' => tohtml(bytesHuman($all[3])),
-            'ALL_ALL_TRAFFIC' => tohtml(bytesHuman(array_sum($all)))
+            'ALL_ALL_TRAFFIC'  => tohtml(bytesHuman(array_sum($all)))
         ]);
     } else {
         set_page_message(tr('No statistics found for the given period. Try another period.'), 'static_info');
         $tpl->assign([
-            'USERNAME' => tohtml($adminName),
-            'USER_ID' => tohtml($userId),
+            'USERNAME'                      => tohtml($adminName),
+            'USER_ID'                       => tohtml($userId),
             'USER_STATISTICS_DETAILS_BLOCK' => ''
         ]);
     }
@@ -161,9 +163,7 @@ function generatePage($tpl, $userId)
 
 require 'imscp-lib.php';
 
-$eventManager = iMSCP_Events_Aggregator::getInstance();
-$eventManager->dispatch(iMSCP_Events::onResellerScriptStart);
-
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 check_login('reseller');
 
 if (!resellerHasCustomers()) {
@@ -183,26 +183,26 @@ if (isset($_GET['user_id'])) {
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'reseller/user_statistics_details.tpl',
-    'page_message' => 'layout',
-    'month_list' => 'page',
-    'year_list' => 'page',
+    'layout'                        => 'shared/layouts/ui.tpl',
+    'page'                          => 'reseller/user_statistics_details.tpl',
+    'page_message'                  => 'layout',
+    'month_list'                    => 'page',
+    'year_list'                     => 'page',
     'user_statistics_details_block' => 'page',
-    'traffic_table_item' => 'user_statistics_details_block'
+    'traffic_table_item'            => 'user_statistics_details_block'
 ]);
 $tpl->assign([
-    'TR_PAGE_TITLE' => tohtml(tr('Reseller / Statistics / Overview / {USERNAME} USER Statistics')),
-    'TR_MONTH' => tohtml(tr('Month')),
-    'TR_YEAR' => tohtml(tr('Year')),
-    'TR_SHOW' => tohtml(tr('Show')),
-    'TR_WEB_TRAFFIC' => tohtml(tr('Web traffic')),
-    'TR_FTP_TRAFFIC' => tohtml(tr('FTP traffic')),
+    'TR_PAGE_TITLE'   => tohtml(tr('Reseller / Statistics / Overview / {USERNAME} USER Statistics')),
+    'TR_MONTH'        => tohtml(tr('Month')),
+    'TR_YEAR'         => tohtml(tr('Year')),
+    'TR_SHOW'         => tohtml(tr('Show')),
+    'TR_WEB_TRAFFIC'  => tohtml(tr('Web traffic')),
+    'TR_FTP_TRAFFIC'  => tohtml(tr('FTP traffic')),
     'TR_SMTP_TRAFFIC' => tohtml(tr('SMTP traffic')),
     'TR_POP3_TRAFFIC' => tohtml(tr('POP3/IMAP traffic')),
-    'TR_ALL_TRAFFIC' => tohtml(tr('All traffic')),
-    'TR_ALL' => tohtml(tr('All')),
-    'TR_DAY' => tohtml(tr('Day'))
+    'TR_ALL_TRAFFIC'  => tohtml(tr('All traffic')),
+    'TR_ALL'          => tohtml(tr('All')),
+    'TR_DAY'          => tohtml(tr('Day'))
 ]);
 
 generateNavigation($tpl);
@@ -210,8 +210,7 @@ generatePage($tpl, $userId);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-$eventManager->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();
-

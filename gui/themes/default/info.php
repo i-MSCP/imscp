@@ -19,12 +19,12 @@
  */
 
 return [
-	'theme_name' => 'default',
-	'theme_version' => '1.0.0',
-	'theme_authors' => [
-		'Henrik Schytte' => 'henrik@schytte.net',
-		'Marc Pujol' => 'kilburn@la3.org'
+    'theme_name'      => 'default',
+    'theme_version'   => '1.0.0',
+    'theme_authors'   => [
+        'Henrik Schytte' => 'henrik@schytte.net',
+        'Marc Pujol'     => 'kilburn@la3.org'
     ],
-	'theme_licence' => 'GPLv2++',
-	'theme_color_set' => ['black', 'blue', 'green', 'red', 'yellow']
+    'theme_licence'   => 'GPLv2++',
+    'theme_color_set' => ['black', 'blue', 'green', 'red', 'yellow']
 ];

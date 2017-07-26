@@ -23,35 +23,35 @@
  */
 class iMSCP_Validate_Uri extends Zend_Validate_Abstract
 {
-	const INVALID_URI = 'invalidURI';
+    const INVALID_URI = 'invalidURI';
 
-	protected $_messageTemplates = [
-		self::INVALID_URI => "'%value%' is not a valid URI.",
+    protected $_messageTemplates = [
+        self::INVALID_URI => "'%value%' is not a valid URI.",
     ];
 
-	/**
-	 * Returns true if the $uri is valid
-	 *
-	 * If $uri is not a valid URI, then this method returns false, and
-	 * getMessages() will return an array of messages that explain why the
-	 * validation failed.
-	 *
-	 * @throws Zend_Validate_Exception If validation of $value is impossible
-	 * @param  string $uri URI to be validated
-	 * @return boolean
-	 */
-	public function isValid($uri)
-	{
-		$uri = (string) $uri;
-		$this->_setValue($uri);
+    /**
+     * Returns true if the $uri is valid
+     *
+     * If $uri is not a valid URI, then this method returns false, and
+     * getMessages() will return an array of messages that explain why the
+     * validation failed.
+     *
+     * @throws Zend_Validate_Exception If validation of $value is impossible
+     * @param  string $uri URI to be validated
+     * @return boolean
+     */
+    public function isValid($uri)
+    {
+        $uri = (string)$uri;
+        $this->_setValue($uri);
 
-		try {
-			Zend_Uri::factory($uri, 'iMSCP_Uri_Redirect');
-		} catch(Exception $e) {
-			$this->_error(self::INVALID_URI);
-			return false;
-		}
+        try {
+            Zend_Uri::factory($uri, 'iMSCP_Uri_Redirect');
+        } catch (Exception $e) {
+            $this->_error(self::INVALID_URI);
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 }

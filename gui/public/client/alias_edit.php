@@ -135,7 +135,7 @@ function client_generatePage($tpl)
     if ($domainAliasData['url_forward'] != 'no') {
         $vfs = new VirtualFileSystem($_SESSION['user_logged'], $domainAliasData['alias_mount']);
 
-        if(!$vfs->exists('/htdocs')) {
+        if (!$vfs->exists('/htdocs')) {
             $tpl->assign('DOCUMENT_ROOT_BLOC', '');
             return;
         }
@@ -334,3 +334,5 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

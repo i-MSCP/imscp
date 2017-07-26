@@ -25,20 +25,20 @@
  */
 class iMSCP_Events_Listener_SplPriorityQueue extends SplPriorityQueue
 {
-	/**
-	 * @var int Seed used to ensure queue order for listeners whith same priority
-	 */
-	protected $seed = PHP_INT_MAX;
+    /**
+     * @var int Seed used to ensure queue order for listeners whith same priority
+     */
+    protected $seed = PHP_INT_MAX;
 
-	/**
-	 * Insert a value with a given priority
-	 *
-	 * @param mixed $listener Listener to insert in the queue
-	 * @param mixed $priority Item priority
-	 * @return void
-	 */
-	public function insert($listener, $priority)
-	{
-		parent::insert($listener, [$priority, $this->seed--]);
-	}
+    /**
+     * Insert a value with a given priority
+     *
+     * @param mixed $listener Listener to insert in the queue
+     * @param mixed $priority Item priority
+     * @return void
+     */
+    public function insert($listener, $priority)
+    {
+        parent::insert($listener, [$priority, $this->seed--]);
+    }
 }

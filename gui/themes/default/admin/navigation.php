@@ -259,7 +259,7 @@ return [
                 'title_class' => 'ip'
             ],
             'server_traffic' => [
-                'label' => tr('Server traffic'),
+                'label' => tr('Monthly Server traffic'),
                 'uri' => '/admin/settings_server_traffic.php',
                 'title_class' => 'traffic'
             ],

@@ -337,7 +337,7 @@ if (!empty($_POST)) {
         [
             $domainProps['domain_id'], $aliasId, $subId, $aliasSubId, $softwareId, $softwareData['software_master_id'],
             $softwareData['software_name'], $softwareData['software_version'], $softwareData['software_language'],
-            $installPath, $softwarePrefix, $appDatabase, $appSqlUser, $appSqlPassword, $appLoginName,  $appPassword,
+            $installPath, $softwarePrefix, $appDatabase, $appSqlUser, $appSqlPassword, $appLoginName, $appPassword,
             $appEmail, 'toadd', $softwareData['software_depot']
         ]
     );
@@ -396,4 +396,5 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
 unsetMessages();

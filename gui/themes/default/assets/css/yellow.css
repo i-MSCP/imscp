@@ -50,7 +50,7 @@ a:hover.link_as_button {
     color: #ffffff;
 }
 
-span.clickable:hover {
+.clickable:hover {
     color:#5cbada;
     cursor: pointer;
 }

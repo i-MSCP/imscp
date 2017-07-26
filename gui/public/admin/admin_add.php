@@ -33,14 +33,11 @@
  */
 function add_user($tpl)
 {
-    $cfg = iMSCP_Registry::get('config');
-
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddUser);
 
         if (check_user_data()) {
             $upass = \iMSCP\Crypt::apr1MD5($_POST['password']);
-            $user_id = $_SESSION['user_id'];
             $username = clean_input($_POST['username']);
             $fname = clean_input($_POST['fname']);
             $lname = clean_input($_POST['lname']);
@@ -62,38 +59,30 @@ function add_user($tpl)
 
             exec_query(
                 "
-                  INSERT INTO admin (
-                    admin_name, admin_pass, admin_type, domain_created, created_by, fname, lname, firm,
-                    zip, city, state, country, email, phone, fax, street1, street2, gender
-                ) VALUES (
-                  ?, ?, 'admin', unix_timestamp(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-                )
+                    INSERT INTO admin (
+                        admin_name, admin_pass, admin_type, domain_created, created_by, fname, lname, firm, zip, city,
+                        state, country, email, phone, fax, street1, street2, gender
+                    ) VALUES (
+                        ?, ?, 'admin', unix_timestamp(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                    )
                 ",
                 [
-                    $username, $upass, $user_id, $fname, $lname, $firm, $zip, $city, $state, $country, $email, $phone,
-                    $fax, $street1, $street2, $gender
-                ]);
+                    $username, $upass, $_SESSION['user_id'], $fname, $lname, $firm, $zip, $city, $state, $country,
+                    $email, $phone, $fax, $street1, $street2, $gender
+                ]
+            );
 
-            /** @var $db iMSCP_Database */
-            $db = iMSCP_Registry::get('db');
-            $new_admin_id = $db->insertId();
-            $user_logged = $_SESSION['user_logged'];
-            write_log("$user_logged: add admin: $username", E_USER_NOTICE);
-            $user_def_lang = $cfg['USER_INITIAL_LANG'];
-            $user_theme_color = $cfg['USER_INITIAL_THEME'];
+            $cfg = iMSCP_Registry::get('config');
 
             exec_query('REPLACE INTO user_gui_props (user_id, lang, layout) VALUES (?, ?, ?)', [
-                $new_admin_id, $user_def_lang, $user_theme_color
+                iMSCP_Database::getInstance()->insertId(), $cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']
             ]);
 
+            write_log("{$_SESSION['user_logged']}: add admin: $username", E_USER_NOTICE);
             iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddUser);
             send_add_user_auto_msg(
-                $user_id,
-                clean_input($_POST['username']),
-                clean_input($_POST['password']),
-                clean_input($_POST['email']),
-                clean_input($_POST['fname']),
-                clean_input($_POST['lname']),
+                $_SESSION['user_id'], clean_input($_POST['username']), clean_input($_POST['password']),
+                clean_input($_POST['email']), clean_input($_POST['fname']), clean_input($_POST['lname']),
                 tr('Administrator')
             );
             set_page_message(tr('Admin account successfully created.'), 'success');
@@ -180,6 +169,7 @@ function check_user_data()
 /***********************************************************************************************************************
  * Main
  */
+
 require 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
@@ -191,10 +181,7 @@ $tpl->define_dynamic([
     'page'         => 'admin/admin_add.tpl',
     'page_message' => 'layout'
 ]);
-
 $tpl->assign('TR_PAGE_TITLE', tr('Admin / Users / Add Admin'));
-
-
 $tpl->assign([
     'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field.'),
     'TR_PASSWORD_NOT_MATCH'  => tr("Passwords do not match."),
@@ -230,4 +217,5 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
 unsetMessages();

@@ -167,7 +167,7 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
     {
         return [
             'author'      => 'Laurent Declercq',
-            'email'       => 'team@i-mscp.net',
+            'email'       => 'l.declercq@nuxwin.com',
             'version'     => '0.0.6',
             'require_api' => '1.0.0',
             'date'        => '2016-12-22',

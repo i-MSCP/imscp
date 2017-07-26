@@ -34,9 +34,11 @@ function _getUserTraffic($domainId, $beginTime, $endTime)
 {
     $stmt = exec_query(
         '
-          SELECT SUM(dtraff_web) AS web_traffic, SUM(dtraff_ftp) AS ftp_traffic,
-            SUM(dtraff_mail) AS smtp_traffic, SUM(dtraff_pop) AS pop_traffic
-          FROM domain_traffic WHERE domain_id = ? AND dtraff_time BETWEEN ? AND ?
+          SELECT SUM(dtraff_web) AS web_traffic, SUM(dtraff_ftp) AS ftp_traffic, SUM(dtraff_mail) AS smtp_traffic,
+            SUM(dtraff_pop) AS pop_traffic
+          FROM domain_traffic
+          WHERE domain_id = ?
+          AND dtraff_time BETWEEN ? AND ?
         ',
         [$domainId, $beginTime, $endTime]
     );
@@ -109,12 +111,12 @@ function generatePage($tpl)
         );
 
         $tpl->assign([
-            'DATE' => tohtml(date($dateFormat, strtotime($year . '-' . $month . '-' . $fromDay))),
-            'WEB_TRAFF' => tohtml(bytesHuman($webTraffic)),
-            'FTP_TRAFF' => tohtml(bytesHuman($ftpTraffic)),
+            'DATE'       => tohtml(date($dateFormat, strtotime($year . '-' . $month . '-' . $fromDay))),
+            'WEB_TRAFF'  => tohtml(bytesHuman($webTraffic)),
+            'FTP_TRAFF'  => tohtml(bytesHuman($ftpTraffic)),
             'SMTP_TRAFF' => tohtml(bytesHuman($smtpTraffic)),
-            'POP_TRAFF' => tohtml(bytesHuman($popTraffic)),
-            'SUM_TRAFF' => tohtml(bytesHuman($webTraffic + $ftpTraffic + $smtpTraffic + $popTraffic))
+            'POP_TRAFF'  => tohtml(bytesHuman($popTraffic)),
+            'SUM_TRAFF'  => tohtml(bytesHuman($webTraffic + $ftpTraffic + $smtpTraffic + $popTraffic))
         ]);
 
         $all[0] += $webTraffic;
@@ -126,11 +128,11 @@ function generatePage($tpl)
     }
 
     $tpl->assign([
-        'WEB_ALL' => tohtml(bytesHuman($all[0])),
-        'FTP_ALL' => tohtml(bytesHuman($all[1])),
+        'WEB_ALL'  => tohtml(bytesHuman($all[0])),
+        'FTP_ALL'  => tohtml(bytesHuman($all[1])),
         'SMTP_ALL' => tohtml(bytesHuman($all[2])),
-        'POP_ALL' => tohtml(bytesHuman($all[3])),
-        'SUM_ALL' => tohtml(bytesHuman(array_sum($all)))
+        'POP_ALL'  => tohtml(bytesHuman($all[3])),
+        'SUM_ALL'  => tohtml(bytesHuman(array_sum($all)))
     ]);
 
 }
@@ -141,34 +143,32 @@ function generatePage($tpl)
 
 require 'imscp-lib.php';
 
-$eventManager = iMSCP_Events_Aggregator::getInstance();
-$eventManager->dispatch(iMSCP_Events::onClientScriptStart);
-
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 check_login('user');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'client/traffic_statistics.tpl',
-    'page_message' => 'layout',
-    'month_list' => 'page',
-    'year_list' => 'page',
-    'statistics_block' => 'page',
+    'layout'             => 'shared/layouts/ui.tpl',
+    'page'               => 'client/traffic_statistics.tpl',
+    'page_message'       => 'layout',
+    'month_list'         => 'page',
+    'year_list'          => 'page',
+    'statistics_block'   => 'page',
     'traffic_table_item' => 'statistics_block'
 ]);
 $tpl->assign([
     'TR_PAGE_TITLE' => tr('Client / Statistics'),
     'TR_STATISTICS' => tr('Statistics'),
-    'TR_MONTH' => tr('Month'),
-    'TR_YEAR' => tr('Year'),
-    'TR_SHOW' => tr('Show'),
-    'TR_WEB_TRAFF' => tr('Web traffic'),
-    'TR_FTP_TRAFF' => tr('FTP traffic'),
+    'TR_MONTH'      => tr('Month'),
+    'TR_YEAR'       => tr('Year'),
+    'TR_SHOW'       => tr('Show'),
+    'TR_WEB_TRAFF'  => tr('Web traffic'),
+    'TR_FTP_TRAFF'  => tr('FTP traffic'),
     'TR_SMTP_TRAFF' => tr('SMTP traffic'),
-    'TR_POP_TRAFF' => tr('POP3/IMAP traffic'),
-    'TR_SUM' => tr('All traffic'),
-    'TR_ALL' => tr('All'),
-    'TR_DATE' => tr('Date')
+    'TR_POP_TRAFF'  => tr('POP3/IMAP traffic'),
+    'TR_SUM'        => tr('All traffic'),
+    'TR_ALL'        => tr('All'),
+    'TR_DATE'       => tr('Date')
 ]);
 
 generateNavigation($tpl);
@@ -176,7 +176,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-$eventManager->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

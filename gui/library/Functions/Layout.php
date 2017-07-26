@@ -1,28 +1,21 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 /**
@@ -36,22 +29,27 @@ function get_user_gui_props($user_id)
 {
     $cfg = iMSCP_Registry::get('config');
 
-    $query = "SELECT `lang`, `layout` FROM `user_gui_props` WHERE `user_id` = ?";
-    $stmt = exec_query($query, $user_id);
+    $stmt = exec_query('SELECT lang, layout FROM user_gui_props WHERE user_id = ?', $user_id);
 
-    if (!$stmt->rowCount() || (empty($stmt->fields['lang']) && empty($stmt->fields['layout']))) {
+    if (!$stmt->rowCount()) {
         return [$cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']];
     }
 
-    if (empty($stmt->fields['lang'])) {
-        return [$cfg['USER_INITIAL_LANG'], $stmt->fields['layout']];
+    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+
+    if (empty($row['lang']) && empty($row['layout'])) {
+        return [$cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']];
     }
 
-    if (empty($stmt->fields['layout'])) {
-        return [$stmt->fields['lang'], $cfg['USER_INITIAL_THEME']];
+    if (empty($row['lang'])) {
+        return [$cfg['USER_INITIAL_LANG'], $row['layout']];
     }
-    
-    return [$stmt->fields['lang'], $stmt->fields['layout']];
+
+    if (empty($row['layout'])) {
+        return [$row['lang'], $cfg['USER_INITIAL_THEME']];
+    }
+
+    return [$row['lang'], $row['layout']];
 }
 
 /**
@@ -155,16 +153,14 @@ function get_menu_vars($menuLink)
         return $menuLink;
     }
 
-    $query = "
-      SELECT
-        `customer_id`, `fname`, `lname`, `firm`, `zip`, `city`, `state`, `country`, `email`, `phone`, `fax`, `street1`,
-        `street2`
-      FROM
-        `admin`
-      WHERE
-        `admin_id` = ?
-    ";
-    $stmt = exec_query($query, $_SESSION['user_id']);
+    $row = exec_query(
+        '
+            SELECT customer_id, fname, lname, firm, zip, city, state, country, email, phone, fax, street1, street2
+            FROM admin
+            WHERE admin_id = ?
+        ',
+        $_SESSION['user_id']
+    )->fetchRow(PDO::FETCH_ASSOC);
 
     $search = [];
     $replace = [];
@@ -174,37 +170,38 @@ function get_menu_vars($menuLink)
     $search [] = '{uname}';
     $replace[] = tohtml($_SESSION['user_logged']);
     $search [] = '{cid}';
-    $replace[] = tohtml($stmt->fields['customer_id']);
+    $replace[] = tohtml($row['customer_id']);
     $search [] = '{fname}';
-    $replace[] = tohtml($stmt->fields['fname']);
+    $replace[] = tohtml($row['fname']);
     $search [] = '{lname}';
-    $replace[] = tohtml($stmt->fields['lname']);
+    $replace[] = tohtml($row['lname']);
     $search [] = '{company}';
-    $replace[] = tohtml($stmt->fields['firm']);
+    $replace[] = tohtml($row['firm']);
     $search [] = '{zip}';
-    $replace[] = tohtml($stmt->fields['zip']);
+    $replace[] = tohtml($row['zip']);
     $search [] = '{city}';
-    $replace[] = tohtml($stmt->fields['city']);
+    $replace[] = tohtml($row['city']);
     $search [] = '{state}';
-    $replace[] = $stmt->fields['state'];
+    $replace[] = tohtml($row['state']);
     $search [] = '{country}';
-    $replace[] = tohtml($stmt->fields['country']);
+    $replace[] = tohtml($row['country']);
     $search [] = '{email}';
-    $replace[] = tohtml($stmt->fields['email']);
+    $replace[] = tohtml($row['email']);
     $search [] = '{phone}';
-    $replace[] = tohtml($stmt->fields['phone']);
+    $replace[] = tohtml($row['phone']);
     $search [] = '{fax}';
-    $replace[] = tohtml($stmt->fields['fax']);
+    $replace[] = tohtml($row['fax']);
     $search [] = '{street1}';
-    $replace[] = tohtml($stmt->fields['street1']);
+    $replace[] = tohtml($row['street1']);
     $search [] = '{street2}';
-    $replace[] = tohtml($stmt->fields['street2']);
+    $replace[] = tohtml($row['street2']);
 
-    $query = 'SELECT `domain_name`, `domain_admin_id` FROM `domain` WHERE `domain_admin_id` = ?';
-    $stmt = exec_query($query, $_SESSION['user_id']);
+    $row = exec_query(
+        'SELECT domain_name, domain_admin_id FROM domain WHERE domain_admin_id = ?', $_SESSION['user_id']
+    )->fetchRow(PDO::FETCH_ASSOC);
 
     $search [] = '{domain_name}';
-    $replace[] = $stmt->fields['domain_name'];
+    $replace[] = $row['domain_name'];
 
     return str_replace($search, $replace, $menuLink);
 }
@@ -329,14 +326,14 @@ function layout_setUserLayoutColor($userId, $color)
         return false;
     }
 
-    $query = 'UPDATE `user_gui_props` SET `layout_color` = ? WHERE `user_id` = ?';
-    exec_query($query, [$color, $userId]);
+    exec_query('UPDATE user_gui_props SET layout_color = ? WHERE user_id = ?', [$color, $userId]);
 
     // Dealing with sessions across multiple browsers for same user identifier - Begin
 
     $sessionId = session_id();
-    $query = "SELECT `session_id` FROM `login` WHERE `user_name` = ?  AND `session_id` <> ?";
-    $stmt = exec_query($query, [$_SESSION['user_logged'], $sessionId]);
+    $stmt = exec_query(
+        'SELECT session_id FROM login WHERE user_name = ?  AND session_id <> ?', [$_SESSION['user_logged'], $sessionId]
+    );
 
     if (!$stmt->rowCount()) {
         return true;
@@ -383,22 +380,26 @@ function layout_getUserLogo($searchForCreator = true, $returnDefault = true)
         $userId = $_SESSION['user_id'];
     }
 
-    $query = 'SELECT `logo` FROM `user_gui_props` WHERE `user_id`= ?';
-    $stmt = exec_query($query, $userId);
+
+    $stmt = exec_query('SELECT logo FROM user_gui_props WHERE user_id= ?', $userId);
 
     // No logo is found for the user, let see for it creator
     if ($searchForCreator && $userId != 1 && empty($stmt->fields['logo'])) {
-        $query = '
-          SELECT `b`.`logo`
-          FROM `admin` `a`
-          LEFT JOIN `user_gui_props` `b` ON (`b`.`user_id` = `a`.`created_by`)
-          WHERE `a`.`admin_id`= ?
-        ';
-        $stmt = exec_query($query, $userId);
+        $stmt = exec_query(
+            '
+                SELECT b.logo
+                FROM admin a
+                LEFT JOIN user_gui_props b ON (b.user_id = a.created_by)
+                WHERE a.admin_id= ?
+            ',
+            $userId
+        );
     }
 
     // No user logo found
-    if (empty($stmt->fields['logo']) || !file_exists($cfg['GUI_ROOT_DIR'] . '/data/persistent/ispLogos/' . $stmt->fields['logo'])) {
+    if (empty($stmt->fields['logo'])
+        || !file_exists($cfg['GUI_ROOT_DIR'] . '/data/persistent/ispLogos/' . $stmt->fields['logo'])
+    ) {
         if (!$returnDefault) {
             return '';
         }
@@ -473,7 +474,7 @@ function layout_updateUserLogo()
     // We must catch old logo before update
     $oldLogoFile = layout_getUserLogo(false, false);
 
-    exec_query('UPDATE `user_gui_props` SET `logo` = ? WHERE `user_id` = ?', [basename($logoPath), $userId]);
+    exec_query('UPDATE user_gui_props SET logo = ? WHERE user_id = ?', [basename($logoPath), $userId]);
 
     // Deleting old logo (we are safe here) - We don't return FALSE on failure.
     // The administrator will be warned through logs.
@@ -500,14 +501,10 @@ function layout_deleteUserLogo($logoFilePath = NULL, $onlyFile = false)
         }
     }
 
-    if ($_SESSION['user_type'] == 'admin') {
-        $userId = 1;
-    } else {
-        $userId = $_SESSION['user_id'];
-    }
+    $userId = ($_SESSION['user_type'] == 'admin') ? 1 : $_SESSION['user_id'];
 
     if (!$onlyFile) {
-        exec_query('UPDATE `user_gui_props` SET `logo` = ? WHERE `user_id` = ?', [NULL, $userId]);
+        exec_query('UPDATE user_gui_props SET logo = ? WHERE user_id = ?', [NULL, $userId]);
     }
 
     if (strpos($logoFilePath, $cfg['ISP_LOGO_PATH']) === false) {
@@ -532,10 +529,8 @@ function layout_deleteUserLogo($logoFilePath = NULL, $onlyFile = false)
  */
 function layout_isUserLogo($logoPath)
 {
-    $cfg = iMSCP_Registry::get('config');
-
     if ($logoPath == '/themes/' . $_SESSION['user_theme'] . '/assets/images/imscp_logo.png'
-        || $logoPath == $cfg['ISP_LOGO_PATH'] . '/' . 'isp_logo.gif'
+        || $logoPath == iMSCP_Registry::get('config')['ISP_LOGO_PATH'] . '/' . 'isp_logo.gif'
     ) {
         return false;
     }
@@ -554,7 +549,6 @@ function layout_LoadNavigation()
         return;
     }
 
-    $cfg = iMSCP_Registry::get('config');
     $locale = iMSCP_Registry::get('translator')->getLocale();
 
     switch ($_SESSION['user_type']) {
@@ -572,7 +566,9 @@ function layout_LoadNavigation()
     }
 
     if (!file_exists($filePath)) {
-        layout_createNavigationFile($cfg['ROOT_TEMPLATE_PATH'] . "/$userLevel/navigation.php", $locale, $userLevel);
+        layout_createNavigationFile(
+            iMSCP_Registry::get('config')['ROOT_TEMPLATE_PATH'] . "/$userLevel/navigation.php", $locale, $userLevel
+        );
     }
 
     iMSCP_Registry::set('navigation', new Zend_Navigation(include($filePath)));
@@ -615,10 +611,10 @@ function layout_createNavigationFile($filePath, $locale, $userLevel)
  */
 function layout_isMainMenuLabelsVisible($userId)
 {
-    $stmt = exec_query('SELECT `show_main_menu_labels` FROM `user_gui_props` WHERE `user_id` = ?', $userId);
+    $stmt = exec_query('SELECT show_main_menu_labels FROM user_gui_props WHERE user_id = ?', $userId);
 
     if ($stmt->rowCount()) {
-        return (bool)$stmt->fields['show_main_menu_labels'];
+        return (bool)$stmt->fetchRow(PDO::FETCH_COLUMN);
     }
 
     return true;
@@ -635,8 +631,7 @@ function layout_setMainMenuLabelsVisibility($userId, $visibility)
 {
     $visibility = ($visibility) ? 1 : 0;
 
-    $query = 'UPDATE `user_gui_props` SET `show_main_menu_labels` = ? WHERE `user_id` = ?';
-    exec_query($query, [$visibility, $userId]);
+    exec_query('UPDATE user_gui_props SET show_main_menu_labels = ? WHERE user_id = ?', [$visibility, $userId]);
 
     if (!isset($_SESSION['logged_from_id'])) {
         $_SESSION['show_main_menu_labels'] = $visibility;

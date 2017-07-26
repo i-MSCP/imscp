@@ -1,0 +1,60 @@
+<script>
+    $(function () {
+        $("#catchall_addresses_type_auto, #catchall_addresses_type_manual").on('change', function () {
+            if ($(this).val() === 'auto' && $(this).is(':checked')) {
+                $("#automatic_catchall_addresses").prop('disabled', false);
+                $("#manual_catchall_addresses").prop('disabled', true).val('');
+            } else if ($(this).val() === 'manual' && $(this).is(':checked')) {
+                $("#automatic_catchall_addresses").prop('disabled', true);
+                $("#manual_catchall_addresses").prop('disabled', false);
+            }
+        }).trigger('change');
+    });
+</script>
+<form name="create_catchall_frm" method="post" action="mail_catchall_add.php?id={CATCHALL_ID}">
+    <table class="firstColFixed">
+        <thead>
+        <tr>
+            <th colspan="2"><?= tohtml(tr('Catch-all addresses for the %s domain', '{CATCHALL_DOMAIN_NAME}'));?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- BDP: automatic_catchall_addresses_blk -->
+        <tr>
+            <td>
+                <input type="radio" name="catchall_addresses_type" id="catchall_addresses_type_auto" value="auto"{AUTOMATIC_CATCHALL_ADDRESSES_CHECKED}>
+                <label class="clickable" for="catchall_addresses_type_auto"><?= tohtml(tr('Automatic catch-all address')) ;?></label>
+                <span class="icon i_help" title="<?= tohtml(tr('You can select has many addresses as you want.'), 'htmlAttr') ;?>"></span>
+            </td>
+            <td>
+                <!--email_off-->
+                <label>
+                    <select name="automatic_catchall_addresses[]" id="automatic_catchall_addresses" size='3' multiple required>
+                        <!-- BDP: automatic_catchall_address_option -->
+                        <option value="{AUTOMATIC_CATCHALL_ADDRESS_ID}">{AUTOMATIC_CATCHALL_ADDRESS}</option>
+                        <!-- EDP: automatic_catchall_address_option -->
+                    </select>
+                </label>
+                <!--/email_off-->
+            </td>
+        </tr>
+        <!-- EDP: automatic_catchall_addresses_blk -->
+        <tr>
+            <td>
+                <input type="radio" name="catchall_addresses_type" id="catchall_addresses_type_manual" value="manual"{MANUAL_CATCHALL_ADDRESSES_CHECKED}>
+                <label class="clickable" for="catchall_addresses_type_manual"><?= tohtml(tr('Manual catch-all addresses'));?></label>
+                <span class="icon i_help" title="<?= tohtml(tr('Separate addresses by a comma, line-break or space.'), 'htmlAttr') ;?>"></span>
+            </td>
+            <td>
+                <label>
+                    <textarea name="manual_catchall_addresses" id="manual_catchall_addresses" required>{MANUAL_CATCHALL_ADDRESSES}</textarea>
+                </label>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="buttons">
+        <input name="Submit" type="submit" value="<?= tohtml(tr('Add'), 'htmlAttr'); ?>">
+        <a href="mail_catchall.php" class="link_as_button"><?= tohtml(tr('Cancel')); ?></a>
+    </div>
+</form>

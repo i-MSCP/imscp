@@ -371,7 +371,9 @@ function addDomainAlias()
 
         // Create default email addresses if needed
         if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
-            client_mail_add_default_accounts($mainDmnProps['domain_id'], $mainDmnProps['admin_email'], $domainAliasNameAscii, 'alias', $id);
+            createDefaultMailAccounts(
+                $mainDmnProps['domain_id'], $mainDmnProps['admin_email'], $domainAliasNameAscii, MT_ALIAS_FORWARD, $id
+            );
         }
 
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddDomainAlias, [
@@ -464,3 +466,5 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

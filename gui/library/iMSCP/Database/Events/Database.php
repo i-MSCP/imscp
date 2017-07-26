@@ -23,23 +23,23 @@
  */
 class iMSCP_Database_Events_Database extends iMSCP_Events_Event
 {
-	/**
-	 * Returns the database instance in which this event was dispatched.
-	 *
-	 * @return iMSCP_Database
-	 */
-	public function getDb()
-	{
-		return $this->getParam('context');
-	}
+    /**
+     * Returns the database instance in which this event was dispatched.
+     *
+     * @return iMSCP_Database
+     */
+    public function getDb()
+    {
+        return $this->getParam('context');
+    }
 
-	/**
-	 * Returns the query string.
-	 *
-	 * @return string
-	 */
-	public function getQueryString()
-	{
-		return $this->getParam('query');
-	}
+    /**
+     * Returns the query string.
+     *
+     * @return string
+     */
+    public function getQueryString()
+    {
+        return $this->getParam('query');
+    }
 }

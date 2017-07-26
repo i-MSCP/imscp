@@ -13,8 +13,8 @@
     <thead>
     <tr>
         <th>{TR_USER}</th>
-        <th>{TR_TRAFF}</th>
         <th>{TR_DISK}</th>
+        <th>{TR_TRAFF}</th>
         <th>{TR_WEB}</th>
         <th>{TR_FTP_TRAFF}</th>
         <th>{TR_SMTP}</th>
@@ -30,8 +30,8 @@
     <tfoot>
     <tr>
         <td>{TR_USER}</td>
-        <td>{TR_TRAFF}</td>
         <td>{TR_DISK}</td>
+        <td>{TR_TRAFF}</td>
         <td>{TR_WEB}</td>
         <td>{TR_FTP_TRAFF}</td>
         <td>{TR_SMTP}</td>
@@ -52,17 +52,17 @@
         </td>
         <td>
             <div class="graph">
-                <span style="width:{TRAFF_PERCENT}%"></span>
-                <strong>{TRAFF_PERCENT}%</strong>
-            </div>
-            {TRAFF_MSG}
-        </td>
-        <td>
-            <div class="graph">
                 <span style="width:{DISK_PERCENT}%"></span>
                 <strong>{DISK_PERCENT}%</strong>
             </div>
             {DISK_MSG}
+        </td>
+        <td>
+            <div class="graph">
+                <span style="width:{TRAFF_PERCENT}%"></span>
+                <strong>{TRAFF_PERCENT}%</strong>
+            </div>
+            {TRAFF_MSG}
         </td>
         <td>{WEB}</td>
         <td>{FTP}</td>

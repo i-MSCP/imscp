@@ -32,23 +32,21 @@ if (isset($_SESSION['logged_from'])
     change_user_interface($_SESSION['user_id'], $_SESSION['logged_from_id']);
 }
 
-if (isset($_SESSION['user_id'])
-    && isset($_GET['to_id'])
-) { // Switch to customer
+if (isset($_SESSION['user_id']) && isset($_GET['to_id'])) {
+    // Switch to customer
     $toUserId = intval($_GET['to_id']);
 
-    // Admin logged as reseller
-    if (isset($_SESSION['logged_from'])
-        && isset($_SESSION['logged_from_id'])
-    ) {
+    if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
+        // Admin logged as reseller
         $fromUserId = $_SESSION['logged_from_id'];
-    }
-
-    // reseller to customer
-    else {
+    } else {
+        // reseller to customer
         $fromUserId = $_SESSION['user_id'];
-
-        if (who_owns_this($toUserId, 'client') != $fromUserId) {
+        $stmt = exec_query(
+            'SELECT COUNT(admin_id) FROM admin WHERE admin_id = ? AND created_by = ?', [$toUserId, $fromUserId]
+        );
+        
+        if ($stmt->fetchRow(PDO::FETCH_COLUMN) == 0) {
             showBadRequestErrorPage();
         }
     }

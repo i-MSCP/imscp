@@ -52,7 +52,7 @@ removeOldKeys($cfg['LOSTPASSWORD_TIMEOUT']);
 if (isset($_GET['key'])) {
     $key = clean_input($_GET['key']);
     if (sendPassword($key)) {
-        set_page_message(tr('Your password has been successfully scheduled for renewal. Check your emails.'), 'success');
+        set_page_message(tr('Your password has been successfully scheduled for renewal. Check your mails.'), 'success');
     }
 
     redirectTo('index.php');
@@ -104,7 +104,7 @@ if (!empty($_POST)) {
         if (strtolower($_SESSION['capcode']) !== strtolower($capcode)) {
             set_page_message(tr('Wrong security code'), 'error');
         } else if (sendPasswordRequestValidation($uname)) {
-            set_page_message(tr('Your request for password renewal has been registered. You will receive an email with instructions to complete the process.'), 'success');
+            set_page_message(tr('Your request for password renewal has been registered. You will receive a mail with instructions to complete the process.'), 'success');
             redirectTo('index.php');
         }
     }

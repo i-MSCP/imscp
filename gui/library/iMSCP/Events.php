@@ -1144,7 +1144,7 @@ class iMSCP_Events
      *
      * The listeners receive an iMSCP_Events_Event object with the following parameters:
      *
-     * - mailUsername: A string representing the local part of the email account being added
+     * - mailUsername: A string representing the local part of the mail account being added
      * - mailAddress: A string representing the complete email address of the mail account being added
      *
      * @const string
@@ -1156,9 +1156,9 @@ class iMSCP_Events
      *
      * The listeners receive an iMSCP_Events_Event object with the following parameters:
      *
-     * - mailUsername: A string representing the local part of the email account that has been added
+     * - mailUsername: A string representing the local part of the mail account that has been added
      * - mailAddress: A string representing the complete address of the mail account that has been added
-     * - mailId: An integer representing the ID of the email account that has been added
+     * - mailId: An integer representing the ID of the mail account that has been added
      *
      * @const string
      */
@@ -1209,47 +1209,47 @@ class iMSCP_Events
     const onAfterDeleteMail = 'onAfterDeleteMail';
 
     /**
-     * The onBeforeAddMailCatchall event is triggered after a mail catchall is created.
+     * The onBeforeAddMailCatchall event is triggered after a catch-all acount is created.
      *
      * The listeners receive an iMSCP_Events_Event object with the following parameters:
      *
-     * - mailCatchall: A string representing the catchall being added
-     * - mailForwardList: An array representing list of mail addresses to which catchall must be forwarded
+     * - mailCatchallDomain: A string representing the domain catch-all
+     * - mailCatchallAddresses: A array representing list of catch-all addresses
      *
      * @const string
      */
     const onBeforeAddMailCatchall = 'onBeforeAddMailCatchall';
 
     /**
-     * The onAfterAddMailCatchall event is triggered after a mail catchall is created.
+     * The onAfterAddMailCatchall event is triggered after a catch-all account is created.
      *
      * The listeners receive an iMSCP_Events_Event object with the following parameters:
      *
-     * - mailCatchallId: An integer representing the ID of the mail catchall that has been added
-     * - mailCatchall: A string representing the catchall that has been added
-     * - mailForwardList: A array representing list of mail addresses to which catchall must be forwarded
+     * - mailCatchallId: An integer representing the ID of the catchall account that has been added
+     * - mailCatchallDomain: A string representing the domain catch-all
+     * - mailCatchallAddresses: A array representing list of catch-all addresses
      *
      * @const string
      */
     const onAfterAddMailCatchall = 'onAfterAddMailCatchall';
 
     /**
-     * The onBeforeDeleteMailCatchall event is triggered before a mail catchall is deleted.
+     * The onBeforeDeleteMailCatchall event is triggered before a catch-all acount is deleted.
      *
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
-     * - mailCatchallId: An integer representing the ID of the mail catchall being deleted
+     * - mailCatchallId: An integer representing the ID of the catchall account being deleted
      *
      * @const string
      */
     const onBeforeDeleteMailCatchall = 'onBeforeDeleteMailCatchall';
 
     /**
-     * The onAfterDeleteMail event is triggered after a mail account is deleted.
+     * The onAfterDeleteMail event is triggered after a catch-all acount is deleted.
      *
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
-     * - mailCatchallId: An integer representing the ID of the mail catchall that has been deleted
+     * - mailCatchallId: An integer representing the ID of the catch-all acount that has been deleted
      *
      * @const string
      */

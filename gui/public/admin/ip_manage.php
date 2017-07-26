@@ -18,8 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-namespace iMSCP;
-
+use iMSCP\Net as Net;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventManager;
 use iMSCP_pTemplate as TemplateEngine;
@@ -368,8 +367,7 @@ function addIpAddr()
 
 require 'imscp-lib.php';
 
-$eventManager = EventManager::getInstance();
-$eventManager->dispatch(Events::onAdminScriptStart);
+EventManager::getInstance()->dispatch(Events::onAdminScriptStart);
 check_login('admin');
 
 if (!empty($_POST)) {
@@ -411,7 +409,7 @@ $tpl->assign([
     'TR_MANUAL'               => tr('Manual')
 ]);
 
-$eventManager->registerListener('onGetJsTranslations', function ($e) {
+EventManager::getInstance()->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e \iMSCP_Events_Event */
     $translation = $e->getParam('translations');
     $translation['core']['datatable'] = getDataTablesPluginTranslations(false);
@@ -425,5 +423,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-$eventManager->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

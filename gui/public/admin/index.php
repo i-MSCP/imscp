@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,14 +29,15 @@
  */
 function admin_generateSupportQuestionsMessage()
 {
-    $stmt = exec_query(
-        'SELECT COUNT(ticket_id) AS cnt FROM tickets WHERE ticket_to = ? AND ticket_status IN (1, 2) AND ticket_reply = 0',
+    $ticketsCount = exec_query(
+        'SELECT COUNT(ticket_id) FROM tickets WHERE ticket_to = ? AND ticket_status IN (1, 2) AND ticket_reply = 0',
         $_SESSION['user_id']
-    );
-    $row = $stmt->fetchRow();
+    )->fetchRow(PDO::FETCH_COLUMN);
 
-    if ($row['cnt'] > 0) {
-        set_page_message(ntr('You have a new support ticket.', 'You have %d new support tickets.', $row['cnt']), 'static_info');
+    if ($ticketsCount > 0) {
+        set_page_message(
+            ntr('You have a new support ticket.', 'You have %d new support tickets.', $ticketsCount), 'static_info'
+        );
     }
 }
 
@@ -49,9 +50,7 @@ function admin_generateSupportQuestionsMessage()
  */
 function admin_generateUpdateMessages()
 {
-    $cfg = iMSCP_Registry::get('config');
-
-    if (!$cfg['CHECK_FOR_UPDATES']) {
+    if (!iMSCP_Registry::get('config')['CHECK_FOR_UPDATES']) {
         return;
     }
 
@@ -72,30 +71,43 @@ function admin_generateUpdateMessages()
  */
 function admin_getAdminGeneralInfo($tpl)
 {
-    $cfg = iMSCP_Registry::get('config');
-    $totalMails = records_count('mail_users', 'mail_type NOT RLIKE \'_catchall\'', '');
+    $where = "mail_type NOT LIKE '%catchall%'";
 
-    if ($cfg['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
-        $showTotalMails = $totalMails;
-    } else {
-        $totalDefaultMails = records_count('mail_users', 'mail_acc', 'abuse');
-        $totalDefaultMails += records_count('mail_users', 'mail_acc', 'webmaster');
-        $totalDefaultMails += records_count('mail_users', 'mail_acc', 'postmaster');
-        $showTotalMails = ($totalMails - $totalDefaultMails) . '/' . $totalMails;
+    if (!iMSCP_Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
+        # A default mail account is composed of a name matching with:
+        # - abuse, hostmaster, postmaster or webmaster for a domain
+        # - webmaster for a subdomain
+        # and is set as forward mail account. If the customeer turn a default
+        # mail account into a normal mail account, it is no longer seen as
+        # default mail account.
+        $where .= "
+            AND ! (
+                (
+                    mail_acc IN('abuse', 'hostmaster', 'postmaster', 'webmaster')
+                    AND
+                    mail_type IN('" . MT_NORMAL_FORWARD . "', '" . MT_ALIAS_FORWARD . "')
+                )    
+                OR
+                (
+                    mail_acc = 'webmaster'
+                    AND
+                    mail_type IN('" . MT_SUBDOM_FORWARD . "', '" . MT_ALSSUB_FORWARD . "')
+                )
+            )
+        ";
     }
 
     $tpl->assign([
-        'ACCOUNT_NAME' => tohtml($_SESSION['user_logged']),
-        'ADMIN_USERS' => records_count('admin', 'admin_type', 'admin'),
-        'RESELLER_USERS' => records_count('admin', 'admin_type', 'reseller'),
-        'NORMAL_USERS' => records_count('admin', 'admin_type', 'user'),
-        'DOMAINS' => records_count('domain', '', ''),
-        'SUBDOMAINS' => records_count('subdomain', '', '') + records_count('subdomain_alias', 'subdomain_alias_id', '', ''),
-        'DOMAINS_ALIASES' => records_count('domain_aliasses', '', ''),
-        'MAIL_ACCOUNTS' => $showTotalMails,
-        'FTP_ACCOUNTS' => records_count('ftp_users', '', ''),
-        'SQL_DATABASES' => records_count('sql_database', '', ''),
-        'SQL_USERS' => get_sql_user_count()
+        'ADMIN_USERS'     => tohtml(records_count('admin', 'admin_type', 'admin')),
+        'RESELLER_USERS'  => tohtml(records_count('admin', 'admin_type', 'reseller')),
+        'NORMAL_USERS'    => tohtml(records_count('admin', 'admin_type', 'user')),
+        'DOMAINS'         => tohtml(records_count('domain')),
+        'SUBDOMAINS'      => tohtml(records_count('subdomain') + records_count('subdomain_alias', 'subdomain_alias_id')),
+        'DOMAINS_ALIASES' => tohtml(records_count('domain_aliasses')),
+        'MAIL_ACCOUNTS'   => records_count('mail_users', $where),
+        'FTP_ACCOUNTS'    => tohtml(records_count('ftp_users')),
+        'SQL_DATABASES'   => tohtml(records_count('sql_database')),
+        'SQL_USERS'       => tohtml(get_sql_user_count())
     ]);
 }
 
@@ -115,11 +127,13 @@ function admin_generateServerTrafficInfo($tpl)
         $trafficWarningBytes = $trafficLimitBytes;
     }
 
-    // Get server traffic usage value in bytes for the current month
+    // Get server traffic usage in bytes for the current month
     $stmt = exec_query(
         '
-            SELECT IFNULL((SUM(bytes_in) + SUM(bytes_out)), 0) AS serverTrafficUsage FROM server_traffic
-            WHERE  traff_time BETWEEN ? AND ?
+            SELECT SUM(bytes_in) + SUM(bytes_out) AS serverTrafficUsage
+            FROM server_traffic
+            WHERE traff_time BETWEEN ?
+            AND ?
         ',
         [getFirstDayOfMonth(), getLastDayOfMonth()]
     );
@@ -135,9 +149,9 @@ function admin_generateServerTrafficInfo($tpl)
     $trafficUsagePercent = make_usage_vals($trafficUsageBytes, $trafficLimitBytes);
 
     if ($trafficLimitBytes) {
-        $trafficMessage = tr('%1$s%% [%2$s of %3$s]', $trafficUsagePercent, bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes));
+        $trafficMessage = tr('%s%% [%s / %s]', $trafficUsagePercent, bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes));
     } else {
-        $trafficMessage = tr('%1$s%% [%2$s of unlimited]', $trafficUsagePercent, bytesHuman($trafficUsageBytes));
+        $trafficMessage = tr('%s%% [%s / ∞]', $trafficUsagePercent, bytesHuman($trafficUsageBytes));
     }
 
     // traffic warning 
@@ -163,34 +177,30 @@ function admin_generateServerTrafficInfo($tpl)
 require 'imscp-lib.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
-
-$cfg = iMSCP_Registry::get('config');
-
-check_login('admin', $cfg['PREVENT_EXTERNAL_LOGIN_ADMIN']);
+check_login('admin', iMSCP_Registry::get('config')['PREVENT_EXTERNAL_LOGIN_ADMIN']);
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'admin/index.tpl',
-    'page_message' => 'layout',
+    'layout'                  => 'shared/layouts/ui.tpl',
+    'page'                    => 'admin/index.tpl',
+    'page_message'            => 'layout',
     'traffic_warning_message' => 'page'
 ]);
 $tpl->assign([
-    'TR_PAGE_TITLE' => tr('Admin / General / Overview'),
-    'TR_PROPERTIES' => tr('Properties'),
-    'TR_VALUES' => tr('Values'),
-    'TR_ACCOUNT_NAME' => tr('Account name'),
-    'TR_ADMIN_USERS' => tr('Admin users'),
-    'TR_RESELLER_USERS' => tr('Reseller users'),
-    'TR_NORMAL_USERS' => tr('Normal users'),
-    'TR_DOMAINS' => tr('Domains'),
-    'TR_SUBDOMAINS' => tr('Subdomains'),
+    'TR_PAGE_TITLE'      => tr('Admin / General / Overview'),
+    'TR_PROPERTIES'      => tr('Properties'),
+    'TR_VALUES'          => tr('Values'),
+    'TR_ADMIN_USERS'     => tr('Admin users'),
+    'TR_RESELLER_USERS'  => tr('Reseller users'),
+    'TR_NORMAL_USERS'    => tr('Client users'),
+    'TR_DOMAINS'         => tr('Domains'),
+    'TR_SUBDOMAINS'      => tr('Subdomains'),
     'TR_DOMAINS_ALIASES' => tr('Domain aliases'),
-    'TR_MAIL_ACCOUNTS' => tr('Email accounts'),
-    'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
-    'TR_SQL_DATABASES' => tr('SQL databases'),
-    'TR_SQL_USERS' => tr('SQL users'),
-    'TR_SERVER_TRAFFIC' => tr('Server traffic')
+    'TR_MAIL_ACCOUNTS'   => tr('Mail accounts'),
+    'TR_FTP_ACCOUNTS'    => tr('FTP accounts'),
+    'TR_SQL_DATABASES'   => tr('SQL databases'),
+    'TR_SQL_USERS'       => tr('SQL users'),
+    'TR_SERVER_TRAFFIC'  => tr('Monthly server traffic')
 ]);
 
 generateNavigation($tpl);

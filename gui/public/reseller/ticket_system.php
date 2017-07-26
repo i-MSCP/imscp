@@ -25,30 +25,24 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
-/************************************************************************************
- * Main script
+/***********************************************************************************************************************
+ * Main
  */
 
-// Include core library
 require_once 'imscp-lib.php';
 require_once LIBRARY_PATH . '/Functions/Tickets.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
-
 check_login('reseller');
 
 resellerHasFeature('support') or showBadRequestErrorPage();
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
-$userId = $_SESSION['user_id'];
 $_SESSION['previousPage'] = 'ticket_system.php';
 
 // Checks if support ticket system is activated and if the reseller can access to it
-if (!hasTicketSystem($userId)) {
+if (!hasTicketSystem($_SESSION['user_id'])) {
     redirectTo('index.php');
-} elseif(isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
+} elseif (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
     closeTicket(intval($_GET['ticket_id']));
 }
 
@@ -59,45 +53,45 @@ if (isset($_GET['psi'])) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	[
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'reseller/ticket_system.tpl',
-		'page_message' => 'layout',
-		'tickets_list' => 'page',
-		'tickets_item' => 'tickets_list',
-		'scroll_prev_gray' => 'page',
-		'scroll_prev' => 'page',
-		'scroll_next_gray' => 'page',
-		'scroll_next' => 'page']);
-
-$tpl->assign(
-	[
-		'TR_PAGE_TITLE' => tr('Reseller / Support / Open Tickets'),
-		'TR_TICKET_STATUS' => tr('Status'),
-		'TR_TICKET_FROM' => tr('From'),
-		'TR_TICKET_SUBJECT' => tr('Subject'),
-		'TR_TICKET_URGENCY' => tr('Priority'),
-		'TR_TICKET_LAST_ANSWER_DATE' => tr('Last reply date'),
-		'TR_TICKET_ACTIONS' => tr('Actions'),
-		'TR_TICKET_DELETE' => tr('Delete'),
-		'TR_TICKET_CLOSE' => tr('Close'),
-		'TR_TICKET_READ_LINK' => tr('Read ticket'),
-		'TR_TICKET_DELETE_LINK' => tr('Delete ticket'),
-		'TR_TICKET_CLOSE_LINK' => tr('Close ticket'),
-		'TR_TICKET_DELETE_ALL' => tr('Delete all tickets'),
-		'TR_TICKETS_DELETE_MESSAGE' => tr("Are you sure you want to delete the '%s' ticket?", '%s'),
-		'TR_TICKETS_DELETE_ALL_MESSAGE' => tr('Are you sure you want to delete all tickets?'),
-		'TR_PREVIOUS' => tr('Previous'),
-		'TR_NEXT' => tr('Next')]);
+$tpl->define_dynamic([
+    'layout'           => 'shared/layouts/ui.tpl',
+    'page'             => 'reseller/ticket_system.tpl',
+    'page_message'     => 'layout',
+    'tickets_list'     => 'page',
+    'tickets_item'     => 'tickets_list',
+    'scroll_prev_gray' => 'page',
+    'scroll_prev'      => 'page',
+    'scroll_next_gray' => 'page',
+    'scroll_next'      => 'page'
+]);
+$tpl->assign([
+    'TR_PAGE_TITLE'                 => tr('Reseller / Support / Open Tickets'),
+    'TR_TICKET_STATUS'              => tr('Status'),
+    'TR_TICKET_FROM'                => tr('From'),
+    'TR_TICKET_SUBJECT'             => tr('Subject'),
+    'TR_TICKET_URGENCY'             => tr('Priority'),
+    'TR_TICKET_LAST_ANSWER_DATE'    => tr('Last reply date'),
+    'TR_TICKET_ACTIONS'             => tr('Actions'),
+    'TR_TICKET_DELETE'              => tr('Delete'),
+    'TR_TICKET_CLOSE'               => tr('Close'),
+    'TR_TICKET_READ_LINK'           => tr('Read ticket'),
+    'TR_TICKET_DELETE_LINK'         => tr('Delete ticket'),
+    'TR_TICKET_CLOSE_LINK'          => tr('Close ticket'),
+    'TR_TICKET_DELETE_ALL'          => tr('Delete all tickets'),
+    'TR_TICKETS_DELETE_MESSAGE'     => tr("Are you sure you want to delete the '%s' ticket?", '%s'),
+    'TR_TICKETS_DELETE_ALL_MESSAGE' => tr('Are you sure you want to delete all tickets?'),
+    'TR_PREVIOUS'                   => tr('Previous'),
+    'TR_NEXT'                       => tr('Next')
+]);
 
 generateNavigation($tpl);
-generateTicketList($tpl, $userId, $start, $cfg->DOMAIN_ROWS_PER_PAGE, 'reseller', 'open');
+generateTicketList(
+    $tpl, $_SESSION['user_id'], $start, iMSCP_Registry::get('config')['DOMAIN_ROWS_PER_PAGE'], 'reseller', 'open'
+);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
-
 $tpl->prnt();
+
 unsetMessages();

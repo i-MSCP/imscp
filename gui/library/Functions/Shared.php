@@ -1,31 +1,116 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 use Mso\IdnaConvert\IdnaConvert;
+
+// Available mail types
+define('MT_NORMAL_MAIL', 'normal_mail');
+define('MT_NORMAL_FORWARD', 'normal_forward');
+define('MT_ALIAS_MAIL', 'alias_mail');
+define('MT_ALIAS_FORWARD', 'alias_forward');
+define('MT_SUBDOM_MAIL', 'subdom_mail');
+define('MT_SUBDOM_FORWARD', 'subdom_forward');
+define('MT_ALSSUB_MAIL', 'alssub_mail');
+define('MT_ALSSUB_FORWARD', 'alssub_forward');
+define('MT_NORMAL_CATCHALL', 'normal_catchall');
+define('MT_SUBDOM_CATCHALL', 'subdom_catchall');
+define('MT_ALIAS_CATCHALL', 'alias_catchall');
+define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
+
+/**
+ * Create default mails accounts
+ *
+ * @param int $mainDmnId Customer main domain unique identifier
+ * @param string $userEmail Customer email
+ * @param string $dmnName Domain name
+ * @param string $forwardType Forward type(MT_NORMAL_FORWARD|MT_ALIAS_FORWARD|MT_SUBDOM_FORWARD|MT_ALSSUB_FORWARD)
+ * @param int $subId OPTIONAL Sub-ID if default mail accounts are being created for a domain alias or subdomain
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
+ */
+function createDefaultMailAccounts($mainDmnId, $userEmail, $dmnName, $forwardType = MT_NORMAL_FORWARD, $subId = 0)
+{
+    $db = iMSCP_Database::getInstance();
+
+    try {
+        if ($subId == 0 && $forwardType != MT_NORMAL_FORWARD) {
+            throw new iMSCP_Exception("Forward type doesn't match with provided child domain ID");
+        }
+
+        $db->beginTransaction();
+
+        $stmt = $db->getRawInstance()->prepare(
+            '
+                INSERT IGNORE INTO mail_users (
+                    mail_acc, mail_pass, mail_forward, domain_id, mail_type, sub_id, status, po_active,
+                    mail_auto_respond, quota, mail_addr
+                ) VALUES (
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                )
+            '
+        );
+
+        if (in_array($forwardType, [MT_NORMAL_FORWARD, MT_ALIAS_FORWARD])) {
+            $cfg = iMSCP_Registry::get('config');
+            $mailAccounts = [
+                'abuse'      => $cfg['DEFAULT_ADMIN_ADDRESS'],
+                'hostmaster' => $cfg['DEFAULT_ADMIN_ADDRESS'],
+                'postmaster' => $cfg['DEFAULT_ADMIN_ADDRESS'],
+                'webmaster'  => $userEmail
+            ];
+        } else {
+            $mailAccounts = ['webmaster' => $userEmail];
+        }
+
+        foreach ($mailAccounts as $email => $forwardTo) {
+            if ($forwardTo === NULL) {
+                continue;
+            }
+
+            $stmt->execute([
+                $email, '_no_', $forwardTo, $mainDmnId, $forwardType, $subId, 'toadd', 'no', 0, NULL,
+                $email . '@' . $dmnName
+            ]);
+        }
+
+        $db->commit();
+    } catch (PDOException $e) {
+        $db->rollBack();
+        throw new iMSCP_Exception_Database($e->getMessage(), $e->getCode(), NULL, $e);
+    }
+}
+
+/**
+ * Delete all autoreplies log for which no mail address is found in the mail_users database table
+ *
+ * @return void
+ */
+function delete_autoreplies_log_entries()
+{
+    exec_query(
+        "
+            DELETE FROM autoreplies_log
+            WHERE `from` NOT IN (SELECT mail_addr FROM mail_users WHERE status <> 'todelete')
+        "
+    );
+}
 
 /***********************************************************************************************************************
  * Account functions
@@ -34,14 +119,12 @@ use Mso\IdnaConvert\IdnaConvert;
 /**
  * Returns user name matching identifier
  *
- * @param int $user_id User unique identifier
+ * @param int $userId User unique identifier
  * @return string Username
  */
-function get_user_name($user_id)
+function get_user_name($userId)
 {
-    $stmt = exec_query('SELECT admin_name FROM admin WHERE admin_id = ?', $user_id);
-    $row = $stmt->fetchRow();
-    return $row['admin_name'];
+    return exec_query('SELECT admin_name FROM admin WHERE admin_id = ?', $userId)->fetchRow(PDO::FETCH_COLUMN);
 }
 
 /***********************************************************************************************************************
@@ -69,29 +152,28 @@ function imscp_domain_exists($domainName, $resellerId)
     $domainName = encode_idna($domainName);
 
     // $domainName already exist in the domain table?
-    $stmt = exec_query('SELECT COUNT(domain_id) AS cnt FROM domain WHERE domain_name = ?', $domainName);
-    $row = $stmt->fetchRow();
-    if ($row['cnt']) {
+    $stmt = exec_query('SELECT COUNT(domain_id) FROM domain WHERE domain_name = ?', $domainName);
+
+    if ($stmt->fetchRow(PDO::FETCH_COLUMN) > 0) {
         return true;
     }
 
     // $domainName already exists in the domain_aliasses table?
-    $stmt = exec_query('SELECT COUNT(alias_id) AS cnt FROM domain_aliasses WHERE alias_name = ?', $domainName);
-    $row = $stmt->fetchRow();
-    if ($row['cnt']) {
+    $stmt = exec_query('SELECT COUNT(alias_id) FROM domain_aliasses WHERE alias_name = ?', $domainName);
+    if ($stmt->fetchRow(PDO::FETCH_COLUMN) > 0) {
         return true;
     }
 
     # $domainName is a subzone of another domain which doesn't belong to the given reseller?
     $queryDomain = '
-        SELECT COUNT(domain_id) AS cnt
+        SELECT COUNT(domain_id)
         FROM domain
         JOIN admin ON(admin_id = domain_admin_id)
         WHERE domain_name = ?
         AND created_by <> ?
     ';
     $queryAliases = '
-        SELECT COUNT(alias_id) AS cnt
+        SELECT COUNT(alias_id)
         FROM domain_aliasses
         JOIN domain USING(domain_id)
         JOIN admin ON(admin_id = domain_admin_id)
@@ -108,14 +190,12 @@ function imscp_domain_exists($domainName, $resellerId)
 
         // Execute query the redefined queries for domains/accounts and aliases tables
         $stmt = exec_query($queryDomain, [$parentDomain, $resellerId]);
-        $row = $stmt->fetchRow();
-        if ($row['cnt']) {
+        if ($stmt->fetchRow(PDO::FETCH_COLUMN) > 0) {
             return true;
         }
 
         $stmt = exec_query($queryAliases, [$parentDomain, $resellerId]);
-        $row = $stmt->fetchRow();
-        if ($row['cnt']) {
+        if ($stmt->fetchRow(PDO::FETCH_COLUMN) > 0) {
             return true;
         }
     }
@@ -123,30 +203,27 @@ function imscp_domain_exists($domainName, $resellerId)
     // $domainName already exists as subdomain?
     $stmt = exec_query(
         "
-            SELECT COUNT('subdomain_id') AS cnt
+            SELECT COUNT(subdomain_id)
             FROM subdomain
             JOIN domain USING(domain_id)
             WHERE CONCAT(subdomain_name, '.', domain_name) = ?
         ",
         $domainName
     );
-    $row = $stmt->fetchRow();
-    if ($row['cnt']) {
+    if ($stmt->fetchRow(PDO::FETCH_COLUMN) > 0) {
         return true;
     }
 
     $stmt = exec_query(
         "
-            SELECT COUNT(subdomain_alias_id) AS cnt
+            SELECT COUNT(subdomain_alias_id)
             FROM subdomain_alias
             JOIN domain_aliasses USING(alias_id)
             WHERE CONCAT(subdomain_alias_name, '.', alias_name) = ?
         ",
         $domainName
     );
-    $row = $stmt->fetchRow();
-
-    if ($row['cnt']) {
+    if ($stmt->fetchRow(PDO::FETCH_COLUMN) > 0) {
         return true;
     }
 
@@ -162,11 +239,11 @@ function imscp_domain_exists($domainName, $resellerId)
  * @param int|null $createdBy OPTIONAL reseller unique identifier
  * @return array Returns an associative array where each key is a domain propertie name.
  */
-function get_domain_default_props($domainAdminId, $createdBy = null)
+function get_domain_default_props($domainAdminId, $createdBy = NULL)
 {
-    static $domainProperties = null;
+    static $domainProperties = NULL;
 
-    if (null !== $domainProperties) {
+    if (NULL !== $domainProperties) {
         return $domainProperties;
     }
 
@@ -202,9 +279,9 @@ function get_domain_default_props($domainAdminId, $createdBy = null)
  */
 function get_user_domain_id($customeId)
 {
-    static $domainId = null;
+    static $domainId = NULL;
 
-    if (null !== $domainId) {
+    if (NULL !== $domainId) {
         return $domainId;
     }
 
@@ -213,9 +290,7 @@ function get_user_domain_id($customeId)
         throw new iMSCP_Exception(sprintf("Couldn't find domain ID of user with ID %s", $customeId));
     }
 
-    $row = $stmt->fetchRow();
-    $domainId = $row['domain_id'];
-    return $domainId;
+    return $stmt->fetchRow(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -226,7 +301,6 @@ function get_user_domain_id($customeId)
  */
 function shared_getCustomerProps($userId)
 {
-    $cfg = iMSCP_Registry::get('config');
     $stmt = exec_query('SELECT * FROM domain WHERE domain_admin_id = ?', $userId);
 
     if (!$stmt->rowCount()) {
@@ -249,12 +323,12 @@ function shared_getCustomerProps($userId)
 
     // Retrieves total number of mail accounts already consumed by the customer
     // This works with the admin option (Count default email addresses)
-    if ($cfg['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
-        $mailConsumed = records_count('mail_users', "mail_type NOT RLIKE '_catchall' AND domain_id", $row['domain_id']);
+    if (iMSCP_Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
+        $mailConsumed = records_count('mail_users', "mail_type NOT LIKE '%catchall%' AND domain_id", $row['domain_id']);
     } else {
         $where = "
-            `mail_acc` != 'abuse' AND `mail_acc` != 'postmaster' AND `mail_acc` != 'webmaster'
-            AND `mail_type` NOT RLIKE '_catchall' AND `domain_id`
+            mail_acc != 'abuse' AND mail_acc != 'postmaster' AND mail_acc != 'webmaster'
+            AND mail_type NOT RLIKE '_catchall' AND domain_id
         ";
         $mailConsumed = records_count('mail_users', $where, $row['domain_id']);
     }
@@ -264,10 +338,10 @@ function shared_getCustomerProps($userId)
 
     // Retrieve total number of ftp accounts already consumed by the customer
     $ftpConsumed = sub_records_rlike_count(
-        'domain_name', 'domain', 'domain_id', $row['domain_id'], 'userid', 'ftp_users', 'userid', '@', ''
+        'domain_name', 'domain', 'domain_id', $row['domain_id'], 'ftp_users', 'userid', '@', ''
     );
     $ftpConsumed += sub_records_rlike_count(
-        'alias_name', 'domain_aliasses', 'domain_id', $row['domain_id'], 'userid', 'ftp_users', 'userid', '@', ''
+        'alias_name', 'domain_aliasses', 'domain_id', $row['domain_id'], 'ftp_users', 'userid', '@', ''
     );
 
     // Retrieves max available number of mail accounts for the customer
@@ -390,8 +464,6 @@ function change_domain_status($customerId, $action)
     ignore_user_abort(true);
     set_time_limit(0);
 
-    $cfg = iMSCP_Registry::get('config');
-
     if ($action == 'deactivate') {
         $newStatus = 'todisable';
     } else if ($action == 'activate') {
@@ -428,7 +500,7 @@ function change_domain_status($customerId, $action)
         ]);
 
         if ($action == 'deactivate') {
-            if ($cfg['HARD_MAIL_SUSPENSION']) { # SMTP/IMAP/POP disabled
+            if (iMSCP_Registry::get('config')['HARD_MAIL_SUSPENSION']) { # SMTP/IMAP/POP disabled
                 exec_query('UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ?', [
                     'todisable', 'no', $domainId
                 ]);
@@ -529,7 +601,7 @@ function sql_delete_user($dmnId, $userId)
     $dbName = $row['sqld_name'];
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlUser, [
-        'sqlUserId' => $userId,
+        'sqlUserId'   => $userId,
         'sqlUsername' => $user,
         'sqlUserhost' => $host
     ]);
@@ -552,7 +624,7 @@ function sql_delete_user($dmnId, $userId)
     execute_query('FLUSH PRIVILEGES');
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSqlUser, [
-        'sqlUserId' => $userId,
+        'sqlUserId'   => $userId,
         'sqlUsername' => $user,
         'sqlUserhost' => $host
     ]);
@@ -581,7 +653,7 @@ function delete_sql_database($dmnId, $dbId)
     $dbName = $row['sqld_name'];
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlDb, [
-        'sqlDbId' => $dbId,
+        'sqlDbId'         => $dbId,
         'sqlDatabaseName' => $dbName
     ]);
 
@@ -600,7 +672,7 @@ function delete_sql_database($dmnId, $dbId)
     exec_query('DELETE FROM sql_database WHERE domain_id = ? AND sqld_id = ?', [$dmnId, $dbId]);
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSqlDb, [
-        'sqlDbId' => $dbId,
+        'sqlDbId'         => $dbId,
         'sqlDatabaseName' => $dbName
     ]);
 
@@ -644,10 +716,10 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
     $db = iMSCP_Database::getInstance();
 
     try {
-        // First, we remove customer sessions to prevent any problems
+        // First, we remove customer sessions to avoid any problems
         exec_query('DELETE FROM login WHERE user_name = ?', $data['admin_name']);
 
-        // Remove customer's databases and Sql users
+        // Remove customer's databases and SQL users
         $stmt = exec_query('SELECT sqld_id FROM sql_database WHERE domain_id = ?', $data['domain_id']);
 
         while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
@@ -686,52 +758,58 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
         // Delegated tasks - begin
         //
 
-        exec_query('UPDATE ftp_users SET status = ? WHERE admin_id = ?', ['todelete', $customerId]);
-        exec_query('UPDATE mail_users SET status = ? WHERE domain_id = ?', ['todelete', $data['domain_id']]);
-        exec_query(
-            '
-                UPDATE subdomain_alias AS t1 JOIN domain_aliasses AS t2 ON(t2.domain_id = ?)
-                SET t1.subdomain_alias_status = ? WHERE t1.alias_id = t2.alias_id
-            ',
-            [$data['domain_id'], 'todelete']
-        );
-        exec_query('UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', ['todelete', $data['domain_id']]);
-        exec_query('UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', ['todelete', $data['domain_id']]);
-        exec_query('UPDATE domain SET domain_status = ? WHERE domain_id = ?', ['todelete', $data['domain_id']]);
-        exec_query('UPDATE admin SET admin_status = ? WHERE admin_id = ?', ['todelete', $customerId]);
-        exec_query("UPDATE ssl_certs SET status = ? WHERE domain_type = 'dmn' AND domain_id = ?", [
-            'todelete', $data['domain_id']
-        ]);
+        exec_query("UPDATE ftp_users SET status = 'todelete' WHERE admin_id = ?", $customerId);
+        exec_query("UPDATE mail_users SET status = 'todelete' WHERE domain_id = ?", $data['domain_id']);
         exec_query(
             "
-                UPDATE ssl_certs SET status = ?
-                WHERE domain_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?) AND domain_type = ?
+                UPDATE subdomain_alias AS t1
+                JOIN domain_aliasses AS t2 ON(t2.domain_id = ?)
+                SET t1.subdomain_alias_status = 'todelete'
+                WHERE t1.alias_id = t2.alias_id
             ",
-            ['todelete', $data['domain_id'], 'als']
+            $data['domain_id']
+        );
+        exec_query("UPDATE domain_aliasses SET alias_status = 'todelete' WHERE domain_id = ?", $data['domain_id']);
+        exec_query("UPDATE subdomain SET subdomain_status = 'todelete' WHERE domain_id = ?", $data['domain_id']);
+        exec_query("UPDATE domain SET domain_status = 'todelete' WHERE domain_id = ?", $data['domain_id']);
+        exec_query("UPDATE admin SET admin_status = 'todelete' WHERE admin_id = ?", $customerId);
+        exec_query(
+            "UPDATE ssl_certs SET status = 'todelete' WHERE domain_type = 'dmn' AND domain_id = ?", $data['domain_id']
         );
         exec_query(
             "
-                UPDATE ssl_certs SET status = ?
-                WHERE domain_id IN (SELECT subdomain_id FROM subdomain WHERE domain_id = ?) AND domain_type = ?
+                UPDATE ssl_certs
+                SET status = 'todelete'
+                WHERE domain_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?) AND domain_type = 'als'
             ",
-            ['todelete', $data['domain_id'], 'sub']
+            $data['domain_id']
         );
         exec_query(
             "
-                UPDATE ssl_certs SET status = ?
+                UPDATE ssl_certs
+                SET status = 'todelete'
+                WHERE domain_id IN (SELECT subdomain_id FROM subdomain WHERE domain_id = ?) AND domain_type = 'sub'
+            ",
+            $data['domain_id']
+        );
+        exec_query(
+            "
+                UPDATE ssl_certs
+                SET status = 'todelete'
                 WHERE domain_id IN (
                     SELECT subdomain_alias_id FROM subdomain_alias
                     WHERE alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
                 )
-                AND domain_type = ?
+                AND domain_type = 'alssub'
             ",
-            ['todelete', $data['domain_id'], 'alssub']
+            $data['domain_id']
         );
 
         //
         // Delegated tasks - end
         //
 
+        delete_autoreplies_log_entries();
         update_reseller_c_props($data['created_by']);
 
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteCustomer, [
@@ -756,11 +834,13 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
  * Delete the given domain alias (including any related entities)
  *
  * @throws iMSCP_Exception_Database
+ * @param int $mainDomainId Customer main domain identifier
  * @param int $aliasId Domain alias unique identifier
  * @param string $aliasName Domain alias name
+ * @param string $aliasMount Domain alias mount point
  * @throws iMSCP_Exception
  */
-function deleteDomainAlias($aliasId, $aliasName)
+function deleteDomainAlias($mainDomainId, $aliasId, $aliasName, $aliasMount)
 {
     ignore_user_abort(true);
     set_time_limit(0);
@@ -771,11 +851,9 @@ function deleteDomainAlias($aliasId, $aliasName)
         $db->beginTransaction();
 
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteDomainAlias, [
-            'domainAliasId' => $aliasId,
+            'domainAliasId'   => $aliasId,
             'domainAliasName' => $aliasName
         ]);
-
-        // Delete any FTP account that belongs to the domain alias
 
         $stmt = exec_query(
             "
@@ -784,8 +862,7 @@ function deleteDomainAlias($aliasId, $aliasName)
                 LEFT JOIN subdomain_alias AS t4 ON(t4.alias_id = t3.alias_id)
                 LEFT JOIN ftp_users AS t2 ON(
                     userid LIKE CONCAT('%@', t4.subdomain_alias_name, '.', t3.alias_name)
-                    OR
-                    userid LIKE CONCAT('%@', t3.alias_name)
+                    OR userid LIKE CONCAT('%@', t3.alias_name)
                 )
                 WHERE t1.gid = t2.gid LIMIT 1
             ",
@@ -806,7 +883,9 @@ function deleteDomainAlias($aliasId, $aliasName)
             }
 
             if (!empty($nFtpMembers)) {
-                exec_query('UPDATE ftp_group SET members = ? WHERE gid = ?', [implode(',', $nFtpMembers), $ftpGgid]);
+                exec_query(
+                    'UPDATE ftp_group SET members = ? WHERE gid = ?', [implode(',', $nFtpMembers), $ftpGgid]
+                );
             } else {
                 exec_query('DELETE FROM ftp_group WHERE groupname = ?', $ftpGname);
                 exec_query('DELETE FROM quotalimits WHERE name = ?', $ftpGname);
@@ -821,8 +900,7 @@ function deleteDomainAlias($aliasId, $aliasName)
                 LEFT JOIN subdomain_alias AS t3 ON(t3.alias_id = t2.alias_id)
                 WHERE (
                     userid LIKE CONCAT('%@', t3.subdomain_alias_name, '.', t2.alias_name)
-                    OR
-                    userid LIKE CONCAT('%@', t2.alias_name)
+                    OR userid LIKE CONCAT('%@', t2.alias_name)
                 )
             ",
             $aliasId
@@ -831,34 +909,46 @@ function deleteDomainAlias($aliasId, $aliasName)
         exec_query("DELETE FROM php_ini WHERE domain_id = ? AND domain_type = 'als'", $aliasId);
         exec_query(
             "
-                UPDATE mail_users SET status = ? WHERE (sub_id = ? AND mail_type LIKE ?)
-                OR (sub_id IN (SELECT subdomain_alias_id FROM subdomain_alias WHERE alias_id = ?) AND mail_type LIKE ?)
+                UPDATE mail_users
+                SET status = 'todelete'
+                WHERE (
+                    sub_id = ? AND mail_type LIKE '%alias_%'
+                ) OR (
+                    sub_id IN (SELECT subdomain_alias_id FROM subdomain_alias WHERE alias_id = ?)
+                    AND mail_type LIKE '%alssub_%'
+                )
             ",
-            ['todelete', $aliasId, '%alias_%', $aliasId, '%alssub_%']
+            [$aliasId, $aliasId]
         );
-
-        # Schedule deletion of any SSL certificate that belongs to the domain alias
-
         exec_query(
-            '
-                UPDATE ssl_certs SET status = ?
-                WHERE domain_id IN (SELECT subdomain_alias_id FROM subdomain_alias WHERE alias_id = ?) AND domain_type = ?
-            ',
-            ['todelete', 'alssub', $aliasId]
+            "
+                UPDATE ssl_certs
+                SET status = 'todelete'
+                WHERE domain_id IN (SELECT subdomain_alias_id FROM subdomain_alias WHERE alias_id = ?)
+                AND domain_type = 'alssub'
+            ",
+            $aliasId
         );
-        exec_query('UPDATE ssl_certs SET status = ? WHERE domain_id = ? and domain_type = ?', ['todelete', $aliasId, 'als']);
-        exec_query('UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE alias_id = ?', ['todelete', $aliasId]);
-        exec_query('UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', ['todelete', $aliasId]);
+        exec_query("UPDATE ssl_certs SET status = 'todelete' WHERE domain_id = ? and domain_type = 'als'", $aliasId);
+        exec_query(
+            "UPDATE htaccess SET status = 'todelete' WHERE dmn_id = ? AND path LIKE ?",
+            [$mainDomainId, utils_normalizePath($aliasMount) . '%']
+        );
+        exec_query("UPDATE subdomain_alias SET subdomain_alias_status = 'todelete' WHERE alias_id = ?", $aliasId);
+        exec_query("UPDATE domain_aliasses SET alias_status = 'todelete' WHERE alias_id = ?", $aliasId);
 
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteDomainAlias, [
-            'domainAliasId' => $aliasId,
+            'domainAliasId'   => $aliasId,
             'domainAliasName' => $aliasName
         ]);
 
         $db->commit();
 
         send_request();
-        write_log(sprintf('%s scheduled deletion of the %s domain alias', decode_idna($_SESSION['user_logged']), $aliasName), E_USER_NOTICE);
+        write_log(
+            sprintf('%s scheduled deletion of the %s domain alias', decode_idna($_SESSION['user_logged']), $aliasName),
+            E_USER_NOTICE
+        );
         set_page_message(tr('Domain alias successfully scheduled for deletion.'), 'success');
     } catch (iMSCP_Exception $e) {
         $db->rollBack();
@@ -937,17 +1027,15 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
  * @param string $table
  * @param string $where
  * @param string $value
- * @param string $subfield
  * @param string $subtable
  * @param string $subwhere
  * @param string $a
  * @param string $b
  * @return int
  */
-function sub_records_rlike_count($field, $table, $where, $value, $subfield, $subtable, $subwhere, $a, $b)
+function sub_records_rlike_count($field, $table, $where, $value, $subtable, $subwhere, $a, $b)
 {
-
-    if ($where != '') {
+    if ($where !== '') {
         $stmt = exec_query("SELECT $field AS `field` FROM $table WHERE $where = ?", $value);
     } else {
         $stmt = execute_query("SELECT $field AS `field` FROM $table");
@@ -959,18 +1047,15 @@ function sub_records_rlike_count($field, $table, $where, $value, $subfield, $sub
         return $result;
     }
 
-    while (!$stmt->EOF) {
-        $contents = $stmt->fields['field'];
-
-        if ($subwhere != '') {
-            $query = "SELECT COUNT(*) AS `cnt` FROM $subtable WHERE $subwhere RLIKE ?";
-        } else {
+    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+        if ($subwhere === '') {
             return $result;
+
         }
 
-        $stmt2 = exec_query($query, $a . $contents . $b);
-        $result += $stmt2->fields['cnt'];
-        $stmt->moveNext();
+        $result += exec_query(
+            "SELECT COUNT(*) FROM $subtable WHERE $subwhere RLIKE ?", $a . $row['field'] . $b
+        )->fetchRow(PDO::FETCH_COLUMN);
     }
 
     return $result;
@@ -990,13 +1075,15 @@ function sub_records_rlike_count($field, $table, $where, $value, $subfield, $sub
  */
 function imscp_getResellerProperties($resellerId, $forceReload = false)
 {
-    static $properties = null;
+    static $properties = NULL;
 
-    if (null === $properties || $forceReload) {
+    if (NULL === $properties || $forceReload) {
         $stmt = exec_query('SELECT * FROM reseller_props WHERE reseller_id = ? LIMIT 1', $resellerId);
 
         if (!$stmt->rowCount()) {
-            throw new iMSCP_Exception(tr('Properties for reseller with ID %d were not found in database.', $resellerId));
+            throw new iMSCP_Exception(
+                tr('Properties for reseller with ID %d were not found in database.', $resellerId)
+            );
         }
 
         $properties = $stmt->fetchRow(PDO::FETCH_ASSOC);
@@ -1018,7 +1105,7 @@ function update_reseller_props($resellerId, $props)
     set_time_limit(0);
 
     if (empty($props)) {
-        return null;
+        return NULL;
     }
 
     list(
@@ -1031,7 +1118,8 @@ function update_reseller_props($resellerId, $props)
             UPDATE reseller_props SET current_dmn_cnt = ?, max_dmn_cnt = ?, current_sub_cnt = ?, max_sub_cnt = ?,
                 current_als_cnt = ?, max_als_cnt = ?, current_mail_cnt = ?, max_mail_cnt = ?, current_ftp_cnt = ?,
                 max_ftp_cnt = ?, current_sql_db_cnt = ?, max_sql_db_cnt = ?, current_sql_user_cnt = ?,
-                max_sql_user_cnt = ?, current_traff_amnt = ?, max_traff_amnt = ?, current_disk_amnt = ?, max_disk_amnt = ?
+                max_sql_user_cnt = ?, current_traff_amnt = ?, max_traff_amnt = ?, current_disk_amnt = ?,
+                max_disk_amnt = ?
             WHERE reseller_id = ?
         ',
         [
@@ -1081,9 +1169,7 @@ function sync_mailboxes_quota($domainId, $newQuota)
     }
 
     $cfg = iMSCP_Registry::get('config');
-    $stmt = exec_query(
-        'SELECT `mail_id`, `quota` FROM `mail_users` WHERE `domain_id` = ? AND `quota` IS NOT NULL', $domainId
-    );
+    $stmt = exec_query('SELECT mail_id, quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL', $domainId);
 
     if (!$stmt->rowCount()) {
         return;
@@ -1103,7 +1189,7 @@ function sync_mailboxes_quota($domainId, $newQuota)
         || $totalQuota == 0
     ) {
         $db = iMSCP_Database::getRawInstance();
-        $stmt = $db->prepare('UPDATE `mail_users` SET `quota` = ? WHERE `mail_id` = ?');
+        $stmt = $db->prepare('UPDATE mail_users SET quota = ? WHERE mail_id = ?');
         $result = 0;
 
         foreach ($mailboxes as $mailbox) {
@@ -1267,7 +1353,9 @@ function utils_uploadFile($inputFieldName, $destPath)
                 set_page_message(tr('A PHP extension stopped the file upload.'), 'error');
                 break;
             default:
-                set_page_message(tr('An unknown error occurred during file upload: %s', $_FILES[$inputFieldName]['error']), 'error');
+                set_page_message(
+                    tr('An unknown error occurred during file upload: %s', $_FILES[$inputFieldName]['error']), 'error'
+                );
         }
 
         return false;
@@ -1329,7 +1417,7 @@ function utils_getPhpValueInBytes($value)
         return $value;
     }
 
-    $unit = strtolower($value[strlen($value) -1]);
+    $unit = strtolower($value[strlen($value) - 1]);
     $value = substr($value, 0, -1);
 
     if ($unit == 'g') {
@@ -1374,7 +1462,6 @@ function utils_normalizePath($path, $posixCompliant = false)
     $newSegments = [];
 
     foreach ($segments as $segment) {
-
         if ($segment === '' || $segment === '.')
             continue;
 
@@ -1542,7 +1629,6 @@ function is_xhr()
 /**
  * Check if a data is serialized.
  *
- * @author Laurent Declercq (nuxwin) <l.declercq@nuxwin.com>
  * @param string $data Data to be checked
  * @return boolean TRUE if serialized data, FALSE otherwise
  */
@@ -1747,11 +1833,12 @@ function shared_getCustomerMonthlyTrafficData($domainId)
     $stmt = exec_query(
         '
           SELECT
-            SUM(dtraff_web) AS dtraff_web,
-            SUM(dtraff_ftp) AS dtraff_ftp,
-            SUM(dtraff_mail) AS dtraff_mail,
-            SUM(dtraff_pop) AS dtraff_pop
-          FROM domain_traffic WHERE `dtraff_time` BETWEEN
+            IFNULL(SUM(dtraff_web), 0) AS dtraff_web,
+            IFNULL(SUM(dtraff_ftp), 0) AS dtraff_ftp,
+            IFNULL(SUM(dtraff_mail), 0) AS dtraff_mail,
+            IFNULL(SUM(dtraff_pop), 0) AS dtraff_pop
+          FROM domain_traffic
+          WHERE dtraff_time BETWEEN
             UNIX_TIMESTAMP(((LAST_DAY(CURDATE()) + INTERVAL 1 DAY) - INTERVAL 1 MONTH ))
             AND
             UNIX_TIMESTAMP((LAST_DAY(CURDATE()) + INTERVAL 1 DAY ))
@@ -1793,7 +1880,8 @@ function shared_getCustomerStats($adminId)
               admin_name
             FROM domain
             JOIN admin on(admin_id = domain_admin_id)
-            WHERE domain_admin_id = ? ORDER BY domain_name
+            WHERE domain_admin_id = ?
+            ORDER BY domain_name
         ',
         $adminId
     );
@@ -1872,11 +1960,11 @@ function write_log($msg, $logLevel = E_USER_WARNING)
     }
 
     send_mail([
-        'mail_id' => 'imscp-log',
-        'username' => tr('administrator'),
-        'email' => $cfg['DEFAULT_ADMIN_ADDRESS'],
-        'subject' => "i-MSCP Notification ($severity)",
-        'message' => tr('Dear {NAME},
+        'mail_id'      => 'imscp-log',
+        'username'     => tr('administrator'),
+        'email'        => $cfg['DEFAULT_ADMIN_ADDRESS'],
+        'subject'      => "i-MSCP Notification ($severity)",
+        'message'      => tr('Dear {NAME},
 
 This is an automatic email sent by your i-MSCP control panel:
 
@@ -1896,14 +1984,14 @@ Please do not reply to this email.
 ________________
 i-MSCP Mailer'),
         'placeholders' => [
-            '{USERNAME}' => tr('administrator'),
-            '{HOSTNAME}' => $cfg['SERVER_HOSTNAME'],
-            '{SERVER_IP}' => $cfg['BASE_SERVER_PUBLIC_IP'],
-            '{CLIENT_IP}' => getIpAddr() ? getIpAddr() : 'unknown',
-            '{VERSION}' => $cfg['Version'],
-            '{BUILDDATE}' => $cfg['BuildDate'] ?: tr('Unavailable'),
+            '{USERNAME}'         => tr('administrator'),
+            '{HOSTNAME}'         => $cfg['SERVER_HOSTNAME'],
+            '{SERVER_IP}'        => $cfg['BASE_SERVER_PUBLIC_IP'],
+            '{CLIENT_IP}'        => getIpAddr() ? getIpAddr() : 'unknown',
+            '{VERSION}'          => $cfg['Version'],
+            '{BUILDDATE}'        => $cfg['BuildDate'] ?: tr('Unavailable'),
             '{MESSAGE_SEVERITY}' => $severity,
-            '{MESSAGE}' => $msg
+            '{MESSAGE}'          => $msg
         ],
     ]);
 }
@@ -1924,13 +2012,13 @@ function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $uln
 {
     $data = get_welcome_email($adminId);
     $ret = send_mail([
-        'mail_id' => 'add-user-auto-msg',
-        'fname' => $ufname,
-        'lname' => $ulname,
-        'username' => $uname,
-        'email' => $uemail,
-        'subject' => $data['subject'],
-        'message' => $data['message'],
+        'mail_id'      => 'add-user-auto-msg',
+        'fname'        => $ufname,
+        'lname'        => $ulname,
+        'username'     => $uname,
+        'email'        => $uemail,
+        'subject'      => $data['subject'],
+        'message'      => $data['message'],
         'placeholders' => [
             '{USERTYPE}' => $utype,
             '{PASSWORD}' => $upass
@@ -1968,28 +2056,28 @@ function get_client_software_permission($tpl, $userId)
 
     if ($stmt->fields('domain_software_allowed') == 'yes' && $stmt->fields('domain_ftpacc_limit') != '1') {
         $tpl->assign([
-            'SOFTWARE_SUPPORT' => tr('yes'),
-            'TR_SOFTWARE_MENU' => tr('Software installer'),
-            'SOFTWARE_MENU' => tr('yes'),
-            'TR_INSTALLATION' => tr('Installation details'),
+            'SOFTWARE_SUPPORT'            => tr('yes'),
+            'TR_SOFTWARE_MENU'            => tr('Software installer'),
+            'SOFTWARE_MENU'               => tr('yes'),
+            'TR_INSTALLATION'             => tr('Installation details'),
             'TR_INSTALLATION_INFORMATION' => tr('Please set now the username and password for the later login in the software. (Required fiels)'),
-            'TR_INSTALL_USER' => tr('Login username'),
-            'TR_INSTALL_PWD' => tr('Login password'),
-            'TR_INSTALL_EMAIL' => tr('Email address'),
-            'SW_MSG' => tr('Enabled'),
-            'SW_ALLOWED' => tr('Software installer'),
-            'TR_SOFTWARE_DESCRIPTION' => tr('Software Description')
+            'TR_INSTALL_USER'             => tr('Login username'),
+            'TR_INSTALL_PWD'              => tr('Login password'),
+            'TR_INSTALL_EMAIL'            => tr('Email address'),
+            'SW_MSG'                      => tr('Enabled'),
+            'SW_ALLOWED'                  => tr('Software installer'),
+            'TR_SOFTWARE_DESCRIPTION'     => tr('Software Description')
         ]);
         $tpl->parse('T_SOFTWARE_SUPPORT', '.t_software_support');
     } else {
         $tpl->assign([
-            'T_SOFTWARE_SUPPORT' => '',
-            'T_SOFTWARE_MENU' => '',
-            'SOFTWARE_ITEM' => '',
-            'TR_INSTALLATION' => tr('You do not have permission to install software yet'),
+            'T_SOFTWARE_SUPPORT'      => '',
+            'T_SOFTWARE_MENU'         => '',
+            'SOFTWARE_ITEM'           => '',
+            'TR_INSTALLATION'         => tr('You do not have permission to install software yet'),
             'TR_SOFTWARE_DESCRIPTION' => tr('You do not have permission to install software yet'),
-            'SW_MSG' => tr('Disabled'),
-            'SW_ALLOWED' => tr('Software installer')
+            'SW_MSG'                  => tr('Disabled'),
+            'SW_ALLOWED'              => tr('Software installer')
         ]);
     }
 }
@@ -2014,15 +2102,15 @@ function get_reseller_software_permission($tpl, $resellerId)
     if ($stmt->fields('software_allowed') == 'yes') {
         $tpl->assign([
             'SOFTWARE_SUPPORT' => tr('yes'),
-            'SW_ALLOWED' => tr('Software installer'),
-            'SW_MSG' => tr('enabled')
+            'SW_ALLOWED'       => tr('Software installer'),
+            'SW_MSG'           => tr('enabled')
         ]);
         $tpl->parse('T_SOFTWARE_SUPPORT', 't_software_support');
     } else {
         $tpl->assign([
-            'SOFTWARE_SUPPORT' => tr('no'),
-            'SW_ALLOWED' => tr('Software installer'),
-            'SW_MSG' => tr('disabled'),
+            'SOFTWARE_SUPPORT'   => tr('no'),
+            'SW_ALLOWED'         => tr('Software installer'),
+            'SW_MSG'             => tr('disabled'),
             'T_SOFTWARE_SUPPORT' => ''
         ]);
     }
@@ -2031,13 +2119,12 @@ function get_reseller_software_permission($tpl, $resellerId)
 /**
  * Get all software installer options
  *
- * @author Sascha Bay (TheCry) <sascha.bay@i-mscp.net>
  * @throws iMSCP_Exception in case software installer options cannot be retrieved
  * @return array An array containing software installer options
  */
 function get_application_installer_conf()
 {
-    $stmt = execute_query('SELECT * FROM `web_software_options`');
+    $stmt = execute_query('SELECT * FROM web_software_options');
     if (!$stmt->rowCount()) {
         throw new iMSCP_Exception('Unable to retrieve software installer options in database');
     }
@@ -2059,8 +2146,7 @@ function get_application_installer_conf()
  */
 function check_package_is_installed($packageInstallType, $packageName, $packageVersion, $packageLanguage, $userId)
 {
-    $query = "SELECT `admin_type` FROM `admin` WHERE `admin_id` = ?";
-    $stmt = exec_query($query, $userId);
+    $stmt = exec_query('SELECT admin_type FROM admin WHERE admin_id = ?', $userId);
 
     if (!$stmt->rowCount()) {
         throw new iMSCP_Exception('Unable to found the given user in database');
@@ -2070,24 +2156,38 @@ function check_package_is_installed($packageInstallType, $packageName, $packageV
 
     if ($row['admin_type'] == 'admin') {
         $query = "
-            SELECT `software_id` FROM `web_software`
-            WHERE `software_installtype`  = ? AND `software_name` = ? AND `software_version` = ?
-            AND `software_language` = ? AND `software_depot` = 'no'
+            SELECT software_id
+            FROM web_software
+            WHERE software_installtype  = ?
+            AND software_name = ?
+            AND software_version = ?
+            AND software_language = ?
+            AND software_depot = 'no'
         ";
     } else {
         $query = "
-            SELECT `software_id` FROM `web_software`
-            WHERE `software_installtype` = ? AND `software_name` = ? AND `software_version`= ?
-            AND `software_language` = ? AND `reseller_id` = '" . $userId . "' AND `software_depot` = 'no'
+            SELECT software_id
+            FROM web_software
+            WHERE software_installtype = ?
+            AND software_name = ?
+            AND software_version= ?
+            AND software_language = ?
+            AND reseller_id = '" . $userId . "'
+            AND software_depot = 'no'
         ";
     }
 
     $stmt = exec_query($query, [$packageInstallType, $packageName, $packageVersion, $packageLanguage]);
     $softwaresCount = $stmt->rowCount();
     $query = "
-        SELECT `software_id` FROM `web_software`
-        WHERE `software_installtype`  = ? AND `software_name` = ? AND `software_version` = ?
-        AND `software_language` = ? AND `software_master_id` = '0' AND `software_depot` = 'yes'
+        SELECT software_id
+        FROM web_software
+        WHERE software_installtype  = ?
+        AND software_name = ?
+        AND software_version = ?
+        AND software_language = ?
+        AND software_master_id = '0'
+        AND software_depot = 'yes'
     ";
     $stmt = exec_query($query, [$packageInstallType, $packageName, $packageVersion, $packageLanguage]);
     $softwaresCountDepot = $stmt->rowCount();
@@ -2112,20 +2212,19 @@ function check_package_is_installed($packageInstallType, $packageName, $packageV
  */
 function get_webdepot_software_list($tpl, $userId)
 {
-    $query = "SELECT * FROM `web_software_depot` ORDER BY `package_install_type` ASC, `package_title` ASC";
-    $stmt = execute_query($query);
+    $stmt = execute_query('SELECT * FROM web_software_depot ORDER BY package_install_type ASC, package_title ASC');
     $rowCount = $stmt->rowCount();
 
     if ($rowCount) {
         while ($row = $stmt->fetchRow()) {
             $tpl->assign([
-                'TR_PACKAGE_NAME' => tohtml($row['package_title']),
-                'TR_PACKAGE_TOOLTIP' => tohtml($row['package_description'], 'htmlAttr'),
+                'TR_PACKAGE_NAME'         => tohtml($row['package_title']),
+                'TR_PACKAGE_TOOLTIP'      => tohtml($row['package_description'], 'htmlAttr'),
                 'TR_PACKAGE_INSTALL_TYPE' => tohtml($row['package_install_type']),
-                'TR_PACKAGE_VERSION' => tohtml($row['package_version']),
-                'TR_PACKAGE_LANGUAGE' => tohtml($row['package_language']),
-                'TR_PACKAGE_TYPE' => tohtml($row['package_type']),
-                'TR_PACKAGE_VENDOR_HP' => $row['package_vendor_hp'] === ''
+                'TR_PACKAGE_VERSION'      => tohtml($row['package_version']),
+                'TR_PACKAGE_LANGUAGE'     => tohtml($row['package_language']),
+                'TR_PACKAGE_TYPE'         => tohtml($row['package_type']),
+                'TR_PACKAGE_VENDOR_HP'    => $row['package_vendor_hp'] === ''
                     ? tr('N/A') : '<a href="' . $row['package_vendor_hp'] . '" target="_blank">' . tr('Vendor hompage') . '</a>'
             ]);
 
@@ -2136,7 +2235,7 @@ function get_webdepot_software_list($tpl, $userId)
 
             if ($isInstalled) {
                 $tpl->assign([
-                    'PACKAGE_HTTP_URL' => '',
+                    'PACKAGE_HTTP_URL'   => '',
                     'TR_PACKAGE_INSTALL' => ($installedOn == "sw_depot")
                         ? tr('Installed in software repository') : tr('Installed in reseller repository'),
                     'TR_MESSAGE_INSTALL' => ''
@@ -2145,7 +2244,7 @@ function get_webdepot_software_list($tpl, $userId)
                 $tpl->assign('PACKAGE_INSTALL_LINK', '');
             } else {
                 $tpl->assign([
-                    'PACKAGE_HTTP_URL' => $row['package_download_link'],
+                    'PACKAGE_HTTP_URL'   => $row['package_download_link'],
                     'TR_PACKAGE_INSTALL' => tr('Start installation'),
                     'TR_MESSAGE_INSTALL' => tr('Are you sure you want to install this package from the Web software repository?')
                 ]);
@@ -2160,7 +2259,7 @@ function get_webdepot_software_list($tpl, $userId)
     } else {
         $tpl->assign([
             'NO_WEBDEPOTSOFTWARE_AVAILABLE' => tr('No software in Web repository found!'),
-            'WEB_SOFTWARE_REPOSITORY' => ''
+            'WEB_SOFTWARE_REPOSITORY'       => ''
         ]);
     }
 
@@ -2196,10 +2295,9 @@ function update_webdepot_software_list($repositoryIndexFile, $webRepositoryLastU
             ) {
                 $query = '
                     INSERT INTO
-                        `web_software_depot` (
-                            `package_install_type`, `package_title`, `package_version`, `package_language`,
-                            `package_type`, `package_description`, `package_vendor_hp`, `package_download_link`,
-                            `package_signature_link`
+                        web_software_depot (
+                            package_install_type, package_title, package_version, package_language, package_type,
+                            package_description, package_vendor_hp, package_download_link, package_signature_link
                         ) VALUES (
                             ?, ?, ?, ?, ?, ?, ?, ?, ?
                         )
@@ -2222,7 +2320,9 @@ function update_webdepot_software_list($repositoryIndexFile, $webRepositoryLastU
             ]);
             set_page_message(tr('Web software repository index been successfully updated.'), 'success');
         } else {
-            set_page_message(tr('Update of Web software repository index has been aborted. Missing or empty fields.'), 'error');
+            set_page_message(
+                tr('Update of Web software repository index has been aborted. Missing or empty fields.'), 'error'
+            );
         }
     } else {
         set_page_message(tr('Web software repository index is already up to date.'), 'info');
@@ -2236,9 +2336,7 @@ function update_webdepot_software_list($repositoryIndexFile, $webRepositoryLastU
  */
 function generate_software_upload_token()
 {
-    $token = md5(uniqid(microtime(), true));
-    $_SESSION['software_upload_token'] = $token;
-    return $token;
+    return $_SESSION['software_upload_token'] = md5(uniqid(microtime(), true));
 }
 
 /***********************************************************************************************************************
@@ -2262,7 +2360,9 @@ function daemon_readAnswer(&$socket)
             return false;
         }
     } else {
-        write_log(sprintf('Unable to read answer from i-MSCP daemon: %s' . socket_strerror(socket_last_error())), E_USER_ERROR);
+        write_log(
+            sprintf('Unable to read answer from i-MSCP daemon: %s' . socket_strerror(socket_last_error())), E_USER_ERROR
+        );
         return false;
     }
 
@@ -2290,7 +2390,10 @@ function daemon_sendCommand(&$socket, $command)
                 return true;
             }
         } else {
-            write_log(sprintf('Unable to send command to i-MSCP daemon: %s', socket_strerror(socket_last_error())), E_USER_ERROR);
+            write_log(
+                sprintf("Couldn't send command to i-MSCP daemon: %s", socket_strerror(socket_last_error())),
+                E_USER_ERROR
+            );
             return false;
         }
     }
@@ -2326,7 +2429,9 @@ function send_request()
 
         socket_close($socket);
     } else {
-        write_log(sprintf('Unable to connect to the i-MSCP daemon: %s', socket_strerror(socket_last_error())), E_USER_ERROR);
+        write_log(
+            sprintf("Couldn't connect to the i-MSCP daemon: %s", socket_strerror(socket_last_error())), E_USER_ERROR
+        );
         $ret = false;
     }
 
@@ -2350,17 +2455,16 @@ function send_request()
  * @param array|int|string $parameters OPTIONAL parameters - See iMSCP_Database::execute()
  * @return iMSCP_Database_ResultSet     An iMSCP_Database_ResultSet object
  */
-function execute_query($query, $parameters = null)
+function execute_query($query, $parameters = NULL)
 {
-    static $db = null;
+    static $db = NULL;
 
-    if (null === $db) {
-        /** @var $db iMSCP_Database */
-        $db = iMSCP_Registry::get('db');
+    if (NULL === $db) {
+        $db = iMSCP_Database::getInstance();
     }
 
     try {
-        if (null !== $parameters) {
+        if (NULL !== $parameters) {
             $parameters = func_get_args();
             array_shift($parameters);
             $stmt = call_user_func_array([$db, 'execute'], $parameters);
@@ -2386,11 +2490,11 @@ function execute_query($query, $parameters = null)
  * @param string|int|array $bind Data to bind to the placeholders
  * @return iMSCP_Database_ResultSet|null A iMSCP_Database_ResultSet object that represents a result set
  */
-function exec_query($query, $bind = null)
+function exec_query($query, $bind = NULL)
 {
-    static $db = null;
+    static $db = NULL;
 
-    if (null === $db) {
+    if (NULL === $db) {
         $db = iMSCP_Database::getInstance();
     }
 
@@ -2413,9 +2517,9 @@ function exec_query($query, $bind = null)
  */
 function quoteIdentifier($identifier)
 {
-    static $db = null;
+    static $db = NULL;
 
-    if (null === $db) {
+    if (NULL === $db) {
         $db = iMSCP_Database::getInstance();
     }
 
@@ -2431,9 +2535,9 @@ function quoteIdentifier($identifier)
  */
 function quoteValue($value, $parameterType = PDO::PARAM_STR)
 {
-    static $db = null;
+    static $db = NULL;
 
-    if (null === $db) {
+    if (NULL === $db) {
         $db = iMSCP_Database::getInstance();
     }
 
@@ -2454,7 +2558,7 @@ function quoteValue($value, $parameterType = PDO::PARAM_STR)
  */
 function records_count($table, $where = '', $bind = '')
 {
-    $table =quoteIdentifier($table);
+    $table = quoteIdentifier($table);
 
     if ($where != '') {
         if ($bind != '') {
@@ -2617,7 +2721,7 @@ if (!function_exists('http_build_url')) {
 function getDataTablesPluginTranslations($json = true)
 {
     $tr = [
-        'sLengthMenu' => tr(
+        'sLengthMenu'  => tr(
             'Show %s records per page',
             '
                 <select>
@@ -2630,13 +2734,13 @@ function getDataTablesPluginTranslations($json = true)
             '
         ),
         //'sLengthMenu' => tr('Show %s records per page', '_MENU_'),
-        'zeroRecords' => tr('Nothing found - sorry'),
-        'info' => tr('Showing %s to %s of %s records', '_START_', '_END_', '_TOTAL_'),
-        'infoEmpty' => tr('Showing 0 to 0 of 0 records'),
+        'zeroRecords'  => tr('Nothing found - sorry'),
+        'info'         => tr('Showing %s to %s of %s records', '_START_', '_END_', '_TOTAL_'),
+        'infoEmpty'    => tr('Showing 0 to 0 of 0 records'),
         'infoFiltered' => tr('(filtered from %s total records)', '_MAX_'),
-        'search' => tr('Search'),
-        'paginate' => ['previous' => tr('Previous'), 'next' => tr('Next')],
-        'processing' => tr('Loading data...')
+        'search'       => tr('Search'),
+        'paginate'     => ['previous' => tr('Previous'), 'next' => tr('Next')],
+        'processing'   => tr('Loading data...')
     ];
 
     return ($json) ? json_encode($tr) : $tr;
@@ -2644,7 +2748,7 @@ function getDataTablesPluginTranslations($json = true)
 
 /**
  * Show the given error page
- * 
+ *
  * @param int $code Code of error page to show (400, 403 or 404)
  * @throws iMSCP_Exception
  * @return void
@@ -2772,7 +2876,7 @@ function calc_bars($crnt, $max, $bars_max)
  * @param int $power OPTIONAL Power to use for conversion (1024 or 1000)
  * @return string
  */
-function bytesHuman($bytes, $unit = null, $decimals = 2, $power = 1024)
+function bytesHuman($bytes, $unit = NULL, $decimals = 2, $power = 1024)
 {
     if ($power == 1000) {
         $units = [
@@ -2790,7 +2894,7 @@ function bytesHuman($bytes, $unit = null, $decimals = 2, $power = 1024)
 
     if ($bytes > 0) {
         if (!array_key_exists($unit, $units)) {
-            if (null === $unit) {
+            if (NULL === $unit) {
                 $pow = floor(log($bytes) / log($power));
                 $unit = array_search($pow, $units);
             } else {
@@ -2874,7 +2978,7 @@ function bytesHuman($bytes, $unit = null, $decimals = 2, $power = 1024)
  * @param string $unit OPTIONAL Unit to calculate to ('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB')
  * @return string
  */
-function mebibyteHuman($value, $unit = null)
+function mebibyteHuman($value, $unit = NULL)
 {
     return bytesHuman($value * 1048576, $unit);
 }
@@ -2887,7 +2991,7 @@ function mebibyteHuman($value, $unit = null)
  * @param string $to OPTIONAL Unit to calclulate to ('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB')
  * @return String
  */
-function translate_limit_value($value, $autosize = false, $to = null)
+function translate_limit_value($value, $autosize = false, $to = NULL)
 {
     $trEnabled = '<span style="color:green">' . tr('Enabled') . '</span>';
     $trDisabled = '<span style="color:red">' . tr('Disabled') . '</span>';
@@ -2896,7 +3000,7 @@ function translate_limit_value($value, $autosize = false, $to = null)
         case '-1':
             return tr('Disabled');
         case  '0':
-            return tr('Unlimited');
+            return '∞';
         case '_yes_':
         case 'yes':
             return $trEnabled;
@@ -2920,6 +3024,7 @@ function translate_limit_value($value, $autosize = false, $to = null)
  * @throws iMSCP_Exception
  * @param  string $password Blowfish (CBC) encrypted password
  * @return string Decrypted password
+ * @deprecated Will be removed in later version
  */
 function decryptBlowfishCbcPassword($password)
 {
@@ -2949,7 +3054,7 @@ function decryptBlowfishCbcPassword($password)
  * @param int $year OPTIONAL A year (two or 4 digits, whatever)
  * @return int
  */
-function getFirstDayOfMonth($month = null, $year = null)
+function getFirstDayOfMonth($month = NULL, $year = NULL)
 {
     $month = $month ?: date('m');
     $year = $year ?: date('y');
@@ -2963,7 +3068,7 @@ function getFirstDayOfMonth($month = null, $year = null)
  * @param int $year OPTIONAL A year (two or 4 digits, whatever)
  * @return int
  */
-function getLastDayOfMonth($month = null, $year = null)
+function getLastDayOfMonth($month = NULL, $year = NULL)
 {
     $month = $month ?: date('m');
     $year = $year ?: date('y');

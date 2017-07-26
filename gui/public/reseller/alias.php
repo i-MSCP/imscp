@@ -127,10 +127,10 @@ function reseller_getDatatable()
 
     /* Output */
     $output = [
-        'sEcho' => intval($_GET['sEcho']),
+        'sEcho'                => intval($_GET['sEcho']),
         'iTotalDisplayRecords' => $iTotalDisplayRecords,
-        'iTotalRecords' => $iTotalRecords,
-        'aaData' => []
+        'iTotalRecords'        => $iTotalRecords,
+        'aaData'               => []
     ];
 
     $trDelete = tr('Delete');
@@ -166,7 +166,7 @@ function reseller_getDatatable()
                 $actions = "<a href=\"alias_edit.php?id=$aliasId\" class=\"icon i_edit\" " .
                     "title=\"$trEdit\">$trEdit</a>";
 
-                $actions .= "\n<a href=\"alias_delete.php?id=$aliasId\" onclick=\"return delete_alias(this, '". tojs($aliasName)."')\" " .
+                $actions .= "\n<a href=\"alias_delete.php?id=$aliasId\" onclick=\"return delete_alias(this, '" . tojs($aliasName) . "')\" " .
                     "class=\"icon i_close\" title=\"$trDelete\">$trDelete</a>";
                 break;
             case 'ordered':
@@ -174,7 +174,7 @@ function reseller_getDatatable()
                     "title=\"$trActivate\">$trActivate</a>";
 
                 $actions .= "\n<a href=\"alias_order.php?action=delete&del_id=$aliasId\" " .
-                    "onclick=\"return delete_alias_order(this, '".tojs($aliasName)."')\" class=\"icon i_close\" " .
+                    "onclick=\"return delete_alias_order(this, '" . tojs($aliasName) . "')\" class=\"icon i_close\" " .
                     "title=\"$trDelete\">$trDelete</a>";
                 break;
             default;
@@ -212,24 +212,24 @@ if (is_xhr()) {
 $tpl = new iMSCP_pTemplate();
 
 $tpl->define_dynamic([
-    'layout' => 'shared/layouts/ui.tpl',
-    'page' => 'reseller/alias.tpl',
-    'page_message' => 'layout',
+    'layout'         => 'shared/layouts/ui.tpl',
+    'page'           => 'reseller/alias.tpl',
+    'page_message'   => 'layout',
     'als_add_button' => 'page'
 ]);
 
 $tpl->assign([
-    'TR_PAGE_TITLE' => tr('Reseller / Customers / Domain Aliases'),
-    'TR_ALIAS_NAME' => tr('Domain alias name'),
-    'TR_MOUNT_POINT' => tr('Mount point'),
-    'TR_FORWARD_URL' => tr('Forward URL'),
-    'TR_STATUS' => tr('Status'),
-    'TR_CUSTOMER' => tr('Customer'),
-    'TR_ACTIONS' => tr('Actions'),
-    'TR_ADD_DOMAIN_ALIAS' => tr('Add domain alias'),
-    'TR_MESSAGE_DELETE_ALIAS' => tojs(tr('Are you sure you want to delete the %s domain alias?', '%s')),
+    'TR_PAGE_TITLE'                 => tr('Reseller / Customers / Domain Aliases'),
+    'TR_ALIAS_NAME'                 => tr('Domain alias name'),
+    'TR_MOUNT_POINT'                => tr('Mount point'),
+    'TR_FORWARD_URL'                => tr('Forward URL'),
+    'TR_STATUS'                     => tr('Status'),
+    'TR_CUSTOMER'                   => tr('Customer'),
+    'TR_ACTIONS'                    => tr('Actions'),
+    'TR_ADD_DOMAIN_ALIAS'           => tr('Add domain alias'),
+    'TR_MESSAGE_DELETE_ALIAS'       => tojs(tr('Are you sure you want to delete the %s domain alias?', '%s')),
     'TR_MESSAGE_DELETE_ALIAS_ORDER' => tojs(tr('Are you sure you want to delete the %s domain alias order?', '%s')),
-    'TR_PROCESSING_DATA' => tr('Processing...')
+    'TR_PROCESSING_DATA'            => tr('Processing...')
 ]);
 
 iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
@@ -257,3 +257,5 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
+
+unsetMessages();

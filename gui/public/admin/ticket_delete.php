@@ -1,87 +1,67 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/************************************************************************************
- * Main script
+/***********************************************************************************************************************
+ * Main
  */
 
-// Include core library
 require_once 'imscp-lib.php';
 require_once LIBRARY_PATH . '/Functions/Tickets.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
-
 check_login('admin');
 
-// Checks if support ticket system is activated
 if (!hasTicketSystem()) {
-	redirectTo('index.php');
+    redirectTo('index.php');
 }
 
-$userId = $_SESSION['user_id'];
 $previousPage = 'ticket_system';
 
 if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
+    $ticketId = intval($_GET['ticket_id']);
+    $stmt = exec_query(
+        'SELECT ticket_status FROM tickets WHERE ticket_id = ? AND (ticket_from = ? OR ticket_to = ?)', [
+        $ticketId, $_SESSION['user_id'], $_SESSION['user_id']
+    ]);
 
-	$ticketId = intval($_GET['ticket_id']);
-
-	$query = "
-		SELECT
-			`ticket_status`
-		FROM
-			`tickets`
-		WHERE
-			`ticket_id` = ?
-		AND
-			(`ticket_from` = ? OR `ticket_to` = ?)
-	";
-	$stmt = exec_query($query, [$ticketId, $userId, $userId]);
-
-	if ($stmt->rowCount() == 0) {
+    if ($stmt->rowCount() == 0) {
         set_page_message(tr("Ticket with Id '%d' was not found.", $ticketId), 'error');
-		redirectTo($previousPage . '.php');
-	}
+        redirectTo($previousPage . '.php');
+    }
 
     // The ticket status was 0 so we come from ticket_closed.php
-    if($stmt->fields['ticket_status'] == 0 ) {
+    if ($stmt->fetchRow(PDO::FETCH_COLUMN) == 0) {
         $previousPage = 'ticket_closed';
     }
 
-	deleteTicket($ticketId);
+    deleteTicket($ticketId);
     set_page_message(tr('Ticket successfully deleted.'), 'success');
-	write_log(sprintf("%s: deleted ticket %d", $_SESSION['user_logged'], $ticketId), E_USER_NOTICE);
+    write_log(sprintf("%s: deleted ticket %d", $_SESSION['user_logged'], $ticketId), E_USER_NOTICE);
 } elseif (isset($_GET['delete']) && $_GET['delete'] == 'open') {
-	deleteTickets('open', $userId);
+    deleteTickets('open', $_SESSION['user_id']);
     set_page_message(tr('All open tickets were successfully deleted.'), 'success');
-	write_log(sprintf("%s: deleted all open tickets.", $_SESSION['user_logged']), E_USER_NOTICE);
+    write_log(sprintf("%s: deleted all open tickets.", $_SESSION['user_logged']), E_USER_NOTICE);
 } elseif (isset($_GET['delete']) && $_GET['delete'] == 'closed') {
-	deleteTickets('closed', $userId);
+    deleteTickets('closed', $_SESSION['user_id']);
     set_page_message(tr('All closed tickets were successfully deleted.'), 'success');
-	write_log(sprintf("%s: deleted all closed tickets.", $_SESSION['user_logged']), E_USER_NOTICE);
+    write_log(sprintf("%s: deleted all closed tickets.", $_SESSION['user_logged']), E_USER_NOTICE);
     $previousPage = 'ticket_closed';
 } else {
     set_page_message(tr('Unknown action requested.'), 'error');

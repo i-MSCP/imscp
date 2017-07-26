@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,65 +18,87 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Config_Handler_File as ConfigFile;
+use iMSCP_Database as Database;
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Exception as iMSCPException;
+use iMSCP_Registry as Registry;
+use Zend_Session as Session;
+
+/***********************************************************************************************************************
+ * Functions
+ */
+
 /**
  * Schedule deletion of the given mail account
  *
- * @throws iMSCP_Exception on error
+ * @throws iMSCPException on error
  * @param int $mailId Mail account unique identifier
  * @param int $domainId Main domain unique identifier
+ * @param ConfigFile $config
+ * @param ConfigFile $mtaConfig
+ * @param int &$nbDeletedMails Counter for deleted mail accounts
  * @return void
  */
-function client_deleteMailAccount($mailId, $domainId)
+function deleteMailAccount($mailId, $domainId, $config, $mtaConfig, &$nbDeletedMails)
 {
-    static $postfixConfig = NULL;
-
-    $stmt = exec_query('SELECT mail_addr, mail_type FROM mail_users WHERE mail_id = ? AND domain_id = ?', [
+    $stmt = exec_query('SELECT mail_acc, mail_addr, mail_type FROM mail_users WHERE mail_id = ? AND domain_id = ?', [
         $mailId, $domainId
     ]);
 
     if (!$stmt->rowCount()) {
-        throw new iMSCP_Exception('Bad request.', 400);
+        return;
     }
 
     $row = $stmt->fetchRow();
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteMail, ['mailId' => $mailId]);
-    exec_query('UPDATE mail_users SET status = ? WHERE mail_id = ?', ['todelete', $mailId]);
+    if ($config['PROTECT_DEFAULT_EMAIL_ADDRESSES']
+        && (
+            (in_array($row['mail_type'], [MT_NORMAL_FORWARD, MT_ALIAS_FORWARD]) 
+                && in_array($row['mail_acc'], ['abuse', 'hostmaster', 'postmaster', 'webmaster'])
+            )
+            || ($row['mail_acc'] == 'webmaster' && in_array($row['mail_type'], [MT_SUBDOM_FORWARD, MT_ALSSUB_FORWARD]))
+        )
+    ) {
+        return;
+    }
+
+    EventsManager::getInstance()->dispatch(Events::onBeforeDeleteMail, ['mailId' => $mailId]);
+    exec_query("UPDATE mail_users SET status = 'todelete' WHERE mail_id = ?", $mailId);
 
     if (strpos($row['mail_type'], '_mail') !== false) {
         # Remove cached quota info if any
-        if (NULL === $postfixConfig) {
-            $postfixConfig = new iMSCP_Config_Handler_File(
-                utils_normalizePath(iMSCP_Registry::get('config')->CONF_DIR . '/postfix/postfix.data')
-            );
-        }
-
         list($user, $domain) = explode('@', $row['mail_addr']);
-        unset($_SESSION['maildirsize'][utils_normalizePath($postfixConfig['MTA_VIRTUAL_MAIL_DIR'] . "/$domain/$user/maildirsize")]);
+        unset($_SESSION['maildirsize'][utils_normalizePath($mtaConfig['MTA_VIRTUAL_MAIL_DIR'] . "/$domain/$user/maildirsize")]);
     }
 
-    # Update or delete forward accounts and/or catch-alls that list mail_addr of the account that is being deleted
-    #  Forward accounts:
-    #   A forward account which only forward on the mail_addr of the account that is being deleted will be also deleted,
-    #   else mail_addr will be simply removed from its forward list
-    # Catch-alls:
-    #   A catchall that catch only on mail_addr of the account that is being deleted will be also deleted, else
-    #   mail_addr will be simply deleted from the catchall list.
+    # Update or delete forward and/or catch-all accounts that list mail_addr of
+    # the account that is being deleted.
+    #
+    # Forward accounts:
+    #  A forward account that is only forwarded to the mail_addr of the account
+    #  that is being deleted will be also deleted, else the mail_addr will be
+    #  simply removed from its forward list
+    #
+    # Catch-all accounts:
+    #   A catch-all account that catch only on mail_addr of the account that is
+    #   being deleted will be also deleted, else the mail_addr will be simply
+    #   deleted from the catch-all addresses list.
     $stmt = exec_query(
         '
-            SELECT mail_id, mail_acc, mail_forward FROM mail_users
-            WHERE mail_addr <> :mail_addr AND (mail_acc RLIKE :rlike OR mail_forward RLIKE :rlike) 
+            SELECT mail_id, mail_acc, mail_forward
+            FROM mail_users
+            WHERE mail_id <> ?
+            AND (mail_acc RLIKE ? OR mail_forward RLIKE ?) 
         ',
-        [
-            'mail_addr' => $row['mail_addr'],
-            'rlike'     => '(,|^)' . $row['mail_addr'] . '(,|$)'
-        ]
+        [$mailId, '(,|^)' . $row['mail_addr'] . '(,|$)', '(,|^)' . $row['mail_addr'] . '(,|$)']
     );
 
     if ($stmt->rowCount()) {
         while ($row = $stmt->fetchRow()) {
             if ($row['mail_forward'] == '_no_') {
-                # Catchall
+                # catch-all account
                 $row['mail_acc'] = implode(',', preg_grep(
                     '/^' . quotemeta($row['mail_addr']) . '$/', explode(',', $row['mail_acc']), PREG_GREP_INVERT
                 ));
@@ -87,19 +109,20 @@ function client_deleteMailAccount($mailId, $domainId)
                 ));
             }
 
-            if ($row['mail_acc'] == '' || $row['mail_forward'] == '') {
-                exec_query('UPDATE mail_users SET status = ? WHERE mail_id = ?', ['todelete', $row['mail_id']]);
+            if ($row['mail_acc'] === '' || $row['mail_forward'] === '') {
+                exec_query("UPDATE mail_users SET status = 'todelete' WHERE mail_id = ?", $row['mail_id']);
             } else {
-                exec_query('UPDATE mail_users SET status = ?, mail_acc = ?, mail_forward = ? WHERE mail_id = ?', [
-                    'tochange', $row['mail_acc'], $row['mail_forward'], $row['mail_id']
-                ]);
+                exec_query(
+                    "UPDATE mail_users SET status = 'tochange', mail_acc = ?, mail_forward = ? WHERE mail_id = ?",
+                    [$row['mail_acc'], $row['mail_forward'], $row['mail_id']]
+                );
             }
         }
     }
 
     delete_autoreplies_log_entries();
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMail, ['mailId' => $mailId]);
-    set_page_message(tr('Mail account %s successfully scheduled for deletion.', decode_idna($row['mail_addr'])), 'success');
+    EventsManager::getInstance()->dispatch(Events::onAfterDeleteMail, ['mailId' => $mailId]);
+    $nbDeletedMails++;
 }
 
 /***********************************************************************************************************************
@@ -108,10 +131,12 @@ function client_deleteMailAccount($mailId, $domainId)
 
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 check_login('user');
 
-if (!customerHasFeature('mail') || !isset($_REQUEST['id'])) {
+if (!customerHasFeature('mail')
+    || !isset($_REQUEST['id'])
+) {
     showBadRequestErrorPage();
 }
 
@@ -124,42 +149,53 @@ if (empty($mailIds)) {
     redirectTo('mail_accounts.php');
 }
 
-$db = iMSCP_Database::getInstance();
+$db = Database::getInstance();
 
 try {
     $db->beginTransaction();
+    $config = Registry::get('config');
+    $mtaConfig = new ConfigFile(utils_normalizePath(Registry::get('config')['CONF_DIR'] . '/postfix/postfix.data'));
 
     foreach ($mailIds as $mailId) {
-        $mailId = intval($mailId);
-        client_deleteMailAccount($mailId, $domainId);
-        $nbDeletedMails++;
+        deleteMailAccount(intval($mailId), $domainId, $config, $mtaConfig, $nbDeletedMails);
     }
 
     $db->commit();
     send_request();
-    write_log(sprintf("{$_SESSION['user_logged']} deleted %d mail account(s)", $nbDeletedMails), E_USER_NOTICE);
-} catch (iMSCP_Exception $e) {
+
+    if ($nbDeletedMails) {
+        write_log(sprintf('%d mail account(s) were deleted by %s', decode_idna($_SESSION['user_logged']), $nbDeletedMails), E_USER_NOTICE);
+        set_page_message(
+            ntr(
+                'Mail account has been scheduled for deletion.',
+                '%d mail accounts were scheduled for deletion.',
+                $nbDeletedMails,
+                $nbDeletedMails
+            ),
+            'success'
+        );
+    } else {
+        set_page_message(tr('No mail account has been deleted.'), 'warning');
+    }
+} catch (iMSCPException $e) {
     $db->rollBack();
 
-    if (Zend_Session::namespaceIsset('pageMessages')) {
-        Zend_Session::namespaceUnset('pageMessages');
+    if (Session::namespaceIsset('pageMessages')) {
+        Session::namespaceUnset('pageMessages');
     }
 
     $errorMessage = $e->getMessage();
     $code = $e->getCode();
 
-    write_log(sprintf(
-        'An unexpected error occurred while attempting to delete a mail account: %s', $errorMessage), E_USER_ERROR
-    );
+    write_log(sprintf('An unexpected error occurred while attempting to delete a mail account: %s', $errorMessage), E_USER_ERROR);
 
     if ($code == 403) {
         set_page_message(tr('Operation cancelled: %s', $errorMessage), 'warning');
     } elseif ($e->getCode() == 400) {
         showBadRequestErrorPage();
     } else {
-        set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
+        set_page_message(tr('An unexpected error occurred. Please contact your reseller. %s', $e->getMessage()), 'error');
     }
 }
 
 redirectTo('mail_accounts.php');
-

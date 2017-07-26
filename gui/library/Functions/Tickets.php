@@ -77,7 +77,9 @@ function showTicketContent($tpl, $ticketId, $userId)
     $stmt = exec_query(
         '
             SELECT ticket_id, ticket_status, ticket_reply, ticket_urgency, ticket_date, ticket_subject, ticket_message
-            FROM tickets WHERE ticket_id = ? AND (ticket_from = ? OR ticket_to = ?)
+            FROM tickets
+            WHERE ticket_id = ?
+            AND (ticket_from = ? OR ticket_to = ?)
         ',
         [$ticketId, $userId, $userId]
     );
@@ -104,15 +106,15 @@ function showTicketContent($tpl, $ticketId, $userId)
     $from = _getTicketSender($ticketId);
 
     $tpl->assign([
-        'TR_TICKET_ACTION' => $trAction,
-        'TICKET_ACTION_VAL' => $action,
-        'TICKET_DATE_VAL' => date($cfg['DATE_FORMAT']. ' (H:i)', $row['ticket_date']),
-        'TICKET_SUBJECT_VAL' => tohtml($ticketSubject),
-        'TICKET_CONTENT_VAL' => nl2br(tohtml($row['ticket_message'])),
-        'TICKET_ID_VAL' => $row['ticket_id'],
-        'TICKET_URGENCY_VAL' => getTicketUrgency($ticketUrgency),
+        'TR_TICKET_ACTION'      => $trAction,
+        'TICKET_ACTION_VAL'     => $action,
+        'TICKET_DATE_VAL'       => date($cfg['DATE_FORMAT'] . ' (H:i)', $row['ticket_date']),
+        'TICKET_SUBJECT_VAL'    => tohtml($ticketSubject),
+        'TICKET_CONTENT_VAL'    => nl2br(tohtml($row['ticket_message'])),
+        'TICKET_ID_VAL'         => $row['ticket_id'],
+        'TICKET_URGENCY_VAL'    => getTicketUrgency($ticketUrgency),
         'TICKET_URGENCY_ID_VAL' => $ticketUrgency,
-        'TICKET_FROM_VAL' => tohtml($from)
+        'TICKET_FROM_VAL'       => tohtml($from)
     ]);
     $tpl->parse('TICKET_MESSAGE', '.ticket_message');
 
@@ -139,8 +141,10 @@ function updateTicket($ticketId, $userId, $urgency, $subject, $message, $ticketL
     $userMessage = clean_input($message);
     $stmt = exec_query(
         '
-            SELECT ticket_from, ticket_to, ticket_status FROM tickets
-            WHERE ticket_id = ? AND (ticket_from = ? OR ticket_to = ?)
+            SELECT ticket_from, ticket_to, ticket_status
+            FROM tickets
+            WHERE ticket_id = ?
+            AND (ticket_from = ? OR ticket_to = ?)
         ',
         [$ticketId, $userId, $userId]
     );
@@ -173,7 +177,7 @@ function updateTicket($ticketId, $userId, $urgency, $subject, $message, $ticketL
                         ?, ?, ?, ?, ?, ?, ?, ?
                     )
                 ',
-                [$ticketFrom, $ticketTo, null, $ticketId, $urgency, $ticketDate, $subject, $userMessage]
+                [$ticketFrom, $ticketTo, NULL, $ticketId, $urgency, $ticketDate, $subject, $userMessage]
             );
 
             if ($userLevel != 2) {
@@ -250,21 +254,26 @@ function generateTicketList($tpl, $userId, $start, $count, $userLevel, $status)
     $condition = ($status == 'open') ? "ticket_status != 0" : 'ticket_status = 0';
     $stmt = exec_query(
         "
-            SELECT COUNT(ticket_id) AS cnt FROM tickets
-            WHERE (ticket_from = ? OR ticket_to = ?) AND ticket_reply = '0' AND $condition
+            SELECT COUNT(ticket_id)
+            FROM tickets
+            WHERE (ticket_from = ? OR ticket_to = ?)
+            AND ticket_reply = '0'
+            AND $condition
         "
         ,
         [$userId, $userId]
     );
-    $row = $stmt->fetchRow();
-    $rowsCount = $row['cnt'];
+    $rowsCount = $stmt->fetchRow(PDO::FETCH_COLUMN);
 
     if ($rowsCount != 0) {
         $stmt = exec_query(
             "
                 SELECT ticket_id, ticket_status, ticket_urgency, ticket_level, ticket_date, ticket_subject
-                FROM tickets WHERE (ticket_from = ? OR ticket_to = ?) AND ticket_reply = 0 AND $condition
-                ORDER BY ticket_date DESC LIMIT {$start}, {$count}
+                FROM tickets WHERE (ticket_from = ? OR ticket_to = ?)
+                AND ticket_reply = 0
+                AND $condition
+                ORDER BY ticket_date DESC
+                LIMIT {$start}, {$count}
             ",
             [$userId, $userId]
         );
@@ -276,7 +285,7 @@ function generateTicketList($tpl, $userId, $start, $count, $userLevel, $status)
         } else {
             $tpl->assign([
                 'SCROLL_PREV_GRAY' => '',
-                'PREV_PSI' => $prevSi
+                'PREV_PSI'         => $prevSi
             ]);
         }
 
@@ -287,7 +296,7 @@ function generateTicketList($tpl, $userId, $start, $count, $userLevel, $status)
         } else {
             $tpl->assign([
                 'SCROLL_NEXT_GRAY' => '',
-                'NEXT_PSI' => $nextSi
+                'NEXT_PSI'         => $nextSi
             ]);
         }
 
@@ -312,20 +321,20 @@ function generateTicketList($tpl, $userId, $start, $count, $userLevel, $status)
             }
 
             $tpl->assign([
-                'TICKET_URGENCY_VAL' => getTicketUrgency($row['ticket_urgency']),
-                'TICKET_FROM_VAL' => tohtml(_getTicketSender($row['ticket_id'])),
+                'TICKET_URGENCY_VAL'   => getTicketUrgency($row['ticket_urgency']),
+                'TICKET_FROM_VAL'      => tohtml(_getTicketSender($row['ticket_id'])),
                 'TICKET_LAST_DATE_VAL' => _ticketGetLastDate($row['ticket_id']),
-                'TICKET_SUBJECT_VAL' => tohtml($row['ticket_subject']),
-                'TICKET_SUBJECT2_VAL' => addslashes(clean_html($row['ticket_subject'])),
-                'TICKET_ID_VAL' => $row['ticket_id']
+                'TICKET_SUBJECT_VAL'   => tohtml($row['ticket_subject']),
+                'TICKET_SUBJECT2_VAL'  => addslashes(clean_html($row['ticket_subject'])),
+                'TICKET_ID_VAL'        => $row['ticket_id']
             ]);
             $tpl->parse('TICKETS_ITEM', '.tickets_item');
         }
     } else { // no ticket to display
         $tpl->assign([
             'TICKETS_LIST' => '',
-            'SCROLL_PREV' => '',
-            'SCROLL_NEXT' => ''
+            'SCROLL_PREV'  => '',
+            'SCROLL_NEXT'  => ''
         ]);
 
         if ($status == 'open') {
@@ -415,8 +424,10 @@ function changeTicketStatus($ticketId, $ticketStatus)
 {
     $stmt = exec_query(
         '
-            UPDATE tickets SET ticket_status = ?
-            WHERE ticket_id = ? OR ticket_reply = ? AND (ticket_from = ? OR ticket_to = ?)
+            UPDATE tickets
+            SET ticket_status = ?
+            WHERE ticket_id = ? OR ticket_reply = ?
+            AND (ticket_from = ? OR ticket_to = ?)
         ',
         [$ticketStatus, $ticketId, $ticketId, $_SESSION['user_id'], $_SESSION['user_id']]
     );
@@ -483,7 +494,9 @@ function _getTicketSender($ticketId)
     $stmt = exec_query(
         '
             SELECT a.admin_name, a.fname, a.lname, a.admin_type
-            FROM tickets t LEFT JOIN admin a ON (t.ticket_from = a.admin_id) WHERE ticket_id = ?
+            FROM tickets t
+            LEFT JOIN admin a ON (t.ticket_from = a.admin_id)
+            WHERE ticket_id = ?
         ',
         $ticketId
     );
@@ -540,7 +553,7 @@ function _ticketGetLastDate($ticketId)
  * @return bool TRUE if support ticket system is available, FALSE otherwise
  * @Todo: Allows to provides support ticket system as hosting plan option for clients
  */
-function hasTicketSystem($userId = null)
+function hasTicketSystem($userId = NULL)
 {
     $cfg = iMSCP_Registry::get('config');
 
@@ -548,7 +561,7 @@ function hasTicketSystem($userId = null)
         return false;
     }
 
-    if ($userId !== null) {
+    if ($userId !== NULL) {
         $stmt = exec_query('SELECT support_system FROM reseller_props WHERE reseller_id = ?', $userId);
 
         if ($stmt->rowCount()) {
@@ -579,8 +592,10 @@ function _showTicketReplies($tpl, $ticketId)
     $cfg = iMSCP_Registry::get('config');
     $stmt = exec_query(
         '
-            SELECT ticket_id, ticket_urgency, ticket_date, ticket_message FROM tickets
-            WHERE ticket_reply = ? ORDER BY ticket_date DESC
+            SELECT ticket_id, ticket_urgency, ticket_date, ticket_message
+            FROM tickets
+            WHERE ticket_reply = ?
+            ORDER BY ticket_date DESC
         ',
         $ticketId
     );
@@ -588,8 +603,8 @@ function _showTicketReplies($tpl, $ticketId)
     if ($stmt->rowCount()) {
         while ($row = $stmt->fetchRow()) {
             $tpl->assign([
-                'TICKET_FROM_VAL' => _getTicketSender($row['ticket_id']),
-                'TICKET_DATE_VAL' => date($cfg['DATE_FORMAT']. ' (H:i)', $row['ticket_date']),
+                'TICKET_FROM_VAL'    => _getTicketSender($row['ticket_id']),
+                'TICKET_DATE_VAL'    => date($cfg['DATE_FORMAT'] . ' (H:i)', $row['ticket_date']),
                 'TICKET_CONTENT_VAL' => nl2br(tohtml($row['ticket_message']))
             ]);
             $tpl->parse('TICKET_MESSAGE', '.ticket_message');
@@ -652,16 +667,16 @@ i-MSCP Mailer');
     }
 
     $ret = send_mail([
-        'mail_id' => 'support-ticket-notification',
-        'fname' => $toData['fname'],
-        'lname' => $toData['lname'],
-        'username' => $toData['admin_name'],
-        'email' => $toData['email'],
-        'subject' => "i-MSCP - [Ticket] $ticketSubject",
-        'message' => $message,
+        'mail_id'      => 'support-ticket-notification',
+        'fname'        => $toData['fname'],
+        'lname'        => $toData['lname'],
+        'username'     => $toData['admin_name'],
+        'email'        => $toData['email'],
+        'subject'      => "i-MSCP - [Ticket] $ticketSubject",
+        'message'      => $message,
         'placeholders' => [
             '{PRIORITY}' => getTicketUrgency($urgency),
-            '{MESSAGE}' => $ticketMessage,
+            '{MESSAGE}'  => $ticketMessage,
         ]
     ]);
 

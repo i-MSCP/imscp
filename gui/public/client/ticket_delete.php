@@ -25,16 +25,14 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
-/************************************************************************************
- * Main script
+/***********************************************************************************************************************
+ * Main
  */
 
-// Include core library
 require_once 'imscp-lib.php';
 require_once LIBRARY_PATH . '/Functions/Tickets.php';
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
 check_login('user');
 
 customerHasFeature('support') or showBadRequestErrorPage();
@@ -43,9 +41,9 @@ $userId = $_SESSION['user_id'];
 $previousPage = 'ticket_system';
 
 if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
-	$ticketId = intval($_GET['ticket_id']);
+    $ticketId = intval($_GET['ticket_id']);
 
-	$query = "
+    $query = "
 		SELECT
 			`ticket_status`
 		FROM
@@ -55,29 +53,29 @@ if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
 		AND
 			(`ticket_from` = ? OR `ticket_to` = ?)
 	";
-	$stmt = exec_query($query, [$ticketId, $userId, $userId]);
+    $stmt = exec_query($query, [$ticketId, $userId, $userId]);
 
-	if ($stmt->rowCount() == 0) {
+    if ($stmt->rowCount() == 0) {
         set_page_message(tr("Ticket with Id '%d' was not found.", $ticketId), 'error');
-		redirectTo($previousPage . '.php');
-	}
+        redirectTo($previousPage . '.php');
+    }
 
     // The ticket status was 0 so we come from ticket_closed.php
-    if($stmt->fields['ticket_status'] == 0 ) {
+    if ($stmt->fields['ticket_status'] == 0) {
         $previousPage = 'ticket_closed';
     }
 
-	deleteTicket($ticketId);
-	set_page_message(tr('Ticket successfully deleted.'), 'success');
-	write_log(sprintf("%s: deleted ticket %d", $_SESSION['user_logged'], $ticketId), E_USER_NOTICE);
+    deleteTicket($ticketId);
+    set_page_message(tr('Ticket successfully deleted.'), 'success');
+    write_log(sprintf("%s: deleted ticket %d", $_SESSION['user_logged'], $ticketId), E_USER_NOTICE);
 } elseif (isset($_GET['delete']) && $_GET['delete'] == 'open') {
-	deleteTickets('open', $userId);
-	set_page_message(tr('All open tickets were successfully deleted.'), 'success');
-	write_log(sprintf("%s: deleted all open tickets.", $_SESSION['user_logged']), E_USER_NOTICE);
+    deleteTickets('open', $userId);
+    set_page_message(tr('All open tickets were successfully deleted.'), 'success');
+    write_log(sprintf("%s: deleted all open tickets.", $_SESSION['user_logged']), E_USER_NOTICE);
 } elseif (isset($_GET['delete']) && $_GET['delete'] == 'closed') {
-	deleteTickets('closed', $userId);
-	set_page_message(tr('All closed tickets were successfully deleted.'), 'success');
-	write_log(sprintf("%s: deleted all closed tickets.", $_SESSION['user_logged']), E_USER_NOTICE);
+    deleteTickets('closed', $userId);
+    set_page_message(tr('All closed tickets were successfully deleted.'), 'success');
+    write_log(sprintf("%s: deleted all closed tickets.", $_SESSION['user_logged']), E_USER_NOTICE);
     $previousPage = 'ticket_closed';
 } else {
     set_page_message(tr('Unknown action requested.'), 'error');
