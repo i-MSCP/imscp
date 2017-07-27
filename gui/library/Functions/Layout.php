@@ -549,58 +549,25 @@ function layout_LoadNavigation()
         return;
     }
 
-    $locale = iMSCP_Registry::get('translator')->getLocale();
-
     switch ($_SESSION['user_type']) {
         case 'admin':
             $userLevel = 'admin';
-            $filePath = CACHE_PATH . '/translations/navigation/admin_' . $locale . '.php';
             break;
         case 'reseller':
             $userLevel = 'reseller';
-            $filePath = CACHE_PATH . '/translations/navigation/reseller_' . $locale . '.php';
             break;
         default:
             $userLevel = 'client';
-            $filePath = CACHE_PATH . '/translations/navigation/client_' . $locale . '.php';
     }
 
-    if (!file_exists($filePath)) {
-        layout_createNavigationFile(
-            iMSCP_Registry::get('config')['ROOT_TEMPLATE_PATH'] . "/$userLevel/navigation.php", $locale, $userLevel
-        );
-    }
-
-    iMSCP_Registry::set('navigation', new Zend_Navigation(include($filePath)));
+    iMSCP_Registry::set('navigation', new Zend_Navigation(
+        include(iMSCP_Registry::get('config')['ROOT_TEMPLATE_PATH'] . "/$userLevel/navigation.php")
+    ));
 
     // Set main menu labels visibility for the current environment
     iMSCP_Events_Aggregator::getInstance()->registerListener(
         iMSCP_Events::onBeforeGenerateNavigation, 'layout_setMainMenuLabelsVisibilityEvt'
     );
-
-}
-
-/**
- * Create cached version of navigation translations file for the give file and locale
- *
- * @param string $filePath Navigation translation file path
- * @param string $locale Locale
- * @param string $userLevel User level for which the file is created
- * @throws Zend_Config_Exception
- * @throws iMSCP_Exception
- */
-function layout_createNavigationFile($filePath, $locale, $userLevel)
-{
-    $translationsCacheDir = CACHE_PATH . '/translations/navigation';
-
-    if (!is_dir($translationsCacheDir) && !@mkdir($translationsCacheDir)) {
-        throw new iMSCP_Exception("Couldn't create cache directory for navigation translations");
-    }
-
-    $config = new Zend_Config(include($filePath));
-    $writer = new Zend_Config_Writer_Array();
-    $writer->setConfig($config);
-    $writer->write($translationsCacheDir . '/' . $userLevel . '_' . $locale . '.php');
 }
 
 /**

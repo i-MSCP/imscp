@@ -39,6 +39,7 @@ FRONTEND
     Fixed: Several integer type casting issues
     Fixed: Wrong default mail accounts accounting (missing hostmaster email, wrong SQL queries...)
     Removed: Administrator database update interface; Database update are executed by installer
+    Removed: Cached versions of navigation files; Make use og global translation cache
     Removed: Information about total items/limits assigned - People don't understand their meaning (statistics)
     Review: abuse, hostmaster and postmaster default mail accounts are now forwarded to customer email
     Review: Catchall mail accounts are now counted in mail accounts limit
@@ -46,6 +47,7 @@ FRONTEND
     Review: Default mail accounts are now hidden in the client mail accounts overview interface (default)
     Review: Hide E_STRICT, E_NOTICE, ~E_USER_NOTICE, E_DEPRECATED and E_USER_DEPRECATED on production (PHP)
     Review: Make usage of short syntax for arrays
+    Review: Reuse Zend_Registry class instead of reinventing the wheel
     Review: Skip the intermediate edit page when mail autoresponder is being enabled and that message is already set
     Security: Input for personal user data is not filtered or validated (all UI levels)
 
