@@ -31,10 +31,10 @@ function gen_reseller_table($tpl)
     $stmt = execute_query(
         "
             SELECT t1.admin_id, t1.admin_name, t2.admin_name AS created_by
-            FROM admin AS t1, admin AS t2
+            FROM admin AS t1
+            JOIN admin AS t2 ON(t1.created_by = t2.admin_id)
             WHERE t1.admin_type = 'reseller'
-            AND t1.created_by = t2.admin_id
-            ORDER BY created_by, admin_id`
+            ORDER BY created_by, admin_id
         "
     );
 
