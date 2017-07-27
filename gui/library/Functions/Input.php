@@ -18,7 +18,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-$ESCAPER = new Zend_Escaper_Escaper('UTF-8');
+use iMSCP_Exception as iMSCPException;
+use Zend_Escaper_Escaper as Escaper;
+use Zend_Filter_Digits as FilterDigits;
+use Zend_Filter_Input as FilterInput;
+use Zend_Validate_File_MimeType as FileMimeTypeValidator;
+use Zend_Validate_InArray as InArrayValidator;
+
+$ESCAPER = new Escaper('UTF-8');
 
 /**
  * clean_html replaces up defined inputs.
@@ -79,7 +86,7 @@ function filter_digits($input, $default = NULL)
     static $filter = NULL;
 
     if (NULL === $filter) {
-        $filter = new Zend_Filter_Digits();
+        $filter = new FilterDigits();
     }
 
     $input = $filter->filter(clean_input($input));
@@ -100,12 +107,14 @@ function filter_digits($input, $default = NULL)
  *
  * @throws iMSCP_Exception
  * @param string $string String to be converted
- * @param string $escapeType Escape type ( html|htmlAttr )
+ * @param string $escapeType Escape type (html|htmlAttr )
  * @return string HTML entitied text
  */
 function tohtml($string, $escapeType = 'html')
 {
     global $ESCAPER;
+
+    $string = (string)$string;
 
     if ($escapeType == 'html') {
         return $ESCAPER->escapeHtml($string);
@@ -115,7 +124,7 @@ function tohtml($string, $escapeType = 'html')
         return $ESCAPER->escapeHtmlAttr($string);
     }
 
-    throw new iMSCP_Exception('Unknown escape type');
+    throw new iMSCPException('Unknown escape type');
 }
 
 /**
@@ -251,50 +260,50 @@ function isValidDomainName($domainName)
         return false;
     }
 
-    if (($asciiDomainName = encode_idna($domainName)) !== false) {
-        $asciiDomainName = strtolower($asciiDomainName);
-
-        if (strlen($asciiDomainName) > 255) {
-            $dmnNameValidationErrMsg = tr('Domain name (ASCII form) cannot be greater than 255 characters.');
-            return false;
-        }
-
-        if (preg_match('/([^a-z0-9\-\.])/', $asciiDomainName, $m)) {
-            $dmnNameValidationErrMsg = tr('Domain name contains an invalid character: %s', $m[1]);
-            return false;
-        }
-
-        if (strpos($asciiDomainName, '..') !== false) {
-            $dmnNameValidationErrMsg = tr('Usage of dot in domain name labels is prohibited.');
-            return false;
-        }
-
-        $labels = explode('.', $asciiDomainName);
-
-        if (sizeof($labels) > 1) {
-            foreach ($labels as $label) {
-                if (strlen($label) > 63) {
-                    $dmnNameValidationErrMsg = tr('Domain name labels cannot be greater than 63 characters.');
-                    return false;
-                }
-
-                if (preg_match('/([^a-z0-9\-])/', $label, $m)) {
-                    $dmnNameValidationErrMsg = tr("Domain name label '%s' contain an invalid character: %s", $label, $m[1]);
-                    return false;
-                }
-
-                if (preg_match('/^[\-]|[\-]$/', $label)) {
-                    $dmnNameValidationErrMsg = tr('Domain name labels cannot start nor end with hyphen.');
-                    return false;
-                }
-            }
-        } else {
-            $dmnNameValidationErrMsg = tr('Invalid domain name.');
-            return false;
-        }
-    } else {
+    if (($asciiDomainName = encode_idna($domainName)) === false) {
         $dmnNameValidationErrMsg = tr('Invalid domain name.');
         return false;
+    }
+
+    $asciiDomainName = strtolower($asciiDomainName);
+
+    if (strlen($asciiDomainName) > 255) {
+        $dmnNameValidationErrMsg = tr('Domain name (ASCII form) cannot be greater than 255 characters.');
+        return false;
+    }
+
+    if (preg_match('/([^a-z0-9\-\.])/', $asciiDomainName, $m)) {
+        $dmnNameValidationErrMsg = tr('Domain name contains an invalid character: %s', $m[1]);
+        return false;
+    }
+
+    if (strpos($asciiDomainName, '..') !== false) {
+        $dmnNameValidationErrMsg = tr('Usage of dot in domain name labels is prohibited.');
+        return false;
+    }
+
+    $labels = explode('.', $asciiDomainName);
+
+    if (sizeof($labels) < 2) {
+        $dmnNameValidationErrMsg = tr('Invalid domain name.');
+        return false;
+    }
+
+    foreach ($labels as $label) {
+        if (strlen($label) > 63) {
+            $dmnNameValidationErrMsg = tr('Domain name labels cannot be greater than 63 characters.');
+            return false;
+        }
+
+        if (preg_match('/([^a-z0-9\-])/', $label, $m)) {
+            $dmnNameValidationErrMsg = tr("Domain name label '%s' contain an invalid character: %s", $label, $m[1]);
+            return false;
+        }
+
+        if (preg_match('/^[\-]|[\-]$/', $label)) {
+            $dmnNameValidationErrMsg = tr('Domain name labels cannot start nor end with hyphen.');
+            return false;
+        }
     }
 
     return true;
@@ -339,11 +348,48 @@ function imscp_limit_check($data, $extra = -1)
 function checkMimeType($pathFile, array $mimeTypes)
 {
     $mimeTypes['headerCheck'] = true;
-    $validator = new Zend_Validate_File_MimeType($mimeTypes);
+    $validator = new FileMimeTypeValidator($mimeTypes);
 
     if ($validator->isValid($pathFile)) {
         return true;
     }
 
     return false;
+}
+
+/**
+ * Get input filter for user personal data
+ *
+ * @return FilterInput
+ */
+function getUserPersonalDataInputFilter()
+{
+    # TODO: Add appropriate validators (postcode, phone...)
+    return new FilterInput(
+        ['*' => ['StripTags']],
+        [
+            'fname'   => ['Alnums' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid first name.')],
+            'lname'   => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid last name.')],
+            'gender'  => [
+                new InArrayValidator(['haystack' => ['M', 'F', 'U'], 'strict' => true]),
+                FilterInput::MESSAGES => tr('Invalid gender')
+            ],
+            'firm'    => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid firm.')],
+            'street1' => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid firm.')],
+            'street2' => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid firm.')],
+            'zip'     => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid zipcode.')],
+            'city'    => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid city.')],
+            'state'   => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid state.')],
+            'country' => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid country.')],
+            'email'   => ['EmailAddress', FilterInput::MESSAGES => tr('Invalid email address.')],
+            'phone'   => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid phone number.')],
+            'fax'     => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid fax number.')],
+        ],
+        $_POST,
+        [
+            FilterInput::ESCAPE_FILTER => 'StringTrim',
+            FilterInput::PRESENCE      => FilterInput::PRESENCE_REQUIRED,
+            FilterInput::ALLOW_EMPTY   => true
+        ]
+    );
 }

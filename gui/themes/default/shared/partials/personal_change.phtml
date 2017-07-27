@@ -1,0 +1,73 @@
+
+<form action="personal_change.php" method="post">
+    <table class="firstColFixed">
+        <thead>
+        <tr>
+            <th colspan="2"><?= tohtml(tr('Personal data')); ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><label for="fname"><?= tohtml(tr('First name')); ?></label></td>
+            <td><input type="text" name="fname" id="fname" value="{FIRST_NAME}"/></td>
+        </tr>
+        <tr>
+            <td><label for="lname"><?= tohtml(tr('Last name')); ?></label></td>
+            <td><input type="text" name="lname" id="lname" value="{LAST_NAME}"/></td>
+        </tr>
+        <tr>
+            <td><label for="gender"><?= tohtml(tr('Gender')); ?></label></td>
+            <td>
+                <select id="gender" name="gender">
+                    <option value="M"{VL_MALE}><?= tohtml(tr('Male')); ?></option>
+                    <option value="F"{VL_FEMALE}><?= tohtml(tr('Female')); ?></option>
+                    <option value="U"{VL_UNKNOWN}><?= tohtml(tr('Unknown')); ?></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="firm"><?= tohtml(tr('Company'));?></label></td>
+            <td><input type="text" name="firm" id="firm" value="{FIRM}"/></td>
+        </tr>
+        <tr>
+            <td><label for="street1"><?= tohtml(tr('Street 1'));?></label></td>
+            <td><input type="text" name="street1" id="street1" value="{STREET_1}"></td>
+        </tr>
+        <tr>
+            <td><label for="street2"><?= tohtml(tr('Street 2'));?></label></td>
+            <td><input type="text" name="street2" id="street2" value="{STREET_2}"></td>
+        </tr>
+        <tr>
+            <td><label for="zip"><?= tohtml(tr('Zip/Postal code')); ?></label></td>
+            <td><input type="text" name="zip" id="zip" value="{ZIP}"></td>
+        </tr>
+        <tr>
+            <td><label for="city"><?= tohtml(tr('City')); ?></label></td>
+            <td><input type="text" name="city" id="city" value="{CITY}"></td>
+        </tr>
+        <tr>
+            <td><label for="state"><?= tohtml(tr('State/Province')); ?></label></td>
+            <td><input type="text" name="state" id="state" value="{STATE}"></td>
+        </tr>
+        <tr>
+            <td><label for="country"><?= tohtml(tr('Country')); ?></label></td>
+            <td><input type="text" name="country" id="country" value="{COUNTRY}"></td>
+        </tr>
+        <tr>
+            <td><label for="email"><?= tohtml(tr('Email')); ?></label></td>
+            <td><input type="text" name="email" id="email" value="{EMAIL}" required></td>
+        </tr>
+        <tr>
+            <td><label for="phone"><?= tohtml(tr('Phone')); ?></label></td>
+            <td><input type="text" name="phone" id="phone" value="{PHONE}"></td>
+        </tr>
+        <tr>
+            <td><label for="fax"><?= tohtml(tr('Fax')); ?></label></td>
+            <td><input type="text" name="fax" id="fax" value="{FAX}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="buttons">
+        <input name="Submit" type="submit" value="<?= tohtml(tr('Update data'), 'htmlAttr'); ?>">
+    </div>
+</form>
