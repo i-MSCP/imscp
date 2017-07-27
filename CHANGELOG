@@ -49,7 +49,7 @@ FRONTEND
     Review: Make usage of short syntax for arrays
     Review: Reuse Zend_Registry class instead of reinventing the wheel
     Review: Skip the intermediate edit page when mail autoresponder is being enabled and that message is already set
-    Security: Input for personal user data is not filtered or validated (all UI levels)
+    Security: Input for personal user data not filtered nor validated (all UI levels)
 
 INSTALLER
     Fixed: Hide notice about user/group changes (Courier)
