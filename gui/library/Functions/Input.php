@@ -107,7 +107,7 @@ function filter_digits($input, $default = NULL)
  *
  * @throws iMSCP_Exception
  * @param string $string String to be converted
- * @param string $escapeType Escape type (html|htmlAttr )
+ * @param string $escapeType Escape type (html|htmlAttr)
  * @return string HTML entitied text
  */
 function tohtml($string, $escapeType = 'html')

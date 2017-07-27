@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Set default error reporting level
-error_reporting(E_ALL | E_STRICT);
+// Set default error reporting level (production)
+error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE & ~E_USER_NOTICE & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
 // Sets to TRUE here to ensure displaying of the base core errors
 // Will be overwritten during initialization process
@@ -37,11 +37,11 @@ define('DBCONFIG_CACHE_FILE_PATH', CACHE_PATH . '/imscp_dbconfig.conf');
 
 // Setup include path
 set_include_path(implode(PATH_SEPARATOR, array_unique(
-    array_merge([LIBRARY_PATH, LIBRARY_PATH . '/vendor'], explode(PATH_SEPARATOR, get_include_path()))
+    array_merge([LIBRARY_PATH, LIBRARY_PATH . '/vendor/Zend/library'], explode(PATH_SEPARATOR, get_include_path()))
 )));
 
 // Setup autoloader
-require_once LIBRARY_PATH . '/vendor/Zend/Loader/AutoloaderFactory.php';
+require_once LIBRARY_PATH . '/vendor/Zend/library/Zend/Loader/AutoloaderFactory.php';
 
 Zend_Loader_AutoloaderFactory::factory([
     'Zend_Loader_StandardAutoloader' => [
@@ -51,11 +51,11 @@ Zend_Loader_AutoloaderFactory::factory([
             'Mso\IdnaConvert' => LIBRARY_PATH . '/vendor/idna_convert/src/Mso/IdnaConvert'
         ],
         'prefixes'        => [
-            'iMSCP_' => LIBRARY_PATH . '/iMSCP',
-            'Crypt_' => LIBRARY_PATH . '/vendor/phpseclib/Crypt',
-            'File_'  => LIBRARY_PATH . '/vendor/phpseclib/File',
-            'Math_'  => LIBRARY_PATH . '/vendor/phpseclib/Math',
-            'Net_'   => LIBRARY_PATH . '/vendor/Net'
+            'iMSCP' => LIBRARY_PATH . '/iMSCP',
+            'Crypt' => LIBRARY_PATH . '/vendor/phpseclib/Crypt',
+            'File'  => LIBRARY_PATH . '/vendor/phpseclib/File',
+            'Math'  => LIBRARY_PATH . '/vendor/phpseclib/Math',
+            'Net'   => LIBRARY_PATH . '/vendor/Net'
         ]
     ]
 ]);
@@ -79,10 +79,8 @@ require_once LIBRARY_PATH . '/Functions/SoftwareInstaller.php';
 require_once LIBRARY_PATH . '/Functions/Reseller.php';
 require_once LIBRARY_PATH . '/Functions/View.php';
 
-/** @var $config iMSCP_Config_Handler_File */
 if (is_readable(CONFIG_CACHE_FILE_PATH)) {
     $config = unserialize(file_get_contents(CONFIG_CACHE_FILE_PATH));
-
     clearstatcache(true, CONFIG_FILE_PATH);
 
     if (PHP_SAPI == 'cli' || $config['DEBUG'] || filemtime(CONFIG_FILE_PATH) !== $config['__filemtime__']) {
@@ -106,7 +104,7 @@ if (is_readable(CONFIG_CACHE_FILE_PATH)) {
     $config['HTML_SELECTED'] = ' selected';
 
     // Default Language (if not overriden by admin)
-    $config['USER_INITIAL_LANG'] = 'auto';
+    $config['USER_INITIAL_LANG'] = Zend_Locale::BROWSER;
 
     // Tell whether or not output must be compressed
     $config['COMPRESS_OUTPUT'] = 1;
@@ -213,7 +211,7 @@ if (is_readable(CONFIG_CACHE_FILE_PATH)) {
     // 1: default mail accounts are counted
     // 0: default mail accounts are NOT counted
     $config['COUNT_DEFAULT_EMAIL_ADDRESSES'] = 0;
-    
+
     // Protectdefault abuse, hostmaster, postmaster and webmaster mail accounts
     // against change and deletion
     $config['PROTECT_DEFAULT_EMAIL_ADDRESSES'] = 1;

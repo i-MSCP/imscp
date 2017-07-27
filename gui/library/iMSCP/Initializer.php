@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use \iMSCP\Crypt as Crypt;
+use iMSCP\Crypt as Crypt;
 
 /**
  * Class iMSCP_Initializer
@@ -100,7 +100,7 @@ class iMSCP_Initializer
      */
     protected function processAll()
     {
-        $this->setDisplayErrors();
+        $this->setErrorReporting();
         $this->initializeSession();
         $this->initializeDatabase();
         $this->loadConfig();
@@ -125,7 +125,7 @@ class iMSCP_Initializer
      */
     protected function processAjax()
     {
-        $this->setDisplayErrors();
+        $this->setErrorReporting();
         $this->initializeSession();
         $this->initializeDatabase();
         $this->loadConfig();
@@ -146,6 +146,7 @@ class iMSCP_Initializer
      */
     protected function processCLI()
     {
+        $this->setErrorReporting();
         $this->initializeDatabase();
         $this->loadConfig();
         $this->setInternalEncoding();
@@ -171,17 +172,19 @@ class iMSCP_Initializer
     }
 
     /**
-     * Sets the PHP display_errors parameter
+     * Sets PHP error reporting
      *
      * @return void
      */
-    protected function setDisplayErrors()
+    protected function setErrorReporting()
     {
-        if ($this->config->DEBUG) {
+        if ($this->config['DEBUG']) {
+            error_reporting(E_ALL);
             ini_set('display_errors', 1);
-        } else {
-            ini_set('display_errors', 0);
+            return;
         }
+
+        #ini_set('display_errors', 0);
 
         // In any case, write error logs in data/logs/errors.log
         // FIXME Disabled as long file is not rotated
@@ -429,71 +432,76 @@ class iMSCP_Initializer
      */
     protected function initializeLocalization()
     {
-        $trFilePathPattern = $this->config['GUI_ROOT_DIR'] . '/i18n/locales/%s/LC_MESSAGES/%s.mo';
+        Zend_Locale::setDefault('en_GB');
 
         if (PHP_SAPI != 'cli') {
-            $lang = iMSCP_Registry::set(
-                'user_def_lang', isset($_SESSION['user_def_lang'])
-                ? $_SESSION['user_def_lang']
-                : ((isset($this->config['USER_INITIAL_LANG'])) ? $this->config['USER_INITIAL_LANG'] : 'auto')
+            $locale = iMSCP_Registry::set(
+                'user_def_lang', isset($_SESSION['user_def_lang']) ? $_SESSION['user_def_lang'] : Zend_Locale::BROWSER
             );
-
-            if (Zend_Locale::isLocale($lang)) {
-                $locale = new Zend_Locale($lang);
-
-                if ($lang == 'auto') {
-                    $locale->setLocale('en_GB');
-                    $browser = $locale->getBrowser();
-
-                    arsort($browser);
-                    foreach ($browser as $language => $quality) {
-                        if (file_exists(sprintf($trFilePathPattern, $language, $language))) {
-                            $locale->setLocale($language);
-                            break;
-                        }
-                    }
-                } elseif (!file_exists(sprintf($trFilePathPattern, $locale, $locale))) {
-                    $locale->setLocale('en_GB');
-                }
-            } else {
-                $locale = new Zend_Locale('en_GB');
-            }
         } else {
-            $locale = new Zend_Locale('en_GB');
+            $locale = Zend_Locale::ZFDEFAULT;
         }
 
-        // Setup cache object for translations
+        $locale = new Zend_Locale($locale);
+
+        // Make locale available for Zend library
+        iMSCP_Registry::set('Zend_Locale', $locale);
+
+        // Setup cache for translations
         $cache = Zend_Cache::factory(
             'Core',
             'File',
             [
-                'caching'                   => true,
+                'caching'                   => $this->config['DEBUG'],
                 'lifetime'                  => NULL, // Translation cache is never flushed automatically
                 'automatic_serialization'   => true,
                 'automatic_cleaning_factor' => 0,
                 'ignore_user_abort'         => true,
-                'cache_id_prefix'           => 'iMSCP_Translate'
+                'cache_id_prefix'           => 'translations'
             ],
             [
-                'hashed_directory_level' => 0,
-                'cache_dir'              => CACHE_PATH . '/translations'
+                'file_locking'           => false,
+                'hashed_directory_level' => 2,
+                'cache_dir'              => CACHE_PATH . '/translations',
+                'read_control'           => false,
+                'file_name_prefix'       => 'iMSCP'
+
             ]
         );
 
-        if ($this->config['DEBUG']) {
-            $cache->clean(Zend_Cache::CLEANING_MODE_ALL);
-        } else {
-            Zend_Translate::setCache($cache);
-        }
+        Zend_Locale::setCache($cache);
+        Zend_Translate::setCache($cache);
 
-        // Setup primary translator for iMSCP core translations
-        iMSCP_Registry::set('translator', new Zend_Translate([
+        // Setup translator for iMSCP
+        $coreTranslator = new Zend_Translate([
             'adapter'        => 'gettext',
-            'content'        => sprintf($trFilePathPattern, $locale, $locale),
             'locale'         => $locale,
-            'disableNotices' => true,
-            'tag'            => 'iMSCP'
-        ]));
+            'content'        => $this->config['GUI_ROOT_DIR'] . '/i18n/locales',
+            'disableNotices' => !$this->config['DEBUG'],
+            'tag'            => 'iMSCP_Translate',
+            'scan'           => Zend_Translate::LOCALE_DIRECTORY
+        ]);
+
+        // Setup translator for Zend validators
+        $zendTranslatorAdapter = new Zend_Translate_Adapter_Array([
+            'cache'          => $cache,
+            'content'        => LIBRARY_PATH . '/vendor/Zend/resources/languages',
+            'disableNotices' => !$this->config['DEBUG'],
+            'locale'         => $locale,
+            'tag'            => 'iMSCP_Translate',
+            'scan'           => Zend_Translate::LOCALE_DIRECTORY
+        ]);
+
+        #if ($zendTranslatorAdapter->isAvailable($locale->getLanguage())
+        #    || $zendTranslatorAdapter->isAvailable($locale)) {
+            $coreTranslator->getAdapter()->addTranslation(['content' => $zendTranslatorAdapter]);
+        #}
+
+        // Make translator available for i-MSCP and Zend libraries
+        iMSCP_Registry::set('translator', $coreTranslator);
+        iMSCP_Registry::set('Zend_Translate', $coreTranslator);
+
+        //exit;
     }
 
     /**

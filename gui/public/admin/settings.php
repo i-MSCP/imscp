@@ -123,11 +123,25 @@ if (!empty($_POST)) {
         $newCount = $dbCfg->countQueries('insert');
 
         if ($updtCount > 0) {
-            set_page_message(tr('%d configuration parameter(s) have/has been updated.', $updtCount), 'success');
+            set_page_message(
+                ntr('The configuration parameter has been updated.',
+                    '%d configuration parameters were updated',
+                    $updtCount,
+                    $updtCount
+                ),
+                'success'
+            );
         }
 
         if ($newCount > 0) {
-            set_page_message(tr('%d configuration parameter(s) have/has been created.', $newCount), 'success');
+            set_page_message(
+                ntr('A new configuration parameter has been created.',
+                    '%d configuration parameters were created',
+                    $newCount,
+                    $newCount
+                ),
+                'success'
+            );
         }
 
         if ($newCount == 0 && $updtCount == 0) {
@@ -401,15 +415,15 @@ $tpl->assign([
     'TR_SETTINGS'                              => tohtml(tr('Settings')),
     'TR_MESSAGE'                               => tohtml(tr('Message')),
     'TR_LOSTPASSWORD'                          => tohtml(tr('Lost password')),
-    'TR_LOSTPASSWORD_TIMEOUT'                  => tohtml(tr('Activation link expire time <small>(In minutes)</small>')),
+    'TR_LOSTPASSWORD_TIMEOUT'                  => tohtml(tr('Activation link expire time in minutes')),
     'TR_PASSWORD_SETTINGS'                     => tohtml(tr('Password settings')),
     'TR_PASSWD_STRONG'                         => tohtml(tr('Strong passwords')),
     'TR_PASSWD_CHARS'                          => tohtml(tr('Password minimum length')),
     'TR_BRUTEFORCE'                            => tohtml(tr('Bruteforce detection')),
     'TR_BRUTEFORCE_BETWEEN'                    => tohtml(tr('Blocking time between logins and captcha attempts')),
     'TR_BRUTEFORCE_MAX_LOGIN'                  => tohtml(tr('Max number of login attempts')),
-    'TR_BRUTEFORCE_BLOCK_TIME'                 => tohtml(tr('Blocktime <small>(in minutes)</small>')),
-    'TR_BRUTEFORCE_BETWEEN_TIME'               => tohtml(tr('Blocking time between login/captcha attempts <small>(In seconds)</small>')),
+    'TR_BRUTEFORCE_BLOCK_TIME'                 => tohtml(tr('Blocktime in minutes')),
+    'TR_BRUTEFORCE_BETWEEN_TIME'               => tohtml(tr('Blocking time between login/captcha attempts in seconds')),
     'TR_BRUTEFORCE_MAX_CAPTCHA'                => tohtml(tr('Maximum number of captcha validation attempts')),
     'TR_BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT'   => tohtml(tr('Maximum number of validation attempts before waiting restriction intervenes')),
     'TR_OTHER_SETTINGS'                        => tohtml(tr('Other settings')),

@@ -602,6 +602,7 @@ abstract class Zend_Translate_Adapter {
 
         if (($options['content'] instanceof Zend_Translate) || ($options['content'] instanceof Zend_Translate_Adapter)) {
             $options['usetranslateadapter'] = true;
+
             if (!empty($options['locale']) && ($options['locale'] !== 'auto')) {
                 $options['content'] = $options['content']->getMessages($options['locale']);
             } else {

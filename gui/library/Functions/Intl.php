@@ -321,7 +321,7 @@ function i18n_changeDefaultLanguage()
  * @throws iMSCP_Exception
  * @return void
  */
-function l10n_addTranslations($dirPath, $type = 'Array', $tag = 'iMSCP', $scan = Zend_Translate::LOCALE_FILENAME)
+function l10n_addTranslations($dirPath, $type = 'Array', $tag = 'iMSCP_Translate', $scan = Zend_Translate::LOCALE_FILENAME)
 {
     /** @var Zend_Translate_Adapter $primaryTranslator */
     $primaryTranslator = iMSCP_Registry::get('translator')->getAdapter();

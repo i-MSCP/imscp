@@ -26,12 +26,12 @@ class iMSCP_Validate
     /**
      * @var iMSCP_Validate
      */
-    protected static $_instance = null;
+    protected static $_instance = NULL;
 
     /**
      * @var iMSCP_Config_Handler_File
      */
-    protected $_config = null;
+    protected $_config = NULL;
 
     /**
      * @var Zend_Validate_Abstract[]
@@ -43,14 +43,7 @@ class iMSCP_Validate
      *
      * @var Zend_Validate_Abstract
      */
-    protected $_lastValidator = null;
-
-    /**
-     * Tell whether or not the default error messages must be overriden for the given validation method.
-     *
-     * @var string Validation method name
-     */
-    protected $_overrideMessagesFor = null;
+    protected $_lastValidator = NULL;
 
     /**
      * Last iMSCP_Validate validation error messages.
@@ -58,31 +51,6 @@ class iMSCP_Validate
      * @var array
      */
     protected $_lastValidationErrorMessages = [];
-
-    /**
-     * Error messages that override those provided by validators in a specific validation context.
-     *
-     * @var array
-     */
-    protected $_messages = [
-        'domain' => [
-            'hostnameCannotDecodePunycode' => "'%value%' appears to be a domain name but the given punycode notation cannot be decoded",
-            'hostnameDashCharacter' => "'%value%' appears to be a domain name but contains a dash in an invalid position",
-            'hostnameInvalidHostname' => "'%value%' does not match the expected structure for a domain name",
-            'hostnameInvalidHostnameSchema' => "'%value%' appears to be a domain name but cannot match against domain name schema for TLD '%tld%'",
-            'hostnameUndecipherableTld' => "'%value%' appears to be a domain name but cannot extract TLD part",
-            'hostnameUnknownTld' => "'%value%' appears to be a domain name but cannot match TLD against known list",
-        ],
-
-        'subdomain' => [
-            'hostnameCannotDecodePunycode' => "'%value%' appears to be a subdomain name but the given punycode notation cannot be decoded",
-            'hostnameDashCharacter' => "'%value%' appears to be a subdomain name but contains a dash in an invalid position",
-            'hostnameInvalidHostname' => "'%value%' does not match the expected structure for a subdomain name",
-            'hostnameInvalidHostnameSchema' => "'%value%' appears to be a subdomain name but cannot match against subdomain schema for TLD '%tld%'",
-            'hostnameUndecipherableTld' => "'%value%' appears to be a subdomain name but cannot extract TLD part",
-            'hostnameUnknownTld' => "'%value%' appears to be a subdomain name but cannot match TLD against known list",
-        ]
-    ];
 
     /**
      * Singleton - Make new unavailable.
@@ -110,7 +78,7 @@ class iMSCP_Validate
      */
     static public function getInstance()
     {
-        if (self::$_instance === null) {
+        if (self::$_instance === NULL) {
             self::$_instance = new self();
         }
 
@@ -177,24 +145,6 @@ class iMSCP_Validate
     }
 
     /**
-     * Set default translation object for all Zend validate objects.
-     *
-     * @throws iMSCP_Exception When $translator is not a Zend_Translate_Adapter instance
-     * @param Zend_Translate_Adapter $translator Translator adapter
-     * @return void
-     */
-    public function setDefaultTranslator($translator = null)
-    {
-        if (null === $translator) {
-            $translator = new iMSCP_I18n_Adapter_Zend();
-        } elseif (!$translator instanceof Zend_Translate_Adapter) {
-            throw new iMSCP_Exception('$translator must be an instance of Zend_Translate_Adapter.');
-        }
-
-        Zend_Validate_Abstract::setDefaultTranslator($translator);
-    }
-
-    /**
      * Returns instance of a specific Zend validator.
      *
      * @param string $validatorName Zend validator name
@@ -205,12 +155,7 @@ class iMSCP_Validate
     {
         if (!array_key_exists($validatorName, $this->_validators)) {
             $validator = 'Zend_Validate_' . $validatorName;
-
             $this->_validators[$validatorName] = new $validator($options);
-
-            if (empty($this->_validators) && !Zend_Validate_Abstract::hasDefaultTranslator()) {
-                self::setDefaultTranslator();
-            }
         }
 
         $this->_lastValidator = $this->_validators[$validatorName];
@@ -229,9 +174,9 @@ class iMSCP_Validate
             $messages = $this->_lastValidationErrorMessages;
             $this->_lastValidationErrorMessages = [];
             return format_message($messages);
-        } else {
-            return '';
         }
+
+        return '';
     }
 
     /**
@@ -248,20 +193,6 @@ class iMSCP_Validate
         /** @var $validator Zend_Validate_Abstract */
         $validator = self::getZendValidator($validatorName);
 
-        // Override validator default errors message if needed
-        if (null != $this->_overrideMessagesFor) {
-            if (isset($this->_messages[$this->_overrideMessagesFor])) {
-                $defaultMessages = $validator->getMessageTemplates();
-                $messages = $this->_messages[$this->_overrideMessagesFor];
-                $validator->setMessages($messages);
-            } else {
-                throw new iMSCP_Exception(
-                    sprintf(
-                        'Custom error messages for the %s validation method are not defined.',
-                        __CLASS__ . '::' . $this->_overrideMessagesFor));
-            }
-        }
-
         // Getting validator default options
         $defaultOptions = $validator->getOptions();
 
@@ -271,17 +202,12 @@ class iMSCP_Validate
         // Process validation
         if (!($retVal = $validator->isValid($input))) {
             $this->_lastValidationErrorMessages = array_merge(
-                $this->_lastValidationErrorMessages, $this->_lastValidator->getMessages());
+                $this->_lastValidationErrorMessages, $this->_lastValidator->getMessages()
+            );
         }
 
         // Reset default options on validator
         $validator->setOptions($defaultOptions);
-
-        if (isset($defaultMessages)) {
-            $validator->setMessages($defaultMessages);
-            $this->_overrideMessagesFor = null;
-        }
-
         return $retVal;
     }
 
@@ -293,19 +219,18 @@ class iMSCP_Validate
      * @param string|array $messages OPTIONAL Error message(s)
      * @return bool
      */
-    public function assertEquals($value1, $value2, $messages = null)
+    public function assertEquals($value1, $value2, $messages = NULL)
     {
-        if (($value1 !== $value2)) {
-            if (null === $messages) {
-                $messages = tr('The values must not be equal', $value1, $value2);
-            }
-
-            $this->_lastValidationErrorMessages = array_merge($this->_lastValidationErrorMessages, (array)$messages);
-
-            return false;
+        if (($value1 === $value2)) {
+            return true;
         }
 
-        return true;
+        if (NULL === $messages) {
+            $messages = tr('The values must not be equal', $value1, $value2);
+        }
+
+        $this->_lastValidationErrorMessages = array_merge($this->_lastValidationErrorMessages, (array)$messages);
+        return false;
     }
 
     /**
@@ -316,19 +241,20 @@ class iMSCP_Validate
      * @param string|array $messages OPTIONAL Error message(s)
      * @return bool
      */
-    public function assertNotEquals($value1, $value2, $messages = null)
+    public function assertNotEquals($value1, $value2, $messages = NULL)
     {
-        if (($value1 === $value2)) {
-            if (null === $messages) {
-                $messages = tr('The values must not be equal', $value1, $value2);
-            }
-
-            $this->_lastValidationErrorMessages = array_merge($this->_lastValidationErrorMessages, (array)$messages);
-
-            return false;
+        if ($value1 !== $value2) {
+            return true;
         }
 
-        return true;
+        if (NULL === $messages) {
+            $messages = tr('The values must not be equal', $value1, $value2);
+        }
+
+        $this->_lastValidationErrorMessages = array_merge($this->_lastValidationErrorMessages, (array)$messages);
+        return false;
+
+
     }
 
     /**
@@ -336,23 +262,22 @@ class iMSCP_Validate
      *
      * @param mixed $value value
      * @param array $stack Value stack
-	 * @param bool $strict Whether the check should be made in strict mode
+     * @param bool $strict Whether the check should be made in strict mode
      * @param array|string $messages OPTIONAL Error message(s)
      * @return bool
      */
-    public function assertContains($value, array $stack, $strict = true, $messages = null)
+    public function assertContains($value, array $stack, $strict = true, $messages = NULL)
     {
-        if ((!in_array($value, $stack, $strict))) {
-            if (null === $messages) {
-                $messages = tr('The value has not been found in the stack');
-            }
-
-            $this->_lastValidationErrorMessages = array_merge($this->_lastValidationErrorMessages, (array)$messages);
-
-            return false;
+        if (in_array($value, $stack, $strict)) {
+            return true;
         }
 
-        return true;
+        if (NULL === $messages) {
+            $messages = tr('The value has not been found in the stack');
+        }
+
+        $this->_lastValidationErrorMessages = array_merge($this->_lastValidationErrorMessages, (array)$messages);
+        return false;
     }
 
     /**
@@ -363,18 +288,17 @@ class iMSCP_Validate
      * @param array|string $messages OPTIONAL Error message(s)
      * @return bool
      */
-    public function assertNotContains($value, array $stack, $messages = null)
+    public function assertNotContains($value, array $stack, $messages = NULL)
     {
-        if ((in_array($value, $stack, true))) {
-            if (null === $messages) {
-                $messages = tr('The value has been found in the stack');
-            }
-
-            $this->_lastValidationErrorMessages = array_merge($this->_lastValidationErrorMessages, (array)$messages);
-
-            return false;
+        if (!in_array($value, $stack, true)) {
+            return true;
         }
 
-        return true;
+        if (NULL === $messages) {
+            $messages = tr('The value has been found in the stack');
+        }
+
+        $this->_lastValidationErrorMessages = array_merge($this->_lastValidationErrorMessages, (array)$messages);
+        return false;
     }
 }

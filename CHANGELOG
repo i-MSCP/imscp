@@ -21,6 +21,7 @@ CONFIG
 
 FRONTEND
     Added: Setting that allows administrator to protect/unrpotect default mail accounts against both edition and deletion
+    Added: Zend Framework translaltion resource for validator
     Cosmetics: Make usage of the mathematical infinity symbol (∞) in place of the `Unlimited' translation string
     Enhancement: Make customers able to edit catch-all accounts
     Enhancement: Make customers able to edit mail autoresponder message even if the autoresponder is not activated yet
@@ -43,6 +44,7 @@ FRONTEND
     Review: Catchall mail accounts are now counted in mail accounts limit
     Review: Default mail accounts are not longer counted for the mail accounts limit (default)
     Review: Default mail accounts are now hidden in the client mail accounts overview interface (default)
+    Review: Hide E_STRICT, E_NOTICE, ~E_USER_NOTICE, E_DEPRECATED and E_USER_DEPRECATED on production (PHP)
     Review: Make usage of short syntax for arrays
     Review: Skip the intermediate edit page when mail autoresponder is being enabled and that message is already set
     Security: Input for personal user data is not filtered or validated (all UI levels)
