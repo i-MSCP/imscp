@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Exception as iMSCPException;
+use iMSCP_Filter_Noop as NoopFilter;
 use Zend_Escaper_Escaper as Escaper;
 use Zend_Filter_Digits as FilterDigits;
 use Zend_Filter_Input as FilterInput;
@@ -360,15 +361,19 @@ function checkMimeType($pathFile, array $mimeTypes)
 /**
  * Get input filter for user personal data
  *
+ * @param $inputData Input data
  * @return FilterInput
  */
-function getUserPersonalDataInputFilter()
+function getUserPersonalDataInputFilter($inputData)
 {
     # TODO: Add appropriate validators (postcode, phone...)
     return new FilterInput(
-        ['*' => ['StripTags']],
         [
-            'fname'   => ['Alnums' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid first name.')],
+            '*'     => ['StripTags', 'StringTrim'],
+            'email' => ['stringToLower']
+        ],
+        [
+            'fname'   => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid first name.')],
             'lname'   => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid last name.')],
             'gender'  => [
                 new InArrayValidator(['haystack' => ['M', 'F', 'U'], 'strict' => true]),
@@ -383,11 +388,11 @@ function getUserPersonalDataInputFilter()
             'country' => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid country.')],
             'email'   => ['EmailAddress', FilterInput::MESSAGES => tr('Invalid email address.')],
             'phone'   => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid phone number.')],
-            'fax'     => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid fax number.')],
+            'fax'     => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid fax number.')]
         ],
-        $_POST,
+        $inputData,
         [
-            FilterInput::ESCAPE_FILTER => 'StringTrim',
+            FilterInput::ESCAPE_FILTER => new NoopFilter(),
             FilterInput::PRESENCE      => FilterInput::PRESENCE_REQUIRED,
             FilterInput::ALLOW_EMPTY   => true
         ]

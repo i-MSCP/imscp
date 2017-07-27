@@ -22,6 +22,7 @@ use iMSCP_Authentication_AuthEvent as AuthEvent;
 use iMSCP_Authentication_Result as AuthResult;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventManager;
+use iMSCP_Events_Event as Event;
 use iMSCP_Events_Manager_Interface as EventManagerInterface;
 
 /**
@@ -73,6 +74,16 @@ class iMSCP_Authentication
     {
         if (NULL === self::$instance) {
             self::$instance = new self;
+            self::$instance->getEventManager()->registerListener(Events::onAfterEditUser, function (Event $e) {
+                $auth = self::getInstance();
+                $identity = $auth->getIdentity();
+
+                if ($identity !== NULL && $e->getParam('userData')->email !== $identity->email) {
+                    $identity->email = $e->getParam('userData')->email;
+                    $auth->unsetIdentity();
+                    $auth->setIdentity($identity);
+                }
+            });
         }
 
         return self::$instance;

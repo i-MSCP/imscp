@@ -33,7 +33,7 @@ use iMSCP_pTemplate as TemplateEngine;
  */
 function updatePersonalData()
 {
-    $input = getUserPersonalDataInputFilter();
+    $input = getUserPersonalDataInputFilter($_POST);
 
     if (!$input->isValid()) {
         if ($input->hasMissing() || !$input->isValid('gender')) {
@@ -47,7 +47,10 @@ function updatePersonalData()
         return;
     }
 
-    EventsManager::getInstance()->dispatch(Events::onBeforeEditUser, ['userId' => $_SESSION['user_id']]);
+    EventsManager::getInstance()->dispatch(Events::onBeforeEditUser, [
+        'userId'   => $_SESSION['user_id'],
+        'userData' => $input
+    ]);
     exec_query(
         "
             UPDATE admin
@@ -57,11 +60,15 @@ function updatePersonalData()
         ",
         [
             $input->fname, $input->lname, $input->firm, $input->zip, $input->city, $input->state, $input->country,
-            $input->street1, $input->street2, $input->email, $input->phone, $input->fax, $input->gender,
+            $input->street1, $input->street2, encode_idna($input->email), $input->phone, $input->fax, $input->gender,
             $_SESSION['user_id']
         ]
     );
-    EventsManager::getInstance()->dispatch(Events::onAfterEditUser, ['userId' => $_SESSION['user_id']]);
+    EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
+        'userId'   => $_SESSION['user_id'],
+        'userData' => $input
+
+    ]);
     set_page_message(tr('Personal data successfully updated.'), 'success');
     redirectTo('personal_change.php');
 }
@@ -102,7 +109,7 @@ function generatePage(TemplateEngine $tpl)
         'CITY'       => tohtml($data['city'], 'htmlAttr'),
         'STATE'      => tohtml($data['state'], 'htmlAttr'),
         'COUNTRY'    => tohtml($data['country'], 'htmlAttr'),
-        'EMAIL'      => tohtml($data['email'], 'htmlAttr'),
+        'EMAIL'      => tohtml(decode_idna($data['email']), 'htmlAttr'),
         'PHONE'      => tohtml($data['phone'], 'htmlAttr'),
         'FAX'        => tohtml($data['fax'], 'htmlAttr')
     ]);
