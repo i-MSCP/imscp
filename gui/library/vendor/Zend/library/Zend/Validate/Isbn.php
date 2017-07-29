@@ -43,10 +43,10 @@ class Zend_Validate_Isbn extends Zend_Validate_Abstract
      *
      * @var array
      */
-    protected $_messageTemplates = [
+    protected $_messageTemplates = array(
         self::INVALID => "Invalid type given. String or integer expected",
         self::NO_ISBN => "'%value%' is not a valid ISBN number",
-    ];
+    );
 
     /**
      * Allowed type.
@@ -68,7 +68,7 @@ class Zend_Validate_Isbn extends Zend_Validate_Abstract
      * @param  Zend_Config|array $options
      * @throws Zend_Validate_Exception When $options is not valid
      */
-    public function __construct($options = [])
+    public function __construct($options = array())
     {
         // prepare options
         if ($options instanceof Zend_Config) {
@@ -102,8 +102,8 @@ class Zend_Validate_Isbn extends Zend_Validate_Abstract
     {
         // prepare separator and pattern list
         $sep      = quotemeta($this->_separator);
-        $patterns = [];
-        $lengths  = [];
+        $patterns = array();
+        $lengths  = array();
 
         // check for ISBN-10
         if ($this->_type == self::ISBN10 || $this->_type == self::AUTO) {
@@ -222,7 +222,7 @@ class Zend_Validate_Isbn extends Zend_Validate_Abstract
     public function setSeparator($separator)
     {
         // check separator
-        if (!in_array($separator, ['-', ' ', ''])) {
+        if (!in_array($separator, array('-', ' ', ''))) {
             /**
              * @see Zend_Validate_Exception
              */
@@ -254,7 +254,7 @@ class Zend_Validate_Isbn extends Zend_Validate_Abstract
     public function setType($type)
     {
         // check type
-        if (!in_array($type, [self::AUTO, self::ISBN10, self::ISBN13])) {
+        if (!in_array($type, array(self::AUTO, self::ISBN10, self::ISBN13))) {
             /**
              * @see Zend_Validate_Exception
              */

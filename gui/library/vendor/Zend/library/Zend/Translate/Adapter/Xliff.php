@@ -42,7 +42,7 @@ class Zend_Translate_Adapter_Xliff extends Zend_Translate_Adapter {
     // Internal variables
     private $_file        = false;
     private $_useId       = true;
-    private $_cleared     = [];
+    private $_cleared     = array();
     private $_transunit   = null;
     private $_source      = null;
     private $_target      = null;
@@ -51,7 +51,7 @@ class Zend_Translate_Adapter_Xliff extends Zend_Translate_Adapter {
     private $_tcontent    = null;
     private $_stag        = false;
     private $_ttag        = false;
-    private $_data        = [];
+    private $_data        = array();
 
     /**
      * Load translation data (XLIFF file reader)
@@ -63,9 +63,9 @@ class Zend_Translate_Adapter_Xliff extends Zend_Translate_Adapter {
      * @throws Zend_Translation_Exception
      * @return array
      */
-    protected function _loadTranslationData($filename, $locale, array $options = [])
+    protected function _loadTranslationData($filename, $locale, array $options = array())
     {
-        $this->_data = [];
+        $this->_data = array();
         if (!is_readable($filename)) {
             require_once 'Zend/Translate/Exception.php';
             throw new Zend_Translate_Exception('Translation file \'' . $filename . '\' is not readable.');
@@ -130,11 +130,11 @@ class Zend_Translate_Adapter_Xliff extends Zend_Translate_Adapter {
                     }
 
                     if (!isset($this->_data[$this->_source])) {
-                        $this->_data[$this->_source] = [];
+                        $this->_data[$this->_source] = array();
                     }
 
                     if (!isset($this->_data[$this->_target])) {
-                        $this->_data[$this->_target] = [];
+                        $this->_data[$this->_target] = array();
                     }
 
                     break;

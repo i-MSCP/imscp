@@ -264,7 +264,7 @@ class Zend_Loader
                 throw new Zend_Exception("The class \"$class\" does not have an autoload() method");
             }
 
-            $callback = [$class, 'autoload'];
+            $callback = array($class, 'autoload');
 
             if ($enabled) {
                 $autoloader->pushAutoloader($callback);

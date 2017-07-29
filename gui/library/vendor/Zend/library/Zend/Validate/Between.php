@@ -47,20 +47,20 @@ class Zend_Validate_Between extends Zend_Validate_Abstract
      *
      * @var array
      */
-    protected $_messageTemplates = [
+    protected $_messageTemplates = array(
         self::NOT_BETWEEN        => "'%value%' is not between '%min%' and '%max%', inclusively",
         self::NOT_BETWEEN_STRICT => "'%value%' is not strictly between '%min%' and '%max%'"
-    ];
+    );
 
     /**
      * Additional variables available for validation failure messages
      *
      * @var array
      */
-    protected $_messageVariables = [
+    protected $_messageVariables = array(
         'min' => '_min',
         'max' => '_max'
-    ];
+    );
 
     /**
      * Minimum value

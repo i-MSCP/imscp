@@ -75,7 +75,7 @@ class Zend_Cache_Backend_BlackHole
      * @param  int    $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
      * @return boolean true if no problem
      */
-    public function save($data, $id, $tags = [], $specificLifetime = false)
+    public function save($data, $id, $tags = array(), $specificLifetime = false)
     {
         return true;
     }
@@ -108,7 +108,7 @@ class Zend_Cache_Backend_BlackHole
      * @param  tags array $tags array of tags
      * @return boolean true if no problem
      */
-    public function clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = [])
+    public function clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = array())
     {
         return true;
     }
@@ -120,7 +120,7 @@ class Zend_Cache_Backend_BlackHole
      */
     public function getIds()
     {
-        return [];
+        return array();
     }
 
     /**
@@ -130,7 +130,7 @@ class Zend_Cache_Backend_BlackHole
      */
     public function getTags()
     {
-        return [];
+        return array();
     }
 
     /**
@@ -141,9 +141,9 @@ class Zend_Cache_Backend_BlackHole
      * @param array $tags array of tags
      * @return array array of matching cache ids (string)
      */
-    public function getIdsMatchingTags($tags = [])
+    public function getIdsMatchingTags($tags = array())
     {
-        return [];
+        return array();
     }
 
     /**
@@ -154,9 +154,9 @@ class Zend_Cache_Backend_BlackHole
      * @param array $tags array of tags
      * @return array array of not matching cache ids (string)
      */
-    public function getIdsNotMatchingTags($tags = [])
+    public function getIdsNotMatchingTags($tags = array())
     {
-        return [];
+        return array();
     }
 
     /**
@@ -167,9 +167,9 @@ class Zend_Cache_Backend_BlackHole
      * @param  array $tags array of tags
      * @return array array of any matching cache ids (string)
      */
-    public function getIdsMatchingAnyTags($tags = [])
+    public function getIdsMatchingAnyTags($tags = array())
     {
-        return [];
+        return array();
     }
 
     /**
@@ -227,14 +227,14 @@ class Zend_Cache_Backend_BlackHole
      */
     public function getCapabilities()
     {
-        return [
+        return array(
             'automatic_cleaning' => true,
             'tags'               => true,
             'expired_read'       => true,
             'priority'           => true,
             'infinite_lifetime'  => true,
             'get_list'           => true,
-        ];
+        );
     }
 
     /**

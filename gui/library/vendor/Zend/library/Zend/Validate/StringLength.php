@@ -39,19 +39,19 @@ class Zend_Validate_StringLength extends Zend_Validate_Abstract
     /**
      * @var array
      */
-    protected $_messageTemplates = [
+    protected $_messageTemplates = array(
         self::INVALID   => "Invalid type given. String expected",
         self::TOO_SHORT => "'%value%' is less than %min% characters long",
         self::TOO_LONG  => "'%value%' is more than %max% characters long",
-    ];
+    );
 
     /**
      * @var array
      */
-    protected $_messageVariables = [
+    protected $_messageVariables = array(
         'min' => '_min',
         'max' => '_max'
-    ];
+    );
 
     /**
      * Minimum length
@@ -81,7 +81,7 @@ class Zend_Validate_StringLength extends Zend_Validate_Abstract
      *
      * @param integer|array|Zend_Config $options
      */
-    public function __construct($options = [])
+    public function __construct($options = array())
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();

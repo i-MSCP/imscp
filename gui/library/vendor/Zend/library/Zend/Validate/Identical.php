@@ -41,17 +41,17 @@ class Zend_Validate_Identical extends Zend_Validate_Abstract
      * Error messages
      * @var array
      */
-    protected $_messageTemplates = [
+    protected $_messageTemplates = array(
         self::NOT_SAME      => "The two given tokens do not match",
         self::MISSING_TOKEN => 'No token was provided to match against',
-    ];
+    );
 
     /**
      * @var array
      */
-    protected $_messageVariables = [
+    protected $_messageVariables = array(
         'token' => '_tokenString'
-    ];
+    );
 
     /**
      * Original token against which to validate

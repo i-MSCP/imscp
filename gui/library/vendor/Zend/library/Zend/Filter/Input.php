@@ -69,50 +69,50 @@ class Zend_Filter_Input
     /**
      * @var array Input data, before processing.
      */
-    protected $_data = [];
+    protected $_data = array();
 
     /**
      * @var array Association of rules to filters.
      */
-    protected $_filterRules = [];
+    protected $_filterRules = array();
 
     /**
      * @var array Association of rules to validators.
      */
-    protected $_validatorRules = [];
+    protected $_validatorRules = array();
 
     /**
      * @var array After processing data, this contains mapping of valid fields
      * to field values.
      */
-    protected $_validFields = [];
+    protected $_validFields = array();
 
     /**
      * @var array After processing data, this contains mapping of validation
      * rules that did not pass validation to the array of messages returned
      * by the validator chain.
      */
-    protected $_invalidMessages = [];
+    protected $_invalidMessages = array();
 
     /**
      * @var array After processing data, this contains mapping of validation
      * rules that did not pass validation to the array of error identifiers
      * returned by the validator chain.
      */
-    protected $_invalidErrors = [];
+    protected $_invalidErrors = array();
 
     /**
      * @var array After processing data, this contains mapping of validation
      * rules in which some fields were missing to the array of messages
      * indicating which fields were missing.
      */
-    protected $_missingFields = [];
+    protected $_missingFields = array();
 
     /**
      * @var array After processing, this contains a copy of $_data elements
      * that were not mentioned in any validation rule.
      */
-    protected $_unknownFields = [];
+    protected $_unknownFields = array();
 
     /**
      * @var Zend_Filter_Interface The filter object that is run on values
@@ -124,19 +124,19 @@ class Zend_Filter_Input
      * Plugin loaders
      * @var array
      */
-    protected $_loaders = [];
+    protected $_loaders = array();
 
     /**
      * @var array Default values to use when processing filters and validators.
      */
-    protected $_defaults = [
+    protected $_defaults = array(
         self::ALLOW_EMPTY         => false,
         self::BREAK_CHAIN         => false,
         self::ESCAPE_FILTER       => 'HtmlEntities',
         self::MISSING_MESSAGE     => "Field '%field%' is required by rule '%rule%', but the field is missing",
         self::NOT_EMPTY_MESSAGE   => "You must give a non-empty value for field '%field%'",
         self::PRESENCE            => self::PRESENCE_OPTIONAL
-    ];
+    );
 
     /**
      * @var boolean Set to False initially, this is set to True after the
@@ -184,7 +184,7 @@ class Zend_Filter_Input
     public function addNamespace($namespaces)
     {
         if (!is_array($namespaces)) {
-            $namespaces = [$namespaces];
+            $namespaces = array($namespaces);
         }
 
         foreach ($namespaces as $namespace) {
@@ -283,7 +283,7 @@ class Zend_Filter_Input
 
             require_once 'Zend/Loader/PluginLoader.php';
             $this->_loaders[$type] = new Zend_Loader_PluginLoader(
-                [$prefixSegment => $pathSegment]
+                array($prefixSegment => $pathSegment)
             );
         }
 
@@ -486,11 +486,11 @@ class Zend_Filter_Input
         /**
          * Reset to initial state
          */
-        $this->_validFields = [];
-        $this->_invalidMessages = [];
-        $this->_invalidErrors = [];
-        $this->_missingFields = [];
-        $this->_unknownFields = [];
+        $this->_validFields = array();
+        $this->_invalidMessages = array();
+        $this->_invalidErrors = array();
+        $this->_missingFields = array();
+        $this->_unknownFields = array();
 
         $this->_processed = false;
 
@@ -531,7 +531,7 @@ class Zend_Filter_Input
                     break;
                 case self::VALIDATOR_NAMESPACE:
                     if(is_string($value)) {
-                        $value = [$value];
+                        $value = array($value);
                     }
 
                     foreach($value AS $prefix) {
@@ -543,7 +543,7 @@ class Zend_Filter_Input
                     break;
                 case self::FILTER_NAMESPACE:
                     if(is_string($value)) {
-                        $value = [$value];
+                        $value = array($value);
                     }
 
                     foreach($value AS $prefix) {
@@ -653,14 +653,14 @@ class Zend_Filter_Input
              * Don't typecast to (array) because it might be a Zend_Filter object
              */
             if (!is_array($filterRule)) {
-                $filterRule = [$filterRule];
+                $filterRule = array($filterRule);
             }
 
             /**
              * Filters are indexed by integer, metacommands are indexed by string.
              * Pick out the filters.
              */
-            $filterList = [];
+            $filterList = array();
             foreach ($filterRule as $key => $value) {
                 if (is_int($key)) {
                     $filterList[] = $value;
@@ -695,7 +695,7 @@ class Zend_Filter_Input
              */
             if ($ruleName == self::RULE_WILDCARD) {
                 foreach (array_keys($this->_data) as $field)  {
-                    $this->_filterRule(array_merge($filterRule, [self::FIELDS => $field]));
+                    $this->_filterRule(array_merge($filterRule, array(self::FIELDS => $field)));
                 }
             } else {
                 $this->_filterRule($filterRule);
@@ -798,7 +798,7 @@ class Zend_Filter_Input
          */
         if (!$this->_validatorRules) {
             $this->_validFields = $this->_data;
-            $this->_data = [];
+            $this->_data = array();
             return;
         }
         
@@ -811,14 +811,14 @@ class Zend_Filter_Input
              * Don't typecast to (array) because it might be a Zend_Validate object
              */
             if (!is_array($validatorRule)) {
-                $validatorRule = [$validatorRule];
+                $validatorRule = array($validatorRule);
             }
 
             /**
              * Validators are indexed by integer, metacommands are indexed by string.
              * Pick out the validators.
              */
-            $validatorList = [];
+            $validatorList = array();
             foreach ($validatorRule as $key => $value) {
                 if (is_int($key)) {
                     $validatorList[$key] = $value;
@@ -882,16 +882,16 @@ class Zend_Filter_Input
             }
 
             if (!isset($validatorRule[self::MESSAGES])) {
-                $validatorRule[self::MESSAGES] = [];
+                $validatorRule[self::MESSAGES] = array();
             } else if (!is_array($validatorRule[self::MESSAGES])) {
-                $validatorRule[self::MESSAGES] = [$validatorRule[self::MESSAGES]];
+                $validatorRule[self::MESSAGES] = array($validatorRule[self::MESSAGES]);
             } else if (array_intersect_key($validatorList, $validatorRule[self::MESSAGES])) {
                 // this seems pointless... it just re-adds what it already has...
                 // I can disable all this and not a single unit test fails...
                 // There are now corresponding numeric keys in the validation rule messages array
                 // Treat it as a named messages list for all rule validators
                 $unifiedMessages = $validatorRule[self::MESSAGES];
-                $validatorRule[self::MESSAGES] = [];
+                $validatorRule[self::MESSAGES] = array();
 
                 foreach ($validatorList as $key => $validator) {
                     if (array_key_exists($key, $unifiedMessages)) {
@@ -946,7 +946,7 @@ class Zend_Filter_Input
              */
             if ($ruleName == self::RULE_WILDCARD) {
                 foreach (array_keys($this->_data) as $field)  {
-                    $this->_validateRule(array_merge($validatorRule, [self::FIELDS => $field]));
+                    $this->_validateRule(array_merge($validatorRule, array(self::FIELDS => $field)));
                 }
             } else {
                 $this->_validateRule($validatorRule);
@@ -988,7 +988,7 @@ class Zend_Filter_Input
          * Get one or more data values from input, and check for missing fields.
          * Apply defaults if fields are missing.
          */
-        $data = [];
+        $data = array();
         foreach ((array) $validatorRule[self::FIELDS] as $key => $field) {
             if (array_key_exists($field, $this->_data)) {
                 $data[$field] = $this->_data[$field];
@@ -1027,8 +1027,8 @@ class Zend_Filter_Input
         if (count((array) $validatorRule[self::FIELDS]) > 1) {
             if (!$validatorRule[self::ALLOW_EMPTY]) {
                 $emptyFieldsFound = false;
-                $errorsList       = [];
-                $messages         = [];
+                $errorsList       = array();
+                $messages         = array();
 
                 foreach ($data as $fieldKey => $field) {
                     // if there is no Zend_Validate_NotEmpty instance in the rules, we will use the default
@@ -1070,7 +1070,7 @@ class Zend_Filter_Input
 
             $failed = false;
             if (!is_array($field)) {
-                $field = [$field];
+                $field = array($field);
             }
 
             // if there is no Zend_Validate_NotEmpty instance in the rules, we will use the default
@@ -1097,7 +1097,7 @@ class Zend_Filter_Input
                     if (isset($this->_invalidMessages[$validatorRule[self::RULE]])) {
                         $collectedMessages = $this->_invalidMessages[$validatorRule[self::RULE]];
                     } else {
-                        $collectedMessages = [];
+                        $collectedMessages = array();
                     }
 
                     foreach ($validatorChain->getMessages() as $messageKey => $message) {
@@ -1180,7 +1180,7 @@ class Zend_Filter_Input
      */
     protected function _getFilterOrValidator($type, $classBaseName)
     {
-        $args = [];
+        $args = array();
 
         if (is_array($classBaseName)) {
             $args = $classBaseName;

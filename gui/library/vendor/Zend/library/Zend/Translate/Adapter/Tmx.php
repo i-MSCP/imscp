@@ -47,7 +47,7 @@ class Zend_Translate_Adapter_Tmx extends Zend_Translate_Adapter {
     private $_tuv     = null;
     private $_seg     = null;
     private $_content = null;
-    private $_data    = [];
+    private $_data    = array();
 
     /**
      * Load translation data (TMX file reader)
@@ -59,9 +59,9 @@ class Zend_Translate_Adapter_Tmx extends Zend_Translate_Adapter {
      * @throws Zend_Translation_Exception
      * @return array
      */
-    protected function _loadTranslationData($filename, $locale, array $options = [])
+    protected function _loadTranslationData($filename, $locale, array $options = array())
     {
-        $this->_data = [];
+        $this->_data = array();
         if (!is_readable($filename)) {
             require_once 'Zend/Translate/Exception.php';
             throw new Zend_Translate_Exception('Translation file \'' . $filename . '\' is not readable.');
@@ -156,7 +156,7 @@ class Zend_Translate_Adapter_Tmx extends Zend_Translate_Adapter {
                         }
 
                         if (!isset($this->_data[$this->_tuv])) {
-                            $this->_data[$this->_tuv] = [];
+                            $this->_data[$this->_tuv] = array();
                         }
                     }
                     break;

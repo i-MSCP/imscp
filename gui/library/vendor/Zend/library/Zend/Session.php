@@ -90,7 +90,7 @@ class Zend_Session extends Zend_Session_Abstract
      *
      * @var array
      */
-    private static $_defaultOptions = [
+    private static $_defaultOptions = array(
         'save_path'                 => null,
         'name'                      => null, /* this should be set to a unique value for each application */
         'save_handler'              => null,
@@ -116,7 +116,7 @@ class Zend_Session extends Zend_Session_Abstract
         'bug_compat_warn'           => null,
         'hash_function'             => null,
         'hash_bits_per_character'   => null
-    ];
+    );
 
     /**
      * List of options pertaining to Zend_Session that can be set by developers
@@ -125,11 +125,11 @@ class Zend_Session extends Zend_Session_Abstract
      *
      * @var array
      */
-    private static $_localOptions = [
+    private static $_localOptions = array(
         'strict'                => '_strict',
         'remember_me_seconds'   => '_rememberMeSeconds',
         'throw_startup_exceptions' => '_throwStartupExceptions'
-    ];
+    );
 
     /**
      * Whether or not write close has been performed.
@@ -196,7 +196,7 @@ class Zend_Session extends Zend_Session_Abstract
      * @throws Zend_Session_Exception
      * @return void
      */
-    public static function setOptions(array $userOptions = [])
+    public static function setOptions(array $userOptions = array())
     {
         // set default options on first run only (before applying user settings)
         if (!self::$_defaultOptionsSet) {
@@ -237,7 +237,7 @@ class Zend_Session extends Zend_Session_Abstract
      */
     public static function getOptions($optionName = null)
     {
-        $options = [];
+        $options = array();
         foreach (ini_get_all('session') as $sysOptionName => $sysOptionValues) {
             $options[substr($sysOptionName, 8)] = $sysOptionValues['local_value'];
         }
@@ -271,12 +271,12 @@ class Zend_Session extends Zend_Session_Abstract
         }
 
         $result = session_set_save_handler(
-            [&$saveHandler, 'open'],
-            [&$saveHandler, 'close'],
-            [&$saveHandler, 'read'],
-            [&$saveHandler, 'write'],
-            [&$saveHandler, 'destroy'],
-            [&$saveHandler, 'gc']
+            array(&$saveHandler, 'open'),
+            array(&$saveHandler, 'close'),
+            array(&$saveHandler, 'read'),
+            array(&$saveHandler, 'write'),
+            array(&$saveHandler, 'destroy'),
+            array(&$saveHandler, 'gc')
             );
 
         if (!$result) {
@@ -439,7 +439,7 @@ class Zend_Session extends Zend_Session_Abstract
 
         // make sure our default options (at the least) have been set
         if (!self::$_defaultOptionsSet) {
-            self::setOptions(is_array($options) ? $options : []);
+            self::setOptions(is_array($options) ? $options : array());
         }
 
         // In strict mode, do not allow auto-starting Zend_Session, such as via "new Zend_Session_Namespace()"
@@ -476,7 +476,7 @@ class Zend_Session extends Zend_Session_Abstract
 
             if (self::$_throwStartupExceptions) {
                 require_once 'Zend/Session/Exception.php';
-                set_error_handler(['Zend_Session_Exception', 'handleSessionStartError'], $errorLevel);
+                set_error_handler(array('Zend_Session_Exception', 'handleSessionStartError'), $errorLevel);
             }
 
             $startedCleanly = session_start();
@@ -487,7 +487,7 @@ class Zend_Session extends Zend_Session_Abstract
 
             if (!$startedCleanly || Zend_Session_Exception::$sessionStartError != null) {
                 if (self::$_throwStartupExceptions) {
-                    set_error_handler(['Zend_Session_Exception', 'handleSilentWriteClose'], $errorLevel);
+                    set_error_handler(array('Zend_Session_Exception', 'handleSilentWriteClose'), $errorLevel);
                 }
                 session_write_close();
                 if (self::$_throwStartupExceptions) {
@@ -873,7 +873,7 @@ class Zend_Session extends Zend_Session_Abstract
             throw new Zend_Session_Exception(parent::_THROW_NOT_READABLE_MSG);
         }
 
-        $spaces  = [];
+        $spaces  = array();
         if (isset($_SESSION)) {
             $spaces = array_keys($_SESSION);
             foreach($spaces as $key => $space) {

@@ -79,7 +79,7 @@ class Zend_Config_Writer_Json extends Zend_Config_Writer_FileAbstract
         $extends     = $this->_config->getExtends();
 
         if (is_string($sectionName)) {
-            $data = [$sectionName => $data];
+            $data = array($sectionName => $data);
         }
 
         foreach ($extends as $section => $parentSection) {

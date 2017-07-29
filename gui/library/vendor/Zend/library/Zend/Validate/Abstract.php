@@ -44,21 +44,21 @@ abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
      *
      * @var array
      */
-    protected $_messageVariables = [];
+    protected $_messageVariables = array();
 
     /**
      * Validation failure message template definitions
      *
      * @var array
      */
-    protected $_messageTemplates = [];
+    protected $_messageTemplates = array();
 
     /**
      * Array of validation failure messages
      *
      * @var array
      */
-    protected $_messages = [];
+    protected $_messages = array();
 
     /**
      * Flag indidcating whether or not value should be obfuscated in error
@@ -73,7 +73,7 @@ abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
      * @var array
      * @deprecated Since 1.5.0
      */
-    protected $_errors = [];
+    protected $_errors = array();
 
     /**
      * Translation object
@@ -264,7 +264,7 @@ abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
      */
     protected function _implodeRecursive(array $pieces)
     {
-        $values = [];
+        $values = array();
         foreach ($pieces as $item) {
             if (is_array($item)) {
                 $values[] = $this->_implodeRecursive($item);
@@ -303,8 +303,8 @@ abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
     protected function _setValue($value)
     {
         $this->_value    = $value;
-        $this->_messages = [];
-        $this->_errors   = [];
+        $this->_messages = array();
+        $this->_errors   = array();
     }
 
     /**

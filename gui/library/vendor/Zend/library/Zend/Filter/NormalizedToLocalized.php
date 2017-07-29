@@ -42,11 +42,11 @@ class Zend_Filter_NormalizedToLocalized implements Zend_Filter_Interface
     /**
      * Set options
      */
-    protected $_options = [
+    protected $_options = array(
         'locale'      => null,
         'date_format' => null,
         'precision'   => null
-    ];
+    );
 
     /**
      * Class constructor

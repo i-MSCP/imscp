@@ -44,21 +44,21 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      *
      * @var array available options
      */
-    protected $_options = [];
+    protected $_options = array();
 
     /**
      * Frontend or Core directives
      *
      * @var array directives
      */
-    protected $_directives = [];
+    protected $_directives = array();
 
     /**
      * Array to log actions
      *
      * @var array $_log
      */
-    private $_log = [];
+    private $_log = array();
 
     /**
      * Current index for log array
@@ -73,9 +73,9 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      * @param  array $options associative array of options
      * @return void
      */
-    public function __construct($options = [])
+    public function __construct($options = array())
     {
-        $this->_addLog('construct', [$options]);
+        $this->_addLog('construct', array($options));
     }
 
     /**
@@ -86,7 +86,7 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      */
     public function setDirectives($directives)
     {
-        $this->_addLog('setDirectives', [$directives]);
+        $this->_addLog('setDirectives', array($directives));
     }
 
     /**
@@ -102,7 +102,7 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      */
     public function load($id, $doNotTestCacheValidity = false)
     {
-        $this->_addLog('get', [$id, $doNotTestCacheValidity]);
+        $this->_addLog('get', array($id, $doNotTestCacheValidity));
 
         if ( $id == 'false'
           || $id == 'd8523b3ee441006261eeffa5c3d3a0a7'
@@ -115,18 +115,18 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
             return false;
         }
         if ($id=='serialized') {
-            return serialize(['foo']);
+            return serialize(array('foo'));
         }
         if ($id=='serialized2') {
-            return serialize(['headers' => [], 'data' => 'foo']);
+            return serialize(array('headers' => array(), 'data' => 'foo'));
         }
         if ( $id == '71769f39054f75894288e397df04e445' || $id == '615d222619fb20b527168340cebd0578'
           || $id == '8a02d218a5165c467e7a5747cc6bd4b6' || $id == '648aca1366211d17cbf48e65dc570bee'
           || $id == '4a923ef02d7f997ca14d56dfeae25ea7') {
-            return serialize(['foo', 'bar']);
+            return serialize(array('foo', 'bar'));
         }
         if ( $id == 'f53c7d912cc523d9a65834c8286eceb9') {
-            return serialize(['foobar']);
+            return serialize(array('foobar'));
         }
         return 'foo';
     }
@@ -142,7 +142,7 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      */
     public function test($id)
     {
-        $this->_addLog('test', [$id]);
+        $this->_addLog('test', array($id));
         if ($id=='false') {
             return false;
         }
@@ -164,9 +164,9 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      * @param  int    $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
      * @return boolean True if no problem
      */
-    public function save($data, $id, $tags = [], $specificLifetime = false)
+    public function save($data, $id, $tags = array(), $specificLifetime = false)
     {
-        $this->_addLog('save', [$data, $id, $tags]);
+        $this->_addLog('save', array($data, $id, $tags));
         if (substr($id,-5)=='false') {
             return false;
         }
@@ -184,7 +184,7 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      */
     public function remove($id)
     {
-        $this->_addLog('remove', [$id]);
+        $this->_addLog('remove', array($id));
         if (substr($id,-5)=='false') {
             return false;
         }
@@ -209,9 +209,9 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      * @param  array  $tags Array of tags
      * @return boolean True if no problem
      */
-    public function clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = [])
+    public function clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = array())
     {
-        $this->_addLog('clean', [$mode, $tags]);
+        $this->_addLog('clean', array($mode, $tags));
         if ($mode=='false') {
             return false;
         }
@@ -265,9 +265,9 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      */
     public function getIds()
     {
-        return [
+        return array(
             'prefix_id1', 'prefix_id2'
-        ];
+        );
     }
 
     /**
@@ -277,9 +277,9 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      */
     public function getTags()
     {
-        return [
+        return array(
             'tag1', 'tag2'
-        ];
+        );
     }
 
     /**
@@ -290,13 +290,13 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      * @param array $tags array of tags
      * @return array array of matching cache ids (string)
      */
-    public function getIdsMatchingTags($tags = [])
+    public function getIdsMatchingTags($tags = array())
     {
-        if ($tags == ['tag1', 'tag2']) {
-            return ['prefix_id1', 'prefix_id2'];
+        if ($tags == array('tag1', 'tag2')) {
+            return array('prefix_id1', 'prefix_id2');
         }
 
-        return [];
+        return array();
     }
 
     /**
@@ -307,13 +307,13 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      * @param array $tags array of tags
      * @return array array of not matching cache ids (string)
      */
-    public function getIdsNotMatchingTags($tags = [])
+    public function getIdsNotMatchingTags($tags = array())
     {
-        if ($tags == ['tag3', 'tag4']) {
-            return ['prefix_id3', 'prefix_id4'];
+        if ($tags == array('tag3', 'tag4')) {
+            return array('prefix_id3', 'prefix_id4');
         }
 
-        return [];
+        return array();
     }
 
     /**
@@ -324,13 +324,13 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      * @param array $tags array of tags
      * @return array array of any matching cache ids (string)
      */
-    public function getIdsMatchingAnyTags($tags = [])
+    public function getIdsMatchingAnyTags($tags = array())
     {
-        if ($tags == ['tag5', 'tag6']) {
-            return ['prefix_id5', 'prefix_id6'];
+        if ($tags == array('tag5', 'tag6')) {
+            return array('prefix_id5', 'prefix_id6');
         }
 
-        return [];
+        return array();
     }
 
     /**
@@ -387,14 +387,14 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      */
     public function getCapabilities()
     {
-        return [
+        return array(
             'automatic_cleaning' => true,
             'tags'               => true,
             'expired_read'       => false,
             'priority'           => true,
             'infinite_lifetime'  => true,
             'get_list'           => true
-        ];
+        );
     }
 
     /**
@@ -406,10 +406,10 @@ class Zend_Cache_Backend_Test extends Zend_Cache_Backend implements Zend_Cache_B
      */
     private function _addLog($methodName, $args)
     {
-        $this->_log[$this->_index] = [
+        $this->_log[$this->_index] = array(
             'methodName' => $methodName,
             'args' => $args
-        ];
+        );
         $this->_index = $this->_index + 1;
     }
 

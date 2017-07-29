@@ -38,16 +38,16 @@ class Zend_Validate_GreaterThan extends Zend_Validate_Abstract
     /**
      * @var array
      */
-    protected $_messageTemplates = [
+    protected $_messageTemplates = array(
         self::NOT_GREATER => "'%value%' is not greater than '%min%'",
-    ];
+    );
 
     /**
      * @var array
      */
-    protected $_messageVariables = [
+    protected $_messageVariables = array(
         'min' => '_min'
-    ];
+    );
 
     /**
      * Minimum value

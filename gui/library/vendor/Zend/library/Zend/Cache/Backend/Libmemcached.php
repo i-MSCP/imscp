@@ -71,14 +71,14 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
      *
      * @var array available options
      */
-    protected $_options = [
-        'servers' => [[
+    protected $_options = array(
+        'servers' => array(array(
             'host'   => self::DEFAULT_HOST,
             'port'   => self::DEFAULT_PORT,
             'weight' => self::DEFAULT_WEIGHT,
-        ]],
-        'client' => []
-    ];
+        )),
+        'client' => array()
+    );
 
     /**
      * Memcached object
@@ -94,18 +94,18 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
      * @throws Zend_Cache_Exception
      * @return void
      */
-    public function __construct(array $options = [])
+    public function __construct(array $options = array())
     {
         if (!extension_loaded('memcached')) {
             Zend_Cache::throwException('The memcached extension must be loaded for using this backend !');
         }
 
         // override default client options
-        $this->_options['client'] = [
+        $this->_options['client'] = array(
             Memcached::OPT_DISTRIBUTION         => Memcached::DISTRIBUTION_CONSISTENT,
             Memcached::OPT_HASH                 => Memcached::HASH_MD5,
             Memcached::OPT_LIBKETAMA_COMPATIBLE => true,
-        ];
+        );
 
         parent::__construct($options);
 
@@ -113,7 +113,7 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
             $value = $this->_options['servers'];
             if (isset($value['host'])) {
                 // in this case, $value seems to be a simple associative array (one server only)
-                $value = [0 => $value]; // let's transform it into a classical array of associative arrays
+                $value = array(0 => $value); // let's transform it into a classical array of associative arrays
             }
             $this->setOption('servers', $value);
         }
@@ -140,7 +140,7 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
         }
 
         // setup memcached servers
-        $servers = [];
+        $servers = array();
         foreach ($this->_options['servers'] as $server) {
             if (!array_key_exists('port', $server)) {
                 $server['port'] = self::DEFAULT_PORT;
@@ -149,7 +149,7 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
                 $server['weight'] = self::DEFAULT_WEIGHT;
             }
 
-            $servers[] = [$server['host'], $server['port'], $server['weight']];
+            $servers[] = array($server['host'], $server['port'], $server['weight']);
         }
         $this->_memcache->addServers($servers);
     }
@@ -197,12 +197,12 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
      * @param  int    $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
      * @return boolean True if no problem
      */
-    public function save($data, $id, $tags = [], $specificLifetime = false)
+    public function save($data, $id, $tags = array(), $specificLifetime = false)
     {
         $lifetime = $this->getLifetime($specificLifetime);
 
         // ZF-8856: using set because add needs a second request if item already exists
-        $result = @$this->_memcache->set($id, [$data, time(), $lifetime], $lifetime);
+        $result = @$this->_memcache->set($id, array($data, time(), $lifetime), $lifetime);
         if ($result === false) {
             $rsCode = $this->_memcache->getResultCode();
             $rsMsg  = $this->_memcache->getResultMessage();
@@ -242,7 +242,7 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
      * @throws Zend_Cache_Exception
      * @return boolean True if no problem
      */
-    public function clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = [])
+    public function clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = array())
     {
         switch ($mode) {
             case Zend_Cache::CLEANING_MODE_ALL:
@@ -289,7 +289,7 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
         }
         if ($lifetime === null) {
             // #ZF-4614 : we tranform null to zero to get the maximal lifetime
-            parent::setDirectives(['lifetime' => 0]);
+            parent::setDirectives(array('lifetime' => 0));
         }
     }
 
@@ -301,7 +301,7 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
     public function getIds()
     {
         $this->_log("Zend_Cache_Backend_Libmemcached::save() : getting the list of cache ids is unsupported by the Libmemcached backend");
-        return [];
+        return array();
     }
 
     /**
@@ -312,7 +312,7 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
     public function getTags()
     {
         $this->_log(self::TAGS_UNSUPPORTED_BY_SAVE_OF_LIBMEMCACHED_BACKEND);
-        return [];
+        return array();
     }
 
     /**
@@ -323,10 +323,10 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
      * @param array $tags array of tags
      * @return array array of matching cache ids (string)
      */
-    public function getIdsMatchingTags($tags = [])
+    public function getIdsMatchingTags($tags = array())
     {
         $this->_log(self::TAGS_UNSUPPORTED_BY_SAVE_OF_LIBMEMCACHED_BACKEND);
-        return [];
+        return array();
     }
 
     /**
@@ -337,10 +337,10 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
      * @param array $tags array of tags
      * @return array array of not matching cache ids (string)
      */
-    public function getIdsNotMatchingTags($tags = [])
+    public function getIdsNotMatchingTags($tags = array())
     {
         $this->_log(self::TAGS_UNSUPPORTED_BY_SAVE_OF_LIBMEMCACHED_BACKEND);
-        return [];
+        return array();
     }
 
     /**
@@ -351,10 +351,10 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
      * @param array $tags array of tags
      * @return array array of any matching cache ids (string)
      */
-    public function getIdsMatchingAnyTags($tags = [])
+    public function getIdsMatchingAnyTags($tags = array())
     {
         $this->_log(self::TAGS_UNSUPPORTED_BY_SAVE_OF_LIBMEMCACHED_BACKEND);
-        return [];
+        return array();
     }
 
     /**
@@ -413,11 +413,11 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
             $data     = $tmp[0];
             $mtime    = $tmp[1];
             $lifetime = $tmp[2];
-            return [
+            return array(
                 'expire' => $mtime + $lifetime,
-                'tags' => [],
+                'tags' => array(),
                 'mtime' => $mtime
-            ];
+            );
         }
 
         return false;
@@ -442,8 +442,8 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
                 return false;
             }
             // #ZF-5702 : we try replace() first becase set() seems to be slower
-            if (!($result = $this->_memcache->replace($id, [$data, time(), $newLifetime], $newLifetime))) {
-                $result = $this->_memcache->set($id, [$data, time(), $newLifetime], $newLifetime);
+            if (!($result = $this->_memcache->replace($id, array($data, time(), $newLifetime), $newLifetime))) {
+                $result = $this->_memcache->set($id, array($data, time(), $newLifetime), $newLifetime);
                 if ($result === false) {
                     $rsCode = $this->_memcache->getResultCode();
                     $rsMsg  = $this->_memcache->getResultMessage();
@@ -471,14 +471,14 @@ class Zend_Cache_Backend_Libmemcached extends Zend_Cache_Backend implements Zend
      */
     public function getCapabilities()
     {
-        return [
+        return array(
             'automatic_cleaning' => false,
             'tags' => false,
             'expired_read' => false,
             'priority' => false,
             'infinite_lifetime' => false,
             'get_list' => false
-        ];
+        );
     }
 
 }

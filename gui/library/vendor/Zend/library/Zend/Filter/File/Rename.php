@@ -35,7 +35,7 @@ class Zend_Filter_File_Rename implements Zend_Filter_Interface
     /**
      * Internal array of array(source, target, overwrite)
      */
-    protected $_files = [];
+    protected $_files = array();
 
     /**
      * Class constructor
@@ -56,7 +56,7 @@ class Zend_Filter_File_Rename implements Zend_Filter_Interface
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
         } elseif (is_string($options)) {
-            $options = ['target' => $options];
+            $options = array('target' => $options);
         } elseif (!is_array($options)) {
             require_once 'Zend/Filter/Exception.php';
             throw new Zend_Filter_Exception('Invalid options argument provided to filter');
@@ -100,7 +100,7 @@ class Zend_Filter_File_Rename implements Zend_Filter_Interface
      */
     public function setFile($options)
     {
-        $this->_files = [];
+        $this->_files = array();
         $this->addFile($options);
 
         return $this;
@@ -120,7 +120,7 @@ class Zend_Filter_File_Rename implements Zend_Filter_Interface
     public function addFile($options)
     {
         if (is_string($options)) {
-            $options = ['target' => $options];
+            $options = array('target' => $options);
         } elseif (!is_array($options)) {
             require_once 'Zend/Filter/Exception.php';
             throw new Zend_Filter_Exception ('Invalid options to rename filter provided');
@@ -206,7 +206,7 @@ class Zend_Filter_File_Rename implements Zend_Filter_Interface
      * @return array
      */
     protected function _convertOptions($options) {
-        $files = [];
+        $files = array();
         foreach ($options as $key => $value) {
             if (is_array($value)) {
                 $this->_convertOptions($value);
@@ -272,7 +272,7 @@ class Zend_Filter_File_Rename implements Zend_Filter_Interface
      */
     protected function _getFileName($file)
     {
-        $rename = [];
+        $rename = array();
         foreach ($this->_files as $value) {
             if ($value['source'] == '*') {
                 if (!isset($rename['source'])) {

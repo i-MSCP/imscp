@@ -54,42 +54,42 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
      *
      * @var array
      */
-    protected $_loadedPluginPaths = [];
+    protected $_loadedPluginPaths = array();
 
     /**
      * Instance loaded plugins
      *
      * @var array
      */
-    protected $_loadedPlugins = [];
+    protected $_loadedPlugins = array();
 
     /**
      * Instance registry property
      *
      * @var array
      */
-    protected $_prefixToPaths = [];
+    protected $_prefixToPaths = array();
 
     /**
      * Statically loaded plugin path mappings
      *
      * @var array
      */
-    protected static $_staticLoadedPluginPaths = [];
+    protected static $_staticLoadedPluginPaths = array();
 
     /**
      * Statically loaded plugins
      *
      * @var array
      */
-    protected static $_staticLoadedPlugins = [];
+    protected static $_staticLoadedPlugins = array();
 
     /**
      * Static registry property
      *
      * @var array
      */
-    protected static $_staticPrefixToPaths = [];
+    protected static $_staticPrefixToPaths = array();
 
     /**
      * Whether to use a statically named registry for loading plugins
@@ -104,15 +104,15 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
      * @param array $prefixToPaths
      * @param string $staticRegistryName OPTIONAL
      */
-    public function __construct(Array $prefixToPaths = [], $staticRegistryName = null)
+    public function __construct(Array $prefixToPaths = array(), $staticRegistryName = null)
     {
         if (is_string($staticRegistryName) && !empty($staticRegistryName)) {
             $this->_useStaticRegistry = $staticRegistryName;
             if(!isset(self::$_staticPrefixToPaths[$staticRegistryName])) {
-                self::$_staticPrefixToPaths[$staticRegistryName] = [];
+                self::$_staticPrefixToPaths[$staticRegistryName] = array();
             }
             if(!isset(self::$_staticLoadedPlugins[$staticRegistryName])) {
-                self::$_staticLoadedPlugins[$staticRegistryName] = [];
+                self::$_staticLoadedPlugins[$staticRegistryName] = array();
             }
         }
 
@@ -164,7 +164,7 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
             self::$_staticPrefixToPaths[$this->_useStaticRegistry][$prefix][] = $path;
         } else {
             if (!isset($this->_prefixToPaths[$prefix])) {
-                $this->_prefixToPaths[$prefix] = [];
+                $this->_prefixToPaths[$prefix] = array();
             }
             if (!in_array($path, $this->_prefixToPaths[$prefix])) {
                 $this->_prefixToPaths[$prefix][] = $path;
@@ -233,9 +233,9 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
         }
 
         if ($this->_useStaticRegistry) {
-            self::$_staticPrefixToPaths[$this->_useStaticRegistry] = [];
+            self::$_staticPrefixToPaths[$this->_useStaticRegistry] = array();
         } else {
-            $this->_prefixToPaths = [];
+            $this->_prefixToPaths = array();
         }
 
         return true;

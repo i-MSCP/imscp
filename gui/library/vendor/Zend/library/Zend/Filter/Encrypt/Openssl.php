@@ -42,11 +42,11 @@ class Zend_Filter_Encrypt_Openssl implements Zend_Filter_Encrypt_Interface
      *     'envelope' => resulting envelope keys
      * )
      */
-    protected $_keys = [
-        'public'   => [],
-        'private'  => [],
-        'envelope' => []
-    ];
+    protected $_keys = array(
+        'public'   => array(),
+        'private'  => array(),
+        'envelope' => array()
+    );
 
     /**
      * Internal passphrase
@@ -81,7 +81,7 @@ class Zend_Filter_Encrypt_Openssl implements Zend_Filter_Encrypt_Interface
      *
      * @param string|array $options Options for this adapter
      */
-    public function __construct($options = [])
+    public function __construct($options = array())
     {
         if (!extension_loaded('openssl')) {
             require_once 'Zend/Filter/Exception.php';
@@ -93,7 +93,7 @@ class Zend_Filter_Encrypt_Openssl implements Zend_Filter_Encrypt_Interface
         }
 
         if (!is_array($options)) {
-            $options = ['public' => $options];
+            $options = array('public' => $options);
         }
 
         if (array_key_exists('passphrase', $options)) {
@@ -196,7 +196,7 @@ class Zend_Filter_Encrypt_Openssl implements Zend_Filter_Encrypt_Interface
                 }
             }
         } else {
-            $key = ['public' => $key];
+            $key = array('public' => $key);
         }
 
         return $this->_setKeys($key);
@@ -230,7 +230,7 @@ class Zend_Filter_Encrypt_Openssl implements Zend_Filter_Encrypt_Interface
                 }
             }
         } else {
-            $key = ['private' => $key];
+            $key = array('private' => $key);
         }
 
         if ($passphrase !== null) {
@@ -267,7 +267,7 @@ class Zend_Filter_Encrypt_Openssl implements Zend_Filter_Encrypt_Interface
                 }
             }
         } else {
-            $key = ['envelope' => $key];
+            $key = array('envelope' => $key);
         }
 
         return $this->_setKeys($key);
@@ -314,7 +314,7 @@ class Zend_Filter_Encrypt_Openssl implements Zend_Filter_Encrypt_Interface
     public function setCompression($compression)
     {
         if (is_string($this->_compression)) {
-            $compression = ['adapter' => $compression];
+            $compression = array('adapter' => $compression);
         }
 
         $this->_compression = $compression;
@@ -353,23 +353,23 @@ class Zend_Filter_Encrypt_Openssl implements Zend_Filter_Encrypt_Interface
      */
     public function encrypt($value)
     {
-        $encrypted     = [];
-        $encryptedkeys = [];
+        $encrypted     = array();
+        $encryptedkeys = array();
 
         if (count($this->_keys['public']) == 0) {
             require_once 'Zend/Filter/Exception.php';
             throw new Zend_Filter_Exception('Openssl can not encrypt without public keys');
         }
 
-        $keys         = [];
-        $fingerprints = [];
+        $keys         = array();
+        $fingerprints = array();
         $count        = -1;
         foreach($this->_keys['public'] as $key => $cert) {
             $keys[$key] = openssl_pkey_get_public($cert);
             if ($this->_package) {
                 $details = openssl_pkey_get_details($keys[$key]);
                 if ($details === false) {
-                    $details = ['key' => 'ZendFramework'];
+                    $details = array('key' => 'ZendFramework');
                 }
 
                 ++$count;

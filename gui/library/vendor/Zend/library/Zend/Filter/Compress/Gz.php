@@ -44,11 +44,11 @@ class Zend_Filter_Compress_Gz extends Zend_Filter_Compress_CompressAbstract
      *
      * @var array
      */
-    protected $_options = [
+    protected $_options = array(
         'level'   => 9,
         'mode'    => 'compress',
         'archive' => null,
-    ];
+    );
 
     /**
      * Class constructor

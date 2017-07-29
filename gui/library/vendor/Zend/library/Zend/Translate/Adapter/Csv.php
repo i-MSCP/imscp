@@ -35,14 +35,14 @@ require_once 'Zend/Translate/Adapter.php';
  */
 class Zend_Translate_Adapter_Csv extends Zend_Translate_Adapter
 {
-    private $_data    = [];
+    private $_data    = array();
 
     /**
      * Generates the adapter
      *
      * @param  array|Zend_Config $options Translation content
      */
-    public function __construct($options = [])
+    public function __construct($options = array())
     {
         $this->_options['delimiter'] = ";";
         $this->_options['length']    = 0;
@@ -52,7 +52,7 @@ class Zend_Translate_Adapter_Csv extends Zend_Translate_Adapter
             $options = $options->toArray();
         } else if (func_num_args() > 1) {
             $args               = func_get_args();
-            $options            = [];
+            $options            = array();
             $options['content'] = array_shift($args);
 
             if (!empty($args)) {
@@ -64,7 +64,7 @@ class Zend_Translate_Adapter_Csv extends Zend_Translate_Adapter
                 $options = array_merge($opt, $options);
             }
         } else if (!is_array($options)) {
-            $options = ['content' => $options];
+            $options = array('content' => $options);
         }
 
         parent::__construct($options);
@@ -79,9 +79,9 @@ class Zend_Translate_Adapter_Csv extends Zend_Translate_Adapter
      * @param  array         $option    OPTIONAL Options to use
      * @return array
      */
-    protected function _loadTranslationData($filename, $locale, array $options = [])
+    protected function _loadTranslationData($filename, $locale, array $options = array())
     {
-        $this->_data = [];
+        $this->_data = array();
         $options     = $options + $this->_options;
         $this->_file = @fopen($filename, 'rb');
         if (!$this->_file) {

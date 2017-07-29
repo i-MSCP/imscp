@@ -48,7 +48,7 @@ class Zend_Cache_Manager
      *
      * @var array
      */
-    protected $_caches = [];
+    protected $_caches = array();
 
     /**
      * Array of ready made configuration templates for lazy
@@ -56,60 +56,60 @@ class Zend_Cache_Manager
      *
      * @var array
      */
-    protected $_optionTemplates = [
+    protected $_optionTemplates = array(
         // Simple Common Default
-        'default' => [
-            'frontend' => [
+        'default' => array(
+            'frontend' => array(
                 'name'    => 'Core',
-                'options' => [
+                'options' => array(
                     'automatic_serialization' => true,
-                ],
-            ],
-            'backend' => [
+                ),
+            ),
+            'backend' => array(
                 'name'    => 'File',
-                'options' => [
+                'options' => array(
                     // use system temp dir by default of file backend
                     // 'cache_dir' => '../cache',
-                ],
-            ],
-        ],
+                ),
+            ),
+        ),
 
         // Static Page HTML Cache
-        'page' => [
-            'frontend' => [
+        'page' => array(
+            'frontend' => array(
                 'name'    => 'Capture',
-                'options' => [
+                'options' => array(
                     'ignore_user_abort' => true,
-                ],
-            ],
-            'backend' => [
+                ),
+            ),
+            'backend' => array(
                 'name'    => 'Static',
-                'options' => [
+                'options' => array(
                     'public_dir' => '../public',
-                ],
-            ],
-        ],
+                ),
+            ),
+        ),
 
         // Tag Cache
-        'pagetag' => [
-            'frontend' => [
+        'pagetag' => array(
+            'frontend' => array(
                 'name'    => 'Core',
-                'options' => [
+                'options' => array(
                     'automatic_serialization' => true,
                     'lifetime' => null
-                ],
-            ],
-            'backend' => [
+                ),
+            ),
+            'backend' => array(
                 'name'    => 'File',
-                'options' => [
+                'options' => array(
                     // use system temp dir by default of file backend
                     // 'cache_dir' => '../cache',
                     // use default umask of file backend
                     // 'cache_file_umask' => 0644
-                ],
-            ],
-        ],
-    ];
+                ),
+            ),
+        ),
+    );
 
     /**
      * Set a new cache for the Cache Manager to contain
@@ -165,8 +165,8 @@ class Zend_Cache_Manager
             $this->_caches[$name] = Zend_Cache::factory(
                 $this->_optionTemplates[$name]['frontend']['name'],
                 $this->_optionTemplates[$name]['backend']['name'],
-                isset($this->_optionTemplates[$name]['frontend']['options']) ? $this->_optionTemplates[$name]['frontend']['options'] : [],
-                isset($this->_optionTemplates[$name]['backend']['options']) ? $this->_optionTemplates[$name]['backend']['options'] : [],
+                isset($this->_optionTemplates[$name]['frontend']['options']) ? $this->_optionTemplates[$name]['frontend']['options'] : array(),
+                isset($this->_optionTemplates[$name]['backend']['options']) ? $this->_optionTemplates[$name]['backend']['options'] : array(),
                 isset($this->_optionTemplates[$name]['frontend']['customFrontendNaming']) ? $this->_optionTemplates[$name]['frontend']['customFrontendNaming'] : false,
                 isset($this->_optionTemplates[$name]['backend']['customBackendNaming']) ? $this->_optionTemplates[$name]['backend']['customBackendNaming'] : false,
                 isset($this->_optionTemplates[$name]['frontendBackendAutoload']) ? $this->_optionTemplates[$name]['frontendBackendAutoload'] : false

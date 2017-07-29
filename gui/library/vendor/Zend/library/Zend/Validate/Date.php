@@ -41,18 +41,18 @@ class Zend_Validate_Date extends Zend_Validate_Abstract
      *
      * @var array
      */
-    protected $_messageTemplates = [
+    protected $_messageTemplates = array(
         self::INVALID        => "Invalid type given. String, integer, array or Zend_Date expected",
         self::INVALID_DATE   => "'%value%' does not appear to be a valid date",
         self::FALSEFORMAT    => "'%value%' does not fit the date format '%format%'",
-    ];
+    );
 
     /**
      * @var array
      */
-    protected $_messageVariables = [
+    protected $_messageVariables = array(
         'format'  => '_format'
-    ];
+    );
 
     /**
      * Optional format
@@ -73,7 +73,7 @@ class Zend_Validate_Date extends Zend_Validate_Abstract
      *
      * @param string|array|Zend_Config $options OPTIONAL
      */
-    public function __construct($options = [])
+    public function __construct($options = array())
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
@@ -208,9 +208,9 @@ class Zend_Validate_Date extends Zend_Validate_Abstract
     {
         try {
             require_once 'Zend/Locale/Format.php';
-            $parsed = Zend_Locale_Format::getDate($value, [
+            $parsed = Zend_Locale_Format::getDate($value, array(
                                                   'date_format' => $this->_format, 'format_type' => 'iso',
-                                                  'fix_date' => false]);
+                                                  'fix_date' => false));
             if (isset($parsed['year']) and ((strpos(strtoupper($this->_format), 'YY') !== false) and
                 (strpos(strtoupper($this->_format), 'YYYY') === false))) {
                 $parsed['year'] = Zend_Date::getFullYear($parsed['year']);

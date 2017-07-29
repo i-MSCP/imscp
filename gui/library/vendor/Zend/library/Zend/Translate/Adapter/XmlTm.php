@@ -41,11 +41,11 @@ require_once 'Zend/Xml/Exception.php';
 class Zend_Translate_Adapter_XmlTm extends Zend_Translate_Adapter {
     // Internal variables
     private $_file        = false;
-    private $_cleared     = [];
+    private $_cleared     = array();
     private $_lang        = null;
     private $_content     = null;
     private $_tag         = null;
-    private $_data        = [];
+    private $_data        = array();
 
     /**
      * Load translation data (XMLTM file reader)
@@ -57,9 +57,9 @@ class Zend_Translate_Adapter_XmlTm extends Zend_Translate_Adapter {
      * @throws Zend_Translation_Exception
      * @return array
      */
-    protected function _loadTranslationData($filename, $locale, array $options = [])
+    protected function _loadTranslationData($filename, $locale, array $options = array())
     {
-        $this->_data = [];
+        $this->_data = array();
         $this->_lang = $locale;
         if (!is_readable($filename)) {
             require_once 'Zend/Translate/Exception.php';

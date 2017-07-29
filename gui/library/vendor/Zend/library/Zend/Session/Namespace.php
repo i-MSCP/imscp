@@ -61,14 +61,14 @@ class Zend_Session_Namespace extends Zend_Session_Abstract implements IteratorAg
      *
      * @var array
      */
-    protected static $_namespaceLocks = [];
+    protected static $_namespaceLocks = array();
 
     /**
      * Single instance namespace array to ensure data security.
      *
      * @var array
      */
-    protected static $_singleInstances = [];
+    protected static $_singleInstances = array();
 
     /**
      * resetSingleInstance()
@@ -85,7 +85,7 @@ class Zend_Session_Namespace extends Zend_Session_Abstract implements IteratorAg
             return;
         }
 
-        self::$_singleInstances = [];
+        self::$_singleInstances = array();
         return;
     }
 
@@ -95,9 +95,9 @@ class Zend_Session_Namespace extends Zend_Session_Abstract implements IteratorAg
      * The optional argument $singleInstance will prevent construction of additional
      * instance objects acting as accessors to this $namespace.
      *
-     * @param string $namespace - programmatic name of the requested namespace
-     * @param bool $singleInstance - prevent creation of additional accessor instance objects for this namespace
-     * @throws Zend_Session_Exception
+     * @param string $namespace       - programmatic name of the requested namespace
+     * @param bool $singleInstance    - prevent creation of additional accessor instance objects for this namespace
+     * @return void
      */
     public function __construct($namespace = 'Default', $singleInstance = false)
     {
@@ -242,7 +242,7 @@ class Zend_Session_Namespace extends Zend_Session_Abstract implements IteratorAg
      */
     public static function unlockAll()
     {
-        self::$_namespaceLocks = [];
+        self::$_namespaceLocks = array();
     }
 
 
@@ -260,11 +260,11 @@ class Zend_Session_Namespace extends Zend_Session_Abstract implements IteratorAg
     /**
      * unsetAll() - unset all variables in this namespace
      *
-     * @return void
+     * @return true
      */
     public function unsetAll()
     {
-        parent::_namespaceUnset($this->_namespace);
+        return parent::_namespaceUnset($this->_namespace);
     }
 
 
@@ -273,7 +273,6 @@ class Zend_Session_Namespace extends Zend_Session_Abstract implements IteratorAg
      *
      * @param string $name - programmatic name of a key, in a <key,value> pair in the current namespace
      * @return mixed
-     * @throws Zend_Session_Exception
      */
     public function & __get($name)
     {
@@ -295,7 +294,7 @@ class Zend_Session_Namespace extends Zend_Session_Abstract implements IteratorAg
      * @param string $name - programmatic name of a key, in a <key,value> pair in the current namespace
      * @param mixed $value - value in the <key,value> pair to assign to the $name key
      * @throws Zend_Session_Exception
-     * @return void
+     * @return true
      */
     public function __set($name, $value)
     {
@@ -339,7 +338,6 @@ class Zend_Session_Namespace extends Zend_Session_Abstract implements IteratorAg
      *   $namespace->apply('count');
      *
      * @param string|array $callback - callback function
-     * @return mixed
      */
     public function apply($callback)
     {
@@ -359,8 +357,6 @@ class Zend_Session_Namespace extends Zend_Session_Abstract implements IteratorAg
      *   $namespace->applySet('array_merge', array('tree' => 'apple', 'fruit' => 'peach'), array('flower' => 'rose'));
      *
      * @param string|array $callback - callback function
-     * @return mixed
-     * @throws Zend_Session_Exception
      */
     public function applySet($callback)
     {
@@ -384,7 +380,6 @@ class Zend_Session_Namespace extends Zend_Session_Abstract implements IteratorAg
      *
      * @param string $name - programmatic name of a key, in a <key,value> pair in the current namespace
      * @return bool
-     * @throws Zend_Session_Exception
      */
     public function __isset($name)
     {
@@ -404,8 +399,7 @@ class Zend_Session_Namespace extends Zend_Session_Abstract implements IteratorAg
      * __unset() - unset a variable in this object's namespace.
      *
      * @param string $name - programmatic name of a key, in a <key,value> pair in the current namespace
-     * @return void
-     * @throws Zend_Session_Exception
+     * @return true
      */
     public function __unset($name)
     {
@@ -417,7 +411,7 @@ class Zend_Session_Namespace extends Zend_Session_Abstract implements IteratorAg
             throw new Zend_Session_Exception("The '$name' key must be a non-empty string");
         }
 
-        parent::_namespaceUnset($this->_namespace, $name);
+        return parent::_namespaceUnset($this->_namespace, $name);
     }
 
 
@@ -456,7 +450,7 @@ class Zend_Session_Namespace extends Zend_Session_Abstract implements IteratorAg
         } else {
 
             if (is_string($variables)) {
-                $variables = [$variables];
+                $variables = array($variables);
             }
 
             foreach ($variables as $variable) {
@@ -508,7 +502,7 @@ class Zend_Session_Namespace extends Zend_Session_Abstract implements IteratorAg
         } else {
 
             if (is_string($variables)) {
-                $variables = [$variables];
+                $variables = array($variables);
             }
 
             foreach ($variables as $variable) {

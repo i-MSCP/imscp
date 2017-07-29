@@ -59,7 +59,7 @@ class Zend_Filter_StripTags implements Zend_Filter_Interface
      *
      * @var array
      */
-    protected $_tagsAllowed = [];
+    protected $_tagsAllowed = array();
 
     /**
      * Array of allowed attributes for all allowed tags
@@ -68,7 +68,7 @@ class Zend_Filter_StripTags implements Zend_Filter_Interface
      *
      * @var array
      */
-    protected $_attributesAllowed = [];
+    protected $_attributesAllowed = array();
 
     /**
      * Sets the filter options
@@ -159,7 +159,7 @@ class Zend_Filter_StripTags implements Zend_Filter_Interface
     public function setTagsAllowed($tagsAllowed)
     {
         if (!is_array($tagsAllowed)) {
-            $tagsAllowed = [$tagsAllowed];
+            $tagsAllowed = array($tagsAllowed);
         }
 
         foreach ($tagsAllowed as $index => $element) {
@@ -168,7 +168,7 @@ class Zend_Filter_StripTags implements Zend_Filter_Interface
                 // Canonicalize the tag name
                 $tagName = strtolower($element);
                 // Store the tag as allowed with no attributes
-                $this->_tagsAllowed[$tagName] = [];
+                $this->_tagsAllowed[$tagName] = array();
             }
             // Otherwise, if a tag was provided with attributes
             else if (is_string($index) && (is_array($element) || is_string($element))) {
@@ -176,10 +176,10 @@ class Zend_Filter_StripTags implements Zend_Filter_Interface
                 $tagName = strtolower($index);
                 // Canonicalize the attributes
                 if (is_string($element)) {
-                    $element = [$element];
+                    $element = array($element);
                 }
                 // Store the tag as allowed with the provided attributes
-                $this->_tagsAllowed[$tagName] = [];
+                $this->_tagsAllowed[$tagName] = array();
                 foreach ($element as $attribute) {
                     if (is_string($attribute)) {
                         // Canonicalize the attribute name
@@ -212,7 +212,7 @@ class Zend_Filter_StripTags implements Zend_Filter_Interface
     public function setAttributesAllowed($attributesAllowed)
     {
         if (!is_array($attributesAllowed)) {
-            $attributesAllowed = [$attributesAllowed];
+            $attributesAllowed = array($attributesAllowed);
         }
 
         // Store each attribute as allowed

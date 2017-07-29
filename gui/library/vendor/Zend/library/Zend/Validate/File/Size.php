@@ -45,20 +45,20 @@ class Zend_Validate_File_Size extends Zend_Validate_Abstract
     /**
      * @var array Error message templates
      */
-    protected $_messageTemplates = [
+    protected $_messageTemplates = array(
         self::TOO_BIG   => "Maximum allowed size for file '%value%' is '%max%' but '%size%' detected",
         self::TOO_SMALL => "Minimum expected size for file '%value%' is '%min%' but '%size%' detected",
         self::NOT_FOUND => "File '%value%' is not readable or does not exist",
-    ];
+    );
 
     /**
      * @var array Error message template variables
      */
-    protected $_messageVariables = [
+    protected $_messageVariables = array(
         'min'  => '_min',
         'max'  => '_max',
         'size' => '_size',
-    ];
+    );
 
     /**
      * Minimum filesize
@@ -106,7 +106,7 @@ class Zend_Validate_File_Size extends Zend_Validate_Abstract
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
         } elseif (is_string($options) || is_numeric($options)) {
-            $options = ['max' => $options];
+            $options = array('max' => $options);
         } elseif (!is_array($options)) {
             require_once 'Zend/Validate/Exception.php';
             throw new Zend_Validate_Exception ('Invalid options to validator provided');
@@ -327,7 +327,7 @@ class Zend_Validate_File_Size extends Zend_Validate_Abstract
      */
     protected function _toByteString($size)
     {
-        $sizes = ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+        $sizes = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
         for ($i=0; $size >= 1024 && $i < 9; $i++) {
             $size /= 1024;
         }

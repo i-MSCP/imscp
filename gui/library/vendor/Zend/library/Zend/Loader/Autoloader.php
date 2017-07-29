@@ -42,12 +42,12 @@ class Zend_Loader_Autoloader
     /**
      * @var array Concrete autoloader callback implementations
      */
-    protected $_autoloaders = [];
+    protected $_autoloaders = array();
 
     /**
      * @var array Default autoloader callback
      */
-    protected $_defaultAutoloader = ['Zend_Loader', 'loadClass'];
+    protected $_defaultAutoloader = array('Zend_Loader', 'loadClass');
 
     /**
      * @var bool Whether or not to act as a fallback autoloader
@@ -62,15 +62,15 @@ class Zend_Loader_Autoloader
     /**
      * @var array Supported namespaces 'Zend' and 'ZendX' by default.
      */
-    protected $_namespaces = [
+    protected $_namespaces = array(
         'Zend_'  => true,
         'ZendX_' => true,
-    ];
+    );
 
     /**
      * @var array Namespace-specific autoloaders
      */
-    protected $_namespaceAutoloaders = [];
+    protected $_namespaceAutoloaders = array();
 
     /**
      * @var bool Whether or not to suppress file not found warnings
@@ -138,8 +138,7 @@ class Zend_Loader_Autoloader
      * Set the default autoloader implementation
      *
      * @param  string|array $callback PHP callback
-     * @return self
-     * @throws Zend_Loader_Exception
+     * @return void
      */
     public function setDefaultAutoloader($callback)
     {
@@ -193,7 +192,7 @@ class Zend_Loader_Autoloader
     {
         $namespace = (string) $namespace;
         if (!array_key_exists($namespace, $this->_namespaceAutoloaders)) {
-            return [];
+            return array();
         }
         return $this->_namespaceAutoloaders[$namespace];
     }
@@ -203,7 +202,6 @@ class Zend_Loader_Autoloader
      *
      * @param  string|array $namespace
      * @return Zend_Loader_Autoloader
-     * @throws Zend_Loader_Exception
      */
     public function registerNamespace($namespace)
     {
@@ -226,7 +224,6 @@ class Zend_Loader_Autoloader
      *
      * @param  string|array $namespace
      * @return Zend_Loader_Autoloader
-     * @throws Zend_Loader_Exception
      */
     public function unregisterNamespace($namespace)
     {
@@ -268,10 +265,10 @@ class Zend_Loader_Autoloader
         }
 
         $this->_zfPath = $this->_getVersionPath($path, $version);
-        set_include_path(implode(PATH_SEPARATOR, [
+        set_include_path(implode(PATH_SEPARATOR, array(
             $this->_zfPath,
             get_include_path(),
-        ]));
+        )));
         return $this;
     }
 
@@ -330,7 +327,7 @@ class Zend_Loader_Autoloader
     public function getClassAutoloaders($class)
     {
         $namespace   = false;
-        $autoloaders = [];
+        $autoloaders = array();
 
         // Add concrete namespaced autoloaders
         foreach (array_keys($this->_namespaceAutoloaders) as $ns) {
@@ -457,11 +454,13 @@ class Zend_Loader_Autoloader
      * Constructor
      *
      * Registers instance with spl_autoload stack
+     *
+     * @return void
      */
     protected function __construct()
     {
-        spl_autoload_register([__CLASS__, 'autoload']);
-        $this->_internalAutoloader = [$this, '_autoload'];
+        spl_autoload_register(array(__CLASS__, 'autoload'));
+        $this->_internalAutoloader = array($this, '_autoload');
     }
 
     /**
@@ -504,8 +503,7 @@ class Zend_Loader_Autoloader
      *
      * @param  string $path
      * @param  string $version
-     * @return string
-     * @throws Zend_Loader_Exception
+     * @return void
      */
     protected function _getVersionPath($path, $version)
     {
@@ -557,7 +555,6 @@ class Zend_Loader_Autoloader
      * @param  string $path
      * @param  string $version
      * @return array
-     * @throws Zend_Loader_Exception
      */
     protected function _getAvailableVersions($path, $version)
     {
@@ -568,7 +565,7 @@ class Zend_Loader_Autoloader
         $path       = rtrim($path, '/');
         $path       = rtrim($path, '\\');
         $versionLen = strlen($version);
-        $versions   = [];
+        $versions   = array();
         $dirs       = glob("$path/*", GLOB_ONLYDIR);
         foreach ((array) $dirs as $dir) {
             $dirName = substr($dir, strlen($path) + 1);

@@ -44,7 +44,7 @@ class Zend_Filter_Boolean implements Zend_Filter_Interface
     const YES          = 256;
     const ALL          = 511;
 
-    protected $_constants = [
+    protected $_constants = array(
         self::BOOLEAN      => 'boolean',
         self::INTEGER      => 'integer',
         self::FLOAT        => 'float',
@@ -56,7 +56,7 @@ class Zend_Filter_Boolean implements Zend_Filter_Interface
         self::FALSE_STRING => 'false',
         self::YES          => 'yes',
         self::ALL          => 'all',
-    ];
+    );
 
     /**
      * Internal type to detect
@@ -70,7 +70,7 @@ class Zend_Filter_Boolean implements Zend_Filter_Interface
      *
      * @var array
      */
-    protected $_locale = ['auto'];
+    protected $_locale = array('auto');
 
     /**
      * Internal mode
@@ -90,7 +90,7 @@ class Zend_Filter_Boolean implements Zend_Filter_Interface
             $options = $options->toArray();
         } elseif (!is_array($options)) {
             $options = func_get_args();
-            $temp    = [];
+            $temp    = array();
             if (!empty($options)) {
                 $temp['type'] = array_shift($options);
             }
@@ -182,9 +182,9 @@ class Zend_Filter_Boolean implements Zend_Filter_Interface
     public function setLocale($locale = null)
     {
         if (is_string($locale)) {
-            $locale = [$locale];
+            $locale = array($locale);
         } elseif ($locale instanceof Zend_Locale) {
-            $locale = [$locale->toString()];
+            $locale = array($locale->toString());
         } elseif (!is_array($locale)) {
             require_once 'Zend/Filter/Exception.php';
             throw new Zend_Filter_Exception('Locale has to be string, array or an instance of Zend_Locale');
@@ -281,7 +281,7 @@ class Zend_Filter_Boolean implements Zend_Filter_Interface
         // EMPTY_ARRAY (array())
         if ($type >= self::EMPTY_ARRAY) {
             $type -= self::EMPTY_ARRAY;
-            if (is_array($value) && ($value == [])) {
+            if (is_array($value) && ($value == array())) {
                 return false;
             }
         }

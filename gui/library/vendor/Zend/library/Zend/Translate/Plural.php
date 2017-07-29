@@ -34,7 +34,7 @@ class Zend_Translate_Plural
      *
      * @var string
      */
-    protected static $_plural = [];
+    protected static $_plural = array();
 
     /**
      * Returns the plural definition to use

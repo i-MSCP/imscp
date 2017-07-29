@@ -44,7 +44,7 @@ class Zend_Config_Writer_Array extends Zend_Config_Writer_FileAbstract
         $sectionName = $this->_config->getSectionName();
 
         if (is_string($sectionName)) {
-            $data = [$sectionName => $data];
+            $data = array($sectionName => $data);
         }
 
         $arrayString = "<?php\n"

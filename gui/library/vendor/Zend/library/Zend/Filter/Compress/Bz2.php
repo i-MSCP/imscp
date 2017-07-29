@@ -43,10 +43,10 @@ class Zend_Filter_Compress_Bz2 extends Zend_Filter_Compress_CompressAbstract
      *
      * @var array
      */
-    protected $_options = [
+    protected $_options = array(
         'blocksize' => 4,
         'archive'   => null,
-    ];
+    );
 
     /**
      * Class constructor

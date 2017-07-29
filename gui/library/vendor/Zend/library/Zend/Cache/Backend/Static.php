@@ -46,7 +46,7 @@ class Zend_Cache_Backend_Static
      * Static backend options
      * @var array
      */
-    protected $_options = [
+    protected $_options = array(
         'public_dir'           => null,
         'sub_dir'              => 'html',
         'file_extension'       => '.html',
@@ -57,7 +57,7 @@ class Zend_Cache_Backend_Static
         'debug_header'         => false,
         'tag_cache'            => null,
         'disable_caching'      => false
-    ];
+    );
 
     /**
      * Cache for handling tags
@@ -212,7 +212,7 @@ class Zend_Cache_Backend_Static
      * @param  int   $specificLifetime If != false, set a specific lifetime for this cache record (null => infinite lifetime)
      * @return boolean true if no problem
      */
-    public function save($data, $id, $tags = [], $specificLifetime = false)
+    public function save($data, $id, $tags = array(), $specificLifetime = false)
     {
         if ($this->_options['disable_caching']) {
             return true;
@@ -256,13 +256,13 @@ class Zend_Cache_Backend_Static
         if ($this->_tagged === null && $tagged = $this->getInnerCache()->load(self::INNER_CACHE_NAME)) {
             $this->_tagged = $tagged;
         } elseif ($this->_tagged === null) {
-            $this->_tagged = [];
+            $this->_tagged = array();
         }
         if (!isset($this->_tagged[$id])) {
-            $this->_tagged[$id] = [];
+            $this->_tagged[$id] = array();
         }
         if (!isset($this->_tagged[$id]['tags'])) {
-            $this->_tagged[$id]['tags'] = [];
+            $this->_tagged[$id]['tags'] = array();
         }
         $this->_tagged[$id]['tags'] = array_unique(array_merge($this->_tagged[$id]['tags'], $tags));
         $this->_tagged[$id]['extension'] = $ext;
@@ -395,7 +395,7 @@ class Zend_Cache_Backend_Static
      * @return boolean true if no problem
      * @throws Zend_Exception
      */
-    public function clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = [])
+    public function clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = array())
     {
         $result = false;
         switch ($mode) {
