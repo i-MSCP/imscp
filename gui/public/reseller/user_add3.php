@@ -71,7 +71,7 @@ function getPreviousStepData()
  */
 function generatePage($tpl)
 {
-    global $hpId, $dmnName, $adminName, $email, $customerId, $firstName, $lastName, $gender, $firm, $zip, $city, $state,
+    global $hpId, $dmnName, $adminName, $email, $firstName, $lastName, $gender, $firm, $zip, $city, $state,
            $country, $street1, $street2, $phone, $fax, $domainIp;
 
     $adminName = decode_idna($adminName);
@@ -79,7 +79,6 @@ function generatePage($tpl)
     $tpl->assign([
         'VL_USERNAME'     => tohtml($adminName, 'htmlAttr'),
         'VL_MAIL'         => tohtml($email, 'htmlAttr'),
-        'VL_USR_ID'       => tohtml($customerId, 'htmlAttr'),
         'VL_USR_NAME'     => tohtml($firstName, 'htmlAttr'),
         'VL_LAST_USRNAME' => tohtml($lastName, 'htmlAttr'),
         'VL_USR_FIRM'     => tohtml($firm, 'htmlAttr'),
@@ -109,7 +108,7 @@ function generatePage($tpl)
 function addCustomer()
 {
     global $hpId, $dmnName, $dmnExpire, $dmnUrlForward, $dmnTypeForward, $dmnHostForward, $domainIp, $adminName, $email,
-           $password, $customerId, $firstName, $lastName, $gender, $firm, $zip, $city, $state, $country, $phone, $fax,
+           $password, $firstName, $lastName, $gender, $firm, $zip, $city, $state, $country, $phone, $fax,
            $street1, $street2;
 
     if (!isset($_POST['domain_ip'])) {
@@ -165,14 +164,14 @@ function addCustomer()
             '
                 INSERT INTO admin (
                     admin_name, admin_pass, admin_type, domain_created, created_by, fname, lname, firm, zip, city, state,
-                    country, email, phone, fax, street1, street2, customer_id, gender, admin_status
+                    country, email, phone, fax, street1, street2, gender, admin_status
                 ) VALUES (
-                    ?, ?, ?, unix_timestamp(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, unix_timestamp(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                 )
             ',
             [
                 $adminName, $encryptedPassword, 'user', $_SESSION['user_id'], $firstName, $lastName, $firm, $zip, $city,
-                $state, $country, $email, $phone, $fax, $street1, $street2, $customerId, $gender, 'toadd'
+                $state, $country, $email, $phone, $fax, $street1, $street2, $gender, 'toadd'
             ]
         );
 
@@ -267,7 +266,7 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptS
 check_login('reseller');
 
 // Initialize global variables
-$email = $customerId = $firstName = $lastName = $firm = $zip = $city = $state = $country = $street1 = $street2 = '';
+$email = $firstName = $lastName = $firm = $zip = $city = $state = $country = $street1 = $street2 = '';
 $phone = $mail = $fax = $domainIp = '';
 $gender = 'U';
 
@@ -308,7 +307,6 @@ $tpl->assign([
     'TR_DOMAIN_IP'       => tr('Domain IP'),
     'TR_USREMAIL'        => tr('Email'),
     'TR_ADDITIONAL_DATA' => tr('Additional data'),
-    'TR_CUSTOMER_ID'     => tr('Customer ID'),
     'TR_FIRSTNAME'       => tr('First name'),
     'TR_LASTNAME'        => tr('Last name'),
     'TR_GENDER'          => tr('Gender'),

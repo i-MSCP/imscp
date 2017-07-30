@@ -37,13 +37,13 @@
  */
 function reseller_loadUserData($adminId)
 {
-    global $adminName, $email, $customerId, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
+    global $adminName, $email, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
            $street1, $street2, $phone, $fax;
 
     $stmt = exec_query(
         '
             SELECT admin_name, created_by, fname, lname, firm, zip, city, state, country, email, phone, fax, street1,
-                street2, customer_id, gender
+                street2, gender
             FROM admin
             WHERE admin_id = ?
             AND created_by = ?
@@ -58,7 +58,6 @@ function reseller_loadUserData($adminId)
     $data = $stmt->fetchRow();
     $adminName = $data['admin_name'];
     $email = $data['email'];
-    $customerId = $data['customer_id'];
     $firstName = $data['fname'];
     $lastName = $data['lname'];
     $gender = $data['gender'];
@@ -81,13 +80,12 @@ function reseller_loadUserData($adminId)
  */
 function reseller_generatePage($tpl)
 {
-    global $adminName, $email, $customerId, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
+    global $adminName, $email, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
            $street1, $street2, $phone, $fax;
 
     $tpl->assign([
         'VL_USERNAME'     => tohtml(decode_idna($adminName)),
         'VL_MAIL'         => tohtml($email),
-        'VL_USR_ID'       => tohtml($customerId),
         'VL_USR_NAME'     => tohtml($firstName),
         'VL_LAST_USRNAME' => tohtml($lastName),
         'VL_USR_FIRM'     => tohtml($firm),
@@ -115,7 +113,7 @@ function reseller_updateUserData($adminId)
 {
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, ['userId' => $adminId]);
 
-    global $adminName, $email, $customerId, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
+    global $adminName, $email, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
            $street1, $street2, $phone, $fax, $password, $passwordRepeat;
 
     $resellerId = intval($_SESSION['user_id']);
@@ -125,18 +123,18 @@ function reseller_updateUserData($adminId)
             '
               UPDATE admin
               SET fname = ?, lname = ?, firm = ?, zip = ?, city = ?, state = ?, country = ?, email = ?, phone = ?,
-                fax = ?, street1 = ?, street2 = ?, gender = ?, customer_id = ?
+                fax = ?, street1 = ?, street2 = ?, gender = ?
               WHERE admin_id = ?
               AND created_by = ?
             ',
             [
                 $firstName, $lastName, $firm, $zip, $city, $state, $country, $email, $phone, $fax, $street1, $street2,
-                $gender, $customerId, $adminId, $resellerId
+                $gender, $adminId, $resellerId
             ]
         );
     } else { // Change password
         if ($password !== $passwordRepeat) {
-            set_page_message(tr("Passwords do not match."), 'error');
+            set_page_message(tr('Passwords do not match.'), 'error');
             redirectTo('user_edit.php?edit_id=' . $adminId);
         }
 
@@ -150,13 +148,13 @@ function reseller_updateUserData($adminId)
             '
               UPDATE admin
               SET admin_pass = ?, fname = ?, lname = ?, firm = ?, zip = ?, city = ?, state = ?, country = ?, email = ?,
-                phone = ?, fax = ?, street1 = ?, street2 = ?, gender = ?, customer_id = ?, admin_status = ?
+                phone = ?, fax = ?, street1 = ?, street2 = ?, gender = ?, admin_status = ?
               WHERE admin_id = ?
               AND created_by = ?
             ',
             [
                 $encryptedPassword, $firstName, $lastName, $firm, $zip, $city, $state, $country, $email, $phone, $fax,
-                $street1, $street2, $gender, $customerId, 'tochangepwd', $adminId, $resellerId
+                $street1, $street2, $gender, 'tochangepwd', $adminId, $resellerId
             ]
         );
 
@@ -209,7 +207,6 @@ $tpl->assign([
     'TR_REP_PASSWORD'    => tr('Repeat password'),
     'TR_USREMAIL'        => tr('Email'),
     'TR_ADDITIONAL_DATA' => tr('Additional data'),
-    'TR_CUSTOMER_ID'     => tr('Customer ID'),
     'TR_FIRSTNAME'       => tr('First name'),
     'TR_LASTNAME'        => tr('Last name'),
     'TR_COMPANY'         => tr('Company'),

@@ -18,6 +18,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP\Crypt as Crypt;
+use iMSCP_Config_Handler_Db as ConfigDb;
+use iMSCP_Config_Handler_File as ConfigFile;
+use iMSCP_PHPini as PhpIni;
+use iMSCP_Registry as Registry;
+use iMSCP_Update_Exception as UpdateException;
+use iMSCP_Uri_Redirect as UriRedirect;
+
 /**
  * Class iMSCP_Update_Database
  */
@@ -29,12 +37,12 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected static $instance;
 
     /**
-     * @var
+     * @var ConfigFile
      */
     protected $config;
 
     /**
-     * @var
+     * @var ConfigDb
      */
     protected $dbConfig;
 
@@ -56,17 +64,18 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 255;
+    protected $lastUpdate = 256;
 
     /**
      * Singleton - Make new unavailable
      */
     protected function __construct()
     {
-        $this->config = iMSCP_Registry::get('config');
-        $this->dbConfig = iMSCP_Registry::get('dbConfig');
+        $this->config = Registry::get('config');
+        $this->dbConfig = Registry::get('dbConfig');
+
         if (!isset($this->config['DATABASE_NAME'])) {
-            throw new iMSCP_Update_Exception('Database name not found.');
+            throw new UpdateException('Database name not found.');
         }
 
         $this->databaseName = $this->config['DATABASE_NAME'];
@@ -164,7 +173,9 @@ class iMSCP_Update_Database extends iMSCP_Update
                     if (!empty($query)) {
                         $stmt = $pdo->prepare($query);
                         $stmt->execute();
-                        while ($stmt->nextRowset()) {/* https://bugs.php.net/bug.php?id=61613 */};
+                        while ($stmt->nextRowset()) {
+                            /* https://bugs.php.net/bug.php?id=61613 */
+                        };
                     }
                 }
 
@@ -403,7 +414,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * Catch any database updates that were removed
      *
-     * @throws iMSCP_Update_Exception
+     * @throws UpdateException
      * @param  string $updateMethod Database update method name
      * @param array $params Params
      * @return null
@@ -411,7 +422,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     public function __call($updateMethod, $params)
     {
         if (!preg_match('/^r[0-9]+$/', $updateMethod)) {
-            throw new iMSCP_Update_Exception(sprintf('%s is not a valid database update method', $updateMethod));
+            throw new UpdateException(sprintf('%s is not a valid database update method', $updateMethod));
         }
 
         return NULL;
@@ -480,7 +491,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected function r177()
     {
         $sqlQueries = [];
-        $sqlUserHost = iMSCP_Registry::get('config')->DATABASE_USER_HOST;
+        $sqlUserHost = Registry::get('config')['DATABASE_USER_HOST'];
 
         if ($sqlUserHost == '127.0.0.1') {
             $sqlUserHost = 'localhost';
@@ -1248,7 +1259,7 @@ class iMSCP_Update_Database extends iMSCP_Update
         $stmt = exec_query("SELECT alias_id, url_forward FROM domain_aliasses WHERE url_forward <> 'no'");
 
         while ($row = $stmt->fetchRow()) {
-            $uri = iMSCP_Uri_Redirect::fromString($row['url_forward']);
+            $uri = UriRedirect::fromString($row['url_forward']);
             $uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/';
             $uri->setPath($uriPath);
             exec_query(
@@ -1261,7 +1272,7 @@ class iMSCP_Update_Database extends iMSCP_Update
         );
 
         while ($row = $stmt->fetchRow()) {
-            $uri = iMSCP_Uri_Redirect::fromString($row['subdomain_url_forward']);
+            $uri = UriRedirect::fromString($row['subdomain_url_forward']);
             $uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/';
             $uri->setPath($uriPath);
             exec_query('UPDATE subdomain SET subdomain_url_forward = ? WHERE subdomain_id = ?', [
@@ -1276,7 +1287,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             "
         );
         while ($row = $stmt->fetchRow()) {
-            $uri = iMSCP_Uri_Redirect::fromString($row['subdomain_alias_url_forward']);
+            $uri = UriRedirect::fromString($row['subdomain_alias_url_forward']);
             $uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/';
             $uri->setPath($uriPath);
             exec_query('UPDATE subdomain_alias SET subdomain_alias_url_forward = ? WHERE subdomain_alias_id = ?', [
@@ -1364,7 +1375,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r232()
     {
-        $primaryIP = quoteValue(iMSCP_Registry::get('config')->BASE_SERVER_IP);
+        $primaryIP = quoteValue(Registry::get('config')['BASE_SERVER_IP']);
         return "UPDATE server_ips SET ip_config_mode = 'manual' WHERE ip_number = $primaryIP";
     }
 
@@ -1377,7 +1388,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r233()
     {
-        $phpini = iMSCP_PHPini::getInstance();
+        $phpini = PhpIni::getInstance();
 
         // For each reseller
         $resellers = execute_query("SELECT admin_id FROM admin WHERE admin_type = 'reseller'");
@@ -1623,10 +1634,9 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r243()
     {
-        $cfg = iMSCP_Registry::get('config');
         $stmt = execute_query('SELECT ip_id, ip_number, ip_netmask FROM server_ips');
         while ($row = $stmt->fetchRow()) {
-            if ($cfg['BASE_SERVER_IP'] === $row['ip_number'] || $row['ip_netmask'] !== NULL) {
+            if ($this->config['BASE_SERVER_IP'] === $row['ip_number'] || $row['ip_netmask'] !== NULL) {
                 continue;
             }
 
@@ -1737,7 +1747,7 @@ class iMSCP_Update_Database extends iMSCP_Update
         );
         while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
             exec_query('UPDATE mail_users SET mail_pass = ? WHERE mail_id = ?', [
-                iMSCP\Crypt::sha512($row['mail_pass']), $row['mail_id']
+                Crypt::sha512($row['mail_pass']), $row['mail_id']
             ]);
         }
     }
@@ -1813,7 +1823,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                 WHERE mail_type LIKE '%_mail%'
                 AND SUBSTRING(mail_addr, LOCATE('@', mail_addr)+1) = ?
             ",
-            iMSCP_Registry::get('config')->{'SERVER_HOSTNAME'}
+            Registry::get('config')['SERVER_HOSTNAME']
         );
 
         while ($row = $stmt->fetchRow()) {
@@ -1844,5 +1854,24 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected function r255()
     {
         return "UPDATE mail_users SET po_active = 'no' WHERE mail_type NOT LIKE '%_mail%'";
+    }
+
+    /**
+     * Remove output compression related parameters
+     *
+     * @return null
+     */
+    protected function r256()
+    {
+
+        if (isset($this->dbConfig['COMPRESS_OUTPUT'])) {
+            unset($this->dbConfig['COMPRESS_OUTPUT']);
+        }
+
+        if (isset($this->dbConfig['SHOW_COMPRESSION_SIZE'])) {
+            unset($this->dbConfig['SHOW_COMPRESSION_SIZE']);
+        }
+
+        return NULL;
     }
 }

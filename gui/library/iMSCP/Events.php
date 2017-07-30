@@ -302,6 +302,7 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - userId: An integer representing the ID of user being edited
+     * - userData: New user login and personal data (depending on context, login data can be unavailable)
      *
      * @const string
      */
@@ -313,7 +314,7 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - userId: An integer representing the ID of user that has been edited
-     * - userData: Input filter object containing new user data
+     * - userData: New user login and personal data (depending on context, login data can be unavailable)
      *
      * @const string
      */
@@ -325,7 +326,6 @@ class iMSCP_Events
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
      * - userId: An integer representing the ID of user being deleted
-     * - userData: Input filter object containing new user data
      *
      * @const string
      */

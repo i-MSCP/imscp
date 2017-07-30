@@ -115,7 +115,7 @@ function client_editMailAccount()
             }
 
             if ($password !== $passwordRep) {
-                set_page_message(tr("Passwords do not match."), 'error');
+                set_page_message(tr('Passwords do not match.'), 'error');
                 return false;
             }
 

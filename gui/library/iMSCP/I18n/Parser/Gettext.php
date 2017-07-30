@@ -259,7 +259,7 @@ class iMSCP_I18n_Parser_Gettext
             $this->getHeaders();
         }
 
-        return $this->nbStrings - 1;
+        return $this->nbStrings;
     }
 
     /**
@@ -383,7 +383,7 @@ class iMSCP_I18n_Parser_Gettext
      * Read an integer from the current file
      *
      * @param int $num
-     * @return int
+     * @return array
      */
     protected function readIntegerList($num)
     {

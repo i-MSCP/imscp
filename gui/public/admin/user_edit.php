@@ -18,6 +18,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Database as Database;
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_pTemplate as TemplateEngine;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -25,110 +30,132 @@
 /**
  * Update user data
  *
- * @param int $userId Customer unique identifier
+ * @throws Exception
+ * @param Zend_Form $form
+ * @param int $userId User unique identifier
  * @return void
  */
-function admin_updateUserData($userId)
+function updateUserData(Zend_Form $form, $userId)
 {
-    global $userData;
+    global $userType;
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, ['userId' => $userId]);
+    $data = exec_query('SELECT admin_name, admin_type FROM admin WHERE admin_id = ?', $userId)->fetchRow();
 
-    $fname = isset($_POST['fname']) ? clean_input($_POST['fname']) : '';
-    $lname = isset($_POST['lname']) ? clean_input($_POST['lname']) : '';
-    $firm = isset($_POST['firm']) ? clean_input($_POST['firm']) : '';
-    $gender = isset($_POST['gender']) ? clean_input($_POST['gender']) : '';
-    $zip = isset($_POST['zip']) ? clean_input($_POST['zip']) : '';
-    $city = isset($_POST['city']) ? clean_input($_POST['city']) : '';
-    $state = isset($_POST['state']) ? clean_input($_POST['state']) : '';
-    $country = isset($_POST['country']) ? clean_input($_POST['country']) : '';
-    $email = clean_input($_POST['email']);
-    $phone = isset($_POST['phone']) ? clean_input($_POST['phone']) : '';
-    $fax = isset($_POST['fax']) ? clean_input($_POST['fax']) : '';
-    $street1 = isset($_POST['street1']) ? clean_input($_POST['street1']) : '';
-    $street2 = isset($_POST['street2']) ? clean_input($_POST['street2']) : '';
-    $userName = get_user_name($userId);
-    $password = clean_input($_POST['password']);
-
-
-    if ($password === '') {
-        exec_query(
-            '
-              UPDATE admin
-              SET fname = ?, lname = ?, firm = ?, zip = ?, city = ?, state = ?, country = ?, email = ?, phone = ?,
-                fax = ?, street1 = ?, street2 = ?, gender = ?
-              WHERE admin_id = ?
-            ',
-            [
-                $fname, $lname, $firm, $zip, $city, $state, $country, $email, $phone, $fax, $street1, $street2,
-                $gender, $userId
-            ]
-        );
-    } else {
-        exec_query(
-            "
-              UPDATE admin
-              SET admin_pass = ?, fname = ?, lname = ?, firm = ?, zip = ?, city = ?, state = ?, country = ?, email = ?,
-                phone = ?, fax = ?, street1 = ?, street2 = ?, gender = ?,
-                admin_status = IF(admin_type = 'user', 'tochangepwd', admin_status)
-              WHERE
-                admin_id = ?
-            ",
-            [
-                iMSCP\Crypt::apr1MD5($password), $fname, $lname, $firm, $zip, $city, $state, $country, $email,
-                $phone, $fax, $street1, $street2, $gender, $userId
-            ]);
-
-        exec_query('DELETE FROM login WHERE user_name = ?', $userName);
-    }
-
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, ['userId' => $userId]);
-
-    if (isset($_POST['send_data']) && !empty($_POST['password'])) {
-        if ($userData['admin_type'] == 'admin') {
-            $userType = tr('Administrator');
-        } elseif ($userData['admin_type'] == 'reseller') {
-            $userType = tr('Reseller');
-        } else {
-            $userType = tr('Customer');
-        }
-
-        send_add_user_auto_msg($userId, $userName, $password, $email, $fname, $lname, $userType);
-    }
-
-    send_request();
-}
-
-/**
- * Validate input data
- *
- * @access private
- * @return bool TRUE if data are valid, FALSE otherwise
- */
-function admin_isValidData()
-{
-    if (!isset($_POST['email']) || !isset($_POST['password']) || !isset($_POST['password_confirmation'])) {
+    if (!$data) {
         showBadRequestErrorPage();
     }
 
-    if (!chk_email($_POST['email'])) {
-        set_page_message(tr('Incorrect email length or syntax.'), 'error');
-    }
+    $userType = $data['admin_type'];
 
-    if ($_POST['password'] !== '') {
-        if ($_POST['password'] !== $_POST['password_confirmation']) {
-            set_page_message(tr("Passwords do not match."), 'error');
+    if (!$form->isValid($_POST)) {
+        foreach ($form->getMessages() as $msgStack => $msg) {
+            set_page_message(reset($msg), 'error');
         }
 
-        checkPasswordSyntax($_POST['password']);
+        return;
     }
 
-    if (Zend_Session::namespaceIsset('pageMessages')) {
-        return false;
+    $passwordUpdated = ($form->getValue('password') !== '');
+    $db = Database::getInstance();
+
+    try {
+        $db->beginTransaction();
+
+        EventsManager::getInstance()->dispatch(Events::onBeforeEditUser, [
+            'userId'   => $userId,
+            'userData' => $form->getValues()
+        ]);
+
+        exec_query(
+            "
+                UPDATE admin
+                SET admin_pass = IFNULL(?, admin_pass), fname = ?, lname = ?, firm = ?, zip = ?, city = ?, state = ?,
+                    country = ?, email = ?, phone = ?, fax = ?, street1 = ?, street2 = ?, gender = ?,
+                    admin_status = IF(admin_type = 'user', IF(?>0, 'tochangepwd', admin_status), admin_status)
+                WHERE admin_id = ?
+            ",
+            [
+                $passwordUpdated ? NULL : iMSCP\Crypt::apr1MD5($form->getValue('password')), $form->getValue('fname'),
+                $form->getValue('lname'), $form->getValue('firm'), $form->getValue('zip'), $form->getValue('city'),
+                $form->getValue('state'), $form->getValue('country'), $form->getValue('email'),
+                $form->getValue('phone'), $form->getValue('fax'), $form->getValue('street1'), $form->getValue('street2'),
+                $form->getValue('gender'), $passwordUpdated ? 1 : 0, $userId
+            ]
+        );
+
+        if ($passwordUpdated) {
+            exec_query('DELETE FROM login WHERE user_name = ?', $data['admin_name']);
+        }
+
+        EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
+            'userId'   => $userId,
+            'userData' => $form->getValues(),
+        ]);
+        $db->commit();
+    } catch (Exception $e) {
+        $db->rollBack();
+        throw $e;
     }
 
-    return true;
+    $ret = false;
+
+    if ($passwordUpdated) {
+        # Fixme: Add specific message for login data renewal
+        $ret = send_add_user_auto_msg(
+            $userId, $data['admin_name'], $form->getValue('password'), $form->getValue('email'), $form->getValue('fname'),
+            $form->getValue('lname'), ($data['admin_type'] == 'admin') ? tr('Administrator') : tr('Customer')
+        );
+    }
+
+    send_request();
+    write_log(sprintf('The %s user has been updated by %s', $data['admin_name'], $_SESSION['user_logged']), E_USER_NOTICE);
+    set_page_message('User has been updated.', 'success');
+
+    if ($ret) {
+        set_page_message(tr('New login data were sent to the %s user.', decode_idna($data['admin_name'])), 'success');
+    }
+
+    redirectTo("user_edit.php?edit_id=$userId");
 }
+
+/**
+ * Generate page
+ *
+ * @param TemplateEngine $tpl
+ * @param Zend_Form $form
+ * @param int $userId User unique identifier
+ * 
+ * @return void
+ */
+function generatePage(TemplateEngine $tpl, Zend_Form $form, $userId)
+{
+    global $userType;
+
+    $tpl->form = $form;
+    $tpl->editId = $userId;
+
+    if (!empty($_POST)) {
+        return;
+    }
+
+    $stmt = exec_query(
+        "
+            SELECT admin_name, admin_type, fname, lname, IFNULL(gender, 'U') as gender, firm, zip, city, state, country,
+                street1, street2, email, phone, fax
+            FROM admin
+            WHERE admin_id = ?
+        ",
+        $userId
+    );
+
+    if (!($data = $stmt->fetchRow())) {
+        showBadRequestErrorPage();
+    }
+
+    $userType = $data['admin_type'];
+    $form->setDefaults($data);
+}
+
 
 /***********************************************************************************************************************
  * Main
@@ -136,7 +163,7 @@ function admin_isValidData()
 
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 check_login('admin');
 
 if (!isset($_GET['edit_id'])) {
@@ -149,91 +176,42 @@ if ($userId == $_SESSION['user_id']) {
     redirectTo('personal_change.php');
 }
 
-$stmt = exec_query(
-    '
-      SELECT admin_name, admin_type, fname, lname, firm, zip, city, state, country, phone, fax, street1, street2, email,
-        gender
-      FROM admin
-      WHERE admin_id = ?
-    ',
-    $userId
-);
+global $userType;
 
-if (!$stmt->rowCount()) {
-    showBadRequestErrorPage();
-}
+$form = getUserLoginDataForm()->addElements(getUserPersonalDataForm()->getElements());
 
-$userData = $stmt->fetchRow();
-
-if (!empty($_POST) && admin_isValidData()) {
-    admin_updateUserData($userId);
-    set_page_message(tr('User data successfully updated.'), 'success');
-    redirectTo('users.php');
+if (!empty($_POST)) {
+    updateUserData($form, $userId);
 }
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
     'layout'        => 'shared/layouts/ui.tpl',
-    'page'          => 'admin/user_edit.tpl',
+    'page'          => 'admin/user_edit.phtml',
     'page_message'  => 'layout',
     'hosting_plans' => 'page'
-]);
-$tpl->assign([
-    'TR_PAGE_TITLE'          => tr('Admin / Users / Overview / Edit Admin'),
-    'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field.'),
-    'TR_PASSWORD_NOT_MATCH'  => tr("Passwords do not match."),
-    'TR_CORE_DATA'           => tr('Core data'),
-    'TR_USERNAME'            => tr('Username'),
-    'TR_PASSWORD'            => tr('Password'),
-    'TR_PASSWORD_REPEAT'     => tr('Password confirmation'),
-    'TR_EMAIL'               => tr('Email'),
-    'TR_ADDITIONAL_DATA'     => tr('Additional data'),
-    'TR_FIRST_NAME'          => tr('First name'),
-    'TR_LAST_NAME'           => tr('Last name'),
-    'TR_COMPANY'             => tr('Company'),
-    'TR_ZIP_POSTAL_CODE'     => tr('Zip/Postal code'),
-    'TR_CITY'                => tr('City'),
-    'TR_STATE_PROVINCE'      => tr('State/Province'),
-    'TR_COUNTRY'             => tr('Country'),
-    'TR_STREET_1'            => tr('Street 1'),
-    'TR_STREET_2'            => tr('Street 2'),
-    'TR_PHONE'               => tr('Phone'),
-    'TR_FAX'                 => tr('Fax'),
-    'TR_GENDER'              => tr('Gender'),
-    'TR_MALE'                => tr('Male'),
-    'TR_FEMALE'              => tr('Female'),
-    'TR_UNKNOWN'             => tr('Unknown'),
-    'TR_UPDATE'              => tr('Update'),
-    'TR_SEND_DATA'           => tr('Send new login data'),
-    'FIRST_NAME'             => isset($_POST['fname']) ? tohtml($_POST['fname']) : tohtml($userData['fname']),
-    'LAST_NAME'              => isset($_POST['lname']) ? tohtml($_POST['lname']) : tohtml($userData['lname']),
-    'FIRM'                   => isset($_POST['firm']) ? tohtml($_POST['firm']) : tohtml($userData['firm']),
-    'ZIP'                    => isset($_POST['zip']) ? tohtml($_POST['zip']) : tohtml($userData['zip']),
-    'CITY'                   => isset($_POST['city']) ? tohtml($_POST['city']) : tohtml($userData['city']),
-    'STATE_PROVINCE'         => isset($_POST['state']) ? tohtml($_POST['state']) : tohtml($userData['state']),
-    'COUNTRY'                => isset($_POST['country']) ? tohtml($_POST['country']) : tohtml($userData['country']),
-    'STREET_1'               => isset($_POST['street1']) ? tohtml($_POST['street1']) : tohtml($userData['street1']),
-    'STREET_2'               => isset($_POST['street2']) ? tohtml($_POST['street2']) : tohtml($userData['street2']),
-    'PHONE'                  => isset($_POST['phone']) ? tohtml($_POST['phone']) : tohtml($userData['phone']),
-    'FAX'                    => isset($_POST['fax']) ? tohtml($_POST['fax']) : tohtml($userData['fax']),
-    'USERNAME'               => tohtml(decode_idna($userData['admin_name'])),
-    'EMAIL'                  => isset($_POST['email']) ? tohtml($_POST['email']) : tohtml($userData['email']),
-    'VL_MALE'                => (isset($_POST['gender']) && $_POST['gender'] == 'M' || $userData['gender'] == 'M') ? ' selected' : '',
-    'VL_FEMALE'              => (isset($_POST['gender']) && $_POST['gender'] == 'F' || $userData['gender'] == 'F') ? ' selected' : '',
-    'VL_UNKNOWN'             => (
-        isset($_POST['gender']) && $_POST['gender'] == 'U'
-        || ((!isset($_POST['gender']) && ($userData['gender'] == 'U') || empty($userData['gender'])))
-    ) ? ' selected' : '',
-    'SEND_DATA_CHECKED'      => (isset($_POST['send_data'])) ? ' checked' : '',
-    'EDIT_ID'                => $userId
 ]);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
+generatePage($tpl, $form, $userId);
+
+if ($userType == 'admin') {
+    $tpl->assign([
+        'TR_PAGE_TITLE'       => tohtml(tr('Admin / Users / Overview / Edit Admin')),
+        'TR_DYNAMIC_TITLE'    => tr('Edit admin'),
+        'DYNAMIC_TITLE_CLASS' => 'user_yellow'
+    ]);
+} else {
+    $tpl->assign([
+        'TR_PAGE_TITLE'       => tohtml(tr('Admin / Users / Overview / Edit Customer')),
+        'TR_DYNAMIC_TITLE'    => tr('Edit customer'),
+        'DYNAMIC_TITLE_CLASS' => 'user_blue'
+    ]);
+}
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();
-

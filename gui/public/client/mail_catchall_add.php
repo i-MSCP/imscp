@@ -360,6 +360,10 @@ if (!customerHasFeature('mail')
     showBadRequestErrorPage();
 }
 
+echo '<pre>';
+print_r($_SESSION);
+exit;
+
 $catchallId = clean_input($_GET['id']);
 
 if (!preg_match(

@@ -20,10 +20,11 @@ CONFIG
     Removed: `.htgroup' and `.htpasswd' files from the skeleton directory; These files are now created only when needed
 
 FRONTEND
-    Added: Noop filter -- A filter that does nothing else than returning the initial value
+    Added: Routing for languages without territory information: eg. `de' will be routed to `de_DE' (autodetection)
     Added: Setting that allows administrator to protect/unrpotect default mail accounts against both edition and deletion
-    Added: Zend Framework translaltion resource for validator
+    Added: Translaltion resources for Zend validators
     Cosmetics: Make usage of the mathematical infinity symbol (∞) in place of the `Unlimited' translation string
+    Deprecated: Usage of customer ID field (will be removed in a later release)
     Enhancement: Make customers able to edit catch-all accounts
     Enhancement: Make customers able to edit mail autoresponder message even if the autoresponder is not activated yet
     Enhancement: Make customers able to select more than one catch-all address in catch-all addresses drop-down list
@@ -31,6 +32,7 @@ FRONTEND
     Enhancement: Protect default mail accounts against change and deletion (default)
     Enhancement: Show Catch-all accounts in client mail accounts overview interface
     Fixed: All SQL queries must be compatible with the `ONLY_FULL_GROUP_BY' SQL mode
+    Fixed: A user must not be able to clear his email address
     Fixed: Cannot edit mailbox quota due to integer type casting (i386 arch)
     Fixed: Cannot set value bigger than 2GB for mailbox quota due to integer type casting (i386 arch)
     Fixed: Customers must stay able to login when their password or their main domain are being modified
@@ -43,14 +45,16 @@ FRONTEND
     Removed: Administrator database update interface; Database update are executed by installer
     Removed: Cached versions of navigation files; Make use og global translation cache
     Removed: Information about total items/limits assigned - People don't understand their meaning (statistics)
+    Removed: Output compression, including related parameters -- Compression is done at Nginx Web server level
     Review: abuse, hostmaster and postmaster default mail accounts are now forwarded to customer email
     Review: Catchall mail accounts are now counted in mail accounts limit
     Review: Default mail accounts are not longer counted for the mail accounts limit (default)
     Review: Default mail accounts are now hidden in the client mail accounts overview interface (default)
-    Review: Hide E_STRICT, E_NOTICE, ~E_USER_NOTICE, E_DEPRECATED and E_USER_DEPRECATED on production (PHP)
+    Review: Hide PHP E_STRICT, E_NOTICE, ~E_USER_NOTICE, E_DEPRECATED and E_USER_DEPRECATED on production
     Review: Make usage of short syntax for arrays
-    Review: Reuse Zend_Registry class instead of reinventing the wheel
-    Review: Skip the intermediate edit page when mail autoresponder is being enabled and that message is already set
+    Review: Extend Zend_Registry class instead of reinventing the wheel
+    Review: Skip the intermediate edit page when mail autoresponder is being enabled and that the message is already set
+    Rewritten: Edit user and personal data interfaces (all UI levels)
     Security: Input for personal user data not filtered nor validated (all UI levels)
 
 INSTALLER

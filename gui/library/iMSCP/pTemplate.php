@@ -289,182 +289,6 @@ class iMSCP_pTemplate
     }
 
     /**
-     * Find next dynamic block
-     *
-     * @param string $data Data in which search is made
-     * @param int $spos Position from which starting to search
-     * @return array|bool
-     */
-    public function find_next($data, $spos)
-    {
-        do {
-            if (false === ($tag_spos = strpos($data, $this->tpl_start_tag, $spos + 1))) {
-                return false;
-            }
-
-            if (false === ($tag_epos = strpos($data, $this->tpl_end_tag, $tag_spos + 1))) {
-                return false;
-            }
-
-            $length = $tag_epos + strlen($this->tpl_end_tag) - $tag_spos;
-            $tag = substr($data, $tag_spos, $length);
-
-            if (!$tag) {
-                return false;
-            }
-
-            if (preg_match($this->tpl_start_rexpr, $tag, $matches)) {
-                return [$matches[1], 'b', $tag_spos, $tag_epos + strlen($this->tpl_end_tag) - 1];
-            }
-
-            if (preg_match($this->tpl_end_rexpr, $tag, $matches)) {
-                return [$matches[1], 'e', $tag_spos, $tag_epos + strlen($this->tpl_end_tag) - 1];
-            }
-
-            $spos = $tag_epos;
-        } while (true);
-
-        return false;
-    }
-
-    /**
-     * Finds the next pair of curly brakets.
-     *
-     * @param string $data
-     * @param int $spos
-     * @return array|bool
-     */
-    private function find_next_curl($data, $spos)
-    {
-        $curl_b = strpos($data, '{', $spos + 1);
-        $curl_e = strpos($data, '}', $spos + 1);
-
-        if ($curl_b) {
-            if ($curl_e) {
-                if ($curl_b < $curl_e) {
-                    return ['{', $curl_b];
-                }
-
-                return ['}', $curl_e];
-            }
-
-            return ['{', $curl_b];
-        }
-
-        if ($curl_e) {
-            return ['}', $curl_e];
-        }
-
-        return false;
-    }
-
-    /**
-     *
-     * @param string $data
-     * @return mixed
-     */
-    private function devide_dynamic($data)
-    {
-        $start_from = -1;
-        $tag = $this->find_next($data, $start_from);
-
-        while ($tag) {
-            if ($tag[1] == 'b') {
-                $this->stack[$this->sp++] = $tag;
-                $start_from = $tag[3];
-            } else {
-                $tpl_name = $tag[0];
-                $tpl_eb_pos = $tag[2];
-                $tpl_ee_pos = $tag[3];
-                $tag = $this->stack [--$this->sp];
-                $tpl_bb_pos = $tag[2];
-                $tpl_be_pos = $tag[3];
-
-                $this->dtpl_data[strtoupper($tpl_name)] = substr($data, $tpl_be_pos + 1, $tpl_eb_pos - $tpl_be_pos - 1);
-                $this->dtpl_data[$tpl_name] = substr($data, $tpl_be_pos + 1, $tpl_eb_pos - $tpl_be_pos - 1);
-                $data = substr_replace($data, '{' . strtoupper($tpl_name) . '}', $tpl_bb_pos, $tpl_ee_pos - $tpl_bb_pos + 1);
-                $start_from = $tpl_bb_pos + strlen("{" . $tpl_name . "}") - 1;
-            }
-
-            $tag = $this->find_next($data, $start_from);
-        }
-
-        return $data;
-    }
-
-    /**
-     * @param  $data
-     * @return mixed
-     */
-    private function substitute_dynamic($data)
-    {
-        if (($curl_b = strpos($data, '{')) === FALSE) {
-            return $data; // there is nothing to substitute in $data; return early
-        }
-
-        $this->sp = 0;
-        $start_from = -1;
-        $this->stack[$this->sp++] = ['{', $curl_b];
-        $curl = $this->find_next_curl($data, $start_from);
-
-        while ($curl) {
-            if ($curl[0] == '{') {
-                $this->stack[$this->sp++] = $curl;
-                $start_from = $curl[1];
-            } else {
-                $curl_e = $curl[1];
-
-                if ($this->sp > 0) {
-                    $curl = $this->stack[--$this->sp];
-                    // CHECK for empty stack must be done HERE !
-                    $curl_b = $curl[1];
-
-                    if ($curl_b < $curl_e + 1) {
-                        $var_name = substr($data, $curl_b + 1, $curl_e - $curl_b - 1);
-
-                        // The whole WORK goes here :)
-                        if (preg_match('/[A-Z0-9][A-Z0-9\_]*/', $var_name)) {
-                            if (isset($this->namespace[$var_name])) {
-                                $data = substr_replace($data, $this->namespace[$var_name], $curl_b, $curl_e - $curl_b + 1);
-                                $start_from = $curl_b - 1;
-                                // new value may also begin with '{'
-                            } elseif (isset($this->dtpl_data[$var_name])) {
-                                $data = substr_replace($data, $this->dtpl_data[$var_name], $curl_b, $curl_e - $curl_b + 1);
-                                $start_from = $curl_b - 1;
-                                // new value may also begin with '{'
-                            } else {
-                                $start_from = $curl_b;
-                                // no suitable value found -> go forward
-                            }
-                        } else {
-                            $start_from = $curl_b;
-                            // go forward, we have {no variable} here.
-                        }
-                    } else {
-                        $start_from = $curl_e;
-                        // go forward, we have {} here.
-                    }
-                } else {
-                    $start_from = $curl_e;
-                }
-            }
-
-            $curl = $this->find_next_curl($data, $start_from);
-        }
-
-        return $data;
-    }
-
-    /**
-     * @param string $fname
-     * @return bool
-     */
-    private function is_safe($fname)
-    {
-        return (file_exists($this->root_dir . '/' . $fname)) ? true : false;
-    }
-
-    /**
      * Checks if a namespace is defined.
      *
      * @param string $namespace namespace
@@ -484,15 +308,15 @@ class iMSCP_pTemplate
      */
     public function get_file($fname)
     {
-        static $parentTplDir = null;
+        static $parentTplDir = NULL;
 
         if (!is_array($fname)) {
             $this->eventManager->dispatch(iMSCP_Events::onBeforeAssembleTemplateFiles, [
-                'context' => $this,
+                'context'      => $this,
                 'templatePath' => $this->root_dir . '/' . $fname
             ]);
         } else { // INCLUDED file
-            $fname = $parentTplDir !== null ? $parentTplDir . '/' . $fname[1] : $fname[1];
+            $fname = $parentTplDir !== NULL ? $parentTplDir . '/' . $fname[1] : $fname[1];
         }
 
         if (!$this->is_safe($fname)) {
@@ -502,16 +326,16 @@ class iMSCP_pTemplate
         $parentTplDir = dirname($fname);
 
         $this->eventManager->dispatch(iMSCP_Events::onBeforeLoadTemplateFile, [
-            'context' => $this,
+            'context'      => $this,
             'templatePath' => $this->root_dir . '/' . $fname
         ]);
 
         ob_start();
-        include $this->root_dir . '/' . $fname;
+        $this->run(utils_normalizePath($this->root_dir . '/' . $fname));
         $fileContent = ob_get_clean();
 
         $this->eventManager->dispatch(iMSCP_Events::onAfterLoadTemplateFile, [
-            'context' => $this,
+            'context'         => $this,
             'templateContent' => $fileContent
         ]);
 
@@ -519,30 +343,11 @@ class iMSCP_pTemplate
         $parentTplDir = $prevParentTplDir;
 
         $this->eventManager->dispatch(iMSCP_Events::onAfterAssembleTemplateFiles, [
-            'context' => $this,
+            'context'         => $this,
             'templateContent' => $fileContent
         ]);
 
         return $fileContent;
-    }
-
-    /**
-     * @param string $tname
-     * @return bool
-     */
-    private function find_origin($tname)
-    {
-        if (!@$this->dtpl_name[$tname]) {
-            return false;
-        }
-
-        while (strpos($this->dtpl_name[$tname], '_no_file_') === false
-            && !preg_match('/\.(?:tpl|phtml)$/', $this->dtpl_name[$tname])
-        ) {
-            $tname = $this->dtpl_name[$tname];
-        }
-
-        return $tname;
     }
 
     /**
@@ -610,8 +415,8 @@ class iMSCP_pTemplate
     public function parse($pname, $tname)
     {
         $this->eventManager->dispatch(iMSCP_Events::onParseTemplate, [
-            'pname' => $pname,
-            'tname' => $tname,
+            'pname'          => $pname,
+            'tname'          => $tname,
             'templateEngine' => $this
         ]);
 
@@ -630,7 +435,7 @@ class iMSCP_pTemplate
             && ($this->tpl_name[$tname] == '_no_file_' || preg_match('/\.(?:tpl|phtml)$/', $this->tpl_name[$tname]))
         ) {
             // static NO FILE - static FILE
-            
+
             if (isset($this->tpl_data[$tname]) && $this->tpl_data[$tname] == '') {
                 $this->tpl_data[$tname] = $this->get_file($this->tpl_name[$tname]);
             }
@@ -650,7 +455,7 @@ class iMSCP_pTemplate
             if (!$this->parse_dynamic($pname, $tname, $ADD_FLAG)) {
                 return;
             }
-            
+
             $this->last_parsed = $this->namespace[$pname];
         } else {
             if ($ADD_FLAG) {
@@ -706,7 +511,7 @@ class iMSCP_pTemplate
      * @param string $namespace Namespace
      * @return iMSCP_pTemplate Provides fluent interface, returns self
      */
-    public function replaceLastParseResult($newContent, $namespace = null)
+    public function replaceLastParseResult($newContent, $namespace = NULL)
     {
         $this->last_parsed = (string)$newContent;
         if (isset($this->namespace[$namespace])) {
@@ -714,5 +519,210 @@ class iMSCP_pTemplate
         }
 
         return $this;
+    }
+
+    /**
+     * @param string $tname
+     * @return bool
+     */
+    protected function find_origin($tname)
+    {
+        if (!@$this->dtpl_name[$tname]) {
+            return false;
+        }
+
+        while (strpos($this->dtpl_name[$tname], '_no_file_') === false
+            && !preg_match('/\.(?:tpl|phtml)$/', $this->dtpl_name[$tname])
+        ) {
+            $tname = $this->dtpl_name[$tname];
+        }
+
+        return $tname;
+    }
+
+    /**
+     * Find next dynamic block
+     *
+     * @param string $data Data in which search is made
+     * @param int $spos Position from which starting to search
+     * @return array|bool
+     */
+    protected function find_next($data, $spos)
+    {
+        do {
+            if (false === ($tag_spos = strpos($data, $this->tpl_start_tag, $spos + 1))) {
+                return false;
+            }
+
+            if (false === ($tag_epos = strpos($data, $this->tpl_end_tag, $tag_spos + 1))) {
+                return false;
+            }
+
+            $length = $tag_epos + strlen($this->tpl_end_tag) - $tag_spos;
+            $tag = substr($data, $tag_spos, $length);
+
+            if (!$tag) {
+                return false;
+            }
+
+            if (preg_match($this->tpl_start_rexpr, $tag, $matches)) {
+                return [$matches[1], 'b', $tag_spos, $tag_epos + strlen($this->tpl_end_tag) - 1];
+            }
+
+            if (preg_match($this->tpl_end_rexpr, $tag, $matches)) {
+                return [$matches[1], 'e', $tag_spos, $tag_epos + strlen($this->tpl_end_tag) - 1];
+            }
+
+            $spos = $tag_epos;
+        } while (true);
+
+        return false;
+    }
+
+    /**
+     * Finds the next pair of curly brakets.
+     *
+     * @param string $data
+     * @param int $spos
+     * @return array|bool
+     */
+    protected function find_next_curl($data, $spos)
+    {
+        $curl_b = strpos($data, '{', $spos + 1);
+        $curl_e = strpos($data, '}', $spos + 1);
+
+        if ($curl_b) {
+            if ($curl_e) {
+                if ($curl_b < $curl_e) {
+                    return ['{', $curl_b];
+                }
+
+                return ['}', $curl_e];
+            }
+
+            return ['{', $curl_b];
+        }
+
+        if ($curl_e) {
+            return ['}', $curl_e];
+        }
+
+        return false;
+    }
+
+    /**
+     *
+     * @param string $data
+     * @return mixed
+     */
+    protected function devide_dynamic($data)
+    {
+        $start_from = -1;
+        $tag = $this->find_next($data, $start_from);
+
+        while ($tag) {
+            if ($tag[1] == 'b') {
+                $this->stack[$this->sp++] = $tag;
+                $start_from = $tag[3];
+            } else {
+                $tpl_name = $tag[0];
+                $tpl_eb_pos = $tag[2];
+                $tpl_ee_pos = $tag[3];
+                $tag = $this->stack [--$this->sp];
+                $tpl_bb_pos = $tag[2];
+                $tpl_be_pos = $tag[3];
+
+                $this->dtpl_data[strtoupper($tpl_name)] = substr($data, $tpl_be_pos + 1, $tpl_eb_pos - $tpl_be_pos - 1);
+                $this->dtpl_data[$tpl_name] = substr($data, $tpl_be_pos + 1, $tpl_eb_pos - $tpl_be_pos - 1);
+                $data = substr_replace($data, '{' . strtoupper($tpl_name) . '}', $tpl_bb_pos, $tpl_ee_pos - $tpl_bb_pos + 1);
+                $start_from = $tpl_bb_pos + strlen("{" . $tpl_name . "}") - 1;
+            }
+
+            $tag = $this->find_next($data, $start_from);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param  $data
+     * @return mixed
+     */
+    protected function substitute_dynamic($data)
+    {
+        if (($curl_b = strpos($data, '{')) === FALSE) {
+            return $data; // there is nothing to substitute in $data; return early
+        }
+
+        $this->sp = 0;
+        $start_from = -1;
+        $this->stack[$this->sp++] = ['{', $curl_b];
+        $curl = $this->find_next_curl($data, $start_from);
+
+        while ($curl) {
+            if ($curl[0] == '{') {
+                $this->stack[$this->sp++] = $curl;
+                $start_from = $curl[1];
+            } else {
+                $curl_e = $curl[1];
+
+                if ($this->sp > 0) {
+                    $curl = $this->stack[--$this->sp];
+                    // CHECK for empty stack must be done HERE !
+                    $curl_b = $curl[1];
+
+                    if ($curl_b < $curl_e + 1) {
+                        $var_name = substr($data, $curl_b + 1, $curl_e - $curl_b - 1);
+
+                        // The whole WORK goes here :)
+                        if (preg_match('/[A-Z0-9][A-Z0-9\_]*/', $var_name)) {
+                            if (isset($this->namespace[$var_name])) {
+                                $data = substr_replace($data, $this->namespace[$var_name], $curl_b, $curl_e - $curl_b + 1);
+                                $start_from = $curl_b - 1;
+                                // new value may also begin with '{'
+                            } elseif (isset($this->dtpl_data[$var_name])) {
+                                $data = substr_replace($data, $this->dtpl_data[$var_name], $curl_b, $curl_e - $curl_b + 1);
+                                $start_from = $curl_b - 1;
+                                // new value may also begin with '{'
+                            } else {
+                                $start_from = $curl_b;
+                                // no suitable value found -> go forward
+                            }
+                        } else {
+                            $start_from = $curl_b;
+                            // go forward, we have {no variable} here.
+                        }
+                    } else {
+                        $start_from = $curl_e;
+                        // go forward, we have {} here.
+                    }
+                } else {
+                    $start_from = $curl_e;
+                }
+            }
+
+            $curl = $this->find_next_curl($data, $start_from);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param string $fname
+     * @return bool
+     */
+    protected function is_safe($fname)
+    {
+        return (file_exists($this->root_dir . '/' . $fname)) ? true : false;
+    }
+
+    /**
+     * Includes the template script in a scope with only public $this variables.
+     *
+     * @param string $scriptPath The view script to execute.
+     */
+    protected function run($scriptPath)
+    {
+        include $scriptPath;
     }
 }

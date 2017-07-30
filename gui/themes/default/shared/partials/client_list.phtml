@@ -44,7 +44,6 @@
             <select name="search_field" id="search_field">
                 <option value="anything"{CLIENT_NONE_SELECTED}><?= tohtml(tr('anything')); ?></option>
                 <option value="domain_name"{CLIENT_DOMAIN_NAME_SELECTED}><?= tohtml(tr('domain name')); ?></option>
-                <option value="customer_id"{CLIENT_CUSTOMER_ID_SELECTED}><?= tohtml(tr('customer ID')); ?></option>
                 <option value="lname"{CLIENT_FIRST_NAME_SELECTED}><?= tohtml(tr('first name')); ?></option>
                 <option value="lname"{CLIENT_LAST_NAME_SELECTED}><?= tohtml(tr('last name')); ?></option>
                 <option value="firm"{CLIENT_COMPANY_SELECTED}><?= tohtml(tr('company')); ?></option>
@@ -118,12 +117,12 @@
         <td>
             <a class="icon i_identity" href="domain_details.php?domain_id={CLIENT_DOMAIN_ID}" title="<?= tohtml(tr('Details'), 'htmlAttr'); ?>"><?= tohtml(tr('Details')); ?></a>
             <a class="icon i_details" href="change_user_interface.php?to_id={CLIENT_ID}" title="<?= tohtml(tr('Switch to user interface'), 'htmlAttr'); ?>"><?= tohtml(tr('Switch')); ?></a>
-            <a class="icon i_user" href="user_edit.php?edit_id={CLIENT_ID}" title="<?= tohtml(tr('Edit user'), 'htmlAttr'); ?>"><?= tohtml(tr('Edit user')); ?></a>
+            <a class="icon i_user" href="user_edit.php?edit_id={CLIENT_ID}" title="<?= tohtml(tr('Edit'), 'htmlAttr'); ?>"><?= tohtml(tr('Edit')); ?></a>
             <!-- BDP: client_restricted_links -->
 <? if($_SESSION['user_type'] == 'reseller'): ?>
             <a class="icon i_domain_icon" href="domain_edit.php?edit_id={CLIENT_DOMAIN_ID}" title="<?= tohtml(tr('Edit domain'), 'htmlAttr'); ?>"><?= tohtml(tr('Edit domain')); ?></a>
 <? endif; ?>
-            <a class="icon i_delete" href="user_delete.php?user_id={CLIENT_ID}" onclick="return action_delete(this)" title="<?= tohtml(tr('Delete user'), 'htmlAttr'); ?>"><?= tohtml(tr('Delete user')); ?></a>
+            <a class="icon i_delete" href="user_delete.php?user_id={CLIENT_ID}" onclick="return action_delete(this)" title="<?= tohtml(tr('Delete'), 'htmlAttr'); ?>"><?= tohtml(tr('Delete')); ?></a>
             <!-- EDP: client_restricted_links -->
         </td>
     </tr>

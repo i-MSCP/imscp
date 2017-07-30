@@ -21,7 +21,7 @@
     <tr>
         <th>{TR_LANGUAGE_NAME}</th>
         <th>{TR_NUMBER_TRANSLATED_STRINGS}</th>
-        <th>{TR_LANGUAGE_REVISION}</th>
+        <th>{TR_LANGUAGE_CREATION_DATE}</th>
         <th>{TR_LAST_TRANSLATOR}</th>
         <th>{TR_DEFAULT_LANGUAGE}</th>
     </tr>
@@ -31,13 +31,12 @@
     <tr>
         <td><label for="defaultLanguage_{LOCALE}"><span class="icon i_locale">{LANGUAGE_NAME}</span></label></td>
         <td>{NUMBER_TRANSLATED_STRINGS}</td>
-        <td>{LANGUAGE_REVISION}</td>
+        <td>{LANGUAGE_REVISION_DATE}</td>
         <td>{LAST_TRANSLATOR}</td>
         <td>
             <form method="post">
                 <label for="radio_defaultLanguage_{LOCALE}">{TR_DEFAULT}</label>
-                <input type="radio" name="defaultLanguage" id="radio_defaultLanguage_{LOCALE}" value="{LOCALE}"
-                       {LOCALE_CHECKED}>
+                <input type="radio" name="defaultLanguage" id="radio_defaultLanguage_{LOCALE}" value="{LOCALE}"{LOCALE_CHECKED}>
                 <input type="hidden" name="uaction" id="uaction" value="changeLanguage">
             </form>
         </td>

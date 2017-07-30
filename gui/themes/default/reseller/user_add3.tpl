@@ -43,10 +43,6 @@
         </thead>
         <tbody>
         <tr>
-            <td><label for="useruid">{TR_CUSTOMER_ID}</label></td>
-            <td><input type="text" name="useruid" id="useruid" value="{VL_USR_ID}"></td>
-        </tr>
-        <tr>
             <td><label for="userfname">{TR_FIRSTNAME}</label></td>
             <td><input type="text" name="userfname" id="userfname" value="{VL_USR_NAME}"></td>
         </tr>

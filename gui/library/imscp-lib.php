@@ -106,12 +106,6 @@ if (is_readable(CONFIG_CACHE_FILE_PATH)) {
     // Default Language (if not overriden by admin)
     $config['USER_INITIAL_LANG'] = Zend_Locale::BROWSER;
 
-    // Tell whether or not output must be compressed
-    $config['COMPRESS_OUTPUT'] = 1;
-
-    // show GZIP compression information in HTML output
-    $config['SHOW_COMPRESSION_SIZE'] = 1;
-
     // Session timeout in minutes
     $config['SESSION_TIMEOUT'] = 30;
 

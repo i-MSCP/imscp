@@ -54,6 +54,10 @@ if (!empty($_POST)) {
     $customerId = $_SESSION['user_id'];
     $customerNewLanguage = clean_input($_POST['def_language']);
 
+    if (!in_array($customerNewLanguage, i18n_getAvailableLanguages(true), true)) {
+        showBadRequestErrorPage();
+    }
+
     if ($customerCurrentLanguage != $customerNewLanguage) {
         exec_query('UPDATE user_gui_props SET lang = ? WHERE user_id = ?', [
             $customerNewLanguage, $_SESSION['user_id']
@@ -64,12 +68,12 @@ if (!empty($_POST)) {
             $_SESSION['user_def_lang'] = $customerNewLanguage;
         }
 
-        set_page_message(tr('Language successfully updated.'), 'success');
+        set_page_message(tr('Language has been updated.'), 'success');
     } else {
-        set_page_message(tr("Nothing has been changed."), 'info');
+        set_page_message(tr('Nothing has been changed.'), 'info');
     }
 
-    redirectTo('index.php');
+    redirectTo('language.php');
 }
 
 $tpl->assign([
@@ -81,7 +85,7 @@ $tpl->assign([
 ]);
 
 generateNavigation($tpl);
-gen_def_language($tpl, $customerCurrentLanguage);
+generateLanguagesList($tpl, $customerCurrentLanguage);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

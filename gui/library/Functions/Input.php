@@ -19,12 +19,9 @@
  */
 
 use iMSCP_Exception as iMSCPException;
-use iMSCP_Filter_Noop as NoopFilter;
 use Zend_Escaper_Escaper as Escaper;
 use Zend_Filter_Digits as FilterDigits;
-use Zend_Filter_Input as FilterInput;
 use Zend_Validate_File_MimeType as FileMimeTypeValidator;
-use Zend_Validate_InArray as InArrayValidator;
 
 $ESCAPER = new Escaper('UTF-8');
 
@@ -125,7 +122,7 @@ function tohtml($string, $escapeType = 'html')
         return $ESCAPER->escapeHtmlAttr($string);
     }
 
-    throw new iMSCPException('Unknown escape type');
+    throw new iMSCPException(sprintf('Unknown escape type: %s', $escapeType));
 }
 
 /**
@@ -173,15 +170,9 @@ function checkPasswordSyntax($password, $unallowedChars = '/[^\x21-\x7e]/', $noE
         $cfg['PASSWD_CHARS'] = 30;
     }
 
-    if ($passwordLength < $cfg['PASSWD_CHARS']) {
+    if ($passwordLength < $cfg['PASSWD_CHARS'] || $passwordLength > 30) {
         if (!$noErrorMsg) {
-            set_page_message(tr('Password is shorter than %s characters.', $cfg['PASSWD_CHARS']), 'error');
-        }
-
-        $ret = false;
-    } elseif ($passwordLength > 30) {
-        if (!$noErrorMsg) {
-            set_page_message(tr('Password cannot be longer than 30 characters.'), 'error');
+            set_page_message(tr('Password must be between %d and %d characters.', $cfg['PASSWD_CHARS'], 30), 'error');
         }
 
         $ret = false;
@@ -197,10 +188,7 @@ function checkPasswordSyntax($password, $unallowedChars = '/[^\x21-\x7e]/', $noE
 
     if ($cfg['PASSWD_STRONG'] && !(preg_match('/[0-9]/', $password) && preg_match('/[a-zA-Z]/', $password))) {
         if (!$noErrorMsg) {
-            set_page_message(
-                tr('Password must be at least %s characters long and contain letters and numbers to be valid.', $cfg['PASSWD_CHARS']),
-                'error'
-            );
+            set_page_message(tr('Password must contain letters and digits.'), 'error');
         }
 
         $ret = false;
@@ -296,10 +284,11 @@ function isValidDomainName($domainName)
             return false;
         }
 
-        if (preg_match('/([^a-z0-9\-])/', $label, $m)) {
-            $dmnNameValidationErrMsg = tr("Domain name label '%s' contain an invalid character: %s", $label, $m[1]);
-            return false;
-        }
+        # Already done on full domain name above
+        #if (preg_match('/([^a-z0-9\-])/', $label, $m)) {
+        #    $dmnNameValidationErrMsg = tr("Domain name label '%s' contain an invalid character: %s", $label, $m[1]);
+        #    return false;
+        #}
 
         if (preg_match('/^[\-]|[\-]$/', $label)) {
             $dmnNameValidationErrMsg = tr('Domain name labels cannot start nor end with hyphen.');
@@ -359,42 +348,100 @@ function checkMimeType($pathFile, array $mimeTypes)
 }
 
 /**
- * Get input filter for user personal data
+ * Get user login data form
  *
- * @param $inputData Input data
- * @return FilterInput
+ * @return Zend_Form
  */
-function getUserPersonalDataInputFilter($inputData)
+function getUserLoginDataForm()
 {
-    # TODO: Add appropriate validators (postcode, phone...)
-    return new FilterInput(
-        [
-            '*'     => ['StripTags', 'StringTrim'],
-            'email' => ['stringToLower']
-        ],
-        [
-            'fname'   => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid first name.')],
-            'lname'   => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid last name.')],
-            'gender'  => [
-                new InArrayValidator(['haystack' => ['M', 'F', 'U'], 'strict' => true]),
-                FilterInput::MESSAGES => tr('Invalid gender')
+    $cfg = iMSCP_Registry::get('config');
+    $minPasswordLength = intval($cfg['PASSWD_CHARS']);
+
+    if ($minPasswordLength < 6) {
+        $minPasswordLength = 6;
+    }
+
+    $form = new Zend_Form([
+        'elements' => [
+            'admin_name'            => [
+                'text',
+                [
+                    'validators' => [
+                        ['Regex', true, '/^[[:alnum:]](:?(?<![-_])(:?-*|[_.])?(?![-_])[[:alnum:]]*)*?(?<![-_.])$/', 'messages' => tr('Invalid username.')],
+                        ['StringLength', true, ['min' => 2, 'max' => 30, 'messages' => tr('Username must be between %d and %d characters', 2, 30)]]
+                    ]
+                ]
             ],
-            'firm'    => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid firm.')],
-            'street1' => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid firm.')],
-            'street2' => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid firm.')],
-            'zip'     => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid zipcode.')],
-            'city'    => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid city.')],
-            'state'   => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid state.')],
-            'country' => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid country.')],
-            'email'   => ['EmailAddress', FilterInput::MESSAGES => tr('Invalid email address.')],
-            'phone'   => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid phone number.')],
-            'fax'     => ['Alnum' => ['allowWhiteSpace' => true], FilterInput::MESSAGES => tr('Invalid fax number.')]
-        ],
-        $inputData,
-        [
-            FilterInput::ESCAPE_FILTER => new NoopFilter(),
-            FilterInput::PRESENCE      => FilterInput::PRESENCE_REQUIRED,
-            FilterInput::ALLOW_EMPTY   => true
+            'password'              => [
+                'password',
+                [
+                    'validators' => [
+                        [
+                            'StringLength',
+                            true,
+                            [
+                                'min'      => $minPasswordLength,
+                                'max'      => 30,
+                                'messages' => tr('Password must be between %d and %d characters.', $minPasswordLength, 30)
+                            ]
+                        ],
+                        ['Regex', true, ['/^[\x21-\x7e]+$/', 'messages' => tr('Password contains unallowed characters.')]]
+                    ]
+                ]
+            ],
+            'password_confirmation' => [
+                'password', ['validators' => [['Identical', true, ['password', 'messages' => tr('Passwords do not match.')]]]]
+            ]
         ]
-    );
+    ]);
+
+    if ($cfg['PASSWD_STRONG']) {
+        $form->getElement('password')->addValidator('Callback', true, [
+            function ($password) {
+                return preg_match('/[0-9]/', $password) && preg_match('/[a-zA-Z]/', $password);
+            },
+            'messages' => tr('Password must contain letters and digits.'),
+        ]);
+    }
+
+    $form->setElementFilters(['StripTags', 'StringTrim']);
+    return $form;
+}
+
+/**
+ * Get user personal data form
+ *
+ * @return Zend_Form
+ */
+function getUserPersonalDataForm()
+{
+    $form = new Zend_Form([
+        'elements' => [
+            'fname'   => ['text', ['validators' => [['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid first name.')]]]]],
+            'lname'   => ['text', ['validators' => [['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid last name.')]]]]],
+            'gender'  => ['select', ['validators' => [['InArray', true, ['haystack' => ['M', 'F', 'U'], 'strict' => true, 'messages' => tr('Invalid gender')]]]]],
+            'firm'    => ['text', ['validators' => [['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid firm.')]]]]],
+            'street1' => ['text', ['validators' => [['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid firm.')]]]]],
+            'street2' => ['text', ['validators' => [['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid firm.')]]]]],
+            'zip'     => ['text', ['validators' => [['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid zipcode.')]]]]],
+            'city'    => ['text', ['validators' => [['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid city.')]]]]],
+            'state'   => ['text', ['validators' => [['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid state.')]]]]],
+            'country' => ['text', ['validators' => [['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid country.')]]]]],
+            'email'   => [
+                'text', [
+                    'validators' => [
+                        ['NotEmpty', true, ['type' => 'string', 'messages' => tr('Email address cannot be empty.')]],
+                        ['EmailAddress', true, ['messages' => tr('Invalid email address.')]]
+                    ],
+                    'Required'   => true
+                ]
+            ],
+            'phone'   => ['text', ['validators' => [['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid phone number.')]]]]],
+            'fax'     => ['text', ['validators' => [['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid fax number.')]]]]]
+        ]
+    ]);
+
+    $form->setElementFilters(['StripTags', 'StringTrim']);
+    $form->getElement('email')->addFilter('stringToLower');
+    return $form;
 }

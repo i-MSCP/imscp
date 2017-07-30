@@ -1,4 +1,26 @@
-<form action="personal_change.php" method="post">
+<form method="post" action="user_edit.php?edit_id=<?= tourl($this->editId); ?>" autocomplete="off">
+    <table class="firstColFixed">
+        <thead>
+        <tr>
+            <th colspan="2"><?= tohtml(tr('Login data')); ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><?= tohtml(tr('Username')); ?></td>
+            <td><?= tohtml(decode_idna($this->form->getValue('admin_name'))); ?></td>
+        </tr>
+        <tr>
+            <td><label for="password"><?= tohtml(tr('Password')); ?></label></td>
+            <td><input type="password" name="password" id="password" class="pwd_generator" value="" autocomplete="new-password">
+            </td>
+        </tr>
+        <tr>
+            <td><label for="cpassword"><?= tohtml(tr('Password confirmation')); ?></label></td>
+            <td><input type="password" name="password_confirmation" id="cpassword" value="" autocomplete="new-password"></td>
+        </tr>
+        </tbody>
+    </table>
     <table class="firstColFixed">
         <thead>
         <tr>
@@ -68,5 +90,6 @@
     </table>
     <div class="buttons">
         <input name="Submit" type="submit" value="<?= tohtml(tr('Update'), 'htmlAttr'); ?>">
+        <a href="users.php" class="link_as_button"><?= tohtml(tr('Cancel')); ?></a>
     </div>
 </form>

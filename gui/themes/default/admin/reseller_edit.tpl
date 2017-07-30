@@ -288,10 +288,6 @@
         </thead>
         <tbody>
         <tr>
-            <td><label for="customer_id">{TR_CUSTOMER_ID}</label></td>
-            <td><input type="text" name="customer_id" id="customer_id" value="{CUSTOMER_ID}"></td>
-        </tr>
-        <tr>
             <td><label for="fname">{TR_FNAME}</label></td>
             <td><input type="text" name="fname" id="fname" value="{FNAME}"></td>
         </tr>

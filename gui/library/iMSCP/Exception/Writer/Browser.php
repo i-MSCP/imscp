@@ -59,7 +59,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer_Abstract
         $exception = $event->getException();
 
         if (iMSCP_Registry::isRegistered('config')) {
-            $debug = iMSCP_Registry::get('config')->DEBUG;
+            $debug = iMSCP_Registry::get('config')['DEBUG'];
         } else {
             $debug = 1;
         }

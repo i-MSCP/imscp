@@ -45,7 +45,7 @@ function admin_updatePassword()
     }
 
     if ($_POST['password'] !== $_POST['password_confirmation']) {
-        set_page_message(tr("Passwords do not match."), 'error');
+        set_page_message(tr('Passwords do not match.'), 'error');
         return;
     }
 

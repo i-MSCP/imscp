@@ -32,7 +32,7 @@ function tr($messageId, $substitution = NULL)
     if (NULL == $translator) {
         if (iMSCP_Registry::isRegistered('translator')) {
             /** @var Zend_Translate_Adapter $translator */
-            $translator = iMSCP_Registry::get('translator');
+            $translator = iMSCP_Registry::get('Zend_Translate');
         } else {
             $message = $messageId;
 
@@ -72,7 +72,7 @@ function ntr($singular, $plural, $number)
 
     if (NULL == $translator) {
         /** @var Zend_Translate_Adapter $translator */
-        $translator = iMSCP_Registry::get('translator');
+        $translator = iMSCP_Registry::get('Zend_Translate');
     }
 
     $message = $translator->plural($singular, $plural, $number);
@@ -115,13 +115,15 @@ function i18n_buildLanguageIndex()
 
     // Clear translation cache
     /** @var Zend_Translate $translator */
-    $translator = iMSCP_Registry::get('translator');
+    $translator = iMSCP_Registry::get('Zend_Translate');
+    echo '<pre>';
+
     if ($translator->hasCache()) {
-        $translator->clearCache('iMSCP');
+        $translator->clearCache();
     }
 
     # Remove all cached navigation translation files
-    if (@is_dir(CACHE_PATH . '/translations/navigation')) {
+    if (is_dir(CACHE_PATH . '/translations/navigation')) {
         if (!utils_removeDir(CACHE_PATH . '/translations/navigation')) {
             throw new iMSCP_Exception('Unable to remove directory for cached navigation translation files');
         }
@@ -138,32 +140,35 @@ function i18n_buildLanguageIndex()
 
     /** @var $item SplFileInfo */
     foreach ($iterator as $item) {
-        if (strlen($basename = $item->getBasename()) > 8) {
+        if (!$item->isReadable()) {
             continue;
         }
 
-        if ($item->isReadable()) {
-            $parser = new iMSCP_I18n_Parser_Gettext($item->getPathname());
-            $translationTable = $parser->getTranslationTable();
+        $basename = $item->getBasename();
+        $parser = new iMSCP_I18n_Parser_Gettext($item->getPathname());
+        $translationTable = $parser->getTranslationTable();
 
-            if (!empty($translationTable)) {
-                $poRevisionDate = DateTime::createFromFormat('Y-m-d H:i O', $parser->getPotCreationDate());
-                $availableLanguages[$basename] = [
-                    'locale'            => $parser->getLanguage(),
-                    'revision'          => $poRevisionDate->format('Y-m-d H:i'),
-                    'translatedStrings' => $parser->getNumberOfTranslatedStrings(),
-                    'lastTranslator'    => $parser->getLastTranslator()
-                ];
+        if (!empty($translationTable)) {
+            $poCreationDate = DateTime::createFromFormat('Y-m-d H:i O', $parser->getPotCreationDate());
+            $availableLanguages[$basename] = [
+                'locale'            => $parser->getLanguage(),
+                'creation'          => $poCreationDate->format('Y-m-d H:i'),
+                'translatedStrings' => $parser->getNumberOfTranslatedStrings(),
+                'lastTranslator'    => $parser->getLastTranslator()
+            ];
 
-                // Getting localized language name
-                if (!isset($translationTable['_: Localised language'])) {
-                    $availableLanguages[$basename]['language'] = tr('Unknown');
-                } else {
-                    $availableLanguages[$basename]['language'] = $translationTable['_: Localised language'];
-                }
+            // Getting localized language name
+            if (!isset($translationTable['_: Localised language'])) {
+                $availableLanguages[$basename]['language'] = tr('Unknown');
             } else {
-                set_page_message(tr('The %s translation file has been ignored: Translation table is empty.', $basename), 'warning');
+                $availableLanguages[$basename]['language'] = $translationTable['_: Localised language'];
             }
+
+            continue;
+        }
+
+        if(PHP_SAPI != 'cli') {
+            set_page_message(tr('The %s translation file has been ignored: Translation table is empty.', $basename), 'warning');
         }
     }
 
@@ -175,13 +180,12 @@ function i18n_buildLanguageIndex()
 }
 
 /**
- * Returns list of available languages with some information
+ * Returns list of available languages
  *
- * Note: For safe reasons, only the files that are readable will be indexed.
- *
+ * @param bool $localesOnly Flag indicating whether or not only list of locales must be returned
  * @return array Array that contains information about available languages
  */
-function i18n_getAvailableLanguages()
+function i18n_getAvailableLanguages($localesOnly = false)
 {
     $cfg = iMSCP_Registry::get('config');
 
@@ -191,8 +195,17 @@ function i18n_getAvailableLanguages()
 
     $languages = unserialize($cfg['AVAILABLE_LANGUAGES']);
 
+    if ($localesOnly) {
+        $locales = [Zend_Locale::BROWSER];
+        foreach ($languages as $language) {
+            $locales[] = $language['locale'];
+        }
+
+        return $locales;
+    }
+
     array_unshift($languages, [
-        'locale'            => 'auto',
+        'locale'            => Zend_Locale::BROWSER,
         'revision'          => tr('N/A'),
         'translatedStrings' => tr('N/A'),
         'lastTranslator'    => tr('N/A'),
@@ -225,7 +238,7 @@ function i18n_importMachineObjectFile()
             $parser = new iMSCP_I18n_Parser_Gettext($filePath);
             $encoding = $parser->getContentType();
             $locale = $parser->getLanguage();
-            $revision = $parser->getPoRevisionDate();
+            $creation = $parser->getPotCreationDate();
             $translationTable = $parser->getTranslationTable();
         } catch (iMSCP_Exception $e) {
             set_page_message(tr('Only gettext Machine Object files (MO files) are accepted.'), 'error');
@@ -234,7 +247,7 @@ function i18n_importMachineObjectFile()
 
         $language = isset($translationTable['_: Localised language']) ? $translationTable['_: Localised language'] : '';
 
-        if (empty($encoding) || empty($locale) || empty($revision) || empty($lastTranslator) || empty($language)) {
+        if (empty($encoding) || empty($locale) || empty($creation) || empty($lastTranslator) || empty($language)) {
             set_page_message(tr("%s is not a valid i-MSCP language file.", tohtml($_FILES['languageFile']['name'])), 'error');
             return false;
         }
@@ -324,7 +337,7 @@ function i18n_changeDefaultLanguage()
 function l10n_addTranslations($dirPath, $type = 'Array', $tag = 'iMSCP_Translate', $scan = Zend_Translate::LOCALE_FILENAME)
 {
     /** @var Zend_Translate_Adapter $primaryTranslator */
-    $primaryTranslator = iMSCP_Registry::get('translator')->getAdapter();
+    $primaryTranslator = iMSCP_Registry::get('Zend_Translate')->getAdapter();
     $locale = $primaryTranslator->getLocale();
     $pluginTranslator = new Zend_Translate([
         'adapter'        => $type,

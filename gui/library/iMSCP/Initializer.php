@@ -19,6 +19,20 @@
  */
 
 use iMSCP\Crypt as Crypt;
+use iMSCP_Config_Handler_Db as ConfigDb;
+use iMSCP_Config_Handler_File as ConfigFile;
+use iMSCP_Database as Database;
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Exception as iMSCPException;
+use iMSCP_Exception_Database as DatabaseException;
+use iMSCP_Plugin_Manager as PluginManager;
+use iMSCP_Registry as Registry;
+use Zend_Cache as Cache;
+use Zend_Locale as Locale;
+use Zend_Session as Session;
+use Zend_Translate as Translator;
+use Zend_Translate_Adapter_Array as TranslatorArray;
 
 /**
  * Class iMSCP_Initializer
@@ -26,47 +40,46 @@ use iMSCP\Crypt as Crypt;
 class iMSCP_Initializer
 {
     /**
-     * @var iMSCP_Config_Handler_File
+     * @var ConfigFile
      */
     protected $config;
 
     /**
-     * @static boolean Initialization status
-     */
-    protected static $_initialized = false;
-
-    /**
-     * @var iMSCP_Events_Manager
+     * @var EventsManager
      */
     protected $eventManager;
+
+    /**
+     * @static boolean Flag indicating whether or not initialization has been already processed
+     */
+    protected static $initialized = false;
 
     /**
      * Runs initializer
      *
      * @throws iMSCP_Exception
-     * @param string|iMSCP_Config_Handler_File $command Initializer method or an iMSCP_Config_Handler_File object
-     * @param iMSCP_Config_Handler_File $config OPTIONAL iMSCP_Config_Handler_File object
+     * @param string|ConfigFile $command Initializer method or an ConfigFile object
+     * @param ConfigFile $config OPTIONAL ConfigFile object
      * @return iMSCP_Initializer
      */
-    public static function run($command = 'processAll', iMSCP_Config_Handler_File $config = NULL)
+    public static function run($command = 'processAll', ConfigFile $config = NULL)
     {
-        if (self::$_initialized) {
-            throw new iMSCP_Exception('i-MSCP is already fully initialized.');
+        if (self::$initialized) {
+            throw new iMSCPException('Already initialized.');
         }
 
-        if ($command instanceof iMSCP_Config_Handler_File) {
+        if ($command instanceof ConfigFile) {
             $config = $command;
             $command = 'processAll';
         }
 
-        // Overrides _processAll command for CLI interface
         if ($command == 'processAll' && PHP_SAPI == 'cli') {
             $command = 'processCLI';
         } elseif (is_xhr()) {
             $command = 'processAjax';
         }
 
-        $initializer = new self(is_object($config) ? $config : new iMSCP_Config_Handler_File());
+        $initializer = new self(is_object($config) ? $config : new ConfigFile());
         $initializer->$command();
         return $initializer;
     }
@@ -74,15 +87,12 @@ class iMSCP_Initializer
     /**
      * Singleton - Make new unavailable
      *
-     * Create a new Initializer instance that references the given {@link iMSCP_Config_Handler_File} instance.
-     *
-     * @param iMSCP_Config_Handler|iMSCP_Config_Handler_File $config
+     * @param ConfigFile $config
      */
-    protected function __construct(iMSCP_Config_Handler $config)
+    protected function __construct(ConfigFile $config)
     {
-        // Register config object in registry for further usage.
-        $this->config = iMSCP_Registry::set('config', $config);
-        $this->eventManager = iMSCP_Events_Aggregator::getInstance();
+        $this->config = Registry::set('config', $config);
+        $this->eventManager = EventsManager::getInstance();
     }
 
     /**
@@ -111,11 +121,9 @@ class iMSCP_Initializer
         $this->initializeLocalization();
         $this->initializeLayout();
         $this->initializeNavigation();
-        $this->initializeOutputBuffering();
         $this->initializePlugins();
-        // Trigger the onAfterInitialize event
-        $this->eventManager->dispatch(iMSCP_Events::onAfterInitialize, ['context' => $this]);
-        self::$_initialized = true;
+        $this->eventManager->dispatch(Events::onAfterInitialize, ['context' => $this]);
+        self::$initialized = true;
     }
 
     /**
@@ -135,8 +143,8 @@ class iMSCP_Initializer
         $this->initializeUserGuiProperties();
         $this->initializeLocalization();
         $this->initializePlugins();
-        $this->eventManager->dispatch(iMSCP_Events::onAfterInitialize, ['context' => $this]);
-        self::$_initialized = true;
+        $this->eventManager->dispatch(Events::onAfterInitialize, ['context' => $this]);
+        self::$initialized = true;
     }
 
     /**
@@ -153,9 +161,8 @@ class iMSCP_Initializer
         $this->setCharset();
         $this->setTimezone();
         $this->initializeLocalization(); // Needed for rebuilt of languages index
-        // Trigger the onAfterInitialize event
-        $this->eventManager->dispatch(iMSCP_Events::onAfterInitialize, ['context' => $this]);
-        self::$_initialized = true;
+        $this->eventManager->dispatch(Events::onAfterInitialize, ['context' => $this]);
+        self::$initialized = true;
     }
 
     /**
@@ -165,10 +172,12 @@ class iMSCP_Initializer
      */
     protected function setInternalEncoding()
     {
-        if (extension_loaded('mbstring')) {
-            mb_internal_encoding('UTF-8');
-            @mb_regex_encoding('UTF-8');
+        if (!extension_loaded('mbstring')) {
+            return;
         }
+
+        mb_internal_encoding('UTF-8');
+        @mb_regex_encoding('UTF-8');
     }
 
     /**
@@ -178,11 +187,13 @@ class iMSCP_Initializer
      */
     protected function setErrorReporting()
     {
-        if ($this->config['DEBUG']) {
-            error_reporting(E_ALL);
-            ini_set('display_errors', 1);
+        if (!$this->config['DEBUG']) {
             return;
         }
+
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
+        return;
 
         #ini_set('display_errors', 0);
 
@@ -202,21 +213,23 @@ class iMSCP_Initializer
         // Set layout color for the current environment (Must be donne at end)
         $this->eventManager->registerListener(
             [
-                iMSCP_Events::onLoginScriptEnd,
-                iMSCP_Events::onLostPasswordScriptEnd,
-                iMSCP_Events::onAdminScriptEnd,
-                iMSCP_Events::onResellerScriptEnd,
-                iMSCP_Events::onClientScriptEnd
+                Events::onLoginScriptEnd,
+                Events::onLostPasswordScriptEnd,
+                Events::onAdminScriptEnd,
+                Events::onResellerScriptEnd,
+                Events::onClientScriptEnd
             ],
             'layout_init'
         );
 
-        if (!isset($_SESSION['user_logged'])) {
-            $this->eventManager->registerListener(
-                iMSCP_Events::onAfterSetIdentity, function () {
-                unset($_SESSION['user_theme_color']);
-            });
+        if (isset($_SESSION['user_logged'])) {
+            return;
         }
+
+        $this->eventManager->registerListener(
+            Events::onAfterSetIdentity, function () {
+            unset($_SESSION['user_theme_color']);
+        });
     }
 
     /**
@@ -227,13 +240,13 @@ class iMSCP_Initializer
      */
     protected function initializeSession()
     {
-        $sessionDir = $this->config->GUI_ROOT_DIR . '/data/sessions';
+        $sessionDir = utils_normalizePath($this->config['GUI_ROOT_DIR'] . '/data/sessions');
 
         if (!is_writable($sessionDir)) {
-            throw new iMSCP_Exception('The gui/data/sessions directory must be writable.');
+            throw new iMSCPException('The gui/data/sessions directory must be writable.');
         }
 
-        Zend_Session::setOptions([
+        Session::setOptions([
             'use_cookies'         => 'on',
             'use_only_cookies'    => 'on',
             'use_trans_sid'       => 'off',
@@ -246,7 +259,7 @@ class iMSCP_Initializer
             'save_path'           => $sessionDir
         ]);
 
-        Zend_Session::start();
+        Session::start();
     }
 
     /**
@@ -265,27 +278,27 @@ class iMSCP_Initializer
     {
         try {
             $db_pass_key = $db_pass_iv = '';
-            eval(@file_get_contents($this->config->CONF_DIR . '/imscp-db-keys'));
+            eval(@file_get_contents($this->config['CONF_DIR'] . '/imscp-db-keys'));
 
             if (empty($db_pass_key) || empty($db_pass_iv)) {
-                throw new iMSCP_Exception('Missing encryption key and/or initialization vector.');
+                throw new iMSCPException('Missing encryption key and/or initialization vector.');
             }
 
-            $connection = iMSCP_Database::connect(
-                $this->config->DATABASE_USER,
-                Crypt::decryptRijndaelCBC($db_pass_key, $db_pass_iv, $this->config->DATABASE_PASSWORD),
-                $this->config->DATABASE_TYPE,
-                $this->config->DATABASE_HOST,
-                $this->config->DATABASE_NAME
+            $connection = Database::connect(
+                $this->config['DATABASE_USER'],
+                Crypt::decryptRijndaelCBC($db_pass_key, $db_pass_iv, $this->config['DATABASE_PASSWORD']),
+                $this->config['DATABASE_TYPE'],
+                $this->config['DATABASE_HOST'],
+                $this->config['DATABASE_NAME']
             );
         } catch (PDOException $e) {
-            throw new iMSCP_Exception_Database(
+            throw new DatabaseException(
                 sprintf("Couldn't establish connection to the database: %s", $e->getMessage()), NULL, $e->getCode(), $e
             );
         }
 
         // Register Database instance in registry for further usage.
-        iMSCP_Registry::set('db', $connection);
+        Registry::set('db', $connection);
     }
 
     /**
@@ -301,18 +314,11 @@ class iMSCP_Initializer
     /**
      * Sets timezone
      *
-     * This method ensures that the timezone is set to avoid any error with PHP versions equal or later than version 5.3.x
-     *
-     * This method acts by checking the `date.timezone` value, and sets it to the value from the i-MSCP PHP_TIMEZONE
-     * parameter if exists and if it not empty or to 'UTC' otherwise. If the timezone identifier is invalid, an
-     * {@link iMSCP_Exception} exception is raised.
-     *
      * @throws iMSCP_Exception
      * @return void
      */
     protected function setTimezone()
     {
-        // Timezone is not set in the php.ini file?
         $timezone = $this->config['TIMEZONE'] != '' ? $this->config['TIMEZONE'] : 'UTC';
 
         if (!@date_default_timezone_set($timezone)) {
@@ -323,23 +329,23 @@ class iMSCP_Initializer
     /**
      * Load configuration parameters from the database
      *
-     * This function retrieves all the parameters from the database and merge them with the basis configuration object.
+     * Retrieves all the parameters from the database and merge them with the
+     * main configuration object. Parameters that exists in the main
+     * configuration object are replaced by those that come from the database.
      *
-     * Parameters that exists in the basis configuration object will be replaced by those that come from the database.
-     * The basis configuration object contains parameters that come from the i-mscp.conf configuration file or any
-     * parameter defined in the {@link environment.php} file.
+     * The main configuration object contains parameters that come from the
+     * i-mscp.conf configuration file or any parameter defined in the
+     * {@link environment.php} file.
      *
      * @throws iMSCP_Exception
      * @return void
      */
     protected function loadConfig()
     {
-        /** @var $pdo PDO */
-        $pdo = iMSCP_Database::getRawInstance();
+        $pdo = Database::getRawInstance();
 
         if (is_readable(DBCONFIG_CACHE_FILE_PATH)) {
             if (!$this->config['DEBUG']) {
-                /** @var iMSCP_Config_Handler_Db $dbConfig */
                 $dbConfig = unserialize(file_get_contents(DBCONFIG_CACHE_FILE_PATH));
                 $dbConfig->setDb($pdo);
             } else {
@@ -348,48 +354,14 @@ class iMSCP_Initializer
             }
         } else {
             FORCE_DBCONFIG_RELOAD:
-            // Create new DB configuration handler.
-            $dbConfig = new iMSCP_Config_Handler_Db($pdo);
-
+            $dbConfig = new ConfigDb($pdo);
             if (!$this->config['DEBUG'] && PHP_SAPI != 'cli') {
                 @file_put_contents(DBCONFIG_CACHE_FILE_PATH, serialize($dbConfig), LOCK_EX);
             }
         }
 
-        // Merge main configuration object with the dbConfig object
         $this->config->merge($dbConfig);
-
-        // Add the dbconfig object into the registry for later use
-        iMSCP_Registry::set('dbConfig', $dbConfig);
-    }
-
-    /**
-     * Initialize the PHP output buffering / spGzip filter
-     *
-     * Note: The high level such as 8 and 9 for compression are not recommended for performances reasons. The obtained
-     * gain with these levels is very small compared to the intermediate level such as 6 or 7.
-     *
-     * @return void
-     */
-    protected function initializeOutputBuffering()
-    {
-        if (!isset($this->config->COMPRESS_OUTPUT) || !$this->config->COMPRESS_OUTPUT) {
-            return;
-        }
-
-        // Create a new filter that will be applyed on the buffer output
-        /** @var $filter iMSCP_Filter_Compress_Gzip */
-        $filter = iMSCP_Registry::set(
-            'bufferFilter', new iMSCP_Filter_Compress_Gzip(iMSCP_Filter_Compress_Gzip::FILTER_BUFFER)
-        );
-
-        // Show compression information in HTML comment ?
-        if (isset($this->config->SHOW_COMPRESSION_SIZE) && !$this->config->SHOW_COMPRESSION_SIZE) {
-            $filter->compressionInformation = false;
-        }
-
-        // Start the buffer and attach the filter to him
-        ob_start([$filter, iMSCP_Filter_Compress_Gzip::CALLBACK_NAME]);
+        Registry::set('dbConfig', $dbConfig);
     }
 
     /**
@@ -399,109 +371,136 @@ class iMSCP_Initializer
      */
     protected function initializeUserGuiProperties()
     {
-        if (isset($_SESSION['user_id']) && !isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
-            if (!isset($_SESSION['user_def_lang']) || !isset($_SESSION['user_theme'])) {
-                $stmt = exec_query('SELECT lang, layout FROM user_gui_props WHERE user_id = ?', $_SESSION['user_id']);
-
-                if ($stmt->rowCount()) {
-                    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-
-                    if ((empty($row['lang']) && empty($row['layout']))) {
-                        list($lang, $theme) = [$this->config['USER_INITIAL_LANG'], $this->config['USER_INITIAL_THEME']];
-                    } elseif (empty($row['lang'])) {
-                        list($lang, $theme) = [$this->config['USER_INITIAL_LANG'], $row['layout']];
-                    } elseif (empty($row['layout'])) {
-                        list($lang, $theme) = [$row['lang'], $this->config['USER_INITIAL_THEME']];
-                    } else {
-                        list($lang, $theme) = [$row['lang'], $row['layout']];
-                    }
-                } else {
-                    list($lang, $theme) = [$this->config['USER_INITIAL_LANG'], $this->config['USER_INITIAL_THEME']];
-                }
-
-                $_SESSION['user_def_lang'] = $lang;
-                $_SESSION['user_theme'] = $theme;
-            }
+        if (!isset($_SESSION['user_id'])
+            || !isset($_SESSION['logged_from'])
+            || !isset($_SESSION['logged_from_id'])
+            || isset($_SESSION['user_def_lang'])
+            || isset($_SESSION['user_theme'])
+        ) {
+            return;
         }
+
+        $stmt = exec_query('SELECT lang, layout FROM user_gui_props WHERE user_id = ?', $_SESSION['user_id']);
+
+        if ($stmt->rowCount()) {
+            $row = $stmt->fetchRow();
+
+            if ((empty($row['lang']) && empty($row['layout']))) {
+                list($lang, $theme) = [$this->config['USER_INITIAL_LANG'], $this->config['USER_INITIAL_THEME']];
+            } elseif (empty($row['lang'])) {
+                list($lang, $theme) = [$this->config['USER_INITIAL_LANG'], $row['layout']];
+            } elseif (empty($row['layout'])) {
+                list($lang, $theme) = [$row['lang'], $this->config['USER_INITIAL_THEME']];
+            } else {
+                list($lang, $theme) = [$row['lang'], $row['layout']];
+            }
+        } else {
+            list($lang, $theme) = [$this->config['USER_INITIAL_LANG'], $this->config['USER_INITIAL_THEME']];
+        }
+
+        $_SESSION['user_def_lang'] = $lang;
+        $_SESSION['user_theme'] = $theme;
     }
 
     /**
      * Initialize localization
      *
+     * FIXME:  Remove registry 'translator' item; It is currently kept for backward compatibility with plugins
+     *
      * @return void
      */
     protected function initializeLocalization()
     {
-        Zend_Locale::setDefault('en_GB');
-
-        if (PHP_SAPI != 'cli') {
-            $locale = iMSCP_Registry::set(
-                'user_def_lang', isset($_SESSION['user_def_lang']) ? $_SESSION['user_def_lang'] : Zend_Locale::BROWSER
-            );
+        if (PHP_SAPI == 'cli') {
+            $locale = new Locale('en_GB');
         } else {
-            $locale = Zend_Locale::ZFDEFAULT;
+            try {
+                // Setup cache for localization and translation
+                $cache = Cache::factory(
+                    'Core',
+                    'File',
+                    [
+                        'caching'                   => !$this->config['DEBUG'],
+                        'lifetime'                  => 0, // Translation cache is never flushed automatically
+                        'automatic_serialization'   => true,
+                        'automatic_cleaning_factor' => 0,
+                        'ignore_user_abort'         => true
+                    ],
+                    [
+                        'file_locking'           => false,
+                        'hashed_directory_level' => 2,
+                        'cache_dir'              => CACHE_PATH . '/translations',
+                        'read_control'           => false
+                    ]
+                );
+
+                Locale::setCache($cache);
+                Translator::setCache($cache);
+
+                $locale = new Locale(Registry::set(
+                    'user_def_lang',
+                    isset($_SESSION['user_def_lang']) ? $_SESSION['user_def_lang'] : Zend_Locale::BROWSER
+                ));
+            } catch (Exception $e) {
+                $locale = new Locale('en_GB');
+            }
         }
 
-        $locale = new Zend_Locale($locale);
-
-        // Make locale available for Zend library
-        iMSCP_Registry::set('Zend_Locale', $locale);
-
-        // Setup cache for translations
-        $cache = Zend_Cache::factory(
-            'Core',
-            'File',
-            [
-                'caching'                   => $this->config['DEBUG'],
-                'lifetime'                  => NULL, // Translation cache is never flushed automatically
-                'automatic_serialization'   => true,
-                'automatic_cleaning_factor' => 0,
-                'ignore_user_abort'         => true,
-                'cache_id_prefix'           => 'translations'
-            ],
-            [
-                'file_locking'           => false,
-                'hashed_directory_level' => 2,
-                'cache_dir'              => CACHE_PATH . '/translations',
-                'read_control'           => false,
-                'file_name_prefix'       => 'iMSCP'
-
-            ]
-        );
-
-        Zend_Locale::setCache($cache);
-        Zend_Translate::setCache($cache);
-
-        // Setup translator for iMSCP
-        $coreTranslator = new Zend_Translate([
+        // Setup translator
+        $translator = new Translator([
             'adapter'        => 'gettext',
             'locale'         => $locale,
             'content'        => $this->config['GUI_ROOT_DIR'] . '/i18n/locales',
-            'disableNotices' => !$this->config['DEBUG'],
-            'tag'            => 'iMSCP_Translate',
-            'scan'           => Zend_Translate::LOCALE_DIRECTORY
+            'disableNotices' => true,
+            'scan'           => Translator::LOCALE_DIRECTORY,
+            # Fallbacks for languages without territory information (eg: 'de' will be routed to 'de_DE')
+            'route'          => [
+                'bg' => 'bg_BG',
+                'ca' => 'ca_es',
+                'cs' => 'cs_CZ',
+                'da' => 'da_DK',
+                'de' => 'de_DE',
+                'en' => 'en_GB',
+                'es' => 'es_ES',
+                'eu' => 'eu_ES',
+                'fa' => 'fa_IR',
+                'fi' => 'fi_FI',
+                'fr' => 'fr_FR',
+                'gl' => 'gl_ES',
+                'hu' => 'hu_HU',
+                'it' => 'it_IT',
+                'ja' => 'ja_JP',
+                'lt' => 'lt_LT',
+                'nb' => 'nb_NO',
+                'nl' => 'nl_NL',
+                'pl' => 'pl_PL',
+                'pt' => 'pt_PT',
+                'ro' => 'ro_RO',
+                'ru' => 'ru_RU',
+                'sk' => 'sk_SK',
+                'sv' => 'sv_SE',
+                'th' => 'th_TH',
+                'tr' => 'tr_TR',
+                'uk' => 'uk_UA',
+                'zh' => 'zh_CN'
+            ]
         ]);
 
-        // Setup translator for Zend validators
-        $zendTranslatorAdapter = new Zend_Translate_Adapter_Array([
-            'cache'          => $cache,
+        // Setup additional translator for Zend_Validate
+        $zendTranslator = new TranslatorArray([
             'content'        => LIBRARY_PATH . '/vendor/Zend/resources/languages',
-            'disableNotices' => !$this->config['DEBUG'],
+            'disableNotices' => true,
             'locale'         => $locale,
-            'tag'            => 'iMSCP_Translate',
-            'scan'           => Zend_Translate::LOCALE_DIRECTORY
+            'scan'           => Translator::LOCALE_DIRECTORY
         ]);
 
-        #if ($zendTranslatorAdapter->isAvailable($locale->getLanguage())
-        #    || $zendTranslatorAdapter->isAvailable($locale)) {
-            $coreTranslator->getAdapter()->addTranslation(['content' => $zendTranslatorAdapter]);
-        #}
+        if ($zendTranslator->isAvailable($locale->getLanguage()) || $zendTranslator->isAvailable($locale)) {
+            $translator->getAdapter()->addTranslation(['content' => $zendTranslator]);
+        }
 
-        // Make translator available for i-MSCP and Zend libraries
-        iMSCP_Registry::set('translator', $coreTranslator);
-        iMSCP_Registry::set('Zend_Translate', $coreTranslator);
-
-        //exit;
+        // Make Zend_Locale and Zend_Translate available for i-MSCP core, i-MSCP plugins and Zend libraries
+        Registry::set('Zend_Locale', $locale);
+        Registry::set('translator', Registry::set('Zend_Translate', $translator));
     }
 
     /**
@@ -513,9 +512,9 @@ class iMSCP_Initializer
     {
         $this->eventManager->registerListener(
             [
-                iMSCP_Events::onAdminScriptStart,
-                iMSCP_Events::onResellerScriptStart,
-                iMSCP_Events::onClientScriptStart
+                Events::onAdminScriptStart,
+                Events::onResellerScriptStart,
+                Events::onClientScriptStart
             ],
             'layout_loadNavigation'
         );
@@ -529,14 +528,15 @@ class iMSCP_Initializer
      */
     protected function initializePlugins()
     {
-        /** @var iMSCP_Plugin_Manager $pluginManager */
-        $pluginManager = iMSCP_Registry::set('pluginManager', new iMSCP_Plugin_Manager($this->config['PLUGINS_DIR']));
+        $pluginManager = Registry::set('pluginManager', new PluginManager($this->config['PLUGINS_DIR']));
 
         foreach ($pluginManager->pluginGetList() as $pluginName) {
-            if (!$pluginManager->pluginHasError($pluginName)) {
-                if (!$pluginManager->pluginLoad($pluginName)) {
-                    throw new iMSCP_Exception(sprintf("Couldn't load plugin: %s", $pluginName));
-                }
+            if ($pluginManager->pluginHasError($pluginName)) {
+                continue;
+            }
+
+            if (!$pluginManager->pluginLoad($pluginName)) {
+                throw new iMSCPException(sprintf("Couldn't load plugin: %s", $pluginName));
             }
         }
     }

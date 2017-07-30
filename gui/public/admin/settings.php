@@ -56,8 +56,6 @@ if (!empty($_POST)) {
 
     $userInitialLang = isset($_POST['def_language']) ? clean_input($_POST['def_language']) : $cfg['USER_INITIAL_LANG'];
     $supportSystem = isset($_POST['support_system']) ? clean_input($_POST['support_system']) : $cfg['IMSCP_SUPPORT_SYSTEM'];
-    $compressOutput = isset($_POST['compress_output']) ? clean_input($_POST['compress_output']) : $cfg['COMPRESS_OUTPUT'];
-    $showCompressionSize = isset($_POST['show_compression_size']) ? clean_input($_POST['show_compression_size']) : $cfg['SHOW_COMPRESSION_SIZE'];
     $domainRowsPerPage = isset($_POST['domain_rows_per_page']) ? clean_input($_POST['domain_rows_per_page']) : $cfg['DOMAIN_ROWS_PER_PAGE'];
     $logLevel = isset($_POST['log_level']) && in_array($_POST['log_level'], ['0', 'E_USER_ERROR', 'E_USER_WARNING', 'E_USER_NOTICE']) ? $_POST['log_level'] : $cfg['LOG_LEVEL'];
     $prevExtLoginAdmin = isset($_POST['prevent_external_login_admin']) ? clean_input($_POST['prevent_external_login_admin']) : $cfg['PREVENT_EXTERNAL_LOGIN_ADMIN'];
@@ -69,9 +67,8 @@ if (!empty($_POST)) {
         !is_number($checkForUpdate) || !is_number($lostPasswd) || !is_number($passwdStrong) || !is_number($bruteforce)
         || !is_number($bruteforceBetween) || !is_number($createDefaultEmails) || !is_number($countDefaultEmails)
         || !is_number($protecttDefaultEmails) || !is_number($hardMailSuspension) || !is_number($emailQuotaSyncMode)
-        || !is_number($supportSystem) || !is_number($compressOutput) || !is_number($showCompressionSize)
-        || !is_number($prevExtLoginAdmin) || !is_number($prevExtLoginReseller) || !is_number($prevExtLoginClient)
-        || !is_number($enableSSL)
+        || !is_number($supportSystem) || !is_number($prevExtLoginAdmin) || !is_number($prevExtLoginReseller)
+        || !is_number($prevExtLoginClient) || !is_number($enableSSL)
     ) {
         showBadRequestErrorPage();
     }
@@ -109,8 +106,6 @@ if (!empty($_POST)) {
         $dbCfg['IMSCP_SUPPORT_SYSTEM'] = $supportSystem;
         $dbCfg['DOMAIN_ROWS_PER_PAGE'] = $domainRowsPerPage;
         $dbCfg['LOG_LEVEL'] = defined($logLevel) ? constant($logLevel) : 0;
-        $dbCfg['COMPRESS_OUTPUT'] = $compressOutput;
-        $dbCfg['SHOW_COMPRESSION_SIZE'] = $showCompressionSize;
         $dbCfg['PREVENT_EXTERNAL_LOGIN_ADMIN'] = $prevExtLoginAdmin;
         $dbCfg['PREVENT_EXTERNAL_LOGIN_RESELLER'] = $prevExtLoginReseller;
         $dbCfg['PREVENT_EXTERNAL_LOGIN_CLIENT'] = $prevExtLoginClient;
@@ -294,30 +289,6 @@ if (isset($cfg['EMAIL_QUOTA_SYNC_MODE']) && $cfg['EMAIL_QUOTA_SYNC_MODE']) {
     ]);
 }
 
-if ($cfg['COMPRESS_OUTPUT']) {
-    $tpl->assign([
-        'COMPRESS_OUTPUT_ON'  => ' selected',
-        'COMPRESS_OUTPUT_OFF' => ''
-    ]);
-} else {
-    $tpl->assign([
-        'COMPRESS_OUTPUT_ON'  => '',
-        'COMPRESS_OUTPUT_OFF' => ' selected'
-    ]);
-}
-
-if ($cfg['SHOW_COMPRESSION_SIZE']) {
-    $tpl->assign([
-        'SHOW_COMPRESSION_SIZE_SELECTED_ON'  => ' selected',
-        'SHOW_COMPRESSION_SIZE_SELECTED_OFF' => ''
-    ]);
-} else {
-    $tpl->assign([
-        'SHOW_COMPRESSION_SIZE_SELECTED_ON'  => '',
-        'SHOW_COMPRESSION_SIZE_SELECTED_OFF' => ' selected'
-    ]);
-}
-
 if ($cfg['PREVENT_EXTERNAL_LOGIN_ADMIN']) {
     $tpl->assign([
         'PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_ON'  => ' selected',
@@ -452,16 +423,14 @@ $tpl->assign([
     'TR_CHECK_FOR_UPDATES'                     => tohtml(tr('Check for update')),
     'TR_ENABLE_SSL'                            => tohtml(tr('Enable SSL')),
     'TR_SSL_HELP'                              => tohtml(tr('Defines whether or not customers can add/change SSL certificates for their domains.')),
-    'TR_COMPRESS_OUTPUT'                       => tohtml(tr('Compress HTML output')),
-    'TR_SHOW_COMPRESSION_SIZE'                 => tohtml(tr('Show HTML output compression size comment')),
     'TR_PREVENT_EXTERNAL_LOGIN_ADMIN'          => tohtml(tr('Prevent external login for admins')),
     'TR_PREVENT_EXTERNAL_LOGIN_RESELLER'       => tohtml(tr('Prevent external login for resellers')),
     'TR_PREVENT_EXTERNAL_LOGIN_CLIENT'         => tohtml(tr('Prevent external login for clients'))
 ]);
 
 generateNavigation($tpl);
-gen_def_language($tpl, $cfg['USER_INITIAL_LANG']);
 generatePageMessage($tpl);
+generateLanguagesList($tpl, $cfg['USER_INITIAL_LANG']);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);

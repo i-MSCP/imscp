@@ -74,7 +74,6 @@ function &admin_getData()
                 'softwaredepot_allowed'        => 'no',
                 'websoftwaredepot_allowed'     => 'no',
                 'support_system'               => 'yes',
-                'customer_id'                  => '',
                 'php_ini_system'               => $phpini->getResellerPermission('phpiniSystem'),
                 'php_ini_al_allow_url_fopen'   => $phpini->getResellerPermission('phpiniAllowUrlFopen'),
                 'php_ini_al_display_errors'    => $phpini->getResellerPermission('phpiniDisplayErrors'),
@@ -285,8 +284,6 @@ function _admin_generatePersonalDataFrom($tpl, &$data)
 {
     $tpl->assign([
         'TR_PERSONAL_DATA' => tr('Personal data'),
-        'TR_CUSTOMER_ID'   => tr('Customer ID'),
-        'CUSTOMER_ID'      => tohtml($data['customer_id']),
         'TR_FNAME'         => tr('First name'),
         'FNAME'            => tohtml($data['fname']),
         'TR_LNAME'         => tr('Last name'),
@@ -371,7 +368,7 @@ function admin_checkAndCreateResellerAccount()
             $errFieldsStack[] = 'password';
             $errFieldsStack[] = 'password_confirmation';
         } elseif ($data['password'] != $data['password_confirmation']) {
-            set_page_message(tr("Passwords do not match."), 'error');
+            set_page_message(tr('Passwords do not match.'), 'error');
             $errFieldsStack[] = 'password';
             $errFieldsStack[] = 'password_confirmation';
         } elseif (!checkPasswordSyntax($data['password'])) {
@@ -508,21 +505,21 @@ function admin_checkAndCreateResellerAccount()
                         reseller_id, reseller_ips, max_dmn_cnt, current_dmn_cnt, max_sub_cnt, current_sub_cnt,
                         max_als_cnt, current_als_cnt, max_mail_cnt, current_mail_cnt, max_ftp_cnt, current_ftp_cnt,
                         max_sql_db_cnt, current_sql_db_cnt, max_sql_user_cnt, current_sql_user_cnt, max_traff_amnt,
-                        current_traff_amnt, max_disk_amnt, current_disk_amnt, support_system, customer_id,
+                        current_traff_amnt, max_disk_amnt, current_disk_amnt, support_system,
                         software_allowed, softwaredepot_allowed, websoftwaredepot_allowed, php_ini_system,
                         php_ini_al_disable_functions, php_ini_al_mail_function, php_ini_al_allow_url_fopen,
                         php_ini_al_display_errors, php_ini_max_post_max_size, php_ini_max_upload_max_filesize,
                         php_ini_max_max_execution_time, php_ini_max_max_input_time, php_ini_max_memory_limit
                     ) VALUES (
                         ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                        ?, ?, ?
+                        ?, ?
                     )
                 ',
                 [
                     $resellerId, implode(';', $resellerIps) . ';', $data['max_dmn_cnt'], '0', $data['max_sub_cnt'], '0',
                     $data['max_als_cnt'], '0', $data['max_mail_cnt'], '0', $data['max_ftp_cnt'], '0', $data['max_sql_db_cnt'],
                     '0', $data['max_sql_user_cnt'], '0', $data['max_traff_amnt'], '0', $data['max_disk_amnt'], '0',
-                    $data['support_system'], $data['customer_id'], $data['software_allowed'], $data['softwaredepot_allowed'],
+                    $data['support_system'], $data['software_allowed'], $data['softwaredepot_allowed'],
                     $data['websoftwaredepot_allowed'],
                     $phpini->getResellerPermission('phpiniSystem'),
                     $phpini->getResellerPermission('phpiniDisableFunctions'),

@@ -89,7 +89,10 @@ function generateDynamicTplParts($tpl, $mailAcc, $mailType, $mailStatus, $mailAu
             'MAIL_ACCOUNT_ACTION_LINKS'               => tr('N/A'),
             'MAIL_ACCOUNT_DISABLED_DELETION_CHECKBOX' => ' disabled'
         ]);
-    } elseif (strpos($mailType, 'catchall') !== false) {
+        return;
+    }
+
+    if (strpos($mailType, 'catchall') !== false) {
         $tpl->assign([
             'MAIL_ACCOUNT_AUTORESPONDER'              => '',
             'MAIL_ACCOUNT_EDIT_LINK'                  => '',
@@ -97,9 +100,13 @@ function generateDynamicTplParts($tpl, $mailAcc, $mailType, $mailStatus, $mailAu
             'MAIL_PROTECTED_MAIL_ACCOUNT'             => '',
             'MAIL_ACCOUNT_DISABLED_DELETION_CHECKBOX' => ' disabled'
         ]);
+        $tpl->parse('MAIL_CATCHALL_ACCOUNT_EDIT_LINK', 'mail_catchall_account_edit_link');
         $tpl->parse('MAIL_CATCHALL_ACCOUNT_DELETE_LINK', 'mail_catchall_account_delete_link');
         $tpl->parse('MAIL_ACCOUNT_ACTION_LINKS', 'mail_account_action_links');
-    } elseif (Registry::get('config')['PROTECT_DEFAULT_EMAIL_ADDRESSES']
+        return;
+    }
+
+    if (Registry::get('config')['PROTECT_DEFAULT_EMAIL_ADDRESSES']
         && (
             (in_array($mailType, [MT_NORMAL_FORWARD, MT_ALIAS_FORWARD])
                 && in_array($mailAcc, ['abuse', 'hostmaster', 'postmaster', 'webmaster'])
@@ -119,30 +126,34 @@ function generateDynamicTplParts($tpl, $mailAcc, $mailType, $mailStatus, $mailAu
         $tpl->assign([
             'MAIL_ACCOUNT_EDIT_LINK'                  => '',
             'MAIL_ACCOUNT_DELETE_LINK'                => '',
+            'MAIL_CATCHALL_ACCOUNT_EDIT_LINK'         => '',
             'MAIL_CATCHALL_ACCOUNT_DELETE_LINK'       => '',
             'MAIL_ACCOUNT_DISABLED_DELETION_CHECKBOX' => ' disabled'
         ]);
         $tpl->parse('MAIL_PROTECTED_MAIL_ACCOUNT', 'mail_protected_mail_account');
         $tpl->parse('MAIL_ACCOUNT_ACTION_LINKS', 'mail_account_action_links');
-    } else {
-        if ($mailAutoResponder) {
-            $tpl->assign('MAIL_ACCOUNT_AUTORESPONDER_ACTIVATION_LINK', '');
-            $tpl->parse('MAIL_ACCOUNT_AUTORESPONDER_DEACTIVATION_LINK', 'mail_account_autoresponder_deactivation_link');
-        } else {
-            $tpl->assign('MAIL_ACCOUNT_AUTORESPONDER_DEACTIVATION_LINK', '');
-            $tpl->parse('MAIL_ACCOUNT_AUTORESPONDER_ACTIVATION_LINK', 'mail_account_autoresponder_activation_link');
-        }
-
-        $tpl->parse('MAIL_ACCOUNT_AUTORESPONDER', 'mail_account_autoresponder');
-        $tpl->assign([
-            'MAIL_CATCHALL_ACCOUNT_DELETE_LINK'       => '',
-            'MAIL_PROTECTED_MAIL_ACCOUNT'             => '',
-            'MAIL_ACCOUNT_DISABLED_DELETION_CHECKBOX' => ''
-        ]);
-        $tpl->parse('MAIL_ACCOUNT_EDIT_LINK', 'mail_account_edit_link');
-        $tpl->parse('MAIL_ACCOUNT_DELETE_LINK', 'mail_account_delete_link');
-        $tpl->parse('MAIL_ACCOUNT_ACTION_LINKS', 'mail_account_action_links');
+        return;
     }
+
+    if ($mailAutoResponder) {
+        $tpl->assign('MAIL_ACCOUNT_AUTORESPONDER_ACTIVATION_LINK', '');
+        $tpl->parse('MAIL_ACCOUNT_AUTORESPONDER_DEACTIVATION_LINK', 'mail_account_autoresponder_deactivation_link');
+    } else {
+        $tpl->assign('MAIL_ACCOUNT_AUTORESPONDER_DEACTIVATION_LINK', '');
+        $tpl->parse('MAIL_ACCOUNT_AUTORESPONDER_ACTIVATION_LINK', 'mail_account_autoresponder_activation_link');
+    }
+
+    $tpl->parse('MAIL_ACCOUNT_AUTORESPONDER', 'mail_account_autoresponder');
+    $tpl->assign([
+        'MAIL_CATCHALL_ACCOUNT_EDIT_LINK'         => '',
+        'MAIL_CATCHALL_ACCOUNT_DELETE_LINK'       => '',
+        'MAIL_PROTECTED_MAIL_ACCOUNT'             => '',
+        'MAIL_ACCOUNT_DISABLED_DELETION_CHECKBOX' => ''
+    ]);
+    $tpl->parse('MAIL_ACCOUNT_EDIT_LINK', 'mail_account_edit_link');
+    $tpl->parse('MAIL_ACCOUNT_DELETE_LINK', 'mail_account_delete_link');
+    $tpl->parse('MAIL_ACCOUNT_ACTION_LINKS', 'mail_account_action_links');
+
 }
 
 /**
@@ -175,7 +186,6 @@ function generateMailAccountsList($tpl, $mainDmnId)
             ";
         } else {
             $tpl->assign('MAIL_SHOW_DEFAULT_MAIL_ACCOUNTS_LINK', '');
-
         }
     } else {
         $tpl->assign('MAIL_HIDE_DEFAULT_MAIL_ACCOUNTS_LINK', '');
@@ -208,14 +218,16 @@ function generateMailAccountsList($tpl, $mainDmnId)
     $postfixConfig = new ConfigFile(utils_normalizePath(Registry::get('config')['CONF_DIR'] . '/postfix/postfix.data'));
     $syncQuotaInfo = isset($_GET['sync_quota_info']);
     $hasMailboxes = $overQuota = false;
-    $mailQuotaInfo = tr('N/A');
 
     while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+        $mailQuotaInfo = '-';
+        
         foreach (explode(',', $row['mail_type']) as $type) {
-            if (strpos($type, 'forward') !== false || strpos($type, 'catchall') !== false) {
+            $isCatchall = (strpos($type, 'catchall') !== FALSE);
+
+            if ($isCatchall || strpos($type, 'forward') !== false) {
                 $forwardList = implode(
-                    ', ',
-                    array_map('decode_idna', explode(',', strpos($type, 'forward') ? $row['mail_forward'] : $row['mail_acc']))
+                    ', ', array_map('decode_idna', explode(',', $isCatchall ? $row['mail_acc'] : $row['mail_forward']))
                 );
                 $tpl->assign([
                     'MAIL_ACCOUNT_LONG_FORWARD_LIST'  => tohtml(wordwrap($forwardList, 75)),
@@ -230,11 +242,6 @@ function generateMailAccountsList($tpl, $mainDmnId)
 
             $tpl->assign('MAIL_ACCOUNT_FORWARD_LIST', '');
 
-            if ($row['status'] != 'ok' || strpos($row['mail_type'], 'mail') === false) {
-                $mailQuotaInfo = tr('N/A');
-                continue;
-            }
-
             $hasMailboxes = true;
             list($user, $domain) = explode('@', $row['mail_addr']);
 
@@ -245,12 +252,16 @@ function generateMailAccountsList($tpl, $mainDmnId)
                 ) : false;
 
             if ($maildirsize === false) {
-                $mailQuotaInfo = ($row['quota']) ? tr('?') . ' / ' . bytesHuman($row['quota'], NULL, 1) : tr('?') . ' / ∞';
+                $mailQuotaInfo = ($row['quota']) ? '- / ' . bytesHuman($row['quota'], NULL, 1) : '- / ∞';
                 continue;
             }
 
             $quotaPercent = min(100, round(($maildirsize['byte_count'] / max(1, $maildirsize['quota_bytes'])) * 100));
-            $overQuota = ($quotaPercent >= 100);
+
+            if(!$overQuota && $quotaPercent >= 100) {
+                $overQuota = true;
+            }
+
             $mailQuotaInfo = sprintf(
                 ($quotaPercent >= 95) ? '<span style="color:red">%s / %s (%.0f%%)</span>' : '%s / %s (%.0f%%)',
                 bytesHuman($maildirsize['byte_count'], NULL, 1),
@@ -261,13 +272,12 @@ function generateMailAccountsList($tpl, $mainDmnId)
 
         $tpl->assign([
             'MAIL_ACCOUNT_ID'         => tohtml($row['mail_id']),
-            'MAIL_ACCOUNT_ADDR'       => tohtml(decode_idna($row['mail_addr'])),
+            'MAIL_ACCOUNT_ADDR'       => tohtml(substr(decode_idna('-' . $row['mail_addr']), 1)),
             'MAIL_ACCOUNT_TYPE'       => tohtml(user_trans_mail_type($row['mail_acc'], $row['mail_type'])),
             'MAIL_ACCOUNT_QUOTA_INFO' => tohtml($mailQuotaInfo),
-            'MAIL_ACCOUNT_STATUS'     => translate_dmn_status($row['status']), ''
+            'MAIL_ACCOUNT_STATUS'     => translate_dmn_status($row['status'])
         ]);
 
-        #generateAutoResponderBloc($tpl, $row['mail_type'], $row['status'], $row['mail_auto_respond']);
         generateDynamicTplParts($tpl, $row['mail_acc'], $row['mail_type'], $row['status'], $row['mail_auto_respond']);
         $tpl->parse('MAIL_ACCOUNT', '.mail_account');
     }
@@ -278,7 +288,10 @@ function generateMailAccountsList($tpl, $mainDmnId)
     }
 
     if (!$hasMailboxes) {
-        $tpl->assign('MAIL_SYNC_QUOTA_INFO_LINK', '');
+        $tpl->assign([
+            'MAIL_SYNC_QUOTA_INFO_LINK'         => '',
+            'MAIL_DELETE_SELECTED_ITEMS_BUTTON' => ''
+        ]);
     }
 
     if ($overQuota) {
@@ -349,6 +362,10 @@ if (!customerHasMailOrExtMailFeatures()) {
     showBadRequestErrorPage();
 }
 
+echo '<pre>';
+print_r($_SESSION);
+exit;
+
 $tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                                       => 'shared/layouts/ui.tpl',
@@ -364,6 +381,7 @@ $tpl->define_dynamic([
     'mail_account_action_links'                    => 'mail_account',
     'mail_account_edit_link'                       => 'mail_account_action_links',
     'mail_account_delete_link'                     => 'mail_account_action_links',
+    'mail_catchall_account_edit_link'              => 'mail_account_action_links',
     'mail_catchall_account_delete_link'            => 'mail_account_action_links',
     'mail_protected_mail_account'                  => 'mail_account_action_links',
     'mail_show_default_mail_accounts_link'         => 'mail_accounts',

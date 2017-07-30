@@ -155,7 +155,7 @@ function get_menu_vars($menuLink)
 
     $row = exec_query(
         '
-            SELECT customer_id, fname, lname, firm, zip, city, state, country, email, phone, fax, street1, street2
+            SELECT fname, lname, firm, zip, city, state, country, email, phone, fax, street1, street2
             FROM admin
             WHERE admin_id = ?
         ',
@@ -169,8 +169,6 @@ function get_menu_vars($menuLink)
     $replace[] = $_SESSION['user_id'];
     $search [] = '{uname}';
     $replace[] = tohtml($_SESSION['user_logged']);
-    $search [] = '{cid}';
-    $replace[] = tohtml($row['customer_id']);
     $search [] = '{fname}';
     $replace[] = tohtml($row['fname']);
     $search [] = '{lname}';

@@ -37,8 +37,6 @@
  * @property string HTML_READONLY Html attribute for readonly input element
  * @property string HTML_SELECTED Html attribute for selected input element
  * @property string USER_INITIAL_LANG User initial them
- * @property bool DUMP_GUI_DEBUG If true, display some information for debugging
- * @property bool SHOW_COMPRESSION_SIZE If TRUE, show page compression info
  * @property int SESSION_TIMEOUT Session timeout
  * @property int DOMAIN_ROWS_PER_PAGE Number for domain displayed per page
  * @property bool IMSCP_SUPPORT_SYSTEM If TRUE, support system is available
@@ -90,7 +88,6 @@
  * @property string Version
  * @property string CodeName
  * @property string GUI_APS_DIR Directory for software repositories
- * @property int COMPRESS_OUTPUT Tells whether or not output must be compressed
  * @property int ENABLE_SSL Tells whether or not SSL feature for customers is enabled
  * @property bool MAIN_MENU_SHOW_LABELS Tells whether or not labels must be showed for main menu links
  * @property string FTP_USERNAME_SEPARATOR Ftp username separator

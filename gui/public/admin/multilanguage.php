@@ -34,18 +34,16 @@ use iMSCP_Registry as Registry;
  */
 function admin_generateLanguagesList($tpl)
 {
-    $languages = i18n_getAvailableLanguages();
-    $cfg = Registry::get('config');
-    $defaultLanguage = $cfg['USER_INITIAL_LANG'];
+    $defaultLanguage = Registry::get('config')['USER_INITIAL_LANG'];
 
-    foreach ($languages as $language) {
+    foreach (i18n_getAvailableLanguages() as $language) {
         $tpl->assign([
             'LANGUAGE_NAME'             => tohtml($language['language']),
-            'NUMBER_TRANSLATED_STRINGS' => ($language['locale'] == 'auto')
+            'NUMBER_TRANSLATED_STRINGS' => ($language['locale'] == Zend_Locale::BROWSER)
                 ? $language['translatedStrings'] : tohtml(tr('%d strings translated', $language['translatedStrings'])),
-            'LANGUAGE_REVISION'         => tohtml($language['revision']),
+            'LANGUAGE_REVISION_DATE'    => tohtml($language['creation']),
             'LAST_TRANSLATOR'           => tohtml($language['lastTranslator']),
-            'LOCALE_CHECKED'            => ($language['locale'] == $defaultLanguage) ? 'checked' : '',
+            'LOCALE_CHECKED'            => ($language['locale'] == $defaultLanguage) ? ' checked' : '',
             'LOCALE'                    => tohtml($language['locale'], 'htmlAttr')
         ]);
         $tpl->parse('LANGUAGE_BLOCK', '.language_block');
@@ -94,7 +92,7 @@ $tpl->assign([
     'TR_MULTILANGUAGE'             => tohtml(tr('Internationalization')),
     'TR_LANGUAGE_NAME'             => tohtml(tr('Language')),
     'TR_NUMBER_TRANSLATED_STRINGS' => tohtml(tr('Translated strings')),
-    'TR_LANGUAGE_REVISION'         => tohtml(tr('Revision date')),
+    'TR_LANGUAGE_CREATION_DATE'    => tohtml(tr('Creation date')),
     'TR_LAST_TRANSLATOR'           => tohtml(tr('Last translator')),
     'TR_DEFAULT_LANGUAGE'          => tohtml(tr('Default language')),
     'TR_DEFAULT'                   => tohtml(tr('Default')),

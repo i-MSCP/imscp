@@ -126,7 +126,7 @@ function &admin_getData($resellerId, $forUpdate = false)
             'country', 'email', 'phone', 'fax', 'street1', 'street2', 'max_dmn_cnt', 'max_sub_cnt', 'max_als_cnt',
             'max_mail_cnt', 'max_ftp_cnt', 'max_sql_db_cnt', 'max_sql_user_cnt', 'max_traff_amnt',
             'max_disk_amnt', 'software_allowed', 'softwaredepot_allowed', 'websoftwaredepot_allowed',
-            'support_system', 'customer_id'
+            'support_system'
         ] as $key
     ) {
         if (isset($_POST[$key])) {
@@ -374,8 +374,6 @@ function _admin_generatePersonalDataFrom($tpl, &$data)
 {
     $tpl->assign([
         'TR_PERSONAL_DATA' => tr('Personal data'),
-        'TR_CUSTOMER_ID'   => tr('Customer ID'),
-        'CUSTOMER_ID'      => tohtml($data['customer_id']),
         'TR_FNAME'         => tr('First name'),
         'FNAME'            => tohtml($data['fname']),
         'TR_LNAME'         => tr('Last name'),
@@ -655,7 +653,7 @@ function admin_checkAndUpdateData($resellerId)
                     SET
                         max_dmn_cnt = ?, max_sub_cnt = ?, max_als_cnt = ?, max_mail_cnt = ?, max_ftp_cnt = ?,
                         max_sql_db_cnt = ?, max_sql_user_cnt = ?, max_traff_amnt = ?, max_disk_amnt = ?,
-                        reseller_ips = ?, customer_id = ?, software_allowed = ?, softwaredepot_allowed = ?,
+                        reseller_ips = ?, software_allowed = ?, softwaredepot_allowed = ?,
                         websoftwaredepot_allowed = ?, support_system = ?, php_ini_system = ?,
                         php_ini_al_disable_functions = ?, php_ini_al_mail_function = ?,
                         php_ini_al_allow_url_fopen = ?, php_ini_al_display_errors = ?, php_ini_max_post_max_size = ?,
@@ -667,7 +665,7 @@ function admin_checkAndUpdateData($resellerId)
                 [
                     $data['max_dmn_cnt'], $data['max_sub_cnt'], $data['max_als_cnt'], $data['max_mail_cnt'],
                     $data['max_ftp_cnt'], $data['max_sql_db_cnt'], $data['max_sql_user_cnt'], $data['max_traff_amnt'],
-                    $data['max_disk_amnt'], implode(';', $resellerIps) . ';', $data['customer_id'], $data['software_allowed'],
+                    $data['max_disk_amnt'], implode(';', $resellerIps) . ';', $data['software_allowed'],
                     $data['softwaredepot_allowed'], $data['websoftwaredepot_allowed'], $data['support_system'],
                     $phpini->getResellerPermission('phpiniSystem'),
                     $phpini->getResellerPermission('phpiniDisableFunctions'),

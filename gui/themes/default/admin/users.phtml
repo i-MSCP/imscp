@@ -36,9 +36,9 @@
         <td>{ADMINISTRATOR_CREATED_ON}</td>
         <td>{ADMINISTRATPR_CREATED_BY}</td>
         <td>
-            <a href="user_edit.php?edit_id={ADMINISTRATOR_ID}" class="icon i_user" title="<?= tohtml(tr('Edit user'), 'htmlAttr'); ?>"><?= tohtml(tr('Edit user')); ?></a>
+            <a href="user_edit.php?edit_id={ADMINISTRATOR_ID}" class="icon i_user" title="<?= tohtml(tr('Edit'), 'htmlAttr'); ?>"><?= tohtml(tr('Edit')); ?></a>
             <!-- BDP: administrator_delete_link -->
-            <a href="user_delete.php?delete_id={ADMINISTRATOR_ID}" class="icon i_delete" onclick="return action_delete(this)" title="<?= tohtml(tr('Delete user'), 'htmlAttr'); ?>"><?= tohtml(tr('Delete user')); ?></a>
+            <a href="user_delete.php?delete_id={ADMINISTRATOR_ID}" class="icon i_delete" onclick="return action_delete(this)" title="<?= tohtml(tr('Delete'), 'htmlAttr'); ?>"><?= tohtml(tr('Delete')); ?></a>
             <!-- EDP: administrator_delete_link -->
         </td>
     </tr>
@@ -68,8 +68,8 @@
         <td>{RESELLER_CREATED_BY}</td>
         <td>
             <a class="icon i_details" href="change_user_interface.php?to_id={RESELLER_ID}" title="<?= tohtml(tr('Switch to user interface'), 'htmlAttr'); ?>"><?= tohtml(tr('Switch')); ?></a>
-            <a href="reseller_edit.php?edit_id={RESELLER_ID}" class="icon i_user" title="<?= tohtml(tr('Edit user'), 'htmlAttr'); ?>"><?= tohtml(tr('Edit user')); ?></a>
-            <a href="user_delete.php?delete_id={RESELLER_ID}" class="icon i_delete" title="<?= tohtml(tr('Delete user'), 'htmlAttr'); ?>" onclick="return action_delete(this)"><?= tohtml(tr('Delete user')); ?></a>
+            <a href="reseller_edit.php?edit_id={RESELLER_ID}" class="icon i_user" title="<?= tohtml(tr('Edit'), 'htmlAttr'); ?>"><?= tohtml(tr('Edit')); ?></a>
+            <a href="user_delete.php?delete_id={RESELLER_ID}" class="icon i_delete" title="<?= tohtml(tr('Delete'), 'htmlAttr'); ?>" onclick="return action_delete(this)"><?= tohtml(tr('Delete')); ?></a>
         </td>
     </tr>
     <!-- EDP: reseller_item -->

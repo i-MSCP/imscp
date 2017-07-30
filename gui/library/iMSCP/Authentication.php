@@ -74,16 +74,6 @@ class iMSCP_Authentication
     {
         if (NULL === self::$instance) {
             self::$instance = new self;
-            self::$instance->getEventManager()->registerListener(Events::onAfterEditUser, function (Event $e) {
-                $auth = self::getInstance();
-                $identity = $auth->getIdentity();
-
-                if ($identity !== NULL && $e->getParam('userData')->email !== $identity->email) {
-                    $identity->email = $e->getParam('userData')->email;
-                    $auth->unsetIdentity();
-                    $auth->setIdentity($identity);
-                }
-            });
         }
 
         return self::$instance;
@@ -161,7 +151,7 @@ class iMSCP_Authentication
             return false;
         }
 
-        $stmt = exec_query('SELECT COUNT(session_id) AS cnt FROM login WHERE session_id = ? AND ipaddr = ?', [
+        $stmt = exec_query('SELECT COUNT(session_id) FROM login WHERE session_id = ? AND ipaddr = ?', [
             session_id(), getipaddr()
         ]);
 

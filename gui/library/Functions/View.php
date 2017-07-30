@@ -53,7 +53,7 @@ function generateLoggedFrom($tpl)
  * @param  string $selectedLanguage Selected language
  * @return void
  */
-function gen_def_language($tpl, $selectedLanguage)
+function generateLanguagesList($tpl, $selectedLanguage)
 {
     foreach (i18n_getAvailableLanguages() as $language) {
         $tpl->assign([
@@ -274,7 +274,8 @@ function generateNavigation($tpl)
                         if ($subpage->isActive(true)) {
                             $tpl->assign([
                                 'TR_TITLE'    => ($subpage->get('dynamic_title'))
-                                    ? $subpage->get('dynamic_title') : tohtml($subpage->getLabel()),
+                                    ? $subpage->get('dynamic_title')
+                                    : tohtml($subpage->getLabel()),
                                 'TITLE_CLASS' => $subpage->get('title_class')
                             ]);
 
@@ -282,13 +283,13 @@ function generateNavigation($tpl)
                                 $tpl->assign('HREF', $subpage->getHref() . "$query");
                             }
 
-                            // ad subpage to breadcrumbs
+                            // add subpage to breadcrumbs
                             if (NULL != ($label = $subpage->get('dynamic_title'))) {
-                                $tpl->assign('MENU_LABEL_TOOLTIP', tohtml($label));
+                                $tpl->assign('BREADCRUMB_LABEL', $label);
                             } else {
                                 $tpl->assign('BREADCRUMB_LABEL', tohtml($subpage->getLabel()));
                             }
-
+                            
                             $tpl->parse('BREADCRUMB_BLOCK', '.breadcrumb_block');
                         }
                     }
@@ -433,7 +434,7 @@ function gen_reseller_list($tpl)
             'RESELLER_CREATED_BY' => tohtml(is_null($row['created_by']) ? tr('Unknown') : $row['created_by']),
             'RESELLER_ID'         => $row['admin_id']
         ]);
-        $tpl->parse('RESELER_ITEM', '.reseller_item');
+        $tpl->parse('RESELLER_ITEM', '.reseller_item');
     }
 }
 
@@ -473,7 +474,7 @@ function get_search_user_queries($sLimit, $eLimit, $searchField = NULL, $searchV
         } elseif ($_SESSION['user_type'] == 'admin' && $searchField == 'reseller_name') {
             $where .= (($where == '') ? 'WHERE ' : ' AND ') . 't3.admin_name';
         } elseif (in_array(
-            $searchField, ['customer_id', 'fname', 'lname', 'firm', 'city', 'state', 'country'], true
+            $searchField, ['fname', 'lname', 'firm', 'city', 'state', 'country'], true
         )) {
             $where .= (($where == '') ? 'WHERE ' : ' AND ') . "t2.$searchField";
         } else {
@@ -529,8 +530,6 @@ function gen_search_user_fields($tpl, $searchField = NULL, $searchValue = NULL, 
             $none = ' selected';
         } elseif ($searchField == 'domain_name') {
             $domain = ' selected';
-        } elseif ($searchField == 'customer_id') {
-            $customerId = ' selected';
         } elseif ($searchField == 'fname') {
             $firstname = ' selected';
         } elseif ($searchField == 'lname') {
@@ -568,7 +567,6 @@ function gen_search_user_fields($tpl, $searchField = NULL, $searchValue = NULL, 
         # search_field select
         'CLIENT_NONE_SELECTED'          => $none,
         'CLIENT_DOMAIN_NAME_SELECTED'   => $domain,
-        'CLIENT_CUSTOMER_ID_SELECTED'   => $customerId,
         'CLIENT_FIRST_NAME_SELECTED'    => $firstname,
         'CLIENT_LAST_NAME_SELECTED'     => $lastname,
         'CLIENT_COMPANY_SELECTED'       => $company,

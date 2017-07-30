@@ -37,13 +37,13 @@ define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
 /**
  * Create default mails accounts
  *
+ * @throws iMSCP_Exception
  * @param int $mainDmnId Customer main domain unique identifier
- * @param string $userEmail Customer email
+ * @param string $userEmail Customer email address
  * @param string $dmnName Domain name
  * @param string $forwardType Forward type(MT_NORMAL_FORWARD|MT_ALIAS_FORWARD|MT_SUBDOM_FORWARD|MT_ALSSUB_FORWARD)
  * @param int $subId OPTIONAL Sub-ID if default mail accounts are being created for a domain alias or subdomain
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
+ * @return void
  */
 function createDefaultMailAccounts($mainDmnId, $userEmail, $dmnName, $forwardType = MT_NORMAL_FORWARD, $subId = 0)
 {
@@ -51,43 +51,40 @@ function createDefaultMailAccounts($mainDmnId, $userEmail, $dmnName, $forwardTyp
 
     try {
         if ($subId == 0 && $forwardType != MT_NORMAL_FORWARD) {
-            throw new iMSCP_Exception("Forward type doesn't match with provided child domain ID");
+            throw new iMSCP_Exception("Mail account forward type doesn't match with provided child domain ID");
         }
 
         $db->beginTransaction();
 
+        if (empty($userEmail) || !chk_email($userEmail)) {
+            write_log(
+                sprintf(
+                    "Couldn't create default mail accounts for the %s domain. Customer email address is not set or invalid.",
+                    $dmnName
+                ),
+                E_USER_WARNING
+            );
+            return;
+        }
+
         $stmt = $db->getRawInstance()->prepare(
-            '
-                INSERT IGNORE INTO mail_users (
-                    mail_acc, mail_pass, mail_forward, domain_id, mail_type, sub_id, status, po_active,
-                    mail_auto_respond, quota, mail_addr
+            "
+                INSERT INTO mail_users (
+                    mail_acc, mail_forward, domain_id, mail_type, sub_id, status, po_active, mail_addr
                 ) VALUES (
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, ? ,?, 'toadd', 'no', ?
                 )
-            '
+            "
         );
 
         if (in_array($forwardType, [MT_NORMAL_FORWARD, MT_ALIAS_FORWARD])) {
-            $cfg = iMSCP_Registry::get('config');
-            $mailAccounts = [
-                'abuse'      => $cfg['DEFAULT_ADMIN_ADDRESS'],
-                'hostmaster' => $cfg['DEFAULT_ADMIN_ADDRESS'],
-                'postmaster' => $cfg['DEFAULT_ADMIN_ADDRESS'],
-                'webmaster'  => $userEmail
-            ];
+            $mailAccounts = ['abuse', 'hostmaster', 'postmaster', 'webmaster'];
         } else {
-            $mailAccounts = ['webmaster' => $userEmail];
+            $mailAccounts = ['webmaster'];
         }
 
-        foreach ($mailAccounts as $email => $forwardTo) {
-            if ($forwardTo === NULL) {
-                continue;
-            }
-
-            $stmt->execute([
-                $email, '_no_', $forwardTo, $mainDmnId, $forwardType, $subId, 'toadd', 'no', 0, NULL,
-                $email . '@' . $dmnName
-            ]);
+        foreach ($mailAccounts as $mailAccount) {
+            $stmt->execute([$mailAccount, $userEmail, $mainDmnId, $forwardType, $subId, $mailAccount . '@' . $dmnName]);
         }
 
         $db->commit();
@@ -355,7 +352,7 @@ function shared_getCustomerProps($userId)
 
     // Retrieves total number of SQL user already consumed by the customer
     $sqlUserConsumed = sub_records_count(
-        'sqld_id', 'sql_database', 'domain_id', $row['domain_id'], 'sqlu_id', 'sql_user', 'sqld_id', 'sqlu_name', ''
+        'sqld_id', 'sql_database', 'domain_id', $row['domain_id'], 'sql_user', 'sqld_id', 'sqlu_name'
     );
 
     // Retrieves max number of SQL user for the customer
@@ -963,13 +960,12 @@ function deleteDomainAlias($mainDomainId, $aliasId, $aliasName, $aliasMount)
  * @param string $table
  * @param string $where
  * @param string $value
- * @param string $subfield
  * @param string $subtable
  * @param string $subwhere
  * @param string $subgroupname
  * @return int
  */
-function sub_records_count($field, $table, $where, $value, $subfield, $subtable, $subwhere, $subgroupname)
+function sub_records_count($field, $table, $where, $value, $subtable, $subwhere, $subgroupname)
 {
     if ($where != '') {
         $stmt = exec_query("SELECT $field AS `field` FROM $table WHERE $where = ?", $value);
