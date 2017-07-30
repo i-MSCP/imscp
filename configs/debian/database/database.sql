@@ -507,7 +507,6 @@ CREATE TABLE IF NOT EXISTS `reseller_props` (
   `current_traff_amnt` int(11) DEFAULT NULL,
   `max_traff_amnt` int(11) DEFAULT NULL,
   `support_system` ENUM( 'yes', 'no' ) NOT NULL DEFAULT 'yes',
-  `customer_id` varchar(200) collate utf8_unicode_ci DEFAULT NULL,
   `reseller_ips` text collate utf8_unicode_ci,
   `software_allowed` varchar(15) collate utf8_general_ci NOT NULL DEFAULT 'no',
   `softwaredepot_allowed` varchar(15) collate utf8_general_ci NOT NULL DEFAULT 'yes',

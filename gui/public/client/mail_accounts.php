@@ -362,10 +362,6 @@ if (!customerHasMailOrExtMailFeatures()) {
     showBadRequestErrorPage();
 }
 
-echo '<pre>';
-print_r($_SESSION);
-exit;
-
 $tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                                       => 'shared/layouts/ui.tpl',

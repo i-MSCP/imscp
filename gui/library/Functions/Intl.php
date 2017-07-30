@@ -116,7 +116,6 @@ function i18n_buildLanguageIndex()
     // Clear translation cache
     /** @var Zend_Translate $translator */
     $translator = iMSCP_Registry::get('Zend_Translate');
-    echo '<pre>';
 
     if ($translator->hasCache()) {
         $translator->clearCache();
