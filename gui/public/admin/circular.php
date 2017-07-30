@@ -232,7 +232,7 @@ function admin_sendCircular()
         'body'         => $body
     ]);
     set_page_message(tr('Circular successfully sent.'), 'success');
-    write_log(sprintf('A circular has been sent by an administrator: %s', $_SESSION['user_logged']), E_USER_NOTICE);
+    write_log(sprintf('A circular has been sent by %s', $_SESSION['user_logged']), E_USER_NOTICE);
     return true;
 }
 

@@ -330,7 +330,9 @@ function layout_setUserLayoutColor($userId, $color)
 
     $sessionId = session_id();
     $stmt = exec_query(
-        'SELECT session_id FROM login WHERE user_name = ?  AND session_id <> ?', [$_SESSION['user_logged'], $sessionId]
+        'SELECT session_id FROM login WHERE user_name = ? AND session_id <> ?', [
+            encode_idna($_SESSION['user_logged']), $sessionId
+        ]
     );
 
     if (!$stmt->rowCount()) {

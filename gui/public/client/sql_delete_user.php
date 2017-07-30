@@ -48,5 +48,5 @@ if (!sql_delete_user(get_user_domain_id($_SESSION['user_id']), $userId)) {
 }
 
 set_page_message(tr('SQL user successfully deleted.'), 'success');
-write_log(sprintf('%s deleted SQL user with ID %d', decode_idna($_SESSION['user_logged']), $userId), E_USER_NOTICE);
+write_log(sprintf('%s deleted SQL user with ID %d', $_SESSION['user_logged'], $userId), E_USER_NOTICE);
 redirectTo('sql_manage.php');

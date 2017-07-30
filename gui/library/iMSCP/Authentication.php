@@ -206,10 +206,10 @@ class iMSCP_Authentication
             session_id(), getIpAddr(), $lastAccess, $identity->admin_name
         ]);
 
-        $_SESSION['user_logged'] = $identity->admin_name;
+        $_SESSION['user_logged'] = decode_idna($identity->admin_name);
         $_SESSION['user_type'] = $identity->admin_type;
         $_SESSION['user_id'] = $identity->admin_id;
-        $_SESSION['user_email'] = $identity->email;
+        $_SESSION['user_email'] = decode_idna($identity->email);
         $_SESSION['user_created_by'] = $identity->created_by;
         $_SESSION['user_login_time'] = $lastAccess;
         $_SESSION['user_identity'] = $identity;

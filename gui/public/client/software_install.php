@@ -342,7 +342,7 @@ if (!empty($_POST)) {
         ]
     );
 
-    write_log(sprintf('%s added new software instance: %s', decode_idna($_SESSION['user_logged']), $softwareData['software_name']), E_USER_NOTICE);
+    write_log(sprintf('%s added new software instance: %s', $_SESSION['user_logged'], $softwareData['software_name']), E_USER_NOTICE);
     send_request();
     set_page_message(tr('Software instance has been scheduled for installation'), 'success');
     redirectTo('software.php');

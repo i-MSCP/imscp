@@ -738,7 +738,7 @@ function admin_checkAndUpdateData($resellerId)
                 send_request();
             }
 
-            write_log(sprintf('The %s reseller account has been updated by %s', $data['admin_name'], $_SESSION['user_logged']), E_USER_NOTICE);
+            write_log(sprintf('A reseller account (%s) has been updated by %s', $data['admin_name'], $_SESSION['user_logged']), E_USER_NOTICE);
             set_page_message(tr('Reseller account successfully updated.'), 'success');
             return true;
         }

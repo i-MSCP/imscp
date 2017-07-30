@@ -282,7 +282,7 @@ function client_addSqlUser($customerId, $databaseId)
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlUser);
 
-    write_log(sprintf('A SQL user has been added by %s', decode_idna($_SESSION['user_logged'])), E_USER_NOTICE);
+    write_log(sprintf('A SQL user has been added by %s', $_SESSION['user_logged']), E_USER_NOTICE);
     set_page_message(tr('SQL user successfully added.'), 'success');
     redirectTo('sql_manage.php');
 }

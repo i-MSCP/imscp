@@ -381,11 +381,11 @@ function addSubdomain()
 
         $db->commit();
         send_request();
-        write_log(sprintf('A new `%s` subdomain has been created by %s', $subdomainName, decode_idna($_SESSION['user_logged'])), E_USER_NOTICE);
+        write_log(sprintf('A new subdomain (%s) has been created by %s', $subdomainName, $_SESSION['user_logged']), E_USER_NOTICE);
         return true;
     } catch (iMSCP_Exception $e) {
         $db->rollBack();
-        write_log(sprintf('System was unable to create the `%s` subdomain: %s', $subdomainName, $e->getMessage()), E_USER_ERROR);
+        write_log(sprintf('System was unable to create the %s subdomain: %s', $subdomainName, $e->getMessage()), E_USER_ERROR);
         set_page_message('Could not create subdomain. An unexpected error occurred.', 'error');
         return false;
     }

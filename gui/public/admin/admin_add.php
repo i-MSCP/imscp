@@ -78,7 +78,7 @@ function add_user($tpl)
                 iMSCP_Database::getInstance()->insertId(), $cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']
             ]);
 
-            write_log("{$_SESSION['user_logged']}: add admin: $username", E_USER_NOTICE);
+            write_log(sprintf('A new administrator account (%s) has been created by %s', $username, $_SESSION['user_logged']), E_USER_NOTICE);
             iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddUser);
             send_add_user_auto_msg(
                 $_SESSION['user_id'], clean_input($_POST['username']), clean_input($_POST['password']),

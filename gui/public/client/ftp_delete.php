@@ -88,7 +88,7 @@ try {
 
     $db->commit();
     send_request();
-    write_log(sprintf('An FTP account has been deleted by %s', decode_idna($_SESSION['user_logged'])), E_USER_NOTICE);
+    write_log(sprintf('An FTP account has been deleted by %s', $_SESSION['user_logged']), E_USER_NOTICE);
     set_page_message(tr('FTP account successfully deleted.'), 'success');
 } catch (iMSCP_Exception $e) {
     $db->rollBack();

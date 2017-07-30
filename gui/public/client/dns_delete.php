@@ -54,6 +54,6 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteCust
 ]);
 
 send_request();
-write_log(sprintf('%s scheduled deletion of a custom DNS record', decode_idna($_SESSION['user_logged'])), E_USER_NOTICE);
+write_log(sprintf('%s scheduled deletion of a custom DNS record', $_SESSION['user_logged']), E_USER_NOTICE);
 set_page_message(tr('Custom DNS record successfully scheduled for deletion.'), 'success');
 redirectTo('domains_manage.php');

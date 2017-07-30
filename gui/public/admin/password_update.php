@@ -62,7 +62,7 @@ function admin_updatePassword()
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, [
         'userId' => $_SESSION['user_id']
     ]);
-    write_log(sprintf('%s: updated password.', $_SESSION['user_logged']), E_USER_NOTICE);
+    write_log(sprintf('The %s user has updated his password.', $_SESSION['user_logged']), E_USER_NOTICE);
     set_page_message(tr('Password successfully updated.'), 'success');
     redirectTo('password_update.php');
 }

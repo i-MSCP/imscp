@@ -32,11 +32,7 @@ function generateLoggedFrom($tpl)
 
     if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
         $tpl->assign([
-            'YOU_ARE_LOGGED_AS' => tr(
-                '%1$s you are now logged as %2$s',
-                $_SESSION['logged_from'],
-                decode_idna($_SESSION['user_logged'])
-            ),
+            'YOU_ARE_LOGGED_AS' => tr('%1$s you are now logged as %2$s', $_SESSION['logged_from'], $_SESSION['user_logged']),
             'TR_GO_BACK'        => tr('Back')
         ]);
         $tpl->parse('LOGGED_FROM', 'logged_from');
@@ -289,7 +285,7 @@ function generateNavigation($tpl)
                             } else {
                                 $tpl->assign('BREADCRUMB_LABEL', tohtml($subpage->getLabel()));
                             }
-                            
+
                             $tpl->parse('BREADCRUMB_BLOCK', '.breadcrumb_block');
                         }
                     }

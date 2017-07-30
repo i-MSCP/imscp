@@ -302,7 +302,7 @@ function editIpAddr()
             ]);
 
         send_request();
-        write_log(sprintf("Configuration for the `%s' IP address has been changed by %s", $row['ip_number'], $_SESSION['user_logged']), E_USER_NOTICE);
+        write_log(sprintf("Configuration for the %s IP address has been updated by %s", $row['ip_number'], $_SESSION['user_logged']), E_USER_NOTICE);
         set_page_message(tr('IP address successfully scheduled for modification.'), 'success');
         sendJsonResponse(200);
     } catch (\Exception $e) {
@@ -357,7 +357,7 @@ function addIpAddr()
 
     send_request();
     set_page_message(tr('IP address successfully scheduled for addition.'), 'success');
-    write_log(sprintf("The `%s' IP address has been address by %s", $ipAddr, $_SESSION['user_logged']), E_USER_NOTICE);
+    write_log(sprintf("An IP address (%s) has been added by %s", $ipAddr, $_SESSION['user_logged']), E_USER_NOTICE);
     redirectTo('ip_manage.php');
 }
 

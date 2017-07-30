@@ -148,7 +148,7 @@ function client_addSqlDb($userId)
         exec_query('INSERT INTO sql_database (domain_id, sqld_name) VALUES (?, ?)', [$mainDmnId, $dbName]);
         iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlDb, ['dbName' => $dbName]);
         set_page_message(tr('SQL database successfully created.'), 'success');
-        write_log(sprintf('%s added new SQL database: %s', decode_idna($_SESSION['user_logged']), $dbName), E_USER_NOTICE);
+        write_log(sprintf('%s added new SQL database: %s', $_SESSION['user_logged'], $dbName), E_USER_NOTICE);
     } catch (iMSCP_Exception $e) {
         write_log(sprintf('Could not create `%s` database: %s', $dbName, $e->getMessage()));
         set_page_message(tr('Could not create `%s` database name.', $dbName), 'error');

@@ -238,7 +238,7 @@ function client_editMailAccount()
 
     # Force synching of quota info on next load (or remove cached data in case of normal account changed to forward account)
     $postfixConfig = new iMSCP_Config_Handler_File(
-        utils_normalizePath(iMSCP_Registry::get('config')->CONF_DIR . '/postfix/postfix.data')
+        utils_normalizePath(iMSCP_Registry::get('config')['CONF_DIR'] . '/postfix/postfix.data')
     );
     list($user, $domain) = explode('@', $mailAddr);
     unset($_SESSION['maildirsize'][utils_normalizePath($postfixConfig['MTA_VIRTUAL_MAIL_DIR'] . "/$domain/$user/maildirsize")]);
@@ -249,7 +249,7 @@ function client_editMailAccount()
     send_request();
     write_log(
         sprintf(
-            'A mail account (%s) has been edited by %s', decode_idna($mailAddr), decode_idna($_SESSION['user_logged'])
+            'A mail account (%s) has been edited by %s', decode_idna($mailAddr), $_SESSION['user_logged']
         ),
         E_USER_NOTICE
     );

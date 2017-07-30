@@ -95,7 +95,7 @@ function updateFtpAccount($userid)
     ]);
 
     send_request();
-    write_log(sprintf('%s updated Ftp account: %s', $_SESSION['user_logged'], $userid), E_USER_NOTICE);
+    write_log(sprintf('An FTP account (%s) has been updated by', $userid, $_SESSION['user_logged']), E_USER_NOTICE);
     set_page_message(tr('FTP account successfully updated.'), 'success');
     return true;
 }

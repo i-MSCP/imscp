@@ -103,10 +103,7 @@ try {
 
     $db->commit();
     send_request();
-    write_log(
-        sprintf("%s scheduled deletion of the %s subdomain", decode_idna($_SESSION['user_logged']), $row['subdomain_name']),
-        E_USER_NOTICE
-    );
+    write_log(sprintf("%s scheduled deletion of the %s subdomain", $_SESSION['user_logged'], $row['subdomain_name']), E_USER_NOTICE);
     set_page_message(tr('Subdomain scheduled for deletion.'), 'success');
 } catch (iMSCP_Exception $e) {
     $db->rollBack();

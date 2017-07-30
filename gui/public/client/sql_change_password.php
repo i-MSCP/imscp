@@ -131,7 +131,7 @@ function client_updateSqlUserPassword($id, $user, $host)
     }
 
     set_page_message(tr('SQL user password successfully updated.'), 'success');
-    write_log(sprintf('%s updated %s@%s SQL user password.', decode_idna($_SESSION['user_logged']), $user, $host), E_USER_NOTICE);
+    write_log(sprintf('%s updated %s@%s SQL user password.', $_SESSION['user_logged'], $user, $host), E_USER_NOTICE);
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditSqlUser, ['sqlUserId' => $id]);
     redirectTo('sql_manage.php');

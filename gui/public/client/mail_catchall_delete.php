@@ -55,6 +55,6 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMail
     'mailCatchallId' => $catchallId
 ]);
 send_request();
-write_log(sprintf('A catch-all account has been deleted by %s', decode_idna($_SESSION['user_logged'])), E_USER_NOTICE);
+write_log(sprintf('A catch-all account has been deleted by %s', $_SESSION['user_logged']), E_USER_NOTICE);
 set_page_message(tr('Catch-all account successfully scheduled for deletion.'), 'success');
 redirectTo('mail_catchall.php');

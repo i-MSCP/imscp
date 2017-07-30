@@ -396,10 +396,10 @@ function client_addSslCert($domainId, $domainType)
 
         if (!$certId) {
             set_page_message(tr('SSL certificate successfully scheduled for addition.'), 'success');
-            write_log(sprintf('%s added a new SSL certificate for the %s domain', decode_idna($_SESSION['user_logged']), decode_idna($domainName)), E_USER_NOTICE);
+            write_log(sprintf('%s added a new SSL certificate for the %s domain', $_SESSION['user_logged'], decode_idna($domainName)), E_USER_NOTICE);
         } else {
             set_page_message(tr('SSL certificate successfully scheduled for update.'), 'success');
-            write_log(sprintf('%s updated an SSL certificate for the %s domain', decode_idna($_SESSION['user_logged']), $domainName), E_USER_NOTICE);
+            write_log(sprintf('%s updated an SSL certificate for the %s domain', $_SESSION['user_logged'], $domainName), E_USER_NOTICE);
         }
 
         redirectTo("cert_view.php?domain_id=$domainId&domain_type=$domainType");
@@ -447,7 +447,7 @@ function client_deleteSslCert($domainId, $domainType)
 
         send_request();
         set_page_message(tr('SSL certificate successfully scheduled for deletion.'), 'success');
-        write_log(sprintf('%s deleted SSL certificate for the %s domain.', decode_idna($_SESSION['user_logged']), decode_idna($domainName)), E_USER_NOTICE);
+        write_log(sprintf('%s deleted SSL certificate for the %s domain.', $_SESSION['user_logged'], decode_idna($domainName)), E_USER_NOTICE);
         redirectTo('domains_manage.php');
     } catch (iMSCP_Exception $e) {
         $db->rollBack();

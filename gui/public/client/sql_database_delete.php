@@ -48,5 +48,5 @@ if (!delete_sql_database(get_user_domain_id($_SESSION['user_id']), $dbId)) {
 }
 
 set_page_message(tr('SQL database successfully deleted.'), 'success');
-write_log(sprintf('%s deleted SQL database with ID %s', decode_idna($_SESSION['user_logged']), $dbId), E_USER_NOTICE);
+write_log(sprintf('%s deleted SQL database with ID %s', $_SESSION['user_logged'], $dbId), E_USER_NOTICE);
 redirectTo('sql_manage.php');

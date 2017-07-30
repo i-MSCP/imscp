@@ -62,7 +62,7 @@ function customer_updatePassword()
         'userId' => $_SESSION['user_id']
     ]);
     send_request();
-    write_log(sprintf('%s: updated password.', $_SESSION['user_logged']), E_USER_NOTICE);
+    write_log(sprintf("The %s's user password has been updated.", $_SESSION['user_logged']), E_USER_NOTICE);
     set_page_message(tr('Password successfully updated.'), 'success');
     redirectTo('password_update.php');
 }

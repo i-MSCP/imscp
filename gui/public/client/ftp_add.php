@@ -274,7 +274,7 @@ function addAccount()
 
         $db->commit();
         send_request();
-        write_log(sprintf('%s added Ftp account: %s', $_SESSION['user_logged'], $username), E_USER_NOTICE);
+        write_log(sprintf('A new FTP account (%s) has been created by %s', $username, $_SESSION['user_logged']), E_USER_NOTICE);
         set_page_message(tr('FTP account successfully added.'), 'success');
     } catch (iMSCP_Exception $e) {
         $db->rollBack();

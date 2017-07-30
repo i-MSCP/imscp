@@ -76,7 +76,7 @@ function updateAutoresponderMessage($mailAccountId, $autoresponderMessage)
         [$autoresponderMessage, $mailAccountId]
     );
     send_request();
-    write_log(sprintf('A mail autoresponder has been edited by %s', decode_idna($_SESSION['user_logged'])), E_USER_NOTICE);
+    write_log(sprintf('A mail autoresponder has been edited by %s', $_SESSION['user_logged']), E_USER_NOTICE);
     set_page_message(tr('Autoresponder has been edited.'), 'success');
 }
 

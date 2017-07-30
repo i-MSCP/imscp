@@ -173,7 +173,7 @@ function admin_addUpdateServices($mode = 'add')
         if (admin_validatesService($name, $ip, $port, $protocol, $show)) {
             $dbServiceName = "PORT_$name";
             $dbConfig[$dbServiceName] = "$port;$protocol;$name;$show;$ip";
-            write_log($_SESSION['user_logged'] . ": Added service port $name ($port)!", E_USER_NOTICE);
+            write_log(sprintf('A service port (%s:%s) has been added by %s', $name, $port, $_SESSION['user_logged']), E_USER_NOTICE);
         }
     } elseif ($mode == 'update') { // Updates one or more services ports
         // Reset counter of update queries
@@ -316,7 +316,7 @@ function deleteService($serviceName)
 
     // Remove service port from the database
     unset($dbConfig[$serviceName]);
-    write_log($_SESSION['user_logged'] . ": Removed port for '$serviceName'.", E_USER_NOTICE);
+    write_log(sprintf('A service port (%s) has been removed by %s', $serviceName, $_SESSION['user_logged']), E_USER_NOTICE);
     set_page_message(tr('Service port successfully removed.'), 'success');
     return true;
 }

@@ -41,7 +41,7 @@ function admin_generateLanguagesList($tpl)
             'LANGUAGE_NAME'             => tohtml($language['language']),
             'NUMBER_TRANSLATED_STRINGS' => ($language['locale'] == Zend_Locale::BROWSER)
                 ? $language['translatedStrings'] : tohtml(tr('%d strings translated', $language['translatedStrings'])),
-            'LANGUAGE_REVISION_DATE'    => tohtml($language['creation']),
+            'LANGUAGE_CREATION_DATE'    => tohtml($language['creation']),
             'LAST_TRANSLATOR'           => tohtml($language['lastTranslator']),
             'LOCALE_CHECKED'            => ($language['locale'] == $defaultLanguage) ? ' checked' : '',
             'LOCALE'                    => tohtml($language['locale'], 'htmlAttr')

@@ -66,9 +66,7 @@ function deactivateAutoresponder($mailAccountId)
 {
     exec_query("UPDATE mail_users SET status = 'tochange', mail_auto_respond = 0 WHERE mail_id = ?", $mailAccountId);
     send_request();
-    write_log(
-        sprintf('A mail autoresponder has been deactivated by %s', decode_idna($_SESSION['user_logged'])), E_USER_NOTICE
-    );
+    write_log(sprintf('A mail autoresponder has been deactivated by %s', $_SESSION['user_logged']), E_USER_NOTICE);
     set_page_message(tr('Autoresponder has been deactivated.'), 'success');
 }
 

@@ -36,7 +36,7 @@ function generatePage($tpl)
     $tpl->assign([
         'TR_ACCOUNT_SUMMARY'   => tr('Account summary'),
         'TR_USERNAME'          => tr('Username'),
-        'USERNAME'             => tohtml(decode_idna($_SESSION['user_logged'])),
+        'USERNAME'             => tohtml($_SESSION['user_logged']),
         'TR_ACCOUNT_TYPE'      => tr('Account type'),
         'ACCOUNT_TYPE'         => tr('Customer'),
         'TR_REGISTRATION_DATE' => tr('Registration date'),

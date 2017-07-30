@@ -39,7 +39,7 @@ function scheduleBackupRestoration($userId)
 {
     exec_query("UPDATE domain SET domain_status = ? WHERE domain_admin_id = ?", ['torestore', $userId]);
     send_request();
-    write_log($_SESSION['user_logged'] . ": scheduled backup restoration.", E_USER_NOTICE);
+    write_log(sprintf('A backup restore has been scheduled by %s.', $_SESSION['user_logged']), E_USER_NOTICE);
     set_page_message(tr('Backup has been successfully scheduled for restoration.'), 'success');
 }
 

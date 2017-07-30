@@ -62,7 +62,7 @@ function kill_session()
         session_id($currentSessionId);
         session_start();
         set_page_message($message, 'success');
-        write_log($_SESSION['user_logged'] . ": has disconnected $username or destroyed its session", E_USER_NOTICE);
+        write_log(sprintf('The session of the %s user has been disconnected/destroyed by %s', $username, $_SESSION['user_logged']), E_USER_NOTICE);
     } elseif (isset($_GET['own'])) {
         set_page_message(tr("You are not allowed to act on your own session."), 'warning');
     }

@@ -34,7 +34,7 @@ use iMSCP_pTemplate as TemplateEngine;
  */
 function updatePersonalData(Zend_Form $form)
 {
-    if (!$form->isValid()) {
+    if (!$form->isValid($_POST)) {
         foreach ($form->getMessages() as $msgStack => $msg) {
             set_page_message(reset($msg), 'error');
         }
@@ -48,8 +48,9 @@ function updatePersonalData(Zend_Form $form)
     ]);
     exec_query(
         "
+            UPDATE admin
             SET fname = ?, lname = ?, firm = ?, zip = ?, city = ?, state = ?, country = ?, email = ?, phone = ?, fax = ?,
-                street1 = ?, street2 = ?, gender = ?,
+                street1 = ?, street2 = ?, gender = ?
             WHERE admin_id = ?
         ",
         [
@@ -63,7 +64,7 @@ function updatePersonalData(Zend_Form $form)
         'userId'   => $_SESSION['user_id'],
         'userData' => $form->getValues()
     ]);
-    write_log(sprintf('The %s user data were updated by %s', 'dd', $_SESSION['user_logged']), E_USER_NOTICE);
+    write_log(sprintf('The %s user data were updated', $_SESSION['user_logged']), E_USER_NOTICE);
     set_page_message(tr('Personal data were updated.'), 'success');
     redirectTo('personal_change.php');
 }

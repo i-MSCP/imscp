@@ -727,7 +727,14 @@ function client_saveDnsRecord($dnsRecordId)
 
         $db->commit();
         send_request();
-        write_log(sprintf('DNS resource record has been scheduled for %s by %s', ($dnsRecordId) ? tr('update') : tr('addition'), $_SESSION['user_logged']), E_USER_NOTICE);
+        write_log(
+            sprintf(
+                'DNS resource record has been scheduled for %s by %s',
+                ($dnsRecordId) ? tr('update') : tr('addition'),
+                $_SESSION['user_logged']
+            ),
+            E_USER_NOTICE
+        );
     } catch (iMSCP_Exception $e) {
         $db->rollBack();
         if ($e->getCode() == 23000) { // Duplicate entries

@@ -164,7 +164,7 @@ try {
     send_request();
 
     if ($nbDeletedMails) {
-        write_log(sprintf('%d mail account(s) were deleted by %s', decode_idna($_SESSION['user_logged']), $nbDeletedMails), E_USER_NOTICE);
+        write_log(sprintf('%d mail account(s) were deleted by %s', $_SESSION['user_logged'], $nbDeletedMails), E_USER_NOTICE);
         set_page_message(
             ntr(
                 'Mail account has been scheduled for deletion.',

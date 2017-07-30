@@ -356,7 +356,7 @@ function addDomainAlias()
             set_page_message(tr('Domain alias successfully created.'), 'success');
         } else {
             send_alias_order_email($domainAliasName);
-            write_log(sprintf('A new `%s` domain alias has been ordered by: %s', $domainAliasName, decode_idna($_SESSION['user_logged'])), E_USER_NOTICE);
+            write_log(sprintf('A new `%s` domain alias has been ordered by: %s', $domainAliasName, $_SESSION['user_logged']), E_USER_NOTICE);
             set_page_message(tr('Domain alias successfully ordered.'), 'success');
         }
     } catch (iMSCP_Exception $e) {

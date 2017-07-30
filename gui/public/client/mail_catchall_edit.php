@@ -162,7 +162,7 @@ function editCatchallAccount($catchAllDomainId, $catchAllDomain, $catchallType)
     }
 
     send_request();
-    write_log(sprintf('A catch-all account has been created by %s', decode_idna($_SESSION['user_logged'])), E_USER_NOTICE);
+    write_log(sprintf('A catch-all account has been created by %s', $_SESSION['user_logged']), E_USER_NOTICE);
     set_page_message(tr('Catch-all successfully scheduled for addition.'), 'success');
     redirectTo('mail_catchall.php');
 }

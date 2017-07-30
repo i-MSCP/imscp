@@ -309,8 +309,7 @@ sub dumpdb
 
     # Encode slashes as SOLIDUS unicode character
     # Encode dots as Full stop unicode character
-    my %rpl = ( '/', '@002f', '.', '@002e' );
-    (my $encodedDbName = $dbName) =~ s%([./])%$rpl{$1}%ge;
+    (my $encodedDbName = $dbName) =~ s%([./])%{'/', '@002f', '.', '@002e'}->{$1}%ge;
 
     debug( sprintf('Dump `%s` database into %s', $dbName, $dbDumpTargetDir.'/'.$encodedDbName.'.sql') );
 

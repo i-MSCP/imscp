@@ -284,7 +284,7 @@ function addMailAccount()
             'mailId'       => $db->insertId()
         ]);
         send_request();
-        write_log(sprintf('A mail account has been added by %s', decode_idna($_SESSION['user_logged'])), E_USER_NOTICE);
+        write_log(sprintf('A mail account has been added by %s', $_SESSION['user_logged']), E_USER_NOTICE);
         set_page_message(tr('Mail account successfully scheduled for addition.'), 'success');
     } catch (DatabaseException $e) {
         if ($e->getCode() == 23000) {
