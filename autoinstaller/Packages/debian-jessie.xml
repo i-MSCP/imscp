@@ -75,6 +75,8 @@
             <package post_install_tasks="phpenmod pspell">php5.6-pspell</package>
             <package post_install_tasks="phpenmod dom xml xmlreader xmlwriter">php5.6-xml</package>
             <package post_install_tasks="phpenmod zip">php5.6-zip</package>
+            <package post_install_tasks="sh php_apcu.sh 5.6">php-apcu</package>
+            <package post_install_tasks="sh php_apcu_bc.sh 5.6">php-apcu-bc</package>
             <package>php-pear</package>
             <package>libapache2-mod-php5.6</package>
             <package_conflict>php5-common</package_conflict>
@@ -110,6 +112,7 @@
             <package post_install_tasks="phpenmod pspell">php7.0-pspell</package>
             <package post_install_tasks="phpenmod dom xml xmlreader xmlwriter">php7.0-xml</package>
             <package post_install_tasks="phpenmod zip">php7.0-zip</package>
+            <package post_install_tasks="sh php_apcu.sh 7.0">php-apcu</package>
             <package>php-pear</package>
             <package>libapache2-mod-php7.0</package>
             <package_conflict>php5-common</package_conflict>
@@ -145,6 +148,8 @@
             <package post_install_tasks="phpenmod pspell">php7.1-pspell</package>
             <package post_install_tasks="phpenmod dom xml xmlreader xmlwriter">php7.1-xml</package>
             <package post_install_tasks="phpenmod zip">php7.1-zip</package>
+            <package post_install_tasks="sh php_apcu.sh 7.1">php-apcu</package>
+            <package post_install_tasks="sh php_apcu_bc.sh 7.1">php-apcu-bc</package>
             <package>php-pear</package>
             <package>libapache2-mod-php7.1</package>
             <package_conflict>php5-common</package_conflict>

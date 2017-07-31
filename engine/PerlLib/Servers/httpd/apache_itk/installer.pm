@@ -579,11 +579,17 @@ sub _cleanup
 
     iMSCP::Dir->new( dirname => '/etc/php5' )->remove( );
 
-    for(grep !/^$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}$/,
-        glob dirname($self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}).'/*'
-    ) {
-        iMSCP::Dir->new( dirname => $_ )->remove( );
-    }
+    # Some of PHP individual packages install their INI file once for all build
+    # variants, including for those not installed yet. Therefore, removing
+    # configuration directory for unused build variants is a mistake because
+    # when switching to one of them, INI files from individual packages won't
+    # be reinstalled.
+    # See https://github.com/oerdnj/deb.sury.org/issues/660
+    #for(grep !/^$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}$/,
+    #    glob dirname($self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}).'/*'
+    #) {
+    #    iMSCP::Dir->new( dirname => $_ )->remove( );
+    #}
 
     # CGI
     iMSCP::Dir->new( dirname => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'} )->remove( );

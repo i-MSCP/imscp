@@ -69,9 +69,9 @@ function admin_updateServerTrafficSettings($trafficLimit, $trafficWarning)
         // An Update was been made in the database ?
         if ($updtCount || $newCount) {
             set_page_message(tr('Monthly server traffic settings successfully updated.', $updtCount), 'success');
-            write_log(sprintf('Server monthly traffic settings were updated by', $_SESSION['user_logged']), E_USER_NOTICE);
+            write_log(sprintf('Server monthly traffic settings were updated by %s', $_SESSION['user_logged']), E_USER_NOTICE);
         } else {
-            set_page_message(tr("Nothing has been changed."), 'info');
+            set_page_message(tr('Nothing has been changed.'), 'info');
         }
     }
 

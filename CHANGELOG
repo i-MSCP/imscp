@@ -23,8 +23,9 @@ FRONTEND
     Added: Routing for languages without territory information: eg. `de' will be routed to `de_DE' (autodetection)
     Added: Setting that allows administrator to protect/unrpotect default mail accounts against both edition and deletion
     Added: Translaltion resources for Zend validators
-    Cosmetics: Make usage of the mathematical infinity symbol (∞) in place of the `Unlimited' translation string
+    Cosmetics: Make use of the mathematical infinity symbol (∞) in place of the `Unlimited' translation string
     Deprecated: Usage of customer ID field (will be removed in a later release)
+    Enhancement: Make use of Zend APC cache backend ; fallback to Zend File backend if APC extension isn't available 
     Enhancement: Make customers able to edit catch-all accounts
     Enhancement: Make customers able to edit mail autoresponder message even if the autoresponder is not activated yet
     Enhancement: Make customers able to select more than one catch-all address in catch-all addresses drop-down list
@@ -51,18 +52,19 @@ FRONTEND
     Review: Default mail accounts are not longer counted for the mail accounts limit (default)
     Review: Default mail accounts are now hidden in the client mail accounts overview interface (default)
     Review: Hide PHP E_STRICT, E_NOTICE, ~E_USER_NOTICE, E_DEPRECATED and E_USER_DEPRECATED on production
-    Review: Make usage of short syntax for arrays
+    Review: Make use of short syntax for arrays
     Review: Extend Zend_Registry class instead of reinventing the wheel
     Review: Skip the intermediate edit page when mail autoresponder is being enabled and that the message is already set
     Rewritten: Edit user and personal data interfaces (all UI levels)
     Security: Input for personal user data not filtered nor validated (all UI levels)
 
 INSTALLER
+    Fixed: Don't remove unused PHP variants configuration directories; PHP packages install INI files for all variants
     Fixed: Hide notice about user/group changes (Courier)
     Fixed: Missing LOGROTATE(8) configuration file for RSYSLOGD(8) (Debian 9/Stretch; Ubuntu 16.04/Xenial)
     Fixed: Removal of obsolete files must be done before saving the persistent data, else some files won't be deleted
     Securiry: Permissions hardening - Files and folders are now copied with UMASK(2) 027 instead of 022
-    
+
 PACKAGES
     Fixed: Can't locate Package/FileManager/Net2FTP/Net2FTP.pm when upgrading from some older versions (Package::FileManager)
 
@@ -145,7 +147,7 @@ SERVERS
     Fixed: Calling createUser()/dropUser() with `RaiseError' flag set to 1 raise an error (SQL server impl.)
     Fixed: Couldn't switch from external to local DNS server
     Fixed: Invalid ssl_protocols setting: Unknown protocol 'SSLv2' when Dovecot is built against libssl >= 1.1.x
-    Fixed: Make usage of POSTCONF(1) to remove unwanted parameters (Postfix)
+    Fixed: Make use of POSTCONF(1) to remove unwanted parameters (Postfix)
     Fixed: Never process the same zone twice for SOA addition (Bind9)
     Review: Engine permissions (Bind9)
 

@@ -64,7 +64,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 256;
+    protected $lastUpdate = 257;
 
     /**
      * Singleton - Make new unavailable
@@ -324,7 +324,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      * Add index
      *
      * Be aware that no check is made for duplicate rows. Thus, if you want to add an UNIQUE contraint, you must make
-     * sure to remove duplicate rows first. We don't make usage of the IGNORE clause for the following reasons:
+     * sure to remove duplicate rows first. We don't make use of the IGNORE clause for the following reasons:
      *
      * - The IGNORE clause is no standard and do not work with Fast Index Creation (MySQL #Bug #40344)
      * - The IGNORE clause has been removed in MySQL 5.7
@@ -1873,5 +1873,18 @@ class iMSCP_Update_Database extends iMSCP_Update
         }
 
         return NULL;
+    }
+
+    /**
+     * Update user_gui_props.lang column
+     * 
+     * @return array SQL statements to be executed
+     */
+    protected function r257()
+    {
+        return [
+            $this->changeColumn('user_gui_props', 'lang', "lang varchar(15) collate utf8_unicode_ci DEFAULT 'browser'"),
+            "UPDATE user_gui_props SET lang = 'browser' WHERE lang = 'auto'"
+        ];
     }
 }

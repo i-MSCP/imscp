@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '256');
+  ('DATABASE_REVISION', '257');
 
 -- --------------------------------------------------------
 
@@ -684,7 +684,7 @@ CREATE TABLE IF NOT EXISTS `tickets` (
 
 CREATE TABLE IF NOT EXISTS `user_gui_props` (
   `user_id` int(10) unsigned NOT NULL,
-  `lang` varchar(5) collate utf8_unicode_ci DEFAULT '',
+  `lang` varchar(15) collate utf8_unicode_ci DEFAULT 'browser',
   `layout` varchar(100) collate utf8_unicode_ci DEFAULT NULL,
   `layout_color` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   `logo` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT '',

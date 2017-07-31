@@ -372,10 +372,9 @@ class iMSCP_Initializer
     protected function initializeUserGuiProperties()
     {
         if (!isset($_SESSION['user_id'])
-            || !isset($_SESSION['logged_from'])
-            || !isset($_SESSION['logged_from_id'])
-            || isset($_SESSION['user_def_lang'])
-            || isset($_SESSION['user_theme'])
+            || isset($_SESSION['logged_from'])
+            || isset($_SESSION['logged_from_id'])
+            || (isset($_SESSION['user_def_lang']) && isset($_SESSION['user_theme']))
         ) {
             return;
         }
@@ -418,7 +417,8 @@ class iMSCP_Initializer
                 // Setup cache for localization and translation
                 $cache = Cache::factory(
                     'Core',
-                    'File',
+                    # Make use of 'APC' backend if APC(U) is available, else fallback to 'File' backend
+                    extension_loaded('apc') ? 'Apc' : 'File',
                     [
                         'caching'                   => !$this->config['DEBUG'],
                         'lifetime'                  => 0, // Translation cache is never flushed automatically
@@ -426,6 +426,7 @@ class iMSCP_Initializer
                         'automatic_cleaning_factor' => 0,
                         'ignore_user_abort'         => true
                     ],
+                    // Only for 'File' backend
                     [
                         'file_locking'           => false,
                         'hashed_directory_level' => 2,
@@ -441,6 +442,11 @@ class iMSCP_Initializer
                     'user_def_lang',
                     isset($_SESSION['user_def_lang']) ? $_SESSION['user_def_lang'] : Zend_Locale::BROWSER
                 ));
+                
+                if($locale == 'root') {
+                    # Handle case where value from $_SESSION['user_def_lang'] is erronous and lead to root locale
+                    $locale->setLocale('en_GB');
+                }
             } catch (Exception $e) {
                 $locale = new Locale('en_GB');
             }

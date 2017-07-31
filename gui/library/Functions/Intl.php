@@ -205,7 +205,7 @@ function i18n_getAvailableLanguages($localesOnly = false)
 
     array_unshift($languages, [
         'locale'            => Zend_Locale::BROWSER,
-        'revision'          => tr('N/A'),
+        'creation'          => tr('N/A'),
         'translatedStrings' => tr('N/A'),
         'lastTranslator'    => tr('N/A'),
         'language'          => tr('Auto (Browser language)')
