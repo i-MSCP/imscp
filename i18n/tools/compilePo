@@ -25,6 +25,13 @@ if [ ! -f "gui/public/index.php" ]; then
 	exit 1
 fi
 
+# Only for debugging purpose
+# Transifex is taking care of merging
+#for i in i18n/po/*; do
+#	echo "Updating ${i} file"
+#	msgmerge -U ${i} i18n/iMSCP.pot
+#done
+
 # Purge any old language file
 rm -fR gui/i18n/locales/*
 
@@ -33,5 +40,5 @@ for i in `find i18n/po -name '*.po' | sed -r 's/.*\/(.*)/\1/'`; do
 	LOCALE=`echo ${i} | cut -d '.' -f 1`
 	DESTDIR="gui/i18n/locales/${LOCALE}/LC_MESSAGES"
 	mkdir -p ${DESTDIR}
-	msgfmt --strict --no-hash -o ${DESTDIR}/${LOCALE}.mo i18n/po/${i}
+	msgfmt --strict --no-hash --use-fuzzy -o ${DESTDIR}/${LOCALE}.mo i18n/po/${i}
 done

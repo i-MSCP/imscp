@@ -88,7 +88,7 @@ SERVERS
     Removed: sql_mode parameter from the mysql/imscp.cnf configuration file; it is now set on a per session basis) (SQL servers)
 
 TRANSLATIONS
-    Review: Make use of fuzzy entries in machine object files -- Some people just forgot to review them
+    Review: Make use of fuzzy entries in machine object files
 
 VENDOR
     Updated: Zend Framework libraries to version 1.12.20
