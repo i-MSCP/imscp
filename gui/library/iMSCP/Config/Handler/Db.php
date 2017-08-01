@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Database as Database;
 use iMSCP_Config_Handler as ConfigHandler;
+use iMSCP_Database as Database;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_Exception_Database as DatabaseException;
 
@@ -439,18 +439,19 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      */
     protected function _loadAll()
     {
-        $query = "SELECT `{$this->_keysColumn}`, `{$this->_valuesColumn}` FROM `{$this->_tableName}`";
-
-        if (($stmt = $this->_db->execute($query))) {
-            $keyColumn = $this->_keysColumn;
-            $valueColumn = $this->_valuesColumn;
-
-            foreach ($stmt->fetchAll() as $row) {
-                $this->_parameters[$row[$keyColumn]] = $row[$valueColumn];
-            }
-        } else {
+        if (!($stmt = $this->_db->execute(
+            "SELECT `{$this->_keysColumn}`, `{$this->_valuesColumn}` FROM `{$this->_tableName}`")
+        )) {
             throw new iMSCPException("Couldn't get configuration parameters from database.");
         }
+
+        $keyColumn = $this->_keysColumn;
+        $valueColumn = $this->_valuesColumn;
+
+        foreach ($stmt->fetchAll() as $row) {
+            $this->_parameters[$row[$keyColumn]] = $row[$valueColumn];
+        }
+
     }
 
     /**
@@ -469,10 +470,10 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
 
         if (!$this->_db->execute($this->_insertStmt, [$this->_key, $this->_value])) {
             throw new DatabaseException("Couldn't insert new entry `{$this->_key}` in config table.");
-        } else {
-            $this->flushCache = true;
-            $this->_insertQueriesCounter++;
         }
+
+        $this->flushCache = true;
+        $this->_insertQueriesCounter++;
     }
 
     /**
@@ -491,10 +492,10 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
 
         if (!$this->_db->execute($this->_updateStmt, [$this->_value, $this->_key])) {
             throw new DatabaseException("Couldn't update entry `{$this->_key}` in config table.");
-        } else {
-            $this->flushCache = true;
-            $this->_updateQueriesCounter++;
         }
+
+        $this->flushCache = true;
+        $this->_updateQueriesCounter++;
     }
 
     /**
@@ -513,10 +514,10 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
 
         if (!$this->_db->execute($this->_deleteStmt, $this->_key)) {
             throw new DatabaseException("Couldn't delete entry in config table.");
-        } else {
-            $this->flushCache = true;
-            $this->_deleteQueriesCounter++;
         }
+
+        $this->flushCache = true;
+        $this->_deleteQueriesCounter++;
     }
 
     /**
