@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:35+0000\n"
+"POT-Creation-Date: 2017-08-01 12:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Alex_Joe <voxar@voxar.pl>, 2017\n"
 "Language-Team: Polish (Poland) (https://www.transifex.com/i-mscp/teams/576/pl_PL/)\n"
@@ -2405,7 +2405,7 @@ msgid "Forward URL %s is not valid."
 msgstr "URL przekierowania '%s' jest nieprawidłowe."
 
 msgid "Forward account"
-msgstr ""
+msgstr "Przekierowanie konta"
 
 msgid "Forward list is empty."
 msgstr "Lista przekierowań jest pusta."
@@ -2672,19 +2672,19 @@ msgid "Incorrect FTP account limit."
 msgstr "Nieprawidłowy limit kont FTP."
 
 msgid "Incorrect FTP accounts limit."
-msgstr ""
+msgstr "Nieprawidłowy limit kont FTP."
 
 msgid "Incorrect SQL database limit."
 msgstr "Nieprawidłowy limit baz danych SQL."
 
 msgid "Incorrect SQL databases limit."
-msgstr ""
+msgstr "Nieprawidłowy limit baz danych SQL."
 
 msgid "Incorrect SQL user limit."
 msgstr "Nieprawidłowy limit użytkowników SQL."
 
 msgid "Incorrect SQL users limit."
-msgstr ""
+msgstr "Nieprawidłowy limit użytkowników SQL."
 
 msgid "Incorrect alias limit."
 msgstr "Nieprawidłowy limit aliasów."
@@ -2712,7 +2712,7 @@ msgid "Incorrect mail account limit."
 msgstr ""
 
 msgid "Incorrect mail accounts limit."
-msgstr ""
+msgstr "Nieprawdiłowy limit kont mailowych."
 
 msgid "Incorrect mail quota"
 msgstr ""
@@ -2730,7 +2730,7 @@ msgid "Incorrect subdomain limit."
 msgstr "Nieprawidłowy limit subdomen."
 
 msgid "Incorrect subdomains limit."
-msgstr ""
+msgstr "Nieprawidłowy limit subdomen."
 
 msgid "Incorrect syntax for email address."
 msgstr "Nieprawidłowa składnia adresu poczty."
@@ -3011,13 +3011,13 @@ msgid "Mail Log Level"
 msgstr "Poziom logowania"
 
 msgid "Mail account already exists."
-msgstr ""
+msgstr "Konto mailowe już istnieje."
 
 msgid "Mail account data"
-msgstr ""
+msgstr "Dane kont mailowego"
 
 msgid "Mail account errors"
-msgstr ""
+msgstr "Błędy konta pocztowego"
 
 #, php-format
 msgid "Mail account has been scheduled for deletion."
@@ -3037,7 +3037,7 @@ msgid "Mail account type"
 msgstr "Typ konta pocztowego"
 
 msgid "Mail accounts"
-msgstr ""
+msgstr "Konta pocztowe"
 
 msgid "Mail accounts are hard suspended"
 msgstr ""
@@ -6017,7 +6017,7 @@ msgid "mail"
 msgstr "poczta"
 
 msgid "mail account"
-msgstr ""
+msgstr "konto mailowe"
 
 msgid "mail accounts"
 msgstr "konta e-mail"

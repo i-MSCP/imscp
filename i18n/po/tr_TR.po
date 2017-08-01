@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:35+0000\n"
+"POT-Creation-Date: 2017-08-01 12:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: ugur tezer <utezer@hotmail.com>, 2017\n"
 "Language-Team: Turkish (Turkey) (https://www.transifex.com/i-mscp/teams/576/tr_TR/)\n"
@@ -2809,7 +2809,7 @@ msgid "Mail account data"
 msgstr ""
 
 msgid "Mail account errors"
-msgstr ""
+msgstr "Posta hesabı hataları"
 
 #, php-format
 msgid "Mail account has been scheduled for deletion."
@@ -2826,7 +2826,7 @@ msgid "Mail account type"
 msgstr "Eposta hesap türü"
 
 msgid "Mail accounts"
-msgstr ""
+msgstr "Eposta hesapları"
 
 msgid "Mail accounts are hard suspended"
 msgstr ""

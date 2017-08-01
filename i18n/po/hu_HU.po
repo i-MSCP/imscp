@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:35+0000\n"
+"POT-Creation-Date: 2017-08-01 12:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zsolt Bertalan <bercy42@gmail.com>, 2017\n"
 "Language-Team: Hungarian (Hungary) (https://www.transifex.com/i-mscp/teams/576/hu_HU/)\n"
@@ -1135,7 +1135,7 @@ msgid "Client / Mail / External Mail Feature"
 msgstr ""
 
 msgid "Client / Mail / Overview"
-msgstr ""
+msgstr "Ügyfél / Levelezés / Áttekintés"
 
 msgid "Client / Mail / Overview / Activate Autoresponder"
 msgstr ""
@@ -2411,7 +2411,7 @@ msgid "Forward URL %s is not valid."
 msgstr "%s átirányítási URL érvénytelen."
 
 msgid "Forward account"
-msgstr ""
+msgstr "Továbbítási fiók"
 
 msgid "Forward list is empty."
 msgstr "Továbbítási lista üres"
@@ -2680,19 +2680,19 @@ msgid "Incorrect FTP account limit."
 msgstr "Hibás FTP-felhasználó korlát."
 
 msgid "Incorrect FTP accounts limit."
-msgstr ""
+msgstr "FTP hozzáférési korlát hibás"
 
 msgid "Incorrect SQL database limit."
 msgstr "SQL adatbázis korlát hibás."
 
 msgid "Incorrect SQL databases limit."
-msgstr ""
+msgstr "SQL adatbázis darabszám korlát hibás"
 
 msgid "Incorrect SQL user limit."
 msgstr "Hibás SQL felhasználó korlát."
 
 msgid "Incorrect SQL users limit."
-msgstr ""
+msgstr "SQL felhasználói korlát hibás"
 
 msgid "Incorrect alias limit."
 msgstr "Álnév korlát hibás."
@@ -2704,7 +2704,7 @@ msgid "Incorrect domain alias limit."
 msgstr "Domain álnév korlát hibás."
 
 msgid "Incorrect domain aliases limit."
-msgstr ""
+msgstr "Domain álnév korlát hibás"
 
 msgid "Incorrect email length or syntax."
 msgstr "Hibásan formázott email cím"
@@ -2720,7 +2720,7 @@ msgid "Incorrect mail account limit."
 msgstr ""
 
 msgid "Incorrect mail accounts limit."
-msgstr ""
+msgstr "Email cím korlát hibás"
 
 msgid "Incorrect mail quota"
 msgstr ""
@@ -2738,7 +2738,7 @@ msgid "Incorrect subdomain limit."
 msgstr "Aldomain korlát hibás."
 
 msgid "Incorrect subdomains limit."
-msgstr ""
+msgstr "Aldomain korlát hibás"
 
 msgid "Incorrect syntax for email address."
 msgstr "Hibásan formázott email cím"
@@ -3018,13 +3018,13 @@ msgid "Mail Log Level"
 msgstr "Emailek naplózási szintje"
 
 msgid "Mail account already exists."
-msgstr ""
+msgstr "Már létezik ilyen email fiók"
 
 msgid "Mail account data"
-msgstr ""
+msgstr "Email fiók adatok"
 
 msgid "Mail account errors"
-msgstr ""
+msgstr "Email fiók hibák"
 
 #, php-format
 msgid "Mail account has been scheduled for deletion."
@@ -3042,7 +3042,7 @@ msgid "Mail account type"
 msgstr "Postafiók típusa"
 
 msgid "Mail accounts"
-msgstr ""
+msgstr "Email fiókok"
 
 msgid "Mail accounts are hard suspended"
 msgstr ""
@@ -5494,25 +5494,25 @@ msgid "You are exceeding you domain aliases limit."
 msgstr ""
 
 msgid "You are exceeding your FTP accounts limit."
-msgstr ""
+msgstr "Túllépte a létrehozható FTP felhasználók számát"
 
 msgid "You are exceeding your SQL databases limit."
-msgstr ""
+msgstr "Túllépte a létrehozható SQL adatbázisok számát"
 
 msgid "You are exceeding your SQL users limit."
-msgstr ""
+msgstr "Túllépte a létrehozható SQL felhasználók számát"
 
 msgid "You are exceeding your disk space limit."
 msgstr "Túllépte a lemezterület korlátját"
 
 msgid "You are exceeding your mail accounts limit."
-msgstr ""
+msgstr "Túllépte a létrehozható postafiókok számát"
 
 msgid "You are exceeding your monthly traffic limit."
 msgstr "Túllépte a havi adatforgami korlátot"
 
 msgid "You are exceeding your subdomains limit."
-msgstr ""
+msgstr "Túllépte a létrehozható aldomainek számát"
 
 msgid "You are not allowed to act on your own session."
 msgstr "Saját munkamenet - session - nem engedélyezett."
@@ -6012,7 +6012,7 @@ msgid "mail"
 msgstr "e-mail"
 
 msgid "mail account"
-msgstr ""
+msgstr "email postafiók"
 
 msgid "mail accounts"
 msgstr "e-mail fiókok"

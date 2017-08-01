@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:35+0000\n"
+"POT-Creation-Date: 2017-08-01 12:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thom Heemstra <thom@heemstra.xyz>, 2017\n"
 "Language-Team: Swedish (Sweden) (https://www.transifex.com/i-mscp/teams/576/sv_SE/)\n"
@@ -1125,7 +1125,7 @@ msgid "Client / Mail / External Mail Feature"
 msgstr ""
 
 msgid "Client / Mail / Overview"
-msgstr ""
+msgstr "Kund / Mail / Översikt"
 
 msgid "Client / Mail / Overview / Activate Autoresponder"
 msgstr ""
@@ -2399,7 +2399,7 @@ msgid "Forward URL %s is not valid."
 msgstr "Framåt URL %s är inte giltigt."
 
 msgid "Forward account"
-msgstr ""
+msgstr "Framåt konto"
 
 msgid "Forward list is empty."
 msgstr "Framåt Listan är tom."
@@ -2664,19 +2664,19 @@ msgid "Incorrect FTP account limit."
 msgstr "Felaktig FTP konton gräns."
 
 msgid "Incorrect FTP accounts limit."
-msgstr ""
+msgstr "Felaktig FTP konton gräns."
 
 msgid "Incorrect SQL database limit."
 msgstr "Felaktig SQL-databaser gräns."
 
 msgid "Incorrect SQL databases limit."
-msgstr ""
+msgstr "Felaktig SQL-databaser gräns."
 
 msgid "Incorrect SQL user limit."
 msgstr "Felaktig SQL-användare gräns."
 
 msgid "Incorrect SQL users limit."
-msgstr ""
+msgstr "Felaktig SQL-användare gräns."
 
 msgid "Incorrect alias limit."
 msgstr "Felaktigt alias gränsen."
@@ -2688,7 +2688,7 @@ msgid "Incorrect domain alias limit."
 msgstr "Felaktig domän alias gräns."
 
 msgid "Incorrect domain aliases limit."
-msgstr ""
+msgstr "Felaktig domän alias gräns."
 
 msgid "Incorrect email length or syntax."
 msgstr "Felaktig e-mail-längd eller syntax."
@@ -2704,7 +2704,7 @@ msgid "Incorrect mail account limit."
 msgstr ""
 
 msgid "Incorrect mail accounts limit."
-msgstr ""
+msgstr "Felaktig postkonton gräns."
 
 msgid "Incorrect mail quota"
 msgstr ""
@@ -2722,7 +2722,7 @@ msgid "Incorrect subdomain limit."
 msgstr "Felaktig underdomäner gränsen."
 
 msgid "Incorrect subdomains limit."
-msgstr ""
+msgstr "Felaktig underdomäner gränsen."
 
 msgid "Incorrect syntax for email address."
 msgstr "Incorrect syntax for email address."
@@ -3002,13 +3002,13 @@ msgid "Mail Log Level"
 msgstr "Mail Log Level"
 
 msgid "Mail account already exists."
-msgstr ""
+msgstr "Mail-konto finns redan."
 
 msgid "Mail account data"
-msgstr ""
+msgstr "Mail-konto uppgifter"
 
 msgid "Mail account errors"
-msgstr ""
+msgstr "E-postkontofel"
 
 #, php-format
 msgid "Mail account has been scheduled for deletion."
@@ -3026,7 +3026,7 @@ msgid "Mail account type"
 msgstr "E-Post kontotyp"
 
 msgid "Mail accounts"
-msgstr ""
+msgstr "E-postkonton"
 
 msgid "Mail accounts are hard suspended"
 msgstr ""
@@ -5462,25 +5462,25 @@ msgid "You are exceeding you domain aliases limit."
 msgstr ""
 
 msgid "You are exceeding your FTP accounts limit."
-msgstr ""
+msgstr "You are exceeding your FTP accounts limit."
 
 msgid "You are exceeding your SQL databases limit."
-msgstr ""
+msgstr "Du överstiger dina SQL-databaser."
 
 msgid "You are exceeding your SQL users limit."
-msgstr ""
+msgstr "Du överstiger dina SQL-användare."
 
 msgid "You are exceeding your disk space limit."
 msgstr "Du överskrider din hårddisk limit."
 
 msgid "You are exceeding your mail accounts limit."
-msgstr ""
+msgstr "You are exceeding your mail accounts limit."
 
 msgid "You are exceeding your monthly traffic limit."
 msgstr "Du överstiger din månadsvis trafikgränsen."
 
 msgid "You are exceeding your subdomains limit."
-msgstr ""
+msgstr "You are exceeding your subdomains limit."
 
 msgid "You are not allowed to act on your own session."
 msgstr "Du får inte gör det på din egen session."
@@ -5985,7 +5985,7 @@ msgid "mail"
 msgstr "mail"
 
 msgid "mail account"
-msgstr ""
+msgstr "mail konto"
 
 msgid "mail accounts"
 msgstr "e-postkonton"

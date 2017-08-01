@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:35+0000\n"
+"POT-Creation-Date: 2017-08-01 12:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Japanese (Japan) (https://www.transifex.com/i-mscp/teams/576/ja_JP/)\n"
@@ -1089,7 +1089,7 @@ msgid "Client / Mail / External Mail Feature"
 msgstr ""
 
 msgid "Client / Mail / Overview"
-msgstr ""
+msgstr "クライアント / メール / 概要"
 
 msgid "Client / Mail / Overview / Activate Autoresponder"
 msgstr ""
@@ -2350,7 +2350,7 @@ msgid "Forward URL %s is not valid."
 msgstr "転送URL%sは有効ではありません。"
 
 msgid "Forward account"
-msgstr ""
+msgstr "フォワードアカウント"
 
 msgid "Forward list is empty."
 msgstr "フォワードリストは空です。"
@@ -2607,19 +2607,19 @@ msgid "Incorrect FTP account limit."
 msgstr "不正なFTPアカウントの制限。"
 
 msgid "Incorrect FTP accounts limit."
-msgstr ""
+msgstr "FTPアカウント制限が誤っています。"
 
 msgid "Incorrect SQL database limit."
 msgstr "不正なSQLデータベースの制限。"
 
 msgid "Incorrect SQL databases limit."
-msgstr ""
+msgstr "SQLデータベース制限が誤っています。"
 
 msgid "Incorrect SQL user limit."
 msgstr "不正なSQLユーザの制限。"
 
 msgid "Incorrect SQL users limit."
-msgstr ""
+msgstr "SQLユーザー制限が誤っています。"
 
 msgid "Incorrect alias limit."
 msgstr "不正なエイリアスの制限"
@@ -2631,7 +2631,7 @@ msgid "Incorrect domain alias limit."
 msgstr "不正なドメインエイリアスの制限"
 
 msgid "Incorrect domain aliases limit."
-msgstr ""
+msgstr "ドメインエイリアス制限に誤りがあります。"
 
 msgid "Incorrect email length or syntax."
 msgstr "Eメールの長さか構文が誤っています。"
@@ -2647,7 +2647,7 @@ msgid "Incorrect mail account limit."
 msgstr ""
 
 msgid "Incorrect mail accounts limit."
-msgstr ""
+msgstr "メールアカウント制限が誤っています。"
 
 msgid "Incorrect mail quota"
 msgstr ""
@@ -2665,7 +2665,7 @@ msgid "Incorrect subdomain limit."
 msgstr "不正なサブドメインの制限"
 
 msgid "Incorrect subdomains limit."
-msgstr ""
+msgstr "サブドメイン制限が誤っています。"
 
 msgid "Incorrect syntax for email address."
 msgstr "メールアドレスの誤った構文があります。"
@@ -2945,13 +2945,13 @@ msgid "Mail Log Level"
 msgstr "メールログレベル"
 
 msgid "Mail account already exists."
-msgstr ""
+msgstr "メールアカウントは既に存在します。"
 
 msgid "Mail account data"
-msgstr ""
+msgstr "メールアカウントデータ"
 
 msgid "Mail account errors"
-msgstr ""
+msgstr "メールアカウントエラー"
 
 #, php-format
 msgid "Mail account has been scheduled for deletion."
@@ -2968,7 +2968,7 @@ msgid "Mail account type"
 msgstr "メールアカウント種別"
 
 msgid "Mail accounts"
-msgstr ""
+msgstr "メールアカウント"
 
 msgid "Mail accounts are hard suspended"
 msgstr ""
@@ -5360,25 +5360,25 @@ msgid "You are exceeding you domain aliases limit."
 msgstr ""
 
 msgid "You are exceeding your FTP accounts limit."
-msgstr ""
+msgstr "FTPアカウント数の制限を超えています。"
 
 msgid "You are exceeding your SQL databases limit."
-msgstr ""
+msgstr "SQLデータベース制限を超えています。"
 
 msgid "You are exceeding your SQL users limit."
-msgstr ""
+msgstr "SQLユーザー制限を超えています。"
 
 msgid "You are exceeding your disk space limit."
 msgstr "ディスク容量の制限を超えています。"
 
 msgid "You are exceeding your mail accounts limit."
-msgstr ""
+msgstr "メールアカウント数の制限を超えています。"
 
 msgid "You are exceeding your monthly traffic limit."
 msgstr "月次のトラフィック制限を超えています。"
 
 msgid "You are exceeding your subdomains limit."
-msgstr ""
+msgstr "サブドメイン数の制限を超えています。"
 
 msgid "You are not allowed to act on your own session."
 msgstr "自分のセッションに基づいて行動することは許されません。"
@@ -5862,7 +5862,7 @@ msgid "mail"
 msgstr "メール"
 
 msgid "mail account"
-msgstr ""
+msgstr "メールアカウント"
 
 msgid "mail accounts"
 msgstr "メールアカウント"

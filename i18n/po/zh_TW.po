@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:35+0000\n"
+"POT-Creation-Date: 2017-08-01 12:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/i-mscp/teams/576/zh_TW/)\n"
@@ -2946,7 +2946,7 @@ msgid "Mail account data"
 msgstr ""
 
 msgid "Mail account errors"
-msgstr ""
+msgstr "郵件統計錯誤"
 
 #, php-format
 msgid "Mail account has been scheduled for deletion."
@@ -2963,7 +2963,7 @@ msgid "Mail account type"
 msgstr "郵件帳號類型"
 
 msgid "Mail accounts"
-msgstr ""
+msgstr "Mail 帳號"
 
 msgid "Mail accounts are hard suspended"
 msgstr ""

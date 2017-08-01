@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:35+0000\n"
+"POT-Creation-Date: 2017-08-01 12:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Umberto Bubaweb <demoweb@live.it>, 2017\n"
+"Last-Translator: Tommaso <redmail@hotmail.it>, 2017\n"
 "Language-Team: Italian (Italy) (https://www.transifex.com/i-mscp/teams/576/it_IT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1131,7 +1131,7 @@ msgid "Client / Mail / External Mail Feature"
 msgstr ""
 
 msgid "Client / Mail / Overview"
-msgstr ""
+msgstr "Cliente / Posta / Panoramica"
 
 msgid "Client / Mail / Overview / Activate Autoresponder"
 msgstr ""
@@ -2424,7 +2424,7 @@ msgid "Forward URL %s is not valid."
 msgstr "Forward URL %s non valido"
 
 msgid "Forward account"
-msgstr ""
+msgstr "Account di inoltro"
 
 msgid "Forward list is empty."
 msgstr "La lista di inoltro è vuota."
@@ -2694,19 +2694,19 @@ msgid "Incorrect FTP account limit."
 msgstr "Limite account FTP errato."
 
 msgid "Incorrect FTP accounts limit."
-msgstr ""
+msgstr "Limite account FTP errato."
 
 msgid "Incorrect SQL database limit."
 msgstr "Limite di database SQL errato."
 
 msgid "Incorrect SQL databases limit."
-msgstr ""
+msgstr "Limite database SQL errato."
 
 msgid "Incorrect SQL user limit."
 msgstr "Limite di utenti SQL errato."
 
 msgid "Incorrect SQL users limit."
-msgstr ""
+msgstr "Limite utenti SQL errato."
 
 msgid "Incorrect alias limit."
 msgstr "Limite alias ​​errato."
@@ -2718,7 +2718,7 @@ msgid "Incorrect domain alias limit."
 msgstr "Limite alias ​​di dominio errato."
 
 msgid "Incorrect domain aliases limit."
-msgstr ""
+msgstr "Limite alias di dominio non corretto."
 
 msgid "Incorrect email length or syntax."
 msgstr "Lunghezza indirizzo email o sintassi non corretta. "
@@ -2734,7 +2734,7 @@ msgid "Incorrect mail account limit."
 msgstr ""
 
 msgid "Incorrect mail accounts limit."
-msgstr ""
+msgstr "Limite account e-mail errato."
 
 msgid "Incorrect mail quota"
 msgstr ""
@@ -2752,7 +2752,7 @@ msgid "Incorrect subdomain limit."
 msgstr "Limite sottodominio errato."
 
 msgid "Incorrect subdomains limit."
-msgstr ""
+msgstr "Limite sottodomini errato."
 
 msgid "Incorrect syntax for email address."
 msgstr "Sintassi non corretta per l'indirizzo email."
@@ -3040,7 +3040,7 @@ msgid "Mail account data"
 msgstr ""
 
 msgid "Mail account errors"
-msgstr ""
+msgstr "Errori account di posta"
 
 #, php-format
 msgid "Mail account has been scheduled for deletion."
@@ -3058,7 +3058,7 @@ msgid "Mail account type"
 msgstr "Tipo account email"
 
 msgid "Mail accounts"
-msgstr ""
+msgstr "Account di posta"
 
 msgid "Mail accounts are hard suspended"
 msgstr ""
@@ -6064,7 +6064,7 @@ msgid "mail"
 msgstr "mail"
 
 msgid "mail account"
-msgstr ""
+msgstr "account email"
 
 msgid "mail accounts"
 msgstr "accounts email"
