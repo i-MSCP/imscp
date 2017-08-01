@@ -384,9 +384,10 @@ sub _init
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'repositorySections'} = [ 'main', 'contrib', 'non-free' ];
     $self->{'preRequiredPackages'} = [
-        'binutils', 'debconf-utils', 'dialog', 'dirmngr', 'libbit-vector-perl', 'libclass-insideout-perl',
-        'lsb-release', 'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl',
-        'wget', 'liblchown-perl', 'apt-transport-https', 'policyrcd-script-zg2', 'libclone-perl'
+        'apt-transport-https', 'binutils', 'ca-certificates', 'debconf-utils', 'dialog', 'dirmngr',
+        'libbit-vector-perl', 'libclass-insideout-perl', 'libclone-perl', 'liblchown-perl', 'liblist-moreutils-perl',
+        'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'lsb-release', 'policyrcd-script-zg2',
+        'wget' 
     ];
     $self->{'aptRepositoriesToRemove'} = [];
     $self->{'aptRepositoriesToAdd'} = [];
@@ -669,7 +670,10 @@ sub _updateAptSourceList
 
             if ( $fileContent !~ /^deb\s+$rc{'uri'}\s+$rc{'dist'}\s+.*\b$section\b/m ) {
                 my $rs = execute(
-                    [ 'wget', '--spider', "$rc{'uri'}/dists/$rc{'dist'}/$section/" =~ s{([^:])//}{$1/}gr ],
+                    [
+                        'wget', '--prefer-family=IPv4', '--timeout=30', '--spider',
+                        "$rc{'uri'}/dists/$rc{'dist'}/$section/" =~ s{([^:])//}{$1/}gr
+                    ],
                     \ my $stdout,
                     \ my $stderr
                 );
@@ -685,7 +689,10 @@ sub _updateAptSourceList
 
             if ( $foundSection && $fileContent !~ /^deb-src\s+$rc{'uri'}\s+$rc{'dist'}\s+.*\b$section\b/m ) {
                 my $rs = execute(
-                    [ 'wget', '--spider', "$rc{'uri'}/dists/$rc{'dist'}/$section/source/" =~ s{([^:])//}{$1/}gr ],
+                    [
+                        'wget', '--prefer-family=IPv4', '--timeout=30', '--spider',
+                        "$rc{'uri'}/dists/$rc{'dist'}/$section/source/" =~ s{([^:])//}{$1/}gr
+                    ],
                     \ my $stdout,
                     \ my $stderr
                 );
@@ -774,8 +781,8 @@ EOF
             my $keyFile = File::Temp->new( UNLINK => 1 );
             $rs = execute(
                 [
-                    'wget', '--prefer-family=IPv4', '--timeout=5', '--no-cache', '--no-dns-cache', '-O',
-                    $keyFile->filename, $repository->{'repository_key_uri'}
+                    'wget', '--prefer-family=IPv4', '--timeout=30', '-O', $keyFile->filename,
+                    $repository->{'repository_key_uri'}
                 ],
                 \ my $stdout,
                 \ my $stderr
