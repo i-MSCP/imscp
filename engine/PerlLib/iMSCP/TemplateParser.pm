@@ -55,7 +55,7 @@ sub process( $$ )
 
     return $template unless ref $data eq 'HASH';
 
-    while (my ($placeholder, $value) = each( %{$data} )) {
+    while ( my ($placeholder, $value) = each( %{$data} ) ) {
         next unless defined $value;
         $template =~ s/(?<!%)\Q{$placeholder}\E/$value/gim
     }
@@ -81,7 +81,7 @@ sub getBloc( $$$;$ )
 
     $beginTag = "\Q$beginTag\E" unless ref $beginTag eq 'Regexp';
     $endingTag = "\Q$endingTag\E" unless ref $endingTag eq 'Regexp';
-    ($includeTags
+    ( $includeTags
         ? $template =~ /([\t ]*$beginTag.*?[\t ]*$endingTag)/s
         : $template =~ /[\t ]*$beginTag(.*?)[\t ]*$endingTag/s
     ) ? $1 : '';
@@ -107,7 +107,7 @@ sub replaceBloc( $$$$;$ )
 {
     my ($beginTag, $endingTag, $repl, $template, $preserveTags) = @_;
 
-    if($preserveTags) {
+    if ( $preserveTags ) {
         $beginTag = "(\Q$beginTag\E)" unless ref $beginTag eq 'Regexp';
         $endingTag = "(\Q$endingTag\E)" unless ref $endingTag eq 'Regexp';
         return $template =~ s/[\t ]*$beginTag.*?[\t ]*$endingTag/$repl$1$2/grs;

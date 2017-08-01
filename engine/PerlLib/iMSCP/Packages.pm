@@ -85,14 +85,14 @@ sub _init
     );
 
     # Load all package classes
-    for (@{$self->{'packages'}}) {
+    for ( @{$self->{'packages'}} ) {
         my $package = "Package::${_}";
         eval "require $package" or die( sprintf( "Couldn't load %s package class: %s", $package, $@ ));
     }
 
     # Sort packages in descending order of priority
     @{$self->{'packages'}} = sort {
-        "Package::${b}"->getPriority( ) <=> "Package::${a}"->getPriority( )
+        "Package::${b}"->getPriority() <=> "Package::${a}"->getPriority()
     } @{$self->{'packages'}};
 
     @{$self->{'packages_full_names'}} = map { "Package::${_}" } @{$self->{'packages'}};

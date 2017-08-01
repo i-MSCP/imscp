@@ -60,12 +60,12 @@ sub execute( $;$$ )
 
     defined( $command ) or die( 'Missing $command parameter' );
 
-    if ($stdout) {
+    if ( $stdout ) {
         ref $stdout eq 'SCALAR' or die( "Expects a scalar reference as second parameter for capture of STDOUT" );
         ${$stdout} = '';
     }
 
-    if ($stderr) {
+    if ( $stderr ) {
         ref $stderr eq 'SCALAR' or die( "Expects a scalar reference as third parameter for capture of STDERR" );
         ${$stderr} = '';
     }
@@ -73,20 +73,20 @@ sub execute( $;$$ )
     my $list = ref $command eq 'ARRAY';
     debug( $list ? "@{$command}" : $command );
 
-    if ($stdout && $stderr) {
-        (${$stdout}, ${$stderr}) = capture sub { system( $list ? @{$command} : $command); };
+    if ( $stdout && $stderr ) {
+        ( ${$stdout}, ${$stderr} ) = capture sub { system( $list ? @{$command} : $command ); };
         chomp( ${$stdout}, ${$stderr} );
-    } elsif ($stdout) {
+    } elsif ( $stdout ) {
         ${$stdout} = capture_stdout sub { system( $list ? @{$command} : $command ); };
         chomp( ${$stdout} );
-    } elsif ($stderr) {
+    } elsif ( $stderr ) {
         ${$stderr} = capture_stderr sub { system( $list ? @{$command} : $command ); };
         chomp( $stderr );
     } else {
-        system( $list ? @{$command} : $command ) != -1 or die( sprintf( "Couldn't execute command: %s", $! ) );
+        system( $list ? @{$command} : $command ) != -1 or die( sprintf( "Couldn't execute command: %s", $! ));
     }
 
-    getExitCode( );
+    getExitCode();
 }
 
 =item executeNoWait( $command [, $subSTDOUT = CODE [, $subSTDERR = CODE ] ] )
@@ -119,8 +119,8 @@ sub executeNoWait( $;$$ )
     my %buffers = ( $stdout => '', $stderr => '' );
     my $sel = IO::Select->new( $stdout, $stderr );
 
-    while(my @ready = $sel->can_read) {
-        for my $fh (@ready) {
+    while ( my @ready = $sel->can_read ) {
+        for my $fh ( @ready ) {
             # Read 1 byte at a time to avoid ending with multiple lines
             my $ret = sysread( $fh, my $nextbyte, 1 );
 
@@ -128,7 +128,7 @@ sub executeNoWait( $;$$ )
 
             defined $ret or die( $! ); # Something is going wrong; Best is to abort early
 
-            if ($ret == 0) {
+            if ( $ret == 0 ) {
                 # EOL
                 $sel->remove( $fh );
                 close( $fh );
@@ -144,7 +144,7 @@ sub executeNoWait( $;$$ )
     }
 
     waitpid( $pid, 0 );
-    getExitCode( );
+    getExitCode();
 }
 
 =item escapeShell( $string )
@@ -179,13 +179,14 @@ sub getExitCode( ;$ )
     my ($ret) = @_;
     $ret //= $?;
 
-    if ($ret == -1) {
+    if ( $ret == -1 ) {
         debug( "Couldn't execute command" );
         return 1;
     }
 
-    if ($ret & 127) {
-        debug( sprintf( 'Command died with signal %d, %s coredump', ($ret & 127), ($? & 128) ? 'with' : 'without' ) );
+    if ( $ret & 127 ) {
+        debug( sprintf( 'Command died with signal %d, %s coredump', ( $ret & 127 ),
+                ( $? & 128 ) ? 'with' : 'without' ));
         return $ret;
     }
 

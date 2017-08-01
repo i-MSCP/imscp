@@ -30,11 +30,11 @@ use iMSCP::Debug;
 
 {
     my $unload = sub {
-        delete @INC{qw<asm/unistd.ph asm/unistd_32.ph asm/unistd_64.ph bits/syscall.ph syscall.ph sys/syscall.ph _h2ph_pre.ph>};
+        delete @INC{qw< asm/unistd.ph asm/unistd_32.ph asm/unistd_64.ph bits/syscall.ph syscall.ph sys/syscall.ph _h2ph_pre.ph >};
     };
 
     # We need to force loading in case the header files have been already loaded from elsewhere
-    $unload->( );
+    $unload->();
     local $@;
     eval {
         require 'syscall.ph';
@@ -43,9 +43,9 @@ use iMSCP::Debug;
         require 'sys/syscall.ph';
         1
     };
-    fatal(sprintf("Couldn't load required Perl header files to perform syscalls: %s", $@)) if $@;
+    fatal( sprintf( "Couldn't load required Perl header files to perform syscalls: %s", $@ )) if $@;
     # We need to force unload to not disturb other modules
-    $unload->( );
+    $unload->();
 }
 
 =head1 DESCRIPTION

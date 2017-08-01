@@ -74,10 +74,10 @@ sub imscpBackupDialog
 
     my $backupImscp = main::setupGetQuestion( 'BACKUP_IMSCP' );
 
-    if ($main::reconfigure =~ /^(?:backup|all|forced)$/
+    if ( $main::reconfigure =~ /^(?:backup|all|forced)$/
         || $backupImscp !~ /^(?:yes|no)$/
     ) {
-        (my $rs, $backupImscp) = $dialog->radiolist( <<"EOF", [ 'yes', 'no' ], $backupImscp ne 'no' ? 'yes' : 'no' );
+        ( my $rs, $backupImscp ) = $dialog->radiolist( <<"EOF", [ 'yes', 'no' ], $backupImscp ne 'no' ? 'yes' : 'no' );
 
 \\Z4\\Zb\\Zui-MSCP Backup Feature\\Zn
 
@@ -107,10 +107,11 @@ sub customerBackupDialog
 
     my $backupDomains = main::setupGetQuestion( 'BACKUP_DOMAINS' );
 
-    if ($main::reconfigure =~ /^(?:backup|all|forced)$/
+    if ( $main::reconfigure =~ /^(?:backup|all|forced)$/
         || $backupDomains !~ /^(?:yes|no)$/
     ) {
-        (my $rs, $backupDomains) = $dialog->radiolist( <<"EOF", [ 'yes', 'no' ], $backupDomains ne 'no' ? 'yes' : 'no' );
+        ( my $rs, $backupDomains ) = $dialog->radiolist(
+            <<"EOF", [ 'yes', 'no' ], $backupDomains ne 'no' ? 'yes' : 'no' );
 
 \\Z4\\Zb\\ZuDomains Backup Feature\\Zn
 

@@ -8,8 +8,8 @@
 # Particularly needed on heavy systems where a process can still be running when another is spawned
 # In case the lock cannot be acquired , just exit.
 use Fcntl ":flock";
-open(my $lockFile, '>', '/tmp/awstats_updateall.pl.lock') or die(sprintf("Couldn't open lock file: %s", $!));
-exit unless flock($lockFile, LOCK_EX | LOCK_NB);
+open( my $lockFile, '>', '/tmp/awstats_updateall.pl.lock' ) or die( sprintf( "Couldn't open lock file: %s", $! ));
+exit unless flock( $lockFile, LOCK_EX | LOCK_NB );
 
 #------------------------------------------------------------------------------
 # Defines
@@ -37,7 +37,8 @@ my $LastLine = '';
 # Output:       None
 # Return:       None
 #------------------------------------------------------------------------------
-sub error {
+sub error
+{
     print STDERR "Error: $_[0].\n";
     exit 1;
 }
@@ -49,15 +50,16 @@ sub error {
 # Output:       None
 # Return:       None
 #------------------------------------------------------------------------------
-sub debug {
+sub debug
+{
     my $level = $_[1] || 1;
-    if ($Debug >= $level) {
+    if ( $Debug >= $level ) {
         my $debugstring = $_[0];
-        if ($ENV{"GATEWAY_INTERFACE"}) {
+        if ( $ENV{"GATEWAY_INTERFACE"} ) {
             $debugstring =~ s/^ /&nbsp&nbsp /;
             $debugstring .= "<br />";
         }
-        print localtime(time)." - DEBUG $level - $debugstring\n";
+        print localtime( time ) . " - DEBUG $level - $debugstring\n";
     }
 }
 
@@ -69,36 +71,36 @@ sub debug {
 my $helpfound = 0;
 my $nowfound = 0;
 my %confexcluded = ();
-for (0 .. @ARGV-1) {
-    if ($ARGV[$_] =~ /^-*h/i) {
+for ( 0 .. @ARGV-1 ) {
+    if ( $ARGV[$_] =~ /^-*h/i ) {
         $helpfound = 1;
         last;
     }
-    if ($ARGV[$_] =~ /^-*awstatsprog=(.*)/i) {
+    if ( $ARGV[$_] =~ /^-*awstatsprog=(.*)/i ) {
         $Awstats = "$1";
         next;
     }
-    if ($ARGV[$_] =~ /^-*configdir=(.*)/i) {
+    if ( $ARGV[$_] =~ /^-*configdir=(.*)/i ) {
         $DIRCONFIG = "$1";
         next;
     }
-    if ($ARGV[$_] =~ /^-*excludeconf=(.*)/i) {
+    if ( $ARGV[$_] =~ /^-*excludeconf=(.*)/i ) {
         #try to get the different files to exclude
-        @conftoexclude = split(/,/, $1);
-        foreach (@conftoexclude) {
+        @conftoexclude = split( /,/, $1 );
+        foreach ( @conftoexclude ) {
             $confexcluded{"$_"} = 1;
         }
         next;
     }
-    if ($ARGV[$_] =~ /^-*debug=(\d+)/i) {
+    if ( $ARGV[$_] =~ /^-*debug=(\d+)/i ) {
         $Debug = $1;
         next;
     }
-    if ($ARGV[$_] =~ /^-*lastline=(\d+)/i) {
+    if ( $ARGV[$_] =~ /^-*lastline=(\d+)/i ) {
         $LastLine = $1;
         next;
     }
-    if ($ARGV[$_] =~ /^now/i) {
+    if ( $ARGV[$_] =~ /^now/i ) {
         $nowfound = 1;
         next;
     }
@@ -108,10 +110,10 @@ for (0 .. @ARGV-1) {
 my $DIR;
 my $PROG;
 my $Extension;
-($DIR = $0) =~ s/([^\/\\]*)$//;
-($PROG = $1) =~ s/\.([^\.]*)$//;
+( $DIR = $0 ) =~ s/([^\/\\]*)$//;
+( $PROG = $1 ) =~ s/\.([^\.]*)$//;
 $Extension = $1;
-if (!$nowfound || $helpfound || !@ARGV) {
+if ( !$nowfound || $helpfound || !@ARGV ) {
     print "----- $PROG $VERSION (c) Laurent Destailleur -----\n";
     print "awstats_updateall launches update process for all AWStats config files (except\n";
     print "awstats.model.conf) found in a particular directory, so you can easily setup a\n";
@@ -127,60 +129,60 @@ if (!$nowfound || $helpfound || !@ARGV) {
     exit 0;
 }
 
-debug("Scan directory $DIRCONFIG");
+debug( "Scan directory $DIRCONFIG" );
 
 # Scan directory $DIRCONFIG
-opendir(DIR, $DIRCONFIG) || error("Can't scan directory $DIRCONFIG");
-my @filesindir = grep { /^awstats\.(.*)conf$/ } sort readdir(DIR);
-closedir(DIR);
+opendir( DIR, $DIRCONFIG ) || error( "Can't scan directory $DIRCONFIG" );
+my @filesindir = grep { /^awstats\.(.*)conf$/ } sort readdir( DIR );
+closedir( DIR );
 
-debug("List of files found :".join(",", @filesindir));
+debug( "List of files found :" . join( ",", @filesindir ));
 
 # Build file list
 my @files = ();
-foreach my $file (@filesindir) {
-    if ($confexcluded{$file}) { next; } # Should be useless
-    if ($file =~ /^awstats\.(.*)conf$/) {
+foreach my $file ( @filesindir ) {
+    if ( $confexcluded{$file} ) { next; } # Should be useless
+    if ( $file =~ /^awstats\.(.*)conf$/ ) {
         my $conf = $1;
         $conf =~ s/\.$//;
-        if ($conf eq 'model') { next; }
-        if ($confexcluded{$conf}) { next; }
+        if ( $conf eq 'model' ) { next; }
+        if ( $confexcluded{$conf} ) { next; }
     }
     push @files, $file;
 }
 
-debug("List of files qualified :".join(",", @files));
+debug( "List of files qualified :" . join( ",", @files ));
 
 # Run update process for each config file found
-if (@files) {
+if ( @files ) {
     # Check if AWSTATS prog is found
     my $AwstatsFound = 0;
-    if (-s "$Awstats") {
+    if ( -s "$Awstats" ) {
         $AwstatsFound = 1;
-    } elsif (-s "/usr/local/awstats/wwwroot/cgi-bin/awstats.pl") {
+    } elsif ( -s "/usr/local/awstats/wwwroot/cgi-bin/awstats.pl" ) {
         $Awstats = "/usr/local/awstats/wwwroot/cgi-bin/awstats.pl";
         $AwstatsFound = 1;
     }
-    if (!$AwstatsFound) {
-        error("Can't find AWStats program ('$Awstats').\nUse -awstatsprog option to solve this");
+    if ( !$AwstatsFound ) {
+        error( "Can't find AWStats program ('$Awstats').\nUse -awstatsprog option to solve this" );
         exit 1;
     }
     # Define AwstatsDir and AwstatsProg
-    ($AwstatsDir = $Awstats) =~ s/([^\/\\]+)$//;
+    ( $AwstatsDir = $Awstats ) =~ s/([^\/\\]+)$//;
     $AwstatsProg = $1;
     $AwstatsDir ||= '.';
     $AwstatsDir =~ s/([^\/\\])[\\\/]+$/$1/;
-    debug("AwstatsDir=$AwstatsDir");
-    debug("AwstatsProg=$AwstatsProg");
+    debug( "AwstatsDir=$AwstatsDir" );
+    debug( "AwstatsProg=$AwstatsProg" );
 
-    foreach (@files) {
-        if ($_ =~ /^awstats\.(.*)conf$/) {
+    foreach ( @files ) {
+        if ( $_ =~ /^awstats\.(.*)conf$/ ) {
             my $domain = $1 || "default";
             $domain =~ s/\.$//;
             # Define command line
             my $command = "\"$AwstatsDir/$AwstatsProg\" -update -config=$domain";
             $command .= " -configdir=\"$DIRCONFIG\"";
-            if ($LastLine) {
+            if ( $LastLine ) {
                 $command .= " -lastline=$LastLine";
             }
             # Run command line

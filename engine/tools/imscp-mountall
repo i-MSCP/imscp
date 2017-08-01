@@ -45,15 +45,15 @@ sub run
     my $fstab = "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf";
     return $rs unless -f $fstab;
 
-    open my $fh, '<', $fstab or die( sprintf( "Couldn't open %s: %s", $fstab, $! ) );
+    open my $fh, '<', $fstab or die( sprintf( "Couldn't open %s: %s", $fstab, $! ));
 
-    while(<$fh>) {
+    while ( <$fh> ) {
         next if /^(?:#|$)/; # Ignore comment and empty lines
         chomp;
         my $fields;
         @{$fields}{ qw/ fs_spec fs_file fs_vfstype fs_mntops ignore_failures / } = split;
 
-        if ($action eq 'start') {
+        if ( $action eq 'start' ) {
             next if $fields->{'fs_mntops'} =~ /\bnoauto\b/;
             $rs = mount( $fields );
             $rs ? last : next;
@@ -68,7 +68,7 @@ sub run
 
 newDebug( 'imscp_mountall.log' );
 
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]... start|stop', basename( $0 ) ).qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]... start|stop', basename( $0 )) . qq {
 
 Mount or umount filesystems by reading entries from i-MSCP fstab-like file.
 
@@ -85,11 +85,11 @@ OPTIONS:
 );
 
 my $action = shift;
-defined $action && $action =~ /^(?:start|stop)$/ or iMSCP::Getopt->showUsage( );
+defined $action && $action =~ /^(?:start|stop)$/ or iMSCP::Getopt->showUsage();
 
 setVerbose( iMSCP::Getopt->verbose );
 
-my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
+my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-mountall.lock', 'nowait' );
 
 $bootstrapper->boot(

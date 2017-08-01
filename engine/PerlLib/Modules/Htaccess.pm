@@ -68,22 +68,22 @@ sub process
     return $rs if $rs;
 
     my @sql;
-    if ($self->{'status'} =~ /^to(?:add|change|enable)$/) {
-        $rs = $self->add( );
-        @sql = ('UPDATE htaccess SET status = ? WHERE id = ?', undef,
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $htaccessId);
-    } elsif ($self->{'status'} eq 'todisable') {
-        $rs = $self->disable( );
-        @sql = ('UPDATE htaccess SET status = ? WHERE id = ?', undef,
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'), $htaccessId);
-    } elsif ($self->{'status'} eq 'todelete') {
-        $rs = $self->delete( );
+    if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
+        $rs = $self->add();
+        @sql = ( 'UPDATE htaccess SET status = ? WHERE id = ?', undef,
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $htaccessId );
+    } elsif ( $self->{'status'} eq 'todisable' ) {
+        $rs = $self->disable();
+        @sql = ( 'UPDATE htaccess SET status = ? WHERE id = ?', undef,
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $htaccessId );
+    } elsif ( $self->{'status'} eq 'todelete' ) {
+        $rs = $self->delete();
         @sql = $rs
-            ? ('UPDATE htaccess SET status = ? WHERE id = ?', undef,
-                (getLastError( 'error' ) || 'Unknown error'), $htaccessId)
-            : ('DELETE FROM htaccess WHERE id = ?', undef, $htaccessId);
+            ? ( 'UPDATE htaccess SET status = ? WHERE id = ?', undef,
+                ( getLastError( 'error' ) || 'Unknown error' ), $htaccessId )
+            : ( 'DELETE FROM htaccess WHERE id = ?', undef, $htaccessId );
     } else {
-        warning( sprintf( 'Unknown action (%s) for htaccess (ID %d)', $self->{'status'}, $htaccessId ) );
+        warning( sprintf( 'Unknown action (%s) for htaccess (ID %d)', $self->{'status'}, $htaccessId ));
         return 0;
     }
 
@@ -92,7 +92,7 @@ sub process
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         $self->{'_dbh'}->do( @sql );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -153,10 +153,10 @@ sub _loadData
             ",
             undef, $htaccessId, $htaccessId, $htaccessId
         );
-        $row or die( sprintf( 'Data not found for htaccess (ID %d)', $htaccessId ) );
-        %{$self} = (%{$self}, %{$row});
+        $row or die( sprintf( 'Data not found for htaccess (ID %d)', $htaccessId ));
+        %{$self} = ( %{$self}, %{$row} );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -178,8 +178,8 @@ sub _getData
     my ($self, $action) = @_;
 
     $self->{'_data'} = do {
-        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
-            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'});
+        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+            ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'} );
         my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
         my $pathDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}/$self->{'path'}" );
 

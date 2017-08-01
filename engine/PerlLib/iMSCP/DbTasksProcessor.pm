@@ -339,10 +339,10 @@ sub processDbTasks
         'software_id'
     );
 
-    if (%{$rows}) {
+    if ( %{$rows} ) {
         newDebug( 'imscp_sw_mngr_engine' );
 
-        for (values %{$rows}) {
+        for ( values %{$rows} ) {
             my $pushString = encode_base64(
                 encode_json(
                     [
@@ -358,7 +358,7 @@ sub processDbTasks
 
             my ($stdout, $stderr);
             execute(
-                "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-sw-mngr ".escapeShell( $pushString ), \$stdout,
+                "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-sw-mngr " . escapeShell( $pushString ), \$stdout,
                 \$stderr
             ) == 0 or die( $stderr || 'Unknown error' );
             debug( $stdout ) if $stdout;
@@ -368,7 +368,7 @@ sub processDbTasks
             debug( $stdout ) if $stdout;
         }
 
-        endDebug( );
+        endDebug();
     }
 
     # Process software tasks
@@ -382,10 +382,10 @@ sub processDbTasks
         'software_id'
     );
 
-    if (%{$rows}) {
+    if ( %{$rows} ) {
         newDebug( 'imscp_pkt_mngr_engine.log' );
 
-        for (values %{$rows}) {
+        for ( values %{$rows} ) {
             my $pushstring = encode_base64(
                 encode_json(
                     [
@@ -398,7 +398,7 @@ sub processDbTasks
 
             my ($stdout, $stderr);
             execute(
-                "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-pkt-mngr ".escapeShell( $pushstring ), \$stdout,
+                "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-pkt-mngr " . escapeShell( $pushstring ), \$stdout,
                 \$stderr
             ) == 0 or die( $stderr || 'Unknown error' );
             debug( $stdout ) if $stdout;
@@ -408,7 +408,7 @@ sub processDbTasks
             debug( $stdout ) if $stdout;
         }
 
-        endDebug( );
+        endDebug();
     }
 }
 
@@ -431,7 +431,7 @@ sub _init
     my ($self) = @_;
 
     defined $self->{'mode'} or die( 'mode attribute is not defined' );
-    $self->{'_dbh'} = iMSCP::Database->factory( )->getRawDb( );
+    $self->{'_dbh'} = iMSCP::Database->factory()->getRawDb();
     $self;
 }
 
@@ -451,32 +451,32 @@ sub _processModuleDbTasks
     my ($self, $module, $sql, $perItemLogFile) = @_;
 
     eval {
-        debug( sprintf( 'Processing %s tasks...', $module ), (caller( 2 ))[3] );
+        debug( sprintf( 'Processing %s tasks...', $module ), ( caller( 2 ) )[3] );
 
         local $self->{'_dbh'}->{'RaiseError'} = 1;
 
         my $sth = $self->{'_dbh'}->prepare( $sql );
-        $sth->execute( );
+        $sth->execute();
 
-        my $countRows = $sth->rows( );
+        my $countRows = $sth->rows();
 
-        unless ($countRows) {
-            debug( sprintf( 'No task to process for %s', $module ), (caller( 2 ))[3] );
+        unless ( $countRows ) {
+            debug( sprintf( 'No task to process for %s', $module ), ( caller( 2 ) )[3] );
             return 0;
         }
 
         eval "require $module" or die;
 
-        my ($nStep, $rs) = (0, 0);
+        my ($nStep, $rs) = ( 0, 0 );
         my $needStepper = grep( $self->{'mode'} eq $_, ( 'setup', 'uninstall' ) );
 
-        while(my $row = $sth->fetchrow_hashref( )) {
+        while ( my $row = $sth->fetchrow_hashref() ) {
             my $name = encode_utf8( $row->{'name'} );
 
-            debug( sprintf( 'Processing %s tasks for: %s (ID %s)', $module, $name, $row->{'id'} ), (caller( 2 ))[3] );
-            newDebug( $module.(($perItemLogFile) ? "_${name}" : '').'.log' );
+            debug( sprintf( 'Processing %s tasks for: %s (ID %s)', $module, $name, $row->{'id'} ), ( caller( 2 ) )[3] );
+            newDebug( $module . ( ( $perItemLogFile ) ? "_${name}" : '' ) . '.log' );
 
-            if ($needStepper) {
+            if ( $needStepper ) {
                 $rs = step(
                     sub { $self->_processModuleTasks( $module, $row->{'id'} ); },
                     sprintf( 'Processing %s tasks for: %s (ID %s)', $module, $name, $row->{'id'} ),
@@ -488,11 +488,11 @@ sub _processModuleDbTasks
             }
 
             $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
-            endDebug( );
+            endDebug();
         }
     };
-    if ($@) {
-        endDebug( );
+    if ( $@ ) {
+        endDebug();
         die;
     }
 
@@ -517,7 +517,7 @@ sub _processModuleTasks
     # Will be removed when RaiseError will be default in version 1.5.0
     local $self->{'_dbh'}->{'RaiseError'} = 0;
 
-    $module->new( )->process( $dbItemId );
+    $module->new()->process( $dbItemId );
 }
 
 =back

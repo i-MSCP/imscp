@@ -83,23 +83,23 @@ sub servicesSslDialog
     my $passphrase = main::setupGetQuestion( 'SERVICES_SSL_PRIVATE_KEY_PASSPHRASE' );
     my $certificatePath = main::setupGetQuestion( 'SERVICES_SSL_CERTIFICATE_PATH', '/root' );
     my $caBundlePath = main::setupGetQuestion( 'SERVICES_SSL_CA_BUNDLE_PATH', '/root' );
-    my $openSSL = iMSCP::OpenSSL->new( );
+    my $openSSL = iMSCP::OpenSSL->new();
 
-    if ($main::reconfigure =~ /^(?:services_ssl|ssl|all|forced)$/
+    if ( $main::reconfigure =~ /^(?:services_ssl|ssl|all|forced)$/
         || $sslEnabled !~ /^(?:yes|no)$/
-        || ($sslEnabled eq 'yes' && $main::reconfigure =~ /^(?:system_hostname|hostnames)$/)
+        || ( $sslEnabled eq 'yes' && $main::reconfigure =~ /^(?:system_hostname|hostnames)$/ )
     ) {
         my $rs = $dialog->yesno( <<'EOF', $sslEnabled eq 'no' ? 1 : 0 );
 
 Do you want to enable SSL for FTP and MAIL services?
 EOF
-        if ($rs == 0) {
+        if ( $rs == 0 ) {
             $sslEnabled = 'yes';
             $rs = $dialog->yesno( <<"EOF", $selfSignedCertificate eq 'no' ? 1 : 0 );
 
 Do you have a SSL certificate for the $hostnameUnicode domain?
 EOF
-            if ($rs == 0) {
+            if ( $rs == 0 ) {
                 my $msg = '';
 
                 do {
@@ -108,11 +108,11 @@ $msg
 Please select your private key in next dialog.
 EOF
                     do {
-                        ($rs, $privateKeyPath) = $dialog->fselect( $privateKeyPath );
-                    } while $rs < 30 && !($privateKeyPath && -f $privateKeyPath);
+                        ( $rs, $privateKeyPath ) = $dialog->fselect( $privateKeyPath );
+                    } while $rs < 30 && !( $privateKeyPath && -f $privateKeyPath );
                     return $rs if $rs >= 30;
 
-                    ($rs, $passphrase) = $dialog->passwordbox( <<'EOF', $passphrase );
+                    ( $rs, $passphrase ) = $dialog->passwordbox( <<'EOF', $passphrase );
 
 Please enter the passphrase for your private key if any:
 EOF
@@ -122,7 +122,7 @@ EOF
                     $openSSL->{'private_key_passphrase'} = $passphrase;
 
                     $msg = '';
-                    if ($openSSL->validatePrivateKey( )) {
+                    if ( $openSSL->validatePrivateKey() ) {
                         getMessageByType(
                             'error',
                             {
@@ -139,10 +139,10 @@ EOF
 
 Do you have a SSL CA Bundle?
 EOF
-                if ($rs == 0) {
+                if ( $rs == 0 ) {
                     do {
-                        ($rs, $caBundlePath) = $dialog->fselect( $caBundlePath );
-                    } while $rs < 30 && !($caBundlePath && -f $caBundlePath);
+                        ( $rs, $caBundlePath ) = $dialog->fselect( $caBundlePath );
+                    } while $rs < 30 && !( $caBundlePath && -f $caBundlePath );
                     return $rs if $rs >= 30;
 
                     $openSSL->{'ca_bundle_container_path'} = $caBundlePath;
@@ -161,8 +161,8 @@ EOF
 \\Z1Invalid SSL certificate. Please try again.\\Zn
 EOF
                     do {
-                        ($rs, $certificatePath) = $dialog->fselect( $certificatePath );
-                    } while $rs < 30 && !($certificatePath && -f $certificatePath);
+                        ( $rs, $certificatePath ) = $dialog->fselect( $certificatePath );
+                    } while $rs < 30 && !( $certificatePath && -f $certificatePath );
                     return $rs if $rs >= 30;
 
                     getMessageByType(
@@ -173,7 +173,7 @@ EOF
                         }
                     );
                     $openSSL->{'certificate_container_path'} = $certificatePath;
-                } while $rs < 30 && $openSSL->validateCertificate( );
+                } while $rs < 30 && $openSSL->validateCertificate();
                 return $rs if $rs >= 30;
             } else {
                 $selfSignedCertificate = 'yes';
@@ -181,12 +181,12 @@ EOF
         } else {
             $sslEnabled = 'no';
         }
-    } elsif ($sslEnabled eq 'yes' && !iMSCP::Getopt->preseed) {
+    } elsif ( $sslEnabled eq 'yes' && !iMSCP::Getopt->preseed ) {
         $openSSL->{'private_key_container_path'} = "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem";
         $openSSL->{'ca_bundle_container_path'} = "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem";
         $openSSL->{'certificate_container_path'} = "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem";
 
-        if ($openSSL->validateCertificateChain( )) {
+        if ( $openSSL->validateCertificateChain() ) {
             getMessageByType(
                 'error',
                 {
@@ -194,11 +194,11 @@ EOF
                     remove => 1
                 }
             );
-            $dialog->getInstance( )->msgbox( <<'EOF' );
+            $dialog->getInstance()->msgbox( <<'EOF' );
 
 Your SSL certificate for the FTP and MAIL services is missing or invalid.
 EOF
-            main::setupSetQuestion( 'SERVICES_SSL_ENABLED', '');
+            main::setupSetQuestion( 'SERVICES_SSL_ENABLED', '' );
             goto &{servicesSslDialog};
         }
 
@@ -227,22 +227,22 @@ sub preinstall
 {
     my $sslEnabled = main::setupGetQuestion( 'SERVICES_SSL_ENABLED' );
 
-    if ($sslEnabled eq 'no' || main::setupGetQuestion( 'SERVICES_SSL_SETUP', 'yes' ) eq 'no') {
-        if ($sslEnabled eq 'no' && -f "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem") {
-            my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem" )->delFile( );
+    if ( $sslEnabled eq 'no' || main::setupGetQuestion( 'SERVICES_SSL_SETUP', 'yes' ) eq 'no' ) {
+        if ( $sslEnabled eq 'no' && -f "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem" ) {
+            my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem" )->delFile();
             return $rs if $rs;
         }
 
         return 0;
     }
 
-    if (main::setupGetQuestion( 'SERVICES_SSL_SELFSIGNED_CERTIFICATE' ) eq 'yes') {
+    if ( main::setupGetQuestion( 'SERVICES_SSL_SELFSIGNED_CERTIFICATE' ) eq 'yes' ) {
         return iMSCP::OpenSSL->new(
             certificate_chains_storage_dir => $main::imscpConfig{'CONF_DIR'},
             certificate_chain_name         => 'imscp_services'
         )->createSelfSignedCertificate(
             {
-                common_name => main::setupGetQuestion('SERVER_HOSTNAME'),
+                common_name => main::setupGetQuestion( 'SERVER_HOSTNAME' ),
                 email       => main::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' )
             }
         );
@@ -255,7 +255,7 @@ sub preinstall
         private_key_passphrase         => main::setupGetQuestion( 'SERVICES_SSL_PRIVATE_KEY_PASSPHRASE' ),
         certificate_container_path     => main::setupGetQuestion( 'SERVICES_SSL_CERTIFICATE_PATH' ),
         ca_bundle_container_path       => main::setupGetQuestion( 'SERVICES_SSL_CA_BUNDLE_PATH' )
-    )->createCertificateChain( );
+    )->createCertificateChain();
 }
 
 =item getPriority( )

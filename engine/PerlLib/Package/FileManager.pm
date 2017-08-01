@@ -80,9 +80,9 @@ sub showDialog
     my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
 
     my $rs = 0;
-    if ($main::reconfigure =~ /^(?:filemanager|all|forced)$/ || !$package || !exists $self->{'PACKAGES'}->{$package}) {
-        ($rs, $package) = $dialog->radiolist(
-            <<"EOF", [ keys %{$self->{'PACKAGES'}} ], exists $self->{'PACKAGES'}->{$package} ? $package : (keys %{$self->{'PACKAGES'}})[0] );
+    if ( $main::reconfigure =~ /^(?:filemanager|all|forced)$/ || !$package || !exists $self->{'PACKAGES'}->{$package} ) {
+        ( $rs, $package ) = $dialog->radiolist(
+            <<"EOF", [ keys %{$self->{'PACKAGES'}} ], exists $self->{'PACKAGES'}->{$package} ? $package : ( keys %{$self->{'PACKAGES'}} )[0] );
 
 Please select the Ftp Web file manager package you want to install:
 EOF
@@ -94,14 +94,14 @@ EOF
 
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
 
     return 0 unless my $subref = $package->can( 'showDialog' );
-    debug( sprintf( 'Executing showDialog action on %s', $package ) );
-    $subref->( $package->getInstance( ), $dialog );
+    debug( sprintf( 'Executing showDialog action on %s', $package ));
+    $subref->( $package->getInstance(), $dialog );
 }
 
 =item preinstall( )
@@ -123,28 +123,28 @@ sub preinstall
         : $main::imscpOldConfig{'FILEMANAGER_PACKAGE'};
 
     # Ensure backward compatibility
-    if ($oldPackage eq 'AjaXplorer') {
+    if ( $oldPackage eq 'AjaXplorer' ) {
         $oldPackage = 'Pydio';
-    } elsif ($oldPackage eq 'Net2FTP') {
+    } elsif ( $oldPackage eq 'Net2FTP' ) {
         $oldPackage = 'Net2ftp';
     }
 
     my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
-    if ($oldPackage ne '' && $oldPackage ne $package) {
+    if ( $oldPackage ne '' && $oldPackage ne $package ) {
         my $rs = $self->uninstall( $oldPackage );
         return $rs if $rs;
     }
 
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
 
     return 0 unless my $subref = $package->can( 'preinstall' );
-    debug( sprintf( 'Executing preinstall action on %s', $package ) );
-    $subref->( $package->getInstance( ) );
+    debug( sprintf( 'Executing preinstall action on %s', $package ));
+    $subref->( $package->getInstance());
 }
 
 =item install( )
@@ -160,14 +160,14 @@ sub install
     my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
 
     return 0 unless my $subref = $package->can( 'install' );
-    debug( sprintf( 'Executing install action on %s', $package ) );
-    $subref->( $package->getInstance( ) );
+    debug( sprintf( 'Executing install action on %s', $package ));
+    $subref->( $package->getInstance());
 }
 
 =item uninstall( [ $package ])
@@ -188,14 +188,14 @@ sub uninstall
 
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
 
     return 0 unless my $subref = $package->can( 'uninstall' );
-    debug( sprintf( 'Executing uninstall action on %s', $package ) );
-    $subref->( $package->getInstance( ) );
+    debug( sprintf( 'Executing uninstall action on %s', $package ));
+    $subref->( $package->getInstance());
 }
 
 =item getPriority( )
@@ -231,15 +231,15 @@ sub setGuiPermissions
 
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
 
     return 0 unless my $subref = $package->can( 'setGuiPermissions' );
 
-    debug( sprintf( 'Executing setGuiPermissions action on %s', $package ) );
-    $rs = $subref->( $package->getInstance( ) );
+    debug( sprintf( 'Executing setGuiPermissions action on %s', $package ));
+    $rs = $subref->( $package->getInstance());
     $rs ||= $self->{'eventManager'}->trigger( 'afterFileManagerSetGuiPermissions' );
 }
 
@@ -261,14 +261,14 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     @{$self->{'PACKAGES'}}{
-        iMSCP::Dir->new( dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager" )->getDirs( )
-    } = ( );
+        iMSCP::Dir->new( dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager" )->getDirs()
+    } = ();
 
     # Quick fix for disabling Pydio package if PHP >= 7 is detected
-    if (defined $main::execmode && $main::execmode eq 'setup') {
-        delete $self->{'PACKAGES'}->{'Pydio'} if version->parse( $self->_getPhpVersion( ) ) >= version->parse( '7.0.0' );
+    if ( defined $main::execmode && $main::execmode eq 'setup' ) {
+        delete $self->{'PACKAGES'}->{'Pydio'} if version->parse( $self->_getPhpVersion()) >= version->parse( '7.0.0' );
     }
 
     $self;

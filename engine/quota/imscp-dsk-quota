@@ -58,16 +58,16 @@ use Servers::mta;
 sub quotaFiles
 {
     eval {
-        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
 
         my $rows = $dbh->selectall_hashref(
             "SELECT domain_id, domain_name FROM domain WHERE domain_status NOT IN ('disabled', 'todelete')", 'domain_id'
         );
 
-        my $virtualMailDir = Servers::mta->factory( )->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
+        my $virtualMailDir = Servers::mta->factory()->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
 
-        while(my ($dmnId, $dmnData) = each( %{$rows} )) {
+        while ( my ($dmnId, $dmnData) = each( %{$rows} ) ) {
             my $totalDiskUsage = my $webDiskUsage = my $mailDiskUsage = 0;
             my @items = (
                 { webdir => "$main::imscpConfig{'USER_WEB_DIR'}/$dmnData->{'domain_name'}" },
@@ -102,17 +102,17 @@ sub quotaFiles
                     'domain_name', undef, $dmnId, $dmnId, $dmnId
                 );
             };
-            if ($@) {
+            if ( $@ ) {
                 error( $@ );
-            } elsif (%{$rows2}) {
+            } elsif ( %{$rows2} ) {
                 push @items, { maildir => "$virtualMailDir/$_" } for keys %{$rows2};
             }
 
-            for(@items) {
+            for( @items ) {
                 my ($dirType, $dir) = %{$_};
                 next unless -d $dir;
 
-                if ($dirType eq 'webdir') {
+                if ( $dirType eq 'webdir' ) {
                     my $rs = execute(
                         [ 'du', '--exclude=backups/*', '--exclude=logs/*', '-s', '-B1', $dir ], \ my $stdout,
                         \ my $stderr
@@ -146,10 +146,10 @@ sub quotaFiles
                     undef, $totalDiskUsage, $dmnData->{'domain_name'}
                 );
 
-                $dbh->commit( );
+                $dbh->commit();
             };
-            if ($@) {
-                $dbh->rollback( );
+            if ( $@ ) {
+                $dbh->rollback();
                 error( $@ );
             }
         }
@@ -168,7 +168,7 @@ sub quotaFiles
 sub quotaSql
 {
     eval {
-        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
 
         my $rows = $dbh->selectall_hashref(
@@ -184,18 +184,18 @@ sub quotaSql
 
         my $databases = $dbh->selectcol_arrayref( 'SHOW DATABASES' );
 
-        while(my ($dmnId, $dmnData) = each( %{$rows} )) {
-            my ($size, $sqlSize) = (0, 0);
+        while ( my ($dmnId, $dmnData) = each( %{$rows} ) ) {
+            my ($size, $sqlSize) = ( 0, 0 );
 
             my $customerDatabases = $dbh->selectall_hashref(
                 'SELECT sqld_name FROM sql_database WHERE domain_id = ?', 'sqld_name', undef, $dmnId
             );
 
-            for my $sqlDbName (keys %{$customerDatabases}) {
+            for my $sqlDbName ( keys %{$customerDatabases} ) {
                 next unless grep($_ eq $sqlDbName, @{$databases});
 
                 my $sqlDbTables = $dbh->selectall_hashref(
-                    "SHOW TABLE STATUS FROM ".$dbh->quote_identifier( $sqlDbName ), 1
+                    "SHOW TABLE STATUS FROM " . $dbh->quote_identifier( $sqlDbName ), 1
                 );
 
                 next unless %{$sqlDbTables};
@@ -216,10 +216,10 @@ sub quotaSql
                 $dbh->do(
                     'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?', undef, $size, $dmnData->{'domain_name'}
                 );
-                $dbh->commit( );
+                $dbh->commit();
             };
-            if ($@) {
-                $dbh->rollback( );
+            if ( $@ ) {
+                $dbh->rollback();
                 error( $@ );
             }
         }
@@ -229,7 +229,7 @@ sub quotaSql
 
 newDebug( 'imscp-dsk-quota.log' );
 
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 ) ).qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq {
 
 Script which computes customer's quota.
 
@@ -242,7 +242,7 @@ OPTIONS:
 
 setVerbose( iMSCP::Getopt->verbose );
 
-my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
+my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-dsk-quota.lock', 'nowait' );
 
 $bootstrapper->boot(
@@ -253,8 +253,8 @@ $bootstrapper->boot(
     }
 );
 
-quotaFiles( );
-quotaSql( );
+quotaFiles();
+quotaSql();
 
 my @errors = getMessageByType( 'error' );
 iMSCP::Mail->new()->errmsg( "@errors" ) if @errors;

@@ -34,8 +34,8 @@ use Net::LibIDN qw/ idn_to_ascii /;
 use parent 'Exporter';
 
 our @EXPORT = qw/isValidUsername isValidPassword isValidEmail isValidHostname isValidDomain isValidIpAddr
-    isValidTimezone isValidDbName isNumber isNumberInRange isStringNotInList isValidNumberRange isNotEmpty
-    isAvailableSqlUser/;
+isValidTimezone isValidDbName isNumber isNumberInRange isStringNotInList isValidNumberRange isNotEmpty
+isAvailableSqlUser/;
 
 our $lastValidationError = '';
 
@@ -154,7 +154,7 @@ sub isValidHostname( $ )
 
     defined $hostname or die( 'Missing $hostname parameter' );
 
-    return 1 if $hostname !~ /\.$/ && ($hostname =~ tr/.//) >= 2 && is_hostname( idn_to_ascii( $hostname, 'utf-8' ) );
+    return 1 if $hostname !~ /\.$/ && ( $hostname =~ tr/.// ) >= 2 && is_hostname( idn_to_ascii( $hostname, 'utf-8' ));
 
     $lastValidationError = <<"EOF";
 
@@ -186,7 +186,7 @@ sub isValidDomain( $ )
     defined $domainName or die( 'Missing $domainName parameter' );
 
     return 1 if $domainName !~ /\.$/ && is_domain(
-        idn_to_ascii($domainName, 'utf-8'),
+        idn_to_ascii( $domainName, 'utf-8' ),
         {
             domain_disable_tld_validation => 1
         }
@@ -221,8 +221,8 @@ sub isValidIpAddr( $;$ )
 
     defined $ipAddr or die( 'Missing $ipAddr parameter' );
 
-    my $net = iMSCP::Net->getInstance( );
-    return 1 if $net->isValidAddr($ipAddr) && (!defined $typeReg || $net->getAddrType($ipAddr) =~ /^$typeReg$/);
+    my $net = iMSCP::Net->getInstance();
+    return 1 if $net->isValidAddr( $ipAddr ) && ( !defined $typeReg || $net->getAddrType( $ipAddr ) =~ /^$typeReg$/ );
 
     $lastValidationError = <<"EOF";
 
@@ -344,7 +344,7 @@ sub isValidNumberRange( $$$ )
     defined $n1 or die( 'Missing $n1 parameter' );
     defined $n2 or die( 'Missing $n2 parameter' );
 
-    return 1 if (${$n1}, ${$n2}) = $numberRange =~ /^([\x30-\x39]+)\s+([\x30-\x39]+)$/;
+    return 1 if ( ${$n1}, ${$n2} ) = $numberRange =~ /^([\x30-\x39]+)\s+([\x30-\x39]+)$/;
 
     $lastValidationError = <<"EOF";
 
@@ -473,16 +473,16 @@ sub isAvailableSqlUser ( $ )
 
     defined $username or die( 'Missing $username parameter' );
 
-    my $db = iMSCP::Database->factory( );
+    my $db = iMSCP::Database->factory();
 
     local $@;
-    my $oldDbName = eval { $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME') ); };
-    if ($@) {
+    my $oldDbName = eval { $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' )); };
+    if ( $@ ) {
         return 1 if $@ =~ /unknown database/i; # On fresh installation, there is no database yet
         die;
     }
 
-    my $dbh = $db->getRawDb( );
+    my $dbh = $db->getRawDb();
     $dbh->{'RaiseError'} = 1;
     my $row = $dbh->selectrow_hashref( 'SELECT 1 FROM sql_user WHERE sqlu_name = ? LIMIT 1', undef, $username );
 

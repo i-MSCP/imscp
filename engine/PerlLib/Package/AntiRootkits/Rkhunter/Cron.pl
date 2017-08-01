@@ -29,7 +29,7 @@ use iMSCP::ProgramFinder;
 
 newDebug( 'imscp-rkhunter-package.log' );
 
-iMSCP::Bootstrapper->getInstance( )->boot(
+iMSCP::Bootstrapper->getInstance()->boot(
     {
         nolock          => 1,
         nokeys          => 1,

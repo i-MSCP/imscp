@@ -52,7 +52,7 @@ sub uninstall
 {
     my ($self) = @_;
 
-    $self->_removeConfig( );
+    $self->_removeConfig();
 }
 
 =back
@@ -73,7 +73,7 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'named'} = Servers::named::bind->getInstance( );
+    $self->{'named'} = Servers::named::bind->getInstance();
     $self->{'cfgDir'} = $self->{'named'}->{'cfgDir'};
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
@@ -94,12 +94,12 @@ sub _removeConfig
 {
     my ($self) = @_;
 
-    if (exists $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}) {
+    if ( exists $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} ) {
         my $dirname = dirname( $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} );
-        if (-d $dirname) {
+        if ( -d $dirname ) {
             my $filename = basename( $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} );
 
-            if (-f "$self->{'bkpDir'}/$filename.system") {
+            if ( -f "$self->{'bkpDir'}/$filename.system" ) {
                 my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
                     $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}, { preserve => 'no' }
                 );
@@ -113,7 +113,7 @@ sub _removeConfig
         }
     }
 
-    for ('BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE') {
+    for ( 'BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE' ) {
         next unless exists $self->{'config'}->{$_};
 
         my $dirname = dirname( $self->{'config'}->{$_} );
@@ -133,9 +133,9 @@ sub _removeConfig
         return $rs if $rs;
     }
 
-    iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_MASTER_DIR'} )->remove( );
-    iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_SLAVE_DIR'} )->remove( );
-    iMSCP::Dir->new( dirname => $self->{'wrkDir'} )->clear( );
+    iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_MASTER_DIR'} )->remove();
+    iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_SLAVE_DIR'} )->remove();
+    iMSCP::Dir->new( dirname => $self->{'wrkDir'} )->clear();
     0;
 }
 

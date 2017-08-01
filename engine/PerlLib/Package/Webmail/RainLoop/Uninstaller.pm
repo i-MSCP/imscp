@@ -56,10 +56,10 @@ sub uninstall
 
     return 0 unless %{$self->{'config'}};
 
-    my $rs = $self->_removeSqlUser( );
-    $rs ||= $self->_removeSqlDatabase( );
-    $rs ||= $self->_unregisterConfig( );
-    $rs ||= $self->_removeFiles( );
+    my $rs = $self->_removeSqlUser();
+    $rs ||= $self->_removeSqlDatabase();
+    $rs ||= $self->_unregisterConfig();
+    $rs ||= $self->_removeFiles();
 }
 
 =back
@@ -80,9 +80,9 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'rainloop'} = Package::Webmail::RainLoop::RainLoop->getInstance( );
-    $self->{'frontend'} = Package::FrontEnd->getInstance( );
-    $self->{'db'} = iMSCP::Database->factory( );
+    $self->{'rainloop'} = Package::Webmail::RainLoop::RainLoop->getInstance();
+    $self->{'frontend'} = Package::FrontEnd->getInstance();
+    $self->{'db'} = iMSCP::Database->factory();
     $self->{'config'} = $self->{'rainloop'}->{'config'};
     $self;
 }
@@ -99,10 +99,10 @@ sub _removeSqlUser
 {
     my ($self) = @_;
 
-    my $sqlServer = Servers::sqld->factory( );
+    my $sqlServer = Servers::sqld->factory();
     return 0 unless $self->{'config'}->{'DATABASE_USER'};
 
-    for ($main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1',
+    for ( $main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1',
         '%'
     ) {
         next unless $_;
@@ -126,13 +126,13 @@ sub _removeSqlDatabase
 
     local $@;
     eval {
-        my $dbh = $self->{'db'}->getRawDb( );
+        my $dbh = $self->{'db'}->getRawDb();
         $dbh->{'RaiseError'} = 1;
         $dbh->do(
-            'DROP DATABASE IF EXISTS '.$dbh->quote_identifier( $main::imscpConfig{'DATABASE_NAME'}.'_rainloop' )
+            'DROP DATABASE IF EXISTS ' . $dbh->quote_identifier( $main::imscpConfig{'DATABASE_NAME'} . '_rainloop' )
         );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -156,15 +156,15 @@ sub _unregisterConfig
     my $file = iMSCP::File->new(
         filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf"
     );
-    my $fileContentRef = $file->getAsRef( );
-    unless (defined $fileContentRef) {
-        error( sprintf( "Couldn't read %s file", $file->{'filename'} ) );
+    my $fileContentRef = $file->getAsRef();
+    unless ( defined $fileContentRef ) {
+        error( sprintf( "Couldn't read %s file", $file->{'filename'} ));
         return 1;
     }
 
     ${$fileContentRef} =~ s/[\t ]*include imscp_rainloop.conf;\n//;
 
-    my $rs = $file->save( );
+    my $rs = $file->save();
     return $rs if $rs;
 
     $self->{'frontend'}->{'reload'} = 1;
@@ -183,16 +183,16 @@ sub _removeFiles
 {
     my ($self) = @_;
 
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop" )->remove( );
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop" )->remove();
 
-    if(-f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf") {
+    if ( -f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf" ) {
         my $rs = iMSCP::File->new(
             filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf"
-        )->delFile( );
+        )->delFile();
         return $rs if $rs;
     }
 
-    iMSCP::Dir->new( dirname => $self->{'rainloop'}->{'cfgDir'} )->remove( );
+    iMSCP::Dir->new( dirname => $self->{'rainloop'}->{'cfgDir'} )->remove();
 }
 
 =back

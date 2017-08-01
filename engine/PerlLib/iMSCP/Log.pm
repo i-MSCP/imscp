@@ -25,7 +25,7 @@ package iMSCP::Log;
 
 use strict;
 use warnings;
-use Params::Check qw[check];
+use Params::Check qw[ check ];
 
 local $Params::Check::VERBOSE = 1;
 
@@ -53,13 +53,13 @@ sub new
     my %hash = @_;
 
     my $tmpl = {
-        'id'    => {
-            'default'     => 'dummy',
-            'strict_type' => 1,
-            'required'    => 1
+        id    => {
+            default     => 'dummy',
+            strict_type => 1,
+            required    => 1
         },
-        'stack' => {
-            'default' => [ ]
+        stack => {
+            default => []
         }
     };
 
@@ -114,35 +114,35 @@ sub store
 {
     my $self = shift;
 
-    my %hash = ( );
+    my %hash = ();
     my $tmpl = {
-        'when'    => {
-            'default'     => scalar localtime,
-            'strict_type' => 1,
+        when    => {
+            default => scalar localtime,
+                strict_type => 1,
         },
-        'message' => {
-            'default'     => 'empty log',
-            'strict_type' => 1,
-            'required'    => 1
+        message => {
+            default     => 'empty log',
+            strict_type => 1,
+            required    => 1
         },
-        'tag'     => { 'default' => 'none' }
+        tag     => { default => 'none' }
     };
 
-    if (@_ == 1) {
+    if ( @_ == 1 ) {
         $hash{'message'} = shift;
     } else {
         %hash = @_;
     }
 
     my $args = check( $tmpl, \%hash ) or (
-        warn( sprintf( "Couldn't store message: %s", Params::Check->last_error ) ),
+        warn( sprintf( "Couldn't store message: %s", Params::Check->last_error )),
         return
     );
 
     my $item = {
-        'when'    => $args->{'when'},
-        'message' => $args->{'message'},
-        'tag'     => $args->{'tag'}
+        when    => $args->{'when'},
+        message => $args->{'message'},
+        tag     => $args->{'tag'}
     };
 
     push @{$self->{'stack'}}, $item;
@@ -189,39 +189,39 @@ sub retrieve
 {
     my $self = shift;
 
-    my %hash = ( );
+    my %hash = ();
     my $tmpl = {
-        'tag'     => {
-            'default' => qr/.*/
+        tag     => {
+            default => qr/.*/
         },
-        'message' => {
-            'default' => qr/.*/
+        message => {
+            default => qr/.*/
         },
-        'amount'  => {
-            'default' => undef
+        amount  => {
+            default => undef
         },
-        'remove'  => {
-            'default' => 0
+        remove  => {
+            default => 0
         },
-        'chrono'  => {
-            'default' => 1
+        chrono  => {
+            default => 1
         }
     };
 
     # single arg means just the amount otherwise, they are named
-    if (@_ == 1) {
+    if ( @_ == 1 ) {
         $hash{'amount'} = shift;
     } else {
         %hash = @_;
     }
 
     my $args = check( $tmpl, \%hash ) or (
-        warn( sprintf( "Couldn't parse input: %s", Params::Check->last_error ) ), return
+        warn( sprintf( "Couldn't parse input: %s", Params::Check->last_error )), return
     );
 
-    my @list = ( );
-    for(@{$self->{'stack'}}) {
-        if ($_->{'tag'} =~ /$args->{'tag'}/ && $_->{'message'} =~ /$args->{'message'}/) {
+    my @list = ();
+    for( @{$self->{'stack'}} ) {
+        if ( $_->{'tag'} =~ /$args->{'tag'}/ && $_->{'message'} =~ /$args->{'message'}/ ) {
             push @list, $_;
             undef $_ if $args->{'remove'};
         }
@@ -229,8 +229,8 @@ sub retrieve
 
     @{$self->{'stack'}} = grep(defined, @{$self->{'stack'}}) if $args->{'remove'};
     my $amount = $args->{'amount'} || scalar @list;
-    @list = ($amount >= @list) ? @list : @list[0 .. $amount - 1] if @list;
-    wantarray ? ($args->{'chrono'}) ? @list : reverse( @list ) : ($args->{'chrono'}) ? $list[0] : $list[$#list];
+    @list = ( $amount >= @list ) ? @list : @list[0 .. $amount-1] if @list;
+    wantarray ? ( $args->{'chrono'} ) ? @list : reverse( @list ) : ( $args->{'chrono'} ) ? $list[0] : $list[$#list];
 }
 
 =item first( )
@@ -249,7 +249,7 @@ sub first
     my $self = shift;
 
     my $amt = @_ == 1 ? shift : 1;
-    $self->retrieve( 'amount' => $amt, @_, 'chrono' => 1 );
+    $self->retrieve( amount => $amt, @_, chrono => 1 );
 }
 
 =item final( )
@@ -268,7 +268,7 @@ sub final
     my $self = shift;
 
     my $amt = @_ == 1 ? shift : 1;
-    $self->retrieve( 'amount' => $amt, @_, 'chrono' => 0 );
+    $self->retrieve( amount => $amt, @_, chrono => 0 );
 }
 
 =item flush( )

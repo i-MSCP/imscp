@@ -50,7 +50,7 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-    Package::AntiRootkits::Chkrootkit::Installer->getInstance( )->preinstall( );
+    Package::AntiRootkits::Chkrootkit::Installer->getInstance()->preinstall();
 }
 
 =item postinstall( )
@@ -63,7 +63,7 @@ sub preinstall
 
 sub postinstall
 {
-    Package::AntiRootkits::Chkrootkit::Installer->getInstance( )->postinstall( );
+    Package::AntiRootkits::Chkrootkit::Installer->getInstance()->postinstall();
 }
 
 =item uninstall( )
@@ -76,7 +76,7 @@ sub postinstall
 
 sub uninstall
 {
-    Package::AntiRootkits::Chkrootkit::Uninstaller->getInstance( )->uninstall( );
+    Package::AntiRootkits::Chkrootkit::Uninstaller->getInstance()->uninstall();
 }
 
 =item setEnginePermissions( )

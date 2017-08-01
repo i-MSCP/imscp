@@ -49,7 +49,7 @@ sub uninstall
 {
     my ($self) = @_;
 
-    $self->_removeConfig( );
+    $self->_removeConfig();
 }
 
 =back
@@ -70,7 +70,7 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'sqld'} = Servers::sqld::mysql->getInstance( );
+    $self->{'sqld'} = Servers::sqld::mysql->getInstance();
     $self;
 }
 
@@ -88,7 +88,7 @@ sub _removeConfig
 
     return 0 unless -f "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf";
 
-    iMSCP::File->new( filename => "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf" )->delFile( );
+    iMSCP::File->new( filename => "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf" )->delFile();
 }
 
 =back

@@ -70,23 +70,23 @@ sub process
     return $rs if $rs || !$self->{'domain_name'};
 
     my @sql;
-    if ($self->{'status'} =~ /^to(?:add|change)$/) {
-        $rs = $self->add( );
-        @sql = ('UPDATE ssl_certs SET status = ? WHERE cert_id = ?', undef,
-            ($rs
-                ? (getMessageByType('error', { amount => 1, remove => 1 } )
-                    || 'Unknown error') =~ s/iMSCP::OpenSSL::validateCertificate:\s+//r
+    if ( $self->{'status'} =~ /^to(?:add|change)$/ ) {
+        $rs = $self->add();
+        @sql = ( 'UPDATE ssl_certs SET status = ? WHERE cert_id = ?', undef,
+            ( $rs
+                ? ( getMessageByType( 'error', { amount => 1, remove => 1 } )
+                    || 'Unknown error' ) =~ s/iMSCP::OpenSSL::validateCertificate:\s+//r
                 : 'ok'
             ),
-            $certificateId);
-    } elsif ($self->{'status'} eq 'todelete') {
-        $rs = $self->delete( );
+            $certificateId );
+    } elsif ( $self->{'status'} eq 'todelete' ) {
+        $rs = $self->delete();
         @sql = $rs
-            ? ('UPDATE ssl_certs SET status = ? WHERE cert_id = ?', undef,
-                getLastError( 'error' ) || 'Unknown error', $certificateId)
-            : ('DELETE FROM ssl_certs WHERE cert_id = ?', undef, $certificateId);
+            ? ( 'UPDATE ssl_certs SET status = ? WHERE cert_id = ?', undef,
+                getLastError( 'error' ) || 'Unknown error', $certificateId )
+            : ( 'DELETE FROM ssl_certs WHERE cert_id = ?', undef, $certificateId );
     } else {
-        warning( sprintf( 'Unknown action (%s) for SSL certificate (ID %d)', $self->{'status'}, $certificateId ) );
+        warning( sprintf( 'Unknown action (%s) for SSL certificate (ID %d)', $self->{'status'}, $certificateId ));
         return 0;
     }
 
@@ -95,7 +95,7 @@ sub process
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         $self->{'_dbh'}->do( @sql );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -105,7 +105,7 @@ sub process
     # (since 1.2.16 - See #IP-1500)
     # On toadd and to change actions, return 0 to avoid any failure on update when a customer's SSL certificate is
     # expired or invalid. It is the customer responsability to update the certificate throught his interface
-    ($self->{'status'} =~ /^to(?:add|change)$/) ? 0 : $rs;
+    ( $self->{'status'} =~ /^to(?:add|change)$/ ) ? 0 : $rs;
 }
 
 =item add( )
@@ -121,28 +121,28 @@ sub add
     my ($self) = @_;
 
     # Remove previous SSL certificate if any
-    my $rs = $self->delete( );
+    my $rs = $self->delete();
     return $rs if $rs;
 
     # Private key
     my $privateKeyContainer = File::Temp->new( UNLINK => 1 );
     print $privateKeyContainer $self->{'private_key'};
-    $privateKeyContainer->flush( );
-    $privateKeyContainer->close( );
+    $privateKeyContainer->flush();
+    $privateKeyContainer->close();
 
     # Certificate
     my $certificateContainer = File::Temp->new( UNLINK => 1 );
     print $certificateContainer $self->{'certificate'};
-    $certificateContainer->flush( );
-    $certificateContainer->close( );
+    $certificateContainer->flush();
+    $certificateContainer->close();
 
     # CA Bundle (intermediate certificate(s))
     my $caBundleContainer;
-    if ($self->{'ca_bundle'}) {
+    if ( $self->{'ca_bundle'} ) {
         $caBundleContainer = File::Temp->new( UNLINK => 1 );
         print $caBundleContainer $self->{'ca_bundle'};
-        $caBundleContainer->flush( );
-        $caBundleContainer->close( );
+        $caBundleContainer->flush();
+        $caBundleContainer->close();
     }
 
     # Create OpenSSL object
@@ -155,10 +155,10 @@ sub add
     );
 
     # Check certificate chain
-    $rs = $openSSL->validateCertificateChain( );
+    $rs = $openSSL->validateCertificateChain();
 
     # Create certificate chain (private key, certificate and CA bundle)
-    $rs ||= $openSSL->createCertificateChain( );
+    $rs ||= $openSSL->createCertificateChain();
 }
 
 =item delete( )
@@ -174,7 +174,7 @@ sub delete
     my ($self) = @_;
 
     return 0 unless -f "$self->{'certsDir'}/$self->{'domain_name'}.pem";
-    iMSCP::File->new( filename => "$self->{'certsDir'}/$self->{'domain_name'}.pem" )->delFile( );
+    iMSCP::File->new( filename => "$self->{'certsDir'}/$self->{'domain_name'}.pem" )->delFile();
 }
 
 =item _init( )
@@ -198,7 +198,7 @@ sub _init
             mode  => 0750
         }
     );
-    $self->SUPER::_init( );
+    $self->SUPER::_init();
 }
 
 =item _loadData( $certificateId )
@@ -220,18 +220,18 @@ sub _loadData
         my $row = $self->{'_dbh'}->selectrow_hashref(
             'SELECT * FROM ssl_certs WHERE cert_id = ?', undef, $certificateId
         );
-        $row or die( sprintf( 'Data not found for SSL certificate (ID %d)', $certificateId ) );
-        %{$self} = (%{$self}, %{$row});
+        $row or die( sprintf( 'Data not found for SSL certificate (ID %d)', $certificateId ));
+        %{$self} = ( %{$self}, %{$row} );
 
-        if ($self->{'domain_type'} eq 'dmn') {
+        if ( $self->{'domain_type'} eq 'dmn' ) {
             $row = $self->{'_dbh'}->selectrow_hashref(
                 'SELECT domain_name FROM domain WHERE domain_id = ?', undef, $self->{'domain_id'}
             );
-        } elsif ($self->{'domain_type'} eq 'als') {
+        } elsif ( $self->{'domain_type'} eq 'als' ) {
             $row = $self->{'_dbh'}->selectrow_hashref(
                 'SELECT alias_name AS domain_name FROM domain_aliasses WHERE alias_id = ?', undef, $self->{'domain_id'}
             );
-        } elsif ($self->{'domain_type'} eq 'sub') {
+        } elsif ( $self->{'domain_type'} eq 'sub' ) {
             $row = $self->{'_dbh'}->selectrow_hashref(
                 "
                     SELECT CONCAT(subdomain_name, '.', domain_name) AS domain_name
@@ -253,14 +253,14 @@ sub _loadData
             );
         }
 
-        unless ($row) {
+        unless ( $row ) {
             # Delete orphaned SSL certificate
             $self->{'_dbh'}->do( 'DELETE FROM FROM ssl_certs WHERE cert_id = ?', undef, $certificateId );
         } else {
-            %{$self} = (%{$self}, %{$row});
+            %{$self} = ( %{$self}, %{$row} );
         }
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }

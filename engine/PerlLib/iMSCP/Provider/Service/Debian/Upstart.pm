@@ -67,7 +67,7 @@ sub enable
 
     defined $job or die( 'parameter $job is not defined' );
 
-    if ($self->_isUpstart( $job )) {
+    if ( $self->_isUpstart( $job ) ) {
         # Ensure that sysvinit script if any is not enabled
         # FIXME: Should we really disable underlying sysvinit script?
         #my $ret = $self->_isSysvinit( $job ) ? $self->iMSCP::Provider::Service::Debian::Sysvinit::disable( $job ) : 1;
@@ -76,7 +76,7 @@ sub enable
     }
 
     # Also enable the underlying sysvinit script if any
-    if ($self->_isSysvinit( $job )) {
+    if ( $self->_isSysvinit( $job ) ) {
         return $self->iMSCP::Provider::Service::Debian::Sysvinit::enable( $job );
     }
 
@@ -95,12 +95,12 @@ sub disable
 
     defined $job or die( 'parameter $job is not defined' );
 
-    if ($self->_isUpstart( $job )) {
+    if ( $self->_isUpstart( $job ) ) {
         return 0 unless $self->SUPER::disable( $job );
     }
 
     # Also disable the underlying sysvinit script if any
-    if ($self->_isSysvinit( $job )) {
+    if ( $self->_isSysvinit( $job ) ) {
         return $self->iMSCP::Provider::Service::Debian::Sysvinit::disable( $job );
     }
 
@@ -119,7 +119,7 @@ sub remove
 
     defined $job or die( 'parameter $job is not defined' );
 
-    if ($self->_isUpstart( $job )) {
+    if ( $self->_isUpstart( $job ) ) {
         return 0 unless $self->SUPER::remove( $job );
     }
 

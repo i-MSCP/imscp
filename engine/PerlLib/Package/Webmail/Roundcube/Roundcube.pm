@@ -61,7 +61,7 @@ sub showDialog
 {
     my (undef, $dialog) = @_;
 
-    Package::Webmail::Roundcube::Installer->getInstance( )->showDialog( $dialog );
+    Package::Webmail::Roundcube::Installer->getInstance()->showDialog( $dialog );
 }
 
 =item preinstall( )
@@ -74,7 +74,7 @@ sub showDialog
 
 sub preinstall
 {
-    Package::Webmail::Roundcube::Installer->getInstance( )->preinstall( );
+    Package::Webmail::Roundcube::Installer->getInstance()->preinstall();
 }
 
 =item install( )
@@ -87,7 +87,7 @@ sub preinstall
 
 sub install
 {
-    Package::Webmail::Roundcube::Installer->getInstance( )->install( );
+    Package::Webmail::Roundcube::Installer->getInstance()->install();
 }
 
 =item uninstall( )
@@ -104,7 +104,7 @@ sub uninstall
 
     return 0 if $self->{'skip_uninstall'};
 
-    Package::Webmail::Roundcube::Uninstaller->getInstance( )->uninstall( );
+    Package::Webmail::Roundcube::Uninstaller->getInstance()->uninstall();
 }
 
 =item setGuiPermissions( )
@@ -121,7 +121,7 @@ sub setGuiPermissions
 
     return 0 unless -d "$guiPublicDir/tools/webmail";
 
-    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
     my $rs = setRights(
         "$guiPublicDir/tools/webmail",
@@ -162,14 +162,14 @@ sub deleteMail
 
     local $@;
     eval {
-        my $db = iMSCP::Database->factory( );
-        my $oldDbName = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'}.'_roundcube' );
-        my $dbh = $db->getRawDb( );
+        my $db = iMSCP::Database->factory();
+        my $oldDbName = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'} . '_roundcube' );
+        my $dbh = $db->getRawDb();
         local $dbh->{'RaiseError'} = 1;
         $dbh->do( 'DELETE FROM users WHERE username = ?', undef, $data->{'MAIL_ADDR'} );
         $db->useDatabase( $oldDbName ) if $oldDbName;
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -199,10 +199,10 @@ sub _init
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
-    if (-f "$self->{'cfgDir'}/roundcube.data") {
+    if ( -f "$self->{'cfgDir'}/roundcube.data" ) {
         tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/roundcube.data", readonly => 1;
     } else {
-        $self->{'config'} = { };
+        $self->{'config'} = {};
         $self->{'skip_uninstall'} = 1;
     }
 

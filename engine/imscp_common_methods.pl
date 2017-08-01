@@ -49,8 +49,8 @@ $main::use_crypted_pwd = undef;
 $main::cfg_re = '^[ \t]*([\_A-Za-z0-9]+) *= *([^\n\r]*)[\n\r]';
 
 # License request function must not SIGPIPE;
-$SIG{PIPE} = 'IGNORE';
-$SIG{HUP} = 'IGNORE';
+$SIG{'PIPE'} = 'IGNORE';
+$SIG{'HUP'} = 'IGNORE';
 
 # Logging subroutines
 
@@ -67,9 +67,9 @@ sub push_el
 {
     my ($el, $sub_name, $msg) = @_;
 
-    push @$el, "$sub_name".$main::el_sep."$msg";
+    push @{$el}, "$sub_name" . $main::el_sep . "$msg";
 
-    if (defined $main::engine_debug) {
+    if ( defined $main::engine_debug ) {
         print STDOUT "[DEBUG] push_el() sub_name: $sub_name, msg: $msg\n";
     }
 }
@@ -88,10 +88,10 @@ sub push_el
 sub pop_el
 {
     my ($el) = @_;
-    my $data = pop @$el;
+    my $data = pop @{$el};
 
-    if (!defined $data) {
-        if (defined $main::engine_debug) {
+    if ( !defined $data ) {
+        if ( defined $main::engine_debug ) {
             print STDOUT "[DEBUG] pop_el() Empty 'EL' Stack !\n";
         }
 
@@ -99,7 +99,7 @@ sub pop_el
     }
 
     my ($sub_name, $msg) = split( /$main::el_sep/, $data );
-    if (defined $main::engine_debug) {
+    if ( defined $main::engine_debug ) {
         print STDOUT "[DEBUG] pop_el() sub_name: $sub_name, msg: $msg\n";
     }
 
@@ -116,21 +116,21 @@ sub dump_el
 {
     my (undef, $fname) = @_;
 
-    my  $fh;
-    if ($fname ne 'stdout' && $fname ne 'stderr') {
+    my $fh;
+    if ( $fname ne 'stdout' && $fname ne 'stderr' ) {
         return 0 unless open( $fh, '>', $fname );
     }
 
     my $el_data;
-    while (defined( $el_data = pop_el( \@main::el ) )) {
+    while ( defined( $el_data = pop_el( \@main::el )) ) {
         my ($sub_name, $msg) = split( /$main::el_sep/, $el_data );
 
-        if ($fname eq 'stdout') {
+        if ( $fname eq 'stdout' ) {
             printf STDOUT "%-30s | %s\n", $sub_name, $msg;
-        } elsif ($fname eq 'stderr') {
+        } elsif ( $fname eq 'stderr' ) {
             printf STDERR "%-30s | %s\n", $sub_name, $msg;
         } else {
-            printf {$fh} "%-30s | %s\n", $sub_name, $msg;
+            printf { $fh } "%-30s | %s\n", $sub_name, $msg;
         }
     }
 
@@ -144,45 +144,45 @@ sub doSQL
     my ($sql) = @_;
     my $qr;
 
-    if (!defined $sql || $sql eq '') {
+    if ( !defined $sql || $sql eq '' ) {
         push_el( \@main::el, 'doSQL()', '[ERROR] Undefined SQL query' );
-        return (-1, '');
+        return ( -1, '' );
     }
 
-    if (!defined $main::db || !ref $main::db) {
+    if ( !defined $main::db || !ref $main::db ) {
         $main::db = DBI->connect(
             @main::db_connect,
             {
-                'PrintError'           => 0,
-                'mysql_auto_reconnect' => 1,
-                'mysql_enable_utf8'    => 1,
-                'AutoInactiveDestroy'  => 1
+                PrintError           => 0,
+                mysql_auto_reconnect => 1,
+                mysql_enable_utf8    => 1,
+                AutoInactiveDestroy  => 1
             }
         );
 
-        unless (defined $main::db) {
+        unless ( defined $main::db ) {
             push_el(
                 \@main::el, 'doSQL()', "[ERROR] Couldn't connect to SQL server with current DSN: @main::db_connect"
             );
-            return (-1, '');
+            return ( -1, '' );
         }
     }
 
-    if ($sql =~ /select/i) {
+    if ( $sql =~ /select/i ) {
         $qr = $main::db->selectall_arrayref( $sql );
-    } elsif ($sql =~ /show/i) {
+    } elsif ( $sql =~ /show/i ) {
         $qr = $main::db->selectall_arrayref( $sql );
     } else {
         $qr = $main::db->do( $sql );
     }
 
-    if (defined $qr) {
+    if ( defined $qr ) {
         push_el( \@main::el, 'doSQL()', 'Ending...' );
-        return (0, $qr);
+        return ( 0, $qr );
     }
 
-    push_el( \@main::el, 'doSQL()', '[ERROR] Wrong SQL Query: '.$main::db->errstr );
-    return (-1, '');
+    push_el( \@main::el, 'doSQL()', '[ERROR] Wrong SQL Query: ' . $main::db->errstr );
+    return ( -1, '' );
 }
 
 # Get file content in string
@@ -195,18 +195,18 @@ sub get_file
 
     my ($fname) = @_;
 
-    if (!defined $fname || $fname eq '') {
+    if ( !defined $fname || $fname eq '' ) {
         push_el( \@main::el, 'get_file()', "[ERROR] Undefined input data, fname: |$fname| !" );
         return 1;
     }
 
-    unless (-f $fname) {
+    unless ( -f $fname ) {
         push_el( \@main::el, 'get_file()', "[ERROR] File `$fname' does not exist !" );
         return 1;
     }
 
     my $fh;
-    unless (open( $fh, '<', $fname )) {
+    unless ( open( $fh, '<', $fname ) ) {
         push_el( \@main::el, 'get_file()', "[ERROR] Couldn't open `$fname' for reading: $!" );
         return 1;
     }
@@ -217,7 +217,7 @@ sub get_file
     my $line = join( '', @fdata );
 
     push_el( \@main::el, 'get_file()', 'Ending...' );
-    return (0, $line);
+    return ( 0, $line );
 }
 
 # Delete a file
@@ -231,18 +231,18 @@ sub del_file
 
     my ($fname) = @_;
 
-    if (!defined $fname || $fname eq '') {
+    if ( !defined $fname || $fname eq '' ) {
         push_el( \@main::el, 'del_file()', "[ERROR] Undefined input data, fname: $fname" );
         return -1;
     }
 
-    unless (-f $fname) {
+    unless ( -f $fname ) {
         push_el( \@main::el, 'del_file()', "[ERROR] File '$fname' doesn't exist" );
         return -1;
     }
 
     my $res = unlink( $fname );
-    if ($res != 1) {
+    if ( $res != 1 ) {
         push_el( \@main::el, 'del_file()', "[ERROR] Couldn't unlink '$fname' !" );
         return -1;
     }
@@ -270,13 +270,14 @@ sub getCmdExitValue()
 
     my $exitValue = -1;
 
-    if ($? == -1) {
+    if ( $? == -1 ) {
         push_el( \@main::el, 'getCmdExitValue()', "[ERROR] Failed to execute external command: $!" );
-    } elsif ($? & 127) {
+    } elsif ( $? & 127 ) {
         push_el(
             \@main::el, 'getCmdExitValue()',
             sprintf(
-                "[ERROR] External command died with signal %d, %s coredump", ($? & 127), ($? & 128) ? 'with' : 'without'
+                "[ERROR] External command died with signal %d, %s coredump", ( $? & 127 ),
+                    ( $? & 128 ) ? 'with' : 'without'
             )
         );
     } else {
@@ -307,7 +308,7 @@ sub sys_command
     system( $cmd );
     my $exit_value = getCmdExitValue();
 
-    if ($exit_value == 0) {
+    if ( $exit_value == 0 ) {
         push_el( \@main::el, "sys_command('$cmd')", 'Ending...' );
         return 0;
     }
@@ -346,14 +347,14 @@ sub decrypt_db_password
 
     push_el( \@main::el, 'decrypt_db_password()', 'Starting...' );
 
-    if (!defined $pass || $pass eq '') {
+    if ( !defined $pass || $pass eq '' ) {
         push_el( \@main::el, 'decrypt_db_password()', '[ERROR] Undefined input data...' );
-        return (1, '');
+        return ( 1, '' );
     }
 
-    if (length( $main::db_pass_key ) != 32 || length( $main::db_pass_iv ) != 16) {
+    if ( length( $main::db_pass_key ) != 32 || length( $main::db_pass_iv ) != 16 ) {
         push_el( \@main::el, 'decrypt_db_password()', '[ERROR] KEY or IV has invalid length' );
-        return (1, '');
+        return ( 1, '' );
     }
 
     my $plaintext = Crypt::CBC->new(
@@ -370,7 +371,7 @@ sub decrypt_db_password
     );
 
     push_el( \@main::el, 'decrypt_db_password()', 'Ending...' );
-    return (0, $plaintext);
+    return ( 0, $plaintext );
 }
 
 # Setup the global database variables and redefines the DSN
@@ -386,13 +387,13 @@ sub setup_db_vars
     $main::db_pwd = $main::cfg{'DATABASE_PASSWORD'};
     $main::db_name = $main::cfg{'DATABASE_NAME'};
 
-    if ($main::db_pwd ne '') {
-        (my $rs, $main::db_pwd) = decrypt_db_password( $main::db_pwd );
+    if ( $main::db_pwd ne '' ) {
+        ( my $rs, $main::db_pwd ) = decrypt_db_password( $main::db_pwd );
         return $rs if $rs;
     }
 
     # Setup DSN
-    @main::db_connect = ("DBI:mysql:$main::db_name:$main::db_host", $main::db_user, $main::db_pwd);
+    @main::db_connect = ( "DBI:mysql:$main::db_name:$main::db_host", $main::db_user, $main::db_pwd );
     $main::db = undef;
     push_el( \@main::el, 'setup_db_vars()', 'Ending...' );
     0;
@@ -418,15 +419,15 @@ sub get_conf
     my $file_name = shift || $main::cfg_file;
 
     my ($rs, $fline) = get_file( $file_name );
-    return -1 if ($rs != 0);
+    return -1 if $rs != 0;
 
     my @frows = split( /\n/, $fline );
 
     my $i = '';
-    for ($i = 0; $i < scalar( @frows ); $i++) {
+    for ( $i = 0; $i < scalar( @frows ); $i++ ) {
         $frows[$i] = "$frows[$i]\n";
 
-        if ($frows[$i] =~ /$main::cfg_re/) {
+        if ( $frows[$i] =~ /$main::cfg_re/ ) {
             $main::cfg{$1} = $2;
         }
     }
@@ -450,7 +451,7 @@ sub get_el_error
     $rdata = $1;
 
     push_el( \@main::el, 'get_el_error()', 'Ending...' );
-    return (0, $rdata);
+    return ( 0, $rdata );
 }
 
 1;

@@ -29,15 +29,18 @@ tie $UMASK, 'iMSCP::Umask::SCALAR' or die "Can't tie \$UMASK";
 {
     package iMSCP::Umask::SCALAR;
 
-    sub TIESCALAR {
-        bless [ ], $_[0];
+    sub TIESCALAR
+    {
+        bless [], $_[0];
     }
 
-    sub FETCH {
-        umask( );
+    sub FETCH
+    {
+        umask();
     }
 
-    sub STORE {
+    sub STORE
+    {
         return unless defined $_[1];
         umask( $_[1] );
     }

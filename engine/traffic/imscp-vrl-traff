@@ -45,10 +45,10 @@ use Servers::po;
 
 sub run
 {
-    my $rs = iMSCP::EventManager->getInstance( )->trigger( 'beforeVrlTraffic' );
+    my $rs = iMSCP::EventManager->getInstance()->trigger( 'beforeVrlTraffic' );
     return $rs if $rs;
 
-    my $dbh = iMSCP::Database->factory( )->getRawDb( );
+    my $dbh = iMSCP::Database->factory()->getRawDb();
 
     # Get list of domains for which traffic must be collected
     my $sth = $dbh->prepare(
@@ -78,32 +78,32 @@ sub run
            WHERE subdomain_alias_status <> 'todelete'
        "
     );
-    unless ($sth && $sth->execute( )) {
-        error( sprintf( "Couldn't prepare or execute SQL statement: %s", $dbh->errstr ) );
+    unless ( $sth && $sth->execute() ) {
+        error( sprintf( "Couldn't prepare or execute SQL statement: %s", $dbh->errstr ));
         return 1;
     }
     my $domains = $sth->fetchall_hashref( 'domain_name' );
     return 0 unless %{$domains};
 
     my %domains = map { $_ => 0 } keys %{$domains};
-    my $timestamp = time( );
-    my $halfTimestamp = $timestamp-($timestamp % 1800);
+    my $timestamp = time();
+    my $halfTimestamp = $timestamp-( $timestamp % 1800 );
     my %trafficDb;
 
     # Collects traffic data from each server implementing the getTraffic() method
-    for my $server('Servers::httpd', 'Servers::ftpd', 'Servers::mta', 'Servers::po') {
+    for my $server( 'Servers::httpd', 'Servers::ftpd', 'Servers::mta', 'Servers::po' ) {
         next unless $server->can( 'getTraffic' );
         eval {
             # Initialize intermediate traffic database
             tie %{$trafficDb{$server}},
                 'iMSCP::Config', fileName => "$main::imscpConfig{'IMSCP_HOMEDIR'}/$server-vrl-traff.db", nodie => 1;
-            %{$trafficDb{$server}} = (%domains, %{$trafficDb{$server}});
+            %{$trafficDb{$server}} = ( %domains, %{$trafficDb{$server}} );
 
             # Collect traffic
-            $server->factory( )->getTraffic( $trafficDb{$server} );
+            $server->factory()->getTraffic( $trafficDb{$server} );
         };
-        if ($@) {
-            error($@);
+        if ( $@ ) {
+            error( $@ );
             $rs = 1;
             last;
         }
@@ -113,7 +113,7 @@ sub run
 
     # Updates traffic data in i-MSCP database
 
-    while (my ($domainName, $domainData) = each(%{$domains})) {
+    while ( my ($domainName, $domainData) = each( %{$domains} ) ) {
         # Don't process domain for which there are no traffic data
         next unless $trafficDb{'Servers::httpd'}->{$domainName} || $trafficDb{'Servers::ftpd'}->{$domainName}
             || $trafficDb{'Servers::mta'}->{$domainName} || $trafficDb{'Servers::po'}->{$domainName};
@@ -135,8 +135,8 @@ sub run
             $trafficDb{'Servers::ftpd'}->{$domainName}, $trafficDb{'Servers::mta'}->{$domainName},
             $trafficDb{'Servers::po'}->{$domainName}
         );
-        if ($dbh->err) {
-            error($dbh->errstr);
+        if ( $dbh->err ) {
+            error( $dbh->errstr );
             $rs = 1;
         } else {
             $trafficDb{'Servers::httpd'}->{$domainName} = 0;
@@ -148,19 +148,19 @@ sub run
 
     return $rs if $rs;
 
-    for my $server('Servers::httpd', 'Servers::ftpd', 'Servers::mta', 'Servers::po') {
-        untie(%{$trafficDb{$server}});
+    for my $server( 'Servers::httpd', 'Servers::ftpd', 'Servers::mta', 'Servers::po' ) {
+        untie( %{$trafficDb{$server}} );
         $rs |= iMSCP::File->new(
             filename => "$main::imscpConfig{'IMSCP_HOMEDIR'}/$server-vrl-traff.db"
-        )->delFile( );
+        )->delFile();
     }
 
-    $rs |= iMSCP::EventManager->getInstance( )->trigger( 'afterVrlTraffic' );
+    $rs |= iMSCP::EventManager->getInstance()->trigger( 'afterVrlTraffic' );
 }
 
 newDebug( 'imscp-vrl-traff.log' );
 
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 ) ).qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq {
 
 Script that collects i-MSCP customers' traffic data (http, ftp, imap/pop3, smtp).
 
@@ -173,7 +173,7 @@ OPTIONS:
 
 setVerbose( iMSCP::Getopt->verbose );
 
-my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
+my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-vrl-traff.lock', 'nowait' );
 $bootstrapper->boot(
     {
@@ -183,7 +183,7 @@ $bootstrapper->boot(
     }
 );
 
-exit run( );
+exit run();
 
 =head1 AUTHOR
 

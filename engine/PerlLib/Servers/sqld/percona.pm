@@ -50,7 +50,7 @@ sub preinstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'percona' );
-    $rs ||= Servers::sqld::percona::installer->getInstance( )->preinstall( );
+    $rs ||= Servers::sqld::percona::installer->getInstance()->preinstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPreinstall', 'percona' )
 }
 
@@ -69,8 +69,8 @@ sub postinstall
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'percona' );
 
     local $@;
-    eval { iMSCP::Service->getInstance( )->enable( 'mysql' ); };
-    if ($@) {
+    eval { iMSCP::Service->getInstance()->enable( 'mysql' ); };
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -78,7 +78,7 @@ sub postinstall
     $rs = $self->{'eventManager'}->register(
         'beforeSetupRestartServices',
         sub {
-            push @{$_[0]}, [ sub { $self->restart( ); }, 'Percona' ];
+            push @{$_[0]}, [ sub { $self->restart(); }, 'Percona' ];
             0;
         },
         7
@@ -100,7 +100,7 @@ sub uninstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'percona' );
-    $rs ||= Servers::sqld::percona::uninstaller->getInstance( )->uninstall( );
+    $rs ||= Servers::sqld::percona::uninstaller->getInstance()->uninstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldUninstall', 'percona' );
 }
 

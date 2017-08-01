@@ -51,9 +51,9 @@ sub flush
     my ($self) = @_;
 
     return 0 if $self->{'readonly'}
-        || !($self->{'tieFileObject'}->{'defer'} || $self->{'tieFileObject'}->{'autodeferring'});
+        || !( $self->{'tieFileObject'}->{'defer'} || $self->{'tieFileObject'}->{'autodeferring'} );
 
-    $self->{'tieFileObject'}->flush( );
+    $self->{'tieFileObject'}->flush();
 }
 
 =back
@@ -79,7 +79,7 @@ sub flush
 
 sub TIEHASH
 {
-    (shift)->new( @_ );
+    ( shift )->new( @_ );
 }
 
 =item FETCH( $param )
@@ -95,14 +95,14 @@ sub FETCH
 {
     my ($self, $param) = @_;
 
-    $self->{'configValues'}->{$param} // ($self->{'nodie'}
+    $self->{'configValues'}->{$param} // ( $self->{'nodie'}
         ? ''
         : die(
             sprintf(
                 'Accessing a non-existing parameter: %s in %s file from: %s (line %s)',
                 $param,
                 $self->{'fileName'},
-                (caller)[1, 2]
+                ( caller )[1, 2]
             )
         )
     );
@@ -123,9 +123,9 @@ sub STORE
     my ($self, $param, $value) = @_;
 
     !$self->{'readonly'} || $self->{'temporary'} or die(
-        sprintf("Couldn't store value for the `%s' parameter: config object is readonly", $param )
+        sprintf( "Couldn't store value for the `%s' parameter: config object is readonly", $param )
     );
-    
+
     return $self->_insertConfig( $param, $value ) unless exists $self->{'configValues'}->{$param};
     $self->_replaceConfig( $param, $value );
 }
@@ -185,9 +185,9 @@ sub CLEAR
 {
     my ($self) = @_;
 
-    @{$self->{'tiefile'}} = ( );
-    $self->{'configValues'} = { };
-    $self->{'lineMap'} = { };
+    @{$self->{'tiefile'}} = ();
+    $self->{'configValues'} = {};
+    $self->{'lineMap'} = {};
     $self;
 }
 
@@ -202,7 +202,7 @@ sub DESTROY
     my ($self) = @_;
 
     undef $self->{'tieFileObject'};
-    untie(@{$self->{'tiefile'}});
+    untie( @{$self->{'tiefile'}} );
 }
 
 =item _init( )
@@ -219,12 +219,12 @@ sub _init
 
     defined $self->{'fileName'} or die( 'fileName attribut is not defined' );
 
-    @{$self->{'tiefile'}} = ( );
+    @{$self->{'tiefile'}} = ();
     $self->{'tieFileObject'} = undef;
-    $self->{'configValues'} = { };
-    $self->{'lineMap'} = { };
+    $self->{'configValues'} = {};
+    $self->{'lineMap'} = {};
     $self->{'confFileName'} = $self->{'fileName'};
-    $self->_loadConfig( );
+    $self->_loadConfig();
     $self;
 }
 
@@ -241,14 +241,14 @@ sub _loadConfig
     my ($self) = @_;
 
     my $mode = $self->{'nocreate'}
-        ? ($self->{'readonly'} ? O_RDONLY : O_RDWR)
-        : ($self->{'readonly'} ? O_RDONLY : O_RDWR | O_CREAT);
+        ? ( $self->{'readonly'} ? O_RDONLY : O_RDWR )
+        : ( $self->{'readonly'} ? O_RDONLY : O_RDWR | O_CREAT );
 
     $self->{'tieFileObject'} = tie @{$self->{'tiefile'}}, 'Tie::File', $self->{'confFileName'}, mode => $mode;
-    $self->{'tieFileObject'} or die( sprintf( "Couldn't tie %s file: %s", $self->{'confFileName'}, $! ) );
+    $self->{'tieFileObject'} or die( sprintf( "Couldn't tie %s file: %s", $self->{'confFileName'}, $! ));
     $self->{'tieFileObject'}->defer unless $self->{'nodeferring'} || $self->{'readonly'};
 
-    while(my ($lineNo, $value) = each(@{$self->{'tiefile'}})) {
+    while ( my ($lineNo, $value) = each( @{$self->{'tiefile'}} ) ) {
         next unless $value =~ /^([^#\s=]+)\s*=\s*(.*)$/;
         $self->{'configValues'}->{$1} = $2;
         $self->{'lineMap'}->{$1} = $lineNo;
@@ -272,7 +272,7 @@ sub _insertConfig
     my ($self, $param, $value) = @_;
     $value //= '';
 
-    unless ($self->{'temporary'}) {
+    unless ( $self->{'temporary'} ) {
         push @{$self->{'tiefile'}}, "$param = $value";
         $self->{'lineMap'}->{$param} = $#{$self->{'tiefile'}};
     }

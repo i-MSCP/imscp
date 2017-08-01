@@ -46,7 +46,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-    $_[0]->_restoreDebianConfig( );
+    $_[0]->_restoreDebianConfig();
 }
 
 =back
@@ -65,10 +65,10 @@ sub uninstall
 
 sub _restoreDebianConfig
 {
-    if (-f '/etc/default/rkhunter') {
+    if ( -f '/etc/default/rkhunter' ) {
         my $file = iMSCP::File->new( filename => '/etc/default/rkhunter' );
-        my $fileContent = $file->get( );
-        unless (defined $fileContent) {
+        my $fileContent = $file->get();
+        unless ( defined $fileContent ) {
             error( "Couldn't read /etc/default/rkhunter file" );
             return 1;
         }
@@ -76,25 +76,25 @@ sub _restoreDebianConfig
         $fileContent =~ s/CRON_DAILY_RUN=".*"/CRON_DAILY_RUN=""/i;
         $fileContent =~ s/CRON_DB_UPDATE=".*"/CRON_DB_UPDATE=""/i;
         $file->set( $fileContent );
-        my $rs = $file->save( );
+        my $rs = $file->save();
         return $rs if $rs;
     }
 
-    if (-f '/etc/cron.daily/rkhunter.disabled') {
+    if ( -f '/etc/cron.daily/rkhunter.disabled' ) {
         my $rs = iMSCP::File->new( filename => '/etc/cron.daily/rkhunter.disabled' )->moveFile(
             '/etc/cron.daily/rkhunter'
         );
         return $rs if $rs;
     }
 
-    if (-f '/etc/cron.weekly/rkhunter.disabled') {
+    if ( -f '/etc/cron.weekly/rkhunter.disabled' ) {
         my $rs = iMSCP::File->new( filename => '/etc/cron.weekly/rkhunter.disabled' )->moveFile(
             '/etc/cron.weekly/rkhunter'
         );
         return $rs if $rs;
     }
 
-    if (-f "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/rkhunter.disabled") {
+    if ( -f "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/rkhunter.disabled" ) {
         my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/rkhunter.disabled" )->moveFile(
             "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/rkhunter"
         );

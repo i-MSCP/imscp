@@ -50,7 +50,7 @@ use parent 'Common::Object';
 
 sub getType
 {
-    fatal( ref( $_[0] ).' module must implements the getType( ) method' );
+    fatal( ref( $_[0] ) . ' module must implements the getType( ) method' );
 }
 
 =item process( )
@@ -63,7 +63,7 @@ sub getType
 
 sub process
 {
-    fatal( ref( $_[0] ).' module must implements the process( ) method' );
+    fatal( ref( $_[0] ) . ' module must implements the process( ) method' );
 }
 
 =item add( )
@@ -144,9 +144,9 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
-    $self->{'_dbh'} = iMSCP::Database->factory( )->getRawDb( );
-    $self->{'_data'} = { };
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'_dbh'} = iMSCP::Database->factory()->getRawDb();
+    $self->{'_data'} = {};
     $self;
 }
 
@@ -164,21 +164,21 @@ sub _execAction
 {
     my ($self, $action, $pkgType) = @_;
 
-    if ($pkgType eq 'server') {
-        for  (iMSCP::Servers->getInstance( )->getListWithFullNames( )) {
-            (my $subref = $_->can( $action )) or next;
-            debug( sprintf("Executing `%s' action on %s", $action, $_ ) );
-            my $rs = $subref->( $_->factory( ), $self->_getData( $action ) );
+    if ( $pkgType eq 'server' ) {
+        for  ( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
+            ( my $subref = $_->can( $action ) ) or next;
+            debug( sprintf( "Executing `%s' action on %s", $action, $_ ));
+            my $rs = $subref->( $_->factory(), $self->_getData( $action ));
             return $rs if $rs;
         }
 
         return 0;
     }
 
-    for (iMSCP::Packages->getInstance( )->getListWithFullNames( )) {
-        (my $subref = $_->can( $action )) or next;
-        debug( sprintf("Executing `%s' action on %s", $action, $_ ) );
-        my $rs = $subref->( $_->getInstance( ), $self->_getData( $action ) );
+    for ( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
+        ( my $subref = $_->can( $action ) ) or next;
+        debug( sprintf( "Executing `%s' action on %s", $action, $_ ));
+        my $rs = $subref->( $_->getInstance(), $self->_getData( $action ));
         return $rs if $rs;
     }
 
@@ -198,10 +198,10 @@ sub _execAllActions
 {
     my ($self, $action) = @_;
 
-    my $moduleType = $self->getType( );
+    my $moduleType = $self->getType();
 
-    if ($action =~ /^(?:add|restore)$/) {
-        for('pre', '', 'post') {
+    if ( $action =~ /^(?:add|restore)$/ ) {
+        for( 'pre', '', 'post' ) {
             my $rs = $self->_execAction( "$_$action$moduleType", 'server' );
             $rs ||= $self->_execAction( "$_$action$moduleType", 'package' );
             return $rs if $rs;
@@ -210,7 +210,7 @@ sub _execAllActions
         return 0;
     }
 
-    for('pre', '', 'post') {
+    for( 'pre', '', 'post' ) {
         my $rs = $self->_execAction( "$_$action$moduleType", 'package' );
         $rs ||= $self->_execAction( "$_$action$moduleType", 'server' );
         return $rs if $rs;

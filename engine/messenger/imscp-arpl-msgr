@@ -25,7 +25,7 @@ use Mail::Address;
 use MIME::Parser;
 use MIME::Entity;
 
-iMSCP::Bootstrapper->getInstance( )->boot(
+iMSCP::Bootstrapper->getInstance()->boot(
     {
         mode            => 'backend',
         nolock          => 1,
@@ -35,11 +35,11 @@ iMSCP::Bootstrapper->getInstance( )->boot(
 );
 
 eval {
-    my $dbh = iMSCP::Database->factory( )->getRawDb( );
+    my $dbh = iMSCP::Database->factory()->getRawDb();
     $dbh->{'RaiseError'} = 1;
     $dbh->do( "DELETE FROM `autoreplies_log` WHERE ADDTIME(`time`, '24:00:00') < NOW()" );
 
-    (my $from = $ARGV[0]) =~ s/imscp-arpl\.//;
+    ( my $from = $ARGV[0] ) =~ s/imscp-arpl\.//;
 
     my $message = do {
         local $/;
@@ -47,28 +47,28 @@ eval {
     };
 
     # Setup MIME parser
-    my $mimeParser = new MIME::Parser;
+    my $mimeParser = MIME::Parser->new();
     $mimeParser->output_to_core( 1 );
     $mimeParser->tmp_to_core( 1 );
-    
+
     # Parse MIME message
     my $mimeEntity = $mimeParser->parse_data( $message ) or die( "Couldn't parse MIME message" );
     undef $mimeParser;
 
     # Retrieve MIME headers
-    my $mimeHeaders = $mimeEntity->head( ) or die( "Couldn't get MIME headers" );
+    my $mimeHeaders = $mimeEntity->head() or die( "Couldn't get MIME headers" );
     undef $mimeEntity;
 
     # Return early if needed
-    return if ($mimeHeaders->get( 'x-spam-flag' ) && $mimeHeaders->get( 'x-spam-flag' ) =~ /yes/i)
-            || ($mimeHeaders->get( 'x-mailer' ) && $mimeHeaders->get( 'x-mailer' ) =~ /Auto-Reply/i)
-            || ($mimeHeaders->get( 'auto-submitted' ) && $mimeHeaders->get('auto-submitted') =~ /auto-replied/i)
-            || ($mimeHeaders->get( 'sender') && $mimeHeaders->get('sender') =~ /autoresponder/i)
-            || $mimeHeaders->get( 'x-autoresponse-from' );
+    return if ( $mimeHeaders->get( 'x-spam-flag' ) && $mimeHeaders->get( 'x-spam-flag' ) =~ /yes/i )
+        || ( $mimeHeaders->get( 'x-mailer' ) && $mimeHeaders->get( 'x-mailer' ) =~ /Auto-Reply/i )
+        || ( $mimeHeaders->get( 'auto-submitted' ) && $mimeHeaders->get( 'auto-submitted' ) =~ /auto-replied/i )
+        || ( $mimeHeaders->get( 'sender' ) && $mimeHeaders->get( 'sender' ) =~ /autoresponder/i )
+        || $mimeHeaders->get( 'x-autoresponse-from' );
 
     # Get recipient address
-    my ($to) = Mail::Address->parse($mimeHeaders->get( 'from' )) or die( "Couldn't parse `From' MIME header");
-    $to = $to->address( );
+    my ($to) = Mail::Address->parse( $mimeHeaders->get( 'from' )) or die( "Couldn't parse `From' MIME header" );
+    $to = $to->address();
 
     # Get original subject
     my $subject = $mimeHeaders->get( 'subject' );
@@ -113,14 +113,14 @@ eval {
     );
 
     # Send message through sendmail command
-    open my $fh, '|-', '/usr/sbin/sendmail -t -oi' or die( sprintf( "Couldn't send auto-reply message: %s", $! ) );
+    open my $fh, '|-', '/usr/sbin/sendmail -t -oi' or die( sprintf( "Couldn't send auto-reply message: %s", $! ));
     $mimeEntity->print( $fh );
     close $fh;
     undef $mimeEntity;
 
     $dbh->do( 'INSERT INTO `autoreplies_log` (`time`, `from`, `to`) VALUES (NOW(),?,?)', undef, $from, $to );
 };
-if($@) {
+if ( $@ ) {
     print STDERR $@;
     exit 1;
 }

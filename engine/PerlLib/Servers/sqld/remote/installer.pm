@@ -57,8 +57,8 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
-    $self->{'sqld'} = Servers::sqld::remote->getInstance( );
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'sqld'} = Servers::sqld::remote->getInstance();
     $self->{'cfgDir'} = $self->{'sqld'}->{'cfgDir'};
     $self->{'config'} = $self->{'sqld'}->{'config'};
     $self;
@@ -93,39 +93,39 @@ sub _buildConf
     );
 
     # Create the /etc/mysql/my.cnf file if missing
-    unless (-f "$confDir/my.cnf") {
-        $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'my.cnf', \ my $cfgTpl, { } );
+    unless ( -f "$confDir/my.cnf" ) {
+        $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'my.cnf', \ my $cfgTpl, {} );
         return $rs if $rs;
 
-        unless (defined $cfgTpl) {
+        unless ( defined $cfgTpl ) {
             $cfgTpl = "!includedir $confDir/conf.d/\n";
-        } elsif ($cfgTpl !~ m%^!includedir\s+$confDir/conf.d/\n%m) {
+        } elsif ( $cfgTpl !~ m%^!includedir\s+$confDir/conf.d/\n%m ) {
             $cfgTpl .= "!includedir $confDir/conf.d/\n";
         }
 
         my $file = iMSCP::File->new( filename => "$confDir/my.cnf" );
         $file->set( $cfgTpl );
 
-        $rs = $file->save( );
+        $rs = $file->save();
         $rs ||= $file->owner( $rootUName, $rootGName );
         $rs ||= $file->mode( 0644 );
         return $rs if $rs;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'imscp.cnf', \ my $cfgTpl, { } );
+    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'imscp.cnf', \ my $cfgTpl, {} );
     return $rs if $rs;
 
-    unless (defined $cfgTpl) {
-        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp.cnf" )->get( );
-        unless (defined $cfgTpl) {
-            error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/imscp.cnf" ) );
+    unless ( defined $cfgTpl ) {
+        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp.cnf" )->get();
+        unless ( defined $cfgTpl ) {
+            error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/imscp.cnf" ));
             return 1;
         }
     }
 
-    (my $user = main::setupGetQuestion( 'DATABASE_USER' )) =~ s/"/\\"/g;
-    (my $pwd = decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv,
-        main::setupGetQuestion( 'DATABASE_PASSWORD' ) )) =~ s/"/\\"/g;
+    ( my $user = main::setupGetQuestion( 'DATABASE_USER' ) ) =~ s/"/\\"/g;
+    ( my $pwd = decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv,
+        main::setupGetQuestion( 'DATABASE_PASSWORD' )) ) =~ s/"/\\"/g;
 
     $cfgTpl = process(
         {
@@ -142,7 +142,7 @@ sub _buildConf
     my $file = iMSCP::File->new( filename => "$confDir/conf.d/imscp.cnf" );
     $file->set( $cfgTpl );
 
-    $rs = $file->save( );
+    $rs = $file->save();
     $rs ||= $file->owner( $rootUName, $rootGName ); # The `mysql' group is only created by mysql-server package
     $rs ||= $file->mode( 0640 );
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldBuildConf' );
@@ -163,25 +163,25 @@ sub _updateServerConfig
 {
     my ($self) = @_;
 
-    if (!($main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::mariadb'
-        && version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '10.0' ))
-        && !(version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.6.6' ))
+    if ( !( $main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::mariadb'
+        && version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '10.0' ) )
+        && !( version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.6.6' ) )
     ) {
         return 0;
     }
 
     eval {
-        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'};
 
         # Disable unwanted plugins (bc reasons)
-        for (qw/ cracklib_password_check simple_password_check validate_password /) {
+        for ( qw/ cracklib_password_check simple_password_check validate_password / ) {
             $dbh->do( "UNINSTALL PLUGIN $_" ) if $dbh->selectrow_hashref(
                 "SELECT name FROM mysql.plugin WHERE name = '$_'"
             );
         }
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }

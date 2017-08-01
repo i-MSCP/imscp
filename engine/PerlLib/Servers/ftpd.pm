@@ -54,7 +54,7 @@ sub factory
 
     my $package = $main::imscpConfig{'FTPD_PACKAGE'} || 'Servers::noserver';
 
-    if (%main::imscpOldConfig
+    if ( %main::imscpOldConfig
         && exists $main::imscpOldConfig{'FTPD_PACKAGE'}
         && $main::imscpOldConfig{'FTPD_PACKAGE'} ne ''
         && $main::imscpOldConfig{'FTPD_PACKAGE'} ne $package
@@ -62,13 +62,13 @@ sub factory
         eval "require $main::imscpOldConfig{'FTPD_PACKAGE'}";
         fatal( $@ ) if $@;
 
-        my $rs = $main::imscpOldConfig{'FTPD_PACKAGE'}->getInstance( )->uninstall( );
-        fatal( sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'FTPD_PACKAGE'} ) ) if $rs;
+        my $rs = $main::imscpOldConfig{'FTPD_PACKAGE'}->getInstance()->uninstall();
+        fatal( sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'FTPD_PACKAGE'} )) if $rs;
     }
 
     eval "require $package";
     fatal( $@ ) if $@;
-    $instance = $package->getInstance( );
+    $instance = $package->getInstance();
 }
 
 =item can( $method )
@@ -105,14 +105,14 @@ sub getPriority
 
 END
     {
-        return if $? || !$instance || ($main::execmode && $main::execmode eq 'setup');
+        return if $? || !$instance || ( $main::execmode && $main::execmode eq 'setup' );
 
-        if ($instance->{'start'}) {
-            $? = $instance->start( );
-        } elsif ($instance->{'restart'}) {
-            $? = $instance->restart( );
-        } elsif ($instance->{'reload'}) {
-            $? = $instance->reload( );
+        if ( $instance->{'start'} ) {
+            $? = $instance->start();
+        } elsif ( $instance->{'restart'} ) {
+            $? = $instance->restart();
+        } elsif ( $instance->{'reload'} ) {
+            $? = $instance->reload();
         }
     }
 

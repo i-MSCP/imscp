@@ -66,23 +66,23 @@ sub process
     return $rs if $rs;
 
     my @sql;
-    if ($self->{'status'} =~ /^to(?:add|change|enable)$/) {
-        $rs = $self->add( );
-        @sql = ('UPDATE mail_users SET status = ? WHERE mail_id = ?', undef,
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $mailId);
-    } elsif ($self->{'status'} eq 'todelete') {
-        $rs = $self->delete( );
+    if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
+        $rs = $self->add();
+        @sql = ( 'UPDATE mail_users SET status = ? WHERE mail_id = ?', undef,
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $mailId );
+    } elsif ( $self->{'status'} eq 'todelete' ) {
+        $rs = $self->delete();
         @sql = $rs
-            ? ('UPDATE mail_users SET status = ? WHERE mail_id = ?', undef,
-                (getLastError( 'error' ) || 'Unknown error'), $mailId)
-            : ('DELETE FROM mail_users WHERE mail_id = ?', undef, $self->{'mail_id'});
+            ? ( 'UPDATE mail_users SET status = ? WHERE mail_id = ?', undef,
+                ( getLastError( 'error' ) || 'Unknown error' ), $mailId )
+            : ( 'DELETE FROM mail_users WHERE mail_id = ?', undef, $self->{'mail_id'} );
 
-    } elsif ($self->{'status'} eq 'todisable') {
-        $rs = $self->disable( );
-        @sql = ('UPDATE mail_users SET status = ? WHERE mail_id = ?', undef,
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'), $mailId);
+    } elsif ( $self->{'status'} eq 'todisable' ) {
+        $rs = $self->disable();
+        @sql = ( 'UPDATE mail_users SET status = ? WHERE mail_id = ?', undef,
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $mailId );
     } else {
-        warning( sprintf( 'Unknown action (%s) for mail user (ID %d)', $self->{'status'}, $mailId ) );
+        warning( sprintf( 'Unknown action (%s) for mail user (ID %d)', $self->{'status'}, $mailId ));
         return 0;
     }
 
@@ -91,7 +91,7 @@ sub process
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         $self->{'_dbh'}->do( @sql );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -130,10 +130,10 @@ sub _loadData
             ',
             undef, $mailId
         );
-        $row or die( sprintf( 'Data not found for mail user (ID %d)', $mailId ) );
-        %{$self} = (%{$self}, %{$row});
+        $row or die( sprintf( 'Data not found for mail user (ID %d)', $mailId ));
+        %{$self} = ( %{$self}, %{$row} );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -169,7 +169,7 @@ sub _getData
             MAIL_HAS_AUTO_RESPONDER => $self->{'mail_auto_respond'},
             MAIL_STATUS             => $self->{'status'},
             MAIL_ADDR               => $self->{'mail_addr'},
-            MAIL_CATCHALL           => (index( $self->{'mail_type'}, 'catchall' ) != -1) ? $self->{'mail_acc'} : undef
+            MAIL_CATCHALL           => ( index( $self->{'mail_type'}, 'catchall' ) != -1 ) ? $self->{'mail_acc'} : undef
         }
     } unless %{$self->{'_data'}};
 

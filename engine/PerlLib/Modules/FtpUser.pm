@@ -66,22 +66,22 @@ sub process
     return $rs if $rs;
 
     my @sql;
-    if ($self->{'status'} =~ /^to(?:add|change|enable)$/) {
-        $rs = $self->add( );
-        @sql = ('UPDATE ftp_users SET status = ? WHERE userid = ?', undef,
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $ftpUserId);
-    } elsif ($self->{'status'} eq 'todisable') {
-        $rs = $self->disable( );
-        @sql = ('UPDATE ftp_users SET status = ? WHERE userid = ?', undef,
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'), $ftpUserId);
-    } elsif ($self->{'status'} eq 'todelete') {
-        $rs = $self->delete( );
+    if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
+        $rs = $self->add();
+        @sql = ( 'UPDATE ftp_users SET status = ? WHERE userid = ?', undef,
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $ftpUserId );
+    } elsif ( $self->{'status'} eq 'todisable' ) {
+        $rs = $self->disable();
+        @sql = ( 'UPDATE ftp_users SET status = ? WHERE userid = ?', undef,
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $ftpUserId );
+    } elsif ( $self->{'status'} eq 'todelete' ) {
+        $rs = $self->delete();
         @sql = $rs
-            ? ('UPDATE ftp_users SET status = ? WHERE userid = ?', undef,
-                (getLastError( 'error' ) || 'Unknown error'), $ftpUserId)
-            : ('DELETE FROM ftp_users WHERE userid = ?', undef, $ftpUserId);
+            ? ( 'UPDATE ftp_users SET status = ? WHERE userid = ?', undef,
+                ( getLastError( 'error' ) || 'Unknown error' ), $ftpUserId )
+            : ( 'DELETE FROM ftp_users WHERE userid = ?', undef, $ftpUserId );
     } else {
-        warning( sprintf( 'Unknown action (%s) for ftp user (ID %d)', $self->{'status'}, $ftpUserId ) );
+        warning( sprintf( 'Unknown action (%s) for ftp user (ID %d)', $self->{'status'}, $ftpUserId ));
         return 0;
     }
 
@@ -90,7 +90,7 @@ sub process
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         $self->{'_dbh'}->do( @sql );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -121,10 +121,10 @@ sub _loadData
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         my $row = $self->{'_dbh'}->selectrow_hashref( 'SELECT * FROM ftp_users WHERE userid = ?', undef, $ftpUserId );
-        $row or die( sprintf( 'Data not found for ftp user (ID %d)', $ftpUserId ) );
-        %{$self} = (%{$self}, %{$row});
+        $row or die( sprintf( 'Data not found for ftp user (ID %d)', $ftpUserId ));
+        %{$self} = ( %{$self}, %{$row} );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -146,7 +146,7 @@ sub _getData
     my ($self, $action) = @_;
 
     $self->{'_data'} = do {
-        my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.(
+        my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . (
             $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'}
         );
 

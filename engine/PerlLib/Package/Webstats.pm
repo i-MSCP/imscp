@@ -82,37 +82,37 @@ sub showDialog
     my ($self, $dialog) = @_;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', main::setupGetQuestion( 'WEBSTATS_PACKAGES' ) } = ( );
+    @{selectedPackages}{ split ',', main::setupGetQuestion( 'WEBSTATS_PACKAGES' ) } = ();
 
     my $rs = 0;
-    if ($main::reconfigure =~ /^(?:webstats|all|forced)$/ || !%selectedPackages
+    if ( $main::reconfigure =~ /^(?:webstats|all|forced)$/ || !%selectedPackages
         || grep { !exists $self->{'PACKAGES'}->{$_} && $_ ne 'No' } keys %selectedPackages
     ) {
-        ($rs, my $packages) = $dialog->checkbox(
+        ( $rs, my $packages ) = $dialog->checkbox(
             <<'EOF', [ keys %{$self->{'PACKAGES'}} ], grep { exists $self->{'PACKAGES'}->{$_} && $_ ne 'No' } keys %selectedPackages );
 
 Please select the Webstats packages you want to install
 EOF
-        %selectedPackages = ( );
-        @{selectedPackages}{@{$packages}} = ( );
+        %selectedPackages = ();
+        @{selectedPackages}{@{$packages}} = ();
     }
 
     return $rs unless $rs < 30;
 
     main::setupSetQuestion( 'WEBSTATS_PACKAGES', %selectedPackages ? join ',', keys %selectedPackages : 'No' );
 
-    for (keys %{$self->{'PACKAGES'}}) {
+    for ( keys %{$self->{'PACKAGES'}} ) {
         next unless exists $selectedPackages{$_};
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-        if ($@) {
+        if ( $@ ) {
             error( $@ );
             return 1;
         }
 
         return 0 unless my $subref = $package->can( 'showDialog' );
-        debug( sprintf( 'Executing showDialog action on %s', $package ) );
-        $rs = $subref->( $package->getInstance( ), $dialog );
+        debug( sprintf( 'Executing showDialog action on %s', $package ));
+        $rs = $subref->( $package->getInstance(), $dialog );
         return $rs if $rs;
     }
 
@@ -134,56 +134,56 @@ sub preinstall
     my ($self) = @_;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', main::setupGetQuestion( 'WEBSTATS_PACKAGES' ) } = ( );
+    @{selectedPackages}{ split ',', main::setupGetQuestion( 'WEBSTATS_PACKAGES' ) } = ();
 
-    my @distroPackages = ( );
-    for(keys %{$self->{'PACKAGES'}}) {
+    my @distroPackages = ();
+    for( keys %{$self->{'PACKAGES'}} ) {
         next if exists $selectedPackages{$_};
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-        if ($@) {
+        if ( $@ ) {
             error( $@ );
             return 1;
         }
 
-        if (my $subref = $package->can( 'uninstall' )) {
-            debug( sprintf( 'Executing uninstall action on %s', $package ) );
-            my $rs = $subref->( $package->getInstance( ) );
+        if ( my $subref = $package->can( 'uninstall' ) ) {
+            debug( sprintf( 'Executing uninstall action on %s', $package ));
+            my $rs = $subref->( $package->getInstance());
             return $rs if $rs;
         }
 
-        (my $subref = $package->can( 'getDistroPackages' )) or next;
-        debug( sprintf( 'Executing getDistroPackages action on %s', $package ) );
-        push @distroPackages, $subref->( $package->getInstance( ) );
+        ( my $subref = $package->can( 'getDistroPackages' ) ) or next;
+        debug( sprintf( 'Executing getDistroPackages action on %s', $package ));
+        push @distroPackages, $subref->( $package->getInstance());
     }
 
-    if (defined $main::skippackages && !$main::skippackages && @distroPackages) {
+    if ( defined $main::skippackages && !$main::skippackages && @distroPackages ) {
         my $rs = $self->_removePackages( @distroPackages );
         return $rs if $rs;
     }
 
-    @distroPackages = ( );
-    for (keys %{$self->{'PACKAGES'}}) {
+    @distroPackages = ();
+    for ( keys %{$self->{'PACKAGES'}} ) {
         next unless exists $selectedPackages{$_};
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-        if ($@) {
+        if ( $@ ) {
             error( $@ );
             return 1;
         }
 
-        if (my $subref = $package->can( 'preinstall' )) {
-            debug( sprintf( 'Executing preinstall action on %s', $package ) );
-            my $rs = $subref->( $package->getInstance( ) );
+        if ( my $subref = $package->can( 'preinstall' ) ) {
+            debug( sprintf( 'Executing preinstall action on %s', $package ));
+            my $rs = $subref->( $package->getInstance());
             return $rs if $rs;
         }
 
-        (my $subref = $package->can( 'getDistroPackages' )) or next;
-        debug( sprintf( 'Executing getDistroPackages action on %s', $package ) );
-        push @distroPackages, $subref->( $package->getInstance( ) );
+        ( my $subref = $package->can( 'getDistroPackages' ) ) or next;
+        debug( sprintf( 'Executing getDistroPackages action on %s', $package ));
+        push @distroPackages, $subref->( $package->getInstance());
     }
 
-    if (defined $main::skippackages && !$main::skippackages && @distroPackages) {
+    if ( defined $main::skippackages && !$main::skippackages && @distroPackages ) {
         my $rs = $self->_installPackages( @distroPackages );
         return $rs if $rs;
     }
@@ -204,20 +204,20 @@ sub install
     my ($self) = @_;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', main::setupGetQuestion( 'WEBSTATS_PACKAGES' ) } = ( );
+    @{selectedPackages}{ split ',', main::setupGetQuestion( 'WEBSTATS_PACKAGES' ) } = ();
 
-    for (keys %{$self->{'PACKAGES'}}) {
+    for ( keys %{$self->{'PACKAGES'}} ) {
         next unless exists $selectedPackages{$_} && $_ ne 'No';
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-        if ($@) {
+        if ( $@ ) {
             error( $@ );
             return 1;
         }
 
-        (my $subref = $package->can( 'install' )) or next;
-        debug( sprintf( 'Executing install action on %s', $package ) );
-        my $rs = $subref->( $package->getInstance( ) );
+        ( my $subref = $package->can( 'install' ) ) or next;
+        debug( sprintf( 'Executing install action on %s', $package ));
+        my $rs = $subref->( $package->getInstance());
         return $rs if $rs;
     }
 
@@ -237,20 +237,20 @@ sub postinstall
     my ($self) = @_;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', main::setupGetQuestion( 'WEBSTATS_PACKAGES' ) } = ( );
+    @{selectedPackages}{ split ',', main::setupGetQuestion( 'WEBSTATS_PACKAGES' ) } = ();
 
-    for (keys %{$self->{'PACKAGES'}}) {
+    for ( keys %{$self->{'PACKAGES'}} ) {
         next unless exists $selectedPackages{$_} && $_ ne 'No';
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-        if ($@) {
+        if ( $@ ) {
             error( $@ );
             return 1;
         }
 
-        (my $subref = $package->can( 'postinstall' )) or next;
-        debug( sprintf( 'Executing postinstall action on %s', $package ) );
-        my $rs = $subref->( $package->getInstance( ) );
+        ( my $subref = $package->can( 'postinstall' ) ) or next;
+        debug( sprintf( 'Executing postinstall action on %s', $package ));
+        my $rs = $subref->( $package->getInstance());
         return $rs if $rs;
     }
 
@@ -269,24 +269,24 @@ sub uninstall
 {
     my ($self) = @_;
 
-    my @distroPackages = ( );
-    for (keys %{$self->{'PACKAGES'}}) {
+    my @distroPackages = ();
+    for ( keys %{$self->{'PACKAGES'}} ) {
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-        if ($@) {
+        if ( $@ ) {
             error( $@ );
             return 1;
         }
 
-        if (my $subref = $package->can( 'uninstall' )) {
-            debug( sprintf( 'Executing uninstall action on %s', $package ) );
-            my $rs = $subref->( $package->getInstance( ) );
+        if ( my $subref = $package->can( 'uninstall' ) ) {
+            debug( sprintf( 'Executing uninstall action on %s', $package ));
+            my $rs = $subref->( $package->getInstance());
             return $rs if $rs;
         }
 
-        (my $subref = $package->can( 'getDistroPackages' )) or next;
-        debug( sprintf( 'Executing getDistroPackages action on %s', $package ) );
-        push @distroPackages, $subref->( $package->getInstance( ) );
+        ( my $subref = $package->can( 'getDistroPackages' ) ) or next;
+        debug( sprintf( 'Executing getDistroPackages action on %s', $package ));
+        push @distroPackages, $subref->( $package->getInstance());
     }
 
     $self->_removePackages( @distroPackages );
@@ -318,20 +318,20 @@ sub setEnginePermissions
     my ($self) = @_;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', $main::imscpConfig{'WEBSTATS_PACKAGES'} } = ( );
+    @{selectedPackages}{ split ',', $main::imscpConfig{'WEBSTATS_PACKAGES'} } = ();
 
-    for (keys %{$self->{'PACKAGES'}}) {
+    for ( keys %{$self->{'PACKAGES'}} ) {
         next unless exists $selectedPackages{$_};
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-        if ($@) {
+        if ( $@ ) {
             error( $@ );
             return 1;
         }
 
-        (my $subref = $package->can( 'setEnginePermissions' )) or next;
-        debug( sprintf( 'Executing setEnginePermissions action on %s', $package ) );
-        my $rs = $subref->( $package->getInstance( ) );
+        ( my $subref = $package->can( 'setEnginePermissions' ) ) or next;
+        debug( sprintf( 'Executing setEnginePermissions action on %s', $package ));
+        my $rs = $subref->( $package->getInstance());
         return $rs if $rs;
     }
 
@@ -352,20 +352,20 @@ sub addUser
     my ($self, $data) = @_;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', $main::imscpConfig{'WEBSTATS_PACKAGES'} } = ( );
+    @{selectedPackages}{ split ',', $main::imscpConfig{'WEBSTATS_PACKAGES'} } = ();
 
-    for (keys %{$self->{'PACKAGES'}}) {
+    for ( keys %{$self->{'PACKAGES'}} ) {
         next unless exists $selectedPackages{$_};
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-        if ($@) {
+        if ( $@ ) {
             error( $@ );
             return 1;
         }
 
-        (my $subref = $package->can( 'addUser' )) or next;
-        debug( sprintf( 'Executing addUser action on %s', $package ) );
-        my $rs = $subref->( $package->getInstance( ), $data );
+        ( my $subref = $package->can( 'addUser' ) ) or next;
+        debug( sprintf( 'Executing addUser action on %s', $package ));
+        my $rs = $subref->( $package->getInstance(), $data );
         return $rs if $rs;
     }
 
@@ -386,20 +386,20 @@ sub preaddDmn
     my ($self, $data) = @_;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', $main::imscpConfig{'WEBSTATS_PACKAGES'} } = ( );
+    @{selectedPackages}{ split ',', $main::imscpConfig{'WEBSTATS_PACKAGES'} } = ();
 
-    for (keys %{$self->{'PACKAGES'}}) {
+    for ( keys %{$self->{'PACKAGES'}} ) {
         next unless exists $selectedPackages{$_};
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-        if ($@) {
+        if ( $@ ) {
             error( $@ );
             return 1;
         }
 
-        (my $subref = $package->can( 'preaddDmn' )) or next;
-        debug( sprintf( 'Executing preaddDmn action on %s', $package ) );
-        my $rs = $subref->( $package->getInstance( ), $data );
+        ( my $subref = $package->can( 'preaddDmn' ) ) or next;
+        debug( sprintf( 'Executing preaddDmn action on %s', $package ));
+        my $rs = $subref->( $package->getInstance(), $data );
         return $rs if $rs;
     }
 
@@ -420,20 +420,20 @@ sub addDmn
     my ($self, $data) = @_;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', $main::imscpConfig{'WEBSTATS_PACKAGES'} } = ( );
+    @{selectedPackages}{ split ',', $main::imscpConfig{'WEBSTATS_PACKAGES'} } = ();
 
-    for (keys %{$self->{'PACKAGES'}}) {
+    for ( keys %{$self->{'PACKAGES'}} ) {
         next unless exists $selectedPackages{$_};
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-        if ($@) {
+        if ( $@ ) {
             error( $@ );
             return 1;
         }
 
-        (my $subref = $package->can( 'addDmn' )) or next;
-        debug( sprintf( 'Executing addDmn action on %s', $package ) );
-        my $rs = $subref->( $package->getInstance( ), $data );
+        ( my $subref = $package->can( 'addDmn' ) ) or next;
+        debug( sprintf( 'Executing addDmn action on %s', $package ));
+        my $rs = $subref->( $package->getInstance(), $data );
         return $rs if $rs;
     }
 
@@ -454,20 +454,20 @@ sub deleteDmn
     my ($self, $data) = @_;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', $main::imscpConfig{'WEBSTATS_PACKAGES'} } = ( );
+    @{selectedPackages}{ split ',', $main::imscpConfig{'WEBSTATS_PACKAGES'} } = ();
 
-    for (keys %{$self->{'PACKAGES'}}) {
+    for ( keys %{$self->{'PACKAGES'}} ) {
         next unless exists $selectedPackages{$_};
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-        if ($@) {
+        if ( $@ ) {
             error( $@ );
             return 1;
         }
 
-        (my $subref = $package->can( 'deleteDmn' )) or next;
-        debug( sprintf( 'Executing deleteDmn action on %s', $package ) );
-        my $rs = $subref->( $package->getInstance( ), $data );
+        ( my $subref = $package->can( 'deleteDmn' ) ) or next;
+        debug( sprintf( 'Executing deleteDmn action on %s', $package ));
+        my $rs = $subref->( $package->getInstance(), $data );
         return $rs if $rs;
     }
 
@@ -540,10 +540,10 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     @{$self->{'PACKAGES'}}{
-        iMSCP::Dir->new( dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats" )->getDirs( )
-    } = ( );
+        iMSCP::Dir->new( dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats" )->getDirs()
+    } = ();
     $self;
 }
 
@@ -560,7 +560,7 @@ sub _installPackages
 {
     my (undef, @packages) = @_;
 
-    iMSCP::Dialog->getInstance->endGauge( ) unless iMSCP::Getopt->noprompt;
+    iMSCP::Dialog->getInstance->endGauge() unless iMSCP::Getopt->noprompt;
 
     local $ENV{'LANG'} = 'C';
     local $ENV{'UCF_FORCE_CONFFNEW'} = 1;
@@ -570,17 +570,17 @@ sub _installPackages
     my $stdout;
     my $rs = execute(
         [
-            (!iMSCP::Getopt->noprompt ? ( 'debconf-apt-progress', '--logstderr', '--' ) : ( )),
+            ( !iMSCP::Getopt->noprompt ? ( 'debconf-apt-progress', '--logstderr', '--' ) : () ),
             'apt-get', '--assume-yes', '--option', 'DPkg::Options::=--force-confnew',
             '--option', 'DPkg::Options::=--force-confmiss', '--option', 'Dpkg::Options::=--force-overwrite',
-            ($main::forcereinstall ? '--reinstall' : ( )), '--auto-remove', '--purge', '--no-install-recommends',
-            ((version->parse( $aptVersion ) < version->parse( '1.1.0' )) ? '--force-yes' : '--allow-downgrades'),
+            ( $main::forcereinstall ? '--reinstall' : () ), '--auto-remove', '--purge', '--no-install-recommends',
+            ( ( version->parse( $aptVersion ) < version->parse( '1.1.0' ) ) ? '--force-yes' : '--allow-downgrades' ),
             'install', @packages
         ],
-        (iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef),
+        ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef ),
         \ my $stderr
     );
-    error( sprintf( "Couldn't install packages: %s", $stderr || 'Unknown error' ) ) if $rs;
+    error( sprintf( "Couldn't install packages: %s", $stderr || 'Unknown error' )) if $rs;
     $rs;
 }
 
@@ -604,17 +604,17 @@ sub _removePackages
     @packages = split /\n/, $stdout;
     return 0 unless @packages;
 
-    iMSCP::Dialog->getInstance( )->endGauge( ) unless iMSCP::Getopt->noprompt;
+    iMSCP::Dialog->getInstance()->endGauge() unless iMSCP::Getopt->noprompt;
 
     $rs = execute(
         [
-            (!iMSCP::Getopt->noprompt ? ('debconf-apt-progress', '--logstderr', '--') : ( )),
+            ( !iMSCP::Getopt->noprompt ? ( 'debconf-apt-progress', '--logstderr', '--' ) : () ),
             'apt-get', '--assume-yes', '--auto-remove', '--purge', '--no-install-recommends', 'remove', @packages
         ],
-        (iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef),
+        ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef ),
         \my $stderr
     );
-    error( sprintf( "Couldn't remove packages: %s", $stderr || 'Unknown error' ) ) if $rs;
+    error( sprintf( "Couldn't remove packages: %s", $stderr || 'Unknown error' )) if $rs;
     $rs;
 }
 

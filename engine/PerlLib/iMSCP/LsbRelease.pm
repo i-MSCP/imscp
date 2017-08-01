@@ -34,7 +34,7 @@ my $IS_DEVUAN = -f '/etc/devuan_version';
 # XXX: Update as needed
 # This should really be included in apt-cache policy output... it is already
 # in the Release file...
-my %RELEASE_CODENAME_LOOKUP = (!$IS_DEVUAN)
+my %RELEASE_CODENAME_LOOKUP = ( !$IS_DEVUAN )
       ? (
         '1.1' => 'buzz',
         '1.2' => 'rex',
@@ -60,8 +60,8 @@ my %RELEASE_CODENAME_LOOKUP = (!$IS_DEVUAN)
 my $TESTING_CODENAME = 'unknown.new.testing';
 
 my @RELEASES_ORDER = (
-    (map { $RELEASE_CODENAME_LOOKUP{$_} } sort keys %RELEASE_CODENAME_LOOKUP),
-    'stable', 'testing', 'unstable', (($IS_DEVUAN) ? 'ceres' : 'sid')
+    ( map { $RELEASE_CODENAME_LOOKUP{$_} } sort keys %RELEASE_CODENAME_LOOKUP ),
+    'stable', 'testing', 'unstable', ( ( $IS_DEVUAN ) ? 'ceres' : 'sid' )
 );
 
 =head1 DESCRIPTION
@@ -87,9 +87,9 @@ sub getInstance
 
     no strict 'refs';
     my $instance = \${"$self\::_instance"};
-    unless (defined ${$instance}) {
-        ${$instance} = bless { }, $self;
-        %{${$instance}->{'lsbInfo'}} = ${$instance}->getDistroInformation( );
+    unless ( defined ${$instance} ) {
+        ${$instance} = bless {}, $self;
+        %{${$instance}->{'lsbInfo'}} = ${$instance}->getDistroInformation();
     }
 
     ${$instance};
@@ -145,10 +145,10 @@ sub getRelease
 
     my $release = $self->{'lsbInfo'}->{'RELEASE'} || 'n/a';
 
-    if ($forceNumeric && $release =~ /[^\d.]/) {
-        my $codename = $self->getCodename(1);
-        my %lookup = reverse(%RELEASE_CODENAME_LOOKUP);
-        $release = sprintf('%.1f', $lookup{$codename}) if exists $lookup{$codename};
+    if ( $forceNumeric && $release =~ /[^\d.]/ ) {
+        my $codename = $self->getCodename( 1 );
+        my %lookup = reverse( %RELEASE_CODENAME_LOOKUP );
+        $release = sprintf( '%.1f', $lookup{$codename} ) if exists $lookup{$codename};
     }
 
     return $release if $short;
@@ -216,12 +216,12 @@ sub getDistroInformation
     my ($self) = @_;
 
     # Try to retrieve information from /etc/lsb-release first
-    my %lsbInfo = $self->_getLsbInformation( );
+    my %lsbInfo = $self->_getLsbInformation();
 
-    for ('ID', 'RELEASE', 'CODENAME', 'DESCRIPTION') {
+    for ( 'ID', 'RELEASE', 'CODENAME', 'DESCRIPTION' ) {
         next if exists $lsbInfo{$_};
-        my %distInfo = $self->_guessDebianRelease( );
-        %lsbInfo = (%distInfo, %lsbInfo);
+        my %distInfo = $self->_guessDebianRelease();
+        %lsbInfo = ( %distInfo, %lsbInfo );
         last;
     }
 
@@ -248,7 +248,7 @@ sub _lookupCodename
 
     return $unknown unless $release =~ /(\d+)\.(\d+)(r(\d+))?/;
 
-    my $shortRelease = (!$IS_DEVUAN && int( $1 ) < 7) ? sprintf '%s.%s', $1, $2 : sprintf '%s', $1;
+    my $shortRelease = ( !$IS_DEVUAN && int( $1 ) < 7 ) ? sprintf '%s.%s', $1, $2 : sprintf '%s', $1;
     $RELEASE_CODENAME_LOOKUP{$shortRelease} || $unknown;
 }
 
@@ -268,8 +268,8 @@ sub _parsePolicyLine
 {
     my @bits = split ',', $_[1];
 
-    my %retval = ( );
-    for(@bits) {
+    my %retval = ();
+    for( @bits ) {
         my @kv = split '=', $_, 2;
         $retval{$longnames{$kv[0]}} = $kv[1] if @kv > 1 && exists $longnames{$kv[0]};
     }
@@ -289,9 +289,9 @@ sub _releaseIndex
 {
     my $suite = $_[1]->{'suite'} || undef;
 
-    if ($suite) {
+    if ( $suite ) {
         return grep($_ eq $suite, @RELEASES_ORDER)
-            ? int( @RELEASES_ORDER - (grep { $RELEASES_ORDER[$_] eq $suite } 0 .. $#RELEASES_ORDER)[0] ) : $suite;
+            ? int( @RELEASES_ORDER-( grep { $RELEASES_ORDER[$_] eq $suite } 0 .. $#RELEASES_ORDER )[0] ) : $suite;
     }
 
     0;
@@ -309,7 +309,7 @@ sub _parseAptPolicy
 {
     my $self = $_[0];
 
-    my ($in, $out, $err) = (undef, undef, gensym( ));
+    my ($in, $out, $err) = ( undef, undef, gensym() );
     my $pid = open3( $in, $out, $err, 'LANG=C apt-cache policy' );
     close $in;
 
@@ -325,15 +325,15 @@ sub _parseAptPolicy
     close $out;
     close $err;
     waitpid( $pid, 0 ) or die "$!\n";
-    die( sprintf("Couldn't parse APT policy: %s", $stderr || 'Unknown error' ) ) if $?;
+    die( sprintf( "Couldn't parse APT policy: %s", $stderr || 'Unknown error' )) if $?;
 
-    my @data = ( );
+    my @data = ();
     my $priority;
 
-    for(split /\n/, $stdout) {
+    for( split /\n/, $stdout ) {
         s/^\s+|\s+$//g; # Remove leading and trailing whitespaces
         $priority = int( $1 ) if /^(\d+)/;
-        if (index( $_, 'release' ) == 0) {
+        if ( index( $_, 'release' ) == 0 ) {
             my @bits = split ' ', $_, 2;
             push @data, [ $priority, { $self->_parsePolicyLine( $bits[1] ) } ] if @bits > 1;
         }
@@ -363,19 +363,19 @@ sub _guessReleaseFromApt
     $label ||= 'Debian';
     $alternateOlabels ||= { 'Debian Ports' => 'ftp.debian-ports.org' };
 
-    my @releases = $self->_parseAptPolicy( );
+    my @releases = $self->_parseAptPolicy();
 
     return undef unless @releases;
 
     # We only care about the specified origin, component, and label
     @releases = grep {
         (
-            ($_->[1]->{'origin'} || '') eq $origin and
-                ($_->[1]->{'component'} || '') eq $component and
-                ($_->[1]->{'label'} || '') eq $label
+            ( $_->[1]->{'origin'} || '' ) eq $origin and
+                ( $_->[1]->{'component'} || '' ) eq $component and
+                ( $_->[1]->{'label'} || '' ) eq $label
         ) or (
             exists $alternateOlabels->{$_->[1]->{'origin'} || ''} and
-                ($_->[1]->{'label'} || '') eq $alternateOlabels->{($_->[1]->{'origin'} || '')}
+                ( $_->[1]->{'label'} || '' ) eq $alternateOlabels->{( $_->[1]->{'origin'} || '' )}
         )
     } @releases;
 
@@ -405,37 +405,37 @@ sub _guessDebianRelease
 {
     my $self = $_[0];
 
-    my %distInfo = ( ID => ($IS_DEVUAN) ? 'Devuan' : 'Debian' );
+    my %distInfo = ( ID => ( $IS_DEVUAN ) ? 'Devuan' : 'Debian' );
 
     # Use /etc/dpkg/origins/default to fetch the distribution name
     my $etcDpkgOriginsDefauft = $ENV{'LSB_ETC_DPKG_ORIGINS_DEFAULT'} || '/etc/dpkg/origins/default';
 
-    if (-f $etcDpkgOriginsDefauft) {
-        if (open my $fh, '<', $etcDpkgOriginsDefauft) {
-            while (my $line = <$fh>) {
+    if ( -f $etcDpkgOriginsDefauft ) {
+        if ( open my $fh, '<', $etcDpkgOriginsDefauft ) {
+            while ( my $line = <$fh> ) {
                 my ($header, $content) = split ':', $line, 2;
 
                 $header = lc( $header );
                 $content =~ s/^\s+|\s+$//g;
 
-                if ($header eq 'vendor') {
+                if ( $header eq 'vendor' ) {
                     $distInfo{'ID'} = $content;
                 }
             }
 
             close $fh;
         } else {
-            warn( sprintf("Couldn't open %s: %s", $etcDpkgOriginsDefauft, $! ) );
+            warn( sprintf( "Couldn't open %s: %s", $etcDpkgOriginsDefauft, $! ));
         }
     }
 
-    my ($kern) = uname( );
+    my ($kern) = uname();
 
-    if ($kern =~ /^(?:Linux|Hurd|NetBSD)$/) {
+    if ( $kern =~ /^(?:Linux|Hurd|NetBSD)$/ ) {
         $distInfo{'OS'} = "GNU/$kern";
-    } elsif ($kern eq 'FreeBSD') {
+    } elsif ( $kern eq 'FreeBSD' ) {
         $distInfo{'OS'} = "GNU/k$kern";
-    } elsif ($kern =~ /^GNU\/(?:Linux|kFreeBSD)$/) {
+    } elsif ( $kern =~ /^GNU\/(?:Linux|kFreeBSD)$/ ) {
         $distInfo{'OS'} = $kern;
     } else {
         $distInfo{'OS'} = 'GNU';
@@ -444,12 +444,12 @@ sub _guessDebianRelease
     $distInfo{'DESCRIPTION'} = sprintf( '%s %s', $distInfo{'ID'}, $distInfo{'OS'} );
 
     my $etcDebianVersion = $ENV{'LSB_ETC_DEBIAN_VERSION'}
-        || (($IS_DEVUAN) ? '/etc/devuan_version' : '/etc/debian_version');
+        || ( ( $IS_DEVUAN ) ? '/etc/devuan_version' : '/etc/debian_version' );
 
-    if (-f $etcDebianVersion) {
+    if ( -f $etcDebianVersion ) {
         my $release = 'unknown';
 
-        if (open my $fh, '<', $etcDebianVersion) {
+        if ( open my $fh, '<', $etcDebianVersion ) {
             $release = do {
                 local $/;
                 <$fh>
@@ -458,14 +458,14 @@ sub _guessDebianRelease
 
             close $fh;
         } else {
-            warn( sprintf( "Couldn't open %s file: %s", $etcDebianVersion, $! ) );
+            warn( sprintf( "Couldn't open %s file: %s", $etcDebianVersion, $! ));
         }
 
-        if ($release !~ /^[a-z]/) {
+        if ( $release !~ /^[a-z]/ ) {
             # /etc/debian_version or /etc/devuan_version should be numeric
             $distInfo{'CODENAME'} = $self->_lookupCodename( $release, 'n/a' );
             $distInfo{'RELEASE'} = $release;
-        } elsif ($release =~ m%(.*)/(?:sid|ceres)$%) {
+        } elsif ( $release =~ m%(.*)/(?:sid|ceres)$% ) {
             $TESTING_CODENAME = $1 if lc( $1 ) ne 'testing';
             $distInfo{'RELEASE'} = 'testing/unstable';
         } else {
@@ -481,18 +481,18 @@ sub _guessDebianRelease
     # This is slightly faster and less error prone in case the user
     # has an entry in his /etc/apt/sources.list but has not actually
     # upgraded the system.
-    unless (exists $distInfo{'CODENAME'}) {
-        my %rInfo = ($distInfo{'ID'} eq 'Devuan')
+    unless ( exists $distInfo{'CODENAME'} ) {
+        my %rInfo = ( $distInfo{'ID'} eq 'Devuan' )
             ? $self->_guessReleaseFromApt(
                 'Devuan', 'main', 'experimental', 'Devuan', { 'Devuan Ports' => 'packages.devuan.org' }
             )
             : $self->_guessReleaseFromApt();
 
-        if (%rInfo) {
+        if ( %rInfo ) {
             my $release = $rInfo{'version'} || '';
 
             # Special case Debian-Ports as their Release file has 'version': '1.0'
-            if (!$IS_DEVUAN &&
+            if ( !$IS_DEVUAN &&
                 $release eq '1.0'
                 && $rInfo{'origin'} eq 'Debian Ports'
                 && $rInfo{'label'} == 'ftp.debian-ports.org'
@@ -501,16 +501,16 @@ sub _guessDebianRelease
                 $rInfo{'suite'} = 'unstable';
             }
 
-            if ($release) {
+            if ( $release ) {
                 $distInfo{'CODENAME'} = $self->_lookupCodename( $release, 'n/a' );
             } else {
                 $release = $rInfo{'suite'} || 'unstable';
 
-                if ($release eq 'testing') {
+                if ( $release eq 'testing' ) {
                     # Would be nice if I didn't have to hardcode this.
                     $distInfo{'CODENAME'} = $TESTING_CODENAME;
                 } else {
-                    $distInfo{'CODENAME'} = ($IS_DEVUAN) ? 'ceres' : 'sid';
+                    $distInfo{'CODENAME'} = ( $IS_DEVUAN ) ? 'ceres' : 'sid';
                 }
             }
 
@@ -518,11 +518,11 @@ sub _guessDebianRelease
         }
     }
 
-    if (exists $distInfo{'RELEASE'}) {
+    if ( exists $distInfo{'RELEASE'} ) {
         $distInfo{'DESCRIPTION'} .= sprintf( ' %s', $distInfo{'RELEASE'} );
     }
 
-    if (exists $distInfo{'CODENAME'}) {
+    if ( exists $distInfo{'CODENAME'} ) {
         $distInfo{'DESCRIPTION'} .= sprintf( ' (%s)', $distInfo{'CODENAME'} );
     }
 
@@ -539,18 +539,18 @@ sub _guessDebianRelease
 
 sub _getLsbInformation
 {
-    my %distInfo = ( );
+    my %distInfo = ();
     my $etcLsbFile = $ENV{'LSB_ETC_LSB_RELEASE'} || '/etc/lsb-release';
 
-    if (-f $etcLsbFile) {
-        if (open my $fh, '<', $etcLsbFile) {
-            while (my $line = <$fh>) {
+    if ( -f $etcLsbFile ) {
+        if ( open my $fh, '<', $etcLsbFile ) {
+            while ( my $line = <$fh> ) {
                 $line =~ s/^\s+|\s+$//g; # Remove trailing and leading whitespaces
 
                 next unless $line && index( $line, '=' ) != -1; # Skip invalid lines
 
                 my ($var, $arg) = split '=', $line, 2;
-                if (index( $var, 'DISTRIB_' ) == 0) {
+                if ( index( $var, 'DISTRIB_' ) == 0 ) {
                     $var = substr( $var, 8 );
                     $arg = substr( $arg, 1, -1 ) if $arg =~ /^".*?"$/;
                     $distInfo{$var} = $arg if $arg; # Ignore empty arguments
@@ -559,7 +559,7 @@ sub _getLsbInformation
 
             close $fh;
         } else {
-            warn( sprintf( "Couldn't open %s file: %s", $etcLsbFile, $! ) );
+            warn( sprintf( "Couldn't open %s file: %s", $etcLsbFile, $! ));
         }
     }
 

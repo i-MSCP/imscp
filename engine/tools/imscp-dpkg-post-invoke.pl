@@ -40,7 +40,7 @@ use iMSCP::Packages;
 
 newDebug( 'imscp-dpkg-post-invoke.log' );
 
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 ) ).qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq {
 
 Process dpkg post invoke tasks
 
@@ -51,12 +51,12 @@ OPTIONS:
     'verbose|v' => \&iMSCP::Getopt::verbose
 );
 
-setVerbose(iMSCP::Getopt->verbose);
+setVerbose( iMSCP::Getopt->verbose );
 
-my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
+my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-dpkg-post-invoke.lock', 'nowait' );
 
-$bootstrapper->getInstance( )->boot(
+$bootstrapper->getInstance()->boot(
     {
         config_readonly => 1,
         mode            => 'backend',
@@ -65,21 +65,21 @@ $bootstrapper->getInstance( )->boot(
 );
 
 my $rs = 0;
-my @items = ( );
+my @items = ();
 
-for (iMSCP::Servers->getInstance( )->getListWithFullNames( )) {
+for ( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
     next unless $_->can( 'dpkgPostInvokeTasks' );
-    push @items, $_->factory( );
+    push @items, $_->factory();
 }
 
-for (iMSCP::Packages->getInstance( )->getListWithFullNames( )) {
+for ( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
     next unless $_->can( 'dpkgPostInvokeTasks' );
-    push @items, $_->getInstance( );
+    push @items, $_->getInstance();
 }
 
-for(@items) {
-    debug( sprintf( 'Executing %s dpkg post-invoke tasks', ref ) );
-    $rs |= $_->dpkgPostInvokeTasks( );
+for( @items ) {
+    debug( sprintf( 'Executing %s dpkg post-invoke tasks', ref ));
+    $rs |= $_->dpkgPostInvokeTasks();
 }
 
 exit $rs;

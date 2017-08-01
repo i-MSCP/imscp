@@ -58,7 +58,7 @@ sub registerSetupListeners
 {
     my (undef, $eventManager) = @_;
 
-    Servers::ftpd::proftpd::installer->getInstance( )->registerSetupListeners( $eventManager );
+    Servers::ftpd::proftpd::installer->getInstance()->registerSetupListeners( $eventManager );
 }
 
 =item preinstall( )
@@ -74,7 +74,7 @@ sub preinstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdPreinstall' );
-    $rs ||= $self->stop( );
+    $rs ||= $self->stop();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFtpdPreinstall' );
 }
 
@@ -91,7 +91,7 @@ sub install
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdInstall', 'proftpd' );
-    $rs ||= Servers::ftpd::proftpd::installer->getInstance( )->install( );
+    $rs ||= Servers::ftpd::proftpd::installer->getInstance()->install();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFtpdInstall', 'proftpd' );
 }
 
@@ -111,8 +111,8 @@ sub postinstall
     return $rs if $rs;
 
     local $@;
-    eval { iMSCP::Service->getInstance( )->enable( $self->{'config'}->{'FTPD_SNAME'} ); };
-    if ($@) {
+    eval { iMSCP::Service->getInstance()->enable( $self->{'config'}->{'FTPD_SNAME'} ); };
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -120,7 +120,7 @@ sub postinstall
     $self->{'eventManager'}->register(
         'beforeSetupRestartServices',
         sub {
-            push @{$_[0]}, [ sub { $self->start( ); }, 'ProFTPD' ];
+            push @{$_[0]}, [ sub { $self->start(); }, 'ProFTPD' ];
             0;
         },
         4
@@ -142,10 +142,10 @@ sub uninstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdUninstall', 'proftpd' );
-    $rs ||= Servers::ftpd::proftpd::uninstaller->getInstance( )->uninstall( );
+    $rs ||= Servers::ftpd::proftpd::uninstaller->getInstance()->uninstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFtpdUninstall', 'proftpd' );
 
-    unless ($rs || !iMSCP::Service->getInstance( )->hasService( $self->{'config'}->{'FTPD_SNAME'} )) {
+    unless ( $rs || !iMSCP::Service->getInstance()->hasService( $self->{'config'}->{'FTPD_SNAME'} ) ) {
         $self->{'restart'} = 1;
     } else {
         $self->{'start'} = 0;
@@ -198,7 +198,7 @@ sub addUser
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdAddUser', $data );
     return $rs if $rs;
 
-    my $dbh = iMSCP::Database->factory( )->getRawDb( );
+    my $dbh = iMSCP::Database->factory()->getRawDb();
 
     local $@;
     eval {
@@ -212,10 +212,10 @@ sub addUser
         $dbh->do(
             'UPDATE ftp_group SET gid = ? WHERE groupname = ?', undef, $data->{'USER_SYS_GID'}, $data->{'USERNAME'}
         );
-        $dbh->commit( );
+        $dbh->commit();
     };
-    if ($@) {
-        $dbh->rollback( );
+    if ( $@ ) {
+        $dbh->rollback();
         error( $@ );
         return 1;
     }
@@ -290,8 +290,8 @@ sub start
     return $rs if $rs;
 
     local $@;
-    eval { iMSCP::Service->getInstance( )->start( $self->{'config'}->{'FTPD_SNAME'} ); };
-    if ($@) {
+    eval { iMSCP::Service->getInstance()->start( $self->{'config'}->{'FTPD_SNAME'} ); };
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -315,8 +315,8 @@ sub stop
     return $rs if $rs;
 
     local $@;
-    eval { iMSCP::Service->getInstance( )->stop( $self->{'config'}->{'FTPD_SNAME'} ); };
-    if ($@) {
+    eval { iMSCP::Service->getInstance()->stop( $self->{'config'}->{'FTPD_SNAME'} ); };
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -340,8 +340,8 @@ sub restart
     return $rs if $rs;
 
     local $@;
-    eval { iMSCP::Service->getInstance( )->restart( $self->{'config'}->{'FTPD_SNAME'} ); };
-    if ($@) {
+    eval { iMSCP::Service->getInstance()->restart( $self->{'config'}->{'FTPD_SNAME'} ); };
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -365,8 +365,8 @@ sub reload
     return $rs if $rs;
 
     local $@;
-    eval { iMSCP::Service->getInstance( )->reload( $self->{'config'}->{'FTPD_SNAME'} ); };
-    if ($@) {
+    eval { iMSCP::Service->getInstance()->reload( $self->{'config'}->{'FTPD_SNAME'} ); };
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -390,12 +390,12 @@ sub getTraffic
     my $logFile = $self->{'config'}->{'FTPD_TRAFF_LOG_PATH'};
 
     # The log file exists and is not empty
-    unless (-f -s $logFile) {
-        debug( sprintf( 'No new FTP logs found in %s file for processing', $logFile ) );
+    unless ( -f -s $logFile ) {
+        debug( sprintf( 'No new FTP logs found in %s file for processing', $logFile ));
         return;
     }
 
-    debug( sprintf( 'Processing FTP logs from the %s file', $logFile ) );
+    debug( sprintf( 'Processing FTP logs from the %s file', $logFile ));
 
     # Create snapshot of traffic data source file
     my $snapshotFH = File::Temp->new( UNLINK => 1 );
@@ -405,10 +405,10 @@ sub getTraffic
 
     # Reset log file
     # FIXME: We should really avoid truncating. Instead, we should use logrotate.
-    truncate( $logFile, 0 ) or die( sprintf( "Couldn't truncate %s file: %s", $logFile, $! ) );
+    truncate( $logFile, 0 ) or die( sprintf( "Couldn't truncate %s file: %s", $logFile, $! ));
 
     # Extract FTP traffic data
-    while(<$snapshotFH>) {
+    while ( <$snapshotFH> ) {
         next unless /^(?:[^\s]+\s){7}(?<bytes>\d+)\s(?:[^\s]+\s){5}[^\s]+\@(?<domain>[^\s]+)/o
             && exists $trafficDb->{$+{'domain'}};
         $trafficDb->{$+{'domain'}} += $+{'bytes'};
@@ -438,16 +438,16 @@ sub _init
     $self->{'start'} = 0;
     $self->{'restart'} = 0;
     $self->{'reload'} = 0;
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/proftpd";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-    $self->_mergeConfig( ) if -f "$self->{'cfgDir'}/proftpd.data.dist";
+    $self->_mergeConfig() if -f "$self->{'cfgDir'}/proftpd.data.dist";
     tie %{$self->{'config'}},
         'iMSCP::Config',
         fileName    => "$self->{'cfgDir'}/proftpd.data",
-        readonly    => !(defined $main::execmode && $main::execmode eq 'setup'),
-        nodeferring => (defined $main::execmode && $main::execmode eq 'setup');
+        readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
+        nodeferring => ( defined $main::execmode && $main::execmode eq 'setup' );
     $self;
 }
 
@@ -463,21 +463,21 @@ sub _mergeConfig
 {
     my ($self) = @_;
 
-    if (-f "$self->{'cfgDir'}/proftpd.data") {
+    if ( -f "$self->{'cfgDir'}/proftpd.data" ) {
         tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/proftpd.data.dist";
         tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/proftpd.data", readonly => 1;
 
-        debug('Merging old configuration with new configuration...');
+        debug( 'Merging old configuration with new configuration...' );
 
-        while(my ($key, $value) = each(%oldConfig)) {
+        while ( my ($key, $value) = each( %oldConfig ) ) {
             next unless exists $newConfig{$key};
             $newConfig{$key} = $value;
         }
 
-        untie(%newConfig);
-        untie(%oldConfig);
+        untie( %newConfig );
+        untie( %oldConfig );
 
-        iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.data" )->delFile( );
+        iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.data" )->delFile();
     }
 
     iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.data.dist" )->moveFile(

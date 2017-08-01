@@ -53,7 +53,7 @@ sub factory
     my $package ||= $main::imscpConfig{'MTA_PACKAGE'} || 'Servers::noserver';
     eval "require $package";
     fatal( $@ ) if $@;
-    $instance = $package->getInstance( );
+    $instance = $package->getInstance();
 }
 
 =item can( $method )
@@ -91,12 +91,12 @@ sub getPriority
 
 END
     {
-        return if $? || !$instance || ($main::execmode && $main::execmode eq 'setup');
+        return if $? || !$instance || ( $main::execmode && $main::execmode eq 'setup' );
 
-        if ($instance->{'restart'}) {
-            $? = $instance->restart( );
-        } elsif ($instance->{'reload'}) {
-            $? = $instance->reload( );
+        if ( $instance->{'restart'} ) {
+            $? = $instance->restart();
+        } elsif ( $instance->{'reload'} ) {
+            $? = $instance->reload();
         }
     }
 

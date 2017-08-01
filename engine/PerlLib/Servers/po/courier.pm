@@ -63,7 +63,7 @@ sub registerSetupListeners
 {
     my (undef, $eventManager) = @_;
 
-    Servers::po::courier::installer->getInstance( )->registerSetupListeners( $eventManager );
+    Servers::po::courier::installer->getInstance()->registerSetupListeners( $eventManager );
 }
 
 =item preinstall( )
@@ -79,7 +79,7 @@ sub preinstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoPreinstall', 'courier' );
-    $rs ||= $self->stop( );
+    $rs ||= $self->stop();
     $rs ||= $self->{'eventManager'}->trigger( 'afterPoPreinstall', 'courier' );
 }
 
@@ -96,7 +96,7 @@ sub install
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoInstall', 'courier' );
-    $rs ||= Servers::po::courier::installer->getInstance( )->install( );
+    $rs ||= Servers::po::courier::installer->getInstance()->install();
     $rs ||= $self->{'eventManager'}->trigger( 'afterPoInstall', 'courier' );
 }
 
@@ -117,24 +117,24 @@ sub postinstall
 
     local $@;
     eval {
-        my @toEnableServices = ('AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME');
-        my @toDisableServices = ( );
+        my @toEnableServices = ( 'AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME' );
+        my @toDisableServices = ();
 
-        if ($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') {
+        if ( $main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes' ) {
             push @toEnableServices, 'POPD_SSL_SNAME', 'IMAPD_SSL_SNAME';
         } else {
             push @toDisableServices, 'POPD_SSL_SNAME', 'IMAPD_SSL_SNAME';
         }
 
-        my $serviceMngr = iMSCP::Service->getInstance( );
+        my $serviceMngr = iMSCP::Service->getInstance();
         $serviceMngr->enable( $self->{'config'}->{$_} ) for @toEnableServices;
 
-        for(@toDisableServices) {
+        for( @toDisableServices ) {
             $serviceMngr->stop( $self->{'config'}->{$_} );
             $serviceMngr->disable( $self->{'config'}->{$_} );
         }
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -142,7 +142,7 @@ sub postinstall
     $rs = $self->{'eventManager'}->register(
         'beforeSetupRestartServices',
         sub {
-            push @{$_[0]}, [ sub { $self->start( ); }, 'Courier IMAP/POP, Courier Authdaemon' ];
+            push @{$_[0]}, [ sub { $self->start(); }, 'Courier IMAP/POP, Courier Authdaemon' ];
             0;
         },
         5
@@ -163,10 +163,10 @@ sub uninstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoUninstall', 'courier' );
-    $rs ||= Servers::po::courier::uninstaller->getInstance( )->uninstall( );
+    $rs ||= Servers::po::courier::uninstaller->getInstance()->uninstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterPoUninstall', 'courier' );
 
-    unless ($rs || !iMSCP::Service->getInstance( )->hasService( $self->{'config'}->{'AUTHDAEMON_SNAME'} )) {
+    unless ( $rs || !iMSCP::Service->getInstance()->hasService( $self->{'config'}->{'AUTHDAEMON_SNAME'} ) ) {
         $self->{'restart'} = 1;
     } else {
         $self->{'restart'} = 0;
@@ -190,7 +190,7 @@ sub setEnginePermissions
     my $rs = $self->{'eventManager'}->trigger( 'beforePoSetEnginePermissions' );
     return $rs if $rs;
 
-    if (-d $self->{'config'}->{'AUTHLIB_SOCKET_DIR'}) {
+    if ( -d $self->{'config'}->{'AUTHLIB_SOCKET_DIR'} ) {
         $rs ||= setRights(
             $self->{'config'}->{'AUTHLIB_SOCKET_DIR'},
             {
@@ -220,7 +220,7 @@ sub setEnginePermissions
     );
     return $rs if $rs;
 
-    if (-f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem") {
+    if ( -f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem" ) {
         $rs = setRights(
             "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem",
             {
@@ -254,7 +254,7 @@ sub addMail
     my $mailUidName = $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'};
     my $mailGidName = $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
-    for my $mailbox('.Drafts', '.Junk', '.Sent', '.Trash') {
+    for my $mailbox( '.Drafts', '.Junk', '.Sent', '.Trash' ) {
         iMSCP::Dir->new( dirname => "$mailDir/$mailbox" )->make(
             {
                 user           => $mailUidName,
@@ -264,7 +264,7 @@ sub addMail
             }
         );
 
-        for ('cur', 'new', 'tmp') {
+        for ( 'cur', 'new', 'tmp' ) {
             iMSCP::Dir->new( dirname => "$mailDir/$mailbox/$_" )->make(
                 {
                     user           => $mailUidName,
@@ -276,30 +276,30 @@ sub addMail
         }
     }
 
-    my @subscribedFolders = ('INBOX.Drafts', 'INBOX.Junk', 'INBOX.Sent', 'INBOX.Trash');
+    my @subscribedFolders = ( 'INBOX.Drafts', 'INBOX.Junk', 'INBOX.Sent', 'INBOX.Trash' );
     my $subscriptionsFile = iMSCP::File->new( filename => "$mailDir/courierimapsubscribed" );
 
-    if (-f "$mailDir/courierimapsubscribed") {
-        my $subscriptionsFileContent = $subscriptionsFile->get( );
-        unless (defined $subscriptionsFile) {
+    if ( -f "$mailDir/courierimapsubscribed" ) {
+        my $subscriptionsFileContent = $subscriptionsFile->get();
+        unless ( defined $subscriptionsFile ) {
             error( "Couldn't read Courier subscriptions file" );
             return 1;
         }
 
-        if ($subscriptionsFileContent ne '') {
-            @subscribedFolders = nsort uniq (@subscribedFolders, split( /\n/, $subscriptionsFileContent ));
+        if ( $subscriptionsFileContent ne '' ) {
+            @subscribedFolders = nsort uniq ( @subscribedFolders, split( /\n/, $subscriptionsFileContent ));
         }
     }
 
-    my $rs = $subscriptionsFile->set( (join "\n", @subscribedFolders)."\n" );
-    $rs = $subscriptionsFile->save( );
+    my $rs = $subscriptionsFile->set( ( join "\n", @subscribedFolders ) . "\n" );
+    $rs = $subscriptionsFile->save();
     $rs ||= $subscriptionsFile->owner( $mailUidName, $mailGidName );
     $rs ||= $subscriptionsFile->mode( 0640 );
     return $rs if $rs;
 
-    if ($data->{'MAIL_QUOTA'}) {
-        if ($self->{'forceMailboxesQuotaRecalc'}
-            || ($self->{'execMode'} eq 'backend' && $data->{'STATUS'} eq 'tochange')
+    if ( $data->{'MAIL_QUOTA'} ) {
+        if ( $self->{'forceMailboxesQuotaRecalc'}
+            || ( $self->{'execMode'} eq 'backend' && $data->{'STATUS'} eq 'tochange' )
             || !-f "$mailDir/maildirsize"
         ) {
             $rs = execute( [ 'maildirmake', '-q', "$data->{'MAIL_QUOTA'}S", $mailDir ], \ my $stdout, \ my $stderr );
@@ -316,8 +316,8 @@ sub addMail
         return 0;
     }
 
-    if (-f "$mailDir/maildirsize") {
-        $rs = iMSCP::File->new( filename => "$mailDir/maildirsize" )->delFile( );
+    if ( -f "$mailDir/maildirsize" ) {
+        $rs = iMSCP::File->new( filename => "$mailDir/maildirsize" )->delFile();
         return $rs if $rs;
     }
 
@@ -341,19 +341,19 @@ sub start
 
     local $@;
     eval {
-        my $serviceMngr = iMSCP::Service->getInstance( );
+        my $serviceMngr = iMSCP::Service->getInstance();
 
-        for my $service('AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME') {
+        for my $service( 'AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME' ) {
             $serviceMngr->start( $self->{'config'}->{$service} );
         }
 
-        if ($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') {
-            for my $service('POPD_SSL_SNAME', 'IMAPD_SSL_SNAME') {
+        if ( $main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes' ) {
+            for my $service( 'POPD_SSL_SNAME', 'IMAPD_SSL_SNAME' ) {
                 $serviceMngr->start( $self->{'config'}->{$service} );
             }
         }
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -378,12 +378,12 @@ sub stop
 
     local $@;
     eval {
-        my $serviceMngr = iMSCP::Service->getInstance( );
-        for my $service('AUTHDAEMON_SNAME', 'POPD_SNAME', 'POPD_SSL_SNAME', 'IMAPD_SNAME', 'IMAPD_SSL_SNAME') {
+        my $serviceMngr = iMSCP::Service->getInstance();
+        for my $service( 'AUTHDAEMON_SNAME', 'POPD_SNAME', 'POPD_SSL_SNAME', 'IMAPD_SNAME', 'IMAPD_SSL_SNAME' ) {
             $serviceMngr->stop( $self->{'config'}->{$service} );
         }
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -408,15 +408,15 @@ sub restart
 
     local $@;
     eval {
-        my @toRestartServices = ('AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME');
-        if ($main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes') {
+        my @toRestartServices = ( 'AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME' );
+        if ( $main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes' ) {
             push @toRestartServices, 'POPD_SSL_SNAME', 'IMAPD_SSL_SNAME';
         }
 
-        my $serviceMngr = iMSCP::Service->getInstance( );
+        my $serviceMngr = iMSCP::Service->getInstance();
         $serviceMngr->restart( $self->{'config'}->{$_} ) for @toRestartServices;
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -441,13 +441,12 @@ sub getTraffic
 
     $logFile ||= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
 
-    # The log file exists and is not empty
-    if (-f -s $logFile) {
+    if ( -f -s $logFile ) {
         # We use an index database file to keep trace of the last processed log
         $trafficIndexDb or tie %{$trafficIndexDb},
             'iMSCP::Config', fileName => "$main::imscpConfig{'IMSCP_HOMEDIR'}/traffic_index.db", nodie => 1;
 
-        my ($idx, $idxContent) = ($trafficIndexDb->{'po_lineNo'} || 0, $trafficIndexDb->{'po_lineContent'});
+        my ($idx, $idxContent) = ( $trafficIndexDb->{'po_lineNo'} || 0, $trafficIndexDb->{'po_lineContent'} );
 
         # Create a snapshot of current log file state
         my $snapshotFH = File::Temp->new( UNLINK => 1 );
@@ -461,34 +460,34 @@ sub getTraffic
         );
 
         # We keep trace of the index for the live log file only
-        unless ($logFile =~ /\.1$/) {
+        unless ( $logFile =~ /\.1$/ ) {
             $trafficIndexDb->{'po_lineNo'} = $#snapshot;
             $trafficIndexDb->{'po_lineContent'} = $snapshot[$#snapshot];
         }
 
-        debug( sprintf( 'Processing IMAP/POP3 logs from the %s file', $logFile ) );
+        debug( sprintf( 'Processing IMAP/POP3 logs from the %s file', $logFile ));
 
         # We have already seen the log file in the past. We must skip logs that were already processed
-        if ($snapshot[$idx] && $snapshot[$idx] eq $idxContent) {
-            debug( sprintf( 'Skipping logs that were already processed (lines %d to %d)', 1, ++$idx ) );
+        if ( $snapshot[$idx] && $snapshot[$idx] eq $idxContent ) {
+            debug( sprintf( 'Skipping logs that were already processed (lines %d to %d)', 1, ++$idx ));
 
-            my $logsFound = (@snapshot = @snapshot[$idx .. $#snapshot]) > 0;
-            untie(@snapshot);
+            my $logsFound = ( @snapshot = @snapshot[$idx .. $#snapshot] ) > 0;
+            untie( @snapshot );
 
-            unless ($logsFound) {
-                debug( sprintf( 'No new IMAP/POP3 logs found in %s file for processing', $logFile ) );
-                $snapshotFH->close( );
+            unless ( $logsFound ) {
+                debug( sprintf( 'No new IMAP/POP3 logs found in %s file for processing', $logFile ));
+                $snapshotFH->close();
                 return;
             }
-        } elsif ($logFile !~ /\.1$/) {
+        } elsif ( $logFile !~ /\.1$/ ) {
             debug( 'Log rotation has been detected. Processing last rotated log file first' );
-            untie(@snapshot);
-            $self->getTraffic(  $trafficDb, $logFile.'.1', $trafficIndexDb );
+            untie( @snapshot );
+            $self->getTraffic( $trafficDb, $logFile . '.1', $trafficIndexDb );
         } else {
-            untie(@snapshot);
+            untie( @snapshot );
         }
 
-        while(<$snapshotFH>) {
+        while ( <$snapshotFH> ) {
             # Extract IMAP/POP3 traffic data
             #
             # Log line examples
@@ -499,22 +498,18 @@ sub getTraffic
             next unless /(?:imapd|pop3d(:?-ssl)):.*user=[^\@]+\@(?<domain>[^,]+).*rcvd=(?<rcvd>\d+).*sent=(?<sent>\d+)/o
                 && exists $trafficDb->{$+{'domain'}};
 
-            $trafficDb->{$+{'domain'}} += ($+{'rcvd'} + $+{'sent'});
+            $trafficDb->{$+{'domain'}} += ( $+{'rcvd'}+$+{'sent'} );
         }
 
-        $snapshotFH->close( );
-    }
-
-    # The log file is empty. We need to check the last rotated log file
-    # to extract traffic from possible unprocessed logs
-    elsif ($logFile !~ /\.1$/ && -f -s $logFile.'.1') {
+        $snapshotFH->close();
+    } elsif ( $logFile !~ /\.1$/ && -f -s $logFile . '.1' ) {
+        # The log file is empty. We need to check the last rotated log file
+        # to extract traffic from possible unprocessed logs
         debug( 'The %s log file is empty. Processing last rotated log file', $logFile );
-        $self->getTraffic(  $trafficDb, $logFile.'.1', $trafficIndexDb );
-    }
-
-    # There are no new logs found for processing
-    else {
-        debug( sprintf( 'No new IMAP/POP3 logs found in %s file for processing', $logFile ) );
+        $self->getTraffic( $trafficDb, $logFile . '.1', $trafficIndexDb );
+    } else {
+        # There are no new logs found for processing
+        debug( sprintf( 'No new IMAP/POP3 logs found in %s file for processing', $logFile ));
     }
 }
 
@@ -538,16 +533,16 @@ sub _init
 
     $self->{'restart'} = 0;
     $self->{'forceMailboxesQuotaRecalc'} = 0;
-    $self->{'execMode'} = (defined $main::execmode && $main::execmode eq 'setup') ? 'setup' : 'backend';
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
-    $self->{'mta'} = Servers::mta->factory( );
+    $self->{'execMode'} = ( defined $main::execmode && $main::execmode eq 'setup' ) ? 'setup' : 'backend';
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'mta'} = Servers::mta->factory();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
-    $self->_mergeConfig( ) if -f "$self->{'cfgDir'}/courier.data.dist";
+    $self->_mergeConfig() if -f "$self->{'cfgDir'}/courier.data.dist";
     tie %{$self->{'config'}},
         'iMSCP::Config',
         fileName    => "$self->{'cfgDir'}/courier.data",
-        readonly    => !(defined $main::execmode && $main::execmode eq 'setup'),
-        nodeferring => (defined $main::execmode && $main::execmode eq 'setup');
+        readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
+        nodeferring => ( defined $main::execmode && $main::execmode eq 'setup' );
     $self;
 }
 
@@ -563,19 +558,19 @@ sub _mergeConfig
 {
     my ($self) = @_;
 
-    if (-f "$self->{'cfgDir'}/courier.data") {
+    if ( -f "$self->{'cfgDir'}/courier.data" ) {
         tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/courier.data.dist";
         tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/courier.data", readonly => 1;
 
-        debug('Merging old configuration with new configuration...');
+        debug( 'Merging old configuration with new configuration...' );
 
-        while(my ($key, $value) = each(%oldConfig)) {
+        while ( my ($key, $value) = each( %oldConfig ) ) {
             next unless exists $newConfig{$key};
             $newConfig{$key} = $value;
         }
 
-        untie(%newConfig);
-        untie(%oldConfig);
+        untie( %newConfig );
+        untie( %oldConfig );
     }
 
     iMSCP::File->new( filename => "$self->{'cfgDir'}/courier.data.dist" )->moveFile(

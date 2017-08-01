@@ -31,17 +31,20 @@ tie $CWD, 'iMSCP::Cwd::SCALAR' or die "Can't tie \$CWD";
 
     use Cwd;
 
-    sub TIESCALAR {
-        bless [ ], $_[0];
+    sub TIESCALAR
+    {
+        bless [], $_[0];
     }
 
-    sub FETCH {
-        getcwd( );
+    sub FETCH
+    {
+        getcwd();
     }
 
-    sub STORE {
+    sub STORE
+    {
         return unless defined $_[1];
-        chdir( $_[1] ) or die( sprintf( "Couldn't change directory to %s: %s:", $_[1], $! ) );
+        chdir( $_[1] ) or die( sprintf( "Couldn't change directory to %s: %s:", $_[1], $! ));
     }
 }
 

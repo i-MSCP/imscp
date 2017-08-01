@@ -43,7 +43,7 @@ sub _init
 {
     my $self = shift;
 
-    $self->SUPER::_init( );
+    $self->SUPER::_init();
     $self->{'repositorySections'} = [ 'main', 'universe', 'multiverse' ];
     $self;
 }

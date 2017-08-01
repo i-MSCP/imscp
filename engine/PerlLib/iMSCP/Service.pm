@@ -80,7 +80,7 @@ sub enable
             && $self->{'provider'}->enable( $service )
             && $self->{'eventManager'}->trigger( 'onAfterEnableService', $service ) == 0;
     };
-    $ret && !$@ or die( sprintf( "Couldn't enable the `%s' service: %s", $service, $@ || $self->_getLastError( ) ) );
+    $ret && !$@ or die( sprintf( "Couldn't enable the `%s' service: %s", $service, $@ || $self->_getLastError()));
     $ret;
 }
 
@@ -104,7 +104,7 @@ sub disable
             && $self->{'provider'}->disable( $service )
             && $self->{'eventManager'}->trigger( 'onAfterDisableService', $service ) == 0;
     };
-    $ret && !$@ or die( sprintf( "Couldn't disable the `%s' service: %s", $service, $@ || $self->_getLastError( ) ) );
+    $ret && !$@ or die( sprintf( "Couldn't disable the `%s' service: %s", $service, $@ || $self->_getLastError()));
     $ret;
 }
 
@@ -125,34 +125,34 @@ sub remove
 
     local $@;
     eval {
-        $self->{'eventManager'}->trigger( 'onBeforeRemoveService', $service ) == 0 or die( $self->_getLastError( ) );
-        $self->{'provider'}->remove( $service ) or die( $self->_getLastError( ) );
+        $self->{'eventManager'}->trigger( 'onBeforeRemoveService', $service ) == 0 or die( $self->_getLastError());
+        $self->{'provider'}->remove( $service ) or die( $self->_getLastError());
 
-        unless ($self->{'init'} eq 'sysvinit') {
-            my $provider = $self->getProvider( ($self->{'init'} eq 'upstart') ? 'systemd' : 'upstart' );
+        unless ( $self->{'init'} eq 'sysvinit' ) {
+            my $provider = $self->getProvider( ( $self->{'init'} eq 'upstart' ) ? 'systemd' : 'upstart' );
 
-            if ($self->{'init'} eq 'upstart') {
-                for(qw / service socket /) {
+            if ( $self->{'init'} eq 'upstart' ) {
+                for( qw / service socket / ) {
                     my $unitFilePath = eval { $provider->getUnitFilePath( "$service.$_" ); };
-                    if (defined $unitFilePath) {
-                        iMSCP::File->new(filename => $unitFilePath )->delFile( ) == 0 or die(
-                            $self->_getLastError( )
+                    if ( defined $unitFilePath ) {
+                        iMSCP::File->new( filename => $unitFilePath )->delFile() == 0 or die(
+                            $self->_getLastError()
                         );
                     }
                 }
             } else {
-                for (qw / conf override /) {
+                for ( qw / conf override / ) {
                     my $jobfilePath = eval { $provider->getJobFilePath( $service, $_ ); };
-                    if (defined $jobfilePath) {
-                        iMSCP::File->new( filename => $jobfilePath )->delFile( ) == 0 or die( $self->_getLastError( ) );
+                    if ( defined $jobfilePath ) {
+                        iMSCP::File->new( filename => $jobfilePath )->delFile() == 0 or die( $self->_getLastError());
                     }
                 }
             }
         }
 
-        $self->{'eventManager'}->trigger( 'onAfterRemoveService', $service ) == 0 or die( $self->_getLastError( ) );
+        $self->{'eventManager'}->trigger( 'onAfterRemoveService', $service ) == 0 or die( $self->_getLastError());
     };
-    !$@ or die( sprintf( "Couldn't remove the `%s' service: %s", $service, $@ ) );
+    !$@ or die( sprintf( "Couldn't remove the `%s' service: %s", $service, $@ ));
     1;
 }
 
@@ -176,7 +176,7 @@ sub start
             && $self->{'provider'}->start( $service )
             && $self->{'eventManager'}->trigger( 'onAfterStartService', $service ) == 0;
     };
-    $ret && !$@ or die( sprintf( "Couldn't start the `%s' service: %s", $service, $@ || $self->_getLastError( ) ) );
+    $ret && !$@ or die( sprintf( "Couldn't start the `%s' service: %s", $service, $@ || $self->_getLastError()));
     $ret;
 }
 
@@ -200,7 +200,7 @@ sub stop
             && $self->{'provider'}->stop( $service )
             && $self->{'eventManager'}->trigger( 'onAfterStopService', $service ) == 0
     };
-    $ret && !$@ or die( sprintf( "Couldn't stop the `%s' service: %s", $service, $@ || $self->_getLastError( ) ) );
+    $ret && !$@ or die( sprintf( "Couldn't stop the `%s' service: %s", $service, $@ || $self->_getLastError()));
     $ret;
 }
 
@@ -224,7 +224,7 @@ sub restart
             && $self->{'provider'}->restart( $service )
             && $self->{'eventManager'}->trigger( 'onAfterRestartService', $service ) == 0;
     };
-    $ret && !$@ or die( sprintf( "Couldn't restart the `%s' service: %s", $service, $@ || $self->_getLastError( ) ) );
+    $ret && !$@ or die( sprintf( "Couldn't restart the `%s' service: %s", $service, $@ || $self->_getLastError()));
     $ret;
 }
 
@@ -248,7 +248,7 @@ sub reload
             && $self->{'provider'}->reload( $service )
             && $self->{'eventManager'}->trigger( 'onAfterReloadService', $service ) == 0;
     };
-    $ret && !$@ or die( sprintf( "Couldn't reload the `%s' service: %s", $service, $@ || $self->_getLastError( ) ) );
+    $ret && !$@ or die( sprintf( "Couldn't reload the `%s' service: %s", $service, $@ || $self->_getLastError()));
     $ret;
 }
 
@@ -338,17 +338,17 @@ sub getProvider
 {
     my ($self, $providerName) = @_;
 
-    $providerName = ucfirst( lc( $providerName // $self->{'init'} ) );
+    $providerName = ucfirst( lc( $providerName // $self->{'init'} ));
     my $id = iMSCP::LsbRelease->getInstance->getId( 'short' );
     $id = 'Debian' if grep( lc $_ eq lc $id, 'Devuan', 'Ubuntu' );
     my $provider = "iMSCP::Provider::Service::${id}::${providerName}";
-    unless (check_install( module => $provider )) {
+    unless ( check_install( module => $provider ) ) {
         $provider = "iMSCP::Provider::Service::${providerName}"; # Fallback to the base provider
     }
     can_load( modules => { $provider => undef } ) or die(
         sprintf( "Couldn't load the `%s' service provider: %s", $provider, $Module::Load::Conditional::ERROR )
     );
-    $provider->getInstance( );
+    $provider->getInstance();
 }
 
 =back
@@ -369,8 +369,8 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
-    $self->{'init'} = _detectInit( );
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'init'} = _detectInit();
     $self->{'provider'} = $self->getProvider( $self->{'init'} );
     $self;
 }
@@ -385,12 +385,12 @@ sub _init
 
 sub _detectInit
 {
-    if (-d '/run/systemd/system') {
+    if ( -d '/run/systemd/system' ) {
         debug( 'Systemd init system has been detected' );
         return 'systemd';
     }
 
-    if (iMSCP::ProgramFinder::find( 'initctl' )
+    if ( iMSCP::ProgramFinder::find( 'initctl' )
         && execute( 'initctl version 2>/dev/null | grep -q upstart' ) == 0
     ) {
         debug( 'Upstart init system has been detected' );

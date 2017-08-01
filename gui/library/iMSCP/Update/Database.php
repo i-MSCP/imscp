@@ -1876,15 +1876,22 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Update user_gui_props.lang column
-     * 
+     * Update user_gui_props table
+     *
      * @return array SQL statements to be executed
      */
     protected function r257()
     {
         return [
             $this->changeColumn('user_gui_props', 'lang', "lang varchar(15) collate utf8_unicode_ci DEFAULT 'browser'"),
-            "UPDATE user_gui_props SET lang = 'browser' WHERE lang = 'auto'"
+            "UPDATE user_gui_props SET lang = 'browser' WHERE lang = 'auto'",
+            $this->changeColumn(
+                'user_gui_props', 'layout', "layout varchar(100) collate utf8_unicode_ci NOT NULL DEFAULT 'default'"
+            ),
+            $this->changeColumn(
+                'user_gui_props', 'layout_color', "layout_color varchar(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'black'"
+            ),
+            $this->changeColumn('user_gui_props', "show_main_menu_labels tinyint(1) NOT NULL DEFAULT '0'")
         ];
     }
 }

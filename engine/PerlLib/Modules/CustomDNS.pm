@@ -65,9 +65,9 @@ sub process
 {
     my ($self, $domainId) = @_;
 
-    (my $domainType, $domainId) = split '_', $domainId;
+    ( my $domainType, $domainId ) = split '_', $domainId;
 
-    unless ($domainType && $domainId) {
+    unless ( $domainType && $domainId ) {
         error( 'Bad input data...' );
         return 1;
     }
@@ -78,16 +78,16 @@ sub process
     my $rs = $self->_loadData( $domainType, $domainId );
     return $rs if $rs;
 
-    if ($self->add( )) {
+    if ( $self->add() ) {
         local $@;
         eval {
             local $self->{'_dbh'}->{'RaiseError'} = 1;
             $self->{'_dbh'}->do(
                 "UPDATE domain_dns SET domain_dns_status = ? WHERE $condition AND domain_dns_status <> 'disabled'",
-                undef, (getLastError( 'error' ) || 'Invalid DNS resource record')
+                undef, ( getLastError( 'error' ) || 'Invalid DNS resource record' )
             );
         };
-        if ($@) {
+        if ( $@ ) {
             error( $@ );
             return 1;
         }
@@ -111,10 +111,10 @@ sub process
             "
         );
         $self->{'_dbh'}->do( "DELETE FROM domain_dns WHERE $condition AND domain_dns_status = 'todelete'" );
-        $self->{'_dbh'}->commit( );
+        $self->{'_dbh'}->commit();
     };
-    if ($@) {
-        $self->{'_dbh'}->rollback( );
+    if ( $@ ) {
+        $self->{'_dbh'}->rollback();
         error( $@ );
         return 1;
     }
@@ -141,8 +141,8 @@ sub _init
     my ($self) = @_;
 
     $self->{'domain_name'} = undef;
-    $self->{'dns_records'} = [ ];
-    $self->SUPER::_init( );
+    $self->{'dns_records'} = [];
+    $self->SUPER::_init();
 }
 
 =item _loadData( $domainType, $domainId )
@@ -187,22 +187,22 @@ sub _loadData
         # 1. Filter DNS records which must be disabled or deleted
         # 2. For TXT/SPF records, split data field to several <character-string>s when <character-string> is longer than
         #    255 characters. See: https://tools.ietf.org/html/rfc4408#section-3.1.3
-        for (@{$rows}) {
+        for ( @{$rows} ) {
             next if $_->[4] =~ /^to(?:disable|delete)$/;
 
-            if (($_->[2] eq 'TXT' || $_->[2] eq 'SPF') && length($_->[3]) > 257) {
-                my ($data, @chuncks) = ($_->[3] =~ s/^"|"$//gr, ( ));
-                for (my $i = 0, my $length = length $data; $i < $length; $i += 255) {
-                    push(@chuncks, substr($data, $i, 255));
+            if ( ( $_->[2] eq 'TXT' || $_->[2] eq 'SPF' ) && length( $_->[3] ) > 257 ) {
+                my ($data, @chuncks) = ( $_->[3] =~ s/^"|"$//gr, () );
+                for ( my $i = 0, my $length = length $data; $i < $length; $i += 255 ) {
+                    push( @chuncks, substr( $data, $i, 255 ));
                 }
 
                 $_->[3] = join ' ', map( qq/"$_"/, @chuncks );
             }
 
-            push @{$self->{'dns_records'}}, [ (@{$_})[0 .. 3] ];
+            push @{$self->{'dns_records'}}, [ ( @{$_} )[0 .. 3] ];
         }
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }

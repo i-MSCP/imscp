@@ -49,8 +49,8 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
-    $self->{'sqld'} = Servers::sqld::mariadb->getInstance( );
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'sqld'} = Servers::sqld::mariadb->getInstance();
     $self->{'cfgDir'} = $self->{'sqld'}->{'cfgDir'};
     $self->{'config'} = $self->{'sqld'}->{'config'};
     $self;

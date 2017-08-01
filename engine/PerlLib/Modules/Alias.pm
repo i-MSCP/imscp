@@ -68,29 +68,29 @@ sub process
     return $rs if $rs;
 
     my @sql;
-    if ($self->{'alias_status'} =~ /^to(?:add|change|enable)$/) {
-        $rs = $self->add( );
-        @sql = ('UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', undef,
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $aliasId);
-    } elsif ($self->{'alias_status'} eq 'todelete') {
-        $rs = $self->delete( );
+    if ( $self->{'alias_status'} =~ /^to(?:add|change|enable)$/ ) {
+        $rs = $self->add();
+        @sql = ( 'UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', undef,
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $aliasId );
+    } elsif ( $self->{'alias_status'} eq 'todelete' ) {
+        $rs = $self->delete();
         @sql = $rs
-            ? ('UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', undef,
-                (getLastError( 'error' ) || 'Unknown error'), $aliasId)
-            : ('DELETE FROM domain_aliasses WHERE alias_id = ?', undef, $aliasId);
-    } elsif ($self->{'alias_status'} eq 'todisable') {
-        $rs = $self->disable( );
+            ? ( 'UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', undef,
+                ( getLastError( 'error' ) || 'Unknown error' ), $aliasId )
+            : ( 'DELETE FROM domain_aliasses WHERE alias_id = ?', undef, $aliasId );
+    } elsif ( $self->{'alias_status'} eq 'todisable' ) {
+        $rs = $self->disable();
         @sql = (
             'UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', undef,
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'), $aliasId);
-    } elsif ($self->{'alias_status'} eq 'torestore') {
-        $rs = $self->restore( );
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $aliasId );
+    } elsif ( $self->{'alias_status'} eq 'torestore' ) {
+        $rs = $self->restore();
         @sql = (
             'UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', undef,
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $aliasId
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $aliasId
         );
     } else {
-        warning( sprintf( 'Unknown action (%s) for domain alias (ID %d)', $self->{'alias_status'}, $aliasId ) );
+        warning( sprintf( 'Unknown action (%s) for domain alias (ID %d)', $self->{'alias_status'}, $aliasId ));
         return 0;
     }
 
@@ -99,7 +99,7 @@ sub process
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         $self->{'_dbh'}->do( @sql );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -134,12 +134,12 @@ sub disable
             undef, $self->{'alias_id'}
         );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
 
-    $self->SUPER::disable( );
+    $self->SUPER::disable();
 }
 
 =back
@@ -187,10 +187,10 @@ sub _loadData
             ",
             undef, $aliasId
         );
-        $row or die( sprintf( 'Data not found for domain alias (ID %d)', $aliasId ) );
-        %{$self} = (%{$self}, %{$row});
+        $row or die( sprintf( 'Data not found for domain alias (ID %d)', $aliasId ));
+        %{$self} = ( %{$self}, %{$row} );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -212,9 +212,9 @@ sub _getData
     my ($self, $action) = @_;
 
     $self->{'_data'} = do {
-        my $httpd = Servers::httpd->factory( );
+        my $httpd = Servers::httpd->factory();
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}
-            .($main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'});
+            . ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'} );
         my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}" );
         my $webDir = File::Spec->canonpath( "$homeDir/$self->{'alias_mount'}" );
         my $documentRoot = File::Spec->canonpath( "$webDir/$self->{'alias_document_root'}" );
@@ -223,16 +223,16 @@ sub _getData
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         my $phpini = $self->{'_dbh'}->selectrow_hashref(
             'SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = ?', undef,
-            ($confLevel eq 'dmn' ? $self->{'domain_id'} : $self->{'alias_id'}), $confLevel
-        ) || { };
+            ( $confLevel eq 'dmn' ? $self->{'domain_id'} : $self->{'alias_id'} ), $confLevel
+        ) || {};
 
-        my $haveCert = (defined $self->{'certificate'}
+        my $haveCert = ( defined $self->{'certificate'}
             && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'alias_name'}.pem"
         );
-        my $allowHSTS = ($haveCert && $self->{'allow_hsts'} eq 'on');
-        my $hstsMaxAge = ($allowHSTS) ? $self->{'hsts_max_age'} : 0;
-        my $hstsIncludeSubDomains = ($allowHSTS && $self->{'hsts_include_subdomains'} eq 'on')
-            ? '; includeSubDomains' : (($allowHSTS) ? '' : '; includeSubDomains');
+        my $allowHSTS = ( $haveCert && $self->{'allow_hsts'} eq 'on' );
+        my $hstsMaxAge = ( $allowHSTS ) ? $self->{'hsts_max_age'} : 0;
+        my $hstsIncludeSubDomains = ( $allowHSTS && $self->{'hsts_include_subdomains'} eq 'on' )
+            ? '; includeSubDomains' : ( ( $allowHSTS ) ? '' : '; includeSubDomains' );
 
         {
             ACTION                  => $action,
@@ -251,7 +251,7 @@ sub _getData
             WEB_DIR                 => $webDir,
             MOUNT_POINT             => $self->{'alias_mount'},
             DOCUMENT_ROOT           => $documentRoot,
-            SHARED_MOUNT_POINT      => $self->_sharedMountPoint( ),
+            SHARED_MOUNT_POINT      => $self->_sharedMountPoint(),
             PEAR_DIR                => $httpd->{'phpConfig'}->{'PHP_PEAR_DIR'},
             TIMEZONE                => $main::imscpConfig{'TIMEZONE'},
             USER                    => $userName,
@@ -263,7 +263,7 @@ sub _getData
             HSTS_SUPPORT            => $allowHSTS,
             HSTS_MAX_AGE            => $hstsMaxAge,
             HSTS_INCLUDE_SUBDOMAINS => $hstsIncludeSubDomains,
-            ALIAS                   => 'als'.$self->{'alias_id'},
+            ALIAS                   => 'als' . $self->{'alias_id'},
             FORWARD                 => $self->{'url_forward'} || 'no',
             FORWARD_TYPE            => $self->{'type_forward'} || '',
             FORWARD_PRESERVE_HOST   => $self->{'host_forward'} || 'Off',
@@ -277,10 +277,10 @@ sub _getData
             POST_MAX_SIZE           => $phpini->{'post_max_size'} // 8,
             UPLOAD_MAX_FILESIZE     => $phpini->{'upload_max_filesize'} // 2,
             ALLOW_URL_FOPEN         => $phpini->{'allow_url_fopen'} || 'off',
-            PHP_FPM_LISTEN_PORT     => ($phpini->{'id'} // 0)-1,
+            PHP_FPM_LISTEN_PORT     => ( $phpini->{'id'} // 0 )-1,
             EXTERNAL_MAIL           => $self->{'external_mail'},
-            MAIL_ENABLED            => ($self->{'external_mail'} eq 'off'
-                && ($self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0)
+            MAIL_ENABLED            => ( $self->{'external_mail'} eq 'off'
+                && ( $self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0 )
             )
         }
     } unless %{$self->{'_data'}};
@@ -329,7 +329,7 @@ sub _sharedMountPoint
         $regexp
     );
 
-    ($nbSharedMountPoints || $self->{'alias_mount'} eq '/');
+    ( $nbSharedMountPoints || $self->{'alias_mount'} eq '/' );
 }
 
 =back

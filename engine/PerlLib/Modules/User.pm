@@ -68,18 +68,18 @@ sub process
     return $rs if $rs;
 
     my @sql;
-    if ($self->{'admin_status'} =~ /^to(?:add|change(?:pwd)?)$/) {
-        $rs = $self->add( );
-        @sql = ('UPDATE admin SET admin_status = ? WHERE admin_id = ?', undef,
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $userId);
-    } elsif ($self->{'admin_status'} eq 'todelete') {
-        $rs = $self->delete( );
+    if ( $self->{'admin_status'} =~ /^to(?:add|change(?:pwd)?)$/ ) {
+        $rs = $self->add();
+        @sql = ( 'UPDATE admin SET admin_status = ? WHERE admin_id = ?', undef,
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $userId );
+    } elsif ( $self->{'admin_status'} eq 'todelete' ) {
+        $rs = $self->delete();
         @sql = $rs
-            ? ('UPDATE admin SET admin_status = ? WHERE admin_id = ?', undef,
-                getLastError( 'error' ) || 'Unknown error', $userId)
-            : ('DELETE FROM admin WHERE admin_id = ?', undef, $userId);
+            ? ( 'UPDATE admin SET admin_status = ? WHERE admin_id = ?', undef,
+                getLastError( 'error' ) || 'Unknown error', $userId )
+            : ( 'DELETE FROM admin WHERE admin_id = ?', undef, $userId );
     } else {
-        warning( sprintf( 'Unknown action (%s) for user (ID %d)', $self->{'admin_status'}, $userId ) );
+        warning( sprintf( 'Unknown action (%s) for user (ID %d)', $self->{'admin_status'}, $userId ));
         return 0;
     }
 
@@ -88,7 +88,7 @@ sub process
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         $self->{'_dbh'}->do( @sql );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -108,10 +108,10 @@ sub add
 {
     my ($self) = @_;
 
-    return $self->SUPER::add( ) if $self->{'admin_status'} eq 'tochangepwd';
+    return $self->SUPER::add() if $self->{'admin_status'} eq 'tochangepwd';
 
     my $user = my $group = $main::imscpConfig{'SYSTEM_USER_PREFIX'}
-        .($main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'});
+        . ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'} );
     my $home = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'admin_name'}";
 
     my $rs = $self->{'eventManager'}->trigger(
@@ -119,8 +119,8 @@ sub add
     );
     return $rs if $rs;
 
-    my ($oldUser, $uid, $gid) = ($self->{'admin_sys_uid'} && $self->{'admin_sys_uid'} ne '0')
-        ? (getpwuid( $self->{'admin_sys_uid'} ))[0, 2, 3] : ( );
+    my ($oldUser, $uid, $gid) = ( $self->{'admin_sys_uid'} && $self->{'admin_sys_uid'} ne '0' )
+        ? ( getpwuid( $self->{'admin_sys_uid'} ) )[0, 2, 3] : ();
 
     $rs = iMSCP::SystemUser->new(
         username     => $oldUser,
@@ -132,7 +132,7 @@ sub add
     )->addSystemUser( $user, $group );
     return $rs if $rs;
 
-    ($uid, $gid) = (getpwnam( $user ))[2, 3];
+    ( $uid, $gid ) = ( getpwnam( $user ) )[2, 3];
 
     local $@;
     eval {
@@ -146,13 +146,13 @@ sub add
             undef, $user, $uid, $group, $gid, $self->{'admin_id'},
         );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
 
-    @{$self}{ qw/ admin_sys_name admin_sys_uid admin_sys_gname admin_sys_gid / } = ($user, $uid, $group, $gid);
-    $self->SUPER::add( );
+    @{$self}{ qw/ admin_sys_name admin_sys_uid admin_sys_gname admin_sys_gid / } = ( $user, $uid, $group, $gid );
+    $self->SUPER::add();
 }
 
 =item delete( )
@@ -168,12 +168,12 @@ sub delete
     my ($self) = @_;
 
     my $user = my $group = $main::imscpConfig{'SYSTEM_USER_PREFIX'}
-        .($main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'});
+        . ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'} );
 
     my $rs = $self->{'eventManager'}->trigger( 'onBeforeDeleteImscpUnixUser', $user );
-    $rs ||= $self->SUPER::delete( );
+    $rs ||= $self->SUPER::delete();
     $rs ||= iMSCP::SystemUser->new( force => 1 )->delSystemUser( $user );
-    $rs ||= iMSCP::SystemGroup->getInstance( )->delSystemGroup( $group );
+    $rs ||= iMSCP::SystemGroup->getInstance()->delSystemGroup( $group );
     $rs ||= $self->{'eventManager'}->trigger( 'onAfterDeleteImscpUnixUser', $group );
 }
 
@@ -208,10 +208,10 @@ sub _loadData
             ',
             undef, $userId
         );
-        $row or die( sprintf( 'User (ID %d) has not been found', $userId ) );
-        %{$self} = (%{$self}, %{$row});
+        $row or die( sprintf( 'User (ID %d) has not been found', $userId ));
+        %{$self} = ( %{$self}, %{$row} );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -234,7 +234,7 @@ sub _getData
 
     $self->{'_data'} = do {
         my $user = my $group = $main::imscpConfig{'SYSTEM_USER_PREFIX'}
-            .($main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'});
+            . ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'} );
 
         {
             ACTION        => $action,

@@ -75,7 +75,7 @@ sub enable
     defined $unit or die( 'parameter $unit is not defined' );
 
     my $realUnit = $unit;
-    if ($self->_isSystemd( $unit )) {
+    if ( $self->_isSystemd( $unit ) ) {
         my $unitFilePath = $self->getUnitFilePath( $unit );
         $realUnit = basename( readlink( $unitFilePath ), '.service', '.socket' ) if -l $unitFilePath;
     }
@@ -97,7 +97,7 @@ sub disable
     defined $unit or die( 'parameter $unit is not defined' );
 
     my $realUnit = $unit;
-    if ($self->_isSystemd( $unit )) {
+    if ( $self->_isSystemd( $unit ) ) {
         my $unitFilePath = $self->getUnitFilePath( $unit );
         $realUnit = basename( readlink( $unitFilePath ), '.service', '.socket' ) if -l $unitFilePath;
     }
@@ -118,15 +118,15 @@ sub remove
 
     defined $unit or die( 'parameter $unit is not defined' );
 
-    if ($self->_isSystemd( $unit )) {
+    if ( $self->_isSystemd( $unit ) ) {
         return 0 unless $self->SUPER::remove( $unit );
     }
 
     # Remove the underlying sysvinit script if any and make systemd aware of changes
-    if ($self->_isSysvinit( $unit )) {
+    if ( $self->_isSysvinit( $unit ) ) {
         return $self->iMSCP::Provider::Service::Debian::Sysvinit::remove( $unit )
             && $self->_exec(
-                $iMSCP::Provider::Service::Systemd::COMMANDS{'systemctl'}, '--system', 'daemon-reload'
+            $iMSCP::Provider::Service::Systemd::COMMANDS{'systemctl'}, '--system', 'daemon-reload'
         ) == 0;
     }
 

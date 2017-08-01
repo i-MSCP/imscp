@@ -58,7 +58,7 @@ sub registerSetupListeners
 {
     my (undef, $eventManager) = @_;
 
-    Servers::sqld::mysql::installer->getInstance( )->registerSetupListeners( $eventManager );
+    Servers::sqld::mysql::installer->getInstance()->registerSetupListeners( $eventManager );
 }
 
 =item preinstall( )
@@ -74,7 +74,7 @@ sub preinstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'mysql' );
-    $rs ||= Servers::sqld::mysql::installer->getInstance( )->preinstall( );
+    $rs ||= Servers::sqld::mysql::installer->getInstance()->preinstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPreinstall', 'mysql' );
 }
 
@@ -94,8 +94,8 @@ sub postinstall
     return $rs if $rs;
 
     local $@;
-    eval { iMSCP::Service->getInstance( )->enable( 'mysql' ); };
-    if ($@) {
+    eval { iMSCP::Service->getInstance()->enable( 'mysql' ); };
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -103,7 +103,7 @@ sub postinstall
     $rs = $self->{'eventManager'}->register(
         'beforeSetupRestartServices',
         sub {
-            push @{$_[0]}, [ sub { $self->restart( ); }, 'MySQL' ];
+            push @{$_[0]}, [ sub { $self->restart(); }, 'MySQL' ];
             0;
         },
         7
@@ -124,9 +124,9 @@ sub uninstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'mysql' );
-    $rs ||= Servers::sqld::mysql::uninstaller->getInstance( )->uninstall( );
+    $rs ||= Servers::sqld::mysql::uninstaller->getInstance()->uninstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldUninstall', 'mysql' );
-    $rs ||= $self->restart( ) unless $rs;
+    $rs ||= $self->restart() unless $rs;
     $rs;
 }
 
@@ -178,8 +178,8 @@ sub restart
     return $rs if $rs;
 
     local $@;
-    eval { iMSCP::Service->getInstance( )->restart( 'mysql' ); };
-    if ($@) {
+    eval { iMSCP::Service->getInstance()->restart( 'mysql' ); };
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -207,15 +207,15 @@ sub createUser
     defined $password or die( '$password parameter is not defined' );
 
     eval {
-        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
         $dbh->do(
             'CREATE USER ?@? IDENTIFIED BY ?'
-                .(version->parse( $self->getVersion( ) ) >= version->parse( '5.7.6' ) ? ' PASSWORD EXPIRE NEVER' : ''),
+                . ( version->parse( $self->getVersion()) >= version->parse( '5.7.6' ) ? ' PASSWORD EXPIRE NEVER' : '' ),
             undef, $user, $host, $password
         );
     };
-    !$@ or die( sprintf( "Couldn't create the %s\@%s SQL user: %s", $user, $host, $@ ) );
+    !$@ or die( sprintf( "Couldn't create the %s\@%s SQL user: %s", $user, $host, $@ ));
     0;
 }
 
@@ -240,14 +240,14 @@ sub dropUser
 
     local $@;
     eval {
-        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
         return unless $dbh->selectrow_hashref(
             'SELECT 1 FROM mysql.user WHERE user = ? AND host = ?', undef, $user, $host
         );
-        $dbh->do('DROP USER ?@?', undef, $user, $host );
+        $dbh->do( 'DROP USER ?@?', undef, $user, $host );
     };
-    !$@ or die( sprintf( "Couldn't drop the %s\@%s SQL user: %s", $user, $host, $@ ) );
+    !$@ or die( sprintf( "Couldn't drop the %s\@%s SQL user: %s", $user, $host, $@ ));
     0;
 }
 
@@ -299,14 +299,14 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/mysql";
-    $self->_mergeConfig( ) if -f "$self->{'cfgDir'}/mysql.data.dist";
+    $self->_mergeConfig() if -f "$self->{'cfgDir'}/mysql.data.dist";
     tie %{$self->{'config'}},
         'iMSCP::Config',
         fileName    => "$self->{'cfgDir'}/mysql.data",
-        readonly    => !(defined $main::execmode && $main::execmode eq 'setup'),
-        nodeferring => (defined $main::execmode && $main::execmode eq 'setup');
+        readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
+        nodeferring => ( defined $main::execmode && $main::execmode eq 'setup' );
     $self;
 }
 
@@ -322,19 +322,19 @@ sub _mergeConfig
 {
     my ($self) = @_;
 
-    if (-f "$self->{'cfgDir'}/mysql.data") {
+    if ( -f "$self->{'cfgDir'}/mysql.data" ) {
         tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/mysql.data.dist";
         tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/mysql.data", readonly => 1;
 
-        debug('Merging old configuration with new configuration...');
+        debug( 'Merging old configuration with new configuration...' );
 
-        while(my ($key, $value) = each(%oldConfig)) {
+        while ( my ($key, $value) = each( %oldConfig ) ) {
             next unless exists $newConfig{$key};
             $newConfig{$key} = $value;
         }
 
-        untie(%newConfig);
-        untie(%oldConfig);
+        untie( %newConfig );
+        untie( %oldConfig );
     }
 
     iMSCP::File->new( filename => "$self->{'cfgDir'}/mysql.data.dist" )->moveFile(

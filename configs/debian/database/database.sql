@@ -685,10 +685,10 @@ CREATE TABLE IF NOT EXISTS `tickets` (
 CREATE TABLE IF NOT EXISTS `user_gui_props` (
   `user_id` int(10) unsigned NOT NULL,
   `lang` varchar(15) collate utf8_unicode_ci DEFAULT 'browser',
-  `layout` varchar(100) collate utf8_unicode_ci DEFAULT NULL,
-  `layout_color` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `layout` varchar(100) collate utf8_unicode_ci NOT NULL DEFAULT 'default',
+  `layout_color` varchar(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'black',
   `logo` varchar(255) collate utf8_unicode_ci NOT NULL DEFAULT '',
-  `show_main_menu_labels` tinyint(1) NOT NULL DEFAULT '1',
+  `show_main_menu_labels` tinyint(1) NOT NULL DEFAULT '0',
   UNIQUE KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

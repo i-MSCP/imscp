@@ -53,7 +53,7 @@ sub factory
     my $package = $main::imscpConfig{'SQL_PACKAGE'} || 'Servers::noserver';
     eval "require $package";
     fatal( $@ ) if $@;
-    $instance = $package->getInstance( );
+    $instance = $package->getInstance();
 }
 
 =item can( $method )

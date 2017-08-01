@@ -48,7 +48,7 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'sqld'} = Servers::sqld::mariadb->getInstance( );
+    $self->{'sqld'} = Servers::sqld::mariadb->getInstance();
     $self;
 }
 

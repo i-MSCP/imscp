@@ -66,36 +66,36 @@ sub setRights
         defined $target or die( '$target parameter is not defined' );
         ref $options eq 'HASH' && %{$options} or die( '$options parameter is not defined' );
 
-        if (defined $options->{'mode'} && (defined $options->{'dirmode'} || defined $options->{'filemode'})) {
+        if ( defined $options->{'mode'} && ( defined $options->{'dirmode'} || defined $options->{'filemode'} ) ) {
             die( '`mode` option is not allowed when using dirmode/filemode options' );
         }
 
         my $uid = $options->{'user'} ? getpwnam( $options->{'user'} ) : -1;
         my $gid = $options->{'group'} ? getgrnam( $options->{'group'} ) : -1;
-        defined $uid or die( sprintf( 'user option refers to inexistent user: %s', $options->{'user'} ) );
-        defined $gid or die( sprintf( 'group option refers to inexistent group: %s', $options->{'group'} ) );
+        defined $uid or die( sprintf( 'user option refers to inexistent user: %s', $options->{'user'} ));
+        defined $gid or die( sprintf( 'group option refers to inexistent group: %s', $options->{'group'} ));
 
         my $mode = defined $options->{'mode'} ? oct( $options->{'mode'} ) : undef;
         my $dirmode = defined $options->{'dirmode'} ? oct( $options->{'dirmode'} ) : undef;
         my $filemode = defined $options->{'filemode'} ? oct( $options->{'filemode'} ) : undef;
 
-        if ($options->{'recursive'}) {
+        if ( $options->{'recursive'} ) {
             local $SIG{'__WARN__'} = sub { die @_ };
             find(
                 {
                     wanted   => sub {
-                        if ($options->{'user'} || $options->{'group'}) {
-                            lchown $uid, $gid, $_ or die( sprintf( "Couldn't set user/group on %s: %s", $_, $! ) );
+                        if ( $options->{'user'} || $options->{'group'} ) {
+                            lchown $uid, $gid, $_ or die( sprintf( "Couldn't set user/group on %s: %s", $_, $! ));
                         }
 
                         return if -l; # We do not call chmod on symkink targets
 
-                        if ($mode) {
-                            chmod $mode, $_ or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ) );
-                        } elsif ($dirmode && -d _) {
-                            chmod $dirmode, $_ or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ) );
-                        } elsif ($filemode) {
-                            chmod $filemode, $_ or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ) );
+                        if ( $mode ) {
+                            chmod $mode, $_ or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ));
+                        } elsif ( $dirmode && -d _ ) {
+                            chmod $dirmode, $_ or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ));
+                        } elsif ( $filemode ) {
+                            chmod $filemode, $_ or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ));
                         }
                     },
                     no_chdir => 1
@@ -106,21 +106,21 @@ sub setRights
             return 0;
         }
 
-        if ($options->{'user'} || $options->{'group'}) {
-            lchown $uid, $gid, $target or die( sprintf( "Couldn't set user/group on %s: %s", $target, $! ) );
+        if ( $options->{'user'} || $options->{'group'} ) {
+            lchown $uid, $gid, $target or die( sprintf( "Couldn't set user/group on %s: %s", $target, $! ));
         }
 
-        unless (-l $target) { # We do not call chmod on symkink targets
-            if ($mode) {
-                chmod $mode, $target or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ) );
-            } elsif ($dirmode && -d _) {
-                chmod $dirmode, $target or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ) );
-            } elsif ($filemode) {
-                chmod $filemode, $target or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ) );
+        unless ( -l $target ) { # We do not call chmod on symkink targets
+            if ( $mode ) {
+                chmod $mode, $target or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ));
+            } elsif ( $dirmode && -d _ ) {
+                chmod $dirmode, $target or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ));
+            } elsif ( $filemode ) {
+                chmod $filemode, $target or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ));
             }
         }
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }

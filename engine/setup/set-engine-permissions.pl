@@ -42,7 +42,7 @@ use iMSCP::Packages;
 newDebug( 'imscp-set-engine-permissions.log' );
 
 $main::execmode = 'backend';
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 ) ).qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq {
 
 Set i-MSCP engine permissions.
 
@@ -59,7 +59,7 @@ OPTIONS:
 
 setVerbose( iMSCP::Getopt->verbose );
 
-my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
+my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-set-engine-permissions.lock', 'nowait' );
 
 $bootstrapper->boot(
@@ -73,16 +73,16 @@ $bootstrapper->boot(
 );
 
 my $rs = 0;
-my @items = ( );
+my @items = ();
 
-for my $server(iMSCP::Servers->getInstance( )->getListWithFullNames( )) {
-    (my $subref = $server->can( 'setEnginePermissions' )) or next;
-    push @items, [ $server, sub { $subref->( $server->factory( ) ); } ];
+for my $server( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
+    ( my $subref = $server->can( 'setEnginePermissions' ) ) or next;
+    push @items, [ $server, sub { $subref->( $server->factory()); } ];
 }
 
-for my $package(iMSCP::Packages->getInstance( )->getListWithFullNames( )) {
-    (my $subref = $package->can( 'setEnginePermissions' )) or next;
-    push @items, [ $package, sub { $subref->( $package->getInstance( ) ); } ];
+for my $package( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
+    ( my $subref = $package->can( 'setEnginePermissions' ) ) or next;
+    push @items, [ $package, sub { $subref->( $package->getInstance()); } ];
 }
 
 my $totalItems = scalar @items+1;
@@ -158,8 +158,8 @@ $rs |= setRights(
 
 $count++;
 
-for(@items) {
-    debug( sprintf( 'Setting %s engine permissions', $_->[0] ) );
+for( @items ) {
+    debug( sprintf( 'Setting %s engine permissions', $_->[0] ));
     printf( "Setting %s engine permissions\t%s\t%s\n", $_->[0], $totalItems, $count ) if $main::execmode eq 'setup';
     $rs |= $_->[1]->();
     $count++;

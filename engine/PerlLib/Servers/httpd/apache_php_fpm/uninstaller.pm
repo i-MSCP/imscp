@@ -51,10 +51,10 @@ sub uninstall
 {
     my ($self) = @_;
 
-    my $rs = $self->_removeVloggerSqlUser( );
-    $rs ||= $self->_removeDirs( );
-    $rs ||= $self->_restoreApacheConfig( );
-    $rs ||= $self->_restorePhpfpmConfig( );
+    my $rs = $self->_removeVloggerSqlUser();
+    $rs ||= $self->_removeDirs();
+    $rs ||= $self->_restoreApacheConfig();
+    $rs ||= $self->_restorePhpfpmConfig();
 }
 
 =back
@@ -75,7 +75,7 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'httpd'} = Servers::httpd::apache_php_fpm->getInstance( );
+    $self->{'httpd'} = Servers::httpd::apache_php_fpm->getInstance();
     $self->{'config'} = $self->{'httpd'}->{'config'};
     $self->{'phpConfig'} = $self->{'httpd'}->{'phpConfig'};
     $self;
@@ -91,11 +91,11 @@ sub _init
 
 sub _removeVloggerSqlUser
 {
-    if ($main::imscpConfig{'DATABASE_USER_HOST'} eq 'localhost') {
-        return Servers::sqld->factory( )->dropUser( 'vlogger_user', '127.0.0.1' );
+    if ( $main::imscpConfig{'DATABASE_USER_HOST'} eq 'localhost' ) {
+        return Servers::sqld->factory()->dropUser( 'vlogger_user', '127.0.0.1' );
     }
 
-    Servers::sqld->factory( )->dropUser( 'vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'} );
+    Servers::sqld->factory()->dropUser( 'vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'} );
 }
 
 =item _removeDirs( )
@@ -110,7 +110,7 @@ sub _removeDirs
 {
     my ($self) = @_;
 
-    iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove( );
+    iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove();
     0;
 }
 
@@ -126,26 +126,26 @@ sub _restoreApacheConfig
 {
     my ($self) = @_;
 
-    if (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf") {
+    if ( -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf" ) {
         my $rs = $self->{'httpd'}->disableSites( '00_nameserver.conf' );
         $rs ||= iMSCP::File->new(
             filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf"
-        )->delFile( );
+        )->delFile();
         return $rs if $rs;
     }
 
     my $confDir = -d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available"
         ? "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available" : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d";
 
-    if (-f "$confDir/00_imscp.conf") {
+    if ( -f "$confDir/00_imscp.conf" ) {
         my $rs = $self->{'httpd'}->disableConfs( '00_imscp.conf' );
-        $rs ||= iMSCP::File->new( filename => "$confDir/00_imscp.conf" )->delFile( );
+        $rs ||= iMSCP::File->new( filename => "$confDir/00_imscp.conf" )->delFile();
         return $rs if $rs;
     }
 
-    iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove( );
+    iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove();
 
-    for ('000-default', 'default') {
+    for ( '000-default', 'default' ) {
         next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
         $rs = $self->{'httpd'}->enableSites( $_ );
         return $rs if $rs;
@@ -165,9 +165,9 @@ sub _restoreApacheConfig
 sub _restorePhpfpmConfig
 {
 
-    for('5.6', '7.0', '7.1') {
+    for( '5.6', '7.0', '7.1' ) {
         next unless -f "/etc/init/php$_-fpm.override";
-        my $rs = iMSCP::File->new( filename => "/etc/init/php$_-fpm.override" )->delFile( );
+        my $rs = iMSCP::File->new( filename => "/etc/init/php$_-fpm.override" )->delFile();
         return $rs if $rs;
     }
 }

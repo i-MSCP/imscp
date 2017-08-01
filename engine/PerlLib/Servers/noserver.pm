@@ -50,8 +50,8 @@ sub factory
 {
     return $instance if $instance;
 
-    $instance = __PACKAGE__->getInstance( );
-    @{$instance}{qw/ start restart reload /} = (0, 0, 0);
+    $instance = __PACKAGE__->getInstance();
+    @{$instance}{qw/ start restart reload /} = ( 0, 0, 0 );
     $instance;
 }
 

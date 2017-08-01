@@ -66,22 +66,22 @@ sub process
     return $rs if $rs;
 
     my @sql;
-    if ($self->{'status'} =~ /^to(?:add|change|enable)$/) {
-        $rs = $self->add( );
-        @sql = ('UPDATE htaccess_users SET status = ? WHERE id = ?', undef,
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $htuserId);
-    } elsif ($self->{'status'} eq 'todisable') {
-        $rs = $self->disable( );
-        @sql = ('UPDATE htaccess_users SET status = ? WHERE id = ?', undef,
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'), $htuserId);
-    } elsif ($self->{'status'} eq 'todelete') {
-        $rs = $self->delete( );
+    if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
+        $rs = $self->add();
+        @sql = ( 'UPDATE htaccess_users SET status = ? WHERE id = ?', undef,
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $htuserId );
+    } elsif ( $self->{'status'} eq 'todisable' ) {
+        $rs = $self->disable();
+        @sql = ( 'UPDATE htaccess_users SET status = ? WHERE id = ?', undef,
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $htuserId );
+    } elsif ( $self->{'status'} eq 'todelete' ) {
+        $rs = $self->delete();
         @sql = $rs
-            ? ('UPDATE htaccess_users SET status = ? WHERE id = ?', undef,
-                getLastError( 'error' ) || 'Unknown error', $htuserId)
-            : ('DELETE FROM htaccess_users WHERE id = ?', undef, $htuserId);
+            ? ( 'UPDATE htaccess_users SET status = ? WHERE id = ?', undef,
+                getLastError( 'error' ) || 'Unknown error', $htuserId )
+            : ( 'DELETE FROM htaccess_users WHERE id = ?', undef, $htuserId );
     } else {
-        warning( sprintf( 'Unknown action (%s) for htuser (ID %d)', $self->{'status'}, $htuserId ) );
+        warning( sprintf( 'Unknown action (%s) for htuser (ID %d)', $self->{'status'}, $htuserId ));
         return 0;
     }
 
@@ -90,7 +90,7 @@ sub process
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         $self->{'_dbh'}->do( @sql );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -130,10 +130,10 @@ sub _loadData
             ',
             undef, $htuserId
         );
-        $row or die( sprintf( 'Data not found for htuser (ID %d)', $htuserId ) );
-        %{$self} = (%{$self}, %{$row});
+        $row or die( sprintf( 'Data not found for htuser (ID %d)', $htuserId ));
+        %{$self} = ( %{$self}, %{$row} );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -155,8 +155,8 @@ sub _getData
     my ($self, $action) = @_;
 
     $self->{'_data'} = do {
-        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
-            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'});
+        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+            ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'} );
 
         {
             ACTION                => $action,

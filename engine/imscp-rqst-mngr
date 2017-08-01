@@ -39,7 +39,7 @@ use iMSCP::Getopt;
 
 newDebug( 'imscp-rqst-mngr.log' );
 
-iMSCP::Getopt->parseNoDefault( sprintf( "Usage: perl %s [OPTIONS]...", basename( $0 ) ).qq {
+iMSCP::Getopt->parseNoDefault( sprintf( "Usage: perl %s [OPTIONS]...", basename( $0 )) . qq {
 
 Script that processes i-MSCP backend requests.
 
@@ -52,13 +52,13 @@ OPTIONS:
 
 setVerbose( iMSCP::Getopt->verbose );
 
-iMSCP::Bootstrapper->getInstance( )->boot(
+iMSCP::Bootstrapper->getInstance()->boot(
     {
         mode            => 'backend',
         config_readonly => 1
     }
 );
-iMSCP::DbTasksProcessor->getInstance( mode => 'backend' )->processDbTasks( );
+iMSCP::DbTasksProcessor->getInstance( mode => 'backend' )->processDbTasks();
 
 =head1 AUTHOR
 

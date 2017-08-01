@@ -29,15 +29,15 @@ use File::Spec;
 use iMSCP::Log;
 use parent 'Exporter';
 
-our @EXPORT = qw/debug warning error fatal newDebug endDebug getMessage getLastError getMessageByType setVerbose
-    setDebug debugRegisterCallBack output silent/;
+our @EXPORT = qw/ debug warning error fatal newDebug endDebug getMessage getLastError getMessageByType setVerbose
+    setDebug debugRegisterCallBack output silent /;
 
 BEGIN {
     $SIG{'__DIE__'} = sub {
-        fatal( @_, (caller( 1 ))[3] || 'main' ) if defined $^S && !$^S
+        fatal( @_, ( caller( 1 ) )[3] || 'main' ) if defined $^S && !$^S
     };
     $SIG{'__WARN__'} = sub {
-        warning( @_, (caller( 1 ))[3] || 'main' );
+        warning( @_, ( caller( 1 ) )[3] || 'main' );
     };
 }
 
@@ -45,7 +45,7 @@ my $self;
 $self = {
     debug           => 0,
     verbose         => 0,
-    debug_callbacks => [ ],
+    debug_callbacks => [],
     loggers         => [ iMSCP::Log->new( id => 'default' ) ],
     logger          => sub { $self->{'loggers'}->[$#{$self->{'loggers'}}] }
 };
@@ -69,12 +69,12 @@ $self = {
 
 sub setDebug
 {
-    if ($_[0]) {
+    if ( $_[0] ) {
         $self->{'debug'} = 1;
         return;
     }
 
-    for(@{$self->{'loggers'}}) { # Remove any debug log message from all loggers
+    for( @{$self->{'loggers'}} ) { # Remove any debug log message from all loggers
         $_->retrieve( tag => 'debug', remove => 1 );
     }
 
@@ -125,7 +125,7 @@ sub newDebug
 
     fatal( "A log file unique identifier is expected" ) unless $logfileId;
 
-    for(@{$self->{'loggers'}}) {
+    for( @{$self->{'loggers'}} ) {
         die( "A logger with same identifier already exists" ) if $_->getId() eq $logfileId;
     }
 
@@ -150,12 +150,12 @@ sub endDebug
     pop @{$self->{'loggers'}}; # Remove logger from loggers stack
 
     # warn, error and fatal log messages must be always stored in default logger for later processing
-    for($logger->retrieve( tag => qr/(?:warn|error|fatal)/ )) {
+    for( $logger->retrieve( tag => qr/(?:warn|error|fatal)/ ) ) {
         $self->{'loggers'}->[0]->store( %{$_} );
     }
 
     my $logDir = $main::imscpConfig{'LOG_DIR'} || '/tmp';
-    if ($logDir ne '/tmp' && !-d $logDir) {
+    if ( $logDir ne '/tmp' && !-d $logDir ) {
         require iMSCP::Dir;
         local $@;
         eval {
@@ -170,7 +170,7 @@ sub endDebug
         $logDir = '/tmp' if $@;
     }
 
-    _writeLogfile( $logger, File::Spec->catfile( $logDir, $logger->getId() ) );
+    _writeLogfile( $logger, File::Spec->catfile( $logDir, $logger->getId()));
 }
 
 =item debug( $message [, $caller ] )
@@ -186,7 +186,7 @@ sub endDebug
 sub debug
 {
     my ($message, $caller) = @_;
-    $caller //= (caller( 1 ))[3] || 'main';
+    $caller //= ( caller( 1 ) )[3] || 'main';
 
     $self->{'logger'}()->store( message => "$caller: $message", tag => 'debug' ) if $self->{'debug'};
     print STDOUT output( "$caller: $message", 'debug' ) if $self->{'verbose'};
@@ -206,7 +206,7 @@ sub debug
 sub warning
 {
     my ($message, $caller) = @_;
-    $caller //= (caller( 1 ))[3] || 'main';
+    $caller //= ( caller( 1 ) )[3] || 'main';
 
     $self->{'logger'}()->store( message => "$caller: $message", tag => 'warn' );
     undef;
@@ -225,7 +225,7 @@ sub warning
 sub error
 {
     my ($message, $caller) = @_;
-    $caller //= (caller( 1 ))[3] || 'main';
+    $caller //= ( caller( 1 ) )[3] || 'main';
 
     $self->{'logger'}()->store( message => "$caller: $message", tag => 'error' );
     undef;
@@ -244,7 +244,7 @@ sub error
 sub fatal
 {
     my ($message, $caller) = @_;
-    $caller //= (caller( 1 ))[3] || 'main';
+    $caller //= ( caller( 1 ) )[3] || 'main';
 
     $self->{'logger'}()->store( message => "$caller: $message", tag => 'fatal' );
     exit 255;
@@ -276,7 +276,7 @@ sub getLastError
 sub getMessageByType
 {
     my ($type, $options) = @_;
-    $options ||= { };
+    $options ||= {};
 
     my @messages = map { $_->{'message'} } $self->{'logger'}()->retrieve(
         tag    => ref $type eq 'Regexp' ? $type : qr/$type/i,
@@ -305,17 +305,17 @@ sub output
 
     my $output = '';
 
-    if ($level eq 'debug') {
+    if ( $level eq 'debug' ) {
         $output = "[\033[0;34mDEBUG\033[0m] $text\n";
-    } elsif ($level eq 'info') {
+    } elsif ( $level eq 'info' ) {
         $output = "[\033[0;34mINFO\033[0m]  $text\n";
-    } elsif ($level eq 'warn') {
+    } elsif ( $level eq 'warn' ) {
         $output = "[\033[0;33mWARN\033[0m]  $text\n";
-    } elsif ($level eq 'error') {
+    } elsif ( $level eq 'error' ) {
         $output = "[\033[0;31mERROR\033[0m] $text\n";
-    } elsif ($level eq 'fatal') {
+    } elsif ( $level eq 'fatal' ) {
         $output = "[\033[0;31mFATAL\033[0m] $text\n";
-    } elsif ($level eq 'ok') {
+    } elsif ( $level eq 'ok' ) {
         $output = "[\033[0;32mDONE\033[0m]  $text\n";
     } else {
         $output = "$text\n";
@@ -363,17 +363,17 @@ sub _writeLogfile
     my ($logger, $logfilePath) = @_;
 
     # Make error message free of any ANSI color and end of line codes
-    (my $messages = _getMessages( $logger )) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
+    ( my $messages = _getMessages( $logger ) ) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
 
     return 0 if $messages eq '';
 
-    if (open( my $fh, '>', $logfilePath )) {
-        print {$fh} $messages;
+    if ( open( my $fh, '>', $logfilePath ) ) {
+        print { $fh } $messages;
         close $fh;
         return 0;
     }
 
-    print output( sprintf("Couldn't open log file `%s' for writing: %s", $logfilePath, $! ), 'error');
+    print output( sprintf( "Couldn't open log file `%s' for writing: %s", $logfilePath, $! ), 'error' );
     0;
 }
 
@@ -391,7 +391,7 @@ sub _getMessages
     my ($logger) = @_;
 
     my $bf = '';
-    for($logger->flush()) {
+    for( $logger->flush() ) {
         $bf .= "[$_->{'when'}] [$_->{'tag'}] $_->{'message'}\n";
     }
     $bf;
@@ -409,13 +409,13 @@ END {
     &{$_} for @{$self->{'debug_callbacks'}};
 
     my $countLoggers = scalar @{$self->{'loggers'}};
-    while($countLoggers > 0) {
+    while ( $countLoggers > 0 ) {
         endDebug();
         $countLoggers--;
     }
 
-    for($self->{'logger'}()->retrieve( tag => qr/(?:warn|error|fatal)/, remove => 1 )) {
-        print STDERR output($_->{'message'}, $_->{'tag'});
+    for( $self->{'logger'}()->retrieve( tag => qr/(?:warn|error|fatal)/, remove => 1 ) ) {
+        print STDERR output( $_->{'message'}, $_->{'tag'} );
     }
 
     $? = $exitCode;

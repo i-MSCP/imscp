@@ -51,7 +51,7 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-    Package::FileManager::Net2ftp::Installer->getInstance( )->preinstall( );
+    Package::FileManager::Net2ftp::Installer->getInstance()->preinstall();
 }
 
 =item install( )
@@ -64,7 +64,7 @@ sub preinstall
 
 sub install
 {
-    Package::FileManager::Net2ftp::Installer->getInstance( )->install( );
+    Package::FileManager::Net2ftp::Installer->getInstance()->install();
 }
 
 =item uninstall( )
@@ -77,7 +77,7 @@ sub install
 
 sub uninstall
 {
-    Package::FileManager::Net2ftp::Uninstaller->getInstance( )->uninstall( );
+    Package::FileManager::Net2ftp::Uninstaller->getInstance()->uninstall();
 }
 
 =item setGuiPermissions( )
@@ -90,7 +90,7 @@ sub uninstall
 
 sub setGuiPermissions
 {
-    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
     setRights(
         "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp",

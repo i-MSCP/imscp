@@ -81,18 +81,18 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'packages'} = [ ];
+    $self->{'packages'} = [];
     $self->{'packages_dir'} = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages";
     $self->{'su_cmd_pattern'} = "su -l $main::imscpConfig{'IMSCP_USER'} -s /bin/bash -c %s";
     $self->{'php_cmd_prefix'} = "php -d date.timezone=$main::imscpConfig{'TIMEZONE'} -d allow_url_fopen=1 "
-        ."-d suhosin.executor.include.whitelist=phar";
+        . "-d suhosin.executor.include.whitelist=phar";
 
-    iMSCP::EventManager->getInstance( )->register(
+    iMSCP::EventManager->getInstance()->register(
         'afterSetupPreInstallPackages',
         sub {
 
-            if(iMSCP::Getopt->cleanPackageCache) {
-                my $rs = $self->_cleanPackageCache( );
+            if ( iMSCP::Getopt->cleanPackageCache ) {
+                my $rs = $self->_cleanPackageCache();
                 return $rs if $rs;
             }
 
@@ -108,10 +108,10 @@ sub _init
 
             my $rs = step(
                 sub {
-                    unless (iMSCP::Getopt->skipPackageUpdate
+                    unless ( iMSCP::Getopt->skipPackageUpdate
                         && -x "$main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar"
                     ) {
-                        my $rs = $self->_getComposer( );
+                        my $rs = $self->_getComposer();
                         return $rs if $rs;
                     }
                     0;
@@ -119,17 +119,17 @@ sub _init
                 'Installing composer.phar from http://getcomposer.org', 3, 1
             );
             $rs ||= step(
-                sub { iMSCP::Getopt->skipPackageUpdate ? $self->_checkRequirements( ) : 0; },
+                sub { iMSCP::Getopt->skipPackageUpdate ? $self->_checkRequirements() : 0; },
                 'Checking composer package requirements', 3, 2
             );
 
-            if (iMSCP::Getopt->skipPackageUpdate) {
+            if ( iMSCP::Getopt->skipPackageUpdate ) {
                 endDetail;
                 return $rs;
             };
 
             $rs ||= step(
-                sub { $self->_installPackages( ); },
+                sub { $self->_installPackages(); },
                 'Installing/Updating composer packages from Github', 3, 3
             );
 
@@ -155,16 +155,16 @@ sub _getComposer
 
     my $msgHeader = "Installing/Updating composer.phar from http://getcomposer.org\n\n";
     my $msgFooter = "\nDepending on your connection, this may take few seconds...";
-    my ($rs, $stderr) = (0, undef);
+    my ($rs, $stderr) = ( 0, undef );
 
-    unless (-f "$main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar") {
+    unless ( -f "$main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar" ) {
         $rs = executeNoWait(
             sprintf(
                 $self->{'su_cmd_pattern'},
                 escapeShell( "curl -s http://getcomposer.org/installer | $self->{'php_cmd_prefix'}" )
             ),
-            (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                ? undef : sub { step( undef, $msgHeader.(shift).$msgFooter, 3, 1 ); }
+            ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
+                ? undef : sub { step( undef, $msgHeader . ( shift ) . $msgFooter, 3, 1 ); }
             ),
             sub { $stderr .= shift; }
         );
@@ -174,17 +174,17 @@ sub _getComposer
                 $self->{'su_cmd_pattern'},
                 escapeShell(
                     "$self->{'php_cmd_prefix'} $main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar self-update "
-                        ."--clean-backups --stable --no-ansi --no-interaction"
+                        . "--clean-backups --stable --no-ansi --no-interaction"
                 )
             ),
-            (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                ? undef : sub { step( undef, "$msgHeader".(shift).$msgFooter, 3, 1 ); }
+            ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
+                ? undef : sub { step( undef, "$msgHeader" . ( shift ) . $msgFooter, 3, 1 ); }
             ),
             sub { $stderr .= shift; }
         );
     }
 
-    error( sprintf( "Couldn't install/update composer.phar: %s", $stderr || 'Unknown error' ) ) if $rs;
+    error( sprintf( "Couldn't install/update composer.phar: %s", $stderr || 'Unknown error' )) if $rs;
     $rs;
 }
 
@@ -205,25 +205,25 @@ sub _checkRequirements
     my $msgHeader = "Checking composer package requirements\n\n";
     my $stderr;
 
-    for(@{$self->{'packages'}}) {
+    for( @{$self->{'packages'}} ) {
         my ($package, $version) = $_ =~ /"(.*)":\s*"(.*)"/;
-        my $msg = $msgHeader."Checking package $package ($version)\n\n";
+        my $msg = $msgHeader . "Checking package $package ($version)\n\n";
 
         my $rs = executeNoWait(
             sprintf(
                 $self->{'su_cmd_pattern'},
                 escapeShell(
-                    "$self->{'php_cmd_prefix'} $main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar show --no-ansi ".
+                    "$self->{'php_cmd_prefix'} $main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar show --no-ansi " .
                         "--no-interaction --working-dir=$self->{'packages_dir'} $package $version"
                 )
             ),
-            (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
+            ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
                 ? undef : sub { step( undef, $msg, 3, 2 ); }
             ),
             sub { $stderr .= shift; }
         );
-        if ($rs) {
-            error( sprintf( "Package %s (%s) not found. Please retry without the '-a' option.", $package, $version ) );
+        if ( $rs ) {
+            error( sprintf( "Package %s (%s) not found. Please retry without the '-a' option.", $package, $version ));
             return 1;
         }
     }
@@ -243,7 +243,7 @@ sub _installPackages
 {
     my ($self) = @_;
 
-    my $rs = $self->_buildComposerFile( );
+    my $rs = $self->_buildComposerFile();
     return $rs if $rs;
 
     my $msgHeader = "Installing/Updating composer packages from Github\n\n";
@@ -255,12 +255,12 @@ sub _installPackages
             $self->{'su_cmd_pattern'},
             escapeShell(
                 "$self->{'php_cmd_prefix'} $main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar update --no-ansi "
-                    ."--no-interaction --working-dir=$self->{'packages_dir'}"
+                    . "--no-interaction --working-dir=$self->{'packages_dir'}"
             )
         ),
-        sub { },
-        (iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-            ? undef : sub { step( undef, $msgHeader.(shift).$msgFooter, 3, 3 ); }
+        sub {},
+        ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
+            ? undef : sub { step( undef, $msgHeader . ( shift ) . $msgFooter, 3, 3 ); }
         )
     );
 
@@ -298,8 +298,8 @@ sub _buildComposerFile
 TPL
 
     my $file = iMSCP::File->new( filename => "$self->{'packages_dir'}/composer.json" );
-    $file->set( process( { PACKAGES => join ",\n", @{$self->{'packages'}} }, $tpl ) );
-    $file->save( );
+    $file->set( process( { PACKAGES => join ",\n", @{$self->{'packages'}} }, $tpl ));
+    $file->save();
 }
 
 =item _cleanPackageCache( )
@@ -314,9 +314,9 @@ sub _cleanPackageCache
 {
     my ($self) = @_;
 
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'IMSCP_HOMEDIR'}/.cache" )->remove( );
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'IMSCP_HOMEDIR'}/.composer" )->remove( );
-    iMSCP::Dir->new( dirname => $self->{'packages_dir'} )->remove( );
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'IMSCP_HOMEDIR'}/.cache" )->remove();
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'IMSCP_HOMEDIR'}/.composer" )->remove();
+    iMSCP::Dir->new( dirname => $self->{'packages_dir'} )->remove();
     0;
 }
 

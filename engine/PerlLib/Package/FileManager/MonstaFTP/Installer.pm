@@ -57,7 +57,7 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = iMSCP::Composer->getInstance( )->registerPackage( 'imscp/monsta-ftp', $VERSION );
+    my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/monsta-ftp', $VERSION );
     $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 
@@ -73,9 +73,9 @@ sub install
 {
     my ($self) = @_;
 
-    my $rs = $self->_installFiles( );
-    $rs ||= $self->_buildHttpdConfig( );
-    $rs ||= $self->_buildConfig( );
+    my $rs = $self->_installFiles();
+    $rs ||= $self->_buildHttpdConfig();
+    $rs ||= $self->_buildConfig();
 }
 
 =back
@@ -103,13 +103,13 @@ sub afterFrontEndBuildConfFile
     ${$tplContent} = replaceBloc(
         "# SECTION custom BEGIN.\n",
         "# SECTION custom END.\n",
-        "    # SECTION custom BEGIN.\n".
+        "    # SECTION custom BEGIN.\n" .
             getBloc(
                 "# SECTION custom BEGIN.\n",
                 "# SECTION custom END.\n",
                 ${$tplContent}
-            ).
-            "    include imscp_monstaftp.conf;\n".
+            ) .
+            "    include imscp_monstaftp.conf;\n" .
             "    # SECTION custom END.\n",
         ${$tplContent}
     );
@@ -134,7 +134,7 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self;
 }
 
@@ -150,12 +150,12 @@ sub _installFiles
 {
     my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/monsta-ftp";
 
-    unless (-d $packageDir) {
+    unless ( -d $packageDir ) {
         error( "Couldn't find the imscp/monsta-ftp package into the packages cache directory" );
         return 1;
     }
 
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove( );
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
     iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy(
         "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' }
     );
@@ -175,7 +175,7 @@ sub _installFiles
 
 sub _buildHttpdConfig
 {
-    my $frontEnd = Package::FrontEnd->getInstance( );
+    my $frontEnd = Package::FrontEnd->getInstance();
     $frontEnd->buildConfFile(
         "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/monsta-ftp/iMSCP/nginx/imscp_monstaftp.conf",
         {
@@ -200,7 +200,7 @@ sub _buildConfig
     my ($self) = @_;
 
     my $panelUName = my $panelGName =
-        $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+        $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
     # config.php file
 
@@ -213,10 +213,10 @@ sub _buildConfig
     my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'monstaftp', 'config.php', \ my $cfgTpl, $data );
     return $rs if $rs;
 
-    unless (defined $cfgTpl) {
-        $cfgTpl = iMSCP::File->new( filename => $conffile )->get( );
-        unless (defined $cfgTpl) {
-            error( sprintf( "Couldn't read %s file", $conffile ) );
+    unless ( defined $cfgTpl ) {
+        $cfgTpl = iMSCP::File->new( filename => $conffile )->get();
+        unless ( defined $cfgTpl ) {
+            error( sprintf( "Couldn't read %s file", $conffile ));
             return 1;
         }
     }
@@ -225,7 +225,7 @@ sub _buildConfig
 
     my $file = iMSCP::File->new( filename => $conffile );
     $file->set( $cfgTpl );
-    $rs = $file->save( );
+    $rs = $file->save();
     $rs ||= $file->owner( $panelUName, $panelGName );
     $rs ||= $file->mode( 0440 );
     return $rs if $rs;
@@ -247,7 +247,7 @@ sub _buildConfig
                 port             => 21,
                 # Enable passive mode excepted if the FTP daemon is vsftpd
                 # vsftpd doesn't allows to operate on a per IP basic (IP masquerading)
-                passive          => ($main::imscpConfig{'FTPD_SERVER'} eq 'vsftpd') ? JSON::false : JSON::true,
+                passive          => ( $main::imscpConfig{'FTPD_SERVER'} eq 'vsftpd' ) ? JSON::false : JSON::true,
                 ssl              => main::setupGetQuestion( 'SERVICES_SSL_ENABLED' ) eq 'yes'
                     ? JSON::true : JSON::false,
                 initialDirectory => '/' # Home directory as set for the FTP user
@@ -260,8 +260,8 @@ sub _buildConfig
     return $rs if $rs;
 
     $file = iMSCP::File->new( filename => $conffile );
-    $file->set( $cfgTpl || JSON->new( )->utf8( 1 )->pretty( 1 )->encode( $data ) );
-    $rs = $file->save( );
+    $file->set( $cfgTpl || JSON->new()->utf8( 1 )->pretty( 1 )->encode( $data ));
+    $rs = $file->save();
     $rs ||= $file->owner( $panelUName, $panelGName );
     $rs ||= $file->mode( 0440 );
 }

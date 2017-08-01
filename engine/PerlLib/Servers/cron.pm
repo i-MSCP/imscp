@@ -53,7 +53,7 @@ sub factory
     my $package = 'Servers::cron::cron';
     eval "require $package";
     fatal( $@ ) if $@;
-    $instance = $package->getInstance( );
+    $instance = $package->getInstance();
 }
 
 =item can( $method )

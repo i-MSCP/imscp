@@ -53,10 +53,10 @@ sub acquire
 {
     my ($self) = @_;
 
-    debug( sprintf( 'Acquiring exclusive lock on %s', $self->{'path'} ) );
+    debug( sprintf( 'Acquiring exclusive lock on %s', $self->{'path'} ));
 
-    while(!$self->{'_fd'}) {
-        open my $fd, '>', $self->{'path'} or die( sprintf( "Couldn't open %s file", $self->{'path'} ) );
+    while ( !$self->{'_fd'} ) {
+        open my $fd, '>', $self->{'path'} or die( sprintf( "Couldn't open %s file", $self->{'path'} ));
 
         eval {
             return 0 unless $self->_tryLock( $fd );
@@ -87,7 +87,7 @@ sub release
     # Prevent lock from being released if the process is not the lock owner
     return unless $self->{'_owner'} == $$;
 
-    debug( sprintf( 'Releasing exclusive lock on %s', $self->{'path'} ) );
+    debug( sprintf( 'Releasing exclusive lock on %s', $self->{'path'} ));
 
     # It is important the lock file is removed before it's released, otherwise:
     #
@@ -141,9 +141,9 @@ sub _tryLock
 {
     my ($self, $fd) = @_;
 
-    return 1 if flock( $fd, LOCK_EX | ($self->{'non_blocking'} ? LOCK_NB : 0 ) );
+    return 1 if flock( $fd, LOCK_EX | ( $self->{'non_blocking'} ? LOCK_NB : 0 ));
 
-    $!{'EWOULDBLOCK'} or die( sprintf( "Couldn't acquire exclusive lock on %s: %s", $self->{'path'}, $! ) );
+    $!{'EWOULDBLOCK'} or die( sprintf( "Couldn't acquire exclusive lock on %s: %s", $self->{'path'}, $! ));
     debug( sprintf( "A lock on %s is held by another process.", $self->{'path'} ));
     0;
 }
@@ -167,12 +167,12 @@ sub _lockSuccess
     my ($self, $fd) = @_;
 
     my @stat1 = CORE::stat( $self->{'path'} );
-    unless (@stat1) {
+    unless ( @stat1 ) {
         return if $!{'ENOENT'};
-        die( sprintf( "Couldn't stats: %s", $! ) );
+        die( sprintf( "Couldn't stats: %s", $! ));
     }
 
-    my @stat2 = CORE::stat( $fd ) or die( sprintf( "Couldn't stats: %s", $! ) );
+    my @stat2 = CORE::stat( $fd ) or die( sprintf( "Couldn't stats: %s", $! ));
 
     # If our locked file descriptor and the file on disk refer to
     # the same device and inode, they're the same file.

@@ -52,7 +52,7 @@ sub preinstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'remote' );
-    $rs ||= Servers::sqld::remote::installer->getInstance( )->preinstall( );
+    $rs ||= Servers::sqld::remote::installer->getInstance()->preinstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPreinstall', 'remote' )
 }
 
@@ -85,7 +85,7 @@ sub uninstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'remote' );
-    $rs ||= Servers::sqld::remote::uninstaller->getInstance( )->uninstall( );
+    $rs ||= Servers::sqld::remote::uninstaller->getInstance()->uninstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldUninstall', 'remote' );
 }
 
@@ -154,18 +154,18 @@ sub createUser
     defined $password or die( '$password parameter is not defined' );
 
     eval {
-        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
         $dbh->do(
             'CREATE USER ?@? IDENTIFIED BY ?'
-                .(($self->getType( ) ne 'mariadb'
-                    && version->parse( $self->getVersion( ) ) >= version->parse( '5.7.6' ))
+                . ( ( $self->getType() ne 'mariadb'
+                    && version->parse( $self->getVersion()) >= version->parse( '5.7.6' ) )
                 ? ' PASSWORD EXPIRE NEVER' : ''
             ),
             undef, $user, $host, $password
         );
     };
-    !$@ or die( sprintf( "Couldn't create the %s\@%s SQL user: %s", $user, $host, $@ ) );
+    !$@ or die( sprintf( "Couldn't create the %s\@%s SQL user: %s", $user, $host, $@ ));
     0;
 }
 

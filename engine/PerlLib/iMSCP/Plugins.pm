@@ -63,7 +63,7 @@ sub getClass
 {
     my ($self, $pluginName) = @_;
 
-    unless ($self->{'loaded_plugins'}->{$pluginName}) {
+    unless ( $self->{'loaded_plugins'}->{$pluginName} ) {
         grep( $_ eq $pluginName, @{$self->{'availables_plugins'}} ) or die (
             sprintf( "Plugin %s isn't available", $pluginName )
         );
@@ -96,7 +96,7 @@ sub _init
     $_ = basename( $_, '.pm' ) for @{$self->{'availables_plugins'}} = glob(
         "$main::imscpConfig{'PLUGINS_DIR'}/*/backend/*.pm"
     );
-    $self->{'loaded_plugins'} = { };
+    $self->{'loaded_plugins'} = {};
     $self;
 }
 

@@ -51,18 +51,18 @@ sub addSystemGroup
 {
     my (undef, $groupname, $systemgroup) = @_;
 
-    unless (defined $groupname) {
+    unless ( defined $groupname ) {
         error( 'Missing $groupname parameter' );
         return 1;
     }
 
-    if ($groupname eq $main::imscpConfig{'ROOT_GROUP'}) {
-        error( sprintf( '%s group is prohibited', $main::imscpConfig{'ROOT_GROUP'} ) );
+    if ( $groupname eq $main::imscpConfig{'ROOT_GROUP'} ) {
+        error( sprintf( '%s group is prohibited', $main::imscpConfig{'ROOT_GROUP'} ));
         return 1;
     }
 
     my $rs = execute(
-        [ '/usr/sbin/groupadd', '-f', ($systemgroup ? '-r' : ( ) ), $groupname ], \ my $stdout, \ my $stderr
+        [ '/usr/sbin/groupadd', '-f', ( $systemgroup ? '-r' : () ), $groupname ], \ my $stdout, \ my $stderr
     );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
@@ -82,19 +82,19 @@ sub delSystemGroup
 {
     my (undef, $groupname) = @_;
 
-    unless (defined $groupname) {
+    unless ( defined $groupname ) {
         error( '$groupname parameter is not defined' );
         return 1;
     }
 
-    if ($groupname eq $main::imscpConfig{'ROOT_GROUP'}) {
-        error( sprintf( '%s group deletion is prohibited', $main::imscpConfig{'ROOT_GROUP'} ) );
+    if ( $groupname eq $main::imscpConfig{'ROOT_GROUP'} ) {
+        error( sprintf( '%s group deletion is prohibited', $main::imscpConfig{'ROOT_GROUP'} ));
         return 1;
     }
 
     my $rs = execute( [ '/usr/sbin/groupdel', $groupname ], \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
-    unless (grep($_ == $rs, 0, 6)) {
+    unless ( grep($_ == $rs, 0, 6) ) {
         error( $stderr || 'Unknown error' );
         return $rs;
     }

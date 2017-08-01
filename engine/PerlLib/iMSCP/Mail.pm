@@ -59,7 +59,7 @@ sub errmsg
 
     defined $message or die( "$message parameter is not defined" );
 
-    my $functionName = (caller( 1 ))[3] || 'main';
+    my $functionName = ( caller( 1 ) )[3] || 'main';
     $self->_sendMail( 'i-MSCP - An error has been raised', <<"EOF", 'error' );
 An error has been raised while executing function $functionName in $0:
 
@@ -83,7 +83,7 @@ sub warnMsg
 
     defined $message or die( "$message parameter is not defined" );
 
-    my $functionName = (caller( 1 ))[3] || 'main';
+    my $functionName = ( caller( 1 ) )[3] || 'main';
     $self->_sendMail( 'i-MSCP - A warning has been raised', <<"EOF", 'warning' );
 A warning has been raised while executing function $functionName in $0:
 
@@ -115,13 +115,13 @@ sub _sendMail
 
     my $sendmail = iMSCP::ProgramFinder::find( 'sendmail' ) or die( "Couldn't find sendmail executable" );
     my $host = $main::imscpConfig{'BASE_SERVER_VHOST'};
-    my $out = MIME::Entity->new( )->build(
+    my $out = MIME::Entity->new()->build(
         From       => "i-MSCP ($host) <noreply\@$host>",
         To         => $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'},
         Subject    => $subject,
         Type       => 'text/plain; charset=utf-8',
         Encoding   => '8bit',
-        Data       => encode( 'UTF-8', wrap( '', '', <<"EOF" ) ),
+        Data       => encode( 'UTF-8', wrap( '', '', <<"EOF" )),
 Dear administrator,
 
 This is an automatic email sent by i-MSCP:
@@ -145,8 +145,8 @@ EOF
     );
 
     my $fh;
-    unless (open $fh, '|-', $sendmail, '-t', '-oi', '-f', "noreply\@$host") {
-        error( sprintf( "Couldn't send mail: %s", $! ) );
+    unless ( open $fh, '|-', $sendmail, '-t', '-oi', '-f', "noreply\@$host" ) {
+        error( sprintf( "Couldn't send mail: %s", $! ));
         return 1;
     }
     $out->print( $fh );

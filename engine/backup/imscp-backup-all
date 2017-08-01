@@ -94,8 +94,7 @@ my $command = {
 
 =cut
 
-sub backupHomedir
-{
+sub backupHomedir {
     my ($mainDmnName, $homeDir, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group) = @_;
 
     my $bkpDate = strftime "%Y.%m.%d-%H-%M", localtime;
@@ -103,7 +102,7 @@ sub backupHomedir
 
     my @cmd = (
         "tar -c -C $homeDir --exclude=logs --exclude=phptmp --exclude=backups .",
-        ($cmpAlgo eq 'no'
+        ( $cmpAlgo eq 'no'
             ? "-f $bkpDir/$bkpArchName" : "| $command->{$cmpAlgo}->{'command'} -$cmpLevel > $bkpDir/$bkpArchName"
         )
     );
@@ -113,7 +112,7 @@ sub backupHomedir
     debug( $stdout ) if $stdout;
 
     # tar exit with status 1 only if some files were changed while being read. We want ignore this.
-    if ($rs > 1) {
+    if ( $rs > 1 ) {
         error( $stderr || 'Unknown error' ) if $stderr;
         return;
     }
@@ -138,33 +137,32 @@ sub backupHomedir
 
 =cut
 
-sub backupDatabases
-{
+sub backupDatabases {
     my ($mainDmnId, $bkpDir, $cmpAlgo, $cmpLevel, $user, $group) = @_;
 
+    my $db = iMSCP::Database->factory();
     my $rows = eval {
-        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        my $dbh = $db->getRawDb();
         local $dbh->{'RaiseError'} = 1;
 
         $dbh->selectall_hashref(
             'SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?', 'sqld_name', undef, $mainDmnId
         );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return;
     }
 
-    for my $dbName(keys %{$rows}) {
+    for my $dbName( keys %{$rows} ) {
         local $@;
         eval { $db->dumpdb( $dbName, $bkpDir ); };
         next if $@;
 
         # Encode slashes as SOLIDUS unicode character
         # Encode dots as Full stop unicode character
-        (my $encodedDbName = $dbName) =~ s%([./])%{'/', '@002f', '.', '@002e'}->{$1}%ge;
-
-        my $dbDumpFilePath = File::Spec->catfile( $bkpDir, $encodedDbName.'.sql' );
+        ( my $encodedDbName = $dbName ) =~ s%([./])%{ '/', '@002f', '.', '@002e' }->{$1}%ge;
+        my $dbDumpFilePath = File::Spec->catfile( $bkpDir, $encodedDbName . '.sql' );
 
         my $file = iMSCP::File->new( filename => $dbDumpFilePath );
         my $rs = $file->owner( $user, $group );
@@ -176,7 +174,7 @@ sub backupDatabases
             [ $command->{$cmpAlgo}->{'command'}, "-$cmpLevel", '--force', $dbDumpFilePath ], \ my $stdout, \ my $stderr
         );
         debug( $stdout ) if $stdout;
-        error( sprintf( "Couldn't compress %s database dump: %s", $dbName, $stderr || 'Unknown error' ) ) if $rs;
+        error( sprintf( "Couldn't compress %s database dump: %s", $dbName, $stderr || 'Unknown error' )) if $rs;
     }
 }
 
@@ -195,12 +193,11 @@ sub backupDatabases
 
 =cut
 
-sub backupMaildirs
-{
+sub backupMaildirs {
     my ($dmnId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group) = @_;
 
     my $rows = eval {
-        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
 
         $dbh->selectall_hashref(
@@ -236,23 +233,23 @@ sub backupMaildirs
             'domain_name', undef, $dmnId, $dmnId, $dmnId, $dmnId
         );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return;
     }
 
-    my $virtualMailDir = Servers::mta->factory( )->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
+    my $virtualMailDir = Servers::mta->factory()->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
 
-    for (keys %{$rows}) {
+    for ( keys %{$rows} ) {
         my $mailDirPath = "$virtualMailDir/$_";
         next unless -d $mailDirPath;
 
-        my $bkpDate = strftime "%Y.%m.%d-%H-%M", localtime( );
+        my $bkpDate = strftime "%Y.%m.%d-%H-%M", localtime();
         my $bkpArchName = "mail-backup-$_-$bkpDate.tar$bkpExt";
 
         my @cmd = (
             "tar -c -C $mailDirPath .",
-            ($cmpAlgo eq 'no'
+            ( $cmpAlgo eq 'no'
                 ? "-f $bkpDir/$bkpArchName" : "| $command->{$cmpAlgo}->{'command'} -$cmpLevel > $bkpDir/$bkpArchName"
             )
         );
@@ -275,8 +272,7 @@ sub backupMaildirs
 
 =cut
 
-sub run
-{
+sub run {
     return unless $main::imscpConfig{'BACKUP_DOMAINS'} eq 'yes';
 
     my $cmpAlgo = lc( $main::imscpConfig{'BACKUP_COMPRESS_ALGORITHM'} );
@@ -285,10 +281,10 @@ sub run
     my ($cmpLevel) = $main::imscpConfig{'BACKUP_COMPRESS_LEVEL'} =~ /^([1-9])$/;
     $cmpLevel ||= 1;
 
-    my $bkpExt = ($cmpAlgo ne 'no') ? '.'.$command->{$cmpAlgo}->{'extension'} : '';
+    my $bkpExt = ( $cmpAlgo ne 'no' ) ? '.' . $command->{$cmpAlgo}->{'extension'} : '';
 
     my $rows = eval {
-        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
 
         $dbh->selectall_hashref(
@@ -302,12 +298,12 @@ sub run
             'domain_id'
         );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return;
     }
 
-    while(my ($dmnId, $dmnData) = each( %{$rows} )) {
+    while ( my ($dmnId, $dmnData) = each( %{$rows} ) ) {
         next unless $dmnData->{'allowbackup'} && $dmnData->{'allowbackup'} =~ /\b(?:dmn|sql|mail)\b/;
         my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$dmnData->{'domain_name'}";
 
@@ -319,10 +315,10 @@ sub run
 
         local $@;
         eval {
-            unless (-d $bkpDir) {
+            unless ( -d $bkpDir ) {
                 my $isProtectedHomedir = 0;
 
-                if (isImmutable( $homeDir )) {
+                if ( isImmutable( $homeDir ) ) {
                     $isProtectedHomedir = 1;
                     clearImmutable( $homeDir );
                 }
@@ -336,24 +332,25 @@ sub run
                 );
 
                 setImmutable( $homeDir ) if $isProtectedHomedir;
-            } else {
+            }
+            else {
                 iMSCP::Dir->new( dirname => $bkpDir )->clear( undef, qr/.*/ );
             }
         };
-        if ($@) {
+        if ( $@ ) {
             error( $@ );
             next;
         }
 
-        if ($dmnData->{'allowbackup'} =~ /\bdmn\b/) {
+        if ( $dmnData->{'allowbackup'} =~ /\bdmn\b/ ) {
             backupHomedir( $dmnData->{'domain_name'}, $homeDir, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group )
         }
 
-        if ($dmnData->{'allowbackup'} =~ /\bsql\b/) {
+        if ( $dmnData->{'allowbackup'} =~ /\bsql\b/ ) {
             backupDatabases( $dmnId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group );
         }
 
-        if ($dmnData->{'allowbackup'} =~ /\bmail\b/) {
+        if ( $dmnData->{'allowbackup'} =~ /\bmail\b/ ) {
             backupMaildirs( $dmnId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group );
         }
     }
@@ -361,7 +358,7 @@ sub run
 
 newDebug( 'imscp-backup-all.log' );
 
-iMSCP::Getopt->parseNoDefault( sprintf( "Usage: perl %s [OPTION]...", basename( $0 ) ).qq {
+iMSCP::Getopt->parseNoDefault( sprintf( "Usage: perl %s [OPTION]...", basename( $0 )) . qq {
 
 Script that backup i-MSCP customer's data.
 
@@ -373,7 +370,7 @@ OPTIONS:
 
 setVerbose( iMSCP::Getopt->verbose );
 
-my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
+my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-backup-all.lock', 'nowait' );
 
 $bootstrapper->boot(
@@ -383,10 +380,10 @@ $bootstrapper->boot(
     }
 );
 
-run( );
+run();
 
 my @errors = getMessageByType( 'error' );
-iMSCP::Mail->new( )->errmsg( "@errors" ) if @errors;
+iMSCP::Mail->new()->errmsg( "@errors" ) if @errors;
 
 =back
 

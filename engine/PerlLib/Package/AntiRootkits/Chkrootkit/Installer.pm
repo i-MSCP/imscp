@@ -49,7 +49,7 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-    $_[0]->_disableDebianConfig( );
+    $_[0]->_disableDebianConfig();
 }
 
 =item postinstall( )
@@ -64,8 +64,8 @@ sub postinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->_addCronTask( );
-    $rs ||= $self->_scheduleCheck( );
+    my $rs = $self->_addCronTask();
+    $rs ||= $self->_scheduleCheck();
 }
 
 =back
@@ -99,7 +99,7 @@ sub _disableDebianConfig
 
 sub _addCronTask
 {
-    Servers::cron->factory( )->addTask(
+    Servers::cron->factory()->addTask(
         {
             TASKID  => 'Package::AntiRootkits::Chkrootkit',
             MINUTE  => '@weekly',
@@ -128,7 +128,7 @@ sub _scheduleCheck
     # Create an emtpy file to avoid planning multiple check if installer is run many time
     my $file = iMSCP::File->new( filename => $main::imscpConfig{'CHKROOTKIT_LOG'} );
     $file->set( "Check scheduled...\n" );
-    my $rs = $file->save( );
+    my $rs = $file->save();
     return $rs if $rs;
 
     $rs = execute(

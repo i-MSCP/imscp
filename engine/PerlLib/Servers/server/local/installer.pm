@@ -91,15 +91,15 @@ sub hostnameDialog
 
     my $hostname = main::setupGetQuestion( 'SERVER_HOSTNAME' );
 
-    if ($main::reconfigure =~ /^(?:local_server|system_hostname|hostnames|all|forced)$/
+    if ( $main::reconfigure =~ /^(?:local_server|system_hostname|hostnames|all|forced)$/
         || !isValidHostname( $hostname )
     ) {
-        chomp( $hostname = $hostname || `hostname --fqdn 2>/dev/null` || '');
+        chomp( $hostname = $hostname || `hostname --fqdn 2>/dev/null` || '' );
         $hostname = idn_to_unicode( $hostname, 'utf-8' );
 
-        my ($rs, $msg) = (0, '');
+        my ($rs, $msg) = ( 0, '' );
         do {
-            ($rs, $hostname) = $dialog->inputbox( <<"EOF", $hostname );
+            ( $rs, $hostname ) = $dialog->inputbox( <<"EOF", $hostname );
 
 Please enter your server fully qualified hostname:$msg
 EOF
@@ -108,7 +108,7 @@ EOF
         return $rs if $rs >= 30;
     }
 
-    main::setupSetQuestion( 'SERVER_HOSTNAME', idn_to_ascii( $hostname, 'utf-8' ) );
+    main::setupSetQuestion( 'SERVER_HOSTNAME', idn_to_ascii( $hostname, 'utf-8' ));
     0;
 }
 
@@ -128,10 +128,10 @@ sub primaryIpDialog
     my @ipList = sort
         grep(
             isValidIpAddr( $_, qr/(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)/ ),
-            iMSCP::Net->getInstance( )->getAddresses( )
+            iMSCP::Net->getInstance()->getAddresses()
         ),
         'None';
-    unless (@ipList) {
+    unless ( @ipList ) {
         error( "Couldn't get list of server IP addresses. At least one IP address must be configured." );
         return 1;
     }
@@ -140,21 +140,21 @@ sub primaryIpDialog
     $lanIP = 'None' if $lanIP eq '0.0.0.0';
     my $wanIP = main::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
 
-    if (iMSCP::Getopt->preseed
+    if ( iMSCP::Getopt->preseed
         && !$wanIP
-        && (!isValidIpAddr( $lanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ))
+        && ( !isValidIpAddr( $lanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ) )
     ) {
         chomp( $wanIP = get( 'https://ipinfo.io/ip' ) || '' );
     }
 
-    if ($main::reconfigure =~ /^(?:local_server|primary_ip|all|forced)$/
+    if ( $main::reconfigure =~ /^(?:local_server|primary_ip|all|forced)$/
         || !grep( $_ eq $lanIP, @ipList )
-        || ($wanIP ne $lanIP && !isValidIpAddr( $wanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ))
+        || ( $wanIP ne $lanIP && !isValidIpAddr( $wanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ) )
     ) {
-        my ($rs, $msg) = (0, '');
+        my ($rs, $msg) = ( 0, '' );
 
         do {
-            ($rs, $lanIP) = $dialog->radiolist(
+            ( $rs, $lanIP ) = $dialog->radiolist(
                 <<"EOF", [ @ipList ], grep( $_ eq $lanIP, @ipList ) ? $lanIP : $ipList[0] );
 
 Please select your server primary IP address:
@@ -167,27 +167,27 @@ EOF
         return $rs if $rs >= 30;
 
         # IP inside private IP range?
-        if (!isValidIpAddr( $lanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ )) {
+        if ( !isValidIpAddr( $lanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ) ) {
             chomp( $wanIP = get( 'https://ipinfo.io/ip' ) || '' ) unless $wanIP;
 
             do {
-                ($rs, $wanIP) = $dialog->inputbox( <<"EOF", $wanIP );
+                ( $rs, $wanIP ) = $dialog->inputbox( <<"EOF", $wanIP );
 
 The IP address that you have selected is in private IP range.
 
 Please enter your public IP address (WAN IP), or leave blank to force usage of the private IP address:$msg
 EOF
                 $msg = '';
-                if ($wanIP
+                if ( $wanIP
                     && $wanIP ne $lanIP
                     && !isValidIpAddr( $wanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ )
                 ) {
                     $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
-                } elsif (!$wanIP) {
+                } elsif ( !$wanIP ) {
                     $wanIP = $lanIP;
                 }
 
-                if ($wanIP eq '0.0.0.0') {
+                if ( $wanIP eq '0.0.0.0' ) {
                     $msg = <<"EOF";
 
 \\Z1Invalid or unauthorized IP address.\\Zn
@@ -200,7 +200,7 @@ EOF
         } else {
             $wanIP = $lanIP
         }
-    } elsif ($lanIP eq 'None') {
+    } elsif ( $lanIP eq 'None' ) {
         $lanIP = '0.0.0.0';
     }
 
@@ -223,16 +223,16 @@ sub timezoneDialog
     my (undef, $dialog) = @_;
 
     my $timezone = main::setupGetQuestion(
-        'TIMEZONE', (iMSCP::Getopt->preseed) ? DateTime::TimeZone->new( name => 'local' )->name( ) : ''
+        'TIMEZONE', ( iMSCP::Getopt->preseed ) ? DateTime::TimeZone->new( name => 'local' )->name() : ''
     );
 
-    if ($main::reconfigure =~ /^(?:local_server|timezone|all|forced)$/
+    if ( $main::reconfigure =~ /^(?:local_server|timezone|all|forced)$/
         || !isValidTimezone( $timezone )
     ) {
-        my ($rs, $msg) = (0, '');
+        my ($rs, $msg) = ( 0, '' );
         do {
-            ($rs, $timezone) = $dialog->inputbox(
-                <<"EOF", $timezone || DateTime::TimeZone->new( name => 'local' )->name( ) );
+            ( $rs, $timezone ) = $dialog->inputbox(
+                <<"EOF", $timezone || DateTime::TimeZone->new( name => 'local' )->name());
 
 Please enter your timezone:$msg
 EOF
@@ -260,7 +260,7 @@ sub preinstall
     my $rs = $self->{'eventManager'}->trigger( 'beforeSetupKernel' );
     return $rs if $rs;
 
-    if (-f "$main::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf") {
+    if ( -f "$main::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf" ) {
         # Don't catch any error here to avoid permission denied error on some
         # vps due to restrictions set by provider
         $rs = execute(
@@ -289,8 +289,8 @@ sub install
 {
     my ($self) = @_;
 
-    my $rs = $self->_setupHostname( );
-    $rs ||= $self->_setupPrimaryIP( );
+    my $rs = $self->_setupHostname();
+    $rs ||= $self->_setupPrimaryIP();
 }
 
 =back
@@ -311,7 +311,7 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self;
 }
 
@@ -355,7 +355,7 @@ ff02::3 ip6-allhosts
 EOF
     $file->set( $content );
 
-    $rs = $file->save( );
+    $rs = $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
     return $rs if $rs;
@@ -363,7 +363,7 @@ EOF
     $file = iMSCP::File->new( filename => '/etc/hostname' );
     $file->set( $host );
 
-    $rs = $file->save( );
+    $rs = $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
     return $rs if $rs;
@@ -371,13 +371,13 @@ EOF
     $file = iMSCP::File->new( filename => '/etc/mailname' );
     $file->set( $hostname );
 
-    $rs = $file->save( );
+    $rs = $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
     return $rs if $rs;
 
     $rs = execute( 'hostname -F /etc/hostname', \ my $stdout, \ my $stderr );
-    debug( $stdout) if $stdout;
+    debug( $stdout ) if $stdout;
     error( $stderr || "Couldn't set server hostname" ) if $rs;
     $rs ||= $self->{'eventManager'}->trigger( 'afterSetupServerHostname' );
 }
@@ -400,16 +400,16 @@ sub _setupPrimaryIP
 
     local $@;
     eval {
-        my $netCard = ($primaryIP eq '0.0.0.0') ? 'any' : iMSCP::Net->getInstance( )->getAddrDevice( $primaryIP );
-        defined $netCard or die( sprintf( "Couldn't find network card for the `%s' IP address", $primaryIP ) );
+        my $netCard = ( $primaryIP eq '0.0.0.0' ) ? 'any' : iMSCP::Net->getInstance()->getAddrDevice( $primaryIP );
+        defined $netCard or die( sprintf( "Couldn't find network card for the `%s' IP address", $primaryIP ));
 
-        my $db = iMSCP::Database->factory( );
-        my $oldDbName = $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ) );
+        my $db = iMSCP::Database->factory();
+        my $oldDbName = $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ));
 
-        my $dbh = $db->getRawDb( );
+        my $dbh = $db->getRawDb();
         local $dbh->{'RaiseError'} = 1;
 
-        $dbh->selectrow_hashref('SELECT 1 FROM server_ips WHERE ip_number = ?', undef, $primaryIP )
+        $dbh->selectrow_hashref( 'SELECT 1 FROM server_ips WHERE ip_number = ?', undef, $primaryIP )
             ? $dbh->do( 'UPDATE server_ips SET ip_card = ? WHERE ip_number = ?', undef, $netCard, $primaryIP )
             : $dbh->do(
             'INSERT INTO server_ips (ip_number, ip_card, ip_config_mode, ip_status) VALUES(?, ?, ?, ?)',
@@ -418,7 +418,7 @@ sub _setupPrimaryIP
 
         $db->useDatabase( $oldDbName ) if $oldDbName;
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }

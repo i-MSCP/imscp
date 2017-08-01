@@ -72,11 +72,11 @@ sub connect
 {
     my ($self) = @_;
 
-    my $dsn = "dbi:mysql:database=$self->{'db'}->{'DATABASE_NAME'}".
-        ($self->{'db'}->{'DATABASE_HOST'} ? ';host='.$self->{'db'}->{'DATABASE_HOST'} : '').
-        ($self->{'db'}->{'DATABASE_PORT'} ? ';port='.$self->{'db'}->{'DATABASE_PORT'} : '');
+    my $dsn = "dbi:mysql:database=$self->{'db'}->{'DATABASE_NAME'}" .
+        ( $self->{'db'}->{'DATABASE_HOST'} ? ';host=' . $self->{'db'}->{'DATABASE_HOST'} : '' ) .
+        ( $self->{'db'}->{'DATABASE_PORT'} ? ';port=' . $self->{'db'}->{'DATABASE_PORT'} : '' );
 
-    if ($self->{'connection'}
+    if ( $self->{'connection'}
         && $self->{'_dsn'} eq $dsn
         && $self->{'_currentUser'} eq $self->{'db'}->{'DATABASE_USER'}
         && $self->{'_currentPassword'} eq $self->{'db'}->{'DATABASE_PASSWORD'}
@@ -84,12 +84,12 @@ sub connect
         return 0;
     }
 
-    $self->{'connection'}->disconnect( ) if $self->{'connection'};
+    $self->{'connection'}->disconnect() if $self->{'connection'};
 
     # Set connection timeout to 5 seconds
     my $mask = POSIX::SigSet->new( SIGALRM );
     my $action = POSIX::SigAction->new( sub { die "SQL database connection timeout\n" }, $mask );
-    my $oldaction = POSIX::SigAction->new( );
+    my $oldaction = POSIX::SigAction->new();
     sigaction( SIGALRM, $action, $oldaction );
 
     eval {
@@ -132,15 +132,15 @@ sub useDatabase
     my $oldDbName = $self->{'db'}->{'DATABASE_NAME'};
     return $oldDbName if $dbName eq $oldDbName;
 
-    my $dbh = $self->getRawDb( );
-    unless ($dbh->ping( )) {
-        $self->connect( );
-        $dbh = $self->getRawDb( );
+    my $dbh = $self->getRawDb();
+    unless ( $dbh->ping() ) {
+        $self->connect();
+        $dbh = $self->getRawDb();
     }
 
     {
         local $dbh->{'RaiseError'} = 1;
-        $dbh->do( 'USE '.$self->quoteIdentifier( $dbName ) );
+        $dbh->do( 'USE ' . $self->quoteIdentifier( $dbName ));
     }
 
     $self->{'db'}->{'DATABASE_NAME'} = $dbName;
@@ -160,7 +160,7 @@ sub startTransaction
 {
     my ($self) = @_;
 
-    my $dbh = $self->getRawDb( );
+    my $dbh = $self->getRawDb();
     $dbh->{'AutoCommit'} = 0;
     $dbh->{'RaiseError'} = 1;
     $dbh;
@@ -179,7 +179,7 @@ sub endTransaction
 {
     my ($self) = @_;
 
-    my $dbh = $self->getRawDb( );
+    my $dbh = $self->getRawDb();
 
     $dbh->{'AutoCommit'} = 1;
     $dbh->{'RaiseError'} = 0;
@@ -200,8 +200,8 @@ sub getRawDb
 
     return $self->{'connection'} if $self->{'connection'};
 
-    my $rs = $self->connect( );
-    !$rs or die( sprintf( "Couldn't connect to SQL server: %s", $rs ) );
+    my $rs = $self->connect();
+    !$rs or die( sprintf( "Couldn't connect to SQL server: %s", $rs ));
     $self->{'connection'};
 }
 
@@ -226,11 +226,11 @@ sub doQuery
     local $@;
     my $qrs = eval {
         defined $query or die 'No query provided';
-        my $dbh = $self->getRawDb( );
+        my $dbh = $self->getRawDb();
         local $dbh->{'RaiseError'} = 0;
         my $sth = $dbh->prepare( $query ) or die $DBI::errstr;
         $sth->execute( @bindValues ) or die $DBI::errstr;
-        $sth->fetchall_hashref( $key ) || { };
+        $sth->fetchall_hashref( $key ) || {};
     };
 
     return "$@" if $@;
@@ -253,7 +253,7 @@ sub getDbTables
 
     local $@;
     my @tables = eval {
-        my $dbh = $self->getRawDb( );
+        my $dbh = $self->getRawDb();
         local $dbh->{'RaiseError'} = 1;
         keys %{$dbh->selectall_hashref(
                 'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ?', 'TABLE_NAME', undef, $dbName
@@ -281,7 +281,7 @@ sub getTableColumns
 
     local $@;
     my @columns = eval {
-        my $dbh = $self->getRawDb( );
+        my $dbh = $self->getRawDb();
         local $dbh->{'RaiseError'} = 1;
         keys %{$dbh->selectall_hashref(
                 'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?',
@@ -309,9 +309,9 @@ sub dumpdb
 
     # Encode slashes as SOLIDUS unicode character
     # Encode dots as Full stop unicode character
-    (my $encodedDbName = $dbName) =~ s%([./])%{'/', '@002f', '.', '@002e'}->{$1}%ge;
+    ( my $encodedDbName = $dbName ) =~ s%([./])%{ '/', '@002f', '.', '@002e' }->{$1}%ge;
 
-    debug( sprintf('Dump `%s` database into %s', $dbName, $dbDumpTargetDir.'/'.$encodedDbName.'.sql') );
+    debug( sprintf( 'Dump `%s` database into %s', $dbName, $dbDumpTargetDir . '/' . $encodedDbName . '.sql' ));
 
     my $stderr;
     execute(
@@ -341,7 +341,7 @@ sub quoteIdentifier
 {
     my ($self, $identifier) = @_;
 
-    $self->getRawDb( )->quote_identifier( $identifier );
+    $self->getRawDb()->quote_identifier( $identifier );
 }
 
 =item quote( $string )
@@ -357,7 +357,7 @@ sub quote
 {
     my ($self, $string) = @_;
 
-    $self->getRawDb( )->quote( $string );
+    $self->getRawDb()->quote( $string );
 }
 
 =back

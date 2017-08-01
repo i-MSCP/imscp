@@ -66,23 +66,23 @@ sub process
     return $rs if $rs;
 
     my @sql;
-    if ($self->{'status'} =~ /^to(?:add|change|enable)$/) {
-        $rs = $self->add( );
+    if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
+        $rs = $self->add();
         @sql = (
             'UPDATE htaccess_groups SET status = ? WHERE id = ?', undef,
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $htgroupId);
-    } elsif ($self->{'status'} eq 'todisable') {
-        $rs = $self->disable( );
-        @sql = ('UPDATE htaccess_groups SET status = ? WHERE id = ?', undef,
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled'), $htgroupId);
-    } elsif ($self->{'status'} eq 'todelete') {
-        $rs = $self->delete( );
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $htgroupId );
+    } elsif ( $self->{'status'} eq 'todisable' ) {
+        $rs = $self->disable();
+        @sql = ( 'UPDATE htaccess_groups SET status = ? WHERE id = ?', undef,
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $htgroupId );
+    } elsif ( $self->{'status'} eq 'todelete' ) {
+        $rs = $self->delete();
         @sql = $rs
-            ? ('UPDATE htaccess_groups SET status = ? WHERE id = ?', undef,
-                getLastError( 'error' ) || 'Unknown error', $htgroupId)
-            : ('DELETE FROM htaccess_groups WHERE id = ?', undef, $htgroupId);
+            ? ( 'UPDATE htaccess_groups SET status = ? WHERE id = ?', undef,
+                getLastError( 'error' ) || 'Unknown error', $htgroupId )
+            : ( 'DELETE FROM htaccess_groups WHERE id = ?', undef, $htgroupId );
     } else {
-        warning( sprintf( 'Unknown action (%s) for htgroup (ID %d)', $self->{'status'}, $htgroupId ) );
+        warning( sprintf( 'Unknown action (%s) for htgroup (ID %d)', $self->{'status'}, $htgroupId ));
         return 0;
     }
 
@@ -91,7 +91,7 @@ sub process
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         $self->{'_dbh'}->do( @sql );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -144,10 +144,10 @@ sub _loadData
             ",
             undef, $htgroupId, $htgroupId
         );
-        $row or die( sprintf( 'Data not found for htgroup (ID %d)', $htgroupId ) );
-        %{$self} = (%{$self}, %{$row});
+        $row or die( sprintf( 'Data not found for htgroup (ID %d)', $htgroupId ));
+        %{$self} = ( %{$self}, %{$row} );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -169,8 +169,8 @@ sub _getData
     my ($self, $action) = @_;
 
     $self->{'_data'} = do {
-        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.
-            ($main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'});
+        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
+            ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'} );
 
         {
             ACTION                => $action,

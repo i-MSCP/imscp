@@ -55,7 +55,7 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = iMSCP::Composer->getInstance( )->registerPackage( 'imscp/ajaxplorer', $VERSION );
+    my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/ajaxplorer', $VERSION );
     $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 
@@ -71,8 +71,8 @@ sub install
 {
     my ($self) = @_;
 
-    my $rs = $self->_installFiles( );
-    $rs ||= $self->_buildHttpdConfig( );
+    my $rs = $self->_installFiles();
+    $rs ||= $self->_buildHttpdConfig();
 }
 
 =back
@@ -100,13 +100,13 @@ sub afterFrontEndBuildConfFile
     ${$tplContent} = replaceBloc(
         "# SECTION custom BEGIN.\n",
         "# SECTION custom END.\n",
-        "    # SECTION custom BEGIN.\n".
+        "    # SECTION custom BEGIN.\n" .
             getBloc(
                 "# SECTION custom BEGIN.\n",
                 "# SECTION custom END.\n",
                 ${$tplContent}
-            ).
-            "    include imscp_pydio.conf;\n".
+            ) .
+            "    include imscp_pydio.conf;\n" .
             "    # SECTION custom END.\n",
         ${$tplContent}
     );
@@ -131,7 +131,7 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self;
 }
 
@@ -146,12 +146,12 @@ sub _init
 sub _installFiles
 {
     my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/ajaxplorer";
-    unless (-d $packageDir) {
+    unless ( -d $packageDir ) {
         error( "Couldn't find the imscp/ajaxplorer (Pydio) package into the packages cache directory" );
         return 1;
     }
 
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove( );
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
     iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy(
         "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' }
     );
@@ -171,7 +171,7 @@ sub _installFiles
 
 sub _buildHttpdConfig
 {
-    my $frontEnd = Package::FrontEnd->getInstance( );
+    my $frontEnd = Package::FrontEnd->getInstance();
     $frontEnd->buildConfFile(
         "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/ajaxplorer/iMSCP/config/nginx/imscp_pydio.conf",
         {

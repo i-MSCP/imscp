@@ -54,29 +54,29 @@ use Servers::sqld;
 # Set backend mode
 $main::execmode = 'uninstall' unless defined $main::execmode;;
 
-newDebug('imscp-uninstall.log');
+newDebug( 'imscp-uninstall.log' );
 
 sub startUp
 {
     iMSCP::Getopt->debug( 1 ); # Enforce debug mode (logs)
-    iMSCP::Bootstrapper->getInstance( )->boot( );
+    iMSCP::Bootstrapper->getInstance()->boot();
     0;
 }
 
 sub process
 {
-    _userDialog( );
+    _userDialog();
 
     local $@;
     my $row = eval {
-        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
-        $dbh->selectrow_hashref( "SELECT 1 FROM plugin WHERE plugin_status <> 'uninstalled'");
+        $dbh->selectrow_hashref( "SELECT 1 FROM plugin WHERE plugin_status <> 'uninstalled'" );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
-    } elsif ($row) {
+    } elsif ( $row ) {
         iMSCP::Dialog->getInstance()->infobox( <<'EOF' );
 \Z1Uninstallation aborted.\Zn
 
@@ -100,14 +100,14 @@ EOF
         [ \&_removeFiles, 'Removing i-MSCP files' ],
     );
 
-    my ($step, $rs) = (1, 0);
-    for (@steps) {
+    my ($step, $rs) = ( 1, 0 );
+    for ( @steps ) {
         $rs = step( @{$_}, scalar @steps, $step );
         last if $rs;
         $step++;
     }
 
-    $rs ||= iMSCP::Dialog->getInstance( )->endGauge( );
+    $rs ||= iMSCP::Dialog->getInstance()->endGauge();
 }
 
 sub shutDown
@@ -161,32 +161,32 @@ sub _removeCustomers
             };
             my $aditionalCondition;
 
-            my $db = iMSCP::Database->factory( );
+            my $db = iMSCP::Database->factory();
             my $oldDbName = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'} );
 
-            my $dbh = $db->getRawDb( );
+            my $dbh = $db->getRawDb();
             local $dbh->{'RaiseError'};
 
-            while (my ($table, $field) = each %{$tables}) {
-                if (ref $field eq 'ARRAY') {
+            while ( my ($table, $field) = each %{$tables} ) {
+                if ( ref $field eq 'ARRAY' ) {
                     $aditionalCondition = $field->[1];
                     $field = $field->[0];
                 } else {
                     $aditionalCondition = ''
                 }
 
-                ($table, $field) = ($dbh->quote_identifier( $table ), $dbh->quote_identifier( $field ));
+                ( $table, $field ) = ( $dbh->quote_identifier( $table ), $dbh->quote_identifier( $field ) );
                 $dbh->do( "UPDATE $table SET $field = 'todelete' $aditionalCondition" );
             }
 
             $db->useDatabase( $oldDbName ) if $oldDbName;
         }
 
-        startDetail( );
-        iMSCP::DbTasksProcessor->getInstance( mode => 'uninstall' )->processDbTasks( );
-        endDetail( );
+        startDetail();
+        iMSCP::DbTasksProcessor->getInstance( mode => 'uninstall' )->processDbTasks();
+        endDetail();
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -196,16 +196,16 @@ sub _removeCustomers
 
 sub _uninstallPackages
 {
-    startDetail( );
+    startDetail();
 
-    my @packages = iMSCP::Packages->getInstance( )->getListWithFullNames( );
+    my @packages = iMSCP::Packages->getInstance()->getListWithFullNames();
     my $nbSteps = scalar @packages;
-    my ($step, $rs) = (1, 0);
+    my ($step, $rs) = ( 1, 0 );
 
-    for my $package(@packages) {
-        (my $subref = $package->can( 'uninstall' )) or $step++ && next;
+    for my $package( @packages ) {
+        ( my $subref = $package->can( 'uninstall' ) ) or $step++ && next;
         $rs = step(
-            sub { $subref->( $package->getInstance( ) ) },
+            sub { $subref->( $package->getInstance()) },
             sprintf( 'Executing %s uninstall tasks...', $package ),
             $nbSteps,
             $step
@@ -219,16 +219,16 @@ sub _uninstallPackages
 
 sub _uninstallServers
 {
-    startDetail( );
+    startDetail();
 
-    my @servers = iMSCP::Servers->getInstance( )->getListWithFullNames( );
+    my @servers = iMSCP::Servers->getInstance()->getListWithFullNames();
     my $nbSteps = scalar @servers;
-    my ($step, $rs) = (1, 0);
+    my ($step, $rs) = ( 1, 0 );
 
-    for my $server(@servers) {
-        (my $subref = $server->can( 'uninstall' )) or $step++ && next;
+    for my $server( @servers ) {
+        ( my $subref = $server->can( 'uninstall' ) ) or $step++ && next;
         $rs = step(
-            sub { $subref->( $server->factory( ) ) },
+            sub { $subref->( $server->factory()) },
             sprintf( 'Executing %s uninstall tasks...', $server ),
             $nbSteps,
             $step
@@ -237,25 +237,25 @@ sub _uninstallServers
         $step++;
     }
 
-    endDetail( );
+    endDetail();
     $rs;
 }
 
 sub _uninstallServices
 {
-    my $serviceMngr = iMSCP::Service->getInstance( );
+    my $serviceMngr = iMSCP::Service->getInstance();
     $serviceMngr->remove( $_ ) for 'imscp_daemon', 'imscp_traffic', 'imscp_mountall';
 
-    for my $service('bind9', 'bind9-resolvconf') {
-        $serviceMngr->disable( $service ) if $serviceMngr->isSystemd( );
+    for my $service( 'bind9', 'bind9-resolvconf' ) {
+        $serviceMngr->disable( $service ) if $serviceMngr->isSystemd();
 
-        if (-f "/etc/systemd/system/$service.service") {
-            my $rs = iMSCP::File->new( filename => "/etc/systemd/system/$service.service" )->delFile( );
+        if ( -f "/etc/systemd/system/$service.service" ) {
+            my $rs = iMSCP::File->new( filename => "/etc/systemd/system/$service.service" )->delFile();
             return $rs if $rs;
         }
 
-        if ("/lib/systemd/system/$service.service") {
-            $serviceMngr->enable( $service ) if $serviceMngr->isSystemd( );
+        if ( "/lib/systemd/system/$service.service" ) {
+            $serviceMngr->enable( $service ) if $serviceMngr->isSystemd();
         }
     }
 
@@ -265,27 +265,27 @@ sub _uninstallServices
 sub _removeCrontabFile
 {
     return 0 unless -f '/etc/cron.d/imscp';
-    iMSCP::File->new( filename => '/etc/cron.d/imscp' )->delFile( );
+    iMSCP::File->new( filename => '/etc/cron.d/imscp' )->delFile();
 }
 
 sub _removeLogrotateFile
 {
     return 0 unless -f "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/imscp";
-    iMSCP::File->new( filename => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/imscp" )->delFile( );
+    iMSCP::File->new( filename => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/imscp" )->delFile();
 }
 
 sub _removeSysctlFile
 {
     return 0 unless -f '/etc/sysctl.d/imscp.conf';
-    iMSCP::File->new( filename => '/etc/sysctl.d/imscp.conf' )->delFile( );
+    iMSCP::File->new( filename => '/etc/sysctl.d/imscp.conf' )->delFile();
 }
 
 sub _removeSqlData
 {
     local $@;
     eval {
-        my $sqlServer = Servers::sqld->factory( );
-        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        my $sqlServer = Servers::sqld->factory();
+        my $dbh = iMSCP::Database->factory()->getRawDb();
 
         # Remove customer's sql users
         my $rows = $dbh->selectall_hashref( 'SELECT DISTINCT sqlu_name, sqlu_host FROM sql_user', 'sqlu_name' );
@@ -293,15 +293,15 @@ sub _removeSqlData
 
         # Remove customer's sql databases
         $rows = $dbh->selectall_hashref( 'SELECT sqld_name FROM sql_database', 'sqld_name' );
-        $dbh->do( 'DROP DATABASE IF EXISTS '.$dbh->quote_identifier( $rows->{$_}->{'sqld_name'}) ) for keys %{$rows};
+        $dbh->do( 'DROP DATABASE IF EXISTS ' . $dbh->quote_identifier( $rows->{$_}->{'sqld_name'} )) for keys %{$rows};
 
         # Remove i-MSCP sql database
-        $dbh->do( 'DROP DATABASE IF EXISTS '.$dbh->quote_identifier( $main::imscpConfig{'DATABASE_NAME'} ) );
+        $dbh->do( 'DROP DATABASE IF EXISTS ' . $dbh->quote_identifier( $main::imscpConfig{'DATABASE_NAME'} ));
 
         # Drop i-MSCP master SQL user
         $sqlServer->dropUser( $main::imscpConfig{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'} );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -318,25 +318,25 @@ sub _removeFiles
 {
     chdir( '/' );
 
-    for('/usr/local/sbin/imscp-dpkg-post-invoke.pl', '/etc/apt/apt.conf.d/90imscp') {
+    for( '/usr/local/sbin/imscp-dpkg-post-invoke.pl', '/etc/apt/apt.conf.d/90imscp' ) {
         next unless -f;
-        my $rs = iMSCP::File->new( filename => $_ )->delFile( );
+        my $rs = iMSCP::File->new( filename => $_ )->delFile();
         return $rs if $rs;
     }
 
-    for ($main::imscpConfig{'CONF_DIR'}, $main::imscpConfig{'USER_WEB_DIR'}, $main::imscpConfig{'LOG_DIR'},
+    for ( $main::imscpConfig{'CONF_DIR'}, $main::imscpConfig{'USER_WEB_DIR'}, $main::imscpConfig{'LOG_DIR'},
         $main::imscpConfig{'ROOT_DIR'}
     ) {
-        iMSCP::Dir->new( dirname => $_ )->remove( );
+        iMSCP::Dir->new( dirname => $_ )->remove();
     }
 
     0;
 }
 
 my $rs = 0;
-$rs ||= startUp( );
-$rs ||= process( );
-$rs ||= shutDown( );
+$rs ||= startUp();
+$rs ||= process();
+$rs ||= shutDown();
 exit $rs;
 
 =head1 AUTHOR

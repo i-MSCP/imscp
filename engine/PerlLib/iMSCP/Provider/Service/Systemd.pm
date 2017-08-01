@@ -116,8 +116,8 @@ sub remove
 
     local $@;
     my $unitFilePath = eval { $self->getUnitFilePath( $unit ); };
-    if (defined $unitFilePath) {
-        return 0 if iMSCP::File->new( filename => $unitFilePath )->delFile( );
+    if ( defined $unitFilePath ) {
+        return 0 if iMSCP::File->new( filename => $unitFilePath )->delFile();
     }
 
     $self->_exec( $COMMANDS{'systemctl'}, '--system', 'daemon-reload' ) == 0;
@@ -270,12 +270,12 @@ sub _searchUnitFile
 {
     my (undef, $unit) = @_;
 
-    for (@UNITFILEPATHS) {
+    for ( @UNITFILEPATHS ) {
         my $filepath = File::Spec->join( $_, $unit );
         return $filepath if -f $filepath;
     }
 
-    die( sprintf( "Couldn't find systemd `%s' unit configuration file", $unit ) );
+    die( sprintf( "Couldn't find systemd `%s' unit configuration file", $unit ));
 }
 
 =back

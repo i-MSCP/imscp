@@ -19,7 +19,9 @@
             <package post_install_tasks="sh apache2_postinst.sh">apache2-bin</package>
             <package>apache2-data</package>
             <package>apache2-dev</package>
-            <package post_install_tasks="update-alternatives --set suexec /usr/lib/apache2/suexec-pristine">apache2-suexec-pristine</package>
+            <package post_install_tasks="update-alternatives --set suexec /usr/lib/apache2/suexec-pristine">
+                apache2-suexec-pristine
+            </package>
             <package>libapache2-mod-fcgid</package>
         </apache_fcgid>
         <apache_itk
@@ -41,7 +43,9 @@
             <package post_install_tasks="sh apache2_postinst.sh">apache2-bin</package>
             <package>apache2-data</package>
             <package>apache2-dev</package>
-            <package post_install_tasks="update-alternatives --set suexec /usr/lib/apache2/suexec-pristine">apache2-suexec-pristine</package>
+            <package post_install_tasks="update-alternatives --set suexec /usr/lib/apache2/suexec-pristine">
+                apache2-suexec-pristine
+            </package>
         </apache_php_fpm>
     </httpd>
     <php>
@@ -62,7 +66,8 @@
             <package>php5.6-cgi</package>
             <package>php5.6-fpm</package>
             <package
-                    post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets; update-alternatives --set phar /usr/bin/phar5.6; update-alternatives --set phar.phar /usr/bin/phar.phar5.6">
+                    post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets; update-alternatives --set phar /usr/bin/phar5.6; update-alternatives --set phar.phar /usr/bin/phar.phar5.6"
+            >
                 php5.6-common
             </package>
             <package post_install_tasks="phpenmod curl">php5.6-curl</package>
@@ -99,7 +104,8 @@
             <package post_install_tasks="update-alternatives --set php /usr/bin/php7.0">php7.0-cli</package>
             <package>php7.0-fpm</package>
             <package
-                    post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets; update-alternatives --set phar /usr/bin/phar7.0; update-alternatives --set phar.phar /usr/bin/phar.phar7.0">
+                    post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets; update-alternatives --set phar /usr/bin/phar7.0; update-alternatives --set phar.phar /usr/bin/phar.phar7.0"
+            >
                 php7.0-common
             </package>
             <package post_install_tasks="phpenmod curl">php7.0-curl</package>
@@ -136,7 +142,8 @@
             <package>php7.1-cgi</package>
             <package>php7.1-fpm</package>
             <package
-                    post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets; update-alternatives --set phar /usr/bin/phar7.1; update-alternatives --set phar.phar /usr/bin/phar.phar7.1">
+                    post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets; update-alternatives --set phar /usr/bin/phar7.1; update-alternatives --set phar.phar /usr/bin/phar.phar7.1"
+            >
                 php7.1-common
             </package>
             <package post_install_tasks="phpenmod curl">php7.1-curl</package>
@@ -301,7 +308,7 @@
             <package>libmysqlclient20</package>
             <package>mariadb-client-10.2</package>
             <package>mariadb-common</package>
-            <package pre_install_tasks="/bin/mkdir -p /etc/mysql/mariadb.conf.d" >mariadb-server-10.2</package>
+            <package pre_install_tasks="/bin/mkdir -p /etc/mysql/mariadb.conf.d">mariadb-server-10.2</package>
             <package>mysql-common</package>
         </mariadb_10.2>
         <percona_5.5

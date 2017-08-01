@@ -85,14 +85,14 @@ sub _init
     );
 
     # Load all server classes
-    for (@{$self->{'servers'}}) {
+    for ( @{$self->{'servers'}} ) {
         my $server = "Servers::${_}";
         eval "require $server" or die( sprintf( "Couldn't load %s server class: %s", $server, $@ ));
     }
 
     # Sort servers in descending order of priority
     @{$self->{'servers'}} = sort {
-        "Servers::${b}"->getPriority( ) <=> "Servers::${a}"->getPriority( )
+        "Servers::${b}"->getPriority() <=> "Servers::${a}"->getPriority()
     } @{$self->{'servers'}};
 
     @{$self->{'servers_full_names'}} = map { "Servers::${_}" } @{$self->{'servers'}};

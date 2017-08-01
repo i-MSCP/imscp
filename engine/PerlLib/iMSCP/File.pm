@@ -54,14 +54,14 @@ sub get
 
     return $self->{'fileContent'} if defined $self->{'fileContent'};
 
-    unless (defined $self->{'filename'}) {
+    unless ( defined $self->{'filename'} ) {
         error( "Attribut `filename' is not set." );
         return undef;
     }
 
     my $fh;
-    unless (open($fh, '<', $self->{'filename'})) {
-        error( sprintf( "Couldn't open `%s' file for reading: %s", $self->{'filename'}, $! ) );
+    unless ( open( $fh, '<', $self->{'filename'} ) ) {
+        error( sprintf( "Couldn't open `%s' file for reading: %s", $self->{'filename'}, $! ));
         return undef;
     }
 
@@ -85,7 +85,7 @@ sub getAsRef
 
     return \$self->{'fileContent'} if defined $self->{'fileContent'};
 
-    $self->{'fileContent'} = $self->get( );
+    $self->{'fileContent'} = $self->get();
 
     return undef unless defined $self->{'fileContent'};
 
@@ -121,19 +121,19 @@ sub save
 {
     my ($self) = @_;
 
-    unless (defined $self->{'filename'}) {
+    unless ( defined $self->{'filename'} ) {
         error( "Attribut `filename' is not set." );
         return undef;
     }
 
     my $fh;
-    unless (open($fh, '>', $self->{'filename'})) {
-        error( sprintf( "Couldn't open `%s' file for writing: %s", $self->{'filename'}, $! ) );
+    unless ( open( $fh, '>', $self->{'filename'} ) ) {
+        error( sprintf( "Couldn't open `%s' file for writing: %s", $self->{'filename'}, $! ));
         return 1;
     }
 
     $self->{'fileContent'} //= '';
-    print {$fh} $self->{'fileContent'};
+    print { $fh } $self->{'fileContent'};
     close( $fh );
     0;
 }
@@ -150,13 +150,13 @@ sub delFile
 {
     my ($self) = @_;
 
-    unless (defined $self->{'filename'}) {
+    unless ( defined $self->{'filename'} ) {
         error( "Attribut `filename' is not set." );
         return 1;
     }
 
-    unless (unlink( $self->{'filename'} )) {
-        error( sprintf( "Couldn't delete `%s' file: %s", $self->{'filename'}, $! ) );
+    unless ( unlink( $self->{'filename'} ) ) {
+        error( sprintf( "Couldn't delete `%s' file: %s", $self->{'filename'}, $! ));
         return 1;
     }
 
@@ -178,20 +178,20 @@ sub mode
 {
     my ($self, $mode) = @_;
 
-    unless (defined $self->{'filename'}) {
+    unless ( defined $self->{'filename'} ) {
         error( "Attribut `filename' is not set." );
         return 1;
     }
 
-    unless (defined $mode) {
+    unless ( defined $mode ) {
         error( 'Missing $mode parameter' );
         return 1;
     }
 
     return 0 if -l $self->{'filename'};
 
-    unless (chmod( $mode, $self->{'filename'} )) {
-        error( sprintf( "Couldn't change `%s' file permissions: %s", $self->{'filename'}, $! ) );
+    unless ( chmod( $mode, $self->{'filename'} ) ) {
+        error( sprintf( "Couldn't change `%s' file permissions: %s", $self->{'filename'}, $! ));
         return 1;
     }
 
@@ -214,26 +214,26 @@ sub owner
 {
     my ($self, $owner, $group) = @_;
 
-    unless (defined $self->{'filename'}) {
+    unless ( defined $self->{'filename'} ) {
         error( "Attribut `filename' is not set." );
         return 1;
     }
 
-    unless (defined $owner) {
+    unless ( defined $owner ) {
         error( 'Missing $owner parameter' );
         return 1;
     }
 
-    unless (defined $group) {
+    unless ( defined $group ) {
         error( 'Missing $group parameter' );
         return 1;
     }
 
-    my $uid = (($owner =~ /^\d+$/) ? $owner : getpwnam( $owner )) // -1;
-    my $gid = (($group =~ /^\d+$/) ? $group : getgrnam( $group )) // -1;
+    my $uid = ( ( $owner =~ /^\d+$/ ) ? $owner : getpwnam( $owner ) ) // -1;
+    my $gid = ( ( $group =~ /^\d+$/ ) ? $group : getgrnam( $group ) ) // -1;
 
-    unless (lchown( $uid, $gid, $self->{'filename'} )) {
-        error( sprintf( "Couldn't change `%s' file ownership: %s", $self->{'filename'}, $! ) );
+    unless ( lchown( $uid, $gid, $self->{'filename'} ) ) {
+        error( sprintf( "Couldn't change `%s' file ownership: %s", $self->{'filename'}, $! ));
         return 1;
     }
 
@@ -258,38 +258,38 @@ sub copyFile
 {
     my ($self, $destination, $options) = @_;
 
-    $options = { } unless $options && ref $options eq 'HASH';
+    $options = {} unless $options && ref $options eq 'HASH';
 
-    unless (defined $self->{'filename'}) {
+    unless ( defined $self->{'filename'} ) {
         error( "Attribut `filename' is not set." );
         return 1;
     }
 
-    unless (defined $destination && ref \$destination eq 'SCALAR') {
+    unless ( defined $destination && ref \$destination eq 'SCALAR' ) {
         error( '$destination parameter is msissing or invalid.' );
         return 1;
     }
 
-    unless (copy( $self->{'filename'}, $destination )) {
-        error( sprintf( "Couldn't copy `%s' file to `%s': %s", $self->{'filename'}, $destination, $! ) );
+    unless ( copy( $self->{'filename'}, $destination ) ) {
+        error( sprintf( "Couldn't copy `%s' file to `%s': %s", $self->{'filename'}, $destination, $! ));
         return 1;
     }
 
     return 0 if defined $options->{'preserve'} && $options->{'preserve'} eq 'no';
 
-    $destination = File::Spec->catfile( $destination, basename( $self->{'filename'} ) ) if -d $destination;
+    $destination = File::Spec->catfile( $destination, basename( $self->{'filename'} )) if -d $destination;
 
-    my ($mode, $uid, $gid) = (lstat( $self->{'filename'} ))[2, 4, 5];
+    my ($mode, $uid, $gid) = ( lstat( $self->{'filename'} ) )[2, 4, 5];
 
-    unless (lchown( $uid, $gid, $destination )) {
-        error( sprintf( "Couldn't change `%s' file ownership: %s", $destination, $! ) );
+    unless ( lchown( $uid, $gid, $destination ) ) {
+        error( sprintf( "Couldn't change `%s' file ownership: %s", $destination, $! ));
         return 1;
     }
 
     return if -l $destination; # We do not call chmod on symkink targets
 
-    unless (chmod( $mode & 07777, $destination )) {
-        error( sprintf( "Couldn't change `%s' file permissions: %s", $destination, $! ) );
+    unless ( chmod( $mode & 07777, $destination ) ) {
+        error( sprintf( "Couldn't change `%s' file permissions: %s", $destination, $! ));
         return 1;
     }
 
@@ -309,18 +309,18 @@ sub moveFile
 {
     my ($self, $destination) = @_;
 
-    unless (defined $self->{'filename'}) {
+    unless ( defined $self->{'filename'} ) {
         error( "Attribut `filename' is not set." );
         return 1;
     }
 
-    unless (defined $destination && ref \$destination eq 'SCALAR') {
+    unless ( defined $destination && ref \$destination eq 'SCALAR' ) {
         error( '$destination parameter is msissing or invalid.' );
         return 1;
     }
 
-    unless (mv( $self->{'filename'}, $destination )) {
-        error( sprintf( "Couldn't move `%s' file to `%s': %s", $self->{'filename'}, $destination, $! ) );
+    unless ( mv( $self->{'filename'}, $destination ) ) {
+        error( sprintf( "Couldn't move `%s' file to `%s': %s", $self->{'filename'}, $destination, $! ));
         return 1;
     }
 

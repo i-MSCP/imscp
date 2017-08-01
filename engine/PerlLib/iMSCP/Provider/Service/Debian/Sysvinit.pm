@@ -59,11 +59,11 @@ sub isEnabled
 
     # 104 is the exit status when you query start an enabled service.
     # 106 is the exit status when the policy layer supplies a fallback action
-    if ($ret =~ /^10(?:4|6)$/) {
+    if ( $ret =~ /^10(?:4|6)$/ ) {
         return 1;
     }
 
-    if ($ret =~ /^10(?:1|5)$/) {
+    if ( $ret =~ /^10(?:1|5)$/ ) {
         # 101 is action not allowed, which means we have to do the check manually.
         # 105 is unknown, which generally means the iniscript does not support query
         # The debian policy states that the initscript should support methods of query

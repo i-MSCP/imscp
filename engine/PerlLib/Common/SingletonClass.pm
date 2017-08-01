@@ -52,9 +52,9 @@ sub getInstance
     no strict 'refs';
     my $instance = \${"${class}::_instance"};
 
-    unless (defined ${$instance}) {
+    unless ( defined ${$instance} ) {
         ${$instance} = bless { @attrs && ref $attrs[0] eq 'HASH' ? %{$attrs[0]} : @attrs }, $class;
-        ${$instance}->_init( );
+        ${$instance}->_init();
     }
 
     ${$instance};
@@ -77,7 +77,7 @@ sub getInstance
 sub _init
 {
     my ($self) = @_;
-    
+
     $self;
 }
 

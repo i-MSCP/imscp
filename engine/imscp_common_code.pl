@@ -33,7 +33,7 @@ $main::engine_debug = undef;
 require 'imscp_common_methods.pl';
 
 # Load i-MSCP configuration from the imscp.conf file
-if (-f '/usr/local/etc/imscp/imscp.conf') {
+if ( -f '/usr/local/etc/imscp/imscp.conf' ) {
     $main::cfg_file = '/usr/local/etc/imscp/imscp.conf';
 } else {
     $main::cfg_file = '/etc/imscp/imscp.conf';
@@ -43,7 +43,7 @@ my $rs = get_conf( $main::cfg_file );
 die( 'FATAL: Unable to load imscp.conf file.' ) if $rs;
 
 # Enable debug mode if needed
-if ($main::cfg{'DEBUG'}) {
+if ( $main::cfg{'DEBUG'} ) {
     $main::engine_debug = '_on_';
 }
 
@@ -55,8 +55,8 @@ our $db_pass_iv = '{IV}';
 require "$key_file" if -f $key_file;
 
 # Check for i-MSCP Db key and initialization vector
-if ($db_pass_key eq '{KEY}' || $db_pass_iv eq '{IV}') {
-    print STDERR ("Key file not found at $main::cfg{'CONF_DIR'}/imscp-db-keys. Run imscp-reconfigure script to fix.");
+if ( $db_pass_key eq '{KEY}' || $db_pass_iv eq '{IV}' ) {
+    print STDERR ( "Key file not found at $main::cfg{'CONF_DIR'}/imscp-db-keys. Run imscp-reconfigure script to fix." );
     exit 1;
 }
 

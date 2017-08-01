@@ -60,7 +60,7 @@ sub showDialog
 {
     my (undef, $dialog) = @_;
 
-    Package::Webmail::RainLoop::Installer->getInstance( )->showDialog( $dialog );
+    Package::Webmail::RainLoop::Installer->getInstance()->showDialog( $dialog );
 }
 
 =item preinstall( )
@@ -73,7 +73,7 @@ sub showDialog
 
 sub preinstall
 {
-    Package::Webmail::RainLoop::Installer->getInstance( )->preinstall( );
+    Package::Webmail::RainLoop::Installer->getInstance()->preinstall();
 }
 
 =item install( )
@@ -86,7 +86,7 @@ sub preinstall
 
 sub install
 {
-    Package::Webmail::RainLoop::Installer->getInstance( )->install( );
+    Package::Webmail::RainLoop::Installer->getInstance()->install();
 }
 
 =item uninstall( )
@@ -103,7 +103,7 @@ sub uninstall
 
     return 0 if $self->{'skip_uninstall'};
 
-    Package::Webmail::RainLoop::Uninstaller->getInstance( )->uninstall( );
+    Package::Webmail::RainLoop::Uninstaller->getInstance()->uninstall();
 }
 
 =item setGuiPermissions( )
@@ -118,7 +118,7 @@ sub setGuiPermissions
 {
     return 0 unless -d "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop";
 
-    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
     my $rs = setRights(
         "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop",
         {
@@ -158,18 +158,18 @@ sub deleteMail
 
     local $@;
     eval {
-        my $db = iMSCP::Database->factory( );
-        my $dbh = $db->getRawDb( );
+        my $db = iMSCP::Database->factory();
+        my $dbh = $db->getRawDb();
         $dbh->{'RaiseError'} = 1;
 
-        unless ($dbInitialized) {
-            my $quotedRainLoopDbName = $dbh->quote_identifier( $main::imscpConfig{'DATABASE_NAME'}.'_rainloop' );
+        unless ( $dbInitialized ) {
+            my $quotedRainLoopDbName = $dbh->quote_identifier( $main::imscpConfig{'DATABASE_NAME'} . '_rainloop' );
             my $row = $dbh->selectrow_hashref( "SHOW TABLES FROM $quotedRainLoopDbName" );
             $dbInitialized = 1 if $row;
         }
 
-        if ($dbInitialized) {
-            my $oldDbName = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'}.'_rainloop' );
+        if ( $dbInitialized ) {
+            my $oldDbName = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'} . '_rainloop' );
             $dbh->do(
                 '
                     DELETE u, c, p
@@ -183,21 +183,21 @@ sub deleteMail
             $db->useDatabase( $oldDbName ) if $oldDbName;
         }
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
 
     my $storageDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop/data/_data_/_default_/storage";
-    (my $email = $data->{'MAIL_ADDR'}) =~ s/[^a-z0-9\-\.@]+/_/;
-    (my $storagePath = substr( $email, 0, 2 )) =~ s/\@$//;
+    ( my $email = $data->{'MAIL_ADDR'} ) =~ s/[^a-z0-9\-\.@]+/_/;
+    ( my $storagePath = substr( $email, 0, 2 ) ) =~ s/\@$//;
 
-    for my $storageType(qw/ cfg data files /) {
-        iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath/$email" )->remove( );
+    for my $storageType( qw/ cfg data files / ) {
+        iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath/$email" )->remove();
         next unless -d "$storageDir/$storageType/$storagePath";
         my $dir = iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath" );
-        next unless $dir->isEmpty( );
-        $dir->remove( );
+        next unless $dir->isEmpty();
+        $dir->remove();
     }
 
     0;
@@ -223,10 +223,10 @@ sub _init
 
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/rainloop";
 
-    if (-f "$self->{'cfgDir'}/rainloop.data") {
+    if ( -f "$self->{'cfgDir'}/rainloop.data" ) {
         tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/rainloop.data", readonly => 1;
     } else {
-        $self->{'config'} = { };
+        $self->{'config'} = {};
         $self->{'skip_uninstall'} = 1;
     }
 

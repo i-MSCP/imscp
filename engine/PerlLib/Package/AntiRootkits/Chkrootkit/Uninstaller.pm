@@ -46,7 +46,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-    $_[0]->_restoreDebianConfig( );
+    $_[0]->_restoreDebianConfig();
 }
 
 =back

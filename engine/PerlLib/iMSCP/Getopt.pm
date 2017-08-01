@@ -27,7 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug qw/ debugRegisterCallBack /;
 use Text::Wrap;
-use fields qw /cleanPackageCache debug fixPermissions listener noprompt preseed reconfigure skipPackageUpdate verbose/;
+use fields qw / cleanPackageCache debug fixPermissions listener noprompt preseed reconfigure skipPackageUpdate verbose /;
 
 $Text::Wrap::columns = 80;
 $Text::Wrap::break = qr/[\s\n\|]/;
@@ -100,7 +100,7 @@ EOF
     Getopt::Long::GetOptions(
         'clean-package-cache|c', sub { $options->{'cleanPackageCache'} = 1 },
         'debug|d', sub { $options->{'debug'} = 1 },
-        'help|?|h', sub { $class->showUsage( ) },
+        'help|?|h', sub { $class->showUsage() },
         'fix-permissions|x', sub { $options->{'fixPermissions'} = 1 },
         'listener|l=s', sub { $class->listener( $_[1] ) },
         'noprompt|n', sub { $options->{'noprompt'} = 1 },
@@ -153,7 +153,7 @@ EOF
 
     require Getopt::Long;
     Getopt::Long::Configure( 'bundling' );
-    Getopt::Long::GetOptions( 'help|?|h', sub { $class->showUsage( ) }, @options ) or $class->showUsage( 1 );
+    Getopt::Long::GetOptions( 'help|?|h', sub { $class->showUsage() }, @options ) or $class->showUsage( 1 );
     undef;
 }
 
@@ -197,7 +197,7 @@ sub reconfigure
 
     return $options->{'reconfigure'} ||= 'none' unless defined $item;
 
-    if ($item eq 'help') {
+    if ( $item eq 'help' ) {
         $optionHelp = <<'EOF';
 Reconfigure option usage:
 
@@ -206,9 +206,9 @@ Without any argument, this option allows to reconfigure all items. You can recon
 Available items are:
 
 EOF
-        $optionHelp .= ' '.(join '|', @reconfigurationItems);
-        die( );
-    } elsif ($item eq '') {
+        $optionHelp .= ' ' . ( join '|', @reconfigurationItems );
+        die();
+    } elsif ( $item eq '' ) {
         $item = 'all';
     }
 
@@ -233,7 +233,7 @@ sub preseed
 
     return $options->{'preseed'} unless defined $file;
 
-    -f $file or die( sprintf( 'Preseed file not found: %s', $file ) );
+    -f $file or die( sprintf( 'Preseed file not found: %s', $file ));
     $options->{'preseed'} = $file;
 }
 
@@ -252,7 +252,7 @@ sub listener
 
     return $options->{'listener'} unless defined $file;
 
-    -f $file or die( sprintf( 'Listener file not found: %s', $file ) );
+    -f $file or die( sprintf( 'Listener file not found: %s', $file ));
     $options->{'listener'} = $file;
 }
 
@@ -267,7 +267,7 @@ sub listener
 
 sub AUTOLOAD
 {
-    (my $field = our $AUTOLOAD) =~ s/.*://;
+    ( my $field = our $AUTOLOAD ) =~ s/.*://;
 
     no strict 'refs';
     *{$AUTOLOAD} = sub {

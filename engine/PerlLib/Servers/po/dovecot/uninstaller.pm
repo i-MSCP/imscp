@@ -54,18 +54,18 @@ sub uninstall
     my ($self) = @_;
 
     # In setup context, processing must be delayed, else we won't be able to connect to SQL server
-    if ($main::execmode eq 'setup') {
-        return iMSCP::EventManager->getInstance( )->register(
+    if ( $main::execmode eq 'setup' ) {
+        return iMSCP::EventManager->getInstance()->register(
             'afterSqldPreinstall',
             sub {
-                my $rs ||= $self->_dropSqlUser( );
-                $rs ||= $self->_removeConfig( );
+                my $rs ||= $self->_dropSqlUser();
+                $rs ||= $self->_removeConfig();
             }
         );
     }
 
-    my $rs = $self->_dropSqlUser( );
-    $rs ||= $self->_removeConfig( );
+    my $rs = $self->_dropSqlUser();
+    $rs ||= $self->_removeConfig();
 }
 
 =back
@@ -86,8 +86,8 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'po'} = Servers::po::dovecot->getInstance( );
-    $self->{'mta'} = Servers::mta->factory( );
+    $self->{'po'} = Servers::po::dovecot->getInstance();
+    $self->{'mta'} = Servers::mta->factory();
     $self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'config'} = $self->{'po'}->{'config'};
@@ -107,15 +107,15 @@ sub _dropSqlUser
     my ($self) = @_;
 
     # In setup context, take value from old conffile, else take value from current conffile
-    my $dbUserHost = ($main::execmode eq 'setup')
+    my $dbUserHost = ( $main::execmode eq 'setup' )
         ? $main::imscpOldConfig{'DATABASE_USER_HOST'} : $main::imscpConfig{'DATABASE_USER_HOST'};
 
     return 0 unless $self->{'config'}->{'DATABASE_USER'} && $dbUserHost;
 
     local $@;
-    eval { Servers::sqld->factory( )->dropUser( $self->{'config'}->{'DATABASE_USER'}, $dbUserHost ); };
-    if ($@) {
-        error($@);
+    eval { Servers::sqld->factory()->dropUser( $self->{'config'}->{'DATABASE_USER'}, $dbUserHost ); };
+    if ( $@ ) {
+        error( $@ );
         return 1;
     }
 
@@ -136,7 +136,7 @@ sub _removeConfig
 
     return 0 unless -d $self->{'config'}->{'DOVECOT_CONF_DIR'};
 
-    for ('dovecot.conf', 'dovecot-sql.conf') {
+    for ( 'dovecot.conf', 'dovecot-sql.conf' ) {
         next unless -f "$self->{'bkpDir'}/$_.system";
 
         my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$_.system" )->copyFile(
@@ -145,7 +145,7 @@ sub _removeConfig
         return $rs if $rs;
     }
 
-    if (-f "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf") {
+    if ( -f "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf" ) {
         my $file = iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf" );
         my $rs ||= $file->owner(
             $main::imscpConfig{'ROOT_USER'}, $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}

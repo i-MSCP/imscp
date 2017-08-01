@@ -52,7 +52,7 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-    Package::FileManager::Pydio::Installer->getInstance( )->preinstall( );
+    Package::FileManager::Pydio::Installer->getInstance()->preinstall();
 }
 
 =item install( )
@@ -65,7 +65,7 @@ sub preinstall
 
 sub install
 {
-    Package::FileManager::Pydio::Installer->getInstance( )->install( );
+    Package::FileManager::Pydio::Installer->getInstance()->install();
 }
 
 =item uninstall( )
@@ -78,7 +78,7 @@ sub install
 
 sub uninstall
 {
-    Package::FileManager::Pydio::Uninstaller->getInstance( )->uninstall( );
+    Package::FileManager::Pydio::Uninstaller->getInstance()->uninstall();
 }
 
 =item setGuiPermissions( )
@@ -91,7 +91,7 @@ sub uninstall
 
 sub setGuiPermissions
 {
-    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
     my $rs = setRights(
         "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp",
         {

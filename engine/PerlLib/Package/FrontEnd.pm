@@ -59,7 +59,7 @@ sub registerSetupListeners
 {
     my (undef, $eventManager) = @_;
 
-    Package::FrontEnd::Installer->getInstance( )->registerSetupListeners( $eventManager );
+    Package::FrontEnd::Installer->getInstance()->registerSetupListeners( $eventManager );
 }
 
 =item preinstall( )
@@ -75,7 +75,7 @@ sub preinstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndPreInstall' );
-    $rs ||= $self->stop( );
+    $rs ||= $self->stop();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndPreInstall' );
 }
 
@@ -92,7 +92,7 @@ sub install
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndInstall' );
-    $rs ||= Package::FrontEnd::Installer->getInstance( )->install( );
+    $rs ||= Package::FrontEnd::Installer->getInstance()->install();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndInstall' );
 }
 
@@ -113,11 +113,11 @@ sub postinstall
 
     local $@;
     eval {
-        my $serviceMngr = iMSCP::Service->getInstance( );
+        my $serviceMngr = iMSCP::Service->getInstance();
         $serviceMngr->enable( $self->{'config'}->{'HTTPD_SNAME'} );
         $serviceMngr->enable( 'imscp_panel' );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -125,7 +125,7 @@ sub postinstall
     $rs = $self->{'eventManager'}->register(
         'beforeSetupRestartServices',
         sub {
-            push @{$_[0]}, [ sub { $self->start( ); }, 'i-MSCP FrontEnd services' ];
+            push @{$_[0]}, [ sub { $self->start(); }, 'i-MSCP FrontEnd services' ];
             0;
         },
         2
@@ -146,7 +146,7 @@ sub dpkgPostInvokeTasks
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndDpkgPostInvokeTasks' );
-    $rs ||= Package::FrontEnd::Installer->getInstance( )->dpkgPostInvokeTasks( );
+    $rs ||= Package::FrontEnd::Installer->getInstance()->dpkgPostInvokeTasks();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndDpkgPostInvokeTasks' );
 }
 
@@ -163,7 +163,7 @@ sub uninstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndUninstall' );
-    $rs ||= Package::FrontEnd::Uninstaller->getInstance( )->uninstall( );
+    $rs ||= Package::FrontEnd::Uninstaller->getInstance()->uninstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndUninstall' );
 }
 
@@ -217,7 +217,7 @@ sub setEnginePermissions
     return $rs if $rs;
 
     # Temporary directories as provided by nginx package (from Debian Team)
-    if (-d "$self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'}") {
+    if ( -d "$self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'}" ) {
         $rs = setRights(
             $self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'},
             {
@@ -226,7 +226,7 @@ sub setEnginePermissions
             }
         );
 
-        for my $tmp('body', 'fastcgi', 'proxy', 'scgi', 'uwsgi') {
+        for my $tmp( 'body', 'fastcgi', 'proxy', 'scgi', 'uwsgi' ) {
             next unless -d "$self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'}/$tmp";
 
             $rs = setRights(
@@ -263,7 +263,7 @@ sub setEnginePermissions
     );
     return $rs if $rs;
 
-    for my $tmp('client_temp', 'fastcgi_temp', 'proxy_temp', 'scgi_temp', 'uwsgi_temp') {
+    for my $tmp( 'client_temp', 'fastcgi_temp', 'proxy_temp', 'scgi_temp', 'uwsgi_temp' ) {
         next unless -d "$self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'}/$tmp";
 
         $rs = setRights(
@@ -305,8 +305,8 @@ sub setGuiPermissions
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontendSetGuiPermissions' );
     return $rs if $rs;
 
-    my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-    my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
     $rs = setRights(
         $main::imscpConfig{'GUI_ROOT_DIR'},
@@ -388,7 +388,7 @@ sub addUser
     return 0 if $data->{'STATUS'} eq 'tochangepwd';
 
     iMSCP::SystemUser->new(
-        username => $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'}
+        username => $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
     )->addToGroup(
         $data->{'GROUP'}
     );
@@ -410,19 +410,19 @@ sub enableSites
     my $rs = $self->{'eventManager'}->trigger( 'beforeEnableFrontEndSites', \@sites );
     return $rs if $rs;
 
-    for my $site(@sites) {
+    for my $site( @sites ) {
         my $target = "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site";
-        my $link = $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}.'/'.basename( $site, '.conf' );
+        my $link = $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'} . '/' . basename( $site, '.conf' );
 
-        unless (-f $target) {
-            error( sprintf( "Site `%s` doesn't exist", $site ) );
+        unless ( -f $target ) {
+            error( sprintf( "Site `%s` doesn't exist", $site ));
             return 1;
         }
 
         next if -l $link;
 
-        unless (symlink( File::Spec->abs2rel( $target, $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'} ), $link )) {
-            error( sprintf( "Couldn't enable `%s` site: %s", $site, $! ) );
+        unless ( symlink( File::Spec->abs2rel( $target, $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'} ), $link ) ) {
+            error( sprintf( "Couldn't enable `%s` site: %s", $site, $! ));
             return 1;
         }
 
@@ -448,11 +448,11 @@ sub disableSites
     my $rs = $self->{'eventManager'}->trigger( 'beforeDisableFrontEndSites', \@sites );
     return $rs if $rs;
 
-    for my $site(@sites) {
-        my $link = $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}.'/'.basename( $site, '.conf' );
+    for my $site( @sites ) {
+        my $link = $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'} . '/' . basename( $site, '.conf' );
         next unless -l $link;
 
-        $rs = iMSCP::File->new( filename => $link )->delFile( );
+        $rs = iMSCP::File->new( filename => $link )->delFile();
         return $rs if $rs;
 
         $self->{'reload'} = 1;
@@ -474,8 +474,8 @@ sub start
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndStart' );
-    $rs ||= $self->startPhpFpm( );
-    $rs ||= $self->startNginx( );
+    $rs ||= $self->startPhpFpm();
+    $rs ||= $self->startNginx();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndStart' );
 }
 
@@ -492,8 +492,8 @@ sub stop
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndStop' );
-    $rs ||= $self->stopPhpFpm( );
-    $rs ||= $self->stopNginx( );
+    $rs ||= $self->stopPhpFpm();
+    $rs ||= $self->stopNginx();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndStop' );
 }
 
@@ -510,8 +510,8 @@ sub reload
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndReload' );
-    $rs ||= $self->reloadPhpFpm( );
-    $rs ||= $self->reloadNginx( );
+    $rs ||= $self->reloadPhpFpm();
+    $rs ||= $self->reloadNginx();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndReload' );
 }
 
@@ -528,8 +528,8 @@ sub restart
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndRestart' );
-    $rs ||= $self->restartPhpFpm( );
-    $rs ||= $self->restartNginx( );
+    $rs ||= $self->restartPhpFpm();
+    $rs ||= $self->restartNginx();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndRestart' );
 }
 
@@ -549,8 +549,8 @@ sub startNginx
     return $rs if $rs;
 
     local $@;
-    eval { iMSCP::Service->getInstance( )->start( $self->{'config'}->{'HTTPD_SNAME'} ); };
-    if ($@) {
+    eval { iMSCP::Service->getInstance()->start( $self->{'config'}->{'HTTPD_SNAME'} ); };
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -574,8 +574,8 @@ sub stopNginx
     return $rs if $rs;
 
     local $@;
-    eval { iMSCP::Service->getInstance( )->stop( "$self->{'config'}->{'HTTPD_SNAME'}" ); };
-    if ($@) {
+    eval { iMSCP::Service->getInstance()->stop( "$self->{'config'}->{'HTTPD_SNAME'}" ); };
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -599,8 +599,8 @@ sub reloadNginx
     return $rs if $rs;
 
     local $@;
-    eval { iMSCP::Service->getInstance( )->reload( $self->{'config'}->{'HTTPD_SNAME'} ); };
-    if ($@) {
+    eval { iMSCP::Service->getInstance()->reload( $self->{'config'}->{'HTTPD_SNAME'} ); };
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -624,8 +624,8 @@ sub restartNginx
     return $rs if $rs;
 
     local $@;
-    eval { iMSCP::Service->getInstance( )->restart( $self->{'config'}->{'HTTPD_SNAME'} ); };
-    if ($@) {
+    eval { iMSCP::Service->getInstance()->restart( $self->{'config'}->{'HTTPD_SNAME'} ); };
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -649,8 +649,8 @@ sub startPhpFpm
     return $rs if $rs;
 
     local $@;
-    eval { iMSCP::Service->getInstance( )->start( 'imscp_panel' ); };
-    if ($@) {
+    eval { iMSCP::Service->getInstance()->start( 'imscp_panel' ); };
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -674,8 +674,8 @@ sub stopPhpFpm
     return $rs if $rs;
 
     local $@;
-    eval { iMSCP::Service->getInstance( )->stop( 'imscp_panel' ); };
-    if ($@) {
+    eval { iMSCP::Service->getInstance()->stop( 'imscp_panel' ); };
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -699,8 +699,8 @@ sub reloadPhpFpm
     return $rs if $rs;
 
     local $@;
-    eval { iMSCP::Service->getInstance( )->reload( 'imscp_panel' ); };
-    if ($@) {
+    eval { iMSCP::Service->getInstance()->reload( 'imscp_panel' ); };
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -724,8 +724,8 @@ sub restartPhpFpm
     return $rs if $rs;
 
     local $@;
-    eval { iMSCP::Service->getInstance( )->restart( 'imscp_panel' ); };
-    if ($@) {
+    eval { iMSCP::Service->getInstance()->restart( 'imscp_panel' ); };
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -748,18 +748,18 @@ sub buildConfFile
 {
     my ($self, $file, $tplVars, $options) = @_;
 
-    $tplVars ||= { };
-    $options ||= { };
+    $tplVars ||= {};
+    $options ||= {};
 
     my ($filename, $path) = fileparse( $file );
     my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'frontend', $filename, \ my $cfgTpl, $tplVars );
     return $rs if $rs;
 
-    unless (defined $cfgTpl) {
+    unless ( defined $cfgTpl ) {
         $file = "$self->{'cfgDir'}/$file" unless -d $path && $path ne './';
-        $cfgTpl = iMSCP::File->new( filename => $file )->get( );
-        unless (defined $cfgTpl) {
-            error( sprintf( "Couldn't read %s file", $file ) );
+        $cfgTpl = iMSCP::File->new( filename => $file )->get();
+        unless ( defined $cfgTpl ) {
+            error( sprintf( "Couldn't read %s file", $file ));
             return 1;
         }
     }
@@ -777,10 +777,10 @@ sub buildConfFile
 
     my $fileHandler = iMSCP::File->new( filename => $options->{'destination'} );
     $rs = $fileHandler->set( $cfgTpl );
-    $rs ||= $fileHandler->save( );
+    $rs ||= $fileHandler->save();
     $rs ||= $fileHandler->owner(
-        ($options->{'user'} ? $options->{'user'} : $main::imscpConfig{'ROOT_USER'}),
-        ($options->{'group'} ? $options->{'group'} : $main::imscpConfig{'ROOT_GROUP'})
+        ( $options->{'user'} ? $options->{'user'} : $main::imscpConfig{'ROOT_USER'} ),
+        ( $options->{'group'} ? $options->{'group'} : $main::imscpConfig{'ROOT_GROUP'} )
     );
     $rs ||= $fileHandler->mode( $options->{'mode'} ? $options->{'mode'} : 0644 );
 }
@@ -806,14 +806,14 @@ sub _init
     $self->{'start'} = 0;
     $self->{'reload'} = 0;
     $self->{'restart'} = 0;
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/frontend";
-    $self->_mergeConfig( ) if -f "$self->{'cfgDir'}/frontend.data.dist";
+    $self->_mergeConfig() if -f "$self->{'cfgDir'}/frontend.data.dist";
     tie %{$self->{'config'}},
         'iMSCP::Config',
         fileName    => "$self->{'cfgDir'}/frontend.data",
-        readonly    => !(defined $main::execmode && $main::execmode eq 'setup'),
-        nodeferring => (defined $main::execmode && $main::execmode eq 'setup');
+        readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
+        nodeferring => ( defined $main::execmode && $main::execmode eq 'setup' );
     $self;
 }
 
@@ -829,19 +829,19 @@ sub _mergeConfig
 {
     my ($self) = @_;
 
-    if (-f "$self->{'cfgDir'}/frontend.data") {
+    if ( -f "$self->{'cfgDir'}/frontend.data" ) {
         tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.data.dist";
         tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.data", readonly => 1;
 
-        debug('Merging old configuration with new configuration...');
+        debug( 'Merging old configuration with new configuration...' );
 
-        while(my ($key, $value) = each(%oldConfig)) {
+        while ( my ($key, $value) = each( %oldConfig ) ) {
             next unless exists $newConfig{$key};
             $newConfig{$key} = $value;
         }
 
-        untie(%newConfig);
-        untie(%oldConfig);
+        untie( %newConfig );
+        untie( %oldConfig );
     }
 
     iMSCP::File->new( filename => "$self->{'cfgDir'}/frontend.data.dist" )->moveFile(
@@ -866,7 +866,7 @@ sub _buildConf
 {
     my ($self, $cfgTpl, $filename, $tplVars) = @_;
 
-    $tplVars ||= { };
+    $tplVars ||= {};
     $self->{'eventManager'}->trigger( 'beforeFrontEndBuildConf', \$cfgTpl, $filename, $tplVars );
     $cfgTpl = process( $tplVars, $cfgTpl );
     $self->{'eventManager'}->trigger( 'afterFrontEndBuildConf', \$cfgTpl, $filename, $tplVars );
@@ -885,19 +885,19 @@ END
     {
         return if $?;
 
-        if (defined $main::execmode) {
+        if ( defined $main::execmode ) {
             return if $main::execmode eq 'setup';
-            $? = Package::FrontEnd->getInstance( )->restartNginx( ) if $main::execmode eq 'uninstaller';
+            $? = Package::FrontEnd->getInstance()->restartNginx() if $main::execmode eq 'uninstaller';
             return;
         }
 
-        my $self = Package::FrontEnd->getInstance( );
-        if ($self->{'start'}) {
-            $? = $self->start( );
-        } elsif ($self->{'restart'}) {
-            $? = $self->restart( );
-        } elsif ($self->{'reload'}) {
-            $? = $self->reload( );
+        my $self = Package::FrontEnd->getInstance();
+        if ( $self->{'start'} ) {
+            $? = $self->start();
+        } elsif ( $self->{'restart'} ) {
+            $? = $self->restart();
+        } elsif ( $self->{'reload'} ) {
+            $? = $self->reload();
         }
     }
 

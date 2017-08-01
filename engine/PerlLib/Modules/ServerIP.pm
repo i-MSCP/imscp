@@ -68,18 +68,18 @@ sub process
     return $rs if $rs;
 
     my @sql;
-    if ($self->{'_data'}->{'ip_status'} =~ /^to(?:add|change)$/) {
-        $rs = $self->add( );
-        @sql = ('UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', undef,
-            ($rs ? getLastError( 'error' ) || 'Unknown error' : 'ok'), $ipId);
-    } elsif ($self->{'_data'}->{'ip_status'} eq 'todelete') {
-        $rs = $self->delete( );
+    if ( $self->{'_data'}->{'ip_status'} =~ /^to(?:add|change)$/ ) {
+        $rs = $self->add();
+        @sql = ( 'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', undef,
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $ipId );
+    } elsif ( $self->{'_data'}->{'ip_status'} eq 'todelete' ) {
+        $rs = $self->delete();
         @sql = $rs
-            ? ('UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', undef,
-                getLastError( 'error' ) || 'Unknown error', $ipId)
-            : ('DELETE FROM server_ips WHERE ip_id = ?', undef, $ipId);
+            ? ( 'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', undef,
+                getLastError( 'error' ) || 'Unknown error', $ipId )
+            : ( 'DELETE FROM server_ips WHERE ip_id = ?', undef, $ipId );
     } else {
-        warning( sprintf( 'Unknown action (%s) for server IP with ID %s', $self->{'_data'}->{'ip_status'}, $ipId ) );
+        warning( sprintf( 'Unknown action (%s) for server IP with ID %s', $self->{'_data'}->{'ip_status'}, $ipId ));
         return 0;
     }
 
@@ -88,7 +88,7 @@ sub process
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         $self->{'_dbh'}->do( @sql );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -114,12 +114,12 @@ sub add
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
-        if ($self->{'_data'}->{'ip_card'} ne 'any' && $self->{'_data'}->{'ip_address'} ne '0.0.0.0') {
-            iMSCP::Provider::NetworkInterface->getInstance( )->addIpAddr( $self->{'_data'} );
-            iMSCP::Net->getInstance( )->resetInstance( );
+        if ( $self->{'_data'}->{'ip_card'} ne 'any' && $self->{'_data'}->{'ip_address'} ne '0.0.0.0' ) {
+            iMSCP::Provider::NetworkInterface->getInstance()->addIpAddr( $self->{'_data'} );
+            iMSCP::Net->getInstance()->resetInstance();
         }
 
-        $self->SUPER::add( ) == 0 or die(
+        $self->SUPER::add() == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
@@ -127,7 +127,7 @@ sub add
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -153,12 +153,12 @@ sub delete
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
-        if ($self->{'_data'}->{'ip_card'} ne 'any' && $self->{'_data'}->{'ip_address'} ne '0.0.0.0') {
-            iMSCP::Provider::NetworkInterface->getInstance( )->removeIpAddr( $self->{'_data'} );
-            iMSCP::Net->getInstance( )->resetInstance( );
+        if ( $self->{'_data'}->{'ip_card'} ne 'any' && $self->{'_data'}->{'ip_address'} ne '0.0.0.0' ) {
+            iMSCP::Provider::NetworkInterface->getInstance()->removeIpAddr( $self->{'_data'} );
+            iMSCP::Net->getInstance()->resetInstance();
         }
 
-        $self->SUPER::delete( ) == 0 or die(
+        $self->SUPER::delete() == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
@@ -166,7 +166,7 @@ sub delete
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }
@@ -204,9 +204,9 @@ sub _loadData
             ',
             undef, $ipId
         );
-        $self->{'_data'} or die( sprintf( 'Data not found for server IP address (ID %d)', $ipId ) );
+        $self->{'_data'} or die( sprintf( 'Data not found for server IP address (ID %d)', $ipId ));
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
     }

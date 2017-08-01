@@ -60,8 +60,8 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->_createUserAndGroup( );
-    $rs ||= $self->_makeDirs( );
+    my $rs = $self->_createUserAndGroup();
+    $rs ||= $self->_makeDirs();
 }
 
 =item install( )
@@ -76,11 +76,11 @@ sub install
 {
     my ($self) = @_;
 
-    my $rs = $self->_setPostfixVersion( );
-    $rs ||= $self->_createPostfixMaps( );
-    $rs ||= $self->_buildConf( );
-    $rs ||= $self->_buildAliasesDb( );
-    $rs ||= $self->_oldEngineCompatibility( );
+    my $rs = $self->_setPostfixVersion();
+    $rs ||= $self->_createPostfixMaps();
+    $rs ||= $self->_buildConf();
+    $rs ||= $self->_buildAliasesDb();
+    $rs ||= $self->_oldEngineCompatibility();
 }
 
 =back
@@ -101,8 +101,8 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
-    $self->{'mta'} = Servers::mta::postfix->getInstance( );
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'mta'} = Servers::mta::postfix->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
     $self->{'config'} = $self->{'mta'}->{'config'};
     $self;
@@ -120,7 +120,7 @@ sub _createUserAndGroup
 {
     my ($self) = @_;
 
-    my $rs = iMSCP::SystemGroup->getInstance( )->addSystemGroup( $self->{'config'}->{'MTA_MAILBOX_GID_NAME'}, 1 );
+    my $rs = iMSCP::SystemGroup->getInstance()->addSystemGroup( $self->{'config'}->{'MTA_MAILBOX_GID_NAME'}, 1 );
     return $rs if $rs;
 
     my $systemUser = iMSCP::SystemUser->new(
@@ -130,7 +130,7 @@ sub _createUserAndGroup
         home     => $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
         system   => 1
     );
-    $rs = $systemUser->addSystemUser( );
+    $rs = $systemUser->addSystemUser();
     $rs ||= $systemUser->addToGroup( $main::imscpConfig{'IMSCP_GROUP'} );
 }
 
@@ -165,9 +165,9 @@ sub _makeDirs
     return $rs if $rs;
 
     # Make sure to start with clean directory
-    iMSCP::Dir->new(dirname => $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'})->remove( );
+    iMSCP::Dir->new( dirname => $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'} )->remove();
 
-    for my $dir(@directories) {
+    for my $dir( @directories ) {
         iMSCP::Dir->new( dirname => $dir->[0] )->make(
             {
                 user           => $dir->[1],
@@ -194,8 +194,8 @@ sub _buildConf
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaBuildConf' );
-    $rs ||= $self->_buildMasterCfFile( );
-    $rs ||= $self->_buildMainCfFile( );
+    $rs ||= $self->_buildMasterCfFile();
+    $rs ||= $self->_buildMainCfFile();
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaBuildConf' );
 }
 
@@ -215,13 +215,13 @@ sub _setPostfixVersion
     debug( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
-    if ($stdout !~ m/^([\d.]+)/) {
+    if ( $stdout !~ m/^([\d.]+)/ ) {
         error( "Couldn't guess Postfix version" );
         return 1;
     }
 
     $self->{'config'}->{'POSTFIX_VERSION'} = $stdout;
-    debug( sprintf( 'Postfix version set to: %s', $stdout ) );
+    debug( sprintf( 'Postfix version set to: %s', $stdout ));
     0;
 }
 
@@ -246,7 +246,7 @@ sub _createPostfixMaps
     my $rs = $self->{'eventManager'}->trigger( 'beforeCreatePostfixMaps', \ @lookupTables );
     return $rs if $rs;
 
-    for (@lookupTables) {
+    for ( @lookupTables ) {
         $rs = $self->{'mta'}->addMapEntry( $_ );
         return $rs if $rs;
     }
@@ -267,11 +267,11 @@ sub _buildAliasesDb
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaBuildAliasesDb' );
-    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'postfix', 'aliases', \ my $cfgTpl, { } );
+    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'postfix', 'aliases', \ my $cfgTpl, {} );
     return $rs if $rs;
 
-    unless (defined $cfgTpl) {
-        $cfgTpl = iMSCP::File->new( filename => $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'} )->get( );
+    unless ( defined $cfgTpl ) {
+        $cfgTpl = iMSCP::File->new( filename => $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'} )->get();
         $cfgTpl = '' unless defined $cfgTpl;
     }
 
@@ -280,7 +280,7 @@ sub _buildAliasesDb
 
     # Add alias for local root user
     $cfgTpl =~ s/^root:.*\n//gim;
-    $cfgTpl .= 'root: '.main::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' )."\n";
+    $cfgTpl .= 'root: ' . main::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' ) . "\n";
 
     $rs = $self->{'eventManager'}->trigger( 'afterMtaBuildAliasesDbFile', \ $cfgTpl, 'aliases' );
     return $rs if $rs;
@@ -288,7 +288,7 @@ sub _buildAliasesDb
     my $file = iMSCP::File->new( filename => $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'} );
     $file->set( $cfgTpl );
 
-    $rs = $file->save( );
+    $rs = $file->save();
     return $rs if $rs;
 
     $rs = execute( 'newaliases', \ my $stdout, \ my $stderr );
@@ -313,16 +313,16 @@ sub _buildMasterCfFile
     my $data = {
         MTA_MAILBOX_UID_NAME => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
         IMSCP_GROUP          => $main::imscpConfig{'IMSCP_GROUP'},
-        ARPL_PATH            => $main::imscpConfig{'ROOT_DIR'}."/engine/messenger/imscp-arpl-msgr"
+        ARPL_PATH            => $main::imscpConfig{'ROOT_DIR'} . "/engine/messenger/imscp-arpl-msgr"
     };
 
     my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'postfix', 'master.cf', \ my $cfgTpl, $data );
     return $rs if $rs;
 
-    unless (defined $cfgTpl) {
-        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/master.cf" )->get( );
-        unless (defined $cfgTpl) {
-            error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/master.cf" ) );
+    unless ( defined $cfgTpl ) {
+        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/master.cf" )->get();
+        unless ( defined $cfgTpl ) {
+            error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/master.cf" ));
             return 1;
         }
     }
@@ -337,7 +337,7 @@ sub _buildMasterCfFile
 
     my $file = iMSCP::File->new( filename => $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'} );
     $file->set( $cfgTpl );
-    $file->save( );
+    $file->save();
 }
 
 =item _buildMainCfFile( )
@@ -359,8 +359,8 @@ sub _buildMainCfFile
     my $hostname = main::setupGetQuestion( 'SERVER_HOSTNAME' );
     my $data = {
         MTA_INET_PROTOCOLS       => $baseServerIpType,
-        MTA_SMTP_BIND_ADDRESS    => ($baseServerIpType eq 'ipv4' && $baseServerIp ne '0.0.0.0') ? $baseServerIp : '',
-        MTA_SMTP_BIND_ADDRESS6   => ($baseServerIpType eq 'ipv6') ? $baseServerIp : '',
+        MTA_SMTP_BIND_ADDRESS    => ( $baseServerIpType eq 'ipv4' && $baseServerIp ne '0.0.0.0' ) ? $baseServerIp : '',
+        MTA_SMTP_BIND_ADDRESS6   => ( $baseServerIpType eq 'ipv6' ) ? $baseServerIp : '',
         MTA_HOSTNAME             => $hostname,
         MTA_LOCAL_DOMAIN         => "$hostname.local",
         MTA_VERSION              => $main::imscpConfig{'Version'},
@@ -380,10 +380,10 @@ sub _buildMainCfFile
     my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'postfix', 'main.cf', \ my $cfgTpl, $data );
     return $rs if $rs;
 
-    unless (defined $cfgTpl) {
-        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/main.cf" )->get( );
-        unless (defined $cfgTpl) {
-            error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/main.cf" ) );
+    unless ( defined $cfgTpl ) {
+        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/main.cf" )->get();
+        unless ( defined $cfgTpl ) {
+            error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/main.cf" ));
             return 1;
         }
     }
@@ -399,7 +399,7 @@ sub _buildMainCfFile
     my $file = iMSCP::File->new( filename => $self->{'config'}->{'POSTFIX_CONF_FILE'} );
     $file->set( $cfgTpl );
 
-    $rs = $file->save( );
+    $rs = $file->save();
     return $rs if $rs;
 
     # Add TLS parameters if required
@@ -485,7 +485,7 @@ sub _buildMainCfFile
                 }
             );
 
-            if (version->parse( $self->{'config'}->{'POSTFIX_VERSION'} ) >= version->parse( '2.10.0' )) {
+            if ( version->parse( $self->{'config'}->{'POSTFIX_VERSION'} ) >= version->parse( '2.10.0' ) ) {
                 $params{'smtpd_relay_restrictions'} = {
                     action => 'replace',
                     values => [ '' ],
@@ -493,7 +493,7 @@ sub _buildMainCfFile
                 };
             }
 
-            if (version->parse( $self->{'config'}->{'POSTFIX_VERSION'} ) >= version->parse( '3.0.0' )) {
+            if ( version->parse( $self->{'config'}->{'POSTFIX_VERSION'} ) >= version->parse( '3.0.0' ) ) {
                 $params{'compatibility_level'} = {
                     action => 'replace',
                     values => [ '2' ]
@@ -520,8 +520,8 @@ sub _oldEngineCompatibility
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaOldEngineCompatibility' );
     return $rs if $rs;
 
-    if (-f "$self->{'cfgDir'}/postfix.old.data") {
-        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/postfix.old.data" )->delFile( );
+    if ( -f "$self->{'cfgDir'}/postfix.old.data" ) {
+        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/postfix.old.data" )->delFile();
         return $rs if $rs;
     }
 

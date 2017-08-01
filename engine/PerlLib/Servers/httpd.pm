@@ -53,7 +53,7 @@ sub factory
     my $package = $main::imscpConfig{'HTTPD_PACKAGE'} || 'Servers::noserver';
     eval "require $package";
     fatal( $@ ) if $@;
-    $instance = $package->getInstance( );
+    $instance = $package->getInstance();
 }
 
 =item can( $method )
@@ -90,12 +90,12 @@ sub getPriority
 
 END
     {
-        return if $? || !$instance || ($main::execmode && $main::execmode eq 'setup');
+        return if $? || !$instance || ( $main::execmode && $main::execmode eq 'setup' );
 
-        if ($instance->{'start'}) {
-            $? = $instance->start( );
-        } elsif ($instance->{'restart'}) {
-            $? = $instance->restart( );
+        if ( $instance->{'start'} ) {
+            $? = $instance->start();
+        } elsif ( $instance->{'restart'} ) {
+            $? = $instance->restart();
         }
     }
 

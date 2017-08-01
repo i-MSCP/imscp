@@ -62,21 +62,21 @@ sub register
     eval {
         defined $eventNames or die 'Missing $eventNames parameter';
 
-        if (ref $eventNames eq 'ARRAY') {
+        if ( ref $eventNames eq 'ARRAY' ) {
             $self->register( $_, $listener, $priority, $once ) for @{$eventNames};
             return 0;
         }
 
-        unless ($self->{'events'}->{$eventNames}) {
-            $self->{'events'}->{$eventNames} = iMSCP::EventManager::ListenerPriorityQueue->new( );
+        unless ( $self->{'events'}->{$eventNames} ) {
+            $self->{'events'}->{$eventNames} = iMSCP::EventManager::ListenerPriorityQueue->new();
         }
 
         $listener = sub { $listener->$eventNames( @_ ) } if blessed $listener;
         $self->{'events'}->{$eventNames}->addListener( $listener, $priority );
         $self->{'nonces'}->{$eventNames}->{$listener} = 1 if $once;
     };
-    if ($@) {
-        error($@);
+    if ( $@ ) {
+        error( $@ );
         return 1;
     }
 
@@ -121,13 +121,13 @@ sub unregister
     eval {
         defined $listener or die 'Missing $listener parameter';
 
-        if (defined $eventName) {
+        if ( defined $eventName ) {
             return unless $self->{'events'}->{$eventName};
 
             $self->{'events'}->{$eventName}->removeListener( $listener ) if $self->{'events'}->{$eventName};
-            delete $self->{'events'}->{$eventName} if $self->{'events'}->{$eventName}->isEmpty( );
+            delete $self->{'events'}->{$eventName} if $self->{'events'}->{$eventName}->isEmpty();
 
-            if ($self->{'nonces'}->{$eventName}->{$listener}) {
+            if ( $self->{'nonces'}->{$eventName}->{$listener} ) {
                 delete $self->{'nonces'}->{$eventName}->{$listener};
                 delete $self->{'nonces'}->{$eventName} unless %{$self->{'nonces'}->{$eventName}};
             }
@@ -135,10 +135,10 @@ sub unregister
             return;
         }
 
-        $self->unregister($listener, $_) for keys %{$self->{'events'}};
+        $self->unregister( $listener, $_ ) for keys %{$self->{'events'}};
     };
-    if ($@) {
-        error($@);
+    if ( $@ ) {
+        error( $@ );
         return 1;
     }
 
@@ -158,7 +158,7 @@ sub clearListeners
 {
     my ($self, $eventName) = @_;
 
-    unless (defined $eventName) {
+    unless ( defined $eventName ) {
         error( 'Missing $eventName parameter' );
         return 1;
     }
@@ -182,20 +182,20 @@ sub trigger
 {
     my ($self, $eventName, @params) = @_;
 
-    unless (defined $eventName) {
+    unless ( defined $eventName ) {
         error( 'Missing $eventName parameter' );
         return 1;
     }
 
     return 0 unless $self->{'events'}->{$eventName};
-    debug( sprintf( 'Triggering %s event', $eventName ) );
+    debug( sprintf( 'Triggering %s event', $eventName ));
 
     # The priority queue acts as a heap, which implies that as items are popped
     # they are also removed. Thus we clone it for purposes of iteration.
     my $listenerPriorityQueue = clone( $self->{'events'}->{$eventName} );
     my $rs = 0;
-    while(my $listener = $listenerPriorityQueue->pop( )) {
-        if ($self->{'nonces'}->{$eventName}->{$listener}) {
+    while ( my $listener = $listenerPriorityQueue->pop() ) {
+        if ( $self->{'nonces'}->{$eventName}->{$listener} ) {
             $self->{'events'}->{$eventName}->removeListener( $listener );
             delete $self->{'nonces'}->{$eventName}->{$listener};
         }
@@ -204,7 +204,7 @@ sub trigger
         last if $rs;
     }
 
-    delete $self->{'events'}->{$eventName} if $self->{'events'}->{$eventName}->isEmpty( );
+    delete $self->{'events'}->{$eventName} if $self->{'events'}->{$eventName}->isEmpty();
     delete $self->{'nonces'}->{$eventName} if $self->{'nonces'}->{$eventName} && !%{$self->{'nonces'}->{$eventName}};
     $rs;
 }
@@ -227,11 +227,11 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'events'} = { };
-    $self->{'nonces'} = { };
+    $self->{'events'} = {};
+    $self->{'nonces'} = {};
 
-    while (<$main::imscpConfig{'CONF_DIR'}/listeners.d/*.pl>) {
-        debug( sprintf( 'Loading %s listener file', $_ ) );
+    while ( <$main::imscpConfig{'CONF_DIR'}/listeners.d/*.pl> ) {
+        debug( sprintf( 'Loading %s listener file', $_ ));
         require $_;
     }
 

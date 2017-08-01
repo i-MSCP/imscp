@@ -49,7 +49,7 @@ sub run
     my $timestamp = time;
     $timestamp -= ( $timestamp % 1800 ); # Floor down for the last half'n hour
 
-    for my $exec(@EXECS) {
+    for my $exec( @EXECS ) {
         defined $exec or next;
 
         # Make sure that at least one of IMSCP_INPUT or IMSCP_OUTPUT chain exists
@@ -66,7 +66,7 @@ sub run
         );
 
         # Get input and output traffic data
-        while( $stdout =~ /-N\s+(.*)/gm ) {
+        while ( $stdout =~ /-N\s+(.*)/gm ) {
             $rs = execute( "$exec -t filter -nvxL $1", $chains{$1}, \$stderr );
             debug( ${$chains{$1}} ) if ${$chains{$1}};
             error( $stderr || 'Unknown error' ) if $rs;
@@ -81,7 +81,7 @@ sub run
     return 0 unless $smtpIn || $poIn || $httpIn || $allIn || $smtpOut || $poOut || $httpOut || $allOut;
 
     # Update traffic data in database
-    my $dbh = iMSCP::Database->factory( )->getRawDb( );
+    my $dbh = iMSCP::Database->factory()->getRawDb();
     $dbh->do(
         '
             INSERT INTO server_traffic (
@@ -99,7 +99,7 @@ sub run
         $allIn, $allOut, $smtpIn, $smtpOut, $poIn, $poOut, $httpIn, $httpOut,
         $allIn, $allOut, $smtpIn, $smtpOut, $poIn, $poOut, $httpIn, $httpOut
     );
-    if ($dbh->err) {
+    if ( $dbh->err ) {
         error( $dbh->errstr );
         return 1;
     }
@@ -114,9 +114,9 @@ sub _parseTrafficData
     my $frontEndHttpPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'};
     my $frontEndHttpsPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
 
-    while( ${$trafficData} =~ /^\s+\d+\s+(\d+).*?(?:(?:dpt|spt):(\d+))?$/gm ) {
-        my ($bytes, $port) = ($1, $2 // 0);
-        if ($port > 0) {
+    while ( ${$trafficData} =~ /^\s+\d+\s+(\d+).*?(?:(?:dpt|spt):(\d+))?$/gm ) {
+        my ($bytes, $port) = ( $1, $2 // 0 );
+        if ( $port > 0 ) {
             ${$smtp} += $bytes if $port =~ /^(?:587|25|465)$/;
             ${$po} += $bytes if $port =~ /^(?:110|995|143|993)$/;
             ${$http} += $bytes if $port =~ /^(?:80|443|$frontEndHttpPort|$frontEndHttpsPort)$/;
@@ -128,7 +128,7 @@ sub _parseTrafficData
 
 newDebug( 'imscp-srv-traff.log' );
 
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 ) ).qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq {
 
 Script that collects i-MSCP server' traffic data.
 
@@ -141,7 +141,7 @@ OPTIONS:
 
 setVerbose( iMSCP::Getopt->verbose );
 
-my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
+my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-srv-traff.lock', 'nowait' );
 
 $bootstrapper->boot(
@@ -154,7 +154,7 @@ $bootstrapper->boot(
 
 @EXECS = (
     iMSCP::ProgramFinder::find( 'iptables' ),
-    ($main::imscpConfig{'IPV6_SUPPORT'} ? iMSCP::ProgramFinder::find( 'ip6tables' ) : undef)
+    ( $main::imscpConfig{'IPV6_SUPPORT'} ? iMSCP::ProgramFinder::find( 'ip6tables' ) : undef )
 );
 
 exit run();

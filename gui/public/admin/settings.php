@@ -41,26 +41,44 @@ if (!empty($_POST)) {
     $passwdChars = isset($_POST['passwd_chars']) ? clean_input($_POST['passwd_chars']) : $cfg['PASSWD_CHARS'];
 
     $bruteforce = isset($_POST['bruteforce']) ? clean_input($_POST['bruteforce']) : $cfg['BRUTEFORCE'];
-    $bruteforceBetween = isset($_POST['bruteforce_between']) ? clean_input($_POST['bruteforce_between']) : $cfg['BRUTEFORCE_BETWEEN'];
-    $bruteforceMaxLogin = isset($_POST['bruteforce_max_login']) ? clean_input($_POST['bruteforce_max_login']) : $cfg['BRUTEFORCE_MAX_LOGIN'];
-    $bruteforceBlockTime = isset($_POST['bruteforce_block_time']) ? clean_input($_POST['bruteforce_block_time']) : $cfg['BRUTEFORCE_BLOCK_TIME'];
-    $bruteforceBetweenTime = isset($_POST['bruteforce_block_time']) ? clean_input($_POST['bruteforce_between_time']) : $cfg['BRUTEFORCE_BETWEEN_TIME'];
-    $bruteforceMaxCapcha = isset($_POST['bruteforce_max_capcha']) ? clean_input($_POST['bruteforce_max_capcha']) : $cfg['BRUTEFORCE_MAX_CAPTCHA'];
-    $bruteforceMaxAttemptsBeforeWait = isset($_POST['bruteforce_max_attempts_before_wait']) ? clean_input($_POST['bruteforce_max_attempts_before_wait']) : $cfg['BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT'];
+    $bruteforceBetween = isset($_POST['bruteforce_between'])
+        ? clean_input($_POST['bruteforce_between']) : $cfg['BRUTEFORCE_BETWEEN'];
+    $bruteforceMaxLogin = isset($_POST['bruteforce_max_login'])
+        ? clean_input($_POST['bruteforce_max_login']) : $cfg['BRUTEFORCE_MAX_LOGIN'];
+    $bruteforceBlockTime = isset($_POST['bruteforce_block_time'])
+        ? clean_input($_POST['bruteforce_block_time']) : $cfg['BRUTEFORCE_BLOCK_TIME'];
+    $bruteforceBetweenTime = isset($_POST['bruteforce_block_time'])
+        ? clean_input($_POST['bruteforce_between_time']) : $cfg['BRUTEFORCE_BETWEEN_TIME'];
+    $bruteforceMaxCapcha = isset($_POST['bruteforce_max_capcha'])
+        ? clean_input($_POST['bruteforce_max_capcha']) : $cfg['BRUTEFORCE_MAX_CAPTCHA'];
+    $bruteforceMaxAttemptsBeforeWait = isset($_POST['bruteforce_max_attempts_before_wait'])
+        ? clean_input($_POST['bruteforce_max_attempts_before_wait']) : $cfg['BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT'];
 
-    $createDefaultEmails = isset($_POST['create_default_email_addresses']) ? clean_input($_POST['create_default_email_addresses']) : $cfg['CREATE_DEFAULT_EMAIL_ADDRESSES'];
-    $countDefaultEmails = isset($_POST['count_default_email_addresses']) ? clean_input($_POST['count_default_email_addresses']) : $cfg['COUNT_DEFAULT_EMAIL_ADDRESSES'];
-    $protecttDefaultEmails = isset($_POST['protect_default_email_addresses']) ? clean_input($_POST['protect_default_email_addresses']) : $cfg['PROTECT_DEFAULT_EMAIL_ADDRESSES'];
-    $hardMailSuspension = isset($_POST['hard_mail_suspension']) ? clean_input($_POST['hard_mail_suspension']) : $cfg['HARD_MAIL_SUSPENSION'];
-    $emailQuotaSyncMode = isset($_POST['email_quota_sync_mode']) ? clean_input($_POST['email_quota_sync_mode']) : $cfg['EMAIL_QUOTA_SYNC_MODE'];
+    $createDefaultEmails = isset($_POST['create_default_email_addresses'])
+        ? clean_input($_POST['create_default_email_addresses']) : $cfg['CREATE_DEFAULT_EMAIL_ADDRESSES'];
+    $countDefaultEmails = isset($_POST['count_default_email_addresses'])
+        ? clean_input($_POST['count_default_email_addresses']) : $cfg['COUNT_DEFAULT_EMAIL_ADDRESSES'];
+    $protecttDefaultEmails = isset($_POST['protect_default_email_addresses'])
+        ? clean_input($_POST['protect_default_email_addresses']) : $cfg['PROTECT_DEFAULT_EMAIL_ADDRESSES'];
+    $hardMailSuspension = isset($_POST['hard_mail_suspension'])
+        ? clean_input($_POST['hard_mail_suspension']) : $cfg['HARD_MAIL_SUSPENSION'];
+    $emailQuotaSyncMode = isset($_POST['email_quota_sync_mode'])
+        ? clean_input($_POST['email_quota_sync_mode']) : $cfg['EMAIL_QUOTA_SYNC_MODE'];
 
-    $userInitialLang = isset($_POST['def_language']) ? clean_input($_POST['def_language']) : $cfg['USER_INITIAL_LANG'];
-    $supportSystem = isset($_POST['support_system']) ? clean_input($_POST['support_system']) : $cfg['IMSCP_SUPPORT_SYSTEM'];
-    $domainRowsPerPage = isset($_POST['domain_rows_per_page']) ? clean_input($_POST['domain_rows_per_page']) : $cfg['DOMAIN_ROWS_PER_PAGE'];
-    $logLevel = isset($_POST['log_level']) && in_array($_POST['log_level'], ['0', 'E_USER_ERROR', 'E_USER_WARNING', 'E_USER_NOTICE']) ? $_POST['log_level'] : $cfg['LOG_LEVEL'];
-    $prevExtLoginAdmin = isset($_POST['prevent_external_login_admin']) ? clean_input($_POST['prevent_external_login_admin']) : $cfg['PREVENT_EXTERNAL_LOGIN_ADMIN'];
-    $prevExtLoginReseller = isset($_POST['prevent_external_login_reseller']) ? clean_input($_POST['prevent_external_login_reseller']) : $cfg['PREVENT_EXTERNAL_LOGIN_RESELLER'];
-    $prevExtLoginClient = isset($_POST['prevent_external_login_client']) ? clean_input($_POST['prevent_external_login_client']) : $cfg['PREVENT_EXTERNAL_LOGIN_CLIENT'];
+    $userInitialLang = isset($_POST['def_language'])
+        ? clean_input($_POST['def_language']) : $cfg['USER_INITIAL_LANG'];
+    $supportSystem = isset($_POST['support_system'])
+        ? clean_input($_POST['support_system']) : $cfg['IMSCP_SUPPORT_SYSTEM'];
+    $domainRowsPerPage = isset($_POST['domain_rows_per_page'])
+        ? clean_input($_POST['domain_rows_per_page']) : $cfg['DOMAIN_ROWS_PER_PAGE'];
+    $logLevel = isset($_POST['log_level']) && in_array($_POST['log_level'], ['0', 'E_USER_ERROR', 'E_USER_WARNING', 'E_USER_NOTICE'])
+        ? $_POST['log_level'] : $cfg['LOG_LEVEL'];
+    $prevExtLoginAdmin = isset($_POST['prevent_external_login_admin'])
+        ? clean_input($_POST['prevent_external_login_admin']) : $cfg['PREVENT_EXTERNAL_LOGIN_ADMIN'];
+    $prevExtLoginReseller = isset($_POST['prevent_external_login_reseller'])
+        ? clean_input($_POST['prevent_external_login_reseller']) : $cfg['PREVENT_EXTERNAL_LOGIN_RESELLER'];
+    $prevExtLoginClient = isset($_POST['prevent_external_login_client'])
+        ? clean_input($_POST['prevent_external_login_client']) : $cfg['PREVENT_EXTERNAL_LOGIN_CLIENT'];
     $enableSSL = isset($_POST['enableSSL']) ? clean_input($_POST['enableSSL']) : $cfg['ENABLE_SSL'];
 
     if (
@@ -69,6 +87,7 @@ if (!empty($_POST)) {
         || !is_number($protecttDefaultEmails) || !is_number($hardMailSuspension) || !is_number($emailQuotaSyncMode)
         || !is_number($supportSystem) || !is_number($prevExtLoginAdmin) || !is_number($prevExtLoginReseller)
         || !is_number($prevExtLoginClient) || !is_number($enableSSL)
+        || !in_array($userInitialLang, i18n_getAvailableLanguages(true), true)
     ) {
         showBadRequestErrorPage();
     }
@@ -248,7 +267,7 @@ if ($cfg['PROTECT_DEFAULT_EMAIL_ADDRESSES']) {
     ]);
 } else {
     $tpl->assign([
-        'PROTECT_DEFAULT_EMAIL_ADDRESSESL_ON'  => '',
+        'PROTECT_DEFAULT_EMAIL_ADDRESSESL_ON' => '',
         'PROTECT_DEFAULT_EMAIL_ADDRESSES_OFF' => ' selected'
     ]);
 }
@@ -373,59 +392,59 @@ if ($cfg['ENABLE_SSL']) {
 }
 
 $tpl->assign([
-    'TR_PAGE_TITLE'                            => tohtml(tr('Admin / Settings')),
-    'TR_UPDATES'                               => tohtml(tr('Updates')),
-    'LOSTPASSWORD_TIMEOUT_VALUE'               => tohtml($cfg['LOSTPASSWORD_TIMEOUT'], 'htmlAttr'),
-    'PASSWD_CHARS'                             => tohtml($cfg['PASSWD_CHARS'], 'htmlAttr'),
-    'BRUTEFORCE_MAX_LOGIN_VALUE'               => tohtml($cfg['BRUTEFORCE_MAX_LOGIN'], 'htmlAttr'),
-    'BRUTEFORCE_BLOCK_TIME_VALUE'              => tohtml($cfg['BRUTEFORCE_BLOCK_TIME'], 'htmlAttr'),
-    'BRUTEFORCE_BETWEEN_TIME_VALUE'            => tohtml($cfg['BRUTEFORCE_BETWEEN_TIME'], 'htmlAttr'),
-    'BRUTEFORCE_MAX_CAPTCHA'                   => tohtml($cfg['BRUTEFORCE_MAX_CAPTCHA'], 'htmlAttr'),
-    'BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT'      => tohtml($cfg['BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT'], 'htmlAttr'),
-    'DOMAIN_ROWS_PER_PAGE'                     => tohtml($cfg['DOMAIN_ROWS_PER_PAGE'], 'htmlAttr'),
-    'TR_SETTINGS'                              => tohtml(tr('Settings')),
-    'TR_MESSAGE'                               => tohtml(tr('Message')),
-    'TR_LOSTPASSWORD'                          => tohtml(tr('Lost password')),
-    'TR_LOSTPASSWORD_TIMEOUT'                  => tohtml(tr('Activation link expire time in minutes')),
-    'TR_PASSWORD_SETTINGS'                     => tohtml(tr('Password settings')),
-    'TR_PASSWD_STRONG'                         => tohtml(tr('Strong passwords')),
-    'TR_PASSWD_CHARS'                          => tohtml(tr('Password minimum length')),
-    'TR_BRUTEFORCE'                            => tohtml(tr('Bruteforce detection')),
-    'TR_BRUTEFORCE_BETWEEN'                    => tohtml(tr('Blocking time between logins and captcha attempts')),
-    'TR_BRUTEFORCE_MAX_LOGIN'                  => tohtml(tr('Max number of login attempts')),
-    'TR_BRUTEFORCE_BLOCK_TIME'                 => tohtml(tr('Blocktime in minutes')),
-    'TR_BRUTEFORCE_BETWEEN_TIME'               => tohtml(tr('Blocking time between login/captcha attempts in seconds')),
-    'TR_BRUTEFORCE_MAX_CAPTCHA'                => tohtml(tr('Maximum number of captcha validation attempts')),
-    'TR_BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT'   => tohtml(tr('Maximum number of validation attempts before waiting restriction intervenes')),
-    'TR_OTHER_SETTINGS'                        => tohtml(tr('Other settings')),
-    'TR_MAIL_SETTINGS'                         => tohtml(tr('Email settings')),
-    'TR_CREATE_DEFAULT_EMAIL_ADDRESSES'        => tohtml(tr('Create default mail accounts')),
-    'TR_COUNT_DEFAULT_EMAIL_ADDRESSES'         => tohtml(tr('Count default mail accounts')),
-    'PROTECT_DEFAULT_EMAIL_ADDRESSES'          => tohtml(tr('Protect default mail accounts against change and removal')),
-    'TR_HARD_MAIL_SUSPENSION'                  => tohtml(tr('Mail accounts are hard suspended')),
-    'TR_EMAIL_QUOTA_SYNC_MODE'                 => tohtml(tr('Redistribute unused quota across existing mail accounts')),
-    'TR_USER_INITIAL_LANG'                     => tohtml(tr('Panel default language')),
-    'TR_SUPPORT_SYSTEM'                        => tohtml(tr('Support system')),
-    'TR_ENABLED'                               => tohtml(tr('Enabled')),
-    'TR_DISABLED'                              => tohtml(tr('Disabled')),
-    'TR_YES'                                   => tohtml(tr('Yes')),
-    'TR_NO'                                    => tohtml(tr('No')),
-    'TR_UPDATE'                                => tohtml(tr('Update')),
-    'TR_SERVERPORTS'                           => tohtml(tr('Server ports')),
-    'TR_ADMIN'                                 => tohtml(tr('Admin')),
-    'TR_RESELLER'                              => tohtml(tr('Reseller')),
-    'TR_DOMAIN_ROWS_PER_PAGE'                  => tohtml(tr('Domains per page')),
-    'TR_LOG_LEVEL'                             => tohtml(tr('Mail Log Level')),
-    'TR_E_USER_OFF'                            => tohtml(tr('Disabled')),
-    'TR_E_USER_NOTICE'                         => tohtml(tr('Notices, Warnings and Errors')),
-    'TR_E_USER_WARNING'                        => tohtml(tr('Warnings and Errors')),
-    'TR_E_USER_ERROR'                          => tohtml(tr('Errors')),
-    'TR_CHECK_FOR_UPDATES'                     => tohtml(tr('Check for update')),
-    'TR_ENABLE_SSL'                            => tohtml(tr('Enable SSL')),
-    'TR_SSL_HELP'                              => tohtml(tr('Defines whether or not customers can add/change SSL certificates for their domains.')),
-    'TR_PREVENT_EXTERNAL_LOGIN_ADMIN'          => tohtml(tr('Prevent external login for admins')),
-    'TR_PREVENT_EXTERNAL_LOGIN_RESELLER'       => tohtml(tr('Prevent external login for resellers')),
-    'TR_PREVENT_EXTERNAL_LOGIN_CLIENT'         => tohtml(tr('Prevent external login for clients'))
+    'TR_PAGE_TITLE'                          => tohtml(tr('Admin / Settings')),
+    'TR_UPDATES'                             => tohtml(tr('Updates')),
+    'LOSTPASSWORD_TIMEOUT_VALUE'             => tohtml($cfg['LOSTPASSWORD_TIMEOUT'], 'htmlAttr'),
+    'PASSWD_CHARS'                           => tohtml($cfg['PASSWD_CHARS'], 'htmlAttr'),
+    'BRUTEFORCE_MAX_LOGIN_VALUE'             => tohtml($cfg['BRUTEFORCE_MAX_LOGIN'], 'htmlAttr'),
+    'BRUTEFORCE_BLOCK_TIME_VALUE'            => tohtml($cfg['BRUTEFORCE_BLOCK_TIME'], 'htmlAttr'),
+    'BRUTEFORCE_BETWEEN_TIME_VALUE'          => tohtml($cfg['BRUTEFORCE_BETWEEN_TIME'], 'htmlAttr'),
+    'BRUTEFORCE_MAX_CAPTCHA'                 => tohtml($cfg['BRUTEFORCE_MAX_CAPTCHA'], 'htmlAttr'),
+    'BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT'    => tohtml($cfg['BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT'], 'htmlAttr'),
+    'DOMAIN_ROWS_PER_PAGE'                   => tohtml($cfg['DOMAIN_ROWS_PER_PAGE'], 'htmlAttr'),
+    'TR_SETTINGS'                            => tohtml(tr('Settings')),
+    'TR_MESSAGE'                             => tohtml(tr('Message')),
+    'TR_LOSTPASSWORD'                        => tohtml(tr('Lost password')),
+    'TR_LOSTPASSWORD_TIMEOUT'                => tohtml(tr('Activation link expire time in minutes')),
+    'TR_PASSWORD_SETTINGS'                   => tohtml(tr('Password settings')),
+    'TR_PASSWD_STRONG'                       => tohtml(tr('Strong passwords')),
+    'TR_PASSWD_CHARS'                        => tohtml(tr('Password minimum length')),
+    'TR_BRUTEFORCE'                          => tohtml(tr('Bruteforce detection')),
+    'TR_BRUTEFORCE_BETWEEN'                  => tohtml(tr('Blocking time between logins and captcha attempts')),
+    'TR_BRUTEFORCE_MAX_LOGIN'                => tohtml(tr('Max number of login attempts')),
+    'TR_BRUTEFORCE_BLOCK_TIME'               => tohtml(tr('Blocktime in minutes')),
+    'TR_BRUTEFORCE_BETWEEN_TIME'             => tohtml(tr('Blocking time between login/captcha attempts in seconds')),
+    'TR_BRUTEFORCE_MAX_CAPTCHA'              => tohtml(tr('Maximum number of captcha validation attempts')),
+    'TR_BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT' => tohtml(tr('Maximum number of validation attempts before waiting restriction intervenes')),
+    'TR_OTHER_SETTINGS'                      => tohtml(tr('Other settings')),
+    'TR_MAIL_SETTINGS'                       => tohtml(tr('Email settings')),
+    'TR_CREATE_DEFAULT_EMAIL_ADDRESSES'      => tohtml(tr('Create default mail accounts')),
+    'TR_COUNT_DEFAULT_EMAIL_ADDRESSES'       => tohtml(tr('Count default mail accounts')),
+    'PROTECT_DEFAULT_EMAIL_ADDRESSES'        => tohtml(tr('Protect default mail accounts against change and removal')),
+    'TR_HARD_MAIL_SUSPENSION'                => tohtml(tr('Mail accounts are hard suspended')),
+    'TR_EMAIL_QUOTA_SYNC_MODE'               => tohtml(tr('Redistribute unused quota across existing mail accounts')),
+    'TR_USER_INITIAL_LANG'                   => tohtml(tr('Panel default language')),
+    'TR_SUPPORT_SYSTEM'                      => tohtml(tr('Support system')),
+    'TR_ENABLED'                             => tohtml(tr('Enabled')),
+    'TR_DISABLED'                            => tohtml(tr('Disabled')),
+    'TR_YES'                                 => tohtml(tr('Yes')),
+    'TR_NO'                                  => tohtml(tr('No')),
+    'TR_UPDATE'                              => tohtml(tr('Update')),
+    'TR_SERVERPORTS'                         => tohtml(tr('Server ports')),
+    'TR_ADMIN'                               => tohtml(tr('Admin')),
+    'TR_RESELLER'                            => tohtml(tr('Reseller')),
+    'TR_DOMAIN_ROWS_PER_PAGE'                => tohtml(tr('Domains per page')),
+    'TR_LOG_LEVEL'                           => tohtml(tr('Mail Log Level')),
+    'TR_E_USER_OFF'                          => tohtml(tr('Disabled')),
+    'TR_E_USER_NOTICE'                       => tohtml(tr('Notices, Warnings and Errors')),
+    'TR_E_USER_WARNING'                      => tohtml(tr('Warnings and Errors')),
+    'TR_E_USER_ERROR'                        => tohtml(tr('Errors')),
+    'TR_CHECK_FOR_UPDATES'                   => tohtml(tr('Check for update')),
+    'TR_ENABLE_SSL'                          => tohtml(tr('Enable SSL')),
+    'TR_SSL_HELP'                            => tohtml(tr('Defines whether or not customers can add/change SSL certificates for their domains.')),
+    'TR_PREVENT_EXTERNAL_LOGIN_ADMIN'        => tohtml(tr('Prevent external login for admins')),
+    'TR_PREVENT_EXTERNAL_LOGIN_RESELLER'     => tohtml(tr('Prevent external login for resellers')),
+    'TR_PREVENT_EXTERNAL_LOGIN_CLIENT'       => tohtml(tr('Prevent external login for clients'))
 ]);
 
 generateNavigation($tpl);

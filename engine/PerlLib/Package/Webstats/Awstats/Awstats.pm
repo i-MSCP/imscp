@@ -31,7 +31,7 @@ use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
-use iMSCP::Ext2Attributes qw(setImmutable clearImmutable);
+use iMSCP::Ext2Attributes qw( setImmutable clearImmutable );
 use iMSCP::File;
 use iMSCP::Rights;
 use iMSCP::TemplateParser;
@@ -64,7 +64,7 @@ use parent 'Common::SingletonClass';
 
 sub install
 {
-    Package::Webstats::Awstats::Installer->getInstance( )->install( );
+    Package::Webstats::Awstats::Installer->getInstance()->install();
 }
 
 =item postinstall( )
@@ -77,7 +77,7 @@ sub install
 
 sub postinstall
 {
-    Package::Webstats::Awstats::Installer->getInstance( )->postinstall( );
+    Package::Webstats::Awstats::Installer->getInstance()->postinstall();
 }
 
 =item uninstall( )
@@ -90,7 +90,7 @@ sub postinstall
 
 sub uninstall
 {
-    Package::Webstats::Awstats::Uninstaller->getInstance( )->uninstall( );
+    Package::Webstats::Awstats::Uninstaller->getInstance()->uninstall();
 }
 
 =item setEnginePermissions( )
@@ -117,7 +117,7 @@ sub setEnginePermissions
         $main::imscpConfig{'AWSTATS_CACHE_DIR'},
         {
             user      => $main::imscpConfig{'ROOT_USER'},
-            group     => $self->{'httpd'}->getRunningGroup( ),
+            group     => $self->{'httpd'}->getRunningGroup(),
             dirmode   => '02750',
             filemode  => '0640',
             recursive => 1
@@ -127,7 +127,7 @@ sub setEnginePermissions
         "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats",
         {
             user  => $main::imscpConfig{'ROOT_USER'},
-            group => $self->{'httpd'}->getRunningGroup( ),
+            group => $self->{'httpd'}->getRunningGroup(),
             mode  => '0640'
         }
     );
@@ -143,7 +143,7 @@ sub setEnginePermissions
 
 sub getDistroPackages
 {
-    ('awstats');
+    ( 'awstats' );
 }
 
 =item addUser( \%data )
@@ -161,12 +161,12 @@ sub addUser
 
     my $filePath = "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats";
     my $file = iMSCP::File->new( filename => $filePath );
-    my $fileContentRef = $file->getAsRef( );
+    my $fileContentRef = $file->getAsRef();
     ${$fileContentRef} = '' unless defined $fileContentRef;
     ${$fileContentRef} =~ s/^$data->{'USERNAME'}:[^\n]*\n//gim;
     ${$fileContentRef} .= "$data->{'USERNAME'}:$data->{'PASSWORD_HASH'}\n";
 
-    my $rs = $file->save( );
+    my $rs = $file->save();
 
     $self->{'httpd'}->{'restart'} = 1 unless $rs;
     $rs;
@@ -205,7 +205,7 @@ sub addDmn
     $rs ||= clearImmutable( $data->{'HOME_DIR'} );
     return $rs if $rs;
 
-    iMSCP::Dir->new( dirname => "$data->{'HOME_DIR'}/statistics" )->remove( );
+    iMSCP::Dir->new( dirname => "$data->{'HOME_DIR'}/statistics" )->remove();
     setImmutable( $data->{'HOME_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
     0;
 }
@@ -224,8 +224,8 @@ sub deleteDmn
     my (undef, $data) = @_;
 
     my $cfgFileName = "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DOMAIN_NAME'}.conf";
-    if (-f $cfgFileName) {
-        my $rs = iMSCP::File->new( filename => $cfgFileName )->delFile( );
+    if ( -f $cfgFileName ) {
+        my $rs = iMSCP::File->new( filename => $cfgFileName )->delFile();
         return $rs if $rs;
     }
 
@@ -234,14 +234,14 @@ sub deleteDmn
 
     my @awstatsCacheFiles = iMSCP::Dir->new(
         dirname  => $awstatsCacheDir,
-        fileType => '^(?:awstats[0-9]+|dnscachelastupdate)'.quotemeta( ".$data->{'DOMAIN_NAME'}.txt" )
-    )->getFiles( );
+        fileType => '^(?:awstats[0-9]+|dnscachelastupdate)' . quotemeta( ".$data->{'DOMAIN_NAME'}.txt" )
+    )->getFiles();
 
     return 0 unless @awstatsCacheFiles;
 
-    for(@awstatsCacheFiles) {
+    for( @awstatsCacheFiles ) {
         my $file = iMSCP::File->new( filename => "$awstatsCacheDir/$_" );
-        my $rs = $file->delFile( );
+        my $rs = $file->delFile();
         return $rs if $rs;
     }
 
@@ -298,8 +298,8 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'httpd'} = Servers::httpd->factory( );
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance( );
+    $self->{'httpd'} = Servers::httpd->factory();
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self;
 }
 
@@ -323,14 +323,14 @@ sub _addAwstatsSection
     ${$cfgTpl} = replaceBloc(
         "# SECTION addons BEGIN.\n",
         "# SECTION addons END.\n",
-        "    # SECTION addons BEGIN.\n".
+        "    # SECTION addons BEGIN.\n" .
             getBloc(
                 "# SECTION addons BEGIN.\n",
                 "# SECTION addons END.\n",
                 ${$cfgTpl}
-            ).
-            process( { DOMAIN_NAME => $data->{'DOMAIN_NAME'} }, $self->_getApacheConfSnippet( ) )
-            ."    # SECTION addons END.\n",
+            ) .
+            process( { DOMAIN_NAME => $data->{'DOMAIN_NAME'} }, $self->_getApacheConfSnippet())
+            . "    # SECTION addons END.\n",
         ${$cfgTpl}
     );
     0;
@@ -370,26 +370,26 @@ sub _addAwstatsConfig
     my ($self, $data) = @_;
 
     my $awstatsPackageRootDir = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats";
-    my $tplFileContent = iMSCP::File->new( filename => "$awstatsPackageRootDir/Config/awstats.imscp_tpl.conf" )->get( );
-    unless (defined $tplFileContent) {
-        error( sprintf( "Couldn't read %s file", $tplFileContent->{'filename'} ) );
+    my $tplFileContent = iMSCP::File->new( filename => "$awstatsPackageRootDir/Config/awstats.imscp_tpl.conf" )->get();
+    unless ( defined $tplFileContent ) {
+        error( sprintf( "Couldn't read %s file", $tplFileContent->{'filename'} ));
         return 1;
     }
 
     local $@;
     my $row = eval {
-        my $dbh = iMSCP::Database->factory( )->getRawDb( );
+        my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
 
         $dbh->selectrow_hashref(
             'SELECT admin_name FROM admin WHERE admin_id = ?', undef, $data->{'DOMAIN_ADMIN_ID'}
         );
     };
-    if ($@) {
+    if ( $@ ) {
         error( $@ );
         return 1;
-    } elsif (!$row) {
-        error( sprintf( "Couldn't retrieve data from admin whith ID %d", $data->{'DOMAIN_ADMIN_ID'} ) );
+    } elsif ( !$row ) {
+        error( sprintf( "Couldn't retrieve data from admin whith ID %d", $data->{'DOMAIN_ADMIN_ID'} ));
         return 1;
     }
 
@@ -405,7 +405,7 @@ sub _addAwstatsConfig
     };
 
     $tplFileContent = process( $tags, $tplFileContent );
-    unless (defined $tplFileContent) {
+    unless ( defined $tplFileContent ) {
         error( 'Error while building Awstats configuration file' );
         return 1;
     }
@@ -414,7 +414,7 @@ sub _addAwstatsConfig
         filename => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DOMAIN_NAME'}.conf"
     );
     $file->set( $tplFileContent );
-    my $rs = $file->save( );
+    my $rs = $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
 }

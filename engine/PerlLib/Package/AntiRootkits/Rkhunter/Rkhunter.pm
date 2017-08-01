@@ -47,7 +47,7 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-    Package::AntiRootkits::Rkhunter::Installer->getInstance( )->preinstall( );
+    Package::AntiRootkits::Rkhunter::Installer->getInstance()->preinstall();
 }
 
 =item postinstall( )
@@ -60,7 +60,7 @@ sub preinstall
 
 sub postinstall
 {
-    Package::AntiRootkits::Rkhunter::Installer->getInstance( )->postinstall( );
+    Package::AntiRootkits::Rkhunter::Installer->getInstance()->postinstall();
 }
 
 =item uninstall( )
@@ -73,7 +73,7 @@ sub postinstall
 
 sub uninstall
 {
-    Package::AntiRootkits::Rkhunter::Uninstaller->getInstance( )->uninstall( );
+    Package::AntiRootkits::Rkhunter::Uninstaller->getInstance()->uninstall();
 }
 
 =item setEnginePermissions( )

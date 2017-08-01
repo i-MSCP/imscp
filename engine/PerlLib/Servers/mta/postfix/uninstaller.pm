@@ -54,10 +54,10 @@ sub uninstall
 {
     my ($self) = @_;
 
-    my $rs = $self->_restoreConffiles( );
-    $rs ||= $self->_buildAliasesFile( );
-    $rs ||= $self->_removeUser( );
-    $rs ||= $self->_removeFiles( );
+    my $rs = $self->_restoreConffiles();
+    $rs ||= $self->_buildAliasesFile();
+    $rs ||= $self->_removeUser();
+    $rs ||= $self->_removeFiles();
 }
 
 =back
@@ -78,7 +78,7 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'mta'} = Servers::mta::postfix->getInstance( );
+    $self->{'mta'} = Servers::mta::postfix->getInstance();
     $self->{'config'} = $self->{'mta'}->{'config'};
     $self;
 }
@@ -95,9 +95,9 @@ sub _restoreConffiles
 {
     return 0 unless -d "/etc/postfix";
 
-    for ('/usr/share/postfix/main.cf.debian', '/usr/share/postfix/master.cf.dist') {
+    for ( '/usr/share/postfix/main.cf.debian', '/usr/share/postfix/master.cf.dist' ) {
         next unless -f;
-        my $rs = iMSCP::File->new( filename => $_ )->copyFile( '/etc/postfix/'.basename( $_ ), { preserve => 'no' } );
+        my $rs = iMSCP::File->new( filename => $_ )->copyFile( '/etc/postfix/' . basename( $_ ), { preserve => 'no' } );
         return $rs if $rs;
     }
 
@@ -145,13 +145,13 @@ sub _removeFiles
 {
     my ($self) = @_;
 
-    for ($self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}) {
-        iMSCP::Dir->new( dirname => $_ )->remove( );
+    for ( $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'} ) {
+        iMSCP::Dir->new( dirname => $_ )->remove();
     }
 
     return 0 unless -f $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'};
 
-    iMSCP::File->new( filename => $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'} )->delFile( );
+    iMSCP::File->new( filename => $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'} )->delFile();
 }
 
 =back

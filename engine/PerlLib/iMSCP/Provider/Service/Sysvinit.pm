@@ -94,8 +94,8 @@ sub remove
 
     local $@;
     my $initScriptPath = eval { $self->getInitScriptPath( $service ); };
-    if (defined $initScriptPath) {
-        return 0 if iMSCP::File->new( filename => $initScriptPath )->delFile( );
+    if ( defined $initScriptPath ) {
+        return 0 if iMSCP::File->new( filename => $initScriptPath )->delFile();
     }
 
     1;
@@ -173,7 +173,7 @@ sub isRunning
 
     defined $service or die( 'parameter $service is not defined' );
 
-    unless(defined $self->{'_pid_pattern'}) {
+    unless ( defined $self->{'_pid_pattern'} ) {
         return $self->_exec( $self->getInitScriptPath( $service ), 'status' ) == 0;
     }
 
@@ -227,7 +227,7 @@ sub setPidPattern
     my ($self, $pattern) = @_;
 
     defined $pattern or die( '$pattern parameter is not defined' );
-    $self->{'_pid_pattern'} = (ref $pattern eq 'Regexp') ? $pattern : qr/$pattern/;
+    $self->{'_pid_pattern'} = ( ref $pattern eq 'Regexp' ) ? $pattern : qr/$pattern/;
     0;
 }
 
@@ -248,13 +248,13 @@ sub _init
 {
     my ($self) = @_;
 
-    my $distID = iMSCP::LsbRelease->getInstance( )->getId( 'short' );
+    my $distID = iMSCP::LsbRelease->getInstance()->getId( 'short' );
 
-    if ($distID =~ /^(?:FreeBSD|DragonFly)$/) {
+    if ( $distID =~ /^(?:FreeBSD|DragonFly)$/ ) {
         $self->{'sysvinitscriptpaths'} = [ '/etc/rc.d', '/usr/local/etc/rc.d' ];
-    } elsif ($distID eq 'HP-UX') {
+    } elsif ( $distID eq 'HP-UX' ) {
         $self->{'sysvinitscriptpaths'} = [ '/sbin/init.d' ];
-    } elsif ($distID eq 'Archlinux') {
+    } elsif ( $distID eq 'Archlinux' ) {
         $self->{'sysvinitscriptpaths'} = [ '/etc/rc.d' ];
     } else {
         $self->{'sysvinitscriptpaths'} = [ '/etc/init.d' ];
@@ -293,7 +293,7 @@ sub _searchInitScript
 {
     my ($self, $service) = @_;
 
-    for (@{$self->{'sysvinitscriptpaths'}}) {
+    for ( @{$self->{'sysvinitscriptpaths'}} ) {
         my $initScriptPath = File::Spec->join( $_, $service );
         return $initScriptPath if -f $initScriptPath;
 
@@ -301,7 +301,7 @@ sub _searchInitScript
         return $initScriptPath if -f $initScriptPath;
     }
 
-    die( sprintf( "Couldn't find sysvinit script for the `%s' service", $service ) );
+    die( sprintf( "Couldn't find sysvinit script for the `%s' service", $service ));
 }
 
 =item _exec( $command )
@@ -334,10 +334,10 @@ sub _exec
 sub _getPs
 {
     # Fixme: iMSCP::LsbRelease is Linux specific. We must rewrite it to support all platforms below.
-    my $id = iMSCP::LsbRelease->getInstance( )->getId( 'short' );
-    if ($id eq 'OpenWrt') {
+    my $id = iMSCP::LsbRelease->getInstance()->getId( 'short' );
+    if ( $id eq 'OpenWrt' ) {
         'ps www';
-    } elsif ($id =~ /^(?:FreeBSD|NetBSD|OpenBSD|Darwin|DragonFly)$/) {
+    } elsif ( $id =~ /^(?:FreeBSD|NetBSD|OpenBSD|Darwin|DragonFly)$/ ) {
         'ps auxwww';
     } else {
         'ps -ef'
@@ -359,13 +359,13 @@ sub _getPid
 
     defined $pattern or die( '$pattern parameter is not defined' );
 
-    my $ps = $self->_getPs( );
-    open my $fh, '-|', $ps or die( sprintf( "Couldn't pipe to %s: %s", $ps, $! ) );
+    my $ps = $self->_getPs();
+    open my $fh, '-|', $ps or die( sprintf( "Couldn't pipe to %s: %s", $ps, $! ));
 
-    while(<$fh>) {
+    while ( <$fh> ) {
         next unless /$pattern/;
-        debug( sprintf( 'Process matched line: %s', $_ ) );
-        return (split /\s+/, s/^\s+//r)[1];
+        debug( sprintf( 'Process matched line: %s', $_ ));
+        return ( split /\s+/, s/^\s+//r )[1];
     }
 
     undef;

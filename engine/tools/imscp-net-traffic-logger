@@ -45,11 +45,11 @@ sub start
     my $panelHttpPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'} || undef;
     my $panelHttpsPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'} || undef;
 
-    for my $exec(@EXECS) {
+    for my $exec( @EXECS ) {
         defined $exec or next;
 
         # Creating IMSCP_INPUT and IMSCP_OUTPUT chains for incoming/outgoing traffic logging
-        for (qw/ IMSCP_INPUT IMSCP_OUTPUT /) {
+        for ( qw/ IMSCP_INPUT IMSCP_OUTPUT / ) {
             my $rs = execute( "$exec -t filter -N $_", \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
@@ -57,14 +57,14 @@ sub start
         }
 
         # Adding rules to pass incoming/outgoing traffic through our chains, excluding traffic from/to `lo' interface
-        for ('-I INPUT ! -i lo -j IMSCP_INPUT', '-I OUTPUT ! -o lo -j IMSCP_OUTPUT') {
+        for ( '-I INPUT ! -i lo -j IMSCP_INPUT', '-I OUTPUT ! -o lo -j IMSCP_OUTPUT' ) {
             my $rs = execute( "$exec -t filter $_", \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
         }
 
-        for ($panelHttpPort, $panelHttpsPort, 80, 443, 110, 143, 25, 465, 587, 995, 993, 20, 21) {
+        for ( $panelHttpPort, $panelHttpsPort, 80, 443, 110, 143, 25, 465, 587, 995, 993, 20, 21 ) {
             defined or next;
 
             # Adding rule for logging incoming traffic to the given port
@@ -80,7 +80,7 @@ sub start
             return $rs if $rs;
         }
 
-        for (qw/ 25 465 587 /) {
+        for ( qw/ 25 465 587 / ) {
             # Adding a rule for logging incoming traffic from the given port
             my $rs = execute( "$exec -t filter -I IMSCP_INPUT -p tcp --sport $_", \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
@@ -94,7 +94,7 @@ sub start
             return $rs if $rs;
         }
 
-        for (qw/ IMSCP_INPUT IMSCP_OUTPUT /) {
+        for ( qw/ IMSCP_INPUT IMSCP_OUTPUT / ) {
             my $rs = execute( "$exec -t filter -A $_ -j RETURN", \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
@@ -107,7 +107,7 @@ sub start
 
 sub stop
 {
-    for my $exec(@EXECS) {
+    for my $exec( @EXECS ) {
         defined $exec or next;
 
         my $rs = execute( "$exec -S | grep 'IMSCP_'", \ my $stdout, \ my $stderr );
@@ -118,8 +118,8 @@ sub stop
         next unless $stdout;
 
         my %data;
-        while( $stdout =~ /^-(A|N)\s+(((?:IMSCP_)?(?:INPUT|OUTPUT)).*)/gmi ) {
-            if ($1 eq 'A' && index( $3, 'IMSCP' ) != 0) {
+        while ( $stdout =~ /^-(A|N)\s+(((?:IMSCP_)?(?:INPUT|OUTPUT)).*)/gmi ) {
+            if ( $1 eq 'A' && index( $3, 'IMSCP' ) != 0 ) {
                 push @{$data{'delete'}}, $2;
                 next;
             }
@@ -128,8 +128,8 @@ sub stop
         };
 
         # Delete i-MSCP rules on INPUT and OUTPUT chains if any
-        if ($data{'delete'}) {
-            for(@{$data{'delete'}}) {
+        if ( $data{'delete'} ) {
+            for( @{$data{'delete'}} ) {
                 $rs = execute( "$exec -t filter -D $_", \$stdout, \$stderr );
                 debug( $stdout ) if $stdout;
                 error( $stderr || 'Unknown error' ) if $rs;
@@ -138,8 +138,8 @@ sub stop
         }
 
         # Flush and delete i-MSCP chains if any
-        if ($data{'flush'}) {
-            for(keys %{$data{'flush'}}) {
+        if ( $data{'flush'} ) {
+            for( keys %{$data{'flush'}} ) {
                 $rs = execute( "$exec -t filter -F $_", \$stdout, \$stderr );
                 debug( $stdout ) if $stdout;
                 error( $stderr || 'Unknown error' ) if $rs;
@@ -158,7 +158,7 @@ sub stop
 
 newDebug( 'imscp-net-traffic-logger.log' );
 
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]... start|stop', basename( $0 ) ).qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]... start|stop', basename( $0 )) . qq {
 
 Script that start/stop i-MSCP traffic logger.
 
@@ -170,11 +170,11 @@ OPTIONS:
 );
 
 my $action = shift;
-$action && $action =~ /^(?:start|stop)$/ or iMSCP::Getopt->showUsage( );
+$action && $action =~ /^(?:start|stop)$/ or iMSCP::Getopt->showUsage();
 
 setVerbose( iMSCP::Getopt->verbose );
 
-my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
+my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-net-traffic-logger.lock', 'nowait' );
 
 $bootstrapper->boot(
@@ -188,7 +188,7 @@ $bootstrapper->boot(
 
 @EXECS = (
     iMSCP::ProgramFinder::find( 'iptables' ),
-    ($main::imscpConfig{'IPV6_SUPPORT'} ? iMSCP::ProgramFinder::find( 'ip6tables' ) : undef)
+    ( $main::imscpConfig{'IPV6_SUPPORT'} ? iMSCP::ProgramFinder::find( 'ip6tables' ) : undef )
 );
 
 my %dispatch = (
@@ -196,7 +196,7 @@ my %dispatch = (
     stop  => \&stop
 );
 
-exit $dispatch{ $action }->( );
+exit $dispatch{ $action }->();
 
 =head1 AUTHOR
 

@@ -29,17 +29,17 @@ sub uninstall
 {
     my ($self) = @_;
 
-    my $rs = $self->_removeVloggerSqlUser( );
-    $rs ||= $self->_removeDirs( );
-    $rs ||= $self->_fastcgiConf( );
-    $rs ||= $self->_vHostConf( );
+    my $rs = $self->_removeVloggerSqlUser();
+    $rs ||= $self->_removeDirs();
+    $rs ||= $self->_fastcgiConf();
+    $rs ||= $self->_vHostConf();
 }
 
 sub _init
 {
     my ($self) = @_;
 
-    $self->{'httpd'} = Servers::httpd::apache_fcgid->getInstance( );
+    $self->{'httpd'} = Servers::httpd::apache_fcgid->getInstance();
     $self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
     $self->{'config'} = $self->{'httpd'}->{'config'};
     $self->{'phpConfig'} = $self->{'httpd'}->{'phpConfig'};
@@ -48,19 +48,19 @@ sub _init
 
 sub _removeVloggerSqlUser
 {
-    if ($main::imscpConfig{'DATABASE_USER_HOST'} eq 'localhost') {
-        return Servers::sqld->factory( )->dropUser( 'vlogger_user', '127.0.0.1' );
+    if ( $main::imscpConfig{'DATABASE_USER_HOST'} eq 'localhost' ) {
+        return Servers::sqld->factory()->dropUser( 'vlogger_user', '127.0.0.1' );
     }
 
-    Servers::sqld->factory( )->dropUser( 'vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'} );
+    Servers::sqld->factory()->dropUser( 'vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'} );
 }
 
 sub _removeDirs
 {
     my ($self) = @_;
 
-    for ($self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}, $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}) {
-        iMSCP::Dir->new( dirname => $_ )->remove( );
+    for ( $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}, $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'} ) {
+        iMSCP::Dir->new( dirname => $_ )->remove();
     }
 
     0;
@@ -73,9 +73,9 @@ sub _fastcgiConf
     my $rs = $self->{'httpd'}->disableModules( 'fcgid_imscp' );
     return $rs if $rs;
 
-    for ('fcgid_imscp.conf', 'fcgid_imscp.load') {
+    for ( 'fcgid_imscp.conf', 'fcgid_imscp.load' ) {
         next unless -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_";
-        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_" )->delFile( );
+        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_" )->delFile();
         return $rs if $rs;
     }
 
@@ -86,24 +86,24 @@ sub _vHostConf
 {
     my ($self) = @_;
 
-    if (-f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf") {
+    if ( -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf" ) {
         my $rs = $self->{'httpd'}->disableSites( '00_nameserver.conf' );
         $rs ||= iMSCP::File->new(
             filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf"
-        )->delFile( );
+        )->delFile();
         return $rs if $rs;
     }
 
     my $confDir = -d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available"
         ? "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available" : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d";
 
-    if (-f "$confDir/00_imscp.conf") {
+    if ( -f "$confDir/00_imscp.conf" ) {
         my $rs = $self->{'httpd'}->disableConfs( '00_imscp.conf' );
-        $rs ||= iMSCP::File->new( filename => "$confDir/00_imscp.conf" )->delFile( );
+        $rs ||= iMSCP::File->new( filename => "$confDir/00_imscp.conf" )->delFile();
         return $rs if $rs;
     }
 
-    for ('000-default', 'default') {
+    for ( '000-default', 'default' ) {
         next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
         my $rs = $self->{'httpd'}->enableSites( $_ );
         return $rs if $rs;

@@ -33,9 +33,9 @@ use parent 'Exporter';
 
 our @EXPORT = qw/ startDetail endDetail step /;
 
-my @all = ( );
+my @all = ();
 my $last = '';
-my $dialog = lazy { iMSCP::Dialog->getInstance( ); };
+my $dialog = lazy { iMSCP::Dialog->getInstance(); };
 my $step = lazy { iMSCP::Getopt->noprompt ? \&_callback : \&_step; };
 
 =head1 DESCRIPTION
@@ -57,7 +57,7 @@ my $step = lazy { iMSCP::Getopt->noprompt ? \&_callback : \&_step; };
 sub startDetail
 {
     return 0 if iMSCP::Getopt->noprompt;
-    $dialog->endGauge( );
+    $dialog->endGauge();
     push @all, $last;
     0;
 }
@@ -116,8 +116,8 @@ sub _callback
     return 0 unless defined $callback;
 
     local $@;
-    my $rs = eval { $callback->( ) };
-    if ($@) {
+    my $rs = eval { $callback->() };
+    if ( $@ ) {
         error( $@ );
         $rs = 1;
     }
@@ -136,7 +136,7 @@ sub _step
     my ($callback, $text, $nSteps, $nStep) = @_;
 
     $last = sprintf( "\n\\ZbStep %s of %s\\Zn\n\n%s", $nStep, $nSteps, $text );
-    my $msg = @all ? join( "\n", @all )."\n".$last : $last;
+    my $msg = @all ? join( "\n", @all ) . "\n" . $last : $last;
 
     use integer;
     my $percent = $nStep * 100 / $nSteps;
@@ -148,11 +148,11 @@ sub _step
     return $rs unless $rs && $rs != 50;
 
     # Make error message free of any ANSI color and end of line codes
-    (my $errorMessage = getLastError( )) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
+    ( my $errorMessage = getLastError() ) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
     $errorMessage = 'An unexpected error occurred...' unless $errorMessage;
     $errorMessage =~ s/\n+$//;
 
-    $dialog->endGauge( );
+    $dialog->endGauge();
     $dialog->msgbox( <<"EOF" );
 \\Z1[ERROR]\\Zn
 

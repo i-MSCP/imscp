@@ -50,7 +50,7 @@ sub addIpAddr
 {
     my ($self, $data) = @_;
 
-    $self->getProvider( )->addIpAddr( $data );
+    $self->getProvider()->addIpAddr( $data );
     $self;
 }
 
@@ -64,7 +64,7 @@ sub removeIpAddr
 {
     my ($self, $data) = @_;
 
-    $self->getProvider( )->removeIpAddr( $data );
+    $self->getProvider()->removeIpAddr( $data );
     $self;
 }
 
@@ -81,11 +81,11 @@ sub getProvider
     my ($self) = @_;
 
     $self->{'_provider'} ||= do {
-        my $provider = __PACKAGE__.'::'.iMSCP::LsbRelease->getInstance->getId( 'short' );
+        my $provider = __PACKAGE__ . '::' . iMSCP::LsbRelease->getInstance->getId( 'short' );
         can_load( modules => { $provider => undef } ) or die(
             sprintf( "Couldn't load `%s' network interface provider: %s", $provider, $Module::Load::Conditional::ERROR )
         );
-        $provider = $provider->new( );
+        $provider = $provider->new();
         $self->setProvider( $provider );
         $provider;
     };
