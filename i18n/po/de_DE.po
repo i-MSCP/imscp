@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:35+0000\n"
+"POT-Creation-Date: 2017-08-01 12:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Florian Rettenbacher <florian.rettenbacher@gmx.at>, 2017\n"
 "Language-Team: German (Germany) (https://www.transifex.com/i-mscp/teams/576/de_DE/)\n"
@@ -1141,7 +1141,7 @@ msgid "Client / Mail / External Mail Feature"
 msgstr ""
 
 msgid "Client / Mail / Overview"
-msgstr ""
+msgstr "Kunde / Mail / Übersicht"
 
 msgid "Client / Mail / Overview / Activate Autoresponder"
 msgstr ""
@@ -2434,7 +2434,7 @@ msgid "Forward URL %s is not valid."
 msgstr "Weiterleitungs-URL %s ist nicht zulässig."
 
 msgid "Forward account"
-msgstr ""
+msgstr "Weiterleitungs-Account"
 
 msgid "Forward list is empty."
 msgstr "Weiterleitungsliste ist leer."
@@ -2704,19 +2704,19 @@ msgid "Incorrect FTP account limit."
 msgstr "Falsches FTP Konto Limit."
 
 msgid "Incorrect FTP accounts limit."
-msgstr ""
+msgstr "Falsches FTP-Konten Limit."
 
 msgid "Incorrect SQL database limit."
 msgstr "Falsches SQL Datenbank Limit."
 
 msgid "Incorrect SQL databases limit."
-msgstr ""
+msgstr "Falsches SQL-Datenbank Limit."
 
 msgid "Incorrect SQL user limit."
 msgstr "Falsches SQL Benutzer Limit."
 
 msgid "Incorrect SQL users limit."
-msgstr ""
+msgstr "Falsches SQL-Benutzer Limit."
 
 msgid "Incorrect alias limit."
 msgstr "Falsches Alias Limit."
@@ -2728,7 +2728,7 @@ msgid "Incorrect domain alias limit."
 msgstr "Falsches Domain Alias Limit."
 
 msgid "Incorrect domain aliases limit."
-msgstr ""
+msgstr "Falsche Alias-Limit."
 
 msgid "Incorrect email length or syntax."
 msgstr "Falsche E-Mail Länge oder Syntax."
@@ -2744,7 +2744,7 @@ msgid "Incorrect mail account limit."
 msgstr ""
 
 msgid "Incorrect mail accounts limit."
-msgstr ""
+msgstr "Falsches Mail-Konten Limit."
 
 msgid "Incorrect mail quota"
 msgstr ""
@@ -2762,7 +2762,7 @@ msgid "Incorrect subdomain limit."
 msgstr "Falsches Subdomain Limit."
 
 msgid "Incorrect subdomains limit."
-msgstr ""
+msgstr "Falsche Anzahl der Subdomains."
 
 msgid "Incorrect syntax for email address."
 msgstr "Falscher Syntax für E-Mail-Adresse."
@@ -3044,13 +3044,13 @@ msgid "Mail Log Level"
 msgstr "Mail-Protokollebene"
 
 msgid "Mail account already exists."
-msgstr ""
+msgstr "Das Mail Konto existiert bereits."
 
 msgid "Mail account data"
-msgstr ""
+msgstr "Mail-Konto Daten"
 
 msgid "Mail account errors"
-msgstr ""
+msgstr "Mail Konten Fehler"
 
 #, php-format
 msgid "Mail account has been scheduled for deletion."
@@ -3068,7 +3068,7 @@ msgid "Mail account type"
 msgstr "E-Mail Kontentyp"
 
 msgid "Mail accounts"
-msgstr ""
+msgstr "E-Mail Konten"
 
 msgid "Mail accounts are hard suspended"
 msgstr ""
@@ -5544,25 +5544,25 @@ msgid "You are exceeding you domain aliases limit."
 msgstr ""
 
 msgid "You are exceeding your FTP accounts limit."
-msgstr ""
+msgstr "Sie haben Ihr FTP-Account-Limit erreicht."
 
 msgid "You are exceeding your SQL databases limit."
-msgstr ""
+msgstr "Sie überschreiten ihr SQL-Datenbank Limit."
 
 msgid "You are exceeding your SQL users limit."
-msgstr ""
+msgstr "Sie überschreiten Ihr SQL-Benutzer Limit."
 
 msgid "You are exceeding your disk space limit."
 msgstr "Sie überschreiten Ihre maximale Speicherkapazität."
 
 msgid "You are exceeding your mail accounts limit."
-msgstr ""
+msgstr "Sie haben Ihr E-Mail-Account-Limit erreicht."
 
 msgid "You are exceeding your monthly traffic limit."
 msgstr "Sie überschreiten ihr monatliches Transfervolumen."
 
 msgid "You are exceeding your subdomains limit."
-msgstr ""
+msgstr "Sie haben Ihr Subdomain-Limit erreicht."
 
 msgid "You are not allowed to act on your own session."
 msgstr ""
@@ -6081,7 +6081,7 @@ msgid "mail"
 msgstr "E-Mail"
 
 msgid "mail account"
-msgstr ""
+msgstr "E-Mail-Konto"
 
 msgid "mail accounts"
 msgstr "E-Mail Konten"

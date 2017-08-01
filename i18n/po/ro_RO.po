@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:35+0000\n"
+"POT-Creation-Date: 2017-08-01 12:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: johnnyg_ro <johnnyg_ro@yahoo.com>, 2017\n"
 "Language-Team: Romanian (Romania) (https://www.transifex.com/i-mscp/teams/576/ro_RO/)\n"
@@ -2801,7 +2801,7 @@ msgid "Mail account data"
 msgstr ""
 
 msgid "Mail account errors"
-msgstr ""
+msgstr "Erori conturi e-mail"
 
 #, php-format
 msgid "Mail account has been scheduled for deletion."
@@ -2820,7 +2820,7 @@ msgid "Mail account type"
 msgstr ""
 
 msgid "Mail accounts"
-msgstr ""
+msgstr "Conturi mail"
 
 msgid "Mail accounts are hard suspended"
 msgstr ""

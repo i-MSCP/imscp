@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:35+0000\n"
+"POT-Creation-Date: 2017-08-01 12:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Torsten Widmann <info@goover.de>, 2017\n"
 "Language-Team: English (United Kingdom) (https://www.transifex.com/i-mscp/teams/576/en_GB/)\n"
@@ -2391,7 +2391,7 @@ msgid "Forward URL %s is not valid."
 msgstr "Forward URL %s is not valid."
 
 msgid "Forward account"
-msgstr ""
+msgstr "Forward account"
 
 msgid "Forward list is empty."
 msgstr "Forward list is empty."
@@ -2656,19 +2656,19 @@ msgid "Incorrect FTP account limit."
 msgstr "Incorrect FTP account limit."
 
 msgid "Incorrect FTP accounts limit."
-msgstr ""
+msgstr "Incorrect FTP accounts limit."
 
 msgid "Incorrect SQL database limit."
 msgstr "Incorrect SQL database limit."
 
 msgid "Incorrect SQL databases limit."
-msgstr ""
+msgstr "Incorrect SQL databases limit."
 
 msgid "Incorrect SQL user limit."
 msgstr "Incorrect SQL user limit."
 
 msgid "Incorrect SQL users limit."
-msgstr ""
+msgstr "Incorrect SQL users limit."
 
 msgid "Incorrect alias limit."
 msgstr "Incorrect alias limit."
@@ -2696,7 +2696,7 @@ msgid "Incorrect mail account limit."
 msgstr ""
 
 msgid "Incorrect mail accounts limit."
-msgstr ""
+msgstr "Incorrect mail accounts limit."
 
 msgid "Incorrect mail quota"
 msgstr ""
@@ -2714,7 +2714,7 @@ msgid "Incorrect subdomain limit."
 msgstr "Incorrect subdomain limit."
 
 msgid "Incorrect subdomains limit."
-msgstr ""
+msgstr "Incorrect subdomains limit."
 
 msgid "Incorrect syntax for email address."
 msgstr "Incorrect syntax for email address."
@@ -2995,13 +2995,13 @@ msgid "Mail Log Level"
 msgstr "Mail Log Level"
 
 msgid "Mail account already exists."
-msgstr ""
+msgstr "Mail account already exists."
 
 msgid "Mail account data"
-msgstr ""
+msgstr "Mail account data"
 
 msgid "Mail account errors"
-msgstr ""
+msgstr "Mail account errors"
 
 #, php-format
 msgid "Mail account has been scheduled for deletion."
@@ -3019,7 +3019,7 @@ msgid "Mail account type"
 msgstr "Mail account type"
 
 msgid "Mail accounts"
-msgstr ""
+msgstr "Mail accounts"
 
 msgid "Mail accounts are hard suspended"
 msgstr ""
@@ -5451,10 +5451,10 @@ msgid "You are exceeding you domain aliases limit."
 msgstr ""
 
 msgid "You are exceeding your FTP accounts limit."
-msgstr ""
+msgstr "You are exceeding your FTP accounts limit."
 
 msgid "You are exceeding your SQL databases limit."
-msgstr ""
+msgstr "You are exceeding your SQL databases limit."
 
 msgid "You are exceeding your SQL users limit."
 msgstr ""
@@ -5463,13 +5463,13 @@ msgid "You are exceeding your disk space limit."
 msgstr "You are exceeding your disk space limit."
 
 msgid "You are exceeding your mail accounts limit."
-msgstr ""
+msgstr "You are exceeding your mail accounts limit."
 
 msgid "You are exceeding your monthly traffic limit."
 msgstr "You are exceeding your monthly traffic limit."
 
 msgid "You are exceeding your subdomains limit."
-msgstr ""
+msgstr "You are exceeding your subdomains limit."
 
 msgid "You are not allowed to act on your own session."
 msgstr "You are not allowed to act on your own session."
@@ -5978,7 +5978,7 @@ msgid "mail"
 msgstr "mail"
 
 msgid "mail account"
-msgstr ""
+msgstr "mail account"
 
 msgid "mail accounts"
 msgstr "mail accounts"

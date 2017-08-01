@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:35+0000\n"
+"POT-Creation-Date: 2017-08-01 12:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Torsten Widmann <info@goover.de>, 2017\n"
 "Language-Team: Danish (Denmark) (https://www.transifex.com/i-mscp/teams/576/da_DK/)\n"
@@ -1100,7 +1100,7 @@ msgid "Client / Mail / External Mail Feature"
 msgstr ""
 
 msgid "Client / Mail / Overview"
-msgstr ""
+msgstr "Klient / Mail / Oversigt"
 
 msgid "Client / Mail / Overview / Activate Autoresponder"
 msgstr ""
@@ -2224,7 +2224,7 @@ msgid "Forward URL %s is not valid."
 msgstr "Forward URL %s er ikke gyldig"
 
 msgid "Forward account"
-msgstr ""
+msgstr "Videresende konto"
 
 msgid "Forward list is empty."
 msgstr "Videresende liste er tom."
@@ -2486,19 +2486,19 @@ msgid "Incorrect FTP account limit."
 msgstr "Forkert FTP konti grænse."
 
 msgid "Incorrect FTP accounts limit."
-msgstr ""
+msgstr "Forkert maksimum antal FTP kontoer."
 
 msgid "Incorrect SQL database limit."
 msgstr "Forkert SQL database grænse."
 
 msgid "Incorrect SQL databases limit."
-msgstr ""
+msgstr "Forkert maksimum antal SQL databaser."
 
 msgid "Incorrect SQL user limit."
 msgstr "Forkert SQL bruger grænse."
 
 msgid "Incorrect SQL users limit."
-msgstr ""
+msgstr "Forkert maksimum antal SQL brugere."
 
 msgid "Incorrect alias limit."
 msgstr "Forkert alias grænse."
@@ -2510,7 +2510,7 @@ msgid "Incorrect domain alias limit."
 msgstr "Forkert domæne alias grænse."
 
 msgid "Incorrect domain aliases limit."
-msgstr ""
+msgstr "Forkert domænealias grænse."
 
 msgid "Incorrect email length or syntax."
 msgstr "Forkert email længde eller syntaks."
@@ -2526,7 +2526,7 @@ msgid "Incorrect mail account limit."
 msgstr ""
 
 msgid "Incorrect mail accounts limit."
-msgstr ""
+msgstr "Forkert maksimum antal mail kontoer."
 
 msgid "Incorrect mail quota"
 msgstr ""
@@ -2544,7 +2544,7 @@ msgid "Incorrect subdomain limit."
 msgstr "Forkert subdomæne grænse."
 
 msgid "Incorrect subdomains limit."
-msgstr ""
+msgstr "Forkert maksimum antal for subdomæner."
 
 msgid "Incorrect syntax for email address."
 msgstr "Forkert syntaks for e-mail adresse."
@@ -2824,13 +2824,13 @@ msgid "Mail Log Level"
 msgstr "Mail Log Level"
 
 msgid "Mail account already exists."
-msgstr ""
+msgstr "Mail konto eksisterer allerede."
 
 msgid "Mail account data"
-msgstr ""
+msgstr "Mail konto data"
 
 msgid "Mail account errors"
-msgstr ""
+msgstr "Mailkonto fejl"
 
 #, php-format
 msgid "Mail account has been scheduled for deletion."
@@ -2848,7 +2848,7 @@ msgid "Mail account type"
 msgstr "E-mail konto type"
 
 msgid "Mail accounts"
-msgstr ""
+msgstr "Mailkonti"
 
 msgid "Mail accounts are hard suspended"
 msgstr ""
@@ -5262,25 +5262,25 @@ msgid "You are exceeding you domain aliases limit."
 msgstr ""
 
 msgid "You are exceeding your FTP accounts limit."
-msgstr ""
+msgstr "Du overskrider din FTP konti grænse."
 
 msgid "You are exceeding your SQL databases limit."
-msgstr ""
+msgstr "Du overskrider din SQL databaser grænse."
 
 msgid "You are exceeding your SQL users limit."
-msgstr ""
+msgstr "Du overskrider din SQL bruger grænse."
 
 msgid "You are exceeding your disk space limit."
 msgstr "Du overskrider din diskplads grænse."
 
 msgid "You are exceeding your mail accounts limit."
-msgstr ""
+msgstr "Du overskrider din mail konti grænse."
 
 msgid "You are exceeding your monthly traffic limit."
 msgstr "Du overskrider din månedlige trafik grænse."
 
 msgid "You are exceeding your subdomains limit."
-msgstr ""
+msgstr "Du overskrider din subdomæne grænse."
 
 msgid "You are not allowed to act on your own session."
 msgstr "Du har ikke tilladelse til at indgribe i din egen session."
@@ -5767,7 +5767,7 @@ msgid "mail"
 msgstr "mail"
 
 msgid "mail account"
-msgstr ""
+msgstr "mail konto"
 
 msgid "mail accounts"
 msgstr "mail konti"

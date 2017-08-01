@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:35+0000\n"
+"POT-Creation-Date: 2017-08-01 12:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: David Bancells <el_slaughter@yahoo.es>, 2017\n"
+"Last-Translator: Sagi Roca <sagi@canbasis.com>, 2017\n"
 "Language-Team: Catalan (Spain) (https://www.transifex.com/i-mscp/teams/576/ca_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2222,7 +2222,7 @@ msgid "Forward URL %s is not valid."
 msgstr ""
 
 msgid "Forward account"
-msgstr ""
+msgstr "Redirigir correu"
 
 msgid "Forward list is empty."
 msgstr "La llista de reenviament és buida."
@@ -2478,19 +2478,19 @@ msgid "Incorrect FTP account limit."
 msgstr "Límit de comptes FTP incorrecte."
 
 msgid "Incorrect FTP accounts limit."
-msgstr ""
+msgstr "Límit de comptes FTP incorrecte."
 
 msgid "Incorrect SQL database limit."
 msgstr "Límit de base de dades SQL incorrecte."
 
 msgid "Incorrect SQL databases limit."
-msgstr ""
+msgstr "Límit de base de dades SQL incorrecte."
 
 msgid "Incorrect SQL user limit."
 msgstr "Límit d'usuaris SQL incorrecte."
 
 msgid "Incorrect SQL users limit."
-msgstr ""
+msgstr "Límit d'usuaris SQL incorrecte."
 
 msgid "Incorrect alias limit."
 msgstr "Límit d'àlies incorrecte."
@@ -2518,7 +2518,7 @@ msgid "Incorrect mail account limit."
 msgstr ""
 
 msgid "Incorrect mail accounts limit."
-msgstr ""
+msgstr "Límit de comptes de correu incorrecte."
 
 msgid "Incorrect mail quota"
 msgstr ""
@@ -2536,7 +2536,7 @@ msgid "Incorrect subdomain limit."
 msgstr "Límit de subdominis incorrecte."
 
 msgid "Incorrect subdomains limit."
-msgstr ""
+msgstr "Límit de subdominis incorrecte."
 
 msgid "Incorrect syntax for email address."
 msgstr "L'adreça de correu no és vàlida."
@@ -2816,13 +2816,13 @@ msgid "Mail Log Level"
 msgstr "Nivell de registre (log) de mail"
 
 msgid "Mail account already exists."
-msgstr ""
+msgstr "El compte d'email ja existeix."
 
 msgid "Mail account data"
-msgstr ""
+msgstr "Dades del compte d'email."
 
 msgid "Mail account errors"
-msgstr ""
+msgstr "Errors de comptes de correu"
 
 #, php-format
 msgid "Mail account has been scheduled for deletion."
@@ -2840,7 +2840,7 @@ msgid "Mail account type"
 msgstr ""
 
 msgid "Mail accounts"
-msgstr ""
+msgstr "Comptes de correu"
 
 msgid "Mail accounts are hard suspended"
 msgstr ""
@@ -5244,10 +5244,10 @@ msgid "You are exceeding you domain aliases limit."
 msgstr ""
 
 msgid "You are exceeding your FTP accounts limit."
-msgstr ""
+msgstr "Estàs excedint el teu límit de comptes FTP."
 
 msgid "You are exceeding your SQL databases limit."
-msgstr ""
+msgstr "Estàs excedint el teu límit de Bases de Dades SQL."
 
 msgid "You are exceeding your SQL users limit."
 msgstr ""
@@ -5256,13 +5256,13 @@ msgid "You are exceeding your disk space limit."
 msgstr "Estàs excedint el teu limit d'espai en disc."
 
 msgid "You are exceeding your mail accounts limit."
-msgstr ""
+msgstr "Estàs excedint el teu límit de comptes de mail."
 
 msgid "You are exceeding your monthly traffic limit."
 msgstr "Esteu excedint el vostre límit de transit mensual."
 
 msgid "You are exceeding your subdomains limit."
-msgstr ""
+msgstr "Estàs excedint el teu límit de subdominis."
 
 msgid "You are not allowed to act on your own session."
 msgstr ""
@@ -5745,7 +5745,7 @@ msgid "mail"
 msgstr "correu electrònic"
 
 msgid "mail account"
-msgstr ""
+msgstr "compte de correu electrònic"
 
 msgid "mail accounts"
 msgstr "comptes de correu"

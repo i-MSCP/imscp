@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:35+0000\n"
+"POT-Creation-Date: 2017-08-01 12:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: krok <krok@totalynet.fr>, 2017\n"
+"Last-Translator: lkppo <inactive+lkppo@transifex.com>, 2017\n"
 "Language-Team: French (France) (https://www.transifex.com/i-mscp/teams/576/fr_FR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2439,7 +2439,7 @@ msgid "Forward URL %s is not valid."
 msgstr "L'URL %s n'est pas  valide."
 
 msgid "Forward account"
-msgstr ""
+msgstr "Compte de redirection"
 
 msgid "Forward list is empty."
 msgstr "La liste des transferts est vide."
@@ -2709,19 +2709,19 @@ msgid "Incorrect FTP account limit."
 msgstr "Limite de compte FTP incorrecte."
 
 msgid "Incorrect FTP accounts limit."
-msgstr ""
+msgstr "Limite de compte Ftp incorrecte"
 
 msgid "Incorrect SQL database limit."
 msgstr "Limite de base de données incorrecte."
 
 msgid "Incorrect SQL databases limit."
-msgstr ""
+msgstr "Limite de base de données incorrecte."
 
 msgid "Incorrect SQL user limit."
 msgstr "Limite d'utilisateur SQL incorrecte."
 
 msgid "Incorrect SQL users limit."
-msgstr ""
+msgstr "Limite de compte SQL incorrecte."
 
 msgid "Incorrect alias limit."
 msgstr "Limite d'alias incorrecte."
@@ -2749,7 +2749,7 @@ msgid "Incorrect mail account limit."
 msgstr ""
 
 msgid "Incorrect mail accounts limit."
-msgstr ""
+msgstr "Limite de compte mail incorrecte."
 
 msgid "Incorrect mail quota"
 msgstr ""
@@ -2767,7 +2767,7 @@ msgid "Incorrect subdomain limit."
 msgstr "Limite de sous-domaine incorrecte."
 
 msgid "Incorrect subdomains limit."
-msgstr ""
+msgstr "Limite de sous-domaine incorrecte."
 
 msgid "Incorrect syntax for email address."
 msgstr "Syntaxe de l'adresse e-mail incorrect."
@@ -3049,13 +3049,13 @@ msgid "Mail Log Level"
 msgstr "Niveau de journalisation (e-mail)"
 
 msgid "Mail account already exists."
-msgstr ""
+msgstr "L'adresse E-mail existe déjà."
 
 msgid "Mail account data"
-msgstr ""
+msgstr "Données du compte mail"
 
 msgid "Mail account errors"
-msgstr ""
+msgstr "Erreurs liées aux comptes de messagerie"
 
 #, php-format
 msgid "Mail account has been scheduled for deletion."
@@ -3073,7 +3073,7 @@ msgid "Mail account type"
 msgstr "Type de compte e-mail"
 
 msgid "Mail accounts"
-msgstr ""
+msgstr "Comptes de messagerie"
 
 msgid "Mail accounts are hard suspended"
 msgstr ""
@@ -5564,7 +5564,7 @@ msgid "You are exceeding you domain aliases limit."
 msgstr ""
 
 msgid "You are exceeding your FTP accounts limit."
-msgstr ""
+msgstr "Vous dépassez votre limite de compte FTP."
 
 msgid "You are exceeding your SQL databases limit."
 msgstr ""
@@ -5576,7 +5576,7 @@ msgid "You are exceeding your disk space limit."
 msgstr "Vous avez dépassé votre limite d'espace de stockage."
 
 msgid "You are exceeding your mail accounts limit."
-msgstr ""
+msgstr "Vous avez atteints le nombre de compte mail maximum."
 
 msgid "You are exceeding your monthly traffic limit."
 msgstr "Vous avez dépassé la limite de trafic mensuel."
@@ -6094,7 +6094,7 @@ msgid "mail"
 msgstr "e-mail"
 
 msgid "mail account"
-msgstr ""
+msgstr "compte email"
 
 msgid "mail accounts"
 msgstr "comptes de messageries"

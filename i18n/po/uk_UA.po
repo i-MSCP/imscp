@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:35+0000\n"
+"POT-Creation-Date: 2017-08-01 12:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Aleksandr Sidenko <fox4ua@ya.ru>, 2017\n"
+"Last-Translator: Plastilin <alexey.blinkov@gmail.com>, 2017\n"
 "Language-Team: Ukrainian (Ukraine) (https://www.transifex.com/i-mscp/teams/576/uk_UA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2395,7 +2395,7 @@ msgid "Forward URL %s is not valid."
 msgstr "URL перенаправления %s неверный."
 
 msgid "Forward account"
-msgstr ""
+msgstr "Переслать учетную запись"
 
 msgid "Forward list is empty."
 msgstr "Лист пересылки пуст"
@@ -2660,19 +2660,19 @@ msgid "Incorrect FTP account limit."
 msgstr "Неверное ограничение учетных записей FTP."
 
 msgid "Incorrect FTP accounts limit."
-msgstr ""
+msgstr "Неверное ограничение учетных записей FTP."
 
 msgid "Incorrect SQL database limit."
 msgstr "Неверное ограничение баз данных SQL."
 
 msgid "Incorrect SQL databases limit."
-msgstr ""
+msgstr "Неверное ограничение баз данных SQL."
 
 msgid "Incorrect SQL user limit."
 msgstr "Неверное ограничение пользователей SQL."
 
 msgid "Incorrect SQL users limit."
-msgstr ""
+msgstr "Неверное ограничение пользователей SQL."
 
 msgid "Incorrect alias limit."
 msgstr "Неверный лимит алиасов."
@@ -2700,7 +2700,7 @@ msgid "Incorrect mail account limit."
 msgstr ""
 
 msgid "Incorrect mail accounts limit."
-msgstr ""
+msgstr "Неверное ограничение учетных записей почты."
 
 msgid "Incorrect mail quota"
 msgstr ""
@@ -2718,7 +2718,7 @@ msgid "Incorrect subdomain limit."
 msgstr "Неверный лимит поддоменов."
 
 msgid "Incorrect subdomains limit."
-msgstr ""
+msgstr "Неверное ограничение поддоменов."
 
 msgid "Incorrect syntax for email address."
 msgstr "Неверный синтаксис email адреса"
@@ -2998,13 +2998,13 @@ msgid "Mail Log Level"
 msgstr "Уровень логирования почты"
 
 msgid "Mail account already exists."
-msgstr ""
+msgstr "Почтовый ящик уже существует."
 
 msgid "Mail account data"
-msgstr ""
+msgstr "Данные почтового ящика"
 
 msgid "Mail account errors"
-msgstr ""
+msgstr "Помилки поштових облікових записів"
 
 #, php-format
 msgid "Mail account has been scheduled for deletion."
@@ -3023,7 +3023,7 @@ msgid "Mail account type"
 msgstr "Тип почтового ящика"
 
 msgid "Mail accounts"
-msgstr ""
+msgstr "Поштові скриньки"
 
 msgid "Mail accounts are hard suspended"
 msgstr ""
@@ -5468,7 +5468,7 @@ msgid "You are exceeding you domain aliases limit."
 msgstr ""
 
 msgid "You are exceeding your FTP accounts limit."
-msgstr ""
+msgstr "Вы превысили лимит FTP-аккаунтов."
 
 msgid "You are exceeding your SQL databases limit."
 msgstr ""
@@ -5480,13 +5480,13 @@ msgid "You are exceeding your disk space limit."
 msgstr "Вы исчерпали выделенное Вам место на жестком диске."
 
 msgid "You are exceeding your mail accounts limit."
-msgstr ""
+msgstr "Вы превысили лимит почтовых ящиков."
 
 msgid "You are exceeding your monthly traffic limit."
 msgstr "Вы превышаете Ваш месячный порог трафика."
 
 msgid "You are exceeding your subdomains limit."
-msgstr ""
+msgstr "Вы превысили лимит поддоменов."
 
 msgid "You are not allowed to act on your own session."
 msgstr "Вам не разрешено действовать в собственной сессии."
@@ -5989,7 +5989,7 @@ msgid "mail"
 msgstr "почта"
 
 msgid "mail account"
-msgstr ""
+msgstr "почтовый ящик"
 
 msgid "mail accounts"
 msgstr "почтовых ящиков"

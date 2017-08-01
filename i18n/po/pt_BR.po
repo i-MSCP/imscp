@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:35+0000\n"
+"POT-Creation-Date: 2017-08-01 12:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Alan Lira <atglira@gmail.com>, 2017\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/i-mscp/teams/576/pt_BR/)\n"
@@ -2247,7 +2247,7 @@ msgid "Forward URL %s is not valid."
 msgstr "Encaminhar URL %s não é válida."
 
 msgid "Forward account"
-msgstr ""
+msgstr "Redirecionamento de conta"
 
 msgid "Forward list is empty."
 msgstr "Encaminhar lista está vazia."
@@ -2508,19 +2508,19 @@ msgid "Incorrect FTP account limit."
 msgstr "Limite de conta FTP incorreto."
 
 msgid "Incorrect FTP accounts limit."
-msgstr ""
+msgstr "Limites incorretos de contas de FTP."
 
 msgid "Incorrect SQL database limit."
 msgstr "Limite de banco de dados SQL incorreta."
 
 msgid "Incorrect SQL databases limit."
-msgstr ""
+msgstr "Limites incorretos de banco de dados SQL."
 
 msgid "Incorrect SQL user limit."
 msgstr "Limite de usuários SQL incorreta."
 
 msgid "Incorrect SQL users limit."
-msgstr ""
+msgstr "Limites incorretos de usuários SQL."
 
 msgid "Incorrect alias limit."
 msgstr "Limite apelido incorreto."
@@ -2548,7 +2548,7 @@ msgid "Incorrect mail account limit."
 msgstr ""
 
 msgid "Incorrect mail accounts limit."
-msgstr ""
+msgstr "Limites incorretos de contas de emails."
 
 msgid "Incorrect mail quota"
 msgstr ""
@@ -2566,7 +2566,7 @@ msgid "Incorrect subdomain limit."
 msgstr "Limite subdomínio incorreta."
 
 msgid "Incorrect subdomains limit."
-msgstr ""
+msgstr "Limites incorretos de subdomínios."
 
 msgid "Incorrect syntax for email address."
 msgstr "Sintaxe incorreta para o endereço de e-mail."
@@ -2846,13 +2846,13 @@ msgid "Mail Log Level"
 msgstr "E-Mail Log Level"
 
 msgid "Mail account already exists."
-msgstr ""
+msgstr "Esta conta de e-mail já existe."
 
 msgid "Mail account data"
 msgstr ""
 
 msgid "Mail account errors"
-msgstr ""
+msgstr "Erro nas contas de e-mail"
 
 #, php-format
 msgid "Mail account has been scheduled for deletion."
@@ -2870,7 +2870,7 @@ msgid "Mail account type"
 msgstr "Tipo da conta de e-mail"
 
 msgid "Mail accounts"
-msgstr ""
+msgstr "Contas de email"
 
 msgid "Mail accounts are hard suspended"
 msgstr ""
@@ -5798,7 +5798,7 @@ msgid "mail"
 msgstr "e-mail"
 
 msgid "mail account"
-msgstr ""
+msgstr "conta de e-mail"
 
 msgid "mail accounts"
 msgstr "contas de email"
