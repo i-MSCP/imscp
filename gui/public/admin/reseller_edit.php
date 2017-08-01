@@ -602,7 +602,13 @@ function admin_checkAndUpdateData($resellerId)
         }
 
         if (empty($errFieldsStack) && !Zend_Session::namespaceIsset('pageMessages')) { // Update process begin here
-            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, ['userId' => $resellerId]);
+            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, [
+                'userId'   => $resellerId,
+                'userData' => [
+                    'admin_name' => $data['admin_name'],
+                    'admin_pass' => $data['password']
+                ]
+            ]);
 
             $oldValues = $newValues = [];
             foreach ($data as $property => $value) {
@@ -631,7 +637,7 @@ function admin_checkAndUpdateData($resellerId)
             ];
 
             if ($data['password'] != '') {
-                $setPassword = '`admin_pass` = ?,';
+                $setPassword = 'admin_pass = ?,';
                 array_unshift($bindParams, \iMSCP\Crypt::apr1MD5($data['password']));
             } else {
                 $setPassword = '';
@@ -721,7 +727,11 @@ function admin_checkAndUpdateData($resellerId)
             }
 
             iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, [
-                'userId' => $resellerId
+                'userId'   => $resellerId,
+                'userData' => [
+                    'admin_name' => $data['admin_name'],
+                    'admin_pass' => $data['password']
+                ]
             ]);
 
             $db->commit();
