@@ -54,6 +54,7 @@ FRONTEND
     Review: Default mail accounts are not longer counted for the mail accounts limit (default)
     Review: Default mail accounts are now hidden in the client mail accounts overview interface (default)
     Review: Hide PHP E_STRICT, E_NOTICE, ~E_USER_NOTICE, E_DEPRECATED and E_USER_DEPRECATED on production
+    Review: Hide the i-MSCP update interface when Git version is in use (admin UI level)
     Review: Make use of short syntax for arrays
     Review: Extend Zend_Registry class instead of reinventing the wheel
     Review: Skip the intermediate edit page when mail autoresponder is being enabled and that the message is already set

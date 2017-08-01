@@ -50,7 +50,9 @@ function admin_generateSupportQuestionsMessage()
  */
 function admin_generateUpdateMessages()
 {
-    if (!iMSCP_Registry::get('config')['CHECK_FOR_UPDATES']) {
+    if (!iMSCP_Registry::get('config')['CHECK_FOR_UPDATES']
+        || stripos(iMSCP_Registry::get('config')['Version'], 'git') !== false
+    ) {
         return;
     }
 
@@ -104,7 +106,7 @@ function admin_getAdminGeneralInfo($tpl)
         'DOMAINS'         => tohtml(records_count('domain')),
         'SUBDOMAINS'      => tohtml(records_count('subdomain') + records_count('subdomain_alias', 'subdomain_alias_id')),
         'DOMAINS_ALIASES' => tohtml(records_count('domain_aliasses')),
-        'MAIL_ACCOUNTS'   => records_count('mail_users', $where),
+        'MAIL_ACCOUNTS'   => tohtml(records_count('mail_users', $where)),
         'FTP_ACCOUNTS'    => tohtml(records_count('ftp_users')),
         'SQL_DATABASES'   => tohtml(records_count('sql_database')),
         'SQL_USERS'       => tohtml(get_sql_user_count())
@@ -149,9 +151,9 @@ function admin_generateServerTrafficInfo($tpl)
     $trafficUsagePercent = make_usage_vals($trafficUsageBytes, $trafficLimitBytes);
 
     if ($trafficLimitBytes) {
-        $trafficMessage = tr('%s%% [%s / %s]', $trafficUsagePercent, bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes));
+        $trafficMessage = tohtml(tr('%s%% [%s / %s]', $trafficUsagePercent, bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes)));
     } else {
-        $trafficMessage = tr('%s%% [%s / ∞]', $trafficUsagePercent, bytesHuman($trafficUsageBytes));
+        $trafficMessage = tohtml(tr('%s%% [%s / ∞]', $trafficUsagePercent, bytesHuman($trafficUsageBytes)));
     }
 
     // traffic warning 
@@ -165,8 +167,8 @@ function admin_generateServerTrafficInfo($tpl)
     }
 
     $tpl->assign([
-        'TRAFFIC_WARNING' => $trafficMessage,
-        'TRAFFIC_PERCENT' => $trafficUsagePercent
+        'TRAFFIC_WARNING' => tohtml($trafficMessage),
+        'TRAFFIC_PERCENT' => tohtml($trafficUsagePercent, 'htmlAttr')
     ]);
 }
 
@@ -187,28 +189,28 @@ $tpl->define_dynamic([
     'traffic_warning_message' => 'page'
 ]);
 $tpl->assign([
-    'TR_PAGE_TITLE'      => tr('Admin / General / Overview'),
-    'TR_PROPERTIES'      => tr('Properties'),
-    'TR_VALUES'          => tr('Values'),
-    'TR_ADMIN_USERS'     => tr('Admin users'),
-    'TR_RESELLER_USERS'  => tr('Reseller users'),
-    'TR_NORMAL_USERS'    => tr('Client users'),
-    'TR_DOMAINS'         => tr('Domains'),
-    'TR_SUBDOMAINS'      => tr('Subdomains'),
-    'TR_DOMAINS_ALIASES' => tr('Domain aliases'),
-    'TR_MAIL_ACCOUNTS'   => tr('Mail accounts'),
-    'TR_FTP_ACCOUNTS'    => tr('FTP accounts'),
-    'TR_SQL_DATABASES'   => tr('SQL databases'),
-    'TR_SQL_USERS'       => tr('SQL users'),
-    'TR_SERVER_TRAFFIC'  => tr('Monthly server traffic')
+    'TR_PAGE_TITLE'      => tohtml(tr('Admin / General / Overview')),
+    'TR_PROPERTIES'      => tohtml(tr('Properties')),
+    'TR_VALUES'          => tohtml(tr('Values')),
+    'TR_ADMIN_USERS'     => tohtml(tr('Admin users')),
+    'TR_RESELLER_USERS'  => tohtml(tr('Reseller users')),
+    'TR_NORMAL_USERS'    => tohtml(tr('Client users')),
+    'TR_DOMAINS'         => tohtml(tr('Domains')),
+    'TR_SUBDOMAINS'      => tohtml(tr('Subdomains')),
+    'TR_DOMAINS_ALIASES' => tohtml(tr('Domain aliases')),
+    'TR_MAIL_ACCOUNTS'   => tohtml(tr('Mail accounts')),
+    'TR_FTP_ACCOUNTS'    => tohtml(tr('FTP accounts')),
+    'TR_SQL_DATABASES'   => tohtml(tr('SQL databases')),
+    'TR_SQL_USERS'       => tohtml(tr('SQL users')),
+    'TR_SERVER_TRAFFIC'  => tohtml(tr('Monthly server traffic'))
 ]);
 
 generateNavigation($tpl);
+generatePageMessage($tpl);
 admin_generateSupportQuestionsMessage();
 admin_generateUpdateMessages();
 admin_getAdminGeneralInfo($tpl);
 admin_generateServerTrafficInfo($tpl);
-generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);

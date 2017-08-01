@@ -134,9 +134,14 @@ return [
                 'title_class' => 'maintenancemode'
             ],
             'updates'              => [
-                'label'       => tr('i-MSCP updates'),
-                'uri'         => '/admin/imscp_updates.php',
-                'title_class' => 'update'
+                'label'              => tr('i-MSCP updates'),
+                'uri'                => '/admin/imscp_updates.php',
+                'title_class'        => 'update',
+                'privilege_callback' => [
+                    'name' => function () {
+                        return stripos(iMSCP_Registry::get('config')['Version'], 'git') === false;
+                    }
+                ]
             ],
             'debugger'             => [
                 'label'       => tr('Debugger'),
