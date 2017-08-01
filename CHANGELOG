@@ -70,7 +70,7 @@ INSTALLER
     Fixed: Hide notice about user/group changes (Courier)
     Fixed: Missing LOGROTATE(8) configuration file for RSYSLOGD(8) (Debian 9/Stretch; Ubuntu 16.04/Xenial)
     Fixed: Removal of obsolete files must be done before saving the persistent data, else some files won't be deleted
-    Review: Raise GNU Wget timeout for slow DNS resolver (Debian apdater)
+    Review: Raise GNU Wget timeout for slow DNS resolvers (Debian apdater)
     Securiry: Permissions hardening - Files and folders are now copied with UMASK(2) 027 instead of 022
 
 PACKAGES
