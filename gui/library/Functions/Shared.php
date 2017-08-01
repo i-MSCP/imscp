@@ -3014,35 +3014,6 @@ function translate_limit_value($value, $autosize = false, $to = NULL)
 }
 
 /**
- * Decrypt the given password using the iMSCP secret key and vector
- *
- * @throws iMSCP_Exception
- * @param  string $password Blowfish (CBC) encrypted password
- * @return string Decrypted password
- * @deprecated Will be removed in later version
- */
-function decryptBlowfishCbcPassword($password)
-{
-    if ($password == '') {
-        return '';
-    }
-
-    if (!extension_loaded('mcrypt')) {
-        throw new iMSCP_Exception("PHP extension 'mcrypt' not loaded!");
-    }
-
-    $text = @base64_decode($password . "\n");
-    $td = @mcrypt_module_open('blowfish', '', 'cbc', '');
-    $key = iMSCP_Registry::get('MCRYPT_KEY');
-    $iv = iMSCP_Registry::get('MCRYPT_IV');
-    @mcrypt_generic_init($td, $key, $iv);
-    $decrypted = @mdecrypt_generic($td, $text);
-    @mcrypt_module_close($td);
-
-    return trim($decrypted);
-}
-
-/**
  * Return timestamp for the first day of $month of $year
  *
  * @param int $month OPTIONAL a month

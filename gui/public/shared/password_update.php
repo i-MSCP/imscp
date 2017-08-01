@@ -34,7 +34,7 @@ use iMSCP_pTemplate as TemplateEngine;
  */
 function updatePassword()
 {
-    $form = getUserLoginDataForm(true);
+    $form = getUserLoginDataForm(false, true);
 
     if (!$form->isValid($_POST)) {
         foreach ($form->getMessages() as $msgStack => $msg) {

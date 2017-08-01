@@ -52,6 +52,7 @@ function updateUserData(Zend_Form $form, $userId)
             set_page_message(reset($msg), 'error');
         }
 
+        $form->setDefault('admin_name', $data['admin_name']); // admin_name not part of form; wee need re-add it
         return;
     }
 
@@ -182,7 +183,8 @@ if ($userId == $_SESSION['user_id']) {
 
 global $userType;
 
-$form = getUserLoginDataForm()->addElements(getUserPersonalDataForm()->getElements());
+$form = getUserLoginDataForm(false, false)->addElements(getUserPersonalDataForm()->getElements());
+$form->getElement('admin_name')->setIgnore(true);
 
 if (!empty($_POST)) {
     updateUserData($form, $userId);

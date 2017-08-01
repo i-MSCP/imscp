@@ -21,15 +21,15 @@
 /**
  * Must be documented
  *
- * @param  $user_id
+ * @param  int $userId User unique identifier
  * @return array
  * @todo must be removed
  */
-function get_user_gui_props($user_id)
+function get_user_gui_props($userId)
 {
     $cfg = iMSCP_Registry::get('config');
 
-    $stmt = exec_query('SELECT lang, layout FROM user_gui_props WHERE user_id = ?', $user_id);
+    $stmt = exec_query('SELECT lang, layout FROM user_gui_props WHERE user_id = ?', $userId);
 
     if (!$stmt->rowCount()) {
         return [$cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']];
@@ -61,7 +61,7 @@ function get_user_gui_props($user_id)
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
  */
-function generatePageMessage($tpl)
+function generatePageMessage(iMSCP_pTemplate $tpl)
 {
     $namespace = new Zend_Session_Namespace('pageMessages');
 
@@ -243,31 +243,27 @@ function layout_getAvailableColorSet()
  */
 function layout_getUserLayoutColor($userId)
 {
-    static $color = NULL;
+    static $layoutColor = NULL;
 
-    if (NULL !== $color) {
-        return $color;
+    if (NULL !== $layoutColor) {
+        return $layoutColor;
     }
 
     if (isset($_SESSION['user_theme_color'])) {
-        $color = $_SESSION['user_theme_color'];
-        return $color;
+        $layoutColor = $_SESSION['user_theme_color'];
+        return $layoutColor;
     }
 
     $allowedColors = layout_getAvailableColorSet();
-    $query = 'SELECT `layout_color` FROM `user_gui_props` WHERE `user_id` = ?';
-    $stmt = exec_query($query, $userId);
+    $layoutColor = exec_query(
+        'SELECT layout_color FROM user_gui_props WHERE user_id = ?', $userId
+    )->fetchRow(PDO::FETCH_COLUMN);
 
-    if ($stmt->rowCount()) {
-        $color = $stmt->fields['layout_color'];
-        if (!$color || !in_array($color, $allowedColors)) {
-            $color = array_shift($allowedColors);
-        }
-        return $color;
+    if (!$layoutColor || !in_array($layoutColor, $allowedColors)) {
+        $layoutColor = array_shift($allowedColors);
     }
 
-    $color = array_shift($allowedColors);
-    return $color;
+    return $layoutColor;
 }
 
 /**

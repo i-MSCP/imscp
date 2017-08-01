@@ -174,7 +174,7 @@ if ($userId == $_SESSION['user_id']) {
     redirectTo('personal_change.php');
 }
 
-$form = getUserLoginDataForm()->addElements(getUserPersonalDataForm()->getElements());
+$form = getUserLoginDataForm(false, false)->addElements(getUserPersonalDataForm()->getElements());
 
 if (!empty($_POST)) {
     updateUserData($form, $userId);

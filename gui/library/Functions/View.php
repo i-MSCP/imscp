@@ -26,7 +26,7 @@
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
  */
-function generateLoggedFrom($tpl)
+function generateLoggedFrom(iMSCP_pTemplate $tpl)
 {
     $tpl->define_dynamic('logged_from', 'layout');
 
@@ -49,7 +49,7 @@ function generateLoggedFrom($tpl)
  * @param  string $selectedLanguage Selected language
  * @return void
  */
-function generateLanguagesList($tpl, $selectedLanguage)
+function generateLanguagesList(iMSCP_pTemplate $tpl, $selectedLanguage)
 {
     foreach (i18n_getAvailableLanguages() as $language) {
         $tpl->assign([
@@ -70,7 +70,7 @@ function generateLanguagesList($tpl, $selectedLanguage)
  * @param  int $numberYears
  * @return void
  */
-function generateMonthsAndYearsHtmlList($tpl, $fromMonth = NULL, $fromYear = NULL, $numberYears = 3)
+function generateMonthsAndYearsHtmlList(iMSCP_pTemplate $tpl, $fromMonth = NULL, $fromYear = NULL, $numberYears = 3)
 {
     $fromMonth = filter_digits($fromMonth);
     $fromYear = filter_digits($fromYear);
@@ -109,7 +109,7 @@ function generateMonthsAndYearsHtmlList($tpl, $fromMonth = NULL, $fromYear = NUL
  * @param iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
  */
-function generateNavigation($tpl)
+function generateNavigation(iMSCP_pTemplate $tpl)
 {
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeGenerateNavigation, [
         'templateEngine' => $tpl
@@ -353,7 +353,7 @@ function getCustomMenus($userLevel)
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
  */
-function gen_admin_list($tpl)
+function gen_admin_list(iMSCP_pTemplate $tpl)
 {
     $stmt = execute_query(
         "
@@ -400,7 +400,7 @@ function gen_admin_list($tpl)
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
  */
-function gen_reseller_list($tpl)
+function gen_reseller_list(iMSCP_pTemplate $tpl)
 {
     $stmt = execute_query(
         "
@@ -457,7 +457,7 @@ function get_search_user_queries($sLimit, $eLimit, $searchField = NULL, $searchV
     }
 
     if ($searchStatus !== NULL && $searchStatus != 'anything') {
-        $where .= (($where == '') ? 'WHERE ' : ' ') . 't1.domain_status' . (
+        $where .= (($where == '') ? 'WHERE ' : ' AND ') . 't1.domain_status' . (
             ($searchStatus == 'ok' || $searchStatus == 'disabled')
                 ? ' = ' . quoteValue($searchStatus)
                 : " NOT IN ('ok', 'toadd', 'tochange', 'toenable', 'torestore', 'todisable', 'todelete')"
@@ -513,7 +513,7 @@ function get_search_user_queries($sLimit, $eLimit, $searchField = NULL, $searchV
  * @param string|null $searchStatus Status to search
  * @return void
  */
-function gen_search_user_fields($tpl, $searchField = NULL, $searchValue = NULL, $searchStatus = NULL)
+function gen_search_user_fields(iMSCP_pTemplate $tpl, $searchField = NULL, $searchValue = NULL, $searchStatus = NULL)
 {
     $none = $domain = $customerId = $firstname = $lastname = $company = $city = $state = $country = $resellerName =
     $anything = $ok = $suspended = $error = '';
@@ -585,7 +585,7 @@ function gen_search_user_fields($tpl, $searchField = NULL, $searchValue = NULL, 
  * @param int $domainId Domain unique identifier
  * @return void
  */
-function gen_user_domain_aliases_list($tpl, $domainId)
+function gen_user_domain_aliases_list(iMSCP_pTemplate $tpl, $domainId)
 {
     $tpl->assign('CLIENT_DOMAIN_ALIAS_BLK', '');
 
@@ -616,7 +616,7 @@ function gen_user_domain_aliases_list($tpl, $domainId)
  * @param iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
  */
-function gen_user_list($tpl)
+function gen_user_list(iMSCP_pTemplate $tpl)
 {
     $cfg = iMSCP_Registry::get('config');
 
@@ -769,7 +769,7 @@ function gen_user_list($tpl)
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
  */
-function get_admin_manage_users($tpl)
+function get_admin_manage_users(iMSCP_pTemplate $tpl)
 {
     gen_admin_list($tpl);
     gen_reseller_list($tpl);
@@ -786,7 +786,7 @@ function get_admin_manage_users($tpl)
  * @param int $domainIp Identifier of the selected domain IP
  * @return void
  */
-function reseller_generate_ip_list($tpl, $resellerId, $domainIp)
+function reseller_generate_ip_list(iMSCP_pTemplate $tpl, $resellerId, $domainIp)
 {
     $stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', $resellerId);
     $row = $stmt->fetchRow();

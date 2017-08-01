@@ -350,10 +350,11 @@ function checkMimeType($pathFile, array $mimeTypes)
 /**
  * Get user login data form
  *
+ * @param bool $usernameRequired Flag indicating whether username is required
  * @param bool $passwordRequired Flag indicating whether password is required
  * @return Zend_Form
  */
-function getUserLoginDataForm($passwordRequired = false)
+function getUserLoginDataForm($usernameRequired = true, $passwordRequired = true)
 {
     $cfg = iMSCP_Registry::get('config');
     $minPasswordLength = intval($cfg['PASSWD_CHARS']);
@@ -368,15 +369,18 @@ function getUserLoginDataForm($passwordRequired = false)
                 'text',
                 [
                     'validators' => [
+                        ['NotEmpty', true, ['type' => 'string', 'messages' => tr('Username cannot be empty.')]],
                         ['Regex', true, '/^[[:alnum:]](:?(?<![-_])(:?-*|[_.])?(?![-_])[[:alnum:]]*)*?(?<![-_.])$/', 'messages' => tr('Invalid username.')],
                         ['StringLength', true, ['min' => 2, 'max' => 30, 'messages' => tr('Username must be between %d and %d characters', 2, 30)]]
-                    ]
+                    ],
+                    'Required'   => true
                 ]
             ],
             'admin_pass'              => [
                 'password',
                 [
                     'validators' => [
+                        ['NotEmpty', true, ['type' => 'string', 'messages' => tr('Password cannot be empty.')]],
                         [
                             'StringLength',
                             true,
@@ -387,7 +391,8 @@ function getUserLoginDataForm($passwordRequired = false)
                             ]
                         ],
                         ['Regex', true, ['/^[\x21-\x7e]+$/', 'messages' => tr('Password contains unallowed characters.')]]
-                    ]
+                    ],
+                    'Required'   => true
                 ]
             ],
             'admin_pass_confirmation' => [
@@ -405,13 +410,12 @@ function getUserLoginDataForm($passwordRequired = false)
         ]);
     }
 
-    if ($passwordRequired) {
-        $password = $form->getElement('admin_pass');
-        $validators = $password->getValidators();
-        array_unshift(
-            $validators, ['NotEmpty', true, ['type' => 'string', 'messages' => tr('Password cannot be empty.')]]
-        );
-        $password->setValidators($validators)->setRequired(true);
+    if (!$usernameRequired) {
+        $form->getElement('admin_name')->removeValidator('NoEmpty')->setRequired(false);
+    }
+
+    if (!$passwordRequired) {
+        $form->getElement('admin_pass')->removeValidator('NoEmpty')->setRequired(false);
     }
 
     $form->setElementFilters(['StripTags', 'StringTrim']);
@@ -441,7 +445,7 @@ function getUserPersonalDataForm()
                 'text', [
                     'validators' => [
                         ['NotEmpty', true, ['type' => 'string', 'messages' => tr('Email address cannot be empty.')]],
-                        ['EmailAddress', true, ['messages' => tr('Invalid email address.')]]
+                        ['EmailAddress', true, ['messagess' => tr('Invalid email address.')]]
                     ],
                     'Required'   => true
                 ]
