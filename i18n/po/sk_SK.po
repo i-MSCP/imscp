@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-07-20 16:43+0000\n"
+"POT-Creation-Date: 2017-08-01 12:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Henrich Brunner <brunno.eu@gmail.com>, 2017\n"
 "Language-Team: Slovak (Slovakia) (https://www.transifex.com/i-mscp/teams/576/sk_SK/)\n"
@@ -37,36 +37,12 @@ msgid "$ORIGIN value is currently set to: %s"
 msgstr ""
 
 #, php-format
-msgid "%%s cannot be greater than %%s."
+msgid "%%s / %s"
 msgstr ""
 
 #, php-format
-msgid "%1$d / %2$d"
-msgstr "%1$d / %2$d"
-
-#, php-format
-msgid "%1$d / %2$d of %3$d"
-msgstr "%1$d / %2$d of %3$d"
-
-#, php-format
-msgid "%1$d / %2$d of %3$d</b>"
-msgstr "%1$d / %2$d of %3$d</b>"
-
-#, php-format
-msgid "%1$d / %2$d of unlimited"
-msgstr "%1$d / %2$d z neobmedzených"
-
-#, php-format
-msgid "%1$d of %2$d"
-msgstr "%1$d z %2$d"
-
-#, php-format
-msgid "%1$d%% [%2$s of %3$s]"
-msgstr "%1$d%% [%2$s z %3$s]"
-
-#, php-format
-msgid "%1$d%% [%2$s of unlimited]"
-msgstr "%1$d%% [%2$s z nebmedzených]"
+msgid "%%s cannot be greater than %%s."
+msgstr ""
 
 #, php-format
 msgid "%1$s (%2$s)"
@@ -81,28 +57,8 @@ msgid "%1$s - (Version: %2$s, Language: %3$s)"
 msgstr "%1$s - (Verzia: %2$s, Jazyk: %3$s)"
 
 #, php-format
-msgid "%1$s / %2$s"
-msgstr "%1$s / %2$s"
-
-#, php-format
-msgid "%1$s / %2$s of %3$s"
-msgstr "%1$s / %2$s z %3$s"
-
-#, php-format
-msgid "%1$s / %2$s of unlimited"
-msgstr "%1$s / %2$s z neobmedzených "
-
-#, php-format
 msgid "%1$s you are now logged as %2$s"
 msgstr "%1$s teraz ste prihlásený ako %2$s"
-
-#, php-format
-msgid "%1$s%% [%2$s of %3$s]"
-msgstr "%1$s%% [%2$s z %3$s]"
-
-#, php-format
-msgid "%1$s%% [%2$s of unlimited]"
-msgstr "%1$s%% [%2$s z nebmedzených]"
 
 #, php-format
 msgid "%1$ss - Software"
@@ -113,32 +69,20 @@ msgid "%d %s remaining until account expiration"
 msgstr "%d %s zostáva pokiaľ konto expiruje "
 
 #, php-format
-msgid "%d / unlimited"
-msgstr "%d / neobmedzených "
-
-#, php-format
 msgid "%d Service(s) port successfully updateds"
 msgstr "%d Port služby/služieb bol(i) úspešne aktualizovaný(é) "
-
-#, php-format
-msgid "%d configuration parameter(s) have/has been created."
-msgstr "%d konfiguračné parametre boli vytvorené."
-
-#, php-format
-msgid "%d configuration parameter(s) have/has been updated."
-msgstr "%d konfiguračné parametre boli aktualizované."
-
-#, php-format
-msgid "%d of %s"
-msgstr "%d z %s"
 
 #, php-format
 msgid "%d strings translated"
 msgstr "%d reťazcov preložených"
 
 #, php-format
-msgid "%s / unlimited"
-msgstr "%s / neobmedzené "
+msgid "%s / %s"
+msgstr ""
+
+#, php-format
+msgid "%s / ∞"
+msgstr ""
 
 #, php-format
 msgid "%s account successfully deleted."
@@ -161,14 +105,6 @@ msgid "%s is not allowed as subdomain label."
 msgstr "%s nie je povolené ako pomenovanie subdomeny. "
 
 #, php-format
-msgid "%s of %s"
-msgstr "%s z %s"
-
-#, php-format
-msgid "%s of unlimited"
-msgstr "%s z neobmedzené "
-
-#, php-format
 msgid "%s page"
 msgstr "%s strana"
 
@@ -178,6 +114,22 @@ msgstr "%s záznam"
 
 #, php-format
 msgid "%s webmail"
+msgstr ""
+
+#, php-format
+msgid "%s%% [%s / %s]"
+msgstr ""
+
+#, php-format
+msgid "%s%% [%s / ∞]"
+msgstr ""
+
+#, php-format
+msgid "%s%% [%s of %3$s]"
+msgstr ""
+
+#, php-format
+msgid "%s%% [%s of ∞]"
 msgstr ""
 
 #, php-format
@@ -214,159 +166,7 @@ msgid ""
 "plugin which must be reported to the author(s)."
 msgstr ""
 
-#, php-format
-msgid ""
-"'%%hostname%%' does not appear to have a valid MX record for the email "
-"address '%%value%%'"
-msgstr ""
-
-#, php-format
-msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
-msgstr ""
-
-#, php-format
-msgid ""
-"'%%hostname%%' is not in a routable network segment. The email address "
-"'%%value%%' should not be resolved from public network"
-msgstr ""
-
-#, php-format
-msgid "'%%localPart%%' can not be matched against dot-atom format"
-msgstr ""
-
-#, php-format
-msgid "'%%localPart%%' can not be matched against quoted-string format"
-msgstr ""
-
-#, php-format
-msgid "'%%localPart%%' is no valid local part for email address '%%value%%'"
-msgstr ""
-
-#, php-format
-msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
-msgstr ""
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a DNS hostname but cannot match TLD against known "
-"list"
-msgstr ""
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a DNS hostname but cannot match against hostname "
-"schema for TLD '%%tld%%'"
-msgstr ""
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a DNS hostname but contains a dash in an invalid "
-"position"
-msgstr ""
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a DNS hostname but the given punycode notation "
-"cannot be decoded"
-msgstr ""
-
-#, php-format
-msgid "'%%value%%' appears to be a domain name but cannot extract TLD part"
-msgstr ""
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a domain name but cannot match TLD against known "
-"list"
-msgstr ""
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a domain name but cannot match against domain name"
-" schema for TLD '%%tld%%'"
-msgstr ""
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a domain name but contains a dash in an invalid "
-"position"
-msgstr ""
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a domain name but the given punycode notation "
-"cannot be decoded"
-msgstr ""
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a local network name but local network names are "
-"not allowed"
-msgstr ""
-
-#, php-format
-msgid "'%%value%%' appears to be a subdomain name but cannot extract TLD part"
-msgstr ""
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a subdomain name but cannot match TLD against "
-"known list"
-msgstr ""
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a subdomain name but cannot match against "
-"subdomain schema for TLD '%%tld%%'"
-msgstr ""
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a subdomain name but contains a dash in an invalid"
-" position"
-msgstr ""
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a subdomain name but the given punycode notation "
-"cannot be decoded"
-msgstr ""
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be an IP address, but IP addresses are not allowed"
-msgstr ""
-
-#, php-format
-msgid "'%%value%%' does not appear to be a valid IP address"
-msgstr ""
-
-#, php-format
-msgid "'%%value%%' does not appear to be a valid URI hostname"
-msgstr ""
-
-#, php-format
-msgid "'%%value%%' does not appear to be a valid local network name"
-msgstr ""
-
-#, php-format
-msgid "'%%value%%' does not match the expected structure for a DNS hostname"
-msgstr ""
-
-#, php-format
-msgid "'%%value%%' does not match the expected structure for a domain name"
-msgstr ""
-
-#, php-format
-msgid "'%%value%%' does not match the expected structure for a subdomain name"
-msgstr ""
-
-#, php-format
-msgid "'%%value%%' exceeds the allowed length"
-msgstr ""
-
-msgid ""
-"'%%value%' is no valid email address in the basic format local-part@hostname"
+msgid "(default)"
 msgstr ""
 
 #, php-format
@@ -395,11 +195,15 @@ msgstr ""
 msgid "A PHP extension stopped the file upload."
 msgstr ""
 
-msgid "A database update is available"
-msgstr ""
-
 msgid "A hosting plan with same name already exists."
 msgstr ""
+
+#, php-format
+msgid "A new configuration parameter has been created."
+msgid_plural "%d configuration parameters were created"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "A new i-MSCP version is available"
 msgstr ""
@@ -428,9 +232,6 @@ msgstr "Limity účtu"
 msgid "Account name"
 msgstr "Názov konta"
 
-msgid "Account overview"
-msgstr "Prehľad účtu"
-
 msgid "Account summary"
 msgstr "Prehľad účtu"
 
@@ -452,6 +253,9 @@ msgstr "Akcie"
 msgid "Activate"
 msgstr "Aktívny"
 
+msgid "Activate autoresponder"
+msgstr ""
+
 msgid "Activate this plugin"
 msgstr ""
 
@@ -467,7 +271,7 @@ msgstr ""
 msgid "Activation in progress..."
 msgstr ""
 
-msgid "Activation link expire time <small>(In minutes)</small>"
+msgid "Activation link expire time in minutes"
 msgstr ""
 
 msgid "Add"
@@ -497,8 +301,8 @@ msgstr "Pridať SSl certifikát"
 msgid "Add admin"
 msgstr "Pridať administrátora"
 
-msgid "Add catchall"
-msgstr "Pridať \"Zachytiť všetko\""
+msgid "Add catch-all account"
+msgstr ""
 
 msgid "Add custom menu"
 msgstr "Pridať vlastné menu"
@@ -512,14 +316,14 @@ msgstr ""
 msgid "Add domain alias"
 msgstr "Pridať alias domény"
 
-msgid "Add email account"
-msgstr "Pridať emailové konto"
-
 msgid "Add group"
 msgstr "Pridať skupinu"
 
 msgid "Add hosting plan"
 msgstr "Pridať hostingový plán"
+
+msgid "Add mail account"
+msgstr ""
 
 msgid "Add new IP address"
 msgstr ""
@@ -596,10 +400,10 @@ msgstr ""
 msgid "Admin / Settings / Lost Password Email"
 msgstr ""
 
-msgid "Admin / Settings / Plugin Management"
+msgid "Admin / Settings / Monthly Server Traffic"
 msgstr ""
 
-msgid "Admin / Settings / Server Traffic"
+msgid "Admin / Settings / Plugin Management"
 msgstr ""
 
 msgid "Admin / Settings / Service Ports"
@@ -649,9 +453,6 @@ msgstr "Admin / Podpora / Zobraziť tiket"
 msgid "Admin / System Tools / Anti-Rootkits Logs"
 msgstr ""
 
-msgid "Admin / System Tools / Database Update"
-msgstr ""
-
 msgid "Admin / System Tools / Debugger"
 msgstr ""
 
@@ -686,6 +487,9 @@ msgid "Admin / Users / Overview / Domain Details"
 msgstr ""
 
 msgid "Admin / Users / Overview / Edit Admin"
+msgstr ""
+
+msgid "Admin / Users / Overview / Edit Customer"
 msgstr ""
 
 msgid "Admin / Users / Resellers Assignment"
@@ -743,21 +547,6 @@ msgid ""
 "After your upload the package it will be installed on your "
 "systems.<br>Refresh your site to see the new status!"
 msgstr ""
-
-msgid "Alias forward"
-msgstr ""
-
-msgid "Alias mail"
-msgstr ""
-
-msgid "Alias subdomain forward"
-msgstr ""
-
-msgid "Alias subdomain mail"
-msgstr ""
-
-msgid "Aliases"
-msgstr "Aliasy"
 
 msgid "All"
 msgstr "Všetko"
@@ -822,9 +611,6 @@ msgstr ""
 msgid "Alternative URL to reach your website"
 msgstr "Alternatívna URL pre prístup k Vašej stránke"
 
-msgid "An email addresse is not valid in mail forward list."
-msgstr ""
-
 msgid "An unexpected error occurred"
 msgstr ""
 
@@ -835,6 +621,10 @@ msgid "An unexpected error occurred. Please contact your administrator."
 msgstr ""
 
 msgid "An unexpected error occurred. Please contact your reseller."
+msgstr ""
+
+#, php-format
+msgid "An unexpected error occurred. Please contact your reseller. %s"
 msgstr ""
 
 #, php-format
@@ -887,19 +677,12 @@ msgstr "Ste si istý, že chcete zmazať %s?"
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr ""
 
-msgid "Are you sure you want to delete all selected mail accounts?"
-msgstr ""
-
 msgid "Are you sure you want to delete all tickets?"
 msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s FTP user?"
 msgstr "Ste si istý že chcete zmazať %s FTP užívateľa?"
-
-#, php-format
-msgid "Are you sure you want to delete the %s catch all?"
-msgstr "Ste si istý, že chcete zmazať zachytenie všetkého pre %s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
@@ -933,6 +716,9 @@ msgid "Are you sure you want to delete this DNS record?"
 msgstr ""
 
 msgid "Are you sure you want to delete this account?"
+msgstr ""
+
+msgid "Are you sure you want to delete this catch-all account?"
 msgstr ""
 
 msgid "Are you sure you want to delete this domain alias?"
@@ -999,19 +785,22 @@ msgstr ""
 msgid "Auto (Browser language)"
 msgstr ""
 
-msgid "Auto responder"
+msgid "Automatic catch-all address"
 msgstr ""
 
-msgid "Auto-responder message cannot be empty."
+msgid "Autoresponder"
 msgstr ""
 
-msgid "Auto-responder successfully scheduled for activation."
+msgid "Autoresponder has been activated."
 msgstr ""
 
-msgid "Auto-responder successfully scheduled for deactivation."
+msgid "Autoresponder has been deactivated."
 msgstr ""
 
-msgid "Auto-responder successfully scheduled for update."
+msgid "Autoresponder has been edited."
+msgstr ""
+
+msgid "Autoresponder message cannot be empty."
 msgstr ""
 
 msgid "Available"
@@ -1041,6 +830,12 @@ msgstr ""
 msgid "Backup has been successfully scheduled for restoration."
 msgstr ""
 
+msgid "Bad email address in catch-all addresses field."
+msgstr ""
+
+msgid "Bad email address in forward list field."
+msgstr ""
+
 msgid "Bad password."
 msgstr "Nesprávne heslo."
 
@@ -1057,14 +852,13 @@ msgid ""
 "record is created for it."
 msgstr ""
 
-msgid ""
-"Blocking time between login/captcha attempts <small>(In seconds)</small>"
+msgid "Blocking time between login/captcha attempts in seconds"
 msgstr ""
 
 msgid "Blocking time between logins and captcha attempts"
 msgstr ""
 
-msgid "Blocktime <small>(in minutes)</small>"
+msgid "Blocktime in minutes"
 msgstr ""
 
 msgid "Body"
@@ -1111,17 +905,30 @@ msgstr "Zrušiť"
 msgid "Canonical name"
 msgstr "Kanonické meno"
 
-msgid "Catch all"
-msgstr "\"Zachytiť všetko\""
+msgid "Catch-all account"
+msgstr ""
 
-msgid "Catch all successfully scheduled for addition."
-msgstr "\"Zachytiť všetko\" úspešne naplánované na pridanie."
+msgid "Catch-all account successfully scheduled for deletion."
+msgstr ""
 
-msgid "Catch all successfully scheduled for deletion."
-msgstr "\"Zachytiť všetko\" úspešne naplánované na zmazanie."
+msgid "Catch-all accounts"
+msgstr ""
 
-msgid "Catchall"
-msgstr "Zachytiť všetko"
+msgid "Catch-all addresses"
+msgstr ""
+
+msgid "Catch-all addresses field cannot be empty."
+msgstr ""
+
+#, php-format
+msgid "Catch-all addresses for the %s domain"
+msgstr ""
+
+msgid "Catch-all domain"
+msgstr ""
+
+msgid "Catch-all successfully scheduled for addition."
+msgstr ""
 
 msgid "Certificate"
 msgstr ""
@@ -1131,9 +938,6 @@ msgstr ""
 
 msgid "Change"
 msgstr "Zmeniť"
-
-msgid "Change personal data"
-msgstr "Zmeniť osobné údaje"
 
 msgid "Change status of this item for a new attempt"
 msgstr ""
@@ -1255,30 +1059,6 @@ msgstr ""
 msgid "Client / Domains / SSL Certificate"
 msgstr ""
 
-msgid "Client / Email / Add Email Account"
-msgstr ""
-
-msgid "Client / Email / Catchall"
-msgstr ""
-
-msgid "Client / Email / Catchall / Add Catchall"
-msgstr ""
-
-msgid "Client / Email / Edit Email Account"
-msgstr ""
-
-msgid "Client / Email / External Mail Feature"
-msgstr ""
-
-msgid "Client / Email / Overview"
-msgstr ""
-
-msgid "Client / Email / Overview / Edit Auto Responder"
-msgstr ""
-
-msgid "Client / Email / Overview / Enable Auto Responder"
-msgstr ""
-
 msgid "Client / FTP / Add FTP Account"
 msgstr ""
 
@@ -1290,6 +1070,33 @@ msgstr ""
 
 msgid "Client / General / Overview"
 msgstr "Klient / Všeobecné / Prehľad"
+
+msgid "Client / Mail / Add Mail Account"
+msgstr ""
+
+msgid "Client / Mail / Catch-all Accounts"
+msgstr ""
+
+msgid "Client / Mail / Catch-all Accounts / Add Catch-all account"
+msgstr ""
+
+msgid "Client / Mail / Catch-all Accounts / Edit Catch-all account"
+msgstr ""
+
+msgid "Client / Mail / Edit Mail Account"
+msgstr ""
+
+msgid "Client / Mail / External Mail Feature"
+msgstr ""
+
+msgid "Client / Mail / Overview"
+msgstr ""
+
+msgid "Client / Mail / Overview / Activate Autoresponder"
+msgstr ""
+
+msgid "Client / Mail / Overview / Edit Autoresponder"
+msgstr ""
 
 msgid "Client / Profile / Account Summary"
 msgstr "Klient / Profil / Prehľad účtu"
@@ -1360,6 +1167,9 @@ msgstr ""
 msgid "Client / Webtools / Software / View"
 msgstr ""
 
+msgid "Client users"
+msgstr ""
+
 msgid "Clock speed (MHz)"
 msgstr ""
 
@@ -1380,9 +1190,6 @@ msgstr ""
 
 msgid "Company"
 msgstr "Spoločnosť"
-
-msgid "Compress HTML output"
-msgstr "Kompresia HTML výstupu"
 
 msgid "Configuration mode"
 msgstr ""
@@ -1413,10 +1220,6 @@ msgstr ""
 
 #, php-format
 msgid "Could not connect to the `%s' database. Please check the password."
-msgstr ""
-
-#, php-format
-msgid "Could not create `%s` database name."
 msgstr ""
 
 msgid "Could not create domain alias. An unexpected error occurred."
@@ -1487,7 +1290,14 @@ msgstr ""
 msgid "Could not validate DNS resource record: %s"
 msgstr ""
 
-msgid "Count default email addresses"
+#, php-format
+msgid "Couldn't create the %s database."
+msgstr ""
+
+msgid "Couldn't delete subdomain. An unexpected error occurred."
+msgstr ""
+
+msgid "Count default mail accounts"
 msgstr ""
 
 msgid "Country"
@@ -1496,10 +1306,7 @@ msgstr "Krajina"
 msgid "Create"
 msgstr "OK"
 
-msgid "Create catch all"
-msgstr "Vytvoriť \"zachytiť všetko\""
-
-msgid "Create default email addresses"
+msgid "Create default mail accounts"
 msgstr ""
 
 msgid "Created by"
@@ -1640,12 +1447,6 @@ msgstr "Databáza"
 msgid "Database Name and Users"
 msgstr "Mená databáz a užívateľov"
 
-msgid "Database Update Revision"
-msgstr "Revízia aktualizácie databáze"
-
-msgid "Database Update details"
-msgstr "Detaily aktualizácie databáze"
-
 msgid "Database data"
 msgstr ""
 
@@ -1669,9 +1470,6 @@ msgstr "Databáza prefix/suffix"
 
 msgid "Database required"
 msgstr "Potrebná databáza"
-
-msgid "Database update"
-msgstr "Aktualizácie databáze"
 
 msgid "Database usage"
 msgstr "Použitie databáze"
@@ -1905,9 +1703,6 @@ msgstr ""
 msgid "Delete"
 msgstr "Zmazať"
 
-msgid "Delete CatchAll"
-msgstr "Vymazať \"zachytiť všetko\""
-
 msgid "Delete all tickets"
 msgstr ""
 
@@ -1927,9 +1722,6 @@ msgid "Delete this plugin"
 msgstr ""
 
 msgid "Delete ticket"
-msgstr ""
-
-msgid "Delete user"
 msgstr ""
 
 msgid "Deletion in progress"
@@ -1961,9 +1753,6 @@ msgstr ""
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
 msgstr ""
-
-msgid "Disable"
-msgstr "Vypnúť"
 
 msgid "Disabled"
 msgstr "Zakázané"
@@ -2009,9 +1798,6 @@ msgstr ""
 msgid "Domain IP"
 msgstr "IP adresa domény"
 
-msgid "Domain Limit"
-msgstr ""
-
 msgid "Domain Name"
 msgstr "Meno domény"
 
@@ -2034,9 +1820,6 @@ msgstr ""
 msgid "Domain alias errors"
 msgstr "Chyby pre doménové aliasy"
 
-msgid "Domain alias limit"
-msgstr ""
-
 msgid "Domain alias name"
 msgstr ""
 
@@ -2057,6 +1840,9 @@ msgstr ""
 
 msgid "Domain aliases"
 msgstr "Aliasy domén"
+
+msgid "Domain aliases limit"
+msgstr ""
 
 msgid "Domain and SQL databases"
 msgstr ""
@@ -2082,12 +1868,6 @@ msgstr "Je potrebné uviesť expiráciu domény."
 msgid "Domain for which PHP Editor must act."
 msgstr ""
 
-msgid "Domain limit"
-msgstr "Limit domén"
-
-msgid "Domain mail"
-msgstr "Doménový mail"
-
 msgid "Domain name"
 msgstr "Meno domény"
 
@@ -2102,10 +1882,6 @@ msgstr ""
 
 #, php-format
 msgid "Domain name contains an invalid character: %s"
-msgstr ""
-
-#, php-format
-msgid "Domain name label '%s' contain an invalid character: %s"
 msgstr ""
 
 msgid "Domain name labels cannot be greater than 63 characters."
@@ -2140,6 +1916,12 @@ msgstr "Typ domény"
 
 msgid "Domains"
 msgstr "Domény"
+
+msgid "Domains Limit"
+msgstr ""
+
+msgid "Domains limit"
+msgstr ""
 
 msgid "Domains per page"
 msgstr "Domén na stránku"
@@ -2180,7 +1962,7 @@ msgstr ""
 msgid "Edit admin"
 msgstr ""
 
-msgid "Edit auto responder"
+msgid "Edit autoresponder"
 msgstr ""
 
 msgid "Edit custom error page"
@@ -2210,9 +1992,6 @@ msgstr ""
 msgid "Edit mail account"
 msgstr ""
 
-msgid "Edit mail quota"
-msgstr ""
-
 msgid "Edit protected area"
 msgstr ""
 
@@ -2222,69 +2001,20 @@ msgstr "Upraviť predajcu"
 msgid "Edit subdomain"
 msgstr "Upraviť doménu"
 
-msgid "Edit user"
-msgstr "Upraviť užívateľa"
-
 msgid "EiB"
 msgstr ""
 
 msgid "Email"
 msgstr "Email"
 
-msgid "Email account already exists."
-msgstr "Emailový účet už existuje."
-
-msgid "Email account data"
-msgstr ""
-
-msgid "Email account errors"
-msgstr ""
-
-msgid "Email account limit"
-msgstr ""
-
-msgid "Email account list"
-msgstr ""
-
-msgid "Email account successfully scheduled for addition."
-msgstr ""
-
-msgid "Email account successfully scheduled for update."
-msgstr ""
-
-msgid "Email accounts"
-msgstr "Emailové účty"
-
-msgid "Email accounts are hard suspended"
-msgstr ""
-
 msgid "Email address"
 msgstr "Emailová adresa"
 
-msgid "Email forward"
-msgstr "Emailové presmerovanie"
-
-msgid "Email quota"
-msgstr "Emailová kvôta"
-
-msgid "Email quota [MiB]"
+msgid "Email address cannot be empty."
 msgstr ""
 
 #, php-format
 msgid "Email quota cannot be bigger than %s"
-msgstr ""
-
-msgid "Email quota cannot be bigger than disk space limit."
-msgstr ""
-
-#, php-format
-msgid ""
-"Email quota cannot be lower than %d. Each mailbox should have a least 1 MiB "
-"quota."
-msgstr ""
-
-#, php-format
-msgid "Email quota cannot be unlimited. Max value is %d MiB."
 msgstr ""
 
 msgid "Email settings"
@@ -2299,13 +2029,7 @@ msgstr ""
 msgid "Empty data or wrong field."
 msgstr ""
 
-msgid "Enable"
-msgstr "Zapnúť"
-
 msgid "Enable SSL"
-msgstr ""
-
-msgid "Enable auto responder"
 msgstr ""
 
 msgid "Enabled"
@@ -2330,14 +2054,14 @@ msgstr "Chyba: Vzdialený súbor sa nenašiel!"
 msgid "Errors"
 msgstr "Chyba"
 
-msgid "Excl. default mails"
-msgstr ""
-
 msgid "Execute tasks"
 msgstr ""
 
 msgid "Ext. mail server"
 msgstr "Ext. mail server"
+
+msgid "External mail feature"
+msgstr ""
 
 msgid "External mail server"
 msgstr "Externý mail server"
@@ -2348,17 +2072,11 @@ msgstr ""
 msgid "External mail server feature scheduled for deactivation."
 msgstr ""
 
-msgid "External mail servers"
-msgstr "Externé mailové servere"
-
 msgid "FTP account"
 msgstr "FTP konto"
 
 msgid "FTP account already exists."
 msgstr "FTP konto už existuje"
-
-msgid "FTP account limit"
-msgstr "FTP limit konta"
 
 msgid "FTP account limit reached."
 msgstr "FTP limit konta bol dosiahnutý."
@@ -2374,6 +2092,9 @@ msgstr "FTP konto bolo úspešne aktualizované."
 
 msgid "FTP accounts"
 msgstr "FTP kontá"
+
+msgid "FTP accounts limit"
+msgstr ""
 
 msgid "FTP home directory"
 msgstr ""
@@ -2456,10 +2177,10 @@ msgstr "Krstné meno"
 msgid "First name cannot have more than 200 characters."
 msgstr ""
 
-msgid "For the time being, you can only add forwarded email account."
+msgid "For the time being, you can only add forwarded mail account."
 msgstr ""
 
-msgid "For the time being, you can only edit your forwarded email account."
+msgid "For the time being, you can only edit your forwarded mail account."
 msgstr ""
 
 msgid "Forbidden"
@@ -2483,11 +2204,11 @@ msgstr ""
 msgid "Forward URL %s is not valid."
 msgstr ""
 
-msgid "Forward list is empty."
+msgid "Forward account"
 msgstr ""
 
-msgid "Forward mail"
-msgstr "Presmerovný e-mail"
+msgid "Forward list is empty."
+msgstr ""
 
 msgid "Forward to"
 msgstr "Presmerovať do"
@@ -2573,6 +2294,9 @@ msgstr ""
 msgid "HTTP traffic"
 msgstr ""
 
+msgid "Hide default mail accounts"
+msgstr ""
+
 msgid "Hide domain aliases"
 msgstr ""
 
@@ -2645,9 +2369,6 @@ msgid "Htaccess user successfully scheduled for addition."
 msgstr ""
 
 msgid "Htaccess, htgroups and htpasswd errors"
-msgstr ""
-
-msgid "Http traffic"
 msgstr ""
 
 msgid "IP Address"
@@ -2736,22 +2457,22 @@ msgstr ""
 msgid "In maintenance mode, only administrators can login."
 msgstr ""
 
-msgid "Incl. default mails"
-msgstr ""
-
-msgid "Incorrect Email quota"
-msgstr ""
-
-msgid "Incorrect Email quota."
-msgstr ""
-
 msgid "Incorrect FTP account limit."
+msgstr ""
+
+msgid "Incorrect FTP accounts limit."
 msgstr ""
 
 msgid "Incorrect SQL database limit."
 msgstr ""
 
+msgid "Incorrect SQL databases limit."
+msgstr ""
+
 msgid "Incorrect SQL user limit."
+msgstr ""
+
+msgid "Incorrect SQL users limit."
 msgstr ""
 
 msgid "Incorrect alias limit."
@@ -2763,7 +2484,7 @@ msgstr ""
 msgid "Incorrect domain alias limit."
 msgstr ""
 
-msgid "Incorrect email account limit."
+msgid "Incorrect domain aliases limit."
 msgstr ""
 
 msgid "Incorrect email length or syntax."
@@ -2776,6 +2497,18 @@ msgstr ""
 msgid "Incorrect limit for %s."
 msgstr "Nesprávny limit pre %s."
 
+msgid "Incorrect mail account limit."
+msgstr ""
+
+msgid "Incorrect mail accounts limit."
+msgstr ""
+
+msgid "Incorrect mail quota"
+msgstr ""
+
+msgid "Incorrect mail quota."
+msgstr ""
+
 msgid "Incorrect monthly traffic limit."
 msgstr ""
 
@@ -2783,6 +2516,9 @@ msgid "Incorrect post code length or syntax!"
 msgstr ""
 
 msgid "Incorrect subdomain limit."
+msgstr ""
+
+msgid "Incorrect subdomains limit."
 msgstr ""
 
 msgid "Incorrect syntax for email address."
@@ -2859,8 +2595,10 @@ msgstr ""
 msgid "Invalid URL."
 msgstr ""
 
-#, php-format
-msgid "Invalid `%s` field."
+msgid "Invalid city."
+msgstr ""
+
+msgid "Invalid country."
 msgstr ""
 
 msgid "Invalid domain name."
@@ -2872,8 +2610,27 @@ msgstr ""
 msgid "Invalid email username."
 msgstr ""
 
+msgid "Invalid fax number."
+msgstr ""
+
+#, php-format
+msgid "Invalid field: %s"
+msgstr ""
+
+msgid "Invalid firm."
+msgstr ""
+
+msgid "Invalid first name."
+msgstr ""
+
+msgid "Invalid gender"
+msgstr ""
+
 msgid "Invalid group name!"
 msgstr "Zlé časové obdobie!"
+
+msgid "Invalid last name."
+msgstr ""
 
 msgid "Invalid menu order."
 msgstr ""
@@ -2884,6 +2641,9 @@ msgstr ""
 msgid "Invalid payload received from GitHub"
 msgstr ""
 
+msgid "Invalid phone number."
+msgstr ""
+
 #, php-format
 msgid "Invalid plugin directory: %s"
 msgstr ""
@@ -2891,13 +2651,16 @@ msgstr ""
 msgid "Invalid private key or passphrase."
 msgstr ""
 
+msgid "Invalid state."
+msgstr ""
+
 msgid "Invalid target."
 msgstr ""
 
-msgid "Invalid type given. String expected"
+msgid "Invalid username."
 msgstr ""
 
-msgid "Invalid username."
+msgid "Invalid zipcode."
 msgstr ""
 
 msgid "Kernel Version"
@@ -2918,7 +2681,7 @@ msgstr "Súbor s prekladom"
 msgid "Language file successfully installed."
 msgstr ""
 
-msgid "Language successfully updated."
+msgid "Language has been updated."
 msgstr ""
 
 msgid "Languages"
@@ -2984,6 +2747,9 @@ msgstr ""
 msgid "Login"
 msgstr "Prihlásenie"
 
+msgid "Login data"
+msgstr ""
+
 msgid "Login password"
 msgstr ""
 
@@ -3032,18 +2798,68 @@ msgstr "E-mail"
 msgid "Mail Log Level"
 msgstr ""
 
+msgid "Mail account already exists."
+msgstr ""
+
+msgid "Mail account data"
+msgstr ""
+
+msgid "Mail account errors"
+msgstr ""
+
 #, php-format
-msgid "Mail account %s successfully scheduled for deletion."
+msgid "Mail account has been scheduled for deletion."
+msgid_plural "%d mail accounts were scheduled for deletion."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid "Mail account successfully scheduled for addition."
+msgstr ""
+
+msgid "Mail account successfully scheduled for update."
 msgstr ""
 
 msgid "Mail account type"
 msgstr "E-mail typ účtu"
+
+msgid "Mail accounts"
+msgstr ""
+
+msgid "Mail accounts are hard suspended"
+msgstr ""
+
+msgid "Mail accounts limit"
+msgstr ""
 
 msgid "Mail accounts list is empty."
 msgstr "Zoznam e-mailov je prázdny."
 
 msgid "Mail feature is disabled."
 msgstr "E-maily sú zakázane"
+
+msgid "Mail quota"
+msgstr ""
+
+msgid "Mail quota [MiB]"
+msgstr ""
+
+#, php-format
+msgid "Mail quota cannot be bigger than %s"
+msgstr ""
+
+msgid "Mail quota cannot be bigger than disk space limit."
+msgstr ""
+
+#, php-format
+msgid ""
+"Mail quota cannot be lower than %d. Each mail account must have a least 1 "
+"MiB quota."
+msgstr ""
+
+#, php-format
+msgid "Mail quota cannot be unlimited. Max value is %d MiB."
+msgstr ""
 
 msgid "Mail usage"
 msgstr "E-mail vužitie"
@@ -3070,9 +2886,6 @@ msgstr ""
 msgid "Male"
 msgstr "Muž"
 
-msgid "Malformed resolver SQL query"
-msgstr ""
-
 msgid "Manage SQL"
 msgstr "Spravovať SQL"
 
@@ -3089,6 +2902,9 @@ msgid "Manage your protected areas, users and groups."
 msgstr ""
 
 msgid "Manual"
+msgstr ""
+
+msgid "Manual catch-all addresses"
 msgstr ""
 
 msgid "Mark"
@@ -3161,19 +2977,31 @@ msgstr ""
 msgid "Month"
 msgstr "Mesiac"
 
+msgid "Monthly Server traffic"
+msgstr ""
+
+msgid "Monthly server traffic"
+msgstr ""
+
+msgid "Monthly server traffic settings"
+msgstr ""
+
+msgid "Monthly server traffic settings successfully updated."
+msgstr ""
+
 msgid "Monthly traffic limit [MiB]"
 msgstr ""
 
 msgid "Monthly traffic limit must be a number."
 msgstr ""
 
+msgid "Monthly traffic usage"
+msgstr ""
+
 msgid "Monthly traffic warning cannot be bigger than monthly traffic limit."
 msgstr ""
 
 msgid "Monthly traffic warning must be a number."
-msgstr ""
-
-msgid "More Details"
 msgstr ""
 
 msgid "Mount"
@@ -3212,6 +3040,10 @@ msgstr ""
 msgid "New alias order for {CUSTOMER}"
 msgstr ""
 
+#, php-format
+msgid "New login data were sent to the %s user."
+msgstr ""
+
 msgid "New ticket"
 msgstr "Nový tiket"
 
@@ -3239,9 +3071,6 @@ msgstr ""
 msgid "No custom menu found."
 msgstr ""
 
-msgid "No database update available."
-msgstr ""
-
 msgid "No domain available for new software instance."
 msgstr ""
 
@@ -3255,6 +3084,9 @@ msgid "No group found."
 msgstr ""
 
 msgid "No hosting plan available."
+msgstr ""
+
+msgid "No mail account has been deleted."
 msgstr ""
 
 msgid "No reseller available to add the permissions."
@@ -3302,20 +3134,23 @@ msgstr ""
 msgid "No."
 msgstr "Por."
 
-msgid "None"
-msgstr "Žiadny"
-
 msgid "Normal"
+msgstr ""
+
+msgid "Normal & Forward"
+msgstr ""
+
+msgid "Normal & forward account"
 msgstr ""
 
 msgid "Normal + Forward"
 msgstr ""
 
-msgid "Normal connection"
+msgid "Normal account"
 msgstr ""
 
-msgid "Normal users"
-msgstr "Normálny užívatelia"
+msgid "Normal connection"
+msgstr ""
 
 msgid "Not Found"
 msgstr ""
@@ -3348,13 +3183,7 @@ msgstr "Oznámenia, upozornenia a chyby"
 msgid "Ok"
 msgstr "V poriadku"
 
-msgid "One or more database updates are now available. See the details below."
-msgstr ""
-
 msgid "Only 'tar.gz' archives are accepted."
-msgstr ""
-
-msgid "Only administrators can login when maintenance mode is activated."
 msgstr ""
 
 msgid "Only exec"
@@ -3518,17 +3347,11 @@ msgstr "Heslo"
 msgid "Password cannot be empty."
 msgstr ""
 
-msgid "Password cannot be longer than 30 characters."
-msgstr ""
-
 msgid "Password confirmation"
 msgstr "Zopakujte heslo"
 
 msgid "Password contains unallowed characters."
 msgstr "Heslo obsahuje nepovolené znaky."
-
-msgid "Password data"
-msgstr "Heslo"
 
 msgid "Password email"
 msgstr ""
@@ -3536,17 +3359,14 @@ msgstr ""
 msgid "Password is missing."
 msgstr "Chýba heslo."
 
-#, php-format
-msgid "Password is shorter than %s characters."
-msgstr "Heslo je kratšie ako %s znakov."
-
 msgid "Password minimum length"
 msgstr ""
 
 #, php-format
-msgid ""
-"Password must be at least %s characters long and contain letters and numbers"
-" to be valid."
+msgid "Password must be between %d and %d characters."
+msgstr ""
+
+msgid "Password must contain letters and digits."
 msgstr ""
 
 msgid "Password settings"
@@ -3576,8 +3396,8 @@ msgstr ""
 msgid "Personal data"
 msgstr "Osobné údaje"
 
-msgid "Personal data successfully updated."
-msgstr "Osobné údaje boli úspešne aktualizovné."
+msgid "Personal data were updated."
+msgstr ""
 
 msgid "Personalise template"
 msgstr "Prispôsobiť šablónu"
@@ -3609,6 +3429,9 @@ msgid ""
 "your site to see the new status!"
 msgstr ""
 
+msgid "Please edit your autoresponder message below"
+msgstr ""
+
 msgid "Please enter a name for the protected area."
 msgstr ""
 
@@ -3624,7 +3447,7 @@ msgstr "Prosím zadajte uživatelské meno."
 msgid "Please enter protected area path."
 msgstr ""
 
-msgid "Please enter your auto-responder message below"
+msgid "Please enter your autoresponder message below"
 msgstr ""
 
 msgid "Please fill up both data fields for password."
@@ -3891,9 +3714,6 @@ msgstr ""
 msgid "Private key passphrase if any"
 msgstr ""
 
-msgid "Process update"
-msgstr ""
-
 msgid "Processing..."
 msgstr ""
 
@@ -3911,6 +3731,9 @@ msgid "Properties for reseller with ID %d were not found in database."
 msgstr ""
 
 msgid "Protect"
+msgstr ""
+
+msgid "Protect default mail accounts against change and removal"
 msgstr ""
 
 msgid "Protect this plugin"
@@ -3943,7 +3766,10 @@ msgstr "Chránené oblasti"
 msgid "Protocol"
 msgstr "Protokol"
 
-msgid "Quota in MiB (0 for unlimited)"
+msgid "Quota in MiB (0 ∞"
+msgstr ""
+
+msgid "Quota in MiB (0 ∞)"
 msgstr ""
 
 #, php-format
@@ -3971,7 +3797,7 @@ msgstr "Základné data"
 msgid "Redirect"
 msgstr ""
 
-msgid "Redistribute unused quota across existing mailboxes"
+msgid "Redistribute unused quota across existing mail accounts"
 msgstr ""
 
 msgid "Registration date"
@@ -4190,9 +4016,6 @@ msgstr "Obnoviť"
 msgid "Restore backup"
 msgstr "Obnoviť zálohu"
 
-msgid "Revision date"
-msgstr ""
-
 msgid "Rights"
 msgstr ""
 
@@ -4217,9 +4040,6 @@ msgstr "SQL"
 msgid "SQL database"
 msgstr "SQL databáza"
 
-msgid "SQL database limit"
-msgstr "SQL limit databáz"
-
 msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr ""
 
@@ -4241,6 +4061,15 @@ msgstr ""
 msgid "SQL databases"
 msgstr "SQL databázy"
 
+msgid "SQL databases limit"
+msgstr ""
+
+msgid "SQL databases limit is disabled."
+msgstr ""
+
+msgid "SQL databases limit is not disabled."
+msgstr ""
+
 msgid "SQL databases only"
 msgstr ""
 
@@ -4249,9 +4078,6 @@ msgstr "SQL užívateľ"
 
 msgid "SQL user host"
 msgstr "SQL užívateľ"
-
-msgid "SQL user limit"
-msgstr ""
 
 msgid "SQL user limit is <i>disabled</i>."
 msgstr ""
@@ -4282,6 +4108,12 @@ msgstr ""
 
 msgid "SQL users"
 msgstr "SQL užívatelia"
+
+msgid "SQL users limit"
+msgstr ""
+
+msgid "SQL users limit is disabled."
+msgstr ""
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr ""
@@ -4334,9 +4166,6 @@ msgstr "Poslať správu"
 msgid "Send message to"
 msgstr "Poslať správu "
 
-msgid "Send new login data"
-msgstr "Pošli nové prihlasovacie údaje"
-
 msgid "Send reply"
 msgstr "Odoslať odpoveď"
 
@@ -4355,11 +4184,8 @@ msgstr "Odosielateľove meno"
 msgid "Sender name is missing."
 msgstr ""
 
-msgid "Separate multiple email addresses by comma or a line-break."
+msgid "Separate addresses by a comma, line-break or space."
 msgstr ""
-
-msgid "Separate multiple email addresses with a line-break."
-msgstr "Oddelte viac e-mailových adries novým riadkom."
 
 msgid "Server ports"
 msgstr "Porty servra"
@@ -4369,15 +4195,6 @@ msgstr "Štatistiky servra"
 
 msgid "Server status"
 msgstr "Stav servra"
-
-msgid "Server traffic"
-msgstr "Prenesené dáta servra"
-
-msgid "Server traffic settings"
-msgstr "Nastavenia prenesených dát servra"
-
-msgid "Server traffic settings successfully updated."
-msgstr ""
 
 msgid "Service Name"
 msgstr "Meno služby"
@@ -4425,11 +4242,11 @@ msgstr "Zobraz"
 msgid "Show %s records per page"
 msgstr "Zobraziť %s záznamov na stranu."
 
-msgid "Show HTML output compression size comment"
-msgstr "Zobraziť veľkosť kompresie výstupu HTML"
-
 msgid "Show SSL certificate"
 msgstr "Zobraziť SSL certfikát"
+
+msgid "Show default mail accounts"
+msgstr ""
 
 msgid "Show detailed statistics for this reseller"
 msgstr ""
@@ -4591,22 +4408,8 @@ msgstr ""
 msgid "Subdomain alias scheduled for deletion."
 msgstr ""
 
-msgid ""
-"Subdomain alias you are trying to remove has Ftp accounts. Please remove "
-"them first."
-msgstr ""
-
 msgid "Subdomain errors"
 msgstr "Chyby pre sub-domény"
-
-msgid "Subdomain forward"
-msgstr ""
-
-msgid "Subdomain limit"
-msgstr ""
-
-msgid "Subdomain mail"
-msgstr ""
 
 msgid "Subdomain name"
 msgstr "Meno sub-domény"
@@ -4624,20 +4427,19 @@ msgid "Subdomain successfully scheduled for update"
 msgstr ""
 
 msgid ""
-"Subdomain you are trying to remove has Ftp accounts. Remove them first."
-msgstr ""
-
-msgid ""
-"Subdomain you are trying to remove has email accounts. Please remove them "
+"Subdomain you are trying to remove has mail accounts. Please remove them "
 "first."
 msgstr ""
 
 msgid ""
-"Subdomain you are trying to remove has email accounts. Remove them first."
+"Subdomain you are trying to remove has mail accounts. Remove them first."
 msgstr ""
 
 msgid "Subdomains"
 msgstr "Sub-domény"
+
+msgid "Subdomains limit"
+msgstr ""
 
 msgid "Subject"
 msgstr "Predmet"
@@ -4667,9 +4469,6 @@ msgid "Switch to user interface"
 msgstr "Zmeniť užívateľské rozhranie"
 
 msgid "Sync quota info"
-msgstr ""
-
-msgid "Syntax error found in mail forward list."
 msgstr ""
 
 msgid "System"
@@ -4712,6 +4511,14 @@ msgid "Temporary folder not found."
 msgstr ""
 
 #, php-format
+msgid "The  %s field cannot be empty."
+msgstr ""
+
+#, php-format
+msgid "The %s field cannot be empty."
+msgstr ""
+
+#, php-format
 msgid ""
 "The %s limit for this customer cannot be greater than %d, your calculated "
 "limit."
@@ -4746,6 +4553,13 @@ msgstr ""
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr ""
+
+#, php-format
+msgid "The configuration parameter has been updated."
+msgid_plural "%d configuration parameters were updated"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #, php-format
 msgid ""
@@ -4792,6 +4606,15 @@ msgstr ""
 msgid ""
 "The reseller you want to remove has one or more customers accounts. Please "
 "remove them first."
+msgstr ""
+
+msgid ""
+"The subdomain alias you are trying to remove has FTP accounts. Please remove"
+" them first."
+msgstr ""
+
+msgid ""
+"The subdomain you are trying to remove has FTP accounts. Remove them first."
 msgstr ""
 
 msgid "The uploaded file was only partially uploaded."
@@ -4849,6 +4672,9 @@ msgid ""
 "This is the host from which this SQL user must be allowed to connect to the "
 "SQL server. Enter the %s wildcard character to allow this SQL user to "
 "connect from any host."
+msgstr ""
+
+msgid "This mail account is protected against both edition and deletion."
 msgstr ""
 
 msgid "This package already exists in the administrator software repository."
@@ -4923,12 +4749,12 @@ msgstr "Softwaru celkom"
 msgid "Total Web software repositories"
 msgstr ""
 
+#, php-format
+msgid "Total accounts: %s / %s"
+msgstr ""
+
 msgid "Total installations"
 msgstr "Celkom inštalácií"
-
-#, php-format
-msgid "Total mails: %s / %s %s"
-msgstr ""
 
 msgid "Total packages in Web software repository"
 msgstr ""
@@ -4944,9 +4770,6 @@ msgstr "Prenesené dáta"
 
 msgid "Traffic statistics"
 msgstr ""
-
-msgid "Traffic usage"
-msgstr "Prenesené dáta"
 
 msgid "Translated strings"
 msgstr ""
@@ -5100,9 +4923,6 @@ msgstr ""
 msgid "Unknown username."
 msgstr ""
 
-msgid "Unlimited"
-msgstr "Neobmedzené"
-
 msgid "Update"
 msgstr "Aktualizovať"
 
@@ -5111,9 +4931,6 @@ msgstr ""
 
 msgid "Update SQL user password"
 msgstr ""
-
-msgid "Update data"
-msgstr "Aktualizovať údaje"
 
 msgid "Update from Web software repository"
 msgstr ""
@@ -5177,20 +4994,10 @@ msgstr "Užívateľské meno (krstné aj priezvisko)"
 msgid "User assignment"
 msgstr "Priradenie užívateľov"
 
-msgid "User data successfully updated"
-msgstr ""
-
-msgid "User data successfully updated."
-msgstr ""
-
 msgid "User data were not updated."
 msgstr "Užívateľové údaje neboli aktualizované."
 
 msgid "User data were successfully updated."
-msgstr ""
-
-msgid ""
-"User do not exist or you do not have permission to access this interface"
 msgstr ""
 
 msgid "User errors"
@@ -5231,6 +5038,10 @@ msgstr "Užívateľské meno"
 
 msgid "Username and password for application login"
 msgstr "Užívateľské meno a heslo pre prihlásenie do aplikácie"
+
+#, php-format
+msgid "Username must be between %d and %d characters"
+msgstr ""
 
 msgid "Users"
 msgstr "Užívatelia"
@@ -5334,9 +5145,6 @@ msgstr ""
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr ""
 
-msgid "Wrong mail syntax in forward list."
-msgstr "Nesprávna mailová adresa v zozname presmerovaní."
-
 msgid "Wrong or unallowed IP address."
 msgstr ""
 
@@ -5389,35 +5197,38 @@ msgstr ""
 msgid "You are exceeding the monthly server traffic limit."
 msgstr "Dosiahli ste limit mesačného server trafiku."
 
-msgid "You are exceeding you domain alias limit."
-msgstr "Dosiahli ste limit počtu doménových aliasov."
+msgid "You are exceeding you domain aliases limit."
+msgstr ""
 
-msgid "You are exceeding your FTP account limit."
-msgstr "Dosiahli ste limit počtu FTP kont."
+msgid "You are exceeding your FTP accounts limit."
+msgstr ""
 
-msgid "You are exceeding your SQL database limit."
-msgstr "Dosiahli ste limit počtu SQL databáz."
+msgid "You are exceeding your SQL databases limit."
+msgstr ""
 
-msgid "You are exceeding your SQL user limit."
-msgstr "Dosiahli ste limit počtu SQL kont."
+msgid "You are exceeding your SQL users limit."
+msgstr ""
 
 msgid "You are exceeding your disk space limit."
 msgstr "Dosiahli ste limit diskového priestoru."
 
-msgid "You are exceeding your email account limit."
-msgstr "Dosiahli ste limit počtu emailových kont."
+msgid "You are exceeding your mail accounts limit."
+msgstr ""
 
 msgid "You are exceeding your monthly traffic limit."
 msgstr "Dosiahli ste limit mesačného trafiku."
 
-msgid "You are exceeding your subdomain limit."
-msgstr "Dosiahli ste limit počtu subdomén."
+msgid "You are exceeding your subdomains limit."
+msgstr ""
 
 msgid "You are not allowed to act on your own session."
 msgstr ""
 
 msgid "You can only upload images."
 msgstr "Môžete nahrať iba obrázky."
+
+msgid "You can select has many addresses as you want."
+msgstr ""
 
 msgid ""
 "You can set an alternative document root. This is mostly needed when using a"
@@ -5427,17 +5238,17 @@ msgid ""
 msgstr ""
 
 msgid ""
-"You cannot add normal email account because you have already assigned all "
-"your email quota to other mailboxes. If you want to add a new normal email "
+"You cannot add normal mail account because you have already assigned all "
+"your email quota to other mailboxes. If you want to add a new normal mail "
 "account, you must first lower the quota assigned to one of your other "
 "mailboxes."
 msgstr ""
 
 msgid ""
-"You cannot change this account to normal email account because you have "
-"already assigned all your email quota to other mailboxes. If you want to "
-"change this account to normal email account, you must first lower the quota "
-"assigned to one of your other mailboxes."
+"You cannot change this account to normal mail account because you have "
+"already assigned all your mail quota to other mail accounts. If you want to "
+"change this account to normal mail account, you must first lower the quota "
+"assigned to one of your other mail accounts."
 msgstr ""
 
 msgid ""
@@ -5504,17 +5315,17 @@ msgid "You do not have subdomains."
 msgstr "Nemáte žiadne subdomény."
 
 msgid ""
-"You have a FTP account limit. You cannot add a user with unlimited FTP "
+"You have a FTP accounts limit. You cannot add a user with unlimited FTP "
 "accounts."
 msgstr ""
 
 msgid ""
-"You have a SQL database limit. You cannot add a user with unlimited SQL "
+"You have a SQL databases limit. You cannot add a user with unlimited SQL "
 "databases."
 msgstr ""
 
 msgid ""
-"You have a SQL user limit. You cannot add a user with unlimited SQL users."
+"You have a SQL users limit. You cannot add a user with unlimited SQL users."
 msgstr ""
 
 msgid ""
@@ -5523,12 +5334,12 @@ msgid ""
 msgstr ""
 
 msgid ""
-"You have a domain alias limit. You cannot add a user with unlimited domain "
-"aliases."
+"You have a domain aliases limit. You cannot add a user with unlimited domain"
+" aliases."
 msgstr ""
 
 msgid ""
-"You have a mail account limit. You cannot add a user with unlimited email "
+"You have a mail accounts limit. You cannot add a user with unlimited mail "
 "accounts."
 msgstr ""
 
@@ -5559,7 +5370,8 @@ msgstr[1] ""
 msgstr[2] ""
 
 msgid ""
-"You have a subdomain limit. You cannot add a user with unlimited subdomains."
+"You have a subdomains limit. You cannot add a user with unlimited "
+"subdomains."
 msgstr ""
 
 #, php-format
@@ -5592,7 +5404,7 @@ msgid ""
 msgstr ""
 
 msgid ""
-"You have reached the maximum number of email accounts allowed by your "
+"You have reached the maximum number of mail accounts allowed by your "
 "subscription."
 msgstr ""
 
@@ -5601,7 +5413,7 @@ msgid ""
 "subscription."
 msgstr ""
 
-msgid "You have reached your domain limit. You cannot add more domains."
+msgid "You have reached your domains limit. You cannot add more domains."
 msgstr ""
 
 msgid "You have to choose between file-upload and wget-function."
@@ -5637,11 +5449,11 @@ msgstr "Musíte zvoliť súbor pre upload."
 msgid "You must select a file to upload/download."
 msgstr "Musite vybrať súbor na upload."
 
-msgid "You must select a least one mail account to delete"
-msgstr ""
-
 msgid "You must select a least one mail account to delete."
 msgstr "Musíte zvoliť aspoň jedno konto na vymazanie."
+
+msgid "You must select at least one catch-all addresses."
+msgstr ""
 
 msgid "You must select at least one plugin."
 msgstr ""
@@ -5695,8 +5507,7 @@ msgid "Your package is corrupt. Please correct it!"
 msgstr "Váš balíček je poškodený. Prosím opravte ho!"
 
 msgid ""
-"Your password has been successfully scheduled for renewal. Check your "
-"emails."
+"Your password has been successfully scheduled for renewal. Check your mails."
 msgstr ""
 
 #, php-format
@@ -5709,8 +5520,8 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Your request for password renewal has been registered. You will receive an "
-"email with instructions to complete the process."
+"Your request for password renewal has been registered. You will receive a "
+"mail with instructions to complete the process."
 msgstr ""
 
 msgid "Your request for password renewal is either invalid or has expired."
@@ -5749,10 +5560,6 @@ msgstr "[Re]"
 msgid "_: Localised language"
 msgstr "slovenčina - Slovak"
 
-#, php-format
-msgid "`%s` field cannot be empty."
-msgstr ""
-
 msgid "activated"
 msgstr "aktivované"
 
@@ -5771,6 +5578,9 @@ msgstr "a"
 msgid "anything"
 msgstr ""
 
+msgid "catch-all"
+msgstr ""
+
 msgid "city"
 msgstr ""
 
@@ -5781,9 +5591,6 @@ msgid "country"
 msgstr ""
 
 msgid "created by"
-msgstr ""
-
-msgid "customer ID"
 msgstr ""
 
 msgid "day"
@@ -5819,12 +5626,6 @@ msgstr ""
 msgid "domains"
 msgstr "Domény"
 
-msgid "email account"
-msgstr "email konto"
-
-msgid "email accounts"
-msgstr "email konta"
-
 msgid "enabled"
 msgstr "povolené"
 
@@ -5842,9 +5643,6 @@ msgstr ""
 
 msgid "i-MSCP - Application Management (Permissions)"
 msgstr "i-MSCP - Manažment applikácií (Oprávnenia)"
-
-msgid "i-MSCP - Client/Create CatchAll Mail Account"
-msgstr "i-MSCP - Client/Vytvoriť \"Zachytiť všetko\" konto"
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
 msgstr ""
@@ -5906,6 +5704,9 @@ msgstr ""
 msgid "mail"
 msgstr "mail"
 
+msgid "mail account"
+msgstr ""
+
 msgid "mail accounts"
 msgstr ""
 
@@ -5914,9 +5715,6 @@ msgstr "Alias domény"
 
 msgid "missing domain"
 msgstr "Hlavná doména"
-
-msgid "n/a"
-msgstr ""
 
 msgid "n\\a"
 msgstr "Nedostupné"
@@ -5984,9 +5782,6 @@ msgstr "trafik"
 
 msgid "udp"
 msgstr "udp"
-
-msgid "unlimited"
-msgstr "Bez obmedzení"
 
 msgid "update"
 msgstr ""

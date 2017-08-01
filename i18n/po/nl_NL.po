@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-07-20 16:43+0000\n"
+"POT-Creation-Date: 2017-08-01 12:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Dutch (Netherlands) (https://www.transifex.com/i-mscp/teams/576/nl_NL/)\n"
@@ -39,36 +39,12 @@ msgid "$ORIGIN value is currently set to: %s"
 msgstr "$ORIGIN is momenteel ingesteld op: %s"
 
 #, php-format
+msgid "%%s / %s"
+msgstr ""
+
+#, php-format
 msgid "%%s cannot be greater than %%s."
 msgstr "%%s kan niet groter zijn dan %%s."
-
-#, php-format
-msgid "%1$d / %2$d"
-msgstr "%1$d / %2$d"
-
-#, php-format
-msgid "%1$d / %2$d of %3$d"
-msgstr "%1$d / %2$d van %3$d"
-
-#, php-format
-msgid "%1$d / %2$d of %3$d</b>"
-msgstr "%1$d / %2$d van %3$d</b>"
-
-#, php-format
-msgid "%1$d / %2$d of unlimited"
-msgstr "%1$d / %2$d van ongelimiteerd"
-
-#, php-format
-msgid "%1$d of %2$d"
-msgstr "%1$d van %2$d"
-
-#, php-format
-msgid "%1$d%% [%2$s of %3$s]"
-msgstr "%1$d%% [%2$s van %3$s]"
-
-#, php-format
-msgid "%1$d%% [%2$s of unlimited]"
-msgstr "%1$d%% [%2$s van ongelimiteerd]"
 
 #, php-format
 msgid "%1$s (%2$s)"
@@ -83,28 +59,8 @@ msgid "%1$s - (Version: %2$s, Language: %3$s)"
 msgstr "%1$s - (Versie: %2$s, Taal: %3$s)"
 
 #, php-format
-msgid "%1$s / %2$s"
-msgstr "%1$s / %2$s"
-
-#, php-format
-msgid "%1$s / %2$s of %3$s"
-msgstr "%1$s / %2$s van %3$s"
-
-#, php-format
-msgid "%1$s / %2$s of unlimited"
-msgstr "%1$s / %2$s van ongelimiteerd"
-
-#, php-format
 msgid "%1$s you are now logged as %2$s"
 msgstr "%1$s is ingelogd als %2$s"
-
-#, php-format
-msgid "%1$s%% [%2$s of %3$s]"
-msgstr "%1$s%% [%2$s van %3$s]"
-
-#, php-format
-msgid "%1$s%% [%2$s of unlimited]"
-msgstr "%1$s%% [%2$s van ongelimiteerd]"
 
 #, php-format
 msgid "%1$ss - Software"
@@ -115,32 +71,20 @@ msgid "%d %s remaining until account expiration"
 msgstr "%d %s totdat de account verloopt"
 
 #, php-format
-msgid "%d / unlimited"
-msgstr "%d / ongelimiteerd"
-
-#, php-format
 msgid "%d Service(s) port successfully updateds"
 msgstr "%d Service(s) poort is bijgewerkt"
-
-#, php-format
-msgid "%d configuration parameter(s) have/has been created."
-msgstr "%d configuratie parameter(s) is/zijn gemaakt."
-
-#, php-format
-msgid "%d configuration parameter(s) have/has been updated."
-msgstr "%d configuratieparameter(s) bijgewerkt."
-
-#, php-format
-msgid "%d of %s"
-msgstr "%d van %s"
 
 #, php-format
 msgid "%d strings translated"
 msgstr "%d tekenreeksen vertaald"
 
 #, php-format
-msgid "%s / unlimited"
-msgstr "%s / ongelimiteerd"
+msgid "%s / %s"
+msgstr ""
+
+#, php-format
+msgid "%s / ∞"
+msgstr ""
 
 #, php-format
 msgid "%s account successfully deleted."
@@ -163,14 +107,6 @@ msgid "%s is not allowed as subdomain label."
 msgstr "%s is niet toegestaan als subdomeinlabel."
 
 #, php-format
-msgid "%s of %s"
-msgstr "%s van %s"
-
-#, php-format
-msgid "%s of unlimited"
-msgstr "%s van ongelimiteerd"
-
-#, php-format
 msgid "%s page"
 msgstr "%s pagina"
 
@@ -181,6 +117,22 @@ msgstr "%s record"
 #, php-format
 msgid "%s webmail"
 msgstr "%s webmail"
+
+#, php-format
+msgid "%s%% [%s / %s]"
+msgstr ""
+
+#, php-format
+msgid "%s%% [%s / ∞]"
+msgstr ""
+
+#, php-format
+msgid "%s%% [%s of %3$s]"
+msgstr ""
+
+#, php-format
+msgid "%s%% [%s of ∞]"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -223,206 +175,8 @@ msgstr ""
 "%s::getInfo() niet geïmplementeerd en %s niet gevonden. Dit is een bug in de"
 " invoegtoepassing %s welke bij de maker(s) gemeld dient te worden."
 
-#, php-format
-msgid ""
-"'%%hostname%%' does not appear to have a valid MX record for the email "
-"address '%%value%%'"
+msgid "(default)"
 msgstr ""
-"'%%hostname%%' blijkt geen geldig MX-record te hebben voor het e-mailadres "
-"'%%value%%'"
-
-#, php-format
-msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
-msgstr ""
-"'%%hostname%%' is geen geldige hostname voor het e-mailadres  '%%value%%'"
-
-#, php-format
-msgid ""
-"'%%hostname%%' is not in a routable network segment. The email address "
-"'%%value%%' should not be resolved from public network"
-msgstr ""
-"'%%hostname%%' bevindt zich niet in een routeerbaar netwerksegment. Het "
-"e-mailadres '%%value%%' dient niet uit het publieke netwerk te worden "
-"opgevraagd"
-
-#, php-format
-msgid "'%%localPart%%' can not be matched against dot-atom format"
-msgstr "'%%localPart%%' komt niet overeen met het dot-atomformaat"
-
-#, php-format
-msgid "'%%localPart%%' can not be matched against quoted-string format"
-msgstr "'%%localPart%%' komt niet overeen met het quoted-stringformaat"
-
-#, php-format
-msgid "'%%localPart%%' is no valid local part for email address '%%value%%'"
-msgstr ""
-"'%%localPart%%' is geen geldige lokaal deel (voor het apenstaartje) voor het"
-" e-mailadres '%%value%%'"
-
-#, php-format
-msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
-msgstr ""
-"'%%value%%' lijkt een DNS-hostname te zijn, maar het TLD-gedeelte kan niet "
-"worden bepaald"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a DNS hostname but cannot match TLD against known "
-"list"
-msgstr ""
-"'%%value%%' lijkt een DNS-hostname te zijn, maar het TLD wordt niet door ons"
-" ondersteund"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a DNS hostname but cannot match against hostname "
-"schema for TLD '%%tld%%'"
-msgstr ""
-"'%%value%%' lijkt een DNS-hostname te zijn, maar komt niet overeen met het "
-"hostname-schema voor het TLD '%%tld%%'"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a DNS hostname but contains a dash in an invalid "
-"position"
-msgstr ""
-"'%%value%%' lijkt een DNS-hostname te zijn, maar bevat een koppelteken op "
-"een ongeldige positie"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a DNS hostname but the given punycode notation "
-"cannot be decoded"
-msgstr ""
-"'%%value%%' lijkt een DNS-hostname te zijn, maar de opgegeven punycode-"
-"notatie kan niet worden gedecodeerd"
-
-#, php-format
-msgid "'%%value%%' appears to be a domain name but cannot extract TLD part"
-msgstr ""
-"'%%value%%' lijkt een domeinnaam te zijn, maar het TLD-gedeelte kan niet "
-"worden bepaald"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a domain name but cannot match TLD against known "
-"list"
-msgstr ""
-"'%%value%%' lijkt een domeinnaam te zijn maar kon deze niet koppelen aan een"
-" bekende TLD"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a domain name but cannot match against domain name"
-" schema for TLD '%%tld%%'"
-msgstr ""
-"'%%value%%' lijkt een domein naam te zijn maar kon deze niet koppelen aan de"
-" vaste vorm voor een TLD '%%tld%%'"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a domain name but contains a dash in an invalid "
-"position"
-msgstr ""
-"'%%value%%' lijkt een domeinnaam te zijn, maar bevat een koppelteken op een "
-"incorrecte plek"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a domain name but the given punycode notation "
-"cannot be decoded"
-msgstr ""
-"'%%value%%' lijkt een domeinnaam te zijn, maar het opgegeven punycode-"
-"notatie kan niet gedecodeerd worden"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a local network name but local network names are "
-"not allowed"
-msgstr ""
-"'%%value%%' lijkt een naam van een lokaal netwerk te zijn, maar namen van "
-"lokale netwerken zijn niet toegestaan"
-
-#, php-format
-msgid "'%%value%%' appears to be a subdomain name but cannot extract TLD part"
-msgstr ""
-"'%%value%%' lijkt een subdomein te zijn, maar kon het TLD-gedeelte niet "
-"vinden"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a subdomain name but cannot match TLD against "
-"known list"
-msgstr ""
-"'%%value%%' lijkt een subdomein te zijn, maar kon deze niet koppelen aan een"
-" bekende TLD"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a subdomain name but cannot match against "
-"subdomain schema for TLD '%%tld%%'"
-msgstr ""
-"'%%value%%' lijkt een subdomein te zijn, maar kon niet worden gekoppeld aan "
-"een vaste vorm voor de TLD '%%tld%%'"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a subdomain name but contains a dash in an invalid"
-" position"
-msgstr ""
-"'%%value%%' lijkt een subdomein te zijn, maar heeft een koppelteken in een "
-"inccorecte plek."
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a subdomain name but the given punycode notation "
-"cannot be decoded"
-msgstr ""
-"'%%value%%' lijkt een subdomein te zijn, maar het opgegeven punycode-notatie"
-" kan niet gedecodeerd worden"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be an IP address, but IP addresses are not allowed"
-msgstr "'%%value%%' lijkt een IP-adres, maar IP-adressen zijn niet toegestaan"
-
-#, php-format
-msgid "'%%value%%' does not appear to be a valid IP address"
-msgstr "'%%value%%' lijkt geen geldig IP-adres."
-
-#, php-format
-msgid "'%%value%%' does not appear to be a valid URI hostname"
-msgstr "'%%value%%' lijkt niet op een geldige URL-hostnaam"
-
-#, php-format
-msgid "'%%value%%' does not appear to be a valid local network name"
-msgstr "'%%value%%' lijkt niet op een geldige lokale netwerknaam"
-
-#, php-format
-msgid "'%%value%%' does not match the expected structure for a DNS hostname"
-msgstr ""
-"'%%value%%' komt niet overeen met de verwachte structuur voor een DNS-"
-"hostnaam"
-
-#, php-format
-msgid "'%%value%%' does not match the expected structure for a domain name"
-msgstr ""
-"'%%value%%' komt niet overeen met de verwachte structuur voor een domeinnaam"
-
-#, php-format
-msgid "'%%value%%' does not match the expected structure for a subdomain name"
-msgstr ""
-"'%%value%%' komt niet overeen met de verwachte structuur voor een subdomein"
-
-#, php-format
-msgid "'%%value%%' exceeds the allowed length"
-msgstr "'%%value%%' is langer dan toegestaan"
-
-msgid ""
-"'%%value%' is no valid email address in the basic format local-part@hostname"
-msgstr ""
-"'%%value%%' is geen geldig e-mailadres in het standaardformaat "
-"gebruikersnaam@hostnaam.tld"
 
 #, php-format
 msgid "(filtered from %s total records)"
@@ -455,11 +209,14 @@ msgstr ""
 msgid "A PHP extension stopped the file upload."
 msgstr "Een PHP-uitbreiding heeft de upload gestopt."
 
-msgid "A database update is available"
-msgstr "Er is een databank-update beschikbaar"
-
 msgid "A hosting plan with same name already exists."
 msgstr "Een hostingpakket met dezelfde naam bestaat al."
+
+#, php-format
+msgid "A new configuration parameter has been created."
+msgid_plural "%d configuration parameters were created"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "A new i-MSCP version is available"
 msgstr "Er is een update voor i-MSCP beschikbaar"
@@ -488,9 +245,6 @@ msgstr "Accountlimieten"
 msgid "Account name"
 msgstr "Accountnaam"
 
-msgid "Account overview"
-msgstr "Accountoverzicht"
-
 msgid "Account summary"
 msgstr "Accountoverzicht"
 
@@ -512,6 +266,9 @@ msgstr "Acties"
 msgid "Activate"
 msgstr "Activeer"
 
+msgid "Activate autoresponder"
+msgstr ""
+
 msgid "Activate this plugin"
 msgstr "Activeer deze invoegtoepassing"
 
@@ -527,8 +284,8 @@ msgstr "Activatiemail"
 msgid "Activation in progress..."
 msgstr "Bezig met activeren..."
 
-msgid "Activation link expire time <small>(In minutes)</small>"
-msgstr "Activeringslink verloopt in <small>(Minuten)</small>"
+msgid "Activation link expire time in minutes"
+msgstr ""
 
 msgid "Add"
 msgstr "Toevoegen"
@@ -557,8 +314,8 @@ msgstr "Voeg SSL-certificaat toe"
 msgid "Add admin"
 msgstr "Nieuwe beheerder"
 
-msgid "Add catchall"
-msgstr "Voeg catch-all aan domein toe"
+msgid "Add catch-all account"
+msgstr ""
 
 msgid "Add custom menu"
 msgstr "Voeg eigen menuitem toe"
@@ -572,14 +329,14 @@ msgstr "Nieuwe klant - Volgende stap"
 msgid "Add domain alias"
 msgstr "Domeinalias toevoegen"
 
-msgid "Add email account"
-msgstr "E-mailaccount toevoegen"
-
 msgid "Add group"
 msgstr "Groep toevoegen"
 
 msgid "Add hosting plan"
 msgstr "Webhostingpakket toevoegen"
+
+msgid "Add mail account"
+msgstr ""
 
 msgid "Add new IP address"
 msgstr "Voeg nieuw IP-adres toe"
@@ -656,11 +413,11 @@ msgstr "Beheerder / Instellingen / Talen"
 msgid "Admin / Settings / Lost Password Email"
 msgstr "Wederverkoper / Instellingen / Wachtwoord vergetene-mail"
 
+msgid "Admin / Settings / Monthly Server Traffic"
+msgstr ""
+
 msgid "Admin / Settings / Plugin Management"
 msgstr "Beheerder / Instellingen / Invoegtoepassingen"
-
-msgid "Admin / Settings / Server Traffic"
-msgstr "Beheerder / Instellingen / Serververkeer"
 
 msgid "Admin / Settings / Service Ports"
 msgstr "Beheerder / Instellingen / Serverpoorten"
@@ -713,9 +470,6 @@ msgstr "Beheerder / Ondersteuning / Bekijk Ticket"
 msgid "Admin / System Tools / Anti-Rootkits Logs"
 msgstr "Beheerder / Systeem / Anti-Rootkitlogboek"
 
-msgid "Admin / System Tools / Database Update"
-msgstr "Beheerder / Systeem / Databankupdate"
-
 msgid "Admin / System Tools / Debugger"
 msgstr "Beheerder / Systeem / Debugger"
 
@@ -751,6 +505,9 @@ msgstr "Beheerder / Gebruikers / Overzicht / Domeindetails"
 
 msgid "Admin / Users / Overview / Edit Admin"
 msgstr "Beheerder / Gebruikers / Overzicht / Beheerder anpassen"
+
+msgid "Admin / Users / Overview / Edit Customer"
+msgstr ""
 
 msgid "Admin / Users / Resellers Assignment"
 msgstr "Beheerder / Gebruikers / Wederverkoper toewijzen"
@@ -809,21 +566,6 @@ msgid ""
 msgstr ""
 "Nadat je het pakket hebt geüpload, wordt deze geïnstalleerd op uw systemen. "
 "<br>Herlaad uw website om de nieuwe status te bekijken."
-
-msgid "Alias forward"
-msgstr "Doorstuuradres van aliasdomein"
-
-msgid "Alias mail"
-msgstr "E-mailbox van aliasdomein"
-
-msgid "Alias subdomain forward"
-msgstr "Alias voor doorsturen subdomein"
-
-msgid "Alias subdomain mail"
-msgstr "Alias voor mail subdomein"
-
-msgid "Aliases"
-msgstr "Aliassen"
 
 msgid "All"
 msgstr "Alle"
@@ -890,9 +632,6 @@ msgstr "Alternatieve URL om uw website te bereiken"
 msgid "Alternative URL to reach your website"
 msgstr "Alternatieve URL"
 
-msgid "An email addresse is not valid in mail forward list."
-msgstr "Een ontvanger uit de mailinglist is niet geldig."
-
 msgid "An unexpected error occurred"
 msgstr "Er is een onbekende fout opgetreden"
 
@@ -906,6 +645,10 @@ msgstr ""
 msgid "An unexpected error occurred. Please contact your reseller."
 msgstr ""
 "Er is een onbekende fout opgetreden. Neem contact op met uw wederverkoper."
+
+#, php-format
+msgid "An unexpected error occurred. Please contact your reseller. %s"
+msgstr ""
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -957,19 +700,12 @@ msgstr "Weet u zeker dat u %s wilt verwijderen?"
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Weet u zeker dat u alle gesloten tickets wilt aanpassen?"
 
-msgid "Are you sure you want to delete all selected mail accounts?"
-msgstr "Weet u zeker dat u alle geselecteerde e-mailaccounts wil verwijderen?"
-
 msgid "Are you sure you want to delete all tickets?"
 msgstr "Weet u zeker dat u alle tickets wilt verwijderen?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s FTP user?"
 msgstr "Weet u zeker dat u de FTP-gebruiker %s wilt verwijderen?"
-
-#, php-format
-msgid "Are you sure you want to delete the %s catch all?"
-msgstr "Weet u zeker dat u de catch-all %s wilt verwijderen?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
@@ -1006,6 +742,9 @@ msgstr "Weet u zeker dat u deze DNS-record wilt verwijderen?"
 
 msgid "Are you sure you want to delete this account?"
 msgstr "Weet u zeker dat u dit account wilt verwijderen?"
+
+msgid "Are you sure you want to delete this catch-all account?"
+msgstr ""
 
 msgid "Are you sure you want to delete this domain alias?"
 msgstr "Weet u zeker dat u deze domeinalias wilt verwijderen?"
@@ -1072,20 +811,23 @@ msgstr "Automatisch"
 msgid "Auto (Browser language)"
 msgstr "Automatisch (Browsertaal)"
 
-msgid "Auto responder"
-msgstr "Automatische beantwoorder"
+msgid "Automatic catch-all address"
+msgstr ""
 
-msgid "Auto-responder message cannot be empty."
-msgstr "Automatische beantwoorderbericht mag niet leeg zijn."
+msgid "Autoresponder"
+msgstr ""
 
-msgid "Auto-responder successfully scheduled for activation."
-msgstr "Auto-beantwoorder wordt geactiveerd."
+msgid "Autoresponder has been activated."
+msgstr ""
 
-msgid "Auto-responder successfully scheduled for deactivation."
-msgstr "Auto-beantwoorder wordt gedeactiveerd."
+msgid "Autoresponder has been deactivated."
+msgstr ""
 
-msgid "Auto-responder successfully scheduled for update."
-msgstr "Auto-beantwoorder wordt bijgewerkt."
+msgid "Autoresponder has been edited."
+msgstr ""
+
+msgid "Autoresponder message cannot be empty."
+msgstr ""
 
 msgid "Available"
 msgstr "Beschikbaar"
@@ -1114,6 +856,12 @@ msgstr "Back-up en herstel uw instellingen."
 msgid "Backup has been successfully scheduled for restoration."
 msgstr "Back-up wordt teruggezet."
 
+msgid "Bad email address in catch-all addresses field."
+msgstr ""
+
+msgid "Bad email address in forward list field."
+msgstr ""
+
 msgid "Bad password."
 msgstr "Wachtwoord niet correct."
 
@@ -1134,16 +882,14 @@ msgstr ""
 "server ingesteld om mail door te sturen naar uw eigen mailserver, maar er "
 "worden géén DNS-records aangemaakt."
 
-msgid ""
-"Blocking time between login/captcha attempts <small>(In seconds)</small>"
+msgid "Blocking time between login/captcha attempts in seconds"
 msgstr ""
-"Blokkeertijd tussen login/captcha-pogingen <small>(in seconden)</small>"
 
 msgid "Blocking time between logins and captcha attempts"
 msgstr "Blokkadetijd tussen fout inloggen en captcha fouten"
 
-msgid "Blocktime <small>(in minutes)</small>"
-msgstr "Blokkadetijd <small>(in minuten)</small>"
+msgid "Blocktime in minutes"
+msgstr ""
 
 msgid "Body"
 msgstr "Bericht"
@@ -1189,17 +935,30 @@ msgstr "Annuleren"
 msgid "Canonical name"
 msgstr "Canonieke naam"
 
-msgid "Catch all"
-msgstr "Catch-all"
+msgid "Catch-all account"
+msgstr ""
 
-msgid "Catch all successfully scheduled for addition."
-msgstr "Catch-all wordt toegevoegd."
+msgid "Catch-all account successfully scheduled for deletion."
+msgstr ""
 
-msgid "Catch all successfully scheduled for deletion."
-msgstr "Catch-all wordt verwijderd."
+msgid "Catch-all accounts"
+msgstr ""
 
-msgid "Catchall"
-msgstr "Catch-all"
+msgid "Catch-all addresses"
+msgstr ""
+
+msgid "Catch-all addresses field cannot be empty."
+msgstr ""
+
+#, php-format
+msgid "Catch-all addresses for the %s domain"
+msgstr ""
+
+msgid "Catch-all domain"
+msgstr ""
+
+msgid "Catch-all successfully scheduled for addition."
+msgstr ""
 
 msgid "Certificate"
 msgstr "Certificaat"
@@ -1209,9 +968,6 @@ msgstr "Certificaatgegevens"
 
 msgid "Change"
 msgstr "Aanpassen"
-
-msgid "Change personal data"
-msgstr "Verander persoonlijke informatie"
 
 msgid "Change status of this item for a new attempt"
 msgstr "Verander de status van dit object voor een nieuwe poging."
@@ -1344,30 +1100,6 @@ msgstr "Klant / Domain / PHP-instellingen"
 msgid "Client / Domains / SSL Certificate"
 msgstr "Klant / Domeinen / SSL-Certificaat"
 
-msgid "Client / Email / Add Email Account"
-msgstr "Klant / E-mail / E-mailaccount toevoegen"
-
-msgid "Client / Email / Catchall"
-msgstr "Klant / E-mail / Catch-all"
-
-msgid "Client / Email / Catchall / Add Catchall"
-msgstr "Klant / E-mail / Catch-all / Voeg catch-all toe"
-
-msgid "Client / Email / Edit Email Account"
-msgstr "Klant / E-mail / Pas mailaccount aan"
-
-msgid "Client / Email / External Mail Feature"
-msgstr "Klant / E-mail / Externe Mailserver"
-
-msgid "Client / Email / Overview"
-msgstr "Klant / E-mail / Overzicht"
-
-msgid "Client / Email / Overview / Edit Auto Responder"
-msgstr "Klant / E-mail / Overview / Auto-beantwoorder bewerken"
-
-msgid "Client / Email / Overview / Enable Auto Responder"
-msgstr "Klant / E-mail / Zet auto-beantwoorder aan"
-
 msgid "Client / FTP / Add FTP Account"
 msgstr "Klant / FTP / FTP-account toevoegen"
 
@@ -1379,6 +1111,33 @@ msgstr "Klant / FTP / Overzicht / FTP-account aanpassen"
 
 msgid "Client / General / Overview"
 msgstr "Klant / Algemeen / Overzicht"
+
+msgid "Client / Mail / Add Mail Account"
+msgstr ""
+
+msgid "Client / Mail / Catch-all Accounts"
+msgstr ""
+
+msgid "Client / Mail / Catch-all Accounts / Add Catch-all account"
+msgstr ""
+
+msgid "Client / Mail / Catch-all Accounts / Edit Catch-all account"
+msgstr ""
+
+msgid "Client / Mail / Edit Mail Account"
+msgstr ""
+
+msgid "Client / Mail / External Mail Feature"
+msgstr ""
+
+msgid "Client / Mail / Overview"
+msgstr ""
+
+msgid "Client / Mail / Overview / Activate Autoresponder"
+msgstr ""
+
+msgid "Client / Mail / Overview / Edit Autoresponder"
+msgstr ""
 
 msgid "Client / Profile / Account Summary"
 msgstr "Klant / Account / Accountoverzicht"
@@ -1455,6 +1214,9 @@ msgstr "Klant / Tools / Software / Software-installatie"
 msgid "Client / Webtools / Software / View"
 msgstr "Klant / Tools / Software / Tonen"
 
+msgid "Client users"
+msgstr ""
+
 msgid "Clock speed (MHz)"
 msgstr "Kloksnelheid (MHz)"
 
@@ -1475,9 +1237,6 @@ msgstr "Common-name"
 
 msgid "Company"
 msgstr "Bedrijf"
-
-msgid "Compress HTML output"
-msgstr "Compressie toepassen op HTML-output"
 
 msgid "Configuration mode"
 msgstr "Configuratiemode"
@@ -1511,10 +1270,6 @@ msgstr "Kon de %s invoegtoepassing niet wijzigen: %s"
 #, php-format
 msgid "Could not connect to the `%s' database. Please check the password."
 msgstr "Kon niet verbinden met de `%s' database. Controleer uw wachtwoord."
-
-#, php-format
-msgid "Could not create `%s` database name."
-msgstr "Kon database met naam `%s` niet aanmaken."
 
 msgid "Could not create domain alias. An unexpected error occurred."
 msgstr ""
@@ -1595,8 +1350,15 @@ msgstr "Kon bestand niet uploaden. Maximale grootte (%1$d MB) is bereikt."
 msgid "Could not validate DNS resource record: %s"
 msgstr "Kon de DNS-record niet valideren: %s"
 
-msgid "Count default email addresses"
-msgstr "Laat standaarde-mailadres meestellen."
+#, php-format
+msgid "Couldn't create the %s database."
+msgstr ""
+
+msgid "Couldn't delete subdomain. An unexpected error occurred."
+msgstr ""
+
+msgid "Count default mail accounts"
+msgstr ""
 
 msgid "Country"
 msgstr "Land"
@@ -1604,11 +1366,8 @@ msgstr "Land"
 msgid "Create"
 msgstr "Aanmaken"
 
-msgid "Create catch all"
-msgstr "Maak catch-all"
-
-msgid "Create default email addresses"
-msgstr "Maak standaarde-mailadres aan"
+msgid "Create default mail accounts"
+msgstr ""
 
 msgid "Created by"
 msgstr "Gemaakt door"
@@ -1748,12 +1507,6 @@ msgstr "Databank"
 msgid "Database Name and Users"
 msgstr "Naam van databank en gebruikers"
 
-msgid "Database Update Revision"
-msgstr "Databank-updaterevisie"
-
-msgid "Database Update details"
-msgstr "Databank-updatedetails"
-
 msgid "Database data"
 msgstr "Databankgegevens"
 
@@ -1777,9 +1530,6 @@ msgstr "Databank voor-/achtervoegsel"
 
 msgid "Database required"
 msgstr "Databank vereist"
-
-msgid "Database update"
-msgstr "Databankupdate"
 
 msgid "Database usage"
 msgstr "Databankgebruik"
@@ -2149,9 +1899,6 @@ msgstr ""
 msgid "Delete"
 msgstr "Verwijder"
 
-msgid "Delete CatchAll"
-msgstr "Verwijder catch-all"
-
 msgid "Delete all tickets"
 msgstr "Verwijder alle tickets"
 
@@ -2172,9 +1919,6 @@ msgstr "Verwijder deze invoegtoepassing"
 
 msgid "Delete ticket"
 msgstr "Verwijder ticket"
-
-msgid "Delete user"
-msgstr "Verwijder gebruiker"
 
 msgid "Deletion in progress"
 msgstr "Verwijderen bezig"
@@ -2205,9 +1949,6 @@ msgstr "Map '%s' bestaat niet."
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
 msgstr "Map '%s' is niet toegestaan of niet geldig."
-
-msgid "Disable"
-msgstr "Uitschakelen"
 
 msgid "Disabled"
 msgstr "Uitgeschakeld"
@@ -2253,9 +1994,6 @@ msgstr "Domein %s is niet beschikbaar"
 msgid "Domain IP"
 msgstr "Domein-IP"
 
-msgid "Domain Limit"
-msgstr "Domeinlimiet"
-
 msgid "Domain Name"
 msgstr "Domeinnaam"
 
@@ -2278,9 +2016,6 @@ msgstr "Domeinalias %s kan niet naar zichzelf doorgestuurd worden."
 msgid "Domain alias errors"
 msgstr "Domeinaliasfouten"
 
-msgid "Domain alias limit"
-msgstr "Limiet domeinalias"
-
 msgid "Domain alias name"
 msgstr "Naam domeinalias"
 
@@ -2301,6 +2036,9 @@ msgstr "Domeinalias wordt bijgewerkt."
 
 msgid "Domain aliases"
 msgstr "Domeinaliassen"
+
+msgid "Domain aliases limit"
+msgstr ""
 
 msgid "Domain and SQL databases"
 msgstr "Domein en SQL-databanken"
@@ -2326,12 +2064,6 @@ msgstr "Vervaldatum domein dient te worden ingevuld."
 msgid "Domain for which PHP Editor must act."
 msgstr "Domein waarvoor PHP-editor moet werken."
 
-msgid "Domain limit"
-msgstr "Domeinlimiet"
-
-msgid "Domain mail"
-msgstr "E-mailbox"
-
 msgid "Domain name"
 msgstr "Domeinnaam"
 
@@ -2347,10 +2079,6 @@ msgstr "Domeinnaam kan niet beginnen of eindigen met een punt."
 #, php-format
 msgid "Domain name contains an invalid character: %s"
 msgstr "Domeinnaam bevat een ongeldig teken: %s"
-
-#, php-format
-msgid "Domain name label '%s' contain an invalid character: %s"
-msgstr "Domeinnaamlabel '%s' bevat een ongeldig teken: %s"
 
 msgid "Domain name labels cannot be greater than 63 characters."
 msgstr "Domeinnaamlabels kunnen niet langer dan 63 tekens zijn."
@@ -2384,6 +2112,12 @@ msgstr "Domeintype"
 
 msgid "Domains"
 msgstr "Domeinen"
+
+msgid "Domains Limit"
+msgstr ""
+
+msgid "Domains limit"
+msgstr ""
 
 msgid "Domains per page"
 msgstr "Domeinen per pagina"
@@ -2424,8 +2158,8 @@ msgstr "SSL-certificaat aanpassen"
 msgid "Edit admin"
 msgstr "Bewerk beheerder"
 
-msgid "Edit auto responder"
-msgstr "Auto-beantwoorder aanpassen"
+msgid "Edit autoresponder"
+msgstr ""
 
 msgid "Edit custom error page"
 msgstr "Pas eigen foutpagina's aan"
@@ -2454,9 +2188,6 @@ msgstr "Htaccess-gebruiker aanpassen"
 msgid "Edit mail account"
 msgstr "Pas mailaccount aan"
 
-msgid "Edit mail quota"
-msgstr "Pas mailquota aan"
-
 msgid "Edit protected area"
 msgstr "Bewerk beschermd gedeelte"
 
@@ -2466,73 +2197,21 @@ msgstr "Wederverkoper bewerken"
 msgid "Edit subdomain"
 msgstr "Pas subdomein aan"
 
-msgid "Edit user"
-msgstr "Klant bewerken"
-
 msgid "EiB"
 msgstr "EiB"
 
 msgid "Email"
 msgstr "E-mail"
 
-msgid "Email account already exists."
-msgstr "E-mailaccount bestaat al"
-
-msgid "Email account data"
-msgstr "E-mailaccountgegevens"
-
-msgid "Email account errors"
-msgstr "E-mailaccountfouten"
-
-msgid "Email account limit"
-msgstr "E-mailaccountlimiet"
-
-msgid "Email account list"
-msgstr "E-mailaccountlijst"
-
-msgid "Email account successfully scheduled for addition."
-msgstr "E-mailaccount wordt toegevoegd"
-
-msgid "Email account successfully scheduled for update."
-msgstr "E-mailaccount wordt bijgewerkt."
-
-msgid "Email accounts"
-msgstr "E-mailaccounts"
-
-msgid "Email accounts are hard suspended"
-msgstr "E-mailaccounts worden ook opgeschort"
-
 msgid "Email address"
 msgstr "E-mailadres"
 
-msgid "Email forward"
-msgstr "Doorstuuradres"
-
-msgid "Email quota"
-msgstr "E-mailquota"
-
-msgid "Email quota [MiB]"
-msgstr "E-mailquota [MB]"
+msgid "Email address cannot be empty."
+msgstr ""
 
 #, php-format
 msgid "Email quota cannot be bigger than %s"
 msgstr "E-mailquota kan niet groter zijn dan %s"
-
-msgid "Email quota cannot be bigger than disk space limit."
-msgstr "E-mailquota kan niet grote zijn dan het limiet qua opslagruimte"
-
-#, php-format
-msgid ""
-"Email quota cannot be lower than %d. Each mailbox should have a least 1 MiB "
-"quota."
-msgstr ""
-"E-mailquota kan niet lager zijn dan %d. Elke mailbox dient minimaal 1MB "
-"ruimte te hebben."
-
-#, php-format
-msgid "Email quota cannot be unlimited. Max value is %d MiB."
-msgstr ""
-"E-mailquota kan niet ongelimiteerd zijn. Maximaal toegestaan is %d MB."
 
 msgid "Email settings"
 msgstr "E-mailinstellingen"
@@ -2546,14 +2225,8 @@ msgstr "E-mail succesvol bijgewerkt."
 msgid "Empty data or wrong field."
 msgstr "Geen gegevens of verkeerde veld."
 
-msgid "Enable"
-msgstr "Inschakelen"
-
 msgid "Enable SSL"
 msgstr "SSL gebruiken"
-
-msgid "Enable auto responder"
-msgstr "Zet automatisch antwoorden aan"
 
 msgid "Enabled"
 msgstr "Ingeschakeld"
@@ -2577,14 +2250,14 @@ msgstr "Fout: Extern bestand niet gevonden!"
 msgid "Errors"
 msgstr "Fouten"
 
-msgid "Excl. default mails"
-msgstr "Excl. standaard-e-mails"
-
 msgid "Execute tasks"
 msgstr "Verzoeken uitvoeren"
 
 msgid "Ext. mail server"
 msgstr "Externe mailserver"
+
+msgid "External mail feature"
+msgstr ""
 
 msgid "External mail server"
 msgstr "Externe mailserver"
@@ -2595,17 +2268,11 @@ msgstr "Externe mailserver wordt ingeschakeld."
 msgid "External mail server feature scheduled for deactivation."
 msgstr "Externe mailserver wordt uitgeschakeld."
 
-msgid "External mail servers"
-msgstr "Externe mailservers"
-
 msgid "FTP account"
 msgstr "FTP-account"
 
 msgid "FTP account already exists."
 msgstr "FTP-account bestaat reeds."
-
-msgid "FTP account limit"
-msgstr "FTP-accountlimiet"
 
 msgid "FTP account limit reached."
 msgstr "FTP-accountlimiet bereikt."
@@ -2621,6 +2288,9 @@ msgstr "FTP-account succesvol bijgewerkt."
 
 msgid "FTP accounts"
 msgstr "FTP-accounts"
+
+msgid "FTP accounts limit"
+msgstr ""
 
 msgid "FTP home directory"
 msgstr "FTP-thuismap"
@@ -2703,11 +2373,11 @@ msgstr "Voornaam"
 msgid "First name cannot have more than 200 characters."
 msgstr "Eerste naam mag niet meer dan 200 karakters bevatten."
 
-msgid "For the time being, you can only add forwarded email account."
-msgstr "In deze situatie kunt u enkel doorstuur-adressen aanmaken."
+msgid "For the time being, you can only add forwarded mail account."
+msgstr ""
 
-msgid "For the time being, you can only edit your forwarded email account."
-msgstr "Op dit moment kunt u slechts uw doorstuuradres aanpassen."
+msgid "For the time being, you can only edit your forwarded mail account."
+msgstr ""
 
 msgid "Forbidden"
 msgstr "Verboden"
@@ -2732,11 +2402,11 @@ msgstr "Doorstuur-URL"
 msgid "Forward URL %s is not valid."
 msgstr "Doorstuur-URL %s is niet geldig."
 
+msgid "Forward account"
+msgstr ""
+
 msgid "Forward list is empty."
 msgstr "Doorstuurlijst is leeg."
-
-msgid "Forward mail"
-msgstr "Mail doorsturen"
 
 msgid "Forward to"
 msgstr "Doorsturen naar"
@@ -2822,6 +2492,9 @@ msgstr "HSTS max-leeftijd optie"
 msgid "HTTP traffic"
 msgstr "HTTP-verkeer"
 
+msgid "Hide default mail accounts"
+msgstr ""
+
 msgid "Hide domain aliases"
 msgstr "Verberg domeinaliassen"
 
@@ -2897,9 +2570,6 @@ msgstr "De htaccess-gebruiker wordt toegevoegd."
 
 msgid "Htaccess, htgroups and htpasswd errors"
 msgstr "Htaccess-, htgroups- en htpasswd-fouten"
-
-msgid "Http traffic"
-msgstr "HTTP-verkeer"
 
 msgid "IP Address"
 msgstr "IP-adres"
@@ -2998,23 +2668,23 @@ msgstr "Voor"
 msgid "In maintenance mode, only administrators can login."
 msgstr "In onderhoudsmodus kunnen enkel beheerders inloggen"
 
-msgid "Incl. default mails"
-msgstr "Incl. standaardmails"
-
-msgid "Incorrect Email quota"
-msgstr "Foutieve e-mailquota"
-
-msgid "Incorrect Email quota."
-msgstr "Foutieve e-mailquota."
-
 msgid "Incorrect FTP account limit."
 msgstr "Foutief FTP-accountlimiet"
+
+msgid "Incorrect FTP accounts limit."
+msgstr ""
 
 msgid "Incorrect SQL database limit."
 msgstr "Foutief SQL-databanklimiet"
 
+msgid "Incorrect SQL databases limit."
+msgstr ""
+
 msgid "Incorrect SQL user limit."
 msgstr "Foutief SQL-gebruikerslimiet."
+
+msgid "Incorrect SQL users limit."
+msgstr ""
 
 msgid "Incorrect alias limit."
 msgstr "Foutief aliaslimiet."
@@ -3025,8 +2695,8 @@ msgstr "Foutief limiet voor opslag."
 msgid "Incorrect domain alias limit."
 msgstr "Foutief limiet voor domeinaliassen."
 
-msgid "Incorrect email account limit."
-msgstr "Foutief limiet voor emailaccounts."
+msgid "Incorrect domain aliases limit."
+msgstr ""
 
 msgid "Incorrect email length or syntax."
 msgstr "Foutieve emaillengte of emailsyntaxis."
@@ -3038,6 +2708,18 @@ msgstr "Foutieve e-mailquota."
 msgid "Incorrect limit for %s."
 msgstr "Foutief limiet voor %s."
 
+msgid "Incorrect mail account limit."
+msgstr ""
+
+msgid "Incorrect mail accounts limit."
+msgstr ""
+
+msgid "Incorrect mail quota"
+msgstr ""
+
+msgid "Incorrect mail quota."
+msgstr ""
+
 msgid "Incorrect monthly traffic limit."
 msgstr "Foutief maandelijkse verkeerslimiet"
 
@@ -3046,6 +2728,9 @@ msgstr "Foutieve lengte voor postcode of syntaxis!"
 
 msgid "Incorrect subdomain limit."
 msgstr "Foutieve limiet voor subdomeinen"
+
+msgid "Incorrect subdomains limit."
+msgstr ""
 
 msgid "Incorrect syntax for email address."
 msgstr "Foutieve syntaxis voor e-mailadres."
@@ -3124,9 +2809,11 @@ msgstr "Ongeldig SSL-certificaat."
 msgid "Invalid URL."
 msgstr "Ongeldige URL."
 
-#, php-format
-msgid "Invalid `%s` field."
-msgstr "Ongeldig `%s`-veld"
+msgid "Invalid city."
+msgstr ""
+
+msgid "Invalid country."
+msgstr ""
 
 msgid "Invalid domain name."
 msgstr "Ongeldige domeinnaam."
@@ -3137,8 +2824,27 @@ msgstr "Ongeldig e-mailadres."
 msgid "Invalid email username."
 msgstr "Foutieve e-mailgebruikersnaam"
 
+msgid "Invalid fax number."
+msgstr ""
+
+#, php-format
+msgid "Invalid field: %s"
+msgstr ""
+
+msgid "Invalid firm."
+msgstr ""
+
+msgid "Invalid first name."
+msgstr ""
+
+msgid "Invalid gender"
+msgstr ""
+
 msgid "Invalid group name!"
 msgstr "Ongeldige groepsnaam!"
+
+msgid "Invalid last name."
+msgstr ""
 
 msgid "Invalid menu order."
 msgstr "Ongeldige menuvolgorde."
@@ -3149,6 +2855,9 @@ msgstr "Ongeldige naam."
 msgid "Invalid payload received from GitHub"
 msgstr "Ongeldige informatie ontvangen van GitHub"
 
+msgid "Invalid phone number."
+msgstr ""
+
 #, php-format
 msgid "Invalid plugin directory: %s"
 msgstr "Foutieve invoegtoepassingsmap: %s"
@@ -3156,14 +2865,17 @@ msgstr "Foutieve invoegtoepassingsmap: %s"
 msgid "Invalid private key or passphrase."
 msgstr "Ongeldige privésleutel of wachtwoordzin."
 
+msgid "Invalid state."
+msgstr ""
+
 msgid "Invalid target."
 msgstr "Doel is ongeldig"
 
-msgid "Invalid type given. String expected"
-msgstr "Ongeldig type ingevoerd. Tekenreeks verwacht"
-
 msgid "Invalid username."
 msgstr "Ongeldige gebruikersnaam."
+
+msgid "Invalid zipcode."
+msgstr ""
 
 msgid "Kernel Version"
 msgstr "Kernelversie"
@@ -3183,8 +2895,8 @@ msgstr "Taalbestand"
 msgid "Language file successfully installed."
 msgstr "Taalbestand succesvol geïnstalleerd."
 
-msgid "Language successfully updated."
-msgstr "Taal succesvol bijgewerkt."
+msgid "Language has been updated."
+msgstr ""
 
 msgid "Languages"
 msgstr "Taalinstellingen"
@@ -3249,6 +2961,9 @@ msgstr "Logboekinvoer succesvol verwijderd."
 msgid "Login"
 msgstr "Login"
 
+msgid "Login data"
+msgstr ""
+
 msgid "Login password"
 msgstr "Wachtwoord"
 
@@ -3297,18 +3012,67 @@ msgstr "E-mail"
 msgid "Mail Log Level"
 msgstr "E-maillogboekniveau"
 
+msgid "Mail account already exists."
+msgstr ""
+
+msgid "Mail account data"
+msgstr ""
+
+msgid "Mail account errors"
+msgstr ""
+
 #, php-format
-msgid "Mail account %s successfully scheduled for deletion."
-msgstr "E-mailaccount %s wordt verwijderd."
+msgid "Mail account has been scheduled for deletion."
+msgid_plural "%d mail accounts were scheduled for deletion."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Mail account successfully scheduled for addition."
+msgstr ""
+
+msgid "Mail account successfully scheduled for update."
+msgstr ""
 
 msgid "Mail account type"
 msgstr "E-mailaccounttype"
+
+msgid "Mail accounts"
+msgstr ""
+
+msgid "Mail accounts are hard suspended"
+msgstr ""
+
+msgid "Mail accounts limit"
+msgstr ""
 
 msgid "Mail accounts list is empty."
 msgstr "E-mailaccountlijst is leeg"
 
 msgid "Mail feature is disabled."
 msgstr "E-mailfunctie is uitgeschakeld"
+
+msgid "Mail quota"
+msgstr ""
+
+msgid "Mail quota [MiB]"
+msgstr ""
+
+#, php-format
+msgid "Mail quota cannot be bigger than %s"
+msgstr ""
+
+msgid "Mail quota cannot be bigger than disk space limit."
+msgstr ""
+
+#, php-format
+msgid ""
+"Mail quota cannot be lower than %d. Each mail account must have a least 1 "
+"MiB quota."
+msgstr ""
+
+#, php-format
+msgid "Mail quota cannot be unlimited. Max value is %d MiB."
+msgstr ""
 
 msgid "Mail usage"
 msgstr "Mailverbruik"
@@ -3336,9 +3100,6 @@ msgstr "Onderhoudsmodus"
 msgid "Male"
 msgstr "Man"
 
-msgid "Malformed resolver SQL query"
-msgstr "Ongeldige resolver-SQL-query"
-
 msgid "Manage SQL"
 msgstr "Beheer SQL"
 
@@ -3356,6 +3117,9 @@ msgstr "Beheer uw beveiligde mappen, gebruikers en groepen"
 
 msgid "Manual"
 msgstr "Handmatig"
+
+msgid "Manual catch-all addresses"
+msgstr ""
 
 msgid "Mark"
 msgstr "Markeer"
@@ -3430,11 +3194,26 @@ msgstr "Bezig met bewerken..."
 msgid "Month"
 msgstr "Maand"
 
+msgid "Monthly Server traffic"
+msgstr ""
+
+msgid "Monthly server traffic"
+msgstr ""
+
+msgid "Monthly server traffic settings"
+msgstr ""
+
+msgid "Monthly server traffic settings successfully updated."
+msgstr ""
+
 msgid "Monthly traffic limit [MiB]"
 msgstr "Maandelijks verkeerslimiet [MB]"
 
 msgid "Monthly traffic limit must be a number."
 msgstr "Maandelijks verkeerslimiet dient een nummer te zijn."
+
+msgid "Monthly traffic usage"
+msgstr ""
 
 msgid "Monthly traffic warning cannot be bigger than monthly traffic limit."
 msgstr ""
@@ -3442,9 +3221,6 @@ msgstr ""
 
 msgid "Monthly traffic warning must be a number."
 msgstr "Maandelijkse verkeerslimietswaarschuwing dient een nummer te zijn."
-
-msgid "More Details"
-msgstr "Meer details"
 
 msgid "Mount"
 msgstr "Aanhechtingspunt"
@@ -3482,6 +3258,10 @@ msgstr "Nieuwe SQL-gebruikersinformatie"
 msgid "New alias order for {CUSTOMER}"
 msgstr "Nieuwe aliasorder voor {CUSTOMER}"
 
+#, php-format
+msgid "New login data were sent to the %s user."
+msgstr ""
+
 msgid "New ticket"
 msgstr "Nieuw ticket"
 
@@ -3509,9 +3289,6 @@ msgstr "Geen beschikbaar"
 msgid "No custom menu found."
 msgstr "Geen eigen menu gevonden."
 
-msgid "No database update available."
-msgstr "Geen databankupdate beschikbaar."
-
 msgid "No domain available for new software instance."
 msgstr "Geen domein beschikbaar voor nieuwe software."
 
@@ -3526,6 +3303,9 @@ msgstr "Geen groep gevonden."
 
 msgid "No hosting plan available."
 msgstr "Geen webhostingpakket beschikbaar."
+
+msgid "No mail account has been deleted."
+msgstr ""
 
 msgid "No reseller available to add the permissions."
 msgstr "Geen wederverkoper beschikbaar om rechten toe te voegen."
@@ -3574,20 +3354,23 @@ msgstr "Geen gebruikers gevonden voor deze wederverkoper."
 msgid "No."
 msgstr "Nr."
 
-msgid "None"
-msgstr "Geen"
-
 msgid "Normal"
 msgstr "Normaal"
+
+msgid "Normal & Forward"
+msgstr ""
+
+msgid "Normal & forward account"
+msgstr ""
 
 msgid "Normal + Forward"
 msgstr "Normaal + Doorsturen"
 
+msgid "Normal account"
+msgstr ""
+
 msgid "Normal connection"
 msgstr "Normale verbinding"
-
-msgid "Normal users"
-msgstr "Normale gebruikers"
 
 msgid "Not Found"
 msgstr "Niet gevonden"
@@ -3622,16 +3405,8 @@ msgstr "Opmerkingen, Waarschuwingen en Fouten"
 msgid "Ok"
 msgstr "Oké"
 
-msgid "One or more database updates are now available. See the details below."
-msgstr ""
-"Een of meerdere databankupdates zijn beschikbaar. Meer informatie hier "
-"onder."
-
 msgid "Only 'tar.gz' archives are accepted."
 msgstr "Enkel 'tar.gz'-archieven worden geaccepteerd."
-
-msgid "Only administrators can login when maintenance mode is activated."
-msgstr "Enkel beheerders kunnen inloggen als onderhoudsmodus aan staat."
 
 msgid "Only exec"
 msgstr "Enkel exec"
@@ -3797,17 +3572,11 @@ msgstr "Wachtwoord"
 msgid "Password cannot be empty."
 msgstr "Wachtwoord kan niet leeg zijn."
 
-msgid "Password cannot be longer than 30 characters."
-msgstr "Wachtwoord mag niet langer dan 30 tekens zijn."
-
 msgid "Password confirmation"
 msgstr "Wachtwoord bevestigen"
 
 msgid "Password contains unallowed characters."
 msgstr "Wachtwoord bevat tekens die niet worden toegestaan."
-
-msgid "Password data"
-msgstr "Wachtwoordinformatie"
 
 msgid "Password email"
 msgstr "Wachtwoordmail"
@@ -3815,20 +3584,15 @@ msgstr "Wachtwoordmail"
 msgid "Password is missing."
 msgstr "Wachtwoord ontbreekt"
 
-#, php-format
-msgid "Password is shorter than %s characters."
-msgstr "Wachtwoord is korter dan %s tekens."
-
 msgid "Password minimum length"
 msgstr "Minimum wachtwoordlengte"
 
 #, php-format
-msgid ""
-"Password must be at least %s characters long and contain letters and numbers"
-" to be valid."
+msgid "Password must be between %d and %d characters."
 msgstr ""
-"Wachtwoord dient minimaal %s tekens lang zijn en dient zowel letters en "
-"cijfers bevatten om geldig te zijn."
+
+msgid "Password must contain letters and digits."
+msgstr ""
 
 msgid "Password settings"
 msgstr "Wachtwoordinstellingen"
@@ -3857,8 +3621,8 @@ msgstr "Rechten"
 msgid "Personal data"
 msgstr "Persoonlijke gegevens"
 
-msgid "Personal data successfully updated."
-msgstr "Persoonlijke informatie succesvol bijgewerkt"
+msgid "Personal data were updated."
+msgstr ""
 
 msgid "Personalise template"
 msgstr "Personaliseer template"
@@ -3893,6 +3657,9 @@ msgstr ""
 "dit pakket te gebruiken.<br>Het is niet toegestaan om dit pakket twee keer "
 "te uploaden.<br>Herlaad uw site om de nieuwe status te zien!"
 
+msgid "Please edit your autoresponder message below"
+msgstr ""
+
 msgid "Please enter a name for the protected area."
 msgstr "Geef een naam op voor de beveiligde map."
 
@@ -3908,8 +3675,8 @@ msgstr "Vul een gebruikersnaam in."
 msgid "Please enter protected area path."
 msgstr "Vult u hier het pad in naar de beveiligde map."
 
-msgid "Please enter your auto-responder message below"
-msgstr "Vul uw auto-beantwoorderbericht in"
+msgid "Please enter your autoresponder message below"
+msgstr ""
 
 msgid "Please fill up both data fields for password."
 msgstr "Vult u beide wachtwoordvelden in"
@@ -4195,9 +3962,6 @@ msgstr "Privésleutel"
 msgid "Private key passphrase if any"
 msgstr "Indien aanwezig: wachtwoordzin voor privésleutel"
 
-msgid "Process update"
-msgstr "Procesupdate"
-
 msgid "Processing..."
 msgstr "Verwerken..."
 
@@ -4218,6 +3982,9 @@ msgstr ""
 
 msgid "Protect"
 msgstr "Beveilig"
+
+msgid "Protect default mail accounts against change and removal"
+msgstr ""
 
 msgid "Protect this plugin"
 msgstr "Beveilig deze invoegtoepassing"
@@ -4249,8 +4016,11 @@ msgstr "Beveiligde mappen"
 msgid "Protocol"
 msgstr "Protocol"
 
-msgid "Quota in MiB (0 for unlimited)"
-msgstr "Quota in MB (vul 0 in voor ongelimiteerd)"
+msgid "Quota in MiB (0 ∞"
+msgstr ""
+
+msgid "Quota in MiB (0 ∞)"
+msgstr ""
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
@@ -4277,8 +4047,8 @@ msgstr "Record-gegevens"
 msgid "Redirect"
 msgstr "Doorsturen naar"
 
-msgid "Redistribute unused quota across existing mailboxes"
-msgstr "Herdistribueer ongebruikte quota over bestaande mailboxen"
+msgid "Redistribute unused quota across existing mail accounts"
+msgstr ""
 
 msgid "Registration date"
 msgstr "Registratiedatum"
@@ -4497,9 +4267,6 @@ msgstr "Herstel"
 msgid "Restore backup"
 msgstr "Herstel laatste back-up"
 
-msgid "Revision date"
-msgstr "Laatst bijgewerkt"
-
 msgid "Rights"
 msgstr "Rechten"
 
@@ -4524,9 +4291,6 @@ msgstr "SQL"
 msgid "SQL database"
 msgstr "SQL-databank"
 
-msgid "SQL database limit"
-msgstr "SQL-databanklimiet"
-
 msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr "SQL-databanklimiet is uitgeschakeld, maar SQL-gebruikerslimiet niet."
 
@@ -4548,6 +4312,15 @@ msgstr "SQL-databank succesvol verwijderd."
 msgid "SQL databases"
 msgstr "MySQL-databanken"
 
+msgid "SQL databases limit"
+msgstr ""
+
+msgid "SQL databases limit is disabled."
+msgstr ""
+
+msgid "SQL databases limit is not disabled."
+msgstr ""
+
 msgid "SQL databases only"
 msgstr "Enkel SQL-databanken"
 
@@ -4556,9 +4329,6 @@ msgstr "SQL-gebruiker"
 
 msgid "SQL user host"
 msgstr "SQL-gebruikershost"
-
-msgid "SQL user limit"
-msgstr "SQL-gebruikerslimiet"
 
 msgid "SQL user limit is <i>disabled</i>."
 msgstr "SQL-gebruikerslimiet is <i>uitgeschakeld</i>."
@@ -4589,6 +4359,12 @@ msgstr "SQL-gebruikersnaam is te lang."
 
 msgid "SQL users"
 msgstr "MySQL-gebruikers"
+
+msgid "SQL users limit"
+msgstr ""
+
+msgid "SQL users limit is disabled."
+msgstr ""
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "SSL-certificaat wordt toegevoegd."
@@ -4643,9 +4419,6 @@ msgstr "Verstuur bericht"
 msgid "Send message to"
 msgstr "Verstuur bericht naar"
 
-msgid "Send new login data"
-msgstr "Verstuur nieuwe logininformatie"
-
 msgid "Send reply"
 msgstr "Verstuur antwoord"
 
@@ -4664,12 +4437,8 @@ msgstr "Afzender naam"
 msgid "Sender name is missing."
 msgstr "Naam afzender mist"
 
-msgid "Separate multiple email addresses by comma or a line-break."
+msgid "Separate addresses by a comma, line-break or space."
 msgstr ""
-"Scheid meerdere e-mailadressen met een komma of een lijn-onderbreking."
-
-msgid "Separate multiple email addresses with a line-break."
-msgstr "Scheid meerdere e-mailadressen met een lijnonderbreking."
 
 msgid "Server ports"
 msgstr "Serverpoorten"
@@ -4679,15 +4448,6 @@ msgstr "Serversstatistieken"
 
 msgid "Server status"
 msgstr "Serverstatus"
-
-msgid "Server traffic"
-msgstr "Serververkeer"
-
-msgid "Server traffic settings"
-msgstr "Serververkeer-instellingen"
-
-msgid "Server traffic settings successfully updated."
-msgstr "Instellingen van serververkeer succesvol bijgewerkt."
 
 msgid "Service Name"
 msgstr "Servicenaam"
@@ -4735,11 +4495,11 @@ msgstr "Weergeven"
 msgid "Show %s records per page"
 msgstr "Toon %s records per pagina"
 
-msgid "Show HTML output compression size comment"
-msgstr "Toon opmerking over grootte van HTML-outputcompressie"
-
 msgid "Show SSL certificate"
 msgstr "Toon SSL-certificaat"
+
+msgid "Show default mail accounts"
+msgstr ""
 
 msgid "Show detailed statistics for this reseller"
 msgstr "Gedetailleerde statistieken voor deze wederverkoper tonen"
@@ -4901,24 +4661,8 @@ msgstr "Fouten bij subdomeinalias"
 msgid "Subdomain alias scheduled for deletion."
 msgstr "Subdomeinalias wordt verwijderd."
 
-msgid ""
-"Subdomain alias you are trying to remove has Ftp accounts. Please remove "
-"them first."
-msgstr ""
-"Het subdomein dat u probeert te verwijderen heeft FTP-accounts. Verwijder "
-"deze eerst en probeer het vervolgens opnieuw."
-
 msgid "Subdomain errors"
 msgstr "Subdomeinfouten"
-
-msgid "Subdomain forward"
-msgstr "Doorsturen subdomein"
-
-msgid "Subdomain limit"
-msgstr "Subdomeinlimiet"
-
-msgid "Subdomain mail"
-msgstr "Subdomein-e-mail"
 
 msgid "Subdomain name"
 msgstr "Subdomeinnaam"
@@ -4936,26 +4680,19 @@ msgid "Subdomain successfully scheduled for update"
 msgstr "Subdomein wordt bijgewerkt"
 
 msgid ""
-"Subdomain you are trying to remove has Ftp accounts. Remove them first."
-msgstr ""
-"Het subdomein dat u probeert te verwijderen heeft FTP-accounts. Verwijder ze"
-" eerst."
-
-msgid ""
-"Subdomain you are trying to remove has email accounts. Please remove them "
+"Subdomain you are trying to remove has mail accounts. Please remove them "
 "first."
 msgstr ""
-"Het subdomens dat u probeert te verwijderen heeft nog E-mailaccounts. "
-"Verwijder deze eerst en probeer het vervolgens opnieuw."
 
 msgid ""
-"Subdomain you are trying to remove has email accounts. Remove them first."
+"Subdomain you are trying to remove has mail accounts. Remove them first."
 msgstr ""
-"Het subdomein dat u probeert te verwijderen heeft e-mailaccounts. Verwijder "
-"ze eerst."
 
 msgid "Subdomains"
 msgstr "Subdomeinen"
+
+msgid "Subdomains limit"
+msgstr ""
 
 msgid "Subject"
 msgstr "Onderwerp"
@@ -4986,9 +4723,6 @@ msgstr "Verander van gebruiker"
 
 msgid "Sync quota info"
 msgstr "Synchroniseer quota-informatie"
-
-msgid "Syntax error found in mail forward list."
-msgstr "Syntaxis-fout gevonden in de doorstuurlijst."
 
 msgid "System"
 msgstr "Systeem"
@@ -5028,6 +4762,14 @@ msgstr "Doelpoort moet een getal zijn."
 
 msgid "Temporary folder not found."
 msgstr "Tmp map niet gevonden"
+
+#, php-format
+msgid "The  %s field cannot be empty."
+msgstr ""
+
+#, php-format
+msgid "The %s field cannot be empty."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5073,6 +4815,12 @@ msgstr "Het vertalingsbestand %s wordt overgeslagen: Vertaaltabel is leeg."
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr "De `%s' SQL-gebruiker is niet beschikbaar of niet toegestaan."
+
+#, php-format
+msgid "The configuration parameter has been updated."
+msgid_plural "%d configuration parameters were updated"
+msgstr[0] ""
+msgstr[1] ""
 
 #, php-format
 msgid ""
@@ -5129,6 +4877,15 @@ msgid ""
 msgstr ""
 "De wederverkoper die u wil verwijderen heeft een of meerdere klantaccounts "
 "onder zich, verplaats of verwijder deze eerst."
+
+msgid ""
+"The subdomain alias you are trying to remove has FTP accounts. Please remove"
+" them first."
+msgstr ""
+
+msgid ""
+"The subdomain you are trying to remove has FTP accounts. Remove them first."
+msgstr ""
 
 msgid "The uploaded file was only partially uploaded."
 msgstr "Het geüploade bestand is maar voor een deel geüpload."
@@ -5200,6 +4957,9 @@ msgstr ""
 "Dit is de host waarvan deze SQL-gebruiker moet kunnen verbinden met de SQL-"
 "server. Gebruik de %s wildcard om deze gebruiker vanaf alle hosts te kunnen "
 "laten verbinden."
+
+msgid "This mail account is protected against both edition and deletion."
+msgstr ""
 
 msgid "This package already exists in the administrator software repository."
 msgstr "Dit pakket bestaat al in de softwareberging voor beheerders."
@@ -5277,12 +5037,12 @@ msgstr "Totaal software"
 msgid "Total Web software repositories"
 msgstr "Totaal aantal softwaredepots"
 
+#, php-format
+msgid "Total accounts: %s / %s"
+msgstr ""
+
 msgid "Total installations"
 msgstr "Totaal installaties"
-
-#, php-format
-msgid "Total mails: %s / %s %s"
-msgstr "Totaal aantal e-mails: %s / %s %s"
 
 msgid "Total packages in Web software repository"
 msgstr "Totaal aantal pakketten in softwareberging"
@@ -5298,9 +5058,6 @@ msgstr "Verkeer"
 
 msgid "Traffic statistics"
 msgstr "Verkeersstatistieken"
-
-msgid "Traffic usage"
-msgstr "Dataverbruik"
 
 msgid "Translated strings"
 msgstr "Vertaalde tekenreeksen"
@@ -5464,9 +5221,6 @@ msgstr "Onbekend type."
 msgid "Unknown username."
 msgstr "Onbekende gebruikersnaam."
 
-msgid "Unlimited"
-msgstr "Ongelimiteerd"
-
 msgid "Update"
 msgstr "Opslaan"
 
@@ -5475,9 +5229,6 @@ msgstr "Werk invoegtoepassingen bij"
 
 msgid "Update SQL user password"
 msgstr "Werk SQL-gebruikerswachtwoord bij"
-
-msgid "Update data"
-msgstr "Werk gegevens bij"
 
 msgid "Update from Web software repository"
 msgstr "Bijwerken vanuit softwareberging"
@@ -5543,23 +5294,11 @@ msgstr "Gebruikers(voor- en achter-)naam"
 msgid "User assignment"
 msgstr "Gebruikerstoekenning"
 
-msgid "User data successfully updated"
-msgstr "Gebruikersgegevens succesvol bijgewerkt"
-
-msgid "User data successfully updated."
-msgstr "Gebruikersgegevens succesvol bijgewerkt."
-
 msgid "User data were not updated."
 msgstr "Gebruikersgegevens zijn niet bijgewerkt."
 
 msgid "User data were successfully updated."
 msgstr "Gebruikersgegevens zijn succesvol bijgewerkt."
-
-msgid ""
-"User do not exist or you do not have permission to access this interface"
-msgstr ""
-"Gebruiker bestaat niet of u heeft geen rechten om deze interface te "
-"gebruiken"
 
 msgid "User errors"
 msgstr "Gebruikersfouten."
@@ -5599,6 +5338,10 @@ msgstr "Gebruikersnaam"
 
 msgid "Username and password for application login"
 msgstr "Gebruikersnaam en wachtwoord voor toepassingslogin."
+
+#, php-format
+msgid "Username must be between %d and %d characters"
+msgstr ""
 
 msgid "Users"
 msgstr "Gebruikers"
@@ -5708,9 +5451,6 @@ msgstr ""
 "Wanneer ingesteld op 'Handmatig', dan dient de beheerder de IP-adressen "
 "handmatig te configureren en beheren op de server."
 
-msgid "Wrong mail syntax in forward list."
-msgstr "Verkeerde syntax in doorstuurlijst."
-
 msgid "Wrong or unallowed IP address."
 msgstr "Fout of niet toegestaan IP-adres."
 
@@ -5763,35 +5503,38 @@ msgstr "YiB"
 msgid "You are exceeding the monthly server traffic limit."
 msgstr "U overschrijdt uw maandelijkse serververkeerslimitet."
 
-msgid "You are exceeding you domain alias limit."
-msgstr "U overschrijdt uw domeinaliaslimiet."
+msgid "You are exceeding you domain aliases limit."
+msgstr ""
 
-msgid "You are exceeding your FTP account limit."
-msgstr "U overschrijdt uw FTP-accountlimiet."
+msgid "You are exceeding your FTP accounts limit."
+msgstr ""
 
-msgid "You are exceeding your SQL database limit."
-msgstr "U overschrijdt uw SQL-databanklimiet."
+msgid "You are exceeding your SQL databases limit."
+msgstr ""
 
-msgid "You are exceeding your SQL user limit."
-msgstr "U overschrijdt uw SQL-gebruikerslimiet."
+msgid "You are exceeding your SQL users limit."
+msgstr ""
 
 msgid "You are exceeding your disk space limit."
 msgstr "U overschrijdt uw schijfruimtelimiet."
 
-msgid "You are exceeding your email account limit."
-msgstr "U overschrijdt uw e-mailaccountlimiet."
+msgid "You are exceeding your mail accounts limit."
+msgstr ""
 
 msgid "You are exceeding your monthly traffic limit."
 msgstr "U overschrijdt uw maandelijkse verkeerslimiet."
 
-msgid "You are exceeding your subdomain limit."
-msgstr "U overschrijdt uw subdomeinlimiet."
+msgid "You are exceeding your subdomains limit."
+msgstr ""
 
 msgid "You are not allowed to act on your own session."
 msgstr "U heeft geen rechten om te handelen in uw eigen sessie."
 
 msgid "You can only upload images."
 msgstr "U kunt alleen afbeeldingen uploaden."
+
+msgid "You can select has many addresses as you want."
+msgstr ""
 
 msgid ""
 "You can set an alternative document root. This is mostly needed when using a"
@@ -5804,26 +5547,18 @@ msgstr ""
 "map te vinden zijn en moet reeds bestaan."
 
 msgid ""
-"You cannot add normal email account because you have already assigned all "
-"your email quota to other mailboxes. If you want to add a new normal email "
+"You cannot add normal mail account because you have already assigned all "
+"your email quota to other mailboxes. If you want to add a new normal mail "
 "account, you must first lower the quota assigned to one of your other "
 "mailboxes."
 msgstr ""
-"U kunt geen normaal e-mailaccount aanmaken, omdat alle MB's uit uw quota "
-"reeds zijn toegewezen aan andere e-mailaccounts. Indien u een normaal "
-"account wilt aanmaken, dient u eerst de toegewezen MB's van een andere "
-"e-mail weg te halen, alvorens een nieuw account aan te maken."
 
 msgid ""
-"You cannot change this account to normal email account because you have "
-"already assigned all your email quota to other mailboxes. If you want to "
-"change this account to normal email account, you must first lower the quota "
-"assigned to one of your other mailboxes."
+"You cannot change this account to normal mail account because you have "
+"already assigned all your mail quota to other mail accounts. If you want to "
+"change this account to normal mail account, you must first lower the quota "
+"assigned to one of your other mail accounts."
 msgstr ""
-"U kunt van dit adres geen normaal e-mailaccount maken, omdat alle MB's uit "
-"uw quota reeds zijn toegewezen aan andere e-mailaccounts. Indien u van dit "
-"adres een normaal account wilt maken, dient u eerst de toegewezen MB's van "
-"een andere e-mail weg te halen, alvorens deze wijziging uit te voeren."
 
 msgid ""
 "You cannot create new mailboxes for that domain. Only forwarded mail "
@@ -5896,24 +5631,18 @@ msgid "You do not have subdomains."
 msgstr "U heeft geen subdomeinen."
 
 msgid ""
-"You have a FTP account limit. You cannot add a user with unlimited FTP "
+"You have a FTP accounts limit. You cannot add a user with unlimited FTP "
 "accounts."
 msgstr ""
-"U heeft een FTP-accountlimiet, u kunt geen klanten met een onbeperkt aantal "
-"FTP-accounts hebben."
 
 msgid ""
-"You have a SQL database limit. You cannot add a user with unlimited SQL "
+"You have a SQL databases limit. You cannot add a user with unlimited SQL "
 "databases."
 msgstr ""
-"U heeft een SQL-databanklimiet, u kunt geen klanten met een onbeperkt aantal"
-" SQL-databanke hebben."
 
 msgid ""
-"You have a SQL user limit. You cannot add a user with unlimited SQL users."
+"You have a SQL users limit. You cannot add a user with unlimited SQL users."
 msgstr ""
-"U heeft een SQL-gebruikerslimiet, u kunt geen klanten met een onbeperkt "
-"aantal SQL-gebruikers hebben."
 
 msgid ""
 "You have a disk space limit. You cannot add a user with unlimited disk "
@@ -5923,18 +5652,14 @@ msgstr ""
 " hebben."
 
 msgid ""
-"You have a domain alias limit. You cannot add a user with unlimited domain "
-"aliases."
+"You have a domain aliases limit. You cannot add a user with unlimited domain"
+" aliases."
 msgstr ""
-"U heeft een limiet aan domeinaliassen, u kunt geen klanten met een onbeperkt"
-" aantal domeinaliassen hebben."
 
 msgid ""
-"You have a mail account limit. You cannot add a user with unlimited email "
+"You have a mail accounts limit. You cannot add a user with unlimited mail "
 "accounts."
 msgstr ""
-"U heeft een limiet aan mailaccounts, u kunt geen klanten met een onbeperkt "
-"aantal mailaccounts hebben."
 
 msgid ""
 "You have a monthly traffic limit. You cannot add a user with unlimited "
@@ -5962,10 +5687,9 @@ msgstr[0] "U heeft een nieuw ondersteuningsticket."
 msgstr[1] "U heeft %d nieuwe ondersteuningstickets."
 
 msgid ""
-"You have a subdomain limit. You cannot add a user with unlimited subdomains."
+"You have a subdomains limit. You cannot add a user with unlimited "
+"subdomains."
 msgstr ""
-"U heeft een limiet aan subdomeinen, u kunt geen klanten met een onbeperkt "
-"aantal subdomeinenhebben."
 
 #, php-format
 msgid "You have been blocked for %s minutes."
@@ -6000,18 +5724,17 @@ msgstr ""
 "U heeft het maximale aantal domein aliassen bereikt conform uwabbonnement"
 
 msgid ""
-"You have reached the maximum number of email accounts allowed by your "
+"You have reached the maximum number of mail accounts allowed by your "
 "subscription."
 msgstr ""
-"U heeft het maximale aantal email accounts bereikt conform uw abonnement"
 
 msgid ""
 "You have reached the maximum number of subdomains allowed by your "
 "subscription."
 msgstr "U heeft het maximale aantal subdomeinen voor uw abonnement bereikt."
 
-msgid "You have reached your domain limit. You cannot add more domains."
-msgstr "U heeft het domeinlimiet bereikt, u kunt geen domeinen meer toevoegen"
+msgid "You have reached your domains limit. You cannot add more domains."
+msgstr ""
 
 msgid "You have to choose between file-upload and wget-function."
 msgstr "U dient te kiezen tussen bestandsupload en wget-functie."
@@ -6048,11 +5771,11 @@ msgstr "U dient een bestand te selecteren om te uploaden."
 msgid "You must select a file to upload/download."
 msgstr "U dient een bestand te selecteren om te uploaden/downloaden."
 
-msgid "You must select a least one mail account to delete"
-msgstr "U moet minimaal één mailaccount selecteren om te verwijderen."
-
 msgid "You must select a least one mail account to delete."
 msgstr "U dient tenminste één e-mailaccount te selecteren om te verwijderen."
+
+msgid "You must select at least one catch-all addresses."
+msgstr ""
 
 msgid "You must select at least one plugin."
 msgstr "Selecteer minimaal 1 invoegtoepassing."
@@ -6111,9 +5834,8 @@ msgid "Your package is corrupt. Please correct it!"
 msgstr "Uw pakket is corrupt. Gelieve het te corrigeren!"
 
 msgid ""
-"Your password has been successfully scheduled for renewal. Check your "
-"emails."
-msgstr "Uw wachtwoord wordt vernieuwd. Controleer uw e-mail."
+"Your password has been successfully scheduled for renewal. Check your mails."
+msgstr ""
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
@@ -6129,11 +5851,9 @@ msgstr ""
 "minuten."
 
 msgid ""
-"Your request for password renewal has been registered. You will receive an "
-"email with instructions to complete the process."
+"Your request for password renewal has been registered. You will receive a "
+"mail with instructions to complete the process."
 msgstr ""
-"Uw wachtwoordaanvraag is ontvangen. U ontvangt een e-mail met instructies "
-"hoe dit proces af te ronden."
 
 msgid "Your request for password renewal is either invalid or has expired."
 msgstr "Uw wachtwoordaanvraag klopt niet of is verlopen."
@@ -6171,10 +5891,6 @@ msgstr "[Re]"
 msgid "_: Localised language"
 msgstr "Nederlands - Dutch"
 
-#, php-format
-msgid "`%s` field cannot be empty."
-msgstr "`%s`-veld kan niet leeg zijn."
-
 msgid "activated"
 msgstr "geactiveerd"
 
@@ -6193,20 +5909,20 @@ msgstr "en"
 msgid "anything"
 msgstr "alle"
 
+msgid "catch-all"
+msgstr ""
+
 msgid "city"
 msgstr "plaats"
 
 msgid "company"
-msgstr ""
+msgstr "bedrijf"
 
 msgid "country"
 msgstr "land"
 
 msgid "created by"
 msgstr "aangemaakt door"
-
-msgid "customer ID"
-msgstr "klantnummer"
 
 msgid "day"
 msgstr "dag"
@@ -6241,12 +5957,6 @@ msgstr "domeinnaam"
 msgid "domains"
 msgstr "domeinen"
 
-msgid "email account"
-msgstr "E-mailaccount"
-
-msgid "email accounts"
-msgstr "E-mailaccounts"
-
 msgid "enabled"
 msgstr "ingeschakeld"
 
@@ -6264,9 +5974,6 @@ msgstr "vanaf andere browser"
 
 msgid "i-MSCP - Application Management (Permissions)"
 msgstr "i-MSCP - Applicatiebeheer (Rechten)"
-
-msgid "i-MSCP - Client/Create CatchAll Mail Account"
-msgstr "Klant / Catch-all E-Mailaccount maken"
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
 msgstr "i-MSCP - Multi Server Control Panel / Inloggen"
@@ -6328,6 +6035,9 @@ msgstr "achternaam"
 msgid "mail"
 msgstr "E-mail"
 
+msgid "mail account"
+msgstr ""
+
 msgid "mail accounts"
 msgstr "e-mailaccounts"
 
@@ -6336,9 +6046,6 @@ msgstr "ontbrekende alias"
 
 msgid "missing domain"
 msgstr "ontbrekend domein"
-
-msgid "n/a"
-msgstr "n/b"
 
 msgid "n\\a"
 msgstr "N/B"
@@ -6406,9 +6113,6 @@ msgstr "Verkeer"
 
 msgid "udp"
 msgstr "UDP"
-
-msgid "unlimited"
-msgstr "ongelimiteerd"
 
 msgid "update"
 msgstr "bijwerken"

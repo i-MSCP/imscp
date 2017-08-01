@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-07-20 16:43+0000\n"
+"POT-Creation-Date: 2017-08-01 12:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Aleksandr Sidenko <fox4ua@ya.ru>, 2017\n"
 "Language-Team: Ukrainian (Ukraine) (https://www.transifex.com/i-mscp/teams/576/uk_UA/)\n"
@@ -39,36 +39,12 @@ msgid "$ORIGIN value is currently set to: %s"
 msgstr ""
 
 #, php-format
-msgid "%%s cannot be greater than %%s."
+msgid "%%s / %s"
 msgstr ""
 
 #, php-format
-msgid "%1$d / %2$d"
-msgstr "%1$d / %2$d"
-
-#, php-format
-msgid "%1$d / %2$d of %3$d"
-msgstr "%1$d / %2$d из %3$d"
-
-#, php-format
-msgid "%1$d / %2$d of %3$d</b>"
-msgstr "%1$d / %2$d из %3$d</b>"
-
-#, php-format
-msgid "%1$d / %2$d of unlimited"
-msgstr "%1$d / %2$d із не обмежено"
-
-#, php-format
-msgid "%1$d of %2$d"
-msgstr "%1$d из %2$d"
-
-#, php-format
-msgid "%1$d%% [%2$s of %3$s]"
-msgstr "%1$d%% [%2$s з %3$s]"
-
-#, php-format
-msgid "%1$d%% [%2$s of unlimited]"
-msgstr "%1$d%% [%2$s із не обмежено]"
+msgid "%%s cannot be greater than %%s."
+msgstr ""
 
 #, php-format
 msgid "%1$s (%2$s)"
@@ -83,28 +59,8 @@ msgid "%1$s - (Version: %2$s, Language: %3$s)"
 msgstr "%1$s - (Версія: %2$s, Мова: %3$s)"
 
 #, php-format
-msgid "%1$s / %2$s"
-msgstr "%1$s / %2$s"
-
-#, php-format
-msgid "%1$s / %2$s of %3$s"
-msgstr "%1$s / %2$s из %3$s"
-
-#, php-format
-msgid "%1$s / %2$s of unlimited"
-msgstr "%1$s / %2$s із не обмежено"
-
-#, php-format
 msgid "%1$s you are now logged as %2$s"
 msgstr "%1$s ви увійшли як %2$s"
-
-#, php-format
-msgid "%1$s%% [%2$s of %3$s]"
-msgstr "%1$s%% [%2$s из %3$s]"
-
-#, php-format
-msgid "%1$s%% [%2$s of unlimited]"
-msgstr "%1$s%% [%2$s із не обмежено]"
 
 #, php-format
 msgid "%1$ss - Software"
@@ -115,32 +71,20 @@ msgid "%d %s remaining until account expiration"
 msgstr "%d %s до истечения срока"
 
 #, php-format
-msgid "%d / unlimited"
-msgstr "%d / не ограничено"
-
-#, php-format
 msgid "%d Service(s) port successfully updateds"
 msgstr "%d Порт(ов) служб были успешно обновлены"
-
-#, php-format
-msgid "%d configuration parameter(s) have/has been created."
-msgstr "%d параметр(ів) конфігурації було створено."
-
-#, php-format
-msgid "%d configuration parameter(s) have/has been updated."
-msgstr "%d параметр(ів) конфігурації було оновлено."
-
-#, php-format
-msgid "%d of %s"
-msgstr "%d из %s"
 
 #, php-format
 msgid "%d strings translated"
 msgstr "Переведено %d строк "
 
 #, php-format
-msgid "%s / unlimited"
-msgstr "%s / не ограничено"
+msgid "%s / %s"
+msgstr ""
+
+#, php-format
+msgid "%s / ∞"
+msgstr ""
 
 #, php-format
 msgid "%s account successfully deleted."
@@ -163,14 +107,6 @@ msgid "%s is not allowed as subdomain label."
 msgstr "%s не разрешено использовать в качестве ярлыка поддомена"
 
 #, php-format
-msgid "%s of %s"
-msgstr "%s из %s"
-
-#, php-format
-msgid "%s of unlimited"
-msgstr "%s из не ограничено"
-
-#, php-format
 msgid "%s page"
 msgstr "%s страница"
 
@@ -181,6 +117,22 @@ msgstr "%s запис"
 #, php-format
 msgid "%s webmail"
 msgstr "Веб-почта %s "
+
+#, php-format
+msgid "%s%% [%s / %s]"
+msgstr ""
+
+#, php-format
+msgid "%s%% [%s / ∞]"
+msgstr ""
+
+#, php-format
+msgid "%s%% [%s of %3$s]"
+msgstr ""
+
+#, php-format
+msgid "%s%% [%s of ∞]"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -217,187 +169,8 @@ msgstr ""
 "%s::getInfo() не реализован и %s не найден. Это баг плагина %s , и он должен"
 " быть отправлен автору(ам) плагина."
 
-#, php-format
-msgid ""
-"'%%hostname%%' does not appear to have a valid MX record for the email "
-"address '%%value%%'"
+msgid "(default)"
 msgstr ""
-"'%%hostname%%' имеет неверную MX запись для электронного адреса '%%value%%'"
-
-#, php-format
-msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
-msgstr ""
-"'%%hostname%%' - неверное имя хоста для электронного адреса '%%value%%'"
-
-#, php-format
-msgid ""
-"'%%hostname%%' is not in a routable network segment. The email address "
-"'%%value%%' should not be resolved from public network"
-msgstr ""
-"'%%hostname%%' - немаршрутизируемый сегмент сети. Электронный адрес "
-"'%%value%%' не будет доступен из всемирной сети"
-
-#, php-format
-msgid "'%%localPart%%' can not be matched against dot-atom format"
-msgstr "'%%localPart%%' cне соответствует формату dot-atom"
-
-#, php-format
-msgid "'%%localPart%%' can not be matched against quoted-string format"
-msgstr "'%%localPart%%' не соответствует формату quoted-string"
-
-#, php-format
-msgid "'%%localPart%%' is no valid local part for email address '%%value%%'"
-msgstr ""
-"'%%localPart%%' неверная локальная часть для электронного адреса '%%value%%'"
-
-#, php-format
-msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
-msgstr "'%%value%%' является DNS именем узла, но не может извлечь TLD часть"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a DNS hostname but cannot match TLD against known "
-"list"
-msgstr ""
-"'%%value%%'  является DNS именем узла, но оно не дожно быть из TLD-списка"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a DNS hostname but cannot match against hostname "
-"schema for TLD '%%tld%%'"
-msgstr ""
-"'%%value%%'  является DNS именем узла, но не совпадает со схемой имен узла "
-"для TLD '%%tld%%'"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a DNS hostname but contains a dash in an invalid "
-"position"
-msgstr ""
-"'%%value%%'  является DNS именем узла, но знак '-' находится в неправильном "
-"месте"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a DNS hostname but the given punycode notation "
-"cannot be decoded"
-msgstr ""
-"'%%value%%' является DNS именем узла, но данный punycode не может быть "
-"раскодирован"
-
-#, php-format
-msgid "'%%value%%' appears to be a domain name but cannot extract TLD part"
-msgstr "'%%value%%' является доменным именем, но невозможно извлечь TLD часть"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a domain name but cannot match TLD against known "
-"list"
-msgstr ""
-"'%%value%%' является доменным именем, но оно не дожно быть из TLD-списка"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a domain name but cannot match against domain name"
-" schema for TLD '%%tld%%'"
-msgstr ""
-"'%%value%%' является доменным именем, но не совпадает со схемой имен узла "
-"для TLD '%%tld%%'"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a domain name but contains a dash in an invalid "
-"position"
-msgstr ""
-"'%%value%%' является доменным именем, но знак '-' находится в неправильном "
-"месте"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a domain name but the given punycode notation "
-"cannot be decoded"
-msgstr ""
-"'%%value%%' является доменным именем, но данный punycode не может быть "
-"раскодирован"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a local network name but local network names are "
-"not allowed"
-msgstr ""
-"'%%value%%' является именем сети, но локальные сетевые имена не разрешены "
-
-#, php-format
-msgid "'%%value%%' appears to be a subdomain name but cannot extract TLD part"
-msgstr "'%%value%%' является поддоменом, но не может извлечь TLD часть"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a subdomain name but cannot match TLD against "
-"known list"
-msgstr "'%%value%%' является поддоменом, но оно не дожно быть из TLD-списка"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a subdomain name but cannot match against "
-"subdomain schema for TLD '%%tld%%'"
-msgstr ""
-"'%%value%%' является поддоменом, но не совпадает со схемой имен узла для TLD"
-" '%%tld%%' "
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a subdomain name but contains a dash in an invalid"
-" position"
-msgstr ""
-"'%%value%%' является поддоменом, но знак '-' находится в неправильном месте"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a subdomain name but the given punycode notation "
-"cannot be decoded"
-msgstr ""
-"'%%value%%' является поддоменом, но данный punycode не может быть "
-"раскодирован"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be an IP address, but IP addresses are not allowed"
-msgstr "'%%value%%' является IP адресом, IP адреса запрещены."
-
-#, php-format
-msgid "'%%value%%' does not appear to be a valid IP address"
-msgstr "'%%value%%' является неверным IP адресом"
-
-#, php-format
-msgid "'%%value%%' does not appear to be a valid URI hostname"
-msgstr "'%%value%%' не является верным URI именем хоста"
-
-#, php-format
-msgid "'%%value%%' does not appear to be a valid local network name"
-msgstr "'%%value%%' не является верным локальным сетевым именем"
-
-#, php-format
-msgid "'%%value%%' does not match the expected structure for a DNS hostname"
-msgstr "'%%value%%' не соответствует ожидаемой структуре DNS-имени"
-
-#, php-format
-msgid "'%%value%%' does not match the expected structure for a domain name"
-msgstr "'%%value%%' не совпадает с ожидаемой структурой имени домена"
-
-#, php-format
-msgid "'%%value%%' does not match the expected structure for a subdomain name"
-msgstr "'%%value%%' не совпадает с ожидаемой структурой имени поддомена"
-
-#, php-format
-msgid "'%%value%%' exceeds the allowed length"
-msgstr "'%%value%%' превышает допустимую длину"
-
-msgid ""
-"'%%value%' is no valid email address in the basic format local-part@hostname"
-msgstr ""
-"'%%value%%' не является верным почтовым ящиком вида \"локальная-часть@имя-"
-"узла\""
 
 #, php-format
 msgid "(filtered from %s total records)"
@@ -429,11 +202,15 @@ msgstr ""
 msgid "A PHP extension stopped the file upload."
 msgstr "Расширение PHP остановило загрузку файла."
 
-msgid "A database update is available"
-msgstr "Доступно обновление базы данных."
-
 msgid "A hosting plan with same name already exists."
 msgstr "Хостинг-план с таким именем уже существует."
+
+#, php-format
+msgid "A new configuration parameter has been created."
+msgid_plural "%d configuration parameters were created"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "A new i-MSCP version is available"
 msgstr "Доступна новая версия i-MSCP"
@@ -462,9 +239,6 @@ msgstr "Ограничения учетной записи"
 msgid "Account name"
 msgstr "Ім'я облікового запису"
 
-msgid "Account overview"
-msgstr "Просмотр учетной записи"
-
 msgid "Account summary"
 msgstr "Учетная запись"
 
@@ -486,6 +260,9 @@ msgstr "Дії"
 msgid "Activate"
 msgstr "Активувати"
 
+msgid "Activate autoresponder"
+msgstr ""
+
 msgid "Activate this plugin"
 msgstr "Активировать плагин"
 
@@ -501,8 +278,8 @@ msgstr "Активационное письмо"
 msgid "Activation in progress..."
 msgstr "Активация в процессе..."
 
-msgid "Activation link expire time <small>(In minutes)</small>"
-msgstr "Время истечения ссылки активации <small>(В минутах)</small>"
+msgid "Activation link expire time in minutes"
+msgstr ""
 
 msgid "Add"
 msgstr "Додати"
@@ -531,8 +308,8 @@ msgstr "Добавить SSL сертификат"
 msgid "Add admin"
 msgstr "Додати адміністратора"
 
-msgid "Add catchall"
-msgstr "Добавить переадресацию"
+msgid "Add catch-all account"
+msgstr ""
 
 msgid "Add custom menu"
 msgstr "Добавить пользовательское меню"
@@ -546,14 +323,14 @@ msgstr "Добавить клиента - Следующий шаг"
 msgid "Add domain alias"
 msgstr "Додати аліас домена"
 
-msgid "Add email account"
-msgstr "Добавить почтовый ящик"
-
 msgid "Add group"
 msgstr "Добавить группу"
 
 msgid "Add hosting plan"
 msgstr "Додати хостинг-план"
+
+msgid "Add mail account"
+msgstr ""
 
 msgid "Add new IP address"
 msgstr "Добавить новый IP адрес"
@@ -630,11 +407,11 @@ msgstr "Администратор / Настройки / Языки"
 msgid "Admin / Settings / Lost Password Email"
 msgstr "Администратор / Настройки / Письмо восстановления пароля"
 
+msgid "Admin / Settings / Monthly Server Traffic"
+msgstr ""
+
 msgid "Admin / Settings / Plugin Management"
 msgstr "Администратор / Настройки / Управление плагинами"
-
-msgid "Admin / Settings / Server Traffic"
-msgstr "Администратор / Настройки / Трафик сервера"
 
 msgid "Admin / Settings / Service Ports"
 msgstr "Администратор / Настройки / Порты служб"
@@ -686,9 +463,6 @@ msgstr "Администратор / Служба поддержки / Прос�
 msgid "Admin / System Tools / Anti-Rootkits Logs"
 msgstr "Администратор / Системные инструменты / Логи антируткита"
 
-msgid "Admin / System Tools / Database Update"
-msgstr "Администратор / Системные инструменты / Обновление базы данных"
-
 msgid "Admin / System Tools / Debugger"
 msgstr "Администратор / Системные инструменты / Отладчик"
 
@@ -724,6 +498,9 @@ msgstr "Администратор / Пользователи / Обзор / Д�
 
 msgid "Admin / Users / Overview / Edit Admin"
 msgstr "Администратор / Пользователи / Обзор / Редактировать домен"
+
+msgid "Admin / Users / Overview / Edit Customer"
+msgstr ""
 
 msgid "Admin / Users / Resellers Assignment"
 msgstr "Администратор / Пользователи / Подтверждение реселлера"
@@ -782,21 +559,6 @@ msgid ""
 msgstr ""
 "После загрузки пакета, он будет установлен в вашу систему.<br>Обновите Ваш "
 "сайт, чтобы увидеть новый статус!"
-
-msgid "Alias forward"
-msgstr "Перенаправление алиаса"
-
-msgid "Alias mail"
-msgstr "алиас почты"
-
-msgid "Alias subdomain forward"
-msgstr "Перенаправление поддомена алиаса"
-
-msgid "Alias subdomain mail"
-msgstr "Почтовый ящик алиаса"
-
-msgid "Aliases"
-msgstr "Аліаси"
 
 msgid "All"
 msgstr "Усі"
@@ -862,9 +624,6 @@ msgstr "Альтернативный URL для доступа к сайту."
 msgid "Alternative URL to reach your website"
 msgstr "Альтернативный URL для доступа к сайту"
 
-msgid "An email addresse is not valid in mail forward list."
-msgstr "Неверный синтаксис почтового адреса в списке перенаправления."
-
 msgid "An unexpected error occurred"
 msgstr "Произошла неожиданная ошибка."
 
@@ -879,6 +638,10 @@ msgstr ""
 msgid "An unexpected error occurred. Please contact your reseller."
 msgstr ""
 "Произошла непредвиденная ошибка. Пожалуйста свяжитесь с Вашим реселлером."
+
+#, php-format
+msgid "An unexpected error occurred. Please contact your reseller. %s"
+msgstr ""
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -930,19 +693,12 @@ msgstr "Ви впевнені що хочете видалити %s?"
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Вы уверены, что хотите удалить все закрытые тикеты?"
 
-msgid "Are you sure you want to delete all selected mail accounts?"
-msgstr ""
-
 msgid "Are you sure you want to delete all tickets?"
 msgstr "Вы уверены, что хотите удалить все тикеты?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s FTP user?"
 msgstr "Вы уверены, что хотите удалить пользователя FTP %s ?"
-
-#, php-format
-msgid "Are you sure you want to delete the %s catch all?"
-msgstr "Вы уверены, что хотите удалить переадресацию %s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
@@ -976,6 +732,9 @@ msgid "Are you sure you want to delete this DNS record?"
 msgstr "Вы уверены, что хотите удалить эту DNS запись?"
 
 msgid "Are you sure you want to delete this account?"
+msgstr ""
+
+msgid "Are you sure you want to delete this catch-all account?"
 msgstr ""
 
 msgid "Are you sure you want to delete this domain alias?"
@@ -1042,20 +801,23 @@ msgstr "Автоматически"
 msgid "Auto (Browser language)"
 msgstr "Автоматически (язык браузера)"
 
-msgid "Auto responder"
-msgstr "Автоответчик"
+msgid "Automatic catch-all address"
+msgstr ""
 
-msgid "Auto-responder message cannot be empty."
-msgstr "Сообщение автоответчика не может быть пусто."
+msgid "Autoresponder"
+msgstr ""
 
-msgid "Auto-responder successfully scheduled for activation."
-msgstr "Автоответчик успешно помечен для активации."
+msgid "Autoresponder has been activated."
+msgstr ""
 
-msgid "Auto-responder successfully scheduled for deactivation."
-msgstr "Автоответчик успешно помечен для деактивации."
+msgid "Autoresponder has been deactivated."
+msgstr ""
 
-msgid "Auto-responder successfully scheduled for update."
-msgstr "Автоответчик успешно помечен для обновления."
+msgid "Autoresponder has been edited."
+msgstr ""
+
+msgid "Autoresponder message cannot be empty."
+msgstr ""
 
 msgid "Available"
 msgstr "Доступно"
@@ -1084,6 +846,12 @@ msgstr "Параметры резервного копирования."
 msgid "Backup has been successfully scheduled for restoration."
 msgstr "Резервная копия успешно помечена для восстановления."
 
+msgid "Bad email address in catch-all addresses field."
+msgstr ""
+
+msgid "Bad email address in forward list field."
+msgstr ""
+
 msgid "Bad password."
 msgstr "Неверный пароль."
 
@@ -1103,16 +871,14 @@ msgstr ""
 "доставки почты на другой почтовый сервер. Внимание, эта функция не изменяет "
 "записи DNS. Не забудьте изменить запись MX в настройках DNS."
 
-msgid ""
-"Blocking time between login/captcha attempts <small>(In seconds)</small>"
+msgid "Blocking time between login/captcha attempts in seconds"
 msgstr ""
-"Блокировка между попытками входа/ввода каптчи <small>(в секундах)</small>"
 
 msgid "Blocking time between logins and captcha attempts"
 msgstr "Время блокировки между попытками входа"
 
-msgid "Blocktime <small>(in minutes)</small>"
-msgstr "Время блокировки <small>(в минутах)</small>"
+msgid "Blocktime in minutes"
+msgstr ""
 
 msgid "Body"
 msgstr "Тело"
@@ -1158,17 +924,30 @@ msgstr "Скасування"
 msgid "Canonical name"
 msgstr "Канонічне ім'я"
 
-msgid "Catch all"
-msgstr "Перенаправлення пошти"
+msgid "Catch-all account"
+msgstr ""
 
-msgid "Catch all successfully scheduled for addition."
-msgstr "Сборщик почты домена помечен для добавления."
+msgid "Catch-all account successfully scheduled for deletion."
+msgstr ""
 
-msgid "Catch all successfully scheduled for deletion."
-msgstr "Сборщик почты успешно отмечен для удаления."
+msgid "Catch-all accounts"
+msgstr ""
 
-msgid "Catchall"
-msgstr "Перенаправление"
+msgid "Catch-all addresses"
+msgstr ""
+
+msgid "Catch-all addresses field cannot be empty."
+msgstr ""
+
+#, php-format
+msgid "Catch-all addresses for the %s domain"
+msgstr ""
+
+msgid "Catch-all domain"
+msgstr ""
+
+msgid "Catch-all successfully scheduled for addition."
+msgstr ""
 
 msgid "Certificate"
 msgstr "Сертификат"
@@ -1178,9 +957,6 @@ msgstr "Данные сертификата"
 
 msgid "Change"
 msgstr "Изменить"
-
-msgid "Change personal data"
-msgstr "Змінити персональні дані"
 
 msgid "Change status of this item for a new attempt"
 msgstr "Изменить статус данного элемента для новой попытки"
@@ -1311,30 +1087,6 @@ msgstr "Клиент / Домены / Настройки PHP"
 msgid "Client / Domains / SSL Certificate"
 msgstr "Клиент / Домены / SSL сертификаты"
 
-msgid "Client / Email / Add Email Account"
-msgstr "Клиент / Управление почтой / Добавить учетную запись"
-
-msgid "Client / Email / Catchall"
-msgstr "Клиент / Управление почтой / Перенаправление"
-
-msgid "Client / Email / Catchall / Add Catchall"
-msgstr "Клиент / Управление почтой / Добавить перенаправление"
-
-msgid "Client / Email / Edit Email Account"
-msgstr "Клиент / Управление почтой / Изменить учетную запись"
-
-msgid "Client / Email / External Mail Feature"
-msgstr "Клиент / Управление почтой / Внешние почтовые сервера"
-
-msgid "Client / Email / Overview"
-msgstr "Клиент / Управление почтой / Обзор"
-
-msgid "Client / Email / Overview / Edit Auto Responder"
-msgstr "Клиент / Управление почтой / Обзор / Изменить автоответчик"
-
-msgid "Client / Email / Overview / Enable Auto Responder"
-msgstr "Клиент / Управление почтой / Обзор / Включить автоответчик"
-
 msgid "Client / FTP / Add FTP Account"
 msgstr "Клиент / FTP / Добавить пользователя FTP"
 
@@ -1346,6 +1098,33 @@ msgstr "Клиент / FTP / Обзор / Редактировать учётн�
 
 msgid "Client / General / Overview"
 msgstr "Клиент / Основное / Обзор"
+
+msgid "Client / Mail / Add Mail Account"
+msgstr ""
+
+msgid "Client / Mail / Catch-all Accounts"
+msgstr ""
+
+msgid "Client / Mail / Catch-all Accounts / Add Catch-all account"
+msgstr ""
+
+msgid "Client / Mail / Catch-all Accounts / Edit Catch-all account"
+msgstr ""
+
+msgid "Client / Mail / Edit Mail Account"
+msgstr ""
+
+msgid "Client / Mail / External Mail Feature"
+msgstr ""
+
+msgid "Client / Mail / Overview"
+msgstr ""
+
+msgid "Client / Mail / Overview / Activate Autoresponder"
+msgstr ""
+
+msgid "Client / Mail / Overview / Edit Autoresponder"
+msgstr ""
 
 msgid "Client / Profile / Account Summary"
 msgstr "Клиент / Профиль / Учетная запись"
@@ -1424,6 +1203,9 @@ msgstr "Клиент / Инструменты / Обзор / Приложени�
 msgid "Client / Webtools / Software / View"
 msgstr "Клиент / Инструменты / Приложения / Просмотр"
 
+msgid "Client users"
+msgstr ""
+
 msgid "Clock speed (MHz)"
 msgstr "Частота (MHz)"
 
@@ -1444,9 +1226,6 @@ msgstr "Общее имя"
 
 msgid "Company"
 msgstr "Компанія"
-
-msgid "Compress HTML output"
-msgstr "Сжать вывод HTML"
 
 msgid "Configuration mode"
 msgstr "Режим конфигурации"
@@ -1479,10 +1258,6 @@ msgstr "Невозможно изменить плагин %s: %s"
 #, php-format
 msgid "Could not connect to the `%s' database. Please check the password."
 msgstr ""
-
-#, php-format
-msgid "Could not create `%s` database name."
-msgstr "Невозможно создать базу данных с именем `%s`."
 
 msgid "Could not create domain alias. An unexpected error occurred."
 msgstr "Не удалось создать алиас домена. Произошла неожиданная ошибка."
@@ -1555,8 +1330,15 @@ msgstr ""
 msgid "Could not validate DNS resource record: %s"
 msgstr "Невозможно проверить запись DNS: %s"
 
-msgid "Count default email addresses"
-msgstr "Учитывать email адреса по умолчанию"
+#, php-format
+msgid "Couldn't create the %s database."
+msgstr ""
+
+msgid "Couldn't delete subdomain. An unexpected error occurred."
+msgstr ""
+
+msgid "Count default mail accounts"
+msgstr ""
 
 msgid "Country"
 msgstr "Країна"
@@ -1564,11 +1346,8 @@ msgstr "Країна"
 msgid "Create"
 msgstr "Создать"
 
-msgid "Create catch all"
-msgstr "Создать Catch all"
-
-msgid "Create default email addresses"
-msgstr "Создать email адреса по умолчанию"
+msgid "Create default mail accounts"
+msgstr ""
 
 msgid "Created by"
 msgstr "Створив"
@@ -1708,12 +1487,6 @@ msgstr "База данных"
 msgid "Database Name and Users"
 msgstr "Имя и пользователи базы данных"
 
-msgid "Database Update Revision"
-msgstr "Ревизия обновления базы данных"
-
-msgid "Database Update details"
-msgstr "Детали обновления БД"
-
 msgid "Database data"
 msgstr ""
 
@@ -1737,9 +1510,6 @@ msgstr "Префикс/постфикс БД"
 
 msgid "Database required"
 msgstr "Требуется база данных"
-
-msgid "Database update"
-msgstr "Обновление базы данных"
 
 msgid "Database usage"
 msgstr "Использование БД"
@@ -2123,9 +1893,6 @@ msgstr ""
 msgid "Delete"
 msgstr "Видалити"
 
-msgid "Delete CatchAll"
-msgstr "Удалить Catch all"
-
 msgid "Delete all tickets"
 msgstr "Удалить все тикеты"
 
@@ -2146,9 +1913,6 @@ msgstr "Удалить этот плагин"
 
 msgid "Delete ticket"
 msgstr "Удалить тикет"
-
-msgid "Delete user"
-msgstr ""
 
 msgid "Deletion in progress"
 msgstr "Удаление в процессе"
@@ -2179,9 +1943,6 @@ msgstr "Домашний каталог '%s' не существует"
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
 msgstr "Домашний каталог %s не разрешен или неверен."
-
-msgid "Disable"
-msgstr "Відключити"
 
 msgid "Disabled"
 msgstr "Відключено"
@@ -2227,9 +1988,6 @@ msgstr "Домен %s недоступен."
 msgid "Domain IP"
 msgstr "IP домену"
 
-msgid "Domain Limit"
-msgstr "Лимит доменов"
-
 msgid "Domain Name"
 msgstr "Доменне ім'я"
 
@@ -2252,9 +2010,6 @@ msgstr "Алиас домена %s не может быть перенаправ
 msgid "Domain alias errors"
 msgstr "Помилки аліасів доменів"
 
-msgid "Domain alias limit"
-msgstr "Лимит на алиасы домена"
-
 msgid "Domain alias name"
 msgstr "Имя адиаса домена"
 
@@ -2275,6 +2030,9 @@ msgstr "Алиас домена успешно помечен для обнов�
 
 msgid "Domain aliases"
 msgstr "Аліаси домену"
+
+msgid "Domain aliases limit"
+msgstr ""
 
 msgid "Domain and SQL databases"
 msgstr "Домен и базы данных SQL"
@@ -2300,12 +2058,6 @@ msgstr "Должна быть заполнена дата истечения д�
 msgid "Domain for which PHP Editor must act."
 msgstr "Домен, для которого вы включаете редактор PHP"
 
-msgid "Domain limit"
-msgstr "Лимит доменов"
-
-msgid "Domain mail"
-msgstr "Почта домена"
-
 msgid "Domain name"
 msgstr "Ім'я домену"
 
@@ -2321,10 +2073,6 @@ msgstr "Доменное имя не может начинаться и зака
 #, php-format
 msgid "Domain name contains an invalid character: %s"
 msgstr "Доменное имя содержит неверный символ: %s"
-
-#, php-format
-msgid "Domain name label '%s' contain an invalid character: %s"
-msgstr "Ярлык доменного имени '%s' содержит неверный символ: %s"
 
 msgid "Domain name labels cannot be greater than 63 characters."
 msgstr "Ярлыки доменного имени не могут быть длиннее 63 знаков."
@@ -2358,6 +2106,12 @@ msgstr "Тип домена"
 
 msgid "Domains"
 msgstr "Домени"
+
+msgid "Domains Limit"
+msgstr ""
+
+msgid "Domains limit"
+msgstr ""
 
 msgid "Domains per page"
 msgstr "Доменів на сторінці"
@@ -2398,8 +2152,8 @@ msgstr "Изменить SSL сертификат"
 msgid "Edit admin"
 msgstr "Изменить администратора"
 
-msgid "Edit auto responder"
-msgstr "Изменить автоответчик"
+msgid "Edit autoresponder"
+msgstr ""
 
 msgid "Edit custom error page"
 msgstr "Изменить пользовательскую страницу ошибок"
@@ -2428,9 +2182,6 @@ msgstr "Изменить пользователя htaccess"
 msgid "Edit mail account"
 msgstr "Изменить учетную запись почты"
 
-msgid "Edit mail quota"
-msgstr "Редактировать почтовую квоту"
-
 msgid "Edit protected area"
 msgstr "Изменить защищенную зону"
 
@@ -2440,74 +2191,21 @@ msgstr "Редагувати реселлера"
 msgid "Edit subdomain"
 msgstr "Изменить поддомен"
 
-msgid "Edit user"
-msgstr "Редагувати користувача"
-
 msgid "EiB"
 msgstr "Эб"
 
 msgid "Email"
 msgstr "Електронна пошта"
 
-msgid "Email account already exists."
-msgstr "Почтовый ящик уже существует."
-
-msgid "Email account data"
-msgstr "Данные почтового ящика"
-
-msgid "Email account errors"
-msgstr "Ошибки почтовых ящиков"
-
-msgid "Email account limit"
-msgstr "Ограничение учетных записей почты."
-
-msgid "Email account list"
-msgstr "Список почтовых ящиков"
-
-msgid "Email account successfully scheduled for addition."
-msgstr "Почтовый ящик успешно помечен для добавления."
-
-msgid "Email account successfully scheduled for update."
-msgstr "Почтовый ящик успешно помечен для обновления."
-
-msgid "Email accounts"
-msgstr "Почтовые ящики"
-
-msgid "Email accounts are hard suspended"
-msgstr "Учетные записи почты приостановлены"
-
 msgid "Email address"
 msgstr "Email алрес"
 
-msgid "Email forward"
-msgstr "Перенаправление почты"
-
-msgid "Email quota"
-msgstr "Почтовая квота"
-
-msgid "Email quota [MiB]"
-msgstr "Почтовая квота [Мб]"
+msgid "Email address cannot be empty."
+msgstr ""
 
 #, php-format
 msgid "Email quota cannot be bigger than %s"
 msgstr "Значение почтовой квоты не может быть более %s."
-
-msgid "Email quota cannot be bigger than disk space limit."
-msgstr "Значение почтовой квоты не может быть больше дискового пространства."
-
-#, php-format
-msgid ""
-"Email quota cannot be lower than %d. Each mailbox should have a least 1 MiB "
-"quota."
-msgstr ""
-"Почтовая квота не может быть меньше чем %d. Каждый почтовый ящик должен "
-"иметь по крайней мере 1Мб"
-
-#, php-format
-msgid "Email quota cannot be unlimited. Max value is %d MiB."
-msgstr ""
-"Значение почтовой квоты не может быть не ограничено. Максимальное значение "
-"%d МБ"
 
 msgid "Email settings"
 msgstr "Настройка почты"
@@ -2521,14 +2219,8 @@ msgstr "Почтовый ящик успешно обновлен."
 msgid "Empty data or wrong field."
 msgstr "Пустые данные или неверное поле"
 
-msgid "Enable"
-msgstr "Включити"
-
 msgid "Enable SSL"
 msgstr "Включить SSL"
-
-msgid "Enable auto responder"
-msgstr "Включить автоответчик"
 
 msgid "Enabled"
 msgstr "Увімкнено"
@@ -2552,14 +2244,14 @@ msgstr "Помилка: Віддалений файл не знайдено!"
 msgid "Errors"
 msgstr "Помилки"
 
-msgid "Excl. default mails"
-msgstr "Кроме ящиков по умолчанию"
-
 msgid "Execute tasks"
 msgstr "Выполнить задачи"
 
 msgid "Ext. mail server"
 msgstr "Внешние почтовые сервера"
+
+msgid "External mail feature"
+msgstr ""
 
 msgid "External mail server"
 msgstr "Внешний почтовый сервер"
@@ -2570,17 +2262,11 @@ msgstr "Внешний почтовый сервер успешно помече
 msgid "External mail server feature scheduled for deactivation."
 msgstr "Внешний почтовый сервер успешно помечен для деактивации."
 
-msgid "External mail servers"
-msgstr "Внешние почтовые сервера"
-
 msgid "FTP account"
 msgstr "Обліковий запис FTP"
 
 msgid "FTP account already exists."
 msgstr "Учетная запись FTP уже существует."
-
-msgid "FTP account limit"
-msgstr "Ограничения учетной записи FTP"
 
 msgid "FTP account limit reached."
 msgstr "Достигнут лимит учётных записей FTP."
@@ -2596,6 +2282,9 @@ msgstr "Учетная запись FTP успешно обновлена."
 
 msgid "FTP accounts"
 msgstr "Облікові записи FTP"
+
+msgid "FTP accounts limit"
+msgstr ""
 
 msgid "FTP home directory"
 msgstr "Домашний каталог"
@@ -2678,10 +2367,10 @@ msgstr "Ім'я"
 msgid "First name cannot have more than 200 characters."
 msgstr "Имя не может содержать более 200 символов"
 
-msgid "For the time being, you can only add forwarded email account."
+msgid "For the time being, you can only add forwarded mail account."
 msgstr ""
 
-msgid "For the time being, you can only edit your forwarded email account."
+msgid "For the time being, you can only edit your forwarded mail account."
 msgstr ""
 
 msgid "Forbidden"
@@ -2705,11 +2394,11 @@ msgstr "URL перенаправления"
 msgid "Forward URL %s is not valid."
 msgstr "URL перенаправления %s неверный."
 
+msgid "Forward account"
+msgstr ""
+
 msgid "Forward list is empty."
 msgstr "Лист пересылки пуст"
-
-msgid "Forward mail"
-msgstr "Перенаправлять почту"
 
 msgid "Forward to"
 msgstr "Перенаправить к"
@@ -2795,6 +2484,9 @@ msgstr "HSTS значение директивы max-age"
 msgid "HTTP traffic"
 msgstr "HTTP трафик"
 
+msgid "Hide default mail accounts"
+msgstr ""
+
 msgid "Hide domain aliases"
 msgstr ""
 
@@ -2869,9 +2561,6 @@ msgstr "Пользователь Htaccess успешно помечен для �
 
 msgid "Htaccess, htgroups and htpasswd errors"
 msgstr ""
-
-msgid "Http traffic"
-msgstr "HTTP трафик"
 
 msgid "IP Address"
 msgstr "IP адрес"
@@ -2967,23 +2656,23 @@ msgstr "Спереди"
 msgid "In maintenance mode, only administrators can login."
 msgstr "В режим техобслуживания, только администратор сможет войти."
 
-msgid "Incl. default mails"
-msgstr "Включая ящики по умолчанию"
-
-msgid "Incorrect Email quota"
-msgstr "Неверное значение почтовой квоты."
-
-msgid "Incorrect Email quota."
-msgstr "Неверное значение почтовой квоты."
-
 msgid "Incorrect FTP account limit."
 msgstr "Неверное ограничение учетных записей FTP."
+
+msgid "Incorrect FTP accounts limit."
+msgstr ""
 
 msgid "Incorrect SQL database limit."
 msgstr "Неверное ограничение баз данных SQL."
 
+msgid "Incorrect SQL databases limit."
+msgstr ""
+
 msgid "Incorrect SQL user limit."
 msgstr "Неверное ограничение пользователей SQL."
+
+msgid "Incorrect SQL users limit."
+msgstr ""
 
 msgid "Incorrect alias limit."
 msgstr "Неверный лимит алиасов."
@@ -2994,8 +2683,8 @@ msgstr "Неверное ограничение дискового простр�
 msgid "Incorrect domain alias limit."
 msgstr "Неверное ограничение алиасов."
 
-msgid "Incorrect email account limit."
-msgstr "Неверное ограничение учетных записей почты."
+msgid "Incorrect domain aliases limit."
+msgstr ""
 
 msgid "Incorrect email length or syntax."
 msgstr "Неверная длина или синтаксис почтового ящика."
@@ -3007,6 +2696,18 @@ msgstr "Неверное значение почтовой квоты."
 msgid "Incorrect limit for %s."
 msgstr "Неверное ограничение для %s."
 
+msgid "Incorrect mail account limit."
+msgstr ""
+
+msgid "Incorrect mail accounts limit."
+msgstr ""
+
+msgid "Incorrect mail quota"
+msgstr ""
+
+msgid "Incorrect mail quota."
+msgstr ""
+
 msgid "Incorrect monthly traffic limit."
 msgstr "Неверный порог трафика"
 
@@ -3015,6 +2716,9 @@ msgstr "Некорректная длина почтового кода или �
 
 msgid "Incorrect subdomain limit."
 msgstr "Неверный лимит поддоменов."
+
+msgid "Incorrect subdomains limit."
+msgstr ""
 
 msgid "Incorrect syntax for email address."
 msgstr "Неверный синтаксис email адреса"
@@ -3090,9 +2794,11 @@ msgstr "Негодный SSL сертификат."
 msgid "Invalid URL."
 msgstr "Неверный URL"
 
-#, php-format
-msgid "Invalid `%s` field."
-msgstr "Поле `%s` недействительно."
+msgid "Invalid city."
+msgstr ""
+
+msgid "Invalid country."
+msgstr ""
 
 msgid "Invalid domain name."
 msgstr "Неправильное имя домена."
@@ -3103,8 +2809,27 @@ msgstr "Неверный Email адрес"
 msgid "Invalid email username."
 msgstr "Неверное имя пользователя почтового ящика"
 
+msgid "Invalid fax number."
+msgstr ""
+
+#, php-format
+msgid "Invalid field: %s"
+msgstr ""
+
+msgid "Invalid firm."
+msgstr ""
+
+msgid "Invalid first name."
+msgstr ""
+
+msgid "Invalid gender"
+msgstr ""
+
 msgid "Invalid group name!"
 msgstr "Неправильное имя группы!"
+
+msgid "Invalid last name."
+msgstr ""
 
 msgid "Invalid menu order."
 msgstr "Неверный заказ меню."
@@ -3115,6 +2840,9 @@ msgstr "Неверное имя."
 msgid "Invalid payload received from GitHub"
 msgstr "Неверный запрос получен из GitHub"
 
+msgid "Invalid phone number."
+msgstr ""
+
 #, php-format
 msgid "Invalid plugin directory: %s"
 msgstr "Каталог плагина не верный: %s"
@@ -3122,14 +2850,17 @@ msgstr "Каталог плагина не верный: %s"
 msgid "Invalid private key or passphrase."
 msgstr "Неверный приватный ключ или пароль."
 
+msgid "Invalid state."
+msgstr ""
+
 msgid "Invalid target."
 msgstr "Неверная цель"
 
-msgid "Invalid type given. String expected"
-msgstr "Дан неверный тип. Ожидался строковый параметр"
-
 msgid "Invalid username."
 msgstr "Неверное имя пользователя"
+
+msgid "Invalid zipcode."
+msgstr ""
 
 msgid "Kernel Version"
 msgstr "Версія ядра"
@@ -3149,8 +2880,8 @@ msgstr "Файл перекладу"
 msgid "Language file successfully installed."
 msgstr "Языковой файл успешно установлен"
 
-msgid "Language successfully updated."
-msgstr "Язык успешно обновлен."
+msgid "Language has been updated."
+msgstr ""
 
 msgid "Languages"
 msgstr "Языки"
@@ -3215,6 +2946,9 @@ msgstr "Записи лога успешно удалены."
 msgid "Login"
 msgstr "Увійти"
 
+msgid "Login data"
+msgstr ""
+
 msgid "Login password"
 msgstr "Пароль"
 
@@ -3263,18 +2997,68 @@ msgstr "Пошта"
 msgid "Mail Log Level"
 msgstr "Уровень логирования почты"
 
+msgid "Mail account already exists."
+msgstr ""
+
+msgid "Mail account data"
+msgstr ""
+
+msgid "Mail account errors"
+msgstr ""
+
 #, php-format
-msgid "Mail account %s successfully scheduled for deletion."
-msgstr "Почтовый ящик %s успешно помечен для удаления."
+msgid "Mail account has been scheduled for deletion."
+msgid_plural "%d mail accounts were scheduled for deletion."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid "Mail account successfully scheduled for addition."
+msgstr ""
+
+msgid "Mail account successfully scheduled for update."
+msgstr ""
 
 msgid "Mail account type"
 msgstr "Тип почтового ящика"
+
+msgid "Mail accounts"
+msgstr ""
+
+msgid "Mail accounts are hard suspended"
+msgstr ""
+
+msgid "Mail accounts limit"
+msgstr ""
 
 msgid "Mail accounts list is empty."
 msgstr "Список почтовых ящиков пуст."
 
 msgid "Mail feature is disabled."
 msgstr "Почта отключена"
+
+msgid "Mail quota"
+msgstr ""
+
+msgid "Mail quota [MiB]"
+msgstr ""
+
+#, php-format
+msgid "Mail quota cannot be bigger than %s"
+msgstr ""
+
+msgid "Mail quota cannot be bigger than disk space limit."
+msgstr ""
+
+#, php-format
+msgid ""
+"Mail quota cannot be lower than %d. Each mail account must have a least 1 "
+"MiB quota."
+msgstr ""
+
+#, php-format
+msgid "Mail quota cannot be unlimited. Max value is %d MiB."
+msgstr ""
 
 msgid "Mail usage"
 msgstr "Использование почты"
@@ -3303,9 +3087,6 @@ msgstr "Настройки техобслуживания"
 msgid "Male"
 msgstr "Чоловіча"
 
-msgid "Malformed resolver SQL query"
-msgstr "Искаженный запрос SQL"
-
 msgid "Manage SQL"
 msgstr "Управління SQL"
 
@@ -3323,6 +3104,9 @@ msgstr "Управление защищенными зонами, пользов
 
 msgid "Manual"
 msgstr "Вручную"
+
+msgid "Manual catch-all addresses"
+msgstr ""
 
 msgid "Mark"
 msgstr "Мітка"
@@ -3397,11 +3181,26 @@ msgstr "Процесс модификации..."
 msgid "Month"
 msgstr "Місяц"
 
+msgid "Monthly Server traffic"
+msgstr ""
+
+msgid "Monthly server traffic"
+msgstr ""
+
+msgid "Monthly server traffic settings"
+msgstr ""
+
+msgid "Monthly server traffic settings successfully updated."
+msgstr ""
+
 msgid "Monthly traffic limit [MiB]"
 msgstr "Месячный порог трафика [Мб]"
 
 msgid "Monthly traffic limit must be a number."
 msgstr "Месячный порог трафика должен быть числом."
+
+msgid "Monthly traffic usage"
+msgstr ""
 
 msgid "Monthly traffic warning cannot be bigger than monthly traffic limit."
 msgstr ""
@@ -3410,9 +3209,6 @@ msgstr ""
 
 msgid "Monthly traffic warning must be a number."
 msgstr "Предупреждение о трафике должно быть числом."
-
-msgid "More Details"
-msgstr "Больше данных"
 
 msgid "Mount"
 msgstr "Точка монтування"
@@ -3450,6 +3246,10 @@ msgstr "Новые данные пользователя SQL"
 msgid "New alias order for {CUSTOMER}"
 msgstr "Новый заказ алиаса для {CUSTOMER}"
 
+#, php-format
+msgid "New login data were sent to the %s user."
+msgstr ""
+
 msgid "New ticket"
 msgstr "Новий запит підтримки"
 
@@ -3477,9 +3277,6 @@ msgstr "Недоступно"
 msgid "No custom menu found."
 msgstr "Не найдены пользовательские меню."
 
-msgid "No database update available."
-msgstr "Нет обновлений базы данных."
-
 msgid "No domain available for new software instance."
 msgstr ""
 
@@ -3494,6 +3291,9 @@ msgstr "Не найдено групп."
 
 msgid "No hosting plan available."
 msgstr "Нет доступных хостинг-планов."
+
+msgid "No mail account has been deleted."
+msgstr ""
 
 msgid "No reseller available to add the permissions."
 msgstr "Нет доступного реселлера для добавления прав"
@@ -3541,20 +3341,23 @@ msgstr "Не найдены клиентов этого реселлера."
 msgid "No."
 msgstr "№"
 
-msgid "None"
-msgstr "Пусто"
-
 msgid "Normal"
 msgstr "Обычный"
+
+msgid "Normal & Forward"
+msgstr ""
+
+msgid "Normal & forward account"
+msgstr ""
 
 msgid "Normal + Forward"
 msgstr "Обычный + перенаправление"
 
+msgid "Normal account"
+msgstr ""
+
 msgid "Normal connection"
 msgstr "Нешифрованное соединение"
-
-msgid "Normal users"
-msgstr "Користувачі"
 
 msgid "Not Found"
 msgstr "Не найдено"
@@ -3589,16 +3392,8 @@ msgstr "Повідомлення, попередження та помилки"
 msgid "Ok"
 msgstr "Ok"
 
-msgid "One or more database updates are now available. See the details below."
-msgstr ""
-"Одно или более обновление базы данных было найдено. Смотрите детали ниже."
-
 msgid "Only 'tar.gz' archives are accepted."
 msgstr "Поддерживаются только 'tar.gz' архивы."
-
-msgid "Only administrators can login when maintenance mode is activated."
-msgstr ""
-"Только администраторы могут входить при включенном режиме техобслуживания."
 
 msgid "Only exec"
 msgstr "Только запустить"
@@ -3761,17 +3556,11 @@ msgstr "Пароль"
 msgid "Password cannot be empty."
 msgstr "Поле пароля пусто."
 
-msgid "Password cannot be longer than 30 characters."
-msgstr "Пароль не может быть длиннее 30 символов."
-
 msgid "Password confirmation"
 msgstr "Подтверждение пароля"
 
 msgid "Password contains unallowed characters."
 msgstr "Пароль содержит запрещенные символы."
-
-msgid "Password data"
-msgstr "Дані паролю"
 
 msgid "Password email"
 msgstr "Пароль почтового ящика"
@@ -3779,18 +3568,15 @@ msgstr "Пароль почтового ящика"
 msgid "Password is missing."
 msgstr "Пароль отсутствует."
 
-#, php-format
-msgid "Password is shorter than %s characters."
-msgstr "Пароль короче чем %s знаков."
-
 msgid "Password minimum length"
 msgstr "Минимальная длина пароля"
 
 #, php-format
-msgid ""
-"Password must be at least %s characters long and contain letters and numbers"
-" to be valid."
-msgstr "Пароль должен быть не короче %s символов и содержать буквы и цифры."
+msgid "Password must be between %d and %d characters."
+msgstr ""
+
+msgid "Password must contain letters and digits."
+msgstr ""
 
 msgid "Password settings"
 msgstr "Налаштування пароля"
@@ -3819,8 +3605,8 @@ msgstr "Разрешения"
 msgid "Personal data"
 msgstr "Персональні дані"
 
-msgid "Personal data successfully updated."
-msgstr "Персональные данные успешно обновлены."
+msgid "Personal data were updated."
+msgstr ""
 
 msgid "Personalise template"
 msgstr "Персонализировать шаблон"
@@ -3855,6 +3641,9 @@ msgstr ""
 "разрешениями на пакет.<br>Не разрешается загружать один и тот же пакет "
 "дважды.<br>Обновите страницу, чтобы увидеть новый статус!"
 
+msgid "Please edit your autoresponder message below"
+msgstr ""
+
 msgid "Please enter a name for the protected area."
 msgstr "Пожалуйста, введите имя для защищенной зоны."
 
@@ -3870,8 +3659,8 @@ msgstr "Пожалуйста, введите имя пользователя."
 msgid "Please enter protected area path."
 msgstr "Пожалуйста, укажите путь для защищенной зоны"
 
-msgid "Please enter your auto-responder message below"
-msgstr "Пожалуйста, введите сообщение для автоответчика ниже"
+msgid "Please enter your autoresponder message below"
+msgstr ""
 
 msgid "Please fill up both data fields for password."
 msgstr "Пожалуйста, заполните оба поля для пароля."
@@ -4150,9 +3939,6 @@ msgstr "Приватный ключ"
 msgid "Private key passphrase if any"
 msgstr "Пароль приватного ключа, если необходимо"
 
-msgid "Process update"
-msgstr "Процесс обновления"
-
 msgid "Processing..."
 msgstr "Выполнение..."
 
@@ -4171,6 +3957,9 @@ msgstr "Свойства для реселлера ID %d не были найд�
 
 msgid "Protect"
 msgstr "Защитить"
+
+msgid "Protect default mail accounts against change and removal"
+msgstr ""
 
 msgid "Protect this plugin"
 msgstr "Защитить этот плагин"
@@ -4202,8 +3991,11 @@ msgstr "Захищені зони"
 msgid "Protocol"
 msgstr "Протокол"
 
-msgid "Quota in MiB (0 for unlimited)"
-msgstr "Квота в MB (0 неограниченно)"
+msgid "Quota in MiB (0 ∞"
+msgstr ""
+
+msgid "Quota in MiB (0 ∞)"
+msgstr ""
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
@@ -4230,8 +4022,8 @@ msgstr "Дані записи"
 msgid "Redirect"
 msgstr "Редирект"
 
-msgid "Redistribute unused quota across existing mailboxes"
-msgstr "Распределить неиспользуемое пространство между существующими ящиками"
+msgid "Redistribute unused quota across existing mail accounts"
+msgstr ""
 
 msgid "Registration date"
 msgstr "Дата регистрации"
@@ -4450,9 +4242,6 @@ msgstr "Відновити"
 msgid "Restore backup"
 msgstr "Відновити резервну копію"
 
-msgid "Revision date"
-msgstr "Дата ревизии"
-
 msgid "Rights"
 msgstr "Права"
 
@@ -4477,9 +4266,6 @@ msgstr "SQL"
 msgid "SQL database"
 msgstr "База данных SQL"
 
-msgid "SQL database limit"
-msgstr "Баз данных SQL"
-
 msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr "SQL базы данных отключены, однако пользователи - нет."
 
@@ -4501,6 +4287,15 @@ msgstr "База данных успешно удалена."
 msgid "SQL databases"
 msgstr "Облікові записи SQL"
 
+msgid "SQL databases limit"
+msgstr ""
+
+msgid "SQL databases limit is disabled."
+msgstr ""
+
+msgid "SQL databases limit is not disabled."
+msgstr ""
+
 msgid "SQL databases only"
 msgstr "Только базы данных SQL"
 
@@ -4509,9 +4304,6 @@ msgstr "Пользователь SQL"
 
 msgid "SQL user host"
 msgstr "Хост пользователя SQL"
-
-msgid "SQL user limit"
-msgstr "Лимит пользователей SQL"
 
 msgid "SQL user limit is <i>disabled</i>."
 msgstr "Лимит пользователей SQL <i>отключен</i>."
@@ -4542,6 +4334,12 @@ msgstr ""
 
 msgid "SQL users"
 msgstr "Користувачі SQL"
+
+msgid "SQL users limit"
+msgstr ""
+
+msgid "SQL users limit is disabled."
+msgstr ""
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "SSL cертификат успешно отмечен для добавления."
@@ -4594,9 +4392,6 @@ msgstr "Відправити повідомлення"
 msgid "Send message to"
 msgstr "Кому відправити"
 
-msgid "Send new login data"
-msgstr "Відправити нову інформацію для входу"
-
 msgid "Send reply"
 msgstr "Надіслати відповідь"
 
@@ -4615,14 +4410,8 @@ msgstr "Имя отправителя"
 msgid "Sender name is missing."
 msgstr "Имя отправителя отсутствует."
 
-msgid "Separate multiple email addresses by comma or a line-break."
+msgid "Separate addresses by a comma, line-break or space."
 msgstr ""
-"Разделяйте множество почтовых адресов пробелами, запятыми или прочерками."
-
-msgid "Separate multiple email addresses with a line-break."
-msgstr ""
-"При вводе нескольких email адресов, каждый адрес должен располагаться на "
-"отдельной строке"
 
 msgid "Server ports"
 msgstr "Порти сервера"
@@ -4632,15 +4421,6 @@ msgstr "Статистика сервера"
 
 msgid "Server status"
 msgstr "Статус сервера"
-
-msgid "Server traffic"
-msgstr "Трафік серверу"
-
-msgid "Server traffic settings"
-msgstr "Налаштування трафіку сервера"
-
-msgid "Server traffic settings successfully updated."
-msgstr "Настройки трафика сервера успешно обновлены."
 
 msgid "Service Name"
 msgstr "Имя службы"
@@ -4688,11 +4468,11 @@ msgstr "Показати"
 msgid "Show %s records per page"
 msgstr "Показывать %s записей на странице"
 
-msgid "Show HTML output compression size comment"
-msgstr "Показать комментарий размера сжатия вывода HTML"
-
 msgid "Show SSL certificate"
 msgstr "Показать SSL сертификат"
+
+msgid "Show default mail accounts"
+msgstr ""
 
 msgid "Show detailed statistics for this reseller"
 msgstr "Показать детальную статистику для этого реселлера"
@@ -4854,24 +4634,8 @@ msgstr "Ошибки алиаса поддомена"
 msgid "Subdomain alias scheduled for deletion."
 msgstr "Алиас поддомена помечен для удаления."
 
-msgid ""
-"Subdomain alias you are trying to remove has Ftp accounts. Please remove "
-"them first."
-msgstr ""
-"Алиас поддомена, который Вы пытаетесь удалить имеет учетные записи FTP. "
-"Сначала удалите их."
-
 msgid "Subdomain errors"
 msgstr "Помилки піддоменів"
-
-msgid "Subdomain forward"
-msgstr "Перенаправление поддомена"
-
-msgid "Subdomain limit"
-msgstr "Лимит поддоменов"
-
-msgid "Subdomain mail"
-msgstr "Поддомен почты"
 
 msgid "Subdomain name"
 msgstr "Имя поддомена"
@@ -4889,26 +4653,19 @@ msgid "Subdomain successfully scheduled for update"
 msgstr "Поддомен успешно помечен для обновления."
 
 msgid ""
-"Subdomain you are trying to remove has Ftp accounts. Remove them first."
-msgstr ""
-"Поддомен, который Вы пытаетесь удалить имеет учетные записи FTP. Сначала "
-"удалите их."
-
-msgid ""
-"Subdomain you are trying to remove has email accounts. Please remove them "
+"Subdomain you are trying to remove has mail accounts. Please remove them "
 "first."
 msgstr ""
-"Поддомен, который вы пытаетесь удалить, содержит учетные записи почты. "
-"Сначала удалите их."
 
 msgid ""
-"Subdomain you are trying to remove has email accounts. Remove them first."
+"Subdomain you are trying to remove has mail accounts. Remove them first."
 msgstr ""
-"Поддомен, который вы пытаетесь удалить, содержит учетные записи почты. "
-"Сначала удалите их."
 
 msgid "Subdomains"
 msgstr "Піддомени"
+
+msgid "Subdomains limit"
+msgstr ""
 
 msgid "Subject"
 msgstr "Тема"
@@ -4939,9 +4696,6 @@ msgstr "Перейти в інтерфейс користувача"
 
 msgid "Sync quota info"
 msgstr ""
-
-msgid "Syntax error found in mail forward list."
-msgstr "Была найдена ошибка синтаксиса в списке перенаправления."
 
 msgid "System"
 msgstr "Система"
@@ -4981,6 +4735,14 @@ msgstr "Порт должен быть числом."
 
 msgid "Temporary folder not found."
 msgstr "Временная папка не найдена."
+
+#, php-format
+msgid "The  %s field cannot be empty."
+msgstr ""
+
+#, php-format
+msgid "The %s field cannot be empty."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5025,6 +4787,13 @@ msgstr "Язык %s перевода был проигнорирован: Таб
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr ""
+
+#, php-format
+msgid "The configuration parameter has been updated."
+msgid_plural "%d configuration parameters were updated"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #, php-format
 msgid ""
@@ -5081,6 +4850,15 @@ msgid ""
 msgstr ""
 "Реселлер, которго вы хотите удалить, имеет одного или более клиентов.<br /> "
 "Сначала удалите их."
+
+msgid ""
+"The subdomain alias you are trying to remove has FTP accounts. Please remove"
+" them first."
+msgstr ""
+
+msgid ""
+"The subdomain you are trying to remove has FTP accounts. Remove them first."
+msgstr ""
 
 msgid "The uploaded file was only partially uploaded."
 msgstr "Загружаемый файл был загружен частично."
@@ -5149,6 +4927,9 @@ msgstr ""
 "Это хост, с которого данный пользователь SQL lДолжен иметь доступ на "
 "подключение. Введите спецсимвол %s для того, чтобы данный пользователь мог "
 "подключиться с любого хоста."
+
+msgid "This mail account is protected against both edition and deletion."
+msgstr ""
 
 msgid "This package already exists in the administrator software repository."
 msgstr "Этот пакет уже существует в репозитории администратора."
@@ -5224,12 +5005,12 @@ msgstr "Всього ПЗ"
 msgid "Total Web software repositories"
 msgstr "Всего Web-репозиториев"
 
+#, php-format
+msgid "Total accounts: %s / %s"
+msgstr ""
+
 msgid "Total installations"
 msgstr "Всього встановлень"
-
-#, php-format
-msgid "Total mails: %s / %s %s"
-msgstr "Всего почты %s / %s %s"
 
 msgid "Total packages in Web software repository"
 msgstr "Всего пакетов в Web-репозитории"
@@ -5245,9 +5026,6 @@ msgstr "Трафік"
 
 msgid "Traffic statistics"
 msgstr "Статистика трафика"
-
-msgid "Traffic usage"
-msgstr "Использование трафика"
 
 msgid "Translated strings"
 msgstr "Переведенные строки"
@@ -5408,9 +5186,6 @@ msgstr "Неизвестный тип."
 msgid "Unknown username."
 msgstr "Неизвестное имя пользователя."
 
-msgid "Unlimited"
-msgstr "Не ограничено"
-
 msgid "Update"
 msgstr "Змінити"
 
@@ -5419,9 +5194,6 @@ msgstr "Обновить плагины"
 
 msgid "Update SQL user password"
 msgstr "Обновить пароль SQL"
-
-msgid "Update data"
-msgstr "Змінити дані"
 
 msgid "Update from Web software repository"
 msgstr "Обновить из Web-репозитория"
@@ -5487,23 +5259,11 @@ msgstr "Прізвище та ім'я користувача"
 msgid "User assignment"
 msgstr "Призначення користувача"
 
-msgid "User data successfully updated"
-msgstr "Персональные данные успешно обновлены."
-
-msgid "User data successfully updated."
-msgstr "Персональные данные успешно обновлены."
-
 msgid "User data were not updated."
 msgstr "Данные пользователя не были обновлены."
 
 msgid "User data were successfully updated."
 msgstr "Данные были успешно обновлены."
-
-msgid ""
-"User do not exist or you do not have permission to access this interface"
-msgstr ""
-"Пользователь не существует, или у Вас нет прав для доступа к этому "
-"интерфейсу"
 
 msgid "User errors"
 msgstr "Ошибки пользователя"
@@ -5543,6 +5303,10 @@ msgstr "Ім'я користувача"
 
 msgid "Username and password for application login"
 msgstr "Имя пользователя и пароль для входа в приложение"
+
+#, php-format
+msgid "Username must be between %d and %d characters"
+msgstr ""
 
 msgid "Users"
 msgstr "Користувачі"
@@ -5648,9 +5412,6 @@ msgstr "В автоматическом режиме IP адрес будет н
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr "В ручном режиме администратор может настроить IP адрес сам."
 
-msgid "Wrong mail syntax in forward list."
-msgstr "Неверный почтовый синтаксис списка перенаправления."
-
 msgid "Wrong or unallowed IP address."
 msgstr "Неверный или неразрешенный IP адрес."
 
@@ -5703,35 +5464,38 @@ msgstr "Йб"
 msgid "You are exceeding the monthly server traffic limit."
 msgstr "Вы превышаете месячный порог трафика сервера."
 
-msgid "You are exceeding you domain alias limit."
-msgstr "Вы превышаете ограничение алиасов домена."
+msgid "You are exceeding you domain aliases limit."
+msgstr ""
 
-msgid "You are exceeding your FTP account limit."
-msgstr "Вы превысили лимит FTP-аккаунтов."
+msgid "You are exceeding your FTP accounts limit."
+msgstr ""
 
-msgid "You are exceeding your SQL database limit."
-msgstr "Вы превысили лимит базы данных SQL."
+msgid "You are exceeding your SQL databases limit."
+msgstr ""
 
-msgid "You are exceeding your SQL user limit."
-msgstr "Вы превышаете ограничение пользователей баз данных."
+msgid "You are exceeding your SQL users limit."
+msgstr ""
 
 msgid "You are exceeding your disk space limit."
 msgstr "Вы исчерпали выделенное Вам место на жестком диске."
 
-msgid "You are exceeding your email account limit."
-msgstr "Вы превысили лимит почтовых ящиков."
+msgid "You are exceeding your mail accounts limit."
+msgstr ""
 
 msgid "You are exceeding your monthly traffic limit."
 msgstr "Вы превышаете Ваш месячный порог трафика."
 
-msgid "You are exceeding your subdomain limit."
-msgstr "Вы превысили лимит субдоменов."
+msgid "You are exceeding your subdomains limit."
+msgstr ""
 
 msgid "You are not allowed to act on your own session."
 msgstr "Вам не разрешено действовать в собственной сессии."
 
 msgid "You can only upload images."
 msgstr "Вы можете загружать только изображения."
+
+msgid "You can select has many addresses as you want."
+msgstr ""
 
 msgid ""
 "You can set an alternative document root. This is mostly needed when using a"
@@ -5741,17 +5505,17 @@ msgid ""
 msgstr ""
 
 msgid ""
-"You cannot add normal email account because you have already assigned all "
-"your email quota to other mailboxes. If you want to add a new normal email "
+"You cannot add normal mail account because you have already assigned all "
+"your email quota to other mailboxes. If you want to add a new normal mail "
 "account, you must first lower the quota assigned to one of your other "
 "mailboxes."
 msgstr ""
 
 msgid ""
-"You cannot change this account to normal email account because you have "
-"already assigned all your email quota to other mailboxes. If you want to "
-"change this account to normal email account, you must first lower the quota "
-"assigned to one of your other mailboxes."
+"You cannot change this account to normal mail account because you have "
+"already assigned all your mail quota to other mail accounts. If you want to "
+"change this account to normal mail account, you must first lower the quota "
+"assigned to one of your other mail accounts."
 msgstr ""
 
 msgid ""
@@ -5822,24 +5586,18 @@ msgid "You do not have subdomains."
 msgstr "У Вас нет поддоменов."
 
 msgid ""
-"You have a FTP account limit. You cannot add a user with unlimited FTP "
+"You have a FTP accounts limit. You cannot add a user with unlimited FTP "
 "accounts."
 msgstr ""
-"У вас есть лимит учетных записей FTP!<br />Вы не можете добавлять "
-"пользователей с неограниченным числом учетных записей FTP."
 
 msgid ""
-"You have a SQL database limit. You cannot add a user with unlimited SQL "
+"You have a SQL databases limit. You cannot add a user with unlimited SQL "
 "databases."
 msgstr ""
-"У вас есть лимит баз данных.<br />Вы не можете добавлять пользователей с "
-"неограниченным числом баз данных."
 
 msgid ""
-"You have a SQL user limit. You cannot add a user with unlimited SQL users."
+"You have a SQL users limit. You cannot add a user with unlimited SQL users."
 msgstr ""
-"У вас есть лимит пользователей БД.<br />Вы не можете добавлять пользователей"
-" с неограниченным числом пользователей БД."
 
 msgid ""
 "You have a disk space limit. You cannot add a user with unlimited disk "
@@ -5849,18 +5607,14 @@ msgstr ""
 "пользователей с неограниченным дисковым пространством."
 
 msgid ""
-"You have a domain alias limit. You cannot add a user with unlimited domain "
-"aliases."
+"You have a domain aliases limit. You cannot add a user with unlimited domain"
+" aliases."
 msgstr ""
-"У вас ограничены алиасы доменов.<br />Вы не можете добавлять пользователей с"
-" неограниченными алиасами доменов."
 
 msgid ""
-"You have a mail account limit. You cannot add a user with unlimited email "
+"You have a mail accounts limit. You cannot add a user with unlimited mail "
 "accounts."
 msgstr ""
-"У вас есть лимит почтовых ящиков.<br />Вы не можете добавлять пользователей "
-"с неограниченным числом почтовых ящиков."
 
 msgid ""
 "You have a monthly traffic limit. You cannot add a user with unlimited "
@@ -5891,10 +5645,9 @@ msgstr[1] ""
 msgstr[2] ""
 
 msgid ""
-"You have a subdomain limit. You cannot add a user with unlimited subdomains."
+"You have a subdomains limit. You cannot add a user with unlimited "
+"subdomains."
 msgstr ""
-"У вас есть лимит поддоменов.<br />Вы не можете добавлять пользователей с "
-"неограниченным числом поддоменов."
 
 #, php-format
 msgid "You have been blocked for %s minutes."
@@ -5928,10 +5681,9 @@ msgid ""
 msgstr ""
 
 msgid ""
-"You have reached the maximum number of email accounts allowed by your "
+"You have reached the maximum number of mail accounts allowed by your "
 "subscription."
 msgstr ""
-"Вы достигли максимального числа почтовых ящиков, доступного Вашей подписке. "
 
 msgid ""
 "You have reached the maximum number of subdomains allowed by your "
@@ -5939,10 +5691,8 @@ msgid ""
 msgstr ""
 "Вы достигли максимального числа алиасов домена, доступного Вашей подписке. "
 
-msgid "You have reached your domain limit. You cannot add more domains."
+msgid "You have reached your domains limit. You cannot add more domains."
 msgstr ""
-"Вы достигли Вашего лимита доменов.<br />Вы не можете добавить больше "
-"доменов."
 
 msgid "You have to choose between file-upload and wget-function."
 msgstr "Ви повинні обрати між функціями завантаження файлів або скачування."
@@ -5977,11 +5727,11 @@ msgstr "Вы должны выбрать файл для загрузки"
 msgid "You must select a file to upload/download."
 msgstr "Ви повинні обрати файл для завантаження/скачування."
 
-msgid "You must select a least one mail account to delete"
-msgstr ""
-
 msgid "You must select a least one mail account to delete."
 msgstr "Вы должны выбрать как минимум один почтовый ящик для удаления."
+
+msgid "You must select at least one catch-all addresses."
+msgstr ""
 
 msgid "You must select at least one plugin."
 msgstr "Вы должны выбрать по крайней мере один плагин."
@@ -6040,8 +5790,7 @@ msgid "Your package is corrupt. Please correct it!"
 msgstr "Ваш пакет поврежден. Пожалуйста, исправьте его!"
 
 msgid ""
-"Your password has been successfully scheduled for renewal. Check your "
-"emails."
+"Your password has been successfully scheduled for renewal. Check your mails."
 msgstr ""
 
 #, php-format
@@ -6055,11 +5804,9 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Your request for password renewal has been registered. You will receive an "
-"email with instructions to complete the process."
+"Your request for password renewal has been registered. You will receive a "
+"mail with instructions to complete the process."
 msgstr ""
-"Ваш запрос нового пароля был зарегистрирован. Вы получите письмо с "
-"инструкциями по завершению процесса смены пароля."
 
 msgid "Your request for password renewal is either invalid or has expired."
 msgstr "Ваш запрос нового пароля не действителен или его срок истек."
@@ -6097,10 +5844,6 @@ msgstr "[Re]"
 msgid "_: Localised language"
 msgstr "Українська мова - Ukrainian"
 
-#, php-format
-msgid "`%s` field cannot be empty."
-msgstr "Поле `%s` не может пустовать."
-
 msgid "activated"
 msgstr "активировано"
 
@@ -6119,6 +5862,9 @@ msgstr "и"
 msgid "anything"
 msgstr ""
 
+msgid "catch-all"
+msgstr ""
+
 msgid "city"
 msgstr ""
 
@@ -6129,9 +5875,6 @@ msgid "country"
 msgstr ""
 
 msgid "created by"
-msgstr ""
-
-msgid "customer ID"
 msgstr ""
 
 msgid "day"
@@ -6167,12 +5910,6 @@ msgstr ""
 msgid "domains"
 msgstr "домены"
 
-msgid "email account"
-msgstr "почтовый ящик"
-
-msgid "email accounts"
-msgstr "почтовые ящики"
-
 msgid "enabled"
 msgstr "Включено"
 
@@ -6190,9 +5927,6 @@ msgstr "из другого браузера"
 
 msgid "i-MSCP - Application Management (Permissions)"
 msgstr "i-MSCP - Керування додатками (Права)"
-
-msgid "i-MSCP - Client/Create CatchAll Mail Account"
-msgstr "i-MSCP - Клиент / Создать перенапраленный почтовый ящик"
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
 msgstr "i-MSCP - Multi Server Control Panel / Вхід"
@@ -6254,6 +5988,9 @@ msgstr ""
 msgid "mail"
 msgstr "почта"
 
+msgid "mail account"
+msgstr ""
+
 msgid "mail accounts"
 msgstr "почтовых ящиков"
 
@@ -6262,9 +5999,6 @@ msgstr "відсутній аліас"
 
 msgid "missing domain"
 msgstr "відсутній домен"
-
-msgid "n/a"
-msgstr ""
 
 msgid "n\\a"
 msgstr "Недоступно"
@@ -6332,9 +6066,6 @@ msgstr "трафик"
 
 msgid "udp"
 msgstr "udp"
-
-msgid "unlimited"
-msgstr "не обмежено"
 
 msgid "update"
 msgstr "обновить"

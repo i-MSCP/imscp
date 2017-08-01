@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-07-20 16:43+0000\n"
+"POT-Creation-Date: 2017-08-01 12:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/i-mscp/teams/576/zh_TW/)\n"
@@ -37,36 +37,12 @@ msgid "$ORIGIN value is currently set to: %s"
 msgstr "$ORIGIN 的值目前設定為: %s"
 
 #, php-format
+msgid "%%s / %s"
+msgstr ""
+
+#, php-format
 msgid "%%s cannot be greater than %%s."
 msgstr "%%s 不能大於 %%s."
-
-#, php-format
-msgid "%1$d / %2$d"
-msgstr "%1$d / %2$d"
-
-#, php-format
-msgid "%1$d / %2$d of %3$d"
-msgstr "%1$d / %2$d 的 %3$d "
-
-#, php-format
-msgid "%1$d / %2$d of %3$d</b>"
-msgstr "%1$d / %2$d 的 %3$d</b> "
-
-#, php-format
-msgid "%1$d / %2$d of unlimited"
-msgstr "%1$d / %2$d 無限制"
-
-#, php-format
-msgid "%1$d of %2$d"
-msgstr "%1$d 的 %2$d "
-
-#, php-format
-msgid "%1$d%% [%2$s of %3$s]"
-msgstr "%1$d%% [%2$s 的 %3$s]"
-
-#, php-format
-msgid "%1$d%% [%2$s of unlimited]"
-msgstr "%1$d%% [%2$s 的 無限制]"
 
 #, php-format
 msgid "%1$s (%2$s)"
@@ -81,28 +57,8 @@ msgid "%1$s - (Version: %2$s, Language: %3$s)"
 msgstr "%1$s - (版本: %2$s, 語系: %3$s)"
 
 #, php-format
-msgid "%1$s / %2$s"
-msgstr "%1$s / %2$s"
-
-#, php-format
-msgid "%1$s / %2$s of %3$s"
-msgstr "%1$s / %2$s 的 %3$s "
-
-#, php-format
-msgid "%1$s / %2$s of unlimited"
-msgstr "%1$s / %2$s 無限制"
-
-#, php-format
 msgid "%1$s you are now logged as %2$s"
 msgstr "%1$s 你現在已登入為 %2$s"
-
-#, php-format
-msgid "%1$s%% [%2$s of %3$s]"
-msgstr "%1$s%% [%2$s of %3$s]"
-
-#, php-format
-msgid "%1$s%% [%2$s of unlimited]"
-msgstr "%1$s%% [%2$s 的 無限制]"
 
 #, php-format
 msgid "%1$ss - Software"
@@ -113,32 +69,20 @@ msgid "%d %s remaining until account expiration"
 msgstr "%d %s 當帳號到期時通知"
 
 #, php-format
-msgid "%d / unlimited"
-msgstr "%d / 無限制"
-
-#, php-format
 msgid "%d Service(s) port successfully updateds"
 msgstr "%d 服務連接埠已經成功更新。"
-
-#, php-format
-msgid "%d configuration parameter(s) have/has been created."
-msgstr "%d 設置的參數已經建立了。"
-
-#, php-format
-msgid "%d configuration parameter(s) have/has been updated."
-msgstr "%d 設置的參數已經更新了。"
-
-#, php-format
-msgid "%d of %s"
-msgstr "%d 的 %s"
 
 #, php-format
 msgid "%d strings translated"
 msgstr "%d 條字串已經翻譯"
 
 #, php-format
-msgid "%s / unlimited"
-msgstr "%s / 無限制"
+msgid "%s / %s"
+msgstr ""
+
+#, php-format
+msgid "%s / ∞"
+msgstr ""
 
 #, php-format
 msgid "%s account successfully deleted."
@@ -161,14 +105,6 @@ msgid "%s is not allowed as subdomain label."
 msgstr "%s 不允許的子網域標籤。"
 
 #, php-format
-msgid "%s of %s"
-msgstr "%s of %s"
-
-#, php-format
-msgid "%s of unlimited"
-msgstr "%s / 無限制"
-
-#, php-format
 msgid "%s page"
 msgstr "%s 頁"
 
@@ -179,6 +115,22 @@ msgstr "%s 筆記錄"
 #, php-format
 msgid "%s webmail"
 msgstr "%s webmail"
+
+#, php-format
+msgid "%s%% [%s / %s]"
+msgstr ""
+
+#, php-format
+msgid "%s%% [%s / ∞]"
+msgstr ""
+
+#, php-format
+msgid "%s%% [%s of %3$s]"
+msgstr ""
+
+#, php-format
+msgid "%s%% [%s of ∞]"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -211,160 +163,8 @@ msgid ""
 "plugin which must be reported to the author(s)."
 msgstr "%s::getInfo() 沒在運作也 %s 沒找到。這是一個 %s 外掛的錯誤且必須回報給作者。"
 
-#, php-format
-msgid ""
-"'%%hostname%%' does not appear to have a valid MX record for the email "
-"address '%%value%%'"
-msgstr "'%%hostname%%' 不可以出現給電子郵件用的 MX 紀錄 '%%value%%'"
-
-#, php-format
-msgid "'%%hostname%%' is no valid hostname for email address '%%value%%'"
-msgstr "'%%hostname%%' 在電子郵件中是不正確的主機名稱 '%%value%%'"
-
-#, php-format
-msgid ""
-"'%%hostname%%' is not in a routable network segment. The email address "
-"'%%value%%' should not be resolved from public network"
-msgstr "'%%hostname%%' 不是正確的路由網段。此電子郵件 '%%value%%' 應該不是從公開網路解析的"
-
-#, php-format
-msgid "'%%localPart%%' can not be matched against dot-atom format"
-msgstr "'%%localPart%%' 不能不符合 dot-atom 格式"
-
-#, php-format
-msgid "'%%localPart%%' can not be matched against quoted-string format"
-msgstr "'%%localPart%%' 不能不符合 quoted-string 格式"
-
-#, php-format
-msgid "'%%localPart%%' is no valid local part for email address '%%value%%'"
-msgstr "'%%localPart%%' 在電子郵件中是不正確的 local part '%%value%%'"
-
-#, php-format
-msgid "'%%value%%' appears to be a DNS hostname but cannot extract TLD part"
-msgstr "'%%value%%' 看起來是 DNS 主機名稱但是無法取得 TLD 的部份"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a DNS hostname but cannot match TLD against known "
-"list"
-msgstr "'%%value%%' 看起來是 DNS 主機名稱但是不符合 TLD 已知列表"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a DNS hostname but cannot match against hostname "
-"schema for TLD '%%tld%%'"
-msgstr "'%%value%%' 看起來是 DNS 主機名稱但是無法符合 TLD 主機名稱模式 '%%tld%%'"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a DNS hostname but contains a dash in an invalid "
-"position"
-msgstr "'%%value%%' 看起來是 DNS 主機名稱但是在不正確的位置上有\"-\"符號"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a DNS hostname but the given punycode notation "
-"cannot be decoded"
-msgstr "'%%value%%' 看起來是 DNS 主機名稱但是指定的 punycode 符號不能解碼"
-
-#, php-format
-msgid "'%%value%%' appears to be a domain name but cannot extract TLD part"
-msgstr "'%%value%%' 看起來是網域名稱但是無法取得 TLD 的部份"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a domain name but cannot match TLD against known "
-"list"
-msgstr "'%%value%%' 看起來是網域名稱但是不符合 TLD 已知列表"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a domain name but cannot match against domain name"
-" schema for TLD '%%tld%%'"
-msgstr "'%%value%%' 看起來是網域名稱但是無法符合 TLD 網域名稱模式 '%%tld%%'"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a domain name but contains a dash in an invalid "
-"position"
-msgstr "'%%value%%' 看起來是網域名稱但是在不正確的位置上有\"-\"符號"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a domain name but the given punycode notation "
-"cannot be decoded"
-msgstr "'%%value%%' 看起來是網域名稱但是指定的 punycode 符號不能解碼"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a local network name but local network names are "
-"not allowed"
-msgstr "'%%value%%' 看起來是本機網路名稱但是本機網路名稱是不允許的"
-
-#, php-format
-msgid "'%%value%%' appears to be a subdomain name but cannot extract TLD part"
-msgstr "'%%value%%' 看起來是子網域名稱但是無法取得 TLD 的部份"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a subdomain name but cannot match TLD against "
-"known list"
-msgstr "'%%value%%' 看起來是子網域名稱但是不符合 TLD 已知列表"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a subdomain name but cannot match against "
-"subdomain schema for TLD '%%tld%%'"
-msgstr "'%%value%%' 看起來是子網域名稱但是無法符合 TLD 子網域名稱模式 '%%tld%%'"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a subdomain name but contains a dash in an invalid"
-" position"
-msgstr "'%%value%%' 看起來是子網域名稱但是在不正確的位置上有\"-\"符號"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be a subdomain name but the given punycode notation "
-"cannot be decoded"
-msgstr "'%%value%%' 看起來是子網域名稱但是指定的 punycode 符號不能解碼"
-
-#, php-format
-msgid ""
-"'%%value%%' appears to be an IP address, but IP addresses are not allowed"
-msgstr "'%%value%%' 出現這個 IP 位址，但是此 IP 位址不允許"
-
-#, php-format
-msgid "'%%value%%' does not appear to be a valid IP address"
-msgstr "'%%value%%' 並不是標準的 IP 位址"
-
-#, php-format
-msgid "'%%value%%' does not appear to be a valid URI hostname"
-msgstr "'%%value%%' 並不是標準的 URL 主機名稱"
-
-#, php-format
-msgid "'%%value%%' does not appear to be a valid local network name"
-msgstr "'%%value%%' 並不是標準本機網路名稱"
-
-#, php-format
-msgid "'%%value%%' does not match the expected structure for a DNS hostname"
-msgstr "'%%value%%' 這個 DNS 主機名稱不符合預期的結構"
-
-#, php-format
-msgid "'%%value%%' does not match the expected structure for a domain name"
-msgstr "'%%value%%' 這個網域名稱不符合預期的結構"
-
-#, php-format
-msgid "'%%value%%' does not match the expected structure for a subdomain name"
-msgstr "'%%value%%' 這個子網域名稱不符合預期的結構"
-
-#, php-format
-msgid "'%%value%%' exceeds the allowed length"
-msgstr "'%%value%%' 超過允許的長度"
-
-msgid ""
-"'%%value%' is no valid email address in the basic format local-part@hostname"
-msgstr "'%%value%' 不是正確的電子郵件地址，正常郵件格式為local-part@hostname"
+msgid "(default)"
+msgstr ""
 
 #, php-format
 msgid "(filtered from %s total records)"
@@ -392,11 +192,13 @@ msgstr "<b>%s</b> 此 IP 位址不能讓經銷商管理!<br>這個使用者不�
 msgid "A PHP extension stopped the file upload."
 msgstr "PHP extension 停用了檔案上傳。"
 
-msgid "A database update is available"
-msgstr "可以更新資料庫"
-
 msgid "A hosting plan with same name already exists."
 msgstr "主機方案的名稱已經存在了。"
+
+#, php-format
+msgid "A new configuration parameter has been created."
+msgid_plural "%d configuration parameters were created"
+msgstr[0] ""
 
 msgid "A new i-MSCP version is available"
 msgstr "i-MSCP 目前已經有最新版本"
@@ -425,9 +227,6 @@ msgstr "帳號限制"
 msgid "Account name"
 msgstr "帳號名稱"
 
-msgid "Account overview"
-msgstr "帳號概觀"
-
 msgid "Account summary"
 msgstr "帳戶概觀"
 
@@ -449,6 +248,9 @@ msgstr "動作"
 msgid "Activate"
 msgstr "啟動"
 
+msgid "Activate autoresponder"
+msgstr ""
+
 msgid "Activate this plugin"
 msgstr "啟用這個外掛"
 
@@ -464,8 +266,8 @@ msgstr "帳戶啟用信"
 msgid "Activation in progress..."
 msgstr "啟用執行中..."
 
-msgid "Activation link expire time <small>(In minutes)</small>"
-msgstr "驗證連結到期時間 <small>(分鐘)</small>"
+msgid "Activation link expire time in minutes"
+msgstr ""
 
 msgid "Add"
 msgstr "增加"
@@ -494,8 +296,8 @@ msgstr "新增 SSL 證書"
 msgid "Add admin"
 msgstr "增加管理員"
 
-msgid "Add catchall"
-msgstr "新增外部信箱抓取"
+msgid "Add catch-all account"
+msgstr ""
 
 msgid "Add custom menu"
 msgstr "新增自訂選單"
@@ -509,14 +311,14 @@ msgstr "新增客戶 - 下一步"
 msgid "Add domain alias"
 msgstr "增加網域別名"
 
-msgid "Add email account"
-msgstr "新增電子郵件帳號"
-
 msgid "Add group"
 msgstr "增加群組"
 
 msgid "Add hosting plan"
 msgstr "增加代管方案"
+
+msgid "Add mail account"
+msgstr ""
 
 msgid "Add new IP address"
 msgstr "新增 IP 位址"
@@ -593,11 +395,11 @@ msgstr "管理 / 設定 / 語系"
 msgid "Admin / Settings / Lost Password Email"
 msgstr "管理 / 設定 / 忘記密碼郵件"
 
+msgid "Admin / Settings / Monthly Server Traffic"
+msgstr ""
+
 msgid "Admin / Settings / Plugin Management"
 msgstr "管理 / 設定 / 外掛管理"
-
-msgid "Admin / Settings / Server Traffic"
-msgstr "管理 / 設定 / 伺服器流量"
 
 msgid "Admin / Settings / Service Ports"
 msgstr "管理 / 設定 / 服務連接埠"
@@ -646,9 +448,6 @@ msgstr "管理 / 支援 / 檢視服務單"
 msgid "Admin / System Tools / Anti-Rootkits Logs"
 msgstr "管理 / 系統工具 / Anti-Rootkits 紀錄"
 
-msgid "Admin / System Tools / Database Update"
-msgstr "管理 / 系統工具 / 資料庫更新"
-
 msgid "Admin / System Tools / Debugger"
 msgstr "管理 / 系統工具 / 除錯"
 
@@ -684,6 +483,9 @@ msgstr "管理 / 使用者 / 概要 / 網域詳細資訊"
 
 msgid "Admin / Users / Overview / Edit Admin"
 msgstr "管理 / 使用者 / 概要 / 編輯管理者"
+
+msgid "Admin / Users / Overview / Edit Customer"
+msgstr ""
 
 msgid "Admin / Users / Resellers Assignment"
 msgstr "管理 / 使用者 / 經銷商分配"
@@ -740,21 +542,6 @@ msgid ""
 "After your upload the package it will be installed on your "
 "systems.<br>Refresh your site to see the new status!"
 msgstr "在您上傳套件將會自動安裝在您的系統上。<br>重整您的網站來確認新的狀態!"
-
-msgid "Alias forward"
-msgstr "別名轉址"
-
-msgid "Alias mail"
-msgstr "郵件別名"
-
-msgid "Alias subdomain forward"
-msgstr "子網域別名轉址"
-
-msgid "Alias subdomain mail"
-msgstr "子網域別名郵件"
-
-msgid "Aliases"
-msgstr "網域別名"
 
 msgid "All"
 msgstr "所有"
@@ -819,9 +606,6 @@ msgstr "您的臨時網址"
 msgid "Alternative URL to reach your website"
 msgstr "您的臨時網址"
 
-msgid "An email addresse is not valid in mail forward list."
-msgstr "在郵件轉址列表中有電子郵件位址是不正確的。"
-
 msgid "An unexpected error occurred"
 msgstr "發生無法預期的錯誤。"
 
@@ -833,6 +617,10 @@ msgstr "發生無法預期的錯誤，請連絡您的系統管理員。"
 
 msgid "An unexpected error occurred. Please contact your reseller."
 msgstr "發生無法預期的錯誤，請連絡您的經銷商。"
+
+#, php-format
+msgid "An unexpected error occurred. Please contact your reseller. %s"
+msgstr ""
 
 #, php-format
 msgid "An unexpected error occurred: %s"
@@ -884,19 +672,12 @@ msgstr "你確定想刪除%s?"
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "您確定要刪除所有已結案的服務單?"
 
-msgid "Are you sure you want to delete all selected mail accounts?"
-msgstr "您確定要刪除所有選擇的郵件帳號?"
-
 msgid "Are you sure you want to delete all tickets?"
 msgstr "您確定要刪除所有服務單?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s FTP user?"
 msgstr "您確定要刪除 %s FTP使用者?"
-
-#, php-format
-msgid "Are you sure you want to delete the %s catch all?"
-msgstr "您確定要刪除這個 %s 外部抓取郵件?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
@@ -930,6 +711,9 @@ msgid "Are you sure you want to delete this DNS record?"
 msgstr "您確定要刪除這個 DNS 紀錄?"
 
 msgid "Are you sure you want to delete this account?"
+msgstr ""
+
+msgid "Are you sure you want to delete this catch-all account?"
 msgstr ""
 
 msgid "Are you sure you want to delete this domain alias?"
@@ -996,20 +780,23 @@ msgstr "自動"
 msgid "Auto (Browser language)"
 msgstr "自動 (瀏覽器語言)"
 
-msgid "Auto responder"
-msgstr "自動回覆"
+msgid "Automatic catch-all address"
+msgstr ""
 
-msgid "Auto-responder message cannot be empty."
-msgstr "自動回覆訊息不可以空白。"
+msgid "Autoresponder"
+msgstr ""
 
-msgid "Auto-responder successfully scheduled for activation."
-msgstr "啟用自動回覆的排程已成功"
+msgid "Autoresponder has been activated."
+msgstr ""
 
-msgid "Auto-responder successfully scheduled for deactivation."
-msgstr "停用自動回覆的排程已成功"
+msgid "Autoresponder has been deactivated."
+msgstr ""
 
-msgid "Auto-responder successfully scheduled for update."
-msgstr "更新自動回覆的排程已成功"
+msgid "Autoresponder has been edited."
+msgstr ""
+
+msgid "Autoresponder message cannot be empty."
+msgstr ""
 
 msgid "Available"
 msgstr "有效"
@@ -1038,6 +825,12 @@ msgstr "備份與還原設定"
 msgid "Backup has been successfully scheduled for restoration."
 msgstr "還原備份的排程已成功"
 
+msgid "Bad email address in catch-all addresses field."
+msgstr ""
+
+msgid "Bad email address in forward list field."
+msgstr ""
+
 msgid "Bad password."
 msgstr "錯誤密碼"
 
@@ -1056,15 +849,14 @@ msgstr ""
 "以下，您可以啟用外部郵件主機功能給一個或多個您的網域。注意這個啟用外部郵件主機功能設置將會把我們伺服器的郵件轉送到您指定的郵件主機，但是不會產生 DNS"
 " 紀錄。"
 
-msgid ""
-"Blocking time between login/captcha attempts <small>(In seconds)</small>"
-msgstr "每次登入及驗證碼嘗試的間隔 <small>(在幾秒鐘)</small>"
+msgid "Blocking time between login/captcha attempts in seconds"
+msgstr ""
 
 msgid "Blocking time between logins and captcha attempts"
 msgstr "每次登入及驗證碼嘗試的間隔"
 
-msgid "Blocktime <small>(in minutes)</small>"
-msgstr "凍結時間 <small>(分鐘)</small>"
+msgid "Blocktime in minutes"
+msgstr ""
 
 msgid "Body"
 msgstr "內文"
@@ -1110,17 +902,30 @@ msgstr "取消"
 msgid "Canonical name"
 msgstr "別名(CNAME)"
 
-msgid "Catch all"
-msgstr "抓取外部郵件"
+msgid "Catch-all account"
+msgstr ""
 
-msgid "Catch all successfully scheduled for addition."
-msgstr "新增抓取外部郵件的排程已成功"
+msgid "Catch-all account successfully scheduled for deletion."
+msgstr ""
 
-msgid "Catch all successfully scheduled for deletion."
-msgstr "刪除抓取外部郵件的排程已成功"
+msgid "Catch-all accounts"
+msgstr ""
 
-msgid "Catchall"
-msgstr "抓取外部信箱"
+msgid "Catch-all addresses"
+msgstr ""
+
+msgid "Catch-all addresses field cannot be empty."
+msgstr ""
+
+#, php-format
+msgid "Catch-all addresses for the %s domain"
+msgstr ""
+
+msgid "Catch-all domain"
+msgstr ""
+
+msgid "Catch-all successfully scheduled for addition."
+msgstr ""
 
 msgid "Certificate"
 msgstr "憑證"
@@ -1130,9 +935,6 @@ msgstr "憑證日期"
 
 msgid "Change"
 msgstr "變更"
-
-msgid "Change personal data"
-msgstr "變更個人資料"
 
 msgid "Change status of this item for a new attempt"
 msgstr "試著變更這個項目的狀態"
@@ -1253,30 +1055,6 @@ msgstr "客戶 / 網域 / PHP 設定"
 msgid "Client / Domains / SSL Certificate"
 msgstr "客戶 / 網域 / SSL 憑證"
 
-msgid "Client / Email / Add Email Account"
-msgstr "客戶 / 郵件 / 新增郵件帳號"
-
-msgid "Client / Email / Catchall"
-msgstr "客戶 / 郵件 / 抓取外部郵件"
-
-msgid "Client / Email / Catchall / Add Catchall"
-msgstr "客戶 / 郵件 / 抓取外部郵件 / 新增抓取外部郵件"
-
-msgid "Client / Email / Edit Email Account"
-msgstr "客戶 / 郵件 / 編輯郵件帳號"
-
-msgid "Client / Email / External Mail Feature"
-msgstr "客戶 / 郵件 / 外部郵件功能"
-
-msgid "Client / Email / Overview"
-msgstr "客戶 / 郵件 / 概要"
-
-msgid "Client / Email / Overview / Edit Auto Responder"
-msgstr "客戶 / 郵件 / 概要 / 編輯自動回覆"
-
-msgid "Client / Email / Overview / Enable Auto Responder"
-msgstr "客戶 / 郵件 / 概要 / 啟用自動回覆"
-
 msgid "Client / FTP / Add FTP Account"
 msgstr "客戶 / FTP / 新增 FTP 帳號"
 
@@ -1288,6 +1066,33 @@ msgstr "客戶 / FTP / 概要 / 編輯 FTP 帳號"
 
 msgid "Client / General / Overview"
 msgstr "客戶 / 一般 / 概要"
+
+msgid "Client / Mail / Add Mail Account"
+msgstr ""
+
+msgid "Client / Mail / Catch-all Accounts"
+msgstr ""
+
+msgid "Client / Mail / Catch-all Accounts / Add Catch-all account"
+msgstr ""
+
+msgid "Client / Mail / Catch-all Accounts / Edit Catch-all account"
+msgstr ""
+
+msgid "Client / Mail / Edit Mail Account"
+msgstr ""
+
+msgid "Client / Mail / External Mail Feature"
+msgstr ""
+
+msgid "Client / Mail / Overview"
+msgstr ""
+
+msgid "Client / Mail / Overview / Activate Autoresponder"
+msgstr ""
+
+msgid "Client / Mail / Overview / Edit Autoresponder"
+msgstr ""
 
 msgid "Client / Profile / Account Summary"
 msgstr "客戶 / 個人設定 / 帳號摘要"
@@ -1358,6 +1163,9 @@ msgstr "客戶 / 網站工具 / 軟體 / 軟體安裝"
 msgid "Client / Webtools / Software / View"
 msgstr "客戶 / 網站工具 / 軟體 / 檢視"
 
+msgid "Client users"
+msgstr ""
+
 msgid "Clock speed (MHz)"
 msgstr "時脈頻率 (MHz)"
 
@@ -1378,9 +1186,6 @@ msgstr "名稱"
 
 msgid "Company"
 msgstr "公司名稱"
-
-msgid "Compress HTML output"
-msgstr "HTML 壓縮輸出"
 
 msgid "Configuration mode"
 msgstr "設置模式"
@@ -1412,10 +1217,6 @@ msgstr "可能無法變更 %s 外掛: %s"
 #, php-format
 msgid "Could not connect to the `%s' database. Please check the password."
 msgstr "可能無法連到 `%s' 資料庫。請確認密碼。"
-
-#, php-format
-msgid "Could not create `%s` database name."
-msgstr "可能無法建立 `%s` 資料庫名稱。"
 
 msgid "Could not create domain alias. An unexpected error occurred."
 msgstr "無法建立網域別名。已產生無法預期的錯誤。"
@@ -1485,8 +1286,15 @@ msgstr "無法上傳檔案。最大上傳檔案大小 (%1$d MB) 已經達到了�
 msgid "Could not validate DNS resource record: %s"
 msgstr "可能無法驗證 DNS 紀錄: %s"
 
-msgid "Count default email addresses"
-msgstr "計算預設郵件地址"
+#, php-format
+msgid "Couldn't create the %s database."
+msgstr ""
+
+msgid "Couldn't delete subdomain. An unexpected error occurred."
+msgstr ""
+
+msgid "Count default mail accounts"
+msgstr ""
 
 msgid "Country"
 msgstr "國家"
@@ -1494,11 +1302,8 @@ msgstr "國家"
 msgid "Create"
 msgstr "建立"
 
-msgid "Create catch all"
-msgstr "建立抓取外部郵件"
-
-msgid "Create default email addresses"
-msgstr "建立預設郵件地址"
+msgid "Create default mail accounts"
+msgstr ""
 
 msgid "Created by"
 msgstr "建立者"
@@ -1638,12 +1443,6 @@ msgstr "資料庫"
 msgid "Database Name and Users"
 msgstr "資料庫名稱和使用者"
 
-msgid "Database Update Revision"
-msgstr "資料庫更新調整"
-
-msgid "Database Update details"
-msgstr "資料庫更新詳細資料"
-
 msgid "Database data"
 msgstr "資料庫資料"
 
@@ -1667,9 +1466,6 @@ msgstr "資料庫前置字串/字尾"
 
 msgid "Database required"
 msgstr "需要資料庫"
-
-msgid "Database update"
-msgstr "資料庫更新"
 
 msgid "Database usage"
 msgstr "資料庫使用量"
@@ -2048,9 +1844,6 @@ msgstr "設定是否讓客戶可以新增/變更 SSL 憑證在他們的網域上
 msgid "Delete"
 msgstr "刪除"
 
-msgid "Delete CatchAll"
-msgstr "刪除抓取外部信箱"
-
 msgid "Delete all tickets"
 msgstr "刪除所有服務單"
 
@@ -2071,9 +1864,6 @@ msgstr "刪除這個外掛"
 
 msgid "Delete ticket"
 msgstr "刪除服務單"
-
-msgid "Delete user"
-msgstr ""
 
 msgid "Deletion in progress"
 msgstr "刪除執行中"
@@ -2104,9 +1894,6 @@ msgstr "目錄 '%s' 不存在。"
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
 msgstr "目錄 '%s' 是不允許或是無效的。"
-
-msgid "Disable"
-msgstr "停用"
 
 msgid "Disabled"
 msgstr "停用"
@@ -2152,9 +1939,6 @@ msgstr "網域 %s 是無效的。"
 msgid "Domain IP"
 msgstr "網域 IP"
 
-msgid "Domain Limit"
-msgstr "網域限制"
-
 msgid "Domain Name"
 msgstr "網域名稱"
 
@@ -2177,9 +1961,6 @@ msgstr "網域別名 %s 不可以轉址到自己身上。"
 msgid "Domain alias errors"
 msgstr "網域別名錯誤"
 
-msgid "Domain alias limit"
-msgstr "網域別名限制"
-
 msgid "Domain alias name"
 msgstr "網域別名"
 
@@ -2200,6 +1981,9 @@ msgstr "更新網域別名的排程已成功"
 
 msgid "Domain aliases"
 msgstr "網域別名"
+
+msgid "Domain aliases limit"
+msgstr ""
 
 msgid "Domain and SQL databases"
 msgstr "網域 及 SQL資料庫"
@@ -2225,12 +2009,6 @@ msgstr "網域到期日必須填寫"
 msgid "Domain for which PHP Editor must act."
 msgstr "網域的 PHP 編輯器必須啟動。"
 
-msgid "Domain limit"
-msgstr "網域限制"
-
-msgid "Domain mail"
-msgstr "網域郵件"
-
 msgid "Domain name"
 msgstr "網域名稱"
 
@@ -2246,10 +2024,6 @@ msgstr "網域名稱不可以在開頭或結尾時用\"點\"。"
 #, php-format
 msgid "Domain name contains an invalid character: %s"
 msgstr "網域名稱包括了無效的字元: %s"
-
-#, php-format
-msgid "Domain name label '%s' contain an invalid character: %s"
-msgstr "網域名稱標籤 '%s' 包括了無效的字元: %s"
 
 msgid "Domain name labels cannot be greater than 63 characters."
 msgstr "網域名稱標籤不可以超過 63 個字元。"
@@ -2283,6 +2057,12 @@ msgstr "網域類型"
 
 msgid "Domains"
 msgstr "網域"
+
+msgid "Domains Limit"
+msgstr ""
+
+msgid "Domains limit"
+msgstr ""
 
 msgid "Domains per page"
 msgstr "每頁顯示網域數"
@@ -2323,8 +2103,8 @@ msgstr "編輯 SSL 憑證"
 msgid "Edit admin"
 msgstr "編輯管理員"
 
-msgid "Edit auto responder"
-msgstr "編輯自動回覆"
+msgid "Edit autoresponder"
+msgstr ""
 
 msgid "Edit custom error page"
 msgstr "編輯自訂錯誤頁面"
@@ -2353,9 +2133,6 @@ msgstr "編輯 htaccess 使用者"
 msgid "Edit mail account"
 msgstr "編輯郵件帳號"
 
-msgid "Edit mail quota"
-msgstr "編輯郵件配額"
-
 msgid "Edit protected area"
 msgstr "編輯已保護區域"
 
@@ -2365,70 +2142,21 @@ msgstr "編輯經銷商"
 msgid "Edit subdomain"
 msgstr "編輯子網域"
 
-msgid "Edit user"
-msgstr "編輯使用者"
-
 msgid "EiB"
 msgstr "EiB"
 
 msgid "Email"
 msgstr "電子郵件"
 
-msgid "Email account already exists."
-msgstr "電子郵件帳號已經存在"
-
-msgid "Email account data"
-msgstr "電子郵件帳號資料"
-
-msgid "Email account errors"
-msgstr "電子郵件帳戶錯誤"
-
-msgid "Email account limit"
-msgstr "電子郵件帳號限制"
-
-msgid "Email account list"
-msgstr "電子郵件帳號列表"
-
-msgid "Email account successfully scheduled for addition."
-msgstr "新增電子郵件帳號的排程已成功"
-
-msgid "Email account successfully scheduled for update."
-msgstr "更新電子郵件帳號的排程已成功"
-
-msgid "Email accounts"
-msgstr "電子郵件帳號"
-
-msgid "Email accounts are hard suspended"
-msgstr "電子郵件帳號強制暫停"
-
 msgid "Email address"
 msgstr "電子郵件地址"
 
-msgid "Email forward"
-msgstr "郵件轉寄"
-
-msgid "Email quota"
-msgstr "郵件配額"
-
-msgid "Email quota [MiB]"
-msgstr "郵件配額 [MiB]"
+msgid "Email address cannot be empty."
+msgstr ""
 
 #, php-format
 msgid "Email quota cannot be bigger than %s"
 msgstr "郵件配額不可以大於 %s"
-
-msgid "Email quota cannot be bigger than disk space limit."
-msgstr "郵件配額不可以大於磁碟空間限制。"
-
-#, php-format
-msgid ""
-"Email quota cannot be lower than %d. Each mailbox should have a least 1 MiB "
-"quota."
-msgstr "郵件配額不可以小於 %d。每一個信箱應該至少有 1 Mib 配額。"
-
-#, php-format
-msgid "Email quota cannot be unlimited. Max value is %d MiB."
-msgstr "電子郵件空間容量不能是無限制. 最大值為 %d MiB."
 
 msgid "Email settings"
 msgstr "電子郵件設定"
@@ -2442,14 +2170,8 @@ msgstr "電子郵件已成功更新。"
 msgid "Empty data or wrong field."
 msgstr "空白資料或錯誤欄位。"
 
-msgid "Enable"
-msgstr "啟用"
-
 msgid "Enable SSL"
 msgstr "啟用 SSL"
-
-msgid "Enable auto responder"
-msgstr "啟用自動回覆"
 
 msgid "Enabled"
 msgstr "啟用"
@@ -2473,14 +2195,14 @@ msgstr "錯誤: 遠端檔案不存在"
 msgid "Errors"
 msgstr "錯誤"
 
-msgid "Excl. default mails"
-msgstr "預設郵件除外"
-
 msgid "Execute tasks"
 msgstr "執行工作"
 
 msgid "Ext. mail server"
 msgstr "外部郵件伺服器"
+
+msgid "External mail feature"
+msgstr ""
 
 msgid "External mail server"
 msgstr "外部郵件伺服器"
@@ -2491,17 +2213,11 @@ msgstr "啟用外部郵件伺服器功能的排程已成功"
 msgid "External mail server feature scheduled for deactivation."
 msgstr "停用外部郵件伺服器功能的排程已成功"
 
-msgid "External mail servers"
-msgstr "外部郵件伺服器"
-
 msgid "FTP account"
 msgstr "FTP 帳號"
 
 msgid "FTP account already exists."
 msgstr "FTP 帳號已經存在"
-
-msgid "FTP account limit"
-msgstr "FTP 帳號限制"
 
 msgid "FTP account limit reached."
 msgstr "已到達 FTP 帳號限制。"
@@ -2517,6 +2233,9 @@ msgstr "FTP 帳號已經成功更新"
 
 msgid "FTP accounts"
 msgstr "FTP  帳號"
+
+msgid "FTP accounts limit"
+msgstr ""
 
 msgid "FTP home directory"
 msgstr "FTP 家目錄"
@@ -2599,11 +2318,11 @@ msgstr "名"
 msgid "First name cannot have more than 200 characters."
 msgstr "名字不可以超過200個字元。"
 
-msgid "For the time being, you can only add forwarded email account."
-msgstr "在這個同時，您只能新增轉寄郵件帳號。"
+msgid "For the time being, you can only add forwarded mail account."
+msgstr ""
 
-msgid "For the time being, you can only edit your forwarded email account."
-msgstr "在這個同時，您只能編輯您的轉寄郵件帳號。"
+msgid "For the time being, you can only edit your forwarded mail account."
+msgstr ""
 
 msgid "Forbidden"
 msgstr "禁止"
@@ -2626,11 +2345,11 @@ msgstr "轉址網址"
 msgid "Forward URL %s is not valid."
 msgstr "轉址的網址 %s 是無效的。"
 
+msgid "Forward account"
+msgstr ""
+
 msgid "Forward list is empty."
 msgstr "轉址列表是空的。"
-
-msgid "Forward mail"
-msgstr "轉寄郵件"
 
 msgid "Forward to"
 msgstr "轉寄"
@@ -2716,6 +2435,9 @@ msgstr "HSTS max-age directive value"
 msgid "HTTP traffic"
 msgstr "HTTP 流量"
 
+msgid "Hide default mail accounts"
+msgstr ""
+
 msgid "Hide domain aliases"
 msgstr ""
 
@@ -2789,9 +2511,6 @@ msgstr "新增 htaccess 使用者的排程已成功"
 
 msgid "Htaccess, htgroups and htpasswd errors"
 msgstr ""
-
-msgid "Http traffic"
-msgstr "HTTP 流量"
 
 msgid "IP Address"
 msgstr "IP 地址"
@@ -2879,23 +2598,23 @@ msgstr "在前面"
 msgid "In maintenance mode, only administrators can login."
 msgstr "維護模式啟用時僅允許管理員登入"
 
-msgid "Incl. default mails"
-msgstr "包括預設郵件"
-
-msgid "Incorrect Email quota"
-msgstr "不正確的郵件配額"
-
-msgid "Incorrect Email quota."
-msgstr "不正確的郵件配額。"
-
 msgid "Incorrect FTP account limit."
 msgstr "不正確的 FTP帳號限制"
+
+msgid "Incorrect FTP accounts limit."
+msgstr ""
 
 msgid "Incorrect SQL database limit."
 msgstr "不正確的 SQL 資料庫限制"
 
+msgid "Incorrect SQL databases limit."
+msgstr ""
+
 msgid "Incorrect SQL user limit."
 msgstr "不正確的 SQL 使用者限制"
+
+msgid "Incorrect SQL users limit."
+msgstr ""
 
 msgid "Incorrect alias limit."
 msgstr "不正確的別名限制。"
@@ -2906,8 +2625,8 @@ msgstr "不正確的磁碟空間限制。"
 msgid "Incorrect domain alias limit."
 msgstr "不正確的網域別名限制"
 
-msgid "Incorrect email account limit."
-msgstr "不正確的 Email 帳號限制"
+msgid "Incorrect domain aliases limit."
+msgstr ""
 
 msgid "Incorrect email length or syntax."
 msgstr "不正確的Email長度 或 格式"
@@ -2919,6 +2638,18 @@ msgstr "不正確的郵件配額。"
 msgid "Incorrect limit for %s."
 msgstr "%s 的限制是不正確的"
 
+msgid "Incorrect mail account limit."
+msgstr ""
+
+msgid "Incorrect mail accounts limit."
+msgstr ""
+
+msgid "Incorrect mail quota"
+msgstr ""
+
+msgid "Incorrect mail quota."
+msgstr ""
+
 msgid "Incorrect monthly traffic limit."
 msgstr "不正確的月流量限制。"
 
@@ -2927,6 +2658,9 @@ msgstr "不正確的郵遞區號長度或文法!"
 
 msgid "Incorrect subdomain limit."
 msgstr "不正確的子網域限制。"
+
+msgid "Incorrect subdomains limit."
+msgstr ""
 
 msgid "Incorrect syntax for email address."
 msgstr "電子郵件位址的語法不正確。"
@@ -3002,9 +2736,11 @@ msgstr "無效的 SSL 憑證"
 msgid "Invalid URL."
 msgstr "無效的網址"
 
-#, php-format
-msgid "Invalid `%s` field."
-msgstr "無效 `%s` 欄位."
+msgid "Invalid city."
+msgstr ""
+
+msgid "Invalid country."
+msgstr ""
 
 msgid "Invalid domain name."
 msgstr "無效的網域名稱。"
@@ -3015,8 +2751,27 @@ msgstr "無效的電子郵件位址。"
 msgid "Invalid email username."
 msgstr "無效的郵件使用者名稱。"
 
+msgid "Invalid fax number."
+msgstr ""
+
+#, php-format
+msgid "Invalid field: %s"
+msgstr ""
+
+msgid "Invalid firm."
+msgstr ""
+
+msgid "Invalid first name."
+msgstr ""
+
+msgid "Invalid gender"
+msgstr ""
+
 msgid "Invalid group name!"
 msgstr "無效的群組名稱！"
+
+msgid "Invalid last name."
+msgstr ""
 
 msgid "Invalid menu order."
 msgstr "無效的選單訂購。"
@@ -3027,6 +2782,9 @@ msgstr "無效的名稱"
 msgid "Invalid payload received from GitHub"
 msgstr "從 GitHub 接收到無效的負載"
 
+msgid "Invalid phone number."
+msgstr ""
+
 #, php-format
 msgid "Invalid plugin directory: %s"
 msgstr "無效的外掛目錄: %s"
@@ -3034,14 +2792,17 @@ msgstr "無效的外掛目錄: %s"
 msgid "Invalid private key or passphrase."
 msgstr "無效的私鑰或密碼。"
 
+msgid "Invalid state."
+msgstr ""
+
 msgid "Invalid target."
 msgstr "不正確的目標。"
 
-msgid "Invalid type given. String expected"
-msgstr "指定了無效的類型。應該是字串"
-
 msgid "Invalid username."
 msgstr "不正確的使用者名稱。"
+
+msgid "Invalid zipcode."
+msgstr ""
 
 msgid "Kernel Version"
 msgstr "核心版本"
@@ -3061,8 +2822,8 @@ msgstr "語言檔"
 msgid "Language file successfully installed."
 msgstr "語言檔已經成功安裝"
 
-msgid "Language successfully updated."
-msgstr "語言已經成功更新"
+msgid "Language has been updated."
+msgstr ""
 
 msgid "Languages"
 msgstr "多國語言"
@@ -3127,6 +2888,9 @@ msgstr "紀錄已成功刪除。"
 msgid "Login"
 msgstr "登入"
 
+msgid "Login data"
+msgstr ""
+
 msgid "Login password"
 msgstr "登入密碼"
 
@@ -3175,18 +2939,66 @@ msgstr "郵件"
 msgid "Mail Log Level"
 msgstr "郵件日誌等級"
 
+msgid "Mail account already exists."
+msgstr ""
+
+msgid "Mail account data"
+msgstr ""
+
+msgid "Mail account errors"
+msgstr ""
+
 #, php-format
-msgid "Mail account %s successfully scheduled for deletion."
-msgstr "刪除郵件帳號 %s 的排程已成功"
+msgid "Mail account has been scheduled for deletion."
+msgid_plural "%d mail accounts were scheduled for deletion."
+msgstr[0] ""
+
+msgid "Mail account successfully scheduled for addition."
+msgstr ""
+
+msgid "Mail account successfully scheduled for update."
+msgstr ""
 
 msgid "Mail account type"
 msgstr "郵件帳號類型"
+
+msgid "Mail accounts"
+msgstr ""
+
+msgid "Mail accounts are hard suspended"
+msgstr ""
+
+msgid "Mail accounts limit"
+msgstr ""
 
 msgid "Mail accounts list is empty."
 msgstr "郵件帳號列表是空白的。"
 
 msgid "Mail feature is disabled."
 msgstr "郵件功能已停用。"
+
+msgid "Mail quota"
+msgstr ""
+
+msgid "Mail quota [MiB]"
+msgstr ""
+
+#, php-format
+msgid "Mail quota cannot be bigger than %s"
+msgstr ""
+
+msgid "Mail quota cannot be bigger than disk space limit."
+msgstr ""
+
+#, php-format
+msgid ""
+"Mail quota cannot be lower than %d. Each mail account must have a least 1 "
+"MiB quota."
+msgstr ""
+
+#, php-format
+msgid "Mail quota cannot be unlimited. Max value is %d MiB."
+msgstr ""
 
 msgid "Mail usage"
 msgstr "郵件使用量"
@@ -3213,9 +3025,6 @@ msgstr "維護設定"
 msgid "Male"
 msgstr "男"
 
-msgid "Malformed resolver SQL query"
-msgstr "解析 SQL 佇列異常"
-
 msgid "Manage SQL"
 msgstr "管理 SQL"
 
@@ -3233,6 +3042,9 @@ msgstr "管理您的保護區域、使用者、群組。"
 
 msgid "Manual"
 msgstr "手動"
+
+msgid "Manual catch-all addresses"
+msgstr ""
 
 msgid "Mark"
 msgstr "標記"
@@ -3304,20 +3116,32 @@ msgstr "修改執行中..."
 msgid "Month"
 msgstr "月"
 
+msgid "Monthly Server traffic"
+msgstr ""
+
+msgid "Monthly server traffic"
+msgstr ""
+
+msgid "Monthly server traffic settings"
+msgstr ""
+
+msgid "Monthly server traffic settings successfully updated."
+msgstr ""
+
 msgid "Monthly traffic limit [MiB]"
 msgstr "月流量上限限制"
 
 msgid "Monthly traffic limit must be a number."
 msgstr "月流量上限限制必須是數字。"
 
+msgid "Monthly traffic usage"
+msgstr ""
+
 msgid "Monthly traffic warning cannot be bigger than monthly traffic limit."
 msgstr "月流量上限警告無可以大於月流量上限限制。"
 
 msgid "Monthly traffic warning must be a number."
 msgstr "月流量上限警告必須是數字。"
-
-msgid "More Details"
-msgstr "更多資訊"
 
 msgid "Mount"
 msgstr "掛載"
@@ -3355,6 +3179,10 @@ msgstr "新 SQL 使用者資料"
 msgid "New alias order for {CUSTOMER}"
 msgstr "新別名訂購的客戶為 {CUSTOMER}"
 
+#, php-format
+msgid "New login data were sent to the %s user."
+msgstr ""
+
 msgid "New ticket"
 msgstr "新客戶服務單"
 
@@ -3382,9 +3210,6 @@ msgstr "無法使用"
 msgid "No custom menu found."
 msgstr "目前沒有自訂功能選單"
 
-msgid "No database update available."
-msgstr "沒有可用的資料庫更新"
-
 msgid "No domain available for new software instance."
 msgstr "沒有網域可用於新的軟體實例。"
 
@@ -3399,6 +3224,9 @@ msgstr "找不到群組"
 
 msgid "No hosting plan available."
 msgstr "沒有任何可用的主機方案"
+
+msgid "No mail account has been deleted."
+msgstr ""
 
 msgid "No reseller available to add the permissions."
 msgstr "沒有經銷商可以新增權限。"
@@ -3445,20 +3273,23 @@ msgstr "這個經銷商底下沒找到使用者"
 msgid "No."
 msgstr "編號"
 
-msgid "None"
-msgstr "空"
-
 msgid "Normal"
 msgstr "一般"
+
+msgid "Normal & Forward"
+msgstr ""
+
+msgid "Normal & forward account"
+msgstr ""
 
 msgid "Normal + Forward"
 msgstr "一般 + 轉寄"
 
+msgid "Normal account"
+msgstr ""
+
 msgid "Normal connection"
 msgstr "一般連線"
-
-msgid "Normal users"
-msgstr "普通使用者"
 
 msgid "Not Found"
 msgstr "找不到"
@@ -3491,14 +3322,8 @@ msgstr "通知，警告和錯誤"
 msgid "Ok"
 msgstr "OK"
 
-msgid "One or more database updates are now available. See the details below."
-msgstr "一個或多個資料庫是可以更新的。見以下的詳細資料。"
-
 msgid "Only 'tar.gz' archives are accepted."
 msgstr "只有 'tar.gz' 壓縮檔是允許的。"
-
-msgid "Only administrators can login when maintenance mode is activated."
-msgstr "當維護模式啟用時只有管理者可以登入。"
 
 msgid "Only exec"
 msgstr "只有 exec"
@@ -3661,17 +3486,11 @@ msgstr "密碼"
 msgid "Password cannot be empty."
 msgstr "密碼不能空白"
 
-msgid "Password cannot be longer than 30 characters."
-msgstr "密碼不能超過 30 字元。"
-
 msgid "Password confirmation"
 msgstr "確認密碼"
 
 msgid "Password contains unallowed characters."
 msgstr "密碼包含不允許的字元"
-
-msgid "Password data"
-msgstr "密碼資料"
 
 msgid "Password email"
 msgstr "忘記密碼信件"
@@ -3679,18 +3498,15 @@ msgstr "忘記密碼信件"
 msgid "Password is missing."
 msgstr "忘記密碼。"
 
-#, php-format
-msgid "Password is shorter than %s characters."
-msgstr "密碼短少於 %s 字元。"
-
 msgid "Password minimum length"
 msgstr "密碼最小長度"
 
 #, php-format
-msgid ""
-"Password must be at least %s characters long and contain letters and numbers"
-" to be valid."
-msgstr "密碼必須至少有 %s 字元長度且包括有效的字母和數字。"
+msgid "Password must be between %d and %d characters."
+msgstr ""
+
+msgid "Password must contain letters and digits."
+msgstr ""
 
 msgid "Password settings"
 msgstr "密碼設定"
@@ -3719,8 +3535,8 @@ msgstr "權限"
 msgid "Personal data"
 msgstr "個人資料"
 
-msgid "Personal data successfully updated."
-msgstr "個人資料已經成功更新。"
+msgid "Personal data were updated."
+msgstr ""
 
 msgid "Personalise template"
 msgstr "個人化範本"
@@ -3752,6 +3568,9 @@ msgid ""
 "your site to see the new status!"
 msgstr "請聯絡管理員!<br />詢問他們使用這個套件的權限。<br>這裡不允許上傳這個套件兩次。<br>重整您的站台來檢視新的狀態!"
 
+msgid "Please edit your autoresponder message below"
+msgstr ""
+
 msgid "Please enter a name for the protected area."
 msgstr "請輸入保護區域的名稱。"
 
@@ -3767,8 +3586,8 @@ msgstr "請輸入一個使用者名稱"
 msgid "Please enter protected area path."
 msgstr "請輸入保護目錄的路徑。"
 
-msgid "Please enter your auto-responder message below"
-msgstr "請在下面輸入您的自動回覆郵件"
+msgid "Please enter your autoresponder message below"
+msgstr ""
 
 msgid "Please fill up both data fields for password."
 msgstr "請在這兩個資料欄位填入密碼。"
@@ -4036,9 +3855,6 @@ msgstr "私鑰"
 msgid "Private key passphrase if any"
 msgstr "假如任何私鑰的密碼"
 
-msgid "Process update"
-msgstr "執行更新"
-
 msgid "Processing..."
 msgstr "執行中..."
 
@@ -4057,6 +3873,9 @@ msgstr "經銷商及其 ID %d 的內容未從資料庫中找到。"
 
 msgid "Protect"
 msgstr "保護"
+
+msgid "Protect default mail accounts against change and removal"
+msgstr ""
 
 msgid "Protect this plugin"
 msgstr "保護這個外掛"
@@ -4088,8 +3907,11 @@ msgstr "保護區域"
 msgid "Protocol"
 msgstr "通訊協定"
 
-msgid "Quota in MiB (0 for unlimited)"
-msgstr "以MB設定配額 (0代表無限制)"
+msgid "Quota in MiB (0 ∞"
+msgstr ""
+
+msgid "Quota in MiB (0 ∞)"
+msgstr ""
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
@@ -4116,8 +3938,8 @@ msgstr "值"
 msgid "Redirect"
 msgstr "重新導向"
 
-msgid "Redistribute unused quota across existing mailboxes"
-msgstr "重新分配未使用的配額到已存在的信箱"
+msgid "Redistribute unused quota across existing mail accounts"
+msgstr ""
 
 msgid "Registration date"
 msgstr "註冊日期"
@@ -4335,9 +4157,6 @@ msgstr "還原"
 msgid "Restore backup"
 msgstr "還原備份"
 
-msgid "Revision date"
-msgstr "修訂日期"
-
 msgid "Rights"
 msgstr "權限"
 
@@ -4362,9 +4181,6 @@ msgstr "SQL"
 msgid "SQL database"
 msgstr "SQL 資料庫"
 
-msgid "SQL database limit"
-msgstr "SQL 資料庫限制"
-
 msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr "SQL 資料庫限制是停用的但 SQL 使用者限制還存在。"
 
@@ -4386,6 +4202,15 @@ msgstr "SQL 資料庫已經成功刪除"
 msgid "SQL databases"
 msgstr "SQL 資料庫"
 
+msgid "SQL databases limit"
+msgstr ""
+
+msgid "SQL databases limit is disabled."
+msgstr ""
+
+msgid "SQL databases limit is not disabled."
+msgstr ""
+
 msgid "SQL databases only"
 msgstr "只有 SQL 資料庫"
 
@@ -4394,9 +4219,6 @@ msgstr "SQL 使用者"
 
 msgid "SQL user host"
 msgstr "SQL 使用者主機"
-
-msgid "SQL user limit"
-msgstr "SQL 使用者限制"
 
 msgid "SQL user limit is <i>disabled</i>."
 msgstr "SQL 使用者限制為 <i>停用</i>。"
@@ -4427,6 +4249,12 @@ msgstr "資料庫使用者名稱太長。"
 
 msgid "SQL users"
 msgstr "SQL 使用者"
+
+msgid "SQL users limit"
+msgstr ""
+
+msgid "SQL users limit is disabled."
+msgstr ""
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "新增 SSL 憑證的排程已成功"
@@ -4479,9 +4307,6 @@ msgstr "發送訊息"
 msgid "Send message to"
 msgstr "發送訊息到"
 
-msgid "Send new login data"
-msgstr "發送新的登入資料"
-
 msgid "Send reply"
 msgstr "發送回覆"
 
@@ -4500,11 +4325,8 @@ msgstr "寄件者"
 msgid "Sender name is missing."
 msgstr "寄件者名稱遺失。"
 
-msgid "Separate multiple email addresses by comma or a line-break."
-msgstr "用逗號或換行來分開多個電子郵件地址。"
-
-msgid "Separate multiple email addresses with a line-break."
-msgstr "分行輸入多個郵件位址。"
+msgid "Separate addresses by a comma, line-break or space."
+msgstr ""
 
 msgid "Server ports"
 msgstr "伺服器連接埠"
@@ -4514,15 +4336,6 @@ msgstr "伺服器統計"
 
 msgid "Server status"
 msgstr "伺服器狀態"
-
-msgid "Server traffic"
-msgstr "伺服器流量"
-
-msgid "Server traffic settings"
-msgstr "伺服器流量設定"
-
-msgid "Server traffic settings successfully updated."
-msgstr "伺服器流量設定已經成功更新。"
 
 msgid "Service Name"
 msgstr "服務名稱"
@@ -4570,11 +4383,11 @@ msgstr "顯示"
 msgid "Show %s records per page"
 msgstr "每一頁顯示 %s 筆紀錄"
 
-msgid "Show HTML output compression size comment"
-msgstr "顯示 HTML 輸出壓縮大小註解"
-
 msgid "Show SSL certificate"
 msgstr "顯示 SSL 證書"
+
+msgid "Show default mail accounts"
+msgstr ""
 
 msgid "Show detailed statistics for this reseller"
 msgstr "顯示這個經銷商的詳細狀態"
@@ -4736,22 +4549,8 @@ msgstr "子網域別名錯誤"
 msgid "Subdomain alias scheduled for deletion."
 msgstr "子網域別名已排程刪除。"
 
-msgid ""
-"Subdomain alias you are trying to remove has Ftp accounts. Please remove "
-"them first."
-msgstr "您正試著移除子網域別名中的 Ftp 帳號。先移除他們。"
-
 msgid "Subdomain errors"
 msgstr "子網域錯誤"
-
-msgid "Subdomain forward"
-msgstr "子網域轉址"
-
-msgid "Subdomain limit"
-msgstr "子網域限制"
-
-msgid "Subdomain mail"
-msgstr "子網域郵件"
 
 msgid "Subdomain name"
 msgstr "子網域"
@@ -4769,20 +4568,19 @@ msgid "Subdomain successfully scheduled for update"
 msgstr "更新子網域的排程已成功"
 
 msgid ""
-"Subdomain you are trying to remove has Ftp accounts. Remove them first."
-msgstr "您正試著移除子網域中的 Ftp 帳號。先移除他們。"
-
-msgid ""
-"Subdomain you are trying to remove has email accounts. Please remove them "
+"Subdomain you are trying to remove has mail accounts. Please remove them "
 "first."
-msgstr "您正試著移除子網域中的電子郵件帳號。先移除他們。"
+msgstr ""
 
 msgid ""
-"Subdomain you are trying to remove has email accounts. Remove them first."
-msgstr "您正試著移除子網域中的電子郵件帳號。先移除他們。"
+"Subdomain you are trying to remove has mail accounts. Remove them first."
+msgstr ""
 
 msgid "Subdomains"
 msgstr "子網域"
+
+msgid "Subdomains limit"
+msgstr ""
 
 msgid "Subject"
 msgstr "主旨"
@@ -4813,9 +4611,6 @@ msgstr "切換使用者介面"
 
 msgid "Sync quota info"
 msgstr ""
-
-msgid "Syntax error found in mail forward list."
-msgstr "在郵件轉寄列表發現語法錯誤。"
 
 msgid "System"
 msgstr "系統"
@@ -4857,6 +4652,14 @@ msgid "Temporary folder not found."
 msgstr "暫存資料夾找不到。"
 
 #, php-format
+msgid "The  %s field cannot be empty."
+msgstr ""
+
+#, php-format
+msgid "The %s field cannot be empty."
+msgstr ""
+
+#, php-format
 msgid ""
 "The %s limit for this customer cannot be greater than %d, your calculated "
 "limit."
@@ -4891,6 +4694,11 @@ msgstr "此 %s 翻譯檔已經忽略了: 翻譯表是空白的。"
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr "此 `%s' 資料庫使用者是無效或不允許的。"
+
+#, php-format
+msgid "The configuration parameter has been updated."
+msgid_plural "%d configuration parameters were updated"
+msgstr[0] ""
 
 #, php-format
 msgid ""
@@ -4938,6 +4746,15 @@ msgid ""
 "The reseller you want to remove has one or more customers accounts. Please "
 "remove them first."
 msgstr "此經銷商想要移除一個或多個客戶帳號。請先移除這些。"
+
+msgid ""
+"The subdomain alias you are trying to remove has FTP accounts. Please remove"
+" them first."
+msgstr ""
+
+msgid ""
+"The subdomain you are trying to remove has FTP accounts. Remove them first."
+msgstr ""
 
 msgid "The uploaded file was only partially uploaded."
 msgstr "已上傳的檔案只有部份上傳而已。"
@@ -4997,6 +4814,9 @@ msgid ""
 "connect from any host."
 msgstr ""
 "這個主機位置是設定這個 SQL 使用者必須從允許的位置連到 SQL 伺服器。輸入 %s 萬用字元來允許 SQL 使用者可以從任何地方連到主機。"
+
+msgid "This mail account is protected against both edition and deletion."
+msgstr ""
 
 msgid "This package already exists in the administrator software repository."
 msgstr "這個套件已存在管理者的軟體庫中。"
@@ -5070,12 +4890,12 @@ msgstr "軟體數量總計"
 msgid "Total Web software repositories"
 msgstr "總網站軟體庫"
 
+#, php-format
+msgid "Total accounts: %s / %s"
+msgstr ""
+
 msgid "Total installations"
 msgstr "總安裝"
-
-#, php-format
-msgid "Total mails: %s / %s %s"
-msgstr "總計有郵件: %s / %s %s"
 
 msgid "Total packages in Web software repository"
 msgstr "在網站軟體庫中總計套件"
@@ -5091,9 +4911,6 @@ msgstr "流量"
 
 msgid "Traffic statistics"
 msgstr "流量狀態"
-
-msgid "Traffic usage"
-msgstr "流量使用量"
 
 msgid "Translated strings"
 msgstr "已翻譯字串"
@@ -5247,9 +5064,6 @@ msgstr "未知的類型"
 msgid "Unknown username."
 msgstr "未知的使用者名稱"
 
-msgid "Unlimited"
-msgstr "無限制"
-
 msgid "Update"
 msgstr "更新"
 
@@ -5258,9 +5072,6 @@ msgstr "更新外掛"
 
 msgid "Update SQL user password"
 msgstr "更新 SQL 使用者密碼"
-
-msgid "Update data"
-msgstr "更新資料"
 
 msgid "Update from Web software repository"
 msgstr "從網站軟體庫中更新"
@@ -5324,21 +5135,11 @@ msgstr "使用者名稱（姓氏和名字）"
 msgid "User assignment"
 msgstr "使用者分配"
 
-msgid "User data successfully updated"
-msgstr "使用者資料已經成功更新。"
-
-msgid "User data successfully updated."
-msgstr "使用者資料已經成功更新。"
-
 msgid "User data were not updated."
 msgstr "使用者資料並沒有更新。"
 
 msgid "User data were successfully updated."
 msgstr "使用者資料已經成功更新"
-
-msgid ""
-"User do not exist or you do not have permission to access this interface"
-msgstr "使用者不存在或您沒有存取此介面的權限！"
 
 msgid "User errors"
 msgstr "使用者錯誤"
@@ -5378,6 +5179,10 @@ msgstr "使用者名稱"
 
 msgid "Username and password for application login"
 msgstr "此使用者名稱和密碼是給應用程式登入用的"
+
+#, php-format
+msgid "Username must be between %d and %d characters"
+msgstr ""
 
 msgid "Users"
 msgstr "使用者"
@@ -5483,9 +5288,6 @@ msgstr "當設定為 `自動'，IP地址會自動設置。"
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr "當設定為 `手動'，設置將由管理員自行設定。"
 
-msgid "Wrong mail syntax in forward list."
-msgstr "轉寄列表裡面的郵件格式是錯誤的"
-
 msgid "Wrong or unallowed IP address."
 msgstr "錯誤或是不允許的 IP 地址。"
 
@@ -5538,35 +5340,38 @@ msgstr "YiB"
 msgid "You are exceeding the monthly server traffic limit."
 msgstr "您已經超過您的伺服器月流量限制。"
 
-msgid "You are exceeding you domain alias limit."
-msgstr "您已經超過您的網域別名數量限制。"
+msgid "You are exceeding you domain aliases limit."
+msgstr ""
 
-msgid "You are exceeding your FTP account limit."
-msgstr "您已經超過您的 FTP 帳號數量限制。"
+msgid "You are exceeding your FTP accounts limit."
+msgstr ""
 
-msgid "You are exceeding your SQL database limit."
-msgstr "您已經超過您的 SQL 資料庫數量限制。"
+msgid "You are exceeding your SQL databases limit."
+msgstr ""
 
-msgid "You are exceeding your SQL user limit."
-msgstr "您已經超過您的 SQL 使用者數量限制。"
+msgid "You are exceeding your SQL users limit."
+msgstr ""
 
 msgid "You are exceeding your disk space limit."
 msgstr "您已經超過您的網頁空間容量限制。"
 
-msgid "You are exceeding your email account limit."
-msgstr "您已經超過您的 Email 帳號數量限制。"
+msgid "You are exceeding your mail accounts limit."
+msgstr ""
 
 msgid "You are exceeding your monthly traffic limit."
 msgstr "您已經超過您的月流量限制。"
 
-msgid "You are exceeding your subdomain limit."
-msgstr "您已經超出您的子網域數量限制。"
+msgid "You are exceeding your subdomains limit."
+msgstr ""
 
 msgid "You are not allowed to act on your own session."
 msgstr "您不被允許在您目前的連線上動作。"
 
 msgid "You can only upload images."
 msgstr "您僅能上傳圖片"
+
+msgid "You can select has many addresses as you want."
+msgstr ""
 
 msgid ""
 "You can set an alternative document root. This is mostly needed when using a"
@@ -5578,19 +5383,18 @@ msgstr ""
 "根目錄裡面。並注意新的根目錄必須已經存在。"
 
 msgid ""
-"You cannot add normal email account because you have already assigned all "
-"your email quota to other mailboxes. If you want to add a new normal email "
+"You cannot add normal mail account because you have already assigned all "
+"your email quota to other mailboxes. If you want to add a new normal mail "
 "account, you must first lower the quota assigned to one of your other "
 "mailboxes."
-msgstr "您不可以新增一般郵件帳號因為您已經分配所有郵件配額到其他信箱。假如您想要新增一般郵件帳號，您必須先降低配額分配到您的其他的信箱中。"
+msgstr ""
 
 msgid ""
-"You cannot change this account to normal email account because you have "
-"already assigned all your email quota to other mailboxes. If you want to "
-"change this account to normal email account, you must first lower the quota "
-"assigned to one of your other mailboxes."
+"You cannot change this account to normal mail account because you have "
+"already assigned all your mail quota to other mail accounts. If you want to "
+"change this account to normal mail account, you must first lower the quota "
+"assigned to one of your other mail accounts."
 msgstr ""
-"您不可以變更這個帳號到一般郵件帳號因為您已經分配所有郵件配額到其他信箱。假如您想要變更這個帳號到一般郵件帳號，您必須先降低配額分配到您的其他的信箱中。"
 
 msgid ""
 "You cannot create new mailboxes for that domain. Only forwarded mail "
@@ -5656,18 +5460,18 @@ msgid "You do not have subdomains."
 msgstr "您沒有任何子網域"
 
 msgid ""
-"You have a FTP account limit. You cannot add a user with unlimited FTP "
+"You have a FTP accounts limit. You cannot add a user with unlimited FTP "
 "accounts."
-msgstr "您有 FTP 帳號數量限制。您不可以新增無限制 FTP 帳號的使用者。"
+msgstr ""
 
 msgid ""
-"You have a SQL database limit. You cannot add a user with unlimited SQL "
+"You have a SQL databases limit. You cannot add a user with unlimited SQL "
 "databases."
-msgstr "您有資料庫數量限制。您不可以新增無限制資料庫的使用者。"
+msgstr ""
 
 msgid ""
-"You have a SQL user limit. You cannot add a user with unlimited SQL users."
-msgstr "您有資料庫使用者數量限制。您不可以新增無限制資料庫數量的使用者。"
+"You have a SQL users limit. You cannot add a user with unlimited SQL users."
+msgstr ""
 
 msgid ""
 "You have a disk space limit. You cannot add a user with unlimited disk "
@@ -5675,14 +5479,14 @@ msgid ""
 msgstr "您有磁碟空間限制。您不可以新增無磁碟空間限制的使用者。"
 
 msgid ""
-"You have a domain alias limit. You cannot add a user with unlimited domain "
-"aliases."
-msgstr "您有網域別名數量限制。您不可以新增無限制網域別名數量的使用者。"
+"You have a domain aliases limit. You cannot add a user with unlimited domain"
+" aliases."
+msgstr ""
 
 msgid ""
-"You have a mail account limit. You cannot add a user with unlimited email "
+"You have a mail accounts limit. You cannot add a user with unlimited mail "
 "accounts."
-msgstr "您有電子郵件帳號數量限制。您不可以新增無電子郵件帳號限制的使用者。"
+msgstr ""
 
 msgid ""
 "You have a monthly traffic limit. You cannot add a user with unlimited "
@@ -5705,8 +5509,9 @@ msgid_plural "You have %d new support tickets."
 msgstr[0] "您有 %d 個新的服務單"
 
 msgid ""
-"You have a subdomain limit. You cannot add a user with unlimited subdomains."
-msgstr "您有子網域數量限制。您不可以新增無限制子網域數量的使用者。"
+"You have a subdomains limit. You cannot add a user with unlimited "
+"subdomains."
+msgstr ""
 
 #, php-format
 msgid "You have been blocked for %s minutes."
@@ -5738,17 +5543,17 @@ msgid ""
 msgstr "您已經達到您所訂購中網域別名允許的最大數量了。"
 
 msgid ""
-"You have reached the maximum number of email accounts allowed by your "
+"You have reached the maximum number of mail accounts allowed by your "
 "subscription."
-msgstr "您已經達到您所訂購中郵件帳號允許的最大數量了。"
+msgstr ""
 
 msgid ""
 "You have reached the maximum number of subdomains allowed by your "
 "subscription."
 msgstr "您已經達到您所訂購中子網域允許最大數量了。"
 
-msgid "You have reached your domain limit. You cannot add more domains."
-msgstr "您已經達到您的網域限制了。您不可以再新增更多網域了。"
+msgid "You have reached your domains limit. You cannot add more domains."
+msgstr ""
 
 msgid "You have to choose between file-upload and wget-function."
 msgstr "您有選擇檔案上傳和下載這兩個功能。"
@@ -5783,11 +5588,11 @@ msgstr "您必須選擇至少一個須上傳的檔案。"
 msgid "You must select a file to upload/download."
 msgstr "您必須選擇一個檔案來上傳/下載。"
 
-msgid "You must select a least one mail account to delete"
-msgstr "您必須選擇至少一個郵件帳號來刪除"
-
 msgid "You must select a least one mail account to delete."
 msgstr "您必須選擇至少一個欲刪除的Mail 帳號。"
+
+msgid "You must select at least one catch-all addresses."
+msgstr ""
 
 msgid "You must select at least one plugin."
 msgstr "您必須選擇至少一個插件。"
@@ -5842,9 +5647,8 @@ msgid "Your package is corrupt. Please correct it!"
 msgstr "您的套件是損壞的。請用正常的!"
 
 msgid ""
-"Your password has been successfully scheduled for renewal. Check your "
-"emails."
-msgstr "您的密碼已成功排程更新。確認您的電子郵件。"
+"Your password has been successfully scheduled for renewal. Check your mails."
+msgstr ""
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
@@ -5856,9 +5660,9 @@ msgid ""
 msgstr "您所要求更新密碼已無法使用。請在幾分鐘後再重試。"
 
 msgid ""
-"Your request for password renewal has been registered. You will receive an "
-"email with instructions to complete the process."
-msgstr "您更新密碼需求已經申請了。您將會收到完成更新密碼教學的郵件。"
+"Your request for password renewal has been registered. You will receive a "
+"mail with instructions to complete the process."
+msgstr ""
 
 msgid "Your request for password renewal is either invalid or has expired."
 msgstr "您更新密碼的需求是無效或已經過期了。"
@@ -5896,10 +5700,6 @@ msgstr "[Re]"
 msgid "_: Localised language"
 msgstr "正體中文 - Traditional Chinese"
 
-#, php-format
-msgid "`%s` field cannot be empty."
-msgstr "`%s` 欄位不可以是空白。"
-
 msgid "activated"
 msgstr "已啟用"
 
@@ -5918,6 +5718,9 @@ msgstr "和"
 msgid "anything"
 msgstr ""
 
+msgid "catch-all"
+msgstr ""
+
 msgid "city"
 msgstr ""
 
@@ -5928,9 +5731,6 @@ msgid "country"
 msgstr ""
 
 msgid "created by"
-msgstr ""
-
-msgid "customer ID"
 msgstr ""
 
 msgid "day"
@@ -5966,12 +5766,6 @@ msgstr ""
 msgid "domains"
 msgstr "網域"
 
-msgid "email account"
-msgstr "Email 帳號"
-
-msgid "email accounts"
-msgstr "Email 帳號"
-
 msgid "enabled"
 msgstr "啟用"
 
@@ -5989,9 +5783,6 @@ msgstr "從其他的瀏覽器"
 
 msgid "i-MSCP - Application Management (Permissions)"
 msgstr "i-MSCP - 應用程式管理 (權限)"
-
-msgid "i-MSCP - Client/Create CatchAll Mail Account"
-msgstr "i-MSCP - 客戶/建立 CatchAll 郵件帳號"
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
 msgstr "i-MSCP - Multi Server Control Panel / 登入"
@@ -6053,6 +5844,9 @@ msgstr ""
 msgid "mail"
 msgstr "郵件"
 
+msgid "mail account"
+msgstr ""
+
 msgid "mail accounts"
 msgstr "郵件帳號"
 
@@ -6061,9 +5855,6 @@ msgstr "遺失別名"
 
 msgid "missing domain"
 msgstr "遺失網域"
-
-msgid "n/a"
-msgstr ""
 
 msgid "n\\a"
 msgstr "空"
@@ -6131,9 +5922,6 @@ msgstr "流量"
 
 msgid "udp"
 msgstr "udp"
-
-msgid "unlimited"
-msgstr "無限制"
 
 msgid "update"
 msgstr "更新"
