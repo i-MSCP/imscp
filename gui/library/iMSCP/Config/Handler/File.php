@@ -146,7 +146,7 @@ class iMSCP_Config_Handler_File extends iMSCP_Config_Handler
     protected function _parseFile()
     {
         if (($fd = @file_get_contents($this->_pathFile)) == false) {
-            throw new iMSCP_Exception(sprintf("Couldn't open the configuration file `%s`", $this->_pathFile));
+            throw new iMSCP_Exception(sprintf("Couldn't open the %s configuration file", $this->_pathFile));
         }
 
         foreach (explode(PHP_EOL, $fd) as $line) {

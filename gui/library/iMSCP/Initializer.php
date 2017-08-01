@@ -342,19 +342,17 @@ class iMSCP_Initializer
      */
     protected function loadConfig()
     {
-        $pdo = Database::getRawInstance();
-
         if (is_readable(DBCONFIG_CACHE_FILE_PATH)) {
             if (!$this->config['DEBUG']) {
                 $dbConfig = unserialize(file_get_contents(DBCONFIG_CACHE_FILE_PATH));
-                $dbConfig->setDb($pdo);
+                $dbConfig->setDb(Database::getInstance());
             } else {
                 @unlink(DBCONFIG_CACHE_FILE_PATH);
                 goto FORCE_DBCONFIG_RELOAD;
             }
         } else {
             FORCE_DBCONFIG_RELOAD:
-            $dbConfig = new ConfigDb($pdo);
+            $dbConfig = new ConfigDb(Database::getInstance());
             if (!$this->config['DEBUG'] && PHP_SAPI != 'cli') {
                 @file_put_contents(DBCONFIG_CACHE_FILE_PATH, serialize($dbConfig), LOCK_EX);
             }

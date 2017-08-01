@@ -177,19 +177,16 @@ class iMSCP_Database
     }
 
     /**
-     * Returns the PDO object linked to the current database connection object
+     * Same as getInstance()
      *
      * @throws iMSCP_Exception
      * @param string $connection Connection unique identifier
-     * @return PDO A PDO instance
+     * @return self
+     * @deprecated Will be removed in a later release; now return self instead of underlying PDO instance
      */
     public static function getRawInstance($connection = 'default')
     {
-        if (!isset(self::$_instances[$connection])) {
-            throw new DatabaseException(sprintf("The Database connection %s doesn't exist.", $connection));
-        }
-
-        return self::$_instances[$connection]->_db;
+        return self::getInstance($connection);
     }
 
     /**
@@ -236,7 +233,7 @@ class iMSCP_Database
      *
      * @param PDOStatement|string $stmt
      * @param null $parameters
-     * @return bool|ResultSet
+     * @return ResultSet|false
      * @throws iMSCP_Exception_Database
      */
     public function execute($stmt, $parameters = NULL)
@@ -273,18 +270,19 @@ class iMSCP_Database
             ));
 
             return new ResultSet($stmt);
-        } else {
-            $errorInfo = is_string($stmt) ? $this->errorInfo() : $stmt->errorInfo();
-            if (isset($errorInfo[2])) {
-                $this->_lastErrorCode = $errorInfo[0];
-                $this->_lastErrorMessage = $errorInfo[2];
-            } else { // WARN (HY093)
-                $errorInfo = error_get_last();
-                $this->_lastErrorMessage = $errorInfo['message'];
-            }
-
-            return false;
         }
+
+        $errorInfo = is_string($stmt) ? $this->errorInfo() : $stmt->errorInfo();
+
+        if (isset($errorInfo[2])) {
+            $this->_lastErrorCode = $errorInfo[0];
+            $this->_lastErrorMessage = $errorInfo[2];
+        } else { // WARN (HY093)
+            $errorInfo = error_get_last();
+            $this->_lastErrorMessage = $errorInfo['message'];
+        }
+
+        return false;
     }
 
     /**
@@ -419,6 +417,17 @@ class iMSCP_Database
         }
 
         $this->_db->exec("ROLLBACK TO SAVEPOINT TRANSACTION{$this->transactionCounter}");
+    }
+
+    /**
+     * Checks if inside a transaction
+     *
+     *
+     * @return bool TRUE if a transaction is currently active, FALSE otherwise
+     */
+    public function inTransaction()
+    {
+        return $this->_db->inTransaction();
     }
 
     /**

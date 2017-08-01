@@ -167,7 +167,7 @@ function login_checkDomainAccount($event)
 
     if (!$stmt->rowCount()) {
         write_log(
-            sprintf('Account data were not found in database for the %s user', $identity->admin_name),
+            sprintf('Account data not found in database for the %s user', $identity->admin_name),
             E_USER_ERROR
         );
         set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');

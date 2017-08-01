@@ -329,7 +329,6 @@ function addDomainAlias()
     }
 
     $mainDmnProps = get_domain_default_props($customerId, $_SESSION['user_id']);
-    $cfg = iMSCP_Registry::get('config');
     $db = iMSCP_Database::getInstance();
 
     try {
@@ -370,7 +369,7 @@ function addDomainAlias()
         $phpini->saveDomainIni($mainDmnProps['admin_id'], $id, 'als');
 
         // Create default email addresses if needed
-        if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
+        if (iMSCP_Registry::get('config')['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
             createDefaultMailAccounts(
                 $mainDmnProps['domain_id'], $mainDmnProps['admin_email'], $domainAliasNameAscii, MT_ALIAS_FORWARD, $id
             );
@@ -389,13 +388,14 @@ function addDomainAlias()
 
         $db->commit();
         send_request();
-        write_log(sprintf('New domain alias `%s` has been added by %', $domainAliasName, $_SESSION['user_logged']), E_USER_NOTICE);
+        write_log(sprintf('A new domain alias (%s) has been added by %s', $domainAliasName, $_SESSION['user_logged']), E_USER_NOTICE);
         set_page_message(tr('Domain alias successfully scheduled for addition.'), 'success');
     } catch (iMSCP_Exception $e) {
         $db->rollBack();
         throw $e;
     }
 
+    exit;
     return true;
 }
 

@@ -248,7 +248,7 @@ function sendPassword($uniqueKey)
         'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
     );
     setPassword($row['admin_type'], $uniqueKey, $userPassword);
-    write_log(sprintf('Lostpassword: A New password has been set for %s user', $row['admin_name']), E_USER_NOTICE);
+    write_log(sprintf('Lostpassword: A New password has been set for the %s user', $row['admin_name']), E_USER_NOTICE);
 
     $createdBy = $row['created_by'];
     if ($createdBy == 0) {

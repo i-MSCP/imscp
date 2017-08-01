@@ -130,7 +130,7 @@ if (($handle = fopen($csvFilePath, 'r')) === false) {
     exit(1);
 }
 
-$db = iMSCP_Database::getRawInstance();
+$db = iMSCP_Database::getInstance();
 $stmt = $db->prepare(
     '
         INSERT INTO mail_users (
@@ -172,7 +172,7 @@ while (($csvEntry = fgetcsv($handle, 1024, $csvDelimiter)) !== false) {
         ]);
 
         try {
-            $stmt->execute($mailAccount);
+            $db->execute($stmt, $mailAccount);
             printf("`%s` has been successfully inserted in database.\n", $mailAddr);
         } catch (PDOException $e) {
             if ($e->getCode() == 23000) {

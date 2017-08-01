@@ -82,7 +82,7 @@ function hasConflict($rrName, $rrType, $isNewRecord, &$errorString)
 function client_validate_NAME($name, &$errorString)
 {
     if ($name === '') {
-        $errorString .= tr('`%s` field cannot be empty.', tr('Name'));
+        $errorString .= tr('The %s field cannot be empty.', tr('Name'));
         return false;
     }
 
@@ -90,7 +90,7 @@ function client_validate_NAME($name, &$errorString)
     // AS per RFC 4871: All DKIM keys are stored in a subdomain named "_domainkey" ...
     // Here we remove any underscore to pass hostname validation
     if (!isValidDomainName(str_replace('_', '', $name))) {
-        $errorString .= tr('Invalid `%s` field.', tr('Name'));
+        $errorString .= tr('Invalid field: %s', tr('Name'));
         return false;
     }
 
@@ -107,7 +107,7 @@ function client_validate_NAME($name, &$errorString)
 function client_validate_CNAME($cname, &$errorString)
 {
     if ($cname === '') {
-        $errorString .= tr('`%s` field cannot be empty.', tr('Canonical name'));
+        $errorString .= tr('The %s field cannot be empty.', tr('Canonical name'));
         return false;
     }
 
@@ -115,7 +115,7 @@ function client_validate_CNAME($cname, &$errorString)
     // AS per RFC 4871: All DKIM keys are stored in a subdomain named "_domainkey" ...
     // Here we remove any underscore to pass hostname validation
     if (!isValidDomainName(str_replace('_', '', $cname))) {
-        $errorString .= tr('Invalid `%s` field.', tr('Canonical name'));
+        $errorString .= tr('Invalid field: %s', tr('Canonical name'));
         return false;
     }
 
@@ -132,12 +132,12 @@ function client_validate_CNAME($cname, &$errorString)
 function client_validate_A($ip, &$errorString)
 {
     if ($ip === '') {
-        $errorString .= tr('`%s` field cannot be empty.', tr('IP address'));
+        $errorString .= tr('The %s field cannot be empty.', tr('IP address'));
         return false;
     }
 
     if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false) {
-        $errorString .= tr('Invalid `%s` field.', tr('IP address'));
+        $errorString .= tr('Invalid field: %s', tr('IP address'));
         return false;
     }
 
@@ -154,12 +154,12 @@ function client_validate_A($ip, &$errorString)
 function client_validate_AAAA($ip, &$errorString)
 {
     if ($ip === '') {
-        $errorString .= tr('`%s` field cannot be empty.', tr('IPv6 address'));
+        $errorString .= tr('The %s field cannot be empty.', tr('IPv6 address'));
         return false;
     }
 
     if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false) {
-        $errorString .= tr('Invalid `%s` field.', tr('IPv6 address'));
+        $errorString .= tr('Invalid field: %s', tr('IPv6 address'));
         return false;
     }
 
@@ -181,12 +181,12 @@ function client_validate_MX($pref, $host, &$errorString)
     }
 
     if ($host === '') {
-        $errorString .= tr('`%s` field cannot be empty.', tr('Host'));
+        $errorString .= tr('The %s field cannot be empty.', tr('Host'));
         return false;
     }
 
     if (!isValidDomainName($host)) {
-        $errorString .= tr('Invalid `%s` field.', tr('Host'));
+        $errorString .= tr('Invalid field: %s', tr('Host'));
         return false;
     }
 
@@ -203,12 +203,12 @@ function client_validate_MX($pref, $host, &$errorString)
 function client_validate_NS($host, &$errorString)
 {
     if ($host === '') {
-        $errorString .= tr('`%s` field cannot be empty.', tr('Host'));
+        $errorString .= tr('The  %s field cannot be empty.', tr('Host'));
         return false;
     }
 
     if (!isValidDomainName($host)) {
-        $errorString .= tr('Invalid `%s` field.', tr('Host'));
+        $errorString .= tr('Invalid field: %s', tr('Host'));
         return false;
     }
 
@@ -225,12 +225,12 @@ function client_validate_NS($host, &$errorString)
 function client_validate_TXT($data, &$errorString)
 {
     if ($data === '') {
-        $errorString .= tr('`%s` field cannot be empty.', tr('Data'));
+        $errorString .= tr('The %s field cannot be empty.', tr('Data'));
         return false;
     }
 
     if (!preg_match('/^[[:print:]]+$/', $data)) {
-        $errorString .= tr('Invalid `%s` field.', tr('Data'));
+        $errorString .= tr('Invalid field: %s', tr('Data'));
         return false;
     }
 
@@ -252,12 +252,12 @@ function client_validate_TXT($data, &$errorString)
 function client_validate_SRV($srvName, $proto, $priority, $weight, $port, $host, &$errorString)
 {
     if ($srvName === '') {
-        $errorString .= tr('`%s` field cannot be empty.', tr('Service name'));
+        $errorString .= tr('The %s field cannot be empty.', tr('Service name'));
         return false;
     }
 
     if (!preg_match('/^_[a-z0-9]+/i', $srvName)) {
-        $errorString .= tr('Invalid `%s` field.', tr('Service name'));
+        $errorString .= tr('Invalid field: %s', tr('Service name'));
         return false;
     }
 
@@ -274,7 +274,7 @@ function client_validate_SRV($srvName, $proto, $priority, $weight, $port, $host,
     }
 
     if ($port === '') {
-        $errorString .= tr('`%s` field cannot be empty.', tr('Target port'));
+        $errorString .= tr('The %s field cannot be empty.', tr('Target port'));
         return false;
     }
 
@@ -284,12 +284,12 @@ function client_validate_SRV($srvName, $proto, $priority, $weight, $port, $host,
     }
 
     if ($host === '') {
-        $errorString .= tr('`%s` field cannot be empty.', tr('Host'));
+        $errorString .= tr('The %s field cannot be empty.', tr('Host'));
         return false;
     }
 
     if (!isValidDomainName($host)) {
-        $errorString .= tr('Invalid `%s` field.', tr('Host'));
+        $errorString .= tr('Invalid field: %s', tr('Host'));
         return false;
     }
 

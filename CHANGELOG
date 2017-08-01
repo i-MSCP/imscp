@@ -20,11 +20,13 @@ CONFIG
     Removed: `.htgroup' and `.htpasswd' files from the skeleton directory; These files are now created only when needed
 
 FRONTEND
+    Added: iMSCP_Database::inTransaction() method
     Added: Routing for languages without territory information: eg. `de' will be routed to `de_DE' (autodetection)
     Added: Setting that allows administrator to protect/unrpotect default mail accounts against both edition and deletion
     Added: Translaltion resources for Zend validators
     Cosmetics: Make use of the mathematical infinity symbol (∞) in place of the `Unlimited' translation string
-    Deprecated: Usage of customer ID field (will be removed in a later release)
+    Deprecated: iMSCP_Database::getRawInstance() method -- will be removed in a later release
+    Deprecated: Usage of customer ID field -- will be removed in a later release
     Enhancement: Make use of Zend APC cache backend ; fallback to Zend File backend if APC extension isn't available 
     Enhancement: Make customers able to edit catch-all accounts
     Enhancement: Make customers able to edit mail autoresponder message even if the autoresponder is not activated yet

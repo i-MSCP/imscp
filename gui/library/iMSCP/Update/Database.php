@@ -153,7 +153,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     public function applyUpdates()
     {
         ignore_user_abort(true);
-        $pdo = iMSCP_Database::getRawInstance();
+        $db = iMSCP_Database::getInstance();
 
         while ($this->isAvailableUpdate()) {
             $revision = $this->getNextUpdate();
@@ -167,12 +167,12 @@ class iMSCP_Update_Database extends iMSCP_Update
                     continue;
                 }
 
-                $pdo->beginTransaction();
+                $db->beginTransaction();
 
                 foreach ($queries as $query) {
                     if (!empty($query)) {
-                        $stmt = $pdo->prepare($query);
-                        $stmt->execute();
+                        $stmt = $db->prepare($query);
+                        $db->execute($stmt);
                         while ($stmt->nextRowset()) {
                             /* https://bugs.php.net/bug.php?id=61613 */
                         };
@@ -183,14 +183,14 @@ class iMSCP_Update_Database extends iMSCP_Update
 
                 # Make sure that we are still in transaction due to possible implicite commit
                 # See https://dev.mysql.com/doc/refman/5.7/en/implicit-commit.html
-                if ($pdo->inTransaction()) {
-                    $pdo->commit();
+                if ($db->inTransaction()) {
+                    $db->commit();
                 }
             } catch (Exception $e) {
                 # Make sure that we are still in transaction due to possible implicite commit
                 # See https://dev.mysql.com/doc/refman/5.7/en/implicit-commit.html
-                if ($pdo->inTransaction()) {
-                    $pdo->rollBack();
+                if ($db->inTransaction()) {
+                    $db->rollBack();
                 }
 
                 $this->setError(sprintf('Database update %s failed: %s', $revision, $e->getMessage()));

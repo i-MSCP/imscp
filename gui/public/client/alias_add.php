@@ -352,16 +352,16 @@ function addDomainAlias()
 
         if ($isSuUser) {
             send_request();
-            write_log(sprintf('A new `%s` domain alias has been created by: %s', $domainAliasName, $_SESSION['user_logged']), E_USER_NOTICE);
+            write_log(sprintf('A new domain alias (%s) has been created by %s', $domainAliasName, $_SESSION['user_logged']), E_USER_NOTICE);
             set_page_message(tr('Domain alias successfully created.'), 'success');
         } else {
             send_alias_order_email($domainAliasName);
-            write_log(sprintf('A new `%s` domain alias has been ordered by: %s', $domainAliasName, $_SESSION['user_logged']), E_USER_NOTICE);
+            write_log(sprintf('A new domain alias (%s) has been ordered by %s', $domainAliasName, $_SESSION['user_logged']), E_USER_NOTICE);
             set_page_message(tr('Domain alias successfully ordered.'), 'success');
         }
     } catch (iMSCP_Exception $e) {
         $db->rollBack();
-        write_log(sprintf('System was unable to create the `%s` domain alias: %s', $domainAliasName, $e->getMessage()), E_USER_ERROR);
+        write_log(sprintf('System was unable to create the %s domain alias: %s', $domainAliasName, $e->getMessage()), E_USER_ERROR);
         set_page_message(tr('Could not create domain alias. An unexpected error occurred.'), 'error');
         return false;
     }

@@ -18,10 +18,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Database as Database;
+use iMSCP_Config_Handler as ConfigHandler;
+use iMSCP_Exception as iMSCPException;
+use iMSCP_Exception_Database as DatabaseException;
+
 /**
  * Class to handle configuration parameters from database
  *
- * iMSCP_Config_Handler adapter class to handle configuration parameters that are stored in database.
+ * ConfigHandler adapter class to handle configuration parameters that are stored in database.
  *
  * @property string MAIL_BODY_FOOTPRINTS Mail body footprint
  * @property int FAILED_UPDATE Failed database update
@@ -30,10 +35,10 @@
  * @property int DATABASE_REVISION Database revision
  * @property  int EMAIL_QUOTA_SYNC_MODE Email quota sync mode
  */
-class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, Serializable
+class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Serializable
 {
     /**
-     * @var PDO PDO instance used by objects of this class
+     * @var Database Database instance
      */
     protected $_db;
 
@@ -136,24 +141,24 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, 
      *
      * For an array, the possible parameters are:
      *
-     * - db: A PDO instance
+     * - db: A Database instance
      * - table_name: Database table that contain configuration parameters
      * - key_column: Database column name for configuration parameters key names
      * - value_column: Database column name for configuration parameters values
      *
      * <b>Note:</b> The three last parameters are optionals.
      *
-     * For a single parameter, only a PDO instance is accepted.
+     * For a single parameter, only a Database instance is accepted.
      *
-     * @throws iMSCP_Exception
-     * @param PDO|array $params A PDO instance or an array of parameters that contains
-     * at least a PDO instance
+     * @throws iMSCPException
+     * @param Database|array $params A Database instance or an array of parameters that contains
+     * at least a Database instance
      */
     public function __construct($params)
     {
         if (is_array($params)) {
-            if (!array_key_exists('db', $params) || !($params['db'] instanceof PDO)) {
-                throw new iMSCP_Exception('A PDO instance is requested for ' . __CLASS__);
+            if (!array_key_exists('db', $params) || !($params['db'] instanceof Database)) {
+                throw new iMSCPException('A Database instance is requested for ' . __CLASS__);
             }
 
             $this->_db = (string)$params['db'];
@@ -173,8 +178,8 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, 
                 $this->_valuesColumn = (string)$params['values_column'];
             }
 
-        } elseif (!$params instanceof PDO) {
-            throw new iMSCP_Exception('PDO instance requested for ' . __CLASS__);
+        } elseif (!$params instanceof Database) {
+            throw new iMSCPException('Database instance requested for ' . __CLASS__);
         }
 
         $this->_db = $params;
@@ -182,11 +187,11 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, 
     }
 
     /**
-     * Set PDO instance
+     * Set Database instance
      *
-     * @param PDO $db
+     * @param Database $db
      */
-    public function setDb(PDO $db)
+    public function setDb(Database $db)
     {
         $this->_db = $db;
     }
@@ -263,14 +268,14 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, 
     /**
      * Retrieve a configuration parameter value
      *
-     * @throws iMSCP_Exception
+     * @throws iMSCPException
      * @param string $key Configuration parameter key name
      * @return mixed Configuration parameter value
      */
     public function get($key)
     {
         if (!isset($this->_parameters[$key])) {
-            throw new iMSCP_Exception("Configuration variable `$key` is missing.");
+            throw new iMSCPException("Configuration variable `$key` is missing.");
         }
 
         return $this->_parameters[$key];
@@ -291,7 +296,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, 
      * Replaces all parameters of this object with parameters from another
      *
      * This method replace the parameters values of this object with the same values from another
-     * {@link iMSCP_Config_Handler} object.
+     * {@link ConfigHandler} object.
      *
      * If a key from this object exists in the second object, its value will be replaced by the value from the second
      * object. If the key exists in the second object, and not in the first, it will be created in the first object.
@@ -299,10 +304,10 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, 
      *
      * <b>Note:</b> This method is not recursive.
      *
-     * @param iMSCP_Config_Handler $config iMSCP_Config_Handler object
+     * @param ConfigHandler $config ConfigHandler object
      * @return bool TRUE on success, FALSE otherwise
      */
-    public function merge(iMSCP_Config_Handler $config)
+    public function merge(ConfigHandler $config)
     {
         try {
             $this->_db->beginTransaction();
@@ -367,7 +372,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, 
      * This method returns the count of queries that were executed since the last call of
      * {@link reset_queries_counter()} method.
      *
-     * @throws iMSCP_Exception
+     * @throws iMSCPException
      * @param string $queriesCounterType Query counter type (insert|update)
      * @return int
      */
@@ -384,14 +389,14 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, 
                 return $this->_deleteQueriesCounter;
                 break;
             default:
-                throw new iMSCP_Exception('Unknown queries counter.');
+                throw new iMSCPException('Unknown queries counter.');
         }
     }
 
     /**
      * Reset a counter of queries
      *
-     * @throws iMSCP_Exception
+     * @throws iMSCPException
      * @param string $queriesCounterType Type of query counter (insert|update|delete)
      * @return void
      */
@@ -408,7 +413,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, 
                 $this->_deleteQueriesCounter = 0;
                 break;
             default:
-                throw new iMSCP_Exception('Unknown queries counter.');
+                throw new iMSCPException('Unknown queries counter.');
         }
     }
 
@@ -429,14 +434,14 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, 
     /**
      * Load all configuration parameters from the database
      *
-     * @throws iMSCP_Exception
+     * @throws iMSCPException
      * @return void
      */
     protected function _loadAll()
     {
         $query = "SELECT `{$this->_keysColumn}`, `{$this->_valuesColumn}` FROM `{$this->_tableName}`";
 
-        if (($stmt = $this->_db->query($query, PDO::FETCH_ASSOC))) {
+        if (($stmt = $this->_db->execute($query))) {
             $keyColumn = $this->_keysColumn;
             $valueColumn = $this->_valuesColumn;
 
@@ -444,32 +449,26 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, 
                 $this->_parameters[$row[$keyColumn]] = $row[$valueColumn];
             }
         } else {
-            throw new iMSCP_Exception("Couldn't get configuration parameters from database.");
+            throw new iMSCPException("Couldn't get configuration parameters from database.");
         }
     }
 
     /**
      * Store a new configuration parameter in the database
      *
-     * @throws iMSCP_Exception_Database
+     * @throws DatabaseException
      * @return void
      */
     protected function _insert()
     {
         if (!$this->_insertStmt instanceof PDOStatement) {
-            $query = "
-                INSERT INTO `{$this->_tableName}` (
-                    `{$this->_keysColumn}`, `{$this->_valuesColumn}`
-                ) VALUES (
-                    :index, :value
-                )
-            ";
-
-            $this->_insertStmt = $this->_db->prepare($query);
+            $this->_insertStmt = $this->_db->prepare(
+                "INSERT INTO `{$this->_tableName}` (`{$this->_keysColumn}`, `{$this->_valuesColumn}`) VALUES (?, ?)"
+            );
         }
 
-        if (!$this->_insertStmt->execute([':index' => $this->_key, ':value' => $this->_value])) {
-            throw new iMSCP_Exception_Database("Couldn't insert new entry `{$this->_key}` in config table.");
+        if (!$this->_db->execute($this->_insertStmt, [$this->_key, $this->_value])) {
+            throw new DatabaseException("Couldn't insert new entry `{$this->_key}` in config table.");
         } else {
             $this->flushCache = true;
             $this->_insertQueriesCounter++;
@@ -479,21 +478,19 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, 
     /**
      * Update a configuration parameter in the database
      *
-     * @throws iMSCP_Exception_Database
+     * @throws DatabaseException
      * @return void
      */
     protected function _update()
     {
         if (!$this->_updateStmt instanceof PDOStatement) {
-            $query = "
-                UPDATE `{$this->_tableName}` SET `{$this->_valuesColumn}` = :value WHERE `{$this->_keysColumn}` = :index
-            ";
-
-            $this->_updateStmt = $this->_db->prepare($query);
+            $this->_updateStmt = $this->_db->prepare(
+                "UPDATE `{$this->_tableName}` SET `{$this->_valuesColumn}` = ? WHERE `{$this->_keysColumn}` = ?"
+            );
         }
 
-        if (!$this->_updateStmt->execute([':index' => $this->_key, ':value' => $this->_value])) {
-            throw new iMSCP_Exception_Database("Couldn't update entry `{$this->_key}` in config table.");
+        if (!$this->_db->execute($this->_updateStmt, [$this->_value, $this->_key])) {
+            throw new DatabaseException("Couldn't update entry `{$this->_key}` in config table.");
         } else {
             $this->flushCache = true;
             $this->_updateQueriesCounter++;
@@ -503,18 +500,19 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, 
     /**
      * Deletes a configuration parameter from the database
      *
-     * @throws iMSCP_Exception_Database
+     * @throws DatabaseException
      * @return void
      */
     protected function _delete()
     {
         if (!$this->_deleteStmt instanceof PDOStatement) {
-            $query = "DELETE FROM `{$this->_tableName}` WHERE `{$this->_keysColumn}` = :index";
-            $this->_deleteStmt = $this->_db->prepare($query);
+            $this->_deleteStmt = $this->_db->prepare(
+                "DELETE FROM `{$this->_tableName}` WHERE `{$this->_keysColumn}` = ?"
+            );
         }
 
-        if (!$this->_deleteStmt->execute([':index' => $this->_key])) {
-            throw new iMSCP_Exception_Database("Couldn't delete entry in config table.");
+        if (!$this->_db->execute($this->_deleteStmt, $this->_key)) {
+            throw new DatabaseException("Couldn't delete entry in config table.");
         } else {
             $this->flushCache = true;
             $this->_deleteQueriesCounter++;
@@ -575,8 +573,8 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements Iterator, 
     /**
      * Rewinds back to the first element of the Iterator.
      *
-     * <b>Note:</b> This is the first method called when starting a foreach loop. It will not be executed after foreach
-     * loops.
+     * <b>Note:</b> This is the first method called when starting a foreach
+     * loop. It will not be executed after foreach loops.
      *
      * @return void
      */

@@ -225,7 +225,7 @@ class iMSCP_PHPini
                 }
                 break;
             default:
-                throw new iMSCP_Exception(sprintf('Unknown `%s` reseller PHP permission.', $permission));
+                throw new iMSCP_Exception(sprintf('Unknown reseller PHP permission: %s', $permission));
         }
     }
 
@@ -243,7 +243,7 @@ class iMSCP_PHPini
         }
 
         if (!array_key_exists($permission, $this->resellerPermissions)) {
-            throw new iMSCP_Exception(sprintf('Unknown `%s` reseller PHP permission.', $permission));
+            throw new iMSCP_Exception(sprintf('Unknown reseller PHP permission: %s', $permission));
         }
 
         return $this->resellerPermissions[$permission];
@@ -270,7 +270,7 @@ class iMSCP_PHPini
             case 'phpiniMailFunction':
                 return $this->resellerPermissions[$permission] === 'yes';
             default;
-                throw new iMSCP_Exception(sprintf('Unknown `%s` reseller PHP permission.', $permission));
+                throw new iMSCP_Exception(sprintf('Unknown reseller PHP permission: %s', $permission));
         }
     }
 
@@ -410,7 +410,7 @@ class iMSCP_PHPini
         }
 
         if (!array_key_exists($permission, $this->clientPermissions)) {
-            throw new iMSCP_Exception(sprintf('Unknown `%s` client PHP permission.', $permission));
+            throw new iMSCP_Exception(sprintf('Unknown client PHP permission: %s', $permission));
         }
 
         return $this->clientPermissions[$permission];
@@ -441,7 +441,7 @@ class iMSCP_PHPini
             case 'phpiniDisableFunctions':
                 return $this->clientPermissions[$permission] == 'yes' || $this->clientPermissions[$permission] == 'exec';
             default:
-                throw new iMSCP_Exception(sprintf('Unknown `%s` client PHP permission.', $permission));
+                throw new iMSCP_Exception(sprintf('Unknown client PHP permission: %s', $permission));
         }
     }
 
@@ -607,7 +607,7 @@ class iMSCP_PHPini
         }
 
         if (!array_key_exists($varname, $this->domainIni)) {
-            throw new iMSCP_Exception(sprintf('Unknown `%s` domain configuration option.', $varname));
+            throw new iMSCP_Exception(sprintf('Unknown domain configuration option: %s', $varname));
         }
 
         return $this->domainIni[$varname];
@@ -643,7 +643,7 @@ class iMSCP_PHPini
             case 'phpiniDisableFunctions':
                 return $value === 'yes' || $value === 'no' || $value === 'exec';
             default:
-                throw new iMSCP_Exception(sprintf('Unknown `%s` PHP permission.', $permission));
+                throw new iMSCP_Exception(sprintf('Unknown PHP permission: %s', $permission));
         }
     }
 
@@ -697,7 +697,7 @@ class iMSCP_PHPini
                     && $value >= 1
                     && $value <= 10000;
             default:
-                throw new iMSCP_Exception(sprintf('Unknown `%s` configuration option.', $varname));
+                throw new iMSCP_Exception(sprintf('Unknown configuration option: %s', $varname));
         }
     }
 

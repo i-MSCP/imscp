@@ -54,8 +54,6 @@ function createDefaultMailAccounts($mainDmnId, $userEmail, $dmnName, $forwardTyp
             throw new iMSCP_Exception("Mail account forward type doesn't match with provided child domain ID");
         }
 
-        $db->beginTransaction();
-
         if (empty($userEmail) || !chk_email($userEmail)) {
             write_log(
                 sprintf(
@@ -67,7 +65,9 @@ function createDefaultMailAccounts($mainDmnId, $userEmail, $dmnName, $forwardTyp
             return;
         }
 
-        $stmt = $db->getRawInstance()->prepare(
+        $db->beginTransaction();
+
+        $stmt = $db->prepare(
             "
                 INSERT INTO mail_users (
                     mail_acc, mail_forward, domain_id, mail_type, sub_id, status, po_active, mail_addr
@@ -84,7 +84,9 @@ function createDefaultMailAccounts($mainDmnId, $userEmail, $dmnName, $forwardTyp
         }
 
         foreach ($mailAccounts as $mailAccount) {
-            $stmt->execute([$mailAccount, $userEmail, $mainDmnId, $forwardType, $subId, $mailAccount . '@' . $dmnName]);
+            $db->execute($stmt, [
+                $mailAccount, $userEmail, $mainDmnId, $forwardType, $subId, $mailAccount . '@' . $dmnName
+            ]);
         }
 
         $db->commit();
@@ -1181,7 +1183,7 @@ function sync_mailboxes_quota($domainId, $newQuota)
     if ($newQuota < $totalQuota || (isset($cfg['EMAIL_QUOTA_SYNC_MODE']) && $cfg['EMAIL_QUOTA_SYNC_MODE'])
         || $totalQuota == 0
     ) {
-        $db = iMSCP_Database::getRawInstance();
+        $db = iMSCP_Database::getInstance();
         $stmt = $db->prepare('UPDATE mail_users SET quota = ? WHERE mail_id = ?');
         $result = 0;
 
@@ -1194,7 +1196,7 @@ function sync_mailboxes_quota($domainId, $newQuota)
                 $result = 1;
             }
 
-            $stmt->execute([((int)$result - (int)$oldResult) * 1048576, $mailbox['mail_id']]);
+            $db->execute($stmt, [((int)$result - (int)$oldResult) * 1048576, $mailbox['mail_id']]);
         }
     }
 }

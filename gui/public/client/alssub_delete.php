@@ -111,6 +111,6 @@ try {
 }
 
 send_request();
-write_log(sprintf('%s scheduled deletion of the `%s` subdomain alias', $_SESSION['user_logged'], $name), E_USER_NOTICE);
+write_log(sprintf('Deletion of the %s subdomain alias has been scheduled by %s', $name, $_SESSION['user_logged']), E_USER_NOTICE);
 set_page_message(tr('Subdomain alias scheduled for deletion.'), 'success');
 redirectTo('domains_manage.php');
