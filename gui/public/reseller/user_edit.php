@@ -1,180 +1,158 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
+use iMSCP_Database as Database;
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_pTemplate as TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
  */
 
 /**
- * Load user data
+ * Update user data
  *
- * @param int $adminId Customer unique identifier
+ * @throws Exception
+ * @param Zend_Form $form
+ * @param int $userId User unique identifier
  * @return void
  */
-function reseller_loadUserData($adminId)
+function updateUserData(Zend_Form $form, $userId)
 {
-    global $adminName, $email, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
-           $street1, $street2, $phone, $fax;
+    $data = exec_query(
+        'SELECT admin_name FROM admin WHERE admin_id = ? AND created_by = ?', [$userId, $_SESSION['user_id']]
+    )->fetchRow();
 
-    $stmt = exec_query(
-        '
-            SELECT admin_name, created_by, fname, lname, firm, zip, city, state, country, email, phone, fax, street1,
-                street2, gender
-            FROM admin
-            WHERE admin_id = ?
-            AND created_by = ?
-        ',
-        [$adminId, $_SESSION['user_id']]
-    );
-
-    if (!$stmt->rowCount()) {
+    if (!$data) {
         showBadRequestErrorPage();
     }
 
-    $data = $stmt->fetchRow();
-    $adminName = $data['admin_name'];
-    $email = $data['email'];
-    $firstName = $data['fname'];
-    $lastName = $data['lname'];
-    $gender = $data['gender'];
-    $firm = $data['firm'];
-    $zip = $data['zip'];
-    $city = $data['city'];
-    $state = $data['state'];
-    $country = $data['country'];
-    $street1 = $data['street1'];
-    $street2 = $data['street2'];
-    $phone = $data['phone'];
-    $fax = $data['fax'];
+    if (!$form->isValid($_POST)) {
+        foreach ($form->getMessages() as $msgStack => $msg) {
+            set_page_message(reset($msg), 'error');
+        }
+
+        return;
+    }
+
+    $passwordUpdated = ($form->getValue('admin_pass') !== '');
+    $db = Database::getInstance();
+
+    try {
+        $db->beginTransaction();
+
+        EventsManager::getInstance()->dispatch(Events::onBeforeEditUser, [
+            'userId'   => $userId,
+            'userData' => $form->getValues()
+        ]);
+
+        exec_query(
+            "
+                UPDATE admin
+                SET admin_pass = IFNULL(?, admin_pass), fname = ?, lname = ?, firm = ?, zip = ?, city = ?, state = ?,
+                    country = ?, email = ?, phone = ?, fax = ?, street1 = ?, street2 = ?, gender = ?,
+                    admin_status = IF(?, 'tochangepwd', admin_status)
+                WHERE admin_id = ?
+            ",
+            [
+                $passwordUpdated ? NULL : iMSCP\Crypt::apr1MD5($form->getValue('admin_pass')), $form->getValue('fname'),
+                $form->getValue('lname'), $form->getValue('firm'), $form->getValue('zip'), $form->getValue('city'),
+                $form->getValue('state'), $form->getValue('country'), $form->getValue('email'),
+                $form->getValue('phone'), $form->getValue('fax'), $form->getValue('street1'), $form->getValue('street2'),
+                $form->getValue('gender'), $passwordUpdated ? 1 : 0, $userId
+            ]
+        );
+
+        if ($passwordUpdated) {
+            exec_query('DELETE FROM login WHERE user_name = ?', $data['admin_name']);
+        }
+
+        EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
+            'userId'   => $userId,
+            'userData' => $form->getValues(),
+        ]);
+        $db->commit();
+    } catch (Exception $e) {
+        $db->rollBack();
+        throw $e;
+    }
+
+    $ret = false;
+
+    if ($passwordUpdated) {
+        # Fixme: Add specific message for login data renewal
+        $ret = send_add_user_auto_msg(
+            $userId, $data['admin_name'], $form->getValue('admin_pass'), $form->getValue('email'),
+            $form->getValue('fname'), $form->getValue('lname'), tr('Customer')
+        );
+    }
+
+    send_request();
+    write_log(sprintf('The %s user has been updated by %s', $data['admin_name'], $_SESSION['user_logged']), E_USER_NOTICE);
+    set_page_message('User has been updated.', 'success');
+
+    if ($ret) {
+        set_page_message(tr('New login data were sent to the %s user.', decode_idna($data['admin_name'])), 'success');
+    }
+
+    redirectTo("user_edit.php?edit_id=$userId");
 }
 
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl
- * @return void
- */
-function reseller_generatePage($tpl)
-{
-    global $adminName, $email, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
-           $street1, $street2, $phone, $fax;
-
-    $tpl->assign([
-        'VL_USERNAME'     => tohtml(decode_idna($adminName)),
-        'VL_MAIL'         => tohtml($email),
-        'VL_USR_NAME'     => tohtml($firstName),
-        'VL_LAST_USRNAME' => tohtml($lastName),
-        'VL_USR_FIRM'     => tohtml($firm),
-        'VL_USR_POSTCODE' => tohtml($zip),
-        'VL_USRCITY'      => tohtml($city),
-        'VL_USRSTATE'     => tohtml($state),
-        'VL_COUNTRY'      => tohtml($country),
-        'VL_STREET1'      => tohtml($street1),
-        'VL_STREET2'      => tohtml($street2),
-        'VL_MALE'         => ($gender == 'M') ? ' selected' : '',
-        'VL_FEMALE'       => ($gender == 'F') ? ' selected' : '',
-        'VL_UNKNOWN'      => ($gender == 'U') ? ' selected' : '',
-        'VL_PHONE'        => tohtml($phone),
-        'VL_FAX'          => tohtml($fax)
-    ]);
-}
-
-/**
- * Function to update changes into db
+ * @param TemplateEngine $tpl
+ * @param Zend_Form $form
+ * @param int $userId User unique identifier
  *
- * @param int $adminId Customer unique identifier
  * @return void
  */
-function reseller_updateUserData($adminId)
+function generatePage(TemplateEngine $tpl, Zend_Form $form, $userId)
 {
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, ['userId' => $adminId]);
+    global $userType;
 
-    global $adminName, $email, $firstName, $lastName, $firm, $zip, $gender, $city, $state, $country,
-           $street1, $street2, $phone, $fax, $password, $passwordRepeat;
+    $tpl->form = $form;
+    $tpl->editId = $userId;
 
-    $resellerId = intval($_SESSION['user_id']);
-
-    if ($password === '' && $passwordRepeat === '') { // Save without password
-        exec_query(
-            '
-              UPDATE admin
-              SET fname = ?, lname = ?, firm = ?, zip = ?, city = ?, state = ?, country = ?, email = ?, phone = ?,
-                fax = ?, street1 = ?, street2 = ?, gender = ?
-              WHERE admin_id = ?
-              AND created_by = ?
-            ',
-            [
-                $firstName, $lastName, $firm, $zip, $city, $state, $country, $email, $phone, $fax, $street1, $street2,
-                $gender, $adminId, $resellerId
-            ]
-        );
-    } else { // Change password
-        if ($password !== $passwordRepeat) {
-            set_page_message(tr('Passwords do not match.'), 'error');
-            redirectTo('user_edit.php?edit_id=' . $adminId);
-        }
-
-        if (!checkPasswordSyntax($password)) {
-            redirectTo('user_edit.php?edit_id=' . $adminId);
-        }
-
-        $encryptedPassword = \iMSCP\Crypt::apr1MD5($password);
-
-        exec_query(
-            '
-              UPDATE admin
-              SET admin_pass = ?, fname = ?, lname = ?, firm = ?, zip = ?, city = ?, state = ?, country = ?, email = ?,
-                phone = ?, fax = ?, street1 = ?, street2 = ?, gender = ?, admin_status = ?
-              WHERE admin_id = ?
-              AND created_by = ?
-            ',
-            [
-                $encryptedPassword, $firstName, $lastName, $firm, $zip, $city, $state, $country, $email, $phone, $fax,
-                $street1, $street2, $gender, 'tochangepwd', $adminId, $resellerId
-            ]
-        );
-
-        $adminName = get_user_name($adminId);
-        exec_query('DELETE FROM login WHERE user_name = ?', $adminName);
+    if (!empty($_POST)) {
+        return;
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, ['userId' => $adminId]);
+    $stmt = exec_query(
+        "
+            SELECT admin_name, admin_type, fname, lname, IFNULL(gender, 'U') as gender, firm, zip, city, state, country,
+                street1, street2, email, phone, fax
+            FROM admin
+            WHERE admin_id = ?
+            AND created_by = ?
+        ",
+        [$userId, $_SESSION['user_id']]
+    );
 
-    set_page_message(tr('User data successfully updated'), 'success');
-    write_log("{$_SESSION['user_logged']} updated data for $adminName.", E_USER_NOTICE);
-
-    if (isset($_POST['send_data']) && $password !== '') {
-        send_add_user_auto_msg($resellerId, $adminName, $password, $email, $firstName, $lastName, tr('Customer'));
+    if (!($data = $stmt->fetchRow())) {
+        showBadRequestErrorPage();
     }
 
-    if ($password !== '')
-        send_request();
-
-    redirectTo('users.php');
+    $userType = $data['admin_type'];
+    $form->setDefaults($data);
 }
 
 /***********************************************************************************************************************
@@ -183,62 +161,39 @@ function reseller_updateUserData($adminId)
 
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+EventsManager::getInstance()->dispatch(Events::onResellerScriptStart);
 check_login('reseller');
 
-if (!isset($_REQUEST['edit_id'])) {
+if (!isset($_GET['edit_id'])) {
     showBadRequestErrorPage();
 }
 
 $userId = intval($_GET['edit_id']);
 
+if ($userId == $_SESSION['user_id']) {
+    redirectTo('personal_change.php');
+}
+
+$form = getUserLoginDataForm()->addElements(getUserPersonalDataForm()->getElements());
+
+if (!empty($_POST)) {
+    updateUserData($form, $userId);
+}
+
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
-    'page'         => 'reseller/user_edit.tpl',
-    'page_message' => 'layout',
-    'ip_entry'     => 'page'
+    'page'         => 'shared/partials/user_edit.phtml',
+    'page_message' => 'layout'
 ]);
-$tpl->assign([
-    'TR_PAGE_TITLE'      => tr('Reseller / Customers / Overview / Edit Customer'),
-    'TR_CORE_DATA'       => tr('Core data'),
-    'TR_USERNAME'        => tr('Username'),
-    'TR_PASSWORD'        => tr('Password'),
-    'TR_REP_PASSWORD'    => tr('Repeat password'),
-    'TR_USREMAIL'        => tr('Email'),
-    'TR_ADDITIONAL_DATA' => tr('Additional data'),
-    'TR_FIRSTNAME'       => tr('First name'),
-    'TR_LASTNAME'        => tr('Last name'),
-    'TR_COMPANY'         => tr('Company'),
-    'TR_POST_CODE'       => tr('Zip'),
-    'TR_CITY'            => tr('City'),
-    'TR_STATE'           => tr('State/Province'),
-    'TR_COUNTRY'         => tr('Country'),
-    'TR_STREET1'         => tr('Street 1'),
-    'TR_STREET2'         => tr('Street 2'),
-    'TR_PHONE'           => tr('Phone'),
-    'TR_FAX'             => tr('Fax'),
-    'TR_GENDER'          => tr('Gender'),
-    'TR_MALE'            => tr('Male'),
-    'TR_FEMALE'          => tr('Female'),
-    'TR_UNKNOWN'         => tr('Unknown'),
-    'EDIT_ID'            => $userId,
-    'TR_UPDATE'          => tr('Update'),
-    'TR_SEND_DATA'       => tr('Send new login data')
-]);
-
-reseller_loadUserData($userId);
-
-if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_changes' && check_ruser_data(true)) {
-    reseller_updateUserData($userId);
-}
+$tpl->assign('TR_PAGE_TITLE', tohtml(tr('Reseller / Customers / Overview / Edit Customer')));
 
 generateNavigation($tpl);
-reseller_generatePage($tpl);
 generatePageMessage($tpl);
+generatePage($tpl, $form, $userId);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+EventsManager::getInstance()->dispatch(Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

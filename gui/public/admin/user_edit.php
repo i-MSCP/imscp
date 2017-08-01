@@ -55,7 +55,7 @@ function updateUserData(Zend_Form $form, $userId)
         return;
     }
 
-    $passwordUpdated = ($form->getValue('password') !== '');
+    $passwordUpdated = ($form->getValue('admin_pass') !== '');
     $db = Database::getInstance();
 
     try {
@@ -71,7 +71,7 @@ function updateUserData(Zend_Form $form, $userId)
                 UPDATE admin
                 SET admin_pass = IFNULL(?, admin_pass), fname = ?, lname = ?, firm = ?, zip = ?, city = ?, state = ?,
                     country = ?, email = ?, phone = ?, fax = ?, street1 = ?, street2 = ?, gender = ?,
-                    admin_status = IF(admin_type = 'user', IF(?>0, 'tochangepwd', admin_status), admin_status)
+                    admin_status = IF(admin_type = 'user', IF(?, 'tochangepwd', admin_status), admin_status)
                 WHERE admin_id = ?
             ",
             [
@@ -102,8 +102,9 @@ function updateUserData(Zend_Form $form, $userId)
     if ($passwordUpdated) {
         # Fixme: Add specific message for login data renewal
         $ret = send_add_user_auto_msg(
-            $userId, $data['admin_name'], $form->getValue('admin_pass'), $form->getValue('email'), $form->getValue('fname'),
-            $form->getValue('lname'), ($data['admin_type'] == 'admin') ? tr('Administrator') : tr('Customer')
+            $userId, $data['admin_name'], $form->getValue('admin_pass'), $form->getValue('email'),
+            $form->getValue('fname'), $form->getValue('lname'),
+            ($data['admin_type'] == 'admin') ? tr('Administrator') : tr('Customer')
         );
     }
 
@@ -189,10 +190,9 @@ if (!empty($_POST)) {
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout'        => 'shared/layouts/ui.tpl',
-    'page'          => 'admin/user_edit.phtml',
-    'page_message'  => 'layout',
-    'hosting_plans' => 'page'
+    'layout'       => 'shared/layouts/ui.tpl',
+    'page'         => 'shared/partials/user_edit.phtml',
+    'page_message' => 'layout'
 ]);
 
 generateNavigation($tpl);
