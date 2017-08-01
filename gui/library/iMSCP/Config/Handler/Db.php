@@ -242,8 +242,8 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
     /**
      * Insert or update a configuration parameter in the database
      *
-     * <b>Note:</b> For performances reasons, queries for updates are only done if old and new value of a parameter are
-     * not the same.
+     * <b>Note:</b> For performances reasons, queries for updates are only done
+     * if old and new value of a parameter are not identical.
      *
      * @param string $key Configuration parameter key name
      * @param mixed $value Configuration parameter value
@@ -317,7 +317,6 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
             $this->_db->commit();
         } catch (PDOException $e) {
             $this->_db->rollBack();
-
             return false;
         }
 

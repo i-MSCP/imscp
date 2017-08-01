@@ -18,8 +18,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Exception as iMSCPException;
+
 /**
- * This class provides an interface to manage easily a set of configuration parameters from an array.
+ * This class provides an interface to manage easily a set of configuration
+ * parameters from an array.
  *
  * This class implements the ArrayAccess and Iterator interfaces to improve
  * the access to the configuration parameters.
@@ -40,7 +43,7 @@ class iMSCP_Config_Handler implements ArrayAccess
     public function __construct(array $parameters)
     {
         foreach ($parameters as $parameter => $value) {
-            $this->$parameter = $value;
+            $this->{$parameter} = $value;
         }
     }
 
@@ -70,14 +73,14 @@ class iMSCP_Config_Handler implements ArrayAccess
     /**
      * Getter method to retrieve a configuration parameter value
      *
-     * @throws iMSCP_Exception
+     * @throws iMSCPException
      * @param string $key Configuration parameter key name
      * @return mixed Configuration parameter value
      */
     public function get($key)
     {
         if (!$this->exists($key)) {
-            throw new iMSCP_Exception("Configuration variable `$key` is missing.");
+            throw new iMSCPException("Configuration variable `$key` is missing.");
         }
 
         return $this->$key;
@@ -109,9 +112,10 @@ class iMSCP_Config_Handler implements ArrayAccess
     /**
      * Merge the given configuration object
      *
-     * All keys in this object that don't exist in the second object will be left untouched.
+     * All keys in this object that don't exist in the second object will be
+     * left untouched.
      *
-     * <b>Note:</b> This method is not recursive.
+     * This method is not recursive.
      *
      * @param iMSCP_Config_Handler $config iMSCP_Config_Handler object
      * @return void
@@ -136,7 +140,7 @@ class iMSCP_Config_Handler implements ArrayAccess
 
         foreach ($properties as $property) {
             $name = $property->name;
-            $array[$name] = $this->$name;
+            $array[$name] = $this->{$name};
         }
 
         return $array;
@@ -184,6 +188,6 @@ class iMSCP_Config_Handler implements ArrayAccess
      */
     public function offsetUnset($offset)
     {
-        unset($this->$offset);
+        unset($this->{$offset});
     }
 }

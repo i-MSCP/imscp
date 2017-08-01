@@ -87,7 +87,7 @@ function updateUserData(Zend_Form $form, $userId)
 
         EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
             'userId'   => $userId,
-            'userData' => $form->getValues(),
+            'userData' => $form->getValues()
         ]);
         $db->commit();
     } catch (Exception $e) {

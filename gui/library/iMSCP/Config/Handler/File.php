@@ -18,11 +18,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Config_Handler as ConfigHandler;
+use iMSCP_Exception as iMSCPException;
+
 /**
  * Class to handle configuration parameters from a flat file.
  *
- * iMSCP_Config_Handler adapter class to handle configuration parameters that are stored in a flat file where each pair
- * of key-values are separated by the equal sign.
+ * ConfigHandler adapter class to handle configuration parameters that are
+ * stored in a flat file where each pair of key-values are separated by the
+ * equal sign.
  *
  * @property string ROOT_TEMPLATE_PATH Root templates path
  * @property string USER_INITIAL_THEME User initial theme
@@ -99,7 +103,7 @@
  * @property string PANEL_SSL_ENABLED Whether or not SSL is enabled for the panel
  * @property int EMAIL_QUOTA_SYNC_MODE
  */
-class iMSCP_Config_Handler_File extends iMSCP_Config_Handler
+class iMSCP_Config_Handler_File extends ConfigHandler
 {
     /**
      * Configuration file path
@@ -111,7 +115,8 @@ class iMSCP_Config_Handler_File extends iMSCP_Config_Handler
     /**
      * Loads all configuration parameters from a flat file
      *
-     * <b>Note:</b> Default file path is set to {/usr/local}/etc/imscp/imscp.conf depending of distribution.
+     * Default file path is set to {/usr/local}/etc/imscp/imscp.conf depending
+     * of distribution.
      *
      * @param string $pathFile Configuration file path
      */
@@ -140,13 +145,13 @@ class iMSCP_Config_Handler_File extends iMSCP_Config_Handler
     /**
      * Opens a configuration file and parses its Key = Value pairs
      *
-     * @throws iMSCP_Exception
+     * @throws iMSCPException
      * @return void
      */
     protected function _parseFile()
     {
         if (($fd = @file_get_contents($this->_pathFile)) == false) {
-            throw new iMSCP_Exception(sprintf("Couldn't open the %s configuration file", $this->_pathFile));
+            throw new iMSCPException(sprintf("Couldn't open the %s configuration file", $this->_pathFile));
         }
 
         foreach (explode(PHP_EOL, $fd) as $line) {
