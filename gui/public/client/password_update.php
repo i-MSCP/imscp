@@ -18,84 +18,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP\Crypt as Crypt;
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
 
-/***********************************************************************************************************************
- * Functions
- */
-
-/**
- * Update customer password
- *
- * @return void
- */
-function customer_updatePassword()
-{
-    if (empty($_POST))
-        return;
-
-    if (!isset($_POST['password']) || !isset($_POST['password_confirmation'])) {
-        showBadRequestErrorPage();
-    }
-
-    if ($_POST['password'] === '' || $_POST['password_confirmation'] === '') {
-        set_page_message(tr('All fields are required.'), 'error');
-        return;
-    }
-
-    if ($_POST['password'] !== $_POST['password_confirmation']) {
-        set_page_message(tr('Passwords do not match.'), 'error');
-        return;
-    }
-
-    if (!checkPasswordSyntax($_POST['password'])) {
-        return;
-    }
-
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, [
-        'userId' => $_SESSION['user_id']
-    ]);
-    exec_query('UPDATE admin SET admin_pass = ?, admin_status = ? WHERE admin_id = ?', [
-        Crypt::apr1MD5($_POST['password']), 'tochangepwd', $_SESSION['user_id']
-    ]);
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, [
-        'userId' => $_SESSION['user_id']
-    ]);
-    send_request();
-    write_log(sprintf("The %s's user password has been updated.", $_SESSION['user_logged']), E_USER_NOTICE);
-    set_page_message(tr('Password successfully updated.'), 'success');
-    redirectTo('password_update.php');
-}
 
 /***********************************************************************************************************************
  * Main
  */
 
 require_once 'imscp-lib.php';
-
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 check_login('user');
-customer_updatePassword();
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
-    'layout'       => 'shared/layouts/ui.tpl',
-    'page'         => 'shared/partials/password_update.tpl',
-    'page_message' => 'layout'
-]);
-$tpl->assign([
-    'TR_PAGE_TITLE'            => tr('Client / Profile / Password'),
-    'TR_PASSWORD_DATA'         => tr('Password data'),
-    'TR_PASSWORD'              => tr('Password'),
-    'TR_PASSWORD_CONFIRMATION' => tr('Password confirmation'),
-    'TR_UPDATE'                => tr('Update')
-]);
-
-generateNavigation($tpl);
-generatePageMessage($tpl);
-
+require_once '../shared/password_update.php';
+$tpl->assign('TR_PAGE_TITLE', tohtml(tr('Client / Profile / Password')));
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
-
 unsetMessages();

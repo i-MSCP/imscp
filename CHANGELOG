@@ -56,6 +56,7 @@ FRONTEND
     Review: Extend Zend_Registry class instead of reinventing the wheel
     Review: Skip the intermediate edit page when mail autoresponder is being enabled and that the message is already set
     Rewritten: Edit user and personal data interfaces (all UI levels)
+    Rewritten: Password update interface (all UI levels)
     Security: Input for personal user data not filtered nor validated (all UI levels)
 
 INSTALLER
@@ -85,6 +86,9 @@ SERVERS
     Fixed: Several warnings raised by POSTFIX(1) when files located inside its directories are not owned by the `postfix' user (Postfix)
     Fixed: Unwanted leading character in server alias names - Alternative URLs feature (Httpd servers)
     Removed: sql_mode parameter from the mysql/imscp.cnf configuration file; it is now set on a per session basis) (SQL servers)
+
+TRANSLATIONS
+    Review: Make use of fuzzy entries in machine object files -- Some people just forgot to review them
 
 VENDOR
     Updated: Zend Framework libraries to version 1.12.20
