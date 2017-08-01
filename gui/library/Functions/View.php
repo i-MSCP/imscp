@@ -460,7 +460,7 @@ function get_search_user_queries($sLimit, $eLimit, $searchField = NULL, $searchV
         $where .= (($where == '') ? 'WHERE ' : ' AND ') . 't1.domain_status' . (
             ($searchStatus == 'ok' || $searchStatus == 'disabled')
                 ? ' = ' . quoteValue($searchStatus)
-                : " NOT IN ('ok', 'toadd', 'tochange', 'toenable', 'torestore', 'todisable', 'todelete')"
+                : " NOT IN ('ok', 'disabled', 'toadd', 'tochange', 'toenable', 'torestore', 'todisable', 'todelete')"
             );
     }
 
