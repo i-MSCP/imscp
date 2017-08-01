@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:44+0000\n"
+"POT-Creation-Date: 2017-08-01 12:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/i-mscp/teams/576/zh_TW/)\n"
@@ -35,10 +35,6 @@ msgstr "$ORIGIN 將自動附加到不正確的名稱，主機名和標準名稱�
 #, php-format
 msgid "$ORIGIN value is currently set to: %s"
 msgstr "$ORIGIN 的值目前設定為: %s"
-
-#, php-format
-msgid "%%s / %s"
-msgstr ""
 
 #, php-format
 msgid "%%s cannot be greater than %%s."

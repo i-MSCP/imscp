@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:44+0000\n"
+"POT-Creation-Date: 2017-08-01 12:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Florian Rettenbacher <florian.rettenbacher@gmx.at>, 2017\n"
 "Language-Team: German (Germany) (https://www.transifex.com/i-mscp/teams/576/de_DE/)\n"
@@ -38,10 +38,6 @@ msgstr ""
 #, php-format
 msgid "$ORIGIN value is currently set to: %s"
 msgstr "Der aktuelle Wert von $ORIGIN ist: %s"
-
-#, php-format
-msgid "%%s / %s"
-msgstr ""
 
 #, php-format
 msgid "%%s cannot be greater than %%s."

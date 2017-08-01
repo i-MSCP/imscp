@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:44+0000\n"
+"POT-Creation-Date: 2017-08-01 12:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: killerbender0temp <reachme@mailinator.com>, 2017\n"
 "Language-Team: Spanish (Spain) (https://www.transifex.com/i-mscp/teams/576/es_ES/)\n"
@@ -37,10 +37,6 @@ msgstr "$ORIGIN se añade automáticamente a los nombres no cualificados"
 #, php-format
 msgid "$ORIGIN value is currently set to: %s"
 msgstr "El vaor de $ORIGIN actualmente es: %s"
-
-#, php-format
-msgid "%%s / %s"
-msgstr ""
 
 #, php-format
 msgid "%%s cannot be greater than %%s."
