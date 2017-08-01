@@ -31,7 +31,7 @@ if (!resellerHasFeature('domain_aliases') || !isset($_GET['id'])) {
     showBadRequestErrorPage();
 }
 
-$îd = intval($_GET['id']);
+$id = intval($_GET['id']);
 
 $stmt = exec_query(
     '
@@ -42,7 +42,7 @@ $stmt = exec_query(
         WHERE t1.alias_id = ?
         AND t3.created_by = ?
     ',
-    [$îd, $_SESSION['user_id']]
+    [$id, $_SESSION['user_id']]
 );
 
 if ($stmt->rowCount()) {
