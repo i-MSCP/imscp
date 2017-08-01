@@ -350,9 +350,10 @@ function checkMimeType($pathFile, array $mimeTypes)
 /**
  * Get user login data form
  *
+ * @param bool $passwordRequired Flag indicating whether password is required
  * @return Zend_Form
  */
-function getUserLoginDataForm()
+function getUserLoginDataForm($passwordRequired = false)
 {
     $cfg = iMSCP_Registry::get('config');
     $minPasswordLength = intval($cfg['PASSWD_CHARS']);
@@ -363,7 +364,7 @@ function getUserLoginDataForm()
 
     $form = new Zend_Form([
         'elements' => [
-            'admin_name'            => [
+            'admin_name'              => [
                 'text',
                 [
                     'validators' => [
@@ -372,7 +373,7 @@ function getUserLoginDataForm()
                     ]
                 ]
             ],
-            'password'              => [
+            'admin_pass'              => [
                 'password',
                 [
                     'validators' => [
@@ -389,19 +390,28 @@ function getUserLoginDataForm()
                     ]
                 ]
             ],
-            'password_confirmation' => [
-                'password', ['validators' => [['Identical', true, ['password', 'messages' => tr('Passwords do not match.')]]]]
+            'admin_pass_confirmation' => [
+                'password', ['validators' => [['Identical', true, ['admin_pass', 'messages' => tr('Passwords do not match.')]]]]
             ]
         ]
     ]);
 
     if ($cfg['PASSWD_STRONG']) {
-        $form->getElement('password')->addValidator('Callback', true, [
+        $form->getElement('admin_pass')->addValidator('Callback', true, [
             function ($password) {
                 return preg_match('/[0-9]/', $password) && preg_match('/[a-zA-Z]/', $password);
             },
             'messages' => tr('Password must contain letters and digits.'),
         ]);
+    }
+
+    if ($passwordRequired) {
+        $password = $form->getElement('admin_pass');
+        $validators = $password->getValidators();
+        array_unshift(
+            $validators, ['NotEmpty', true, ['type' => 'string', 'messages' => tr('Password cannot be empty.')]]
+        );
+        $password->setValidators($validators)->setRequired(true);
     }
 
     $form->setElementFilters(['StripTags', 'StringTrim']);
