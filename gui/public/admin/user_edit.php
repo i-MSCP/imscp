@@ -75,7 +75,7 @@ function updateUserData(Zend_Form $form, $userId)
                 WHERE admin_id = ?
             ",
             [
-                $passwordUpdated ? NULL : iMSCP\Crypt::apr1MD5($form->getValue('password')), $form->getValue('fname'),
+                $passwordUpdated ? NULL : iMSCP\Crypt::apr1MD5($form->getValue('admin_pass')), $form->getValue('fname'),
                 $form->getValue('lname'), $form->getValue('firm'), $form->getValue('zip'), $form->getValue('city'),
                 $form->getValue('state'), $form->getValue('country'), $form->getValue('email'),
                 $form->getValue('phone'), $form->getValue('fax'), $form->getValue('street1'), $form->getValue('street2'),
@@ -102,12 +102,15 @@ function updateUserData(Zend_Form $form, $userId)
     if ($passwordUpdated) {
         # Fixme: Add specific message for login data renewal
         $ret = send_add_user_auto_msg(
-            $userId, $data['admin_name'], $form->getValue('password'), $form->getValue('email'), $form->getValue('fname'),
+            $userId, $data['admin_name'], $form->getValue('admin_pass'), $form->getValue('email'), $form->getValue('fname'),
             $form->getValue('lname'), ($data['admin_type'] == 'admin') ? tr('Administrator') : tr('Customer')
         );
     }
 
-    send_request();
+    if ($userType == 'user') {
+        send_request();
+    }
+
     write_log(sprintf('The %s user has been updated by %s', $data['admin_name'], $_SESSION['user_logged']), E_USER_NOTICE);
     set_page_message('User has been updated.', 'success');
 
@@ -124,7 +127,7 @@ function updateUserData(Zend_Form $form, $userId)
  * @param TemplateEngine $tpl
  * @param Zend_Form $form
  * @param int $userId User unique identifier
- * 
+ *
  * @return void
  */
 function generatePage(TemplateEngine $tpl, Zend_Form $form, $userId)
