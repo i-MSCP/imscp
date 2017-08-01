@@ -445,7 +445,7 @@ function getUserPersonalDataForm()
                 'text', [
                     'validators' => [
                         ['NotEmpty', true, ['type' => 'string', 'messages' => tr('Email address cannot be empty.')]],
-                        ['EmailAddress', true, ['messagess' => tr('Invalid email address.')]]
+                        ['EmailAddress', true, ['messages' => tr('Invalid email address.')]]
                     ],
                     'Required'   => true
                 ]
