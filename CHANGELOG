@@ -22,7 +22,7 @@ CONFIG
 FRONTEND
     Added: iMSCP_Database::inTransaction() method
     Added: Routing for languages without territory information: eg. `de' will be routed to `de_DE' (autodetection)
-    Added: Setting that allows administrator to protect/unrpotect default mail accounts against both edition and deletion
+    Added: Setting that allows administrator to protect/unprotect default mail accounts against both edition and deletion
     Added: Translaltion resources for Zend validators
     Cosmetics: Make use of the mathematical infinity symbol (∞) in place of the `Unlimited' translation string
     Deprecated: iMSCP_Database::getRawInstance() method -- will be removed in a later release

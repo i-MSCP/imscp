@@ -175,7 +175,7 @@ function reseller_generatePageData($tpl, $resellerId, $resellerName)
         'TR_DISK_USAGE'     => tr('Disk usage'),
         'RESELLER_NAME'     => tohtml($resellerName),
         'DMN_MSG'           => ($resellerProperties['max_dmn_cnt'])
-            ? tr('%%s / %s', $udmnCurrent, $resellerProperties['max_dmn_cnt']) : tr('%s / ∞', $udmnCurrent),
+            ? tr('%s / %s', $udmnCurrent, $resellerProperties['max_dmn_cnt']) : tr('%s / ∞', $udmnCurrent),
         'SUB_MSG'           => ($resellerProperties['max_sub_cnt'] > 0)
             ? tr('%s / %s', $usubCurrent, $resellerProperties['max_sub_cnt'])
             : (($resellerProperties['max_sub_cnt'] == '-1') ? '-' : tr('%s / ∞', $usubCurrent)),
