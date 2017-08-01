@@ -57,8 +57,7 @@ function updatePassword()
             SET admin_pass = ?, admin_status = IF(admin_type = 'user', 'tochangepwd', admin_status)
             WHERE admin_id = ?
         ",
-        [Crypt::apr1MD5($form->getValue('admin_pass')), $_SESSION['user_id']
-        ]
+        [Crypt::apr1MD5($form->getValue('admin_pass')), $_SESSION['user_id']]
     );
     EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
         'userId'   => $_SESSION['user_id'],
