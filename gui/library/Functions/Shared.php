@@ -1606,14 +1606,14 @@ function is_basicString($string)
  *
  * Returns true if the request‘s "X-Requested-With" header contains "XMLHttpRequest".
  *
- * Note: jQuery and Prototype Javascript libraries sends this header with every Ajax request.
+ * Note: jQuery and Prototype Javascript libraries both set this header with every Ajax request.
  *
  * @return boolean TRUE if the request‘s "X-Requested-With" header contains "XMLHttpRequest", FALSE otherwise
  */
 function is_xhr()
 {
     if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])
-        && stristr($_SERVER['HTTP_X_REQUESTED_WITH'], 'XMLHttpRequest') !== false
+        && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'
     ) {
         return true;
     }

@@ -22,11 +22,13 @@ use iMSCP_Config_Handler as ConfigHandler;
 use iMSCP_Database as Database;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_Exception_Database as DatabaseException;
+use iMSCP_Registry as Registry;
 
 /**
  * Class to handle configuration parameters from database
  *
- * ConfigHandler adapter class to handle configuration parameters that are stored in database.
+ * ConfigHandler adapter class to handle configuration parameters that are
+ * stored in database.
  *
  * @property string MAIL_BODY_FOOTPRINTS Mail body footprint
  * @property int FAILED_UPDATE Failed database update
@@ -43,45 +45,30 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
     protected $_db;
 
     /**
-     * @var array Array that contains all configuration parameters from the database
+     * @var array Configuration parameters
      */
     protected $_parameters = [];
 
     /**
-     * PDOStatement to insert a configuration parameter in the database
-     *
-     * <b>Note:</b> For performance reason, the PDOStatement instance is created only once at the first execution of the
-     * {@link _insert()} method.
-     *
-     * @var PDOStatement
+     * @var PDOStatement to insert a configuration parameter in the database
      */
     protected $_insertStmt = NULL;
 
     /**
-     * PDOStatement to update a configuration parameter in the database
-     *
-     * <b>Note:</b> For performances reasons, the PDOStatement instance is created only once at the first execution of
-     * the {@link _update()} method.
-     *
-     * @var PDOStatement
+     * @var PDOStatement to update a configuration parameter in the database
      */
     protected $_updateStmt = NULL;
 
     /**
-     * PDOStatement to delete a configuration parameter in the database
-     *
-     * <b>Note:</b> For performances reasons, the PDOStatement instance is created only once at the first execution of
-     * the {@link _delete()} method.
-     *
-     * @var PDOStatement
+     * @var PDOStatement PDOStatement to delete a configuration parameter in the database
      */
     protected $_deleteStmt = NULL;
 
     /**
      * Variable bound to the PDOStatement instances
      *
-     * This variable is bound to the PDOStatement instances that are used by {@link _insert()}, {@link _update()} and
-     * {@link _delete()} methods.
+     * This variable is bound to the PDOStatement instances that are used by
+     * {@link _insert()}, {@link _update()} and {@link _delete()} methods.
      *
      * @var string Configuration parameter key name
      */
@@ -90,8 +77,8 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
     /**
      * Variable bound to the PDOStatement objects
      *
-     * This variable is bound to the PDOStatement instances that are used by both {@link _insert()} and
-     * {@link _update()} methods.
+     * This variable is bound to the PDOStatement instances that are used by
+     * both {@link _insert()} and {@link _update()} methods.
      *
      * @var mixed Configuration parameter value
      */
@@ -128,7 +115,8 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
     protected $_valuesColumn = 'value';
 
     /**
-     * @var bool Internal flag indicating whether or not cached dbconfig object must be flushed
+     * @var bool Internal flag indicating whether or not cached dbconfig object
+     *           must be flushed
      */
     protected $flushCache = false;
 
@@ -137,22 +125,24 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      *
      * <b>Parameters:</b>
      *
-     * The constructor accepts one or more parameters passed in a array where each key represent a parameter name.
+     * The constructor accepts one or more parameters passed in a array where
+     * each key represent a parameter name.
      *
      * For an array, the possible parameters are:
      *
      * - db: A Database instance
-     * - table_name: Database table that contain configuration parameters
-     * - key_column: Database column name for configuration parameters key names
-     * - value_column: Database column name for configuration parameters values
+     * - table_name: Table that contain configuration parameters
+     * - key_column: Column name for configuration parameters key names
+     * - value_column: Column name for configuration parameters values
      *
      * <b>Note:</b> The three last parameters are optionals.
      *
      * For a single parameter, only a Database instance is accepted.
      *
      * @throws iMSCPException
-     * @param Database|array $params A Database instance or an array of parameters that contains
-     * at least a Database instance
+     * @param Database|array $params A Database instance or an array of
+     *                               parameters that contains at least a
+     *                               Database instance
      */
     public function __construct($params)
     {
@@ -242,9 +232,6 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
     /**
      * Insert or update a configuration parameter in the database
      *
-     * <b>Note:</b> For performances reasons, queries for updates are only done
-     * if old and new value of a parameter are not identical.
-     *
      * @param string $key Configuration parameter key name
      * @param mixed $value Configuration parameter value
      * @return void
@@ -295,14 +282,16 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
     /**
      * Replaces all parameters of this object with parameters from another
      *
-     * This method replace the parameters values of this object with the same values from another
-     * {@link ConfigHandler} object.
+     * This method replace the parameters values of this object with the same
+     * values from another {@link ConfigHandler} object.
      *
-     * If a key from this object exists in the second object, its value will be replaced by the value from the second
-     * object. If the key exists in the second object, and not in the first, it will be created in the first object.
+     * If a key from this object exists in the second object, its value will be
+     * replaced by the value from the second object. If the key exists in the
+     * second object, and not in the first, it will be created in the first
+     * object.
      * All keys in this object that don't exist in the second object will be left untouched.
      *
-     * <b>Note:</b> This method is not recursive.
+     * This method is not recursive.
      *
      * @param ConfigHandler $config ConfigHandler object
      * @return bool TRUE on success, FALSE otherwise
@@ -326,10 +315,12 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
     /**
      * PHP isset() overloading on inaccessible members
      *
-     * This method is triggered by calling isset() or empty() on inaccessible members.
+     * This method is triggered by calling isset() or empty() on inaccessible
+     * members.
      *
-     * <b>Note:</b> This method will return FALSE if the configuration parameter value is NULL. To test existence of a
-     * configuration parameter, you should use the {@link exists()} method.
+     * This method will return FALSE if the configuration parameter value is
+     * NULL. To test existence of a configuration parameter, you should use the
+     * {@link exists()} method.
      *
      * @param string $key Configuration parameter key name
      * @return boolean TRUE if the parameter exists and its value is not NULL
@@ -342,9 +333,10 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
     /**
      * PHP unset() overloading on inaccessible members
      *
-     * This method is triggered by calling isset() or empty() on inaccessible members.
+     * This method is triggered by calling isset() or empty() on inaccessible
+     * members.
      *
-     * @param  string $key Configuration parameter key name
+     * @param string $key Configuration parameter key name
      * @return void
      */
     public function __unset($key)
@@ -355,7 +347,8 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
     /**
      * Force reload of all configuration parameters from the database
      *
-     * This method will remove all the current loaded parameters and reload it from the database.
+     * This method will remove all the current loaded parameters and reload it
+     * from the database.
      *
      * @return void
      */
@@ -368,8 +361,8 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
     /**
      * Returns the count of SQL queries that were executed
      *
-     * This method returns the count of queries that were executed since the last call of
-     * {@link reset_queries_counter()} method.
+     * This method returns the count of queries that were executed since the
+     * last call of {@link reset_queries_counter()} method.
      *
      * @throws iMSCPException
      * @param string $queriesCounterType Query counter type (insert|update)
@@ -396,7 +389,7 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      * Reset a counter of queries
      *
      * @throws iMSCPException
-     * @param string $queriesCounterType Type of query counter (insert|update|delete)
+     * @param string $queriesCounterType Query counter (insert|update|delete)
      * @return void
      */
     public function resetQueriesCounter($queriesCounterType)
@@ -625,7 +618,7 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
     public function __destruct()
     {
         if ($this->flushCache) {
-            @unlink(DBCONFIG_CACHE_FILE_PATH);
+            Registry::get('iMSCP_Application')->getCache()->remove('iMSCP_DbConfig');
         }
     }
 }

@@ -18,6 +18,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Exception as iMSCPException;
+use iMSCP_I18n_Parser_Gettext as GettextParser;
+use iMSCP_Registry as Registry;
+use iMSCP_Utility_OpcodeCache as OpcodeCacheManager;
+use Zend_Locale as Locale;
+use Zend_Translate as Translator;
+
 /**
  * Translates the given string
  *
@@ -30,9 +39,9 @@ function tr($messageId, $substitution = NULL)
     static $translator = NULL;
 
     if (NULL == $translator) {
-        if (iMSCP_Registry::isRegistered('translator')) {
+        if (Registry::isRegistered('translator')) {
             /** @var Zend_Translate_Adapter $translator */
-            $translator = iMSCP_Registry::get('Zend_Translate');
+            $translator = Registry::get('Zend_Translate');
         } else {
             $message = $messageId;
 
@@ -72,7 +81,7 @@ function ntr($singular, $plural, $number)
 
     if (NULL == $translator) {
         /** @var Zend_Translate_Adapter $translator */
-        $translator = iMSCP_Registry::get('Zend_Translate');
+        $translator = Registry::get('Zend_Translate');
     }
 
     $message = $translator->plural($singular, $plural, $number);
@@ -104,32 +113,25 @@ function replace_html($string)
 }
 
 /**
- * Build languages index from machine object files.
+ * Build languages index from machine object files
  *
- * @throws iMSCP_Exception
+ * @throws iMSCPException
  * @return void
  */
 function i18n_buildLanguageIndex()
 {
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     // Clear translation cache
     /** @var Zend_Translate $translator */
-    $translator = iMSCP_Registry::get('Zend_Translate');
+    $translator = Registry::get('Zend_Translate');
 
     if ($translator->hasCache()) {
         $translator->clearCache();
     }
 
-    # Remove all cached navigation translation files
-    if (is_dir(CACHE_PATH . '/translations/navigation')) {
-        if (!utils_removeDir(CACHE_PATH . '/translations/navigation')) {
-            throw new iMSCP_Exception('Unable to remove directory for cached navigation translation files');
-        }
-    }
-
     # Clear opcode cache if any
-    iMSCP_Utility_OpcodeCache::clearAllActive();
+    OpcodeCacheManager::clearAllActive();
 
     $iterator = new RecursiveIteratorIterator(
         new RecursiveDirectoryIterator($cfg['GUI_ROOT_DIR'] . '/i18n/locales/', FilesystemIterator::SKIP_DOTS)
@@ -144,7 +146,7 @@ function i18n_buildLanguageIndex()
         }
 
         $basename = $item->getBasename();
-        $parser = new iMSCP_I18n_Parser_Gettext($item->getPathname());
+        $parser = new GettextParser($item->getPathname());
         $translationTable = $parser->getTranslationTable();
 
         if (!empty($translationTable)) {
@@ -156,22 +158,23 @@ function i18n_buildLanguageIndex()
                 'lastTranslator'    => $parser->getLastTranslator()
             ];
 
-            // Getting localized language name
-            if (!isset($translationTable['_: Localised language'])) {
-                $availableLanguages[$basename]['language'] = tr('Unknown');
-            } else {
+            if (isset($translationTable['_: Localised language'])) {
                 $availableLanguages[$basename]['language'] = $translationTable['_: Localised language'];
+            } else {
+                $availableLanguages[$basename]['language'] = tr('Unknown');
             }
 
             continue;
         }
 
-        if(PHP_SAPI != 'cli') {
-            set_page_message(tr('The %s translation file has been ignored: Translation table is empty.', $basename), 'warning');
+        if (PHP_SAPI != 'cli') {
+            set_page_message(
+                tr('The %s translation file has been ignored: Translation table is empty.', $basename), 'warning'
+            );
         }
     }
 
-    $dbConfig = iMSCP_Registry::get('dbConfig');
+    $dbConfig = Registry::get('dbConfig');
     sort($availableLanguages);
     $serializedData = serialize($availableLanguages);
     $dbConfig['AVAILABLE_LANGUAGES'] = $serializedData;
@@ -186,16 +189,19 @@ function i18n_buildLanguageIndex()
  */
 function i18n_getAvailableLanguages($localesOnly = false)
 {
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
-    if (!isset($cfg['AVAILABLE_LANGUAGES']) || !isSerialized($cfg['AVAILABLE_LANGUAGES'])) {
+    if (!isset($cfg['AVAILABLE_LANGUAGES'])
+        || !isSerialized($cfg['AVAILABLE_LANGUAGES'])
+    ) {
         i18n_buildLanguageIndex();
     }
 
     $languages = unserialize($cfg['AVAILABLE_LANGUAGES']);
 
     if ($localesOnly) {
-        $locales = [Zend_Locale::BROWSER];
+        $locales = [Locale::BROWSER];
+
         foreach ($languages as $language) {
             $locales[] = $language['locale'];
         }
@@ -204,7 +210,7 @@ function i18n_getAvailableLanguages($localesOnly = false)
     }
 
     array_unshift($languages, [
-        'locale'            => Zend_Locale::BROWSER,
+        'locale'            => Locale::BROWSER,
         'creation'          => tr('N/A'),
         'translatedStrings' => tr('N/A'),
         'lastTranslator'    => tr('N/A'),
@@ -224,8 +230,7 @@ function i18n_importMachineObjectFile()
     // closure that is run before move_uploaded_file() function - See the Utils_UploadFile() function for further
     // information about implementation details
     $beforeMove = function () {
-        $cfg = iMSCP_Registry::get('config');
-        $localesDirectory = $cfg['GUI_ROOT_DIR'] . '/i18n/locales';
+        $localesDirectory = Registry::get('config')['GUI_ROOT_DIR'] . '/i18n/locales';
         $filePath = $_FILES['languageFile']['tmp_name'];
 
         if (!is_readable($filePath)) {
@@ -234,20 +239,27 @@ function i18n_importMachineObjectFile()
         }
 
         try {
-            $parser = new iMSCP_I18n_Parser_Gettext($filePath);
+            $parser = new GettextParser($filePath);
             $encoding = $parser->getContentType();
             $locale = $parser->getLanguage();
             $creation = $parser->getPotCreationDate();
             $translationTable = $parser->getTranslationTable();
-        } catch (iMSCP_Exception $e) {
+        } catch (iMSCPException $e) {
             set_page_message(tr('Only gettext Machine Object files (MO files) are accepted.'), 'error');
             return false;
         }
 
         $language = isset($translationTable['_: Localised language']) ? $translationTable['_: Localised language'] : '';
 
-        if (empty($encoding) || empty($locale) || empty($creation) || empty($lastTranslator) || empty($language)) {
-            set_page_message(tr("%s is not a valid i-MSCP language file.", tohtml($_FILES['languageFile']['name'])), 'error');
+        if (empty($encoding)
+            || empty($locale)
+            || empty($creation)
+            || empty($lastTranslator)
+            || empty($language)
+        ) {
+            set_page_message(
+                tr("%s is not a valid i-MSCP language file.", tohtml($_FILES['languageFile']['name'])), 'error'
+            );
             return false;
         }
 
@@ -289,7 +301,6 @@ function i18n_changeDefaultLanguage()
         return false;
     }
 
-    $cfg = iMSCP_Registry::get('config');
     $defaultLanguage = clean_input($_POST['defaultLanguage']);
     $availableLanguages = i18n_getAvailableLanguages();
 
@@ -305,9 +316,9 @@ function i18n_changeDefaultLanguage()
         return false;
     }
 
-    $dbConfig = iMSCP_Registry::get('dbConfig');
+    $dbConfig = Registry::get('dbConfig');
     $dbConfig['USER_INITIAL_LANG'] = $defaultLanguage;
-    $cfg['USER_INITIAL_LANG'] = $defaultLanguage;
+    Registry::get('config')['USER_INITIAL_LANG'] = $defaultLanguage;
 
     // Ensures language change on next load for current user in case he has not yet his gui properties explicitly
     // set (eg. for the first admin user when i-MSCP was just installed
@@ -328,17 +339,17 @@ function i18n_changeDefaultLanguage()
  * @param string $type Translations type (array, Csv, Gettext, Ini, Qt, Tbx, Tmx, Xliff, XmlTm)
  * @param string $tag Tag which is used for caching (eg. plugin name)
  * @param string|null $scan If set to NULL, no scanning of the directory structure will be done. If set to
- *                          Zend_Translate::LOCALE_DIRECTORY the locale will be detected within the directory.
- *                          If set to Zend_Translate::LOCALE_FILENAME the locale will be detected within the filename.
- * @throws iMSCP_Exception
+ *                          Translator::LOCALE_DIRECTORY the locale will be detected within the directory.
+ *                          If set to Translator::LOCALE_FILENAME the locale will be detected within the filename.
+ * @throws iMSCPException
  * @return void
  */
-function l10n_addTranslations($dirPath, $type = 'Array', $tag = 'iMSCP_Translate', $scan = Zend_Translate::LOCALE_FILENAME)
+function l10n_addTranslations($dirPath, $type = 'Array', $tag = 'iMSCP_Translate', $scan = Translator::LOCALE_FILENAME)
 {
     /** @var Zend_Translate_Adapter $primaryTranslator */
     $primaryTranslator = iMSCP_Registry::get('Zend_Translate')->getAdapter();
     $locale = $primaryTranslator->getLocale();
-    $pluginTranslator = new Zend_Translate([
+    $pluginTranslator = new Translator([
         'adapter'        => $type,
         'content'        => $dirPath,
         'scan'           => $scan,
@@ -357,12 +368,13 @@ function l10n_addTranslations($dirPath, $type = 'Array', $tag = 'iMSCP_Translate
 /**
  * Get JS translations strings
  *
- * Note: Plugins can register their own JS translation strings by listening on the onGetJsTranslations event, and add
- * them to the translations ArrayObject which is a parameter of that event.
+ * Note: Plugins can register their own JS translation strings by listening on
+ * the onGetJsTranslations event, and add them to the translations ArrayObject
+ * which is a parameter of that event.
  *
  * For instance:
  *
- * iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function($e) {
+ * EventsManager::getInstance()->registerListener('onGetJsTranslations', function($e) {
  *    $e->getParam('translations')->my_namespace = array(
  *        'first_translation_string_identifier' => tr('my first translation string'),
  *        'second_translation_string_identifier' => tr('my second translation string')
@@ -380,7 +392,6 @@ function l10n_addTranslations($dirPath, $type = 'Array', $tag = 'iMSCP_Translate
  */
 function i18n_getJsTranslations()
 {
-    $cfg = iMSCP_Registry::get('config');
     $translations = new ArrayObject([
         // Core translation strings
         'core' => [
@@ -394,11 +405,11 @@ function i18n_getJsTranslations()
             'show'                    => tr('Show'),
             'your_new_password'       => tr('Your new password'),
             'password_generate_alert' => tr('You must first generate a password by clicking on the generate button.'),
-            'password_length'         => $cfg['PASSWD_CHARS']
+            'password_length'         => Registry::get('config')['PASSWD_CHARS']
         ]],
         ArrayObject::ARRAY_AS_PROPS
     );
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch('onGetJsTranslations', ['translations' => $translations]);
+    EventsManager::getInstance()->dispatch(Events::onGetJsTranslations, ['translations' => $translations]);
     return json_encode($translations, JSON_FORCE_OBJECT);
 }

@@ -24,15 +24,15 @@
 class iMSCP_Events
 {
     /**
-     * The onAfterInitialize event is triggered after i-MSCP has been fully initialized.
+     * The onAfterApplicationBootstrap event is triggered after i-MSCP application has been bootstrapped.
      *
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
      *
-     * - context: An iMSCP_Initializer object, the context in which the event is triggered
+     * - context: An instance of iMSCP\Application, the context in which the event is triggered
      *
      * @const string
      */
-    const onAfterInitialize = 'onAfterInitialize';
+    const onAfterApplicationBootstrap = 'onAfterApplicationBootstrap';
 
     /**
      * The onLoginScriptStart event is triggered at the very beginning of Login script.
@@ -93,7 +93,7 @@ class iMSCP_Events
      * @const string
      */
     const onSharedScriptEnd = 'onSharedScriptEnd';
-    
+
     /**
      * The onAdminScriptStart event is triggered at the very beginning of admin scripts.
      *
@@ -550,7 +550,7 @@ class iMSCP_Events
 
     /**
      * The onBeforeAddCustomDNSrecord event is triggered when a custom DNS record is being added.
-     * 
+     *
      * The listeners receive an iMSCP_Events_Event object with the following parameters:
      *
      * - domainId: An integer representing the main domain unique identifier
@@ -564,7 +564,7 @@ class iMSCP_Events
 
     /**
      * The onAfterAddCustomDNSrecord event is triggered when a custom DNS record has been added.
-     * 
+     *
      * The listeners receive an iMSCP_Events_Event object with the following parameters:
      *
      * - id:       An integer representing the DNS record unique identifier
@@ -579,7 +579,7 @@ class iMSCP_Events
 
     /**
      * The onBeforeEditCustomDNSrecord event is triggered when a custom DNS record is being edited.
-     * 
+     *
      * The listeners receive an iMSCP_Events_Event object with the following parameters:
      *
      * - id:       An integer representing the DNS record unique identifier
@@ -594,7 +594,7 @@ class iMSCP_Events
 
     /**
      * The onAfterEditCustomDNSrecord event is triggered when a custom DNS record has been edited.
-     * 
+     *
      * The listeners receive an iMSCP_Events_Event object with the following parameters:
      *
      * - id:       An integer representing the DNS record unique identifier
@@ -609,22 +609,22 @@ class iMSCP_Events
 
     /**
      * The onBeforeDeleteCustomDNSrecord event is triggered when a custom DNS record is being deleted
-     * 
+     *
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     * 
+     *
      * - id: Custom DNS record unique identifier
      */
     const onBeforeDeleteCustomDNSrecord = 'onBeforeDeleteCustomDNSrecord';
 
     /**
      * The onAfterDeleteCustomDNSrecord event is triggered when a custom DNS record has been deleted
-     * 
+     *
      * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     * 
+     *
      * - id: Custom DNS record unique identifier
      */
     const onAfterDeleteCustomDNSrecord = 'onAfterDeleteCustomDNSrecord';
-    
+
     /**
      * The onBeforePluginRoute event is triggered before routing of plugins.
      *
@@ -1211,7 +1211,7 @@ class iMSCP_Events
     const onAfterDeleteMail = 'onAfterDeleteMail';
 
     /**
-     * The onBeforeAddMailCatchall event is triggered after a catch-all acount is created.
+     * The onBeforeAddMailCatchall event is triggered before a catch-all acount is created.
      *
      * The listeners receive an iMSCP_Events_Event object with the following parameters:
      *
@@ -1363,9 +1363,9 @@ class iMSCP_Events
 
     /**
      * The onParseTemplate event is triggered when a template is parsed
-     * 
+     *
      * The listener receive an iMSCP_Events_Event object with the following parameters:
-     * 
+     *
      * pname: Parent template name
      * tname: template name
      * templateEngine: iMSCP_pTemplate instance
@@ -1482,9 +1482,9 @@ class iMSCP_Events
 
     /**
      * The onSendMail event is triggered by the send_mail() function.
-     * 
+     *
      * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     * 
+     *
      * - mail_data: An ArrayObject that allows third-party components to override mail data which are:
      *    - mail_id      : Mail unique identifier
      *    - fname        : OPTIONAL Receiver firstname
@@ -1502,13 +1502,13 @@ class iMSCP_Events
 
     /**
      * The onAddIpAddr event is triggered when a new IP is added.
-     * 
+     *
      * The listeners receive an iMSCP_Events_Event object with the following parameters:
      * - ip_number      : IP address
      * - ip_netmask     : IP netmask
      * - ip_card        : Network interface to which IP address is attached
      * - ip_config_mode : Ip address configuration mode (auto|manual)
-     * 
+     *
      */
     const onAddIpAddr = 'onAddIpAddr';
 

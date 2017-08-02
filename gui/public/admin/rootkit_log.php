@@ -63,65 +63,73 @@ foreach ($antiRootkitLogFiles as $antiRootkit => $logVar) {
 }
 
 if (!empty($antiRootkitLogFiles)) {
+    /** @var Zend_Cache_Core $cache */
+    $cache = iMSCP_Registry::get('iMSCP_Application')->getCache();
+
     foreach ($antiRootkitLogFiles AS $antiRootkit => $logVar) {
         $logFile = $config[$logVar];
+        $cacheId = 'iMSCP_Rootkit_'. pathinfo($logFile, PATHINFO_FILENAME);
 
-        if (@is_readable($logFile) && @filesize($logFile) > 0) {
-            $handle = fopen($logFile, 'r');
-            $log = fread($handle, filesize($logFile));
-            fclose($handle);
-            $content = nl2br(tohtml($log));
-            $content = '<div>' . $content . '</div>';
-            $search = [];
-            $replace = [];
+        if(!($content = $cache->load($cacheId))) {
+            if (@is_readable($logFile) && @filesize($logFile) > 0) {
+                $handle = fopen($logFile, 'r');
+                $log = fread($handle, filesize($logFile));
+                fclose($handle);
+                $content = nl2br(tohtml($log));
+                $content = '<div>' . $content . '</div>';
+                $search = [];
+                $replace = [];
 
-            // rkhunter-like log colouring
-            if ($antiRootkit == 'Rkhunter') {
-                $search [] = '/[^\-]WARNING/i';
-                $replace[] = '<strong style="color:orange">$0</strong>';
-                $search [] = '/([^a-z])(OK)([^a-z])/i';
-                $replace[] = '$1<span style="color:green">$2</span>$3';
-                $search [] = '/[ \t]+clean[ \t]+/i';
-                $replace[] = '<span style="color:green">$0</span>';
-                $search [] = '/Not found/i';
-                $replace[] = '<span style="color:blue">$0</span>';
-                $search [] = '/None found/i';
-                $replace[] = '<span style="color:magenta">$0</span>';
-                $search [] = '/Skipped/i';
-                $replace[] = '<span style="color:blue">$0</span>';
-                $search [] = '/unknown[^)]/i';
-                $replace[] = '<strong style="color:#bf55bf">$0</strong>';
-                $search [] = '/Unsafe/i';
-                $replace[] = '<strong style="color:#cfcf00">$0</strong>';
-                $search [] = '/[1-9][0-9]*[ \t]+vulnerable/i';
-                $replace[] = '<strong style="color:red">$0</strong>';
-                $search [] = '/0[ \t]+vulnerable/i';
-                $replace[] = '<span style="color:green">$0</span>';
-            } elseif ($antiRootkit == 'Chkrootkit') {
-                // chkrootkit-like log colouring
-                $search [] = '/([^a-z][ \t]+)(INFECTED)/i';
-                $replace[] = '$1<strong style="color:red">$2</strong>';
-                $search [] = '/Nothing found/i';
-                $replace[] = '<span style="color:green">$0</span>';
-                $search [] = '/Nothing detected/i';
-                $replace[] = '<span style="color:green">$0</span>';
-                $search [] = '/Not infected/i';
-                $replace[] = '<span style="color:green">$0</span>';
-                $search [] = '/no packet sniffer/i';
-                $replace[] = '<span style="color:green">$0</span>';
-                $search [] = '/(: )(PACKET SNIFFER)/i';
-                $replace[] = '$1<span style="color:orange">$2</span>';
-                $search [] = '/not promisc/i';
-                $replace[] = '<span style="color:green">$0</span>';
-                $search [] = '/no suspect file(s|)/i';
-                $replace[] = '<span style="color:green">$0</span>';
-                $search [] = '/([0-9]+) process(|es) hidden/i';
-                $replace[] = '<span style="color:#cfcf00">$0</span>';
+                // rkhunter-like log colouring
+                if ($antiRootkit == 'Rkhunter') {
+                    $search [] = '/[^\-]WARNING/i';
+                    $replace[] = '<strong style="color:orange">$0</strong>';
+                    $search [] = '/([^a-z])(OK)([^a-z])/i';
+                    $replace[] = '$1<span style="color:green">$2</span>$3';
+                    $search [] = '/[ \t]+clean[ \t]+/i';
+                    $replace[] = '<span style="color:green">$0</span>';
+                    $search [] = '/Not found/i';
+                    $replace[] = '<span style="color:blue">$0</span>';
+                    $search [] = '/None found/i';
+                    $replace[] = '<span style="color:magenta">$0</span>';
+                    $search [] = '/Skipped/i';
+                    $replace[] = '<span style="color:blue">$0</span>';
+                    $search [] = '/unknown[^)]/i';
+                    $replace[] = '<strong style="color:#bf55bf">$0</strong>';
+                    $search [] = '/Unsafe/i';
+                    $replace[] = '<strong style="color:#cfcf00">$0</strong>';
+                    $search [] = '/[1-9][0-9]*[ \t]+vulnerable/i';
+                    $replace[] = '<strong style="color:red">$0</strong>';
+                    $search [] = '/0[ \t]+vulnerable/i';
+                    $replace[] = '<span style="color:green">$0</span>';
+                } elseif ($antiRootkit == 'Chkrootkit') {
+                    // chkrootkit-like log colouring
+                    $search [] = '/([^a-z][ \t]+)(INFECTED)/i';
+                    $replace[] = '$1<strong style="color:red">$2</strong>';
+                    $search [] = '/Nothing found/i';
+                    $replace[] = '<span style="color:green">$0</span>';
+                    $search [] = '/Nothing detected/i';
+                    $replace[] = '<span style="color:green">$0</span>';
+                    $search [] = '/Not infected/i';
+                    $replace[] = '<span style="color:green">$0</span>';
+                    $search [] = '/no packet sniffer/i';
+                    $replace[] = '<span style="color:green">$0</span>';
+                    $search [] = '/(: )(PACKET SNIFFER)/i';
+                    $replace[] = '$1<span style="color:orange">$2</span>';
+                    $search [] = '/not promisc/i';
+                    $replace[] = '<span style="color:green">$0</span>';
+                    $search [] = '/no suspect file(s|)/i';
+                    $replace[] = '<span style="color:green">$0</span>';
+                    $search [] = '/([0-9]+) process(|es) hidden/i';
+                    $replace[] = '<span style="color:#cfcf00">$0</span>';
+                }
+
+                $content = preg_replace($search, $replace, $content);
+            } else {
+                $content = '<strong style="color:red">' . tr("%s doesn't exist or is empty.", $logFile) . '</strong>';
             }
 
-            $content = preg_replace($search, $replace, $content);
-        } else {
-            $content = '<strong style="color:red">' . tr("%s doesn't exist or is empty.", $logFile) . '</strong>';
+            $cache->save($content, $cacheId, array(), 86400);
         }
 
         $tpl->assign([
@@ -131,7 +139,7 @@ if (!empty($antiRootkitLogFiles)) {
         $tpl->parse('ANTIROOTKITS_LOG', '.antirootkits_log');
     }
 
-    $tpl->assign('NB_LOG', sizeof($antiRootkitLogFiles));
+    //$tpl->assign('NB_LOG', sizeof($antiRootkitLogFiles));
 } else {
     $tpl->assign('ANTIROOTKITS_LOG', '');
     set_page_message(tr('No anti-rootkits logs'), 'static_info');

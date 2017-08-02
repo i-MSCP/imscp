@@ -23,6 +23,7 @@ use Zend_Escaper_Escaper as Escaper;
 use Zend_Filter_Digits as FilterDigits;
 use Zend_Validate_File_MimeType as FileMimeTypeValidator;
 
+global $ESCAPER;
 $ESCAPER = new Escaper('UTF-8');
 
 /**

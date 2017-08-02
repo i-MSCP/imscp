@@ -58,7 +58,7 @@ class iMSCP_Update_Version extends iMSCP_Update
      */
     public static function getInstance()
     {
-        if (null === self::$instance) {
+        if (NULL === self::$instance) {
             self::$instance = new self();
         }
 
@@ -98,7 +98,7 @@ class iMSCP_Update_Version extends iMSCP_Update
      */
     public function getUpdateInfo($forceReload = false)
     {
-        if (null !== $this->updateInfo) {
+        if (NULL !== $this->updateInfo) {
             return $this->updateInfo;
         }
 
@@ -107,14 +107,14 @@ class iMSCP_Update_Version extends iMSCP_Update
             clearstatcache();
             $context = stream_context_create([
                 'http' => [
-                    'method' => 'GET',
+                    'method'           => 'GET',
                     'protocol_version' => '1.1',
-                    'header' => [
+                    'header'           => [
                         'Host: api.github.com',
                         'Accept: application/vnd.github.v3+json',
                         'User-Agent: i-MSCP',
                         'Connection: close',
-                        'timeout' => 3
+                        'timeout' => 30
                     ]
                 ]
             ]);
