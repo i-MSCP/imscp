@@ -139,7 +139,7 @@ if (!empty($antiRootkitLogFiles)) {
         $tpl->parse('ANTIROOTKITS_LOG', '.antirootkits_log');
     }
 
-    //$tpl->assign('NB_LOG', sizeof($antiRootkitLogFiles));
+    $tpl->assign('NB_LOG', sizeof($antiRootkitLogFiles));
 } else {
     $tpl->assign('ANTIROOTKITS_LOG', '');
     set_page_message(tr('No anti-rootkits logs'), 'static_info');
