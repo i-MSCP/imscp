@@ -115,7 +115,7 @@ function reseller_generateDiskUsageBar($tpl, $diskspaceUsageBytes, $diskspaceLim
     if ($diskspaceLimitBytes) {
         $diskUsageData = tr('%s%% [%s / %s]', $diskspaceUsagePercent, bytesHuman($diskspaceUsageBytes), bytesHuman($diskspaceLimitBytes));
     } else {
-        $diskUsageData = tr('%s%% [%s of ∞]', $diskspaceUsagePercent, bytesHuman($diskspaceUsageBytes));
+        $diskUsageData = tr('%s%% [%s / ∞]', $diskspaceUsagePercent, bytesHuman($diskspaceUsageBytes));
     }
 
     $tpl->assign([

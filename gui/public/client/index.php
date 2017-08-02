@@ -129,9 +129,9 @@ function client_generateDiskUsageBar($tpl, $usage, $maxUsage, $barMax)
     list($percent, $bars) = calc_bars($usage, $maxUsage, $barMax);
 
     if ($maxUsage != 0) {
-        $traffic_usage_data = tr('%s%% [%s of %s]', $percent, bytesHuman($usage), bytesHuman($maxUsage));
+        $traffic_usage_data = tr('%s%% [%s / %s]', $percent, bytesHuman($usage), bytesHuman($maxUsage));
     } else {
-        $traffic_usage_data = tr('%s%% [%s of ∞]', $percent, bytesHuman($usage));
+        $traffic_usage_data = tr('%s%% [%s / ∞]', $percent, bytesHuman($usage));
     }
 
     $tpl->assign([
