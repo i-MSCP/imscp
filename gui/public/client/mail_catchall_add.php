@@ -28,19 +28,19 @@ use iMSCP_pTemplate as TemplateEngine;
  */
 
 /**
- * Check catch-all domain owner
+ * Get catch-all domain
  *
- * @param int $catchAllDomainId Domain unique identifier
+ * @param int $catchallDomainId Domain unique identifier
  * @param int $catchalType Catch-all type
  * @return string Catch-all domain name if owner is verified, FALSE otherwise
  */
-function checkCatchallDomainOwner($catchAllDomainId, $catchalType)
+function getCatchallDomain($catchallDomainId, $catchalType)
 {
     switch ($catchalType) {
         case MT_NORMAL_CATCHALL:
             $stmt = exec_query(
                 'SELECT domain_name FROM domain WHERE domain_id = ? AND domain_admin_id = ?',
-                [$catchAllDomainId, $_SESSION['user_id']]
+                [$catchallDomainId, $_SESSION['user_id']]
             );
             break;
         case MT_SUBDOM_CATCHALL:
@@ -48,9 +48,10 @@ function checkCatchallDomainOwner($catchAllDomainId, $catchalType)
                 "
                     SELECT CONCAT(subdomain_name, '.', domain_name) FROM subdomain
                     JOIN domain USING(domain_id)
-                    WHERE subdomain_id = ? AND domain_admin_id = ?
+                    WHERE subdomain_id = ?
+                    AND domain_admin_id = ?
                 ",
-                [$catchAllDomainId, $_SESSION['user_id']]
+                [$catchallDomainId, $_SESSION['user_id']]
             )->fetchRow(PDO::FETCH_COLUMN);
             break;
         case MT_ALIAS_CATCHALL:
@@ -58,9 +59,10 @@ function checkCatchallDomainOwner($catchAllDomainId, $catchalType)
                 "
                     SELECT alias_name FROM domain_aliasses
                     JOIN domain USING(domain_id)
-                    WHERE alias_id = ? AND domain_admin_id = ?
+                    WHERE alias_id = ?
+                    AND domain_admin_id = ?
                 ",
-                [$catchAllDomainId, $_SESSION['user_id']]
+                [$catchallDomainId, $_SESSION['user_id']]
             );
             break;
         case MT_ALSSUB_CATCHALL:
@@ -69,9 +71,10 @@ function checkCatchallDomainOwner($catchAllDomainId, $catchalType)
                     SELECT CONCAT(subdomain_alias_name, '.', alias_name) FROM subdomain_alias
                     JOIN domain_aliasses USING(alias_id)
                     JOIN domain USING(domain_id)
-                    WHERE subdomain_alias_id = ? AND domain_admin_id = ?
+                    WHERE subdomain_alias_id = ?
+                    AND domain_admin_id = ?
                 ",
-                [$catchAllDomainId, $_SESSION['user_id']]
+                [$catchallDomainId, $_SESSION['user_id']]
             );
             break;
         default:
@@ -84,12 +87,12 @@ function checkCatchallDomainOwner($catchAllDomainId, $catchalType)
 /**
  * Add catch-all account
  *
- * @param int $catchAllDomainId Catch-all domain unique identifier
- * @param string $catchAllDomain Catch all domain name
+ * @param int $catchallDomainId Catch-all domain unique identifier
+ * @param string $catchallDomain Catch all domain name
  * @param string $catchallType Catch-all type
  * @return void
  */
-function addCatchallAccount($catchAllDomainId, $catchAllDomain, $catchallType)
+function addCatchallAccount($catchallDomainId, $catchallDomain, $catchallType)
 {
     if (!isset($_POST['catchall_addresses_type'])
         || !in_array($_POST['catchall_addresses_type'], ['auto', 'manual'])
@@ -100,11 +103,13 @@ function addCatchallAccount($catchAllDomainId, $catchAllDomain, $catchallType)
 
     if ($_POST['catchall_addresses_type'] == 'auto') {
         if (!isset($_POST['automatic_catchall_addresses'])
-            || empty($_POST['automatic_catchall_addresses'])
+            || !is_array($_POST['automatic_catchall_addresses'])
         ) {
-            set_page_message(tr('You must select at least one catch-all addresses.'), 'error');
-            return;
-        } elseif (!is_array($_POST['automatic_catchall_addresses'])) {
+            showBadRequestErrorPage();
+        }
+
+        if (empty($_POST['automatic_catchall_addresses'])) {
+            set_page_message(tr('You must select at least one catch-all address.'), 'error');
             showBadRequestErrorPage();
         }
 
@@ -159,7 +164,7 @@ function addCatchallAccount($catchAllDomainId, $catchAllDomain, $catchallType)
         case MT_ALIAS_CATCHALL:
         case MT_SUBDOM_CATCHALL:
         case MT_ALSSUB_CATCHALL:
-            $subId = $catchAllDomainId;
+            $subId = $catchallDomainId;
             break;
         default:
             showBadRequestErrorPage();
@@ -167,7 +172,7 @@ function addCatchallAccount($catchAllDomainId, $catchAllDomain, $catchallType)
     }
 
     EventsManager::getInstance()->dispatch(Events::onBeforeAddMailCatchall, [
-        'mailCatchallDomain'    => $catchAllDomain,
+        'mailCatchallDomain'    => $catchallDomain,
         'mailCatchallAddresses' => $catchallAddresses
     ]);
     exec_query(
@@ -178,11 +183,11 @@ function addCatchallAccount($catchAllDomainId, $catchAllDomain, $catchallType)
                 ?, '_no_', ?, ?, ?, 'toadd', 'no', ?
             )
         ",
-        [implode(',', $catchallAddresses), $domainId, $catchallType, $subId, '@' . $catchAllDomain]
+        [implode(',', $catchallAddresses), $domainId, $catchallType, $subId, '@' . $catchallDomain]
     );
     EventsManager::getInstance()->dispatch(Events::onAfterAddMailCatchall, [
         'mailCatchallId'        => Database::getInstance()->insertId(),
-        'mailCatchallDomain'    => $catchAllDomain,
+        'mailCatchallDomain'    => $catchallDomain,
         'mailCatchallAddresses' => $catchallAddresses
     ]);
     send_request();
@@ -195,17 +200,17 @@ function addCatchallAccount($catchAllDomainId, $catchAllDomain, $catchallType)
  * Generate page
  *
  * @param TemplateEngine $tpl
- * @param int $catchAllDomainId Catch-all domain unique identifier
+ * @param int $catchallDomainId Catch-all domain unique identifier
  * @param string $catchallType Catch-all type
  * @return void
  */
-function generatePage($tpl, $catchAllDomainId, $catchallType)
+function generatePage($tpl, $catchallDomainId, $catchallType)
 {
     switch ($catchallType) {
         case MT_NORMAL_CATCHALL:
             $stmt = exec_query(
                 "SELECT mail_id, mail_addr FROM mail_users WHERE domain_id = ? AND mail_type RLIKE ? AND status = 'ok'",
-                [$catchAllDomainId, MT_NORMAL_MAIL . '|' . MT_NORMAL_FORWARD]
+                [$catchallDomainId, MT_NORMAL_MAIL . '|' . MT_NORMAL_FORWARD]
             );
 
             if (!$stmt->rowCount()) {
@@ -237,9 +242,13 @@ function generatePage($tpl, $catchAllDomainId, $catchallType)
         case MT_SUBDOM_CATCHALL:
             $stmt = exec_query(
                 "
-                    SELECT mail_id, mail_addr FROM mail_users
-                    WHERE domain_id AND sub_id = ? AND mail_type RLIKE ? AND status = 'ok'",
-                [get_user_domain_id($_SESSION['user_id']), $catchAllDomainId, MT_SUBDOM_MAIL . '|' . MT_SUBDOM_FORWARD]
+                    SELECT mail_id, mail_addr
+                    FROM mail_users
+                    WHERE domain_id
+                    AND sub_id = ?
+                    AND mail_type RLIKE ?
+                    AND status = 'ok'",
+                [get_user_domain_id($_SESSION['user_id']), $catchallDomainId, MT_SUBDOM_MAIL . '|' . MT_SUBDOM_FORWARD]
             );
 
             if (!$stmt->rowCount()) {
@@ -248,7 +257,6 @@ function generatePage($tpl, $catchAllDomainId, $catchallType)
                     'MANUAL_CATCHALL_ADDRESSES_CHECKED' => ' checked',
                     'MANUAL_CATCHALL_ADDRESSES'         => isset($_POST['manual_catchall_addresses'])
                         ? tohtml($_POST['manual_catchall_addresses']) : ''
-
                 ]);
             } else {
                 $tpl->assign([
@@ -272,10 +280,14 @@ function generatePage($tpl, $catchAllDomainId, $catchallType)
         case MT_ALIAS_CATCHALL:
             $stmt = exec_query(
                 "
-                    SELECT mail_id, mail_addr FROM mail_users
-                    WHERE domain_id = ? AND sub_id = ? AND mail_type RLIKE ? AND status = 'ok'
+                    SELECT mail_id, mail_addr
+                    FROM mail_users
+                    WHERE domain_id = ?
+                    AND sub_id = ?
+                    AND mail_type RLIKE ?
+                    AND status = 'ok'
                 ",
-                [get_user_domain_id($_SESSION['user_id']), $catchAllDomainId, MT_ALIAS_MAIL . '|' . MT_ALIAS_FORWARD]
+                [get_user_domain_id($_SESSION['user_id']), $catchallDomainId, MT_ALIAS_MAIL . '|' . MT_ALIAS_FORWARD]
             );
 
             if (!$stmt->rowCount()) {
@@ -308,10 +320,14 @@ function generatePage($tpl, $catchAllDomainId, $catchallType)
         case MT_ALSSUB_CATCHALL:
             $stmt = exec_query(
                 "
-                    SELECT mail_id, mail_addr FROM mail_users
-                    WHERE domain_id = ? AND sub_id = ? AND mail_type RLIKE ? AND status = 'ok'
+                    SELECT mail_id, mail_addr
+                    FROM mail_users
+                    WHERE domain_id = ?
+                    AND sub_id = ?
+                    AND mail_type RLIKE ?
+                    AND status = 'ok'
                 ",
-                [get_user_domain_id($_SESSION['user_id']), $catchAllDomainId, MT_ALSSUB_MAIL . '|' . MT_ALSSUB_FORWARD]
+                [get_user_domain_id($_SESSION['user_id']), $catchallDomainId, MT_ALSSUB_MAIL . '|' . MT_ALSSUB_FORWARD]
             );
 
             if (!$stmt->rowCount()) {
@@ -369,14 +385,14 @@ if (!preg_match(
         $catchallId,
         $matches
     )
-    || !($catchAllDomainName = checkCatchallDomainOwner($matches['catchallDomainId'], $matches['catchallType']))
+    || ($catchallDomain = getCatchallDomain($matches['catchallDomainId'], $matches['catchallType'])) === false
 ) {
     showBadRequestErrorPage();
     exit;
 }
 
 if (!empty($_POST)) {
-    addCatchallAccount($matches['catchallDomainId'], $catchAllDomainName, $matches['catchallType']);
+    addCatchallAccount($matches['catchallDomainId'], $catchallDomain, $matches['catchallType']);
 }
 
 $tpl = new TemplateEngine();
@@ -388,9 +404,9 @@ $tpl->define_dynamic([
     'automatic_catchall_address_option' => 'automatic_catchall_addresses_blk'
 ]);
 $tpl->assign([
-    'TR_PAGE_TITLE'        => tohtml(tr('Client / Mail / Catch-all Accounts / Add Catch-all account')),
-    'CATCHALL_DOMAIN_NAME' => tohtml(decode_idna($catchAllDomainName)),
-    'CATCHALL_ID'          => tohtml($catchallId, 'htmlAttr')
+    'TR_PAGE_TITLE'   => tohtml(tr('Client / Mail / Catch-all Accounts / Add Catch-all account')),
+    'CATCHALL_DOMAIN' => tohtml(decode_idna($catchallDomain)),
+    'CATCHALL_ID'     => tohtml($catchallId, 'htmlAttr')
 ]);
 
 generateNavigation($tpl);

@@ -38,7 +38,8 @@ $stmt = exec_query(
     '
         SELECT COUNT(mail_id) FROM mail_users
         JOIN domain USING(domain_id)
-        WHERE mail_id = ? AND domain_admin_id = ?
+        WHERE mail_id = ?
+        AND domain_admin_id = ?
     ',
     [$catchallId, $_SESSION['user_id']]
 );

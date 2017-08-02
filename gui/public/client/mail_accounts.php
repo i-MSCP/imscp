@@ -100,7 +100,6 @@ function generateDynamicTplParts($tpl, $mailAcc, $mailType, $mailStatus, $mailAu
             'MAIL_PROTECTED_MAIL_ACCOUNT'             => '',
             'MAIL_ACCOUNT_DISABLED_DELETION_CHECKBOX' => ' disabled'
         ]);
-        $tpl->parse('MAIL_CATCHALL_ACCOUNT_EDIT_LINK', 'mail_catchall_account_edit_link');
         $tpl->parse('MAIL_CATCHALL_ACCOUNT_DELETE_LINK', 'mail_catchall_account_delete_link');
         $tpl->parse('MAIL_ACCOUNT_ACTION_LINKS', 'mail_account_action_links');
         return;
@@ -126,7 +125,6 @@ function generateDynamicTplParts($tpl, $mailAcc, $mailType, $mailStatus, $mailAu
         $tpl->assign([
             'MAIL_ACCOUNT_EDIT_LINK'                  => '',
             'MAIL_ACCOUNT_DELETE_LINK'                => '',
-            'MAIL_CATCHALL_ACCOUNT_EDIT_LINK'         => '',
             'MAIL_CATCHALL_ACCOUNT_DELETE_LINK'       => '',
             'MAIL_ACCOUNT_DISABLED_DELETION_CHECKBOX' => ' disabled'
         ]);
@@ -145,7 +143,6 @@ function generateDynamicTplParts($tpl, $mailAcc, $mailType, $mailStatus, $mailAu
 
     $tpl->parse('MAIL_ACCOUNT_AUTORESPONDER', 'mail_account_autoresponder');
     $tpl->assign([
-        'MAIL_CATCHALL_ACCOUNT_EDIT_LINK'         => '',
         'MAIL_CATCHALL_ACCOUNT_DELETE_LINK'       => '',
         'MAIL_PROTECTED_MAIL_ACCOUNT'             => '',
         'MAIL_ACCOUNT_DISABLED_DELETION_CHECKBOX' => ''
@@ -377,7 +374,6 @@ $tpl->define_dynamic([
     'mail_account_action_links'                    => 'mail_account',
     'mail_account_edit_link'                       => 'mail_account_action_links',
     'mail_account_delete_link'                     => 'mail_account_action_links',
-    'mail_catchall_account_edit_link'              => 'mail_account_action_links',
     'mail_catchall_account_delete_link'            => 'mail_account_action_links',
     'mail_protected_mail_account'                  => 'mail_account_action_links',
     'mail_show_default_mail_accounts_link'         => 'mail_accounts',

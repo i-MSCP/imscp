@@ -55,7 +55,6 @@ function generateCatchallItem($tpl, $domainName, $mailId, $mailAcc, $domainId, $
         if ($mailStatus != 'ok') {
             $tpl->assign([
                 'CATCHALL_ADD_LINK'    => tr('N/A'),
-                'CATCHALL_EDIT_LINK'   => '',
                 'CATCHALL_DELETE_LINK' => ''
             ]);
             return;
@@ -65,7 +64,6 @@ function generateCatchallItem($tpl, $domainName, $mailId, $mailAcc, $domainId, $
             'CATCHALL_ID'       => $mailId,
             'CATCHALL_ADD_LINK' => ''
         ]);
-        $tpl->parse('CATCHALL_EDIT_LINK', 'catchall_edit_link');
         $tpl->parse('CATCHALL_DELETE_LINK', 'catchall_delete_link');
         return;
     }
@@ -76,7 +74,6 @@ function generateCatchallItem($tpl, $domainName, $mailId, $mailAcc, $domainId, $
         'CATCHALL_SHORT_FOWARD_LIST' => tohtml($mailAcc, 'htmlAttr'),
         'CATCHALL_STATUS'            => tohtml($mailStatus),
         'CATCHALL_ID'                => "$domainId;$mailType",
-        'CATCHALL_EDIT_LINK'         => '',
         'CATCHALL_DELETE_LINK'       => ''
     ]);
     $tpl->parse('CATCHALL_ADD_LINK', 'catchall_add_link');
@@ -121,7 +118,8 @@ function generatePage($tpl)
             SELECT t1.subdomain_id, CONCAT(t1.subdomain_name, '.', t2.domain_name) AS subdomain_name
             FROM subdomain AS t1
             JOIN domain AS t2 USING(domain_id)
-            WHERE t1.domain_id = ? AND t1.subdomain_status = 'ok'
+            WHERE t1.domain_id = ?
+            AND t1.subdomain_status = 'ok'
         ",
         $dmnProps['domain_id']
     );
@@ -181,7 +179,8 @@ function generatePage($tpl)
             FROM subdomain_alias AS t1
             JOIN domain_aliasses AS t2 USING(alias_id)
             JOIN domain as t3 USING(domain_id)
-            WHERE t2.domain_id = ? AND t1.subdomain_alias_status = 'ok'
+            WHERE t2.domain_id = ?
+            AND t1.subdomain_alias_status = 'ok'
         ",
         $dmnProps['domain_id']
     );
@@ -228,7 +227,6 @@ $tpl->define_dynamic([
     'page_message'         => 'layout',
     'catchall_item'        => 'page',
     'catchall_add_link'    => 'catchall_item',
-    'catchall_edit_link'   => 'catchall_item',
     'catchall_delete_link' => 'catchall_item'
 
 ]);

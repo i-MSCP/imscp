@@ -6,9 +6,9 @@ Git 1.4.x
 
 BACKEND
     Added: Flag allowing to ignore mount operation failures (iMSCP::Mount)
-    Deprecated: iMSCP::Database::mysql::doQuery() method -- Will be removed in later version
-    Deprecated: iMSCP::Database::mysql::endTransaction() method -- Will be removed in later version
-    Deprecated: iMSCP::Database::mysql::startTransaction() method -- Will be removed in later version
+    Deprecated: iMSCP::Database::mysql::doQuery() method -- Will be removed in a later version
+    Deprecated: iMSCP::Database::mysql::endTransaction() method -- Will be removed in a later version
+    Deprecated: iMSCP::Database::mysql::startTransaction() method -- Will be removed in a later version
     Fixed: Can't use an undefined value as a HASH reference (iMSCP::EventManager)
     Fixed: Couldn't remove IP address: Unknown action requested for server IP (Modules::ServerIP)
     Fixed: Permissions on files are always preverved when copying directory recursively
@@ -32,8 +32,7 @@ FRONTEND
     Deprecated: Usage of customer ID field -- will be removed in a later release
     Enhancement: Make use of application cache for caching of merged (imscp.conf, database) and database configuration
     Enhancement: Make use of application cache for caching of rootkit logs (html versions)
-    Enhancement: Make use of Zend APC cache backend ; fallback to Zend File backend if APC extension isn't available
-    Enhancement: Make customers able to edit catch-all accounts
+    Enhancement: Make use of Zend APC cache backend; fallback to Zend File backend if APC extension isn't available
     Enhancement: Make customers able to edit mail autoresponder message even if the autoresponder is not activated yet
     Enhancement: Make customers able to select more than one catch-all address in catch-all addresses drop-down list
     Enhancement: Make customers able to show/hide default mail accounts
@@ -52,7 +51,7 @@ FRONTEND
     Fixed: When an user personal email is being modified, the user identity must be updated as well
     Fixed: Wrong default mail accounts accounting (missing hostmaster email, wrong SQL queries...)
     Removed: Administrator database update interface; Database update are executed by installer
-    Removed: Cached versions of navigation files; Make use og global translation cache
+    Removed: Cached versions of navigation files; Make use of application cache instead
     Removed: iMSCP_Initializer class (replaced by iMSCP\Application class)
     Removed: Information about total items/limits assigned - People don't understand their meaning (statistics)
     Removed: Output compression, including related parameters -- Compression is done at Nginx Web server level
