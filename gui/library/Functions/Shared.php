@@ -952,110 +952,6 @@ function deleteDomainAlias($mainDomainId, $aliasId, $aliasName, $aliasMount)
     }
 }
 
-/**
- * Returns number of items in a database table with optional search criterias
- *
- * @param string $field
- * @param string $table
- * @param string $where
- * @param string $value
- * @param string $subtable
- * @param string $subwhere
- * @param string $subgroupname
- * @return int
- */
-function sub_records_count($field, $table, $where, $value, $subtable, $subwhere, $subgroupname)
-{
-    if ($where != '') {
-        $stmt = exec_query("SELECT $field AS `field` FROM $table WHERE $where = ?", $value);
-    } else {
-        $stmt = execute_query("SELECT $field AS `field` FROM $table");
-    }
-
-    $result = 0;
-
-    if (!$stmt->rowCount()) {
-        return $result;
-    }
-
-    if ($subgroupname != '') {
-        $sqldIds = [];
-
-        while (!$stmt->EOF) {
-            array_push($sqldIds, $stmt->fields['field']);
-            $stmt->moveNext();
-        }
-
-        $sqldIds = implode(',', $sqldIds);
-
-        if ($subwhere != '') {
-            $subres = execute_query(
-                "SELECT COUNT(DISTINCT $subgroupname) AS `cnt` FROM $subtable WHERE `sqld_id` IN ($sqldIds)"
-            );
-            $result = $subres->fields['cnt'];
-        } else {
-            return $result;
-        }
-    } else {
-        while (!$stmt->EOF) {
-            $contents = $stmt->fields['field'];
-
-            if ($subwhere != '') {
-                $query = "SELECT COUNT(*) AS `cnt` FROM $subtable WHERE $subwhere = ?";
-            } else {
-                return $result;
-            }
-
-            $subres = exec_query($query, $contents);
-            $result += $subres->fields['cnt'];
-            $stmt->moveNext();
-        }
-    }
-
-    return $result;
-}
-
-/**
- * Must be documented
- *
- * @param string $field
- * @param string $table
- * @param string $where
- * @param string $value
- * @param string $subtable
- * @param string $subwhere
- * @param string $a
- * @param string $b
- * @return int
- */
-function sub_records_rlike_count($field, $table, $where, $value, $subtable, $subwhere, $a, $b)
-{
-    if ($where !== '') {
-        $stmt = exec_query("SELECT $field AS `field` FROM $table WHERE $where = ?", $value);
-    } else {
-        $stmt = execute_query("SELECT $field AS `field` FROM $table");
-    }
-
-    $result = 0;
-
-    if (!$stmt->rowCount()) {
-        return $result;
-    }
-
-    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-        if ($subwhere === '') {
-            return $result;
-
-        }
-
-        $result += exec_query(
-            "SELECT COUNT(*) FROM $subtable WHERE $subwhere RLIKE ?", $a . $row['field'] . $b
-        )->fetchRow(PDO::FETCH_COLUMN);
-    }
-
-    return $result;
-}
-
 /***********************************************************************************************************************
  * Reseller related functions
  */
@@ -1357,27 +1253,6 @@ function utils_uploadFile($inputFieldName, $destPath)
     }
 
     return $destPath;
-}
-
-/**
- * Generates a random string
- *
- * @param int $length random string length
- * @return array|string
- */
-function utils_randomString($length = 10)
-{
-    $base = 'ABCDEFGHKLMNOPQRSTWXYZabcdefghjkmnpqrstwxyz123456789';
-    $max = strlen($base) - 1;
-    $string = '';
-
-    mt_srand((double)microtime() * 1000000);
-
-    while (strlen($string) < $length + 1) {
-        $string .= $base{mt_rand(0, $max)};
-    }
-
-    return $string;
 }
 
 /**
@@ -2542,31 +2417,6 @@ function quoteValue($value, $parameterType = PDO::PARAM_STR)
 /***********************************************************************************************************************
  * Unclassified functions
  */
-
-/**
- * Returns a count of items present in a database table with optional search criterias.
- *
- * @param  string $table Table name on which to operate
- * @param  string $where OPTIONAL SQL WHERE clause
- * @param  string $bind OPTIONAL value to bind to the placeholder
- * @return int Items count
- */
-function records_count($table, $where = '', $bind = '')
-{
-    $table = quoteIdentifier($table);
-
-    if ($where != '') {
-        if ($bind != '') {
-            $stmt = exec_query("SELECT COUNT(*) FROM $table WHERE $where = ?", $bind);
-        } else {
-            $stmt = execute_query("SELECT COUNT(*) FROM $table WHERE $where");
-        }
-    } else {
-        $stmt = execute_query("SELECT COUNT(*) FROM $table");
-    }
-
-    return $stmt->fetchRow(PDO::FETCH_COLUMN);
-}
 
 /**
  * Unset global variables

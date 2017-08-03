@@ -391,7 +391,7 @@ $dmnProps = get_domain_default_props($_SESSION['user_id']);
 $emailAccountsLimit = $dmnProps['domain_mailacc_limit'];
 
 if ($emailAccountsLimit != '0') {
-    list($nbEmailAccounts) = get_domain_running_mail_acc_cnt($dmnProps['domain_id']);
+    $nbEmailAccounts = get_domain_running_mail_acc_cnt($dmnProps['domain_id']);
 
     if ($nbEmailAccounts >= $emailAccountsLimit) {
         set_page_message(tr('You have reached the maximum number of mail accounts allowed by your subscription.'), 'warning');

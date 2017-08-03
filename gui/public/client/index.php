@@ -347,7 +347,7 @@ $tpl->assign('CREATE_DATE', tohtml(date($cfg['DATE_FORMAT'], $domainProperties['
 
 list(
     $subdomainCount, $domainAliasCount, $mailAccountsCount, $ftpAccountsCount, $sqlDatabasesCount, $sqlUsersCount
-    ) = get_domain_running_props_cnt($domainProperties['domain_id']);
+    ) = get_customer_running_props_cnt($_SESSION['user_id']);
 
 $tpl->assign([
     'TR_DOMAIN_ACCOUNT'                        => tr('Domain account'),

@@ -451,7 +451,7 @@ function layout_updateUserLogo()
         }
 
         // Building an unique file name
-        $fileName = sha1(utils_randomString(15) . '-' . $_SESSION['user_id']) . '.' . $fileExtension;
+        $fileName = sha1(\iMSCP\Crypt::randomStr(15). '-' . $_SESSION['user_id']) . '.' . $fileExtension;
 
         // Return destination file path
         return $cfg['GUI_ROOT_DIR'] . '/data/persistent/ispLogos/' . $fileName;

@@ -18,15 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/**
- * Returns count of SQL users
- *
- * @return int Number of SQL users
- */
-function get_sql_user_count()
-{
-    return execute_query('SELECT COUNT(DISTINCT sqlu_name) FROM sql_user')->fetchRow(PDO::FETCH_COLUMN);
-}
+
 
 /**
  * Returns the total number of consumed and assigned items for the given reseller

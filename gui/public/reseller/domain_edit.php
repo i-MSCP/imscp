@@ -36,10 +36,9 @@ function reseller_getMailData($domainId, $mailQuota)
     if (NULL === $mailData) {
         $stmt = exec_query(
             '
-                SELECT SUM(quota) AS quota, COUNT(mail_id) AS nb_mailboxes
+                SELECT IFNULL(SUM(quota), 0) AS quota, COUNT(mail_id) AS nb_mailboxes
                 FROM mail_users
                 WHERE domain_id = ?
-                AND quota IS NOT NULL
             ',
             $domainId
         );
@@ -134,7 +133,7 @@ function &reseller_getData($domainId, $forUpdate = false)
     $stmt = exec_query(
         '
             SELECT
-                t1.domain_status, COUNT(t3.subdomain_status) + COUNT(t4.alias_status) +
+                t1.domain_status, t2.admin_id, COUNT(t3.subdomain_status) + COUNT(t4.alias_status) +
                 COUNT(t5.subdomain_alias_status) AS status_not_ok
             FROM domain AS t1
             JOIN admin AS t2 ON(admin_id = domain_admin_id)
@@ -166,7 +165,10 @@ function &reseller_getData($domainId, $forUpdate = false)
     $resellerProps = reseller_getResellerProps($_SESSION['user_id']);
     $resellerProps['reseller_ips'] = explode(';', rtrim($resellerProps['reseller_ips'], ';'));
 
-    list($subCount, $alsCount, $mailCount, $ftpCount, $sqlDbCount, $sqlUsersCount) = get_domain_running_props_cnt($domainId);
+
+    list($subCount, $alsCount, $mailCount, $ftpCount, $sqlDbCount, $sqlUsersCount) = get_customer_running_props_cnt(
+        $row['admin_id']
+    );
 
     $data['nbSubdomains'] = $subCount;
     $data['nbAliasses'] = $alsCount;

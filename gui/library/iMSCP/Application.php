@@ -332,6 +332,7 @@ class Application
     {
         require_once LIBRARY_PATH . '/Functions/Admin.php';
         require_once LIBRARY_PATH . '/Functions/Client.php';
+        require_once LIBRARY_PATH . '/Functions/Counting.php';
         require_once LIBRARY_PATH . '/Functions/Email.php';
         require_once LIBRARY_PATH . '/Functions/Input.php';
         require_once LIBRARY_PATH . '/Functions/Intl.php';
