@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-03 07:35+0000\n"
+"POT-Creation-Date: 2017-08-03 08:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>, 2017\n"
 "Language-Team: Chinese (Hong Kong) (https://www.transifex.com/i-mscp/teams/576/zh_HK/)\n"
@@ -607,10 +607,6 @@ msgid "An unexpected error occurred. Please contact your reseller."
 msgstr ""
 
 #, php-format
-msgid "An unexpected error occurred. Please contact your reseller. %s"
-msgstr ""
-
-#, php-format
 msgid "An unexpected error occurred: %s"
 msgstr ""
 
@@ -768,7 +764,7 @@ msgstr ""
 msgid "Auto (Browser language)"
 msgstr ""
 
-msgid "Automatic catch-all address"
+msgid "Automatic catch-all addresses"
 msgstr ""
 
 msgid "Autoresponder"
@@ -1896,9 +1892,6 @@ msgstr ""
 msgid "Domains"
 msgstr "網域"
 
-msgid "Domains Limit"
-msgstr ""
-
 msgid "Domains limit"
 msgstr ""
 
@@ -2577,6 +2570,9 @@ msgstr ""
 msgid "Invalid city."
 msgstr ""
 
+msgid "Invalid company."
+msgstr ""
+
 msgid "Invalid country."
 msgstr ""
 
@@ -2596,13 +2592,10 @@ msgstr ""
 msgid "Invalid field: %s"
 msgstr ""
 
-msgid "Invalid firm."
-msgstr ""
-
 msgid "Invalid first name."
 msgstr ""
 
-msgid "Invalid gender"
+msgid "Invalid gender."
 msgstr ""
 
 msgid "Invalid group name!"
@@ -2631,6 +2624,9 @@ msgid "Invalid private key or passphrase."
 msgstr ""
 
 msgid "Invalid state."
+msgstr ""
+
+msgid "Invalid street."
 msgstr ""
 
 msgid "Invalid target."
@@ -3743,9 +3739,6 @@ msgstr "保護區域"
 msgid "Protocol"
 msgstr "協議"
 
-msgid "Quota in MiB (0 ∞"
-msgstr ""
-
 msgid "Quota in MiB (0 ∞)"
 msgstr ""
 
@@ -4485,10 +4478,6 @@ msgid "Target port must be a number."
 msgstr ""
 
 msgid "Temporary folder not found."
-msgstr ""
-
-#, php-format
-msgid "The  %s field cannot be empty."
 msgstr ""
 
 #, php-format

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-03 07:35+0000\n"
+"POT-Creation-Date: 2017-08-03 08:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zsolt Bertalan <bercy42@gmail.com>, 2017\n"
 "Language-Team: Hungarian (Hungary) (https://www.transifex.com/i-mscp/teams/576/hu_HU/)\n"
@@ -637,10 +637,6 @@ msgstr ""
 "Váratlan hiba történt. Kérjük, vedd fel a kapcsolatot a viszonteladóddal."
 
 #, php-format
-msgid "An unexpected error occurred. Please contact your reseller. %s"
-msgstr ""
-
-#, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "Váratlan hiba történt: %s"
 
@@ -802,7 +798,7 @@ msgstr "Auto"
 msgid "Auto (Browser language)"
 msgstr "Automatikus (böngésző nyelve)"
 
-msgid "Automatic catch-all address"
+msgid "Automatic catch-all addresses"
 msgstr ""
 
 msgid "Autoresponder"
@@ -2108,9 +2104,6 @@ msgstr "Domain típusa"
 msgid "Domains"
 msgstr "Domainek"
 
-msgid "Domains Limit"
-msgstr ""
-
 msgid "Domains limit"
 msgstr ""
 
@@ -2802,6 +2795,9 @@ msgstr "Érvénytelen webcím"
 msgid "Invalid city."
 msgstr "Érvénytelen város."
 
+msgid "Invalid company."
+msgstr ""
+
 msgid "Invalid country."
 msgstr "Érvénytelen ország."
 
@@ -2821,13 +2817,10 @@ msgstr ""
 msgid "Invalid field: %s"
 msgstr ""
 
-msgid "Invalid firm."
-msgstr "Érvénytelen cég."
-
 msgid "Invalid first name."
 msgstr ""
 
-msgid "Invalid gender"
+msgid "Invalid gender."
 msgstr ""
 
 msgid "Invalid group name!"
@@ -2857,6 +2850,9 @@ msgstr "Érvénytelen személyes kulcs vagy jelszó."
 
 msgid "Invalid state."
 msgstr "Érvénytelen állam."
+
+msgid "Invalid street."
+msgstr ""
 
 msgid "Invalid target."
 msgstr "Érvénytelen cél"
@@ -3998,9 +3994,6 @@ msgstr "Védett területek"
 msgid "Protocol"
 msgstr "Protokoll"
 
-msgid "Quota in MiB (0 ∞"
-msgstr ""
-
 msgid "Quota in MiB (0 ∞)"
 msgstr ""
 
@@ -4746,10 +4739,6 @@ msgstr "A cél portnak egy számnak kell lennie."
 
 msgid "Temporary folder not found."
 msgstr "Ideiglenes könyvtár nem található"
-
-#, php-format
-msgid "The  %s field cannot be empty."
-msgstr ""
 
 #, php-format
 msgid "The %s field cannot be empty."
