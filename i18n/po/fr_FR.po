@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:50+0000\n"
+"POT-Creation-Date: 2017-08-03 07:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: lkppo <inactive+lkppo@transifex.com>, 2017\n"
 "Language-Team: French (France) (https://www.transifex.com/i-mscp/teams/576/fr_FR/)\n"
@@ -80,11 +80,11 @@ msgstr "%d chaines traduites"
 
 #, php-format
 msgid "%s / %s"
-msgstr ""
+msgstr "%s / %s"
 
 #, php-format
 msgid "%s / ∞"
-msgstr ""
+msgstr "%s / ∞"
 
 #, php-format
 msgid "%s account successfully deleted."
@@ -120,19 +120,11 @@ msgstr "Webmail %s"
 
 #, php-format
 msgid "%s%% [%s / %s]"
-msgstr ""
+msgstr "%s%% [%s / %s]"
 
 #, php-format
 msgid "%s%% [%s / ∞]"
-msgstr ""
-
-#, php-format
-msgid "%s%% [%s of %3$s]"
-msgstr ""
-
-#, php-format
-msgid "%s%% [%s of ∞]"
-msgstr ""
+msgstr "%s%% [%s / ∞]"
 
 #, php-format
 msgid ""
@@ -1130,9 +1122,6 @@ msgid "Client / Mail / Catch-all Accounts"
 msgstr ""
 
 msgid "Client / Mail / Catch-all Accounts / Add Catch-all account"
-msgstr ""
-
-msgid "Client / Mail / Catch-all Accounts / Edit Catch-all account"
 msgstr ""
 
 msgid "Client / Mail / Edit Mail Account"
@@ -3635,7 +3624,7 @@ msgid "Password settings"
 msgstr "Paramètres des mots de passe"
 
 msgid "Password successfully updated."
-msgstr "Le mot de pass a été mis à jour."
+msgstr "Le mot de passe a été mis à jour."
 
 msgid "Passwords do not match"
 msgstr "Les mots de passes ne correspondent pas"
@@ -4860,6 +4849,10 @@ msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr ""
 "Le fichier de traduction %s a été ignoré : tableau de traduction vide."
 
+msgid ""
+"The DEBUG mode is currently enabled, making resources caching unavailable."
+msgstr ""
+
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr "L'utilisateur SQL `%s'  n'est pas disponible."
@@ -5391,6 +5384,9 @@ msgstr "Nom d'utilisateur"
 msgid "Username and password for application login"
 msgstr "Utilisateur et mot de passe de l'application"
 
+msgid "Username cannot be empty."
+msgstr ""
+
 #, php-format
 msgid "Username must be between %d and %d characters"
 msgstr ""
@@ -5582,6 +5578,9 @@ msgstr ""
 
 msgid "You are not allowed to act on your own session."
 msgstr "Vous ne pouvez pas supprimer votre propre session."
+
+msgid "You can disable the DEBUG mode in the /etc/imscp/imscp.conf file."
+msgstr ""
 
 msgid "You can only upload images."
 msgstr "Vous ne pouvez téléverser que des images."
@@ -5826,7 +5825,7 @@ msgstr "Vous devez sélectionner un fichier à téléverser/télécharger."
 msgid "You must select a least one mail account to delete."
 msgstr "Vous devez sélectionner au moins un compte e-mail à supprimer."
 
-msgid "You must select at least one catch-all addresses."
+msgid "You must select at least one catch-all address."
 msgstr ""
 
 msgid "You must select at least one plugin."

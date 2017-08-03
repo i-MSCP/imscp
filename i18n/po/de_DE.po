@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:50+0000\n"
+"POT-Creation-Date: 2017-08-03 07:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Florian Rettenbacher <florian.rettenbacher@gmx.at>, 2017\n"
 "Language-Team: German (Germany) (https://www.transifex.com/i-mscp/teams/576/de_DE/)\n"
@@ -121,14 +121,6 @@ msgstr ""
 
 #, php-format
 msgid "%s%% [%s / ∞]"
-msgstr ""
-
-#, php-format
-msgid "%s%% [%s of %3$s]"
-msgstr ""
-
-#, php-format
-msgid "%s%% [%s of ∞]"
 msgstr ""
 
 #, php-format
@@ -1125,9 +1117,6 @@ msgid "Client / Mail / Catch-all Accounts"
 msgstr ""
 
 msgid "Client / Mail / Catch-all Accounts / Add Catch-all account"
-msgstr ""
-
-msgid "Client / Mail / Catch-all Accounts / Edit Catch-all account"
 msgstr ""
 
 msgid "Client / Mail / Edit Mail Account"
@@ -4840,6 +4829,10 @@ msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr ""
 "Die Übersetzungsdatei %s wurde ignoriert: Übersetzungstabelle ist leer."
 
+msgid ""
+"The DEBUG mode is currently enabled, making resources caching unavailable."
+msgstr ""
+
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr "Der SQL Benutzername '%s' ist nicht verfügbar oder nicht erlaubt."
@@ -5370,6 +5363,9 @@ msgstr "Benutzername"
 msgid "Username and password for application login"
 msgstr "Benutzername und Passwort für Anwendungsanmeldung"
 
+msgid "Username cannot be empty."
+msgstr ""
+
 #, php-format
 msgid "Username must be between %d and %d characters"
 msgstr ""
@@ -5563,6 +5559,9 @@ msgstr "Sie haben Ihr Subdomain-Limit erreicht."
 msgid "You are not allowed to act on your own session."
 msgstr ""
 "Es ist Ihnen nicht erlaubt auf Ihre eigene Sitzung Einfluss zu nehmen."
+
+msgid "You can disable the DEBUG mode in the /etc/imscp/imscp.conf file."
+msgstr ""
 
 msgid "You can only upload images."
 msgstr "Sie können nur Bilder hochladen."
@@ -5810,7 +5809,7 @@ msgstr "Sie müssen eine Datei zum Hoch- oder Herunterladen wählen."
 msgid "You must select a least one mail account to delete."
 msgstr "Es muss mindestens ein E-Mail Konto für die Löschung ausgewählt sein."
 
-msgid "You must select at least one catch-all addresses."
+msgid "You must select at least one catch-all address."
 msgstr ""
 
 msgid "You must select at least one plugin."

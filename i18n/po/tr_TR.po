@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:50+0000\n"
+"POT-Creation-Date: 2017-08-03 07:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: ugur tezer <utezer@hotmail.com>, 2017\n"
 "Language-Team: Turkish (Turkey) (https://www.transifex.com/i-mscp/teams/576/tr_TR/)\n"
@@ -120,14 +120,6 @@ msgstr ""
 
 #, php-format
 msgid "%s%% [%s / ∞]"
-msgstr ""
-
-#, php-format
-msgid "%s%% [%s of %3$s]"
-msgstr ""
-
-#, php-format
-msgid "%s%% [%s of ∞]"
 msgstr ""
 
 #, php-format
@@ -1076,9 +1068,6 @@ msgid "Client / Mail / Catch-all Accounts"
 msgstr ""
 
 msgid "Client / Mail / Catch-all Accounts / Add Catch-all account"
-msgstr ""
-
-msgid "Client / Mail / Catch-all Accounts / Edit Catch-all account"
 msgstr ""
 
 msgid "Client / Mail / Edit Mail Account"
@@ -4550,6 +4539,10 @@ msgstr ""
 msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr ""
 
+msgid ""
+"The DEBUG mode is currently enabled, making resources caching unavailable."
+msgstr ""
+
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr ""
@@ -5039,6 +5032,9 @@ msgstr "Kullanıcı adı"
 msgid "Username and password for application login"
 msgstr ""
 
+msgid "Username cannot be empty."
+msgstr ""
+
 #, php-format
 msgid "Username must be between %d and %d characters"
 msgstr ""
@@ -5222,6 +5218,9 @@ msgid "You are exceeding your subdomains limit."
 msgstr ""
 
 msgid "You are not allowed to act on your own session."
+msgstr ""
+
+msgid "You can disable the DEBUG mode in the /etc/imscp/imscp.conf file."
 msgstr ""
 
 msgid "You can only upload images."
@@ -5446,7 +5445,7 @@ msgstr "Yükleme/indirme için bir dosya seçmelisiniz."
 msgid "You must select a least one mail account to delete."
 msgstr ""
 
-msgid "You must select at least one catch-all addresses."
+msgid "You must select at least one catch-all address."
 msgstr ""
 
 msgid "You must select at least one plugin."

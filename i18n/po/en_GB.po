@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-01 12:50+0000\n"
+"POT-Creation-Date: 2017-08-03 07:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Torsten Widmann <info@goover.de>, 2017\n"
 "Language-Team: English (United Kingdom) (https://www.transifex.com/i-mscp/teams/576/en_GB/)\n"
@@ -76,11 +76,11 @@ msgstr "%d strings translated"
 
 #, php-format
 msgid "%s / %s"
-msgstr ""
+msgstr "%s / %s"
 
 #, php-format
 msgid "%s / ∞"
-msgstr ""
+msgstr "%s / ∞"
 
 #, php-format
 msgid "%s account successfully deleted."
@@ -116,19 +116,11 @@ msgstr "%s webmail"
 
 #, php-format
 msgid "%s%% [%s / %s]"
-msgstr ""
+msgstr "%s%% [%s / %s]"
 
 #, php-format
 msgid "%s%% [%s / ∞]"
-msgstr ""
-
-#, php-format
-msgid "%s%% [%s of %3$s]"
-msgstr ""
-
-#, php-format
-msgid "%s%% [%s of ∞]"
-msgstr ""
+msgstr "%s%% [%s / ∞]"
 
 #, php-format
 msgid ""
@@ -170,7 +162,7 @@ msgstr ""
 "plugin which must be reported to the author(s)."
 
 msgid "(default)"
-msgstr ""
+msgstr "(default)"
 
 #, php-format
 msgid "(filtered from %s total records)"
@@ -260,7 +252,7 @@ msgid "Activate"
 msgstr "Activate"
 
 msgid "Activate autoresponder"
-msgstr ""
+msgstr "Activate autoresponder"
 
 msgid "Activate this plugin"
 msgstr "Activate this plugin"
@@ -278,7 +270,7 @@ msgid "Activation in progress..."
 msgstr "Activation in progress..."
 
 msgid "Activation link expire time in minutes"
-msgstr ""
+msgstr "Activation link expire time in minutes"
 
 msgid "Add"
 msgstr "Add"
@@ -1105,9 +1097,6 @@ msgid "Client / Mail / Catch-all Accounts"
 msgstr ""
 
 msgid "Client / Mail / Catch-all Accounts / Add Catch-all account"
-msgstr ""
-
-msgid "Client / Mail / Catch-all Accounts / Edit Catch-all account"
 msgstr ""
 
 msgid "Client / Mail / Edit Mail Account"
@@ -4769,6 +4758,10 @@ msgstr "The %s plugin version %s is not compatible with your i-MSCP version."
 msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr "The %s translation file has been ignored: Translation table is empty."
 
+msgid ""
+"The DEBUG mode is currently enabled, making resources caching unavailable."
+msgstr ""
+
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr "The `%s' SQL user is not available or not permitted."
@@ -5283,6 +5276,9 @@ msgstr "Username"
 msgid "Username and password for application login"
 msgstr "Username and password for application login"
 
+msgid "Username cannot be empty."
+msgstr ""
+
 #, php-format
 msgid "Username must be between %d and %d characters"
 msgstr ""
@@ -5469,6 +5465,9 @@ msgstr "You are exceeding your subdomains limit."
 
 msgid "You are not allowed to act on your own session."
 msgstr "You are not allowed to act on your own session."
+
+msgid "You can disable the DEBUG mode in the /etc/imscp/imscp.conf file."
+msgstr ""
 
 msgid "You can only upload images."
 msgstr "You can only upload images."
@@ -5713,7 +5712,7 @@ msgstr "You must select a file to upload/download."
 msgid "You must select a least one mail account to delete."
 msgstr "You must select a least one mail account to delete."
 
-msgid "You must select at least one catch-all addresses."
+msgid "You must select at least one catch-all address."
 msgstr ""
 
 msgid "You must select at least one plugin."
