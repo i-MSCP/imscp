@@ -35,9 +35,9 @@ function get_sql_user_count()
 /**
  * Returns a count of items present in a database table with optional search criterias.
  *
- * @param  string $table Table name on which to operate
- * @param  string $where OPTIONAL SQL WHERE clause
- * @param  string $bind OPTIONAL value to bind to the placeholder
+ * @param string $table Table name on which to operate
+ * @param string $where OPTIONAL SQL WHERE clause
+ * @param string $bind OPTIONAL value to bind to the placeholder
  * @return int Items count
  */
 function records_count($table, $where = '', $bind = '')
@@ -164,10 +164,10 @@ function sub_records_rlike_count($field, $table, $where, $value, $subtable, $sub
 // Per domain/customer counting functions
 
 /**
- * Retrieve total number of subdomains that belong the given domain
+ * Retrieve count of subdomains that belong to the given domain
  *
- * @param  int $domainId Domain unique identifier
- * @return int Total number of subdomains that belong the given domain
+ * @param int $domainId Domain unique identifier
+ * @return int Count of subdomains that belong to the given domain
  */
 function get_domain_running_sub_cnt($domainId)
 {
@@ -184,10 +184,10 @@ function get_domain_running_sub_cnt($domainId)
 }
 
 /**
- * Retrieve total number of domain aliases that belong the given domain
+ * Retrieve count of domain aliases that belong to the given domain
  *
- * @param  int $domainId Domain unique identifier
- * @return int Total number of domain_aliases that belong the given domain
+ * @param int $domainId Domain unique identifier
+ * @return int Count of domain_aliases that belong to the given domain
  */
 function get_domain_running_als_cnt($domainId)
 {
@@ -197,10 +197,10 @@ function get_domain_running_als_cnt($domainId)
 }
 
 /**
- * Retrieve total number of mail accounts that belong the given domain
+ * Retrieve count of mail accounts that belong to the given domain
  *
- * @param  int $domainId Domain unique identifier
- * @return int Total number of mail accounts that belong the given domain
+ * @param int $domainId Domain unique identifier
+ * @return int Count of mail accounts that belong to the given domain
  */
 function get_domain_running_mail_acc_cnt($domainId)
 {
@@ -234,10 +234,10 @@ function get_domain_running_mail_acc_cnt($domainId)
 }
 
 /**
- * Retrieve total number of FTP account that belong the given customer
+ * Retrieve count of FTP account that belong to the given customer
  *
- * @param  int $customerId Customer unique identifier
- * @return int Total number of FTP accounts that belong the given domain
+ * @param int $customerId Customer unique identifier
+ * @return int Total number of FTP accounts that belong to the given domain
  */
 function get_customer_running_ftp_acc_cnt($customerId)
 {
@@ -247,10 +247,10 @@ function get_customer_running_ftp_acc_cnt($customerId)
 }
 
 /**
- * Retrieve total number of SQL databases that belong the given domain
+ * Retrieve count of SQL databases that belong to the given domain
  *
- * @param  int $domainId Domain unique identifier
- * @return int Total number of SQL databases that belong the given domain
+ * @param int $domainId Domain unique identifier
+ * @return int Total number of SQL databases that belong to the given domain
  */
 function get_domain_running_sqld_acc_cnt($domainId)
 {
@@ -260,10 +260,10 @@ function get_domain_running_sqld_acc_cnt($domainId)
 }
 
 /**
- * Retrieve total number of SQL users that belong the given domain
+ * Retrieve count of SQL users that belong to the given domain
  *
- * @param  int $domainId Domain unique identifier
- * @return int Total number of SQL users that belong the given domain
+ * @param int $domainId Domain unique identifier
+ * @return int Total number of SQL users that belong to the given domain
  */
 function get_domain_running_sqlu_acc_cnt($domainId)
 {
@@ -274,10 +274,11 @@ function get_domain_running_sqlu_acc_cnt($domainId)
 }
 
 /**
- * Retrieve total number of SQL databases and users that belong the given domain
+ * Retrieve count of both SQL databases and SQL users that belong to the given domain
  *
- * @param  int $domainId Domain unique identifier
- * @return array An array containing total number of SQL databases and users that belong to the given domain
+ * @param int $domainId Domain unique identifier
+ * @return array An array containing total number of SQL databases and users
+ *               that belong to the given domain
  */
 function get_domain_running_sql_acc_cnt($domainId)
 {
@@ -285,12 +286,13 @@ function get_domain_running_sql_acc_cnt($domainId)
 }
 
 /**
- * Get total number of objects consumed by the given customer
+ * Retrieve count of subdomains, domain aliases, mail accounts, FTP accounts,
+ * SQL database and SQL users that belong to the given customer
  *
- * @param  int $customerId Customer unique identifier
- * @return array An array containing total number of subdomain, domain aliases,
- *               mail accounts, FTP accounts, SQL databases and SQL users for
- *               the given customer
+ * @param int $customerId Customer unique identifier
+ * @return array An array containing count of subdomain, domain aliases, mail
+ *               accounts, FTP accounts, SQL databases and SQL users for the
+ *               given customer
  */
 function get_customer_running_props_cnt($customerId)
 {
