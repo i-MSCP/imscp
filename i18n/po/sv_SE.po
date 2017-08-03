@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-03 07:35+0000\n"
+"POT-Creation-Date: 2017-08-03 08:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thom Heemstra <thom@heemstra.xyz>, 2017\n"
 "Language-Team: Swedish (Sweden) (https://www.transifex.com/i-mscp/teams/576/sv_SE/)\n"
@@ -630,10 +630,6 @@ msgid "An unexpected error occurred. Please contact your reseller."
 msgstr "Ett oväntat fel inträffade. Vänligen kontakta din återförsäljare."
 
 #, php-format
-msgid "An unexpected error occurred. Please contact your reseller. %s"
-msgstr ""
-
-#, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "Ett oväntat fel uppstod: %s"
 
@@ -794,7 +790,7 @@ msgstr "Auto"
 msgid "Auto (Browser language)"
 msgstr "Auto (Browser språk)"
 
-msgid "Automatic catch-all address"
+msgid "Automatic catch-all addresses"
 msgstr ""
 
 msgid "Autoresponder"
@@ -2096,9 +2092,6 @@ msgstr "Domain typ"
 msgid "Domains"
 msgstr "Domäner"
 
-msgid "Domains Limit"
-msgstr ""
-
 msgid "Domains limit"
 msgstr ""
 
@@ -2786,6 +2779,9 @@ msgstr "Invalid URL."
 msgid "Invalid city."
 msgstr ""
 
+msgid "Invalid company."
+msgstr ""
+
 msgid "Invalid country."
 msgstr ""
 
@@ -2805,13 +2801,10 @@ msgstr ""
 msgid "Invalid field: %s"
 msgstr ""
 
-msgid "Invalid firm."
-msgstr ""
-
 msgid "Invalid first name."
 msgstr ""
 
-msgid "Invalid gender"
+msgid "Invalid gender."
 msgstr ""
 
 msgid "Invalid group name!"
@@ -2840,6 +2833,9 @@ msgid "Invalid private key or passphrase."
 msgstr "Ogiltig privat nyckel eller lösenordsfras."
 
 msgid "Invalid state."
+msgstr ""
+
+msgid "Invalid street."
 msgstr ""
 
 msgid "Invalid target."
@@ -3975,9 +3971,6 @@ msgstr "Skyddade områden"
 msgid "Protocol"
 msgstr "Protokoll"
 
-msgid "Quota in MiB (0 ∞"
-msgstr ""
-
 msgid "Quota in MiB (0 ∞)"
 msgstr ""
 
@@ -4718,10 +4711,6 @@ msgstr "Target port måste vara ett tal."
 
 msgid "Temporary folder not found."
 msgstr "Tillfällig mapp hittades inte."
-
-#, php-format
-msgid "The  %s field cannot be empty."
-msgstr ""
 
 #, php-format
 msgid "The %s field cannot be empty."

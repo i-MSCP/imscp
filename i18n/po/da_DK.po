@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-03 07:35+0000\n"
+"POT-Creation-Date: 2017-08-03 08:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Torsten Widmann <info@goover.de>, 2017\n"
 "Language-Team: Danish (Denmark) (https://www.transifex.com/i-mscp/teams/576/da_DK/)\n"
@@ -620,10 +620,6 @@ msgid "An unexpected error occurred. Please contact your reseller."
 msgstr "En uventet fejl opstod. Kontakt din forhandler."
 
 #, php-format
-msgid "An unexpected error occurred. Please contact your reseller. %s"
-msgstr ""
-
-#, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "En uventet fejl opstod: %s"
 
@@ -783,7 +779,7 @@ msgstr ""
 msgid "Auto (Browser language)"
 msgstr "Auto (Browser sprog)"
 
-msgid "Automatic catch-all address"
+msgid "Automatic catch-all addresses"
 msgstr ""
 
 msgid "Autoresponder"
@@ -1921,9 +1917,6 @@ msgstr "Domæne type"
 msgid "Domains"
 msgstr "Domæner"
 
-msgid "Domains Limit"
-msgstr ""
-
 msgid "Domains limit"
 msgstr ""
 
@@ -2608,6 +2601,9 @@ msgstr "Ugyldig URL."
 msgid "Invalid city."
 msgstr ""
 
+msgid "Invalid company."
+msgstr ""
+
 msgid "Invalid country."
 msgstr ""
 
@@ -2627,13 +2623,10 @@ msgstr ""
 msgid "Invalid field: %s"
 msgstr ""
 
-msgid "Invalid firm."
-msgstr ""
-
 msgid "Invalid first name."
 msgstr ""
 
-msgid "Invalid gender"
+msgid "Invalid gender."
 msgstr ""
 
 msgid "Invalid group name!"
@@ -2662,6 +2655,9 @@ msgid "Invalid private key or passphrase."
 msgstr "Ugyldig privat nøgle eller adgangssætning"
 
 msgid "Invalid state."
+msgstr ""
+
+msgid "Invalid street."
 msgstr ""
 
 msgid "Invalid target."
@@ -3788,9 +3784,6 @@ msgstr "Beskyttet områder"
 msgid "Protocol"
 msgstr "Protokol"
 
-msgid "Quota in MiB (0 ∞"
-msgstr ""
-
 msgid "Quota in MiB (0 ∞)"
 msgstr ""
 
@@ -4533,10 +4526,6 @@ msgstr ""
 
 msgid "Temporary folder not found."
 msgstr "Midlertidig mappe ikke fundet."
-
-#, php-format
-msgid "The  %s field cannot be empty."
-msgstr ""
 
 #, php-format
 msgid "The %s field cannot be empty."

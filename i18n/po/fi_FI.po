@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-03 07:35+0000\n"
+"POT-Creation-Date: 2017-08-03 08:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jari <info@jkwebdesign.fi>, 2017\n"
 "Language-Team: Finnish (Finland) (https://www.transifex.com/i-mscp/teams/576/fi_FI/)\n"
@@ -614,10 +614,6 @@ msgid "An unexpected error occurred. Please contact your reseller."
 msgstr "Tapahtui odottamaton virhe. Ota yhteyttä jälleenmyyjään."
 
 #, php-format
-msgid "An unexpected error occurred. Please contact your reseller. %s"
-msgstr ""
-
-#, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "Tapahtui odottamaton virhe: %s"
 
@@ -775,7 +771,7 @@ msgstr ""
 msgid "Auto (Browser language)"
 msgstr "Auto (selaimen kieli)"
 
-msgid "Automatic catch-all address"
+msgid "Automatic catch-all addresses"
 msgstr ""
 
 msgid "Autoresponder"
@@ -1912,9 +1908,6 @@ msgstr "Domain-tyyppi"
 msgid "Domains"
 msgstr "Domainit"
 
-msgid "Domains Limit"
-msgstr ""
-
 msgid "Domains limit"
 msgstr ""
 
@@ -2605,6 +2598,9 @@ msgstr "Virheellinen osoite."
 msgid "Invalid city."
 msgstr ""
 
+msgid "Invalid company."
+msgstr ""
+
 msgid "Invalid country."
 msgstr ""
 
@@ -2624,13 +2620,10 @@ msgstr ""
 msgid "Invalid field: %s"
 msgstr ""
 
-msgid "Invalid firm."
-msgstr ""
-
 msgid "Invalid first name."
 msgstr ""
 
-msgid "Invalid gender"
+msgid "Invalid gender."
 msgstr ""
 
 msgid "Invalid group name!"
@@ -2659,6 +2652,9 @@ msgid "Invalid private key or passphrase."
 msgstr "Virheellinen yksityinen avain tai salasana."
 
 msgid "Invalid state."
+msgstr ""
+
+msgid "Invalid street."
 msgstr ""
 
 msgid "Invalid target."
@@ -3783,9 +3779,6 @@ msgstr "Suojatut alueet"
 msgid "Protocol"
 msgstr "Protokolla"
 
-msgid "Quota in MiB (0 ∞"
-msgstr ""
-
 msgid "Quota in MiB (0 ∞)"
 msgstr ""
 
@@ -4533,10 +4526,6 @@ msgstr "Kohdeportin täytyy olla numero."
 
 msgid "Temporary folder not found."
 msgstr "Väliaikaista kansiota ei löydy."
-
-#, php-format
-msgid "The  %s field cannot be empty."
-msgstr ""
 
 #, php-format
 msgid "The %s field cannot be empty."

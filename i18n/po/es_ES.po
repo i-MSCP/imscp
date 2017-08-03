@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-03 07:35+0000\n"
+"POT-Creation-Date: 2017-08-03 08:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: killerbender0temp <reachme@mailinator.com>, 2017\n"
 "Language-Team: Spanish (Spain) (https://www.transifex.com/i-mscp/teams/576/es_ES/)\n"
@@ -638,10 +638,6 @@ msgid "An unexpected error occurred. Please contact your reseller."
 msgstr "Ha ocurrido un error inesperado. Por favor contacté a su revendedor."
 
 #, php-format
-msgid "An unexpected error occurred. Please contact your reseller. %s"
-msgstr ""
-
-#, php-format
 msgid "An unexpected error occurred: %s"
 msgstr "Ha ocurrido un error inesperado: %s"
 
@@ -804,7 +800,7 @@ msgstr "Auto"
 msgid "Auto (Browser language)"
 msgstr "Automático (Idioma del Navegador)"
 
-msgid "Automatic catch-all address"
+msgid "Automatic catch-all addresses"
 msgstr ""
 
 msgid "Autoresponder"
@@ -2123,9 +2119,6 @@ msgstr "Tipo de Dominio"
 msgid "Domains"
 msgstr "Dominios"
 
-msgid "Domains Limit"
-msgstr ""
-
 msgid "Domains limit"
 msgstr ""
 
@@ -2823,6 +2816,9 @@ msgstr "URL inválida"
 msgid "Invalid city."
 msgstr ""
 
+msgid "Invalid company."
+msgstr ""
+
 msgid "Invalid country."
 msgstr ""
 
@@ -2842,13 +2838,10 @@ msgstr ""
 msgid "Invalid field: %s"
 msgstr ""
 
-msgid "Invalid firm."
-msgstr ""
-
 msgid "Invalid first name."
 msgstr ""
 
-msgid "Invalid gender"
+msgid "Invalid gender."
 msgstr ""
 
 msgid "Invalid group name!"
@@ -2877,6 +2870,9 @@ msgid "Invalid private key or passphrase."
 msgstr "Clave privada o frase de contraseña inválida."
 
 msgid "Invalid state."
+msgstr ""
+
+msgid "Invalid street."
 msgstr ""
 
 msgid "Invalid target."
@@ -4037,9 +4033,6 @@ msgstr "Áreas protegidas"
 msgid "Protocol"
 msgstr "Protocolo"
 
-msgid "Quota in MiB (0 ∞"
-msgstr ""
-
 msgid "Quota in MiB (0 ∞)"
 msgstr ""
 
@@ -4791,10 +4784,6 @@ msgstr "El puerto de destino debe ser un numero."
 
 msgid "Temporary folder not found."
 msgstr "No se ha encontrado la carpeta temporal."
-
-#, php-format
-msgid "The  %s field cannot be empty."
-msgstr ""
 
 #, php-format
 msgid "The %s field cannot be empty."
