@@ -497,8 +497,8 @@ class Application
         $this->config['PREVENT_EXTERNAL_LOGIN_CLIENT'] = 1;
 
         // Automatic search for new version
-        $config['CHECK_FOR_UPDATES'] = 0;
-        $config['ENABLE_SSL'] = 1;
+        $this->config['CHECK_FOR_UPDATES'] = 0;
+        $this->config['ENABLE_SSL'] = 1;
 
         // Converting some possible IDN to ACE
         $this->config['DEFAULT_ADMIN_ADDRESS'] = encode_idna($this->config->get('DEFAULT_ADMIN_ADDRESS'));
