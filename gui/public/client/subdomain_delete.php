@@ -66,13 +66,13 @@ $stmt = exec_query(
 );
 
 if ($stmt->rowCount()) {
-    set_page_message(tr('Subdomain you are trying to remove has mail accounts. Remove them first.'), 'error');
+    set_page_message(tr('The subdomain you are trying to remove has mail accounts. Please remove them first.'), 'error');
     redirectTo('domains_manage.php');
 }
 
 $stmt = exec_query('SELECT userid FROM ftp_users WHERE userid LIKE ? LIMIT 1', "%@{$row['subdomain_name']}");
 if ($stmt->rowCount()) {
-    set_page_message(tr('The subdomain you are trying to remove has FTP accounts. Remove them first.'), 'error');
+    set_page_message(tr('The subdomain you are trying to remove has FTP accounts. Please remove them first.'), 'error');
     redirectTo('domains_manage.php');
 }
 

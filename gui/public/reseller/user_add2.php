@@ -356,7 +356,7 @@ function checkInputData()
 
     // Mail quota limit
     if (!imscp_limit_check($mailQuota, NULL)) {
-        set_page_message(tr('Incorrect mail quota'), 'error');
+        set_page_message(tr('Incorrect mail quota.'), 'error');
         $errFieldsStack[] = 'nreseller_mail_quota';
     } elseif ($diskspace != '0' && $mailQuota > $diskspace) {
         set_page_message(tr('Mail quota cannot be bigger than disk space limit.'), 'error');
