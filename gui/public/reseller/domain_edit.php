@@ -276,7 +276,7 @@ function reseller_generateForm($tpl, &$data)
 function _reseller_generateLimitsForm($tpl, &$data)
 {
     $tpl->assign([
-        'TR_DOMAIN_LIMITS'        => tr('Domains Limit'),
+        'TR_DOMAIN_LIMITS'        => tr('Domains limit'),
         'TR_LIMIT_VALUE'          => tr('Limit value'),
         'TR_CUSTOMER_CONSUMPTION' => tr('Customer consumption'),
         'TR_RESELLER_CONSUMPTION' => isset($_SESSION['logged_from']) ? tr('Reseller consumption') : tr('Your consumption')

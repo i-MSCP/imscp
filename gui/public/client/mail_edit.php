@@ -279,7 +279,7 @@ function client_generatePage($tpl)
 
     if ($customerEmailQuotaLimitBytes < 1) {
         $tpl->assign([
-            'TR_QUOTA'  => tohtml(tr('Quota in MiB (0 ∞')),
+            'TR_QUOTA'  => tohtml(tr('Quota in MiB (0 ∞)')),
             'MIN_QUOTA' => 0,
             'MAX_QUOTA' => tohtml(floor(PHP_INT_MAX), 'htmlAttr'),
             'QUOTA'     => isset($_POST['quota'])

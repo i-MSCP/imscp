@@ -203,7 +203,7 @@ function client_validate_MX($pref, $host, &$errorString)
 function client_validate_NS($host, &$errorString)
 {
     if ($host === '') {
-        $errorString .= tr('The  %s field cannot be empty.', tr('Host'));
+        $errorString .= tr('The %s field cannot be empty.', tr('Host'));
         return false;
     }
 
