@@ -194,7 +194,7 @@ try {
     } elseif ($e->getCode() == 400) {
         showBadRequestErrorPage();
     } else {
-        set_page_message(tr('An unexpected error occurred. Please contact your reseller. %s', $e->getMessage()), 'error');
+        set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
     }
 }
 
