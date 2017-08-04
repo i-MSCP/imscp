@@ -779,7 +779,7 @@ sub _removeObsoleteFiles
         iMSCP::Dir->new( dirname => $_ )->remove();
     }
 
-    for( "$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_disabled_ssl.tpl",
+    for("$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_disabled_ssl.tpl",
         "$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_redirect.tpl",
         "$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_redirect_ssl.tpl",
         "$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_ssl.tpl",
