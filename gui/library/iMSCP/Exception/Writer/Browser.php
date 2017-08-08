@@ -164,7 +164,7 @@ HTML;
         $tpl->assign([
             'TR_PAGE_TITLE' => 'i-MSCP - internet Multi Server Control Panel - Fatal Error',
             'HEADER_BLOCK' => '',
-            'BOX_MESSAGE_TITLE' => 'An unexpected error occurred',
+            'BOX_MESSAGE_TITLE' => 'An unexpected error occurred.',
             'PAGE_MESSAGE' => '',
             'BOX_MESSAGE' => $this->message,
             'BACK_BUTTON_DESTINATION' => $backButtonDestination,

@@ -362,7 +362,7 @@ function checkInputData()
     if (!resellerHasFeature('domain_aliases')) {
         $als = '-1';
     } elseif (!imscp_limit_check($als, -1)) {
-        set_page_message(tr('Incorrect domain alias limit.'), 'error');
+        set_page_message(tr('Incorrect domain aliases limit.'), 'error');
         $errFieldsStack[] = 'als';
     }
 
@@ -376,14 +376,14 @@ function checkInputData()
     if (!resellerHasFeature('ftp')) {
         $ftp = '-1';
     } elseif (!imscp_limit_check($ftp, -1)) {
-        set_page_message(tr('Incorrect FTP account limit.'), 'error');
+        set_page_message(tr('Incorrect FTP accounts limit.'), 'error');
         $errFieldsStack[] = 'ftp';
     }
 
     if (!resellerHasFeature('sql_db')) {
         $sqld = '-1';
     } elseif (!imscp_limit_check($sqld, -1)) {
-        set_page_message(tr('Incorrect SQL database limit.'), 'error');
+        set_page_message(tr('Incorrect SQL databases limit.'), 'error');
         $errFieldsStack[] = 'sql_db';
     } elseif ($sqlu != -1 && $sqld == -1) {
         set_page_message(tr('SQL user limit is <i>disabled</i>.'), 'error');

@@ -40,7 +40,7 @@ class Zend_Service_Amazon_Ec2_Elasticip extends Zend_Service_Amazon_Ec2_Abstract
     /**
      * Acquires an elastic IP address for use with your account
      *
-     * @return string                           Returns the newly Allocated IP Address
+     * @return string                           Returns the newly Allocated IP address
      */
     public function allocate()
     {

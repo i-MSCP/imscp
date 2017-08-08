@@ -42,7 +42,7 @@ function client_updateHtaccessUser($domainId, $htuserId)
     }
 
     if ($_POST['pass'] !== $_POST['pass_rep']) {
-        set_page_message(tr('Passwords do not match.'), 'error');
+        set_page_message(tr('Passwords does not match.'), 'error');
         return;
     }
 

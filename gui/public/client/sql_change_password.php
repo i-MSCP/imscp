@@ -106,7 +106,7 @@ function client_updateSqlUserPassword($id, $user, $host)
     }
 
     if ($password !== $passwordConf) {
-        set_page_message(tr('Passwords do not match.'), 'error');
+        set_page_message(tr('Passwords does not match.'), 'error');
         return;
     }
 

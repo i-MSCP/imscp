@@ -350,7 +350,7 @@ function checkInputData()
     if (!resellerHasFeature('mail')) {
         $mail = '-1';
     } elseif (!imscp_limit_check($mail, -1)) {
-        set_page_message(tr('Incorrect mail account limit.'), 'error');
+        set_page_message(tr('Incorrect mail accounts limit.'), 'error');
         $errFieldsStack[] = 'nreseller_max_mail_cnt';
     }
 
@@ -370,7 +370,7 @@ function checkInputData()
     if (!resellerHasFeature('ftp')) {
         $ftp = '-1';
     } elseif (!imscp_limit_check($ftp, -1)) {
-        set_page_message(tr('Incorrect FTP account limit.'), 'error');
+        set_page_message(tr('Incorrect FTP accounts limit.'), 'error');
         $errFieldsStack[] = 'nreseller_max_ftp_cnt';
     }
 
@@ -378,10 +378,10 @@ function checkInputData()
     if (!resellerHasFeature('sql_db')) {
         $sqld = -1;
     } elseif (!imscp_limit_check($sqld, -1)) {
-        set_page_message(tr('Incorrect SQL database limit.'), 'error');
+        set_page_message(tr('Incorrect SQL databases limit.'), 'error');
         $errFieldsStack[] = 'nreseller_max_sql_db_cnt';
     } elseif ($sqld != -1 && $sqlu == -1) {
-        set_page_message(tr('SQL user limit is disabled.'), 'error');
+        set_page_message(tr('SQL users limit is disabled.'), 'error');
         $errFieldsStack[] = 'nreseller_max_sql_db_cnt';
         $errFieldsStack[] = 'nreseller_max_sql_user_cnt';
     }
@@ -390,10 +390,10 @@ function checkInputData()
     if (!resellerHasFeature('sql_user')) {
         $sqlu = -1;
     } elseif (!imscp_limit_check($sqlu, -1)) {
-        set_page_message(tr('Incorrect SQL user limit.'), 'error');
+        set_page_message(tr('Incorrect SQL users limit.'), 'error');
         $errFieldsStack[] = 'nreseller_max_sql_user_cnt';
     } elseif ($sqlu != -1 && $sqld == -1) {
-        set_page_message(tr("SQL database limit is disabled."), 'error');
+        set_page_message(tr("SQL databases limit is disabled."), 'error');
         $errFieldsStack[] = 'nreseller_max_sql_user_cnt';
         $errFieldsStack[] = 'nreseller_max_sql_db_cnt';
     }

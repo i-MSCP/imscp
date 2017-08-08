@@ -144,7 +144,7 @@ function check_user_data()
     }
 
     if ($_POST['password'] != $_POST['password_confirmation']) {
-        set_page_message(tr('Passwords do not match.'), 'error');
+        set_page_message(tr('Passwords does not match.'), 'error');
         return false;
     }
 
@@ -184,7 +184,7 @@ $tpl->define_dynamic([
 $tpl->assign('TR_PAGE_TITLE', tr('Admin / Users / Add Admin'));
 $tpl->assign([
     'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field.'),
-    'TR_PASSWORD_NOT_MATCH'  => tr('Passwords do not match.'),
+    'TR_PASSWORD_NOT_MATCH'  => tr('Passwords does not match.'),
     'TR_ADD_ADMIN'           => tr('Add admin'),
     'TR_CORE_DATA'           => tr('Core data'),
     'TR_USERNAME'            => tr('Username'),
