@@ -368,7 +368,7 @@ function admin_checkAndCreateResellerAccount()
             $errFieldsStack[] = 'password';
             $errFieldsStack[] = 'password_confirmation';
         } elseif ($data['password'] != $data['password_confirmation']) {
-            set_page_message(tr('Passwords does not match.'), 'error');
+            set_page_message(tr('Passwords do not match.'), 'error');
             $errFieldsStack[] = 'password';
             $errFieldsStack[] = 'password_confirmation';
         } elseif (!checkPasswordSyntax($data['password'])) {

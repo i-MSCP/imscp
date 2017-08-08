@@ -397,7 +397,7 @@ function getUserLoginDataForm($usernameRequired = true, $passwordRequired = true
                 ]
             ],
             'admin_pass_confirmation' => [
-                'password', ['validators' => [['Identical', true, ['admin_pass', 'messages' => tr('Passwords does not match.')]]]]
+                'password', ['validators' => [['Identical', true, ['admin_pass', 'messages' => tr('Passwords do not match.')]]]]
             ]
         ]
     ]);

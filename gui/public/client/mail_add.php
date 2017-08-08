@@ -153,7 +153,7 @@ function addMailAccount()
         }
 
         if ($password !== $passwordRep) {
-            set_page_message(tr('Passwords does not match.'), 'error');
+            set_page_message(tr('Passwords do not match.'), 'error');
             return false;
         }
 

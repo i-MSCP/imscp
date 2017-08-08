@@ -506,7 +506,7 @@ function check_ruser_data($noPass = false)
         if ('' === $passwordRepeat || '' === $password) {
             set_page_message(tr('Please fill up both data fields for password.'), 'error');
         } elseif ($passwordRepeat !== $password) {
-            set_page_message(tr("Passwords does not match."), 'error');
+            set_page_message(tr("Passwords do not match."), 'error');
         } else {
             checkPasswordSyntax($password);
         }

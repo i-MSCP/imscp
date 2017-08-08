@@ -48,7 +48,7 @@ function client_addHtaccessUser()
     $passwd = clean_input($_POST['pass']);
 
     if ($passwd !== $_POST['pass_rep']) {
-        set_page_message(tr('Passwords does not match.'), 'error');
+        set_page_message(tr('Passwords do not match.'), 'error');
         return;
     }
 
