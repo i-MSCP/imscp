@@ -277,7 +277,7 @@ sub _getData
             POST_MAX_SIZE           => $phpini->{'post_max_size'} // 8,
             UPLOAD_MAX_FILESIZE     => $phpini->{'upload_max_filesize'} // 2,
             ALLOW_URL_FOPEN         => $phpini->{'allow_url_fopen'} || 'off',
-            PHP_FPM_LISTEN_PORT     => ( $phpini->{'id'} // 0 )-1,
+            PHP_FPM_LISTEN_PORT     => ( $phpini->{'id'} // 1 )-1,
             EXTERNAL_MAIL           => $self->{'external_mail'},
             MAIL_ENABLED            => ( $self->{'external_mail'} eq 'off'
                 && ( $self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0 )
