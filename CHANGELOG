@@ -43,6 +43,7 @@ FRONTEND
     Fixed: A user must not be able to clear his email address
     Fixed: Cannot edit mailbox quota due to integer type casting (i386 arch)
     Fixed: Cannot set value bigger than 2GB for mailbox quota due to integer type casting (i386 arch)
+    Fixed: Couldn't generate self-signed SSL certificate (string passed as serial number while integer is expected)
     Fixed: Customers must stay able to login when their password or their main domain are being modified
     Fixed: Missing creation of default `webmaster' mail account for subdomains
     Fixed: Sets the SQL `group_concat_max_len' variable on a per session basis
