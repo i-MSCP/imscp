@@ -43,7 +43,7 @@ $tpl->define_dynamic([
 ]);
 $tpl->assign([
     'TR_PAGE_TITLE'    => tr('Admin / General / Services Status'),
-    'TR_SERVICE'       => tr('Service Name'),
+    'TR_SERVICE'       => tr('Service name'),
     'TR_IP'            => tr('IP address'),
     'TR_PORT'          => tr('Port'),
     'TR_STATUS'        => tr('Status'),
