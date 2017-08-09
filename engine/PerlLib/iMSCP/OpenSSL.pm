@@ -26,10 +26,10 @@ package iMSCP::OpenSSL;
 use strict;
 use warnings;
 use File::Temp;
-use iMSCP::Debug;
-use iMSCP::Execute;
-use iMSCP::File;
 use Date::Parse;
+use iMSCP::Debug qw/ error debug /;
+use iMSCP::Execute qw/ execute escapeShell /;
+use iMSCP::File;
 use iMSCP::TemplateParser;
 use parent 'Common::Object';
 
@@ -114,17 +114,24 @@ sub validateCertificate
     }
 
     my $caBundle = 0;
+
     if ( $self->{'ca_bundle_container_path'} ) {
-        if ( -f $self->{'ca_bundle_container_path'} ) {
-            $caBundle = 1;
-        } else {
+        unless ( -f $self->{'ca_bundle_container_path'} ) {
             error( sprintf( "%s SSL CA Bundle doesn't exists", $self->{'ca_bundle_container_path'} ));
             return 1;
         }
+
+        $caBundle = 1;
+    } else {
+        # We asssume a self-signed SSL certificate.
+        # We need trust the self-signed SSL certificate for validation time, else
+        # the 18 at 0 depth lookup: self signed certificate' error is raised (openssl >= 1.1.0)
+        $self->{'ca_bundle_container_path'} = $self->{'certificate_container_path'};
     }
 
     my $cmd = [
-        'openssl', 'verify', ( ( $caBundle ) ? ( '-CAfile', $self->{'ca_bundle_container_path'} ) : () ),
+        'openssl', 'verify',
+        ( ( $self->{'ca_bundle_container_path'} ne '' ) ? ( '-CAfile', $self->{'ca_bundle_container_path'} ) : () ),
         '-purpose', 'sslserver', $self->{'certificate_container_path'}
     ];
 
@@ -134,6 +141,8 @@ sub validateCertificate
         "SSL certificate is not valid: %s",
         ( $stderr || $stdout || 'Unknown error' ) =~ s/$self->{'certificate_container_path'}:\s+//r
     )) if $rs;
+
+    $self->{'ca_bundle_container_path'} = '' unless $caBundle;
     $rs;
 }
 
@@ -294,9 +303,9 @@ sub createSelfSignedCertificate
         {
             COMMON_NAME   => $commonName,
             EMAIL_ADDRESS => $data->{'email'},
-            ALT_NAMES     => $data->{'wildcard'}
-                ? "DNS.1 = $commonName\n"
-                : "DNS.1 = $commonName\nDNS.2 = www.$commonName\n"
+            ALT_NAMES     => ( $data->{'wildcard'}
+                ? "DNS.1 = $commonName\n" : "DNS.1 = $commonName\nDNS.2 = www.$commonName\n"
+            )
         },
         $openSSLConffileTplContent
     );
@@ -384,16 +393,22 @@ sub _init
 
     # Full path to the certificate chains storage directory
     $self->{'certificate_chains_storage_dir'} = '' unless $self->{'certificate_chains_storage_dir'};
+
     # Certificate chain name
     $self->{'certificate_chain_name'} = '' unless $self->{'certificate_chain_name'};
+
     # Full path to the private key container
     $self->{'private_key_container_path'} = '' unless $self->{'private_key_container_path'};
+
     # Private key passphrase if any
     $self->{'private_key_passphrase'} = '' unless $self->{'private_key_passphrase'};
+
     # Full path to the SSL certificate container
     $self->{'certificate_container_path'} = '' unless $self->{'certificate_container_path'};
+
     # Full path to the CA Bundle container (Container which contain one or many intermediate certificates)
     $self->{'ca_bundle_container_path'} = '' unless $self->{'ca_bundle_container_path'};
+
     $self;
 }
 

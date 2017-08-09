@@ -106,6 +106,7 @@ VENDOR
     
 YOUTRACK
     IP-0749 Protected areas under a mount point of a domain alias or subdomain that is being deleted are not removed
+    IP-1729 Couldn't generate self-signed SSL certificate with OpenSSL 1.1.x
     IP-1730 Couldn't delete support tickets that are closed
     IP-1733 Default mail accounts in client mail accounts overview should be hidden by default
 

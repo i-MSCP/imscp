@@ -25,7 +25,7 @@ package Modules::SSLcertificate;
 
 use strict;
 use warnings;
-use iMSCP::Debug qw/ error getLastError warning /;
+use iMSCP::Debug qw/ error getLastError getMessageByType warning /;
 use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::OpenSSL;
@@ -99,8 +99,6 @@ sub process
         error( $@ );
         return 1;
     }
-
-    $rs;
 
     # (since 1.2.16 - See #IP-1500)
     # On toadd and to change actions, return 0 to avoid any failure on update when a customer's SSL certificate is
