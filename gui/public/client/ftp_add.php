@@ -164,7 +164,7 @@ function addAccount()
     }
 
     if ($passwd !== $passwdRepeat) {
-        set_page_message(tr('Passwords do not match'), 'error');
+        set_page_message(tr('Passwords do not match.'), 'error');
         $error = true;
     } elseif (!checkPasswordSyntax($passwd)) {
         $error = true;

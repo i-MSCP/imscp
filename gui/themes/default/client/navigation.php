@@ -139,7 +139,7 @@ return [
                 'title_class' => 'ftp'
             ],
             'file_manager'    => [
-                'label'  => tr('Filemanager'),
+                'label'  => tr('FileManager'),
                 'uri'    => '/ftp/',
                 'target' => '_blank'
             ]
@@ -385,7 +385,7 @@ return [
                 ],
             ],
             'file_manager'       => [
-                'label'              => tr('Filemanager'),
+                'label'              => tr('FileManager'),
                 'uri'                => '/ftp/',
                 'target'             => '_blank',
                 'privilege_callback' => [

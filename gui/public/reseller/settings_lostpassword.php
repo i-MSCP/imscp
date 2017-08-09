@@ -85,7 +85,7 @@ $tpl->assign([
     'TR_USER_LOGIN_NAME'          => tr('User login (system) name'),
     'TR_USER_PASSWORD'            => tr('User password'),
     'TR_USER_REAL_NAME'           => tr('User (first and last) name'),
-    'TR_LOSTPW_LINK'              => tr('Lostpw link'),
+    'TR_LOSTPW_LINK'              => tr('Lost password link'),
     'TR_SUBJECT'                  => tr('Subject'),
     'TR_MESSAGE'                  => tr('Message'),
     'TR_SENDER_EMAIL'             => tr('Sender email'),

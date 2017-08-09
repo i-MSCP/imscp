@@ -384,7 +384,7 @@ function doAction($pluginManager, $pluginName, $action)
         $ret = call_user_func([$pluginManager, 'plugin' . ucfirst($action)], $pluginName);
 
         if ($ret === false) {
-            set_page_message(tr('An unexpected error occurred'));
+            set_page_message(tr('An unexpected error occurred.'));
             return;
         }
 

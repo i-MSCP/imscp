@@ -4572,7 +4572,7 @@ class File_X509
     }
 
     /**
-     * Set the IP Addresses's which the cert is to be valid for
+     * Set the IP addresses's which the cert is to be valid for
      *
      * @access public
      * @param string $ipAddress optional
