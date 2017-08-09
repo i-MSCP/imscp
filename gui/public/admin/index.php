@@ -36,7 +36,8 @@ function admin_generateSupportQuestionsMessage()
 
     if ($ticketsCount > 0) {
         set_page_message(
-            ntr('You have a new support ticket.', 'You have %d new support tickets.', $ticketsCount), 'static_info'
+            ntr('You have a new support ticket.', 'You have %d new support tickets.', $ticketsCount, $ticketsCount),
+            'static_info'
         );
     }
 }
@@ -73,43 +74,19 @@ function admin_generateUpdateMessages()
  */
 function admin_getAdminGeneralInfo($tpl)
 {
-    $where = "mail_type NOT LIKE '%catchall%'";
-
-    if (!iMSCP_Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
-        # A default mail account is composed of a name matching with:
-        # - abuse, hostmaster, postmaster or webmaster for a domain
-        # - webmaster for a subdomain
-        # and is set as forward mail account. If the customeer turn a default
-        # mail account into a normal mail account, it is no longer seen as
-        # default mail account.
-        $where .= "
-            AND ! (
-                (
-                    mail_acc IN('abuse', 'hostmaster', 'postmaster', 'webmaster')
-                    AND
-                    mail_type IN('" . MT_NORMAL_FORWARD . "', '" . MT_ALIAS_FORWARD . "')
-                )    
-                OR
-                (
-                    mail_acc = 'webmaster'
-                    AND
-                    mail_type IN('" . MT_SUBDOM_FORWARD . "', '" . MT_ALSSUB_FORWARD . "')
-                )
-            )
-        ";
-    }
-
     $tpl->assign([
-        'ADMIN_USERS'     => tohtml(records_count('admin', 'admin_type', 'admin')),
-        'RESELLER_USERS'  => tohtml(records_count('admin', 'admin_type', 'reseller')),
-        'NORMAL_USERS'    => tohtml(records_count('admin', 'admin_type', 'user')),
-        'DOMAINS'         => tohtml(records_count('domain')),
-        'SUBDOMAINS'      => tohtml(records_count('subdomain') + records_count('subdomain_alias', 'subdomain_alias_id')),
-        'DOMAINS_ALIASES' => tohtml(records_count('domain_aliasses')),
-        'MAIL_ACCOUNTS'   => tohtml(records_count('mail_users', $where)),
-        'FTP_ACCOUNTS'    => tohtml(records_count('ftp_users')),
-        'SQL_DATABASES'   => tohtml(records_count('sql_database')),
-        'SQL_USERS'       => tohtml(get_sql_user_count())
+        'ADMIN_USERS'     => tohtml(get_administrators_count()),
+        'RESELLER_USERS'  => tohtml(get_resellers_count()),
+        'NORMAL_USERS'    => tohtml(get_customers_count()),
+        'DOMAINS'         => tohtml(get_domains_count()),
+        'SUBDOMAINS'      => tohtml(get_subdomains_count()),
+        'DOMAINS_ALIASES' => tohtml(get_domain_aliases_count()),
+        'MAIL_ACCOUNTS'   => tohtml(get_mail_accounts_count()) . (
+            !iMSCP_Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES'] ? ' ('.tohtml('Excl. default mail accounts') . ')' : ''
+        ),
+        'FTP_ACCOUNTS'    => tohtml(get_ftp_users_count()),
+        'SQL_DATABASES'   => tohtml(get_sql_databases_count()),
+        'SQL_USERS'       => tohtml(get_sql_users_count())
     ]);
 }
 
@@ -132,10 +109,9 @@ function admin_generateServerTrafficInfo($tpl)
     // Get server traffic usage in bytes for the current month
     $stmt = exec_query(
         '
-            SELECT SUM(bytes_in) + SUM(bytes_out) AS serverTrafficUsage
+            SELECT IFNULL(SUM(bytes_in), 0) + IFNULL(SUM(bytes_out), 0) AS serverTrafficUsage
             FROM server_traffic
-            WHERE traff_time BETWEEN ?
-            AND ?
+            WHERE traff_time BETWEEN ? AND ?
         ',
         [getFirstDayOfMonth(), getLastDayOfMonth()]
     );
@@ -151,7 +127,9 @@ function admin_generateServerTrafficInfo($tpl)
     $trafficUsagePercent = make_usage_vals($trafficUsageBytes, $trafficLimitBytes);
 
     if ($trafficLimitBytes) {
-        $trafficMessage = tohtml(tr('%s%% [%s / %s]', $trafficUsagePercent, bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes)));
+        $trafficMessage = tohtml(
+            tr('%s%% [%s / %s]', $trafficUsagePercent, bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes))
+        );
     } else {
         $trafficMessage = tohtml(tr('%s%% [%s / ∞]', $trafficUsagePercent, bytesHuman($trafficUsageBytes)));
     }

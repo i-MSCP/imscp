@@ -559,14 +559,14 @@ function get_reseller_software($tpl)
 
             $countSwDepot = exec_query(
                 "
-                  SELECT count(software_id) AS swdepot
+                  SELECT count(software_id)
                   FROM web_software
                   WHERE software_active = 1
                   AND software_depot = 'yes'
                   AND reseller_id = ?
                 ",
                 $row['reseller_id']
-            )->fetchRow(PDO::FETCH_COLUMN);;
+            )->fetchRow(PDO::FETCH_COLUMN);
 
             $countWaiting = exec_query(
                 "SELECT count(software_id) FROM web_software WHERE software_active = 0 AND reseller_id = ?",
@@ -576,7 +576,7 @@ function get_reseller_software($tpl)
             $countActivated = exec_query(
                 "SELECT count(software_id) FROM web_software WHERE software_active = 1 AND reseller_id = ?",
                 $row['reseller_id']
-            )->fetchRow(PDO::FETCH_COLUMN);;
+            )->fetchRow(PDO::FETCH_COLUMN);
 
             if (count($software_ids) > 0) {
                 $swInUse = execute_query(
@@ -1175,11 +1175,9 @@ function gen_software_list($tpl, $domainId, $resellerId)
  */
 function check_software_avail($softwareId, $dmnCreatedId)
 {
-    $stmt = exec_query('SELECT COUNT(software_id) FROM web_software WHERE software_id = ? AND reseller_id = ?', [
+    return (bool)exec_query('SELECT COUNT(software_id) FROM web_software WHERE software_id = ? AND reseller_id = ?', [
         $softwareId, $dmnCreatedId
-    ]);
-
-    return (bool)$stmt->fetchRow(PDO::FETCH_COLUMN);
+    ])->fetchRow(PDO::FETCH_COLUMN);
 }
 
 /**

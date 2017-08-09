@@ -119,11 +119,7 @@ function setPassword($userType, $uniqueKey, $userPassword)
 
     if ($userType == 'user') {
         exec_query(
-            '
-              UPDATE admin
-              SET admin_pass = ?, uniqkey = NULL, uniqkey_time = NULL, admin_status = ?
-              WHERE uniqkey = ?
-            ',
+            'UPDATE admin SET admin_pass = ?, uniqkey = NULL, uniqkey_time = NULL, admin_status = ? WHERE uniqkey = ?',
             [$passwordHash, 'tochangepwd', $uniqueKey]
         );
 
@@ -179,8 +175,8 @@ function sendPasswordRequestValidation($adminName)
     }
 
     $row = $stmt->fetchRow();
-
     $createdBy = $row['created_by'];
+
     if ($createdBy == 0) {
         $createdBy = $row['admin_id']; // Force usage of default template for any admin request
     }

@@ -172,12 +172,9 @@ function addMailAccount()
                 return false;
             }
 
-            $stmt = exec_query(
-                'SELECT SUM(quota) FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
-                $mainDmnProps['domain_id']
-            );
-
-            $customerMailboxesQuotaSumBytes = $stmt->fetchRow(PDO::FETCH_COLUMN);
+            $customerMailboxesQuotaSumBytes = exec_query(
+                'SELECT IFNULL(SUM(quota), 0) FROM mail_users WHERE domain_id = ?', $mainDmnProps['domain_id']
+            )->fetchRow(PDO::FETCH_COLUMN);
 
             if ($customerMailboxesQuotaSumBytes >= $customerEmailQuotaLimitBytes) {
                 showBadRequestErrorPage(); # Customer should never goes here excepted if it try to bypass js code
@@ -304,12 +301,10 @@ function addMailAccount()
 function generatePage($tpl)
 {
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
-    $stmt = exec_query(
-        'SELECT SUM(quota) FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
+    $customerMailboxesQuotaSumBytes = exec_query(
+        'SELECT IFNULL(SUM(quota), 0) FROM mail_users WHERE domain_id = ?',
         $mainDmnProps['domain_id']
-    );
-
-    $customerMailboxesQuotaSumBytes = $stmt->fetchRow(PDO::FETCH_COLUMN);
+    )->fetchRow(PDO::FETCH_COLUMN);
     $customerEmailQuotaLimitBytes = filter_digits($mainDmnProps['mail_quota'], 0);
 
     if ($customerEmailQuotaLimitBytes < 1) {
@@ -391,7 +386,7 @@ $dmnProps = get_domain_default_props($_SESSION['user_id']);
 $emailAccountsLimit = $dmnProps['domain_mailacc_limit'];
 
 if ($emailAccountsLimit != '0') {
-    $nbEmailAccounts = get_domain_running_mail_acc_cnt($dmnProps['domain_id']);
+    $nbEmailAccounts = get_customer_mail_accounts_count($dmnProps['domain_id']);
 
     if ($nbEmailAccounts >= $emailAccountsLimit) {
         set_page_message(tr('You have reached the maximum number of mail accounts allowed by your subscription.'), 'warning');

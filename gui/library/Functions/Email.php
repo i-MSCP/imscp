@@ -160,6 +160,7 @@ function get_lostpassword_activation_email($userId)
     if ($data['subject'] == '') {
         $data['subject'] = tr('Please activate your new i-MSCP password');
     }
+
     if ($data['message'] == '') {
         $data['message'] = tr('Dear {NAME},
 
@@ -211,6 +212,7 @@ function get_lostpassword_password_email($userId)
     if ($data['subject'] == '') {
         $data['subject'] = tr('Your new i-MSCP login');
     }
+
     if ($data['message'] == '') {
         $data['message'] = tr('Dear {NAME},
 
@@ -258,9 +260,11 @@ function set_lostpassword_password_email($userId, $data)
 function get_alias_order_email($resellerId)
 {
     $data = get_email_tpl_data($resellerId, 'alias-order-msg');
+
     if ($data['subject'] == '') {
         $data['subject'] = tr('New alias order for {CUSTOMER}');
     }
+
     if ($data['message'] == '') {
         $data['message'] = tr('Dear {NAME},
 
@@ -291,31 +295,32 @@ i-MSCP Mailer');
  */
 function encode_mime_header($string, $charset = 'UTF-8')
 {
-    if ($string && $charset) {
-        if (function_exists('mb_encode_mimeheader')) {
-            $string = mb_encode_mimeheader($string, $charset, 'Q', "\r\n", 8);
-        } elseif ($string && $charset) {
-            // define start delimiter, end delimiter and spacer
-            $end = '?=';
-            $start = '=?' . $charset . '?B?';
-            $spacer = $end . "\r\n " . $start;
-
-            // Determine length of encoded text withing chunks and ensure length is even
-            $length = 75 - strlen($start) - strlen($end);
-            $length = floor($length / 4) * 4;
-
-            // Encode the string and split it into chunks with spacers after each chunk
-            $string = base64_encode($string);
-            $string = chunk_split($string, $length, $spacer);
-
-            // Remove trailing spacer and add start and end delimiters
-            $spacer = preg_quote($spacer);
-            $string = preg_replace('/' . $spacer . '$/', '', $string);
-            $string = $start . $string . $end;
-        }
+    if (!$string || !$charset) {
+        return $string;
     }
 
-    return $string;
+    if (function_exists('mb_encode_mimeheader')) {
+        return mb_encode_mimeheader($string, $charset, 'Q', "\r\n", 8);
+    }
+
+    // define start delimiter, end delimiter and spacer
+    $end = '?=';
+    $start = '=?' . $charset . '?B?';
+    $spacer = $end . "\r\n " . $start;
+
+    // Determine length of encoded text withing chunks and ensure length is even
+    $length = 75 - strlen($start) - strlen($end);
+    $length = floor($length / 4) * 4;
+
+    // Encode the string and split it into chunks with spacers after each chunk
+    $string = base64_encode($string);
+    $string = chunk_split($string, $length, $spacer);
+
+    // Remove trailing spacer and add start and end delimiters
+    $spacer = preg_quote($spacer);
+    $string = preg_replace('/' . $spacer . '$/', '', $string);
+
+    return $start . $string . $end;
 }
 
 /**
@@ -376,17 +381,18 @@ function send_mail($data)
 
     # Prepare default replacements
     $replacements = [
-        '{NAME}' => $name,
-        '{USERNAME}' => $username,
+        '{NAME}'                     => $name,
+        '{USERNAME}'                 => $username,
         '{BASE_SERVER_VHOST_PREFIX}' => $scheme,
-        '{BASE_SERVER_VHOST}' => $host,
-        '{BASE_SERVER_VHOST_PORT}' => ":$port"
+        '{BASE_SERVER_VHOST}'        => $host,
+        '{BASE_SERVER_VHOST_PORT}'   => ":$port"
     ];
 
     if (isset($data['placeholders'])) {
         # Merge user defined replacements if any (those replacements take precedence on default replacements)
         $replacements = array_merge($replacements, $data['placeholders']);
     }
+
     $replacements["\n"] = "\r\n";
     $search = array_keys($replacements);
     $replace = array_values($replacements);
@@ -423,6 +429,7 @@ function send_mail($data)
     } else {
         $headers[] = 'Reply-To: ' . $cfg['DEFAULT_ADMIN_ADDRESS'];
     }
+
     $headers[] = 'MIME-Version: 1.0';
     $headers[] = 'Content-Type: text/plain; charset=utf-8';
     $headers[] = 'Content-Transfer-Encoding: 8bit';

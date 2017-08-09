@@ -114,7 +114,7 @@ function admin_validatesService($name, $ip, $port, $protocol, $show, $index = ''
     $ip = ($ip == 'localhost') ? '127.0.0.1' : $ip;
 
     // Check for service name syntax
-    if (!is_basicString($name)) {
+    if(!preg_match('/^[\w\-]+$/D', $name)) {
         set_page_message(
             tr("Error with '$name': Only letters, numbers, dash and underscore are allowed for services names."),
             'error'

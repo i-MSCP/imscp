@@ -34,8 +34,10 @@ function _getUserTraffic($domainId, $beginTime, $endTime)
 {
     $stmt = exec_query(
         '
-            SELECT SUM(dtraff_web) AS web_traffic, SUM(dtraff_ftp) AS ftp_traffic, SUM(dtraff_mail) AS smtp_traffic,
-                SUM(dtraff_pop) AS pop_traffic
+            SELECT IFNULL(SUM(dtraff_web), 0) AS web_traffic,
+                IFNULL(SUM(dtraff_ftp), 0) AS ftp_traffic,
+                IFNULL(SUM(dtraff_mail), 0) AS smtp_traffic,
+                IFNULL(SUM(dtraff_pop),0) AS pop_traffic
             FROM domain_traffic
             WHERE domain_id = ?
             AND dtraff_time BETWEEN ? AND ?

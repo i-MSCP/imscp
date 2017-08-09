@@ -166,7 +166,7 @@ function &reseller_getData($domainId, $forUpdate = false)
     $resellerProps['reseller_ips'] = explode(';', rtrim($resellerProps['reseller_ips'], ';'));
 
 
-    list($subCount, $alsCount, $mailCount, $ftpCount, $sqlDbCount, $sqlUsersCount) = get_customer_running_props_cnt(
+    list($subCount, $alsCount, $mailCount, $ftpCount, $sqlDbCount, $sqlUsersCount) = get_customer_objects_counts(
         $row['admin_id']
     );
 

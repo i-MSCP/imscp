@@ -22,7 +22,6 @@ use iMSCP_Authentication_AuthEvent as AuthEvent;
 use iMSCP_Authentication_Result as AuthResult;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventManager;
-use iMSCP_Events_Event as Event;
 use iMSCP_Events_Manager_Interface as EventManagerInterface;
 
 /**
@@ -151,11 +150,9 @@ class iMSCP_Authentication
             return false;
         }
 
-        $stmt = exec_query('SELECT COUNT(session_id) FROM login WHERE session_id = ? AND ipaddr = ?', [
+        return (bool)exec_query('SELECT COUNT(session_id) FROM login WHERE session_id = ? AND ipaddr = ?', [
             session_id(), getipaddr()
-        ]);
-
-        return (bool)$stmt->fetchRow(PDO::FETCH_COLUMN);
+        ])->fetchRow(PDO::FETCH_COLUMN);
     }
 
     /**

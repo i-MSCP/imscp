@@ -26,7 +26,7 @@
  */
 
 /***********************************************************************************************************************
- * Script functions
+ * Functions
  */
 
 /**
@@ -41,6 +41,7 @@ function gen_num_limit_msg($num, $limit)
     if ($limit == -1) {
         return '<span style="color: red;">' . tr('Disabled') . '</span>';
     }
+
     if ($limit == 0) {
         return $num . ' / ∞';
     }
@@ -55,18 +56,16 @@ function gen_num_limit_msg($num, $limit)
  */
 function gen_mail_quota_limit_mgs()
 {
-    $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
-    $stmt = exec_query(
-        'SELECT SUM(quota) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
-        $mainDmnProps['domain_id']
-    );
-    $row = $stmt->fetchRow();
+    $domainProps = get_domain_default_props($_SESSION['user_id']);
+    $mailQuota = exec_query(
+        'SELECT IFNULL(SUM(quota), 0) FROM mail_users WHERE domain_id = ?', $domainProps['domain_id']
+    )->fetchRow(PDO::FETCH_COLUMN);
 
-    if ($mainDmnProps['mail_quota'] == 0) {
-        return bytesHuman($row['quota']) . ' / ∞';
+    if ($domainProps['mail_quota'] == 0) {
+        return bytesHuman($mailQuota) . ' / ∞';
     }
 
-    return bytesHuman($row['quota']) . ' / ' . bytesHuman($mainDmnProps['mail_quota']);
+    return bytesHuman($mailQuota) . ' / ' . bytesHuman($domainProps['mail_quota']);
 }
 
 /**
@@ -76,10 +75,19 @@ function gen_mail_quota_limit_mgs()
  */
 function client_generateSupportSystemNotices()
 {
-    $stmt = exec_query("SELECT COUNT(ticket_id) cnt FROM tickets WHERE ticket_from = ? AND ticket_status = '2' AND ticket_reply = '0'", $_SESSION['user_id']);
-    $row = $stmt->fetchRow();
-    if ($row['cnt']) {
-        set_page_message(ntr('You have a new answer to your support ticket.', 'You have %d new answers to your support tickets.', $row['cnt']), 'static_info');
+    $ticketsCount = exec_query(
+        "SELECT COUNT(ticket_id) FROM tickets WHERE ticket_from = ? AND ticket_status = '2' AND ticket_reply = '0'",
+        $_SESSION['user_id']
+    )->fetchRow(PDO::FETCH_COLUMN);
+    
+    if ($ticketsCount) {
+        set_page_message(
+            ntr(
+                'You have a new answer to your support ticket.', 'You have %d new answers to your support tickets.',
+                $ticketsCount, $ticketsCount
+            ),
+            'static_info'
+        );
     }
 }
 
@@ -216,7 +224,6 @@ function client_makeTrafficUsage($domainId)
 {
     $domainProperties = get_domain_default_props($_SESSION['user_id']);
 
-
     $trafficData = shared_getCustomerMonthlyTrafficData($domainId);
     $totalTraffic = $trafficData[4];
     unset($trafficData);
@@ -284,7 +291,9 @@ function client_generateDomainExpiresInformation($tpl)
             list($years, $month, $days) = _client_getDomainRemainingTime($domainProperties['domain_expires']);
 
             if ($years == 0 && $month == 0 && $days <= 14) {
-                $domainRemainingTime = '<span style="color:red">' . tr('%d %s remaining until account expiration', $days, ($days > 1) ? tr('days') : tr('day')) . '</span>';
+                $domainRemainingTime = '<span style="color:red">'
+                    . ntr('%d day remaining until account expiration', '%d days remaining until account expiration', $days, $days)
+                    . '</span>';
                 $domainExpiresDate = '<strong>(' . $domainExpiresDate . ')</strong>';
             }
         } else {
@@ -347,7 +356,7 @@ $tpl->assign('CREATE_DATE', tohtml(date($cfg['DATE_FORMAT'], $domainProperties['
 
 list(
     $subdomainCount, $domainAliasCount, $mailAccountsCount, $ftpAccountsCount, $sqlDatabasesCount, $sqlUsersCount
-    ) = get_customer_running_props_cnt($_SESSION['user_id']);
+    ) = get_customer_objects_counts($_SESSION['user_id']);
 
 $tpl->assign([
     'TR_DOMAIN_ACCOUNT'                        => tr('Domain account'),

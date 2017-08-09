@@ -380,7 +380,7 @@ check_login('user');
 customerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
 $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
-$domainAliasesCount = get_domain_running_als_cnt($mainDmnProps['domain_id']);
+$domainAliasesCount = get_customer_domain_aliases_count($mainDmnProps['domain_id']);
 
 if ($mainDmnProps['domain_alias_limit'] != 0 && $domainAliasesCount >= $mainDmnProps['domain_alias_limit']) {
     set_page_message(tr('You have reached the maximum number of domain aliases allowed by your subscription.'), 'warning');

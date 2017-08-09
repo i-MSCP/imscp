@@ -139,12 +139,10 @@ function client_editMailAccount()
                 return false;
             }
 
-            $stmt = exec_query(
-                'SELECT SUM(quota) FROM mail_users WHERE mail_id <> ? AND domain_id = ? AND quota IS NOT NULL',
+            $customerMailboxesQuotaSumBytes = exec_query(
+                'SELECT IFNULL(SUM(quota), 0) FROM mail_users WHERE mail_id <> ? AND domain_id = ?',
                 [$mailData['mail_id'], $mainDmnProps['domain_id']]
-            );
-
-            $customerMailboxesQuotaSumBytes = $stmt->fetchRow(PDO::FETCH_COLUMN);
+            )->fetchRow(PDO::FETCH_COLUMN);
 
             if ($customerMailboxesQuotaSumBytes >= $customerEmailQuotaLimitBytes) {
                 showBadRequestErrorPage(); # Customer should never goes here excepted if it try to bypass js code
@@ -269,12 +267,11 @@ function client_generatePage($tpl)
     $mailData = client_getEmailAccountData($mailId);
     list($username, $domainName) = explode('@', $mailData['mail_addr']);
 
-    $stmt = exec_query(
-        'SELECT SUM(quota) FROM mail_users WHERE mail_id <> ? AND domain_id = ? AND quota IS NOT NULL',
+    $customerMailboxesQuotaSumBytes = exec_query(
+        'SELECT IFNULL(SUM(quota)n 0) FROM mail_users WHERE mail_id <> ? AND domain_id = ?',
         [$mailId, $mainDmnProps['domain_id']]
-    );
+    )->fetchRow(PDO::FETCH_COLUMN);
 
-    $customerMailboxesQuotaSumBytes = $stmt->fetchRow(PDO::FETCH_COLUMN);
     $customerEmailQuotaLimitBytes = filter_digits($mainDmnProps['mail_quota'], 0);
 
     if ($customerEmailQuotaLimitBytes < 1) {

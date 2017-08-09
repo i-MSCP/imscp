@@ -402,7 +402,7 @@ check_login('user');
 customerHasFeature('subdomains') or showBadRequestErrorPage();
 
 $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
-$subdomainsCount = get_domain_running_sub_cnt($mainDmnProps['domain_id']);
+$subdomainsCount = get_customer_subdomains_count($mainDmnProps['domain_id']);
 
 if ($mainDmnProps['domain_subd_limit'] != 0 && $subdomainsCount >= $mainDmnProps['domain_subd_limit']) {
     set_page_message(tr('You have reached the maximum number of subdomains allowed by your subscription.'), 'warning');

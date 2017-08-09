@@ -30,16 +30,16 @@ function generateLoggedFrom(iMSCP_pTemplate $tpl)
 {
     $tpl->define_dynamic('logged_from', 'layout');
 
-    if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
-        $tpl->assign([
-            'YOU_ARE_LOGGED_AS' => tr('%1$s you are now logged as %2$s', $_SESSION['logged_from'], $_SESSION['user_logged']),
-            'TR_GO_BACK'        => tr('Back')
-        ]);
-        $tpl->parse('LOGGED_FROM', 'logged_from');
+    if (!isset($_SESSION['logged_from']) || !isset($_SESSION['logged_from_id'])) {
+        $tpl->assign('LOGGED_FROM', '');
         return;
     }
 
-    $tpl->assign('LOGGED_FROM', '');
+    $tpl->assign([
+        'YOU_ARE_LOGGED_AS' => tr('%1$s you are now logged as %2$s', $_SESSION['logged_from'], $_SESSION['user_logged']),
+        'TR_GO_BACK'        => tr('Back')
+    ]);
+    $tpl->parse('LOGGED_FROM', 'logged_from');
 }
 
 /**
@@ -79,9 +79,7 @@ function generateMonthsAndYearsHtmlList(iMSCP_pTemplate $tpl, $fromMonth = NULL,
         $fromMonth = date('m');
     }
 
-    $fromYearTwoDigit = ($fromYear)
-        ? date('y', mktime(0, 0, 0, 1, 1, $fromYear))
-        : date('y');
+    $fromYearTwoDigit = ($fromYear) ? date('y', mktime(0, 0, 0, 1, 1, $fromYear)) : date('y');
 
     foreach (range(1, 12) as $month) {
         $tpl->assign([
@@ -652,10 +650,9 @@ function gen_user_list(iMSCP_pTemplate $tpl)
 
     if (isset($_SESSION['client_domain_aliases_switch'])) {
         $tpl->assign([
-            'CLIENT_DOMAIN_ALIASES_SWITCH_VALUE' => $_SESSION['client_domain_aliases_switch'],
+            'CLIENT_DOMAIN_ALIASES_SWITCH_VALUE'                              => $_SESSION['client_domain_aliases_switch'],
             ($_SESSION['client_domain_aliases_switch'] == 'show')
-                ? 'CLIENT_DOMAIN_ALIASES_SHOW'
-                : 'CLIENT_DOMAIN_ALIASES_HIDE'   => ''
+                ? 'CLIENT_DOMAIN_ALIASES_SHOW' : 'CLIENT_DOMAIN_ALIASES_HIDE' => ''
         ]);
     } else {
         $tpl->assign([
@@ -685,7 +682,6 @@ function gen_user_list(iMSCP_pTemplate $tpl)
         $tpl->assign('CLIENT_SCROLL_PREV', '');
     } else {
         $prevSi = $sLimit - $eLimit;
-
         $tpl->assign([
             'CLIENT_SCROLL_PREV_GRAY' => '',
             'CLIENT_PREV_PSI'         => $prevSi > 0 ? $prevSi : 0
@@ -704,7 +700,6 @@ function gen_user_list(iMSCP_pTemplate $tpl)
     }
 
     $tpl->assign('CLIENT_MESSAGE', '');
-
     $stmt = execute_query($sQuery);
 
     while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {

@@ -104,8 +104,8 @@ sub preBuild
         (
             [ sub { $self->_buildPackageList() }, 'Building list of packages to install/uninstall' ],
             [ sub { $self->_prefillDebconfDatabase() }, 'Pre-fill Debconf database' ],
-            [ sub { $self->_processAptRepositories() }, 'Processing APT repositories if any' ],
-            [ sub { $self->_processAptPreferences() }, 'Processing APT preferences if any' ],
+            [ sub { $self->_processAptRepositories() }, 'Processing APT repositories' ],
+            [ sub { $self->_processAptPreferences() }, 'Processing APT preferences' ],
             [ sub { $self->_updatePackagesIndex() }, 'Updating packages index' ]
         );
 

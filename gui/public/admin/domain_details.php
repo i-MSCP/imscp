@@ -37,17 +37,12 @@
  */
 function admin_gen_mail_quota_limit_mgs($customerId)
 {
-    $mainDmnProps = get_domain_default_props($customerId);
-    $stmt = exec_query(
-        'SELECT SUM(quota) AS quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL',
-        $mainDmnProps['domain_id']
-    );
-
-    $row = $stmt->fetchRow();
-    return [
-        bytesHuman($row['quota']),
-        $mainDmnProps['mail_quota'] == 0 ? '∞' : bytesHuman($mainDmnProps['mail_quota'])
-    ];
+    $domainProps = get_domain_default_props($customerId);
+    $mailQuota = exec_query(
+        'SELECT IFNULL(SUM(quota), 0) FROM mail_users WHERE domain_id = ?', $domainProps['domain_id']
+    )->fetchRow(PDO::FETCH_COLUMN);
+    
+    return [bytesHuman($mailQuota), ($domainProps['mail_quota'] == 0) ? '∞' : bytesHuman($domainProps['mail_quota'])];
 }
 
 /**
@@ -122,19 +117,19 @@ function admin_generatePage($tpl, $domainId)
         'VL_DISK_PERCENT'            => $diskspaceUsagePercent,
         'VL_DISK_USED'               => bytesHuman($domainData['domain_disk_usage']),
         'VL_DISK_LIMIT'              => bytesHuman($diskspaceLimitBytes),
-        'VL_MAIL_ACCOUNTS_USED'      => get_domain_running_mail_acc_cnt($domainId),
+        'VL_MAIL_ACCOUNTS_USED'      => get_customer_mail_accounts_count($domainId),
         'VL_MAIL_ACCOUNTS_LIMIT'     => translate_limit_value($domainData['domain_mailacc_limit']),
         'VL_MAIL_QUOTA_USED'         => $quota,
         'VL_MAIL_QUOTA_LIMIT'        => ($domainData['domain_mailacc_limit'] != '-1') ? $quotaLimit : tr('Disabled'),
-        'VL_FTP_ACCOUNTS_USED'       => get_customer_running_ftp_acc_cnt($domainData['domain_admin_id']),
+        'VL_FTP_ACCOUNTS_USED'       => get_customer_ftp_users_count($domainData['domain_admin_id']),
         'VL_FTP_ACCOUNTS_LIMIT'      => translate_limit_value($domainData['domain_ftpacc_limit']),
-        'VL_SQL_DB_ACCOUNTS_USED'    => get_domain_running_sqld_acc_cnt($domainId),
+        'VL_SQL_DB_ACCOUNTS_USED'    => get_customer_sql_databases_count($domainId),
         'VL_SQL_DB_ACCOUNTS_LIMIT'   => translate_limit_value($domainData['domain_sqld_limit']),
-        'VL_SQL_USER_ACCOUNTS_USED'  => get_domain_running_sqlu_acc_cnt($domainId),
+        'VL_SQL_USER_ACCOUNTS_USED'  => get_customer_sql_users_count($domainId),
         'VL_SQL_USER_ACCOUNTS_LIMIT' => translate_limit_value($domainData['domain_sqlu_limit']),
-        'VL_SUBDOM_ACCOUNTS_USED'    => get_domain_running_sub_cnt($domainId),
+        'VL_SUBDOM_ACCOUNTS_USED'    => get_customer_subdomains_count($domainId),
         'VL_SUBDOM_ACCOUNTS_LIMIT'   => translate_limit_value($domainData['domain_subd_limit']),
-        'VL_DOMALIAS_ACCOUNTS_USED'  => get_domain_running_als_cnt($domainId),
+        'VL_DOMALIAS_ACCOUNTS_USED'  => get_customer_domain_aliases_count($domainId),
         'VL_DOMALIAS_ACCOUNTS_LIMIT' => translate_limit_value($domainData['domain_alias_limit']),
     ]);
 }

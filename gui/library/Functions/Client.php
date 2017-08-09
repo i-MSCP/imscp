@@ -35,14 +35,11 @@ function user_trans_mail_type($mailAcc, $mailType)
             return tr('Normal account');
         case MT_NORMAL_FORWARD:
         case MT_ALIAS_FORWARD:
-            return tr('Forward account') . (
-                in_array($mailAcc, ['abuse', 'hostmaster', 'postmaster', 'webmaster']) ? ' ' . tr('(default)') : ''
-                );
+            return tr('Forward account') .
+                (in_array($mailAcc, ['abuse', 'hostmaster', 'postmaster', 'webmaster']) ? ' ' . tr('(default)') : '');
         case MT_SUBDOM_FORWARD:
         case MT_ALSSUB_FORWARD:
-            return tr('Forward account') . (
-                $mailAcc == 'webmaster' ? ' ' . tr('(default)') : ''
-                );
+            return tr('Forward account') . ($mailAcc == 'webmaster' ? ' ' . tr('(default)') : '');
         case MT_NORMAL_MAIL . ',' . MT_NORMAL_FORWARD:
         case MT_ALIAS_MAIL . ',' . MT_ALIAS_FORWARD:
         case MT_SUBDOM_MAIL . ',' . MT_SUBDOM_FORWARD:
@@ -54,7 +51,6 @@ function user_trans_mail_type($mailAcc, $mailType)
         case MT_SUBDOM_CATCHALL:
         case MT_ALSSUB_CATCHALL:
             return tr('Catch-all account');
-
         default:
             return tr('Unknown type.');
     }
@@ -98,7 +94,6 @@ function customerHasFeature($featureNames, $forceReload = false)
         $cfg = iMSCP_Registry::get('config');
         $debug = (bool)$cfg['DEBUG'];
         $dmnProps = get_domain_default_props($_SESSION['user_id']);
-
         $availableFeatures = [
             /*'domain' => ($dmnProps['domain_alias_limit'] != '-1'
                 || $dmnProps['domain_subd_limit'] != '-1'
@@ -181,9 +176,9 @@ function customerHasDomain($domainName, $customerId)
     $domainName = encode_idna($domainName);
 
     // Check in domain table
-    $stmt = exec_query(
-        "SELECT 'found' FROM domain WHERE domain_admin_id = ? AND domain_name = ?", [$customerId, $domainName]
-    );
+    $stmt = exec_query("SELECT 'found' FROM domain WHERE domain_admin_id = ? AND domain_name = ?", [
+        $customerId, $domainName
+    ]);
 
     if ($stmt->rowCount()) {
         return true;
@@ -339,9 +334,10 @@ function getDomainMountpoint($domainId, $domainType, $ownerId)
  * @param bool $refreshData Flag indicating if data must be refreshed
  * @return array|bool Array containing maildirsize data, FALSE on failure
  */
-function parseMaildirsize($maildirsizeFilePath, $refreshData = FALSE)
+function parseMaildirsize($maildirsizeFilePath, $refreshData = false)
 {
-    if (!$refreshData && !empty($_SESSION['maildirsize'][$maildirsizeFilePath])
+    if (!$refreshData
+        && !empty($_SESSION['maildirsize'][$maildirsizeFilePath])
         && $_SESSION['maildirsize'][$maildirsizeFilePath]['TIMESTAMP'] < (time() + 300)
     ) {
         return $_SESSION['maildirsize'][$maildirsizeFilePath];

@@ -34,28 +34,26 @@ $ESCAPER = new Escaper('UTF-8');
  */
 function clean_html($text)
 {
-    return strip_tags(
-        preg_replace(
-            [
-                '@<script[^>]*?>.*?</script[\s]*>@si', // remove JavaScript
-                '@<[\/\!]*?[^<>]*?>@si', // remove HTML tags
-                '@([\r\n])[\s]+@', // remove spaces
-                '@&(quot|#34|#034);@i', // change HTML entities
-                '@&(apos|#39|#039);@i', // change HTML entities
-                '@&(amp|#38);@i',
-                '@&(lt|#60);@i',
-                '@&(gt|#62);@i',
-                '@&(nbsp|#160);@i',
-                '@&(iexcl|#161);@i',
-                '@&(cent|#162);@i',
-                '@&(pound|#163);@i',
-                '@&(copy|#169);@i'
-                /*'@&#(\d+);@e'*/
-            ],
-            ['', '', '\1', '"', "'", '&', '<', '>', ' ', chr(161), chr(162), chr(163), chr(169)],
-            $text
-        )
-    );
+    return strip_tags(preg_replace(
+        [
+            '@<script[^>]*?>.*?</script[\s]*>@si', // remove JavaScript
+            '@<[\/\!]*?[^<>]*?>@si', // remove HTML tags
+            '@([\r\n])[\s]+@', // remove spaces
+            '@&(quot|#34|#034);@i', // change HTML entities
+            '@&(apos|#39|#039);@i', // change HTML entities
+            '@&(amp|#38);@i',
+            '@&(lt|#60);@i',
+            '@&(gt|#62);@i',
+            '@&(nbsp|#160);@i',
+            '@&(iexcl|#161);@i',
+            '@&(cent|#162);@i',
+            '@&(pound|#163);@i',
+            '@&(copy|#169);@i'
+            /*'@&#(\d+);@e'*/
+        ],
+        ['', '', '\1', '"', "'", '&', '<', '>', ' ', chr(161), chr(162), chr(163), chr(169)],
+        $text
+    ));
 }
 
 /**
@@ -91,7 +89,7 @@ function filter_digits($input, $default = NULL)
     $input = $filter->filter(clean_input($input));
 
     if ($input === '') {
-        if (NULL !== $default) {
+        if (NULL === $default) {
             showBadRequestErrorPage();
         }
 

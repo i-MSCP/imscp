@@ -210,14 +210,12 @@ if (is_xhr()) {
 
 /** @var $tpl iMSCP_pTemplate */
 $tpl = new iMSCP_pTemplate();
-
 $tpl->define_dynamic([
     'layout'         => 'shared/layouts/ui.tpl',
     'page'           => 'reseller/alias.tpl',
     'page_message'   => 'layout',
     'als_add_button' => 'page'
 ]);
-
 $tpl->assign([
     'TR_PAGE_TITLE'                 => tr('Reseller / Customers / Domain Aliases'),
     'TR_ALIAS_NAME'                 => tr('Domain alias name'),
@@ -237,18 +235,12 @@ iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', 
     $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
 });
 
-$resellerId = $_SESSION['user_id'];
-$resellerProps = imscp_getResellerProperties($resellerId);
+$resellerProps = imscp_getResellerProperties($_SESSION['user_id']);
 
-if ($resellerProps['max_als_cnt'] != 0) {
-    list(, , , , , , $customersAlsCount) = generate_reseller_user_props($resellerId);
-
-    if (
-        $customersAlsCount >= $resellerProps['max_als_cnt'] ||
-        $resellerProps['current_als_cnt'] >= $resellerProps['max_als_cnt']
-    ) {
-        $tpl->assign('ALS_ADD_BUTTON', '');
-    }
+if ($resellerProps['max_als_cnt'] != 0
+    && $resellerProps['current_als_cnt'] >= $resellerProps['max_als_cnt']
+) {
+    $tpl->assign('ALS_ADD_BUTTON', '');
 }
 
 generateNavigation($tpl);

@@ -1,32 +1,25 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 /***********************************************************************************************************************
- * Script functions
+ * Functions
  */
 
 /**
@@ -36,16 +29,18 @@
  *
  * @return void
  */
-function reseller_generateSupportQuestionsMessage()
+function generateSupportQuestionsMessage()
 {
-    $stmt = exec_query(
-        'SELECT count(ticket_id) cnt FROM tickets WHERE ticket_to = ? AND ticket_status IN (1, 4) AND ticket_reply = 0',
+    $ticketsCount = exec_query(
+        'SELECT count(ticket_id) FROM tickets WHERE ticket_to = ? AND ticket_status IN (1, 4) AND ticket_reply = 0',
         $_SESSION['user_id']
-    );
-    $row = $stmt->fetchRow();
+    )->fetchRow(PDO::FETCH_COLUMN);
 
-    if ($row['cnt'] > 0) {
-        set_page_message(ntr('You have a new support ticket.', 'You have %d new support tickets.', $row['cnt']), 'static_info');
+    if ($ticketsCount > 0) {
+        set_page_message(
+            ntr('You have a new support ticket.', 'You have %d new support tickets.', $ticketsCount, $ticketsCount),
+            'static_info'
+        );
     }
 }
 
@@ -54,7 +49,7 @@ function reseller_generateSupportQuestionsMessage()
  *
  * @return void
  */
-function reseller_generateOrdersAliasesMessage()
+function generateOrdersAliasesMessage()
 {
     $stmt = exec_query(
         '
@@ -84,14 +79,18 @@ function reseller_generateOrdersAliasesMessage()
  * @param int $trafficLimitBytes Traffic max usage
  * @return void
  */
-function reseller_generateTrafficUsageBar($tpl, $trafficUsageBytes, $trafficLimitBytes)
+function generateTrafficUsageBar($tpl, $trafficUsageBytes, $trafficLimitBytes)
 {
     $trafficUsagePercent = make_usage_vals($trafficUsageBytes, $trafficLimitBytes);
 
     if ($trafficLimitBytes) {
-        $trafficUsageData = tr('%s%% [%s / %s]', $trafficUsagePercent, bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes));
+        $trafficUsageData = tr(
+            '%s%% [%s / %s]', $trafficUsagePercent, bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes)
+        );
     } else {
-        $trafficUsageData = tr('%s%% [%s / ∞]', $trafficUsagePercent, bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes));
+        $trafficUsageData = tr(
+            '%s%% [%s / ∞]', $trafficUsagePercent, bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes)
+        );
     }
 
     $tpl->assign([
@@ -101,19 +100,21 @@ function reseller_generateTrafficUsageBar($tpl, $trafficUsageBytes, $trafficLimi
 }
 
 /**
- * Generates disk usage bar.
+ * Generates disk usage bar
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @param int $diskspaceUsageBytes Disk usage
  * @param int $diskspaceLimitBytes Max disk usage
  * @return void
  */
-function reseller_generateDiskUsageBar($tpl, $diskspaceUsageBytes, $diskspaceLimitBytes)
+function generateDiskUsageBar($tpl, $diskspaceUsageBytes, $diskspaceLimitBytes)
 {
     $diskspaceUsagePercent = make_usage_vals($diskspaceUsageBytes, $diskspaceLimitBytes);
 
     if ($diskspaceLimitBytes) {
-        $diskUsageData = tr('%s%% [%s / %s]', $diskspaceUsagePercent, bytesHuman($diskspaceUsageBytes), bytesHuman($diskspaceLimitBytes));
+        $diskUsageData = tr(
+            '%s%% [%s / %s]', $diskspaceUsagePercent, bytesHuman($diskspaceUsageBytes), bytesHuman($diskspaceLimitBytes)
+        );
     } else {
         $diskUsageData = tr('%s%% [%s / ∞]', $diskspaceUsagePercent, bytesHuman($diskspaceUsageBytes));
     }
@@ -125,37 +126,57 @@ function reseller_generateDiskUsageBar($tpl, $diskspaceUsageBytes, $diskspaceLim
 }
 
 /**
- * Generates page data
+ * Generates page
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @param int $resellerId Reseller unique identifier
  * @param string $resellerName Reseller name
  * @return void
  */
-function reseller_generatePageData($tpl, $resellerId, $resellerName)
+function generatePage($tpl, $resellerId, $resellerName)
 {
-    $resellerProperties = imscp_getResellerProperties($resellerId);
+    generateSupportQuestionsMessage();
+    generateOrdersAliasesMessage();
 
-    list(
-        $udmnCurrent, , , $usubCurrent, , , $ualsCurrent, , , $umailCurrent, , ,
-        $uftpCurrent, , , $usqlDbCurrent, , , $usqlUserCurrent, , , $utraffCurrent, , ,
-        $udiskCurrent
-        ) = generate_reseller_user_props($resellerId);
+    $resellerProperties = imscp_getResellerProperties($resellerId);
+    $udmnCurrent = get_reseller_domains_count($resellerId);
+    $usubCurrent = get_reseller_subdomains_count($resellerId);
+    $ualsCurrent = get_reseller_domain_aliases_count($resellerId);
+    $umailCurrent = get_reseller_mail_accounts_count($resellerId);
+    $uftpCurrent = get_reseller_ftp_users_count($resellerId);
+    $usqlDbCurrent = get_reseller_sql_databases_count($resellerId);
+    $usqlUserCurrent = get_reseller_sql_users_count($resellerId);
+
+    $stmt = exec_query(
+        '
+            SELECT
+                IFNULL(SUM(domain_disk_usage), 0) AS disk_usage,
+                IFNULL(SUM(dtraff_web), 0) + IFNULL(SUM(dtraff_ftp), 0) + IFNULL(SUM(dtraff_mail), 0) +
+                IFNULL(SUM(dtraff_pop), 0) AS monthly_traffic
+            FROM domain AS t1
+            JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
+            LEFT JOIN domain_traffic AS t3 ON(t3.domain_id = t1.domain_id AND t3.dtraff_time BETWEEN ? AND ?)
+            WHERE created_by = ?
+        ',
+        [getFirstDayOfMonth(), getLastDayOfMonth(), $_SESSION['user_id']]
+    );
+
+    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
     // Convert into Mib values
-    $rtraffMax = $resellerProperties['max_traff_amnt'] * 1024 * 1024;
-    $rdiskMax = $resellerProperties['max_disk_amnt'] * 1024 * 1024;
+    $monthlyTrafficLimit = $resellerProperties['max_traff_amnt'] * 1024 * 1024;
+    $diskUsageLimit = $resellerProperties['max_disk_amnt'] * 1024 * 1024;
 
-    reseller_generateTrafficUsageBar($tpl, $utraffCurrent, $rtraffMax);
-    reseller_generateDiskUsageBar($tpl, $udiskCurrent, $rdiskMax);
+    generateTrafficUsageBar($tpl, $row['monthly_traffic'], $monthlyTrafficLimit);
+    generateDiskUsageBar($tpl, $row['disk_usage'], $diskUsageLimit);
 
-    if ($rtraffMax > 0 && $utraffCurrent > $rtraffMax) {
+    if ($monthlyTrafficLimit > 0 && $row['monthly_traffic'] > $monthlyTrafficLimit) {
         $tpl->assign('TR_TRAFFIC_WARNING', tr('You are exceeding your monthly traffic limit.'));
     } else {
         $tpl->assign('TRAFFIC_WARNING_MESSAGE', '');
     }
 
-    if ($rdiskMax > 0 && $udiskCurrent > $rdiskMax) {
+    if ($diskUsageLimit > 0 && $row['disk_usage'] > $diskUsageLimit) {
         $tpl->assign('TR_DISK_WARNING', tr('You are exceeding your disk space limit.'));
     } else {
         $tpl->assign('DISK_WARNING_MESSAGE', '');
@@ -232,10 +253,8 @@ $tpl->assign([
 ]);
 
 generateNavigation($tpl);
-reseller_generateSupportQuestionsMessage();
-reseller_generateOrdersAliasesMessage();
-reseller_generatePageData($tpl, $_SESSION['user_id'], $_SESSION['user_logged']);
 generatePageMessage($tpl);
+generatePage($tpl, $_SESSION['user_id'], $_SESSION['user_logged']);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);

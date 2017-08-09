@@ -33,9 +33,14 @@ function _getServerTraffic($beginDate, $endDate)
 {
     $stmt = exec_query(
         '
-            SELECT SUM(bytes_in) AS sbin, SUM(bytes_out) AS sbout, SUM(bytes_mail_in) AS smbin,
-                SUM(bytes_mail_out) AS smbout, SUM(bytes_pop_in) AS spbin, SUM(bytes_pop_out) AS spbout,
-                SUM(bytes_web_in) AS swbin, SUM(bytes_web_out) AS swbout
+            SELECT IFNULL(SUM(bytes_in), 0) AS sbin,
+                IFNULL(SUM(bytes_out), 0) AS sbout,
+                IFNULL(SUM(bytes_mail_in), 0) AS smbin,
+                IFNULL(SUM(bytes_mail_out), 0) AS smbout,
+                IFNULL(SUM(bytes_pop_in), 0) AS spbin,
+                IFNULL(SUM(bytes_pop_out), 0) AS spbout,
+                IFNULL(SUM(bytes_web_in), 0) AS swbin,
+                IFNULL(SUM(bytes_web_out), 0) AS swbout
             FROM server_traffic
             WHERE traff_time BETWEEN ? AND ?
         ',

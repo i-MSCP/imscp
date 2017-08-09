@@ -21,188 +21,426 @@
 // Global counting functions
 
 /**
- * Returns count of SQL users
+ * Retrieve count of administrator accounts, exluding those that are being deleted
  *
- * @return int Number of SQL users
+ * @return int Count of administrator accounts
  */
-function get_sql_user_count()
+function get_administrators_count()
 {
-    return execute_query('SELECT COUNT(DISTINCT sqlu_name) FROM sql_user')->fetchRow(PDO::FETCH_COLUMN);
+    return get_objects_count('admin', 'admin_id', "WHERE admin_type = 'admin' AND admin_status <> 'todelete'");
 }
 
-// Per criteria counting functions
+/**
+ * Retrieve count of reseller accounts, exluding those that are being deleted
+ *
+ * @return int Count of reseller accounts
+ */
+function get_resellers_count()
+{
+    return get_objects_count('admin', 'admin_id', "WHERE admin_type = 'reseller' AND admin_status <> 'todelete'");
+}
 
 /**
- * Returns a count of items present in a database table with optional search criterias.
+ * Retrieve count of customers accounts, exluding those that are being deleted
  *
- * @param string $table Table name on which to operate
- * @param string $where OPTIONAL SQL WHERE clause
- * @param string $bind OPTIONAL value to bind to the placeholder
- * @return int Items count
+ * @return int Count of customer accounts
  */
-function records_count($table, $where = '', $bind = '')
+function get_customers_count()
+{
+    return get_objects_count('admin', 'admin_id', "WHERE admin_type = 'user' AND admin_status <> 'todelete'");
+}
+
+/**
+ * Retrieve count of domains, exluding those that are being deleted
+ *
+ * @return int Count of domains
+ */
+function get_domains_count()
+{
+    return get_objects_count('domain', 'domain_id', "WHERE domain_status <> 'todelete'");
+}
+
+/**
+ * Retrieve count of subdomains, exluding those that are being deleted
+ *
+ *
+ * @return int Count of subdomains
+ */
+function get_subdomains_count()
+{
+    return get_objects_count('subdomain', 'subdomain_id', "WHERE subdomain_status <> 'todelete'")
+        + get_objects_count('subdomain_alias', 'subdomain_alias_id', "WHERE subdomain_alias_status <> 'todelete'");
+}
+
+/**
+ * Retrieve count of domain aliases, excluding those that are ordered or being deleted
+ *
+ * @return int Count of domain aliases
+ */
+function get_domain_aliases_count()
+{
+    return get_objects_count('domain_aliasses', 'alias_id', "WHERE alias_status NOT IN('ordered', 'todelete')");
+}
+
+/**
+ * Retrieve count of mail accounts, exluding those that are being deleted
+ *
+ * Default mail accounts are counted or not, depending of administrator settings.
+ *
+ * @return int Count of mail accounts
+ */
+function get_mail_accounts_count()
+{
+    $where = '';
+
+    if (!iMSCP_Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
+        # A default mail account is composed of a name matching with:
+        # - abuse, hostmaster, postmaster or webmaster for a domain
+        # - webmaster for a subdomain
+        # and is set as forward mail account. If the customeer turn a default
+        # mail account into a normal mail account, it is no longer seen as
+        # default mail account.
+        $where .= "
+            WHERE ! (
+                mail_acc IN('abuse', 'hostmaster', 'postmaster', 'webmaster')
+                AND
+                mail_type IN('" . MT_NORMAL_FORWARD . "', '" . MT_ALIAS_FORWARD . "')
+            )
+            AND !(mail_acc = 'webmaster' AND mail_type IN('" . MT_SUBDOM_FORWARD . "', '" . MT_ALSSUB_FORWARD . "'))
+        ";
+    }
+
+    $where .= ($where == '' ? 'WHERE ' : 'AND ') . "status <> 'todelete'";
+
+    return get_objects_count('mail_users', 'mail_id', $where);
+}
+
+/**
+ * Retrieve count of FTP users, exluding those that are being deleted
+ *
+ * @return int Count of FTP users
+ */
+function get_ftp_users_count()
+{
+    return get_objects_count('ftp_users', 'userid', "WHERE status <> 'todelete'");
+}
+
+/**
+ * Retrieve count of SQL databases
+ *
+ * @return int Count of SQL databases;
+ */
+function get_sql_databases_count()
+{
+    return get_objects_count('sql_database', 'sqld_id');
+}
+
+/**
+ * Retrieve count of SQL users
+ *
+ * @return int Count of SQL users
+ */
+function get_sql_users_count()
+{
+    return get_objects_count('sql_user', 'sqlu_name');
+}
+
+/**
+ * Retrieve count of objects from the given table using the given identifier field and optional WHERE clause
+ *
+ * @param string $table
+ * @param string $idField Identifier field
+ * @param string $where OPTIONAL Where clause
+ * @return int Count of objects
+ */
+function get_objects_count($table, $idField, $where = '')
 {
     $table = quoteIdentifier($table);
+    $idField = quoteIdentifier($idField);
 
-    if ($where != '') {
-        if ($bind != '') {
-            $stmt = exec_query("SELECT COUNT(*) FROM $table WHERE $where = ?", $bind);
-        } else {
-            $stmt = execute_query("SELECT COUNT(*) FROM $table WHERE $where");
-        }
-    } else {
-        $stmt = execute_query("SELECT COUNT(*) FROM $table");
-    }
-
-    return $stmt->fetchRow(PDO::FETCH_COLUMN);
+    return execute_query("SELECT COUNT(DISTINCT $idField) FROM $table $where")->fetchRow(PDO::FETCH_COLUMN);
 }
 
 /**
- * Returns number of items in a database table with optional search criterias
+ * Retrieve count of subdomains, domain aliases, mail accounts, FTP users,
+ * SQL database and SQL users that belong to the given reseller, excluding those that are being deleted
  *
- * @param string $field
- * @param string $table
- * @param string $where
- * @param string $value
- * @param string $subtable
- * @param string $subwhere
- * @param string $subgroupname
- * @return int
+ * @return array An array containing count of administrators, resellers,
+ *              customers, domains, subdomains, domain aliases, mail accounts,
+ *              FTP users, SQL databases and SQL users
  */
-function sub_records_count($field, $table, $where, $value, $subtable, $subwhere, $subgroupname)
+function get_objects_counts()
 {
-    if ($where != '') {
-        $stmt = exec_query("SELECT $field AS `field` FROM $table WHERE $where = ?", $value);
-    } else {
-        $stmt = execute_query("SELECT $field AS `field` FROM $table");
-    }
+    return [
+        get_administrators_count(),
+        get_resellers_count(),
+        get_customers_count(),
+        get_domains_count(),
+        get_subdomains_count(),
+        get_domain_aliases_count(),
+        get_mail_accounts_count(),
+        get_ftp_users_count(),
+        get_sql_databases_count(),
+        get_sql_users_count()
+    ];
+}
 
-    $result = 0;
+// Per reseller counting functions
 
-    if (!$stmt->rowCount()) {
-        return $result;
-    }
-
-    if ($subgroupname != '') {
-        $sqldIds = [];
-
-        while (!$stmt->EOF) {
-            array_push($sqldIds, $stmt->fields['field']);
-            $stmt->moveNext();
-        }
-
-        $sqldIds = implode(',', $sqldIds);
-
-        if ($subwhere != '') {
-            $subres = execute_query(
-                "SELECT COUNT(DISTINCT $subgroupname) AS `cnt` FROM $subtable WHERE `sqld_id` IN ($sqldIds)"
-            );
-            $result = $subres->fields['cnt'];
-        } else {
-            return $result;
-        }
-    } else {
-        while (!$stmt->EOF) {
-            $contents = $stmt->fields['field'];
-
-            if ($subwhere != '') {
-                $query = "SELECT COUNT(*) AS `cnt` FROM $subtable WHERE $subwhere = ?";
-            } else {
-                return $result;
-            }
-
-            $subres = exec_query($query, $contents);
-            $result += $subres->fields['cnt'];
-            $stmt->moveNext();
-        }
-    }
-
-    return $result;
+/**
+ * Retrieve count of customer accounts that belong to the given reseller, excluding those that are being deleted
+ *
+ * @param int $resellerId Reseller unique identifier
+ * @return int Count of subdomains
+ */
+function get_reseller_customers_count($resellerId)
+{
+    return exec_query(
+        "SELECT COUNT(admin_id) FROM admin WHERE created_by = ? AND admin_status <> 'todelete'", $resellerId
+    )->fetchRow(PDO::FETCH_COLUMN);
 }
 
 /**
- * Must be documented
+ * Retrieve count of domains that belong to the given reseller, excluding those that are being deleted
  *
- * @param string $field
- * @param string $table
- * @param string $where
- * @param string $value
- * @param string $subtable
- * @param string $subwhere
- * @param string $a
- * @param string $b
- * @return int
+ * @param int $resellerId Reseller unique identifier
+ * @return int Count of subdomains
  */
-function sub_records_rlike_count($field, $table, $where, $value, $subtable, $subwhere, $a, $b)
+function get_reseller_domains_count($resellerId)
 {
-    if ($where !== '') {
-        $stmt = exec_query("SELECT $field AS `field` FROM $table WHERE $where = ?", $value);
-    } else {
-        $stmt = execute_query("SELECT $field AS `field` FROM $table");
-    }
+    return exec_query(
+        "
+            SELECT COUNT(domain_id)
+            FROM domain
+            JOIN admin ON(admin_id = domain_admin_id)
+            WHERE created_by = ?
+            AND domain_status <> 'todelete'
+        ", $resellerId
+    )->fetchRow(PDO::FETCH_COLUMN);
+}
 
-    $result = 0;
-
-    if (!$stmt->rowCount()) {
-        return $result;
-    }
-
-    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-        if ($subwhere === '') {
-            return $result;
-
-        }
-
-        $result += exec_query(
-            "SELECT COUNT(*) FROM $subtable WHERE $subwhere RLIKE ?", $a . $row['field'] . $b
+/**
+ * Retrieve count of subdomains that belong to the given reseller, excluding those that are being deleted
+ *
+ * @param int $resellerId Reseller unique identifier
+ * @return int Count of subdomains
+ */
+function get_reseller_subdomains_count($resellerId)
+{
+    return exec_query(
+            "
+                SELECT COUNT(subdomain_id)
+                FROM subdomain
+                JOIN domain USING(domain_id)
+                JOIN admin ON(admin_id = domain_admin_id)
+                WHERE created_by = ?
+                AND subdomain_status <> 'todelete'
+            ",
+            $resellerId
+        )->fetchRow(PDO::FETCH_COLUMN)
+        +
+        exec_query(
+            "
+                SELECT COUNT(subdomain_alias_id)
+                FROM subdomain_alias
+                JOIN domain_aliasses USING(alias_id)
+                JOIN domain USING(domain_id)
+                JOIN admin ON(admin_id = domain_admin_id)
+                WHERE created_by = ?
+                AND subdomain_alias_status <> 'todelete'
+            ",
+            $resellerId
         )->fetchRow(PDO::FETCH_COLUMN);
+}
+
+/**
+ * Retrieve count of domain aliases that belong to the given reseller, excluding those that are ordered or being deleted
+ *
+ * @param int $resellerId Reseller unique identifier
+ * @return int Count of domain aliases
+ */
+function get_reseller_domain_aliases_count($resellerId)
+{
+    return exec_query(
+        "
+            SELECT COUNT(alias_id)
+            FROM domain_aliasses
+            JOIN domain USING(domain_id)
+            JOIN admin ON(admin_id = domain_admin_id)
+            WHERE created_by = ?
+            AND alias_status <> 'todelete'
+        ",
+        $resellerId
+    )->fetchRow(PDO::FETCH_COLUMN);
+}
+
+/**
+ * Retrieve count of mail accounts that belong to the given reseller, excluding those that are being deleted
+ *
+ * Default mail accounts are counted or not, depending of administrator settings.
+ *
+ * @param int $resellerId Domain unique identifier
+ * @return int Count of mail accounts
+ */
+function get_reseller_mail_accounts_count($resellerId)
+{
+    $query = '
+        SELECT COUNT(mail_id)
+        FROM mail_users
+        JOIN domain USING(domain_id)
+        JOIN admin ON(admin_id = domain_admin_id)
+        WHERE created_by = ?
+    ';
+
+    if (!iMSCP_Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
+        # A default mail account is composed of a name matching with:
+        # - abuse, hostmaster, postmaster or webmaster for a domain
+        # - webmaster for a subdomain
+        # and is set as forward mail account. If the customeer turn a default
+        # mail account into a normal mail account, it is no longer seen as
+        # default mail account.
+        $query .= "
+            AND !(
+                mail_acc IN('abuse', 'hostmaster', 'postmaster', 'webmaster')
+                AND
+                mail_type IN('" . MT_NORMAL_FORWARD . "', '" . MT_ALIAS_FORWARD . "')
+            )    
+            AND !(mail_acc = 'webmaster' AND mail_type IN('" . MT_SUBDOM_FORWARD . "', '" . MT_ALSSUB_FORWARD . "'))
+        ";
     }
 
-    return $result;
+    $query .= "AND status <> 'todelete'";
+
+    return exec_query($query, $resellerId)->fetchRow(PDO::FETCH_COLUMN);
+}
+
+/**
+ * Retrieve count of FTP users that belong to the given reseller, excluding those that are being deleted
+ *
+ * @param int $resellerId Reseller unique identifier
+ * @return int Count of FTP users
+ */
+function get_reseller_ftp_users_count($resellerId)
+{
+    return exec_query(
+        "SELECT COUNT(userid) FROM ftp_users JOIN admin USING(admin_id) WHERE created_by = ? AND status <> 'todelete'",
+        $resellerId
+    )->fetchRow(PDO::FETCH_COLUMN);
+}
+
+/**
+ * Retrieve count of SQL databases that belong to the given reseller
+ *
+ * @param int $resellerId Reseller unique identifier
+ * @return int Count of SQL databases
+ */
+function get_reseller_sql_databases_count($resellerId)
+{
+    return exec_query(
+        '
+            SELECT COUNT(sqld_id)
+            FROM sql_database
+            JOIN domain USING(domain_id)
+            JOIN admin ON(admin_id = domain_admin_id)
+            WHERE created_by = ?
+        ',
+        $resellerId
+    )->fetchRow(PDO::FETCH_COLUMN);
+}
+
+/**
+ * Retrieve count of SQL users that belong to the given reseller
+ *
+ * @param int $resellerId Domain unique identifier
+ * @return int Count of SQL users
+ */
+function get_reseller_sql_users_count($resellerId)
+{
+    return exec_query(
+        '
+            SELECT COUNT(DISTINCT sqlu_name)
+            FROM sql_user
+            JOIN sql_database USING(sqld_id)
+            JOIN domain USING(domain_id)
+            JOIN admin ON(admin_id = domain_admin_id)
+            WHERE created_by = ?
+        ',
+        $resellerId
+    )->fetchRow(PDO::FETCH_COLUMN);
+}
+
+/**
+ * Retrieve count of subdomains, domain aliases, mail accounts, FTP users,
+ * SQL database and SQL users that belong to the given reseller, excluding those that are being deleted
+ *
+ * @param int $resellerId Customer unique identifier
+ * @return array An array containing count of customers, domains, subdomains,
+ *               domain aliases, mail accounts, FTP users, SQL databases and
+ *               SQL users
+ */
+function get_reseller_objects_counts($resellerId)
+{
+    return [
+        get_reseller_customers_count($resellerId),
+        get_reseller_domains_count($resellerId),
+        get_reseller_subdomains_count($resellerId),
+        get_reseller_domain_aliases_count($resellerId),
+        get_reseller_mail_accounts_count($resellerId),
+        get_reseller_ftp_users_count($resellerId),
+        get_reseller_sql_databases_count($resellerId),
+        get_reseller_sql_users_count($resellerId)
+    ];
 }
 
 // Per domain/customer counting functions
 
 /**
- * Retrieve count of subdomains that belong to the given domain
+ * Retrieve count of subdomains that belong to the given customer, excluding those that are being deleted
  *
- * @param int $domainId Domain unique identifier
- * @return int Count of subdomains that belong to the given domain
+ * @param int $domainId Customer main domain unique identifier
+ * @return int Count of subdomains
  */
-function get_domain_running_sub_cnt($domainId)
-{
-    $subCount = exec_query(
-        'SELECT COUNT(subdomain_id) FROM subdomain WHERE domain_id = ?', $domainId
-    )->fetchRow(PDO::FETCH_COLUMN);
-
-    $subCount += exec_query(
-        'SELECT COUNT(subdomain_alias_id) FROM subdomain_alias JOIN domain_aliasses USING(alias_id) WHERE domain_id = ?',
-        $domainId
-    )->fetchRow(PDO::FETCH_COLUMN);
-
-    return $subCount;
-}
-
-/**
- * Retrieve count of domain aliases that belong to the given domain
- *
- * @param int $domainId Domain unique identifier
- * @return int Count of domain_aliases that belong to the given domain
- */
-function get_domain_running_als_cnt($domainId)
+function get_customer_subdomains_count($domainId)
 {
     return exec_query(
-        "SELECT COUNT(alias_id) FROM domain_aliasses WHERE domain_id = ? AND alias_status <> 'ordered'", $domainId
+            "SELECT COUNT(subdomain_id) FROM subdomain WHERE domain_id = ? AND subdomain_status <> 'todelete'",
+            $domainId
+        )->fetchRow(PDO::FETCH_COLUMN)
+        + exec_query(
+            "
+                SELECT COUNT(subdomain_alias_id)
+                FROM subdomain_alias
+                JOIN domain_aliasses USING(alias_id)
+                WHERE domain_id = ?
+                AND subdomain_alias_status <> 'todelete'
+            ",
+            $domainId
+        )->fetchRow(PDO::FETCH_COLUMN);
+}
+
+/**
+ * Retrieve count of domain aliases that belong to the given customer, excluding those that are ordered or being deleted
+ *
+ * @param int $domainId Customer main domain unique identifier
+ * @return int Count of domain aliases
+ */
+function get_customer_domain_aliases_count($domainId)
+{
+    return exec_query(
+        "SELECT COUNT(alias_id) FROM domain_aliasses WHERE domain_id = ? AND alias_status NOT IN('ordered', 'todelete')",
+        $domainId
     )->fetchRow(PDO::FETCH_COLUMN);
 }
 
 /**
- * Retrieve count of mail accounts that belong to the given domain
+ * Retrieve count of mail accounts that belong to the given customer, excluding those that are being deleted
  *
- * @param int $domainId Domain unique identifier
- * @return int Count of mail accounts that belong to the given domain
+ * Default mail accounts are counted or not, depending of administrator settings.
+ *
+ * @param int $domainId Customer main domain unique identifier
+ * @return int Count of mail accounts
  */
-function get_domain_running_mail_acc_cnt($domainId)
+function get_customer_mail_accounts_count($domainId)
 {
     $query = 'SELECT COUNT(mail_id) FROM mail_users WHERE domain_id = ?';
 
@@ -214,45 +452,40 @@ function get_domain_running_mail_acc_cnt($domainId)
         # mail account into a normal mail account, it is no longer seen as
         # default mail account.
         $query .= "
-            AND ! (
-                (
-                    mail_acc IN('abuse', 'hostmaster', 'postmaster', 'webmaster')
-                    AND
-                    mail_type IN('" . MT_NORMAL_FORWARD . "', '" . MT_ALIAS_FORWARD . "')
-                )    
-                OR
-                (
-                    mail_acc = 'webmaster'
-                    AND
-                    mail_type IN('" . MT_SUBDOM_FORWARD . "', '" . MT_ALSSUB_FORWARD . "')
-                )
-            )
+            AND !(
+                mail_acc IN('abuse', 'hostmaster', 'postmaster', 'webmaster')
+                AND
+                mail_type IN('" . MT_NORMAL_FORWARD . "', '" . MT_ALIAS_FORWARD . "')
+            )    
+            AND !(mail_acc = 'webmaster' AND mail_type IN('" . MT_SUBDOM_FORWARD . "', '" . MT_ALSSUB_FORWARD . "'))
         ";
     }
+
+    $query .= "AND status <> 'todelete'";
 
     return exec_query($query, $domainId)->fetchRow(PDO::FETCH_COLUMN);
 }
 
 /**
- * Retrieve count of FTP account that belong to the given customer
+ * Retrieve count of FTP users that belong to the given customer, excluding those that are being deleted
  *
  * @param int $customerId Customer unique identifier
- * @return int Total number of FTP accounts that belong to the given domain
+ * @return int Count of FTP users
  */
-function get_customer_running_ftp_acc_cnt($customerId)
+function get_customer_ftp_users_count($customerId)
 {
     return exec_query(
-        'SELECT COUNT(userid) FROM ftp_users WHERE admin_id = ?', $customerId
+        "SELECT COUNT(userid) FROM ftp_users WHERE admin_id = ? AND status <> 'todelete'", $customerId
     )->fetchRow(PDO::FETCH_COLUMN);
 }
 
 /**
- * Retrieve count of SQL databases that belong to the given domain
+ * Retrieve count of SQL databases that belong to the given customer
  *
- * @param int $domainId Domain unique identifier
- * @return int Total number of SQL databases that belong to the given domain
+ * @param int $domainId Customer main domain unique identifier
+ * @return int Count of SQL databases
  */
-function get_domain_running_sqld_acc_cnt($domainId)
+function get_customer_sql_databases_count($domainId)
 {
     return exec_query(
         'SELECT COUNT(sqld_id) FROM sql_database WHERE domain_id = ?', $domainId
@@ -260,12 +493,12 @@ function get_domain_running_sqld_acc_cnt($domainId)
 }
 
 /**
- * Retrieve count of SQL users that belong to the given domain
+ * Retrieve count of SQL users that belong to the given customer
  *
- * @param int $domainId Domain unique identifier
- * @return int Total number of SQL users that belong to the given domain
+ * @param int $domainId Customer main domain unique identifier
+ * @return int Count of SQL users
  */
-function get_domain_running_sqlu_acc_cnt($domainId)
+function get_customer_sql_users_count($domainId)
 {
     return exec_query(
         'SELECT COUNT(DISTINCT sqlu_name) FROM sql_user JOIN sql_database USING(sqld_id) WHERE domain_id = ?',
@@ -274,36 +507,23 @@ function get_domain_running_sqlu_acc_cnt($domainId)
 }
 
 /**
- * Retrieve count of both SQL databases and SQL users that belong to the given domain
- *
- * @param int $domainId Domain unique identifier
- * @return array An array containing total number of SQL databases and users
- *               that belong to the given domain
- */
-function get_domain_running_sql_acc_cnt($domainId)
-{
-    return [get_domain_running_sqld_acc_cnt($domainId), get_domain_running_sqlu_acc_cnt($domainId)];
-}
-
-/**
- * Retrieve count of subdomains, domain aliases, mail accounts, FTP accounts,
- * SQL database and SQL users that belong to the given customer
+ * Retrieve count of subdomains, domain aliases, mail accounts, FTP users,
+ * SQL database and SQL users that belong to the given customer, excluding those that are being deleted
  *
  * @param int $customerId Customer unique identifier
- * @return array An array containing count of subdomain, domain aliases, mail
- *               accounts, FTP accounts, SQL databases and SQL users for the
- *               given customer
+ * @return array An array containing count of subdomains, domain aliases, mail
+ *               accounts, FTP users, SQL databases and SQL users
  */
-function get_customer_running_props_cnt($customerId)
+function get_customer_objects_counts($customerId)
 {
     $domainId = get_user_domain_id($customerId);
 
     return [
-        get_domain_running_sub_cnt($domainId),
-        get_domain_running_als_cnt($domainId),
-        get_domain_running_mail_acc_cnt($domainId),
-        get_customer_running_ftp_acc_cnt($customerId),
-        get_domain_running_sqld_acc_cnt($domainId),
-        get_domain_running_sqlu_acc_cnt($domainId)
+        get_customer_subdomains_count($domainId),
+        get_customer_domain_aliases_count($domainId),
+        get_customer_mail_accounts_count($domainId),
+        get_customer_ftp_users_count($customerId),
+        get_customer_sql_databases_count($domainId),
+        get_customer_sql_users_count($domainId)
     ];
 }

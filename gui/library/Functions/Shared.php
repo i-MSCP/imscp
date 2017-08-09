@@ -293,82 +293,37 @@ function get_user_domain_id($customeId)
 }
 
 /**
- * Get the total number of consumed and max available items for the given customer
+ * Get counts of objects and max objects for the given customer
  *
- * @param  int $userId Domain unique identifier
+ * @param  int $customerId Customer unique identifier
  * @return array
  */
-function shared_getCustomerProps($userId)
+function shared_getCustomerProps($customerId)
 {
-    $stmt = exec_query('SELECT * FROM domain WHERE domain_admin_id = ?', $userId);
+    $stmt = exec_query('SELECT * FROM domain WHERE domain_admin_id = ?', $customerId);
 
     if (!$stmt->rowCount()) {
+        // FIXME: bad implementation -- Should never occurs
         return array_fill(0, 14, 0);
     }
 
     $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
-    // Retrieves total number of subdomains already consumed by the customer
-    $subConsumed = records_count('subdomain', 'domain_id', $row['domain_id']);
-
-    // Retrieves max available number of subdomains for the customer
-    $subMax = $row['domain_subd_limit'];
-
-    // Retrieves total number of domain aliases already consumed by the customer
-    $alsConsumed = records_count('domain_aliasses', 'domain_id', $row['domain_id']);
-
-    // Retrieves max available number of domain aliases for the customer
-    $alsMax = $row['domain_alias_limit'];
-
-    // Retrieves total number of mail accounts already consumed by the customer
-    // This works with the admin option (Count default email addresses)
-    if (iMSCP_Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
-        $mailConsumed = records_count('mail_users', "mail_type NOT LIKE '%catchall%' AND domain_id", $row['domain_id']);
-    } else {
-        $where = "
-            mail_acc != 'abuse' AND mail_acc != 'postmaster' AND mail_acc != 'webmaster'
-            AND mail_type NOT RLIKE '_catchall' AND domain_id
-        ";
-        $mailConsumed = records_count('mail_users', $where, $row['domain_id']);
-    }
-
-    // Retrieves max available number of mail accounts for the customer
-    $mailMax = $row['domain_mailacc_limit'];
-
-    // Retrieve total number of ftp accounts already consumed by the customer
-    $ftpConsumed = sub_records_rlike_count(
-        'domain_name', 'domain', 'domain_id', $row['domain_id'], 'ftp_users', 'userid', '@', ''
-    );
-    $ftpConsumed += sub_records_rlike_count(
-        'alias_name', 'domain_aliasses', 'domain_id', $row['domain_id'], 'ftp_users', 'userid', '@', ''
-    );
-
-    // Retrieves max available number of mail accounts for the customer
-    $ftpMax = $row['domain_ftpacc_limit'];
-
-    // Retrieves total number of SQL databases already consumed by the customer
-    $sqlDbConsumed = records_count('sql_database', 'domain_id', $row['domain_id']);
-
-    // Retrieves max available number of SQL databases for the customer
-    $sqlDbMax = $row['domain_sqld_limit'];
-
-    // Retrieves total number of SQL user already consumed by the customer
-    $sqlUserConsumed = sub_records_count(
-        'sqld_id', 'sql_database', 'domain_id', $row['domain_id'], 'sql_user', 'sqld_id', 'sqlu_name'
-    );
-
-    // Retrieves max number of SQL user for the customer
-    $sqlUserMax = $row['domain_sqlu_limit'];
-
-    // Retrieves max available montly traffic volume for the customer
-    $trafficMax = $row['domain_traffic_limit'];
-
-    // Retrieve max available diskspace limit for the customer
-    $diskMax = $row['domain_disk_limit'];
-
     return [
-        $subConsumed, $subMax, $alsConsumed, $alsMax, $mailConsumed, $mailMax, $ftpConsumed, $ftpMax, $sqlDbConsumed,
-        $sqlDbMax, $sqlUserConsumed, $sqlUserMax, $trafficMax, $diskMax
+        get_customer_subdomains_count($row['domain_id']),
+        $row['domain_subd_limit'],
+        get_customer_domain_aliases_count($row['domain_id']),
+        $row['domain_alias_limit'],
+        get_customer_mail_accounts_count($row['domain_id']),
+        $row['domain_mailacc_limit'],
+        get_customer_ftp_users_count($customerId),
+        $row['domain_ftpacc_limit'],
+        get_customer_sql_databases_count($row['domain_id']),
+        $row['domain_sqld_limit'],
+        get_customer_sql_users_count($row['domain_id']),
+        $row['domain_sqlu_limit'],
+        $row['domain_traffic_limit'],
+        $row['domain_disk_limit']
     ];
 }
 
@@ -1466,17 +1421,6 @@ function is_number($number)
 }
 
 /**
- * Checks if all of the characters in the provided string match like a basic string.
- *
- * @param  $string string to be checked
- * @return bool TRUE if all characters match like a basic string, FALSE otherwise
- */
-function is_basicString($string)
-{
-    return (bool)preg_match('/^[\w\-]+$/D', $string);
-}
-
-/**
  * Is the request a Javascript XMLHttpRequest?
  *
  * Returns true if the request‘s "X-Requested-With" header contains "XMLHttpRequest".
@@ -1702,20 +1646,15 @@ function shared_getCustomerMonthlyTrafficData($domainId)
 {
     $stmt = exec_query(
         '
-          SELECT
-            IFNULL(SUM(dtraff_web), 0) AS dtraff_web,
+          SELECT IFNULL(SUM(dtraff_web), 0) AS dtraff_web,
             IFNULL(SUM(dtraff_ftp), 0) AS dtraff_ftp,
             IFNULL(SUM(dtraff_mail), 0) AS dtraff_mail,
             IFNULL(SUM(dtraff_pop), 0) AS dtraff_pop
           FROM domain_traffic
-          WHERE dtraff_time BETWEEN
-            UNIX_TIMESTAMP(((LAST_DAY(CURDATE()) + INTERVAL 1 DAY) - INTERVAL 1 MONTH ))
-            AND
-            UNIX_TIMESTAMP((LAST_DAY(CURDATE()) + INTERVAL 1 DAY ))
-          AND
-            domain_id = ?
+          WHERE dtraff_time BETWEEN ? AND ?
+          AND domain_id = ?
         ',
-        $domainId
+        [getFirstDayOfMonth(), getLastDayOfMonth(), $domainId]
     );
 
     if ($stmt->rowCount()) {
@@ -1742,8 +1681,7 @@ function shared_getCustomerStats($adminId)
 {
     $stmt = exec_query(
         '
-            SELECT
-              domain_id,
+            SELECT domain_id,
               IFNULL(domain_disk_usage, 0) AS diskspace_usage,
               IFNULL(domain_traffic_limit, 0) AS monthly_traffic_limit,
               IFNULL(domain_disk_limit, 0) AS diskspace_limit,
@@ -1770,26 +1708,6 @@ function shared_getCustomerStats($adminId)
         $row['admin_name'], $row['domain_id'], $webTraffic, $ftpTraffic, $smtpTraffic, $popTraffic, $totalTraffic,
         $row['diskspace_usage'], $row['monthly_traffic_limit'], $row['diskspace_limit']
     ];
-}
-
-/**
- * Must be documented
- *
- * @param  $value
- * @param  $value_max
- * @param  $bar_width
- * @return int
- * @deprecated
- */
-function calc_bar_value($value, $value_max, $bar_width)
-{
-    if ($value_max == 0) {
-        return 0;
-    }
-
-    $ret_value = ($value * $bar_width) / $value_max;
-    return ($ret_value > $bar_width) ? $bar_width : $ret_value;
-
 }
 
 /***********************************************************************************************************************
@@ -1906,85 +1824,6 @@ function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $uln
 /***********************************************************************************************************************
  * Softwares installer functions
  */
-
-/**
- * Returns client software permissions
- *
- * @throws iMSCP_Exception in case softwares installer permissions of the given user cannot be retrieved
- * @param  iMSCP_pTemplate $tpl Template engine
- * @param  int $userId User unique identifier
- * @return void
- */
-function get_client_software_permission($tpl, $userId)
-{
-    $query = "SELECT `domain_software_allowed`, `domain_ftpacc_limit` FROM `domain` WHERE `domain_admin_id` = ?";
-    $stmt = exec_query($query, [$userId]);
-
-    if (!$stmt->rowCount()) {
-        throw new iMSCP_Exception('Unable to retrieve software installer permissions for the given user');
-    }
-
-    if ($stmt->fields('domain_software_allowed') == 'yes' && $stmt->fields('domain_ftpacc_limit') != '1') {
-        $tpl->assign([
-            'SOFTWARE_SUPPORT'            => tr('yes'),
-            'TR_SOFTWARE_MENU'            => tr('Software installer'),
-            'SOFTWARE_MENU'               => tr('yes'),
-            'TR_INSTALLATION'             => tr('Installation details'),
-            'TR_INSTALLATION_INFORMATION' => tr('Please set now the username and password for the later login in the software. (Required fiels)'),
-            'TR_INSTALL_USER'             => tr('Login username'),
-            'TR_INSTALL_PWD'              => tr('Login password'),
-            'TR_INSTALL_EMAIL'            => tr('Email address'),
-            'SW_MSG'                      => tr('Enabled'),
-            'SW_ALLOWED'                  => tr('Software installer'),
-            'TR_SOFTWARE_DESCRIPTION'     => tr('Software Description')
-        ]);
-        $tpl->parse('T_SOFTWARE_SUPPORT', '.t_software_support');
-    } else {
-        $tpl->assign([
-            'T_SOFTWARE_SUPPORT'      => '',
-            'T_SOFTWARE_MENU'         => '',
-            'SOFTWARE_ITEM'           => '',
-            'TR_INSTALLATION'         => tr('You do not have permission to install software yet'),
-            'TR_SOFTWARE_DESCRIPTION' => tr('You do not have permission to install software yet'),
-            'SW_MSG'                  => tr('Disabled'),
-            'SW_ALLOWED'              => tr('Software installer')
-        ]);
-    }
-}
-
-/**
- * Whether or not the given reseller is allowed to use the software installer
- *
- * @throws iMSCP_Exception in case properties for the given reseller are not found
- * @param  iMSCP_pTemplate $tpl Template engine
- * @param  int $resellerId Reseller unique identifier
- * @return void
- */
-function get_reseller_software_permission($tpl, $resellerId)
-{
-    $query = "SELECT `software_allowed` FROM `reseller_props` WHERE `reseller_id` = ?";
-    $stmt = exec_query($query, [$resellerId]);
-
-    if (!$stmt->rowCount()) {
-        throw new iMSCP_Exception('Unable to found properties of the given reseller');
-    }
-
-    if ($stmt->fields('software_allowed') == 'yes') {
-        $tpl->assign([
-            'SOFTWARE_SUPPORT' => tr('yes'),
-            'SW_ALLOWED'       => tr('Software installer'),
-            'SW_MSG'           => tr('enabled')
-        ]);
-        $tpl->parse('T_SOFTWARE_SUPPORT', 't_software_support');
-    } else {
-        $tpl->assign([
-            'SOFTWARE_SUPPORT'   => tr('no'),
-            'SW_ALLOWED'         => tr('Software installer'),
-            'SW_MSG'             => tr('disabled'),
-            'T_SOFTWARE_SUPPORT' => ''
-        ]);
-    }
-}
 
 /**
  * Get all software installer options
@@ -2313,7 +2152,7 @@ function send_request()
  */
 
 /**
- * Executes a SQL statement.
+ * Executes a SQL statement
  *
  * Note: You may pass additional parameters. They will be treated as though you
  * called PDOStatement::setFetchMode() on the resultant statement object that is

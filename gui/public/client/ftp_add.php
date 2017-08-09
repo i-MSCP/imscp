@@ -350,7 +350,8 @@ if (is_xhr() && isset($_POST['domain_type'])) {
 }
 
 if (!empty($_POST)) {
-    $nbFtpAccounts = get_customer_running_ftp_acc_cnt($_SESSION['user_id']);
+    $nbFtpAccounts = get_customer_ftp_users_count($_SESSION['user_id']);
+
     if ($mainDmnProps['domain_ftpacc_limit'] && $nbFtpAccounts >= $mainDmnProps['domain_ftpacc_limit']) {
         set_page_message(tr('FTP account limit reached.'), 'error');
         redirectTo('ftp_accounts.php');

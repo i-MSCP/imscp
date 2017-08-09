@@ -26,7 +26,6 @@
  */
 function init_login($eventManager)
 {
-    // Purge expired sessions
     do_session_timeout();
 
     if (iMSCP_Registry::get('config')['BRUTEFORCE']) {
@@ -166,22 +165,24 @@ function login_checkDomainAccount($event)
     $event->stopPropagation();
 
     if (!$stmt->rowCount()) {
-        write_log(
-            sprintf('Account data not found in database for the %s user', $identity->admin_name),
-            E_USER_ERROR
-        );
+        write_log(sprintf('Account data not found in database for the %s user', $identity->admin_name), E_USER_ERROR);
         set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
-    } else {
-        $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-
-        if ($row['admin_status'] == 'disabled' || $row['domain_status'] == 'disabled') {
-            set_page_message(tr('Your account has been disabled. Please, contact your reseller.'), 'error');
-        } elseif ($row['domain_expires'] > 0 && $row['domain_expires'] < time()) {
-            set_page_message(tr('Your account has expired. Please, contact your reseller.'), 'error');
-        } else {
-            $event->stopPropagation(false);
-        }
+        return;
     }
+
+    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+
+    if ($row['admin_status'] == 'disabled' || $row['domain_status'] == 'disabled') {
+        set_page_message(tr('Your account has been disabled. Please, contact your reseller.'), 'error');
+        return;
+    }
+
+    if ($row['domain_expires'] > 0 && $row['domain_expires'] < time()) {
+        set_page_message(tr('Your account has expired. Please, contact your reseller.'), 'error');
+        return;
+    }
+
+    $event->stopPropagation(false);
 }
 
 /**
@@ -222,7 +223,8 @@ function check_login($userLevel, $preventExternalLogin = true)
     $identity = $auth->getIdentity();
 
     // When the panel is in maintenance mode, only administrators can access the interface
-    if (iMSCP_Registry::get('config')['MAINTENANCEMODE'] && $identity->admin_type != 'admin'
+    if (iMSCP_Registry::get('config')['MAINTENANCEMODE']
+        && $identity->admin_type != 'admin'
         && (!isset($_SESSION['logged_from_type']) || $_SESSION['logged_from_type'] != 'admin')
     ) {
         $auth->unsetIdentity();
@@ -274,7 +276,7 @@ function change_user_interface($fromId, $toId)
         );
 
         if ($stmt->rowCount() < 2) {
-            set_page_message(tr('Wrong request.'), 'error');
+            set_page_message(tr('Bad request.'), 'error');
         }
 
         list($from, $to) = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -287,19 +289,19 @@ function change_user_interface($fromId, $toId)
         $fromToMap['reseller']['BACK'] = 'users.php';
 
         if (!isset($fromToMap[$from->admin_type][$to->admin_type]) || ($from->admin_type == $to->admin_type)) {
-            if (isset($_SESSION['logged_from_id']) && $_SESSION['logged_from_id'] == $to->admin_id) {
-                $toActionScript = $fromToMap[$to->admin_type]['BACK'];
-            } else {
-                set_page_message(tr('Wrong request.'), 'error');
+            if (!isset($_SESSION['logged_from_id']) || $_SESSION['logged_from_id'] != $to->admin_id) {
+                set_page_message(tr('Bad request.'), 'error');
                 write_log(
                     sprintf("%s tried to switch onto %s's interface", $from->admin_name, decode_idna($to->admin_name)),
                     E_USER_WARNING
                 );
                 break;
             }
+
+            $toActionScript = $fromToMap[$to->admin_type]['BACK'];
         }
 
-        $toActionScript = ($toActionScript) ? $toActionScript : $fromToMap[$from->admin_type][$to->admin_type];
+        $toActionScript = $toActionScript ?: $fromToMap[$from->admin_type][$to->admin_type];
 
         // Set new identity
         $auth = iMSCP_Authentication::getInstance();

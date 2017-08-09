@@ -37,29 +37,20 @@
  */
 function client_checkSqlUserPermissions($tpl, $databaseId)
 {
-    $domainProperties = get_domain_default_props($_SESSION['user_id']);
-    $domainSqlUsersLimit = $domainProperties['domain_sqlu_limit'];
-    $limits = get_domain_running_sql_acc_cnt($domainProperties['domain_id']);
+    $domainProps = get_domain_default_props($_SESSION['user_id']);
 
-    if ($domainSqlUsersLimit != 0
-        && $limits[1] >= $domainSqlUsersLimit
+    if ($domainProps['domain_sqlu_limit'] != 0
+        && get_customer_sql_databases_count($domainProps['domain_id']) >= $domainProps['domain_sqlu_limit']
     ) {
         $tpl->assign('CREATE_SQLUSER', '');
     }
 
     $stmt = exec_query(
-        '
-            SELECT domain_id
-            FROM domain
-            JOIN sql_database USING(domain_id)
-            WHERE domain_id = ?
-            AND sqld_id = ?
-            LIMIT 1
-        ',
-        [$domainProperties['domain_id'], $databaseId]
+        'SELECT COUNT(sqld_id) FROM sql_database JOIN domain USING(domain_id) WHERE sqld_id = ? AND domain_id = ?',
+        [$databaseId, $domainProps['domain_id']]
     );
 
-    if (!$stmt->rowCount()) {
+    if (!$stmt->fetchRow(PDO::FETCH_COLUMN)) {
         showBadRequestErrorPage();
     }
 }

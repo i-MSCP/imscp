@@ -158,22 +158,21 @@ function client_addSqlDb($userId)
 }
 
 /**
- * Check SQL permissions
+ * Check SQL databases limit
  *
  * @return void
  */
 function client_checkSqlDbLimit()
 {
-    $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
-    $mainDmnId = $mainDmnProps['domain_id'];
-    $sqlDatabaseLimit = $mainDmnProps['domain_sqld_limit'];
+    $domainProps = get_domain_default_props($_SESSION['user_id']);
 
-    list($nbSqlDb) = get_domain_running_sql_acc_cnt($mainDmnId);
-
-    if ($sqlDatabaseLimit != 0 && $nbSqlDb >= $sqlDatabaseLimit) {
-        set_page_message(tr('SQL database limit reached.'), 'error');
-        redirectTo('sql_manage.php');
+    if ($domainProps['domain_sqld_limit'] == 0
+        || get_customer_sql_databases_count($domainProps['domain_id']) < $domainProps['domain_sqld_limit']) {
+        return;
     }
+
+    set_page_message(tr('SQL database limit reached.'), 'error');
+    redirectTo('sql_manage.php');
 }
 
 /***********************************************************************************************************************
