@@ -162,19 +162,13 @@ class iMSCP_Authentication
      */
     public function getIdentity()
     {
-        $identity = NULL;
-
-        if (!$this->hasIdentity()) {
-            return $identity;
-        }
-
-        $identity = new stdClass();
-        $identity->admin_id = $_SESSION['user_id'];
-        $identity->admin_name = $_SESSION['user_logged'];
-        $identity->admin_type = $_SESSION['user_type'];
-        $identity->email = $_SESSION['user_email'];
-        $identity->created_by = $_SESSION['user_created_by'];
-        return $identity;
+        return $this->hasIdentity() ? (object)[
+            'admin_id'   => (int)$_SESSION['user_id'],
+            'admin_name' => (string)$_SESSION['user_logged'],
+            'admin_type' => (string)$_SESSION['user_type'],
+            'email'      => (string)$_SESSION['user_email'],
+            'created_by' => (int)$_SESSION['user_created_by']
+        ] : NULL;
     }
 
     /**

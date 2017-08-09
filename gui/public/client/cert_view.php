@@ -189,7 +189,7 @@ function client_generateSelfSignedCert($domainName)
     }
 
     $distinguishedName = [
-        'countryName'         => 'US', //  TODO map of country names to ISO-3166 codes
+        'countryName'         => 'US', // TODO map of country names to ISO-3166 codes
         'stateOrProvinceName' => !empty($row['state']) ? $row['state'] : 'N/A',
         'localityName'        => !empty($row['city']) ? $row['city'] : 'N/A',
         'organizationName'    => !empty($row['firm']) ? $row['firm'] : 'N/A',
@@ -209,7 +209,7 @@ function client_generateSelfSignedCert($domainName)
         return false;
     }
 
-    $cert = @openssl_csr_sign($csr, NULL, $pkeyStr, 365, $sslConfig, $_SESSION['user_id'] . time());
+    $cert = @openssl_csr_sign($csr, NULL, $pkeyStr, 365, $sslConfig, (int)($_SESSION['user_id'] . time()));
     if (!is_resource($cert)) {
         write_log(sprintf('Could not generate SSL certificate: %s', openssl_error_string()));
         return false;
