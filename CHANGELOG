@@ -109,6 +109,7 @@ YOUTRACK
     IP-1729 Couldn't generate self-signed SSL certificate with OpenSSL 1.1.x
     IP-1730 Couldn't delete support tickets that are closed
     IP-1733 Default mail accounts in client mail accounts overview should be hidden by default
+    IP-1737 Circular feature - A circular must not be send twice to the same email address
 
 ------------------------------------------------------------------------------------------------------------------------
 1.4.7

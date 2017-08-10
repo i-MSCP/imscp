@@ -73,7 +73,15 @@ function admin_sendToAdministrators($senderName, $senderEmail, $subject, $body)
         return;
     }
 
-    $stmt = exec_query('SELECT admin_name, fname, lname, email FROM admin WHERE admin_type = ?', 'admin');
+    $stmt = execute_query(
+        "
+            SELECT MIN(admin_name), MIN(fname), MIN(lname), email
+            FROM admin
+            WHERE admin_type = 'admin'
+            GROUP BY email
+        "
+    );
+
     while ($rcptToData = $stmt->fetchRow()) {
         admin_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData);
     }
@@ -94,7 +102,14 @@ function admin_sendToResellers($senderName, $senderEmail, $subject, $body)
         return;
     }
 
-    $stmt = exec_query('SELECT admin_name, fname, lname, email FROM admin WHERE admin_type = ?', 'reseller');
+    $stmt = execute_query(
+        "
+            SELECT MIN(admin_name), MIN(fname), MIN(lname), email
+            FROM admin
+            WHERE admin_type = 'reseller'
+            GROUP BY email
+        "
+    );
     while ($rcptToData = $stmt->fetchRow()) {
         admin_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData);
     }
@@ -115,7 +130,14 @@ function admin_sendToCustomers($senderName, $senderEmail, $subject, $body)
         return;
     }
 
-    $stmt = exec_query('SELECT admin_name, fname, lname, email FROM admin WHERE admin_type = ?', 'user');
+    $stmt = execute_query(
+        "
+            SELECT MIN(admin_name), MIN(fname), MIN(lname), email
+            FROM admin
+            WHERE admin_type = 'user'
+            GROUP BY email
+        "
+    );
     while ($rcptToData = $stmt->fetchRow()) {
         admin_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData);
     }

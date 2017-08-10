@@ -73,7 +73,15 @@ function reseller_sendToCustomers($senderName, $senderEmail, $subject, $body)
         return;
     }
 
-    $stmt = exec_query('SELECT admin_name, fname, lname, email FROM admin WHERE created_by = ?', $_SESSION['user_id']);
+    $stmt = exec_query(
+        "
+            SELECT MIN(admin_name), MIN(fname), MIN(lname), email
+            FROM admin
+            WHERE created_by = ?
+            GROUP BY email
+        ",
+        $_SESSION['user_id']
+    );
     while ($rcptToData = $stmt->fetchRow()) {
         reseller_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData);
     }
