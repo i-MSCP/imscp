@@ -281,7 +281,9 @@ class iMSCP_Events
     /**
      * The onBeforeAddUser event is triggered before an user is created.
      *
-     * The listeners receive an iMSCP_Events_Event object.
+     * The listeners receive an iMSCP_Events_Event object with the following parameter:
+     *
+     * - userData: New user login and personal data
      *
      * @const string
      */
@@ -290,7 +292,10 @@ class iMSCP_Events
     /**
      * The onAfterAddUser event is triggered after an user is created.
      *
-     * The listeners receive an iMSCP_Events_Event object.
+     * The listeners receive an iMSCP_Events_Event object with the following parameter:
+     *
+     * - userId: An integer representing the ID of user that has been edited
+     * - userData: New user login and personal data
      *
      * @const string
      */

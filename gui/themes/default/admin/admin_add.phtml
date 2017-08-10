@@ -1,0 +1,95 @@
+<form method="post" action="admin_add.php" autocomplete="off">
+    <table class="firstColFixed">
+        <thead>
+        <tr>
+            <th colspan="2"><?= tohtml(tr('Login data')); ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><label for="admin_name"><?= tohtml(tr('Username')); ?></label></td>
+            <td><input type="text" name="admin_name" id="admin_name" value="<?= tohtml($this->form->getValue('admin_name'), 'htmlAttr'); ?>" required> </td>
+        </tr>
+        <tr>
+            <td><label for="password"><?= tohtml(tr('Password')); ?></label></td>
+            <td><input type="password" name="admin_pass" id="password" class="pwd_generator" value="" autocomplete="new-password" required>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="cpassword"><?= tohtml(tr('Password confirmation')); ?></label></td>
+            <td><input type="password" name="admin_pass_confirmation" id="cpassword" value="" autocomplete="new-password" required></td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="firstColFixed">
+        <thead>
+        <tr>
+            <th colspan="2"><?= tohtml(tr('Personal data')); ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><label for="fname"><?= tohtml(tr('First name')); ?></label></td>
+            <td><input type="text" name="fname" id="fname" value="<?= tohtml($this->form->getValue('fname'), 'htmlAttr'); ?>"></td>
+        </tr>
+        <tr>
+            <td><label for="lname"><?= tohtml(tr('Last name')); ?></label></td>
+            <td><input type="text" name="lname" id="lname" value="<?= tohtml($this->form->getValue('lname'), 'htmlAttr'); ?>"></td>
+        </tr>
+        <tr>
+            <td><label for="gender"><?= tohtml(tr('Gender')); ?></label></td>
+            <td>
+                <select id="gender" name="gender">
+                    <option value="M"<?= $this->form->getValue('gender') == 'M' ? ' selected' : ''; ?>><?= tohtml(tr('Male')); ?></option>
+                    <option value="F"<?= $this->form->getValue('gender') == 'F' ? ' selected' : ''; ?>><?= tohtml(tr('Female')); ?></option>
+                    <option value="U"<?= $this->form->getValue('gender') == 'U' ? ' selected' : ''; ?>><?= tohtml(tr('Unknown')); ?></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="firm"><?= tohtml(tr('Company')); ?></label></td>
+            <td><input type="text" name="firm" id="firm" value="<?= tohtml($this->form->getValue('firm'), 'htmlAttr'); ?>"></td>
+        </tr>
+        <tr>
+            <td><label for="street1"><?= tohtml(tr('Street 1')); ?></label></td>
+            <td><input type="text" name="street1" id="street1" value="<?= tohtml($this->form->getValue('street1'), 'htmlAttr'); ?>"></td>
+        </tr>
+        <tr>
+            <td><label for="street2"><?= tohtml(tr('Street 2')); ?></label></td>
+            <td><input type="text" name="street2" id="street2" value="<?= tohtml($this->form->getValue('street2'), 'htmlAttr'); ?>"></td>
+        </tr>
+        <tr>
+            <td><label for="zip"><?= tohtml(tr('Zip/Postal code')); ?></label></td>
+            <td><input type="text" name="zip" id="zip" value="<?= tohtml($this->form->getValue('zip'), 'htmlAttr'); ?>"></td>
+        </tr>
+        <tr>
+            <td><label for="city"><?= tohtml(tr('City')); ?></label></td>
+            <td><input type="text" name="city" id="city" value="<?= tohtml($this->form->getValue('city'), 'htmlAttr'); ?>"></td>
+        </tr>
+        <tr>
+            <td><label for="state"><?= tohtml(tr('State/Province')); ?></label></td>
+            <td><input type="text" name="state" id="state" value="<?= tohtml($this->form->getValue('state'), 'htmlAttr'); ?>"></td>
+        </tr>
+        <tr>
+            <td><label for="country"><?= tohtml(tr('Country')); ?></label></td>
+            <td><input type="text" name="country" id="country" value="<?= tohtml($this->form->getValue('country'), 'htmlAttr'); ?>"></td>
+        </tr>
+        <tr>
+            <td><label for="email"><?= tohtml(tr('Email')); ?></label></td>
+            <td><input type="text" name="email" id="email" value="<?= tohtml($this->form->getValue('email'), 'htmlAttr'); ?>" required></td>
+        </tr>
+        <tr>
+            <td><label for="phone"><?= tohtml(tr('Phone')); ?></label></td>
+            <td><input type="text" name="phone" id="phone" value="<?= tohtml(decode_idna($this->form->getValue('phone')), 'htmlAttr'); ?>"></td>
+        </tr>
+        <tr>
+            <td><label for="fax"><?= tohtml(tr('Fax')); ?></label></td>
+            <td><input type="text" name="fax" id="fax" value="<?= tohtml($this->form->getValue('fax'), 'htmlAttr'); ?>"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="buttons">
+        <input name="Submit" type="submit" value="<?= tohtml(tr('Add'), 'htmlAttr'); ?>">
+        <a href="users.php" class="link_as_button"><?= tohtml(tr('Cancel')); ?></a>
+    </div>
+</form>

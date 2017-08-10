@@ -49,7 +49,7 @@ FRONTEND
     Fixed: Sets the SQL `group_concat_max_len' variable on a per session basis
     Fixed: Sets the SQL modes on a per session basis to 'NO_AUTO_CREATE_USER' (backward compatibility with plugins)
     Fixed: Several integer type casting issues
-    Fixed: When an user personal email is being modified, the user identity must be updated as well
+    Fixed: When an user personal email is being modified, the user identity must be updated as well (session)
     Fixed: Wrong default mail accounts accounting (missing hostmaster email, wrong SQL queries...)
     Removed: Administrator database update interface; Database update are executed by installer
     Removed: Cached versions of navigation files; Make use of application cache instead
@@ -65,6 +65,7 @@ FRONTEND
     Review: Make use of short syntax for arrays
     Review: Extend Zend_Registry class instead of reinventing the wheel
     Review: Skip the intermediate edit page when mail autoresponder is being enabled and that the message is already set
+    Rewritten: Add administrator interface (admin level)
     Rewritten: Edit user and personal data interfaces (all UI levels)
     Rewritten: Password update interface (all UI levels)
     Security: Input for personal user data not filtered nor validated (all UI levels)
@@ -83,10 +84,6 @@ PACKAGES
 SCRIPTS
     Removed: Explicite unlocking of locked files -- Files are automatically unlocked
 
-SERVICES
-    Fixed: MOUNT(2) operation failures are ignored (imscp_mountall)
-    Review: Rotate log files on a daily basis instead of a weekly basis for faster processing (Mail service log files)
-
 SERVERS
     Changed: Mount courier-authdaemon rundir on var/run/courier/authdaemon instead of private/authdaemon (Postfix/Cyrus-SASL)
     Changed: The `postfix' user is now added in the `mail' group instead of the `daemon' group (Postfix/Cyrus-SASL)
@@ -97,6 +94,10 @@ SERVERS
     Fixed: Several warnings raised by POSTFIX(1) when files located inside its directories are not owned by the `postfix' user (Postfix)
     Fixed: Unwanted leading character in server alias names - Alternative URLs feature (Httpd servers)
     Removed: sql_mode parameter from the mysql/imscp.cnf configuration file; it is now set on a per session basis) (SQL servers)
+
+SERVICES
+    Fixed: MOUNT(2) operation failures are ignored (imscp_mountall)
+    Review: Rotate log files on a daily basis instead of a weekly basis for faster processing (Mail service log files)
 
 TRANSLATIONS
     Review: Make use of fuzzy entries in machine object files

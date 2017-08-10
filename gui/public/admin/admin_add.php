@@ -1,169 +1,105 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+use iMSCP\Crypt as Crypt;
+use iMSCP_Database as Database;
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_pTemplate as TemplateEngine;
+
+/***********************************************************************************************************************
+ * Functions
  */
 
 /**
- * Add user
+ * Add admin user
  *
- * @param  $tpl iMSCP_pTemplate
+ * @throws Exception
+ * @param Zend_Form $form
  * @return void
  */
-function add_user($tpl)
+function addAdminUser(Zend_Form $form)
 {
-    if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddUser);
-
-        if (check_user_data()) {
-            $upass = \iMSCP\Crypt::apr1MD5($_POST['password']);
-            $username = clean_input($_POST['username']);
-            $fname = clean_input($_POST['fname']);
-            $lname = clean_input($_POST['lname']);
-            $gender = clean_input($_POST['gender']);
-            $firm = clean_input($_POST['firm']);
-            $zip = clean_input($_POST['zip']);
-            $city = clean_input($_POST['city']);
-            $state = clean_input($_POST['state']);
-            $country = clean_input($_POST['country']);
-            $email = clean_input($_POST['email']);
-            $phone = clean_input($_POST['phone']);
-            $fax = clean_input($_POST['fax']);
-            $street1 = clean_input($_POST['street1']);
-            $street2 = clean_input($_POST['street2']);
-
-            if (get_gender_by_code($gender, true) === NULL) {
-                $gender = '';
-            }
-
-            exec_query(
-                "
-                    INSERT INTO admin (
-                        admin_name, admin_pass, admin_type, domain_created, created_by, fname, lname, firm, zip, city,
-                        state, country, email, phone, fax, street1, street2, gender
-                    ) VALUES (
-                        ?, ?, 'admin', unix_timestamp(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-                    )
-                ",
-                [
-                    $username, $upass, $_SESSION['user_id'], $fname, $lname, $firm, $zip, $city, $state, $country,
-                    $email, $phone, $fax, $street1, $street2, $gender
-                ]
-            );
-
-            $cfg = iMSCP_Registry::get('config');
-
-            exec_query('REPLACE INTO user_gui_props (user_id, lang, layout) VALUES (?, ?, ?)', [
-                iMSCP_Database::getInstance()->insertId(), $cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']
-            ]);
-
-            write_log(sprintf('A new administrator account (%s) has been created by %s', $username, $_SESSION['user_logged']), E_USER_NOTICE);
-            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddUser);
-            send_add_user_auto_msg(
-                $_SESSION['user_id'], clean_input($_POST['username']), clean_input($_POST['password']),
-                clean_input($_POST['email']), clean_input($_POST['fname']), clean_input($_POST['lname']),
-                tr('Administrator')
-            );
-            set_page_message(tr('Admin account successfully created.'), 'success');
-            redirectTo('users.php');
-        } else { // check user data
-            $tpl->assign([
-                'EMAIL'      => clean_input($_POST['email']),
-                'USERNAME'   => clean_input($_POST['username']),
-                'FIRST_NAME' => clean_input($_POST['fname']),
-                'LAST_NAME'  => clean_input($_POST['lname']),
-                'FIRM'       => clean_input($_POST['firm']),
-                'ZIP'        => clean_input($_POST['zip']),
-                'CITY'       => clean_input($_POST['city']),
-                'STATE'      => clean_input($_POST['state']),
-                'COUNTRY'    => clean_input($_POST['country']),
-                'STREET_1'   => clean_input($_POST['street1']),
-                'STREET_2'   => clean_input($_POST['street2']),
-                'PHONE'      => clean_input($_POST['phone']),
-                'FAX'        => clean_input($_POST['fax']),
-                'VL_MALE'    => ($_POST['gender'] == 'M') ? ' selected' : '',
-                'VL_FEMALE'  => ($_POST['gender'] == 'F') ? ' selected' : '',
-                'VL_UNKNOWN' => (($_POST['gender'] == 'U') || empty($_POST['gender'])) ? ' selected' : ''
-            ]);
+    if (!$form->isValid($_POST)) {
+        foreach ($form->getMessages() as $msgStack => $msg) {
+            set_page_message(reset($msg), 'error');
         }
 
         return;
     }
 
-    $tpl->assign([
-        'EMAIL'      => '',
-        'USERNAME'   => '',
-        'FIRST_NAME' => '',
-        'LAST_NAME'  => '',
-        'FIRM'       => '',
-        'ZIP'        => '',
-        'CITY'       => '',
-        'STATE'      => '',
-        'COUNTRY'    => '',
-        'STREET_1'   => '',
-        'STREET_2'   => '',
-        'PHONE'      => '',
-        'FAX'        => '',
-        'VL_MALE'    => '',
-        'VL_FEMALE'  => '',
-        'VL_UNKNOWN' => ' selected'
-    ]);
-}
+    $db = Database::getInstance();
 
-/**
- * Check user data
- *
- * @return bool
- */
-function check_user_data()
-{
-    if (!validates_username($_POST['username'])) {
-        set_page_message(tr('Incorrect username length or syntax.'), 'error');
-        return false;
+    try {
+        $db->beginTransaction();
+
+        EventsManager::getInstance()->dispatch(Events::onBeforeAddUser, [
+            'userData' => $form->getValues()
+        ]);
+
+        exec_query(
+            "
+                INSERT INTO admin (
+                    admin_name, admin_pass, admin_type, domain_created, created_by, fname, lname, firm, zip, city,
+                    state, country, email, phone, fax, street1, street2, gender
+                ) VALUES (
+                    ?, ?, 'admin', unix_timestamp(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                )
+            ",
+            [
+                $form->getValue('admin_name'), Crypt::apr1MD5($form->getValue('admin_pass')), $_SESSION['user_id'],
+                $form->getValue('fname'), $form->getValue('lname'), $form->getValue('firm'), $form->getValue('zip'),
+                $form->getValue('city'), $form->getValue('state'), $form->getValue('country'), $form->getValue('email'),
+                $form->getValue('phone'), $form->getValue('fax'), $form->getValue('street1'), $form->getValue('street2'),
+                $form->getValue('gender')
+            ]
+        );
+
+        $adminId = $db->insertId();
+        $cfg = iMSCP_Registry::get('config');
+
+        exec_query('REPLACE INTO user_gui_props (user_id, lang, layout) VALUES (?, ?, ?)', [
+            $adminId, $cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']
+        ]);
+
+        EventsManager::getInstance()->dispatch(Events::onAfterAddUser, [
+            'userId'   => $adminId,
+            'userData' => $form->getValues()
+        ]);
+
+        $db->commit();
+    } catch (Exception $e) {
+        $db->rollBack();
+        throw $e;
     }
 
-    if ($_POST['password'] != $_POST['password_confirmation']) {
-        set_page_message(tr('Passwords do not match.'), 'error');
-        return false;
-    }
-
-    if (!checkPasswordSyntax($_POST['password'])) {
-        return false;
-    }
-
-    if (!chk_email($_POST['email'])) {
-        set_page_message(tr('Incorrect email length or syntax.'), 'error');
-        return false;
-    }
-
-    $stmt = exec_query('SELECT admin_id FROM admin WHERE admin_name = ?', clean_input($_POST['username']));
-    if ($stmt->rowCount()) {
-        set_page_message(tr('This user name already exist.'), 'warning');
-        return false;
-    }
-
-    return true;
+    send_add_user_auto_msg(
+        $_SESSION['user_id'], $form->getValue('admin_name'), $form->getValue('admin_pass'), $form->getValue('email'),
+        $form->getValue('fname'), $form->getValue('lname'), tr('Administrator')
+    );
+    write_log(
+        sprintf('The %s user has been added by %s', $form->getValue('admin_name'), $_SESSION['user_logged']),
+        E_USER_NOTICE
+    );
+    set_page_message('User has been added.', 'success');
+    redirectTo('users.php');
 }
 
 /***********************************************************************************************************************
@@ -172,50 +108,30 @@ function check_user_data()
 
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 check_login('admin');
 
-$tpl = new iMSCP_pTemplate();
+$form = getUserLoginDataForm(true, true)->addElements(getUserPersonalDataForm()->getElements());
+$form->setDefault('gender', 'U');
+
+if (!empty($_POST)) {
+    addAdminUser($form);
+}
+
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
-    'page'         => 'admin/admin_add.tpl',
+    'page'         => 'admin/admin_add.phtml',
     'page_message' => 'layout'
 ]);
 $tpl->assign('TR_PAGE_TITLE', tr('Admin / Users / Add Admin'));
-$tpl->assign([
-    'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field.'),
-    'TR_PASSWORD_NOT_MATCH'  => tr('Passwords do not match.'),
-    'TR_ADD_ADMIN'           => tr('Add admin'),
-    'TR_CORE_DATA'           => tr('Core data'),
-    'TR_USERNAME'            => tr('Username'),
-    'TR_PASSWORD'            => tr('Password'),
-    'TR_PASSWORD_REPEAT'     => tr('Password confirmation'),
-    'TR_EMAIL'               => tr('Email'),
-    'TR_ADDITIONAL_DATA'     => tr('Additional data'),
-    'TR_FIRST_NAME'          => tr('First name'),
-    'TR_LAST_NAME'           => tr('Last name'),
-    'TR_GENDER'              => tr('Gender'),
-    'TR_MALE'                => tr('Male'),
-    'TR_FEMALE'              => tr('Female'),
-    'TR_UNKNOWN'             => tr('Unknown'),
-    'TR_COMPANY'             => tr('Company'),
-    'TR_ZIP_POSTAL_CODE'     => tr('Zip/Postal code'),
-    'TR_CITY'                => tr('City'),
-    'TR_STATE'               => tr('State/Province'),
-    'TR_COUNTRY'             => tr('Country'),
-    'TR_STREET_1'            => tr('Street 1'),
-    'TR_STREET_2'            => tr('Street 2'),
-    'TR_PHONE'               => tr('Phone'),
-    'TR_FAX'                 => tr('Fax'),
-    'TR_ADD'                 => tr('Add')
-]);
 
 generateNavigation($tpl);
-add_user($tpl);
 generatePageMessage($tpl);
+$tpl->form = $form;
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();
