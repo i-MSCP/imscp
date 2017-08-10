@@ -78,7 +78,8 @@ function getPreviousStepData()
  * 
  * @throws Exception
  * @throws iMSCP_Exception
- * @param Zend_Form $form
+ * @param Form $form
+ * @return void
  */
 function addCustomer(Form $form)
 {

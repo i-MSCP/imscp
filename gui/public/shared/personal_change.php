@@ -18,9 +18,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Authentication as Authentication;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
+use Zend_Form as Form;
 
 /***********************************************************************************************************************
  * Functions
@@ -29,14 +31,14 @@ use iMSCP_pTemplate as TemplateEngine;
 /**
  * Update personal data
  *
- * @param Zend_Form $form
+ * @param Form $form
  * @return void
  */
-function updatePersonalData(Zend_Form $form)
+function updatePersonalData(Form $form)
 {
     if (!$form->isValid($_POST)) {
-        foreach ($form->getMessages() as $msgStack => $msg) {
-            set_page_message(reset($msg), 'error');
+        foreach ($form->getMessages() as $fieldname => $msgsStack) {
+            set_page_message(reset($msgsStack), 'error');
         }
 
         return;
@@ -55,11 +57,16 @@ function updatePersonalData(Zend_Form $form)
         ",
         [
             $form->getValue('fname'), $form->getValue('lname'), $form->getValue('firm'), $form->getValue('zip'),
-            $form->getValue('city'), $form->getValue('state'), $form->getValue('country'), $form->getValue('email'),
-            $form->getValue('phone'), $form->getValue('fax'), $form->getValue('street1'), $form->getValue('street2'),
-            $form->getValue('gender'), $_SESSION['user_id']
+            $form->getValue('city'), $form->getValue('state'), $form->getValue('country'),
+            encode_idna($form->getValue('email')), $form->getValue('phone'), $form->getValue('fax'),
+            $form->getValue('street1'), $form->getValue('street2'), $form->getValue('gender'), $_SESSION['user_id']
         ]
     );
+
+    # We need also update user email in session
+    Authentication::getInstance()->getIdentity()->email = $form->getValue('email');
+    $_SESSION['user_email'] = $form->getValue('email'); // Only for backward compatibility
+
     EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
         'userId'   => $_SESSION['user_id'],
         'userData' => $form->getValues()
@@ -73,10 +80,10 @@ function updatePersonalData(Zend_Form $form)
  * Generate page
  *
  * @param TemplateEngine $tpl
- * @param Zend_Form $form
+ * @param Form $form
  * @return void
  */
-function generatePage(TemplateEngine $tpl, Zend_Form $form)
+function generatePage(TemplateEngine $tpl, Form $form)
 {
     $tpl->form = $form;
 

@@ -23,6 +23,7 @@ use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
+use Zend_Form as Form;
 
 /***********************************************************************************************************************
  * Functions
@@ -32,11 +33,11 @@ use iMSCP_pTemplate as TemplateEngine;
  * Update user data
  *
  * @throws Exception
- * @param Zend_Form $form
+ * @param Form $form
  * @param int $userId User unique identifier
  * @return void
  */
-function updateUserData(Zend_Form $form, $userId)
+function updateUserData(Form $form, $userId)
 {
     $data = exec_query(
         'SELECT admin_name FROM admin WHERE admin_id = ? AND created_by = ?', [$userId, $_SESSION['user_id']]
@@ -121,12 +122,12 @@ function updateUserData(Zend_Form $form, $userId)
  * Generate page
  *
  * @param TemplateEngine $tpl
- * @param Zend_Form $form
+ * @param Form $form
  * @param int $userId User unique identifier
  *
  * @return void
  */
-function generatePage(TemplateEngine $tpl, Zend_Form $form, $userId)
+function generatePage(TemplateEngine $tpl, Form $form, $userId)
 {
     global $userType;
 
