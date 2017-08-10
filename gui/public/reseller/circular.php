@@ -104,7 +104,7 @@ function reseller_isValidCircular($senderName, $senderEmail, $subject, $body)
         $ret = false;
     }
     if ($senderEmail == '') {
-        set_page_message(tr('Sender email is missing.'), 'error');
+        set_page_message(tr('Reply-To email is missing.'), 'error');
         $ret = false;
     } elseif (!chk_email($senderEmail)) {
         set_page_message(tr("Incorrect email length or syntax."), 'error');
@@ -247,8 +247,8 @@ $tpl->assign([
     'TR_SEND_TO'       => tr('Send to'),
     'TR_SUBJECT'       => tr('Subject'),
     'TR_BODY'          => tr('Body'),
-    'TR_SENDER_EMAIL'  => tr('Sender email'),
-    'TR_SENDER_NAME'   => tr('Sender name'),
+    'TR_SENDER_EMAIL'  => tr('Reply-To email'),
+    'TR_SENDER_NAME'   => tr('Reply-To name'),
     'TR_SEND_CIRCULAR' => tr('Send circular'),
     'TR_CANCEL'        => tr('Cancel')
 ]);
