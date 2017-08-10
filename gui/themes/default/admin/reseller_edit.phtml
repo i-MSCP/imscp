@@ -1,40 +1,43 @@
-
 <script>
     $(function () {
         $.each(imscp_i18n.core.error_field_stack, function (i, k) {
             $("#" + k).css("border-color", "#ca1d11");
         });
 
-        $("#datatable").dataTable({
+        $(".datatable").dataTable({
             language: imscp_i18n.core.dataTable,
             stateSave: true,
             pagingType: "simple"
         });
+
+        // Prevent click event on readonly input
+        $('#ip_data').find('input').click(function (e) {
+            if ($(this).is("[readonly]")) {
+                e.preventDefault();
+                return false;
+            }
+        });
     });
 </script>
-<form method="post" action="reseller_add.php" autocomplete="off">
+<form name="editFrm" method="post" action="reseller_edit.php?edit_id={EDIT_ID}" autocomplete="off">
     <table class="firstColFixed">
         <thead>
         <tr>
-            <th colspan="2">{TR_ACCOUNT_DATA}</th>
+            <th colspan="2"><?= tohtml(tr('Login data')); ?></th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td><label for="admin_name">{TR_RESELLER_NAME}</label></td>
-            <td><input type="text" name="admin_name" id="admin_name" value="{RESELLER_NAME}"></td>
+            <td><?= tohtml(tr('Username')); ?></td>
+            <td><?= tohtml($this->form->getValue('admin_name')); ?></td>
         </tr>
         <tr>
-            <td><label for="password">{TR_PASSWORD}</label></td>
-            <td><input type="password" name="password" id="password" value="" autocomplete="new-password"></td>
+            <td><label for="password"><?= tohtml(tr('Password')); ?></label></td>
+            <td><input type="password" name="admin_pass" id="password" class="pwd_generator" value="" autocomplete="new-password"></td>
         </tr>
         <tr>
-            <td><label for="cpassword">{TR_PASSWORD_CONFIRMATION}</label></td>
-            <td><input type="password" name="password_confirmation" id="cpassword" class="pwd_generator pwd_prefill" value="" autocomplete="new-password"></td>
-        </tr>
-        <tr>
-            <td><label for="email">{TR_EMAIL}</label></td>
-            <td><input type="text" name="email" id="email" value="{EMAIL}"></td>
+            <td><label for="cpassword"><?= tohtml(tr('Password confirmation')); ?></label></td>
+            <td><input type="password" name="admin_pass_confirmation" id="cpassword" value="" autocomplete="new-password"></td>
         </tr>
         </tbody>
     </table>
@@ -44,13 +47,15 @@
         <tr>
             <th>{TR_IP_ADDRESS}</th>
             <th>{TR_ASSIGN}</th>
+            <th>{TR_STATUS}</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="ip_data">
         <!-- BDP: ip_block -->
         <tr>
             <td><label for="ip_{IP_ID}">{IP_NUMBER}</label></td>
-            <td><input type="checkbox" id="ip_{IP_ID}" name="reseller_ips[]" value="{IP_ID}"{IP_ASSIGNED}></td>
+            <td><input type="checkbox" id="ip_{IP_ID}" name="reseller_ips[]" value="{IP_ID}"{IP_ASSIGNED}{IP_READONLY}></td>
+            <td>{IP_STATUS}</td>
         </tr>
         <!-- EDP: ip_block -->
         </tbody>
@@ -89,8 +94,7 @@
         </tr>
         <tr>
             <td><label for="max_sql_user_cnt">{TR_MAX_SQL_USER_CNT}</label></td>
-            <td><input type="number" name="max_sql_user_cnt" id="max_sql_user_cnt" min="-1" value="{MAX_SQL_USER_CNT}">
-            </td>
+            <td><input type="number" name="max_sql_user_cnt" id="max_sql_user_cnt" min="-1" value="{MAX_SQL_USER_CNT}"></td>
         </tr>
         <tr>
             <td><label for="max_traff_amnt">{TR_MAX_TRAFF_AMNT}</label></td>
@@ -177,8 +181,8 @@
                         <!-- BDP: php_editor_mail_function_block -->
                         <tr>
                             <td>
-                                {TR_PHP_INI_AL_MAIL_FUNCTION} <span class="icon i_help"
-                                                                    title="{TR_PHP_INI_AL_MAIL_FUNCTION_HELP}"></span>
+                                {TR_PHP_INI_AL_MAIL_FUNCTION}
+                                <span class="icon i_help" title="{TR_PHP_INI_AL_MAIL_FUNCTION_HELP}"></span>
                             </td>
                             <td>
                                 <div class="radio">
@@ -217,7 +221,7 @@
                         </tr>
                         <tr>
                             <td><label for="upload_max_filesize">{TR_UPLOAD_MAX_FILESIZE}</label></td>
-                            <td><input type="number" name="upload_max_filesize" id="upload_max_filesize" min="1"  max="10000" value="{UPLOAD_MAX_FILESIZE}"> <span>{TR_MIB}</span></td>
+                            <td><input type="number" name="upload_max_filesize" id="upload_max_filesize" min="1" max="10000" value="{UPLOAD_MAX_FILESIZE}"> <span>{TR_MIB}</span></td>
                         </tr>
                         </tbody>
                     </table>
@@ -228,9 +232,9 @@
             <td>{TR_SOFTWARES_INSTALLER}</td>
             <td>
                 <div class="radio">
-                    <input type="radio" name="software_allowed" id="software_allowed_yes" value="yes"{SOFTWARES_INSTALLER_YES}>
+                    <input type="radio" name="software_allowed" id="software_allowed_yes" value="yes"{SOFTWARES_INSTALLER_YES} >
                     <label for="software_allowed_yes">{TR_YES}</label>
-                    <input type="radio" name="software_allowed" id="software_allowed_no" value="no"{SOFTWARES_INSTALLER_NO}>
+                    <input type="radio" name="software_allowed" id="software_allowed_no" value="no"{SOFTWARES_INSTALLER_NO} >
                     <label for="software_allowed_no">{TR_NO}</label>
                 </div>
             </td>
@@ -273,68 +277,72 @@
     <table class="firstColFixed">
         <thead>
         <tr>
-            <th colspan="2">{TR_PERSONAL_DATA}</th>
+            <th colspan="2"><?= tohtml(tr('Personal data')); ?></th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td><label for="fname">{TR_FNAME}</label></td>
-            <td><input type="text" name="fname" id="fname" value="{FNAME}"></td>
+            <td><label for="fname"><?= tohtml(tr('First name')); ?></label></td>
+            <td><input type="text" name="fname" id="fname" value="<?= tohtml($this->form->getValue('fname'), 'htmlAttr'); ?>"></td>
         </tr>
         <tr>
-            <td><label for="lname">{TR_LNAME}</label></td>
-            <td><input type="text" name="lname" id="lname" value="{LNAME}"></td>
+            <td><label for="lname"><?= tohtml(tr('Last name')); ?></label></td>
+            <td><input type="text" name="lname" id="lname" value="<?= tohtml($this->form->getValue('lname'), 'htmlAttr'); ?>"></td>
         </tr>
         <tr>
-            <td><label for="gender">{TR_GENDER}</label></td>
+            <td><label for="gender"><?= tohtml(tr('Gender')); ?></label></td>
             <td>
                 <select id="gender" name="gender">
-                    <option value="M"{MALE}>{TR_MALE}</option>
-                    <option value="F"{FEMALE}>{TR_FEMALE}</option>
-                    <option value="U"{UNKNOWN}>{TR_UNKNOWN}</option>
+                    <option value="M"<?= $this->form->getValue('gender') == 'M' ? ' selected' : ''; ?>><?= tohtml(tr('Male')); ?></option>
+                    <option value="F"<?= $this->form->getValue('gender') == 'F' ? ' selected' : ''; ?>><?= tohtml(tr('Female')); ?></option>
+                    <option value="U"<?= $this->form->getValue('gender') == 'U' ? ' selected' : ''; ?>><?= tohtml(tr('Unknown')); ?></option>
                 </select>
             </td>
         </tr>
         <tr>
-            <td><label for="firm">{TR_FIRM}</label></td>
-            <td><input type="text" name="firm" id="firm" value="{FIRM}"></td>
+            <td><label for="firm"><?= tohtml(tr('Company')); ?></label></td>
+            <td><input type="text" name="firm" id="firm" value="<?= tohtml($this->form->getValue('firm'), 'htmlAttr'); ?>"></td>
         </tr>
         <tr>
-            <td><label for="street1">{TR_STREET1}</label></td>
-            <td><input type="text" name="street1" id="street1" value="{STREET1}"></td>
+            <td><label for="street1"><?= tohtml(tr('Street 1')); ?></label></td>
+            <td><input type="text" name="street1" id="street1" value="<?= tohtml($this->form->getValue('street1'), 'htmlAttr'); ?>"></td>
         </tr>
         <tr>
-            <td><label for="street2">{TR_STREET2}</label></td>
-            <td><input type="text" name="street2" id="street2" value="{STREET2}"></td>
+            <td><label for="street2"><?= tohtml(tr('Street 2')); ?></label></td>
+            <td><input type="text" name="street2" id="street2" value="<?= tohtml($this->form->getValue('street2'), 'htmlAttr'); ?>"></td>
         </tr>
         <tr>
-            <td><label for="zip">{TR_ZIP}</label></td>
-            <td><input type="text" name="zip" id="zip" value="{ZIP}"></td>
+            <td><label for="zip"><?= tohtml(tr('Zip/Postal code')); ?></label></td>
+            <td><input type="text" name="zip" id="zip" value="<?= tohtml($this->form->getValue('zip'), 'htmlAttr'); ?>"></td>
         </tr>
         <tr>
-            <td><label for="city">{TR_CITY}</label></td>
-            <td><input type="text" name="city" id="city" value="{CITY}"></td>
+            <td><label for="city"><?= tohtml(tr('City')); ?></label></td>
+            <td><input type="text" name="city" id="city" value="<?= tohtml($this->form->getValue('city'), 'htmlAttr'); ?>"></td>
         </tr>
         <tr>
-            <td><label for="state">{TR_STATE}</label></td>
-            <td><input type="text" name="state" id="state" value="{STATE}"></td>
+            <td><label for="state"><?= tohtml(tr('State/Province')); ?></label></td>
+            <td><input type="text" name="state" id="state" value="<?= tohtml($this->form->getValue('state'), 'htmlAttr'); ?>"></td>
         </tr>
         <tr>
-            <td><label for="country">{TR_COUNTRY}</label></td>
-            <td><input type="text" name="country" id="country" value="{COUNTRY}"></td>
+            <td><label for="country"><?= tohtml(tr('Country')); ?></label></td>
+            <td><input type="text" name="country" id="country" value="<?= tohtml($this->form->getValue('country'), 'htmlAttr'); ?>"></td>
         </tr>
         <tr>
-            <td><label for="phone">{TR_PHONE}</label></td>
-            <td><input type="text" name="phone" id="phone" value="{PHONE}"></td>
+            <td><label for="email"><?= tohtml(tr('Email')); ?></label></td>
+            <td><input type="text" name="email" id="email" value="<?= tohtml($this->form->getValue('email'), 'htmlAttr'); ?>" required></td>
         </tr>
         <tr>
-            <td><label for="fax">{TR_FAX}</label></td>
-            <td><input type="text" name="fax" id="fax" value="{FAX}"></td>
+            <td><label for="phone"><?= tohtml(tr('Phone')); ?></label></td>
+            <td><input type="text" name="phone" id="phone" value="<?= tohtml(decode_idna($this->form->getValue('phone')), 'htmlAttr'); ?>"></td>
+        </tr>
+        <tr>
+            <td><label for="fax"><?= tohtml(tr('Fax')); ?></label></td>
+            <td><input type="text" name="fax" id="fax" value="<?= tohtml($this->form->getValue('fax'), 'htmlAttr'); ?>"></td>
         </tr>
         </tbody>
     </table>
     <div class="buttons">
-        <button name="Submit" type="submit">{TR_CREATE}</button>
-        <a class="link_as_button" href="users.php">{TR_CANCEL}</a>
+        <button name="Submit" type="submit"><?= tohtml(tr('Update')); ?></button>
+        <a class="link_as_button" href="users.php"><?= tohtml(tr('Cancel'), 'htmlAttr'); ?></a>
     </div>
 </form>

@@ -18,6 +18,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Authentication as Authentication;
+use iMSCP_Database as Database;
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -122,10 +129,10 @@ function getDomainsList()
 /**
  * Generate page
  *
- * @param $tpl iMSCP_pTemplate
+ * @param $tpl TemplateEngine
  * @return void
  */
-function generatePage($tpl)
+function generatePage(TemplateEngine $tpl)
 {
     $forwardType = (
         isset($_POST['forward_type'])
@@ -137,8 +144,10 @@ function generatePage($tpl)
         'DOMAIN_ALIAS_NAME'  => (isset($_POST['domain_alias_name'])) ? tohtml($_POST['domain_alias_name']) : '',
         'FORWARD_URL_YES'    => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? ' checked' : '',
         'FORWARD_URL_NO'     => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? '' : ' checked',
-        'HTTP_YES'           => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'http://') ? ' selected' : '',
-        'HTTPS_YES'          => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'https://') ? ' selected' : '',
+        'HTTP_YES'           => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'http://')
+            ? ' selected' : '',
+        'HTTPS_YES'          => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'https://')
+            ? ' selected' : '',
         'FORWARD_URL'        => (isset($_POST['forward_url'])) ? tohtml($_POST['forward_url']) : '',
         'FORWARD_TYPE_301'   => ($forwardType == '301') ? ' checked' : '',
         'FORWARD_TYPE_302'   => ($forwardType == '302') ? ' checked' : '',
@@ -152,15 +161,21 @@ function generatePage($tpl)
 
     if (!empty($domainList)) {
         $tpl->assign([
-            'SHARED_MOUNT_POINT_YES' => (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes') ? ' checked' : '',
-            'SHARED_MOUNT_POINT_NO'  => (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes') ? '' : ' checked',
+            'SHARED_MOUNT_POINT_YES' => (isset($_POST['shared_mount_point'])
+                && $_POST['shared_mount_point'] == 'yes'
+            ) ? ' checked' : '',
+            'SHARED_MOUNT_POINT_NO'  => (isset($_POST['shared_mount_point'])
+                && $_POST['shared_mount_point'] == 'yes'
+            ) ? '' : ' checked',
         ]);
 
         foreach ($domainList as $domain) {
             $tpl->assign([
                 'DOMAIN_NAME'                        => tohtml($domain['name']),
                 'DOMAIN_NAME_UNICODE'                => tohtml(decode_idna($domain['name'])),
-                'SHARED_MOUNT_POINT_DOMAIN_SELECTED' => (isset($_POST['shared_mount_point_domain']) && $_POST['shared_mount_point_domain'] == $domain['name']) ? ' selected' : ''
+                'SHARED_MOUNT_POINT_DOMAIN_SELECTED' => (isset($_POST['shared_mount_point_domain'])
+                    && $_POST['shared_mount_point_domain'] == $domain['name']
+                ) ? ' selected' : ''
             ]);
             $tpl->parse('SHARED_MOUNT_POINT_DOMAIN', '.shared_mount_point_domain');
         }
@@ -288,12 +303,12 @@ function addDomainAlias()
     }
 
     $isSuUser = isset($_SESSION['logged_from_type']); # See http://youtrack.i-mscp.net/issue/IP-1486
-    $db = iMSCP_Database::getInstance();
+    $db = Database::getInstance();
 
     try {
         $db->beginTransaction();
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddDomainAlias, [
+        EventsManager::getInstance()->dispatch(Events::onBeforeAddDomainAlias, [
             'domainId'        => $mainDmnProps['domain_id'],
             'domainAliasName' => $domainAliasNameAscii,
             'mountPoint'      => $mountPoint,
@@ -328,16 +343,20 @@ function addDomainAlias()
         $phpini->saveDomainIni($_SESSION['user_id'], $id, 'als');
 
         if ($isSuUser) {
-            $cfg = iMSCP_Registry::get('config');
+            $cfg = Registry::get('config');
 
             if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
                 createDefaultMailAccounts(
-                    $mainDmnProps['domain_id'], $_SESSION['user_email'], $domainAliasNameAscii, MT_ALIAS_FORWARD, $id
+                    $mainDmnProps['domain_id'],
+                    Authentication::getInstance()->getIdentity()->email,
+                    $domainAliasNameAscii,
+                    MT_ALIAS_FORWARD,
+                    $id
                 );
             }
         }
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddDomainAlias, [
+        EventsManager::getInstance()->dispatch(Events::onAfterAddDomainAlias, [
             'domainId'        => $mainDmnProps['domain_id'],
             'domainAliasName' => $domainAliasNameAscii,
             'domainAliasId'   => $id,
@@ -375,7 +394,7 @@ function addDomainAlias()
 
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 check_login('user');
 customerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
@@ -391,7 +410,7 @@ if (!empty($_POST) && addDomainAlias()) {
     redirectTo('domains_manage.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                       => 'shared/layouts/ui.tpl',
     'page'                         => 'client/alias_add.tpl',
@@ -425,11 +444,11 @@ $tpl->assign([
 ]);
 
 generateNavigation($tpl);
-generatePage($tpl);
 generatePageMessage($tpl);
+generatePage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

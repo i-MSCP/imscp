@@ -23,6 +23,8 @@ use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
+use Zend_Form as Form;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -32,19 +34,19 @@ use iMSCP_pTemplate as TemplateEngine;
  * Add admin user
  *
  * @throws Exception
- * @param Zend_Form $form
+ * @param Form $form
  * @return void
  */
-function addAdminUser(Zend_Form $form)
+function addAdminUser(Form $form)
 {
     if (!$form->isValid($_POST)) {
-        foreach ($form->getMessages() as $msgStack => $msg) {
-            set_page_message(reset($msg), 'error');
+        foreach ($form->getMessages() as $fieldname => $msgsStack) {
+            set_page_message(reset($msgsStack), 'error');
         }
 
         return;
     }
-
+    
     $db = Database::getInstance();
 
     try {
@@ -66,16 +68,16 @@ function addAdminUser(Zend_Form $form)
             [
                 $form->getValue('admin_name'), Crypt::apr1MD5($form->getValue('admin_pass')), $_SESSION['user_id'],
                 $form->getValue('fname'), $form->getValue('lname'), $form->getValue('firm'), $form->getValue('zip'),
-                $form->getValue('city'), $form->getValue('state'), $form->getValue('country'), $form->getValue('email'),
-                $form->getValue('phone'), $form->getValue('fax'), $form->getValue('street1'), $form->getValue('street2'),
-                $form->getValue('gender')
+                $form->getValue('city'), $form->getValue('state'), $form->getValue('country'),
+                encode_idna($form->getValue('email')), $form->getValue('phone'), $form->getValue('fax'),
+                $form->getValue('street1'), $form->getValue('street2'), $form->getValue('gender')
             ]
         );
 
         $adminId = $db->insertId();
-        $cfg = iMSCP_Registry::get('config');
+        $cfg = Registry::get('config');
 
-        exec_query('REPLACE INTO user_gui_props (user_id, lang, layout) VALUES (?, ?, ?)', [
+        exec_query('INSERT INTO user_gui_props (user_id, lang, layout) VALUES (?, ?, ?)', [
             $adminId, $cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']
         ]);
 
@@ -95,10 +97,10 @@ function addAdminUser(Zend_Form $form)
         $form->getValue('fname'), $form->getValue('lname'), tr('Administrator')
     );
     write_log(
-        sprintf('The %s user has been added by %s', $form->getValue('admin_name'), $_SESSION['user_logged']),
+        sprintf('The %s administrator has been added by %s', $form->getValue('admin_name'), $_SESSION['user_logged']),
         E_USER_NOTICE
     );
-    set_page_message('User has been added.', 'success');
+    set_page_message('Administrator has been added.', 'success');
     redirectTo('users.php');
 }
 
@@ -124,7 +126,7 @@ $tpl->define_dynamic([
     'page'         => 'admin/admin_add.phtml',
     'page_message' => 'layout'
 ]);
-$tpl->assign('TR_PAGE_TITLE', tr('Admin / Users / Add Admin'));
+$tpl->assign('TR_PAGE_TITLE', tohtml(tr('Admin / Users / Add Admin')));
 
 generateNavigation($tpl);
 generatePageMessage($tpl);

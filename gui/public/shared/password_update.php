@@ -37,8 +37,8 @@ function updatePassword()
     $form = getUserLoginDataForm(false, true);
 
     if (!$form->isValid($_POST)) {
-        foreach ($form->getMessages() as $msgStack => $msg) {
-            set_page_message(reset($msg), 'error');
+        foreach ($form->getMessages() as $fieldname => $msgsStack) {
+            set_page_message(reset($msgsStack), 'error');
         }
 
         return;

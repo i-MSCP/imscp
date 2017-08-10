@@ -18,6 +18,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP\Crypt as Crypt;
+use iMSCP_Database as Database;
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Exception as iMSCPException;
+use iMSCP_PHPini as PhpIni;
+use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
+use Zend_Form as Form;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -64,61 +74,32 @@ function getPreviousStepData()
 }
 
 /**
- * Generates page
- *
- * @param  iMSCP_pTemplate $tpl Template engine
- * @return void
- */
-function generatePage($tpl)
-{
-    global $hpId, $dmnName, $adminName, $email, $firstName, $lastName, $gender, $firm, $zip, $city, $state,
-           $country, $street1, $street2, $phone, $fax, $domainIp;
-
-    $adminName = decode_idna($adminName);
-
-    $tpl->assign([
-        'VL_USERNAME'     => tohtml($adminName, 'htmlAttr'),
-        'VL_MAIL'         => tohtml($email, 'htmlAttr'),
-        'VL_USR_NAME'     => tohtml($firstName, 'htmlAttr'),
-        'VL_LAST_USRNAME' => tohtml($lastName, 'htmlAttr'),
-        'VL_USR_FIRM'     => tohtml($firm, 'htmlAttr'),
-        'VL_USR_POSTCODE' => tohtml($zip, 'htmlAttr'),
-        'VL_USRCITY'      => tohtml($city, 'htmlAttr'),
-        'VL_USRSTATE'     => tohtml($state, 'htmlAttr'),
-        'VL_MALE'         => $gender == 'M' ? ' selected' : '',
-        'VL_FEMALE'       => $gender == 'F' ? ' selected' : '',
-        'VL_UNKNOWN'      => $gender == 'U' ? ' selected' : '',
-        'VL_COUNTRY'      => tohtml($country, 'htmlAttr'),
-        'VL_STREET1'      => tohtml($street1, 'htmlAttr'),
-        'VL_STREET2'      => tohtml($street2, 'htmlAttr'),
-        'VL_PHONE'        => tohtml($phone, 'htmlAttr'),
-        'VL_FAX'          => tohtml($fax, 'htmlAttr')
-    ]);
-
-    reseller_generate_ip_list($tpl, $_SESSION['user_id'], $domainIp);
-    $_SESSION['local_data'] = "$dmnName;$hpId";
-}
-
-/**
- * Add customer
- *
+ * Add customer user
+ * 
+ * @throws Exception
  * @throws iMSCP_Exception
- * @return void
+ * @param Zend_Form $form
  */
-function addCustomer()
+function addCustomer(Form $form)
 {
-    global $hpId, $dmnName, $dmnExpire, $dmnUrlForward, $dmnTypeForward, $dmnHostForward, $domainIp, $adminName, $email,
-           $password, $firstName, $lastName, $gender, $firm, $zip, $city, $state, $country, $phone, $fax,
-           $street1, $street2;
+    global $hpId, $dmnName, $dmnExpire, $dmnUrlForward, $dmnTypeForward, $dmnHostForward, $domainIp, $adminName;
 
     if (!isset($_POST['domain_ip'])) {
         showBadRequestErrorPage();
     }
 
+    if (!$form->isValid($_POST)) {
+        foreach ($form->getMessages() as $fieldname => $msgsStack) {
+            set_page_message(reset($msgsStack), 'error');
+        }
+
+        return;
+    }
+
     $domainIp = intval($_POST['domain_ip']);
     $stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', $_SESSION['user_id']);
     if (!$stmt->rowCount()) {
-        throw new iMSCP_Exception(sprintf('Could not find IPs for reseller with ID %s', $_SESSION['user_id']));
+        throw new iMSCPException(sprintf('Could not find IPs for reseller with ID %s', $_SESSION['user_id']));
     }
 
     $resellerIps = $stmt->fetchRow();
@@ -127,7 +108,7 @@ function addCustomer()
         showBadRequestErrorPage();
     }
 
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     if (isset($_SESSION['ch_hpprops'])) {
         $props = $_SESSION['ch_hpprops'];
@@ -154,34 +135,36 @@ function addCustomer()
     $aps = str_replace('_', '', $aps);
     $extMailServer = str_replace('_', '', $extMailServer);
     $webFolderProtection = str_replace('_', '', $webFolderProtection);
-    $encryptedPassword = \iMSCP\Crypt::apr1MD5($password);
-    $db = iMSCP_Database::getInstance();
+    $db = Database::getInstance();
 
     try {
         $db->beginTransaction();
 
         exec_query(
-            '
+            "
                 INSERT INTO admin (
                     admin_name, admin_pass, admin_type, domain_created, created_by, fname, lname, firm, zip, city, state,
                     country, email, phone, fax, street1, street2, gender, admin_status
                 ) VALUES (
-                    ?, ?, ?, unix_timestamp(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, unix_timestamp(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'toadd'
                 )
-            ',
+            ",
             [
-                $adminName, $encryptedPassword, 'user', $_SESSION['user_id'], $firstName, $lastName, $firm, $zip, $city,
-                $state, $country, $email, $phone, $fax, $street1, $street2, $gender, 'toadd'
+                $adminName, Crypt::apr1MD5($form->getValue('admin_pass')), 'user', $_SESSION['user_id'],
+                $form->getValue('fname'), $form->getValue('lname'), $form->getValue('firm'), $form->getValue('zip'),
+                $form->getValue('city'), $form->getValue('state'), $form->getValue('country'),
+                encode_idna($form->getValue('email')), $form->getValue('phone'), $form->getValue('fax'),
+                $form->getValue('street1'), $form->getValue('street2'), $form->getValue('gender')
             ]
         );
 
         $adminId = $db->insertId();
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddDomain, [
+        EventsManager::getInstance()->dispatch(Events::onBeforeAddDomain, [
             'domainName'    => $dmnName,
             'createdBy'     => $_SESSION['user_id'],
             'customerId'    => $adminId,
-            'customerEmail' => $email,
+            'customerEmail' => $form->getValue('email'),
             'mountPoint'    => '/',
             'documentRoot'  => '/htdocs',
             'forwardUrl'    => $dmnUrlForward,
@@ -213,7 +196,11 @@ function addCustomer()
 
         $dmnId = $db->insertId();
 
-        $phpini = iMSCP_PHPini::getInstance();
+        $phpini = PhpIni::getInstance();
+        $phpini->loadResellerPermissions($_SESSION['user_id']); // Load reseller PHP permissions
+        $phpini->loadClientPermissions(); // Load client default PHP permissions
+        $phpini->loadDomainIni(); // Load domain default PHP configuration options
+
         $phpini->setDomainIni('phpiniMemoryLimit', $phpiniMemoryLimit); // Must be set before phpiniPostMaxSize
         $phpini->setDomainIni('phpiniPostMaxSize', $phpiniPostMaxSize); // Must be set before phpiniUploadMaxFileSize
         $phpini->setDomainIni('phpiniUploadMaxFileSize', $phpiniUploadMaxFileSize);
@@ -222,20 +209,23 @@ function addCustomer()
         $phpini->saveDomainIni($adminId, $dmnId, 'dmn');
 
         if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
-            createDefaultMailAccounts($dmnId, $email, $dmnName);
+            createDefaultMailAccounts($dmnId, $form->getValue('email'), $dmnName);
         }
 
-        send_add_user_auto_msg($_SESSION['user_id'], $adminName, $password, $email, $firstName, $lastName, tr('Customer'));
+        send_add_user_auto_msg(
+            $_SESSION['user_id'], $adminName, $form->getValue('admin_pass'), $form->getValue('email'),
+            $form->getValue('fname'), $form->getValue('lname'), tr('Customer')
+        );
         exec_query('INSERT INTO user_gui_props (user_id, lang, layout) VALUES (?, ?, ?)', [
             $adminId, $cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']
         ]);
         update_reseller_c_props($_SESSION['user_id']);
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddDomain, [
+        EventsManager::getInstance()->dispatch(Events::onAfterAddDomain, [
             'domainName'    => $dmnName,
             'createdBy'     => $_SESSION['user_id'],
             'customerId'    => $adminId,
-            'customerEmail' => $email,
+            'customerEmail' => $form->getValue('email'),
             'domainId'      => $dmnId,
             'mountPoint'    => '/',
             'documentRoot'  => '/htdocs',
@@ -246,14 +236,35 @@ function addCustomer()
 
         $db->commit();
         send_request();
-        write_log("{$_SESSION['user_logged']} added new customer: $adminName", E_USER_NOTICE);
+        write_log(
+            sprintf('A new customer (%s) has been created by: %s:', $adminName, $_SESSION['user_logged']),
+            E_USER_NOTICE
+        );
         set_page_message(tr('Customer account successfully scheduled for creation.'), 'success');
         unsetMessages();
         redirectTo('users.php');
-    } catch (iMSCP_Exception $e) {
+    } catch (Exception $e) {
         $db->rollBack();
         throw $e;
     }
+}
+
+/**
+ * Generates page
+ *
+ * @param  TemplateEngine $tpl Template engine
+ * @param Form $form
+ * @return void
+ */
+function generatePage(TemplateEngine $tpl, Form $form)
+{
+    global $hpId, $dmnName, $domainIp;
+
+    $form->setDefault('admin_name', decode_idna($dmnName));
+    $tpl->form = $form;
+
+    reseller_generate_ip_list($tpl, $_SESSION['user_id'], $domainIp);
+    $_SESSION['local_data'] = "$dmnName;$hpId";
 }
 
 /***********************************************************************************************************************
@@ -262,13 +273,8 @@ function addCustomer()
 
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+EventsManager::getInstance()->dispatch(Events::onResellerScriptStart);
 check_login('reseller');
-
-// Initialize global variables
-$email = $firstName = $lastName = $firm = $zip = $city = $state = $country = $street1 = $street2 = '';
-$phone = $mail = $fax = $domainIp = '';
-$gender = 'U';
 
 if (!getPreviousStepData()) {
     set_page_message(tr('Data were altered. Please try again.'), 'error');
@@ -276,60 +282,31 @@ if (!getPreviousStepData()) {
     redirectTo('user_add1.php');
 }
 
-$phpini = iMSCP_PHPini::getInstance();
-$phpini->loadResellerPermissions($_SESSION['user_id']); // Load reseller PHP permissions
-$phpini->loadClientPermissions(); // Load client default PHP permissions
-$phpini->loadDomainIni(); // Load domain default PHP configuration options
+$form = getUserLoginDataForm(false, true)->addElements(getUserPersonalDataForm()->getElements());
+$form->setDefault('gender', 'U');
 
-if (isset($_POST['uaction']) && 'user_add3_nxt' == $_POST['uaction'] && !isset($_SESSION['step_two_data'])) {
-    if (check_ruser_data()) {
-        addCustomer();
-    }
+if (isset($_POST['uaction'])
+    && 'user_add3_nxt' == $_POST['uaction']
+    && !isset($_SESSION['step_two_data'])
+) {
+    addCustomer($form);
 } else {
     unset($_SESSION['step_two_data']);
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
-    'layout'        => 'shared/layouts/ui.tpl',
-    'page'          => 'reseller/user_add3.tpl',
-    'page_message'  => 'layout',
-    'ip_entry'      => 'page',
-    'alias_feature' => 'page'
+    'layout'       => 'shared/layouts/ui.tpl',
+    'page'         => 'reseller/user_add3.phtml',
+    'page_message' => 'layout',
+    'ip_entry'     => 'page'
 ]);
-$tpl->assign([
-    'TR_PAGE_TITLE'      => tr('Reseller / Customers / Add Customer - Next Step'),
-    'TR_ADD_USER'        => tr('Add user'),
-    'TR_CORE_DATA'       => tr('Core data'),
-    'TR_USERNAME'        => tr('Username'),
-    'TR_PASSWORD'        => tr('Password'),
-    'TR_REP_PASSWORD'    => tr('Repeat password'),
-    'TR_DOMAIN_IP'       => tr('Domain IP'),
-    'TR_USREMAIL'        => tr('Email'),
-    'TR_ADDITIONAL_DATA' => tr('Additional data'),
-    'TR_FIRSTNAME'       => tr('First name'),
-    'TR_LASTNAME'        => tr('Last name'),
-    'TR_GENDER'          => tr('Gender'),
-    'TR_MALE'            => tr('Male'),
-    'TR_FEMALE'          => tr('Female'),
-    'TR_UNKNOWN'         => tr('Unknown'),
-    'TR_COMPANY'         => tr('Company'),
-    'TR_POST_CODE'       => tr('Zip'),
-    'TR_CITY'            => tr('City'),
-    'TR_STATE_PROVINCE'  => tr('State/Province'),
-    'TR_COUNTRY'         => tr('Country'),
-    'TR_STREET1'         => tr('Street 1'),
-    'TR_STREET2'         => tr('Street 2'),
-    'TR_MAIL'            => tr('Email'),
-    'TR_PHONE'           => tr('Phone'),
-    'TR_FAX'             => tr('Fax'),
-    'TR_BTN_ADD_USER'    => tr('Add user')
-]);
+$tpl->assign('TR_PAGE_TITLE', tohtml(tr('Reseller / Customers / Add Customer - Next Step')));
 
 generateNavigation($tpl);
-generatePage($tpl);
 generatePageMessage($tpl);
+generatePage($tpl, $form);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+EventsManager::getInstance()->dispatch(Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

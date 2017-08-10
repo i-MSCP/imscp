@@ -361,7 +361,9 @@ function addSubdomain()
 
         if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
             createDefaultMailAccounts(
-                $mainDmnProps['domain_id'], $_SESSION['user_email'], $subdomainNameAscii,
+                $mainDmnProps['domain_id'],
+                iMSCP_Authentication::getInstance()->getIdentity()->email,
+                $subdomainNameAscii,
                 ($domainType == 'dmn') ? MT_SUBDOM_FORWARD : MT_ALSSUB_FORWARD, $subdomainId
             );
         }

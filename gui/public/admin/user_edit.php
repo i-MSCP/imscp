@@ -18,10 +18,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP\Crypt as Crypt;
 use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
+use Zend_Form as Form;
 
 /***********************************************************************************************************************
  * Functions
@@ -31,11 +33,11 @@ use iMSCP_pTemplate as TemplateEngine;
  * Update user data
  *
  * @throws Exception
- * @param Zend_Form $form
+ * @param Form $form
  * @param int $userId User unique identifier
  * @return void
  */
-function updateUserData(Zend_Form $form, $userId)
+function updateUserData(Form $form, $userId)
 {
     global $userType;
 
@@ -48,8 +50,8 @@ function updateUserData(Zend_Form $form, $userId)
     $userType = $data['admin_type'];
 
     if (!$form->isValid($_POST)) {
-        foreach ($form->getMessages() as $msgStack => $msg) {
-            set_page_message(reset($msg), 'error');
+        foreach ($form->getMessages() as $fieldname => $msgsStack) {
+            set_page_message(reset($msgsStack), 'error');
         }
 
         $form->setDefault('admin_name', $data['admin_name']); // admin_name not part of form; we need re-add it
@@ -76,17 +78,16 @@ function updateUserData(Zend_Form $form, $userId)
                 WHERE admin_id = ?
             ",
             [
-                $passwordUpdated ? NULL : iMSCP\Crypt::apr1MD5($form->getValue('admin_pass')), $form->getValue('fname'),
+                $passwordUpdated ? NULL : Crypt::apr1MD5($form->getValue('admin_pass')), $form->getValue('fname'),
                 $form->getValue('lname'), $form->getValue('firm'), $form->getValue('zip'), $form->getValue('city'),
-                $form->getValue('state'), $form->getValue('country'), $form->getValue('email'),
+                $form->getValue('state'), $form->getValue('country'), encode_idna($form->getValue('email')),
                 $form->getValue('phone'), $form->getValue('fax'), $form->getValue('street1'), $form->getValue('street2'),
                 $form->getValue('gender'), $passwordUpdated ? 1 : 0, $userId
             ]
         );
 
-        if ($passwordUpdated) {
-            exec_query('DELETE FROM login WHERE user_name = ?', $data['admin_name']);
-        }
+        // For user to login again (need due to possible password or email change)
+        exec_query('DELETE FROM login WHERE user_name = ?', $data['admin_name']);
 
         EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
             'userId'   => $userId,
@@ -127,12 +128,12 @@ function updateUserData(Zend_Form $form, $userId)
  * Generate page
  *
  * @param TemplateEngine $tpl
- * @param Zend_Form $form
+ * @param Form $form
  * @param int $userId User unique identifier
  *
  * @return void
  */
-function generatePage(TemplateEngine $tpl, Zend_Form $form, $userId)
+function generatePage(TemplateEngine $tpl, Form $form, $userId)
 {
     global $userType;
 

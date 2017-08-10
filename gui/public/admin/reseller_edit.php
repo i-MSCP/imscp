@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,18 +18,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP\Crypt as Crypt;
+use iMSCP_Database as Database;
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_PHPini as PhpIni;
+use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
+use Zend_Form as Form;
+use Zend_Session as Session;
+
 /***********************************************************************************************************************
  * Functions
  */
 
 /**
- * Returns reseller data
+ * Retrieve form data
  *
  * @param int $resellerId Domain unique identifier
  * @param bool $forUpdate Tell whether or not data are fetched for update
  * @return array Reference to array of data
  */
-function &admin_getData($resellerId, $forUpdate = false)
+function getFormData($resellerId, $forUpdate = false)
 {
     static $data = NULL;
 
@@ -103,7 +113,7 @@ function &admin_getData($resellerId, $forUpdate = false)
 
     $data = array_merge($data, $fallbackData);
 
-    $phpini = iMSCP_PHPini::getInstance();
+    $phpini = PhpIni::getInstance();
 
     $data['php_ini_system'] = $phpini->getResellerPermission('phpiniSystem');
     $data['php_ini_al_disable_functions'] = $phpini->getResellerPermission('phpiniDisableFunctions');
@@ -122,11 +132,9 @@ function &admin_getData($resellerId, $forUpdate = false)
 
     foreach (
         [
-            'password', 'password_confirmation', 'fname', 'lname', 'gender', 'firm', 'zip', 'city', 'state',
-            'country', 'email', 'phone', 'fax', 'street1', 'street2', 'max_dmn_cnt', 'max_sub_cnt', 'max_als_cnt',
-            'max_mail_cnt', 'max_ftp_cnt', 'max_sql_db_cnt', 'max_sql_user_cnt', 'max_traff_amnt',
-            'max_disk_amnt', 'software_allowed', 'softwaredepot_allowed', 'websoftwaredepot_allowed',
-            'support_system'
+            'max_dmn_cnt', 'max_sub_cnt', 'max_als_cnt', 'max_mail_cnt', 'max_ftp_cnt', 'max_sql_db_cnt',
+            'max_sql_user_cnt', 'max_traff_amnt', 'max_disk_amnt', 'software_allowed', 'softwaredepot_allowed',
+            'websoftwaredepot_allowed', 'support_system'
         ] as $key
     ) {
         if (isset($_POST[$key])) {
@@ -188,35 +196,16 @@ function &admin_getData($resellerId, $forUpdate = false)
 }
 
 /**
- * Generates account form
- *
- * @param iMSCP_pTemplate $tpl Template engine instance
- * @param array &$data Reseller data
- * @return void
- */
-function _admin_generateAccountForm($tpl, &$data)
-{
-    $tpl->assign([
-        'TR_ACCOUNT_DATA'          => tr('Account data'),
-        'TR_RESELLER_NAME'         => tr('Name'),
-        'RESELLER_NAME'            => tohtml($data['admin_name']),
-        'TR_PASSWORD'              => tr('Password'),
-        'TR_PASSWORD_CONFIRMATION' => tr('Password confirmation'),
-        'PASSWORD_CONFIRMATION'    => tohtml($data['password_confirmation']),
-        'TR_EMAIL'                 => tr('Email'),
-        'EMAIL'                    => tohtml($data['email'])
-    ]);
-}
-
-/**
  * Generates IP list form
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
- * @param array &$data Reseller data
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
  */
-function _admin_generateIpListForm($tpl, &$data)
+function generateIpListForm(TemplateEngine $tpl)
 {
+    global $resellerId;
+
+    $data = getFormData($resellerId);
     $assignedTranslation = tr('Already in use');
     $unusedTranslation = tr('Not used');
 
@@ -227,7 +216,7 @@ function _admin_generateIpListForm($tpl, &$data)
         'TR_STATUS'     => tr('Usage status')
     ]);
 
-    iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+    EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
         /** @var $e \iMSCP_Events_Event */
         $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
     });
@@ -249,12 +238,14 @@ function _admin_generateIpListForm($tpl, &$data)
 /**
  * Generates features form
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
- * @param array &$data Reseller data
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
  */
-function _admin_generateLimitsForm($tpl, &$data)
+function generateLimitsForm(TemplateEngine $tpl)
 {
+    global $resellerId;
+
+    $data = getFormData($resellerId);
     $tpl->assign([
         'TR_ACCOUNT_LIMITS'   => tr('Account limits'),
         'TR_MAX_DMN_CNT'      => tr('Domains limit') . '<br/><i>(0 ∞)</i>',
@@ -281,12 +272,14 @@ function _admin_generateLimitsForm($tpl, &$data)
 /**
  * Generates features form
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
- * @param array &$data Reseller data
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
  */
-function _admin_generateFeaturesForm($tpl, &$data)
+function generateFeaturesForm(TemplateEngine $tpl)
 {
+    global $resellerId;
+
+    $data = getFormData($resellerId);
     $tpl->assign([
         'TR_FEATURES'                      => tr('Features'),
         'TR_SETTINGS'                      => tr('PHP Settings'),
@@ -336,18 +329,18 @@ function _admin_generateFeaturesForm($tpl, &$data)
         'TR_SEC'                           => tr('Sec.')
     ]);
 
-    iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+    EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
         /** @var iMSCP_Events_Event $e */
         $translations = $e->getParam('translations');
         $translations['core']['close'] = tr('Close');
         $translations['core']['fields_ok'] = tr('All fields are valid.');
         $translations['core']['out_of_range_value_error'] = tr('Value for the PHP %%s directive must be in range %%d to %%d.');
         $translations['core']['lower_value_expected_error'] = tr('%%s cannot be greater than %%s.');
-        $translations['core']['error_field_stack'] = iMSCP_Registry::isRegistered('errFieldsStack')
-            ? iMSCP_Registry::get('errFieldsStack') : [];
+        $translations['core']['error_field_stack'] = Registry::isRegistered('errFieldsStack')
+            ? Registry::get('errFieldsStack') : [];
     });
 
-    if (iMSCP_Registry::get('config')['HTTPD_PACKAGE'] != 'Servers::httpd::apache_itk') {
+    if (Registry::get('config')['HTTPD_PACKAGE'] != 'Servers::httpd::apache_itk') {
         $tpl->assign([
             'TR_PHP_INI_AL_DISABLE_FUNCTIONS'  => tr('Can edit the PHP %s configuration option', '<b>disable_functions</b>'),
             'PHP_INI_AL_DISABLE_FUNCTIONS_YES' => $data['php_ini_al_disable_functions'] == 'yes' ? ' checked' : '',
@@ -357,107 +350,37 @@ function _admin_generateFeaturesForm($tpl, &$data)
             'PHP_INI_AL_MAIL_FUNCTION_YES' => $data['php_ini_al_mail_function'] == 'yes' ? ' checked' : '',
             'PHP_INI_AL_MAIL_FUNCTION_NO'  => $data['php_ini_al_mail_function'] != 'yes' ? ' checked' : '',
         ]);
-    } else {
-        $tpl->assign('PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK', '');
-        $tpl->assign('PHP_EDITOR_MAIL_FUNCTION_BLOCK', '');
+        return;
     }
+
+    $tpl->assign('PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK', '');
+    $tpl->assign('PHP_EDITOR_MAIL_FUNCTION_BLOCK', '');
 }
 
 /**
- * Generates features form
+ * Update reseller user
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
- * @param array $data Domain data
+ * @throws Exception
+ * @param Form $form
  * @return void
  */
-function _admin_generatePersonalDataFrom($tpl, &$data)
+function updateResellerUser(Form $form)
 {
-    $tpl->assign([
-        'TR_PERSONAL_DATA' => tr('Personal data'),
-        'TR_FNAME'         => tr('First name'),
-        'FNAME'            => tohtml($data['fname']),
-        'TR_LNAME'         => tr('Last name'),
-        'LNAME'            => tohtml($data['lname']),
-        'TR_GENDER'        => tr('Gender'),
-        'TR_MALE'          => tr('Male'),
-        'MALE'             => $data['gender'] == 'M' ? ' selected' : '',
-        'TR_FEMALE'        => tr('Female'),
-        'FEMALE'           => $data['gender'] == 'F' ? ' selected' : '',
-        'TR_UNKNOWN'       => tr('Unknown'),
-        'UNKNOWN'          => $data['gender'] != 'M' && $data['gender'] != 'F' ? ' selected' : '',
-        'TR_FIRM'          => tr('Company'),
-        'FIRM'             => tohtml($data['firm']),
-        'TR_STREET1'       => tr('Street 1'),
-        'STREET1'          => tohtml($data['street1']),
-        'TR_STREET2'       => tr('Street 2'),
-        'STREET2'          => tohtml($data['street2']),
-        'TR_ZIP'           => tr('Zip code'),
-        'ZIP'              => tohtml($data['zip']),
-        'TR_CITY'          => tr('City'),
-        'CITY'             => tohtml($data['city']),
-        'TR_STATE'         => tr('State'),
-        'STATE'            => tohtml($data['state']),
-        'TR_COUNTRY'       => tr('Country'),
-        'COUNTRY'          => tohtml($data['country']),
-        'TR_PHONE'         => tr('Phone'),
-        'PHONE'            => tohtml($data['phone']),
-        'TR_FAX'           => tr('Fax'),
-        'FAX'              => tohtml($data['fax'])
-    ]);
-}
+    global $resellerId;
 
-/**
- * Generate edit form
- *
- * @param iMSCP_pTemplate $tpl Template engine instance
- * @param array &$data Reseller data
- * @return void
- */
-function admin_generateForm($tpl, &$data)
-{
-    _admin_generateAccountForm($tpl, $data);
-    _admin_generateIpListForm($tpl, $data);
-    _admin_generateLimitsForm($tpl, $data);
-    _admin_generateFeaturesForm($tpl, $data);
-    _admin_generatePersonalDataFrom($tpl, $data);
-}
-
-/**
- * Check and updates reseller data
- *
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
- * @param int $resellerId Reseller unique identifier
- * @return bool
- */
-function admin_checkAndUpdateData($resellerId)
-{
     $errFieldsStack = [];
-    $data =& admin_getData($resellerId, true);
-    $db = iMSCP_Database::getInstance();
+    $db = Database::getInstance();
 
     try {
-        $db->beginTransaction();
-
-        // check for password (if needed)
-        if ($data['password'] !== '' && $data['password_confirmation'] !== '') {
-            if ($data['password'] !== $data['password_confirmation']) {
-                set_page_message(tr('Passwords do not match.'), 'error');
-            }
-
-            checkPasswordSyntax($data['password']);
-
-            if (Zend_Session::namespaceIsset('pageMessages')) {
-                $errFieldsStack[] = 'password';
-                $errFieldsStack[] = 'password_confirmation';
+        // Check for login and personal data
+        if (!$form->isValid($_POST)) {
+            foreach ($form->getMessages() as $fieldname => $msgsStack) {
+                $errFieldsStack[] = $fieldname;
+                set_page_message(reset($msgsStack), 'error');
             }
         }
 
-        // Check for email address
-        if (!chk_email($data['email'])) {
-            set_page_message(tr('Incorrect syntax for email address.'), 'error');
-            $errFieldsStack[] = 'email';
-        }
+        $data = getFormData($resellerId, true);
 
         // Check for ip addresses
         $resellerIps = [];
@@ -476,7 +399,9 @@ function admin_checkAndUpdateData($resellerId)
 
         // Check for max domains limit
         if (imscp_limit_check($data['max_dmn_cnt'], NULL)) {
-            $rs = admin_checkResellerLimit($data['max_dmn_cnt'], $data['current_dmn_cnt'], $data['nbDomains'], '0', tr('domains'));
+            $rs = checkResellerLimit(
+                $data['max_dmn_cnt'], $data['current_dmn_cnt'], $data['nbDomains'], '0', tr('domains')
+            );
         } else {
             set_page_message(tr('Incorrect limit for %s.', tr('domain')), 'error');
             $rs = false;
@@ -488,7 +413,10 @@ function admin_checkAndUpdateData($resellerId)
 
         // Check for max subdomains limit
         if (imscp_limit_check($data['max_sub_cnt'])) {
-            $rs = admin_checkResellerLimit($data['max_sub_cnt'], $data['current_sub_cnt'], $data['nbSubdomains'], $data['unlimitedSubdomains'], tr('subdomains'));
+            $rs = checkResellerLimit(
+                $data['max_sub_cnt'], $data['current_sub_cnt'], $data['nbSubdomains'], $data['unlimitedSubdomains'],
+                tr('subdomains')
+            );
         } else {
             set_page_message(tr('Incorrect limit for %s.', tr('subdomains')), 'error');
             $rs = false;
@@ -498,7 +426,10 @@ function admin_checkAndUpdateData($resellerId)
 
         // check for max domain aliases limit
         if (imscp_limit_check($data['max_als_cnt'])) {
-            $rs = admin_checkResellerLimit($data['max_als_cnt'], $data['current_als_cnt'], $data['nbDomainAliases'], $data['unlimitedDomainAliases'], tr('domain aliases'));
+            $rs = checkResellerLimit(
+                $data['max_als_cnt'], $data['current_als_cnt'], $data['nbDomainAliases'],
+                $data['unlimitedDomainAliases'], tr('domain aliases')
+            );
         } else {
             set_page_message(tr('Incorrect limit for %s.', tr('domain aliases')), 'error');
             $rs = false;
@@ -508,7 +439,10 @@ function admin_checkAndUpdateData($resellerId)
 
         // Check for max mail accounts limit
         if (imscp_limit_check($data['max_mail_cnt'])) {
-            $rs = admin_checkResellerLimit($data['max_mail_cnt'], $data['current_mail_cnt'], $data['nbMailAccounts'], $data['unlimitedMailAccounts'], tr('mail'));
+            $rs = checkResellerLimit(
+                $data['max_mail_cnt'], $data['current_mail_cnt'], $data['nbMailAccounts'], $data['unlimitedMailAccounts'],
+                tr('mail')
+            );
         } else {
             set_page_message(tr('Incorrect limit for %s.', tr('mail accounts')), 'error');
             $rs = false;
@@ -518,7 +452,10 @@ function admin_checkAndUpdateData($resellerId)
 
         // Check for max ftp accounts limit
         if (imscp_limit_check($data['max_ftp_cnt'])) {
-            $rs = admin_checkResellerLimit($data['max_ftp_cnt'], $data['current_ftp_cnt'], $data['nbFtpAccounts'], $data['unlimitedFtpAccounts'], tr('Ftp'));
+            $rs = checkResellerLimit(
+                $data['max_ftp_cnt'], $data['current_ftp_cnt'], $data['nbFtpAccounts'], $data['unlimitedFtpAccounts'],
+                tr('Ftp')
+            );
         } else {
             set_page_message(tr('Incorrect limit for %s.', tr('Ftp accounts')), 'error');
             $rs = false;
@@ -535,7 +472,10 @@ function admin_checkAndUpdateData($resellerId)
             set_page_message(tr('SQL database limit is disabled but SQL user limit is not.'), 'error');
             $rs = false;
         } else {
-            $rs = admin_checkResellerLimit($data['max_sql_db_cnt'], $data['current_sql_db_cnt'], $data['nbSqlDatabases'], $data['unlimitedSqlDatabases'], tr('SQL databases'));
+            $rs = checkResellerLimit(
+                $data['max_sql_db_cnt'], $data['current_sql_db_cnt'], $data['nbSqlDatabases'],
+                $data['unlimitedSqlDatabases'], tr('SQL databases')
+            );
         }
 
         if (!$rs) {
@@ -549,7 +489,10 @@ function admin_checkAndUpdateData($resellerId)
             set_page_message(tr('SQL user limit is disabled but SQL database limit is not.'), 'error');
             $rs = false;
         } else {
-            $rs = admin_checkResellerLimit($data['max_sql_user_cnt'], $data['current_sql_user_cnt'], $data['nbSqlUsers'], $data['unlimitedSqlUsers'], tr('SQL users'));
+            $rs = checkResellerLimit(
+                $data['max_sql_user_cnt'], $data['current_sql_user_cnt'], $data['nbSqlUsers'],
+                $data['unlimitedSqlUsers'], tr('SQL users')
+            );
         }
 
         if (!$rs) {
@@ -558,7 +501,10 @@ function admin_checkAndUpdateData($resellerId)
 
         // Check for max monthly traffic limit
         if (imscp_limit_check($data['max_traff_amnt'], NULL)) {
-            $rs = admin_checkResellerLimit($data['max_traff_amnt'], $data['current_traff_amnt'], $data['totalTraffic'] / 1048576, $data['unlimitedTraffic'], tr('traffic'));
+            $rs = checkResellerLimit(
+                $data['max_traff_amnt'], $data['current_traff_amnt'], $data['totalTraffic'] / 1048576,
+                $data['unlimitedTraffic'], tr('traffic')
+            );
         } else {
             set_page_message(tr('Incorrect limit for %s.', tr('traffic')), 'error');
             $rs = false;
@@ -570,7 +516,10 @@ function admin_checkAndUpdateData($resellerId)
 
         // Check for max disk space limit
         if (imscp_limit_check($data['max_disk_amnt'], NULL)) {
-            $rs = admin_checkResellerLimit($data['max_disk_amnt'], $data['current_disk_amnt'], $data['totalDiskspace'] / 1048576, $data['unlimitedDiskspace'], tr('disk space'));
+            $rs = checkResellerLimit(
+                $data['max_disk_amnt'], $data['current_disk_amnt'], $data['totalDiskspace'] / 1048576,
+                $data['unlimitedDiskspace'], tr('disk space')
+            );
         } else {
             set_page_message(tr('Incorrect limit for %s.', tr('disk space')), 'error');
             $rs = false;
@@ -579,6 +528,8 @@ function admin_checkAndUpdateData($resellerId)
         if (!$rs) {
             $errFieldsStack[] = 'max_disk_amnt';
         }
+
+        $db->beginTransaction();
 
         // Check for PHP settings
         $phpini = iMSCP_PHPini::getInstance();
@@ -601,13 +552,10 @@ function admin_checkAndUpdateData($resellerId)
             $phpini->loadResellerPermissions(); // Reset reseller PHP permissions to default values
         }
 
-        if (empty($errFieldsStack) && !Zend_Session::namespaceIsset('pageMessages')) { // Update process begin here
-            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, [
+        if (empty($errFieldsStack) && !Session::namespaceIsset('pageMessages')) { // Update process begin here
+            EventsManager::getInstance()->dispatch(Events::onBeforeEditUser, [
                 'userId'   => $resellerId,
-                'userData' => [
-                    'admin_name' => $data['admin_name'],
-                    'admin_pass' => $data['password']
-                ]
+                'userData' => $form->getValues()
             ]);
 
             $oldValues = $newValues = [];
@@ -625,20 +573,21 @@ function admin_checkAndUpdateData($resellerId)
             // Nothing has been changed ?
             if ($newValues == $oldValues && !$needPHPiniChange) {
                 set_page_message(tr('Nothing has been changed.'), 'info');
-                return true;
+                redirectTo('users.php');
             }
 
             // Update reseller personal data (including password if needed)
 
             $bindParams = [
-                $data['fname'], $data['lname'], $data['gender'], $data['firm'],
-                $data['zip'], $data['city'], $data['state'], $data['country'], $data['email'], $data['phone'],
-                $data['fax'], $data['street1'], $data['street2'], $resellerId
+                $form->getValue('fname'), $form->getValue('lname'), $form->getValue('gender'), $form->getValue('firm'),
+                $form->getValue('zip'), $form->getValue('city'), $form->getValue('state'), $form->getValue('country'),
+                $form->getValue('email'), $form->getValue('phone'),
+                $form->getValue('fax'), $form->getValue('street1'), $form->getValue('street2'), $resellerId
             ];
 
-            if ($data['password'] != '') {
+            if ($form->getValue('admin_pass') != '') {
                 $setPassword = 'admin_pass = ?,';
-                array_unshift($bindParams, \iMSCP\Crypt::apr1MD5($data['password']));
+                array_unshift($bindParams, Crypt::apr1MD5($form->getValue('admin_pass')));
             } else {
                 $setPassword = '';
             }
@@ -728,19 +677,16 @@ function admin_checkAndUpdateData($resellerId)
 
             iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, [
                 'userId'   => $resellerId,
-                'userData' => [
-                    'admin_name' => $data['admin_name'],
-                    'admin_pass' => $data['password']
-                ]
+                'userData' => $form->getValues()
             ]);
 
             $db->commit();
 
             // Send mail to reseller for new password
-            if ($data['password'] != '') {
+            if ($form->getValue('admin_pass')) {
                 send_add_user_auto_msg(
-                    $_SESSION['user_id'], $data['admin_name'], $data['password'], $data['email'], $data['fname'],
-                    $data['lname'], tr('Reseller')
+                    $_SESSION['user_id'], $data['admin_name'], $form->getValue('admin_pass'), $form->getValue('email'),
+                    $form->getValue('fname'), $form->getValue('lname'), tr('Reseller')
                 );
             }
 
@@ -748,11 +694,14 @@ function admin_checkAndUpdateData($resellerId)
                 send_request();
             }
 
-            write_log(sprintf('A reseller account (%s) has been updated by %s', $data['admin_name'], $_SESSION['user_logged']), E_USER_NOTICE);
-            set_page_message(tr('Reseller account successfully updated.'), 'success');
-            return true;
+            write_log(
+                sprintf('The %s reseller has been updated by %s', $form->getValue('admin_name'), $_SESSION['user_logged']),
+                E_USER_NOTICE
+            );
+            set_page_message('Reseller has been updated.', 'success');
+            redirectTo('users.php');
         }
-    } catch (iMSCP_Exception $e) {
+    } catch (Exception $e) {
         $db->rollBack();
         throw $e;
     }
@@ -760,8 +709,6 @@ function admin_checkAndUpdateData($resellerId)
     if (!empty($errFieldsStack)) {
         iMSCP_Registry::set('errFieldsStack', $errFieldsStack);
     }
-
-    return false;
 }
 
 /**
@@ -774,40 +721,93 @@ function admin_checkAndUpdateData($resellerId)
  * @param String $serviceName Service name for which new limit is verified
  * @return bool TRUE if new limit is valid, FALSE otherwise
  */
-function admin_checkResellerLimit($newLimit, $assignedByReseller, $consumedByCustomers, $unlimitedService, $serviceName)
+function checkResellerLimit($newLimit, $assignedByReseller, $consumedByCustomers, $unlimitedService, $serviceName)
 {
     $retVal = true;
 
     // We process only if the new limit value is not equal to 0 (unlimited)
-    if ($newLimit != 0) {
-        // The service is limited for all customers
-        if ($unlimitedService == false) {
-            // If the new limit is lower than the already consomed item by customer
-            if ($newLimit < $consumedByCustomers && $newLimit != -1) {
-                set_page_message(tr("%s: The clients consumption (%s) for this reseller is greater than the new limit.", '<b>' . ucfirst($serviceName) . '</b>', $consumedByCustomers), 'error');
-                $retVal = false;
-                // If the new limit is lower than the items already assigned by the reseller
-            } elseif ($newLimit < $assignedByReseller && $newLimit != -1) {
-                set_page_message(tr('%s: The total of items (%s) already assigned by the reseller is greater than the new limit.', '<b>' . ucfirst($serviceName) . '</b>', $assignedByReseller), 'error');
-                $retVal = false;
-                // If the new limit is -1 (disabled) and assigned items are already consumed by customer
-            } elseif ($newLimit == -1 && $consumedByCustomers > 0) {
-                set_page_message(tr("%s: You cannot disable a service already consumed by reseller's customers.", '<b>' . ucfirst($serviceName) . '</b>'), 'error');
-                $retVal = false;
-                // If the new limit is -1 (disabled) and the already assigned accounts/limits by reseller is greater 0
-            } elseif ($newLimit == -1 && $assignedByReseller > 0) {
-                set_page_message(tr("%s: You cannot disable a service already sold to reseller's customers.", '<b>' . ucfirst($serviceName) . '</b>'), 'error');
-                $retVal = false;
-            }
-            // One or more reseller's customers have unlimited items
-        } elseif ($newLimit != 0) {
-            set_page_message(tr('%s: This reseller has customer(s) with unlimited items.', '<b>' . ucfirst($serviceName) . '</b>'), 'error');
-            set_page_message(tr('If you want to limit the reseller, you must first limit its customers.'), 'error');
-            $retVal = false;
-        }
+    if ($newLimit == 0) {
+        return $retVal;
     }
 
+    // The service is limited for all customers
+    if ($unlimitedService == false) {
+        // If the new limit is lower than the already consomed item by customer
+        if ($newLimit < $consumedByCustomers && $newLimit != -1) {
+            set_page_message(
+                tr(
+                    "%s: The clients consumption (%s) for this reseller is greater than the new limit.",
+                    '<b>' . ucfirst($serviceName) . '</b>', $consumedByCustomers),
+                'error'
+            );
+            $retVal = false;
+            // If the new limit is lower than the items already assigned by the reseller
+        } elseif ($newLimit < $assignedByReseller && $newLimit != -1) {
+            set_page_message(
+                tr(
+                    '%s: The total of items (%s) already assigned by the reseller is greater than the new limit.',
+                    '<b>' . ucfirst($serviceName) . '</b>', $assignedByReseller
+                ),
+                'error'
+            );
+            $retVal = false;
+            // If the new limit is -1 (disabled) and assigned items are already consumed by customer
+        } elseif ($newLimit == -1 && $consumedByCustomers > 0) {
+            set_page_message(
+                tr(
+                    "%s: You cannot disable a service already consumed by reseller's customers.",
+                    '<b>' . ucfirst($serviceName) . '</b>'
+                ),
+                'error'
+            );
+            $retVal = false;
+            // If the new limit is -1 (disabled) and the already assigned accounts/limits by reseller is greater 0
+        } elseif ($newLimit == -1 && $assignedByReseller > 0) {
+            set_page_message(
+                tr(
+                    "%s: You cannot disable a service already sold to reseller's customers.",
+                    '<b>' . ucfirst($serviceName) . '</b>'
+                ),
+                'error'
+            );
+            $retVal = false;
+        }
+        // One or more reseller's customers have unlimited items
+    } elseif ($newLimit != 0) {
+        set_page_message(
+            tr('%s: This reseller has customer(s) with unlimited items.', '<b>' . ucfirst($serviceName) . '</b>'),
+            'error'
+        );
+        set_page_message(tr('If you want to limit the reseller, you must first limit its customers.'), 'error');
+        $retVal = false;
+    }
+
+
     return $retVal;
+}
+
+/**
+ * Generate page
+ *
+ * @param TemplateEngine $tpl Template engine instance
+ * @param Form $form
+ * @return void
+ */
+function generatePage(TemplateEngine $tpl, Form $form)
+{
+    global $resellerId;
+
+    $tpl->form = $form;
+
+    if (empty($_POST)) {
+        $form->setDefaults(getFormData($resellerId));
+    } else {
+        $form->setDefault('admin_name', getFormData($resellerId)['admin_name']);
+    }
+
+    generateIpListForm($tpl);
+    generateLimitsForm($tpl);
+    generateFeaturesForm($tpl);
 }
 
 /***********************************************************************************************************************
@@ -816,27 +816,29 @@ function admin_checkResellerLimit($newLimit, $assignedByReseller, $consumedByCus
 
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 check_login('admin');
 
 if (!isset($_GET['edit_id'])) {
     showBadRequestErrorPage();
 }
 
+global $resellerId;
 $resellerId = intval($_GET['edit_id']);
 
 $phpini = iMSCP_PHPini::getInstance();
 $phpini->loadResellerPermissions($resellerId); // Load reseller PHP permissions
 
-if (!empty($_POST) && admin_checkAndUpdateData($resellerId)) {
-    redirectTo('users.php');
+$form = getUserLoginDataForm(false, false)->addElements(getUserPersonalDataForm()->getElements());
+
+if (!empty($_POST)) {
+    updateResellerUser($form);
 }
 
-$data =& admin_getData($resellerId);
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                             => 'shared/layouts/ui.tpl',
-    'page'                               => 'admin/reseller_edit.tpl',
+    'page'                               => 'admin/reseller_edit.phtml',
     'page_message'                       => 'layout',
     'ips_block'                          => 'page',
     'ip_block'                           => 'ips_block',
@@ -844,19 +846,16 @@ $tpl->define_dynamic([
     'php_editor_mail_function_block'     => 'page'
 ]);
 $tpl->assign([
-    'TR_PAGE_TITLE'    => tr('Admin / Users / Edit Reseller'),
-    'EDIT_ID'          => $resellerId,
-    'TR_EDIT_RESELLER' => tr('Edit reseller'),
-    'TR_UPDATE'        => tr('Update'),
-    'TR_CANCEL'        => tr('Cancel')
+    'TR_PAGE_TITLE' => tohtml(tr('Admin / Users / Edit Reseller')),
+    'EDIT_ID'       => tourl($resellerId)
 ]);
 
 generateNavigation($tpl);
-admin_generateForm($tpl, $data);
 generatePageMessage($tpl);
+generatePage($tpl, $form);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

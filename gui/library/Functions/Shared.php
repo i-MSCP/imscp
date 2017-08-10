@@ -65,6 +65,8 @@ function createDefaultMailAccounts($mainDmnId, $userEmail, $dmnName, $forwardTyp
             return;
         }
 
+        $userEmail = encode_idna($userEmail);
+
         $db->beginTransaction();
 
         $stmt = $db->prepare(
@@ -1804,7 +1806,7 @@ function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $uln
         'fname'        => $ufname,
         'lname'        => $ulname,
         'username'     => $uname,
-        'email'        => $uemail,
+        'email'        => decode_idna($uemail),
         'subject'      => $data['subject'],
         'message'      => $data['message'],
         'placeholders' => [

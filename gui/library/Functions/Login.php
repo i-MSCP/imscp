@@ -211,7 +211,7 @@ function check_login($userLevel, $preventExternalLogin = true)
     $auth = iMSCP_Authentication::getInstance();
 
     if (!$auth->hasIdentity()) {
-        $auth->unsetIdentity(); // Ensure deletion of all entity data
+        $auth->unsetIdentity(); // Ensure deletion of all identity data
 
         if (is_xhr()) {
             showForbiddenErrorPage();

@@ -338,7 +338,7 @@ if (!empty($_POST)) {
             $domainProps['domain_id'], $aliasId, $subId, $aliasSubId, $softwareId, $softwareData['software_master_id'],
             $softwareData['software_name'], $softwareData['software_version'], $softwareData['software_language'],
             $installPath, $softwarePrefix, $appDatabase, $appSqlUser, $appSqlPassword, $appLoginName, $appPassword,
-            $appEmail, 'toadd', $softwareData['software_depot']
+            encode_idna($appEmail), 'toadd', $softwareData['software_depot']
         ]
     );
 
@@ -351,7 +351,7 @@ if (!empty($_POST)) {
     setFtpRootDir($tpl);
     $otherDir = $appPassword = $appDatabase = $appDatabase = $appSqlUser = '';
     $appLoginName = 'admin';
-    $appEmail = $_SESSION['user_email'];
+    $appEmail = iMSCP_Authentication::getInstance()->getIdentity()->email;
 }
 
 $tpl->assign([
@@ -377,7 +377,7 @@ $tpl->assign([
     'VAL_OTHER_DIR'               => tohtml($otherDir),
     'VAL_INSTALL_USERNAME'        => tohtml($appLoginName),
     'VAL_INSTALL_PASSWORD'        => tohtml($appPassword),
-    'VAL_INSTALL_EMAIL'           => tohtml($appEmail),
+    'VAL_INSTALL_EMAIL'           => tohtml(decode_idna($appEmail)),
     'VAL_DATABASE_NAME'           => tohtml($appDatabase),
     'VAL_DATABASE_USER'           => tohtml($appSqlUser)
 ]);

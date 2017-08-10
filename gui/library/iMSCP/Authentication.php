@@ -156,19 +156,18 @@ class iMSCP_Authentication
     }
 
     /**
-     * Returns the identity from storage or null if no identity is available
+     * Returns the identity from storage if any, redirect to login page otherwise
      *
-     * @return stdClass|null
+     * @return stdClass
      */
     public function getIdentity()
     {
-        return $this->hasIdentity() ? (object)[
-            'admin_id'   => (int)$_SESSION['user_id'],
-            'admin_name' => (string)$_SESSION['user_logged'],
-            'admin_type' => (string)$_SESSION['user_type'],
-            'email'      => (string)$_SESSION['user_email'],
-            'created_by' => (int)$_SESSION['user_created_by']
-        ] : NULL;
+        if (!$_SESSION['user_identity']) {
+            $this->unsetIdentity(); // Make sure that all identity data are removed
+            redirectTo('/index.php');
+        }
+
+        return $_SESSION['user_identity'];
     }
 
     /**
@@ -198,12 +197,15 @@ class iMSCP_Authentication
         ]);
 
         $_SESSION['user_logged'] = decode_idna($identity->admin_name);
+
         $_SESSION['user_type'] = $identity->admin_type;
+        $_SESSION['user_login_time'] = $lastAccess;
+        $_SESSION['user_identity'] = $identity;
+
+        # Only for backward compatibility. Will be removed in a later version
         $_SESSION['user_id'] = $identity->admin_id;
         $_SESSION['user_email'] = $identity->email;
         $_SESSION['user_created_by'] = $identity->created_by;
-        $_SESSION['user_login_time'] = $lastAccess;
-        $_SESSION['user_identity'] = $identity;
 
         $this->getEventManager()->dispatch(Events::onAfterSetIdentity, ['context' => $this]);
     }

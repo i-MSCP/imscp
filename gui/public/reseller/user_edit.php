@@ -18,6 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP\Crypt as Crypt;
 use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
@@ -46,8 +47,8 @@ function updateUserData(Zend_Form $form, $userId)
     }
 
     if (!$form->isValid($_POST)) {
-        foreach ($form->getMessages() as $msgStack => $msg) {
-            set_page_message(reset($msg), 'error');
+        foreach ($form->getMessages() as $fieldname => $msgsStack) {
+            set_page_message(reset($msgsStack), 'error');
         }
 
         return;
@@ -73,17 +74,17 @@ function updateUserData(Zend_Form $form, $userId)
                 WHERE admin_id = ?
             ",
             [
-                $passwordUpdated ? NULL : iMSCP\Crypt::apr1MD5($form->getValue('admin_pass')), $form->getValue('fname'),
+                $passwordUpdated ? NULL : Crypt::apr1MD5($form->getValue('admin_pass')), $form->getValue('fname'),
                 $form->getValue('lname'), $form->getValue('firm'), $form->getValue('zip'), $form->getValue('city'),
-                $form->getValue('state'), $form->getValue('country'), $form->getValue('email'),
+                $form->getValue('state'), $form->getValue('country'), encode_idna($form->getValue('email')),
                 $form->getValue('phone'), $form->getValue('fax'), $form->getValue('street1'), $form->getValue('street2'),
                 $form->getValue('gender'), $passwordUpdated ? 1 : 0, $userId
             ]
         );
 
-        if ($passwordUpdated) {
-            exec_query('DELETE FROM login WHERE user_name = ?', $data['admin_name']);
-        }
+
+        // For user to login again (need due to possible password or email change)
+        exec_query('DELETE FROM login WHERE user_name = ?', $data['admin_name']);
 
         EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
             'userId'   => $userId,
