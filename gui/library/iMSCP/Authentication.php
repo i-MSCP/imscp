@@ -162,7 +162,7 @@ class iMSCP_Authentication
      */
     public function getIdentity()
     {
-        if (!$_SESSION['user_identity']) {
+        if (!isset($_SESSION['user_identity'])) {
             $this->unsetIdentity(); // Make sure that all identity data are removed
             redirectTo('/index.php');
         }
