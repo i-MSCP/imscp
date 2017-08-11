@@ -96,7 +96,7 @@ function client_updateSqlUserPassword($id, $user, $host)
     $passwordConf = clean_input($_POST['password_confirmation']);
 
     if ($password === '') {
-        set_page_message(tr('Password cannot be empty.'), 'error');
+        set_page_message(tr('The password cannot be empty.'), 'error');
         return;
     }
 

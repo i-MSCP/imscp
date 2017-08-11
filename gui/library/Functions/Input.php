@@ -365,9 +365,9 @@ function getUserLoginDataForm($usernameRequired = true, $passwordRequired = true
     $form = new Zend_Form(['elements' => [
         'admin_name'              => ['text', [
             'validators' => [
-                ['NotEmpty', true, ['type' => 'string', 'messages' => tr('Username cannot be empty.')]],
+                ['NotEmpty', true, ['type' => 'string', 'messages' => tr('The username cannot be empty.')]],
                 ['Regex', true, '/^[[:alnum:]](:?(?<![-_])(:?-*|[_.])?(?![-_])[[:alnum:]]*)*?(?<![-_.])$/', 'messages' => tr('Invalid username.')],
-                ['StringLength', true, ['min' => 2, 'max' => 30, 'messages' => tr('Username must be between %d and %d characters', 2, 30)]],
+                ['StringLength', true, ['min' => 2, 'max' => 30, 'messages' => tr('The username must be between %d and %d characters.', 2, 30)]],
                 ['Callback', true, [
                     function ($username) {
                         return !exec_query('SELECT COUNT(admin_id) FROM admin WHERE admin_name = ?', $username)->fetchRow(PDO::FETCH_COLUMN);
@@ -379,7 +379,7 @@ function getUserLoginDataForm($usernameRequired = true, $passwordRequired = true
         ]],
         'admin_pass'              => ['password', [
             'validators' => [
-                ['NotEmpty', true, ['type' => 'string', 'messages' => tr('Password cannot be empty.')]],
+                ['NotEmpty', true, ['type' => 'string', 'messages' => tr('The password cannot be empty.')]],
                 [
                     'StringLength',
                     true,
@@ -389,7 +389,7 @@ function getUserLoginDataForm($usernameRequired = true, $passwordRequired = true
                         'messages' => tr('Password must be between %d and %d characters.', $minPasswordLength, 30)
                     ]
                 ],
-                ['Regex', true, ['/^[\x21-\x7e]+$/', 'messages' => tr('Password contains unallowed characters.')]]
+                ['Regex', true, ['/^[\x21-\x7e]+$/', 'messages' => tr('The password contains unallowed characters.')]]
             ],
             'Required'   => true
         ]],
@@ -427,58 +427,58 @@ function getUserPersonalDataForm()
     $form = new Zend_Form(['elements' => [
         'fname'   => ['text', ['validators' => [
             ['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid first name.')]],
-            ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('First name must be between %d and %d characters', 1, 200)]]
+            ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('The first name must be between %d and %d characters.', 1, 200)]]
         ]]],
         'lname'   => ['text', ['validators' => [
             ['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid last name.')]],
-            ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('Last name must be between %d and %d characters', 1, 200)]]
+            ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('The last name must be between %d and %d characters.', 1, 200)]]
         ]]],
         'gender'  => ['select', ['validators' => [
             ['InArray', true, ['haystack' => ['M', 'F', 'U'], 'strict' => true, 'messages' => tr('Invalid gender.')]],
         ]]],
         'firm'    => ['text', ['validators' => [
             ['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid company.')]],
-            ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('Company must be between %d and %d characters', 1, 200)]]
+            ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('The company name must be between %d and %d characters.', 1, 200)]]
         ]]],
         'street1' => ['text', ['validators' => [
             ['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid street.')]],
-            ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('Street 1 name must be between %d and %d characters', 1, 200)]]
+            ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('The street 1 name must be between %d and %d characters', 1, 200)]]
         ]]],
         'street2' => ['text', ['validators' => [
             ['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid street.')]],
-            ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('Street 2 must be between %d and %d characters', 1, 200)]]
+            ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('The street 2 name must be between %d and %d characters.', 1, 200)]]
         ]]],
         'zip'     => ['text', ['validators' => [
             ['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid zipcode.')]],
-            ['StringLength', true, ['min' => 1, 'max' => 10, 'messages' => tr('Zipcode must be between %d and %d characters', 1, 10)]]
+            ['StringLength', true, ['min' => 1, 'max' => 10, 'messages' => tr('The Zipcode must be between %d and %d characters.', 1, 10)]]
         ]]],
         'city'    => ['text', ['validators' => [
             ['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid city.')]],
-            ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('City must be between %d and %d characters', 1, 200)]]
+            ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('The city name must be between %d and %d characters.', 1, 200)]]
         ]]],
         'state'   => ['text', ['validators' => [
             ['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid state/province.')]],
-            ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('State/province must be between %d and %d characters', 1, 200)]]
+            ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('The state/province name must be between %d and %d characters.', 1, 200)]]
         ]]],
         'country' => ['text', ['validators' => [
             ['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid country.')]],
-            ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('County must be between %d and %d characters', 1, 200)]]
+            ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('The country name must be between %d and %d characters.', 1, 200)]]
         ]]],
         'email'   => ['text', [
             'validators' => [
-                ['NotEmpty', true, ['type' => 'string', 'messages' => tr('Email address cannot be empty.')]],
+                ['NotEmpty', true, ['type' => 'string', 'messages' => tr('The Email address cannot be empty.')]],
                 ['EmailAddress', true, ['messages' => tr('Invalid email address.')]]
             ],
             'Required'   => true
         ]],
         'phone'   => ['text', ['validators' => [
             ['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid phone.')]],
-            ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('Phone must be between %d and %d characters', 1, 200)]]
+            ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('The phone number must be between %d and %d characters.', 1, 200)]]
         ]
         ]],
         'fax'     => ['text', ['validators' => [
             ['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid fax.')]],
-            ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('Fax must be between %d and %d characters', 1, 200)]]
+            ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('The fax number must be between %d and %d characters.', 1, 200)]]
         ]]]
     ]]);
 

@@ -75,7 +75,7 @@ $tpl->assign([
     'TR_SUBJECT'                  => tr('Subject'),
     'TR_MESSAGE'                  => tr('Message'),
     'TR_SENDER_EMAIL'             => tr('Reply-To email'),
-    'TR_SENDER_NAME'              => tr('Reply-ToRepl name'),
+    'TR_SENDER_NAME'              => tr('Reply-To name'),
     'TR_UPDATE'                   => tr('Update'),
     'TR_USERTYPE'                 => tr('User type (admin, reseller, user)'),
     'TR_BASE_SERVER_VHOST_PREFIX' => tr('URL protocol'),
