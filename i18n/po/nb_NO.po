@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-11 02:38+0000\n"
+"POT-Creation-Date: 2017-08-11 02:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>, 2017\n"
 "Language-Team: Norwegian Bokmål (Norway) (https://www.transifex.com/i-mscp/teams/576/nb_NO/)\n"
@@ -2577,7 +2577,10 @@ msgstr ""
 msgid "Invalid state/province."
 msgstr ""
 
-msgid "Invalid street."
+msgid "Invalid street 1."
+msgstr ""
+
+msgid "Invalid street 2."
 msgstr ""
 
 msgid "Invalid target."
@@ -4428,13 +4431,6 @@ msgid ""
 "The DEBUG mode is currently enabled, making resources caching unavailable."
 msgstr ""
 
-msgid "The Email address cannot be empty."
-msgstr ""
-
-#, php-format
-msgid "The Zipcode must be between %d and %d characters."
-msgstr ""
-
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr ""
@@ -4475,6 +4471,9 @@ msgstr ""
 msgid "The domain you are trying to edit doesn't exist."
 msgstr ""
 
+msgid "The email address cannot be empty."
+msgstr ""
+
 #, php-format
 msgid "The fax number must be between %d and %d characters."
 msgstr ""
@@ -4508,6 +4507,9 @@ msgid "The password contains unallowed characters."
 msgstr ""
 
 msgid "The password field is empty."
+msgstr ""
+
+msgid "The password must contain letters and digits."
 msgstr ""
 
 #, php-format
@@ -4573,6 +4575,10 @@ msgid "The value has not been found in the stack"
 msgstr ""
 
 msgid "The values must not be equal"
+msgstr ""
+
+#, php-format
+msgid "The zipcode must be between %d and %d characters."
 msgstr ""
 
 msgid ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-11 02:38+0000\n"
+"POT-Creation-Date: 2017-08-11 02:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: krok <krok@totalynet.fr>, 2017\n"
 "Language-Team: French (France) (https://www.transifex.com/i-mscp/teams/576/fr_FR/)\n"
@@ -2836,8 +2836,11 @@ msgstr "Clé ou mot de passe invalide."
 msgid "Invalid state/province."
 msgstr ""
 
-msgid "Invalid street."
-msgstr "Rue incorrecte.."
+msgid "Invalid street 1."
+msgstr ""
+
+msgid "Invalid street 2."
+msgstr ""
 
 msgid "Invalid target."
 msgstr "Cible invalide"
@@ -4755,13 +4758,6 @@ msgstr ""
 "Le mode de débogage est actuellement activé, randant la mise en cache des "
 "resources indisponibles."
 
-msgid "The Email address cannot be empty."
-msgstr ""
-
-#, php-format
-msgid "The Zipcode must be between %d and %d characters."
-msgstr ""
-
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr "L'utilisateur SQL `%s'  n'est pas disponible."
@@ -4807,6 +4803,9 @@ msgstr ""
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "Le domaine que vous essayez d'éditer n'existe pas."
 
+msgid "The email address cannot be empty."
+msgstr ""
+
 #, php-format
 msgid "The fax number must be between %d and %d characters."
 msgstr ""
@@ -4845,6 +4844,9 @@ msgstr ""
 
 msgid "The password field is empty."
 msgstr "Le champ mot de passe est vide."
+
+msgid "The password must contain letters and digits."
+msgstr ""
 
 #, php-format
 msgid "The phone number must be between %d and %d characters."
@@ -4917,6 +4919,10 @@ msgstr "La valeur n'a pas été trouvée dans la pile"
 
 msgid "The values must not be equal"
 msgstr "Les valeurs ne doivent pas être égales"
+
+#, php-format
+msgid "The zipcode must be between %d and %d characters."
+msgstr ""
 
 msgid ""
 "There is an Error inside your package. Please check it!<br>Refresh your site"

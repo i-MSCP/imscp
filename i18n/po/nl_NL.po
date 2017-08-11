@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-11 02:38+0000\n"
+"POT-Creation-Date: 2017-08-11 02:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Dutch (Netherlands) (https://www.transifex.com/i-mscp/teams/576/nl_NL/)\n"
@@ -2794,8 +2794,11 @@ msgstr "Ongeldige privésleutel of wachtwoordzin."
 msgid "Invalid state/province."
 msgstr ""
 
-msgid "Invalid street."
-msgstr "Straat ongeldig"
+msgid "Invalid street 1."
+msgstr ""
+
+msgid "Invalid street 2."
+msgstr ""
 
 msgid "Invalid target."
 msgstr "Doel is ongeldig"
@@ -4692,13 +4695,6 @@ msgid ""
 "The DEBUG mode is currently enabled, making resources caching unavailable."
 msgstr ""
 
-msgid "The Email address cannot be empty."
-msgstr ""
-
-#, php-format
-msgid "The Zipcode must be between %d and %d characters."
-msgstr ""
-
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr "De `%s' SQL-gebruiker is niet beschikbaar of niet toegestaan."
@@ -4743,6 +4739,9 @@ msgstr ""
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "Het domein dat u probeert te bewerken bestaat niet."
 
+msgid "The email address cannot be empty."
+msgstr ""
+
 #, php-format
 msgid "The fax number must be between %d and %d characters."
 msgstr ""
@@ -4779,6 +4778,9 @@ msgstr ""
 
 msgid "The password field is empty."
 msgstr "Het wachtwoordveld is leeg."
+
+msgid "The password must contain letters and digits."
+msgstr ""
 
 #, php-format
 msgid "The phone number must be between %d and %d characters."
@@ -4847,6 +4849,10 @@ msgstr "Deze waarde staat er niet tussen"
 
 msgid "The values must not be equal"
 msgstr "De waarden mogen niet gelijk zijn"
+
+#, php-format
+msgid "The zipcode must be between %d and %d characters."
+msgstr ""
 
 msgid ""
 "There is an Error inside your package. Please check it!<br>Refresh your site"
