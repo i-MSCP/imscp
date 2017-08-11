@@ -865,6 +865,14 @@ function deleteDomainAlias($mainDomainId, $aliasId, $aliasName, $aliasMount)
         exec_query("DELETE FROM php_ini WHERE domain_id = ? AND domain_type = 'als'", $aliasId);
         exec_query(
             "
+                DELETE t1 FROM php_ini AS t1
+                JOIN subdomain_alias AS t2 ON(t2.subdomain_alias_id = t1.domain_id  AND t1.domain_type = 'subals')
+                WHERE alias_id = ?
+            ",
+            $aliasId
+        );
+        exec_query(
+            "
                 UPDATE mail_users
                 SET status = 'todelete'
                 WHERE (

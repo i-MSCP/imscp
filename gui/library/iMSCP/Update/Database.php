@@ -64,7 +64,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 257;
+    protected $lastUpdate = 258;
 
     /**
      * Singleton - Make new unavailable
@@ -1893,5 +1893,19 @@ class iMSCP_Update_Database extends iMSCP_Update
             ),
             $this->changeColumn('user_gui_props', "show_main_menu_labels tinyint(1) NOT NULL DEFAULT '0'")
         ];
+    }
+
+    /**
+     * Remove possible orphaned PHP ini entries that belong to subdomains of domain aliases
+     *
+     * @return string SQL statement to be executed
+     */
+    protected function r258()
+    {
+        return "
+            DELETE FROM php_ini
+            WHERE domain_id NOT IN(SELECT subdomain_alias_id FROM subdomain_alias WHERE subdomain_alias_status <> 'todelete')
+            AND domain_type = 'subals'
+        ";
     }
 }
