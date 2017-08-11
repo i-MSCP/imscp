@@ -194,11 +194,10 @@ function addAccount()
     $homeDir = utils_normalizePath('/' . $cfg['USER_WEB_DIR'] . '/' . $mainDmnProps['domain_name'] . '/' . $homeDir);
     $stmt = exec_query(
         '
-            SELECT t1.admin_name, t1.admin_sys_uid, t1.admin_sys_gid, t2.domain_disk_limit,
-                count(t3.name) AS quota_entry
+            SELECT t1.admin_name, t1.admin_sys_uid, t1.admin_sys_gid, t2.domain_disk_limit, t3.name AS quota_entry
             FROM admin AS t1
-            LEFT JOIN domain AS t2 ON (t2.domain_admin_id = t1.admin_id )
-            LEFT JOIN quotalimits AS t3 ON (t3.name = t1.admin_name )
+            JOIN domain AS t2 ON (t2.domain_admin_id = t1.admin_id)
+            LEFT JOIN quotalimits AS t3 ON (t3.name = t1.admin_name)
             WHERE t1.admin_id = ?
         ',
         $_SESSION['user_id']
@@ -233,20 +232,21 @@ function addAccount()
             ]
         );
 
-        $stmt = exec_query('SELECT COUNT(*) AS cnt FROM ftp_group WHERE groupname = ?', $row1['admin_name']);
-        $row2 = $stmt->fetchRow();
+        $stmt = exec_query('SELECT members FROM ftp_group WHERE groupname = ?', $row1['admin_name']);
 
-        if ($row2['cnt'] == 0) {
+        if ($stmt->rowCount()) {
+            exec_query('UPDATE ftp_group SET members = ? WHERE groupname = ?', [
+                $stmt->fetchRow(PDO::FETCH_COLUMN) . ",$username", $row1['admin_name']
+            ]);
+        } else {
             exec_query('INSERT INTO ftp_group (groupname, gid, members) VALUES (?, ?, ?)', [
                 $row1['admin_name'], $row1['admin_sys_gid'], $username
             ]);
-        } else {
-            exec_query('UPDATE ftp_group SET members = ? WHERE groupname = ?', [
-                $row1['members'] . ",$username", $row1['admin_name']
-            ]);
         }
-
+        
         if (!$row1['quota_entry']) {
+            $quotaLimit = ($row1['domain_disk_limit']) ? $row1['domain_disk_limit'] * 1024 * 1024 : 0;
+
             exec_query(
                 '
                     INSERT INTO quotalimits (
@@ -256,10 +256,7 @@ function addAccount()
                         ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                      )
                 ',
-                [
-                    $row1['admin_name'], 'group', 'false', 'hard', $row1['domain_disk_limit'] * 1024 * 1024, 0, 0, 0, 0,
-                    0
-                ]
+                [$row1['admin_name'], 'group', 'false', 'hard', $quotaLimit, 0, 0, 0, 0, 0]
             );
         }
 

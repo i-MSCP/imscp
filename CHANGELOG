@@ -39,12 +39,14 @@ FRONTEND
     Enhancement: Protect default mail accounts against change and deletion (default)
     Enhancement: Show a warning at the administrator UI level when the DEBUG mode is enabled
     Enhancement: Show Catch-all accounts in client mail accounts overview interface
+    Fixed: Action links for FTP accounts must be hidden when they have a status other than 'ok'
     Fixed: All SQL queries must be compatible with the `ONLY_FULL_GROUP_BY' SQL mode
     Fixed: A user must not be able to clear his email address
     Fixed: Cannot edit mailbox quota due to integer type casting (i386 arch)
     Fixed: Cannot set value bigger than 2GB for mailbox quota due to integer type casting (i386 arch)
     Fixed: Couldn't generate self-signed SSL certificate (string passed as serial number while integer is expected)
     Fixed: Customers must stay able to login when their password or their main domain are being modified
+    Fixed: Erroneous ftp_group.members field (Subsequent FTP accounts members are never added)
     Fixed: Missing creation of default `webmaster' mail account for subdomains
     Fixed: PHP ini entries that belong to subdomains of an alias being removed are not removed
     Fixed: Sets the SQL `group_concat_max_len' variable on a per session basis

@@ -64,7 +64,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 258;
+    protected $lastUpdate = 259;
 
     /**
      * Singleton - Make new unavailable
@@ -1906,6 +1906,21 @@ class iMSCP_Update_Database extends iMSCP_Update
             DELETE FROM php_ini
             WHERE domain_id NOT IN(SELECT subdomain_alias_id FROM subdomain_alias WHERE subdomain_alias_status <> 'todelete')
             AND domain_type = 'subals'
+        ";
+    }
+
+    /**
+     * Fix erroneous ftp_group.members fields (missing subsequent FTP account members)
+     *
+     * @return string SQL statement to be executed
+     */
+    protected function r259()
+    {
+        return "
+            UPDATE ftp_group AS t1,
+            (SELECT gid, group_concat(userid SEPARATOR ',') AS members FROM ftp_users GROUP BY gid) AS t2
+            SET t1.members = t2.members
+            WHERE t1.gid = t2.gid
         ";
     }
 }

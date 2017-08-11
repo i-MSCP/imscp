@@ -30,10 +30,7 @@
  */
 function generatePage($tpl)
 {
-    $stmt = exec_query(
-        'SELECT `userid`, `status` FROM `ftp_users` WHERE `admin_id` = ? ORDER BY LENGTH(`userid`) DESC',
-        $_SESSION['user_id']
-    );
+    $stmt = exec_query('SELECT userid, status FROM ftp_users WHERE admin_id = ?', $_SESSION['user_id']);
 
     if (!$stmt->rowCount()) {
         set_page_message(tr('You do not have FTP accounts.'), 'static_info');
@@ -47,6 +44,13 @@ function generatePage($tpl)
             'UID'                => tohtml($row['userid'], 'htmlAttr'),
             'FTP_ACCOUNT_STATUS' => translate_dmn_status($row['status'])
         ]);
+        
+        if($row['status'] != 'ok') {
+            $tpl->assign('FTP_ACTIONS', '');
+        } else {
+            $tpl->parse('FTP_ACTIONS', 'ftp_actions');
+        }
+        
         $tpl->parse('FTP_ITEM', '.ftp_item');
     }
 }
@@ -79,7 +83,7 @@ $tpl->assign([
     'TR_FTP_ACCOUNT_STATUS' => tr('Status'),
     'TR_EDIT'               => tr('Edit'),
     'TR_DELETE'             => tr('Delete'),
-    'TR_MESSAGE_DELETE'     => tr('Are you sure you want to delete the %s FTP user?', '%s'),
+    'TR_MESSAGE_DELETE'     => tr('Are you sure you want to delete the %s FTP account?', '%s'),
 ]);
 
 iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {

@@ -26,7 +26,6 @@
         <th>{TR_FTP_ACTIONS}</th>
     </tr>
     </thead>
-    <!-- BDP: ftps_total -->
     <tfoot>
     <tr>
         <td>{TR_FTP_ACCOUNT}</td>
@@ -34,7 +33,6 @@
         <td>{TR_FTP_ACTIONS}</td>
     </tr>
     </tfoot>
-    <!-- EDP: ftps_total -->
     <tbody>
     <!-- BDP: ftp_item -->
     <tr>
