@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-03 08:04+0000\n"
+"POT-Creation-Date: 2017-08-11 02:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Tommaso <redmail@hotmail.it>, 2017\n"
 "Language-Team: Italian (Italy) (https://www.transifex.com/i-mscp/teams/576/it_IT/)\n"
@@ -63,12 +63,14 @@ msgid "%1$ss - Software"
 msgstr "%1$ss - Software"
 
 #, php-format
-msgid "%d %s remaining until account expiration"
-msgstr "%d %s rimanenti prima che l'account scada"
-
-#, php-format
 msgid "%d Service(s) port successfully updateds"
 msgstr "La porta del servizio %d è stato aggiornata correttamente"
+
+#, php-format
+msgid "%d day remaining until account expiration"
+msgid_plural "%d days remaining until account expiration"
+msgstr[0] ""
+msgstr[1] ""
 
 #, php-format
 msgid "%d strings translated"
@@ -223,9 +225,6 @@ msgstr "Accedi ai tuoi file tramite l'interfaccia web."
 msgid "Access your mail through the web interface."
 msgstr "Accedi alla tua posta tramite l'interfaccia web."
 
-msgid "Account data"
-msgstr "Dati dell'account"
-
 msgid "Account limits"
 msgstr "Limiti dell'account"
 
@@ -357,9 +356,6 @@ msgstr "Aggiunto da"
 
 msgid "Addition in progress..."
 msgstr "Aggiunta in corso"
-
-msgid "Additional data"
-msgstr "Dati aggiuntivi"
 
 msgid "Admin"
 msgstr "Admin"
@@ -500,9 +496,6 @@ msgstr "Admin / Utenti / Assegna rivenditori"
 msgid "Admin / Users / Sessions"
 msgstr "Admin / Utenti / Sessioni"
 
-msgid "Admin account successfully created."
-msgstr "Account Admin creato con successo."
-
 msgid "Admin log"
 msgstr "Amministrazione log"
 
@@ -616,9 +609,6 @@ msgstr "URL alternativo per raggiungere il tuo sito"
 
 msgid "Alternative URL to reach your website"
 msgstr "URL alternativo per raggiungere il tuo sito"
-
-msgid "An unexpected error occurred"
-msgstr "Si è verificato un errore inaspettato."
 
 msgid "An unexpected error occurred."
 msgstr "Si è verificato un errore inaspettato."
@@ -1018,6 +1008,10 @@ msgstr "Circolare inviata correttamente."
 msgid "City"
 msgstr "Città"
 
+#, php-format
+msgid "City must be between %d and %d characters"
+msgstr ""
+
 msgid "Class"
 msgstr "Classe"
 
@@ -1219,6 +1213,10 @@ msgstr "Nome Comune"
 msgid "Company"
 msgstr "Azienda"
 
+#, php-format
+msgid "Company must be between %d and %d characters"
+msgstr ""
+
 msgid "Configuration mode"
 msgstr "Modo di configurazione"
 
@@ -1228,9 +1226,6 @@ msgstr "Conferma richiesta"
 #, php-format
 msgid "Conflict with the `%s' DNS resource record."
 msgstr ".Conflitto con il record DNS  `%s' ."
-
-msgid "Core data"
-msgstr "Dati principali"
 
 msgid "Cores"
 msgstr "Core"
@@ -1350,6 +1345,10 @@ msgstr ""
 msgid "Country"
 msgstr "Paese"
 
+#, php-format
+msgid "County must be between %d and %d characters"
+msgstr ""
+
 msgid "Create"
 msgstr "Crea"
 
@@ -1403,9 +1402,6 @@ msgstr "Cliente"
 
 msgid "Customer ID"
 msgstr "ID cliente"
-
-msgid "Customer ID cannot have more than 200 characters"
-msgstr "L'ID Cliente non può avere più di 200 caratteri"
 
 msgid "Customer account"
 msgstr "Customer account"
@@ -2220,9 +2216,6 @@ msgstr "Configurazione email"
 msgid "Email successfully updated."
 msgstr "Email aggiornata con successo."
 
-msgid "Empty data or wrong field."
-msgstr "Dati mancanti o campo errato."
-
 msgid "Enable SSL"
 msgstr "Abilita SSL"
 
@@ -2314,6 +2307,10 @@ msgstr "Errore nel pacchetto. In cancellazione!"
 msgid "Fax"
 msgstr "Fax"
 
+#, php-format
+msgid "Fax must be between %d and %d characters"
+msgstr ""
+
 msgid "Feature"
 msgstr "Funzionalità"
 
@@ -2356,9 +2353,6 @@ msgstr "Uso del file"
 msgid "FileManager"
 msgstr "FileManager"
 
-msgid "Filemanager"
-msgstr "FileManager"
-
 msgid "Filesystem system Info"
 msgstr "Informazioni filesystem"
 
@@ -2371,8 +2365,9 @@ msgstr "Filtra per cliente"
 msgid "First name"
 msgstr "Nome"
 
-msgid "First name cannot have more than 200 characters."
-msgstr "Il Nome non può avere più di 200 caratteri."
+#, php-format
+msgid "First name must be between %d and %d characters"
+msgstr ""
 
 msgid "For the time being, you can only add forwarded mail account."
 msgstr ""
@@ -2570,9 +2565,6 @@ msgstr "L'utente Htaccess è stato schedulato con successo per l'aggiunta"
 msgid "Htaccess, htgroups and htpasswd errors"
 msgstr ""
 
-msgid "IP Address"
-msgstr "Indirizzo IP"
-
 msgid "IP address"
 msgstr "Indirizzo IP"
 
@@ -2668,14 +2660,8 @@ msgstr "Davanti"
 msgid "In maintenance mode, only administrators can login."
 msgstr "In modalità di manutenzione, solo l'amministratore può loggarsi."
 
-msgid "Incorrect FTP account limit."
-msgstr "Limite account FTP errato."
-
 msgid "Incorrect FTP accounts limit."
 msgstr "Limite account FTP errato."
-
-msgid "Incorrect SQL database limit."
-msgstr "Limite di database SQL errato."
 
 msgid "Incorrect SQL databases limit."
 msgstr "Limite database SQL errato."
@@ -2691,9 +2677,6 @@ msgstr "Limite alias ​​errato."
 
 msgid "Incorrect disk space limit."
 msgstr "Limite spazio disco errato."
-
-msgid "Incorrect domain alias limit."
-msgstr "Limite alias ​​di dominio errato."
 
 msgid "Incorrect domain aliases limit."
 msgstr "Limite alias di dominio non corretto."
@@ -2714,29 +2697,17 @@ msgstr ""
 msgid "Incorrect mail accounts limit."
 msgstr "Limite account e-mail errato."
 
-msgid "Incorrect mail quota"
-msgstr ""
-
 msgid "Incorrect mail quota."
 msgstr ""
 
 msgid "Incorrect monthly traffic limit."
 msgstr "Limite traffico mensile non corretto."
 
-msgid "Incorrect post code length or syntax!"
-msgstr "Lunghezza del codice postale o di sintassi errata!"
-
 msgid "Incorrect subdomain limit."
 msgstr "Limite sottodominio errato."
 
 msgid "Incorrect subdomains limit."
 msgstr "Limite sottodomini errato."
-
-msgid "Incorrect syntax for email address."
-msgstr "Sintassi non corretta per l'indirizzo email."
-
-msgid "Incorrect username length or syntax."
-msgstr "La lunghezza o la sintassi del nome utente non é valida."
 
 msgid "Install"
 msgstr "Installa"
@@ -2825,7 +2796,7 @@ msgstr "Indirizzo EMAIL non valido"
 msgid "Invalid email username."
 msgstr "Email utente non valido."
 
-msgid "Invalid fax number."
+msgid "Invalid fax."
 msgstr ""
 
 #, php-format
@@ -2853,7 +2824,7 @@ msgstr "Nome non valido."
 msgid "Invalid payload received from GitHub"
 msgstr "Payload ricevuto da GitHub non valido"
 
-msgid "Invalid phone number."
+msgid "Invalid phone."
 msgstr ""
 
 #, php-format
@@ -2863,7 +2834,7 @@ msgstr "Directory del plugin non valida: %s"
 msgid "Invalid private key or passphrase."
 msgstr "Private key o passphrase non valida"
 
-msgid "Invalid state."
+msgid "Invalid state/province."
 msgstr ""
 
 msgid "Invalid street."
@@ -2914,8 +2885,9 @@ msgstr "Ultimo accesso"
 msgid "Last name"
 msgstr "Cognome"
 
-msgid "Last name cannot have more than 200 characters."
-msgstr "Il cognome non può avere più di 200 caratteri."
+#, php-format
+msgid "Last name must be between %d and %d characters"
+msgstr ""
 
 msgid "Last reply date"
 msgstr "Data ultima risposta"
@@ -2998,9 +2970,6 @@ msgstr ""
 
 msgid "Lost password link"
 msgstr "Link password smarrita"
-
-msgid "Lostpw link"
-msgstr "Link password dimenticata"
 
 msgid "Low"
 msgstr "Bassa"
@@ -3198,9 +3167,6 @@ msgstr "Modifica in corso"
 
 msgid "Month"
 msgstr "Mese"
-
-msgid "Monthly Server traffic"
-msgstr ""
 
 msgid "Monthly server traffic"
 msgstr ""
@@ -3603,9 +3569,6 @@ msgstr "Configurazione password"
 msgid "Password successfully updated."
 msgstr "Password aggiornata con successo."
 
-msgid "Passwords do not match"
-msgstr "Le password non corrispondono"
-
 msgid "Passwords do not match."
 msgstr "Le password non corrispondono."
 
@@ -3632,6 +3595,10 @@ msgstr "Personalizza il template"
 
 msgid "Phone"
 msgstr "Telefono"
+
+#, php-format
+msgid "Phone must be between %d and %d characters"
+msgstr ""
 
 msgid "PhpMyAdmin"
 msgstr "PhpMyAdmin"
@@ -3681,22 +3648,12 @@ msgstr "Per favore inserisci il path dell'area protetta"
 msgid "Please enter your autoresponder message below"
 msgstr ""
 
-msgid "Please fill up both data fields for password."
-msgstr "Compilare entrambi i campi della password."
-
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
 msgstr "Selezionare un'altra directory. %s ( %s ) è installato."
 
 msgid "Please select at least one user."
 msgstr "Selezionare almeno un utente."
-
-msgid ""
-"Please set now the username and password for the later login in the "
-"software. (Required fiels)"
-msgstr ""
-"Impostare il nome utente e la password per l'accesso successivo nel "
-"software. (Campo obbligatorio)"
 
 msgid "Please specify a message content."
 msgstr "Inserire il contenuto del messaggio."
@@ -4091,6 +4048,18 @@ msgstr "Ripeti la Password"
 msgid "Reply"
 msgstr "Rispondi"
 
+msgid "Reply-To email"
+msgstr ""
+
+msgid "Reply-To email is missing."
+msgstr ""
+
+msgid "Reply-To name"
+msgstr ""
+
+msgid "Reply-ToRepl name"
+msgstr ""
+
 msgid "Request Timeout: The server took too long to send the data."
 msgstr ""
 "Tempo scaduto per la richiesta: Il server ha impiegato troppo tempo per "
@@ -4193,12 +4162,6 @@ msgstr "Rivenditore / Piani di Hosting / Modifica Piano di Hosting"
 msgid "Reseller Name"
 msgstr "Nome rivenditore"
 
-msgid "Reseller account successfully created."
-msgstr "Account rivenditore creato con successo."
-
-msgid "Reseller account successfully updated."
-msgstr "Account rivenditore aggiornato con successo."
-
 msgid "Reseller and customer"
 msgstr "Rivenditore e cliente"
 
@@ -4294,9 +4257,6 @@ msgstr "Database SQL"
 
 msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr "Limite al database SQL è disattivato, ma limite utente SQL non lo è."
-
-msgid "SQL database limit is disabled."
-msgstr "Il limite degli utente SQL è disabilitato."
 
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr "Il limite del database SQL non è <i> disabilitato </ i>."
@@ -4425,15 +4385,6 @@ msgstr "Invia la risposta"
 msgid "Send to"
 msgstr "Invia a"
 
-msgid "Sender email"
-msgstr "E-mail del mittente"
-
-msgid "Sender email is missing."
-msgstr "L'e-mail del mittente non è presente."
-
-msgid "Sender name"
-msgstr "Nome mittente"
-
 msgid "Sender name is missing."
 msgstr "Manca il nome del mittente"
 
@@ -4529,9 +4480,6 @@ msgstr "Dimensioni"
 msgid "Software"
 msgstr "Software"
 
-msgid "Software Description"
-msgstr "Descrizione del software"
-
 msgid "Software available"
 msgstr "Software disponibile"
 
@@ -4616,11 +4564,12 @@ msgstr "Deposito Software"
 msgid "Start installation"
 msgstr "Avviare l'installazione"
 
-msgid "State"
-msgstr "Stato"
-
 msgid "State/Province"
 msgstr "Stato/Provincia"
+
+#, php-format
+msgid "State/province must be between %d and %d characters"
+msgstr ""
 
 msgid "Statistics"
 msgstr "Statistiche"
@@ -4631,8 +4580,16 @@ msgstr "Stato"
 msgid "Street 1"
 msgstr "Indirizzo 1"
 
+#, php-format
+msgid "Street 1 name must be between %d and %d characters"
+msgstr ""
+
 msgid "Street 2"
 msgstr "Indirizzo 2"
+
+#, php-format
+msgid "Street 2 must be between %d and %d characters"
+msgstr ""
 
 msgid "Strong passwords"
 msgstr "Password complesse"
@@ -4678,15 +4635,6 @@ msgstr "Sottodominio programmato correttamente per l'aggiunta."
 
 msgid "Subdomain successfully scheduled for update"
 msgstr "Sottodominio programmato con successo per l'aggiornamento"
-
-msgid ""
-"Subdomain you are trying to remove has mail accounts. Please remove them "
-"first."
-msgstr ""
-
-msgid ""
-"Subdomain you are trying to remove has mail accounts. Remove them first."
-msgstr ""
 
 msgid "Subdomains"
 msgstr "Sottodomini"
@@ -4812,6 +4760,9 @@ msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr ""
 "Il file di traduzione %s è stato ignorato: tabella di traduzione vuota"
 
+msgid "The '%value%' username is not available."
+msgstr ""
+
 msgid ""
 "The DEBUG mode is currently enabled, making resources caching unavailable."
 msgstr ""
@@ -4885,20 +4836,22 @@ msgstr ""
 "prima rimuovili."
 
 msgid ""
-"The subdomain alias you are trying to remove has FTP accounts. Please remove"
-" them first."
+"The subdomain alias you are trying to remove has mail accounts. Please "
+"remove them first."
 msgstr ""
 
 msgid ""
-"The subdomain you are trying to remove has FTP accounts. Remove them first."
+"The subdomain you are trying to remove has FTP accounts. Please remove them "
+"first."
+msgstr ""
+
+msgid ""
+"The subdomain you are trying to remove has mail accounts. Please remove them"
+" first."
 msgstr ""
 
 msgid "The uploaded file was only partially uploaded."
 msgstr "Il file caricato è stato caricato solo parzialmente."
-
-#, php-format
-msgid "The username %s is not available."
-msgstr "Il nome utente %s non è disponibile."
 
 msgid "The username field is empty."
 msgstr "Il campo del nome utente è vuoto"
@@ -4994,9 +4947,6 @@ msgstr "Questo software è installato sul seguente dominio:"
 msgid "This user has domain record. First remove the domain from the system."
 msgstr ""
 "Questo utente ha record di dominio. Prima rimuovi il dominio dla sistema."
-
-msgid "This user name already exist."
-msgstr "Questo nome utente esiste già."
 
 msgid "TiB"
 msgstr "TiB"
@@ -5467,9 +5417,6 @@ msgstr "Indirizzo IP errato oppure non autorizzato."
 msgid "Wrong or unallowed IP netmask."
 msgstr "Maschera di sottorete errata oppure non autorizzata."
 
-msgid "Wrong request."
-msgstr "Richiesta sbagliata."
-
 msgid "Wrong reseller id."
 msgstr "ID rivenditore sbagliato."
 
@@ -5546,7 +5493,7 @@ msgstr ""
 msgid "You can only upload images."
 msgstr "Puoi caricare solamente immagini."
 
-msgid "You can select has many addresses as you want."
+msgid "You can select as many addresses as you want."
 msgstr ""
 
 msgid ""
@@ -5626,9 +5573,6 @@ msgstr "Non si dispone di database."
 
 msgid "You do not have domain aliases."
 msgstr "Non possiedi nessun alias di dominio."
-
-msgid "You do not have permission to install software yet"
-msgstr "Non si dispone dell'autorizzazione per installare ancora software"
 
 msgid "You do not have permissions to upload software"
 msgstr "Non si dispone delle autorizzazioni per caricare il software"
@@ -5772,9 +5716,6 @@ msgstr "Devi prima creare un utente."
 msgid "You must first generate a password by clicking on the generate button."
 msgstr "Devi prima generare una password cliccando sul bottone apposito."
 
-msgid "You must provide a password."
-msgstr "È necessario specificare una password."
-
 msgid "You must select a file to upload."
 msgstr "Devi selezionare un file per l'upload."
 
@@ -5882,14 +5823,12 @@ msgstr "ZB"
 msgid "ZiB"
 msgstr "ZiB"
 
-msgid "Zip"
-msgstr "Zip"
-
-msgid "Zip code"
-msgstr "Cap"
-
 msgid "Zip/Postal code"
 msgstr "Codice postale"
+
+#, php-format
+msgid "Zipcode must be between %d and %d characters"
+msgstr ""
 
 msgid "Zone"
 msgstr "Zona"
@@ -5936,12 +5875,6 @@ msgstr ""
 msgid "created by"
 msgstr ""
 
-msgid "day"
-msgstr "giorno"
-
-msgid "days"
-msgstr "giorni"
-
 msgid "deleting"
 msgstr "eliminazione"
 
@@ -5968,9 +5901,6 @@ msgstr ""
 
 msgid "domains"
 msgstr "domini"
-
-msgid "enabled"
-msgstr "abilitato"
 
 msgid "error"
 msgstr ""

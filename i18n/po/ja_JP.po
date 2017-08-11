@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-03 08:04+0000\n"
+"POT-Creation-Date: 2017-08-11 02:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Japanese (Japan) (https://www.transifex.com/i-mscp/teams/576/ja_JP/)\n"
@@ -61,12 +61,13 @@ msgid "%1$ss - Software"
 msgstr "%1$ss - ソフトウェア"
 
 #, php-format
-msgid "%d %s remaining until account expiration"
-msgstr "アカウントの有効期限まで、残りの%d %s"
-
-#, php-format
 msgid "%d Service(s) port successfully updateds"
 msgstr "%d個のサービスポートを更新しました"
+
+#, php-format
+msgid "%d day remaining until account expiration"
+msgid_plural "%d days remaining until account expiration"
+msgstr[0] ""
 
 #, php-format
 msgid "%d strings translated"
@@ -207,9 +208,6 @@ msgstr "Webインタフェース経由でファイルにアクセス。"
 msgid "Access your mail through the web interface."
 msgstr "Webインタフェース経由でメールにアクセス。"
 
-msgid "Account data"
-msgstr "アカウントデータ"
-
 msgid "Account limits"
 msgstr "アカウント制限数"
 
@@ -341,9 +339,6 @@ msgstr "追加しました"
 
 msgid "Addition in progress..."
 msgstr "追加の処理中..."
-
-msgid "Additional data"
-msgstr "追加データ"
 
 msgid "Admin"
 msgstr "管理者"
@@ -482,9 +477,6 @@ msgstr "管理者 / ユーザー / リセラーの割当"
 msgid "Admin / Users / Sessions"
 msgstr "管理者 / ユーザー / セッション"
 
-msgid "Admin account successfully created."
-msgstr "管理者アカウントの作成に成功しました。"
-
 msgid "Admin log"
 msgstr "管理者ログ"
 
@@ -594,9 +586,6 @@ msgstr "代替URLはあなたのウェブサイトに到達します。"
 
 msgid "Alternative URL to reach your website"
 msgstr "あなたのWebサイトへの代替アクセスURL"
-
-msgid "An unexpected error occurred"
-msgstr "予期しないエラーが発生しました"
 
 msgid "An unexpected error occurred."
 msgstr "予期しないエラーが発生しました。"
@@ -978,6 +967,10 @@ msgstr "回覧は送りました。"
 msgid "City"
 msgstr "市区町村"
 
+#, php-format
+msgid "City must be between %d and %d characters"
+msgstr ""
+
 msgid "Class"
 msgstr "クラス"
 
@@ -1171,6 +1164,10 @@ msgstr "コモンネーム"
 msgid "Company"
 msgstr "会社"
 
+#, php-format
+msgid "Company must be between %d and %d characters"
+msgstr ""
+
 msgid "Configuration mode"
 msgstr "設定モード"
 
@@ -1180,9 +1177,6 @@ msgstr "ご確認ください"
 #, php-format
 msgid "Conflict with the `%s' DNS resource record."
 msgstr "`%s' DNSリソースレコードと競合しています。"
-
-msgid "Core data"
-msgstr "基本情報"
 
 msgid "Cores"
 msgstr "コア"
@@ -1283,6 +1277,10 @@ msgstr ""
 msgid "Country"
 msgstr "国"
 
+#, php-format
+msgid "County must be between %d and %d characters"
+msgstr ""
+
 msgid "Create"
 msgstr "作成"
 
@@ -1336,9 +1334,6 @@ msgstr "顧客"
 
 msgid "Customer ID"
 msgstr "顧客ID"
-
-msgid "Customer ID cannot have more than 200 characters"
-msgstr "顧客IDは、200文字以内です"
 
 msgid "Customer account"
 msgstr "顧客アカウント"
@@ -2149,9 +2144,6 @@ msgstr "Eメール設定"
 msgid "Email successfully updated."
 msgstr "Eメールが更新されました。"
 
-msgid "Empty data or wrong field."
-msgstr "空のデータまたは誤ったフィールドがあります。"
-
 msgid "Enable SSL"
 msgstr "SSLを有効にする"
 
@@ -2240,6 +2232,10 @@ msgstr "パッケージで障害が発生。削除中！"
 msgid "Fax"
 msgstr "FAX番号"
 
+#, php-format
+msgid "Fax must be between %d and %d characters"
+msgstr ""
+
 msgid "Feature"
 msgstr "機能"
 
@@ -2282,9 +2278,6 @@ msgstr "ファイルの使用"
 msgid "FileManager"
 msgstr "ファイルマネージャー"
 
-msgid "Filemanager"
-msgstr "ファイルマネージャー"
-
 msgid "Filesystem system Info"
 msgstr "ファイルシステム情報"
 
@@ -2297,8 +2290,9 @@ msgstr ""
 msgid "First name"
 msgstr "名字"
 
-msgid "First name cannot have more than 200 characters."
-msgstr "名は、200文字以内です。"
+#, php-format
+msgid "First name must be between %d and %d characters"
+msgstr ""
 
 msgid "For the time being, you can only add forwarded mail account."
 msgstr ""
@@ -2494,9 +2488,6 @@ msgstr "Htaccessユーザーの追加が予定されました。"
 msgid "Htaccess, htgroups and htpasswd errors"
 msgstr ""
 
-msgid "IP Address"
-msgstr "IPアドレス"
-
 msgid "IP address"
 msgstr "IPアドレス"
 
@@ -2581,14 +2572,8 @@ msgstr "前に"
 msgid "In maintenance mode, only administrators can login."
 msgstr "メンテナンスモードでは、管理者のみがログインできます。"
 
-msgid "Incorrect FTP account limit."
-msgstr "不正なFTPアカウントの制限。"
-
 msgid "Incorrect FTP accounts limit."
 msgstr "FTPアカウント制限が誤っています。"
-
-msgid "Incorrect SQL database limit."
-msgstr "不正なSQLデータベースの制限。"
 
 msgid "Incorrect SQL databases limit."
 msgstr "SQLデータベース制限が誤っています。"
@@ -2604,9 +2589,6 @@ msgstr "不正なエイリアスの制限"
 
 msgid "Incorrect disk space limit."
 msgstr "ディスク容量の制限数に誤りがあります。"
-
-msgid "Incorrect domain alias limit."
-msgstr "不正なドメインエイリアスの制限"
 
 msgid "Incorrect domain aliases limit."
 msgstr "ドメインエイリアス制限に誤りがあります。"
@@ -2627,29 +2609,17 @@ msgstr ""
 msgid "Incorrect mail accounts limit."
 msgstr "メールアカウント制限が誤っています。"
 
-msgid "Incorrect mail quota"
-msgstr ""
-
 msgid "Incorrect mail quota."
 msgstr ""
 
 msgid "Incorrect monthly traffic limit."
 msgstr "毎月のトラフィック制限に誤りがあります。"
 
-msgid "Incorrect post code length or syntax!"
-msgstr "郵便番号の長さや構文が正しくありません！"
-
 msgid "Incorrect subdomain limit."
 msgstr "不正なサブドメインの制限"
 
 msgid "Incorrect subdomains limit."
 msgstr "サブドメイン制限が誤っています。"
-
-msgid "Incorrect syntax for email address."
-msgstr "メールアドレスの誤った構文があります。"
-
-msgid "Incorrect username length or syntax."
-msgstr "ユーザー名の長さか構文が誤っています。"
 
 msgid "Install"
 msgstr "インストール"
@@ -2737,7 +2707,7 @@ msgstr "無効なメールアドレスです。"
 msgid "Invalid email username."
 msgstr "無効なEメールユーザ名です。"
 
-msgid "Invalid fax number."
+msgid "Invalid fax."
 msgstr ""
 
 #, php-format
@@ -2765,7 +2735,7 @@ msgstr "名前が無効です。"
 msgid "Invalid payload received from GitHub"
 msgstr "無効なペイロードを、GitHubのから受け取りました"
 
-msgid "Invalid phone number."
+msgid "Invalid phone."
 msgstr ""
 
 #, php-format
@@ -2775,7 +2745,7 @@ msgstr "無効なプラグインディレクトリ：%s"
 msgid "Invalid private key or passphrase."
 msgstr "秘密鍵もしくはパスフレーズに誤りがあります。"
 
-msgid "Invalid state."
+msgid "Invalid state/province."
 msgstr ""
 
 msgid "Invalid street."
@@ -2826,8 +2796,9 @@ msgstr "最終アクセス"
 msgid "Last name"
 msgstr "名前"
 
-msgid "Last name cannot have more than 200 characters."
-msgstr "姓は、200文字以内です。"
+#, php-format
+msgid "Last name must be between %d and %d characters"
+msgstr ""
 
 msgid "Last reply date"
 msgstr "最終返信日"
@@ -2908,9 +2879,6 @@ msgid "Lost password email templates were updated."
 msgstr "パスワードを忘れたEメールテンプレートを更新しました。"
 
 msgid "Lost password link"
-msgstr "パスワード忘れリンク"
-
-msgid "Lostpw link"
 msgstr "パスワード忘れリンク"
 
 msgid "Low"
@@ -3101,9 +3069,6 @@ msgstr "修正中..."
 
 msgid "Month"
 msgstr "月"
-
-msgid "Monthly Server traffic"
-msgstr ""
 
 msgid "Monthly server traffic"
 msgstr ""
@@ -3500,9 +3465,6 @@ msgstr "パスワード設定"
 msgid "Password successfully updated."
 msgstr "パスワードは更新されました。"
 
-msgid "Passwords do not match"
-msgstr "パスワードが一致しません"
-
 msgid "Passwords do not match."
 msgstr "パスワードが一致しません。"
 
@@ -3529,6 +3491,10 @@ msgstr "個人テンプレート"
 
 msgid "Phone"
 msgstr "電話番号"
+
+#, php-format
+msgid "Phone must be between %d and %d characters"
+msgstr ""
 
 msgid "PhpMyAdmin"
 msgstr "PhpMyAdmin"
@@ -3576,20 +3542,12 @@ msgstr "保護領域のパスを入力してください。"
 msgid "Please enter your autoresponder message below"
 msgstr ""
 
-msgid "Please fill up both data fields for password."
-msgstr "パスワードを両方のデータ項目を入力してください。"
-
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
 msgstr "別のディレクトリを選択してください。 %s (%s) がインストールされています。"
 
 msgid "Please select at least one user."
 msgstr "少なくとも1人のユーザーを選択してください。"
-
-msgid ""
-"Please set now the username and password for the later login in the "
-"software. (Required fiels)"
-msgstr "このソフトウェアでは、後でログイン用のユーザー名とパスワードを設定してください。（必須フィールド）"
 
 msgid "Please specify a message content."
 msgstr "メッセージの内容を指定してください。"
@@ -3972,6 +3930,18 @@ msgstr "パスワード再入力"
 msgid "Reply"
 msgstr "返信"
 
+msgid "Reply-To email"
+msgstr ""
+
+msgid "Reply-To email is missing."
+msgstr ""
+
+msgid "Reply-To name"
+msgstr ""
+
+msgid "Reply-ToRepl name"
+msgstr ""
+
 msgid "Request Timeout: The server took too long to send the data."
 msgstr "リクエストタイムアウト：サーバーはデータを送信するにはあまりにも時間がかかった。"
 
@@ -4071,12 +4041,6 @@ msgstr "代理店 / ホスティングプラン / ホスティングプラン編
 msgid "Reseller Name"
 msgstr "リセラー名"
 
-msgid "Reseller account successfully created."
-msgstr "リセラーアカウントが作成されました。"
-
-msgid "Reseller account successfully updated."
-msgstr "リセラーアカウントが更新されました。"
-
 msgid "Reseller and customer"
 msgstr "リセラーと顧客"
 
@@ -4172,9 +4136,6 @@ msgstr "SQLデータベース"
 
 msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr "SQLデータベース制限が無効になったが、SQLユーザに制限はない。"
-
-msgid "SQL database limit is disabled."
-msgstr "SQLデータベース制限が無効です。"
 
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr "SQLデータベースの制限が<i>無効</i>になっていません。"
@@ -4302,15 +4263,6 @@ msgstr "返信を送信"
 msgid "Send to"
 msgstr "送ってください"
 
-msgid "Sender email"
-msgstr "Eメール送信者"
-
-msgid "Sender email is missing."
-msgstr "送信メールがありません。"
-
-msgid "Sender name"
-msgstr "送信者名"
-
 msgid "Sender name is missing."
 msgstr "送信者名がありません。"
 
@@ -4406,9 +4358,6 @@ msgstr "サイズ"
 msgid "Software"
 msgstr "ソフトウェア"
 
-msgid "Software Description"
-msgstr "ソフトウェアの説明"
-
 msgid "Software available"
 msgstr "利用可能なソフトウェア"
 
@@ -4493,11 +4442,12 @@ msgstr "ソフトウェアデポット"
 msgid "Start installation"
 msgstr "インストールを開始します。"
 
-msgid "State"
-msgstr "都道府県"
-
 msgid "State/Province"
 msgstr "都道府県"
+
+#, php-format
+msgid "State/province must be between %d and %d characters"
+msgstr ""
 
 msgid "Statistics"
 msgstr "統計情報"
@@ -4508,8 +4458,16 @@ msgstr "ステータス"
 msgid "Street 1"
 msgstr "建物名"
 
+#, php-format
+msgid "Street 1 name must be between %d and %d characters"
+msgstr ""
+
 msgid "Street 2"
 msgstr "番地"
+
+#, php-format
+msgid "Street 2 must be between %d and %d characters"
+msgstr ""
 
 msgid "Strong passwords"
 msgstr "強力なパスワード"
@@ -4555,15 +4513,6 @@ msgstr "サブドメインが追加が予定されました。"
 
 msgid "Subdomain successfully scheduled for update"
 msgstr "サブドメインの更新が予定されました"
-
-msgid ""
-"Subdomain you are trying to remove has mail accounts. Please remove them "
-"first."
-msgstr ""
-
-msgid ""
-"Subdomain you are trying to remove has mail accounts. Remove them first."
-msgstr ""
 
 msgid "Subdomains"
 msgstr "サブドメイン"
@@ -4676,6 +4625,9 @@ msgstr "%s のプラグインバージョン %s は、i-MSCPバージョンと�
 msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr " %sの翻訳ファイルは無視されました：変換テーブルは空です。"
 
+msgid "The '%value%' username is not available."
+msgstr ""
+
 msgid ""
 "The DEBUG mode is currently enabled, making resources caching unavailable."
 msgstr ""
@@ -4738,20 +4690,22 @@ msgid ""
 msgstr "削除する代理店が一つ以上の顧客口座があります。最初にそれらを削除してください。"
 
 msgid ""
-"The subdomain alias you are trying to remove has FTP accounts. Please remove"
-" them first."
+"The subdomain alias you are trying to remove has mail accounts. Please "
+"remove them first."
 msgstr ""
 
 msgid ""
-"The subdomain you are trying to remove has FTP accounts. Remove them first."
+"The subdomain you are trying to remove has FTP accounts. Please remove them "
+"first."
+msgstr ""
+
+msgid ""
+"The subdomain you are trying to remove has mail accounts. Please remove them"
+" first."
 msgstr ""
 
 msgid "The uploaded file was only partially uploaded."
 msgstr "一部分しかアップロードされませんてした。"
-
-#, php-format
-msgid "The username %s is not available."
-msgstr "ユーザ名ー %s は使用できません。"
 
 msgid "The username field is empty."
 msgstr "ユーザー名の項目が空です。"
@@ -4839,9 +4793,6 @@ msgstr "このソフトウェアは、次のドメインにインストールさ
 
 msgid "This user has domain record. First remove the domain from the system."
 msgstr "ユーザはドメインレコードを持っています。まず、システムからドメインを削除します。"
-
-msgid "This user name already exist."
-msgstr "このユーザー名は既に存在している。"
 
 msgid "TiB"
 msgstr "TB"
@@ -5291,9 +5242,6 @@ msgstr "間違っていたり、許可されていないIPアドレス。"
 msgid "Wrong or unallowed IP netmask."
 msgstr "間違っていたり、許可されていないIPネットマスク。"
 
-msgid "Wrong request."
-msgstr "要求に誤りがあります。"
-
 msgid "Wrong reseller id."
 msgstr "リセラーIDに誤りがあります。"
 
@@ -5370,7 +5318,7 @@ msgstr ""
 msgid "You can only upload images."
 msgstr "イメージをアップロードすることができるだけです。"
 
-msgid "You can select has many addresses as you want."
+msgid "You can select as many addresses as you want."
 msgstr ""
 
 msgid ""
@@ -5447,9 +5395,6 @@ msgstr "データベースを持っていません。"
 
 msgid "You do not have domain aliases."
 msgstr "ドメインエイリアスを持っていません。"
-
-msgid "You do not have permission to install software yet"
-msgstr "まだソフトウェアをインストールする権限がありません"
 
 msgid "You do not have permissions to upload software"
 msgstr "ソフトウェアをアップロードする権限がありません。"
@@ -5580,9 +5525,6 @@ msgstr "最初にユーザーを作成する必要があります。"
 msgid "You must first generate a password by clicking on the generate button."
 msgstr "最初に生成ボタンをクリックしてパスワードを生成する必要があります。"
 
-msgid "You must provide a password."
-msgstr "パスワードを入力する必要があります。"
-
 msgid "You must select a file to upload."
 msgstr "アップロードするファイルを選択する必要があります。"
 
@@ -5680,14 +5622,12 @@ msgstr "ZB"
 msgid "ZiB"
 msgstr "ZB"
 
-msgid "Zip"
-msgstr "郵便番号"
-
-msgid "Zip code"
-msgstr "郵便番号"
-
 msgid "Zip/Postal code"
 msgstr "郵便番号"
+
+#, php-format
+msgid "Zipcode must be between %d and %d characters"
+msgstr ""
 
 msgid "Zone"
 msgstr "ゾーン"
@@ -5734,12 +5674,6 @@ msgstr ""
 msgid "created by"
 msgstr ""
 
-msgid "day"
-msgstr "日"
-
-msgid "days"
-msgstr "日"
-
 msgid "deleting"
 msgstr "削除中"
 
@@ -5766,9 +5700,6 @@ msgstr ""
 
 msgid "domains"
 msgstr "ドメイン"
-
-msgid "enabled"
-msgstr "有効"
 
 msgid "error"
 msgstr ""

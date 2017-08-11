@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-03 08:04+0000\n"
+"POT-Creation-Date: 2017-08-11 02:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: ugur tezer <utezer@hotmail.com>, 2017\n"
 "Language-Team: Turkish (Turkey) (https://www.transifex.com/i-mscp/teams/576/tr_TR/)\n"
@@ -63,12 +63,13 @@ msgid "%1$ss - Software"
 msgstr ""
 
 #, php-format
-msgid "%d %s remaining until account expiration"
-msgstr "Hesap bitişine %d %s"
-
-#, php-format
 msgid "%d Service(s) port successfully updateds"
 msgstr "%d hizmet portu güncellendi"
+
+#, php-format
+msgid "%d day remaining until account expiration"
+msgid_plural "%d days remaining until account expiration"
+msgstr[0] ""
 
 #, php-format
 msgid "%d strings translated"
@@ -211,9 +212,6 @@ msgstr "Dosyalarınıza Web arayüzünden erişin."
 msgid "Access your mail through the web interface."
 msgstr "Eposta mesajlarınıza Web arayüzünden erişin."
 
-msgid "Account data"
-msgstr "Hesap verisi"
-
 msgid "Account limits"
 msgstr "Hesap limitleri"
 
@@ -345,9 +343,6 @@ msgstr "Ekleyen"
 
 msgid "Addition in progress..."
 msgstr "Ekleniyor..."
-
-msgid "Additional data"
-msgstr "Ek veri"
 
 msgid "Admin"
 msgstr "Yönetici"
@@ -486,9 +481,6 @@ msgstr ""
 msgid "Admin / Users / Sessions"
 msgstr ""
 
-msgid "Admin account successfully created."
-msgstr "Yönetici hesabı oluşturuldu."
-
 msgid "Admin log"
 msgstr "Yönetici logları"
 
@@ -598,9 +590,6 @@ msgstr ""
 
 msgid "Alternative URL to reach your website"
 msgstr "Alternatif URL"
-
-msgid "An unexpected error occurred"
-msgstr "Beklenmeyen bir hata oluştu"
 
 msgid "An unexpected error occurred."
 msgstr "Beklenmeyen bir hata oluştu."
@@ -978,6 +967,10 @@ msgstr ""
 msgid "City"
 msgstr "Şehir"
 
+#, php-format
+msgid "City must be between %d and %d characters"
+msgstr ""
+
 msgid "Class"
 msgstr "Sınıflar"
 
@@ -1174,6 +1167,10 @@ msgstr "Sertifika ismi"
 msgid "Company"
 msgstr "Şirket"
 
+#, php-format
+msgid "Company must be between %d and %d characters"
+msgstr ""
+
 msgid "Configuration mode"
 msgstr ""
 
@@ -1183,9 +1180,6 @@ msgstr ""
 #, php-format
 msgid "Conflict with the `%s' DNS resource record."
 msgstr ""
-
-msgid "Core data"
-msgstr "Çekirdek verisi"
 
 msgid "Cores"
 msgstr "Çekirdek"
@@ -1286,6 +1280,10 @@ msgstr ""
 msgid "Country"
 msgstr "Ülke"
 
+#, php-format
+msgid "County must be between %d and %d characters"
+msgstr ""
+
 msgid "Create"
 msgstr "Tamam"
 
@@ -1339,9 +1337,6 @@ msgstr "Müşteri"
 
 msgid "Customer ID"
 msgstr "Müşteri ID"
-
-msgid "Customer ID cannot have more than 200 characters"
-msgstr ""
 
 msgid "Customer account"
 msgstr "Müşteri hesabı"
@@ -2006,9 +2001,6 @@ msgstr "Eposta ayarları"
 msgid "Email successfully updated."
 msgstr ""
 
-msgid "Empty data or wrong field."
-msgstr ""
-
 msgid "Enable SSL"
 msgstr "SSL Aktif"
 
@@ -2097,6 +2089,10 @@ msgstr ""
 msgid "Fax"
 msgstr "Faks"
 
+#, php-format
+msgid "Fax must be between %d and %d characters"
+msgstr ""
+
 msgid "Feature"
 msgstr "Özellik"
 
@@ -2139,9 +2135,6 @@ msgstr "Dosya boyutu"
 msgid "FileManager"
 msgstr "Dosya yöneticisi"
 
-msgid "Filemanager"
-msgstr "Dosya yöneticisi"
-
 msgid "Filesystem system Info"
 msgstr "Dosya sistemi sistem bilgisi"
 
@@ -2154,7 +2147,8 @@ msgstr ""
 msgid "First name"
 msgstr "İsim"
 
-msgid "First name cannot have more than 200 characters."
+#, php-format
+msgid "First name must be between %d and %d characters"
 msgstr ""
 
 msgid "For the time being, you can only add forwarded mail account."
@@ -2353,9 +2347,6 @@ msgstr "Htaccess kullanıcısı eklenmek için işleme alındı."
 msgid "Htaccess, htgroups and htpasswd errors"
 msgstr ""
 
-msgid "IP Address"
-msgstr ""
-
 msgid "IP address"
 msgstr "IP adresi"
 
@@ -2439,14 +2430,8 @@ msgstr "önüne"
 msgid "In maintenance mode, only administrators can login."
 msgstr ""
 
-msgid "Incorrect FTP account limit."
-msgstr "Hatalı FTP hesap limiti."
-
 msgid "Incorrect FTP accounts limit."
 msgstr ""
-
-msgid "Incorrect SQL database limit."
-msgstr "Hatalı SQL veritabanı limiti."
 
 msgid "Incorrect SQL databases limit."
 msgstr ""
@@ -2461,9 +2446,6 @@ msgid "Incorrect alias limit."
 msgstr ""
 
 msgid "Incorrect disk space limit."
-msgstr ""
-
-msgid "Incorrect domain alias limit."
 msgstr ""
 
 msgid "Incorrect domain aliases limit."
@@ -2485,28 +2467,16 @@ msgstr ""
 msgid "Incorrect mail accounts limit."
 msgstr ""
 
-msgid "Incorrect mail quota"
-msgstr ""
-
 msgid "Incorrect mail quota."
 msgstr ""
 
 msgid "Incorrect monthly traffic limit."
 msgstr ""
 
-msgid "Incorrect post code length or syntax!"
-msgstr ""
-
 msgid "Incorrect subdomain limit."
 msgstr ""
 
 msgid "Incorrect subdomains limit."
-msgstr ""
-
-msgid "Incorrect syntax for email address."
-msgstr ""
-
-msgid "Incorrect username length or syntax."
 msgstr ""
 
 msgid "Install"
@@ -2595,7 +2565,7 @@ msgstr "Geçersiz eposta adresi."
 msgid "Invalid email username."
 msgstr "Geçersiz eposta kullanıcı adı."
 
-msgid "Invalid fax number."
+msgid "Invalid fax."
 msgstr ""
 
 #, php-format
@@ -2623,7 +2593,7 @@ msgstr "Geçersiz isim."
 msgid "Invalid payload received from GitHub"
 msgstr "GitHub'tan alınan veri geçersiz."
 
-msgid "Invalid phone number."
+msgid "Invalid phone."
 msgstr ""
 
 #, php-format
@@ -2633,7 +2603,7 @@ msgstr ""
 msgid "Invalid private key or passphrase."
 msgstr "Geçersiz özel anahtar veya parola."
 
-msgid "Invalid state."
+msgid "Invalid state/province."
 msgstr ""
 
 msgid "Invalid street."
@@ -2684,7 +2654,8 @@ msgstr "Son erişim"
 msgid "Last name"
 msgstr "Soyisim"
 
-msgid "Last name cannot have more than 200 characters."
+#, php-format
+msgid "Last name must be between %d and %d characters"
 msgstr ""
 
 msgid "Last reply date"
@@ -2767,9 +2738,6 @@ msgstr ""
 
 msgid "Lost password link"
 msgstr "Kayıf şifre linki"
-
-msgid "Lostpw link"
-msgstr "Kayıp şifre Linki"
 
 msgid "Low"
 msgstr "Düşük"
@@ -2959,9 +2927,6 @@ msgstr ""
 
 msgid "Month"
 msgstr "Ay"
-
-msgid "Monthly Server traffic"
-msgstr ""
 
 msgid "Monthly server traffic"
 msgstr ""
@@ -3358,9 +3323,6 @@ msgstr "Şifre ayarları"
 msgid "Password successfully updated."
 msgstr ""
 
-msgid "Passwords do not match"
-msgstr "Şifreler uyuşmuyor"
-
 msgid "Passwords do not match."
 msgstr "Şifreler uyuşmuyor"
 
@@ -3387,6 +3349,10 @@ msgstr "Görünümü kişiselleştir"
 
 msgid "Phone"
 msgstr "Telefon"
+
+#, php-format
+msgid "Phone must be between %d and %d characters"
+msgstr ""
 
 msgid "PhpMyAdmin"
 msgstr "PhpMyAdmin"
@@ -3433,19 +3399,11 @@ msgstr ""
 msgid "Please enter your autoresponder message below"
 msgstr ""
 
-msgid "Please fill up both data fields for password."
-msgstr ""
-
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
 msgstr ""
 
 msgid "Please select at least one user."
-msgstr ""
-
-msgid ""
-"Please set now the username and password for the later login in the "
-"software. (Required fiels)"
 msgstr ""
 
 msgid "Please specify a message content."
@@ -3822,6 +3780,18 @@ msgstr "Şifre (tekrar)"
 msgid "Reply"
 msgstr ""
 
+msgid "Reply-To email"
+msgstr ""
+
+msgid "Reply-To email is missing."
+msgstr ""
+
+msgid "Reply-To name"
+msgstr ""
+
+msgid "Reply-ToRepl name"
+msgstr ""
+
 msgid "Request Timeout: The server took too long to send the data."
 msgstr ""
 
@@ -3921,12 +3891,6 @@ msgstr ""
 msgid "Reseller Name"
 msgstr "Bayi Adı"
 
-msgid "Reseller account successfully created."
-msgstr ""
-
-msgid "Reseller account successfully updated."
-msgstr ""
-
 msgid "Reseller and customer"
 msgstr ""
 
@@ -4023,9 +3987,6 @@ msgstr "SQL veritabanı"
 msgid "SQL database limit is disabled but SQL user limit is not."
 msgstr ""
 "SQL veritabanı limiti devre dışı ayarlanmış ama SQL kullanıcı limiti mevcut."
-
-msgid "SQL database limit is disabled."
-msgstr "SQL veritabanı limiti devre dışı."
 
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr "SQL veritabanı limiti <i>devre dışı</i> değil."
@@ -4154,15 +4115,6 @@ msgstr "Yanıtla"
 msgid "Send to"
 msgstr ""
 
-msgid "Sender email"
-msgstr "Gönderen eposta"
-
-msgid "Sender email is missing."
-msgstr ""
-
-msgid "Sender name"
-msgstr "Gönderen isim"
-
 msgid "Sender name is missing."
 msgstr ""
 
@@ -4258,9 +4210,6 @@ msgstr "Boyut"
 msgid "Software"
 msgstr "Yazılım"
 
-msgid "Software Description"
-msgstr ""
-
 msgid "Software available"
 msgstr ""
 
@@ -4345,11 +4294,12 @@ msgstr "Yazılım Deposu"
 msgid "Start installation"
 msgstr ""
 
-msgid "State"
-msgstr ""
-
 msgid "State/Province"
 msgstr "Bölge/İlçe"
+
+#, php-format
+msgid "State/province must be between %d and %d characters"
+msgstr ""
 
 msgid "Statistics"
 msgstr "İstatistikler"
@@ -4360,8 +4310,16 @@ msgstr "Durum"
 msgid "Street 1"
 msgstr "Adres 1"
 
+#, php-format
+msgid "Street 1 name must be between %d and %d characters"
+msgstr ""
+
 msgid "Street 2"
 msgstr "Adres 2"
+
+#, php-format
+msgid "Street 2 must be between %d and %d characters"
+msgstr ""
 
 msgid "Strong passwords"
 msgstr ""
@@ -4407,15 +4365,6 @@ msgstr "Subdomain aklenmek için işleme alındı."
 
 msgid "Subdomain successfully scheduled for update"
 msgstr "Subdomain güncellenmek için işleme alındı."
-
-msgid ""
-"Subdomain you are trying to remove has mail accounts. Please remove them "
-"first."
-msgstr ""
-
-msgid ""
-"Subdomain you are trying to remove has mail accounts. Remove them first."
-msgstr ""
 
 msgid "Subdomains"
 msgstr "Subdomainler"
@@ -4528,6 +4477,9 @@ msgstr ""
 msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr ""
 
+msgid "The '%value%' username is not available."
+msgstr ""
+
 msgid ""
 "The DEBUG mode is currently enabled, making resources caching unavailable."
 msgstr ""
@@ -4589,19 +4541,21 @@ msgid ""
 msgstr ""
 
 msgid ""
-"The subdomain alias you are trying to remove has FTP accounts. Please remove"
-" them first."
+"The subdomain alias you are trying to remove has mail accounts. Please "
+"remove them first."
 msgstr ""
 
 msgid ""
-"The subdomain you are trying to remove has FTP accounts. Remove them first."
+"The subdomain you are trying to remove has FTP accounts. Please remove them "
+"first."
+msgstr ""
+
+msgid ""
+"The subdomain you are trying to remove has mail accounts. Please remove them"
+" first."
 msgstr ""
 
 msgid "The uploaded file was only partially uploaded."
-msgstr ""
-
-#, php-format
-msgid "The username %s is not available."
 msgstr ""
 
 msgid "The username field is empty."
@@ -4686,9 +4640,6 @@ msgstr ""
 
 msgid "This user has domain record. First remove the domain from the system."
 msgstr ""
-
-msgid "This user name already exist."
-msgstr "Kullanıcı adı mevcut."
 
 msgid "TiB"
 msgstr "TiB"
@@ -5136,9 +5087,6 @@ msgstr ""
 msgid "Wrong or unallowed IP netmask."
 msgstr ""
 
-msgid "Wrong request."
-msgstr ""
-
 msgid "Wrong reseller id."
 msgstr "Yanlış Bayi ID'si"
 
@@ -5215,7 +5163,7 @@ msgstr ""
 msgid "You can only upload images."
 msgstr "Sadece resim yükleyebilirsiniz."
 
-msgid "You can select has many addresses as you want."
+msgid "You can select as many addresses as you want."
 msgstr ""
 
 msgid ""
@@ -5289,9 +5237,6 @@ msgstr "Veritabanınız yok."
 
 msgid "You do not have domain aliases."
 msgstr "Domain aliasınız yok."
-
-msgid "You do not have permission to install software yet"
-msgstr ""
 
 msgid "You do not have permissions to upload software"
 msgstr ""
@@ -5422,9 +5367,6 @@ msgstr ""
 msgid "You must first generate a password by clicking on the generate button."
 msgstr "Öncelikle \"Oluştur\" düğmesine basarak bir şifre oluşturmalısınız."
 
-msgid "You must provide a password."
-msgstr ""
-
 msgid "You must select a file to upload."
 msgstr ""
 
@@ -5521,14 +5463,12 @@ msgstr "ZB"
 msgid "ZiB"
 msgstr "ZiB"
 
-msgid "Zip"
-msgstr "PK"
-
-msgid "Zip code"
-msgstr "Posta kodu"
-
 msgid "Zip/Postal code"
 msgstr "Posta kodu"
+
+#, php-format
+msgid "Zipcode must be between %d and %d characters"
+msgstr ""
 
 msgid "Zone"
 msgstr ""
@@ -5575,12 +5515,6 @@ msgstr ""
 msgid "created by"
 msgstr ""
 
-msgid "day"
-msgstr "gün"
-
-msgid "days"
-msgstr "gün"
-
 msgid "deleting"
 msgstr "siliniyor"
 
@@ -5607,9 +5541,6 @@ msgstr ""
 
 msgid "domains"
 msgstr "Domain"
-
-msgid "enabled"
-msgstr "aktif"
 
 msgid "error"
 msgstr ""

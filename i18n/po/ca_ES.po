@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-03 08:04+0000\n"
+"POT-Creation-Date: 2017-08-11 02:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Sagi Roca <sagi@canbasis.com>, 2017\n"
 "Language-Team: Catalan (Spain) (https://www.transifex.com/i-mscp/teams/576/ca_ES/)\n"
@@ -65,12 +65,14 @@ msgid "%1$ss - Software"
 msgstr ""
 
 #, php-format
-msgid "%d %s remaining until account expiration"
-msgstr "queden %d %s fins a l'expiració del compte"
-
-#, php-format
 msgid "%d Service(s) port successfully updateds"
 msgstr "%d Port(s) actualitzat(s) correctament"
+
+#, php-format
+msgid "%d day remaining until account expiration"
+msgid_plural "%d days remaining until account expiration"
+msgstr[0] ""
+msgstr[1] ""
 
 #, php-format
 msgid "%d strings translated"
@@ -222,9 +224,6 @@ msgstr "Accedir a l'FTP web."
 msgid "Access your mail through the web interface."
 msgstr "Accedir al webmail."
 
-msgid "Account data"
-msgstr "Dades del compte"
-
 msgid "Account limits"
 msgstr "Límits del compte"
 
@@ -356,9 +355,6 @@ msgstr "Afegit per"
 
 msgid "Addition in progress..."
 msgstr ""
-
-msgid "Additional data"
-msgstr "Dades addicionals"
 
 msgid "Admin"
 msgstr "Admin"
@@ -498,9 +494,6 @@ msgstr "Admin / Usuaris / Assignació de distribuïdor"
 msgid "Admin / Users / Sessions"
 msgstr "Admin / Usuaris / Sessions"
 
-msgid "Admin account successfully created."
-msgstr "Compte d'admin creat satisfactòriament."
-
 msgid "Admin log"
 msgstr "Log d'Admin"
 
@@ -610,9 +603,6 @@ msgstr ""
 
 msgid "Alternative URL to reach your website"
 msgstr "URL alternativa per arribar a la teva web"
-
-msgid "An unexpected error occurred"
-msgstr ""
 
 msgid "An unexpected error occurred."
 msgstr ""
@@ -991,6 +981,10 @@ msgstr ""
 msgid "City"
 msgstr "Ciutat"
 
+#, php-format
+msgid "City must be between %d and %d characters"
+msgstr ""
+
 msgid "Class"
 msgstr "Classe"
 
@@ -1187,6 +1181,10 @@ msgstr ""
 msgid "Company"
 msgstr "Empresa"
 
+#, php-format
+msgid "Company must be between %d and %d characters"
+msgstr ""
+
 msgid "Configuration mode"
 msgstr ""
 
@@ -1196,9 +1194,6 @@ msgstr ""
 #, php-format
 msgid "Conflict with the `%s' DNS resource record."
 msgstr ""
-
-msgid "Core data"
-msgstr "Dades principals"
 
 msgid "Cores"
 msgstr "Nuclis"
@@ -1301,6 +1296,10 @@ msgstr ""
 msgid "Country"
 msgstr "País"
 
+#, php-format
+msgid "County must be between %d and %d characters"
+msgstr ""
+
 msgid "Create"
 msgstr "Crear"
 
@@ -1354,9 +1353,6 @@ msgstr "Client"
 
 msgid "Customer ID"
 msgstr "ID del client"
-
-msgid "Customer ID cannot have more than 200 characters"
-msgstr "L'ID del client no pot tenir més de 200 caràcters"
 
 msgid "Customer account"
 msgstr ""
@@ -2021,9 +2017,6 @@ msgstr "Configurar Email"
 msgid "Email successfully updated."
 msgstr ""
 
-msgid "Empty data or wrong field."
-msgstr "No hi ha dades o el camp és erroni"
-
 msgid "Enable SSL"
 msgstr "Activar SSL"
 
@@ -2112,6 +2105,10 @@ msgstr "Fracàs en el paquet. Esborrant!"
 msgid "Fax"
 msgstr "Fax"
 
+#, php-format
+msgid "Fax must be between %d and %d characters"
+msgstr ""
+
 msgid "Feature"
 msgstr "Característica"
 
@@ -2154,9 +2151,6 @@ msgstr ""
 msgid "FileManager"
 msgstr "Gestor de fitxers"
 
-msgid "Filemanager"
-msgstr "Administrador de fitxers"
-
 msgid "Filesystem system Info"
 msgstr "Informació del sistema de fitxers"
 
@@ -2169,7 +2163,8 @@ msgstr ""
 msgid "First name"
 msgstr "Nom"
 
-msgid "First name cannot have more than 200 characters."
+#, php-format
+msgid "First name must be between %d and %d characters"
 msgstr ""
 
 msgid "For the time being, you can only add forwarded mail account."
@@ -2366,9 +2361,6 @@ msgstr "Usuari htaccess programat per ser afegit."
 msgid "Htaccess, htgroups and htpasswd errors"
 msgstr ""
 
-msgid "IP Address"
-msgstr ""
-
 msgid "IP address"
 msgstr "Adreça IP"
 
@@ -2452,14 +2444,8 @@ msgstr ""
 msgid "In maintenance mode, only administrators can login."
 msgstr ""
 
-msgid "Incorrect FTP account limit."
-msgstr "Límit de comptes FTP incorrecte."
-
 msgid "Incorrect FTP accounts limit."
 msgstr "Límit de comptes FTP incorrecte."
-
-msgid "Incorrect SQL database limit."
-msgstr "Límit de base de dades SQL incorrecte."
 
 msgid "Incorrect SQL databases limit."
 msgstr "Límit de base de dades SQL incorrecte."
@@ -2475,9 +2461,6 @@ msgstr "Límit d'àlies incorrecte."
 
 msgid "Incorrect disk space limit."
 msgstr "Límit d'espai en disc incorrecte."
-
-msgid "Incorrect domain alias limit."
-msgstr "Límit d'àlies de domini incorrecte."
 
 msgid "Incorrect domain aliases limit."
 msgstr ""
@@ -2498,29 +2481,17 @@ msgstr ""
 msgid "Incorrect mail accounts limit."
 msgstr "Límit de comptes de correu incorrecte."
 
-msgid "Incorrect mail quota"
-msgstr ""
-
 msgid "Incorrect mail quota."
 msgstr ""
 
 msgid "Incorrect monthly traffic limit."
 msgstr "Límit de transit mensual incorrecte."
 
-msgid "Incorrect post code length or syntax!"
-msgstr ""
-
 msgid "Incorrect subdomain limit."
 msgstr "Límit de subdominis incorrecte."
 
 msgid "Incorrect subdomains limit."
 msgstr "Límit de subdominis incorrecte."
-
-msgid "Incorrect syntax for email address."
-msgstr "L'adreça de correu no és vàlida."
-
-msgid "Incorrect username length or syntax."
-msgstr "La sintaxi o longitud de l'usuari no són valides."
 
 msgid "Install"
 msgstr "Instal·lar"
@@ -2608,7 +2579,7 @@ msgstr ""
 msgid "Invalid email username."
 msgstr ""
 
-msgid "Invalid fax number."
+msgid "Invalid fax."
 msgstr ""
 
 #, php-format
@@ -2636,7 +2607,7 @@ msgstr "Nom incorrecte."
 msgid "Invalid payload received from GitHub"
 msgstr ""
 
-msgid "Invalid phone number."
+msgid "Invalid phone."
 msgstr ""
 
 #, php-format
@@ -2646,7 +2617,7 @@ msgstr ""
 msgid "Invalid private key or passphrase."
 msgstr ""
 
-msgid "Invalid state."
+msgid "Invalid state/province."
 msgstr ""
 
 msgid "Invalid street."
@@ -2697,7 +2668,8 @@ msgstr "Darrer accés"
 msgid "Last name"
 msgstr "Cognom"
 
-msgid "Last name cannot have more than 200 characters."
+#, php-format
+msgid "Last name must be between %d and %d characters"
 msgstr ""
 
 msgid "Last reply date"
@@ -2780,9 +2752,6 @@ msgstr ""
 
 msgid "Lost password link"
 msgstr "Link de contrasenya perduda"
-
-msgid "Lostpw link"
-msgstr "Link Pèrdua de contrasenya de correu"
 
 msgid "Low"
 msgstr "Baixa"
@@ -2977,9 +2946,6 @@ msgstr ""
 
 msgid "Month"
 msgstr "Mes"
-
-msgid "Monthly Server traffic"
-msgstr ""
 
 msgid "Monthly server traffic"
 msgstr ""
@@ -3382,9 +3348,6 @@ msgstr "Paràmetres de la contrasenya"
 msgid "Password successfully updated."
 msgstr "Contrasenya actualitzada."
 
-msgid "Passwords do not match"
-msgstr ""
-
 msgid "Passwords do not match."
 msgstr "Les contrasenyes no coincideixen."
 
@@ -3411,6 +3374,10 @@ msgstr "Personalitzar plantilla"
 
 msgid "Phone"
 msgstr "Telèfon"
+
+#, php-format
+msgid "Phone must be between %d and %d characters"
+msgstr ""
 
 msgid "PhpMyAdmin"
 msgstr "PhpMyAdmin"
@@ -3457,19 +3424,11 @@ msgstr ""
 msgid "Please enter your autoresponder message below"
 msgstr ""
 
-msgid "Please fill up both data fields for password."
-msgstr "Si us plau ompliu els dos camps de la contrasenya."
-
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
 msgstr "Siusplau selecciona un altre directori. %s (%s) està instal.lat allà."
 
 msgid "Please select at least one user."
-msgstr ""
-
-msgid ""
-"Please set now the username and password for the later login in the "
-"software. (Required fiels)"
 msgstr ""
 
 msgid "Please specify a message content."
@@ -3848,6 +3807,18 @@ msgstr "Repeteix la contrasenya"
 msgid "Reply"
 msgstr ""
 
+msgid "Reply-To email"
+msgstr ""
+
+msgid "Reply-To email is missing."
+msgstr ""
+
+msgid "Reply-To name"
+msgstr ""
+
+msgid "Reply-ToRepl name"
+msgstr ""
+
 msgid "Request Timeout: The server took too long to send the data."
 msgstr ""
 
@@ -3947,12 +3918,6 @@ msgstr ""
 msgid "Reseller Name"
 msgstr "Nom del distribuïdor"
 
-msgid "Reseller account successfully created."
-msgstr "Compte del distribuïdor afegit."
-
-msgid "Reseller account successfully updated."
-msgstr "Compte de distribuïdor actualitzat."
-
 msgid "Reseller and customer"
 msgstr "Distribuïdor i client"
 
@@ -4047,9 +4012,6 @@ msgid "SQL database"
 msgstr ""
 
 msgid "SQL database limit is disabled but SQL user limit is not."
-msgstr ""
-
-msgid "SQL database limit is disabled."
 msgstr ""
 
 msgid "SQL database limit is not <i>disabled</i>."
@@ -4178,15 +4140,6 @@ msgstr "Enviar resposta"
 msgid "Send to"
 msgstr ""
 
-msgid "Sender email"
-msgstr ""
-
-msgid "Sender email is missing."
-msgstr ""
-
-msgid "Sender name"
-msgstr ""
-
 msgid "Sender name is missing."
 msgstr ""
 
@@ -4282,9 +4235,6 @@ msgstr "Mida"
 msgid "Software"
 msgstr "Software"
 
-msgid "Software Description"
-msgstr ""
-
 msgid "Software available"
 msgstr "Sofware disponible"
 
@@ -4369,11 +4319,12 @@ msgstr "Repositori d'aplicacions"
 msgid "Start installation"
 msgstr "Iniciar instal.lació"
 
-msgid "State"
-msgstr "Estat"
-
 msgid "State/Province"
 msgstr "Estat/Província"
+
+#, php-format
+msgid "State/province must be between %d and %d characters"
+msgstr ""
 
 msgid "Statistics"
 msgstr "Estadístiques"
@@ -4384,8 +4335,16 @@ msgstr "Estat"
 msgid "Street 1"
 msgstr "Carrer 1"
 
+#, php-format
+msgid "Street 1 name must be between %d and %d characters"
+msgstr ""
+
 msgid "Street 2"
 msgstr "Carrer 2"
+
+#, php-format
+msgid "Street 2 must be between %d and %d characters"
+msgstr ""
 
 msgid "Strong passwords"
 msgstr ""
@@ -4430,15 +4389,6 @@ msgid "Subdomain successfully scheduled for addition."
 msgstr "El subdomini ha estat programat per a ésser afegit."
 
 msgid "Subdomain successfully scheduled for update"
-msgstr ""
-
-msgid ""
-"Subdomain you are trying to remove has mail accounts. Please remove them "
-"first."
-msgstr ""
-
-msgid ""
-"Subdomain you are trying to remove has mail accounts. Remove them first."
 msgstr ""
 
 msgid "Subdomains"
@@ -4556,6 +4506,9 @@ msgstr ""
 msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr ""
 
+msgid "The '%value%' username is not available."
+msgstr ""
+
 msgid ""
 "The DEBUG mode is currently enabled, making resources caching unavailable."
 msgstr ""
@@ -4623,20 +4576,22 @@ msgid ""
 msgstr ""
 
 msgid ""
-"The subdomain alias you are trying to remove has FTP accounts. Please remove"
-" them first."
+"The subdomain alias you are trying to remove has mail accounts. Please "
+"remove them first."
 msgstr ""
 
 msgid ""
-"The subdomain you are trying to remove has FTP accounts. Remove them first."
+"The subdomain you are trying to remove has FTP accounts. Please remove them "
+"first."
+msgstr ""
+
+msgid ""
+"The subdomain you are trying to remove has mail accounts. Please remove them"
+" first."
 msgstr ""
 
 msgid "The uploaded file was only partially uploaded."
 msgstr "El fitxer carregat només s'ha carregat parcialment."
-
-#, php-format
-msgid "The username %s is not available."
-msgstr "El nom d'usuari %s no està disponible."
 
 msgid "The username field is empty."
 msgstr ""
@@ -4722,9 +4677,6 @@ msgstr "Aquest programari està instal.lat en el(s) següent(s) domini(s):"
 
 msgid "This user has domain record. First remove the domain from the system."
 msgstr ""
-
-msgid "This user name already exist."
-msgstr "Aquest nom d'usuari ja existeix."
 
 msgid "TiB"
 msgstr "TiB"
@@ -5175,9 +5127,6 @@ msgstr ""
 msgid "Wrong or unallowed IP netmask."
 msgstr ""
 
-msgid "Wrong request."
-msgstr "Petició incorrecta."
-
 msgid "Wrong reseller id."
 msgstr "Identificador de distribuïdor incorrecte"
 
@@ -5254,7 +5203,7 @@ msgstr ""
 msgid "You can only upload images."
 msgstr "Només pots carregar imatges,"
 
-msgid "You can select has many addresses as you want."
+msgid "You can select as many addresses as you want."
 msgstr ""
 
 msgid ""
@@ -5328,9 +5277,6 @@ msgstr ""
 
 msgid "You do not have domain aliases."
 msgstr "No disposeu de cap àlies de domini."
-
-msgid "You do not have permission to install software yet"
-msgstr ""
 
 msgid "You do not have permissions to upload software"
 msgstr "No tens permisos per a carregar programari."
@@ -5464,9 +5410,6 @@ msgstr ""
 msgid "You must first generate a password by clicking on the generate button."
 msgstr ""
 
-msgid "You must provide a password."
-msgstr "Has de proporcionar una contrasenya."
-
 msgid "You must select a file to upload."
 msgstr ""
 
@@ -5563,14 +5506,12 @@ msgstr "ZB"
 msgid "ZiB"
 msgstr "ZiB"
 
-msgid "Zip"
-msgstr ""
-
-msgid "Zip code"
-msgstr "Codi postal"
-
 msgid "Zip/Postal code"
 msgstr "Codi postal"
+
+#, php-format
+msgid "Zipcode must be between %d and %d characters"
+msgstr ""
 
 msgid "Zone"
 msgstr ""
@@ -5617,12 +5558,6 @@ msgstr ""
 msgid "created by"
 msgstr ""
 
-msgid "day"
-msgstr "dia"
-
-msgid "days"
-msgstr "dies"
-
 msgid "deleting"
 msgstr "esborrant"
 
@@ -5649,9 +5584,6 @@ msgstr ""
 
 msgid "domains"
 msgstr "dominis"
-
-msgid "enabled"
-msgstr "activat"
 
 msgid "error"
 msgstr ""
