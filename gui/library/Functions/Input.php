@@ -401,7 +401,7 @@ function getUserLoginDataForm($usernameRequired = true, $passwordRequired = true
             function ($password) {
                 return preg_match('/[0-9]/', $password) && preg_match('/[a-zA-Z]/', $password);
             },
-            'messages' => tr('Password must contain letters and digits.'),
+            'messages' => tr('The password must contain letters and digits.'),
         ]);
     }
 
@@ -441,16 +441,16 @@ function getUserPersonalDataForm()
             ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('The company name must be between %d and %d characters.', 1, 200)]]
         ]]],
         'street1' => ['text', ['validators' => [
-            ['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid street.')]],
+            ['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid street 1.')]],
             ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('The street 1 name must be between %d and %d characters', 1, 200)]]
         ]]],
         'street2' => ['text', ['validators' => [
-            ['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid street.')]],
+            ['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid street 2.')]],
             ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('The street 2 name must be between %d and %d characters.', 1, 200)]]
         ]]],
         'zip'     => ['text', ['validators' => [
             ['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid zipcode.')]],
-            ['StringLength', true, ['min' => 1, 'max' => 10, 'messages' => tr('The Zipcode must be between %d and %d characters.', 1, 10)]]
+            ['StringLength', true, ['min' => 1, 'max' => 10, 'messages' => tr('The zipcode must be between %d and %d characters.', 1, 10)]]
         ]]],
         'city'    => ['text', ['validators' => [
             ['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid city.')]],
@@ -466,7 +466,7 @@ function getUserPersonalDataForm()
         ]]],
         'email'   => ['text', [
             'validators' => [
-                ['NotEmpty', true, ['type' => 'string', 'messages' => tr('The Email address cannot be empty.')]],
+                ['NotEmpty', true, ['type' => 'string', 'messages' => tr('The email address cannot be empty.')]],
                 ['EmailAddress', true, ['messages' => tr('Invalid email address.')]]
             ],
             'Required'   => true
