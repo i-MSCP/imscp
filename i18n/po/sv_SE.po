@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-11 02:13+0000\n"
+"POT-Creation-Date: 2017-08-11 02:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thom Heemstra <thom@heemstra.xyz>, 2017\n"
 "Language-Team: Swedish (Sweden) (https://www.transifex.com/i-mscp/teams/576/sv_SE/)\n"
@@ -1002,10 +1002,6 @@ msgstr "Cirkulär har skickats."
 msgid "City"
 msgstr "Stad"
 
-#, php-format
-msgid "City must be between %d and %d characters"
-msgstr ""
-
 msgid "Class"
 msgstr "Klass"
 
@@ -1208,10 +1204,6 @@ msgstr "Nätverksnamn"
 msgid "Company"
 msgstr "Företag"
 
-#, php-format
-msgid "Company must be between %d and %d characters"
-msgstr ""
-
 msgid "Configuration mode"
 msgstr "konfigurationsläge"
 
@@ -1324,10 +1316,6 @@ msgstr ""
 
 msgid "Country"
 msgstr "Land"
-
-#, php-format
-msgid "County must be between %d and %d characters"
-msgstr ""
 
 msgid "Create"
 msgstr "Create"
@@ -2178,9 +2166,6 @@ msgstr "E-post"
 msgid "Email address"
 msgstr "E-mail adr."
 
-msgid "Email address cannot be empty."
-msgstr ""
-
 #, php-format
 msgid "Email quota cannot be bigger than %s"
 msgstr "E-mail kvot kan inte vara större än %s"
@@ -2282,10 +2267,6 @@ msgstr "Failure in the package. Deleting!"
 msgid "Fax"
 msgstr "Fax"
 
-#, php-format
-msgid "Fax must be between %d and %d characters"
-msgstr ""
-
 msgid "Feature"
 msgstr "Funktion"
 
@@ -2339,10 +2320,6 @@ msgstr ""
 
 msgid "First name"
 msgstr "Förnamn"
-
-#, php-format
-msgid "First name must be between %d and %d characters"
-msgstr ""
 
 msgid "For the time being, you can only add forwarded mail account."
 msgstr ""
@@ -2853,10 +2830,6 @@ msgstr "Senaste sidvisning/åtkomst"
 
 msgid "Last name"
 msgstr "Efternamn"
-
-#, php-format
-msgid "Last name must be between %d and %d characters"
-msgstr ""
 
 msgid "Last reply date"
 msgstr "Sista svarsdatum"
@@ -3498,9 +3471,6 @@ msgstr "Partition"
 msgid "Password"
 msgstr "Lösenord"
 
-msgid "Password cannot be empty."
-msgstr "Lösenord får inte vara tomt."
-
 msgid "Password confirmation"
 msgstr "Lösenord bekräftelse"
 
@@ -3555,10 +3525,6 @@ msgstr "Anpassa mallen"
 
 msgid "Phone"
 msgstr "Telefon"
-
-#, php-format
-msgid "Phone must be between %d and %d characters"
-msgstr ""
 
 msgid "PhpMyAdmin"
 msgstr "PhpMyAdmin"
@@ -4008,9 +3974,6 @@ msgid "Reply-To email is missing."
 msgstr ""
 
 msgid "Reply-To name"
-msgstr ""
-
-msgid "Reply-ToRepl name"
 msgstr ""
 
 msgid "Request Timeout: The server took too long to send the data."
@@ -4516,10 +4479,6 @@ msgstr "Starta installationen"
 msgid "State/Province"
 msgstr "Län/Landskap"
 
-#, php-format
-msgid "State/province must be between %d and %d characters"
-msgstr ""
-
 msgid "Statistics"
 msgstr "Statistik"
 
@@ -4529,16 +4488,8 @@ msgstr "Status"
 msgid "Street 1"
 msgstr "Gata 1"
 
-#, php-format
-msgid "Street 1 name must be between %d and %d characters"
-msgstr ""
-
 msgid "Street 2"
 msgstr "Adress 2"
-
-#, php-format
-msgid "Street 2 must be between %d and %d characters"
-msgstr ""
 
 msgid "Strong passwords"
 msgstr "starka lösenord"
@@ -4710,8 +4661,23 @@ msgid ""
 "The DEBUG mode is currently enabled, making resources caching unavailable."
 msgstr ""
 
+msgid "The Email address cannot be empty."
+msgstr ""
+
+#, php-format
+msgid "The Zipcode must be between %d and %d characters."
+msgstr ""
+
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
+msgstr ""
+
+#, php-format
+msgid "The city name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The company name must be between %d and %d characters."
 msgstr ""
 
 #, php-format
@@ -4719,6 +4685,10 @@ msgid "The configuration parameter has been updated."
 msgid_plural "%d configuration parameters were updated"
 msgstr[0] ""
 msgstr[1] ""
+
+#, php-format
+msgid "The country name must be between %d and %d characters."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4743,6 +4713,18 @@ msgstr ""
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "The domain you are trying to edit doesn't exist."
 
+#, php-format
+msgid "The fax number must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The first name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The last name must be between %d and %d characters."
+msgstr ""
+
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "The menu you are trying to edit doesn't exist."
 
@@ -4759,8 +4741,18 @@ msgstr ""
 "The package will be installed automaticly to your system after "
 "upload.<br>Refresh your site to see the new status!"
 
+msgid "The password cannot be empty."
+msgstr ""
+
+msgid "The password contains unallowed characters."
+msgstr ""
+
 msgid "The password field is empty."
 msgstr "Fältet för lösenord är tomt."
+
+#, php-format
+msgid "The phone number must be between %d and %d characters."
+msgstr ""
 
 msgid "The private key doesn't belong to the provided SSL certificate."
 msgstr "Den privata nyckeln tillhör inte den medföljande SSL-certifikat."
@@ -4775,6 +4767,18 @@ msgid ""
 msgstr ""
 "Återförsäljaren du vill ta bort har ett eller flera kundkonton . Ta bort dem"
 " först."
+
+#, php-format
+msgid "The state/province name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The street 1 name must be between %d and %d characters"
+msgstr ""
+
+#, php-format
+msgid "The street 2 name must be between %d and %d characters."
+msgstr ""
 
 msgid ""
 "The subdomain alias you are trying to remove has mail accounts. Please "
@@ -4794,8 +4798,15 @@ msgstr ""
 msgid "The uploaded file was only partially uploaded."
 msgstr "Den överförda filen var bara delvis överförd."
 
+msgid "The username cannot be empty."
+msgstr ""
+
 msgid "The username field is empty."
 msgstr "Användarnamnet är tomt."
+
+#, php-format
+msgid "The username must be between %d and %d characters."
+msgstr ""
 
 msgid "The value has been found in the stack"
 msgstr "Värdet har hittats i stapeln"
@@ -5225,13 +5236,6 @@ msgstr "Användarnamn"
 
 msgid "Username and password for application login"
 msgstr "Användarnamn och lösenord för inloggning"
-
-msgid "Username cannot be empty."
-msgstr ""
-
-#, php-format
-msgid "Username must be between %d and %d characters"
-msgstr ""
 
 msgid "Users"
 msgstr "Användare"
@@ -5746,10 +5750,6 @@ msgstr "ZiB"
 
 msgid "Zip/Postal code"
 msgstr "Postnr"
-
-#, php-format
-msgid "Zipcode must be between %d and %d characters"
-msgstr ""
 
 msgid "Zone"
 msgstr "Zon"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-11 02:13+0000\n"
+"POT-Creation-Date: 2017-08-11 02:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Oleg Olegov <>, 2017\n"
 "Language-Team: Russian (Russia) (https://www.transifex.com/i-mscp/teams/576/ru_RU/)\n"
@@ -1001,10 +1001,6 @@ msgstr "Рассылка успешно отправлена."
 msgid "City"
 msgstr "Город / Населенный пункт"
 
-#, php-format
-msgid "City must be between %d and %d characters"
-msgstr ""
-
 msgid "Class"
 msgstr "Класс"
 
@@ -1208,10 +1204,6 @@ msgstr "Общее имя"
 msgid "Company"
 msgstr "Компания"
 
-#, php-format
-msgid "Company must be between %d and %d characters"
-msgstr ""
-
 msgid "Configuration mode"
 msgstr "Режим конфигурации"
 
@@ -1325,10 +1317,6 @@ msgstr "Считать почтовые ящики по умолчанию"
 
 msgid "Country"
 msgstr "Страна"
-
-#, php-format
-msgid "County must be between %d and %d characters"
-msgstr ""
 
 msgid "Create"
 msgstr "Создать"
@@ -2181,9 +2169,6 @@ msgstr "E-Mail"
 msgid "Email address"
 msgstr "Email адрес"
 
-msgid "Email address cannot be empty."
-msgstr "Почтовый адрес не может быть пуст."
-
 #, php-format
 msgid "Email quota cannot be bigger than %s"
 msgstr "Значение почтовой квоты не может быть более %s."
@@ -2285,10 +2270,6 @@ msgstr "Ошибка пакета. Удаление!"
 msgid "Fax"
 msgstr "Факс"
 
-#, php-format
-msgid "Fax must be between %d and %d characters"
-msgstr ""
-
 msgid "Feature"
 msgstr "Свойства"
 
@@ -2342,10 +2323,6 @@ msgstr "Фильтр клиентов по"
 
 msgid "First name"
 msgstr "Имя"
-
-#, php-format
-msgid "First name must be between %d and %d characters"
-msgstr ""
 
 msgid "For the time being, you can only add forwarded mail account."
 msgstr ""
@@ -2866,10 +2843,6 @@ msgstr "Последний доступ"
 
 msgid "Last name"
 msgstr "Фамилия"
-
-#, php-format
-msgid "Last name must be between %d and %d characters"
-msgstr ""
 
 msgid "Last reply date"
 msgstr "Дата последнего ответа"
@@ -3521,9 +3494,6 @@ msgstr "Раздел"
 msgid "Password"
 msgstr "Пароль"
 
-msgid "Password cannot be empty."
-msgstr "Поле пароля пусто."
-
 msgid "Password confirmation"
 msgstr "Подтверждение пароля"
 
@@ -3578,10 +3548,6 @@ msgstr "Персонализировать шаблон"
 
 msgid "Phone"
 msgstr "Телефон"
-
-#, php-format
-msgid "Phone must be between %d and %d characters"
-msgstr ""
 
 msgid "PhpMyAdmin"
 msgstr "PhpMyAdmin"
@@ -4031,9 +3997,6 @@ msgid "Reply-To email is missing."
 msgstr ""
 
 msgid "Reply-To name"
-msgstr ""
-
-msgid "Reply-ToRepl name"
 msgstr ""
 
 msgid "Request Timeout: The server took too long to send the data."
@@ -4541,10 +4504,6 @@ msgstr "Добавить в репозиторий"
 msgid "State/Province"
 msgstr "Область / Район"
 
-#, php-format
-msgid "State/province must be between %d and %d characters"
-msgstr ""
-
 msgid "Statistics"
 msgstr "Статистика"
 
@@ -4554,16 +4513,8 @@ msgstr "Статус"
 msgid "Street 1"
 msgstr "Основной адрес"
 
-#, php-format
-msgid "Street 1 name must be between %d and %d characters"
-msgstr ""
-
 msgid "Street 2"
 msgstr "Дополнительный адрес"
-
-#, php-format
-msgid "Street 2 must be between %d and %d characters"
-msgstr ""
 
 msgid "Strong passwords"
 msgstr "Использовать сильные пароли"
@@ -4738,9 +4689,24 @@ msgstr ""
 "Режим ОТЛАДКИ в данный момент включен, что делает кеширование ресурсов "
 "недоступным."
 
+msgid "The Email address cannot be empty."
+msgstr ""
+
+#, php-format
+msgid "The Zipcode must be between %d and %d characters."
+msgstr ""
+
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr "SQL пользователь `%s' недоступен или не разрешен."
+
+#, php-format
+msgid "The city name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The company name must be between %d and %d characters."
+msgstr ""
 
 #, php-format
 msgid "The configuration parameter has been updated."
@@ -4749,6 +4715,10 @@ msgstr[0] "Конфигурационный параметр был обновл
 msgstr[1] "%d конфигурационных параметра было обновлено."
 msgstr[2] "%d конфигурационных параметров было обновлено."
 msgstr[3] "%d конфигурационных параметров было обновлено."
+
+#, php-format
+msgid "The country name must be between %d and %d characters."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4772,6 +4742,18 @@ msgstr "Домен, или как минимум одно его записей 
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "Домен, который Вы пытаетесь отредактировать, не существует."
 
+#, php-format
+msgid "The fax number must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The first name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The last name must be between %d and %d characters."
+msgstr ""
+
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "Меню, которое Вы пытаетесь отредактировать, не существует."
 
@@ -4788,8 +4770,18 @@ msgstr ""
 "Пакет будет автоматически установлен в вашу систему после "
 "загрузки.<br>Обновите страницу, чтобы увидеть новый статус!"
 
+msgid "The password cannot be empty."
+msgstr ""
+
+msgid "The password contains unallowed characters."
+msgstr ""
+
 msgid "The password field is empty."
 msgstr "Поле пароля пусто."
+
+#, php-format
+msgid "The phone number must be between %d and %d characters."
+msgstr ""
 
 msgid "The private key doesn't belong to the provided SSL certificate."
 msgstr "Приватный ключ не принадлежит предоставленному сертификату."
@@ -4805,6 +4797,18 @@ msgid ""
 msgstr ""
 "Реселлер, которго вы хотите удалить, имеет одного или более клиентов.<br /> "
 "Сначала удалите их."
+
+#, php-format
+msgid "The state/province name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The street 1 name must be between %d and %d characters"
+msgstr ""
+
+#, php-format
+msgid "The street 2 name must be between %d and %d characters."
+msgstr ""
 
 msgid ""
 "The subdomain alias you are trying to remove has mail accounts. Please "
@@ -4824,8 +4828,15 @@ msgstr ""
 msgid "The uploaded file was only partially uploaded."
 msgstr "Загружаемый файл был загружен частично."
 
+msgid "The username cannot be empty."
+msgstr ""
+
 msgid "The username field is empty."
 msgstr "Поле имя пользователя пусто."
+
+#, php-format
+msgid "The username must be between %d and %d characters."
+msgstr ""
 
 msgid "The value has been found in the stack"
 msgstr "Значение было найдено в стеке"
@@ -5257,13 +5268,6 @@ msgstr "Имя пользователя"
 
 msgid "Username and password for application login"
 msgstr "Имя пользователя и пароль для входа в приложение"
-
-msgid "Username cannot be empty."
-msgstr "Имя пользователя не может пустовать"
-
-#, php-format
-msgid "Username must be between %d and %d characters"
-msgstr "Пароль должен содержать от %d до %d знаков."
 
 msgid "Users"
 msgstr "Пользователи"
@@ -5815,10 +5819,6 @@ msgstr "Зб"
 
 msgid "Zip/Postal code"
 msgstr "Почтовый индекс"
-
-#, php-format
-msgid "Zipcode must be between %d and %d characters"
-msgstr ""
 
 msgid "Zone"
 msgstr "Зона DNS"

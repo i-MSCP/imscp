@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-11 02:13+0000\n"
+"POT-Creation-Date: 2017-08-11 02:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/i-mscp/teams/576/zh_TW/)\n"
@@ -964,10 +964,6 @@ msgstr "通知已成功送出。"
 msgid "City"
 msgstr "城市"
 
-#, php-format
-msgid "City must be between %d and %d characters"
-msgstr ""
-
 msgid "Class"
 msgstr "Class"
 
@@ -1161,10 +1157,6 @@ msgstr "名稱"
 msgid "Company"
 msgstr "公司名稱"
 
-#, php-format
-msgid "Company must be between %d and %d characters"
-msgstr ""
-
 msgid "Configuration mode"
 msgstr "設置模式"
 
@@ -1273,10 +1265,6 @@ msgstr ""
 
 msgid "Country"
 msgstr "國家"
-
-#, php-format
-msgid "County must be between %d and %d characters"
-msgstr ""
 
 msgid "Create"
 msgstr "建立"
@@ -2124,9 +2112,6 @@ msgstr "電子郵件"
 msgid "Email address"
 msgstr "電子郵件地址"
 
-msgid "Email address cannot be empty."
-msgstr ""
-
 #, php-format
 msgid "Email quota cannot be bigger than %s"
 msgstr "郵件配額不可以大於 %s"
@@ -2228,10 +2213,6 @@ msgstr "在套件中失敗，刪除中!"
 msgid "Fax"
 msgstr "傳真"
 
-#, php-format
-msgid "Fax must be between %d and %d characters"
-msgstr ""
-
 msgid "Feature"
 msgstr "功能"
 
@@ -2285,10 +2266,6 @@ msgstr ""
 
 msgid "First name"
 msgstr "名"
-
-#, php-format
-msgid "First name must be between %d and %d characters"
-msgstr ""
 
 msgid "For the time being, you can only add forwarded mail account."
 msgstr ""
@@ -2790,10 +2767,6 @@ msgstr "最後訪問"
 
 msgid "Last name"
 msgstr "姓"
-
-#, php-format
-msgid "Last name must be between %d and %d characters"
-msgstr ""
 
 msgid "Last reply date"
 msgstr "最後回覆日期"
@@ -3429,9 +3402,6 @@ msgstr "分區"
 msgid "Password"
 msgstr "密碼"
 
-msgid "Password cannot be empty."
-msgstr "密碼不能空白"
-
 msgid "Password confirmation"
 msgstr "確認密碼"
 
@@ -3486,10 +3456,6 @@ msgstr "個人化範本"
 
 msgid "Phone"
 msgstr "電話"
-
-#, php-format
-msgid "Phone must be between %d and %d characters"
-msgstr ""
 
 msgid "PhpMyAdmin"
 msgstr "PhpMyAdmin"
@@ -3926,9 +3892,6 @@ msgid "Reply-To email is missing."
 msgstr ""
 
 msgid "Reply-To name"
-msgstr ""
-
-msgid "Reply-ToRepl name"
 msgstr ""
 
 msgid "Request Timeout: The server took too long to send the data."
@@ -4434,10 +4397,6 @@ msgstr "開始安裝"
 msgid "State/Province"
 msgstr "省/洲"
 
-#, php-format
-msgid "State/province must be between %d and %d characters"
-msgstr ""
-
 msgid "Statistics"
 msgstr "資料統計"
 
@@ -4447,16 +4406,8 @@ msgstr "狀態"
 msgid "Street 1"
 msgstr "街道 1"
 
-#, php-format
-msgid "Street 1 name must be between %d and %d characters"
-msgstr ""
-
 msgid "Street 2"
 msgstr "街道 2"
-
-#, php-format
-msgid "Street 2 must be between %d and %d characters"
-msgstr ""
 
 msgid "Strong passwords"
 msgstr "較強密碼"
@@ -4621,14 +4572,33 @@ msgid ""
 "The DEBUG mode is currently enabled, making resources caching unavailable."
 msgstr ""
 
+msgid "The Email address cannot be empty."
+msgstr ""
+
+#, php-format
+msgid "The Zipcode must be between %d and %d characters."
+msgstr ""
+
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr "此 `%s' 資料庫使用者是無效或不允許的。"
 
 #, php-format
+msgid "The city name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The company name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
 msgid "The configuration parameter has been updated."
 msgid_plural "%d configuration parameters were updated"
 msgstr[0] ""
+
+#, php-format
+msgid "The country name must be between %d and %d characters."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4648,6 +4618,18 @@ msgstr "此網域或至少一個網域有不同於'正常'的狀態。"
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "您試著編輯的網域是不存在的。"
 
+#, php-format
+msgid "The fax number must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The first name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The last name must be between %d and %d characters."
+msgstr ""
+
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "您試著編輯的選單是不存在的。"
 
@@ -4662,8 +4644,18 @@ msgid ""
 "upload.<br>Refresh your site to see the new status!"
 msgstr "此套件在上傳之後就會自動安裝到您的系統。<br>重整您的網站來檢視新的狀態!"
 
+msgid "The password cannot be empty."
+msgstr ""
+
+msgid "The password contains unallowed characters."
+msgstr ""
+
 msgid "The password field is empty."
 msgstr "密碼欄位是空白的。"
+
+#, php-format
+msgid "The phone number must be between %d and %d characters."
+msgstr ""
 
 msgid "The private key doesn't belong to the provided SSL certificate."
 msgstr "此私鑰不屬於此提供的 SSL 憑證。"
@@ -4676,6 +4668,18 @@ msgid ""
 "The reseller you want to remove has one or more customers accounts. Please "
 "remove them first."
 msgstr "此經銷商想要移除一個或多個客戶帳號。請先移除這些。"
+
+#, php-format
+msgid "The state/province name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The street 1 name must be between %d and %d characters"
+msgstr ""
+
+#, php-format
+msgid "The street 2 name must be between %d and %d characters."
+msgstr ""
 
 msgid ""
 "The subdomain alias you are trying to remove has mail accounts. Please "
@@ -4695,8 +4699,15 @@ msgstr ""
 msgid "The uploaded file was only partially uploaded."
 msgstr "已上傳的檔案只有部份上傳而已。"
 
+msgid "The username cannot be empty."
+msgstr ""
+
 msgid "The username field is empty."
 msgstr "使用者名稱欄位是空白的。"
+
+#, php-format
+msgid "The username must be between %d and %d characters."
+msgstr ""
 
 msgid "The value has been found in the stack"
 msgstr "此值在這裡找到"
@@ -5108,13 +5119,6 @@ msgstr "使用者名稱"
 
 msgid "Username and password for application login"
 msgstr "此使用者名稱和密碼是給應用程式登入用的"
-
-msgid "Username cannot be empty."
-msgstr ""
-
-#, php-format
-msgid "Username must be between %d and %d characters"
-msgstr ""
 
 msgid "Users"
 msgstr "使用者"
@@ -5607,10 +5611,6 @@ msgstr "ZiB"
 
 msgid "Zip/Postal code"
 msgstr "郵遞區號"
-
-#, php-format
-msgid "Zipcode must be between %d and %d characters"
-msgstr ""
 
 msgid "Zone"
 msgstr "區域"

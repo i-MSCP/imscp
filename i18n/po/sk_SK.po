@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-11 02:13+0000\n"
+"POT-Creation-Date: 2017-08-11 02:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Henrich Brunner <brunno.eu@gmail.com>, 2017\n"
 "Language-Team: Slovak (Slovakia) (https://www.transifex.com/i-mscp/teams/576/sk_SK/)\n"
@@ -969,10 +969,6 @@ msgstr ""
 msgid "City"
 msgstr "Mesto"
 
-#, php-format
-msgid "City must be between %d and %d characters"
-msgstr ""
-
 msgid "Class"
 msgstr "Aliasy"
 
@@ -1167,10 +1163,6 @@ msgstr ""
 msgid "Company"
 msgstr "Spoločnosť"
 
-#, php-format
-msgid "Company must be between %d and %d characters"
-msgstr ""
-
 msgid "Configuration mode"
 msgstr ""
 
@@ -1279,10 +1271,6 @@ msgstr ""
 
 msgid "Country"
 msgstr "Krajina"
-
-#, php-format
-msgid "County must be between %d and %d characters"
-msgstr ""
 
 msgid "Create"
 msgstr "OK"
@@ -1985,9 +1973,6 @@ msgstr "Email"
 msgid "Email address"
 msgstr "Emailová adresa"
 
-msgid "Email address cannot be empty."
-msgstr ""
-
 #, php-format
 msgid "Email quota cannot be bigger than %s"
 msgstr ""
@@ -2089,10 +2074,6 @@ msgstr ""
 msgid "Fax"
 msgstr "Fax"
 
-#, php-format
-msgid "Fax must be between %d and %d characters"
-msgstr ""
-
 msgid "Feature"
 msgstr "Funkcie"
 
@@ -2146,10 +2127,6 @@ msgstr ""
 
 msgid "First name"
 msgstr "Krstné meno"
-
-#, php-format
-msgid "First name must be between %d and %d characters"
-msgstr ""
 
 msgid "For the time being, you can only add forwarded mail account."
 msgstr ""
@@ -2651,10 +2628,6 @@ msgstr "Posledný prístup"
 
 msgid "Last name"
 msgstr "Priezvisko"
-
-#, php-format
-msgid "Last name must be between %d and %d characters"
-msgstr ""
 
 msgid "Last reply date"
 msgstr ""
@@ -3292,9 +3265,6 @@ msgstr "Partícia"
 msgid "Password"
 msgstr "Heslo"
 
-msgid "Password cannot be empty."
-msgstr ""
-
 msgid "Password confirmation"
 msgstr "Zopakujte heslo"
 
@@ -3349,10 +3319,6 @@ msgstr "Prispôsobiť šablónu"
 
 msgid "Phone"
 msgstr "Telefón"
-
-#, php-format
-msgid "Phone must be between %d and %d characters"
-msgstr ""
 
 msgid "PhpMyAdmin"
 msgstr "PhpMyAdmin"
@@ -3787,9 +3753,6 @@ msgid "Reply-To email is missing."
 msgstr ""
 
 msgid "Reply-To name"
-msgstr ""
-
-msgid "Reply-ToRepl name"
 msgstr ""
 
 msgid "Request Timeout: The server took too long to send the data."
@@ -4295,10 +4258,6 @@ msgstr ""
 msgid "State/Province"
 msgstr "Štát/provincia"
 
-#, php-format
-msgid "State/province must be between %d and %d characters"
-msgstr ""
-
 msgid "Statistics"
 msgstr "Štatistiky"
 
@@ -4308,16 +4267,8 @@ msgstr "Stav"
 msgid "Street 1"
 msgstr "Ulica 1"
 
-#, php-format
-msgid "Street 1 name must be between %d and %d characters"
-msgstr ""
-
 msgid "Street 2"
 msgstr "Ulica 2"
-
-#, php-format
-msgid "Street 2 must be between %d and %d characters"
-msgstr ""
 
 msgid "Strong passwords"
 msgstr ""
@@ -4482,8 +4433,23 @@ msgid ""
 "The DEBUG mode is currently enabled, making resources caching unavailable."
 msgstr ""
 
+msgid "The Email address cannot be empty."
+msgstr ""
+
+#, php-format
+msgid "The Zipcode must be between %d and %d characters."
+msgstr ""
+
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
+msgstr ""
+
+#, php-format
+msgid "The city name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The company name must be between %d and %d characters."
 msgstr ""
 
 #, php-format
@@ -4492,6 +4458,10 @@ msgid_plural "%d configuration parameters were updated"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+
+#, php-format
+msgid "The country name must be between %d and %d characters."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4511,6 +4481,18 @@ msgstr ""
 msgid "The domain you are trying to edit doesn't exist."
 msgstr ""
 
+#, php-format
+msgid "The fax number must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The first name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The last name must be between %d and %d characters."
+msgstr ""
+
 msgid "The menu you are trying to edit doesn't exist."
 msgstr ""
 
@@ -4525,8 +4507,18 @@ msgid ""
 "upload.<br>Refresh your site to see the new status!"
 msgstr ""
 
+msgid "The password cannot be empty."
+msgstr ""
+
+msgid "The password contains unallowed characters."
+msgstr ""
+
 msgid "The password field is empty."
 msgstr "Pole pre heslo je prázdne."
+
+#, php-format
+msgid "The phone number must be between %d and %d characters."
+msgstr ""
 
 msgid "The private key doesn't belong to the provided SSL certificate."
 msgstr ""
@@ -4538,6 +4530,18 @@ msgstr ""
 msgid ""
 "The reseller you want to remove has one or more customers accounts. Please "
 "remove them first."
+msgstr ""
+
+#, php-format
+msgid "The state/province name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The street 1 name must be between %d and %d characters"
+msgstr ""
+
+#, php-format
+msgid "The street 2 name must be between %d and %d characters."
 msgstr ""
 
 msgid ""
@@ -4558,8 +4562,15 @@ msgstr ""
 msgid "The uploaded file was only partially uploaded."
 msgstr ""
 
+msgid "The username cannot be empty."
+msgstr ""
+
 msgid "The username field is empty."
 msgstr "Pole užívateľa je prázdne."
+
+#, php-format
+msgid "The username must be between %d and %d characters."
+msgstr ""
 
 msgid "The value has been found in the stack"
 msgstr ""
@@ -4969,13 +4980,6 @@ msgstr "Užívateľské meno"
 
 msgid "Username and password for application login"
 msgstr "Užívateľské meno a heslo pre prihlásenie do aplikácie"
-
-msgid "Username cannot be empty."
-msgstr ""
-
-#, php-format
-msgid "Username must be between %d and %d characters"
-msgstr ""
 
 msgid "Users"
 msgstr "Užívatelia"
@@ -5469,10 +5473,6 @@ msgstr "ZiB"
 
 msgid "Zip/Postal code"
 msgstr "PSČ"
-
-#, php-format
-msgid "Zipcode must be between %d and %d characters"
-msgstr ""
 
 msgid "Zone"
 msgstr ""

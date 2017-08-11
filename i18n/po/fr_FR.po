@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-11 02:13+0000\n"
+"POT-Creation-Date: 2017-08-11 02:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: krok <krok@totalynet.fr>, 2017\n"
 "Language-Team: French (France) (https://www.transifex.com/i-mscp/teams/576/fr_FR/)\n"
@@ -73,8 +73,8 @@ msgstr "%d port(s) de service ont été mis à jour."
 #, php-format
 msgid "%d day remaining until account expiration"
 msgid_plural "%d days remaining until account expiration"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d jour restant avant l'expiration du compte"
+msgstr[1] "%d jours restant avant l'expiration du compte"
 
 #, php-format
 msgid "%d strings translated"
@@ -1024,10 +1024,6 @@ msgstr "E-mail de masse envoyé avec succès."
 msgid "City"
 msgstr "Ville"
 
-#, php-format
-msgid "City must be between %d and %d characters"
-msgstr ""
-
 msgid "Class"
 msgstr "Classe"
 
@@ -1232,10 +1228,6 @@ msgstr "Nom commun"
 msgid "Company"
 msgstr "Société"
 
-#, php-format
-msgid "Company must be between %d and %d characters"
-msgstr ""
-
 msgid "Configuration mode"
 msgstr "Mode de configuration"
 
@@ -1364,10 +1356,6 @@ msgstr "Compter les comptes de messagerie par défaut."
 
 msgid "Country"
 msgstr "Pays"
-
-#, php-format
-msgid "County must be between %d and %d characters"
-msgstr ""
 
 msgid "Create"
 msgstr "Créer"
@@ -2220,9 +2208,6 @@ msgstr "E-mail"
 msgid "Email address"
 msgstr "Adresse courriel"
 
-msgid "Email address cannot be empty."
-msgstr "L'adresse e-mail ne peut pas être vide."
-
 #, php-format
 msgid "Email quota cannot be bigger than %s"
 msgstr "Le quota e-mail ne peut pas être supérieur à %s"
@@ -2324,10 +2309,6 @@ msgstr "Erreur dans le paquet. Suppression !"
 msgid "Fax"
 msgstr "Fax"
 
-#, php-format
-msgid "Fax must be between %d and %d characters"
-msgstr ""
-
 msgid "Feature"
 msgstr "Fonctionnalité"
 
@@ -2381,10 +2362,6 @@ msgstr "Filtrer les clients par"
 
 msgid "First name"
 msgstr "Prénom"
-
-#, php-format
-msgid "First name must be between %d and %d characters"
-msgstr ""
 
 msgid "For the time being, you can only add forwarded mail account."
 msgstr ""
@@ -2819,7 +2796,7 @@ msgid "Invalid email username."
 msgstr "Nom de compte de messagerie invalide."
 
 msgid "Invalid fax."
-msgstr ""
+msgstr "Fax incorrect."
 
 #, php-format
 msgid "Invalid field: %s"
@@ -2847,7 +2824,7 @@ msgid "Invalid payload received from GitHub"
 msgstr "Les données reçue de GitHub ne sont pas valides."
 
 msgid "Invalid phone."
-msgstr ""
+msgstr "Téléphone incorrect."
 
 #, php-format
 msgid "Invalid plugin directory: %s"
@@ -2906,10 +2883,6 @@ msgstr "Dernier accès"
 
 msgid "Last name"
 msgstr "Nom"
-
-#, php-format
-msgid "Last name must be between %d and %d characters"
-msgstr ""
 
 msgid "Last reply date"
 msgstr "Date de la dernière réponse"
@@ -3302,7 +3275,7 @@ msgid "No hosting plan available."
 msgstr "Aucun plan d'hébergemet disponible."
 
 msgid "No mail account has been deleted."
-msgstr ""
+msgstr "Aucun compte de messagerie n'a été supprimé."
 
 msgid "No reseller available to add the permissions."
 msgstr "Aucun revendeur disponible pour ajouter des permissions."
@@ -3565,9 +3538,6 @@ msgstr "Partition"
 msgid "Password"
 msgstr "Mot de passe"
 
-msgid "Password cannot be empty."
-msgstr "Le mot de passe est obligatoire."
-
 msgid "Password confirmation"
 msgstr "Confirmation du mot de passe"
 
@@ -3588,7 +3558,7 @@ msgid "Password must be between %d and %d characters."
 msgstr ""
 
 msgid "Password must contain letters and digits."
-msgstr ""
+msgstr "Le mot de passe doit contenir des chiffres et des lettres."
 
 msgid "Password settings"
 msgstr "Paramètres des mots de passe"
@@ -3615,17 +3585,13 @@ msgid "Personal data"
 msgstr "Informations personnelles"
 
 msgid "Personal data were updated."
-msgstr ""
+msgstr "Les données personelles ont été mises à jour."
 
 msgid "Personalise template"
 msgstr "Personnaliser le plan d'hébergement"
 
 msgid "Phone"
 msgstr "Téléphone"
-
-#, php-format
-msgid "Phone must be between %d and %d characters"
-msgstr ""
 
 msgid "PhpMyAdmin"
 msgstr "PhpMyAdmin"
@@ -4089,9 +4055,6 @@ msgid "Reply-To email is missing."
 msgstr ""
 
 msgid "Reply-To name"
-msgstr ""
-
-msgid "Reply-ToRepl name"
 msgstr ""
 
 msgid "Request Timeout: The server took too long to send the data."
@@ -4606,10 +4569,6 @@ msgstr "Débuter l'installation"
 msgid "State/Province"
 msgstr "Région / Département"
 
-#, php-format
-msgid "State/province must be between %d and %d characters"
-msgstr ""
-
 msgid "Statistics"
 msgstr "Statistiques"
 
@@ -4619,16 +4578,8 @@ msgstr "Statut"
 msgid "Street 1"
 msgstr "Rue 1"
 
-#, php-format
-msgid "Street 1 name must be between %d and %d characters"
-msgstr ""
-
 msgid "Street 2"
 msgstr "Rue 2"
-
-#, php-format
-msgid "Street 2 must be between %d and %d characters"
-msgstr ""
 
 msgid "Strong passwords"
 msgstr "Forcer l'utilisation de mots de passe forts"
@@ -4796,7 +4747,7 @@ msgstr ""
 "Le fichier de traduction %s a été ignoré : tableau de traduction vide."
 
 msgid "The '%value%' username is not available."
-msgstr ""
+msgstr "Le nom d'utilsateur '%value%' n'est pas disponible."
 
 msgid ""
 "The DEBUG mode is currently enabled, making resources caching unavailable."
@@ -4804,15 +4755,34 @@ msgstr ""
 "Le mode de débogage est actuellement activé, randant la mise en cache des "
 "resources indisponibles."
 
+msgid "The Email address cannot be empty."
+msgstr ""
+
+#, php-format
+msgid "The Zipcode must be between %d and %d characters."
+msgstr ""
+
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr "L'utilisateur SQL `%s'  n'est pas disponible."
+
+#, php-format
+msgid "The city name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The company name must be between %d and %d characters."
+msgstr ""
 
 #, php-format
 msgid "The configuration parameter has been updated."
 msgid_plural "%d configuration parameters were updated"
 msgstr[0] ""
 msgstr[1] ""
+
+#, php-format
+msgid "The country name must be between %d and %d characters."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4837,6 +4807,18 @@ msgstr ""
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "Le domaine que vous essayez d'éditer n'existe pas."
 
+#, php-format
+msgid "The fax number must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The first name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The last name must be between %d and %d characters."
+msgstr ""
+
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "Le menu que vous essayez d’éditer n'existe pas."
 
@@ -4855,8 +4837,18 @@ msgstr ""
 "Le paquet sera installé automatiquement sur le système après le "
 "téléversement.<br>Rafraichissez votre site pour voir le nouveau statut !"
 
+msgid "The password cannot be empty."
+msgstr ""
+
+msgid "The password contains unallowed characters."
+msgstr ""
+
 msgid "The password field is empty."
 msgstr "Le champ mot de passe est vide."
+
+#, php-format
+msgid "The phone number must be between %d and %d characters."
+msgstr ""
 
 msgid "The private key doesn't belong to the provided SSL certificate."
 msgstr "La clé privée n'appartient pas au certificat SSL fourni."
@@ -4873,6 +4865,18 @@ msgstr ""
 "Le revendeur que vous voulez supprimer a un ou plusieurs compte client. "
 "Veuillez d'abord les supprimer."
 
+#, php-format
+msgid "The state/province name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The street 1 name must be between %d and %d characters"
+msgstr ""
+
+#, php-format
+msgid "The street 2 name must be between %d and %d characters."
+msgstr ""
+
 msgid ""
 "The subdomain alias you are trying to remove has mail accounts. Please "
 "remove them first."
@@ -4882,17 +4886,28 @@ msgid ""
 "The subdomain you are trying to remove has FTP accounts. Please remove them "
 "first."
 msgstr ""
+"Le sous-domaine que vous essayez de supprimer à des comptes FTP. Veuillez "
+"d'abord les supprimer."
 
 msgid ""
 "The subdomain you are trying to remove has mail accounts. Please remove them"
 " first."
 msgstr ""
+"Le sous-domaine que vous essayez de supprimer à des comptes de messagerie. "
+"Veuillez d'abord les supprimer."
 
 msgid "The uploaded file was only partially uploaded."
 msgstr "Le fichier téléversé n'est que partiellement téléversé."
 
+msgid "The username cannot be empty."
+msgstr ""
+
 msgid "The username field is empty."
 msgstr "Le champ utilisateur est vide."
+
+#, php-format
+msgid "The username must be between %d and %d characters."
+msgstr ""
 
 msgid "The value has been found in the stack"
 msgstr "La valeur a été trouvée dans la pile"
@@ -4955,6 +4970,7 @@ msgstr ""
 
 msgid "This mail account is protected against both edition and deletion."
 msgstr ""
+"Ce compte de messagerie est protégé contre la modification et suppression."
 
 msgid "This package already exists in the administrator software repository."
 msgstr "Ce paquet existe déjà dans le dépôt de logiciels de l'administrateur."
@@ -5029,7 +5045,7 @@ msgstr "Nombre total de dépôts de logiciels Web"
 
 #, php-format
 msgid "Total accounts: %s / %s"
-msgstr ""
+msgstr "Nombre total de comptes: %s / %s"
 
 msgid "Total installations"
 msgstr "Nombre total d'installations"
@@ -5334,13 +5350,6 @@ msgstr "Nom d'utilisateur"
 msgid "Username and password for application login"
 msgstr "Utilisateur et mot de passe de l'application"
 
-msgid "Username cannot be empty."
-msgstr ""
-
-#, php-format
-msgid "Username must be between %d and %d characters"
-msgstr ""
-
 msgid "Users"
 msgstr "Utilisateurs"
 
@@ -5500,16 +5509,16 @@ msgid "You are exceeding the monthly server traffic limit."
 msgstr "Vous avez dépassé la limite de trafic mensuel du serveur."
 
 msgid "You are exceeding you domain aliases limit."
-msgstr ""
+msgstr "Vous avez atteint votre limite d'alias de domaines."
 
 msgid "You are exceeding your FTP accounts limit."
 msgstr "Vous avez dépassé votre limite de comptes FTP."
 
 msgid "You are exceeding your SQL databases limit."
-msgstr ""
+msgstr "Vous avez atteint la limite de bases de données SQL autorisées."
 
 msgid "You are exceeding your SQL users limit."
-msgstr ""
+msgstr "Vous avez atteint votre limite d'utilisateurs SQL."
 
 msgid "You are exceeding your disk space limit."
 msgstr "Vous avez dépassé votre limite d'espace de stockage."
@@ -5521,19 +5530,21 @@ msgid "You are exceeding your monthly traffic limit."
 msgstr "Vous avez dépassé la limite de trafic mensuel."
 
 msgid "You are exceeding your subdomains limit."
-msgstr ""
+msgstr "Vous avez atteint la limite de sous-domaines autorisés."
 
 msgid "You are not allowed to act on your own session."
 msgstr "Vous ne pouvez pas supprimer votre propre session."
 
 msgid "You can disable the DEBUG mode in the /etc/imscp/imscp.conf file."
 msgstr ""
+"Vous pouvez désactiver le mode de debogage dans le ficher "
+"/etc/imscp/imscp.conf."
 
 msgid "You can only upload images."
 msgstr "Vous ne pouvez téléverser que des images."
 
 msgid "You can select as many addresses as you want."
-msgstr ""
+msgstr "Vous pouvez sélectionnez autant d'adresses que vous le souhaitez."
 
 msgid ""
 "You can set an alternative document root. This is mostly needed when using a"
@@ -5632,15 +5643,21 @@ msgid ""
 "You have a FTP accounts limit. You cannot add a user with unlimited FTP "
 "accounts."
 msgstr ""
+"Vous avez une limite de comptes FTP. Vous ne pouvez pas ajouter un "
+"utilisateur avec un nombre illimité de comptes FTP."
 
 msgid ""
 "You have a SQL databases limit. You cannot add a user with unlimited SQL "
 "databases."
 msgstr ""
+"Vous avez une limite de bases de données SQL. Vous ne pouvez pas ajouter un "
+"utilisateur avec un nombre illimité de base de données SQL."
 
 msgid ""
 "You have a SQL users limit. You cannot add a user with unlimited SQL users."
 msgstr ""
+"Vous avez une limite d'utilisateurs SQL. Vous ne pouvez pas ajouter un "
+"utilisateur avec un nombre illimité d'utilisateurs SQL."
 
 msgid ""
 "You have a disk space limit. You cannot add a user with unlimited disk "
@@ -5653,6 +5670,8 @@ msgid ""
 "You have a domain aliases limit. You cannot add a user with unlimited domain"
 " aliases."
 msgstr ""
+"Vous avez une limite d'alias de domaines. Vous ne pouvez pas ajouter un "
+"utilisateur avec un nombre illimité d'alias de domaines."
 
 msgid ""
 "You have a mail accounts limit. You cannot add a user with unlimited mail "
@@ -5875,10 +5894,6 @@ msgstr "ZiB"
 
 msgid "Zip/Postal code"
 msgstr "Code postal"
-
-#, php-format
-msgid "Zipcode must be between %d and %d characters"
-msgstr ""
 
 msgid "Zone"
 msgstr "Zone DNS"

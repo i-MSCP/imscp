@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-11 02:13+0000\n"
+"POT-Creation-Date: 2017-08-11 02:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Miguel Angel <piradoxlanieve@gmail.com>, 2017\n"
 "Language-Team: Spanish (Argentina) (https://www.transifex.com/i-mscp/teams/576/es_AR/)\n"
@@ -988,10 +988,6 @@ msgstr "Circular enviada satisfactoriamente."
 msgid "City"
 msgstr "Ciudad"
 
-#, php-format
-msgid "City must be between %d and %d characters"
-msgstr ""
-
 msgid "Class"
 msgstr "Clase"
 
@@ -1196,10 +1192,6 @@ msgstr "Nombre común"
 msgid "Company"
 msgstr "Compañía"
 
-#, php-format
-msgid "Company must be between %d and %d characters"
-msgstr ""
-
 msgid "Configuration mode"
 msgstr ""
 
@@ -1310,10 +1302,6 @@ msgstr ""
 
 msgid "Country"
 msgstr "País"
-
-#, php-format
-msgid "County must be between %d and %d characters"
-msgstr ""
 
 msgid "Create"
 msgstr "Crear"
@@ -2022,9 +2010,6 @@ msgstr "Email"
 msgid "Email address"
 msgstr "Dirección de correo"
 
-msgid "Email address cannot be empty."
-msgstr ""
-
 #, php-format
 msgid "Email quota cannot be bigger than %s"
 msgstr "La cuota de correo no puede ser mayor que %s"
@@ -2126,10 +2111,6 @@ msgstr "Fallo en el paquete. ¡Eliminando!"
 msgid "Fax"
 msgstr "Fax"
 
-#, php-format
-msgid "Fax must be between %d and %d characters"
-msgstr ""
-
 msgid "Feature"
 msgstr "Característica"
 
@@ -2183,10 +2164,6 @@ msgstr ""
 
 msgid "First name"
 msgstr "Nombre"
-
-#, php-format
-msgid "First name must be between %d and %d characters"
-msgstr ""
 
 msgid "For the time being, you can only add forwarded mail account."
 msgstr ""
@@ -2694,10 +2671,6 @@ msgstr "Ultimo acceso"
 
 msgid "Last name"
 msgstr "Apellido"
-
-#, php-format
-msgid "Last name must be between %d and %d characters"
-msgstr ""
 
 msgid "Last reply date"
 msgstr "Última fecha de respuesta"
@@ -3349,9 +3322,6 @@ msgstr "Partición"
 msgid "Password"
 msgstr "Contraseña"
 
-msgid "Password cannot be empty."
-msgstr "La contraseña no puede estar vacía."
-
 msgid "Password confirmation"
 msgstr "Confirmar contraseña"
 
@@ -3406,10 +3376,6 @@ msgstr "Personalizar plantilla"
 
 msgid "Phone"
 msgstr "Teléfono"
-
-#, php-format
-msgid "Phone must be between %d and %d characters"
-msgstr ""
 
 msgid "PhpMyAdmin"
 msgstr "phpMyAdmin"
@@ -3855,9 +3821,6 @@ msgid "Reply-To email is missing."
 msgstr ""
 
 msgid "Reply-To name"
-msgstr ""
-
-msgid "Reply-ToRepl name"
 msgstr ""
 
 msgid "Request Timeout: The server took too long to send the data."
@@ -4372,10 +4335,6 @@ msgstr "Iniciar instalación"
 msgid "State/Province"
 msgstr "Estado / Provincia"
 
-#, php-format
-msgid "State/province must be between %d and %d characters"
-msgstr ""
-
 msgid "Statistics"
 msgstr "Estadisticas"
 
@@ -4385,16 +4344,8 @@ msgstr "Estado"
 msgid "Street 1"
 msgstr "Domicilio 1"
 
-#, php-format
-msgid "Street 1 name must be between %d and %d characters"
-msgstr ""
-
 msgid "Street 2"
 msgstr "Domicilio 2"
-
-#, php-format
-msgid "Street 2 must be between %d and %d characters"
-msgstr ""
 
 msgid "Strong passwords"
 msgstr ""
@@ -4564,8 +4515,23 @@ msgid ""
 "The DEBUG mode is currently enabled, making resources caching unavailable."
 msgstr ""
 
+msgid "The Email address cannot be empty."
+msgstr ""
+
+#, php-format
+msgid "The Zipcode must be between %d and %d characters."
+msgstr ""
+
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
+msgstr ""
+
+#, php-format
+msgid "The city name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The company name must be between %d and %d characters."
 msgstr ""
 
 #, php-format
@@ -4573,6 +4539,10 @@ msgid "The configuration parameter has been updated."
 msgid_plural "%d configuration parameters were updated"
 msgstr[0] ""
 msgstr[1] ""
+
+#, php-format
+msgid "The country name must be between %d and %d characters."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4598,6 +4568,18 @@ msgstr ""
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "El dominio que estás intentando editar no existe."
 
+#, php-format
+msgid "The fax number must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The first name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The last name must be between %d and %d characters."
+msgstr ""
+
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "El menú que estás intentando editar no existe."
 
@@ -4612,8 +4594,18 @@ msgid ""
 "upload.<br>Refresh your site to see the new status!"
 msgstr ""
 
+msgid "The password cannot be empty."
+msgstr ""
+
+msgid "The password contains unallowed characters."
+msgstr ""
+
 msgid "The password field is empty."
 msgstr "El campo contraseña está vacío."
+
+#, php-format
+msgid "The phone number must be between %d and %d characters."
+msgstr ""
 
 msgid "The private key doesn't belong to the provided SSL certificate."
 msgstr ""
@@ -4625,6 +4617,18 @@ msgstr ""
 msgid ""
 "The reseller you want to remove has one or more customers accounts. Please "
 "remove them first."
+msgstr ""
+
+#, php-format
+msgid "The state/province name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The street 1 name must be between %d and %d characters"
+msgstr ""
+
+#, php-format
+msgid "The street 2 name must be between %d and %d characters."
 msgstr ""
 
 msgid ""
@@ -4645,8 +4649,15 @@ msgstr ""
 msgid "The uploaded file was only partially uploaded."
 msgstr "El archivo ha sido subido parcialmente."
 
+msgid "The username cannot be empty."
+msgstr ""
+
 msgid "The username field is empty."
 msgstr "El campo nombre de usuario está vacío."
+
+#, php-format
+msgid "The username must be between %d and %d characters."
+msgstr ""
 
 msgid "The value has been found in the stack"
 msgstr "El valor ha sido encontrado en la pila."
@@ -5077,13 +5088,6 @@ msgstr "Nombre de usuario"
 
 msgid "Username and password for application login"
 msgstr "Nombre de usuario y contraseña para inicio de sesión en la aplicación"
-
-msgid "Username cannot be empty."
-msgstr ""
-
-#, php-format
-msgid "Username must be between %d and %d characters"
-msgstr ""
 
 msgid "Users"
 msgstr "Usuarios"
@@ -5582,10 +5586,6 @@ msgstr "ZiB"
 
 msgid "Zip/Postal code"
 msgstr "Código postal"
-
-#, php-format
-msgid "Zipcode must be between %d and %d characters"
-msgstr ""
 
 msgid "Zone"
 msgstr ""

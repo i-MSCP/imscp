@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-11 02:13+0000\n"
+"POT-Creation-Date: 2017-08-11 02:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Zsolt Bertalan <bercy42@gmail.com>, 2017\n"
 "Language-Team: Hungarian (Hungary) (https://www.transifex.com/i-mscp/teams/576/hu_HU/)\n"
@@ -1011,10 +1011,6 @@ msgstr "Körlevél sikeresen elküldve."
 msgid "City"
 msgstr "Város"
 
-#, php-format
-msgid "City must be between %d and %d characters"
-msgstr ""
-
 msgid "Class"
 msgstr "Osztály"
 
@@ -1219,10 +1215,6 @@ msgstr "Közös név"
 msgid "Company"
 msgstr "Cég"
 
-#, php-format
-msgid "Company must be between %d and %d characters"
-msgstr ""
-
 msgid "Configuration mode"
 msgstr "Beállítás üzemmód"
 
@@ -1337,10 +1329,6 @@ msgstr ""
 
 msgid "Country"
 msgstr "Ország"
-
-#, php-format
-msgid "County must be between %d and %d characters"
-msgstr ""
 
 msgid "Create"
 msgstr "OK"
@@ -2190,9 +2178,6 @@ msgstr "Email"
 msgid "Email address"
 msgstr "Email címek"
 
-msgid "Email address cannot be empty."
-msgstr ""
-
 #, php-format
 msgid "Email quota cannot be bigger than %s"
 msgstr "Az e-mail kvóta nem lehet nagyobb mint %s"
@@ -2294,10 +2279,6 @@ msgstr "Hiba a csomagban, ezért törlésre került"
 msgid "Fax"
 msgstr "Fax"
 
-#, php-format
-msgid "Fax must be between %d and %d characters"
-msgstr ""
-
 msgid "Feature"
 msgstr "Szolgáltatás"
 
@@ -2351,10 +2332,6 @@ msgstr ""
 
 msgid "First name"
 msgstr "Vezetéknév"
-
-#, php-format
-msgid "First name must be between %d and %d characters"
-msgstr ""
 
 msgid "For the time being, you can only add forwarded mail account."
 msgstr ""
@@ -2869,10 +2846,6 @@ msgstr "Utolsó belépés"
 
 msgid "Last name"
 msgstr "Keresztnév"
-
-#, php-format
-msgid "Last name must be between %d and %d characters"
-msgstr ""
 
 msgid "Last reply date"
 msgstr "Válasz utolsó dátuma"
@@ -3516,9 +3489,6 @@ msgstr "Csatolási pont"
 msgid "Password"
 msgstr "Jelszó"
 
-msgid "Password cannot be empty."
-msgstr "A jelszó nem lehet üres!"
-
 msgid "Password confirmation"
 msgstr "Jelszó megerősítése"
 
@@ -3573,10 +3543,6 @@ msgstr "Sablon személyre szabása"
 
 msgid "Phone"
 msgstr "Telefon"
-
-#, php-format
-msgid "Phone must be between %d and %d characters"
-msgstr ""
 
 msgid "PhpMyAdmin"
 msgstr "phpMyAdmin"
@@ -4031,9 +3997,6 @@ msgid "Reply-To email is missing."
 msgstr ""
 
 msgid "Reply-To name"
-msgstr ""
-
-msgid "Reply-ToRepl name"
 msgstr ""
 
 msgid "Request Timeout: The server took too long to send the data."
@@ -4544,10 +4507,6 @@ msgstr "Telepítés megkezdése"
 msgid "State/Province"
 msgstr "Megye"
 
-#, php-format
-msgid "State/province must be between %d and %d characters"
-msgstr ""
-
 msgid "Statistics"
 msgstr "Statisztika"
 
@@ -4557,16 +4516,8 @@ msgstr "Állapot"
 msgid "Street 1"
 msgstr "Utca 1"
 
-#, php-format
-msgid "Street 1 name must be between %d and %d characters"
-msgstr ""
-
 msgid "Street 2"
 msgstr "Utca 2"
-
-#, php-format
-msgid "Street 2 must be between %d and %d characters"
-msgstr ""
 
 msgid "Strong passwords"
 msgstr "Erős jelszavak"
@@ -4738,8 +4689,23 @@ msgid ""
 "The DEBUG mode is currently enabled, making resources caching unavailable."
 msgstr ""
 
+msgid "The Email address cannot be empty."
+msgstr ""
+
+#, php-format
+msgid "The Zipcode must be between %d and %d characters."
+msgstr ""
+
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
+msgstr ""
+
+#, php-format
+msgid "The city name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The company name must be between %d and %d characters."
 msgstr ""
 
 #, php-format
@@ -4747,6 +4713,10 @@ msgid "The configuration parameter has been updated."
 msgid_plural "%d configuration parameters were updated"
 msgstr[0] ""
 msgstr[1] ""
+
+#, php-format
+msgid "The country name must be between %d and %d characters."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4772,6 +4742,18 @@ msgstr ""
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "A módosítani kívánt domain név nem létezik"
 
+#, php-format
+msgid "The fax number must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The first name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The last name must be between %d and %d characters."
+msgstr ""
+
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "A módosítani kívánt menü nem létezik."
 
@@ -4788,8 +4770,18 @@ msgstr ""
 "A csomag automatikusan telepítve lesz a rendszere, miután "
 "feltöltötted.<br>Frissítsd a weboldalt az új állapot megtekintéséhez."
 
+msgid "The password cannot be empty."
+msgstr ""
+
+msgid "The password contains unallowed characters."
+msgstr ""
+
 msgid "The password field is empty."
 msgstr "A jelszó mező nem maradhat üresen. "
+
+#, php-format
+msgid "The phone number must be between %d and %d characters."
+msgstr ""
 
 msgid "The private key doesn't belong to the provided SSL certificate."
 msgstr "A privát kulcs nem a megadott SSL tanúsítványhoz tartozik."
@@ -4806,6 +4798,18 @@ msgid ""
 msgstr ""
 "A törlendő viszonteladónak egy vagy több ügyfél fiókja van. Előbb törölnöd "
 "kell őket!"
+
+#, php-format
+msgid "The state/province name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The street 1 name must be between %d and %d characters"
+msgstr ""
+
+#, php-format
+msgid "The street 2 name must be between %d and %d characters."
+msgstr ""
 
 msgid ""
 "The subdomain alias you are trying to remove has mail accounts. Please "
@@ -4825,8 +4829,15 @@ msgstr ""
 msgid "The uploaded file was only partially uploaded."
 msgstr "A feltöltött fájl csak részben feltöltött"
 
+msgid "The username cannot be empty."
+msgstr ""
+
 msgid "The username field is empty."
 msgstr "A felhasználónév mező nem maradhat üresen. "
+
+#, php-format
+msgid "The username must be between %d and %d characters."
+msgstr ""
 
 msgid "The value has been found in the stack"
 msgstr "Az érték megtalálható a veremben"
@@ -5255,13 +5266,6 @@ msgstr "Felhasználónév"
 
 msgid "Username and password for application login"
 msgstr "Felhasználónév és jelszó a bejeletkezéshez "
-
-msgid "Username cannot be empty."
-msgstr ""
-
-#, php-format
-msgid "Username must be between %d and %d characters"
-msgstr ""
 
 msgid "Users"
 msgstr "Felhasználók"
@@ -5773,10 +5777,6 @@ msgstr "ZB"
 
 msgid "Zip/Postal code"
 msgstr "Irányítószám"
-
-#, php-format
-msgid "Zipcode must be between %d and %d characters"
-msgstr ""
 
 msgid "Zone"
 msgstr "Zóna"

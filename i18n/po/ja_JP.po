@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.4.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-11 02:13+0000\n"
+"POT-Creation-Date: 2017-08-11 02:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Japanese (Japan) (https://www.transifex.com/i-mscp/teams/576/ja_JP/)\n"
@@ -967,10 +967,6 @@ msgstr "回覧は送りました。"
 msgid "City"
 msgstr "市区町村"
 
-#, php-format
-msgid "City must be between %d and %d characters"
-msgstr ""
-
 msgid "Class"
 msgstr "クラス"
 
@@ -1164,10 +1160,6 @@ msgstr "コモンネーム"
 msgid "Company"
 msgstr "会社"
 
-#, php-format
-msgid "Company must be between %d and %d characters"
-msgstr ""
-
 msgid "Configuration mode"
 msgstr "設定モード"
 
@@ -1276,10 +1268,6 @@ msgstr ""
 
 msgid "Country"
 msgstr "国"
-
-#, php-format
-msgid "County must be between %d and %d characters"
-msgstr ""
 
 msgid "Create"
 msgstr "作成"
@@ -2128,9 +2116,6 @@ msgstr "Eメール"
 msgid "Email address"
 msgstr "Eメールアドレス"
 
-msgid "Email address cannot be empty."
-msgstr ""
-
 #, php-format
 msgid "Email quota cannot be bigger than %s"
 msgstr "Eメール容量は、%sより大きくすることはできません"
@@ -2232,10 +2217,6 @@ msgstr "パッケージで障害が発生。削除中！"
 msgid "Fax"
 msgstr "FAX番号"
 
-#, php-format
-msgid "Fax must be between %d and %d characters"
-msgstr ""
-
 msgid "Feature"
 msgstr "機能"
 
@@ -2289,10 +2270,6 @@ msgstr ""
 
 msgid "First name"
 msgstr "名字"
-
-#, php-format
-msgid "First name must be between %d and %d characters"
-msgstr ""
 
 msgid "For the time being, you can only add forwarded mail account."
 msgstr ""
@@ -2795,10 +2772,6 @@ msgstr "最終アクセス"
 
 msgid "Last name"
 msgstr "名前"
-
-#, php-format
-msgid "Last name must be between %d and %d characters"
-msgstr ""
 
 msgid "Last reply date"
 msgstr "最終返信日"
@@ -3434,9 +3407,6 @@ msgstr "パーティション"
 msgid "Password"
 msgstr "パスワード"
 
-msgid "Password cannot be empty."
-msgstr "パスワードが空にすることはできません。"
-
 msgid "Password confirmation"
 msgstr "パスワードの確認"
 
@@ -3491,10 +3461,6 @@ msgstr "個人テンプレート"
 
 msgid "Phone"
 msgstr "電話番号"
-
-#, php-format
-msgid "Phone must be between %d and %d characters"
-msgstr ""
 
 msgid "PhpMyAdmin"
 msgstr "PhpMyAdmin"
@@ -3937,9 +3903,6 @@ msgid "Reply-To email is missing."
 msgstr ""
 
 msgid "Reply-To name"
-msgstr ""
-
-msgid "Reply-ToRepl name"
 msgstr ""
 
 msgid "Request Timeout: The server took too long to send the data."
@@ -4445,10 +4408,6 @@ msgstr "インストールを開始します。"
 msgid "State/Province"
 msgstr "都道府県"
 
-#, php-format
-msgid "State/province must be between %d and %d characters"
-msgstr ""
-
 msgid "Statistics"
 msgstr "統計情報"
 
@@ -4458,16 +4417,8 @@ msgstr "ステータス"
 msgid "Street 1"
 msgstr "建物名"
 
-#, php-format
-msgid "Street 1 name must be between %d and %d characters"
-msgstr ""
-
 msgid "Street 2"
 msgstr "番地"
-
-#, php-format
-msgid "Street 2 must be between %d and %d characters"
-msgstr ""
 
 msgid "Strong passwords"
 msgstr "強力なパスワード"
@@ -4632,14 +4583,33 @@ msgid ""
 "The DEBUG mode is currently enabled, making resources caching unavailable."
 msgstr ""
 
+msgid "The Email address cannot be empty."
+msgstr ""
+
+#, php-format
+msgid "The Zipcode must be between %d and %d characters."
+msgstr ""
+
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr "`%s' SQLユーザーは利用できないか、または許可されていません。"
 
 #, php-format
+msgid "The city name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The company name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
 msgid "The configuration parameter has been updated."
 msgid_plural "%d configuration parameters were updated"
 msgstr[0] ""
+
+#, php-format
+msgid "The country name must be between %d and %d characters."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4659,6 +4629,18 @@ msgstr "ドメインまたはエンティティの少なくとも一方が'OK'�
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "編集しようとしているドメインは存在しません。"
 
+#, php-format
+msgid "The fax number must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The first name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The last name must be between %d and %d characters."
+msgstr ""
+
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "編集するメニューは存在しません。"
 
@@ -4674,8 +4656,18 @@ msgid ""
 msgstr ""
 "パッケージは、アップロード後にシステムに自動的にインストールされます。<br>新しいステータスを表示するにはサイトをリフレッシュしてください！"
 
+msgid "The password cannot be empty."
+msgstr ""
+
+msgid "The password contains unallowed characters."
+msgstr ""
+
 msgid "The password field is empty."
 msgstr "パスワードの項目が空です。"
+
+#, php-format
+msgid "The phone number must be between %d and %d characters."
+msgstr ""
 
 msgid "The private key doesn't belong to the provided SSL certificate."
 msgstr "秘密鍵が提供するSSL証明書に属していません。"
@@ -4688,6 +4680,18 @@ msgid ""
 "The reseller you want to remove has one or more customers accounts. Please "
 "remove them first."
 msgstr "削除する代理店が一つ以上の顧客口座があります。最初にそれらを削除してください。"
+
+#, php-format
+msgid "The state/province name must be between %d and %d characters."
+msgstr ""
+
+#, php-format
+msgid "The street 1 name must be between %d and %d characters"
+msgstr ""
+
+#, php-format
+msgid "The street 2 name must be between %d and %d characters."
+msgstr ""
 
 msgid ""
 "The subdomain alias you are trying to remove has mail accounts. Please "
@@ -4707,8 +4711,15 @@ msgstr ""
 msgid "The uploaded file was only partially uploaded."
 msgstr "一部分しかアップロードされませんてした。"
 
+msgid "The username cannot be empty."
+msgstr ""
+
 msgid "The username field is empty."
 msgstr "ユーザー名の項目が空です。"
+
+#, php-format
+msgid "The username must be between %d and %d characters."
+msgstr ""
 
 msgid "The value has been found in the stack"
 msgstr "値はスタックで発見されている"
@@ -5124,13 +5135,6 @@ msgstr "ユーザー名"
 
 msgid "Username and password for application login"
 msgstr "アプリケーションへのログイン用のユーザー名とパスワード"
-
-msgid "Username cannot be empty."
-msgstr ""
-
-#, php-format
-msgid "Username must be between %d and %d characters"
-msgstr ""
 
 msgid "Users"
 msgstr "ユーザー"
@@ -5624,10 +5628,6 @@ msgstr "ZB"
 
 msgid "Zip/Postal code"
 msgstr "郵便番号"
-
-#, php-format
-msgid "Zipcode must be between %d and %d characters"
-msgstr ""
 
 msgid "Zone"
 msgstr "ゾーン"
