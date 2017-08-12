@@ -1,15 +1,3 @@
-
-<script>
-    var nbLog = {NB_LOG};
-
-    $(function () {
-        $(".logtable").hide();
-        var h = ($("body").height() - 300) / nbLog;
-        if (h < 150) h = 200;
-        $(".log").height(h);
-        $(".logtable").show();
-    });
-</script>
 <!-- BDP: antirootkits_log -->
 <table class="logtable">
     <thead>

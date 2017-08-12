@@ -305,8 +305,8 @@ $tpl->define_dynamic([
 $tpl->assign('TR_PAGE_TITLE', tohtml(tr('Reseller / Customers / Add Customer - Next Step')));
 
 generateNavigation($tpl);
-generatePageMessage($tpl);
 generatePage($tpl, $form);
+generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 EventsManager::getInstance()->dispatch(Events::onResellerScriptEnd, ['templateEngine' => $tpl]);

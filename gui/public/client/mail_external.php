@@ -224,8 +224,8 @@ $tpl->define_dynamic([
 ]);
 
 generateNavigation($tpl);
-generatePageMessage($tpl);
 generatePage($tpl);
+generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);

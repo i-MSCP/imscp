@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 /**
  * Returns the total number of consumed and assigned items for the given reseller
  *
@@ -52,7 +54,8 @@ function generate_reseller_users_props($resellerId)
     while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
         list(
             $subConsumed, $subAssigned, $alsConsumed, $alsAssigned, $mailConsumed, $mailAssigned, $ftpConsumed,
-            $ftpAssigned, $sqlDbConsumed, $sqlDbAssigned, $sqlUserConsumed, $sqlUserAssigned, $traffAssigned, $diskAssigned
+            $ftpAssigned, $sqlDbConsumed, $sqlDbAssigned, $sqlUserConsumed, $sqlUserAssigned, $traffAssigned,
+            $diskAssigned
             ) = shared_getCustomerProps($row['admin_id']);
 
         list(, , , , , , $traffConsumed, $diskConsumed) = shared_getCustomerStats($row['admin_id']);
@@ -174,7 +177,9 @@ function systemHasCustomers($minNbCustomers = 1)
     static $customersCount = NULL;
 
     if (NULL === $customersCount) {
-        $stmt = execute_query("SELECT COUNT(admin_id) FROM admin WHERE admin_type = 'user' AND admin_status <> 'todelete'");
+        $stmt = execute_query(
+            "SELECT COUNT(admin_id) FROM admin WHERE admin_type = 'user' AND admin_status <> 'todelete'"
+        );
         $customersCount = $stmt->fetchRow(PDO::FETCH_COLUMN);
     }
 
@@ -225,7 +230,7 @@ function systemHasManyAdmins()
  */
 function systemHasAntiRootkits()
 {
-    $config = iMSCP_Registry::get('config');
+    $config = Registry::get('config');
 
     if ((isset($config['ANTI_ROOTKITS_PACKAGES']) && $config['ANTI_ROOTKITS_PACKAGES'] != 'No'
             && $config['ANTI_ROOTKITS_PACKAGES'] != ''

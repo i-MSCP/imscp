@@ -18,20 +18,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Events as Events;
+use Zend_Session as Session;
+use iMSCP_Authentication as Auth;
+use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
+
 require 'imscp-lib.php';
 
-$eventManager = iMSCP_Events_Aggregator::getInstance();
-$eventManager->dispatch(iMSCP_Events::onLoginScriptStart);
+EventsManager::getInstance()->dispatch(Events::onLoginScriptStart);
 
 if (isset($_REQUEST['action'])) {
-    init_login($eventManager);
-    $auth = iMSCP_Authentication::getInstance();
+    init_login(EventsManager::getInstance());
+    $auth = Auth::getInstance();
 
     switch ($_REQUEST['action']) {
         case 'logout':
             if ($auth->hasIdentity()) {
                 $adminName = $auth->getIdentity()->admin_name;
                 $auth->unsetIdentity();
+                // Prevents display of any UI level message
+                Session::namespaceUnset('pageMessages');
                 set_page_message(tr('You have been successfully logged out.'), 'success');
                 write_log(sprintf("%s logged out", decode_idna($adminName)), E_USER_NOTICE);
             }
@@ -51,7 +59,7 @@ if (isset($_REQUEST['action'])) {
 
 redirectToUiLevel();
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'         => 'shared/layouts/simple.tpl',
     'page_message'   => 'layout',
@@ -64,7 +72,7 @@ $tpl->assign([
     'productCopyright' => tr('© 2010-2017 i-MSCP Team<br>All Rights Reserved')
 ]);
 
-$cfg = iMSCP_Registry::get('config');
+$cfg = Registry::get('config');
 
 if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
     $tpl->define_dynamic('page', 'message.tpl');
@@ -84,7 +92,6 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
         'lost_password_support' => 'page',
         'ssl_support'           => 'page'
     ]);
-
     $tpl->assign([
         'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Login'),
         'TR_LOGIN'      => tr('Login'),
@@ -125,5 +132,5 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-$eventManager::getInstance()->dispatch(iMSCP_Events::onLoginScriptEnd, ['templateEngine' => $tpl]);
+EventsManager::getInstance()->dispatch(Events::onLoginScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

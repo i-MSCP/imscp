@@ -300,6 +300,7 @@ function checkInputData()
     global $php, $cgi, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $traffic, $diskspace, $backup, $dns, $aps,
            $extMail, $webFolderProtection;
 
+    $error = false;
     $sub = isset($_POST['nreseller_max_subdomain_cnt']) ? clean_input($_POST['nreseller_max_subdomain_cnt']) : $sub;
     $als = isset($_POST['nreseller_max_alias_cnt']) ? clean_input($_POST['nreseller_max_alias_cnt']) : $als;
     $mail = isset($_POST['nreseller_max_mail_cnt']) ? clean_input($_POST['nreseller_max_mail_cnt']) : $mail;
@@ -337,6 +338,7 @@ function checkInputData()
     } elseif (!imscp_limit_check($sub, -1)) {
         set_page_message(tr('Incorrect subdomain limit.'), 'error');
         $errFieldsStack[] = 'nreseller_max_subdomain_cnt';
+        $error = true;
     }
 
     if (!resellerHasFeature('domain_aliases')) {
@@ -344,6 +346,7 @@ function checkInputData()
     } elseif (!imscp_limit_check($als, -1)) {
         set_page_message(tr('Incorrect alias limit.'), 'error');
         $errFieldsStack[] = 'nreseller_max_alias_cnt';
+        $error = true;
     }
 
     // Mail accounts limit
@@ -352,18 +355,22 @@ function checkInputData()
     } elseif (!imscp_limit_check($mail, -1)) {
         set_page_message(tr('Incorrect mail accounts limit.'), 'error');
         $errFieldsStack[] = 'nreseller_max_mail_cnt';
+        $error = true;
     }
 
     // Mail quota limit
     if (!imscp_limit_check($mailQuota, NULL)) {
         set_page_message(tr('Incorrect mail quota.'), 'error');
         $errFieldsStack[] = 'nreseller_mail_quota';
+        $error = true;
     } elseif ($diskspace != '0' && $mailQuota > $diskspace) {
         set_page_message(tr('Mail quota cannot be bigger than disk space limit.'), 'error');
         $errFieldsStack[] = 'nreseller_mail_quota';
+        $error = true;
     } elseif ($diskspace != '0' && $mailQuota == '0') {
         set_page_message(tr('Mail quota cannot be unlimited. Max value is %d MiB.', $diskspace), 'error');
         $errFieldsStack[] = 'nreseller_mail_quota';
+        $error = true;
     }
 
     // Ftp accounts limit
@@ -372,6 +379,7 @@ function checkInputData()
     } elseif (!imscp_limit_check($ftp, -1)) {
         set_page_message(tr('Incorrect FTP accounts limit.'), 'error');
         $errFieldsStack[] = 'nreseller_max_ftp_cnt';
+        $error = true;
     }
 
     // SQL database limit
@@ -380,10 +388,12 @@ function checkInputData()
     } elseif (!imscp_limit_check($sqld, -1)) {
         set_page_message(tr('Incorrect SQL databases limit.'), 'error');
         $errFieldsStack[] = 'nreseller_max_sql_db_cnt';
+        $error = true;
     } elseif ($sqld != -1 && $sqlu == -1) {
         set_page_message(tr('SQL users limit is disabled.'), 'error');
         $errFieldsStack[] = 'nreseller_max_sql_db_cnt';
         $errFieldsStack[] = 'nreseller_max_sql_user_cnt';
+        $error = true;
     }
 
     // SQL users limit
@@ -392,28 +402,34 @@ function checkInputData()
     } elseif (!imscp_limit_check($sqlu, -1)) {
         set_page_message(tr('Incorrect SQL users limit.'), 'error');
         $errFieldsStack[] = 'nreseller_max_sql_user_cnt';
+        $error = true;
     } elseif ($sqlu != -1 && $sqld == -1) {
         set_page_message(tr("SQL databases limit is disabled."), 'error');
         $errFieldsStack[] = 'nreseller_max_sql_user_cnt';
         $errFieldsStack[] = 'nreseller_max_sql_db_cnt';
+        $error = true;
     }
 
     // Monthly traffic limit
     if (!imscp_limit_check($traffic, NULL)) {
         set_page_message(tr('Incorrect monthly traffic limit.'), 'error');
         $errFieldsStack[] = 'nreseller_max_traffic';
+        $error = true;
     }
 
     // Disk space limit
     if (!imscp_limit_check($diskspace, NULL)) {
         set_page_message(tr('Incorrect disk space limit.'), 'error');
         $errFieldsStack[] = 'nreseller_max_disk';
+        $error = true;
     }
 
     // PHP Editor feature
     $phpini = iMSCP_PHPini::getInstance();
 
-    if (isset($_POST['php_ini_system']) && $php != '_no_' && $phpini->resellerHasPermission('phpiniSystem')) {
+    if (isset($_POST['php_ini_system']) && $php != '_no_'
+        && $phpini->resellerHasPermission('phpiniSystem')
+    ) {
         $phpini->setClientPermission('phpiniSystem', clean_input($_POST['php_ini_system']));
 
         if ($phpini->clientHasPermission('phpiniSystem')) {
@@ -426,7 +442,9 @@ function checkInputData()
             }
 
             if (isset($_POST['phpini_perm_disable_functions'])) {
-                $phpini->setClientPermission('phpiniDisableFunctions', clean_input($_POST['phpini_perm_disable_functions']));
+                $phpini->setClientPermission(
+                    'phpiniDisableFunctions', clean_input($_POST['phpini_perm_disable_functions'])
+                );
             }
 
             if (isset($_POST['phpini_perm_mail_function'])) {
@@ -463,7 +481,7 @@ function checkInputData()
     #    $phpini->loadDomainIni(); // Reset domain PHP configuration options to default values
     #}
 
-    if (!Zend_Session::namespaceIsset('pageMessages')) {
+    if (!$error) {
         return true;
     }
 

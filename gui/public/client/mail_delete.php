@@ -24,7 +24,6 @@ use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_Registry as Registry;
-use Zend_Session as Session;
 
 /***********************************************************************************************************************
  * Functions
@@ -179,11 +178,6 @@ try {
     }
 } catch (iMSCPException $e) {
     $db->rollBack();
-
-    if (Session::namespaceIsset('pageMessages')) {
-        Session::namespaceUnset('pageMessages');
-    }
-
     $errorMessage = $e->getMessage();
     $code = $e->getCode();
 

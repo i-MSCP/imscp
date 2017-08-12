@@ -18,19 +18,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Exception as iMSCPException;
+use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
+use Zend_Navigation as Navigation;
+
 // Common
 
 /**
  * Generate logged from block
  *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
+ * @param  TemplateEngine $tpl
  * @return void
  */
-function generateLoggedFrom(iMSCP_pTemplate $tpl)
+function generateLoggedFrom(TemplateEngine $tpl)
 {
     $tpl->define_dynamic('logged_from', 'layout');
 
-    if (!isset($_SESSION['logged_from']) || !isset($_SESSION['logged_from_id'])) {
+    if (!isset($_SESSION['logged_from'])
+        || !isset($_SESSION['logged_from_id'])
+    ) {
         $tpl->assign('LOGGED_FROM', '');
         return;
     }
@@ -45,11 +54,11 @@ function generateLoggedFrom(iMSCP_pTemplate $tpl)
 /**
  * Generates list of available languages
  *
- * @param  iMSCP_pTemplate $tpl Template engine
+ * @param  TemplateEngine $tpl
  * @param  string $selectedLanguage Selected language
  * @return void
  */
-function generateLanguagesList(iMSCP_pTemplate $tpl, $selectedLanguage)
+function generateLanguagesList(TemplateEngine $tpl, $selectedLanguage)
 {
     foreach (i18n_getAvailableLanguages() as $language) {
         $tpl->assign([
@@ -64,18 +73,20 @@ function generateLanguagesList(iMSCP_pTemplate $tpl, $selectedLanguage)
 /**
  * Generate list of months and years
  *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
+ * @param  TemplateEngine $tpl
  * @param  int $fromMonth
  * @param  int $fromYear
  * @param  int $numberYears
  * @return void
  */
-function generateMonthsAndYearsHtmlList(iMSCP_pTemplate $tpl, $fromMonth = NULL, $fromYear = NULL, $numberYears = 3)
+function generateMonthsAndYearsHtmlList(TemplateEngine $tpl, $fromMonth = NULL, $fromYear = NULL, $numberYears = 3)
 {
     $fromMonth = filter_digits($fromMonth);
     $fromYear = filter_digits($fromYear);
 
-    if (!$fromMonth || $fromMonth > 12) {
+    if (!$fromMonth
+        || $fromMonth > 12
+    ) {
         $fromMonth = date('m');
     }
 
@@ -103,17 +114,15 @@ function generateMonthsAndYearsHtmlList(iMSCP_pTemplate $tpl, $fromMonth = NULL,
 /**
  * Generate navigation
  *
- * @throws iMSCP_Exception
- * @param iMSCP_pTemplate $tpl iMSCP_pTemplate instance
+ * @throws iMSCPException
+ * @param TemplateEngine $tpl
  * @return void
  */
-function generateNavigation(iMSCP_pTemplate $tpl)
+function generateNavigation(TemplateEngine $tpl)
 {
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeGenerateNavigation, [
-        'templateEngine' => $tpl
-    ]);
+    EventsManager::getInstance()->dispatch(Events::onBeforeGenerateNavigation, ['templateEngine' => $tpl]);
 
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
     $tpl->define_dynamic([
         'main_menu'        => 'layout',
         'main_menu_block'  => 'main_menu',
@@ -125,8 +134,8 @@ function generateNavigation(iMSCP_pTemplate $tpl)
 
     generateLoggedFrom($tpl);
 
-    /** @var $navigation Zend_Navigation */
-    $navigation = iMSCP_Registry::get('navigation');
+    /** @var $navigation Navigation */
+    $navigation = Registry::get('navigation');
 
     // Dynamic links (only at customer level)
     if ($_SESSION['user_type'] == 'user') {
@@ -199,7 +208,7 @@ function generateNavigation(iMSCP_pTemplate $tpl)
                     }
                 } else {
                     $name = (is_array($callback['name'])) ? $callback['name'][1] : $callback['name'];
-                    throw new iMSCP_Exception(sprintf('Privileges callback is not callable: %s', $name));
+                    throw new iMSCPException(sprintf('Privileges callback is not callable: %s', $name));
                 }
             }
         }
@@ -246,9 +255,7 @@ function generateNavigation(iMSCP_pTemplate $tpl)
                                     }
                                 } else {
                                     $name = (is_array($callback['name'])) ? $callback['name'][1] : $callback['name'];
-                                    throw new iMSCP_Exception(
-                                        sprintf('Privileges callback is not callable: %s', $name)
-                                    );
+                                    throw new iMSCPException(sprintf('Privileges callback is not callable: %s', $name));
                                 }
                             }
                         }
@@ -311,17 +318,16 @@ function generateNavigation(iMSCP_pTemplate $tpl)
             ? $cfg['CodeName'] : tohtml(tr('Unknown'))
     ]);
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterGenerateNavigation, [
-        'templateEngine' => $tpl
-    ]);
+    EventsManager::getInstance()->dispatch(Events::onAfterGenerateNavigation, ['templateEngine' => $tpl]);
 }
 
 /**
  * Get custom menus for the given user
  *
- * @throws iMSCP_Exception
+ * @throws iMSCPException
  * @param string $userLevel User type (admin, reseller or user)
- * @return null|[] Array containing custom menus definitions or NULL in case no custom menu is found
+ * @return null|[] Array containing custom menus definitions or NULL in case no
+ *                 custom menu is found
  */
 function getCustomMenus($userLevel)
 {
@@ -332,7 +338,7 @@ function getCustomMenus($userLevel)
     } elseif ($userLevel == 'user') {
         $param = 'C';
     } else {
-        throw new iMSCP_Exception("Unknown user level '$userLevel' for getCustomMenus() function.");
+        throw new iMSCPException("Unknown user level '$userLevel' for getCustomMenus() function.");
     }
 
     $stmt = exec_query('SELECT * FROM custom_menus WHERE menu_level LIKE ?', "%$param%");
@@ -348,10 +354,10 @@ function getCustomMenus($userLevel)
 /**
  * Generate administrator list
  *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
+ * @param  TemplateEngine $tpl
  * @return void
  */
-function gen_admin_list(iMSCP_pTemplate $tpl)
+function gen_admin_list(TemplateEngine $tpl)
 {
     $stmt = execute_query(
         "
@@ -370,7 +376,7 @@ function gen_admin_list(iMSCP_pTemplate $tpl)
 
     $tpl->assign('ADMINISTRATOR_MESSAGE', '');
 
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
         $tpl->assign([
@@ -395,10 +401,10 @@ function gen_admin_list(iMSCP_pTemplate $tpl)
 /**
  * Generate reseller list
  *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
+ * @param  TemplateEngine $tpl
  * @return void
  */
-function gen_reseller_list(iMSCP_pTemplate $tpl)
+function gen_reseller_list(TemplateEngine $tpl)
 {
     $stmt = execute_query(
         "
@@ -417,7 +423,7 @@ function gen_reseller_list(iMSCP_pTemplate $tpl)
 
     $tpl->assign('RESELLER_MESSAGE', '');
 
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
         $tpl->assign([
@@ -505,13 +511,13 @@ function get_search_user_queries($sLimit, $eLimit, $searchField = NULL, $searchV
 /**
  * Generate user search fields
  *
- * @param iMSCP_pTemplate $tpl iMSCP_pTemplate instance
+ * @param TemplateEngine $tpl
  * @param string|null $searchField Field to search
  * @param string|null $searchValue Value to search
  * @param string|null $searchStatus Status to search
  * @return void
  */
-function gen_search_user_fields(iMSCP_pTemplate $tpl, $searchField = NULL, $searchValue = NULL, $searchStatus = NULL)
+function gen_search_user_fields(TemplateEngine $tpl, $searchField = NULL, $searchValue = NULL, $searchStatus = NULL)
 {
     $none = $domain = $customerId = $firstname = $lastname = $company = $city = $state = $country = $resellerName =
     $anything = $ok = $suspended = $error = '';
@@ -579,11 +585,11 @@ function gen_search_user_fields(iMSCP_pTemplate $tpl, $searchField = NULL, $sear
 /**
  * Generates user domain_aliases_list
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl
  * @param int $domainId Domain unique identifier
  * @return void
  */
-function gen_user_domain_aliases_list(iMSCP_pTemplate $tpl, $domainId)
+function gen_user_domain_aliases_list(TemplateEngine $tpl, $domainId)
 {
     $tpl->assign('CLIENT_DOMAIN_ALIAS_BLK', '');
 
@@ -611,12 +617,12 @@ function gen_user_domain_aliases_list(iMSCP_pTemplate $tpl, $domainId)
 /**
  * Generate user list
  *
- * @param iMSCP_pTemplate $tpl iMSCP_pTemplate instance
+ * @param TemplateEngine $tpl
  * @return void
  */
-function gen_user_list(iMSCP_pTemplate $tpl)
+function gen_user_list(TemplateEngine $tpl)
 {
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     if (!empty($_POST)) {
         if (!isset($_POST['search_status'])
@@ -761,10 +767,10 @@ function gen_user_list(iMSCP_pTemplate $tpl)
 /**
  * Generate manage users page
  *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
+ * @param  TemplateEngine $tpl
  * @return void
  */
-function get_admin_manage_users(iMSCP_pTemplate $tpl)
+function get_admin_manage_users(TemplateEngine $tpl)
 {
     gen_admin_list($tpl);
     gen_reseller_list($tpl);
@@ -776,12 +782,12 @@ function get_admin_manage_users(iMSCP_pTemplate $tpl)
 /**
  * Returns reseller Ip list
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl
  * @param int $resellerId Reseller unique identifier
  * @param int $domainIp Identifier of the selected domain IP
  * @return void
  */
-function reseller_generate_ip_list(iMSCP_pTemplate $tpl, $resellerId, $domainIp)
+function reseller_generate_ip_list(TemplateEngine $tpl, $resellerId, $domainIp)
 {
     $stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', $resellerId);
     $row = $stmt->fetchRow();

@@ -88,7 +88,7 @@ class Application
     protected $bootstrapped = false;
 
     /**
-     * Application constructor.
+     * Application constructor
      *
      * @param string $environment
      */
@@ -170,15 +170,19 @@ class Application
         if (NULL === $this->cache) {
             $this->cache = Cache::factory(
                 'Core',
-                # Make use of 'APC' backend if APC(u) is available, else fallback to 'File' backend
-                extension_loaded('apc') && ini_get('apc.enabled') ? 'Apc' : 'File',
+                # Make use of 'APC' backend if APC(u) is available, else
+                # fallback to the 'File' backend
+                extension_loaded('apcb') && ini_get('apc.enabled') ? 'Apc' : 'File',
                 [
-                    'lifetime'                  => 0, // Cache is never flushed automatically
+                    'caching' => (PHP_SAPI != 'cli'),
+                    // Cache is never flushed automatically (default)
+                    'lifetime'                  => 0,
                     'automatic_serialization'   => true,
                     'automatic_cleaning_factor' => 0,
                     'ignore_user_abort'         => true
                 ],
-                // Only for 'File' backend
+                // Options below are only relevant for the 'File' backend
+                // (fallback backend)
                 [
                     'file_locking'           => true,
                     'hashed_directory_level' => 0,
@@ -360,9 +364,13 @@ class Application
                 Registry::set('config', $this->config);
                 return;
             }
-        }
 
-        $this->getCache()->remove('iMSCP_DbConfig');
+            // Remove all cache entries
+            $this->getCache()->clean(Cache::CLEANING_MODE_ALL);
+        } else {
+            // Remove all cache entries
+            $this->getCache()->clean(Cache::CLEANING_MODE_ALL);
+        }
 
         $this->config = new ConfigFile($configFilePath);
 
@@ -514,8 +522,11 @@ class Application
         $this->config['__filemtime__'] = filemtime($configFilePath);
 
         if ($this->config['DEBUG']) {
+            // Prevent caching when DEBUG mode is enabled
             $this->getCache()->setOption('caching', false);
-            $this->getEventsManager()->registerListener(Events::onAdminScriptEnd, function () {
+
+            // Warn administrator that DEBUG mode is enabled and that resources caching isn't available
+            $this->getEventsManager()->registerListener(Events::onAdminScriptStart, function () {
                 set_page_message(
                     tr("The DEBUG mode is currently enabled, making resources caching unavailable."), 'static_warning'
                 );
@@ -554,19 +565,29 @@ class Application
     protected function initDatabase()
     {
         try {
+            $cache = $this->getCache();
             $config = $this->getConfig();
-            $db_pass_key = $db_pass_iv = '';
-            eval(@file_get_contents($this->getConfig()['CONF_DIR'] . '/imscp-db-keys'));
+            $db_pass_key = $cache->load('iMSCP_DATABASE_KEY');
+            $db_pass_iv = $cache->load('iMSCP_DATABASE_IV');
 
             if (empty($db_pass_key) || empty($db_pass_iv)) {
-                throw new iMSCPException('Missing encryption key and/or initialization vector.');
+                eval(@file_get_contents($this->getConfig()['CONF_DIR'] . '/imscp-db-keys'));
+
+                if (empty($db_pass_key) || empty($db_pass_iv)) {
+                    throw new iMSCPException('Missing encryption key and/or initialization vector.');
+                }
+
+                $cache->save($db_pass_key, 'iMSCP_DATABASE_KEY');
+                $cache->save($db_pass_iv, 'iMSCP_DATABASE_IV');
+            }
+
+            if (!($plainPasswd = $cache->load('DATABASE_PASSWORD_PLAIN'))) {
+                $plainPasswd = Crypt::decryptRijndaelCBC($db_pass_key, $db_pass_iv, $config['DATABASE_PASSWORD']);
+                $cache->save($plainPasswd, 'DATABASE_PASSWORD_PLAIN');
             }
 
             $this->database = Database::connect(
-                $config['DATABASE_USER'],
-                Crypt::decryptRijndaelCBC($db_pass_key, $db_pass_iv, $config['DATABASE_PASSWORD']),
-                $config['DATABASE_TYPE'],
-                $config['DATABASE_HOST'],
+                $config['DATABASE_USER'], $plainPasswd, $config['DATABASE_TYPE'], $config['DATABASE_HOST'],
                 $config['DATABASE_NAME']
             );
         } catch (\PDOException $e) {
@@ -593,9 +614,8 @@ class Application
     protected function mergeConfig()
     {
         $cache = $this->getCache();
-        $this->dbConfig = $cache->load('iMSCP_DbConfig');
 
-        if (!$this->dbConfig) {
+        if (!($this->dbConfig = $cache->load('iMSCP_DbConfig'))) {
             $this->dbConfig = new ConfigDb($this->getDatabase());
             $config = $this->getConfig();
             $config->merge($this->dbConfig);

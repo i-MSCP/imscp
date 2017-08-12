@@ -18,10 +18,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 // Global counting functions
 
 /**
- * Retrieve count of administrator accounts, exluding those that are being deleted
+ * Retrieve count of administrator accounts, exluding those that are being
+ * deleted
  *
  * @return int Count of administrator accounts
  */
@@ -93,7 +96,7 @@ function get_mail_accounts_count()
 {
     $where = '';
 
-    if (!iMSCP_Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
+    if (!Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
         # A default mail account is composed of a name matching with:
         # - abuse, hostmaster, postmaster or webmaster for a domain
         # - webmaster for a subdomain
@@ -146,7 +149,8 @@ function get_sql_users_count()
 }
 
 /**
- * Retrieve count of objects from the given table using the given identifier field and optional WHERE clause
+ * Retrieve count of objects from the given table using the given identifier
+ * field and optional WHERE clause
  *
  * @param string $table
  * @param string $idField Identifier field
@@ -163,7 +167,8 @@ function get_objects_count($table, $idField, $where = '')
 
 /**
  * Retrieve count of subdomains, domain aliases, mail accounts, FTP users,
- * SQL database and SQL users that belong to the given reseller, excluding those that are being deleted
+ * SQL database and SQL users that belong to the given reseller, excluding
+ * those that are being deleted
  *
  * @return array An array containing count of administrators, resellers,
  *              customers, domains, subdomains, domain aliases, mail accounts,
@@ -188,7 +193,8 @@ function get_objects_counts()
 // Per reseller counting functions
 
 /**
- * Retrieve count of customer accounts that belong to the given reseller, excluding those that are being deleted
+ * Retrieve count of customer accounts that belong to the given reseller,
+ * excluding those that are being deleted
  *
  * @param int $resellerId Reseller unique identifier
  * @return int Count of subdomains
@@ -201,7 +207,8 @@ function get_reseller_customers_count($resellerId)
 }
 
 /**
- * Retrieve count of domains that belong to the given reseller, excluding those that are being deleted
+ * Retrieve count of domains that belong to the given reseller, excluding those
+ * that are being deleted
  *
  * @param int $resellerId Reseller unique identifier
  * @return int Count of subdomains
@@ -220,7 +227,8 @@ function get_reseller_domains_count($resellerId)
 }
 
 /**
- * Retrieve count of subdomains that belong to the given reseller, excluding those that are being deleted
+ * Retrieve count of subdomains that belong to the given reseller, excluding
+ * those that are being deleted
  *
  * @param int $resellerId Reseller unique identifier
  * @return int Count of subdomains
@@ -254,7 +262,8 @@ function get_reseller_subdomains_count($resellerId)
 }
 
 /**
- * Retrieve count of domain aliases that belong to the given reseller, excluding those that are ordered or being deleted
+ * Retrieve count of domain aliases that belong to the given reseller,
+ * excluding those that are ordered or being deleted
  *
  * @param int $resellerId Reseller unique identifier
  * @return int Count of domain aliases
@@ -275,7 +284,8 @@ function get_reseller_domain_aliases_count($resellerId)
 }
 
 /**
- * Retrieve count of mail accounts that belong to the given reseller, excluding those that are being deleted
+ * Retrieve count of mail accounts that belong to the given reseller, excluding
+ * those that are being deleted
  *
  * Default mail accounts are counted or not, depending of administrator settings.
  *
@@ -292,7 +302,7 @@ function get_reseller_mail_accounts_count($resellerId)
         WHERE created_by = ?
     ';
 
-    if (!iMSCP_Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
+    if (!Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
         # A default mail account is composed of a name matching with:
         # - abuse, hostmaster, postmaster or webmaster for a domain
         # - webmaster for a subdomain
@@ -315,7 +325,8 @@ function get_reseller_mail_accounts_count($resellerId)
 }
 
 /**
- * Retrieve count of FTP users that belong to the given reseller, excluding those that are being deleted
+ * Retrieve count of FTP users that belong to the given reseller, excluding
+ * those that are being deleted
  *
  * @param int $resellerId Reseller unique identifier
  * @return int Count of FTP users
@@ -371,7 +382,8 @@ function get_reseller_sql_users_count($resellerId)
 
 /**
  * Retrieve count of subdomains, domain aliases, mail accounts, FTP users,
- * SQL database and SQL users that belong to the given reseller, excluding those that are being deleted
+ * SQL database and SQL users that belong to the given reseller, excluding
+ * those that are being deleted
  *
  * @param int $resellerId Customer unique identifier
  * @return array An array containing count of customers, domains, subdomains,
@@ -395,7 +407,8 @@ function get_reseller_objects_counts($resellerId)
 // Per domain/customer counting functions
 
 /**
- * Retrieve count of subdomains that belong to the given customer, excluding those that are being deleted
+ * Retrieve count of subdomains that belong to the given customer, excluding
+ * those that are being deleted
  *
  * @param int $domainId Customer main domain unique identifier
  * @return int Count of subdomains
@@ -419,7 +432,8 @@ function get_customer_subdomains_count($domainId)
 }
 
 /**
- * Retrieve count of domain aliases that belong to the given customer, excluding those that are ordered or being deleted
+ * Retrieve count of domain aliases that belong to the given customer,
+ * excluding those that are ordered or being deleted
  *
  * @param int $domainId Customer main domain unique identifier
  * @return int Count of domain aliases
@@ -433,7 +447,8 @@ function get_customer_domain_aliases_count($domainId)
 }
 
 /**
- * Retrieve count of mail accounts that belong to the given customer, excluding those that are being deleted
+ * Retrieve count of mail accounts that belong to the given customer, excluding
+ * those that are being deleted
  *
  * Default mail accounts are counted or not, depending of administrator settings.
  *
@@ -444,7 +459,7 @@ function get_customer_mail_accounts_count($domainId)
 {
     $query = 'SELECT COUNT(mail_id) FROM mail_users WHERE domain_id = ?';
 
-    if (!iMSCP_Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
+    if (!Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
         # A default mail account is composed of a name matching with:
         # - abuse, hostmaster, postmaster or webmaster for a domain
         # - webmaster for a subdomain
@@ -467,7 +482,8 @@ function get_customer_mail_accounts_count($domainId)
 }
 
 /**
- * Retrieve count of FTP users that belong to the given customer, excluding those that are being deleted
+ * Retrieve count of FTP users that belong to the given customer, excluding
+ * those that are being deleted
  *
  * @param int $customerId Customer unique identifier
  * @return int Count of FTP users
@@ -508,7 +524,8 @@ function get_customer_sql_users_count($domainId)
 
 /**
  * Retrieve count of subdomains, domain aliases, mail accounts, FTP users,
- * SQL database and SQL users that belong to the given customer, excluding those that are being deleted
+ * SQL database and SQL users that belong to the given customer, excluding
+ * those that are being deleted
  *
  * @param int $customerId Customer unique identifier
  * @return array An array containing count of subdomains, domain aliases, mail

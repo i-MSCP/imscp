@@ -4,18 +4,6 @@
         return jQuery.imscp.confirmOnclick(link, sprintf("{TR_MESSAGE_DELETE}", service));
     }
 
-    function enable_for_post() {
-        for (var i = 0; i < document.frm_to_updt.length; i++) {
-            for (var j = 0; j < document.frm_to_updt.elements[i].length; j++) {
-                if (document.frm_to_updt.elements[i].name == "port_type[]") {
-                    document.frm_to_updt.elements[i].disabled = false;
-                }
-            }
-        }
-
-        return true;
-    }
-
     var error_fields_ids = {ERROR_FIELDS_IDS};
 
     $(function () {
@@ -31,7 +19,7 @@
         );
 
         $.each(error_fields_ids, function () {
-            $("#" + this).css({"border": "1px solid red", "font-weight": "bolder"});
+            $("#" + this).css({ "border": "1px solid red", "font-weight": "bolder" });
         });
 
         $('input[name=submitForReset]').click(function () {
@@ -40,7 +28,7 @@
     });
 </script>
 <!-- start form edit -->
-<form name="editFrm" method="post" action="settings_ports.php" onsubmit="return enable_for_post();">
+<form name="editFrm" method="post" action="settings_ports.php"">
     <table class="datatable">
         <thead>
         <tr>
@@ -56,35 +44,33 @@
         <!-- BDP: service_ports -->
         <tr>
             <td>
-                <label for="name{NUM}">{SERVICE}</label>
+                <label for="name{NUM}"><input name="name[]" type="text" id="name{NUM}" value="{NAME}" class="textinput" maxlength="25"></label>
                 <input name="var_name[]" type="hidden" id="var_name{NUM}" value="{VAR_NAME}">
             </td>
             <td>
-                <label><input name="ip[]" type="text" id="ip{NUM}" value="{IP}" maxlength="40" {DISABLED}></label>
+                <label><input name="ip[]" type="text" id="ip{NUM}" value="{IP}" maxlength="40"></label>
             </td>
             <td>
-                <label><input name="port[]" type="number" id="port{NUM}" value="{PORT}" min="1" max="65535" {DISABLED}></label>
+                <label><input name="port[]" type="number" id="port{NUM}" value="{PORT}" min="1" max="65535"></label>
             </td>
             <td>
                 <label>
-                    <select name="port_type[]" id="port_type{NUM}" {DISABLED}>
-                        <option value="udp" {SELECTED_UDP}>{TR_UDP}</option>
-                        <option value="tcp" {SELECTED_TCP}>{TR_TCP}</option>
+                    <select name="port_type[]" id="port_type{NUM}">
+                        <option value="udp"{SELECTED_UDP}>UDP</option>
+                        <option value="tcp"{SELECTED_TCP}>TCP</option>
                     </select>
                 </label>
             </td>
             <td>
                 <label>
                     <select name="show_val[]" id="show_val{NUM}">
-                        <option value="1" {SELECTED_ON}>{TR_ENABLED}</option>
-                        <option value="0" {SELECTED_OFF}>{TR_DISABLED}</option>
+                        <option value="1"{SELECTED_ON}>{TR_YES}</option>
+                        <option value="0"{SELECTED_OFF}>{TR_NO}</option>
                     </select>
                 </label>
             </td>
             <td>
-                <!-- BDP: port_delete_link -->
-                <a href="{URL_DELETE}" class="icon i_delete" onclick="return action_delete(this, '{NAME}')">{TR_DELETE}</a>
-                <!-- EDP: port_delete_link -->
+                <a href="settings_ports.php?delete={DELETE_ID}" class="icon i_delete" onclick="return action_delete(this, '{NAME}')">{TR_DELETE}</a>
             </td>
         </tr>
         <!-- EDP: service_ports -->
@@ -115,16 +101,16 @@
             <td>
                 <label>
                     <select name="port_type_new" id="port_type">
-                        <option value="udp">{TR_UDP}</option>
-                        <option value="tcp" selected="selected">{TR_TCP}</option>
+                        <option value="udp">UDP</option>
+                        <option value="tcp" selected>TCP</option>
                     </select>
                 </label>
             </td>
             <td>
                 <label>
                     <select name="show_val_new" id="show_val">
-                        <option value="1" selected="selected">{TR_ENABLED}</option>
-                        <option value="0">{TR_DISABLED}</option>
+                        <option value="1" selected>{TR_YES}</option>
+                        <option value="0">{TR_NO}</option>
                     </select>
                 </label>
             </td>

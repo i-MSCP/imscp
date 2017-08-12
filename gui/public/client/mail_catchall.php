@@ -233,8 +233,8 @@ $tpl->define_dynamic([
 $tpl->assign('TR_PAGE_TITLE', tohtml(tr('Client / Mail / Catch-all Accounts')));
 
 generateNavigation($tpl);
-generatePageMessage($tpl);
 generatePage($tpl);
+generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);

@@ -18,16 +18,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Exception as iMSCPException;
+use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
+use Zend_Navigation as Navigation;
+use Zend_Session as Session;
+use Zend_Session_Namespace as SessionNamespace;
+
 /**
  * Must be documented
  *
  * @param  int $userId User unique identifier
  * @return array
- * @todo must be removed
  */
 function get_user_gui_props($userId)
 {
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     $stmt = exec_query('SELECT lang, layout FROM user_gui_props WHERE user_id = ?', $userId);
 
@@ -37,7 +45,9 @@ function get_user_gui_props($userId)
 
     $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
-    if (empty($row['lang']) && empty($row['layout'])) {
+    if (empty($row['lang'])
+        && empty($row['layout'])
+    ) {
         return [$cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']];
     }
 
@@ -55,22 +65,26 @@ function get_user_gui_props($userId)
 /**
  * Generates the page messages to display on client browser
  *
- * Note: The default level for message is sets to 'info'.
+ * The default level for message is sets to 'info'.
  * See the {@link set_page_message()} function for more information.
  *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
+ * @param  TemplateEngine $tpl
  * @return void
  */
-function generatePageMessage(iMSCP_pTemplate $tpl)
+function generatePageMessage(TemplateEngine $tpl)
 {
-    $namespace = new Zend_Session_Namespace('pageMessages');
+    $namespace = new SessionNamespace('pageMessages');
 
-    if (!Zend_Session::namespaceIsset('pageMessages')) {
+    if (!Session::namespaceIsset('pageMessages')) {
         $tpl->assign('PAGE_MESSAGE', '');
         return;
     }
 
-    foreach (['success', 'error', 'warning', 'info', 'static_success', 'static_error', 'static_warning', 'static_info'] as $level) {
+    foreach (
+        [
+            'success', 'error', 'warning', 'info', 'static_success', 'static_error', 'static_warning', 'static_info'
+        ] as $level
+    ) {
         if (isset($namespace->{$level})) {
             $tpl->assign([
                 'MESSAGE_CLS' => $level,
@@ -80,13 +94,13 @@ function generatePageMessage(iMSCP_pTemplate $tpl)
         }
     }
 
-    Zend_Session::namespaceUnset('pageMessages');
+    Session::namespaceUnset('pageMessages');
 }
 
 /**
  * Sets a page message to display on client browser
  *
- * @throws iMSCP_Exception
+ * @throws iMSCPException
  * @param string $message $message Message to display
  * @param string $level Message level (INFO, WARNING, ERROR, SUCCESS)
  * @return void
@@ -96,17 +110,20 @@ function set_page_message($message, $level = 'info')
     $level = strtolower($level);
 
     if (!is_string($message)) {
-        throw new iMSCP_Exception('set_page_message() expects a string for $message');
+        throw new iMSCPException('set_page_message() expects a string for $message');
     }
 
-    if (!in_array($level, ['info', 'warning', 'error', 'success', 'static_success', 'static_error', 'static_warning', 'static_info'])) {
-        throw new iMSCP_Exception(sprintf('Wrong level %s for page message.', $level));
+    if (!in_array(
+        $level,
+        ['info', 'warning', 'error', 'success', 'static_success', 'static_error', 'static_warning', 'static_info']
+    )) {
+        throw new iMSCPException(sprintf('Wrong level %s for page message.', $level));
     }
 
     static $namespace = NULL;
 
     if (NULL === $namespace) {
-        $namespace = new Zend_Session_Namespace('pageMessages');
+        $namespace = new SessionNamespace('pageMessages');
     }
 
     if (isset($namespace->{$level})) {
@@ -118,9 +135,9 @@ function set_page_message($message, $level = 'info')
 }
 
 /**
- * format message(s) to be displayed on client browser as page message.
+ * format message(s) to be displayed on client browser as page message
  *
- * @throws iMSCP_Exception
+ * @throws iMSCPException
  * @param  string|array $messages Message or stack of messages to be concatenated
  * @return string Concatenated messages
  */
@@ -135,7 +152,7 @@ function format_message($messages)
     } elseif (is_string($messages)) {
         $string = $messages;
     } else {
-        throw new iMSCP_Exception('set_page_message() expects a string or an array for $messages.');
+        throw new iMSCPException('set_page_message() expects a string or an array for $messages.');
     }
 
     return $string;
@@ -217,7 +234,7 @@ function layout_getAvailableColorSet()
         return $colorSet;
     }
 
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     if (file_exists($cfg['ROOT_TEMPLATE_PATH'] . '/info.php')) {
         $themeInfo = include_once($cfg['ROOT_TEMPLATE_PATH'] . '/info.php');
@@ -275,7 +292,7 @@ function layout_getUserLayoutColor($userId)
  */
 function layout_init($event)
 {
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     if ($cfg['DEBUG']) {
         $themesAssetsVersion = time();
@@ -294,7 +311,7 @@ function layout_init($event)
         $color = array_shift($colors);
     }
 
-    /** @var $tpl iMSCP_pTemplate */
+    /** @var $tpl TemplateEngine */
     $tpl = $event->getParam('templateEngine');
     $tpl->assign([
         'THEME_CHARSET'        => 'UTF-8',
@@ -354,17 +371,21 @@ function layout_setUserLayoutColor($userId, $color)
 /**
  * Get user logo path
  *
- * Note: Only administrators and resellers can have their own logo. Search is done in the following order:
- * user logo -> user's creator logo -> theme logo --> isp logo.
+ * Only administrators and resellers can have their own logo.
  *
- * @param bool $searchForCreator Tell whether or not search must be done for user's creator in case no logo is found for user
+ * Search is done in the following order:
+ *  user logo -> user's creator logo -> theme logo --> isp logo
+ *
+ * @param bool $searchForCreator Tell whether or not search must be done for
+ *                               user's creator in case no logo is found for
+ *                               user
  * @param bool $returnDefault Tell whether or not default logo must be returned
  * @return string User logo path.
  * @todo cache issues
  */
 function layout_getUserLogo($searchForCreator = true, $returnDefault = true)
 {
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     // On switched level, we want show logo from logged user
     if (isset($_SESSION['logged_from_id']) && $searchForCreator) {
@@ -420,7 +441,7 @@ function layout_getUserLogo($searchForCreator = true, $returnDefault = true)
  */
 function layout_updateUserLogo()
 {
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     // closure that is run before move_uploaded_file() function - See the
     // Utils_UploadFile() function for further information about implementation
@@ -451,7 +472,7 @@ function layout_updateUserLogo()
         }
 
         // Building an unique file name
-        $fileName = sha1(\iMSCP\Crypt::randomStr(15). '-' . $_SESSION['user_id']) . '.' . $fileExtension;
+        $fileName = sha1(\iMSCP\Crypt::randomStr(15) . '-' . $_SESSION['user_id']) . '.' . $fileExtension;
 
         // Return destination file path
         return $cfg['GUI_ROOT_DIR'] . '/data/persistent/ispLogos/' . $fileName;
@@ -482,12 +503,13 @@ function layout_updateUserLogo()
  * Deletes user logo
  *
  * @param string $logoFilePath OPTIONAL Logo file path
- * @param bool $onlyFile OPTIONAL Tell whether or not only logo file must be deleted
+ * @param bool $onlyFile OPTIONAL Tell whether or not only logo file must be
+ *                       deleted
  * @return bool TRUE on success, FALSE otherwise
  */
 function layout_deleteUserLogo($logoFilePath = NULL, $onlyFile = false)
 {
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     if (NULL === $logoFilePath) {
         if ($_SESSION['user_type'] == 'admin') {
@@ -526,7 +548,7 @@ function layout_deleteUserLogo($logoFilePath = NULL, $onlyFile = false)
 function layout_isUserLogo($logoPath)
 {
     if ($logoPath == '/themes/' . $_SESSION['user_theme'] . '/assets/images/imscp_logo.png'
-        || $logoPath == iMSCP_Registry::get('config')['ISP_LOGO_PATH'] . '/' . 'isp_logo.gif'
+        || $logoPath == Registry::get('config')['ISP_LOGO_PATH'] . '/' . 'isp_logo.gif'
     ) {
         return false;
     }
@@ -556,18 +578,18 @@ function layout_LoadNavigation()
             $userLevel = 'client';
     }
 
-    iMSCP_Registry::set('navigation', new Zend_Navigation(
-        include(iMSCP_Registry::get('config')['ROOT_TEMPLATE_PATH'] . "/$userLevel/navigation.php")
+    Registry::set('navigation', new Navigation(
+        include(Registry::get('config')['ROOT_TEMPLATE_PATH'] . "/$userLevel/navigation.php")
     ));
 
     // Set main menu labels visibility for the current environment
-    iMSCP_Events_Aggregator::getInstance()->registerListener(
-        iMSCP_Events::onBeforeGenerateNavigation, 'layout_setMainMenuLabelsVisibilityEvt'
+    EventsManager::getInstance()->registerListener(
+        Events::onBeforeGenerateNavigation, 'layout_setMainMenuLabelsVisibilityEvt'
     );
 }
 
 /**
- * Tells whether or not main menu labels are visible for the given user.
+ * Tells whether or not main menu labels are visible for the given user
  *
  * @param int $userId User unique identifier
  * @return bool

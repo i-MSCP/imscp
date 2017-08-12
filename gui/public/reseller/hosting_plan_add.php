@@ -419,14 +419,11 @@ function checkInputData()
         }
     }
 
-    if (!Zend_Session::namespaceIsset('pageMessages')) {
+    if (empty($errFieldsStack)) {
         return true;
     }
 
-    if (!empty($errFieldsStack)) {
-        iMSCP_Registry::set('errFieldsStack', $errFieldsStack);
-    }
-
+    iMSCP_Registry::set('errFieldsStack', $errFieldsStack);
     return false;
 }
 

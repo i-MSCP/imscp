@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,11 +28,9 @@
  * @param  iMSCP_pTemplate $tpl Template engine
  * @return void
  */
-function listIPDomains($tpl)
+function generatePage($tpl)
 {
-    $resellerId = $_SESSION['user_id'];
-
-    $stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', $resellerId);
+    $stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', $_SESSION['user_id']);
     $data = $stmt->fetchRow();
     $resellerIps = explode(';', substr($data['reseller_ips'], 0, -1));
 
@@ -41,31 +39,20 @@ function listIPDomains($tpl)
     while ($ip = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
         $stmt2 = exec_query(
             '
-				SELECT
-					domain_name
-				FROM
-					domain
-				JOIN
-					admin ON(admin_id = domain_admin_id)
-				WHERE
-					domain_ip_id = :ip_id
-				AND
-					created_by = :reseller_id
-				UNION
-				SELECT
-					alias_name AS domain_name
-				FROM
-					domain_aliasses
-				JOIN
-					domain USING(domain_id)
-				JOIN
-					admin ON(admin_id = domain_admin_id)
-				WHERE
-					alias_ip_id = :ip_id
-				AND
-					created_by = :reseller_id
-			',
-            ['ip_id' => $ip['ip_id'], 'reseller_id' => $resellerId]
+                SELECT domain_name
+                FROM domain
+                JOIN admin ON(admin_id = domain_admin_id)
+                WHERE domain_ip_id = ?
+                AND created_by = ?
+                UNION ALL
+                SELECT alias_name AS domain_name
+                FROM domain_aliasses
+                JOIN domain USING(domain_id)
+                JOIN admin ON(admin_id = domain_admin_id)
+                WHERE alias_ip_id = ?
+                AND created_by = ?
+            ',
+            [$ip['ip_id'], $_SESSION['user_id'], $ip['ip_id'], $_SESSION['user_id']]
         );
 
         $domainsCount = $stmt2->rowCount();
@@ -113,19 +100,16 @@ $tpl->define_dynamic([
     'ip_row'       => 'page',
     'domain_row'   => 'ip_row'
 ]);
-
-$reseller_id = $_SESSION['user_id'];
-
 $tpl->assign([
-    'TR_PAGE_TITLE'                   => tr('Reseller / Statistics / IP Usage'),
-    'TR_DOMAIN_STATISTICS'            => tr('Domain statistics'),
-    'TR_IP_RESELLER_USAGE_STATISTICS' => tr('Reseller/IP usage statistics'),
-    'TR_DOMAIN_NAME'                  => tr('Domain Name')
+    'TR_PAGE_TITLE'                   => tohtml(tr('Reseller / Statistics / IP Usage')),
+    'TR_DOMAIN_STATISTICS'            => tohtml(tr('Domain statistics')),
+    'TR_IP_RESELLER_USAGE_STATISTICS' => tohtml(tr('Reseller/IP usage statistics')),
+    'TR_DOMAIN_NAME'                  => tohtml(tr('Domain Name'))
 ]);
 
 generateNavigation($tpl);
+generatePage($tpl);
 generatePageMessage($tpl);
-listIPDomains($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);

@@ -1,4 +1,3 @@
-
 <script>
     $(function () {
         $('.datatable').dataTable(
@@ -9,17 +8,8 @@
                 pagingType: "simple"
             }
         );
-
-        $.each(error_fields_ids, function () {
-            $('#' + this).css({'border': '1px solid red', 'font-weight': 'bolder'});
-        });
-
-        $('input[name=submitForReset]').click(function () {
-            $('input[name=uaction]').val('reset');
-        });
     });
 </script>
-<!-- BDP: props_list -->
 <table class="datatable firstColFixed">
     <thead>
     <tr>
@@ -32,12 +22,18 @@
     <tbody>
     <!-- BDP: service_status -->
     <tr>
-        <td class="{CLASS}">{SERVICE}</td>
-        <td class="{CLASS}">{IP}</td>
-        <td class="{CLASS}">{PORT}</td>
-        <td class="{CLASS}">{STATUS}</td>
+        <td>{SERVICE}</td>
+        <td>{IP}</td>
+        <td>{PORT}</td>
+        <td class="{CLASS}"><span class="tips" title="{STATUS_TOOLTIP}"><strong>{STATUS}</strong></span></td>
     </tr>
     <!-- EDP: service_status -->
     </tbody>
+    <tbody>
+    <tr style="background-color:#b0def5">
+        <td colspan="4" class="buttons">
+            <button type="button" onclick="window.location.href = window.location.href.replace(/[\?#].*|$/, '?refresh');">{TR_FORCE_REFRESH}</button>
+        </td>
+    </tr>
+    </tbody>
 </table>
-<!-- EDP: props_list -->

@@ -410,8 +410,8 @@ $tpl->assign([
 ]);
 
 generateNavigation($tpl);
-generatePageMessage($tpl);
 generatePage($tpl, $matches['catchallDomainId'], $matches['catchallType']);
+generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);

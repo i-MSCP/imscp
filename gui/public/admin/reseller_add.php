@@ -27,7 +27,6 @@ use iMSCP_PHPini as PhpIni;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
 use Zend_Form as Form;
-use Zend_Session as Session;
 
 /***********************************************************************************************************************
  * Functions
@@ -260,6 +259,7 @@ function generateFeaturesForm(TemplateEngine $tpl)
  */
 function addResellerUser(Form $form)
 {
+    $error = false;
     $errFieldsStack = [];
     $db = Database::getInstance();
 
@@ -285,6 +285,7 @@ function addResellerUser(Form $form)
 
         if (empty($resellerIps)) {
             set_page_message(tr('You must assign at least one IP to this reseller.'), 'error');
+            $error = true;
         }
 
         // Check for max domains limit
@@ -366,9 +367,7 @@ function addResellerUser(Form $form)
             $phpini->setResellerPermission('phpiniMaxInputTime', $data['max_input_time']);
         }
 
-        if (empty($errFieldsStack)
-            && !Session::namespaceIsset('pageMessages')
-        ) {
+        if (empty($errFieldsStack) && !$error) {
             EventsManager::getInstance()->dispatch(Events::onBeforeAddUser, [
                 'userData' => $form->getValues()
             ]);
@@ -455,14 +454,12 @@ function addResellerUser(Form $form)
             );
             set_page_message('Reseller has been added.', 'success');
             redirectTo('users.php');
+        } elseif (!empty($errFieldsStack)) {
+            Registry::set('errFieldsStack', $errFieldsStack);
         }
     } catch (Exception $e) {
         $db->rollBack();
         throw $e;
-    }
-
-    if (!empty($errFieldsStack)) {
-        Registry::set('errFieldsStack', $errFieldsStack);
     }
 }
 
@@ -511,12 +508,11 @@ $tpl->define_dynamic([
     'php_editor_disable_functions_block' => 'page',
     'php_editor_mail_function_block'     => 'page'
 ]);
-
 $tpl->assign('TR_PAGE_TITLE', tohtml(tr('Admin / Users / Add Reseller')));
 
 generateNavigation($tpl);
-generatePageMessage($tpl);
 generatePage($tpl, $form);
+generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);

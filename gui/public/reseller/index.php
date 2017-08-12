@@ -253,8 +253,8 @@ $tpl->assign([
 ]);
 
 generateNavigation($tpl);
-generatePageMessage($tpl);
 generatePage($tpl, $_SESSION['user_id'], $_SESSION['user_logged']);
+generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);

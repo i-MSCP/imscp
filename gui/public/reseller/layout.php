@@ -148,8 +148,8 @@ $tpl->assign([
 ]);
 
 generateNavigation($tpl);
-generatePageMessage($tpl);
 reseller_generateLayoutColorForm($tpl);
+generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);

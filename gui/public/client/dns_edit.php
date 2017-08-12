@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -413,6 +413,7 @@ function client_decodeDnsRecordData($data)
  */
 function client_saveDnsRecord($dnsRecordId)
 {
+    $error = false;
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
     $mainDmnId = $mainDmnProps['domain_id'];
     $errorString = '';
@@ -485,15 +486,17 @@ function client_saveDnsRecord($dnsRecordId)
     # Disallow out-of-zone record
     if ($dnsRecordName !== '' && !preg_match("/(?:.*?\\.)?$domainName\\.$/", $dnsRecordName)) {
         set_page_message(tr('Could not validate DNS resource record: %s', 'out-of-zone data'), 'error');
-    } // Remove trailing dot for validation process (will be re-added after)
-    else {
+        $error = true;
+    } else {
+        // Remove trailing dot for validation process (will be re-added after)
         $dnsRecordName = rtrim($dnsRecordName, '.');
         if (!client_validate_NAME($dnsRecordName, $nameValidationError)) {
             set_page_message(tr('Could not validate DNS resource record: %s', $nameValidationError), 'error');
+            $error = true;
         }
     }
 
-    if (Zend_Session::namespaceIsset('pageMessages')) {
+    if ($error) {
         return false;
     }
 
@@ -504,6 +507,7 @@ function client_saveDnsRecord($dnsRecordId)
             // Process validation
             if (!client_validate_A($ip, $errorString)) {
                 set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
+                $error = true;
             }
 
             $dnsRecordData = $ip;
@@ -514,6 +518,7 @@ function client_saveDnsRecord($dnsRecordId)
             // Process validation
             if (!client_validate_AAAA(client_getPost('dns_AAAA_address'), $errorString)) {
                 set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
+                $error = true;
             }
 
             $dnsRecordData = $ip;
@@ -535,6 +540,7 @@ function client_saveDnsRecord($dnsRecordId)
             // Process validation
             if (!client_validate_CNAME($dnsRecordData, $errorString)) {
                 set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
+                $error = true;
             }
 
             $dnsRecordData .= '.';
@@ -557,6 +563,7 @@ function client_saveDnsRecord($dnsRecordId)
             // Process validation
             if (!client_validate_MX($pref, $host, $errorString)) {
                 set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
+                $error = true;
             }
 
             $dnsRecordData = sprintf('%d %s.', $pref, $host);
@@ -578,8 +585,10 @@ function client_saveDnsRecord($dnsRecordId)
             // Process validation
             if (!client_validate_NS($host, $errorString)) {
                 set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
+                $error = true;
             } elseif ($dnsRecordName == $domainName) {
                 set_page_message(tr('Could not validate DNS resource record: %s', tr('NS DNS resource records are only allowed for subzone delegation.')), 'error');
+                $error = true;
             }
 
             $dnsRecordData = $host . '.';
@@ -606,6 +615,7 @@ function client_saveDnsRecord($dnsRecordId)
             // Process validation
             if (!client_validate_SRV($srvName, $srvProto, $srvPrio, $srvWeight, $srvPort, $srvTarget, $errorString)) {
                 set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
+                $error = true;
             }
 
             $dnsRecordName = sprintf('%s._%s.%s', $srvName, $srvProto, $dnsRecordName);
@@ -618,6 +628,7 @@ function client_saveDnsRecord($dnsRecordId)
             // Process validation
             if (!client_validate_TXT($data, $errorString)) {
                 set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
+                $error = true;
             }
 
             $dnsRecordData = '"' . addcslashes(trim($data, '"'), '"') . '"';
@@ -627,7 +638,7 @@ function client_saveDnsRecord($dnsRecordId)
             exit;
     }
 
-    if (Zend_Session::namespaceIsset('pageMessages')) {
+    if ($error) {
         return false;
     }
 
@@ -636,9 +647,10 @@ function client_saveDnsRecord($dnsRecordId)
     // See 10_named_override_default_rr.pl listener file
     //if (hasConflict($dnsRecordName, $dnsRecordType, ($dnsRecordId > 0) ? false : true, $errorString)) {
     //    set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
+    //    $error = true;
     //}
 
-    //if (Zend_Session::namespaceIsset('pageMessages')) {
+    //if ($error) {
     //    return false;
     //}
 

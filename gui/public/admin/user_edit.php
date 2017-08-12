@@ -86,7 +86,7 @@ function updateUserData(Form $form, $userId)
             ]
         );
 
-        // For user to login again (need due to possible password or email change)
+        // Force user to login again (need due to possible password or email change)
         exec_query('DELETE FROM login WHERE user_name = ?', $data['admin_name']);
 
         EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
@@ -198,8 +198,8 @@ $tpl->define_dynamic([
 ]);
 
 generateNavigation($tpl);
-generatePageMessage($tpl);
 generatePage($tpl, $form, $userId);
+generatePageMessage($tpl);
 
 if ($userType == 'admin') {
     $tpl->assign([

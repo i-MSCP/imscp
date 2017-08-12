@@ -347,8 +347,9 @@ function i18n_changeDefaultLanguage()
 function l10n_addTranslations($dirPath, $type = 'Array', $tag = 'iMSCP_Translate', $scan = Translator::LOCALE_FILENAME)
 {
     /** @var Zend_Translate_Adapter $primaryTranslator */
-    $primaryTranslator = iMSCP_Registry::get('Zend_Translate')->getAdapter();
+    $primaryTranslator = Registry::get('Zend_Translate')->getAdapter();
     $locale = $primaryTranslator->getLocale();
+
     $pluginTranslator = new Translator([
         'adapter'        => $type,
         'content'        => $dirPath,

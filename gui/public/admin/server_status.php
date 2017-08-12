@@ -1,29 +1,70 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
+use iMSCP_Events as Events;
+use iMSCP_pTemplate as TemplateEngine;
+
+/***********************************************************************************************************************
+ * Functions
+ */
+
+/**
+ * Generate page
+ *
+ * @param TemplateEngine $tpl
+ * @return void
+ */
+function generatePage(TemplateEngine $tpl)
+{
+    $services = new iMSCP_Services();
+
+    foreach ($services as $service) {
+        $isRunning = $services->isRunning(isset($_GET['refresh']));
+
+        if ($isRunning && $service[0] == 23) {
+            set_page_message(
+                tr('The Telnet-Server is currently running on your server. This legacy service is not secure.'),
+                'static_warning'
+            );
+        }
+
+        if (!$service[3]) {
+            continue;
+        }
+
+        $tpl->assign([
+            'SERVICE'        => tohtml($service[2]),
+            'IP'             => ($service[4] === '0.0.0.0') ? tr('Any') : tohtml($service[4]),
+            'PORT'           => tohtml($service[0]),
+            'STATUS'         => $isRunning ? tr('UP') : tr('DOWN'),
+            'CLASS'          => $isRunning ? 'up' : 'down',
+            'STATUS_TOOLTIP' => tohtml($isRunning ? tr('Service is running') : tr('Service is not running'), 'htmlAttr')
+        ]);
+        $tpl->parse('SERVICE_STATUS', '.service_status');
+    }
+    
+    if(isset($_GET['refresh'])) {
+        set_page_message('Service statuses were refreshed.', 'success');
+        redirectTo('server_status.php');
+    }
+}
 
 /***********************************************************************************************************************
  * Main
@@ -31,10 +72,10 @@
 
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+iMSCP_Events_Aggregator::getInstance()->dispatch(Events::onAdminScriptStart);
 check_login('admin');
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'         => 'shared/layouts/ui.tpl',
     'page'           => 'admin/server_status.tpl',
@@ -42,45 +83,26 @@ $tpl->define_dynamic([
     'service_status' => 'page'
 ]);
 $tpl->assign([
-    'TR_PAGE_TITLE'    => tr('Admin / General / Services Status'),
-    'TR_SERVICE'       => tr('Service name'),
-    'TR_IP'            => tr('IP address'),
-    'TR_PORT'          => tr('Port'),
-    'TR_STATUS'        => tr('Status'),
-    'TR_SERVER_STATUS' => tr('Server status')
+    'TR_PAGE_TITLE'    => tohtml(tr('Admin / General / Services Status')),
+    'TR_SERVICE'       => tohtml(tr('Service name')),
+    'TR_IP'            => tohtml(tr('IP address')),
+    'TR_PORT'          => tohtml(tr('Port')),
+    'TR_STATUS'        => tohtml(tr('Status')),
+    'TR_SERVER_STATUS' => tohtml(tr('Server status')),
+    'TR_FORCE_REFRESH' => tohtml(tr('Force refresh', 'htmlAttr'))
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+iMSCP_Events_Aggregator::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
     /** @var $e \iMSCP_Events_Event */
     $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
 });
 
 generateNavigation($tpl);
+generatePage($tpl);
 generatePageMessage($tpl);
 
-$running = tr('UP');
-$down = tr('DOWN');
-$services = new iMSCP_Services();
-
-foreach ($services as $service) {
-    if (!$services->isVisible()) {
-        continue;
-    }
-
-    $serviceState = $services->isRunning();
-    $ip = $services->getIp();
-    $tpl->assign([
-        'SERVICE' => tohtml($services->getName()),
-        'IP'      => ($ip === '0.0.0.0') ? tr('Any') : tohtml($ip),
-        'PORT'    => tohtml($services->getPort()),
-        'STATUS'  => $serviceState ? "<b>$running</b>" : $down,
-        'CLASS'   => $serviceState ? 'up' : 'down'
-    ]);
-    $tpl->parse('SERVICE_STATUS', '.service_status');
-}
-
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+iMSCP_Events_Aggregator::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

@@ -44,8 +44,7 @@ $data_1 = get_lostpassword_activation_email($_SESSION['user_id']);
 $data_2 = get_lostpassword_password_email($_SESSION['user_id']);
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
-    $err_message = '';
-
+    $error = false;
     $data_1['subject'] = clean_input($_POST['subject1']);
     $data_1['message'] = clean_input($_POST['message1']);
     $data_2['subject'] = clean_input($_POST['subject2']);
@@ -53,19 +52,22 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 
     if (empty($data_1['subject']) || empty($data_2['subject'])) {
         set_page_message(tr('You must specify a subject.'), 'error');
+        $error = true;
     }
 
     if (empty($data_1['message']) || empty($data_2['message'])) {
         set_page_message(tr('You must specify a message.'), 'error');
+        $error = true;
     }
 
-    if (Zend_Session::namespaceIsset('pageMessages')) {
+    if ($error) {
         return false;
-    } else {
-        set_lostpassword_activation_email($_SESSION['user_id'], $data_1);
-        set_lostpassword_password_email($_SESSION['user_id'], $data_2);
-        set_page_message(tr('Lost password email templates were updated.'), 'success');
     }
+
+    set_lostpassword_activation_email($_SESSION['user_id'], $data_1);
+    set_lostpassword_password_email($_SESSION['user_id'], $data_2);
+    set_page_message(tr('Lost password email templates were updated.'), 'success');
+
 }
 
 generateNavigation($tpl);

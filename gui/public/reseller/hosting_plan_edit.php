@@ -477,14 +477,11 @@ function checkInputData()
         $phpini->loadDomainIni(); // Reset domain PHP configuration options to default values
     }
 
-    if (!Zend_Session::namespaceIsset('pageMessages')) {
+    if (!empty($errFieldsStack)) {
         return true;
     }
-
-    if (!empty($errFieldsStack)) {
-        iMSCP_Registry::set('errFieldsStack', $errFieldsStack);
-    }
-
+    
+    iMSCP_Registry::set('errFieldsStack', $errFieldsStack);
     return false;
 }
 

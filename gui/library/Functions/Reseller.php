@@ -18,16 +18,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Exception as iMSCPException;
+use iMSCP_Registry as Registry;
+
 /**
- * Check that reseller limits are not smaller than those defined by the given hosting plan
+ * Check that reseller limits are not smaller than those defined by the given
+ * hosting plan
  *
- * @throws iMSCP_Exception
+ * @throws iMSCPException
  * @param int $resellerId Reseller unique identifier
- * @param int|string $hp Hosting plan unique identifier or string representing hosting plan properties to check against
+ * @param int|string $hp Hosting plan unique identifier or string representin
+ *                       hosting plan properties to check against
  * @return bool
  */
 function reseller_limits_check($resellerId, $hp)
 {
+    $error = false;
+
     if (is_number($hp)) {
         if (isset($_SESSION['ch_hpprops'])) {
             $hostingPlanProperties = $_SESSION['ch_hpprops'];
@@ -38,7 +45,7 @@ function reseller_limits_check($resellerId, $hp)
                 $data = $stmt->fetchRow();
                 $hostingPlanProperties = $data['props'];
             } else {
-                throw new iMSCP_Exception('Hosting plan not found');
+                throw new iMSCPException('Hosting plan not found');
             }
         }
     } else {
@@ -73,85 +80,116 @@ function reseller_limits_check($resellerId, $hp)
 
     if ($maxDmnLimit != 0 && $currentDmnLimit + 1 > $maxDmnLimit) {
         set_page_message(tr('You have reached your domains limit. You cannot add more domains.'), 'error');
+        $error = true;
     }
 
     if ($maxSubLimit != 0 && $newSubLimit != -1) {
         if ($newSubLimit == 0) {
-            set_page_message(tr('You have a subdomains limit. You cannot add a user with unlimited subdomains.'), 'error');
+            set_page_message(
+                tr('You have a subdomains limit. You cannot add a user with unlimited subdomains.'), 'error'
+            );
+            $error = true;
         } else if ($currentSubLimit + $newSubLimit > $maxSubLimit) {
             set_page_message(tr('You are exceeding your subdomains limit.'), 'error');
+            $error = true;
         }
     }
 
     if ($maxAlsLimit != 0 && $newAlsLimit != -1) {
         if ($newAlsLimit == 0) {
-            set_page_message(tr('You have a domain aliases limit. You cannot add a user with unlimited domain aliases.'), 'error');
+            set_page_message(
+                tr('You have a domain aliases limit. You cannot add a user with unlimited domain aliases.'), 'error'
+            );
+            $error = true;
         } else if ($currentAlsLimit + $newAlsLimit > $maxAlsLimit) {
             set_page_message(tr('You are exceeding you domain aliases limit.'), 'error');
+            $error = true;
         }
     }
 
     if ($maxMailLimit != 0) {
         if ($newMailLimit == 0) {
-            set_page_message(tr('You have a mail accounts limit. You cannot add a user with unlimited mail accounts.'), 'error');
+            set_page_message(
+                tr('You have a mail accounts limit. You cannot add a user with unlimited mail accounts.'), 'error'
+            );
+            $error = true;
         } else if ($currentMailLimit + $newMailLimit > $maxMailLimit) {
             set_page_message(tr('You are exceeding your mail accounts limit.'), 'error');
+            $error = true;
         }
     }
 
     if ($ftpMaxLimit != 0) {
         if ($newFtpLimit == 0) {
-            set_page_message(tr('You have a FTP accounts limit. You cannot add a user with unlimited FTP accounts.'), 'error');
+            set_page_message(
+                tr('You have a FTP accounts limit. You cannot add a user with unlimited FTP accounts.'), 'error'
+            );
+            $error = true;
         } else if ($currentFtpLimit + $newFtpLimit > $ftpMaxLimit) {
             set_page_message(tr('You are exceeding your FTP accounts limit.'), 'error');
+            $error = true;
         }
     }
 
     if ($maxSqlDbLimit != 0 && $newSqlDbLimit != -1) {
         if ($newSqlDbLimit == 0) {
-            set_page_message(tr('You have a SQL databases limit. You cannot add a user with unlimited SQL databases.'), 'error');
+            set_page_message(
+                tr('You have a SQL databases limit. You cannot add a user with unlimited SQL databases.'), 'error'
+            );
+            $error = true;
         } else if ($currentSqlDbLimit + $newSqlDbLimit > $maxSqlDbLimit) {
             set_page_message(tr('You are exceeding your SQL databases limit.'), 'error');
+            $error = true;
         }
     }
 
     if ($maxSqlUserLimit != 0 && $newSqlUserLimit != -1) {
         if ($newSqlUserLimit == 0) {
-            set_page_message(tr('You have a SQL users limit. You cannot add a user with unlimited SQL users.'), 'error');
+            set_page_message(
+                tr('You have a SQL users limit. You cannot add a user with unlimited SQL users.'), 'error'
+            );
         } else if ($newSqlDbLimit == -1) {
-            set_page_message(tr('You have disabled SQL databases for this user. You cannot have SQL users here.'), 'error');
+            set_page_message(
+                tr('You have disabled SQL databases for this user. You cannot have SQL users here.'), 'error'
+            );
+            $error = true;
         } else if ($currentSqlUserLimit + $newSqlUserLimit > $maxSqlUserLimit) {
             set_page_message(tr('You are exceeding your SQL users limit.'), 'error');
+            $error = true;
         }
     }
 
     if ($maxTrafficLimit != 0) {
         if ($newTrafficLimit == 0) {
-            set_page_message(tr('You have a monthly traffic limit. You cannot add a user with unlimited monthly traffic.'), 'error');
+            set_page_message(
+                tr('You have a monthly traffic limit. You cannot add a user with unlimited monthly traffic.'), 'error'
+            );
+            $error = true;
         } else if ($currentTrafficLimit + $newTrafficLimit > $maxTrafficLimit) {
             set_page_message(tr('You are exceeding your monthly traffic limit.'), 'error');
+            $error = true;
         }
     }
 
     if ($maxDiskspaceLimit != 0) {
         if ($newDiskspaceLimit == 0) {
-            set_page_message(tr('You have a disk space limit. You cannot add a user with unlimited disk space.'), 'error');
+            set_page_message(
+                tr('You have a disk space limit. You cannot add a user with unlimited disk space.'), 'error'
+            );
+            $error = true;
         } else if ($currentDiskspaceLimit + $newDiskspaceLimit > $maxDiskspaceLimit) {
             set_page_message(tr('You are exceeding your disk space limit.'), 'error');
+            $error = true;
         }
     }
 
-    if (Zend_Session::namespaceIsset('pageMessages')) {
-        return false;
-    }
-
-    return true;
+    return $error;
 }
 
 /**
- * Tells whether or not the given feature is available for the reseller.
+ * Tells whether or not the given feature is available for the reseller
  *
- * @throws iMSCP_Exception When $featureName is not known
+ * @throws iMSCPException When $featureName is not known
  * @param string $featureName Feature name
  * @param bool $forceReload If true force data to be reloaded
  * @return bool TRUE if $featureName is available for reseller, FALSE otherwise
@@ -163,7 +201,7 @@ function resellerHasFeature($featureName, $forceReload = false)
     $featureName = strtolower($featureName);
 
     if (NULL == $availableFeatures || $forceReload) {
-        $cfg = iMSCP_Registry::get('config');
+        $cfg = Registry::get('config');
         $resellerProps = imscp_getResellerProperties($_SESSION['user_id'], true);
         $availableFeatures = [
             'domains'            => ($resellerProps['max_dmn_cnt'] != '-1'),
@@ -186,7 +224,7 @@ function resellerHasFeature($featureName, $forceReload = false)
     }
 
     if (!array_key_exists($featureName, $availableFeatures)) {
-        throw new iMSCP_Exception(
+        throw new iMSCPException(
             sprintf("Feature %s is not known by the resellerHasFeature() function.", $featureName)
         );
     }
@@ -195,10 +233,12 @@ function resellerHasFeature($featureName, $forceReload = false)
 }
 
 /**
- * Whether or not the logged-in reseller has a least the given number of registered customers.
+ * Whether or not the logged-in reseller has a least the given number of
+ * registered customers
  *
  * @param int $minNbCustomers Minimum number of customers
- * @return bool TRUE if the logged-in reseller has a least the given number of registered customer, FALSE otherwise
+ * @return bool TRUE if the logged-in reseller has a least the given number of
+ *              registered customer, FALSE otherwise
  */
 function resellerHasCustomers($minNbCustomers = 1)
 {

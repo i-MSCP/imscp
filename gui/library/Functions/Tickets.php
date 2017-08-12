@@ -18,6 +18,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Database as Database;
+use iMSCP_Registry as Registry;
+
 /**
  * Creates a ticket and informs the recipient
  *
@@ -31,16 +34,15 @@
  */
 function createTicket($userId, $adminId, $urgency, $subject, $message, $userLevel)
 {
-    if ($userLevel < 1 || $userLevel > 2) {
+    if ($userLevel < 1
+        || $userLevel > 2
+    ) {
         set_page_message(tr('Wrong user level provided.'), 'error');
         return false;
     }
 
-    $ticketDate = time();
     $subject = clean_input($subject);
     $userMessage = clean_input($message);
-    $ticketStatus = 1;
-    $ticketReply = 0;
 
     exec_query(
         '
@@ -51,11 +53,11 @@ function createTicket($userId, $adminId, $urgency, $subject, $message, $userLeve
                 ?, ?, ?, ?, ?, ?, ?, ?, ?
             )
         ',
-        [$userLevel, $userId, $adminId, $ticketStatus, $ticketReply, $urgency, $ticketDate, $subject, $userMessage]
+        [$userLevel, $userId, $adminId, 1, 0, $urgency, time(), $subject, $userMessage]
     );
 
     set_page_message(tr('Your message has been successfully sent.'), 'success');
-    sendTicketNotification($adminId, $subject, $userMessage, $ticketReply, $urgency);
+    sendTicketNotification($adminId, $subject, $userMessage, 0, $urgency);
     return true;
 }
 
@@ -89,11 +91,8 @@ function showTicketContent($tpl, $ticketId, $userId)
     }
 
     $row = $stmt->fetchRow();
-    $ticketUrgency = $row['ticket_urgency'];
-    $ticketSubject = $row['ticket_subject'];
-    $ticketStatus = $row['ticket_status'];
 
-    if ($ticketStatus == 0) {
+    if ($row['ticket_status'] == 0) {
         $trAction = tr('Open ticket');
         $action = 'open';
     } else {
@@ -102,16 +101,15 @@ function showTicketContent($tpl, $ticketId, $userId)
     }
 
     $from = _getTicketSender($ticketId);
-
     $tpl->assign([
         'TR_TICKET_ACTION'      => $trAction,
         'TICKET_ACTION_VAL'     => $action,
-        'TICKET_DATE_VAL'       => date(iMSCP_Registry::get('config')['DATE_FORMAT'] . ' (H:i)', $row['ticket_date']),
-        'TICKET_SUBJECT_VAL'    => tohtml($ticketSubject),
+        'TICKET_DATE_VAL'       => date(Registry::get('config')['DATE_FORMAT'] . ' (H:i)', $row['ticket_date']),
+        'TICKET_SUBJECT_VAL'    => tohtml($row['ticket_subject']),
         'TICKET_CONTENT_VAL'    => nl2br(tohtml($row['ticket_message'])),
         'TICKET_ID_VAL'         => $row['ticket_id'],
-        'TICKET_URGENCY_VAL'    => getTicketUrgency($ticketUrgency),
-        'TICKET_URGENCY_ID_VAL' => $ticketUrgency,
+        'TICKET_URGENCY_VAL'    => getTicketUrgency($row['ticket_urgency']),
+        'TICKET_URGENCY_ID_VAL' => $row['ticket_urgency'],
         'TICKET_FROM_VAL'       => tohtml($from)
     ]);
     $tpl->parse('TICKET_MESSAGE', '.ticket_message');
@@ -132,8 +130,7 @@ function showTicketContent($tpl, $ticketId, $userId)
  */
 function updateTicket($ticketId, $userId, $urgency, $subject, $message, $ticketLevel, $userLevel)
 {
-    $db = iMSCP_Database::getInstance();
-    $ticketDate = time();
+    $db = Database::getInstance();
     $subject = clean_input($subject);
     $userMessage = clean_input($message);
     $stmt = exec_query(
@@ -167,8 +164,6 @@ function updateTicket($ticketId, $userId, $urgency, $subject, $message, $ticketL
             $ticketFrom = $row['ticket_to'];
         }
 
-        $ticketStatus = $row['ticket_status'];
-
         exec_query(
             '
                 INSERT INTO tickets (
@@ -178,22 +173,22 @@ function updateTicket($ticketId, $userId, $urgency, $subject, $message, $ticketL
                     ?, ?, ?, ?, ?, ?, ?, ?
                 )
              ',
-            [$ticketFrom, $ticketTo, NULL, $ticketId, $urgency, $ticketDate, $subject, $userMessage]
+            [$ticketFrom, $ticketTo, NULL, $ticketId, $urgency, time(), $subject, $userMessage]
         );
 
         if ($userLevel != 2) {
             // Level User: Set ticket status to "client answered"
-            if ($ticketLevel == 1 && ($ticketStatus == 0 || $ticketStatus == 3)) {
+            if ($ticketLevel == 1 && ($row['ticket_status'] == 0 || $row['ticket_status'] == 3)) {
                 changeTicketStatus($ticketId, 4);
                 // Level Super: set ticket status to "reseller answered"
-            } elseif ($ticketLevel == 2 && ($ticketStatus == 0 || $ticketStatus == 3)) {
+            } elseif ($ticketLevel == 2 && ($row['ticket_status'] == 0 || $row['ticket_status'] == 3)) {
                 changeTicketStatus($ticketId, 2);
             }
         } else {
             // Set ticket status to "reseller answered" or "client answered" depending on ticket
-            if ($ticketLevel == 1 && ($ticketStatus == 0 || $ticketStatus == 3)) {
+            if ($ticketLevel == 1 && ($row['ticket_status'] == 0 || $row['ticket_status'] == 3)) {
                 changeTicketStatus($ticketId, 2);
-            } elseif ($ticketLevel == 2 && ($ticketStatus == 0 || $ticketStatus == 3)) {
+            } elseif ($ticketLevel == 2 && ($row['ticket_status'] == 0 || $row['ticket_status'] == 3)) {
                 if (!changeTicketStatus($ticketId, 4)) {
                     return false;
                 }
@@ -224,7 +219,7 @@ function deleteTicket($ticketId)
 }
 
 /**
- * Deletes all open/closed tickets that are belong to a user.
+ * Deletes all open/closed tickets that are belong to a user
  *
  * @param string $status Ticket status ('open' or 'closed')
  * @param int $userId The user's ID
@@ -232,7 +227,7 @@ function deleteTicket($ticketId)
  */
 function deleteTickets($status, $userId)
 {
-    $condition = $status == 'open' ? "ticket_status != '0'" : "ticket_status = '0'";
+    $condition = ($status == 'open') ? "ticket_status != '0'" : "ticket_status = '0'";
     exec_query("DELETE FROM tickets WHERE (ticket_from = ? OR ticket_to = ?) AND {$condition}", [$userId, $userId]);
 }
 
@@ -298,19 +293,20 @@ function generateTicketList($tpl, $userId, $start, $count, $userLevel, $status)
         }
 
         while ($row = $stmt->fetchRow()) {
-            $ticketStatus = $row['ticket_status'];
-            $ticketLevel = $row['ticket_level'];
-
-            if ($ticketStatus == 1) {
+            if ($row['ticket_status'] == 1) {
                 $tpl->assign('TICKET_STATUS_VAL', tr('[New]'));
             } elseif (
-                $ticketStatus == 2 &&
-                (($ticketLevel == 1 && $userLevel == 'client') || ($ticketLevel == 2 && $userLevel == 'reseller'))
+                $row['ticket_status'] == 2 &&
+                (($row['ticket_level'] == 1 && $userLevel == 'client')
+                    || ($row['ticket_level'] == 2 && $userLevel == 'reseller')
+                )
             ) {
                 $tpl->assign('TICKET_STATUS_VAL', tr('[Re]'));
             } elseif (
-                $ticketStatus == 4 &&
-                (($ticketLevel == 1 && $userLevel == 'reseller') || ($ticketLevel == 2 && $userLevel == 'admin'))
+                $row['ticket_status'] == 4 &&
+                (($row['ticket_level'] == 1 && $userLevel == 'reseller')
+                    || ($row['ticket_level'] == 2 && $userLevel == 'admin')
+                )
             ) {
                 $tpl->assign('TICKET_STATUS_VAL', tr('[Re]'));
             } else {
@@ -422,7 +418,7 @@ function getTicketStatus($ticketId)
  *
  * @param int $ticketId Ticket unique identifier
  * @param int $ticketStatus New status identifier
- * @return bool TRUE if ticket status was changed, FALSE otherwise (eg. if ticket was not found)
+ * @return bool TRUE if ticket status was changed, FALSE otherwise
  */
 function changeTicketStatus($ticketId, $ticketStatus)
 {
@@ -507,10 +503,9 @@ function _getTicketSender($ticketId)
     }
 
     $row = $stmt->fetchRow();
-    $fromUsername = ($row['admin_type'] == 'user') ? decode_idna($row['admin_name']) : $row['admin_name'];
-    $fromFirstname = $row['fname'];
-    $fromLastname = $row['lname'];
-    return $fromFirstname . ' ' . $fromLastname . ' (' . $fromUsername . ')';
+
+    return $row['fname'] . ' ' . $row['lname'] . ' (' .
+        (($row['admin_type'] == 'user') ? decode_idna($row['admin_name']) : $row['admin_name']) . ')';
 }
 
 /**
@@ -523,7 +518,6 @@ function _getTicketSender($ticketId)
  */
 function _ticketGetLastDate($ticketId)
 {
-    $cfg = iMSCP_Registry::get('config');
     $stmt = exec_query(
         'SELECT ticket_date FROM tickets WHERE ticket_reply = ? ORDER BY ticket_date DESC LIMIT 1', $ticketId
     );
@@ -533,22 +527,23 @@ function _ticketGetLastDate($ticketId)
     }
 
     $row = $stmt->fetchRow();
-    return date($cfg['DATE_FORMAT'], $row['ticket_date']);
+    return date(Registry::get('config')['DATE_FORMAT'], $row['ticket_date']);
 }
 
 /**
- * Checks if the support ticket system is globally enabled and (optionaly) if a specific reseller has permissions to
- * access to it
+ * Checks if the support ticket system is globally enabled and (optionaly) if a
+ * specific reseller has permissions to access to it
  *
- * Note: If a reseller has not access to the support ticket system, it's means that
- * all his customers have not access to it too.
+ * Note: If a reseller has not access to the support ticket system, it's means
+ * that all his customers have not access to it too.
  *
- * @param int $userId OPTIONAL Id of the user created the current user or null if admin
+ * @param int $userId OPTIONAL Id of the user created the current user or null
+ *                    if admin
  * @return bool TRUE if support ticket system is available, FALSE otherwise
  */
 function hasTicketSystem($userId = NULL)
 {
-    if (!iMSCP_Registry::get('config')['IMSCP_SUPPORT_SYSTEM']) {
+    if (!Registry::get('config')['IMSCP_SUPPORT_SYSTEM']) {
         return false;
     }
 
@@ -593,7 +588,7 @@ function _showTicketReplies($tpl, $ticketId)
     while ($row = $stmt->fetchRow()) {
         $tpl->assign([
             'TICKET_FROM_VAL'    => _getTicketSender($row['ticket_id']),
-            'TICKET_DATE_VAL'    => date(iMSCP_Registry::get('config')['DATE_FORMAT'] . ' (H:i)', $row['ticket_date']),
+            'TICKET_DATE_VAL'    => date(Registry::get('config')['DATE_FORMAT'] . ' (H:i)', $row['ticket_date']),
             'TICKET_CONTENT_VAL' => nl2br(tohtml($row['ticket_message']))
         ]);
         $tpl->parse('TICKET_MESSAGE', '.ticket_message');

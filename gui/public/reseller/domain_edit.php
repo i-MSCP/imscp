@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -725,13 +725,21 @@ function reseller_checkAndUpdateData($domainId)
                 set_page_message(tr('Mail quota cannot be bigger than disk space limit.'), 'error');
                 $errFieldsStack[] = 'mail_quota';
             } elseif ($data['domain_disk_limit'] != 0 && $data['mail_quota'] == 0) {
-                set_page_message(tr('Mail quota cannot be unlimited. Max value is %d MiB.', $data['domain_disk_limit']), 'error');
+                set_page_message(
+                    tr('Mail quota cannot be unlimited. Max value is %d MiB.', $data['domain_disk_limit']), 'error'
+                );
                 $errFieldsStack[] = 'mail_quota';
             } else {
                 $mailData = reseller_getMailData($data['domain_id'], $data['fallback_mail_quota']);
 
                 if ($data['mail_quota'] != 0 && $data['mail_quota'] < $mailData['nb_mailboxes']) {
-                    set_page_message(tr('Mail quota cannot be lower than %d. Each mail account must have a least 1 MiB quota.', $mailData['nb_mailboxes']), 'error');
+                    set_page_message(
+                        tr(
+                            'Mail quota cannot be lower than %d. Each mail account must have a least 1 MiB quota.',
+                            $mailData['nb_mailboxes']
+                        ),
+                        'error'
+                    );
                     $errFieldsStack[] = 'mail_quota';
                 }
             }
@@ -749,24 +757,35 @@ function reseller_checkAndUpdateData($domainId)
         $phpiniClientPerms = $phpini->getClientPermission();
         $phpiniDomainConf = $phpini->getDomainIni();
 
-        if (isset($_POST['php_ini_system']) && $data['domain_php'] == 'yes' && $phpini->resellerHasPermission('phpiniSystem')) {
+        if (isset($_POST['php_ini_system'])
+            && $data['domain_php'] == 'yes'
+            && $phpini->resellerHasPermission('phpiniSystem')
+        ) {
             $phpini->setClientPermission('phpiniSystem', clean_input($_POST['php_ini_system']));
 
             if ($phpini->clientHasPermission('phpiniSystem')) {
                 if (isset($_POST['phpini_perm_allow_url_fopen'])) {
-                    $phpini->setClientPermission('phpiniAllowUrlFopen', clean_input($_POST['phpini_perm_allow_url_fopen']));
+                    $phpini->setClientPermission(
+                        'phpiniAllowUrlFopen', clean_input($_POST['phpini_perm_allow_url_fopen'])
+                    );
                 }
 
                 if (isset($_POST['phpini_perm_display_errors'])) {
-                    $phpini->setClientPermission('phpiniDisplayErrors', clean_input($_POST['phpini_perm_display_errors']));
+                    $phpini->setClientPermission(
+                        'phpiniDisplayErrors', clean_input($_POST['phpini_perm_display_errors'])
+                    );
                 }
 
                 if (isset($_POST['phpini_perm_disable_functions'])) {
-                    $phpini->setClientPermission('phpiniDisableFunctions', clean_input($_POST['phpini_perm_disable_functions']));
+                    $phpini->setClientPermission(
+                        'phpiniDisableFunctions', clean_input($_POST['phpini_perm_disable_functions'])
+                    );
                 }
 
                 if (isset($_POST['phpini_perm_mail_function'])) {
-                    $phpini->setClientPermission('phpiniMailFunction', clean_input($_POST['phpini_perm_mail_function']));
+                    $phpini->setClientPermission(
+                        'phpiniMailFunction', clean_input($_POST['phpini_perm_mail_function'])
+                    );
                 }
 
                 if (isset($_POST['memory_limit'])) { // Must be set before phpiniPostMaxSize
@@ -798,24 +817,30 @@ function reseller_checkAndUpdateData($domainId)
         }
 
         // Check for CGI support
-        $data['domain_cgi'] = in_array($data['domain_cgi'], ['no', 'yes']) ? $data['domain_cgi'] : $data['fallback_domain_cgi'];
+        $data['domain_cgi'] = in_array($data['domain_cgi'], ['no', 'yes'])
+            ? $data['domain_cgi'] : $data['fallback_domain_cgi'];
 
         // Check for custom DNS records support
-        $data['domain_dns'] = in_array($data['domain_dns'], ['no', 'yes']) ? $data['domain_dns'] : $data['fallback_domain_dns'];
+        $data['domain_dns'] = in_array($data['domain_dns'], ['no', 'yes'])
+            ? $data['domain_dns'] : $data['fallback_domain_dns'];
 
         // Check for APS support
-        $data['domain_software_allowed'] = in_array($data['domain_software_allowed'], ['no', 'yes']) ? $data['domain_software_allowed'] : $data['fallback_domain_software_allowed'];
+        $data['domain_software_allowed'] = in_array($data['domain_software_allowed'], ['no', 'yes'])
+            ? $data['domain_software_allowed'] : $data['fallback_domain_software_allowed'];
 
         // Check for External mail server support
-        $data['domain_external_mail'] = in_array($data['domain_external_mail'], ['no', 'yes']) ? $data['domain_external_mail'] : $data['fallback_domain_external_mail'];
+        $data['domain_external_mail'] = in_array($data['domain_external_mail'], ['no', 'yes'])
+            ? $data['domain_external_mail'] : $data['fallback_domain_external_mail'];
 
         // Check for backup support
-        $data['allowbackup'] = is_array($data['allowbackup']) ? (array_intersect($data['allowbackup'], ['dmn', 'sql', 'mail'])) : $data['fallback_allowbackup'];
+        $data['allowbackup'] = is_array($data['allowbackup'])
+            ? (array_intersect($data['allowbackup'], ['dmn', 'sql', 'mail'])) : $data['fallback_allowbackup'];
 
         // Check for Web folder protection support
-        $data['web_folder_protection'] = in_array($data['web_folder_protection'], ['no', 'yes']) ? $data['web_folder_protection'] : $data['fallback_web_folder_protection'];
+        $data['web_folder_protection'] = in_array($data['web_folder_protection'], ['no', 'yes'])
+            ? $data['web_folder_protection'] : $data['fallback_web_folder_protection'];
 
-        if (empty($errFieldsStack) && !Zend_Session::namespaceIsset('pageMessages')) { // Update process begin here
+        if (empty($errFieldsStack)) { // Update process begin here
             $oldValues = [];
             $newValues = [];
 

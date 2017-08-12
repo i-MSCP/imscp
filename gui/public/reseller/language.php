@@ -82,8 +82,8 @@ $tpl->assign([
 ]);
 
 generateNavigation($tpl);
-generatePageMessage($tpl);
 generateLanguagesList($tpl, $resellerCurrentLanguage);
+generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);

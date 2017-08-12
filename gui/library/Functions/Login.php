@@ -18,36 +18,45 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP\Crypt as Crypt;
+use iMSCP_Authentication as Auth;
+use iMSCP_Authentication_AuthEvent as AuthEvent;
+use iMSCP_Authentication_Result as AuthResult;
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Events_Event as Event;
+use iMSCP_Exception as iMSCPException;
+use iMSCP_Registry as Registry;
+use Zend_Session as Session;
+
 /**
  * Initialize login
  *
- * @param iMSCP_Events_Manager_Interface $eventManager Events Manager
+ * @param iMSCP_Events_Manager_Interface $eventManager
  * @return void
  */
 function init_login($eventManager)
 {
     do_session_timeout();
 
-    if (iMSCP_Registry::get('config')['BRUTEFORCE']) {
-        $bruteforce = new iMSCP_Plugin_Bruteforce(iMSCP_Registry::get('pluginManager'));
+    if (Registry::get('config')['BRUTEFORCE']) {
+        $bruteforce = new iMSCP_Plugin_Bruteforce(Registry::get('pluginManager'));
         $bruteforce->register($eventManager);
     }
 
     // Register default authentication handler with high-priority
-    $eventManager->registerListener(iMSCP_Events::onAuthentication, 'login_credentials', 99);
+    $eventManager->registerListener(Events::onAuthentication, 'login_credentials', 99);
 
     // Register listener that is responsible to check domain status and expire date
-    $eventManager->registerListener(iMSCP_Events::onBeforeSetIdentity, 'login_checkDomainAccount');
+    $eventManager->registerListener(Events::onBeforeSetIdentity, 'login_checkDomainAccount');
 }
 
 /**
  * Credentials authentication handler
  *
- * @throws iMSCP_Exception_Database
- * @param iMSCP_Authentication_AuthEvent
- * @return void
+ * @param AuthEvent $authEvent
  */
-function login_credentials(iMSCP_Authentication_AuthEvent $authEvent)
+function login_credentials(AuthEvent $authEvent)
 {
     $username = (!empty($_POST['uname'])) ? encode_idna(clean_input($_POST['uname'])) : '';
     $password = (!empty($_POST['upass'])) ? clean_input($_POST['upass']) : '';
@@ -63,11 +72,8 @@ function login_credentials(iMSCP_Authentication_AuthEvent $authEvent)
             $message[] = tr('The password field is empty.');
         }
 
-        $authEvent->setAuthenticationResult(new iMSCP_Authentication_Result(
-            (count($message) == 2)
-                ? iMSCP_Authentication_Result::FAILURE_CREDENTIAL_EMPTY
-                : iMSCP_Authentication_Result::FAILURE_CREDENTIAL_INVALID
-            ,
+        $authEvent->setAuthenticationResult(new AuthResult(
+            (count($message) == 2) ? AuthResult::FAILURE_CREDENTIAL_EMPTY : AuthResult::FAILURE_CREDENTIAL_INVALID,
             NULL,
             $message
         ));
@@ -80,19 +86,19 @@ function login_credentials(iMSCP_Authentication_AuthEvent $authEvent)
     );
 
     if (!$stmt->rowCount()) {
-        $authEvent->setAuthenticationResult(new iMSCP_Authentication_Result(
-            iMSCP_Authentication_Result::FAILURE_IDENTITY_NOT_FOUND, NULL, tr('Unknown username.')
+        $authEvent->setAuthenticationResult(new AuthResult(
+            AuthResult::FAILURE_IDENTITY_NOT_FOUND, NULL, tr('Unknown username.')
         ));
         return;
     }
 
     $identity = $stmt->fetchRow(PDO::FETCH_OBJ);
 
-    if (!\iMSCP\Crypt::hashEqual($identity->admin_pass, md5($password))
-        && !\iMSCP\Crypt::verify($password, $identity->admin_pass)
+    if (!Crypt::hashEqual($identity->admin_pass, md5($password))
+        && !Crypt::verify($password, $identity->admin_pass)
     ) {
-        $authEvent->setAuthenticationResult(new iMSCP_Authentication_Result(
-            iMSCP_Authentication_Result::FAILURE_CREDENTIAL_INVALID, NULL, tr('Bad password.')
+        $authEvent->setAuthenticationResult(new AuthResult(
+            AuthResult::FAILURE_CREDENTIAL_INVALID, NULL, tr('Bad password.')
         ));
         return;
     }
@@ -100,10 +106,10 @@ function login_credentials(iMSCP_Authentication_AuthEvent $authEvent)
     if (strpos($identity->admin_pass, '$apr1$') !== 0) { # Not an APR-1 hashed password, we recreate the hash
         // We must postpone update until the onAfterAuthentication event to handle cases where the authentication process
         // fail later on (case of a multi-factor authentication process)
-        iMSCP_Events_Aggregator::getInstance()->registerListener(
-            iMSCP_Events::onAfterAuthentication,
-            function (iMSCP_Events_Event $event) use ($password) {
-                /** @var iMSCP_Authentication_Result $authResult */
+        EventsManager::getInstance()->registerListener(
+            Events::onAfterAuthentication,
+            function (Event $event) use ($password) {
+                /** @var AuthResult $authResult */
                 $authResult = $event->getParam('authResult');
 
                 if (!$authResult->isValid()) {
@@ -113,7 +119,7 @@ function login_credentials(iMSCP_Authentication_AuthEvent $authEvent)
                 $identity = $authResult->getIdentity();
 
                 exec_query('UPDATE admin SET admin_pass = ?, admin_status = ? WHERE admin_id = ?', [
-                    \iMSCP\Crypt::apr1MD5($password), ($identity->admin_type) == 'user' ? 'tochangepwd' : 'ok',
+                    Crypt::apr1MD5($password), ($identity->admin_type) == 'user' ? 'tochangepwd' : 'ok',
                     $identity->admin_id
                 ]);
 
@@ -130,17 +136,15 @@ function login_credentials(iMSCP_Authentication_AuthEvent $authEvent)
         );
     }
 
-    $authEvent->setAuthenticationResult(
-        new iMSCP_Authentication_Result(iMSCP_Authentication_Result::SUCCESS, $identity)
-    );
+    $authEvent->setAuthenticationResult(new AuthResult(AuthResult::SUCCESS, $identity));
 }
 
 /**
  * Check domain account state (status and expires date)
  *
- * Note: Listen to the onBeforeSetIdentity event triggered in the iMSCP_Authentication component.
+ * Note: Listen to the onBeforeSetIdentity event triggered in the Auth component.
  *
- * @param iMSCP_Events_Event $event An iMSCP_Events_Events object representing an onBeforeSetIdentity event.
+ * @param Event $event
  * @return void
  */
 function login_checkDomainAccount($event)
@@ -195,7 +199,7 @@ function do_session_timeout()
     // We must not remove bruteforce plugin data (AND `user_name` IS NOT NULL)
     exec_query(
         'DELETE FROM login WHERE lastaccess < ? AND user_name IS NOT NULL',
-        time() - iMSCP_Registry::get('config')['SESSION_TIMEOUT'] * 60
+        time() - Registry::get('config')['SESSION_TIMEOUT'] * 60
     );
 }
 
@@ -208,7 +212,7 @@ function do_session_timeout()
 function check_login($userLevel, $preventExternalLogin = true)
 {
     do_session_timeout();
-    $auth = iMSCP_Authentication::getInstance();
+    $auth = Auth::getInstance();
 
     if (!$auth->hasIdentity()) {
         $auth->unsetIdentity(); // Ensure deletion of all identity data
@@ -223,7 +227,7 @@ function check_login($userLevel, $preventExternalLogin = true)
     $identity = $auth->getIdentity();
 
     // When the panel is in maintenance mode, only administrators can access the interface
-    if (iMSCP_Registry::get('config')['MAINTENANCEMODE']
+    if (Registry::get('config')['MAINTENANCEMODE']
         && $identity->admin_type != 'admin'
         && (!isset($_SESSION['logged_from_type']) || $_SESSION['logged_from_type'] != 'admin')
     ) {
@@ -304,7 +308,7 @@ function change_user_interface($fromId, $toId)
         $toActionScript = $toActionScript ?: $fromToMap[$from->admin_type][$to->admin_type];
 
         // Set new identity
-        $auth = iMSCP_Authentication::getInstance();
+        $auth = Auth::getInstance();
         $auth->unsetIdentity();
 
         if ($from->admin_type != 'user' && $to->admin_type != 'admin') {
@@ -333,13 +337,13 @@ function change_user_interface($fromId, $toId)
 /**
  * Redirects to user ui level
  *
- * @throws iMSCP_Exception in case ui level is unknown
+ * @throws iMSCPException in case ui level is unknown
  * @param string $actionScript Action script on which user should be redirected
  * @return void
  */
 function redirectToUiLevel($actionScript = 'index.php')
 {
-    $auth = iMSCP_Authentication::getInstance();
+    $auth = Auth::getInstance();
 
     if (!$auth->hasIdentity()) {
         return;
@@ -356,10 +360,10 @@ function redirectToUiLevel($actionScript = 'index.php')
             $userType = 'reseller';
             break;
         default:
-            throw new iMSCP_Exception('Unknown UI level');
+            throw new iMSCPException('Unknown UI level');
     }
 
     // Prevents display of any old message when switching to another user level
-    Zend_Session::namespaceUnset('pageMessages');
+    Session::namespaceUnset('pageMessages');
     redirectTo('/' . $userType . '/' . $actionScript);
 }

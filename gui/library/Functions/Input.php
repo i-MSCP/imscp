@@ -27,7 +27,7 @@ global $ESCAPER;
 $ESCAPER = new Escaper('UTF-8');
 
 /**
- * clean_html replaces up defined inputs.
+ * clean_html replaces up defined inputs
  *
  * @param string $text text string to be cleaned
  * @return string cleared text string
@@ -171,7 +171,7 @@ function checkPasswordSyntax($password, $unallowedChars = '/[^\x21-\x7e]/', $noE
 
     if ($passwordLength < $cfg['PASSWD_CHARS'] || $passwordLength > 30) {
         if (!$noErrorMsg) {
-            set_page_message(tr('Password must be between %d and %d characters.', $cfg['PASSWD_CHARS'], 30), 'error');
+            set_page_message(tr('The password must be between %d and %d characters.', $cfg['PASSWD_CHARS'], 30), 'error');
         }
 
         $ret = false;
@@ -199,8 +199,9 @@ function checkPasswordSyntax($password, $unallowedChars = '/[^\x21-\x7e]/', $noE
 /**
  * Validates a username
  *
- * This function validates syntax of usernames. The characters allowed are all alphanumeric in upper or lower case, the
- * hyphen , the low dash and  the dot, the three latter  being banned at the beginning and end of string.
+ * This function validates syntax of usernames. The characters allowed are all
+ * alphanumeric in upper or lower case, the hyphen , the low dash and  the dot,
+ * the three latter  being banned at the beginning and end of string.
  *
  * Successive instances of a dot or underscore are prohibited
  *
@@ -301,13 +302,17 @@ function isValidDomainName($domainName)
 /**
  * Function for checking i-MSCP limits syntax.
  *
- * @param string $data Limit field data (by default valids are numbers greater equal 0)
- * @param mixed $extra single extra permitted value or array of permitted values
+ * @param string $data Limit field data (by default valids are numbers greater
+ *                     equal 0)
+ * @param mixed $extra single extra permitted value or array of permitted
+ *                    values
  * @return bool false incorrect syntax (ranges) true correct syntax (ranges)
  */
 function imscp_limit_check($data, $extra = -1)
 {
-    if ($extra !== NULL && !is_bool($extra)) {
+    if ($extra !== NULL
+        && !is_bool($extra)
+    ) {
         if (is_array($extra)) {
             $nextra = '';
             $max = count($extra);
@@ -386,7 +391,7 @@ function getUserLoginDataForm($usernameRequired = true, $passwordRequired = true
                     [
                         'min'      => $minPasswordLength,
                         'max'      => 30,
-                        'messages' => tr('Password must be between %d and %d characters.', $minPasswordLength, 30)
+                        'messages' => tr('The password must be between %d and %d characters.', $minPasswordLength, 30)
                     ]
                 ],
                 ['Regex', true, ['/^[\x21-\x7e]+$/', 'messages' => tr('The password contains unallowed characters.')]]

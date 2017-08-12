@@ -244,8 +244,8 @@ function checkIpData($ipAddr, $ipNetmask, $ipConfigMode, $ipCard)
         showBadRequestErrorPage();
     }
 
-    if (Session::namespaceIsset('pageMessages')) {
-        if (!empty($errFieldsStack) && !is_xhr()) {
+    if (!empty($errFieldsStack)) {
+        if (!is_xhr()) {
             Registry::set('errFieldsStack', $errFieldsStack);
         }
 

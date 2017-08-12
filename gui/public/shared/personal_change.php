@@ -126,5 +126,5 @@ $tpl->define_dynamic([
 ]);
 
 generateNavigation($tpl);
-generatePageMessage($tpl);
 generatePage($tpl, $form);
+generatePageMessage($tpl);

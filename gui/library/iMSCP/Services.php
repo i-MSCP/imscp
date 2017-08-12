@@ -1,23 +1,24 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "i-MSCP - Multi Server Control panel".
- *
- * The Initial Developer of the Original Code is i-MSCP Team.
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
- * internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
+use iMSCP_Registry as Registry;
 
 /**
  * Class that allows to get services properties and their status
@@ -35,10 +36,16 @@ class iMSCP_Services implements iterator, countable
     private $queriedService = NULL;
 
     /**
+     * @var Zend_Cache_Core $cache
+     */
+    private $cache;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
+        $this->cache = Registry::get('iMSCP_Application')->getCache();
         $values = iMSCP_Registry::get('dbConfig')->toArray();
 
         // Gets list of services port names
@@ -52,8 +59,6 @@ class iMSCP_Services implements iterator, countable
         foreach ($services as $name) {
             $this->services[$name] = explode(';', $values[$name]);
         }
-
-        ksort($this->services);
     }
 
     /**
@@ -131,21 +136,23 @@ class iMSCP_Services implements iterator, countable
     /**
      * Check if a service is running
      *
+     * @param bool $refresh Flag indicating whether or not cached values must be refreshed
      * @return bool return TRUE if the service is currently running, FALSE otherwise
      */
-    public function isRunning()
+    public function isRunning($refresh = false)
     {
-        return $this->getStatus();
+        return $this->getStatus($refresh);
     }
 
     /**
      * Check if a service is down
      *
+     * @param bool $refresh Flag indicating whether or not cached values must be refreshed
      * @return bool return TRUE if the service is currently down, FALSE otherwise
      */
-    public function isDown()
+    public function isDown($refresh = false)
     {
-        return (!($this->getStatus()));
+        return !$this->getStatus($refresh);
     }
 
     /**
@@ -232,21 +239,31 @@ class iMSCP_Services implements iterator, countable
     /**
      * Get service status
      *
+     * @param bool $refresh Flag indicating whether or not cached values must be refreshed
      * @return bool TRUE if the service is currently running, FALSE otherwise
      */
-    private function getStatus()
+    private function getStatus($refresh = false)
     {
-        $ip = $this->getIp();
+        $identifier = __CLASS__ . '_' . __FUNCTION__ . '_' . preg_replace('/[^a-zA-Z0-9_]/', '_', $this->getName());
 
-        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-            $ip = '[' . $ip . ']';
+        if ($refresh || !($this->cache->test($identifier))) {
+            $ip = $this->getIp();
+
+            if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+                $ip = '[' . $ip . ']';
+            }
+
+            $status = false;
+            if (($fp = @fsockopen($this->getProtocol() . '://' . $ip, $this->getPort(), $errno, $errstr, 0.5))) {
+                fclose($fp);
+                $status = true;
+            }
+
+            $this->cache->save($status, $identifier, array(), 1200);
+        } else {
+            $status = $this->cache->load($identifier);
         }
 
-        if (($fp = @fsockopen($this->getProtocol() . '://' . $ip, $this->getPort(), $errno, $errstr, 0.5))) {
-            fclose($fp);
-            return true;
-        }
-
-        return false;
+        return $status;
     }
 }

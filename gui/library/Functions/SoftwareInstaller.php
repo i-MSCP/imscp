@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Database as Database;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * These functions are used by admin
@@ -249,6 +251,7 @@ function get_avail_software($tpl)
             ]);
             $tpl->parse('LIST_SOFTWARE', '.list_software');
         }
+
         $tpl->assign('NO_SOFTWARE_LIST', '');
         return $stmt->rowCount();
     }
@@ -394,11 +397,17 @@ function get_avail_softwaredepot($tpl)
                             substr(strrchr($row['swstatus'], '_'), 1)
                         );
                         if ($stmt2->rowCount()) {
-                            set_page_message(tr('This package already exists in the depot of the reseller "%1$s"!', $stmt2->fetchRow(PDO::FETCH_COLUMN)), 'warning');
+                            set_page_message(
+                                tr(
+                                    'This package already exists in the depot of the reseller "%1$s"!',
+                                    $stmt2->fetchRow(PDO::FETCH_COLUMN)
+                                ),
+                                'warning'
+                            );
                         }
                     }
 
-                    $cfg = iMSCP_Registry::get('config');
+                    $cfg = Registry::get('config');
                     @unlink(utils_normalizePath($cfg['GUI_APS_DEPOT_DIR'] . '/' . $row['filename'] . '-' . $row['id'] . '.tar.gz'));
                     exec_query('DELETE FROM web_software WHERE software_id = ?', $row['id']);
                 }
@@ -637,10 +646,12 @@ function get_reseller_rights($tpl, $softwareId)
             $stmt2 = exec_query('SELECT admin_name FROM admin WHERE admin_id = ?', $row['rights_add_by']);
             $tpl->assign([
                 'RESELLER'          => $row['reseller'],
-                'ADMINISTRATOR'     => ($stmt2->rowCount()) ? $stmt2->fetchRow(PDO::FETCH_COLUMN) : tr('Admin not available'),
+                'ADMINISTRATOR'     => ($stmt2->rowCount())
+                    ? $stmt2->fetchRow(PDO::FETCH_COLUMN) : tr('Admin not available'),
                 'TR_REMOVE_RIGHT'   => tr('Remove'),
                 'TR_MESSAGE_REMOVE' => tr('Are you sure to remove the permissions ?'),
-                'REMOVE_RIGHT_LINK' => "software_change_rights.php?id=" . $row['software_master_id'] . "&reseller_id=" . $row['reseller_id']
+                'REMOVE_RIGHT_LINK' => "software_change_rights.php?id=" . $row['software_master_id'] . "&reseller_id="
+                    . $row['reseller_id']
             ]);
             $tpl->parse('LIST_RESELLER', '.list_reseller');
         }
@@ -736,8 +747,9 @@ function send_new_sw_upload($resellerId, $softwarePackage, $softwareId)
 {
     $stmt = exec_query('SELECT created_by FROM admin WHERE admin_id = ?', $resellerId);
     $resellerData = $stmt->fetchRow();
-
-    $stmt = exec_query('SELECT admin_name, fname, lname, email FROM admin WHERE admin_id = ?', $resellerData['created_by']);
+    $stmt = exec_query(
+        'SELECT admin_name, fname, lname, email FROM admin WHERE admin_id = ?', $resellerData['created_by']
+    );
     $adminData = $stmt->fetchRow();
     $ret = send_mail([
         'mail_id'      => 'software-installer-upload-sw',
@@ -820,7 +832,9 @@ function get_avail_software_reseller($tpl, $userId)
                     if ($row['swstatus'] == 'ready') {
                         exec_query("UPDATE web_software SET software_status = 'ok' WHERE software_id = ?", $row['id']);
                         send_new_sw_upload($userId, $row['filename'] . '.tar.gz', $row['id']);
-                        set_page_message(tr('Package installed successfully... Awaiting release from admin!'), 'success');
+                        set_page_message(
+                            tr('Package installed successfully... Awaiting release from admin!'), 'success'
+                        );
                     }
 
                     $url = "software_delete.php?id=" . $row['id'];
@@ -931,8 +945,11 @@ function get_avail_software_reseller($tpl, $userId)
                             set_page_message(tr('This package already exists in your software repository.'), 'error');
                         }
 
-                        $cfg = iMSCP_Registry::get('config');
-                        @unlink(utils_normalizePath($cfg['GUI_APS_DIR'] . '/' . $row['resellerid'] . '/' . $row['filename'] . '-' . $row['id'] . '.tar.gz'));
+                        $cfg = Registry::get('config');
+                        @unlink(utils_normalizePath(
+                            $cfg['GUI_APS_DIR'] . '/' . $row['resellerid'] . '/' . $row['filename'] . '-'
+                            . $row['id'] . '.tar.gz')
+                        );
                         exec_query('DELETE FROM web_software WHERE software_id = ?', $row['id']);
                     }
                 }
@@ -1021,7 +1038,11 @@ function gen_user_software_action($softwareId, $dmnId, $tpl)
             'TR_MESSAGE_DELETE'       => tr('Are you sure you want to delete this package?'),
             'SOFTWARE_ACTION_INSTALL' => ''
         ]);
-        return [tr('Uninstall'), 'software_delete.php?id=' . $softwareId, 'software_view.php?id=' . $softwareId, $software_status, $software_icon];
+        return [
+            tr('Uninstall'),
+            'software_delete.php?id=' . $softwareId,
+            'software_view.php?id=' . $softwareId, $software_status, $software_icon
+        ];
     }
 
     $tpl->assign([
@@ -1029,7 +1050,13 @@ function gen_user_software_action($softwareId, $dmnId, $tpl)
         'SOFTWARE_ACTION_DELETE' => ''
     ]);
 
-    return [tr('Install'), 'software_install.php?id=' . $softwareId, 'software_view.php?id=' . $softwareId, $software_status, $software_icon];
+    return [
+        tr('Install'),
+        'software_install.php?id=' . $softwareId,
+        'software_view.php?id=' . $softwareId,
+        $software_status,
+        $software_icon
+    ];
 }
 
 /**
@@ -1381,7 +1408,8 @@ function gen_user_domain_list($tpl, $customerId)
 
         while ($row = $stmt->fetchRow()) {
             $tpl->assign([
-                'SELECTED_DOMAIN'    => ($postDomainType == 'als' && $postDomainId == $row['alias_id']) ? ' selected' : '',
+                'SELECTED_DOMAIN'    => ($postDomainType == 'als' && $postDomainId == $row['alias_id'])
+                    ? ' selected' : '',
                 'DOMAIN_NAME_VALUES' => tohtml($row['alias_id'] . ';als', 'htmlAttr'),
                 'DOMAIN_NAME'        => tohtml(decode_idna($row['alias_name']))
             ]);
@@ -1406,7 +1434,8 @@ function gen_user_domain_list($tpl, $customerId)
 
         while ($row = $stmt->fetchRow()) {
             $tpl->assign([
-                'SELECTED_DOMAIN'    => ($postDomainType == 'sub' && $postDomainId == $row['subdomain_id']) ? ' selected' : '',
+                'SELECTED_DOMAIN'    => ($postDomainType == 'sub' && $postDomainId == $row['subdomain_id'])
+                    ? ' selected' : '',
                 'DOMAIN_NAME_VALUES' => tohtml($row['subdomain_id'] . ';sub', 'htmlAttr'),
                 'DOMAIN_NAME'        => tohtml(decode_idna($row['subdomain_name']))
             ]);
@@ -1431,7 +1460,8 @@ function gen_user_domain_list($tpl, $customerId)
 
         while ($row = $stmt->fetchRow()) {
             $tpl->assign([
-                'SELECTED_DOMAIN'    => ($postDomainType == 'alssub' && $postDomainId == $row['subdomain_alias_id']) ? ' selected' : '',
+                'SELECTED_DOMAIN'    => ($postDomainType == 'alssub' && $postDomainId == $row['subdomain_alias_id'])
+                    ? ' selected' : '',
                 'DOMAIN_NAME_VALUES' => tohtml($row['subdomain_alias_id'] . ';alssub', 'htmlAttr'),
                 'DOMAIN_NAME'        => tohtml(decode_idna($row['subdomain_alias_name']))
             ]);
@@ -1455,10 +1485,10 @@ function gen_user_domain_list($tpl, $customerId)
  */
 function check_db_connection($dbName, $dbUser, $dbPass)
 {
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     try {
-        iMSCP_Database::connect($dbUser, $dbPass, $cfg['DATABASE_TYPE'], $cfg['DATABASE_HOST'], $dbName, 'testConn');
+        Database::connect($dbUser, $dbPass, $cfg['DATABASE_TYPE'], $cfg['DATABASE_HOST'], $dbName, 'testConn');
     } catch (PDOException $e) {
         return false;
     }

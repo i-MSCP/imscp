@@ -184,11 +184,11 @@ $tpl->assign([
 ]);
 
 generateNavigation($tpl);
-generatePageMessage($tpl);
 admin_generateSupportQuestionsMessage();
 admin_generateUpdateMessages();
 admin_getAdminGeneralInfo($tpl);
 admin_generateServerTrafficInfo($tpl);
+generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);

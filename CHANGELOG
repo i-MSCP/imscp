@@ -23,6 +23,7 @@ DISTRIBUTIONS
     Added: ca-certificates package in list of pre-required packages
 
 FRONTEND
+    Added: Button to force refresh of service statuses as they are now cached for 20 minutes
     Added: iMSCP_Database::inTransaction() method
     Added: Routing for languages without territory information: eg. `de' will be routed to `de_DE' (autodetection)
     Added: Setting that allows administrator to protect/unprotect default mail accounts against both edition and deletion
@@ -30,8 +31,9 @@ FRONTEND
     Cosmetics: Make use of the mathematical infinity symbol (∞) in place of the `Unlimited' translation string
     Deprecated: iMSCP_Database::getRawInstance() method -- will be removed in a later release
     Deprecated: Usage of customer ID field -- will be removed in a later release
-    Enhancement: Make use of application cache for caching of merged (imscp.conf, database) and database configuration
-    Enhancement: Make use of application cache for caching of rootkit logs (html versions)
+    Enhancement: Make use of application cache for caching of configuration data (lifetime: indefinitely till change)
+    Enhancement: Make use of application cache for caching of rootkit logs (lifetime: 24 hours)
+    Enhancement: Make use of application cache for caching of service statuses (lifetime: 20 minutes)
     Enhancement: Make use of Zend APC cache backend; fallback to Zend File backend if APC extension isn't available
     Enhancement: Make customers able to edit mail autoresponder message even if the autoresponder is not activated yet
     Enhancement: Make customers able to select more than one catch-all address in catch-all addresses drop-down list

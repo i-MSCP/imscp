@@ -26,7 +26,6 @@ use iMSCP_PHPini as PhpIni;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
 use Zend_Form as Form;
-use Zend_Session as Session;
 
 /***********************************************************************************************************************
  * Functions
@@ -368,6 +367,7 @@ function updateResellerUser(Form $form)
 {
     global $resellerId;
 
+    $error = false;
     $errFieldsStack = [];
     $db = Database::getInstance();
 
@@ -395,6 +395,7 @@ function updateResellerUser(Form $form)
 
         if (empty($resellerIps)) {
             set_page_message(tr('You must assign at least one IP to this reseller.'), 'error');
+            $error = true;
         }
 
         // Check for max domains limit
@@ -422,7 +423,9 @@ function updateResellerUser(Form $form)
             $rs = false;
         }
 
-        if (!$rs) $errFieldsStack[] = 'max_sub_cnt';
+        if (!$rs) {
+            $errFieldsStack[] = 'max_sub_cnt';
+        }
 
         // check for max domain aliases limit
         if (imscp_limit_check($data['max_als_cnt'])) {
@@ -435,7 +438,9 @@ function updateResellerUser(Form $form)
             $rs = false;
         }
 
-        if (!$rs) $errFieldsStack[] = 'max_als_cnt';
+        if (!$rs) {
+            $errFieldsStack[] = 'max_als_cnt';
+        }
 
         // Check for max mail accounts limit
         if (imscp_limit_check($data['max_mail_cnt'])) {
@@ -448,7 +453,9 @@ function updateResellerUser(Form $form)
             $rs = false;
         }
 
-        if (!$rs) $errFieldsStack[] = 'max_mail_cnt';
+        if (!$rs) {
+            $errFieldsStack[] = 'max_mail_cnt';
+        }
 
         // Check for max ftp accounts limit
         if (imscp_limit_check($data['max_ftp_cnt'])) {
@@ -552,7 +559,7 @@ function updateResellerUser(Form $form)
             $phpini->loadResellerPermissions(); // Reset reseller PHP permissions to default values
         }
 
-        if (empty($errFieldsStack) && !Session::namespaceIsset('pageMessages')) { // Update process begin here
+        if (empty($errFieldsStack) && !$error) {// Update process begin here
             EventsManager::getInstance()->dispatch(Events::onBeforeEditUser, [
                 'userId'   => $resellerId,
                 'userData' => $form->getValues()
@@ -700,14 +707,12 @@ function updateResellerUser(Form $form)
             );
             set_page_message('Reseller has been updated.', 'success');
             redirectTo('users.php');
+        } elseif(!empty($errFieldsStack)) {
+            iMSCP_Registry::set('errFieldsStack', $errFieldsStack);
         }
     } catch (Exception $e) {
         $db->rollBack();
         throw $e;
-    }
-
-    if (!empty($errFieldsStack)) {
-        iMSCP_Registry::set('errFieldsStack', $errFieldsStack);
     }
 }
 
@@ -851,8 +856,8 @@ $tpl->assign([
 ]);
 
 generateNavigation($tpl);
-generatePageMessage($tpl);
 generatePage($tpl, $form);
+generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
