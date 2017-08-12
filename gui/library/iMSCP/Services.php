@@ -46,7 +46,7 @@ class iMSCP_Services implements iterator, countable
     public function __construct()
     {
         $this->cache = Registry::get('iMSCP_Application')->getCache();
-        $values = iMSCP_Registry::get('dbConfig')->toArray();
+        $values = Registry::get('dbConfig')->toArray();
 
         // Gets list of services port names
         $services = array_filter(
