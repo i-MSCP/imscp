@@ -855,7 +855,7 @@ function deleteDomainAlias($customerId, $mainDomainId, $aliasId, $aliasName, $al
             [$customerId]
         );
         if ($stmt->rowCount()) {
-            $ftpGroupData = $stmt->fetchRow(PDO::FETCH_COLUMN);
+            $ftpGroupData = $stmt->fetchRow(PDO::FETCH_ASSOC);
             $members = array_filter(
                 preg_split('/,/', $ftpGroupData['members'], -1, PREG_SPLIT_NO_EMPTY),
                 function ($member) use ($aliasName) {

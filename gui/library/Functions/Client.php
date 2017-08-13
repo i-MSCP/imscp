@@ -428,13 +428,13 @@ function deleteSubdomain($id)
                 SELECT groupname, members
                 FROM ftp_group
                 JOIN ftp_users USING(gid)
-                WHERE userid LIKE CONCAT('%@', ?)
+                WHERE userid LIKE CONCAT('%@', '?')
                 LIMIT 1
             ",
             $row['subdomain_name']
         );
         if ($stmt->rowCount()) {
-            $ftpGroupData = $stmt->fetchRow(PDO::FETCH_COLUMN);
+            $ftpGroupData = $stmt->fetchRow(PDO::FETCH_ASSOC);
             $members = array_filter(
                 preg_split('/,/', $ftpGroupData['members'], -1, PREG_SPLIT_NO_EMPTY),
                 function ($member) use ($row) {
@@ -512,14 +512,14 @@ function deleteSubdomainAlias($id)
     $domainId = get_user_domain_id($_SESSION['user_id']);
 
     $stmt = exec_query(
-        '
-            SELECT CONCAT(t1.subdomain_alias_name, ' . ', t2.alias_name) AS subdomain_alias_name,
+        "
+            SELECT CONCAT(t1.subdomain_alias_name, '.', t2.alias_name) AS subdomain_alias_name,
                 t1.subdomain_alias_mount
             FROM subdomain_alias AS t1
             JOIN domain_aliasses AS t2 USING(alias_id)
             WHERE t2.domain_id = ?
             AND t1.subdomain_alias_id = ?
-        ',
+        ",
         [$domainId, $id]
     );
 
@@ -551,7 +551,7 @@ function deleteSubdomainAlias($id)
             $row['subdomain_alias_name']
         );
         if ($stmt->rowCount()) {
-            $ftpGroupData = $stmt->fetchRow(PDO::FETCH_COLUMN);
+            $ftpGroupData = $stmt->fetchRow(PDO::FETCH_ASSOC);
             $members = array_filter(
                 preg_split('/,/', $ftpGroupData['members'], -1, PREG_SPLIT_NO_EMPTY),
                 function ($member) use ($row) {
