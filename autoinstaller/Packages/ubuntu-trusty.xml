@@ -293,7 +293,7 @@
                 pinning_pin_priority="1001"
                 allow_switch="remote_server"
         >
-            <package>libmysqlclient18=5.5*</package>
+            <package>libmysqlclient18</package>
             <package>libmysqlclient20</package>
             <package>mysql-community-client</package>
             <package>mysql-common</package>
@@ -381,7 +381,7 @@
         >
             <package>libmysqlclient18</package>
             <package>libperconaserverclient18</package>
-            <package>mysql-common=5.5*</package>
+            <package>mysql-common</package>
             <package>percona-server-client-5.5</package>
             <package>percona-server-common-5.5</package>
             <package>percona-server-server-5.5</package>
@@ -399,7 +399,7 @@
         >
             <package>libmysqlclient18</package>
             <package>libperconaserverclient18.1</package>
-            <package>mysql-common=5.5*</package>
+            <package>mysql-common</package>
             <package>percona-server-client-5.6</package>
             <package>percona-server-common-5.6</package>
             <package>percona-server-server-5.6</package>
@@ -415,7 +415,7 @@
                 pinning_pin_priority="1001"
                 allow_switch="remote_server"
         >
-            <package>libmysqlclient18=5.5*</package>
+            <package>libmysqlclient18</package>
             <package>libperconaserverclient20</package>
             <package>mysql-common</package>
             <package>percona-server-client-5.7</package>
@@ -428,7 +428,7 @@
                 pinning_package="libmysqlclient18 mysql-common mysql-server-5.5"
                 pinning_pin="release o=Ubuntu,n=trusty"
                 pinning_pin_priority="1001"
-                allow_switch="mysql_5.5,mysql_5.6,mysql_5.7,mariadb_5.5,mariadb_10.0,mariadb_10.1,percona_5.5,percona_5.6,percona_5.7"
+                allow_switch="mysql_5.5,mysql_5.6,mysql_5.7,mariadb_5.5,mariadb_10.0,mariadb_10.1,mariadb_10.2,percona_5.5,percona_5.6,percona_5.7"
         >
             <package>libmysqlclient18</package>
             <package>mysql-client-5.5</package>

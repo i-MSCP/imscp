@@ -515,10 +515,17 @@ sub _buildPackageList
         # Map of alternative descriptions to aternative names
         my %altDescs;
         for( keys %{$data} ) {
+            # Skip unsupported alternatives by arch
+            if(defined $data->{$_}->{'required_arch'}
+                && `dpkg-architecture -qDEB_HOST_ARCH` !~ /^$data->{$_}->{'required_arch'}$/
+            ) {
+                next;
+            }
+            
             $altDescs{$data->{$_}->{'description'} || $_} = $_;
 
             # If there is no alternative set yet, set selected alternative 
-            # to default alternative and force dialog to make user able change it
+            # to default alternative and force dialog to make user able to change it
             if ( $sAlt eq '' && $data->{$_}->{'default'} ) {
                 $sAlt = $_;
                 $needDialog = 1;

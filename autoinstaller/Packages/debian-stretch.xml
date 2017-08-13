@@ -303,13 +303,32 @@
             <package pre_install_tasks="/bin/mkdir -p /etc/mysql/mariadb.conf.d">mariadb-server-10.2</package>
             <package>mysql-common</package>
         </mariadb_10.2>
+        <percona_5.7
+                description="Percona 5.7 server"
+                class="Servers::sqld::percona"
+                repository="http://repo.percona.com/apt stretch main"
+                repository_key_id="8507EFA5"
+                repository_key_srv="keyserver.ubuntu.com"
+                pinning_package="libperconaserverclient20 libperconaserverclient20-dev percona-server-client-5.7 percona-server-common-5.7 percona-server-server-5.7"
+                pinning_pin="origin repo.percona.com"
+                pinning_pin_priority="1001"
+                allow_switch="remote_server"
+                required_arch="amd64"
+        >
+            <package>libmariadbclient18</package>
+            <package>libperconaserverclient20</package>
+            <package>mysql-common</package>
+            <package>percona-server-client-5.7</package>
+            <package>percona-server-common-5.7</package>
+            <package>percona-server-server-5.7</package>
+        </percona_5.7>
         <remote_server
                 description="Remote SQL server"
                 class="Servers::sqld::remote"
                 pinning_package="libmariadbclient18 mariadb-client-10.1 mariadb-common mysql-common"
                 pinning_pin="release o=Debian,n=stretch"
                 pinning_pin_priority="1001"
-                allow_switch="mariadb_10.1"
+                allow_switch="mariadb_10.1,mariadb_10.2,percona_5.7"
         >
             <package>libmariadbclient18</package>
             <package>mariadb-common</package>
