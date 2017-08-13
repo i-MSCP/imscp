@@ -259,7 +259,7 @@ class iMSCP_Services implements iterator, countable
                 $status = true;
             }
 
-            $this->cache->save($status, $identifier, array(), 1200);
+            $this->cache->save($status, $identifier, [], 1200);
         } else {
             $status = $this->cache->load($identifier);
         }

@@ -129,7 +129,7 @@ if (!empty($antiRootkitLogFiles)) {
                 $content = '<strong style="color:red">' . tr("%s doesn't exist or is empty.", $logFile) . '</strong>';
             }
 
-            $cache->save($content, $cacheId, array(), 86400);
+            $cache->save($content, $cacheId, [], 86400);
         }
 
         $tpl->assign([
