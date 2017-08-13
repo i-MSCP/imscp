@@ -102,6 +102,7 @@ SERVERS
     Fixed: Several warnings raised by POSTFIX(1) when files located inside its directories are not owned by the `postfix' user (Postfix)
     Fixed: Unwanted leading character in server alias names - Alternative URLs feature (Httpd servers)
     Removed: sql_mode parameter from the mysql/imscp.cnf configuration file; it is now set on a per session basis) (SQL servers)
+    Disallow recursive directory listing (ProFTPD)
 
 SERVICES
     Fixed: MOUNT(2) operation failures are ignored (imscp_mountall)
