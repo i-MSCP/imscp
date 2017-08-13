@@ -93,9 +93,9 @@ class iMSCP_Database
             PDO::ATTR_DEFAULT_FETCH_MODE       => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES         => true, # FIXME should be FALSE but we must first review all SQL queries
             PDO::ATTR_ERRMODE                  => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_STRINGIFY_FETCHES        => false, # Useless as long PDO::ATTR_EMULATE_PREPARES is true
-            PDO::MYSQL_ATTR_INIT_COMMAND       => "SET SESSION sql_mode = 'NO_AUTO_CREATE_USER', SESSION group_concat_max_len = 16384",
-            PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true # FIXME should be FALSE but we must first review all SQL queries
+            PDO::ATTR_STRINGIFY_FETCHES        => false, // Useless as long PDO::ATTR_EMULATE_PREPARES is true
+            PDO::MYSQL_ATTR_INIT_COMMAND       => "SET SESSION sql_mode = 'NO_AUTO_CREATE_USER', SESSION group_concat_max_len = 65535",
+            PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true // FIXME should be FALSE but we must first review all SQL queries
         ];
 
         $this->_db = new PDO("$type:host=$host;dbname=$name;charset=utf8", $user, $pass, $driverOptions);

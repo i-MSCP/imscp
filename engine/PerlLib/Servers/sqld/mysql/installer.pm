@@ -572,6 +572,7 @@ sub _buildConf
 [mysqld]
 performance_schema = 0
 max_connections = 500
+max_allowed_packet = 500M
 EOF
 
     ( my $user = main::setupGetQuestion( 'DATABASE_USER' ) ) =~ s/"/\\"/g;
