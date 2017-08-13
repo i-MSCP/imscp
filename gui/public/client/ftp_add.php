@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP team
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,7 +18,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP\Crypt as Crypt;
 use iMSCP\VirtualFileSystem as VirtualFileSystem;
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Exception as iMSCPException;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -27,7 +32,6 @@ use iMSCP\VirtualFileSystem as VirtualFileSystem;
 /**
  * Generate domain type list
  *
- * @throws iMSCP_Exception
  * @param int $mainDmnId Customer main domain id
  * @param iMSCP_pTemplate $tpl
  * @return void
@@ -131,8 +135,7 @@ function getDomainList($mainDmnName, $mainDmnId, $dmnType = 'dmn')
 /**
  * Add Ftp account
  *
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
+ * @throws iMSCPException
  * @return bool TRUE on success, FALSE on failure
  */
 function addAccount()
@@ -182,16 +185,17 @@ function addAccount()
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
     $vfs = new VirtualFileSystem($_SESSION['user_logged']);
-    if ($homeDir !== '/' && !$vfs->exists($homeDir, VirtualFileSystem::VFS_TYPE_DIR)) {
+    if ($homeDir !== '/'
+        && !$vfs->exists($homeDir, VirtualFileSystem::VFS_TYPE_DIR)
+    ) {
         set_page_message(tr("Directory '%s' doesn't exists.", $homeDir), 'error');
         return false;
     }
 
-    $cfg = iMSCP_Registry::get('config');
     $username .= '@' . encode_idna($dmnName);
-    $encryptedPassword = \iMSCP\Crypt::sha512($passwd);
-    $shell = '/bin/sh';
-    $homeDir = utils_normalizePath('/' . $cfg['USER_WEB_DIR'] . '/' . $mainDmnProps['domain_name'] . '/' . $homeDir);
+    $homeDir = utils_normalizePath(
+        '/' . Registry::get('config')['USER_WEB_DIR'] . '/' . $mainDmnProps['domain_name'] . '/' . $homeDir
+    );
     $stmt = exec_query(
         '
             SELECT t1.admin_name, t1.admin_sys_uid, t1.admin_sys_gid, t2.domain_disk_limit, t3.name AS quota_entry
@@ -209,71 +213,67 @@ function addAccount()
     try {
         $db->beginTransaction();
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddFtp, [
+        EventsManager::getInstance()->dispatch(Events::onBeforeAddFtp, [
             'ftpUserId'    => $username,
-            'ftpPassword'  => $encryptedPassword,
+            'ftpPassword'  => $passwd,
             'ftpUserUid'   => $row1['admin_sys_uid'],
             'ftpUserGid'   => $row1['admin_sys_gid'],
-            'ftpUserShell' => $shell,
+            'ftpUserShell' => '/bin/sh',
             'ftpUserHome'  => $homeDir
         ]);
 
         exec_query(
-            '
+            "
                 INSERT INTO ftp_users (
                     userid, admin_id, passwd, uid, gid, shell, homedir, status
                 ) VALUES (
-                    ?, ?, ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, ?, ?, ?, ?, 'toadd'
                 )
-            ',
+            ",
             [
-                $username, $_SESSION['user_id'], $encryptedPassword, $row1['admin_sys_uid'], $row1['admin_sys_gid'],
-                $shell, $homeDir, 'toadd'
+                $username, $_SESSION['user_id'], Crypt::sha512($passwd), $row1['admin_sys_uid'], $row1['admin_sys_gid'],
+                '/bin/sh', $homeDir
             ]
         );
 
-        $stmt = exec_query('SELECT members FROM ftp_group WHERE groupname = ?', $row1['admin_name']);
+        exec_query(
+            "
+                INSERT INTO ftp_group (groupname, gid, members) VALUES (?, ?, ?)
+                ON DUPLICATE KEY UPDATE members = CONCAT(members, ',', ?)
+            ",
+            [$row1['admin_name'], $row1['admin_sys_gid'], $username, $username]
+        );
 
-        if ($stmt->rowCount()) {
-            exec_query('UPDATE ftp_group SET members = ? WHERE groupname = ?', [
-                $stmt->fetchRow(PDO::FETCH_COLUMN) . ",$username", $row1['admin_name']
-            ]);
-        } else {
-            exec_query('INSERT INTO ftp_group (groupname, gid, members) VALUES (?, ?, ?)', [
-                $row1['admin_name'], $row1['admin_sys_gid'], $username
-            ]);
-        }
-        
         if (!$row1['quota_entry']) {
-            $quotaLimit = ($row1['domain_disk_limit']) ? $row1['domain_disk_limit'] * 1024 * 1024 : 0;
-
             exec_query(
-                '
+                "
                     INSERT INTO quotalimits (
                         name, quota_type, per_session, limit_type, bytes_in_avail, bytes_out_avail, bytes_xfer_avail,
                         files_in_avail, files_out_avail, files_xfer_avail
                     ) VALUES (
-                        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                        ?, 'group', 'false', 'hard', ?, 0, 0, 0, 0, 0
                      )
-                ',
-                [$row1['admin_name'], 'group', 'false', 'hard', $quotaLimit, 0, 0, 0, 0, 0]
+                ",
+                [$row1['admin_name'], ($row1['domain_disk_limit']) ? $row1['domain_disk_limit'] * 1024 * 1024 : 0]
             );
         }
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddFtp, [
+        EventsManager::getInstance()->dispatch(Events::onAfterAddFtp, [
             'ftpUserId'    => $username,
-            'ftpPassword'  => $encryptedPassword,
+            'ftpPassword'  => $passwd,
             'ftpUserUid'   => $row1['admin_sys_uid'],
             'ftpUserGid'   => $row1['admin_sys_gid'],
-            'ftpUserShell' => $shell,
+            'ftpUserShell' => '/bin/sh',
             'ftpUserHome'  => $homeDir
         ]);
 
         $db->commit();
         send_request();
-        write_log(sprintf('A new FTP account (%s) has been created by %s', $username, $_SESSION['user_logged']), E_USER_NOTICE);
+        write_log(
+            sprintf('A new FTP account (%s) has been created by %s', $username, $_SESSION['user_logged']), E_USER_NOTICE
+        );
         set_page_message(tr('FTP account successfully added.'), 'success');
-    } catch (iMSCP_Exception $e) {
+    } catch (iMSCPException $e) {
         $db->rollBack();
         if ($e->getCode() == 23000) {
             set_page_message(tr('FTP account already exists.'), 'error');
@@ -332,14 +332,16 @@ function generatePage($tpl)
 
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 check_login('user');
 
 customerHasFeature('ftp') or showBadRequestErrorPage();
 
 $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
-if (is_xhr() && isset($_POST['domain_type'])) {
+if (is_xhr()
+    && isset($_POST['domain_type'])
+) {
     echo json_encode(
         getDomainList($mainDmnProps['domain_name'], $mainDmnProps['domain_id'], clean_input($_POST['domain_type']))
     );
@@ -380,7 +382,7 @@ $tpl->assign([
     'TR_CANCEL'            => tr('Cancel')
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
     /** @var $e iMSCP_Events_Event */
     $translations = $e->getParam('translations');
     $translations['core']['close'] = tr('Close');
@@ -392,7 +394,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

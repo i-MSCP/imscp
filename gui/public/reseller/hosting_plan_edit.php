@@ -478,11 +478,11 @@ function checkInputData()
     }
 
     if (!empty($errFieldsStack)) {
-        return true;
+        iMSCP_Registry::set('errFieldsStack', $errFieldsStack);
+        return false;
     }
-    
-    iMSCP_Registry::set('errFieldsStack', $errFieldsStack);
-    return false;
+
+    return true;
 }
 
 /**

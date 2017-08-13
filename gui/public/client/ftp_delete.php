@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP team
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,79 +18,87 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Exception as iMSCPException;
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Main
  */
 
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 check_login('user');
 
-if (!customerHasFeature('ftp') || !isset($_GET['id'])) {
+if (!customerHasFeature('ftp')
+    || !isset($_GET['id'])
+) {
     showBadRequestErrorPage();
 }
 
-$ftpUserId = clean_input($_GET['id']);
-$stmt = exec_query('SELECT `gid` FROM `ftp_users` WHERE `userid` = ? AND `admin_id` = ?', [
-    $ftpUserId, $_SESSION['user_id']
-]);
+$userid = clean_input($_GET['id']);
+
+$stmt = exec_query(
+    'SELECT admin_name as groupname FROM ftp_users JOIN admin USING(admin_id) WHERE userid = ? AND admin_id = ?',
+    [$userid, $_SESSION['user_id']]
+);
 
 if (!$stmt->rowCount()) {
     showBadRequestErrorPage();
 }
 
 $row = $stmt->fetchRow();
-$ftpUserGid = $row['gid'];
+$groupname = $row['groupname'];
+
 $db = iMSCP_Database::getInstance();
 
 try {
     $db->beginTransaction();
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteFtp, ['ftpUserId' => $ftpUserId]);
+    EventsManager::getInstance()->dispatch(Events::onBeforeDeleteFtp, ['ftpUserId' => $userid]);
 
-    $stmt = exec_query("SELECT `groupname`, `members` FROM `ftp_group` WHERE `gid` = ?", $ftpUserGid);
+    $stmt = exec_query('SELECT members FROM ftp_group WHERE groupname = ?', $groupname);
 
     if ($stmt->rowCount()) {
         $row = $stmt->fetchRow();
-        $groupName = $row['groupname'];
         $members = preg_split('/,/', $row['members'], -1, PREG_SPLIT_NO_EMPTY);
-        $member = array_search($ftpUserId, $members);
+        $member = array_search($userid, $members);
 
         if (false !== $member) {
             unset($members[$member]);
 
-            if (!empty($members)) {
-                exec_query('UPDATE `ftp_group` SET `members` = ? WHERE `gid` = ?', [
-                    implode(',', $members), $ftpUserGid
-                ]);
+            if (empty($members)) {
+                exec_query('DELETE FROM ftp_group WHERE groupname = ?', $groupname);
+                exec_query('DELETE FROM quotalimits WHERE name = ?', $groupname);
+                exec_query('DELETE FROM quotatallies WHERE name = ?', $groupname);
             } else {
-                exec_query('DELETE FROM `ftp_group` WHERE `groupname` = ?', $groupName);
-                exec_query('DELETE FROM `quotalimits` WHERE `name` = ?', $groupName);
-                exec_query('DELETE FROM `quotatallies` WHERE `name` = ?', $groupName);
+                exec_query('UPDATE ftp_group SET members = ? WHERE groupname = ?', [
+                    implode(',', $members), $groupname]
+                );
             }
         }
     }
 
-    $cfg = iMSCP_Registry::get('config');
-    exec_query('UPDATE `ftp_users` SET `status` = ? WHERE `userid` = ?', ['todelete', $ftpUserId]);
+    exec_query("UPDATE ftp_users SET status = 'todelete' WHERE userid = ?", $userid);
+
+    $cfg = Registry::get('config');
 
     if (isset($cfg['FILEMANAGER_PACKAGE']) && $cfg['FILEMANAGER_PACKAGE'] == 'Pydio') {
-        // Quick fix to delete Ftp preferences directory as created by Pydio
-        // FIXME: Move this statement at engine level
-        $userPrefDir = $cfg['GUI_PUBLIC_DIR'] . '/tools/ftp/data/plugins/auth.serial/' . $ftpUserId;
+        $userPrefDir = $cfg['GUI_PUBLIC_DIR'] . '/tools/ftp/data/plugins/auth.serial/' . $userid;
         if (is_dir($userPrefDir)) {
             utils_removeDir($userPrefDir);
         }
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteFtp, ['ftpUserId' => $ftpUserId]);
+    EventsManager::getInstance()->dispatch(Events::onAfterDeleteFtp, ['ftpUserId' => $userid]);
 
     $db->commit();
     send_request();
     write_log(sprintf('An FTP account has been deleted by %s', $_SESSION['user_logged']), E_USER_NOTICE);
     set_page_message(tr('FTP account successfully deleted.'), 'success');
-} catch (iMSCP_Exception $e) {
+} catch (iMSCPException $e) {
     $db->rollBack();
     throw $e;
 }

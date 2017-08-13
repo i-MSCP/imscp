@@ -36,6 +36,7 @@ FRONTEND
     Enhancement: Make use of application cache for caching of rootkit logs (lifetime: 24 hours)
     Enhancement: Make use of application cache for caching of service statuses (lifetime: 20 minutes)
     Enhancement: Make use of Zend APC cache backend; fallback to Zend File backend if APC extension isn't available
+    Enhancement: Make customers able to delete their subdomains without first having to delete FTP and mail accounts
     Enhancement: Make customers able to edit mail autoresponder message even if the autoresponder is not activated yet
     Enhancement: Make customers able to select more than one catch-all address in catch-all addresses drop-down list
     Enhancement: Make customers able to show/hide default mail accounts
@@ -70,6 +71,7 @@ FRONTEND
     Review: Hide the i-MSCP update interface when Git version is in use (admin UI level)
     Review: Make use of short syntax for arrays
     Review: Extend Zend_Registry class instead of reinventing the wheel
+    Review: Show an explicite warning when the legacy and unsecure telnet server is running (service statuses)
     Review: Skip the intermediate edit page when mail autoresponder is being enabled and that the message is already set
     Rewritten: Add administrator interface (admin level)
     Rewritten: Edit user and personal data interfaces (all UI levels)

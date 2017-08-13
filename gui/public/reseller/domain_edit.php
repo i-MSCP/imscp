@@ -984,17 +984,14 @@ function reseller_checkAndUpdateData($domainId)
             write_log(sprintf('Domain %s has been updated by %s', decode_idna($data['domain_name']), $userLogged), E_USER_NOTICE);
             return true;
         }
+
+        iMSCP_Registry::set('errFieldsStack', $errFieldsStack);
+        return false;
     } catch (iMSCP_Exception $e) {
         $db->rollBack();
         throw $e;
     }
-
-    if (!empty($errFieldsStack)) {
-        iMSCP_Registry::set('errFieldsStack', $errFieldsStack);
-    }
-
-    return false;
-} // end reseller_updateData()
+}
 
 /**
  * Validates a new service limit

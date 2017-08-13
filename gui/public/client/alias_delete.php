@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -46,7 +46,7 @@ $stmt = exec_query(
 
 if ($stmt->rowCount()) {
     $row = $stmt->fetchRow();
-    deleteDomainAlias($row['domain_id'], $id, $row['alias_name'], $row['alias_mount']);
+    deleteDomainAlias($_SESSION['user_id'], $row['domain_id'], $id, $row['alias_name'], $row['alias_mount']);
     redirectTo('domains_manage.php');
 }
 

@@ -18,6 +18,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Database as Database;
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Exception as iMSCPException;
+use iMSCP_Registry as Registry;
+
 /**
  * Translate mail type
  *
@@ -57,30 +63,9 @@ function user_trans_mail_type($mailAcc, $mailType)
 }
 
 /**
- * Returns translated gender code
- *
- * @param string $code Gender code to be returned
- * @param bool $nullOnBad Tells whether or not null must be returned on unknow $code
- * @return null|string Translated gender or null in some circonstances.
- */
-function get_gender_by_code($code, $nullOnBad = false)
-{
-    switch (strtolower($code)) {
-        case 'm':
-        case 'M':
-            return tr('Male');
-        case 'f':
-        case 'F':
-            return tr('Female');
-        default:
-            return !$nullOnBad ? tr('Unknown') : NULL;
-    }
-}
-
-/**
  * Tells whether or not the current customer can access to the given feature(s)
  *
- * @throws iMSCP_Exception When $featureName is not known
+ * @throws iMSCPException When $featureName is not known
  * @param array|string $featureNames Feature name(s) (insensitive case)
  * @param bool $forceReload If true force data to be reloaded
  * @return bool TRUE if $featureName is available for customer, FALSE otherwise
@@ -91,7 +76,7 @@ function customerHasFeature($featureNames, $forceReload = false)
     static $debug = false;
 
     if (NULL === $availableFeatures || $forceReload) {
-        $cfg = iMSCP_Registry::get('config');
+        $cfg = Registry::get('config');
         $debug = (bool)$cfg['DEBUG'];
         $dmnProps = get_domain_default_props($_SESSION['user_id']);
         $availableFeatures = [
@@ -127,7 +112,9 @@ function customerHasFeature($featureNames, $forceReload = false)
         ];
 
         if ($cfg['IMSCP_SUPPORT_SYSTEM']) {
-            $stmt = exec_query('SELECT support_system FROM reseller_props WHERE reseller_id = ?', $_SESSION['user_created_by']);
+            $stmt = exec_query(
+                'SELECT support_system FROM reseller_props WHERE reseller_id = ?', $_SESSION['user_created_by']
+            );
             $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
             $availableFeatures['support'] = ($row['support_system'] == 'yes');
         } else {
@@ -140,7 +127,7 @@ function customerHasFeature($featureNames, $forceReload = false)
         $featureName = strtolower($featureName);
 
         if ($debug && !array_key_exists($featureName, $availableFeatures)) {
-            throw new iMSCP_Exception(
+            throw new iMSCPException(
                 sprintf("Feature %s is not known by the customerHasFeature() function.", $featureName)
             );
         }
@@ -271,7 +258,7 @@ function getMountpoints($domainId)
 /**
  * Get mount point and document root for the given domain
  *
- * @throws iMSCP_Exception
+ * @throws iMSCPException
  * @param int $domainId Domain unique identifier
  * @param string $domainType Domain type (dmn,als,sub,alssub)
  * @param int $ownerId Domain owner unique identifier
@@ -312,12 +299,12 @@ function getDomainMountpoint($domainId, $domainType, $ownerId)
             ';
             break;
         default:
-            throw new iMSCP_Exception('Unknown domain type');
+            throw new iMSCPException('Unknown domain type');
     }
 
     $stmt = exec_query($query, [$domainId, $ownerId]);
     if (!$stmt->rowCount()) {
-        throw new iMSCP_Exception("Couldn't find domain data");
+        throw new iMSCPException("Couldn't find domain data");
     }
 
     return $stmt->fetchRow(PDO::FETCH_NUM);
@@ -367,7 +354,9 @@ function parseMaildirsize($maildirsizeFilePath, $refreshData = false)
 
     $quotaDefinition = explode(',', $line, 2);
 
-    if (!isset($quotaDefinition[0]) || !preg_match('/(\d+)S/i', $quotaDefinition[0], $m)) {
+    if (!isset($quotaDefinition[0])
+        || !preg_match('/(\d+)S/i', $quotaDefinition[0], $m)
+    ) {
         // No quota definition. Skip processing...
         fclose($fh);
         return false;
@@ -375,7 +364,9 @@ function parseMaildirsize($maildirsizeFilePath, $refreshData = false)
 
     $maildirsize['quota_bytes'] = $m[1];
 
-    if (isset($quotaDefinition[1]) && preg_match('/(\d+)C/i', $quotaDefinition[1], $m)) {
+    if (isset($quotaDefinition[1])
+        && preg_match('/(\d+)C/i', $quotaDefinition[1], $m)
+    ) {
         $maildirsize['quota_messages'] = $m[1];
     }
 
@@ -390,4 +381,238 @@ function parseMaildirsize($maildirsizeFilePath, $refreshData = false)
 
     fclose($fh);
     return $_SESSION['maildirsize'][$maildirsizeFilePath] = $maildirsize;
+}
+
+/**
+ * Delete the given subdomain, including any entity that belong to it
+ *
+ * @param int $id Subdomain unique identifier
+ * @return void
+ */
+function deleteSubdomain($id)
+{
+    ignore_user_abort(true);
+    set_time_limit(0);
+
+    $stmt = exec_query(
+        "
+            SELECT t1.domain_id, CONCAT(t1.subdomain_name, '.', t2.domain_name) AS subdomain_name, t1.subdomain_mount
+            FROM subdomain AS t1
+            JOIN domain AS t2 USING(domain_id)
+            WHERE t1.subdomain_id = ?
+            AND t2.domain_admin_id = ?
+        ",
+        [$id, $_SESSION['user_id']]
+    );
+
+    if (!$stmt->rowCount()) {
+        showBadRequestErrorPage();
+    }
+
+    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+
+    $db = Database::getInstance();
+
+    try {
+        $db->beginTransaction();
+
+        EventsManager::getInstance()->dispatch(Events::onBeforeDeleteSubdomain, [
+            'subdomainId'   => $id,
+            'subdomainName' => $row['subdomain_name'],
+            'type'          => 'sub'
+        ]);
+
+        // Delete FTP groups and FTP accounting/limit data
+        $stmt = exec_query(
+            "
+                SELECT groupname, members
+                FROM ftp_group
+                JOIN ftp_users USING(gid)
+                WHERE userid LIKE CONCAT('%@', ?)
+                LIMIT 1
+            ",
+            $row['subdomain_name']
+        );
+        if ($stmt->rowCount()) {
+            $ftpGroupData = $stmt->fetchRow(PDO::FETCH_COLUMN);
+            $members = array_filter(
+                preg_split('/,/', $ftpGroupData['members'], -1, PREG_SPLIT_NO_EMPTY),
+                function ($member) use ($row) {
+                    return !preg_match("/@{$row['subdomain_name']}$/", $member);
+                }
+            );
+
+            if (empty($members)) {
+                exec_query('DELETE FROM ftp_group WHERE groupname = ?', $ftpGroupData['groupname']);
+                exec_query('DELETE FROM quotalimits WHERE name = ?', $ftpGroupData['groupname']);
+                exec_query('DELETE FROM quotatallies WHERE name = ?', $ftpGroupData['groupname']);
+            } else {
+                exec_query('UPDATE ftp_group SET members = ? WHERE groupname = ?', [
+                    implode(',', $members), $ftpGroupData['groupname']
+                ]);
+            }
+
+            unset($ftpGroupData, $members);
+        }
+
+        // Delete PHP ini entries
+        exec_query("DELETE FROM php_ini WHERE domain_id = ? AND domain_type = 'sub'", $id);
+
+        // Schedule FTP accounts deletion
+        exec_query("UPDATE ftp_users SET status = 'todelete' WHERE userid LIKE ?", '%@' . $row['subdomain_name']);
+
+        // Schedule mail accounts deletion
+        exec_query("UPDATE mail_users SET status = 'todelete' WHERE sub_id = ? AND mail_type LIKE '%subdom_%'", $id);
+
+        // Schedule SSL certificates deletion
+        exec_query("UPDATE ssl_certs SET status = 'todelete' WHERE domain_id = ? AND domain_type = 'sub'", $id);
+
+        // Schedule protected area deletion        
+        exec_query("UPDATE htaccess SET status = 'todelete' WHERE dmn_id = ? AND path LIKE ?", [
+            $row['domain_id'], utils_normalizePath($row['subdomain_mount']) . '%'
+        ]);
+
+        // Schedule subdomain deletion
+        exec_query("UPDATE subdomain SET subdomain_status = 'todelete' WHERE subdomain_id = ?", $id);
+
+        EventsManager::getInstance()->dispatch(Events::onAfterDeleteSubdomain, [
+            'subdomainId'   => $id,
+            'subdomainName' => $row['subdomain_name'],
+            'type'          => 'sub'
+        ]);
+
+        $db->commit();
+        send_request();
+        write_log(
+            sprintf(
+                'Deletion of the %s subdomain has been scheduled by %s', decode_idna($row['subdomain_alias_name']),
+                decode_idna($_SESSION['user_logged'])
+            ),
+            E_USER_NOTICE
+        );
+        set_page_message(tr('Subdomain scheduled for deletion.'), 'success');
+    } catch (iMSCPException $e) {
+        $db->rollBack();
+        write_log(sprintf('System was unable to remove a subdomain: %s', $e->getMessage()), E_ERROR);
+        set_page_message(tr("Couldn't delete subdomain. An unexpected error occurred."), 'error');
+    }
+}
+
+/**
+ * Delete the given subdomain alias, including any entity that belong to it
+ *
+ * @param int $id Subdomain alias unique identifier
+ * @return void
+ */
+function deleteSubdomainAlias($id)
+{
+    ignore_user_abort(true);
+    set_time_limit(0);
+
+    $domainId = get_user_domain_id($_SESSION['user_id']);
+
+    $stmt = exec_query(
+        '
+            SELECT CONCAT(t1.subdomain_alias_name, ' . ', t2.alias_name) AS subdomain_alias_name,
+                t1.subdomain_alias_mount
+            FROM subdomain_alias AS t1
+            JOIN domain_aliasses AS t2 USING(alias_id)
+            WHERE t2.domain_id = ?
+            AND t1.subdomain_alias_id = ?
+        ',
+        [$domainId, $id]
+    );
+
+    if (!$stmt->rowCount()) {
+        showBadRequestErrorPage();
+    }
+
+    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $db = Database::getInstance();
+
+    try {
+        $db->beginTransaction();
+
+        EventsManager::getInstance()->dispatch(Events::onBeforeDeleteSubdomain, [
+            'subdomainId'   => $id,
+            'subdomainName' => $row['subdomain_alias_name'],
+            'type'          => 'alssub'
+        ]);
+
+        // Delete FTP groups and FTP accounting/limit data
+        $stmt = exec_query(
+            "
+                SELECT groupname, members
+                FROM ftp_group
+                JOIN ftp_users USING(gid)
+                WHERE userid LIKE CONCAT('%@', ?)
+                LIMIT 1
+            ",
+            $row['subdomain_alias_name']
+        );
+        if ($stmt->rowCount()) {
+            $ftpGroupData = $stmt->fetchRow(PDO::FETCH_COLUMN);
+            $members = array_filter(
+                preg_split('/,/', $ftpGroupData['members'], -1, PREG_SPLIT_NO_EMPTY),
+                function ($member) use ($row) {
+                    return !preg_match("/@{$row['subdomain_alias_name']}$/", $member);
+                }
+            );
+
+            if (empty($members)) {
+                exec_query('DELETE FROM ftp_group WHERE groupname = ?', $ftpGroupData['groupname']);
+                exec_query('DELETE FROM quotalimits WHERE name = ?', $ftpGroupData['groupname']);
+                exec_query('DELETE FROM quotatallies WHERE name = ?', $ftpGroupData['groupname']);
+            } else {
+                exec_query('UPDATE ftp_group SET members = ? WHERE groupname = ?', [
+                    implode(',', $members), $ftpGroupData['groupname']
+                ]);
+            }
+
+            unset($ftpGroupData, $members);
+        }
+
+        // Delete PHP ini entries
+        exec_query("DELETE FROM php_ini WHERE domain_id = ? AND domain_type = 'subals'", $id);
+
+        // Schedule FTP accounts deletion
+        exec_query("UPDATE ftp_users SET status = 'todelete' WHERE userid LIKE ?", '%@' . $row['subdomain_alias_name']);
+
+        // Schedule mail accounts deletion
+        exec_query("UPDATE mail_users SET status = 'todelete' WHERE sub_id = ? AND mail_type LIKE '%alssub_%'", $id);
+
+        // Schedule SSL certificates deletion
+        exec_query("UPDATE ssl_certs SET status = 'todelete' WHERE domain_id = ? AND domain_type = 'alssub'", $id);
+
+        // Schedule protected areas deletion
+        exec_query("UPDATE htaccess SET status = 'todelete' WHERE dmn_id = ? AND path LIKE ?", [
+            $domainId, utils_normalizePath($row['subdomain_alias_mount']) . '%'
+        ]);
+
+        // Schedule subdomain aliases deletion
+        exec_query("UPDATE subdomain_alias SET subdomain_alias_status = 'todelete' WHERE subdomain_alias_id = ?", $id);
+
+        EventsManager::getInstance()->dispatch(Events::onAfterDeleteSubdomain, [
+            'subdomainId'   => $id,
+            'subdomainName' => $row['subdomain_alias_name'],
+            'type'          => 'alssub'
+        ]);
+
+        $db->commit();
+
+        send_request();
+        write_log(
+            sprintf(
+                'Deletion of the %s subdomain has been scheduled by %s', decode_idna($row['subdomain_alias_name']),
+                decode_idna($_SESSION['user_logged'])
+            ),
+            E_USER_NOTICE
+        );
+        set_page_message(tr('Subdomain scheduled for deletion.'), 'success');
+    } catch (iMSCPException $e) {
+        $db->rollBack();
+        write_log(sprintf('System was unable to remove a subdomain: %s', $e->getMessage()), E_ERROR);
+        set_page_message(tr("Couldn't delete subdomain. An unexpected error occurred."), 'error');
+        redirectTo('domains_manage.php');
+    }
 }

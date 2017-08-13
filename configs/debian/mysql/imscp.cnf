@@ -3,3 +3,4 @@ host     = {DATABASE_HOST}
 port     = {DATABASE_PORT}
 user     = "{DATABASE_USER}"
 password = "{DATABASE_PASSWORD}"
+max_allowed_packet = 500M

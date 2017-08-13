@@ -4,7 +4,7 @@
         $('#domain_type').change(function () {
             $.post(
                 "ftp_add.php",
-                {"domain_type": this.value},
+                { "domain_type": this.value },
                 function (data) {
                     var select = $("#domain_name");
                     select.empty();

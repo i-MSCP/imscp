@@ -419,12 +419,12 @@ function checkInputData()
         }
     }
 
-    if (empty($errFieldsStack)) {
-        return true;
+    if (!empty($errFieldsStack)) {
+        iMSCP_Registry::set('errFieldsStack', $errFieldsStack);
+        return false;
     }
 
-    iMSCP_Registry::set('errFieldsStack', $errFieldsStack);
-    return false;
+    return true;
 }
 
 /**

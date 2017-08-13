@@ -18,10 +18,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Exception as iMSCPException;
+use iMSCP_Registry as Registry;
+
 /**
  * Gets data for the given email template and the given user
  *
- * @throws iMSCP_Exception
+ * @throws iMSCPException
  * @param int $userId User unique identifier
  * @param string $tplName Template name
  * @return array An associative array containing mail data:
@@ -42,7 +47,7 @@ function get_email_tpl_data($userId, $tplName)
     );
 
     if (!$stmt->rowCount()) {
-        throw new iMSCP_Exception("Couldn't find user data");
+        throw new iMSCPException("Couldn't find user data");
     }
     $row = $stmt->fetchRow();
 
@@ -63,7 +68,8 @@ function get_email_tpl_data($userId, $tplName)
 }
 
 /**
- * Sets data for the given email template and the given user using the given data
+ * Sets data for the given email template and the given user using the given
+ * data
  *
  * @param int $userId User unique identifier
  * @param string $tplName Template name
@@ -180,7 +186,8 @@ i-MSCP Mailer');
 }
 
 /**
- * Sets lostpassword activation email template data for the given user, using given data.
+ * Sets lostpassword activation email template data for the given user, using
+ * given data
  *
  * @see set_email_tpl_data()
  * @param int $adminId User unique identifier
@@ -232,7 +239,8 @@ i-MSCP Mailer');
 }
 
 /**
- * Sets lostpassword password email template data for the given user, using given data
+ * Sets lostpassword password email template data for the given user, using
+ * given data
  *
  * @see set_email_tpl_data()
  * @param int $userId User unique identifier - Template owner
@@ -326,7 +334,7 @@ function encode_mime_header($string, $charset = 'UTF-8')
 /**
  * Send a mail using given data
  *
- * @throws iMSCP_Exception
+ * @throws iMSCPException
  * @param array $data An associative array containing mail data:
  *  - mail_id      : Email identifier
  *  - fname        : OPTIONAL Receiver firstname
@@ -337,16 +345,15 @@ function encode_mime_header($string, $charset = 'UTF-8')
  *  - sender_email : OPTIONAL Sender email (if present, passed through `Reply-To' header)
  *  - subject      : Subject of the email to be sent
  *  - message      : Message to be sent
- *  - placeholders : OPTIONAL An array where keys are placeholders to replace and values, the replacement values.
- *                   Those placeholders take precedence on the default placeholders.
+ *  - placeholders : OPTIONAL An array where keys are placeholders to replace
+ *                   and values, the replacement values. Those placeholders
+ *                   take precedence on the default placeholders.
  * @return bool TRUE on success, FALSE on failure
  */
 function send_mail($data)
 {
     $data = new ArrayObject($data);
-    $response = iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onSendMail, [
-        'mail_data' => new ArrayObject($data)
-    ]);
+    $response = EventsManager::getInstance()->dispatch(Events::onSendMail, ['mail_data' => new ArrayObject($data)]);
 
     if ($response->isStopped()) { // Allow third-party components to short-circuit this event.
         return true;
@@ -354,12 +361,12 @@ function send_mail($data)
 
     foreach (['mail_id', 'username', 'email', 'subject', 'message'] as $parameter) {
         if (!isset($data[$parameter]) || !is_string($data[$parameter])) {
-            throw new  iMSCP_Exception(sprintf("`%s' parameter is not defined or not a string", $parameter));
+            throw new  iMSCPException(sprintf("`%s' parameter is not defined or not a string", $parameter));
         }
     }
 
     if (isset($data['placeholders']) && !is_array($data['placeholders'])) {
-        throw new  iMSCP_Exception("`placeholders' parameter must be an array of placeholders/replacements");
+        throw new  iMSCPException("`placeholders' parameter must be an array of placeholders/replacements");
     }
 
     $username = decode_idna($data['username']);
@@ -374,7 +381,7 @@ function send_mail($data)
         $name = $username;
     }
 
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
     $scheme = $cfg['BASE_SERVER_VHOST_PREFIX'];
     $host = $cfg['BASE_SERVER_VHOST'];
     $port = $scheme == 'http://' ? $cfg['BASE_SERVER_VHOST_HTTP_PORT'] : $cfg['BASE_SERVER_VHOST_HTTPS_PORT'];

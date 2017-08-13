@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -35,7 +35,7 @@ $id = intval($_GET['id']);
 
 $stmt = exec_query(
     '
-        SELECT t1.domain_id, t1.alias_name, t1.alias_mount
+        SELECT t1.domain_id, t1.domain_admin_id, t1.alias_name, t1.alias_mount
         FROM domain_aliasses AS t1
         JOIN domain AS t2 USING (domain_id)
         JOIN admin AS t3 ON(t3.admin_id = t2.domain_admin_id)
@@ -47,7 +47,7 @@ $stmt = exec_query(
 
 if ($stmt->rowCount()) {
     $row = $stmt->fetchRow();
-    deleteDomainAlias($row['domain_id'], $id, $row['alias_name'], $row['alias_mount']);
+    deleteDomainAlias($row['domain_admin_id'], $row['domain_id'], $id, $row['alias_name'], $row['alias_mount']);
     redirectTo('alias.php');
 }
 

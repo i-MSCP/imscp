@@ -18,6 +18,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Database as Database;
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Exception as iMSCPException;
+use iMSCP_Exception_Database as DatabaseException;
+use iMSCP_Registry as Registry;
 use Mso\IdnaConvert\IdnaConvert;
 
 // Available mail types
@@ -37,7 +43,7 @@ define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
 /**
  * Create default mails accounts
  *
- * @throws iMSCP_Exception
+ * @throws iMSCPException
  * @param int $mainDmnId Customer main domain unique identifier
  * @param string $userEmail Customer email address
  * @param string $dmnName Domain name
@@ -47,11 +53,11 @@ define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
  */
 function createDefaultMailAccounts($mainDmnId, $userEmail, $dmnName, $forwardType = MT_NORMAL_FORWARD, $subId = 0)
 {
-    $db = iMSCP_Database::getInstance();
+    $db = Database::getInstance();
 
     try {
         if ($subId == 0 && $forwardType != MT_NORMAL_FORWARD) {
-            throw new iMSCP_Exception("Mail account forward type doesn't match with provided child domain ID");
+            throw new iMSCPException("Mail account forward type doesn't match with provided child domain ID");
         }
 
         if (empty($userEmail) || !chk_email($userEmail)) {
@@ -94,7 +100,7 @@ function createDefaultMailAccounts($mainDmnId, $userEmail, $dmnName, $forwardTyp
         $db->commit();
     } catch (PDOException $e) {
         $db->rollBack();
-        throw new iMSCP_Exception_Database($e->getMessage(), $e->getCode(), NULL, $e);
+        throw new DatabaseException($e->getMessage(), $e->getCode(), NULL, $e);
     }
 }
 
@@ -190,13 +196,11 @@ function imscp_domain_exists($domainName, $resellerId)
         $parentDomain = substr($domainName, $domainPartCnt);
 
         // Execute query the redefined queries for domains/accounts and aliases tables
-        $stmt = exec_query($queryDomain, [$parentDomain, $resellerId]);
-        if ($stmt->fetchRow(PDO::FETCH_COLUMN) > 0) {
+        if (exec_query($queryDomain, [$parentDomain, $resellerId])->fetchRow(PDO::FETCH_COLUMN) > 0) {
             return true;
         }
 
-        $stmt = exec_query($queryAliases, [$parentDomain, $resellerId]);
-        if ($stmt->fetchRow(PDO::FETCH_COLUMN) > 0) {
+        if (exec_query($queryAliases, [$parentDomain, $resellerId])->fetchRow(PDO::FETCH_COLUMN) > 0) {
             return true;
         }
     }
@@ -274,7 +278,7 @@ function get_domain_default_props($domainAdminId, $createdBy = NULL)
 /**
  * Return main domain unique identifier of the given customer
  *
- * @throws iMSCP_Exception in case the domain id cannot be found
+ * @throws iMSCPException in case the domain id cannot be found
  * @param int $customeId Customer unique identifier
  * @return int main domain unique identifier
  */
@@ -288,7 +292,7 @@ function get_user_domain_id($customeId)
 
     $stmt = exec_query('SELECT domain_id FROM domain WHERE domain_admin_id = ?', $customeId);
     if (!$stmt->rowCount()) {
-        throw new iMSCP_Exception(sprintf("Couldn't find domain ID of user with ID %s", $customeId));
+        throw new iMSCPException(sprintf("Couldn't find domain ID of user with ID %s", $customeId));
     }
 
     return $stmt->fetchRow(PDO::FETCH_COLUMN);
@@ -364,8 +368,6 @@ function translate_dmn_status($status, $showError = false)
 /**
  * Recalculates limits for the given reseller
  *
- * Important:
- *
  * This is not based on the objects consumed by customers. This is based on objects assigned by the reseller to its
  * customers.
  *
@@ -410,7 +412,7 @@ function update_reseller_c_props($resellerId)
 /**
  * Activate or deactivate the given customer account
  *
- * @throws iMSCP_Exception|iMSCP_Exception_Database
+ * @throws iMSCPException|DatabaseException
  * @param int $customerId Customer unique identifier
  * @param string $action Action to schedule
  * @return void
@@ -425,7 +427,7 @@ function change_domain_status($customerId, $action)
     } else if ($action == 'activate') {
         $newStatus = 'toenable';
     } else {
-        throw new iMSCP_Exception("Unknown action: $action");
+        throw new iMSCPException("Unknown action: $action");
     }
 
     $stmt = exec_query(
@@ -439,24 +441,24 @@ function change_domain_status($customerId, $action)
     );
 
     if (!$stmt->rowCount()) {
-        throw new iMSCP_Exception(sprintf("Couldn't find domain for user with ID %s", $customerId));
+        throw new iMSCPException(sprintf("Couldn't find domain for user with ID %s", $customerId));
     }
 
     $row = $stmt->fetchRow();
     $domainId = $row['domain_id'];
     $adminName = decode_idna($row['admin_name']);
-    $db = iMSCP_Database::getInstance();
+    $db = Database::getInstance();
 
     try {
         $db->beginTransaction();
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeChangeDomainStatus, [
+        EventsManager::getInstance()->dispatch(Events::onBeforeChangeDomainStatus, [
             'customerId' => $customerId,
             'action'     => $action
         ]);
 
         if ($action == 'deactivate') {
-            if (iMSCP_Registry::get('config')['HARD_MAIL_SUSPENSION']) { # SMTP/IMAP/POP disabled
+            if (Registry::get('config')['HARD_MAIL_SUSPENSION']) { # SMTP/IMAP/POP disabled
                 exec_query('UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ?', [
                     'todisable', 'no', $domainId
                 ]);
@@ -502,7 +504,7 @@ function change_domain_status($customerId, $action)
         );
         exec_query('UPDATE domain_dns SET domain_dns_status = ? WHERE domain_id = ?', [$newStatus, $domainId]);
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterChangeDomainStatus, [
+        EventsManager::getInstance()->dispatch(Events::onAfterChangeDomainStatus, [
             'customerId' => $customerId,
             'action'     => $action
         ]);
@@ -511,13 +513,19 @@ function change_domain_status($customerId, $action)
         send_request();
 
         if ($action == 'deactivate') {
-            write_log(sprintf('%s: scheduled deactivation of customer account: %s', $_SESSION['user_logged'], $adminName), E_USER_NOTICE);
+            write_log(
+                sprintf('%s: scheduled deactivation of customer account: %s', $_SESSION['user_logged'], $adminName),
+                E_USER_NOTICE
+            );
             set_page_message(tr('Customer account successfully scheduled for deactivation.'), 'success');
         } else {
-            write_log(sprintf('%s: scheduled activation of customer account: %s', $_SESSION['user_logged'], $adminName), E_USER_NOTICE);
+            write_log(
+                sprintf('%s: scheduled activation of customer account: %s', $_SESSION['user_logged'], $adminName),
+                E_USER_NOTICE
+            );
             set_page_message(tr('Customer account successfully scheduled for activation.'), 'success');
         }
-    } catch (iMSCP_Exception $e) {
+    } catch (iMSCPException $e) {
         $db->rollBack();
         throw $e;
     }
@@ -526,7 +534,7 @@ function change_domain_status($customerId, $action)
 /**
  * Deletes an SQL user
  *
- * @throws iMSCP_Exception_Database
+ * @throws DatabaseException
  * @param int $dmnId Domain unique identifier
  * @param int $userId Sql user unique identifier
  * @return bool TRUE on success, FALSE otherwise
@@ -556,7 +564,7 @@ function sql_delete_user($dmnId, $userId)
     $host = $row['sqlu_host'];
     $dbName = $row['sqld_name'];
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlUser, [
+    EventsManager::getInstance()->dispatch(Events::onBeforeDeleteSqlUser, [
         'sqlUserId'   => $userId,
         'sqlUsername' => $user,
         'sqlUserhost' => $host
@@ -579,7 +587,7 @@ function sql_delete_user($dmnId, $userId)
     exec_query('DELETE FROM sql_user WHERE sqlu_id = ?', $userId);
     execute_query('FLUSH PRIVILEGES');
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSqlUser, [
+    EventsManager::getInstance()->dispatch(Events::onAfterDeleteSqlUser, [
         'sqlUserId'   => $userId,
         'sqlUsername' => $user,
         'sqlUserhost' => $host
@@ -608,7 +616,7 @@ function delete_sql_database($dmnId, $dbId)
     $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
     $dbName = $row['sqld_name'];
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlDb, [
+    EventsManager::getInstance()->dispatch(Events::onBeforeDeleteSqlDb, [
         'sqlDbId'         => $dbId,
         'sqlDatabaseName' => $dbName
     ]);
@@ -627,7 +635,7 @@ function delete_sql_database($dmnId, $dbId)
     exec_query(sprintf('DROP DATABASE IF EXISTS %s', quoteIdentifier($dbName)));
     exec_query('DELETE FROM sql_database WHERE domain_id = ? AND sqld_id = ?', [$dmnId, $dbId]);
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSqlDb, [
+    EventsManager::getInstance()->dispatch(Events::onAfterDeleteSqlDb, [
         'sqlDbId'         => $dbId,
         'sqlDatabaseName' => $dbName
     ]);
@@ -638,7 +646,7 @@ function delete_sql_database($dmnId, $dbId)
 /**
  * Deletes the given customer
  *
- * @throws iMSCP_Exception
+ * @throws iMSCPException
  * @param integer $customerId Customer unique identifier
  * @param boolean $checkCreatedBy Tell whether or not customer must have been created by logged-in user
  * @return bool TRUE on success, FALSE otherwise
@@ -669,30 +677,29 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 
     $data = $stmt->fetchRow();
 
-    $db = iMSCP_Database::getInstance();
+    $db = Database::getInstance();
 
     try {
-        // First, we remove customer sessions to avoid any problems
+        // Delete customer session data
         exec_query('DELETE FROM login WHERE user_name = ?', $data['admin_name']);
 
-        // Remove customer's databases and SQL users
+        // Delete SQL databases and SQL users
         $stmt = exec_query('SELECT sqld_id FROM sql_database WHERE domain_id = ?', $data['domain_id']);
-
         while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
             delete_sql_database($data['domain_id'], $row['sqld_id']);
         }
 
         $db->beginTransaction();
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteCustomer, [
+        EventsManager::getInstance()->dispatch(Events::onBeforeDeleteCustomer, [
             'customerId' => $customerId
         ]);
 
-        // Deletes all protected areas data (areas, groups and users)
-
+        // Delete protected areas
         exec_query(
             '
-                DELETE t2, t3, t4 FROM domain AS t1
+                DELETE t2, t3, t4
+                FROM domain AS t1
                 LEFT JOIN htaccess AS t2 ON (t2.dmn_id = t1.domain_id)
                 LEFT JOIN htaccess_users AS t3 ON (t3.dmn_id = t1.domain_id)
                 LEFT JOIN htaccess_groups AS t4 ON (t4.dmn_id = t1.domain_id)
@@ -701,21 +708,33 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
             $data['domain_id']
         );
 
+        // Delete traffic data
         exec_query('DELETE FROM domain_traffic WHERE domain_id = ?', $data['domain_id']);
+
+        // Delete custom DNS
         exec_query('DELETE FROM domain_dns WHERE domain_id = ?', $data['domain_id']);
+
+        // Delete FTP group and FTP accounting/limit data
         exec_query('DELETE FROM ftp_group WHERE groupname = ?', $data['admin_name']);
         exec_query('DELETE FROM quotalimits WHERE name = ?', $data['admin_name']);
         exec_query('DELETE FROM quotatallies WHERE name = ?', $data['admin_name']);
+
+        // Delete support tickets
         exec_query('DELETE FROM tickets WHERE ticket_from = ? OR ticket_to = ?', [$customerId, $customerId]);
+
+        // Delete user gui properties
         exec_query('DELETE FROM user_gui_props WHERE user_id = ?', $customerId);
+
+        // Delete PHP ini
         exec_query('DELETE FROM php_ini WHERE admin_id = ?', $customerId);
 
-        //
-        // Delegated tasks - begin
-        //
-
+        // Schedule FTP accounts deletion
         exec_query("UPDATE ftp_users SET status = 'todelete' WHERE admin_id = ?", $customerId);
+
+        // Schedule mail accounts deletion
         exec_query("UPDATE mail_users SET status = 'todelete' WHERE domain_id = ?", $data['domain_id']);
+
+        // Schedule subdomain aliases deletion
         exec_query(
             "
                 UPDATE subdomain_alias AS t1
@@ -725,10 +744,20 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
             ",
             $data['domain_id']
         );
+
+        // Schedule domain aliases deletion
         exec_query("UPDATE domain_aliasses SET alias_status = 'todelete' WHERE domain_id = ?", $data['domain_id']);
+
+        // Schedule subdomains deletion
         exec_query("UPDATE subdomain SET subdomain_status = 'todelete' WHERE domain_id = ?", $data['domain_id']);
+
+        // Schedule domain deletion
         exec_query("UPDATE domain SET domain_status = 'todelete' WHERE domain_id = ?", $data['domain_id']);
+
+        // Schedule customer deletion
         exec_query("UPDATE admin SET admin_status = 'todelete' WHERE admin_id = ?", $customerId);
+
+        // Schedule SSL certificates deletion
         exec_query(
             "UPDATE ssl_certs SET status = 'todelete' WHERE domain_type = 'dmn' AND domain_id = ?", $data['domain_id']
         );
@@ -736,7 +765,9 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
             "
                 UPDATE ssl_certs
                 SET status = 'todelete'
-                WHERE domain_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?) AND domain_type = 'als'
+                WHERE domain_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
+                AND domain_type = 'als'
+
             ",
             $data['domain_id']
         );
@@ -744,7 +775,8 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
             "
                 UPDATE ssl_certs
                 SET status = 'todelete'
-                WHERE domain_id IN (SELECT subdomain_id FROM subdomain WHERE domain_id = ?) AND domain_type = 'sub'
+                WHERE domain_id IN (SELECT subdomain_id FROM subdomain WHERE domain_id = ?)
+                AND domain_type = 'sub'
             ",
             $data['domain_id']
         );
@@ -753,7 +785,8 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
                 UPDATE ssl_certs
                 SET status = 'todelete'
                 WHERE domain_id IN (
-                    SELECT subdomain_alias_id FROM subdomain_alias
+                    SELECT subdomain_alias_id
+                    FROM subdomain_alias
                     WHERE alias_id IN (SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
                 )
                 AND domain_type = 'alssub'
@@ -761,19 +794,18 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
             $data['domain_id']
         );
 
-        //
-        // Delegated tasks - end
-        //
-
+        // Delete autoreplies log entries
         delete_autoreplies_log_entries();
+
+        // Update reseller properties
         update_reseller_c_props($data['created_by']);
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteCustomer, [
+        EventsManager::getInstance()->dispatch(Events::onAfterDeleteCustomer, [
             'customerId' => $customerId
         ]);
 
         $db->commit();
-    } catch (iMSCP_Exception $e) {
+    } catch (iMSCPException $e) {
         $db->rollBack();
         throw $e;
     }
@@ -787,81 +819,67 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 }
 
 /**
- * Delete the given domain alias (including any related entities)
+ * Delete the given domain alias, including any entity that belong to it
  *
- * @throws iMSCP_Exception_Database
+ * @throws DatabaseException|iMSCPException
+ * @param int $customerId Customer unique identifier
  * @param int $mainDomainId Customer main domain identifier
  * @param int $aliasId Domain alias unique identifier
  * @param string $aliasName Domain alias name
  * @param string $aliasMount Domain alias mount point
- * @throws iMSCP_Exception
+ * @return void
  */
-function deleteDomainAlias($mainDomainId, $aliasId, $aliasName, $aliasMount)
+function deleteDomainAlias($customerId, $mainDomainId, $aliasId, $aliasName, $aliasMount)
 {
     ignore_user_abort(true);
     set_time_limit(0);
 
-    $db = iMSCP_Database::getInstance();
+    $db = Database::getInstance();
 
     try {
         $db->beginTransaction();
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteDomainAlias, [
+        EventsManager::getInstance()->dispatch(Events::onBeforeDeleteDomainAlias, [
             'domainAliasId'   => $aliasId,
             'domainAliasName' => $aliasName
         ]);
 
+        // Delete FTP groups and FTP accounting/limit data
         $stmt = exec_query(
-            "
-                SELECT t1.groupname, t1.gid, t1.members FROM ftp_group AS t1
-                LEFT JOIN domain_aliasses AS t3 ON(alias_id = ?)
-                LEFT JOIN subdomain_alias AS t4 ON(t4.alias_id = t3.alias_id)
-                LEFT JOIN ftp_users AS t2 ON(
-                    userid LIKE CONCAT('%@', t4.subdomain_alias_name, '.', t3.alias_name)
-                    OR userid LIKE CONCAT('%@', t3.alias_name)
-                )
-                WHERE t1.gid = t2.gid LIMIT 1
-            ",
-            $aliasId
+            '
+                SELECT t1.groupname, t1.members
+                FROM ftp_group AS t1
+                JOIN admin AS t2 ON(t2.admin_name = t1.groupname)
+                WHERE admin_id = ?
+            ',
+            [$customerId]
         );
-
         if ($stmt->rowCount()) {
-            $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-            $ftpGname = $row['groupname'];
-            $ftpGgid = $row['gid'];
-            $ftpMembers = preg_split('/,/', $row['members'], -1, PREG_SPLIT_NO_EMPTY);
-
-            $nFtpMembers = [];
-            foreach ($ftpMembers as $ftpMember) {
-                if (!preg_match("/@(?:.+?\\.)*$aliasName$/", $ftpMember)) {
-                    $nFtpMembers[] = $ftpMember;
+            $ftpGroupData = $stmt->fetchRow(PDO::FETCH_COLUMN);
+            $members = array_filter(
+                preg_split('/,/', $ftpGroupData['members'], -1, PREG_SPLIT_NO_EMPTY),
+                function ($member) use ($aliasName) {
+                    return !preg_match("/@(?:.+\\.)*$aliasName$/", $member);
                 }
+            );
+
+            if (empty($members)) {
+                exec_query('DELETE FROM ftp_group WHERE groupname = ?', $ftpGroupData['groupname']);
+                exec_query('DELETE FROM quotalimits WHERE name = ?', $ftpGroupData['groupname']);
+                exec_query('DELETE FROM quotatallies WHERE name = ?', $ftpGroupData['groupname']);
+            } else {
+                exec_query('UPDATE ftp_group SET members = ? WHERE groupname = ?', [
+                    implode(',', $members), $ftpGroupData['groupname']
+                ]);
             }
 
-            if (!empty($nFtpMembers)) {
-                exec_query(
-                    'UPDATE ftp_group SET members = ? WHERE gid = ?', [implode(',', $nFtpMembers), $ftpGgid]
-                );
-            } else {
-                exec_query('DELETE FROM ftp_group WHERE groupname = ?', $ftpGname);
-                exec_query('DELETE FROM quotalimits WHERE name = ?', $ftpGname);
-                exec_query('DELETE FROM quotatallies WHERE name = ?', $ftpGname);
-            }
+            unset($ftpGroupData, $members);
         }
 
-        exec_query(
-            "
-                DELETE ftp_users FROM ftp_users
-                LEFT JOIN domain_aliasses AS t2 ON(alias_id = ?)
-                LEFT JOIN subdomain_alias AS t3 ON(t3.alias_id = t2.alias_id)
-                WHERE (
-                    userid LIKE CONCAT('%@', t3.subdomain_alias_name, '.', t2.alias_name)
-                    OR userid LIKE CONCAT('%@', t2.alias_name)
-                )
-            ",
-            $aliasId
-        );
+        // Delete custom DNS
         exec_query('DELETE FROM domain_dns WHERE alias_id = ?', $aliasId);
+
+        // Delete PHP ini
         exec_query("DELETE FROM php_ini WHERE domain_id = ? AND domain_type = 'als'", $aliasId);
         exec_query(
             "
@@ -871,6 +889,24 @@ function deleteDomainAlias($mainDomainId, $aliasId, $aliasName, $aliasMount)
             ",
             $aliasId
         );
+
+        // Schedule FTP accounts deletion
+        exec_query(
+            "
+                UPDATE ftp_users AS t1
+                LEFT JOIN domain_aliasses AS t2 ON(alias_id = ?)
+                LEFT JOIN subdomain_alias AS t3 USING(alias_id)
+                SET status = 'todelete'
+                WHERE (
+                    userid LIKE CONCAT('%@', t3.subdomain_alias_name, '.', t2.alias_name)
+                    OR
+                    userid LIKE CONCAT('%@', t2.alias_name)
+                )
+            ",
+            $aliasId
+        );
+
+        // Schedule mail accounts deletion
         exec_query(
             "
                 UPDATE mail_users
@@ -884,6 +920,8 @@ function deleteDomainAlias($mainDomainId, $aliasId, $aliasName, $aliasMount)
             ",
             [$aliasId, $aliasId]
         );
+
+        // Schedule SSL certificates deletion
         exec_query(
             "
                 UPDATE ssl_certs
@@ -894,14 +932,20 @@ function deleteDomainAlias($mainDomainId, $aliasId, $aliasName, $aliasMount)
             $aliasId
         );
         exec_query("UPDATE ssl_certs SET status = 'todelete' WHERE domain_id = ? and domain_type = 'als'", $aliasId);
+
+        // Schedule protected areas deletion
         exec_query(
             "UPDATE htaccess SET status = 'todelete' WHERE dmn_id = ? AND path LIKE ?",
             [$mainDomainId, utils_normalizePath($aliasMount) . '%']
         );
+
+        // Schedule subdomain aliases deletion
         exec_query("UPDATE subdomain_alias SET subdomain_alias_status = 'todelete' WHERE alias_id = ?", $aliasId);
+
+        // Schedule domain alias deletion
         exec_query("UPDATE domain_aliasses SET alias_status = 'todelete' WHERE alias_id = ?", $aliasId);
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteDomainAlias, [
+        EventsManager::getInstance()->dispatch(Events::onAfterDeleteDomainAlias, [
             'domainAliasId'   => $aliasId,
             'domainAliasName' => $aliasName
         ]);
@@ -909,11 +953,15 @@ function deleteDomainAlias($mainDomainId, $aliasId, $aliasName, $aliasMount)
         $db->commit();
 
         send_request();
-        write_log(sprintf('%s scheduled deletion of the %s domain alias', $_SESSION['user_logged'], $aliasName), E_USER_NOTICE);
+        write_log(
+            sprintf('%s scheduled deletion of the %s domain alias', $_SESSION['user_logged'], $aliasName),
+            E_USER_NOTICE
+        );
         set_page_message(tr('Domain alias successfully scheduled for deletion.'), 'success');
-    } catch (iMSCP_Exception $e) {
+    } catch (iMSCPException $e) {
         $db->rollBack();
-        throw $e;
+        write_log(sprintf('System was unable to remove a domain alias: %s', $e->getMessage()), E_ERROR);
+        set_page_message(tr("Couldn't delete domain alias. An unexpected error occurred."), 'error');
     }
 }
 
@@ -924,7 +972,7 @@ function deleteDomainAlias($mainDomainId, $aliasId, $aliasName, $aliasMount)
 /**
  * Returns properties for the given reseller
  *
- * @throws iMSCP_Exception When reseller properties are not found
+ * @throws iMSCPException When reseller properties are not found
  * @param int $resellerId Reseller unique identifier
  * @param bool $forceReload Whether or not force properties reload from database
  * @return array
@@ -937,9 +985,7 @@ function imscp_getResellerProperties($resellerId, $forceReload = false)
         $stmt = exec_query('SELECT * FROM reseller_props WHERE reseller_id = ? LIMIT 1', $resellerId);
 
         if (!$stmt->rowCount()) {
-            throw new iMSCP_Exception(
-                tr('Properties for reseller with ID %d were not found in database.', $resellerId)
-            );
+            throw new iMSCPException(tr('Properties for reseller with ID %d were not found in database.', $resellerId));
         }
 
         $properties = $stmt->fetchRow(PDO::FETCH_ASSOC);
@@ -1024,7 +1070,7 @@ function sync_mailboxes_quota($domainId, $newQuota)
         return;
     }
 
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
     $stmt = exec_query('SELECT mail_id, quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL', $domainId);
 
     if (!$stmt->rowCount()) {
@@ -1041,10 +1087,11 @@ function sync_mailboxes_quota($domainId, $newQuota)
     $totalQuota /= 1048576;
     $newQuota /= 1048576;
 
-    if ($newQuota < $totalQuota || (isset($cfg['EMAIL_QUOTA_SYNC_MODE']) && $cfg['EMAIL_QUOTA_SYNC_MODE'])
+    if ($newQuota < $totalQuota
+        || (isset($cfg['EMAIL_QUOTA_SYNC_MODE']) && $cfg['EMAIL_QUOTA_SYNC_MODE'])
         || $totalQuota == 0
     ) {
-        $db = iMSCP_Database::getInstance();
+        $db = Database::getInstance();
         $stmt = $db->prepare('UPDATE mail_users SET quota = ? WHERE mail_id = ?');
         $result = 0;
 
@@ -1126,12 +1173,12 @@ function array_encode_idna($array, $asPath = false)
  */
 function encode_idna($string)
 {
-    if (!iMSCP_Registry::isRegistered('IdnaConvert')) {
-        iMSCP_Registry::set('IdnaConvert', new IdnaConvert());
+    if (!Registry::isRegistered('IdnaConvert')) {
+        Registry::set('IdnaConvert', new IdnaConvert());
     }
 
     try {
-        return iMSCP_Registry::get('IdnaConvert')->encode($string);
+        return Registry::get('IdnaConvert')->encode($string);
     } catch (Exception $e) {
         return $string;
     }
@@ -1145,12 +1192,12 @@ function encode_idna($string)
  */
 function decode_idna($string)
 {
-    if (!iMSCP_Registry::isRegistered('IdnaConvert')) {
-        iMSCP_Registry::set('IdnaConvert', new IdnaConvert());
+    if (!Registry::isRegistered('IdnaConvert')) {
+        Registry::set('IdnaConvert', new IdnaConvert());
     }
 
     try {
-        return iMSCP_Registry::get('IdnaConvert')->decode($string);
+        return Registry::get('IdnaConvert')->decode($string);
     } catch (Exception $e) {
         return $string;
     }
@@ -1237,10 +1284,13 @@ function utils_getMaxFileUpload()
 /**
  * Returns PHP directive value in bytes
  *
- * Note: If $value do not come with shorthand byte value, the value is retured as this.
- * See http://fr2.php.net/manual/en/faq.using.php#faq.using.shorthandbytes for further explaination
+ * Note: If $value do not come with shorthand byte value, the value is retured
+ * as this.
  *
- * @throws iMSCP_Exception
+ * See http://fr2.php.net/manual/en/faq.using.php#faq.using.shorthandbytes for
+ * further explaination
+ *
+ * @throws iMSCPException
  * @param int|string PHP directive value
  * @return int Value in bytes
  */
@@ -1273,7 +1323,8 @@ function utils_getPhpValueInBytes($value)
 /**
  * Normalize the given path (e.g. A//B, A/./B and A/foo/../B all become A/B)
  *
- * It should be understood that this may change the meaning of the path if it contains symbolic links.
+ * It should be understood that this may change the meaning of the path if it
+ * contains symbolic links.
  *
  * @param string $path Path
  * @param bool $posixCompliant Be POSIX compliant regarding initial slashes?
@@ -1288,8 +1339,13 @@ function utils_normalizePath($path, $posixCompliant = false)
     $path = iconv('UTF-8', 'UTF-8//IGNORE//TRANSLIT', $path);
 
     $initialSlashes = strpos($path, '/') === 0;
-    # POSIX allows one or two initial slashes, but treats three or more as single slash.
-    if ($posixCompliant && $initialSlashes && strpos($path, '//') === 0 && strpos($path, '///') !== 0) {
+    // POSIX allows one or two initial slashes, but treats three or more as
+    // single slash.
+    if ($posixCompliant
+        && $initialSlashes
+        && strpos($path, '//') === 0
+        && strpos($path, '///') !== 0
+    ) {
         $initialSlashes = 2;
     }
 
@@ -1300,7 +1356,10 @@ function utils_normalizePath($path, $posixCompliant = false)
         if ($segment === '' || $segment === '.')
             continue;
 
-        if ($segment !== '..' || (!$initialSlashes && !$newSegments) || ($newSegments && end($newSegments) === '..')) {
+        if ($segment !== '..'
+            || (!$initialSlashes && !$newSegments)
+            || ($newSegments && end($newSegments) === '..')
+        ) {
             array_push($newSegments, $segment);
         } elseif ($newSegments) {
             array_pop($newSegments);
@@ -1330,26 +1389,30 @@ function utils_removeDir($directory)
         return false;
     }
 
-    if (is_readable($directory)) {
-        $handle = opendir($directory);
+    if (!is_readable($directory)) {
+        return true;
+    }
+    $handle = opendir($directory);
 
-        while (false !== ($item = readdir($handle))) {
-            if ($item != '.' && $item != '..') {
-                $path = $directory . '/' . $item;
-
-                if (is_dir($path)) {
-                    utils_removeDir($path);
-                } else {
-                    @unlink($path);
-                }
-            }
+    while (false !== ($item = readdir($handle))) {
+        if ($item == '.' || $item == '..') {
+            continue;
         }
 
-        closedir($handle);
+        $path = $directory . '/' . $item;
 
-        if (!@rmdir($directory)) {
-            return false;
+        if (is_dir($path)) {
+            utils_removeDir($path);
+        } else {
+            @unlink($path);
         }
+
+    }
+
+    closedir($handle);
+
+    if (!@rmdir($directory)) {
+        return false;
     }
 
     return true;
@@ -1370,14 +1433,15 @@ function utils_removeDir($directory)
 function utils_arrayMergeRecursive(array $array1, array $array2)
 {
     foreach ($array2 as $key => $value) {
-        if (array_key_exists($key, $array1)) {
-            if (is_int($key)) {
-                $array1[] = $value;
-            } elseif (is_array($value) && is_array($array1[$key])) {
-                $array1[$key] = utils_arrayMergeRecursive($array1[$key], $value);
-            } else {
-                $array1[$key] = $value;
-            }
+        if (!array_key_exists($key, $array1)) {
+            $array1[$key] = $value;
+            continue;
+        }
+
+        if (is_int($key)) {
+            $array1[] = $value;
+        } elseif (is_array($value) && is_array($array1[$key])) {
+            $array1[$key] = utils_arrayMergeRecursive($array1[$key], $value);
         } else {
             $array1[$key] = $value;
         }
@@ -1391,23 +1455,25 @@ function utils_arrayMergeRecursive(array $array1, array $array2)
  *
  * @param array $array1 The array to compare from
  * @param array $array2 An array to compare against
- * @return array An array containing all the entries from array1 that are not present in $array2.
+ * @return array An array containing all the entries from array1 that are not
+ *               present in $array2.
  */
 function utils_arrayDiffRecursive(array $array1, array $array2)
 {
     $diff = [];
     foreach ($array1 as $key => $value) {
-        if (array_key_exists($key, $array2)) {
-            if (is_array($value)) {
-                $arrDiff = utils_arrayDiffRecursive($value, $array2[$key]);
+        if (!array_key_exists($key, $array2)) {
+            $diff[$key] = $value;
+            continue;
+        }
 
-                if (count($arrDiff)) {
-                    $diff[$key] = $arrDiff;
-                }
-            } elseif ($value != $array2[$key]) {
-                $diff[$key] = $value;
+        if (is_array($value)) {
+            $arrDiff = utils_arrayDiffRecursive($value, $array2[$key]);
+
+            if (count($arrDiff)) {
+                $diff[$key] = $arrDiff;
             }
-        } else {
+        } elseif ($value != $array2[$key]) {
             $diff[$key] = $value;
         }
     }
@@ -1433,11 +1499,13 @@ function is_number($number)
 /**
  * Is the request a Javascript XMLHttpRequest?
  *
- * Returns true if the request‘s "X-Requested-With" header contains "XMLHttpRequest".
+ * Returns true if the request‘s "X-Requested-With" header contains
+ * "XMLHttpRequest".
  *
  * Note: jQuery and Prototype Javascript libraries both set this header with every Ajax request.
  *
- * @return boolean TRUE if the request‘s "X-Requested-With" header contains "XMLHttpRequest", FALSE otherwise
+ * @return boolean TRUE if the request‘s "X-Requested-With" header contains
+ *                 "XMLHttpRequest", FALSE otherwise
  */
 function is_xhr()
 {
@@ -1481,7 +1549,8 @@ function isSerialized($data)
  * Check if the given string look like json data
  *
  * @param $string $string $string to be checked
- * @return boolean TRUE if the given string look like json data, FALSE otherwise
+ * @return boolean TRUE if the given string look like json data, FALSE
+ *                 otherwise
  */
 function isJson($string)
 {
@@ -1539,10 +1608,16 @@ function getRequestHost()
 
     $host = '';
     foreach ($possibleHostSources as $source) {
-        if (!empty($host)) break;
-        if (empty($_SERVER[$source])) continue;
+        if (!empty($host)) {
+            break;
+        }
+
+        if (empty($_SERVER[$source])) {
+            continue;
+        }
 
         $host = $_SERVER[$source];
+
         if (array_key_exists($source, $sourceTransformations)) {
             $host = $sourceTransformations[$source]($host);
         }
@@ -1552,9 +1627,11 @@ function getRequestHost()
     // host is lowercase as per RFC 952/2181
     $host = strtolower(preg_replace('/:\d+$/', '', trim($host)));
 
-    // as the host can come from the user (HTTP_HOST and depending on the configuration, SERVER_NAME too can come from the user)
-    // check that it does not contain forbidden characters (see RFC 952 and RFC 2181)
-    // use preg_replace() instead of preg_match() to prevent DoS attacks with long host names
+    // as the host can come from the user (HTTP_HOST and depending on the
+    // configuration, SERVER_NAME too can come from the user) check that it
+    // does not contain forbidden characters (see RFC 952 and RFC 2181)
+    // use preg_replace() instead of preg_match() to prevent DoS attacks with
+    // long host names
     if ($host && '' !== preg_replace('/(?:^\[)?[a-zA-Z0-9-:\]_]+\.?/', '', $host)) {
         throw new \UnexpectedValueException(sprintf('Invalid Host "%s"', $host));
     }
@@ -1573,7 +1650,9 @@ function getRequestPort()
         return $_SERVER['HTTP_X_FORWARDED_PORT'];
     }
 
-    if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+    if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])
+        && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https'
+    ) {
         return 443;
     }
 
@@ -1606,7 +1685,9 @@ function getHttpHost()
     $scheme = getRequestScheme();
     $port = getRequestPort();
 
-    if (('http' == $scheme && $port == 80) || ('https' == $scheme && $port == 443)) {
+    if (('http' == $scheme && $port == 80)
+        || ('https' == $scheme && $port == 443)
+    ) {
         return getRequestHost();
     }
 
@@ -1623,7 +1704,9 @@ function getRequestBaseUrl()
     $scheme = getRequestScheme();
     $port = getRequestPort();
 
-    if (('http' == $scheme && $port == 80) || ('https' == $scheme && $port == 443)) {
+    if (('http' == $scheme && $port == 80)
+        || ('https' == $scheme && $port == 443)
+    ) {
         return $scheme . '://' . getRequestHost();
     }
 
@@ -1643,7 +1726,9 @@ function getRequestBaseUrl()
  */
 function make_usage_vals($amount, $total)
 {
-    return $total ? sprintf('%.2f', (($percent = ($amount / $total) * 100)) > 100 ? 100 : $percent) : 0;
+    return $total
+        ? sprintf('%.2f', (($percent = ($amount / $total) * 100)) > 100 ? 100 : $percent)
+        : 0;
 }
 
 /**
@@ -1740,7 +1825,7 @@ function write_log($msg, $logLevel = E_USER_WARNING)
     $msg = '[' . getIpAddr() . '] ' . replace_html($msg);
     exec_query('INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)', $msg);
 
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
     if ($logLevel > $cfg['LOG_LEVEL']) {
         return;
     }
@@ -1838,14 +1923,14 @@ function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $uln
 /**
  * Get all software installer options
  *
- * @throws iMSCP_Exception in case software installer options cannot be retrieved
+ * @throws iMSCPException in case software installer options cannot be retrieved
  * @return array An array containing software installer options
  */
 function get_application_installer_conf()
 {
     $stmt = execute_query('SELECT * FROM web_software_options');
     if (!$stmt->rowCount()) {
-        throw new iMSCP_Exception('Unable to retrieve software installer options in database');
+        throw new iMSCPException('Unable to retrieve software installer options in database');
     }
 
     $row = $stmt->fetchRow();
@@ -1855,7 +1940,7 @@ function get_application_installer_conf()
 /**
  * Check wheter the package is still installed this system
  *
- * @throws iMSCP_Exception in case the given user cannot be retrieved in database
+ * @throws iMSCPException in case the given user cannot be retrieved in database
  * @param string $packageInstallType Package install type
  * @param string $packageName Package name
  * @param string $packageVersion Package version
@@ -1868,7 +1953,7 @@ function check_package_is_installed($packageInstallType, $packageName, $packageV
     $stmt = exec_query('SELECT admin_type FROM admin WHERE admin_id = ?', $userId);
 
     if (!$stmt->rowCount()) {
-        throw new iMSCP_Exception('Unable to found the given user in database');
+        throw new iMSCPException('Unable to found the given user in database');
     }
 
     $row = $stmt->fetchRow();
@@ -2070,20 +2155,21 @@ function generate_software_upload_token()
  */
 function daemon_readAnswer(&$socket)
 {
-    if (($answer = @socket_read($socket, 1024, PHP_NORMAL_READ)) !== false) {
-        list($code) = explode(' ', $answer);
-        $code = intval($code);
-
-        if ($code != 250) {
-            write_log(sprintf('i-MSCP daemon returned an unexpected answer: %s', $answer), E_USER_ERROR);
-            return false;
-        }
-    } else {
+    if (($answer = @socket_read($socket, 1024, PHP_NORMAL_READ)) === false) {
         write_log(
             sprintf('Unable to read answer from i-MSCP daemon: %s' . socket_strerror(socket_last_error())), E_USER_ERROR
         );
         return false;
     }
+
+    list($code) = explode(' ', $answer);
+    $code = intval($code);
+
+    if ($code != 250) {
+        write_log(sprintf('i-MSCP daemon returned an unexpected answer: %s', $answer), E_USER_ERROR);
+        return false;
+    }
+
 
     return true;
 }
@@ -2101,19 +2187,19 @@ function daemon_sendCommand(&$socket, $command)
     $commandLength = strlen($command);
 
     while (true) {
-        if (($bytesSent = @socket_write($socket, $command, $commandLength)) !== false) {
-            if ($bytesSent < $commandLength) {
-                $command = substr($command, $bytesSent);
-                $commandLength -= $bytesSent;
-            } else {
-                return true;
-            }
-        } else {
+        if (($bytesSent = @socket_write($socket, $command, $commandLength)) == false) {
             write_log(
                 sprintf("Couldn't send command to i-MSCP daemon: %s", socket_strerror(socket_last_error())),
                 E_USER_ERROR
             );
             return false;
+        }
+
+        if ($bytesSent < $commandLength) {
+            $command = substr($command, $bytesSent);
+            $commandLength -= $bytesSent;
+        } else {
+            return true;
         }
     }
 
@@ -2128,32 +2214,31 @@ function daemon_sendCommand(&$socket, $command)
 function send_request()
 {
     if (
-        ($socket = @socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) !== false &&
-        @socket_connect($socket, '127.0.0.1', 9876) !== false
+        ($socket = @socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === false ||
+        @socket_connect($socket, '127.0.0.1', 9876) === false
     ) {
-        $cfg = iMSCP_Registry::get('config');
-
-        if (daemon_readAnswer($socket) && // Read Welcome message from i-MSCP daemon
-            daemon_sendCommand($socket, "helo {$cfg->Version}") && // Send helo command to i-MSCP daemon
-            daemon_readAnswer($socket) && // Read answer from i-MSCP daemon
-            daemon_sendCommand($socket, 'execute query') && // Send execute query command to i-MSCP daemon
-            daemon_readAnswer($socket) && // Read answer from i-MSCP daemon
-            daemon_sendCommand($socket, 'bye') && // Send bye command to i-MSCP daemon
-            daemon_readAnswer($socket) // Read answer from i-MSCP daemon
-        ) {
-            $ret = true;
-        } else {
-            $ret = false;
-        }
-
-        socket_close($socket);
-    } else {
         write_log(
             sprintf("Couldn't connect to the i-MSCP daemon: %s", socket_strerror(socket_last_error())), E_USER_ERROR
         );
+        return false;
+    }
+
+    $version = Registry::get('config')['Version'];
+
+    if (daemon_readAnswer($socket) && // Read Welcome message from i-MSCP daemon
+        daemon_sendCommand($socket, "helo $version") && // Send helo command to i-MSCP daemon
+        daemon_readAnswer($socket) && // Read answer from i-MSCP daemon
+        daemon_sendCommand($socket, 'execute query') && // Send execute query command to i-MSCP daemon
+        daemon_readAnswer($socket) && // Read answer from i-MSCP daemon
+        daemon_sendCommand($socket, 'bye') && // Send bye command to i-MSCP daemon
+        daemon_readAnswer($socket) // Read answer from i-MSCP daemon
+    ) {
+        $ret = true;
+    } else {
         $ret = false;
     }
 
+    socket_close($socket);
     return $ret;
 }
 
@@ -2168,10 +2253,10 @@ function send_request()
  * called PDOStatement::setFetchMode() on the resultant statement object that is
  * wrapped by the iMSCP_Database_ResultSet object.
  *
- * @see iMSCP_Database::execute()
- * @throws iMSCP_Exception_Database
+ * @see Database::execute()
+ * @throws DatabaseException
  * @param string $query Sql statement to be executed
- * @param array|int|string $parameters OPTIONAL parameters - See iMSCP_Database::execute()
+ * @param array|int|string $parameters OPTIONAL parameters - See Database::execute()
  * @return iMSCP_Database_ResultSet     An iMSCP_Database_ResultSet object
  */
 function execute_query($query, $parameters = NULL)
@@ -2179,7 +2264,7 @@ function execute_query($query, $parameters = NULL)
     static $db = NULL;
 
     if (NULL === $db) {
-        $db = iMSCP_Database::getInstance();
+        $db = Database::getInstance();
     }
 
     try {
@@ -2192,10 +2277,10 @@ function execute_query($query, $parameters = NULL)
         }
 
         if ($stmt == false) {
-            throw new iMSCP_Exception_Database($db->getLastErrorMessage(), $query);
+            throw new DatabaseException($db->getLastErrorMessage(), $query);
         }
     } catch (PDOException $e) {
-        throw new iMSCP_Exception_Database($e->getMessage(), $query, $e->getCode(), $e);
+        throw new DatabaseException($e->getMessage(), $query, $e->getCode(), $e);
     }
 
     return $stmt;
@@ -2204,7 +2289,7 @@ function execute_query($query, $parameters = NULL)
 /**
  * Convenience method to prepare and execute a query.
  *
- * @throws iMSCP_Exception_Database      When query fail
+ * @throws DatabaseException When query fail
  * @param string $query Sql statement
  * @param string|int|array $bind Data to bind to the placeholders
  * @return iMSCP_Database_ResultSet|null A iMSCP_Database_ResultSet object that represents a result set
@@ -2214,13 +2299,13 @@ function exec_query($query, $bind = NULL)
     static $db = NULL;
 
     if (NULL === $db) {
-        $db = iMSCP_Database::getInstance();
+        $db = Database::getInstance();
     }
 
     try {
         $stmt = $db->execute($db->prepare($query), $bind);
     } catch (PDOException $e) {
-        throw new iMSCP_Exception_Database($e->getMessage(), $query, $e->getCode(), $e);
+        throw new DatabaseException($e->getMessage(), $query, $e->getCode(), $e);
     }
 
     return $stmt;
@@ -2239,7 +2324,7 @@ function quoteIdentifier($identifier)
     static $db = NULL;
 
     if (NULL === $db) {
-        $db = iMSCP_Database::getInstance();
+        $db = Database::getInstance();
     }
 
     return $db->quoteIdentifier($identifier);
@@ -2257,7 +2342,7 @@ function quoteValue($value, $parameterType = PDO::PARAM_STR)
     static $db = NULL;
 
     if (NULL === $db) {
-        $db = iMSCP_Database::getInstance();
+        $db = Database::getInstance();
     }
 
     return $db->quote($value, $parameterType);
@@ -2322,10 +2407,10 @@ if (!function_exists('http_build_url')) {
      * @param mixed $url (Part(s) of) an URL in form of a string or associative array like parse_url() returns
      * @param mixed $parts Same as the first argument
      * @param int $flags A bitmask of binary or'ed HTTP_URL constants (Optional)HTTP_URL_REPLACE is the default
-     * @param bool|array $new_url If set, it will be filled with the parts of the composed url like parse_url() would return
+     * @param bool|array $newUrl If set, it will be filled with the parts of the composed url like parse_url() would return
      * @return string URL
      */
-    function http_build_url($url, $parts = [], $flags = HTTP_URL_REPLACE, &$new_url = false)
+    function http_build_url($url, $parts = [], $flags = HTTP_URL_REPLACE, &$newUrl = false)
     {
         $keys = ['user', 'pass', 'port', 'path', 'query', 'fragment'];
 
@@ -2344,41 +2429,41 @@ if (!function_exists('http_build_url')) {
         }
 
         // Parse the original URL
-        $parse_url = parse_url($url);
+        $parseUrl = parse_url($url);
 
         // Scheme and Host are always replaced
         if (isset($parts['scheme'])) {
-            $parse_url['scheme'] = $parts['scheme'];
+            $parseUrl['scheme'] = $parts['scheme'];
         }
 
         if (isset($parts['host'])) {
-            $parse_url['host'] = $parts['host'];
+            $parseUrl['host'] = $parts['host'];
         }
 
         // (If applicable) Replace the original URL with it's new parts
         if ($flags & HTTP_URL_REPLACE) {
             foreach ($keys as $key) {
                 if (isset($parts[$key])) {
-                    $parse_url[$key] = $parts[$key];
+                    $parseUrl[$key] = $parts[$key];
                 }
             }
         } else {
             // Join the original URL path with the new path
             if (isset($parts['path']) && ($flags & HTTP_URL_JOIN_PATH)) {
-                if (isset($parse_url['path'])) {
-                    $parse_url['path'] = rtrim(str_replace(basename($parse_url['path']), '', $parse_url['path']), '/') .
+                if (isset($parseUrl['path'])) {
+                    $parseUrl['path'] = rtrim(str_replace(basename($parseUrl['path']), '', $parseUrl['path']), '/') .
                         '/' . ltrim($parts['path'], '/');
                 } else {
-                    $parse_url['path'] = $parts['path'];
+                    $parseUrl['path'] = $parts['path'];
                 }
             }
 
             // Join the original query string with the new query string
             if (isset($parts['query']) && ($flags & HTTP_URL_JOIN_QUERY)) {
-                if (isset($parse_url['query'])) {
-                    $parse_url['query'] .= '&' . $parts['query'];
+                if (isset($parseUrl['query'])) {
+                    $parseUrl['query'] .= '&' . $parts['query'];
                 } else {
-                    $parse_url['query'] = $parts['query'];
+                    $parseUrl['query'] = $parts['query'];
                 }
             }
         }
@@ -2387,22 +2472,22 @@ if (!function_exists('http_build_url')) {
         // Note: Scheme and Host are never stripped
         foreach ($keys as $key) {
             if ($flags & (int)constant('HTTP_URL_STRIP_' . strtoupper($key))) {
-                unset($parse_url[$key]);
+                unset($parseUrl[$key]);
             }
         }
 
-        $new_url = $parse_url;
+        $newUrl = $parseUrl;
 
         return
-            (isset($parse_url['scheme']) ? $parse_url['scheme'] . '://' : '')
-            . (isset($parse_url['user'])
-                ? $parse_url['user'] . (isset($parse_url['pass'])
-                    ? ':' . $parse_url['pass'] : '') . '@' : '')
-            . (isset($parse_url['host']) ? $parse_url['host'] : '')
-            . (isset($parse_url['port']) ? ':' . $parse_url['port'] : '')
-            . (isset($parse_url['path']) ? $parse_url['path'] : '')
-            . (isset($parse_url['query']) ? '?' . $parse_url['query'] : '')
-            . (isset($parse_url['fragment']) ? '#' . $parse_url['fragment'] : '');
+            (isset($parseUrl['scheme']) ? $parseUrl['scheme'] . '://' : '')
+            . (isset($parseUrl['user'])
+                ? $parseUrl['user'] . (isset($parseUrl['pass'])
+                    ? ':' . $parseUrl['pass'] : '') . '@' : '')
+            . (isset($parseUrl['host']) ? $parseUrl['host'] : '')
+            . (isset($parseUrl['port']) ? ':' . $parseUrl['port'] : '')
+            . (isset($parseUrl['path']) ? $parseUrl['path'] : '')
+            . (isset($parseUrl['query']) ? '?' . $parseUrl['query'] : '')
+            . (isset($parseUrl['fragment']) ? '#' . $parseUrl['fragment'] : '');
     }
 }
 
@@ -2444,7 +2529,7 @@ function getDataTablesPluginTranslations($json = true)
  * Show the given error page
  *
  * @param int $code Code of error page to show (400, 403 or 404)
- * @throws iMSCP_Exception
+ * @throws iMSCPException
  * @return void
  */
 function showErrorPage($code)
@@ -2460,7 +2545,7 @@ function showErrorPage($code)
             $message = 'Not Found';
             break;
         default:
-            throw new iMSCP_Exception(500, 'Unknown error page');
+            throw new iMSCPException(500, 'Unknown error page');
     }
 
     header("Status: $code $message");
@@ -2485,8 +2570,7 @@ EOF
     }
 
     if (!is_xhr()) {
-        $cfg = iMSCP_Registry::get('config');
-        include($cfg['GUI_ROOT_DIR'] . "/public/errordocs/$code.html");
+        include(Registry::get('config')['GUI_ROOT_DIR'] . "/public/errordocs/$code.html");
     }
 
     exit;
@@ -2548,7 +2632,7 @@ function calc_bars($crnt, $max, $bars_max)
 }
 
 /**
- * Turns byte counts to human readable format.
+ * Turns byte counts to human readable format
  *
  * If you feel like a hard-drive manufacturer, you can start counting bytes by power
  * of 1000 (instead of the generous 1024). Just set power to 1000.
@@ -2563,7 +2647,7 @@ function calc_bars($crnt, $max, $bars_max)
  * with the horrible names: bytes, kibibytes, mebibytes, etc.
  *
  * @see http://physics.nist.gov/cuu/Units/binary.html
- * @throws iMSCP_Exception if power or unit value is unknown
+ * @throws iMSCPException if power or unit value is unknown
  * @param int|float $bytes Bytes value to convert
  * @param string $unit OPTIONAL Unit to calculate to
  * @param int $decimals OPTIONAL Number of decimal to be show
@@ -2573,15 +2657,13 @@ function calc_bars($crnt, $max, $bars_max)
 function bytesHuman($bytes, $unit = NULL, $decimals = 2, $power = 1024)
 {
     if ($power == 1000) {
-        $units = [
-            'B' => 0, 'kB' => 1, 'MB' => 2, 'GB' => 3, 'TB' => 4, 'PB' => 5, 'EB' => 6, 'ZB' => 7, 'YB' => 8
-        ];
+        $units = ['B' => 0, 'kB' => 1, 'MB' => 2, 'GB' => 3, 'TB' => 4, 'PB' => 5, 'EB' => 6, 'ZB' => 7, 'YB' => 8];
     } elseif ($power == 1024) {
         $units = [
             'B' => 0, 'kiB' => 1, 'MiB' => 2, 'GiB' => 3, 'TiB' => 4, 'PiB' => 5, 'EiB' => 6, 'ZiB' => 7, 'YiB' => 8
         ];
     } else {
-        throw new iMSCP_Exception('Unknown power value');
+        throw new iMSCPException('Unknown power value');
     }
 
     $value = 0;
@@ -2592,7 +2674,7 @@ function bytesHuman($bytes, $unit = NULL, $decimals = 2, $power = 1024)
                 $pow = floor(log($bytes) / log($power));
                 $unit = array_search($pow, $units);
             } else {
-                throw new iMSCP_Exception('Unknown unit value');
+                throw new iMSCPException('Unknown unit value');
             }
         }
 
@@ -2603,7 +2685,9 @@ function bytesHuman($bytes, $unit = NULL, $decimals = 2, $power = 1024)
 
     // If decimals is not numeric or decimals is less than 0
     // then set default value
-    if (!is_numeric($decimals) || $decimals < 0) {
+    if (!is_numeric($decimals)
+        || $decimals < 0
+    ) {
         $decimals = 2;
     }
 
@@ -2678,7 +2762,8 @@ function mebibyteHuman($value, $unit = NULL)
 }
 
 /**
- * Translates '-1', 'no', 'yes', '0' or mebibyte value string into human readable string
+ * Translates '-1', 'no', 'yes', '0' or mebibyte value string into human
+ * readable string
  *
  * @param int $value variable to be translated
  * @param bool $autosize calculate value in different unit (default false)
@@ -2747,9 +2832,11 @@ function getLastDayOfMonth($month = NULL, $year = NULL)
  */
 function getWebmailList()
 {
-    $config = iMSCP_Registry::get('config');
+    $config = Registry::get('config');
 
-    if (isset($config['WEBMAIL_PACKAGES']) && strtolower($config['WEBMAIL_PACKAGES']) != 'no') {
+    if (isset($config['WEBMAIL_PACKAGES'])
+        && strtolower($config['WEBMAIL_PACKAGES']) != 'no'
+    ) {
         return explode(',', $config['WEBMAIL_PACKAGES']);
     }
 

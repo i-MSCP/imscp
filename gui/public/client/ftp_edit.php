@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP team
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,7 +18,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP\Crypt as Crypt;
 use iMSCP\VirtualFileSystem as VirtualFileSystem;
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -67,31 +71,38 @@ function updateFtpAccount($userid)
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
 
     $vfs = new VirtualFileSystem($_SESSION['user_logged']);
-    if ($homeDir !== '/' && !$vfs->exists($homeDir, VirtualFileSystem::VFS_TYPE_DIR)) {
+    if ($homeDir !== '/'
+        && !$vfs->exists($homeDir, VirtualFileSystem::VFS_TYPE_DIR)
+    ) {
         set_page_message(tr("Directory '%s' doesn't exists.", $homeDir), 'error');
         return false;
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditFtp, [
-        'ftpUserId' => $userid
-    ]);
+    $homeDir = utils_normalizePath(
+        Registry::get('config')['USER_WEB_DIR'] . '/' . $mainDmnProps['domain_name'] . '/' . $homeDir
+    );
 
-    $cfg = iMSCP_Registry::get('config');
-    $homeDir = utils_normalizePath($cfg['USER_WEB_DIR'] . '/' . $mainDmnProps['domain_name'] . '/' . $homeDir);
+    EventsManager::getInstance()->dispatch(Events::onBeforeEditFtp, [
+        'ftpUserId'   => $userid,
+        'ftpPassword' => $passwd,
+        'ftpUserHome' => $homeDir
+    ]);
 
     if ($passwd !== '') {
         exec_query(
-            'UPDATE ftp_users SET passwd = ?, homedir = ?, status = ? WHERE userid = ? AND admin_id = ?',
-            [\iMSCP\Crypt::sha512($passwd), $homeDir, 'tochange', $userid, $_SESSION['user_id']]
+            "UPDATE ftp_users SET passwd = ?, homedir = ?, status = 'tochange' WHERE userid = ? AND admin_id = ?",
+            [Crypt::sha512($passwd), $homeDir, $userid, $_SESSION['user_id']]
         );
     } else {
-        exec_query('UPDATE ftp_users SET homedir = ?, status = ? WHERE userid = ? AND admin_id = ?', [
-            $homeDir, 'tochange', $userid, $_SESSION['user_id']
+        exec_query("UPDATE ftp_users SET homedir = ?, status = 'tochange' WHERE userid = ? AND admin_id = ?", [
+            $homeDir, $userid, $_SESSION['user_id']
         ]);
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditFtp, [
-        'ftpUserId' => $userid
+    EventsManager::getInstance()->dispatch(Events::onAfterEditFtp, [
+        'ftpUserId'   => $userid,
+        'ftpPassword' => $passwd,
+        'ftpUserHome' => $homeDir
     ]);
 
     send_request();
@@ -144,7 +155,7 @@ function generatePage($tpl, $ftpUserId)
 
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 check_login('user');
 
 if (!customerHasFeature('ftp') || !isset($_GET['id'])) {
@@ -152,7 +163,7 @@ if (!customerHasFeature('ftp') || !isset($_GET['id'])) {
 }
 
 $userid = clean_input($_GET['id']);
-$stmt = exec_query('SELECT COUNT(admin_id) FROM ftp_user WHERE userid = ? AND admin_id = ?', [
+$stmt = exec_query('SELECT COUNT(admin_id) FROM ftp_users WHERE userid = ? AND admin_id = ?', [
     $userid, $_SESSION['user_id']
 ]);
 
@@ -184,7 +195,7 @@ $tpl->assign([
     'TR_CANCEL'          => tr('Cancel')
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
     /** @var $e iMSCP_Events_Event */
     $translations = $e->getParam('translations');
     $translations['core']['close'] = tr('Close');
@@ -197,7 +208,7 @@ generatePage($tpl, $userid);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

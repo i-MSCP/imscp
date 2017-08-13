@@ -559,7 +559,7 @@ function updateResellerUser(Form $form)
             $phpini->loadResellerPermissions(); // Reset reseller PHP permissions to default values
         }
 
-        if (empty($errFieldsStack) && !$error) {// Update process begin here
+        if (empty($errFieldsStack) && !$error) { // Update process begin here
             EventsManager::getInstance()->dispatch(Events::onBeforeEditUser, [
                 'userId'   => $resellerId,
                 'userData' => $form->getValues()
