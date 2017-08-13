@@ -172,7 +172,7 @@ class Application
                 'Core',
                 # Make use of 'APC' backend if APC(u) is available, else
                 # fallback to the 'File' backend
-                extension_loaded('apcb') && ini_get('apc.enabled') ? 'Apc' : 'File',
+                extension_loaded('apc') && ini_get('apc.enabled') ? 'Apc' : 'File',
                 [
                     'caching' => (PHP_SAPI != 'cli'),
                     // Cache is never flushed automatically (default)
