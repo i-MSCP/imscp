@@ -428,7 +428,7 @@ function deleteSubdomain($id)
                 SELECT groupname, members
                 FROM ftp_group
                 JOIN ftp_users USING(gid)
-                WHERE userid LIKE CONCAT('%@', '?')
+                WHERE userid LIKE CONCAT('%@', ?)
                 LIMIT 1
             ",
             $row['subdomain_name']
