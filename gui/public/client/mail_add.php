@@ -322,7 +322,7 @@ function generatePage($tpl)
             $mailQuotaLimitMiB = $mailMaxQuotaLimitMib;
             $mailTypeForwardOnly = false;
         } else {
-            set_page_message(tr('You cannot add normal mail account because you have already assigned all your email quota to other mailboxes. If you want to add a new normal mail account, you must first lower the quota assigned to one of your other mailboxes.'), 'static_info');
+            set_page_message(tr('You cannot add normal mail accounts because you have already assigned all your mail quota. If you want to add a normal mail account, you must first lower the quota assigned to one of your other mail account.'), 'static_info');
             set_page_message(tr('For the time being, you can only add forwarded mail account.'), 'static_info');
             # Only for sanity; Attempting to create account involving quota
             # will fail because quota is already full assigned (expected)

@@ -293,7 +293,7 @@ function client_generatePage($tpl)
                 : min(10, $mailMaxQuotaLimitMib);
             $mailTypeForwardOnly = false;
         } else {
-            set_page_message(tr('You cannot change this account to normal mail account because you have already assigned all your mail quota to other mail accounts. If you want to change this account to normal mail account, you must first lower the quota assigned to one of your other mail accounts.'), 'static_info');
+            set_page_message(tr('You cannot make this account a normal mail account because you have already assigned all your mail quota. If you want make this account a normal mail account, you must first lower the quota assigned to one of your other mail account.'), 'static_info');
             set_page_message(tr('For the time being, you can only edit your forwarded mail account.'), 'static_info');
             $mailQuotaLimitBytes = 1048576; // Only for sanity. Customer won't be able to switch to normal mail account
             $mailMaxQuotaLimitMib = 1;
