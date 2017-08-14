@@ -54,7 +54,7 @@ function validatesService($name, $ip, $port, $protocol, $show, $index = '')
     $ip = ($ip == 'localhost') ? '127.0.0.1' : $ip;
 
     if (!preg_match('/^[\w\-]+$/D', $name)) {
-        set_page_message(tr("Invalid services name: %s", $name), 'error');
+        set_page_message(tr("Invalid service name: %s", $name), 'error');
         $errorFieldsIds[] = "name$index";
     } elseif (strlen($name) > 25) {
         set_page_message(tr("Service name cannot be greater than 25 characters.", $name), 'error');
