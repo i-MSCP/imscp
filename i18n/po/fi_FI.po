@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: i-MSCP 1.4.x\n"
+"Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-11 02:43+0000\n"
+"POT-Creation-Date: 2017-08-14 06:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jari <info@jkwebdesign.fi>, 2017\n"
 "Language-Team: Finnish (Finland) (https://www.transifex.com/i-mscp/teams/576/fi_FI/)\n"
@@ -59,10 +59,6 @@ msgstr "%1$s olet kirjautunut nyt käyttäjänä %2$s"
 #, php-format
 msgid "%1$ss - Software"
 msgstr ""
-
-#, php-format
-msgid "%d Service(s) port successfully updateds"
-msgstr "%d Palvelu(n) portit päivitetty onnistuneesti."
 
 #, php-format
 msgid "%d day remaining until account expiration"
@@ -317,9 +313,6 @@ msgstr "Lisää uusi IP osoite"
 
 msgid "Add new protected area"
 msgstr "Lisää uusi suojattu alue"
-
-msgid "Add new service port"
-msgstr "Lisää uusi palveluportti"
 
 msgid "Add permissions"
 msgstr "Lisää oikeudet"
@@ -643,10 +636,6 @@ msgid "Are you sure you want to activate this package?"
 msgstr "Oletko varma, että haluat aktivoida tämän paketin?"
 
 #, php-format
-msgid "Are you sure you want to delete %s service port ?"
-msgstr "Oletko varma, että haluat poistaa palveluportin %s ?"
-
-#, php-format
 msgid "Are you sure you want to delete %s?"
 msgstr "Oletko varma että haluat poistaa %s?"
 
@@ -657,8 +646,8 @@ msgid "Are you sure you want to delete all tickets?"
 msgstr "Oletko varma, että haluat poistaa kaikki tukipyynnöt?"
 
 #, php-format
-msgid "Are you sure you want to delete the %s FTP user?"
-msgstr "Oletko varma, että haluat poistaa FTP käyttäjän %s"
+msgid "Are you sure you want to delete the %s FTP account?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
@@ -671,6 +660,10 @@ msgstr "Oletko varma, että haluat poistaa %s domainin aliaksen?"
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
 msgstr "Oletko varma, että haluat poistaa %s valikon?"
+
+#, php-format
+msgid "Are you sure you want to delete the %s service port ?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1270,6 +1263,9 @@ msgstr ""
 
 #, php-format
 msgid "Couldn't create the %s database."
+msgstr ""
+
+msgid "Couldn't delete domain alias. An unexpected error occurred."
 msgstr ""
 
 msgid "Couldn't delete subdomain. An unexpected error occurred."
@@ -2146,6 +2142,9 @@ msgstr ""
 msgid "Forbidden"
 msgstr "Kielletty"
 
+msgid "Force refresh"
+msgstr ""
+
 msgid "Force retry"
 msgstr "Pakota uudelleen"
 
@@ -2598,6 +2597,10 @@ msgstr "Virheellinen lisäosa-hakemisto: %s"
 
 msgid "Invalid private key or passphrase."
 msgstr "Virheellinen yksityinen avain tai salasana."
+
+#, php-format
+msgid "Invalid services name: %s"
+msgstr ""
 
 msgid "Invalid state/province."
 msgstr ""
@@ -3304,10 +3307,6 @@ msgstr "Salasana puuttuu."
 
 msgid "Password minimum length"
 msgstr "Salasanan minimipituus"
-
-#, php-format
-msgid "Password must be between %d and %d characters."
-msgstr ""
 
 msgid "Password must contain letters and digits."
 msgstr ""
@@ -4130,17 +4129,26 @@ msgstr "Palvelintilastot"
 msgid "Server status"
 msgstr "Palvelimen tila"
 
-msgid "Service Name"
-msgstr "Palvelu"
-
 msgid "Service Unavailable"
 msgstr "Palvelu ei ole saatavilla"
+
+msgid "Service is not running"
+msgstr ""
+
+msgid "Service is running"
+msgstr ""
 
 msgid "Service name"
 msgstr "Palvelu"
 
-msgid "Service name already exists."
-msgstr "Palvelun nimi on jo käytössä"
+msgid "Service name cannot be greater than 25 characters."
+msgstr ""
+
+#, php-format
+msgid "Service port has been updated."
+msgid_plural "%d service ports were updated."
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Service port successfully added"
 msgstr "Palveluportti lisätty onnistuneesti"
@@ -4153,6 +4161,9 @@ msgstr "Palveluportit"
 
 msgid "Service protocol"
 msgstr "Palvelun protolla"
+
+msgid "Service with same name already exists."
+msgstr ""
 
 msgid "Services status"
 msgstr "Palvelun tila"
@@ -4333,9 +4344,6 @@ msgstr "Alidomainin alias"
 msgid "Subdomain alias errors"
 msgstr "Alidomain-aliaksien virheet"
 
-msgid "Subdomain alias scheduled for deletion."
-msgstr "Alidomainin alias odottaa poistoa."
-
 msgid "Subdomain errors"
 msgstr "Alidomainien virheet"
 
@@ -4472,6 +4480,11 @@ msgid ""
 "The DEBUG mode is currently enabled, making resources caching unavailable."
 msgstr ""
 
+msgid ""
+"The Telnet-Server is currently running on your server. This legacy service "
+"is not secure."
+msgstr ""
+
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr ""
@@ -4552,6 +4565,10 @@ msgstr ""
 msgid "The password field is empty."
 msgstr "Virheellinen käyttäjätunnus tai salasana."
 
+#, php-format
+msgid "The password must be between %d and %d characters."
+msgstr ""
+
 msgid "The password must contain letters and digits."
 msgstr ""
 
@@ -4583,21 +4600,6 @@ msgstr ""
 msgid "The street 2 name must be between %d and %d characters."
 msgstr ""
 
-msgid ""
-"The subdomain alias you are trying to remove has mail accounts. Please "
-"remove them first."
-msgstr ""
-
-msgid ""
-"The subdomain you are trying to remove has FTP accounts. Please remove them "
-"first."
-msgstr ""
-
-msgid ""
-"The subdomain you are trying to remove has mail accounts. Please remove them"
-" first."
-msgstr ""
-
 msgid "The uploaded file was only partially uploaded."
 msgstr ""
 
@@ -4622,6 +4624,9 @@ msgstr ""
 
 #, php-format
 msgid "The zipcode must be between %d and %d characters."
+msgstr ""
+
+msgid "There are no service ports yet."
 msgstr ""
 
 msgid ""
@@ -5386,9 +5391,6 @@ msgstr "Sinulla ei ole ryhmiä."
 msgid "You have no open tickets."
 msgstr "Sinulla ei ole avoimia tukipyyntöjä."
 
-msgid "You have not service ports defined."
-msgstr "Sinulla ei ole palveluportteja määritettynä."
-
 msgid ""
 "You have reached the maximum number of domain aliases allowed by your "
 "subscription."
@@ -5747,17 +5749,11 @@ msgstr "alidomainit"
 msgid "suspended"
 msgstr ""
 
-msgid "tcp"
-msgstr "tcp"
-
 msgid "that match with"
 msgstr ""
 
 msgid "traffic"
 msgstr "Liikenne"
-
-msgid "udp"
-msgstr "udp"
 
 msgid "update"
 msgstr "päivitä"

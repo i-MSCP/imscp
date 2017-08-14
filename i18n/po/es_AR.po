@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: i-MSCP 1.4.x\n"
+"Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-11 02:43+0000\n"
+"POT-Creation-Date: 2017-08-14 06:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Miguel Angel <piradoxlanieve@gmail.com>, 2017\n"
 "Language-Team: Spanish (Argentina) (https://www.transifex.com/i-mscp/teams/576/es_AR/)\n"
@@ -61,10 +61,6 @@ msgstr "%1$s estás ahora logueado como %2$s"
 #, php-format
 msgid "%1$ss - Software"
 msgstr ""
-
-#, php-format
-msgid "%d Service(s) port successfully updateds"
-msgstr "%d Puerto(s) de Servicio(s) actualizados satisfactoriamente"
 
 #, php-format
 msgid "%d day remaining until account expiration"
@@ -323,9 +319,6 @@ msgstr "Añadir nueva dirección IP"
 
 msgid "Add new protected area"
 msgstr "Añadir nueva área protegida"
-
-msgid "Add new service port"
-msgstr "Agregar nuevo Puerto de Servicio"
 
 msgid "Add permissions"
 msgstr "Agregar permisos"
@@ -657,10 +650,6 @@ msgid "Are you sure you want to activate this package?"
 msgstr "¿Estás seguro que querés instalar este paquete?"
 
 #, php-format
-msgid "Are you sure you want to delete %s service port ?"
-msgstr "¿estás seguro que querés borrar el puerto de servicio %s?"
-
-#, php-format
 msgid "Are you sure you want to delete %s?"
 msgstr "¿Seguro deseás eliminar %s?"
 
@@ -671,8 +660,8 @@ msgid "Are you sure you want to delete all tickets?"
 msgstr "¿Estás seguro que querés eliminar todos los tickets?"
 
 #, php-format
-msgid "Are you sure you want to delete the %s FTP user?"
-msgstr "¿Estás seguro que querés eliminar el usuario FTP %s?"
+msgid "Are you sure you want to delete the %s FTP account?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
@@ -685,6 +674,10 @@ msgstr "¿Estás seguro que querés elimiinar el alias de dominio %s?"
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
 msgstr "¿Estás seguro que querés eliminar el menú %s?"
+
+#, php-format
+msgid "Are you sure you want to delete the %s service port ?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1292,6 +1285,9 @@ msgstr ""
 
 #, php-format
 msgid "Couldn't create the %s database."
+msgstr ""
+
+msgid "Couldn't delete domain alias. An unexpected error occurred."
 msgstr ""
 
 msgid "Couldn't delete subdomain. An unexpected error occurred."
@@ -2174,6 +2170,9 @@ msgstr ""
 msgid "Forbidden"
 msgstr "Prohibido"
 
+msgid "Force refresh"
+msgstr ""
+
 msgid "Force retry"
 msgstr "Forzar reintento"
 
@@ -2620,6 +2619,10 @@ msgstr ""
 
 msgid "Invalid private key or passphrase."
 msgstr "Llave privada o contraseña inválidas."
+
+#, php-format
+msgid "Invalid services name: %s"
+msgstr ""
 
 msgid "Invalid state/province."
 msgstr ""
@@ -3338,10 +3341,6 @@ msgid "Password is missing."
 msgstr "Contraseña no hallada."
 
 msgid "Password minimum length"
-msgstr ""
-
-#, php-format
-msgid "Password must be between %d and %d characters."
 msgstr ""
 
 msgid "Password must contain letters and digits."
@@ -4171,17 +4170,26 @@ msgstr "Estadísticas del servidor"
 msgid "Server status"
 msgstr "Estado del servidor"
 
-msgid "Service Name"
-msgstr "Nombre del Servicio"
-
 msgid "Service Unavailable"
 msgstr "Servicio No Disponible"
+
+msgid "Service is not running"
+msgstr ""
+
+msgid "Service is running"
+msgstr ""
 
 msgid "Service name"
 msgstr "Nombre del Servicio"
 
-msgid "Service name already exists."
-msgstr "El Nombre de Servicio ya existe."
+msgid "Service name cannot be greater than 25 characters."
+msgstr ""
+
+#, php-format
+msgid "Service port has been updated."
+msgid_plural "%d service ports were updated."
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Service port successfully added"
 msgstr ""
@@ -4194,6 +4202,9 @@ msgstr "Puertos de los Servicios"
 
 msgid "Service protocol"
 msgstr "Protocolo de Servicio"
+
+msgid "Service with same name already exists."
+msgstr ""
 
 msgid "Services status"
 msgstr "Estado de los servicios"
@@ -4374,9 +4385,6 @@ msgstr "Alias de Subdominio"
 msgid "Subdomain alias errors"
 msgstr "Errores en alias de subdominio"
 
-msgid "Subdomain alias scheduled for deletion."
-msgstr ""
-
 msgid "Subdomain errors"
 msgstr "Errores de subdominio"
 
@@ -4518,6 +4526,11 @@ msgid ""
 "The DEBUG mode is currently enabled, making resources caching unavailable."
 msgstr ""
 
+msgid ""
+"The Telnet-Server is currently running on your server. This legacy service "
+"is not secure."
+msgstr ""
+
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr ""
@@ -4602,6 +4615,10 @@ msgstr ""
 msgid "The password field is empty."
 msgstr "El campo contraseña está vacío."
 
+#, php-format
+msgid "The password must be between %d and %d characters."
+msgstr ""
+
 msgid "The password must contain letters and digits."
 msgstr ""
 
@@ -4633,21 +4650,6 @@ msgstr ""
 msgid "The street 2 name must be between %d and %d characters."
 msgstr ""
 
-msgid ""
-"The subdomain alias you are trying to remove has mail accounts. Please "
-"remove them first."
-msgstr ""
-
-msgid ""
-"The subdomain you are trying to remove has FTP accounts. Please remove them "
-"first."
-msgstr ""
-
-msgid ""
-"The subdomain you are trying to remove has mail accounts. Please remove them"
-" first."
-msgstr ""
-
 msgid "The uploaded file was only partially uploaded."
 msgstr "El archivo ha sido subido parcialmente."
 
@@ -4672,6 +4674,9 @@ msgstr "Los valores no deben ser iguales"
 
 #, php-format
 msgid "The zipcode must be between %d and %d characters."
+msgstr ""
+
+msgid "There are no service ports yet."
 msgstr ""
 
 msgid ""
@@ -5445,9 +5450,6 @@ msgstr "No tenés grupos."
 msgid "You have no open tickets."
 msgstr "No tenés tickets abiertos."
 
-msgid "You have not service ports defined."
-msgstr "No tenés puertos de servicio definidos."
-
 msgid ""
 "You have reached the maximum number of domain aliases allowed by your "
 "subscription."
@@ -5807,17 +5809,11 @@ msgstr "Subdominios"
 msgid "suspended"
 msgstr ""
 
-msgid "tcp"
-msgstr "tcp"
-
 msgid "that match with"
 msgstr ""
 
 msgid "traffic"
 msgstr "tráfico"
-
-msgid "udp"
-msgstr "udp"
 
 msgid "update"
 msgstr "actualización"

@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: i-MSCP 1.4.x\n"
+"Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-11 02:43+0000\n"
+"POT-Creation-Date: 2017-08-14 06:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Dutch (Netherlands) (https://www.transifex.com/i-mscp/teams/576/nl_NL/)\n"
@@ -61,10 +61,6 @@ msgstr "%1$s is ingelogd als %2$s"
 #, php-format
 msgid "%1$ss - Software"
 msgstr "%1$ss - Software"
-
-#, php-format
-msgid "%d Service(s) port successfully updateds"
-msgstr "%d Service(s) poort is bijgewerkt"
 
 #, php-format
 msgid "%d day remaining until account expiration"
@@ -330,9 +326,6 @@ msgstr "Voeg nieuw IP-adres toe"
 
 msgid "Add new protected area"
 msgstr "Nieuwe beveiligde map toevoegen"
-
-msgid "Add new service port"
-msgstr "Nieuwe poort toevoegen"
 
 msgid "Add permissions"
 msgstr "Voeg rechten toe"
@@ -664,10 +657,6 @@ msgid "Are you sure you want to activate this package?"
 msgstr "Weet u zeker dat u dit pakket wilt activeren?"
 
 #, php-format
-msgid "Are you sure you want to delete %s service port ?"
-msgstr "Weet je zeker dat je servicepoort %s wilt verwijderen?"
-
-#, php-format
 msgid "Are you sure you want to delete %s?"
 msgstr "Weet u zeker dat u %s wilt verwijderen?"
 
@@ -678,8 +667,8 @@ msgid "Are you sure you want to delete all tickets?"
 msgstr "Weet u zeker dat u alle tickets wilt verwijderen?"
 
 #, php-format
-msgid "Are you sure you want to delete the %s FTP user?"
-msgstr "Weet u zeker dat u de FTP-gebruiker %s wilt verwijderen?"
+msgid "Are you sure you want to delete the %s FTP account?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
@@ -694,6 +683,10 @@ msgstr "Weet u zeker dat u de domein-alias voor adres %s wilt verwijderen?"
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
 msgstr "Weet u zeker dat u het %s menu wilt verwijderen?"
+
+#, php-format
+msgid "Are you sure you want to delete the %s service port ?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1321,6 +1314,9 @@ msgstr "Kon de DNS-record niet valideren: %s"
 #, php-format
 msgid "Couldn't create the %s database."
 msgstr "Kon de %s database niet aanmaken."
+
+msgid "Couldn't delete domain alias. An unexpected error occurred."
+msgstr ""
 
 msgid "Couldn't delete subdomain. An unexpected error occurred."
 msgstr "Door een onbekende fout kon dit subdomein niet verwijderd worden."
@@ -2332,6 +2328,9 @@ msgstr "Op dit moment kunt u slechts het doorstuuraccount bewerken."
 msgid "Forbidden"
 msgstr "Verboden"
 
+msgid "Force refresh"
+msgstr ""
+
 msgid "Force retry"
 msgstr "Forceren opnieuw proberen"
 
@@ -2790,6 +2789,10 @@ msgstr "Foutieve invoegtoepassingsmap: %s"
 
 msgid "Invalid private key or passphrase."
 msgstr "Ongeldige privésleutel of wachtwoordzin."
+
+#, php-format
+msgid "Invalid services name: %s"
+msgstr ""
 
 msgid "Invalid state/province."
 msgstr ""
@@ -3506,10 +3509,6 @@ msgstr "Wachtwoord ontbreekt"
 
 msgid "Password minimum length"
 msgstr "Minimum wachtwoordlengte"
-
-#, php-format
-msgid "Password must be between %d and %d characters."
-msgstr ""
 
 msgid "Password must contain letters and digits."
 msgstr ""
@@ -4344,17 +4343,26 @@ msgstr "Serversstatistieken"
 msgid "Server status"
 msgstr "Serverstatus"
 
-msgid "Service Name"
-msgstr "Servicenaam"
-
 msgid "Service Unavailable"
 msgstr "Service niet beschikbaar"
+
+msgid "Service is not running"
+msgstr ""
+
+msgid "Service is running"
+msgstr ""
 
 msgid "Service name"
 msgstr "Servicenaam"
 
-msgid "Service name already exists."
-msgstr "Servicenaam bestaat al."
+msgid "Service name cannot be greater than 25 characters."
+msgstr ""
+
+#, php-format
+msgid "Service port has been updated."
+msgid_plural "%d service ports were updated."
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Service port successfully added"
 msgstr "Servicepoort is succesvol toegevoegd"
@@ -4367,6 +4375,9 @@ msgstr "Serverpoorten"
 
 msgid "Service protocol"
 msgstr "Serviceprotocol"
+
+msgid "Service with same name already exists."
+msgstr ""
 
 msgid "Services status"
 msgstr "Serverstatus"
@@ -4547,9 +4558,6 @@ msgstr "Subdomeinalias"
 msgid "Subdomain alias errors"
 msgstr "Fouten bij subdomeinalias"
 
-msgid "Subdomain alias scheduled for deletion."
-msgstr "Subdomeinalias wordt verwijderd."
-
 msgid "Subdomain errors"
 msgstr "Subdomeinfouten"
 
@@ -4695,6 +4703,11 @@ msgid ""
 "The DEBUG mode is currently enabled, making resources caching unavailable."
 msgstr ""
 
+msgid ""
+"The Telnet-Server is currently running on your server. This legacy service "
+"is not secure."
+msgstr ""
+
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr "De `%s' SQL-gebruiker is niet beschikbaar of niet toegestaan."
@@ -4779,6 +4792,10 @@ msgstr ""
 msgid "The password field is empty."
 msgstr "Het wachtwoordveld is leeg."
 
+#, php-format
+msgid "The password must be between %d and %d characters."
+msgstr ""
+
 msgid "The password must contain letters and digits."
 msgstr ""
 
@@ -4813,21 +4830,6 @@ msgstr ""
 msgid "The street 2 name must be between %d and %d characters."
 msgstr ""
 
-msgid ""
-"The subdomain alias you are trying to remove has mail accounts. Please "
-"remove them first."
-msgstr ""
-
-msgid ""
-"The subdomain you are trying to remove has FTP accounts. Please remove them "
-"first."
-msgstr ""
-
-msgid ""
-"The subdomain you are trying to remove has mail accounts. Please remove them"
-" first."
-msgstr ""
-
 msgid "The uploaded file was only partially uploaded."
 msgstr "Het geüploade bestand is maar voor een deel geüpload."
 
@@ -4852,6 +4854,9 @@ msgstr "De waarden mogen niet gelijk zijn"
 
 #, php-format
 msgid "The zipcode must be between %d and %d characters."
+msgstr ""
+
+msgid "There are no service ports yet."
 msgstr ""
 
 msgid ""
@@ -5652,9 +5657,6 @@ msgstr "U heeft geen groep."
 msgid "You have no open tickets."
 msgstr "Er zijn geen open tickets."
 
-msgid "You have not service ports defined."
-msgstr "Er zijn geen serverpoorten ingesteld."
-
 msgid ""
 "You have reached the maximum number of domain aliases allowed by your "
 "subscription."
@@ -6022,17 +6024,11 @@ msgstr "subdomeinen"
 msgid "suspended"
 msgstr "opgeschort"
 
-msgid "tcp"
-msgstr "TCP"
-
 msgid "that match with"
 msgstr "die overeenkomen met"
 
 msgid "traffic"
 msgstr "Verkeer"
-
-msgid "udp"
-msgstr "UDP"
 
 msgid "update"
 msgstr "bijwerken"

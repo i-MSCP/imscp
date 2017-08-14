@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: i-MSCP 1.4.x\n"
+"Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-11 02:43+0000\n"
+"POT-Creation-Date: 2017-08-14 06:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jiří Vírava <appukonrad@gmail.com>, 2017\n"
 "Language-Team: Czech (Czech Republic) (https://www.transifex.com/i-mscp/teams/576/cs_CZ/)\n"
@@ -58,10 +58,6 @@ msgstr "%1$s právě jste přihlášen jako %2$s"
 
 #, php-format
 msgid "%1$ss - Software"
-msgstr ""
-
-#, php-format
-msgid "%d Service(s) port successfully updateds"
 msgstr ""
 
 #, php-format
@@ -315,9 +311,6 @@ msgstr "Přidat novou IP adresu"
 
 msgid "Add new protected area"
 msgstr "Přidat chráněnou oblast"
-
-msgid "Add new service port"
-msgstr "Přidat nový port služby"
 
 msgid "Add permissions"
 msgstr "Přidat oprávnění"
@@ -639,10 +632,6 @@ msgid "Are you sure you want to activate this package?"
 msgstr "Opravdu chcete aktivovat tento balíček?"
 
 #, php-format
-msgid "Are you sure you want to delete %s service port ?"
-msgstr "Opravdu chcete smazat port služby %s?"
-
-#, php-format
 msgid "Are you sure you want to delete %s?"
 msgstr "Opravdu chcete odstranit %s?"
 
@@ -653,8 +642,8 @@ msgid "Are you sure you want to delete all tickets?"
 msgstr "Opravdu chcete smazat všechny tikety?"
 
 #, php-format
-msgid "Are you sure you want to delete the %s FTP user?"
-msgstr "Opravdu chcete smazat FTP uživatele %s?"
+msgid "Are you sure you want to delete the %s FTP account?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
@@ -666,6 +655,10 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the %s service port ?"
 msgstr ""
 
 #, php-format
@@ -1257,6 +1250,9 @@ msgstr ""
 
 #, php-format
 msgid "Couldn't create the %s database."
+msgstr ""
+
+msgid "Couldn't delete domain alias. An unexpected error occurred."
 msgstr ""
 
 msgid "Couldn't delete subdomain. An unexpected error occurred."
@@ -2133,6 +2129,9 @@ msgstr ""
 msgid "Forbidden"
 msgstr ""
 
+msgid "Force refresh"
+msgstr ""
+
 msgid "Force retry"
 msgstr ""
 
@@ -2572,6 +2571,10 @@ msgid "Invalid plugin directory: %s"
 msgstr ""
 
 msgid "Invalid private key or passphrase."
+msgstr ""
+
+#, php-format
+msgid "Invalid services name: %s"
 msgstr ""
 
 msgid "Invalid state/province."
@@ -3277,10 +3280,6 @@ msgid "Password is missing."
 msgstr "Chybí heslo."
 
 msgid "Password minimum length"
-msgstr ""
-
-#, php-format
-msgid "Password must be between %d and %d characters."
 msgstr ""
 
 msgid "Password must contain letters and digits."
@@ -4090,17 +4089,27 @@ msgstr "Statistiky serveru"
 msgid "Server status"
 msgstr "Stav serveru"
 
-msgid "Service Name"
-msgstr "Název Služby"
-
 msgid "Service Unavailable"
+msgstr ""
+
+msgid "Service is not running"
+msgstr ""
+
+msgid "Service is running"
 msgstr ""
 
 msgid "Service name"
 msgstr "Název služby"
 
-msgid "Service name already exists."
-msgstr "Název služby již existuje."
+msgid "Service name cannot be greater than 25 characters."
+msgstr ""
+
+#, php-format
+msgid "Service port has been updated."
+msgid_plural "%d service ports were updated."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "Service port successfully added"
 msgstr ""
@@ -4113,6 +4122,9 @@ msgstr ""
 
 msgid "Service protocol"
 msgstr "Protokol služby"
+
+msgid "Service with same name already exists."
+msgstr ""
 
 msgid "Services status"
 msgstr "Stav služeb"
@@ -4293,9 +4305,6 @@ msgstr "Alias subdoménovy"
 msgid "Subdomain alias errors"
 msgstr ""
 
-msgid "Subdomain alias scheduled for deletion."
-msgstr ""
-
 msgid "Subdomain errors"
 msgstr "Chyby subdomén"
 
@@ -4432,6 +4441,11 @@ msgid ""
 "The DEBUG mode is currently enabled, making resources caching unavailable."
 msgstr ""
 
+msgid ""
+"The Telnet-Server is currently running on your server. This legacy service "
+"is not secure."
+msgstr ""
+
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr ""
@@ -4511,6 +4525,10 @@ msgstr ""
 msgid "The password field is empty."
 msgstr ""
 
+#, php-format
+msgid "The password must be between %d and %d characters."
+msgstr ""
+
 msgid "The password must contain letters and digits."
 msgstr ""
 
@@ -4542,21 +4560,6 @@ msgstr ""
 msgid "The street 2 name must be between %d and %d characters."
 msgstr ""
 
-msgid ""
-"The subdomain alias you are trying to remove has mail accounts. Please "
-"remove them first."
-msgstr ""
-
-msgid ""
-"The subdomain you are trying to remove has FTP accounts. Please remove them "
-"first."
-msgstr ""
-
-msgid ""
-"The subdomain you are trying to remove has mail accounts. Please remove them"
-" first."
-msgstr ""
-
 msgid "The uploaded file was only partially uploaded."
 msgstr "Nahraný soubor byl nahrán jen částečně."
 
@@ -4581,6 +4584,9 @@ msgstr ""
 
 #, php-format
 msgid "The zipcode must be between %d and %d characters."
+msgstr ""
+
+msgid "There are no service ports yet."
 msgstr ""
 
 msgid ""
@@ -5332,9 +5338,6 @@ msgstr "Nemáte žádné skupiny."
 msgid "You have no open tickets."
 msgstr "Nemáte žádné otevřené tikety."
 
-msgid "You have not service ports defined."
-msgstr ""
-
 msgid ""
 "You have reached the maximum number of domain aliases allowed by your "
 "subscription."
@@ -5690,17 +5693,11 @@ msgstr "subdomény"
 msgid "suspended"
 msgstr ""
 
-msgid "tcp"
-msgstr "tcp"
-
 msgid "that match with"
 msgstr ""
 
 msgid "traffic"
 msgstr "provoz"
-
-msgid "udp"
-msgstr "udp"
 
 msgid "update"
 msgstr ""

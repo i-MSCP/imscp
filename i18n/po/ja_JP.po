@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: i-MSCP 1.4.x\n"
+"Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-11 02:43+0000\n"
+"POT-Creation-Date: 2017-08-14 06:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Japanese (Japan) (https://www.transifex.com/i-mscp/teams/576/ja_JP/)\n"
@@ -59,10 +59,6 @@ msgstr "%1$s は、現在 %2$s としてログインしています"
 #, php-format
 msgid "%1$ss - Software"
 msgstr "%1$ss - ソフトウェア"
-
-#, php-format
-msgid "%d Service(s) port successfully updateds"
-msgstr "%d個のサービスポートを更新しました"
 
 #, php-format
 msgid "%d day remaining until account expiration"
@@ -312,9 +308,6 @@ msgstr "新しいＩＰアドレス追加"
 
 msgid "Add new protected area"
 msgstr "新しい制限領域を追加する"
-
-msgid "Add new service port"
-msgstr "新規サービスポート追加"
 
 msgid "Add permissions"
 msgstr "アクセス権の追加"
@@ -636,10 +629,6 @@ msgid "Are you sure you want to activate this package?"
 msgstr "このパッケージをアクティブにしてもよろしいですか？"
 
 #, php-format
-msgid "Are you sure you want to delete %s service port ?"
-msgstr "サービスポート %s を削除してもよろしいですか？"
-
-#, php-format
 msgid "Are you sure you want to delete %s?"
 msgstr "%s を削除してもよろしいですか？"
 
@@ -650,8 +639,8 @@ msgid "Are you sure you want to delete all tickets?"
 msgstr "全てのチケットを削除してもよろしいですか？"
 
 #, php-format
-msgid "Are you sure you want to delete the %s FTP user?"
-msgstr "%s のFTPユーザーを削除してもよろしいですか？"
+msgid "Are you sure you want to delete the %s FTP account?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
@@ -664,6 +653,10 @@ msgstr "本当に%sドメインエイリアスを削除してもよろしいで�
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
 msgstr "%s のメニューを削除してもよろしいですか？"
+
+#, php-format
+msgid "Are you sure you want to delete the %s service port ?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1258,6 +1251,9 @@ msgstr "DNSリソースレコードを検証できませんでした: %s"
 
 #, php-format
 msgid "Couldn't create the %s database."
+msgstr ""
+
+msgid "Couldn't delete domain alias. An unexpected error occurred."
 msgstr ""
 
 msgid "Couldn't delete subdomain. An unexpected error occurred."
@@ -2280,6 +2276,9 @@ msgstr ""
 msgid "Forbidden"
 msgstr "禁止"
 
+msgid "Force refresh"
+msgstr ""
+
 msgid "Force retry"
 msgstr "強制的に再試行"
 
@@ -2721,6 +2720,10 @@ msgstr "無効なプラグインディレクトリ：%s"
 
 msgid "Invalid private key or passphrase."
 msgstr "秘密鍵もしくはパスフレーズに誤りがあります。"
+
+#, php-format
+msgid "Invalid services name: %s"
+msgstr ""
 
 msgid "Invalid state/province."
 msgstr ""
@@ -3424,10 +3427,6 @@ msgstr "パスワードが欠落しています。"
 
 msgid "Password minimum length"
 msgstr "パスワードの最小長"
-
-#, php-format
-msgid "Password must be between %d and %d characters."
-msgstr ""
 
 msgid "Password must contain letters and digits."
 msgstr ""
@@ -4244,17 +4243,25 @@ msgstr "サーバ統計情報"
 msgid "Server status"
 msgstr "サーバのステータス"
 
-msgid "Service Name"
-msgstr "サービス名"
-
 msgid "Service Unavailable"
 msgstr "サービスは利用できません"
+
+msgid "Service is not running"
+msgstr ""
+
+msgid "Service is running"
+msgstr ""
 
 msgid "Service name"
 msgstr "サービス名"
 
-msgid "Service name already exists."
-msgstr "サービス名は既に存在しています。"
+msgid "Service name cannot be greater than 25 characters."
+msgstr ""
+
+#, php-format
+msgid "Service port has been updated."
+msgid_plural "%d service ports were updated."
+msgstr[0] ""
 
 msgid "Service port successfully added"
 msgstr "サービスポートは追加されました"
@@ -4267,6 +4274,9 @@ msgstr "サービスポート"
 
 msgid "Service protocol"
 msgstr "サービスプロトコル"
+
+msgid "Service with same name already exists."
+msgstr ""
 
 msgid "Services status"
 msgstr "サービス状態"
@@ -4447,9 +4457,6 @@ msgstr "サブドメインエイリアス"
 msgid "Subdomain alias errors"
 msgstr "サブドメインエイリアスエラー"
 
-msgid "Subdomain alias scheduled for deletion."
-msgstr "サブドメインエイリアスの削除が予定されました。"
-
 msgid "Subdomain errors"
 msgstr "サブドメインエラー"
 
@@ -4586,6 +4593,11 @@ msgid ""
 "The DEBUG mode is currently enabled, making resources caching unavailable."
 msgstr ""
 
+msgid ""
+"The Telnet-Server is currently running on your server. This legacy service "
+"is not secure."
+msgstr ""
+
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr "`%s' SQLユーザーは利用できないか、または許可されていません。"
@@ -4664,6 +4676,10 @@ msgstr ""
 msgid "The password field is empty."
 msgstr "パスワードの項目が空です。"
 
+#, php-format
+msgid "The password must be between %d and %d characters."
+msgstr ""
+
 msgid "The password must contain letters and digits."
 msgstr ""
 
@@ -4695,21 +4711,6 @@ msgstr ""
 msgid "The street 2 name must be between %d and %d characters."
 msgstr ""
 
-msgid ""
-"The subdomain alias you are trying to remove has mail accounts. Please "
-"remove them first."
-msgstr ""
-
-msgid ""
-"The subdomain you are trying to remove has FTP accounts. Please remove them "
-"first."
-msgstr ""
-
-msgid ""
-"The subdomain you are trying to remove has mail accounts. Please remove them"
-" first."
-msgstr ""
-
 msgid "The uploaded file was only partially uploaded."
 msgstr "一部分しかアップロードされませんてした。"
 
@@ -4734,6 +4735,9 @@ msgstr "値が等しくてはいけません"
 
 #, php-format
 msgid "The zipcode must be between %d and %d characters."
+msgstr ""
+
+msgid "There are no service ports yet."
 msgstr ""
 
 msgid ""
@@ -5490,9 +5494,6 @@ msgstr "グループがありません。"
 msgid "You have no open tickets."
 msgstr "オープンチケットを持っていません。"
 
-msgid "You have not service ports defined."
-msgstr "サービスポートは定義されていません。"
-
 msgid ""
 "You have reached the maximum number of domain aliases allowed by your "
 "subscription."
@@ -5849,17 +5850,11 @@ msgstr "サブドメイン"
 msgid "suspended"
 msgstr ""
 
-msgid "tcp"
-msgstr "tcp"
-
 msgid "that match with"
 msgstr ""
 
 msgid "traffic"
 msgstr "トラフィック"
-
-msgid "udp"
-msgstr "udp"
 
 msgid "update"
 msgstr "更新"

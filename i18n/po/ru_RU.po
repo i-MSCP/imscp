@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: i-MSCP 1.4.x\n"
+"Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-11 02:43+0000\n"
+"POT-Creation-Date: 2017-08-14 06:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Oleg Olegov <>, 2017\n"
 "Language-Team: Russian (Russia) (https://www.transifex.com/i-mscp/teams/576/ru_RU/)\n"
@@ -63,10 +63,6 @@ msgstr "%1$s вы вошли как %2$s"
 #, php-format
 msgid "%1$ss - Software"
 msgstr "%1$ss - Программное обеспечение"
-
-#, php-format
-msgid "%d Service(s) port successfully updateds"
-msgstr "%d Порт(ов) служб были успешно обновлены"
 
 #, php-format
 msgid "%d day remaining until account expiration"
@@ -329,9 +325,6 @@ msgstr "Добавить новый IP адрес"
 
 msgid "Add new protected area"
 msgstr "Добавить новую защищённую зону"
-
-msgid "Add new service port"
-msgstr "Добавить новый порт служб"
 
 msgid "Add permissions"
 msgstr "Добавить разрешения"
@@ -662,10 +655,6 @@ msgid "Are you sure you want to activate this package?"
 msgstr "Вы уверены, что хотите активировать этот пакет?"
 
 #, php-format
-msgid "Are you sure you want to delete %s service port ?"
-msgstr "Вы уверены, что хотите удалить порт службы %s ?"
-
-#, php-format
 msgid "Are you sure you want to delete %s?"
 msgstr "Вы уверены что хотите удалить %s?"
 
@@ -676,8 +665,8 @@ msgid "Are you sure you want to delete all tickets?"
 msgstr "Вы уверены, что хотите удалить все тикеты?"
 
 #, php-format
-msgid "Are you sure you want to delete the %s FTP user?"
-msgstr "Вы уверены, что хотите удалить пользователя FTP %s ?"
+msgid "Are you sure you want to delete the %s FTP account?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
@@ -690,6 +679,10 @@ msgstr "Вы уверены, что хотите удалить %s алиас д
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
 msgstr "Вы уверены, что хотите удалить меню %s ?"
+
+#, php-format
+msgid "Are you sure you want to delete the %s service port ?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1308,6 +1301,9 @@ msgstr "Невозможно проверить запись DNS: %s"
 #, php-format
 msgid "Couldn't create the %s database."
 msgstr "Невозможно создать базу данных %s."
+
+msgid "Couldn't delete domain alias. An unexpected error occurred."
+msgstr ""
 
 msgid "Couldn't delete subdomain. An unexpected error occurred."
 msgstr "Невозможно удалить поддомен. Произошла неожиданная ошибка."
@@ -2337,6 +2333,9 @@ msgstr ""
 msgid "Forbidden"
 msgstr "Доступ запрещен"
 
+msgid "Force refresh"
+msgstr ""
+
 msgid "Force retry"
 msgstr "Заставить повторить"
 
@@ -2792,6 +2791,10 @@ msgstr "Каталог плагина не верный: %s"
 
 msgid "Invalid private key or passphrase."
 msgstr "Неверный приватный ключ или пароль."
+
+#, php-format
+msgid "Invalid services name: %s"
+msgstr ""
 
 msgid "Invalid state/province."
 msgstr ""
@@ -3511,10 +3514,6 @@ msgstr "Пароль отсутствует."
 
 msgid "Password minimum length"
 msgstr "Минимальная длина пароля"
-
-#, php-format
-msgid "Password must be between %d and %d characters."
-msgstr "Пароль должен содержать от %d до %d знаков."
 
 msgid "Password must contain letters and digits."
 msgstr "Пароль должен содержать буквы и цифры."
@@ -4340,17 +4339,28 @@ msgstr "Статистика сервера"
 msgid "Server status"
 msgstr "Статус сервера"
 
-msgid "Service Name"
-msgstr "Имя службы"
-
 msgid "Service Unavailable"
 msgstr "Служба недоступна"
+
+msgid "Service is not running"
+msgstr ""
+
+msgid "Service is running"
+msgstr ""
 
 msgid "Service name"
 msgstr "Служба"
 
-msgid "Service name already exists."
-msgstr "Имя службы уже существует."
+msgid "Service name cannot be greater than 25 characters."
+msgstr ""
+
+#, php-format
+msgid "Service port has been updated."
+msgid_plural "%d service ports were updated."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 msgid "Service port successfully added"
 msgstr "Порт служб был успешно добавлен"
@@ -4363,6 +4373,9 @@ msgstr "Порты служб"
 
 msgid "Service protocol"
 msgstr "Протокол службы"
+
+msgid "Service with same name already exists."
+msgstr ""
 
 msgid "Services status"
 msgstr "Статус служб"
@@ -4543,9 +4556,6 @@ msgstr "Алиас поддомена"
 msgid "Subdomain alias errors"
 msgstr "Ошибки алиаса поддомена"
 
-msgid "Subdomain alias scheduled for deletion."
-msgstr "Алиас поддомена помечен для удаления."
-
 msgid "Subdomain errors"
 msgstr "Ошибки поддоменов"
 
@@ -4692,6 +4702,11 @@ msgstr ""
 "Режим ОТЛАДКИ в данный момент включен, что делает кеширование ресурсов "
 "недоступным."
 
+msgid ""
+"The Telnet-Server is currently running on your server. This legacy service "
+"is not secure."
+msgstr ""
+
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr "SQL пользователь `%s' недоступен или не разрешен."
@@ -4778,6 +4793,10 @@ msgstr ""
 msgid "The password field is empty."
 msgstr "Поле пароля пусто."
 
+#, php-format
+msgid "The password must be between %d and %d characters."
+msgstr ""
+
 msgid "The password must contain letters and digits."
 msgstr ""
 
@@ -4812,21 +4831,6 @@ msgstr ""
 msgid "The street 2 name must be between %d and %d characters."
 msgstr ""
 
-msgid ""
-"The subdomain alias you are trying to remove has mail accounts. Please "
-"remove them first."
-msgstr ""
-
-msgid ""
-"The subdomain you are trying to remove has FTP accounts. Please remove them "
-"first."
-msgstr ""
-
-msgid ""
-"The subdomain you are trying to remove has mail accounts. Please remove them"
-" first."
-msgstr ""
-
 msgid "The uploaded file was only partially uploaded."
 msgstr "Загружаемый файл был загружен частично."
 
@@ -4851,6 +4855,9 @@ msgstr "Значения не должны быть равны"
 
 #, php-format
 msgid "The zipcode must be between %d and %d characters."
+msgstr ""
+
+msgid "There are no service ports yet."
 msgstr ""
 
 msgid ""
@@ -5664,9 +5671,6 @@ msgstr "У вас нет групп."
 msgid "You have no open tickets."
 msgstr "У вас нет открытых тикетов."
 
-msgid "You have not service ports defined."
-msgstr "У Вас нет заданных портов служб."
-
 msgid ""
 "You have reached the maximum number of domain aliases allowed by your "
 "subscription."
@@ -6040,17 +6044,11 @@ msgstr "поддомены"
 msgid "suspended"
 msgstr "Приостановлено"
 
-msgid "tcp"
-msgstr "tcp"
-
 msgid "that match with"
 msgstr "которые соответствуют"
 
 msgid "traffic"
 msgstr "трафик"
-
-msgid "udp"
-msgstr "udp"
 
 msgid "update"
 msgstr "обновить"

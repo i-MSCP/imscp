@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: i-MSCP 1.4.x\n"
+"Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-11 02:43+0000\n"
+"POT-Creation-Date: 2017-08-14 06:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Alex_Joe <voxar@voxar.pl>, 2017\n"
 "Language-Team: Polish (Poland) (https://www.transifex.com/i-mscp/teams/576/pl_PL/)\n"
@@ -61,10 +61,6 @@ msgstr "%1$s jest teraz zalogowany jako %2$s"
 #, php-format
 msgid "%1$ss - Software"
 msgstr "%1$ss - Oprogramowanie"
-
-#, php-format
-msgid "%d Service(s) port successfully updateds"
-msgstr "%d Port(y) usgług zaktualizowane pomyślnie."
 
 #, php-format
 msgid "%d day remaining until account expiration"
@@ -332,9 +328,6 @@ msgstr "Dodaj adres IP"
 
 msgid "Add new protected area"
 msgstr "Dodaj nowy obszar chroniony"
-
-msgid "Add new service port"
-msgstr "Dodaj nowy port usługi"
 
 msgid "Add permissions"
 msgstr "Dodaj uprawnienia"
@@ -663,10 +656,6 @@ msgid "Are you sure you want to activate this package?"
 msgstr "Jesteś pewien, że chcesz aktywować ten pakiet ?"
 
 #, php-format
-msgid "Are you sure you want to delete %s service port ?"
-msgstr "Jesteś pewien, że chcesz usunąć port %s usługi ?"
-
-#, php-format
 msgid "Are you sure you want to delete %s?"
 msgstr "Jesteś pewien, że chcesz usunąć %s ?"
 
@@ -677,8 +666,8 @@ msgid "Are you sure you want to delete all tickets?"
 msgstr "Jesteś pewien, że chcesz usunąć wszystkie zgłoszenia ?"
 
 #, php-format
-msgid "Are you sure you want to delete the %s FTP user?"
-msgstr "Jesteś pewien, że chcesz usunąć użytkownika FTP %s ?"
+msgid "Are you sure you want to delete the %s FTP account?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
@@ -691,6 +680,10 @@ msgstr "Jesteś pewien, że chcesz usunąć alias domeny %s ?"
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
 msgstr "Jesteś pewien, że chcesz usunąć menu %s ?"
+
+#, php-format
+msgid "Are you sure you want to delete the %s service port ?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1315,6 +1308,9 @@ msgstr "Nie można zwalidować zasobu DNS: %s"
 
 #, php-format
 msgid "Couldn't create the %s database."
+msgstr ""
+
+msgid "Couldn't delete domain alias. An unexpected error occurred."
 msgstr ""
 
 msgid "Couldn't delete subdomain. An unexpected error occurred."
@@ -2336,6 +2332,9 @@ msgstr ""
 msgid "Forbidden"
 msgstr "Zabronione"
 
+msgid "Force refresh"
+msgstr ""
+
 msgid "Force retry"
 msgstr "Wymuś ponownie"
 
@@ -2790,6 +2789,10 @@ msgstr "Nieprawidłowy katalog pluginu: %s"
 
 msgid "Invalid private key or passphrase."
 msgstr "Nieprawidłowy klucz prywatny lub hasło."
+
+#, php-format
+msgid "Invalid services name: %s"
+msgstr ""
 
 msgid "Invalid state/province."
 msgstr ""
@@ -3503,10 +3506,6 @@ msgstr "Hasło jest puste."
 
 msgid "Password minimum length"
 msgstr "Minimalna długość hasła"
-
-#, php-format
-msgid "Password must be between %d and %d characters."
-msgstr ""
 
 msgid "Password must contain letters and digits."
 msgstr ""
@@ -4336,17 +4335,28 @@ msgstr "Statystyki serwera"
 msgid "Server status"
 msgstr "Stan serwera"
 
-msgid "Service Name"
-msgstr "Nazwa Usługi"
-
 msgid "Service Unavailable"
 msgstr "Usługa niedostępna"
+
+msgid "Service is not running"
+msgstr ""
+
+msgid "Service is running"
+msgstr ""
 
 msgid "Service name"
 msgstr "Nazwa usługi"
 
-msgid "Service name already exists."
-msgstr "Nazwa usługi już istnieje."
+msgid "Service name cannot be greater than 25 characters."
+msgstr ""
+
+#, php-format
+msgid "Service port has been updated."
+msgid_plural "%d service ports were updated."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 msgid "Service port successfully added"
 msgstr "Port usługi dodany pomyślnie."
@@ -4359,6 +4369,9 @@ msgstr "Porty usług"
 
 msgid "Service protocol"
 msgstr "Protokół usługi"
+
+msgid "Service with same name already exists."
+msgstr ""
 
 msgid "Services status"
 msgstr "Stan usług"
@@ -4539,9 +4552,6 @@ msgstr "Alias subdomeny"
 msgid "Subdomain alias errors"
 msgstr "Błędy aliasu subdomeny"
 
-msgid "Subdomain alias scheduled for deletion."
-msgstr "Alias domeny zakolejkowany do usunięcia."
-
 msgid "Subdomain errors"
 msgstr "Błędy subdomeny"
 
@@ -4686,6 +4696,11 @@ msgid ""
 "The DEBUG mode is currently enabled, making resources caching unavailable."
 msgstr ""
 
+msgid ""
+"The Telnet-Server is currently running on your server. This legacy service "
+"is not secure."
+msgstr ""
+
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr "Użytkownik  `%s'  nie istnieje, bądź nie posiada uprawnień."
@@ -4770,6 +4785,10 @@ msgstr ""
 msgid "The password field is empty."
 msgstr "Pole hasła jest puste."
 
+#, php-format
+msgid "The password must be between %d and %d characters."
+msgstr ""
+
 msgid "The password must contain letters and digits."
 msgstr ""
 
@@ -4803,21 +4822,6 @@ msgstr ""
 msgid "The street 2 name must be between %d and %d characters."
 msgstr ""
 
-msgid ""
-"The subdomain alias you are trying to remove has mail accounts. Please "
-"remove them first."
-msgstr ""
-
-msgid ""
-"The subdomain you are trying to remove has FTP accounts. Please remove them "
-"first."
-msgstr ""
-
-msgid ""
-"The subdomain you are trying to remove has mail accounts. Please remove them"
-" first."
-msgstr ""
-
 msgid "The uploaded file was only partially uploaded."
 msgstr "Plik został przesłany tylko częściowo."
 
@@ -4842,6 +4846,9 @@ msgstr "Te wartości nie muszą być równe"
 
 #, php-format
 msgid "The zipcode must be between %d and %d characters."
+msgstr ""
+
+msgid "There are no service ports yet."
 msgstr ""
 
 msgid ""
@@ -5638,9 +5645,6 @@ msgstr "Nie posiadasz grup."
 msgid "You have no open tickets."
 msgstr "Nie masz otwartych zgłoszeń."
 
-msgid "You have not service ports defined."
-msgstr "Nie masz zdefiniowanych portów usług."
-
 msgid ""
 "You have reached the maximum number of domain aliases allowed by your "
 "subscription."
@@ -6005,17 +6009,11 @@ msgstr "subdomeny"
 msgid "suspended"
 msgstr "zawieszony"
 
-msgid "tcp"
-msgstr "tcp"
-
 msgid "that match with"
 msgstr "pokrywa się z"
 
 msgid "traffic"
 msgstr "transfer"
-
-msgid "udp"
-msgstr "udp"
 
 msgid "update"
 msgstr "aktualizacja"

@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: i-MSCP 1.4.x\n"
+"Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-11 02:43+0000\n"
+"POT-Creation-Date: 2017-08-14 06:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: krok <krok@totalynet.fr>, 2017\n"
 "Language-Team: French (France) (https://www.transifex.com/i-mscp/teams/576/fr_FR/)\n"
@@ -65,10 +65,6 @@ msgstr "%1$s vous êtes connecté en tant que %2$s"
 #, php-format
 msgid "%1$ss - Software"
 msgstr "%1$ss - Logiciel"
-
-#, php-format
-msgid "%d Service(s) port successfully updateds"
-msgstr "%d port(s) de service ont été mis à jour."
 
 #, php-format
 msgid "%d day remaining until account expiration"
@@ -334,9 +330,6 @@ msgstr "Ajouter une nouvelle adresse IP"
 
 msgid "Add new protected area"
 msgstr "Ajouter une nouvelle zone protégée"
-
-msgid "Add new service port"
-msgstr "Ajouter un nouveau port de service"
 
 msgid "Add permissions"
 msgstr "Ajouter des permissions"
@@ -673,10 +666,6 @@ msgid "Are you sure you want to activate this package?"
 msgstr "Êtes-vous certains de vouloir activer ce paquet ?"
 
 #, php-format
-msgid "Are you sure you want to delete %s service port ?"
-msgstr "Êtes-vous certain de vouloir supprimer le port de service %s ?"
-
-#, php-format
 msgid "Are you sure you want to delete %s?"
 msgstr "Êtes-vous certain de vouloir supprimer %s ?"
 
@@ -687,8 +676,8 @@ msgid "Are you sure you want to delete all tickets?"
 msgstr "Etes-vous certain de supprimer tous les tickets ?"
 
 #, php-format
-msgid "Are you sure you want to delete the %s FTP user?"
-msgstr "Êtes vous sur de vouloir supprimer l'utilisateur FTP : %s ?"
+msgid "Are you sure you want to delete the %s FTP account?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
@@ -703,6 +692,10 @@ msgstr "Etes-vous certain de vouloir supprimer l'alias de domain %s?"
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
 msgstr "Êtes-vous certain de vouloir supprimer le menu %s ?"
+
+#, php-format
+msgid "Are you sure you want to delete the %s service port ?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1345,6 +1338,9 @@ msgstr "L'enregistrement DNS n'est pas valide: %s"
 #, php-format
 msgid "Couldn't create the %s database."
 msgstr "Impossible de créer la base de données %s."
+
+msgid "Couldn't delete domain alias. An unexpected error occurred."
+msgstr ""
 
 msgid "Couldn't delete subdomain. An unexpected error occurred."
 msgstr ""
@@ -2374,6 +2370,9 @@ msgstr ""
 msgid "Forbidden"
 msgstr "Interdit"
 
+msgid "Force refresh"
+msgstr ""
+
 msgid "Force retry"
 msgstr "Forcer réessayer"
 
@@ -2833,14 +2832,18 @@ msgstr "Répertoire d'extension invalide: %s"
 msgid "Invalid private key or passphrase."
 msgstr "Clé ou mot de passe invalide."
 
-msgid "Invalid state/province."
+#, php-format
+msgid "Invalid services name: %s"
 msgstr ""
+
+msgid "Invalid state/province."
+msgstr "Région invalide."
 
 msgid "Invalid street 1."
-msgstr ""
+msgstr "Rue 1 incorrecte."
 
 msgid "Invalid street 2."
-msgstr ""
+msgstr "Rue 2 incorrecte."
 
 msgid "Invalid target."
 msgstr "Cible invalide"
@@ -3091,7 +3094,7 @@ msgid "Manual"
 msgstr "Manuel"
 
 msgid "Manual catch-all addresses"
-msgstr ""
+msgstr "Catch-all adresses manuelles"
 
 msgid "Mark"
 msgstr "Marque"
@@ -3171,10 +3174,10 @@ msgid "Monthly server traffic"
 msgstr "Traffic mensuel du serveur"
 
 msgid "Monthly server traffic settings"
-msgstr ""
+msgstr "Paramètres pour le trafic mensuel"
 
 msgid "Monthly server traffic settings successfully updated."
-msgstr ""
+msgstr "Les paramètres du trafic mensuel ont été mis à jour."
 
 msgid "Monthly traffic limit [MiB]"
 msgstr "Limite de trafic mensuel [MiB]"
@@ -3183,7 +3186,7 @@ msgid "Monthly traffic limit must be a number."
 msgstr "La limite du trafic mensuel doit être un nombre."
 
 msgid "Monthly traffic usage"
-msgstr ""
+msgstr "Trafic mensuel"
 
 msgid "Monthly traffic warning cannot be bigger than monthly traffic limit."
 msgstr ""
@@ -3233,7 +3236,7 @@ msgstr "Nouvelle commande d'alias pour {CUSTOMER}"
 
 #, php-format
 msgid "New login data were sent to the %s user."
-msgstr ""
+msgstr "Les nouvelles données de connexion ont été envoyées à l'utisateur %s."
 
 msgid "New ticket"
 msgstr "Nouveau ticket"
@@ -3556,10 +3559,6 @@ msgstr "Mot de passe manquant."
 msgid "Password minimum length"
 msgstr "Taille minimum des mots de passe"
 
-#, php-format
-msgid "Password must be between %d and %d characters."
-msgstr ""
-
 msgid "Password must contain letters and digits."
 msgstr "Le mot de passe doit contenir des chiffres et des lettres."
 
@@ -3624,7 +3623,7 @@ msgstr ""
 "fois.<br>Rafraichissez votre site pour voir le nouveau statut !"
 
 msgid "Please edit your autoresponder message below"
-msgstr ""
+msgstr "Veuillez éditer votre message de messagerie ci-dessous"
 
 msgid "Please enter a name for the protected area."
 msgstr "Veuillez saisir un nom pour la zone protégée."
@@ -3642,7 +3641,7 @@ msgid "Please enter protected area path."
 msgstr "Veuillez entrer un chemin pour la zone protégée."
 
 msgid "Please enter your autoresponder message below"
-msgstr ""
+msgstr "Veuillez insérez votre message de messagerie ci-dessous"
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
@@ -3947,6 +3946,7 @@ msgstr "Protéger"
 
 msgid "Protect default mail accounts against change and removal"
 msgstr ""
+"Protéger les comptes par défaut contre la modification et la suppression"
 
 msgid "Protect this plugin"
 msgstr "Protéger cette extension"
@@ -4052,13 +4052,13 @@ msgid "Reply"
 msgstr "Répondre"
 
 msgid "Reply-To email"
-msgstr ""
+msgstr "E-mail pour le champ Reply-To"
 
 msgid "Reply-To email is missing."
-msgstr ""
+msgstr "L'e-mail est manquante pour le champ Reply-To"
 
 msgid "Reply-To name"
-msgstr ""
+msgstr "Nom pour le champ Reply-To"
 
 msgid "Request Timeout: The server took too long to send the data."
 msgstr ""
@@ -4405,17 +4405,26 @@ msgstr "Statistiques du serveur"
 msgid "Server status"
 msgstr "État du serveur"
 
-msgid "Service Name"
-msgstr "Nom du service"
-
 msgid "Service Unavailable"
 msgstr "Service non disponible"
+
+msgid "Service is not running"
+msgstr ""
+
+msgid "Service is running"
+msgstr ""
 
 msgid "Service name"
 msgstr "Nom du service"
 
-msgid "Service name already exists."
-msgstr "Ce nom de service existe déjà."
+msgid "Service name cannot be greater than 25 characters."
+msgstr ""
+
+#, php-format
+msgid "Service port has been updated."
+msgid_plural "%d service ports were updated."
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Service port successfully added"
 msgstr "Le port du service a été ajouté."
@@ -4428,6 +4437,9 @@ msgstr "Ports des services"
 
 msgid "Service protocol"
 msgstr "Protocole du service"
+
+msgid "Service with same name already exists."
+msgstr ""
 
 msgid "Services status"
 msgstr "État des services"
@@ -4608,9 +4620,6 @@ msgstr "Alias de sous domaine"
 msgid "Subdomain alias errors"
 msgstr "Erreurs liées aux aliases de sous-domaine"
 
-msgid "Subdomain alias scheduled for deletion."
-msgstr "Alias de sous domaine programmé pour suppression."
-
 msgid "Subdomain errors"
 msgstr "Erreurs liées aux sous-domaine"
 
@@ -4758,27 +4767,32 @@ msgstr ""
 "Le mode de débogage est actuellement activé, randant la mise en cache des "
 "resources indisponibles."
 
+msgid ""
+"The Telnet-Server is currently running on your server. This legacy service "
+"is not secure."
+msgstr ""
+
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
 msgstr "L'utilisateur SQL `%s'  n'est pas disponible."
 
 #, php-format
 msgid "The city name must be between %d and %d characters."
-msgstr ""
+msgstr "Le nom de la ville doit se situer entre %d et %d caractères."
 
 #, php-format
 msgid "The company name must be between %d and %d characters."
-msgstr ""
+msgstr "Le nom de l'entreprise doit se situer entre %d et %d caractères."
 
 #, php-format
 msgid "The configuration parameter has been updated."
 msgid_plural "%d configuration parameters were updated"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Le paramètre de configuration à été mis à jour."
+msgstr[1] "%d paramètres de configuration ont été mis à jour."
 
 #, php-format
 msgid "The country name must be between %d and %d characters."
-msgstr ""
+msgstr "Le pays doit se situer entre %d et %d caractères."
 
 #, php-format
 msgid ""
@@ -4804,19 +4818,19 @@ msgid "The domain you are trying to edit doesn't exist."
 msgstr "Le domaine que vous essayez d'éditer n'existe pas."
 
 msgid "The email address cannot be empty."
-msgstr ""
+msgstr "L'adresse e-mail ne peut pas être vide."
 
 #, php-format
 msgid "The fax number must be between %d and %d characters."
-msgstr ""
+msgstr "Le numéro de fax doit se situer entre %d et %d caractères."
 
 #, php-format
 msgid "The first name must be between %d and %d characters."
-msgstr ""
+msgstr "Le prénom doit se situer entre %d et %d caractères."
 
 #, php-format
 msgid "The last name must be between %d and %d characters."
-msgstr ""
+msgstr "Le nom doit se situer entre %d et %d caractères."
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "Le menu que vous essayez d’éditer n'existe pas."
@@ -4837,20 +4851,24 @@ msgstr ""
 "téléversement.<br>Rafraichissez votre site pour voir le nouveau statut !"
 
 msgid "The password cannot be empty."
-msgstr ""
+msgstr "Le mot de passe ne peut pas être vide."
 
 msgid "The password contains unallowed characters."
-msgstr ""
+msgstr "Le mot de passe contient des caractères non-autorisés."
 
 msgid "The password field is empty."
 msgstr "Le champ mot de passe est vide."
 
-msgid "The password must contain letters and digits."
+#, php-format
+msgid "The password must be between %d and %d characters."
 msgstr ""
+
+msgid "The password must contain letters and digits."
+msgstr "Le mot de passe doit contenir des chiffres et des lettres."
 
 #, php-format
 msgid "The phone number must be between %d and %d characters."
-msgstr ""
+msgstr "Le numéro de téléhopne doit se situer entre %d et %d caractères."
 
 msgid "The private key doesn't belong to the provided SSL certificate."
 msgstr "La clé privée n'appartient pas au certificat SSL fourni."
@@ -4869,47 +4887,28 @@ msgstr ""
 
 #, php-format
 msgid "The state/province name must be between %d and %d characters."
-msgstr ""
+msgstr "La région doit se situer entre %d et %d caractères."
 
 #, php-format
 msgid "The street 1 name must be between %d and %d characters"
-msgstr ""
+msgstr "La rue 1 doit se situer entre %d et %d caractères."
 
 #, php-format
 msgid "The street 2 name must be between %d and %d characters."
-msgstr ""
-
-msgid ""
-"The subdomain alias you are trying to remove has mail accounts. Please "
-"remove them first."
-msgstr ""
-
-msgid ""
-"The subdomain you are trying to remove has FTP accounts. Please remove them "
-"first."
-msgstr ""
-"Le sous-domaine que vous essayez de supprimer à des comptes FTP. Veuillez "
-"d'abord les supprimer."
-
-msgid ""
-"The subdomain you are trying to remove has mail accounts. Please remove them"
-" first."
-msgstr ""
-"Le sous-domaine que vous essayez de supprimer à des comptes de messagerie. "
-"Veuillez d'abord les supprimer."
+msgstr "La rue 2 doit se situer entre %d et %d caractères."
 
 msgid "The uploaded file was only partially uploaded."
 msgstr "Le fichier téléversé n'est que partiellement téléversé."
 
 msgid "The username cannot be empty."
-msgstr ""
+msgstr "Le nom d'utilisateur ne peut pas être vide."
 
 msgid "The username field is empty."
 msgstr "Le champ utilisateur est vide."
 
 #, php-format
 msgid "The username must be between %d and %d characters."
-msgstr ""
+msgstr "Le nom d'utilisateur doit se situer entre %d et %d caractères."
 
 msgid "The value has been found in the stack"
 msgstr "La valeur a été trouvée dans la pile"
@@ -4922,6 +4921,9 @@ msgstr "Les valeurs ne doivent pas être égales"
 
 #, php-format
 msgid "The zipcode must be between %d and %d characters."
+msgstr "Le code postal doit se situer entre %d et %d caractères."
+
+msgid "There are no service ports yet."
 msgstr ""
 
 msgid ""
@@ -5741,9 +5743,6 @@ msgstr "Vous n'avez pas de groupe."
 msgid "You have no open tickets."
 msgstr "Vous n'avez pas de tickets ouverts."
 
-msgid "You have not service ports defined."
-msgstr "Vous n'avez pas de port de service défini."
-
 msgid ""
 "You have reached the maximum number of domain aliases allowed by your "
 "subscription."
@@ -6115,17 +6114,11 @@ msgstr "Sous-domaines"
 msgid "suspended"
 msgstr "suspendu"
 
-msgid "tcp"
-msgstr "TCP"
-
 msgid "that match with"
 msgstr "qui correspond à"
 
 msgid "traffic"
 msgstr "trafic"
-
-msgid "udp"
-msgstr "UDP"
 
 msgid "update"
 msgstr "mettre à jour"
