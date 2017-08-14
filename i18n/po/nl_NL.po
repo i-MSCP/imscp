@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-14 06:16+0000\n"
+"POT-Creation-Date: 2017-08-14 18:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Dutch (Netherlands) (https://www.transifex.com/i-mscp/teams/576/nl_NL/)\n"
@@ -65,8 +65,8 @@ msgstr "%1$ss - Software"
 #, php-format
 msgid "%d day remaining until account expiration"
 msgid_plural "%d days remaining until account expiration"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d dag totdat uw account verloopt"
+msgstr[1] "Over %d dagen verloopt uw account"
 
 #, php-format
 msgid "%d strings translated"
@@ -668,7 +668,7 @@ msgstr "Weet u zeker dat u alle tickets wilt verwijderen?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s FTP account?"
-msgstr ""
+msgstr "Weet u zeker dat u het %s FTP-account wilt verwijderen?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
@@ -686,7 +686,7 @@ msgstr "Weet u zeker dat u het %s menu wilt verwijderen?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s service port ?"
-msgstr ""
+msgstr "Weet u zeker dat u de %s servicepoort wilt verwijderen?"
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1316,7 +1316,7 @@ msgid "Couldn't create the %s database."
 msgstr "Kon de %s database niet aanmaken."
 
 msgid "Couldn't delete domain alias. An unexpected error occurred."
-msgstr ""
+msgstr "Kon domeinalias niet verwijderen. Onverwachte fout opgetreden."
 
 msgid "Couldn't delete subdomain. An unexpected error occurred."
 msgstr "Door een onbekende fout kon dit subdomein niet verwijderd worden."
@@ -2329,7 +2329,7 @@ msgid "Forbidden"
 msgstr "Verboden"
 
 msgid "Force refresh"
-msgstr ""
+msgstr "Forceer verversing"
 
 msgid "Force retry"
 msgstr "Forceren opnieuw proberen"
@@ -2753,7 +2753,7 @@ msgid "Invalid email username."
 msgstr "Foutieve e-mailgebruikersnaam"
 
 msgid "Invalid fax."
-msgstr ""
+msgstr "Foutief faxnummer"
 
 #, php-format
 msgid "Invalid field: %s"
@@ -2781,7 +2781,7 @@ msgid "Invalid payload received from GitHub"
 msgstr "Ongeldige informatie ontvangen van GitHub"
 
 msgid "Invalid phone."
-msgstr ""
+msgstr "Foutief telefoonnummer"
 
 #, php-format
 msgid "Invalid plugin directory: %s"
@@ -2792,16 +2792,16 @@ msgstr "Ongeldige privésleutel of wachtwoordzin."
 
 #, php-format
 msgid "Invalid service name: %s"
-msgstr ""
+msgstr "Servicenaam foutief: %s"
 
 msgid "Invalid state/province."
-msgstr ""
+msgstr "Foutieve Staat/provincie"
 
 msgid "Invalid street 1."
-msgstr ""
+msgstr "Foutief straatadres (1)"
 
 msgid "Invalid street 2."
-msgstr ""
+msgstr "Foutief straatadres (2)"
 
 msgid "Invalid target."
 msgstr "Doel is ongeldig"
@@ -2998,10 +2998,12 @@ msgid ""
 "Mail quota cannot be lower than %d. Each mail account must have a least 1 "
 "MiB quota."
 msgstr ""
+"Mailquote kan niet lager zijn dan %d. Elke e-mailaccount dient minimaal 1MiB"
+" groot te zijn."
 
 #, php-format
 msgid "Mail quota cannot be unlimited. Max value is %d MiB."
-msgstr ""
+msgstr "Mailquota kan niet onbeperkt zijn. Maximale waarde is %d MiB"
 
 msgid "Mail usage"
 msgstr "Mailverbruik"
@@ -3048,7 +3050,7 @@ msgid "Manual"
 msgstr "Handmatig"
 
 msgid "Manual catch-all addresses"
-msgstr ""
+msgstr "Handmatig catch-all adres"
 
 msgid "Mark"
 msgstr "Markeer"
@@ -3124,13 +3126,13 @@ msgid "Month"
 msgstr "Maand"
 
 msgid "Monthly server traffic"
-msgstr ""
+msgstr "Maandelijks serververkeer"
 
 msgid "Monthly server traffic settings"
-msgstr ""
+msgstr "Maandelijks serververkeer - instellingen"
 
 msgid "Monthly server traffic settings successfully updated."
-msgstr ""
+msgstr "Instellingen voor maandelijks serververkeer opgeslagen"
 
 msgid "Monthly traffic limit [MiB]"
 msgstr "Maandelijks verkeerslimiet [MB]"
@@ -3139,7 +3141,7 @@ msgid "Monthly traffic limit must be a number."
 msgstr "Maandelijks verkeerslimiet dient een nummer te zijn."
 
 msgid "Monthly traffic usage"
-msgstr ""
+msgstr "Maandelijks verkeer gebruik"
 
 msgid "Monthly traffic warning cannot be bigger than monthly traffic limit."
 msgstr ""
@@ -3186,7 +3188,7 @@ msgstr "Nieuwe aliasorder voor {CUSTOMER}"
 
 #, php-format
 msgid "New login data were sent to the %s user."
-msgstr ""
+msgstr "Nieuwe inloggegevens verstuurd naar %s"
 
 msgid "New ticket"
 msgstr "Nieuw ticket"
@@ -3231,7 +3233,7 @@ msgid "No hosting plan available."
 msgstr "Geen webhostingpakket beschikbaar."
 
 msgid "No mail account has been deleted."
-msgstr ""
+msgstr "Geen e-mailaccount verwijderd"
 
 msgid "No reseller available to add the permissions."
 msgstr "Geen wederverkoper beschikbaar om rechten toe te voegen."
@@ -3284,16 +3286,16 @@ msgid "Normal"
 msgstr "Normaal"
 
 msgid "Normal & Forward"
-msgstr ""
+msgstr "Normaal & Doorsturen"
 
 msgid "Normal & forward account"
-msgstr ""
+msgstr "Normaal & doorstuuraccount"
 
 msgid "Normal + Forward"
 msgstr "Normaal + Doorsturen"
 
 msgid "Normal account"
-msgstr ""
+msgstr "Normaal account"
 
 msgid "Normal connection"
 msgstr "Normale verbinding"
@@ -3511,7 +3513,7 @@ msgid "Password minimum length"
 msgstr "Minimum wachtwoordlengte"
 
 msgid "Password must contain letters and digits."
-msgstr ""
+msgstr "Wachtwoord dient letters en cijfers te bevatten"
 
 msgid "Password settings"
 msgstr "Wachtwoordinstellingen"
@@ -3538,7 +3540,7 @@ msgid "Personal data"
 msgstr "Persoonlijke gegevens"
 
 msgid "Personal data were updated."
-msgstr ""
+msgstr "Persoonlijke gegevens bijgewerkt"
 
 msgid "Personalise template"
 msgstr "Personaliseer template"
@@ -4356,13 +4358,13 @@ msgid "Service name"
 msgstr "Servicenaam"
 
 msgid "Service name cannot be greater than 25 characters."
-msgstr ""
+msgstr "Servicenaam kan niet langer dan 25 karakters zijn."
 
 #, php-format
 msgid "Service port has been updated."
 msgid_plural "%d service ports were updated."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Servicepoort bijgewerkt"
+msgstr[1] "%d servicepoorten bijgewerkt"
 
 msgid "Service port successfully added"
 msgstr "Servicepoort is succesvol toegevoegd"
@@ -4377,7 +4379,7 @@ msgid "Service protocol"
 msgstr "Serviceprotocol"
 
 msgid "Service with same name already exists."
-msgstr ""
+msgstr "Service met deze naam bestaat reeds"
 
 msgid "Services status"
 msgstr "Serverstatus"
@@ -4405,7 +4407,7 @@ msgid "Show SSL certificate"
 msgstr "Toon SSL-certificaat"
 
 msgid "Show default mail accounts"
-msgstr ""
+msgstr "Toon Standaardmailaccounts"
 
 msgid "Show detailed statistics for this reseller"
 msgstr "Gedetailleerde statistieken voor deze wederverkoper tonen"
@@ -4580,7 +4582,7 @@ msgid "Subdomains"
 msgstr "Subdomeinen"
 
 msgid "Subdomains limit"
-msgstr ""
+msgstr "Subdomeinlimiet"
 
 msgid "Subject"
 msgstr "Onderwerp"
@@ -4653,7 +4655,7 @@ msgstr "Tmp map niet gevonden"
 
 #, php-format
 msgid "The %s field cannot be empty."
-msgstr ""
+msgstr "Het %s veld kan niet leeg blijve."
 
 #, php-format
 msgid ""
@@ -5493,17 +5495,9 @@ msgstr ""
 "map te vinden zijn en moet reeds bestaan."
 
 msgid ""
-"You cannot add normal mail account because you have already assigned all "
-"your email quota to other mailboxes. If you want to add a new normal mail "
-"account, you must first lower the quota assigned to one of your other "
-"mailboxes."
-msgstr ""
-
-msgid ""
-"You cannot change this account to normal mail account because you have "
-"already assigned all your mail quota to other mail accounts. If you want to "
-"change this account to normal mail account, you must first lower the quota "
-"assigned to one of your other mail accounts."
+"You cannot add normal mail accounts because you have already assigned all "
+"your mail quota. If you want to add a normal mail account, you must first "
+"lower the quota assigned to one of your other mail account."
 msgstr ""
 
 msgid ""
@@ -5525,6 +5519,13 @@ msgstr "Je kan het laatste actieve IP-adres niet verwijderen."
 #, php-format
 msgid "You cannot forward %s on itself."
 msgstr "U kunt %s zelf niet doorsturen."
+
+msgid ""
+"You cannot make this account a normal mail account because you have already "
+"assigned all your mail quota. If you want make this account a normal mail "
+"account, you must first lower the quota assigned to one of your other mail "
+"account."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5841,7 +5842,7 @@ msgid "anything"
 msgstr "alle"
 
 msgid "catch-all"
-msgstr ""
+msgstr "catch-all"
 
 msgid "city"
 msgstr "plaats"
@@ -5958,7 +5959,7 @@ msgid "mail"
 msgstr "E-mail"
 
 msgid "mail account"
-msgstr ""
+msgstr "mailaccount"
 
 msgid "mail accounts"
 msgstr "e-mailaccounts"

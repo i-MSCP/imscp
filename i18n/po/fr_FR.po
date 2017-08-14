@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-14 06:16+0000\n"
+"POT-Creation-Date: 2017-08-14 18:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: krok <krok@totalynet.fr>, 2017\n"
 "Language-Team: French (France) (https://www.transifex.com/i-mscp/teams/576/fr_FR/)\n"
@@ -677,7 +677,7 @@ msgstr "Etes-vous certain de supprimer tous les tickets ?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s FTP account?"
-msgstr ""
+msgstr "Êtes-vous certain de vouloir supprimer le compte FTP %s?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
@@ -695,7 +695,7 @@ msgstr "Êtes-vous certain de vouloir supprimer le menu %s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s service port ?"
-msgstr ""
+msgstr "Êtes-vous de vouloir supprimer le service %s?"
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1341,6 +1341,8 @@ msgstr "Impossible de créer la base de données %s."
 
 msgid "Couldn't delete domain alias. An unexpected error occurred."
 msgstr ""
+"Impossible de supprimer l'alias de domaine. Une erreur innatendue s'est "
+"produite."
 
 msgid "Couldn't delete subdomain. An unexpected error occurred."
 msgstr ""
@@ -2371,7 +2373,7 @@ msgid "Forbidden"
 msgstr "Interdit"
 
 msgid "Force refresh"
-msgstr ""
+msgstr "Rafraichir les données"
 
 msgid "Force retry"
 msgstr "Forcer réessayer"
@@ -2834,7 +2836,7 @@ msgstr "Clé ou mot de passe invalide."
 
 #, php-format
 msgid "Invalid service name: %s"
-msgstr ""
+msgstr "Nom de service invalide: %s"
 
 msgid "Invalid state/province."
 msgstr "Région invalide."
@@ -3042,10 +3044,14 @@ msgid ""
 "Mail quota cannot be lower than %d. Each mail account must have a least 1 "
 "MiB quota."
 msgstr ""
+"Le quota ne peut pas êtres inférieur à %d. Chaque compte de messagerie doit "
+"avoir un quota d'au moins 1 MiB."
 
 #, php-format
 msgid "Mail quota cannot be unlimited. Max value is %d MiB."
 msgstr ""
+"Le quota pour les comptes de messagerie ne peut pas être illimité. La valeur"
+" maximale est %d MiB."
 
 msgid "Mail usage"
 msgstr "Utilisation des e-mails"
@@ -4008,6 +4014,7 @@ msgstr "Redirection"
 
 msgid "Redistribute unused quota across existing mail accounts"
 msgstr ""
+"Redistribuer le quota non utilisé dans les comptes de messagerie existants"
 
 msgid "Registration date"
 msgstr "Date d'enregistrement"
@@ -4409,22 +4416,22 @@ msgid "Service Unavailable"
 msgstr "Service non disponible"
 
 msgid "Service is not running"
-msgstr ""
+msgstr "Le service n'est pas en cours de fonctionnement"
 
 msgid "Service is running"
-msgstr ""
+msgstr "Le service est en cours de fonctionnement"
 
 msgid "Service name"
 msgstr "Nom du service"
 
 msgid "Service name cannot be greater than 25 characters."
-msgstr ""
+msgstr "Le nom du service ne peut pas dépasser 25 caractères."
 
 #, php-format
 msgid "Service port has been updated."
 msgid_plural "%d service ports were updated."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Le service a été mis à jour."
+msgstr[1] "%d services ont été mis à jour."
 
 msgid "Service port successfully added"
 msgstr "Le port du service a été ajouté."
@@ -4439,7 +4446,7 @@ msgid "Service protocol"
 msgstr "Protocole du service"
 
 msgid "Service with same name already exists."
-msgstr ""
+msgstr "Un service avec un nom identique existe déjà."
 
 msgid "Services status"
 msgstr "État des services"
@@ -4771,6 +4778,8 @@ msgid ""
 "The Telnet-Server is currently running on your server. This legacy service "
 "is not secure."
 msgstr ""
+"Le serveur Telnet est actuellement en cours de fonctionnement sur votre "
+"serveur. Ce service n'est pas considéré comme étant sécurisé."
 
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
@@ -4861,7 +4870,7 @@ msgstr "Le champ mot de passe est vide."
 
 #, php-format
 msgid "The password must be between %d and %d characters."
-msgstr ""
+msgstr "Le mot de passe doit être compris entre %d et %d caractères."
 
 msgid "The password must contain letters and digits."
 msgstr "Le mot de passe doit contenir des chiffres et des lettres."
@@ -4924,7 +4933,7 @@ msgid "The zipcode must be between %d and %d characters."
 msgstr "Le code postal doit se situer entre %d et %d caractères."
 
 msgid "There are no service ports yet."
-msgstr ""
+msgstr "Il n'y a pas encore de services."
 
 msgid ""
 "There is an Error inside your package. Please check it!<br>Refresh your site"
@@ -5568,17 +5577,9 @@ msgstr ""
 "exister."
 
 msgid ""
-"You cannot add normal mail account because you have already assigned all "
-"your email quota to other mailboxes. If you want to add a new normal mail "
-"account, you must first lower the quota assigned to one of your other "
-"mailboxes."
-msgstr ""
-
-msgid ""
-"You cannot change this account to normal mail account because you have "
-"already assigned all your mail quota to other mail accounts. If you want to "
-"change this account to normal mail account, you must first lower the quota "
-"assigned to one of your other mail accounts."
+"You cannot add normal mail accounts because you have already assigned all "
+"your mail quota. If you want to add a normal mail account, you must first "
+"lower the quota assigned to one of your other mail account."
 msgstr ""
 
 msgid ""
@@ -5600,6 +5601,13 @@ msgstr "Vous ne pouvez pas supprimé la dernière adresse Ip disponible."
 #, php-format
 msgid "You cannot forward %s on itself."
 msgstr "Vous ne pouvez pas transférer %s vers lui-même."
+
+msgid ""
+"You cannot make this account a normal mail account because you have already "
+"assigned all your mail quota. If you want make this account a normal mail "
+"account, you must first lower the quota assigned to one of your other mail "
+"account."
+msgstr ""
 
 #, php-format
 msgid ""
