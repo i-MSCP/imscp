@@ -482,7 +482,7 @@ sub _buildPackageList
 
         # Simple list of packages
 
-        my $spl = 0;
+        my $spl;
 
         if ( $data->{'package'} ) {
             push @{$self->{'packagesToInstall'}}, ( ref $_ eq 'HASH' ? $_->{'content'} : $_ ) for @{$data->{'package'}};
@@ -509,7 +509,8 @@ sub _buildPackageList
                 };
         }
         
-        next if $spl eq 1;
+        next if $spl;
+        undef $spl;
 
         # List of alternatives
 
