@@ -499,6 +499,16 @@ sub _buildPackageList
             $spl = 1;
         }
 
+        if($spl && $data->{'pinning_package'}) {
+            # APT preferences to add
+            push @{$self->{'aptPreferences'}},
+                {
+                    pinning_package      => $data->{'pinning_package'},
+                    pinning_pin          => $data->{'pinning_pin'} || undef,
+                    pinning_pin_priority => $data->{'pinning_pin_priority'} || undef,
+                };
+        }
+        
         next if $spl eq 1;
 
         # List of alternatives
