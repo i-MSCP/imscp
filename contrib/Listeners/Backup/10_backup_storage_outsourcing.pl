@@ -51,8 +51,8 @@ my $STORAGE_ROOT_PATH = '';
 #
 
 # Don't register event listeners if the listener file is not configured yet
-unless($STORAGE_ROOT_PATH eq '') {
-    iMSCP::EventManager->getInstance( )->register(
+unless ( $STORAGE_ROOT_PATH eq '' ) {
+    iMSCP::EventManager->getInstance()->register(
         'onBoot',
         sub {
             local $@;
@@ -71,10 +71,10 @@ unless($STORAGE_ROOT_PATH eq '') {
         }
     );
 
-    iMSCP::EventManager->getInstance( )->register(
+    iMSCP::EventManager->getInstance()->register(
         'beforeHttpdAddFiles',
         sub {
-            my $data = shift;
+            my ($data) = @_;
 
             return 0 unless $data->{'DOMAIN_TYPE'} eq 'dmn'
                 && -d "$data->{'WEB_DIR'}/backups";
@@ -85,50 +85,49 @@ unless($STORAGE_ROOT_PATH eq '') {
         }
     );
 
-    iMSCP::EventManager->getInstance( )->register(
+    iMSCP::EventManager->getInstance()->register(
         'afterHttpdAddFiles',
         sub {
-            my $data = shift;
+            my ($data) = @_;
 
             return 0 unless $data->{'DOMAIN_TYPE'} eq 'dmn';
 
             local $@;
             eval {
+                my $backupDirHandle = iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/backups" );
+
                 # If needed, moves data from existents backup directory into the
                 # new backup directory
-                my $backupDirHandle = iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/backups" );
-                unless ($backupDirHandle->isEmpty( )) {
+                unless ( $backupDirHandle->isEmpty() ) {
                     clearImmutable( $data->{'WEB_DIR'} );
 
-                    unless (-d "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}") {
+                    unless ( -d "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" ) {
                         # Move backup directory to new location 
                         # Moving is faster than copying when source and destination are on same device
                         $backupDirHandle->moveDir( "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" );
                     } else {
                         # Empty directory by re-creating it from scratch (should never occurs)
-                        $backupDirHandle->remove( );
+                        $backupDirHandle->clear();
                     }
 
-                    $backupDirHandle->make(
+                    setImmutable( $data->{'WEB_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
+                } else {
+                    # Create empty outsourced customer backup directory
+                    iMSCP::Dir->new( dirname => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" )->make(
                         {
                             user  => $data->{'USER'},
                             group => $data->{'GROUP'},
                             mode  => 0750
                         }
                     );
-
-                    setImmutable( $data->{'WEB_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
                 }
             };
-            if ($@) {
+            if ( $@ ) {
                 return 1;
             }
 
-            # Outsource default backup directory by mounting new backup directory on top of it
-            my $rs ||= addMountEntry(
-                "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'} $data->{'WEB_DIR'}/backups none bind,slave"
-            );
-            $rs ||= mount(
+            # Outsource customer backup directory by mounting new backup directory on top of it
+            my $rs ||= mount(
                 {
                     fs_spec    => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}",
                     fs_file    => "$data->{'WEB_DIR'}/backups",
@@ -136,10 +135,13 @@ unless($STORAGE_ROOT_PATH eq '') {
                     fs_mntops  => 'bind,slave'
                 }
             );
+            $rs ||= addMountEntry(
+                "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'} $data->{'WEB_DIR'}/backups none bind,slave"
+            );
         }
     );
 
-    iMSCP::EventManager->getInstance( )->register(
+    iMSCP::EventManager->getInstance()->register(
         'beforeHttpdDelDmn',
         sub {
             my $data = shift;
@@ -153,7 +155,7 @@ unless($STORAGE_ROOT_PATH eq '') {
 
             local $@;
             eval {
-                iMSCP::Dir->new( dirname => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" )->remove( );
+                iMSCP::Dir->new( dirname => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" )->remove();
             };
             $@ ? 1 : 0;
         }

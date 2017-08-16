@@ -19,6 +19,9 @@ BACKEND
 CONFIG
     Removed: `.htgroup' and `.htpasswd' files from the skeleton directory; These files are now created only when needed
 
+CONTRIB
+    Fixed: 10_backup_storage_outsourcing.pl: Outsourced backup directory not created on new customer account creation
+
 DISTRIBUTIONS
     Added: Support for Percona DB 5.7 -- Debian 9/Stretch (amd64 architecture only)
     Added: ca-certificates package in list of pre-required packages
