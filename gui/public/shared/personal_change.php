@@ -44,6 +44,8 @@ function updatePersonalData(Form $form)
         return;
     }
 
+    $idnaEmail = $form->getValue('email');
+
     EventsManager::getInstance()->dispatch(Events::onBeforeEditUser, [
         'userId'   => $_SESSION['user_id'],
         'userData' => $form->getValues()
@@ -58,14 +60,14 @@ function updatePersonalData(Form $form)
         [
             $form->getValue('fname'), $form->getValue('lname'), $form->getValue('firm'), $form->getValue('zip'),
             $form->getValue('city'), $form->getValue('state'), $form->getValue('country'),
-            encode_idna($form->getValue('email')), $form->getValue('phone'), $form->getValue('fax'),
-            $form->getValue('street1'), $form->getValue('street2'), $form->getValue('gender'), $_SESSION['user_id']
+            $idnaEmail, $form->getValue('phone'), $form->getValue('fax'), $form->getValue('street1'),
+            $form->getValue('street2'), $form->getValue('gender'), $_SESSION['user_id']
         ]
     );
 
     # We need also update user email in session
-    Authentication::getInstance()->getIdentity()->email = $form->getValue('email');
-    $_SESSION['user_email'] = $form->getValue('email'); // Only for backward compatibility
+    Authentication::getInstance()->getIdentity()->email = $idnaEmail;
+    $_SESSION['user_email'] = $idnaEmail; // Only for backward compatibility
 
     EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
         'userId'   => $_SESSION['user_id'],

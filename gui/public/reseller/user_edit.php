@@ -84,7 +84,7 @@ function updateUserData(Form $form, $userId)
         );
 
 
-        // For user to login again (need due to possible password or email change)
+        // Force user to login again (needed due to possible password or email change)
         exec_query('DELETE FROM login WHERE user_name = ?', $data['admin_name']);
 
         EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
@@ -100,7 +100,6 @@ function updateUserData(Form $form, $userId)
     $ret = false;
 
     if ($passwordUpdated) {
-        # Fixme: Add specific message for login data renewal
         $ret = send_add_user_auto_msg(
             $userId, $data['admin_name'], $form->getValue('admin_pass'), $form->getValue('email'),
             $form->getValue('fname'), $form->getValue('lname'), tr('Customer')
@@ -108,7 +107,10 @@ function updateUserData(Form $form, $userId)
     }
 
     send_request();
-    write_log(sprintf('The %s user has been updated by %s', $data['admin_name'], $_SESSION['user_logged']), E_USER_NOTICE);
+    write_log(
+        sprintf('The %s user has been updated by %s', $data['admin_name'], $_SESSION['user_logged']),
+        E_USER_NOTICE
+    );
     set_page_message('User has been updated.', 'success');
 
     if ($ret) {
@@ -129,19 +131,18 @@ function updateUserData(Form $form, $userId)
  */
 function generatePage(TemplateEngine $tpl, Form $form, $userId)
 {
-    global $userType;
-
     $tpl->form = $form;
     $tpl->editId = $userId;
 
     if (!empty($_POST)) {
+        $form->setDefault('admin_name', get_user_name($userId));
         return;
     }
 
     $stmt = exec_query(
         "
-            SELECT admin_name, admin_type, fname, lname, IFNULL(gender, 'U') as gender, firm, zip, city, state, country,
-                street1, street2, email, phone, fax
+            SELECT admin_name, fname, lname, IFNULL(gender, 'U') as gender, firm, zip, city, state, country, street1,
+                street2, email, phone, fax
             FROM admin
             WHERE admin_id = ?
             AND created_by = ?
@@ -153,7 +154,6 @@ function generatePage(TemplateEngine $tpl, Form $form, $userId)
         showBadRequestErrorPage();
     }
 
-    $userType = $data['admin_type'];
     $form->setDefaults($data);
 }
 

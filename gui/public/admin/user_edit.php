@@ -54,7 +54,6 @@ function updateUserData(Form $form, $userId)
             set_page_message(reset($msgsStack), 'error');
         }
 
-        $form->setDefault('admin_name', $data['admin_name']); // admin_name not part of form; we need re-add it
         return;
     }
 
@@ -86,7 +85,7 @@ function updateUserData(Form $form, $userId)
             ]
         );
 
-        // Force user to login again (need due to possible password or email change)
+        // Force user to login again (needed due to possible password or email change)
         exec_query('DELETE FROM login WHERE user_name = ?', $data['admin_name']);
 
         EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
@@ -114,7 +113,10 @@ function updateUserData(Form $form, $userId)
         send_request();
     }
 
-    write_log(sprintf('The %s user has been updated by %s', $data['admin_name'], $_SESSION['user_logged']), E_USER_NOTICE);
+    write_log(
+        sprintf('The %s user has been updated by %s', $data['admin_name'], $_SESSION['user_logged']),
+        E_USER_NOTICE
+    );
     set_page_message('User has been updated.', 'success');
 
     if ($ret) {
@@ -141,6 +143,7 @@ function generatePage(TemplateEngine $tpl, Form $form, $userId)
     $tpl->editId = $userId;
 
     if (!empty($_POST)) {
+        $form->setDefault('admin_name', get_user_name($userId));
         return;
     }
 
@@ -161,7 +164,6 @@ function generatePage(TemplateEngine $tpl, Form $form, $userId)
     $userType = $data['admin_type'];
     $form->setDefaults($data);
 }
-
 
 /***********************************************************************************************************************
  * Main

@@ -61,6 +61,7 @@ function getFormData($resellerId, $forUpdate = false)
     }
 
     $data = $stmt->fetchRow();
+    $data['admin_pass'] = '';
 
     // Getting total number of consumed items for the given reseller.
     list(
@@ -74,9 +75,6 @@ function getFormData($resellerId, $forUpdate = false)
         $data['totalTraffic'], , $data['unlimitedTraffic'],
         $data['totalDiskspace'], , $data['unlimitedDiskspace']
         ) = generate_reseller_users_props($resellerId);
-
-    $data['password'] = '';
-    $data['password_confirmation'] = '';
 
     // Ip data begin
 
@@ -372,6 +370,8 @@ function updateResellerUser(Form $form)
     $db = Database::getInstance();
 
     try {
+        $data = getFormData($resellerId, true);
+
         // Check for login and personal data
         if (!$form->isValid($_POST)) {
             foreach ($form->getMessages() as $fieldname => $msgsStack) {
@@ -380,7 +380,10 @@ function updateResellerUser(Form $form)
             }
         }
 
-        $data = getFormData($resellerId, true);
+        $form->setDefault('admin_name', $data['fallback_admin_name']);
+
+        // Make sure to compare email in IDNA form
+        $form->setDefault('email', encode_idna($form->getValue('email')));
 
         // Check for ip addresses
         $resellerIps = [];
@@ -457,7 +460,7 @@ function updateResellerUser(Form $form)
             $errFieldsStack[] = 'max_mail_cnt';
         }
 
-        // Check for max ftp accounts limit
+        // Check for max FTP accounts limit
         if (imscp_limit_check($data['max_ftp_cnt'])) {
             $rs = checkResellerLimit(
                 $data['max_ftp_cnt'], $data['current_ftp_cnt'], $data['nbFtpAccounts'], $data['unlimitedFtpAccounts'],
@@ -472,7 +475,7 @@ function updateResellerUser(Form $form)
             $errFieldsStack[] = 'max_ftp_cnt';
         }
 
-        // Check for max Sql databases limit
+        // Check for max SQL databases limit
         if (!$rs = imscp_limit_check($data['max_sql_db_cnt'])) {
             set_page_message(tr('Incorrect limit for %s.', tr('SQL databases')), 'error');
         } elseif ($data['max_sql_db_cnt'] == -1 && $data['max_sql_user_cnt'] != -1) {
@@ -489,7 +492,7 @@ function updateResellerUser(Form $form)
             $errFieldsStack[] = 'max_sql_db_cnt';
         }
 
-        // Check for max Sql users limit
+        // Check for max SQL users limit
         if (!$rs = imscp_limit_check($data['max_sql_user_cnt'])) {
             set_page_message(tr('Incorrect limit for %s.', tr('SQL users')), 'error');
         } elseif ($data['max_sql_db_cnt'] != -1 && $data['max_sql_user_cnt'] == -1) {
@@ -550,8 +553,12 @@ function updateResellerUser(Form $form)
             $phpini->setResellerPermission('phpiniAllowUrlFopen', $data['php_ini_al_allow_url_fopen']);
             $phpini->setResellerPermission('phpiniDisplayErrors', $data['php_ini_al_display_errors']);
 
-            $phpini->setResellerPermission('phpiniMemoryLimit', $data['memory_limit']); // Must be set before phpiniPostMaxSize
-            $phpini->setResellerPermission('phpiniPostMaxSize', $data['post_max_size']); // Must be set before phpiniUploadMaxFileSize
+            // Must be set before phpiniPostMaxSize
+            $phpini->setResellerPermission('phpiniMemoryLimit', $data['memory_limit']);
+
+            // Must be set before phpiniUploadMaxFileSize
+            $phpini->setResellerPermission('phpiniPostMaxSize', $data['post_max_size']);
+
             $phpini->setResellerPermission('phpiniUploadMaxFileSize', $data['upload_max_filesize']);
             $phpini->setResellerPermission('phpiniMaxExecutionTime', $data['max_execution_time']);
             $phpini->setResellerPermission('phpiniMaxInputTime', $data['max_input_time']);
@@ -559,17 +566,24 @@ function updateResellerUser(Form $form)
             $phpini->loadResellerPermissions(); // Reset reseller PHP permissions to default values
         }
 
-        if (empty($errFieldsStack) && !$error) { // Update process begin here
+        if (empty($errFieldsStack) && !$error) {
             EventsManager::getInstance()->dispatch(Events::onBeforeEditUser, [
                 'userId'   => $resellerId,
                 'userData' => $form->getValues()
             ]);
 
             $oldValues = $newValues = [];
+
             foreach ($data as $property => $value) {
                 if (strpos($property, 'fallback_') !== false) {
                     $property = substr($property, 9);
                     $oldValues[$property] = $value;
+
+                    if (($formVal = $form->getValue($property)) !== NULL) {
+                        $newValues[$property] = $formVal;
+                        continue;
+                    }
+
                     $newValues[$property] = $data[$property];
                 }
             }
@@ -588,8 +602,8 @@ function updateResellerUser(Form $form)
             $bindParams = [
                 $form->getValue('fname'), $form->getValue('lname'), $form->getValue('gender'), $form->getValue('firm'),
                 $form->getValue('zip'), $form->getValue('city'), $form->getValue('state'), $form->getValue('country'),
-                $form->getValue('email'), $form->getValue('phone'),
-                $form->getValue('fax'), $form->getValue('street1'), $form->getValue('street2'), $resellerId
+                $form->getValue('email'), $form->getValue('phone'), $form->getValue('fax'),
+                $form->getValue('street1'), $form->getValue('street2'), $resellerId
             ];
 
             if ($form->getValue('admin_pass') != '') {
@@ -690,7 +704,7 @@ function updateResellerUser(Form $form)
             $db->commit();
 
             // Send mail to reseller for new password
-            if ($form->getValue('admin_pass')) {
+            if ($form->getValue('admin_pass') !== '') {
                 send_add_user_auto_msg(
                     $_SESSION['user_id'], $data['admin_name'], $form->getValue('admin_pass'), $form->getValue('email'),
                     $form->getValue('fname'), $form->getValue('lname'), tr('Reseller')
@@ -707,7 +721,7 @@ function updateResellerUser(Form $form)
             );
             set_page_message('Reseller has been updated.', 'success');
             redirectTo('users.php');
-        } elseif(!empty($errFieldsStack)) {
+        } elseif (!empty($errFieldsStack)) {
             iMSCP_Registry::set('errFieldsStack', $errFieldsStack);
         }
     } catch (Exception $e) {
@@ -806,8 +820,7 @@ function generatePage(TemplateEngine $tpl, Form $form)
 
     if (empty($_POST)) {
         $form->setDefaults(getFormData($resellerId));
-    } else {
-        $form->setDefault('admin_name', getFormData($resellerId)['admin_name']);
+        $form->setDefault('email', decode_idna(getFormData($resellerId)['email']));
     }
 
     generateIpListForm($tpl);
