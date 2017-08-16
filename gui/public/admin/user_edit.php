@@ -101,7 +101,6 @@ function updateUserData(Form $form, $userId)
     $ret = false;
 
     if ($passwordUpdated) {
-        # Fixme: Add specific message for login data renewal
         $ret = send_add_user_auto_msg(
             $userId, $data['admin_name'], $form->getValue('admin_pass'), $form->getValue('email'),
             $form->getValue('fname'), $form->getValue('lname'),
@@ -114,8 +113,7 @@ function updateUserData(Form $form, $userId)
     }
 
     write_log(
-        sprintf('The %s user has been updated by %s', $data['admin_name'], $_SESSION['user_logged']),
-        E_USER_NOTICE
+        sprintf('The %s user has been updated by %s', $data['admin_name'], $_SESSION['user_logged']), E_USER_NOTICE
     );
     set_page_message('User has been updated.', 'success');
 

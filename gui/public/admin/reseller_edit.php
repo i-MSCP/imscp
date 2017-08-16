@@ -696,7 +696,10 @@ function updateResellerUser(Form $form)
                 }
             }
 
-            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, [
+            // Force user to login again (needed due to possible password or email change)
+            exec_query('DELETE FROM login WHERE user_name = ?', $data['fallback_admin_name']);
+
+            EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
                 'userId'   => $resellerId,
                 'userData' => $form->getValues()
             ]);
