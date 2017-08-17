@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-14 18:14+0000\n"
+"POT-Creation-Date: 2017-08-17 02:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Dutch (Netherlands) (https://www.transifex.com/i-mscp/teams/576/nl_NL/)\n"
@@ -3576,7 +3576,7 @@ msgstr ""
 "te uploaden.<br>Herlaad uw site om de nieuwe status te zien!"
 
 msgid "Please edit your autoresponder message below"
-msgstr ""
+msgstr "Bewerk uw autoresponderbericht hieronder"
 
 msgid "Please enter a name for the protected area."
 msgstr "Geef een naam op voor de beveiligde map."
@@ -3594,7 +3594,7 @@ msgid "Please enter protected area path."
 msgstr "Vult u hier het pad in naar de beveiligde map."
 
 msgid "Please enter your autoresponder message below"
-msgstr ""
+msgstr "Voer uw autoresponderbericht hieronder in"
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
@@ -3892,7 +3892,7 @@ msgid "Protect"
 msgstr "Beveilig"
 
 msgid "Protect default mail accounts against change and removal"
-msgstr ""
+msgstr "Bescherm standaardaccounts tegen wijzigingen of verwijderen."
 
 msgid "Protect this plugin"
 msgstr "Beveilig deze invoegtoepassing"
@@ -3925,7 +3925,7 @@ msgid "Protocol"
 msgstr "Protocol"
 
 msgid "Quota in MiB (0 ∞)"
-msgstr ""
+msgstr "Quota in MiB (0 ∞)"
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
@@ -3953,7 +3953,7 @@ msgid "Redirect"
 msgstr "Doorsturen naar"
 
 msgid "Redistribute unused quota across existing mail accounts"
-msgstr ""
+msgstr "Redistribueer ongebruikte quote over de bestaande e-mailaccounts"
 
 msgid "Registration date"
 msgstr "Registratiedatum"
@@ -3998,13 +3998,13 @@ msgid "Reply"
 msgstr "Antwoorden"
 
 msgid "Reply-To email"
-msgstr ""
+msgstr "Reply-To email"
 
 msgid "Reply-To email is missing."
-msgstr ""
+msgstr "Reply-To email mist"
 
 msgid "Reply-To name"
-msgstr ""
+msgstr "Reply-To naam"
 
 msgid "Request Timeout: The server took too long to send the data."
 msgstr "Geen antwoord: De server deed er te lang over om data te versturen."
@@ -4218,13 +4218,13 @@ msgid "SQL databases"
 msgstr "MySQL-databanken"
 
 msgid "SQL databases limit"
-msgstr ""
+msgstr "SQL-databanklimiet"
 
 msgid "SQL databases limit is disabled."
-msgstr ""
+msgstr "SQL-databanklimiet is uitgeschakeld"
 
 msgid "SQL databases limit is not disabled."
-msgstr ""
+msgstr "SQL-databanklimiet is niet uitgeschakeld"
 
 msgid "SQL databases only"
 msgstr "Enkel SQL-databanken"
@@ -4266,10 +4266,10 @@ msgid "SQL users"
 msgstr "MySQL-gebruikers"
 
 msgid "SQL users limit"
-msgstr ""
+msgstr "SQL-gebruikerslimiet"
 
 msgid "SQL users limit is disabled."
-msgstr ""
+msgstr "SQL-gebruikerslimiet is uitgeschakeld"
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "SSL-certificaat wordt toegevoegd."
@@ -4334,7 +4334,7 @@ msgid "Sender name is missing."
 msgstr "Naam afzender mist"
 
 msgid "Separate addresses by a comma, line-break or space."
-msgstr ""
+msgstr "Scheid adressen met een comma, nieuwe regel of spatie."
 
 msgid "Server ports"
 msgstr "Serverpoorten"
@@ -4349,10 +4349,10 @@ msgid "Service Unavailable"
 msgstr "Service niet beschikbaar"
 
 msgid "Service is not running"
-msgstr ""
+msgstr "Dienst draait niet."
 
 msgid "Service is running"
-msgstr ""
+msgstr "Dienst draait"
 
 msgid "Service name"
 msgstr "Servicenaam"
@@ -4699,16 +4699,20 @@ msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr "Het vertalingsbestand %s wordt overgeslagen: Vertaaltabel is leeg."
 
 msgid "The '%value%' username is not available."
-msgstr ""
+msgstr "De '%value' gebruikersnaam is niet beschikbaar."
 
 msgid ""
 "The DEBUG mode is currently enabled, making resources caching unavailable."
 msgstr ""
+"De DEBUG-mode is momenteel geactiveerd, waardoor caching niet beschikbaar "
+"is."
 
 msgid ""
 "The Telnet-Server is currently running on your server. This legacy service "
 "is not secure."
 msgstr ""
+"De Telnet-server draait momenteel op uw machine. Dit is een verouderde "
+"dienst en is niet veilig."
 
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
@@ -4716,21 +4720,21 @@ msgstr "De `%s' SQL-gebruiker is niet beschikbaar of niet toegestaan."
 
 #, php-format
 msgid "The city name must be between %d and %d characters."
-msgstr ""
+msgstr "De plaatsnaam dient tussen de %d en %d karakters lang te zijn."
 
 #, php-format
 msgid "The company name must be between %d and %d characters."
-msgstr ""
+msgstr "De bedrijfsnaam dient tussen de %d en %d karakters lang te zijn."
 
 #, php-format
 msgid "The configuration parameter has been updated."
 msgid_plural "%d configuration parameters were updated"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "De configuratieparameter is bijgewerkt"
+msgstr[1] "%d configuratieparameters bijgewerkt"
 
 #, php-format
 msgid "The country name must be between %d and %d characters."
-msgstr ""
+msgstr "De landsnaam dient tussen de %d en %d karakters lang te zijn."
 
 #, php-format
 msgid ""
@@ -4755,19 +4759,19 @@ msgid "The domain you are trying to edit doesn't exist."
 msgstr "Het domein dat u probeert te bewerken bestaat niet."
 
 msgid "The email address cannot be empty."
-msgstr ""
+msgstr "Het e-mailadres kan niet leeg blijven"
 
 #, php-format
 msgid "The fax number must be between %d and %d characters."
-msgstr ""
+msgstr "De faxnummer dient tussen de %d en %d karakters lang te zijn."
 
 #, php-format
 msgid "The first name must be between %d and %d characters."
-msgstr ""
+msgstr "De voornaam dient tussen de %d en %d karakters lang te zijn."
 
 #, php-format
 msgid "The last name must be between %d and %d characters."
-msgstr ""
+msgstr "De achternaam dient tussen de %d en %d karakters lang te zijn."
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "Het menu dat u probeert te bewerken bestaat niet."
@@ -4786,24 +4790,24 @@ msgstr ""
 "uploaden.<br>Herlaad uw website om de nieuwe status te zien!"
 
 msgid "The password cannot be empty."
-msgstr ""
+msgstr "Het wachtwoord kan niet leeg blijven."
 
 msgid "The password contains unallowed characters."
-msgstr ""
+msgstr "Het wachtwoord bevat tekens die niet zijn toegestaa."
 
 msgid "The password field is empty."
 msgstr "Het wachtwoordveld is leeg."
 
 #, php-format
 msgid "The password must be between %d and %d characters."
-msgstr ""
+msgstr "Het wachtwoord dient tussen de %d en %d karakters lang te zijn."
 
 msgid "The password must contain letters and digits."
-msgstr ""
+msgstr "Het wachtwoord moet letters en cijfers bevatten."
 
 #, php-format
 msgid "The phone number must be between %d and %d characters."
-msgstr ""
+msgstr "Het telefoonnummer dient tussen de %d en %d karakters lang te zijn."
 
 msgid "The private key doesn't belong to the provided SSL certificate."
 msgstr "De private key hoort niet bij het opgegeven SSL-certificaat."
@@ -4822,28 +4826,28 @@ msgstr ""
 
 #, php-format
 msgid "The state/province name must be between %d and %d characters."
-msgstr ""
+msgstr "De staat/provincie dient tussen de %d en %d karakters lang te zijn."
 
 #, php-format
 msgid "The street 1 name must be between %d and %d characters"
-msgstr ""
+msgstr "De straatnaam (1) dient tussen de %d en %d karakters lang te zijn."
 
 #, php-format
 msgid "The street 2 name must be between %d and %d characters."
-msgstr ""
+msgstr "De straatnaam (2) dient tussen de %d en %d karakters lang te zijn."
 
 msgid "The uploaded file was only partially uploaded."
 msgstr "Het geüploade bestand is maar voor een deel geüpload."
 
 msgid "The username cannot be empty."
-msgstr ""
+msgstr "De gebruikersnaam kan niet leeg blijven"
 
 msgid "The username field is empty."
 msgstr "Het gebruikersnaamveld is leeg."
 
 #, php-format
 msgid "The username must be between %d and %d characters."
-msgstr ""
+msgstr "De gebruikersnaam dient tussen de %d en %d karakters lang te zijn."
 
 msgid "The value has been found in the stack"
 msgstr "Deze waarde staat er tussen"
@@ -4856,10 +4860,10 @@ msgstr "De waarden mogen niet gelijk zijn"
 
 #, php-format
 msgid "The zipcode must be between %d and %d characters."
-msgstr ""
+msgstr "De postcode dient tussen de %d en %d karakters lang te zijn."
 
 msgid "There are no service ports yet."
-msgstr ""
+msgstr "Er zijn nog geen servicepoorten ingesteld."
 
 msgid ""
 "There is an Error inside your package. Please check it!<br>Refresh your site"
@@ -4914,7 +4918,7 @@ msgstr ""
 "laten verbinden."
 
 msgid "This mail account is protected against both edition and deletion."
-msgstr ""
+msgstr "Dit e-mailaccount is beveiligd tegen wijzigingen en verwijdering."
 
 msgid "This package already exists in the administrator software repository."
 msgstr "Dit pakket bestaat al in de softwareberging voor beheerders."
@@ -4991,7 +4995,7 @@ msgstr "Totaal aantal softwaredepots"
 
 #, php-format
 msgid "Total accounts: %s / %s"
-msgstr ""
+msgstr "Totaal aantal accounts: %s / %s"
 
 msgid "Total installations"
 msgstr "Totaal installaties"
@@ -5449,40 +5453,40 @@ msgid "You are exceeding the monthly server traffic limit."
 msgstr "U overschrijdt uw maandelijkse serververkeerslimitet."
 
 msgid "You are exceeding you domain aliases limit."
-msgstr ""
+msgstr "U overschrijdt het domeinaliaslimiet."
 
 msgid "You are exceeding your FTP accounts limit."
-msgstr ""
+msgstr "U overschrijdt het FTP-accountlimiet."
 
 msgid "You are exceeding your SQL databases limit."
-msgstr ""
+msgstr "U overschrijdt het SQL-databanklimiet."
 
 msgid "You are exceeding your SQL users limit."
-msgstr ""
+msgstr "U overschrijdt het SQL-gebruikerslimiet."
 
 msgid "You are exceeding your disk space limit."
 msgstr "U overschrijdt uw schijfruimtelimiet."
 
 msgid "You are exceeding your mail accounts limit."
-msgstr ""
+msgstr "U overschrijdt het e-mailaccountlimiet."
 
 msgid "You are exceeding your monthly traffic limit."
 msgstr "U overschrijdt uw maandelijkse verkeerslimiet."
 
 msgid "You are exceeding your subdomains limit."
-msgstr ""
+msgstr "U overschrijdt het subdomeinlimiet."
 
 msgid "You are not allowed to act on your own session."
 msgstr "U heeft geen rechten om te handelen in uw eigen sessie."
 
 msgid "You can disable the DEBUG mode in the /etc/imscp/imscp.conf file."
-msgstr ""
+msgstr "U kunt de DEBUG-mode uitschakelen in /etc/imscp/inscp.conf."
 
 msgid "You can only upload images."
 msgstr "U kunt alleen afbeeldingen uploaden."
 
 msgid "You can select as many addresses as you want."
-msgstr ""
+msgstr "U kunt zo veel adressen selecteren als u wenst."
 
 msgid ""
 "You can set an alternative document root. This is mostly needed when using a"
@@ -5499,6 +5503,9 @@ msgid ""
 "your mail quota. If you want to add a normal mail account, you must first "
 "lower the quota assigned to one of your other mail account."
 msgstr ""
+"U kunt geen normaal e-mailaccount meer toevoegen, omdat u al uw quota reeds "
+"heeft gebruikt. Als u toch een account wenst te maken, zorg er dan voor dat "
+"u andere accounts kleiner maakt, of uw pakket upgradet."
 
 msgid ""
 "You cannot create new mailboxes for that domain. Only forwarded mail "
@@ -5526,6 +5533,9 @@ msgid ""
 "account, you must first lower the quota assigned to one of your other mail "
 "account."
 msgstr ""
+"U kunt van dit account geen normaal e-mailaccount maken, omdat u al uw quota"
+" reeds heeft gebruikt. Als u dit toch wenst, zorg er dan voor dat u andere "
+"accounts kleiner maakt, of uw pakket upgradet."
 
 #, php-format
 msgid ""
@@ -5578,15 +5588,21 @@ msgid ""
 "You have a FTP accounts limit. You cannot add a user with unlimited FTP "
 "accounts."
 msgstr ""
+"U heeft een FTP-accountlimiet. U kunt geen gebruiker toevoegen zonder "
+"limiet."
 
 msgid ""
 "You have a SQL databases limit. You cannot add a user with unlimited SQL "
 "databases."
 msgstr ""
+"U heeft een SQL-databanklimiet. U kunt geen gebruiker toevoegen zonder "
+"limiet."
 
 msgid ""
 "You have a SQL users limit. You cannot add a user with unlimited SQL users."
 msgstr ""
+"U heeft een SQL-gebruikerlimiet. U kunt geen gebruiker toevoegen zonder "
+"limiet."
 
 msgid ""
 "You have a disk space limit. You cannot add a user with unlimited disk "
@@ -5599,11 +5615,15 @@ msgid ""
 "You have a domain aliases limit. You cannot add a user with unlimited domain"
 " aliases."
 msgstr ""
+"U heeft een domeinaliaslimiet. U kunt geen gebruiker toevoegen zonder "
+"limiet."
 
 msgid ""
 "You have a mail accounts limit. You cannot add a user with unlimited mail "
 "accounts."
 msgstr ""
+"U heeft een e-mailaccountlimiet. U kunt geen gebruiker toevoegen zonder "
+"limiet."
 
 msgid ""
 "You have a monthly traffic limit. You cannot add a user with unlimited "
@@ -5634,6 +5654,7 @@ msgid ""
 "You have a subdomains limit. You cannot add a user with unlimited "
 "subdomains."
 msgstr ""
+"U heeft een subdomeinlimiet. U kunt geen gebruiker toevoegen zonder limiet."
 
 #, php-format
 msgid "You have been blocked for %s minutes."
@@ -5668,6 +5689,8 @@ msgid ""
 "You have reached the maximum number of mail accounts allowed by your "
 "subscription."
 msgstr ""
+"U heeft het maximaal aantal toegestane e-mailaccounts bereikt. Indien u meer"
+" wilt gebruiken, overweeg een upgrade."
 
 msgid ""
 "You have reached the maximum number of subdomains allowed by your "
@@ -5676,6 +5699,8 @@ msgstr "U heeft het maximale aantal subdomeinen voor uw abonnement bereikt."
 
 msgid "You have reached your domains limit. You cannot add more domains."
 msgstr ""
+"U heeft het maximaal aantal toegestane domeinaliassen bereikt. Indien u meer"
+" wilt gebruiken, overweeg een upgrade."
 
 msgid "You have to choose between file-upload and wget-function."
 msgstr "U dient te kiezen tussen bestandsupload en wget-functie."
@@ -5713,7 +5738,7 @@ msgid "You must select a least one mail account to delete."
 msgstr "U dient tenminste één e-mailaccount te selecteren om te verwijderen."
 
 msgid "You must select at least one catch-all address."
-msgstr ""
+msgstr "U dient minimaal één catch-all adres te selecteren."
 
 msgid "You must select at least one plugin."
 msgstr "Selecteer minimaal 1 invoegtoepassing."
@@ -5773,7 +5798,7 @@ msgstr "Uw pakket is corrupt. Gelieve het te corrigeren!"
 
 msgid ""
 "Your password has been successfully scheduled for renewal. Check your mails."
-msgstr ""
+msgstr "Uw wachtwoord wordt vernieuwd. Controleer uw e-mail."
 
 #, php-format
 msgid "Your remote filesize (%s) is lower than 1 byte. Please check your URL."
@@ -5792,6 +5817,8 @@ msgid ""
 "Your request for password renewal has been registered. You will receive a "
 "mail with instructions to complete the process."
 msgstr ""
+"Uw verzoek tot vernieuwen van het wachtwoord is ontvangen. U ontvangt een "
+"e-mail met instructies om dit te voltooien."
 
 msgid "Your request for password renewal is either invalid or has expired."
 msgstr "Uw wachtwoordaanvraag klopt niet of is verlopen."

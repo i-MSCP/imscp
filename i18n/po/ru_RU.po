@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-14 18:14+0000\n"
+"POT-Creation-Date: 2017-08-17 02:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Oleg Olegov <>, 2017\n"
 "Language-Team: Russian (Russia) (https://www.transifex.com/i-mscp/teams/576/ru_RU/)\n"
@@ -67,10 +67,10 @@ msgstr "%1$ss - Программное обеспечение"
 #, php-format
 msgid "%d day remaining until account expiration"
 msgid_plural "%d days remaining until account expiration"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Остался %d день до истечения срока"
+msgstr[1] "Осталось %d дня до истечения срока"
+msgstr[2] "Осталось %d дней до истечения срока"
+msgstr[3] "Осталось %d дней до истечения срока"
 
 #, php-format
 msgid "%d strings translated"
@@ -666,7 +666,7 @@ msgstr "Вы уверены, что хотите удалить все тике�
 
 #, php-format
 msgid "Are you sure you want to delete the %s FTP account?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить пользователя FTP %s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
@@ -682,7 +682,7 @@ msgstr "Вы уверены, что хотите удалить меню %s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s service port ?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить порт службы %s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1303,7 +1303,7 @@ msgid "Couldn't create the %s database."
 msgstr "Невозможно создать базу данных %s."
 
 msgid "Couldn't delete domain alias. An unexpected error occurred."
-msgstr ""
+msgstr "Не удалось удалить алиас домена. Произошла неожиданная ошибка."
 
 msgid "Couldn't delete subdomain. An unexpected error occurred."
 msgstr "Невозможно удалить поддомен. Произошла неожиданная ошибка."
@@ -2334,7 +2334,7 @@ msgid "Forbidden"
 msgstr "Доступ запрещен"
 
 msgid "Force refresh"
-msgstr ""
+msgstr "Заставить повторить"
 
 msgid "Force retry"
 msgstr "Заставить повторить"
@@ -2755,7 +2755,7 @@ msgid "Invalid email username."
 msgstr "Неверное имя пользователя почтового ящика"
 
 msgid "Invalid fax."
-msgstr ""
+msgstr "Неверный номер факса."
 
 #, php-format
 msgid "Invalid field: %s"
@@ -2783,7 +2783,7 @@ msgid "Invalid payload received from GitHub"
 msgstr "Неверный запрос получен из GitHub"
 
 msgid "Invalid phone."
-msgstr ""
+msgstr "Неверный номер телефона."
 
 #, php-format
 msgid "Invalid plugin directory: %s"
@@ -2794,16 +2794,16 @@ msgstr "Неверный приватный ключ или пароль."
 
 #, php-format
 msgid "Invalid service name: %s"
-msgstr ""
+msgstr "Недействительное название службы: %s"
 
 msgid "Invalid state/province."
-msgstr ""
+msgstr "Неверная область."
 
 msgid "Invalid street 1."
-msgstr ""
+msgstr "Неверная улица 1."
 
 msgid "Invalid street 2."
-msgstr ""
+msgstr "Неверная улица 2."
 
 msgid "Invalid target."
 msgstr "Неверная цель"
@@ -3993,13 +3993,13 @@ msgid "Reply"
 msgstr "Ответ"
 
 msgid "Reply-To email"
-msgstr ""
+msgstr "Е-Mail-Адрес для ответа"
 
 msgid "Reply-To email is missing."
-msgstr ""
+msgstr "Е-Mail-Адрес для ответа отсутствует."
 
 msgid "Reply-To name"
-msgstr ""
+msgstr "Имя для ответа"
 
 msgid "Request Timeout: The server took too long to send the data."
 msgstr "Задержка зарпоса: Сервер ожидает слишком долго."
@@ -4343,24 +4343,24 @@ msgid "Service Unavailable"
 msgstr "Служба недоступна"
 
 msgid "Service is not running"
-msgstr ""
+msgstr "Служба не работает"
 
 msgid "Service is running"
-msgstr ""
+msgstr "Служба работает"
 
 msgid "Service name"
 msgstr "Служба"
 
 msgid "Service name cannot be greater than 25 characters."
-msgstr ""
+msgstr "Название службы не может быть длиннее 25 знаков."
 
 #, php-format
 msgid "Service port has been updated."
 msgid_plural "%d service ports were updated."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Порт службы был успешно обновлен."
+msgstr[1] "%d Порта служб были успешно обновлены."
+msgstr[2] "%d Портов служб были успешно обновлены."
+msgstr[3] "%d Портов служб были успешно обновлены."
 
 msgid "Service port successfully added"
 msgstr "Порт служб был успешно добавлен"
@@ -4375,7 +4375,7 @@ msgid "Service protocol"
 msgstr "Протокол службы"
 
 msgid "Service with same name already exists."
-msgstr ""
+msgstr "Ошибка: Порт службы с таким именем уже существует."
 
 msgid "Services status"
 msgstr "Статус служб"
@@ -4694,7 +4694,7 @@ msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr "Язык %s перевода был проигнорирован: Таблица перевода пуста."
 
 msgid "The '%value%' username is not available."
-msgstr ""
+msgstr "Имя пользователя '%value%' недоступно."
 
 msgid ""
 "The DEBUG mode is currently enabled, making resources caching unavailable."
@@ -4706,6 +4706,8 @@ msgid ""
 "The Telnet-Server is currently running on your server. This legacy service "
 "is not secure."
 msgstr ""
+"В данный момент сервис Telnet включен на вашем сервере. Эта устарелая служба"
+" не безопасна."
 
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
@@ -4713,11 +4715,11 @@ msgstr "SQL пользователь `%s' недоступен или не ра�
 
 #, php-format
 msgid "The city name must be between %d and %d characters."
-msgstr ""
+msgstr "Название города должно содержать от %d до %d знаков."
 
 #, php-format
 msgid "The company name must be between %d and %d characters."
-msgstr ""
+msgstr "Название фирмы должно содержать от %d до %d знаков."
 
 #, php-format
 msgid "The configuration parameter has been updated."
@@ -4729,7 +4731,7 @@ msgstr[3] "%d конфигурационных параметров было о�
 
 #, php-format
 msgid "The country name must be between %d and %d characters."
-msgstr ""
+msgstr "Название страны должно содержать от %d до %d знаков."
 
 #, php-format
 msgid ""
@@ -4754,19 +4756,19 @@ msgid "The domain you are trying to edit doesn't exist."
 msgstr "Домен, который Вы пытаетесь отредактировать, не существует."
 
 msgid "The email address cannot be empty."
-msgstr ""
+msgstr "Почтовый адрес не может быть пуст."
 
 #, php-format
 msgid "The fax number must be between %d and %d characters."
-msgstr ""
+msgstr "Номер телефакса должен содержать от %d до %d знаков."
 
 #, php-format
 msgid "The first name must be between %d and %d characters."
-msgstr ""
+msgstr "Имя должно содержать от %d до %d знаков."
 
 #, php-format
 msgid "The last name must be between %d and %d characters."
-msgstr ""
+msgstr "Фамилия должна содержать от %d до %d знаков."
 
 msgid "The menu you are trying to edit doesn't exist."
 msgstr "Меню, которое Вы пытаетесь отредактировать, не существует."
@@ -4785,24 +4787,24 @@ msgstr ""
 "загрузки.<br>Обновите страницу, чтобы увидеть новый статус!"
 
 msgid "The password cannot be empty."
-msgstr ""
+msgstr "Поле пароля пусто."
 
 msgid "The password contains unallowed characters."
-msgstr ""
+msgstr "Пароль содержит запрещенные символы."
 
 msgid "The password field is empty."
 msgstr "Поле пароля пусто."
 
 #, php-format
 msgid "The password must be between %d and %d characters."
-msgstr ""
+msgstr "Пароль должен содержать от %d до %d знаков."
 
 msgid "The password must contain letters and digits."
-msgstr ""
+msgstr "Пароль должен содержать буквы и цифры."
 
 #, php-format
 msgid "The phone number must be between %d and %d characters."
-msgstr ""
+msgstr "Номер телефона должен содержать от %d до %d знаков."
 
 msgid "The private key doesn't belong to the provided SSL certificate."
 msgstr "Приватный ключ не принадлежит предоставленному сертификату."
@@ -4821,28 +4823,28 @@ msgstr ""
 
 #, php-format
 msgid "The state/province name must be between %d and %d characters."
-msgstr ""
+msgstr "Название района/области должно содержать от %d до %d знаков."
 
 #, php-format
 msgid "The street 1 name must be between %d and %d characters"
-msgstr ""
+msgstr "Название улицы 1 должно содержать от %d до %d знаков."
 
 #, php-format
 msgid "The street 2 name must be between %d and %d characters."
-msgstr ""
+msgstr "Название улицы 2 должно содержать от %d до %d знаков."
 
 msgid "The uploaded file was only partially uploaded."
 msgstr "Загружаемый файл был загружен частично."
 
 msgid "The username cannot be empty."
-msgstr ""
+msgstr "Имя пользователя не может пустовать."
 
 msgid "The username field is empty."
 msgstr "Поле имя пользователя пусто."
 
 #, php-format
 msgid "The username must be between %d and %d characters."
-msgstr ""
+msgstr "Имя пользователя должно содержать от %d до %d знаков."
 
 msgid "The value has been found in the stack"
 msgstr "Значение было найдено в стеке"
@@ -4855,10 +4857,10 @@ msgstr "Значения не должны быть равны"
 
 #, php-format
 msgid "The zipcode must be between %d and %d characters."
-msgstr ""
+msgstr "Пчтовый индекс должен содержать от %d до %d знаков."
 
 msgid "There are no service ports yet."
-msgstr ""
+msgstr "У Вас нет заданных портов служб."
 
 msgid ""
 "There is an Error inside your package. Please check it!<br>Refresh your site"
@@ -5469,7 +5471,7 @@ msgid "You can only upload images."
 msgstr "Вы можете загружать только изображения."
 
 msgid "You can select as many addresses as you want."
-msgstr ""
+msgstr "Вы можете выбрать столько адресов, сколько хотите."
 
 msgid ""
 "You can set an alternative document root. This is mostly needed when using a"
@@ -5488,6 +5490,9 @@ msgid ""
 "your mail quota. If you want to add a normal mail account, you must first "
 "lower the quota assigned to one of your other mail account."
 msgstr ""
+"Вы не можете добавить новый почтовый ящик. Вы уже исчерпали всё доступное "
+"для ящиков пространство. Пожалуйста, пересмотрите Вашу политику "
+"использования почтовых ящиков."
 
 msgid ""
 "You cannot create new mailboxes for that domain. Only forwarded mail "
@@ -5517,6 +5522,9 @@ msgid ""
 "account, you must first lower the quota assigned to one of your other mail "
 "account."
 msgstr ""
+"Вы не можете превратить эту учетную запись в обыкновенный почтовый ящик. Вы "
+"уже исчерпали всё доступное для ящиков пространство. Пожалуйста, "
+"пересмотрите Вашу политику использования почтовых ящиков."
 
 #, php-format
 msgid ""

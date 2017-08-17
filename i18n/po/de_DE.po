@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-14 18:14+0000\n"
+"POT-Creation-Date: 2017-08-17 02:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: ssd63 <m.sauer@z63.de>, 2017\n"
 "Language-Team: German (Germany) (https://www.transifex.com/i-mscp/teams/576/de_DE/)\n"
@@ -66,8 +66,8 @@ msgstr "%1$s`s - Software"
 #, php-format
 msgid "%d day remaining until account expiration"
 msgid_plural "%d days remaining until account expiration"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d Tag verbleibt bis zum Ablauf des Kontos"
+msgstr[1] "%d Tage verbleiben bis zum Ablauf des Kontos"
 
 #, php-format
 msgid "%d strings translated"
@@ -204,8 +204,8 @@ msgstr "Ein Tarif mit gleichem Namen existiert bereits."
 #, php-format
 msgid "A new configuration parameter has been created."
 msgid_plural "%d configuration parameters were created"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ein neuer Konfigurationsparameter wurde erzeugt."
+msgstr[1] "%d Konfigurationsparameter wurden erzeugt"
 
 msgid "A new i-MSCP version is available"
 msgstr "Es ist eine neue I-MSCP Version verfügbar."
@@ -672,7 +672,7 @@ msgstr "Sind Sie sicher, dass Sie alle Tickets löschen wollen?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s FTP account?"
-msgstr ""
+msgstr "Wollen Sie den FTP-Benutzer %s wirklich löschen?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s domain alias order?"
@@ -689,7 +689,7 @@ msgstr "Sind Sie sicher, dass Sie das Menü %s löschen möchten?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s service port ?"
-msgstr ""
+msgstr "Sind Sie sicher, dass der Service-Port %s gelöscht werden soll?"
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -1190,7 +1190,7 @@ msgid "Client / Webtools / Software / View"
 msgstr "Kunde / Webwerkzeuge / Software / Ansehen"
 
 msgid "Client users"
-msgstr ""
+msgstr "Nutzers"
 
 msgid "Clock speed (MHz)"
 msgstr "Taktrate (MHz)"
@@ -1333,6 +1333,8 @@ msgstr "Konnte die Datenbank %s nicht erstellen."
 
 msgid "Couldn't delete domain alias. An unexpected error occurred."
 msgstr ""
+"Domain-Alias konnte nicht gelöscht werden. Ein unerwarteter Fehler ist "
+"aufgetreten."
 
 msgid "Couldn't delete subdomain. An unexpected error occurred."
 msgstr ""
@@ -2362,7 +2364,7 @@ msgid "Forbidden"
 msgstr "Verboten"
 
 msgid "Force refresh"
-msgstr ""
+msgstr "Erzwungene Auffrischung"
 
 msgid "Force retry"
 msgstr "Wiederholung erzwingen"
@@ -2825,7 +2827,7 @@ msgstr "Falscher Privater Schlüssel oder falsche Passphrase."
 
 #, php-format
 msgid "Invalid service name: %s"
-msgstr ""
+msgstr "Ungültiger Dienst-Name %s"
 
 msgid "Invalid state/province."
 msgstr "Ungültiges Bundesland."
@@ -2986,8 +2988,8 @@ msgstr "Mail Konten Fehler"
 #, php-format
 msgid "Mail account has been scheduled for deletion."
 msgid_plural "%d mail accounts were scheduled for deletion."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Das E-Mail Konto wurde zur Löschung vorgemerkt."
+msgstr[1] "%d E-Mail Konten wurden zur Löschung vorgemerkt."
 
 msgid "Mail account successfully scheduled for addition."
 msgstr "E-Mail Konto erfolgreich zum Hinzufügen vorgemerkt."
@@ -4389,22 +4391,22 @@ msgid "Service Unavailable"
 msgstr "Dienst nicht verfügbar"
 
 msgid "Service is not running"
-msgstr ""
+msgstr "Dienst läuft nicht"
 
 msgid "Service is running"
-msgstr ""
+msgstr "Dienst läuft"
 
 msgid "Service name"
 msgstr "Name des Dienstes"
 
 msgid "Service name cannot be greater than 25 characters."
-msgstr ""
+msgstr "Dienst-Name darf nicht länger als 25 Zeichen sein."
 
 #, php-format
 msgid "Service port has been updated."
 msgid_plural "%d service ports were updated."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Service Port wurde erneuert."
+msgstr[1] "%d Service Ports wurden erneuert."
 
 msgid "Service port successfully added"
 msgstr "Dienst-Port erfolgreich hinzugefügt"
@@ -4419,7 +4421,7 @@ msgid "Service protocol"
 msgstr "Dienst-Protokoll"
 
 msgid "Service with same name already exists."
-msgstr ""
+msgstr "Service-Port mit gleichem Namen existiert bereits."
 
 msgid "Services status"
 msgstr "Status der Dienste"
@@ -4751,6 +4753,8 @@ msgid ""
 "The Telnet-Server is currently running on your server. This legacy service "
 "is not secure."
 msgstr ""
+"Der Telnet-Server läuft zurzeit auf Ihren Server. Dieser Legacy-Dienst ist "
+"nicht sicher."
 
 #, php-format
 msgid "The `%s' SQL user is not available or not permitted."
@@ -4767,8 +4771,8 @@ msgstr "Der Firmenname muss zwischen %d und %d Zeichen enthalten."
 #, php-format
 msgid "The configuration parameter has been updated."
 msgid_plural "%d configuration parameters were updated"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Der Konfigurationsparameter wurde erneuert."
+msgstr[1] "%d Konfigurationsparameter wurden erneuert"
 
 #, php-format
 msgid "The country name must be between %d and %d characters."
@@ -4842,7 +4846,7 @@ msgstr "Das Passwortfeld ist leer."
 
 #, php-format
 msgid "The password must be between %d and %d characters."
-msgstr ""
+msgstr "The password must be between %d and %d characters."
 
 msgid "The password must contain letters and digits."
 msgstr "Das Passwort muss Buchstaben und Zahlen beinhalten."
@@ -4905,7 +4909,7 @@ msgid "The zipcode must be between %d and %d characters."
 msgstr "Die Postleitzahl muss zwischen %d und %d Zeichen enthalten."
 
 msgid "There are no service ports yet."
-msgstr ""
+msgstr "Sie haben keine eigenen Service-Ports definiert."
 
 msgid ""
 "There is an Error inside your package. Please check it!<br>Refresh your site"
@@ -5552,6 +5556,10 @@ msgid ""
 "your mail quota. If you want to add a normal mail account, you must first "
 "lower the quota assigned to one of your other mail account."
 msgstr ""
+"Sie können keine normalen EMail-Konten anlegen, weil Sie bereits das gesamte"
+" Email Quota anderen Konten zugeordnet haben. Wenn Sie ein normales Mail-"
+"Konto hinzufügen wollen, müssen Sie zunächst das Quota eines bestehenden "
+"Kontos verringern. "
 
 msgid ""
 "You cannot create new mailboxes for that domain. Only forwarded mail "
@@ -5579,6 +5587,10 @@ msgid ""
 "account, you must first lower the quota assigned to one of your other mail "
 "account."
 msgstr ""
+"Sie können dieses Konten nicht in ein normales Konto umwandeln, weil Sie "
+"bereits das gesamte E-Mail Quota anderen Konten zugeordnet haben. Wenn Sie "
+"dieses Konto in ein normales E-Mail-Konto umwandeln wollen, müssen Sie "
+"zunächst das Quota eines bestehenden Kontos verringern. "
 
 #, php-format
 msgid ""
