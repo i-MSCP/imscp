@@ -956,8 +956,7 @@ sub _buildPhpConfig
         {
 
             PEAR_DIR => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
-            TIMEZONE => main::setupGetQuestion( 'TIMEZONE' ),
-            WEB_DIR  => $main::imscpConfig{'GUI_ROOT_DIR'}
+            TIMEZONE => main::setupGetQuestion( 'TIMEZONE' )
         },
         {
             destination => "/usr/local/etc/imscp_panel/php.ini",
