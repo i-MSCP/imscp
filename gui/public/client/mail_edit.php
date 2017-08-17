@@ -268,7 +268,7 @@ function client_generatePage($tpl)
     list($username, $domainName) = explode('@', $mailData['mail_addr']);
 
     $customerMailboxesQuotaSumBytes = exec_query(
-        'SELECT IFNULL(SUM(quota)n 0) FROM mail_users WHERE mail_id <> ? AND domain_id = ?',
+        'SELECT IFNULL(SUM(quota), 0) FROM mail_users WHERE mail_id <> ? AND domain_id = ?',
         [$mailId, $mainDmnProps['domain_id']]
     )->fetchRow(PDO::FETCH_COLUMN);
 
