@@ -329,11 +329,11 @@
         </tr>
         <tr>
             <td><label for="email"><?= tohtml(tr('Email')); ?></label></td>
-            <td><input type="text" name="email" id="email" value="<?= tohtml($this->form->getValue('email'), 'htmlAttr'); ?>" required></td>
+            <td><input type="text" name="email" id="email" value="<?= tohtml(decode_idna($this->form->getValue('email')), 'htmlAttr'); ?>" required></td>
         </tr>
         <tr>
             <td><label for="phone"><?= tohtml(tr('Phone')); ?></label></td>
-            <td><input type="text" name="phone" id="phone" value="<?= tohtml(decode_idna($this->form->getValue('phone')), 'htmlAttr'); ?>"></td>
+            <td><input type="text" name="phone" id="phone" value="<?= tohtml($this->form->getValue('phone'), 'htmlAttr'); ?>"></td>
         </tr>
         <tr>
             <td><label for="fax"><?= tohtml(tr('Fax')); ?></label></td>

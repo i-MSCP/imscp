@@ -261,7 +261,7 @@ function generatePage(TemplateEngine $tpl, Form $form)
 {
     global $hpId, $dmnName, $domainIp;
 
-    $form->setDefault('admin_name', decode_idna($dmnName));
+    $form->setDefault('admin_name', $dmnName);
     $tpl->form = $form;
 
     reseller_generate_ip_list($tpl, $_SESSION['user_id'], $domainIp);

@@ -382,7 +382,7 @@ function updateResellerUser(Form $form)
 
         $form->setDefault('admin_name', $data['fallback_admin_name']);
 
-        // Make sure to compare email in IDNA form
+        // Make sure to compare and store email in IDNA form
         $form->setDefault('email', encode_idna($form->getValue('email')));
 
         // Check for ip addresses
