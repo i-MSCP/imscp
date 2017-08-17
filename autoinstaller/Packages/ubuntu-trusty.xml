@@ -468,7 +468,6 @@
             pinning_pin_priority="1002"
     >
         <package>openssl</package>
-        <package>libssl-dev</package>
     </ssl>
     <other>
         <package>apt-src</package>
