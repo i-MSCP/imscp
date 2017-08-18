@@ -18,6 +18,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+/**
+ * @see Zend_Validate_Alnum
+ */
 require_once 'Zend/Validate/Alnum.php';
 
 /**

@@ -18,8 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Events as Events;
 use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Services as Services;
 
 /***********************************************************************************************************************
  * Functions
@@ -33,7 +35,7 @@ use iMSCP_pTemplate as TemplateEngine;
  */
 function generatePage(TemplateEngine $tpl)
 {
-    $services = new iMSCP_Services();
+    $services = new Services();
 
     foreach ($services as $service) {
         $isRunning = $services->isRunning(isset($_GET['refresh']));
@@ -62,7 +64,7 @@ function generatePage(TemplateEngine $tpl)
     
     if(isset($_GET['refresh'])) {
         set_page_message('Service statuses were refreshed.', 'success');
-        redirectTo('server_status.php');
+        redirectTo('service_statuses.php');
     }
 }
 
@@ -72,13 +74,13 @@ function generatePage(TemplateEngine $tpl)
 
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(Events::onAdminScriptStart);
+EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 check_login('admin');
 
 $tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'         => 'shared/layouts/ui.tpl',
-    'page'           => 'admin/server_status.tpl',
+    'page'           => 'admin/service_statuses.tpl',
     'page_message'   => 'layout',
     'service_status' => 'page'
 ]);
@@ -92,7 +94,7 @@ $tpl->assign([
     'TR_FORCE_REFRESH' => tohtml(tr('Force refresh', 'htmlAttr'))
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
+EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
     /** @var $e \iMSCP_Events_Event */
     $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
 });
@@ -102,7 +104,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

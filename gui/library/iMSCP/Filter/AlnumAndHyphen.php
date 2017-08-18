@@ -19,14 +19,9 @@
  */
 
 /**
- * @see Zend_Filter_Interface
+ * @see Zend_Filter_Alnum
  */
-require_once 'Zend/Filter/Interface.php';
-
-/**
- * @see Zend_Locale
- */
-require_once 'Zend/Locale.php';
+require_once 'Zend/Filter/Alnum.php';
 
 /**
  * Class iMSCP_Filter_AlnumAndHyphen

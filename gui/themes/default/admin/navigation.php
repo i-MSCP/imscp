@@ -29,9 +29,9 @@ return [
                 'uri'         => '/admin/index.php',
                 'title_class' => 'general'
             ],
-            'server_status' => [
-                'label'       => tr('Services status'),
-                'uri'         => '/admin/server_status.php',
+            'services_statuses' => [
+                'label'       => tr('Service statuses'),
+                'uri'         => '/admin/service_statuses.php',
                 'title_class' => 'serverstatus'
             ],
             'admin_log'     => [
