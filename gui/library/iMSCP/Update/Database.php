@@ -64,7 +64,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 259;
+    protected $lastUpdate = 264;
 
     /**
      * Singleton - Make new unavailable
@@ -240,11 +240,14 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function renameTable($table, $newTableName)
     {
-        $table = quoteIdentifier($table);
         $stmt = exec_query('SHOW TABLES LIKE ?', $table);
 
         if ($stmt->rowCount()) {
-            return sprintf('ALTER TABLE %s RENAME TO %s', $table, quoteIdentifier($newTableName));
+            $stmt = exec_query('SHOW TABLES LIKE ?', $newTableName);
+
+            if (!$stmt->rowCount()) {
+                return sprintf('ALTER TABLE %s RENAME TO %s', quoteIdentifier($table), quoteIdentifier($newTableName));
+            }
         }
 
         return NULL;
@@ -849,23 +852,6 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Adds unique constraint for mail user entities
-     *
-     * @return array SQL statements to be executed
-     */
-    protected function r202()
-    {
-        return [
-            $this->renameTable('mail_users', 'old_mail_users'),
-            'CREATE TABLE mail_users LIKE old_mail_users',
-            $this->dropIndexByName('mail_users', 'mail_addr'),
-            $this->addIndex('mail_users', 'mail_addr', 'UNIQUE', 'mail_addr'),
-            'INSERT IGNORE INTO mail_users SELECT * FROM old_mail_users',
-            $this->dropTable('old_mail_users')
-        ];
-    }
-
-    /**
      * Change domain.allowbackup column length and update values for backup feature
      *
      * @return array SQL statements to be executed
@@ -939,22 +925,6 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected function r208()
     {
         return $this->dropIndexByName('server_traffic', 'traff_time');
-    }
-
-    /**
-     * Add unique constraint on server_traffic.traff_time column to avoid duplicate time periods
-     *
-     * @return array SQL statements to be executed
-     */
-    protected function r210()
-    {
-        return [
-            $this->renameTable('server_traffic', 'old_server_traffic'),
-            'CREATE TABLE server_traffic LIKE old_server_traffic',
-            $this->addIndex('server_traffic', 'traff_time', 'UNIQUE', 'traff_time'),
-            'INSERT IGNORE INTO server_traffic SELECT * FROM old_server_traffic',
-            $this->dropTable('old_server_traffic')
-        ];
     }
 
     /**
@@ -1463,31 +1433,6 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Adds compound unique key on the php_ini table
-     *
-     * @return array SQL statement to be executed
-     */
-    protected function r234()
-    {
-        $sqlQueries = [
-            $this->renameTable('php_ini', 'old_php_ini'),
-            'CREATE TABLE php_ini LIKE old_php_ini',
-        ];
-        $sqlQueries = array_merge(
-            $sqlQueries,
-            $this->dropIndexByColumn('php_ini', 'admin_id'),
-            $this->dropIndexByColumn('php_ini', 'domain_id'),
-            $this->dropIndexByColumn('php_ini', 'domain_type'),
-            [
-                $this->addIndex('php_ini', ['admin_id', 'domain_id', 'domain_type'], 'UNIQUE', 'unique_php_ini'),
-                'INSERT IGNORE INTO php_ini SELECT * FROM old_php_ini',
-                $this->dropTable('old_php_ini')
-            ]
-        );
-        return $sqlQueries;
-    }
-
-    /**
      * #IP-1429 Make main domains forwardable
      * - Add domain.url_forward, domain.type_forward and domain.host_forward columns
      * - Add domain_aliasses.host_forward column
@@ -1541,23 +1486,6 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * #IP-1587 Slow query on domain_traffic table when admin or reseller want to login into customer's area
-     * - Add compound unique index on the domain_traffic table to avoid slow query and duplicate entries
-     *
-     * @return array SQL statements to be executed
-     */
-    protected function r237()
-    {
-        return [
-            $this->renameTable('domain_traffic', 'old_domain_traffic'),
-            'CREATE TABLE domain_traffic LIKE old_domain_traffic',
-            $this->addIndex('domain_traffic', ['domain_id', 'dtraff_time'], 'UNIQUE', 'i_unique_timestamp'),
-            'INSERT IGNORE INTO domain_traffic SELECT * FROM old_domain_traffic',
-            $this->dropTable('old_domain_traffic')
-        ];
-    }
-
-    /**
      * Update domain_traffic table schema
      * - Disallow NULL value on domain_id and dtraff_time columns
      * - Change default value for dtraff_web, dtraff_ftp, dtraff_mail domain_traffic columns (NULL to 0)
@@ -1585,26 +1513,6 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected function r239()
     {
         return 'DROP VIEW IF EXISTS monthly_domain_traffic';
-    }
-
-    /**
-     * Add missing primary key on httpd_vlogger table
-     *
-     * @return null|array SQL statements to be executed or null
-     */
-    protected function r240()
-    {
-        if (!$this->isKnownTable('httpd_vlogger')) {
-            return NULL;
-        }
-
-        return [
-            $this->renameTable('httpd_vlogger', 'old_httpd_vlogger'),
-            'CREATE TABLE httpd_vlogger LIKE old_httpd_vlogger',
-            $this->addIndex('httpd_vlogger', ['vhost', 'ldate']),
-            'INSERT IGNORE INTO httpd_vlogger SELECT * FROM old_httpd_vlogger',
-            $this->dropTable('old_httpd_vlogger')
-        ];
     }
 
     /**
@@ -1922,5 +1830,148 @@ class iMSCP_Update_Database extends iMSCP_Update
             SET t1.members = t2.members
             WHERE t1.gid = t2.gid
         ";
+    }
+
+    /**
+     * Adds unique constraint for mail user entities
+     *
+     * Note: Repeated update due to mistake in previous implementation (was r202)
+     *
+     * @return array SQL statements to be executed
+     */
+    protected function r260()
+    {
+        if (($renameQuery = $this->renameTable('mail_users', 'old_mail_users')) !== NULL) {
+            execute_query($renameQuery);
+        }
+
+        if (!$this->isKnownTable('mail_users')) {
+            execute_query('CREATE TABLE mail_users LIKE old_mail_users');
+        }
+
+        return [
+            $this->dropIndexByName('mail_users', 'mail_addr'),
+            $this->addIndex('mail_users', 'mail_addr', 'UNIQUE', 'mail_addr'),
+            'INSERT IGNORE INTO mail_users SELECT * FROM old_mail_users',
+            $this->dropTable('old_mail_users')
+        ];
+    }
+
+    /**
+     * Add unique constraint on server_traffic.traff_time column to avoid duplicate time periods
+     *
+     * Note: Repeated update due to mistake in previous implementation (was r210)
+     *
+     * @return array SQL statements to be executed
+     */
+    protected function r261()
+    {
+        if (($renameQuery = $this->renameTable('server_traffic', 'old_server_traffic')) !== NULL) {
+            execute_query($renameQuery);
+        }
+
+        if (!$this->isKnownTable('server_traffic')) {
+            execute_query('CREATE TABLE server_traffic LIKE old_server_traffic');
+        }
+
+        return [
+            $this->dropIndexByName('server_traffic', 'traff_time'),
+            $this->addIndex('server_traffic', 'traff_time', 'UNIQUE', 'traff_time'),
+            'INSERT IGNORE INTO server_traffic SELECT * FROM old_server_traffic',
+            $this->dropTable('old_server_traffic')
+        ];
+    }
+
+    /**
+     * Adds compound unique key on the php_ini table
+     *
+     * Note: Repeated update due to mistake in previous implementation (was r234)
+     *
+     * @return array SQL statement to be executed
+     */
+    protected function r262()
+    {
+        if (($renameQuery = $this->renameTable('php_ini', 'old_php_ini')) !== NULL) {
+            execute_query($renameQuery);
+        }
+
+        if (!$this->isKnownTable('php_ini')) {
+            execute_query('CREATE TABLE php_ini LIKE old_php_ini');
+        }
+
+        if (($dropQueries = $this->dropIndexByColumn('php_ini', 'admin_id')) !== NULL) {
+            foreach ($dropQueries as $dropQuery) {
+                execute_query($dropQuery);
+            }
+        }
+
+        if (($dropQueries = $this->dropIndexByColumn('php_ini', 'domain_id')) !== NULL) {
+            foreach ($dropQueries as $dropQuery) {
+                execute_query($dropQuery);
+            }
+        }
+
+        if (($dropQuery = $this->dropIndexByColumn('php_ini', 'domain_type')) !== NULL) {
+            foreach ($dropQueries as $dropQuery) {
+                execute_query($dropQuery);
+            }
+        }
+
+        return [
+            $this->addIndex('php_ini', ['admin_id', 'domain_id', 'domain_type'], 'UNIQUE', 'unique_php_ini'),
+            'INSERT IGNORE INTO php_ini SELECT * FROM old_php_ini',
+            $this->dropTable('old_php_ini')
+        ];
+    }
+
+    /**
+     * #IP-1587 Slow query on domain_traffic table when admin or reseller want to login into customer's area
+     * - Add compound unique index on the domain_traffic table to avoid slow query and duplicate entries
+     *
+     * Note: Repeated update due to mistake in previous implementation (was r237)
+     *
+     * @return array SQL statements to be executed
+     */
+    protected function r263()
+    {
+        if (($renameQuery = $this->renameTable('domain_traffic', 'old_domain_traffic')) !== NULL) {
+            execute_query($renameQuery);
+        }
+
+        if (!$this->isKnownTable('domain_traffic')) {
+            execute_query('CREATE TABLE domain_traffic LIKE old_domain_traffic');
+        }
+
+        return [
+            $this->dropIndexByName('domain_traffic', 'i_unique_timestamp'),
+            $this->addIndex('domain_traffic', ['domain_id', 'dtraff_time'], 'UNIQUE', 'i_unique_timestamp'),
+            'INSERT IGNORE INTO domain_traffic SELECT * FROM old_domain_traffic',
+            $this->dropTable('old_domain_traffic')
+        ];
+    }
+
+    /**
+     * Add missing primary key on httpd_vlogger table
+     *
+     * Note: Repeated update due to mistake in previous implementation (was r240)
+     *
+     * @return null|array SQL statements to be executed or null
+     */
+    protected function r264()
+    {
+        if (($renameQuery = $this->renameTable('httpd_vlogger', 'old_httpd_vlogger')) !== NULL) {
+            execute_query($renameQuery);
+        }
+
+        if (!$this->isKnownTable('httpd_vlogger')) {
+            execute_query('CREATE TABLE httpd_vlogger LIKE old_httpd_vlogger');
+        }
+
+        return [
+            $this->dropIndexByName('httpd_vlogger', 'PRIMARY'),
+            $this->addIndex('httpd_vlogger', ['vhost', 'ldate']),
+            'INSERT IGNORE INTO httpd_vlogger SELECT * FROM old_httpd_vlogger',
+            $this->dropTable('old_httpd_vlogger')
+        ];
     }
 }

@@ -22,7 +22,8 @@ use iMSCP_Update_Database as DbUpdater;
 
 define('IMSCP_SETUP', true);
 
-try {
+function upddb_process()
+{
     chdir(dirname(__FILE__));
     require_once '../../gui/library/imscp-lib.php';
 
@@ -38,7 +39,29 @@ try {
     }
 
     i18n_buildLanguageIndex();
+}
+
+try {
+    if (version_compare(PHP_VERSION, '7', '<')) {
+        upddb_process();
+    } else {
+        try {
+            upddb_process();
+        } catch (Throwable $e) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
+
+        }
+    }
 } catch (Exception $e) {
-    fwrite(STDERR, sprintf("[ERROR] %s \n\nStack trace:\n\n%s\n", $e->getMessage(), $e->getTraceAsString()));
+    $prevException = $e->getPrevious();
+
+    fwrite(
+        STDERR,
+        sprintf(
+            "[ERROR] %s \n\nStack trace:\n\n%s\n",
+            $e->getMessage(),
+            ($prevException) ? $prevException->getTraceAsString() : $e->getTraceAsString()
+        )
+    );
     exit(1);
 }
