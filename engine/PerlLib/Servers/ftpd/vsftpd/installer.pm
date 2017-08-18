@@ -346,6 +346,8 @@ sub _buildConfigFile
 
     my ($passvMinPort, $passvMaxPort) = split( /\s+/, $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'} );
     my $data = {
+        IPV4_ONLY              => main::setupGetQuestion( 'IPV6_SUPPORT' ) ? 'NO' : 'YES',
+        IPV6_SUPPORT           => main::setupGetQuestion( 'IPV6_SUPPORT' ) ? 'YES' : 'NO',
         DATABASE_NAME          => main::setupGetQuestion( 'DATABASE_NAME' ),
         DATABASE_HOST          => main::setupGetQuestion( 'DATABASE_HOST' ),
         DATABASE_PORT          => main::setupGetQuestion( 'DATABASE_PORT' ),
