@@ -27,6 +27,7 @@ package Listener::Backup::Storage::Outsourcing;
 
 use strict;
 use warnings;
+use iMSCP::Debug qw/ error /;
 use iMSCP::EventManager;
 use iMSCP::Ext2Attributes qw/ setImmutable clearImmutable /;
 use iMSCP::Dir;
@@ -67,7 +68,12 @@ unless ( $STORAGE_ROOT_PATH eq '' ) {
                     }
                 );
             };
-            $@ ? 1 : 0;
+            if ( $@ ) {
+                error( $@ );
+                return 1;
+            }
+
+            0;
         }
     );
 
@@ -102,13 +108,12 @@ unless ( $STORAGE_ROOT_PATH eq '' ) {
                     clearImmutable( $data->{'WEB_DIR'} );
 
                     unless ( -d "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" ) {
-                        # Move backup directory to new location 
-                        # Moving is faster than copying when source and destination are on same device
-                        $backupDirHandle->moveDir( "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" );
-                    } else {
-                        # Empty directory by re-creating it from scratch (should never occurs)
-                        $backupDirHandle->clear();
+                        # Move backup directory to new location
+                        $backupDirHandle->rcopy( "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" );
                     }
+
+                    # Empty directory by re-creating it from scratch (should never occurs)
+                    $backupDirHandle->clear();
 
                     setImmutable( $data->{'WEB_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
                 } else {
@@ -123,6 +128,7 @@ unless ( $STORAGE_ROOT_PATH eq '' ) {
                 }
             };
             if ( $@ ) {
+                error( $@ );
                 return 1;
             }
 
@@ -154,10 +160,13 @@ unless ( $STORAGE_ROOT_PATH eq '' ) {
             return $rs if $rs;
 
             local $@;
-            eval {
-                iMSCP::Dir->new( dirname => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" )->remove();
-            };
-            $@ ? 1 : 0;
+            eval { iMSCP::Dir->new( dirname => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" )->remove(); };
+            if ( $@ ) {
+                error( $@ );
+                return 1;
+            }
+
+            0;
         }
     );
 }

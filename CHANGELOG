@@ -20,6 +20,7 @@ CONFIG
     Removed: `.htgroup' and `.htpasswd' files from the skeleton directory; These files are now created only when needed
 
 CONTRIB
+    Fixed: 10_backup_storage_outsourcing.pl: Couldn't move XXX directory to XXX -- filesystem boundaries
     Fixed: 10_backup_storage_outsourcing.pl: Outsourced backup directory not created on new customer account creation
 
 DISTRIBUTIONS
@@ -51,8 +52,8 @@ FRONTEND
     Fixed: Action links for FTP accounts must be hidden when they have a status other than 'ok'
     Fixed: All SQL queries must be compatible with the `ONLY_FULL_GROUP_BY' SQL mode
     Fixed: A user must not be able to clear his email address
-    Fixed: Cannot edit mailbox quota due to integer type casting (i386 arch)
-    Fixed: Cannot set value bigger than 2GB for mailbox quota due to integer type casting (i386 arch)
+    Fixed: Couldn't edit mailbox quota due to integer type casting (i386 arch)
+    Fixed: Couldn't set value bigger than 2GB for mailbox quota due to integer type casting (i386 arch)
     Fixed: Couldn't generate self-signed SSL certificate (string passed as serial number while integer is expected)
     Fixed: Customers must stay able to login when their password or their main domain are being modified
     Fixed: Erroneous ftp_group.members field (Subsequent FTP accounts members are never added)
@@ -73,11 +74,11 @@ FRONTEND
     Review: Catchall mail accounts are now counted in mail accounts limit
     Review: Default mail accounts are not longer counted for the mail accounts limit (default)
     Review: Default mail accounts are now hidden in the client mail accounts overview interface (default)
+    Review: Extend Zend_Registry class instead of reinventing the wheel
     Review: Hide PHP E_STRICT, E_NOTICE, ~E_USER_NOTICE, E_DEPRECATED and E_USER_DEPRECATED on production
     Review: Hide the i-MSCP update interface when Git version is in use (admin UI level)
     Review: Make use of short syntax for arrays
     Review: Make use of Zend_Controller_Action_Helper_FlashMessenger for page messages
-    Review: Extend Zend_Registry class instead of reinventing the wheel
     Review: Show an explicite warning when the legacy and unsecure telnet server is running (service statuses)
     Review: Skip the intermediate edit page when mail autoresponder is being enabled and that the message is already set
     Rewritten: Add administrator interface (admin level)
