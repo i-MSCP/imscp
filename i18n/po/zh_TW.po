@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-17 02:15+0000\n"
+"POT-Creation-Date: 2017-08-20 15:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/i-mscp/teams/576/zh_TW/)\n"
@@ -411,9 +411,6 @@ msgstr "管理 / 狀態 / 經銷商狀態 / 使用者狀態 / {USERNAME} 使用�
 
 msgid "Admin / Statistics / Server Statistics"
 msgstr "管理 / 狀態 / 伺服器狀態"
-
-msgid "Admin / Statistics / Server Statistics / Day Statistics"
-msgstr "管理 / 狀態 / 伺服器狀態 / 日狀態"
 
 msgid "Admin / Support / Closed Tickets"
 msgstr "管理 / 支援 / 已關閉服務單"
@@ -1444,9 +1441,6 @@ msgstr "日期"
 
 msgid "Day"
 msgstr "日"
-
-msgid "Day statistics"
-msgstr "每日狀態"
 
 msgid "Days"
 msgstr "日"
@@ -2677,9 +2671,6 @@ msgstr "無效的電子郵件位址。"
 
 msgid "Invalid email username."
 msgstr "無效的郵件使用者名稱。"
-
-msgid "Invalid fax."
-msgstr ""
 
 #, php-format
 msgid "Invalid field: %s"
@@ -4264,11 +4255,11 @@ msgstr "通訊埠口"
 msgid "Service protocol"
 msgstr "協議"
 
-msgid "Service with same name already exists."
+msgid "Service statuses"
 msgstr ""
 
-msgid "Services status"
-msgstr "伺服器狀態"
+msgid "Service with same name already exists."
+msgstr ""
 
 msgid "Sessions"
 msgstr "工作階段"

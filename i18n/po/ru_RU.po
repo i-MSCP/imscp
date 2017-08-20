@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-17 02:15+0000\n"
+"POT-Creation-Date: 2017-08-20 15:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Oleg Olegov <>, 2017\n"
 "Language-Team: Russian (Russia) (https://www.transifex.com/i-mscp/teams/576/ru_RU/)\n"
@@ -432,9 +432,6 @@ msgstr ""
 
 msgid "Admin / Statistics / Server Statistics"
 msgstr "Администратор / Статистика / Статистика сервера"
-
-msgid "Admin / Statistics / Server Statistics / Day Statistics"
-msgstr "Администратор / Статистика / Статистика сервера / Статистика дня"
 
 msgid "Admin / Support / Closed Tickets"
 msgstr "Администратор / Служба поддержки / Закрытые тикеты"
@@ -1496,9 +1493,6 @@ msgstr "Дата"
 
 msgid "Day"
 msgstr "День"
-
-msgid "Day statistics"
-msgstr "Статистика дня"
 
 msgid "Days"
 msgstr "Дни"
@@ -2753,9 +2747,6 @@ msgstr "Неверный Email адрес"
 
 msgid "Invalid email username."
 msgstr "Неверное имя пользователя почтового ящика"
-
-msgid "Invalid fax."
-msgstr "Неверный номер факса."
 
 #, php-format
 msgid "Invalid field: %s"
@@ -4374,11 +4365,11 @@ msgstr "Порты служб"
 msgid "Service protocol"
 msgstr "Протокол службы"
 
+msgid "Service statuses"
+msgstr ""
+
 msgid "Service with same name already exists."
 msgstr "Ошибка: Порт службы с таким именем уже существует."
-
-msgid "Services status"
-msgstr "Статус служб"
 
 msgid "Sessions"
 msgstr "Сессия"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-17 02:15+0000\n"
+"POT-Creation-Date: 2017-08-20 15:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Japanese (Japan) (https://www.transifex.com/i-mscp/teams/576/ja_JP/)\n"
@@ -412,9 +412,6 @@ msgstr "管理者 / 統計 / 代理店統計 / 顧客統計 / ドメイン統計
 
 msgid "Admin / Statistics / Server Statistics"
 msgstr "管理者 / 統計 / サーバ統計"
-
-msgid "Admin / Statistics / Server Statistics / Day Statistics"
-msgstr "管理者 / 統計 / サーバ統計 / 日統計"
 
 msgid "Admin / Support / Closed Tickets"
 msgstr "管理者 / サポート / クローズチケット"
@@ -1447,9 +1444,6 @@ msgstr "日付"
 
 msgid "Day"
 msgstr "日"
-
-msgid "Day statistics"
-msgstr "日毎の統計"
 
 msgid "Days"
 msgstr "日"
@@ -2682,9 +2676,6 @@ msgstr "無効なメールアドレスです。"
 
 msgid "Invalid email username."
 msgstr "無効なEメールユーザ名です。"
-
-msgid "Invalid fax."
-msgstr ""
 
 #, php-format
 msgid "Invalid field: %s"
@@ -4275,11 +4266,11 @@ msgstr "サービスポート"
 msgid "Service protocol"
 msgstr "サービスプロトコル"
 
-msgid "Service with same name already exists."
+msgid "Service statuses"
 msgstr ""
 
-msgid "Services status"
-msgstr "サービス状態"
+msgid "Service with same name already exists."
+msgstr ""
 
 msgid "Sessions"
 msgstr "セッション"

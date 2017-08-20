@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-17 02:15+0000\n"
+"POT-Creation-Date: 2017-08-20 15:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Dutch (Netherlands) (https://www.transifex.com/i-mscp/teams/576/nl_NL/)\n"
@@ -434,9 +434,6 @@ msgstr ""
 
 msgid "Admin / Statistics / Server Statistics"
 msgstr "Beheerder / Statistieken / Serverstatistieken"
-
-msgid "Admin / Statistics / Server Statistics / Day Statistics"
-msgstr "Beheerder / Statistieken / Serverstatistieken / Dagstatistieken"
 
 msgid "Admin / Support / Closed Tickets"
 msgstr "Beheerder / Ondersteuning / Gesloten Tickets"
@@ -1509,9 +1506,6 @@ msgstr "Datum"
 
 msgid "Day"
 msgstr "Dag"
-
-msgid "Day statistics"
-msgstr "Dagstatistieken"
 
 msgid "Days"
 msgstr "Dagen"
@@ -2751,9 +2745,6 @@ msgstr "Ongeldig e-mailadres."
 
 msgid "Invalid email username."
 msgstr "Foutieve e-mailgebruikersnaam"
-
-msgid "Invalid fax."
-msgstr "Foutief faxnummer"
 
 #, php-format
 msgid "Invalid field: %s"
@@ -4378,11 +4369,11 @@ msgstr "Serverpoorten"
 msgid "Service protocol"
 msgstr "Serviceprotocol"
 
+msgid "Service statuses"
+msgstr ""
+
 msgid "Service with same name already exists."
 msgstr "Service met deze naam bestaat reeds"
-
-msgid "Services status"
-msgstr "Serverstatus"
 
 msgid "Sessions"
 msgstr "Sessies"

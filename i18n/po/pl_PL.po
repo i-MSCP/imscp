@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-17 02:15+0000\n"
+"POT-Creation-Date: 2017-08-20 15:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Alex_Joe <voxar@voxar.pl>, 2017\n"
 "Language-Team: Polish (Poland) (https://www.transifex.com/i-mscp/teams/576/pl_PL/)\n"
@@ -434,9 +434,6 @@ msgstr ""
 
 msgid "Admin / Statistics / Server Statistics"
 msgstr "Admin / Statystyki / Statystyki Serwera"
-
-msgid "Admin / Statistics / Server Statistics / Day Statistics"
-msgstr "Admin / Statystyki / Statystyki Serwera / Dzienne Statystyki"
 
 msgid "Admin / Support / Closed Tickets"
 msgstr "Admin / Wsparcie / Zamknięte Zgłoszenia"
@@ -1504,9 +1501,6 @@ msgstr "Data"
 
 msgid "Day"
 msgstr "Dzień"
-
-msgid "Day statistics"
-msgstr "Statystyki dzienne"
 
 msgid "Days"
 msgstr "Dni"
@@ -2751,9 +2745,6 @@ msgstr "Nieprawidlowy adres email."
 
 msgid "Invalid email username."
 msgstr "Nieprawidłowy użytkownik poczty."
-
-msgid "Invalid fax."
-msgstr ""
 
 #, php-format
 msgid "Invalid field: %s"
@@ -4370,11 +4361,11 @@ msgstr "Porty usług"
 msgid "Service protocol"
 msgstr "Protokół usługi"
 
-msgid "Service with same name already exists."
+msgid "Service statuses"
 msgstr ""
 
-msgid "Services status"
-msgstr "Stan usług"
+msgid "Service with same name already exists."
+msgstr ""
 
 msgid "Sessions"
 msgstr "Sesje"
