@@ -71,39 +71,65 @@ function generateLanguagesList(TemplateEngine $tpl, $selectedLanguage)
 }
 
 /**
- * Generate list of months and years
+ * Generate lists for days, months and years
  *
- * @param  TemplateEngine $tpl
- * @param  int $fromMonth
- * @param  int $fromYear
- * @param  int $numberYears
+ * @param TemplateEngine $tpl
+ * @param int $day Selected day
+ * @param int $month Selected month
+ * @param int $year Selected year
+ * @param int $nYear Number of years in years select list
  * @return void
  */
-function generateMonthsAndYearsHtmlList(TemplateEngine $tpl, $fromMonth = NULL, $fromYear = NULL, $numberYears = 3)
+function generateDMYlists(TemplateEngine $tpl, $day = NULL, $month = NULL, $year, $nYear = NULL)
 {
-    $fromMonth = filter_digits($fromMonth);
-    $fromYear = filter_digits($fromYear);
+    $month = filter_digits($month);
+    $year = filter_digits($year);
 
-    if (!$fromMonth
-        || $fromMonth > 12
-    ) {
-        $fromMonth = date('m');
+    if (!in_array($month, range(1, 12))) {
+        $month = date('m');
     }
 
-    $fromYearTwoDigit = ($fromYear) ? date('y', mktime(0, 0, 0, 1, 1, $fromYear)) : date('y');
+    if($tpl->is_dynamic_tpl('day_list')) {
+        $day = filter_digits($day);
+        $numberDays = date('t', mktime(0, 0, 0, $month ?: date('m'), 1, $year));
 
-    foreach (range(1, 12) as $month) {
+        if (!in_array($day, range(0, $numberDays))) {
+            $day = 1;
+        }
+
         $tpl->assign([
-            'OPTION_SELECTED' => ($month == $fromMonth) ? ' selected' : '',
-            'MONTH_VALUE'     => tohtml($month)
+            'OPTION_SELECTED' => 0 == $day ? ' selected' : '',
+            'VALUE'           => 0,
+            'HUMAN_VALUE'     => tohtml(tr('All'))
+        ]);
+    
+
+        $tpl->parse('DAY_LIST', '.day_list');
+
+        foreach (range(1, $numberDays) as $lday) {
+            $tpl->assign([
+                'OPTION_SELECTED' => $lday == $day ? ' selected' : '',
+                'VALUE'           => tohtml($lday, 'htmlAttr'),
+                'HUMAN_VALUE'     => tohtml($lday)
+            ]);
+            $tpl->parse('DAY_LIST', '.day_list');
+        }
+    }
+
+    foreach (range(1, 12) as $lmonth) {
+        $tpl->assign([
+            'OPTION_SELECTED' => ($lmonth == $month) ? ' selected' : '',
+            'MONTH_VALUE'     => tohtml($lmonth)
         ]);
         $tpl->parse('MONTH_LIST', '.month_list');
     }
 
-    $currentYear = date('y');
-    foreach (range($currentYear - ($numberYears - 1), $currentYear) as $year) {
+    $yearTwoDigits = ($year) ? date('y', mktime(0, 0, 0, 1, 1, $year)) : date('y');
+
+    $curYear = date('y');
+    foreach (range($curYear - ($nYear - 1), $curYear) as $year) {
         $tpl->assign([
-            'OPTION_SELECTED' => ($fromYearTwoDigit == $year) ? ' selected' : '',
+            'OPTION_SELECTED' => ($yearTwoDigits == $year) ? ' selected' : '',
             'VALUE'           => tohtml($year, 'htmlAttr'),
             'HUMAN_VALUE'     => tohtml(date('Y', mktime(0, 0, 0, 1, 1, $year)))
         ]);

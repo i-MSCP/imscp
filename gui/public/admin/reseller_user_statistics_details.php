@@ -18,6 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_pTemplate as TemplateEngine;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -26,11 +30,11 @@
  * Get traffic data for the given user and period
  *
  * @param int $domainId User main domain unique identifier
- * @param int $beginTime An UNIX timestamp representing a begin time period
- * @param int $endTime An UNIX timestamp representing an end time period
+ * @param int $startDate An UNIX timestamp representing a start date
+ * @param int $endDate An UNIX timestamp representing an end date
  * @return array
  */
-function _getUserTraffic($domainId, $beginTime, $endTime)
+function getUserTraffic($domainId, $startDate, $endDate)
 {
     $stmt = exec_query(
         '
@@ -42,26 +46,28 @@ function _getUserTraffic($domainId, $beginTime, $endTime)
             WHERE domain_id = ?
             AND dtraff_time BETWEEN ? AND ?
         ',
-        [$domainId, $beginTime, $endTime]
+        [$domainId, $startDate, $endDate]
     );
 
-    if ($stmt->rowCount()) {
-        $row = $stmt->fetchRow();
-        return [$row['web_traffic'], $row['ftp_traffic'], $row['smtp_traffic'], $row['pop_traffic']];
+    if (!$stmt->rowCount()) {
+        return [0, 0, 0, 0];
     }
 
-    return [0, 0, 0, 0];
+    $row = $stmt->fetchRow();
+
+    return [$row['web_traffic'], $row['ftp_traffic'], $row['smtp_traffic'], $row['pop_traffic']];
 }
 
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
- * @param int $userId User unique identifier
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
  */
-function generatePage($tpl, $userId)
+function generatePage(TemplateEngine $tpl)
 {
+    $userId = intval($_GET['user_id']);
+
     $stmt = exec_query(
         'SELECT admin_name, domain_id FROM admin JOIN domain ON(domain_admin_id = admin_id) WHERE admin_id = ?', $userId
     );
@@ -74,9 +80,9 @@ function generatePage($tpl, $userId)
     $domainId = $row['domain_id'];
     $adminName = decode_idna($row['admin_name']);
 
-    if (isset($_POST['month']) && isset($_POST['year'])) {
-        $year = filter_digits($_POST['year']);
-        $month = filter_digits($_POST['month']);
+    if (isset($_GET['month']) && isset($_GET['year'])) {
+        $year = filter_digits($_GET['year']);
+        $month = filter_digits($_GET['month']);
     } else {
         $month = date('m');
         $year = date('y');
@@ -87,69 +93,65 @@ function generatePage($tpl, $userId)
     );
 
     if ($stmt->rowCount()) {
-        $row = $stmt->fetchRow();
-        $numberYears = date('y') - date('y', $row['dtraff_time']);
+        $numberYears = date('y') - date('y', $stmt->fetchRow(PDO::FETCH_COLUMN));
         $numberYears = $numberYears ? $numberYears + 1 : 1;
     } else {
         $numberYears = 1;
     }
 
-    generateMonthsAndYearsHtmlList($tpl, $month, $year, $numberYears);
+    generateDMYlists($tpl, NULL, $month, $year, $numberYears);
 
     $stmt = exec_query(
-        'SELECT domain_id FROM domain_traffic WHERE domain_id = ? AND dtraff_time BETWEEN ? AND ? LIMIT 1',
+        'SELECT COUNT(dtraff_id) FROM domain_traffic WHERE domain_id = ? AND dtraff_time BETWEEN ? AND ?',
         [$domainId, getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)]
     );
 
-    if ($stmt->rowCount()) {
-        $requestedPeriod = getLastDayOfMonth($month, $year);
-        $toDay = ($requestedPeriod < time()) ? date('j', $requestedPeriod) : date('j');
-        $all = array_fill(0, 8, 0);
-
-        $dateFormat = iMSCP_Registry::get('config')->DATE_FORMAT;
-
-        for ($fromDay = 1; $fromDay <= $toDay; $fromDay++) {
-            $beginTime = mktime(0, 0, 0, $month, $fromDay, $year);
-            $endTime = mktime(23, 59, 59, $month, $fromDay, $year);
-
-            list($webTraffic, $ftpTraffic, $smtpTraffic, $popTraffic) = _getUserTraffic(
-                $domainId, $beginTime, $endTime
-            );
-
-            $tpl->assign([
-                'DATE'         => date($dateFormat, strtotime($year . '-' . $month . '-' . $fromDay)),
-                'WEB_TRAFFIC'  => tohtml(bytesHuman($webTraffic)),
-                'FTP_TRAFFIC'  => tohtml(bytesHuman($ftpTraffic)),
-                'SMTP_TRAFFIC' => tohtml(bytesHuman($smtpTraffic)),
-                'POP3_TRAFFIC' => tohtml(bytesHuman($popTraffic)),
-                'ALL_TRAFFIC'  => tohtml(bytesHuman($webTraffic + $ftpTraffic + $smtpTraffic + $popTraffic))
-            ]);
-
-            $all[0] += $webTraffic;
-            $all[1] += $ftpTraffic;
-            $all[2] += $smtpTraffic;
-            $all[3] += $popTraffic;
-
-            $tpl->parse('TRAFFIC_TABLE_ITEM', '.traffic_table_item');
-        }
-
-        $tpl->assign([
-            'USER_ID'          => tohtml($userId),
-            'USERNAME'         => tohtml($adminName),
-            'ALL_WEB_TRAFFIC'  => tohtml(bytesHuman($all[0])),
-            'ALL_FTP_TRAFFIC'  => tohtml(bytesHuman($all[1])),
-            'ALL_SMTP_TRAFFIC' => tohtml(bytesHuman($all[2])),
-            'ALL_POP3_TRAFFIC' => tohtml(bytesHuman($all[3])),
-            'ALL_ALL_TRAFFIC'  => tohtml(bytesHuman(array_sum($all)))
-        ]);
-    } else {
+    if ($stmt->fetchRow(PDO::FETCH_COLUMN) < 1) {
         set_page_message(tr('No statistics found for the given period. Try another period.'), 'static_info');
         $tpl->assign([
             'USERNAME'                              => tohtml($adminName),
             'USER_ID'                               => tohtml($userId),
             'RESELLER_USER_STATISTICS_DETAIL_BLOCK' => ''
         ]);
+        return;
     }
+    $requestedPeriod = getLastDayOfMonth($month, $year);
+    $toDay = ($requestedPeriod < time()) ? date('j', $requestedPeriod) : date('j');
+    $dateFormat = iMSCP_Registry::get('config')['DATE_FORMAT'];
+    $all = array_fill(0, 8, 0);
+
+    for ($fromDay = 1; $fromDay <= $toDay; $fromDay++) {
+        $startDate = mktime(0, 0, 0, $month, $fromDay, $year);
+        $endDate = mktime(23, 59, 59, $month, $fromDay, $year);
+
+        list($webTraffic, $ftpTraffic, $smtpTraffic, $popTraffic) = getUserTraffic($domainId, $startDate, $endDate);
+
+        $tpl->assign([
+            'DATE'         => date($dateFormat, strtotime($year . '-' . $month . '-' . $fromDay)),
+            'WEB_TRAFFIC'  => tohtml(bytesHuman($webTraffic)),
+            'FTP_TRAFFIC'  => tohtml(bytesHuman($ftpTraffic)),
+            'SMTP_TRAFFIC' => tohtml(bytesHuman($smtpTraffic)),
+            'POP3_TRAFFIC' => tohtml(bytesHuman($popTraffic)),
+            'ALL_TRAFFIC'  => tohtml(bytesHuman($webTraffic + $ftpTraffic + $smtpTraffic + $popTraffic))
+        ]);
+
+        $all[0] += $webTraffic;
+        $all[1] += $ftpTraffic;
+        $all[2] += $smtpTraffic;
+        $all[3] += $popTraffic;
+
+        $tpl->parse('TRAFFIC_TABLE_ITEM', '.traffic_table_item');
+    }
+
+    $tpl->assign([
+        'USERNAME'         => tohtml($adminName),
+        'USER_ID'          => tohtml($userId, 'htmlAttr'),
+        'ALL_WEB_TRAFFIC'  => tohtml(bytesHuman($all[0])),
+        'ALL_FTP_TRAFFIC'  => tohtml(bytesHuman($all[1])),
+        'ALL_SMTP_TRAFFIC' => tohtml(bytesHuman($all[2])),
+        'ALL_POP3_TRAFFIC' => tohtml(bytesHuman($all[3])),
+        'ALL_ALL_TRAFFIC'  => tohtml(bytesHuman(array_sum($all)))
+    ]);
 }
 
 /***********************************************************************************************************************
@@ -158,25 +160,16 @@ function generatePage($tpl, $userId)
 
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 check_login('admin');
 
-if (!systemHasCustomers()) {
+if (!systemHasCustomers()
+    || !isset($_GET['user_id'])
+) {
     showBadRequestErrorPage();
 }
 
-if (isset($_GET['user_id'])) {
-    $userId = intval($_GET['user_id']);
-    $_SESSION['stats_user_id'] = $userId;
-} elseif (isset($_SESSION['admin_stats_user_id'])) {
-    redirectTo('reseller_user_statistics_detail.php?user_id=' . $_SESSION['admin_stats_user_id']);
-    exit;
-} else {
-    showBadRequestErrorPage();
-    exit;
-}
-
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                                => 'shared/layouts/ui.tpl',
     'page'                                  => 'admin/reseller_user_statistics_details.tpl',
@@ -190,7 +183,6 @@ $tpl->assign([
     'TR_PAGE_TITLE'   => tohtml(tr("Admin / Statistics / Reseller Statistics / User Statistics / {USERNAME} user statistics")),
     'TR_MONTH'        => tohtml(tr('Month')),
     'TR_YEAR'         => tohtml(tr('Year')),
-    'TR_SHOW'         => tohtml(tr('Show'), 'htmlAttr'),
     'TR_WEB_TRAFFIC'  => tohtml(tr('Web traffic')),
     'TR_FTP_TRAFFIC'  => tohtml(tr('FTP traffic')),
     'TR_SMTP_TRAFFIC' => tohtml(tr('SMTP traffic')),
@@ -201,11 +193,11 @@ $tpl->assign([
 ]);
 
 generateNavigation($tpl);
-generatePage($tpl, $userId);
+generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

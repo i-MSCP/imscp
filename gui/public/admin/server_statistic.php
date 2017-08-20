@@ -18,6 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_pTemplate as TemplateEngine;
+
 /***********************************************************************************************************************
  * functions
  */
@@ -25,11 +29,11 @@
 /**
  * Get server traffic for the given period
  *
- * @param int $beginDate An UNIX timestamp representing a begin date
- * @param int $endDate An UNIX timestamp representing an end date
+ * @param int $startDate UNIX timestamp representing a start date
+ * @param int $endDate UNIX timestamp representing an end date
  * @return array
  */
-function _getServerTraffic($beginDate, $endDate)
+function getServerTraffic($startDate, $endDate)
 {
     $stmt = exec_query(
         '
@@ -44,38 +48,193 @@ function _getServerTraffic($beginDate, $endDate)
             FROM server_traffic
             WHERE traff_time BETWEEN ? AND ?
         ',
-        [$beginDate, $endDate]
+        [$startDate, $endDate]
     );
 
-    if ($stmt->rowCount()) {
-        $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-
-        return [
-            $row['swbin'], $row['swbout'], $row['smbin'], $row['smbout'], $row['spbin'], $row['spbout'],
-            $row['sbin'] - ($row['swbin'] + $row['smbin'] + $row['spbin']),
-            $row['sbout'] - ($row['swbout'] + $row['smbout'] + $row['spbout']),
-            $row['sbin'], $row['sbout']
-        ];
+    if (!$stmt->rowCount()) {
+        return array_fill(0, 10, 0);
     }
 
-    return array_fill(0, 10, 0);
+    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+
+    return [
+        $row['swbin'], $row['swbout'], $row['smbin'], $row['smbout'], $row['spbin'], $row['spbout'],
+        $row['sbin'] - ($row['swbin'] + $row['smbin'] + $row['spbin']),
+        $row['sbout'] - ($row['swbout'] + $row['smbout'] + $row['spbout']),
+        $row['sbin'], $row['sbout']
+    ];
+}
+
+/**
+ * Generate server statistics by day
+ *
+ * @param TemplateEngine $tpl
+ * @param int $day Selected day
+ * @param int $month Selected month
+ * @param int $year Selected year
+ */
+function generateServerStatsByDay(TemplateEngine $tpl, $day, $month, $year)
+{
+    $stmt = exec_query(
+        '
+            SELECT traff_time AS period, bytes_in AS all_in, bytes_out AS all_out, bytes_mail_in AS mail_in,
+                bytes_mail_out AS mail_out, bytes_pop_in AS pop_in, bytes_pop_out AS pop_out, bytes_web_in AS web_in,
+                bytes_web_out AS web_out
+            FROM server_traffic
+            WHERE traff_time BETWEEN ? AND ?
+        ',
+        [mktime(0, 0, 0, $month, $day, $year), mktime(23, 59, 59, $month, $day, $year)]
+    );
+
+    if (!$stmt->rowCount()) {
+        set_page_message(tr('No statistics found for the given period. Try another period.'), 'static_info');
+        $tpl->assign('SERVER_STATS_BY_DAY', '');
+        return;
+    }
+
+    $all = array_fill(0, 8, 0);
+
+    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+        $otherIn = $row['all_in'] - ($row['mail_in'] + $row['pop_in'] + $row['web_in']);
+        $otherOut = $row['all_out'] - ($row['mail_out'] + $row['pop_out'] + $row['web_out']);
+
+        $tpl->assign([
+            'HOUR'      => tohtml(date('H:i', $row['period'])),
+            'WEB_IN'    => tohtml(bytesHuman($row['web_in'])),
+            'WEB_OUT'   => tohtml(bytesHuman($row['web_out'])),
+            'SMTP_IN'   => tohtml(bytesHuman($row['mail_in'])),
+            'SMTP_OUT'  => tohtml(bytesHuman($row['mail_out'])),
+            'POP_IN'    => tohtml(bytesHuman($row['pop_in'])),
+            'POP_OUT'   => tohtml(bytesHuman($row['pop_out'])),
+            'OTHER_IN'  => tohtml(bytesHuman($otherIn)),
+            'OTHER_OUT' => tohtml(bytesHuman($otherOut)),
+            'ALL_IN'    => tohtml(bytesHuman($row['all_in'])),
+            'ALL_OUT'   => tohtml(bytesHuman($row['all_out'])),
+            'ALL'       => tohtml(bytesHuman($row['all_in'] + $row['all_out']))
+        ]);
+
+        $all[0] += $row['web_in'];
+        $all[1] += $row['web_out'];
+        $all[2] += $row['mail_in'];
+        $all[3] += $row['mail_out'];
+        $all[4] += $row['pop_in'];
+        $all[5] += $row['pop_out'];
+        $all[6] += $row['all_in'];
+        $all[7] += $row['all_out'];
+
+        $tpl->parse('SERVER_STATS_HOUR', '.server_stats_hour');
+    }
+
+    $allOtherIn = $all[6] - ($all[0] + $all[2] + $all[4]);
+    $allOtherOut = $all[7] - ($all[1] + $all[3] + $all[5]);
+
+    $tpl->assign([
+        'WEB_IN_ALL'    => tohtml(bytesHuman($all[0])),
+        'WEB_OUT_ALL'   => tohtml(bytesHuman($all[1])),
+        'SMTP_IN_ALL'   => tohtml(bytesHuman($all[2])),
+        'SMTP_OUT_ALL'  => tohtml(bytesHuman($all[3])),
+        'POP_IN_ALL'    => tohtml(bytesHuman($all[4])),
+        'POP_OUT_ALL'   => tohtml(bytesHuman($all[5])),
+        'OTHER_IN_ALL'  => tohtml(bytesHuman($allOtherIn)),
+        'OTHER_OUT_ALL' => tohtml(bytesHuman($allOtherOut)),
+        'ALL_IN_ALL'    => tohtml(bytesHuman($all[6])),
+        'ALL_OUT_ALL'   => tohtml(bytesHuman($all[7])),
+        'ALL_ALL'       => tohtml(bytesHuman($all[6] + $all[7]))
+    ]);
+}
+
+/**
+ * Generate server statistics by month
+ *
+ * @param TemplateEngine $tpl
+ * @param int $month Selected month
+ * @param int $year Selected year
+ */
+function generateServerStatsByMonth(TemplateEngine $tpl, $month, $year)
+{
+    $stmt = exec_query(
+        'SELECT COUNT(straff_id) FROM server_traffic WHERE traff_time BETWEEN ? AND ?',
+        [getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)]
+    );
+
+    if ($stmt->fetchRow(PDO::FETCH_COLUMN) < 1) {
+        set_page_message(tr('No statistics found for the given period. Try another period.'), 'static_info');
+        $tpl->assign('SERVER_STATS_BY_MONTH', '');
+        return;
+    }
+    
+    $curday = ($month == date('m') && $year == date('y')) ? date('j') : date('j', getLastDayOfMonth($month, $year));
+    $all = array_fill(0, 8, 0);
+
+    for ($day = 1; $day <= $curday; $day++) {
+        $startDate = mktime(0, 0, 0, $month, $day, $year);
+        $endDate = mktime(23, 59, 59, $month, $day, $year);
+
+        list(
+            $webIn, $webOut, $smtpIn, $smtpOut, $popIn, $popOut, $otherIn, $otherOut, $allIn, $allOut
+            ) = getServerTraffic($startDate, $endDate);
+
+        $tpl->assign([
+            'DAY'       => tohtml($day),
+            'YEAR'      => tohtml($year),
+            'MONTH'     => tohtml($month),
+            'WEB_IN'    => tohtml(bytesHuman($webIn)),
+            'WEB_OUT'   => tohtml(bytesHuman($webOut)),
+            'SMTP_IN'   => tohtml(bytesHuman($smtpIn)),
+            'SMTP_OUT'  => tohtml(bytesHuman($smtpOut)),
+            'POP_IN'    => tohtml(bytesHuman($popIn)),
+            'POP_OUT'   => tohtml(bytesHuman($popOut)),
+            'OTHER_IN'  => tohtml(bytesHuman($otherIn)),
+            'OTHER_OUT' => tohtml(bytesHuman($otherOut)),
+            'ALL_IN'    => tohtml(bytesHuman($allIn)),
+            'ALL_OUT'   => tohtml(bytesHuman($allOut)),
+            'ALL'       => tohtml(bytesHuman($allIn + $allOut))
+        ]);
+
+        $all[0] += $webIn;
+        $all[1] += $webOut;
+        $all[2] += $smtpIn;
+        $all[3] += $smtpOut;
+        $all[4] += $popIn;
+        $all[5] += $popOut;
+        $all[6] += $allIn;
+        $all[7] += $allOut;
+
+        $tpl->parse('SERVER_STATS_DAY', '.server_stats_day');
+    }
+
+    $allOtherIn = $all[6] - ($all[0] + $all[2] + $all[4]);
+    $allOtherOut = $all[7] - ($all[1] + $all[3] + $all[5]);
+
+    $tpl->assign([
+        'WEB_IN_ALL'    => tohtml(bytesHuman($all[0])),
+        'WEB_OUT_ALL'   => tohtml(bytesHuman($all[1])),
+        'SMTP_IN_ALL'   => tohtml(bytesHuman($all[2])),
+        'SMTP_OUT_ALL'  => tohtml(bytesHuman($all[3])),
+        'POP_IN_ALL'    => tohtml(bytesHuman($all[4])),
+        'POP_OUT_ALL'   => tohtml(bytesHuman($all[5])),
+        'OTHER_IN_ALL'  => tohtml(bytesHuman($allOtherIn)),
+        'OTHER_OUT_ALL' => tohtml(bytesHuman($allOtherOut)),
+        'ALL_IN_ALL'    => tohtml(bytesHuman($all[6])),
+        'ALL_OUT_ALL'   => tohtml(bytesHuman($all[7])),
+        'ALL_ALL'       => tohtml(bytesHuman($all[6] + $all[7]))
+    ]);
 }
 
 /**
  * Generates statistics page for the given period
  *
- * @param iMSCP_pTemplate $tpl template engine instance
+ * @param TemplateEngine $tpl template engine instance
  * @return void
  */
-function generatePage($tpl)
+function generatePage(TemplateEngine $tpl)
 {
-    if (isset($_GET['month']) && isset($_GET['year'])) {
-        $year = intval($_GET['year']);
+    if (isset($_GET['day']) && isset($_GET['month']) && isset($_GET['year'])) {
+        $day = intval($_GET['day']);
         $month = intval($_GET['month']);
-    } else if (isset($_POST['month']) && isset($_POST['year'])) {
-        $year = intval($_POST['year']);
-        $month = intval($_POST['month']);
+        $year = intval($_GET['year']);
     } else {
+        $day = 0;
         $month = date('m');
         $year = date('y');
     }
@@ -90,80 +249,16 @@ function generatePage($tpl)
         $numberYears = 1;
     }
 
-    generateMonthsAndYearsHtmlList($tpl, $month, $year, $numberYears);
+    generateDMYlists($tpl, $day, $month, $year, $numberYears);
 
-    $stmt = exec_query(
-        'SELECT bytes_in FROM server_traffic WHERE traff_time BETWEEN ? AND ? LIMIT 1',
-        [getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)]
-    );
-
-    if ($stmt->rowCount()) {
-        if ($month == date('m') && $year == date('y')) {
-            $curday = date('j');
-        } else {
-            $curday = date('j', getLastDayOfMonth($month, $year));
-        }
-
-        $all = array_fill(0, 8, 0);
-
-        for ($day = 1; $day <= $curday; $day++) {
-            $beginDate = mktime(0, 0, 0, $month, $day, $year);
-            $endDate = mktime(23, 59, 59, $month, $day, $year);
-
-            list(
-                $webIn, $webOut, $smtpIn, $smtpOut, $popIn, $popOut, $otherIn, $otherOut, $allIn, $allOut
-                ) = _getServerTraffic($beginDate, $endDate);
-
-            $tpl->assign([
-                'DAY'               => tohtml($day),
-                'YEAR'              => tohtml($year),
-                'MONTH'             => tohtml($month),
-                'WEB_IN'            => tohtml(bytesHuman($webIn)),
-                'WEB_OUT'           => tohtml(bytesHuman($webOut)),
-                'SMTP_IN'           => tohtml(bytesHuman($smtpIn)),
-                'SMTP_OUT'          => tohtml(bytesHuman($smtpOut)),
-                'POP_IN'            => tohtml(bytesHuman($popIn)),
-                'POP_OUT'           => tohtml(bytesHuman($popOut)),
-                'OTHER_IN'          => tohtml(bytesHuman($otherIn)),
-                'OTHER_OUT'         => tohtml(bytesHuman($otherOut)),
-                'ALL_IN'            => tohtml(bytesHuman($allIn)),
-                'ALL_OUT'           => tohtml(bytesHuman($allOut)),
-                'ALL'               => tohtml(bytesHuman($allIn + $allOut)),
-                'DAY_STATS_QSTRING' => tohtml("year=$year&month=$month&day=$day", 'htmlAttr')
-            ]);
-
-            $all[0] += $webIn;
-            $all[1] += $webOut;
-            $all[2] += $smtpIn;
-            $all[3] += $smtpOut;
-            $all[4] += $popIn;
-            $all[5] += $popOut;
-            $all[6] += $allIn;
-            $all[7] += $allOut;
-
-            $tpl->parse('DAY_SERVER_STATISTICS_BLOCK', '.day_server_statistics_block');
-        }
-
-        $allOtherIn = $all[6] - ($all[0] + $all[2] + $all[4]);
-        $allOtherOut = $all[7] - ($all[1] + $all[3] + $all[5]);
-
-        $tpl->assign([
-            'WEB_IN_ALL'    => tohtml(bytesHuman($all[0])),
-            'WEB_OUT_ALL'   => tohtml(bytesHuman($all[1])),
-            'SMTP_IN_ALL'   => tohtml(bytesHuman($all[2])),
-            'SMTP_OUT_ALL'  => tohtml(bytesHuman($all[3])),
-            'POP_IN_ALL'    => tohtml(bytesHuman($all[4])),
-            'POP_OUT_ALL'   => tohtml(bytesHuman($all[5])),
-            'OTHER_IN_ALL'  => tohtml(bytesHuman($allOtherIn)),
-            'OTHER_OUT_ALL' => tohtml(bytesHuman($allOtherOut)),
-            'ALL_IN_ALL'    => tohtml(bytesHuman($all[6])),
-            'ALL_OUT_ALL'   => tohtml(bytesHuman($all[7])),
-            'ALL_ALL'       => tohtml(bytesHuman($all[6] + $all[7]))
-        ]);
-    } else {
-        set_page_message(tr('No statistics found for the given period. Try another period.'), 'static_info');
-        $tpl->assign('SERVER_STATISTICS_BLOCK', '');
+    if ($day == 0) {
+        generateServerStatsByMonth($tpl, $month, $year);
+        $tpl->assign('SERVER_STATS_BY_DAY', '');
+        return;
     }
+
+    $tpl->assign('SERVER_STATS_BY_MONTH', '');
+    generateServerStatsByDay($tpl, $day, $month, $year);
 }
 
 /***********************************************************************************************************************
@@ -172,25 +267,28 @@ function generatePage($tpl)
 
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 check_login('admin');
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
-    'layout'                      => 'shared/layouts/ui.tpl',
-    'page'                        => 'admin/server_statistic.tpl',
-    'page_message'                => 'layout',
-    'month_list'                  => 'page',
-    'year_list'                   => 'page',
-    'server_statistics_block'     => 'page',
-    'day_server_statistics_block' => 'server_statistics_block'
+    'layout'                => 'shared/layouts/ui.tpl',
+    'page'                  => 'admin/server_statistic.tpl',
+    'page_message'          => 'layout',
+    'day_list'              => 'page',
+    'month_list'            => 'page',
+    'year_list'             => 'page',
+    'server_stats_by_month' => 'page',
+    'server_stats_day'      => 'server_stats_by_month',
+    'server_stats_by_day'   => 'page',
+    'server_stats_hour'     => 'server_stats_by_day'
 ]);
 $tpl->assign([
     'TR_PAGE_TITLE' => tohtml(tr('Admin / Statistics / Server Statistics')),
     'TR_MONTH'      => tohtml(tr('Month')),
     'TR_YEAR'       => tohtml(tr('Year')),
-    'TR_SHOW'       => tohtml(tr('Show')),
     'TR_DAY'        => tohtml(tr('Day')),
+    'TR_HOUR'       => tohtml(tr('Hour')),
     'TR_WEB_IN'     => tohtml(tr('Web in')),
     'TR_WEB_OUT'    => tohtml(tr('Web out')),
     'TR_SMTP_IN'    => tohtml(tr('SMTP in')),
@@ -209,7 +307,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

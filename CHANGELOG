@@ -63,6 +63,7 @@ FRONTEND
     Fixed: Several integer type casting issues
     Fixed: When an user personal email is being modified, the user identity must be updated as well (session)
     Fixed: Wrong default mail accounts accounting (missing hostmaster email, wrong SQL queries...)
+    Merged: Server statistics interfaces (admin UI)
     Removed: Administrator database update interface; Database update are executed by installer
     Removed: Cached versions of navigation files; Make use of application cache instead
     Removed: iMSCP_Initializer class (replaced by iMSCP\Application class)

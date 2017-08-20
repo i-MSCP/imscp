@@ -166,15 +166,7 @@ return [
             'server_statistic'     => [
                 'label'       => tr('Server statistics'),
                 'uri'         => '/admin/server_statistic.php',
-                'title_class' => 'stats',
-                'pages'       => [
-                    'server_day_statistics' => [
-                        'label'       => tr('Day statistics'),
-                        'uri'         => '/admin/server_statistic_day.php',
-                        'title_class' => 'stats',
-                        'visible'     => '0'
-                    ]
-                ]
+                'title_class' => 'stats'
             ],
             'resellers_statistics' => [
                 'label'              => tr('Reseller statistics'),

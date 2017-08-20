@@ -289,7 +289,7 @@ class iMSCP_pTemplate
     }
 
     /**
-     * Checks if a namespace is defined.
+     * Checks if a namespace is defined
      *
      * @param string $namespace namespace
      * @return boolean TRUE if the namespace was define, FALSE otherwise
@@ -297,6 +297,28 @@ class iMSCP_pTemplate
     public function is_namespace($namespace)
     {
         return array_key_exists($namespace, $this->namespace);
+    }
+
+    /**
+     * Checks if the given template is a static template
+     *
+     * @param string $tplName namespace
+     * @return boolean TRUE if the given template is a static template, FALSE otherwise
+     */
+    public function is_static_tpl($tplName)
+    {
+        return array_key_exists($tplName, $this->tpl_name);
+    }
+    
+    /**
+     * Checks if the given template is a dynamic template
+     *
+     * @param string $tplName Dynamic template name
+     * @return boolean TRUE if the given template is a dynamic template, FALSE otherwise
+     */
+    public function is_dynamic_tpl($tplName)
+    {
+        return array_key_exists($tplName, $this->dtpl_name);
     }
 
     /**

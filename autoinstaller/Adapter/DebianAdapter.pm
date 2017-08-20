@@ -213,13 +213,14 @@ EOF
         local $ENV{'UCF_FORCE_CONFFNEW'} = 1;
         local $ENV{'UCF_FORCE_CONFFMISS'} = 1;
 
-        my ($aptVersion) = `apt-get --version` =~ /^apt\s+([\d.]+)/;
         my @cmd = (
             ( !iMSCP::Getopt->noprompt ? ( 'debconf-apt-progress', '--logstderr', '--' ) : () ),
             'apt-get', '--assume-yes', '--option', 'DPkg::Options::=--force-confnew', '--option',
             'DPkg::Options::=--force-confmiss', '--option', 'Dpkg::Options::=--force-overwrite',
             ( $main::forcereinstall ? '--reinstall' : () ), '--auto-remove', '--purge', '--no-install-recommends',
-            ( ( version->parse( $aptVersion ) < version->parse( '1.1.0' ) ) ? '--force-yes' : '--allow-downgrades' ),
+            ( version->parse( `apt-get --version` =~ /^apt\s+(\d\.\d)/ ) < version->parse( '1.1' )
+                ? '--force-yes' : '--allow-downgrades'
+            ),
             'install'
         );
 

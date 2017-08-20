@@ -1,18 +1,25 @@
-
-<form name="user_statistics_details" method="post" action="user_statistics_details.php?user_id={USER_ID}">
+<script>
+    $(function() {
+        $("#month, #year").on("change", function() {
+            $(this).closest("form").submit();
+            return false;
+        });
+    });
+</script>
+<form>
     <label for="month">{TR_MONTH}</label>
-    <select id="month" name="month">
+    <select name="month" id="month">
         <!-- BDP: month_list -->
-        <option {OPTION_SELECTED}>{MONTH_VALUE}</option>
+        <option{OPTION_SELECTED}>{MONTH_VALUE}</option>
         <!-- EDP: month_list -->
     </select>
     <label for="year">{TR_YEAR}</label>
-    <select id="year" name="year">
+    <select name="year" id="year">
         <!-- BDP: year_list -->
-        <option value="{VALUE}" {OPTION_SELECTED}>{HUMAN_VALUE}</option>
+        <option value="{VALUE}"{OPTION_SELECTED}>{HUMAN_VALUE}</option>
         <!-- EDP: year_list -->
     </select>
-    <input name="Submit" type="submit" value="{TR_SHOW}">
+    <input type="hidden" name="user_id" value="{USER_ID}">
 </form>
 <!-- BDP: user_statistics_details_block -->
 <table>

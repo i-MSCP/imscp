@@ -1,7 +1,15 @@
 
-<form name="statistics_frm" method="post" action="traffic_statistics.php">
+<script>
+    $(function() {
+        $("#month, #year").on("change", function() {
+            $(this).closest("form").submit();
+            return false;
+        });
+    });
+</script>
+<form>
     <label for="month">{TR_MONTH}</label>
-    <select id="month" name="month">
+    <select name="month" id="month">
         <!-- BDP: month_list -->
         <option {OPTION_SELECTED}>{MONTH_VALUE}</option>
         <!-- EDP: month_list -->
@@ -12,7 +20,6 @@
         <option value="{VALUE}" {OPTION_SELECTED}>{HUMAN_VALUE}</option>
         <!-- EDP: year_list -->
     </select>
-    <input name="Submit" type="submit" value="{TR_SHOW}">
 </form>
 <!-- BDP: statistics_block -->
 <table>

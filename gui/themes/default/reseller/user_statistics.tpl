@@ -1,4 +1,3 @@
-
 <!-- BDP: user_statistics_entries_block -->
 <script>
     $(function () {
