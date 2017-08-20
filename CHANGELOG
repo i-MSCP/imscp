@@ -28,6 +28,7 @@ DISTRIBUTIONS
     Fixed: Install openssl and libssl-dev packages from Debian/Ubuntu repositories, not from Ondřej Surý repository
 
 FRONTEND
+    Added: `onPageMessages event' --  Event that is triggered when page messages are being generated
     Added: Button to force refresh of service statuses as they are now cached for 20 minutes
     Added: iMSCP_Database::inTransaction() method
     Added: Routing for languages without territory information: eg. `de' will be routed to `de_DE' (autodetection)
@@ -74,6 +75,7 @@ FRONTEND
     Review: Hide PHP E_STRICT, E_NOTICE, ~E_USER_NOTICE, E_DEPRECATED and E_USER_DEPRECATED on production
     Review: Hide the i-MSCP update interface when Git version is in use (admin UI level)
     Review: Make use of short syntax for arrays
+    Review: Make use of Zend_Controller_Action_Helper_FlashMessenger for page messages
     Review: Extend Zend_Registry class instead of reinventing the wheel
     Review: Show an explicite warning when the legacy and unsecure telnet server is running (service statuses)
     Review: Skip the intermediate edit page when mail autoresponder is being enabled and that the message is already set

@@ -26,8 +26,8 @@ use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Events_Event as Event;
 use iMSCP_Exception as iMSCPException;
+use iMSCP_Plugin_Bruteforce as BrutforcePlugin;
 use iMSCP_Registry as Registry;
-use Zend_Session as Session;
 
 /**
  * Initialize login
@@ -40,7 +40,7 @@ function init_login($eventManager)
     do_session_timeout();
 
     if (Registry::get('config')['BRUTEFORCE']) {
-        $bruteforce = new iMSCP_Plugin_Bruteforce(Registry::get('pluginManager'));
+        $bruteforce = new BrutforcePlugin(Registry::get('pluginManager'));
         $bruteforce->register($eventManager);
     }
 
@@ -363,7 +363,5 @@ function redirectToUiLevel($actionScript = 'index.php')
             throw new iMSCPException('Unknown UI level');
     }
 
-    // Prevents display of any old message when switching to another user level
-    Session::namespaceUnset('pageMessages');
     redirectTo('/' . $userType . '/' . $actionScript);
 }

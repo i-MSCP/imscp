@@ -1540,4 +1540,13 @@ class iMSCP_Events
      *
      */
     const onDeleteIpAddr = 'onDeleteIpAddr';
+
+    /**
+     * The onGeneratePageMessages event is triggered when page messages are being generated.
+     *
+     * The listeners receive an iMSCP_Events_Event object with the following parameters:
+     * - flashMessenger : Zend_Controller_Action_Helper_FlashMessenger instance
+     *
+     */
+    const onGeneratePageMessages = 'onGeneratePageMessages';
 }

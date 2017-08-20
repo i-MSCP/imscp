@@ -23,9 +23,8 @@ use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
+use Zend_Controller_Action_Helper_FlashMessenger as FlashMessenger;
 use Zend_Navigation as Navigation;
-use Zend_Session as Session;
-use Zend_Session_Namespace as SessionNamespace;
 
 /**
  * Must be documented
@@ -62,22 +61,59 @@ function get_user_gui_props($userId)
     return [$row['lang'], $row['layout']];
 }
 
+
 /**
- * Generates the page messages to display on client browser
+ * Sets a page message to display on client browser
  *
- * The default level for message is sets to 'info'.
- * See the {@link set_page_message()} function for more information.
+ * @param string $message $message Message to display
+ * @param string $level Message level (now_)?(static_)?(info|warning|error|success)
+ * @param bool $nextHop Flag indicating whether message must be displayed on next hop
+ * @return void
+ */
+function set_page_message($message, $level = 'info', $nextHop = false)
+{
+    $level = strtolower($level);
+
+    if (Registry::isRegistered('flashMessenger')) {
+        $flashMessenger = Registry::get('flashMessenger');
+    } else {
+        $flashMessenger = new FlashMessenger();
+        Registry::set('flashMessenger', $flashMessenger);
+    }
+
+    $flashMessenger->addMessage($message, ($nextHop ? 'nexthop_' : '') . $level);
+}
+
+/**
+ * Generates page messages
  *
- * @param  TemplateEngine $tpl
+ * @param TemplateEngine $tpl
  * @return void
  */
 function generatePageMessage(TemplateEngine $tpl)
 {
-    $namespace = new SessionNamespace('pageMessages');
+    $flashMessenger = Registry::isRegistered('flashMessenger') ? Registry::get('flashMessenger') : new FlashMessenger();
 
-    if (!Session::namespaceIsset('pageMessages')) {
-        $tpl->assign('PAGE_MESSAGE', '');
-        return;
+    EventsManager::getInstance()->dispatch(Events::onGeneratePageMessages, ['flashMessenger' => $flashMessenger]);
+
+    $tpl->assign('PAGE_MESSAGE', '');
+
+    foreach (
+        [
+            'success', 'error', 'warning', 'info', 'static_success', 'static_error', 'static_warning', 'static_info'
+        ] as $level
+    ) {
+        if (!$flashMessenger->hasCurrentMessages($level)) {
+            continue;
+        }
+
+        $tpl->assign([
+            'MESSAGE_CLS' => $level,
+            'MESSAGE'     => implode("<br>\n", $flashMessenger->getCurrentMessages($level))
+        ]);
+        $tpl->parse('PAGE_MESSAGE', '.page_message');
+
+        $flashMessenger->clearCurrentMessages($level);
     }
 
     foreach (
@@ -85,54 +121,18 @@ function generatePageMessage(TemplateEngine $tpl)
             'success', 'error', 'warning', 'info', 'static_success', 'static_error', 'static_warning', 'static_info'
         ] as $level
     ) {
-        if (isset($namespace->{$level})) {
-            $tpl->assign([
-                'MESSAGE_CLS' => $level,
-                'MESSAGE'     => $namespace->{$level}
-            ]);
-            $tpl->parse('PAGE_MESSAGE', '.page_message');
+        if (!$flashMessenger->hasMessages($level)) {
+            continue;
         }
-    }
 
-    Session::namespaceUnset('pageMessages');
+        $tpl->assign([
+            'MESSAGE_CLS' => $level,
+            'MESSAGE'     => implode("<br>\n", $flashMessenger->getMessages($level))
+        ]);
+        $tpl->parse('PAGE_MESSAGE', '.page_message');
+    }
 }
 
-/**
- * Sets a page message to display on client browser
- *
- * @throws iMSCPException
- * @param string $message $message Message to display
- * @param string $level Message level (INFO, WARNING, ERROR, SUCCESS)
- * @return void
- */
-function set_page_message($message, $level = 'info')
-{
-    $level = strtolower($level);
-
-    if (!is_string($message)) {
-        throw new iMSCPException('set_page_message() expects a string for $message');
-    }
-
-    if (!in_array(
-        $level,
-        ['info', 'warning', 'error', 'success', 'static_success', 'static_error', 'static_warning', 'static_info']
-    )) {
-        throw new iMSCPException(sprintf('Wrong level %s for page message.', $level));
-    }
-
-    static $namespace = NULL;
-
-    if (NULL === $namespace) {
-        $namespace = new SessionNamespace('pageMessages');
-    }
-
-    if (isset($namespace->{$level})) {
-        $namespace->{$level} .= "\n<br>$message";
-        return;
-    }
-
-    $namespace->{$level} = $message;
-}
 
 /**
  * format message(s) to be displayed on client browser as page message

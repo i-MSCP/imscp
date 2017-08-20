@@ -147,6 +147,7 @@ $tpl->assign([
 generateNavigation($tpl);
 update_reseller_owner();
 gen_reseller_table($tpl);
+generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);

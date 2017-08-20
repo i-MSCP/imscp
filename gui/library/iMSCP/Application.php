@@ -25,6 +25,7 @@ use iMSCP_Config_Handler_File as ConfigFile;
 use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Events_Event as Event;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_Exception_Database as DatabaseException;
 use iMSCP_Exception_Handler as ExceptionHandler;
@@ -174,7 +175,7 @@ class Application
                 # fallback to the 'File' backend
                 extension_loaded('apc') && ini_get('apc.enabled') ? 'Apc' : 'File',
                 [
-                    'caching' => (PHP_SAPI != 'cli'),
+                    'caching'                   => (PHP_SAPI != 'cli'),
                     // Cache is never flushed automatically (default)
                     'lifetime'                  => 0,
                     'automatic_serialization'   => true,
@@ -527,12 +528,18 @@ class Application
 
             // Warn administrator that DEBUG mode is enabled and that resources caching isn't available
             $this->getEventsManager()->registerListener(Events::onAdminScriptStart, function () {
-                set_page_message(
-                    tr("The DEBUG mode is currently enabled, making resources caching unavailable."), 'static_warning'
-                );
-                set_page_message(
-                    tr("You can disable the DEBUG mode in the /etc/imscp/imscp.conf file."), 'static_warning'
-                );
+                if (is_xhr()) return;
+
+                $this->getEventsManager()->registerListener(Events::onGeneratePageMessages, function (Event $e) {
+                    /** @var \Zend_Controller_Action_Helper_FlashMessenger $flashMessenger */
+                    $flashMessenger = $e->getParam('flashMessenger');
+                    $flashMessenger->addMessage(
+                        tr("The DEBUG mode is currently enabled, making resources caching unavailable."), 'static_warning'
+                    );
+                    $flashMessenger->addMessage(
+                        tr("You can disable the DEBUG mode in the /etc/imscp/imscp.conf file."), 'static_warning'
+                    );
+                });
             });
         }
 

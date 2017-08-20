@@ -18,10 +18,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_Events as Events;
-use Zend_Session as Session;
 use iMSCP_Authentication as Auth;
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
 
@@ -34,16 +33,6 @@ if (isset($_REQUEST['action'])) {
     $auth = Auth::getInstance();
 
     switch ($_REQUEST['action']) {
-        case 'logout':
-            if ($auth->hasIdentity()) {
-                $adminName = $auth->getIdentity()->admin_name;
-                $auth->unsetIdentity();
-                // Prevents display of any UI level message
-                Session::namespaceUnset('pageMessages');
-                set_page_message(tr('You have been successfully logged out.'), 'success');
-                write_log(sprintf("%s logged out", decode_idna($adminName)), E_USER_NOTICE);
-            }
-            break;
         case 'login':
             $authResult = $auth->authenticate();
 
@@ -54,6 +43,16 @@ if (isset($_REQUEST['action'])) {
                 set_page_message($messages, 'error');
                 write_log(sprintf("Authentication failed. Reason: %s", $messages), E_USER_NOTICE);
             }
+            break;
+        case 'logout':
+            if ($auth->hasIdentity()) {
+                $adminName = $auth->getIdentity()->admin_name;
+                $auth->unsetIdentity();
+                set_page_message(tr('You have been successfully logged out.'), 'success');
+                write_log(sprintf("%s logged out", decode_idna($adminName)), E_USER_NOTICE);
+            }
+
+            redirectTo('index.php');
     }
 }
 
