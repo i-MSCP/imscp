@@ -162,8 +162,8 @@ function generateServerStatsByMonth(TemplateEngine $tpl, $month, $year)
         $tpl->assign('SERVER_STATS_BY_MONTH', '');
         return;
     }
-    
-    $curday = ($month == date('m') && $year == date('y'))? date('j') : date('j', getLastDayOfMonth($month, $year));
+
+    $curday = ($month == date('m') && $year == date('y')) ? date('j') : date('j', getLastDayOfMonth($month, $year));
     $all = array_fill(0, 8, 0);
 
     for ($day = 1; $day <= $curday; $day++) {
