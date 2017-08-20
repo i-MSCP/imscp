@@ -61,16 +61,14 @@ function get_user_gui_props($userId)
     return [$row['lang'], $row['layout']];
 }
 
-
 /**
  * Sets a page message to display on client browser
  *
  * @param string $message $message Message to display
- * @param string $level Message level (now_)?(static_)?(info|warning|error|success)
- * @param bool $nextHop Flag indicating whether message must be displayed on next hop
+ * @param string $level Message level (static_)?(info|warning|error|success)
  * @return void
  */
-function set_page_message($message, $level = 'info', $nextHop = false)
+function set_page_message($message, $level = 'info')
 {
     $level = strtolower($level);
 
@@ -81,7 +79,7 @@ function set_page_message($message, $level = 'info', $nextHop = false)
         Registry::set('flashMessenger', $flashMessenger);
     }
 
-    $flashMessenger->addMessage($message, ($nextHop ? 'nexthop_' : '') . $level);
+    $flashMessenger->addMessage($message, $level);
 }
 
 /**
@@ -132,7 +130,6 @@ function generatePageMessage(TemplateEngine $tpl)
         $tpl->parse('PAGE_MESSAGE', '.page_message');
     }
 }
-
 
 /**
  * format message(s) to be displayed on client browser as page message
