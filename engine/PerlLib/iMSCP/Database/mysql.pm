@@ -324,7 +324,6 @@ sub dumpdb
     ) == 0 or die(
         sprintf( "Couldn't dump the `%s` database: %s", $dbName, $stderr || 'Unknown error' )
     );
-
 }
 
 =item quoteIdentifier( $identifier )

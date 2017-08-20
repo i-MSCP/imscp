@@ -34,7 +34,7 @@ use File::Spec;
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 use iMSCP::Bootstrapper;
-use iMSCP::Debug qw/ debug error getMessageByType newDebug setVerbose /;
+use iMSCP::Debug qw/ debug error getMessageByType newDebug setVerbose warning /;
 use iMSCP::Dir;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::Ext2Attributes qw/ isImmutable setImmutable clearImmutable /;
@@ -94,7 +94,8 @@ my $command = {
 
 =cut
 
-sub backupHomedir {
+sub backupHomedir
+{
     my ($mainDmnName, $homeDir, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group) = @_;
 
     my $bkpDate = strftime "%Y.%m.%d-%H-%M", localtime;
@@ -137,7 +138,8 @@ sub backupHomedir {
 
 =cut
 
-sub backupDatabases {
+sub backupDatabases
+{
     my ($mainDmnId, $bkpDir, $cmpAlgo, $cmpLevel, $user, $group) = @_;
 
     my $db = iMSCP::Database->factory();
@@ -157,6 +159,7 @@ sub backupDatabases {
     for my $dbName( keys %{$rows} ) {
         local $@;
         eval { $db->dumpdb( $dbName, $bkpDir ); };
+        warning( $@ );
         next if $@;
 
         # Encode slashes as SOLIDUS unicode character
@@ -193,7 +196,8 @@ sub backupDatabases {
 
 =cut
 
-sub backupMaildirs {
+sub backupMaildirs
+{
     my ($dmnId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group) = @_;
 
     my $rows = eval {
@@ -272,7 +276,8 @@ sub backupMaildirs {
 
 =cut
 
-sub run {
+sub backupAll
+{
     return unless $main::imscpConfig{'BACKUP_DOMAINS'} eq 'yes';
 
     my $cmpAlgo = lc( $main::imscpConfig{'BACKUP_COMPRESS_ALGORITHM'} );
@@ -332,8 +337,7 @@ sub run {
                 );
 
                 setImmutable( $homeDir ) if $isProtectedHomedir;
-            }
-            else {
+            } else {
                 iMSCP::Dir->new( dirname => $bkpDir )->clear( undef, qr/.*/ );
             }
         };
@@ -380,7 +384,7 @@ $bootstrapper->boot(
     }
 );
 
-run();
+backupAll();
 
 my @errors = getMessageByType( 'error' );
 iMSCP::Mail->new()->errmsg( "@errors" ) if @errors;
