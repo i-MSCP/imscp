@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-17 02:15+0000\n"
+"POT-Creation-Date: 2017-08-20 15:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>, 2017\n"
 "Language-Team: Lithuanian (Lithuania) (https://www.transifex.com/i-mscp/teams/576/lt_LT/)\n"
@@ -414,9 +414,6 @@ msgid ""
 msgstr ""
 
 msgid "Admin / Statistics / Server Statistics"
-msgstr ""
-
-msgid "Admin / Statistics / Server Statistics / Day Statistics"
 msgstr ""
 
 msgid "Admin / Support / Closed Tickets"
@@ -1446,9 +1443,6 @@ msgstr "Data"
 
 msgid "Day"
 msgstr "Diena"
-
-msgid "Day statistics"
-msgstr ""
 
 msgid "Days"
 msgstr ""
@@ -2533,9 +2527,6 @@ msgid "Invalid email address."
 msgstr ""
 
 msgid "Invalid email username."
-msgstr ""
-
-msgid "Invalid fax."
 msgstr ""
 
 #, php-format
@@ -4123,11 +4114,11 @@ msgstr ""
 msgid "Service protocol"
 msgstr "Paslaugos protokolas"
 
-msgid "Service with same name already exists."
+msgid "Service statuses"
 msgstr ""
 
-msgid "Services status"
-msgstr "Serverio bûklë"
+msgid "Service with same name already exists."
+msgstr ""
 
 msgid "Sessions"
 msgstr ""
