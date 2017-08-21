@@ -1799,7 +1799,9 @@ class iMSCP_Update_Database extends iMSCP_Update
             $this->changeColumn(
                 'user_gui_props', 'layout_color', "layout_color varchar(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'black'"
             ),
-            $this->changeColumn('user_gui_props', "show_main_menu_labels tinyint(1) NOT NULL DEFAULT '0'")
+            $this->changeColumn(
+                'user_gui_props', 'show_main_menu_labels', "show_main_menu_labels tinyint(1) NOT NULL DEFAULT '0'"
+            )
         ];
     }
 
