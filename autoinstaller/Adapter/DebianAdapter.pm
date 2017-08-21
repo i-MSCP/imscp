@@ -413,7 +413,7 @@ sub _setupGetAddrinfoPrecedence
 
 =item _parsePackageElementNode( \%node|$node, \%target )
 
- Parse a package (package, package_delayed, package_conflict) element node
+ Parse a package or package_delayed element node
 
  param string|hashref $node Package element node
  param hashref \%target Target ($self->{'packagesToInstall'}|$self->{'packagesToInstallDelayed'})
@@ -681,7 +681,7 @@ EOF
     @{$self->{'packagesToInstall'}} = sort(uniq( @{$self->{'packagesToInstall'}} ));
     @{$self->{'packagesToInstallDelayed'}} = sort(uniq( @{$self->{'packagesToInstallDelayed'}} ));
 
-    # Filter packages that are no longer available.
+    # Filter packages that are no longer available
 
     $rs = execute( [ 'apt-cache', '--generate', 'pkgnames' ], \my $stdout, \my $stderr );
     error( $stderr || "Couldn't generate list of available packages" ) if $rs > 2;
