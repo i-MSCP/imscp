@@ -280,7 +280,7 @@
                 repository_key_id="C74CD1D8"
                 repository_key_srv="keyserver.ubuntu.com"
                 pinning_package="*"
-                pinning_pin="origin mirror.netcologne.de"
+                pinning_pin="release o=MariaDB,n=xenial"
                 pinning_pin_priority="1001"
                 allow_switch="mariadb_10.2,remote_server"
         >
@@ -299,7 +299,7 @@
                 repository_key_id="C74CD1D8"
                 repository_key_srv="keyserver.ubuntu.com"
                 pinning_package="*"
-                pinning_pin="origin mirror.netcologne.de"
+                pinning_pin="release o=MariaDB,n=xenial"
                 pinning_pin_priority="1001"
                 allow_switch="remote_server"
         >
@@ -445,6 +445,13 @@
         <package>ssh</package>
         <package>sudo</package>
         <package>tar</package>
-        <package_conflict>sendmail*</package_conflict>
+        <package_conflict>sendmail</package_conflict>
     </other>
+    <sendmail>
+        <package_conflict>sendmail</package_conflict>
+        <package_conflict>sendmail-base</package_conflict>
+        <package_conflict>sendmail-bin</package_conflict>
+        <package_conflict>sendmail-cf</package_conflict>
+        <package_conflict>sendmail-doc</package_conflict>
+    </sendmail>
 </packages>
