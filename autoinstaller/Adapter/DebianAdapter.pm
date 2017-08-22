@@ -355,6 +355,7 @@ sub _init
     my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+
     $self->{'repositorySections'} = [ 'main', 'contrib', 'non-free' ];
     $self->{'preRequiredPackages'} = [
         'apt-transport-https', 'binutils', 'ca-certificates', 'debconf-utils', 'dialog', 'dirmngr',
@@ -373,10 +374,13 @@ sub _init
     $self->{'packagesPreInstallTasks'} = {};
     $self->{'packagesPostInstallTasks'} = {};
     $self->{'need_pbuilder_update'} = 1;
+
     delete $ENV{'DEBCONF_FORCE_DIALOG'};
+
     $ENV{'DEBIAN_FRONTEND'} = 'noninteractive' if iMSCP::Getopt->noprompt;
     $ENV{'DEBFULLNAME'} = 'i-MSCP Installer';
     $ENV{'DEBEMAIL'} = 'team@i-mscp.net';
+
     $self->_setupGetAddrinfoPrecedence();
     $self;
 }
@@ -411,17 +415,17 @@ sub _setupGetAddrinfoPrecedence
     $file->save();
 }
 
-=item _parsePackageElementNode( \%node|$node, \%target )
+=item _parsePackageNode( \%node|$node, \@target )
 
- Parse a package or package_delayed element node
+ Parse a package or package_delayed node
 
- param string|hashref $node Package element node
- param hashref \%target Target ($self->{'packagesToInstall'}|$self->{'packagesToInstallDelayed'})
+ param string|hashref $node Package node
+ param arrayref \@target Target ($self->{'packagesToInstall'}|$self->{'packagesToInstallDelayed'})
  Return void
 
 =cut
 
-sub _parsePackageElementNode
+sub _parsePackageNode
 {
     my ($self, $node, $target) = @_;
 
@@ -437,7 +441,7 @@ sub _parsePackageElementNode
             pkg_src_name      => $node->{'pkg_src_name'} || $node->{'content'},
             patches_directory => $node->{'rebuild_with_patches'},
             discard_patches   => [ $node->{'discard_patches'} ? split ',', $node->{'discard_patches'} : () ],
-            patch_sys_type    => $node->{'patch_sys_type'} || 'quilt',
+            patch_sys_type    => $node->{'patch_sys_type'} || 'quilt'
         };
     } else {
         push @{$target}, $node->{'content'};
@@ -508,14 +512,14 @@ sub _processPackagesFile
         # List of packages to install
         if ( defined $data->{'package'} ) {
             for( @{$data->{'package'}} ) {
-                $self->_parsePackageElementNode( $_, $self->{'packagesToInstall'} );
+                $self->_parsePackageNode( $_, $self->{'packagesToInstall'} );
             }
         }
 
         # List of packages to install (delayed)
         if ( defined $data->{'package_delayed'} ) {
             for( @{$data->{'package_delayed'}} ) {
-                $self->_parsePackageElementNode( $_, $self->{'packagesToInstallDelayed'} );
+                $self->_parsePackageNode( $_, $self->{'packagesToInstallDelayed'} );
             }
         }
 
@@ -593,14 +597,14 @@ EOF
         # Packages to install for the selected alternative
         if ( defined $data->{$sAlt}->{'package'} ) {
             for( @{$data->{$sAlt}->{'package'}} ) {
-                $self->_parsePackageElementNode( $_, $self->{'packagesToInstall'} );
+                $self->_parsePackageNode( $_, $self->{'packagesToInstall'} );
             }
         }
 
         # Package to install (delayed) for the selected alternative
         if ( defined $data->{$sAlt}->{'package_delayed'} ) {
             for( @{$data->{$sAlt}->{'package_delayed'}} ) {
-                $self->_parsePackageElementNode( $_, $self->{'packagesToInstallDelayed'} );
+                $self->_parsePackageNode( $_, $self->{'packagesToInstallDelayed'} );
             }
         }
 
