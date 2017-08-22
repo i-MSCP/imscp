@@ -21,6 +21,7 @@
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -79,27 +80,14 @@ function generatePage(TemplateEngine $tpl)
     $row = $stmt->fetchRow();
     $domainId = $row['domain_id'];
     $adminName = decode_idna($row['admin_name']);
-
-    if (isset($_GET['month']) && isset($_GET['year'])) {
-        $year = filter_digits($_GET['year']);
-        $month = filter_digits($_GET['month']);
-    } else {
-        $month = date('m');
-        $year = date('y');
-    }
-
+    $month = isset($_GET['month']) ? filter_digits($_GET['month']) : date('n');
+    $year = isset($_GET['year']) ? filter_digits($_GET['year']) : date('Y');
     $stmt = exec_query(
         'SELECT dtraff_time FROM domain_traffic WHERE domain_id = ? ORDER BY dtraff_time ASC LIMIT 1', $domainId
     );
+    $nPastYears = $stmt->rowCount() ? date('Y') - date('Y', $stmt->fetchRow(PDO::FETCH_COLUMN)) : 0;
 
-    if ($stmt->rowCount()) {
-        $numberYears = date('y') - date('y', $stmt->fetchRow(PDO::FETCH_COLUMN));
-        $numberYears = $numberYears ? $numberYears + 1 : 1;
-    } else {
-        $numberYears = 1;
-    }
-
-    generateDMYlists($tpl, NULL, $month, $year, $numberYears);
+    generateDMYlists($tpl, 0, $month, $year, $nPastYears);
 
     $stmt = exec_query(
         'SELECT COUNT(dtraff_id) FROM domain_traffic WHERE domain_id = ? AND dtraff_time BETWEEN ? AND ?',
@@ -117,7 +105,7 @@ function generatePage(TemplateEngine $tpl)
     }
     $requestedPeriod = getLastDayOfMonth($month, $year);
     $toDay = ($requestedPeriod < time()) ? date('j', $requestedPeriod) : date('j');
-    $dateFormat = iMSCP_Registry::get('config')['DATE_FORMAT'];
+    $dateFormat = Registry::get('config')['DATE_FORMAT'];
     $all = array_fill(0, 8, 0);
 
     for ($fromDay = 1; $fromDay <= $toDay; $fromDay++) {

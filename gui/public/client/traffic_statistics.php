@@ -21,6 +21,7 @@
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -54,6 +55,7 @@ function getUserTraffic($domainId, $startDate, $endDate)
     }
 
     $row = $stmt->fetchRow();
+
     return [$row['web_traffic'], $row['ftp_traffic'], $row['smtp_traffic'], $row['pop_traffic']];
 }
 
@@ -66,27 +68,14 @@ function getUserTraffic($domainId, $startDate, $endDate)
 function generatePage(TemplateEngine $tpl)
 {
     $domainId = get_user_domain_id($_SESSION['user_id']);
-
-    if (isset($_GET['month']) && isset($_GET['year'])) {
-        $year = intval($_POST['year']);
-        $month = intval($_POST['month']);
-    } else {
-        $month = date('m');
-        $year = date('Y');
-    }
-
+    $month = isset($_GET['month']) ? filter_digits($_GET['month']) : date('n');
+    $year = isset($_GET['year']) ? filter_digits($_GET['year']) : date('Y');
     $stmt = exec_query(
         'SELECT dtraff_time FROM domain_traffic WHERE domain_id = ? ORDER BY dtraff_time ASC LIMIT 1', $domainId
     );
+    $nPastYears = $stmt->rowCount() ? date('Y') - date('Y', $stmt->fetchRow(PDO::FETCH_COLUMN)) : 0;
 
-    if ($stmt->rowCount()) {
-        $numberYears = date('y') - date('y', $stmt->fetchRow(PDO::FETCH_COLUMN));
-        $numberYears = $numberYears ? $numberYears + 1 : 1;
-    } else {
-        $numberYears = 1;
-    }
-
-    generateDMYlists($tpl, NULL, $month, $year, $numberYears);
+    generateDMYlists($tpl, 0, $month, $year, $nPastYears);
 
     $stmt = exec_query(
         'SELECT COUNT(dtraff_id) FROM domain_traffic WHERE domain_id = ? AND dtraff_time BETWEEN ? AND ? LIMIT 1',
@@ -102,7 +91,7 @@ function generatePage(TemplateEngine $tpl)
     $requestedPeriod = getLastDayOfMonth($month, $year);
     $toDay = ($requestedPeriod < time()) ? date('j', $requestedPeriod) : date('j');
     $all = array_fill(0, 8, 0);
-    $dateFormat = iMSCP_Registry::get('config')['DATE_FORMAT'];
+    $dateFormat = Registry::get('config')['DATE_FORMAT'];
 
     for ($fromDay = 1; $fromDay <= $toDay; $fromDay++) {
         $startDate = mktime(0, 0, 0, $month, $fromDay, $year);

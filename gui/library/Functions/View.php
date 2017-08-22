@@ -75,42 +75,30 @@ function generateLanguagesList(TemplateEngine $tpl, $selectedLanguage)
  *
  * @param TemplateEngine $tpl
  * @param int $day Selected day
- * @param int $month Selected month
- * @param int $year Selected year
- * @param int $nYear Number of years in years select list
+ * @param int $month Selected month (date(
+ * @param int $year Selected year (4 digits expected)
+ * @param int $nPastYears Number of past years to display in years select list
  * @return void
  */
-function generateDMYlists(TemplateEngine $tpl, $day = NULL, $month = NULL, $year, $nYear = NULL)
+function generateDMYlists(TemplateEngine $tpl, $day, $month, $year, $nPastYears)
 {
-    $month = filter_digits($month);
-    $year = filter_digits($year);
-
     if (!in_array($month, range(1, 12))) {
-        $month = date('m');
+        $month = date('n');
     }
 
-    if($tpl->is_dynamic_tpl('day_list')) {
-        $day = filter_digits($day);
-        $numberDays = date('t', mktime(0, 0, 0, $month ?: date('m'), 1, $year));
+    if ($tpl->is_dynamic_tpl('day_list')) {
+        $nDays = date('t', mktime(0, 0, 0, $month, 1, $year));
 
-        if (!in_array($day, range(0, $numberDays))) {
-            $day = 1;
+        // 0 = all days
+        if (!in_array($day, range(0, $nDays))) {
+            $day = 0;
         }
 
-        $tpl->assign([
-            'OPTION_SELECTED' => 0 == $day ? ' selected' : '',
-            'VALUE'           => 0,
-            'HUMAN_VALUE'     => tohtml(tr('All'))
-        ]);
-    
-
-        $tpl->parse('DAY_LIST', '.day_list');
-
-        foreach (range(1, $numberDays) as $lday) {
+        foreach (range(0, $nDays) as $lday) {
             $tpl->assign([
                 'OPTION_SELECTED' => $lday == $day ? ' selected' : '',
                 'VALUE'           => tohtml($lday, 'htmlAttr'),
-                'HUMAN_VALUE'     => tohtml($lday)
+                'HUMAN_VALUE'     => $lday == 0 ? tohtml(tr('All')) : tohtml($lday)
             ]);
             $tpl->parse('DAY_LIST', '.day_list');
         }
@@ -124,14 +112,12 @@ function generateDMYlists(TemplateEngine $tpl, $day = NULL, $month = NULL, $year
         $tpl->parse('MONTH_LIST', '.month_list');
     }
 
-    $yearTwoDigits = ($year) ? date('y', mktime(0, 0, 0, 1, 1, $year)) : date('y');
+    $curYear = date('Y');
 
-    $curYear = date('y');
-    foreach (range($curYear - ($nYear - 1), $curYear) as $year) {
+    foreach (range($curYear - $nPastYears, $curYear) as $lyear) {
         $tpl->assign([
-            'OPTION_SELECTED' => ($yearTwoDigits == $year) ? ' selected' : '',
-            'VALUE'           => tohtml($year, 'htmlAttr'),
-            'HUMAN_VALUE'     => tohtml(date('Y', mktime(0, 0, 0, 1, 1, $year)))
+            'OPTION_SELECTED' => ($lyear == $year) ? ' selected' : '',
+            'YEAR_VALUE'      => tohtml($lyear, 'htmlAttr'),
         ]);
         $tpl->parse('YEAR_LIST', '.year_list');
     }

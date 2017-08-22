@@ -163,7 +163,7 @@ function generateServerStatsByMonth(TemplateEngine $tpl, $month, $year)
         return;
     }
 
-    $curday = ($month == date('m') && $year == date('y')) ? date('j') : date('j', getLastDayOfMonth($month, $year));
+    $curday = ($month == date('n') && $year == date('Y')) ? date('j') : date('j', getLastDayOfMonth($month, $year));
     $all = array_fill(0, 8, 0);
 
     for ($day = 1; $day <= $curday; $day++) {
@@ -229,27 +229,13 @@ function generateServerStatsByMonth(TemplateEngine $tpl, $month, $year)
  */
 function generatePage(TemplateEngine $tpl)
 {
-    if (isset($_GET['day']) && isset($_GET['month']) && isset($_GET['year'])) {
-        $day = intval($_GET['day']);
-        $month = intval($_GET['month']);
-        $year = intval($_GET['year']);
-    } else {
-        $day = 0;
-        $month = date('m');
-        $year = date('y');
-    }
-
+    $day = isset($_GET['day']) ? filter_digits($_GET['day']) : 0;
+    $month = isset($_GET['month']) ? filter_digits($_GET['month']) : date('n');
+    $year = isset($_GET['year']) ? filter_digits($_GET['year']) : date('Y');
     $stmt = exec_query('SELECT traff_time FROM server_traffic ORDER BY traff_time ASC LIMIT 1');
+    $nPastYears = $stmt->rowCount() ? date('Y') - date('Y', $stmt->fetchRow(PDO::FETCH_COLUMN)) : 0;
 
-    if ($stmt->rowCount()) {
-        $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-        $numberYears = date('y') - date('y', $row['traff_time']);
-        $numberYears = $numberYears ? $numberYears + 1 : 1;
-    } else {
-        $numberYears = 1;
-    }
-
-    generateDMYlists($tpl, $day, $month, $year, $numberYears);
+    generateDMYlists($tpl, $day, $month, $year, $nPastYears);
 
     if ($day == 0) {
         generateServerStatsByMonth($tpl, $month, $year);
@@ -269,6 +255,10 @@ require 'imscp-lib.php';
 
 EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 check_login('admin');
+
+#print date('d.m.Y', getFirstDayOfMonth(2, 2017)) . '<br>';
+#print date('d.m.Y', getLastDayOfMonth(2, 2017));
+#exit;
 
 $tpl = new TemplateEngine();
 $tpl->define_dynamic([

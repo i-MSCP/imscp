@@ -11,13 +11,13 @@
     <label for="month">{TR_MONTH}</label>
     <select name="month" id="month">
         <!-- BDP: month_list -->
-        <option {OPTION_SELECTED}>{MONTH_VALUE}</option>
+        <option{OPTION_SELECTED}>{MONTH_VALUE}</option>
         <!-- EDP: month_list -->
     </select>
     <label for="year">{TR_YEAR}</label>
     <select name="year" id="year">
         <!-- BDP: year_list -->
-        <option value="{VALUE}" {OPTION_SELECTED}>{HUMAN_VALUE}</option>
+        <option{OPTION_SELECTED}>{YEAR_VALUE}</option>
         <!-- EDP: year_list -->
     </select>
 </form>

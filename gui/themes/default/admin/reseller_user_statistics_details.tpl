@@ -16,7 +16,7 @@
     <label for="year">{TR_YEAR}</label>
     <select name="year" id="year">
         <!-- BDP: year_list -->
-        <option value="{VALUE}"{OPTION_SELECTED}>{HUMAN_VALUE}</option>
+        <option{OPTION_SELECTED}>{YEAR_VALUE}</option>
         <!-- EDP: year_list -->
     </select>
     <input type="hidden" name="user_id" value="{USER_ID}">

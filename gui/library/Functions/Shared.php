@@ -2798,31 +2798,37 @@ function translate_limit_value($value, $autosize = false, $to = NULL)
 }
 
 /**
- * Return timestamp for the first day of $month of $year
+ * Return UNIX timestamp representing first day of month for the given month and year
  *
- * @param int $month OPTIONAL a month
- * @param int $year OPTIONAL A year (two or 4 digits, whatever)
+ * @param int $month OPTIONAL a month (date('n')
+ * @param int $year OPTIONAL A year (date('Y'))
  * @return int
  */
 function getFirstDayOfMonth($month = NULL, $year = NULL)
 {
-    $month = $month ?: date('m');
-    $year = $year ?: date('y');
-    return mktime(0, 0, 0, $month, 1, $year);
+    $date = new Zend_Date(NULL, NULL, Registry::get('Zend_Locale'));
+    $date->setYear($year ?: date('Y'));
+    $date->setMonth($month ?: date('n'));
+    $date->setDay(1);
+
+    return $date->getTimestamp();
 }
 
 /**
- * Return timestamp for last day of month of $year
+ * Return UNIX timestamp representing last day of month for the given month and year
  *
- * @param int $month OPTIONAL a month
- * @param int $year OPTIONAL A year (two or 4 digits, whatever)
+ * @param int $month OPTIONAL a month (date('n')
+ * @param int $year OPTIONAL A year (date('Y'))
  * @return int
  */
 function getLastDayOfMonth($month = NULL, $year = NULL)
 {
-    $month = $month ?: date('m');
-    $year = $year ?: date('y');
-    return mktime(23, 59, 59, $month + 1, 0, $year);
+    $date = new Zend_Date(NULL, NULL, Registry::get('Zend_Locale'));
+    $date->setYear($year ?: date('Y'));
+    $date->setMonth($month ?: date('n'));
+    $date->setDay($date->get(Zend_Date::MONTH_DAYS));
+
+    return $date->getTimestamp();
 }
 
 /**
