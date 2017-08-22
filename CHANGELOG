@@ -101,6 +101,7 @@ PACKAGES
 
 SCRIPTS
     Removed: Explicite unlocking of locked files -- Files are automatically unlocked
+    Fixed: logresolvemerge.pl: Script is broken
 
 SERVERS
     Changed: Mount courier-authdaemon rundir on var/run/courier/authdaemon instead of private/authdaemon (Postfix/Cyrus-SASL)
