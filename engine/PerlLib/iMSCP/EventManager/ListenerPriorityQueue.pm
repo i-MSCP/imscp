@@ -62,7 +62,7 @@ sub new
 
  Note that if a $listener is added twice, it replace the old-one.
 
- Param subref $listener Listener
+ Param coderef $listener Listener
  Param int $priority OPTIONAL Listener priority (Highest values have highest priority)
  Return iMSCP::EventManager::ListenerPriorityQueue, die on failure
  
@@ -78,7 +78,7 @@ sub addListener
         'Invalid $priority. Expects an integer in range [-1000 .. 1000]'
     );
     ref $listener eq 'CODE' or die 'Invalid $listener. Expects CODE reference';
-    $self->removeListener( $listener ) if $self->{'priorities'}->{$listener};
+    $self->removeListener( $listener ) if $self->hasListener( $listener );
     $self->{'priorities'}->{$listener} = $priority;
     push @{$self->{'queue'}->{$priority}}, $listener;
     $self->{'highest_priority'} = max $priority, $self->{'highest_priority'} // $priority;
@@ -108,6 +108,25 @@ sub removeListener
     return 1 unless $self->{'highest_priority'} == $self->{'highest_priority'};
     $self->{'highest_priority'} = max keys( %{$self->{'queue'}} );
     1;
+}
+
+=item hasListener( $listener )
+ 
+ Does this priority queue has the given listener?
+ 
+ Param coderef $listener Listener
+ Return bool TRUE if this priority queue has the given listener, FALSE otherwise, die on failure
+ 
+=cut
+
+sub hasListener
+{
+    my ($self, $listener) = @_;
+
+    defined $listener or die '$listener parameter is not defined';
+    ref $listener eq 'CODE' or die 'Invalid $listener. Expects CODE reference';
+
+    exists $self->{'priorities'}->{$listener};
 }
 
 =item isEmpty( )
@@ -140,7 +159,7 @@ sub count
 
  Pop item with highter priority from the queue
 
- Return subref|undef Listener or undef if the queue is empty
+ Return coderef|undef Listener or undef if the queue is empty
 
 =cut
 

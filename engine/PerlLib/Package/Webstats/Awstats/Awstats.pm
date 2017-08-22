@@ -44,9 +44,10 @@ use parent 'Common::SingletonClass';
 
  AWStats package for i-MSCP.
 
- Advanced Web Statistics (AWStats) is a powerful Web server logfile analyzer written in perl that shows you all your Web
- statistics including visits, unique visitors, pages, hits, rush hours, search engines, keywords used to find your site,
- robots, broken links and more.
+ Advanced Web Statistics (AWStats) is a powerful Web server logfile analyzer
+ written in perl that shows you all your Web statistics including visits,
+ unique visitors, pages, hits, rush hours, search engines, keywords used to
+ find your site, robots, broken links and more.
 
  Project homepage: http://awstats.sourceforge.net/
 
@@ -185,7 +186,9 @@ sub preaddDmn( )
 {
     my ($self) = @_;
 
-    $self->{'eventManager'}->registerOne( 'afterHttpdBuildConf', sub { $self->_addAwstatsSection( @_ ); } );
+    return 0 if $self->{'eventManager'}->hasListener( 'afterHttpdBuildConf', \&_addAwstatsSection );
+
+    $self->{'eventManager'}->register( 'afterHttpdBuildConf', \&_addAwstatsSection )
 }
 
 =item addDmn( \%data )
@@ -305,7 +308,8 @@ sub _init
 
 =item _addAwstatsSection( \$cfgTpl, $filename, \%data )
 
- Listener responsible to build and insert Apache configuration snipped for AWStats in the given domain vhost file.
+ Listener responsible to build and insert Apache configuration snipped for
+ AWStats in the given domain vhost file.
 
  Param string \$cfgTpl Template file content
  Param string $filename Template filename
@@ -316,7 +320,7 @@ sub _init
 
 sub _addAwstatsSection
 {
-    my ($self, $cfgTpl, $tplName, $data) = @_;
+    my ($cfgTpl, $tplName, $data) = @_;
 
     return 0 if $tplName ne 'domain.tpl' || $data->{'FORWARD'} ne 'no';
 
@@ -329,24 +333,7 @@ sub _addAwstatsSection
                 "# SECTION addons END.\n",
                 ${$cfgTpl}
             ) .
-            process( { DOMAIN_NAME => $data->{'DOMAIN_NAME'} }, $self->_getApacheConfSnippet())
-            . "    # SECTION addons END.\n",
-        ${$cfgTpl}
-    );
-    0;
-}
-
-=item _getApacheConfSnippet( )
-
- Get apache configuration snippet
-
- Return string
-
-=cut
-
-sub _getApacheConfSnippet
-{
-    <<'EOF';
+            process( { DOMAIN_NAME => $data->{'DOMAIN_NAME'} }, <<'EOF' )
     <Location /stats>
         ProxyErrorOverride On
         ProxyPreserveHost Off
@@ -354,6 +341,10 @@ sub _getApacheConfSnippet
         ProxyPassReverse http://127.0.0.1:8889/stats/{DOMAIN_NAME}
     </Location>
 EOF
+            . "    # SECTION addons END.\n",
+        ${$cfgTpl}
+    );
+    0;
 }
 
 =item _addAwstatsConfig( \%data )

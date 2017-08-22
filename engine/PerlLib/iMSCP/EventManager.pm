@@ -26,7 +26,7 @@ package iMSCP::EventManager;
 use strict;
 use warnings;
 use autouse Clone => qw/ clone /;
-use iMSCP::Debug qw/ debug /;
+use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::EventManager::ListenerPriorityQueue;
 use Scalar::Util qw / blessed /;
 use parent 'Common::SingletonClass';
@@ -42,12 +42,31 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
+=item hasListener( $eventName, $listener )
+
+ Does the given listener is registered for the given event?
+
+ Param string $eventName Event name on which $listener listen on
+ Param coderef $listener A CODE reference
+ Return bool 1 if the given event has the given listener, FALSE otherwise, die on failure
+
+=cut
+
+sub hasListener
+{
+    my ($self, $eventNames, $listener) = @_;
+
+    defined $eventNames or die 'Missing $eventNames parameter';
+
+    $self->{'events'}->{$eventNames} && $self->{'events'}->{$eventNames}->hasListener( $listener );
+}
+
 =item register( $eventNames, $listener [, priority = 1 [, $once = FALSE ] ] )
 
  Registers an event listener for the given events
 
  Param string|arrayref $eventNames Event(s) that the listener listen to
- Param subref|object $listener A subroutine reference or object implementing $eventNames method
+ Param coderef|object $listener A CODE reference or an object implementing $eventNames method
  Param int $priority OPTIONAL Listener priority (Highest values have highest priority)
  Param bool $once OPTIONAL If TRUE, $listener will be executed at most once for the given events
  Return int 0 on success, 1 on failure
@@ -63,8 +82,13 @@ sub register
         defined $eventNames or die 'Missing $eventNames parameter';
 
         if ( ref $eventNames eq 'ARRAY' ) {
-            $self->register( $_, $listener, $priority, $once ) for @{$eventNames};
-            return 0;
+            for ( @{$eventNames} ) {
+                $self->register( $_, $listener, $priority, $once ) == 0 or die(
+                    getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+                );
+            }
+
+            return;
         }
 
         unless ( $self->{'events'}->{$eventNames} ) {
@@ -90,7 +114,7 @@ sub register
  This is shortcut method for ::register( $eventNames, $listener, $priority, $once )
 
  Param string|arrayref $eventNames Event(s) that the listener listen to
- Param subref|object $listener A subroutine reference or object implementing $eventNames method
+ Param coderef|object $listener A CODE reference or object implementing $eventNames method
  Param int $priority OPTIONAL Listener priority (Highest values have highest priority)
  Return int 0 on success, 1 on failure
 
@@ -107,7 +131,7 @@ sub registerOne
 
  Unregister the given listener from all or the given event
 
- Param subref $listener Listener
+ Param coderef $listener Listener
  Param string OPTIONAL $eventName Event name
  Return int 0 on success, 1 on failure
 

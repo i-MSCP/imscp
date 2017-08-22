@@ -6,6 +6,7 @@ Git 1.5.x
 
 BACKEND
     Added: Flag allowing to ignore mount operation failures (iMSCP::Mount)
+    Added: iMSCP::EventManager::hasListener method -- Allow to check whether or not a listener is registered for an event
     Deprecated: iMSCP::Database::mysql::doQuery() method -- Will be removed in a later version
     Deprecated: iMSCP::Database::mysql::endTransaction() method -- Will be removed in a later version
     Deprecated: iMSCP::Database::mysql::startTransaction() method -- Will be removed in a later version
@@ -98,6 +99,7 @@ INSTALLER
 
 PACKAGES
     Fixed: Can't locate Package/FileManager/Net2FTP/Net2FTP.pm when upgrading from some older versions (Package::FileManager)
+    Fixed: Missing configuration snippet for AWStats in Apache2 vhosts: Event listener badly registered
 
 SCRIPTS
     Removed: Explicite unlocking of locked files -- Files are automatically unlocked
