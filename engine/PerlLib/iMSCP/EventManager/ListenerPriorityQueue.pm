@@ -56,6 +56,25 @@ sub new
         $class;
 }
 
+=item hasListener( $listener )
+ 
+ Does this priority queue has the given listener?
+ 
+ Param coderef $listener Listener
+ Return bool TRUE if this priority queue has the given listener, FALSE otherwise, die on failure
+ 
+=cut
+
+sub hasListener
+{
+    my ($self, $listener) = @_;
+
+    defined $listener or die '$listener parameter is not defined';
+    ref $listener eq 'CODE' or die 'Invalid $listener. Expects CODE reference';
+
+    exists $self->{'priorities'}->{$listener};
+}
+
 =item addListener( $listener [, $priority = 1 ] )
 
  Add the given listener into the queue
@@ -108,25 +127,6 @@ sub removeListener
     return 1 unless $self->{'highest_priority'} == $self->{'highest_priority'};
     $self->{'highest_priority'} = max keys( %{$self->{'queue'}} );
     1;
-}
-
-=item hasListener( $listener )
- 
- Does this priority queue has the given listener?
- 
- Param coderef $listener Listener
- Return bool TRUE if this priority queue has the given listener, FALSE otherwise, die on failure
- 
-=cut
-
-sub hasListener
-{
-    my ($self, $listener) = @_;
-
-    defined $listener or die '$listener parameter is not defined';
-    ref $listener eq 'CODE' or die 'Invalid $listener. Expects CODE reference';
-
-    exists $self->{'priorities'}->{$listener};
 }
 
 =item isEmpty( )

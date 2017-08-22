@@ -48,7 +48,7 @@ use parent 'Common::SingletonClass';
 
  Param string $eventName Event name on which $listener listen on
  Param coderef $listener A CODE reference
- Return bool 1 if the given event has the given listener, FALSE otherwise, die on failure
+ Return bool TRUE if the given event has the given listener, FALSE otherwise, die on failure
 
 =cut
 
