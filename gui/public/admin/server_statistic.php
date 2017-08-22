@@ -256,10 +256,6 @@ require 'imscp-lib.php';
 EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 check_login('admin');
 
-#print date('d.m.Y', getFirstDayOfMonth(2, 2017)) . '<br>';
-#print date('d.m.Y', getLastDayOfMonth(2, 2017));
-#exit;
-
 $tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                => 'shared/layouts/ui.tpl',
