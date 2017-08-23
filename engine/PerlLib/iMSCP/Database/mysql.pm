@@ -149,8 +149,8 @@ sub useDatabase
 
 =item startTransaction( )
 
- Warning: This method is deprecated as of version 1.4.8 and will be removed in
- version 1.5.0. Don't use it in new code.
+ Warning: This method is deprecated as of version 1.5.0 and will be removed in
+ version 1.6.0. Don't use it in new code.
 
  Start a database transaction
 
@@ -168,8 +168,8 @@ sub startTransaction
 
 =item endTransaction( )
 
- Warning: This method is deprecated as of version 1.4.8 and will be removed in
- version 1.5.0. Don't use it in new code.
+ Warning: This method is deprecated as of version 1.5.0 and will be removed in
+ version 1.6.0. Don't use it in new code.
 
  End a database transaction
 
@@ -209,8 +209,8 @@ sub getRawDb
 
  Execute the given SQL statement
 
- Warning: This method is deprecated as of version 1.4.8 and will be removed in
- version 1.5.0. Don't use it in new code.
+ Warning: This method is deprecated as of version 1.5.0 and will be removed in
+ version 1.6.0. Don't use it in new code.
 
  Param int|string $key Query key
  Param string $query SQL statement to be executed

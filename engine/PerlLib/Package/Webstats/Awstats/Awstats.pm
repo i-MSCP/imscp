@@ -182,13 +182,13 @@ sub addUser
 
 =cut
 
-sub preaddDmn( )
+sub preaddDmn
 {
     my ($self) = @_;
 
     return 0 if $self->{'eventManager'}->hasListener( 'afterHttpdBuildConf', \&_addAwstatsSection );
 
-    $self->{'eventManager'}->register( 'afterHttpdBuildConf', \&_addAwstatsSection )
+    $self->{'eventManager'}->register( 'afterHttpdBuildConf', \&_addAwstatsSection );
 }
 
 =item addDmn( \%data )

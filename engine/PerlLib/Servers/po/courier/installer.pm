@@ -770,14 +770,14 @@ sub _oldEngineCompatibility
     }
 
     # Remove postfix user from authdaemon group.
-    # It is now added in mail group (since 1.4.8)
+    # It is now added in mail group (since 1.5.0)
     $rs = iMSCP::SystemUser->new()->removeFromGroup(
         $self->{'config'}->{'AUTHDAEMON_GROUP'}, $self->{'mta'}->{'config'}->{'POSTFIX_USER'}
     );
     return $rs if $rs;
 
     # Remove old authdaemon socket private/authdaemon mount directory.
-    # Replaced by var/run/courier/authdaemon (since 1.4.8)
+    # Replaced by var/run/courier/authdaemon (since 1.5.0)
     my $fsFile = File::Spec->canonpath( "$self->{'mta'}->{'config'}->{'POSTFIX_QUEUE_DIR'}/private/authdaemon" );
     $rs ||= umount( $fsFile );
     return $rs if $rs;
