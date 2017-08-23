@@ -18,6 +18,7 @@ BACKEND
     Removed: `FETCH_MODE' option from iMSCP::Database::mysql
 
 CONFIG
+    Added: `APPLICATION_ENV' environment variable (Nginx)
     Removed: `.htgroup' and `.htpasswd' files from the skeleton directory; These files are now created only when needed
 
 CONTRIB
