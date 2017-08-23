@@ -299,7 +299,7 @@ class Application
         Registry::set('exceptionHandler', new ExceptionHandler());
 
         ini_set('log_errors', 1);
-        ini_set('error_log', GUI_ROOT_DIR . '/data/logs/errors.log');
+        //ini_set('error_log', GUI_ROOT_DIR . '/data/logs/errors.log');
         ini_set('display_errors', 1);
 
         if ($this->getEnvironment() == 'production') {
