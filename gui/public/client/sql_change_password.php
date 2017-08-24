@@ -1,94 +1,52 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
+use iMSCP_Config_Handler_File as ConfigFile;
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
  */
 
 /**
- * Checks if an user has permissions on a specific SQL user
+ * Update SQL user password
  *
- * @param  int $sqlUserId SQL user unique identifier
- * @return bool TRUE if the logged in user has permission on SQL user, FALSE otherwise
+ * @param int $sqluId SQL user unique identifier
+ * @çeturn void
  */
-function check_user_sql_perms($sqlUserId)
+function updateSqlUserPassword($sqluId)
 {
-    return (bool)exec_query(
-        '
-            SELECT COUNT(t1.sqlu_id)
-            FROM sql_user AS t1
-            JOIN sql_database AS t2 USING(sqld_id)
-            JOIN domain AS t3 USING(domain_id)
-            WHERE t1.sqlu_id = ?
-            AND t2.domain_admin_id = ?
-        ',
-        [$sqlUserId, $_SESSION['user_id']]
-    )->fetchRow(PDO::FETCH_COLUMN);
-}
-
-/**
- * Generate page
- *
- * @param iMSCP_pTemplate $tpl
- * @param int $id Sql user id
- * @return array
- */
-function client_generatePage($tpl, $id)
-{
-    $stmt = exec_query('SELECT sqlu_name, sqlu_host FROM sql_user WHERE sqlu_id = ?', $id);
+    $stmt = exec_query('SELECT sqlu_name, sqlu_host FROM sql_user WHERE sqlu_id = ?', $sqluId);
 
     if (!$stmt->rowCount()) {
         showBadRequestErrorPage();
     }
 
     $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-    $tpl->assign([
-        'USER_NAME' => tohtml($row['sqlu_name']),
-        'ID'        => tohtml($id)
-    ]);
 
-    return [$row['sqlu_name'], $row['sqlu_host']];
-}
-
-/**
- * Update SQL user password
- *
- * @param int $id Sql user id
- * @param string $user Sql user name
- * @param string $host SQL user host
- * @çeturn void
- */
-function client_updateSqlUserPassword($id, $user, $host)
-{
-    if (!isset($_POST['uaction'])) {
-        return;
-    }
-
-    if (!isset($_POST['password']) || !isset($_POST['password_confirmation'])) {
+    if (!isset($_POST['password'])
+        || !isset($_POST['password_confirmation'])
+    ) {
         showBadRequestErrorPage();
     }
 
@@ -114,10 +72,10 @@ function client_updateSqlUserPassword($id, $user, $host)
         return;
     }
 
-    $config = iMSCP_Registry::get('config');
-    $mysqlConfig = new iMSCP_Config_Handler_File($config['CONF_DIR'] . '/mysql/mysql.data');
+    $config = Registry::get('config');
+    $mysqlConfig = new ConfigFile($config['CONF_DIR'] . '/mysql/mysql.data');
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditSqlUser, ['sqlUserId' => $id]);
+    EventsManager::getInstance()->dispatch(Events::onBeforeEditSqlUser, ['sqlUserId' => $sqluId]);
 
     // Here we cannot use transaction due to statements that cause an implicit commit. Thus we execute
     // those statements first to let the i-MSCP database in clean state if one of them fails.
@@ -125,16 +83,63 @@ function client_updateSqlUserPassword($id, $user, $host)
 
     // Update SQL user password in the mysql system tables;
     if ($mysqlConfig['SQLD_TYPE'] == 'mariadb' || version_compare($mysqlConfig['SQLD_VERSION'], '5.7.6', '<')) {
-        exec_query('SET PASSWORD FOR ?@? = PASSWORD(?)', [$user, $host, $password]);
+        exec_query('SET PASSWORD FOR ?@? = PASSWORD(?)', [$row['sqlu_name'], $row['sqlu_host'], $password]);
     } else {
-        exec_query('ALTER USER ?@? IDENTIFIED BY ? PASSWORD EXPIRE NEVER', [$user, $host, $password]);
+        exec_query('ALTER USER ?@? IDENTIFIED BY ? PASSWORD EXPIRE NEVER', [
+            $row['sqlu_name'], $row['sqlu_host'], $password
+        ]);
     }
 
     set_page_message(tr('SQL user password successfully updated.'), 'success');
-    write_log(sprintf('%s updated %s@%s SQL user password.', $_SESSION['user_logged'], $user, $host), E_USER_NOTICE);
-
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditSqlUser, ['sqlUserId' => $id]);
+    write_log(
+        sprintf('%s updated %s@%s SQL user password.', $_SESSION['user_logged'], $row['sqlu_name'], $row['sqlu_host']),
+        E_USER_NOTICE
+    );
+    EventsManager::getInstance()->dispatch(Events::onAfterEditSqlUser, ['sqlUserId' => $sqluId]);
     redirectTo('sql_manage.php');
+}
+
+/**
+ * Generate page
+ *
+ * @param TemplateEngine $tpl
+ * @param int $sqluId SQL user unique identifier
+ * @return void
+ */
+function generatePage(TemplateEngine $tpl, $sqluId)
+{
+    $stmt = exec_query('SELECT sqlu_name, sqlu_host FROM sql_user WHERE sqlu_id = ?', $sqluId);
+
+    if (!$stmt->rowCount()) {
+        showBadRequestErrorPage();
+    }
+
+    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $tpl->assign([
+        'USER_NAME' => tohtml($row['sqlu_name']),
+        'SQLU_ID'   => tohtml($sqluId, 'htmlAttr')
+    ]);
+}
+
+/**
+ * Checks if SQL user permissions
+ *
+ * @param  int $sqlUserId SQL user unique identifier
+ * @return bool TRUE if the logged-in user has permission on SQL user, FALSE otherwise
+ */
+function checkSqlUserPerms($sqlUserId)
+{
+    return (bool)exec_query(
+        '
+            SELECT COUNT(t1.sqlu_id)
+            FROM sql_user AS t1
+            JOIN sql_database AS t2 USING(sqld_id)
+            JOIN domain AS t3 USING(domain_id)
+            WHERE t1.sqlu_id = ?
+            AND t3.domain_admin_id = ?
+        ',
+        [$sqlUserId, $_SESSION['user_id']]
+    )->fetchRow(PDO::FETCH_COLUMN);
 }
 
 /***********************************************************************************************************************
@@ -143,44 +148,43 @@ function client_updateSqlUserPassword($id, $user, $host)
 
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 check_login('user');
-customerHasFeature('sql') or showBadRequestErrorPage();
 
-if (!isset($_REQUEST['id'])) {
+customerHasFeature('sql') && isset($_REQUEST['sqlu_id']) or showBadRequestErrorPage();
+
+$sqluId = intval($_REQUEST['sqlu_id']);
+
+if (!checkSqlUserPerms($sqluId)) {
     showBadRequestErrorPage();
 }
 
-$id = intval($_REQUEST['id']);
-
-if (!check_user_sql_perms($id)) {
-    showBadRequestErrorPage();
+if (!empty($_POST)) {
+    updateSqlUserPassword($sqluId);
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/sql_change_password.tpl',
     'page_message' => 'layout'
 ]);
-
 $tpl->assign([
-    'TR_PAGE_TITLE'            => tr('Client / Databases / Overview / Update SQL User Password'),
-    'TR_DB_USER'               => tr('User'),
-    'TR_PASSWORD'              => tr('Password'),
-    'TR_PASSWORD_CONFIRMATION' => tr('Password confirmation'),
-    'TR_CHANGE'                => tr('Update'),
-    'TR_CANCEL'                => tr('Cancel')
+    'TR_PAGE_TITLE'            => tohtml(tr('Client / Databases / Overview / Update SQL User Password')),
+    'TR_SQL_USER_PASSWORD'     => tohtml(tr('SQL user password')),
+    'TR_DB_USER'               => tohtml(tr('User')),
+    'TR_PASSWORD'              => tohtml(tr('Password')),
+    'TR_PASSWORD_CONFIRMATION' => tohtml(tr('Password confirmation')),
+    'TR_UPDATE'                => tohtml(tr('Update'), 'htmlAttr'),
+    'TR_CANCEL'                => tohtml(tr('Cancel'))
 ]);
 
-list($user, $host) = client_generatePage($tpl, $id);
-
-client_updateSqlUserPassword($id, $user, $host);
 generateNavigation($tpl);
+generatePage($tpl, $sqluId);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

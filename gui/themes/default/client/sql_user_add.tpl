@@ -1,6 +1,5 @@
-
 <!-- BDP: show_sqluser_list -->
-<form name="sql_add_user_frm1" method="post" action="sql_user_add.php">
+<form method="post" action="sql_user_add.php">
     <table class="firstColFixed">
         <thead>
         <tr>
@@ -24,14 +23,14 @@
     </table>
     <div class="buttons">
         <input type="hidden" name="uaction" value="add_user">
-        <input type="hidden" name="id" value="{ID}">
+        <input type="hidden" name="sqld_id" value="{SQLD_ID}">
         <input name="reuse_sqluser" type="submit" id="reuse_sqluser" value="{TR_ADD_EXIST}">
+        <a class="link_as_button" href="sql_manage.php">{TR_CANCEL}</a>
     </div>
 </form>
 <!-- EDP: show_sqluser_list -->
-
 <!-- BDP: create_sqluser -->
-<form name="sql_add_user_frm2" method="post" action="sql_user_add.php" autocomplete="off">
+<form method="post" action="sql_user_add.php" autocomplete="off">
     <table class="firstColFixed">
         <thead>
         <tr>
@@ -67,10 +66,10 @@
                 </label>
                 <!-- EDP: mysql_prefix_all -->
                 <!-- BDP: mysql_prefix_infront -->
-                <input type="hidden" name="id_pos" value="start" checked="checked">{TR_START_ID_POS}
+                <input type="hidden" name="id_pos" value="start" checked>{TR_START_ID_POS}
                 <!-- EDP: mysql_prefix_infront -->
                 <!-- BDP: mysql_prefix_behind -->
-                <input type="hidden" name="id_pos" value="end" checked="checked">{TR_END_ID_POS}
+                <input type="hidden" name="id_pos" value="end" checked>{TR_END_ID_POS}
                 <!-- EDP: mysql_prefix_behind -->
             </td>
         </tr>
@@ -86,7 +85,7 @@
     </table>
     <div class="buttons">
         <input type="hidden" name="uaction" value="add_user">
-        <input type="hidden" name="id" value="{ID}">
+        <input type="hidden" name="sqld_id" value="{SQLD_ID}">
         <input name="Add_New" type="submit" id="Add_New" value="{TR_ADD}">
         <a class="link_as_button" href="sql_manage.php">{TR_CANCEL}</a>
     </div>

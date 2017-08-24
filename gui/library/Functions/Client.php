@@ -616,3 +616,20 @@ function deleteSubdomainAlias($id)
         redirectTo('domains_manage.php');
     }
 }
+
+/**
+ * Check if SQL databases limit of the given customer is reached
+ *
+ * @return bool TRUE if SQL database limit is reached, FALSE otherwise
+ */
+function customerSqlDbLimitIsReached()
+{
+    $domainProps = get_domain_default_props($_SESSION['user_id']);
+
+    if ($domainProps['domain_sqld_limit'] == 0
+        || get_customer_sql_databases_count($domainProps['domain_id']) < $domainProps['domain_sqld_limit']) {
+        return false;
+    }
+
+    return true;
+}

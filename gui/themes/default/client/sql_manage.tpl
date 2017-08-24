@@ -1,4 +1,3 @@
-
 <!-- BDP: sql_databases_users_list -->
 <script>
     function action_delete(url, subject, object) {
@@ -28,8 +27,10 @@
     <tr>
         <td><strong>{DB_NAME}</strong></td>
         <td>
-            <a href="sql_user_add.php?id={DB_ID}" class="icon i_add_user" title="{TR_ADD_USER}">{TR_ADD_USER}</a>
-            <a href="#" class="icon i_delete" onclick="return action_delete('sql_database_delete.php?id={DB_ID}', '{DB_NAME_JS}', 'database')" title="{TR_DELETE}">{TR_DELETE}</a>
+            <!-- BDP: sql_user_add_link -->
+            <a href="sql_user_add.php?sqld_id={SQLD_ID}" class="icon i_add_user">{TR_ADD_USER}</a>
+            <!-- EDP: sql_user_add_link -->
+            <a href="#" class="icon i_delete" onclick="return action_delete('sql_database_delete.php?sqld_id={SQLD_ID}', '{DB_NAME_JS}', 'database')">{TR_DELETE}</a>
         </td>
     </tr>
     <tr>
@@ -49,8 +50,8 @@
                         </div>
                     </td>
                     <td>
-                        <a href="sql_change_password.php?id={USER_ID}" class="icon i_change_password" title="{TR_CHANGE_PASSWORD}">{TR_CHANGE_PASSWORD}</a>
-                        <a href="#" class="icon i_delete" onclick="return action_delete('sql_delete_user.php?id={USER_ID}', '{DB_USER_JS}', 'user')" title="{TR_DELETE}">{TR_DELETE}</a>
+                        <a href="sql_change_password.php?sqlu_id={SQLU_ID}" class="icon i_change_password">{TR_CHANGE_PASSWORD}</a>
+                        <a href="#" class="icon i_delete" onclick="return action_delete('sql_delete_user.php?sqlu_id={SQLU_ID}', '{DB_USER_JS}', 'user')">{TR_DELETE}</a>
                     </td>
                 </tr>
             </table>

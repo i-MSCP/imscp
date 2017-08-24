@@ -135,6 +135,7 @@ YOUTRACK
     IP-1730 Couldn't delete support tickets that are closed
     IP-1733 Default mail accounts in client mail accounts overview should be hidden by default
     IP-1737 Circular feature - A circular must not be send twice to the same email address
+    IP-1740 Empty body content when trying to create new SQL user and when SQL users limit has been reached
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series

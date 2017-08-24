@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 return [
     'general'    => [
         'label' => tr('General'),
@@ -174,9 +176,25 @@ return [
                 ]
             ],
             'add_sql_database' => [
-                'label'       => tr('Add SQL database'),
-                'uri'         => '/client/sql_database_add.php',
-                'title_class' => 'sql'
+                'label'              => tr('Add SQL database'),
+                'uri'                => '/client/sql_database_add.php',
+                'title_class'        => 'sql',
+                'privilege_callback' => [
+                    'name' => function () {
+                        if (customerSqlDbLimitIsReached()) {
+                            if(Registry::get('navigation')->findOneBy('uri', '/client/sql_manage.php')->isActive()) {
+                                set_page_message(
+                                    tr("SQL databases limit is reached. You cannot add new SQL databases."),
+                                    'static_info'
+                                );
+                            }
+
+                            return false;
+                        }
+
+                        return true;
+                    }
+                ]
             ],
             'phpmyadmin'       => [
                 'label'  => tr('PhpMyAdmin'),

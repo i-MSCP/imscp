@@ -1,5 +1,4 @@
-
-<form name="sql_add_database_frm" method="post" action="sql_database_add.php">
+<form method="post" action="sql_database_add.php">
     <table class="firstColFixed">
         <thead>
         <tr>
@@ -41,8 +40,7 @@
         </tbody>
     </table>
     <div class="buttons">
-        <input name="Add_New" type="submit" id="Add_New" value="{TR_ADD}">
+        <input name="submit" type="submit" value="{TR_ADD}">
         <a class="link_as_button" href="sql_manage.php">{TR_CANCEL}</a>
     </div>
-    <input type="hidden" name="uaction" value="add_db">
 </form>

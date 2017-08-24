@@ -1,43 +1,103 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Exception as iMSCPException;
+use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
  */
 
 /**
- * Generate page
+ * Add SQL database
  *
- * @param iMSCP_pTemplate $tpl
  * @return void
  */
-function client_generatePage($tpl)
+function addSqlDb()
 {
-    $cfg = iMSCP_Registry::get('config');
+    if (!isset($_POST['db_name'])) {
+        showBadRequestErrorPage();
+    }
+
+    $dbName = clean_input($_POST['db_name']);
+
+    if ($_POST['db_name'] === '') {
+        set_page_message(tr('Please type database name.'), 'error');
+        return;
+    }
+
+    $mainDmnId = get_user_domain_id($_SESSION['user_id']);
+
+    if (isset($_POST['use_dmn_id'])
+        && $_POST['use_dmn_id'] == 'on'
+    ) {
+        if (isset($_POST['id_pos'])
+            && $_POST['id_pos'] == 'start'
+        ) {
+            $dbName = $mainDmnId . '_' . $dbName;
+        } elseif (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') {
+            $dbName = $dbName . '_' . $mainDmnId;
+        }
+    }
+
+    if (strlen($dbName) > 64) {
+        set_page_message(tr('Database name is too long.'), 'error');
+        return;
+    }
+
+    if (in_array($dbName, ['information_schema', 'mysql', 'performance_schema', 'sys', 'test'])
+        || exec_query('SHOW DATABASES LIKE ?', $dbName)->rowCount()
+    ) {
+        set_page_message(tr('Database name is unavailable or unallowed.'), 'error');
+        return;
+    }
+
+    try {
+        EventsManager::getInstance()->dispatch(Events::onBeforeAddSqlDb, ['dbName' => $dbName]);
+        execute_query(sprintf('CREATE DATABASE IF NOT EXISTS %s', quoteIdentifier($dbName)));
+        exec_query('INSERT INTO sql_database (domain_id, sqld_name) VALUES (?, ?)', [$mainDmnId, $dbName]);
+        EventsManager::getInstance()->dispatch(Events::onAfterAddSqlDb, ['dbName' => $dbName]);
+        set_page_message(tr('SQL database successfully created.'), 'success');
+        write_log(
+            sprintf('A new database (%s) has been created by %s', $dbName, $_SESSION['user_logged']), E_USER_NOTICE
+        );
+    } catch (iMSCPException $e) {
+        write_log(sprintf("Couldn't create the %s database: %s", $dbName, $e->getMessage()));
+        set_page_message(tr("Couldn't create the %s database.", $dbName), 'error');
+    }
+
+    redirectTo('sql_manage.php');
+}
+
+/**
+ * Generate page
+ *
+ * @param TemplateEngine $tpl
+ * @return void
+ */
+function generatePage(TemplateEngine $tpl)
+{
+    $cfg = Registry::get('config');
 
     if ($cfg['MYSQL_PREFIX'] != 'none') {
         $tpl->assign('MYSQL_PREFIX_YES', '');
@@ -62,117 +122,12 @@ function client_generatePage($tpl)
         $tpl->parse('MYSQL_PREFIX_ALL', 'mysql_prefix_all');
     }
 
-    if (isset($_POST['uaction'])
-        && $_POST['uaction'] == 'add_db'
-    ) {
-        $tpl->assign([
-            'DB_NAME'               => clean_input($_POST['db_name']),
-            'USE_DMN_ID'            => isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' ? ' checked' : '',
-            'START_ID_POS_SELECTED' => isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end' ? ' checked' : '',
-            'END_ID_POS_SELECTED'   => isset($_POST['id_pos']) && $_POST['id_pos'] === 'end' ? ' checked' : ''
-        ]);
-        return;
-    }
-
     $tpl->assign([
-        'DB_NAME'               => '',
-        'USE_DMN_ID'            => '',
-        'START_ID_POS_SELECTED' => $cfg['HTML_SELECTED'],
-        'END_ID_POS_SELECTED'   => ''
+        'DB_NAME'               => isset($_POST['db_name']) ? tohtml($_POST['db_name'], 'htmlAttr') : '',
+        'USE_DMN_ID'            => isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' ? ' checked' : '',
+        'START_ID_POS_SELECTED' => isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end' ? ' checked' : '',
+        'END_ID_POS_SELECTED'   => isset($_POST['id_pos']) && $_POST['id_pos'] === 'end' ? ' checked' : ''
     ]);
-}
-
-/**
- * Whether or not the given database already exists
- *
- * @param string $dbName database name to be checked
- * @return boolean TRUE if database exists, false otherwise
- */
-function client_isDatabase($dbName)
-{
-    return (bool)exec_query('SHOW DATABASES LIKE ?', $dbName)->rowCount();
-}
-
-/**
- * Add SQL database
- *
- * @param int $userId
- * @return void
- */
-function client_addSqlDb($userId)
-{
-    if (!isset($_POST['uaction'])) {
-        return;
-    }
-
-    if (!isset($_POST['db_name'])) {
-        showBadRequestErrorPage();
-    }
-
-    $dbName = clean_input($_POST['db_name']);
-
-    if ($_POST['db_name'] === '') {
-        set_page_message(tr('Please type database name.'), 'error');
-        return;
-    }
-
-    $mainDmnId = get_user_domain_id($userId);
-
-    if (isset($_POST['use_dmn_id'])
-        && $_POST['use_dmn_id'] == 'on'
-    ) {
-        if (isset($_POST['id_pos'])
-            && $_POST['id_pos'] == 'start'
-        ) {
-            $dbName = $mainDmnId . '_' . $dbName;
-        } elseif (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') {
-            $dbName = $dbName . '_' . $mainDmnId;
-        }
-    }
-
-    if (strlen($dbName) > 64) {
-        set_page_message(tr('Database name is too long.'), 'error');
-        return;
-    }
-
-    if (in_array($dbName, ['information_schema', 'mysql', 'performance_schema', 'sys', 'test'])
-        || client_isDatabase($dbName)
-    ) {
-        set_page_message(tr('Database name is unavailable or unallowed.'), 'error');
-        return;
-    }
-
-    try {
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddSqlDb, ['dbName' => $dbName]);
-        execute_query(sprintf('CREATE DATABASE IF NOT EXISTS %s', quoteIdentifier($dbName)));
-        exec_query('INSERT INTO sql_database (domain_id, sqld_name) VALUES (?, ?)', [$mainDmnId, $dbName]);
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlDb, ['dbName' => $dbName]);
-        set_page_message(tr('SQL database successfully created.'), 'success');
-        write_log(sprintf('A new database (%s) has been created by %s', $dbName, $_SESSION['user_logged']), E_USER_NOTICE);
-    } catch (iMSCP_Exception $e) {
-        write_log(sprintf("Couldn't create the %s database: %s", $dbName, $e->getMessage()));
-        set_page_message(tr("Couldn't create the %s database.", $dbName), 'error');
-    }
-
-    redirectTo('sql_manage.php');
-}
-
-/**
- * Check SQL databases limit
- *
- * @return void
- */
-function client_checkSqlDbLimit()
-{
-    $domainProps = get_domain_default_props($_SESSION['user_id']);
-
-    if ($domainProps['domain_sqld_limit'] == 0
-        || get_customer_sql_databases_count($domainProps['domain_id']) < $domainProps['domain_sqld_limit']) {
-        return;
-    }
-
-    set_page_message(tr('SQL database limit reached.'), 'error');
-    redirectTo('sql_manage.php');
 }
 
 /***********************************************************************************************************************
@@ -181,41 +136,43 @@ function client_checkSqlDbLimit()
 
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 check_login('user');
-customerHasFeature('sql') or showBadRequestErrorPage();
-client_checkSqlDbLimit();
-client_addSqlDb($_SESSION['user_id']);
 
-$tpl = new iMSCP_pTemplate();
+customerHasFeature('sql') && !customerSqlDbLimitIsReached() or showBadRequestErrorPage();
+
+if (!empty($_POST)) {
+    addSqlDb();
+}
+
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'               => 'shared/layouts/ui.tpl',
     'page'                 => 'client/sql_database_add.tpl',
     'page_message'         => 'layout',
-    'mysql_prefix_no'      => 'page',
     'mysql_prefix_yes'     => 'page',
+    'mysql_prefix_no'      => 'page',
+    'mysql_prefix_all'     => 'page',
     'mysql_prefix_infront' => 'page',
-    'mysql_prefix_behind'  => 'page',
-    'mysql_prefix_all'     => 'page'
+    'mysql_prefix_behind'  => 'page'
 ]);
-
 $tpl->assign([
-    'TR_PAGE_TITLE'   => tr('Client / Databases / Add SQL Database'),
-    'TR_DATABASE'     => tr('Database'),
-    'TR_DB_NAME'      => tr('Database name'),
-    'TR_USE_DMN_ID'   => tr('Database prefix/suffix'),
-    'TR_START_ID_POS' => tr('In front'),
-    'TR_END_ID_POS'   => tr('Behind'),
-    'TR_ADD'          => tr('Add'),
-    'TR_CANCEL'       => tr('Cancel')
+    'TR_PAGE_TITLE'   => tohtml(tr('Client / Databases / Add SQL Database')),
+    'TR_DATABASE'     => tohtml(tr('Database')),
+    'TR_DB_NAME'      => tohtml(tr('Database name')),
+    'TR_USE_DMN_ID'   => tohtml(tr('Database prefix/suffix')),
+    'TR_START_ID_POS' => tohtml(tr('In front')),
+    'TR_END_ID_POS'   => tohtml(tr('Behind')),
+    'TR_ADD'          => tohtml(tr('Add'), 'htmlAttr'),
+    'TR_CANCEL'       => tohtml(tr('Cancel'))
 ]);
 
-client_generatePage($tpl);
+generatePage($tpl);
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();
