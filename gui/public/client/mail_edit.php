@@ -179,23 +179,21 @@ function client_editMailAccount()
             return false;
         }
 
-        $forwardList = preg_split("/[\n, ]+/", $forwardList);
+        $forwardList = array_unique(preg_split('/\s|,/', $forwardList, -1, PREG_SPLIT_NO_EMPTY));
 
         foreach ($forwardList as $key => &$forwardEmailAddr) {
-            $forwardEmailAddr = encode_idna(mb_strtolower(trim($forwardEmailAddr)));
+            $forwardEmailAddr = encode_idna(mb_strtolower($forwardEmailAddr));
 
-            if ($forwardEmailAddr == '') {
-                unset($forwardList[$key]);
-            } elseif (!chk_email($forwardEmailAddr)) {
+            if (!chk_email($forwardEmailAddr)) {
                 set_page_message(tr('Bad email address in forward list field.'), 'error');
                 return false;
-            } elseif ($forwardEmailAddr == $mailAddr) {
+            }
+
+            if ($forwardEmailAddr == $mailAddr) {
                 set_page_message(tr('You cannot forward %s on itself.', $mailAddr), 'error');
                 return false;
             }
         }
-
-        $forwardList = array_unique($forwardList);
 
         if (empty($forwardList)) {
             set_page_message(tr('Forward list is empty.'), 'error');

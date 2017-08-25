@@ -416,7 +416,7 @@ sub _isEnabledPre090
     # we check to see if an uncommented `start on' or `manual'
     # stanza is the last one in the file. The last one in the
     # file wins.
-    open my $fh, '<', \$jobFileContent or die ( sprintf( "Couldn't open in-memory file: %s", $! ));
+    open my $fh, '<', \$jobFileContent or die ( sprintf( "Couldn't open in-memory file handle: %s", $! ));
     my $enabled = 0;
     while ( <$fh> ) {
         if ( /$START_ON/ ) {
@@ -449,7 +449,7 @@ sub _isEnabledPost090
     # override files. The last one in the file wins.
     my $enabled = 0;
     for ( \$jobFileContent, \$jobOverrideFileContent ) {
-        open my $fh, '<', $_ or die ( sprintf( "Couldn't open in-memory file: %s", $! ));
+        open my $fh, '<', $_ or die ( sprintf( "Couldn't open in-memory file handle: %s", $! ));
         while ( <$fh> ) {
             if ( /$START_ON/ ) {
                 $enabled = 1;

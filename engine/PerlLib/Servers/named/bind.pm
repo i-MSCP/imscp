@@ -676,7 +676,7 @@ sub addCustomDNS
 
     my $fh;
     unless ( open( $fh, '<', \$wrkDbFileContent ) ) {
-        error( sprintf( "Couldn't open in-memory file: %s", $! ));
+        error( sprintf( "Couldn't open in-memory file handle: %s", $! ));
         return 1;
     }
 

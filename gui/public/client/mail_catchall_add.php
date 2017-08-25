@@ -134,20 +134,16 @@ function addCatchallAccount($catchallDomainId, $catchallDomain, $catchallType)
             return;
         }
 
-        $catchallAddresses = preg_split("/[\n, ]+/", $catchallAddresses);
+        $catchallAddresses = array_unique(preg_split('/\s|,/', $catchallAddresses, -1, PREG_SPLIT_NO_EMPTY));
 
         foreach ($catchallAddresses as $key => &$catchallAddress) {
             $catchallAddress = encode_idna(mb_strtolower(trim($catchallAddress)));
 
-            if ($catchallAddress == '') {
-                unset($catchallAddresses[$key]);
-            } elseif (!chk_email($catchallAddress)) {
+            if (!chk_email($catchallAddress)) {
                 set_page_message(tr('Bad email address in catch-all addresses field.'), 'error');
                 return;
             }
         }
-
-        $catchallAddresses = array_unique($catchallAddresses);
 
         if (empty($catchallAddresses)) {
             set_page_message(tr('Catch-all addresses field cannot be empty.'), 'error');
