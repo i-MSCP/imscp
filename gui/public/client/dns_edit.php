@@ -281,12 +281,12 @@ function client_validate_NS($host, &$errorString)
  */
 function client_validateAndFormat_TXT(&$data, &$errorString)
 {
+    $data = trim($data, "\t\n\r\0\x0B\x28\x29");
+
     if ($data === '') {
         $errorString .= tr("The '%s' field cannot be empty.", tr('Data'));
         return false;
     }
-
-    $data = trim($data, "\t\n\r\0\x0B\x28\x29");
 
     if (!preg_match('/^[[:print:]\s]+$/', $data)) {
         $errorString .= tr(
