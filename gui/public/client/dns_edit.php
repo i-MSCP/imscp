@@ -18,13 +18,68 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Registry as Registry;
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
 use Net_DNS2_Exception as DnsResolverException;
 use Net_DNS2_Resolver as DnsResolver;
 
 /***********************************************************************************************************************
  * Functions
  */
+
+/**
+ * Get quoted and unquoted strings from the given string
+ *
+ * @param $string String to be parsed
+ * @return array Array containing arrays of quoted and unquoted strings
+ * TODO: TO be improved as current version is ugly
+ */
+function getQuotedAndUnquotedStrings($string)
+{
+    $string = trim(str_replace(["\r\n", "\n", "\r"], ' ', $string));
+    $quotedStrings = $unquotedStrings = [];
+    $unquotedIdx = 0;
+    $escaped = $afterQuoted = false;
+
+    for ($i = 0, $length = strlen($string); $i < $length; $i++) {
+        if ($afterQuoted && $string[$i] == ' ') continue;
+
+        if (!$escaped && $string[$i] == '"') {
+            $quotedString = '';
+
+            while (isset($string[++$i]) && ($escaped || $string[$i] != '"')) {
+                $quotedString .= $string[$i];
+                $escaped = $string[$i] == '\\';
+            }
+
+            if (isset($string[$i])) {
+                if ($quotedString != '') {
+                    $quotedStrings[] = $quotedString;
+                }
+
+                $afterQuoted = true;
+            } else {
+                $afterQuoted = false;
+                $unquotedStrings[] = '"' . $quotedString;
+            }
+
+            $unquotedIdx++;
+            $escaped = false;
+            continue;
+        }
+
+        $afterQuoted = false;
+        $escaped = $string[$i] == '\\';
+
+        if (isset($unquotedStrings[$unquotedIdx])) {
+            $unquotedStrings[$unquotedIdx] .= $string[$i];
+        } else {
+            $unquotedStrings[$unquotedIdx] = $string[$i];
+        }
+    }
+
+    return [$quotedStrings, $unquotedStrings];
+}
 
 /**
  * Get value for the given POST variable
@@ -59,7 +114,9 @@ function hasConflict($rrName, $rrType, $isNewRecord, &$errorString)
         /** @var Net_DNS2_Packet_Response $response */
         $response = $resolver->query($rrName, 'CNAME');
 
-        if (empty($response->answer) || (!$isNewRecord && $rrType == 'CNAME' && $rrName == $response->answer[0]->name)) {
+        if (empty($response->answer)
+            || (!$isNewRecord && $rrType == 'CNAME' && $rrName == $response->answer[0]->name)
+        ) {
             return false;
         }
 
@@ -216,22 +273,62 @@ function client_validate_NS($host, &$errorString)
 }
 
 /**
- * Validate text for a SPF/TXT DNS resource record
+ * Validate and format SPF/TXT DNS resource record
  *
  * @param string $data DNS record data
  * @param string &$errorString Reference to variable, which contain error string
  * @return bool TRUE if the record is valid, FALSE otherwise
  */
-function client_validate_TXT($data, &$errorString)
+function client_validateAndFormat_TXT(&$data, &$errorString)
 {
     if ($data === '') {
-        $errorString .= tr('The %s field cannot be empty.', tr('Data'));
+        $errorString .= tr("The '%s' field cannot be empty.", tr('Data'));
         return false;
     }
 
-    if (!preg_match('/^[[:print:]]+$/', $data)) {
-        $errorString .= tr('Invalid field: %s', tr('Data'));
+    $data = trim($data, "\t\n\r\0\x0B\x28\x29");
+
+    if (!preg_match('/^[[:print:]\s]+$/', $data)) {
+        $errorString .= tr(
+            "Invalid character found in the '%s' field. Only printable ASCII characters are allowed.", tr('Data')
+        );
         return false;
+    }
+
+    list($quotedStrings, $unquotedStrings) = getQuotedAndUnquotedStrings($data);
+
+    if (!empty($quotedStrings) && !empty($unquotedStrings)) {
+        $errorString .= tr('The %s field cannot have both unquoted strings and quoted strings.', tr('Data'));
+        return false;
+    }
+
+    if (!empty($unquotedStrings)) {
+        foreach ($unquotedStrings as $unquotedString) {
+            if (preg_match('/(?<!\\\\)(?:\\\\{2})*\K"/', $unquotedString)) {
+                $errorString .= tr(
+                    "Unescaped quote found in '%s' field. A quote that is not a string delimiter must be escaped.",
+                    tr('Data')
+                );
+                return false;
+            }
+        }
+    }
+
+    $data = join('', empty($quotedStrings) ? $unquotedStrings : $quotedStrings);
+
+    // Split <character-string> into several <character-string>s when
+    // <character-string> is longer than 255 bytes.
+    // See: https://tools.ietf.org/html/rfc4408#section-3.1.3
+    if (strlen($data) > 253) {
+        $quotedStrings = [];
+
+        for ($i = 0; $length = strlen($data), $i < $length; $i += 253) {
+            $quotedStrings[] = '"' . substr($data, $i, 253) . '"';
+        }
+
+        $data = join(' ', $quotedStrings);
+    } else {
+        $data = '"' . $data . '"';
     }
 
     return true;
@@ -348,7 +445,9 @@ function client_decodeDnsRecordData($data)
 
     if (is_array($data)) {
         # Extract name and ttl field for any record type excepted SRV record
-        if ($data['domain_type'] != 'SRV' && preg_match('/^(?P<name>([^\s]+))(?:\s+(?P<ttl>\d+))?/', $data['domain_dns'], $matches)) {
+        if ($data['domain_type'] != 'SRV'
+            && preg_match('/^(?P<name>([^\s]+))(?:\s+(?P<ttl>\d+))?/', $data['domain_dns'], $matches)
+        ) {
             $name = $matches['name'];
             $ttl = isset($matches['ttl']) ? $matches['ttl'] : $ttl;
         }
@@ -377,7 +476,11 @@ function client_decodeDnsRecordData($data)
                 break;
             case 'SRV':
                 # Extract service name, protocol name, owner name and ttl fields
-                if (preg_match('/^(?P<srvname>_[^\s.]+)\.(?P<proto>_[^\s.]+)\.(?P<name>[^\s]+)\s+(?P<ttl>\d+)/', $data['domain_dns'], $matches)) {
+                if (preg_match(
+                    '/^(?P<srvname>_[^\s.]+)\.(?P<proto>_[^\s.]+)\.(?P<name>[^\s]+)\s+(?P<ttl>\d+)/',
+                    $data['domain_dns'],
+                    $matches
+                )) {
                     $srvName = $matches['srvname'];
                     $srvProto = $matches['proto'];
                     $name = $matches['name'];
@@ -385,7 +488,11 @@ function client_decodeDnsRecordData($data)
                 }
 
                 # Extract priority, weight, port and target fields
-                if (preg_match('/^(?P<prio>\d+)\s+(?P<weight>\d+)\s(?P<port>\d+)\s+(?P<host>[^\s]+)/', $data['domain_text'], $matches)) {
+                if (preg_match(
+                    '/^(?P<prio>\d+)\s+(?P<weight>\d+)\s(?P<port>\d+)\s+(?P<host>[^\s]+)/',
+                    $data['domain_text'],
+                    $matches
+                )) {
                     $srvPrio = $matches['prio'];
                     $srvWeight = $matches['weight'];
                     $srvTargetPort = $matches['port'];
@@ -393,7 +500,7 @@ function client_decodeDnsRecordData($data)
                 }
                 break;
             default:
-                $txt = stripcslashes(trim($data['domain_text'], '"'));
+                $txt = $data['domain_text'];
         }
     }
 
@@ -485,13 +592,13 @@ function client_saveDnsRecord($dnsRecordId)
 
     # Disallow out-of-zone record
     if ($dnsRecordName !== '' && !preg_match("/(?:.*?\\.)?$domainName\\.$/", $dnsRecordName)) {
-        set_page_message(tr('Could not validate DNS resource record: %s', 'out-of-zone data'), 'error');
+        set_page_message(tr("Couldn't validate DNS resource record: %s", 'out-of-zone data'), 'error');
         $error = true;
     } else {
         // Remove trailing dot for validation process (will be re-added after)
         $dnsRecordName = rtrim($dnsRecordName, '.');
         if (!client_validate_NAME($dnsRecordName, $nameValidationError)) {
-            set_page_message(tr('Could not validate DNS resource record: %s', $nameValidationError), 'error');
+            set_page_message(tr("Couldn't validate DNS resource record: %s", $nameValidationError), 'error');
             $error = true;
         }
     }
@@ -502,32 +609,30 @@ function client_saveDnsRecord($dnsRecordId)
 
     switch ($dnsRecordType) {
         case 'A':
-            $ip = client_getPost('dns_A_address');
+            $dnsRecordData = client_getPost('dns_A_address');
 
             // Process validation
-            if (!client_validate_A($ip, $errorString)) {
-                set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
+            if (!client_validate_A($dnsRecordData, $errorString)) {
+                set_page_message(tr("Couldn't validate DNS resource record: %s", $errorString), 'error');
                 $error = true;
             }
-
-            $dnsRecordData = $ip;
             break;
         case 'AAAA':
-            $ip = client_getPost('dns_AAAA_address');
+            $dnsRecordData = client_getPost('dns_AAAA_address');
 
             // Process validation
-            if (!client_validate_AAAA(client_getPost('dns_AAAA_address'), $errorString)) {
-                set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
+            if (!client_validate_AAAA($dnsRecordData, $errorString)) {
+                set_page_message(tr("Couldn't validate DNS resource record: %s", $errorString), 'error');
                 $error = true;
             }
-
-            $dnsRecordData = $ip;
             break;
         case 'CNAME':
             $dnsRecordData = mb_strtolower(client_getPost('dns_cname'));
 
             // Not a fully-qualified canonical name; append $ORIGIN to it
-            if ($dnsRecordData !== '' && substr($dnsRecordData, -1) !== '.') {
+            if ($dnsRecordData !== ''
+                && substr($dnsRecordData, -1) !== '.'
+            ) {
                 $dnsRecordData .= '.' . $domainName;
             }
 
@@ -539,7 +644,7 @@ function client_saveDnsRecord($dnsRecordId)
 
             // Process validation
             if (!client_validate_CNAME($dnsRecordData, $errorString)) {
-                set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
+                set_page_message(tr("Couldn't validate DNS resource record: %s", $errorString), 'error');
                 $error = true;
             }
 
@@ -562,7 +667,7 @@ function client_saveDnsRecord($dnsRecordId)
 
             // Process validation
             if (!client_validate_MX($pref, $host, $errorString)) {
-                set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
+                set_page_message(tr("Couldn't validate DNS resource record: %s", $errorString), 'error');
                 $error = true;
             }
 
@@ -584,10 +689,15 @@ function client_saveDnsRecord($dnsRecordId)
 
             // Process validation
             if (!client_validate_NS($host, $errorString)) {
-                set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
+                set_page_message(tr("Couldn't validate DNS resource record: %s", $errorString), 'error');
                 $error = true;
             } elseif ($dnsRecordName == $domainName) {
-                set_page_message(tr('Could not validate DNS resource record: %s', tr('NS DNS resource records are only allowed for subzone delegation.')), 'error');
+                set_page_message(
+                    tr("Couldn't validate DNS resource record: %s",
+                        tr('NS DNS resource records are only allowed for subzone delegation.')
+                    ),
+                    'error'
+                );
                 $error = true;
             }
 
@@ -614,7 +724,7 @@ function client_saveDnsRecord($dnsRecordId)
 
             // Process validation
             if (!client_validate_SRV($srvName, $srvProto, $srvPrio, $srvWeight, $srvPort, $srvTarget, $errorString)) {
-                set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
+                set_page_message(tr("Couldn't validate DNS resource record: %s", $errorString), 'error');
                 $error = true;
             }
 
@@ -623,15 +733,16 @@ function client_saveDnsRecord($dnsRecordId)
             break;
         case 'SPF':
         case 'TXT':
-            $data = client_getPost('dns_txt_data');
+            $dnsRecordData = client_getPost('dns_txt_data');
 
-            // Process validation
-            if (!client_validate_TXT($data, $errorString)) {
-                set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
+            // Process validation and formatting
+            if (!client_validateAndFormat_TXT($dnsRecordData, $errorString)) {
+                set_page_message(tr("Couldn't validate DNS resource record: %s", $errorString), 'error');
                 $error = true;
             }
 
-            $dnsRecordData = '"' . addcslashes(trim($data, '"'), '"') . '"';
+            #print $dnsRecordData;
+            #exit;
             break;
         default :
             showBadRequestErrorPage();
@@ -646,7 +757,7 @@ function client_saveDnsRecord($dnsRecordId)
     // Check removed because it prevent user to override default CNAME record
     // See 10_named_override_default_rr.pl listener file
     //if (hasConflict($dnsRecordName, $dnsRecordType, ($dnsRecordId > 0) ? false : true, $errorString)) {
-    //    set_page_message(tr('Could not validate DNS resource record: %s', $errorString), 'error');
+    //    set_page_message(tr("Couldn't validate DNS resource record: %s", $errorString), 'error');
     //    $error = true;
     //}
 
@@ -663,7 +774,7 @@ function client_saveDnsRecord($dnsRecordId)
         $db->beginTransaction();
 
         if (!$dnsRecordId) {
-            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddCustomDNSrecord, [
+            EventsManager::getInstance()->dispatch(Events::onBeforeAddCustomDNSrecord, [
                 'domainId' => $mainDmnId,
                 'aliasId'  => $domainId,
                 'name'     => $dnsRecordName,
@@ -686,7 +797,7 @@ function client_saveDnsRecord($dnsRecordId)
                 ]
             );
 
-            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddCustomDNSrecord, [
+            EventsManager::getInstance()->dispatch(Events::onAfterAddCustomDNSrecord, [
                 'id'       => $db->insertId(),
                 'domainId' => $mainDmnId,
                 'aliasId'  => $domainId,
@@ -696,7 +807,7 @@ function client_saveDnsRecord($dnsRecordId)
                 'data'     => $dnsRecordData
             ]);
         } else {
-            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditCustomDNSrecord, [
+            EventsManager::getInstance()->dispatch(Events::onBeforeEditCustomDNSrecord, [
                 'id'       => $dnsRecordId,
                 'domainId' => $mainDmnId,
                 'aliasId'  => $domainId,
@@ -726,7 +837,7 @@ function client_saveDnsRecord($dnsRecordId)
                 $mainDmnId
             );
 
-            iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditCustomDNSrecord, [
+            EventsManager::getInstance()->dispatch(Events::onAfterEditCustomDNSrecord, [
                 'id'       => $dnsRecordId,
                 'domainId' => $mainDmnId,
                 'aliasId'  => $domainId,
@@ -767,9 +878,8 @@ function client_saveDnsRecord($dnsRecordId)
  * @param int $dnsRecordId DNS record unique identifier (0 for new record)
  * @return void
  */
-function client_generatePage($tpl, $dnsRecordId)
+function generatePage($tpl, $dnsRecordId)
 {
-    $cfg = Registry::get('config');
     $mainDomainId = get_user_domain_id($_SESSION['user_id']);
 
     // Add DNS record
@@ -785,11 +895,12 @@ function client_generatePage($tpl, $dnsRecordId)
         );
 
         $domainId = client_getPost('zone_id', '0');
-        $selected = $cfg['HTML_SELECTED'];
         $selectOptions = "\n";
 
         while ($data = $stmt->fetchRow()) {
-            $selectOptions .= "\t\t\t\t\t" . '<option value="' . $data['domain_id'] . '"' . ($data['domain_id'] == $domainId ? $selected : '') . '>' . decode_idna($data['domain_name']) . "</option>\n";
+            $selectOptions .= "\t\t\t\t\t" . '<option value="' . $data['domain_id'] . '"' .
+                ($data['domain_id'] == $domainId ? ' selected' : '') . '>' . decode_idna($data['domain_name'])
+                . "</option>\n";
         }
 
         $tpl->assign([
@@ -798,7 +909,9 @@ function client_generatePage($tpl, $dnsRecordId)
         ]);
     } // Edit DNS record
     else {
-        $stmt = exec_query('SELECT * FROM `domain_dns` WHERE `domain_dns_id` = ? AND `domain_id` = ?', [$dnsRecordId, $mainDomainId]);
+        $stmt = exec_query('SELECT * FROM `domain_dns` WHERE `domain_dns_id` = ? AND `domain_id` = ?', [
+            $dnsRecordId, $mainDomainId
+        ]);
 
         if (!$stmt->rowCount()) {
             showBadRequestErrorPage();
@@ -820,7 +933,10 @@ function client_generatePage($tpl, $dnsRecordId)
         showBadRequestErrorPage();
     }
 
-    $dnsTypes = client_create_options(['A', 'AAAA', 'SRV', 'CNAME', 'MX', 'NS', 'SPF', 'TXT'], client_getPost('type', $data['domain_type']));
+    $dnsTypes = client_create_options(
+        ['A', 'AAAA', 'SRV', 'CNAME', 'MX', 'NS', 'SPF', 'TXT'],
+        client_getPost('type', $data['domain_type'])
+    );
     $dnsClasses = client_create_options(['IN'], client_getPost('class', $data['domain_class']));
     $tpl->assign([
         'ID'                      => tohtml($dnsRecordId),
@@ -847,7 +963,7 @@ function client_generatePage($tpl, $dnsRecordId)
 
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 check_login('user');
 customerHasFeature('custom_dns_records') or showBadRequestErrorPage();
 
@@ -873,40 +989,42 @@ $tpl->define_dynamic([
     'logged_from'  => 'page'
 ]);
 $tpl->assign([
-    'TR_PAGE_TITLE'        => ($dnsRecordId > 0) ? tr('Client / Domain / Edit DNS resource record') : tr('Client / Domains / Add DNS resource record'),
+    'TR_PAGE_TITLE'        => ($dnsRecordId > 0)
+        ? tohtml(tr('Client / Domain / Edit DNS resource record'))
+        : tohtml(tr('Client / Domains / Add DNS resource record')),
     'ACTION_MODE'          => ($dnsRecordId > 0) ? 'dns_edit.php?id={ID}' : 'dns_add.php',
-    'TR_CUSTOM_DNS_RECORD' => tr('DNS resource record'),
-    'TR_ZONE'              => tr('Zone'),
+    'TR_CUSTOM_DNS_RECORD' => tohtml(tr('DNS resource record')),
+    'TR_ZONE'              => tohtml(tr('Zone')),
     'TR_ZONE_HELP'         => tohtml(tr('DNS zone in which you want add this DNS resource record.'), 'htmlAttr'),
-    'TR_NAME'              => tr('Name'),
-    'TR_DNS_TYPE'          => tr('Type'),
-    'TR_DNS_CLASS'         => tr('Class'),
-    'TR_DNS_NAME'          => tr('Name'),
-    'TR_DNS_SRV_NAME'      => tr('Service name'),
-    'TR_DNS_IP_ADDRESS'    => tr('IP address'),
-    'TR_DNS_IP_ADDRESS_V6' => tr('IPv6 address'),
-    'TR_DNS_SRV_PROTOCOL'  => tr('Service protocol'),
-    'TR_DNS_TTL'           => tr('TTL'),
-    'TR_DNS_SRV_PRIO'      => tr('Priority'),
-    'TR_DNS_SRV_WEIGHT'    => tr('Relative weight'),
-    'TR_DNS_SRV_HOST'      => tr('Host'),
-    'TR_DNS_SRV_PORT'      => tr('Target port'),
-    'TR_DNS_CNAME'         => tr('Canonical name'),
-    'TR_DNS_TXT_DATA'      => tr('Data'),
-    'TR_ADD'               => tr('Add'),
-    'TR_SEC'               => tr('Sec.'),
-    'TR_UPDATE'            => tr('Update'),
-    'TR_CANCEL'            => tr('Cancel')
+    'TR_NAME'              => tohtml(tr('Name')),
+    'TR_DNS_TYPE'          => tohtml(tr('Type')),
+    'TR_DNS_CLASS'         => tohtml(tr('Class')),
+    'TR_DNS_NAME'          => tohtml(tr('Name')),
+    'TR_DNS_SRV_NAME'      => tohtml(tr('Service name')),
+    'TR_DNS_IP_ADDRESS'    => tohtml(tr('IP address')),
+    'TR_DNS_IP_ADDRESS_V6' => tohtml(tr('IPv6 address')),
+    'TR_DNS_SRV_PROTOCOL'  => tohtml(tr('Service protocol')),
+    'TR_DNS_TTL'           => tohtml(tr('TTL')),
+    'TR_DNS_SRV_PRIO'      => tohtml(tr('Priority')),
+    'TR_DNS_SRV_WEIGHT'    => tohtml(tr('Relative weight')),
+    'TR_DNS_SRV_HOST'      => tohtml(tr('Host')),
+    'TR_DNS_SRV_PORT'      => tohtml(tr('Target port')),
+    'TR_DNS_CNAME'         => tohtml(tr('Canonical name')),
+    'TR_DNS_TXT_DATA'      => tohtml(tr('Data')),
+    'TR_ADD'               => tohtml(tr('Add'), 'htmlAttr'),
+    'TR_SEC'               => tohtml(tr('Sec.')),
+    'TR_UPDATE'            => tohtml(tr('Update'), 'htmlAttr'),
+    'TR_CANCEL'            => tohtml(tr('Cancel'))
 ]);
 
 $tpl->assign(($dnsRecordId > 0) ? 'FORM_ADD_MODE' : 'FORM_EDIT_MODE', '');
 
 generateNavigation($tpl);
-client_generatePage($tpl, $dnsRecordId);
+generatePage($tpl, $dnsRecordId);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

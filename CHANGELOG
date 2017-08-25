@@ -7,6 +7,7 @@ Git 1.5.x
 BACKEND
     Added: Flag allowing to ignore mount operation failures (iMSCP::Mount)
     Added: iMSCP::EventManager::hasListener method -- Allow to check whether or not a listener is registered for an event
+    Added: Support for multiple <character-string>s in TXT/SPF DNS resource records (Modules::CustomDNS)
     Deprecated: iMSCP::Database::mysql::doQuery() method -- Will be removed in a later version
     Deprecated: iMSCP::Database::mysql::endTransaction() method -- Will be removed in a later version
     Deprecated: iMSCP::Database::mysql::startTransaction() method -- Will be removed in a later version
@@ -37,6 +38,7 @@ FRONTEND
     Added: iMSCP_Database::inTransaction() method
     Added: Routing for languages without territory information: eg. `de' will be routed to `de_DE' (autodetection)
     Added: Setting that allows administrator to protect/unprotect default mail accounts against both edition and deletion
+    Added: Support for multiple <character-string>s in TXT/SPF DNS resource records (Custom DNS interface)
     Added: Translaltion resources for Zend validators
     Cosmetics: Make use of the mathematical infinity symbol (∞) in place of the `Unlimited' translation string
     Deprecated: iMSCP_Database::getRawInstance() method -- will be removed in a later release
@@ -101,6 +103,9 @@ INSTALLER
 PACKAGES
     Fixed: Can't locate Package/FileManager/Net2FTP/Net2FTP.pm when upgrading from some older versions (Package::FileManager)
     Fixed: Missing configuration snippet for AWStats in Apache2 vhosts: Event listener badly registered
+
+PLUGINS
+    Updated: Plugin API to version to 1.5.0
 
 SCRIPTS
     Removed: Explicite unlocking of locked files -- Files are automatically unlocked

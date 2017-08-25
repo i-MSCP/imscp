@@ -26,6 +26,7 @@ package Modules::CustomDNS;
 use strict;
 use warnings;
 use iMSCP::Debug qw/ error getLastError /;
+use Text::Balanced qw/ extract_multiple extract_delimited /;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -184,19 +185,28 @@ sub _loadData
         $self->{'domain_name'} = $rows->[0]->[5];
         $self->{'domain_ip'} = $rows->[0]->[6];
 
-        # 1. Filter DNS records which must be disabled or deleted
-        # 2. For TXT/SPF records, split data field to several <character-string>s when <character-string> is longer than
-        #    255 characters. See: https://tools.ietf.org/html/rfc4408#section-3.1.3
+        # 1. Filter DNS records that must be disabled or deleted
+        # 2. For TXT/SPF records, split data field into several
+        #    <character-string>s when <character-string> is longer than 255
+        #    bytes. See: https://tools.ietf.org/html/rfc4408#section-3.1.3
         for ( @{$rows} ) {
             next if $_->[4] =~ /^to(?:disable|delete)$/;
 
-            if ( ( $_->[2] eq 'TXT' || $_->[2] eq 'SPF' ) && length( $_->[3] ) > 257 ) {
-                my ($data, @chuncks) = ( $_->[3] =~ s/^"|"$//gr, () );
-                for ( my $i = 0, my $length = length $data; $i < $length; $i += 255 ) {
-                    push( @chuncks, substr( $data, $i, 255 ));
+            if ( ( $_->[2] eq 'TXT' || $_->[2] eq 'SPF' )
+                && length $_->[3] > 255
+            ) {
+                # Extract all quoted <character-string>s (excluding quotes)
+                $_ =~ s/^"(.*)"$/$1/ for my @chunks = extract_multiple(
+                    $_->[3], [ sub { extract_delimited( $_[0], '"' ) } ], undef, 1
+                );
+                $_->[3] = join '', @chunks if @chunks;
+                undef @chunks;
+
+                for ( my $i = 0, my $length = length $_->[3]; $i < $length; $i += 253 ) {
+                    push( @chunks, substr( $_->[3], $i, 253 ));
                 }
 
-                $_->[3] = join ' ', map( qq/"$_"/, @chuncks );
+                $_->[3] = join ' ', map( qq/"$_"/, @chunks );
             }
 
             push @{$self->{'dns_records'}}, [ ( @{$_} )[0 .. 3] ];
