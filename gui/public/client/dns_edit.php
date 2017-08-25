@@ -290,7 +290,7 @@ function client_validateAndFormat_TXT(&$data, &$errorString)
 
     if (!preg_match('/^[[:print:]\s]+$/', $data)) {
         $errorString .= tr(
-            "Invalid character found in the '%s' field. Only printable ASCII characters are allowed.", tr('Data')
+            "Invalid character found in the '%s' field. Only printable ASCII characters and line breaks are allowed.", tr('Data')
         );
         return false;
     }
