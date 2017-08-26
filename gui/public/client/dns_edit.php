@@ -317,13 +317,13 @@ function client_validateAndFormat_TXT(&$data, &$errorString)
     $data = join('', empty($quotedStrings) ? $unquotedStrings : $quotedStrings);
 
     // Split <character-string> into several <character-string>s when
-    // <character-string> is longer than 255 bytes.
+    // <character-string> is longer than 255 bytes (excluding delimiters).
     // See: https://tools.ietf.org/html/rfc4408#section-3.1.3
-    if (strlen($data) > 253) {
+    if (strlen($data) > 255) {
         $quotedStrings = [];
 
-        for ($i = 0; $length = strlen($data), $i < $length; $i += 253) {
-            $quotedStrings[] = '"' . substr($data, $i, 253) . '"';
+        for ($i = 0; $length = strlen($data), $i < $length; $i += 255) {
+            $quotedStrings[] = '"' . substr($data, $i, 255) . '"';
         }
 
         $data = join(' ', $quotedStrings);

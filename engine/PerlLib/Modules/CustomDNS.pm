@@ -190,23 +190,36 @@ sub _loadData
         #    <character-string>s when <character-string> is longer than 255
         #    bytes. See: https://tools.ietf.org/html/rfc4408#section-3.1.3
         for ( @{$rows} ) {
+            # Filter DNS records that must be disabled or deleted
             next if $_->[4] =~ /^to(?:disable|delete)$/;
 
-            if ( ( $_->[2] eq 'TXT' || $_->[2] eq 'SPF' )
-                && length $_->[3] > 255
-            ) {
-                # Extract all quoted <character-string>s (excluding quotes)
-                $_ =~ s/^"(.*)"$/$1/ for my @chunks = extract_multiple(
-                    $_->[3], [ sub { extract_delimited( $_[0], '"' ) } ], undef, 1
-                );
-                $_->[3] = join '', @chunks if @chunks;
-                undef @chunks;
+            if ( $_->[2] eq 'TXT' || $_->[2] eq 'SPF' ) {
+                # Turn line-breaks into whitespaces
+                $_->[3] =~ s/\R+/ /g;
 
-                for ( my $i = 0, my $length = length $_->[3]; $i < $length; $i += 253 ) {
-                    push( @chunks, substr( $_->[3], $i, 253 ));
+                # Remove leading and trailing whitespaces
+                $_->[3] =~ s/^\s+|\s+$//;
+
+                # Make sure to work with quoted <character-string>
+                $_->[3] = qq/"$_->[3]"/ unless $_->[3] =~ /^".*"$/;
+
+                # Split data field into several <character-string>s when
+                # <character-string> is longer than 255 bytes, excluding delimiters.
+                # See: https://tools.ietf.org/html/rfc4408#section-3.1.3
+                if ( length $_->[3] > 257 ) {
+                    # Extract all quoted <character-string>s, excluding delimiters
+                    $_ =~ s/^"(.*)"$/$1/ for my @chunks = extract_multiple(
+                        $_->[3], [ sub { extract_delimited( $_[0], '"' ) } ], undef, 1
+                    );
+                    $_->[3] = join '', @chunks if @chunks;
+                    undef @chunks;
+
+                    for ( my $i = 0, my $length = length $_->[3]; $i < $length; $i += 255 ) {
+                        push( @chunks, substr( $_->[3], $i, 255 ));
+                    }
+
+                    $_->[3] = join ' ', map( qq/"$_"/, @chunks );
                 }
-
-                $_->[3] = join ' ', map( qq/"$_"/, @chunks );
             }
 
             push @{$self->{'dns_records'}}, [ ( @{$_} )[0 .. 3] ];
