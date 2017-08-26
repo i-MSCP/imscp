@@ -269,7 +269,7 @@ sub make
         }
 
         # Setting ownership and permissions on parent directories can lead
-        # to several permissions issues. Starting with version 1.5.0, the
+        # to several permission issues. Starting with version 1.5.0, the
         # ownership and permissions on created parent directories are set as
         # root:root 0755 (assuming UMASK 022).
         $options->{'fixpermissions'} = 1 if @createdDirs;
