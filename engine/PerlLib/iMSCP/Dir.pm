@@ -262,21 +262,17 @@ sub make
 
             for my $diag ( @{$errStack} ) {
                 my ($file, $message) = %{$diag};
-                $errorStr .= ( $file eq '' ) ? "general error: $message\n" : "problem unlinking $file: $message\n";
+                $errorStr .= ( $file eq '' ) ? "general error: $message\n" : "problem creating $file: $message\n";
             }
 
             die( sprintf( "Couldn't create `%s' directory: %s", $self->{'dirname'}, $errorStr ));
         }
 
-        for my $dir( @createdDirs ) {
-            if ( defined $options->{'user'} || defined $options->{'group'} ) {
-                $self->owner( $options->{'user'} // -1, $options->{'group'} // -1, $dir );
-            }
-
-            $self->mode( $options->{'mode'}, $dir ) if defined $options->{'mode'};
-        }
-
-        return 0;
+        # Setting ownership and permissions on parent directories can lead
+        # to several permissions issues. Starting with version 1.5.0, the
+        # ownership and permissions on created parent directories are set as
+        # root:root 0755 (assuming UMASK 022).
+        $options->{'fixpermissions'} = 1 if @createdDirs;
     }
 
     return 0 if defined $options->{'fixpermissions'} && !$options->{'fixpermissions'};

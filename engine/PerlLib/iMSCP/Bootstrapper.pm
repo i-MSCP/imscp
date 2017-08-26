@@ -38,6 +38,7 @@ $SIG{'INT'} = 'IGNORE';
 
 umask 022;
 
+$ENV{'LANG'} = 'C';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 $ENV{'HOME'} = ( getpwuid $> )[7] or die( "Couldn't find running user homedir" );
 
