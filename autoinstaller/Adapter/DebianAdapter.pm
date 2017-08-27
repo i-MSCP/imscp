@@ -550,7 +550,7 @@ sub _processPackagesFile
         # Resets alternative if selected alternative is no longer available
         $sAlt = '' if $sAlt ne '' && !grep($_ eq $sAlt, keys %{$data});
 
-        # Map of alternative descriptions to atersnative names
+        # Map of alternative descriptions to alternative names
         my %altDescs;
         for( keys %{$data} ) {
             # Skip unsupported alternatives by arch
