@@ -785,7 +785,6 @@ class Application
             ]
         ]);
 
-
         // Setup additional translator for Zend_Validate
         // Not used yet
         /*$zendTranslator = new TranslatorArray([
