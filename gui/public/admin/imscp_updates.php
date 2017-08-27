@@ -77,8 +77,8 @@ function admin_generatePage($tpl)
 
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 check_login('admin');
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 stripos(iMSCP_Registry::get('config')['Version'], 'git') === false or showBadRequestErrorPage();
 

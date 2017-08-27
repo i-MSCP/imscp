@@ -455,9 +455,8 @@ function check_ip_sets($to, $customersList, &$errorsStack)
 // Include core library
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
-
 check_login('admin');
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 if (!systemHasResellers(2)) {
     showBadRequestErrorPage();

@@ -65,8 +65,8 @@ function client_updateHtaccessUser($domainId, $htuserId)
 
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 check_login('user');
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 customerHasFeature('protected_areas') or showBadRequestErrorPage();
 
 if (!isset($_REQUEST['uname'])) {

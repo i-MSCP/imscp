@@ -29,8 +29,8 @@ use iMSCP_Registry as Registry;
 
 require_once 'imscp-lib.php';
 
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 check_login('user');
+EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 
 if (!customerHasFeature('ftp')
     || !isset($_GET['id'])

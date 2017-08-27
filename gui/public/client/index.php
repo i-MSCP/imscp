@@ -320,9 +320,9 @@ function client_generateDomainExpiresInformation($tpl)
 
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 $cfg = iMSCP_Registry::get('config');
 check_login('user', $cfg['PREVENT_EXTERNAL_LOGIN_CLIENT']);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([

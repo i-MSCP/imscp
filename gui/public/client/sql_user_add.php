@@ -361,9 +361,8 @@ function generatePage(TemplateEngine $tpl, $sqldId)
 
 require_once 'imscp-lib.php';
 
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 check_login('user');
-
+EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('sql') && isset($_REQUEST['sqld_id']) or showBadRequestErrorPage();
 
 $sqldId = intval($_REQUEST['sqld_id']);

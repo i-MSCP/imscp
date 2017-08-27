@@ -18,6 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Registry as Registry;
+
 require_once 'imscp-lib.php';
 
 if (($urlComponents = parse_url($_SERVER['REQUEST_URI'])) === false
@@ -27,15 +31,15 @@ if (($urlComponents = parse_url($_SERVER['REQUEST_URI'])) === false
 }
 
 /** @var iMSCP_Plugin_Manager $pluginManager */
-$pluginManager = iMSCP_Registry::get('pluginManager');
+$pluginManager = Registry::get('pluginManager');
 $plugins = $pluginManager->pluginGetLoaded('Action');
 
 if (empty($plugins)) {
     showNotFoundErrorPage();
 }
 
-$eventsManager = iMSCP_Events_Aggregator::getInstance();
-$responses = $eventsManager->dispatch(iMSCP_Events::onBeforePluginsRoute, [
+$eventsManager = EventsManager::getInstance();
+$responses = $eventsManager->dispatch(Events::onBeforePluginsRoute, [
     'pluginManager' => $pluginManager
 ]);
 
@@ -66,8 +70,9 @@ if (NULL === $pluginActionScriptPath) {
     showNotFoundErrorPage();
 }
 
-$eventsManager->dispatch(iMSCP_Events::onAfterPluginsRoute, [
-    'pluginManager' => $pluginManager, 'scriptPath' => $pluginActionScriptPath
+$eventsManager->dispatch(Events::onAfterPluginsRoute, [
+    'pluginManager' => $pluginManager,
+    'scriptPath'    => $pluginActionScriptPath
 ]);
 
 if (!is_file($pluginActionScriptPath)) {

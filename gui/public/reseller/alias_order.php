@@ -31,8 +31,8 @@
 
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 check_login('reseller');
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 resellerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
 if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['del_id'])) {

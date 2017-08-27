@@ -65,8 +65,8 @@ function reseller_generateLayoutColorForm($tpl)
 
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 check_login('reseller');
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([

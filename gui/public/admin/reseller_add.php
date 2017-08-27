@@ -485,8 +485,8 @@ function generatePage(TemplateEngine $tpl, Form $form)
 
 require 'imscp-lib.php';
 
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 check_login('admin');
+EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 
 $phpini = PhpIni::getInstance();
 $phpini->loadResellerPermissions(); // Load reseller default PHP permissions

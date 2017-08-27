@@ -42,8 +42,8 @@ function client_generatePageLists($tpl)
 
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 check_login('user');
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 customerHasFeature('aps') or showBadRequestErrorPage();
 
 $tpl = new iMSCP_pTemplate();

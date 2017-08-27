@@ -142,8 +142,8 @@ function generateDirectoryList($tpl)
 
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onSharedScriptStart);
 check_login('all');
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onSharedScriptStart);
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([

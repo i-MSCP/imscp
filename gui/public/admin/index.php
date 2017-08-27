@@ -156,8 +156,8 @@ function admin_generateServerTrafficInfo($tpl)
 
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 check_login('admin', iMSCP_Registry::get('config')['PREVENT_EXTERNAL_LOGIN_ADMIN']);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([

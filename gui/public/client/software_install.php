@@ -111,8 +111,8 @@ function client_generatePage($tpl, $softwareId)
 
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 check_login('user');
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 customerHasFeature('aps') or showBadRequestErrorPage();
 
 if (!isset($_GET['id']) || !is_number($_GET['id'])) {

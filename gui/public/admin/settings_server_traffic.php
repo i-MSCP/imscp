@@ -107,8 +107,8 @@ function admin_generatePage($tpl, $trafficLimit, $trafficWarning)
 
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 check_login('admin');
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 $trafficLimit = $trafficWarning = 0;
 

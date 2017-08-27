@@ -275,8 +275,8 @@ function client_editDomain()
 
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 check_login('user');
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 if (!empty($_POST) && client_editDomain()) {
     set_page_message(tr('Domain successfully scheduled for update.'), 'success');

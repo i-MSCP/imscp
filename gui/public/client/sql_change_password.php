@@ -148,9 +148,8 @@ function checkSqlUserPerms($sqlUserId)
 
 require_once 'imscp-lib.php';
 
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 check_login('user');
-
+EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('sql') && isset($_REQUEST['sqlu_id']) or showBadRequestErrorPage();
 
 $sqluId = intval($_REQUEST['sqlu_id']);

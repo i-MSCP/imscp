@@ -375,9 +375,8 @@ function generatePage($tpl)
 
 require 'imscp-lib.php';
 
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 check_login('user');
-
+EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('mail') or showBadRequestErrorPage();
 
 $dmnProps = get_domain_default_props($_SESSION['user_id']);

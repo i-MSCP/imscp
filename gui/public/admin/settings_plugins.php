@@ -539,8 +539,8 @@ function updatePluginList($pluginManager)
 
 require 'imscp-lib.php';
 
-EventManager::getInstance()->dispatch(Events::onAdminScriptStart);
 check_login('admin');
+EventManager::getInstance()->dispatch(Events::onAdminScriptStart);
 
 /** @var PluginManager $pluginManager */
 $pluginManager = Registry::get('pluginManager');

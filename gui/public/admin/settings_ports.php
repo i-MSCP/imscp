@@ -302,9 +302,8 @@ function generatePage($tpl)
 
 require 'imscp-lib.php';
 
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 check_login('admin');
-
+EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 
 if (isset($_POST['uaction']) && $_POST['uaction'] != 'reset') {
     addOrUpdateServices((clean_input($_POST['uaction'])));

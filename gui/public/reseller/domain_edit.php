@@ -1117,8 +1117,8 @@ function isValidServiceLimit(
 
 require 'imscp-lib.php';
 
-EventsManager::getInstance()->dispatch(Events::onResellerScriptStart);
 check_login('reseller');
+EventsManager::getInstance()->dispatch(Events::onResellerScriptStart);
 
 $cfg = Registry::get('config');
 

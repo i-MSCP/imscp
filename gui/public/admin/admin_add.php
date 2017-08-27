@@ -110,8 +110,8 @@ function addAdminUser(Form $form)
 
 require 'imscp-lib.php';
 
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 check_login('admin');
+EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 
 $form = getUserLoginDataForm(true, true)->addElements(getUserPersonalDataForm()->getElements());
 $form->setDefault('gender', 'U');

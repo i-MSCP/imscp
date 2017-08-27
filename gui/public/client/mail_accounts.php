@@ -352,8 +352,8 @@ function generatePage($tpl)
 
 require_once 'imscp-lib.php';
 
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 check_login('user');
+EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 
 if (!customerHasMailOrExtMailFeatures()) {
     showBadRequestErrorPage();

@@ -29,12 +29,10 @@
  * Main
  */
 
-// Include core library
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
-
 check_login('reseller');
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 if (isset($_GET['domain_id'])) {
     $domainId = intval($_GET['domain_id']);

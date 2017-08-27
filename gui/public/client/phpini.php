@@ -351,8 +351,8 @@ function generatePage($tpl, $phpini, $config, $configLevel)
 
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 check_login('user');
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 customerHasFeature('php_editor') or showBadRequestErrorPage();
 
 $phpini = iMSCP_PHPini::getInstance();

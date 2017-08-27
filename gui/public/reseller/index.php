@@ -236,8 +236,8 @@ function generatePage($tpl, $resellerId, $resellerName)
 
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 check_login('reseller', iMSCP_Registry::get('config')['PREVENT_EXTERNAL_LOGIN_RESELLER']);
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([

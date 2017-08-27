@@ -192,11 +192,10 @@ function reseller_getDatatable()
  * Main
  */
 
-
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 check_login('reseller');
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 resellerHasFeature('domain_aliases') && resellerHasCustomers() or showBadRequestErrorPage();
 
 if (is_xhr()) {

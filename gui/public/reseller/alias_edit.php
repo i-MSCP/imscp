@@ -280,10 +280,9 @@ function reseller_editDomainAlias()
 
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 check_login('reseller');
-
-(resellerHasFeature('domain_aliases') && resellerHasCustomers()) or showBadRequestErrorPage();
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+resellerHasFeature('domain_aliases') && resellerHasCustomers() or showBadRequestErrorPage();
 
 if (!empty($_POST) && reseller_editDomainAlias()) {
     set_page_message(tr('Domain alias successfully scheduled for update.'), 'success');

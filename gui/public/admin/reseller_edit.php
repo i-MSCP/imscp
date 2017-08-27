@@ -837,8 +837,8 @@ function generatePage(TemplateEngine $tpl, Form $form)
 
 require 'imscp-lib.php';
 
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 check_login('admin');
+EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 
 if (!isset($_GET['edit_id'])) {
     showBadRequestErrorPage();

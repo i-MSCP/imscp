@@ -274,8 +274,8 @@ function generatePage(TemplateEngine $tpl, Form $form)
 
 require 'imscp-lib.php';
 
-EventsManager::getInstance()->dispatch(Events::onResellerScriptStart);
 check_login('reseller');
+EventsManager::getInstance()->dispatch(Events::onResellerScriptStart);
 
 if (!getPreviousStepData()) {
     set_page_message(tr('Data were altered. Please try again.'), 'error');

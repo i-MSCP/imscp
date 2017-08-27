@@ -102,8 +102,8 @@ function generatePage($tpl, $mailAccountId)
 
 require_once 'imscp-lib.php';
 
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 check_login('user');
+EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 
 if (!customerHasFeature('mail')
     || !isset($_REQUEST['id'])

@@ -77,8 +77,8 @@ function generatePage($tpl, $eid)
 
 require_once 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 check_login('user');
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 if (!customerHasFeature('custom_error_pages') || !isset($_REQUEST['eid'])) {
     showBadRequestErrorPage();

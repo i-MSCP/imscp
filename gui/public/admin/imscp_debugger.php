@@ -562,8 +562,8 @@ function debugger_countRequests($statusField = NULL, $tableName = NULL)
 
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 check_login('admin');
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 /** @var iMSCP_Plugin_Manager $plugingManager */
 $plugingManager = iMSCP_Registry::get('pluginManager');

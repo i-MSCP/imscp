@@ -26,8 +26,8 @@ use iMSCP_Events_Aggregator as EventsManager;
  */
 
 require_once 'imscp-lib.php';
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 check_login('admin');
+EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 require_once '../shared/password_update.php';
 $tpl->assign('TR_PAGE_TITLE', tohtml(tr('Admin / Profile / Password')));
 $tpl->parse('LAYOUT_CONTENT', 'page');

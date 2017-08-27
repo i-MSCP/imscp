@@ -74,8 +74,8 @@ function generatePage(TemplateEngine $tpl)
 
 require 'imscp-lib.php';
 
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 check_login('admin');
+EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 
 $tpl = new TemplateEngine();
 $tpl->define_dynamic([

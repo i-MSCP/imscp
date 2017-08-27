@@ -148,8 +148,8 @@ function generatePage(TemplateEngine $tpl)
 
 require 'imscp-lib.php';
 
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 check_login('admin');
+EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 
 if (!systemHasCustomers()
     || !isset($_GET['user_id'])

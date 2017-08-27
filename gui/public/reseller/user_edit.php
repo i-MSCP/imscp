@@ -163,8 +163,8 @@ function generatePage(TemplateEngine $tpl, Form $form, $userId)
 
 require 'imscp-lib.php';
 
-EventsManager::getInstance()->dispatch(Events::onResellerScriptStart);
 check_login('reseller');
+EventsManager::getInstance()->dispatch(Events::onResellerScriptStart);
 
 if (!isset($_GET['edit_id'])) {
     showBadRequestErrorPage();

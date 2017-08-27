@@ -151,8 +151,8 @@ function reseller_generatePage($tpl, $domainId)
 
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 check_login('reseller');
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 if (!isset($_GET['domain_id'])) {
     redirectTo('users.php');

@@ -96,8 +96,8 @@ function generatePage($tpl, $resellerId)
 
 require 'imscp-lib.php';
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 check_login('admin');
+iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 if (isset($_GET['reseller_id'])) {
     $resellerId = intval($_GET['reseller_id']);

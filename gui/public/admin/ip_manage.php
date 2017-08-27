@@ -367,8 +367,8 @@ function addIpAddr()
 
 require 'imscp-lib.php';
 
-EventManager::getInstance()->dispatch(Events::onAdminScriptStart);
 check_login('admin');
+EventManager::getInstance()->dispatch(Events::onAdminScriptStart);
 
 if (!empty($_POST)) {
     if (is_xhr()) {

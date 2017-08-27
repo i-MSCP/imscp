@@ -56,8 +56,8 @@ function admin_generateLanguagesList($tpl)
 
 require 'imscp-lib.php';
 
-EventManager::getInstance()->dispatch(Events::onAdminScriptStart);
 check_login('admin');
+EventManager::getInstance()->dispatch(Events::onAdminScriptStart);
 
 if (isset($_POST['uaction'])) {
     if ($_POST['uaction'] == 'uploadLanguage') {

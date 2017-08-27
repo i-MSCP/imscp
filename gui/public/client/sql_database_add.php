@@ -136,9 +136,8 @@ function generatePage(TemplateEngine $tpl)
 
 require_once 'imscp-lib.php';
 
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 check_login('user');
-
+EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('sql') && !customerSqlDbLimitIsReached() or showBadRequestErrorPage();
 
 if (!empty($_POST)) {

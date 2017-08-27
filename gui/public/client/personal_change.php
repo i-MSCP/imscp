@@ -26,8 +26,8 @@ use iMSCP_Events_Aggregator as EventsManager;
  */
 
 require_once 'imscp-lib.php';
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 check_login('user');
+EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 require_once '../shared/personal_change.php';
 $tpl->assign('TR_PAGE_TITLE', tohtml(tr('Client / Profile / Personal Data')));
 $tpl->parse('LAYOUT_CONTENT', 'page');

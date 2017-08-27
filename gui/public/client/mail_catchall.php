@@ -215,9 +215,8 @@ function generatePage($tpl)
 
 require_once 'imscp-lib.php';
 
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 check_login('user');
-
+EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('mail') or showBadRequestErrorPage();
 
 $tpl = new TemplateEngine();

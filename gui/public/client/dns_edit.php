@@ -963,8 +963,8 @@ function generatePage($tpl, $dnsRecordId)
 
 require_once 'imscp-lib.php';
 
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 check_login('user');
+EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
 customerHasFeature('custom_dns_records') or showBadRequestErrorPage();
 
 $dnsRecordId = isset($_GET['id']) ? intval($_GET['id']) : 0;
