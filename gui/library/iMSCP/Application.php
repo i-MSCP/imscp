@@ -36,7 +36,8 @@ use Zend_Loader_AutoloaderFactory as AutoloaderFactory;
 use Zend_Locale as Locale;
 use Zend_Session as Session;
 use Zend_Translate as Translator;
-use Zend_Translate_Adapter_Array as TranslatorArray;
+
+//use Zend_Translate_Adapter_Array as TranslatorArray;
 
 /**
  * Class Appplication
@@ -784,17 +785,22 @@ class Application
             ]
         ]);
 
+
         // Setup additional translator for Zend_Validate
-        $zendTranslator = new TranslatorArray([
+        // Not used yet
+        /*$zendTranslator = new TranslatorArray([
             'content'        => LIBRARY_PATH . '/vendor/Zend/resources/languages',
             'disableNotices' => true,
             'locale'         => $locale,
             'scan'           => Translator::LOCALE_DIRECTORY
         ]);
-
+        
         if ($zendTranslator->isAvailable($locale->getLanguage()) || $zendTranslator->isAvailable($locale)) {
-            $this->translator->getAdapter()->addTranslation(['content' => $zendTranslator]);
-        }
+            $this->translator->getAdapter()->addTranslation([
+                'content' => $zendTranslator,
+                'locale' => 'fr'
+            ]);
+        }*/
 
         // Make Zend_Locale and Zend_Translate available for i-MSCP core,
         // i-MSCP plugins and Zend libraries
