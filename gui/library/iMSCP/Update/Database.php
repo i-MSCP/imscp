@@ -377,7 +377,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      *
      * @param string $table Table name
      * @param string $column Column name
-     * @return array|null SQL statements to be executed
+     * @return array SQL statements to be executed
      */
     protected function dropIndexByColumn($table, $column)
     {
@@ -1835,51 +1835,9 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Adds compound unique key on the php_ini table
-     *
-     * Note: Repeated update due to mistake in previous implementation (was r234)
-     *
-     * @return array SQL statement to be executed
-     */
-    protected function r260()
-    {
-        if (($renameQuery = $this->renameTable('php_ini', 'old_php_ini')) !== NULL) {
-            execute_query($renameQuery);
-        }
-
-        if (!$this->isKnownTable('php_ini')) {
-            execute_query('CREATE TABLE php_ini LIKE old_php_ini');
-        }
-
-        if (($dropQueries = $this->dropIndexByColumn('php_ini', 'admin_id')) !== NULL) {
-            foreach ($dropQueries as $dropQuery) {
-                execute_query($dropQuery);
-            }
-        }
-
-        if (($dropQueries = $this->dropIndexByColumn('php_ini', 'domain_id')) !== NULL) {
-            foreach ($dropQueries as $dropQuery) {
-                execute_query($dropQuery);
-            }
-        }
-
-        if (($dropQuery = $this->dropIndexByColumn('php_ini', 'domain_type')) !== NULL) {
-            foreach ($dropQueries as $dropQuery) {
-                execute_query($dropQuery);
-            }
-        }
-
-        return [
-            $this->addIndex('php_ini', ['admin_id', 'domain_id', 'domain_type'], 'UNIQUE', 'unique_php_ini'),
-            'INSERT IGNORE INTO php_ini SELECT * FROM old_php_ini',
-            $this->dropTable('old_php_ini')
-        ];
-    }
-
-    /**
      * Adds unique constraint for mail user entities
      *
-     * Note: Repeated update due to mistake in previous implementation (was r202 and r260 )
+     * Note: Repeated update due to mistake in previous implementation (was r202 and r260)
      *
      * @return array SQL statements to be executed
      */
@@ -1926,10 +1884,51 @@ class iMSCP_Update_Database extends iMSCP_Update
         }
 
         return [
-
             $this->addIndex('server_traffic', 'traff_time', 'UNIQUE', 'traff_time'),
             'INSERT IGNORE INTO server_traffic SELECT * FROM old_server_traffic',
             $this->dropTable('old_server_traffic')
+        ];
+    }
+
+    /**
+     * Adds compound unique key on the php_ini table
+     *
+     * Note: Repeated update due to mistake in previous implementation (was r234 and r262)
+     *
+     * @return array SQL statement to be executed
+     */
+    protected function r267()
+    {
+        if (($renameQuery = $this->renameTable('php_ini', 'old_php_ini')) !== NULL) {
+            execute_query($renameQuery);
+        }
+
+        if (!$this->isKnownTable('php_ini')) {
+            execute_query('CREATE TABLE php_ini LIKE old_php_ini');
+        }
+
+        if (($dropQueries = $this->dropIndexByColumn('php_ini', 'admin_id'))) {
+            foreach ($dropQueries as $dropQuery) {
+                execute_query($dropQuery);
+            }
+        }
+
+        if (($dropQueries = $this->dropIndexByColumn('php_ini', 'domain_id'))) {
+            foreach ($dropQueries as $dropQuery) {
+                execute_query($dropQuery);
+            }
+        }
+
+        if (($dropQuery = $this->dropIndexByColumn('php_ini', 'domain_type'))) {
+            foreach ($dropQueries as $dropQuery) {
+                execute_query($dropQuery);
+            }
+        }
+
+        return [
+            $this->addIndex('php_ini', ['admin_id', 'domain_id', 'domain_type'], 'UNIQUE', 'unique_php_ini'),
+            'INSERT IGNORE INTO php_ini SELECT * FROM old_php_ini',
+            $this->dropTable('old_php_ini')
         ];
     }
 
