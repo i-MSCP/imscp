@@ -540,16 +540,17 @@ sub _processPackagesFile
                 };
         }
 
-        next if defined $data->{'package'} || defined $data->{'package_delayed'} || defined $data->{'package_conflict'};
+        next if defined $data->{'package'} || defined $data->{'package_delayed'} || defined $data->{'package_conflict'}
+            || defined $data->{'pinning_package'};
 
         # Whether user must be asked for alternative or not
         my $needDialog = 0;
         # Retrieve selected alternative if any
         my $sAlt = $main::questions{ uc( $section ) . '_SERVER' } || $main::imscpConfig{ uc( $section ) . '_SERVER' };
-        # Resets alternative if no longer available
+        # Resets alternative if selected alternative is no longer available
         $sAlt = '' if $sAlt ne '' && !grep($_ eq $sAlt, keys %{$data});
 
-        # Map of alternative descriptions to aternative names
+        # Map of alternative descriptions to atersnative names
         my %altDescs;
         for( keys %{$data} ) {
             # Skip unsupported alternatives by arch
