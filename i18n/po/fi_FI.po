@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-20 15:46+0000\n"
+"POT-Creation-Date: 2017-08-27 09:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jari <info@jkwebdesign.fi>, 2017\n"
 "Language-Team: Finnish (Finland) (https://www.transifex.com/i-mscp/teams/576/fi_FI/)\n"
@@ -1255,10 +1255,6 @@ msgstr ""
 "Tiedostoa ei voitu lähettää. Tiedoston maksimikoko (%1$d MB) on ylitetty."
 
 #, php-format
-msgid "Could not validate DNS resource record: %s"
-msgstr ""
-
-#, php-format
 msgid "Couldn't create the %s database."
 msgstr ""
 
@@ -1266,6 +1262,10 @@ msgid "Couldn't delete domain alias. An unexpected error occurred."
 msgstr ""
 
 msgid "Couldn't delete subdomain. An unexpected error occurred."
+msgstr ""
+
+#, php-format
+msgid "Couldn't validate DNS resource record: %s"
 msgstr ""
 
 msgid "Count default mail accounts"
@@ -2535,6 +2535,12 @@ msgstr "Virheellinen SSL-sertifikaatti"
 
 msgid "Invalid URL."
 msgstr "Virheellinen osoite."
+
+#, php-format
+msgid ""
+"Invalid character found in the '%s' field. Only printable ASCII characters "
+"and line breaks are allowed."
+msgstr ""
 
 msgid "Invalid city."
 msgstr ""
@@ -3978,9 +3984,6 @@ msgstr ""
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr ""
 
-msgid "SQL database limit reached."
-msgstr "SQL-tietokantojen enimmäismäärä on saavutettu."
-
 msgid "SQL database successfully created."
 msgstr "SQL-tietokanta on luotu onnistuneesti."
 
@@ -3997,6 +4000,9 @@ msgid "SQL databases limit is disabled."
 msgstr ""
 
 msgid "SQL databases limit is not disabled."
+msgstr ""
+
+msgid "SQL databases limit is reached. You cannot add new SQL databases."
 msgstr ""
 
 msgid "SQL databases only"
@@ -4022,6 +4028,9 @@ msgstr "SQL-käyttäjien rajoitus on poistettu."
 msgid "SQL user name"
 msgstr "SQL-käyttäjänimi"
 
+msgid "SQL user password"
+msgstr ""
+
 msgid "SQL user password successfully updated."
 msgstr "SQL-käyttäjän salasana päivitetty onnistuneesti."
 
@@ -4044,6 +4053,9 @@ msgid "SQL users limit"
 msgstr ""
 
 msgid "SQL users limit is disabled."
+msgstr ""
+
+msgid "SQL users limit is reached. You cannot add new SQL users."
 msgstr ""
 
 msgid "SSL certificate successfully scheduled for addition."
@@ -4433,6 +4445,10 @@ msgid "The %s field cannot be empty."
 msgstr ""
 
 #, php-format
+msgid "The %s field cannot have both unquoted strings and quoted strings."
+msgstr ""
+
+#, php-format
 msgid ""
 "The %s limit for this customer cannot be greater than %d, your calculated "
 "limit."
@@ -4462,6 +4478,10 @@ msgstr ""
 
 #, php-format
 msgid "The %s translation file has been ignored: Translation table is empty."
+msgstr ""
+
+#, php-format
+msgid "The '%s' field cannot be empty."
 msgstr ""
 
 msgid "The '%value%' username is not available."
@@ -4848,6 +4868,12 @@ msgstr "Ei sallittu"
 
 msgid "Unavailable"
 msgstr "Ei saatavilla"
+
+#, php-format
+msgid ""
+"Unescaped quote found in '%s' field. A quote that is not a string delimiter "
+"must be escaped."
+msgstr ""
 
 msgid "Unexpected error"
 msgstr "Odottamaton virhe"

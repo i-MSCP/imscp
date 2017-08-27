@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-20 15:46+0000\n"
+"POT-Creation-Date: 2017-08-27 09:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: krok <krok@totalynet.fr>, 2017\n"
 "Language-Team: French (France) (https://www.transifex.com/i-mscp/teams/576/fr_FR/)\n"
@@ -1327,10 +1327,6 @@ msgstr ""
 " a était atteinte."
 
 #, php-format
-msgid "Could not validate DNS resource record: %s"
-msgstr "L'enregistrement DNS n'est pas valide: %s"
-
-#, php-format
 msgid "Couldn't create the %s database."
 msgstr "Impossible de créer la base de données %s."
 
@@ -1343,6 +1339,10 @@ msgid "Couldn't delete subdomain. An unexpected error occurred."
 msgstr ""
 "Impossible de supprimer le sous-domaine. Une erreur innatendue s'est "
 "produite."
+
+#, php-format
+msgid "Couldn't validate DNS resource record: %s"
+msgstr ""
 
 msgid "Count default mail accounts"
 msgstr "Compter les comptes de messagerie par défaut."
@@ -2769,6 +2769,12 @@ msgstr "Le certificate SSL n'est pas valide."
 
 msgid "Invalid URL."
 msgstr "URL invalide."
+
+#, php-format
+msgid ""
+"Invalid character found in the '%s' field. Only printable ASCII characters "
+"and line breaks are allowed."
+msgstr ""
 
 msgid "Invalid city."
 msgstr "Ville incorrecte."
@@ -4260,9 +4266,6 @@ msgstr ""
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr "La limite de base de données SQL n'est pas <i>désactivée</b>."
 
-msgid "SQL database limit reached."
-msgstr "Limite de bases de données SQL atteinte."
-
 msgid "SQL database successfully created."
 msgstr "La base de données SQL a été créée."
 
@@ -4280,6 +4283,9 @@ msgstr "La limite de bases de données SQL est désactivée."
 
 msgid "SQL databases limit is not disabled."
 msgstr "La limite de bases de données SQL n'est pas désactivée."
+
+msgid "SQL databases limit is reached. You cannot add new SQL databases."
+msgstr ""
 
 msgid "SQL databases only"
 msgstr "Bases de données SQL seulement"
@@ -4304,6 +4310,9 @@ msgstr "La limite d'utilisateur SQL est désactivée."
 msgid "SQL user name"
 msgstr "Utilisateur SQL"
 
+msgid "SQL user password"
+msgstr ""
+
 msgid "SQL user password successfully updated."
 msgstr "Le mot de passe de l'utilisateur SQL a été mis à jour."
 
@@ -4327,6 +4336,9 @@ msgstr "Limite d'utilisateurs SQL"
 
 msgid "SQL users limit is disabled."
 msgstr "La limite d'utilisateurs SQL est désactivée."
+
+msgid "SQL users limit is reached. You cannot add new SQL users."
+msgstr ""
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "Le certificat SSL va être ajouté."
@@ -4435,7 +4447,7 @@ msgid "Service protocol"
 msgstr "Protocole du service"
 
 msgid "Service statuses"
-msgstr ""
+msgstr "Statut des services"
 
 msgid "Service with same name already exists."
 msgstr "Un service avec un nom identique existe déjà."
@@ -4715,6 +4727,10 @@ msgid "The %s field cannot be empty."
 msgstr "Le champ %s ne peut pas être vide."
 
 #, php-format
+msgid "The %s field cannot have both unquoted strings and quoted strings."
+msgstr ""
+
+#, php-format
 msgid ""
 "The %s limit for this customer cannot be greater than %d, your calculated "
 "limit."
@@ -4753,6 +4769,10 @@ msgstr ""
 msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr ""
 "Le fichier de traduction %s a été ignoré : tableau de traduction vide."
+
+#, php-format
+msgid "The '%s' field cannot be empty."
+msgstr ""
 
 msgid "The '%value%' username is not available."
 msgstr "Le nom d'utilsateur '%value%' n'est pas disponible."
@@ -5178,6 +5198,12 @@ msgstr "Non autorisé"
 
 msgid "Unavailable"
 msgstr "Non disponible"
+
+#, php-format
+msgid ""
+"Unescaped quote found in '%s' field. A quote that is not a string delimiter "
+"must be escaped."
+msgstr ""
 
 msgid "Unexpected error"
 msgstr "Erreur inattendue"

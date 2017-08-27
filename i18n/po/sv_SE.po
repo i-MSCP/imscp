@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-20 15:46+0000\n"
+"POT-Creation-Date: 2017-08-27 09:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thom Heemstra <thom@heemstra.xyz>, 2017\n"
 "Language-Team: Swedish (Sweden) (https://www.transifex.com/i-mscp/teams/576/sv_SE/)\n"
@@ -1291,10 +1291,6 @@ msgid ""
 msgstr "Kunde inte ladda upp filen. Max upload filesize (%1$d MB) har nåtts."
 
 #, php-format
-msgid "Could not validate DNS resource record: %s"
-msgstr "Det gick inte att validera DNS-resursposter: %s"
-
-#, php-format
 msgid "Couldn't create the %s database."
 msgstr ""
 
@@ -1302,6 +1298,10 @@ msgid "Couldn't delete domain alias. An unexpected error occurred."
 msgstr ""
 
 msgid "Couldn't delete subdomain. An unexpected error occurred."
+msgstr ""
+
+#, php-format
+msgid "Couldn't validate DNS resource record: %s"
 msgstr ""
 
 msgid "Count default mail accounts"
@@ -2716,6 +2716,12 @@ msgstr "Ogiltig SSL-certifikat."
 
 msgid "Invalid URL."
 msgstr "Invalid URL."
+
+#, php-format
+msgid ""
+"Invalid character found in the '%s' field. Only printable ASCII characters "
+"and line breaks are allowed."
+msgstr ""
 
 msgid "Invalid city."
 msgstr ""
@@ -4167,9 +4173,6 @@ msgstr "SQL database limit is disabled but SQL user limit is not."
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr "SQL database limit is not <i>disabled</i>."
 
-msgid "SQL database limit reached."
-msgstr "SQL-databas max värde nådd."
-
 msgid "SQL database successfully created."
 msgstr "SQL-databas har skapats."
 
@@ -4186,6 +4189,9 @@ msgid "SQL databases limit is disabled."
 msgstr ""
 
 msgid "SQL databases limit is not disabled."
+msgstr ""
+
+msgid "SQL databases limit is reached. You cannot add new SQL databases."
 msgstr ""
 
 msgid "SQL databases only"
@@ -4209,6 +4215,9 @@ msgstr "SQL-användare är inaktiverad."
 msgid "SQL user name"
 msgstr "SQL-användarnamn"
 
+msgid "SQL user password"
+msgstr ""
+
 msgid "SQL user password successfully updated."
 msgstr "SQL användarens lösenord uppdaterades."
 
@@ -4231,6 +4240,9 @@ msgid "SQL users limit"
 msgstr ""
 
 msgid "SQL users limit is disabled."
+msgstr ""
+
+msgid "SQL users limit is reached. You cannot add new SQL users."
 msgstr ""
 
 msgid "SSL certificate successfully scheduled for addition."
@@ -4618,6 +4630,10 @@ msgid "The %s field cannot be empty."
 msgstr ""
 
 #, php-format
+msgid "The %s field cannot have both unquoted strings and quoted strings."
+msgstr ""
+
+#, php-format
 msgid ""
 "The %s limit for this customer cannot be greater than %d, your calculated "
 "limit."
@@ -4655,6 +4671,10 @@ msgstr "%s plugin version %s är inte kompatibel med din i-MSCP version."
 #, php-format
 msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr "%s översättningsfil har ignorerats: Översättning tabellen är tom."
+
+#, php-format
+msgid "The '%s' field cannot be empty."
+msgstr ""
 
 msgid "The '%value%' username is not available."
 msgstr ""
@@ -5062,6 +5082,12 @@ msgstr "Obehörig"
 
 msgid "Unavailable"
 msgstr "Unavailable"
+
+#, php-format
+msgid ""
+"Unescaped quote found in '%s' field. A quote that is not a string delimiter "
+"must be escaped."
+msgstr ""
 
 msgid "Unexpected error"
 msgstr "Oväntat fel"

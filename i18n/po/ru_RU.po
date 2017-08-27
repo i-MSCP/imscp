@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-20 15:46+0000\n"
+"POT-Creation-Date: 2017-08-27 09:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Oleg Olegov <>, 2017\n"
 "Language-Team: Russian (Russia) (https://www.transifex.com/i-mscp/teams/576/ru_RU/)\n"
@@ -1292,10 +1292,6 @@ msgstr ""
 "Невозможно загрузить файл. Максимальный размер файла (%1$d MB) превышен."
 
 #, php-format
-msgid "Could not validate DNS resource record: %s"
-msgstr "Невозможно проверить запись DNS: %s"
-
-#, php-format
 msgid "Couldn't create the %s database."
 msgstr "Невозможно создать базу данных %s."
 
@@ -1304,6 +1300,10 @@ msgstr "Не удалось удалить алиас домена. Произо
 
 msgid "Couldn't delete subdomain. An unexpected error occurred."
 msgstr "Невозможно удалить поддомен. Произошла неожиданная ошибка."
+
+#, php-format
+msgid "Couldn't validate DNS resource record: %s"
+msgstr ""
 
 msgid "Count default mail accounts"
 msgstr "Считать почтовые ящики по умолчанию"
@@ -2729,6 +2729,12 @@ msgstr "Негодный SSL сертификат."
 
 msgid "Invalid URL."
 msgstr "Неверный URL"
+
+#, php-format
+msgid ""
+"Invalid character found in the '%s' field. Only printable ASCII characters "
+"and line breaks are allowed."
+msgstr ""
 
 msgid "Invalid city."
 msgstr "Неверный город."
@@ -4191,9 +4197,6 @@ msgstr "SQL базы данных отключены, однако пользо�
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr "Базы данных SQL не <i>отключены</i>."
 
-msgid "SQL database limit reached."
-msgstr "Лимит баз данных SQL достигнут."
-
 msgid "SQL database successfully created."
 msgstr "База данных успешно добавлена."
 
@@ -4211,6 +4214,9 @@ msgstr "Лимит баз данных SQL отключен."
 
 msgid "SQL databases limit is not disabled."
 msgstr "Лимит баз данных SQL не отключен."
+
+msgid "SQL databases limit is reached. You cannot add new SQL databases."
+msgstr ""
 
 msgid "SQL databases only"
 msgstr "Только базы данных SQL"
@@ -4232,6 +4238,9 @@ msgstr "Лимит пользователей SQL отключен."
 
 msgid "SQL user name"
 msgstr "Имя пользователя SQL"
+
+msgid "SQL user password"
+msgstr ""
 
 msgid "SQL user password successfully updated."
 msgstr "Пароль пользователя SQL успешно обновлен."
@@ -4256,6 +4265,9 @@ msgstr "Лимит пользователей SQL"
 
 msgid "SQL users limit is disabled."
 msgstr "Лимит пользователей SQL отключен."
+
+msgid "SQL users limit is reached. You cannot add new SQL users."
+msgstr ""
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "SSL cертификат успешно отмечен для добавления."
@@ -4366,7 +4378,7 @@ msgid "Service protocol"
 msgstr "Протокол службы"
 
 msgid "Service statuses"
-msgstr ""
+msgstr "Статусы служб"
 
 msgid "Service with same name already exists."
 msgstr "Ошибка: Порт службы с таким именем уже существует."
@@ -4645,6 +4657,10 @@ msgid "The %s field cannot be empty."
 msgstr "Поле %s не может пустовать."
 
 #, php-format
+msgid "The %s field cannot have both unquoted strings and quoted strings."
+msgstr ""
+
+#, php-format
 msgid ""
 "The %s limit for this customer cannot be greater than %d, your calculated "
 "limit."
@@ -4683,6 +4699,10 @@ msgstr "Ваша версия i-MSCP несовместима с %s плагин
 #, php-format
 msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr "Язык %s перевода был проигнорирован: Таблица перевода пуста."
+
+#, php-format
+msgid "The '%s' field cannot be empty."
+msgstr ""
 
 msgid "The '%value%' username is not available."
 msgstr "Имя пользователя '%value%' недоступно."
@@ -5098,6 +5118,12 @@ msgstr "Неавторизовано"
 
 msgid "Unavailable"
 msgstr "Недоступно"
+
+#, php-format
+msgid ""
+"Unescaped quote found in '%s' field. A quote that is not a string delimiter "
+"must be escaped."
+msgstr ""
 
 msgid "Unexpected error"
 msgstr "Произошла неожиданная ошибка: %s"

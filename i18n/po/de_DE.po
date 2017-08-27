@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-20 15:46+0000\n"
+"POT-Creation-Date: 2017-08-27 09:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: ssd63 <m.sauer@z63.de>, 2017\n"
 "Language-Team: German (Germany) (https://www.transifex.com/i-mscp/teams/576/de_DE/)\n"
@@ -33,7 +33,7 @@ msgid ""
 "names"
 msgstr ""
 "$ORIGIN wird automatisch an unqualifizierte Namen, Hosts und kanonische "
-"Namen angefügt"
+"Namen angehängt"
 
 #, php-format
 msgid "$ORIGIN value is currently set to: %s"
@@ -61,7 +61,7 @@ msgstr "%1$s - Sie sind jetzt angemeldet als: %2$s"
 
 #, php-format
 msgid "%1$ss - Software"
-msgstr "%1$s`s - Software"
+msgstr "%1$ss - Software"
 
 #, php-format
 msgid "%d day remaining until account expiration"
@@ -126,8 +126,8 @@ msgid ""
 "%s: The clients consumption (%s) for this reseller is greater than the new "
 "limit."
 msgstr ""
-"%s: Der Kundenverbrauch (%s) für diesen Reseller ist größer als das neue "
-"Maximum."
+"%s: Der Kundenverbrauch (%s) für diesen Reseller ist größer als die neue "
+"Begrenzung."
 
 #, php-format
 msgid ""
@@ -135,7 +135,7 @@ msgid ""
 " the new limit."
 msgstr ""
 "%s: Die Anzahl der Elemente (%s) die dem Reseller bereits zugeteilt sind, "
-"ist größer als das neue Maximum."
+"ist größer als die neue Begrenzung."
 
 #, php-format
 msgid "%s: This reseller has customer(s) with unlimited items."
@@ -147,23 +147,23 @@ msgstr ""
 msgid ""
 "%s: You cannot disable a service already consumed by reseller's customers."
 msgstr ""
-"%s: Sie können keinen Dienst deaktivieren der bereits von Resellerkunden "
-"genutzt wird."
+"%s: Sie können einen Dienst nicht deaktivieren, wenn dieser bereits durch "
+"Kunden des Resellers verwendet wird."
 
 #, php-format
 msgid "%s: You cannot disable a service already sold to reseller's customers."
 msgstr ""
-"%s: Sie können keinen Dienst deaktivieren der bereits von Resellerkunden "
-"gekauft wurde."
+"%s: Sie können einen Dienst nicht deaktivieren, wenn dieser bereits durch "
+"Kunden des Resellers gekauft wurde."
 
 #, php-format
 msgid ""
 "%s::getInfo() not implemented and %s not found. This is a bug in the %s "
 "plugin which must be reported to the author(s)."
 msgstr ""
-"%s-getInfo() Ist nicht vorhanden und %s wurde nicht gefunden! <br /> Der "
-"Fehler befindet sich in %s plugin. Bitte melden sie den Fehler dem "
-"Pluginautor."
+"%s::getInfo() Ist nicht implementiert und %s wurde nicht gefunden! <br /> "
+"Der Fehler befindet sich in Plugin %s. Bitte melden sie den Fehler dem "
+"Plugin-Autor."
 
 msgid "(default)"
 msgstr "(Standard)"
@@ -192,8 +192,8 @@ msgid ""
 "<b>%s</b> has IP address that cannot be managed from the destination "
 "reseller!<br>This user cannot be moved!"
 msgstr ""
-"<b>%s</b> verwendet IP Adressen, die dieser Reseller nicht verändern "
-"darf!<br>Der Kunde kann nicht verschoben werden!"
+"<b>%s</b> verwendet IP-Adressen, die der Ziel-Reseller nicht kann!<br>Der "
+"Kunde kann daher nicht verschoben werden!"
 
 msgid "A PHP extension stopped the file upload."
 msgstr "Eine PHP-Erweiterung stoppte den Dateiupload."
@@ -208,7 +208,7 @@ msgstr[0] "Ein neuer Konfigurationsparameter wurde erzeugt."
 msgstr[1] "%d Konfigurationsparameter wurden erzeugt"
 
 msgid "A new i-MSCP version is available"
-msgstr "Es ist eine neue I-MSCP Version verfügbar."
+msgstr "Es ist eine neue i-MSCP Version verfügbar."
 
 msgid "A new software package has been uploaded"
 msgstr "Ein neues Software Paket wurde hochgeladen"
@@ -1196,7 +1196,7 @@ msgid "Close"
 msgstr "Schließen"
 
 msgid "Close the ticket"
-msgstr "Ticket schliessen"
+msgstr "Ticket schließen"
 
 msgid "Close ticket"
 msgstr "Ticket schließen"
@@ -1321,10 +1321,6 @@ msgstr ""
 "erreicht."
 
 #, php-format
-msgid "Could not validate DNS resource record: %s"
-msgstr "DNS-Eintrag konnte nicht überprüft werden: %s"
-
-#, php-format
 msgid "Couldn't create the %s database."
 msgstr "Konnte die Datenbank %s nicht erstellen."
 
@@ -1337,6 +1333,10 @@ msgid "Couldn't delete subdomain. An unexpected error occurred."
 msgstr ""
 "Subdomain konnte nicht gelöscht werden. Ein unerwarteter Fehler ist "
 "aufgetreten."
+
+#, php-format
+msgid "Couldn't validate DNS resource record: %s"
+msgstr ""
 
 msgid "Count default mail accounts"
 msgstr "Standard E-Mail Konten mitzählen"
@@ -2763,6 +2763,12 @@ msgstr "Ungültiges SSL-Zertifikat."
 msgid "Invalid URL."
 msgstr "Ungültige URL."
 
+#, php-format
+msgid ""
+"Invalid character found in the '%s' field. Only printable ASCII characters "
+"and line breaks are allowed."
+msgstr ""
+
 msgid "Invalid city."
 msgstr "Ungültige Stadt."
 
@@ -3001,7 +3007,7 @@ msgid "Mail accounts limit"
 msgstr "Limit E-Mail-Kontos"
 
 msgid "Mail accounts list is empty."
-msgstr "Das MerE-Mail Kontenliste ist leer."
+msgstr "Sie haben keine E-Mail Konten."
 
 msgid "Mail feature is disabled."
 msgstr "Das Merkmal E-Mail ist deaktiviert."
@@ -4236,9 +4242,6 @@ msgstr ""
 msgid "SQL database limit is not <i>disabled</i>."
 msgstr "SQL Datenbank Limit ist nicht <i>deaktiviert</i>."
 
-msgid "SQL database limit reached."
-msgstr "SQL-Datenbank Limit erreicht."
-
 msgid "SQL database successfully created."
 msgstr "SQL-Datenbank erfolgreich erstellt."
 
@@ -4256,6 +4259,9 @@ msgstr "SQL Datenbanken Limit ist deaktiviert."
 
 msgid "SQL databases limit is not disabled."
 msgstr "SQL Datenbanken Limit ist nicht deaktiviert."
+
+msgid "SQL databases limit is reached. You cannot add new SQL databases."
+msgstr ""
 
 msgid "SQL databases only"
 msgstr "Nur SQL-Datenbanken"
@@ -4280,6 +4286,9 @@ msgstr "SQL Benutzer Limit ist deaktiviert."
 msgid "SQL user name"
 msgstr "SQL-Benutzername"
 
+msgid "SQL user password"
+msgstr ""
+
 msgid "SQL user password successfully updated."
 msgstr "SQL-Benutzerpasswort erfolgreich aktualisiert."
 
@@ -4303,6 +4312,9 @@ msgstr "SQL Benutzer Limit"
 
 msgid "SQL users limit is disabled."
 msgstr "SQL Benutzer Limit ist deaktiviert."
+
+msgid "SQL users limit is reached. You cannot add new SQL users."
+msgstr ""
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "SSL Zertifikat erfolgreich zum Hinzufügen vorgemerkt."
@@ -4412,7 +4424,7 @@ msgid "Service protocol"
 msgstr "Dienst-Protokoll"
 
 msgid "Service statuses"
-msgstr ""
+msgstr "Status der Dienste"
 
 msgid "Service with same name already exists."
 msgstr "Service-Port mit gleichem Namen existiert bereits."
@@ -4691,6 +4703,10 @@ msgid "The %s field cannot be empty."
 msgstr "Feld %s darf nicht leer sein."
 
 #, php-format
+msgid "The %s field cannot have both unquoted strings and quoted strings."
+msgstr ""
+
+#, php-format
 msgid ""
 "The %s limit for this customer cannot be greater than %d, your calculated "
 "limit."
@@ -4730,6 +4746,10 @@ msgstr "Die %s Pluginversion %s ist nicht kompatibel mit der i-MSCP Version."
 msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr ""
 "Die Übersetzungsdatei %s wurde ignoriert: Übersetzungstabelle ist leer."
+
+#, php-format
+msgid "The '%s' field cannot be empty."
+msgstr ""
 
 msgid "The '%value%' username is not available."
 msgstr "Der Benutzername '%value%' ist nicht verfügbar."
@@ -5156,6 +5176,12 @@ msgstr "unbefugt"
 
 msgid "Unavailable"
 msgstr "Nicht verfügbar"
+
+#, php-format
+msgid ""
+"Unescaped quote found in '%s' field. A quote that is not a string delimiter "
+"must be escaped."
+msgstr ""
 
 msgid "Unexpected error"
 msgstr "Unerwarteter Fehler"
@@ -5745,7 +5771,7 @@ msgstr "Sie haben die maximale Anzahl an Subdomains für Ihren Tarif erreicht."
 
 msgid "You have reached your domains limit. You cannot add more domains."
 msgstr ""
-"Sie haben ihr Domainlimit erreicht. Sie können keine weiteren Domains "
+"Sie haben ihr Domain-Limit erreicht. Sie können keine weiteren Domains "
 "hinzufügen."
 
 msgid "You have to choose between file-upload and wget-function."
