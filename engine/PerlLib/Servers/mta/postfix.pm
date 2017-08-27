@@ -898,7 +898,7 @@ sub postmap
 
   Usage example:
     Let's assume that we want add both, the `check_client_access <table>' value and the `check_recipient_access <table>'
-    value to the `smtpd_recipient_restrictions' parameter, before the `check_policy_service ...' value.
+    value to the `smtpd_recipient_restrictions' parameter, before the `check_policy_service ...' service.
     The following would do the job:
 
     Servers::mta::postfix->getInstance(
@@ -958,8 +958,8 @@ sub postconf
                         my $regexp = $params{$p}->{'before'} || $params{$p}->{'after'};
                         ref $regexp eq 'Regexp' or die( 'Invalid before|after option. Expects a Regexp' );
                         my ($idx) = grep ( $vls[$_] =~ /^$regexp$/, 0 .. ( @vls-1 ) );
-                        defined $idx ? splice( @vls, ( $params{$p}->{'before'} ? $idx : ++$idx ), 0, $v ) : push @vls,
-                            $v;
+                        defined $idx
+                            ? splice( @vls, ( $params{$p}->{'before'} ? $idx : ++$idx ), 0, $v ) : push @vls, $v;
                     } elsif ( $params{$p}->{'action'} eq 'replace' ) {
                         push @rpls, $v;
                     } elsif ( $params{$p}->{'action'} eq 'remove' ) {

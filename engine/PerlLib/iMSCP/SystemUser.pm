@@ -241,7 +241,10 @@ sub addToGroup
     $self->{'groupname'} = $groupname;
     $self->{'username'} = $username;
 
-    return 0 unless getgrnam( $groupname ) && getpwnam( $username );
+    unless ( getgrnam( $groupname ) && getpwnam( $username ) ) {
+        error( 'Invalid group or username' );
+        return 1;
+    }
 
     my $rs = execute( [ '/usr/bin/gpasswd', '-a', $username, $groupname ], \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
