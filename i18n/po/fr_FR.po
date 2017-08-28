@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-27 09:42+0000\n"
+"POT-Creation-Date: 2017-08-28 14:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: krok <krok@totalynet.fr>, 2017\n"
 "Language-Team: French (France) (https://www.transifex.com/i-mscp/teams/576/fr_FR/)\n"
@@ -1342,7 +1342,7 @@ msgstr ""
 
 #, php-format
 msgid "Couldn't validate DNS resource record: %s"
-msgstr ""
+msgstr "Impossible de valider l'enregistrement DNS: %s"
 
 msgid "Count default mail accounts"
 msgstr "Compter les comptes de messagerie par défaut."
@@ -2775,6 +2775,8 @@ msgid ""
 "Invalid character found in the '%s' field. Only printable ASCII characters "
 "and line breaks are allowed."
 msgstr ""
+"Caractère invalide trouvé dans le champ '%s'. Seuls les caractères "
+"imprimable ASCII et les retour à la ligne sont autorisés."
 
 msgid "Invalid city."
 msgstr "Ville incorrecte."
@@ -4286,6 +4288,8 @@ msgstr "La limite de bases de données SQL n'est pas désactivée."
 
 msgid "SQL databases limit is reached. You cannot add new SQL databases."
 msgstr ""
+"Limite de bases de données atteinte. Vous ne pouvez pas ajouter de nouvelles"
+" bases de données."
 
 msgid "SQL databases only"
 msgstr "Bases de données SQL seulement"
@@ -4311,7 +4315,7 @@ msgid "SQL user name"
 msgstr "Utilisateur SQL"
 
 msgid "SQL user password"
-msgstr ""
+msgstr "Mot de passe de l'utilisateur SQL"
 
 msgid "SQL user password successfully updated."
 msgstr "Le mot de passe de l'utilisateur SQL a été mis à jour."
@@ -4339,6 +4343,8 @@ msgstr "La limite d'utilisateurs SQL est désactivée."
 
 msgid "SQL users limit is reached. You cannot add new SQL users."
 msgstr ""
+"Limite d'utilisateurs SQL atteinte. Vous ne pouvez pas ajouter de nouveaux "
+"utilisateurs SQL."
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "Le certificat SSL va être ajouté."
@@ -4729,6 +4735,8 @@ msgstr "Le champ %s ne peut pas être vide."
 #, php-format
 msgid "The %s field cannot have both unquoted strings and quoted strings."
 msgstr ""
+"Le champ %s ne peut pas avoir à la fois des chaînes délimitées et des "
+"chaînes non délimitées."
 
 #, php-format
 msgid ""
@@ -4772,7 +4780,7 @@ msgstr ""
 
 #, php-format
 msgid "The '%s' field cannot be empty."
-msgstr ""
+msgstr "Le champ %s ne peut pas être vide."
 
 msgid "The '%value%' username is not available."
 msgstr "Le nom d'utilsateur '%value%' n'est pas disponible."
@@ -5204,6 +5212,8 @@ msgid ""
 "Unescaped quote found in '%s' field. A quote that is not a string delimiter "
 "must be escaped."
 msgstr ""
+"Un double guillemet non échappé a été trouvé dans le champ '%s'. Un double "
+"guillemet qui n'est pas un délimiteur de chaîne doit être échappé."
 
 msgid "Unexpected error"
 msgstr "Erreur inattendue"

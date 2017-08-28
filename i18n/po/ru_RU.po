@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-27 09:42+0000\n"
+"POT-Creation-Date: 2017-08-28 14:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Oleg Olegov <>, 2017\n"
 "Language-Team: Russian (Russia) (https://www.transifex.com/i-mscp/teams/576/ru_RU/)\n"
@@ -1303,7 +1303,7 @@ msgstr "Невозможно удалить поддомен. Произошла
 
 #, php-format
 msgid "Couldn't validate DNS resource record: %s"
-msgstr ""
+msgstr "Невозможно проверить запись DNS: %s"
 
 msgid "Count default mail accounts"
 msgstr "Считать почтовые ящики по умолчанию"
@@ -2735,6 +2735,8 @@ msgid ""
 "Invalid character found in the '%s' field. Only printable ASCII characters "
 "and line breaks are allowed."
 msgstr ""
+"Недопустимый символ, найденный в поле '%s'. Разрешены только печатные "
+"символы ASCII и разрывы строк."
 
 msgid "Invalid city."
 msgstr "Неверный город."
@@ -4217,6 +4219,8 @@ msgstr "Лимит баз данных SQL не отключен."
 
 msgid "SQL databases limit is reached. You cannot add new SQL databases."
 msgstr ""
+"Достигнут лимит базы данных SQL. Вы не можете добавлять новые базы данных "
+"SQL."
 
 msgid "SQL databases only"
 msgstr "Только базы данных SQL"
@@ -4240,7 +4244,7 @@ msgid "SQL user name"
 msgstr "Имя пользователя SQL"
 
 msgid "SQL user password"
-msgstr ""
+msgstr "пароль пользователя SQL"
 
 msgid "SQL user password successfully updated."
 msgstr "Пароль пользователя SQL успешно обновлен."
@@ -4268,6 +4272,8 @@ msgstr "Лимит пользователей SQL отключен."
 
 msgid "SQL users limit is reached. You cannot add new SQL users."
 msgstr ""
+"Достигнут лимит пользователей SQL. Вы не можете добавлять новых "
+"пользователей SQL."
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "SSL cертификат успешно отмечен для добавления."
@@ -4659,6 +4665,7 @@ msgstr "Поле %s не может пустовать."
 #, php-format
 msgid "The %s field cannot have both unquoted strings and quoted strings."
 msgstr ""
+"Поле %s не может содержать строки с разделителями и строки без разделителей."
 
 #, php-format
 msgid ""
@@ -4702,7 +4709,7 @@ msgstr "Язык %s перевода был проигнорирован: Таб
 
 #, php-format
 msgid "The '%s' field cannot be empty."
-msgstr ""
+msgstr "Поле '%s' не может пустовать."
 
 msgid "The '%value%' username is not available."
 msgstr "Имя пользователя '%value%' недоступно."
@@ -5124,6 +5131,8 @@ msgid ""
 "Unescaped quote found in '%s' field. A quote that is not a string delimiter "
 "must be escaped."
 msgstr ""
+"Неопределенная цитата найдена в поле '%s'. Цитата, которая не является "
+"разделителем строк, должна быть экранирована."
 
 msgid "Unexpected error"
 msgstr "Произошла неожиданная ошибка: %s"

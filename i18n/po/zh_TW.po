@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-27 09:42+0000\n"
+"POT-Creation-Date: 2017-08-28 14:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/i-mscp/teams/576/zh_TW/)\n"
@@ -1251,7 +1251,7 @@ msgstr "無法刪除子網域。已產生無法預期的錯誤。"
 
 #, php-format
 msgid "Couldn't validate DNS resource record: %s"
-msgstr ""
+msgstr "可能無法驗證 DNS 紀錄: %s"
 
 msgid "Count default mail accounts"
 msgstr "計算預設郵件帳號"
@@ -2658,7 +2658,7 @@ msgstr "無效的網址"
 msgid ""
 "Invalid character found in the '%s' field. Only printable ASCII characters "
 "and line breaks are allowed."
-msgstr ""
+msgstr "在'%s'字段中找到无效的字符。 只允许可打印的ASCII字符和换行符。"
 
 msgid "Invalid city."
 msgstr "無效城市。"
@@ -4110,7 +4110,7 @@ msgid "SQL databases limit is not disabled."
 msgstr "SQL 資料庫限制未停用。"
 
 msgid "SQL databases limit is reached. You cannot add new SQL databases."
-msgstr ""
+msgstr "您不能添加新的SQL数据库。"
 
 msgid "SQL databases only"
 msgstr "只有 SQL 資料庫"
@@ -4134,7 +4134,7 @@ msgid "SQL user name"
 msgstr "SQL 使用者名稱"
 
 msgid "SQL user password"
-msgstr ""
+msgstr "SQL 使用者密碼"
 
 msgid "SQL user password successfully updated."
 msgstr "SQL 使用者密碼已經成功更新"
@@ -4161,7 +4161,7 @@ msgid "SQL users limit is disabled."
 msgstr "SQL 使用者限制是停用的。"
 
 msgid "SQL users limit is reached. You cannot add new SQL users."
-msgstr ""
+msgstr "您不能添加新的SQL用户。"
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "新增 SSL 憑證的排程已成功"
@@ -4548,7 +4548,7 @@ msgstr "%s欄位不可以是空白。"
 
 #, php-format
 msgid "The %s field cannot have both unquoted strings and quoted strings."
-msgstr ""
+msgstr "%s字段不能同时包含未引用的字符串和引用的字符串。"
 
 #, php-format
 msgid ""
@@ -4584,7 +4584,7 @@ msgstr "此 %s 翻譯檔已經忽略了: 翻譯表是空白的。"
 
 #, php-format
 msgid "The '%s' field cannot be empty."
-msgstr ""
+msgstr "'%s'欄位不可以是空白。"
 
 msgid "The '%value%' username is not available."
 msgstr "此 '%value%' 使用者名稱無效。"

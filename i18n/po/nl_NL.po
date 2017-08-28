@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-27 09:42+0000\n"
+"POT-Creation-Date: 2017-08-28 14:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Dutch (Netherlands) (https://www.transifex.com/i-mscp/teams/576/nl_NL/)\n"
@@ -1316,7 +1316,7 @@ msgstr "Door een onbekende fout kon dit subdomein niet verwijderd worden."
 
 #, php-format
 msgid "Couldn't validate DNS resource record: %s"
-msgstr ""
+msgstr "Kon de DNS-record niet valideren: %s"
 
 msgid "Count default mail accounts"
 msgstr "Aantal standaard e-mailaccounts"
@@ -2733,6 +2733,8 @@ msgid ""
 "Invalid character found in the '%s' field. Only printable ASCII characters "
 "and line breaks are allowed."
 msgstr ""
+"Ongeldig(e) teken(s) ingevoerd in het '%s'-veld. Enkel ASCII-tekens en "
+"lijnonderbrekingen mogen gebruikt worden."
 
 msgid "Invalid city."
 msgstr "Plaats ongeldig"
@@ -4222,6 +4224,8 @@ msgstr "SQL-databanklimiet is niet uitgeschakeld"
 
 msgid "SQL databases limit is reached. You cannot add new SQL databases."
 msgstr ""
+"Het limiet voor SQL-databases is bereikt. U kunt hierdoor geen nieuwe SQL-"
+"databases aanmaken."
 
 msgid "SQL databases only"
 msgstr "Enkel SQL-databanken"
@@ -4245,7 +4249,7 @@ msgid "SQL user name"
 msgstr "MySQL-gebruikersnaam"
 
 msgid "SQL user password"
-msgstr ""
+msgstr "Wachtwoord MySQL gebruiker"
 
 msgid "SQL user password successfully updated."
 msgstr "SQL-gebruikerswachtwoord succesvol bijgewerkt."
@@ -4273,6 +4277,8 @@ msgstr "SQL-gebruikerslimiet is uitgeschakeld"
 
 msgid "SQL users limit is reached. You cannot add new SQL users."
 msgstr ""
+"SQL-gebruikerslimiet is bereikt. U kunt hierdoor geen nieuwe SQL-gebruikers "
+"aanmaken."
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "SSL-certificaat wordt toegevoegd."
@@ -4663,6 +4669,7 @@ msgstr "Het %s veld kan niet leeg blijve."
 #, php-format
 msgid "The %s field cannot have both unquoted strings and quoted strings."
 msgstr ""
+"Het %s-veld kan geen tekenreeks met en tekenreeks zonder quote bevatten."
 
 #, php-format
 msgid ""
@@ -4707,7 +4714,7 @@ msgstr "Het vertalingsbestand %s wordt overgeslagen: Vertaaltabel is leeg."
 
 #, php-format
 msgid "The '%s' field cannot be empty."
-msgstr ""
+msgstr "Het '%s' veld kan niet leeg blijve."
 
 msgid "The '%value%' username is not available."
 msgstr "De '%value' gebruikersnaam is niet beschikbaar."
@@ -5135,6 +5142,8 @@ msgid ""
 "Unescaped quote found in '%s' field. A quote that is not a string delimiter "
 "must be escaped."
 msgstr ""
+"Onbeschermde quote gevonden in '%s'-veld. Een quote welke geen tekenreeks "
+"onderscheidt dient te worden beschermd."
 
 msgid "Unexpected error"
 msgstr "Onverwachte fout"
