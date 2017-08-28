@@ -436,6 +436,7 @@
             pinning_pin="release o=Debian,n=jessie"
             pinning_pin_priority="1002"
     >
+        <package>libssl-dev</package>
         <package>openssl</package>
     </ssl>
     <other>

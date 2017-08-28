@@ -467,6 +467,7 @@
             pinning_pin="release o=Ubuntu,n=trusty"
             pinning_pin_priority="1002"
     >
+        <package>libssl-dev</package>
         <package>openssl</package>
     </ssl>
     <other>
