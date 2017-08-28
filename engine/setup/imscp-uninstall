@@ -51,6 +51,9 @@ use iMSCP::SystemUser;
 use Servers::sqld;
 use Servers::sqld;
 
+$ENV{'LANG'} = 'C.UTF-8';
+$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+
 # Set backend mode
 $main::execmode = 'uninstall' unless defined $main::execmode;;
 

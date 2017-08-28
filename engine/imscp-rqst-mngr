@@ -37,6 +37,9 @@ use iMSCP::DbTasksProcessor;
 use iMSCP::Debug;
 use iMSCP::Getopt;
 
+$ENV{'LANG'} = 'C.UTF-8';
+$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+
 newDebug( 'imscp-rqst-mngr.log' );
 
 iMSCP::Getopt->parseNoDefault( sprintf( "Usage: perl %s [OPTIONS]...", basename( $0 )) . qq {

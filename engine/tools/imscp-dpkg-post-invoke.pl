@@ -38,6 +38,9 @@ use iMSCP::Getopt;
 use iMSCP::Servers;
 use iMSCP::Packages;
 
+$ENV{'LANG'} = 'C.UTF-8';
+$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+
 newDebug( 'imscp-dpkg-post-invoke.log' );
 
 iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq {

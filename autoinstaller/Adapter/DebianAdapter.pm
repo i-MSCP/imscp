@@ -358,7 +358,7 @@ sub _init
 
     $self->{'repositorySections'} = [ 'main', 'contrib', 'non-free' ];
     $self->{'preRequiredPackages'} = [
-        'apt-transport-https', 'binutils', 'ca-certificates', 'debconf-utils', 'dialog', 'dirmngr',
+        'apt-transport-https', 'binutils', 'ca-certificates', 'debconf-utils', 'dialog', 'dirmngr', 'dpkg-dev',
         'libbit-vector-perl', 'libclass-insideout-perl', 'libclone-perl', 'liblchown-perl', 'liblist-moreutils-perl',
         'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'lsb-release', 'policyrcd-script-zg2',
         'wget'
@@ -491,6 +491,12 @@ sub _processPackagesFile
             . lc( $distroCodename ) . '.xml';
     }
 
+    my $arch = `dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null`;
+    if ( $? != 0 || !$arch ) {
+        error( "Couldn't determine OS architecture" );
+        return 1;
+    }
+
     eval "use XML::Simple; 1" or die( $@ );
     my $xml = XML::Simple->new( NoEscape => 1 );
     my $pkgData = eval {
@@ -555,7 +561,7 @@ sub _processPackagesFile
         for( keys %{$data} ) {
             # Skip unsupported alternatives by arch
             if ( defined $data->{$_}->{'required_arch'}
-                && `dpkg-architecture -qDEB_HOST_ARCH` !~ /^$data->{$_}->{'required_arch'}$/
+                && $arch ne $data->{$_}->{'required_arch'}
             ) {
                 next;
             }

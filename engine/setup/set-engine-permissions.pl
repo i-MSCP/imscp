@@ -39,6 +39,9 @@ use iMSCP::Rights;
 use iMSCP::Servers;
 use iMSCP::Packages;
 
+$ENV{'LANG'} = 'C.UTF-8';
+$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+
 newDebug( 'imscp-set-engine-permissions.log' );
 
 $main::execmode = 'backend';
