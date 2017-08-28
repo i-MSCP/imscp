@@ -543,6 +543,18 @@ sub addMail
             my $maildir = "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
 
             # Create mailbox
+
+            for( $data->{'DOMAIN_NAME'}, "$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}" ) {
+                iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$_" )->make(
+                    {
+                        user           => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+                        group          => $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+                        mode           => 0750,
+                        fixpermissions => iMSCP::Getopt->fixPermissions
+                    }
+                );
+            }
+
             for ( qw/ cur new tmp / ) {
                 iMSCP::Dir->new( dirname => "$maildir/$_" )->make(
                     {
