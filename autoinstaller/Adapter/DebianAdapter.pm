@@ -492,7 +492,7 @@ sub _processPackagesFile
     }
 
     my $arch = `dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null`;
-    if ( $? != 0 || !$arch ) {
+    if ( $? >> 8 != 0 || !$arch ) {
         error( "Couldn't determine OS architecture" );
         return 1;
     }
