@@ -148,10 +148,8 @@ function client_editMailAccount()
                 showBadRequestErrorPage(); # Customer should never goes here excepted if it try to bypass js code
             }
 
-            if ($mailQuotaLimitBytes > floor($customerEmailQuotaLimitBytes - $customerMailboxesQuotaSumBytes)) {
-                set_page_message(
-                    tr('Mail quota cannot be bigger than %s', bytesHuman($mailQuotaLimitBytes, NULL, 0)), 'error'
-                );
+            if ($mailQuotaLimitBytes > $customerEmailQuotaLimitBytes - $customerMailboxesQuotaSumBytes) {
+                set_page_message(tr('Mail quota cannot be bigger than %s', bytesHuman($mailQuotaLimitBytes)), 'error');
                 return false;
             }
         }
@@ -276,18 +274,18 @@ function client_generatePage($tpl)
         $tpl->assign([
             'TR_QUOTA'  => tohtml(tr('Quota in MiB (0 ∞)')),
             'MIN_QUOTA' => 0,
-            'MAX_QUOTA' => tohtml(floor(PHP_INT_MAX), 'htmlAttr'),
+            'MAX_QUOTA' => tohtml(17592186044416, 'htmlAttr'), // Max quota = MySQL UNSIGNED BIGINT in MiB
             'QUOTA'     => isset($_POST['quota'])
                 ? tohtml(filter_digits($_POST['quota']), 'htmlAttr')
-                : tohtml(floor($mailData['quota'] / 1048576), 'htmlAttr')
+                : tohtml($mailData['quota'] / 1048576, 'htmlAttr') // Bytes to MiB conversion
         ]);
         $mailTypeForwardOnly = false;
     } else {
         if ($customerEmailQuotaLimitBytes > $customerMailboxesQuotaSumBytes) {
-            $mailQuotaLimitBytes = floor($customerEmailQuotaLimitBytes - $customerMailboxesQuotaSumBytes);
-            $mailMaxQuotaLimitMib = floor($mailQuotaLimitBytes / 1048576);
+            $mailQuotaLimitBytes = $customerEmailQuotaLimitBytes - $customerMailboxesQuotaSumBytes;
+            $mailMaxQuotaLimitMib = $mailQuotaLimitBytes / 1048576;
             $mailQuotaLimitMiB = ($mailData['quota'] > 0 && $mailData['quota'] < $mailQuotaLimitBytes)
-                ? floor($mailData['quota'] / 1048576)
+                ? $mailData['quota'] / 1048576
                 : min(10, $mailMaxQuotaLimitMib);
             $mailTypeForwardOnly = false;
         } else {
@@ -300,7 +298,7 @@ function client_generatePage($tpl)
         }
 
         $tpl->assign([
-            'TR_QUOTA'  => tohtml(tr('Quota in MiB (Max: %s)', bytesHuman($mailQuotaLimitBytes, NULL, 0))),
+            'TR_QUOTA'  => tohtml(tr('Quota in MiB (Max: %s)', bytesHuman($mailQuotaLimitBytes))),
             'MIN_QUOTA' => 1,
             'MAX_QUOTA' => tohtml($mailMaxQuotaLimitMib, 'htmlAttr'),
             'QUOTA'     => isset($_POST['quota'])

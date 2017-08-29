@@ -2752,13 +2752,16 @@ function bytesHuman($bytes, $unit = NULL, $decimals = 2, $power = 1024)
 /**
  * Humanize a mebibyte value
  *
- * @param int $value mebibyte value
- * @param string $unit OPTIONAL Unit to calculate to ('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB')
+ * @see bytesHuman()
+ * @param int|float $mebibyte Mebibyte value to convert
+ * @param string $unit OPTIONAL Unit to calculate to
+ * @param int $decimals OPTIONAL Number of decimal to be show
+ * @param int $power OPTIONAL Power to use for conversion (1024 or 1000)
  * @return string
  */
-function mebibyteHuman($value, $unit = NULL)
+function mebibyteHuman($mebibyte, $unit = NULL, $decimals = 2, $power = 1024)
 {
-    return bytesHuman($value * 1048576, $unit);
+    return bytesHuman($mebibyte * 1048576, $unit, $decimals, $power);
 }
 
 /**

@@ -119,7 +119,7 @@ function admin_generatePage($tpl, $domainId)
         'VL_DISK_LIMIT'              => bytesHuman($diskspaceLimitBytes),
         'VL_MAIL_ACCOUNTS_USED'      => get_customer_mail_accounts_count($domainId),
         'VL_MAIL_ACCOUNTS_LIMIT'     => translate_limit_value($domainData['domain_mailacc_limit']),
-        'VL_MAIL_QUOTA_USED'         => $quota,
+        'VL_MAIL_QUOTA_USED'         => tohtml($quota),
         'VL_MAIL_QUOTA_LIMIT'        => ($domainData['domain_mailacc_limit'] != '-1') ? $quotaLimit : tr('Disabled'),
         'VL_FTP_ACCOUNTS_USED'       => get_customer_ftp_users_count($domainData['domain_admin_id']),
         'VL_FTP_ACCOUNTS_LIMIT'      => translate_limit_value($domainData['domain_ftpacc_limit']),

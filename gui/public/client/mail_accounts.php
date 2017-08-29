@@ -218,7 +218,8 @@ function generateMailAccountsList($tpl, $mainDmnId)
 
     while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
         $mailQuotaInfo = '-';
-        
+        $quotaPercent = 0;
+
         foreach (explode(',', $row['mail_type']) as $type) {
             $isCatchall = (strpos($type, 'catchall') !== FALSE);
 
@@ -249,20 +250,20 @@ function generateMailAccountsList($tpl, $mainDmnId)
                 ) : false;
 
             if ($maildirsize === false) {
-                $mailQuotaInfo = ($row['quota']) ? '- / ' . bytesHuman($row['quota'], NULL, 1) : '- / ∞';
+                $mailQuotaInfo = ($row['quota']) ? '- / ' . bytesHuman($row['quota']) : '- / ∞';
                 continue;
             }
 
             $quotaPercent = min(100, round(($maildirsize['byte_count'] / max(1, $maildirsize['quota_bytes'])) * 100));
 
-            if(!$overQuota && $quotaPercent >= 100) {
+            if (!$overQuota && $quotaPercent >= 100) {
                 $overQuota = true;
             }
 
             $mailQuotaInfo = sprintf(
-                ($quotaPercent >= 95) ? '<span style="color:red">%s / %s (%.0f%%)</span>' : '%s / %s (%.0f%%)',
-                bytesHuman($maildirsize['byte_count'], NULL, 1),
-                bytesHuman($maildirsize['quota_bytes'], NULL, 1),
+                '%s / %s (%.0f%%)',
+                bytesHuman($maildirsize['byte_count']),
+                bytesHuman($maildirsize['quota_bytes']),
                 $quotaPercent
             );
         }
@@ -274,6 +275,14 @@ function generateMailAccountsList($tpl, $mainDmnId)
             'MAIL_ACCOUNT_QUOTA_INFO' => tohtml($mailQuotaInfo),
             'MAIL_ACCOUNT_STATUS'     => translate_dmn_status($row['status'])
         ]);
+
+        if ($quotaPercent >= 95) {
+            $tpl->assign('MAIL_ACCOUNT_NO_QUOTA_WARNING', '');
+            $tpl->parse('MAIL_ACCOUNT_QUOTA_WARNING', 'mail_account_quota_warning');
+        } else {
+            $tpl->assign('MAIL_ACCOUNT_QUOTA_WARNING', '');
+            $tpl->parse('MAIL_ACCOUNT_NO_QUOTA_WARNING', 'mail_account_no_quota_warning');
+        }
 
         generateDynamicTplParts($tpl, $row['mail_acc'], $row['mail_type'], $row['status'], $row['mail_auto_respond']);
         $tpl->parse('MAIL_ACCOUNT', '.mail_account');
@@ -371,6 +380,8 @@ $tpl->define_dynamic([
     'mail_account_autoresponder_activation_link'   => 'mail_account_autoresponder',
     'mail_account_autoresponder_deactivation_link' => 'mail_account_autoresponder',
     'mail_account_forward_list'                    => 'mail_account',
+    'mail_account_no_quota_warning'                => 'mail_account',
+    'mail_account_quota_warning'                   => 'mail_account',
     'mail_account_action_links'                    => 'mail_account',
     'mail_account_edit_link'                       => 'mail_account_action_links',
     'mail_account_delete_link'                     => 'mail_account_action_links',

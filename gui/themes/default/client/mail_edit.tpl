@@ -23,10 +23,11 @@
             fixQuotaField();
         } else {
             $("input[name='account_type']").on('change', function () {
+                    fixQuotaField();
+
                     if ($(this).val() === '1') { // Normal email account
                         $("#tr_password, #tr_password_rep, #tr_quota").show();
                         $("#tr_forward_list").hide();
-                        fixQuotaField();
                         return;
                     }
 
@@ -42,8 +43,6 @@
                 }
             ).parent().find(':checked').trigger('change'); // Initialize form
         }
-
-        fixQuotaField(); // Make sure that quota field value is correct on initialization
     });
 </script>
 <form name="client_mail_edit" action="mail_edit.php?id={MAIL_ID}" method="post" autocomplete="off">

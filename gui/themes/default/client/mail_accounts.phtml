@@ -107,7 +107,14 @@
                 <!--/email_off-->
                 <!-- EDP: mail_account_forward_list -->
             </td>
-            <td>{MAIL_ACCOUNT_QUOTA_INFO}</td>
+            <td>
+                <!-- BDP: mail_account_no_quota_warning -->
+                {MAIL_ACCOUNT_QUOTA_INFO}
+                <!-- EDP: mail_account_no_quota_warning -->
+                <!-- BDP: mail_account_quota_warning -->
+                    <span style="color:red">{MAIL_ACCOUNT_QUOTA_INFO}</span>
+                <!-- EDP: mail_account_quota_warning -->
+            </td>
             <td>{MAIL_ACCOUNT_STATUS}</td>
             <td>
                 <!-- BDP: mail_account_action_links -->

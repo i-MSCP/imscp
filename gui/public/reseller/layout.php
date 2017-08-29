@@ -106,18 +106,15 @@ if (isset($_POST['uaction'])) {
     }
 }
 
-$html_selected = ' selected';
-$userId = $_SESSION['user_id'];
-
-if (layout_isMainMenuLabelsVisible($userId)) {
+if (layout_isMainMenuLabelsVisible($_SESSION['user_id'])) {
     $tpl->assign([
-        'MAIN_MENU_SHOW_LABELS_ON'  => $html_selected,
+        'MAIN_MENU_SHOW_LABELS_ON'  => ' selected',
         'MAIN_MENU_SHOW_LABELS_OFF' => ''
     ]);
 } else {
     $tpl->assign([
         'MAIN_MENU_SHOW_LABELS_ON'  => '',
-        'MAIN_MENU_SHOW_LABELS_OFF' => $html_selected
+        'MAIN_MENU_SHOW_LABELS_OFF' => ' selected'
     ]);
 }
 
