@@ -28,7 +28,7 @@
         });
 
         // Ensure that software installer is disabled when PHP is disabled
-        $("#php_no").on('change', (function() {
+        $("#php_no").on("change", function() {
             if($(this).is(":checked")) {
                 $("#softwares_installer_no").prop("checked", true).button("refresh");
             }
@@ -79,7 +79,7 @@
         </tr>
         <tr>
             <td><label for="mail_quota">{TR_MAIL_QUOTA}</label></td>
-            <td><input id="mail_quota" type="number" name="mail_quota" min="0" value="{MAIL_QUOTA}"></td>
+            <td><input id="mail_quota" type="number" name="mail_quota" min="0" max="17592186044416" value="{MAIL_QUOTA}"></td>
         </tr>
         <!-- EDP: nb_mail -->
         <!-- BDP: nb_ftp -->
@@ -102,11 +102,11 @@
         <!-- EDP: nb_sqlu -->
         <tr>
             <td><label for="traff">{TR_MONTHLY_TRAFFIC}</label></td>
-            <td><input id="traff" type="number" name="traff" min="0" value="{MONTHLY_TRAFFIC}"></td>
+            <td><input id="traff" type="number" name="traff" min="0" max="17592186044416" value="{MONTHLY_TRAFFIC}"></td>
         </tr>
         <tr>
             <td><label for="disk">{TR_MAX_DISKSPACE}</label></td>
-            <td><input id="disk" type="number" name="disk" min="0" value="{MAX_DISKSPACE}"></td>
+            <td><input id="disk" type="number" name="disk" min="0" max="17592186044416" value="{MAX_DISKSPACE}"></td>
         </tr>
         </tbody>
     </table>

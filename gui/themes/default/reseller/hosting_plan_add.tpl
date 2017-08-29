@@ -79,7 +79,7 @@
         </tr>
         <tr>
             <td><label for="mail_quota">{TR_MAIL_QUOTA}</label></td>
-            <td><input type="number" name="mail_quota" id="mail_quota" min="0" value="{MAIL_QUOTA_VALUE}"></td>
+            <td><input type="number" name="mail_quota" id="mail_quota" min="0" max="17592186044416" value="{MAIL_QUOTA_VALUE}"></td>
         </tr>
         <!-- EDP: nb_mail -->
         <!-- BDP: nb_ftp -->
@@ -102,11 +102,11 @@
         <!-- EDP: nb_sqlu -->
         <tr>
             <td><label for="traff">{TR_MAX_TRAFFIC}</label></td>
-            <td><input type="number" name="traff" id="traff" min="0" value="{TRAFF_VALUE}"></td>
+            <td><input type="number" name="traff" id="traff" min="0" max="17592186044416" value="{TRAFF_VALUE}"></td>
         </tr>
         <tr>
             <td><label for="disk">{TR_DISK_LIMIT}</label></td>
-            <td><input type="number" name="disk" id="disk" min="0" value="{DISK_VALUE}"></td>
+            <td><input type="number" name="disk" id="disk" min="0" max="17592186044416" value="{DISK_VALUE}"></td>
         </tr>
         </tbody>
     </table>

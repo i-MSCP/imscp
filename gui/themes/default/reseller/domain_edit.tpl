@@ -115,7 +115,7 @@
         </tr>
         <tr>
             <td><label for="mail_quota">{TR_MAIL_QUOTA}</label></td>
-            <td><input type="number" name="mail_quota" id="mail_quota" min="0" value="{MAIL_QUOTA}"></td>
+            <td><input type="number" name="mail_quota" id="mail_quota" min="0" max="17592186044416" value="{MAIL_QUOTA}"></td>
             <td>{TR_CUSTOMER_MAIL_QUOTA_COMSUPTION}</td>
             <td>{TR_NO_AVAILABLE}</td>
         </tr>
@@ -144,13 +144,13 @@
         <!-- EDP: sql_db_and_users_limit_block -->
         <tr>
             <td><label for="domain_traffic_limit">{TR_TRAFFIC_LIMIT}</label></td>
-            <td><input type="number" name="domain_traffic_limit" id="domain_traffic_limit" min="0" value="{TRAFFIC_LIMIT}"></td>
+            <td><input type="number" name="domain_traffic_limit" id="domain_traffic_limit" min="0" max="17592186044416" value="{TRAFFIC_LIMIT}"></td>
             <td>{TR_CUSTOMER_TRAFFIC_COMSUPTION}</td>
             <td>{TR_RESELLER_TRAFFIC_COMSUPTION}</td>
         </tr>
         <tr>
             <td><label for="domain_disk_limit">{TR_DISK_LIMIT}</label></td>
-            <td><input type="number" name="domain_disk_limit" id="domain_disk_limit" min="0" value="{DISK_LIMIT}"></td>
+            <td><input type="number" name="domain_disk_limit" id="domain_disk_limit" min="0" max="17592186044416" value="{DISK_LIMIT}"></td>
             <td>{TR_CUSTOMER_DISKPACE_COMSUPTION}</td>
             <td>{TR_RESELLER_DISKPACE_COMSUPTION}</td>
         </tr>

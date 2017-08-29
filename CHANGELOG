@@ -71,6 +71,7 @@ FRONTEND
     Fixed: Sets the SQL `group_concat_max_len' variable on a per session basis
     Fixed: Sets the SQL modes on a per session basis to 'NO_AUTO_CREATE_USER' (backward compatibility with plugins)
     Fixed: Several integer type casting issues
+    Fixed: Uncaught SyntaxError: missing ) after argument list (user_add2.tpl, hosting_plan_edit.tpl -- reseller UI level)
     Fixed: When an user personal email is being modified, the user identity must be updated as well (session)
     Fixed: Wrong default mail accounts accounting (missing hostmaster email, wrong SQL queries...)
     Merged: Server statistics interfaces (admin UI)

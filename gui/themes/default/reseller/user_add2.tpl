@@ -5,7 +5,7 @@
             $("#" + k).css("border-color", "#ca1d11");
         });
 
-        $("#nreseller_max_disk").on('keyup mouseup paste copy cut', function () {
+        $("#nreseller_max_disk").on("keyup mouseup paste copy cut", function () {
             var storageQuotaLimit = parseInt($(this).val());
             var $mailQuotaField = $("#nreseller_mail_quota");
 
@@ -18,8 +18,8 @@
         });
 
         // Ensure that PHP is enabled when software installer is enabled
-        $("#software_allowed_yes").on('change', function() {
-            if($(this).is(':checked')) {
+        $("#software_allowed_yes").on("change", function() {
+            if($(this).is(":checked")) {
                 var $el = $("#php_yes");
                 if(!$el.is(":checked")) {
                     $el.prop("checked", true).button("refresh").trigger("change");
@@ -28,7 +28,7 @@
         });
 
         // Ensure that software installer is disabled when PHP is disabled
-        $("#php_no").on('change', (function() {
+        $("#php_no").on("change", function() {
             if($(this).is(":checked")) {
                 $("#software_allowed_no").prop("checked", true).button("refresh");
             }
@@ -75,7 +75,7 @@
         </tr>
         <tr>
             <td><label for="nreseller_mail_quota">{TR_MAIL_QUOTA}</label></td>
-            <td><input type="number" name="nreseller_mail_quota" id="nreseller_mail_quota" min="0" value="{MAIL_QUOTA}"></td>
+            <td><input type="number" name="nreseller_mail_quota" id="nreseller_mail_quota" min="0" max="17592186044416" value="{MAIL_QUOTA}"></td>
         </tr>
         <!-- EDP: mail_feature -->
         <!-- BDP: ftp_feature -->
@@ -96,11 +96,11 @@
         <!-- EDP: sql_feature -->
         <tr>
             <td><label for="nreseller_max_traffic">{TR_MAX_TRAFFIC}</label></td>
-            <td><input type="number" name="nreseller_max_traffic" id="nreseller_max_traffic" min="0"  value="{VL_MAX_TRAFFIC}"></td>
+            <td><input type="number" name="nreseller_max_traffic" id="nreseller_max_traffic" min="0" max="17592186044416" value="{VL_MAX_TRAFFIC}"></td>
         </tr>
         <tr>
             <td><label for="nreseller_max_disk">{TR_MAX_DISK_USAGE}</label></td>
-            <td><input type="number" name="nreseller_max_disk" id="nreseller_max_disk" min="0" value="{VL_MAX_DISK_USAGE}"></td>
+            <td><input type="number" name="nreseller_max_disk" id="nreseller_max_disk" min="0" max="17592186044416" value="{VL_MAX_DISK_USAGE}"></td>
         </tr>
         </tbody>
     </table>
