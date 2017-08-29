@@ -70,6 +70,7 @@
             </package>
             <package post_install_tasks="phpenmod curl">php5.6-curl</package>
             <package post_install_tasks="phpenmod gd">php5.6-gd</package>
+            <package post_install_tasks="phpenmod gmp">php5.6-gmp</package>
             <package post_install_tasks="phpenmod imap">php5.6-imap</package>
             <package post_install_tasks="phpenmod intl">php5.6-intl</package>
             <package post_install_tasks="phpenmod json">php5.6-json</package>
@@ -107,6 +108,7 @@
             </package>
             <package post_install_tasks="phpenmod curl">php7.0-curl</package>
             <package post_install_tasks="phpenmod gd">php7.0-gd</package>
+            <package post_install_tasks="phpenmod gmp">php7.0-gmp</package>
             <package post_install_tasks="phpenmod imap">php7.0-imap</package>
             <package post_install_tasks="phpenmod intl">php7.0-intl</package>
             <package post_install_tasks="phpenmod json">php7.0-json</package>
@@ -145,6 +147,7 @@
             </package>
             <package post_install_tasks="phpenmod curl">php7.1-curl</package>
             <package post_install_tasks="phpenmod gd">php7.1-gd</package>
+            <package post_install_tasks="phpenmod gmp">php7.1-gmp</package>
             <package post_install_tasks="phpenmod imap">php7.1-imap</package>
             <package post_install_tasks="phpenmod intl">php7.1-intl</package>
             <package post_install_tasks="phpenmod json">php7.1-json</package>

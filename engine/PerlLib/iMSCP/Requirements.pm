@@ -123,10 +123,10 @@ sub _init
             min_version     => '5.6.0',
             max_version     => '7.1.999', # Arbitrary minor version is intentional. We only want reject PHP >= 7.2
             modules         => [
-                'ctype', 'curl', 'date', 'dom', 'fileinfo', 'filter', 'ftp', 'gd', 'gettext', 'hash', 'iconv', 'imap',
-                'intl', 'json', 'libxml', 'mbstring', 'mcrypt', 'mysqli', 'openssl', 'pcntl', 'pcre', 'PDO',
-                'pdo_mysql', 'Phar', 'posix', 'pspell', 'Reflection', 'session', 'SimpleXML', 'sockets', 'SPL', 'xml',
-                'xmlreader', 'xmlwriter', 'zip', 'zlib'
+                'apc', 'apcu', 'ctype', 'curl', 'date', 'dom', 'fileinfo', 'filter', 'ftp', 'gd', 'gettext', 'gmp',
+                'hash', 'iconv', 'imap', 'intl', 'json', 'libxml', 'mbstring', 'mcrypt', 'mysqlnd', 'mysqli', 'openssl',
+                'pcntl', 'pcre', 'PDO', 'pdo_mysql', 'Phar', 'posix', 'pspell', 'Reflection', 'session', 'SimpleXML',
+                'sockets', 'SPL', 'xml', 'xmlreader', 'xmlwriter', 'zip', 'zlib', 'Zend OPcache'
             ]
         },
         Perl => {
@@ -202,7 +202,7 @@ sub _checkPerlModules
     my ($self) = @_;
 
     my @missingModules = ();
-    while ( my ($moduleName, $moduleVersion) = each %{$self->{'Perl'}->{'modules'}} ) {
+    while ( my ($moduleName, $moduleVersion) = each %{$self->{'programs'}->{'Perl'}->{'modules'}} ) {
         push( @missingModules, $moduleName ) unless check_install( module => $moduleName, version => $moduleVersion );
     }
 
@@ -228,12 +228,12 @@ sub _checkPhpModules
     my ($self) = @_;
 
     open my $fh, '-|', 'php', '-d', 'date.timezone=UTC', '-m' or die(
-        sprintf( "Couldn't pipe to php: %s", $! )
+        sprintf( "Couldn't pipe to php command: %s", $! )
     );
     chomp( my @modules = <$fh> );
 
     my @missingModules = ();
-    for my $module( @{$self->{'PHP'}->{'modules'}} ) {
+    for my $module( @{$self->{'programs'}->{'PHP'}->{'modules'}} ) {
         push @missingModules, $module unless grep(lc( $_ ) eq lc( $module ), @modules);
     }
 

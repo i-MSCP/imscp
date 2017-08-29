@@ -5,6 +5,7 @@ Git 1.5.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
+    Added: `apcu', `apc', `gmp' and `Zend Opcache' PHP modules to the list of required PHP module (iMSCP::Requirements)
     Added: Flag allowing to ignore mount operation failures (iMSCP::Mount)
     Added: iMSCP::EventManager::hasListener method -- Allow to check whether or not a listener is registered for an event
     Added: Support for multiple <character-string>s in TXT/SPF DNS resource records (Modules::CustomDNS)
@@ -15,6 +16,7 @@ BACKEND
     Fixed: Couldn't remove IP address: Unknown action requested for server IP (Modules::ServerIP)
     Fixed: Don't set permissions on parent directories as this can lead to several permission issues (iMSCP::Dir::make)
     Fixed: Permissions on files are always preverved when copying directory recursively
+    Fixed: Routines for Perl/PHP modules requirements checking are broken (iMSCP::Requirements)
     Fixed: Sets the SQL `group_concat_max_len' variable on a per session basis
     Fixed: Sets the SQL modes on a per session basis to `NO_AUTO_CREATE_USER' (backward compatibility with plugins)
     Removed: `FETCH_MODE' option from iMSCP::Database::mysql
