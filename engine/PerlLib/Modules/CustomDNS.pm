@@ -98,8 +98,8 @@ sub process
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'AutoCommit'} = 0;
         local $self->{'_dbh'}->{'RaiseError'} = 1;
+        $self->{'_dbh'}->begin_work();
 
         $self->{'_dbh'}->do(
             "

@@ -161,7 +161,7 @@ sub startTransaction
     my ($self) = @_;
 
     my $dbh = $self->getRawDb();
-    $dbh->{'AutoCommit'} = 0;
+    $dbh->begin_work();
     $dbh->{'RaiseError'} = 1;
     $dbh;
 }

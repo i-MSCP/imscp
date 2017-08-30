@@ -67,7 +67,7 @@ sub run
 
         for ( keys %{$rows} ) {
             eval {
-                local $dbh->{'AutoCommit'} = 0;
+                $dbh->begin_work();
 
                 if ( $row->{'value'} ) { # SMTP/IMAP/POP disabled
                     $dbh->do(

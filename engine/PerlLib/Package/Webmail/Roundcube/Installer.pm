@@ -507,9 +507,9 @@ sub _updateDatabase
         my $oldDbName = $db->useDatabase( $roundcubeDbName );
 
         {
-            local $dbh->{'AutoCommit'} = 0;
             local $dbh->{'RaiseError'} = 1;
 
+            $dbh->begin_work();
             $dbh->do( 'UPDATE IGNORE users SET mail_host = ?', undef, $hostname );
             $dbh->do( 'DELETE FROM users WHERE mail_host <> ?', undef, $hostname );
             $dbh->commit();

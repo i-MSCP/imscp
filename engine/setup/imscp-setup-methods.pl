@@ -336,7 +336,9 @@ sub setupDbTasks
                     "
                         UPDATE $table
                         SET $field = 'tochange'
-                        WHERE $field NOT IN('toadd', 'torestore', 'todisable', 'disabled', 'ordered', 'todelete')
+                        WHERE $field NOT IN(
+                            'toadd', 'torestore', 'toenable', 'todisable', 'disabled', 'ordered', 'todelete'
+                        )
                         $aditionalCondition
                     "
                 );

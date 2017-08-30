@@ -1016,8 +1016,9 @@ sub getTraffic
 
     local $@;
     eval {
-        local $dbh->{'AutoCommit'} = 0;
         local $dbh->{'RaiseError'} = 1;
+
+        $dbh->begin_work();
 
         my $sth = $dbh->prepare( 'SELECT vhost, bytes FROM httpd_vlogger WHERE ldate <= ? FOR UPDATE' );
         $sth->execute( $ldate );

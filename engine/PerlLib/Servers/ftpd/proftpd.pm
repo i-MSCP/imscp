@@ -202,9 +202,9 @@ sub addUser
 
     local $@;
     eval {
-        local $dbh->{'AutoCommit'} = 0;
         local $dbh->{'RaiseError'} = 1;
 
+        $dbh->begin_work();
         $dbh->do(
             'UPDATE ftp_users SET uid = ?, gid = ? WHERE admin_id = ?',
             undef, $data->{'USER_SYS_UID'}, $data->{'USER_SYS_GID'}, $data->{'USER_ID'}

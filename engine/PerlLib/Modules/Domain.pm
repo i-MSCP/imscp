@@ -167,6 +167,7 @@ sub restore
     eval {
         # Restore know databases only
         local $self->{'_dbh'}->{'RaiseError'} = 1;
+
         my @rows = $self->{'_dbh'}->selectall_array(
             'SELECT sqld_name FROM sql_database WHERE domain_id = ?', { Slice => {} }, $self->{'domain_id'}
         );
@@ -224,8 +225,7 @@ sub restore
             $rs == 0 or die( $stderr || 'Unknown error' );
 
             eval {
-                local $self->{'_dbh'}->{'AutoCommit'} = 0;
-
+                $self->{'_dbh'}->begin_work();
                 $self->{'_dbh'}->do(
                     'UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', undef, 'torestore',
                     $self->{'domain_id'}

@@ -133,8 +133,7 @@ sub quotaFiles
 
             local $@;
             eval {
-                local $dbh->{'AutoCommit'} = 0;
-
+                $dbh->begin_work();
                 $dbh->do(
                     '
                         UPDATE domain
@@ -143,12 +142,10 @@ sub quotaFiles
                     ',
                     undef, $totalDiskUsage, $webDiskUsage, $mailDiskUsage, $dmnId
                 );
-
                 $dbh->do(
                     'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?',
                     undef, $totalDiskUsage, $dmnData->{'domain_name'}
                 );
-
                 $dbh->commit();
             };
             if ( $@ ) {

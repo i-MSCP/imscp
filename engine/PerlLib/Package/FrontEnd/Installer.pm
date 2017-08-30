@@ -637,8 +637,8 @@ sub _setupMasterAdmin
         my $oldDbName = $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ));
 
         {
-            local $dbh->{'AutoCommit'} = 0;
             local $dbh->{'RaiseError'} = 1;
+            $dbh->begin_work();
 
             my $row = $dbh->selectrow_hashref( "SELECT admin_id FROM admin WHERE admin_name = ?", undef, $loginOld );
 
