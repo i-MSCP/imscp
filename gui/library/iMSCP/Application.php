@@ -272,12 +272,12 @@ class Application
 
         $this->setErrorHandling();
         $this->setEncoding();
+        $this->startSession();
         $this->loadCoreFunctions();
         $this->loadConfig($configFilePath);
         $this->setTimezone();
         $this->initDatabase();
         $this->mergeConfig();
-        $this->startSession();
         $this->setUserGuiProperties();
         $this->initLocalization();
         $this->initLayout();
@@ -528,8 +528,16 @@ class Application
             $this->getCache()->setOption('caching', false);
 
             // Warn administrator that DEBUG mode is enabled and that resources caching isn't available
-            $this->getEventsManager()->registerListener(Events::onAdminScriptStart, function () {
-                if (is_xhr()) return;
+            $this->getEventsManager()->registerListener([
+                Events::onAdminScriptStart, Events::onResellerScriptStart, Events::onClientScriptStart
+            ], function () {
+                if (is_xhr()
+                    || ($_SESSION['user_type'] != 'admin'
+                        && (!isset($_SESSION['logged_from_type']) || $_SESSION['logged_from_type'] != 'admin')
+                    )
+                ) {
+                    return;
+                }
 
                 $this->getEventsManager()->registerListener(Events::onGeneratePageMessages, function (Event $e) {
                     /** @var \Zend_Controller_Action_Helper_FlashMessenger $flashMessenger */

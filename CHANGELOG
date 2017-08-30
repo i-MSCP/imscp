@@ -55,7 +55,7 @@ FRONTEND
     Enhancement: Make customers able to select more than one catch-all address in catch-all addresses drop-down list
     Enhancement: Make customers able to show/hide default mail accounts
     Enhancement: Protect default mail accounts against change and deletion (default)
-    Enhancement: Show a warning at the administrator UI level when the DEBUG mode is enabled
+    Enhancement: Show a warning when the DEBUG mode is enabled (administrators only)
     Enhancement: Show Catch-all accounts in client mail accounts overview interface
     Fixed: Action links for FTP accounts must be hidden when they have a status other than 'ok'
     Fixed: All SQL queries must be compatible with the `ONLY_FULL_GROUP_BY' SQL mode
