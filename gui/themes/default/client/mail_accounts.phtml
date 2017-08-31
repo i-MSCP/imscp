@@ -1,7 +1,7 @@
 <!-- BDP: mail_feature -->
 <script>
     function action_delete(link, subject) {
-        return jQuery.imscp.confirmOnclick(link, sprintf("<?= tojs('Are you sure you want to delete this %%s account?'); ?>", subject));
+        return jQuery.imscp.confirmOnclick(link, sprintf("<?= tojs(tr('Are you sure you want to delete this %%s account?')); ?>", subject));
     }
 
     $(function () {
@@ -48,7 +48,7 @@
                 return false;
             }
 
-            return jQuery.imscp.confirm("<?= tojs('Are you sure you want to delete all selected mail accounts?'); ?>", function(ret) {
+            return jQuery.imscp.confirm("<?= tojs(tr('Are you sure you want to delete all selected mail accounts?')); ?>", function(ret) {
                 if(ret) {
                     $(input).closest("form").submit();
                 }
