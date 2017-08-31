@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-28 14:47+0000\n"
+"POT-Creation-Date: 2017-08-31 22:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Torsten Widmann <info@goover.de>, 2017\n"
 "Language-Team: Danish (Denmark) (https://www.transifex.com/i-mscp/teams/576/da_DK/)\n"
@@ -645,6 +645,9 @@ msgstr "Er du sikker på du vil slette %s?"
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Er du sikker på du vil slette alle lukkede support tikkets?"
 
+msgid "Are you sure you want to delete all selected mail accounts?"
+msgstr ""
+
 msgid "Are you sure you want to delete all tickets?"
 msgstr "Er du sikker på du vil slette alle support tikkets?"
 
@@ -682,6 +685,10 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` protected area?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete this %%s account?"
 msgstr ""
 
 msgid "Are you sure you want to delete this DNS record?"
@@ -2408,13 +2415,6 @@ msgstr "Import i lokal softwarearkiv"
 
 msgid "Import new language file"
 msgstr "Importere ny sprogfil"
-
-msgid ""
-"In case domain expiration date is 'N/A', the expiration date will be set "
-"from today."
-msgstr ""
-"I tilfælde af domæne udløbsdatoen er 'N/A', vil udløbsdatoen blive fastsat "
-"fra i dag."
 
 msgid "In front"
 msgstr "Foran"

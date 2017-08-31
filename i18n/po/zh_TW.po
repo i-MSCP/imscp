@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-28 14:47+0000\n"
+"POT-Creation-Date: 2017-08-31 22:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/i-mscp/teams/576/zh_TW/)\n"
@@ -631,6 +631,9 @@ msgstr "你確定想刪除%s?"
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "您確定要刪除所有已結案的服務單?"
 
+msgid "Are you sure you want to delete all selected mail accounts?"
+msgstr ""
+
 msgid "Are you sure you want to delete all tickets?"
 msgstr "您確定要刪除所有服務單?"
 
@@ -669,6 +672,10 @@ msgstr "你確定想刪除此 `%%s` FTP 使用者?"
 #, php-format
 msgid "Are you sure you want to delete the `%%s` protected area?"
 msgstr "你確定想刪除此 `%%s` 受保護區域?"
+
+#, php-format
+msgid "Are you sure you want to delete this %%s account?"
+msgstr ""
 
 msgid "Are you sure you want to delete this DNS record?"
 msgstr "您確定要刪除這個 DNS 紀錄?"
@@ -2525,11 +2532,6 @@ msgstr "匯入到本機軟體庫"
 
 msgid "Import new language file"
 msgstr "匯入新的語言檔"
-
-msgid ""
-"In case domain expiration date is 'N/A', the expiration date will be set "
-"from today."
-msgstr "這個網域的過期日是 '沒有'，此過期日將會設定從今天起。"
 
 msgid "In front"
 msgstr "在前面"

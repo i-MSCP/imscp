@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-28 14:47+0000\n"
+"POT-Creation-Date: 2017-08-31 22:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Torsten Widmann <info@goover.de>, 2017\n"
 "Language-Team: English (United Kingdom) (https://www.transifex.com/i-mscp/teams/576/en_GB/)\n"
@@ -651,6 +651,9 @@ msgstr "Are you sure you want to delete %s?"
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Are you sure you want to delete all closed tickets?"
 
+msgid "Are you sure you want to delete all selected mail accounts?"
+msgstr ""
+
 msgid "Are you sure you want to delete all tickets?"
 msgstr "Are you sure you want to delete all tickets?"
 
@@ -689,6 +692,10 @@ msgstr "Are you sure you want to delete the `%%s` FTP user?"
 #, php-format
 msgid "Are you sure you want to delete the `%%s` protected area?"
 msgstr "Are you sure you want to delete the `%%s` protected area?"
+
+#, php-format
+msgid "Are you sure you want to delete this %%s account?"
+msgstr ""
 
 msgid "Are you sure you want to delete this DNS record?"
 msgstr "Are you sure you want to delete this DNS record?"
@@ -2578,13 +2585,6 @@ msgstr "Import in local repository"
 
 msgid "Import new language file"
 msgstr "Import new language file"
-
-msgid ""
-"In case domain expiration date is 'N/A', the expiration date will be set "
-"from today."
-msgstr ""
-"In case domain expiration date is 'N/A', the expiration date will be set "
-"from today."
 
 msgid "In front"
 msgstr "In front"

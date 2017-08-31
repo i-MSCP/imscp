@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-28 14:47+0000\n"
+"POT-Creation-Date: 2017-08-31 22:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Oleg Olegov <>, 2017\n"
 "Language-Team: Russian (Russia) (https://www.transifex.com/i-mscp/teams/576/ru_RU/)\n"
@@ -658,6 +658,9 @@ msgstr "Вы уверены что хотите удалить %s?"
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Вы уверены, что хотите удалить все закрытые тикеты?"
 
+msgid "Are you sure you want to delete all selected mail accounts?"
+msgstr ""
+
 msgid "Are you sure you want to delete all tickets?"
 msgstr "Вы уверены, что хотите удалить все тикеты?"
 
@@ -696,6 +699,10 @@ msgstr "Вы уверены, что хотите удалить пользова
 #, php-format
 msgid "Are you sure you want to delete the `%%s` protected area?"
 msgstr "Вы уверены, что хотите удалить защищённую зону %%s ?"
+
+#, php-format
+msgid "Are you sure you want to delete this %%s account?"
+msgstr ""
 
 msgid "Are you sure you want to delete this DNS record?"
 msgstr "Вы уверены, что хотите удалить эту DNS запись?"
@@ -2597,13 +2604,6 @@ msgstr "Импортировать"
 
 msgid "Import new language file"
 msgstr "Импортировать новый языковой файл"
-
-msgid ""
-"In case domain expiration date is 'N/A', the expiration date will be set "
-"from today."
-msgstr ""
-"Поскольку дата истечения доменов 'N/A', дата истечения будет выставлена с "
-"сегодняшнего дня."
 
 msgid "In front"
 msgstr "Спереди"

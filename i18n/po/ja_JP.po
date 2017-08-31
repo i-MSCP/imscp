@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-28 14:47+0000\n"
+"POT-Creation-Date: 2017-08-31 22:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Japanese (Japan) (https://www.transifex.com/i-mscp/teams/576/ja_JP/)\n"
@@ -632,6 +632,9 @@ msgstr "%s を削除してもよろしいですか？"
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "全ての解決したチケットを削除してもよろしいですか？"
 
+msgid "Are you sure you want to delete all selected mail accounts?"
+msgstr ""
+
 msgid "Are you sure you want to delete all tickets?"
 msgstr "全てのチケットを削除してもよろしいですか？"
 
@@ -670,6 +673,10 @@ msgstr "FTPユーザ`%%s` を削除してもよろしいですか？"
 #, php-format
 msgid "Are you sure you want to delete the `%%s` protected area?"
 msgstr "保護領域`%%s` を削除してもよろしいですか？"
+
+#, php-format
+msgid "Are you sure you want to delete this %%s account?"
+msgstr ""
 
 msgid "Are you sure you want to delete this DNS record?"
 msgstr "このDNSレコードを削除してもよろしいですか？"
@@ -2530,11 +2537,6 @@ msgstr "ローカルリポジトリのインポート"
 
 msgid "Import new language file"
 msgstr "言語ファイル"
-
-msgid ""
-"In case domain expiration date is 'N/A', the expiration date will be set "
-"from today."
-msgstr "ドメインの有効期限が'N/A'である場合には、有効期限が今日から設定されます。"
 
 msgid "In front"
 msgstr "前に"

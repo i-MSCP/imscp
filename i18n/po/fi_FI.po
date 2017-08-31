@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-28 14:47+0000\n"
+"POT-Creation-Date: 2017-08-31 22:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jari <info@jkwebdesign.fi>, 2017\n"
 "Language-Team: Finnish (Finland) (https://www.transifex.com/i-mscp/teams/576/fi_FI/)\n"
@@ -639,6 +639,9 @@ msgstr "Oletko varma että haluat poistaa %s?"
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Oletko varma, että haluat poistaa kaikki suljetut tukipyynnöt?"
 
+msgid "Are you sure you want to delete all selected mail accounts?"
+msgstr ""
+
 msgid "Are you sure you want to delete all tickets?"
 msgstr "Oletko varma, että haluat poistaa kaikki tukipyynnöt?"
 
@@ -676,6 +679,10 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` protected area?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete this %%s account?"
 msgstr ""
 
 msgid "Are you sure you want to delete this DNS record?"
@@ -2403,13 +2410,6 @@ msgstr "Tuo paikallinen varasto"
 
 msgid "Import new language file"
 msgstr "Tuo uusi kielitiedosto"
-
-msgid ""
-"In case domain expiration date is 'N/A', the expiration date will be set "
-"from today."
-msgstr ""
-"Mikäli domainin vanhentumispäivää ei ole asetettu', vanhentumispäiväksi "
-"asetetaan tämä päivä."
 
 msgid "In front"
 msgstr "Edessä"

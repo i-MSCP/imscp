@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-28 14:47+0000\n"
+"POT-Creation-Date: 2017-08-31 22:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Dániel Bozsóki <bozsokidaniel5@gmail.com>, 2017\n"
 "Language-Team: Hungarian (Hungary) (https://www.transifex.com/i-mscp/teams/576/hu_HU/)\n"
@@ -662,6 +662,9 @@ msgstr "Biztosan szeretné törölni a következőt: %s ?"
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Biztosan szeretné töröln az összes lezárt hibajegyet?"
 
+msgid "Are you sure you want to delete all selected mail accounts?"
+msgstr ""
+
 msgid "Are you sure you want to delete all tickets?"
 msgstr "Biztosan szeretné törölni az összes hibajegyet?"
 
@@ -700,6 +703,10 @@ msgstr "Biztosan törölni akarod a(z)  `%%s` FTP felhasználót?"
 #, php-format
 msgid "Are you sure you want to delete the `%%s` protected area?"
 msgstr "Biztosan törölni akarod a(z) `%%s` védett területet?"
+
+#, php-format
+msgid "Are you sure you want to delete this %%s account?"
+msgstr ""
 
 msgid "Are you sure you want to delete this DNS record?"
 msgstr "Biztosan törli ezt a DNS rekordot?"
@@ -2601,13 +2608,6 @@ msgstr "Import a helyi raktárba"
 
 msgid "Import new language file"
 msgstr "Új nyelvi fájl importálása"
-
-msgid ""
-"In case domain expiration date is 'N/A', the expiration date will be set "
-"from today."
-msgstr ""
-"Abban az esetben, ha a domain lejáratának dátuma „N/A”, akkor a lejáratának "
-"dátuma ma lesz."
 
 msgid "In front"
 msgstr "Elején"

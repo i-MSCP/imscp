@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-28 14:47+0000\n"
+"POT-Creation-Date: 2017-08-31 22:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Darwin <darko.vintar@gmail.com>, 2017\n"
 "Language-Team: Slovenian (https://www.transifex.com/i-mscp/teams/576/sl/)\n"
@@ -637,6 +637,9 @@ msgstr "Ali ste prepričani, da želite izbrisati (%s)"
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr ""
 
+msgid "Are you sure you want to delete all selected mail accounts?"
+msgstr ""
+
 msgid "Are you sure you want to delete all tickets?"
 msgstr ""
 
@@ -674,6 +677,10 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the `%%s` protected area?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete this %%s account?"
 msgstr ""
 
 msgid "Are you sure you want to delete this DNS record?"
@@ -2383,11 +2390,6 @@ msgid "Import in local repository"
 msgstr ""
 
 msgid "Import new language file"
-msgstr ""
-
-msgid ""
-"In case domain expiration date is 'N/A', the expiration date will be set "
-"from today."
 msgstr ""
 
 msgid "In front"
