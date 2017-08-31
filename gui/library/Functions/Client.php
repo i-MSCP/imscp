@@ -325,7 +325,7 @@ function parseMaildirsize($maildirsizeFilePath, $refreshData = false)
 {
     if (!$refreshData
         && !empty($_SESSION['maildirsize'][$maildirsizeFilePath])
-        && $_SESSION['maildirsize'][$maildirsizeFilePath]['TIMESTAMP'] < (time() + 300)
+        && $_SESSION['maildirsize'][$maildirsizeFilePath]['timestamp'] < (time() + 300)
     ) {
         return $_SESSION['maildirsize'][$maildirsizeFilePath];
     }
