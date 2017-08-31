@@ -371,7 +371,7 @@ function addDomainAlias()
         // Create default email addresses if needed
         if (iMSCP_Registry::get('config')['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
             createDefaultMailAccounts(
-                $mainDmnProps['domain_id'], $mainDmnProps['admin_email'], $domainAliasNameAscii, MT_ALIAS_FORWARD, $id
+                $mainDmnProps['domain_id'], $mainDmnProps['email'], $domainAliasNameAscii, MT_ALIAS_FORWARD, $id
             );
         }
 
@@ -395,7 +395,6 @@ function addDomainAlias()
         throw $e;
     }
 
-    exit;
     return true;
 }
 

@@ -741,8 +741,6 @@ function client_saveDnsRecord($dnsRecordId)
                 $error = true;
             }
 
-            #print $dnsRecordData;
-            #exit;
             break;
         default :
             showBadRequestErrorPage();
