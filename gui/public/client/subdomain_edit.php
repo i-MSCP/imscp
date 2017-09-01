@@ -271,12 +271,14 @@ function client_editSubdomain()
     }
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditSubdomain, [
-        'subdomainId'  => $subdomainId,
-        'mountPoint'   => $subdomainData['subdomain_mount'],
-        'documentRoot' => $documentRoot,
-        'forwardUrl'   => $forwardUrl,
-        'forwardType'  => $forwardType,
-        'forwardHost'  => $forwardHost
+        'subdomainId'   => $subdomainId,
+        'subdomainName' => $subdomainData['subdomain_name'],
+        'subdomainType' => $subdomainType,
+        'mountPoint'    => $subdomainData['subdomain_mount'],
+        'documentRoot'  => $documentRoot,
+        'forwardUrl'    => $forwardUrl,
+        'forwardType'   => $forwardType,
+        'forwardHost'   => $forwardHost
     ]);
 
     if ($subdomainType == 'dmn') {
@@ -298,12 +300,14 @@ function client_editSubdomain()
     exec_query($query, [$documentRoot, $forwardUrl, $forwardType, $forwardHost, 'tochange', $subdomainId]);
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditSubdomain, [
-        'subdomainId'  => $subdomainId,
-        'mountPoint'   => $subdomainData['subdomain_mount'],
-        'documentRoot' => $documentRoot,
-        'forwardUrl'   => $forwardUrl,
-        'forwardType'  => $forwardType,
-        'forwardHost'  => $forwardHost
+        'subdomainId'   => $subdomainId,
+        'subdomainName' => $subdomainData['subdomain_name'],
+        'subdomainType' => $subdomainType,
+        'mountPoint'    => $subdomainData['subdomain_mount'],
+        'documentRoot'  => $documentRoot,
+        'forwardUrl'    => $forwardUrl,
+        'forwardType'   => $forwardType,
+        'forwardHost'   => $forwardHost
     ]);
 
     send_request();

@@ -162,10 +162,10 @@ function addCustomer(Form $form)
         $adminId = $db->insertId();
 
         EventsManager::getInstance()->dispatch(Events::onBeforeAddDomain, [
-            'domainName'    => $dmnName,
             'createdBy'     => $_SESSION['user_id'],
             'customerId'    => $adminId,
             'customerEmail' => $form->getValue('email'),
+            'domainName'    => $dmnName,
             'mountPoint'    => '/',
             'documentRoot'  => '/htdocs',
             'forwardUrl'    => $dmnUrlForward,
@@ -223,11 +223,11 @@ function addCustomer(Form $form)
         update_reseller_c_props($_SESSION['user_id']);
 
         EventsManager::getInstance()->dispatch(Events::onAfterAddDomain, [
-            'domainName'    => $dmnName,
             'createdBy'     => $_SESSION['user_id'],
             'customerId'    => $adminId,
             'customerEmail' => $form->getValue('email'),
             'domainId'      => $dmnId,
+            'domainName'    => $dmnName,
             'mountPoint'    => '/',
             'documentRoot'  => '/htdocs',
             'forwardUrl'    => $dmnUrlForward,

@@ -2813,6 +2813,9 @@ function getFirstDayOfMonth($month = NULL, $year = NULL)
     $date->setYear($year ?: date('Y'));
     $date->setMonth($month ?: date('n'));
     $date->setDay(1);
+    $date->setHour(0);
+    $date->setMinute(0);
+    $date->setSecond(0);
 
     return $date->getTimestamp();
 }
@@ -2830,6 +2833,9 @@ function getLastDayOfMonth($month = NULL, $year = NULL)
     $date->setYear($year ?: date('Y'));
     $date->setMonth($month ?: date('n'));
     $date->setDay($date->get(Zend_Date::MONTH_DAYS));
+    $date->setHour(23);
+    $date->setMinute(59);
+    $date->setSecond(59);
 
     return $date->getTimestamp();
 }

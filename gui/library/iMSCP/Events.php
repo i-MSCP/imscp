@@ -842,11 +842,11 @@ class iMSCP_Events
      * Event triggered before domain (customer account) addition
      *
      * iMSCP_Events_Event object parameters:
-     *  - domainName    : Domain name
      *  - createdBy     : Reseller unique identifier
      *  - customerId    : Customer unique identifier
      *  - customerEmail : Customer email address
-     *  - mountPoint    : Domainmount point
+     *  - domainName    : Domain name
+     *  - mountPoint    : Domain mount point
      *  - documentRoot  : Domain document root
      *  - forwardUrl    : Domain forward URL, 'no' if no forward URL has been set
      *  - forwardType   : Domain forward URL type
@@ -860,12 +860,12 @@ class iMSCP_Events
      * Event triggered after domain (customer account) addition
      *
      * iMSCP_Events_Event object parameters:
-     *  - domainId      : Domain unique identifier
-     *  - domainName    : Domain name
      *  - createdBy     : Reseller unique identifier
      *  - customerId    : Customer unique identifier
      *  - customerEmail : Customer email address
-     *  - mountPoint    : Domainmount point
+     *  - domainId      : Domain unique identifier
+     *  - domainName    : Domain name
+     *  - mountPoint    : Domain mount point
      *  - documentRoot  : Domain document root
      *  - forwardUrl    : Domain forward URL, 'no' if no forward URL has been set
      *  - forwardType   : Domain forward URL type
@@ -880,6 +880,7 @@ class iMSCP_Events
      *
      * iMSCP_Events_Event object parameters:
      *  - domainId     : Domain unique identifier
+     *  - domainName   : Domain name
      *  - mountPoint   : Domainmount point
      *  - documentRoot : Domain document root
      *  - forwardUrl   : Domain forward URL, 'no' if no forward URL has been set
@@ -895,6 +896,7 @@ class iMSCP_Events
      *
      * iMSCP_Events_Event object parameters:
      *  - domainId     : Domain unique identifier
+     *  - domainName   : Domain name
      *  - mountPoint   : Domainmount point
      *  - documentRoot : Domain document root
      *  - forwardUrl   : Domain forward URL, 'no' if no forward URL has been
