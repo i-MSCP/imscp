@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-31 22:15+0000\n"
+"POT-Creation-Date: 2017-09-01 21:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: stanimir iliev <stanimiriliev@gmail.com>, 2017\n"
 "Language-Team: Bulgarian (Bulgaria) (https://www.transifex.com/i-mscp/teams/576/bg_BG/)\n"
@@ -651,6 +651,7 @@ msgstr "Сигурни ли сте , че искате да изтриете в�
 
 msgid "Are you sure you want to delete all selected mail accounts?"
 msgstr ""
+"Сигурни ли сте, че искате да изтриете всички избрани пощенските кутии?"
 
 msgid "Are you sure you want to delete all tickets?"
 msgstr "Сигурни ли сте , че искате да изтриете всички билети?"
@@ -5433,10 +5434,10 @@ msgstr ""
 msgid "You must select a file to upload/download."
 msgstr "Трябва да изберете файл за качване/сваляне."
 
-msgid "You must select a least one mail account to delete."
+msgid "You must select at least one catch-all address."
 msgstr ""
 
-msgid "You must select at least one catch-all address."
+msgid "You must select at least one mail account to delete."
 msgstr ""
 
 msgid "You must select at least one plugin."

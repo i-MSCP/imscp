@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-31 22:15+0000\n"
+"POT-Creation-Date: 2017-09-01 21:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/i-mscp/teams/576/zh_TW/)\n"
@@ -632,7 +632,7 @@ msgid "Are you sure you want to delete all closed tickets?"
 msgstr "您確定要刪除所有已結案的服務單?"
 
 msgid "Are you sure you want to delete all selected mail accounts?"
-msgstr ""
+msgstr "您確定要刪除所有選擇的郵件帳號?"
 
 msgid "Are you sure you want to delete all tickets?"
 msgstr "您確定要刪除所有服務單?"
@@ -675,7 +675,7 @@ msgstr "你確定想刪除此 `%%s` 受保護區域?"
 
 #, php-format
 msgid "Are you sure you want to delete this %%s account?"
-msgstr ""
+msgstr "您确定要删除此%%s帐户吗？"
 
 msgid "Are you sure you want to delete this DNS record?"
 msgstr "您確定要刪除這個 DNS 紀錄?"
@@ -4973,7 +4973,7 @@ msgstr "無效"
 msgid ""
 "Unescaped quote found in '%s' field. A quote that is not a string delimiter "
 "must be escaped."
-msgstr ""
+msgstr "在'%s'字段中找到未转义的引号。 必须转义不是字符串分隔符的引号。"
 
 msgid "Unexpected error"
 msgstr "無法預期的錯誤"
@@ -5543,11 +5543,11 @@ msgstr "您必須選擇至少一個須上傳的檔案。"
 msgid "You must select a file to upload/download."
 msgstr "您必須選擇一個檔案來上傳/下載。"
 
-msgid "You must select a least one mail account to delete."
-msgstr "您必須選擇至少一個欲刪除的Mail 帳號。"
-
 msgid "You must select at least one catch-all address."
 msgstr "您必須選擇至少一個抓取外部位址。"
+
+msgid "You must select at least one mail account to delete."
+msgstr ""
 
 msgid "You must select at least one plugin."
 msgstr "您必須選擇至少一個插件。"

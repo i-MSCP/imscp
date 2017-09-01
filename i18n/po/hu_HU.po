@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-31 22:15+0000\n"
+"POT-Creation-Date: 2017-09-01 21:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Dániel Bozsóki <bozsokidaniel5@gmail.com>, 2017\n"
 "Language-Team: Hungarian (Hungary) (https://www.transifex.com/i-mscp/teams/576/hu_HU/)\n"
@@ -663,7 +663,7 @@ msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Biztosan szeretné töröln az összes lezárt hibajegyet?"
 
 msgid "Are you sure you want to delete all selected mail accounts?"
-msgstr ""
+msgstr "Biztos, hogy törölni szeretné az összes megjelölt email fiókot?"
 
 msgid "Are you sure you want to delete all tickets?"
 msgstr "Biztosan szeretné törölni az összes hibajegyet?"
@@ -5699,10 +5699,10 @@ msgstr "Meg kell adni a feltöltendő fájlt"
 msgid "You must select a file to upload/download."
 msgstr "Meg kell adni a feltöltendő/letöltendő fájlt"
 
-msgid "You must select a least one mail account to delete."
-msgstr "Legalább egy postafiókot ki kell jelölni a törléshez."
-
 msgid "You must select at least one catch-all address."
+msgstr ""
+
+msgid "You must select at least one mail account to delete."
 msgstr ""
 
 msgid "You must select at least one plugin."

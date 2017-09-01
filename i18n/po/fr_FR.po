@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-08-31 22:15+0000\n"
+"POT-Creation-Date: 2017-09-01 21:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: krok <krok@totalynet.fr>, 2017\n"
 "Language-Team: French (France) (https://www.transifex.com/i-mscp/teams/576/fr_FR/)\n"
@@ -669,6 +669,8 @@ msgstr "Êtes-vous certains de vouloir supprimer tous les tickets fermés ?"
 
 msgid "Are you sure you want to delete all selected mail accounts?"
 msgstr ""
+"Êtes-vous sûr de vouloir supprimer tous les comptes de messagerie "
+"sélectionnés ?"
 
 msgid "Are you sure you want to delete all tickets?"
 msgstr "Etes-vous certain de supprimer tous les tickets ?"
@@ -713,7 +715,7 @@ msgstr "Êtes-vous certain de vouloir supprimer la zone protégée `%%s`?"
 
 #, php-format
 msgid "Are you sure you want to delete this %%s account?"
-msgstr ""
+msgstr "Êtes-vous certain de vouloir supprimer ce compte %%s?"
 
 msgid "Are you sure you want to delete this DNS record?"
 msgstr "Etes-vous certain de vouloir supprimer cet enregistrement DNS?"
@@ -5834,11 +5836,11 @@ msgstr "Vous devez sélectionner un fichier à téléverser."
 msgid "You must select a file to upload/download."
 msgstr "Vous devez sélectionner un fichier à téléverser/télécharger."
 
-msgid "You must select a least one mail account to delete."
-msgstr "Vous devez sélectionner au moins un compte e-mail à supprimer."
-
 msgid "You must select at least one catch-all address."
 msgstr "Vous devez sélectionner au moins une adresse catch-alll."
+
+msgid "You must select at least one mail account to delete."
+msgstr ""
 
 msgid "You must select at least one plugin."
 msgstr "Vous devez choisir au moins une extension."
