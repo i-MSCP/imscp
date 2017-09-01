@@ -76,7 +76,10 @@ function addSqlDb()
         EventsManager::getInstance()->dispatch(Events::onBeforeAddSqlDb, ['dbName' => $dbName]);
         execute_query(sprintf('CREATE DATABASE IF NOT EXISTS %s', quoteIdentifier($dbName)));
         exec_query('INSERT INTO sql_database (domain_id, sqld_name) VALUES (?, ?)', [$mainDmnId, $dbName]);
-        EventsManager::getInstance()->dispatch(Events::onAfterAddSqlDb, ['dbName' => $dbName]);
+        EventsManager::getInstance()->dispatch(Events::onAfterAddSqlDb, [
+            'dbId'   => iMSCP_Database::getInstance()->insertId(),
+            'dbName' => $dbName
+        ]);
         set_page_message(tr('SQL database successfully created.'), 'success');
         write_log(
             sprintf('A new database (%s) has been created by %s', $dbName, $_SESSION['user_logged']), E_USER_NOTICE

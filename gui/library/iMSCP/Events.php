@@ -24,142 +24,122 @@
 class iMSCP_Events
 {
     /**
-     * The onAfterApplicationBootstrap event is triggered after i-MSCP application has been bootstrapped.
+     * Event triggered after i-MSCP application has been fully bootstrapped
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - context: An instance of iMSCP\Application, the context in which the event is triggered
+     * iMSCP_Events_Event object parameter:
+     *  - context : iMSCP\Application instance
      *
      * @const string
      */
     const onAfterApplicationBootstrap = 'onAfterApplicationBootstrap';
 
     /**
-     * The onLoginScriptStart event is triggered at the very beginning of Login script.
-     *
-     * The listeners receive an iMSCP_Events_Event object.
+     * Event triggered at starting of login action script
      *
      * @const string
      */
     const onLoginScriptStart = 'onLoginScriptStart';
 
     /**
-     * The onLoginScriptEnd event is triggered at the end of Login script.
+     * Event triggered at end of login script
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - templateEngine: An iMSCP_pTemplate object
+     * iMSCP_Events_Event object parameter:
+     *  - templateEngine : An iMSCP_pTemplate object
      *
      * @const string
      */
     const onLoginScriptEnd = 'onLoginScriptEnd';
 
     /**
-     * The onLostPasswordScriptStart event is triggered at the very beginning of the LostPassword script.
-     *
-     * The listeners receive an iMSCP_Events_Event object.
+     * Event triggered at starting of the lostpassword action script
      *
      * @const string
      */
     const onLostPasswordScriptStart = 'onLostPasswordScriptStart';
 
     /**
-     * The onLostPasswordScriptEnd event is triggered at the end of the LostPassword script.
+     * Event triggered at end of the lostpassword action script
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - templateEngine: An iMSCP_pTemplate object
+     * iMSCP_Events_Event object parameter:
+     *  - templateEngine : iMSCP_pTemplate instance
      *
      * @const string
      */
     const onLostPasswordScriptEnd = 'onLostPasswordScriptEnd';
 
     /**
-     * The onSharedScriptStart event is triggered at the very beginning of shared scripts.
-     *
-     * The listeners receive an iMSCP_Events_Event object.
+     * Event triggered at starting of shared scripts
      *
      * @const string
      */
     const onSharedScriptStart = 'onSharedScriptStart';
 
     /**
-     * The onSharedScriptEnd event is triggered at the end of shared scripts.
+     * Event triggered at end of shared scripts
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - templateEngine: An iMSCP_pTemplate object
+     * iMSCP_Events_Event object parameter:
+     *  - templateEngine : iMSCP_pTemplate instance
      *
      * @const string
      */
     const onSharedScriptEnd = 'onSharedScriptEnd';
 
     /**
-     * The onAdminScriptStart event is triggered at the very beginning of admin scripts.
-     *
-     * The listeners receive an iMSCP_Events_Event object.
+     * Event triggered at starting of admin scripts
      *
      * @const string
      */
     const onAdminScriptStart = 'onAdminScriptStart';
 
     /**
-     * The onAdminScriptEnd event is triggered at the end of admin scripts.
+     * Event triggered at end of admin scripts
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - templateEngine: An iMSCP_pTemplate object
+     * iMSCP_Events_Event object parameter:
+     *  - templateEngine : iMSCP_pTemplate instance
      *
      * @const string
      */
     const onAdminScriptEnd = 'onAdminScriptEnd';
 
     /**
-     * The onResellerScriptStart event is triggered at the very beginning of reseller scripts.
-     *
-     * The listeners receive an iMSCP_Events_Event object.
+     * Event triggered at starting of reseller scripts
      *
      * @const string
      */
     const onResellerScriptStart = 'onResellerScriptStart';
 
     /**
-     * The onResellerScriptEnd event is triggered at the end of reseller scripts.
+     * Event triggered at end of reseller scripts
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - templateEngine: An iMSCP_pTemplate object
+     * iMSCP_Events_Event object parameter:
+     *  - templateEngine : iMSCP_pTemplate instance
      *
      * @const string
      */
     const onResellerScriptEnd = 'onResellerScriptEnd';
 
     /**
-     * The onClientScriptStart event is triggered at the very beginning of client scripts.
-     *
-     * The listeners receive an iMSCP_Events_Event object.
+     * Event triggered at starting of client scripts
      *
      * @const string
      */
     const onClientScriptStart = 'onClientScriptStart';
 
     /**
-     * The onClientScriptEnd event is triggered at the end of client scripts.
+     * Event triggered end of client scripts
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - templateEngine: An iMSCP_pTemplate object
+     * iMSCP_Events_Event object parameter:
+     *  - templateEngine: An iMSCP_pTemplate instance
      *
      * @const string
      */
     const onClientScriptEnd = 'onClientScriptEnd';
 
     /**
-     * The onExceptionToBrowserStart event is triggered before of exception browser write process.
+     * Event triggered before of exception browser write process
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - context: An iMSCP_Exception_Writer_Browser object, the context in which the event is triggered
+     * iMSCP_Events_Event object parameter:
+     *  - context : iMSCP_Exception_Writer_Browser object
      *
      * @deprecated This event is deprecated and no longer triggered
      * @const string
@@ -167,12 +147,11 @@ class iMSCP_Events
     const onExceptionToBrowserStart = 'onExceptionToBrowserStart';
 
     /**
-     * The onExceptionToBrowserEnd event is triggered at the end of exception browser write process.
+     * Event triggered at end of exception browser write process
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - context: An iMSCP_Exception_Writer_Browser object, the context in which the event is triggered
-     * - templateEngine: An iMSCP_pTemplate object
+     * iMSCP_Events_Event object parameters:
+     *  - context        : iMSCP_Exception_Writer_Browser object
+     *  - templateEngine : iMSCP_pTemplate instance
      *
      * @deprecated This event is deprecated and no longer triggered
      * @const string
@@ -180,1222 +159,1179 @@ class iMSCP_Events
     const onExceptionToBrowserEnd = 'onExceptionToBrowserEnd';
 
     /**
-     * The onBeforeAuthentication event is triggered before the authentication process.
+     * Event triggered before the authentication process
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - context: An iMSCP_Authentication object, the context in which the event is triggered
+     * iMSCP_Events_Event object parameter:
+     *  - context : iMSCP_Authentication instance
      *
      * @const string
      */
     const onBeforeAuthentication = 'onBeforeAuthentication';
 
     /**
-     * The onAuthentication event is triggered on authentication process.
+     * Event triggered on authentication process
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - context: An iMSCP_Authentication object, the context in which the event is triggered
-     * - username: Username
-     * - password: Password
+     * iMSCP_Events_Event object parameters:
+     *  - context  : iMSCP_Authentication instance
+     *  - username : Username
+     *  - password : Password
      *
      * @const string
      */
     const onAuthentication = 'onAuthentication';
 
     /**
-     * The onBeforeAuthentication event is triggered after the authentication process.
+     * Event triggered after the authentication process
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - context: An iMSCP_Authentication object, the context in which the event is triggered
-     * - authResult: An iMSCP_Authentication_Result object, an object that encapsulates the authentication result
+     * iMSCP_Events_Event object parameters:
+     *  - context    : iMSCP_Authentication instance
+     *  - authResult : iMSCP_Authentication_Result object
      *
      * @const string
      */
     const onAfterAuthentication = 'onAfterAuthentication';
 
     /**
-     * The onBeforeSetIdentity event is triggered before a user identity is set (logged on).
+     * Event triggered before an user identity is set
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - context: An iMSCP_Authentication object, the context in which the event is triggered
-     * - identity: A stdClass object that contains the user identity data
+     * iMSCP_Events_Event object parameters:
+     *  - context  : iMSCP_Authentication instance
+     *  - identity : stdClass object containing user identity data
      *
      * @const string
      */
     const onBeforeSetIdentity = 'onBeforeSetIdentity';
 
     /**
-     * The onAfterSetIdentity event is triggered after a user identity is set (logged on).
+     * Event triggered after an user identity is set
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - context: An iMSCP_Authentication object, the context in which the event is triggered
+     * iMSCP_Events_Event object parameter:
+     *  - context : iMSCP_Authentication instance
      *
      * @const string
      */
     const  onAfterSetIdentity = 'onAfterSetIdentity';
 
     /**
-     * The onBeforeUnsetIdentity event is triggered before a user identity is unset (logout).
+     * Event triggered before an user identity is unset.
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - context: An iMSCP_Authentication object, the context in which the event is triggered
+     * iMSCP_Events_Event object parameter:
+     *  - context : iMSCP_Authentication instance
      *
      * @const string
      */
     const onBeforeUnsetIdentity = 'onBeforeUnsetIdentity';
 
     /**
-     * The onAfterUnsetIdentity event is triggered after a user identity is unset (logged on).
+     * Event triggered after an user identity is unset
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - context: An iMSCP_Authentication object, the context in which the event is triggered
+     * iMSCP_Events_Event object parameter:
+     *  - context : iMSCP_Authentication instance
      *
      * @const string
      */
     const  onAfterUnsetIdentity = 'onAfterUnsetIdentity';
 
     /**
-     * The onBeforeEditAdminGeneralSettings event is triggered before the admin general settings are edited.
-     *
-     * The listeners receive an iMSCP_Events_Event object.
+     * Event triggered before editing of admin general settings
      *
      * @const string
      */
     const onBeforeEditAdminGeneralSettings = 'onBeforeEditAdminGeneralSettings';
 
     /**
-     * The onAfterEditAdminGeneralSettings event is triggered after the admin general settings are edited.
-     *
-     * The listeners receive an iMSCP_Events_Event object.
+     * Event triggered after editing of admin general settings
      *
      * @const string
      */
     const onAfterEditAdminGeneralSettings = 'onAfterEditAdminGeneralSettings';
 
     /**
-     * The onBeforeAddUser event is triggered before an user is created.
+     * Event triggered before user addition (admin, reseller)
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - userData: New user login and personal data
+     * iMSCP_Events_Event object parameter:
+     *  - userData : User login and personal data
      *
      * @const string
      */
     const onBeforeAddUser = 'onBeforeAddUser';
 
     /**
-     * The onAfterAddUser event is triggered after an user is created.
+     * Event triggered after user addition (admin, reseller)
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - userId: An integer representing the ID of user that has been edited
-     * - userData: New user login and personal data
+     * iMSCP_Events_Event objectparameters:
+     *  - userId   : User unique identifier
+     *  - userData : User login and personal data
      *
      * @const string
      */
     const onAfterAddUser = 'onAfterAddUser';
 
     /**
-     * The onBeforeEditUser event is triggered before an user is edited.
+     * Event triggered before user edition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - userId: An integer representing the ID of user being edited
-     * - userData: New user login and personal data (depending on context data can be unavailable or not)
+     * iMSCP_Events_Event objectparameters:
+     *  - userId   : User unique identifier
+     *  - userData : User login and personal data. Depending on context, some
+     *               data can be unavailable
      *
      * @const string
      */
     const onBeforeEditUser = 'onBeforeEditUser';
 
     /**
-     * The onAfterEditUser event is triggered after an user is edited.
+     * Event triggered after user edition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - userId: An integer representing the ID of user that has been edited
-     * - userData: New user login and personal data (depending on context data can be unavailable or not)
+     * iMSCP_Events_Event object parameters:
+     *  - userId   : User unique identifier
+     *  - userData : User login and personal data Depending on context, some
+     *               data can be unavailable
      *
      * @const string
      */
     const onAfterEditUser = 'onAfterEditUser';
 
     /**
-     * The onBeforeDeleteUser event is triggered before an user is deleted.
+     * Event triggered before user deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - userId: An integer representing the ID of user being deleted
+     * iMSCP_Events_Event object parameter:
+     *  - userId : User unique identifier
      *
      * @const string
      */
     const onBeforeDeleteUser = 'onBeforeDeleteUser';
 
     /**
-     * The onAfterDeleteUser event is triggered after an user is deleted.
+     * Event triggered after user deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - userId: An integer representing the ID of user that has been deleted
+     * iMSCP_Events_Event object parameter:
+     *  - userId : User unique identifier
      *
      * @const string
      */
     const onAfterDeleteUser = 'onAfterDeleteUser';
 
     /**
-     * The onBeforeDeleteDomain event is triggered before a customer account is deleted.
+     * Event triggered before customer account deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     *  - customerId: An integer representing the ID of customer being deleted
+     * iMSCP_Events_Event object parameter:
+     *  - customerId : Customer unique identifier
      *
      * @const string
      */
     const onBeforeDeleteCustomer = 'onBeforeDeleteCustomer';
 
     /**
-     * The onAfterDeleteCustomer event is triggered after a customer account is deleted.
+     * Event triggered after customer account deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - customerId: An integer representing the ID of customer that has been deleted
+     * iMSCP_Events_Event object parameter:
+     *  - customerId : Customer unique identifier
      *
      * @const string
      */
     const onAfterDeleteCustomer = 'onAfterDeleteCustomer';
 
     /**
-     * The onBeforeAddFtp event is triggered after an Ftp account is created.
+     * Event triggered before FTP user addition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - ftpUserId: A string representing Ftp account username
-     * - ftpPassword: A string representing Ftp account password
-     * - ftpUserUid: A string representing Ftp user uid
-     * - ftpUserGid: A string representing Ftp user gid
-     * - ftpUserShell: A string representing Ftp user shell
-     * - ftpUserHome: A string representing Ftp user home
+     * iMSCP_Events_Event object parameters:
+     *  - ftpUserId    : FTP user unique identifier
+     *  - ftpPassword  : FTP user password
+     *  - ftpUserUid   : FTP user uid
+     *  - ftpUserGid   : FTP user gid
+     *  - ftpUserShell : FTP user shell
+     *  - ftpUserHome  : FTP user home
      *
      * @const string
      */
     const onBeforeAddFtp = 'onBeforeAddFtp';
 
     /**
-     * The onAfterAddFtp event is triggered after an Ftp account is created.
+     * Event triggered after FTP user addition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - ftpUserId: A string representing Ftp account username
-     * - ftpPassword: A string representing Ftp account password
-     * - ftpUserUid: A string representing Ftp user uid
-     * - ftpUserGid: A string representing Ftp user gid
-     * - ftpUserShell: A string representing Ftp user shell
-     * - ftpUserHome: A string representing Ftp user home
+     * iMSCP_Events_Event object parameters:
+     *  - ftpUserId    : FTP user unique identifier
+     *  - ftpPassword  : FTP user password
+     *  - ftpUserUid   : FTP user uid
+     *  - ftpUserGid   : FTP user gid
+     *  - ftpUserShell : FTP user shell
+     *  - ftpUserHome  : FTP user home
      *
      * @const string
      */
     const onAfterAddFtp = 'onAfterAddFtp';
 
     /**
-     * The onBeforeEditFtp event is triggered before an Ftp account is edited.
+     * Event triggered before FTP user edition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - ftpUserId: A string representing Ftp account username being edited
-     * - ftpPassword: A string representing Ftp account password (empty string if password has not been updated)
-     * - ftpUserHome: A string representing Ftp user home
+     * iMSCP_Events_Event object parameters:
+     *  - ftpUserId   : FTP user unique identifier
+     *  - ftpPassword : FTP user password
+     *  - ftpUserHome : FTP user home
      *
      * @const string
      */
     const onBeforeEditFtp = 'onBeforeEditFtp';
 
     /**
-     * The onAfterEditFtp event is triggered after an Ftp account is edited.
+     * Event triggered after FTP user edition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - ftpUserId: A string representing Ftp account username that has been edited
-     * - ftpPassword: A string representing Ftp account password (empty string if password has not been updated)
-     * - ftpUserHome: A string representing Ftp user home
+     * iMSCP_Events_Event object parameters:
+     *  - ftpUserId   : FTP user unique identifier
+     *  - ftpPassword : FTP user password
+     *  - ftpUserHome : FTP user home
      *
      * @const string
      */
     const onAfterEditFtp = 'onAfterEditFtp';
 
     /**
-     * The onBeforeDeleteFtp event is triggered before an Ftp account is deleted.
+     * Event triggered before FTP user deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - ftpUserId: A string representing Ftp account username being deleted
+     * iMSCP_Events_Event objectparameter:
+     *  - ftpUserId : FTP user unique identifier
      *
      * @const string
      */
     const onBeforeDeleteFtp = 'onBeforeDeleteFtp';
 
     /**
-     * The onAfterDeleteFtp event is triggered after an Ftp account is deleted.
+     * Event triggered after FTP user deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - ftpUserId: A string representing Ftp account username that has been deleted
+     * iMSCP_Events_Event object parameter:
+     *  - ftpUserId : FTP user unique identifier
      *
      * @const string
      */
     const onAfterDeleteFtp = 'onAfterDeleteFtp';
 
     /**
-     * The onBeforeAddSqlUser event is triggered before an Sql user is created.
+     * Event triggered triggered before SQL user addition
      *
-     * The listeners receive an iMSCP_Events_Event object.
+     * iMSCP_Events_Event object parameter:
+     * - SqlUsername     : SQL username
+     * - SqlUserHost     : SQL user host
+     * - SqlUserPassword : SQL user password for new SQL user or empty string
+     * - SqlDatabaseId   : Unique identifier of SQL database to which the SQL
+     *                     user is attached
      *
      * @const string
      */
     const onBeforeAddSqlUser = 'onBeforeAddSqlUser';
 
     /**
-     * The onAfterAddSqlUser event is triggered after an Sql user is created.
+     * Event triggered after SQL user addition
      *
-     * The listeners receive an iMSCP_Events_Event object.
+     * iMSCP_Events_Event object parameter:
+     * - SqlUserId       : SQL user unique identifier
+     * - SqlUsername     : SQL username
+     * - SqlUserHost     : SQL user host
+     * - SqlUserPassword : SQL user password for new SQL user or empty string
+     * - SqlDatabaseId   : Unique identifier of SQL database to which the SQL
+     *                     user is attached
      *
      * @const string
      */
     const onAfterAddSqlUser = 'onAfterAddSqlUser';
 
     /**
-     * The onBeforeEditSqlUser event is triggered before an Sql user is edited.
+     * Event triggered before SQL user edition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - sqlUserId: An integer representing the ID of Sql user being edited
+     * iMSCP_Events_Event object parameter:
+     *  - sqlUserId       : SQL user unique identifier
+     *  - sqlUserPassword : SQL user password
      *
      * @const string
      */
     const onBeforeEditSqlUser = 'onBeforeEditSqlUser';
 
     /**
-     * The onAfterEditSqlUser event is triggered after an Sql user is edited.
+     * Event triggered after SQL user edition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - sqlUserId: An integer representing the ID of Sql user that has been edited
+     * iMSCP_Events_Event object parameter:
+     *  - sqlUserId : SQL user unique identifier
      *
      * @const string
      */
     const onAfterEditSqlUser = 'onAfterEditSqlUser';
 
     /**
-     * The onBeforeDeleteSqlUser event is triggered before an Sql user is deleted.
+     * Event triggered before SQL user deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - sqlUserId: An integer representing the ID of Sql user being deleted
+     * iMSCP_Events_Event objectparameter:
+     *  - sqlUserId : SQL user unique identifier
      *
      * @const string
      */
     const onBeforeDeleteSqlUser = 'onBeforeDeleteSqlUser';
 
     /**
-     * The onAfterDeleteSqlUser event is triggered after an Sql user is deleted.
+     * Event triggered after SQL user deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - sqlUserId: An integer representing the ID of Sql user that has been deleted
+     * iMSCP_Events_Event object parameter:
+     *  - sqlUserId : SQL user unique identifier
      *
      * @const string
      */
     const onAfterDeleteSqlUser = 'onAfterDeleteSqlUser';
 
     /**
-     * The onBeforeAddSqlDb event is triggered before an Sql database is created.
+     * Event triggered before SQL database addition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - dbName: Name of database being added
+     * iMSCP_Events_Event object parameter:
+     *  - dbName : Database name
      *
      * @const string
      */
     const onBeforeAddSqlDb = 'onBeforeAddSqlDb';
 
     /**
-     * The onAfterAddSqlDb event is triggered after an Sql database is created.
+     * Event triggered after SQl database addition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - dbName: Name of database that was added
+     * iMSCP_Events_Event object parameter:
+     * - dbId:  : Database unique identifier
+     * - dbName : Database name
      *
      * @const string
      */
     const onAfterAddSqlDb = 'onAfterAddSqlDb';
 
     /**
-     * The onBeforeDeleteSqlDb event is triggered before an Sql database is deleted.
+     * Event triggered before SQL database deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - sqlDbId: An integer representing the ID of Sql database being deleted
+     * iMSCP_Events_Event object parameter:
+     *  - sqlDbId : SQL database unique identifier
      *
      * @const string
      */
     const onBeforeDeleteSqlDb = 'onBeforeDeleteSqlDb';
 
     /**
-     * The onAfterDeleteSqlDb event is triggered after an Sql database is deleted.
+     * Event triggered after SQL database deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - sqlDbId: An integer representing the ID of Sql database that has been deleted
+     * iMSCP_Events_Event object parameter:
+     *  - sqlDbId : SQL database unique identifier
      *
      * @const string
      */
     const onAfterDeleteSqlDb = 'onAfterSqlDb';
 
     /**
-     * The onBeforeAddCustomDNSrecord event is triggered when a custom DNS record is being added.
+     * Event triggered before custom DNS resource record addition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
+     * iMSCP_Events_Event object parameters:
+     *  - domainId : Customer main domain unique identifier
+     *  - aliasId  : Domain alias unique identifier, 0 if no domain alias
+     *  - name     : DNS resource record name field, including TTL
+     *  - class    : DNS resource record class field
+     *  - type     : DNS resource record type field
+     *  - data     : DNS resource record data field
      *
-     * - domainId: An integer representing the main domain unique identifier
-     * - aliasId:  An integer representing the domain alias unique identifier (0 if the DNS record belongs to the main domain)
-     * - name:     A string representing the DNS record name
-     * - class:    A string representing the DNS record class
-     * - type:     A string representing the DNS record type
-     * - data:     A string representing the DNS record data
+     * @const string
      */
     const onBeforeAddCustomDNSrecord = 'onBeforeAddCustomDNSrecord';
 
     /**
-     * The onAfterAddCustomDNSrecord event is triggered when a custom DNS record has been added.
+     * Event triggered after custom DNS resource record addition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
+     * iMSCP_Events_Event object parameters:
+     *  - id       : DNS resource record unique identifier
+     *  - domainId : Customer main domain unique identifier
+     *  - aliasId  : Domain alias unique identifier, 0 if no domain alias
+     *  - name     : DNS resource record name field, including TTL
+     *  - class    : DNS resource record class field
+     *  - type     : DNS resource record type field
+     *  - data     : DNS resource record data field
      *
-     * - id:       An integer representing the DNS record unique identifier
-     * - domainId: An integer representing the main domain unique identifier
-     * - aliasId:  An integer representing the domain alias unique identifier (0 if the DNS record belongs to the main domain)
-     * - name:     A string representing the DNS record name
-     * - class:    A string representing the DNS record class
-     * - type:     A string representing the DNS record type
-     * - data:     A string representing the DNS record data
+     * @const string
      */
     const onAfterAddCustomDNSrecord = 'onAfterAddCustomDNSrecord';
 
     /**
-     * The onBeforeEditCustomDNSrecord event is triggered when a custom DNS record is being edited.
+     * Event triggered before custom DNS resource record edition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
+     * iMSCP_Events_Event object parameters:
+     *  - id       : DNS resource record unique identifier
+     *  - domainId : Customer main domain unique identifier
+     *  - aliasId  : Domain alias unique identifier, 0 if no domain alias
+     *  - name     : DNS resource record name field, including TTL
+     *  - class    : DNS resource record class field
+     *  - type     : DNS resource record type field
+     *  - data     : DNS resource record data field
      *
-     * - id:       An integer representing the DNS record unique identifier
-     * - domainId: An integer representing the main domain unique identifier
-     * - aliasId:  An integer representing the domain alias unique identifier (0 if the DNS record belongs to the main domain)
-     * - name:     A string representing the DNS record name
-     * - class:    A string representing the DNS record class
-     * - type:     A string representing the DNS record type
-     * - data:     A string representing the DNS record data
+     * @const string
      */
     const onBeforeEditCustomDNSrecord = 'onBeforeEditCustomDNSrecord';
 
     /**
-     * The onAfterEditCustomDNSrecord event is triggered when a custom DNS record has been edited.
+     * Event triggered after custom DNS resource record edition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
+     * iMSCP_Events_Event object parameters:
+     *  - id       : DNS resource record unique identifier
+     *  - domainId : Customer main domain unique identifier
+     *  - aliasId  : Domain alias unique identifier, 0 if no domain alias
+     *  - name     : DNS resource record name field, including TTL
+     *  - class    : DNS resource record class field
+     *  - type     : DNS resource record type field
+     *  - data     : DNS resource record data field
      *
-     * - id:       An integer representing the DNS record unique identifier
-     * - domainId: An integer representing the main domain unique identifier
-     * - aliasId:  An integer representing the domain alias unique identifier (0 if the DNS record belongs to the main domain)
-     * - name:     A string representing the DNS record name
-     * - class:    A string representing the DNS record class
-     * - type:     A string representing the DNS record type
-     * - data:     A string representing the DNS record data
+     * @const string
      */
     const onAfterEditCustomDNSrecord = 'onAfterEditCustomDNSrecord';
 
     /**
-     * The onBeforeDeleteCustomDNSrecord event is triggered when a custom DNS record is being deleted
+     * Event triggered before custom DNS resource record deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
+     * iMSCP_Events_Event object parameter:
+     *  - id : DNS resource record unique identifier
      *
-     * - id: Custom DNS record unique identifier
+     * @const string
      */
     const onBeforeDeleteCustomDNSrecord = 'onBeforeDeleteCustomDNSrecord';
 
     /**
-     * The onAfterDeleteCustomDNSrecord event is triggered when a custom DNS record has been deleted
+     * Event triggered after custom DNS resource record deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
+     * iMSCP_Events_Event object parameter:
+     *  - id : DNS resource record unique identifier
      *
-     * - id: Custom DNS record unique identifier
+     * @const string
      */
     const onAfterDeleteCustomDNSrecord = 'onAfterDeleteCustomDNSrecord';
 
     /**
-     * The onBeforePluginRoute event is triggered before routing of plugins.
+     * Event triggered before plugin routing
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - pluginManager: iMSCP_Plugin_Manager instance
+     * iMSCP_Events_Event object parameter:
+     *  - pluginManager : iMSCP_Plugin_Manager instance
      *
      * @const string
      */
     const onBeforePluginsRoute = 'onBeforePluginsRoute';
 
     /**
-     * The onAfterPluginRoute event is triggered after routing of plugins.
+     * Event triggered after plugin routing
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - pluginManager: iMSCP_Plugin_Manager instance
-     * - scriptPath: Action script path
+     * iMSCP_Events_Event object parameter:
+     *  - pluginManager : iMSCP_Plugin_Manager instance
+     *  - scriptPath    : Plugin action script path
      *
      * @const string
      */
     const onAfterPluginsRoute = 'onAfterPluginsRoute';
 
     /**
-     * The onAfterUpdatePluginList event is triggered before the plugin list is updated.
+     * Event triggered before plugin list update
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - pluginManager: iMSCP_Plugin_Manager instance
+     * iMSCP_Events_Event object parameter:
+     *  - pluginManager : iMSCP_Plugin_Manager instance
      *
      * @const string
      */
     const onBeforeUpdatePluginList = 'onBeforeUpdatePluginList';
 
     /**
-     * The onAfterUpdatePluginList event is triggered before the plugin list is updated.
+     * Event triggered after plugin list update
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - pluginManager: iMSCP_Plugin_Manager instance
+     * iMSCP_Events_Event object parameter:
+     *  - pluginManager : iMSCP_Plugin_Manager instance
      *
      * @const string
      */
     const onAfterUpdatePluginList = 'onAfterUpdatePluginList';
 
     /**
-     * The onBeforeInstallPlugin event is triggered before a plugin installation.
+     * Event triggered before plugin installation
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - pluginManager: iMSCP_Plugin_Manager instance
-     * - pluginName: Plugin name
+     * iMSCP_Events_Event object parameters:
+     *  - pluginManager : iMSCP_Plugin_Manager instance
+     *  - pluginName    : Plugin name
      *
      * @const string
      */
     const onBeforeInstallPlugin = 'onBeforeInstallPlugin';
 
     /**
-     * The onAfterInstallPlugin event is triggered after a plugin installation.
+     * Event triggered after plugin installation
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - pluginManager: iMSCP_Plugin_Manager instance
-     * - pluginName: Plugin name
+     * iMSCP_Events_Event object parameters:
+     *  - pluginManager : iMSCP_Plugin_Manager instance
+     *  - pluginName    : Plugin name
      *
      * @const string
      */
     const onAfterInstallPlugin = 'onAfterInstallPlugin';
 
     /**
-     * The onBeforeEnablePlugin event is triggered before a plugin activation.
+     * Event triggered before plugin activation
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - pluginManager: iMSCP_Plugin_Manager instance
-     * - pluginName: Plugin name
+     * iMSCP_Events_Event object parameters:
+     *  - pluginManager : iMSCP_Plugin_Manager instance
+     *  - pluginName    : Plugin name
      *
      * @const string
      */
     const onBeforeEnablePlugin = 'onBeforeEnablePlugin';
 
     /**
-     * The onAfterEnablePlugin event is triggered after a plugin activation.
+     * Event triggered after plugin activation
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - pluginManager: iMSCP_Plugin_Manager instance
-     * - pluginName: Plugin name
+     * iMSCP_Events_Event object parameters:
+     *  - pluginManager : iMSCP_Plugin_Manager instance
+     *  - pluginName    : Plugin name
      *
      * @const string
      */
     const onAfterEnablePlugin = 'onAfterEnablePlugin';
 
     /**
-     * The onBeforeDisablePlugin event is triggered before a plugin deactivation.
+     * Event triggered before plugin deactivation
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - pluginManager: iMSCP_Plugin_Manager instance
-     * - pluginName: Plugin name
+     * iMSCP_Events_Event object parameter:
+     *  - pluginManager : iMSCP_Plugin_Manager instance
+     *  - pluginName    : Plugin name
      *
      * @const string
      */
     const onBeforeDisablePlugin = 'onBeforeDisablePlugin';
 
     /**
-     * The onAfterDisablePlugin event is triggered after a plugin deactivation.
+     * Event triggered after plugin deactivation
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - pluginManager: iMSCP_Plugin_Manager instance
-     * - pluginName: Plugin name
+     * iMSCP_Events_Event object parameters:
+     *  - pluginManager : iMSCP_Plugin_Manager instance
+     *  - pluginName    : Plugin name
      *
      * @const string
      */
     const onAfterDisablePlugin = 'onAfterDisablePlugin';
 
     /**
-     * The onBeforeUpdatePlugin event is triggered before a plugin update.
+     * Event triggered before plugin update
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - pluginManager: iMSCP_Plugin_Manager instance
-     * - pluginName: Plugin name
-     * - pluginFromVersion: Version from which plugin is being updated
-     * - PluginToVersion: Version to which plugin is being updated
+     * iMSCP_Events_Event object parameters:
+     *  - pluginManager     : iMSCP_Plugin_Manager instance
+     *  - pluginName        : Plugin name
+     *  - pluginFromVersion : Version from which plugin is being updated
+     *  - PluginToVersion   : Version to which plugin is being updated
      *
      * @const string
      */
     const onBeforeUpdatePlugin = 'onBeforeUpdatePlugin';
 
     /**
-     * The onAfterUpdatePlugin event is triggered after a plugin update.
+     * Event triggered after plugin update
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - pluginManager: iMSCP_Plugin_Manager instance
-     * - pluginName: Plugin name
-     * - PluginFromVersion: Version to which plugin has been updated
-     * - PluginToVersion: Version from which plugin has been updated
+     * iMSCP_Events_Event object parameters:
+     *  - pluginManager     : iMSCP_Plugin_Manager instance
+     *  - pluginName        : Plugin name
+     *  - PluginFromVersion : Version to which plugin has been updated
+     *  - PluginToVersion   : Version from which plugin has been updated
      *
      * @const string
      */
     const onAfterUpdatePlugin = 'onAfterUpdatePlugin';
 
     /**
-     * The onBeforeUninstallPlugin event is triggered before a plugin installation.
+     * Event triggered before plugin uninstallation
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - pluginManager: iMSCP_Plugin_Manager instance
-     * - pluginName: Plugin name
+     * iMSCP_Events_Event object parameters:
+     *  - pluginManager : iMSCP_Plugin_Manager instance
+     *  - pluginName    : Plugin name
      *
      * @const string
      */
     const onBeforeUninstallPlugin = 'onBeforeUninstallPlugin';
 
     /**
-     * The onAfterUninstallPlugin event is triggered after a plugin installation.
+     * Event triggered after plugin uninstallation
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - pluginManager: iMSCP_Plugin_Manager instance
-     * - pluginName: Plugin name
+     * iMSCP_Events_Event object parameters:
+     *  - pluginManager : iMSCP_Plugin_Manager instance
+     *  - pluginName    : Plugin name
      *
      * @const string
      */
     const onAfterUninstallPlugin = 'onAfterUninstallPlugin';
 
     /**
-     * The onBeforeDeletePlugin event is triggered before a plugin deletion.
+     * Event triggered before plugin deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - pluginManager: iMSCP_Plugin_Manager instance
-     * - pluginName: Plugin name
+     * iMSCP_Events_Event object parameters:
+     *  - pluginManager : iMSCP_Plugin_Manager instance
+     *  - pluginName    : Plugin name
      *
      * @const string
      */
     const onBeforeDeletePlugin = 'onBeforeDeletePlugin';
 
     /**
-     * The onAfterDeletePlugin event is triggered after a plugin deletion.
+     * Event triggered after plugin deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - pluginManager: iMSCP_Plugin_Manager instance
-     * - pluginName: Plugin name
+     * iMSCP_Events_Event object parameters:
+     *  - pluginManager : iMSCP_Plugin_Manager instance
+     *  - pluginName    : Plugin name
      *
      * @const string
      */
     const onAfterDeletePlugin = 'onAfterDeletePlugin';
 
     /**
-     * The onBeforeProtectPlugin event is triggered before a plugin protection.
+     * Event triggered before plugin protection
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - pluginManager: iMSCP_Plugin_Manager instance
-     * - pluginName: Plugin name
+     * iMSCP_Events_Event object parameters:
+     *  - pluginManager : iMSCP_Plugin_Manager instance
+     *  - pluginName    : Plugin name
      *
      * @const string
      */
     const onBeforeProtectPlugin = 'onBeforeProtectPlugin';
 
     /**
-     * The onAfterProtectPlugin event is triggered after a plugin protection.
+     * Event triggered after plugin protection
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - pluginManager: iMSCP_Plugin_Manager instance
-     * - pluginName: Plugin name
+     * iMSCP_Events_Event object parameters:
+     *  - pluginManager : iMSCP_Plugin_Manager instance
+     *  - pluginName    : Plugin name
      *
      * @const string
      */
     const onAfterProtectPlugin = 'onAfterProtectPlugin';
 
     /**
-     * The onBeforeLockPlugin event is triggered before a plugin is locked
+     * Event triggered before plugin locking.
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - pluginName: Plugin name
+     * iMSCP_Events_Event object parameter:
+     *  - pluginName : Plugin name
      *
      * @const string
      */
     const onBeforeLockPlugin = 'onBeforeLockPlugin';
 
     /**
-     * The onAfterLockPlugin event is triggered after a plugin is locked
+     * Event triggered ater plugin locking
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - pluginName: Plugin name
+     * iMSCP_Events_Event object parameter:
+     *  - pluginName : Plugin name
      *
      * @const string
      */
     const onAfterLockPlugin = 'onAfterLockPlugin';
 
     /**
-     * The onBeforeUnlockPlugin event is triggered before a plugin is unlocked
+     * Event triggered before plugin unlocking
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - pluginName: Plugin name
+     * iMSCP_Events_Event object parameter:
+     *  - pluginName : Plugin name
      *
      * @const string
      */
     const onBeforeUnlockPlugin = 'onBeforeUnlockPlugin';
 
     /**
-     * The onAfterUnlockPlugin event is triggered after a plugin is unlocked
+     * Event triggered after plugin unlocking
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - pluginName: Plugin name
+     * iMSCP_Events_Event object parameter:
+     *  - pluginName : Plugin name
      *
      * @const string
      */
     const onAfterUnlockPlugin = 'onAfterUnlockPlugin';
 
     /**
-     * The onBeforeAddDomain event is triggered before a domain is created.
+     * Event triggered before domain (customer account) addition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - domainName: A string representing the name of the domain being created
-     * - createdBy: An integer representing the ID of the reseller that adds the domain
-     * - customerId: An integer representing the ID of the customer for which the domain is added
-     * - customerEmail: A string representing the email of the customer for which the domain is added
-     * - mountPoint: A string representing the mount point of the domain
-     * - documentRoot: A string representing the DocumentRoot of the domain
-     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
-     * - forwardType: A string representing the forward type
-     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
+     * iMSCP_Events_Event object parameters:
+     *  - domainName    : Domain name
+     *  - createdBy     : Reseller unique identifier
+     *  - customerId    : Customer unique identifier
+     *  - customerEmail : Customer email address
+     *  - mountPoint    : Domainmount point
+     *  - documentRoot  : Domain document root
+     *  - forwardUrl    : Domain forward URL, 'no' if no forward URL has been set
+     *  - forwardType   : Domain forward URL type
+     *  - forwardHost   : Domain forward URL preserve host option
      *
      * @const string
      */
     const onBeforeAddDomain = 'onBeforeAddDomain';
 
     /**
-     * The onAfterAddDomain event is triggered after a domain is created.
+     * Event triggered after domain (customer account) addition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - domainName: A string representing the name of a the domain that has been added
-     * - createdBy: An integer representing the ID of the reseller that added the domain
-     * - customerId: An integer representing the ID of the customer for which the domain has been added
-     * - customerEmail: A string representing the email of customer for which the domain has been added
-     * - domainId: An integer representing the ID of the domain that has been added
-     * - mountPoint: A string representing the mount point of the domain
-     * - documentRoot: A string representing the DocumentRoot of the domain
-     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
-     * - forwardType: A string representing the forward type
-     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
+     * iMSCP_Events_Event object parameters:
+     *  - domainId      : Domain unique identifier
+     *  - domainName    : Domain name
+     *  - createdBy     : Reseller unique identifier
+     *  - customerId    : Customer unique identifier
+     *  - customerEmail : Customer email address
+     *  - mountPoint    : Domainmount point
+     *  - documentRoot  : Domain document root
+     *  - forwardUrl    : Domain forward URL, 'no' if no forward URL has been set
+     *  - forwardType   : Domain forward URL type
+     *  - forwardHost   : Domain forward URL preserve host option
      *
      * @const string
      */
     const onAfterAddDomain = 'onAfterAddDomain';
 
     /**
-     * The onBeforeEditDomain event is triggered before a domain is edited.
+     * Event triggered before domain edition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - domainId: An integer representing the ID of the domain being edited
-     * - mountPoint: A string representing the mount point of the domain
-     * - documentRoot: A string representing the DocumentRoot of the domain
-     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
-     * - forwardType: A string representing the forward type
-     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
+     * iMSCP_Events_Event object parameters:
+     *  - domainId     : Domain unique identifier
+     *  - mountPoint   : Domainmount point
+     *  - documentRoot : Domain document root
+     *  - forwardUrl   : Domain forward URL, 'no' if no forward URL has been set
+     *  - forwardType  : Domain forward URL type
+     *  - forwardHost  : Domain forward URL preserve host option
      *
      * @const string
      */
     const onBeforeEditDomain = 'onBeforeEditDomain';
 
     /**
-     * The onAfterEditDomain event is triggered after a domain is edited.
+     * Event triggered after domain edition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - domainId: An integer representing the ID of the domain that has been edited
-     * - mountPoint: A string representing the mount point of the domain
-     * - documentRoot: A string representing the DocumentRoot of the domain
-     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
-     * - forwardType: A string representing the forward type
-     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
+     * iMSCP_Events_Event object parameters:
+     *  - domainId     : Domain unique identifier
+     *  - mountPoint   : Domainmount point
+     *  - documentRoot : Domain document root
+     *  - forwardUrl   : Domain forward URL, 'no' if no forward URL has been
+     *                   set
+     *  - forwardType  : Domain forward URL type
+     *  - forwardHost  : Domain forward URL preserve host option
      *
      * @const string
      */
     const onAfterEditDomain = 'onAfterEditDomain';
 
     /**
-     * The onBeforeAddSubdomain event is triggered after a subdomain is created.
+     * Event triggered after subdomain addition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - subdomainName: A string representing the name of the subdomain being added
-     * - subdomainType: A string representing the type of subdomain (als|dmn)
-     * - parentDomainId: An integer representing the ID of the parent domain
-     * - mountPoint: A string representing the mount point of the subdomain
-     * - documentRoot: A string representing the DocumentRoot of the subdomain
-     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
-     * - forwardType: A string representing the forward type
-     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
-     * - customerId: An integer representing the ID of the customer for which the subdomain is added
+     * iMSCP_Events_Event object parameters:
+     *  - subdomainName  : Subdomain name
+     *  - subdomainType  : Subdomain type, either 'als' or 'dmn' depending on
+     *                     parent domain type
+     *  - parentDomainId : Parent domain unique identifier
+     *  - mountPoint     : Subdomain mount point
+     *  - documentRoot   : Subdomain document root
+     *  - forwardUrl     : Subdomain forward URL, 'no' if no forward URL has been set
+     *  - forwardType    : Subdomain forward URL type
+     *  - forwardHost    : Subdomain forward URL preserve host option
+     *  - customerId     : Subdomain owner unique identifier
      *
      * @const string
      */
     const onBeforeAddSubdomain = 'onBeforeAddSubdomain';
 
     /**
-     * The onAfterAddSubdomain event is triggered after a subdomain is created.
+     * Event triggered after subdomain addition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - subdomainName: A string representing the name of the subdomain that has been added
-     * - subdomainType: A string representing the type of subdomain (als|dmn)
-     * - parentDomainId: An integer representing the ID of the parent domain
-     * - mountPoint: A string representing the mount point of the subdomain
-     * - documentRoot: A string representing the DocumentRoot of the subdomain
-     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
-     * - forwardType: A string representing the forward type
-     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
-     * - customerId: An integer representing the ID of the customer for which the subdomain has been added
-     * - subdomainId: An integer representing the ID of the subdomain that has been added
+     * iMSCP_Events_Event object parameters:
+     *  - subdomainId    : Subdomain unique identifier
+     *  - subdomainName  : Subdomain name
+     *  - subdomainType  : Subdomain type, either 'als' or 'dmn' depending on
+     *                     parent domain type
+     *  - parentDomainId : Parent domain unique identifier
+     *  - mountPoint     : Subdomain mount point
+     *  - documentRoot   : Subdomain document root
+     *  - forwardUrl     : Subdomain forward URL, 'no' if no forward URL has
+     *                     been set
+     *  - forwardType    : Subdomain forward URL type
+     *  - forwardHost    : Subdomain forward URL preserve host option
+     *  - customerId     : Subdomain owner unique identifier
      *
      * @const string
      */
     const onAfterAddSubdomain = 'onAfterAddSubdomain';
 
     /**
-     * The onBeforeEditSubdomain event is triggered after a subdomain is edited.
+     * Event triggered before subdomain edition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - subdomainId: An integer representing the ID of the subdomain being edited
-     * - mountPoint: A string representing the mount point of the subdomain
-     * - documentRoot: A string representing the DocumentRoot of the subdomain
-     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
-     * - forwardType: A string representing the forward type
-     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
+     * iMSCP_Events_Event object parameters:
+     *  - subdomainId   : Subdomain unique identifier
+     *  - subdomainName : Subdomain name
+     *  - subdomainType : Subdomain type, either 'als' or 'dmn' depending on
+     *                    parent domain type
+     *  - mountPoint    : Subdomain mount point
+     *  - documentRoot  : Subdomain document root
+     *  - forwardUrl    : Subdomain forward URL, 'no' if no forward URL has
+     *                    been set
+     *  - forwardType   : Subdomain forward URL type
+     *  - forwardHost   : Subdomain forward URL preserve host option
      *
      * @const string
      */
     const onBeforeEditSubdomain = 'onBeforeEditSubdomain';
 
     /**
-     * The onAfterEditSubdomain event is triggered after a subdomain is edited.
+     * Event triggered after subdomain edition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - subdomainId: An integer representing the ID of the subdomain that has been edited
-     * - mountPoint: A string representing the mount point of the subdomain
-     * - documentRoot: A string representing the DocumentRoot of the subdomain
-     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
-     * - forwardType: A string representing the forward type
-     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
+     * iMSCP_Events_Event object parameters:
+     *  - subdomainId   : Subdomain unique identifier
+     *  - subdomainName : Subdomain name
+     *  - subdomainType : Subdomain type, either 'als' or 'dmn' depending on
+     *                    parent domain type
+     *  - mountPoint    : Subdomain mount point
+     *  - documentRoot  : Subdomain document root
+     *  - forwardUrl    : Subdomain forward URL, 'no' if no forward URL has
+     *                    been set
+     *  - forwardType   : Subdomain forward URL type
+     *  - forwardHost   : Subdomain forward URL preserve host option
      *
      * @const string
      */
     const onAfterEditSubdomain = 'onAfterEditSubdomain';
 
     /**
-     * The onBeforeDeleteSubdomain event is triggered before a subdomain is deleted.
+     * Event triggered before subdomain deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - subdomainId: An integer representing the ID of the subdomain being deleted
-     * - type: A string representing the type of subdomain (sub|alssub)
+     * iMSCP_Events_Event object parameters:
+     *  - subdomainId   : Subdomain unique identifier
+     *  - subdomainName : Subdomain name
+     *  - subdomainType : Subdomain type, either 'sub' or 'alssub' depending on
+     *                    parent domain type
+     *  - type (BC)     : Same as subdomainType field; provided for backward
+     *                    compatibility
      *
      * @const string
      */
     const onBeforeDeleteSubdomain = 'onBeforeDeleteSubdomain';
 
     /**
-     * The onAfterDeleteSubdomain event is triggered after a subdomain is deleted.
+     * Event triggered after subdomain deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - subdomainId: An integer representing the ID of the subdomain that has been deleted
-     * - type: A string representing the type of subdomain (sub|alssub)
+     * iMSCP_Events_Event object parameters:
+     *  - subdomainId   : Subdomain unique identifier
+     *  - subdomainName : Subdomain name
+     *  - subdomainType : Subdomain type, either 'sub' or 'alssub' depending on
+     *                    parent domain type
+     *  - type (BC)     : Same as subdomainType field; provided for backward
+     *                    compatibility
      *
      * @const string
      */
     const onAfterDeleteSubdomain = 'onAfterDeleteSubdomain';
 
     /**
-     * The onBeforeAddDomainAlias event is triggered before a domain alias is created.
+     * Event triggered before domain alias addition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - domainId: An integer representing the ID of the parent domain
-     * - domainAliasName: A string representing the name of the domain alias being added
-     * - mountPoint: A string representing the mount point of the domain alias
-     * - documentRoot: A string representing the DocumentRoot of the domain alias
-     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
-     * - forwardType: A string representing the forward type
-     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
+     * iMSCP_Events_Event object parameters:
+     *  - domainId: Customer main domain unique identifier
+     *  - domainAliasName: Domain alias name
+     *  - mountPoint: Domain alias mount point
+     *  - documentRoot: Domain alias document root
+     *  - forwardUrl: Domain alias forward URL, 'no' if no forward URL has been
+     *                set
+     *  - forwardType: Domain alias forward URL type
+     *  - forwardHost: Domain alias forward URL preserve host option
      *
      * @const string
      */
     const onBeforeAddDomainAlias = 'onBeforeAddDomainAlias';
 
     /**
-     * The onAfterAddDomainAlias event is triggered after a domain alias is created.
+     * Event triggered after domain alias addition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - domainId: An integer representing the ID of the parent domain
-     * - domainAliasName: A string representing the name of the domain alias that has been added
-     * - domainAliasId: An integer representing the ID of the domain alias that has been added
-     * - mountPoint: A string representing the mount point of the domain alias
-     * - documentRoot: A string representing the DocumentRoot of the domain alias
-     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
-     * - forwardType: A string representing the forward type
-     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
+     * iMSCP_Events_Event object parameters:
+     *  - domainId: Customer main domain unique identifier
+     *  - domainAliasId: Domain alias unique identifier
+     *  - domainAliasName: Domain alias name
+     *  - mountPoint: Domain alias mount point
+     *  - documentRoot: Domain alias document root
+     *  - forwardUrl: Domain alias forward URL, 'no' if no forward URL has been
+     *                set
+     *  - forwardType: Domain alias forward URL type
+     *  - forwardHost: Domain alias forward URL preserve host optio
      *
      * @const string
      */
     const onAfterAddDomainAlias = 'onAfterAddDomainAlias';
 
     /**
-     * The onBeforeEditDomainAlias event is triggered before a domain alias is edited.
+     * Event triggered before domain alias edition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - domainAliasId: An integer representing the ID of the domain alias being edited
-     * - mountPoint: A string representing the mount point of the domain alias
-     * - documentRoot: A string representing the DocumentRoot of the domain alias
-     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
-     * - forwardType: A string representing the forward type
-     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
+     * iMSCP_Events_Event object parameters:
+     *  - domainAliasId  : Domain alias unique identifier
+     *  - domainAliasName: Domain alias name
+     *  - mountPoint     : Domain alias mount point
+     *  - documentRoot   : Domain alias document root
+     *  - forwardUrl     : Domain alias forward URL, 'no' if not forward URL
+     *                     has been set
+     *  - forwardType    : Domain alias forward URL type
+     *  - forwardHost    : Domain alias forward URL preserve host option
      *
      * @const string
      */
     const onBeforeEditDomainAlias = 'onBeforeEditDomainAlias';
 
     /**
-     * The onAfterEditDomainAlias event is triggered after a domain alias is edited.
+     * Event triggered after domain alias edition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - domainAliasId: An integer representing the ID of the domain alias that has been edited
-     * - mountPoint: A string representing the mount point of the domain alias
-     * - documentRoot: A string representing the DocumentRoot of the domain alias
-     * - forwardUrl: A string representing the forward URL or no in case Forward URL option is not used
-     * - forwardType: A string representing the forward type
-     * - forwardHost: A string indicating whether or not Proxy Host must be preserved
+     * iMSCP_Events_Event objectparameters:
+     *  - domainAliasId   : Domain alias unique identifier
+     *  - domainAliasName : Domain alias name
+     *  - mountPoint      : Domain alias mount point
+     *  - documentRoot    : Domain alias document root
+     *  - forwardUrl      : Domain alias forward URL, 'no' if no forward URL
+     *                      has been set
+     *  - forwardType     : Domain alias forward URL type
+     *  - forwardHost     : Domain alias forward URL preserve host option
      *
      * @const string
      */
     const onAfterEditDomainAlias = 'onAfterEditDomainAlias';
 
     /**
-     * The onBeforeDeleteDomainAlias event is triggered before a domain alias is deleted.
+     * Event triggered before domain alias deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
+     * The listeners receive an iMSCP_Events_Event object with the following
+     * parameter:
      *
-     * - domainAliasId: An integer representing the  ID of the domain alias being deleted
+     * - domainAliasId : Domain alias unique identifier
      *
      * @const string
      */
     const onBeforeDeleteDomainAlias = 'onBeforeDeleteDomainAlias';
 
     /**
-     * The onAfterDeleteDomainAlias event is triggered after a domain alias is deleted.
+     * Event triggered before domain alias deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - domainAliasId: An integer representing the ID of the domain alias that has been deleted
+     * iMSCP_Events_Event object parameter:
+     *  - domainAliasId : Domain alias unique identifier
      *
      * @const string
      */
     const onAfterDeleteDomainAlias = 'onAfterDeleteDomainAlias';
 
     /**
-     * The onBeforeAddMail event is triggered after a mail account is created.
+     * Event triggered before mail account addition.
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - mailUsername: A string representing the local part of the mail account being added
-     * - mailAddress: A string representing the complete email address of the mail account being added
+     * iMSCP_Events_Event object parameters:
+     *  - mailUsername : Mail account local part
+     *  - mailAddress  : Mail account address
      *
      * @const string
      */
     const onBeforeAddMail = 'onBeforeAddMail';
 
     /**
-     * The onAfterAddMail event is triggered after a mail account is created.
+     * Event triggered after mail account addition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - mailUsername: A string representing the local part of the mail account that has been added
-     * - mailAddress: A string representing the complete address of the mail account that has been added
-     * - mailId: An integer representing the ID of the mail account that has been added
+     * iMSCP_Events_Event object parameters:
+     *  - mailId       : Mail account unique identifier
+     *  - mailUsername : Mail account local part
+     *  - mailAddress  : Mail account address
      *
      * @const string
      */
     const onAfterAddMail = 'onAfterAddMail';
 
     /**
-     * The onBeforeEditMail event is triggered before a mail account is created.
+     * Event triggered before mail account edition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - mailId: An integer representing the ID of the mail account being edited
+     * iMSCP_Events_Event object parameter:
+     *  - mailId : mailId: Mail account unique identifier
      *
      * @const string
      */
     const onBeforeEditMail = 'onBeforeEditMail';
 
     /**
-     * The onAfterEditMail event is triggered after a mail account is edited.
+     * Event triggered after mail account edition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - mailId: An integer representing the ID of the mail account that has been edited
+     * iMSCP_Events_Event object parameter:
+     *  - mailId : mailId: Mail account unique identifier
      *
      * @const string
      */
     const onAfterEditMail = 'onAfterEditMail';
 
     /**
-     * The onBeforeDeleteMail event is triggered before a mail account is deleted.
+     * Event triggered before mail account deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - mailId: An integer representing the ID of the mail account being deleted
+     * iMSCP_Events_Event object parameter:
+     *  - mailId : mailId: Mail account unique identifier
      *
      * @const string
      */
     const onBeforeDeleteMail = 'onBeforeDeleteMail';
 
     /**
-     * The onAfterDeleteMail event is triggered after a mail account is deleted.
+     * Event triggered after mail account deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - mailId: An integer representing the ID of the mail account that has been deleted
+     * iMSCP_Events_Event object parameter:
+     *  - mailId : Mail account unique identifier
      *
      * @const string
      */
     const onAfterDeleteMail = 'onAfterDeleteMail';
 
     /**
-     * The onBeforeAddMailCatchall event is triggered before a catch-all acount is created.
+     * Event triggered before catch-all account addition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - mailCatchallDomain: A string representing the domain catch-all
-     * - mailCatchallAddresses: A array representing list of catch-all addresses
+     * iMSCP_Events_Event object parameters:
+     *  - mailCatchallDomain    : Catch-all account domain
+     *  - mailCatchallAddresses : Catch-all account addresses
      *
      * @const string
      */
     const onBeforeAddMailCatchall = 'onBeforeAddMailCatchall';
 
     /**
-     * The onAfterAddMailCatchall event is triggered after a catch-all account is created.
+     * Event triggered after catch-all account addition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - mailCatchallId: An integer representing the ID of the catchall account that has been added
-     * - mailCatchallDomain: A string representing the domain catch-all
-     * - mailCatchallAddresses: A array representing list of catch-all addresses
+     * iMSCP_Events_Event object parameters:
+     *  - mailCatchallId        : Catch-all account unique identifier
+     *  - mailCatchallDomain    : Catch-all account domain
+     *  - mailCatchallAddresses : Catch-all account addresses
      *
      * @const string
      */
     const onAfterAddMailCatchall = 'onAfterAddMailCatchall';
 
     /**
-     * The onBeforeDeleteMailCatchall event is triggered before a catch-all acount is deleted.
+     * Event triggered before catch-all acount deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - mailCatchallId: An integer representing the ID of the catchall account being deleted
+     * iMSCP_Events_Event object parameter:
+     *  - mailCatchallId : Catch-all account unique identifier
      *
      * @const string
      */
     const onBeforeDeleteMailCatchall = 'onBeforeDeleteMailCatchall';
 
     /**
-     * The onAfterDeleteMail event is triggered after a catch-all acount is deleted.
+     * Event triggered after catch-all acount deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - mailCatchallId: An integer representing the ID of the catch-all acount that has been deleted
+     * iMSCP_Events_Event object parameter:
+     *  - mailCatchallId : Catch-all account unique identifier
      *
      * @const string
      */
     const onAfterDeleteMailCatchall = 'onAfterDeleteMailCatchall';
 
     /**
-     * The onBeforeQueryPrepare event is triggered before an SQL statement is prepared for execution.
+     * Event triggered before preparation of SQL statement
      *
-     * The listeners receive an iMSCP_Database_Events_Database instance with the following parameters:
-     *
-     * - context: An iMSCP_Database object, the context in which the event is triggered
-     * - query: The SQL statement being prepared
+     * iMSCP_Database_Events_Database object parameters:
+     *  - context : iMSCP_Database object
+     *  - query   : SQL statement being prepared
      *
      * @const string
      */
     const onBeforeQueryPrepare = 'onBeforeQueryPrepare';
 
     /**
-     * The onAfterQueryPrepare event occurs after a SQL statement has been prepared for execution.
+     * Event triggered after preparation of a SQL statement
      *
-     * The listeners receive an iMSCP_Database_Events_Statement instance with the following parameters:
-     *
-     * - context: An iMSCP_Database object, the context in which the event is triggered
-     * - statement: A PDOStatement object that represent the prepared statement
+     * iMSCP_Database_Events_Statement object parameters:
+     *  - context   : iMSCP_Database object
+     *  - statement : PDOStatement object
      *
      * @const string
      */
     const onAfterQueryPrepare = 'onAfterQueryPrepare';
 
     /**
-     * The onBeforeQueryExecute event is triggered before a prepared SQL statement is executed.
+     * Event triggered before execution of a SQL prepared statement
      *
-     * The listeners receive either :
+     * Depending on context:
      *
-     *  an iMSCP_Database_Events_Statement instance with the following parameters:
-     *
-     *   - context: An iMSCP_Database object, the context in which the event is triggered
-     *   - statement: A PDOStatement object that represent the prepared statement
-     * Or
-     *
-     *  an iMSCP_Database_Events_Database instance with the following arguments:
-     *
-     *   - context: An iMSCP_Database object, the context in which the event is triggered
-     *   - query: The SQL statement being prepared and executed (PDO::query())
+     * iMSCP_Database_Events_Statement object parameters:
+     *   - context  : iMSCP_Database object
+     *   - statement: PDOStatement object
+     * or
+     * iMSCP_Database_Events_Database object parameters:
+     *   - context : iMSCP_Database object
+     *   - query   : SQL statement being prepared and executed (PDO::query())
      *
      * @const string
      */
     const onBeforeQueryExecute = 'onBeforeQueryExecute';
 
     /**
-     * The onAfterQueryExecute event is triggered after a prepared SQL statement has been executed.
+     * Event triggered after execution of a SQL prepared statement
      *
-     * The listeners receive an iMSCP_Database_Events_Statement instance with the following parameters:
-     *
-     * - context: An iMSCP_Database object, the context in which the event is triggered
-     * - statement: The PDOStatement that has been executed
+     * iMSCP_Database_Events_Statement object parameters:
+     *  - context   : An iMSCP_Database object
+     *  - statement : PDOStatement object
      *
      * @const string
      */
     const onAfterQueryExecute = 'onAfterQueryExecute';
 
     /**
-     * The onBeforeAssembleTemplateFiles event is triggered before the first parent template is loaded.
+     * Event triggered before loading of first parent template
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - context: An iMSCP_pTemplate object, the context in which the event is triggered
-     * - templatePath: The file path of the template being loaded
+     * iMSCP_Events_Event object parameters:
+     *  - context     : iMSCP_pTemplate instance
+     *  - templatePath: Template path
      *
      * @const string
      */
     const onBeforeAssembleTemplateFiles = 'onBeforeAssembleTemplateFiles';
 
     /**
-     * The onAfterAssembleTemplateFiles event is triggered after the first parent template is loaded.
+     * Event triggered after loading of first parent template
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - context: An iMSCP_pTemplate object, the context in which the event is triggered
-     * - templateContent: The template content as a string
+     * iMSCP_Events_Event object parameters:
+     *  - context         : An iMSCP_pTemplate instance
+     *  - templateContent : Template content
      *
      * @const string
      */
     const onAfterAssembleTemplateFiles = 'onBeforeAssembleTemplateFiles';
 
     /**
-     * The onBeforeLoadTemplateFile event is triggered before a template is loaded.
+     * Event triggered before template loading
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - context: An iMSCP_pTemplate object, the context in which the event is triggered
-     * - templatePath: The file path of the template being loaded
+     * iMSCP_Events_Event object parameters:
+     *  - context      : iMSCP_pTemplate instance
+     *  - templatePath : Template path
      *
      * @const string
      */
     const onBeforeLoadTemplateFile = 'onBeforeLoadTemplateFile';
 
     /**
-     * The onAfterLoadTemplateFile event is triggered after the loading of a template file.
+     * Event triggered after template loading
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - context: An iMSCP_pTemplate object, the context in which the event is triggered
-     * - templateContent: The template content as a string
+     * iMSCP_Events_Event object parameters:
+     *  - context         : iMSCP_pTemplate instance
+     *  - templateContent : Template content
      *
      * @const string
      */
     const onAfterLoadTemplateFile = 'onAfterLoadTemplateFile';
 
     /**
-     * The onParseTemplate event is triggered when a template is parsed
+     * Event triggered on template parsing
      *
-     * The listener receive an iMSCP_Events_Event object with the following parameters:
+     * iMSCP_Events_Event object parameters:
+     *  - pname          : Parent template name
+     *  - tname          : template name
+     *  - templateEngine : iMSCP_pTemplate instance
      *
-     * pname: Parent template name
-     * tname: template name
-     * templateEngine: iMSCP_pTemplate instance
+     * @const string
      */
     const onParseTemplate = 'onParseTemplate';
 
     /**
-     * The onBeforeGenerateNavigation event is triggered before the navigation is generated.
+     * Event triggered before navigation generation
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - templateEngine: An iMSCP_pTemplate object
+     * iMSCP_Events_Event object parameter:
+     *  - templateEngine: iMSCP_pTemplate instance
      *
      * @const string
      */
     const onBeforeGenerateNavigation = 'onBeforeGenerateNavigation';
 
     /**
-     * The onAfterGenerateNavigation event is triggered after the navigation is generated.
+     * Event triggered after navigation generation
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - templateEngine: An iMSCP_pTemplate object
+     * iMSCP_Events_Event object parameter:
+     *  - templateEngine: iMSCP_pTemplate instance
      *
      * @const string
      *
@@ -1403,150 +1339,142 @@ class iMSCP_Events
     const onAfterGenerateNavigation = 'onAfterGenerateNavigation';
 
     /**
-     * The onBeforeAddExternalMailServer event is triggered before addition of external mail server entries in database.
+     * Event triggered before domain (customer account) activation/deactivation
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - externalMailServerEntries: A reference to an array containing all external mail entries
-     *
-     * @const string
-     */
-    const onBeforeAddExternalMailServer = 'onBeforeAddExternalMailServer';
-
-    /**
-     * The onAfterAddExternalMailServer event is triggered after addition of external mail server entries in database.
-     *
-     * The listeners receive an iMSCP_Events_Event object with the following parameter:
-     *
-     * - externalMailServerEntries: A reference to an array containing all external mail entries
-     *
-     * @const string
-     */
-    const onAfterAddExternalMailServer = 'onAfterAddExternalMailServer';
-
-    /**
-     * The onBeforeChangeDomainStatus event is triggered before an user account is being activated or deactivated.
-     *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - customerId: An integer representing the ID of the customer for which the subdomain has been added
-     * - action: An string representing the action being processed (activate|deactivate)
+     * iMSCP_Events_Event object parameters:
+     *  - customerId : Customer unique identifier
+     *  - action     : The action taking place, either 'activate' or 'deactivate'
      *
      * @const string
      */
     const onBeforeChangeDomainStatus = 'onBeforeChangeDomainStatus';
 
     /**
-     * The onAfterChangeDomainStatus event is triggered before an user account get activated or deactivated.
+     * Event triggered after domain (customer account) activation/deactivation
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - customerId: An integer representing the ID of the customer for which the subdomain has been added
-     * - action: - action: An string representing the action that was processed (activate|deactivate)
+     * iMSCP_Events_Event object parameters:
+     *  - customerId : Customer unique identifier
+     *  - action     : The action taking place, either 'activate' or 'deactivate'
      *
      * @const string
      */
     const onAfterChangeDomainStatus = 'onAfterChangeDomainStatus';
 
     /**
-     * The onBeforeSendCircular event is triggered before an admin or reseller send a circular.
+     * Event triggered before an admin or reseller send a circular
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
+     * iMSCP_Events_Event object parameters:
+     *  - sender_name  : Sender name
+     *  - sender_email : Sender email
+     *  - rcpt_to      : Recipient type, either 'all_users',
+     *                  'administrators_resellers', 'administrators_customers',
+     *                  'resellers_customers', 'administrators', 'resellers' or
+     *                  'customers'
+     *  - subject      : subject
+     *  - body         : body
      *
-     * - sender_name Sender name
-     * - sender_email Sender email
-     * - rcpt_to recipient type (all_users, administrators_resellers, administrators_customers, resellers_customers,
-     *                           administrators, resellers, customers)
-     * - subject Circular subject
-     * - body Circular body
+     * @const string
      */
     const onBeforeSendCircular = 'onBeforeSendCircular';
 
     /**
-     * The onAfterSendCircular event is triggered after an admin or reseller has sent a circular.
+     * Event triggered after an admin or reseller has sent a circular
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
+     * iMSCP_Events_Event object parameters:
+     *  - sender_name  : Sender name
+     *  - sender_email : Sender email
+     *  - rcpt_to      : Recipient type, either 'all_users',
+     *                  'administrators_resellers', 'administrators_customers',
+     *                  'resellers_customers', 'administrators', 'resellers' or
+     *                  'customers'
+     *  - subject      : subject
+     *  - body         : body
      *
-     * - sender_name Sender name
-     * - sender_email Sender email
-     * - rcpt_to recipient type (all_users, administrators_resellers, administrators_customers, resellers_customers,
-     *                           administrators, resellers, customers)
-     * - subject Circular subject
-     * - body Circular body
+     * @const string
      */
     const onAfterSendCircular = 'onAfterSendCircular';
 
     /**
-     * The onGetJsTranslations event is triggered by the i18n_getJsTranslations() function.
+     * Event triggered by the i18n_getJsTranslations() function
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     *
-     * - translations An ArrayObject that allows third-party components to add their own JS translations
+     * iMSCP_Events_Event object parameters:
+     *  - translations : An ArrayObject that allows third-party components to add
+     *                   their own JS translations
      *
      * @see i18n_getJsTranslations() for more details
+     * @const string
      */
     const onGetJsTranslations = 'onGetJsTranslations';
 
     /**
-     * The onSendMail event is triggered by the send_mail() function.
+     * Event triggered by the send_mail() function
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
+     * iMSCP_Events_Event object parameters:
+     *  - mail_data : An ArrayObject that allows third-party components to
+     *                override mail data which are:
+     *               - mail_id      : Mail unique identifier
+     *               - fname        : OPTIONAL Receiver firstname
+     *               - lname        : OPTIONAL Receiver lastname
+     *               - username     : Receiver username
+     *               - email        : Receiver email
+     *               - sender_name  : Sender name added in Reply-To header
+     *               - sender_email : E-mail address added in Reply-To' header
+     *               - subject      : Subject of the email to be sent
+     *               - message      : Message to be sent
+     *               - placeholders : OPTIONAL An array where keys are
+     *                                placeholders to replace and values, the
+     *                                replacement values. These placeholders
+     *                                take precedence on the default
+     *                                placeholders.
      *
-     * - mail_data: An ArrayObject that allows third-party components to override mail data which are:
-     *    - mail_id      : Mail unique identifier
-     *    - fname        : OPTIONAL Receiver firstname
-     *    - lname        : OPTIONAL Receiver lastname
-     *    - username     : Receiver username
-     *    - email        : Receiver email
-     *    - sender_name  : OPTIONAL sender name (if present, passed through `Reply-To' header)
-     *    - sender_email : OPTIONAL Sender email (if present, passed through `Reply-To' header)
-     *    - subject      : Subject of the email to be sent
-     *    - message      : Message to be sent
-     *    - placeholders : OPTIONAL An array where keys are placeholders to replace and values, the replacement values.
-     *                     Those placeholders take precedence on the default placeholders.
+     * @const string
      */
     const onSendMail = 'onSendMail';
 
     /**
-     * The onAddIpAddr event is triggered when a new IP is added.
+     * Event triggered on IP address addition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     * - ip_number      : IP address
-     * - ip_netmask     : IP netmask
-     * - ip_card        : Network interface to which IP address is attached
-     * - ip_config_mode : Ip address configuration mode (auto|manual)
+     * iMSCP_Events_Event object parameters:
+     *  - ip_number      : IP address
+     *  - ip_netmask     : IP netmask
+     *  - ip_card        : Network interface to which IP address is attached
+     *  - ip_config_mode : Ip address configuration mode (auto|manual)
      *
+     * @const string
      */
     const onAddIpAddr = 'onAddIpAddr';
 
     /**
-     * The onEditIpAddr event is triggered when an IP address is edited.
+     * Event triggered on IP address edition
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     * - ip_id          : IP address unique identifier
-     * - ip_number      : IP address
-     * - ip_netmask     : IP netmask
-     * - ip_card        : Network interface to which IP address is attached
-     * - ip_config_mode : Ip address configuration mode (auto|manual)
+     * iMSCP_Events_Event object parameters:
+     *  - ip_id          : IP address unique identifier
+     *  - ip_number      : IP address
+     *  - ip_netmask     : IP netmask
+     *  - ip_card        : Network interface to which IP address is attached
+     *  - ip_config_mode : Ip address configuration mode (auto|manual)
      *
+     * @const string
      */
     const onEditIpAddr = 'onEditIpAddr';
 
     /**
-     * The onDeleteIpAddr event is triggered when a new IP is added.
+     * Event triggered on IP address deletion
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
-     * - ip_id : IP unique identifier
+     * iMSCP_Events_Event object parameter:
+     *  - ip_id : IP address unique identifier
      *
+     * @const string
      */
     const onDeleteIpAddr = 'onDeleteIpAddr';
 
     /**
-     * The onGeneratePageMessages event is triggered when page messages are being generated.
+     * Event triggered on page messages generation
      *
-     * The listeners receive an iMSCP_Events_Event object with the following parameters:
+     * iMSCP_Events_Event object parameter:
      * - flashMessenger : Zend_Controller_Action_Helper_FlashMessenger instance
      *
+     * @const string
      */
     const onGeneratePageMessages = 'onGeneratePageMessages';
 }

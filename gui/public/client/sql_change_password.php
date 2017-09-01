@@ -75,7 +75,10 @@ function updateSqlUserPassword($sqluId)
     $config = Registry::get('config');
     $mysqlConfig = new ConfigFile($config['CONF_DIR'] . '/mysql/mysql.data');
 
-    EventsManager::getInstance()->dispatch(Events::onBeforeEditSqlUser, ['sqlUserId' => $sqluId]);
+    EventsManager::getInstance()->dispatch(Events::onBeforeEditSqlUser, [
+        'sqlUserId'       => $sqluId,
+        'sqlUserPassword' => $password
+    ]);
 
     // Here we cannot use transaction due to statements that cause an implicit commit. Thus we execute
     // those statements first to let the i-MSCP database in clean state if one of them fails.
@@ -95,7 +98,10 @@ function updateSqlUserPassword($sqluId)
         sprintf('%s updated %s@%s SQL user password.', $_SESSION['user_logged'], $row['sqlu_name'], $row['sqlu_host']),
         E_USER_NOTICE
     );
-    EventsManager::getInstance()->dispatch(Events::onAfterEditSqlUser, ['sqlUserId' => $sqluId]);
+    EventsManager::getInstance()->dispatch(Events::onAfterEditSqlUser, [
+        'sqlUserId'       => $sqluId,
+        'sqlUserPassword' => $password
+    ]);
     redirectTo('sql_manage.php');
 }
 

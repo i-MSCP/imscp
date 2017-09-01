@@ -257,7 +257,11 @@ function addSqlUser($sqldId)
     $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
     $mysqlConfig = new ConfigFile(Registry::get('config')['CONF_DIR'] . '/mysql/mysql.data');
 
-    EventsManager::getInstance()->dispatch(Events::onBeforeAddSqlUser);
+    EventsManager::getInstance()->dispatch(Events::onBeforeAddSqlUser, [
+        'SqlUsername'     => $user,
+        'SqlUserHost'     => $host,
+        'SqlUserPassword' => isset($password) ? $password : ''
+    ]);
 
     // Here we cannot use transaction due to statements that cause an implicit commit. Thus we execute
     // those statements first to let the i-MSCP database in clean state if one of them fails.
@@ -287,7 +291,13 @@ function addSqlUser($sqldId)
         $sqldId, $user, $host
     ]);
 
-    EventsManager::getInstance()->dispatch(Events::onAfterAddSqlUser);
+    EventsManager::getInstance()->dispatch(Events::onAfterAddSqlUser, [
+        'SqlUserId'       => iMSCP_Database::getInstance()->insertId(),
+        'SqlUsername'     => $user,
+        'SqlUserHost'     => $host,
+        'SqlUserPassword' => isset($password) ? $password : '',
+        'SqlDatabaseId'   => $sqldId
+    ]);
     write_log(sprintf('A SQL user has been added by %s', $_SESSION['user_logged']), E_USER_NOTICE);
     set_page_message(tr('SQL user successfully added.'), 'success');
     redirectTo('sql_manage.php');

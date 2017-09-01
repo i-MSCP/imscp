@@ -419,7 +419,8 @@ function deleteSubdomain($id)
         EventsManager::getInstance()->dispatch(Events::onBeforeDeleteSubdomain, [
             'subdomainId'   => $id,
             'subdomainName' => $row['subdomain_name'],
-            'type'          => 'sub'
+            'subdomainType' => 'sub',
+            'type'          => 'sub' # BC -- will be removed in a later version
         ]);
 
         // Delete FTP groups and FTP accounting/limit data
@@ -478,7 +479,8 @@ function deleteSubdomain($id)
         EventsManager::getInstance()->dispatch(Events::onAfterDeleteSubdomain, [
             'subdomainId'   => $id,
             'subdomainName' => $row['subdomain_name'],
-            'type'          => 'sub'
+            'subdomainType' => 'sub',
+            'type'          => 'sub' # BC -- will be removed in a later version
         ]);
 
         $db->commit();
@@ -536,7 +538,8 @@ function deleteSubdomainAlias($id)
         EventsManager::getInstance()->dispatch(Events::onBeforeDeleteSubdomain, [
             'subdomainId'   => $id,
             'subdomainName' => $row['subdomain_alias_name'],
-            'type'          => 'alssub'
+            'subdomainType' => 'alssub',
+            'type'          => 'alssub', # BC -- will be removed in a later version
         ]);
 
         // Delete FTP groups and FTP accounting/limit data
@@ -595,7 +598,8 @@ function deleteSubdomainAlias($id)
         EventsManager::getInstance()->dispatch(Events::onAfterDeleteSubdomain, [
             'subdomainId'   => $id,
             'subdomainName' => $row['subdomain_alias_name'],
-            'type'          => 'alssub'
+            'subdomainType' => 'alssub',
+            'type'          => 'alssub', # BC -- will be removed in a later version
         ]);
 
         $db->commit();
