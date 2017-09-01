@@ -565,19 +565,19 @@ function generateCustomDnsRecordsList($tpl)
         $dnsName = $row['domain_dns'];
         $ttl = tr('Default');
         if (preg_match('/^(?P<name>([^\s]+))(?:\s+(?P<ttl>\d+))/', $dnsName, $matches)) {
-            $dnsName = $matches['name'];
+            $dnsName = (substr($matches['name'], -1) == '.')
+                ? $matches['name'] : "{$matches['name']}.{$row['zone_name']}.";
             $ttl = $matches['ttl'] . ' ' . tr('Sec.');
+        } else {
+            $dnsName = (substr($row['domain_dns'], -1) == '.')
+                ? $row['domain_dns'] : "{$row['domain_dns']}.{$row['zone_name']}.";
         }
 
         $status = translate_dmn_status($row['domain_dns_status'], true);
 
-        if(in_array($row['domain_type'], ['cname', 'mx', 'ns', 'srv'])) {
-            $row['domain_text'] = decode_idna($row['domain_text']);
-        }
-
         $tpl->assign([
             'DNS_DOMAIN'             => tohtml(decode_idna($row['zone_name'])),
-            'DNS_NAME'               => tohtml(decode_idna($dnsName)),
+            'DNS_NAME'               => tohtml($dnsName),
             'DNS_TTL'                => tohtml($ttl),
             'DNS_CLASS'              => tohtml($row['domain_class']),
             'DNS_TYPE'               => tohtml($row['domain_type']),
