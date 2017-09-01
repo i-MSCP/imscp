@@ -144,7 +144,7 @@ $nbDeletedMails = 0;
 $mailIds = (array)$_REQUEST['id'];
 
 if (empty($mailIds)) {
-    set_page_message(tr('You must select a least one mail account to delete.'), 'error');
+    set_page_message(tr('You must select at least one mail account to delete.'), 'error');
     redirectTo('mail_accounts.php');
 }
 

@@ -44,7 +44,7 @@
             input.blur();
 
             if($("input[type=checkbox]:checked", $oTable.fnGetNodes()).length < 1) {
-                alert("<?= tojs(tr('You must select a least one mail account to delete.')); ?>");
+                alert("<?= tojs(tr('You must select at least one mail account to delete.')); ?>");
                 return false;
             }
 
