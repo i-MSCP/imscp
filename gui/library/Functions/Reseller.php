@@ -22,13 +22,13 @@ use iMSCP_Exception as iMSCPException;
 use iMSCP_Registry as Registry;
 
 /**
- * Check that limits for the given hosting plan are not exceding limits of the given reseller
+ * Check that limits for the given hosting plan are not exceeding limits of the given reseller
  *
  * @throws iMSCPException
  * @param int $resellerId Reseller unique identifier
  * @param int|string $hp Hosting plan unique identifier or string representin
  *                       hosting plan properties to check against
- * @return bool TRUE if none of the given hosting plan limits is exeding limits of the given reseller, FALSE otherwise
+ * @return bool TRUE if none of the given hosting plan limits is exceeding limits of the given reseller, FALSE otherwise
  */
 function reseller_limits_check($resellerId, $hp)
 {
