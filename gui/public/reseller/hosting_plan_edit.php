@@ -509,15 +509,15 @@ function updateHostingPlan()
     $props .= ';' . $phpini->getDomainIni('phpiniMemoryLimit');
     $props .= ';' . $extMail . ';' . $webFolderProtection . ';' . $mailQuota * 1048576;
 
-    if (reseller_limits_check($_SESSION['user_id'], $props)) {
-        exec_query('UPDATE hosting_plans SET name = ?, description = ?, props = ?, status = ? WHERE id = ?', [
-            $name, $description, $props, $status, $id
-        ]);
-        return true;
+    if (!reseller_limits_check($_SESSION['user_id'], $props)) {
+        set_page_message(tr('Hosting plan limits exceed your limits.'), 'error');
+        return false;
     }
 
-    set_page_message(tr('Hosting plan limits exceed your limits.'), 'error');
-    return false;
+    exec_query('UPDATE hosting_plans SET name = ?, description = ?, props = ?, status = ? WHERE id = ?', [
+        $name, $description, $props, $status, $id
+    ]);
+    return true;
 }
 
 /***********************************************************************************************************************

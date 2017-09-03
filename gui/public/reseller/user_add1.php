@@ -141,19 +141,20 @@ function reseller_checkData()
         redirectTo('user_add2.php');
     }
 
-    if (reseller_limits_check($_SESSION['user_id'], $hpId)) {
-        $_SESSION['dmn_name'] = $asciiDmnName;
-        $_SESSION['dmn_expire'] = $dmnExpire;
-        $_SESSION['dmn_url_forward'] = $forwardUrl;
-        $_SESSION['dmn_type_forward'] = $forwardType;
-        $_SESSION['dmn_host_forward'] = $forwardHost;
-        $_SESSION['dmn_tpl'] = $hpId;
-        $_SESSION['chtpl'] = $customizeHp;
-        $_SESSION['step_one'] = '_yes_';
-        redirectTo('user_add3.php');
+    if (!reseller_limits_check($_SESSION['user_id'], $hpId)) {
+        set_page_message(tr('Hosting plan limits exceed reseller limits.'), 'error');
+        return;
     }
 
-    set_page_message(tr('Hosting plan limits exceed reseller limits.'), 'error');
+    $_SESSION['dmn_name'] = $asciiDmnName;
+    $_SESSION['dmn_expire'] = $dmnExpire;
+    $_SESSION['dmn_url_forward'] = $forwardUrl;
+    $_SESSION['dmn_type_forward'] = $forwardType;
+    $_SESSION['dmn_host_forward'] = $forwardHost;
+    $_SESSION['dmn_tpl'] = $hpId;
+    $_SESSION['chtpl'] = $customizeHp;
+    $_SESSION['step_one'] = '_yes_';
+    redirectTo('user_add3.php');
 }
 
 /**

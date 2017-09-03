@@ -494,7 +494,10 @@ $phpini->loadResellerPermissions($_SESSION['user_id']); // Load reseller PHP per
 $phpini->loadClientPermissions(); // Load client default PHP permissions
 $phpini->loadDomainIni(); // Load domain default PHP configuration options
 
-if (isset($_POST['uaction']) && 'user_add2_nxt' == $_POST['uaction'] && !isset($_SESSION['step_one'])) {
+if (isset($_POST['uaction'])
+    && 'user_add2_nxt' == $_POST['uaction']
+    && !isset($_SESSION['step_one'])
+) {
     if (checkInputData()) {
         $_SESSION['step_two_data'] = "$dmnName;0";
         $_SESSION['ch_hpprops'] =

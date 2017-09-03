@@ -22,14 +22,13 @@ use iMSCP_Exception as iMSCPException;
 use iMSCP_Registry as Registry;
 
 /**
- * Check that reseller limits are not smaller than those defined by the given
- * hosting plan
+ * Check that limits for the given hosting plan are not exceding limits of the given reseller
  *
  * @throws iMSCPException
  * @param int $resellerId Reseller unique identifier
  * @param int|string $hp Hosting plan unique identifier or string representin
  *                       hosting plan properties to check against
- * @return bool
+ * @return bool TRUE if none of the given hosting plan limits is exeding limits of the given reseller, FALSE otherwise
  */
 function reseller_limits_check($resellerId, $hp)
 {
@@ -80,7 +79,7 @@ function reseller_limits_check($resellerId, $hp)
 
     if ($maxDmnLimit != 0 && $currentDmnLimit + 1 > $maxDmnLimit) {
         set_page_message(tr('You have reached your domains limit. You cannot add more domains.'), 'error');
-        $ret = true;
+        $ret = false;
     }
 
     if ($maxSubLimit != 0 && $newSubLimit != -1) {
@@ -88,10 +87,10 @@ function reseller_limits_check($resellerId, $hp)
             set_page_message(
                 tr('You have a subdomains limit. You cannot add a user with unlimited subdomains.'), 'error'
             );
-            $ret = true;
+            $ret = false;
         } else if ($currentSubLimit + $newSubLimit > $maxSubLimit) {
             set_page_message(tr('You are exceeding your subdomains limit.'), 'error');
-            $ret = true;
+            $ret = false;
         }
     }
 
@@ -100,10 +99,10 @@ function reseller_limits_check($resellerId, $hp)
             set_page_message(
                 tr('You have a domain aliases limit. You cannot add a user with unlimited domain aliases.'), 'error'
             );
-            $ret = true;
+            $ret = false;
         } else if ($currentAlsLimit + $newAlsLimit > $maxAlsLimit) {
             set_page_message(tr('You are exceeding you domain aliases limit.'), 'error');
-            $ret = true;
+            $ret = false;
         }
     }
 
@@ -112,10 +111,10 @@ function reseller_limits_check($resellerId, $hp)
             set_page_message(
                 tr('You have a mail accounts limit. You cannot add a user with unlimited mail accounts.'), 'error'
             );
-            $ret = true;
+            $ret = false;
         } else if ($currentMailLimit + $newMailLimit > $maxMailLimit) {
             set_page_message(tr('You are exceeding your mail accounts limit.'), 'error');
-            $ret = true;
+            $ret = false;
         }
     }
 
@@ -124,10 +123,10 @@ function reseller_limits_check($resellerId, $hp)
             set_page_message(
                 tr('You have a FTP accounts limit. You cannot add a user with unlimited FTP accounts.'), 'error'
             );
-            $ret = true;
+            $ret = false;
         } else if ($currentFtpLimit + $newFtpLimit > $ftpMaxLimit) {
             set_page_message(tr('You are exceeding your FTP accounts limit.'), 'error');
-            $ret = true;
+            $ret = false;
         }
     }
 
@@ -136,10 +135,10 @@ function reseller_limits_check($resellerId, $hp)
             set_page_message(
                 tr('You have a SQL databases limit. You cannot add a user with unlimited SQL databases.'), 'error'
             );
-            $ret = true;
+            $ret = false;
         } else if ($currentSqlDbLimit + $newSqlDbLimit > $maxSqlDbLimit) {
             set_page_message(tr('You are exceeding your SQL databases limit.'), 'error');
-            $ret = true;
+            $ret = false;
         }
     }
 
@@ -148,15 +147,15 @@ function reseller_limits_check($resellerId, $hp)
             set_page_message(
                 tr('You have a SQL users limit. You cannot add a user with unlimited SQL users.'), 'error'
             );
-            $ret = true;
+            $ret = false;
         } elseif ($newSqlDbLimit == -1) {
             set_page_message(
                 tr('You have disabled SQL databases for this user. You cannot have SQL users here.'), 'error'
             );
-            $ret = true;
+            $ret = false;
         } elseif ($currentSqlUserLimit + $newSqlUserLimit > $maxSqlUserLimit) {
             set_page_message(tr('You are exceeding your SQL users limit.'), 'error');
-            $ret = true;
+            $ret = false;
         }
     }
 
@@ -165,10 +164,10 @@ function reseller_limits_check($resellerId, $hp)
             set_page_message(
                 tr('You have a monthly traffic limit. You cannot add a user with unlimited monthly traffic.'), 'error'
             );
-            $ret = true;
+            $ret = false;
         } elseif ($currentTrafficLimit + $newTrafficLimit > $maxTrafficLimit) {
             set_page_message(tr('You are exceeding your monthly traffic limit.'), 'error');
-            $ret = true;
+            $ret = false;
         }
     }
 
@@ -177,7 +176,7 @@ function reseller_limits_check($resellerId, $hp)
             set_page_message(
                 tr('You have a disk space limit. You cannot add a user with unlimited disk space.'), 'error'
             );
-            $ret = true;
+            $ret = false;
         } elseif ($currentDiskspaceLimit + $newDiskspaceLimit > $maxDiskspaceLimit) {
             set_page_message(tr('You are exceeding your disk space limit.'), 'error');
             $ret = false;
