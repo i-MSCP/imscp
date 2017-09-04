@@ -929,11 +929,11 @@ sub postmap
  
     Removing parameters
 
-    Servers::mta->factory()->postconf(
+    Servers::mta::postfix->getInstance(
         (
             smtpd_milters     => {
                 action => 'remove',
-                values => [ qr%\Qunix:/opendkim/opendkim.sock\E% ] # # Using Regexp
+                values => [ qr%\Qunix:/opendkim/opendkim.sock\E% ] # Using Regexp
             },
             non_smtpd_milters => {
                 action => 'remove',
