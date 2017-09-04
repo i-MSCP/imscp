@@ -973,7 +973,7 @@ sub postconf
                 my (@vls, @rpls) = ( split( /,\s*/, $v ), () );
 
                 defined $params{$p}->{'values'} && ref $params{$p}->{'values'} eq 'ARRAY' or die(
-                    sprintf( "Missing or invalid `values' for the %s parameter. Expects an array of values', $p" )
+                    sprintf( "Missing or invalid `values' for the %s parameter. Expects an array of values", $p )
                 );
 
                 for $v( @{$params{$p}->{'values'}} ) {
