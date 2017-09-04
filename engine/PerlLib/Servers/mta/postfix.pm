@@ -891,7 +891,8 @@ sub postmap
 
  Param hash %params A hash where each key is a Postfix parameter name and the value, a hashes describing in order:
   - action : Action to be performed (add|replace|remove) -- Default add
-  - values : An array containing parameter value(s) to add, replace or remove.
+  - values : An array containing parameter value(s) to add, replace or remove. For values to be removed, both strings
+             and Regexp are supported.
   - empty  : OPTIONAL Flag that allows to force adding of empty parameter
   - before : OPTIONAL Option that allows to add values before the given value (expressed as a Regexp)
   - after  : OPTIONAL Option that allows to add values after the given value (expressed as a Regexp)
@@ -909,6 +910,9 @@ sub postmap
     Unknown Postfix parameter are silently ignored
 
   Usage example:
+
+    Adding parameters
+
     Let's assume that we want add both, the `check_client_access <table>' value and the `check_recipient_access <table>'
     value to the `smtpd_recipient_restrictions' parameter, before the `check_policy_service ...' service.
     The following would do the job:
@@ -922,6 +926,21 @@ sub postmap
             }
         )
     );
+ 
+    Removing parameters
+
+    Servers::mta->factory()->postconf(
+        (
+            smtpd_milters     => {
+                action => 'remove',
+                values => [ qr%\Qunix:/opendkim/opendkim.sock\E% ] # # Using Regexp
+            },
+            non_smtpd_milters => {
+                action => 'remove',
+                values => [ 'unix:/opendkim/opendkim.sock' ] # Using string
+            }
+        )
+    )
 
  Return int 0 on success, other failure
 
@@ -936,7 +955,7 @@ sub postconf
         %params or die( 'Missing parameters ' );
 
         my @pToDel = ();
-        my $conffile = $self->{'config'}->{'POSTFIX_CONF_DIR'} || '/etc/postfix/main.cf';
+        my $conffile = $self->{'config'}->{'POSTFIX_CONF_DIR'} || '/etc/postfix';
         my $time = time();
 
         # Avoid POSTCONF(1) being slow by waiting 2 seconds before next processing
@@ -975,7 +994,7 @@ sub postconf
                     } elsif ( $params{$p}->{'action'} eq 'replace' ) {
                         push @rpls, $v;
                     } elsif ( $params{$p}->{'action'} eq 'remove' ) {
-                        @vls = grep ($_ ne $v, @vls);
+                        @vls = ref $v eq 'Regexp' ? grep ($_ !~ $v, @vls) : grep ($_ ne $v, @vls);
                     } else {
                         die( sprintf( 'Unknown action %s for the  %s parameter', $params{$p}->{'action'}, $p ));
                     }
