@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-01 21:55+0000\n"
+"POT-Creation-Date: 2017-09-05 00:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: kurgans <bongostudio@gmail.com>, 2017\n"
 "Language-Team: Spanish (Spain) (https://www.transifex.com/i-mscp/teams/576/es_ES/)\n"
@@ -865,7 +865,7 @@ msgid "Blocking time between logins and captcha attempts"
 msgstr "Tiempo de bloqueo entre intentos de inicio de sesión y captcha"
 
 msgid "Blocktime in minutes"
-msgstr ""
+msgstr "Tiempo bloqueado (minutos)"
 
 msgid "Body"
 msgstr "Cuerpo"
@@ -1323,16 +1323,19 @@ msgstr ""
 
 msgid "Couldn't delete domain alias. An unexpected error occurred."
 msgstr ""
+"No se ha podido eliminar alias de Dominio. Se ha producido un un error "
+"inexperado."
 
 msgid "Couldn't delete subdomain. An unexpected error occurred."
 msgstr ""
+"No se ha podido eliminar subdominio. Se ha producido un un error inexperado."
 
 #, php-format
 msgid "Couldn't validate DNS resource record: %s"
 msgstr ""
 
 msgid "Count default mail accounts"
-msgstr ""
+msgstr "Contar cuentas de E-Mail predeterminadas"
 
 msgid "Country"
 msgstr "País"
@@ -2356,7 +2359,7 @@ msgid "Forbidden"
 msgstr "Prohibido"
 
 msgid "Force refresh"
-msgstr ""
+msgstr "Reintentar"
 
 msgid "Force retry"
 msgstr "Forzar reintento"
@@ -3957,7 +3960,7 @@ msgid "Protocol"
 msgstr "Protocolo"
 
 msgid "Quota in MiB (0 ∞)"
-msgstr ""
+msgstr "Cuota en MB (0 ilimitada)"
 
 #, php-format
 msgid "Quota in MiB (Max: %s)"
@@ -3985,7 +3988,7 @@ msgid "Redirect"
 msgstr "Redireccionar"
 
 msgid "Redistribute unused quota across existing mail accounts"
-msgstr ""
+msgstr "Redistribuir cuota no utilizada a otros buzones de correo existentes"
 
 msgid "Registration date"
 msgstr "Fecha de registro"
@@ -4261,6 +4264,8 @@ msgstr "Límite de Bases de Datos SQL no está desactivado."
 
 msgid "SQL databases limit is reached. You cannot add new SQL databases."
 msgstr ""
+"Límite de bases de datos SQL excedido. Usted no puede agregar mas bases de "
+"datos SQL."
 
 msgid "SQL databases only"
 msgstr "Sólo Bases de datos SQL"
@@ -4286,7 +4291,7 @@ msgid "SQL user name"
 msgstr "Nombre de usuario SQL"
 
 msgid "SQL user password"
-msgstr ""
+msgstr "Contraseña usuario SQL"
 
 msgid "SQL user password successfully updated."
 msgstr "La contraseña del usuario SQL ha sido actualizada correctamente."
@@ -4314,6 +4319,7 @@ msgstr "Límite de usuarios SQL está desactivado."
 
 msgid "SQL users limit is reached. You cannot add new SQL users."
 msgstr ""
+"Límite de usuarios SQL excedido. Usted no puede agregar mas usuarios SQL."
 
 msgid "SSL certificate successfully scheduled for addition."
 msgstr "El Certificado SSL ha sido programado correctamente para su creación."
@@ -4424,7 +4430,7 @@ msgid "Service protocol"
 msgstr "Protocolo del servicio"
 
 msgid "Service statuses"
-msgstr ""
+msgstr "Estados servicio"
 
 msgid "Service with same name already exists."
 msgstr "Existe ya un servicio con el mismo nombre."
@@ -5049,7 +5055,7 @@ msgstr "Total de repositorios de software Web"
 
 #, php-format
 msgid "Total accounts: %s / %s"
-msgstr ""
+msgstr "Total de cuentas: %s / %s"
 
 msgid "Total installations"
 msgstr "Instalaciones totales"
