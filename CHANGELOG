@@ -1,8 +1,11 @@
 ﻿i-MSCP ChangeLog
 
 ------------------------------------------------------------------------------------------------------------------------
-Git 1.5.x
+1.5.0
 ------------------------------------------------------------------------------------------------------------------------
+
+2017-09-05: Laurent Declercq
+    RELEASE i-MSCP 1.5.0
 
 BACKEND
     Added: `apcu', `apc', `gmp' and `Zend Opcache' PHP modules to the list of required PHP module (iMSCP::Requirements)
