@@ -42,16 +42,19 @@ function _generateResellerStatistics($tpl, $resellerId, $resellerName)
         $rsqlUserConsumed, $rtraffConsumed, $rdiskConsumed) = getResellerStats($resellerId);
 
     $diskUsagePercent = getPercentUsage($rdiskConsumed, $rdiskLimit);
+    $trafficPercent = getPercentUsage($rtraffConsumed, $rtraffLimit);
 
     $tpl->assign([
         'RESELLER_NAME'   => tohtml($resellerName),
         'RESELLER_ID'     => tohtml($resellerId),
-        'DISK_PERCENT' => getPercentUsage($rdiskConsumed, $rdiskLimit),
+        'DISK_PERCENT_WIDTH' => tohtml($diskUsagePercent, 'htmlAttr'),
+        'DISK_PERCENT' => tohtml($diskUsagePercent),
         'DISK_MSG'        => ($rdiskLimit == 0)
             ? tohtml(sprintf('%s / ∞', bytesHuman($rdiskConsumed)))
             : tohtml(sprintf('%s / %s', bytesHuman($rdiskConsumed), bytesHuman($rdiskLimit))),
 
-        'TRAFFIC_PERCENT' => tohtml(getPercentUsage($rtraffConsumed, $rtraffLimit)),
+        'TRAFFIC_PERCENT_WIDTH' => tohtml($trafficPercent, 'htmlAttr'),
+        'TRAFFIC_PERCENT' => tohtml($trafficPercent),
         'TRAFFIC_MSG'     => ($rtraffLimit == 0)
             ? tohtml(sprintf('%s / ∞', bytesHuman($rtraffConsumed)))
             : tohtml(sprintf('%s / %s', bytesHuman($rtraffConsumed), bytesHuman($rtraffLimit))),

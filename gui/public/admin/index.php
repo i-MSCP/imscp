@@ -81,8 +81,9 @@ function admin_getAdminGeneralInfo($tpl)
         'DOMAINS'         => tohtml(get_domains_count()),
         'SUBDOMAINS'      => tohtml(get_subdomains_count()),
         'DOMAINS_ALIASES' => tohtml(get_domain_aliases_count()),
-        'MAIL_ACCOUNTS'   => tohtml(get_mail_accounts_count()) . (
-            !iMSCP_Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES'] ? ' (' . tohtml('Excl. default mail accounts') . ')' : ''
+        'MAIL_ACCOUNTS'   => tohtml(get_mail_accounts_count())
+            . (!iMSCP_Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']
+                ? ' (' . tohtml('Excl. default mail accounts') . ')' : ''
             ),
         'FTP_ACCOUNTS'    => tohtml(get_ftp_users_count()),
         'SQL_DATABASES'   => tohtml(get_sql_databases_count()),

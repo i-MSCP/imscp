@@ -57,3 +57,6 @@
     </tbody>
 </table>
 <!-- EDP: user_statistics_details_block -->
+<div class="buttons">
+    <a href="user_statistics.php" class="link_as_button">{TR_BACK}</a>
+</div>

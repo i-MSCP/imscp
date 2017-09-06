@@ -186,7 +186,8 @@ $tpl->assign([
     'TR_POP3_TRAFFIC' => tohtml(tr('POP3/IMAP traffic')),
     'TR_ALL_TRAFFIC'  => tohtml(tr('All traffic')),
     'TR_ALL'          => tohtml(tr('All')),
-    'TR_DAY'          => tohtml(tr('Day'))
+    'TR_DAY'          => tohtml(tr('Day')),
+    'TR_BACK'         => tohtml(tr('Back'))
 ]);
 
 generateNavigation($tpl);

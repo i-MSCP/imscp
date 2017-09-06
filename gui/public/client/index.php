@@ -109,7 +109,7 @@ function client_generateTrafficUsageBar($tpl, $usage, $maxUsage)
     $tpl->assign([
         'TRAFFIC_PERCENT_WIDTH' => tohtml($trafficUsagePercent, 'htmlAttr'),
         'TRAFFIC_PERCENT'       => tohtml($trafficUsagePercent),
-        'TRAFFIC_USAGE_DATA'    => tohtml($trafficUsageData),
+        'TRAFFIC_USAGE_DATA'    => tohtml($trafficUsageData)
     ]);
 
     if ($maxUsage > 0 && $usage > $maxUsage) {

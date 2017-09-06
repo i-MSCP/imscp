@@ -51,17 +51,17 @@
         </td>
         <td>
             <div class="graph">
-                <span style="width:{DISK_PERCENT}%"></span>
-                <strong>{DISK_PERCENT}</strong>
+                <span style="width:{DISK_PERCENT_WIDTH}%"></span>
+                <strong>{DISK_PERCENT}%</strong>
             </div>
             {DISK_MSG}
         </td>
         <td>
             <div class="graph">
-                <span style="width:{TRAFF_PERCENT}%"></span>
-                <strong>{TRAFF_PERCENT}</strong>
+                <span style="width:{TRAFFIC_PERCENT_WIDTH}%"></span>
+                <strong>{TRAFFIC_PERCENT}%</strong>
             </div>
-            {TRAFF_MSG}
+            {TRAFFIC_MSG}
         </td>
         <td>{WEB}</td>
         <td>{FTP}</td>
