@@ -50,7 +50,8 @@
     </tbody>
 </table>
 <h2 class="traffic"><span>{TR_SERVER_TRAFFIC}</span></h2>
-<p>{TRAFFIC_WARNING}</p>
 <div class="graph">
-    <span style="width:{TRAFFIC_PERCENT}%">&nbsp;</span>
+    <span style="width:{TRAFFIC_PERCENT_WIDTH}%">&nbsp;</span>
+    <strong>{TRAFFIC_PERCENT}%</strong>
 </div>
+<p>{TRAFFIC_WARNING}</p>

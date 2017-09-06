@@ -18,6 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -81,21 +85,14 @@ function generateOrdersAliasesMessage()
  */
 function generateTrafficUsageBar($tpl, $trafficUsageBytes, $trafficLimitBytes)
 {
-    $trafficUsagePercent = make_usage_vals($trafficUsageBytes, $trafficLimitBytes);
-
-    if ($trafficLimitBytes) {
-        $trafficUsageData = tr(
-            '%s%% [%s / %s]', $trafficUsagePercent, bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes)
-        );
-    } else {
-        $trafficUsageData = tr(
-            '%s%% [%s / ∞]', $trafficUsagePercent, bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes)
-        );
-    }
-
+    $trafficUsagePercent = getPercentUsage($trafficUsageBytes, $trafficLimitBytes);
+    $trafficUsageData = ($trafficLimitBytes > 0)
+        ? sprintf('[%s / %s]', bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes))
+        : sprintf('[%s / ∞]', bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes));
     $tpl->assign([
-        'TRAFFIC_USAGE_DATA' => $trafficUsageData,
-        'TRAFFIC_PERCENT'    => $trafficUsagePercent
+        'TRAFFIC_USAGE_DATA'    => tohtml($trafficUsageData),
+        'TRAFFIC_PERCENT_WIDTH' => tohtml($trafficUsagePercent, 'htmlAttr'),
+        'TRAFFIC_PERCENT'       => tohtml($trafficUsagePercent)
     ]);
 }
 
@@ -109,19 +106,14 @@ function generateTrafficUsageBar($tpl, $trafficUsageBytes, $trafficLimitBytes)
  */
 function generateDiskUsageBar($tpl, $diskspaceUsageBytes, $diskspaceLimitBytes)
 {
-    $diskspaceUsagePercent = make_usage_vals($diskspaceUsageBytes, $diskspaceLimitBytes);
-
-    if ($diskspaceLimitBytes) {
-        $diskUsageData = tr(
-            '%s%% [%s / %s]', $diskspaceUsagePercent, bytesHuman($diskspaceUsageBytes), bytesHuman($diskspaceLimitBytes)
-        );
-    } else {
-        $diskUsageData = tr('%s%% [%s / ∞]', $diskspaceUsagePercent, bytesHuman($diskspaceUsageBytes));
-    }
-
+    $diskspaceUsagePercent = getPercentUsage($diskspaceUsageBytes, $diskspaceLimitBytes);
+    $diskUsageData = ($diskspaceLimitBytes > 0)
+        ? sprintf('[%s / %s]', bytesHuman($diskspaceUsageBytes), bytesHuman($diskspaceLimitBytes))
+        : sprintf('[%s / ∞]', bytesHuman($diskspaceUsageBytes));
     $tpl->assign([
-        'DISK_USAGE_DATA' => $diskUsageData,
-        'DISK_PERCENT'    => $diskspaceUsagePercent
+        'DISK_USAGE_DATA'    => tohtml($diskUsageData),
+        'DISK_PERCENT_WIDTH' => tohtml($diskspaceUsagePercent, 'htmlAttr'),
+        'DISK_PERCENT'       => tohtml($diskspaceUsagePercent)
     ]);
 }
 
@@ -139,94 +131,102 @@ function generatePage($tpl, $resellerId, $resellerName)
     generateOrdersAliasesMessage();
 
     $resellerProperties = imscp_getResellerProperties($resellerId);
-    $udmnCurrent = get_reseller_domains_count($resellerId);
-    $usubCurrent = get_reseller_subdomains_count($resellerId);
-    $ualsCurrent = get_reseller_domain_aliases_count($resellerId);
-    $umailCurrent = get_reseller_mail_accounts_count($resellerId);
-    $uftpCurrent = get_reseller_ftp_users_count($resellerId);
-    $usqlDbCurrent = get_reseller_sql_databases_count($resellerId);
-    $usqlUserCurrent = get_reseller_sql_users_count($resellerId);
+    $domainsCount = get_reseller_domains_count($resellerId);
+    $subdomainsCount = get_reseller_subdomains_count($resellerId);
+    $domainAliasesCount = get_reseller_domain_aliases_count($resellerId);
+    $mailAccountsCount = get_reseller_mail_accounts_count($resellerId);
+    $ftpUsersCount = get_reseller_ftp_users_count($resellerId);
+    $sqlDatabasesCount = get_reseller_sql_databases_count($resellerId);
+    $sqlUsersCount = get_reseller_sql_users_count($resellerId);
 
-    $stmt = exec_query(
+    $totalConsumedMonthlyTraffic = exec_query(
         '
-            SELECT
-                IFNULL(SUM(domain_disk_usage), 0) AS disk_usage,
-                IFNULL(SUM(dtraff_web), 0) + IFNULL(SUM(dtraff_ftp), 0) + IFNULL(SUM(dtraff_mail), 0) +
+            SELECT IFNULL(SUM(dtraff_web), 0) + IFNULL(SUM(dtraff_ftp), 0) + IFNULL(SUM(dtraff_mail), 0) +
                 IFNULL(SUM(dtraff_pop), 0) AS monthly_traffic
             FROM domain AS t1
             JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
-            LEFT JOIN domain_traffic AS t3 ON(t3.domain_id = t1.domain_id AND t3.dtraff_time BETWEEN ? AND ?)
+            JOIN domain_traffic AS t3 ON(t3.domain_id = t1.domain_id AND t3.dtraff_time BETWEEN ? AND ?)
             WHERE created_by = ?
         ',
         [getFirstDayOfMonth(), getLastDayOfMonth(), $_SESSION['user_id']]
-    );
+    )->fetchRow(PDO::FETCH_COLUMN);
+    $monthlyTrafficLimit = $resellerProperties['max_traff_amnt'] * 1048576;
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    generateTrafficUsageBar($tpl, $totalConsumedMonthlyTraffic, $monthlyTrafficLimit);
 
-    // Convert into Mib values
-    $monthlyTrafficLimit = $resellerProperties['max_traff_amnt'] * 1024 * 1024;
-    $diskUsageLimit = $resellerProperties['max_disk_amnt'] * 1024 * 1024;
-
-    generateTrafficUsageBar($tpl, $row['monthly_traffic'], $monthlyTrafficLimit);
-    generateDiskUsageBar($tpl, $row['disk_usage'], $diskUsageLimit);
-
-    if ($monthlyTrafficLimit > 0 && $row['monthly_traffic'] > $monthlyTrafficLimit) {
-        $tpl->assign('TR_TRAFFIC_WARNING', tr('You are exceeding your monthly traffic limit.'));
+    if ($monthlyTrafficLimit > 0
+        && $totalConsumedMonthlyTraffic > $monthlyTrafficLimit
+    ) {
+        $tpl->assign('TR_TRAFFIC_WARNING', tohtml(tr('You are exceeding your monthly traffic limit.')));
     } else {
         $tpl->assign('TRAFFIC_WARNING_MESSAGE', '');
     }
 
-    if ($diskUsageLimit > 0 && $row['disk_usage'] > $diskUsageLimit) {
-        $tpl->assign('TR_DISK_WARNING', tr('You are exceeding your disk space limit.'));
+    $totalDiskUsage = exec_query(
+        '
+            SELECT IFNULL(SUM(domain_disk_usage), 0) AS disk_usage
+            FROM domain AS t1
+            JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
+            WHERE created_by = ?
+        ',
+        $_SESSION['user_id']
+    )->fetchRow(PDO::FETCH_COLUMN);
+    $diskUsageLimit = $resellerProperties['max_disk_amnt'] * 1048576;
+    generateDiskUsageBar($tpl, $totalDiskUsage, $diskUsageLimit);
+
+    if ($diskUsageLimit > 0
+        && $totalDiskUsage > $diskUsageLimit
+    ) {
+        $tpl->assign('TR_DISK_WARNING', tohtml(tr('You are exceeding your disk space limit.')));
     } else {
         $tpl->assign('DISK_WARNING_MESSAGE', '');
     }
 
     $tpl->assign([
-        'TR_ACCOUNT_LIMITS' => tr('Account limits'),
-        'TR_FEATURES'       => tr('Features'),
-        'DOMAINS'           => tr('Domain accounts'),
-        'SUBDOMAINS'        => tr('Subdomains'),
-        'ALIASES'           => tr('Domain aliases'),
-        'MAIL_ACCOUNTS'     => tr('Mail accounts'),
-        'TR_FTP_ACCOUNTS'   => tr('FTP accounts'),
-        'SQL_DATABASES'     => tr('SQL databases'),
-        'SQL_USERS'         => tr('SQL users'),
-        'TR_TRAFFIC_USAGE'  => tr('Monthly traffic usage'),
-        'TR_DISK_USAGE'     => tr('Disk usage'),
+        'TR_ACCOUNT_LIMITS' => tohtml(tr('Account limits')),
+        'TR_FEATURES'       => tohtml(tr('Features')),
+        'DOMAINS'           => tohtml(tr('Domain accounts')),
+        'SUBDOMAINS'        => tohtml(tr('Subdomains')),
+        'ALIASES'           => tohtml(tr('Domain aliases')),
+        'MAIL_ACCOUNTS'     => tohtml(tr('Mail accounts')),
+        'TR_FTP_ACCOUNTS'   => tohtml(tr('FTP accounts')),
+        'SQL_DATABASES'     => tohtml(tr('SQL databases')),
+        'SQL_USERS'         => tohtml(tr('SQL users')),
         'RESELLER_NAME'     => tohtml($resellerName),
-        'DMN_MSG'           => ($resellerProperties['max_dmn_cnt'])
-            ? tr('%s / %s', $udmnCurrent, $resellerProperties['max_dmn_cnt']) : tr('%s / ∞', $udmnCurrent),
-        'SUB_MSG'           => ($resellerProperties['max_sub_cnt'] > 0)
-            ? tr('%s / %s', $usubCurrent, $resellerProperties['max_sub_cnt'])
-            : (($resellerProperties['max_sub_cnt'] == '-1') ? '-' : tr('%s / ∞', $usubCurrent)),
-        'ALS_MSG'           => ($resellerProperties['max_als_cnt'] > 0)
-            ? tr('%s / %s', $ualsCurrent, $resellerProperties['max_als_cnt'])
-            : (($resellerProperties['max_als_cnt'] == '-1') ? '-' : tr('%s / ∞', $ualsCurrent)),
-        'MAIL_MSG'          => ($resellerProperties['max_mail_cnt'] > 0)
-            ? tr('%s / %s', $umailCurrent, $resellerProperties['max_mail_cnt'])
-            : (($resellerProperties['max_mail_cnt'] == '-1') ? '-' : tr('%s / ∞', $umailCurrent)),
-        'FTP_MSG'           => ($resellerProperties['max_ftp_cnt'] > 0)
-            ? tr('%s / %s', $uftpCurrent, $resellerProperties['max_ftp_cnt'])
-            : (($resellerProperties['max_ftp_cnt'] == '-1') ? '-' : tr('%s / ∞', $uftpCurrent)),
-        'SQL_DB_MSG'        => ($resellerProperties['max_sql_db_cnt'] > 0)
-            ? tr('%s / %s', $usqlDbCurrent, $resellerProperties['max_sql_db_cnt'])
-            : (($resellerProperties['max_sql_db_cnt'] == '-1') ? '-' : tr('%s / ∞', $usqlDbCurrent)),
-        'SQL_USER_MSG'      => ($resellerProperties['max_sql_db_cnt'] > 0)
-            ? tr('%s / %s', $usqlUserCurrent, $resellerProperties['max_sql_user_cnt'])
-            : (($resellerProperties['max_sql_user_cnt'] == '-1') ? '-' : tr('%s / ∞', $usqlUserCurrent)),
-        'TR_SUPPORT'        => tr('Support system'),
+        'DMN_MSG'           => tohtml(($resellerProperties['max_dmn_cnt'])
+            ? sprintf('%s / %s', $domainsCount, $resellerProperties['max_dmn_cnt']) : sprintf('%s / ∞', $domainsCount)),
+        'SUB_MSG'           => tohtml(($resellerProperties['max_sub_cnt'] > 0)
+            ? sprintf('%s / %s', $subdomainsCount, $resellerProperties['max_sub_cnt'])
+            : (($resellerProperties['max_sub_cnt'] == '-1') ? '-' : sprintf('%s / ∞', $subdomainsCount))),
+        'ALS_MSG'           => tohtml(($resellerProperties['max_als_cnt'] > 0)
+            ? sprintf('%s / %s', $domainAliasesCount, $resellerProperties['max_als_cnt'])
+            : (($resellerProperties['max_als_cnt'] == '-1') ? '-' : sprintf('%s / ∞', $domainAliasesCount))),
+        'MAIL_MSG'          => tohtml(($resellerProperties['max_mail_cnt'] > 0)
+            ? sprintf('%s / %s', $mailAccountsCount, $resellerProperties['max_mail_cnt'])
+            : (($resellerProperties['max_mail_cnt'] == '-1') ? '-' : sprintf('%s / ∞', $mailAccountsCount))),
+        'FTP_MSG'           => tohtml(($resellerProperties['max_ftp_cnt'] > 0)
+            ? sprintf('%s / %s', $ftpUsersCount, $resellerProperties['max_ftp_cnt'])
+            : (($resellerProperties['max_ftp_cnt'] == '-1') ? '-' : sprintf('%s / ∞', $ftpUsersCount))),
+        'SQL_DB_MSG'        => tohtml(($resellerProperties['max_sql_db_cnt'] > 0)
+            ? sprintf('%s / %s', $sqlDatabasesCount, $resellerProperties['max_sql_db_cnt'])
+            : (($resellerProperties['max_sql_db_cnt'] == '-1') ? '-' : sprintf('%s / ∞', $sqlDatabasesCount))),
+        'SQL_USER_MSG'      => tohtml(($resellerProperties['max_sql_db_cnt'] > 0)
+            ? sprintf('%s / %s', $sqlUsersCount, $resellerProperties['max_sql_user_cnt'])
+            : (($resellerProperties['max_sql_user_cnt'] == '-1') ? '-' : sprintf('%s / ∞', $sqlUsersCount))),
+        'TR_SUPPORT'        => tohtml(tr('Support system')),
         'SUPPORT_STATUS'    => ($resellerProperties['support_system'] == 'yes')
-            ? '<span style="color:green;">' . tr('Enabled') . '</span>'
-            : '<span style="color:red;">' . tr('Disabled') . '</span>',
-        'TR_PHP_EDITOR'     => tr('PHP Editor'),
+            ? '<span style="color:green;">' . tohtml(tr('Enabled')) . '</span>'
+            : '<span style="color:red;">' . tohtml(tr('Disabled')) . '</span>',
+        'TR_PHP_EDITOR'     => tohtml(tr('PHP Editor')),
         'PHP_EDITOR_STATUS' => ($resellerProperties['php_ini_system'] == 'yes')
-            ? '<span style="color:green;">' . tr('Enabled') . '</span>'
-            : '<span style="color:red;">' . tr('Disabled') . '</span>',
+            ? '<span style="color:green;">' . tohtml(tr('Enabled')) . '</span>'
+            : '<span style="color:red;">' . tohtml(tr('Disabled')) . '</span>',
         'TR_APS'            => tr('Software installer'),
         'APS_STATUS'        => ($resellerProperties['software_allowed'] == 'yes')
-            ? '<span style="color:green;">' . tr('Enabled') . '</span>'
-            : '<span style="color:red;">' . tr('Disabled') . '</span>'
+            ? '<span style="color:green;">' . tohtml(tr('Enabled')) . '</span>'
+            : '<span style="color:red;">' . tohtml(tr('Disabled')) . '</span>',
+        'TR_TRAFFIC_USAGE'  => tohtml(tr('Monthly traffic usage')),
+        'TR_DISK_USAGE'     => tohtml(tr('Disk usage')),
     ]);
 }
 
@@ -236,8 +236,8 @@ function generatePage($tpl, $resellerId, $resellerName)
 
 require 'imscp-lib.php';
 
-check_login('reseller', iMSCP_Registry::get('config')['PREVENT_EXTERNAL_LOGIN_RESELLER']);
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+check_login('reseller', Registry::get('config')['PREVENT_EXTERNAL_LOGIN_RESELLER']);
+EventsManager::getInstance()->dispatch(Events::onResellerScriptStart);
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
@@ -247,17 +247,14 @@ $tpl->define_dynamic([
     'traffic_warning_message' => 'page',
     'disk_warning_message'    => 'page'
 ]);
-$tpl->assign([
-    'TR_PAGE_TITLE' => tr('Reseller / General / Overview'),
-    'TR_SAVE'       => tr('Save')
-]);
+$tpl->assign('TR_PAGE_TITLE', tohtml(tr('Reseller / General / Overview')));
 
 generateNavigation($tpl);
 generatePage($tpl, $_SESSION['user_id'], $_SESSION['user_logged']);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+EventsManager::getInstance()->dispatch(Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

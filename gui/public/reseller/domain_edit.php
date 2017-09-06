@@ -107,7 +107,7 @@ function reseller_getDomainProps($domainId)
     $data = $stmt->fetchRow();
     $data['mail_quota'] = $data['mail_quota'] / 1048576;
 
-    $trafficData = shared_getCustomerMonthlyTrafficData($domainId);
+    $trafficData = getClientMonthlyTrafficStats($domainId);
     $data['domainTraffic'] = $trafficData[4];
     return $data;
 }

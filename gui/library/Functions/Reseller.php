@@ -202,7 +202,7 @@ function resellerHasFeature($featureName, $forceReload = false)
 
     if (NULL == $availableFeatures || $forceReload) {
         $cfg = Registry::get('config');
-        $resellerProps = imscp_getResellerProperties($_SESSION['user_id'], true);
+        $resellerProps = imscp_getResellerProperties($_SESSION['user_id']);
         $availableFeatures = [
             'domains'            => ($resellerProps['max_dmn_cnt'] != '-1'),
             'subdomains'         => ($resellerProps['max_sub_cnt'] != '-1'),

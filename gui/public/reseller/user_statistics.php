@@ -34,7 +34,7 @@ function _generateUserStatistics($tpl, $adminId)
 {
     list(
         $adminName, , $webTraffic, $ftpTraffic, $smtpTraffic, $popImapTraffic, $trafficUsageBytes, $diskspaceUsageBytes
-        ) = shared_getCustomerStats($adminId);
+        ) = getClientStats($adminId);
 
     list(
         $subCount, $subMax, $alsCount, $alsMax, $mailCount, $mailMax, $ftpUserCount, $FtpUserMax, $sqlDbCount,
@@ -44,30 +44,30 @@ function _generateUserStatistics($tpl, $adminId)
     $trafficLimitBytes = $trafficLimit * 1048576;
     $diskspaceLimitBytes = $diskspaceLimit * 1048576;
 
-    $trafficPercent = make_usage_vals($trafficUsageBytes, $trafficLimitBytes);
-    $diskPercent = make_usage_vals($diskspaceUsageBytes, $diskspaceLimitBytes);
+    $trafficPercent = getPercentUsage($trafficUsageBytes, $trafficLimitBytes);
+    $diskPercent = getPercentUsage($diskspaceUsageBytes, $diskspaceLimitBytes);
 
     $tpl->assign([
         'USER_ID'       => tohtml($adminId),
         'USERNAME'      => tohtml(decode_idna($adminName)),
         'TRAFF_PERCENT' => tohtml($trafficPercent),
         'TRAFF_MSG'     => ($trafficLimitBytes)
-            ? tohtml(tr('%s / %s', bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes)))
-            : tohtml(tr('%s / ∞', bytesHuman($trafficUsageBytes))),
+            ? tohtml(sprintf('%s / %s', bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes)))
+            : tohtml(sprintf('%s / ∞', bytesHuman($trafficUsageBytes))),
         'DISK_PERCENT'  => tohtml($diskPercent),
         'DISK_MSG'      => ($diskspaceLimitBytes)
-            ? tohtml(tr('%s / %s', bytesHuman($diskspaceUsageBytes), bytesHuman($diskspaceLimitBytes)))
-            : tohtml(tr('%s / ∞', bytesHuman($diskspaceUsageBytes))),
+            ? tohtml(sprintf('%s / %s', bytesHuman($diskspaceUsageBytes), bytesHuman($diskspaceLimitBytes)))
+            : tohtml(sprintf('%s / ∞', bytesHuman($diskspaceUsageBytes))),
         'WEB'           => tohtml(bytesHuman($webTraffic)),
         'FTP'           => tohtml(bytesHuman($ftpTraffic)),
         'SMTP'          => tohtml(bytesHuman($smtpTraffic)),
         'POP3'          => tohtml(bytesHuman($popImapTraffic)),
-        'SUB_MSG'       => tohtml(tr('%s / %s', $subCount, translate_limit_value($subMax))),
-        'ALS_MSG'       => tohtml(tr('%s / %s', $alsCount, translate_limit_value($alsMax))),
-        'MAIL_MSG'      => tohtml(tr('%s / %s', $mailCount, translate_limit_value($mailMax))),
-        'FTP_MSG'       => tohtml(tr('%s / %s', $ftpUserCount, translate_limit_value($FtpUserMax))),
-        'SQL_DB_MSG'    => tohtml(tr('%s / %s', $sqlDbCount, translate_limit_value($sqlDbMax))),
-        'SQL_USER_MSG'  => tohtml(tr('%s / %s', $sqlUserCount, translate_limit_value($sqlUserMax)))
+        'SUB_MSG'       => tohtml(sprintf('%s / %s', $subCount, translate_limit_value($subMax))),
+        'ALS_MSG'       => tohtml(sprintf('%s / %s', $alsCount, translate_limit_value($alsMax))),
+        'MAIL_MSG'      => tohtml(sprintf('%s / %s', $mailCount, translate_limit_value($mailMax))),
+        'FTP_MSG'       => tohtml(sprintf('%s / %s', $ftpUserCount, translate_limit_value($FtpUserMax))),
+        'SQL_DB_MSG'    => tohtml(sprintf('%s / %s', $sqlDbCount, translate_limit_value($sqlDbMax))),
+        'SQL_USER_MSG'  => tohtml(sprintf('%s / %s', $sqlUserCount, translate_limit_value($sqlUserMax)))
     ]);
 }
 

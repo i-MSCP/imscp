@@ -93,7 +93,7 @@ function reseller_generatePage($tpl, $domainId)
     }
 
     // Get total monthly traffic usage in bytes
-    $trafficData = shared_getCustomerMonthlyTrafficData($domainId);
+    $trafficData = getClientMonthlyTrafficStats($domainId);
     $trafficUsageBytes = $trafficData[4];
     unset($trafficData);
 
@@ -101,8 +101,8 @@ function reseller_generatePage($tpl, $domainId)
     $diskspaceLimitBytes = $domainData['domain_disk_limit'] * 1048576;
 
     // Get usages in percent
-    $trafficUsagePercent = make_usage_vals($trafficUsageBytes, $trafficLimitBytes);
-    $diskspaceUsagePercent = make_usage_vals($domainData['domain_disk_usage'], $diskspaceLimitBytes);
+    $trafficUsagePercent = getPercentUsage($trafficUsageBytes, $trafficLimitBytes);
+    $diskspaceUsagePercent = getPercentUsage($domainData['domain_disk_usage'], $diskspaceLimitBytes);
 
     // Get Email quota info
     list($quota, $quotaLimit) = reseller_gen_mail_quota_limit_mgs($domainData['domain_admin_id']);

@@ -820,3 +820,118 @@ function reseller_generate_ip_list(TemplateEngine $tpl, $resellerId, $domainIp)
         $tpl->parse('IP_ENTRY', '.ip_entry');
     }
 }
+
+/**
+ * Returns translation for jQuery DataTables plugin.
+ *
+ * @param bool $json Does the data must be encoded to JSON?
+ * @return string|array
+ */
+function getDataTablesPluginTranslations($json = true)
+{
+    $tr = [
+        'sLengthMenu'  => tr(
+            'Show %s records per page',
+            '
+                <select>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                </select>
+            '
+        ),
+        //'sLengthMenu' => tr('Show %s records per page', '_MENU_'),
+        'zeroRecords'  => tr('Nothing found - sorry'),
+        'info'         => tr('Showing %s to %s of %s records', '_START_', '_END_', '_TOTAL_'),
+        'infoEmpty'    => tr('Showing 0 to 0 of 0 records'),
+        'infoFiltered' => tr('(filtered from %s total records)', '_MAX_'),
+        'search'       => tr('Search'),
+        'paginate'     => ['previous' => tr('Previous'), 'next' => tr('Next')],
+        'processing'   => tr('Loading data...')
+    ];
+
+    return ($json) ? json_encode($tr) : $tr;
+}
+
+/**
+ * Show the given error page
+ *
+ * @param int $code Code of error page to show (400, 403 or 404)
+ * @throws iMSCPException
+ * @return void
+ */
+function showErrorPage($code)
+{
+    switch ($code) {
+        case 400:
+            $message = 'Bad Request';
+            break;
+        case 403:
+            $message = 'Forbidden';
+            break;
+        case 404:
+            $message = 'Not Found';
+            break;
+        default:
+            throw new iMSCPException(500, 'Unknown error page');
+    }
+
+    header("Status: $code $message");
+
+    if (isset($_SERVER['HTTP_ACCEPT'])) {
+        if (strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
+            header("Content-type: application/json");
+            exit(json_encode(['code' => 404, 'message' => $message]));
+        }
+
+        if (strpos($_SERVER['HTTP_ACCEPT'], 'application/xmls') !== false) {
+            header("Content-type: text/xml;charset=utf-8");
+            exit(<<<EOF
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+    <code>$code</code>
+    <message>$message</message>
+</response>
+EOF
+            );
+        }
+    }
+
+    if (!is_xhr()) {
+        include(Registry::get('config')['GUI_ROOT_DIR'] . "/public/errordocs/$code.html");
+    }
+
+    exit;
+}
+
+/**
+ * Show 400 error page
+ *
+ * @return void
+ */
+function showBadRequestErrorPage()
+{
+    showErrorPage(400);
+}
+
+/**
+ * Show 404 error page
+ *
+ * @return void
+ */
+function showNotFoundErrorPage()
+{
+    showErrorPage(404);
+}
+
+/**
+ * Show 404 error page
+ *
+ * @return void
+ */
+function showForbiddenErrorPage()
+{
+    showErrorPage(403);
+}

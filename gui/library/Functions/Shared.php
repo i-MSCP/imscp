@@ -299,7 +299,7 @@ function get_user_domain_id($customeId)
 }
 
 /**
- * Get counts of objects and max objects for the given customer
+ * Get counts of consumed and max items for the given customer
  *
  * @param  int $customerId Customer unique identifier
  * @return array
@@ -309,24 +309,23 @@ function shared_getCustomerProps($customerId)
     $stmt = exec_query('SELECT * FROM domain WHERE domain_admin_id = ?', $customerId);
 
     if (!$stmt->rowCount()) {
-        // FIXME: bad implementation -- Should never occurs
         return array_fill(0, 14, 0);
     }
 
     $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
 
     return [
-        get_customer_subdomains_count($row['domain_id']),
+        ($row['domain_subd_limit'] == -1) ? 0 : get_customer_subdomains_count($row['domain_id']),
         $row['domain_subd_limit'],
-        get_customer_domain_aliases_count($row['domain_id']),
+        ($row['domain_alias_limit'] == -1) ? 0 : get_customer_domain_aliases_count($row['domain_id']),
         $row['domain_alias_limit'],
-        get_customer_mail_accounts_count($row['domain_id']),
+        ($row['domain_mailacc_limit'] == -1) ? 0 : get_customer_mail_accounts_count($row['domain_id']),
         $row['domain_mailacc_limit'],
-        get_customer_ftp_users_count($customerId),
+        ($row['domain_ftpacc_limit'] == -1) ? 0 : get_customer_ftp_users_count($customerId),
         $row['domain_ftpacc_limit'],
-        get_customer_sql_databases_count($row['domain_id']),
+        ($row['domain_sqld_limit'] == -1) ? 0 : get_customer_sql_databases_count($row['domain_id']),
         $row['domain_sqld_limit'],
-        get_customer_sql_users_count($row['domain_id']),
+        ($row['domain_sqlu_limit'] == -1) ? 0 : get_customer_sql_users_count($row['domain_id']),
         $row['domain_sqlu_limit'],
         $row['domain_traffic_limit'],
         $row['domain_disk_limit']
@@ -1374,7 +1373,6 @@ function utils_normalizePath($path, $posixCompliant = false)
     return (isset($path)) ? $path : '.';
 }
 
-
 /**
  * Remove the given directory recursively
  *
@@ -1711,98 +1709,6 @@ function getRequestBaseUrl()
     }
 
     return $scheme . '://' . getRequestHost() . ':' . $port;
-}
-
-/***********************************************************************************************************************
- * Accounting related functions
- */
-
-/**
- * Return usage in percent
- *
- * @param  int $amount Current value
- * @param  int $total (0 = unlimited)
- * @return int Usage in percent
- */
-function make_usage_vals($amount, $total)
-{
-    return $total
-        ? sprintf('%.2f', (($percent = ($amount / $total) * 100)) > 100 ? 100 : $percent)
-        : 0;
-}
-
-/**
- * Get monthly traffic data for a customer
- *
- * @param int $domainId Customer main domain ID
- * @return array An array container Web, FTP, SMTP, POP and total traffic (for the current month)
- */
-function shared_getCustomerMonthlyTrafficData($domainId)
-{
-    $stmt = exec_query(
-        '
-          SELECT IFNULL(SUM(dtraff_web), 0) AS dtraff_web,
-            IFNULL(SUM(dtraff_ftp), 0) AS dtraff_ftp,
-            IFNULL(SUM(dtraff_mail), 0) AS dtraff_mail,
-            IFNULL(SUM(dtraff_pop), 0) AS dtraff_pop
-          FROM domain_traffic
-          WHERE dtraff_time BETWEEN ? AND ?
-          AND domain_id = ?
-        ',
-        [getFirstDayOfMonth(), getLastDayOfMonth(), $domainId]
-    );
-
-    if ($stmt->rowCount()) {
-        $row = $stmt->fetchRow();
-        $webTraffic = $row['dtraff_web'];
-        $ftpTraffic = $row['dtraff_ftp'];
-        $smtpTraffic = $row['dtraff_mail'];
-        $popTraffic = $row['dtraff_pop'];
-        $totalTraffic = $row['dtraff_web'] + $row['dtraff_ftp'] + $row['dtraff_mail'] + $row['dtraff_pop'];
-    } else {
-        $webTraffic = $ftpTraffic = $smtpTraffic = $popTraffic = $totalTraffic = 0;
-    }
-
-    return [$webTraffic, $ftpTraffic, $smtpTraffic, $popTraffic, $totalTraffic];
-}
-
-/**
- * Get statistiques for the given user
- *
- * @param int $adminId User unique identifier
- * @return array
- */
-function shared_getCustomerStats($adminId)
-{
-    $stmt = exec_query(
-        '
-            SELECT domain_id,
-              IFNULL(domain_disk_usage, 0) AS diskspace_usage,
-              IFNULL(domain_traffic_limit, 0) AS monthly_traffic_limit,
-              IFNULL(domain_disk_limit, 0) AS diskspace_limit,
-              admin_name
-            FROM domain
-            JOIN admin on(admin_id = domain_admin_id)
-            WHERE domain_admin_id = ?
-            ORDER BY domain_name
-        ',
-        $adminId
-    );
-
-    if (!$stmt->rowCount()) {
-        showBadRequestErrorPage();
-    }
-
-    $row = $stmt->fetchRow();
-
-    list($webTraffic, $ftpTraffic, $smtpTraffic, $popTraffic, $totalTraffic) = shared_getCustomerMonthlyTrafficData(
-        $row['domain_id']
-    );
-
-    return [
-        $row['admin_name'], $row['domain_id'], $webTraffic, $ftpTraffic, $smtpTraffic, $popTraffic, $totalTraffic,
-        $row['diskspace_usage'], $row['monthly_traffic_limit'], $row['diskspace_limit']
-    ];
 }
 
 /***********************************************************************************************************************
@@ -2492,146 +2398,6 @@ if (!function_exists('http_build_url')) {
 }
 
 /**
- * Returns translation for jQuery DataTables plugin.
- *
- * @param bool $json Does the data must be encoded to JSON?
- * @return string|array
- */
-function getDataTablesPluginTranslations($json = true)
-{
-    $tr = [
-        'sLengthMenu'  => tr(
-            'Show %s records per page',
-            '
-                <select>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-                </select>
-            '
-        ),
-        //'sLengthMenu' => tr('Show %s records per page', '_MENU_'),
-        'zeroRecords'  => tr('Nothing found - sorry'),
-        'info'         => tr('Showing %s to %s of %s records', '_START_', '_END_', '_TOTAL_'),
-        'infoEmpty'    => tr('Showing 0 to 0 of 0 records'),
-        'infoFiltered' => tr('(filtered from %s total records)', '_MAX_'),
-        'search'       => tr('Search'),
-        'paginate'     => ['previous' => tr('Previous'), 'next' => tr('Next')],
-        'processing'   => tr('Loading data...')
-    ];
-
-    return ($json) ? json_encode($tr) : $tr;
-}
-
-/**
- * Show the given error page
- *
- * @param int $code Code of error page to show (400, 403 or 404)
- * @throws iMSCPException
- * @return void
- */
-function showErrorPage($code)
-{
-    switch ($code) {
-        case 400:
-            $message = 'Bad Request';
-            break;
-        case 403:
-            $message = 'Forbidden';
-            break;
-        case 404:
-            $message = 'Not Found';
-            break;
-        default:
-            throw new iMSCPException(500, 'Unknown error page');
-    }
-
-    header("Status: $code $message");
-
-    if (isset($_SERVER['HTTP_ACCEPT'])) {
-        if (strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
-            header("Content-type: application/json");
-            exit(json_encode(['code' => 404, 'message' => $message]));
-        }
-
-        if (strpos($_SERVER['HTTP_ACCEPT'], 'application/xmls') !== false) {
-            header("Content-type: text/xml;charset=utf-8");
-            exit(<<<EOF
-<?xml version="1.0" encoding="utf-8"?>
-<response>
-    <code>$code</code>
-    <message>$message</message>
-</response>
-EOF
-            );
-        }
-    }
-
-    if (!is_xhr()) {
-        include(Registry::get('config')['GUI_ROOT_DIR'] . "/public/errordocs/$code.html");
-    }
-
-    exit;
-}
-
-/**
- * Show 400 error page
- *
- * @return void
- */
-function showBadRequestErrorPage()
-{
-    showErrorPage(400);
-}
-
-/**
- * Show 404 error page
- *
- * @return void
- */
-function showNotFoundErrorPage()
-{
-    showErrorPage(404);
-}
-
-/**
- * Show 404 error page
- *
- * @return void
- */
-function showForbiddenErrorPage()
-{
-    showErrorPage(403);
-}
-
-/**
- * @param  $crnt
- * @param  $max
- * @param  $bars_max
- * @return array
- */
-function calc_bars($crnt, $max, $bars_max)
-{
-    if ($max != 0) {
-        $percent_usage = (100 * $crnt) / $max;
-    } else {
-        $percent_usage = 0;
-    }
-
-    $bars = ($percent_usage * $bars_max) / 100;
-    if ($bars > $bars_max) {
-        $bars = $bars_max;
-    }
-
-    return [
-        sprintf("%.2f", $percent_usage),
-        sprintf("%d", $bars)
-    ];
-}
-
-/**
  * Turns byte counts to human readable format
  *
  * If you feel like a hard-drive manufacturer, you can start counting bytes by power
@@ -2780,7 +2546,7 @@ function translate_limit_value($value, $autosize = false, $to = NULL)
 
     switch ($value) {
         case '-1':
-            return tr('Disabled');
+            return '-';
         case  '0':
             return '∞';
         case '_yes_':

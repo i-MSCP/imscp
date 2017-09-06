@@ -63,18 +63,10 @@ function getFormData($resellerId, $forUpdate = false)
     $data = $stmt->fetchRow();
     $data['admin_pass'] = '';
 
-    // Getting total number of consumed items for the given reseller.
-    list(
-        $data['nbDomains'], , ,
-        $data['nbSubdomains'], , $data['unlimitedSubdomains'],
-        $data['nbDomainAliases'], , $data['unlimitedDomainAliases'],
-        $data['nbMailAccounts'], , $data['unlimitedMailAccounts'],
-        $data['nbFtpAccounts'], , $data['unlimitedFtpAccounts'],
-        $data['nbSqlDatabases'], , $data['unlimitedSqlDatabases'],
-        $data['nbSqlUsers'], , $data['unlimitedSqlUsers'],
-        $data['totalTraffic'], , $data['unlimitedTraffic'],
-        $data['totalDiskspace'], , $data['unlimitedDiskspace']
-        ) = generate_reseller_users_props($resellerId);
+    // Getting total of consumed items for the given reseller.
+    list($data['nbDomains'], $data['nbSubdomains'], $data['nbDomainAliases'], $data['nbMailAccounts'],
+        $data['nbFtpAccounts'], $data['nbSqlDatabases'], $data['nbSqlUsers'], $data['totalTraffic'],
+        $data['totalDiskspace']) = getResellerStats($resellerId);
 
     // Ip data begin
 
@@ -372,6 +364,31 @@ function updateResellerUser(Form $form)
     try {
         $data = getFormData($resellerId, true);
 
+        $stmt = exec_query(
+            "
+            SELECT
+                IFNULL(SUM(t1.domain_subd_limit), 0) AS subdomains,
+                IFNULL(SUM(t1.domain_alias_limit), 0) AS domainAliases,
+                IFNULL(SUM(t1.domain_mailacc_limit), 0) AS mailAccounts,
+                IFNULL(SUM(t1.domain_ftpacc_limit), 0) AS ftpAccounts,
+                IFNULL(SUM(t1.domain_sqld_limit), 0) AS sqlDatabases,
+                IFNULL(SUM(t1.domain_sqlu_limit), 0) AS sqlUsers,
+                IFNULL(SUM(t1.domain_traffic_limit), 0) AS traffic,
+                IFNULL(SUM(t1.domain_disk_limit), 0) AS diskspace
+            FROM domain AS t1
+            JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
+            WHERE t2.created_by = ?
+        ",
+            $resellerId
+        );
+
+        $unlimitedItems = array_map(
+            function ($element) {
+                return $element == -1 ? false : $element == 0;
+            },
+            $stmt->fetchRow(PDO::FETCH_ASSOC)
+        );
+
         // Check for login and personal data
         if (!$form->isValid($_POST)) {
             foreach ($form->getMessages() as $fieldname => $msgsStack) {
@@ -404,7 +421,7 @@ function updateResellerUser(Form $form)
         // Check for max domains limit
         if (imscp_limit_check($data['max_dmn_cnt'], NULL)) {
             $rs = checkResellerLimit(
-                $data['max_dmn_cnt'], $data['current_dmn_cnt'], $data['nbDomains'], '0', tr('domains')
+                $data['max_dmn_cnt'], $data['current_dmn_cnt'], $data['nbDomains'], false, tr('domains')
             );
         } else {
             set_page_message(tr('Incorrect limit for %s.', tr('domain')), 'error');
@@ -418,7 +435,7 @@ function updateResellerUser(Form $form)
         // Check for max subdomains limit
         if (imscp_limit_check($data['max_sub_cnt'])) {
             $rs = checkResellerLimit(
-                $data['max_sub_cnt'], $data['current_sub_cnt'], $data['nbSubdomains'], $data['unlimitedSubdomains'],
+                $data['max_sub_cnt'], $data['current_sub_cnt'], $data['nbSubdomains'], $unlimitedItems['subdomains'],
                 tr('subdomains')
             );
         } else {
@@ -434,7 +451,7 @@ function updateResellerUser(Form $form)
         if (imscp_limit_check($data['max_als_cnt'])) {
             $rs = checkResellerLimit(
                 $data['max_als_cnt'], $data['current_als_cnt'], $data['nbDomainAliases'],
-                $data['unlimitedDomainAliases'], tr('domain aliases')
+                $unlimitedItems['domainAliases'], tr('domain aliases')
             );
         } else {
             set_page_message(tr('Incorrect limit for %s.', tr('domain aliases')), 'error');
@@ -448,8 +465,8 @@ function updateResellerUser(Form $form)
         // Check for max mail accounts limit
         if (imscp_limit_check($data['max_mail_cnt'])) {
             $rs = checkResellerLimit(
-                $data['max_mail_cnt'], $data['current_mail_cnt'], $data['nbMailAccounts'], $data['unlimitedMailAccounts'],
-                tr('mail')
+                $data['max_mail_cnt'], $data['current_mail_cnt'], $data['nbMailAccounts'],
+                $unlimitedItems['mailAccounts'], tr('mail')
             );
         } else {
             set_page_message(tr('Incorrect limit for %s.', tr('mail accounts')), 'error');
@@ -463,7 +480,7 @@ function updateResellerUser(Form $form)
         // Check for max FTP accounts limit
         if (imscp_limit_check($data['max_ftp_cnt'])) {
             $rs = checkResellerLimit(
-                $data['max_ftp_cnt'], $data['current_ftp_cnt'], $data['nbFtpAccounts'], $data['unlimitedFtpAccounts'],
+                $data['max_ftp_cnt'], $data['current_ftp_cnt'], $data['nbFtpAccounts'], $unlimitedItems['ftpAccounts'],
                 tr('Ftp')
             );
         } else {
@@ -483,8 +500,8 @@ function updateResellerUser(Form $form)
             $rs = false;
         } else {
             $rs = checkResellerLimit(
-                $data['max_sql_db_cnt'], $data['current_sql_db_cnt'], $data['nbSqlDatabases'],
-                $data['unlimitedSqlDatabases'], tr('SQL databases')
+                $data['max_sql_db_cnt'], $data['current_sql_db_cnt'], $unlimitedItems['nbSqlDatabases'],
+                $data['sqlDatabases'], tr('SQL databases')
             );
         }
 
@@ -501,7 +518,7 @@ function updateResellerUser(Form $form)
         } else {
             $rs = checkResellerLimit(
                 $data['max_sql_user_cnt'], $data['current_sql_user_cnt'], $data['nbSqlUsers'],
-                $data['unlimitedSqlUsers'], tr('SQL users')
+                $unlimitedItems['sqlUsers'], tr('SQL users')
             );
         }
 
@@ -513,7 +530,7 @@ function updateResellerUser(Form $form)
         if (imscp_limit_check($data['max_traff_amnt'], NULL)) {
             $rs = checkResellerLimit(
                 $data['max_traff_amnt'], $data['current_traff_amnt'], $data['totalTraffic'] / 1048576,
-                $data['unlimitedTraffic'], tr('traffic')
+                $unlimitedItems['traffic'], tr('traffic')
             );
         } else {
             set_page_message(tr('Incorrect limit for %s.', tr('traffic')), 'error');
@@ -528,7 +545,7 @@ function updateResellerUser(Form $form)
         if (imscp_limit_check($data['max_disk_amnt'], NULL)) {
             $rs = checkResellerLimit(
                 $data['max_disk_amnt'], $data['current_disk_amnt'], $data['totalDiskspace'] / 1048576,
-                $data['unlimitedDiskspace'], tr('disk space')
+                $unlimitedItems['diskspace'], tr('disk space')
             );
         } else {
             set_page_message(tr('Incorrect limit for %s.', tr('disk space')), 'error');

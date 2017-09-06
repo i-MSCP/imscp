@@ -79,7 +79,7 @@ function client_generateSupportSystemNotices()
         "SELECT COUNT(ticket_id) FROM tickets WHERE ticket_from = ? AND ticket_status = '2' AND ticket_reply = '0'",
         $_SESSION['user_id']
     )->fetchRow(PDO::FETCH_COLUMN);
-    
+
     if ($ticketsCount) {
         set_page_message(
             ntr(
@@ -97,26 +97,22 @@ function client_generateSupportSystemNotices()
  * @param iMSCP_pTemplate $tpl Template engine
  * @param $usage
  * @param $maxUsage
- * @param $barMax
  * @return void
  */
-function client_generateTrafficUsageBar($tpl, $usage, $maxUsage, $barMax)
+function client_generateTrafficUsageBar($tpl, $usage, $maxUsage)
 {
-    list($percent, $bars) = calc_bars($usage, $maxUsage, $barMax);
 
-    if ($maxUsage != 0) {
-        $traffic_usage_data = tr('%s%% [%s / %s]', $percent, bytesHuman($usage), bytesHuman($maxUsage));
-    } else {
-        $traffic_usage_data = tr('%s%% [%s / ∞]', $percent, bytesHuman($usage));
-    }
-
+    $trafficUsagePercent = getPercentUsage($usage, $maxUsage);
+    $trafficUsageData = ($maxUsage > 0)
+        ? sprintf('[%s / %s]', bytesHuman($usage), bytesHuman($maxUsage))
+        : sprintf('[%s / ∞]', bytesHuman($usage), bytesHuman($maxUsage));
     $tpl->assign([
-        'TRAFFIC_USAGE_DATA' => $traffic_usage_data,
-        'TRAFFIC_BARS'       => $bars,
-        'TRAFFIC_PERCENT'    => $percent > 100 ? 100 : $percent
+        'TRAFFIC_PERCENT_WIDTH' => tohtml($trafficUsagePercent, 'htmlAttr'),
+        'TRAFFIC_PERCENT'       => tohtml($trafficUsagePercent),
+        'TRAFFIC_USAGE_DATA'    => tohtml($trafficUsageData),
     ]);
 
-    if ($maxUsage != 0 && $usage > $maxUsage) {
+    if ($maxUsage > 0 && $usage > $maxUsage) {
         $tpl->assign('TR_TRAFFIC_WARNING', tr('You are exceeding your monthly traffic limit.'));
     } else {
         $tpl->assign('TRAFFIC_WARNING', '');
@@ -129,26 +125,22 @@ function client_generateTrafficUsageBar($tpl, $usage, $maxUsage, $barMax)
  * @param iMSCP_pTemplate $tpl Template engine
  * @param $usage
  * @param $maxUsage
- * @param $barMax
  * @return void
  */
-function client_generateDiskUsageBar($tpl, $usage, $maxUsage, $barMax)
+function client_generateDiskUsageBar($tpl, $usage, $maxUsage)
 {
-    list($percent, $bars) = calc_bars($usage, $maxUsage, $barMax);
 
-    if ($maxUsage != 0) {
-        $traffic_usage_data = tr('%s%% [%s / %s]', $percent, bytesHuman($usage), bytesHuman($maxUsage));
-    } else {
-        $traffic_usage_data = tr('%s%% [%s / ∞]', $percent, bytesHuman($usage));
-    }
-
+    $diskUsagePercent = getPercentUsage($usage, $maxUsage);
+    $diskUsageData = ($maxUsage > 0)
+        ? sprintf('[%s / %s]', bytesHuman($usage), bytesHuman($maxUsage))
+        : sprintf('[%s / ∞]', bytesHuman($usage), bytesHuman($maxUsage));
     $tpl->assign([
-        'DISK_USAGE_DATA' => $traffic_usage_data,
-        'DISK_BARS'       => $bars,
-        'DISK_PERCENT'    => $percent > 100 ? 100 : $percent
+        'DISK_PERCENT_WIDTH' => tohtml($diskUsagePercent, 'htmlAttr'),
+        'DISK_PERCENT'       => tohtml($diskUsagePercent),
+        'DISK_USAGE_DATA'    => tohtml($diskUsageData),
     ]);
 
-    if ($maxUsage != 0 && $usage > $maxUsage) {
+    if ($maxUsage > 0 && $usage > $maxUsage) {
         $tpl->assign('TR_DISK_WARNING', tr('You are exceeding your disk space limit.'));
     } else {
         $tpl->assign('DISK_WARNING', '');
@@ -224,7 +216,7 @@ function client_makeTrafficUsage($domainId)
 {
     $domainProperties = get_domain_default_props($_SESSION['user_id']);
 
-    $trafficData = shared_getCustomerMonthlyTrafficData($domainId);
+    $trafficData = getClientMonthlyTrafficStats($domainId);
     $totalTraffic = $trafficData[4];
     unset($trafficData);
 
@@ -345,12 +337,8 @@ $domainProperties = get_domain_default_props($_SESSION['user_id']);
 
 list($domainTrafficPercent, $domainTrafficUsage) = client_makeTrafficUsage($domainProperties['domain_id']);
 
-client_generateTrafficUsageBar(
-    $tpl, $domainTrafficUsage * 1024 * 1024, $domainProperties['domain_traffic_limit'] * 1024 * 1024, 400
-);
-client_generateDiskUsageBar(
-    $tpl, $domainProperties['domain_disk_usage'], $domainProperties['domain_disk_limit'] * 1024 * 1024, 400
-);
+client_generateTrafficUsageBar($tpl, $domainTrafficUsage * 1048576, $domainProperties['domain_traffic_limit'] * 1048576);
+client_generateDiskUsageBar($tpl, $domainProperties['domain_disk_usage'], $domainProperties['domain_disk_limit'] * 1048576);
 
 $tpl->assign('CREATE_DATE', tohtml(date($cfg['DATE_FORMAT'], $domainProperties['domain_created'])));
 

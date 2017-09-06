@@ -45,14 +45,14 @@
         </td>
         <td>
             <div class="graph">
-                <span style="width: {DISK_PERCENT}%"></span>
+                <span style="width:{DISK_PERCENT}%"></span>
                 <strong>{DISK_PERCENT}%</strong>
             </div>
             {DISK_MSG}
         </td>
         <td>
             <div class="graph">
-                <span style="width: {TRAFF_PERCENT}%"></span>
+                <span style="width:{TRAFFIC_PERCENT}%"></span>
                 <strong>{TRAFFIC_PERCENT}%</strong>
             </div>
             {TRAFFIC_MSG}

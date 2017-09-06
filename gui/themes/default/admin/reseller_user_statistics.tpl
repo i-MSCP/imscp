@@ -51,15 +51,15 @@
         </td>
         <td>
             <div class="graph">
-                <span style="width: {DISK_PERCENT}%"></span>
-                <strong>{DISK_PERCENT} %</strong>
+                <span style="width:{DISK_PERCENT}%"></span>
+                <strong>{DISK_PERCENT}</strong>
             </div>
             {DISK_MSG}
         </td>
         <td>
             <div class="graph">
-                <span style="width: {TRAFF_PERCENT}%"></span>
-                <strong>{TRAFF_PERCENT} %</strong>
+                <span style="width:{TRAFF_PERCENT}%"></span>
+                <strong>{TRAFF_PERCENT}</strong>
             </div>
             {TRAFF_MSG}
         </td>
