@@ -18,6 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_pTemplate as TemplateEngine;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -25,16 +29,14 @@
 /**
  * Genrate statistics entry for the given user
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @param int $adminId User unique identifier
  * @return void
  */
-function _generateUserStatistics($tpl, $adminId)
+function _generateUserStatistics(TemplateEngine $tpl, $adminId)
 {
     list($adminName, , $web, $ftp, $smtp, $pop3, $trafficUsageBytes, $diskspaceUsageBytes) = getClientStats($adminId);
-
-    list(
-        $usub_current, $usub_max, $uals_current, $uals_max, $umail_current, $umail_max, $uftp_current, $uftp_max,
+    list($usub_current, $usub_max, $uals_current, $uals_max, $umail_current, $umail_max, $uftp_current, $uftp_max,
         $usql_db_current, $usql_db_max, $usql_user_current, $usql_user_max, $trafficMaxMebimytes, $diskspaceMaxMebibytes
         ) = shared_getCustomerProps($adminId);
 
@@ -72,21 +74,22 @@ function _generateUserStatistics($tpl, $adminId)
 /**
  * Generates page
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @param int $resellerId Reseller unique identifier
  * @return void
  */
-function generatePage($tpl, $resellerId)
+function generatePage(TemplateEngine $tpl, $resellerId)
 {
     $stmt = exec_query('SELECT admin_id FROM admin WHERE created_by = ?', $resellerId);
 
-    if ($stmt->rowCount()) {
-        while ($row = $stmt->fetchRow()) {
-            _generateUserStatistics($tpl, $row['admin_id']);
-            $tpl->parse('RESELLER_USER_STATISTICS_BLOCK', '.reseller_user_statistics_block');
-        }
-    } else {
+    if (!$stmt->rowCount()) {
         $tpl->assign('RESELLER_USER_STATISTICS_BLOCK', '');
+        return;
+    }
+
+    while ($row = $stmt->fetchRow()) {
+        _generateUserStatistics($tpl, $row['admin_id']);
+        $tpl->parse('RESELLER_USER_STATISTICS_BLOCK', '.reseller_user_statistics_block');
     }
 }
 
@@ -97,7 +100,7 @@ function generatePage($tpl, $resellerId)
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 
 if (isset($_GET['reseller_id'])) {
     $resellerId = intval($_GET['reseller_id']);
@@ -110,7 +113,7 @@ if (isset($_GET['reseller_id'])) {
     exit;
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                         => 'shared/layouts/ui.tpl',
     'page'                           => 'admin/reseller_user_statistics.tpl',
@@ -135,7 +138,7 @@ $tpl->assign([
     'TR_DETAILED_STATS_TOOLTIP' => tohtml(tr('Show detailed statistics for this user'), 'htmlAttr')
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
     /** @var $e \iMSCP_Events_Event */
     $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
 });
@@ -145,7 +148,7 @@ generatePage($tpl, $resellerId);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

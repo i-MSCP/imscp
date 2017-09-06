@@ -20,6 +20,7 @@
 
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_pTemplate as TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -28,12 +29,12 @@ use iMSCP_Events_Aggregator as EventsManager;
 /**
  * Generates statistics for the given reseller
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @param int $resellerId Reseller unique identifier
  * @param string $resellerName Reseller name
  * @return void
  */
-function _generateResellerStatistics($tpl, $resellerId, $resellerName)
+function _generateResellerStatistics(TemplateEngine $tpl, $resellerId, $resellerName)
 {
     $resellerProps = imscp_getResellerProperties($resellerId, true);
     $rtraffLimit = $resellerProps['max_traff_amnt'] * 1048576;
@@ -45,46 +46,43 @@ function _generateResellerStatistics($tpl, $resellerId, $resellerName)
     $trafficPercent = getPercentUsage($rtraffConsumed, $rtraffLimit);
 
     $tpl->assign([
-        'RESELLER_NAME'   => tohtml($resellerName),
-        'RESELLER_ID'     => tohtml($resellerId),
-        'DISK_PERCENT_WIDTH' => tohtml($diskUsagePercent, 'htmlAttr'),
-        'DISK_PERCENT' => tohtml($diskUsagePercent),
-        'DISK_MSG'        => ($rdiskLimit == 0)
+        'RESELLER_NAME'         => tohtml($resellerName),
+        'RESELLER_ID'           => tohtml($resellerId),
+        'DISK_PERCENT_WIDTH'    => tohtml($diskUsagePercent, 'htmlAttr'),
+        'DISK_PERCENT'          => tohtml($diskUsagePercent),
+        'DISK_MSG'              => ($rdiskLimit == 0)
             ? tohtml(sprintf('%s / ∞', bytesHuman($rdiskConsumed)))
             : tohtml(sprintf('%s / %s', bytesHuman($rdiskConsumed), bytesHuman($rdiskLimit))),
-
         'TRAFFIC_PERCENT_WIDTH' => tohtml($trafficPercent, 'htmlAttr'),
-        'TRAFFIC_PERCENT' => tohtml($trafficPercent),
-        'TRAFFIC_MSG'     => ($rtraffLimit == 0)
+        'TRAFFIC_PERCENT'       => tohtml($trafficPercent),
+        'TRAFFIC_MSG'           => ($rtraffLimit == 0)
             ? tohtml(sprintf('%s / ∞', bytesHuman($rtraffConsumed)))
             : tohtml(sprintf('%s / %s', bytesHuman($rtraffConsumed), bytesHuman($rtraffLimit))),
-
-        'DMN_MSG'         => ($resellerProps['max_dmn_cnt'] == 0)
+        'DMN_MSG'               => ($resellerProps['max_dmn_cnt'] == 0)
             ? tohtml(sprintf('%s / ∞', $rdmnConsumed))
             : ($resellerProps['max_dmn_cnt'] == -1
-                ? '-' : tohtml(sprintf('%s / %s', $rdmnConsumed, $resellerProps['max_dmn_cnt']))
-            ),
-        'SUB_MSG'         => ($resellerProps['max_sub_cnt'] == 0)
+                ? '-' : tohtml(sprintf('%s / %s', $rdmnConsumed, $resellerProps['max_dmn_cnt']))),
+        'SUB_MSG'               => ($resellerProps['max_sub_cnt'] == 0)
             ? tohtml(sprintf('%s / ∞', $rsubConsumed))
             : ($resellerProps['max_sub_cnt'] == -1
                 ? '-' : tohtml(sprintf('%s / %s', $rsubConsumed, $resellerProps['max_sub_cnt']))),
-        'ALS_MSG'         => ($resellerProps['max_als_cnt'] == 0)
+        'ALS_MSG'               => ($resellerProps['max_als_cnt'] == 0)
             ? tohtml(sprintf('%s / ∞', $ralsConsumed))
             : ($resellerProps['max_als_cnt'] == -1
                 ? '-' : tohtml(sprintf('%s / %s', $ralsConsumed, $resellerProps['max_als_cnt']))),
-        'MAIL_MSG'        => ($resellerProps['max_mail_cnt'] == 0)
+        'MAIL_MSG'              => ($resellerProps['max_mail_cnt'] == 0)
             ? tohtml(sprintf('%s / ∞', $rmailConsumed))
             : ($resellerProps['max_mail_cnt'] == -1
                 ? '-' : tohtml(sprintf('%s / %s', $rmailConsumed, $resellerProps['max_mail_cnt']))),
-        'FTP_MSG'         => ($resellerProps['max_ftp_cnt'] == 0)
+        'FTP_MSG'               => ($resellerProps['max_ftp_cnt'] == 0)
             ? tohtml(sprintf('%s / ∞', $rftpConsumed))
             : ($resellerProps['max_ftp_cnt'] == -1
                 ? '-' : tohtml(sprintf('%s / %s', $rftpConsumed, $resellerProps['max_ftp_cnt']))),
-        'SQL_DB_MSG'      => ($resellerProps['max_sql_db_cnt'] == 0)
+        'SQL_DB_MSG'            => ($resellerProps['max_sql_db_cnt'] == 0)
             ? tohtml(sprintf('%s / ∞', $rsqlDbConsumed))
             : ($resellerProps['max_sql_db_cnt'] == -1
                 ? '-' : tohtml(sprintf('%s / %s', $rsqlDbConsumed, $resellerProps['max_sql_db_cnt']))),
-        'SQL_USER_MSG'    => ($resellerProps['max_sql_user_cnt'] == 0)
+        'SQL_USER_MSG'          => ($resellerProps['max_sql_user_cnt'] == 0)
             ? tohtml(sprintf('%s / ∞', $rsqlUserConsumed))
             : ($resellerProps['max_sql_user_cnt'] == -1
                 ? '-' : tohtml(sprintf('%s / %s', $rsqlUserConsumed, $resellerProps['max_sql_user_cnt'])))
@@ -94,10 +92,10 @@ function _generateResellerStatistics($tpl, $resellerId, $resellerName)
 /**
  * Generates page
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
  */
-function generatePage($tpl)
+function generatePage(TemplateEngine $tpl)
 {
     $stmt = execute_query("SELECT admin_id, admin_name FROM admin WHERE admin_type = 'reseller'");
 
@@ -117,7 +115,7 @@ check_login('admin');
 EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 systemHasResellers() or showBadRequestErrorPage();
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                    => 'shared/layouts/ui.tpl',
     'page'                      => 'admin/reseller_statistics.tpl',

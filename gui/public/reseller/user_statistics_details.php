@@ -68,7 +68,6 @@ function getDomainTraffic($domainId, $startDate, $endDate)
 function generatePage(TemplateEngine $tpl)
 {
     $userId = intval($_GET['user_id']);
-
     $stmt = exec_query(
         '
           SELECT admin_name, domain_id
@@ -135,7 +134,6 @@ function generatePage(TemplateEngine $tpl)
         $all[1] += $ftpTraffic;
         $all[2] += $smtpTraffic;
         $all[3] += $popTraffic;
-
         $tpl->parse('TRAFFIC_TABLE_ITEM', '.traffic_table_item');
     }
 
@@ -158,12 +156,7 @@ require 'imscp-lib.php';
 
 check_login('reseller');
 EventsManager::getInstance()->dispatch(Events::onResellerScriptStart);
-
-if (!resellerHasCustomers()
-    || !isset($_GET['user_id'])
-) {
-    showBadRequestErrorPage();
-}
+resellerHasCustomers() && isset($_GET['user_id']) or showBadRequestErrorPage();
 
 $tpl = new TemplateEngine();
 $tpl->define_dynamic([
@@ -186,8 +179,7 @@ $tpl->assign([
     'TR_POP3_TRAFFIC' => tohtml(tr('POP3/IMAP traffic')),
     'TR_ALL_TRAFFIC'  => tohtml(tr('All traffic')),
     'TR_ALL'          => tohtml(tr('All')),
-    'TR_DAY'          => tohtml(tr('Day')),
-    'TR_BACK'         => tohtml(tr('Back'))
+    'TR_DAY'          => tohtml(tr('Day'))
 ]);
 
 generateNavigation($tpl);

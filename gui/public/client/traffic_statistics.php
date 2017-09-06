@@ -51,7 +51,7 @@ function getUserTraffic($domainId, $startDate, $endDate)
     );
 
     if (!$stmt->rowCount()) {
-        return [0, 0, 0, 0];
+        return array_fill(0, 4, 0);
     }
 
     $row = $stmt->fetchRow();

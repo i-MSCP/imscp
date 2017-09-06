@@ -51,7 +51,7 @@ function getUserTraffic($domainId, $startDate, $endDate)
     );
 
     if (!$stmt->rowCount()) {
-        return [0, 0, 0, 0];
+        return array_fill(0, 4, 0);
     }
 
     $row = $stmt->fetchRow();
@@ -150,12 +150,7 @@ require 'imscp-lib.php';
 
 check_login('admin');
 EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
-
-if (!systemHasCustomers()
-    || !isset($_GET['user_id'])
-) {
-    showBadRequestErrorPage();
-}
+systemHasCustomers() && isset($_GET['user_id']) or showBadRequestErrorPage();
 
 $tpl = new TemplateEngine();
 $tpl->define_dynamic([

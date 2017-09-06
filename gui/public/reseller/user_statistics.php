@@ -18,6 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_pTemplate as TemplateEngine;
+
 /***********************************************************************************************************************
  * Script functions
  */
@@ -26,27 +30,21 @@
  * Generates statistics for the given user
  *
  * @access private
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @param int $adminId User unique identifier
  * @return void
  */
-function _generateUserStatistics($tpl, $adminId)
+function _generateUserStatistics(TemplateEngine $tpl, $adminId)
 {
-    list(
-        $adminName, , $webTraffic, $ftpTraffic, $smtpTraffic, $popImapTraffic, $trafficUsageBytes, $diskspaceUsageBytes
+    list($adminName, , $webTraffic, $ftpTraffic, $smtpTraffic, $popImapTraffic, $trafficUsageBytes, $diskspaceUsageBytes
         ) = getClientStats($adminId);
-
-    list(
-        $subCount, $subMax, $alsCount, $alsMax, $mailCount, $mailMax, $ftpUserCount, $FtpUserMax, $sqlDbCount,
-        $sqlDbMax, $sqlUserCount, $sqlUserMax, $trafficLimit, $diskspaceLimit
-        ) = shared_getCustomerProps($adminId);
+    list($subCount, $subMax, $alsCount, $alsMax, $mailCount, $mailMax, $ftpUserCount, $FtpUserMax, $sqlDbCount,
+        $sqlDbMax, $sqlUserCount, $sqlUserMax, $trafficLimit, $diskspaceLimit) = shared_getCustomerProps($adminId);
 
     $trafficLimitBytes = $trafficLimit * 1048576;
     $diskspaceLimitBytes = $diskspaceLimit * 1048576;
-
     $trafficPercent = getPercentUsage($trafficUsageBytes, $trafficLimitBytes);
     $diskPercent = getPercentUsage($diskspaceUsageBytes, $diskspaceLimitBytes);
-
     $tpl->assign([
         'USER_ID'               => tohtml($adminId),
         'USERNAME'              => tohtml(decode_idna($adminName)),
@@ -76,10 +74,10 @@ function _generateUserStatistics($tpl, $adminId)
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @return void
  */
-function generatePage($tpl)
+function generatePage(TemplateEngine $tpl)
 {
     $stmt = exec_query('SELECT admin_id FROM admin WHERE created_by = ?', $_SESSION['user_id']);
 
@@ -96,13 +94,10 @@ function generatePage($tpl)
 require 'imscp-lib.php';
 
 check_login('reseller');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+EventsManager::getInstance()->dispatch(Events::onResellerScriptStart);
+resellerHasCustomers() or showBadRequestErrorPage();
 
-if (!resellerHasCustomers()) {
-    showBadRequestErrorPage();
-}
-
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                        => 'shared/layouts/ui.tpl',
     'page'                          => 'reseller/user_statistics.tpl',
@@ -128,7 +123,7 @@ $tpl->assign([
     'TR_USER_TOOLTIP' => tohtml(tr('Show detailed statistics for this user'), 'htmlAttr')
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
     /** @var $e \iMSCP_Events_Event */
     $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
 });
@@ -138,7 +133,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+EventsManager::getInstance()->dispatch(Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

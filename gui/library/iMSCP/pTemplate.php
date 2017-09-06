@@ -25,6 +25,11 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Exception as iMSCPException;
+use iMSCP_Registry as Registry;
+
 /**
  * Class iMSCP_pTemplate
  */
@@ -33,37 +38,37 @@ class iMSCP_pTemplate
     /**
      * @var array
      */
-    protected $tpl_name = [];
+    protected $tplName = [];
 
     /**
      * @var array
      */
-    protected $tpl_data = [];
+    protected $tplData = [];
 
     /**
      * @var array
      */
-    protected $tpl_options = [];
+    protected $tplOptions = [];
 
     /**
      * @var array
      */
-    protected $dtpl_name = [];
+    protected $dtplName = [];
 
     /**
      * @var array
      */
-    protected $dtpl_data = [];
+    protected $dtplData = [];
 
     /**
      * @var array
      */
-    protected $dtpl_options = [];
+    protected $dtplOptions = [];
 
     /**
      * @var array
      */
-    protected $dtpl_values = [];
+    protected $dtplValues = [];
 
     /**
      * @var array
@@ -71,7 +76,7 @@ class iMSCP_pTemplate
     protected $namespace = [];
 
     /**
-     * @var iMSCP_Events_Aggregator
+     * @var EventsManager
      */
     protected $eventManager;
 
@@ -80,47 +85,47 @@ class iMSCP_pTemplate
      *
      * @var string
      */
-    protected $root_dir = '.';
+    protected $rootDir = '.';
 
     /**
      * @var string
      */
-    protected $tpl_start_tag = '<!-- ';
+    protected $tplStartTag = '<!-- ';
 
     /**
      * @var string
      */
-    protected $tpl_end_tag = ' -->';
+    protected $tplEndTag = ' -->';
 
     /**
      * @var string
      */
-    protected $tpl_start_tag_name = 'BDP: ';
+    protected $tplStartTagName = 'BDP: ';
 
     /**
      * @var string
      */
-    protected $tpl_end_tag_name = 'EDP: ';
+    protected $tplEndTagName = 'EDP: ';
 
     /**
      * @var string
      */
-    protected $tpl_name_rexpr = '([a-z0-9][a-z0-9\_]*)';
+    protected $tplNameRexpr = '([a-z0-9][a-z0-9\_]*)';
 
     /**
      * @var string
      */
-    protected $tpl_start_rexpr;
+    protected $tplStartRexpr;
 
     /**
      * @var string
      */
-    protected $tpl_end_rexpr;
+    protected $tplEndRexpr;
 
     /**
      * @var string
      */
-    protected $last_parsed = '';
+    protected $lastParsed = '';
 
     /**
      * @var array
@@ -135,42 +140,42 @@ class iMSCP_pTemplate
     /**
      * @var string
      */
-    protected $tpl_include = 'INCLUDE "([^\"]+)"';
+    protected $tplInclude = 'INCLUDE "([^\"]+)"';
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->eventManager = iMSCP_Events_Aggregator::getInstance();
-        $this->setRootDir(iMSCP_Registry::get('config')->ROOT_TEMPLATE_PATH);
-        $this->tpl_start_rexpr = '/';
-        $this->tpl_start_rexpr .= $this->tpl_start_tag;
-        $this->tpl_start_rexpr .= $this->tpl_start_tag_name;
-        $this->tpl_start_rexpr .= $this->tpl_name_rexpr;
-        $this->tpl_start_rexpr .= $this->tpl_end_tag . '/';
-        $this->tpl_end_rexpr = '/';
-        $this->tpl_end_rexpr .= $this->tpl_start_tag;
-        $this->tpl_end_rexpr .= $this->tpl_end_tag_name;
-        $this->tpl_end_rexpr .= $this->tpl_name_rexpr;
-        $this->tpl_end_rexpr .= $this->tpl_end_tag . '/';
-        $this->tpl_include = '~' . $this->tpl_start_tag . $this->tpl_include . $this->tpl_end_tag . '~m';
+        $this->eventManager = EventsManager::getInstance();
+        $this->setRootDir(Registry::get('config')->ROOT_TEMPLATE_PATH);
+        $this->tplStartRexpr = '/';
+        $this->tplStartRexpr .= $this->tplStartTag;
+        $this->tplStartRexpr .= $this->tplStartTagName;
+        $this->tplStartRexpr .= $this->tplNameRexpr;
+        $this->tplStartRexpr .= $this->tplEndTag . '/';
+        $this->tplEndRexpr = '/';
+        $this->tplEndRexpr .= $this->tplStartTag;
+        $this->tplEndRexpr .= $this->tplEndTagName;
+        $this->tplEndRexpr .= $this->tplNameRexpr;
+        $this->tplEndRexpr .= $this->tplEndTag . '/';
+        $this->tplInclude = '~' . $this->tplStartTag . $this->tplInclude . $this->tplEndTag . '~m';
     }
 
     /**
      * Sets templates root directory.
      *
-     * @throws iMSCP_Exception
+     * @throws iMSCPException
      * @param string $rootDir
      * @return void
      */
     public function setRootDir($rootDir)
     {
         if (!is_dir($rootDir)) {
-            throw new iMSCP_Exception('iMSCP_pTemplate::setRootDir expects a valid directory.');
+            throw new iMSCPException('iMSCP_pTemplate::setRootDir expects a valid directory.');
         }
 
-        $this->root_dir = $rootDir;
+        $this->rootDir = $rootDir;
     }
 
     /**
@@ -184,9 +189,11 @@ class iMSCP_pTemplate
             foreach ($namespaces as $name => $data) {
                 $this->namespace[$name] = $data;
             }
-        } else {
-            $this->namespace[$namespaces] = $namespacesData;
+
+            return;
         }
+
+        $this->namespace[$namespaces] = $namespacesData;
     }
 
     /**
@@ -200,92 +207,102 @@ class iMSCP_pTemplate
             foreach ($namespaces as $key => $value) {
                 unset($this->namespace[$key]);
             }
-        } else {
-            unset($this->namespace[$namespaces]);
+
+            return;
         }
+
+        unset($this->namespace[$namespaces]);
     }
 
     /**
      *
-     * @param string|array $t_name
-     * @param string $t_value
+     * @param string|array $tName
+     * @param string $tValue
      * @return void
      */
-    public function define($t_name, $t_value = '')
+    public function define($tName, $tValue = '')
     {
-        if (is_array($t_name)) {
-            foreach ($t_name as $key => $value) {
-                $this->tpl_name[$key] = $value;
-                $this->tpl_data[$key] = '';
-                $this->tpl_options[$key] = '';
+        if (is_array($tName)) {
+            foreach ($tName as $key => $value) {
+                $this->tplName[$key] = $value;
+                $this->tplData[$key] = '';
+                $this->tplOptions[$key] = '';
             }
-        } else {
-            $this->tpl_name[$t_name] = $t_value;
-            $this->tpl_data[$t_name] = '';
-            $this->tpl_options[$t_name] = '';
+
+            return;
         }
+
+        $this->tplName[$tName] = $tValue;
+        $this->tplData[$tName] = '';
+        $this->tplOptions[$tName] = '';
     }
 
     /**
-     * @param string|array $t_name
-     * @param string $t_value
+     * @param string|array $tName
+     * @param string $tValue
      * @return void
      */
-    public function define_dynamic($t_name, $t_value = '')
+    public function define_dynamic($tName, $tValue = '')
     {
-        if (is_array($t_name)) {
-            foreach ($t_name as $key => $value) {
-                $this->dtpl_name[$key] = $value;
-                $this->dtpl_data[$key] = '';
-                $this->dtpl_options[$key] = '';
+        if (is_array($tName)) {
+            foreach ($tName as $key => $value) {
+                $this->dtplName[$key] = $value;
+                $this->dtplData[$key] = '';
+                $this->dtplOptions[$key] = '';
             }
-        } else {
-            $this->dtpl_name[$t_name] = $t_value;
-            $this->dtpl_data[$t_name] = '';
-            $this->dtpl_options[$t_name] = '';
+
+            return;
         }
+
+        $this->dtplName[$tName] = $tValue;
+        $this->dtplData[$tName] = '';
+        $this->dtplOptions[$tName] = '';
     }
 
     /**
-     * @param string|array $t_name
-     * @param string $t_value
+     * @param string|array $tName
+     * @param string $tValue
      * @return void
      */
-    public function define_no_file($t_name, $t_value = '')
+    public function define_no_file($tName, $tValue = '')
     {
-        if (is_array($t_name)) {
-            foreach ($t_name as $key => $value) {
-                $this->tpl_name[$key] = '_no_file_';
-                $this->tpl_data[$key] = $value;
-                $this->tpl_options[$key] = '';
+        if (is_array($tName)) {
+            foreach ($tName as $key => $value) {
+                $this->tplName[$key] = '_no_file_';
+                $this->tplData[$key] = $value;
+                $this->tplOptions[$key] = '';
             }
-        } else {
-            $this->tpl_name[$t_name] = '_no_file_';
-            $this->tpl_data[$t_name] = $t_value;
-            $this->tpl_options[$t_name] = '';
+
+            return;
         }
+
+        $this->tplName[$tName] = '_no_file_';
+        $this->tplData[$tName] = $tValue;
+        $this->tplOptions[$tName] = '';
     }
 
     /**
-     * @param string|array $t_name
-     * @param string $t_value
+     * @param string|array $tName
+     * @param string $tValue
      * @return void
      */
-    public function define_no_file_dynamic($t_name, $t_value = '')
+    public function define_no_file_dynamic($tName, $tValue = '')
     {
-        if (is_array($t_name)) {
-            foreach ($t_name as $key => $value) {
-                $this->dtpl_name[$key] = '_no_file_';
-                $this->dtpl_data[$key] = $value;
-                $this->dtpl_data[strtoupper($key)] = $value;
-                $this->dtpl_options[$key] = '';
+        if (is_array($tName)) {
+            foreach ($tName as $key => $value) {
+                $this->$tName[$key] = '_no_file_';
+                $this->dtplData[$key] = $value;
+                $this->dtplData[strtoupper($key)] = $value;
+                $this->dtplOptions[$key] = '';
             }
-        } else {
-            $this->dtpl_name[$t_name] = '_no_file_';
-            $this->dtpl_data[$t_name] = $t_value;
-            $this->dtpl_data[strtoupper($t_name)] = @$t_value;
-            $this->dtpl_options[$t_name] = '';
+
+            return;
         }
+
+        $this->dtplName[$tName] = '_no_file_';
+        $this->dtplData[$tName] = $tValue;
+        $this->dtplData[strtoupper($tName)] = @$tValue;
+        $this->dtplOptions[$tName] = '';
     }
 
     /**
@@ -307,9 +324,9 @@ class iMSCP_pTemplate
      */
     public function is_static_tpl($tplName)
     {
-        return array_key_exists($tplName, $this->tpl_name);
+        return array_key_exists($tplName, $this->tplName);
     }
-    
+
     /**
      * Checks if the given template is a dynamic template
      *
@@ -318,13 +335,13 @@ class iMSCP_pTemplate
      */
     public function is_dynamic_tpl($tplName)
     {
-        return array_key_exists($tplName, $this->dtpl_name);
+        return array_key_exists($tplName, $this->dtplName);
     }
 
     /**
      * Load a template file
      *
-     * @throws iMSCP_Exception If template file is not found
+     * @throws iMSCPException If template file is not found
      * @param string|array $fname Template file path or an array where the second item contain the template file path
      * @return mixed|string
      */
@@ -333,38 +350,36 @@ class iMSCP_pTemplate
         static $parentTplDir = NULL;
 
         if (!is_array($fname)) {
-            $this->eventManager->dispatch(iMSCP_Events::onBeforeAssembleTemplateFiles, [
+            $this->eventManager->dispatch(Events::onBeforeAssembleTemplateFiles, [
                 'context'      => $this,
-                'templatePath' => $this->root_dir . '/' . $fname
+                'templatePath' => $this->rootDir . '/' . $fname
             ]);
         } else { // INCLUDED file
-            $fname = $parentTplDir !== NULL ? $parentTplDir . '/' . $fname[1] : $fname[1];
+            $fname = ($parentTplDir ?: $parentTplDir) . '/' . $fname[1];
         }
 
         if (!$this->is_safe($fname)) {
-            throw new iMSCP_Exception(sprintf('Unable to find the %s template file', $this->root_dir . '/' . $fname));
+            throw new iMSCPException(sprintf("Couldn't to find the %s template file", $this->rootDir . '/' . $fname));
         }
+
         $prevParentTplDir = $parentTplDir;
         $parentTplDir = dirname($fname);
-
-        $this->eventManager->dispatch(iMSCP_Events::onBeforeLoadTemplateFile, [
+        $this->eventManager->dispatch(Events::onBeforeLoadTemplateFile, [
             'context'      => $this,
-            'templatePath' => $this->root_dir . '/' . $fname
+            'templatePath' => $this->rootDir . '/' . $fname
         ]);
 
         ob_start();
-        $this->run(utils_normalizePath($this->root_dir . '/' . $fname));
+        $this->run(utils_normalizePath($this->rootDir . '/' . $fname));
         $fileContent = ob_get_clean();
-
-        $this->eventManager->dispatch(iMSCP_Events::onAfterLoadTemplateFile, [
+        $this->eventManager->dispatch(Events::onAfterLoadTemplateFile, [
             'context'         => $this,
             'templateContent' => $fileContent
         ]);
 
-        $fileContent = preg_replace_callback($this->tpl_include, [$this, 'get_file'], $fileContent);
+        $fileContent = preg_replace_callback($this->tplInclude, [$this, 'get_file'], $fileContent);
         $parentTplDir = $prevParentTplDir;
-
-        $this->eventManager->dispatch(iMSCP_Events::onAfterAssembleTemplateFiles, [
+        $this->eventManager->dispatch(Events::onAfterAssembleTemplateFiles, [
             'context'         => $this,
             'templateContent' => $fileContent
         ]);
@@ -373,23 +388,24 @@ class iMSCP_pTemplate
     }
 
     /**
+     * Parse dynamic template
      *
      * @param string $pname
      * @param string $tname
-     * @param bool $ADD_FLAG
+     * @param bool $addFlag
      * @return bool
      */
-    public function parse_dynamic($pname, $tname, $ADD_FLAG)
+    public function parse_dynamic($pname, $tname, $addFlag)
     {
-        $CHILD = false;
+        $child = false;
         $parent = '';
 
-        if (isset($this->dtpl_name[$tname])
-            && (strpos(@$this->dtpl_name[$tname], '_no_file_') === false
-                && !preg_match('/\.(?:tpl|phtml)$/', $this->dtpl_name[$tname])
-            )
+        if (isset($this->dtplName[$tname])
+            && strpos($this->dtplName[$tname], '_no_file_') === false
+            && strpos($this->dtplName[$tname], '.tpl') === false
+            && strpos($this->dtplName[$tname], '.phtml') === false
         ) {
-            $CHILD = true;
+            $child = true;
             $parent = $this->find_origin($tname);
 
             if (!$parent) {
@@ -397,34 +413,42 @@ class iMSCP_pTemplate
             }
         }
 
-        if ($CHILD) {
+        if ($child) {
             $swap = $parent;
             $parent = $tname;
             $tname = $swap;
         }
 
-        if (!@$this->dtpl_data[$tname]) {
-            @$this->dtpl_data[$tname] = $this->get_file(@$this->dtpl_name[$tname]);
+        if (empty($this->dtplData[$tname])) {
+            @$this->dtplData[$tname] = $this->get_file(@$this->dtplName[$tname]);
         }
 
-        if (!preg_match('/d\_/', @$this->dtpl_options[$tname])) {
-            @$this->dtpl_options[$tname] .= 'd_';
-            $tpl_origin = @$this->dtpl_data[$tname];
-            @$this->dtpl_data[$tname] = $this->devide_dynamic($tpl_origin);
+        if (!isset($this->dtplOptions[$tname])
+            || strpos($this->dtplOptions[$tname], 'd_') === false
+        ) {
+            if (isset($this->dtplOptions[$tname])) {
+                $this->dtplOptions[$tname] .= 'd_';
+            } else {
+                $this->dtplOptions[$tname] = 'd_';
+            }
+
+            $this->dtplData[$tname] = $this->devide_dynamic(
+                isset($this->dtplData[$tname]) ? $this->dtplData[$tname] : ''
+            );
         }
 
-        if ($CHILD) {
+        if ($child) {
             $swap = $parent;
             $tname = $swap;
         }
 
-        if ($ADD_FLAG) {
-            $safe = @$this->namespace[$pname];
-            $this->namespace[$pname] = $safe . ($this->substitute_dynamic($this->dtpl_data[$tname]));
-        } else {
-            $this->namespace[$pname] = $this->substitute_dynamic($this->dtpl_data[$tname]);
+        if ($addFlag) {
+            $this->namespace[$pname] = (isset($this->namespace[$pname]) ? $this->namespace[$pname] : '')
+                . $this->substitute_dynamic($this->dtplData[$tname]);
+            return true;
         }
 
+        $this->namespace[$pname] = $this->substitute_dynamic($this->dtplData[$tname]);
         return true;
     }
 
@@ -436,56 +460,72 @@ class iMSCP_pTemplate
      */
     public function parse($pname, $tname)
     {
-        $this->eventManager->dispatch(iMSCP_Events::onParseTemplate, [
+        $this->eventManager->dispatch(Events::onParseTemplate, [
             'pname'          => $pname,
             'tname'          => $tname,
             'templateEngine' => $this
         ]);
 
-        if (!preg_match('/[A-Z0-9][A-Z0-9_]*/', $pname) || !preg_match('/[A-Za-z0-9][A-Za-z0-9_]*/', $tname)) {
-            return;
-        }
-
-        $ADD_FLAG = false;
+        $addFlag = false;
 
         if (strpos($tname, '.') === 0) {
             $tname = substr($tname, 1);
-            $ADD_FLAG = true;
+            $addFlag = true;
         }
 
-        if (isset($this->tpl_name[$tname])
-            && ($this->tpl_name[$tname] == '_no_file_' || preg_match('/\.(?:tpl|phtml)$/', $this->tpl_name[$tname]))
+        if (isset($this->tplName[$tname])
+            && ($this->tplName[$tname] == '_no_file_'
+                || (strpos($this->dtplName[$tname], '.tpl') !== false
+                    || strpos($this->dtplName[$tname], '.phtml') !== false
+                )
+            )
         ) {
             // static NO FILE - static FILE
-
-            if (isset($this->tpl_data[$tname]) && $this->tpl_data[$tname] == '') {
-                $this->tpl_data[$tname] = $this->get_file($this->tpl_name[$tname]);
+            if (isset($this->tplData[$tname])
+                && $this->tplData[$tname] == ''
+            ) {
+                $this->tplData[$tname] = $this->get_file($this->tplName[$tname]);
             }
 
-            if ($ADD_FLAG) {
-                @$this->namespace[$pname] .= $this->substitute_dynamic($this->tpl_data[$tname]);
+            if ($addFlag) {
+                if (isset($this->namespace[$pname])) {
+                    $this->namespace[$pname] .= $this->substitute_dynamic($this->tplData[$tname]);
+                } else {
+                    $this->namespace[$pname] = $this->substitute_dynamic($this->tplData[$tname]);
+                }
             } else {
-                $this->namespace[$pname] = $this->substitute_dynamic($this->tpl_data[$tname]);
+                $this->namespace[$pname] = $this->substitute_dynamic($this->tplData[$tname]);
             }
 
-            $this->last_parsed = $this->namespace[$pname];
-        } elseif ($this->dtpl_name[$tname] == '_no_file_'
-            || preg_match('/\.(?:tpl|phtml)$/', $this->dtpl_name[$tname])
+            $this->lastParsed = $this->namespace[$pname];
+            return;
+        }
+
+        if ($this->dtplName[$tname] == '_no_file_'
+            || strpos($this->dtplName[$tname], '.tpl') !== false
+            || strpos($this->dtplName[$tname], '.phtml') !== false
             || $this->find_origin($tname)
         ) {
             // dynamic NO FILE - dynamic FILE
-            if (!$this->parse_dynamic($pname, $tname, $ADD_FLAG)) {
+            if (!$this->parse_dynamic($pname, $tname, $addFlag)) {
                 return;
             }
 
-            $this->last_parsed = $this->namespace[$pname];
-        } else {
-            if ($ADD_FLAG) {
-                @$this->namespace[$pname] .= $this->namespace[$tname];
-            } else {
-                $this->namespace[$pname] = $this->namespace[$tname];
-            }
+            $this->lastParsed = $this->namespace[$pname];
+            return;
         }
+
+        if (!$addFlag) {
+            $this->namespace[$pname] = $this->namespace[$tname];
+            return;
+        }
+
+        if (isset($this->namespace[$pname])) {
+            $this->namespace[$pname] .= $this->namespace[$tname];
+            return;
+        }
+
+        $this->namespace[$pname] = $this->namespace[$tname];
     }
 
     /**
@@ -495,11 +535,11 @@ class iMSCP_pTemplate
     public function prnt($pname = '')
     {
         if ($pname) {
-            echo @$this->namespace[$pname];
+            echo isset($this->namespace[$pname]) ? $this->namespace[$pname] : '';
             return;
         }
 
-        echo @$this->last_parsed;
+        echo @$this->lastParsed;
     }
 
     /**
@@ -523,7 +563,7 @@ class iMSCP_pTemplate
      */
     public function getLastParseResult()
     {
-        return $this->last_parsed;
+        return $this->lastParsed;
     }
 
     /**
@@ -535,7 +575,8 @@ class iMSCP_pTemplate
      */
     public function replaceLastParseResult($newContent, $namespace = NULL)
     {
-        $this->last_parsed = (string)$newContent;
+        $this->lastParsed = (string)$newContent;
+
         if (isset($this->namespace[$namespace])) {
             $this->namespace[$namespace] = $newContent;
         }
@@ -549,14 +590,16 @@ class iMSCP_pTemplate
      */
     protected function find_origin($tname)
     {
-        if (!@$this->dtpl_name[$tname]) {
+        if (!isset($this->dtplName[$tname])) {
             return false;
         }
 
-        while (strpos($this->dtpl_name[$tname], '_no_file_') === false
-            && !preg_match('/\.(?:tpl|phtml)$/', $this->dtpl_name[$tname])
+        while (isset($this->dtplName[$tname])
+            && strpos($this->dtplName[$tname], '_no_file_') === false
+            && strpos($this->dtplName[$tname], '.tpl') === false
+            && strpos($this->dtplName[$tname], '.phtml') === false
         ) {
-            $tname = $this->dtpl_name[$tname];
+            $tname = $this->dtplName[$tname];
         }
 
         return $tname;
@@ -566,67 +609,68 @@ class iMSCP_pTemplate
      * Find next dynamic block
      *
      * @param string $data Data in which search is made
-     * @param int $spos Position from which starting to search
+     * @param int $startPos Position from which starting to search
      * @return array|bool
      */
-    protected function find_next($data, $spos)
+    protected function find_next($data, $startPos)
     {
         do {
-            if (false === ($tag_spos = strpos($data, $this->tpl_start_tag, $spos + 1))) {
+            if (false === ($tagStartPos = strpos($data, $this->tplStartTag, $startPos + 1))) {
                 return false;
             }
 
-            if (false === ($tag_epos = strpos($data, $this->tpl_end_tag, $tag_spos + 1))) {
+            if (false === ($tagEndPos = strpos($data, $this->tplEndTag, $tagStartPos + 1))) {
                 return false;
             }
 
-            $length = $tag_epos + strlen($this->tpl_end_tag) - $tag_spos;
-            $tag = substr($data, $tag_spos, $length);
+            $length = $tagEndPos + strlen($this->tplEndTag) - $tagStartPos;
+            $tag = substr($data, $tagStartPos, $length);
 
             if (!$tag) {
                 return false;
             }
 
-            if (preg_match($this->tpl_start_rexpr, $tag, $matches)) {
-                return [$matches[1], 'b', $tag_spos, $tag_epos + strlen($this->tpl_end_tag) - 1];
+            if (preg_match($this->tplStartRexpr, $tag, $matches)) {
+                return [$matches[1], 'b', $tagStartPos, $tagEndPos + strlen($this->tplEndTag) - 1];
             }
 
-            if (preg_match($this->tpl_end_rexpr, $tag, $matches)) {
-                return [$matches[1], 'e', $tag_spos, $tag_epos + strlen($this->tpl_end_tag) - 1];
+            if (preg_match($this->tplEndRexpr, $tag, $matches)) {
+                return [$matches[1], 'e', $tagStartPos, $tagEndPos + strlen($this->tplEndTag) - 1];
             }
 
-            $spos = $tag_epos;
+            $startPos = $tagEndPos;
         } while (true);
 
         return false;
     }
 
     /**
-     * Finds the next pair of curly brakets.
+     * Finds the next curly bracket in the given string, starting at the given position + 1
      *
-     * @param string $data
-     * @param int $spos
+     * @param string $string String in which pairs of curly bracket must be searched
+     * @param int $startPos Start search position in $string
      * @return array|bool
      */
-    protected function find_next_curl($data, $spos)
+    protected function find_next_curl($string, $startPos)
     {
-        $curl_b = strpos($data, '{', $spos + 1);
-        $curl_e = strpos($data, '}', $spos + 1);
+        $startPos++;
+        $curlStartPos = strpos($string, '{', $startPos);
+        $curlEndPos = strpos($string, '}', $startPos);
 
-        if ($curl_b) {
-            if ($curl_e) {
-                if ($curl_b < $curl_e) {
-                    return ['{', $curl_b];
+        if ($curlStartPos !== false) {
+            if ($curlEndPos !== false) {
+                if ($curlStartPos < $curlEndPos) {
+                    return ['{', $curlStartPos];
                 }
 
-                return ['}', $curl_e];
+                return ['}', $curlEndPos];
             }
 
-            return ['{', $curl_b];
+            return ['{', $curlStartPos];
         }
 
-        if ($curl_e) {
-            return ['}', $curl_e];
+        if ($curlEndPos !== false) {
+            return ['}', $curlEndPos];
         }
 
         return false;
@@ -639,28 +683,28 @@ class iMSCP_pTemplate
      */
     protected function devide_dynamic($data)
     {
-        $start_from = -1;
-        $tag = $this->find_next($data, $start_from);
+        $startFrom = -1;
+        $tag = $this->find_next($data, $startFrom);
 
-        while ($tag) {
+        while ($tag !== false) {
             if ($tag[1] == 'b') {
                 $this->stack[$this->sp++] = $tag;
-                $start_from = $tag[3];
-            } else {
-                $tpl_name = $tag[0];
-                $tpl_eb_pos = $tag[2];
-                $tpl_ee_pos = $tag[3];
-                $tag = $this->stack [--$this->sp];
-                $tpl_bb_pos = $tag[2];
-                $tpl_be_pos = $tag[3];
-
-                $this->dtpl_data[strtoupper($tpl_name)] = substr($data, $tpl_be_pos + 1, $tpl_eb_pos - $tpl_be_pos - 1);
-                $this->dtpl_data[$tpl_name] = substr($data, $tpl_be_pos + 1, $tpl_eb_pos - $tpl_be_pos - 1);
-                $data = substr_replace($data, '{' . strtoupper($tpl_name) . '}', $tpl_bb_pos, $tpl_ee_pos - $tpl_bb_pos + 1);
-                $start_from = $tpl_bb_pos + strlen("{" . $tpl_name . "}") - 1;
+                $startFrom = $tag[3];
+                $tag = $this->find_next($data, $startFrom);
+                continue;
             }
 
-            $tag = $this->find_next($data, $start_from);
+            $tplName = $tag[0];
+            $tpl_eb_pos = $tag[2];
+            $tpl_ee_pos = $tag[3];
+            $tag = $this->stack [--$this->sp];
+            $tpl_bb_pos = $tag[2];
+            $tpl_be_pos = $tag[3];
+            $this->dtplData[strtoupper($tplName)] = substr($data, $tpl_be_pos + 1, $tpl_eb_pos - $tpl_be_pos - 1);
+            $this->dtplData[$tplName] = substr($data, $tpl_be_pos + 1, $tpl_eb_pos - $tpl_be_pos - 1);
+            $data = substr_replace($data, '{' . strtoupper($tplName) . '}', $tpl_bb_pos, $tpl_ee_pos - $tpl_bb_pos + 1);
+            $startFrom = $tpl_bb_pos + strlen("{" . $tplName . "}") - 1;
+            $tag = $this->find_next($data, $startFrom);
         }
 
         return $data;
@@ -672,58 +716,53 @@ class iMSCP_pTemplate
      */
     protected function substitute_dynamic($data)
     {
-        if (($curl_b = strpos($data, '{')) === FALSE) {
+        if (($curlB = strpos($data, '{')) === FALSE) {
             return $data; // there is nothing to substitute in $data; return early
         }
 
         $this->sp = 0;
-        $start_from = -1;
-        $this->stack[$this->sp++] = ['{', $curl_b];
-        $curl = $this->find_next_curl($data, $start_from);
+        $startFrom = -1;
+        $this->stack[$this->sp++] = ['{', $curlB];
+        $curl = $this->find_next_curl($data, $startFrom);
 
-        while ($curl) {
+        while ($curl !== false) {
             if ($curl[0] == '{') {
                 $this->stack[$this->sp++] = $curl;
-                $start_from = $curl[1];
+                $startFrom = $curl[1];
             } else {
-                $curl_e = $curl[1];
+                $curlE = $curl[1];
 
                 if ($this->sp > 0) {
                     $curl = $this->stack[--$this->sp];
-                    // CHECK for empty stack must be done HERE !
-                    $curl_b = $curl[1];
+                    // Check for empty stack must be done HERE !
+                    $curlB = $curl[1];
 
-                    if ($curl_b < $curl_e + 1) {
-                        $var_name = substr($data, $curl_b + 1, $curl_e - $curl_b - 1);
+                    if ($curlB < $curlE + 1) {
+                        $varName = substr($data, $curlB + 1, $curlE - $curlB - 1);
 
-                        // The whole WORK goes here :)
-                        if (preg_match('/[A-Z0-9][A-Z0-9\_]*/', $var_name)) {
-                            if (isset($this->namespace[$var_name])) {
-                                $data = substr_replace($data, $this->namespace[$var_name], $curl_b, $curl_e - $curl_b + 1);
-                                $start_from = $curl_b - 1;
-                                // new value may also begin with '{'
-                            } elseif (isset($this->dtpl_data[$var_name])) {
-                                $data = substr_replace($data, $this->dtpl_data[$var_name], $curl_b, $curl_e - $curl_b + 1);
-                                $start_from = $curl_b - 1;
-                                // new value may also begin with '{'
+                        // The whole work goes here :)
+                        if (preg_match('/[A-Z0-9][A-Z0-9\_]*/', $varName)) {
+                            if (isset($this->namespace[$varName])) {
+                                $data = substr_replace($data, $this->namespace[$varName], $curlB, $curlE - $curlB + 1);
+                                $startFrom = $curlB - 1; // new value may also begin with '{'
+                            } elseif (isset($this->dtplData[$varName])) {
+                                $data = substr_replace($data, $this->dtplData[$varName], $curlB, $curlE - $curlB + 1);
+                                $startFrom = $curlB - 1; // new value may also begin with '{'
                             } else {
-                                $start_from = $curl_b;
-                                // no suitable value found -> go forward
+                                $startFrom = $curlB; // no suitable value found -> go forward
                             }
                         } else {
-                            $start_from = $curl_b;
-                            // go forward, we have {no variable} here.
+                            $startFrom = $curlB; // go forward, we have {no variable} here.
                         }
                     } else {
-                        $start_from = $curl_e;
-                        // go forward, we have {} here.
+                        $startFrom = $curlE; // go forward, we have {} here.
                     }
                 } else {
-                    $start_from = $curl_e;
+                    $startFrom = $curlE;
                 }
             }
 
-            $curl = $this->find_next_curl($data, $start_from);
+            $curl = $this->find_next_curl($data, $startFrom);
         }
 
         return $data;
@@ -735,7 +774,7 @@ class iMSCP_pTemplate
      */
     protected function is_safe($fname)
     {
-        return (file_exists($this->root_dir . '/' . $fname)) ? true : false;
+        return file_exists($this->rootDir . '/' . $fname);
     }
 
     /**
