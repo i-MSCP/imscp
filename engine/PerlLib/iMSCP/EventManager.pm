@@ -233,7 +233,7 @@ sub trigger
     if ( $self->{'events'}->{$eventName}
         && $self->{'events'}->{$eventName}->isEmpty()
     ) {
-        delete $self->{'events'}->{$eventName}
+        delete $self->{'events'}->{$eventName};
     }
 
     delete $self->{'nonces'}->{$eventName} if $self->{'nonces'}->{$eventName} && !%{$self->{'nonces'}->{$eventName}};
