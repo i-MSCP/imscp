@@ -95,8 +95,8 @@ function client_generateSupportSystemNotices()
  * Generates traffic usage bar
  *
  * @param iMSCP_pTemplate $tpl Template engine
- * @param $usage
- * @param $maxUsage
+ * @param int $usage Usage in bytes
+ * @param int $maxUsage Max usage in bytes
  * @return void
  */
 function client_generateTrafficUsageBar($tpl, $usage, $maxUsage)
@@ -123,8 +123,8 @@ function client_generateTrafficUsageBar($tpl, $usage, $maxUsage)
  * Generates disk usage bar
  *
  * @param iMSCP_pTemplate $tpl Template engine
- * @param $usage
- * @param $maxUsage
+ * @param int $usage Usage in bytes
+ * @param int $maxUsage Max usage in bytes
  * @return void
  */
 function client_generateDiskUsageBar($tpl, $usage, $maxUsage)

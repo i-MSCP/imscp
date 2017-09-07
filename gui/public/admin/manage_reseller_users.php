@@ -248,7 +248,8 @@ function generatePage(TemplateEngine $tpl)
     $customers = exec_query(
         "
             SELECT admin_id, admin_name
-            FROM admin WHERE created_by = ?
+            FROM admin
+            WHERE created_by = ?
             AND admin_type = 'user'
             AND admin_status <> 'todelete'
         ",
@@ -300,11 +301,6 @@ $tpl->define_dynamic([
     'to_reseller_item'             => 'page'
 ]);
 $tpl->assign('TR_PAGE_TITLE', tohtml(tr('Admin / Users / Customer assignments')));
-
-EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
-    /** @var $e \iMSCP_Events_Event */
-    $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
-});
 
 generateNavigation($tpl);
 generatePage($tpl);

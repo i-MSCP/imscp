@@ -28,9 +28,15 @@
         if($oTable.fnSettings().fnRecordsTotal() < 1) {
             $("input[type=submit]").remove();
         } else {
-            $("input[type=submit]").click(function () {
-                var input = this;
-                input.blur();
+            $("form").on('submit', function ($e) {
+                var $form = $(this);
+
+                if($form.get(0).uaction.value === 'change_from') {
+                    return true;
+                }
+
+                $e.preventDefault();
+                $form.find("#Submit").blur();
 
                 if ($("input[type=checkbox]:checked", $oTable.fnGetNodes()).length < 1) {
                     alert("<?= tojs(tr('You must select at least one customer.')); ?>");
@@ -41,7 +47,7 @@
                     "<?= tojs(tr('Are you sure you want to move the selected customers?')); ?>",
                     function (ret) {
                         if (ret) {
-                            $(input).closest("form").submit();
+                            $form.get(0).submit();
                         }
                     }
                 );
@@ -64,7 +70,9 @@
             });
         });
         $("#from_reseller").trigger('change').on('change', function () {
-            sbmt(document.forms[0], 'change_from');
+            var $form = $("form");
+            $form.get(0).uaction.value = 'change_from';
+            $form.submit();
         });        
     });
 </script>

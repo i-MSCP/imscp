@@ -828,7 +828,7 @@ function reseller_generate_ip_list(TemplateEngine $tpl, $resellerId, $domainIp)
  * @param array $override Allow to override or add plugin translation
  * @return string|array
  */
-function getDataTablesPluginTranslations($json = true, $override = [])
+function getDataTablesPluginTranslations($json = true, array $override = [])
 {
     $tr = [
         'sLengthMenu'  => tr(
