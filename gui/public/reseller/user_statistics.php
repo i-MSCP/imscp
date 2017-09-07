@@ -36,38 +36,36 @@ use iMSCP_pTemplate as TemplateEngine;
  */
 function _generateUserStatistics(TemplateEngine $tpl, $adminId)
 {
-    list($adminName, , $webTraffic, $ftpTraffic, $smtpTraffic, $popImapTraffic, $trafficUsageBytes, $diskspaceUsageBytes
-        ) = getClientStats($adminId);
-    list($subCount, $subMax, $alsCount, $alsMax, $mailCount, $mailMax, $ftpUserCount, $FtpUserMax, $sqlDbCount,
-        $sqlDbMax, $sqlUserCount, $sqlUserMax, $trafficLimit, $diskspaceLimit) = shared_getCustomerProps($adminId);
-
-    $trafficLimitBytes = $trafficLimit * 1048576;
-    $diskspaceLimitBytes = $diskspaceLimit * 1048576;
-    $trafficPercent = getPercentUsage($trafficUsageBytes, $trafficLimitBytes);
-    $diskPercent = getPercentUsage($diskspaceUsageBytes, $diskspaceLimitBytes);
+    list($webTraffic, $ftpTraffic, $smtpTraffic, $pop3Traffic, $trafficUsage, $diskUsage
+        ) = getClientTrafficAndDiskStats($adminId);
+    list($subCount, $subLimit, $alsCount, $alsLimit, $mailCount, $mailLimit, $ftpCount, $ftpLimit, $sqlDbCount,
+        $sqlDbLimit, $sqlUsersCount, $sqlUsersLlimit, $trafficLimit, $diskLimit
+        ) = getClientItemCountsAndLimits($adminId);
+    $trafficPercent = getPercentUsage($trafficUsage, $trafficLimit);
+    $diskPercent = getPercentUsage($diskUsage, $diskLimit);
     $tpl->assign([
         'USER_ID'               => tohtml($adminId),
-        'USERNAME'              => tohtml(decode_idna($adminName)),
+        'USERNAME'              => tohtml(decode_idna(get_user_name($adminId))),
         'TRAFFIC_PERCENT_WIDTH' => tohtml($trafficPercent, 'htmlAttr'),
         'TRAFFIC_PERCENT'       => tohtml($trafficPercent),
-        'TRAFFIC_MSG'           => ($trafficLimitBytes)
-            ? tohtml(sprintf('%s / %s', bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes)))
-            : tohtml(sprintf('%s / ∞', bytesHuman($trafficUsageBytes))),
+        'TRAFFIC_MSG'           => ($trafficLimit > 0)
+            ? tohtml(sprintf('%s / %s', bytesHuman($trafficUsage), bytesHuman($trafficLimit)))
+            : tohtml(sprintf('%s / ∞', bytesHuman($trafficUsage))),
         'DISK_PERCENT_WIDTH'    => tohtml($diskPercent, 'htmlAttr'),
         'DISK_PERCENT'          => tohtml($diskPercent),
-        'DISK_MSG'              => ($diskspaceLimitBytes)
-            ? tohtml(sprintf('%s / %s', bytesHuman($diskspaceUsageBytes), bytesHuman($diskspaceLimitBytes)))
-            : tohtml(sprintf('%s / ∞', bytesHuman($diskspaceUsageBytes))),
+        'DISK_MSG'              => ($diskLimit > 0)
+            ? tohtml(sprintf('%s / %s', bytesHuman($diskUsage), bytesHuman($diskLimit)))
+            : tohtml(sprintf('%s / ∞', bytesHuman($diskUsage))),
         'WEB'                   => tohtml(bytesHuman($webTraffic)),
         'FTP'                   => tohtml(bytesHuman($ftpTraffic)),
         'SMTP'                  => tohtml(bytesHuman($smtpTraffic)),
-        'POP3'                  => tohtml(bytesHuman($popImapTraffic)),
-        'SUB_MSG'               => tohtml(sprintf('%s / %s', $subCount, translate_limit_value($subMax))),
-        'ALS_MSG'               => tohtml(sprintf('%s / %s', $alsCount, translate_limit_value($alsMax))),
-        'MAIL_MSG'              => tohtml(sprintf('%s / %s', $mailCount, translate_limit_value($mailMax))),
-        'FTP_MSG'               => tohtml(sprintf('%s / %s', $ftpUserCount, translate_limit_value($FtpUserMax))),
-        'SQL_DB_MSG'            => tohtml(sprintf('%s / %s', $sqlDbCount, translate_limit_value($sqlDbMax))),
-        'SQL_USER_MSG'          => tohtml(sprintf('%s / %s', $sqlUserCount, translate_limit_value($sqlUserMax)))
+        'POP3'                  => tohtml(bytesHuman($pop3Traffic)),
+        'SUB_MSG'               => tohtml(sprintf('%s / %s', $subCount, translate_limit_value($subLimit))),
+        'ALS_MSG'               => tohtml(sprintf('%s / %s', $alsCount, translate_limit_value($alsLimit))),
+        'MAIL_MSG'              => tohtml(sprintf('%s / %s', $mailCount, translate_limit_value($mailLimit))),
+        'FTP_MSG'               => tohtml(sprintf('%s / %s', $ftpCount, translate_limit_value($ftpLimit))),
+        'SQL_DB_MSG'            => tohtml(sprintf('%s / %s', $sqlDbCount, translate_limit_value($sqlDbLimit))),
+        'SQL_USER_MSG'          => tohtml(sprintf('%s / %s', $sqlUsersCount, translate_limit_value($sqlUsersLlimit)))
     ]);
 }
 

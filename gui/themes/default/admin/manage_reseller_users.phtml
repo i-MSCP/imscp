@@ -1,0 +1,122 @@
+
+<script>
+    $(function () {
+        var $oTable = $('.datatable').dataTable(
+            {
+                language: <?= getDataTablesPluginTranslations(true, ['emptyTable' =>  tr('No customer found for the selected reseller.')]); ?>,
+                displayLength: 10,
+                stateSave: true,
+                pagingType: "simple"
+            }
+        );
+
+        $(".dataTables_paginate").on("click", function () {
+            $oTable.find("thead input[type=checkbox],tfoot input[type=checkbox]").prop('checked', false);
+        });
+        $oTable.find("tbody").on("click", "input[type=checkbox]", function () {
+            $oTable.find("thead input[type=checkbox],tfoot input[type=checkbox]").prop("checked", false);
+        });
+        $oTable.find("thead :checkbox, tfoot input[type=checkbox]").click(function (e) {
+            if ($oTable.find("tbody input[type=checkbox]").length !== 0) {
+                $oTable.find("input[type=checkbox]").prop("checked", $(this).is(":checked"));
+                return;
+            }
+
+            e.preventDefault();
+        });
+        
+        if($oTable.fnSettings().fnRecordsTotal() < 1) {
+            $("input[type=submit]").remove();
+        } else {
+            $("input[type=submit]").click(function () {
+                var input = this;
+                input.blur();
+
+                if ($("input[type=checkbox]:checked", $oTable.fnGetNodes()).length < 1) {
+                    alert("<?= tojs(tr('You must select at least one customer.')); ?>");
+                    return false;
+                }
+
+                return jQuery.imscp.confirm(
+                    "<?= tojs(tr('Are you sure you want to move the selected customers?')); ?>",
+                    function (ret) {
+                        if (ret) {
+                            $(input).closest("form").submit();
+                        }
+                    }
+                );
+            });
+        }
+
+        $("#from_reseller,#to_reseller").on('change', function($e) {
+            var $toUpdId = $("#"+($(this).attr('id') === 'from_reseller' ? 'to_reseller' : 'from_reseller'));
+            var thisElVal = this.value;
+
+            if (thisElVal !== $toUpdId.val()) {
+                return;
+            }
+
+            $("option", $toUpdId).each(function () {
+                if (this.value !== thisElVal) {
+                    $toUpdId.val(this.value).trigger('change');
+                    return false;
+                }
+            });
+        });
+        $("#from_reseller").trigger('change').on('change', function () {
+            sbmt(document.forms[0], 'change_from');
+        });        
+    });
+</script>
+<p class="message static_info">
+    <?= tohtml(tr('Below you can move customers from a reseller to another reseller by selecting them and clicking the submit button.')); ?><br>
+    <?= tohtml(tr('When you move a customer to another reseller, limits and permissions of that reseller are automatically extended when necessary, according the customer own limits and permissions.')); ?>
+</p>
+<form action="manage_reseller_users.php" method="post">
+    <table class="datatable">
+        <thead>
+        <tr>
+            <th><label><input type="checkbox" id="select_all"></label></th>
+            <th><?= tohtml(tr('Customer name')); ?></th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <td><label><input type="checkbox" id="select_all"></label></td>
+            <td><?= tohtml(tr('Customer name')); ?></td>
+        </tr>
+        </tfoot>
+        <tbody>
+        <!-- BDP: from_reseller_customers_list -->
+        <!-- BDP: from_reseller_customer_item -->
+        <tr>
+            <td><input id="customer_id_{CUSTOMER_ID}" type="checkbox" name="reseller_customers[]" value="{CUSTOMER_ID}" {RESELLER_CUSTOMER_CHECKED}></td>
+            <td><label for="customer_id_{CUSTOMER_ID}">{CUSTOMER_NAME}</label></td>
+        </tr>
+        <!-- EDP: from_reseller_customer_item -->
+        <!-- EDP: from_reseller_customers_list -->
+        </tbody>
+        <tbody>
+        <tr style="background-color:#b0def5">
+            <td colspan="2" class="buttons">
+                <label for="from_reseller"><?= tohtml(tr('From reseller')); ?></label>
+                <select name="from_reseller" id="from_reseller">
+                    <!-- BDP: from_reseller_item -->
+                    <option value="{FROM_RESELLER_ID}" {FROM_RESELLER_SELECTED}>{FROM_RESELLER_NAME}</option>
+                    <!-- EDP: from_reseller_item -->
+                </select>
+                <label for="to_reseller"><?= tohtml(tr('to reseller')) ;?></label>
+                <select name="to_reseller" id="to_reseller">
+                    <!-- BDP: to_reseller_item -->
+                    <option value="{TO_RESELLER_ID}"{TO_RESELLER_SELECTED}>{TO_RESELLER_NAME}</option>
+                    <!-- EDP: to_reseller_item -->
+                </select>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="buttons">
+        <input type="submit" id="Submit" value="<?= tohtml(tr('Move selected customers'), 'htmlAttr');?>">
+        <input type="hidden" name="uaction" value="move_customers">
+    </div>
+</form>

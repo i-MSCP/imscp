@@ -825,9 +825,10 @@ function reseller_generate_ip_list(TemplateEngine $tpl, $resellerId, $domainIp)
  * Returns translation for jQuery DataTables plugin.
  *
  * @param bool $json Does the data must be encoded to JSON?
+ * @param array $override Allow to override or add plugin translation
  * @return string|array
  */
-function getDataTablesPluginTranslations($json = true)
+function getDataTablesPluginTranslations($json = true, $override = [])
 {
     $tr = [
         'sLengthMenu'  => tr(
@@ -851,6 +852,10 @@ function getDataTablesPluginTranslations($json = true)
         'paginate'     => ['previous' => tr('Previous'), 'next' => tr('Next')],
         'processing'   => tr('Loading data...')
     ];
+
+    if (!empty($override)) {
+        $tr = array_merge($tr, $override);
+    }
 
     return ($json) ? json_encode($tr) : $tr;
 }

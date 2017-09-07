@@ -299,40 +299,6 @@ function get_user_domain_id($customeId)
 }
 
 /**
- * Get counts of consumed and max items for the given customer
- *
- * @param  int $customerId Customer unique identifier
- * @return array
- */
-function shared_getCustomerProps($customerId)
-{
-    $stmt = exec_query('SELECT * FROM domain WHERE domain_admin_id = ?', $customerId);
-
-    if (!$stmt->rowCount()) {
-        return array_fill(0, 14, 0);
-    }
-
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-
-    return [
-        ($row['domain_subd_limit'] == -1) ? 0 : get_customer_subdomains_count($row['domain_id']),
-        $row['domain_subd_limit'],
-        ($row['domain_alias_limit'] == -1) ? 0 : get_customer_domain_aliases_count($row['domain_id']),
-        $row['domain_alias_limit'],
-        ($row['domain_mailacc_limit'] == -1) ? 0 : get_customer_mail_accounts_count($row['domain_id']),
-        $row['domain_mailacc_limit'],
-        ($row['domain_ftpacc_limit'] == -1) ? 0 : get_customer_ftp_users_count($customerId),
-        $row['domain_ftpacc_limit'],
-        ($row['domain_sqld_limit'] == -1) ? 0 : get_customer_sql_databases_count($row['domain_id']),
-        $row['domain_sqld_limit'],
-        ($row['domain_sqlu_limit'] == -1) ? 0 : get_customer_sql_users_count($row['domain_id']),
-        $row['domain_sqlu_limit'],
-        $row['domain_traffic_limit'],
-        $row['domain_disk_limit']
-    ];
-}
-
-/**
  * Returns translated item status
  *
  * @param string $status Item status to translate
@@ -365,10 +331,10 @@ function translate_dmn_status($status, $showError = false)
 }
 
 /**
- * Recalculates limits for the given reseller
+ * Recalculates count of assigned items for the given reseller
  *
- * This is not based on the objects consumed by customers. This is based on objects assigned by the reseller to its
- * customers.
+ * This is not based on the objects consumed by customers. This is based on
+ * objects assigned by the reseller to its customers.
  *
  * @param int $resellerId unique reseller identifier
  * @return void

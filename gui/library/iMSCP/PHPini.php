@@ -800,13 +800,27 @@ class iMSCP_PHPini
      * Synchronise client PHP permissions (including domain INI options) with reseller PHP permissions
      *
      * @param int $resellerId Reseller unique identifier
+     * @param int $clientId OPTIONAL client unique identifier (Client for which PHP permissions must be synchronized)
      * @throws iMSCP_Exception_Database
      * @return bool Boolean indicating whether or not a backend request is needed
      */
-    public function syncClientPermissionsWithResellerPermissions($resellerId)
+    public function syncClientPermissionsWithResellerPermissions($resellerId, $clientId = NULL)
     {
+        if (empty($this->resellerPermissions)) {
+            $this->loadResellerPermissions($resellerId);
+        }
+
         $needBackendRequest = false;
-        $stmt = exec_query('SELECT admin_id FROM admin WHERE created_by = ?', $resellerId);
+
+        if (NULL !== $clientId) {
+            $condition = 'WHERE admin_id = ? AND created_by = ?';
+            $params[] = $clientId;
+        } else {
+            $condition = 'WHERE created_by = ?';
+        }
+
+        $params[] = $resellerId;
+        $stmt = exec_query("SELECT admin_id FROM admin $condition", $params);
 
         while ($row = $stmt->fetchRow()) {
             try {

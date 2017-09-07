@@ -72,21 +72,10 @@ function getClientMonthlyTrafficStats($domainId)
  * @param int $clientId User unique identifier
  * @return array
  */
-function getClientStats($clientId)
+function getClientTrafficAndDiskStats($clientId)
 {
     $stmt = exec_query(
-        '
-            SELECT domain_id,
-              IFNULL(domain_disk_usage, 0) AS diskspace_usage,
-              IFNULL(domain_traffic_limit, 0) AS monthly_traffic_limit,
-              IFNULL(domain_disk_limit, 0) AS diskspace_limit,
-              admin_name
-            FROM domain
-            JOIN admin on(admin_id = domain_admin_id)
-            WHERE domain_admin_id = ?
-            ORDER BY domain_name
-        ',
-        $clientId
+        'SELECT domain_id, IFNULL(domain_disk_usage, 0) AS disk_usage FROM domain WHERE domain_admin_id = ?', $clientId
     );
 
     if (!$stmt->rowCount()) {
@@ -99,17 +88,50 @@ function getClientStats($clientId)
         $row['domain_id']
     );
 
+    return [$webTraffic, $ftpTraffic, $smtpTraffic, $popTraffic, $totalTraffic, $row['disk_usage']];
+}
+
+/**
+ * Get counts of consumed and max items for the given customer
+ * 
+ * Note: For disk and traffic, only limit are returned.
+ *
+ * @param  int $clientId Client unique identifier
+ * @return array
+ */
+function getClientItemCountsAndLimits($clientId)
+{
+    $stmt = exec_query(
+        '
+            SELECT domain_id, domain_subd_limit, domain_alias_limit, domain_mailacc_limit, domain_ftpacc_limit,
+                domain_sqld_limit, domain_sqlu_limit, domain_traffic_limit, domain_disk_limit
+            FROM domain
+            WHERE domain_admin_id = ?
+        ',
+        $clientId
+    );
+
+    if (!$stmt->rowCount()) {
+        return array_fill(0, 14, 0);
+    }
+
+    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+
     return [
-        $row['admin_name'],
-        $row['domain_id'],
-        $webTraffic,
-        $ftpTraffic,
-        $smtpTraffic,
-        $popTraffic,
-        $totalTraffic,
-        $row['diskspace_usage'],
-        $row['monthly_traffic_limit'],
-        $row['diskspace_limit']
+        ($row['domain_subd_limit'] == -1) ? 0 : get_customer_subdomains_count($row['domain_id']),
+        $row['domain_subd_limit'],
+        ($row['domain_alias_limit'] == -1) ? 0 : get_customer_domain_aliases_count($row['domain_id']),
+        $row['domain_alias_limit'],
+        ($row['domain_mailacc_limit'] == -1) ? 0 : get_customer_mail_accounts_count($row['domain_id']),
+        $row['domain_mailacc_limit'],
+        ($row['domain_ftpacc_limit'] == -1) ? 0 : get_customer_ftp_users_count($clientId),
+        $row['domain_ftpacc_limit'],
+        ($row['domain_sqld_limit'] == -1) ? 0 : get_customer_sql_databases_count($row['domain_id']),
+        $row['domain_sqld_limit'],
+        ($row['domain_sqlu_limit'] == -1) ? 0 : get_customer_sql_users_count($row['domain_id']),
+        $row['domain_sqlu_limit'],
+        $row['domain_traffic_limit'] * 1048576,
+        $row['domain_disk_limit'] * 1048576
     ];
 }
 
@@ -126,7 +148,7 @@ function getResellerStats($resellerId)
             SELECT t1.domain_id, t1.domain_admin_id
             FROM domain AS t1
             JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
-            WHERE created_by = ?
+            WHERE t2.created_by = ?
         ',
         $resellerId
     );
@@ -138,9 +160,9 @@ function getResellerStats($resellerId)
     $rtraffConsumed = $rdiskConsumed = 0;
 
     while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-        $customerStats = getClientStats($row['domain_admin_id']);
-        $rtraffConsumed += $customerStats[6];
-        $rdiskConsumed += $customerStats[7];
+        $customerStats = getClientTrafficAndDiskStats($row['domain_admin_id']);
+        $rtraffConsumed += $customerStats[4];
+        $rdiskConsumed += $customerStats[5];
     }
 
     return [

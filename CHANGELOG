@@ -5,8 +5,13 @@ Git 1.5.x
 ------------------------------------------------------------------------------------------------------------------------
 
 FRONTEND
-    Fixed: Several layout issues regarding statistics
-    Fixed: Statistics badly calculated due  to mixing between assigned and consumed values
+    Added: `onMoveCustomer' event -- Event triggered when a customer is moved to another reseller
+    Enhancement: Adjust target reseller limits/permissions instead of throwing error (Customer assignments feature)
+    Enhancement: Allows to synchronize PHP permissions of specific client (iMSCP_PHPini)
+    Fixed: Several layout issues regarding statistics (all UI levels)
+    Fixed: Statistics badly calculated due to mixing between assigned and consumed values (admin UI level)
+    Fixed: Exception raised due to wrong SQL query (Customer assignments)
+    Rewritten: Customer assignments feature
 
 ------------------------------------------------------------------------------------------------------------------------
 1.5.0

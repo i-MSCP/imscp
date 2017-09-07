@@ -1,450 +1,274 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
+use iMSCP_Database as Database;
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_pTemplate as TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
  */
 
 /**
- * Generates user table.
+ * Move the given customer to the given reseller
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
- */
-function admin_generateCustomersTable($tpl)
-{
-    $stmt = exec_query('SELECT admin_id, admin_name FROM admin WHERE admin_type = ? ORDER BY admin_name', 'reseller');
-
-    if (!$stmt->rowCount()) { // Should never occurs
-        set_page_message(tr('Reseller list is empty.'), 'error');
-        redirectTo('users.php');
-    }
-
-    $resellerId = $stmt->fields['admin_id'];
-    $allResellers = [];
-
-    while (!$stmt->EOF) {
-        if ((isset($_POST['uaction']) && $_POST['uaction'] == 'change_src') && (isset($_POST['src_reseller']) &&
-                $_POST['src_reseller'] == $stmt->fields['admin_id'])
-        ) {
-            $selected = ' selected';
-            $resellerId = $_POST['src_reseller'];
-        } elseif ((isset($_POST['uaction']) && $_POST['uaction'] == 'move_user') && (isset($_POST['dst_reseller']) &&
-                $_POST['dst_reseller'] == $stmt->fields['admin_id'])
-        ) {
-            $selected = ' selected';
-            $resellerId = $_POST['dst_reseller'];
-        } else {
-            $selected = '';
-        }
-
-        $allResellers[] = $stmt->fields['admin_id'];
-
-        $tpl->assign(
-            [
-                'SRC_RSL_OPTION'   => tohtml($stmt->fields['admin_name']),
-                'SRC_RSL_VALUE'    => $stmt->fields['admin_id'],
-                'SRC_RSL_SELECTED' => $selected]);
-
-        $tpl->parse('SRC_RESELLER_OPTION', '.src_reseller_option');
-
-        $tpl->assign(
-            [
-                'DST_RSL_OPTION'   => tohtml($stmt->fields['admin_name']),
-                'DST_RSL_VALUE'    => $stmt->fields['admin_id'],
-                'DST_RSL_SELECTED' => '']);
-
-        $tpl->parse('DST_RESELLER_OPTION', '.dst_reseller_option');
-        $stmt->moveNext();
-    }
-
-    if (isset($_POST['src_reseller']) && $_POST['src_reseller'] == 0) {
-        $selected = ' selected';
-        $resellerId = 0;
-    } else {
-        $selected = '';
-    }
-
-    $tpl->assign(
-        [
-            'SRC_RSL_OPTION'   => tr('N/A'),
-            'SRC_RSL_VALUE'    => 0,
-            'SRC_RSL_SELECTED' => $selected]);
-
-    $tpl->parse('SRC_RESELLER_OPTION', '.src_reseller_option');
-
-    // Must never occur in normal usage. Any user returned here are not assigned to a reseller
-    if ($resellerId == 0) {
-        $stmt = execute_query(
-            "
-                SELECT admin_id, admin_name
-                FROM admin
-                WHERE admin_type = 'user'
-                AND created_by NOT IN (' . implode(',', array_map('quoteValue', $allResellers)) . ')
-                ORDER BY admin_name
-            "
-        );
-    } else {
-        $stmt = exec_query(
-            "SELECT admin_id, admin_name FROM admin WHERE admin_type = 'user' AND created_by = ? ORDER BY admin_name",
-            $resellerId
-        );
-    }
-
-    if (!$stmt->rowCount()) {
-        if ($resellerId) {
-            set_page_message(tr('No users found for this reseller.'), 'static_info');
-        } else {
-            set_page_message(tr('No unassigned users were found in the database.'), 'static_info');
-        }
-
-        $tpl->assign('RESELLER_ITEM', '');
-    } else {
-        while (!$stmt->EOF) {
-            $adminId = $stmt->fields['admin_id'];
-            $adminIdVarname = 'admin_id_' . $adminId;
-            $humanAdminName = decode_idna($stmt->fields['admin_name']);
-            $tpl->assign([
-                'CUSTOMER_ID' => $stmt->fields['admin_id'],
-                'USER_NAME'   => tohtml($humanAdminName),
-                'CKB_NAME'    => $adminIdVarname
-            ]);
-
-            $tpl->parse('RESELLER_ITEM', '.reseller_item');
-            $stmt->moveNext();
-        }
-
-        $tpl->parse('RESELLER_LIST', 'reseller_list');
-    }
-}
-
-/**
- * Check input data.
- *
- * @return bool TRUE if data are valid and consistents, FALSE otherwise
- */
-function check_user_data()
-{
-    $stmt = execute_query("SELECT admin_id FROM admin WHERE admin_type = 'user' ORDER BY admin_name");
-    $selectedUsers = '';
-
-    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
-        $adminId = $row['admin_id'];
-        $adminIdVarname = 'admin_id_' . $adminId;
-
-        if (isset($_POST[$adminIdVarname]) && $_POST[$adminIdVarname] === 'on') {
-            $selectedUsers .= $adminId . ';';
-        }
-    }
-
-    if ($selectedUsers == '') {
-        set_page_message(tr('Please select at least one user.'), 'error');
-        return false;
-    }
-
-    if ($_POST['src_reseller'] == $_POST['dst_reseller']) {
-        set_page_message(tr('Both source and destination are identical.'), 'error');
-        return false;
-    }
-
-    $toReseller = intval($_POST['dst_reseller']);
-    $stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', $toReseller);
-    $errorsStack = '_off_';
-    $toResellerIpAddr = $stmt->fields['reseller_ips'];
-
-    check_ip_sets($toResellerIpAddr, $selectedUsers, $errorsStack);
-
-    if ($errorsStack == '_off_') {
-        admin_updateResellerLimits($_POST['dst_reseller'], $_POST['src_reseller'], $selectedUsers, $errorsStack);
-    }
-
-    if ($errorsStack != '_off_') {
-        set_page_message($errorsStack, 'error');
-        return false;
-    }
-
-    return true;
-}
-
-/**
- * Update resellers limit
- *
- * @param int $toReseller Reseller for which the givens customer are moved to
- * @param int $fromReseller Reseller for wich the givens customers are moved from
- * @param array $users List of user to move
- * @param array $errorsStack Error stack
- * @return bool
- * @throws iMSCP_Exception
- */
-function admin_updateResellerLimits($toReseller, $fromReseller, $users, &$errorsStack)
-{
-    $toResellerProperties = imscp_getResellerProperties($toReseller);
-    $fromResellerProperties = imscp_getResellerProperties($fromReseller, true);
-    $usersList = explode(';', $users);
-
-    for ($i = 0, $countUsersList = count($usersList) - 1; $i < $countUsersList; $i++) {
-        $stmt = exec_query('SELECT domain_name FROM domain WHERE domain_admin_id = ?', $usersList[$i]);
-
-        if ($stmt->rowCount()) {
-            $row = $stmt->fetchRow();
-            $domainName = $row['domain_name'];
-
-            list(
-                $subdomainsLimit, , $domainAliasesLimit, , $mailAccountsLimit, , $ftpAccountsLimit, , $sqlDatabasesLimit, ,
-                $sqlUsersLimit, , $trafficLimit, $diskspaceLimit
-                ) = shared_getCustomerProps($usersList[$i]);
-
-            calculate_reseller_dvals(
-                $toResellerProperties['current_dmn_cnt'], $toResellerProperties['max_dmn_cnt'], $src_dmn_current,
-                $fromResellerProperties['max_dmn_cnt'], 1, $errorsStack, 'Domain', $domainName
-            );
-
-            if ($errorsStack == '_off_') {
-                calculate_reseller_dvals(
-                    $toResellerProperties['current_sub_cnt'], $toResellerProperties['max_sub_cnt'],
-                    $fromResellerProperties['current_sub_cnt'], $fromResellerProperties['max_sub_cnt'],
-                    $subdomainsLimit, $errorsStack, 'Subdomain', $domainName
-                );
-
-                calculate_reseller_dvals(
-                    $toResellerProperties['current_als_cnt'], $toResellerProperties['max_als_cnt'],
-                    $fromResellerProperties['current_als_cnt'], $fromResellerProperties['max_als_cnt'],
-                    $domainAliasesLimit, $errorsStack, 'Alias', $domainName
-                );
-
-                calculate_reseller_dvals(
-                    $toResellerProperties['current_mail_cnt'], $toResellerProperties['max_mail_cnt'],
-                    $fromResellerProperties['current_mail_cnt'], $fromResellerProperties['max_mail_cnt'],
-                    $mailAccountsLimit, $errorsStack, 'Mail', $domainName
-                );
-
-                calculate_reseller_dvals(
-                    $toResellerProperties['current_ftp_cnt'], $toResellerProperties['max_ftp_cnt'],
-                    $fromResellerProperties['current_ftp_cnt'], $fromResellerProperties['max_ftp_cnt'],
-                    $ftpAccountsLimit, $errorsStack, 'FTP', $domainName
-                );
-
-                calculate_reseller_dvals(
-                    $toResellerProperties['current_sql_db_cnt'], $toResellerProperties['max_sql_db_cnt'],
-                    $fromResellerProperties['current_sql_db_cnt'], $fromResellerProperties['max_sql_db_cnt'],
-                    $sqlDatabasesLimit, $errorsStack, 'SQL Database', $domainName
-                );
-
-                calculate_reseller_dvals(
-                    $toResellerProperties['current_sql_user_cnt'], $toResellerProperties['max_sql_user_cnt'],
-                    $fromResellerProperties['current_sql_user_cnt'], $fromResellerProperties['max_sql_user_cnt'],
-                    $sqlUsersLimit, $errorsStack, 'SQL User', $domainName
-                );
-
-                calculate_reseller_dvals(
-                    $toResellerProperties['current_traff_amnt'], $toResellerProperties['max_traff_amnt'],
-                    $fromResellerProperties['current_traff_amnt'], $fromResellerProperties['max_traff_amnt'],
-                    $trafficLimit, $errorsStack, 'Traffic', $domainName
-                );
-
-                calculate_reseller_dvals(
-                    $toResellerProperties['current_disk_amnt'], $toResellerProperties['max_disk_amnt'],
-                    $fromResellerProperties['current_disk_amnt'], $fromResellerProperties['max_disk_amnt'],
-                    $diskspaceLimit, $errorsStack, 'Disk', $domainName
-                );
-            }
-
-            if ($errorsStack != '_off_') {
-                return false;
-            }
-        }
-    }
-
-    $db = iMSCP_Database::getInstance();
-
-    try {
-        $db->beginTransaction();
-
-        $newFromResellerProperties = "{$fromResellerProperties['current_dmn_cnt']};{$fromResellerProperties['max_dmn_cnt']};";
-        $newFromResellerProperties .= "{$fromResellerProperties['current_sub_cnt']};{$fromResellerProperties['max_sub_cnt']};";
-        $newFromResellerProperties .= "{$fromResellerProperties['current_als_cnt']};{$fromResellerProperties['max_als_cnt']};";
-        $newFromResellerProperties .= "{$fromResellerProperties['current_mail_cnt']};{$fromResellerProperties['max_mail_cnt']};";
-        $newFromResellerProperties .= "{$fromResellerProperties['current_ftp_cnt']};{$fromResellerProperties['max_ftp_cnt']};";
-        $newFromResellerProperties .= "{$fromResellerProperties['current_sql_db_cnt']};{$fromResellerProperties['max_sql_db_cnt']};";
-        $newFromResellerProperties .= "{$fromResellerProperties['current_sql_user_cnt']};{$fromResellerProperties['max_sql_user_cnt']};";
-        $newFromResellerProperties .= "{$fromResellerProperties['current_traff_amnt']};{$fromResellerProperties['max_traff_amnt']};";
-        $newFromResellerProperties .= "{$fromResellerProperties['current_disk_amnt']};{$fromResellerProperties['max_disk_amnt']};";
-
-        update_reseller_props($fromReseller, $newFromResellerProperties);
-
-        $newToResellerProperties = "{$toResellerProperties['current_dmn_cnt']};{$toResellerProperties['max_dmn_cnt']};";
-        $newToResellerProperties .= "{$toResellerProperties['current_sub_cnt']};{$toResellerProperties['max_sub_cnt']};";
-        $newToResellerProperties .= "{$toResellerProperties['current_als_cnt']};{$toResellerProperties['max_als_cnt']};";
-        $newToResellerProperties .= "{$toResellerProperties['current_mail_cnt']};{$toResellerProperties['max_mail_cnt']};";
-        $newToResellerProperties .= "{$toResellerProperties['current_ftp_cnt']};{$toResellerProperties['max_ftp_cnt']};";
-        $newToResellerProperties .= "{$toResellerProperties['current_sql_db_cnt']};{$toResellerProperties['max_sql_db_cnt']};";
-        $newToResellerProperties .= "{$toResellerProperties['current_sql_user_cnt']};{$toResellerProperties['max_sql_user_cnt']};";
-        $newToResellerProperties .= "{$toResellerProperties['current_traff_amnt']};{$toResellerProperties['max_traff_amnt']};";
-        $newToResellerProperties .= "{$toResellerProperties['current_disk_amnt']};{$toResellerProperties['max_disk_amnt']};";
-
-        update_reseller_props($toReseller, $newToResellerProperties);
-
-        for ($i = 0, $countUsersList = count($usersList) - 1; $i < $countUsersList; $i++) {
-            exec_query('UPDATE admin SET created_by = ? WHERE admin_id = ?', [$toReseller, $usersList[$i]]);
-        }
-
-        $db->commit();
-    } catch (iMSCP_Exception $e) {
-        $db->rollBack();
-        throw $e;
-    }
-
-    return true;
-}
-
-/**
- * @param $to
- * @param $toMax
- * @param $from
- * @param $fromMax
- * @param $uMax
- * @param $errorsStack
- * @param $obj
- * @param $uName
+ * @throws Exception
+ * @param int $customerId Customer unique identifier
+ * @param int $fromResellerId Reseller unique identifier
+ * @param int $toResellerId Reseller unique identifier
  * @return void
  */
-function calculate_reseller_dvals(&$to, $toMax, &$from, $fromMax, $uMax, &$errorsStack, $obj, $uName)
+function moveCustomer($customerId, $fromResellerId, $toResellerId)
 {
-    if ($toMax == 0 && $fromMax == 0 && $uMax == -1) {
-        return;
-    }
+    $db = Database::getInstance();
 
-    if ($toMax == 0 && $fromMax == 0 && $uMax == 0) {
-        return;
-    }
+    try {
+        $toRprops = imscp_getResellerProperties($fromResellerId);
+        $cToRLimits = [
+            'domain_subd_limit'    => ['current_sub_cnt', 'max_sub_cnt'],
+            'domain_alias_limit'   => ['current_als_cnt', 'max_als_cnt'],
+            'domain_mailacc_limit' => ['current_mail_cnt', 'max_mail_cnt'],
+            'domain_ftpacc_limit'  => ['current_ftp_cnt', 'max_ftp_cnt'],
+            'domain_sqld_limit'    => ['current_sql_db_cnt', 'max_sql_db_cnt'],
+            'domain_sqlu_limit'    => ['current_sql_user_cnt', 'max_sql_user_cnt'],
+            'domain_traffic_limit' => ['current_traff_amnt', 'max_traff_amnt'],
+            'domain_disk_limit'    => ['current_disk_amnt', 'max_disk_amnt']
+        ];
+        $cPermsToRPerms = [
+            'domain_software_allowed'       => 'software_allowed',
+            'phpini_perm_system'            => 'php_ini_system',
+            'phpini_perm_allow_url_fopen'   => 'php_ini_al_allow_url_fopen',
+            'phpini_perm_display_errors'    => 'php_ini_al_display_errors',
+            'phpini_perm_disable_functions' => 'php_ini_al_disable_functions',
+            'phpini_perm_mail_function'     => 'php_ini_al_mail_function'
+        ];
+        $stmt = exec_query(
+            '
+                SELECT domain_subd_limit, domain_alias_limit, domain_mailacc_limit, domain_ftpacc_limit,
+                    domain_sqld_limit, domain_sqlu_limit, domain_traffic_limit, domain_disk_limit, domain_ip_id,
+                    domain_software_allowed, phpini_perm_system, phpini_perm_allow_url_fopen, 
+                    phpini_perm_display_errors, phpini_perm_disable_functions, phpini_perm_mail_function
+                FROM domain
+                WHERE domain_admin_id = ?
+            ',
+            $customerId
+        );
 
-    if ($toMax == 0 && $fromMax == 0 && $uMax > 0) {
-        $from -= $uMax;
-        $to += $uMax;
-        return;
-    }
-
-    if ($toMax == 0 && $fromMax > 0 && $uMax == -1) {
-        return;
-    }
-
-    if ($toMax == 0 && $fromMax > 0 && $uMax == 0) {
-        // Impossible condition;
-        return;
-    }
-
-    if ($toMax == 0 && $fromMax > 0 && $uMax > 0) {
-        $from -= $uMax;
-        $to += $uMax;
-        return;
-    }
-
-    if ($toMax > 0 && $fromMax == 0 && $uMax == -1) {
-        return;
-    }
-
-    if ($toMax > 0 && $fromMax == 0 && $uMax == 0) {
-        if ($errorsStack == '_off_') {
-            $errorsStack = '';
+        if (!$stmt->rowCount()) {
+            throw new Exception(tr("Couldn't find domain properties for customer with ID %d.", $customerId));
         }
 
-        $errorsStack .= tr('<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>', $uName, $obj);
-        $errorsStack .= tr('You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service.', $uName, $obj);
-        return;
-    }
+        $cProps = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $db->beginTransaction();
 
-    if ($toMax > 0 && $fromMax == 0 && $uMax > 0) {
-        if ($to + $uMax > $toMax) {
-            if ($errorsStack == '_off_') {
-                $errorsStack = '';
-            }
-            $errorsStack .= tr('<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller.<br>', $uName, $obj);
-
-            $errorsStack .= tr('Moving aborted.');
-        } else {
-            $from -= $uMax;
-
-            $to += $uMax;
-        }
-
-        return;
-    }
-
-    if ($toMax > 0 && $fromMax > 0 && $uMax == -1) {
-        return;
-    }
-
-    if ($toMax > 0 && $fromMax > 0 && $uMax == 0) {
-        // Impossible condition;
-        return;
-    }
-
-    if ($toMax > 0 && $fromMax > 0 && $uMax > 0) {
-        if ($to + $uMax > $toMax) {
-            if ($errorsStack == '_off_') {
-                $errorsStack = '';
+        // For each item (sub, mail, ftp....), adjust (TO) reseller limits
+        // according customer limits
+        foreach ($cToRLimits as $cLimit => $rLimit) {
+            if ($toRprops[$rLimit[1]] == 0 || $cProps[$cLimit] == -1) {
+                // Reseller is not limited for the item, or the customer has no
+                // rights for the item. There is no need to go further
+                continue;
             }
 
-            $errorsStack .= tr('<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller.<br>', $uName, $obj);
-            $errorsStack .= tr('Moving aborted.');
-        } else {
-            $from -= $uMax;
-            $to += $uMax;
+            if ($cProps[$cLimit] == 0) {
+                // Customer is not limited for the item. Reseller must not be
+                // limited.
+                // Fixme: It would be better to update reseller limit based on
+                // count of consumed item by customer and to limit the customer
+                // as well.
+                $toRprops[$rLimit[1]] = 0;
+                continue;
+            }
+
+            if ($toRprops[$rLimit[1]] == -1) {
+                // Reseller has no rights for the item but customer.
+                // Reseller limit must be at least equal to customer limit.
+                $toRprops[$rLimit[1]] = $cProps[$cLimit];
+                continue;
+            }
+
+            if (($toRprops[$rLimit[1]] - $toRprops[$rLimit[0]]) < $cProps[$cLimit]) {
+                // Reseller limit after soustracting total consumed items,
+                // taking into account customer limit would be negative.
+                // Reseller limit must be increased up to customer limit.
+                $toRprops[$rLimit[1]] += $cProps[$cLimit] - ($toRprops[$rLimit[1]] - $toRprops[$rLimit[0]]);
+            }
         }
+
+        // Adjust (TO) reseller permissions according customer permmissions when necessary
+        foreach ($cPermsToRPerms as $cPerm => $rPerm) {
+            if ($toRprops[$rPerm] == 'no' && $cProps[$cPerm] == 'yes') {
+                $toRprops[$rPerm] = 'yes';
+            }
+        }
+
+        // Adjust customer PHP permissions
+        iMSCP_PHPini::getInstance()->syncClientPermissionsWithResellerPermissions($toResellerId, $customerId);
+
+        // Customer IP must be in reseller IP addresses list
+        $toRprops['reseller_ips'] = implode(
+            ';', array_unique(explode(';', $toRprops['reseller_ips'] . $cProps['domain_ip_id'] . ';'))
+        );
+
+        // Move customer to (TO) reseller
+        exec_query('UPDATE admin SET created_by = ? WHERE admin_id = ?', [$toResellerId, $customerId]);
+
+        // Update (TO) reseller limits and permissions and IP addresses list 
+        exec_query(
+            '
+                UPDATE reseller_props 
+                SET
+                    max_sub_cnt = ?, max_als_cnt = ?, max_mail_cnt = ?, max_ftp_cnt = ?, max_sql_db_cnt = ?,
+                    max_sql_user_cnt = ?, max_traff_amnt = ?, max_disk_amnt = ?, reseller_ips = ?, software_allowed = ?,
+                    php_ini_system = ?, php_ini_al_allow_url_fopen= ?, php_ini_al_display_errors= ?,
+                    php_ini_al_disable_functions= ?, php_ini_al_mail_function = ?
+                WHERE reseller_id = ?
+            ',
+            [
+                $toRprops['max_sub_cnt'], $toRprops['max_als_cnt'], $toRprops['max_mail_cnt'], $toRprops['max_ftp_cnt'],
+                $toRprops['max_sql_db_cnt'], $toRprops['max_sql_user_cnt'], $toRprops['max_traff_amnt'],
+                $toRprops['max_disk_amnt'], $toRprops['reseller_ips'], $toRprops['software_allowed'],
+                $toRprops['php_ini_system'], $toRprops['php_ini_al_allow_url_fopen'],
+                $toRprops['php_ini_al_display_errors'], $toRprops['php_ini_al_disable_functions'],
+                $toRprops['php_ini_al_mail_function'], $toResellerId
+            ]
+        );
+
+        // Recalculate count of assigned items for (TO/FROM) resellers
+        update_reseller_c_props($toResellerId);
+        update_reseller_c_props($fromResellerId);
+
+        EventsManager::getInstance()->dispatch(Events::onMoveCustomer, [
+            'customerId'     => $customerId,
+            'fromResellerId' => $fromResellerId,
+            'toResellerId'   => $toResellerId
+        ]);
+
+        $db->commit();
+    } catch (Exception $e) {
+        $db->rollBack();
+        write_log(sprintf("Couldn't move customer with ID %d: %s", $customerId, $e->getMessage()));
+        throw new Exception(
+            tr(
+                "Couldn't move customer with ID %d: %s",
+                $customerId, $e->getMessage() . (($e instanceof iMSCP_Exception_Database) ? ' ' . $e->getQuery() : '')
+            ),
+            $e->getCode(), $e
+        );
     }
 }
 
 /**
- * @param $to
- * @param $customersList
- * @param $errorsStack
- * @return bool
+ * Move selected customers
+ *
+ * @return bool TRUE on success, other on failure
  */
-function check_ip_sets($to, $customersList, &$errorsStack)
+function moveCustomers()
 {
-    $customersList = explode(';', $customersList);
+    if (!isset($_POST['from_reseller'])
+        || !isset($_POST['to_reseller'])
+        || !isset($_POST['reseller_customers'])
+        || !is_array($_POST['reseller_customers'])
+    ) {
+        showBadRequestErrorPage();
+    }
 
-    for ($i = 0, $countCustomersList = count($customersList); $i < $countCustomersList; $i++) {
-        $query = 'SELECT domain_name, domain_ip_id FROM domain WHERE domain_admin_id = ?';
-        $stmt = exec_query($query, $customersList[$i]);
+    set_time_limit(0);
+    ignore_user_abort(true);
 
-        $domainIpAddrId = $stmt->fields['domain_ip_id'];
-        $domainName = $stmt->fields['domain_name'];
+    try {
+        $fromResellerId = intval($_POST['from_reseller']);
+        $toResellerId = intval($_POST['to_reseller']);
 
-        if (!preg_match("/$domainIpAddrId;/", $to)) {
-            if ($errorsStack == '_off_') {
-                $errorsStack = '';
-            }
-
-            $errorsStack .= tr('<b>%s</b> has IP address that cannot be managed from the destination reseller!<br>This user cannot be moved!', $domainName);
-            return false;
+        if ($fromResellerId == $toResellerId) {
+            showBadRequestErrorPage();
         }
+
+        foreach ($_POST['reseller_customers'] as $customerId) {
+            moveCustomer(intval($customerId), $fromResellerId, $toResellerId);
+        }
+    } catch (Exception $e) {
+        set_page_message(tohtml($e->getMessage()), 'error');
+        return false;
     }
 
     return true;
+}
+
+/**
+ * Generate page
+ *
+ * @param TemplateEngine $tpl
+ * @return void
+ */
+function generatePage(TemplateEngine $tpl)
+{
+    $resellers = $stmt = execute_query(
+        "SELECT admin_id, admin_name FROM admin  WHERE admin_type = 'reseller'"
+    )->fetchAll(PDO::FETCH_ASSOC);
+
+    $fromResellerId = isset($_POST['from_reseller']) ? intval($_POST['from_reseller']) : $resellers[0]['admin_id'];
+    $toResellerId = isset($_POST['to_reseller']) ? intval($_POST['to_reseller']) : $resellers[1]['admin_id'];
+
+    // Generate From/To reseller lists
+    foreach ($resellers as $reseller) {
+        $tpl->assign([
+            'FROM_RESELLER_ID'       => tohtml($reseller['admin_id'], 'htmlAttr'),
+            'FROM_RESELLER_NAME'     => tohtml($reseller['admin_name']),
+            'FROM_RESELLER_SELECTED' => ($fromResellerId == $reseller['admin_id']) ? ' selected' : ''
+        ]);
+        $tpl->parse('FROM_RESELLER_ITEM', '.from_reseller_item');
+        $tpl->assign([
+            'TO_RESELLER_ID'       => tohtml($reseller['admin_id'], 'htmlAttr'),
+            'TO_RESELLER_NAME'     => tohtml($reseller['admin_name']),
+            'TO_RESELLER_SELECTED' => ($toResellerId == $reseller['admin_id']) ? ' selected' : ''
+        ]);
+        $tpl->parse('TO_RESELLER_ITEM', '.to_reseller_item');
+    }
+
+    // Generate customers list for the selected (FROM) reseller
+    $customers = exec_query(
+        "
+            SELECT admin_id, admin_name
+            FROM admin WHERE created_by = ?
+            AND admin_type = 'user'
+            AND admin_status <> 'todelete'
+        ",
+        $fromResellerId
+    )->fetchAll(PDO::FETCH_ASSOC);
+
+    if (empty($customers)) {
+        $tpl->assign('FROM_RESELLER_CUSTOMERS_LIST', '');
+        return;
+    }
+
+    $selectedCustomers = isset($_POST['reseller_customers']) ? $_POST['reseller_customers'] : [];
+    foreach ($customers as $customer) {
+        $tpl->assign([
+            'CUSTOMER_ID'               => tohtml($customer['admin_id'], 'htmlAttr'),
+            'CUSTOMER_NAME'             => tohtml(decode_idna($customer['admin_name'])),
+            'RESELLER_CUSTOMER_CHECKED' => in_array($customer['admin_id'], $selectedCustomers) ? ' checked' : ''
+        ]);
+        $tpl->parse('FROM_RESELLER_CUSTOMER_ID', '.from_reseller_customer_item');
+    }
 }
 
 /***********************************************************************************************************************
@@ -452,56 +276,42 @@ function check_ip_sets($to, $customersList, &$errorsStack)
  *
  */
 
-// Include core library
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
+systemHasResellers(2) or showBadRequestErrorPage();
 
-if (!systemHasResellers(2)) {
-    showBadRequestErrorPage();
-}
-
-if (isset($_POST['uaction']) && $_POST['uaction'] == 'move_user' && check_user_data()) {
+if (isset($_POST['uaction'])
+    && $_POST['uaction'] == 'move_customers'
+    && moveCustomers()
+) {
     set_page_message(tr('Customer(s) successfully moved.'), 'success');
     redirectTo('users.php');
 }
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout'              => 'shared/layouts/ui.tpl',
-    'page'                => 'admin/manage_reseller_users.tpl',
-    'page_message'        => 'layout',
-    'reseller_list'       => 'page',
-    'reseller_item'       => 'page',
-    'src_reseller'        => 'page',
-    'src_reseller_option' => 'src_reseller',
-    'dst_reseller'        => 'page',
-    'dst_reseller_option' => 'dst_reseller'
+    'layout'                       => 'shared/layouts/ui.tpl',
+    'page'                         => 'admin/manage_reseller_users.phtml',
+    'page_message'                 => 'layout',
+    'from_reseller_item'           => 'page',
+    'from_reseller_customers_list' => 'reseller_customer_item',
+    'to_reseller_item'             => 'page'
 ]);
-$tpl->assign([
-    'TR_PAGE_TITLE'      => tr('Admin / Users / Customers Assignment'),
-    'TR_USER_ASSIGNMENT' => tr('User assignment'),
-    'TR_RESELLER_USERS'  => tr('Users'),
-    'TR_CUSTOMER_ID'     => tr('Customer ID'),
-    'TR_MARK'            => tr('Mark'),
-    'TR_USER_NAME'       => tr('Username'),
-    'TR_FROM_RESELLER'   => tr('From reseller'),
-    'TR_TO_RESELLER'     => tr('To reseller'),
-    'TR_MOVE'            => tr('Move')
-]);
+$tpl->assign('TR_PAGE_TITLE', tohtml(tr('Admin / Users / Customer assignments')));
 
-iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
     /** @var $e \iMSCP_Events_Event */
     $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
 });
 
 generateNavigation($tpl);
-admin_generateCustomersTable($tpl);
+generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

@@ -213,7 +213,7 @@ class iMSCP_Events
     const  onAfterSetIdentity = 'onAfterSetIdentity';
 
     /**
-     * Event triggered before an user identity is unset.
+     * Event triggered before an user identity is unset
      *
      * iMSCP_Events_Event object parameter:
      *  - context : iMSCP_Authentication instance
@@ -310,6 +310,19 @@ class iMSCP_Events
      * @const string
      */
     const onAfterDeleteUser = 'onAfterDeleteUser';
+
+    /**
+     * Event triggered when a customer account is moved from one reseller to
+     * another reseller
+     *
+     * iMSCP_Events_Event object parameter:
+     *  - customerId : Customer unique identifier
+     *  - fromResellerId: Reseller unique identifier
+     *  - toResellerId: Reseller unique identifier
+     *
+     * @const string
+     */
+    const onMoveCustomer = 'onMoveCustomer';
 
     /**
      * Event triggered before customer account deletion
