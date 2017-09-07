@@ -228,7 +228,14 @@ sub trigger
         last if $rs;
     }
 
-    delete $self->{'events'}->{$eventName} if $self->{'events'}->{$eventName}->isEmpty();
+    # We must test $self->{'events'}->{$eventName} here too because a listener
+    # can self-unregister
+    if ( $self->{'events'}->{$eventName}
+        && $self->{'events'}->{$eventName}->isEmpty()
+    ) {
+        delete $self->{'events'}->{$eventName}
+    }
+
     delete $self->{'nonces'}->{$eventName} if $self->{'nonces'}->{$eventName} && !%{$self->{'nonces'}->{$eventName}};
     $rs;
 }

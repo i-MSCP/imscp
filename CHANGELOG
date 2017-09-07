@@ -4,6 +4,9 @@
 Git 1.5.x
 ------------------------------------------------------------------------------------------------------------------------
 
+Bakend
+    Fixed: Can't call method "isEmpty" on an undefined value when a listener self un-register (iMSCP::EventManager)
+
 FRONTEND
     Added: `onMoveCustomer' event -- Event triggered when a customer is moved to another reseller
     Enhancement: Adjust target reseller limits/permissions instead of throwing error (Customer assignments feature)
