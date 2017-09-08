@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-05 00:52+0000\n"
+"POT-Creation-Date: 2017-09-08 08:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Dániel Bozsóki <bozsokidaniel5@gmail.com>, 2017\n"
 "Language-Team: Hungarian (Hungary) (https://www.transifex.com/i-mscp/teams/576/hu_HU/)\n"
@@ -75,14 +75,6 @@ msgid "%d strings translated"
 msgstr "%d karaktersorozat lefordítva"
 
 #, php-format
-msgid "%s / %s"
-msgstr "%s / %s"
-
-#, php-format
-msgid "%s / ∞"
-msgstr "%s / ∞"
-
-#, php-format
 msgid "%s account successfully deleted."
 msgstr "%s azonosító sikeresen törölve"
 
@@ -113,14 +105,6 @@ msgstr "%s rekord"
 #, php-format
 msgid "%s webmail"
 msgstr "%s webmail"
-
-#, php-format
-msgid "%s%% [%s / %s]"
-msgstr "%s%% [%s / %s]"
-
-#, php-format
-msgid "%s%% [%s / ∞]"
-msgstr "%s%% [%s / ∞]"
 
 #, php-format
 msgid ""
@@ -171,28 +155,6 @@ msgstr "(leszűrve a %s összes rekordból)"
 
 msgid "(usually named"
 msgstr "(általában a mentés neve: "
-
-#, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
-msgstr ""
-"<b>%1$s</b> korlátlan jogokkal rendelkezik a(z) <b>%2$s</b> "
-"szolgáltatáshoz.<br>"
-
-#, php-format
-msgid ""
-"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
-"reseller.<br>"
-msgstr ""
-"<b>%1$s</b> korlátja meghaladja a cél viszonteladó <b>%2$s</b><br> "
-"szolgáltatásra vonatkozó korlátját.<br>"
-
-#, php-format
-msgid ""
-"<b>%s</b> has IP address that cannot be managed from the destination "
-"reseller!<br>This user cannot be moved!"
-msgstr ""
-"<strong>%s</strong> olyan IP-címmel rendelkezik, amit a cél viszonteladó nem"
-" kezelhet!<br>Ez a felhasználó nem mozgatható át!"
 
 msgid "A PHP extension stopped the file upload."
 msgstr "PHP kiterjesztés megállította a fájlfeltöltést"
@@ -467,8 +429,8 @@ msgstr "Adminisztrátor / Felhasználók / Viszonteladó hozzáadása"
 msgid "Admin / Users / Circular"
 msgstr "Adminisztrátor / Felhasználók / Körlevél"
 
-msgid "Admin / Users / Customers Assignment"
-msgstr "Adminisztrátor / Felhasználók / Ügyfelek átadása"
+msgid "Admin / Users / Customer Assignments"
+msgstr ""
 
 msgid "Admin / Users / Edit Reseller"
 msgstr "Adminisztrátor / Felhasználók / Viszonteladó módosítása"
@@ -486,8 +448,8 @@ msgstr ""
 msgid "Admin / Users / Overview / Edit Customer"
 msgstr "Adminisztrátor / Felhasználó / Áttekintés / Ügyfél módosítása"
 
-msgid "Admin / Users / Resellers Assignment"
-msgstr "Adminisztrátor / Felhasználók / Viszonteladó átadása"
+msgid "Admin / Users / Reseller Assignments"
+msgstr ""
 
 msgid "Admin / Users / Sessions"
 msgstr "Adminisztrátor / Felhasználók / Munkafolyamatok"
@@ -745,6 +707,12 @@ msgid ""
 msgstr ""
 "Biztosan be akarja szerezni ezt a programcsomagot a webes szoftverraktárból?"
 
+msgid "Are you sure you want to move the selected customers?"
+msgstr ""
+
+msgid "Are you sure you want to move the selected resellers?"
+msgstr ""
+
 msgid "Are you sure you want to restore the backup?"
 msgstr "Biztosan vissza szeretné állítani a mentést?"
 
@@ -845,6 +813,16 @@ msgid "Behind"
 msgstr "Mögötte"
 
 msgid ""
+"Below you can move customers from a reseller to another reseller by "
+"selecting them and clicking the submit button."
+msgstr ""
+
+msgid ""
+"Below you can move resellers from an administrator to another administrator "
+"by selecting them and clicking the submit button."
+msgstr ""
+
+msgid ""
 "Below, you can activate the external mail feature for one or many of your "
 "domains. Note that activating the external mail feature configures our "
 "server to relay your mail through your own mail server, but that no DNS "
@@ -872,9 +850,6 @@ msgstr "Törzs hiányzik."
 
 msgid "Bogomips"
 msgstr "BogoMips:"
-
-msgid "Both source and destination are identical."
-msgstr "Megegyezik a forrás és a cél"
 
 msgid "Bruteforce detection"
 msgstr "Bruteforce támadás észlelése"
@@ -1320,6 +1295,18 @@ msgid "Couldn't delete subdomain. An unexpected error occurred."
 msgstr "Al-domain nem törölhető. Váratlan hiba történt."
 
 #, php-format
+msgid "Couldn't find domain properties for customer with ID %d."
+msgstr ""
+
+#, php-format
+msgid "Couldn't move customer with ID %d: %s"
+msgstr ""
+
+#, php-format
+msgid "Couldn't move reseller with ID %d: %s"
+msgstr ""
+
+#, php-format
 msgid "Couldn't validate DNS resource record: %s"
 msgstr ""
 
@@ -1380,9 +1367,6 @@ msgstr "Saját menük"
 msgid "Customer"
 msgstr "Ügyfél"
 
-msgid "Customer ID"
-msgstr "Ügyfélazonosító"
-
 msgid "Customer account"
 msgstr "Ügyfélfiók"
 
@@ -1409,6 +1393,9 @@ msgstr "Ügyfél felhasználás"
 
 msgid "Customer level"
 msgstr "Ügyfél szint"
+
+msgid "Customer name"
+msgstr ""
 
 msgid "Customer successfully scheduled for addition."
 msgstr "Ügyfél hozzáadása beütemezve."
@@ -2380,6 +2367,9 @@ msgstr "Szabad"
 msgid "From"
 msgstr "Feladó"
 
+msgid "From administrator"
+msgstr ""
+
 msgid "From reseller"
 msgstr "Kiválasztott viszonteladó:"
 
@@ -3052,9 +3042,6 @@ msgstr "Kézi"
 msgid "Manual catch-all addresses"
 msgstr ""
 
-msgid "Mark"
-msgstr "Kijelölés"
-
 msgid "Max number of login attempts"
 msgstr "Belépési kísérletek száma"
 
@@ -3156,11 +3143,11 @@ msgstr "Eszköz"
 msgid "Mount point"
 msgstr "Csatolási pont"
 
-msgid "Move"
-msgstr "Átadás"
+msgid "Move selected customers"
+msgstr ""
 
-msgid "Moving aborted."
-msgstr "Átadás megszakítva"
+msgid "Move selected resellers"
+msgstr ""
 
 msgid "N/A"
 msgstr "N/A"
@@ -3217,6 +3204,9 @@ msgstr "Nem elérhető"
 msgid "No custom menu found."
 msgstr "Nem található egyéni menü"
 
+msgid "No customer found for the selected reseller."
+msgstr ""
+
 msgid "No domain available for new software instance."
 msgstr "Nincs elérhető domain az új szoftver kérelemhez."
 
@@ -3237,6 +3227,9 @@ msgstr ""
 
 msgid "No reseller available to add the permissions."
 msgstr "Nincs elérhető viszonteladó a jogosultságok hozzáadásához."
+
+msgid "No reseller found for the selected administrator."
+msgstr ""
 
 msgid "No reseller with activated software installer found!"
 msgstr "Nincs viszonteladók által aktivált program"
@@ -3262,9 +3255,6 @@ msgstr "Nincs aktiválásra váró program"
 msgid "No statistics found for the given period. Try another period."
 msgstr "Nincs statisztika a megadott időszakban. Adjon meg egy másikat"
 
-msgid "No unassigned users were found in the database."
-msgstr "Nem azonosított felhasználók nem találhatók az adatbázisban."
-
 msgid "No update available"
 msgstr "Nincs elérhető frissítés"
 
@@ -3273,12 +3263,6 @@ msgstr "Nem használható még"
 
 msgid "No user found."
 msgstr "Nem található felhasználó"
-
-msgid "No users found for this reseller."
-msgstr "Nincs felhasználója ennek a viszonteladónak"
-
-msgid "No."
-msgstr "Sorszám"
 
 msgid "Normal"
 msgstr "Normál"
@@ -3383,9 +3367,6 @@ msgstr "További beállítások"
 
 msgid "Overview"
 msgstr "Áttekintés"
-
-msgid "Owner"
-msgstr "Tulajdonos"
 
 msgid "PB"
 msgstr "PB"
@@ -3595,9 +3576,6 @@ msgstr ""
 msgid "Please select another directory. %s (%s) is installed there."
 msgstr ""
 "Másik célkönyvtárat kell választani, mert a(z) %s (%s) már ide van telepítve"
-
-msgid "Please select at least one user."
-msgstr "Legalább egy felhasználót válassz ki!"
 
 msgid "Please specify a message content."
 msgstr "Adja meg az üzenet szövegét"
@@ -4105,9 +4083,6 @@ msgstr "Viszonteladó és ügyfél"
 msgid "Reseller and customer levels"
 msgstr "Viszonteladói és ügyfél szint"
 
-msgid "Reseller assignment"
-msgstr "Viszonteladó átadása"
-
 msgid "Reseller assignments"
 msgstr "Viszonteladó átadások"
 
@@ -4122,9 +4097,6 @@ msgstr "Viszonteladói szint"
 
 msgid "Reseller list"
 msgstr "Viszonteladói lista"
-
-msgid "Reseller list is empty."
-msgstr "Viszonteladói lista üres"
 
 msgid "Reseller name"
 msgstr "Viszonteladó neve"
@@ -4149,6 +4121,9 @@ msgstr "Viszonteladó ezzel a jogosultsággal összesen"
 
 msgid "Reseller's layout color successfully updated."
 msgstr "Viszonteladó kinézetének színe sikeresen frissítve"
+
+msgid "Reseller(s) successfully moved."
+msgstr ""
 
 msgid "Reseller/IP usage statistics"
 msgstr "Viszonteladó / IP használati statisztika"
@@ -4968,12 +4943,6 @@ msgstr "Hibajegy sikeresen újra megynyitva"
 msgid "Ticket with Id '%d' was not found."
 msgstr "„%d” azonosítójú hibajegy nem található."
 
-msgid "To Admin"
-msgstr "Új tulajdonos (adminisztrátor):"
-
-msgid "To reseller"
-msgstr "Új tulajdonos (viszonteladó):"
-
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr "%s fájlt kell szerkesztened a védelem kikapcsolásához"
@@ -5246,9 +5215,6 @@ msgstr "Felhasználó"
 msgid "User (first and last) name"
 msgstr "Felhasználó neve (vezeték és keresztnév)"
 
-msgid "User assignment"
-msgstr "Felhasználó átadása"
-
 msgid "User data were not updated."
 msgstr "Felhasználói adatok nem változtak"
 
@@ -5400,6 +5366,12 @@ msgstr "Ha 'Auto'-ra van állítva, az IP cím automatikusan be lesz állítva."
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr "Ha 'Kézi'-re állítod, a beállítás az adminisztrátorra marad."
 
+msgid ""
+"When you move a customer to another reseller, limits and permissions of that"
+" reseller are automatically extended when necessary, according the customer "
+"own limits and permissions."
+msgstr ""
+
 msgid "Wrong or unallowed IP address."
 msgstr "Hibás vagy tiltott IP cím."
 
@@ -5522,14 +5494,6 @@ msgid ""
 "account, you must first lower the quota assigned to one of your other mail "
 "account."
 msgstr ""
-
-#, php-format
-msgid ""
-"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
-"for the <b>%2$s</b> service."
-msgstr ""
-"Nem lehet átadni a(z) <b>%1$s</b> felhasználót a cél "
-"viszonteladónak,<br>mert számára korlátozott a <b>%2$s</b> szolgáltatás!"
 
 msgid "You cannot remove an IP that is assigned to a reseller."
 msgstr ""
@@ -5702,11 +5666,17 @@ msgstr "Meg kell adni a feltöltendő/letöltendő fájlt"
 msgid "You must select at least one catch-all address."
 msgstr ""
 
+msgid "You must select at least one customer."
+msgstr ""
+
 msgid "You must select at least one mail account to delete."
 msgstr ""
 
 msgid "You must select at least one plugin."
 msgstr "Legalább egy bővítményt ki kell választanod!"
+
+msgid "You must select at least one reseller."
+msgstr ""
 
 msgid "You must specify a message."
 msgstr "Adja meg az üzenet szövegét"
@@ -6016,6 +5986,12 @@ msgid "suspended"
 msgstr "felfüggesztett"
 
 msgid "that match with"
+msgstr ""
+
+msgid "to administrator"
+msgstr ""
+
+msgid "to reseller"
 msgstr ""
 
 msgid "traffic"

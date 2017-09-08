@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-05 00:52+0000\n"
+"POT-Creation-Date: 2017-09-08 08:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/i-mscp/teams/576/zh_TW/)\n"
@@ -70,14 +70,6 @@ msgid "%d strings translated"
 msgstr "%d 條字串已經翻譯"
 
 #, php-format
-msgid "%s / %s"
-msgstr "%s / %s"
-
-#, php-format
-msgid "%s / ∞"
-msgstr "%s / ∞"
-
-#, php-format
 msgid "%s account successfully deleted."
 msgstr "%s 帳號已經成功地刪除"
 
@@ -108,14 +100,6 @@ msgstr "%s 筆記錄"
 #, php-format
 msgid "%s webmail"
 msgstr "%s webmail"
-
-#, php-format
-msgid "%s%% [%s / %s]"
-msgstr "%s%% [%s / %s]"
-
-#, php-format
-msgid "%s%% [%s / ∞]"
-msgstr "%s%% [%s / ∞]"
 
 #, php-format
 msgid ""
@@ -157,22 +141,6 @@ msgstr "(從 %s 過濾出全部紀錄)"
 
 msgid "(usually named"
 msgstr "（通常名稱"
-
-#, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
-msgstr "<b>%1$s</b> 已有無限制的權限給 <b>%2$s</b> 這個服務。<br>"
-
-#, php-format
-msgid ""
-"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
-"reseller.<br>"
-msgstr "<b>%1$s</b> 已超過經銷商 <b>%2$s</b><br>所限制的服務。<br>"
-
-#, php-format
-msgid ""
-"<b>%s</b> has IP address that cannot be managed from the destination "
-"reseller!<br>This user cannot be moved!"
-msgstr "<b>%s</b> 此 IP 位址不能讓經銷商管理!<br>這個使用者不可以移動!"
 
 msgid "A PHP extension stopped the file upload."
 msgstr "PHP extension 停用了檔案上傳。"
@@ -442,8 +410,8 @@ msgstr "管理 / 使用者 / 新增經銷商"
 msgid "Admin / Users / Circular"
 msgstr "管理 / 使用者 / 通知"
 
-msgid "Admin / Users / Customers Assignment"
-msgstr "管理 / 使用者 / 客戶分配"
+msgid "Admin / Users / Customer Assignments"
+msgstr ""
 
 msgid "Admin / Users / Edit Reseller"
 msgstr "管理 / 使用者 / 編輯經銷商"
@@ -460,8 +428,8 @@ msgstr "管理 / 使用者 / 概要 / 編輯管理者"
 msgid "Admin / Users / Overview / Edit Customer"
 msgstr "管理 / 使用者 / 概要 / 編輯客戶"
 
-msgid "Admin / Users / Resellers Assignment"
-msgstr "管理 / 使用者 / 經銷商分配"
+msgid "Admin / Users / Reseller Assignments"
+msgstr ""
 
 msgid "Admin / Users / Sessions"
 msgstr "管理 / 使用者 / 連線數"
@@ -711,6 +679,12 @@ msgid ""
 "repository?"
 msgstr "您確定要安裝這個套件到網站軟體庫?"
 
+msgid "Are you sure you want to move the selected customers?"
+msgstr ""
+
+msgid "Are you sure you want to move the selected resellers?"
+msgstr ""
+
 msgid "Are you sure you want to restore the backup?"
 msgstr "你確定想還原備份？"
 
@@ -811,6 +785,16 @@ msgid "Behind"
 msgstr "背景"
 
 msgid ""
+"Below you can move customers from a reseller to another reseller by "
+"selecting them and clicking the submit button."
+msgstr ""
+
+msgid ""
+"Below you can move resellers from an administrator to another administrator "
+"by selecting them and clicking the submit button."
+msgstr ""
+
+msgid ""
 "Below, you can activate the external mail feature for one or many of your "
 "domains. Note that activating the external mail feature configures our "
 "server to relay your mail through your own mail server, but that no DNS "
@@ -836,9 +820,6 @@ msgstr "內文遺失"
 
 msgid "Bogomips"
 msgstr "Bogomips"
-
-msgid "Both source and destination are identical."
-msgstr "來源跟目的是相同的。"
 
 msgid "Bruteforce detection"
 msgstr "設定監聽"
@@ -1257,6 +1238,18 @@ msgid "Couldn't delete subdomain. An unexpected error occurred."
 msgstr "無法刪除子網域。已產生無法預期的錯誤。"
 
 #, php-format
+msgid "Couldn't find domain properties for customer with ID %d."
+msgstr ""
+
+#, php-format
+msgid "Couldn't move customer with ID %d: %s"
+msgstr ""
+
+#, php-format
+msgid "Couldn't move reseller with ID %d: %s"
+msgstr ""
+
+#, php-format
 msgid "Couldn't validate DNS resource record: %s"
 msgstr "可能無法驗證 DNS 紀錄: %s"
 
@@ -1317,9 +1310,6 @@ msgstr "自訂選單"
 msgid "Customer"
 msgstr "客戶"
 
-msgid "Customer ID"
-msgstr "客戶 ID"
-
 msgid "Customer account"
 msgstr "客戶帳號"
 
@@ -1346,6 +1336,9 @@ msgstr "客戶購買"
 
 msgid "Customer level"
 msgstr "客戶級別"
+
+msgid "Customer name"
+msgstr ""
 
 msgid "Customer successfully scheduled for addition."
 msgstr "新增客戶的排程已成功"
@@ -2315,6 +2308,9 @@ msgstr "空閒"
 msgid "From"
 msgstr "從"
 
+msgid "From administrator"
+msgstr ""
+
 msgid "From reseller"
 msgstr "來自經銷商"
 
@@ -2973,9 +2969,6 @@ msgstr "手動"
 msgid "Manual catch-all addresses"
 msgstr "手動外部抓取位址"
 
-msgid "Mark"
-msgstr "標記"
-
 msgid "Max number of login attempts"
 msgstr "最多嘗試登入次數"
 
@@ -3073,11 +3066,11 @@ msgstr "掛載"
 msgid "Mount point"
 msgstr "掛載點"
 
-msgid "Move"
-msgstr "移動"
+msgid "Move selected customers"
+msgstr ""
 
-msgid "Moving aborted."
-msgstr "放棄移動。"
+msgid "Move selected resellers"
+msgstr ""
 
 msgid "N/A"
 msgstr "空"
@@ -3134,6 +3127,9 @@ msgstr "無法使用"
 msgid "No custom menu found."
 msgstr "目前沒有自訂功能選單"
 
+msgid "No customer found for the selected reseller."
+msgstr ""
+
 msgid "No domain available for new software instance."
 msgstr "沒有網域可用於新的軟體實例。"
 
@@ -3154,6 +3150,9 @@ msgstr "沒有刪除郵件帳號。"
 
 msgid "No reseller available to add the permissions."
 msgstr "沒有經銷商可以新增權限。"
+
+msgid "No reseller found for the selected administrator."
+msgstr ""
 
 msgid "No reseller with activated software installer found!"
 msgstr "沒有經銷商能找到已啟用的軟體安裝器!"
@@ -3179,9 +3178,6 @@ msgstr "沒有軟體正等待啟用"
 msgid "No statistics found for the given period. Try another period."
 msgstr "特定期間中沒有找到狀態。試其他的期間。"
 
-msgid "No unassigned users were found in the database."
-msgstr "資料庫中沒找到未分配的使用者。"
-
 msgid "No update available"
 msgstr "沒有可用的更新"
 
@@ -3190,12 +3186,6 @@ msgstr "未使用"
 
 msgid "No user found."
 msgstr "沒找到使用者"
-
-msgid "No users found for this reseller."
-msgstr "這個經銷商底下沒找到使用者"
-
-msgid "No."
-msgstr "編號"
 
 msgid "Normal"
 msgstr "一般"
@@ -3300,9 +3290,6 @@ msgstr "其他設定"
 
 msgid "Overview"
 msgstr "概要"
-
-msgid "Owner"
-msgstr "擁有人"
 
 msgid "PB"
 msgstr "PB"
@@ -3506,9 +3493,6 @@ msgstr "請在下方輸入您的自動回覆訊息"
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
 msgstr "請選擇其他目錄。 %s (%s) 已安裝在這裡了。"
-
-msgid "Please select at least one user."
-msgstr "請選擇至少一個使用者。"
 
 msgid "Please specify a message content."
 msgstr "請輸入一個訊息內容"
@@ -4000,9 +3984,6 @@ msgstr "經銷商與客戶"
 msgid "Reseller and customer levels"
 msgstr "經銷商與客戶等級"
 
-msgid "Reseller assignment"
-msgstr "經銷商分配"
-
 msgid "Reseller assignments"
 msgstr "經銷商分配"
 
@@ -4017,9 +3998,6 @@ msgstr "經銷商級別"
 
 msgid "Reseller list"
 msgstr "經銷商列表"
-
-msgid "Reseller list is empty."
-msgstr "經銷商清單是空的"
 
 msgid "Reseller name"
 msgstr "經銷商名稱"
@@ -4044,6 +4022,9 @@ msgstr "經銷商數量及權限總計"
 
 msgid "Reseller's layout color successfully updated."
 msgstr "經銷商的佈景顏色已經成功更新。"
+
+msgid "Reseller(s) successfully moved."
+msgstr ""
 
 msgid "Reseller/IP usage statistics"
 msgstr "經銷商/IP 使用狀態"
@@ -4831,12 +4812,6 @@ msgstr "服務單已經成功重新開啟。"
 msgid "Ticket with Id '%d' was not found."
 msgstr "Id 為 '%d' 的服務單沒找到。"
 
-msgid "To Admin"
-msgstr "轉到管理員"
-
-msgid "To reseller"
-msgstr "轉到經銷商"
-
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr "解除這個套件的保護，您必須要編輯 %s 檔案"
@@ -5101,9 +5076,6 @@ msgstr "使用者"
 msgid "User (first and last) name"
 msgstr "使用者名稱（姓氏和名字）"
 
-msgid "User assignment"
-msgstr "使用者分配"
-
 msgid "User data were not updated."
 msgstr "使用者資料並沒有更新。"
 
@@ -5253,6 +5225,12 @@ msgstr "當設定為 `自動'，IP地址會自動設置。"
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr "當設定為 `手動'，設置將由管理員自行設定。"
 
+msgid ""
+"When you move a customer to another reseller, limits and permissions of that"
+" reseller are automatically extended when necessary, according the customer "
+"own limits and permissions."
+msgstr ""
+
 msgid "Wrong or unallowed IP address."
 msgstr "錯誤或是不允許的 IP 地址。"
 
@@ -5377,12 +5355,6 @@ msgid ""
 "account, you must first lower the quota assigned to one of your other mail "
 "account."
 msgstr "您不可以新增一般郵件帳號因為您已經分配所有郵件配額到其他信箱。假如您想要新增一般郵件帳號，您必須先降低配額分配到您的其他的信箱中。"
-
-#, php-format
-msgid ""
-"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
-"for the <b>%2$s</b> service."
-msgstr "您不可以移動 <b>%1$s</b> 到目標經銷商，<br>這已經有限制在 <b>%2$s</b> 服務中。"
 
 msgid "You cannot remove an IP that is assigned to a reseller."
 msgstr "您不能移除指派到經銷商的 IP 位址。"
@@ -5546,11 +5518,17 @@ msgstr "您必須選擇一個檔案來上傳/下載。"
 msgid "You must select at least one catch-all address."
 msgstr "您必須選擇至少一個抓取外部位址。"
 
+msgid "You must select at least one customer."
+msgstr ""
+
 msgid "You must select at least one mail account to delete."
 msgstr "您必须至少选择一个帐户邮件才能删除。"
 
 msgid "You must select at least one plugin."
 msgstr "您必須選擇至少一個插件。"
+
+msgid "You must select at least one reseller."
+msgstr ""
 
 msgid "You must specify a message."
 msgstr "您必須輸入一個訊息"
@@ -5853,6 +5831,12 @@ msgstr "暫停"
 
 msgid "that match with"
 msgstr "這符合"
+
+msgid "to administrator"
+msgstr ""
+
+msgid "to reseller"
+msgstr ""
 
 msgid "traffic"
 msgstr "流量"

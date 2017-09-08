@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-05 00:52+0000\n"
+"POT-Creation-Date: 2017-09-08 08:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Dutch (Netherlands) (https://www.transifex.com/i-mscp/teams/576/nl_NL/)\n"
@@ -73,14 +73,6 @@ msgid "%d strings translated"
 msgstr "%d tekenreeksen vertaald"
 
 #, php-format
-msgid "%s / %s"
-msgstr "%s / %s"
-
-#, php-format
-msgid "%s / ∞"
-msgstr "%s / ∞"
-
-#, php-format
 msgid "%s account successfully deleted."
 msgstr "%s account is verwijderd."
 
@@ -111,14 +103,6 @@ msgstr "%s record"
 #, php-format
 msgid "%s webmail"
 msgstr "%s webmail"
-
-#, php-format
-msgid "%s%% [%s / %s]"
-msgstr "%s%% [%s / %s]"
-
-#, php-format
-msgid "%s%% [%s / ∞]"
-msgstr "%s%% [%s / ∞]"
 
 #, php-format
 msgid ""
@@ -170,27 +154,6 @@ msgstr "(uit %s gevonden eenheden)"
 
 msgid "(usually named"
 msgstr "(de backups hebben de volgende naam"
-
-#, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
-msgstr ""
-"<b>%1$s</b> heeft ongelimiteerde rechten voor een <b>%2$s</b> service.<br>"
-
-#, php-format
-msgid ""
-"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
-"reseller.<br>"
-msgstr ""
-"<b>%1$s</b> overschrijdt de limieten voor een <b>%2$s</b><br>service bij de "
-"wederverkoper.<br>"
-
-#, php-format
-msgid ""
-"<b>%s</b> has IP address that cannot be managed from the destination "
-"reseller!<br>This user cannot be moved!"
-msgstr ""
-"<b>%s</b> heeft een IP-adres die niet beheerd kan worden door de andere "
-"wederverkoper!<br>Deze gebruiker kan daardoor niet verplaatst worden"
 
 msgid "A PHP extension stopped the file upload."
 msgstr "Een PHP-uitbreiding heeft de upload gestopt."
@@ -465,8 +428,8 @@ msgstr "Beheerder / Gebruikers / Voeg wederverkoper toe"
 msgid "Admin / Users / Circular"
 msgstr "Beheerder / Gebruikers / E-mail rondsturen"
 
-msgid "Admin / Users / Customers Assignment"
-msgstr "Beheerder / Gebruikers / Klant toewijzen aan wederverkoper"
+msgid "Admin / Users / Customer Assignments"
+msgstr ""
 
 msgid "Admin / Users / Edit Reseller"
 msgstr "Beheerder / Gebruikers / Wederverkoper aanpassen"
@@ -483,8 +446,8 @@ msgstr "Beheerder / Gebruikers / Overzicht / Beheerder anpassen"
 msgid "Admin / Users / Overview / Edit Customer"
 msgstr "Beheerder / Gebruikers / Overzicht / Bewerk gebruiker"
 
-msgid "Admin / Users / Resellers Assignment"
-msgstr "Beheerder / Gebruikers / Wederverkoper toewijzen"
+msgid "Admin / Users / Reseller Assignments"
+msgstr ""
 
 msgid "Admin / Users / Sessions"
 msgstr "Beheerder / Gebruikers / Sessies"
@@ -743,6 +706,12 @@ msgid ""
 "repository?"
 msgstr "Weet u zeker dat u dit pakket vanuit de online softwareberging."
 
+msgid "Are you sure you want to move the selected customers?"
+msgstr ""
+
+msgid "Are you sure you want to move the selected resellers?"
+msgstr ""
+
 msgid "Are you sure you want to restore the backup?"
 msgstr "Weet u zeker dat u deze back-up wilt herstellen?"
 
@@ -843,6 +812,16 @@ msgid "Behind"
 msgstr "Achter"
 
 msgid ""
+"Below you can move customers from a reseller to another reseller by "
+"selecting them and clicking the submit button."
+msgstr ""
+
+msgid ""
+"Below you can move resellers from an administrator to another administrator "
+"by selecting them and clicking the submit button."
+msgstr ""
+
+msgid ""
 "Below, you can activate the external mail feature for one or many of your "
 "domains. Note that activating the external mail feature configures our "
 "server to relay your mail through your own mail server, but that no DNS "
@@ -870,9 +849,6 @@ msgstr "Bericht mist."
 
 msgid "Bogomips"
 msgstr "Bogomips"
-
-msgid "Both source and destination are identical."
-msgstr "Bron en eindpunt zijn gelijk."
 
 msgid "Bruteforce detection"
 msgstr "Bruteforce-detectie"
@@ -1322,6 +1298,18 @@ msgid "Couldn't delete subdomain. An unexpected error occurred."
 msgstr "Door een onbekende fout kon dit subdomein niet verwijderd worden."
 
 #, php-format
+msgid "Couldn't find domain properties for customer with ID %d."
+msgstr ""
+
+#, php-format
+msgid "Couldn't move customer with ID %d: %s"
+msgstr ""
+
+#, php-format
+msgid "Couldn't move reseller with ID %d: %s"
+msgstr ""
+
+#, php-format
 msgid "Couldn't validate DNS resource record: %s"
 msgstr "Kon de DNS-record niet valideren: %s"
 
@@ -1382,9 +1370,6 @@ msgstr "Menu-instellingen"
 msgid "Customer"
 msgstr "Klant"
 
-msgid "Customer ID"
-msgstr "Klantnummer"
-
 msgid "Customer account"
 msgstr "Klantaccount"
 
@@ -1411,6 +1396,9 @@ msgstr "Klantverbruik"
 
 msgid "Customer level"
 msgstr "Klantniveau"
+
+msgid "Customer name"
+msgstr ""
 
 msgid "Customer successfully scheduled for addition."
 msgstr "Klant wordt toegevoegd."
@@ -2373,6 +2361,9 @@ msgstr "Vrij"
 msgid "From"
 msgstr "Van"
 
+msgid "From administrator"
+msgstr ""
+
 msgid "From reseller"
 msgstr "Van wederverkoper"
 
@@ -3051,9 +3042,6 @@ msgstr "Handmatig"
 msgid "Manual catch-all addresses"
 msgstr "Handmatig catch-all adres"
 
-msgid "Mark"
-msgstr "Markeer"
-
 msgid "Max number of login attempts"
 msgstr "Maximale aantal inlogpogingen"
 
@@ -3155,11 +3143,11 @@ msgstr "Aanhechtingspunt"
 msgid "Mount point"
 msgstr "Aanhechtingspunt"
 
-msgid "Move"
-msgstr "Verplaats"
+msgid "Move selected customers"
+msgstr ""
 
-msgid "Moving aborted."
-msgstr "Verplaatsen geannuleerd."
+msgid "Move selected resellers"
+msgstr ""
 
 msgid "N/A"
 msgstr "N/B"
@@ -3216,6 +3204,9 @@ msgstr "Geen beschikbaar"
 msgid "No custom menu found."
 msgstr "Geen eigen menu gevonden."
 
+msgid "No customer found for the selected reseller."
+msgstr ""
+
 msgid "No domain available for new software instance."
 msgstr "Geen domein beschikbaar voor nieuwe software."
 
@@ -3236,6 +3227,9 @@ msgstr "Geen e-mailaccount verwijderd"
 
 msgid "No reseller available to add the permissions."
 msgstr "Geen wederverkoper beschikbaar om rechten toe te voegen."
+
+msgid "No reseller found for the selected administrator."
+msgstr ""
 
 msgid "No reseller with activated software installer found!"
 msgstr "Geen wederverkoper met geactiveerde software gevonden."
@@ -3263,9 +3257,6 @@ msgstr ""
 "Geen statistieken gevonden voor de betreffende periode. Probeer een andere "
 "periode."
 
-msgid "No unassigned users were found in the database."
-msgstr "Geen ontoegewezen gebruikers gevonden in deze databank."
-
 msgid "No update available"
 msgstr "Geen updates beschikbaar"
 
@@ -3274,12 +3265,6 @@ msgstr "Nog niet gebruikt"
 
 msgid "No user found."
 msgstr "Geen gebruiker gevonden."
-
-msgid "No users found for this reseller."
-msgstr "Geen gebruikers gevonden voor deze wederverkoper."
-
-msgid "No."
-msgstr "Nr."
 
 msgid "Normal"
 msgstr "Normaal"
@@ -3388,9 +3373,6 @@ msgstr "Andere instellingen"
 
 msgid "Overview"
 msgstr "Overzicht"
-
-msgid "Owner"
-msgstr "Eigenaar"
 
 msgid "PB"
 msgstr "PB"
@@ -3598,9 +3580,6 @@ msgstr "Voer uw autoresponderbericht hieronder in"
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
 msgstr "Kies een andere map. %s (%s) is hier reeds geïnstalleerd"
-
-msgid "Please select at least one user."
-msgstr "Kies minimaal één gebruiker."
 
 msgid "Please specify a message content."
 msgstr "Vul de berichtinhoud in."
@@ -4111,9 +4090,6 @@ msgstr "Wederverkoper en klant"
 msgid "Reseller and customer levels"
 msgstr "Niveaus van wederverkopers en klanten"
 
-msgid "Reseller assignment"
-msgstr "Wederverkoper toewijzing"
-
 msgid "Reseller assignments"
 msgstr "Wederverkopertoewijzingen"
 
@@ -4128,9 +4104,6 @@ msgstr "Niveau van wederverkoper"
 
 msgid "Reseller list"
 msgstr "Wederverkoper lijst"
-
-msgid "Reseller list is empty."
-msgstr "Wederverkoperslijst is leeg."
 
 msgid "Reseller name"
 msgstr "Wederverkoper naam"
@@ -4155,6 +4128,9 @@ msgstr "Wederverkoper met rechten totaal"
 
 msgid "Reseller's layout color successfully updated."
 msgstr "Lay-outkleur van wederverkoper succesvol bijgewerkt."
+
+msgid "Reseller(s) successfully moved."
+msgstr ""
 
 msgid "Reseller/IP usage statistics"
 msgstr "Wederverkoper / Statistieken IP-gebruik"
@@ -4987,12 +4963,6 @@ msgstr "Ticket succesvol heropend."
 msgid "Ticket with Id '%d' was not found."
 msgstr "Ticket met nummer '%d' was niet gevonden."
 
-msgid "To Admin"
-msgstr "Naar beheerder"
-
-msgid "To reseller"
-msgstr "Naar wederverkoper"
-
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr ""
@@ -5273,9 +5243,6 @@ msgstr "Gebruiker"
 msgid "User (first and last) name"
 msgstr "Gebruikers(voor- en achter-)naam"
 
-msgid "User assignment"
-msgstr "Gebruikerstoekenning"
-
 msgid "User data were not updated."
 msgstr "Gebruikersgegevens zijn niet bijgewerkt."
 
@@ -5429,6 +5396,12 @@ msgstr ""
 "Wanneer ingesteld op 'Handmatig', dan dient de beheerder de IP-adressen "
 "handmatig te configureren en beheren op de server."
 
+msgid ""
+"When you move a customer to another reseller, limits and permissions of that"
+" reseller are automatically extended when necessary, according the customer "
+"own limits and permissions."
+msgstr ""
+
 msgid "Wrong or unallowed IP address."
 msgstr "Fout of niet toegestaan IP-adres."
 
@@ -5562,14 +5535,6 @@ msgstr ""
 "U kunt van dit account geen normaal e-mailaccount maken, omdat u al uw quota"
 " reeds heeft gebruikt. Als u dit toch wenst, zorg er dan voor dat u andere "
 "accounts kleiner maakt, of uw pakket upgradet."
-
-#, php-format
-msgid ""
-"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
-"for the <b>%2$s</b> service."
-msgstr ""
-"U kunt de <b>%1$s</b> in de nieuwe wederverkoper niet verplaatsen.<br>Deze "
-"heeft limieten voor de <b>%2$s</b> service."
 
 msgid "You cannot remove an IP that is assigned to a reseller."
 msgstr ""
@@ -5763,11 +5728,17 @@ msgstr "U dient een bestand te selecteren om te uploaden/downloaden."
 msgid "You must select at least one catch-all address."
 msgstr "U dient minimaal één catch-all adres te selecteren."
 
+msgid "You must select at least one customer."
+msgstr ""
+
 msgid "You must select at least one mail account to delete."
 msgstr "U moet minstens één e-mailaccount selecteren om te verwijderen."
 
 msgid "You must select at least one plugin."
 msgstr "Selecteer minimaal 1 invoegtoepassing."
+
+msgid "You must select at least one reseller."
+msgstr ""
 
 msgid "You must specify a message."
 msgstr "U dient een bericht te specificeren."
@@ -6080,6 +6051,12 @@ msgstr "opgeschort"
 
 msgid "that match with"
 msgstr "die overeenkomen met"
+
+msgid "to administrator"
+msgstr ""
+
+msgid "to reseller"
+msgstr ""
 
 msgid "traffic"
 msgstr "Verkeer"
