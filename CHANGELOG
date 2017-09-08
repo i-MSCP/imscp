@@ -1,8 +1,11 @@
 ﻿i-MSCP ChangeLog
 
 ------------------------------------------------------------------------------------------------------------------------
-Git 1.5.x
+1.5.1
 ------------------------------------------------------------------------------------------------------------------------
+
+2017-09-08: Laurent Declercq
+    RELEASE i-MSCP 1.5.1
 
 Bakend
     Fixed: Can't call method "isEmpty" on an undefined value when a listener self un-register (iMSCP::EventManager)
