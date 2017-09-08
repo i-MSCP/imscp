@@ -295,7 +295,7 @@ $tpl->define_dynamic([
     'from_reseller_item'           => 'page',
     'to_reseller_item'             => 'page'
 ]);
-$tpl->assign('TR_PAGE_TITLE', tohtml(tr('Admin / Users / Customer assignments')));
+$tpl->assign('TR_PAGE_TITLE', tohtml(tr('Admin / Users / Customer Assignments')));
 
 generateNavigation($tpl);
 generatePage($tpl);

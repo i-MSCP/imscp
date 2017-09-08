@@ -181,7 +181,7 @@ $tpl->define_dynamic([
     'from_administrator_item'           => 'page',
     'to_administrator_item'             => 'page'
 ]);
-$tpl->assign('TR_PAGE_TITLE', tohtml(tr('Admin / Users / Customer assignments')));
+$tpl->assign('TR_PAGE_TITLE', tohtml(tr('Admin / Users / Reseller Assignments')));
 
 generateNavigation($tpl);
 generatePage($tpl);
