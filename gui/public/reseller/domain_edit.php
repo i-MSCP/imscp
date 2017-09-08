@@ -53,7 +53,7 @@ function getMailData($domainId, $mailQuota)
 
         $mailData = [
             'quota_sum'    => bytesHuman($row['quota']),
-            'quota_limit'  => $mailQuota == 0 ? '∞' : mebibyteHuman($mailQuota),
+            'quota_limit'  => $mailQuota == 0 ? '∞' : mebibytesHuman($mailQuota),
             'nb_mailboxes' => $row['nb_mailboxes']
         ];
     }
@@ -397,18 +397,18 @@ function generateLimitsForm(TemplateEngine $tpl, &$data)
         'TRAFFIC_LIMIT'                   => tohtml($data['domain_traffic_limit']),
         'TR_CUSTOMER_TRAFFIC_COMSUPTION'  => tohtml(bytesHuman($data['domainTraffic'])) . ' / '
             . ($data['fallback_domain_traffic_limit'] != 0
-                ? tohtml(mebibyteHuman($data['fallback_domain_traffic_limit'])) : '∞'),
+                ? tohtml(mebibytesHuman($data['fallback_domain_traffic_limit'])) : '∞'),
         'TR_RESELLER_TRAFFIC_COMSUPTION'  => tohtml(bytesHuman($trafficUsage)) . ' / '
-            . ($data['max_traff_amnt'] != 0 ? tohtml(mebibyteHuman($data['max_traff_amnt'])) : '∞'),
+            . ($data['max_traff_amnt'] != 0 ? tohtml(mebibytesHuman($data['max_traff_amnt'])) : '∞'),
 
         // Disk space limit
         'TR_DISK_LIMIT'                   => tohtml(tr('Disk space limit [MiB]')) . '<br/><i>(0 ∞)</span>',
         'DISK_LIMIT'                      => tohtml($data['domain_disk_limit']),
         'TR_CUSTOMER_DISKPACE_COMSUPTION' => tohtml(bytesHuman($data['domain_disk_usage'])) . ' / '
             . ($data['fallback_domain_disk_limit'] != 0
-                ? tohtml(mebibyteHuman($data['fallback_domain_disk_limit'])) : '∞'),
+                ? tohtml(mebibytesHuman($data['fallback_domain_disk_limit'])) : '∞'),
         'TR_RESELLER_DISKPACE_COMSUPTION' => tohtml(bytesHuman($diskUsage)) . ' / '
-            . ($data['max_disk_amnt'] != 0 ? tohtml(mebibyteHuman($data['max_disk_amnt'])) : '∞')
+            . ($data['max_disk_amnt'] != 0 ? tohtml(mebibytesHuman($data['max_disk_amnt'])) : '∞')
     ]);
 } // end _reseller_generateLimitsForm()
 

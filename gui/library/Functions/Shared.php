@@ -2482,7 +2482,7 @@ function bytesHuman($bytes, $unit = NULL, $decimals = 2, $power = 1024)
 }
 
 /**
- * Humanize a mebibyte value
+ * Turns mebibyte counts to human readable format
  *
  * @see bytesHuman()
  * @param int|float $mebibyte Mebibyte value to convert
@@ -2491,7 +2491,7 @@ function bytesHuman($bytes, $unit = NULL, $decimals = 2, $power = 1024)
  * @param int $power OPTIONAL Power to use for conversion (1024 or 1000)
  * @return string
  */
-function mebibyteHuman($mebibyte, $unit = NULL, $decimals = 2, $power = 1024)
+function mebibytesHuman($mebibyte, $unit = NULL, $decimals = 2, $power = 1024)
 {
     return bytesHuman($mebibyte * 1048576, $unit, $decimals, $power);
 }
@@ -2528,7 +2528,7 @@ function translate_limit_value($value, $autosize = false, $to = NULL)
         case 'sql':
             return '<span style="color:green">' . tr('SQL databases only') . '</span>';
         default:
-            return !$autosize ? $value : mebibyteHuman($value, $to);
+            return !$autosize ? $value : mebibytesHuman($value, $to);
     }
 }
 
