@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-05 00:52+0000\n"
+"POT-Creation-Date: 2017-09-08 08:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thom Heemstra <thom@heemstra.xyz>, 2017\n"
 "Language-Team: Swedish (Sweden) (https://www.transifex.com/i-mscp/teams/576/sv_SE/)\n"
@@ -73,14 +73,6 @@ msgid "%d strings translated"
 msgstr "%d strängar översatt"
 
 #, php-format
-msgid "%s / %s"
-msgstr ""
-
-#, php-format
-msgid "%s / ∞"
-msgstr ""
-
-#, php-format
 msgid "%s account successfully deleted."
 msgstr "%s konto raderades."
 
@@ -111,14 +103,6 @@ msgstr "%s post"
 #, php-format
 msgid "%s webmail"
 msgstr "%s webmail"
-
-#, php-format
-msgid "%s%% [%s / %s]"
-msgstr ""
-
-#, php-format
-msgid "%s%% [%s / ∞]"
-msgstr ""
 
 #, php-format
 msgid ""
@@ -170,26 +154,6 @@ msgstr "(filtered from %s total records)"
 
 msgid "(usually named"
 msgstr "(vanligtvis kallad"
-
-#, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
-msgstr "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
-
-#, php-format
-msgid ""
-"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
-"reseller.<br>"
-msgstr ""
-"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
-"reseller.<br>"
-
-#, php-format
-msgid ""
-"<b>%s</b> has IP address that cannot be managed from the destination "
-"reseller!<br>This user cannot be moved!"
-msgstr ""
-"<b>%s</b> has IP address that cannot be managed from the destination "
-"reseller!<br>This user cannot be moved!"
 
 msgid "A PHP extension stopped the file upload."
 msgstr "A PHP extension stopped the file upload."
@@ -462,8 +426,8 @@ msgstr "Admin / Users / Add Reseller"
 msgid "Admin / Users / Circular"
 msgstr "Admin / Users / Circular"
 
-msgid "Admin / Users / Customers Assignment"
-msgstr "Admin / Users / Customers Assignment"
+msgid "Admin / Users / Customer Assignments"
+msgstr ""
 
 msgid "Admin / Users / Edit Reseller"
 msgstr "Admin / Users / Edit Reseller"
@@ -480,8 +444,8 @@ msgstr "Admin / Users / Overview / Edit Admin"
 msgid "Admin / Users / Overview / Edit Customer"
 msgstr ""
 
-msgid "Admin / Users / Resellers Assignment"
-msgstr "Admin / Users / Resellers Assignment"
+msgid "Admin / Users / Reseller Assignments"
+msgstr ""
 
 msgid "Admin / Users / Sessions"
 msgstr "Admin / Users / Sessions"
@@ -738,6 +702,12 @@ msgid ""
 "repository?"
 msgstr "Är du säker att du vill installera detta paket från Web förvar?"
 
+msgid "Are you sure you want to move the selected customers?"
+msgstr ""
+
+msgid "Are you sure you want to move the selected resellers?"
+msgstr ""
+
 msgid "Are you sure you want to restore the backup?"
 msgstr "Är du säker på att du vill återställa backupen?"
 
@@ -838,6 +808,16 @@ msgid "Behind"
 msgstr "Bakom"
 
 msgid ""
+"Below you can move customers from a reseller to another reseller by "
+"selecting them and clicking the submit button."
+msgstr ""
+
+msgid ""
+"Below you can move resellers from an administrator to another administrator "
+"by selecting them and clicking the submit button."
+msgstr ""
+
+msgid ""
 "Below, you can activate the external mail feature for one or many of your "
 "domains. Note that activating the external mail feature configures our "
 "server to relay your mail through your own mail server, but that no DNS "
@@ -865,9 +845,6 @@ msgstr "Body is missing."
 
 msgid "Bogomips"
 msgstr "Bogomips"
-
-msgid "Both source and destination are identical."
-msgstr "Both source and destination are identical."
 
 msgid "Bruteforce detection"
 msgstr "Bruteforce detektering"
@@ -1308,6 +1285,18 @@ msgid "Couldn't delete subdomain. An unexpected error occurred."
 msgstr ""
 
 #, php-format
+msgid "Couldn't find domain properties for customer with ID %d."
+msgstr ""
+
+#, php-format
+msgid "Couldn't move customer with ID %d: %s"
+msgstr ""
+
+#, php-format
+msgid "Couldn't move reseller with ID %d: %s"
+msgstr ""
+
+#, php-format
 msgid "Couldn't validate DNS resource record: %s"
 msgstr ""
 
@@ -1368,9 +1357,6 @@ msgstr "Egna menyer"
 msgid "Customer"
 msgstr "Kund"
 
-msgid "Customer ID"
-msgstr "Kund ID"
-
 msgid "Customer account"
 msgstr "Kundkonto"
 
@@ -1397,6 +1383,9 @@ msgstr "Customer consumption"
 
 msgid "Customer level"
 msgstr "Customer level"
+
+msgid "Customer name"
+msgstr ""
 
 msgid "Customer successfully scheduled for addition."
 msgstr "Kund framgångsrikt planerad till tillägg."
@@ -2369,6 +2358,9 @@ msgstr "Ledigt"
 msgid "From"
 msgstr "Från"
 
+msgid "From administrator"
+msgstr ""
+
 msgid "From reseller"
 msgstr "Från återförsäljare"
 
@@ -3036,9 +3028,6 @@ msgstr "Manuell"
 msgid "Manual catch-all addresses"
 msgstr ""
 
-msgid "Mark"
-msgstr "Välj"
-
 msgid "Max number of login attempts"
 msgstr "Max antal inloggningförsök"
 
@@ -3137,11 +3126,11 @@ msgstr "Montera"
 msgid "Mount point"
 msgstr "Monteringspunkt"
 
-msgid "Move"
-msgstr "Flytta"
+msgid "Move selected customers"
+msgstr ""
 
-msgid "Moving aborted."
-msgstr "Flytta avbröts."
+msgid "Move selected resellers"
+msgstr ""
 
 msgid "N/A"
 msgstr "Inte tillgänglig"
@@ -3198,6 +3187,9 @@ msgstr "Inte tillgänglig"
 msgid "No custom menu found."
 msgstr "Inget eget meny hittades."
 
+msgid "No customer found for the selected reseller."
+msgstr ""
+
 msgid "No domain available for new software instance."
 msgstr "Ingen domän för ny programvara instans."
 
@@ -3218,6 +3210,9 @@ msgstr ""
 
 msgid "No reseller available to add the permissions."
 msgstr "No Reseller available to add the permissions."
+
+msgid "No reseller found for the selected administrator."
+msgstr ""
 
 msgid "No reseller with activated software installer found!"
 msgstr "No reseller with activated software installer found!"
@@ -3244,9 +3239,6 @@ msgid "No statistics found for the given period. Try another period."
 msgstr ""
 "Ingen statistik finns för angiven tidsperiod. Försök med en annan period."
 
-msgid "No unassigned users were found in the database."
-msgstr "No unassigned users were found in the database."
-
 msgid "No update available"
 msgstr "Inga uppdateringar tillgängliga."
 
@@ -3255,12 +3247,6 @@ msgstr "Inte i bruk nu."
 
 msgid "No user found."
 msgstr "Ingen användare hittades."
-
-msgid "No users found for this reseller."
-msgstr "Inga användare finns för denna återförsäljare."
-
-msgid "No."
-msgstr "Nr."
 
 msgid "Normal"
 msgstr "Normal"
@@ -3367,9 +3353,6 @@ msgstr "Övriga inställningar"
 
 msgid "Overview"
 msgstr "Översikt"
-
-msgid "Owner"
-msgstr "Ägare"
 
 msgid "PB"
 msgstr "PB"
@@ -3576,9 +3559,6 @@ msgstr ""
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
 msgstr "Please select another directory. %s (%s) is installed there."
-
-msgid "Please select at least one user."
-msgstr "Välj minst en användare."
 
 msgid "Please specify a message content."
 msgstr "Vänligen skriv något i meddelande!"
@@ -4080,9 +4060,6 @@ msgstr "Reseller and customer"
 msgid "Reseller and customer levels"
 msgstr "Återförsäljare och kund nivåer"
 
-msgid "Reseller assignment"
-msgstr "Återförsäljare tilldelning"
-
 msgid "Reseller assignments"
 msgstr "Återförsäljare uppdrag"
 
@@ -4097,9 +4074,6 @@ msgstr "Återförsäljarenivå"
 
 msgid "Reseller list"
 msgstr "Återförsäljare lista"
-
-msgid "Reseller list is empty."
-msgstr "Återförsäljare Listan är tom."
 
 msgid "Reseller name"
 msgstr "Återförsäljarnamn"
@@ -4124,6 +4098,9 @@ msgstr "Återförsäljare med behörigheter totala"
 
 msgid "Reseller's layout color successfully updated."
 msgstr "Reseller's layout color successfully updated."
+
+msgid "Reseller(s) successfully moved."
+msgstr ""
 
 msgid "Reseller/IP usage statistics"
 msgstr "Återförsäljare / IP användarstatistik"
@@ -4941,12 +4918,6 @@ msgstr "Ticket har öppnats igen."
 msgid "Ticket with Id '%d' was not found."
 msgstr "Ticket med Id '%d' hittades inte."
 
-msgid "To Admin"
-msgstr "Till Administratör"
-
-msgid "To reseller"
-msgstr "Till återförsäljare"
-
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr "To unprotect this plugin, you must edit the %s file"
@@ -5217,9 +5188,6 @@ msgstr "Användare"
 msgid "User (first and last) name"
 msgstr "Användares (första och sista) namn"
 
-msgid "User assignment"
-msgstr "Användare tilldelning"
-
 msgid "User data were not updated."
 msgstr "Användardata uppdaterades inte."
 
@@ -5369,6 +5337,12 @@ msgstr "När satt till 'Auto' konfigureras IP-adressen automatiskt."
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr "Vid inställningen 'Manuell' , konfigureras den av administratören."
 
+msgid ""
+"When you move a customer to another reseller, limits and permissions of that"
+" reseller are automatically extended when necessary, according the customer "
+"own limits and permissions."
+msgstr ""
+
 msgid "Wrong or unallowed IP address."
 msgstr "Fel eller otillåtna IP-adress."
 
@@ -5495,14 +5469,6 @@ msgid ""
 "account, you must first lower the quota assigned to one of your other mail "
 "account."
 msgstr ""
-
-#, php-format
-msgid ""
-"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
-"for the <b>%2$s</b> service."
-msgstr ""
-"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
-"for the <b>%2$s</b> service."
 
 msgid "You cannot remove an IP that is assigned to a reseller."
 msgstr "Du kan inte ta bort en IP som tilldelas en återförsäljare."
@@ -5677,11 +5643,17 @@ msgstr "Du måste välja en fil att ladda upp / ladda ner."
 msgid "You must select at least one catch-all address."
 msgstr ""
 
+msgid "You must select at least one customer."
+msgstr ""
+
 msgid "You must select at least one mail account to delete."
 msgstr ""
 
 msgid "You must select at least one plugin."
 msgstr "Du måste välja minst ett plugin."
+
+msgid "You must select at least one reseller."
+msgstr ""
 
 msgid "You must specify a message."
 msgstr "Du måste ange ett meddelande."
@@ -5990,6 +5962,12 @@ msgid "suspended"
 msgstr ""
 
 msgid "that match with"
+msgstr ""
+
+msgid "to administrator"
+msgstr ""
+
+msgid "to reseller"
 msgstr ""
 
 msgid "traffic"

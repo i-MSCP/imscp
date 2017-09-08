@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-05 00:52+0000\n"
+"POT-Creation-Date: 2017-09-08 08:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Tommaso <redmail@hotmail.it>, 2017\n"
 "Language-Team: Italian (Italy) (https://www.transifex.com/i-mscp/teams/576/it_IT/)\n"
@@ -74,14 +74,6 @@ msgid "%d strings translated"
 msgstr "%d stringhe tradotte"
 
 #, php-format
-msgid "%s / %s"
-msgstr "%s / %s"
-
-#, php-format
-msgid "%s / ∞"
-msgstr "%s / ∞"
-
-#, php-format
 msgid "%s account successfully deleted."
 msgstr "%s account eliminati con successo."
 
@@ -112,14 +104,6 @@ msgstr "%s record"
 #, php-format
 msgid "%s webmail"
 msgstr "%s webmail"
-
-#, php-format
-msgid "%s%% [%s / %s]"
-msgstr "%s%% [%s / %s]"
-
-#, php-format
-msgid "%s%% [%s / ∞]"
-msgstr "%s%% [%s / ∞]"
 
 #, php-format
 msgid ""
@@ -171,26 +155,6 @@ msgstr "(Filtrato da %s record totali)"
 
 msgid "(usually named"
 msgstr "(solitamente chiamato "
-
-#, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
-msgstr "<b>%1$s</b> ha diritti illimitati per il Servizio <b>%2$s</b>.<br>"
-
-#, php-format
-msgid ""
-"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
-"reseller.<br>"
-msgstr ""
-"<b>%1$s</b> sta eccedendo i limiti per il servizio <b>%2$s</b><br> nel "
-"rivenditore di destinazione.<br>"
-
-#, php-format
-msgid ""
-"<b>%s</b> has IP address that cannot be managed from the destination "
-"reseller!<br>This user cannot be moved!"
-msgstr ""
-"<b>%s</b> ha un indirizzo IP che non può essere gestito dal rivenditore di "
-"destinazione!<br>Questo utente non può essere spostato!"
 
 msgid "A PHP extension stopped the file upload."
 msgstr "Una estensione di PHP blocca il caricamento del file."
@@ -463,8 +427,8 @@ msgstr "Admin / Utenti / Aggiungi Rivenditore"
 msgid "Admin / Users / Circular"
 msgstr "Admin / Utenti / Circolare"
 
-msgid "Admin / Users / Customers Assignment"
-msgstr "Admin / Utenti / Assegna clienti"
+msgid "Admin / Users / Customer Assignments"
+msgstr ""
 
 msgid "Admin / Users / Edit Reseller"
 msgstr "Admin / Utenti / Edita Rivenditore"
@@ -481,8 +445,8 @@ msgstr "Admin / Utenti / Panoramica / Edita Admin"
 msgid "Admin / Users / Overview / Edit Customer"
 msgstr "Admin / Utenti / Panoramica / Modifica Cliente"
 
-msgid "Admin / Users / Resellers Assignment"
-msgstr "Admin / Utenti / Assegna rivenditori"
+msgid "Admin / Users / Reseller Assignments"
+msgstr ""
 
 msgid "Admin / Users / Sessions"
 msgstr "Admin / Utenti / Sessioni"
@@ -742,6 +706,12 @@ msgid ""
 "repository?"
 msgstr "Sicuro che vuoi installare questo pacchetto dal tuo repository Web?"
 
+msgid "Are you sure you want to move the selected customers?"
+msgstr ""
+
+msgid "Are you sure you want to move the selected resellers?"
+msgstr ""
+
 msgid "Are you sure you want to restore the backup?"
 msgstr "Siete sicuri di voler ripristinare il backup?"
 
@@ -842,6 +812,16 @@ msgid "Behind"
 msgstr "Dietro"
 
 msgid ""
+"Below you can move customers from a reseller to another reseller by "
+"selecting them and clicking the submit button."
+msgstr ""
+
+msgid ""
+"Below you can move resellers from an administrator to another administrator "
+"by selecting them and clicking the submit button."
+msgstr ""
+
+msgid ""
 "Below, you can activate the external mail feature for one or many of your "
 "domains. Note that activating the external mail feature configures our "
 "server to relay your mail through your own mail server, but that no DNS "
@@ -870,9 +850,6 @@ msgstr "Il corpo del messaggio è vuoto."
 
 msgid "Bogomips"
 msgstr "Bogomips"
-
-msgid "Both source and destination are identical."
-msgstr "L'origine e la destinazione sono identici."
 
 msgid "Bruteforce detection"
 msgstr "Rilevamento Bruteforce"
@@ -1333,6 +1310,18 @@ msgstr ""
 "inatteso."
 
 #, php-format
+msgid "Couldn't find domain properties for customer with ID %d."
+msgstr ""
+
+#, php-format
+msgid "Couldn't move customer with ID %d: %s"
+msgstr ""
+
+#, php-format
+msgid "Couldn't move reseller with ID %d: %s"
+msgstr ""
+
+#, php-format
 msgid "Couldn't validate DNS resource record: %s"
 msgstr "Non è stato possibile validare il record della risorsa DNS: %s"
 
@@ -1393,9 +1382,6 @@ msgstr "Menù personalizzati"
 msgid "Customer"
 msgstr "Cliente"
 
-msgid "Customer ID"
-msgstr "ID cliente"
-
 msgid "Customer account"
 msgstr "Customer account"
 
@@ -1423,6 +1409,9 @@ msgstr "Blocco di azioni"
 
 msgid "Customer level"
 msgstr "Livello cliente"
+
+msgid "Customer name"
+msgstr ""
 
 msgid "Customer successfully scheduled for addition."
 msgstr ""
@@ -2402,6 +2391,9 @@ msgstr "Libero"
 msgid "From"
 msgstr "Da"
 
+msgid "From administrator"
+msgstr ""
+
 msgid "From reseller"
 msgstr "Dal rivenditore"
 
@@ -3086,9 +3078,6 @@ msgstr "Manuale"
 msgid "Manual catch-all addresses"
 msgstr "Indirizzi manuali catch-all"
 
-msgid "Mark"
-msgstr "Seleziona"
-
 msgid "Max number of login attempts"
 msgstr "Max numero tentantivi di accesso"
 
@@ -3194,11 +3183,11 @@ msgstr "Mount"
 msgid "Mount point"
 msgstr "Mount point"
 
-msgid "Move"
-msgstr "Trasferire"
+msgid "Move selected customers"
+msgstr ""
 
-msgid "Moving aborted."
-msgstr "Trasferimento interrotto."
+msgid "Move selected resellers"
+msgstr ""
 
 msgid "N/A"
 msgstr "N/D"
@@ -3257,6 +3246,9 @@ msgstr "No disponibile"
 msgid "No custom menu found."
 msgstr "Nessun menù personalizzato trovato."
 
+msgid "No customer found for the selected reseller."
+msgstr ""
+
 msgid "No domain available for new software instance."
 msgstr "Nessun dominio disponibile per l'istanza del nuovo software."
 
@@ -3277,6 +3269,9 @@ msgstr "Nessuno account email è stato cancellato"
 
 msgid "No reseller available to add the permissions."
 msgstr "Nessun rivenditore disponibile per aggiungere i permessi."
+
+msgid "No reseller found for the selected administrator."
+msgstr ""
 
 msgid "No reseller with activated software installer found!"
 msgstr "Nessun rivenditore trovato con un'installazione software attiva!"
@@ -3304,9 +3299,6 @@ msgstr ""
 "Non sono state trovate statistiche per il periodo specificato. Provare un "
 "altro periodo."
 
-msgid "No unassigned users were found in the database."
-msgstr "Nessun utente non assegnato è stato trovato nel database."
-
 msgid "No update available"
 msgstr "Nessun aggiornamento disponibile"
 
@@ -3315,12 +3307,6 @@ msgstr "Non ancora utilizzato"
 
 msgid "No user found."
 msgstr "Nessun utente trovato."
-
-msgid "No users found for this reseller."
-msgstr "Nessun utente trovato per questo rivenditore."
-
-msgid "No."
-msgstr "No."
 
 msgid "Normal"
 msgstr "Normale"
@@ -3427,9 +3413,6 @@ msgstr "Altre impostazioni"
 
 msgid "Overview"
 msgstr "Panoramica"
-
-msgid "Owner"
-msgstr "Proprietario"
 
 msgid "PB"
 msgstr "PB"
@@ -3636,9 +3619,6 @@ msgstr "Inserisci il tuo messaggio automatico sotto"
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
 msgstr "Selezionare un'altra directory. %s ( %s ) è installato."
-
-msgid "Please select at least one user."
-msgstr "Selezionare almeno un utente."
 
 msgid "Please specify a message content."
 msgstr "Inserire il contenuto del messaggio."
@@ -4152,9 +4132,6 @@ msgstr "Rivenditore e cliente"
 msgid "Reseller and customer levels"
 msgstr "Livelli rivenditori e clienti"
 
-msgid "Reseller assignment"
-msgstr "Assegna rivenditore"
-
 msgid "Reseller assignments"
 msgstr "Assegna rivenditore"
 
@@ -4169,9 +4146,6 @@ msgstr "Livello del rivenditore"
 
 msgid "Reseller list"
 msgstr "Lista rivenditori"
-
-msgid "Reseller list is empty."
-msgstr "L'elenco dei rivenditori è vuoto."
 
 msgid "Reseller name"
 msgstr "Nome del rivenditore"
@@ -4196,6 +4170,9 @@ msgstr "Rivenditore con permessi totali"
 
 msgid "Reseller's layout color successfully updated."
 msgstr "Layout del rivenditore aggiornato con successo."
+
+msgid "Reseller(s) successfully moved."
+msgstr ""
 
 msgid "Reseller/IP usage statistics"
 msgstr "Statistiche di utilizzo Rivenditori/IP"
@@ -5031,12 +5008,6 @@ msgstr "Ticket riaperto con successo."
 msgid "Ticket with Id '%d' was not found."
 msgstr "Il ticket con id '%d' non è stato trovato."
 
-msgid "To Admin"
-msgstr "All'Admin"
-
-msgid "To reseller"
-msgstr "Al rivenditore"
-
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr ""
@@ -5319,9 +5290,6 @@ msgstr "Utente"
 msgid "User (first and last) name"
 msgstr "Nome (e cognome) dell'utente"
 
-msgid "User assignment"
-msgstr "Assegna utente"
-
 msgid "User data were not updated."
 msgstr "I dati utente non sono stati aggiornati."
 
@@ -5476,6 +5444,12 @@ msgstr ""
 "Se impostato su 'Manuale', la configurazione viene eseguita "
 "dall'amministratore."
 
+msgid ""
+"When you move a customer to another reseller, limits and permissions of that"
+" reseller are automatically extended when necessary, according the customer "
+"own limits and permissions."
+msgstr ""
+
 msgid "Wrong or unallowed IP address."
 msgstr "Indirizzo IP errato oppure non autorizzato."
 
@@ -5610,14 +5584,6 @@ msgstr ""
 "Non puoi aggiungere un altro account email. Hai già assegnato tutti lo "
 "spazio disponibile ad altri account email. Per procedere oltre, devi "
 "rivedere le tue precedenti assegnazioni di quote."
-
-#, php-format
-msgid ""
-"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
-"for the <b>%2$s</b> service."
-msgstr ""
-"Non puoi spostare <b>%1$s</b> in un rivenditore,<br>che ha dei limiti per il"
-" servizio <b>%2$s</b>."
 
 msgid "You cannot remove an IP that is assigned to a reseller."
 msgstr "Non puoi rimuovere un indirizzo IP che è assegnato ad un rivenditore."
@@ -5809,6 +5775,9 @@ msgstr "Devi selezionare un file per l'upload/download."
 msgid "You must select at least one catch-all address."
 msgstr "È necessario selezionare almeno un indirizzo catch-all."
 
+msgid "You must select at least one customer."
+msgstr ""
+
 msgid "You must select at least one mail account to delete."
 msgstr ""
 "È necessario selezionare almeno un account di posta elettronica da "
@@ -5816,6 +5785,9 @@ msgstr ""
 
 msgid "You must select at least one plugin."
 msgstr "È necessario selezionare almeno un plugin."
+
+msgid "You must select at least one reseller."
+msgstr ""
 
 msgid "You must specify a message."
 msgstr "Devi specificare un messaggio."
@@ -6133,6 +6105,12 @@ msgstr "Sospeso"
 
 msgid "that match with"
 msgstr "that match with"
+
+msgid "to administrator"
+msgstr ""
+
+msgid "to reseller"
+msgstr ""
 
 msgid "traffic"
 msgstr "traffico"

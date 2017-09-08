@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-05 00:52+0000\n"
+"POT-Creation-Date: 2017-09-08 08:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Japanese (Japan) (https://www.transifex.com/i-mscp/teams/576/ja_JP/)\n"
@@ -70,14 +70,6 @@ msgid "%d strings translated"
 msgstr "%d の文字列を翻訳"
 
 #, php-format
-msgid "%s / %s"
-msgstr ""
-
-#, php-format
-msgid "%s / ∞"
-msgstr ""
-
-#, php-format
 msgid "%s account successfully deleted."
 msgstr "%s のアカウントは削除されました。"
 
@@ -108,14 +100,6 @@ msgstr "%s レコード"
 #, php-format
 msgid "%s webmail"
 msgstr "%s webメール"
-
-#, php-format
-msgid "%s%% [%s / %s]"
-msgstr ""
-
-#, php-format
-msgid "%s%% [%s / ∞]"
-msgstr ""
 
 #, php-format
 msgid ""
@@ -158,22 +142,6 @@ msgstr "( %s 合計レコードからフィルタリング)"
 
 msgid "(usually named"
 msgstr "(通常の名前"
-
-#, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
-msgstr "<b>%1$s</b> は<b>%2$s</b>のサービスのための無制限の権利を有します。<br>"
-
-#, php-format
-msgid ""
-"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
-"reseller.<br>"
-msgstr "<b>%1$s</b>は代理店の<b>%2$s</b><br>サービスの上限を超えています。<br>"
-
-#, php-format
-msgid ""
-"<b>%s</b> has IP address that cannot be managed from the destination "
-"reseller!<br>This user cannot be moved!"
-msgstr "<b>%s</b>が既に持っているIPアドレスは、代理店では管理できません !<br>ユーザーを移動することはできません！"
 
 msgid "A PHP extension stopped the file upload."
 msgstr "PHP拡張モジュールは、ファイルのアップロードを停止しました。"
@@ -443,8 +411,8 @@ msgstr "管理者 / ユーザー / リセラー追加"
 msgid "Admin / Users / Circular"
 msgstr "管理者 / ユーザー / 回覧"
 
-msgid "Admin / Users / Customers Assignment"
-msgstr "管理者 / ユーザー / 顧客の割当"
+msgid "Admin / Users / Customer Assignments"
+msgstr ""
 
 msgid "Admin / Users / Edit Reseller"
 msgstr "管理者 / ユーザー / リセラー編集"
@@ -461,8 +429,8 @@ msgstr "管理者 / ユーザー / 概要 / 管理者編集"
 msgid "Admin / Users / Overview / Edit Customer"
 msgstr ""
 
-msgid "Admin / Users / Resellers Assignment"
-msgstr "管理者 / ユーザー / リセラーの割当"
+msgid "Admin / Users / Reseller Assignments"
+msgstr ""
 
 msgid "Admin / Users / Sessions"
 msgstr "管理者 / ユーザー / セッション"
@@ -712,6 +680,12 @@ msgid ""
 "repository?"
 msgstr "Webソフトウェアリポジトリからこのパッケージをインストールしてもよろしいですか？"
 
+msgid "Are you sure you want to move the selected customers?"
+msgstr ""
+
+msgid "Are you sure you want to move the selected resellers?"
+msgstr ""
+
 msgid "Are you sure you want to restore the backup?"
 msgstr "バックアップから復元してもよいですか？"
 
@@ -812,6 +786,16 @@ msgid "Behind"
 msgstr "ビハインド"
 
 msgid ""
+"Below you can move customers from a reseller to another reseller by "
+"selecting them and clicking the submit button."
+msgstr ""
+
+msgid ""
+"Below you can move resellers from an administrator to another administrator "
+"by selecting them and clicking the submit button."
+msgstr ""
+
+msgid ""
 "Below, you can activate the external mail feature for one or many of your "
 "domains. Note that activating the external mail feature configures our "
 "server to relay your mail through your own mail server, but that no DNS "
@@ -836,9 +820,6 @@ msgstr "ボディが誤っています。"
 
 msgid "Bogomips"
 msgstr "BogoMips値"
-
-msgid "Both source and destination are identical."
-msgstr "送信元と宛先の両方は同じです。"
 
 msgid "Bruteforce detection"
 msgstr "ブルートフォース検知"
@@ -1260,6 +1241,18 @@ msgid "Couldn't delete subdomain. An unexpected error occurred."
 msgstr ""
 
 #, php-format
+msgid "Couldn't find domain properties for customer with ID %d."
+msgstr ""
+
+#, php-format
+msgid "Couldn't move customer with ID %d: %s"
+msgstr ""
+
+#, php-format
+msgid "Couldn't move reseller with ID %d: %s"
+msgstr ""
+
+#, php-format
 msgid "Couldn't validate DNS resource record: %s"
 msgstr ""
 
@@ -1320,9 +1313,6 @@ msgstr "カスタムメニュー"
 msgid "Customer"
 msgstr "顧客"
 
-msgid "Customer ID"
-msgstr "顧客ID"
-
 msgid "Customer account"
 msgstr "顧客アカウント"
 
@@ -1349,6 +1339,9 @@ msgstr "顧客の消費量"
 
 msgid "Customer level"
 msgstr "顧客レベル"
+
+msgid "Customer name"
+msgstr ""
 
 msgid "Customer successfully scheduled for addition."
 msgstr "顧客の追加が予定されました。"
@@ -2319,6 +2312,9 @@ msgstr "空き容量"
 msgid "From"
 msgstr "From"
 
+msgid "From administrator"
+msgstr ""
+
 msgid "From reseller"
 msgstr "リセラーから"
 
@@ -2978,9 +2974,6 @@ msgstr "手動"
 msgid "Manual catch-all addresses"
 msgstr ""
 
-msgid "Mark"
-msgstr "マーク"
-
 msgid "Max number of login attempts"
 msgstr "最大数のログインの試み"
 
@@ -3078,11 +3071,11 @@ msgstr "マウント先"
 msgid "Mount point"
 msgstr "マウント先"
 
-msgid "Move"
-msgstr "移動"
+msgid "Move selected customers"
+msgstr ""
 
-msgid "Moving aborted."
-msgstr "移動を中止しました。"
+msgid "Move selected resellers"
+msgstr ""
 
 msgid "N/A"
 msgstr "利用不可"
@@ -3139,6 +3132,9 @@ msgstr "使用不可"
 msgid "No custom menu found."
 msgstr "カスタムメニューが見つかりません。"
 
+msgid "No customer found for the selected reseller."
+msgstr ""
+
 msgid "No domain available for new software instance."
 msgstr "新しいソフトウェアインスタンスに利用可能なドメインはありません。"
 
@@ -3159,6 +3155,9 @@ msgstr ""
 
 msgid "No reseller available to add the permissions."
 msgstr "リセラーが追加できる権限はありません。"
+
+msgid "No reseller found for the selected administrator."
+msgstr ""
 
 msgid "No reseller with activated software installer found!"
 msgstr "有効なソフトウェアインストーラーを持ったリセラーは見つかりませんでした。"
@@ -3184,9 +3183,6 @@ msgstr "アクティベーションを待っているソフトウェアはあり
 msgid "No statistics found for the given period. Try another period."
 msgstr "統計情報は指定された期間に見つかりませんでした。別の期間をお試しください。"
 
-msgid "No unassigned users were found in the database."
-msgstr "割当てられていないユーザーがデータベース内に見つかりませんでした。"
-
 msgid "No update available"
 msgstr "利用可能なアップデートがありません"
 
@@ -3195,12 +3191,6 @@ msgstr "まだ使用されていません"
 
 msgid "No user found."
 msgstr "ユーザーが見つかりませんでした。"
-
-msgid "No users found for this reseller."
-msgstr "リセラーのユーザーが見つかりません。"
-
-msgid "No."
-msgstr "No."
 
 msgid "Normal"
 msgstr "ノーマル"
@@ -3305,9 +3295,6 @@ msgstr "その他設定"
 
 msgid "Overview"
 msgstr "概要"
-
-msgid "Owner"
-msgstr "オーナー"
 
 msgid "PB"
 msgstr "PB"
@@ -3512,9 +3499,6 @@ msgstr ""
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
 msgstr "別のディレクトリを選択してください。 %s (%s) がインストールされています。"
-
-msgid "Please select at least one user."
-msgstr "少なくとも1人のユーザーを選択してください。"
 
 msgid "Please specify a message content."
 msgstr "メッセージの内容を指定してください。"
@@ -4011,9 +3995,6 @@ msgstr "リセラーと顧客"
 msgid "Reseller and customer levels"
 msgstr "リセラーと顧客レベル"
 
-msgid "Reseller assignment"
-msgstr "リセラーの割り当て"
-
 msgid "Reseller assignments"
 msgstr "リセラーの割り当て"
 
@@ -4028,9 +4009,6 @@ msgstr "リセラーレベル"
 
 msgid "Reseller list"
 msgstr "リセラーリスト"
-
-msgid "Reseller list is empty."
-msgstr "リセラーリストは未登録です。"
 
 msgid "Reseller name"
 msgstr "リセラー名"
@@ -4055,6 +4033,9 @@ msgstr "リセラーのアクセス権合計"
 
 msgid "Reseller's layout color successfully updated."
 msgstr "リセラーのレイアウトが更新されました。"
+
+msgid "Reseller(s) successfully moved."
+msgstr ""
 
 msgid "Reseller/IP usage statistics"
 msgstr "リセラー/IPアドレス使用状況"
@@ -4847,12 +4828,6 @@ msgstr "チケットは再開されました。"
 msgid "Ticket with Id '%d' was not found."
 msgstr "ID '%d'のチケットは見つかりません。"
 
-msgid "To Admin"
-msgstr "管理者 へ"
-
-msgid "To reseller"
-msgstr "リセラーへ"
-
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr "このプラグインを解除するには、 %s ファイルを編集する必要があります。"
@@ -5117,9 +5092,6 @@ msgstr "ユーザー"
 msgid "User (first and last) name"
 msgstr "ユーザーの氏名（姓と名）"
 
-msgid "User assignment"
-msgstr "ユーザーの割り当て"
-
 msgid "User data were not updated."
 msgstr "ユーザーデータは更新されませんでした。"
 
@@ -5269,6 +5241,12 @@ msgstr "`自動'に設定すると、自動的にIPアドレスが設定され�
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr "`手動'に設定すると、管理者に設定は任されています。"
 
+msgid ""
+"When you move a customer to another reseller, limits and permissions of that"
+" reseller are automatically extended when necessary, according the customer "
+"own limits and permissions."
+msgstr ""
+
 msgid "Wrong or unallowed IP address."
 msgstr "間違っていたり、許可されていないIPアドレス。"
 
@@ -5394,12 +5372,6 @@ msgid ""
 "account, you must first lower the quota assigned to one of your other mail "
 "account."
 msgstr ""
-
-#, php-format
-msgid ""
-"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
-"for the <b>%2$s</b> service."
-msgstr "<b>%1$s</b>に代理店を移動することはできません ,<br><b>%2$s</b> サービスの制限をにより。"
 
 msgid "You cannot remove an IP that is assigned to a reseller."
 msgstr "代理店に割り当てられているIPアドレスを削除することはできません。"
@@ -5563,11 +5535,17 @@ msgstr "アップロード/ダウンロードするファイルを選択する�
 msgid "You must select at least one catch-all address."
 msgstr ""
 
+msgid "You must select at least one customer."
+msgstr ""
+
 msgid "You must select at least one mail account to delete."
 msgstr ""
 
 msgid "You must select at least one plugin."
 msgstr "少なくとも一つのプラグインを選択する必要があります。"
+
+msgid "You must select at least one reseller."
+msgstr ""
 
 msgid "You must specify a message."
 msgstr "メッセージを指定する必要があります。"
@@ -5869,6 +5847,12 @@ msgid "suspended"
 msgstr ""
 
 msgid "that match with"
+msgstr ""
+
+msgid "to administrator"
+msgstr ""
+
+msgid "to reseller"
 msgstr ""
 
 msgid "traffic"

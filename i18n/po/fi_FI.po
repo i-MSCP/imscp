@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-05 00:52+0000\n"
+"POT-Creation-Date: 2017-09-08 08:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jari <info@jkwebdesign.fi>, 2017\n"
 "Language-Team: Finnish (Finland) (https://www.transifex.com/i-mscp/teams/576/fi_FI/)\n"
@@ -71,14 +71,6 @@ msgid "%d strings translated"
 msgstr "%d riviä käännetty"
 
 #, php-format
-msgid "%s / %s"
-msgstr ""
-
-#, php-format
-msgid "%s / ∞"
-msgstr ""
-
-#, php-format
 msgid "%s account successfully deleted."
 msgstr "%s tili on poistettu onnistuneesti."
 
@@ -109,14 +101,6 @@ msgstr "%s tietue"
 #, php-format
 msgid "%s webmail"
 msgstr "%s webmail"
-
-#, php-format
-msgid "%s%% [%s / %s]"
-msgstr ""
-
-#, php-format
-msgid "%s%% [%s / ∞]"
-msgstr ""
 
 #, php-format
 msgid ""
@@ -162,22 +146,6 @@ msgstr ""
 
 msgid "(usually named"
 msgstr "(nimetty yleensä "
-
-#, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
-msgstr ""
-
-#, php-format
-msgid ""
-"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
-"reseller.<br>"
-msgstr ""
-
-#, php-format
-msgid ""
-"<b>%s</b> has IP address that cannot be managed from the destination "
-"reseller!<br>This user cannot be moved!"
-msgstr ""
 
 msgid "A PHP extension stopped the file upload."
 msgstr "PHP:n laajennus pysäytti tiedoston lähetyksen."
@@ -450,8 +418,8 @@ msgstr "Ylläpito / Käyttäjät / Lisää jälleenmyyjä"
 msgid "Admin / Users / Circular"
 msgstr "Ylläpitäjä / Käyttäjät / Joukkokirje"
 
-msgid "Admin / Users / Customers Assignment"
-msgstr "Ylläpitäjä / Käyttäjät / Asiakasmääritys"
+msgid "Admin / Users / Customer Assignments"
+msgstr ""
 
 msgid "Admin / Users / Edit Reseller"
 msgstr "Ylläpito / Käyttäjät / Muokkaa jälleenmyyjää"
@@ -468,8 +436,8 @@ msgstr "Ylläpito / Käyttäjät / Yhteenveto / Muokkaa ylläpitäjää"
 msgid "Admin / Users / Overview / Edit Customer"
 msgstr ""
 
-msgid "Admin / Users / Resellers Assignment"
-msgstr "Ylläpito / Käyttäjät / Määritä jälleenmyyjä"
+msgid "Admin / Users / Reseller Assignments"
+msgstr ""
 
 msgid "Admin / Users / Sessions"
 msgstr "Ylläpito / Käyttäjät / Istunnot"
@@ -719,6 +687,12 @@ msgid ""
 "repository?"
 msgstr "Haluatko varmasti asentaa tämän paketin verkko-ohjelmavarastosta?"
 
+msgid "Are you sure you want to move the selected customers?"
+msgstr ""
+
+msgid "Are you sure you want to move the selected resellers?"
+msgstr ""
+
 msgid "Are you sure you want to restore the backup?"
 msgstr "Oletko varma että haluat palautaa varmuuskopion?"
 
@@ -819,6 +793,16 @@ msgid "Behind"
 msgstr "Lopussa"
 
 msgid ""
+"Below you can move customers from a reseller to another reseller by "
+"selecting them and clicking the submit button."
+msgstr ""
+
+msgid ""
+"Below you can move resellers from an administrator to another administrator "
+"by selecting them and clicking the submit button."
+msgstr ""
+
+msgid ""
 "Below, you can activate the external mail feature for one or many of your "
 "domains. Note that activating the external mail feature configures our "
 "server to relay your mail through your own mail server, but that no DNS "
@@ -842,9 +826,6 @@ msgstr "Sisältö puuttuu."
 
 msgid "Bogomips"
 msgstr "Bogomipsit"
-
-msgid "Both source and destination are identical."
-msgstr "Sekä lähde että kohde ovat identtiset."
 
 msgid "Bruteforce detection"
 msgstr "Bruteforce-tunnistus"
@@ -1272,6 +1253,18 @@ msgid "Couldn't delete subdomain. An unexpected error occurred."
 msgstr ""
 
 #, php-format
+msgid "Couldn't find domain properties for customer with ID %d."
+msgstr ""
+
+#, php-format
+msgid "Couldn't move customer with ID %d: %s"
+msgstr ""
+
+#, php-format
+msgid "Couldn't move reseller with ID %d: %s"
+msgstr ""
+
+#, php-format
 msgid "Couldn't validate DNS resource record: %s"
 msgstr ""
 
@@ -1332,9 +1325,6 @@ msgstr "Vaihtoehtoiset valikot"
 msgid "Customer"
 msgstr "Asiakas"
 
-msgid "Customer ID"
-msgstr "Asiakastunnus"
-
 msgid "Customer account"
 msgstr "Asiakkaan tili"
 
@@ -1361,6 +1351,9 @@ msgstr "Asiakkaan käyttö"
 
 msgid "Customer level"
 msgstr "Asiakkaan taso"
+
+msgid "Customer name"
+msgstr ""
 
 msgid "Customer successfully scheduled for addition."
 msgstr "Asiakas ajastettu lisättäväksi onnistuneesti."
@@ -2185,6 +2178,9 @@ msgstr "Vapaana"
 msgid "From"
 msgstr "Keneltä"
 
+msgid "From administrator"
+msgstr ""
+
 msgid "From reseller"
 msgstr "Jälleenmyyjältä"
 
@@ -2854,9 +2850,6 @@ msgstr "Manuaalinen"
 msgid "Manual catch-all addresses"
 msgstr ""
 
-msgid "Mark"
-msgstr "Valitse"
-
 msgid "Max number of login attempts"
 msgstr "Max kirjautumisyritystä"
 
@@ -2956,11 +2949,11 @@ msgstr "Liitos"
 msgid "Mount point"
 msgstr "Liitospiste"
 
-msgid "Move"
-msgstr "Siirrä"
+msgid "Move selected customers"
+msgstr ""
 
-msgid "Moving aborted."
-msgstr "Siirto keskeytetty."
+msgid "Move selected resellers"
+msgstr ""
 
 msgid "N/A"
 msgstr "Ei asetettu"
@@ -3017,6 +3010,9 @@ msgstr "Ei saatavilla"
 msgid "No custom menu found."
 msgstr "Ei valinnaisia valikoita"
 
+msgid "No customer found for the selected reseller."
+msgstr ""
+
 msgid "No domain available for new software instance."
 msgstr ""
 
@@ -3036,6 +3032,9 @@ msgid "No mail account has been deleted."
 msgstr ""
 
 msgid "No reseller available to add the permissions."
+msgstr ""
+
+msgid "No reseller found for the selected administrator."
 msgstr ""
 
 msgid "No reseller with activated software installer found!"
@@ -3062,9 +3061,6 @@ msgstr "Ei aktivointia odottavia ohjelmistoja"
 msgid "No statistics found for the given period. Try another period."
 msgstr "Tilastoja ei löydy annetulle ajanjaksolle. Kokeile toista ajanjaksoa."
 
-msgid "No unassigned users were found in the database."
-msgstr ""
-
 msgid "No update available"
 msgstr "Päivityksiä ei ole saatavilla"
 
@@ -3073,12 +3069,6 @@ msgstr "Ei vielä käytössä"
 
 msgid "No user found."
 msgstr "Käyttäjää ei löydy."
-
-msgid "No users found for this reseller."
-msgstr "Ei käyttäjiä."
-
-msgid "No."
-msgstr "Nro."
 
 msgid "Normal"
 msgstr "Normaali"
@@ -3183,9 +3173,6 @@ msgstr "Muut asetukset"
 
 msgid "Overview"
 msgstr "Etusivu"
-
-msgid "Owner"
-msgstr "Omistaja"
 
 msgid "PB"
 msgstr "PB"
@@ -3392,9 +3379,6 @@ msgstr ""
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
 msgstr "Valitse toinen kansio. %s (%s) on jo asennettu tänne."
-
-msgid "Please select at least one user."
-msgstr "Valitse vähintään yksi käyttäjä."
 
 msgid "Please specify a message content."
 msgstr "Ole hyvä ja määritä viestin sisältö."
@@ -3889,9 +3873,6 @@ msgstr "Jälleenmyyjä ja asiakas"
 msgid "Reseller and customer levels"
 msgstr "Jälleenmyyjän ja asiakkaan taso"
 
-msgid "Reseller assignment"
-msgstr "Jälleenmyyjämääritys"
-
 msgid "Reseller assignments"
 msgstr ""
 
@@ -3906,9 +3887,6 @@ msgstr "Jälleenmyyjätaso"
 
 msgid "Reseller list"
 msgstr "Jällenmyyjälista"
-
-msgid "Reseller list is empty."
-msgstr "Jälleenmyyjien lista on tyhjä."
 
 msgid "Reseller name"
 msgstr "Jälleenmyyjä"
@@ -3933,6 +3911,9 @@ msgstr "Jälleenmyyjiä oikeuksilla yhteensä"
 
 msgid "Reseller's layout color successfully updated."
 msgstr "Jälleenmyyjien käyttöliittymän väri vaihdettu."
+
+msgid "Reseller(s) successfully moved."
+msgstr ""
 
 msgid "Reseller/IP usage statistics"
 msgstr "Jälleenmyyjä / IP-osoitteiden käyttötilasto"
@@ -4731,12 +4712,6 @@ msgstr "Tukipyyntö uudelleenavattu onnistuneesti."
 msgid "Ticket with Id '%d' was not found."
 msgstr "Tukipyyntöä ID:llä '%d' ei löydy."
 
-msgid "To Admin"
-msgstr "Ylläpitäjälle"
-
-msgid "To reseller"
-msgstr "Jälleenmyyjälle"
-
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr "Poistaaksesi tämän liitännäisen suojauksen, muokkaa tiedostoa %s"
@@ -5001,9 +4976,6 @@ msgstr "Käyttäjä"
 msgid "User (first and last) name"
 msgstr "Käyttäjän (etu ja suku) nimi"
 
-msgid "User assignment"
-msgstr "Käyttäjämääritys"
-
 msgid "User data were not updated."
 msgstr "Käyttäjän tietoja ei päivitetty."
 
@@ -5153,6 +5125,12 @@ msgstr ""
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr ""
 
+msgid ""
+"When you move a customer to another reseller, limits and permissions of that"
+" reseller are automatically extended when necessary, according the customer "
+"own limits and permissions."
+msgstr ""
+
 msgid "Wrong or unallowed IP address."
 msgstr ""
 
@@ -5279,12 +5257,6 @@ msgid ""
 "assigned all your mail quota. If you want make this account a normal mail "
 "account, you must first lower the quota assigned to one of your other mail "
 "account."
-msgstr ""
-
-#, php-format
-msgid ""
-"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
-"for the <b>%2$s</b> service."
 msgstr ""
 
 msgid "You cannot remove an IP that is assigned to a reseller."
@@ -5458,11 +5430,17 @@ msgstr "Sinun täytyy valita tiedosto ladattavaksi."
 msgid "You must select at least one catch-all address."
 msgstr ""
 
+msgid "You must select at least one customer."
+msgstr ""
+
 msgid "You must select at least one mail account to delete."
 msgstr ""
 
 msgid "You must select at least one plugin."
 msgstr "Valitse vähintään yksi lisäosa."
+
+msgid "You must select at least one reseller."
+msgstr ""
 
 msgid "You must specify a message."
 msgstr "Viesti ei voi olla tyhjä"
@@ -5766,6 +5744,12 @@ msgid "suspended"
 msgstr ""
 
 msgid "that match with"
+msgstr ""
+
+msgid "to administrator"
+msgstr ""
+
+msgid "to reseller"
 msgstr ""
 
 msgid "traffic"

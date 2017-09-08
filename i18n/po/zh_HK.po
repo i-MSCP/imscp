@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-05 00:52+0000\n"
+"POT-Creation-Date: 2017-09-08 08:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>, 2017\n"
 "Language-Team: Chinese (Hong Kong) (https://www.transifex.com/i-mscp/teams/576/zh_HK/)\n"
@@ -70,14 +70,6 @@ msgid "%d strings translated"
 msgstr ""
 
 #, php-format
-msgid "%s / %s"
-msgstr ""
-
-#, php-format
-msgid "%s / ∞"
-msgstr ""
-
-#, php-format
 msgid "%s account successfully deleted."
 msgstr ""
 
@@ -107,14 +99,6 @@ msgstr ""
 
 #, php-format
 msgid "%s webmail"
-msgstr ""
-
-#, php-format
-msgid "%s%% [%s / %s]"
-msgstr ""
-
-#, php-format
-msgid "%s%% [%s / ∞]"
 msgstr ""
 
 #, php-format
@@ -157,22 +141,6 @@ msgstr ""
 
 msgid "(usually named"
 msgstr "（通常名稱"
-
-#, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br>"
-msgstr ""
-
-#, php-format
-msgid ""
-"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
-"reseller.<br>"
-msgstr ""
-
-#, php-format
-msgid ""
-"<b>%s</b> has IP address that cannot be managed from the destination "
-"reseller!<br>This user cannot be moved!"
-msgstr ""
 
 msgid "A PHP extension stopped the file upload."
 msgstr ""
@@ -442,7 +410,7 @@ msgstr ""
 msgid "Admin / Users / Circular"
 msgstr ""
 
-msgid "Admin / Users / Customers Assignment"
+msgid "Admin / Users / Customer Assignments"
 msgstr ""
 
 msgid "Admin / Users / Edit Reseller"
@@ -460,7 +428,7 @@ msgstr ""
 msgid "Admin / Users / Overview / Edit Customer"
 msgstr ""
 
-msgid "Admin / Users / Resellers Assignment"
+msgid "Admin / Users / Reseller Assignments"
 msgstr ""
 
 msgid "Admin / Users / Sessions"
@@ -711,6 +679,12 @@ msgid ""
 "repository?"
 msgstr ""
 
+msgid "Are you sure you want to move the selected customers?"
+msgstr ""
+
+msgid "Are you sure you want to move the selected resellers?"
+msgstr ""
+
 msgid "Are you sure you want to restore the backup?"
 msgstr "你確定想恢復備份？"
 
@@ -811,6 +785,16 @@ msgid "Behind"
 msgstr ""
 
 msgid ""
+"Below you can move customers from a reseller to another reseller by "
+"selecting them and clicking the submit button."
+msgstr ""
+
+msgid ""
+"Below you can move resellers from an administrator to another administrator "
+"by selecting them and clicking the submit button."
+msgstr ""
+
+msgid ""
 "Below, you can activate the external mail feature for one or many of your "
 "domains. Note that activating the external mail feature configures our "
 "server to relay your mail through your own mail server, but that no DNS "
@@ -833,9 +817,6 @@ msgid "Body is missing."
 msgstr ""
 
 msgid "Bogomips"
-msgstr ""
-
-msgid "Both source and destination are identical."
 msgstr ""
 
 msgid "Bruteforce detection"
@@ -1255,6 +1236,18 @@ msgid "Couldn't delete subdomain. An unexpected error occurred."
 msgstr ""
 
 #, php-format
+msgid "Couldn't find domain properties for customer with ID %d."
+msgstr ""
+
+#, php-format
+msgid "Couldn't move customer with ID %d: %s"
+msgstr ""
+
+#, php-format
+msgid "Couldn't move reseller with ID %d: %s"
+msgstr ""
+
+#, php-format
 msgid "Couldn't validate DNS resource record: %s"
 msgstr ""
 
@@ -1315,9 +1308,6 @@ msgstr "自定義功能表"
 msgid "Customer"
 msgstr ""
 
-msgid "Customer ID"
-msgstr "客戶 ID"
-
 msgid "Customer account"
 msgstr ""
 
@@ -1343,6 +1333,9 @@ msgid "Customer consumption"
 msgstr ""
 
 msgid "Customer level"
+msgstr ""
+
+msgid "Customer name"
 msgstr ""
 
 msgid "Customer successfully scheduled for addition."
@@ -2168,6 +2161,9 @@ msgstr "空閒"
 msgid "From"
 msgstr "From"
 
+msgid "From administrator"
+msgstr ""
+
 msgid "From reseller"
 msgstr "來自代理商"
 
@@ -2826,9 +2822,6 @@ msgstr ""
 msgid "Manual catch-all addresses"
 msgstr ""
 
-msgid "Mark"
-msgstr "標記"
-
 msgid "Max number of login attempts"
 msgstr "最多嘗試登入次數"
 
@@ -2926,10 +2919,10 @@ msgstr "掛載"
 msgid "Mount point"
 msgstr "掛載點"
 
-msgid "Move"
-msgstr "移動"
+msgid "Move selected customers"
+msgstr ""
 
-msgid "Moving aborted."
+msgid "Move selected resellers"
 msgstr ""
 
 msgid "N/A"
@@ -2987,6 +2980,9 @@ msgstr ""
 msgid "No custom menu found."
 msgstr ""
 
+msgid "No customer found for the selected reseller."
+msgstr ""
+
 msgid "No domain available for new software instance."
 msgstr ""
 
@@ -3006,6 +3002,9 @@ msgid "No mail account has been deleted."
 msgstr ""
 
 msgid "No reseller available to add the permissions."
+msgstr ""
+
+msgid "No reseller found for the selected administrator."
 msgstr ""
 
 msgid "No reseller with activated software installer found!"
@@ -3032,9 +3031,6 @@ msgstr ""
 msgid "No statistics found for the given period. Try another period."
 msgstr ""
 
-msgid "No unassigned users were found in the database."
-msgstr ""
-
 msgid "No update available"
 msgstr ""
 
@@ -3043,12 +3039,6 @@ msgstr ""
 
 msgid "No user found."
 msgstr ""
-
-msgid "No users found for this reseller."
-msgstr ""
-
-msgid "No."
-msgstr "否."
 
 msgid "Normal"
 msgstr ""
@@ -3153,9 +3143,6 @@ msgstr "其他設定"
 
 msgid "Overview"
 msgstr "概覽"
-
-msgid "Owner"
-msgstr "擁有人"
 
 msgid "PB"
 msgstr ""
@@ -3358,9 +3345,6 @@ msgstr ""
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
-msgstr ""
-
-msgid "Please select at least one user."
 msgstr ""
 
 msgid "Please specify a message content."
@@ -3851,9 +3835,6 @@ msgstr ""
 msgid "Reseller and customer levels"
 msgstr ""
 
-msgid "Reseller assignment"
-msgstr "代理商分配"
-
 msgid "Reseller assignments"
 msgstr ""
 
@@ -3867,9 +3848,6 @@ msgid "Reseller level"
 msgstr "代理商級別"
 
 msgid "Reseller list"
-msgstr ""
-
-msgid "Reseller list is empty."
 msgstr ""
 
 msgid "Reseller name"
@@ -3894,6 +3872,9 @@ msgid "Reseller with permissions total"
 msgstr ""
 
 msgid "Reseller's layout color successfully updated."
+msgstr ""
+
+msgid "Reseller(s) successfully moved."
 msgstr ""
 
 msgid "Reseller/IP usage statistics"
@@ -4680,12 +4661,6 @@ msgstr ""
 msgid "Ticket with Id '%d' was not found."
 msgstr ""
 
-msgid "To Admin"
-msgstr "To 管理員"
-
-msgid "To reseller"
-msgstr "到代理商"
-
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr ""
@@ -4950,9 +4925,6 @@ msgstr "使用者"
 msgid "User (first and last) name"
 msgstr "使用者名稱（姓氏和名字）"
 
-msgid "User assignment"
-msgstr "使用者分配"
-
 msgid "User data were not updated."
 msgstr ""
 
@@ -5100,6 +5072,12 @@ msgstr ""
 msgid "When set to `Manual', the configuration is left to the administrator."
 msgstr ""
 
+msgid ""
+"When you move a customer to another reseller, limits and permissions of that"
+" reseller are automatically extended when necessary, according the customer "
+"own limits and permissions."
+msgstr ""
+
 msgid "Wrong or unallowed IP address."
 msgstr ""
 
@@ -5221,12 +5199,6 @@ msgid ""
 "assigned all your mail quota. If you want make this account a normal mail "
 "account, you must first lower the quota assigned to one of your other mail "
 "account."
-msgstr ""
-
-#, php-format
-msgid ""
-"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
-"for the <b>%2$s</b> service."
 msgstr ""
 
 msgid "You cannot remove an IP that is assigned to a reseller."
@@ -5391,10 +5363,16 @@ msgstr ""
 msgid "You must select at least one catch-all address."
 msgstr ""
 
+msgid "You must select at least one customer."
+msgstr ""
+
 msgid "You must select at least one mail account to delete."
 msgstr ""
 
 msgid "You must select at least one plugin."
+msgstr ""
+
+msgid "You must select at least one reseller."
 msgstr ""
 
 msgid "You must specify a message."
@@ -5696,6 +5674,12 @@ msgid "suspended"
 msgstr ""
 
 msgid "that match with"
+msgstr ""
+
+msgid "to administrator"
+msgstr ""
+
+msgid "to reseller"
 msgstr ""
 
 msgid "traffic"
