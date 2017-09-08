@@ -136,7 +136,7 @@ function getClientItemCountsAndLimits($clientId)
 }
 
 /**
- * Returns statistique for the given reseller
+ * Returns statistics about consumed items for the given reseller
  *
  * @param  int $resellerId Reseller unique indentifier
  * @return array An array containing total consumed for each items

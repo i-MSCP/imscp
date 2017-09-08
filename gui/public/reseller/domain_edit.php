@@ -53,7 +53,7 @@ function getMailData($domainId, $mailQuota)
 
         $mailData = [
             'quota_sum'    => bytesHuman($row['quota']),
-            'quota_limit'  => $mailQuota == 0 ? '∞' : bytesHuman($mailQuota),
+            'quota_limit'  => $mailQuota == 0 ? '∞' : mebibyteHuman($mailQuota),
             'nb_mailboxes' => $row['nb_mailboxes']
         ];
     }
@@ -153,7 +153,7 @@ function &getData($domainId, $forUpdate = false)
     }
 
     if (($row['domain_status'] != 'ok'
-            && ($row['domain_status'] != 'disabled') || $row['status_not_ok'] > 0)
+        && ($row['domain_status'] != 'disabled') || $row['status_not_ok'] > 0)
     ) {
         set_page_message(tr("The domain or at least one of its entities has a different status than 'ok'."), 'warning');
         redirectTo('users.php');
@@ -284,6 +284,10 @@ function generatePage(TemplateEngine $tpl, &$data)
  */
 function generateLimitsForm(TemplateEngine $tpl, &$data)
 {
+    list(, $subdomainCount, $domainAliasesCount, $mailsCount, $ftpUsersCount, $sqlDbCount, $sqlUserCount, $trafficUsage,
+        $diskUsage
+        ) = getResellerStats($_SESSION['user_id']);
+
     $tpl->assign([
         'TR_DOMAIN_LIMITS'        => tohtml(tr('Domains limit')),
         'TR_LIMIT_VALUE'          => tohtml(tr('Limit value')),
@@ -301,11 +305,11 @@ function generateLimitsForm(TemplateEngine $tpl, &$data)
             'SUBDOMAIN_LIMIT'                   => tohtml($data['domain_subd_limit']),
             'TR_CUSTOMER_SUBDOMAINS_COMSUPTION' => $data['fallback_domain_subd_limit'] != -1
                 ? tohtml($data['nbSubdomains']) . ' / ' . (
-                    $data['fallback_domain_subd_limit'] != 0 ? tohtml($data['fallback_domain_subd_limit']) : '∞'
+                $data['fallback_domain_subd_limit'] != 0 ? tohtml($data['fallback_domain_subd_limit']) : '∞'
                 ) : tohtml(tr('Disabled')),
-            'TR_RESELLER_SUBDOMAINS_COMSUPTION' => tohtml($data['current_sub_cnt']) . ' / ' . (
+            'TR_RESELLER_SUBDOMAINS_COMSUPTION' => tohtml($subdomainCount) . ' / ' . (
                 $data['max_sub_cnt'] != 0 ? tohtml($data['max_sub_cnt']) : '∞'
-             )
+                )
         ]);
     }
 
@@ -314,13 +318,13 @@ function generateLimitsForm(TemplateEngine $tpl, &$data)
         $tpl->assign('DOMAIN_ALIASES_LIMIT_BLOCK', '');
     } else {
         $tpl->assign([
-            'TR_ALIASSES_LIMIT'                      => tohtml(tr('Domain aliases limit')) . '<br/><i>(-1 ' . tohtml(tr('disabled'))
+            'TR_ALIASSES_LIMIT'                      => tohtml(tr('Domain aliases limit')) . '<br><i>(-1 ' . tohtml(tr('disabled'))
                 . ', 0 ∞)</i>',
             'DOMAIN_ALIASSES_LIMIT'                  => tohtml($data['domain_alias_limit']),
             'TR_CUSTOMER_DOMAIN_ALIASSES_COMSUPTION' => $data['fallback_domain_alias_limit'] != -1
                 ? tohtml($data['nbAliasses']) . ' / ' . ($data['fallback_domain_alias_limit'] != 0
                     ? tohtml($data['fallback_domain_alias_limit']) : '∞') : tohtml(tr('Disabled')),
-            'TR_RESELLER_DOMAIN_ALIASSES_COMSUPTION' => tohtml($data['current_als_cnt']) . ' / '
+            'TR_RESELLER_DOMAIN_ALIASSES_COMSUPTION' => tohtml($domainAliasesCount) . ' / '
                 . ($data['max_als_cnt'] != 0 ? tohtml($data['max_als_cnt']) : '∞')
         ]);
     }
@@ -332,18 +336,18 @@ function generateLimitsForm(TemplateEngine $tpl, &$data)
         $mailData = getMailData($data['domain_id'], $data['fallback_mail_quota']);
 
         $tpl->assign([
-            'TR_MAIL_ACCOUNTS_LIMIT'               => tohtml(tr('Mail accounts limit')) . '<br/><i>(-1 ' . tohtml(tr('disabled'))
-                . ', 0 ∞)</i>',
+            'TR_MAIL_ACCOUNTS_LIMIT'               => tohtml(tr('Mail accounts limit')) . '<br><i>(-1 ' . tohtml(tr('disabled')) . ', 0 ∞)</i>',
             'MAIL_ACCOUNTS_LIMIT'                  => tohtml($data['domain_mailacc_limit']),
             'TR_CUSTOMER_MAIL_ACCOUNTS_COMSUPTION' => $data['fallback_domain_mailacc_limit'] != -1
                 ? tohtml($data['nbMailAccounts']) . ' / ' . ($data['fallback_domain_mailacc_limit'] != 0
                     ? tohtml($data['fallback_domain_mailacc_limit']) : '∞') : tr('Disabled'),
-            'TR_RESELLER_MAIL_ACCOUNTS_COMSUPTION' => tohtml($data['current_mail_cnt']) . ' / '
+            'TR_RESELLER_MAIL_ACCOUNTS_COMSUPTION' => tohtml($mailsCount) . ' / '
                 . ($data['max_mail_cnt'] != 0 ? tohtml($data['max_mail_cnt']) : '∞'),
-            'TR_MAIL_QUOTA'                        => tohtml(tr('Mail quota [MiB]')) . '<br/><i>(0 ∞)</i>',
-            'MAIL_QUOTA'                           => $data['mail_quota'] != 0 ? tohtml($data['mail_quota']) : '0',
-            'TR_CUSTOMER_MAIL_QUOTA_COMSUPTION'    => $mailData['quota_sum'] . ' / ' . $mailData['quota_limit'],
-            'TR_NO_AVAILABLE'                      => tohtml(tr('No available'))
+
+            'TR_MAIL_QUOTA'                     => tohtml(tr('Mail quota [MiB]')) . '<br/><i>(0 ∞)</i>',
+            'MAIL_QUOTA'                        => $data['mail_quota'] != 0 ? tohtml($data['mail_quota']) : 0,
+            'TR_CUSTOMER_MAIL_QUOTA_COMSUPTION' => $mailData['quota_sum'] . ' / ' . $mailData['quota_limit'],
+            'TR_NO_AVAILABLE'                   => tohtml(tr('N/A'))
         ]);
     }
 
@@ -358,7 +362,7 @@ function generateLimitsForm(TemplateEngine $tpl, &$data)
             'TR_CUSTOMER_FTP_ACCOUNTS_COMSUPTION' => $data['fallback_domain_ftpacc_limit'] != -1
                 ? tohtml($data['nbFtpAccounts']) . ' / ' . ($data['fallback_domain_ftpacc_limit'] != 0
                     ? tohtml($data['fallback_domain_ftpacc_limit']) : '∞') : tohtml(tr('Disabled')),
-            'TR_RESELLER_FTP_ACCOUNTS_COMSUPTION' => tohtml($data['current_ftp_cnt']) . ' / '
+            'TR_RESELLER_FTP_ACCOUNTS_COMSUPTION' => tohtml($ftpUsersCount) . ' / '
                 . ($data['max_ftp_cnt'] != 0 ? tohtml($data['max_ftp_cnt']) : '∞')
         ]);
     }
@@ -374,7 +378,7 @@ function generateLimitsForm(TemplateEngine $tpl, &$data)
             'TR_CUSTOMER_SQL_DATABASES_COMSUPTION' => $data['fallback_domain_sqld_limit'] != -1
                 ? tohtml($data['nbSqlDatabases']) . ' / ' . ($data['fallback_domain_sqld_limit'] != 0
                     ? tohtml($data['fallback_domain_sqld_limit']) : '∞') : tr('Disabled'),
-            'TR_RESELLER_SQL_DATABASES_COMSUPTION' => tohtml($data['current_sql_db_cnt']) . ' / '
+            'TR_RESELLER_SQL_DATABASES_COMSUPTION' => tohtml($sqlDbCount) . ' / '
                 . ($data['max_sql_db_cnt'] != 0 ? tohtml($data['max_sql_db_cnt']) : '∞'),
             'TR_SQL_USERS_LIMIT'                   => tohtml(tr('SQL users limit')) . '<br><i>(-1 ' . tohtml(tr('disabled'))
                 . ', 0 ∞)</i>',
@@ -382,7 +386,7 @@ function generateLimitsForm(TemplateEngine $tpl, &$data)
             'TR_CUSTOMER_SQL_USERS_COMSUPTION'     => $data['fallback_domain_sqlu_limit'] != -1
                 ? tohtml($data['nbSqlUsers']) . ' / ' . ($data['fallback_domain_sqlu_limit'] != 0
                     ? tohtml($data['fallback_domain_sqlu_limit']) : '∞') : tohtml(tr('Disabled')),
-            'TR_RESELLER_SQL_USERS_COMSUPTION'     => tohtml($data['current_sql_user_cnt']) . ' / '
+            'TR_RESELLER_SQL_USERS_COMSUPTION'     => tohtml($sqlUserCount) . ' / '
                 . ($data['max_sql_user_cnt'] != 0 ? tohtml($data['max_sql_user_cnt']) : '∞')
         ]);
     }
@@ -391,20 +395,20 @@ function generateLimitsForm(TemplateEngine $tpl, &$data)
     $tpl->assign([
         'TR_TRAFFIC_LIMIT'                => tohtml(tr('Monthly traffic limit [MiB]')) . '<br/><i>(0 ∞)</i>',
         'TRAFFIC_LIMIT'                   => tohtml($data['domain_traffic_limit']),
-        'TR_CUSTOMER_TRAFFIC_COMSUPTION'  => tohtml(bytesHuman($data['domainTraffic'], 'MiB')) . ' / '
+        'TR_CUSTOMER_TRAFFIC_COMSUPTION'  => tohtml(bytesHuman($data['domainTraffic'])) . ' / '
             . ($data['fallback_domain_traffic_limit'] != 0
-                ? tohtml(bytesHuman($data['fallback_domain_traffic_limit'] * 1048576)) : '∞'),
-        'TR_RESELLER_TRAFFIC_COMSUPTION'  => tohtml(bytesHuman($data['current_traff_amnt'] * 1048576)) . ' / '
-            . ($data['max_traff_amnt'] != 0 ? tohtml(bytesHuman($data['max_traff_amnt'] * 1048576)) : '∞'),
+                ? tohtml(mebibyteHuman($data['fallback_domain_traffic_limit'])) : '∞'),
+        'TR_RESELLER_TRAFFIC_COMSUPTION'  => tohtml(bytesHuman($trafficUsage)) . ' / '
+            . ($data['max_traff_amnt'] != 0 ? tohtml(mebibyteHuman($data['max_traff_amnt'])) : '∞'),
 
         // Disk space limit
         'TR_DISK_LIMIT'                   => tohtml(tr('Disk space limit [MiB]')) . '<br/><i>(0 ∞)</span>',
         'DISK_LIMIT'                      => tohtml($data['domain_disk_limit']),
-        'TR_CUSTOMER_DISKPACE_COMSUPTION' => tohtml(bytesHuman($data['domain_disk_usage'], 'MiB')) . ' / '
+        'TR_CUSTOMER_DISKPACE_COMSUPTION' => tohtml(bytesHuman($data['domain_disk_usage'])) . ' / '
             . ($data['fallback_domain_disk_limit'] != 0
-                ? tohtml(bytesHuman($data['fallback_domain_disk_limit'] * 1048576)) : '∞'),
-        'TR_RESELLER_DISKPACE_COMSUPTION' => tohtml(bytesHuman($data['current_disk_amnt'] * 1048576)) . ' / '
-            . ($data['max_disk_amnt'] != 0 ? tohtml(bytesHuman($data['max_disk_amnt'] * 1048576)) : '∞')
+                ? tohtml(mebibyteHuman($data['fallback_domain_disk_limit'])) : '∞'),
+        'TR_RESELLER_DISKPACE_COMSUPTION' => tohtml(bytesHuman($diskUsage)) . ' / '
+            . ($data['max_disk_amnt'] != 0 ? tohtml(mebibyteHuman($data['max_disk_amnt'])) : '∞')
     ]);
 } // end _reseller_generateLimitsForm()
 
@@ -1067,9 +1071,12 @@ function isValidServiceLimit(
                 'The %s limit for this customer cannot be unlimited because your are limited for this service.',
                 $translatedServiceName
             ),
-            'error');
+            'error'
+        );
         return false;
-    } elseif ($newCustomerLimit == -1 && $customerConsumption > 0) {
+    }
+
+    if ($newCustomerLimit == -1 && $customerConsumption > 0) {
         set_page_message(
             tr(
                 "The %s limit for this customer cannot be set to 'disabled' because he has already %d %s.",
@@ -1080,7 +1087,9 @@ function isValidServiceLimit(
             'error'
         );
         return false;
-    } elseif ($resellerLimit != 0
+    }
+
+    if ($resellerLimit != 0
         && $newCustomerLimit > ($resellerLimit - $resellerConsumption) + $customerLimit
     ) {
         set_page_message(
@@ -1092,7 +1101,9 @@ function isValidServiceLimit(
             'error'
         );
         return false;
-    } elseif ($newCustomerLimit != -1 && $newCustomerLimit != 0 && $newCustomerLimit < $customerConsumption) {
+    }
+
+    if ($newCustomerLimit != -1 && $newCustomerLimit != 0 && $newCustomerLimit < $customerConsumption) {
         set_page_message(
             tr(
                 'The %s limit for this customer cannot be lower than %d, the total of %s already used by him.',

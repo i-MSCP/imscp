@@ -12,6 +12,7 @@ FRONTEND
     Added: `onMoveReseller' event -- Event triggered when a reseller is moved to another administrator
     Enhancement: Adjust target reseller limits/permissions instead of throwing error (Customer assignments feature)
     Enhancement: Allows to synchronize PHP permissions of specific client (iMSCP_PHPini)
+    Fixed: Several inconsistencies in displaying of statistics data (domain edit interface -- reseller UI level)
     Fixed: Several layout issues regarding statistics (all UI levels)
     Fixed: Statistics badly calculated due to mixing between assigned and consumed values (admin UI level)
     Fixed: Exception raised due to wrong SQL query (Customer assignments)
