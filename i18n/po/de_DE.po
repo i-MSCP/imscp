@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-08 08:36+0000\n"
+"POT-Creation-Date: 2017-09-08 11:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: ssd63 <m.sauer@z63.de>, 2017\n"
 "Language-Team: German (Germany) (https://www.transifex.com/i-mscp/teams/576/de_DE/)\n"
@@ -431,7 +431,7 @@ msgid "Admin / Users / Circular"
 msgstr "Admin / Benutzer / Rundschreiben"
 
 msgid "Admin / Users / Customer Assignments"
-msgstr ""
+msgstr "Admin / Benutzer / Kundenzuordnung"
 
 msgid "Admin / Users / Edit Reseller"
 msgstr "Admin / Benutzer / Reseller bearbeiten"
@@ -449,7 +449,7 @@ msgid "Admin / Users / Overview / Edit Customer"
 msgstr "Admin / Benutzer / Übersicht / Kunde bearbeiten"
 
 msgid "Admin / Users / Reseller Assignments"
-msgstr ""
+msgstr "Admin / Benutzer / Resellerzuordnung"
 
 msgid "Admin / Users / Sessions"
 msgstr "Admin / Benutzer / Sitzungen"
@@ -718,10 +718,10 @@ msgstr ""
 "installieren wollen?"
 
 msgid "Are you sure you want to move the selected customers?"
-msgstr ""
+msgstr "Sind Sie sicher das Sie die markierten Kunden verschieben wollen?"
 
 msgid "Are you sure you want to move the selected resellers?"
-msgstr ""
+msgstr "Sind Sie sicher das Sie die markierten Reseller verschieben wollen?"
 
 msgid "Are you sure you want to restore the backup?"
 msgstr "Sind Sie sicher, dass Sie dieses Backup einspielen wollen?"
@@ -826,11 +826,15 @@ msgid ""
 "Below you can move customers from a reseller to another reseller by "
 "selecting them and clicking the submit button."
 msgstr ""
+"Hier können Sie Kunden eines Resellers einem anderen Reseller zuordnen.\n"
+"Markieren sie die gewünschten Kunden und klicken Sie den Absenden-Button."
 
 msgid ""
 "Below you can move resellers from an administrator to another administrator "
 "by selecting them and clicking the submit button."
 msgstr ""
+"Hier können Sie Reseller eines Administrators einem anderen Administrator zuordnen.\n"
+"Markieren sie die gewünschten Reseller und klicken Sie den Absenden-Button."
 
 msgid ""
 "Below, you can activate the external mail feature for one or many of your "
@@ -1321,15 +1325,15 @@ msgstr ""
 
 #, php-format
 msgid "Couldn't find domain properties for customer with ID %d."
-msgstr ""
+msgstr "Es wurden keine Domaineigenschaften des Kunden mit ID %d gefunden."
 
 #, php-format
 msgid "Couldn't move customer with ID %d: %s"
-msgstr ""
+msgstr "Kunde mit ID %d : %s konnte nicht verschoben werden."
 
 #, php-format
 msgid "Couldn't move reseller with ID %d: %s"
-msgstr ""
+msgstr "Reseller mit ID %d : %s konnte nicht verschoben werden."
 
 #, php-format
 msgid "Couldn't validate DNS resource record: %s"
@@ -1420,7 +1424,7 @@ msgid "Customer level"
 msgstr "Kundenebene"
 
 msgid "Customer name"
-msgstr ""
+msgstr "Kundenname"
 
 msgid "Customer successfully scheduled for addition."
 msgstr "Kunde erfolgreich zum Hinzufügen vorgemerkt."
@@ -2399,7 +2403,7 @@ msgid "From"
 msgstr "Von"
 
 msgid "From administrator"
-msgstr ""
+msgstr "Vom Administrator"
 
 msgid "From reseller"
 msgstr "Von Reseller"
@@ -3184,10 +3188,10 @@ msgid "Mount point"
 msgstr "Einhängepunkt"
 
 msgid "Move selected customers"
-msgstr ""
+msgstr "Verschiebe markierte Kunden"
 
 msgid "Move selected resellers"
-msgstr ""
+msgstr "Verschiebe markierte Reseller"
 
 msgid "N/A"
 msgstr "N/V"
@@ -3238,14 +3242,11 @@ msgstr "Kein Konto gefunden."
 msgid "No anti-rootkits logs"
 msgstr "keine Anti-Rootkits Logs"
 
-msgid "No available"
-msgstr "Nicht verfügbar"
-
 msgid "No custom menu found."
 msgstr "Kein eigenes Menü gefunden."
 
 msgid "No customer found for the selected reseller."
-msgstr ""
+msgstr "Keine Benutzer für diesen Reseller gefunden."
 
 msgid "No domain available for new software instance."
 msgstr "Keine Domäne für neue Softwareinstanz verfügbar."
@@ -3269,7 +3270,7 @@ msgid "No reseller available to add the permissions."
 msgstr "Kein Reseller verfügbar um die Rechte hinzuzufügen."
 
 msgid "No reseller found for the selected administrator."
-msgstr ""
+msgstr "Keine Reseller für diesen Administrator gefunden."
 
 msgid "No reseller with activated software installer found!"
 msgstr "Kein Reseller mit aktiviertem Software-Installer gefunden!"
@@ -4170,7 +4171,7 @@ msgid "Reseller's layout color successfully updated."
 msgstr "Reseller Layout-Farbe erfolgreich aktualisiert."
 
 msgid "Reseller(s) successfully moved."
-msgstr ""
+msgstr "Reseller erfolgreich verschoben."
 
 msgid "Reseller/IP usage statistics"
 msgstr "Reseller/IP Nutzungsstatistiken"
@@ -5453,6 +5454,9 @@ msgid ""
 " reseller are automatically extended when necessary, according the customer "
 "own limits and permissions."
 msgstr ""
+"Wenn Sie einen Kunden zu einem anderen Reseller verschieben, werden die "
+"Begrenzungen dieses Resellers automatisch nach Bedarf erhöht, einhergehend "
+"mit den Begrenzungen des Kunden."
 
 msgid "Wrong or unallowed IP address."
 msgstr "Falsche oder nicht erlaubte IP Adresse."
@@ -5787,7 +5791,7 @@ msgid "You must select at least one catch-all address."
 msgstr "Sie müssen mindestens eine Catch-All Adresse auswählen."
 
 msgid "You must select at least one customer."
-msgstr ""
+msgstr "Sie müssen mindestens einen Kunden auswählen."
 
 msgid "You must select at least one mail account to delete."
 msgstr "Es muss mindestens ein E-Mail Konto für die Löschung ausgewählt sein."
@@ -5796,7 +5800,7 @@ msgid "You must select at least one plugin."
 msgstr "Sie müssen mindestens ein Plugin auswählen."
 
 msgid "You must select at least one reseller."
-msgstr ""
+msgstr "Sie müssen mindestens einen Reseller auswählen."
 
 msgid "You must specify a message."
 msgstr "Sie müssen eine Nachricht eingeben."
@@ -6118,10 +6122,10 @@ msgid "that match with"
 msgstr "stimmt überein mit"
 
 msgid "to administrator"
-msgstr ""
+msgstr "zum Administrator"
 
 msgid "to reseller"
-msgstr ""
+msgstr "zum Reseller"
 
 msgid "traffic"
 msgstr "Traffic"

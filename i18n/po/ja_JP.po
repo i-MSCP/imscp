@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-08 08:36+0000\n"
+"POT-Creation-Date: 2017-09-08 11:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Japanese (Japan) (https://www.transifex.com/i-mscp/teams/576/ja_JP/)\n"
@@ -3125,9 +3125,6 @@ msgstr ""
 
 msgid "No anti-rootkits logs"
 msgstr "アンチルートキットログはありません"
-
-msgid "No available"
-msgstr "使用不可"
 
 msgid "No custom menu found."
 msgstr "カスタムメニューが見つかりません。"

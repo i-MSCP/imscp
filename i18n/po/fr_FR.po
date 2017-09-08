@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-08 08:36+0000\n"
+"POT-Creation-Date: 2017-09-08 11:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: krok <krok@totalynet.fr>, 2017\n"
 "Language-Team: French (France) (https://www.transifex.com/i-mscp/teams/576/fr_FR/)\n"
@@ -433,7 +433,7 @@ msgid "Admin / Users / Circular"
 msgstr "Administrateur / Utilisateurs / E-mail de masse"
 
 msgid "Admin / Users / Customer Assignments"
-msgstr ""
+msgstr "Administrateur / Utilisateurs / Assignation Des Clients"
 
 msgid "Admin / Users / Edit Reseller"
 msgstr "Administrateur / Utilisateurs / Éditer un revendeur"
@@ -451,7 +451,7 @@ msgid "Admin / Users / Overview / Edit Customer"
 msgstr "Administrateur / Utilisateurs / Vue D'ensemble / Édition Du Client"
 
 msgid "Admin / Users / Reseller Assignments"
-msgstr ""
+msgstr "Administrateur / Utilisateurs / Assignation Des Revendeurs"
 
 msgid "Admin / Users / Sessions"
 msgstr "Administrateur / Utilisateurs / Sessions"
@@ -720,10 +720,10 @@ msgstr ""
 "logiciels Web ?"
 
 msgid "Are you sure you want to move the selected customers?"
-msgstr ""
+msgstr "Êtes-vous certain de vouloir déplacer les clients sélectionnés?"
 
 msgid "Are you sure you want to move the selected resellers?"
-msgstr ""
+msgstr "Êtes-vous certain de vouloir déplacer les revendeurs sélectionnés?"
 
 msgid "Are you sure you want to restore the backup?"
 msgstr "Êtes-vous certain de vouloir restaurer cette sauvegarde ?"
@@ -828,11 +828,15 @@ msgid ""
 "Below you can move customers from a reseller to another reseller by "
 "selecting them and clicking the submit button."
 msgstr ""
+"Ci-dessous, vous pouvez déplacer des clients d'un revendeur à un autre en "
+"les sélectionnant et en cliquant sur le bouton de soumissions."
 
 msgid ""
 "Below you can move resellers from an administrator to another administrator "
 "by selecting them and clicking the submit button."
 msgstr ""
+"Ci-dessous, vous pouvez déplacer des revendeurs d'un administrator à un "
+"autre en les sélectionnant et en cliquant sur le bouton de soumissions."
 
 msgid ""
 "Below, you can activate the external mail feature for one or many of your "
@@ -1328,14 +1332,16 @@ msgstr ""
 #, php-format
 msgid "Couldn't find domain properties for customer with ID %d."
 msgstr ""
+"Impossible de trouver les propriétés de domaine pour le client avec "
+"l'identifiant: %d"
 
 #, php-format
 msgid "Couldn't move customer with ID %d: %s"
-msgstr ""
+msgstr "Impossible de déplacer le client avec l'identifiant %d: %s"
 
 #, php-format
 msgid "Couldn't move reseller with ID %d: %s"
-msgstr ""
+msgstr "Impossible de déplacer le revendeur avec l'identifiant %d: %s"
 
 #, php-format
 msgid "Couldn't validate DNS resource record: %s"
@@ -1426,7 +1432,7 @@ msgid "Customer level"
 msgstr "Niveau du client"
 
 msgid "Customer name"
-msgstr ""
+msgstr "Nom du client"
 
 msgid "Customer successfully scheduled for addition."
 msgstr "Le client va être ajouté."
@@ -2406,7 +2412,7 @@ msgid "From"
 msgstr "De"
 
 msgid "From administrator"
-msgstr ""
+msgstr "De l'administrateur"
 
 msgid "From reseller"
 msgstr "Du revendeur"
@@ -3196,10 +3202,10 @@ msgid "Mount point"
 msgstr "Point de montage"
 
 msgid "Move selected customers"
-msgstr ""
+msgstr "Déplacer les clients sélectionnés"
 
 msgid "Move selected resellers"
-msgstr ""
+msgstr "Déplacer les revendeurs sélectionnés"
 
 msgid "N/A"
 msgstr "N/D"
@@ -3252,14 +3258,11 @@ msgstr "Aucun compte trouvé."
 msgid "No anti-rootkits logs"
 msgstr "Aucun journal anti-Rootkits"
 
-msgid "No available"
-msgstr "Non disponible"
-
 msgid "No custom menu found."
 msgstr "Aucun menu personalisé trouvé."
 
 msgid "No customer found for the selected reseller."
-msgstr ""
+msgstr "Aucun client n'a été trouvé pour le revendeur sélectionné."
 
 msgid "No domain available for new software instance."
 msgstr "Aucun domaine disponible pour l'installation du logiciel."
@@ -3283,7 +3286,7 @@ msgid "No reseller available to add the permissions."
 msgstr "Aucun revendeur disponible pour ajouter des permissions."
 
 msgid "No reseller found for the selected administrator."
-msgstr ""
+msgstr "Aucun revendeur n'a été trouvé pour l'administrator sélectionné."
 
 msgid "No reseller with activated software installer found!"
 msgstr "Aucun revendeur avec un installateur de logiciel trouvé."
@@ -4194,7 +4197,7 @@ msgid "Reseller's layout color successfully updated."
 msgstr "La couleur du thème a été mise à jour."
 
 msgid "Reseller(s) successfully moved."
-msgstr ""
+msgstr "Les revendeurs ont été déplacés avec succèss."
 
 msgid "Reseller/IP usage statistics"
 msgstr "Revendeur / Statistiques d'utilisation des IP"
@@ -5475,6 +5478,9 @@ msgid ""
 " reseller are automatically extended when necessary, according the customer "
 "own limits and permissions."
 msgstr ""
+"Quand vous déplacez un client d'un revendeur à un autre, les limites et "
+"permissions de ce dernier sont automatiquement étendues quand cela est "
+"nécessaire, selon les limites et permissions du client qui est déplacé."
 
 msgid "Wrong or unallowed IP address."
 msgstr "Adresse IP incorrecte ou non-autorisée."
@@ -5805,7 +5811,7 @@ msgid "You must select at least one catch-all address."
 msgstr "Vous devez sélectionner au moins une adresse catch-alll."
 
 msgid "You must select at least one customer."
-msgstr ""
+msgstr "Vous devez sélectionner au moins un client."
 
 msgid "You must select at least one mail account to delete."
 msgstr "Vous devez sélectionner au moins un compte de messagerie à supprimer."
@@ -5814,7 +5820,7 @@ msgid "You must select at least one plugin."
 msgstr "Vous devez choisir au moins une extension."
 
 msgid "You must select at least one reseller."
-msgstr ""
+msgstr "Vous devez sélectionner au moins un revendeur."
 
 msgid "You must specify a message."
 msgstr "Le message est requis."
@@ -6132,10 +6138,10 @@ msgid "that match with"
 msgstr "qui correspond à"
 
 msgid "to administrator"
-msgstr ""
+msgstr "à l'administrateur"
 
 msgid "to reseller"
-msgstr ""
+msgstr "au revendeur"
 
 msgid "traffic"
 msgstr "trafic"

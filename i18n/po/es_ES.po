@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-08 08:36+0000\n"
+"POT-Creation-Date: 2017-09-08 11:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: kurgans <bongostudio@gmail.com>, 2017\n"
 "Language-Team: Spanish (Spain) (https://www.transifex.com/i-mscp/teams/576/es_ES/)\n"
@@ -3231,9 +3231,6 @@ msgstr "Cuenta no encontrada."
 
 msgid "No anti-rootkits logs"
 msgstr "No hay logs anti-rootkits"
-
-msgid "No available"
-msgstr "No disponible"
 
 msgid "No custom menu found."
 msgstr "No se encontró menú personalizado."

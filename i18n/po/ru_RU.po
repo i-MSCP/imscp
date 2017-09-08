@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-08 08:36+0000\n"
+"POT-Creation-Date: 2017-09-08 11:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Oleg Olegov <>, 2017\n"
 "Language-Team: Russian (Russia) (https://www.transifex.com/i-mscp/teams/576/ru_RU/)\n"
@@ -428,7 +428,7 @@ msgid "Admin / Users / Circular"
 msgstr "Администратор / Пользователи / Почтовая рассылка"
 
 msgid "Admin / Users / Customer Assignments"
-msgstr ""
+msgstr "Админ / Пользователи / Распределение пользователей"
 
 msgid "Admin / Users / Edit Reseller"
 msgstr "Администратор / Пользователи / Изменить реселлера"
@@ -446,7 +446,7 @@ msgid "Admin / Users / Overview / Edit Customer"
 msgstr "Администратор / Пользователи / Обзор / Изменить клиента"
 
 msgid "Admin / Users / Reseller Assignments"
-msgstr ""
+msgstr "Админ / Пользователи / Распределение реселлеров"
 
 msgid "Admin / Users / Sessions"
 msgstr "Администратор / Пользователи / Сессии"
@@ -703,10 +703,10 @@ msgid ""
 msgstr "Вы уверены, что хотите установить пакет из Web-репозитория?"
 
 msgid "Are you sure you want to move the selected customers?"
-msgstr ""
+msgstr "Вы уверены, что хотите переместить данного пользователя?"
 
 msgid "Are you sure you want to move the selected resellers?"
-msgstr ""
+msgstr "Вы уверены, что хотите переместить данных реселлеров?"
 
 msgid "Are you sure you want to restore the backup?"
 msgstr "Вы уверены что хотите восстановить резервную копию?"
@@ -811,11 +811,15 @@ msgid ""
 "Below you can move customers from a reseller to another reseller by "
 "selecting them and clicking the submit button."
 msgstr ""
+"Тут выможете перемещать пользователей от одного реселлера к другому.\n"
+"Выделете их и нажмите кнопку отправки."
 
 msgid ""
 "Below you can move resellers from an administrator to another administrator "
 "by selecting them and clicking the submit button."
 msgstr ""
+"Тут выможете перемещать реселлеров от одного администратора к другому.\n"
+"Выделете их и нажмите кнопку отправки."
 
 msgid ""
 "Below, you can activate the external mail feature for one or many of your "
@@ -1287,15 +1291,15 @@ msgstr "Невозможно удалить поддомен. Произошла
 
 #, php-format
 msgid "Couldn't find domain properties for customer with ID %d."
-msgstr ""
+msgstr "Параметров домена пользователя с ID %d не найдено."
 
 #, php-format
 msgid "Couldn't move customer with ID %d: %s"
-msgstr ""
+msgstr "Не удалось переместить пользователя с ID %d: %s"
 
 #, php-format
 msgid "Couldn't move reseller with ID %d: %s"
-msgstr ""
+msgstr "Не удалось переместить реселлера с ID %d: %s"
 
 #, php-format
 msgid "Couldn't validate DNS resource record: %s"
@@ -1386,7 +1390,7 @@ msgid "Customer level"
 msgstr "Уровень клиента"
 
 msgid "Customer name"
-msgstr ""
+msgstr "Имя пользователя"
 
 msgid "Customer successfully scheduled for addition."
 msgstr "Клиент успешно помечен для добавления."
@@ -2368,7 +2372,7 @@ msgid "From"
 msgstr "От"
 
 msgid "From administrator"
-msgstr ""
+msgstr "От администратора"
 
 msgid "From reseller"
 msgstr "От реселлера"
@@ -3152,10 +3156,10 @@ msgid "Mount point"
 msgstr "Точка монтирования"
 
 msgid "Move selected customers"
-msgstr ""
+msgstr "Перенести выделенных пользователей"
 
 msgid "Move selected resellers"
-msgstr ""
+msgstr "Перенести выделенных реселлеров"
 
 msgid "N/A"
 msgstr "Недоступно"
@@ -3206,14 +3210,11 @@ msgstr "Не найдено учетных записей"
 msgid "No anti-rootkits logs"
 msgstr "Логи руткитов отсутствуют"
 
-msgid "No available"
-msgstr "Недоступно"
-
 msgid "No custom menu found."
 msgstr "Не найдены пользовательские меню."
 
 msgid "No customer found for the selected reseller."
-msgstr ""
+msgstr "Не найдено клиентов данного реселлера."
 
 msgid "No domain available for new software instance."
 msgstr "Нет домена для нового экземпляра программного обеспечения."
@@ -3237,7 +3238,7 @@ msgid "No reseller available to add the permissions."
 msgstr "Нет доступного реселлера для добавления прав"
 
 msgid "No reseller found for the selected administrator."
-msgstr ""
+msgstr "Не найдено реселлеров данного администратора."
 
 msgid "No reseller with activated software installer found!"
 msgstr "Не найдено реселлеров с активированным установщиком ПО"
@@ -4126,7 +4127,7 @@ msgid "Reseller's layout color successfully updated."
 msgstr "Цвет подложки реселлера успешно обновлен. "
 
 msgid "Reseller(s) successfully moved."
-msgstr ""
+msgstr "Реселлер(ы) успешно перенесены."
 
 msgid "Reseller/IP usage statistics"
 msgstr "Реселлер / Статистика использования IP"
@@ -5387,6 +5388,9 @@ msgid ""
 " reseller are automatically extended when necessary, according the customer "
 "own limits and permissions."
 msgstr ""
+"Когда вы перемещаете пользователей к другому реселлеру, ограничения этого "
+"реселлера будут автоматически расширены соответственно данным ограничениям "
+"пользователя."
 
 msgid "Wrong or unallowed IP address."
 msgstr "Неверный или неразрешенный IP адрес."
@@ -5720,7 +5724,7 @@ msgid "You must select at least one catch-all address."
 msgstr "Вы должны выбрать как минимум один catch-all адрес."
 
 msgid "You must select at least one customer."
-msgstr ""
+msgstr "Вы должны выбрать по крайней мере одного пользователя."
 
 msgid "You must select at least one mail account to delete."
 msgstr "Вы должны выбрать как минимум один почтовый ящик для удаления."
@@ -5729,7 +5733,7 @@ msgid "You must select at least one plugin."
 msgstr "Вы должны выбрать по крайней мере один плагин."
 
 msgid "You must select at least one reseller."
-msgstr ""
+msgstr "Вы должны выбрать по крайней мере одного реселлера."
 
 msgid "You must specify a message."
 msgstr "Вы должны написать сообщение."
@@ -6047,10 +6051,10 @@ msgid "that match with"
 msgstr "которые соответствуют"
 
 msgid "to administrator"
-msgstr ""
+msgstr "к администратору"
 
 msgid "to reseller"
-msgstr ""
+msgstr "к реселлеру"
 
 msgid "traffic"
 msgstr "трафик"

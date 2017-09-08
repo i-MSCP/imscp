@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-08 08:36+0000\n"
+"POT-Creation-Date: 2017-09-08 11:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Dutch (Netherlands) (https://www.transifex.com/i-mscp/teams/576/nl_NL/)\n"
@@ -429,7 +429,7 @@ msgid "Admin / Users / Circular"
 msgstr "Beheerder / Gebruikers / E-mail rondsturen"
 
 msgid "Admin / Users / Customer Assignments"
-msgstr ""
+msgstr "Beheerder / Gebruikers / Klanttoewijzingen"
 
 msgid "Admin / Users / Edit Reseller"
 msgstr "Beheerder / Gebruikers / Wederverkoper aanpassen"
@@ -447,7 +447,7 @@ msgid "Admin / Users / Overview / Edit Customer"
 msgstr "Beheerder / Gebruikers / Overzicht / Bewerk gebruiker"
 
 msgid "Admin / Users / Reseller Assignments"
-msgstr ""
+msgstr "Beheerder / Gebruikers / Wederverkoperstoewijzingen"
 
 msgid "Admin / Users / Sessions"
 msgstr "Beheerder / Gebruikers / Sessies"
@@ -707,10 +707,10 @@ msgid ""
 msgstr "Weet u zeker dat u dit pakket vanuit de online softwareberging."
 
 msgid "Are you sure you want to move the selected customers?"
-msgstr ""
+msgstr "Weet u zeker dat u de geselecteerde klanten wilt verplaatsen?"
 
 msgid "Are you sure you want to move the selected resellers?"
-msgstr ""
+msgstr "Weet u zeker dat u de geselecteerde wederverkopers wilt verplaatsen?"
 
 msgid "Are you sure you want to restore the backup?"
 msgstr "Weet u zeker dat u deze back-up wilt herstellen?"
@@ -815,11 +815,15 @@ msgid ""
 "Below you can move customers from a reseller to another reseller by "
 "selecting them and clicking the submit button."
 msgstr ""
+"Hieronder kunt u klanten van de ene naar de andere wederverkoper "
+"verplaatsen, door ze te selecteren en vervolgens op te slaan."
 
 msgid ""
 "Below you can move resellers from an administrator to another administrator "
 "by selecting them and clicking the submit button."
 msgstr ""
+"Hieronder kunt u wederverkopers van de ene naar de andere beheerder "
+"verplaatsen, door ze te selecteren en vervolgens op te slaan."
 
 msgid ""
 "Below, you can activate the external mail feature for one or many of your "
@@ -1299,15 +1303,15 @@ msgstr "Door een onbekende fout kon dit subdomein niet verwijderd worden."
 
 #, php-format
 msgid "Couldn't find domain properties for customer with ID %d."
-msgstr ""
+msgstr "Kon domeineigenschappen niet vinden voor klant met ID: %d"
 
 #, php-format
 msgid "Couldn't move customer with ID %d: %s"
-msgstr ""
+msgstr "Kon klant niet verplaatsen, betreft ID %d:%s"
 
 #, php-format
 msgid "Couldn't move reseller with ID %d: %s"
-msgstr ""
+msgstr "Kon wederverkoper niet verplaatsen, betreft ID %d:%s"
 
 #, php-format
 msgid "Couldn't validate DNS resource record: %s"
@@ -1398,7 +1402,7 @@ msgid "Customer level"
 msgstr "Klantniveau"
 
 msgid "Customer name"
-msgstr ""
+msgstr "Klantnaam"
 
 msgid "Customer successfully scheduled for addition."
 msgstr "Klant wordt toegevoegd."
@@ -2362,7 +2366,7 @@ msgid "From"
 msgstr "Van"
 
 msgid "From administrator"
-msgstr ""
+msgstr "Van beheerder"
 
 msgid "From reseller"
 msgstr "Van wederverkoper"
@@ -3144,10 +3148,10 @@ msgid "Mount point"
 msgstr "Aanhechtingspunt"
 
 msgid "Move selected customers"
-msgstr ""
+msgstr "Verplaatst geselecteerde klanten"
 
 msgid "Move selected resellers"
-msgstr ""
+msgstr "Verplaatst geselecteerde wederverkopers"
 
 msgid "N/A"
 msgstr "N/B"
@@ -3198,14 +3202,11 @@ msgstr "Geen account gevonden"
 msgid "No anti-rootkits logs"
 msgstr "Geen anti-rootkit log"
 
-msgid "No available"
-msgstr "Geen beschikbaar"
-
 msgid "No custom menu found."
 msgstr "Geen eigen menu gevonden."
 
 msgid "No customer found for the selected reseller."
-msgstr ""
+msgstr "Geen klant gevonden voor deze wederverkoper."
 
 msgid "No domain available for new software instance."
 msgstr "Geen domein beschikbaar voor nieuwe software."
@@ -3229,7 +3230,7 @@ msgid "No reseller available to add the permissions."
 msgstr "Geen wederverkoper beschikbaar om rechten toe te voegen."
 
 msgid "No reseller found for the selected administrator."
-msgstr ""
+msgstr "Geen wederverkoper gevonden voor deze beheerder."
 
 msgid "No reseller with activated software installer found!"
 msgstr "Geen wederverkoper met geactiveerde software gevonden."
@@ -4130,7 +4131,7 @@ msgid "Reseller's layout color successfully updated."
 msgstr "Lay-outkleur van wederverkoper succesvol bijgewerkt."
 
 msgid "Reseller(s) successfully moved."
-msgstr ""
+msgstr "Wederverkoper(s) zijn verplaatst."
 
 msgid "Reseller/IP usage statistics"
 msgstr "Wederverkoper / Statistieken IP-gebruik"
@@ -5401,6 +5402,9 @@ msgid ""
 " reseller are automatically extended when necessary, according the customer "
 "own limits and permissions."
 msgstr ""
+"Wanneer u een klant verplaatst naar een andere wederverkoper, dan worden de "
+"limieten en toestemmingen van deze wederverkoper automatisch uitgebreid, "
+"zodat de klant dezelfde rechten en limieten behoud."
 
 msgid "Wrong or unallowed IP address."
 msgstr "Fout of niet toegestaan IP-adres."
@@ -5729,7 +5733,7 @@ msgid "You must select at least one catch-all address."
 msgstr "U dient minimaal één catch-all adres te selecteren."
 
 msgid "You must select at least one customer."
-msgstr ""
+msgstr "U dient minimaal één klant te kiezen."
 
 msgid "You must select at least one mail account to delete."
 msgstr "U moet minstens één e-mailaccount selecteren om te verwijderen."
@@ -5738,7 +5742,7 @@ msgid "You must select at least one plugin."
 msgstr "Selecteer minimaal 1 invoegtoepassing."
 
 msgid "You must select at least one reseller."
-msgstr ""
+msgstr "U dient minimaal één wederverkoper te kiezen."
 
 msgid "You must specify a message."
 msgstr "U dient een bericht te specificeren."
@@ -6053,10 +6057,10 @@ msgid "that match with"
 msgstr "die overeenkomen met"
 
 msgid "to administrator"
-msgstr ""
+msgstr "aan beheerder"
 
 msgid "to reseller"
-msgstr ""
+msgstr "aan wederverkoper"
 
 msgid "traffic"
 msgstr "Verkeer"
