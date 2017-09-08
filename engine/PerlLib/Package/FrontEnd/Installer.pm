@@ -515,9 +515,10 @@ Do you want to enable the alternative URLs feature for client domains?
 The alternative URLs feature allows clients accessing their Websites through alternative URLs such as http://dmn1.panel.domain.tld
 EOF
         return $altUrlsFeature if $altUrlsFeature >= 30;
+
+        main::setupSetQuestion( 'CLIENT_DOMAIN_ALT_URLS', $altUrlsFeature ? 0 : 1 );
     }
 
-    main::setupSetQuestion( 'CLIENT_DOMAIN_ALT_URLS', $altUrlsFeature ? 0 : 1 );
     0;
 }
 
