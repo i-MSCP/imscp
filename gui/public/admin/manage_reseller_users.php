@@ -167,11 +167,7 @@ function moveCustomer($customerId, $fromResellerId, $toResellerId)
         $db->rollBack();
         write_log(sprintf("Couldn't move customer with ID %d: %s", $customerId, $e->getMessage()));
         throw new Exception(
-            tr(
-                "Couldn't move customer with ID %d: %s",
-                $customerId, $e->getMessage() . (($e instanceof iMSCP_Exception_Database) ? ' ' . $e->getQuery() : '')
-            ),
-            $e->getCode(), $e
+            tr("Couldn't move customer with ID %d: %s", $customerId, $e->getMessage()), $e->getCode(), $e
         );
     }
 }

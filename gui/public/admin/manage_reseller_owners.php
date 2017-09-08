@@ -57,11 +57,7 @@ function moveReseller($resellerId, $fromAdministratorId, $toAdministratorId)
         $db->rollBack();
         write_log(sprintf("Couldn't move reseller with ID %d: %s", $resellerId, $e->getMessage()));
         throw new Exception(
-            tr(
-                "Couldn't move reseller with ID %d: %s",
-                $resellerId, $e->getMessage() . (($e instanceof iMSCP_Exception_Database) ? ' ' . $e->getQuery() : '')
-            ),
-            $e->getCode(), $e
+            tr("Couldn't move reseller with ID %d: %s", $resellerId, $e->getMessage()), $e->getCode(), $e
         );
     }
 }
