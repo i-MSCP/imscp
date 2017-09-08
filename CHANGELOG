@@ -16,7 +16,7 @@ FRONTEND
     Fixed: Several layout issues regarding statistics (all UI levels)
     Fixed: Statistics badly calculated due to mixing between assigned and consumed values (admin UI level)
     Fixed: Exception raised due to wrong SQL query (Customer assignments)
-    Rewritten: Customer and reseller assignments feature (admin UI level)
+    Rewritten: Customer and reseller assignments features (admin UI level)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.5.0
