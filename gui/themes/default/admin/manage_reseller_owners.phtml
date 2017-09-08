@@ -1,9 +1,8 @@
-
 <script>
     $(function () {
         var $oTable = $('.datatable').dataTable(
             {
-                language: <?= getDataTablesPluginTranslations(true, ['emptyTable' =>  tr('No customer found for the selected reseller.')]); ?>,
+                language: <?= getDataTablesPluginTranslations(true, ['emptyTable' =>  tr('No reseller found for the selected administrator.')]); ?>,
                 displayLength: 10,
                 stateSave: true,
                 pagingType: "simple"
@@ -24,7 +23,7 @@
 
             e.preventDefault();
         });
-        
+
         if($oTable.fnSettings().fnRecordsTotal() < 1) {
             $("input[type=submit]").remove();
         } else {
@@ -39,12 +38,12 @@
                 $form.find("#Submit").blur();
 
                 if ($("input[type=checkbox]:checked", $oTable.fnGetNodes()).length < 1) {
-                    alert("<?= tojs(tr('You must select at least one customer.')); ?>");
+                    alert("<?= tojs(tr('You must select at least one reseller.')); ?>");
                     return false;
                 }
 
                 return jQuery.imscp.confirm(
-                    "<?= tojs(tr('Are you sure you want to move the selected customers?')); ?>",
+                    "<?= tojs(tr('Are you sure you want to move the selected resellers?')); ?>",
                     function (ret) {
                         if (ret) {
                             $form.get(0).submit();
@@ -54,8 +53,8 @@
             });
         }
 
-        $("#from_reseller,#to_reseller").on('change', function() {
-            var $toUpdId = $("#"+($(this).attr('id') === 'from_reseller' ? 'to_reseller' : 'from_reseller'));
+        $("#from_administrator,#to_administrator").on('change', function() {
+            var $toUpdId = $("#"+($(this).attr('id') === 'from_administrator' ? 'to_administrator' : 'from_administrator'));
             var thisElVal = this.value;
 
             if (thisElVal !== $toUpdId.val()) {
@@ -69,62 +68,61 @@
                 }
             });
         });
-        $("#from_reseller").trigger('change').on('change', function () {
+        $("#from_administrator").trigger('change').on('change', function () {
             var $form = $("form");
             $form.get(0).uaction.value = 'change_from';
             $form.submit();
-        });        
+        });
     });
 </script>
 <p class="message static_info">
-    <?= tohtml(tr('Below you can move customers from a reseller to another reseller by selecting them and clicking the submit button.')); ?><br>
-    <?= tohtml(tr('When you move a customer to another reseller, limits and permissions of that reseller are automatically extended when necessary, according the customer own limits and permissions.')); ?>
+    <?= tohtml(tr('Below you can move resellers from an administrator to another administrator by selecting them and clicking the submit button.')); ?><br>
 </p>
-<form action="manage_reseller_users.php" method="post">
+<form action="manage_reseller_owners.php" method="post">
     <table class="datatable">
         <thead>
         <tr>
             <th><label><input type="checkbox" id="select_all"></label></th>
-            <th><?= tohtml(tr('Customer name')); ?></th>
+            <th><?= tohtml(tr('Reseller name')); ?></th>
         </tr>
         </thead>
         <tfoot>
         <tr>
             <td><label><input type="checkbox" id="select_all"></label></td>
-            <td><?= tohtml(tr('Customer name')); ?></td>
+            <td><?= tohtml(tr('Reseller name')); ?></td>
         </tr>
         </tfoot>
         <tbody>
-        <!-- BDP: from_reseller_customers_list -->
-        <!-- BDP: from_reseller_customer_item -->
+        <!-- BDP: from_administrator_resellers_list -->
+        <!-- BDP: from_administrator_reseller_item -->
         <tr>
-            <td><input id="customer_id_{CUSTOMER_ID}" type="checkbox" name="reseller_customers[]" value="{CUSTOMER_ID}"{RESELLER_CUSTOMER_CHECKED}></td>
-            <td><label for="customer_id_{CUSTOMER_ID}">{CUSTOMER_NAME}</label></td>
+            <td><input id="reseller_id_{RESELLER_ID}" type="checkbox" name="administrator_resellers[]" value="{RESELLER_ID}"{ADMINISTRATOR_RESELLER_CHECKED}></td>
+            <td><label for="reseller_id_{RESELLER_ID}">{RESELLER_NAME}</label></td>
         </tr>
-        <!-- EDP: from_reseller_customer_item -->
-        <!-- EDP: from_reseller_customers_list -->
+        <!-- EDP: from_administrator_reseller_item -->
+        <!-- EDP: from_administrator_resellers_list -->
         </tbody>
         <tbody>
         <tr style="background-color:#b0def5">
             <td colspan="2" class="buttons">
-                <label for="from_reseller"><?= tohtml(tr('From reseller')); ?></label>
-                <select name="from_reseller" id="from_reseller">
-                    <!-- BDP: from_reseller_item -->
-                    <option value="{FROM_RESELLER_ID}"{FROM_RESELLER_SELECTED}>{FROM_RESELLER_NAME}</option>
-                    <!-- EDP: from_reseller_item -->
+                <label for="from_administrator"><?= tohtml(tr('From administrator')); ?></label>
+                <select name="from_administrator" id="from_administrator">
+                    <!-- BDP: from_administrator_item -->
+                    <option value="{FROM_ADMINISTRATOR_ID}"{FROM_ADMINISTRATOR_SELECTED}>{FROM_ADMINISTRATOR_NAME}</option>
+                    <!-- EDP: from_administrator_item -->
                 </select>
-                <label for="to_reseller"><?= tohtml(tr('to reseller')) ;?></label>
-                <select name="to_reseller" id="to_reseller">
-                    <!-- BDP: to_reseller_item -->
-                    <option value="{TO_RESELLER_ID}"{TO_RESELLER_SELECTED}>{TO_RESELLER_NAME}</option>
-                    <!-- EDP: to_reseller_item -->
+                <label for="to_administrator"><?= tohtml(tr('to administrator')) ;?></label>
+                <select name="to_administrator" id="to_administrator">
+                    <!-- BDP: to_administrator_item -->
+                    <option value="{TO_ADMINISTRATOR_ID}"{TO_ADMINISTRATOR_SELECTED}>{TO_ADMINISTRATOR_NAME}</option>
+                    <!-- EDP: to_administrator_item -->
                 </select>
             </td>
         </tr>
         </tbody>
     </table>
     <div class="buttons">
-        <input type="submit" id="Submit" value="<?= tohtml(tr('Move selected customers'), 'htmlAttr');?>">
-        <input type="hidden" name="uaction" value="move_customers">
+        <input type="submit" id="Submit" value="<?= tohtml(tr('Move selected resellers'), 'htmlAttr');?>">
+        <input type="hidden" name="uaction" value="move_resellers">
     </div>
 </form>

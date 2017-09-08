@@ -28,7 +28,7 @@ use iMSCP_pTemplate as TemplateEngine;
  */
 
 /**
- * Move the given customer to the given reseller
+ * Move the given customer from the given reseller to the given reseller
  *
  * @throws Exception
  * @param int $customerId Customer unique identifier
@@ -221,10 +221,8 @@ function moveCustomers()
  */
 function generatePage(TemplateEngine $tpl)
 {
-    $resellers = $stmt = execute_query(
-        "SELECT admin_id, admin_name FROM admin  WHERE admin_type = 'reseller'"
-    )->fetchAll(PDO::FETCH_ASSOC);
-
+    $resellers = $stmt = execute_query("SELECT admin_id, admin_name FROM admin  WHERE admin_type = 'reseller'")
+        ->fetchAll(PDO::FETCH_ASSOC);
     $fromResellerId = isset($_POST['from_reseller']) ? intval($_POST['from_reseller']) : $resellers[0]['admin_id'];
     $toResellerId = isset($_POST['to_reseller']) ? intval($_POST['to_reseller']) : $resellers[1]['admin_id'];
 
@@ -296,8 +294,9 @@ $tpl->define_dynamic([
     'layout'                       => 'shared/layouts/ui.tpl',
     'page'                         => 'admin/manage_reseller_users.phtml',
     'page_message'                 => 'layout',
+    'from_reseller_customers_list' => 'page',
+    'from_reseller_customer_item'  => 'from_reseller_customers_list',
     'from_reseller_item'           => 'page',
-    'from_reseller_customers_list' => 'reseller_customer_item',
     'to_reseller_item'             => 'page'
 ]);
 $tpl->assign('TR_PAGE_TITLE', tohtml(tr('Admin / Users / Customer assignments')));

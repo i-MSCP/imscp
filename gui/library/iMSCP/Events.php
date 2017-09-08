@@ -312,13 +312,26 @@ class iMSCP_Events
     const onAfterDeleteUser = 'onAfterDeleteUser';
 
     /**
+     * Event triggered when a reseller account is moved from one administrator to
+     * another administrator
+     *
+     * iMSCP_Events_Event object parameter:
+     *  - resellerId          : Reseller unique identifier
+     *  - fromAdministratorId : Administrator unique identifier
+     *  - toAdministratorId   : Administrator unique identifier
+     *
+     * @const string
+     */
+    const onMoveReseller = 'onMoveReseller';
+
+    /**
      * Event triggered when a customer account is moved from one reseller to
      * another reseller
      *
      * iMSCP_Events_Event object parameter:
-     *  - customerId : Customer unique identifier
-     *  - fromResellerId: Reseller unique identifier
-     *  - toResellerId: Reseller unique identifier
+     *  - customerId     : Customer unique identifier
+     *  - fromResellerId : Reseller unique identifier
+     *  - toResellerId   : Reseller unique identifier
      *
      * @const string
      */
