@@ -17,22 +17,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-EXEC = imscp_daemon
-CC = gcc -ansi -Wall -Wstrict-prototypes -pedantic $(CFLAGS)
-CFLAGS = -g -O2
+PROGRAM = imscp_daemon
+CFLAGS = -s -ansi -Wall -Wstrict-prototypes -pedantic -O2
+SRCS = $(wildcard *.c)
+OBJS = $(SRCS:.c=.o)
 
-OBJECTS = daemon_cmd.o daemon_conn.o daemon_init.o daemon_main.o daemon_msg.o\
-          daemon_notify.o daemon_signals.o daemon_sock_io.o
-
-$(EXEC): $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -o $@
-	strip -s $@
-	@echo "Compilation done"
-
-%.o : %.c
-	$(CC) -c $(CFLAGS) $<
+$(PROGRAM): $(OBJS)
+	gcc $(CFLAGS) -o $@ $^
 
 clean:
-	rm -f *.o *~ $(EXEC)
+	rm -f *.o *~ $(PROGRAM)
 
 .PHONY: clean
