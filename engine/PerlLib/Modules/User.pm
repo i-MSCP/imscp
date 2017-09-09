@@ -117,13 +117,9 @@ sub add
     my $rs = $self->{'eventManager'}->trigger(
         'onBeforeAddImscpUnixUser', $self->{'admin_id'}, $user, \my $pwd, $home, \my $skelPath, \my $shell
     );
-    return $rs if $rs;
 
-    my ($oldUser, $uid, $gid) = ( $self->{'admin_sys_uid'} && $self->{'admin_sys_uid'} ne '0' )
-        ? ( getpwuid( $self->{'admin_sys_uid'} ) )[0, 2, 3] : ();
-
-    $rs = iMSCP::SystemUser->new(
-        username     => $oldUser,
+    $rs ||= iMSCP::SystemUser->new(
+        username     => $self->{'admin_sys_name'}, # Old username
         password     => $pwd,
         comment      => 'i-MSCP Web User',
         home         => $home,
@@ -132,7 +128,7 @@ sub add
     )->addSystemUser( $user, $group );
     return $rs if $rs;
 
-    ( $uid, $gid ) = ( getpwnam( $user ) )[2, 3];
+    my ( $uid, $gid ) = ( getpwnam( $user ) )[2, 3];
 
     local $@;
     eval {
