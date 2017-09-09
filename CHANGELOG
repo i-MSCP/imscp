@@ -7,6 +7,9 @@ Git 1.5.x
 INSTALLER
     Fixed: `CLIENT_DOMAIN_ALT_URLS' configuration parameter reseted to 0 (disabled) while running installer
 
+YOUTRACK
+    IP-1742 i-MSCP upgrade error - Unknown 'mail_user' database table in database update r254
+
 ------------------------------------------------------------------------------------------------------------------------
 1.5.1
 ------------------------------------------------------------------------------------------------------------------------
