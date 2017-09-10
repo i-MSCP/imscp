@@ -15,46 +15,65 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
+# Allows to add or override PHP directives values globally or per domain,
+# depending on the PHP INI level in use.
 #
-## Allows to add or override PHP configuration options globally or per domain.
-##
-## Be aware that only Fcgid and PHP-FPM Apache2 httpd server implementations are supported.
-## Note: When you want operate on a per domain basis, don't forget to set the PHP configuration level to 'per_site'.
-## You can do this by running: perl /var/www/imscp/engine/setup/imscp-reconfigure -dar php
+# Be aware that only Fcgid and PHP-FPM Apache2 httpd server implementations are
+# supported.
+
+# INI levels:
 #
+# Depending on PHP ini level in use on your system, override values set apply
+# differently:
+# 
+# - Per user level: Override values can be set for the main domain name only.
+#   They will apply to main domain, domain aliases and subdomains.
+# - Per domain: Override values can be set for the main domain and domain
+#   aliases only. Values set for the main domain will also apply to the main
+#   domain's subdomains and values set for domain aliases will also apply to
+#   domain aliases's subdomains
+# - Per site: Override values can be set for the main domain, domain aliases
+#   and subdomains. Values set will apply only to the targeted domain, domain
+#   alias or subdomain.
+#
+# You can change the INI level by executing the following command:
+#  perl /var/www/imscp/engine/setup/imscp-setup -dar php
 
 package Listener::Php::ConfOptions::Override;
 
 use strict;
 use warnings;
 use iMSCP::EventManager;
+use Servers::httpd;
 
 #
 ## Configuration parameters
 #
 
-# Add or overrides the PHP configuration options globally or per domain.
-# - The per domain PHP configuration options take precedence over global PHP configuration options.
-# - The PHP configuration options take precedence over those which are defined through the i-MSCP PHP editor.
+# Adds or overrides PHP directive values globally or per domain.
+# - The per domain PHP directive values take precedence over global PHP directive values.
+# - The PHP directives values take precedence over those which are defined through the i-MSCP PHP editor.
 #
-# Placeholders that can be used in PHP option values:
+# Placeholders that can be used in PHP directive values:
 #
 # {HOME_DIR} Will be replaced by client homedir path
 # {PEAR_DIR} Will be replaced by PHP Pear directory path
 # {TMPDIR}   Will be replaced by PHP temporary directory
 #
 # Note that domain names must be in ASCII format.
-my %configOptions = (
-    # Any PHP configuration option added here will apply globally (to all domains).
-    '*'             => {
-        '<option_name1>' => '<option_value1>',
-        '<option_name2>' => '<option_value2>'
-    },
+my %phpDirectives = (
+    # Global PHP directives
+    # PHP directive values added here will apply globally
+    #'*'          => {
+    #    directive_name1 => 'directive_value',
+    #    directive_name2 => 'directive_value'
+    #},
 
-    # Any PHP configuration added here will apply to domain1.tld only
-    'test.domain.tld' => {
-        'option_name1' => 'option_value1',
-        'option_name2' => 'option_value2'
+    # Per domain PHP directives
+    # PHP directive values added here will apply according the
+    # current PHP INI level (see the above explainations).
+    'bbox.nuxwin.com' => {
+        short_open_tag => 'Off',
     }
 );
 
@@ -62,24 +81,31 @@ my %configOptions = (
 ## Please, don't edit anything below this line
 #
 
+# PHP INI level
+my $iniLevel;
+
 iMSCP::EventManager->getInstance()->register(
     'beforeHttpdBuildConfFile',
     sub {
         my ($tplContent, $tplName, $data) = @_;
 
-        if ($tplName eq 'php.ini' && $main::imscpConfig{'HTTPD_SERVER'} eq 'apache_fcgid') {
+        return unless grep($_ eq $tplName, 'php.ini', 'pool.conf');
+
+        if ( $tplName eq 'php.ini' && $main::imscpConfig{'HTTPD_SERVER'} eq 'apache_fcgid' ) {
             # Apply global PHP configuration options overriding if any
-            if (exists $configOptions{'*'}) {
-                while(my ($option, $value) = each( %{$configOptions{'*'}} )) {
-                    $$tplContent .= "$option = $value\n" unless $$tplContent =~ s/^$option\s+=.*/$option = $value/gim;
+            if ( exists $phpDirectives{'*'} ) {
+                while ( my ($directive, $value) = each( %{$phpDirectives{'*'}} ) ) {
+                    next if ${$tplContent} =~ s/^$directive\s+=.*/$directive = $value/gim;
+                    ${$tplContent} .= "$directive = $value\n";
                 }
             }
 
-            # Apply per domain PHP configuration options overriding if any
-            if (exists $configOptions{$data->{'DOMAIN_NAME'}}) {
-                while(my ($option, $value) = each( %{$configOptions{$data->{'DOMAIN_NAME'}}} )) {
-                    $$tplContent .= "$option = $value\n" unless $$tplContent =~ s/^$option\s+=.*/$option = $value/gim;
-                }
+            return 0 unless exists $phpDirectives{my $domain = _getIniLevel( $data )};
+
+            # Adds/Overrides per domain PHP directive
+            while ( my ($directive, $value) = each( %{$phpDirectives{$domain}} ) ) {
+                next if ${$tplContent} =~ s/^$directive\s+=.*/$directive = $value/gim;
+                ${$tplContent} .= "$directive = $value\n";
             }
 
             return 0;
@@ -87,33 +113,47 @@ iMSCP::EventManager->getInstance()->register(
 
         return 0 unless $tplName eq 'pool.conf' && $main::imscpConfig{'HTTPD_SERVER'} eq 'apache_php_fpm';
 
-        # Apply global PHP configuration options overriding if any
-        if (exists $configOptions{'*'}) {
-            while(my ($option, $value) = each( %{$configOptions{'*'}} )) {
-                next if $$tplContent =~ s/^(php_(?:admin_)?(?:value|flag)\[$option\]).*/$1 = $value/gim;
-                if (grep($_ eq lc( $value ), ( 'on', 'off', '1', '0', 'true', 'false', 'yes', 'no' ))) {
-                    $$tplContent .= "php_admin_flag[$option] = $value\n";
-                } else {
-                    $$tplContent .= "php_admin_value[$option] = $value\n";
+        # Adds/Overrides global PHP directive values overriding if any
+        if ( exists $phpDirectives{'*'} ) {
+            while ( my ($directive, $value) = each( %{$phpDirectives{'*'}} ) ) {
+                next if ${$tplContent} =~ s/^(php_(?:admin_)?(?:value|flag)\[$directive\]).*/$1 = $value/gim;
+
+                if ( grep($_ eq lc( $value ), ( 'on', 'off', '1', '0', 'true', 'false', 'yes', 'no' )) ) {
+                    ${$tplContent} .= "php_admin_flag[$directive] = $value\n";
+                    next;
                 }
+
+                ${$tplContent} .= "php_admin_value[$directive] = $value\n";
             }
         }
 
-        return 0 unless exists $configOptions{$data->{'DOMAIN_NAME'}};
+        return 0 unless exists $phpDirectives{my $domain = _getIniLevel( $data )};
 
-        # Apply per domain PHP configuration options overriding if any
-        while(my ($option, $value) = each( %{$configOptions{$data->{'DOMAIN_NAME'}}} )) {
-            next if $$tplContent =~ s/^(php_(?:admin_)?(?:value|flag)\[$option\]).*/$1 = $value/gim;
-            if (grep($_ eq lc( $value ), ( 'on', 'off', '1', '0', 'true', 'false', 'yes', 'no' ))) {
-                $$tplContent .= "php_admin_flag[$option] = $value\n";
-            } else {
-                $$tplContent .= "php_admin_value[$option] = $value\n";
+        # Adds/Overrides per domain PHP directives
+        while ( my ($directive, $value) = each( %{$phpDirectives{$domain}} ) ) {
+            next if ${$tplContent} =~ s/^(php_(?:admin_)?(?:value|flag)\[$directive\]).*/$1 = $value/gim;
+
+            if ( grep($_ eq lc( $value ), ( 'on', 'off', '1', '0', 'true', 'false', 'yes', 'no' )) ) {
+                ${$tplContent} .= "php_admin_flag[$directive] = $value\n";
+                next;
             }
+
+            ${$tplContent} .= "php_admin_value[$directive] = $value\n";
         }
 
         0;
     }
 );
+
+sub _getIniLevel
+{
+    my ($data) = @_;
+
+    $iniLevel ||= Servers::httpd->factory()->{'phpConfig'}->{'PHP_CONFIG_LEVEL'};
+    return $data->{'ROOT_DOMAIN_NAME'} if $iniLevel eq 'per_user';
+    return $data->{'PARENT_DOMAIN_NAME'} if $iniLevel eq 'per_domain';
+    $data->{'DOMAIN_NAME'};
+}
 
 1;
 __END__
