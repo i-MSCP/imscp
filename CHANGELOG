@@ -9,10 +9,10 @@ INSTALLER
     Fixed: `CLIENT_DOMAIN_ALT_URLS' configuration parameter reseted to 0 (disabled) while running installer
 
 PACKAGES
-    Fixed: Distribution package not installed in `build' mode (Package::AntiRootkits, Package::Webstats)
+    Fixed: Distribution packages not installed in `build' mode (Package::AntiRootkits, Package::Webstats)
 
-SCRIPT
-    Fixed: Missing `--skip-distro-packages' (imscp-reconfigure script)
+SCRIPTS
+    Fixed: Missing `--skip-distro-packages' (imscp-reconfigure)
 
 YOUTRACK
     IP-1742 i-MSCP upgrade error - Unknown 'mail_user' database table in database update r254
