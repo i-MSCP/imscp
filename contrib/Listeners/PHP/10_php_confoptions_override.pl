@@ -72,8 +72,9 @@ my %phpDirectives = (
     # Per domain PHP directives
     # PHP directive values added here will apply according the
     # current PHP INI level (see the above explainations).
-    'bbox.nuxwin.com' => {
-        short_open_tag => 'Off',
+    'domain.tld' => {
+        directive_name1 => 'directive_value',
+        directive_name2 => 'directive_value'
     }
 );
 
