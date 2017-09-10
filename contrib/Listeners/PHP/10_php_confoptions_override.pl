@@ -31,9 +31,9 @@
 #   aliases only. PHP directive values set for the main domain will also apply
 #   to the main domain's subdomains and PHP directive values set for domain
 #   aliases will also apply to domain aliases's subdomains.
-# - Per site: PHP directive values values can be set for the main domain,
-#   domain aliases and subdomains. PHP directive values set will apply only to
-#   the targeted domain, domain alias or subdomain.
+# - Per site: PHP directive values can be set for the main domain, domain
+#   aliases and subdomains. PHP directive values set will apply only to the
+#   targeted domain, domain alias or subdomain.
 #
 # You can change the PHP INI level by running the following command:
 #
