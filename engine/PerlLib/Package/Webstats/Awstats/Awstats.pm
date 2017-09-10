@@ -380,7 +380,7 @@ sub _addAwstatsConfig
         error( $@ );
         return 1;
     } elsif ( !$row ) {
-        error( sprintf( "Couldn't retrieve data from admin whith ID %d", $data->{'DOMAIN_ADMIN_ID'} ));
+        error( sprintf( "Couldn't retrieve data for admin with ID %d", $data->{'DOMAIN_ADMIN_ID'} ));
         return 1;
     }
 

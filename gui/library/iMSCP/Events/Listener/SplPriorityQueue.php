@@ -26,7 +26,7 @@
 class iMSCP_Events_Listener_SplPriorityQueue extends SplPriorityQueue
 {
     /**
-     * @var int Seed used to ensure queue order for listeners whith same priority
+     * @var int Seed used to ensure queue order for listeners with same priority
      */
     protected $seed = PHP_INT_MAX;
 
