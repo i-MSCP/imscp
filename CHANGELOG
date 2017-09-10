@@ -5,6 +5,7 @@ Git 1.5.x
 ------------------------------------------------------------------------------------------------------------------------
 
 INSTALLER
+    Fixed: `build'' mode is broken for fresh installs -- Packages must be pre-installed regardless of install mode
     Fixed: `CLIENT_DOMAIN_ALT_URLS' configuration parameter reseted to 0 (disabled) while running installer
 
 YOUTRACK

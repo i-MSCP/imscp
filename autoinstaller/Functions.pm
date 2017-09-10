@@ -154,7 +154,7 @@ sub build
 
     my @steps = (
         [ \&_buildDistributionFiles, 'Building distribution files' ],
-        ( ( $main::skippackages || $main::buildonly )
+        ( ( $main::skippackages )
             ? () : [ \&_installDistroPackages, 'Installing distribution packages' ]
         ),
         [ \&_checkRequirements, 'Checking for requirements' ],
