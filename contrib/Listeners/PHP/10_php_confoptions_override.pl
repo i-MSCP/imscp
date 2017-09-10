@@ -64,10 +64,10 @@ use Servers::httpd;
 my %phpDirectives = (
     # Global PHP directives
     # PHP directive values added here will apply globally
-    #'*'          => {
-    #    directive_name1 => 'directive_value',
-    #    directive_name2 => 'directive_value'
-    #},
+    '*'          => {
+        directive_name1 => 'directive_value',
+        directive_name2 => 'directive_value'
+    },
 
     # Per domain PHP directives
     # PHP directive values added here will apply according the
