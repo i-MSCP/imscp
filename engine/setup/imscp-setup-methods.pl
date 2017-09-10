@@ -440,9 +440,7 @@ sub setupServersAndPackages
 
             unless ( $rs ) {
                 for ( @packages ) {
-                    #debug("Nuxwin: evaluating $_");
                     ( my $subref = $_->can( $lcTask ) ) or $nStep++ && next;
-                    #debug("Nuxwin: Processing $lcTask for $_");
                     $rs = step(
                         sub { $subref->( $_->getInstance()) },
                         sprintf( "Executing %s %s tasks...", $_, $lcTask ), $nSteps, $nStep
