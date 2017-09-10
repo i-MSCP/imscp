@@ -20,24 +20,24 @@
 #
 # Be aware that only Fcgid and PHP-FPM Apache2 httpd server implementations are
 # supported.
-
-# INI levels:
 #
-# Depending on PHP ini level in use on your system, override values set apply
-# differently:
+# PHP INI level:
+#
+# Depending on PHP INI level in use, this listener file act differently:
 # 
-# - Per user level: Override values can be set for the main domain name only.
-#   They will apply to main domain, domain aliases and subdomains.
-# - Per domain: Override values can be set for the main domain and domain
-#   aliases only. Values set for the main domain will also apply to the main
-#   domain's subdomains and values set for domain aliases will also apply to
-#   domain aliases's subdomains
-# - Per site: Override values can be set for the main domain, domain aliases
-#   and subdomains. Values set will apply only to the targeted domain, domain
-#   alias or subdomain.
+# - Per user level: PHP directive values can be set for the main domain name
+#   only. They will apply to main domain, domain aliases and subdomains.
+# - Per domain: PHP directive values can be set for the main domain and domain
+#   aliases only. PHP directive values set for the main domain will also apply
+#   to the main domain's subdomains and PHP directive values set for domain
+#   aliases will also apply to domain aliases's subdomains.
+# - Per site: PHP directive values values can be set for the main domain,
+#   domain aliases and subdomains. PHP directive values set will apply only to
+#   the targeted domain, domain alias or subdomain.
 #
-# You can change the INI level by executing the following command:
-#  perl /var/www/imscp/engine/setup/imscp-setup -dar php
+# You can change the PHP INI level by running the following command:
+#
+#  perl /var/www/imscp/engine/setup/imscp-reconfigure -dar php
 
 package Listener::Php::ConfOptions::Override;
 
@@ -51,8 +51,10 @@ use Servers::httpd;
 #
 
 # Adds or overrides PHP directive values globally or per domain.
-# - The per domain PHP directive values take precedence over global PHP directive values.
-# - The PHP directives values take precedence over those which are defined through the i-MSCP PHP editor.
+# - The per domain PHP directive values take precedence over global PHP
+#   directive values.
+# - The PHP directives values take precedence over those which are defined
+#   through the i-MSCP PHP editor.
 #
 # Placeholders that can be used in PHP directive values:
 #
@@ -70,7 +72,7 @@ my %phpDirectives = (
     },
 
     # Per domain PHP directives
-    # PHP directive values added here will apply according the
+    # PHP directive values added here will apply according on the
     # current PHP INI level (see the above explainations).
     'domain.tld' => {
         directive_name1 => 'directive_value',
@@ -103,7 +105,7 @@ iMSCP::EventManager->getInstance()->register(
 
             return 0 unless exists $phpDirectives{my $domain = _getIniLevel( $data )};
 
-            # Adds/Overrides per domain PHP directive
+            # Adds/Overrides per domain PHP directive values
             while ( my ($directive, $value) = each( %{$phpDirectives{$domain}} ) ) {
                 next if ${$tplContent} =~ s/^$directive\s+=.*/$directive = $value/gim;
                 ${$tplContent} .= "$directive = $value\n";
@@ -130,7 +132,7 @@ iMSCP::EventManager->getInstance()->register(
 
         return 0 unless exists $phpDirectives{my $domain = _getIniLevel( $data )};
 
-        # Adds/Overrides per domain PHP directives
+        # Adds/Overrides per domain PHP directive values
         while ( my ($directive, $value) = each( %{$phpDirectives{$domain}} ) ) {
             next if ${$tplContent} =~ s/^(php_(?:admin_)?(?:value|flag)\[$directive\]).*/$1 = $value/gim;
 
