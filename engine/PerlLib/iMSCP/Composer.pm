@@ -187,7 +187,7 @@ sub _getComposer
             ),
             ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
                 ? sub {}
-                : sub { step( undef, "$msgHeader" . ( shift ) . $msgFooter, 3, 1 ); }
+                : sub { step( undef, $msgHeader . ( shift ) . $msgFooter, 3, 1 ); }
             ),
             sub { $stderr .= shift; }
         );
@@ -216,8 +216,8 @@ sub _checkRequirements
 
     for( @{$self->{'packages'}} ) {
         my ($package, $version) = $_ =~ /"(.*)":\s*"(.*)"/;
+        my $msgShown;
         my $msg = $msgHeader . "Checking package $package ($version)\n\n";
-
         my $rs = executeNoWait(
             sprintf(
                 $self->{'su_cmd_pattern'},
@@ -228,7 +228,11 @@ sub _checkRequirements
             ),
             ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
                 ? sub {}
-                : sub { step( undef, $msg, 3, 2 ); }
+                : sub {
+                    return if $msgShown;
+                    step( undef, $msg, 3, 2 );
+                    $msgShown = 1;
+                }
             ),
             sub { $stderr .= shift; }
         );
