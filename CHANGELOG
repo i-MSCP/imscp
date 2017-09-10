@@ -8,6 +8,12 @@ INSTALLER
     Fixed: `build'' mode is broken for fresh installs -- Packages must be pre-installed regardless of install mode
     Fixed: `CLIENT_DOMAIN_ALT_URLS' configuration parameter reseted to 0 (disabled) while running installer
 
+PACKAGES
+    Fixed: Distribution package not installed in `build' mode (Package::AntiRootkits, Package::Webstats)
+
+SCRIPT
+    Fixed: Missing `--skip-distro-packages' (imscp-reconfigure script)
+
 YOUTRACK
     IP-1742 i-MSCP upgrade error - Unknown 'mail_user' database table in database update r254
 

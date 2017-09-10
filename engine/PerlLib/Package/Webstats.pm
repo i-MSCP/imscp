@@ -157,7 +157,7 @@ sub preinstall
         push @distroPackages, $subref->( $package->getInstance());
     }
 
-    if ( defined $main::skippackages && !$main::skippackages && @distroPackages ) {
+    if ( @distroPackages && ( !defined $main::skippackages || !$main::skippackages ) ) {
         my $rs = $self->_removePackages( @distroPackages );
         return $rs if $rs;
     }
@@ -183,7 +183,7 @@ sub preinstall
         push @distroPackages, $subref->( $package->getInstance());
     }
 
-    if ( defined $main::skippackages && !$main::skippackages && @distroPackages ) {
+    if ( @distroPackages && ( !defined $main::skippackages || !$main::skippackages ) ) {
         my $rs = $self->_installPackages( @distroPackages );
         return $rs if $rs;
     }
@@ -566,7 +566,6 @@ sub _installPackages
     local $ENV{'UCF_FORCE_CONFFNEW'} = 1;
     local $ENV{'UCF_FORCE_CONFFMISS'} = 1;
 
-    my ($aptVersion) = `apt-get --version` =~ /^apt\s+([\d.]+)/;
     my $stdout;
     my $rs = execute(
         [
@@ -574,7 +573,8 @@ sub _installPackages
             'apt-get', '--assume-yes', '--option', 'DPkg::Options::=--force-confnew',
             '--option', 'DPkg::Options::=--force-confmiss', '--option', 'Dpkg::Options::=--force-overwrite',
             ( $main::forcereinstall ? '--reinstall' : () ), '--auto-remove', '--purge', '--no-install-recommends',
-            ( ( version->parse( $aptVersion ) < version->parse( '1.1.0' ) ) ? '--force-yes' : '--allow-downgrades' ),
+            ( version->parse( `apt-get --version 2>/dev/null` =~ /^apt\s+(\d\.\d)/ ) < version->parse( '1.1' )
+                ? '--force-yes' : '--allow-downgrades' ),
             'install', @packages
         ],
         ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef ),

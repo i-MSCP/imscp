@@ -52,8 +52,14 @@ $main::execmode = 'setup' unless defined $main::execmode;
 # Init variable that holds questions
 %main::questions = () unless %main::questions;
 
+# Initialize command line options
+$main::skippackages = 0;
+
 # Parse command line options
-iMSCP::Getopt->parse( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )));
+iMSCP::Getopt->parse( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq {
+ -s,    --skip-distro-packages  Do not install/update distro packages.},
+    'skip-distro-packages|s' => \$main::skippackages
+);
 
 # Set debug and verbose mode
 setDebug( iMSCP::Getopt->debug );
