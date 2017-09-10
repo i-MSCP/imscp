@@ -93,7 +93,7 @@ iMSCP::EventManager->getInstance()->register(
         return unless grep($_ eq $tplName, 'php.ini', 'pool.conf');
 
         if ( $tplName eq 'php.ini' && $main::imscpConfig{'HTTPD_SERVER'} eq 'apache_fcgid' ) {
-            # Apply global PHP configuration options overriding if any
+            # Adds/Overrides PHP directive values globally
             if ( exists $phpDirectives{'*'} ) {
                 while ( my ($directive, $value) = each( %{$phpDirectives{'*'}} ) ) {
                     next if ${$tplContent} =~ s/^$directive\s+=.*/$directive = $value/gim;
@@ -114,7 +114,7 @@ iMSCP::EventManager->getInstance()->register(
 
         return 0 unless $tplName eq 'pool.conf' && $main::imscpConfig{'HTTPD_SERVER'} eq 'apache_php_fpm';
 
-        # Adds/Overrides global PHP directive values overriding if any
+        # Adds/Overrides PHP directive values globally
         if ( exists $phpDirectives{'*'} ) {
             while ( my ($directive, $value) = each( %{$phpDirectives{'*'}} ) ) {
                 next if ${$tplContent} =~ s/^(php_(?:admin_)?(?:value|flag)\[$directive\]).*/$1 = $value/gim;
