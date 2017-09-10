@@ -25,7 +25,7 @@ package iMSCP::Stepper;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error getLastError /;
 use iMSCP::Dialog;
 use iMSCP::Getopt;
 use Scalar::Defer;
@@ -100,18 +100,21 @@ sub step
 
 =over 4
 
-=item _callback( )
+=item _callback( $callback [, $debugMsg ] )
 
  Execute the given callback
 
  Param callback $callback Callback to execute
+ Param string debugMsg Optional DEBUG message
  Return int 0 on success, other on failure
 
 =cut
 
 sub _callback
 {
-    my ($callback) = @_;
+    my ($callback, $debugMsg) = @_;
+
+    debug( $debugMsg ) if $debugMsg;
 
     return 0 unless defined $callback;
 
@@ -135,14 +138,15 @@ sub _step
 {
     my ($callback, $text, $nSteps, $nStep) = @_;
 
-    $last = sprintf( "\n\\ZbStep %s of %s\\Zn\n\n%s", $nStep, $nSteps, $text );
-    my $msg = @all ? join( "\n", @all ) . "\n" . $last : $last;
+    unless ( iMSCP::Getopt->noprompt ) {
+        use integer;
+        $last = sprintf( "\n\\ZbStep %s of %s\\Zn\n\n%s", $nStep, $nSteps, $text );
+        my $msg = @all ? join( "\n", @all ) . "\n" . $last : $last;
+        my $percent = $nStep * 100 / $nSteps;
+        $dialog->hasGauge ? $dialog->setGauge( $percent, $msg ) : $dialog->startGauge( $msg, $percent );
+    }
 
-    use integer;
-    my $percent = $nStep * 100 / $nSteps;
-
-    $dialog->hasGauge ? $dialog->setGauge( $percent, $msg ) : $dialog->startGauge( $msg, $percent );
-    my $rs = _callback( $callback );
+    my $rs = _callback( $callback, iMSCP::Getopt->noprompt ? $text : undef );
 
     return $rs unless defined $callback;
     return $rs unless $rs && $rs != 50;
@@ -151,7 +155,6 @@ sub _step
     ( my $errorMessage = getLastError() ) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
     $errorMessage = 'An unexpected error occurred...' unless $errorMessage;
     $errorMessage =~ s/\n+$//;
-
     $dialog->endGauge();
     $dialog->msgbox( <<"EOF" );
 \\Z1[ERROR]\\Zn
@@ -164,7 +167,7 @@ Error was:
 
 \\Z1$errorMessage\\Zn
 
-Please have a look at http://i-mscp.net/forum if you need help.
+Please have a look at https://i-mscp.net/ if you need help.
 EOF
 
     $rs;

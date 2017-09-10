@@ -336,18 +336,16 @@ sub setGauge
 
 sub endGauge
 {
-    my ($self) = @_;
+    return 0 unless $_[0]->{'gauge'};
 
-    return 0 if iMSCP::Getopt->noprompt || !$self->{'gauge'};
-
-    $self->{'gauge'}->close();
-    undef $self->{'gauge'};
+    $_[0]->{'gauge'}->close();
+    undef $_[0]->{'gauge'};
     0;
 }
 
 =item hasGauge( )
 
- Does a gauge is currently running?
+ Is a gauge set?
 
  Return int 1 if gauge is running 0 otherwise
 
@@ -355,11 +353,7 @@ sub endGauge
 
 sub hasGauge
 {
-    my ($self) = @_;
-
-    return 0 if iMSCP::Getopt->noprompt;
-
-    ( $self->{'gauge'} ) ? 1 : 0;
+    $_[0]->{'gauge'} ? 1 : 0;
 }
 
 =item set( $option, $value )

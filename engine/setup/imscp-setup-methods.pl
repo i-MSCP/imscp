@@ -272,8 +272,8 @@ sub setupSetPermissions
         my $stderr;
         $rs = executeNoWait(
             [ 'perl', "$main::imscpConfig{'ENGINE_ROOT_DIR'}/setup/$script", @options ],
-            ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                ? undef
+            ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
+                ? sub {}
                 : sub {
                     return unless ( shift ) =~ /^(.*)\t(.*)\t(.*)/;
                     step( undef, $1, $2, $3 );
@@ -440,7 +440,9 @@ sub setupServersAndPackages
 
             unless ( $rs ) {
                 for ( @packages ) {
+                    #debug("Nuxwin: evaluating $_");
                     ( my $subref = $_->can( $lcTask ) ) or $nStep++ && next;
+                    #debug("Nuxwin: Processing $lcTask for $_");
                     $rs = step(
                         sub { $subref->( $_->getInstance()) },
                         sprintf( "Executing %s %s tasks...", $_, $lcTask ), $nSteps, $nStep

@@ -25,7 +25,7 @@ package iMSCP::Composer;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug / error /;
 use iMSCP::Dialog;
 use iMSCP::Dir;
 use iMSCP::Execute;
@@ -96,13 +96,20 @@ sub _init
                 return $rs if $rs;
             }
 
-            iMSCP::Dir->new( dirname => $self->{'packages_dir'} )->make(
-                {
-                    user  => $main::imscpConfig{'IMSCP_USER'},
-                    group => $main::imscpConfig{'IMSCP_GROUP'},
-                    mode  => 0755
-                }
-            );
+            local $@;
+            eval {
+                iMSCP::Dir->new( dirname => $self->{'packages_dir'} )->make(
+                    {
+                        user  => $main::imscpConfig{'IMSCP_USER'},
+                        group => $main::imscpConfig{'IMSCP_GROUP'},
+                        mode  => 0755
+                    }
+                );
+            };
+            if ( $@ ) {
+                error( $@ );
+                return 1;
+            }
 
             startDetail;
 
@@ -163,8 +170,9 @@ sub _getComposer
                 $self->{'su_cmd_pattern'},
                 escapeShell( "curl -s http://getcomposer.org/installer | $self->{'php_cmd_prefix'}" )
             ),
-            ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                ? undef : sub { step( undef, $msgHeader . ( shift ) . $msgFooter, 3, 1 ); }
+            ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
+                ? sub {}
+                : sub { step( undef, $msgHeader . ( shift ) . $msgFooter, 3, 1 ); }
             ),
             sub { $stderr .= shift; }
         );
@@ -177,8 +185,9 @@ sub _getComposer
                         . "--clean-backups --stable --no-ansi --no-interaction"
                 )
             ),
-            ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                ? undef : sub { step( undef, "$msgHeader" . ( shift ) . $msgFooter, 3, 1 ); }
+            ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
+                ? sub {}
+                : sub { step( undef, "$msgHeader" . ( shift ) . $msgFooter, 3, 1 ); }
             ),
             sub { $stderr .= shift; }
         );
@@ -217,8 +226,9 @@ sub _checkRequirements
                         "--no-interaction --working-dir=$self->{'packages_dir'} $package $version"
                 )
             ),
-            ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                ? undef : sub { step( undef, $msg, 3, 2 ); }
+            ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
+                ? sub {}
+                : sub { step( undef, $msg, 3, 2 ); }
             ),
             sub { $stderr .= shift; }
         );
@@ -259,8 +269,9 @@ sub _installPackages
             )
         ),
         sub {},
-        ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-            ? undef : sub { step( undef, $msgHeader . ( shift ) . $msgFooter, 3, 3 ); }
+        ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
+            ? sub {}
+            : sub { step( undef, $msgHeader . ( shift ) . $msgFooter, 3, 3 ); }
         )
     );
 
@@ -314,9 +325,20 @@ sub _cleanPackageCache
 {
     my ($self) = @_;
 
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'IMSCP_HOMEDIR'}/.cache" )->remove();
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'IMSCP_HOMEDIR'}/.composer" )->remove();
-    iMSCP::Dir->new( dirname => $self->{'packages_dir'} )->remove();
+    local $@;
+    eval {
+        for( "$main::imscpConfig{'IMSCP_HOMEDIR'}/.cache",
+            "$main::imscpConfig{'IMSCP_HOMEDIR'}/.composer",
+            $self->{'packages_dir'}
+        ) {
+            iMSCP::Dir->new( dirname => $_ )->remove();
+        }
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
     0;
 }
 

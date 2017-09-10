@@ -217,7 +217,7 @@ EOF
             'apt-get', '--assume-yes', '--option', 'DPkg::Options::=--force-confnew', '--option',
             'DPkg::Options::=--force-confmiss', '--option', 'Dpkg::Options::=--force-overwrite',
             ( $main::forcereinstall ? '--reinstall' : () ), '--auto-remove', '--purge', '--no-install-recommends',
-            ( version->parse( `apt-get --version` =~ /^apt\s+(\d\.\d)/ ) < version->parse( '1.1' )
+            ( version->parse( `apt-get --version 2>/dev/null` =~ /^apt\s+(\d\.\d)/ ) < version->parse( '1.1' )
                 ? '--force-yes' : '--allow-downgrades'
             ),
             'install'
@@ -1162,8 +1162,9 @@ sub _rebuildAndInstallPackage
                 ];
                 $rs = executeNoWait(
                     $cmd,
-                    ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                        ? undef : sub {
+                    ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
+                        ? sub {}
+                        : sub {
                             return unless ( shift ) =~ /^i:\s*(.*)/i;
                             step( undef, $msgHeader . ucfirst( $1 ) . $msgFooter, 5, 1 );
                         }
@@ -1185,8 +1186,9 @@ sub _rebuildAndInstallPackage
             my $stderr = '';
             $rs = executeNoWait(
                 [ 'apt-get', '-y', 'source', $pkgSrc ],
-                ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                    ? undef : sub { step( undef, $msgHeader . ( ( shift ) =~ s/^\s*//r ) . $msgFooter, 5, 2 ); }
+                ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
+                    ? sub {}
+                    : sub { step( undef, $msgHeader . ( ( shift ) =~ s/^\s*//r ) . $msgFooter, 5, 2 ); }
                 ),
                 sub { $stderr .= shift }
             );
@@ -1249,8 +1251,9 @@ sub _rebuildAndInstallPackage
                         '--use-pdebuild-internal',
                         '--configfile', "$FindBin::Bin/configs/" . lc( $lsbRelease->getId( 1 )) . '/pbuilder/pbuilderrc'
                     ],
-                    ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                        ? undef : sub {
+                    ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
+                        ? sub {}
+                        : sub {
                             return unless ( shift ) =~ /^i:\s*(.*)/i;
                             step( undef, $msgHeader . ucfirst( $1 ) . $msgFooter, 5, 4 );
                         }
@@ -1276,8 +1279,9 @@ sub _rebuildAndInstallPackage
 
             $rs = executeNoWait(
                 "dpkg --force-confnew -i /var/cache/pbuilder/result/${pkg}_*.deb",
-                ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                    ? undef : sub { step( undef, $msgHeader . ( shift ), 5, 5 ) }
+                ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
+                    ? sub {}
+                    : sub { step( undef, $msgHeader . ( shift ), 5, 5 ) }
                 ),
                 sub { $stderr .= shift }
             );

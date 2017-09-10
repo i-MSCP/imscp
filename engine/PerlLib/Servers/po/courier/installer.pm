@@ -594,7 +594,12 @@ sub _buildDHparametersFile
             };
 
             my $rs = executeNoWait(
-                $cmd, ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : $outputHandler ), $outputHandler
+                $cmd,
+                ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
+                    ? sub {}
+                    : $outputHandler
+                ),
+                $outputHandler
             );
             error( $output || 'Unknown error' ) if $rs;
             $rs ||= iMSCP::File->new( filename => $tmpFile->filename )->moveFile(
