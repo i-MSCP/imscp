@@ -4,9 +4,8 @@
                 default="1"
                 description="Nginx server"
                 class="Package::FrontEnd"
-                repository_conflict="http://nginx.org/packages/debian">
+                repository_conflict="http://nginx.org/">
             <package>nginx-full</package>
-            <package_conflict>nginx</package_conflict>
         </nginx>
     </frontend>
     <httpd>
@@ -55,9 +54,6 @@
                 repository_conflict="http://packages.dotdeb.org"
                 repository="https://packages.sury.org/php/ stretch main"
                 repository_key_uri="https://packages.sury.org/php/apt.gpg"
-                pinning_package="*"
-                pinning_pin="origin packages.sury.org"
-                pinning_pin_priority="1001"
         >
             <package>php5.6</package>
             <package>php5.6-cgi</package>
@@ -93,9 +89,6 @@
                 repository_conflict="http://packages.dotdeb.org"
                 repository="https://packages.sury.org/php/ stretch main"
                 repository_key_uri="https://packages.sury.org/php/apt.gpg"
-                pinning_package="*"
-                pinning_pin="origin packages.sury.org"
-                pinning_pin_priority="1001"
         >
             <package>php7.0</package>
             <package>php7.0-cgi</package>
@@ -132,9 +125,6 @@
                 repository_conflict="http://packages.dotdeb.org"
                 repository="https://packages.sury.org/php/ stretch main"
                 repository_key_uri="https://packages.sury.org/php/apt.gpg"
-                pinning_package="*"
-                pinning_pin="origin packages.sury.org"
-                pinning_pin_priority="1001"
         >
             <package>php7.1</package>
             <package post_install_tasks="update-alternatives --set php /usr/bin/php7.1">php7.1-cli</package>
@@ -300,6 +290,7 @@
                 allow_switch="remote_server"
         >
             <package
+                    comment="See https://jira.mariadb.org/browse/MDEV-13615"
                     pinning_package="libmariadbclient18"
                     pinning_pin="release o=Debian,n=stretch"
                     pinning_pin_priority="1002"
@@ -372,14 +363,6 @@
         <package>libxml-parser-perl</package>
         <package>libxml-simple-perl</package>
     </perl>
-    <ssl
-            pinning_package="openssl libssl-dev"
-            pinning_pin="release o=Debian,n=stretch"
-            pinning_pin_priority="1002"
-    >
-        <package>libssl-dev</package>
-        <package>openssl</package>
-    </ssl>
     <other>
         <package>apt-src</package>
         <package>at</package>
@@ -406,6 +389,7 @@
         <package>lzma</package>
         <package>make</package>
         <package>mawk</package>
+        <package>openssl</package>
         <package>patch</package>
         <package>pbuilder</package>
         <package>pbzip2</package>
