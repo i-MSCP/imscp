@@ -53,7 +53,7 @@ use Servers::httpd;
 # Adds or overrides PHP directive values globally or per domain.
 # - The per domain PHP directive values take precedence over global PHP
 #   directive values.
-# - The PHP directives values take precedence over those which are defined
+# - The PHP directive values take precedence over those which are defined
 #   through the i-MSCP PHP editor.
 #
 # Placeholders that can be used in PHP directive values:
@@ -62,7 +62,7 @@ use Servers::httpd;
 # {PEAR_DIR} Will be replaced by PHP Pear directory path
 # {TMPDIR}   Will be replaced by PHP temporary directory
 #
-# Note that domain names must be in ASCII format.
+# Note that domain names must be in ACE form.
 my %phpDirectives = (
     # Global PHP directives
     # PHP directive values added here will apply globally

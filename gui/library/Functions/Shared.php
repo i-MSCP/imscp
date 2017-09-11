@@ -1091,55 +1091,19 @@ function redirectTo($location)
 }
 
 /**
- * Should be documented
+ * Encode the given UTF-8 string to ACE form
  *
- * @param  $array
- * @param bool $asPath
- * @return array|string
- */
-function array_decode_idna($array, $asPath = false)
-{
-    if ($asPath && !is_array($array)) {
-        return implode('/', array_decode_idna(explode('/', $array)));
-    }
-
-    foreach ($array as $k => $v) {
-        $arr[$k] = decode_idna($v);
-    }
-
-    return $array;
-}
-
-/**
- * Must be documented
- *
- * @param array $array Indexed array that containt
- * @param bool $asPath
- * @return array|string
- */
-function array_encode_idna($array, $asPath = false)
-{
-    if ($asPath && !is_array($array)) {
-        return implode('/', array_encode_idna(explode('/', $array)));
-    }
-
-    foreach ($array as $k => $v) {
-        $array[$k] = encode_idna($v);
-    }
-
-    return $array;
-}
-
-/**
- * Convert a domain name or email to IDNA ASCII form
- *
- * @param  string String to convert
- * @return string Encoded string or original string on failure
+ * @param  string $string UTF-8 string to encode
+ * @return string Encoded UTF-8 string (ACE string), or original string on failure
  */
 function encode_idna($string)
 {
     if (!Registry::isRegistered('IdnaConvert')) {
-        Registry::set('IdnaConvert', new IdnaConvert());
+        Registry::set('IdnaConvert', new IdnaConvert([
+            'encoding'    => 'utf8',
+            'idn_version' => 2008,
+            'strict_mode' => false // Accept any string, not only individual domain name parts
+        ]));
     }
 
     try {
@@ -1150,15 +1114,19 @@ function encode_idna($string)
 }
 
 /**
- * Convert a domain name or email from IDNA ASCII to Unicode
+ * Decode the given ACE string to UTF-8
  *
- * @param  string String to convert
- * @return string Decoded string or original string on failure
+ * @param  string $string ACE string to decode
+ * @return string Decoded ACE string (UTF-8 string), or original string on failure
  */
 function decode_idna($string)
 {
     if (!Registry::isRegistered('IdnaConvert')) {
-        Registry::set('IdnaConvert', new IdnaConvert());
+        Registry::set('IdnaConvert', new IdnaConvert([
+            'encoding'    => 'utf8',
+            'idn_version' => 2008,
+            'strict_mode' => false // Accept any string, not only individual domain name parts   
+        ]));
     }
 
     try {

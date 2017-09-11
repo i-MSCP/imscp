@@ -761,7 +761,7 @@ FRONTEND
     Fixed: Could not remove database; There is no such grant defined for user... (stdlib)
     Fixed: Could not set URL redirect when adding domain alias; Bad request error page (client level)
     Fixed: Email template inconsistencies
-    Fixed: IDNs are shown in IDNA form in several places
+    Fixed: IDNs are shown in ACE form in several places
     Fixed: iMSCP_Update_Database::addIndex() doesn't allows to set index length (stdlib)
     Fixed: Lostpasword feature is broken
     Fixed: Mails sent from FrontEnd could be rejected if sender email domain is hosted externally

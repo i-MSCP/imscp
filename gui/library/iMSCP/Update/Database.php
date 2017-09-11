@@ -1118,7 +1118,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Convert FTP usernames, groups and members to IDNA form
+     * Convert FTP usernames, groups and members to ACE form
      *
      * @throws iMSCP_Exception_Database
      * @return null
