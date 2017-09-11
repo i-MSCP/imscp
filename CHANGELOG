@@ -10,6 +10,7 @@ INSTALLER
 
 LISTENERS
     Fixed: Listener::Php::ConfOptions::Override: PHP INI level not honoured
+    Fixed: 10_named_slave_provisioning.pl: Global symbol "$rs" requires explicit package name
 
 PACKAGES
     Fixed: Distribution packages not installed in `build' mode (Package::AntiRootkits, Package::Webstats)
@@ -108,7 +109,7 @@ FRONTEND
     Fixed: Couldn't set value bigger than 2GB for mailbox quota due to integer type casting (i386 arch)
     Fixed: Couldn't generate self-signed SSL certificate (string passed as serial number while integer is expected)
     Fixed: Customers must stay able to login when their password or their main domain are being modified
-    Fixed: Don't decode IDNA names in list of DNS resource records (Client UI level)
+    Fixed: Don't decode ACE names in list of DNS resource records (Client UI level)
     Fixed: Erroneous ftp_group.members field (Subsequent FTP accounts members are never added)
     Fixed: Login check must be done prior triggering starting script event
     Fixed: Missing creation of default `webmaster' mail account for subdomains
