@@ -171,10 +171,7 @@ class iMSCP_Events
     /**
      * Event triggered on authentication process
      *
-     * iMSCP_Events_Event object parameters:
-     *  - context  : iMSCP_Authentication instance
-     *  - username : Username
-     *  - password : Password
+     *Listeners receive an iMSCP_Authentication_AuthEvent object.
      *
      * @const string
      */

@@ -112,23 +112,31 @@ class iMSCP_Authentication
         $response = $em->dispatch(Events::onBeforeAuthentication, ['context' => $this]);
 
         if (!$response->isStopped()) {
-            $authEvent = new AuthEvent();
+            $authEvent = new AuthEvent($this);
 
             // Process authentication through registered handlers
-            // Note: In versions pre1.3.9, the auth result was pulled from the response object. To stay compatible with
-            // plugins that were developed for versions pre1.3.9, we first try to pull the auth result from the response
-            // object and if it is not defined, we pull it from the new auth event that has been introduced in version
-            // 1.3.9. Plugin that make use of the new auth event must requires the i-MSCP API 1.0.7.
+            //
+            // In versions pre1.3.9, the auth result was pulled from the
+            // response object. To stay compatible with plugins that were
+            // developed for versions pre1.3.9, we first try to pull the auth
+            // result from the response object and if it is not defined, we
+            // pull it from the new auth event that has been introduced in
+            // version 1.3.9.
+            //
+            // Plugin that make use of the new auth event must requires at
+            // least the i-MSCP API 1.0.7.
             $response = $em->dispatch($authEvent, ['context' => $this]);
             $authResult = $response->last() ?: $authEvent->getAuthenticationResult();
 
-            // Covers case where no one of authentication handlers has set an authentication result
+            // Covers case where none of authentication handlers has set an
+            // auth result
             if (!$authResult instanceof AuthResult) {
                 $authResult = new AuthResult(AuthResult::FAILURE_UNCATEGORIZED, NULL, tr('Unknown reason.'));
             }
 
             if ($authResult->isValid()) {
-                $this->unsetIdentity(); // Prevent multiple successive calls from storing inconsistent results
+                // Prevent multiple successive calls from storing inconsistent results
+                $this->unsetIdentity();
                 $this->setIdentity($authResult->getIdentity());
             }
         } else {

@@ -13,6 +13,7 @@ INSTALLER
     Fixed: `CLIENT_DOMAIN_ALT_URLS' configuration parameter reseted to 0 (disabled) while running installer
 
 FRONTEND
+    Fixed: iMSCP_Authentication_AuthEvent badly initialized
     Fixed: Wrong value passed-in the `onBeforeEditUser' and `onAfterEditUser' for the `admin_pass' parameter
 
 LISTENERS

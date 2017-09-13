@@ -18,30 +18,44 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+
+use iMSCP_Authentication as AuthService;
 use iMSCP_Events_Event as Event;
 use iMSCP_Authentication_Result as AuthResult;
 
 /**
  * Class iMSCP_Authentication_AuthEvent
  */
-class iMSCP_Authentication_AuthEvent  extends Event
+class iMSCP_Authentication_AuthEvent extends Event
 {
     /**
      * @var string Event name
      */
     protected $name = iMSCP_Events::onAuthentication;
     
-    /** @var  iMSCP_Authentication */
-    protected $authentication;
+    /**
+     * @var AuthService
+     */
+    protected $authService;
 
     /**
      * @var iMSCP_Authentication_Result
      */
     protected $authenticationResult = null;
 
+    public function __construct(AuthService $authService)
+    {
+        $this->authService = $authService;
+    }
+
+    /**
+     * Get authentication service
+     * 
+     * @return AuthService
+     */
     public function getAuthenticationService()
     {
-        return $this->authentication;
+        return $this->authService;
     }
     
     /**
