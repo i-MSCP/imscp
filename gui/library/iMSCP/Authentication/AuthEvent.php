@@ -20,6 +20,7 @@
 
 use iMSCP_Authentication as AuthService;
 use iMSCP_Authentication_Result as AuthResult;
+use iMSCP_Events as Events;
 use iMSCP_Events_Event as Event;
 
 /**
@@ -30,7 +31,7 @@ class iMSCP_Authentication_AuthEvent extends Event
     /**
      * @var string Event name
      */
-    protected $name = iMSCP_Events::onAuthentication;
+    protected $name = Events::onAuthentication;
 
     /**
      * @var AuthService
