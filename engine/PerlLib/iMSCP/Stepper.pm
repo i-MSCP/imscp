@@ -106,7 +106,7 @@ sub step
 
  Param callback $callback Callback to execute
  Param string debugMsg Optional DEBUG message
- Return int 0 on success, 1 on failure
+ Return int 0 on success, other on failure
 
 =cut
 
