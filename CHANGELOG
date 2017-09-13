@@ -10,7 +10,6 @@ BACKEND
     Security: Don't store i-MSCP master SQL user data into the /etc/mysql/conf.d/imscp.cnf configuration file
 
 DISTRIBUTIONS
-    
     Review: Avoid APT pinning whenever as possible (All distributions)
 
 INSTALLER

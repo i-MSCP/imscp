@@ -320,8 +320,8 @@ sub dumpdb
 [mysqldump]
 host = $self->{'db'}->{'DATABASE_HOST'}
 port = $self->{'db'}->{'DATABASE_PORT'}
-user = "@{ [ $self->{'_currentUser'} =~ s/"/\\"/gr ] }"
-password = "@{ [ $self->{'_currentPassword'} =~ s/"/\\"/gr ] }"
+user = "@{ [ $self->{'db'}->{'DATABASE_USER'} =~ s/"/\\"/gr ] }"
+password = "@{ [ $self->{'db'}->{'DATABASE_PASSWORD'} =~ s/"/\\"/gr ] }"
 max_allowed_packet = 500M
 EOF
         $DEFAULT_MYSQL_CONFFILE->flush();
@@ -330,9 +330,9 @@ EOF
     my $stderr;
     execute(
         [
-            'mysqldump', "--defaults-file=$DEFAULT_MYSQL_CONFFILE",
-            '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords', '--compress',
-            '--quote-names', '-r', "$dbDumpTargetDir/$encodedDbName.sql", '-B', $dbName
+            'mysqldump', "--defaults-file=$DEFAULT_MYSQL_CONFFILE", '--opt', '--complete-insert', '--add-drop-database',
+            '--allow-keywords', '--compress', '--quote-names', '-r', "$dbDumpTargetDir/$encodedDbName.sql",
+            '-B', $dbName
         ],
         undef,
         \ $stderr
