@@ -18,10 +18,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
 use iMSCP_Authentication as AuthService;
-use iMSCP_Events_Event as Event;
 use iMSCP_Authentication_Result as AuthResult;
+use iMSCP_Events_Event as Event;
 
 /**
  * Class iMSCP_Authentication_AuthEvent
@@ -32,7 +31,7 @@ class iMSCP_Authentication_AuthEvent extends Event
      * @var string Event name
      */
     protected $name = iMSCP_Events::onAuthentication;
-    
+
     /**
      * @var AuthService
      */
@@ -41,7 +40,7 @@ class iMSCP_Authentication_AuthEvent extends Event
     /**
      * @var iMSCP_Authentication_Result
      */
-    protected $authenticationResult = null;
+    protected $authenticationResult = NULL;
 
     public function __construct(AuthService $authService)
     {
@@ -50,27 +49,27 @@ class iMSCP_Authentication_AuthEvent extends Event
 
     /**
      * Get authentication service
-     * 
+     *
      * @return AuthService
      */
     public function getAuthenticationService()
     {
         return $this->authService;
     }
-    
+
     /**
      * Has authentication result?
-     * 
+     *
      * @return bool
      */
     public function hasAuthenticationResult()
     {
-        return $this->authenticationResult !== null;
+        return $this->authenticationResult !== NULL;
     }
 
     /**
      * Set authentication result
-     * 
+     *
      * @param iMSCP_Authentication_Result $authResult
      */
     public function setAuthenticationResult(AuthResult $authResult)
@@ -80,7 +79,7 @@ class iMSCP_Authentication_AuthEvent extends Event
 
     /**
      * Get authentication result
-     * 
+     *
      * @return iMSCP_Authentication_Result
      */
     public function getAuthenticationResult()
