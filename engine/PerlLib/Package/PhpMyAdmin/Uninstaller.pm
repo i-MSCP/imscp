@@ -120,7 +120,6 @@ sub _removeSqlDatabase
 {
     my ($self) = @_;
 
-    local $@;
     eval {
         my $dbh = $self->{'db'}->getRawDb();
         local $dbh->{'RaiseError'} = 1;

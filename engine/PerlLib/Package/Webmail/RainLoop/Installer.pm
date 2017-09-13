@@ -321,7 +321,6 @@ sub _setupDatabase
     my $dbPass = main::setupGetQuestion( 'RAINLOOP_SQL_PASSWORD' );
     my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
-    local $@;
     eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
         $dbh->{'RaiseError'} = 1;

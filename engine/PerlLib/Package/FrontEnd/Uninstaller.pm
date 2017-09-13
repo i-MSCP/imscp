@@ -92,7 +92,6 @@ sub _init
 
 sub _deconfigurePHP
 {
-    local $@;
     eval { iMSCP::Service->getInstance()->remove( 'imscp_panel' ); };
     if ( $@ ) {
         error( $@ );

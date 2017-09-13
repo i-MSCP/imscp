@@ -223,7 +223,6 @@ sub doQuery
 {
     my ($self, $key, $query, @bindValues) = @_;
 
-    local $@;
     my $qrs = eval {
         defined $query or die 'No query provided';
         my $dbh = $self->getRawDb();
@@ -251,7 +250,6 @@ sub getDbTables
     my ($self, $dbName) = @_;
     $dbName //= $self->{'db'}->{'DATABASE_NAME'};
 
-    local $@;
     my @tables = eval {
         my $dbh = $self->getRawDb();
         local $dbh->{'RaiseError'} = 1;
@@ -279,7 +277,6 @@ sub getTableColumns
     my ($self, $tableName, $dbName) = @_;
     $dbName //= $self->{'db'}->{'DATABASE_NAME'};
 
-    local $@;
     my @columns = eval {
         my $dbh = $self->getRawDb();
         local $dbh->{'RaiseError'} = 1;

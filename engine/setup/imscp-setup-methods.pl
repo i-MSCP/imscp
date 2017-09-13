@@ -241,7 +241,6 @@ sub setupImportSqlSchema
         return 1;
     }
 
-    local $@;
     eval {
         my $dbh = $db->getRawDb();
         local $dbh->{'RaiseError'} = 1;
@@ -375,9 +374,6 @@ sub setupRegisterPluginListeners
     return $rs if $rs;
 
     my ($db, $pluginNames) = ( iMSCP::Database->factory(), undef );
-
-    local $@;
-
     my $oldDbName = eval { $db->useDatabase( setupGetQuestion( 'DATABASE_NAME' )); };
     return 0 if $@; # Fresh install case
 

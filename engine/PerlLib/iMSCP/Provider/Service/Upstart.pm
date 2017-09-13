@@ -143,7 +143,6 @@ sub remove
 
     return 0 unless $self->stop( $job );
 
-    local $@;
     for ( qw/ conf override / ) {
         my $jobFilePath = eval { $self->getJobFilePath( $job, $_ ); };
         if ( defined $jobFilePath ) {
@@ -333,7 +332,6 @@ sub _isUpstart
 {
     my ($self, $job) = @_;
 
-    local $@;
     eval { $self->_searchJobFile( $job ); };
 }
 
@@ -809,7 +807,6 @@ sub _readJobOverrideFile
 {
     my ($self, $job) = @_;
 
-    local $@;
     my $filepath = eval { $self->getJobFilePath( $job, 'override' ) };
     if ( defined $filepath ) {
         my $fileContent = iMSCP::File->new( filename => $filepath )->get();

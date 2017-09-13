@@ -96,7 +96,6 @@ sub _init
                 return $rs if $rs;
             }
 
-            local $@;
             eval {
                 iMSCP::Dir->new( dirname => $self->{'packages_dir'} )->make(
                     {
@@ -329,7 +328,6 @@ sub _cleanPackageCache
 {
     my ($self) = @_;
 
-    local $@;
     eval {
         for( "$main::imscpConfig{'IMSCP_HOMEDIR'}/.cache",
             "$main::imscpConfig{'IMSCP_HOMEDIR'}/.composer",

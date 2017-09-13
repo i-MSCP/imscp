@@ -551,7 +551,6 @@ sub _setupVlogger
     my $rs = main::setupImportSqlSchema( $db, "$self->{'apacheCfgDir'}/vlogger.sql" );
     return $rs if $rs;
 
-    local $@;
     eval {
         my $sqlServer = Servers::sqld->factory();
 

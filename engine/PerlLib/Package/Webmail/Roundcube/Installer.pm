@@ -353,7 +353,6 @@ sub _setupDatabase
     my $dbPass = main::setupGetQuestion( 'ROUNDCUBE_SQL_PASSWORD' );
     my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
-    local $@;
     eval {
         my $db = iMSCP::Database->factory();
         my $dbh = $db->getRawDb();
@@ -496,7 +495,6 @@ sub _updateDatabase
     my $db = iMSCP::Database->factory();
     my $dbh = $db->getRawDb();
 
-    local $@;
     eval {
         # Ensure tha users.mail_host entries are set with expected hostname (default to `localhost')
         my $hostname = 'localhost';

@@ -80,7 +80,6 @@ sub process
     return $rs if $rs;
 
     if ( $self->add() ) {
-        local $@;
         eval {
             local $self->{'_dbh'}->{'RaiseError'} = 1;
             $self->{'_dbh'}->do(
@@ -96,7 +95,6 @@ sub process
         return 0;
     }
 
-    local $@;
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         $self->{'_dbh'}->begin_work();

@@ -61,7 +61,6 @@ sub setRights
 {
     my ($target, $options) = @_;
 
-    local $@;
     eval {
         defined $target or die( '$target parameter is not defined' );
         ref $options eq 'HASH' && %{$options} or die( '$options parameter is not defined' );

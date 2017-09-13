@@ -94,7 +94,6 @@ sub process
         return 0;
     }
 
-    local $@;
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         $self->{'_dbh'}->do( @sql );
@@ -119,7 +118,6 @@ sub disable
 {
     my ($self) = @_;
 
-    local $@;
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
 
@@ -161,7 +159,6 @@ sub _loadData
 {
     my ($self, $aliasId) = @_;
 
-    local $@;
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         my $row = $self->{'_dbh'}->selectrow_hashref(

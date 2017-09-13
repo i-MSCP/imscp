@@ -5,6 +5,7 @@ Git 1.5.x
 ------------------------------------------------------------------------------------------------------------------------
 
 DISTRIBUTIONS
+    Fixed: Avoid localization of `$@' variable
     Review: Avoid APT pinning whenever as possible (All distributions)
 
 INSTALLER
@@ -19,6 +20,8 @@ PACKAGES
     Fixed: Distribution packages not installed in `build' mode (Package::AntiRootkits, Package::Webstats)
 
 SCRIPTS
+    Fixed: Avoid localization of `$@' variable (all scripts)
+    Fixed: imscp-backup-all: Unexpected warning
     Fixed: Missing `--skip-distro-packages' (imscp-reconfigure)
 
 YOUTRACK

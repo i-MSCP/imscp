@@ -67,8 +67,8 @@ sub postinstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'percona' );
+    return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->enable( 'mysql' ); };
     if ( $@ ) {
         error( $@ );
@@ -83,7 +83,6 @@ sub postinstall
         },
         7
     );
-
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'percona' );
 }
 

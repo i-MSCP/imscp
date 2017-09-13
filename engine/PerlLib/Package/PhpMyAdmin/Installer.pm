@@ -314,7 +314,6 @@ sub _setupSqlUser
     my $dbPass = main::setupGetQuestion( 'PHPMYADMIN_SQL_PASSWORD' );
     my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
-    local $@;
     eval {
         my $sqlServer = Servers::sqld->factory();
 

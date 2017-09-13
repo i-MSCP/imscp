@@ -367,7 +367,6 @@ sub _addAwstatsConfig
         return 1;
     }
 
-    local $@;
     my $row = eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'} = 1;

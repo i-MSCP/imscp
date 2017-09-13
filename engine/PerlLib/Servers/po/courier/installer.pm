@@ -331,7 +331,6 @@ sub _setupAuthdaemonSqlUser
     );
     return $rs if $rs;
 
-    local $@;
     eval {
         my $sqlServer = Servers::sqld->factory();
 

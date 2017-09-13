@@ -101,7 +101,6 @@ sub postinstall
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaPostinstall', 'postfix' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->enable( $self->{'config'}->{'MTA_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -261,7 +260,6 @@ sub start
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaStart' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->start( $self->{'config'}->{'MTA_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -286,7 +284,6 @@ sub stop
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaStop' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->stop( $self->{'config'}->{'MTA_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -311,7 +308,6 @@ sub restart
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaRestart' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->restart( $self->{'config'}->{'MTA_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -336,7 +332,6 @@ sub reload
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaReload' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->reload( $self->{'config'}->{'MTA_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -799,7 +794,6 @@ sub addMapEntry
 {
     my ($self, $mapPath, $entry) = @_;
 
-    local $@;
     my $file = eval { $self->_getMapFileObject( $mapPath ); };
     if ( $@ ) {
         error( $@ );
@@ -839,7 +833,6 @@ sub deleteMapEntry
 {
     my ($self, $mapPath, $entry) = @_;
 
-    local $@;
     my $file = eval { $self->_getMapFileObject( $mapPath ); };
     if ( $@ ) {
         error( $@ );
@@ -950,7 +943,6 @@ sub postconf
 {
     my ($self, %params) = @_;
 
-    local $@;
     eval {
         %params or die( 'Missing parameters ' );
 

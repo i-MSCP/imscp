@@ -115,7 +115,6 @@ sub postinstall
     my $rs = $self->{'eventManager'}->trigger( 'beforePoPostinstall', 'courier' );
     return $rs if $rs;
 
-    local $@;
     eval {
         my @toEnableServices = ( 'AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME' );
         my @toDisableServices = ();
@@ -339,7 +338,6 @@ sub start
     my $rs = $self->{'eventManager'}->trigger( 'beforePoStart' );
     return $rs if $rs;
 
-    local $@;
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
 
@@ -376,7 +374,6 @@ sub stop
     my $rs = $self->{'eventManager'}->trigger( 'beforePoStop' );
     return $rs if $rs;
 
-    local $@;
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
         for my $service( 'AUTHDAEMON_SNAME', 'POPD_SNAME', 'POPD_SSL_SNAME', 'IMAPD_SNAME', 'IMAPD_SSL_SNAME' ) {
@@ -406,7 +403,6 @@ sub restart
     my $rs = $self->{'eventManager'}->trigger( 'beforePoRestart' );
     return $rs if $rs;
 
-    local $@;
     eval {
         my @toRestartServices = ( 'AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME' );
         if ( $main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes' ) {

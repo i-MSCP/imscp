@@ -25,11 +25,11 @@ package Modules::SSLcertificate;
 
 use strict;
 use warnings;
+use File::Temp;
 use iMSCP::Debug qw/ error getLastError getMessageByType warning /;
 use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::OpenSSL;
-use File::Temp;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -90,7 +90,6 @@ sub process
         return 0;
     }
 
-    local $@;
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         $self->{'_dbh'}->do( @sql );
@@ -212,7 +211,6 @@ sub _loadData
 {
     my ($self, $certificateId) = @_;
 
-    local $@;
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         my $row = $self->{'_dbh'}->selectrow_hashref(

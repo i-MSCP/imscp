@@ -123,7 +123,6 @@ sub postinstall
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdPostInstall', 'apache_itk' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->enable( $self->{'config'}->{'HTTPD_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -1014,7 +1013,6 @@ sub getTraffic
 
     debug( sprintf( 'Collecting HTTP traffic data' ));
 
-    local $@;
     eval {
         local $dbh->{'RaiseError'} = 1;
 
@@ -1277,7 +1275,6 @@ sub start
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdStart' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->start( $self->{'config'}->{'HTTPD_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -1302,7 +1299,6 @@ sub stop
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdStop' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->stop( $self->{'config'}->{'HTTPD_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -1327,7 +1323,6 @@ sub restart
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdRestart' );
     return $rs if $rs;
 
-    local $@;
     eval {
         if ( $self->{'forceRestart'} ) {
             iMSCP::Service->getInstance()->restart( $self->{'config'}->{'HTTPD_SNAME'} );
@@ -1665,8 +1660,6 @@ sub _addFiles
             }
         );
     }
-
-    local $@;
 
     # Whether or not permissions must be fixed recursively
     my $fixPermissions = iMSCP::Getopt->fixPermissions || $data->{'ACTION'} =~ /^restore(?:Dmn|Sub)$/;

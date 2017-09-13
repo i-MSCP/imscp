@@ -228,7 +228,6 @@ EOF
                 $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             } else {
                 my $db = iMSCP::Database->factory();
-                local $@;
                 eval { $db->useDatabase( $dbName ); };
                 if ( !$@ && !$self->_setupIsImscpDb( $dbName ) ) {
                     $msg = "\n\n\\Z1Database '$dbName' exists but doesn't looks like an i-MSCP database.\\Zn\n\nPlease try again:";
@@ -472,7 +471,6 @@ sub _setTypeAndVersion
 {
     my ($self) = @_;
 
-    local $@;
     eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
 
@@ -715,7 +713,6 @@ sub _setupMasterSqlUser
     $self->{'sqld'}->createUser( $user, $userHost, $pwd );
 
     # Grant all privileges to that user (including GRANT otpion)
-    local $@;
     eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'};

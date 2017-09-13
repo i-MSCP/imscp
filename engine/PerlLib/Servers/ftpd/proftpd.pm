@@ -110,7 +110,6 @@ sub postinstall
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdPostInstall', 'proftpd' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->enable( $self->{'config'}->{'FTPD_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -200,7 +199,6 @@ sub addUser
 
     my $dbh = iMSCP::Database->factory()->getRawDb();
 
-    local $@;
     eval {
         local $dbh->{'RaiseError'} = 1;
 
@@ -289,7 +287,6 @@ sub start
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdStart' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->start( $self->{'config'}->{'FTPD_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -314,7 +311,6 @@ sub stop
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdStop' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->stop( $self->{'config'}->{'FTPD_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -339,7 +335,6 @@ sub restart
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdRestart' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->restart( $self->{'config'}->{'FTPD_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -364,7 +359,6 @@ sub reload
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdReload' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->reload( $self->{'config'}->{'FTPD_SNAME'} ); };
     if ( $@ ) {
         error( $@ );

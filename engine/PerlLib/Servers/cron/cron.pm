@@ -55,13 +55,15 @@ sub preinstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeCronPreinstall', 'cron' );
-    local $@;
+    return $rs if $rs;
+
     eval { iMSCP::Service->getInstance()->stop( 'cron' ); };
     if ( $@ ) {
         error( $@ );
         return 1;
     }
-    $rs ||= $self->{'eventManager'}->trigger( 'afterCronPreinstall', 'cron' );
+
+    $self->{'eventManager'}->trigger( 'afterCronPreinstall', 'cron' );
 }
 
 =item install( )
@@ -126,7 +128,6 @@ sub postinstall
     my $rs = $self->{'eventManager'}->trigger( 'beforeCronPostInstall', 'cron' );
     return $rs if $rs;
 
-    local $@;
     $rs = eval {
         my $srvMngr = iMSCP::Service->getInstance();
         $srvMngr->enable( $self->{'config'}->{'CRON_SNAME'} );
@@ -192,7 +193,6 @@ sub addTask
     $data->{'DWEEK'} //= '*';
     $data->{'USER'} //= $main::imscpConfig{'ROOT_USER'};
 
-    local $@;
     eval { $self->_validateCronTask( $data ); };
     if ( $@ ) {
         error( sprintf( 'Invalid cron tasks: %s', $@ ));

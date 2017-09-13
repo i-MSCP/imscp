@@ -83,7 +83,6 @@ sub process
         return 0;
     }
 
-    local $@;
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         $self->{'_dbh'}->do( @sql );
@@ -130,7 +129,6 @@ sub add
 
     my ( $uid, $gid ) = ( getpwnam( $user ) )[2, 3];
 
-    local $@;
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         $self->{'_dbh'}->do(
@@ -192,7 +190,6 @@ sub _loadData
 {
     my ($self, $userId) = @_;
 
-    local $@;
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         my $row = $self->{'_dbh'}->selectrow_hashref(

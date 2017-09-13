@@ -83,7 +83,6 @@ sub process
         return 0;
     }
 
-    local $@;
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         $self->{'_dbh'}->do( @sql );
@@ -108,7 +107,6 @@ sub add
 {
     my ($self) = @_;
 
-    local $@;
     eval {
         $self->{'eventManager'}->trigger( 'beforeAddIpAddr', $self->{'_data'} ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
@@ -147,7 +145,6 @@ sub delete
 {
     my ($self) = @_;
 
-    local $@;
     eval {
         $self->{'eventManager'}->trigger( 'beforeRemoveIpAddr', $self->{'_data'} ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
@@ -193,7 +190,6 @@ sub _loadData
 {
     my ($self, $ipId) = @_;
 
-    local $@;
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         $self->{'_data'} = $self->{'_dbh'}->selectrow_hashref(

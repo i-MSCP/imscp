@@ -82,7 +82,6 @@ sub preinstall
     $rs ||= $self->stop();
     return $rs if $rs;
 
-    local $@;
     $rs = eval {
         my $serviceMngr = iMSCP::Service->getInstance();
 
@@ -138,7 +137,6 @@ sub postinstall
     my $rs = $self->{'eventManager'}->trigger( 'beforePoPostinstall', 'dovecot' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->enable( $self->{'config'}->{'DOVECOT_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -329,7 +327,6 @@ sub start
     my $rs = $self->{'eventManager'}->trigger( 'beforePoStart' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->start( $self->{'config'}->{'DOVECOT_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -354,7 +351,6 @@ sub stop
     my $rs = $self->{'eventManager'}->trigger( 'beforePoStop' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->stop( $self->{'config'}->{'DOVECOT_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -379,7 +375,6 @@ sub restart
     my $rs = $self->{'eventManager'}->trigger( 'beforePoRestart' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->restart( $self->{'config'}->{'DOVECOT_SNAME'} ); };
     if ( $@ ) {
         error( $@ );

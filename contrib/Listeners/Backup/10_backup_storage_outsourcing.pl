@@ -56,7 +56,6 @@ unless ( $STORAGE_ROOT_PATH eq '' ) {
     iMSCP::EventManager->getInstance()->register(
         'onBoot',
         sub {
-            local $@;
             eval {
                 # Make sure that the root path for outsourced backup directories
                 # exists and that it is set with expected ownership and permissions
@@ -98,7 +97,6 @@ unless ( $STORAGE_ROOT_PATH eq '' ) {
 
             return 0 unless $data->{'DOMAIN_TYPE'} eq 'dmn';
 
-            local $@;
             eval {
                 my $backupDirHandle = iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/backups" );
 
@@ -159,7 +157,6 @@ unless ( $STORAGE_ROOT_PATH eq '' ) {
             $rs ||= umount( $fsFile );
             return $rs if $rs;
 
-            local $@;
             eval { iMSCP::Dir->new( dirname => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" )->remove(); };
             if ( $@ ) {
                 error( $@ );

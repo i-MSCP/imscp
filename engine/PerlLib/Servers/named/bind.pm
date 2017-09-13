@@ -112,7 +112,6 @@ sub postinstall
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostInstall' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->enable( $self->{'config'}->{'NAMED_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -728,7 +727,6 @@ sub restart
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedRestart' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->restart( $self->{'config'}->{'NAMED_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -753,7 +751,6 @@ sub reload
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedReload' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->reload( $self->{'config'}->{'NAMED_SNAME'} ); };
     if ( $@ ) {
         error( $@ );

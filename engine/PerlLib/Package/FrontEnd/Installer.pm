@@ -101,7 +101,6 @@ sub askMasterAdminCredentials
 
     my $db = iMSCP::Database->factory();
 
-    local $@;
     eval { $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' )); };
     $db = undef if $@;
 
@@ -109,7 +108,6 @@ sub askMasterAdminCredentials
         $username = main::setupGetQuestion( 'ADMIN_LOGIN_NAME' );
         $password = main::setupGetQuestion( 'ADMIN_PASSWORD' );
     } elsif ( $db ) {
-        local $@;
         my $row = eval {
             my $dbh = $db->getRawDb();
             local $dbh->{'RaiseError'} = 1;
@@ -144,7 +142,6 @@ EOF
             if ( !isValidUsername( $username ) ) {
                 $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             } elsif ( $db ) {
-                local $@;
                 my $row = eval {
                     my $dbh = $db->getRawDb();
                     local $dbh->{'RaiseError'} = 1;
@@ -633,7 +630,6 @@ sub _setupMasterAdmin
     my $db = iMSCP::Database->factory();
     my $dbh = $db->getRawDb();
 
-    local $@;
     eval {
         my $oldDbName = $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ));
 
@@ -762,7 +758,6 @@ sub _addMasterWebUser
 {
     my ($self) = @_;
 
-    local $@;
     my $rs = eval {
         my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndAddUser' );
         return $rs if $rs;

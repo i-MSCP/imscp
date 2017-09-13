@@ -464,7 +464,6 @@ sub _setupVlogger
     my $rs = main::setupImportSqlSchema( $db, "$self->{'apacheCfgDir'}/vlogger.sql" );
     return $rs if $rs;
 
-    local $@;
     eval {
         my $sqlServer = Servers::sqld->factory();
 
@@ -596,7 +595,7 @@ sub _cleanup
 
     # FPM
     unlink grep !/www\.conf$/, glob "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/*.conf";
-    local $@;
+
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
         $serviceMngr->stop( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ));

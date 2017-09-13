@@ -36,7 +36,6 @@ use iMSCP::Execute qw/ execute escapeShell /;
 use Net::LibIDN qw/ idn_to_unicode /;
 use Servers::httpd;
 use Servers::sqld;
-
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -100,7 +99,6 @@ sub process
         return 0;
     }
 
-    local $@;
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         $self->{'_dbh'}->do( @sql );
@@ -125,7 +123,6 @@ sub disable
 {
     my ($self) = @_;
 
-    local $@;
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
 
@@ -163,7 +160,6 @@ sub restore
     my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
     my $bkpDir = "$homeDir/backups";
 
-    local $@;
     eval {
         # Restore know databases only
         local $self->{'_dbh'}->{'RaiseError'} = 1;
@@ -276,7 +272,6 @@ sub _loadData
 {
     my ($self, $domainId) = @_;
 
-    local $@;
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         my $row = $self->{'_dbh'}->selectrow_hashref(

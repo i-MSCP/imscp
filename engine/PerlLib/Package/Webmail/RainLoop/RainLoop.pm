@@ -156,7 +156,6 @@ sub deleteMail
 
     return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
 
-    local $@;
     eval {
         my $db = iMSCP::Database->factory();
         my $dbh = $db->getRawDb();

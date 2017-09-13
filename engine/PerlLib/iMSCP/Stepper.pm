@@ -106,7 +106,7 @@ sub step
 
  Param callback $callback Callback to execute
  Param string debugMsg Optional DEBUG message
- Return int 0 on success, other on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -118,8 +118,7 @@ sub _callback
 
     return 0 unless defined $callback;
 
-    local $@;
-    my $rs = eval { $callback->() };
+    my $rs = eval { $callback->(); };
     if ( $@ ) {
         error( $@ );
         $rs = 1;

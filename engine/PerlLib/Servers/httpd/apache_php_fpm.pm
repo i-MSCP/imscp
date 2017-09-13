@@ -123,7 +123,6 @@ sub postinstall
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdPostInstall', 'apache_php_fpm' );
     return $rs if $rs;
 
-    local $@;
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
         $serviceMngr->enable( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ));
@@ -1021,7 +1020,6 @@ sub getTraffic
 
     debug( sprintf( 'Collecting HTTP traffic data' ));
 
-    local $@;
     eval {
         local $dbh->{'RaiseError'} = 1;
 
@@ -1268,7 +1266,6 @@ sub start
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdStart' );
     return $rs if $rs;
 
-    local $@;
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
         $serviceMngr->start( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ));
@@ -1297,7 +1294,6 @@ sub stop
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdStop' );
     return $rs if $rs;
 
-    local $@;
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
         $serviceMngr->stop( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ));
@@ -1342,7 +1338,6 @@ sub restart
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdRestart' );
     return $rs if $rs;
 
-    local $@;
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
         if ( $self->{'forceRestart'} ) {
@@ -1696,8 +1691,6 @@ sub _addFiles
             }
         );
     }
-
-    local $@;
 
     # Whether or not permissions must be fixed recursively
     my $fixPermissions = iMSCP::Getopt->fixPermissions || $data->{'ACTION'} =~ /^restore(?:Dmn|Sub)$/;

@@ -289,7 +289,6 @@ sub _setupDatabase
 
     $self->{'eventManager'}->trigger( 'beforeFtpdSetupDb', $dbUser, $dbPass );
 
-    local $@;
     eval {
         my $sqlServer = Servers::sqld->factory();
 

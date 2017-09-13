@@ -398,7 +398,6 @@ sub _setupPrimaryIP
     my $rs = $self->{'eventManager'}->trigger( 'beforeSetupPrimaryIP', $primaryIP );
     return $rs if $rs;
 
-    local $@;
     eval {
         my $netCard = ( $primaryIP eq '0.0.0.0' ) ? 'any' : iMSCP::Net->getInstance()->getAddrDevice( $primaryIP );
         defined $netCard or die( sprintf( "Couldn't find network card for the `%s' IP address", $primaryIP ));

@@ -93,7 +93,6 @@ sub postinstall
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'mysql' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->enable( 'mysql' ); };
     if ( $@ ) {
         error( $@ );
@@ -177,7 +176,6 @@ sub restart
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldRestart' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->restart( 'mysql' ); };
     if ( $@ ) {
         error( $@ );
@@ -238,7 +236,6 @@ sub dropUser
 
     return 0 if $user =~ /^(?:debian-sys-maint|mysql\.sys|root)$/; # Prevent deletion of system SQL users
 
-    local $@;
     eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
