@@ -171,7 +171,7 @@ class iMSCP_Events
     /**
      * Event triggered on authentication process
      *
-     *Listeners receive an iMSCP_Authentication_AuthEvent object.
+     * Listeners receive an iMSCP_Authentication_AuthEvent object.
      *
      * @const string
      */
