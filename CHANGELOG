@@ -28,6 +28,9 @@ SCRIPTS
     Fixed: imscp-backup-all: Unexpected warning
     Fixed: Missing `--skip-distro-packages' (imscp-reconfigure)
 
+SERVERS
+    Fixed: Applications such as WHMCS behave unexpectedly with strict SQL mode -- Set SQL mode as with MySQL 5.5 (no SQL mode)
+
 YOUTRACK
     IP-1742 i-MSCP upgrade error - Unknown 'mail_user' database table in database update r254
 

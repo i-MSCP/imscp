@@ -571,6 +571,7 @@ sub _buildConf
 performance_schema = 0
 max_connections = 500
 max_allowed_packet = 500M
+sql_mode =
 EOF
 
     ( my $user = main::setupGetQuestion( 'DATABASE_USER' ) ) =~ s/"/\\"/g;
