@@ -48,7 +48,7 @@ function updatePassword()
         'userId'   => $_SESSION['user_id'],
         'userData' => [
             'admin_name' => get_user_name($_SESSION['user_id']),
-            'admin_pass' => [$form->getValue('admin_pass')]
+            'admin_pass' => $form->getValue('admin_pass')
         ]
     ]);
     exec_query(
@@ -63,7 +63,7 @@ function updatePassword()
         'userId'   => $_SESSION['user_id'],
         'userData' => [
             'admin_name' => get_user_name($_SESSION['user_id']),
-            'admin_pass' => [$form->getValue('admin_pass')]
+            'admin_pass' => $form->getValue('admin_pass')
         ]
     ]);
 

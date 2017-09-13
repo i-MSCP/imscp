@@ -12,6 +12,9 @@ INSTALLER
     Fixed: `build'' mode is broken for fresh installs -- Packages must be pre-installed regardless of install mode
     Fixed: `CLIENT_DOMAIN_ALT_URLS' configuration parameter reseted to 0 (disabled) while running installer
 
+FRONTEND
+    Fixed: Wrong value passed-in the `onBeforeEditUser' and `onAfterEditUser' for the `admin_pass' parameter
+
 LISTENERS
     Fixed: Listener::Php::ConfOptions::Override: PHP INI level not honoured
     Fixed: 10_named_slave_provisioning.pl: Global symbol "$rs" requires explicit package name
