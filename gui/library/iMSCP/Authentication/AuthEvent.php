@@ -39,7 +39,7 @@ class iMSCP_Authentication_AuthEvent extends Event
     protected $authService;
 
     /**
-     * @var iMSCP_Authentication_Result
+     * @var AuthResult
      */
     protected $authenticationResult = NULL;
 
@@ -71,7 +71,7 @@ class iMSCP_Authentication_AuthEvent extends Event
     /**
      * Set authentication result
      *
-     * @param iMSCP_Authentication_Result $authResult
+     * @param AuthResult $authResult
      */
     public function setAuthenticationResult(AuthResult $authResult)
     {
@@ -81,7 +81,7 @@ class iMSCP_Authentication_AuthEvent extends Event
     /**
      * Get authentication result
      *
-     * @return iMSCP_Authentication_Result
+     * @return AuthResult
      */
     public function getAuthenticationResult()
     {
