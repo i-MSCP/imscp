@@ -27,16 +27,16 @@ use strict;
 use warnings;
 use File::Basename;
 use iMSCP::Composer;
-use iMSCP::Crypt qw/ randomStr /;
+use iMSCP::Crypt qw/ decryptRijndaelCBC randomStr /;
 use iMSCP::Database;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ process getBloc replaceBloc /;
 use Package::FrontEnd;
 use Package::PhpMyAdmin;
 use Servers::sqld;
@@ -420,7 +420,17 @@ sub _setupDatabase
     my $rs = $file->save();
     return $rs if $rs;
 
-    $rs = execute( "cat $schemaFilePath | mysql", \ my $stdout, \ my $stderr );
+    my $mysqlConffile = File::Temp->new();
+    print $mysqlConffile <<"EOF";
+[mysql]
+host = @{[ main::setupGetQuestion( 'DATABASE_HOST' ) ]}
+port = @{[ main::setupGetQuestion( 'DATABASE_PORT' ) ]}
+user = "@{ [ main::setupGetQuestion( 'DATABASE_USER' ) =~ s/"/\\"/gr ] }"
+password = "@{ [ decryptRijndaelCBC($main::imscpDBKey, $main::imscpDBiv, main::setupGetQuestion( 'DATABASE_PASSWORD' )) =~ s/"/\\"/gr ] }"
+max_allowed_packet = 500M
+EOF
+
+    $rs = execute( "cat $schemaFilePath | mysql --defaults-file=$mysqlConffile", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     $rs;

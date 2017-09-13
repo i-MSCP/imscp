@@ -4,8 +4,13 @@
 Git 1.5.x
 ------------------------------------------------------------------------------------------------------------------------
 
-DISTRIBUTIONS
+BACKEND
     Fixed: Avoid localization of `$@' variable
+    Security: Disallow connection to MySQL command-line tool without user/password, even for root user
+    Security: Don't store i-MSCP master SQL user data into the /etc/mysql/conf.d/imscp.cnf configuration file
+
+DISTRIBUTIONS
+    
     Review: Avoid APT pinning whenever as possible (All distributions)
 
 INSTALLER

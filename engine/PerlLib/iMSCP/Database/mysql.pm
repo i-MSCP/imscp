@@ -26,10 +26,14 @@ package iMSCP::Database::mysql;
 use strict;
 use warnings;
 use DBI;
+use File::Temp;
 use iMSCP::Debug qw/ debug /;
 use iMSCP::Execute qw / execute /;
 use POSIX ':signal_h';
 use parent 'Common::SingletonClass';
+
+# See dumpdb() below
+my $DEFAULT_MYSQL_CONFFILE;
 
 =head1 DESCRIPTION
 
@@ -302,7 +306,7 @@ sub getTableColumns
 
 sub dumpdb
 {
-    my (undef, $dbName, $dbDumpTargetDir) = @_;
+    my ($self, $dbName, $dbDumpTargetDir) = @_;
 
     # Encode slashes as SOLIDUS unicode character
     # Encode dots as Full stop unicode character
@@ -310,10 +314,24 @@ sub dumpdb
 
     debug( sprintf( 'Dump `%s` database into %s', $dbName, $dbDumpTargetDir . '/' . $encodedDbName . '.sql' ));
 
+    unless ( $DEFAULT_MYSQL_CONFFILE ) {
+        $DEFAULT_MYSQL_CONFFILE = File::Temp->new();
+        print $DEFAULT_MYSQL_CONFFILE <<"EOF";
+[mysqldump]
+host = $self->{'db'}->{'DATABASE_HOST'}
+port = $self->{'db'}->{'DATABASE_PORT'}
+user = "@{ [ $self->{'_currentUser'} =~ s/"/\\"/gr ] }"
+password = "@{ [ $self->{'_currentPassword'} =~ s/"/\\"/gr ] }"
+max_allowed_packet = 500M
+EOF
+        $DEFAULT_MYSQL_CONFFILE->flush();
+    }
+
     my $stderr;
     execute(
         [
-            'mysqldump', '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords', '--compress',
+            'mysqldump', "--defaults-file=$DEFAULT_MYSQL_CONFFILE",
+            '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords', '--compress',
             '--quote-names', '-r', "$dbDumpTargetDir/$encodedDbName.sql", '-B', $dbName
         ],
         undef,

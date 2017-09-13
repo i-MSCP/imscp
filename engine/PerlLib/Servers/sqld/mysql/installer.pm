@@ -25,6 +25,7 @@ package Servers::sqld::mysql::installer;
 
 use strict;
 use warnings;
+use File::Temp;
 use iMSCP::Crypt qw/ encryptRijndaelCBC decryptRijndaelCBC randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug error /;
@@ -523,7 +524,6 @@ sub _buildConf
 
     my $rootUName = $main::imscpConfig{'ROOT_USER'};
     my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-    my $mysqlGName = $self->{'config'}->{'SQLD_GROUP'};
     my $confDir = $self->{'config'}->{'SQLD_CONF_DIR'};
 
     # Make sure that the conf.d directory exists
@@ -574,20 +574,6 @@ max_allowed_packet = 500M
 sql_mode =
 EOF
 
-    ( my $user = main::setupGetQuestion( 'DATABASE_USER' ) ) =~ s/"/\\"/g;
-    (
-        my $pwd = decryptRijndaelCBC(
-            $main::imscpDBKey, $main::imscpDBiv, main::setupGetQuestion( 'DATABASE_PASSWORD' )
-        )
-    ) =~ s/"/\\"/g;
-    my $variables = {
-        DATABASE_HOST     => main::setupGetQuestion( 'DATABASE_HOST' ),
-        DATABASE_PORT     => main::setupGetQuestion( 'DATABASE_PORT' ),
-        DATABASE_USER     => $user,
-        DATABASE_PASSWORD => $pwd,
-        SQLD_SOCK_DIR     => $self->{'config'}->{'SQLD_SOCK_DIR'}
-    };
-
     if ( version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.5.0' ) ) {
         my $innoDbUseNativeAIO = $self->_isMysqldInsideCt() ? '0' : '1';
         $cfgTpl .= "innodb_use_native_aio = $innoDbUseNativeAIO\n";
@@ -609,16 +595,14 @@ EOF
     }
 
     $cfgTpl .= "event_scheduler = DISABLED\n";
-    $cfgTpl = process( $variables, $cfgTpl );
-
-    local $UMASK = 027; # imscp.cnf file must not be created world-readable
+    $cfgTpl = process( { SQLD_SOCK_DIR => $self->{'config'}->{'SQLD_SOCK_DIR'} }, $cfgTpl );
 
     my $file = iMSCP::File->new( filename => "$confDir/conf.d/imscp.cnf" );
     $file->set( $cfgTpl );
 
     $rs = $file->save();
-    $rs ||= $file->owner( $rootUName, $mysqlGName );
-    $rs ||= $file->mode( 0640 );
+    $rs ||= $file->owner( $rootUName, $rootGName );
+    $rs ||= $file->mode( 0644 );
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldBuildConf' );
 }
 
@@ -647,9 +631,22 @@ sub _updateServerConfig
         # Upgrade server system tables
         # See #IP-1482 for further details.
         unless ( $rs ) {
+            my $mysqlConffile = File::Temp->new();
+            print $mysqlConffile <<"EOF";
+[mysql_upgrade]
+host = @{[ main::setupGetQuestion( 'DATABASE_HOST' ) ]}
+port = @{[ main::setupGetQuestion( 'DATABASE_PORT' ) ]}
+user = "@{ [ main::setupGetQuestion( 'DATABASE_USER' ) =~ s/"/\\"/gr ] }"
+password = "@{ [ decryptRijndaelCBC($main::imscpDBKey, $main::imscpDBiv, main::setupGetQuestion( 'DATABASE_PASSWORD' )) =~ s/"/\\"/gr ] }"
+EOF
+            $mysqlConffile->flush();
+
             # Filter all "duplicate column", "duplicate key" and "unknown column"
             # errors as the command is designed to be idempotent.
-            $rs = execute( "mysql_upgrade 2>&1 | egrep -v '^(1|\@had|ERROR (1054|1060|1061))'", \$stdout );
+            $rs = execute(
+                "mysql_upgrade --defaults-file=$mysqlConffile 2>&1 | egrep -v '^(1|\@had|ERROR (1054|1060|1061))'",
+                \$stdout
+            );
             error( sprintf( "Couldn't upgrade SQL server system tables: %s", $stdout )) if $rs;
             return $rs if $rs;
             debug( $stdout ) if $stdout;
