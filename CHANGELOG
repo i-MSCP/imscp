@@ -18,6 +18,7 @@ INSTALLER
 
 FRONTEND
     Fixed: iMSCP_Authentication_AuthEvent badly initialized
+    Fixed: Misleading domain status due to missing `torestore' status in the translate_dmn_status() function
     Fixed: Wrong value passed-in the `onBeforeEditUser' and `onAfterEditUser' for the `admin_pass' parameter
 
 LISTENERS

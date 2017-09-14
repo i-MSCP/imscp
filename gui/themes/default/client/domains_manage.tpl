@@ -53,7 +53,7 @@
         <!-- EDP: domain_status_reload_true -->
         <!-- BDP: domain_status_reload_false -->
         <td>
-            <span class="tips icon i_domain_icon" title="{DOMAIN_NAME}">{DOMAIN_NAME}</span>
+            <span class="tips icon i_reload" title="{DOMAIN_NAME}">{DOMAIN_NAME}</span>
         </td>
         <!-- EDP: domain_status_reload_false -->
         <td>{DOMAIN_MOUNT_POINT}</td>

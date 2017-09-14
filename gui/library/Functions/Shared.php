@@ -313,6 +313,7 @@ function translate_dmn_status($status, $showError = false)
         case 'toadd':
             return tr('Addition in progress...');
         case 'tochange':
+        case 'torestore':
         case 'tochangepwd':
             return tr('Modification in progress...');
         case 'todelete':
