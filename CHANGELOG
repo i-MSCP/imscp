@@ -6,6 +6,8 @@ Git 1.5.x
 
 BACKEND
     Fixed: Avoid localization of `$@' variable
+    Fixed: Couldn't restore SQL databases -- Can't locate object method "selectall_array" via package "DBI::db"
+    Fixed: Couldn't restore uncompressed databases
     Security: Disallow connection to MySQL command-line tool without user/password, even for root user
     Security: Don't store i-MSCP master SQL user data into the /etc/mysql/conf.d/imscp.cnf configuration file
 

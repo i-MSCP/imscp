@@ -429,6 +429,7 @@ user = "@{ [ main::setupGetQuestion( 'DATABASE_USER' ) =~ s/"/\\"/gr ] }"
 password = "@{ [ decryptRijndaelCBC($main::imscpDBKey, $main::imscpDBiv, main::setupGetQuestion( 'DATABASE_PASSWORD' )) =~ s/"/\\"/gr ] }"
 max_allowed_packet = 500M
 EOF
+    $mysqlConffile->flush();
 
     $rs = execute( "cat $schemaFilePath | mysql --defaults-file=$mysqlConffile", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
