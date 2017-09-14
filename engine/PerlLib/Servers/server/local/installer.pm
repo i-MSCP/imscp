@@ -35,8 +35,12 @@ use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Net;
 use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
-use LWP::Simple qw/ get /;
+use LWP::Simple qw/ $ua get /;
 use parent 'Common::SingletonClass';
+
+# Set timeout for LWP::Simple
+$ua->timeout( 3 );
+$ua->agent( 'i-MSCP/1.5' );
 
 =head1 DESCRIPTION
 
@@ -144,7 +148,7 @@ sub primaryIpDialog
         && !$wanIP
         && ( !isValidIpAddr( $lanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ) )
     ) {
-        chomp( $wanIP = get( 'https://ipinfo.io/ip' ) || '' );
+        chomp( $wanIP = get( 'https://api.ipify.org/' ) || get( 'https://ipinfo.io/ip/' ) || '' );
     }
 
     if ( $main::reconfigure =~ /^(?:local_server|primary_ip|all|forced)$/
@@ -168,7 +172,7 @@ EOF
 
         # IP inside private IP range?
         if ( !isValidIpAddr( $lanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ) ) {
-            chomp( $wanIP = get( 'https://ipinfo.io/ip' ) || '' ) unless $wanIP;
+            chomp( $wanIP = get( 'https://api.ipify.org/' ) || get( 'https://ipinfo.io/ip/' ) || '' ) unless $wanIP;
 
             do {
                 ( $rs, $wanIP ) = $dialog->inputbox( <<"EOF", $wanIP );
