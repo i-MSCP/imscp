@@ -250,7 +250,6 @@ sub restore
     };
     if ( $@ ) {
         error( $@ );
-        exit;
         return 1;
     }
 
