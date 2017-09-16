@@ -12,6 +12,9 @@ BACKEND
     Security: Disallow connection to MySQL command-line tool without user password, even for root user
     Security: Don't store i-MSCP master SQL user data into the /etc/mysql/conf.d/imscp.cnf configuration file
 
+CONTRIB
+    Added: get_imscp_master_sql_user_pwd.pl script: Print current i-MSCP master SQL user password
+
 DISTRIBUTIONS
     Review: Avoid APT pinning whenever as possible (All distributions)
 
@@ -42,13 +45,13 @@ SERVERS
     Review: Make use of ipify.org as default service for WAN IP retrieval (Servers::server::local::installer)
 
 VAGRANT
-    Fixed: Can't locate Data/Validate/IP.pm in @INC
-    Fixed: Unable to locate package language-pack-en
-    Fixed: Make sure that Vagrant box is up-to-date before installing i-MSCP
+    Fixed: Can't locate Data/Validate/IP.pm in @INC (i-MSCP provision scripts)
+    Fixed: Unable to locate package language-pack-en (i-MSCP provision scripts)
+    Fixed: Make sure that Vagrant box is up-to-date before provisioning i-MSCP
     Fixed: Reboot the Vagrant box before provisioning it with i-MSCP (needed in case of kernel update)
-    Fixed: Setup i-MSCP with public IP address (IP attached to eth1 device)
+    Fixed: Setup i-MSCP with public IP address; IP attached to eth1 device (i-MSCP provision scripts)
     Merged: i-MSCP Vagrant provision scripts
-    Updated: Vagrant box to Debian 9.1/Stretch vanilla from Vagrant Cloud
+    Updated: Vagrant box to vanilla Debian 9.1/Stretch from Vagrant Cloud
 
 YOUTRACK
     IP-1742 i-MSCP upgrade error - Unknown 'mail_user' database table in database update r254
