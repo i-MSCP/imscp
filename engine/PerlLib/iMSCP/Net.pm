@@ -49,6 +49,7 @@ use parent 'Common::SingletonClass';
 sub getAddresses
 {
     my ($self) = @_;
+
     wantarray ? keys %{$self->{'addresses'}} : join ' ', keys %{$self->{'addresses'}};
 }
 
@@ -317,7 +318,7 @@ sub expandAddr
     ip_expand_address( $addr, 6 ) or die( sprintf( "Couldn't expand the %s IP address", $addr ));
 }
 
-=item getDevices( )
+=item getDevices( [ $device ] )
 
  Get network devices list
 
@@ -403,6 +404,7 @@ sub isDeviceUp
 {
     my ($self, $dev) = @_;
 
+    $self->isKnownDevice( $dev ) or die( sprintf( 'Unknown network device: %s', $dev ));
     $self->{'devices'}->{$dev}->{'flags'} =~ /^(?:.*,)?UP(?:,.*)?$/ ? 1 : 0;
 }
 
@@ -419,6 +421,7 @@ sub isDeviceDown
 {
     my ($self, $dev) = @_;
 
+    $self->isKnownDevice( $dev ) or die( sprintf( 'Unknown network device: %s', $dev ));
     $self->{'devices'}->{$dev}->{'flags'} =~ /^(?:.*,)?UP(?:,.*)?$/ ? 0 : 1;
 }
 
