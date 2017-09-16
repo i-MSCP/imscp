@@ -217,7 +217,7 @@ function moveCustomers()
  */
 function generatePage(TemplateEngine $tpl)
 {
-    $resellers = $stmt = execute_query("SELECT admin_id, admin_name FROM admin  WHERE admin_type = 'reseller'")
+    $resellers = $stmt = execute_query("SELECT admin_id, admin_name FROM admin WHERE admin_type = 'reseller'")
         ->fetchAll(PDO::FETCH_ASSOC);
     $fromResellerId = isset($_POST['from_reseller']) ? intval($_POST['from_reseller']) : $resellers[0]['admin_id'];
     $toResellerId = isset($_POST['to_reseller']) ? intval($_POST['to_reseller']) : $resellers[1]['admin_id'];
@@ -262,7 +262,7 @@ function generatePage(TemplateEngine $tpl)
             'CUSTOMER_NAME'             => tohtml(decode_idna($customer['admin_name'])),
             'RESELLER_CUSTOMER_CHECKED' => in_array($customer['admin_id'], $selectedCustomers) ? ' checked' : ''
         ]);
-        $tpl->parse('FROM_RESELLER_CUSTOMER_ID', '.from_reseller_customer_item');
+        $tpl->parse('FROM_RESELLER_CUSTOMER_ITEM', '.from_reseller_customer_item');
     }
 }
 
