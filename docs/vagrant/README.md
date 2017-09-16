@@ -56,6 +56,7 @@ You must create and fill an
 [i-MSCP preseed](https://wiki.i-mscp.net/doku.php?id=start:preseeding) file:
 
 ```
+cd <imscp_archive_dir>
 cp docs/preseed.pl imscp_preseed.pl
 nano imscp_preseed.pl
 ```

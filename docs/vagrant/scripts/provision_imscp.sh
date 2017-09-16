@@ -20,7 +20,7 @@ apt-get --assume-yes --no-install-recommends install locales-all \
 ca-certificates libnet-ip-perl libdata-validate-ip-perl perl
 
 # Create i-MSCP preseed file
-head -n -1 /vagrant/docs/imscp_preseed.pl > /tmp/imscp_preseed.pl
+head -n -1 /vagrant/imscp_preseed.pl > /tmp/imscp_preseed.pl
 cat <<'EOT' >> /tmp/imscp_preseed.pl
 use iMSCP::Debug qw/ output error /;
 use iMSCP::Net;
