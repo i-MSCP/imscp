@@ -404,8 +404,7 @@ sub isDeviceUp
 {
     my ($self, $dev) = @_;
 
-    $self->isKnownDevice( $dev ) or die( sprintf( 'Unknown network device: %s', $dev ));
-    $self->{'devices'}->{$dev}->{'flags'} =~ /^(?:.*,)?UP(?:,.*)?$/ ? 1 : 0;
+    $self->isKnownDevice( $dev ) && $self->{'devices'}->{$dev}->{'flags'} =~ /^(?:.*,)?UP(?:,.*)?$/;
 }
 
 =item isDeviceDown( $dev )
@@ -421,8 +420,7 @@ sub isDeviceDown
 {
     my ($self, $dev) = @_;
 
-    $self->isKnownDevice( $dev ) or die( sprintf( 'Unknown network device: %s', $dev ));
-    $self->{'devices'}->{$dev}->{'flags'} =~ /^(?:.*,)?UP(?:,.*)?$/ ? 0 : 1;
+    $self->isKnownDevice( $dev ) && $self->{'devices'}->{$dev}->{'flags'} !~ /^(?:.*,)?UP(?:,.*)?$/;
 }
 
 =item resetInstance( )
