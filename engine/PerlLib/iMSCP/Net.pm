@@ -318,7 +318,7 @@ sub expandAddr
     ip_expand_address( $addr, 6 ) or die( sprintf( "Couldn't expand the %s IP address", $addr ));
 }
 
-=item getDevices( [ $device ] )
+=item getDevices( )
 
  Get network devices list
 
