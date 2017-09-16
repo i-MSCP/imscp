@@ -83,7 +83,8 @@ sudo -s
 
 ### Default keyboard layout
 
-Default keyboard layout fits for Americans. You can reconfigure the keyboard as follows:
+Default keyboard layout fits for Americans. You can reconfigure the keyboard as
+follows:
 
 ```
 vagrant ssh
