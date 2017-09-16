@@ -8,7 +8,7 @@ BACKEND
     Fixed: Avoid localization of `$@' variable
     Fixed: Couldn't restore SQL databases -- Can't locate object method "selectall_array" via package "DBI::db"
     Fixed: Couldn't restore uncompressed databases
-    Security: Disallow connection to MySQL command-line tool without user/password, even for root user
+    Security: Disallow connection to MySQL command-line tool without user password, even for root user
     Security: Don't store i-MSCP master SQL user data into the /etc/mysql/conf.d/imscp.cnf configuration file
 
 DISTRIBUTIONS
@@ -39,6 +39,15 @@ SERVERS
     Fixed: Applications such as WHMCS behave unexpectedly with strict SQL mode -- Set SQL mode as with MySQL 5.5 (no SQL mode)
     Fixed: Set timeout to 3 seconds for LWP::Simple; Default value is far too hight (Servers::server::local::installer)
     Review: Make use of ipify.org as default service for WAN IP retrieval (Servers::server::local::installer)
+
+VAGRANT
+    Fixed: Can't locate Data/Validate/IP.pm in @INC
+    Fixed: Unable to locate package language-pack-en
+    Fixed: Make sure that Vagrant box is up-to-date before installing i-MSCP
+    Fixed: Reboot the Vagrant box before provisioning it with i-MSCP (needed in case of kernel update)
+    Fixed: Setup i-MSCP with public IP address (IP attached to eth1 device)
+    Merged: i-MSCP Vagrant provision scripts
+    Updated: Vagrant box to Debian 9.1/Stretch vanilla from Vagrant Cloud
 
 YOUTRACK
     IP-1742 i-MSCP upgrade error - Unknown 'mail_user' database table in database update r254
