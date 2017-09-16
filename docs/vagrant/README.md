@@ -8,9 +8,11 @@ Note that Vagrant boxes are pulled from
 
 ## Requirements
 
-- VirtualBox
+- VirtualBox or (LXC and vagrant-lxc plugin)
 - Vagrant >= 2.0.0
 - vagrant-reload Vagrant plugin
+
+Note that the documentation below assumes VirtualBox.
 
 ## Getting started
 
@@ -29,16 +31,15 @@ vagrant plugin install vagrant-reload
 
 #### PhpStorm IDE
 
-If you run Vagrant through PhpStorm IDE, you need to install the `vagrant-reload` plugin
-through PhpStorm Vagrant settings interface:
+If you run Vagrant through PhpStorm IDE, you need to install the
+`vagrant-reload` plugin through PhpStorm Vagrant settings interface:
 
 1. Go to the Settings / Tools / Vagrant settings interface
-2. On the right window, select the plugin tab
-3. Click on the plugin addition icon
+2. On the right window, select the `Plugins` tab
+3. Click on the addition icon
 4. Type `vagrant-reload`
-5. Click on `OK` button
-6. Click on `Apply` button at bottom
-
+5. Click on the `OK` button
+6. Click on the `Apply` button at bottom
 
 ### Vagrant file
 
@@ -52,7 +53,7 @@ ln -s docs/vagrant/Vagrantfile Vagrantfile
 
 ### Preseeding file
 
-You must create and fill an
+You must create an
 [i-MSCP preseed](https://wiki.i-mscp.net/doku.php?id=start:preseeding) file:
 
 ```

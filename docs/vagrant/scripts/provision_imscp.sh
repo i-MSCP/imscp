@@ -38,10 +38,11 @@ unless ( @serverIPs ) {
 
 $main::questions{'BASE_SERVER_IP'} = $main::questions{'BASE_SERVER_PUBLIC_IP'} = $serverIPs[0];
 
-output("VM IP address has been set to: $main::questions{'BASE_SERVER_IP'}", 'info');
+print output("VM IP address has been set to: $main::questions{'BASE_SERVER_IP'}", 'info');
 
 1;
 EOT
 
 # Install i-MSCP
 perl /vagrant/imscp-autoinstall --debug --noprompt --verbose --preseed /tmp/imscp_preseed.pl
+rm -f /tmp/imscp_preseed.pl
