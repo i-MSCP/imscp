@@ -46,6 +46,7 @@ SERVERS
     Review: Make use of ipify.org as default service for WAN IP retrieval (Servers::server::local::installer)
 
 VAGRANT
+    Enhancement: Make users able to choice between many distributions
     Fixed: Can't locate Data/Validate/IP.pm in @INC (i-MSCP provision scripts)
     Fixed: Unable to locate package language-pack-en (i-MSCP provision scripts)
     Fixed: Make sure that Vagrant box is up-to-date before provisioning i-MSCP

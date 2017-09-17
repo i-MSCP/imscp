@@ -1,4 +1,3 @@
-#!/bin/sh
 # i-MSCP - internet Multi Server Control Panel
 # Copyright 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
 #
@@ -13,42 +12,66 @@
 # GNU General Public License for more details.
 
 Vagrant.configure("2") do |config|
-  # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "stretch64"
+    # Debian 8.x/Jessie
+    config.vm.define 'imscp_debian_jessie', autostart: false do |node|
+        node.vm.box = 'debian/jessie64'
+        node.vm.network :public_network
 
-  # The url from where the 'config.vm.box' box will be fetched if it
-  # doesn't already exist on the user's system.
-  config.vm.box_url = "https://app.vagrantup.com/debian/boxes/stretch64/versions/9.1.0/providers/virtualbox.box"
+        node.vm.provider :virtualbox do |vb|
+            vb.customize ['modifyvm', :id, '--memory', '1024']
+            vb.customize ['modifyvm', :id, '--name', 'imscp_debian_jessie']
+        end
+        
+        node.vm.provider :lxc do |lxc|
+            lxc.customize 'cgroup.memory.limit_in_bytes', '1024M'
+            lxc.container_name = 'imscp_debian_jessie'
+        end
+    end
 
-  # Provisioning 
+    # Debian 9.x/Stretch (default if no box name passed-in to vagrant CLI)
+    config.vm.define 'imscp_debian_stretch', autostart: true do |node|
+        node.vm.box = 'debian/stretch64'
+        node.vm.network :public_network
 
-  # Create a public network, which generally matched to bridged network.
-  # Bridged networks make the machine appear as another physical device on
-  # your network.
-  config.vm.network :public_network
+        node.vm.provider :virtualbox do |vb|
+            vb.customize ['modifyvm', :id, '--memory', '1024']
+            vb.customize ['modifyvm', :id, '--name', 'imscp_debian_stretch']
+        end
+        
+        node.vm.provider :lxc do |lxc|
+            lxc.customize 'cgroup.memory.limit_in_bytes', '1024M'
+            lxc.container_name = 'imscp_debian_stretch'
+        end
+    end
 
-  # Provider-specific configuration so you can fine-tune various
-  # backing providers for Vagrant. These expose provider-specific options.
+    # Ubuntu Trusty Thar (14.04)
+    config.vm.define 'imscp_ubuntu_trusty', autostart: false do |node|
+        node.vm.box = 'ubuntu/trusty64'
+        node.vm.network :public_network
 
-  # Drop the memory requirement to 1024 for now.
-  config.vm.provider :virtualbox do |vb, override|
-    vb.customize ["modifyvm", :id, "--memory", "1024"]
-    override.vm.box = "stretch64"
-    override.vm.box_url = "https://app.vagrantup.com/debian/boxes/stretch64/versions/9.1.0/providers/virtualbox.box"
-  end
+        node.vm.provider :virtualbox do |vb|
+            vb.customize ['modifyvm', :id, '--memory', '1024']
+            vb.customize ['modifyvm', :id, '--name', 'imscp_ubuntu_trusty']
+        end
+    end
 
-  config.vm.provider :lxc do |lxc, override|
-    lxc.cgroup.memory.limit_in_bytes='1024'
-    override.vm.box = "stretch64"
-    override.vm.box_url = "https://app.vagrantup.com/debian/boxes/stretch64/versions/9.1.0/providers/lxc.box"
-  end
+    # Ubuntu Xenial Xerus (16.04)
+    config.vm.define 'imscp_ubuntu_xenial', autostart: false do |node|
+        node.vm.box = 'ubuntu/trusty64'
+        node.vm.network :public_network
 
-  # Make sure that distribution is up-to-date
-  config.vm.provision "shell", path: "docs/vagrant/scripts/distro_update.sh"
+        node.vm.provider :virtualbox do |vb|
+            vb.customize ['modifyvm', :id, '--memory', '1024']
+            vb.customize ['modifyvm', :id, '--name', 'imscp_ubuntu_xenial']
+        end
+    end
 
-  # Reboot the VM (possible kernel update)
-  config.vm.provision :reload
+    # Make sure that distribution is up-to-date
+    config.vm.provision "shell", path: "docs/vagrant/scripts/distro_update.sh"
 
-  # Provision i-MSCP
-  config.vm.provision "shell", path: "docs/vagrant/scripts/provision_imscp.sh"
+    # Reboot the VM (possible kernel update)
+    config.vm.provision :reload
+
+    # Provision i-MSCP
+    config.vm.provision "shell", path: "docs/vagrant/scripts/provision_imscp.sh"
 end
