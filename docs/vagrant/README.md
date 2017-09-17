@@ -3,9 +3,6 @@
 This directory contains all you need to setup a
 [Vagrant](http://www.vagrantup.com/) box with i-MSCP pre-installed.
 
-Note that Vagrant boxes are pulled from
-[Vagrant Cloud](https://app.vagrantup.com/debian/boxes/stretch64).
-
 ## Requirements
 
 - VirtualBox or (LXC and vagrant-lxc plugin)
@@ -20,10 +17,10 @@ Vagrant boxes are pulled from [Vagrant Cloud](https://app.vagrantup.com/).
 
 The following Vagrant boxes are made available
 
-- Debian Jessie: `imscp_debian_jessie` (VirtualBox, LXC)
-- Debian Stretch: `imscp_debian_stretch` (VirtualBox, LXC)
-- Ubuntu Trusty Thar: `imscp_ubuntu_trusty` (VirtualBox only)
-- Ubuntu Xenial Xerus: `imscp_ubuntu_xenial` (VirtualBox only)
+- Debian 8.x/Jessie: `imscp_debian_jessie` (VirtualBox, LXC)
+- Debian 9.x/Stretch: `imscp_debian_stretch` (VirtualBox, LXC)
+- Ubuntu 14.04/Trusty Thar: `imscp_ubuntu_trusty` (VirtualBox only)
+- Ubuntu 16.04/Xenial Xerus: `imscp_ubuntu_xenial` (VirtualBox only)
 
 ## Getting started
 
@@ -81,16 +78,16 @@ You can create the Vagrant box as follows:
 vagrant up <vagrant_box_name>
 ```
 
-where `<vagrant_box_name>` must be one of names listed in the Vagrant boxes
+where `<vagrant_box_name>` must be one of names listed in the `Vagrant boxes`
 section above.
 
-For instance, to create a Debian Jessie Vagrant box, you must run:
+For instance, to create a `Debian Jessie` Vagrant box, you must run:
 
 ```
 vagrant up imscp_debian_jessie
 ```
 
-Note that if you don't pass a name, a Debian Stretch Vagrant box will be
+Note that if you don't pass a name, a `Debian Stretch` Vagrant box will be
 created.
 
 ## Login into Vagrant box
