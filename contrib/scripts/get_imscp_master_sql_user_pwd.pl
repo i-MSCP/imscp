@@ -33,7 +33,7 @@ iMSCP::Bootstrapper->getInstance()->boot(
 );
 
 my $passwd = decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'} );
-print output( sprintf( 'Current i-MSCP master SQL password is: %s', $passwd ), 'info' );
+print output( sprintf( 'Current i-MSCP master SQL user password is: %s', $passwd ), 'info' );
 
 1;
 __END__
