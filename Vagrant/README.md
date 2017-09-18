@@ -6,10 +6,11 @@ This directory contains all you need to setup a
 ## Requirements
 
 - VirtualBox or (LXC and vagrant-lxc plugin)
-- Vagrant >= 2.0.0
+- Vagrant ≥ 2.0.0
 - vagrant-reload Vagrant plugin
+- rsync
 
-Note that the documentation below assumes VirtualBox.
+Note that the documentation below assumes the VirtualBox Vagrant provider.
 
 ## Vagrant boxes
 
@@ -34,12 +35,13 @@ You can download latest Vagrant distribution at
 You must install the `vagrant-reload` Vagrant plugin:
 
 ```
+cd <imscp_archive_dir>/Vagrant
 vagrant plugin install vagrant-reload
 ```
 
 #### PhpStorm IDE
 
-If you run Vagrant through PhpStorm IDE, you need to install the
+If you run Vagrant through the PhpStorm IDE, you need to install the
 `vagrant-reload` plugin through PhpStorm Vagrant settings interface:
 
 1. Go to the Settings / Tools / Vagrant settings interface
@@ -49,32 +51,26 @@ If you run Vagrant through PhpStorm IDE, you need to install the
 5. Click on the `OK` button
 6. Click on the `Apply` button at bottom
 
-### Vagrant file
-
-You must link the [Vagrantfile](Vagrantfile) to the base directory
-of the i-MSCP archive directory:
-
-```
-cd <imscp_archive_dir>
-ln -s docs/vagrant/Vagrantfile Vagrantfile
-```
-
 ### Preseeding file
 
 You must create an
 [i-MSCP preseed](https://wiki.i-mscp.net/doku.php?id=start:preseeding) file:
 
 ```
-cd <imscp_archive_dir>
-cp docs/preseed.pl imscp_preseed.pl
-nano imscp_preseed.pl
+cd <imscp_archive_dir>/Vagrant
+cp ../docs/preseed.pl .
+nano preseed.pl
 ```
+
+Be careful to fill up all required parameters. If one required parameter is
+missing, Vagrant box provisioning will fail.
 
 ## Creating the Vagrant box
 
 You can create the Vagrant box as follows:
 
 ```
+cd <imscp_archive_dir>/Vagrant
 vagrant up <vagrant_box_name>
 ```
 
@@ -84,6 +80,7 @@ section above.
 For instance, to create a `Debian Jessie` Vagrant box, you must run:
 
 ```
+cd <imscp_archive_dir>/Vagrant
 vagrant up imscp_debian_jessie
 ```
 
@@ -95,7 +92,8 @@ created.
 You can login into the newly created VM as follows:
 
 ```
-vagrant ssh
+cd <imscp_archive_dir>/Vagrant
+vagrant ssh <vagrant_box_name>
 sudo -s
 ```
 
@@ -107,7 +105,8 @@ Default keyboard layout fits for Americans. You can reconfigure the keyboard as
 follows:
 
 ```
-vagrant ssh
+cd <imscp_archive_dir>/Vagrant
+vagrant ssh <vagrant_box_name>
 sudo -s
 apt-get install console-setup
 dpkg-reconfigure console-setup

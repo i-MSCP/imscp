@@ -556,7 +556,6 @@ sub _processPackagesFile
         # Resets alternative if selected alternative is no longer available
         $sAlt = '' if $sAlt ne '' && !grep($_ eq $sAlt, keys %{$data});
 
-        # Map of alternative descriptions to alternative names
         my %altDescs;
         for( keys %{$data} ) {
             # Skip unsupported alternatives by arch
@@ -566,13 +565,16 @@ sub _processPackagesFile
                 next;
             }
 
+            # Map of alternative descriptions to alternative names
             $altDescs{$data->{$_}->{'description'} || $_} = $_;
 
-            # If there is no alternative set yet, set selected alternative 
-            # to default alternative and force dialog to make user able to change it
+            # If there is no software alternative selected yet, sets the
+            # alternative to default value as defined in packages file and
+            # force dialog to make user able to change it, unless the `nopromp'
+            # flag is set, in which case the default alternative will be enforced.
             if ( $sAlt eq '' && $data->{$_}->{'default'} ) {
                 $sAlt = $_;
-                $needDialog = 1;
+                $needDialog = 1 unless iMSCP::Getopt->noprompt;
             }
         }
 
@@ -679,7 +681,8 @@ EOF
             }
         }
 
-        # Set both alternative name and package name according selected alternative
+        # Set both server name and package name according selected alternative
+        $main::questions{uc( $section ) . '_SERVER'} = $sAlt;
         $main::imscpConfig{uc( $section ) . '_SERVER'} = $sAlt;
         $main::imscpConfig{uc( $section ) . '_PACKAGE'} = $data->{$sAlt}->{'class'} || $sAlt;
     }

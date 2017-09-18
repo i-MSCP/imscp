@@ -12,9 +12,15 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
+set -e
+
 export DEBIAN_FRONTEND=noninteractive
 export LANG=C.UTF-8
 
 # Make sure that the distribution is up-to-date
 apt-get update
 apt-get --assume-yes --no-install-recommends dist-upgrade
+
+# Remove unwanted packages that are installed in some Vagrant boxes
+apt-get --assume-yes purge cloud-init cloud-guest-utils
+rm -Rf /etc/cloud /var/lib/cloud

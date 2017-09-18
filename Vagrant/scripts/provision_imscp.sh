@@ -12,24 +12,25 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
+set -e
+
 export DEBIAN_FRONTEND=noninteractive
 export LANG=C.UTF-8
 
 # Install pre-required packages
-apt-get --assume-yes --no-install-recommends install locales-all \
-ca-certificates libnet-ip-perl libdata-validate-ip-perl perl
+apt-get --assume-yes --no-install-recommends install ca-certificates \
+libnet-ip-perl libdata-validate-ip-perl perl
 
 # Create i-MSCP preseed file
-head -n -1 /vagrant/imscp_preseed.pl > /tmp/imscp_preseed.pl
-cat <<'EOT' >> /tmp/imscp_preseed.pl
+if [ -f /vagrant/preseed.pl ]; then
+    head -n -1 /vagrant/preseed.pl > /tmp/preseed.pl
+    cat <<'EOT' >> /tmp/preseed.pl
 use iMSCP::Debug qw/ output error /;
 use iMSCP::Net;
 
 my $net = iMSCP::Net->getInstance();
-my @serverIPs = sort grep {
-    $net->getAddrDevice( $_ ) eq 'eth1'
-        && $net->getAddrVersion( $_ ) ne 'ipv6'
-        && $net->getAddrType( $_ ) =~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/o;
+my @serverIPs = reverse sort grep {
+    $net->getAddrVersion( $_ ) ne 'ipv6' && $net->getAddrType( $_ ) =~ /^(?:PRIVATE|PUBLIC)$/o;
 } $net->getAddresses();
 unless ( @serverIPs ) {
     error( "Couldn't get list of server IP addresses. At least one IP address must be configured." );
@@ -38,11 +39,25 @@ unless ( @serverIPs ) {
 
 $main::questions{'BASE_SERVER_IP'} = $main::questions{'BASE_SERVER_PUBLIC_IP'} = $serverIPs[0];
 
-print output("VM IP address has been set to: $main::questions{'BASE_SERVER_IP'}", 'info');
+print output("Vagrant Box IP address has been set to: $main::questions{'BASE_SERVER_IP'}", 'info');
 
 1;
 EOT
+else
+ echo "The i-MSCP preseed.pl file has not been found. Please create it first."
+ exit 1
+fi
 
-# Install i-MSCP
-perl /vagrant/imscp-autoinstall --debug --noprompt --verbose --preseed /tmp/imscp_preseed.pl
-rm -f /tmp/imscp_preseed.pl
+# Run i-MSCP installer using preconfiguration file
+perl /usr/local/src/imscp/imscp-autoinstall --debug --verbose --preseed /tmp/preseed.pl
+
+cat << EOT
+You can SSH into your i-MSCP Vagrant box as follows:
+
+    ssh vagrant@$(hostname -i)
+
+with 'vagrant' as password.
+
+If you want use that Vagrant box for production, don't forget to remove the
+/vagrant directory and /tmp/preseed.pl file.
+EOT

@@ -1,11 +1,9 @@
-#!/usr/bin/perl
-
 # i-MSCP preseed.pl template file for installer preseeding feature
 #
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2017.07.05
+# Last update: 2017.09.18
 
 %main::questions = (
     #
@@ -14,22 +12,35 @@
 
     # Server hostname
     # Possible values: A fully qualified hostname name
-    SERVER_HOSTNAME                     => '',
+    SERVER_HOSTNAME                     => 'vagrant.bbox.nuxwin.com',
 
     # Server primary IP
+    #
     # Possible values: An already configured IPv4, IPv6 or `None'
-    # The `None' option is more suitable for Cloud computing services such as Scaleway and Amazon EC2.
-    # Selecting the `None' option means that i-MSCP will configures the services to listen on all interfaces.
-    BASE_SERVER_IP                      => '',
+    #
+    # The `None' option is more suitable for Cloud computing services such as
+    # Scaleway and Amazon EC2.
+    #
+    # Selecting the `None' option means that i-MSCP will configures the
+    # services to listen on all interfaces.
+    #
+    # Note that in Vagrant case, the value will be set automatically to the
+    # public IP as assigned by DHCP server.
+    BASE_SERVER_IP                      => 'None',
 
     # WAN IP (only relevant if your primary IP is in private range)
+    #
     # You can force usage of a private IP by putting BASE_SERVER_IP IP value
     # instead of a public IP. You can also leave this parameter empty for
-    # automatic detection of your public IP using ipinfo.io Web service.
+    # automatic detection of your public IP.
     # Possible values: Ipv4 or IPv6
+    #
+    # Note that in Vagrant case, the value will be set automatically to the
+    # public IP as assigned by DHCP server.
     BASE_SERVER_PUBLIC_IP               => '',
 
     # Timezone
+    #
     # Possible values: A valid timezone such as Europe/Paris
     # (see http://php.net/manual/en/timezones.php)
     # Leave this parameter empty for automatic timezone detection.
@@ -52,12 +63,14 @@
     ## SQL server configuration parameters
     #
 
-    # SQL server implementation
+    # SQL server implementation (Default: Debian Stretch mariadb 10.1)
     # Please consult the ../autoinstaller/Packages/<distro>-<codename>.xml file
     # for available options.
-    SQL_SERVER                          => 'mysql_5.5',
+    #
+    # Leave this parameter empty for use of default SQL server implementation.
+    SQL_SERVER                          => '',
 
-    # Database name
+    # Database name (mandatory)
     DATABASE_NAME                       => 'imscp',
 
     #
@@ -93,7 +106,7 @@
     # That is the host from which SQL users created by i-MSCP are allowed to
     # connect to the SQL server.
     # Possible values: A valid hostname or IP address
-    DATABASE_USER_HOST                  => '',
+    DATABASE_USER_HOST                  => 'localhost',
 
     # Enable or disable prefix/suffix for customer SQL database names
     # Possible values: behind, infront, none
@@ -106,7 +119,7 @@
     # Control panel hostname
     # This is the hostname from which the control panel will be reachable
     # Possible values: A fully qualified hostname name
-    BASE_SERVER_VHOST                   => '',
+    BASE_SERVER_VHOST                   => 'panel.bbox.nuxwin.com',
 
     # Control panel http port
     # Possible values: A port in range 1025-65535
@@ -136,10 +149,10 @@
 
     # SSL certificate path (only relevant for trusted SSL certificate)
     PANEL_SSL_CERTIFICATE_PATH          => '',
-    
+
     # Alternative URLs feature for client domains
     # Possible values: 1 for enabling, 0 for disabling
-    CLIENT_DOMAIN_ALT_URLS              => 1,
+    CLIENT_DOMAIN_ALT_URLS              => '1',
 
     # Control panel default access mode (only relevant if SSL is enabled)
     # Possible values: http://, https://
@@ -160,7 +173,8 @@
 
     # DNS server implementation
     # Possible values: bind, external_server
-    NAMED_SERVER                        => 'bind',
+    # Leave this parameter empty for use of default DNS server implementation.
+    NAMED_SERVER                        => '',
 
     # DNS server mode
     # Only relevant with 'bind' server implementation
@@ -193,7 +207,9 @@
 
     # HTTPd server implementation
     # Possible values: apache_itk, apache_fcgid, apache_php_fpm
-    HTTPD_SERVER                        => 'apache_php_fpm',
+    # Leave this parameter empty for use of default HTTPd server
+    # implementation.
+    HTTPD_SERVER                        => '',
 
     #
     ## PHP configuration parameters
@@ -201,7 +217,8 @@
 
     # PHP version to use
     # Popssible values: php5.6, php7.0, php7.1
-    PHP_SERVER                          => 'php5.6',
+    # Leave this parameter empty for use of default PHP version.
+    PHP_SERVER                          => '',
 
     # PHP configuration level
     # Possible values: per_user, per_domain, per_site
@@ -218,7 +235,8 @@
 
     # FTPd server implementation
     # Possible values: proftpd, vsftpd
-    FTPD_SERVER                         => 'proftpd',
+    # Leave this parameter empty for use of default FTPd server implementation.
+    FTPD_SERVER                         => '',
 
     # FTP SQL user
     # Only ASCII alphabet characters and numbers are allowed in password.
@@ -238,7 +256,8 @@
 
     # MTA server implementation
     # Possible values: postfix
-    MTA_SERVER                          => 'postfix',
+    # Leave this parameter empty for use of default MTA server implementation.
+    MTA_SERVER                          => '',
 
     #
     ## IMAP, POP server configuration parameters
@@ -246,7 +265,9 @@
 
     # POP/IMAP servers implementation
     # Possible values: courier, dovecot
-    PO_SERVER                           => 'dovecot',
+    # Leave this parameter empty for use of default POP/IMAP server
+    # implementation.
+    PO_SERVER                           => '',
 
     # Authdaemon SQL user
     # Only ASCII alphabet characters and numbers are allowed in password.

@@ -122,11 +122,16 @@ sub build
 {
     newDebug( 'imscp-build.log' );
 
-    if ( !iMSCP::Getopt->preseed && !( $main::imscpConfig{'FRONTEND_SERVER'} && $main::imscpConfig{'FTPD_SERVER'}
-        && $main::imscpConfig{'HTTPD_SERVER'} && $main::imscpConfig{'NAMED_SERVER'} && $main::imscpConfig{'MTA_SERVER'}
-        && $main::imscpConfig{'PHP_SERVER'} && $main::imscpConfig{'PO_SERVER'} && $main::imscpConfig{'SQL_SERVER'} )
+    if ( $main::imscpConfig{'FRONTEND_SERVER'} ne '' || $main::imscpConfig{'FTPD_SERVER'} ne ''
+        || $main::imscpConfig{'HTTPD_SERVER'} ne '' || $main::imscpConfig{'NAMED_SERVER'} ne ''
+        || $main::imscpConfig{'MTA_SERVER'} ne '' || $main::imscpConfig{'PHP_SERVER'} ne ''
+        || $main::imscpConfig{'PO_SERVER'} ne '' || $main::imscpConfig{'SQL_SERVER'} ne ''
+        || $main::imscpConfig{'FRONTEND_PACKAGE'} ne '' || $main::imscpConfig{'FTPD_PACKAGE'} ne ''
+        || $main::imscpConfig{'HTTPD_PACKAGE'} ne '' || $main::imscpConfig{'NAMED_PACKAGE'} ne ''
+        || $main::imscpConfig{'MTA_PACKAGE'} ne '' || $main::imscpConfig{'PHP_PACKAGE'} ne ''
+        || $main::imscpConfig{'PO_PACKAGE'} ne '' || $main::imscpConfig{'SQL_PACKAGE'} ne ''
     ) {
-        iMSCP::Getopt->noprompt( 0 );
+        iMSCP::Getopt->noprompt( 0 ) unless iMSCP::Getopt->preseed;
         $main::skippackages = 0;
     }
 
