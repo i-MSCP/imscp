@@ -574,7 +574,7 @@ sub _processPackagesFile
             # flag is set, in which case the default alternative will be enforced.
             if ( $sAlt eq '' && $data->{$_}->{'default'} ) {
                 $sAlt = $_;
-                $needDialog = 1 unless iMSCP::Getopt->noprompt;
+                $needDialog = 1 unless iMSCP::Getopt->preseed;
             }
         }
 
