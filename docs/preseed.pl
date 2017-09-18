@@ -12,7 +12,7 @@
 
     # Server hostname
     # Possible values: A fully qualified hostname name
-    SERVER_HOSTNAME                     => 'vagrant.bbox.nuxwin.com',
+    SERVER_HOSTNAME                     => '',
 
     # Server primary IP
     #
@@ -119,7 +119,7 @@
     # Control panel hostname
     # This is the hostname from which the control panel will be reachable
     # Possible values: A fully qualified hostname name
-    BASE_SERVER_VHOST                   => 'panel.bbox.nuxwin.com',
+    BASE_SERVER_VHOST                   => '',
 
     # Control panel http port
     # Possible values: A port in range 1025-65535
