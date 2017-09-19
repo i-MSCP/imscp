@@ -28,18 +28,19 @@ if [ -f /vagrant/preseed.pl ]; then
 use iMSCP::Debug qw/ output error /;
 use iMSCP::Net;
 
-my $net = iMSCP::Net->getInstance();
-my @serverIPs = reverse sort grep {
-    $net->getAddrVersion( $_ ) ne 'ipv6' && $net->getAddrType( $_ ) =~ /^(?:PRIVATE|PUBLIC)$/o;
-} $net->getAddresses();
-unless ( @serverIPs ) {
-    error( "Couldn't get list of server IP addresses. At least one IP address must be configured." );
-    exit 1;
+unless($main::questions{'BASE_SERVER_IP'} eq 'None') {
+    my $net = iMSCP::Net->getInstance();
+    my @serverIPs = reverse sort grep {
+        $net->getAddrVersion( $_ ) ne 'ipv6' && $net->getAddrType( $_ ) =~ /^(?:PRIVATE|PUBLIC)$/o;
+    } $net->getAddresses();
+    unless ( @serverIPs ) {
+        error( "Couldn't get list of server IP addresses. At least one IP address must be configured." );
+        exit 1;
+    }
+
+    $main::questions{'BASE_SERVER_IP'} = $main::questions{'BASE_SERVER_PUBLIC_IP'} = $serverIPs[0];
+    print output("Vagrant Box IP address has been set to: $main::questions{'BASE_SERVER_IP'}", 'info');
 }
-
-$main::questions{'BASE_SERVER_IP'} = $main::questions{'BASE_SERVER_PUBLIC_IP'} = $serverIPs[0];
-
-print output("Vagrant Box IP address has been set to: $main::questions{'BASE_SERVER_IP'}", 'info');
 
 1;
 EOT
@@ -51,12 +52,25 @@ fi
 # Run i-MSCP installer using preconfiguration file
 perl /usr/local/src/imscp/imscp-autoinstall --debug --verbose --preseed /tmp/preseed.pl
 
+SERVER_PUBLIC_IP_ADDR=$(hostname -i 2>/dev/null)
+
+if [ "$SERVER_PUBLIC_IP_ADDR" = "0.0.0.0" ]; then
 cat << EOT
 You can SSH into your i-MSCP Vagrant box as follows:
 
-    ssh vagrant@$(hostname -i)
+    vagrant ssh <vagrant_box_name>
+EOT
+else
+cat << EOT
+You can SSH into your i-MSCP Vagrant box as follows:
+
+    ssh vagrant@$SERVER_PUBLIC_IP_ADDR
 
 with 'vagrant' as password.
+EOT
+fi
+
+cat << EOT
 
 If you want use that Vagrant box for production, don't forget to remove the
 /vagrant directory and /tmp/preseed.pl file.

@@ -36,7 +36,8 @@
     # Possible values: Ipv4 or IPv6
     #
     # Note that in Vagrant case, the value will be set automatically to the
-    # public IP as assigned by DHCP server, unless the option is set to `None'.
+    # public IP as assigned by DHCP server, unless the BASE_SERVER_IP parameter
+    # is set to `None'.
     BASE_SERVER_PUBLIC_IP               => '',
 
     # Timezone

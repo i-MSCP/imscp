@@ -101,8 +101,11 @@ sudo -s
 
 ### Default keyboard layout
 
-Default keyboard layout fits for Americans. You can reconfigure the keyboard as
-follows:
+Default keyboard layout fits well for Americans only. Thus, if you want to
+connect to your Vagrant box through a ternminal (tty) and not simply through
+SSH, you could have issues due to current keyboard layout.
+ 
+You can reconfigure the keyboard layout as follows:
 
 ```
 cd <imscp_archive_dir>/Vagrant
