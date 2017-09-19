@@ -224,7 +224,8 @@ sub _getData
             DOMAIN_NAME_UNICODE     => idn_to_unicode(
                 $self->{'subdomain_alias_name'} . '.' . $self->{'alias_name'}, 'utf-8'
             ),
-            DOMAIN_IP               => $self->{'ip_number'},
+            DOMAIN_IP               => $main::imscpConfig{'BASE_SERVER_IP'} eq '0.0.0.0'
+                ? '0.0.0.0' : $self->{'ip_number'},
             DOMAIN_TYPE             => 'alssub',
             PARENT_DOMAIN_NAME      => $self->{'alias_name'},
             ROOT_DOMAIN_NAME        => $self->{'user_home'},

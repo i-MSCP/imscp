@@ -240,7 +240,8 @@ sub _getData
             DOMAIN_ADMIN_ID         => $self->{'domain_admin_id'},
             DOMAIN_NAME             => $self->{'alias_name'},
             DOMAIN_NAME_UNICODE     => idn_to_unicode( $self->{'alias_name'}, 'utf-8' ),
-            DOMAIN_IP               => $self->{'ip_number'},
+            DOMAIN_IP               => $main::imscpConfig{'BASE_SERVER_IP'} eq '0.0.0.0'
+                ? '0.0.0.0' : $self->{'ip_number'},
             DOMAIN_TYPE             => 'als',
             PARENT_DOMAIN_NAME      => $self->{'alias_name'},
             ROOT_DOMAIN_NAME        => $self->{'user_home'},

@@ -210,7 +210,8 @@ sub _getData
             DOMAIN_NAME             => $self->{'subdomain_name'} . '.' . $self->{'user_home'},
             DOMAIN_NAME_UNICODE     =>
             idn_to_unicode( $self->{'subdomain_name'} . '.' . $self->{'user_home'}, 'utf-8' ),
-            DOMAIN_IP               => $self->{'ip_number'},
+            DOMAIN_IP               => $main::imscpConfig{'BASE_SERVER_IP'} eq '0.0.0.0'
+                ? '0.0.0.0' : $self->{'ip_number'},
             DOMAIN_TYPE             => 'sub',
             PARENT_DOMAIN_NAME      => $self->{'user_home'},
             ROOT_DOMAIN_NAME        => $self->{'user_home'},

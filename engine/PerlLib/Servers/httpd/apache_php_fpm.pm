@@ -343,15 +343,15 @@ sub disableDmn
 
     my $net = iMSCP::Net->getInstance();
     my @domainIPs = (
-        $data->{'DOMAIN_IP'},
-        ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} ? $data->{'BASE_SERVER_IP'} : () )
+        $data->{'DOMAIN_IP'}, ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} ? $data->{'BASE_SERVER_IP'} : () )
     );
 
     $rs = $self->{'eventManager'}->trigger( 'onAddHttpdVhostIps', $data, \@domainIPs );
     return $rs if $rs;
 
-    # Remove duplicate IP if any and map the INADDR_ANY IP to *
-    @domainIPs = uniq( map { $net->normalizeAddr( $_ ) =~ s/^\Q0.0.0.0\E$/*/r } @domainIPs );
+    # If INADDR_ANY is found, map it to the wildcard sign and discard any other
+    # IP, else, remove any duplicate IP address from the list
+    @domainIPs = ( grep($_ eq '0.0.0.0', @domainIPs) ) ? ( '*' ) : uniq( map { $net->normalizeAddr( $_ ) } @domainIPs );
 
     $self->setData(
         {
@@ -1521,15 +1521,15 @@ sub _addCfg
     my $net = iMSCP::Net->getInstance();
     my $phpVersion = $self->{'phpConfig'}->{'PHP_VERSION'};
     my @domainIPs = (
-        $data->{'DOMAIN_IP'},
-        ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} ? $data->{'BASE_SERVER_IP'} : () )
+        $data->{'DOMAIN_IP'}, ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} ? $data->{'BASE_SERVER_IP'} : () )
     );
 
     $rs = $self->{'eventManager'}->trigger( 'onAddHttpdVhostIps', $data, \@domainIPs );
     return $rs if $rs;
 
-    # Remove duplicate IP if any and map the INADDR_ANY IP to *
-    @domainIPs = uniq( map { $net->normalizeAddr( $_ ) =~ s/^\Q0.0.0.0\E$/*/r } @domainIPs );
+    # If INADDR_ANY is found, map it to the wildcard sign and discard any other
+    # IP, else, remove any duplicate IP address from the list
+    @domainIPs = ( grep($_ eq '0.0.0.0', @domainIPs) ) ? ( '*' ) : uniq( map { $net->normalizeAddr( $_ ) } @domainIPs );
 
     $self->setData(
         {
