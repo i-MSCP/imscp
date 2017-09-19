@@ -124,7 +124,7 @@ sub build
 
     if ( $main::imscpConfig{'FRONTEND_SERVER'} eq '' || $main::imscpConfig{'FTPD_SERVER'} eq ''
         || $main::imscpConfig{'HTTPD_SERVER'} eq '' || $main::imscpConfig{'NAMED_SERVER'} eq ''
-        || $main::imscpConfig{'MTA_SERVER'} eq '' || $main::imscpConfig{'PHP_SERVER'} ne ''
+        || $main::imscpConfig{'MTA_SERVER'} eq '' || $main::imscpConfig{'PHP_SERVER'} eq ''
         || $main::imscpConfig{'PO_SERVER'} eq '' || $main::imscpConfig{'SQL_SERVER'} eq ''
         || $main::imscpConfig{'FRONTEND_PACKAGE'} eq '' || $main::imscpConfig{'FTPD_PACKAGE'} eq ''
         || $main::imscpConfig{'HTTPD_PACKAGE'} eq '' || $main::imscpConfig{'NAMED_PACKAGE'} eq ''
