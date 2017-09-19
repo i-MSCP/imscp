@@ -3,7 +3,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2017.09.18
+# Last update: 2017.09.19
 
 %main::questions = (
     #
@@ -25,7 +25,7 @@
     # services to listen on all interfaces.
     #
     # Note that in Vagrant case, the value will be set automatically to the
-    # public IP as assigned by DHCP server.
+    # public IP as assigned by DHCP server, unless the option is set to `None'.
     BASE_SERVER_IP                      => 'None',
 
     # WAN IP (only relevant if your primary IP is in private range)
@@ -36,7 +36,7 @@
     # Possible values: Ipv4 or IPv6
     #
     # Note that in Vagrant case, the value will be set automatically to the
-    # public IP as assigned by DHCP server.
+    # public IP as assigned by DHCP server, unless the option is set to `None'.
     BASE_SERVER_PUBLIC_IP               => '',
 
     # Timezone
