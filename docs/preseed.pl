@@ -19,7 +19,8 @@
     # Possible values: An already configured IPv4, IPv6 or `None'
     #
     # The `None' option is more suitable for Cloud computing services such as
-    # Scaleway and Amazon EC2.
+    # Scaleway and Amazon EC2, or when using a Vagrant box where the public IP
+    # that is assigned through DHCP can changes over the time.
     #
     # Selecting the `None' option means that i-MSCP will configures the
     # services to listen on all interfaces.
