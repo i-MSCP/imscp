@@ -18,6 +18,7 @@ CONTRIB
 
 DISTRIBUTIONS
     Review: Avoid APT pinning whenever as possible (All distributions)
+    Relaxed: Permissions policy on /etc/apt/apt.conf.d/* files -- Files must be world-readable
 
 INSTALLER
     Fixed: `build'' mode is broken for fresh installs -- Packages must be pre-installed regardless of install mode
