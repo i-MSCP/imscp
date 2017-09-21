@@ -57,7 +57,7 @@ function updateUserData(Form $form, $userId)
         return;
     }
 
-    $passwordUpdated = ($form->getValue('admin_pass') !== '');
+    $passwordUpdated = $form->getValue('admin_pass') !== '';
     $db = Database::getInstance();
 
     try {
@@ -77,7 +77,7 @@ function updateUserData(Form $form, $userId)
                 WHERE admin_id = ?
             ",
             [
-                $passwordUpdated ? NULL : Crypt::apr1MD5($form->getValue('admin_pass')), $form->getValue('fname'),
+                $passwordUpdated ? Crypt::apr1MD5($form->getValue('admin_pass')) : NULL, $form->getValue('fname'),
                 $form->getValue('lname'), $form->getValue('firm'), $form->getValue('zip'), $form->getValue('city'),
                 $form->getValue('state'), $form->getValue('country'), encode_idna($form->getValue('email')),
                 $form->getValue('phone'), $form->getValue('fax'), $form->getValue('street1'), $form->getValue('street2'),
