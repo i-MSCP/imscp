@@ -31,7 +31,11 @@ FRONTEND
     Fixed: Misleading domain status due to missing `torestore' status in the translate_dmn_status() function
     Fixed: List of customers is truncated due to wrong template variable name in loop (Customer assignments feature)
     Fixed: Wrong order for parameters in mail delete.php (i18n -- client UI)
-    Fixed: Wrong value passed-in the `onBeforeEditUser' and `onAfterEditUser' for the `admin_pass' parameter
+    Fixed: Wrong value passed-in the `onBeforeEditUser' and `onAfterEditUser' events for the `admin_pass' parameter
+
+INSTALLER
+    Fixed: `CLIENT_DOMAIN_ALT_URLS' parameter is not set on fresh installations
+    Fixed: Setup dialog for the alternative URLs feature is not shown on fresh installations
 
 LISTENERS
     Fixed: Listener::Php::ConfOptions::Override: PHP INI level not honoured

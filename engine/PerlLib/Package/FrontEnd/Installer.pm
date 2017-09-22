@@ -498,7 +498,7 @@ sub askAltUrlsFeature
 {
     my (undef, $dialog) = @_;
 
-    my $altUrlsFeature = main::setupGetQuestion( 'CLIENT_DOMAIN_ALT_URLS', 1 );
+    my $altUrlsFeature = main::setupGetQuestion( 'CLIENT_DOMAIN_ALT_URLS' );
 
     if ( $main::reconfigure =~ /^(?:panel|alt_urls_feature|all|forced)$/
         || !isNumber( $altUrlsFeature )
@@ -509,7 +509,7 @@ sub askAltUrlsFeature
 
 Do you want to enable the alternative URLs feature for client domains?
 
-The alternative URLs feature allows clients accessing their Websites through alternative URLs such as http://dmn1.panel.domain.tld
+The alternative URLs feature allows clients accessing their websites through alternative URLs such as http://dmn1.panel.domain.tld
 EOF
         return $altUrlsFeature if $altUrlsFeature >= 30;
 
