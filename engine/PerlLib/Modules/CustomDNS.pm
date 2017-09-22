@@ -207,7 +207,8 @@ sub _loadData
             $_->[3] =~ s/\R+/ /g;
 
             # Remove leading and trailing whitespaces
-            $_->[3] =~ s/^\s+|\s+$//;
+            $_->[3] =~ s/^\s+//;
+            $_->[3] =~ s/\s+$//;
 
             # Make sure to work with quoted <character-string>
             $_->[3] = qq/"$_->[3]"/ unless $_->[3] =~ /^".*"$/;
