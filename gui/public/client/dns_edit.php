@@ -795,6 +795,18 @@ function client_saveDnsRecord($dnsRecordId)
                 ]
             );
 
+            // Also update status of any DNS resource record with error
+            // Not needed
+            exec_query(
+                "
+                  UPDATE domain_dns
+                  SET domain_dns_status = 'tochange'
+                  WHERE domain_id = ?
+                  AND domain_dns_status NOT IN('ok', 'toadd', 'tochange', 'todelete', 'disabled')
+                ",
+                $mainDmnId
+            );
+
             EventsManager::getInstance()->dispatch(Events::onAfterAddCustomDNSrecord, [
                 'id'       => $db->insertId(),
                 'domainId' => $mainDmnId,
@@ -825,12 +837,13 @@ function client_saveDnsRecord($dnsRecordId)
             );
 
             // Also update status of any DNS resource record with error
+            // Not needed
             exec_query(
                 "
                   UPDATE domain_dns
                   SET domain_dns_status = 'tochange'
                   WHERE domain_id = ?
-                  AND domain_dns_status NOT IN('ok', 'toadd', 'tochange', 'todelete')
+                  AND domain_dns_status NOT IN('ok', 'toadd', 'tochange', 'todelete', 'disabled')
                 ",
                 $mainDmnId
             );

@@ -25,7 +25,7 @@ package Modules::CustomDNS;
 
 use strict;
 use warnings;
-use iMSCP::Debug qw/ error getLastError /;
+use iMSCP::Debug qw/ error getMessageByType /;
 use Text::Balanced qw/ extract_multiple extract_delimited /;
 use parent 'Modules::Abstract';
 
@@ -50,55 +50,51 @@ sub getType
     'CustomDNS';
 }
 
-=item process( $domainId )
+=item process( $dnsRecordsGroup )
 
  Process module
 
  Note: Even if a DNS resource record is invalid, we always return 0 (success).
  It is the responsability of customers to fix their DNS resource records.
 
- Param string $domainId Domain unique identifier (domain type + domain id)
+ Param string $dnsRecordsGroup DNS record group unique identifier
  Return int 0 on success, other on failure
 
 =cut
 
 sub process
 {
-    my ($self, $domainId) = @_;
+    my ($self, $dnsRecordsGroup) = @_;
 
-    ( my $domainType, $domainId ) = split '_', $domainId;
+    my ($domainId, $aliasId ) = split ';', $dnsRecordsGroup;
 
-    unless ( $domainType && $domainId ) {
+    unless ( defined $domainId && defined $aliasId ) {
         error( 'Bad input data...' );
         return 1;
     }
 
-    my $condition = $domainType eq 'domain'
-        ? "domain_id = $domainId AND alias_id = 0" : "alias_id = $domainId";
-
-    my $rs = $self->_loadData( $domainType, $domainId );
-    return $rs if $rs;
-
-    if ( $self->add() ) {
-        eval {
-            local $self->{'_dbh'}->{'RaiseError'} = 1;
-            $self->{'_dbh'}->do(
-                "UPDATE domain_dns SET domain_dns_status = ? WHERE $condition AND domain_dns_status <> 'disabled'",
-                undef, ( getLastError( 'error' ) || 'Invalid DNS resource record' )
-            );
-        };
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        }
-
-        return 0;
-    }
-
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
-        $self->{'_dbh'}->begin_work();
 
+        eval { $self->_loadData( $domainId, $aliasId ); };
+        error( $@ ) if $@;
+
+        if ( $@ || $self->add() ) {
+            $self->{'_dbh'}->do(
+                "
+                    UPDATE domain_dns
+                    SET domain_dns_status = ?
+                    WHERE domain_id = ?
+                    AND alias_id = ?
+                    AND domain_dns_status <> 'disabled'
+                ",
+                undef, ( getMessageByType( 'error', { remove => 1, amount => 1 } ) || 'Invalid DNS record' ), $domainId,
+                $aliasId
+            );
+            return;
+        }
+
+        $self->{'_dbh'}->begin_work();
         $self->{'_dbh'}->do(
             "
                 UPDATE domain_dns
@@ -106,14 +102,19 @@ sub process
                     domain_dns_status = 'todisable', 'disabled',
                     IF(domain_dns_status NOT IN('todelete', 'disabled'), 'ok', domain_dns_status)
                 )
-                WHERE $condition
-            "
+                WHERE domain_id = ?
+                AND alias_id = ?
+            ",
+            undef, $domainId, $aliasId
         );
-        $self->{'_dbh'}->do( "DELETE FROM domain_dns WHERE $condition AND domain_dns_status = 'todelete'" );
+        $self->{'_dbh'}->do(
+            "DELETE FROM domain_dns WHERE domain_id = ? AND alias_id = ? AND domain_dns_status = 'todelete'",
+            undef, $domainId, $aliasId,
+        );
         $self->{'_dbh'}->commit();
     };
     if ( $@ ) {
-        $self->{'_dbh'}->rollback();
+        $self->{'_dbh'}->rollback() if $self->{'_dbh'}->{'BegunWork'};
         error( $@ );
         return 1;
     }
@@ -140,95 +141,98 @@ sub _init
     my ($self) = @_;
 
     $self->{'domain_name'} = undef;
+    $self->{'domain_ip'} = undef;
     $self->{'dns_records'} = [];
     $self->SUPER::_init();
 }
 
-=item _loadData( $domainType, $domainId )
+=item _loadData( $domainId, $aliasId )
 
  Load data
 
- Param string domainType Domain Type (alias|domain)
  Param int $domainId Domain unique identifier
- Return int 0 on success, other on failure
+ Param int $aliasId Domain alias unique identifier, 0 if DNS records group doesn't belong to a domai alias
+ Return void, die on failure
 
 =cut
 
 sub _loadData
 {
-    my ($self, $domainType, $domainId) = @_;
+    my ($self, $domainId, $aliasId) = @_;
 
-    eval {
-        my $condition = $domainType eq 'domain'
-            ? "t1.domain_id = $domainId AND t1.alias_id = 0" : "t1.alias_id = $domainId";
+    my $row = $self->{'_dbh'}->selectrow_hashref(
+        ( $aliasId eq '0'
+            ? '
+                SELECT t1.domain_name, t2.ip_number
+                FROM domain AS t1
+                JOIN server_ips AS t2 ON(t2.ip_id = t1.domain_ip_id)
+                WHERE t1.domain_id = ?
+              '
+            : '
+                SELECT t1.alias_name AS domain_name, t2.ip_number
+                FROM domain_aliasses AS t1
+                JOIN server_ips AS t2 ON(t2.ip_id = t1.alias_ip_id)
+                WHERE t1.alias_id = ?
+              '
+        ),
+        undef,
+        ( $aliasId eq '0' ? $domainId : $aliasId )
+    );
 
-        local $self->{'_dbh'}->{'RaiseError'} = 1;
-        my $rows = $self->{'_dbh'}->selectall_arrayref(
-            "
-                SELECT t1.domain_dns, t1.domain_class, t1.domain_type, t1.domain_text, t1.domain_dns_status,
-                    IFNULL(t3.alias_name, t2.domain_name) AS domain_name, t4.ip_number
-                FROM domain_dns AS t1
-                LEFT JOIN domain AS t2 USING(domain_id)
-                LEFT JOIN domain_aliasses AS t3 USING(alias_id)
-                LEFT JOIN server_ips AS t4 ON (IFNULL(t3.alias_ip_id, t2.domain_ip_id) = t4.ip_id)
-                WHERE $condition
-                AND domain_dns_status <> 'disabled'
-            "
-        );
+    %{$row} or die( sprintf( 'Data not found for custom DNS records group (%d;%d)', $domainId, $aliasId ));
 
-        @{$rows} && defined $rows->[0]->[5] or die(
-            sprintf( 'Data not found for custom DNS records (%s/%d)', $domainType, $domainId )
-        );
+    $self->{'domain_name'} = $row->{'domain_name'};
+    $self->{'domain_ip'} = $row->{'ip_number'};
+    undef $row;
 
-        $self->{'domain_name'} = $rows->[0]->[5];
-        $self->{'domain_ip'} = $rows->[0]->[6];
+    my $rows = $self->{'_dbh'}->selectall_arrayref(
+        "
+            SELECT domain_dns, domain_class, domain_type, domain_text, domain_dns_status
+            FROM domain_dns
+            WHERE domain_id = ?
+            AND alias_id = ?
+            AND domain_dns_status NOT IN('todelete', 'todisable', 'disabled')
+        ",
+        undef, $domainId, $aliasId
+    );
 
-        # 1. Filter DNS records that must be disabled or deleted
-        # 2. For TXT/SPF records, split data field into several
-        #    <character-string>s when <character-string> is longer than 255
-        #    bytes. See: https://tools.ietf.org/html/rfc4408#section-3.1.3
-        for ( @{$rows} ) {
-            # Filter DNS records that must be disabled or deleted
-            next if $_->[4] =~ /^to(?:disable|delete)$/;
+    return unless @{$rows};
 
-            if ( $_->[2] eq 'TXT' || $_->[2] eq 'SPF' ) {
-                # Turn line-breaks into whitespaces
-                $_->[3] =~ s/\R+/ /g;
+    # 1. For TXT/SPF records, split data field into several
+    #    <character-string>s when <character-string> is longer than 255
+    #    bytes. See: https://tools.ietf.org/html/rfc4408#section-3.1.3
+    for ( @{$rows} ) {
+        if ( $_->[2] eq 'TXT' || $_->[2] eq 'SPF' ) {
+            # Turn line-breaks into whitespaces
+            $_->[3] =~ s/\R+/ /g;
 
-                # Remove leading and trailing whitespaces
-                $_->[3] =~ s/^\s+|\s+$//;
+            # Remove leading and trailing whitespaces
+            $_->[3] =~ s/^\s+|\s+$//;
 
-                # Make sure to work with quoted <character-string>
-                $_->[3] = qq/"$_->[3]"/ unless $_->[3] =~ /^".*"$/;
+            # Make sure to work with quoted <character-string>
+            $_->[3] = qq/"$_->[3]"/ unless $_->[3] =~ /^".*"$/;
 
-                # Split data field into several <character-string>s when
-                # <character-string> is longer than 255 bytes, excluding delimiters.
-                # See: https://tools.ietf.org/html/rfc4408#section-3.1.3
-                if ( length $_->[3] > 257 ) {
-                    # Extract all quoted <character-string>s, excluding delimiters
-                    $_ =~ s/^"(.*)"$/$1/ for my @chunks = extract_multiple(
-                        $_->[3], [ sub { extract_delimited( $_[0], '"' ) } ], undef, 1
-                    );
-                    $_->[3] = join '', @chunks if @chunks;
-                    undef @chunks;
+            # Split data field into several <character-string>s when
+            # <character-string> is longer than 255 bytes, excluding delimiters.
+            # See: https://tools.ietf.org/html/rfc4408#section-3.1.3
+            if ( length $_->[3] > 257 ) {
+                # Extract all quoted <character-string>s, excluding delimiters
+                $_ =~ s/^"(.*)"$/$1/ for my @chunks = extract_multiple(
+                    $_->[3], [ sub { extract_delimited( $_[0], '"' ) } ], undef, 1
+                );
+                $_->[3] = join '', @chunks if @chunks;
+                undef @chunks;
 
-                    for ( my $i = 0, my $length = length $_->[3]; $i < $length; $i += 255 ) {
-                        push( @chunks, substr( $_->[3], $i, 255 ));
-                    }
-
-                    $_->[3] = join ' ', map( qq/"$_"/, @chunks );
+                for ( my $i = 0, my $length = length $_->[3]; $i < $length; $i += 255 ) {
+                    push( @chunks, substr( $_->[3], $i, 255 ));
                 }
+
+                $_->[3] = join ' ', map( qq/"$_"/, @chunks );
             }
-
-            push @{$self->{'dns_records'}}, [ ( @{$_} )[0 .. 3] ];
         }
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
 
-    0;
+        push @{$self->{'dns_records'}}, [ ( @{$_} )[0 .. 3] ];
+    }
 }
 
 =item _getData( $action )
