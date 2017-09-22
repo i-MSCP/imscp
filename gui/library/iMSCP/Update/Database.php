@@ -64,7 +64,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 269;
+    protected $lastUpdate = 270;
 
     /**
      * Singleton - Make new unavailable
@@ -1986,6 +1986,20 @@ class iMSCP_Update_Database extends iMSCP_Update
             $this->addIndex('httpd_vlogger', ['vhost', 'ldate']),
             'INSERT IGNORE INTO httpd_vlogger SELECT * FROM old_httpd_vlogger',
             $this->dropTable('old_httpd_vlogger')
+        ];
+    }
+
+    /**
+     * Drop deprecated columns -- Those are not removed when upgrading from some older versions
+     *
+     * @return array SQL statements to be executed
+     */
+    public function r270()
+    {
+        return [
+            $this->dropColumn('reseller_props', 'php_ini_al_register_globals'),
+            $this->dropColumn('domain', 'phpini_perm_register_globals'),
+            $this->dropColumn('php_ini', 'register_globals'),
         ];
     }
 }
