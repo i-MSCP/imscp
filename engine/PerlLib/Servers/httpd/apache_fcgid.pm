@@ -1446,7 +1446,7 @@ sub _init
         readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
         nodeferring => ( defined $main::execmode && $main::execmode eq 'setup' );
 
-    $self->{'eventManager'}->register( 'afterHttpdBuildConfFile', sub { $self->_cleanTemplate( @_ ) } );
+    $self->{'eventManager'}->register( 'afterHttpdBuildConfFile', sub { $self->_cleanTemplate( @_ ) }, -999 );
     $self;
 }
 

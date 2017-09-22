@@ -759,10 +759,11 @@ sub buildConfFile
     return $rs if $rs;
 
     $cfgTpl = $self->_buildConf( $cfgTpl, $filename, $tplVars );
-    $cfgTpl =~ s/\n{2,}/\n\n/g; # Remove any duplicate blank lines
 
     $rs = $self->{'eventManager'}->trigger( 'afterFrontEndBuildConfFile', \$cfgTpl, $filename, $tplVars, $options );
     return $rs if $rs;
+
+    $cfgTpl =~ s/^\s*(?:[#;].*)?\n//gmi; # Final cleanup
 
     $options->{'destination'} ||= "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$filename";
 

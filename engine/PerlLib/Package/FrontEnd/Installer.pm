@@ -1052,31 +1052,18 @@ sub _buildHttpdConfig
             return 0 unless grep($_ eq $tplName, '00_master.nginx', '00_master_ssl.nginx');
 
             if ( $baseServerIpVersion eq 'ipv6' || !main::setupGetQuestion( 'IPV6_SUPPORT' ) ) {
-                ${$cfgTpl} = replaceBloc(
-                    '# SECTION IPv6 BEGIN.',
-                    '# SECTION IPv6 END.',
-                    '',
-                    ${$cfgTpl}
-                );
+                ${$cfgTpl} = replaceBloc( '# SECTION IPv6 BEGIN.', '# SECTION IPv6 END.', '', ${$cfgTpl} );
             }
 
-            return 0 unless $tplName eq '00_master.nginx'
-                && main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) eq 'https://';
+            return 0 unless $tplName eq '00_master.nginx';
+
+            if ( main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) eq 'https://' ) {
+                ${$cfgTpl} = replaceBloc( "# SECTION http BEGIN.\n", "# SECTION http END.", '', ${$cfgTpl} );
+                return 0;
+            }
 
             ${$cfgTpl} = replaceBloc(
-                "# SECTION custom BEGIN.\n",
-                "# SECTION custom END.\n",
-                "    # SECTION custom BEGIN.\n" .
-                    getBloc(
-                        "# SECTION custom BEGIN.\n",
-                        "# SECTION custom END.\n",
-                        ${$cfgTpl}
-                    ) .
-                    <<'EOF'
-    return 302 https://{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}$request_uri;
-EOF
-                    . "    # SECTION custom END.\n",
-                ${$cfgTpl}
+                "# SECTION https redirect BEGIN.\n", "# SECTION https redirect END.", '', ${$cfgTpl}
             );
 
             0;
