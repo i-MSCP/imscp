@@ -796,7 +796,6 @@ function client_saveDnsRecord($dnsRecordId)
             );
 
             // Also update status of any DNS resource record with error
-            // Not needed
             exec_query(
                 "
                   UPDATE domain_dns
@@ -837,7 +836,6 @@ function client_saveDnsRecord($dnsRecordId)
             );
 
             // Also update status of any DNS resource record with error
-            // Not needed
             exec_query(
                 "
                   UPDATE domain_dns
