@@ -531,36 +531,6 @@ function _ticketGetLastDate($ticketId)
 }
 
 /**
- * Checks if the support ticket system is globally enabled and (optionaly) if a
- * specific reseller has permissions to access to it
- *
- * Note: If a reseller has not access to the support ticket system, it's means
- * that all his customers have not access to it too.
- *
- * @param int $userId OPTIONAL Id of the user created the current user or null
- *                    if admin
- * @return bool TRUE if support ticket system is available, FALSE otherwise
- */
-function hasTicketSystem($userId = NULL)
-{
-    if (!Registry::get('config')['IMSCP_SUPPORT_SYSTEM']) {
-        return false;
-    }
-
-    if ($userId === NULL) {
-        return true;
-    }
-
-    $stmt = exec_query('SELECT support_system FROM reseller_props WHERE reseller_id = ?', $userId);
-
-    if (!$stmt->rowCount() || $stmt->fetchRow(PDO::FETCH_COLUMN == 'no')) {
-        return false;
-    }
-
-    return true;
-}
-
-/**
  * Gets the answers of the selected ticket and generates its output.
  *
  * @access private

@@ -27,14 +27,11 @@ require_once LIBRARY_PATH . '/Functions/Tickets.php';
 
 check_login('admin');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
-
-if (!hasTicketSystem()) {
-    redirectTo('index.php');
-}
+iMSCP_Registry::get('config')['IMSCP_SUPPORT_SYSTEM'] or showBadRequestErrorPage();
 
 $previousPage = 'ticket_system';
 
-if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
+if (isset($_GET['ticket_id'])) {
     $ticketId = intval($_GET['ticket_id']);
     $stmt = exec_query(
         'SELECT ticket_status FROM tickets WHERE ticket_id = ? AND (ticket_from = ? OR ticket_to = ?)', [

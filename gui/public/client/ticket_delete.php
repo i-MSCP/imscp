@@ -39,7 +39,7 @@ customerHasFeature('support') or showBadRequestErrorPage();
 $userId = $_SESSION['user_id'];
 $previousPage = 'ticket_system';
 
-if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
+if (isset($_GET['ticket_id'])) {
     $ticketId = intval($_GET['ticket_id']);
 
     $query = "

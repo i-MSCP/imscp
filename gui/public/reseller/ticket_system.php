@@ -38,10 +38,7 @@ resellerHasFeature('support') or showBadRequestErrorPage();
 
 $_SESSION['previousPage'] = 'ticket_system.php';
 
-// Checks if support ticket system is activated and if the reseller can access to it
-if (!hasTicketSystem($_SESSION['user_id'])) {
-    redirectTo('index.php');
-} elseif (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
+if (isset($_GET['ticket_id'])) {
     closeTicket(intval($_GET['ticket_id']));
 }
 

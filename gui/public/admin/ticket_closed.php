@@ -27,10 +27,9 @@ require_once LIBRARY_PATH . '/Functions/Tickets.php';
 
 check_login('admin');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+iMSCP_Registry::get('config')['IMSCP_SUPPORT_SYSTEM'] or showBadRequestErrorPage();
 
-if (!hasTicketSystem()) {
-    redirectTo('index.php');
-} elseif (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
+if (isset($_GET['ticket_id'])) {
     reopenTicket(intval($_GET['ticket_id']));
 }
 

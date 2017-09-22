@@ -34,10 +34,9 @@ require_once LIBRARY_PATH . '/Functions/Tickets.php';
 
 check_login('user');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+customerHasFeature('support') or showBadRequestErrorPage();
 
-if (!customerHasFeature('support')) {
-    showBadRequestErrorPage();
-} elseif (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
+if (isset($_GET['ticket_id'])) {
     reopenTicket(intval($_GET['ticket_id']));
 }
 

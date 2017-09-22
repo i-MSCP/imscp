@@ -66,6 +66,7 @@ VAGRANT
 
 YOUTRACK
     IP-1742 i-MSCP upgrade error - Unknown 'mail_user' database table in database update r254
+    IP-1744 Couldn't go to support section - 302 redirect to index.php- reseller UI
 
 ------------------------------------------------------------------------------------------------------------------------
 1.5.1
