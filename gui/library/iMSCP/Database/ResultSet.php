@@ -199,4 +199,14 @@ class iMSCP_Database_ResultSet
     {
         return implode(' - ', $this->_stmt->errorInfo());
     }
+
+    /**
+     * Get underlying PDO statement
+     * 
+     * @return PDOStatement
+     */
+    public function getPDOStatement()
+    {
+        return $this->_stmt;
+    }
 }

@@ -28,6 +28,7 @@ INSTALLER
     Fixed: `CLIENT_DOMAIN_ALT_URLS' configuration parameter reseted to 0 (disabled) while running installer
 
 FRONTEND
+    Added: iMSCP_Database_ResultSet::getPDOStatement() method -- Allows to retrieve underlying PDOStatement object
     Fixed: Couldn't update customer password (admin and reseller UI)
     Fixed: Disabled DNS resource records get re-enabled when editing a record (Custom DNS records -- Client UI)
     Fixed: iMSCP_Authentication_AuthEvent badly initialized
