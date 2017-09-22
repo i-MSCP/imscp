@@ -13,6 +13,9 @@ BACKEND
     Security: Disallow connection to MySQL command-line tool without user password, even for root user
     Security: Don't store i-MSCP master SQL user data into the /etc/mysql/conf.d/imscp.cnf configuration file
 
+CONFIG
+    Fixed: Make use of the `ssl' parameter of the `listen' directive in place of the `ssl' directive (Nginx)
+
 CONTRIB
     Added: get_imscp_master_sql_user_pwd.pl script: Print current i-MSCP master SQL user password
 
@@ -47,7 +50,6 @@ LISTENERS
 
 PACKAGES
     Fixed: Distribution packages not installed in `build' mode (Package::AntiRootkits, Package::Webstats)
-    Fixed: Make use of the `ssl' parameter of the `listen' directive in place of the `ssl' directive
     Review: Cleanup production configuration files (Package::FrontEnd::Installer)
 
 PRESEEDING
