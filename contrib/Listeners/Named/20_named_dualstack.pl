@@ -22,13 +22,12 @@
 # However, it can also be used to turn default DNS names into round-robin DNS
 # names, or even add your own default DNS names.
 #
-# The listener can act globally or on a per zone basis.
+# The listener can acts globally or on a per zone basis.
 
 package Listener::Bind9::DualStack;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
 use iMSCP::EventManager;
 use iMSCP::Net;
 use iMSCP::TemplateParser qw/ getBloc replaceBloc /;
@@ -58,8 +57,8 @@ our $DNS_TTL = '3600';
 # Zone definitions allow to add IPs address(es) for default DNS name(s), for
 # all or specific DNS zone(s).
 #
-# Warning: Adding two IP address of the same type (IPv4, IPv6) for the same DNS
-# name will turn it into round-robin DNS name.
+# Warning: Adding two IP addresses of the same type (IPv4, IPv6) for the same
+# DNS name will turn it into round-robin DNS name.
 #
 # Be aware that invalid IP addresses are ignored silently.
 #
@@ -104,7 +103,7 @@ our %ZONE_DEFS = (
     },
 
     # An empty named zone definition allows to discard a zone from processing.
-    'domain.tld3' => {
+    'domain2.tld' => {
         # Zone discarded from processing.
     }
 );
@@ -123,9 +122,6 @@ iMSCP::EventManager->getInstance()->register(
 
         return 0 unless defined $zone && %{$zone};
 
-        my $net = iMSCP::Net->getInstance();
-        my @names = ();
-
         local @DEFAULT_DNS_NAMES = @DEFAULT_DNS_NAMES;
 
         if ( $data->{'REAL_PARENT_DOMAIN_NAME'}
@@ -133,9 +129,12 @@ iMSCP::EventManager->getInstance()->register(
         ) {
             # When adding entry for the alternative URLs feature we do have
             # interest only in `@' DNS name
-            @DEFAULT_DNS_NAMES = ( '@' ) if grep('@' eq $_, @DEFAULT_DNS_NAMES);
+            @DEFAULT_DNS_NAMES = grep('@' eq $_, @DEFAULT_DNS_NAMES);
             return 0 unless @DEFAULT_DNS_NAMES;
         }
+
+        my $net = iMSCP::Net->getInstance();
+        my @names = ();
 
         for ( @DEFAULT_DNS_NAMES ) {
             my $name = $zone->{$_} || $zone->{'*'} || undef;
