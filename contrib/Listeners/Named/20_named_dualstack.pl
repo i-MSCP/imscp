@@ -49,12 +49,12 @@ our @DEFAULT_DNS_NAMES = (
     '@', 'ftp', 'mail', 'imap', 'pop', 'pop3', 'relay', 'smtp'
 );
 
-# TTL in second for DNS names added by this listener file.
+# TTL in seconds for DNS names added by this listener.
 our $DNS_TTL = '3600';
 
 # Zone definitions
 #
-# Zone definitions allow to add IPs address(es) for default DNS name(s), for
+# Zone definitions allow to add IP address(es) for default DNS name(s), for
 # all or specific DNS zone(s).
 #
 # Warning: Adding two IP addresses of the same type (IPv4, IPv6) for the same
@@ -62,11 +62,13 @@ our $DNS_TTL = '3600';
 #
 # Be aware that invalid IP addresses are ignored silently.
 #
+# Note that any name must be in ACE form.
+#  
 # Please replace the zone definitions below by your owns.
 our %ZONE_DEFS = (
     # The wildcard zone definition allows to target all zones.
     # There can only be one wildcard zone definition.
-    '*'           => {
+    '*'                     => {
         # The wildcard DNS name allows to add IP address(es) for all default
         # DNS names (names listed in @DEFAULT_DNS_NAMES).
         # There can only be one wildcard DNS name per zone definition.
@@ -85,7 +87,7 @@ our %ZONE_DEFS = (
 
     # A named zone definition allows to target a specific zone. A named zone
     # definition take precedence over the wildcard zone definition.
-    'domain1.tld' => {
+    'whmcs.bbox.nuxwin.com' => {
         # The wildcard DNS name allows to add IP address(es) for all default
         # DNS names (names listed in @DEFAULT_DNS_NAMES).
         # There can only be one wildcard DNS name per zone definition.
@@ -94,7 +96,7 @@ our %ZONE_DEFS = (
         # A named DNS name allows to add IP address(es) for a specific default
         # DNS name (a name listed in @DEFAULT_DNS_NAMES).
         # A named DNS name take precendence over the wildcard name.
-        mail  => [ 'fd35:4509:90e9:291b::4', 'fd35:4509:90e9:291b::5' ],
+        mail  => [ 'fd35:4509:90e9:291b::5', 'fd35:4509:90e9:291b::6' ],
 
         # An empty named DNS name allows to discard it from processing.
         relay => [
@@ -103,7 +105,7 @@ our %ZONE_DEFS = (
     },
 
     # An empty named zone definition allows to discard a zone from processing.
-    'domain2.tld' => {
+    'domain2.tld'           => {
         # Zone discarded from processing.
     }
 );
@@ -158,8 +160,7 @@ EOT
                     <<"EOT",
 ; dualstack DNS entries BEGIN
 \$ORIGIN $data->{'DOMAIN_NAME'}.
-@{[ join( "\n", uniq @names ) ]}
-; dualstack DNS entries END
+@{[ join( '', uniq @names ) ]}; dualstack DNS entries END
 EOT
                     ${$tplContent}
                 );
@@ -170,8 +171,7 @@ EOT
             ${$tplContent} .= <<"EOT",
 ; dualstack DNS entries BEGIN
 \$ORIGIN $data->{'DOMAIN_NAME'}.
-@{[ join( "\n", uniq @names ) ]}
-; dualstack DNS entries END
+@{[ join( '', uniq @names ) ]}; dualstack DNS entries END
 EOT
                 return 0;
         }
@@ -186,14 +186,14 @@ EOT
                 ${$tplContent}
             )
                 . "\$ORIGIN $data->{'DOMAIN_NAME'}.\n"
-                . join( "\n", uniq @names )
-                . "\n"
+                . join( '', uniq @names )
                 . "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
             ${$tplContent}
         );
 
         0;
-    }
+    },
+    -99
 ) unless version->parse( "$main::imscpConfig{'PluginApi'}" ) < version->parse( '1.5.1' );
 
 1;
