@@ -47,10 +47,14 @@ INSTALLER
 LISTENERS
     Fixed: Listener::Php::ConfOptions::Override: PHP INI level not honoured
     Fixed: 10_named_slave_provisioning.pl: Global symbol "$rs" requires explicit package name
+    Rewritten: 20_named_dualstack.pl listener file (require i-MSCP >= 1.5.2)
 
 PACKAGES
     Fixed: Distribution packages not installed in `build' mode (Package::AntiRootkits, Package::Webstats)
     Review: Cleanup production configuration files (Package::FrontEnd::Installer)
+
+PLUGINS
+    Updated: Plugin API to version 1.5.1
 
 PRESEEDING
     Enhancement: Make use of default alternatives when there is no value set for them
