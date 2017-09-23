@@ -87,7 +87,7 @@ our %ZONE_DEFS = (
 
     # A named zone definition allows to target a specific zone. A named zone
     # definition take precedence over the wildcard zone definition.
-    'whmcs.bbox.nuxwin.com' => {
+    'domain1.tld' => {
         # The wildcard DNS name allows to add IP address(es) for all default
         # DNS names (names listed in @DEFAULT_DNS_NAMES).
         # There can only be one wildcard DNS name per zone definition.
