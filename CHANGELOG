@@ -14,6 +14,7 @@ BACKEND
     Security: Don't store i-MSCP master SQL user data into the /etc/mysql/conf.d/imscp.cnf configuration file
 
 CONFIG
+    Added: Specific LOGROTATE(8) configuration file for rsyslog (Ubuntu 14.04/Trusty Thar)
     Fixed: Make use of the `ssl' parameter of the `listen' directive in place of the `ssl' directive (Nginx)
 
 CONTRIB
@@ -89,6 +90,7 @@ VAGRANT
 YOUTRACK
     IP-1742 i-MSCP upgrade error - Unknown 'mail_user' database table in database update r254
     IP-1744 Couldn't go to support section -- 302 redirect to index.php -- reseller UI
+    IP-1745 Rsyslog log rotation failure -- Initctl command (Upstart) doesn't know the 'rotate' action -- Ubuntu 14.04/Trusty Thar
 
 ------------------------------------------------------------------------------------------------------------------------
 1.5.1
