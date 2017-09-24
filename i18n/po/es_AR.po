@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-24 12:11+0000\n"
+"POT-Creation-Date: 2017-09-24 20:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Miguel Angel <piradoxlanieve@gmail.com>, 2017\n"
 "Language-Team: Spanish (Argentina) (https://www.transifex.com/i-mscp/teams/576/es_AR/)\n"
@@ -1730,11 +1730,11 @@ msgid "Details"
 msgstr "Detalles"
 
 #, php-format
-msgid "Directory %s doesn't exists."
-msgstr "El directorio %s no existe."
+msgid "Directory %s doesn't exist."
+msgstr ""
 
 #, php-format
-msgid "Directory '%s' doesn't exists."
+msgid "Directory '%s' doesn't exist."
 msgstr ""
 
 #, php-format
@@ -4542,11 +4542,9 @@ msgstr ""
 
 #, php-format
 msgid ""
-"The directory %s doesn't exists. Please create that directory using your "
-"file manager."
+"The directory %s doesn't exist. Please create that directory using your file"
+" manager."
 msgstr ""
-"El directorio %s no existe. Por favor, crealo usando el administrador de "
-"archivos."
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
