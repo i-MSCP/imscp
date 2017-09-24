@@ -34,7 +34,7 @@ fastcgi_intercept_errors                off;
 fastcgi_read_timeout                    600;
 
 # Environment (production,development)
-fastcgi_param APPLICATION_ENV production;
+fastcgi_param APPLICATION_ENV development;
 
 # SECTION custom BEGIN.
 # SECTION custom END.

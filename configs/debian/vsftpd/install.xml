@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
+    <folders mode="0755">${ROOT_CONF}/vsftpd</folders>
     <folders>${ROOT_CONF}/vsftpd/imscp</folders>
+    <folders>${SYSTEM_CONF}/vsftpd</folders>
     <folders>${SYSTEM_CONF}/vsftpd/backup</folders>
     <copy_config>${SYSTEM_CONF}/vsftpd/vsftpd.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/vsftpd/vsftpd.data.dist</copy_config>

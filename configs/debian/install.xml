@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
+    <folders mode="1777" export="INST_PREF">/tmp</folders>
+    <folders export="INST_PREF">/tmp/imscp</folders>
+
+    <folders mode="0755" export="ROOT_CONF">${INST_PREF}/etc</folders>
+    <folders export="SYSTEM_CONF">${INST_PREF}/etc/imscp</folders>
+
+    <folders mode="0755">${INST_PREF}/usr</folders>
+    <folders mode="0755" export="SYSTEM_LIB">${INST_PREF}/usr/lib</folders>
+    <folders mode="0755">${INST_PREF}/usr/local</folders>
+    <folders mode="0755" export="LOCAL_CONF">${INST_PREF}/usr/local/etc</folders>
+    <folders mode="0755" export="LOCAL_USR_LIB">${INST_PREF}/usr/local/lib</folders>
+
+    <folders mode="0755">${INST_PREF}/var</folders>
+    <folders mode="0755">${INST_PREF}/var/log</folders>
+    <folders export="SYSTEM_LOG">${INST_PREF}/var/log/imscp</folders>
+
+    <folders mode="0755">${INST_PREF}/var/mail</folders>
+    <folders export="SYSTEM_MAIL_VIRTUAL">${INST_PREF}/var/mail/virtual</folders>
+
+    <folders mode="0755">${INST_PREF}/var/www</folders>
+    <folders export="SYSTEM_ROOT">${INST_PREF}/var/www/imscp</folders>
+    <folders mode="0755" export="SYSTEM_VIRTUAL">${INST_PREF}/var/www/virtual</folders>
+
     <copy_config>${SYSTEM_CONF}/imscp.conf</copy_config>
 </install>

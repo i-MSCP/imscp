@@ -26,10 +26,6 @@ DISTRIBUTIONS
     Review: Avoid APT pinning whenever as possible (All distributions)
     Relaxed: Permissions policy on /etc/apt/apt.conf.d/* files -- Files must be world-readable
 
-INSTALLER
-    Fixed: `build'' mode is broken for fresh installs -- Packages must be pre-installed regardless of install mode
-    Fixed: `CLIENT_DOMAIN_ALT_URLS' configuration parameter reseted to 0 (disabled) while running installer
-
 FRONTEND
     Added: iMSCP_Database_ResultSet::getPDOStatement() method -- Allows to retrieve underlying PDOStatement object
     Fixed: Couldn't update customer password (admin and reseller UI)
@@ -42,8 +38,15 @@ FRONTEND
     Fixed: Wrong value passed-in the `onBeforeEditUser' and `onAfterEditUser' events for the `admin_pass' parameter
 
 INSTALLER
+    Added: `copy_as' attribute -- Allows to copy a file with specific name (copy_config xml node from install.xml files)
+    Enhancement: Make it possible to provide per distribution (codename) configuration file
+    Fixed: `build' mode is broken for fresh installs -- Packages must be pre-installed regardless of install mode
+    Fixed: `CLIENT_DOMAIN_ALT_URLS' configuration parameter reseted to 0 (disabled) while running installer
     Fixed: `CLIENT_DOMAIN_ALT_URLS' parameter is not set on fresh installations
-    Fixed: Setup dialog for the alternative URLs feature is not shown on fresh installations
+    Fixed: Setup dialog for the alternative URLs feature is not shown on fresh install
+    Merged: Distribution layout.xml file with distribution master install.xml file
+    Renamed: `kept` attribute to `keep_if_exist' (copy_config xml node from install.xml files)
+    Renamed: `if' attribute to 'copy_if' (copy_config xml node from install.xml files)
 
 LISTENERS
     Fixed: Listener::Php::ConfOptions::Override: PHP INI level not honoured

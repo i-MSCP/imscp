@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
+    <folders mode="0755">${ROOT_CONF}/apt</folders>
     <folders>${ROOT_CONF}/apt/apt.conf.d</folders>
     <copy_config mode="0644">${ROOT_CONF}/apt/apt.conf.d/90imscp</copy_config>
 </install>

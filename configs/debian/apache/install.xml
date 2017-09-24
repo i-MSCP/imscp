@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders export="ROOT_APACHE_CONF">${ROOT_CONF}/apache2</folders>
+    <folders mode="0755" export="ROOT_APACHE_CONF">${ROOT_CONF}/apache2</folders>
     <folders>${ROOT_APACHE_CONF}/imscp</folders>
     <folders>${ROOT_APACHE_CONF}/imscp/before</folders>
     <folders>${SYSTEM_CONF}/apache</folders>
