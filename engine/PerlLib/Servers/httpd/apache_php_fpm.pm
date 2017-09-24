@@ -1093,7 +1093,7 @@ sub enableSites
 
     for ( @sites ) {
         unless ( -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_" ) {
-            warning( sprintf( "Site %s doesn't exists", $_ ));
+            warning( sprintf( "Site %s doesn't exist", $_ ));
             next;
         }
 
@@ -1209,7 +1209,7 @@ sub enableConfs
 
     for ( @conffiles ) {
         unless ( -f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/$_" ) {
-            warning( sprintf( "Configuration file %s doesn't exists", $_ ));
+            warning( sprintf( "Configuration file %s doesn't exist", $_ ));
             next;
         }
 
@@ -1709,7 +1709,7 @@ sub _addFiles
     my $tmpDir = File::Temp->newdir();
     iMSCP::Dir->new( dirname => $skelDir )->rcopy( $tmpDir, { preserve => 'no' } );
 
-    # Build default page if needed (if htdocs doesn't exists or is empty)
+    # Build default page if needed (if htdocs doesn't exist or is empty)
     if ( !-d "$data->{'WEB_DIR'}/htdocs" || iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/htdocs" )->isEmpty() ) {
         if ( -d "$tmpDir/htdocs" ) {
             # Test needed in case admin removed the index.html file from the skeleton

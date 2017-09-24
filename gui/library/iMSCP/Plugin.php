@@ -510,7 +510,7 @@ abstract class iMSCP_Plugin
         $sqlDir = $pluginManager->pluginGetDirectory() . '/' . $pluginName . '/sql';
 
         if (!@is_dir($sqlDir)) {
-            throw new iMSCP_Plugin_Exception(tr("Directory %s doesn't exists.", $sqlDir));
+            throw new iMSCP_Plugin_Exception(tr("Directory %s doesn't exist.", $sqlDir));
         }
 
         $pluginInfo = $pluginManager->pluginGetInfo($pluginName);

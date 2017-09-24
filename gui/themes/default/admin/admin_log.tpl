@@ -31,7 +31,7 @@
 
         $dataTable = $(".datatable").dataTable({
             language: imscp_i18n.core.dataTable,
-            displayLength: parseInt({ROWS_PER_PAGE}),
+            displayLength: {ROWS_PER_PAGE},
             processing: true,
             serverSide: true,
             pagingType: "simple",

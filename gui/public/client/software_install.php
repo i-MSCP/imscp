@@ -246,7 +246,7 @@ if (!empty($_POST)) {
 
     $vfs = new VirtualFileSystem($_SESSION['user_logged']);
     if (!$vfs->exists($installPath, VirtualFileSystem::VFS_TYPE_DIR)) {
-        set_page_message(tr("The directory %s doesn't exists. Please create that directory using your file manager.", $otherDir), 'error');
+        set_page_message(tr("The directory %s doesn't exist. Please create that directory using your file manager.", $otherDir), 'error');
         $error = true;
     } else {
         $stmt = exec_query(

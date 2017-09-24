@@ -59,7 +59,7 @@ sub validatePrivateKey
     }
 
     unless ( -f $self->{'private_key_container_path'} ) {
-        error( sprintf( "%s SSL private key doesn't exists", $self->{'private_key_container_path'} ));
+        error( sprintf( "%s SSL private key doesn't exist", $self->{'private_key_container_path'} ));
         return 1;
     }
 
@@ -109,7 +109,7 @@ sub validateCertificate
     }
 
     unless ( -f $self->{'certificate_container_path'} ) {
-        error( sprintf( "%s SSL certificate doesn't exists", $self->{'certificate_container_path'} ));
+        error( sprintf( "%s SSL certificate doesn't exist", $self->{'certificate_container_path'} ));
         return 1;
     }
 
@@ -117,7 +117,7 @@ sub validateCertificate
 
     if ( $self->{'ca_bundle_container_path'} ) {
         unless ( -f $self->{'ca_bundle_container_path'} ) {
-            error( sprintf( "%s SSL CA Bundle doesn't exists", $self->{'ca_bundle_container_path'} ));
+            error( sprintf( "%s SSL CA Bundle doesn't exist", $self->{'ca_bundle_container_path'} ));
             return 1;
         }
 

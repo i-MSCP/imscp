@@ -134,7 +134,7 @@ function reseller_generatePage($tpl)
     ]);
 
     // Cover the case where URL forwarding feature is activated and that the
-    // default /htdocs directory doesn't exists yet
+    // default /htdocs directory doesn't exist yet
     if ($domainAliasData['url_forward'] != 'no') {
         $vfs = new VirtualFileSystem($_SESSION['user_logged'], $domainAliasData['alias_mount']);
 

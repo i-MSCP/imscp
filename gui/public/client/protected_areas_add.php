@@ -100,7 +100,7 @@ function handleProtectedArea()
 
     $vfs = new VirtualFileSystem($_SESSION['user_logged']);
     if ($protectedAreaPath !== '/' && !$vfs->exists($protectedAreaPath, VirtualFileSystem::VFS_TYPE_DIR)) {
-        set_page_message(tr("Directory '%s' doesn't exists.", $protectedAreaPath), 'error');
+        set_page_message(tr("Directory '%s' doesn't exist.", $protectedAreaPath), 'error');
         return;
     }
 

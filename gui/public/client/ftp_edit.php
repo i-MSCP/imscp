@@ -74,7 +74,7 @@ function updateFtpAccount($userid)
     if ($homeDir !== '/'
         && !$vfs->exists($homeDir, VirtualFileSystem::VFS_TYPE_DIR)
     ) {
-        set_page_message(tr("Directory '%s' doesn't exists.", $homeDir), 'error');
+        set_page_message(tr("Directory '%s' doesn't exist.", $homeDir), 'error');
         return false;
     }
 
