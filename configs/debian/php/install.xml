@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders>${SYSTEM_CONF}/php</folders>
+    <folder>${SYSTEM_CONF}/php</folder>
     <copy_config>${SYSTEM_CONF}/php/apache</copy_config>
     <copy_config>${SYSTEM_CONF}/php/fcgi</copy_config>
     <copy_config>${SYSTEM_CONF}/php/fpm</copy_config>

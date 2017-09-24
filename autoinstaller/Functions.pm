@@ -827,30 +827,30 @@ sub _processXmlInstallFile
     # Permissions hardening
     local $UMASK = 027;
 
-    # Process xml 'folders' nodes if any
-    if ( $node->{'folders'} ) {
-        for ( @{$node->{'folders'}} ) {
+    # Process 'folder' nodes if any
+    if ( $node->{'folder'} ) {
+        for ( @{$node->{'folder'}} ) {
             $_->{'content'} = _expandVars( $_->{'content'} );
             $main::{$_->{'export'}} = $_->{'content'} if defined $_->{'export'};
-            my $rs = _processFolder( $_ );
+            my $rs = _processFolderNode( $_ );
             return $rs if $rs;
         }
     }
 
-    # Process xml 'copy_config' nodes if any
+    # Process 'copy_config' nodes if any
     if ( $node->{'copy_config'} ) {
         for ( @{$node->{'copy_config'}} ) {
             $_->{'content'} = _expandVars( $_->{'content'} );
-            my $rs = _copyConfig( $_ );
+            my $rs = _processCopyConfigNode( $_ );
             return $rs if $rs;
         }
     }
 
-    # Process xml 'copy' nodes if any
+    # Process 'copy' nodes if any
     if ( $node->{'copy'} ) {
         for ( @{$node->{'copy'}} ) {
             $_->{'content'} = _expandVars( $_->{'content'} );
-            my $rs = _copy( $_ );
+            my $rs = _processCopyNode( $_ );
             return $rs if $rs;
         }
     }
@@ -885,7 +885,7 @@ sub _expandVars
     $string;
 }
 
-=item _processFolder( \%node )
+=item _processFolderNode( \%node )
 
  Process the given folder node
 
@@ -899,7 +899,7 @@ sub _expandVars
 
 =cut
 
-sub _processFolder
+sub _processFolderNode
 {
     my ($node) = @_;
 
@@ -922,7 +922,7 @@ sub _processFolder
     );
 }
 
-=item _copyConfig( \%node )
+=item _processCopyConfigNode( \%node )
 
  Process the givencopy_config node
 
@@ -939,7 +939,7 @@ sub _processFolder
 
 =cut
 
-sub _copyConfig
+sub _processCopyConfigNode
 {
     my ($node) = @_;
 
@@ -983,7 +983,7 @@ sub _copyConfig
     defined $node->{'mode'} ? $file->mode( oct( $node->{'mode'} )) : 0;
 }
 
-=item _copy( \%node )
+=item _processCopyNode( \%node )
 
  Process the given copy node
 
@@ -997,7 +997,7 @@ sub _copyConfig
 
 =cut
 
-sub _copy
+sub _processCopyNode
 {
     my ($node) = @_;
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders>${SYSTEM_CONF}/dovecot</folders>
-    <folders>${SYSTEM_CONF}/dovecot/backup</folders>
-    <folders>${SYSTEM_CONF}/dovecot/working</folders>
+    <folder>${SYSTEM_CONF}/dovecot</folder>
+    <folder>${SYSTEM_CONF}/dovecot/backup</folder>
+    <folder>${SYSTEM_CONF}/dovecot/working</folder>
     <copy_config>${SYSTEM_CONF}/dovecot/dovecot.data.dist</copy_config>
     <copy_config>${SYSTEM_CONF}/dovecot/dovecot.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/dovecot/dovecot-sql.conf</copy_config>

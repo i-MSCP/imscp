@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders mode="0755">${ROOT_CONF}/sysctl.d</folders>
+    <folder mode="0755">${ROOT_CONF}/sysctl.d</folder>
     <copy_config>${ROOT_CONF}/sysctl.d/imscp.conf</copy_config>
 </install>

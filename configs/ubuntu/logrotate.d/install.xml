@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders mode="0755">${ROOT_CONF}/logrotate.d</folders>
+    <folder mode="0755">${ROOT_CONF}/logrotate.d</folder>
     <copy_config>${ROOT_CONF}/logrotate.d/imscp</copy_config>
     <copy_config copy_if="'${DISTRO_CODENAME}' ne 'trusty'">${ROOT_CONF}/logrotate.d/rsyslog</copy_config>
     <copy_config copy_if="'${DISTRO_CODENAME}' eq 'trusty'" copy_as="rsyslog">${ROOT_CONF}/logrotate.d/rsyslog.14.04</copy_config>

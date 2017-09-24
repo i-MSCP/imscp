@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders>${SYSTEM_CONF}/listeners.d</folders>
+    <folder>${SYSTEM_CONF}/listeners.d</folder>
     <copy_config>${SYSTEM_CONF}/listeners.d/README.md</copy_config>
 </install>

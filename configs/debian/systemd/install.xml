@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders mode="0755">${ROOT_CONF}/systemd</folders>
-    <folders mode="0755">${ROOT_CONF}/systemd/system</folders>
-    <folders mode="0755">${ROOT_CONF}/tmpfiles.d</folders>
+    <folder mode="0755">${ROOT_CONF}/systemd</folder>
+    <folder mode="0755">${ROOT_CONF}/systemd/system</folder>
+    <folder mode="0755">${ROOT_CONF}/tmpfiles.d</folder>
     <copy_config copy_if="'${NAMED_PACKAGE}' eq 'Servers::named::bind'" mode="0644">${ROOT_CONF}/systemd/system/bind9.service</copy_config>
     <copy_config copy_if="'${NAMED_PACKAGE}' eq 'Servers::named::bind'" mode="0644">${ROOT_CONF}/systemd/system/bind9-resolvconf.service</copy_config>
     <copy_config copy_if="'${PO_PACKAGE}' eq 'Servers::po::courier'" mode="0644">${ROOT_CONF}/tmpfiles.d/courier-authdaemon.conf</copy_config>
