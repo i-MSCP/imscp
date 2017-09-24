@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-24 20:39+0000\n"
+"POT-Creation-Date: 2017-09-24 20:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/i-mscp/teams/576/zh_TW/)\n"
@@ -411,7 +411,7 @@ msgid "Admin / Users / Circular"
 msgstr "管理 / 使用者 / 通知"
 
 msgid "Admin / Users / Customer Assignments"
-msgstr ""
+msgstr "管理 / 使用者 / 客戶分配"
 
 msgid "Admin / Users / Edit Reseller"
 msgstr "管理 / 使用者 / 編輯經銷商"
@@ -429,7 +429,7 @@ msgid "Admin / Users / Overview / Edit Customer"
 msgstr "管理 / 使用者 / 概要 / 編輯客戶"
 
 msgid "Admin / Users / Reseller Assignments"
-msgstr ""
+msgstr "管理 / 使用者 / 經銷商分配"
 
 msgid "Admin / Users / Sessions"
 msgstr "管理 / 使用者 / 連線數"
@@ -1839,11 +1839,11 @@ msgstr "詳細"
 
 #, php-format
 msgid "Directory %s doesn't exist."
-msgstr ""
+msgstr "目錄 %s 不存在。"
 
 #, php-format
 msgid "Directory '%s' doesn't exist."
-msgstr ""
+msgstr "目錄 '%s' 不存在。"
 
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
@@ -4603,7 +4603,7 @@ msgstr "國家的名稱必須在 %d 和 %d 字元間。"
 msgid ""
 "The directory %s doesn't exist. Please create that directory using your file"
 " manager."
-msgstr ""
+msgstr "此目錄 %s 不存在。請使用您的檔案管理軟體來建立這個目錄。"
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "

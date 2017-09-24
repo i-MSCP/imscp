@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-24 20:39+0000\n"
+"POT-Creation-Date: 2017-09-24 20:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: krok <krok@totalynet.fr>, 2017\n"
 "Language-Team: French (France) (https://www.transifex.com/i-mscp/teams/576/fr_FR/)\n"
@@ -1933,11 +1933,11 @@ msgstr "Détails"
 
 #, php-format
 msgid "Directory %s doesn't exist."
-msgstr ""
+msgstr "Le répertoire %s n'existe pas."
 
 #, php-format
 msgid "Directory '%s' doesn't exist."
-msgstr ""
+msgstr "Le répertoire '%s' n'éxiste pas."
 
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
@@ -4806,6 +4806,8 @@ msgid ""
 "The directory %s doesn't exist. Please create that directory using your file"
 " manager."
 msgstr ""
+"Le répertoire %s n'existe pas. Veuillez créer le répertoire en utilisant le "
+"gestionnaire de fichiers."
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "

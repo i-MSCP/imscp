@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-24 20:39+0000\n"
+"POT-Creation-Date: 2017-09-24 20:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Dutch (Netherlands) (https://www.transifex.com/i-mscp/teams/576/nl_NL/)\n"
@@ -1894,11 +1894,11 @@ msgstr "Bekijk details"
 
 #, php-format
 msgid "Directory %s doesn't exist."
-msgstr ""
+msgstr "Map %s bestaat niet."
 
 #, php-format
 msgid "Directory '%s' doesn't exist."
-msgstr ""
+msgstr "Map '%s' bestaat niet."
 
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
@@ -4735,7 +4735,7 @@ msgstr "De landsnaam dient tussen de %d en %d karakters lang te zijn."
 msgid ""
 "The directory %s doesn't exist. Please create that directory using your file"
 " manager."
-msgstr ""
+msgstr "De map %s bestaat niet, maak deze map aan met de bestandsbeheerder."
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
