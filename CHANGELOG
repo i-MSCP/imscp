@@ -34,6 +34,7 @@ FRONTEND
     Added: iMSCP_Database_ResultSet::getPDOStatement() method -- Allows to retrieve underlying PDOStatement object
     Fixed: Couldn't update customer password (admin and reseller UI)
     Fixed: Disabled DNS resource records get re-enabled when editing a record (Custom DNS records -- Client UI)
+    Fixed: Fatal error: Call to a member function fetchRow() on string in client/mail_catchall_add.php on line 84
     Fixed: iMSCP_Authentication_AuthEvent badly initialized
     Fixed: Misleading domain status due to missing `torestore' status in the translate_dmn_status() function
     Fixed: List of customers is truncated due to wrong template variable name in loop (Customer assignments feature)

@@ -52,7 +52,7 @@ function getCatchallDomain($catchallDomainId, $catchalType)
                     AND domain_admin_id = ?
                 ",
                 [$catchallDomainId, $_SESSION['user_id']]
-            )->fetchRow(PDO::FETCH_COLUMN);
+            );
             break;
         case MT_ALIAS_CATCHALL:
             $stmt = exec_query(
