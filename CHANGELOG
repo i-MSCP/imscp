@@ -77,9 +77,9 @@ VAGRANT
     Fixed: Unable to locate package language-pack-en (i-MSCP provision scripts)
     Fixed: Make sure that Vagrant box is up-to-date before i-MSCP provisioning
     Fixed: Reboot the Vagrant box before provisioning it with i-MSCP (needed in case of kernel update)
-    Fixed: Setup i-MSCP with public IP address; IP attached to eth1 device (i-MSCP provision scripts)
+    Fixed: Setup i-MSCP with public IP address (i-MSCP provision scripts)
     Merged: i-MSCP Vagrant provision scripts
-    Updated: Vagrant box to vanilla Debian 9.1/Stretch from Vagrant Cloud
+    Updated: Vagrant box to vanilla Debian 9.1/Stretch from Vagrant Cloud (default Vagrant box)
     Review: Copy i-MSCP archive directory content under /user/local/src/imscp Vagrant box directory
     Review: Disable automatic box update checking in VagrantFile
 
