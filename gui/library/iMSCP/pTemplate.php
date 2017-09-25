@@ -179,7 +179,7 @@ class iMSCP_pTemplate
     }
 
     /**
-     * Define a file template
+     * Define a static file template
      *
      * @param string|array $tName
      * @param string $tValue
