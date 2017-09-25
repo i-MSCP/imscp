@@ -365,8 +365,8 @@ i-MSCP was designed for professional Hosting Service Providers (HSPs), Internet 
 
 Unless otherwise stated all code is licensed under GPL 2.0 and has the following copyright:
 
-        \\ZbCopyright 2010-2017, Laurent Declercq (i-MSCP)
-        All rights reserved\\ZB
+\\ZbCopyright 2010-2017, Laurent Declercq (i-MSCP)
+All rights reserved\\ZB
 EOF
 }
 
@@ -386,7 +386,7 @@ sub _showUpdateWarning
     if ( $main::imscpConfig{'Version'} !~ /git/i ) {
         $warning = <<"EOF";
 
-Before continue, be sure to have read the errata file:
+Before you continue, be sure to have read the errata file which is located at
 
     \\Zbhttps://github.com/i-MSCP/imscp/blob/1.5.x/docs/1.5.x_errata.md\\ZB
 EOF
@@ -394,11 +394,11 @@ EOF
     } else {
         $warning = <<"EOF";
 
-The installer detected that you intends to install i-MSCP \\ZbGit\\ZB version.
+The installer has detected that you intend to install an i-MSCP development version.
 
-We would remind you that the Git version can be highly unstable and that the i-MSCP team do not provides any support for it.
+We would remind you that development versions can be highly unstable and that they are not supported by the i-MSCP team.
 
-Before continue, be sure to have read the errata file:
+Before you continue, be sure to have read the errata file:
 
     \\Zbhttps://github.com/i-MSCP/imscp/blob/1.5.x/docs/1.5.x_errata.md\\ZB
 EOF
