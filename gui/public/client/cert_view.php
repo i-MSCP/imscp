@@ -130,13 +130,13 @@ DNS.2 = www.{DOMAIN_NAME}
 EOF;
 
     if ($domainType == 'dmn') {
-        $altNames .= "\nDNS.3 = {ADMIN_SYS_NAME}.{BASE_SERVER_VHOST}\n";
+        $altNames .= "\nDNS.3 = dmn$domainId.{BASE_SERVER_VHOST}\n";
     } elseif ($domainType == 'als') {
-        $altNames .= "\nDNS.3 = {ADMIN_SYS_NAME}als$domainId.{BASE_SERVER_VHOST}\n";
+        $altNames .= "\nDNS.3 = als$domainId.{BASE_SERVER_VHOST}\n";
     } elseif ($domainType == 'sub') {
-        $altNames .= "\nDNS.3 = {ADMIN_SYS_NAME}sub$domainId.{BASE_SERVER_VHOST}\n";
+        $altNames .= "\nDNS.3 = sub$domainId.{BASE_SERVER_VHOST}\n";
     } else {
-        $altNames .= "\nDNS.3 = {ADMIN_SYS_NAME}alssub$domainId.{BASE_SERVER_VHOST}\n";
+        $altNames .= "\nDNS.3 = alssub$domainId.{BASE_SERVER_VHOST}\n";
     }
 
     $sslTpl = new TemplateEngine();
@@ -147,7 +147,6 @@ EOF;
         'EMAIL_ADDRESS'     => $data['email'],
         'DOMAIN_NAME'       => $data['domain_name'],
         'ALT_NAMES'         => $altNames,
-        'ADMIN_SYS_NAME'    => $data['admin_sys_name'],
         'BASE_SERVER_VHOST' => $config['BASE_SERVER_VHOST']
     ]);
     $sslTpl->parse('TPL', 'tpl');
@@ -178,9 +177,7 @@ EOF;
  */
 function client_generateSelfSignedCert($domainName)
 {
-    $stmt = exec_query(
-        'SELECT admin_sys_name, firm, city, state, country, email FROM admin WHERE admin_id = ?', $_SESSION['user_id']
-    );
+    $stmt = exec_query('SELECT firm, city, state, country, email FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
 
     if (!$stmt->rowCount()) {
         return false;

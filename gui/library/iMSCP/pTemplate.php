@@ -163,7 +163,7 @@ class iMSCP_pTemplate
     }
 
     /**
-     * Sets templates root directory.
+     * Sets templates root directory
      *
      * @throws iMSCPException
      * @param string $rootDir
@@ -179,6 +179,106 @@ class iMSCP_pTemplate
     }
 
     /**
+     * Define a file template
+     *
+     * @param string|array $tName
+     * @param string $tValue
+     * @return void
+     */
+    public function define($tName, $tValue = '')
+    {
+        if (is_array($tName)) {
+            foreach ($tName as $key => $value) {
+                $this->tplName[$key] = $value;
+                $this->tplData[$key] = '';
+                $this->tplOptions[$key] = '';
+            }
+
+            return;
+        }
+
+        $this->tplName[$tName] = $tValue;
+        $this->tplData[$tName] = '';
+        $this->tplOptions[$tName] = '';
+    }
+
+    /**
+     * Define a dynamic file template
+     *
+     * @param string|array $tName
+     * @param string $tValue
+     * @return void
+     */
+    public function define_dynamic($tName, $tValue = '')
+    {
+        if (is_array($tName)) {
+            foreach ($tName as $key => $value) {
+                $this->dtplName[$key] = $value;
+                $this->dtplData[$key] = '';
+                $this->dtplOptions[$key] = '';
+            }
+
+            return;
+        }
+
+        $this->dtplName[$tName] = $tValue;
+        $this->dtplData[$tName] = '';
+        $this->dtplOptions[$tName] = '';
+    }
+
+    /**
+     * Define an inline (no file) template
+     *
+     * @param string|array $tName
+     * @param string $tValue
+     * @return void
+     */
+    public function define_no_file($tName, $tValue = '')
+    {
+        if (is_array($tName)) {
+            foreach ($tName as $key => $value) {
+                $this->tplName[$key] = '__inline__';
+                $this->tplData[$key] = $value;
+                $this->tplOptions[$key] = '';
+            }
+
+            return;
+        }
+
+        $this->tplName[$tName] = '__inline__';
+        $this->tplData[$tName] = $tValue;
+        $this->tplOptions[$tName] = '';
+    }
+
+    /**
+     * Define a dynamic inline (no file) template
+     *
+     * @param string|array $tName
+     * @param string $tValue
+     * @return void
+     */
+    public function define_no_file_dynamic($tName, $tValue = '')
+    {
+        if (is_array($tName)) {
+            foreach ($tName as $key => $value) {
+                $this->$tName[$key] = '__inline__';
+                $this->dtplData[$key] = $value;
+                $this->dtplData[strtoupper($key)] = $value;
+                $this->dtplOptions[$key] = '';
+            }
+
+            return;
+        }
+
+        $this->dtplName[$tName] = '__inline__';
+        $this->dtplData[$tName] = $tValue;
+        $this->dtplData[strtoupper($tName)] = @$tValue;
+        $this->dtplOptions[$tName] = '';
+    }
+
+    /**
+     * Assign data for the given template namespace(s)
+     *
      * @param string|array $namespaces Namespace(s)
      * @param string $namespacesData
      * @return void
@@ -215,97 +315,6 @@ class iMSCP_pTemplate
     }
 
     /**
-     *
-     * @param string|array $tName
-     * @param string $tValue
-     * @return void
-     */
-    public function define($tName, $tValue = '')
-    {
-        if (is_array($tName)) {
-            foreach ($tName as $key => $value) {
-                $this->tplName[$key] = $value;
-                $this->tplData[$key] = '';
-                $this->tplOptions[$key] = '';
-            }
-
-            return;
-        }
-
-        $this->tplName[$tName] = $tValue;
-        $this->tplData[$tName] = '';
-        $this->tplOptions[$tName] = '';
-    }
-
-    /**
-     * @param string|array $tName
-     * @param string $tValue
-     * @return void
-     */
-    public function define_dynamic($tName, $tValue = '')
-    {
-        if (is_array($tName)) {
-            foreach ($tName as $key => $value) {
-                $this->dtplName[$key] = $value;
-                $this->dtplData[$key] = '';
-                $this->dtplOptions[$key] = '';
-            }
-
-            return;
-        }
-
-        $this->dtplName[$tName] = $tValue;
-        $this->dtplData[$tName] = '';
-        $this->dtplOptions[$tName] = '';
-    }
-
-    /**
-     * @param string|array $tName
-     * @param string $tValue
-     * @return void
-     */
-    public function define_no_file($tName, $tValue = '')
-    {
-        if (is_array($tName)) {
-            foreach ($tName as $key => $value) {
-                $this->tplName[$key] = '_no_file_';
-                $this->tplData[$key] = $value;
-                $this->tplOptions[$key] = '';
-            }
-
-            return;
-        }
-
-        $this->tplName[$tName] = '_no_file_';
-        $this->tplData[$tName] = $tValue;
-        $this->tplOptions[$tName] = '';
-    }
-
-    /**
-     * @param string|array $tName
-     * @param string $tValue
-     * @return void
-     */
-    public function define_no_file_dynamic($tName, $tValue = '')
-    {
-        if (is_array($tName)) {
-            foreach ($tName as $key => $value) {
-                $this->$tName[$key] = '_no_file_';
-                $this->dtplData[$key] = $value;
-                $this->dtplData[strtoupper($key)] = $value;
-                $this->dtplOptions[$key] = '';
-            }
-
-            return;
-        }
-
-        $this->dtplName[$tName] = '_no_file_';
-        $this->dtplData[$tName] = $tValue;
-        $this->dtplData[strtoupper($tName)] = @$tValue;
-        $this->dtplOptions[$tName] = '';
-    }
-
-    /**
      * Checks if a namespace is defined
      *
      * @param string $namespace namespace
@@ -324,7 +333,7 @@ class iMSCP_pTemplate
      */
     public function is_static_tpl($tplName)
     {
-        return array_key_exists($tplName, $this->tplName);
+        return isset($this->tplName[$tplName]);
     }
 
     /**
@@ -335,7 +344,7 @@ class iMSCP_pTemplate
      */
     public function is_dynamic_tpl($tplName)
     {
-        return array_key_exists($tplName, $this->dtplName);
+        return isset($this->dtplName[$tplName]);
     }
 
     /**
@@ -388,7 +397,82 @@ class iMSCP_pTemplate
     }
 
     /**
-     * Parse dynamic template
+     * Parse the given template namespace
+     *
+     * @param string $pname
+     * @param string $tname
+     */
+    public function parse($pname, $tname)
+    {
+        $this->eventManager->dispatch(Events::onParseTemplate, [
+            'pname'          => $pname,
+            'tname'          => $tname,
+            'templateEngine' => $this
+        ]);
+
+        $addFlag = false;
+
+        if (strpos($tname, '.') === 0) {
+            $tname = substr($tname, 1);
+            $addFlag = true;
+        }
+
+        // Static inline|file template
+        if ($this->is_static_tpl($tname)
+            && ($this->tplName[$tname] == '__inline__'
+                || strpos($this->tplName[$tname], '.tpl') !== false
+                || strpos($this->tplName[$tname], '.phtml') !== false
+            )
+        ) {
+            if ($this->tplData[$tname] == '') {
+                $this->tplData[$tname] = $this->get_file($this->tplName[$tname]);
+            }
+
+            if ($addFlag) {
+                if (isset($this->namespace[$pname])) {
+                    $this->namespace[$pname] .= $this->substitute_dynamic($this->tplData[$tname]);
+                } else {
+                    $this->namespace[$pname] = $this->substitute_dynamic($this->tplData[$tname]);
+                }
+            } else {
+                $this->namespace[$pname] = $this->substitute_dynamic($this->tplData[$tname]);
+            }
+
+            $this->lastParsed = $this->namespace[$pname];
+            return;
+        }
+
+        // Dynamic inline|file template
+        if ($this->is_dynamic_tpl($tname)
+            && ($this->dtplName[$tname] == '__inline__'
+                || strpos($this->dtplName[$tname], '.tpl') !== false
+                || strpos($this->dtplName[$tname], '.phtml') !== false
+                || $this->find_origin($tname)
+            )
+        ) {
+            if (!$this->parse_dynamic($pname, $tname, $addFlag)) {
+                return;
+            }
+
+            $this->lastParsed = $this->namespace[$pname];
+            return;
+        }
+
+        if (!$addFlag) {
+            $this->namespace[$pname] = $this->namespace[$tname];
+            return;
+        }
+
+        if (isset($this->namespace[$pname])) {
+            $this->namespace[$pname] .= $this->namespace[$tname];
+            return;
+        }
+
+        $this->namespace[$pname] = $this->namespace[$tname];
+    }
+
+    /**
+     * Parse a dynamic template
      *
      * @param string $pname
      * @param string $tname
@@ -400,8 +484,8 @@ class iMSCP_pTemplate
         $child = false;
         $parent = '';
 
-        if (isset($this->dtplName[$tname])
-            && strpos($this->dtplName[$tname], '_no_file_') === false
+        if ($this->is_dynamic_tpl($tname)
+            && strpos($this->dtplName[$tname], '__inline__') === false
             && strpos($this->dtplName[$tname], '.tpl') === false
             && strpos($this->dtplName[$tname], '.phtml') === false
         ) {
@@ -450,82 +534,6 @@ class iMSCP_pTemplate
 
         $this->namespace[$pname] = $this->substitute_dynamic($this->dtplData[$tname]);
         return true;
-    }
-
-    /**
-     * Parse given template namespace
-     *
-     * @param string $pname
-     * @param string $tname
-     */
-    public function parse($pname, $tname)
-    {
-        $this->eventManager->dispatch(Events::onParseTemplate, [
-            'pname'          => $pname,
-            'tname'          => $tname,
-            'templateEngine' => $this
-        ]);
-
-        $addFlag = false;
-
-        if (strpos($tname, '.') === 0) {
-            $tname = substr($tname, 1);
-            $addFlag = true;
-        }
-
-        if (isset($this->tplName[$tname])
-            && ($this->tplName[$tname] == '_no_file_'
-                || (strpos($this->dtplName[$tname], '.tpl') !== false
-                    || strpos($this->dtplName[$tname], '.phtml') !== false
-                )
-            )
-        ) {
-            // static NO FILE - static FILE
-            if (isset($this->tplData[$tname])
-                && $this->tplData[$tname] == ''
-            ) {
-                $this->tplData[$tname] = $this->get_file($this->tplName[$tname]);
-            }
-
-            if ($addFlag) {
-                if (isset($this->namespace[$pname])) {
-                    $this->namespace[$pname] .= $this->substitute_dynamic($this->tplData[$tname]);
-                } else {
-                    $this->namespace[$pname] = $this->substitute_dynamic($this->tplData[$tname]);
-                }
-            } else {
-                $this->namespace[$pname] = $this->substitute_dynamic($this->tplData[$tname]);
-            }
-
-            $this->lastParsed = $this->namespace[$pname];
-            return;
-        }
-
-        if ($this->dtplName[$tname] == '_no_file_'
-            || strpos($this->dtplName[$tname], '.tpl') !== false
-            || strpos($this->dtplName[$tname], '.phtml') !== false
-            || $this->find_origin($tname)
-        ) {
-            // dynamic NO FILE - dynamic FILE
-            if (!$this->parse_dynamic($pname, $tname, $addFlag)) {
-                return;
-            }
-
-            $this->lastParsed = $this->namespace[$pname];
-            return;
-        }
-
-        if (!$addFlag) {
-            $this->namespace[$pname] = $this->namespace[$tname];
-            return;
-        }
-
-        if (isset($this->namespace[$pname])) {
-            $this->namespace[$pname] .= $this->namespace[$tname];
-            return;
-        }
-
-        $this->namespace[$pname] = $this->namespace[$tname];
     }
 
     /**
@@ -590,12 +598,12 @@ class iMSCP_pTemplate
      */
     protected function find_origin($tname)
     {
-        if (!isset($this->dtplName[$tname])) {
+        if (!$this->is_dynamic_tpl($tname)) {
             return false;
         }
 
-        while (isset($this->dtplName[$tname])
-            && strpos($this->dtplName[$tname], '_no_file_') === false
+        while ($this->is_dynamic_tpl($tname)
+            && strpos($this->dtplName[$tname], '__inline__') === false
             && strpos($this->dtplName[$tname], '.tpl') === false
             && strpos($this->dtplName[$tname], '.phtml') === false
         ) {
