@@ -94,6 +94,7 @@ YOUTRACK
     IP-1744 Couldn't go to support section -- 302 redirect to index.php -- reseller UI
     IP-1745 Rsyslog log rotation failure -- Initctl command (Upstart) doesn't know the 'rotate' action -- Ubuntu 14.04/Trusty Thar
     IP-1746 Error when generating SSL certificate - Could not write in openssl temp file
+    IP-1749 User profile fields validation too strict
 
 ------------------------------------------------------------------------------------------------------------------------
 1.5.1
