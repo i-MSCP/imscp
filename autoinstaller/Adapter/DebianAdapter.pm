@@ -129,11 +129,9 @@ sub installPackages
 
     # Prevents invoke-rc.d (which is invoked by package maintainer scripts) to start some services
     #
-    # - Apache2: Prevent "bind() to 0.0.0.0:80 failed (98: Address already in use" failure
-    # - Nginx:   Prevent "bind() to 0.0.0.0:80 failed (98: Address already in use" failure
-    # - Nginx:   Prevent start failure when IPv6 stack is not enabled
-    # - Dovecot: Prevent start failure when IPv6 stack is not enabled
-    # - bind9:   Prevent failure when resolvconf is not configured yet
+    # - Prevent "bind() to 0.0.0.0:80 failed (98: Address already in use" failure (Apache2, Nginx)
+    # - Prevent start failure when IPv6 stack is not enabled (Dovecot, Nginx)
+    # - Prevent failure when resolvconf is not configured yet (bind9)
     print $policyrcd <<'EOF';
 #!/bin/sh
 

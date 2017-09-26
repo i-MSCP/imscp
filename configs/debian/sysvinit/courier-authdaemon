@@ -8,6 +8,8 @@
 # Default-Stop:      0 1 6
 ### END INIT INFO
 
+# Overrides default sysinvit script for compatibility with i-MSCP setup (rundir group)
+
 prefix="/usr"
 exec_prefix=${prefix}
 sysconfdir="/etc/courier"
