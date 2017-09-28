@@ -71,6 +71,9 @@ only the following parameters are mandatory:
 - `ADMIN_PASSWORD`: Master administrator password
 - `DEFAULT_ADMIN_ADDRESS`: Master administrator email address
 
+You must also fill the `SERVER_HOSTNAME` parameter as the default hostname set in
+Vagrant boxes doesn't fit with i-MSCP policy.
+
 For all other parameters, the installer will make use of default values. Please
 consult the [preseed.pl](../docs/preseed.pl) template file for further details.
 
