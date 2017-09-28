@@ -127,7 +127,7 @@ sub masterSqlUserDialog
         do {
             if ( $user eq '' ) {
                 $iMSCP::Dialog::InputValidation::lastValidationError = '';
-                $user = 'imscp_srv_user';
+                $user = 'imscp_user';
             }
 
             ( $rs, $user ) = $dialog->inputbox( <<"EOF", $user );
@@ -141,8 +141,6 @@ EOF
         );
 
         return $rs unless $rs < 30;
-
-        main::setupSetQuestion( 'DATABASE_USER', $user );
 
         do {
             if ( $pwd eq '' ) {
@@ -160,6 +158,7 @@ EOF
         return $rs unless $rs < 30;
     }
 
+    main::setupSetQuestion( 'DATABASE_USER', $user );
     main::setupSetQuestion( 'DATABASE_PASSWORD', encryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv, $pwd ));
     0;
 }
@@ -198,7 +197,7 @@ sub sqlUserHostDialog
         my $rs = 0;
 
         do {
-            ( $rs, $hostname ) = $dialog->inputbox( <<"EOF", idn_to_unicode( $hostname, 'utf-8' ) // '');
+            ( $rs, $hostname ) = $dialog->inputbox( <<"EOF", idn_to_unicode( $hostname, 'utf-8' ) // '' );
 $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter the host from which SQL users created by i-MSCP must be allowed to connect:
 EOF

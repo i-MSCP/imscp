@@ -89,8 +89,10 @@ sub showDialog
 {
     my ($self, $dialog) = @_;
 
-    my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER', iMSCP::Getopt->preseed ? 'imscp_srv_user' : '' );
-    my $dbUser = main::setupGetQuestion( 'DOVECOT_SQL_USER', $self->{'config'}->{'DATABASE_USER'} );
+    my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER' );
+    my $dbUser = main::setupGetQuestion(
+        'DOVECOT_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || ( iMSCP::Getopt->preseed ? 'imscp_srv_user' : '' )
+    );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
     my $dbPass = main::setupGetQuestion(
         'DOVECOT_SQL_PASSWORD',

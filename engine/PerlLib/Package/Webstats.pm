@@ -83,7 +83,13 @@ sub showDialog
     my ($self, $dialog) = @_;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', main::setupGetQuestion( 'WEBSTATS_PACKAGES' ) } = ();
+    @{selectedPackages}{
+        split (
+            ',', main::setupGetQuestion(
+                'WEBSTATS_PACKAGES', ( iMSCP::Getopt->preseed ? keys %{$self->{'PACKAGES'}} : '' )
+            )
+        )
+    } = ();
 
     if ( $main::reconfigure =~ /^(?:webstats|all|forced)$/ || !%selectedPackages
         || grep { !exists $self->{'PACKAGES'}->{$_} && $_ ne 'No' } keys %selectedPackages
