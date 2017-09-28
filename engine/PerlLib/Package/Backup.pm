@@ -107,7 +107,7 @@ sub customerBackupDialog
 {
     my (undef, $dialog) = @_;
 
-    my $backupDomains = lc( main::setupGetQuestion( 'BACKUP_DOMAINS', iMSCP::Getopt->preseed ? 'yes' : '' ));
+    my $backupDomains = main::setupGetQuestion( 'BACKUP_DOMAINS', iMSCP::Getopt->preseed ? 'yes' : '' );
 
     if ( $main::reconfigure =~ /^(?:backup|all|forced)$/
         || !isStringInList( $backupDomains, 'yes', 'no' )

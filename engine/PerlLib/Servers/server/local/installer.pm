@@ -192,7 +192,7 @@ EOF
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
     if ( $main::reconfigure =~ /^(?:local_server|primary_ip|all|forced)$/
-        || !isValidIpAddr( $wanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ )
+        || !isValidIpAddr( $wanIP )
     ) {
         my $rs = 0;
 
