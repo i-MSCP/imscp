@@ -268,7 +268,9 @@ function addResellerUser(Form $form)
         if (!$form->isValid($_POST)) {
             foreach ($form->getMessages() as $fieldname => $msgsStack) {
                 $errFieldsStack[] = $fieldname;
-                set_page_message(reset($msgsStack), 'error');
+                foreach ($msgsStack as $msg) {
+                    set_page_message(tohtml($msg), 'error');
+                }
             }
         }
 

@@ -1488,7 +1488,7 @@ function check_db_connection($dbName, $dbUser, $dbPass)
     $cfg = Registry::get('config');
 
     try {
-        Database::connect($dbUser, $dbPass, $cfg['DATABASE_TYPE'], $cfg['DATABASE_HOST'], $dbName, 'testConn');
+        Database::connect($dbUser, $dbPass, 'mysql', $cfg['DATABASE_HOST'], $dbName, 'testConn');
     } catch (PDOException $e) {
         return false;
     }

@@ -157,7 +157,7 @@ function client_generateDiskUsageBar($tpl, $usage, $maxUsage)
 function client_generateFeatureStatus($tpl)
 {
     $trYes = '<span style="color: green;">' . tr('Enabled') . '</span>';
-    $trNo = '<span style="color: red;">' . tr('Disabled') . '</span>';;
+    $trNo = '<span style="color: red;">' . tr('Disabled') . '</span>';
     $tpl->assign(
         [
             //'DOMAIN_FEATURE_STATUS' =>  customerHasFeature('domain') ? $trYes : $trNo,

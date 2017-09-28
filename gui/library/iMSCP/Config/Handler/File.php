@@ -84,7 +84,6 @@ use iMSCP_Exception as iMSCPException;
  * @property string GUI_EXCEPTION_WRITERS Exception writer list
  * @property string DATABASE_USER i-MSCP database username
  * @property string DATABASE_PASSWORD i-MSCP database password
- * @property string DATABASE_TYPE Database type
  * @property string DATABASE_HOST Database hostname
  * @property string DATABASE_NAME Database name
  * @property string GUI_ROOT_DIR path to GUI

@@ -172,7 +172,7 @@ select[multiple]:focus {
 }
 
 select[multiple]{
-    width: auto !important;;
+    width: auto !important;
     height: auto !important;
     min-height: 1px;
     padding: 0;

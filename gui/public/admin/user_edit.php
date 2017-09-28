@@ -50,8 +50,10 @@ function updateUserData(Form $form, $userId)
     $userType = $data['admin_type'];
 
     if (!$form->isValid($_POST)) {
-        foreach ($form->getMessages() as $fieldname => $msgsStack) {
-            set_page_message(reset($msgsStack), 'error');
+        foreach ($form->getMessages() as $msgsStack) {
+            foreach ($msgsStack as $msg) {
+                set_page_message(tohtml($msg), 'error');
+            }
         }
 
         return;
