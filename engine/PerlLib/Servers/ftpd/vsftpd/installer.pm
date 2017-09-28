@@ -89,45 +89,65 @@ sub sqlUserDialog
     my ($self, $dialog) = @_;
 
     my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER' );
-    my $dbUser = main::setupGetQuestion( 'FTPD_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || 'imscp_srv_user' );
+    my $dbUser = main::setupGetQuestion(
+        'FTPD_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || ( iMSCP::Getopt->preseed ? 'imscp_srv_user' : '' )
+    );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
     my $dbPass = main::setupGetQuestion(
         'FTPD_SQL_PASSWORD',
-        ( ( iMSCP::Getopt->preseed ) ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
+        ( iMSCP::Getopt->preseed ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
     );
+
+    $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
     if ( $main::reconfigure =~ /^(?:ftpd|servers|all|forced)$/
         || !isValidUsername( $dbUser )
-        || !isStringNotInList( $dbUser, 'root', 'debian-sys-maint', $masterSqlUser, 'vlogger_user' )
-        || !isValidPassword( $dbPass )
+        || !isStringNotInList( lc $dbUser, 'root', 'debian-sys-maint', lc $masterSqlUser, 'vlogger_user' )
         || !isAvailableSqlUser( $dbUser )
     ) {
-        my ($rs, $msg) = ( 0, '' );
+        my $rs = 0;
 
         do {
-            ( $rs, $dbUser ) = $dialog->inputbox( <<"EOF", $dbUser );
-
-Please enter a username for the VsFTPd SQL user:$msg
-EOF
-            $msg = '';
-            if ( !isValidUsername( $dbUser )
-                || !isStringNotInList( $dbUser, 'root', 'debian-sys-maint', $masterSqlUser, 'vlogger_user' )
-                || !isAvailableSqlUser( $dbUser )
-            ) {
-                $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
+            if ( $dbUser eq '' ) {
+                $iMSCP::Dialog::InputValidation::lastValidationError = '';
+                $dbUser = 'imscp_srv_user';
             }
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
 
-        unless ( defined $main::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
-            do {
-                ( $rs, $dbPass ) = $dialog->inputbox( <<"EOF", $dbPass || randomStr( 16, iMSCP::Crypt::ALNUM ));
-
-Please enter a password for the VsFTPd SQL user:$msg
+            ( $rs, $dbUser ) = $dialog->inputbox( <<"EOF", $dbUser );
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter a username for the VsFTPd SQL user (leave empty for default):
 EOF
-                $msg = isValidPassword( $dbPass ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
-            } while $rs < 30 && $msg;
-            return $rs if $rs >= 30;
+        } while $rs < 30
+            && ( !isValidUsername( $dbUser )
+            || !isStringNotInList( lc $dbUser, 'root', 'debian-sys-maint', lc $masterSqlUser, 'vlogger_user' )
+            || !isAvailableSqlUser( $dbUser )
+        );
+
+        return $rs unless $rs < 30;
+    }
+
+    main::setupSetQuestion( 'FTPD_SQL_USER', $dbUser );
+
+    if ( $main::reconfigure =~ /^(?:ftpd|servers|all|forced)$/
+        || !isValidPassword( $dbPass )
+    ) {
+        unless ( defined $main::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
+            my $rs = 0;
+
+            do {
+                if ( $dbPass eq '' ) {
+                    $iMSCP::Dialog::InputValidation::lastValidationError = '';
+                    $dbPass = randomStr( 16, iMSCP::Crypt::ALNUM );
+                }
+
+                ( $rs, $dbPass ) = $dialog->inputbox( <<"EOF", $dbPass );
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter a password for the VsFTPd SQL user (leave empty for autogeneration):
+EOF
+            } while $rs < 30
+                && !isValidPassword( $dbPass );
+
+            return $rs unless $rs < 30;
 
             $main::sqlUsers{$dbUser . '@' . $dbUserHost} = $dbPass;
         } else {
@@ -139,7 +159,6 @@ EOF
         $main::sqlUsers{$dbUser . '@' . $dbUserHost} = $dbPass;
     }
 
-    main::setupSetQuestion( 'FTPD_SQL_USER', $dbUser );
     main::setupSetQuestion( 'FTPD_SQL_PASSWORD', $dbPass );
     0;
 }
@@ -158,38 +177,41 @@ sub passivePortRangeDialog
     my ($self, $dialog) = @_;
 
     my $passivePortRange = main::setupGetQuestion(
-        'FTPD_PASSIVE_PORT_RANGE', $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'}
+        'FTPD_PASSIVE_PORT_RANGE',
+        $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'} || ( iMSCP::Getopt->preseed ? '32768 60999' : '' )
     );
     my ($startOfRange, $endOfRange);
+
+    $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
     if ( !isValidNumberRange( $passivePortRange, \$startOfRange, \$endOfRange )
         || !isNumberInRange( $startOfRange, 32768, 60999 )
         || !isNumberInRange( $endOfRange, $startOfRange, 60999 )
         || $main::reconfigure =~ /^(?:ftpd|servers|all|forced)$/
     ) {
-        $passivePortRange = '32768 60999' unless $startOfRange && $endOfRange;
-        my ($rs, $msg) = ( 0, '' );
+        my $rs = 0;
 
         do {
-            ( $rs, $passivePortRange ) = $dialog->inputbox( <<"EOF", $passivePortRange );
+            if ( $passivePortRange eq '' ) {
+                $iMSCP::Dialog::InputValidation::lastValidationError = '';
+                $passivePortRange = '32768 60999';
+            }
 
+            ( $rs, $passivePortRange ) = $dialog->inputbox( <<"EOF", $passivePortRange );
+$iMSCP::Dialog::InputValidation::lastValidationError
 \\Z4\\Zb\\ZuVsFTPd passive port range\\Zn
 
-Please, choose the passive port range for VsFTPd.
+Please choose the passive port range for VsFTPd.
 
-Note that if you're behind a NAT, you must forward those ports to this server.$msg
+Note that if you're behind a NAT, you must forward those ports to this server.
 EOF
-            $msg = '';
-            if ( !isValidNumberRange( $passivePortRange, \$startOfRange, \$endOfRange )
-                || !isNumberInRange( $startOfRange, 32768, 60999 )
-                || !isNumberInRange( $endOfRange, $startOfRange, 60999 )
-            ) {
-                $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
-            }
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
+        } while $rs < 30
+            && ( !isValidNumberRange( $passivePortRange, \$startOfRange, \$endOfRange )
+            || !isNumberInRange( $startOfRange, 32768, 60999 )
+            || !isNumberInRange( $endOfRange, $startOfRange, 60999 )
+        );
 
-        $passivePortRange = "$startOfRange $endOfRange";
+        return $rs unless $rs < 30;
     }
 
     $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'} = $passivePortRange;

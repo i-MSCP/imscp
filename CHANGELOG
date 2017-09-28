@@ -16,6 +16,7 @@ BACKEND
 CONFIG
     Added: Specific LOGROTATE(8) configuration file for rsyslog (Ubuntu 14.04/Trusty Thar)
     Fixed: Make use of the `ssl' parameter of the `listen' directive in place of the `ssl' directive (Nginx)
+    Removed: Useless `DATABASE_TYPE` parameter (imscp.conf)
 
 CONTRIB
     Added: get_imscp_master_sql_user_pwd.pl script: Print current i-MSCP master SQL user password
@@ -43,13 +44,15 @@ FRONTEND
 INSTALLER
     Added: `copy_as' attribute -- Allows to copy a file with specific name (copy_config xml node from install.xml files)
     Enhancement: Make it possible to provide per distribution (codename) configuration file
+    Enhancement: Provide good default values for installer whenever possible
     Fixed: `build' mode is broken for fresh installs -- Packages must be pre-installed regardless of install mode
     Fixed: `CLIENT_DOMAIN_ALT_URLS' configuration parameter reseted to 0 (disabled) while running installer
     Fixed: `CLIENT_DOMAIN_ALT_URLS' parameter is not set on fresh installations
+    Fixed: If a password is getting incorrect due to a password policy change, user must be warned
     Fixed: Setup dialog for the alternative URLs feature is not shown on fresh install
     Merged: Distribution layout.xml file with distribution master install.xml file
     Renamed: `kept` attribute to `keep_if_exist' (copy_config xml node from install.xml files)
-    Renamed: `if' attribute to 'copy_if' (copy_config xml node from install.xml files)
+    Renamed: `if' attribute to 'copy_if' (copy_config xml node from install.xml files) 
 
 LISTENERS
     Fixed: Listener::Php::ConfOptions::Override: PHP INI level not honoured

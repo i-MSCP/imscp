@@ -25,10 +25,12 @@ package Package::Webmail;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::EventManager;
+use iMSCP::Getopt;
+use version;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -68,7 +70,7 @@ sub registerSetupListeners
  Show dialog
 
  Param iMSCP::Dialog \%dialog
- Return int 0 or 30
+ Return int 0 or 30, die on failure
 
 =cut
 
@@ -77,37 +79,40 @@ sub showDialog
     my ($self, $dialog) = @_;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', main::setupGetQuestion( 'WEBMAIL_PACKAGES' ) } = ();
+    @{selectedPackages}{
+        split (
+            ',', main::setupGetQuestion(
+                'WEBMAIL_PACKAGES', ( iMSCP::Getopt->preseed ? keys %{$self->{'PACKAGES'}} : '' )
+            )
+        )
+    } = ();
 
-    my $rs = 0;
     if ( $main::reconfigure =~ /^(?:webmails|all|forced)$/ || !%selectedPackages
         || grep { !exists $self->{'PACKAGES'}->{$_} && $_ ne 'No' } keys %selectedPackages
     ) {
-        ( $rs, my $packages ) = $dialog->checkbox(
+        ( my $rs, my $packages ) = $dialog->checkbox(
             <<'EOF', [ keys %{$self->{'PACKAGES'}} ], grep { exists $self->{'PACKAGES'}->{$_} && $_ ne 'No' } keys %selectedPackages );
 
-Please select the webmail packages you want to install
+Please select the webmail packages you want to install:
 EOF
         %selectedPackages = ();
         @{selectedPackages}{@{$packages}} = ();
-    }
 
-    return $rs unless $rs < 30;
+        return $rs unless $rs < 30;
+    }
 
     main::setupSetQuestion( 'WEBMAIL_PACKAGES', %selectedPackages ? join ',', keys %selectedPackages : 'No' );
 
     for ( keys %{$self->{'PACKAGES'}} ) {
         next unless exists $selectedPackages{$_};
+
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        }
+        !$@ or die( $@ );
 
         return 0 unless my $subref = $package->can( 'showDialog' );
         debug( sprintf( 'Executing showDialog action on %s', $package ));
-        $rs = $subref->( $package->getInstance(), $dialog );
+        my $rs = $subref->( $package->getInstance(), $dialog );
         return $rs if $rs;
     }
 
@@ -120,7 +125,7 @@ EOF
 
  /!\ This method also triggers uninstallation of unselected webmail packages.
 
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -134,12 +139,10 @@ sub preinstall
     my @distroPackages = ();
     for( keys %{$self->{'PACKAGES'}} ) {
         next if exists $selectedPackages{$_};
+
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        }
+        !$@ or die( $@ );
 
         if ( my $subref = $package->can( 'uninstall' ) ) {
             debug( sprintf( 'Executing uninstall action on %s', $package ));
@@ -160,12 +163,10 @@ sub preinstall
     @distroPackages = ();
     for ( keys %{$self->{'PACKAGES'}} ) {
         next unless exists $selectedPackages{$_};
+
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        }
+        !$@ or die( $@ );
 
         if ( my $subref = $package->can( 'preinstall' ) ) {
             debug( sprintf( 'Executing preinstall action on %s', $package ));
@@ -203,12 +204,10 @@ sub install
 
     for ( keys %{$self->{'PACKAGES'}} ) {
         next unless exists $selectedPackages{$_} && $_ ne 'No';
+
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        }
+        !$@ or die( $@ );
 
         ( my $subref = $package->can( 'install' ) ) or next;
         debug( sprintf( 'Executing install action on %s', $package ));
@@ -224,7 +223,7 @@ sub install
  Process uninstall tasks
 
  Param list @packages OPTIONAL Packages to uninstall
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -236,10 +235,7 @@ sub uninstall
     for ( keys %{$self->{'PACKAGES'}} ) {
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        }
+        !$@ or die( $@ );
 
         if ( my $subref = $package->can( 'uninstall' ) ) {
             debug( sprintf( 'Executing uninstall action on %s', $package ));
@@ -272,7 +268,7 @@ sub getPriority
 
  Set gui permissions
 
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -288,12 +284,10 @@ sub setGuiPermissions
 
     for ( keys %{$self->{'PACKAGES'}} ) {
         next unless exists $selectedPackages{$_};
+
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        }
+        !$@ or die( $@ );
 
         ( my $subref = $package->can( 'setGuiPermissions' ) ) or next;
         debug( sprintf( 'Executing setGuiPermissions action on %s', $package ));
@@ -323,6 +317,7 @@ sub deleteMail
 
     for ( keys %{$self->{'PACKAGES'}} ) {
         next unless exists $selectedPackages{$_};
+
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package";
         if ( $@ ) {

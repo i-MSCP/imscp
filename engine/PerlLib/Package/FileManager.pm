@@ -25,10 +25,11 @@ package Package::FileManager;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ execute /;
+use iMSCP::Getopt;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -69,7 +70,7 @@ sub registerSetupListeners
  Show dialog
 
  Param iMSCP::Dialog \%dialog
- Return int 0 or 30
+ Return int 0 or 30, die on failure
 
 =cut
 
@@ -77,27 +78,25 @@ sub showDialog
 {
     my ($self, $dialog) = @_;
 
-    my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
+    my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE', iMSCP::Getopt->preseed ? 'MonstaFTP' : '' );
 
-    my $rs = 0;
-    if ( $main::reconfigure =~ /^(?:filemanager|all|forced)$/ || !$package || !exists $self->{'PACKAGES'}->{$package} ) {
-        ( $rs, $package ) = $dialog->radiolist(
-            <<"EOF", [ keys %{$self->{'PACKAGES'}} ], exists $self->{'PACKAGES'}->{$package} ? $package : ( keys %{$self->{'PACKAGES'}} )[0] );
+    if ( $main::reconfigure =~ /^(?:filemanager|all|forced)$/
+        || $package eq ''
+        || !exists $self->{'PACKAGES'}->{$package}
+    ) {
+        ( my $rs, $package ) = $dialog->radiolist(
+            <<"EOF", [ keys %{$self->{'PACKAGES'}} ], exists $self->{'PACKAGES'}->{$package} ? $package : 'MonstaFTP' );
 
 Please select the Ftp Web file manager package you want to install:
 EOF
+        return $rs unless $rs < 30;
     }
-
-    return $rs unless $rs < 30;
 
     main::setupSetQuestion( 'FILEMANAGER_PACKAGE', $package );
 
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
+    !$@ or die( $@ );
 
     return 0 unless my $subref = $package->can( 'showDialog' );
     debug( sprintf( 'Executing showDialog action on %s', $package ));
@@ -110,7 +109,7 @@ EOF
 
  /!\ This method also trigger uninstallation of unselected file manager packages.
 
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -122,7 +121,7 @@ sub preinstall
         ? $main::imscpOldConfig{'FILEMANAGER_ADDON'} # backward compatibility with 1.1.x Serie (upgrade process)
         : $main::imscpOldConfig{'FILEMANAGER_PACKAGE'};
 
-    # Ensure backward compatibility
+    # For backward compatibility
     if ( $oldPackage eq 'AjaXplorer' ) {
         $oldPackage = 'Pydio';
     } elsif ( $oldPackage eq 'Net2FTP' ) {
@@ -137,10 +136,7 @@ sub preinstall
 
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
+    !$@ or die( $@ );
 
     return 0 unless my $subref = $package->can( 'preinstall' );
     debug( sprintf( 'Executing preinstall action on %s', $package ));
@@ -151,7 +147,7 @@ sub preinstall
 
  Process install tasks
 
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -160,10 +156,7 @@ sub install
     my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
+    !$@ or die( $@ );
 
     return 0 unless my $subref = $package->can( 'install' );
     debug( sprintf( 'Executing install action on %s', $package ));
@@ -175,7 +168,7 @@ sub install
  Process uninstall tasks
 
  Param string $package OPTIONAL Package to uninstall
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -188,10 +181,7 @@ sub uninstall
 
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
+    !$@ or die( $@ );
 
     return 0 unless my $subref = $package->can( 'uninstall' );
     debug( sprintf( 'Executing uninstall action on %s', $package ));
@@ -215,7 +205,7 @@ sub getPriority
 
  Set gui permissions
 
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -231,10 +221,7 @@ sub setGuiPermissions
 
     $package = "Package::FileManager::${package}::${package}";
     eval "require $package";
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
+    !$@ or die( $@ );
 
     return 0 unless my $subref = $package->can( 'setGuiPermissions' );
 

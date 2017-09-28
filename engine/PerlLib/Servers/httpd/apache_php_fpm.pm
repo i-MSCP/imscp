@@ -683,7 +683,7 @@ sub deleteHtpasswd
 
 sub addHtgroup
 {
-    my ($self, $data) = @_;;
+    my ($self, $data) = @_;
 
     my $fileName = $self->{'config'}->{'HTACCESS_GROUPS_FILENAME'};
     my $filePath = "$data->{'WEB_DIR'}/$fileName";

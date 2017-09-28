@@ -30,6 +30,7 @@ use File::Basename;
 use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;
+use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::EventManager;
@@ -87,10 +88,15 @@ sub showPhpConfigLevelDialog
 {
     my ($self, $dialog) = @_;
 
-    my $confLevel = main::setupGetQuestion( 'PHP_CONFIG_LEVEL', $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} );
+    my $confLevel = main::setupGetQuestion(
+        'PHP_CONFIG_LEVEL', $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} || ( iMSCP::Getopt->preseed ? 'per_site' : '' )
+    );
 
-    if ( $main::reconfigure =~ /^(?:httpd|php|servers|all|forced)$/ || $confLevel !~ /^per_(?:site|domain|user)$/ ) {
+    if ( $main::reconfigure =~ /^(?:httpd|php|servers|all|forced)$/
+        || !isStringInList( $confLevel, 'per_site', 'per_domain', 'per_user' )
+    ) {
         $confLevel =~ s/_/ /;
+
         ( my $rs, $confLevel ) = $dialog->radiolist(
             <<"EOF", [ 'per_site', 'per_domain', 'per_user' ], $confLevel =~ /^per (?:user|domain)$/ ? $confLevel : 'per site' );
 
@@ -102,7 +108,7 @@ Please choose the PHP configuration level you want use. Available levels are:
 \\Z4Per user:\\Zn One pool configuration file per user
 \\Z4Per site:\\Zn One pool configuration per domain
 EOF
-        return $rs if $rs >= 30;
+        return $rs unless $rs < 30;
     }
 
     ( $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} = $confLevel ) =~ s/ /_/;
@@ -122,26 +128,30 @@ sub showListenModeDialog
 {
     my ($self, $dialog) = @_;
 
-    my $rs = 0;
-    my $listenMode = main::setupGetQuestion( 'PHP_FPM_LISTEN_MODE', $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} );
+    my $listenMode = main::setupGetQuestion(
+        'PHP_FPM_LISTEN_MODE', $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} || ( iMSCP::Getopt->preseed ? 'uds' : '' )
+    );
 
-    if ( $main::reconfigure =~ /^(?:httpd|php|servers|all|forced)$/ || $listenMode !~ /^(?:uds|tcp)$/ ) {
-        ( $rs, $listenMode ) = $dialog->radiolist(
+    if ( $main::reconfigure =~ /^(?:httpd|php|servers|all|forced)$/
+        || !isStringInList( $listenMode, 'uds', 'tcp' )
+    ) {
+        ( my $rs, $listenMode ) = $dialog->radiolist(
             <<"EOF", [ 'uds', 'tcp' ], $listenMode =~ /^(?:tcp|uds)$/ ? $listenMode : 'uds' );
 
 \\Z4\\Zb\\ZuPHP-FPM - FastCGI address type\\Zn
 
-Please, choose the FastCGI address type that you want use. Available types are:
+Please choose the FastCGI address type that you want use. Available types are:
 
 \\Z4tcp:\\Zn TCP/IP (e.g. 127.0.0.1:9000)
 \\Z4uds:\\Zn Unix domain socket (e.g. /run/php/php<version>-fpm-domain.tld.sock)
 
 Be aware that for high traffic sites, TCP/IP can require a tweaking of your kernel parameters (sysctl).
 EOF
+        return $rs unless $rs < 30;
     }
 
-    $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} = $listenMode if $rs < 30;
-    $rs;
+    $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} = $listenMode;
+    0;
 }
 
 =item install( )

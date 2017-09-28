@@ -89,7 +89,7 @@ sub registerSetupListeners
  Ask for master administrator credentials
 
  Param iMSCP::Dialog \%dialog
- Return int 0 or 30
+ Return int 0 or 30, die on failure
 
 =cut
 
@@ -98,27 +98,22 @@ sub askMasterAdminCredentials
     my (undef, $dialog) = @_;
 
     my ($username, $password) = ( '', '' );
-
     my $db = iMSCP::Database->factory();
 
     eval { $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' )); };
     $db = undef if $@;
 
     if ( iMSCP::Getopt->preseed ) {
-        $username = main::setupGetQuestion( 'ADMIN_LOGIN_NAME' );
+        $username = main::setupGetQuestion( 'ADMIN_LOGIN_NAME', 'admin' );
         $password = main::setupGetQuestion( 'ADMIN_PASSWORD' );
     } elsif ( $db ) {
-        my $row = eval {
-            my $dbh = $db->getRawDb();
-            local $dbh->{'RaiseError'} = 1;
-            $dbh->selectrow_hashref(
-                "SELECT admin_name, admin_pass FROM admin WHERE created_by = 0 AND admin_type = 'admin'",
-            );
-        };
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        } elsif ( $row ) {
+        my $dbh = $db->getRawDb();
+        local $dbh->{'RaiseError'} = 1;
+        my $row = $dbh->selectrow_hashref(
+            "SELECT admin_name, admin_pass FROM admin WHERE created_by = 0 AND admin_type = 'admin'",
+        );
+
+        if ( $row ) {
             $username = $row->{'admin_name'} // '';
             $password = $row->{'admin_pass'} // '';
         }
@@ -126,47 +121,58 @@ sub askMasterAdminCredentials
 
     main::setupSetQuestion( 'ADMIN_OLD_LOGIN_NAME', $username );
 
+    $iMSCP::Dialog::InputValidation::lastValidationError = '';
+
     if ( $main::reconfigure =~ /^(?:admin|admin_credentials|all|forced)$/
         || !isValidUsername( $username )
         || $password eq ''
     ) {
         $password = '';
-        my ($rs, $msg) = ( 0, '' );
+        my $rs = 0;
 
         do {
-            ( $rs, $username ) = $dialog->inputbox( <<"EOF", $username || 'admin' );
+            if ( $username eq '' ) {
+                $iMSCP::Dialog::InputValidation::lastValidationError = '';
+                $username = 'admin';
+            }
 
-Please enter a username for the master administrator:$msg
+            ( $rs, $username ) = $dialog->inputbox( <<"EOF", $username );
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter a username for the master administrator (leave empty for default):
 EOF
-            $msg = '';
-            if ( !isValidUsername( $username ) ) {
-                $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
-            } elsif ( $db ) {
-                my $row = eval {
+            if ( isValidUsername( $username ) ) {
+                if ( $db ) {
                     my $dbh = $db->getRawDb();
                     local $dbh->{'RaiseError'} = 1;
-                    $dbh->selectrow_hashref(
+                    my $row = $dbh->selectrow_hashref(
                         'SELECT 1 FROM admin WHERE admin_name = ? AND created_by <> 0', undef, $username
                     );
-                };
-                if ( $@ ) {
-                    error( $@ );
-                    return 1;
-                } elsif ( $row ) {
-                    $msg = '\n\n\\Z1This username is not available.\\Zn\n\nPlease try again:'
+
+                    if ( $row ) {
+                        $iMSCP::Dialog::InputValidation::lastValidationError = <<"EOF";
+\\Z1This username is not available.\\Zn
+EOF
+                    }
                 }
             }
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
+        } while $rs < 30 && $iMSCP::Dialog::InputValidation::lastValidationError;
+
+        return $rs unless $rs < 30;
 
         do {
-            ( $rs, $password ) = $dialog->inputbox( <<"EOF", randomStr( 16, iMSCP::Crypt::ALNUM ));
+            if ( $password eq '' ) {
+                $iMSCP::Dialog::InputValidation::lastValidationError = '';
+                $password = randomStr( 16, iMSCP::Crypt::ALNUM );
+            }
 
-Please enter a password for the master administrator:$msg
+            ( $rs, $password ) = $dialog->inputbox( <<"EOF", $password );
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter a password for the master administrator (leave empty for autogeneration):
 EOF
-            $msg = isValidPassword( $password ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
+        } while $rs < 30
+            && !isValidPassword( $password );
+
+        return $rs unless $rs < 30;
     } else {
         $password = '' unless iMSCP::Getopt->preseed
     }
@@ -191,18 +197,23 @@ sub askMasterAdminEmail
 
     my $email = main::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' );
 
+    $iMSCP::Dialog::InputValidation::lastValidationError = '';
+
     if ( $main::reconfigure =~ /^(?:admin|admin_email|all|forced)$/
         || !isValidEmail( $email )
     ) {
-        my ($rs, $msg) = ( 0, '' );
+        my $rs = 0;
+        $iMSCP::Dialog::InputValidation::lastValidationError = '' if $email eq '';
+
         do {
             ( $rs, $email ) = $dialog->inputbox( <<"EOF", $email );
-
-Please enter an email address for the master administrator:$msg
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter an email address for the master administrator:
 EOF
-            $msg = isValidEmail( $email ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
+        } while $rs < 30
+            && !isValidEmail( $email );
+
+        return $rs unless $rs < 30;
     }
 
     main::setupSetQuestion( 'DEFAULT_ADMIN_ADDRESS', $email );
@@ -222,29 +233,43 @@ sub askDomain
 {
     my (undef, $dialog) = @_;
 
-    my $domainName = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
+    my $domainName = main::setupGetQuestion(
+        'BASE_SERVER_VHOST',
+        ( iMSCP::Getopt->preseed
+            ? do {
+                my @labels = split /\./, main::setupGetQuestion( 'SERVER_HOSTNAME' );
+                'panel.' . join( '.', @labels[1 .. $#labels] );
+            }
+            : ''
+        )
+    );
+
+    $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
     if ( $main::reconfigure =~ /^(?:panel|panel_hostname|hostnames|all|forced)$/
         || !isValidDomain( $domainName )
     ) {
-        unless ( $domainName ) {
-            my @domainLabels = split /\./, main::setupGetQuestion( 'SERVER_HOSTNAME' );
-            $domainName = 'panel.' . join( '.', @domainLabels[1 .. $#domainLabels] );
+        if ( $domainName eq '' ) {
+            my @labels = split /\./, main::setupGetQuestion( 'SERVER_HOSTNAME' );
+            $domainName = 'panel.' . join( '.', @labels[1 .. $#labels] );
         }
 
-        $domainName = idn_to_unicode( $domainName, 'utf-8' );
-        my ($rs, $msg) = ( 0, '' );
-        do {
-            ( $rs, $domainName ) = $dialog->inputbox( <<"EOF", $domainName, 'utf-8' );
+        $domainName = idn_to_unicode( $domainName, 'utf-8' ) // '';
 
-Please enter a domain name for the control panel:$msg
+        my $rs = 0;
+
+        do {
+            ( $rs, $domainName ) = $dialog->inputbox( <<"EOF", $domainName );
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter a domain name for the control panel: (leave empty for autodetection)
 EOF
-            $msg = isValidDomain( $domainName ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
+        } while $rs < 30
+            && !isValidDomain( $domainName );
+
+        return $rs unless $rs < 30;
     }
 
-    main::setupSetQuestion( 'BASE_SERVER_VHOST', idn_to_ascii( $domainName, 'utf-8' ));
+    main::setupSetQuestion( 'BASE_SERVER_VHOST', idn_to_ascii( $domainName, 'utf-8' ) // '' );
     0;
 }
 
@@ -262,9 +287,11 @@ sub askSsl
     my (undef, $dialog) = @_;
 
     my $domainName = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
-    my $domainNameUnicode = idn_to_unicode( $domainName, 'utf-8' );
-    my $sslEnabled = main::setupGetQuestion( 'PANEL_SSL_ENABLED' );
-    my $selfSignedCertificate = main::setupGetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE', 'no' );
+    my $domainNameUnicode = idn_to_unicode( $domainName, 'utf-8' ) // '';
+    my $sslEnabled = main::setupGetQuestion( 'PANEL_SSL_ENABLED', iMSCP::Getopt->preseed ? 'yes' : '' );
+    my $selfSignedCertificate = main::setupGetQuestion(
+        'PANEL_SSL_SELFSIGNED_CERTIFICATE', iMSCP::Getopt->preseed ? 'yes' : 'no'
+    );
     my $privateKeyPath = main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH', '/root' );
     my $passphrase = main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PASSPHRASE' );
     my $certificatePath = main::setupGetQuestion( 'PANEL_SSL_CERTIFICATE_PATH', '/root' );
@@ -282,6 +309,7 @@ Do you want to enable SSL for the control panel?
 EOF
         if ( $rs == 0 ) {
             $sslEnabled = 'yes';
+
             $rs = $dialog->yesno( <<"EOF", $selfSignedCertificate eq 'no' ? 1 : 0 );
 
 Do you have a SSL certificate for the $domainNameUnicode domain?
@@ -290,38 +318,35 @@ EOF
                 my $msg = '';
 
                 do {
-                    $dialog->msgbox( <<'EOF' );
-
+                    $dialog->msgbox( <<"EOF" );
 $msg
 Please select your private key in next dialog.
 EOF
                     do {
                         ( $rs, $privateKeyPath ) = $dialog->fselect( $privateKeyPath );
                     } while $rs < 30 && !( $privateKeyPath && -f $privateKeyPath );
-                    return $rs if $rs >= 30;
+
+                    return $rs unless $rs < 30;
 
                     ( $rs, $passphrase ) = $dialog->passwordbox( <<'EOF', $passphrase );
 
 Please enter the passphrase for your private key if any:
 EOF
-                    return $rs if $rs >= 30;
+                    return $rs unless $rs < 30;
 
                     $openSSL->{'private_key_container_path'} = $privateKeyPath;
                     $openSSL->{'private_key_passphrase'} = $passphrase;
 
                     $msg = '';
                     if ( $openSSL->validatePrivateKey() ) {
-                        getMessageByType(
-                            'error',
-                            {
-                                amount => 1,
-                                remove => 1
-                            }
-                        );
-                        $msg = "\n\\Z1Invalid private key or passphrase.\\Zn\n\nPlease try again.";
+                        getMessageByType( 'error', { amount => 1, remove => 1 } );
+                        $msg = <<"EOF";
+\\Z1Invalid private key or passphrase.\\Zn
+EOF
                     }
                 } while $rs < 30 && $msg;
-                return $rs if $rs >= 30;
+
+                return $rs unless $rs < 30;
 
                 $rs = $dialog->yesno( <<'EOF' );
 
@@ -331,7 +356,8 @@ EOF
                     do {
                         ( $rs, $caBundlePath ) = $dialog->fselect( $caBundlePath );
                     } while $rs < 30 && !( $caBundlePath && -f $caBundlePath );
-                    return $rs if $rs >= 30;
+
+                    return $rs unless $rs < 30;
 
                     $openSSL->{'ca_bundle_container_path'} = $caBundlePath;
                 } else {
@@ -343,28 +369,23 @@ EOF
 Please select your SSL certificate in next dialog.
 EOF
                 $rs = 1;
+
                 do {
                     $dialog->msgbox( <<"EOF" ) unless $rs;
                     
 \\Z1Invalid SSL certificate.\\Zn
-
-Please try again.
 EOF
                     do {
                         ( $rs, $certificatePath ) = $dialog->fselect( $certificatePath );
                     } while $rs < 30 && !( $certificatePath && -f $certificatePath );
-                    return $rs if $rs >= 30;
 
-                    getMessageByType(
-                        'error',
-                        {
-                            amount => 1,
-                            remove => 1
-                        }
-                    );
+                    return $rs unless $rs < 30;
+
+                    getMessageByType( 'error', { amount => 1, remove => 1 } );
                     $openSSL->{'certificate_container_path'} = $certificatePath;
                 } while $rs < 30 && $openSSL->validateCertificate();
-                return $rs if $rs >= 30;
+
+                return $rs unless $rs < 30;
             } else {
                 $selfSignedCertificate = 'yes';
             }
@@ -386,13 +407,7 @@ EOF
         $openSSL->{'certificate_container_path'} = "$main::imscpConfig{'CONF_DIR'}/$domainName.pem";
 
         if ( $openSSL->validateCertificateChain() ) {
-            getMessageByType(
-                'error',
-                {
-                    amount => 1,
-                    remove => 1
-                }
-            );
+            getMessageByType( 'error', { amount => 1, remove => 1 } );
             $dialog->msgbox( <<'EOF' );
 
 Your SSL certificate for the control panel is missing or invalid.
@@ -428,57 +443,66 @@ sub askHttpPorts
 {
     my (undef, $dialog) = @_;
 
-    my $httpPort = main::setupGetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT' );
-    my $httpsPort = main::setupGetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT' );
-    my $ssl = main::setupGetQuestion( 'PANEL_SSL_ENABLED' );
-    my ($rs, $msg) = ( 0, '' );
+    my $httpPort = main::setupGetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT', iMSCP::Getopt->preseed ? 8880 : '' );
+    my $httpsPort = main::setupGetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT', iMSCP::Getopt->preseed ? 8443 : '' );
+    my $ssl = main::setupGetQuestion( 'PANEL_SSL_ENABLED', iMSCP::Getopt->preseed ? 'yes' : '' );
+
+    $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
     if ( $main::reconfigure =~ /^(?:panel|panel_ports|all|forced)$/
         || !isNumber( $httpPort )
         || !isNumberInRange( $httpPort, 1025, 65535 )
-        || !isStringNotInList( $httpPort, $httpsPort )
     ) {
-        do {
-            ( $rs, $httpPort ) = $dialog->inputbox( <<"EOF", $httpPort ? $httpPort : 8880 );
+        my $rs = 0;
 
-Please enter the http port for the control panel:$msg
-EOF
-            $msg = '';
-            if ( !isNumber( $httpPort )
-                || !isNumberInRange( $httpPort, 1025, 65535 )
-                || !isStringNotInList( $httpPort, $httpsPort )
-            ) {
-                $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
+        do {
+            if ( $httpPort eq '' ) {
+                $iMSCP::Dialog::InputValidation::lastValidationError = '';
+                $httpPort = 8880;
             }
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
+
+            ( $rs, $httpPort ) = $dialog->inputbox( <<"EOF", $httpPort );
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter the HTTP port for the control panel:
+EOF
+        } while $rs < 30
+            && ( !isNumber( $httpPort )
+            || !isNumberInRange( $httpPort, 1025, 65535 )
+        );
+
+        return $rs unless $rs < 30;
     }
 
     main::setupSetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT', $httpPort );
 
     if ( $ssl eq 'yes' ) {
-        if ( $main::reconfigure =~ /^(?:panel|panel_ports|all|forced)$/
+        if ( $main::reconfigure =~ /^(?:panel|panel_ports|panel_ssl|ssl|all|forced)$/
             || !isNumber( $httpsPort )
             || !isNumberInRange( $httpsPort, 1025, 65535 )
             || !isStringNotInList( $httpsPort, $httpPort )
         ) {
-            do {
-                ( $rs, $httpsPort ) = $dialog->inputbox( <<"EOF", $httpsPort ? $httpsPort : 8443 );
+            my $rs = 0;
 
-Please enter the https port for the control panel:$msg
-EOF
-                $msg = '';
-                if ( !isNumber( $httpsPort )
-                    || !isNumberInRange( $httpsPort, 1025, 65535 )
-                    || !isStringNotInList( $httpsPort, $httpPort )
-                ) {
-                    $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
+            do {
+                if ( $httpsPort eq '' ) {
+                    $iMSCP::Dialog::InputValidation::lastValidationError = '';
+                    $httpsPort = 8443;
                 }
-            } while $rs < 30 && $msg;
-            return $rs if $rs >= 30;
+
+                ( $rs, $httpsPort ) = $dialog->inputbox( <<"EOF", $httpsPort );
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter the HTTPS port for the control panel:
+EOF
+            } while $rs < 30
+                && ( !isNumber( $httpsPort )
+                || !isNumberInRange( $httpsPort, 1025, 65535 )
+                || !isStringNotInList( $httpsPort, $httpPort )
+            );
+
+            return $rs unless $rs < 30;
         }
     } else {
-        $httpsPort ||= 8443;
+        $httpsPort = '';
     }
 
     main::setupSetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT', $httpsPort );
@@ -498,22 +522,23 @@ sub askAltUrlsFeature
 {
     my (undef, $dialog) = @_;
 
-    my $altUrlsFeature = main::setupGetQuestion( 'CLIENT_DOMAIN_ALT_URLS' );
+    my $altUrlsFeature = main::setupGetQuestion( 'CLIENT_DOMAIN_ALT_URLS', iMSCP::Getopt->preseed ? 1 : '' );
 
     if ( $main::reconfigure =~ /^(?:panel|alt_urls_feature|all|forced)$/
         || !isNumber( $altUrlsFeature )
         || !isNumberInRange( $altUrlsFeature, 0, 1 )
     ) {
-        $altUrlsFeature = 1 if !isNumber( $altUrlsFeature ) || !isNumberInRange( $altUrlsFeature, 0, 1 );
-        $altUrlsFeature = $dialog->yesno( <<'EOF', !$altUrlsFeature );
+        $altUrlsFeature = $dialog->yesno( <<"EOF", !$altUrlsFeature );
 
 Do you want to enable the alternative URLs feature for client domains?
 
 The alternative URLs feature allows clients accessing their websites through alternative URLs such as http://dmn1.panel.domain.tld
 EOF
-        return $altUrlsFeature if $altUrlsFeature >= 30;
+        return $altUrlsFeature unless $altUrlsFeature < 30;
 
         main::setupSetQuestion( 'CLIENT_DOMAIN_ALT_URLS', $altUrlsFeature ? 0 : 1 );
+    } else {
+        main::setupSetQuestion( 'CLIENT_DOMAIN_ALT_URLS', $altUrlsFeature );
     }
 
     0;

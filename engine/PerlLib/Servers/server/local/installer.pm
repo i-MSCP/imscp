@@ -93,26 +93,37 @@ sub hostnameDialog
 {
     my (undef, $dialog) = @_;
 
-    my $hostname = main::setupGetQuestion( 'SERVER_HOSTNAME' );
+    my $hostname = main::setupGetQuestion(
+        'SERVER_HOSTNAME', iMSCP::Getopt->preseed ? `hostname --fqdn 2>/dev/null` || '' : ''
+    );
+    chomp( $hostname );
+
+    $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
     if ( $main::reconfigure =~ /^(?:local_server|system_hostname|hostnames|all|forced)$/
         || !isValidHostname( $hostname )
     ) {
-        chomp( $hostname = $hostname || `hostname --fqdn 2>/dev/null` || '' );
-        $hostname = idn_to_unicode( $hostname, 'utf-8' );
+        my $rs = 0;
 
-        my ($rs, $msg) = ( 0, '' );
         do {
-            ( $rs, $hostname ) = $dialog->inputbox( <<"EOF", $hostname );
+            if ( $hostname eq '' ) {
+                $iMSCP::Dialog::InputValidation::lastValidationError = '';
+                chomp( $hostname = $hostname || `hostname --fqdn 2>/dev/null` || '' );
+            }
 
-Please enter your server fully qualified hostname:$msg
+            $hostname = idn_to_unicode( $hostname, 'utf-8' ) // '';
+
+            ( $rs, $hostname ) = $dialog->inputbox( <<"EOF", $hostname );
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter your server fully qualified hostname (leave empty for autodetection):
 EOF
-            $msg = isValidHostname( $hostname ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
+        } while $rs < 30
+            && !isValidHostname( $hostname );
+
+        return $rs unless $rs < 30;
     }
 
-    main::setupSetQuestion( 'SERVER_HOSTNAME', idn_to_ascii( $hostname, 'utf-8' ));
+    main::setupSetQuestion( 'SERVER_HOSTNAME', idn_to_ascii( $hostname, 'utf-8' ) // '' );
     0;
 }
 
@@ -130,8 +141,7 @@ sub primaryIpDialog
     my (undef, $dialog) = @_;
 
     my @ipList = sort
-        grep(
-            isValidIpAddr( $_, qr/(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)/ ),
+        grep(isValidIpAddr( $_, qr/(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)/ ),
             iMSCP::Net->getInstance()->getAddresses()
         ),
         'None';
@@ -140,22 +150,24 @@ sub primaryIpDialog
         return 1;
     }
 
-    my $lanIP = main::setupGetQuestion( 'BASE_SERVER_IP' );
+    my $lanIP = main::setupGetQuestion( 'BASE_SERVER_IP', iMSCP::Getopt->preseed ? 'None' : '' );
     $lanIP = 'None' if $lanIP eq '0.0.0.0';
-    my $wanIP = main::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
 
-    if ( iMSCP::Getopt->preseed
-        && !$wanIP
-        && ( !isValidIpAddr( $lanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ) )
-    ) {
-        chomp( $wanIP = get( 'https://api.ipify.org/' ) || get( 'https://ipinfo.io/ip/' ) || '' );
-    }
+    my $wanIP = main::setupGetQuestion(
+        'BASE_SERVER_PUBLIC_IP',
+        ( iMSCP::Getopt->preseed
+            ? do {
+                chomp( my $wanIP = get( 'https://api.ipify.org/' ) || get( 'https://ipinfo.io/ip/' ) || $lanIP );
+                $wanIP;
+            }
+            : ''
+        )
+    );
 
     if ( $main::reconfigure =~ /^(?:local_server|primary_ip|all|forced)$/
         || !grep( $_ eq $lanIP, @ipList )
-        || ( $wanIP ne $lanIP && !isValidIpAddr( $wanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ) )
     ) {
-        my ($rs, $msg) = ( 0, '' );
+        my $rs = 0;
 
         do {
             ( $rs, $lanIP ) = $dialog->radiolist(
@@ -163,52 +175,46 @@ sub primaryIpDialog
 
 Please select your server primary IP address:
 
-The \\Zb`None'\\Zn option means that i-MSCP will configures the services to listen on all interfaces.
-Note that this options is more suitable for Cloud computing services such as Scaleway and Amazon EC2.
+The \\Zb`None'\\Zn option means that i-MSCP will configure the services to listen on all interfaces.
+This option is more suitable for Cloud computing services such as Scaleway and Amazon EC2, or when using a Vagrant box where the IP that is set through DHCP can changes over the time.
 EOF
-            $lanIP = '0.0.0.0' if $lanIP && $lanIP eq 'None';
-        } while $rs < 30 && !isValidIpAddr( $lanIP );
-        return $rs if $rs >= 30;
+            $lanIP = '0.0.0.0' if $lanIP eq 'None';
+        } while $rs < 30
+            && !isValidIpAddr( $lanIP );
 
-        # IP inside private IP range?
-        if ( !isValidIpAddr( $lanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ) ) {
-            chomp( $wanIP = get( 'https://api.ipify.org/' ) || get( 'https://ipinfo.io/ip/' ) || '' ) unless $wanIP;
-
-            do {
-                ( $rs, $wanIP ) = $dialog->inputbox( <<"EOF", $wanIP );
-
-The IP address that you have selected is in private IP range.
-
-Please enter your public IP address (WAN IP), or leave blank to force usage of the private IP address:$msg
-EOF
-                $msg = '';
-                if ( $wanIP
-                    && $wanIP ne $lanIP
-                    && !isValidIpAddr( $wanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ )
-                ) {
-                    $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
-                } elsif ( !$wanIP ) {
-                    $wanIP = $lanIP;
-                }
-
-                if ( $wanIP eq '0.0.0.0' ) {
-                    $msg = <<"EOF";
-
-\\Z1Invalid or unauthorized IP address.\\Zn
-
-Please try again:
-EOF
-                }
-            } while $rs < 30 && $msg;
-            return $rs if $rs >= 30;
-        } else {
-            $wanIP = $lanIP
-        }
+        return $rs unless $rs < 30;
     } elsif ( $lanIP eq 'None' ) {
         $lanIP = '0.0.0.0';
     }
 
     main::setupSetQuestion( 'BASE_SERVER_IP', $lanIP );
+
+    $iMSCP::Dialog::InputValidation::lastValidationError = '';
+
+    if ( $main::reconfigure =~ /^(?:local_server|primary_ip|all|forced)$/
+        || !isValidIpAddr( $wanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ )
+    ) {
+        my $rs = 0;
+
+        do {
+            if ( $wanIP eq ''
+                || $wanIP eq 'None'
+            ) {
+                $iMSCP::Dialog::InputValidation::lastValidationError = '';
+                chomp( $wanIP = get( 'https://api.ipify.org/' ) || get( 'https://ipinfo.io/ip/' ) || $lanIP );
+                $wanIP = '' if $wanIP eq '0.0.0.0';
+            }
+
+            ( $rs, $wanIP ) = $dialog->inputbox( <<"EOF", $wanIP );
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter your public IP address (leave empty for default):
+EOF
+        } while $rs < 30
+            && !isValidIpAddr( $wanIP );
+
+        return $rs unless $rs < 30;
+    }
+
     main::setupSetQuestion( 'BASE_SERVER_PUBLIC_IP', $wanIP );
     0;
 }
@@ -227,22 +233,30 @@ sub timezoneDialog
     my (undef, $dialog) = @_;
 
     my $timezone = main::setupGetQuestion(
-        'TIMEZONE', ( iMSCP::Getopt->preseed ) ? DateTime::TimeZone->new( name => 'local' )->name() : ''
+        'TIMEZONE', iMSCP::Getopt->preseed ? DateTime::TimeZone->new( name => 'local' )->name() : ''
     );
+
+    $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
     if ( $main::reconfigure =~ /^(?:local_server|timezone|all|forced)$/
         || !isValidTimezone( $timezone )
     ) {
-        my ($rs, $msg) = ( 0, '' );
-        do {
-            ( $rs, $timezone ) = $dialog->inputbox(
-                <<"EOF", $timezone || DateTime::TimeZone->new( name => 'local' )->name());
+        my $rs = 0;
 
-Please enter your timezone:$msg
+        do {
+            if ( $timezone eq '' ) {
+                $iMSCP::Dialog::InputValidation::lastValidationError = '';
+                $timezone = DateTime::TimeZone->new( name => 'local' )->name();
+            }
+
+            ( $rs, $timezone ) = $dialog->inputbox( <<"EOF", $timezone );
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter your timezone (leave empty for autodetection):
 EOF
-            $msg = isValidTimezone( $timezone ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
+        } while $rs < 30
+            && !isValidTimezone( $timezone );
+
+        return $rs unless $rs < 30;
     }
 
     main::setupSetQuestion( 'TIMEZONE', $timezone );

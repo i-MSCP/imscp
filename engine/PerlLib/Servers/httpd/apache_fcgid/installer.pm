@@ -29,6 +29,7 @@ use File::Basename;
 use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;
+use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
@@ -87,12 +88,15 @@ sub showDialog
 {
     my ($self, $dialog) = @_;
 
-    my $confLevel = main::setupGetQuestion( 'PHP_CONFIG_LEVEL', $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} );
+    my $confLevel = main::setupGetQuestion(
+        'PHP_CONFIG_LEVEL', $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} || ( iMSCP::Getopt->preseed ? 'per_site' : '' )
+    );
 
     if ( $main::reconfigure =~ /^(?:httpd|php|servers|all|forced)$/
-        || $confLevel !~ /^per_(?:site|domain|user)$/
+        || !isStringInList( $confLevel, 'per_site', 'per_domain', 'per_user' )
     ) {
         $confLevel =~ s/_/ /;
+
         ( my $rs, $confLevel ) = $dialog->radiolist(
             <<"EOF", [ 'per_site', 'per_domain', 'per_user' ], $confLevel =~ /^per (?:user|domain)$/ ? $confLevel : 'per site' );
 
@@ -104,7 +108,7 @@ Please choose the PHP configuration level you want use. Available levels are:
 \\Z4Per user:\\Zn One php.ini file per user
 \\Z4Per site:\\Zn One php.ini file per domain
 EOF
-        return $rs if $rs >= 30;
+        return $rs unless $rs < 30;
     }
 
     ( $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} = $confLevel ) =~ s/ /_/;

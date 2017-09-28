@@ -3,15 +3,37 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2017.09.19
+# Last update: 2017.09.28
 
 %main::questions = (
+    # Mandatory parameters
     #
-    ## System configuration
+    # Parameters below must be filled. There is no default value for them.
+
+    # SQL root user (mandatory)
+    # This SQL user must have full privileges on the SQL server.
+    # Note that this user used only while i-MSCP installation/reconfiguration.
+    # Leave empty for default (root).
+    SQL_ROOT_USER                       => '',
+    SQL_ROOT_PASSWORD                   => '',
+
+    # Panel administrator password
+    # Only ASCII alphabet characters and numbers are allowed in password.
+    ADMIN_PASSWORD                      => '',
+
+    # System administrator email address
+    # Possible value: A valid email address. Be aware that mails sent to local
+    # root user will be forwarded to that email.
+    DEFAULT_ADMIN_ADDRESS               => '',
+
+    # Optional parameters
     #
+    # Parameters below are optional. If they are not filled, default value
+    # will be used.
 
     # Server hostname
     # Possible values: A fully qualified hostname name
+    # Leave empty for autodetection: $(hostname --fqdn)
     SERVER_HOSTNAME                     => '',
 
     # Server primary IP
@@ -20,125 +42,113 @@
     #
     # The `None' option is more suitable for Cloud computing services such as
     # Scaleway and Amazon EC2, or when using a Vagrant box where the public IP
-    # that is assigned through DHCP can changes over the time.
+    # address that is assigned through DHCP can changes over the time.
     #
-    # Selecting the `None' option means that i-MSCP will configures the
+    # Selecting the `None' option means that i-MSCP will configure the
     # services to listen on all interfaces.
     #
-    # Note that in Vagrant case, the value will be set automatically to the
-    # public IP as assigned by DHCP server, unless the option is set to `None'.
-    BASE_SERVER_IP                      => 'None',
+    # Leave empty for default: None
+    BASE_SERVER_IP                      => '',
 
     # WAN IP (only relevant if your primary IP is in private range)
     #
-    # You can force usage of a private IP by putting BASE_SERVER_IP IP value
-    # instead of a public IP. You can also leave this parameter empty for
-    # automatic detection of your public IP.
-    # Possible values: Ipv4 or IPv6
+    # Possible values: Ipv4 or IPv4
     #
-    # Note that in Vagrant case, the value will be set automatically to the
-    # public IP as assigned by DHCP server, unless the BASE_SERVER_IP parameter
-    # is set to `None'.
+    # You can force the use of the private IP address by using the same value as
+    # the BASE_SERVER_IP parameter.
+    #
+    # Leave empty for public IP address automatic detection.
     BASE_SERVER_PUBLIC_IP               => '',
 
     # Timezone
     #
     # Possible values: A valid timezone such as Europe/Paris
     # (see http://php.net/manual/en/timezones.php)
-    # Leave this parameter empty for automatic timezone detection.
+    # Leave empty for autodetection.
     TIMEZONE                            => '',
-
-    #
-    ## Backup configuration parameters
-    #
 
     # i-MSCP backup feature (database and configuration files)
     # Enable backup for i-MSCP
     # Possible values: yes, no
-    BACKUP_IMSCP                        => 'yes',
+    # Leave empty for default: yes
+    BACKUP_IMSCP                        => '',
 
     # Enable backup feature for customers
     # Possible values: yes, no
-    BACKUP_DOMAINS                      => 'yes',
-
-    #
-    ## SQL server configuration parameters
-    #
+    # Leave empty for default: yes
+    BACKUP_DOMAINS                      => '',
 
     # SQL server implementation (Default: Debian Stretch mariadb 10.1)
     # Please consult the ../autoinstaller/Packages/<distro>-<codename>.xml file
     # for available options.
     #
-    # Leave this parameter empty for use of default SQL server implementation.
+    # Leave empty for default: Depend on distribution and codename.
     SQL_SERVER                          => '',
 
-    # Database name (mandatory)
-    DATABASE_NAME                       => 'imscp',
-
-    #
-    ## SQL server configuration
-    #
+    # Database name
+    # Leave empty for default: imscp
+    DATABASE_NAME                       => '',
 
     # Databas hostname
     # Possible values: A valid hostname or IP address
-    DATABASE_HOST                       => 'localhost',
+    # Leave empty for default: localhost
+    DATABASE_HOST                       => '',
 
     # Database port
     # Note that this port is used only for connections through TCP.
     # Possible values: A valid port
-    DATABASE_PORT                       => '3306',
-
-    # SQL root user (mandatory)
-    # This SQL user must have full privileges on the SQL server.
-    # Note that this user used only while i-MSCP installation/reconfiguration.
-    SQL_ROOT_USER                       => 'root',
-    SQL_ROOT_PASSWORD                   => '',
+    # Leave empty for default: 3306
+    DATABASE_PORT                       => '',
 
     # i-MSCP Master SQL user
     # That is the primary SQL user for i-MSCP. It is used to connect to database
     # and create/delete SQL users for your customers.
     # Note that the debian-sys-maint, imscp_srv_user, mysql.user, root and
     # vlogger_user SQL users are not allowed.
-    DATABASE_USER                       => 'imscp_user',
+    # Leave empty for default: imscp_user
+    DATABASE_USER                       => '',
     # Only ASCII alphabet characters and numbers are allowed in password.
-    # Leave this parameter empty for automatic password generation.
+    # Leave empty for autogeneration.
     DATABASE_PASSWORD                   => '',
 
     # Database user host (only relevant for remote SQL server)
-    # That is the host from which SQL users created by i-MSCP are allowed to
-    # connect to the SQL server.
+    # Host from which SQL users created by i-MSCP are allowed to connect to the
+    # SQL server.
     # Possible values: A valid hostname or IP address
-    DATABASE_USER_HOST                  => 'localhost',
+    # Leave empty for default: BASE_SERVER_PUBLIC_IP
+    DATABASE_USER_HOST                  => '',
 
     # Enable or disable prefix/suffix for customer SQL database names
     # Possible values: behind, infront, none
-    MYSQL_PREFIX                        => 'none',
-
-    #
-    ## Control panel configuration parameters
-    #
+    # Leave empty for default: none.
+    MYSQL_PREFIX                        => '',
 
     # Control panel hostname
     # This is the hostname from which the control panel will be reachable
     # Possible values: A fully qualified hostname name
+    # Leave empty for default: panel.SERVER_HOSTNAME[domain part]
     BASE_SERVER_VHOST                   => '',
 
     # Control panel http port
     # Possible values: A port in range 1025-65535
-    BASE_SERVER_VHOST_HTTP_PORT         => '8880',
+    # Leave empty for default: 8880
+    BASE_SERVER_VHOST_HTTP_PORT         => '',
 
     # Control panel https port (only relevant if SSL is enabled for the control
     # panel (see below))
     # Possible values: A port in range 1025-65535
-    BASE_SERVER_VHOST_HTTPS_PORT        => '8443',
+    # Leave empty for default: 8443
+    BASE_SERVER_VHOST_HTTPS_PORT        => '',
 
     # Enable or disable SSL
     # Possible values: yes, no
-    PANEL_SSL_ENABLED                   => 'yes',
+    # Leave empty for default: yes
+    PANEL_SSL_ENABLED                   => '',
 
     # Whether or not a self-signed SSL cettificate must be used
     # Possible values: yes, no
-    PANEL_SSL_SELFSIGNED_CERTIFICATE    => 'yes',
+    # Leave empty for default: yes
+    PANEL_SSL_SELFSIGNED_CERTIFICATE    => '',
 
     # SSL private key path (only relevant for trusted SSL certificate)
     PANEL_SSL_PRIVATE_KEY_PATH          => '',
@@ -146,7 +156,7 @@
     # SSL private key passphrase (only if the private key is encrypted)
     PANEL_SSL_PRIVATE_KEY_PASSPHRASE    => '',
 
-    # SSL CA Bundle path(only relevant for trusted SSL certificate)
+    # SSL CA Bundle path (only relevant for trusted SSL certificate)
     PANEL_SSL_CA_BUNDLE_PATH            => '',
 
     # SSL certificate path (only relevant for trusted SSL certificate)
@@ -154,150 +164,132 @@
 
     # Alternative URLs feature for client domains
     # Possible values: 1 for enabling, 0 for disabling
-    CLIENT_DOMAIN_ALT_URLS              => '1',
+    # Leave empty for default: 1
+    CLIENT_DOMAIN_ALT_URLS              => '',
 
     # Control panel default access mode (only relevant if SSL is enabled)
     # Possible values: http://, https://
-    BASE_SERVER_VHOST_PREFIX            => 'http://',
+    # Leave empty for default: http://
+    BASE_SERVER_VHOST_PREFIX            => '',
 
     # Master administrator login
-    ADMIN_LOGIN_NAME                    => 'admin',
-    # Only ASCII alphabet characters and numbers are allowed in password.
-    ADMIN_PASSWORD                      => '',
-
-    # Master administrator email address
-    # Possible value: A valid email address. Be aware that mails sent to local root user will be forwarded to that email.
-    DEFAULT_ADMIN_ADDRESS               => '',
-
-    #
-    ## DNS server configuration
-    #
+    # Leave empty for default: admin
+    ADMIN_LOGIN_NAME                    => '',
 
     # DNS server implementation
     # Possible values: bind, external_server
-    # Leave this parameter empty for use of default DNS server implementation.
+    # Leave empty for default: bind
     NAMED_SERVER                        => '',
 
     # DNS server mode
     # Only relevant with 'bind' server implementation
     # Possible values: master, slave
-    BIND_MODE                           => 'master',
+    # Leave empty for default: master
+    BIND_MODE                           => '',
 
-    # Allow to specify IP addresses of your primary DNS servers - Only relevant if you set BIND_MODE to 'slave'
+    # Allow to specify IP addresses of your primary DNS servers
     # Primary DNS server IP addresses
     # Only relevant with master mode
-    # Possible value: 'no' or a list of IPv4/IPv6 each separated by semicolon or space
-    PRIMARY_DNS                         => 'no',
+    # Possible value: 'no' or a list of IPv4/IPv6 each separated by semicolon
+    # or space
+    # Leave empty for default: no
+    PRIMARY_DNS                         => '',
 
     # Slave DNS server IP addresses
     # Only relevant with slave mode
-    # Possible value: 'no' or a list of IPv4/IPv6 each separated by semicolon or space
-    SECONDARY_DNS                       => 'no',
+    # Possible value: 'no' or a list of IPv4/IPv6 each separated by semicolon
+    # or space
+    # Leave empty for default: no
+    SECONDARY_DNS                       => '',
 
     # IPv6 support
     # Only relevant with 'bind' server implementation
     # Possible values: yes, no
-    BIND_IPV6                           => 'no',
+    # Leave empty for default: no
+    BIND_IPV6                           => '',
 
     # Local DNS resolver (only relevant with 'bind' server implementation)
     # Possible values: yes, no
-    LOCAL_DNS_RESOLVER                  => 'yes',
-
-    #
-    ## HTTTPd server configuration parameters
-    #
+    # Leave empty for default: yes
+    LOCAL_DNS_RESOLVER                  => '',
 
     # HTTPd server implementation
     # Possible values: apache_itk, apache_fcgid, apache_php_fpm
-    # Leave this parameter empty for use of default HTTPd server
-    # implementation.
+    # Leave empty for default: apache_php_fpm
     HTTPD_SERVER                        => '',
-
-    #
-    ## PHP configuration parameters
-    #
 
     # PHP version to use
     # Popssible values: php5.6, php7.0, php7.1
-    # Leave this parameter empty for use of default PHP version.
+    # Leave empty for default: php5.6
     PHP_SERVER                          => '',
 
     # PHP configuration level
     # Possible values: per_user, per_domain, per_site
-    PHP_CONFIG_LEVEL                    => 'per_site',
+    # Leave empty for default: per_site
+    PHP_CONFIG_LEVEL                    => '',
 
     # PHP-FPM listen socket type
     # Only relevant with 'apache_php_fpm' sever implementation
     # Possible values: uds, tcp
-    PHP_FPM_LISTEN_MODE                 => 'uds',
-
-    #
-    ## FTPd server configuration parameters
-    #
+    # Leave empty for default: uds
+    PHP_FPM_LISTEN_MODE                 => '',
 
     # FTPd server implementation
     # Possible values: proftpd, vsftpd
-    # Leave this parameter empty for use of default FTPd server implementation.
+    # Leave empty for default: proftpd
     FTPD_SERVER                         => '',
 
     # FTP SQL user
     # Only ASCII alphabet characters and numbers are allowed in password.
-    FTPD_SQL_USER                       => 'imscp_srv_user',
+    # Leave empty for default: imscp_srv_user
+    FTPD_SQL_USER                       => '',
     # Only ASCII alphabet characters and numbers are allowed in password.
-    # Leave this parameter empty for automatic password generation.
+    # Leave empty for autogeneration.
     FTPD_SQL_PASSWORD                   => '',
 
     # Passive port range
     # Possible values: A valid port range in range 32768-60999
     # Don't forgot to forward TCP traffic on those ports on your server if you're behind a firewall
-    FTPD_PASSIVE_PORT_RANGE             => '32800 33800',
-
-    #
-    ## MTA server configuration parameters
-    #
+    # Leave empty for default: 32800 33800
+    FTPD_PASSIVE_PORT_RANGE             => '',
 
     # MTA server implementation
     # Possible values: postfix
-    # Leave this parameter empty for use of default MTA server implementation.
+    # Leave empty for default: postfix
     MTA_SERVER                          => '',
-
-    #
-    ## IMAP, POP server configuration parameters
-    #
 
     # POP/IMAP servers implementation
     # Possible values: courier, dovecot
-    # Leave this parameter empty for use of default POP/IMAP server
-    # implementation.
+    # Leave empty for default: dovecot
     PO_SERVER                           => '',
 
     # Authdaemon SQL user
     # Only ASCII alphabet characters and numbers are allowed in password.
-    AUTHDAEMON_SQL_USER                 => 'imscp_srv_user',
+    # Leave empty for default: imscp_srv_user
+    AUTHDAEMON_SQL_USER                 => '',
     # Only ASCII alphabet characters and numbers are allowed in password.
-    # Leave this parameter empty for automatic password generation.
+    # Leave empty for autogeneration.
     AUTHDAEMON_SQL_PASSWORD             => '',
 
     # Dovecot SQL user
     # Only relevant with 'dovecot' server implementation
     # Only ASCII alphabet characters and numbers are allowed in password.
-    DOVECOT_SQL_USER                    => 'imscp_srv_user',
+    # Leave empty for default: imscp_srv_user
+    DOVECOT_SQL_USER                    => '',
     # Only ASCII alphabet characters and numbers are allowed in password.
-    # Leave this parameter empty for automatic password generation.
+    # Leave empty for autogeneration.
     DOVECOT_SQL_PASSWORD                => '',
-
-    #
-    ## SSL configuration for FTP, IMAP/POP and SMTP services
-    #
 
     # Enable or disable SSL
     # Possible values: yes, no
-    SERVICES_SSL_ENABLED                => 'yes',
+    # Leave empty for default: yes
+    SERVICES_SSL_ENABLED                => '',
 
     # Whether or not a self-signed SSL certificate must be used
     # Only relevant if SSL is enabled
     # Possible values: yes, no
-    SERVICES_SSL_SELFSIGNED_CERTIFICATE => 'yes',
+    # Leave empty for default: yes
+    SERVICES_SSL_SELFSIGNED_CERTIFICATE => '',
 
     # SSL private key path (only relevant for trusted SSL certificate)
     # Possible values: Path to SSL private key
@@ -315,43 +307,46 @@
     # Possible values: Path to SSL certificate
     SERVICES_SSL_CERTIFICATE_PATH       => '',
 
-    #
-    ## Packages configuration parameters
-    #
-
     # Webstats package
     # Possible values: Awstats, No
-    WEBSTATS_PACKAGES                   => 'Awstats',
+    # Leave empty for default: Awstats
+    WEBSTATS_PACKAGES                   => '',
 
     # FTP Web file manager packages
     # Possible values: Pydio (only if PHP < 7.0), Net2ftp and MonstaFTP
-    FILEMANAGER_PACKAGE                 => 'MonstaFTP',
+    # Leave empty for default: MonstaFTP
+    FILEMANAGER_PACKAGE                 => '',
 
     # SQL user for PhpMyAdmin
-    PHPMYADMIN_SQL_USER                 => 'imscp_srv_user',
+    # Leave empty for default: imscp_srv_user
+    PHPMYADMIN_SQL_USER                 => '',
     # Only ASCII alphabet characters and numbers are allowed in password.
-    # Leave this parameter empty for automatic password generation.
+    # Leave empty for autogeneration.
     PHPMYADMIN_SQL_PASSWORD             => '',
 
     # Webmmail packages
-    # Possible values: 'No' or a list of packages, each comma separated
-    WEBMAIL_PACKAGES                    => 'RainLoop,Roundcube',
+    # Possible values: 'No' or a list of comma separated packages.
+    # Leave empty for default: RainLoop,Roundcube
+    WEBMAIL_PACKAGES                    => '',
 
     # SQL user for Roundcube package (only if you use Roundcube)
-    ROUNDCUBE_SQL_USER                  => 'imscp_srv_user',
+    # Leave empty for default: imscp_srv_user
+    ROUNDCUBE_SQL_USER                  => '',
     # Only ASCII alphabet characters and numbers are allowed in password.
-    # Leave this parameter empty for automatic password generation.
+    # Leave empty for autogeneration.
     ROUNDCUBE_SQL_PASSWORD              => '',
 
     # SQL user for Rainloop package (only relevant if you use Rainloop)
-    RAINLOOP_SQL_USER                   => 'imscp_srv_user',
+    # Leave empty for default: imscp_srv_user
+    RAINLOOP_SQL_USER                   => '',
     # Only ASCII alphabet characters and numbers are allowed in password.
-    # Leave this parameter empty for automatic password generation.
+    # Leave empty for autogeneration.
     RAINLOOP_SQL_PASSWORD               => '',
 
     # Anti-rootkits packages
-    # Possible values: 'No' or a list of packages, each comma separated
-    ANTI_ROOTKITS_PACKAGES              => 'Chkrootkit,Rkhunter'
+    # Possible values: 'No' or a list of comma separated packages.
+    # Leave empty for default: Chkrootkit,Rkhunter
+    ANTI_ROOTKITS_PACKAGES              => ''
 );
 
 1;

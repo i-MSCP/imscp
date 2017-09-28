@@ -90,69 +90,83 @@ sub masterSqlUserDialog
 {
     my ($self, $dialog) = @_;
 
-    my $hostname = main::setupGetQuestion( 'DATABASE_HOST' );
-    my $port = main::setupGetQuestion( 'DATABASE_PORT' );
-    my $user = main::setupGetQuestion( 'DATABASE_USER', 'imscp_user' );
-    $user = 'imscp_user' if lc( $user ) eq 'root'; # Handle upgrade case
-    my $pwd = main::setupGetQuestion(
-        'DATABASE_PASSWORD', ( iMSCP::Getopt->preseed ) ? randomStr( 16, iMSCP::Crypt::ALNUM ) : ''
-    );
-    $pwd = decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv, $pwd ) unless $pwd eq '' || iMSCP::Getopt->preseed;
     my $rs = 0;
-
     $rs = $self->_askSqlRootUser( $dialog ) if iMSCP::Getopt->preseed;
     return $rs if $rs;
+
+    my $hostname = main::setupGetQuestion( 'DATABASE_HOST' );
+    my $port = main::setupGetQuestion( 'DATABASE_PORT' );
+    my $user = main::setupGetQuestion( 'DATABASE_USER', iMSCP::Getopt->preseed ? 'imscp_user' : '' );
+    $user = 'imscp_user' if lc( $user ) eq 'root'; # Handle upgrade case
+    my $pwd = main::setupGetQuestion(
+        'DATABASE_PASSWORD', iMSCP::Getopt->preseed ? randomStr( 16, iMSCP::Crypt::ALNUM ) : ''
+    );
+
+    if ( $pwd ne ''
+        && !iMSCP::Getopt->preseed
+    ) {
+        $pwd = decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv, $pwd );
+        $pwd = '' unless isValidPassword( $pwd ); # Handle case of badly decrypted password
+    }
+
+    $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
     if ( $main::reconfigure =~ /(?:sql|servers|all|forced)$/
         || !isNotEmpty( $hostname )
         || !isNotEmpty( $port )
         || !isNotEmpty( $user )
-        || !isStringNotInList( $user, 'debian-sys-maint', 'imscp_srv_user', 'mysql.user', 'root', 'vlogger_user' )
+        || !isStringNotInList( lc $user, 'debian-sys-maint', 'imscp_srv_user', 'mysql.user', 'root', 'vlogger_user' )
         || !isNotEmpty( $pwd )
         || ( !iMSCP::Getopt->preseed && $self->_tryDbConnect( $hostname, $port, $user, $pwd ) )
     ) {
         $rs = $self->_askSqlRootUser( $dialog ) unless iMSCP::Getopt->preseed;
-        return $rs if $rs >= 30;
+        return $rs unless $rs < 30;
 
-        my $msg = '';
+        $iMSCP::Dialog::InputValidation::lastValidationError = '';
+
         do {
-            ( $rs, $user ) = $dialog->inputbox( <<"EOF", $user );
-
-Please enter a username for the master i-MSCP SQL user:$msg
-EOF
-            $msg = '';
-            if ( !isValidUsername( $user )
-                || !isStringNotInList( $user, 'debian-sys-maint', 'imscp_srv_user', 'mysql.user', 'root',
-                'vlogger_user' )
-            ) {
-                $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
+            if ( $user eq '' ) {
+                $iMSCP::Dialog::InputValidation::lastValidationError = '';
+                $user = 'imscp_srv_user';
             }
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
 
-        $pwd = isValidPassword( $pwd ) ? $pwd : '';
-        do {
-            ( $rs, $pwd ) = $dialog->inputbox( <<"EOF", $pwd || randomStr( 16, iMSCP::Crypt::ALNUM ));
-
-Please enter a password for the master i-MSCP SQL user:$msg
+            ( $rs, $user ) = $dialog->inputbox( <<"EOF", $user );
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter a username for the i-MSCP master SQL user (leave empty for default):
 EOF
-            $msg = isValidPassword( $pwd ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
+        } while $rs < 30
+            && ( !isValidUsername( $user )
+            || !isStringNotInList( lc $user, 'debian-sys-maint', 'imscp_srv_user', 'mysql.user', 'root',
+            'vlogger_user' )
+        );
+
+        return $rs unless $rs < 30;
+
+        main::setupSetQuestion( 'DATABASE_USER', $user );
+
+        do {
+            if ( $pwd eq '' ) {
+                $iMSCP::Dialog::InputValidation::lastValidationError = '';
+                $pwd = randomStr( 16, iMSCP::Crypt::ALNUM );
+            }
+
+            ( $rs, $pwd ) = $dialog->inputbox( <<"EOF", $pwd );
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter a password for the master i-MSCP SQL user (leave empty for autogeneration):
+EOF
+        } while $rs < 30
+            && !isValidPassword( $pwd );
+
+        return $rs unless $rs < 30;
     }
 
-    main::setupSetQuestion( 'DATABASE_USER', $user );
     main::setupSetQuestion( 'DATABASE_PASSWORD', encryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv, $pwd ));
-    # Substitute SQL root user data with i-MSCP master user data if needed
-    main::setupSetQuestion( 'SQL_ROOT_USER', main::setupGetQuestion( 'SQL_ROOT_USER', $user ));
-    main::setupSetQuestion( 'SQL_ROOT_PASSWORD', main::setupGetQuestion( 'SQL_ROOT_PASSWORD', $pwd ));
     0;
-
 }
 
 =item sqlUserHostDialog( \%dialog )
 
- Ask for i-MSCP database name
+ Ask for SQL user hostname
 
  Param iMSCP::Dialog \%dialog
  Return int 0 on success, other on failure
@@ -169,31 +183,32 @@ sub sqlUserHostDialog
     }
 
     my $hostname = main::setupGetQuestion( 'DATABASE_USER_HOST', main::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' ));
+
     if ( grep($hostname eq $_, ( 'localhost', '127.0.0.1', '::1' )) ) {
         $hostname = main::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
     }
 
+    $iMSCP::Dialog::InputValidation::lastValidationError = '';
+
     if ( $main::reconfigure =~ /^(?:sql|servers|all|forced)$/
         || ( $hostname ne '%'
         && !isValidHostname( $hostname )
-        && !isValidIpAddr( $hostname, qr/^(?:PUBLIC|GLOBAL-UNICAST)$/ )
-    )
+        && !isValidIpAddr( $hostname, qr/^(?:PUBLIC|GLOBAL-UNICAST)$/ ) )
     ) {
-        my ($rs, $msg) = ( 0, '' );
-        do {
-            ( $rs, $hostname ) = $dialog->inputbox( <<"EOF", idn_to_unicode( $hostname, 'utf-8' ));
+        my $rs = 0;
 
-Please enter the host from which SQL users created by i-MSCP must be allowed to connect:$msg
+        do {
+            ( $rs, $hostname ) = $dialog->inputbox( <<"EOF", idn_to_unicode( $hostname, 'utf-8' ) // '');
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter the host from which SQL users created by i-MSCP must be allowed to connect:
 EOF
-            $msg = '';
-            if ( $hostname ne '%'
-                && !isValidHostname( $hostname )
-                && !isValidIpAddr( $hostname, qr/^(?:PUBLIC|GLOBAL-UNICAST)$/ )
-            ) {
-                $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
-            }
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
+        } while $rs < 30
+            && ( $hostname ne '%'
+            && !isValidHostname( $hostname )
+            && !isValidIpAddr( $hostname, qr/^(?:PUBLIC|GLOBAL-UNICAST)$/ )
+        );
+
+        return unless $rs < 30;
     }
 
     main::setupSetQuestion( 'DATABASE_USER_HOST', idn_to_ascii( $hostname, 'utf-8' ));
@@ -213,31 +228,40 @@ sub databaseNameDialog
 {
     my ($self, $dialog) = @_;
 
-    my $dbName = main::setupGetQuestion( 'DATABASE_NAME', 'imscp' );
+    my $dbName = main::setupGetQuestion( 'DATABASE_NAME', iMSCP::Getopt->preseed ? 'imscp' : '' );
+
+    $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
     if ( $main::reconfigure =~ /^(?:sql|servers|all|forced)$/
         || ( !$self->_setupIsImscpDb( $dbName ) && !iMSCP::Getopt->preseed )
     ) {
-        my ($rs, $msg) = ( 0, '' );
-        do {
-            ( $rs, $dbName ) = $dialog->inputbox( <<"EOF", $dbName );
+        my $rs = 0;
 
-Please enter a database name for i-MSCP:$msg
+        do {
+            if ( $dbName eq '' ) {
+                $iMSCP::Dialog::InputValidation::lastValidationError = '';
+                $dbName = 'imscp';
+            }
+
+            ( $rs, $dbName ) = $dialog->inputbox( <<"EOF", $dbName );
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter a database name for i-MSCP:
 EOF
-            $msg = '';
-            unless ( isValidDbName( $dbName ) ) {
-                $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
-            } else {
+            if ( isValidDbName( $dbName ) ) {
                 my $db = iMSCP::Database->factory();
                 eval { $db->useDatabase( $dbName ); };
                 if ( !$@ && !$self->_setupIsImscpDb( $dbName ) ) {
-                    $msg = "\n\n\\Z1Database '$dbName' exists but doesn't looks like an i-MSCP database.\\Zn\n\nPlease try again:";
+                    $iMSCP::Dialog::InputValidation::lastValidationError = <<"EOF";
+\\Z1Database '$dbName' exists but doesn't look like an i-MSCP database.\\Zn
+EOF
                 }
             }
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
+        } while $rs < 30 && $iMSCP::Dialog::InputValidation::lastValidationError;
+
+        return $rs unless $rs < 30;
 
         my $oldDbName = main::setupGetQuestion( 'DATABASE_NAME' );
+
         if ( $oldDbName
             && $dbName ne $oldDbName
             && $self->setupIsImscpDb( $oldDbName )
@@ -272,17 +296,16 @@ sub databasePrefixDialog
 {
     my (undef, $dialog) = @_;
 
-    my $prefix = main::setupGetQuestion( 'MYSQL_PREFIX' );
+    my $prefix = main::setupGetQuestion( 'MYSQL_PREFIX', iMSCP::Getopt->preseed ? 'none' : '' );
 
     if ( $main::reconfigure =~ /^(?:sql|servers|all|forced)$/
-        || $prefix !~ /^(?:behind|infront|none)$/
+        || !isStringInList( $prefix, 'behind', 'infront', 'none' )
     ) {
         ( my $rs, $prefix ) = $dialog->radiolist(
             <<"EOF", [ 'infront', 'behind', 'none' ], $prefix =~ /^(?:behind|infront)$/ ? $prefix : 'none' );
-
 \\Z4\\Zb\\ZuMySQL Database Prefix/Suffix\\Zn
 
-Do you want use a prefix or suffix for customer's SQL databases?
+Do you want to use a prefix or suffix for customer's SQL databases?
 
 \\Z4Infront:\\Zn A numeric prefix such as '1_' will be added to each customer
          SQL user and database name.
@@ -290,7 +313,7 @@ Do you want use a prefix or suffix for customer's SQL databases?
          SQL user and database name.
    \\Z4None\\Zn: Choice will be let to customer.
 EOF
-        return $rs if $rs >= 30;
+        return $rs unless $rs < 30;
     }
 
     main::setupSetQuestion( 'MYSQL_PREFIX', $prefix );
@@ -354,13 +377,15 @@ sub _askSqlRootUser
     my ($self, $dialog) = @_;
 
     my $hostname = main::setupGetQuestion(
-        'DATABASE_HOST', ( $main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::remote' ) ? '' : 'localhost'
+        'DATABASE_HOST', $main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::remote' ? '' : 'localhost'
     );
+
     if ( $main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::remote'
         && grep { $hostname eq $_ } ( 'localhost', '127.0.0.1', '::1' )
     ) {
         $hostname = '';
     }
+
     my $port = main::setupGetQuestion( 'DATABASE_PORT', 3306 );
     my $user = main::setupGetQuestion( 'SQL_ROOT_USER', 'root' );
     my $pwd = main::setupGetQuestion( 'SQL_ROOT_PASSWORD' );
@@ -370,7 +395,6 @@ sub _askSqlRootUser
         # We try a connect without password with 'root' as user and we return on success
         for( 'localhost', '127.0.0.1' ) {
             next if $self->_tryDbConnect( $_, $port, $user, $pwd );
-            main::setupSetQuestion( 'DATABASE_TYPE', 'mysql' );
             main::setupSetQuestion( 'DATABASE_HOST', $_ );
             main::setupSetQuestion( 'DATABASE_PORT', $port );
             main::setupSetQuestion( 'SQL_ROOT_USER', $user );
@@ -379,59 +403,58 @@ sub _askSqlRootUser
         }
     }
 
-    my ($rs, $msg) = ( 0, '' );
+    my $rs = 0;
+    $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
     do {
         ( $rs, $hostname ) = $dialog->inputbox( <<"EOF", $hostname );
-
-Please enter your SQL server hostname or IP address:$msg
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter your SQL server hostname or IP address:
 EOF
-        $msg = '';
-        if ( $hostname ne 'localhost'
-            && !isValidHostname( $hostname )
-            && !isValidIpAddr( $hostname )
-        ) {
-            $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
-        }
-    } while $rs < 30 && $msg;
+    } while $rs < 30 && ( $hostname ne 'localhost'
+        && !isValidHostname( $hostname )
+        && !isValidIpAddr( $hostname )
+    );
+
+    main::setupSetQuestion( 'DATABASE_HOST', idn_to_ascii( $hostname, 'utf-8' ) // '' );
     return $rs if $rs >= 30;
 
     do {
         ( $rs, $port ) = $dialog->inputbox( <<"EOF", $port );
-
-Please enter your SQL server port:$msg
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter your SQL server port:
 EOF
-        $msg = '';
-        if ( !isNumber( $port )
-            || !isNumberInRange( $port, 1025, 65535 )
-        ) {
-            $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
-        }
-    } while $rs < 30 && $msg;
+    } while $rs < 30
+        && !isNumber( $port )
+        || !isNumberInRange( $port, 1025, 65535 );
+
+    main::setupSetQuestion( 'DATABASE_PORT', $port );
     return $rs if $rs >= 30;
 
     do {
         ( $rs, $user ) = $dialog->inputbox( <<"EOF", $user );
-
-Please enter your SQL root username:$msg
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter your SQL root username:
 
 Note that this user must have full privileges on the SQL server.
 i-MSCP only uses that user while installation or reconfiguration.
 EOF
-        $msg = isNotEmpty( $user ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
-    } while $rs < 30 && $msg;
+    } while $rs < 30 && !isNotEmpty( $user );
+
+    main::setupSetQuestion( 'SQL_ROOT_USER', $user );
     return $rs if $rs >= 30;
 
     do {
         ( $rs, $pwd ) = $dialog->passwordbox( <<"EOF" );
-
-Please enter your SQL root user password:$msg
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter your SQL root user password:
 EOF
-        $msg = isNotEmpty( $pwd ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
-    } while $rs < 30 && $msg;
+    } while $rs < 30 && !isNotEmpty( $pwd );
+
+    main::setupSetQuestion( 'SQL_ROOT_PASSWORD', $pwd );
     return $rs if $rs >= 30;
 
-    if ( my $connectError = $self->_tryDbConnect( idn_to_ascii( $hostname, 'utf-8' ), $port, $user, $pwd ) ) {
+    if ( my $connectError = $self->_tryDbConnect( $hostname, $port, $user, $pwd ) ) {
         chomp( $connectError );
 
         $rs = $dialog->msgbox( <<"EOF" );
@@ -446,17 +469,10 @@ i-MSCP installer couldn't connect to SQL server using the following data:
 \\Z4Password:\\Zn $pwd
 
 Error was: \\Z1$connectError\\Zn
-
-Please try again.
 EOF
         goto &{_askSqlRootUser};
     }
 
-    main::setupSetQuestion( 'DATABASE_TYPE', 'mysql' );
-    main::setupSetQuestion( 'DATABASE_HOST', idn_to_ascii( $hostname, 'utf-8' ));
-    main::setupSetQuestion( 'DATABASE_PORT', $port );
-    main::setupSetQuestion( 'SQL_ROOT_USER', $user );
-    main::setupSetQuestion( 'SQL_ROOT_PASSWORD', $pwd );
     0;
 }
 

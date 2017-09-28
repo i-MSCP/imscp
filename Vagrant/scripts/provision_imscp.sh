@@ -21,57 +21,10 @@ export LANG=C.UTF-8
 apt-get --assume-yes --no-install-recommends install ca-certificates \
 libnet-ip-perl libdata-validate-ip-perl perl
 
-# Create i-MSCP preseed file
-if [ -f /vagrant/preseed.pl ]; then
-    head -n -1 /vagrant/preseed.pl > /tmp/preseed.pl
-    cat <<'EOT' >> /tmp/preseed.pl
-use iMSCP::Debug qw/ output error /;
-use iMSCP::Net;
-
-unless($main::questions{'BASE_SERVER_IP'} eq 'None') {
-    my $net = iMSCP::Net->getInstance();
-    my @serverIPs = reverse sort grep {
-        $net->getAddrVersion( $_ ) ne 'ipv6' && $net->getAddrType( $_ ) =~ /^(?:PRIVATE|PUBLIC)$/o;
-    } $net->getAddresses();
-    unless ( @serverIPs ) {
-        error( "Couldn't get list of server IP addresses. At least one IP address must be configured." );
-        exit 1;
-    }
-
-    $main::questions{'BASE_SERVER_IP'} = $main::questions{'BASE_SERVER_PUBLIC_IP'} = $serverIPs[0];
-    print output("Vagrant Box IP address has been set to: $main::questions{'BASE_SERVER_IP'}", 'info');
-}
-
-1;
-EOT
-else
- echo "The i-MSCP preseed.pl file has not been found. Please create it first."
- exit 1
-fi
+# Make sure that /vagrant/preseed.pl is owned by root user
+# and that it is not world-readable
+chown root:root /vagrant/preseed.pl
+chmod 0640 /vagrant/preseed.pl
 
 # Run i-MSCP installer using preconfiguration file
-perl /usr/local/src/imscp/imscp-autoinstall --debug --verbose --preseed /tmp/preseed.pl
-
-SERVER_PUBLIC_IP_ADDR=$(hostname -i 2>/dev/null)
-
-if [ "$SERVER_PUBLIC_IP_ADDR" = "0.0.0.0" ]; then
-cat << EOT
-You can SSH into your i-MSCP Vagrant box as follows:
-
-    vagrant ssh <vagrant_box_name>
-EOT
-else
-cat << EOT
-You can SSH into your i-MSCP Vagrant box as follows:
-
-    ssh vagrant@$SERVER_PUBLIC_IP_ADDR
-
-with 'vagrant' as password.
-EOT
-fi
-
-cat << EOT
-
-If you want use that Vagrant box for production, don't forget to remove the
-/vagrant directory and /tmp/preseed.pl file.
-EOT
+perl /usr/local/src/imscp/imscp-autoinstall --debug --verbose --preseed /vagrant/preseed.pl

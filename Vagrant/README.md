@@ -10,7 +10,8 @@ This directory contains all you need to setup a
 - vagrant-reload Vagrant plugin
 - rsync
 
-Note that the documentation below assumes the VirtualBox Vagrant provider.
+Note that the documentation below assumes the
+[VirtualBox](https://www.vagrantup.com/docs/virtualbox/) Vagrant provider.
 
 ## Vagrant boxes
 
@@ -62,8 +63,17 @@ cp ../docs/preseed.pl .
 nano preseed.pl
 ```
 
-Be careful to fill up all required parameters. If one required parameter is
-missing, Vagrant box provisioning will fail.
+Be careful to fill up all required parameters. If one of required parameters is
+missing, provisioning of the Vagrant box will fail. Starting with i-MSCP 1.5.2,
+only the following parameters are mandatory:
+
+- `SQL_ROOT_USER`: SQL root username
+- `SQL_ROOT_PASSWORD`: SQL root user password
+- `ADMIN_PASSWORD`: Master administrator password
+- `DEFAULT_ADMIN_ADDRESS`: Master administrator email address
+
+For all other parameters, the installer will make use of default values. Please
+consult the [preseed.pl](../docs/preseed.pl) template file for further details.
 
 ## Creating the Vagrant box
 
@@ -89,7 +99,7 @@ created.
 
 ## Login into Vagrant box
 
-You can login into the newly created VM as follows:
+You can login into the newly created Vagrant box as follows:
 
 ```
 cd <imscp_archive_dir>/Vagrant
@@ -118,4 +128,4 @@ service keyboard-setup restart
 udevadm trigger --subsystem-match=input --action=change
 ```
 
-Then once done, reboot the VM.
+Then once done, reboot the Vagrant box.

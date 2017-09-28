@@ -31,6 +31,7 @@ use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
+use iMSCP::Getopt;
 use iMSCP::Net;
 use iMSCP::ProgramFinder;
 use iMSCP::Service;
@@ -86,23 +87,23 @@ sub askDnsServerMode
 {
     my ($self, $dialog) = @_;
 
-    my $dnsServerMode = main::setupGetQuestion( 'BIND_MODE', $self->{'config'}->{'BIND_MODE'} );
-    my $rs = 0;
+    my $dnsServerMode = main::setupGetQuestion(
+        'BIND_MODE', $self->{'config'}->{'BIND_MODE'} || ( iMSCP::Getopt->preseed ? 'master' : '' )
+    );
 
-    if ( $main::reconfigure =~ /^(?:named|servers|all|forced)$/ || $dnsServerMode !~ /^(?:master|slave)$/ ) {
-        ( $rs, $dnsServerMode ) = $dialog->radiolist(
+    if ( $main::reconfigure =~ /^(?:named|servers|all|forced)$/
+        || $dnsServerMode !~ /^(?:master|slave)$/
+    ) {
+        ( my $rs, $dnsServerMode ) = $dialog->radiolist(
             <<"EOF", [ 'master', 'slave' ], $dnsServerMode eq 'slave' ? 'slave' : 'master' );
 
-Select DNS server type to configure
+Please select the DNS server type to configure
 EOF
+        return $rs unless $rs < 30;
     }
 
-    if ( $rs < 30 ) {
-        $self->{'config'}->{'BIND_MODE'} = $dnsServerMode;
-        $rs = $self->askDnsServerIps( $dialog );
-    }
-
-    $rs;
+    $self->{'config'}->{'BIND_MODE'} = $dnsServerMode;
+    $self->askDnsServerIps( $dialog );
 }
 
 =item askDnsServerIps( \%dialog )
@@ -119,37 +120,45 @@ sub askDnsServerIps
     my ($self, $dialog) = @_;
 
     my $dnsServerMode = $self->{'config'}->{'BIND_MODE'};
-
-    my @masterDnsIps = split ';', main::setupGetQuestion( 'PRIMARY_DNS', $self->{'config'}->{'PRIMARY_DNS'} );
-    my @slaveDnsIps = split ';', main::setupGetQuestion( 'SECONDARY_DNS', $self->{'config'}->{'SECONDARY_DNS'} );
-
+    my @masterDnsIps = split ';', main::setupGetQuestion(
+            'PRIMARY_DNS', $self->{'config'}->{'PRIMARY_DNS'} || ( iMSCP::Getopt->preseed ? 'no' : '' )
+        );
+    my @slaveDnsIps = split ';', main::setupGetQuestion(
+            'SECONDARY_DNS', $self->{'config'}->{'SECONDARY_DNS'} || ( iMSCP::Getopt->preseed ? 'no' : '' )
+        );
     my ($rs, $answer, $msg) = ( 0, '', '' );
 
     if ( $dnsServerMode eq 'master' ) {
-        if ( $main::reconfigure =~ /^(?:named|servers|all|forced)$/ || "@slaveDnsIps" eq ''
+        if ( $main::reconfigure =~ /^(?:named|servers|all|forced)$/
+            || "@slaveDnsIps" eq ''
             || ( "@slaveDnsIps" ne 'no' && !$self->_checkIps( @slaveDnsIps ) )
         ) {
             ( $rs, $answer ) = $dialog->radiolist(
                 <<"EOF", [ 'no', 'yes' ], grep($_ eq "@slaveDnsIps", ( '', 'no' )) ? 'no' : 'yes' );
 
-Do you want add slave DNS servers?
+Do you want to add slave DNS servers?
 EOF
             if ( $rs < 30 && $answer eq 'yes' ) {
                 @slaveDnsIps = () if "@slaveDnsIps" eq 'no';
 
                 do {
                     ( $rs, $answer ) = $dialog->inputbox( <<"EOF", "@slaveDnsIps" );
-
-Please enter IP addresses for the slave DNS servers, each separated by a space:$msg
+$msg
+Please enter the IP addresses for the slave DNS servers, each separated by a space:
 EOF
                     $msg = '';
                     if ( $rs < 30 ) {
-                        @slaveDnsIps = split ' ', $answer;
+                        @slaveDnsIps = split /\s+/, $answer;
 
                         if ( "@slaveDnsIps" eq '' ) {
-                            $msg = "\n\n\\Z1You must enter at least one IP address.\\Zn\n\nPlease try again:";
+                            $msg = <<"EOF";
+\\Z1You must enter at least one IP address.\\Zn                         
+EOF
+
                         } elsif ( !$self->_checkIps( @slaveDnsIps ) ) {
-                            $msg = "\n\n\\Z1Wrong or disallowed IP address found.\\Zn\n\nPlease try again:";
+                            $msg = <<"EOF"
+\\Z1Wrong or disallowed IP address found.\\Zn
+EOF
                         }
                     }
                 } while $rs < 30 && $msg;
@@ -157,24 +166,29 @@ EOF
                 @slaveDnsIps = ( 'no' );
             }
         }
-    } elsif ( $main::reconfigure =~ /^(?:named|servers|all|forced)$/ || grep($_ eq "@masterDnsIps", ( '', 'no' ))
+    } elsif ( $main::reconfigure =~ /^(?:named|servers|all|forced)$/
+        || grep($_ eq "@masterDnsIps", ( '', 'no' ))
         || !$self->_checkIps( @masterDnsIps )
     ) {
         @masterDnsIps = () if "@masterDnsIps" eq 'no';
 
         do {
             ( $rs, $answer ) = $dialog->inputbox( <<"EOF", "@masterDnsIps" );
-
-Please enter master DNS server IP addresses, each separated by space:$msg
+$msg
+Please enter the IP addresses for the master DNS server, each separated by space:
 EOF
             $msg = '';
             if ( $rs < 30 ) {
-                @masterDnsIps = split ' ', $answer;
+                @masterDnsIps = split /\s+/, $answer;
 
                 if ( "@masterDnsIps" eq '' ) {
-                    $msg = "\n\n\\Z1You must enter a least one IP address.\\Zn\n\nPlease try again:";
+                    $msg = <<"EOF";
+\\Z1You must enter a least one IP address.\\Zn
+EOF
                 } elsif ( !$self->_checkIps( @masterDnsIps ) ) {
-                    $msg = "\n\n\\Z1Wrong or disallowed IP address found.\\Zn\n\nPlease try again:";
+                    $msg = <<"EOF";
+\\Z1Wrong or disallowed IP address found.\\Zn
+EOF
                 }
             }
         } while $rs < 30 && $msg;
@@ -211,18 +225,22 @@ sub askIPv6Support
         return 0;
     }
 
-    my $ipv6 = main::setupGetQuestion( 'BIND_IPV6', $self->{'config'}->{'BIND_IPV6'} );
-    my $rs = 0;
+    my $ipv6 = main::setupGetQuestion(
+        'BIND_IPV6', $self->{'config'}->{'BIND_IPV6'} || ( iMSCP::Getopt->preseed ? 'no' : '' )
+    );
 
-    if ( $main::reconfigure =~ /^(?:named|servers|all|forced)$/ || $ipv6 !~ /^(?:yes|no)$/ ) {
-        ( $rs, $ipv6 ) = $dialog->radiolist( <<"EOF", [ 'yes', 'no' ], $ipv6 eq 'yes' ? 'yes' : 'no' );
+    if ( $main::reconfigure =~ /^(?:named|servers|all|forced)$/
+        || $ipv6 !~ /^(?:yes|no)$/
+    ) {
+        ( my $rs, $ipv6 ) = $dialog->radiolist( <<"EOF", [ 'yes', 'no' ], $ipv6 eq 'yes' ? 'yes' : 'no' );
 
-Do you want enable IPv6 support for your DNS server?
+Do you want to enable IPv6 support for the DNS server?
 EOF
+        return $rs unless $rs < 30;
     }
 
-    $self->{'config'}->{'BIND_IPV6'} = $ipv6 if $rs < 30;
-    $rs;
+    $self->{'config'}->{'BIND_IPV6'} = $ipv6;
+    0;
 }
 
 =item askLocalDnsResolver( \%dialog )
@@ -238,19 +256,23 @@ sub askLocalDnsResolver
 {
     my ($self, $dialog) = @_;
 
-    my $localDnsResolver = main::setupGetQuestion( 'LOCAL_DNS_RESOLVER', $self->{'config'}->{'LOCAL_DNS_RESOLVER'} );
-    my $rs = 0;
+    my $localDnsResolver = main::setupGetQuestion(
+        'LOCAL_DNS_RESOLVER', $self->{'config'}->{'LOCAL_DNS_RESOLVER'} || ( iMSCP::Getopt->preseed ? 'yes' : '' )
+    );
 
-    if ( $main::reconfigure =~ /^(?:resolver|named|all|forced)$/ || $localDnsResolver !~ /^(?:yes|no)$/ ) {
-        ( $rs, $localDnsResolver ) = $dialog->radiolist(
+    if ( $main::reconfigure =~ /^(?:resolver|named|all|forced)$/
+        || $localDnsResolver !~ /^(?:yes|no)$/
+    ) {
+        ( my $rs, $localDnsResolver ) = $dialog->radiolist(
             <<"EOF", [ 'yes', 'no' ], $localDnsResolver ne 'no' ? 'yes' : 'no' );
 
-Do you want use the local DNS resolver?
+Do you want to use the local DNS resolver?
 EOF
+        return $rs unless $rs < 30;
     }
 
-    $self->{'config'}->{'LOCAL_DNS_RESOLVER'} = $localDnsResolver if $rs < 30;
-    $rs;
+    $self->{'config'}->{'LOCAL_DNS_RESOLVER'} = $localDnsResolver;
+    0;
 }
 
 =item install( )
@@ -414,9 +436,11 @@ sub _buildConf
         $tplContent =~ s/RESOLVCONF=(?:no|yes)/RESOLVCONF=$self->{'config'}->{'LOCAL_DNS_RESOLVER'}/i;
 
         # Fix for #IP-1333
+        # See also: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=744304
         my $serviceMngr = iMSCP::Service->getInstance();
         if ( $serviceMngr->isSystemd() ) {
             if ( $self->{'config'}->{'LOCAL_DNS_RESOLVER'} eq 'yes' ) {
+                # Service will be started automatically when Bind9 will be restarted
                 $serviceMngr->enable( 'bind9-resolvconf' );
             } else {
                 $serviceMngr->stop( 'bind9-resolvconf' );

@@ -58,7 +58,7 @@ $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
 # Set backend mode
-$main::execmode = 'uninstall' unless defined $main::execmode;;
+$main::execmode = 'uninstall' unless defined $main::execmode;
 
 newDebug( 'imscp-uninstall.log' );
 
@@ -258,7 +258,7 @@ sub _uninstallServices
             return $rs if $rs;
         }
 
-        if ( "/lib/systemd/system/$service.service" ) {
+        if ( -f "/lib/systemd/system/$service.service" ) {
             $serviceMngr->enable( $service ) if $serviceMngr->isSystemd();
         }
     }
