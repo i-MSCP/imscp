@@ -10,13 +10,7 @@
     #
     # Parameters below must be filled. There is no default value for them.
 
-    # SQL root user (mandatory)
-    #
-    # This SQL user must have full privileges on the SQL server.
-    # Note that this user used only while i-MSCP installation/reconfiguration.
-    #
-    # Leave empty for default (root).
-    SQL_ROOT_USER                       => '',
+    # SQL user root password
     SQL_ROOT_PASSWORD                   => '',
 
     # Panel administrator password
@@ -96,7 +90,15 @@
     # for available options.
     #
     # Leave empty for default: Depend on distribution and codename.
-    SQL_SERVER                          => '',
+    SQL_SERVER                          => 'mariadb_10.2',
+
+    # SQL root user (mandatory)
+    #
+    # This SQL user must have full privileges on the SQL server.
+    # Note that this user used only while i-MSCP installation/reconfiguration.
+    #
+    # Leave empty for default (root).
+    SQL_ROOT_USER                       => '',
 
     # Database name
     #

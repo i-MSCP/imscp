@@ -67,7 +67,6 @@ Be careful to fill up all required parameters. If one of required parameters is
 missing, provisioning of the Vagrant box will fail. Starting with i-MSCP 1.5.2,
 only the following parameters are mandatory:
 
-- `SQL_ROOT_USER`: SQL root username
 - `SQL_ROOT_PASSWORD`: SQL root user password
 - `ADMIN_PASSWORD`: Master administrator password
 - `DEFAULT_ADMIN_ADDRESS`: Master administrator email address

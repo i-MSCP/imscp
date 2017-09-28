@@ -390,8 +390,6 @@ sub _askSqlRootUser
     my $pwd = main::setupGetQuestion( 'SQL_ROOT_PASSWORD' );
 
     if ( $hostname eq 'localhost' ) {
-        # If authentication is made through unix socket, password is normally not required.
-        # We try a connect without password with 'root' as user and we return on success
         for( 'localhost', '127.0.0.1' ) {
             next if $self->_tryDbConnect( $_, $port, $user, $pwd );
             main::setupSetQuestion( 'DATABASE_HOST', $_ );
@@ -902,6 +900,7 @@ sub _setupIsImscpDb
 
  Try database connection
 
+ Return int 0 on success, other on failure
 =cut
 
 sub _tryDbConnect
@@ -914,7 +913,7 @@ sub _tryDbConnect
     defined $pwd or die( '$pwd parameter is not defined' );
 
     my $db = iMSCP::Database->factory();
-    $db->set( 'DATABASE_HOST', idn_to_ascii( $host, 'utf-8' ));
+    $db->set( 'DATABASE_HOST', idn_to_ascii( $host, 'utf-8' ) // '' );
     $db->set( 'DATABASE_PORT', $port );
     $db->set( 'DATABASE_USER', $user );
     $db->set( 'DATABASE_PASSWORD', $pwd );
