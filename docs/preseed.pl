@@ -16,13 +16,13 @@
     # Note that this user used only while i-MSCP installation/reconfiguration.
     #
     # Leave empty for default (root).
-    SQL_ROOT_USER                       => 'root',
-    SQL_ROOT_PASSWORD                   => 'skittles',
+    SQL_ROOT_USER                       => '',
+    SQL_ROOT_PASSWORD                   => '',
 
     # Panel administrator password
     #
     # Only ASCII alphabet characters and numbers are allowed in password.
-    ADMIN_PASSWORD                      => 'skittles',
+    ADMIN_PASSWORD                      => '',
 
     # System administrator email address
     #
@@ -30,7 +30,7 @@
     #
     # Bear mind that mails sent to local root user will be forwarded to that
     # email.
-    DEFAULT_ADMIN_ADDRESS               => 'l.declercq@nuxwin.com',
+    DEFAULT_ADMIN_ADDRESS               => '',
 
     # Optional parameters
     #
