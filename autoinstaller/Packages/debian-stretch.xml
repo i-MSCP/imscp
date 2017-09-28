@@ -289,14 +289,7 @@
                 pinning_pin_priority="1001"
                 allow_switch="remote_server"
         >
-            <package
-                    comment="See https://jira.mariadb.org/browse/MDEV-13615"
-                    pinning_package="libmariadbclient18"
-                    pinning_pin="release o=Debian,n=stretch"
-                    pinning_pin_priority="1002"
-            >
-                libmariadbclient18
-            </package>
+            <package>libmariadbclient18</package>
             <package>mariadb-client-10.2</package>
             <package>mariadb-common</package>
             <package pre_install_tasks="/bin/mkdir -p /etc/mysql/mariadb.conf.d">mariadb-server-10.2</package>
