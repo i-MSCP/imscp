@@ -40,7 +40,7 @@ For instance:
 
 File `/etc/apache2/imscp/domain.tld.conf`:
 
-```
+```apache
 # Custom Apache configuration for domain.tld
 #
 # Any changes made to this file will be preserved on update.
