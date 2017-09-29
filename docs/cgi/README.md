@@ -34,7 +34,7 @@ CGI script examples:
 By default, CGI scripts located into the htdocs directory of a Web folder won't
 be executed. If a customer want execute CGI scripts that are located in the
 htdocs directory, the system administrator must add the following configuration
-snippet into the customer customer domain Apache2 configuration file.
+snippet into the customer custom domain Apache2 configuration file.
 
 For instance:
 
