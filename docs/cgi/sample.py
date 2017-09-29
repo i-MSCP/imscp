@@ -1,10 +1,15 @@
 #!/usr/bin/python
 
-print 'Content-type: text/html'
-print
-print '<html><head>'
-print '<title>Hello, world!</title>'
-print '</head>'
-print '<body>'
-print '<h1>Hello, world!</h1>'
-print '</body></html>'
+print("""\
+Content-Type: text/html
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Hello, world!</title>
+    </head>
+<body>
+    <h1>Hello, world!</h1>
+</body>
+</html>
+""")
