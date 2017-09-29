@@ -29,12 +29,12 @@ CGI script examples:
 - [Python](sample.py)
 - [Ruby](sample.rb)
 
-## CGI in htdocs directory
+## CGI scripts in htdocs directory
 
 By default, CGI scripts located into the htdocs directory of a Web folder won't
 be executed. If a customer want execute CGI scripts that are located in the
-htdocs directory, the system administrator must add the following configuration
-snippet into the customer custom domain Apache2 configuration file.
+htdocs directory, the system administrator must add a configuration snippet
+into the customer custom domain Apache2 configuration file.
 
 For instance:
 
