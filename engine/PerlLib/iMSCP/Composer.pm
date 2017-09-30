@@ -85,7 +85,7 @@ sub _init
     $self->{'composer_version'} = '1.5.2'; # Make sure to work with a well-known composer version
     $self->{'packages'} = [];
     $self->{'packages_dir'} = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages";
-    $self->{'su_cmd'} = [ 'su', '-l', $main::imscpConfig{'IMSCP_USER'}, '-s', '/bin/sh', '-c' ];
+    $self->{'su_cmd'} = [ '/bin/su', '-l', $main::imscpConfig{'IMSCP_USER'}, '-s', '/bin/sh', '-c' ];
     $self->{'php_cmd'} = "/usr/bin/php -d date.timezone=$main::imscpConfig{'TIMEZONE'} -d allow_url_fopen=1 "
         . "-d suhosin.executor.include.whitelist=phar";
 
@@ -115,7 +115,7 @@ sub _init
 
             my $rs = step(
                 sub { $self->_installComposer(); },
-                "Installing composer.phar ($self->{'composer_version'}) from http://getcomposer.org", 3, 1
+                "Installing composer.phar ($self->{'composer_version'}) from https://getcomposer.org", 3, 1
             );
             $rs ||= step(
                 sub { iMSCP::Getopt->skipPackageUpdate ? $self->_checkRequirements() : 0; },
@@ -160,7 +160,7 @@ sub _installComposer
         return 0;
     }
 
-    my $msgHeader = "Installing composer.phar from http://getcomposer.org\n\n";
+    my $msgHeader = "Installing composer.phar from https://getcomposer.org\n\n";
     my $msgFooter = "\nDepending on your connection, this may take few seconds...";
     my ($rs, $stderr) = ( 0, undef );
 
@@ -179,7 +179,7 @@ sub _installComposer
 
     $rs ||= executeNoWait(
         [
-            @{$self->{'su_cmd'}}, "/usr/bin/curl -s http://getcomposer.org/installer | $self->{'php_cmd'} --"
+            @{$self->{'su_cmd'}}, "/usr/bin/curl -s https://getcomposer.org/installer | $self->{'php_cmd'} --"
                 . " --version=$self->{'composer_version'}"
         ],
         ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
