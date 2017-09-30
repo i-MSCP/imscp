@@ -21,10 +21,6 @@ export LANG=C.UTF-8
 # boxes
 dpkg --remove-architecture i386 2>/dev/null
 
-# Remove unwanted packages that are installed in some Vagrant boxes
-apt-get --assume-yes purge cloud-init cloud-guest-utils
-rm -Rf /etc/cloud /var/lib/cloud
-
 # Make sure that the distribution is up-to-date
 apt-get update
 apt-get --assume-yes --no-install-recommends dist-upgrade

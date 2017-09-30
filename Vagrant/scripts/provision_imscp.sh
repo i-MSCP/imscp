@@ -21,10 +21,28 @@ export LANG=C.UTF-8
 apt-get --assume-yes --no-install-recommends install ca-certificates \
 libnet-ip-perl libdata-validate-ip-perl perl
 
-# Make sure that /vagrant/preseed.pl is owned by root user
-# and that it is not world-readable
-chown root:root /vagrant/preseed.pl
-chmod 0640 /vagrant/preseed.pl
+# Create i-MSCP preseed file
+if [ -f /vagrant/preseed.pl ]; then
+    head -n -1 /vagrant/preseed.pl > /tmp/preseed.pl
+    cat <<'EOT' >> /tmp/preseed.pl
+
+unless($main::questions{'BASE_SERVER_IP'} eq 'None') {
+    require iMSCP::Net;
+    my $net = iMSCP::Net->getInstance();
+    my @serverIPs = reverse sort grep {
+        $net->getAddrVersion( $_ ) ne 'ipv6' && $net->getAddrType( $_ ) =~ /^(?:PRIVATE|PUBLIC)$/o;
+    } $net->getAddresses();
+
+    @serverIPs or die( "Couldn't get list of server IP addresses. At least one IP address must be configured." );
+    $main::questions{'BASE_SERVER_IP'} = $serverIPs[0];
+}
+
+1;
+EOT
+else
+ echo "The i-MSCP preseed.pl file has not been found. Please create it first."
+ exit 1
+fi
 
 # Run i-MSCP installer using preconfiguration file
-perl /usr/local/src/imscp/imscp-autoinstall --debug --verbose --preseed /vagrant/preseed.pl
+perl /usr/local/src/imscp/imscp-autoinstall --debug --verbose --preseed /tmp/preseed.pl
