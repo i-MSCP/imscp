@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-24 20:46+0000\n"
+"POT-Creation-Date: 2017-09-30 00:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: krok <krok@totalynet.fr>, 2017\n"
 "Language-Team: French (France) (https://www.transifex.com/i-mscp/teams/576/fr_FR/)\n"
@@ -2777,15 +2777,6 @@ msgstr ""
 "Caractère invalide trouvé dans le champ '%s'. Seuls les caractères "
 "imprimable ASCII et les retour à la ligne sont autorisés."
 
-msgid "Invalid city."
-msgstr "Ville incorrecte."
-
-msgid "Invalid company."
-msgstr "Nom d'entreprise incorrect."
-
-msgid "Invalid country."
-msgstr "Pays incorrect."
-
 msgid "Invalid domain name."
 msgstr "Nom de domaine invalide."
 
@@ -2799,17 +2790,11 @@ msgstr "Nom de compte de messagerie invalide."
 msgid "Invalid field: %s"
 msgstr "Champ incorrect: %s"
 
-msgid "Invalid first name."
-msgstr "Prénom incorrect."
-
 msgid "Invalid gender."
 msgstr "Sex incorrect."
 
 msgid "Invalid group name!"
 msgstr "Nom du groupe invalide !"
-
-msgid "Invalid last name."
-msgstr "Nom incorrect."
 
 msgid "Invalid menu order."
 msgstr "Ordre du menu invalide."
@@ -2834,23 +2819,11 @@ msgstr "Clé ou mot de passe invalide."
 msgid "Invalid service name: %s"
 msgstr "Nom de service invalide: %s"
 
-msgid "Invalid state/province."
-msgstr "Région invalide."
-
-msgid "Invalid street 1."
-msgstr "Rue 1 incorrecte."
-
-msgid "Invalid street 2."
-msgstr "Rue 2 incorrecte."
-
 msgid "Invalid target."
 msgstr "Cible invalide"
 
 msgid "Invalid username."
 msgstr "Le nom d'utilisateur n'est pas valide."
-
-msgid "Invalid zipcode."
-msgstr "Code postal incorrect."
 
 msgid "Kernel Version"
 msgstr "Version du noyau"

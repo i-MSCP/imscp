@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-24 20:46+0000\n"
+"POT-Creation-Date: 2017-09-30 00:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Tommaso <redmail@hotmail.it>, 2017\n"
 "Language-Team: Italian (Italy) (https://www.transifex.com/i-mscp/teams/576/it_IT/)\n"
@@ -2762,15 +2762,6 @@ msgstr ""
 "Carattere non valido trovato nel campo '%s' . Sono consentiti solo caratteri"
 " ASCII stampabili e interruzioni di riga."
 
-msgid "Invalid city."
-msgstr "Città non valida"
-
-msgid "Invalid company."
-msgstr "Nome azienda non valido"
-
-msgid "Invalid country."
-msgstr "Nazione non valida"
-
 msgid "Invalid domain name."
 msgstr "Nome dominio non valido."
 
@@ -2784,17 +2775,11 @@ msgstr "Email utente non valido."
 msgid "Invalid field: %s"
 msgstr "Campo %s non valido."
 
-msgid "Invalid first name."
-msgstr "Nome non valido."
-
 msgid "Invalid gender."
 msgstr "Sesso non valido"
 
 msgid "Invalid group name!"
 msgstr "Nome gruppo non valido!"
-
-msgid "Invalid last name."
-msgstr "Cognome non valido"
 
 msgid "Invalid menu order."
 msgstr "Ordine del menù non valido."
@@ -2819,23 +2804,11 @@ msgstr "Private key o passphrase non valida"
 msgid "Invalid service name: %s"
 msgstr "Il nome '%s' non è un nome di servizio valido."
 
-msgid "Invalid state/province."
-msgstr "Stato/provincia non valido"
-
-msgid "Invalid street 1."
-msgstr "Indirizzo 1 non valido"
-
-msgid "Invalid street 2."
-msgstr "Indirizzo 2 non valido."
-
 msgid "Invalid target."
 msgstr "Obiettivo non valido."
 
 msgid "Invalid username."
 msgstr "Nome utente non valido."
-
-msgid "Invalid zipcode."
-msgstr "Cap non valido"
 
 msgid "Kernel Version"
 msgstr "Versione del kernel"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-24 20:46+0000\n"
+"POT-Creation-Date: 2017-09-30 00:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/i-mscp/teams/576/zh_TW/)\n"
@@ -2658,15 +2658,6 @@ msgid ""
 "and line breaks are allowed."
 msgstr "在'%s'字段中找到无效的字符。 只允许可打印的ASCII字符和换行符。"
 
-msgid "Invalid city."
-msgstr "無效城市。"
-
-msgid "Invalid company."
-msgstr "無效公司。"
-
-msgid "Invalid country."
-msgstr "無效國家。"
-
 msgid "Invalid domain name."
 msgstr "無效的網域名稱。"
 
@@ -2680,17 +2671,11 @@ msgstr "無效的郵件使用者名稱。"
 msgid "Invalid field: %s"
 msgstr "無效欄位: %s"
 
-msgid "Invalid first name."
-msgstr "無效的名字。"
-
 msgid "Invalid gender."
 msgstr "無效的性別。"
 
 msgid "Invalid group name!"
 msgstr "無效的群組名稱！"
-
-msgid "Invalid last name."
-msgstr "無效的姓氏。"
 
 msgid "Invalid menu order."
 msgstr "無效的選單訂購。"
@@ -2715,23 +2700,11 @@ msgstr "無效的私鑰或密碼。"
 msgid "Invalid service name: %s"
 msgstr "無效的服務名稱: %s"
 
-msgid "Invalid state/province."
-msgstr "無效的州/區域。"
-
-msgid "Invalid street 1."
-msgstr "無效的街 1."
-
-msgid "Invalid street 2."
-msgstr "無效的街 2."
-
 msgid "Invalid target."
 msgstr "不正確的目標。"
 
 msgid "Invalid username."
 msgstr "不正確的使用者名稱。"
-
-msgid "Invalid zipcode."
-msgstr "無效的郵遞區號。"
 
 msgid "Kernel Version"
 msgstr "核心版本"

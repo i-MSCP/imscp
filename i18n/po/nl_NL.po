@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-24 20:46+0000\n"
+"POT-Creation-Date: 2017-09-30 00:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Dutch (Netherlands) (https://www.transifex.com/i-mscp/teams/576/nl_NL/)\n"
@@ -2731,15 +2731,6 @@ msgstr ""
 "Ongeldig(e) teken(s) ingevoerd in het '%s'-veld. Enkel ASCII-tekens en "
 "lijnonderbrekingen mogen gebruikt worden."
 
-msgid "Invalid city."
-msgstr "Plaats ongeldig"
-
-msgid "Invalid company."
-msgstr "Bedrijf ongeldig"
-
-msgid "Invalid country."
-msgstr "Land ongeldig"
-
 msgid "Invalid domain name."
 msgstr "Ongeldige domeinnaam."
 
@@ -2753,17 +2744,11 @@ msgstr "Foutieve e-mailgebruikersnaam"
 msgid "Invalid field: %s"
 msgstr "%s ongeldig"
 
-msgid "Invalid first name."
-msgstr "Voornaam ongeldig"
-
 msgid "Invalid gender."
 msgstr "Geslacht ongeldig"
 
 msgid "Invalid group name!"
 msgstr "Ongeldige groepsnaam!"
-
-msgid "Invalid last name."
-msgstr "Achternaam ongeldig"
 
 msgid "Invalid menu order."
 msgstr "Ongeldige menuvolgorde."
@@ -2788,23 +2773,11 @@ msgstr "Ongeldige privésleutel of wachtwoordzin."
 msgid "Invalid service name: %s"
 msgstr "Servicenaam foutief: %s"
 
-msgid "Invalid state/province."
-msgstr "Foutieve Staat/provincie"
-
-msgid "Invalid street 1."
-msgstr "Foutief straatadres (1)"
-
-msgid "Invalid street 2."
-msgstr "Foutief straatadres (2)"
-
 msgid "Invalid target."
 msgstr "Doel is ongeldig"
 
 msgid "Invalid username."
 msgstr "Ongeldige gebruikersnaam."
-
-msgid "Invalid zipcode."
-msgstr "Postcode ongeldig"
 
 msgid "Kernel Version"
 msgstr "Kernelversie"

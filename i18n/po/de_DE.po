@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-24 20:46+0000\n"
+"POT-Creation-Date: 2017-09-30 00:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: ssd63 <m.sauer@z63.de>, 2017\n"
 "Language-Team: German (Germany) (https://www.transifex.com/i-mscp/teams/576/de_DE/)\n"
@@ -2768,15 +2768,6 @@ msgstr ""
 "Ungültiges Zeichen im Feld '%s' gefunden. Nur druckbare ASCII-Zeichen und "
 "Zeilenumbrüche sind erlaubt."
 
-msgid "Invalid city."
-msgstr "Ungültige Stadt."
-
-msgid "Invalid company."
-msgstr "Ungültiger Firmenname."
-
-msgid "Invalid country."
-msgstr "Ungültiges Land."
-
 msgid "Invalid domain name."
 msgstr "Ungültiger Domain-Name"
 
@@ -2790,17 +2781,11 @@ msgstr "Falscher E-Mail Benutzername."
 msgid "Invalid field: %s"
 msgstr "Feld %s ungültig."
 
-msgid "Invalid first name."
-msgstr "Ungültiger Vorname."
-
 msgid "Invalid gender."
 msgstr "Ungültiges Geschlecht."
 
 msgid "Invalid group name!"
 msgstr "Ungültiger Gruppenname!"
-
-msgid "Invalid last name."
-msgstr "Ungültiger Nachname."
 
 msgid "Invalid menu order."
 msgstr "Ungültige Menüreihenfolge."
@@ -2825,23 +2810,11 @@ msgstr "Falscher Privater Schlüssel oder falsche Passphrase."
 msgid "Invalid service name: %s"
 msgstr "Ungültiger Dienst-Name %s"
 
-msgid "Invalid state/province."
-msgstr "Ungültiges Bundesland."
-
-msgid "Invalid street 1."
-msgstr "Ungültige Straße 1."
-
-msgid "Invalid street 2."
-msgstr "Ungültige Straße 2."
-
 msgid "Invalid target."
 msgstr "Ungültiges Ziel."
 
 msgid "Invalid username."
 msgstr "Ungültiger Benutzername."
-
-msgid "Invalid zipcode."
-msgstr "Ungültige Postleitzahl."
 
 msgid "Kernel Version"
 msgstr "Kernelversion"

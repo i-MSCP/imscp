@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-24 20:46+0000\n"
+"POT-Creation-Date: 2017-09-30 00:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Oleg Olegov <>, 2017\n"
 "Language-Team: Russian (Russia) (https://www.transifex.com/i-mscp/teams/576/ru_RU/)\n"
@@ -2734,15 +2734,6 @@ msgstr ""
 "Недопустимый символ, найденный в поле '%s'. Разрешены только печатные "
 "символы ASCII и разрывы строк."
 
-msgid "Invalid city."
-msgstr "Неверный город."
-
-msgid "Invalid company."
-msgstr "Неверная компания."
-
-msgid "Invalid country."
-msgstr "Неверная страна."
-
 msgid "Invalid domain name."
 msgstr "Неправильное имя домена."
 
@@ -2756,17 +2747,11 @@ msgstr "Неверное имя пользователя почтового ящ
 msgid "Invalid field: %s"
 msgstr "Неверное поле: %s"
 
-msgid "Invalid first name."
-msgstr "Неверное имя."
-
 msgid "Invalid gender."
 msgstr "Неверный пол."
 
 msgid "Invalid group name!"
 msgstr "Неправильное имя группы!"
-
-msgid "Invalid last name."
-msgstr "Неверная фамилия."
 
 msgid "Invalid menu order."
 msgstr "Неверный заказ меню."
@@ -2791,23 +2776,11 @@ msgstr "Неверный приватный ключ или пароль."
 msgid "Invalid service name: %s"
 msgstr "Недействительное название службы: %s"
 
-msgid "Invalid state/province."
-msgstr "Неверная область."
-
-msgid "Invalid street 1."
-msgstr "Неверная улица 1."
-
-msgid "Invalid street 2."
-msgstr "Неверная улица 2."
-
 msgid "Invalid target."
 msgstr "Неверная цель"
 
 msgid "Invalid username."
 msgstr "Неверное имя пользователя"
-
-msgid "Invalid zipcode."
-msgstr "Неверный почтовый индекс."
 
 msgid "Kernel Version"
 msgstr "Версия ядра"
