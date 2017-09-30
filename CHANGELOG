@@ -9,6 +9,7 @@ BACKEND
     Fixed: Couldn't restore SQL databases -- Can't locate object method "selectall_array" via package "DBI::db"
     Fixed: Couldn't restore uncompressed databases
     Fixed: Existence of network devices must be checked before operating on them (iMSCP::Net)
+    Fixed: Make sure to work with a well-known composer version (iMSCP::Composer)
     Fixed: Make use of the INADDR_ANY address, regadless of domain IP address when primary server IP is set with `None` option
     Security: Disallow connection to MySQL command-line tool without user password, even for root user
     Security: Don't store i-MSCP master SQL user data into the /etc/mysql/conf.d/imscp.cnf configuration file
