@@ -732,7 +732,7 @@ function gen_user_list(TemplateEngine $tpl)
         } elseif ($row['domain_status'] == 'disabled') {
             $class = 'i_disabled';
             $statusTooltip = tr('Click to unsuspend this customer account.');
-        } elseif (in_array($row['admin_status'], ['tochange', 'tochangepw'])
+        } elseif (in_array($row['admin_status'], ['tochange', 'tochangepwd'])
             || in_array($row['domain_status'], ['toadd', 'tochange', 'torestore', 'toenable', 'todisable', 'todelete'])
         ) {
             $class = 'i_reload';

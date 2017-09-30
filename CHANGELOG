@@ -40,6 +40,7 @@ FRONTEND
     Fixed: List of customers is truncated due to wrong template variable name in loop (Customer assignments feature)
     Fixed: Wrong alternative subject names in self-signed SSL certificates
     Fixed: Wrong order for parameters in mail delete.php (i18n -- client UI)
+    Fixed: Wrong status shown in administrator overview interface for customers when a password is being modified
     Fixed: Wrong value passed-in the `onBeforeEditUser' and `onAfterEditUser' events for the `admin_pass' parameter
 
 INSTALLER
