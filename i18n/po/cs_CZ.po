@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-30 00:47+0000\n"
+"POT-Creation-Date: 2017-10-01 16:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Jiří Vírava <appukonrad@gmail.com>, 2017\n"
 "Language-Team: Czech (Czech Republic) (https://www.transifex.com/i-mscp/teams/576/cs_CZ/)\n"
@@ -5069,9 +5069,6 @@ msgstr ""
 
 msgid "Wrong security code"
 msgstr "Chybný bezpečnostní kód"
-
-msgid "Wrong software id."
-msgstr "Chybné ID software"
 
 msgid "Wrong syntax for new expire date."
 msgstr ""

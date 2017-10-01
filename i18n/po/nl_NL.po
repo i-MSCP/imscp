@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-30 00:47+0000\n"
+"POT-Creation-Date: 2017-10-01 16:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Dutch (Netherlands) (https://www.transifex.com/i-mscp/teams/576/nl_NL/)\n"
@@ -5390,9 +5390,6 @@ msgstr "Verkeerd wederverkopersnummer."
 
 msgid "Wrong security code"
 msgstr "Verkeerde beveiligingscode"
-
-msgid "Wrong software id."
-msgstr "Verkeerde softwarenummer."
 
 msgid "Wrong syntax for new expire date."
 msgstr "Verkeerde syntaxis voor nieuwe vervaldatum."

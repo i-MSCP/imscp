@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-30 00:47+0000\n"
+"POT-Creation-Date: 2017-10-01 16:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: krok <krok@totalynet.fr>, 2017\n"
 "Language-Team: French (France) (https://www.transifex.com/i-mscp/teams/576/fr_FR/)\n"
@@ -5466,9 +5466,6 @@ msgstr "ID du revendeur incorrect."
 
 msgid "Wrong security code"
 msgstr "Code de sécurité erroné"
-
-msgid "Wrong software id."
-msgstr "Mauvais ID de logiciel."
 
 msgid "Wrong syntax for new expire date."
 msgstr "Syntaxe incorrect pour la nouvelle date d'expiration."
