@@ -234,7 +234,8 @@ sub dropUser
     defined $user or die( '$user parameter not defined' );
     defined $host or die( '$host parameter not defined' );
 
-    return 0 if $user =~ /^(?:debian-sys-maint|mysql\.sys|root)$/; # Prevent deletion of system SQL users
+    # Prevent deletion of system SQL users
+    return 0 if grep($_ eq $user, 'debian-sys-maint', 'mysql.sys', 'root');
 
     eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
