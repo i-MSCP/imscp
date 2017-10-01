@@ -290,7 +290,7 @@ abstract class iMSCP_Plugin
         );
 
         if ($stmt->rowCount()) {
-            $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $this->config = json_decode($row['plugin_config'], true);
             $this->configPrev = json_decode($row['plugin_config_prev'], true);
             $this->isLoadedConfig = true;

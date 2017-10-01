@@ -36,7 +36,7 @@ try {
     // Schedule deletion or update of any .htaccess files in which the htgroup was used
     $stmt = exec_query('SELECT * FROM htaccess WHERE dmn_id = ?', $domainId);
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $htgroupList = explode(',', $row['group_id']);
         $candidate = array_search($htgroupId, $htgroupList);
 

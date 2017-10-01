@@ -41,7 +41,7 @@ function updateUserData(Form $form, $userId)
 {
     $data = exec_query(
         'SELECT admin_name FROM admin WHERE admin_id = ? AND created_by = ?', [$userId, $_SESSION['user_id']]
-    )->fetchRow();
+    )->fetch();
 
     if (!$data) {
         showBadRequestErrorPage();
@@ -152,7 +152,7 @@ function generatePage(TemplateEngine $tpl, Form $form, $userId)
         [$userId, $_SESSION['user_id']]
     );
 
-    if (!($data = $stmt->fetchRow())) {
+    if (!($data = $stmt->fetch())) {
         showBadRequestErrorPage();
     }
 

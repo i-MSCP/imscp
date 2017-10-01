@@ -174,7 +174,7 @@ function addMailAccount()
 
             $customerMailboxesQuotaSumBytes = exec_query(
                 'SELECT IFNULL(SUM(quota), 0) FROM mail_users WHERE domain_id = ?', $mainDmnProps['domain_id']
-            )->fetchRow(PDO::FETCH_COLUMN);
+            )->fetch(PDO::FETCH_COLUMN);
 
             if ($customerMailboxesQuotaSumBytes >= $customerEmailQuotaLimitBytes) {
                 showBadRequestErrorPage(); # Customer should never goes here excepted if it try to bypass js code
@@ -300,7 +300,7 @@ function generatePage($tpl)
     $customerMailboxesQuotaSumBytes = exec_query(
         'SELECT IFNULL(SUM(quota), 0) FROM mail_users WHERE domain_id = ?',
         $mainDmnProps['domain_id']
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
     $customerEmailQuotaLimitBytes = filter_digits($mainDmnProps['mail_quota'], 0);
 
     if ($customerEmailQuotaLimitBytes < 1) {

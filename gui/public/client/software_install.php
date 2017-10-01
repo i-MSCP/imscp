@@ -99,7 +99,7 @@ function client_generatePage($tpl, $softwareId)
         throw new iMSCP_Exception('An unexpected error occurred. Please contact your reseller.');
     }
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
     get_software_props_install(
         $tpl, $domainProperties['domain_id'], $softwareId, $row['created_by'], $domainProperties['domain_sqld_limit']
     );
@@ -115,9 +115,7 @@ check_login('user');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 customerHasFeature('aps') or showBadRequestErrorPage();
 
-if (!isset($_GET['id']) || !is_number($_GET['id'])) {
-    showBadRequestErrorPage();
-}
+isset($_GET['id']) or showBadRequestErrorPage();
 
 $softwareId = intval($_GET['id']);
 
@@ -166,7 +164,7 @@ if (!empty($_POST)) {
         showBadRequestErrorPage();
     }
 
-    $softwareData = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $softwareData = $stmt->fetch(PDO::FETCH_ASSOC);
     $postData = explode(';', $_POST['selected_domain']);
 
     if (sizeof($postData) != 2) {
@@ -240,7 +238,7 @@ if (!empty($_POST)) {
             exit;
     }
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $installPath = utils_normalizePath($row['mpoint'] . '/htdocs/' . $otherDir);
     $error = false;
 
@@ -255,7 +253,7 @@ if (!empty($_POST)) {
         ]);
 
         if ($stmt->rowCount()) {
-            $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
             set_page_message(tr('Please select another directory. %s (%s) is installed there.', $row['software_name'], $row['software_version']), 'error');
             $error = true;
         }
@@ -299,13 +297,13 @@ if (!empty($_POST)) {
             set_page_message(tr("Unknown `%s' database. Database must exists.", $appDatabase), 'error');
             $error = true;
         } else {
-            $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             # Check that SQL user belongs to the given database
             $stmt = exec_query('SELECT COUNT(sqlu_id) FROM sql_user WHERE sqld_id = ? AND sqlu_name = ?', [
                 $row['sqld_id'], $appSqlUser
             ]);
-            if (!$stmt->fetchRow(PDO::FETCH_COLUMN)) {
+            if (!$stmt->fetch(PDO::FETCH_COLUMN)) {
                 set_page_message(tr('Invalid SQL user. SQL user must exists and belong to the provided database.'), 'error');
                 $error = true;
             } # Check database connection using provided SQL user/password

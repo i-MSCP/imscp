@@ -90,7 +90,7 @@ function showTicketContent($tpl, $ticketId, $userId)
         return false;
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     if ($row['ticket_status'] == 0) {
         $trAction = tr('Open ticket');
@@ -148,7 +148,7 @@ function updateTicket($ticketId, $userId, $urgency, $subject, $message, $ticketL
         return false;
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     try {
         /* Ticket levels:
@@ -255,7 +255,7 @@ function generateTicketList($tpl, $userId, $start, $count, $userLevel, $status)
         "
         ,
         [$userId, $userId]
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
 
     if ($rowsCount) {
         $stmt = exec_query(
@@ -292,7 +292,7 @@ function generateTicketList($tpl, $userId, $start, $count, $userLevel, $status)
             ]);
         }
 
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             if ($row['ticket_status'] == 1) {
                 $tpl->assign('TICKET_STATUS_VAL', tr('[New]'));
             } elseif (
@@ -402,7 +402,7 @@ function getTicketStatus($ticketId)
         return false;
     }
 
-    return $stmt->fetchRow(PDO::FETCH_COLUMN);
+    return $stmt->fetch(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -451,7 +451,7 @@ function getUserLevel($ticketId)
         return false;
     }
 
-    return $stmt->fetchRow(PDO::FETCH_COLUMN);
+    return $stmt->fetch(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -502,7 +502,7 @@ function _getTicketSender($ticketId)
         return false;
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     return $row['fname'] . ' ' . $row['lname'] . ' (' .
         (($row['admin_type'] == 'user') ? decode_idna($row['admin_name']) : $row['admin_name']) . ')';
@@ -526,7 +526,7 @@ function _ticketGetLastDate($ticketId)
         return tr('Never');
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
     return date(Registry::get('config')['DATE_FORMAT'], $row['ticket_date']);
 }
 
@@ -555,7 +555,7 @@ function _showTicketReplies($tpl, $ticketId)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'TICKET_FROM_VAL'    => _getTicketSender($row['ticket_id']),
             'TICKET_DATE_VAL'    => date(Registry::get('config')['DATE_FORMAT'] . ' (H:i)', $row['ticket_date']),
@@ -581,7 +581,7 @@ function _showTicketReplies($tpl, $ticketId)
 function sendTicketNotification($toId, $ticketSubject, $ticketMessage, $ticketStatus, $urgency)
 {
     $stmt = exec_query('SELECT admin_name, fname, lname, email, admin_name FROM admin WHERE admin_id = ?', $toId);
-    $toData = $stmt->fetchRow();
+    $toData = $stmt->fetch();
 
     if ($ticketStatus == 0) {
         $message = tr('Dear {NAME},

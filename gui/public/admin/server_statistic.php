@@ -55,7 +55,7 @@ function getServerTraffic($startDate, $endDate)
         return array_fill(0, 10, 0);
     }
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     return [
         $row['swbin'], $row['swbout'], $row['smbin'], $row['smbout'], $row['spbin'], $row['spbout'],
@@ -94,7 +94,7 @@ function generateServerStatsByDay(TemplateEngine $tpl, $day, $month, $year)
 
     $all = array_fill(0, 8, 0);
 
-    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $otherIn = $row['all_in'] - ($row['mail_in'] + $row['pop_in'] + $row['web_in']);
         $otherOut = $row['all_out'] - ($row['mail_out'] + $row['pop_out'] + $row['web_out']);
 
@@ -157,7 +157,7 @@ function generateServerStatsByMonth(TemplateEngine $tpl, $month, $year)
         [getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)]
     );
 
-    if ($stmt->fetchRow(PDO::FETCH_COLUMN) < 1) {
+    if ($stmt->fetch(PDO::FETCH_COLUMN) < 1) {
         set_page_message(tr('No statistics found for the given period. Try another period.'), 'static_info');
         $tpl->assign('SERVER_STATS_BY_MONTH', '');
         return;
@@ -233,7 +233,7 @@ function generatePage(TemplateEngine $tpl)
     $month = isset($_GET['month']) ? filter_digits($_GET['month']) : date('n');
     $year = isset($_GET['year']) ? filter_digits($_GET['year']) : date('Y');
     $stmt = exec_query('SELECT traff_time FROM server_traffic ORDER BY traff_time ASC LIMIT 1');
-    $nPastYears = $stmt->rowCount() ? date('Y') - date('Y', $stmt->fetchRow(PDO::FETCH_COLUMN)) : 0;
+    $nPastYears = $stmt->rowCount() ? date('Y') - date('Y', $stmt->fetch(PDO::FETCH_COLUMN)) : 0;
 
     generateDMYlists($tpl, $day, $month, $year, $nPastYears);
 

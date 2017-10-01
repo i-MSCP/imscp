@@ -199,12 +199,12 @@ function admin_getLogs()
 
         /* Data set length after filtering */
         $resultFilterTotal = execute_query('SELECT FOUND_ROWS()');
-        $resultFilterTotal = $resultFilterTotal->fetchRow(\PDO::FETCH_NUM);
+        $resultFilterTotal = $resultFilterTotal->fetch(\PDO::FETCH_NUM);
         $filteredTotal = $resultFilterTotal[0];
 
         /* Total data set length */
         $resultTotal = exec_query("SELECT COUNT($indexColumn) FROM $table");
-        $resultTotal = $resultTotal->fetchRow(\PDO::FETCH_NUM);
+        $resultTotal = $resultTotal->fetch(\PDO::FETCH_NUM);
         $total = $resultTotal[0];
 
         /* Output */
@@ -217,7 +217,7 @@ function admin_getLogs()
 
         $dateFormat = iMSCP_Registry::get('config')['DATE_FORMAT'] . ' H:i:s';
 
-        while ($data = $rResult->fetchRow(PDO::FETCH_ASSOC)) {
+        while ($data = $rResult->fetch(PDO::FETCH_ASSOC)) {
             $row = [];
 
             for ($i = 0; $i < $nbColumns; $i++) {

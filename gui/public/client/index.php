@@ -59,7 +59,7 @@ function gen_mail_quota_limit_mgs()
     $domainProps = get_domain_default_props($_SESSION['user_id']);
     $mailQuota = exec_query(
         'SELECT IFNULL(SUM(quota), 0) FROM mail_users WHERE domain_id = ?', $domainProps['domain_id']
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
 
     if ($domainProps['mail_quota'] == 0) {
         return bytesHuman($mailQuota) . ' / ∞';
@@ -78,7 +78,7 @@ function client_generateSupportSystemNotices()
     $ticketsCount = exec_query(
         "SELECT COUNT(ticket_id) FROM tickets WHERE ticket_from = ? AND ticket_status = '2' AND ticket_reply = '0'",
         $_SESSION['user_id']
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
 
     if ($ticketsCount) {
         set_page_message(

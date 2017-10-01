@@ -1351,7 +1351,7 @@ class iMSCP_Plugin_Manager
               ORDER BY plugin_priority DESC
             '
         );
-        while ($plugin = $stmt->fetchRow()) {
+        while ($plugin = $stmt->fetch()) {
             $this->pluginData[$plugin['plugin_name']] = [
                 'info'    => new iMSCP\Json\LazyDecoder($plugin['plugin_info']),
                 'status'  => $plugin['plugin_status'],

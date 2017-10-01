@@ -52,7 +52,7 @@ function debugger_getUserErrors($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'USER_MESSAGE' => '',
             'USER_NAME'    => tohtml(decode_idna($row['admin_name'])),
@@ -87,7 +87,7 @@ function debugger_getDmnErrors($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'DMN_MESSAGE' => '',
             'DMN_NAME'    => tohtml(decode_idna($row['domain_name'])),
@@ -123,7 +123,7 @@ function debugger_getAlsErrors($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'ALS_MESSAGE' => '',
             'ALS_NAME'    => tohtml(decode_idna($row['alias_name'])),
@@ -160,7 +160,7 @@ function debugger_getSubErrors($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'SUB_MESSAGE' => '',
             'SUB_NAME'    => tohtml(decode_idna($row['subdomain_name'] . '.' . $row['domain_name'])),
@@ -197,7 +197,7 @@ function debugger_getAlssubErrors($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'ALSSUB_MESSAGE' => '',
             'ALSSUB_NAME'    => tohtml(decode_idna($row['subdomain_alias_name'] . '.' . $row['alias_name'])),
@@ -233,7 +233,7 @@ function debugger_getCustomDNSErrors($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'CUSTOM_DNS_MESSAGE' => '',
             'CUSTOM_DNS_NAME'    => tohtml(decode_idna($row['domain_dns'])),
@@ -275,7 +275,7 @@ function debugger_getHtaccessErrors($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'HTACCESS_MESSAGE' => '',
             'HTACCESS_NAME'    => tohtml($row['name']),
@@ -312,7 +312,7 @@ function debugger_getFtpUserErrors($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'FTP_MESSAGE' => '',
             'FTP_NAME'    => tohtml(decode_idna($row['userid'])),
@@ -348,7 +348,7 @@ function debugger_getMailsErrors($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $searchedId = $row['domain_id'];
         $mailAcc = $row['mail_acc'];
         $mailType = $row['mail_type'];
@@ -401,7 +401,7 @@ function debugger_getMailsErrors($tpl)
                 throw new iMSCP_Exception('FIXME: ' . __FILE__ . ':' . __LINE__ . $mailType);
         }
 
-        $domainName = ltrim(exec_query($query, $searchedId)->fetchRow(PDO::FETCH_COLUMN), '@');
+        $domainName = ltrim(exec_query($query, $searchedId)->fetch(PDO::FETCH_COLUMN), '@');
         $tpl->assign([
             'MAIL_MESSAGE' => '',
             'MAIL_NAME'    => tohtml($mailAcc . '@' . (
@@ -437,7 +437,7 @@ function debugger_getIpErrors($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'IP_MESSAGE'  => '',
             'IP_NAME'     => tohtml((($row['ip_number'] == '0.0.0.0') ? tr('Any') : $row['ip_number'])

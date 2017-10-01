@@ -79,7 +79,7 @@ function generatePage(TemplateEngine $tpl)
 {
     $stmt = exec_query('SELECT admin_id FROM admin WHERE created_by = ?', $_SESSION['user_id']);
 
-    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         _generateUserStatistics($tpl, $row['admin_id']);
         $tpl->parse('USER_STATISTICS_ENTRY_BLOCK', '.user_statistics_entry_block');
     }

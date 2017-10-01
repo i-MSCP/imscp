@@ -115,7 +115,7 @@ function customerHasFeature($featureNames, $forceReload = false)
             $stmt = exec_query(
                 'SELECT support_system FROM reseller_props WHERE reseller_id = ?', $_SESSION['user_created_by']
             );
-            $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $availableFeatures['support'] = ($row['support_system'] == 'yes');
         } else {
             $availableFeatures['support'] = false;
@@ -307,7 +307,7 @@ function getDomainMountpoint($domainId, $domainType, $ownerId)
         throw new iMSCPException("Couldn't find domain data");
     }
 
-    return $stmt->fetchRow(PDO::FETCH_NUM);
+    return $stmt->fetch(PDO::FETCH_NUM);
 }
 
 /**
@@ -409,7 +409,7 @@ function deleteSubdomain($id)
         showBadRequestErrorPage();
     }
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $db = Database::getInstance();
 
@@ -435,7 +435,7 @@ function deleteSubdomain($id)
             $row['subdomain_name']
         );
         if ($stmt->rowCount()) {
-            $ftpGroupData = $stmt->fetchRow(PDO::FETCH_ASSOC);
+            $ftpGroupData = $stmt->fetch(PDO::FETCH_ASSOC);
             $members = array_filter(
                 preg_split('/,/', $ftpGroupData['members'], -1, PREG_SPLIT_NO_EMPTY),
                 function ($member) use ($row) {
@@ -529,7 +529,7 @@ function deleteSubdomainAlias($id)
         showBadRequestErrorPage();
     }
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $db = Database::getInstance();
 
     try {
@@ -554,7 +554,7 @@ function deleteSubdomainAlias($id)
             $row['subdomain_alias_name']
         );
         if ($stmt->rowCount()) {
-            $ftpGroupData = $stmt->fetchRow(PDO::FETCH_ASSOC);
+            $ftpGroupData = $stmt->fetch(PDO::FETCH_ASSOC);
             $members = array_filter(
                 preg_split('/,/', $ftpGroupData['members'], -1, PREG_SPLIT_NO_EMPTY),
                 function ($member) use ($row) {

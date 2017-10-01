@@ -350,7 +350,7 @@ class VirtualFileSystem
                 return false;
             }
 
-            $row = $stmt->fetchRow();
+            $row = $stmt->fetch();
             $this->passwd = Crypt::randomStr(16);
 
             exec_query(

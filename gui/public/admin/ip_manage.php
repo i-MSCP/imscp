@@ -96,7 +96,7 @@ function generateIpsList($tpl)
 {
     $assignedIps = [];
     $stmt = execute_query('SELECT reseller_ips FROM reseller_props');
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $resellerIps = explode(';', $row['reseller_ips'], -1);
         foreach ($resellerIps as $ipId) {
             if (!in_array($ipId, $assignedIps)) {
@@ -119,7 +119,7 @@ function generateIpsList($tpl)
         ? $net->compress($cfg['BASE_SERVER_IP'])
         : $cfg['BASE_SERVER_IP'];
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $ipAddr = ($net->getVersion($row['ip_number']) == 6) ? $net->compress($row['ip_number']) : $row['ip_number'];
 
         if ($baseServerIp === $ipAddr) {
@@ -275,7 +275,7 @@ function editIpAddr()
         }
 
         $net = Net::getInstance();
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
         $ipNetmask = isset($_POST['ip_netmask'])
             ? clean_input($_POST['ip_netmask'])
             : ($net->getIpPrefixLength($row['ip_number']) ?: ($row['ip_netmask'] ?: ($net->getVersion() == 4 ? 24 : 64)));
@@ -334,7 +334,7 @@ function addIpAddr()
 
     // Make sure that $ipAddr is not already under the control of i-MSCP
     $stmt = execute_query('SELECT ip_number FROM server_ips');
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $cIpaddr = ($net->getVersion($row['ip_number']) == 6) ? $net->compress($row['ip_number']) : $row['ip_number'];
         if ($cIpaddr === $ipAddr) {
             set_page_message(tr('IP address already under the control of i-MSCP.'), 'error');

@@ -68,7 +68,7 @@ function generateDomainsList($tpl)
         $_SESSION['user_id']
     );
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         list($redirectUrl, $editLink, $edit) = generateDomainRedirectAndEditLink($row['domain_id'], $row['domain_status'], $row['url_forward']);
         $domainName = decode_idna($row['domain_name']);
         $redirectUrl = decode_idna($redirectUrl);
@@ -220,7 +220,7 @@ function generateDomainAliasesList($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         list($action, $actionScript, $isStatusOk, $certText, $certScript) = generateDomainAliasAction(
             $row['alias_id'], $row['alias_status']
         );
@@ -407,7 +407,7 @@ function generateSubdomainsList($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         list($action, $actionScript, $isStatusOk, $certText, $certScript) = generateSubdomainAction(
             $row['subdomain_id'], $row['sub_type'], $row['subdomain_status']
         );
@@ -543,7 +543,7 @@ function generateCustomDnsRecordsList($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         list($actionEdit, $actionScriptEdit) = generateCustomDnsRecordAction(
             'edit', $row['domain_dns_id'], $row['domain_dns_status'], $row['owned_by']
         );

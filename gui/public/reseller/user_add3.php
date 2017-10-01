@@ -105,7 +105,7 @@ function addCustomer(Form $form)
         throw new iMSCPException(sprintf('Could not find IPs for reseller with ID %s', $_SESSION['user_id']));
     }
 
-    $resellerIps = $stmt->fetchRow();
+    $resellerIps = $stmt->fetch();
     $resellerIps = explode(';', rtrim($resellerIps['reseller_ips'], ';'));
     if (!in_array($domainIp, $resellerIps)) {
         showBadRequestErrorPage();
@@ -120,7 +120,7 @@ function addCustomer(Form $form)
         $stmt = exec_query('SELECT props FROM hosting_plans WHERE reseller_id = ? AND id = ?', [
             $_SESSION['user_id'], $hpId
         ]);
-        $data = $stmt->fetchRow();
+        $data = $stmt->fetch();
         $props = $data['props'];
     }
 

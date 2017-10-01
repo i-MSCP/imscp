@@ -54,7 +54,7 @@ function _reseller_getAliasData($domainAliasId)
             return false;
         }
 
-        $domainAliasData = $stmt->fetchRow(PDO::FETCH_ASSOC);
+        $domainAliasData = $stmt->fetch(PDO::FETCH_ASSOC);
         $domainAliasData['alias_name_utf8'] = decode_idna($domainAliasData['alias_name']);
     }
 

@@ -38,7 +38,7 @@ function generatePage($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'FTP_ACCOUNT'        => tohtml($row['userid']),
             'UID'                => tohtml($row['userid'], 'htmlAttr'),

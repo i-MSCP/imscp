@@ -42,7 +42,7 @@ function updateSqlUserPassword($sqluId)
         showBadRequestErrorPage();
     }
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!isset($_POST['password'])
         || !isset($_POST['password_confirmation'])
@@ -120,7 +120,7 @@ function generatePage(TemplateEngine $tpl, $sqluId)
         showBadRequestErrorPage();
     }
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $tpl->assign([
         'USER_NAME' => tohtml($row['sqlu_name']),
         'SQLU_ID'   => tohtml($sqluId, 'htmlAttr')
@@ -145,7 +145,7 @@ function checkSqlUserPerms($sqlUserId)
             AND t3.domain_admin_id = ?
         ',
         [$sqlUserId, $_SESSION['user_id']]
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
 }
 
 /***********************************************************************************************************************

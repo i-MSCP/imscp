@@ -41,7 +41,7 @@ function updateUserData(Form $form, $userId)
 {
     global $userType;
 
-    $data = exec_query('SELECT admin_name, admin_type FROM admin WHERE admin_id = ?', $userId)->fetchRow();
+    $data = exec_query('SELECT admin_name, admin_type FROM admin WHERE admin_id = ?', $userId)->fetch();
 
     if (!$data) {
         showBadRequestErrorPage();
@@ -157,7 +157,7 @@ function generatePage(TemplateEngine $tpl, Form $form, $userId)
         $userId
     );
 
-    if (!($data = $stmt->fetchRow())) {
+    if (!($data = $stmt->fetch())) {
         showBadRequestErrorPage();
     }
 

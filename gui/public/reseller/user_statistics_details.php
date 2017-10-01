@@ -54,7 +54,7 @@ function getDomainTraffic($domainId, $startDate, $endDate)
         return [0, 0, 0, 0];
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     return [$row['web_traffic'], $row['ftp_traffic'], $row['mail_traffic'], $row['pop_traffic']];
 }
@@ -83,7 +83,7 @@ function generatePage(TemplateEngine $tpl)
         showBadRequestErrorPage();
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
     $domainId = $row['domain_id'];
     $adminName = decode_idna($row['admin_name']);
     $month = isset($_GET['month']) ? filter_digits($_GET['month']) : date('n');
@@ -91,7 +91,7 @@ function generatePage(TemplateEngine $tpl)
     $stmt = exec_query(
         'SELECT dtraff_time FROM domain_traffic WHERE domain_id = ? ORDER BY dtraff_time ASC LIMIT 1', $domainId
     );
-    $nPastYears = $stmt->rowCount() ? date('Y') - date('Y', $stmt->fetchRow(PDO::FETCH_COLUMN)) : 0;
+    $nPastYears = $stmt->rowCount() ? date('Y') - date('Y', $stmt->fetch(PDO::FETCH_COLUMN)) : 0;
 
     generateDMYlists($tpl, 0, $month, $year, $nPastYears);
 
@@ -100,7 +100,7 @@ function generatePage(TemplateEngine $tpl)
         [getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)]
     );
 
-    if ($stmt->fetchRow(PDO::FETCH_COLUMN) < 1) {
+    if ($stmt->fetch(PDO::FETCH_COLUMN) < 1) {
         set_page_message(tr('No statistics found for the given period. Try another period.'), 'static_info');
         $tpl->assign([
             'USERNAME'                      => tohtml($adminName),

@@ -386,7 +386,7 @@ class iMSCP_Update_Database extends iMSCP_Update
         $stmt = exec_query("SHOW INDEX FROM $table WHERE COLUMN_NAME = ?", $column);
 
         if ($stmt->rowCount()) {
-            while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $row = array_change_key_case($row, CASE_UPPER);
                 $sqlQueries[] = sprintf('ALTER TABLE %s DROP INDEX %s', $table, quoteIdentifier($row['KEY_NAME']));
             }
@@ -504,7 +504,7 @@ class iMSCP_Update_Database extends iMSCP_Update
         $stmt = execute_query('SELECT DISTINCT sqlu_name FROM sql_user');
 
         if ($stmt->rowCount()) {
-            while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $sqlUser = quoteValue($row['sqlu_name']);
 
                 $sqlQueries[] = "
@@ -541,7 +541,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             return NULL;
         }
 
-        while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $certId = quoteValue($row['cert_id'], PDO::PARAM_INT);
             $privateKey = new Crypt_RSA();
 
@@ -673,7 +673,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             return NULL;
         }
 
-        while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $certificateId = quoteValue($row['cert_id'], PDO::PARAM_INT);
             // Data normalization
             $privateKey = quoteValue(str_replace("\r\n", "\n", trim($row['private_key'])) . PHP_EOL);
@@ -882,7 +882,7 @@ class iMSCP_Update_Database extends iMSCP_Update
         if (!$stmt->rowCount()) {
             return NULL;
         }
-        while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $needUpdate = true;
             $id = quoteValue($row['id'], PDO::PARAM_INT);
             $props = explode(';', $row['props']);
@@ -979,7 +979,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
         // Add PHP mail permission property in hosting plans if any
         $stmt = execute_query('SELECT id, props FROM hosting_plans');
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             $id = quoteValue($row['id'], PDO::PARAM_INT);
             $props = explode(';', $row['props']);
 
@@ -1126,14 +1126,14 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected function r222()
     {
         $stmt = exec_query('SELECT userid FROM ftp_users');
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             exec_query('UPDATE ftp_users SET userid = ? WHERE userid = ?', [
                 encode_idna($row['userid']), $row['userid']
             ]);
         }
 
         $stmt = exec_query('SELECT groupname, members FROM ftp_group');
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             $members = implode(',', array_map('encode_idna', explode(',', $row['members'])));
             exec_query('UPDATE ftp_group SET groupname = ?, members = ? WHERE groupname = ?', [
                 encode_idna($row['groupname']), $members, $row['groupname']
@@ -1228,7 +1228,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     {
         $stmt = exec_query("SELECT alias_id, url_forward FROM domain_aliasses WHERE url_forward <> 'no'");
 
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             $uri = UriRedirect::fromString($row['url_forward']);
             $uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/';
             $uri->setPath($uriPath);
@@ -1241,7 +1241,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             "SELECT subdomain_id, subdomain_url_forward FROM subdomain WHERE subdomain_url_forward <> 'no'"
         );
 
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             $uri = UriRedirect::fromString($row['subdomain_url_forward']);
             $uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/';
             $uri->setPath($uriPath);
@@ -1256,7 +1256,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                 WHERE subdomain_alias_url_forward <> 'no'
             "
         );
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             $uri = UriRedirect::fromString($row['subdomain_alias_url_forward']);
             $uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/';
             $uri->setPath($uriPath);
@@ -1362,12 +1362,12 @@ class iMSCP_Update_Database extends iMSCP_Update
 
         // For each reseller
         $resellers = execute_query("SELECT admin_id FROM admin WHERE admin_type = 'reseller'");
-        while ($reseller = $resellers->fetchRow()) {
+        while ($reseller = $resellers->fetch()) {
             $phpini->loadResellerPermissions($reseller['admin_id']);
 
             // For each client of the reseller
             $clients = exec_query("SELECT admin_id FROM admin WHERE created_by = {$reseller['admin_id']}");
-            while ($client = $clients->fetchRow()) {
+            while ($client = $clients->fetch()) {
                 $phpini->loadClientPermissions($client['admin_id']);
 
                 $domain = exec_query(
@@ -1379,7 +1379,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                     continue;
                 }
 
-                $domain = $domain->fetchRow();
+                $domain = $domain->fetch();
                 $phpini->loadDomainIni($client['admin_id'], $domain['domain_id'], 'dmn');
                 if ($phpini->isDefaultDomainIni()) {
                     $phpini->saveDomainIni($client['admin_id'], $domain['domain_id'], 'dmn');
@@ -1389,7 +1389,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                     'SELECT subdomain_id FROM subdomain WHERE domain_id = ? AND subdomain_status <> ?',
                     [$domain['domain_id'], 'todelete']
                 );
-                while ($subdomain = $subdomains->fetchRow()) {
+                while ($subdomain = $subdomains->fetch()) {
                     $phpini->loadDomainIni($client['admin_id'], $subdomain['subdomain_id'], 'sub');
                     if ($phpini->isDefaultDomainIni()) {
                         $phpini->saveDomainIni($client['admin_id'], $subdomain['subdomain_id'], 'sub');
@@ -1401,7 +1401,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                     'SELECT alias_id FROM domain_aliasses WHERE domain_id = ? AND alias_status <> ?',
                     [$domain['domain_id'], 'todelete']
                 );
-                while ($domainAlias = $domainAliases->fetchRow()) {
+                while ($domainAlias = $domainAliases->fetch()) {
                     $phpini->loadDomainIni($client['admin_id'], $domainAlias['alias_id'], 'als');
                     if ($phpini->isDefaultDomainIni()) {
                         $phpini->saveDomainIni($client['admin_id'], $domainAlias['alias_id'], 'als');
@@ -1419,7 +1419,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                     ',
                     [$domain['domain_id'], 'todelete']
                 );
-                while ($subdomainAlias = $subdomainAliases->fetchRow()) {
+                while ($subdomainAlias = $subdomainAliases->fetch()) {
                     $phpini->loadDomainIni($client['admin_id'], $subdomainAlias['subdomain_alias_id'], 'subals');
                     if ($phpini->isDefaultDomainIni()) {
                         $phpini->saveDomainIni($client['admin_id'], $subdomainAlias['subdomain_alias_id'], 'subals');
@@ -1543,7 +1543,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected function r243()
     {
         $stmt = execute_query('SELECT ip_id, ip_number, ip_netmask FROM server_ips');
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             if ($this->config['BASE_SERVER_IP'] === $row['ip_number'] || $row['ip_netmask'] !== NULL) {
                 continue;
             }
@@ -1653,7 +1653,7 @@ class iMSCP_Update_Database extends iMSCP_Update
         $stmt = exec_query('SELECT mail_id, mail_pass FROM mail_users WHERE mail_pass <> ? AND mail_pass NOT LIKE ?',
             ['_no_', '$6$%']
         );
-        while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             exec_query('UPDATE mail_users SET mail_pass = ? WHERE mail_id = ?', [
                 Crypt::sha512($row['mail_pass']), $row['mail_id']
             ]);
@@ -1734,7 +1734,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             Registry::get('config')['SERVER_HOSTNAME']
         );
 
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             if (strpos($row['mail_type'], '_forward') !== FALSE) {
                 # Turn normal+forward account into forward only account
                 exec_query(

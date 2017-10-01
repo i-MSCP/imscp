@@ -73,7 +73,7 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
         return false;
     }
 
-    $subdomainData = $stmt->fetchRow();
+    $subdomainData = $stmt->fetch();
 
     if ($subdomainType == 'dmn') {
         $subdomainData['subdomain_name'] .= '.' . $domainName;

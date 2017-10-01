@@ -213,7 +213,7 @@ function generatePage($tpl)
             showBadRequestErrorPage();
         }
 
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
         $tpl->assign('ID', $row['id']);
         $userIds = $row['user_id'];
         $groupIds = $row['group_id'];
@@ -260,7 +260,7 @@ function generatePage($tpl)
 
     # Create htuser list
     $userIds = isset($_POST['users']) ? (array)$_POST['users'] : explode(',', $userIds);
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'USER_VALUE'    => tohtml($row['id']),
             'USER_LABEL'    => tohtml($row['uname']),
@@ -281,7 +281,7 @@ function generatePage($tpl)
     } else {
         $tpl->assign('TR_AUTHENTICATION_DATA', tr('Authentication users/groups'));
         $groupIds = isset($_POST['groups']) ? (array)$_POST['groups'] : explode(',', $groupIds);
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             $tpl->assign([
                 'GROUP_VALUE'    => tohtml($row['id']),
                 'GROUP_LABEL'    => tohtml($row['ugroup']),

@@ -80,7 +80,7 @@ function client_generateUsersList($tpl)
 
     $tpl->assign('USERS_MESSAGE_BLOCK', '');
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         list(
             $userDeleteTranslation, $userDeleteJsScript, $userEditTranslation, $htuserEditJsScript
             ) = _client_generateUserAction($row['status']);
@@ -119,7 +119,7 @@ function client_generateGroupsList($tpl)
 
     $tpl->assign('GROUPS_MESSAGE_BLOCK', '');
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         list($groupDeleteTranslation, $groupDeleteJsScript) = _client_generateHtgroupAction($row['status']);
 
         $tpl->assign([

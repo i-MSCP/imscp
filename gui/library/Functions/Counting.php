@@ -162,7 +162,7 @@ function get_objects_count($table, $idField, $where = '')
     $table = quoteIdentifier($table);
     $idField = quoteIdentifier($idField);
 
-    return execute_query("SELECT COUNT(DISTINCT $idField) FROM $table $where")->fetchRow(PDO::FETCH_COLUMN);
+    return execute_query("SELECT COUNT(DISTINCT $idField) FROM $table $where")->fetch(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -203,7 +203,7 @@ function get_reseller_customers_count($resellerId)
 {
     return exec_query(
         "SELECT COUNT(admin_id) FROM admin WHERE created_by = ? AND admin_status <> 'todelete'", $resellerId
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -223,7 +223,7 @@ function get_reseller_domains_count($resellerId)
             WHERE created_by = ?
             AND domain_status <> 'todelete'
         ", $resellerId
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -245,7 +245,7 @@ function get_reseller_subdomains_count($resellerId)
                 AND subdomain_status <> 'todelete'
             ",
             $resellerId
-        )->fetchRow(PDO::FETCH_COLUMN)
+        )->fetch(PDO::FETCH_COLUMN)
         +
         exec_query(
             "
@@ -258,7 +258,7 @@ function get_reseller_subdomains_count($resellerId)
                 AND subdomain_alias_status <> 'todelete'
             ",
             $resellerId
-        )->fetchRow(PDO::FETCH_COLUMN);
+        )->fetch(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -280,7 +280,7 @@ function get_reseller_domain_aliases_count($resellerId)
             AND alias_status <> 'todelete'
         ",
         $resellerId
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -321,7 +321,7 @@ function get_reseller_mail_accounts_count($resellerId)
 
     $query .= "AND status <> 'todelete'";
 
-    return exec_query($query, $resellerId)->fetchRow(PDO::FETCH_COLUMN);
+    return exec_query($query, $resellerId)->fetch(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -336,7 +336,7 @@ function get_reseller_ftp_users_count($resellerId)
     return exec_query(
         "SELECT COUNT(userid) FROM ftp_users JOIN admin USING(admin_id) WHERE created_by = ? AND status <> 'todelete'",
         $resellerId
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -356,7 +356,7 @@ function get_reseller_sql_databases_count($resellerId)
             WHERE created_by = ?
         ',
         $resellerId
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -377,7 +377,7 @@ function get_reseller_sql_users_count($resellerId)
             WHERE created_by = ?
         ',
         $resellerId
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -418,7 +418,7 @@ function get_customer_subdomains_count($domainId)
     return exec_query(
             "SELECT COUNT(subdomain_id) FROM subdomain WHERE domain_id = ? AND subdomain_status <> 'todelete'",
             $domainId
-        )->fetchRow(PDO::FETCH_COLUMN)
+        )->fetch(PDO::FETCH_COLUMN)
         + exec_query(
             "
                 SELECT COUNT(subdomain_alias_id)
@@ -428,7 +428,7 @@ function get_customer_subdomains_count($domainId)
                 AND subdomain_alias_status <> 'todelete'
             ",
             $domainId
-        )->fetchRow(PDO::FETCH_COLUMN);
+        )->fetch(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -443,7 +443,7 @@ function get_customer_domain_aliases_count($domainId)
     return exec_query(
         "SELECT COUNT(alias_id) FROM domain_aliasses WHERE domain_id = ? AND alias_status NOT IN('ordered', 'todelete')",
         $domainId
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -478,7 +478,7 @@ function get_customer_mail_accounts_count($domainId)
 
     $query .= "AND status <> 'todelete'";
 
-    return exec_query($query, $domainId)->fetchRow(PDO::FETCH_COLUMN);
+    return exec_query($query, $domainId)->fetch(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -492,7 +492,7 @@ function get_customer_ftp_users_count($customerId)
 {
     return exec_query(
         "SELECT COUNT(userid) FROM ftp_users WHERE admin_id = ? AND status <> 'todelete'", $customerId
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -505,7 +505,7 @@ function get_customer_sql_databases_count($domainId)
 {
     return exec_query(
         'SELECT COUNT(sqld_id) FROM sql_database WHERE domain_id = ?', $domainId
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -519,7 +519,7 @@ function get_customer_sql_users_count($domainId)
     return exec_query(
         'SELECT COUNT(DISTINCT sqlu_name) FROM sql_user JOIN sql_database USING(sqld_id) WHERE domain_id = ?',
         $domainId
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
 }
 
 /**

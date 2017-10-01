@@ -38,7 +38,7 @@ function admin_generateMenusList($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         if ($row['menu_level'] == 'A') {
             $row['menu_level'] = tr('Administrator');
         } elseif ($row['menu_level'] == 'R') {
@@ -92,7 +92,7 @@ function admin_generateForm($tpl)
             redirectTo('custom_menus.php');
         }
 
-        $customMenu = $stmt->fetchRow();
+        $customMenu = $stmt->fetch();
     } elseif (!empty($_POST)) {
         $customMenu = $_POST;
     }

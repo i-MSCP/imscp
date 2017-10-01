@@ -18,61 +18,33 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Include core library
 require_once 'imscp-lib.php';
 
 check_login('user');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-customerHasFeature('aps') or showBadRequestErrorPage();
+customerHasFeature('aps') && isset($_GET['id']) or showBadRequestErrorPage();
 
-if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $domainProps = get_domain_default_props($_SESSION['user_id']);
-    $dmn_id = $domainProps['domain_id'];
-    $query = "
-		SELECT
-			`software_id`, `software_res_del`
-		FROM
-			`web_software_inst`
-		WHERE
-			`software_id` = ?
-		AND
-			`domain_id` = ?
-	";
-    $rs = exec_query($query, [$_GET['id'], $dmn_id]);
+$softwareId = intval($_GET['id']);
+$domainProps = get_domain_default_props($_SESSION['user_id']);
+$stmt = exec_query('SELECT software_res_del FROM web_software_inst WHERE software_id = ? AND domain_id = ?', [
+    $softwareId, $domainProps['domain_id']
+]);
 
-    if ($rs->recordCount() != 1) {
-        set_page_message(tr('Wrong software id.'), 'error');
-        redirectTo('software.php');
-    } else {
-        if ($rs->fields['software_res_del'] === '1') {
-            $delete = "
-				DELETE FROM
-					`web_software_inst`
-				WHERE
-					`software_id` = ?
-				AND
-					`domain_id` = ?
-			";
-            $res = exec_query($delete, [$_GET['id'], $dmn_id]);
-            set_page_message(tr('Software deleted.'), 'success');
-        } else {
-            $delete = "
-				UPDATE
-					`web_software_inst`
-				SET
-					`software_status` = ?
-				WHERE
-					`software_id` = ?
-				AND
-					`domain_id` = ?
-			";
-            $res = exec_query($delete, ['todelete', $_GET['id'], $dmn_id]);
-            send_request();
-            set_page_message(tr('Software successfully scheduled for deletion.'), 'success');
-        }
-        redirectTo('software.php');
-    }
-} else {
-    set_page_message(tr('Wrong software id.'), 'error');
+if (!$stmt->rowCount()) {
+    showBadRequestErrorPage();
+}
+
+if ($stmt->fetch(PDO::FETCH_COLUMN) == 1) {
+    exec_query('DELETE FROM web_software_inst WHERE software_id = ? AND domain_id = ?', [
+        $softwareId, $domainProps['domain_id']
+    ]);
+    set_page_message(tr('Software deleted.'), 'success');
     redirectTo('software.php');
 }
+
+exec_query('UPDATE web_software_inst SET software_status = ? WHERE software_id = ? AND domain_id = ?', [
+    'todelete', $softwareId, $domainProps['domain_id']
+]);
+send_request();
+set_page_message(tr('Software successfully scheduled for deletion.'), 'success');
+redirectTo('software.php');

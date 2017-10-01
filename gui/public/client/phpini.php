@@ -53,7 +53,7 @@ function isDomainStatusOk($domainId, $domainType)
     $stmt = exec_query($query, $domainId);
 
     if ($stmt->rowCount()) {
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
         if ($row['status'] == 'ok') {
             return true;
         }

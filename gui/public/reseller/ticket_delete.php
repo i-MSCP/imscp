@@ -51,7 +51,7 @@ if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
     }
 
     // The ticket status was 0 so we come from ticket_closed.php
-    if ($stmt->fields['ticket_status'] == 0) {
+    if ($stmt->fetch(PDO::FETCH_COLUMN) == 0) {
         $previousPage = 'ticket_closed';
     }
 

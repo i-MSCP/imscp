@@ -103,7 +103,7 @@ class iMSCP_PHPini
             );
 
             if ($stmt->rowCount()) {
-                $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 // PHP permissions
                 $this->resellerPermissions['phpiniSystem'] = $row['php_ini_system'];
@@ -300,7 +300,7 @@ class iMSCP_PHPini
             );
 
             if ($stmt->rowCount()) {
-                $row = $stmt->fetchRow();
+                $row = $stmt->fetch();
                 $this->clientPermissions['phpiniSystem'] = $row['phpini_perm_system'];
                 $this->clientPermissions['phpiniAllowUrlFopen'] = $row['phpini_perm_allow_url_fopen'];
                 $this->clientPermissions['phpiniDisplayErrors'] = $row['phpini_perm_display_errors'];
@@ -465,7 +465,7 @@ class iMSCP_PHPini
             ]);
 
             if ($stmt->rowCount()) {
-                $row = $stmt->fetchRow();
+                $row = $stmt->fetch();
                 $this->domainIni['phpiniAllowUrlFopen'] = $row['allow_url_fopen'];
                 $this->domainIni['phpiniDisplayErrors'] = $row['display_errors'];
                 $this->domainIni['phpiniErrorReporting'] = $row['error_reporting'];
@@ -729,7 +729,7 @@ class iMSCP_PHPini
         $this->createMissingPhpIniEntries($clientId);
 
         $stmt = exec_query('SELECT id, domain_id, domain_type FROM php_ini WHERE admin_id = ?', $clientId);
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             try {
                 if (!$this->clientHasPermission('phpiniSystem')) {
                     $this->loadDomainIni(); // Load domain default PHP configuration options
@@ -822,7 +822,7 @@ class iMSCP_PHPini
         $params[] = $resellerId;
         $stmt = exec_query("SELECT admin_id FROM admin $condition", $params);
 
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             try {
                 // Update client PHP permissions
                 if (!$this->resellerHasPermission('phpiniSystem')) {
@@ -950,7 +950,7 @@ class iMSCP_PHPini
     {
         $phpini = clone($this);
         $domain = exec_query('SELECT domain_id FROM domain WHERE domain_admin_id = ?', $clientId);
-        $domainId = $domain->fetchRow(PDO::FETCH_COLUMN);
+        $domainId = $domain->fetch(PDO::FETCH_COLUMN);
 
         $phpini->loadDomainIni($clientId, $domainId, 'dmn');
         if ($phpini->isDefaultDomainIni()) { // If no entry found, create one with default values
@@ -961,7 +961,7 @@ class iMSCP_PHPini
             'SELECT subdomain_id FROM subdomain WHERE domain_id = ? AND subdomain_status <> ?',
             [$domainId, 'todelete']
         );
-        while ($subdomain = $subdomains->fetchRow()) {
+        while ($subdomain = $subdomains->fetch()) {
             $phpini->loadDomainIni($clientId, $subdomain['subdomain_id'], 'sub');
             if ($phpini->isDefaultDomainIni()) { // If no entry found, create one with default values
                 $phpini->saveDomainIni($clientId, $subdomain['subdomain_id'], 'sub');
@@ -973,7 +973,7 @@ class iMSCP_PHPini
             'SELECT alias_id FROM domain_aliasses WHERE domain_id = ? AND alias_status <> ?',
             [$domainId, 'todelete']
         );
-        while ($domainAlias = $domainAliases->fetchRow()) {
+        while ($domainAlias = $domainAliases->fetch()) {
             $phpini->loadDomainIni($clientId, $domainAlias['alias_id'], 'als');
             if ($phpini->isDefaultDomainIni()) { // If no entry found, create one with default values
                 $phpini->saveDomainIni($clientId, $domainAlias['alias_id'], 'als');
@@ -991,7 +991,7 @@ class iMSCP_PHPini
             ',
             [$domainId, 'todelete']
         );
-        while ($subdomainAlias = $subdomainAliases->fetchRow()) {
+        while ($subdomainAlias = $subdomainAliases->fetch()) {
             $phpini->loadDomainIni($clientId, $subdomainAlias['subdomain_alias_id'], 'subals');
             if ($phpini->isDefaultDomainIni()) { // If no entry found, create one with default values
                 $phpini->saveDomainIni($clientId, $subdomainAlias['subdomain_alias_id'], 'subals');

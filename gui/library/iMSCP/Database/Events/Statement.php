@@ -18,13 +18,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Database_Events_Database as EventsDatabase;
+
 /**
- * Base class for events thrown in the iMSCP_Database component
+ * Class iMSCP_Database_Events_Statement
  */
-class iMSCP_Database_Events_Statement extends iMSCP_Database_Events_Database
+class iMSCP_Database_Events_Statement extends EventsDatabase
 {
     /**
-     * Returns a PDOstatement.
+     * Returns a PDOstatement
      *
      * @return PDOStatement
      */
@@ -34,7 +36,7 @@ class iMSCP_Database_Events_Statement extends iMSCP_Database_Events_Database
     }
 
     /**
-     * Returns the query string.
+     * Returns the query string
      *
      * @return string
      */

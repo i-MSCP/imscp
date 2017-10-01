@@ -32,7 +32,7 @@ function listIPDomains($tpl)
 {
     $stmt = execute_query('SELECT ip_id, ip_number FROM server_ips');
 
-    while ($ip = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+    while ($ip = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $stmt2 = exec_query(
             '
                 SELECT t1.domain_name, t3.admin_name
@@ -59,7 +59,7 @@ function listIPDomains($tpl)
         ]);
 
         if ($domainsCount) {
-            while ($data = $stmt2->fetchRow(PDO::FETCH_ASSOC)) {
+            while ($data = $stmt2->fetch(PDO::FETCH_ASSOC)) {
                 $tpl->assign([
                     'DOMAIN_NAME'   => tohtml(idn_to_utf8($data['domain_name'])),
                     'RESELLER_NAME' => tohtml($data['admin_name'])

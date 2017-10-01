@@ -45,11 +45,11 @@ if (!$stmt->rowCount()) {
     showBadRequestErrorPage();
 }
 
-$row = $stmt->fetchRow();
+$row = $stmt->fetch();
 $ipAddr = $row['ip_number'];
 
 $stmt = execute_query('SELECT reseller_ips FROM reseller_props');
-while ($row = $stmt->fetchRow()) {
+while ($row = $stmt->fetch()) {
     if (in_array($ipId, explode(';', $row['reseller_ips'], -1))) {
         set_page_message(tr('You cannot remove an IP that is assigned to a reseller.'), 'error');
         redirectTo('ip_manage.php');
@@ -57,7 +57,7 @@ while ($row = $stmt->fetchRow()) {
 }
 
 $stmt = execute_query('SELECT count(*) cnt FROM server_ips');
-$row = $stmt->fetchRow();
+$row = $stmt->fetch();
 
 if ($row ['cnt'] < 2) {
     set_page_message(tr('You cannot delete the last active IP address.'), 'error');

@@ -102,7 +102,7 @@ function generatePage($tpl)
             $tpl, $dmnProps['domain_name'], 0, tr('N/A'), $dmnProps['domain_id'], tr('N/A'), MT_NORMAL_CATCHALL
         );
     } else {
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
         generateCatchallItem(
             $tpl, $dmnProps['domain_name'], $row['mail_id'], $row['mail_acc'], $dmnProps['domain_id'], $row['status'],
             MT_NORMAL_CATCHALL
@@ -124,7 +124,7 @@ function generatePage($tpl)
         $dmnProps['domain_id']
     );
 
-    while ($data = $stmt->fetchRow()) {
+    while ($data = $stmt->fetch()) {
         $stmt2 = exec_query(
             'SELECT mail_id, mail_acc, status FROM mail_users WHERE domain_id = ? AND sub_id = ? AND mail_type = ?',
             [$dmnProps['domain_id'], $data['subdomain_id'], MT_SUBDOM_CATCHALL]
@@ -135,7 +135,7 @@ function generatePage($tpl)
                 $tpl, $data['subdomain_name'], 0, tr('N/A'), $data['subdomain_id'], tr('N/A'), MT_SUBDOM_CATCHALL
             );
         } else {
-            $row = $stmt2->fetchRow();
+            $row = $stmt2->fetch();
             generateCatchallItem(
                 $tpl, $data['subdomain_name'], $row['mail_id'], $row['mail_acc'], $data['subdomain_id'], $row['status'],
                 MT_SUBDOM_CATCHALL
@@ -152,7 +152,7 @@ function generatePage($tpl)
         $dmnProps['domain_id']
     );
 
-    while ($data = $stmt->fetchRow()) {
+    while ($data = $stmt->fetch()) {
         $stmt2 = exec_query(
             'SELECT mail_id, mail_acc, status FROM mail_users WHERE domain_id = ? AND sub_id = ? AND mail_type = ?',
             [$dmnProps['domain_id'], $data['alias_id'], MT_ALIAS_CATCHALL]
@@ -163,7 +163,7 @@ function generatePage($tpl)
                 $tpl, $data['alias_name'], 0, tr('N/A'), $data['alias_id'], tr('N/A'), MT_ALIAS_CATCHALL
             );
         } else {
-            $row = $stmt2->fetchRow();
+            $row = $stmt2->fetch();
             generateCatchallItem(
                 $tpl, $data['alias_name'], $row['mail_id'], $row['mail_acc'], $data['alias_id'], $row['status'],
                 MT_ALIAS_CATCHALL
@@ -187,7 +187,7 @@ function generatePage($tpl)
 
     // Subdomain alias catch-all accounts
 
-    while ($data = $stmt->fetchRow()) {
+    while ($data = $stmt->fetch()) {
         $stmt2 = exec_query(
             'SELECT mail_id, mail_acc, status FROM mail_users WHERE domain_id = ? AND sub_id = ? AND mail_type = ?',
             [$dmnProps['domain_id'], $data['subdomain_alias_id'], MT_ALSSUB_CATCHALL]
@@ -198,7 +198,7 @@ function generatePage($tpl)
                 $tpl, $data['subdomain_name'], 0, tr('N/A'), $data['subdomain_alias_id'], tr('N/A'), MT_ALSSUB_CATCHALL
             );
         } else {
-            $row = $stmt2->fetchRow();
+            $row = $stmt2->fetch();
             generateCatchallItem(
                 $tpl, $data['subdomain_name'], $row['mail_id'], $row['mail_acc'], $data['subdomain_alias_id'],
                 $row['status'], MT_ALSSUB_CATCHALL

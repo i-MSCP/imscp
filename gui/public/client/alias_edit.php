@@ -54,7 +54,7 @@ function _client_getAliasData($domainAliasId)
         return false;
     }
 
-    $domainAliasData = $stmt->fetchRow();
+    $domainAliasData = $stmt->fetch();
     $domainAliasData['alias_name_utf8'] = decode_idna($domainAliasData['alias_name']);
     return $domainAliasData;
 }

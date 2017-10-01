@@ -55,7 +55,7 @@ function generatePage($tpl)
         $translations['core']['hp_delete_confirmation'] = tr('Are you sure you want to delete this hosting plan?');
     });
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'ID'     => $row['id'],
             'NAME'   => tohtml($row['name']),

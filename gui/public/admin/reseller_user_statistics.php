@@ -84,7 +84,7 @@ function generatePage(TemplateEngine $tpl, $resellerId)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         _generateUserStatistics($tpl, $row['admin_id']);
         $tpl->parse('RESELLER_USER_STATISTICS_BLOCK', '.reseller_user_statistics_block');
     }

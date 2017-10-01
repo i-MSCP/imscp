@@ -55,7 +55,7 @@ function getClientMonthlyTrafficStats($domainId)
         return array_fill(0, 5, 0);
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     return [
         $row['dtraff_web'],
@@ -82,7 +82,7 @@ function getClientTrafficAndDiskStats($clientId)
         showBadRequestErrorPage();
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     list($webTraffic, $ftpTraffic, $smtpTraffic, $popTraffic, $totalTraffic) = getClientMonthlyTrafficStats(
         $row['domain_id']
@@ -115,7 +115,7 @@ function getClientItemCountsAndLimits($clientId)
         return array_fill(0, 14, 0);
     }
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     return [
         ($row['domain_subd_limit'] == -1) ? 0 : get_customer_subdomains_count($row['domain_id']),
@@ -159,7 +159,7 @@ function getResellerStats($resellerId)
 
     $rtraffConsumed = $rdiskConsumed = 0;
 
-    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $customerStats = getClientTrafficAndDiskStats($row['domain_admin_id']);
         $rtraffConsumed += $customerStats[4];
         $rdiskConsumed += $customerStats[5];

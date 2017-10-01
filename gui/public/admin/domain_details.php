@@ -40,7 +40,7 @@ function admin_gen_mail_quota_limit_mgs($customerId)
     $domainProps = get_domain_default_props($customerId);
     $mailQuota = exec_query(
         'SELECT IFNULL(SUM(quota), 0) FROM mail_users WHERE domain_id = ?', $domainProps['domain_id']
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
     
     return [bytesHuman($mailQuota), ($domainProps['mail_quota'] == 0) ? '∞' : bytesHuman($domainProps['mail_quota'])];
 }
@@ -60,14 +60,14 @@ function admin_generatePage($tpl, $domainId)
         showBadRequestErrorPage();
     }
 
-    $domainData = $stmt->fetchRow();
+    $domainData = $stmt->fetch();
 
     // Domain IP address info
     $stmt = exec_query("SELECT ip_number FROM server_ips WHERE ip_id = ?", $domainData['domain_ip_id']);
     if (!$stmt->rowCount()) {
         $domainIpAddr = tr('Not found.');
     } else {
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
         $domainIpAddr = $row['ip_number'];
     }
 

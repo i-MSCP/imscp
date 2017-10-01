@@ -105,7 +105,7 @@ function generatePage(TemplateEngine $tpl, Form $form)
         $_SESSION['user_id']
     );
 
-    if (!($data = $stmt->fetchRow())) {
+    if (!($data = $stmt->fetch())) {
         showBadRequestErrorPage();
     }
 

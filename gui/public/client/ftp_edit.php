@@ -131,7 +131,7 @@ function generatePage($tpl, $ftpUserId)
 
     $cfg = iMSCP_Registry::get('config');
     $stmt = exec_query('SELECT homedir FROM ftp_users WHERE userid = ?', $ftpUserId);
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     $ftpHomeDir = utils_normalizePath('/' . $row['homedir']);
     $customerHomeDir = utils_normalizePath('/' . $cfg['USER_WEB_DIR'] . '/' . $mainDmnProps['domain_name']);
@@ -167,7 +167,7 @@ $stmt = exec_query('SELECT COUNT(admin_id) FROM ftp_users WHERE userid = ? AND a
     $userid, $_SESSION['user_id']
 ]);
 
-if ($stmt->fetchRow(PDO::FETCH_COLUMN) == 0) {
+if ($stmt->fetch(PDO::FETCH_COLUMN) == 0) {
     showBadRequestErrorPage();
 }
 

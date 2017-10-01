@@ -40,7 +40,7 @@ function send_alias_order_email($aliasName)
     $stmt = exec_query(
         'SELECT admin_name, created_by, fname, lname, email FROM admin WHERE admin_id = ?', $_SESSION['user_id']
     );
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
     $data = get_alias_order_email($row['created_by']);
     $ret = send_mail([
         'mail_id'      => 'alias-order-msg',

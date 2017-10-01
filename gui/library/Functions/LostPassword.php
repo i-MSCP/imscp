@@ -142,7 +142,7 @@ function uniqueKeyExists($uniqueKey)
 {
     return (bool)exec_query(
         'SELECT COUNT(admin_id) FROM admin WHERE uniqkey = ?', $uniqueKey
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -174,7 +174,7 @@ function sendPasswordRequestValidation($adminName)
         return false;
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
     $createdBy = $row['created_by'];
 
     if ($createdBy == 0) {
@@ -231,7 +231,7 @@ function sendPassword($uniqueKey)
         return false;
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     if ($row['admin_status'] != 'ok') {
         set_page_message(tr('Your request for password renewal cannot be honored. Please retry in few minutes.'), 'error');

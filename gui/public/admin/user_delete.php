@@ -48,7 +48,7 @@ function admin_deleteUser($userId)
         ',
         $userId
     );
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $userType = $row['admin_type'];
 
     if (empty($userType) || $userType == 'user') {
@@ -176,7 +176,7 @@ function admin_validateUserDeletion($userId)
         showBadRequestErrorPage(); # No user found; assume a bad request
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     if ($row['created_by'] == 0) {
         set_page_message(tr('You cannot delete the default administrator.'), 'error');
@@ -187,7 +187,7 @@ function admin_validateUserDeletion($userId)
     }
 
     $stmt = exec_query('SELECT COUNT(admin_id) AS user_count FROM admin WHERE created_by = ?', $userId);
-    $row2 = $stmt->fetchRow();
+    $row2 = $stmt->fetch();
 
     if ($row2['user_count'] > 0) {
         if ($row['admin_type'] == 'admin') {

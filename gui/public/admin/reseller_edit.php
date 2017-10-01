@@ -60,7 +60,7 @@ function getFormData($resellerId, $forUpdate = false)
         showBadRequestErrorPage();
     }
 
-    $data = $stmt->fetchRow();
+    $data = $stmt->fetch();
     $data['admin_pass'] = '';
 
     // Getting total of consumed items for the given reseller.
@@ -386,7 +386,7 @@ function updateResellerUser(Form $form)
             function ($element) {
                 return $element == -1 ? false : $element == 0;
             },
-            $stmt->fetchRow(PDO::FETCH_ASSOC)
+            $stmt->fetch(PDO::FETCH_ASSOC)
         );
 
         // Check for login and personal data
@@ -703,7 +703,7 @@ function updateResellerUser(Form $form)
                 );
 
                 if ($stmt->rowCount()) {
-                    while ($row = $stmt->fetchRow()) {
+                    while ($row = $stmt->fetch()) {
                         exec_query('UPDATE web_software_inst SET software_res_del = ? WHERE software_id = ?', [
                             '1', $row['software_id']
                         ]);

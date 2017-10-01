@@ -43,7 +43,7 @@ $stmt = exec_query(
     [$catchallId, $_SESSION['user_id']]
 );
 
-if ($stmt->fetchRow(PDO::FETCH_COLUMN) == 0) {
+if ($stmt->fetch(PDO::FETCH_COLUMN) == 0) {
     showBadRequestErrorPage();
 }
 

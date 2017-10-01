@@ -160,7 +160,7 @@ class iMSCP_Authentication
 
         return (bool)exec_query('SELECT COUNT(session_id) FROM login WHERE session_id = ? AND ipaddr = ?', [
             session_id(), getipaddr()
-        ])->fetchRow(PDO::FETCH_COLUMN);
+        ])->fetch(PDO::FETCH_COLUMN);
     }
 
     /**

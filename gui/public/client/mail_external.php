@@ -129,7 +129,7 @@ function generateItem($tpl, $externalMail, $domainId, $domainName, $status, $typ
 function generateItemList($tpl, $domainId, $domainName)
 {
     $stmt = exec_query('SELECT domain_status, external_mail FROM domain WHERE domain_id = ?', $domainId);
-    $data = $stmt->fetchRow();
+    $data = $stmt->fetch();
 
     generateItem($tpl, $data['external_mail'], $domainId, $domainName, $data['domain_status'], 'dmn');
 
@@ -143,7 +143,7 @@ function generateItemList($tpl, $domainId, $domainName)
         return;
     }
 
-    while ($data = $stmt->fetchRow()) {
+    while ($data = $stmt->fetch()) {
         generateItem($tpl, $data['external_mail'], $data['alias_id'], $data['alias_name'], $data['alias_status'], 'als');
         $tpl->parse('ITEM', '.item');
     }

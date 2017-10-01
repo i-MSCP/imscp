@@ -91,7 +91,7 @@ if (!$stmt->rowCount()) {
     showBadRequestErrorPage();
 }
 
-$row = $stmt->fetchRow();
+$row = $stmt->fetch();
 $db = iMSCP_Database::getInstance();
 
 try {

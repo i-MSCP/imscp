@@ -42,6 +42,10 @@ FRONTEND
     Fixed: Wrong order for parameters in mail delete.php (i18n -- client UI)
     Fixed: Wrong status shown in administrator overview interface for customers when a password is being modified
     Fixed: Wrong value passed-in the `onBeforeEditUser' and `onAfterEditUser' events for the `admin_pass' parameter
+    Deprecated: fetchRow method -- Will be removed in a later version (iMSCP_Database_ResultSet)
+    Removed: errorInfoToString, fields, getPDOStatement, moveNext and recordCount methods (iMSCP_Database_ResultSet)
+    Removed: fields and EOF magic properties (iMSCP_Database_ResultSet)
+    Transitional: iMSCP_Database_ResultSet now extends the PDOStatement class
 
 INSTALLER
     Added: `copy_as' attribute -- Allows to copy a file with specific name (copy_config xml node from install.xml files)

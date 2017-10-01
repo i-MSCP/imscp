@@ -77,7 +77,7 @@ function _client_getDomainName($domainId, $domainType)
             return false;
         }
 
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
         $domainName = $row['domain_name'];
     }
 
@@ -183,7 +183,7 @@ function client_generateSelfSignedCert($domainName)
         return false;
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
     $row['domain_name'] = $domainName;
 
     if (!($sslConfigFilePath = _client_generateOpenSSLConfFile($row))) {
@@ -484,7 +484,7 @@ function client_generatePage(TemplateEngine $tpl, $domainId, $domainType)
     $stmt = exec_query('SELECT * FROM ssl_certs WHERE domain_id = ? AND domain_type = ?', [$domainId, $domainType]);
 
     if ($stmt->rowCount()) {
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
         $dynTitle = (customerHasFeature('ssl') && $row['status'] == 'ok')
             ? tr('Edit SSL certificate') : tr('Show SSL certificate');
         $certId = $row['cert_id'];

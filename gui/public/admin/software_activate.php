@@ -23,24 +23,18 @@ require 'imscp-lib.php';
 check_login('admin');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
-if (!isset($_GET['id'])) {
-    showBadRequestErrorPage();
-}
+isset($_GET['id']) or showBadRequestErrorPage();
 
 $softwareId = intval($_GET['id']);
-
 $stmt = exec_query(
     'SELECT software_id, software_archive, reseller_id FROM web_software WHERE software_id = ? AND software_active = 0',
     intval($softwareId)
 );
-if (!$stmt->rowCount()) {
-    set_page_message(tr('Wrong software id.'), 'error');
-    redirectTo('software_manage.php');
-}
 
-$db = iMSCP_Database::getInstance();
+$stmt->rowCount() or showBadRequestErrorPage();
 
 exec_query('UPDATE web_software SET software_active = 1 WHERE software_id = ?', $softwareId);
+
 $stmt = exec_query(
     '
         SELECT software_id, software_name, software_version, software_language, reseller_id, software_archive
@@ -49,7 +43,8 @@ $stmt = exec_query(
     ',
     $softwareId
 );
-$row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+
+$row = $stmt->fetch();
 
 send_activated_sw($row['reseller_id'], $row['software_archive'] . '.tar.gz', $row['software_id']);
 set_page_message(tr('Software was activated.'), 'success');

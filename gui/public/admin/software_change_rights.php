@@ -23,53 +23,63 @@ require 'imscp-lib.php';
 check_login('admin');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
-if (!isset($_REQUEST['id'])) {
-    showBadRequestErrorPage();
-}
+isset($_REQUEST['id']) or showBadRequestErrorPage();
 
 $softwareId = intval($_REQUEST['id']);
 
 if (isset($_POST['change']) && $_POST['change'] == 'add') {
+    ignore_user_abort(true);
+
     $resellerId = clean_input($_POST['selected_reseller']);
-    $rs = exec_query('SELECT * FROM web_software WHERE software_id = ?', $softwareId);
+    $stmt = exec_query('SELECT * FROM web_software WHERE software_id = ?', $softwareId);
 
-    if ($resellerId == "all") {
-        $rs2 = execute_query("SELECT reseller_id FROM reseller_props WHERE software_allowed = 'yes' AND softwaredepot_allowed = 'yes'");
+    if (!$stmt->rowCount()) {
+        showBadRequestErrorPage();
+    }
 
-        if ($rs2->rowCount()) {
-            while (!$rs2->EOF) {
-                $query3 = "SELECT reseller_id FROM web_software WHERE reseller_id = ? AND software_master_id = ?";
-                $rs3 = exec_query($query3, [$rs2->fields['reseller_id'], $softwareId]);
+    $row = $stmt->fetch();
 
-                if (!$rs3->rowCount()) {
-                    exec_query(
-                        "
-                            INSERT INTO web_software (
-                            software_master_id, reseller_id, software_name, software_version, software_language, software_type,
-                            software_db, software_archive, software_installfile, software_prefix, software_link, software_desc,
-                            software_active, software_status, rights_add_by, software_depot
-                        ) VALUES (
-                            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-                        )
-                        ",
-                        [
-                            $softwareId, $rs2->fields['reseller_id'], $rs->fields['software_name'],
-                            $rs->fields['software_version'], $rs->fields['software_language'], $rs->fields['software_type'],
-                            $rs->fields['software_db'], $rs->fields['software_archive'], $rs->fields['software_installfile'],
-                            $rs->fields['software_prefix'], $rs->fields['software_link'], $rs->fields['software_desc'],
-                            $rs->fields['software_active'], "ok", $_SESSION['user_id'], "yes"
-                        ]
-                    );
-                    /** @var $db iMSCP_Database */
-                    $db = iMSCP_Registry::get('db');
-                    $sw_id = $db->insertId();
-                    update_existing_client_installations_sw_depot($sw_id, $softwareId, $rs2->fields['reseller_id']);
-                }
-                $rs2->MoveNext();
-            }
-        } else {
+    if ($resellerId == 'all') {
+        $stmt = execute_query(
+            "SELECT reseller_id FROM reseller_props WHERE software_allowed = 'yes' AND softwaredepot_allowed = 'yes'"
+        );
+
+        if (!$stmt->rowCount()) {
             set_page_message(tr('No resellers found.'), 'error');
             redirectTo('software_rights.php?id=' . $softwareId);
+        }
+
+        $db = iMSCP_Database::getInstance();
+
+        while ($row2 = $stmt->fetch()) {
+            $cnt = exec_query(
+                'SELECT COUNT(reseller_id) FROM web_software WHERE reseller_id = ? AND software_master_id = ?', [
+                $row2['reseller_id'], $softwareId
+            ])->fetch(PDO::FETCH_COLUMN);
+
+            if ($cnt != 0) {
+                continue;
+            }
+
+            exec_query(
+                "
+                    INSERT INTO web_software (
+                    software_master_id, reseller_id, software_name, software_version, software_language, software_type,
+                    software_db, software_archive, software_installfile, software_prefix, software_link, software_desc,
+                    software_active, software_status, rights_add_by, software_depot
+                ) VALUES (
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'ok', ?, 'yes'
+                )
+                ",
+                [
+                    $softwareId, $row2['reseller_id'], $row['software_name'], $row['software_version'],
+                    $row['software_language'], $row['software_type'], $row['software_db'], $row['software_archive'],
+                    $row['software_installfile'], $row['software_prefix'], $row['software_link'], $row['software_desc'],
+                    $row['software_active'], $_SESSION['user_id']
+                ]
+            );
+
+            update_existing_client_installations_sw_depot($db->insertId(), $softwareId, $row2['reseller_id']);
         }
     } else {
         exec_query(
@@ -79,15 +89,14 @@ if (isset($_POST['change']) && $_POST['change'] == 'add') {
                     software_db, software_archive, software_installfile, software_prefix, software_link, software_desc,
                     software_active, software_status, rights_add_by, software_depot
                 ) VALUES (
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'ok', ?, 'yes'
                 )
             ",
             [
-                $softwareId, $resellerId, $rs->fields['software_name'], $rs->fields['software_version'],
-                $rs->fields['software_language'], $rs->fields['software_type'], $rs->fields['software_db'],
-                $rs->fields['software_archive'], $rs->fields['software_installfile'], $rs->fields['software_prefix'],
-                $rs->fields['software_link'], $rs->fields['software_desc'], $rs->fields['software_active'],
-                "ok", $_SESSION['user_id'], "yes"
+                $softwareId, $resellerId, $row['software_name'], $row['software_version'], $row['software_language'],
+                $row['software_type'], $row['software_db'], $row['software_archive'], $row['software_installfile'],
+                $row['software_prefix'], $row['software_link'], $row['software_desc'], $row['software_active'],
+                $_SESSION['user_id']
             ]
         );
 
@@ -97,12 +106,13 @@ if (isset($_POST['change']) && $_POST['change'] == 'add') {
     }
 
     set_page_message(tr('Rights successfully added.'), 'success');
-    redirectTo('software_rights.php?id=' . $softwareId);
-} else {
-    exec_query('DELETE FROM web_software WHERE software_master_id = ? AND reseller_id = ?', [
-        $softwareId, intval($_GET['reseller_id'])
-    ]);
-    exec_query('UPDATE web_software_inst SET software_res_del = 1 WHERE software_master_id = ?', $softwareId);
-    set_page_message(tr('Rights successfully removed.'), 'success');
-    redirectTo('software_rights.php?id=' . $softwareId);
+    redirectTo("software_rights.php?id=$softwareId");
 }
+
+exec_query('DELETE FROM web_software WHERE software_master_id = ? AND reseller_id = ?', [
+    $softwareId, intval($_GET['reseller_id'])
+]);
+exec_query('UPDATE web_software_inst SET software_res_del = 1 WHERE software_master_id = ?', $softwareId);
+set_page_message(tr('Rights successfully removed.'), 'success');
+redirectTo("software_rights.php?id=$softwareId");
+

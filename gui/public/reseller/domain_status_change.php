@@ -50,7 +50,7 @@ if (isset($_GET['domain_id'])) {
     );
 
     if ($stmt->rowCount()) {
-        $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row['domain_status'] == 'ok') {
             change_domain_status($row['admin_id'], 'deactivate');

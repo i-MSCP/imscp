@@ -46,7 +46,7 @@ if (isset($_SESSION['user_id']) && isset($_GET['to_id'])) {
             'SELECT COUNT(admin_id) FROM admin WHERE admin_id = ? AND created_by = ?', [$toUserId, $fromUserId]
         );
         
-        if ($stmt->fetchRow(PDO::FETCH_COLUMN) == 0) {
+        if ($stmt->fetch(PDO::FETCH_COLUMN) == 0) {
             showBadRequestErrorPage();
         }
     }

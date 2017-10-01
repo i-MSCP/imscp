@@ -41,7 +41,7 @@ function cli_getMailData($domainName)
         $stmt = exec_query('SELECT domain_id FROM domain WHERE domain_name = ?', $domainName);
 
         if ($stmt->rowCount()) {
-            $row = $stmt->fetchRow();
+            $row = $stmt->fetch();
             $data[$domainName] = [
                 'domain_id' => $row['domain_id'],
                 'sub_id' => '0',
@@ -59,7 +59,7 @@ function cli_getMailData($domainName)
             );
 
             if ($stmt->rowCount()) {
-                $row = $stmt->fetchRow();
+                $row = $stmt->fetch();
                 $data[$domainName] = [
                     'domain_id' => $row['domain_id'],
                     'sub_id' => $row['subdomain_id'],
@@ -68,7 +68,7 @@ function cli_getMailData($domainName)
             } else {
                 $stmt = exec_query('SELECT domain_id FROM domain_aliasses WHERE alias_name = ?', $domainName);
                 if ($stmt->rowCount()) {
-                    $row = $stmt->fetchRow();
+                    $row = $stmt->fetch();
                     $data[$domainName] = [
                         'domain_id' => $row['domain_id'],
                         'sub_id' => '0',
@@ -87,7 +87,7 @@ function cli_getMailData($domainName)
                     );
 
                     if ($stmt->rowCount()) {
-                        $row = $stmt->fetchRow();
+                        $row = $stmt->fetch();
                         $data[$domainName] = [
                             'domain_id' => $row['domain_id'],
                             'sub_id' => $row['subdomain_alias_id'],

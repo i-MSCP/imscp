@@ -79,7 +79,7 @@ function client_generatePage($tpl)
     $currentUserSessionId = session_id();
     $stmt = exec_query('SELECT session_id, user_name, lastaccess FROM login');
 
-    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $username = tohtml($row['user_name']);
         $sessionId = $row['session_id'];
 

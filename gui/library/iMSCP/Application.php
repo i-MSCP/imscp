@@ -36,7 +36,6 @@ use Zend_Loader_AutoloaderFactory as AutoloaderFactory;
 use Zend_Locale as Locale;
 use Zend_Session as Session;
 use Zend_Translate as Translator;
-
 //use Zend_Translate_Adapter_Array as TranslatorArray;
 
 /**
@@ -700,7 +699,7 @@ class Application
         $stmt = exec_query('SELECT lang, layout FROM user_gui_props WHERE user_id = ?', $_SESSION['user_id']);
 
         if ($stmt->rowCount()) {
-            $row = $stmt->fetchRow();
+            $row = $stmt->fetch();
 
             if ((empty($row['lang']) && empty($row['layout']))) {
                 list($lang, $theme) = [$config['USER_INITIAL_LANG'], $config['USER_INITIAL_THEME']];

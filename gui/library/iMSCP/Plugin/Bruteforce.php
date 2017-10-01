@@ -144,7 +144,7 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
             return;
         }
 
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
         $this->recordExists = true;
 
         if ($row[$this->targetForm . '_count'] >= $this->maxAttemptsBeforeBlocking) {

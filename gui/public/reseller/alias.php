@@ -109,7 +109,7 @@ function reseller_getDatatable()
 
     /* Total records after filtering (without limit) */
     $stmt = execute_query('SELECT FOUND_ROWS()');
-    $iTotalDisplayRecords = $stmt->fetchRow(PDO::FETCH_NUM);
+    $iTotalDisplayRecords = $stmt->fetch(PDO::FETCH_NUM);
     $iTotalDisplayRecords = $iTotalDisplayRecords[0];
 
     /* Total record before any filtering */
@@ -122,7 +122,7 @@ function reseller_getDatatable()
         ",
         $_SESSION['user_id']
     );
-    $iTotalRecords = $stmt->fetchRow(PDO::FETCH_NUM);
+    $iTotalRecords = $stmt->fetch(PDO::FETCH_NUM);
     $iTotalRecords = $iTotalRecords[0];
 
     /* Output */
@@ -137,7 +137,7 @@ function reseller_getDatatable()
     $trEdit = tr('Edit');
     $trActivate = tr('Activate');
 
-    while ($data = $rResult->fetchRow()) {
+    while ($data = $rResult->fetch()) {
         $row = [];
         $aliasName = decode_idna($data['alias_name']);
 

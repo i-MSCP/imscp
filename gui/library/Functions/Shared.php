@@ -131,7 +131,7 @@ function delete_autoreplies_log_entries()
  */
 function get_user_name($userId)
 {
-    return exec_query('SELECT admin_name FROM admin WHERE admin_id = ?', $userId)->fetchRow(PDO::FETCH_COLUMN);
+    return exec_query('SELECT admin_name FROM admin WHERE admin_id = ?', $userId)->fetch(PDO::FETCH_COLUMN);
 }
 
 /***********************************************************************************************************************
@@ -161,13 +161,13 @@ function imscp_domain_exists($domainName, $resellerId)
     // $domainName already exist in the domain table?
     $stmt = exec_query('SELECT COUNT(domain_id) FROM domain WHERE domain_name = ?', $domainName);
 
-    if ($stmt->fetchRow(PDO::FETCH_COLUMN) > 0) {
+    if ($stmt->fetch(PDO::FETCH_COLUMN) > 0) {
         return true;
     }
 
     // $domainName already exists in the domain_aliasses table?
     $stmt = exec_query('SELECT COUNT(alias_id) FROM domain_aliasses WHERE alias_name = ?', $domainName);
-    if ($stmt->fetchRow(PDO::FETCH_COLUMN) > 0) {
+    if ($stmt->fetch(PDO::FETCH_COLUMN) > 0) {
         return true;
     }
 
@@ -196,11 +196,11 @@ function imscp_domain_exists($domainName, $resellerId)
         $parentDomain = substr($domainName, $domainPartCnt);
 
         // Execute query the redefined queries for domains/accounts and aliases tables
-        if (exec_query($queryDomain, [$parentDomain, $resellerId])->fetchRow(PDO::FETCH_COLUMN) > 0) {
+        if (exec_query($queryDomain, [$parentDomain, $resellerId])->fetch(PDO::FETCH_COLUMN) > 0) {
             return true;
         }
 
-        if (exec_query($queryAliases, [$parentDomain, $resellerId])->fetchRow(PDO::FETCH_COLUMN) > 0) {
+        if (exec_query($queryAliases, [$parentDomain, $resellerId])->fetch(PDO::FETCH_COLUMN) > 0) {
             return true;
         }
     }
@@ -215,7 +215,7 @@ function imscp_domain_exists($domainName, $resellerId)
         ",
         $domainName
     );
-    if ($stmt->fetchRow(PDO::FETCH_COLUMN) > 0) {
+    if ($stmt->fetch(PDO::FETCH_COLUMN) > 0) {
         return true;
     }
 
@@ -228,7 +228,7 @@ function imscp_domain_exists($domainName, $resellerId)
         ",
         $domainName
     );
-    if ($stmt->fetchRow(PDO::FETCH_COLUMN) > 0) {
+    if ($stmt->fetch(PDO::FETCH_COLUMN) > 0) {
         return true;
     }
 
@@ -271,7 +271,7 @@ function get_domain_default_props($domainAdminId, $createdBy = NULL)
         showBadRequestErrorPage();
     }
 
-    $domainProperties = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $domainProperties = $stmt->fetch(PDO::FETCH_ASSOC);
     return $domainProperties;
 }
 
@@ -295,7 +295,7 @@ function get_user_domain_id($customeId)
         throw new iMSCPException(sprintf("Couldn't find domain ID of user with ID %s", $customeId));
     }
 
-    return $stmt->fetchRow(PDO::FETCH_COLUMN);
+    return $stmt->fetch(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -410,7 +410,7 @@ function change_domain_status($customerId, $action)
         throw new iMSCPException(sprintf("Couldn't find domain for user with ID %s", $customerId));
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
     $domainId = $row['domain_id'];
     $adminName = decode_idna($row['admin_name']);
     $db = Database::getInstance();
@@ -525,7 +525,7 @@ function sql_delete_user($dmnId, $userId)
         return false;
     }
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $user = $row['sqlu_name'];
     $host = $row['sqlu_host'];
     $dbName = $row['sqld_name'];
@@ -540,7 +540,7 @@ function sql_delete_user($dmnId, $userId)
         $user, $host
     ]);
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($row['cnt'] < 2) {
         exec_query('DELETE FROM mysql.user WHERE User = ? AND Host = ?', [$user, $host]);
@@ -579,7 +579,7 @@ function delete_sql_database($dmnId, $dbId)
         return false;
     }
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $dbName = $row['sqld_name'];
 
     EventsManager::getInstance()->dispatch(Events::onBeforeDeleteSqlDb, [
@@ -592,7 +592,7 @@ function delete_sql_database($dmnId, $dbId)
         [$dbId, $dmnId]
     );
 
-    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         if (!sql_delete_user($dmnId, $row['sqlu_id'])) {
             return false;
         }
@@ -641,7 +641,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
         return false;
     }
 
-    $data = $stmt->fetchRow();
+    $data = $stmt->fetch();
 
     $db = Database::getInstance();
 
@@ -651,7 +651,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 
         // Delete SQL databases and SQL users
         $stmt = exec_query('SELECT sqld_id FROM sql_database WHERE domain_id = ?', $data['domain_id']);
-        while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             delete_sql_database($data['domain_id'], $row['sqld_id']);
         }
 
@@ -821,7 +821,7 @@ function deleteDomainAlias($customerId, $mainDomainId, $aliasId, $aliasName, $al
             [$customerId]
         );
         if ($stmt->rowCount()) {
-            $ftpGroupData = $stmt->fetchRow(PDO::FETCH_ASSOC);
+            $ftpGroupData = $stmt->fetch(PDO::FETCH_ASSOC);
             $members = array_filter(
                 preg_split('/,/', $ftpGroupData['members'], -1, PREG_SPLIT_NO_EMPTY),
                 function ($member) use ($aliasName) {
@@ -954,7 +954,7 @@ function imscp_getResellerProperties($resellerId, $forceReload = false)
             throw new iMSCPException(tr('Properties for reseller with ID %d were not found in database.', $resellerId));
         }
 
-        $properties = $stmt->fetchRow(PDO::FETCH_ASSOC);
+        $properties = $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     return $properties;
@@ -1771,10 +1771,10 @@ function get_application_installer_conf()
 {
     $stmt = execute_query('SELECT * FROM web_software_options');
     if (!$stmt->rowCount()) {
-        throw new iMSCPException('Unable to retrieve software installer options in database');
+        throw new iMSCPException("Couldn't retrieve software installer options in database");
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
     return [$row['use_webdepot'], $row['webdepot_xml_url'], $row['webdepot_last_update']];
 }
 
@@ -1794,10 +1794,10 @@ function check_package_is_installed($packageInstallType, $packageName, $packageV
     $stmt = exec_query('SELECT admin_type FROM admin WHERE admin_id = ?', $userId);
 
     if (!$stmt->rowCount()) {
-        throw new iMSCPException('Unable to found the given user in database');
+        throw new iMSCPException("Couldn't found the given user in database");
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     if ($row['admin_type'] == 'admin') {
         $query = "
@@ -1861,7 +1861,7 @@ function get_webdepot_software_list($tpl, $userId)
     $rowCount = $stmt->rowCount();
 
     if ($rowCount) {
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             $tpl->assign([
                 'TR_PACKAGE_NAME'         => tohtml($row['package_title']),
                 'TR_PACKAGE_TOOLTIP'      => tohtml($row['package_description'], 'htmlAttr'),

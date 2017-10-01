@@ -39,7 +39,7 @@ function client_getHtaccessUsername($htuserId, $domainId)
         showBadRequestErrorPage();
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     if ($row['status'] != 'ok') {
         set_page_message(tr('A task is in progress for this htuser.'));
@@ -83,7 +83,7 @@ function client_generatePage($tpl)
     $addedIn = 0;
     $notAddedIn = 0;
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $groupId = $row['id'];
         $groupName = $row['ugroup'];
         $members = $row['members'];
@@ -163,7 +163,7 @@ function client_addHtaccessUserToHtaccessGroup()
         showBadRequestErrorPage();
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
     $members = $row['members'];
     if ($members == '') {
         $members = $htuserId;
@@ -219,7 +219,7 @@ function client_removeHtaccessUserFromHtaccessGroup()
         showBadRequestErrorPage();
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     $members = explode(',', $row['members']);
     $key = array_search($htuserId, $members);

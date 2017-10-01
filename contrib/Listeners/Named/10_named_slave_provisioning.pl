@@ -149,7 +149,7 @@ $rowCount = $stmt->rowCount();
 if ($rowCount > 0) {
     echo "// $rowCount HOSTED DOMAINS LISTED ON $config->SERVER_HOSTNAME [$masterDnsServerIp]\n";
 
-    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         echo "zone \"{$row['domain_name']}\" {\n";
         echo "\ttype slave;\n";
         echo "\tfile \"/var/cache/bind/{$row['domain_name']}.db\";\n";
@@ -164,7 +164,7 @@ $stmt = exec_query('SELECT alias_id, alias_name FROM domain_aliasses');
 $rowCount = $stmt->rowCount();
 if ($rowCount > 0) {
     echo "// $rowCount HOSTED ALIASES LISTED ON $config->SERVER_HOSTNAME [$masterDnsServerIp]\n";
-    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         echo "zone \"{$row['alias_name']}\" {\n";
         echo "\ttype slave;\n";
         echo "\tfile \"/var/cache/bind/{$row['alias_name']}.db\";\n";

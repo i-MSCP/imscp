@@ -33,7 +33,6 @@ $tpl->assign('TR_PAGE_TITLE', tr('Admin / Settings / Software Options'));
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
     $error = "";
-
     $webdepot_xml_url = encode_idna(strtolower(clean_input($_POST['webdepot_xml_url'])));
     (strlen($webdepot_xml_url) > 0) ? $use_webdepot = $_POST['use_webdepot'] : $use_webdepot = '0';
 
@@ -45,20 +44,21 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
         }
     }
     if (!$error) {
-        $query = "
-            UPDATE
-                `web_software_options`
-            SET
-                `use_webdepot` = '" . $use_webdepot . "',
-                `webdepot_xml_url` = '" . $webdepot_xml_url . "'
-        ";
-        execute_query($query);
+        exec_query('UPDATE web_software_options SET use_webdepot = ?, webdepot_xml_url = ?', [
+            $use_webdepot, $webdepot_xml_url
+        ]);
         set_page_message(tr("Software installer options successfully updated."), 'success');
     }
 }
 
-$query = "SELECT * FROM `web_software_options`";
-$rs = execute_query($query);
+
+$stmt = execute_query('SELECT * FROM web_software_options');
+
+if (!$stmt->rowCount()) {
+    showBadRequestErrorPage();
+}
+
+$row = $stmt->fetch();
 
 $tpl->assign([
     'TR_OPTIONS_SOFTWARE'        => tr('Software installer options'),
@@ -66,10 +66,10 @@ $tpl->assign([
     'TR_USE_WEBDEPOT'            => tr('Remote Web software repository'),
     'TR_WEBDEPOT_XML_URL'        => tr('XML file URL for the Web software repository'),
     'TR_WEBDEPOT_LAST_UPDATE'    => tr('Last Web software repository update'),
-    'USE_WEBDEPOT_SELECTED_OFF'  => (($rs->fields['use_webdepot'] == "0") ? ' selected' : ''),
-    'USE_WEBDEPOT_SELECTED_ON'   => (($rs->fields['use_webdepot'] == "1") ? ' selected' : ''),
-    'WEBDEPOT_XML_URL_VALUE'     => $rs->fields['webdepot_xml_url'],
-    'WEBDEPOT_LAST_UPDATE_VALUE' => ($rs->fields['webdepot_last_update'] == "0000-00-00 00:00:00") ? tr('not available') : $rs->fields['webdepot_last_update'],
+    'USE_WEBDEPOT_SELECTED_OFF'  => (($row['use_webdepot'] == 0) ? ' selected' : ''),
+    'USE_WEBDEPOT_SELECTED_ON'   => (($row['use_webdepot'] == 1) ? ' selected' : ''),
+    'WEBDEPOT_XML_URL_VALUE'     => $row['webdepot_xml_url'],
+    'WEBDEPOT_LAST_UPDATE_VALUE' => ($row['webdepot_last_update'] == "0000-00-00 00:00:00") ? tr('not available') : $row['webdepot_last_update'],
     'TR_APPLY_CHANGES'           => tr('Apply changes'),
     'TR_ENABLED'                 => tr('Enabled'),
     'TR_DISABLED'                => tr('Disabled')

@@ -548,7 +548,7 @@ function client_saveDnsRecord($dnsRecordId)
                 showBadRequestErrorPage();
             }
 
-            $row = $stmt->fetchRow();
+            $row = $stmt->fetch();
             $domainName = $row['alias_name'];
             $domainId = $row['alias_id'];
         }
@@ -570,7 +570,7 @@ function client_saveDnsRecord($dnsRecordId)
             showBadRequestErrorPage();
         }
 
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
         $domainId = $row['alias_id'] ? $row['alias_id'] : $row['domain_id'];
         $domainName = $row['domain_name'];
         $dnsRecordType = $row['domain_type'];
@@ -906,7 +906,7 @@ function generatePage($tpl, $dnsRecordId)
         $domainId = client_getPost('zone_id', '0');
         $selectOptions = "\n";
 
-        while ($data = $stmt->fetchRow()) {
+        while ($data = $stmt->fetch()) {
             $selectOptions .= "\t\t\t\t\t" . '<option value="' . $data['domain_id'] . '"' .
                 ($data['domain_id'] == $domainId ? ' selected' : '') . '>' . decode_idna($data['domain_name'])
                 . "</option>\n";
@@ -926,7 +926,7 @@ function generatePage($tpl, $dnsRecordId)
             showBadRequestErrorPage();
         }
 
-        $data = $stmt->fetchRow();
+        $data = $stmt->fetch();
         $tpl->assign([
             'ADD_RECORD'        => '',
             'DNS_TYPE_DISABLED' => ' disabled'

@@ -54,7 +54,7 @@ function _client_getDomainData($domainId)
         return false;
     }
 
-    $domainData = $stmt->fetchRow();
+    $domainData = $stmt->fetch();
     $domainData['domain_name_utf8'] = decode_idna($domainData['domain_name']);
     return $domainData;
 }

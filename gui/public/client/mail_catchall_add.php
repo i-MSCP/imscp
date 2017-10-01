@@ -81,7 +81,7 @@ function getCatchallDomain($catchallDomainId, $catchalType)
             return false;
     }
 
-    return $stmt->fetchRow(PDO::FETCH_COLUMN);
+    return $stmt->fetch(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -124,7 +124,7 @@ function addCatchallAccount($catchallDomainId, $catchallDomain, $catchallType)
                 showBadRequestErrorPage();
             }
 
-            $catchallAddresses[] = $stmt->fetchRow(PDO::FETCH_COLUMN);
+            $catchallAddresses[] = $stmt->fetch(PDO::FETCH_COLUMN);
         }
     } else {
         $catchallAddresses = clean_input($_POST['manual_catchall_addresses']);
@@ -226,7 +226,7 @@ function generatePage($tpl, $catchallDomainId, $catchallType)
                         ? tohtml($_POST['manual_catchall_addresses']) : ''
                 ]);
 
-                while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $tpl->assign([
                         'AUTOMATIC_CATCHALL_ADDRESS_ID' => $row['mail_id'],
                         'AUTOMATIC_CATCHALL_ADDRESS'    => tohtml(decode_idna($row['mail_addr']))
@@ -264,7 +264,7 @@ function generatePage($tpl, $catchallDomainId, $catchallType)
                         ? tohtml($_POST['manual_catchall_addresses']) : ''
                 ]);
 
-                while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $tpl->assign([
                         'AUTOMATIC_CATCHALL_ADDRESS_ID' => $row['mail_id'],
                         'AUTOMATIC_CATCHALL_ADDRESS'    => tohtml(decode_idna($row['mail_addr']))
@@ -304,7 +304,7 @@ function generatePage($tpl, $catchallDomainId, $catchallType)
                         ? tohtml($_POST['manual_catchall_addresses']) : ''
                 ]);
 
-                while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $tpl->assign([
                         'AUTOMATIC_CATCHALL_ADDRESS_ID' => $row['mail_id'],
                         'AUTOMATIC_CATCHALL_ADDRESS'    => tohtml(decode_idna($row['mail_addr']))
@@ -343,7 +343,7 @@ function generatePage($tpl, $catchallDomainId, $catchallType)
                         ? tohtml($_POST['manual_catchall_addresses']) : ''
                 ]);
 
-                while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $tpl->assign([
                         'AUTOMATIC_CATCHALL_ADDRESS_ID' => $row['mail_id'],
                         'AUTOMATIC_CATCHALL_ADDRESS'    => tohtml(decode_idna($row['mail_addr']))

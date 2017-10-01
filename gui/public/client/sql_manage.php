@@ -55,7 +55,7 @@ function canAddSQLUserForDatabase($sqldId)
             )
             ',
             [$sqldId, get_user_domain_id($_SESSION['user_id']), $sqldId]
-        )->fetchRow(PDO::FETCH_COLUMN);
+        )->fetch(PDO::FETCH_COLUMN);
     }
 
     return true;
@@ -88,7 +88,7 @@ function generateDatabaseSqlUserList(TemplateEngine $tpl, $sqldId)
         )
     ]);
 
-    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $tpl->assign([
             'DB_USER'      => tohtml($row['sqlu_name']),
             'DB_USER_HOST' => tohtml(decode_idna($row['sqlu_host'])),
@@ -119,7 +119,7 @@ function generatePage(TemplateEngine $tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $tpl->assign([
             'SQLD_ID'    => $row['sqld_id'],
             'DB_NAME'    => tohtml($row['sqld_name']),

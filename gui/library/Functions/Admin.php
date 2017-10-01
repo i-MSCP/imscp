@@ -32,7 +32,7 @@ function systemHasResellers($minNbResellers = 1)
 
     if (NULL === $resellersCount) {
         $stmt = execute_query("SELECT COUNT(admin_id) FROM admin WHERE admin_type = 'reseller'");
-        $resellersCount = $stmt->fetchRow(PDO::FETCH_COLUMN);
+        $resellersCount = $stmt->fetch(PDO::FETCH_COLUMN);
     }
 
     return ($resellersCount >= $minNbResellers);
@@ -52,7 +52,7 @@ function systemHasCustomers($minNbCustomers = 1)
         $stmt = execute_query(
             "SELECT COUNT(admin_id) FROM admin WHERE admin_type = 'user' AND admin_status <> 'todelete'"
         );
-        $customersCount = $stmt->fetchRow(PDO::FETCH_COLUMN);
+        $customersCount = $stmt->fetch(PDO::FETCH_COLUMN);
     }
 
     return ($customersCount >= $minNbCustomers);

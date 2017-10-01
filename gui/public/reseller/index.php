@@ -38,7 +38,7 @@ function generateSupportQuestionsMessage()
     $ticketsCount = exec_query(
         'SELECT count(ticket_id) FROM tickets WHERE ticket_to = ? AND ticket_status IN (1, 4) AND ticket_reply = 0',
         $_SESSION['user_id']
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
 
     if ($ticketsCount > 0) {
         set_page_message(
@@ -66,7 +66,7 @@ function generateOrdersAliasesMessage()
         ',
         ['ordered', $_SESSION['user_id']]
     );
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     if ($row['cnt'] > 0) {
         set_page_message(
@@ -149,7 +149,7 @@ function generatePage($tpl, $resellerId, $resellerName)
             WHERE created_by = ?
         ',
         [getFirstDayOfMonth(), getLastDayOfMonth(), $_SESSION['user_id']]
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
     $monthlyTrafficLimit = $resellerProperties['max_traff_amnt'] * 1048576;
 
     generateTrafficUsageBar($tpl, $totalConsumedMonthlyTraffic, $monthlyTrafficLimit);
@@ -170,7 +170,7 @@ function generatePage($tpl, $resellerId, $resellerName)
             WHERE created_by = ?
         ',
         $_SESSION['user_id']
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
     $diskUsageLimit = $resellerProperties['max_disk_amnt'] * 1048576;
     generateDiskUsageBar($tpl, $totalDiskUsage, $diskUsageLimit);
 

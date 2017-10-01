@@ -92,7 +92,7 @@ function login_credentials(AuthEvent $authEvent)
         return;
     }
 
-    $identity = $stmt->fetchRow(PDO::FETCH_OBJ);
+    $identity = $stmt->fetch(PDO::FETCH_OBJ);
 
     if (!Crypt::hashEqual($identity->admin_pass, md5($password))
         && !Crypt::verify($password, $identity->admin_pass)
@@ -174,7 +174,7 @@ function login_checkDomainAccount($event)
         return;
     }
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($row['admin_status'] == 'disabled' || $row['domain_status'] == 'disabled') {
         set_page_message(tr('Your account has been disabled. Please, contact your reseller.'), 'error');

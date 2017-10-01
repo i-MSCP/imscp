@@ -82,7 +82,7 @@ function reseller_sendToCustomers($senderName, $senderEmail, $subject, $body)
         ",
         $_SESSION['user_id']
     );
-    while ($rcptToData = $stmt->fetchRow()) {
+    while ($rcptToData = $stmt->fetch()) {
         reseller_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData);
     }
 }
@@ -186,7 +186,7 @@ function reseller_generatePageData($tpl)
 
     if ($senderName == '' && $senderEmail == '') {
         $stmt = exec_query('SELECT admin_name, fname, lname, email FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
 
         if (!empty($row['fname']) && !empty($row['lname'])) {
             $senderName = $row['fname'] . ' ' . $row['lname'];

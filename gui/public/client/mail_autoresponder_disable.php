@@ -52,7 +52,7 @@ function checkMailAccount($mailAccountId)
             $_SESSION['user_id'],
             MT_NORMAL_CATCHALL . '|' . MT_SUBDOM_CATCHALL . '|' . MT_ALIAS_CATCHALL . '|' . MT_ALSSUB_CATCHALL
         ]
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
 }
 
 /**

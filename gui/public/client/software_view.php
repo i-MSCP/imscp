@@ -30,15 +30,11 @@
  */
 function client_generatePage($tpl)
 {
-    if (!isset($_GET['id'])) {
-        showBadRequestErrorPage();
-    }
-
     $softwareId = intval($_GET['id']);
     $domainProperties = get_domain_default_props($_SESSION['user_id']);
     $stmt = exec_query('SELECT created_by FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
 
-    get_software_props($tpl, $domainProperties['domain_id'], $softwareId, $stmt->fields['created_by']);
+    get_software_props($tpl, $domainProperties['domain_id'], $softwareId, $stmt->fetch(PDO::FETCH_COLUMN));
 
     return $softwareId;
 }
@@ -51,7 +47,7 @@ require_once 'imscp-lib.php';
 
 check_login('user');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-customerHasFeature('aps') or showBadRequestErrorPage();
+customerHasFeature('aps') && isset($_GET['id']) or showBadRequestErrorPage();
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
@@ -64,7 +60,6 @@ $tpl->define_dynamic([
     'software_item'           => 'page',
     'no_software'             => 'page'
 ]);
-
 $tpl->assign([
     'TR_PAGE_TITLE'    => tr('Client / Webtools / Software / View'),
     'SOFTWARE_ID'      => client_generatePage($tpl),

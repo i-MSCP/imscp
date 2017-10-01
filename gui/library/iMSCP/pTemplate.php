@@ -32,6 +32,8 @@ use iMSCP_Registry as Registry;
 
 /**
  * Class iMSCP_pTemplate
+ * 
+ * @property Zend_Form form
  */
 class iMSCP_pTemplate
 {

@@ -50,7 +50,7 @@ function checkMailAccount($mailAccountId)
             $_SESSION['user_id'],
             MT_NORMAL_CATCHALL . '|' . MT_SUBDOM_CATCHALL . '|' . MT_ALIAS_CATCHALL . '|' . MT_ALSSUB_CATCHALL
         ]
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
 }
 
 /**
@@ -90,7 +90,7 @@ function updateAutoresponderMessage($mailAccountId, $autoresponderMessage)
 function generatePage($tpl, $mailAccountId)
 {
     $stmt = exec_query('SELECT mail_auto_respond_text, mail_acc FROM mail_users WHERE mail_id = ?', $mailAccountId);
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
     $tpl->assign('AUTORESPONDER_MESSAGE', tohtml($row['mail_auto_respond_text']));
 }
 

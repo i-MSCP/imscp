@@ -49,7 +49,7 @@ if (!$stmt->rowCount()) {
     showBadRequestErrorPage();
 }
 
-$row = $stmt->fetchRow();
+$row = $stmt->fetch();
 $groupname = $row['groupname'];
 
 $db = iMSCP_Database::getInstance();
@@ -62,7 +62,7 @@ try {
     $stmt = exec_query('SELECT members FROM ftp_group WHERE groupname = ?', $groupname);
 
     if ($stmt->rowCount()) {
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
         $members = preg_split('/,/', $row['members'], -1, PREG_SPLIT_NO_EMPTY);
         $member = array_search($userid, $members);
 

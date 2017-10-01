@@ -50,7 +50,7 @@ function deleteMailAccount($mailId, $domainId, $config, $mtaConfig, &$nbDeletedM
         return;
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     if ($config['PROTECT_DEFAULT_EMAIL_ADDRESSES']
         && (
@@ -95,7 +95,7 @@ function deleteMailAccount($mailId, $domainId, $config, $mtaConfig, &$nbDeletedM
     );
 
     if ($stmt->rowCount()) {
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             if ($row['mail_forward'] == '_no_') {
                 # catch-all account
                 $row['mail_acc'] = implode(',', preg_grep(

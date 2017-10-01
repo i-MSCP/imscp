@@ -32,7 +32,7 @@ function admin_generateSupportQuestionsMessage()
     $ticketsCount = exec_query(
         'SELECT COUNT(ticket_id) FROM tickets WHERE ticket_to = ? AND ticket_status IN (1, 2) AND ticket_reply = 0',
         $_SESSION['user_id']
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetch(PDO::FETCH_COLUMN);
 
     if ($ticketsCount > 0) {
         set_page_message(
@@ -118,7 +118,7 @@ function admin_generateServerTrafficInfo($tpl)
     );
 
     if ($stmt->rowCount()) {
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
         $trafficUsageBytes = $row['serverTrafficUsage'];
     } else {
         $trafficUsageBytes = 0;

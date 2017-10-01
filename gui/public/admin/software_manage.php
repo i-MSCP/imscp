@@ -53,7 +53,7 @@ list($use_webdepot, $webdepot_xml_url, $webdepot_last_update) = get_application_
 if ($use_webdepot) {
     $error = '';
 
-    if (isset($_POST['uaction']) && $_POST['uaction'] == "updatewebdepot") {
+    if (isset($_POST['uaction']) && $_POST['uaction'] == 'updatewebdepot') {
         //$xml_file =  @file_get_contents(encode_idna(strtolower(clean_input($_POST['webdepot_xml_url']))));
         $xml_file = @file_get_contents($webdepot_xml_url);
 
@@ -61,6 +61,7 @@ if ($use_webdepot) {
             set_page_message(tr("Unable to read Web software repository index file."), 'error');
             $error = 1;
         }
+
         if (!$error) {
             update_webdepot_software_list($webdepot_xml_url, $webdepot_last_update);
         }
@@ -97,10 +98,10 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 
     unset($_SESSION['software_upload_token']);
 
-    if ($_FILES['sw_file']['name'] != '' AND !empty($_POST['sw_wget'])) {
+    if ($_FILES['sw_file']['name'] != '' && !empty($_POST['sw_wget'])) {
         set_page_message(tr('You have to choose between file-upload and wget-function.'), 'error');
         $success = 0;
-    } elseif ($_FILES['sw_file']['name'] == '' AND empty($_POST['sw_wget'])) {
+    } elseif ($_FILES['sw_file']['name'] == '' && empty($_POST['sw_wget'])) {
         set_page_message(tr('You must select a file to upload/download.'), 'error');
         $success = 0;
     } else {
@@ -122,7 +123,6 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
     if ($success == 1) {
         $user_id = $_SESSION['user_id'];
         $upload = 1;
-
         $fname = '';
 
         if ($file == 0) {
@@ -134,21 +134,16 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
         $filename = substr($fname, 0, -7);
         $extension = substr($fname, -7);
 
-        $query = "
-			INSERT INTO
-				`web_software`
-					(
-						`reseller_id`, `software_name`, `software_version`, `software_language`, `software_type`,
-						`software_db`, `software_archive`, `software_installfile`, `software_prefix`, `software_link`,
-						`software_desc`, `software_active`, `software_status`, `software_depot`
-					) VALUES (
-						?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-					)
-				;
-			";
-
         $rs = exec_query(
-            $query,
+            "
+                INSERT INTO web_software (
+                    reseller_id, software_name, software_version, software_language, software_type, software_db,
+                    software_archive, software_installfile, software_prefix, software_link, software_desc,
+                    software_active, software_status, software_depot
+                ) VALUES (
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                )
+            ",
             [
                 $user_id, 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 0,
                 $filename, 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 1,

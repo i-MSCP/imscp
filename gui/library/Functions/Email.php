@@ -49,7 +49,7 @@ function get_email_tpl_data($userId, $tplName)
     if (!$stmt->rowCount()) {
         throw new iMSCPException("Couldn't find user data");
     }
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     if ($row['fname'] != '' && $row['lname'] != '') {
         $data['sender_name'] = $row['fname'] . ' ' . $row['lname'];

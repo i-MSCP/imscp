@@ -39,13 +39,13 @@ try {
         showBadRequestErrorPage();
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
     $htuserName = $row['uname'];
 
     // Remove the user from any group for which it is member and schedule .htgroup file change
     $stmt = exec_query('SELECT id, members FROM htaccess_groups WHERE dmn_id = ?', $domainId);
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $htuserList = explode(',', $row['members']);
         $candidate = array_search($row['id'], $members);
 
@@ -62,7 +62,7 @@ try {
     // Schedule deletion or update of any .htaccess files in which the htuser was used
     $stmt = exec_query('SELECT * FROM htaccess WHERE dmn_id = ?', $domainId);
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $htuserList = explode(',', $row['user_id']);
         $candidate = array_search($htuserId, $htuserList);
 

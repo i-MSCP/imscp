@@ -49,7 +49,7 @@ function getMailData($domainId, $mailQuota)
             ',
             $domainId
         );
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
 
         $mailData = [
             'quota_sum'    => bytesHuman($row['quota']),
@@ -80,7 +80,7 @@ function reseller_getResellerProps($resellerId)
         $resellerId
     );
 
-    return $stmt->fetchRow();
+    return $stmt->fetch();
 }
 
 /**
@@ -104,7 +104,7 @@ function reseller_getDomainProps($domainId)
         ',
         $domainId
     );
-    $data = $stmt->fetchRow();
+    $data = $stmt->fetch();
     $data['mail_quota'] = $data['mail_quota'] / 1048576;
 
     $trafficData = getClientMonthlyTrafficStats($domainId);
@@ -145,7 +145,7 @@ function &getData($domainId, $forUpdate = false)
         ',
         [$statusOk, $statusOk, $statusOk, $domainId, $_SESSION['user_id']]
     );
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($row['domain_status'] == '') {
         set_page_message(tr("The domain you are trying to edit doesn't exist."), 'error');

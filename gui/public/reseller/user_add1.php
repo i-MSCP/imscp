@@ -204,7 +204,7 @@ function reseller_generatePage($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $hpId = isset($_POST['dmn_tpl']) ? $_POST['dmn_tpl'] : '';
         $tpl->assign([
             'HP_NAME'     => tohtml($row['name']),

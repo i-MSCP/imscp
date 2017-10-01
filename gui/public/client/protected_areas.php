@@ -34,7 +34,7 @@ function generatePage($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'AREA_NAME' => tohtml($row['auth_name']),
             'AREA_PATH' => tohtml($row['path']),

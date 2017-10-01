@@ -50,7 +50,7 @@ function generateDomainTypeList($mainDmnId, $tpl)
         ',
         $mainDmnId
     );
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     $domains = [
         ['count' => '1', 'type' => 'dmn', 'tr' => tr('Domain')],
@@ -121,7 +121,7 @@ function getDomainList($mainDmnName, $mainDmnId, $dmnType = 'dmn')
     }
 
     $dmnList = [];
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $domainName = decode_idna($row['name']);
         $dmnList[] = [
             'domain_name_val' => $domainName,
@@ -206,7 +206,7 @@ function addAccount()
         ',
         $_SESSION['user_id']
     );
-    $row1 = $stmt->fetchRow();
+    $row1 = $stmt->fetch();
 
     $db = iMSCP_Database::getInstance();
 

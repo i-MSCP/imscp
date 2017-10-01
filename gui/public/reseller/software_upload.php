@@ -94,6 +94,7 @@ if (ask_reseller_is_allowed_web_depot($_SESSION['user_id']) == "yes") {
 }
 
 if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['send_software_upload_token']) {
+    $file = 0;
     $success = 1;
     unset($_SESSION['software_upload_token']);
 
@@ -109,8 +110,6 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
                 set_page_message(tr("Only 'tar.gz' archives are accepted."), 'error');
                 $success = 0;
             }
-
-            $file = 0;
         } else {
             if (substr($_POST['sw_wget'], -7) != '.tar.gz') {
                 set_page_message(tr("Only 'tar.gz' archives are accepted."), 'error');
@@ -122,7 +121,6 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
     }
 
     if ($success == 1) {
-        $user_id = $_SESSION['user_id'];
         $upload = 1;
 
         if ($file == 0) {
@@ -131,41 +129,43 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
             $fname = substr($_POST['sw_wget'], (strrpos($_POST['sw_wget'], '/') + 1));
         }
 
+        
         $filename = substr($fname, 0, -7);
         $extension = substr($fname, -7);
 
-        $query = "
-			INSERT INTO `web_software` (
-				`reseller_id`, `software_name`, `software_version`, `software_language`, `software_type`, `software_db`,
-				`software_archive`, `software_installfile`, `software_prefix`, `software_link`,
-				`software_desc`, `software_status`
-			) VALUES (
-				?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-			)
-		";
-        $rs = exec_query(
-            $query,
+        exec_query(
+            "
+                INSERT INTO web_software (
+                    reseller_id, software_name, software_version, software_language, software_type, software_db,
+                    software_archive, software_installfile, software_prefix, software_link, software_desc,
+                    software_status
+                ) VALUES (
+                    ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, 'toadd'
+                )
+            ",
             [
-                $user_id, 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', '0',
-                $filename, 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 'toadd'
+                $_SESSION['user_id'], 'waiting_for_input', 'waiting_for_input', 'waiting_for_input',
+                'waiting_for_input', $filename, 'waiting_for_input', 'waiting_for_input', 'waiting_for_input',
+                'waiting_for_input'
             ]
         );
-        /** @var $db iMSCP_Database */
-        $db = iMSCP_Registry::get('db');
-        $sw_id = $db->insertId();
+
+        $db = iMSCP_Database::getInstance();
+        $softwareId = $db->insertId();
 
         if ($file == 0) {
-            $dest_dir = $cfg['GUI_APS_DIR'] . '/' . $user_id . '/' . $filename . '-' . $sw_id . $extension;
+            $destDir = $cfg['GUI_APS_DIR'] . '/' . $_SESSION['user_id'] . '/' . $filename . '-' . $softwareId .
+                $extension;
 
-            if (!is_dir($cfg['GUI_APS_DIR'] . '/' . $user_id)) {
-                @mkdir($cfg['GUI_APS_DIR'] . '/' . $user_id, 0755, true);
+            if (!is_dir($cfg['GUI_APS_DIR'] . '/' . $_SESSION['user_id'])) {
+                @mkdir($cfg['GUI_APS_DIR'] . '/' . $_SESSION['user_id'], 0755, true);
             }
 
-            if (!move_uploaded_file($_FILES['sw_file']['tmp_name'], $dest_dir)) {
+            if (!move_uploaded_file($_FILES['sw_file']['tmp_name'], $destDir)) {
                 // Delete software entry
-                $query = "DELETE FROM `web_software` WHERE `software_id` = ?";
-                exec_query($query, $sw_id);
-                $sw_wget = "";
+                exec_query('DELETE FROM web_software WHERE software_id = ?', $softwareId);
+
+                $sw_wget = '';
                 set_page_message(
                     tr('Could not upload the file. Max. upload filesize (%1$d MB) has been reached.',
                         ini_get('upload_max_filesize')
@@ -175,25 +175,27 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
                 $upload = 0;
             }
         }
+
+        $softwareWget = '';
+
         if ($file == 1) {
-            $sw_wget = $_POST['sw_wget'];
-            $dest_dir = $cfg['GUI_APS_DIR'] . '/' . $user_id . '/' . $filename . '-' . $sw_id . $extension;
+            $softwareWget = $_POST['sw_wget'];
+            $destDir = $cfg['GUI_APS_DIR'] . '/' . $_SESSION['user_id'] . '/' . $filename . '-' . $softwareId . $extension;
 
             // Reading Filesize
-            $parts = parse_url($sw_wget);
+            $parts = parse_url($softwareWget);
             $connection = fsockopen($parts['host'], 80, $errno, $errstr, 30);
 
             if ($connection) {
-                $appdata = get_headers($sw_wget, true);
-                $length = (isset($appdata['Content-Length'])) ? filter_digits($appdata['Content-Length']) : NULL;
+                $appdata = get_headers($softwareWget, true);
+                $length = isset($appdata['Content-Length']) ? filter_digits($appdata['Content-Length']) : NULL;
 
                 ($length) ? $remote_file_size = $length : $remote_file_size = 0;
                 $show_remote_file_size = bytesHuman($remote_file_size);
 
                 if ($remote_file_size < 1) {
                     // Delete software entry
-                    $query = "DELETE FROM `web_software` WHERE `software_id` = ?";
-                    exec_query($query, $sw_id);
+                    exec_query('DELETE FROM web_software WHERE software_id = ?', $softwareId);
                     $show_max_remote_filesize = bytesHuman($cfg['APS_MAX_REMOTE_FILESIZE']);
                     set_page_message(
                         tr(
@@ -205,8 +207,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
                     $upload = 0;
                 } elseif ($remote_file_size > $cfg['APS_MAX_REMOTE_FILESIZE']) {
                     // Delete software entry
-                    $query = "DELETE FROM `web_software` WHERE `software_id` = ?";
-                    exec_query($query, $sw_id);
+                    exec_query('DELETE FROM web_software WHERE software_id = ?', $softwareId);
 
                     $show_max_remote_filesize = bytesHuman($cfg['APS_MAX_REMOTE_FILESIZE']);
                     set_page_message(
@@ -218,43 +219,39 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
                     );
                     $upload = 0;
                 } else {
-                    $remote_file = @file_get_contents($sw_wget);
+                    $remoteFile = @file_get_contents($softwareWget);
 
-                    if ($remote_file) {
-                        $output_file = fopen($dest_dir, 'w+');
-                        fwrite($output_file, $remote_file);
-                        fclose($output_file);
+                    if ($remoteFile) {
+                        $outputFile = fopen($destDir, 'w+');
+                        fwrite($outputFile, $remoteFile);
+                        fclose($outputFile);
                     } else {
                         // Delete software entry
-                        $query = "DELETE FROM `web_software` WHERE `software_id` = ?";
-                        exec_query($query, $sw_id);
+                        exec_query('DELETE FROM web_software WHERE software_id = ?', $softwareId);
                         set_page_message(tr('Remote file not found.'), 'error');
                         $upload = 0;
                     }
                 }
             } else {
                 // Delete software entry
-                $query = "DELETE FROM `web_software` WHERE `software_id` = ?";
-                exec_query($query, $sw_id);
+                exec_query('DELETE FROM web_software WHERE software_id = ?', $softwareId);
                 set_page_message(tr('Could not upload file.'), 'error');
                 $upload = 0;
             }
         }
+
         if ($upload == 1) {
-            $tpl->assign(
-                [
-                    'VAL_WGET'     => '',
-                    'SW_INSTALLED' => ''
-                ]
-            );
+            $tpl->assign([
+                'VAL_WGET'     => '',
+                'SW_INSTALLED' => ''
+            ]);
             send_request();
             set_page_message(tr('File successfully uploaded.'), 'success');
         } else {
-            $tpl->assign('VAL_WGET', $sw_wget);
+            $tpl->assign('VAL_WGET', $softwareWget);
         }
     } else {
         $tpl->assign('VAL_WGET', $_POST['sw_wget']);
-
     }
 } else {
     unset($_SESSION['software_upload_token']);
