@@ -72,9 +72,10 @@ class iMSCP_Database
      * Creates a PDO object and connects to the database.
      *
      * According the PDO implementation, a PDOException is raised on error
-     * See {@link http://www.php.net/manual/en/pdo.construct.php} for more information about this issue.
+     * See {@link http://www.php.net/manual/en/pdo.construct.php} for more
+     * information about this issue.
      *
-     * @throws PDOException|iMSCP_Exception
+     * @throws PDOException
      * @param string $user Sql username
      * @param string $pass Sql password
      * @param string $type PDO driver
@@ -197,37 +198,30 @@ class iMSCP_Database
      *
      * See {@link http://www.php.net/manual/en/pdo.prepare.php}
      *
-     * @param string $sql Sql statement to prepare
-     * @param array $options OPTIONAL Attribute values for the PDOStatement
-     *                       object
-     * @return PDOStatement|false A PDOStatement instance or FALSE on failure.
-     *         If prepared statements are emulated by PDO, FALSE is never
-     *         returned.
+     * @param string $statement SQL statement to be prepared
+     * @param array $driverOptions Attribute values for the PDOStatement object
+     * @return ResultSet|false A ResultSet object or FALSE on failure. If
+     *                         prepared statements are emulated by PDO,FALSE is
+     *                         never returned.
      */
-    public function prepare($sql, $options = NULL)
+    public function prepare($statement, array $driverOptions = [])
     {
-        $this->events()->dispatch(
-            new DatabaseEvents(Events::onBeforeQueryPrepare, ['context' => $this, 'query' => $sql])
-        );
+        $this->events()->dispatch(new DatabaseEvents(Events::onBeforeQueryPrepare, [
+            'context' => $this, 'query' => $statement
+        ]));
+        /** @var ResultSet|false $stmt */
+        $stmt = $this->db->prepare($statement, $driverOptions);
+        $this->events()->dispatch(new DatabaseEventsStatement(Events::onAfterQueryPrepare, [
+            'context' => $this, 'statement' => $stmt
+        ]));
 
-        if (is_array($options)) {
-            $stmt = $this->db->prepare($sql, $options);
-        } else {
-            $stmt = $this->db->prepare($sql);
+        if ($stmt !== false) {
+            return $stmt;
         }
 
-        $this->events()->dispatch(
-            new DatabaseEventsStatement(Events::onAfterQueryPrepare, ['context' => $this, 'statement' => $stmt])
-        );
-
-        if (!$stmt) {
-            $errorInfo = $this->errorInfo();
-            $this->lastErrorMessage = $errorInfo[2];
-
-            return false;
-        }
-
-        return $stmt;
+        $errorInfo = $this->errorInfo();
+        $this->lastErrorMessage = $errorInfo[2];
+        return false;
     }
 
     /**
@@ -240,20 +234,10 @@ class iMSCP_Database
      */
     public function execute($stmt, $parameters = NULL)
     {
-        if ($stmt instanceof ResultSet) {
-            $this->events()->dispatch(
-                new DatabaseEventsStatement(Events::onBeforeQueryExecute, ['context' => $this, 'statement' => $stmt])
-            );
-
-            if (NULL === $parameters) {
-                $rs = $stmt->execute();
-            } else {
-                $rs = $stmt->execute((array)$parameters);
-            }
-        } elseif (is_string($stmt)) {
-            $this->events()->dispatch(
-                new DatabaseEvents(Events::onBeforeQueryExecute, ['context' => $this, 'query' => $stmt])
-            );
+        if (is_string($stmt)) {
+            $this->events()->dispatch(new DatabaseEvents(Events::onBeforeQueryExecute, [
+                'context' => $this, 'query' => $stmt
+            ]));
 
             if (is_null($parameters)) {
                 $rs = $this->db->query($stmt);
@@ -262,7 +246,15 @@ class iMSCP_Database
                 $rs = call_user_func_array([$this->db, 'query'], $parameters);
             }
         } else {
-            throw new DatabaseException('Wrong parameter. Expects either a string or iMSCP_Database_ResultSet object');
+            $this->events()->dispatch(new DatabaseEventsStatement(Events::onBeforeQueryExecute, [
+                'context' => $this, 'statement' => $stmt
+            ]));
+
+            if (NULL === $parameters) {
+                $rs = $stmt->execute();
+            } else {
+                $rs = $stmt->execute((array)$parameters);
+            }
         }
 
         if ($rs) {

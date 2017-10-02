@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Database_Events_Database as EventsDatabase;
+use iMSCP_Database_ResultSet as ResultSet;
 
 /**
  * Class iMSCP_Database_Events_Statement
@@ -28,7 +29,7 @@ class iMSCP_Database_Events_Statement extends EventsDatabase
     /**
      * Returns a PDOstatement
      *
-     * @return PDOStatement
+     * @return ResultSet
      */
     public function getStatement()
     {

@@ -83,7 +83,7 @@ class iMSCP_Config_Handler implements ArrayAccess
             throw new iMSCPException("Configuration variable `$key` is missing.");
         }
 
-        return $this->$key;
+        return $this->{$key};
     }
 
     /**
@@ -94,7 +94,7 @@ class iMSCP_Config_Handler implements ArrayAccess
      */
     public function del($key)
     {
-        unset($this->$key);
+        unset($this->{$key});
     }
 
     /**
