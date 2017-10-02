@@ -86,7 +86,7 @@ sub showDialog
     @{selectedPackages}{
         split (
             ',', main::setupGetQuestion(
-                'WEBSTATS_PACKAGES', ( iMSCP::Getopt->preseed ? keys %{$self->{'PACKAGES'}} : '' )
+                'WEBSTATS_PACKAGES', iMSCP::Getopt->preseed ? keys %{$self->{'PACKAGES'}} : ''
             )
         )
     } = ();

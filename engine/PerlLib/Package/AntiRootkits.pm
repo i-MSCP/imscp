@@ -84,7 +84,7 @@ sub showDialog
     @{selectedPackages}{
         split (
             ',', main::setupGetQuestion(
-                'ANTI_ROOTKITS_PACKAGES', ( iMSCP::Getopt->preseed ? keys %{$self->{'PACKAGES'}} : '' )
+                'ANTI_ROOTKITS_PACKAGES', iMSCP::Getopt->preseed ? keys %{$self->{'PACKAGES'}} : ''
             )
         )
     } = ();
