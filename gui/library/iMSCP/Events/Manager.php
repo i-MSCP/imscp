@@ -74,6 +74,21 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
     }
 
     /**
+     * Retrieve all listeners which listen to a particular event
+     *
+     * @param string $event Event name
+     * @return iMSCP_Events_Listener_PriorityQueue
+     */
+    public function getListeners($event)
+    {
+        if (!array_key_exists($event, $this->events)) {
+            return new iMSCP_Events_Listener_PriorityQueue();
+        }
+
+        return $this->events[$event];
+    }
+
+    /**
      * Registers an event listener that listens on the specified events
      *
      * @param string|array $event The event(s) to listen on
@@ -154,21 +169,6 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
     public function getEvents()
     {
         return array_keys($this->events);
-    }
-
-    /**
-     * Retrieve all listeners which listen to a particular event
-     *
-     * @param string $event Event name
-     * @return iMSCP_Events_Listener_PriorityQueue
-     */
-    public function getListeners($event)
-    {
-        if (!array_key_exists($event, $this->events)) {
-            return new iMSCP_Events_Listener_PriorityQueue();
-        }
-
-        return $this->events[$event];
     }
 
     /**

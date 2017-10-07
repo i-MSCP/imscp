@@ -77,9 +77,9 @@ function kill_session()
 function client_generatePage($tpl)
 {
     $currentUserSessionId = session_id();
-    $stmt = exec_query('SELECT session_id, user_name, lastaccess FROM login');
+    $stmt = execute_query('SELECT session_id, user_name, lastaccess FROM login');
 
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch()) {
         $username = tohtml($row['user_name']);
         $sessionId = $row['session_id'];
 

@@ -55,7 +55,7 @@ function getServerTraffic($startDate, $endDate)
         return array_fill(0, 10, 0);
     }
 
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch();
 
     return [
         $row['swbin'], $row['swbout'], $row['smbin'], $row['smbout'], $row['spbin'], $row['spbout'],
@@ -94,7 +94,7 @@ function generateServerStatsByDay(TemplateEngine $tpl, $day, $month, $year)
 
     $all = array_fill(0, 8, 0);
 
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch()) {
         $otherIn = $row['all_in'] - ($row['mail_in'] + $row['pop_in'] + $row['web_in']);
         $otherOut = $row['all_out'] - ($row['mail_out'] + $row['pop_out'] + $row['web_out']);
 
@@ -152,12 +152,11 @@ function generateServerStatsByDay(TemplateEngine $tpl, $day, $month, $year)
  */
 function generateServerStatsByMonth(TemplateEngine $tpl, $month, $year)
 {
-    $stmt = exec_query(
-        'SELECT COUNT(straff_id) FROM server_traffic WHERE traff_time BETWEEN ? AND ?',
-        [getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)]
-    );
+    $stmt = exec_query('SELECT COUNT(straff_id) FROM server_traffic WHERE traff_time BETWEEN ? AND ?', [
+        getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)
+    ]);
 
-    if ($stmt->fetch(PDO::FETCH_COLUMN) < 1) {
+    if ($stmt->fetchColumn() < 1) {
         set_page_message(tr('No statistics found for the given period. Try another period.'), 'static_info');
         $tpl->assign('SERVER_STATS_BY_MONTH', '');
         return;
@@ -205,7 +204,6 @@ function generateServerStatsByMonth(TemplateEngine $tpl, $month, $year)
 
     $allOtherIn = $all[6] - ($all[0] + $all[2] + $all[4]);
     $allOtherOut = $all[7] - ($all[1] + $all[3] + $all[5]);
-
     $tpl->assign([
         'WEB_IN_ALL'    => tohtml(bytesHuman($all[0])),
         'WEB_OUT_ALL'   => tohtml(bytesHuman($all[1])),
@@ -232,8 +230,8 @@ function generatePage(TemplateEngine $tpl)
     $day = isset($_GET['day']) ? filter_digits($_GET['day']) : 0;
     $month = isset($_GET['month']) ? filter_digits($_GET['month']) : date('n');
     $year = isset($_GET['year']) ? filter_digits($_GET['year']) : date('Y');
-    $stmt = exec_query('SELECT traff_time FROM server_traffic ORDER BY traff_time ASC LIMIT 1');
-    $nPastYears = $stmt->rowCount() ? date('Y') - date('Y', $stmt->fetch(PDO::FETCH_COLUMN)) : 0;
+    $stmt = execute_query('SELECT traff_time FROM server_traffic ORDER BY traff_time ASC LIMIT 1');
+    $nPastYears = $stmt->rowCount() ? date('Y') - date('Y', $stmt->fetchColumn()) : 0;
 
     generateDMYlists($tpl, $day, $month, $year, $nPastYears);
 

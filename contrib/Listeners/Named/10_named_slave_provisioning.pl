@@ -144,12 +144,12 @@ echo "\tmasters { $masterDnsServerIp; };\n";
 echo "\tallow-notify { $masterDnsServerIp; };\n";
 echo "};\n";
 echo "// END CONFIGURATION FOR MAIN DOMAIN\n\n";
-$stmt = exec_query('SELECT domain_id, domain_name FROM domain');
+$stmt = execute_query('SELECT domain_id, domain_name FROM domain');
 $rowCount = $stmt->rowCount();
 if ($rowCount > 0) {
     echo "// $rowCount HOSTED DOMAINS LISTED ON $config->SERVER_HOSTNAME [$masterDnsServerIp]\n";
 
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch()) {
         echo "zone \"{$row['domain_name']}\" {\n";
         echo "\ttype slave;\n";
         echo "\tfile \"/var/cache/bind/{$row['domain_name']}.db\";\n";
@@ -160,11 +160,11 @@ if ($rowCount > 0) {
 
     echo "// END DOMAINS LIST\n\n";
 }
-$stmt = exec_query('SELECT alias_id, alias_name FROM domain_aliasses');
+$stmt = execute_query('SELECT alias_id, alias_name FROM domain_aliasses');
 $rowCount = $stmt->rowCount();
 if ($rowCount > 0) {
     echo "// $rowCount HOSTED ALIASES LISTED ON $config->SERVER_HOSTNAME [$masterDnsServerIp]\n";
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch()) {
         echo "zone \"{$row['alias_name']}\" {\n";
         echo "\ttype slave;\n";
         echo "\tfile \"/var/cache/bind/{$row['alias_name']}.db\";\n";

@@ -18,7 +18,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Database as Database;
 use iMSCP_Exception_Database as DatabaseException;
 
 require 'imscp-lib.php';
@@ -29,7 +28,7 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStar
 isset($_GET['id']) or showBadRequestErrorPage();
 
 $softwareId = intval($_GET['id']);
-$stmt = exec_query('SELECT * FROM web_software WHERE software_id = ?', $softwareId);
+$stmt = exec_query('SELECT * FROM web_software WHERE software_id = ?', [$softwareId]);
 
 if (!$stmt->rowCount()) {
     showBadRequestErrorPage();
@@ -43,7 +42,8 @@ $destFile = $cfg['GUI_APS_DEPOT_DIR'] . '/' . $row['software_archive'] . '-' . $
 @copy($srcFile, $destFile);
 @unlink($srcFile);
 
-$db = Database::getInstance();
+/** @var iMSCP_Database $db */
+$db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
 
 try {
     $db->beginTransaction();
@@ -68,7 +68,7 @@ try {
             $_SESSION['user_id']
         ]
     );
-    update_existing_client_installations_res_upload($db->insertId(), $row['reseller_id'], $row['software_id']);
+    update_existing_client_installations_res_upload($db->lastInsertId(), $row['reseller_id'], $row['software_id']);
     $db->commit();
     set_page_message(tr('Software has been successfully imported.'), 'success');
     redirectTo('software_manage.php');

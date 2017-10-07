@@ -18,10 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -38,10 +38,9 @@ function getCatchallDomain($catchallDomainId, $catchalType)
 {
     switch ($catchalType) {
         case MT_NORMAL_CATCHALL:
-            $stmt = exec_query(
-                'SELECT domain_name FROM domain WHERE domain_id = ? AND domain_admin_id = ?',
-                [$catchallDomainId, $_SESSION['user_id']]
-            );
+            $stmt = exec_query('SELECT domain_name FROM domain WHERE domain_id = ? AND domain_admin_id = ?', [
+                $catchallDomainId, $_SESSION['user_id']
+            ]);
             break;
         case MT_SUBDOM_CATCHALL:
             $stmt = exec_query(
@@ -81,7 +80,7 @@ function getCatchallDomain($catchallDomainId, $catchalType)
             return false;
     }
 
-    return $stmt->fetch(PDO::FETCH_COLUMN);
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -124,7 +123,7 @@ function addCatchallAccount($catchallDomainId, $catchallDomain, $catchallType)
                 showBadRequestErrorPage();
             }
 
-            $catchallAddresses[] = $stmt->fetch(PDO::FETCH_COLUMN);
+            $catchallAddresses[] = $stmt->fetchColumn();
         }
     } else {
         $catchallAddresses = clean_input($_POST['manual_catchall_addresses']);
@@ -182,7 +181,7 @@ function addCatchallAccount($catchallDomainId, $catchallDomain, $catchallType)
         [implode(',', $catchallAddresses), $domainId, $catchallType, $subId, '@' . $catchallDomain]
     );
     EventsManager::getInstance()->dispatch(Events::onAfterAddMailCatchall, [
-        'mailCatchallId'        => Database::getInstance()->insertId(),
+        'mailCatchallId'        => Registry::get('iMSCP_Application')->getDatabase()->lastInsertId(),
         'mailCatchallDomain'    => $catchallDomain,
         'mailCatchallAddresses' => $catchallAddresses
     ]);
@@ -226,7 +225,7 @@ function generatePage($tpl, $catchallDomainId, $catchallType)
                         ? tohtml($_POST['manual_catchall_addresses']) : ''
                 ]);
 
-                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                while ($row = $stmt->fetch()) {
                     $tpl->assign([
                         'AUTOMATIC_CATCHALL_ADDRESS_ID' => $row['mail_id'],
                         'AUTOMATIC_CATCHALL_ADDRESS'    => tohtml(decode_idna($row['mail_addr']))
@@ -243,7 +242,8 @@ function generatePage($tpl, $catchallDomainId, $catchallType)
                     WHERE domain_id
                     AND sub_id = ?
                     AND mail_type RLIKE ?
-                    AND status = 'ok'",
+                    AND status = 'ok'
+                ",
                 [get_user_domain_id($_SESSION['user_id']), $catchallDomainId, MT_SUBDOM_MAIL . '|' . MT_SUBDOM_FORWARD]
             );
 
@@ -264,7 +264,7 @@ function generatePage($tpl, $catchallDomainId, $catchallType)
                         ? tohtml($_POST['manual_catchall_addresses']) : ''
                 ]);
 
-                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                while ($row = $stmt->fetch()) {
                     $tpl->assign([
                         'AUTOMATIC_CATCHALL_ADDRESS_ID' => $row['mail_id'],
                         'AUTOMATIC_CATCHALL_ADDRESS'    => tohtml(decode_idna($row['mail_addr']))
@@ -304,7 +304,7 @@ function generatePage($tpl, $catchallDomainId, $catchallType)
                         ? tohtml($_POST['manual_catchall_addresses']) : ''
                 ]);
 
-                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                while ($row = $stmt->fetch()) {
                     $tpl->assign([
                         'AUTOMATIC_CATCHALL_ADDRESS_ID' => $row['mail_id'],
                         'AUTOMATIC_CATCHALL_ADDRESS'    => tohtml(decode_idna($row['mail_addr']))
@@ -343,7 +343,7 @@ function generatePage($tpl, $catchallDomainId, $catchallType)
                         ? tohtml($_POST['manual_catchall_addresses']) : ''
                 ]);
 
-                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                while ($row = $stmt->fetch()) {
                     $tpl->assign([
                         'AUTOMATIC_CATCHALL_ADDRESS_ID' => $row['mail_id'],
                         'AUTOMATIC_CATCHALL_ADDRESS'    => tohtml(decode_idna($row['mail_addr']))

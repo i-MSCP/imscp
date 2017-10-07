@@ -110,20 +110,6 @@ class iMSCP_I18n_Parser_Gettext
     }
 
     /**
-     * Returns headers
-     *
-     * @return string A string that contains gettext file headers, each separed by EOL
-     */
-    public function getHeaders()
-    {
-        if (!$this->headers) {
-            $this->headers = $this->_parse(self::HEADERS);
-        }
-
-        return $this->headers;
-    }
-
-    /**
      * Returns translation table
      *
      * @return array An array of pairs key/value where the keys are the original strings (msgid) and the values, the
@@ -139,6 +125,123 @@ class iMSCP_I18n_Parser_Gettext
     }
 
     /**
+     * Parse a machine object file
+     *
+     * @throws iMSCP_i18n_Parser_Exception on failure
+     * @param int $part iMSCP_I18n_Parser_Gettext::HEADERS|iMSCP_I18n_Parser_Gettext::TRANSLATION_TABLE
+     * @return array|string An array of pairs key/value where the keys are the original strings (msgid) and the values,
+     *                      the translated strings (msgstr) or a string that contains headers, eachof them separated by
+     *                      EOL.
+     */
+    protected function _parse($part)
+    {
+        if ($this->fh === NULL) {
+            if (!($this->fh = fopen($this->filePath, 'rb'))) {
+                throw new iMSCP_I18n_Parser_Exception('Unable to open ' . $this->filePath);
+            }
+        }
+
+        if ($this->isLoaded === NULL) {
+            // Magic number
+            $magic = fread($this->fh, 4);
+
+            if ($magic == "\x95\x04\x12\xde") {
+                $this->littleEndian = false;
+            } elseif ($magic == "\xde\x12\x04\x95") {
+                $this->littleEndian = true;
+            } else {
+                fclose($this->fh);
+                throw new iMSCP_I18n_Parser_Exception(sprintf('%s is not a valid gettext file', $this->filePath));
+            }
+
+            // Verify major revision (only 0 and 1 supported)
+            $majorRevision = ($this->readInteger() >> 16);
+
+            if ($majorRevision !== 0 && $majorRevision !== 1) {
+                fclose($this->fh);
+                throw new iMSCP_I18n_Parser_Exception(sprintf('%s has an unknown major revision', $this->filePath));
+            }
+
+            $this->nbStrings = $this->readInteger(); // Number of strings
+            $msgidtableOffset = $this->readInteger(); // Offset of table with original strings
+            $msgstrTableOffset = $this->readInteger(); // Offset of table with translation strings
+
+            // Getting index of original strings
+            fseek($this->fh, $msgidtableOffset);
+            $this->msgidIndexTable = $this->readIntegerList(2 * $this->nbStrings);
+
+            // Getting index of translated strings
+            fseek($this->fh, $msgstrTableOffset);
+            $this->msgstrIndexTable = $this->readIntegerList(2 * $this->nbStrings);
+
+            $this->isLoaded = true;
+        }
+
+        switch ((int)$part) {
+            case self::HEADERS:
+                fseek($this->fh, $this->msgstrIndexTable[2]);
+                return fread($this->fh, $this->msgstrIndexTable[1]);
+                break;
+            case self::TRANSLATION_TABLE:
+                $nbString = $this->nbStrings;
+                $parseResult = [];
+
+                for ($index = 1; $index < $nbString; $index++) {
+                    // Getting msgid
+                    fseek($this->fh, $this->msgidIndexTable[$index * 2 + 2]);
+                    $msgid = fread($this->fh, $this->msgidIndexTable[$index * 2 + 1]);
+
+                    // Getting msgstr
+                    fseek($this->fh, $this->msgstrIndexTable[$index * 2 + 2]);
+
+                    if (!$length = $this->msgstrIndexTable[$index * 2 + 1]) {
+                        $msgstr = '';
+                    } else {
+                        $msgstr = fread($this->fh, $length);
+                    }
+
+                    $parseResult[$msgid] = $msgstr;
+                }
+
+                return $parseResult;
+                break;
+            default:
+                throw new iMSCP_I18n_Parser_Exception('Unknown part type to parse');
+        }
+    }
+
+    /**
+     * Read a single integer from the current file
+     *
+     * @return int
+     */
+    protected function readInteger()
+    {
+        if ($this->littleEndian) {
+            $result = unpack('Vint', fread($this->fh, 4));
+        } else {
+            $result = unpack('Nint', fread($this->fh, 4));
+        }
+
+        return $result['int'];
+    }
+
+    /**
+     * Read an integer from the current file
+     *
+     * @param int $num
+     * @return array
+     */
+    protected function readIntegerList($num)
+    {
+        if ($this->littleEndian) {
+            return unpack('V' . $num, fread($this->fh, 4 * $num));
+        }
+
+        return unpack('N' . $num, fread($this->fh, 4 * $num));
+    }
+
+    /**
      * Retruns project id version header value
      *
      * @return string Project id version header value
@@ -146,6 +249,35 @@ class iMSCP_I18n_Parser_Gettext
     public function getProjectIdVersion()
     {
         return $this->_getHeaderValue('Project-Id-Version:');
+    }
+
+    /**
+     * Returns given header value
+     *
+     * @param string $header header name
+     * @return string header value
+     */
+    protected function _getHeaderValue($header)
+    {
+        $headers = $this->getHeaders();
+        $header = str_replace(chr(13), '', substr($headers, strpos($headers, $header)));
+        $header = substr($header, ($start = strpos($header, ':') + 2), (strpos($header, chr(10)) - $start));
+
+        return (!empty($header)) ? $header : '';
+    }
+
+    /**
+     * Returns headers
+     *
+     * @return string A string that contains gettext file headers, each separed by EOL
+     */
+    public function getHeaders()
+    {
+        if (!$this->headers) {
+            $this->headers = $this->_parse(self::HEADERS);
+        }
+
+        return $this->headers;
     }
 
     /**
@@ -260,137 +392,5 @@ class iMSCP_I18n_Parser_Gettext
         }
 
         return $this->nbStrings;
-    }
-
-    /**
-     * Parse a machine object file
-     *
-     * @throws iMSCP_i18n_Parser_Exception on failure
-     * @param int $part iMSCP_I18n_Parser_Gettext::HEADERS|iMSCP_I18n_Parser_Gettext::TRANSLATION_TABLE
-     * @return array|string An array of pairs key/value where the keys are the original strings (msgid) and the values,
-     *                      the translated strings (msgstr) or a string that contains headers, eachof them separated by
-     *                      EOL.
-     */
-    protected function _parse($part)
-    {
-        if ($this->fh === NULL) {
-            if (!($this->fh = fopen($this->filePath, 'rb'))) {
-                throw new iMSCP_I18n_Parser_Exception('Unable to open ' . $this->filePath);
-            }
-        }
-
-        if ($this->isLoaded === NULL) {
-            // Magic number
-            $magic = fread($this->fh, 4);
-
-            if ($magic == "\x95\x04\x12\xde") {
-                $this->littleEndian = false;
-            } elseif ($magic == "\xde\x12\x04\x95") {
-                $this->littleEndian = true;
-            } else {
-                fclose($this->fh);
-                throw new iMSCP_I18n_Parser_Exception(sprintf('%s is not a valid gettext file', $this->filePath));
-            }
-
-            // Verify major revision (only 0 and 1 supported)
-            $majorRevision = ($this->readInteger() >> 16);
-
-            if ($majorRevision !== 0 && $majorRevision !== 1) {
-                fclose($this->fh);
-                throw new iMSCP_I18n_Parser_Exception(sprintf('%s has an unknown major revision', $this->filePath));
-            }
-
-            $this->nbStrings = $this->readInteger(); // Number of strings
-            $msgidtableOffset = $this->readInteger(); // Offset of table with original strings
-            $msgstrTableOffset = $this->readInteger(); // Offset of table with translation strings
-
-            // Getting index of original strings
-            fseek($this->fh, $msgidtableOffset);
-            $this->msgidIndexTable = $this->readIntegerList(2 * $this->nbStrings);
-
-            // Getting index of translated strings
-            fseek($this->fh, $msgstrTableOffset);
-            $this->msgstrIndexTable = $this->readIntegerList(2 * $this->nbStrings);
-
-            $this->isLoaded = true;
-        }
-
-        switch ((int)$part) {
-            case self::HEADERS:
-                fseek($this->fh, $this->msgstrIndexTable[2]);
-                return fread($this->fh, $this->msgstrIndexTable[1]);
-                break;
-            case self::TRANSLATION_TABLE:
-                $nbString = $this->nbStrings;
-                $parseResult = [];
-
-                for ($index = 1; $index < $nbString; $index++) {
-                    // Getting msgid
-                    fseek($this->fh, $this->msgidIndexTable[$index * 2 + 2]);
-                    $msgid = fread($this->fh, $this->msgidIndexTable[$index * 2 + 1]);
-
-                    // Getting msgstr
-                    fseek($this->fh, $this->msgstrIndexTable[$index * 2 + 2]);
-
-                    if (!$length = $this->msgstrIndexTable[$index * 2 + 1]) {
-                        $msgstr = '';
-                    } else {
-                        $msgstr = fread($this->fh, $length);
-                    }
-
-                    $parseResult[$msgid] = $msgstr;
-                }
-
-                return $parseResult;
-                break;
-            default:
-                throw new iMSCP_I18n_Parser_Exception('Unknown part type to parse');
-        }
-    }
-
-    /**
-     * Returns given header value
-     *
-     * @param string $header header name
-     * @return string header value
-     */
-    protected function _getHeaderValue($header)
-    {
-        $headers = $this->getHeaders();
-        $header = str_replace(chr(13), '', substr($headers, strpos($headers, $header)));
-        $header = substr($header, ($start = strpos($header, ':') + 2), (strpos($header, chr(10)) - $start));
-
-        return (!empty($header)) ? $header : '';
-    }
-
-    /**
-     * Read a single integer from the current file
-     *
-     * @return int
-     */
-    protected function readInteger()
-    {
-        if ($this->littleEndian) {
-            $result = unpack('Vint', fread($this->fh, 4));
-        } else {
-            $result = unpack('Nint', fread($this->fh, 4));
-        }
-
-        return $result['int'];
-    }
-
-    /**
-     * Read an integer from the current file
-     *
-     * @param int $num
-     * @return array
-     */
-    protected function readIntegerList($num)
-    {
-        if ($this->littleEndian) {
-            return unpack('V' . $num, fread($this->fh, 4 * $num));
-        }
-
-        return unpack('N' . $num, fread($this->fh, 4 * $num));
     }
 }

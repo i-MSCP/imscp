@@ -51,7 +51,6 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
     }
 }
 
-
 $stmt = execute_query('SELECT * FROM web_software_options');
 
 if (!$stmt->rowCount()) {

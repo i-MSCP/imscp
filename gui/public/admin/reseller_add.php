@@ -19,7 +19,6 @@
  */
 
 use iMSCP\Crypt as Crypt;
-use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
@@ -45,8 +44,7 @@ function getFormData()
         return $data;
     }
 
-    $stmt = exec_query('SELECT ip_id, ip_number FROM server_ips ORDER BY ip_number');
-
+    $stmt = execute_query('SELECT ip_id, ip_number FROM server_ips ORDER BY ip_number');
     if ($stmt->rowCount()) {
         $data['server_ips'] = $stmt->fetchAll();
     } else {
@@ -261,7 +259,9 @@ function addResellerUser(Form $form)
 {
     $error = false;
     $errFieldsStack = [];
-    $db = Database::getInstance();
+
+    /** @var iMSCP_Database $db */
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         // Check for login and personal data
@@ -392,7 +392,7 @@ function addResellerUser(Form $form)
                 ]
             );
 
-            $resellerId = $db->insertId();
+            $resellerId = $db->lastInsertId();
             $cfg = Registry::get('config');
 
             exec_query('INSERT INTO user_gui_props (user_id, lang, layout) VALUES (?, ?, ?)', [

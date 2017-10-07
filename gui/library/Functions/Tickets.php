@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Database as Database;
+use iMSCP_Exception_Database as DatabaseException;
 use iMSCP_Registry as Registry;
 
 /**
@@ -119,6 +119,7 @@ function showTicketContent($tpl, $ticketId, $userId)
 /**
  * Updates a ticket with a new answer and informs the recipient
  *
+ * @throws DatabaseException
  * @param int $ticketId id of the ticket's parent ticket
  * @param int $userId User unique identifier
  * @param int $urgency The parent ticket's urgency
@@ -130,7 +131,8 @@ function showTicketContent($tpl, $ticketId, $userId)
  */
 function updateTicket($ticketId, $userId, $urgency, $subject, $message, $ticketLevel, $userLevel)
 {
-    $db = Database::getInstance();
+    /** @var iMSCP_Database $db */
+    $db = Registry::get('iMSCP_Application')->getDatabase();
     $subject = clean_input($subject);
     $userMessage = clean_input($message);
     $stmt = exec_query(
@@ -144,8 +146,7 @@ function updateTicket($ticketId, $userId, $urgency, $subject, $message, $ticketL
     );
 
     if (!$stmt->rowCount()) {
-        set_page_message(tr("Ticket with Id '%d' was not found.", $ticketId), 'error');
-        return false;
+        showBadRequestErrorPage();
     }
 
     $row = $stmt->fetch();
@@ -164,7 +165,7 @@ function updateTicket($ticketId, $userId, $urgency, $subject, $message, $ticketL
             $ticketFrom = $row['ticket_to'];
         }
 
-        exec_query(
+        $db->prepare(
             '
                 INSERT INTO tickets (
                     ticket_from, ticket_to, ticket_status, ticket_reply, ticket_urgency, ticket_date,
@@ -198,13 +199,10 @@ function updateTicket($ticketId, $userId, $urgency, $subject, $message, $ticketL
         set_page_message(tr('Your message has been successfully sent.'), 'success');
         sendTicketNotification($ticketTo, $subject, $userMessage, $ticketId, $urgency);
         return true;
-    } catch (PDOException $e) {
+    } catch (DatabaseException $e) {
         $db->rollBack();
-        set_page_message('System was unable to create ticket answer.', 'error');
-        write_log(sprintf('System was unable to create ticket answer: %s', $e->getMessage()), E_USER_ERROR);
+        throw $e;
     }
-
-    return false;
 }
 
 /**
@@ -255,9 +253,9 @@ function generateTicketList($tpl, $userId, $start, $count, $userLevel, $status)
         "
         ,
         [$userId, $userId]
-    )->fetch(PDO::FETCH_COLUMN);
+    )->fetchColumn();
 
-    if ($rowsCount) {
+    if ($rowsCount > 0) {
         $stmt = exec_query(
             "
                 SELECT ticket_id, ticket_status, ticket_urgency, ticket_level, ticket_date, ticket_subject
@@ -402,7 +400,7 @@ function getTicketStatus($ticketId)
         return false;
     }
 
-    return $stmt->fetch(PDO::FETCH_COLUMN);
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -432,7 +430,7 @@ function changeTicketStatus($ticketId, $ticketStatus)
         [$ticketStatus, $ticketId, $ticketId, $_SESSION['user_id'], $_SESSION['user_id']]
     );
 
-    return (bool)$stmt->rowCount();
+    return $stmt->rowCount() > 0;
 }
 
 /**
@@ -444,14 +442,14 @@ function changeTicketStatus($ticketId, $ticketStatus)
 function getUserLevel($ticketId)
 {
     // Get info about the type of message
-    $stmt = exec_query('SELECT ticket_level FROM tickets WHERE ticket_id = ?', $ticketId);
+    $stmt = exec_query('SELECT ticket_level FROM tickets WHERE ticket_id = ?', [$ticketId]);
 
     if (!$stmt->rowCount()) {
         set_page_message(tr("Ticket with Id '%d' was not found.", $ticketId), 'error');
         return false;
     }
 
-    return $stmt->fetch(PDO::FETCH_COLUMN);
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -494,7 +492,7 @@ function _getTicketSender($ticketId)
             LEFT JOIN admin a ON (t.ticket_from = a.admin_id)
             WHERE ticket_id = ?
         ',
-        $ticketId
+        [$ticketId]
     );
 
     if (!$stmt->rowCount()) {
@@ -518,16 +516,15 @@ function _getTicketSender($ticketId)
  */
 function _ticketGetLastDate($ticketId)
 {
-    $stmt = exec_query(
-        'SELECT ticket_date FROM tickets WHERE ticket_reply = ? ORDER BY ticket_date DESC LIMIT 1', $ticketId
-    );
+    $stmt = exec_query('SELECT ticket_date FROM tickets WHERE ticket_reply = ? ORDER BY ticket_date DESC LIMIT 1', [
+        $ticketId
+    ]);
 
     if (!$stmt->rowCount()) {
         return tr('Never');
     }
 
-    $row = $stmt->fetch();
-    return date(Registry::get('config')['DATE_FORMAT'], $row['ticket_date']);
+    return date(Registry::get('config')['DATE_FORMAT'], $stmt->fetchColumn());
 }
 
 /**
@@ -548,7 +545,7 @@ function _showTicketReplies($tpl, $ticketId)
             WHERE ticket_reply = ?
             ORDER BY ticket_date DESC
         ',
-        $ticketId
+        [$ticketId]
     );
 
     if (!$stmt->rowCount()) {
@@ -580,7 +577,7 @@ function _showTicketReplies($tpl, $ticketId)
  */
 function sendTicketNotification($toId, $ticketSubject, $ticketMessage, $ticketStatus, $urgency)
 {
-    $stmt = exec_query('SELECT admin_name, fname, lname, email, admin_name FROM admin WHERE admin_id = ?', $toId);
+    $stmt = exec_query('SELECT admin_name, fname, lname, email, admin_name FROM admin WHERE admin_id = ?', [$toId]);
     $toData = $stmt->fetch();
 
     if ($ticketStatus == 0) {

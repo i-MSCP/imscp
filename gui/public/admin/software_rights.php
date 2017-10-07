@@ -27,7 +27,7 @@ isset($_REQUEST['id']) or showBadRequestErrorPage();
 
 $softwareId = intval($_REQUEST['id']);
 $stmt = exec_query(
-    'SELECT software_name, software_version, software_language FROM web_software WHERE software_id = ?', $softwareId
+    'SELECT software_name, software_version, software_language FROM web_software WHERE software_id = ?', [$softwareId]
 );
 
 if (!$stmt->rowCount()) {

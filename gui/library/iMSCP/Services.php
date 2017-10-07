@@ -26,7 +26,8 @@ use iMSCP_Registry as Registry;
 class iMSCP_Services implements iterator, countable
 {
     /**
-     * @var array[] Array of services where keys are service names and valus are arrays containing service properties
+     * @var array[] Array of services where keys are service names and values
+     *              are arrays containing service properties
      */
     private $services = [];
 
@@ -62,45 +63,60 @@ class iMSCP_Services implements iterator, countable
     }
 
     /**
-     * Set service to be queried
+     * Check if the service is visible
      *
-     * @throws iMSCP_Exception
-     * @param  string $serviceName Service name
-     * @param  bool $normalize Tell whether or not the service name must be normalized
-     * @return void
+     * @return bool TRUE if the service is visible, FALSE otherwise
      */
-    public function setService($serviceName, $normalize = true)
+    public function isVisible()
     {
-        // Normalise service name (ex. 'dns' to 'PORT_DNS')
-        if ($normalize) {
-            $serviceName = 'PORT_' . strtoupper($serviceName);
-        }
+        return (bool)$this->getProperty(3);
+    }
 
-        if (array_key_exists($serviceName, $this->services)) {
-            $this->queriedService = $serviceName;
+    /**
+     * Check if a service is running
+     *
+     * @param bool $refresh Flag indicating whether or not cached values must
+     *                      be refreshed
+     * @return bool return TRUE if the service is currently running, FALSE
+     *                     otherwise
+     */
+    public function isRunning($refresh = false)
+    {
+        return $this->getStatus($refresh);
+    }
+
+    /**
+     * Get service status
+     *
+     * @param bool $refresh Flag indicating whether or not cached values must
+     *                      be refreshed
+     * @return bool TRUE if the service is currently running, FALSE otherwise
+     */
+    private function getStatus($refresh = false)
+    {
+        $identifier = __CLASS__ . '_' . __FUNCTION__ . '_' . preg_replace('/[^a-zA-Z0-9_]/', '_', $this->getName());
+
+        if ($refresh
+            || !($this->cache->test($identifier))
+        ) {
+            $ip = $this->getIp();
+
+            if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+                $ip = '[' . $ip . ']';
+            }
+
+            $status = false;
+            if (($fp = @fsockopen($this->getProtocol() . '://' . $ip, $this->getPort(), $errno, $errstr, 0.5))) {
+                fclose($fp);
+                $status = true;
+            }
+
+            $this->cache->save($status, $identifier, [], 1200);
         } else {
-            throw new iMSCP_Exception("Unknown Service: $serviceName");
+            $status = $this->cache->load($identifier);
         }
-    }
 
-    /**
-     * Get service listening port
-     *
-     * @return int
-     */
-    public function getPort()
-    {
-        return $this->getProperty(0);
-    }
-
-    /**
-     * Get service protocol
-     *
-     * @return string
-     */
-    public function getProtocol()
-    {
-        return $this->getProperty(1);
+        return (bool)$status;
     }
 
     /**
@@ -114,16 +130,6 @@ class iMSCP_Services implements iterator, countable
     }
 
     /**
-     * Check if the service is visible
-     *
-     * @return bool TRUE if the service is visible, FALSE otherwise
-     */
-    public function isVisible()
-    {
-        return (bool)$this->getProperty(3);
-    }
-
-    /**
      * Get service IP
      *
      * @return array
@@ -134,90 +140,23 @@ class iMSCP_Services implements iterator, countable
     }
 
     /**
-     * Check if a service is running
+     * Get service protocol
      *
-     * @param bool $refresh Flag indicating whether or not cached values must be refreshed
-     * @return bool return TRUE if the service is currently running, FALSE otherwise
+     * @return string
      */
-    public function isRunning($refresh = false)
+    public function getProtocol()
     {
-        return $this->getStatus($refresh);
+        return $this->getProperty(1);
     }
 
     /**
-     * Check if a service is down
+     * Get service listening port
      *
-     * @param bool $refresh Flag indicating whether or not cached values must be refreshed
-     * @return bool return TRUE if the service is currently down, FALSE otherwise
+     * @return int
      */
-    public function isDown($refresh = false)
+    public function getPort()
     {
-        return !$this->getStatus($refresh);
-    }
-
-    /**
-     * Returns the current element
-     *
-     * @return mixed Returns the current element
-     */
-    public function current()
-    {
-        $this->setService($this->key(), false);
-
-        return current($this->services);
-    }
-
-    /**
-     * Returns the key of the current element
-     *
-     * @return string Return the key of the current element or NULL on failure
-     */
-    public function key()
-    {
-        return key($this->services);
-    }
-
-    /**
-     * Moves the current position to the next element
-     *
-     * @return void
-     */
-    public function next()
-    {
-        next($this->services);
-    }
-
-    /**
-     * Rewinds back to the first element of the Iterator
-     *
-     * <b>Note:</b> This is the first method called when starting a foreach
-     * loop. It will not be executed after foreach loops.
-     *
-     * @return void
-     */
-    public function rewind()
-    {
-        reset($this->services);
-    }
-
-    /**
-     * Checks if current position is valid
-     *
-     * @return boolean TRUE on success or FALSE on failure
-     */
-    public function valid()
-    {
-        return array_key_exists(key($this->services), $this->services);
-    }
-
-    /**
-     * Count number of service
-     *
-     * @return int The custom count as an integer
-     */
-    public function count()
-    {
-        return count($this->services);
+        return $this->getProperty(0);
     }
 
     /**
@@ -237,33 +176,88 @@ class iMSCP_Services implements iterator, countable
     }
 
     /**
-     * Get service status
+     * Check if a service is down
      *
-     * @param bool $refresh Flag indicating whether or not cached values must be refreshed
-     * @return bool TRUE if the service is currently running, FALSE otherwise
+     * @param bool $refresh Flag indicating whether or not cached values must
+     *                      be refreshed
+     * @return bool return TRUE if the service is currently down, FALSE
+     *              otherwise
      */
-    private function getStatus($refresh = false)
+    public function isDown($refresh = false)
     {
-        $identifier = __CLASS__ . '_' . __FUNCTION__ . '_' . preg_replace('/[^a-zA-Z0-9_]/', '_', $this->getName());
+        return !$this->getStatus($refresh);
+    }
 
-        if ($refresh || !($this->cache->test($identifier))) {
-            $ip = $this->getIp();
+    /**
+     * @inheritdoc
+     */
+    public function current()
+    {
+        $this->setService($this->key(), false);
 
-            if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-                $ip = '[' . $ip . ']';
-            }
+        return current($this->services);
+    }
 
-            $status = false;
-            if (($fp = @fsockopen($this->getProtocol() . '://' . $ip, $this->getPort(), $errno, $errstr, 0.5))) {
-                fclose($fp);
-                $status = true;
-            }
-
-            $this->cache->save($status, $identifier, [], 1200);
-        } else {
-            $status = $this->cache->load($identifier);
+    /**
+     * Set service to be queried
+     *
+     * @throws iMSCP_Exception
+     * @param  string $serviceName Service name
+     * @param  bool $normalize Tell whether or not the service name must be
+     *                         normalized
+     * @return void
+     */
+    public function setService($serviceName, $normalize = true)
+    {
+        // Normalise service name (ex. 'dns' to 'PORT_DNS')
+        if ($normalize) {
+            $serviceName = 'PORT_' . strtoupper($serviceName);
         }
 
-        return (bool)$status;
+        if (array_key_exists($serviceName, $this->services)) {
+            $this->queriedService = $serviceName;
+        } else {
+            throw new iMSCP_Exception("Unknown Service: $serviceName");
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function key()
+    {
+        return key($this->services);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function next()
+    {
+        next($this->services);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rewind()
+    {
+        reset($this->services);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function valid()
+    {
+        return array_key_exists(key($this->services), $this->services);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function count()
+    {
+        return count($this->services);
     }
 }

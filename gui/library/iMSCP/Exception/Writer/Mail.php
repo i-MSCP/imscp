@@ -135,12 +135,12 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer_Abstract
         }
 
         return [
-            'mail_id' => 'exception-notification',
-            'footprint' => sha1($message),
-            'username' => 'administrator',
-            'email' => $config['DEFAULT_ADMIN_ADDRESS'],
-            'subject' => 'i-MSCP - An exception has been thrown',
-            'message' => <<<EOF
+            'mail_id'      => 'exception-notification',
+            'footprint'    => sha1($message),
+            'username'     => 'administrator',
+            'email'        => $config['DEFAULT_ADMIN_ADDRESS'],
+            'subject'      => 'i-MSCP - An exception has been thrown',
+            'message'      => <<<EOF
 Dear {NAME},
 
 An exception has been thrown in file {FILE} at line {LINE}:
@@ -166,12 +166,12 @@ Please do not reply to this email.
 ___________________________
 i-MSCP Mailer
 EOF
-        ,
+            ,
             'placeholders' => [
-                '{FILE}' => $exception->getFile(),
-                '{LINE}' => $exception->getLine(),
-                '{EXCEPTION}' => $message,
-                '{BACKTRACE}' => $backtraces,
+                '{FILE}'         => $exception->getFile(),
+                '{LINE}'         => $exception->getLine(),
+                '{EXCEPTION}'    => $message,
+                '{BACKTRACE}'    => $backtraces,
                 '{CONTEXT_INFO}' => $contextInfo
             ]
         ];

@@ -68,7 +68,7 @@ function _client_generateHtgroupAction($status)
 function client_generateUsersList($tpl)
 {
     $domainId = get_user_domain_id($_SESSION['user_id']);
-    $stmt = exec_query('SELECT * FROM `htaccess_users` WHERE `dmn_id` = ? ORDER BY `dmn_id` DESC', $domainId);
+    $stmt = exec_query('SELECT * FROM `htaccess_users` WHERE `dmn_id` = ? ORDER BY `dmn_id` DESC', [$domainId]);
 
     if (!$stmt->rowCount()) {
         $tpl->assign([
@@ -81,8 +81,7 @@ function client_generateUsersList($tpl)
     $tpl->assign('USERS_MESSAGE_BLOCK', '');
 
     while ($row = $stmt->fetch()) {
-        list(
-            $userDeleteTranslation, $userDeleteJsScript, $userEditTranslation, $htuserEditJsScript
+        list($userDeleteTranslation, $userDeleteJsScript, $userEditTranslation, $htuserEditJsScript
             ) = _client_generateUserAction($row['status']);
 
         $tpl->assign([
@@ -107,7 +106,7 @@ function client_generateUsersList($tpl)
 function client_generateGroupsList($tpl)
 {
     $domainId = get_user_domain_id($_SESSION['user_id']);
-    $stmt = exec_query('SELECT * FROM htaccess_groups WHERE dmn_id = ? ORDER BY dmn_id DESC', $domainId);
+    $stmt = exec_query('SELECT * FROM htaccess_groups WHERE dmn_id = ? ORDER BY dmn_id DESC', [$domainId]);
 
     if (!$stmt->rowCount()) {
         $tpl->assign([

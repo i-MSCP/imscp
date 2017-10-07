@@ -130,7 +130,7 @@ function generatePage($tpl, $ftpUserId)
     $_SESSION['ftp_chooser_unselectable_dirs'] = [];
 
     $cfg = iMSCP_Registry::get('config');
-    $stmt = exec_query('SELECT homedir FROM ftp_users WHERE userid = ?', $ftpUserId);
+    $stmt = exec_query('SELECT homedir FROM ftp_users WHERE userid = ?', [$ftpUserId]);
     $row = $stmt->fetch();
 
     $ftpHomeDir = utils_normalizePath('/' . $row['homedir']);
@@ -167,7 +167,7 @@ $stmt = exec_query('SELECT COUNT(admin_id) FROM ftp_users WHERE userid = ? AND a
     $userid, $_SESSION['user_id']
 ]);
 
-if ($stmt->fetch(PDO::FETCH_COLUMN) == 0) {
+if ($stmt->fetchColumn() < 1) {
     showBadRequestErrorPage();
 }
 

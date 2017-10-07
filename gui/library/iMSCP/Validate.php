@@ -26,48 +26,38 @@ class iMSCP_Validate
     /**
      * @var iMSCP_Validate
      */
-    protected static $_instance = NULL;
+    protected static $instance = NULL;
 
     /**
      * @var iMSCP_Config_Handler_File
      */
-    protected $_config = NULL;
+    protected $config = NULL;
 
     /**
      * @var Zend_Validate_Abstract[]
      */
-    protected $_validators = [];
+    protected $validators = [];
 
     /**
      * Instance of last Validator invoked.
      *
      * @var Zend_Validate_Abstract
      */
-    protected $_lastValidator = NULL;
+    protected $lastValidator = NULL;
 
     /**
      * Last iMSCP_Validate validation error messages.
      *
      * @var array
      */
-    protected $_lastValidationErrorMessages = [];
+    protected $lastValidationErrorMessages = [];
 
     /**
      * Singleton - Make new unavailable.
      */
     private function __construct()
     {
-        $this->_config = iMSCP_Registry::get('config');
-    }
-
-    /**
-     * Singleton - Make clone unavailable.
-     *
-     * @return void
-     */
-    private function __clone()
-    {
-
+        $this->config = iMSCP_Registry::get('config');
     }
 
     /**
@@ -78,11 +68,11 @@ class iMSCP_Validate
      */
     static public function getInstance()
     {
-        if (self::$_instance === NULL) {
-            self::$_instance = new self();
+        if (self::$instance === NULL) {
+            self::$instance = new self();
         }
 
-        return self::$_instance;
+        return self::$instance;
     }
 
     /**
@@ -111,7 +101,57 @@ class iMSCP_Validate
             $options['hostname'] = new Zend_Validate_Hostname(['tld' => false]);
         }
 
-        return $this->_processValidation('EmailAddress', $email, $options);
+        return $this->processValidation('EmailAddress', $email, $options);
+    }
+
+    /**
+     * Process validation.
+     *
+     * @param string $validatorName $validatorName Zend validator name
+     * @param mixed $input Input data to be validated
+     * @param array $options Options to pass to validator
+     * @throws iMSCP_Exception
+     * @return bool bool TRUE if input data are valid, FALSE otherwise
+     */
+    protected function processValidation($validatorName, $input, $options)
+    {
+        /** @var $validator Zend_Validate_Barcode_Ean18 */
+        $validator = self::getZendValidator($validatorName);
+
+        // Getting validator default options
+        $defaultOptions = $validator->getOptions();
+
+        // Setup validator options
+        $validator->setOptions((array)$options);
+
+        // Process validation
+        if (!($retVal = $validator->isValid($input))) {
+            $this->lastValidationErrorMessages = array_merge(
+                $this->lastValidationErrorMessages, $this->lastValidator->getMessages()
+            );
+        }
+
+        // Reset default options on validator
+        $validator->setOptions($defaultOptions);
+        return $retVal;
+    }
+
+    /**
+     * Returns instance of a specific Zend validator.
+     *
+     * @param string $validatorName Zend validator name
+     * @param array $options Options to pass to the validator OPTIONAL
+     * @return Zend_Validate_Abstract
+     */
+    public function getZendValidator($validatorName, $options = [])
+    {
+        if (!array_key_exists($validatorName, $this->validators)) {
+            $validator = 'Zend_Validate_' . $validatorName;
+            $this->validators[$validatorName] = new $validator($options);
+        }
+
+        $this->lastValidator = $this->validators[$validatorName];
+        return $this->validators[$validatorName];
     }
 
     /**
@@ -128,7 +168,7 @@ class iMSCP_Validate
             $options['tld'] = false;
         }
 
-        return $this->_processValidation('Hostname', $hostname, $options);
+        return $this->processValidation('Hostname', $hostname, $options);
     }
 
     /**
@@ -141,25 +181,7 @@ class iMSCP_Validate
      */
     public function ip($ip, $options = [])
     {
-        return $this->_processValidation('Ip', $ip, $options);
-    }
-
-    /**
-     * Returns instance of a specific Zend validator.
-     *
-     * @param string $validatorName Zend validator name
-     * @param array $options Options to pass to the validator OPTIONAL
-     * @return Zend_Validate_Abstract
-     */
-    public function getZendValidator($validatorName, $options = [])
-    {
-        if (!array_key_exists($validatorName, $this->_validators)) {
-            $validator = 'Zend_Validate_' . $validatorName;
-            $this->_validators[$validatorName] = new $validator($options);
-        }
-
-        $this->_lastValidator = $this->_validators[$validatorName];
-        return $this->_validators[$validatorName];
+        return $this->processValidation('Ip', $ip, $options);
     }
 
     /**
@@ -170,45 +192,13 @@ class iMSCP_Validate
      */
     public function getLastValidationMessages()
     {
-        if (!empty($this->_lastValidationErrorMessages)) {
-            $messages = $this->_lastValidationErrorMessages;
-            $this->_lastValidationErrorMessages = [];
+        if (!empty($this->lastValidationErrorMessages)) {
+            $messages = $this->lastValidationErrorMessages;
+            $this->lastValidationErrorMessages = [];
             return format_message($messages);
         }
 
         return '';
-    }
-
-    /**
-     * Process validation.
-     *
-     * @param string $validatorName $validatorName Zend validator name
-     * @param mixed $input Input data to be validated
-     * @param array $options Options to pass to validator
-     * @throws iMSCP_Exception
-     * @return bool bool TRUE if input data are valid, FALSE otherwise
-     */
-    protected function _processValidation($validatorName, $input, $options)
-    {
-        /** @var $validator Zend_Validate_Abstract */
-        $validator = self::getZendValidator($validatorName);
-
-        // Getting validator default options
-        $defaultOptions = $validator->getOptions();
-
-        // Setup validator options
-        $validator->setOptions((array)$options);
-
-        // Process validation
-        if (!($retVal = $validator->isValid($input))) {
-            $this->_lastValidationErrorMessages = array_merge(
-                $this->_lastValidationErrorMessages, $this->_lastValidator->getMessages()
-            );
-        }
-
-        // Reset default options on validator
-        $validator->setOptions($defaultOptions);
-        return $retVal;
     }
 
     /**
@@ -229,7 +219,7 @@ class iMSCP_Validate
             $messages = tr('The values must not be equal', $value1, $value2);
         }
 
-        $this->_lastValidationErrorMessages = array_merge($this->_lastValidationErrorMessages, (array)$messages);
+        $this->lastValidationErrorMessages = array_merge($this->lastValidationErrorMessages, (array)$messages);
         return false;
     }
 
@@ -251,7 +241,7 @@ class iMSCP_Validate
             $messages = tr('The values must not be equal', $value1, $value2);
         }
 
-        $this->_lastValidationErrorMessages = array_merge($this->_lastValidationErrorMessages, (array)$messages);
+        $this->lastValidationErrorMessages = array_merge($this->lastValidationErrorMessages, (array)$messages);
         return false;
 
 
@@ -276,7 +266,7 @@ class iMSCP_Validate
             $messages = tr('The value has not been found in the stack');
         }
 
-        $this->_lastValidationErrorMessages = array_merge($this->_lastValidationErrorMessages, (array)$messages);
+        $this->lastValidationErrorMessages = array_merge($this->lastValidationErrorMessages, (array)$messages);
         return false;
     }
 
@@ -298,7 +288,17 @@ class iMSCP_Validate
             $messages = tr('The value has been found in the stack');
         }
 
-        $this->_lastValidationErrorMessages = array_merge($this->_lastValidationErrorMessages, (array)$messages);
+        $this->lastValidationErrorMessages = array_merge($this->lastValidationErrorMessages, (array)$messages);
         return false;
+    }
+
+    /**
+     * Singleton - Make clone unavailable.
+     *
+     * @return void
+     */
+    private function __clone()
+    {
+
     }
 }

@@ -44,6 +44,17 @@ class iMSCP_Exception_Handler
     }
 
     /**
+     * Sets exception handler
+     *
+     * @see exceptionHandler()
+     * @return void
+     */
+    public function setExceptionHandler()
+    {
+        set_exception_handler([$this, 'handleException']);
+    }
+
+    /**
      * Add exception writer
      *
      * @param string $className Exception writer class name
@@ -68,17 +79,6 @@ class iMSCP_Exception_Handler
     {
         $className = (string)$className;
         unset($this->writers[$className]);
-    }
-
-    /**
-     * Sets exception handler
-     *
-     * @see exceptionHandler()
-     * @return void
-     */
-    public function setExceptionHandler()
-    {
-        set_exception_handler([$this, 'handleException']);
     }
 
     /**

@@ -18,10 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Registry as Registry;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -87,7 +87,6 @@ function _client_getDomainName($domainId, $domainType)
 /**
  * Update status for the given domain
  *
- * @throws iMSCP_Exception_Database
  * @param int $domainId Domain entity unique identifier
  * @param string $domainType Domain entity type to update (dmn|als|sub|alssub)
  * @return void
@@ -108,13 +107,12 @@ function _client_updateDomainStatus($domainId, $domainType)
             $query = "UPDATE subdomain_alias SET subdomain_alias_status = 'tochange' WHERE subdomain_alias_id = ?";
     }
 
-    exec_query($query, $domainId);
+    exec_query($query, [$domainId]);
 }
 
 /**
  * Generate temporary openssl configuration file
  *
- * @throws iMSCP_Exception_Database
  * @param array $data User data
  * @return bool|string Path to generate openssl temporary file, FALSE on failure
  */
@@ -177,7 +175,9 @@ EOF;
  */
 function client_generateSelfSignedCert($domainName)
 {
-    $stmt = exec_query('SELECT firm, city, state, country, email FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
+    $stmt = exec_query('SELECT firm, city, state, country, email FROM admin WHERE admin_id = ?', [
+        $_SESSION['user_id']
+    ]);
 
     if (!$stmt->rowCount()) {
         return false;
@@ -237,7 +237,6 @@ function client_generateSelfSignedCert($domainName)
  * Add or update an SSL certificate
  *
  * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  * @param int $domainId domain unique identifier
  * @param string $domainType Domain type (dmn|als|sub|alssub)
  * @return void
@@ -359,7 +358,8 @@ function client_addSslCert($domainId, $domainType)
         $caBundleStr = $caBundle;
     }
 
-    $db = iMSCP_Database::getInstance();
+    /** @var iMSCP_Database $db */
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -420,8 +420,6 @@ function client_addSslCert($domainId, $domainType)
 /**
  * Delete an SSL certificate
  *
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  * @param int $domainId domain unique identifier
  * @param string $domainType Domain type (dmn, als, sub, alssub)
  * @return void
@@ -439,7 +437,9 @@ function client_deleteSslCert($domainId, $domainType)
     }
 
     $certId = intval($_POST['cert_id']);
-    $db = iMSCP_Database::getInstance();
+
+    /** @var iMSCP_Database $db */
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -466,8 +466,6 @@ function client_deleteSslCert($domainId, $domainType)
 /**
  * Generate page
  *
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  * @param TemplateEngine $tpl
  * @param int $domainId Domain entity unique identifier
  * @param string $domainType Domain entity type

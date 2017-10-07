@@ -48,7 +48,7 @@ function generateDomainTypeList($mainDmnId, $tpl)
             LEFT JOIN subdomain_alias AS t4 ON(t4.alias_id = t3.alias_id)
             WHERE t1.domain_id = ?
         ',
-        $mainDmnId
+        [$mainDmnId]
     );
     $row = $stmt->fetch();
 
@@ -204,11 +204,12 @@ function addAccount()
             LEFT JOIN quotalimits AS t3 ON (t3.name = t1.admin_name)
             WHERE t1.admin_id = ?
         ',
-        $_SESSION['user_id']
+        [$_SESSION['user_id']]
     );
     $row1 = $stmt->fetch();
 
-    $db = iMSCP_Database::getInstance();
+    /** @var iMSCP_Database $db */
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();

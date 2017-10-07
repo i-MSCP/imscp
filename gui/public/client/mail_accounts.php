@@ -67,8 +67,8 @@ function countDefaultMailAccounts($mainDmnId)
             )
             AND domain_id = ?
         ",
-        $mainDmnId
-    )->fetch(PDO::FETCH_COLUMN);
+        [$mainDmnId]
+    )->fetchColumn();
 }
 
 /**
@@ -197,7 +197,7 @@ function generateMailAccountsList($tpl, $mainDmnId)
           $where
           ORDER BY mail_addr ASC, mail_type DESC
         ",
-        $mainDmnId
+        [$mainDmnId]
     );
 
     unset($where);
@@ -216,7 +216,7 @@ function generateMailAccountsList($tpl, $mainDmnId)
     $syncQuotaInfo = isset($_GET['sync_quota_info']);
     $hasMailboxes = $overQuota = false;
 
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch()) {
         $mailQuotaInfo = '-';
         $quotaPercent = 0;
 

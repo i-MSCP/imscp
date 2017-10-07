@@ -50,8 +50,8 @@ function client_addHtaccessGroup()
         set_page_message(tr('This htaccess group already exists.'), 'error');
     }
 
-    exec_query('INSERT INTO htaccess_groups (dmn_id, ugroup, status) VALUES (?, ?, ?)', [
-        $domainId, $htgroupName, 'toadd'
+    exec_query("INSERT INTO htaccess_groups (dmn_id, ugroup, status) VALUES (?, ?, 'toadd')", [
+        $domainId, $htgroupName
     ]);
     send_request();
     set_page_message(tr('Htaccess group successfully scheduled for addition.'), 'success');

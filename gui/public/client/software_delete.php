@@ -34,7 +34,7 @@ if (!$stmt->rowCount()) {
     showBadRequestErrorPage();
 }
 
-if ($stmt->fetch(PDO::FETCH_COLUMN) == 1) {
+if ($stmt->fetchColumn() == 1) {
     exec_query('DELETE FROM web_software_inst WHERE software_id = ? AND domain_id = ?', [
         $softwareId, $domainProps['domain_id']
     ]);
@@ -42,8 +42,8 @@ if ($stmt->fetch(PDO::FETCH_COLUMN) == 1) {
     redirectTo('software.php');
 }
 
-exec_query('UPDATE web_software_inst SET software_status = ? WHERE software_id = ? AND domain_id = ?', [
-    'todelete', $softwareId, $domainProps['domain_id']
+exec_query("UPDATE web_software_inst SET software_status = 'todelete' WHERE software_id = ? AND domain_id = ?", [
+    $softwareId, $domainProps['domain_id']
 ]);
 send_request();
 set_page_message(tr('Software successfully scheduled for deletion.'), 'success');

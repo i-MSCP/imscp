@@ -69,16 +69,6 @@ class iMSCP_Authentication_AuthEvent extends Event
     }
 
     /**
-     * Set authentication result
-     *
-     * @param AuthResult $authResult
-     */
-    public function setAuthenticationResult(AuthResult $authResult)
-    {
-        $this->authenticationResult = $authResult;
-    }
-
-    /**
      * Get authentication result
      *
      * @return AuthResult
@@ -86,5 +76,15 @@ class iMSCP_Authentication_AuthEvent extends Event
     public function getAuthenticationResult()
     {
         return $this->authenticationResult;
+    }
+
+    /**
+     * Set authentication result
+     *
+     * @param AuthResult $authResult
+     */
+    public function setAuthenticationResult(AuthResult $authResult)
+    {
+        $this->authenticationResult = $authResult;
     }
 }

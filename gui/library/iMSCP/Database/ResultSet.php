@@ -18,11 +18,58 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+namespace iMSCP\Database;
+
+use iMSCP\Database\Events\Statement as StatementEvent;
+use iMSCP_Events as Events;
+use iMSCP_Events_Manager_Interface as EventsManagerInterface;
+use PDO;
+use PDOStatement;
+
 /**
  * Class iMSCP_Database_ResultSet
  */
-class iMSCP_Database_ResultSet extends PDOStatement
+class ResultSet extends PDOStatement
 {
+    /**
+     * @var EventsManagerInterface
+     */
+    protected $em;
+
+    /**
+     * @var StatementEvent
+     */
+    protected $event;
+
+    /**
+     * iMSCP_Database_ResultSet constructor.
+     *
+     * @param EventsManagerInterface $em
+     */
+    protected function __construct(EventsManagerInterface $em)
+    {
+        $this->em = $em;
+        $this->event = new StatementEvent($this->queryString);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function execute($parameters = NULL)
+    {
+        // BC reasons -- Will be removed in a later release
+        if (NULL !== $parameters) {
+            $parameters = (array)$parameters;
+        }
+
+        $this->event->setName(Events::onBeforeQueryExecute);
+        $this->em->dispatch($this->event);
+        $ret = parent::execute($parameters);
+        $this->event->setName(Events::onAfterQueryExecute);
+        $this->em->dispatch($this->event);
+        return $ret;
+    }
+
     /**
      * Fetches the next row from a result set
      *

@@ -19,7 +19,6 @@
  */
 
 use iMSCP_Config_Handler_File as ConfigFile;
-use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
@@ -54,7 +53,7 @@ function deleteMailAccount($mailId, $domainId, $config, $mtaConfig, &$nbDeletedM
 
     if ($config['PROTECT_DEFAULT_EMAIL_ADDRESSES']
         && (
-            (in_array($row['mail_type'], [MT_NORMAL_FORWARD, MT_ALIAS_FORWARD]) 
+            (in_array($row['mail_type'], [MT_NORMAL_FORWARD, MT_ALIAS_FORWARD])
                 && in_array($row['mail_acc'], ['abuse', 'hostmaster', 'postmaster', 'webmaster'])
             )
             || ($row['mail_acc'] == 'webmaster' && in_array($row['mail_type'], [MT_SUBDOM_FORWARD, MT_ALSSUB_FORWARD]))
@@ -64,7 +63,7 @@ function deleteMailAccount($mailId, $domainId, $config, $mtaConfig, &$nbDeletedM
     }
 
     EventsManager::getInstance()->dispatch(Events::onBeforeDeleteMail, ['mailId' => $mailId]);
-    exec_query("UPDATE mail_users SET status = 'todelete' WHERE mail_id = ?", $mailId);
+    exec_query("UPDATE mail_users SET status = 'todelete' WHERE mail_id = ?", [$mailId]);
 
     if (strpos($row['mail_type'], '_mail') !== false) {
         # Remove cached quota info if any
@@ -109,7 +108,7 @@ function deleteMailAccount($mailId, $domainId, $config, $mtaConfig, &$nbDeletedM
             }
 
             if ($row['mail_acc'] === '' || $row['mail_forward'] === '') {
-                exec_query("UPDATE mail_users SET status = 'todelete' WHERE mail_id = ?", $row['mail_id']);
+                exec_query("UPDATE mail_users SET status = 'todelete' WHERE mail_id = ?", [$row['mail_id']]);
             } else {
                 exec_query(
                     "UPDATE mail_users SET status = 'tochange', mail_acc = ?, mail_forward = ? WHERE mail_id = ?",
@@ -148,7 +147,8 @@ if (empty($mailIds)) {
     redirectTo('mail_accounts.php');
 }
 
-$db = Database::getInstance();
+/** @var iMSCP_Database $db */
+$db = Registry::get('iMSCP_Application')->getDatabase();
 
 try {
     $db->beginTransaction();

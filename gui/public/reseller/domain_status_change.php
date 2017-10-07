@@ -40,17 +40,17 @@ if (isset($_GET['domain_id'])) {
 
     $stmt = exec_query(
         '
-			SELECT admin_id, created_by, domain_status
-			FROM domain
-			JOIN admin ON(admin_id = domain_admin_id)
-			WHERE domain_id = ?
-			AND created_by = ?
-		',
+            SELECT admin_id, created_by, domain_status
+            FROM domain
+            JOIN admin ON(admin_id = domain_admin_id)
+            WHERE domain_id = ?
+            AND created_by = ?
+        ',
         [$domainId, $resellerId]
     );
 
     if ($stmt->rowCount()) {
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $row = $stmt->fetch();
 
         if ($row['domain_status'] == 'ok') {
             change_domain_status($row['admin_id'], 'deactivate');

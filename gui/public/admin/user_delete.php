@@ -40,15 +40,18 @@ function admin_deleteUser($userId)
 {
     $userId = intval($userId);
     $cfg = iMSCP_Registry::get('config');
-    $db = iMSCP_Database::getInstance();
+
+    /** @var iMSCP_Database $db */
+    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+
     $stmt = exec_query(
         '
             SELECT a.admin_type, b.logo FROM admin a LEFT JOIN user_gui_props b ON (b.user_id = a.admin_id)
             WHERE admin_id = ?
         ',
-        $userId
+        [$userId]
     );
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch();
     $userType = $row['admin_type'];
 
     if (empty($userType) || $userType == 'user') {
@@ -67,8 +70,8 @@ function admin_deleteUser($userId)
     // as common item since first admin must be never removed
     if ($userType == 'reseller') {
         // Getting reseller's software packages to remove if any
-        $stmt = exec_query('SELECT software_id, software_archive FROM web_software WHERE reseller_id = ?', $userId);
-        $swPackages = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = exec_query('SELECT software_id, software_archive FROM web_software WHERE reseller_id = ?', [$userId]);
+        $swPackages = $stmt->fetchAll();
 
         // Getting custom reseller isp logo if set
         $resellerLogo = $row['logo'];
@@ -171,7 +174,7 @@ function _admin_deleteResellerSwPackages($userId, array $swPackages)
  */
 function admin_validateUserDeletion($userId)
 {
-    $stmt = exec_query('SELECT admin_type, created_by FROM admin WHERE admin_id = ?', $userId);
+    $stmt = exec_query('SELECT admin_type, created_by FROM admin WHERE admin_id = ?', [$userId]);
     if (!$stmt->rowCount()) {
         showBadRequestErrorPage(); # No user found; assume a bad request
     }
@@ -186,7 +189,7 @@ function admin_validateUserDeletion($userId)
         showBadRequestErrorPage(); # Not an administrator, nor a reseller; assume a bad request
     }
 
-    $stmt = exec_query('SELECT COUNT(admin_id) AS user_count FROM admin WHERE created_by = ?', $userId);
+    $stmt = exec_query('SELECT COUNT(admin_id) AS user_count FROM admin WHERE created_by = ?', [$userId]);
     $row2 = $stmt->fetch();
 
     if ($row2['user_count'] > 0) {
@@ -226,7 +229,9 @@ if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) { # admin/reseller 
         set_page_message(tr('Customer account successfully scheduled for deletion.'), 'success');
         write_log(sprintf('%s scheduled deletion of the customer account with ID %d', $_SESSION['user_logged'], $userId), E_USER_NOTICE);
     } catch (iMSCP_Exception $e) {
-        if (($previous = $e->getPrevious()) && $previous instanceof iMSCP_Exception_Database) {
+        if (($previous = $e->getPrevious())
+            && $previous instanceof iMSCP_Exception_Database
+        ) {
             $queryMessagePart = ' Query was: ' . $previous->getQuery();
         } elseif ($e instanceof iMSCP_Exception_Database) {
             $queryMessagePart = ' Query was: ' . $e->getQuery();

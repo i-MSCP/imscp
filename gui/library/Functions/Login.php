@@ -81,9 +81,9 @@ function login_credentials(AuthEvent $authEvent)
     }
 
     $stmt = exec_query(
-        'SELECT admin_id, admin_name, admin_pass, admin_type, email, created_by FROM admin WHERE admin_name = ?',
+        'SELECT admin_id, admin_name, admin_pass, admin_type, email, created_by FROM admin WHERE admin_name = ?', [
         $username
-    );
+    ]);
 
     if (!$stmt->rowCount()) {
         $authEvent->setAuthenticationResult(new AuthResult(
@@ -163,7 +163,7 @@ function login_checkDomainAccount($event)
             JOIN admin ON(domain_admin_id = admin_id)
             WHERE domain_admin_id = ?
         ',
-        $identity->admin_id
+        [$identity->admin_id]
     );
 
     $event->stopPropagation();
@@ -174,14 +174,18 @@ function login_checkDomainAccount($event)
         return;
     }
 
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch();
 
-    if ($row['admin_status'] == 'disabled' || $row['domain_status'] == 'disabled') {
+    if ($row['admin_status'] == 'disabled'
+        || $row['domain_status'] == 'disabled'
+    ) {
         set_page_message(tr('Your account has been disabled. Please, contact your reseller.'), 'error');
         return;
     }
 
-    if ($row['domain_expires'] > 0 && $row['domain_expires'] < time()) {
+    if ($row['domain_expires'] > 0
+        && $row['domain_expires'] < time()
+    ) {
         set_page_message(tr('Your account has expired. Please, contact your reseller.'), 'error');
         return;
     }
@@ -197,10 +201,9 @@ function login_checkDomainAccount($event)
 function do_session_timeout()
 {
     // We must not remove bruteforce plugin data (AND `user_name` IS NOT NULL)
-    exec_query(
-        'DELETE FROM login WHERE lastaccess < ? AND user_name IS NOT NULL',
+    exec_query('DELETE FROM login WHERE lastaccess < ? AND user_name IS NOT NULL', [
         time() - Registry::get('config')['SESSION_TIMEOUT'] * 60
-    );
+    ]);
 }
 
 /**

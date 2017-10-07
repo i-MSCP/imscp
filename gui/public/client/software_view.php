@@ -32,10 +32,8 @@ function client_generatePage($tpl)
 {
     $softwareId = intval($_GET['id']);
     $domainProperties = get_domain_default_props($_SESSION['user_id']);
-    $stmt = exec_query('SELECT created_by FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
-
-    get_software_props($tpl, $domainProperties['domain_id'], $softwareId, $stmt->fetch(PDO::FETCH_COLUMN));
-
+    $stmt = exec_query('SELECT created_by FROM admin WHERE admin_id = ?', [$_SESSION['user_id']]);
+    get_software_props($tpl, $domainProperties['domain_id'], $softwareId, $stmt->fetchColumn());
     return $softwareId;
 }
 

@@ -43,7 +43,7 @@ if ($row['software_depot'] == 'no') {
     );
 }
 
-exec_query('UPDATE web_software_inst SET software_res_del = 1 WHERE software_id = ?', $softwareId);
+exec_query('UPDATE web_software_inst SET software_res_del = 1 WHERE software_id = ?', [$softwareId]);
 exec_query('DELETE FROM web_software WHERE software_id = ? AND reseller_id = ?', [$softwareId, $_SESSION['user_id']]);
 set_page_message(tr('Software successfully scheduled for deletion.'), 'success');
 redirectTo('software_upload.php');

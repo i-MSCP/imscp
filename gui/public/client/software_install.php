@@ -93,13 +93,13 @@ function setFtpRootDir($tpl = NULL)
 function client_generatePage($tpl, $softwareId)
 {
     $domainProperties = get_domain_default_props($_SESSION['user_id']);
-    $stmt = exec_query('SELECT created_by FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
+    $stmt = exec_query('SELECT created_by FROM admin WHERE admin_id = ?', [$_SESSION['user_id']]);
 
     if (!$stmt->rowCount()) {
         throw new iMSCP_Exception('An unexpected error occurred. Please contact your reseller.');
     }
 
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch();
     get_software_props_install(
         $tpl, $domainProperties['domain_id'], $softwareId, $row['created_by'], $domainProperties['domain_sqld_limit']
     );
@@ -152,19 +152,19 @@ if (!empty($_POST)) {
     $appEmail = clean_input($_POST['install_email']);
     $stmt = exec_query(
         '
-          SELECT software_master_id, software_db, software_name, software_version, software_language,
-            software_prefix, software_depot
+          SELECT software_master_id, software_db, software_name, software_version, software_language, software_prefix,
+          software_depot
           FROM web_software
           WHERE software_id = ?
         ',
-        $softwareId
+        [$softwareId]
     );
 
     if (!$stmt->rowCount()) {
         showBadRequestErrorPage();
     }
 
-    $softwareData = $stmt->fetch(PDO::FETCH_ASSOC);
+    $softwareData = $stmt->fetch();
     $postData = explode(';', $_POST['selected_domain']);
 
     if (sizeof($postData) != 2) {
@@ -184,53 +184,53 @@ if (!empty($_POST)) {
                   FROM domain
                   WHERE domain_id = ?
                   AND domain_admin_id = ?
-                  AND domain_status = ?
-                  AND url_forward = ?
+                  AND domain_status = 'ok'
+                  AND url_forward = 'no'
                 ",
-                [$domainId, $_SESSION['user_id'], 'ok', 'no']
+                [$domainId, $_SESSION['user_id']]
             );
             break;
         case 'sub':
             $subId = $domainId;
             $stmt = exec_query(
-                '
+                "
                   SELECT subdomain_mount AS mpoint, subdomain_document_root AS document_root
                   FROM subdomain
                   WHERE subdomain_id = ?
                   AND domain_id = ?
-                  AND subdomain_url_forward = ?
-                  AND subdomain_status = ?
-                ',
-                [$domainId, $domainProps['domain_id'], 'no', 'ok']
+                  AND subdomain_url_forward = 'no'
+                  AND subdomain_status = 'ok'
+                ",
+                [$domainId, $domainProps['domain_id']]
             );
             break;
         case 'als':
             $aliasId = $domainId;
             $stmt = exec_query(
-                '
+                "
                   SELECT alias_mount AS mpoint, alias_document_root AS document_root
                   FROM domain_aliasses
                   WHERE alias_id = ?
                   AND domain_id = ?
-                  AND alias_status = ?
-                  AND url_forward = ?
-                ',
-                [$domainId, $domainProps['domain_id'], 'ok', 'no']
+                  AND alias_status = 'ok'
+                  AND url_forward = 'no'
+                ",
+                [$domainId, $domainProps['domain_id']]
             );
             break;
         case 'alssub':
             $aliasSubId = $domainId;
             $stmt = exec_query(
-                '
+                "
                   SELECT subdomain_alias_mount AS mpoint, subdomain_alias_document_root AS document_root
                   FROM subdomain_alias
                   JOIN domain_aliasses USING(alias_id)
                   WHERE subdomain_alias_id = ?
-                  AND subdomain_alias_url_forward = ?
+                  AND subdomain_alias_url_forward = 'no'
                   AND domain_id = ?
-                  AND subdomain_alias_status =?
-                ',
-                [$domainId, 'no', $domainProps['domain_id'], 'ok']
+                  AND subdomain_alias_status = 'ok'
+                ",
+                [$domainId, $domainProps['domain_id']]
             );
             break;
         default:
@@ -238,7 +238,7 @@ if (!empty($_POST)) {
             exit;
     }
 
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch();
     $installPath = utils_normalizePath($row['mpoint'] . '/htdocs/' . $otherDir);
     $error = false;
 
@@ -253,7 +253,7 @@ if (!empty($_POST)) {
         ]);
 
         if ($stmt->rowCount()) {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $row = $stmt->fetch();
             set_page_message(tr('Please select another directory. %s (%s) is installed there.', $row['software_name'], $row['software_version']), 'error');
             $error = true;
         }
@@ -297,13 +297,13 @@ if (!empty($_POST)) {
             set_page_message(tr("Unknown `%s' database. Database must exists.", $appDatabase), 'error');
             $error = true;
         } else {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $row = $stmt->fetch();
 
             # Check that SQL user belongs to the given database
             $stmt = exec_query('SELECT COUNT(sqlu_id) FROM sql_user WHERE sqld_id = ? AND sqlu_name = ?', [
                 $row['sqld_id'], $appSqlUser
             ]);
-            if (!$stmt->fetch(PDO::FETCH_COLUMN)) {
+            if ($stmt->fetchColumn() < 1) {
                 set_page_message(tr('Invalid SQL user. SQL user must exists and belong to the provided database.'), 'error');
                 $error = true;
             } # Check database connection using provided SQL user/password
@@ -323,20 +323,20 @@ if (!empty($_POST)) {
     }
 
     exec_query(
-        '
+        "
           INSERT INTO web_software_inst (
             domain_id, alias_id, subdomain_id, subdomain_alias_id, software_id, software_master_id, software_name,
             software_version, software_language, path, software_prefix, db, database_user, database_tmp_pwd,
             install_username, install_password, install_email, software_status, software_depot
           ) VALUES (
-            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'toadd', ?
           )
-        ',
+        ",
         [
             $domainProps['domain_id'], $aliasId, $subId, $aliasSubId, $softwareId, $softwareData['software_master_id'],
             $softwareData['software_name'], $softwareData['software_version'], $softwareData['software_language'],
             $installPath, $softwarePrefix, $appDatabase, $appSqlUser, $appSqlPassword, $appLoginName, $appPassword,
-            encode_idna($appEmail), 'toadd', $softwareData['software_depot']
+            encode_idna($appEmail), $softwareData['software_depot']
         ]
     );
 

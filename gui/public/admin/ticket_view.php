@@ -34,7 +34,7 @@ require_once LIBRARY_PATH . '/Functions/Tickets.php';
 
 check_login('admin');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
-iMSCP_Registry::get('config')['IMSCP_SUPPORT_SYSTEM']  && isset($_GET['ticket_id']) or showBadRequestErrorPage();
+iMSCP_Registry::get('config')['IMSCP_SUPPORT_SYSTEM'] && isset($_GET['ticket_id']) or showBadRequestErrorPage();
 
 $ticketId = intval($_GET['ticket_id']);
 $status = getTicketStatus($ticketId);

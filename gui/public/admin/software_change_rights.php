@@ -31,7 +31,7 @@ if (isset($_POST['change']) && $_POST['change'] == 'add') {
     ignore_user_abort(true);
 
     $resellerId = clean_input($_POST['selected_reseller']);
-    $stmt = exec_query('SELECT * FROM web_software WHERE software_id = ?', $softwareId);
+    $stmt = exec_query('SELECT * FROM web_software WHERE software_id = ?', [$softwareId]);
 
     if (!$stmt->rowCount()) {
         showBadRequestErrorPage();
@@ -49,13 +49,14 @@ if (isset($_POST['change']) && $_POST['change'] == 'add') {
             redirectTo('software_rights.php?id=' . $softwareId);
         }
 
-        $db = iMSCP_Database::getInstance();
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
 
         while ($row2 = $stmt->fetch()) {
             $cnt = exec_query(
                 'SELECT COUNT(reseller_id) FROM web_software WHERE reseller_id = ? AND software_master_id = ?', [
                 $row2['reseller_id'], $softwareId
-            ])->fetch(PDO::FETCH_COLUMN);
+            ])->fetchColumn();
 
             if ($cnt != 0) {
                 continue;
@@ -79,7 +80,7 @@ if (isset($_POST['change']) && $_POST['change'] == 'add') {
                 ]
             );
 
-            update_existing_client_installations_sw_depot($db->insertId(), $softwareId, $row2['reseller_id']);
+            update_existing_client_installations_sw_depot($db->lastInsertId(), $softwareId, $row2['reseller_id']);
         }
     } else {
         exec_query(
@@ -101,7 +102,7 @@ if (isset($_POST['change']) && $_POST['change'] == 'add') {
         );
 
         update_existing_client_installations_sw_depot(
-            iMSCP_Database::getInstance()->insertId(), $softwareId, $resellerId
+            iMSCP_Registry::get('iMSCP_Application')->getDatabase()->lastInsertId(), $softwareId, $resellerId
         );
     }
 
@@ -112,7 +113,7 @@ if (isset($_POST['change']) && $_POST['change'] == 'add') {
 exec_query('DELETE FROM web_software WHERE software_master_id = ? AND reseller_id = ?', [
     $softwareId, intval($_GET['reseller_id'])
 ]);
-exec_query('UPDATE web_software_inst SET software_res_del = 1 WHERE software_master_id = ?', $softwareId);
+exec_query('UPDATE web_software_inst SET software_res_del = 1 WHERE software_master_id = ?', [$softwareId]);
 set_page_message(tr('Rights successfully removed.'), 'success');
 redirectTo("software_rights.php?id=$softwareId");
 

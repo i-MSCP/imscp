@@ -378,7 +378,7 @@ function debugger_getMailsErrors($tpl)
             case MT_ALSSUB_MAIL . ',' . MT_ALSSUB_FORWARD:
                 $query = "
                     SELECT CONCAT('@', t1.subdomain_alias_name, '.', IF(t2.alias_name IS NULL,'" . tr('missing alias')
-                        . "',t2.alias_name) ) AS domain_name
+                    . "',t2.alias_name) ) AS domain_name
                     FROM subdomain_alias AS t1
                     LEFT JOIN domain_aliasses AS t2 ON (t1.alias_id = t2.alias_id)
                     WHERE subdomain_alias_id = ?
@@ -401,7 +401,7 @@ function debugger_getMailsErrors($tpl)
                 throw new iMSCP_Exception('FIXME: ' . __FILE__ . ':' . __LINE__ . $mailType);
         }
 
-        $domainName = ltrim(exec_query($query, $searchedId)->fetch(PDO::FETCH_COLUMN), '@');
+        $domainName = ltrim(exec_query($query, $searchedId)->fetchColumn(), '@');
         $tpl->assign([
             'MAIL_MESSAGE' => '',
             'MAIL_NAME'    => tohtml($mailAcc . '@' . (
@@ -505,7 +505,6 @@ function debugger_changePluginItemStatus($pluginName, $table, $field, $itemId)
 {
     /** @var iMSCP_Plugin_Manager $pluginManager */
     $pluginManager = iMSCP_Registry::get('pluginManager');
-
     if ($pluginManager->pluginIsLoaded($pluginName)) {
         $pluginManager->pluginGet($pluginName)->changeItemStatus($table, $field, $itemId);
         return true;
@@ -520,17 +519,19 @@ function debugger_changePluginItemStatus($pluginName, $table, $field, $itemId)
  * Note: Without any argument, this function will trigger the getCountRequests() method on all enabled plugins
  *
  * @param string $statusField status database field name
- * @param  string $tableName i-MSCP database table name
+ * @param string $tableName i-MSCP database table name
  * @return int Number of request
  */
 function debugger_countRequests($statusField = NULL, $tableName = NULL)
 {
-    if ($statusField && $tableName) {
+    if (null !== $statusField && null !== $tableName) {
+        $statusField = quoteIdentifier($statusField);
+        $tableName = quoteIdentifier($tableName);
         $stmt = execute_query(
             "
-                SELECT `$statusField`
-                FROM `$tableName`
-                WHERE `$statusField` IN (
+                SELECT $statusField
+                FROM $tableName
+                WHERE $statusField IN (
                     'toinstall', 'toupdate', 'touninstall', 'toadd', 'tochange', 'torestore', 'toenable', 'todisable',
                     'todelete'
                 )
@@ -539,11 +540,8 @@ function debugger_countRequests($statusField = NULL, $tableName = NULL)
         return $stmt->rowCount();
     }
 
-    /** @var iMSCP_Plugin_Manager $pluginManager */
-    $pluginManager = iMSCP_Registry::get('pluginManager');
-
     /** @var iMSCP_Plugin[] $plugins */
-    $plugins = $pluginManager->pluginGetLoaded();
+    $plugins = iMSCP_Registry::get('pluginManager')->pluginGetLoaded();
     $nbRequests = 0;
 
     if (!empty($plugins)) {
@@ -595,70 +593,69 @@ if (isset($_GET['action'])) {
         }
 
         redirectTo('imscp_debugger.php');
-    } elseif ($_GET['action'] == 'change' && (isset($_GET['id']) && isset($_GET['type']))) {
+        exit;
+    }
+
+    if ($_GET['action'] == 'change'
+        && (isset($_GET['id']) && isset($_GET['type']))
+    ) {
         switch ($_GET['type']) {
             case 'user':
-                $query = "UPDATE admin SET admin_status = ? WHERE admin_id = ?";
+                $query = "UPDATE admin SET admin_status = 'tochange' WHERE admin_id = ?";
                 break;
             case 'domain':
-                $query = "UPDATE domain SET domain_status = ? WHERE domain_id = ?";
+                $query = "UPDATE domain SET domain_status = 'tochange' WHERE domain_id = ?";
                 break;
             case 'alias':
-                $query = "UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?";
+                $query = "UPDATE domain_aliasses SET alias_status = 'tochange' WHERE alias_id = ?";
                 break;
             case 'subdomain':
-                $query = "UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?";
+                $query = "UPDATE subdomain SET subdomain_status = 'tochange' WHERE subdomain_id = ?";
                 break;
             case 'subdomain_alias':
-                $query = "UPDATE subdomain_alias SET subdomain_alias_status = ? WHERE subdomain_alias_id = ?";
+                $query = "UPDATE subdomain_alias SET subdomain_alias_status = 'tochange' WHERE subdomain_alias_id = ?";
                 break;
             case 'custom_dns':
-                $query = "UPDATE domain_dns SET domain_dns_status = ? WHERE domain_dns_id = ?";
+                $query = "UPDATE domain_dns SET domain_dns_status = 'tochange' WHERE domain_dns_id = ?";
                 break;
             case 'ftp':
-                $query = "UPDATE ftp_users SET status = ? WHERE userid = ?";
+                $query = "UPDATE ftp_users SET status = 'tochange' WHERE userid = ?";
                 break;
             case 'mail':
-                $query = "UPDATE mail_users SET status = ? WHERE mail_id = ?";
+                $query = "UPDATE mail_users SET status = 'tochange' WHERE mail_id = ?";
                 break;
             case 'htaccess':
-                $query = 'UPDATE htaccess SET status = ? WHERE id = ?';
+                $query = "UPDATE htaccess SET status = 'tochange'  WHERE id = ?";
                 break;
             case 'htgroup':
-                $query = 'UPDATE htaccess_groups SET status = ? WHERE id = ?';
+                $query = "UPDATE htaccess_groups SET status = 'tochange' WHERE id = ?";
                 break;
             case 'htpasswd':
-                $query = 'UPDATE htaccess_users SET status = ? WHERE id = ?';
+                $query = "UPDATE htaccess_users SET status = 'tochange' WHERE id = ?";
                 break;
             case 'ip':
-                $query = 'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?';
+                $query = "UPDATE server_ips SET ip_status = 'tochange' WHERE ip_id = ?";
                 break;
             case 'plugin':
-                $query = "UPDATE plugin SET plugin_status = ? WHERE plugin_id = ?";
+                $query = "UPDATE plugin SET plugin_status = 'tochange' WHERE plugin_id = ?";
                 break;
             default:
-                if (isset($_GET['table']) && isset($_GET['field'])) {
-                    if (!debugger_changePluginItemStatus($_GET['type'], $_GET['table'], $_GET['field'], $_GET['id'])) {
-                        set_page_message(tr('Unknown type.'), 'error');
-                    } else {
-                        set_page_message(tr('Done'), 'success');
-                    }
-                } else {
+                if (!isset($_GET['table']) || !isset($_GET['field'])) {
                     showBadRequestErrorPage();
                 }
 
+                if (!debugger_changePluginItemStatus($_GET['type'], $_GET['table'], $_GET['field'], $_GET['id'])) {
+                    set_page_message(tr('Unknown type.'), 'error');
+                } else {
+                    set_page_message(tr('Done'), 'success');
+                }
+
                 redirectTo('imscp_debugger.php');
+                exit;
         }
 
-        $stmt = exec_query($query, ['tochange', $_GET['id']]);
-
-        if ($stmt !== false) {
-            set_page_message(tr('Done'), 'success');
-        } else {
-            $db = iMSCP_Database::getInstance();
-            set_page_message(tr('Unknown Error') . '<br>' . $db->errorMsg(), 'error');
-        }
-
+        $stmt = exec_query($query, [$_GET['id']]);
+        set_page_message(tr('Done'), 'success');
         redirectTo('imscp_debugger.php');
     }
 }

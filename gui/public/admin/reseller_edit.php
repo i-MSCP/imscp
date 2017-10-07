@@ -19,7 +19,6 @@
  */
 
 use iMSCP\Crypt as Crypt;
-use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_PHPini as PhpIni;
@@ -53,7 +52,7 @@ function getFormData($resellerId, $forUpdate = false)
             JOIN reseller_props AS t2 ON(t2.reseller_id = t1.admin_id)
             WHERE t1.admin_id = ?
         ',
-        $resellerId
+        [$resellerId]
     );
 
     if (!$stmt->rowCount()) {
@@ -71,7 +70,7 @@ function getFormData($resellerId, $forUpdate = false)
     // Ip data begin
 
     // Fetch server ip list
-    $stmt = exec_query('SELECT ip_id, ip_number FROM server_ips  ORDER BY ip_number');
+    $stmt = execute_query('SELECT ip_id, ip_number FROM server_ips  ORDER BY ip_number');
 
     if (!$stmt->rowCount()) {
         set_page_message(tr('Unable to get the IP address list. Please fix this problem.'), 'error');
@@ -86,7 +85,7 @@ function getFormData($resellerId, $forUpdate = false)
     // Fetch all ip id used by reseller's customers
     $stmt = exec_query(
         'SELECT DISTINCT domain_ip_id FROM domain JOIN admin ON(admin_id = domain_admin_id) WHERE created_by = ?',
-        $resellerId
+        [$resellerId]
     );
 
     if ($stmt->rowCount()) {
@@ -359,34 +358,35 @@ function updateResellerUser(Form $form)
 
     $error = false;
     $errFieldsStack = [];
-    $db = Database::getInstance();
+
+    /** @var iMSCP_Database $db */
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $data = getFormData($resellerId, true);
 
         $stmt = exec_query(
-            "
-            SELECT
-                IFNULL(SUM(t1.domain_subd_limit), 0) AS subdomains,
-                IFNULL(SUM(t1.domain_alias_limit), 0) AS domainAliases,
-                IFNULL(SUM(t1.domain_mailacc_limit), 0) AS mailAccounts,
-                IFNULL(SUM(t1.domain_ftpacc_limit), 0) AS ftpAccounts,
-                IFNULL(SUM(t1.domain_sqld_limit), 0) AS sqlDatabases,
-                IFNULL(SUM(t1.domain_sqlu_limit), 0) AS sqlUsers,
-                IFNULL(SUM(t1.domain_traffic_limit), 0) AS traffic,
-                IFNULL(SUM(t1.domain_disk_limit), 0) AS diskspace
-            FROM domain AS t1
-            JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
-            WHERE t2.created_by = ?
-        ",
-            $resellerId
+            '
+                SELECT IFNULL(SUM(t1.domain_subd_limit), 0) AS subdomains,
+                    IFNULL(SUM(t1.domain_alias_limit), 0) AS domainAliases,
+                    IFNULL(SUM(t1.domain_mailacc_limit), 0) AS mailAccounts,
+                    IFNULL(SUM(t1.domain_ftpacc_limit), 0) AS ftpAccounts,
+                    IFNULL(SUM(t1.domain_sqld_limit), 0) AS sqlDatabases,
+                    IFNULL(SUM(t1.domain_sqlu_limit), 0) AS sqlUsers,
+                    IFNULL(SUM(t1.domain_traffic_limit), 0) AS traffic,
+                    IFNULL(SUM(t1.domain_disk_limit), 0) AS diskspace
+                FROM domain AS t1
+                JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
+                WHERE t2.created_by = ?
+            ',
+            [$resellerId]
         );
 
         $unlimitedItems = array_map(
             function ($element) {
                 return $element == -1 ? false : $element == 0;
             },
-            $stmt->fetch(PDO::FETCH_ASSOC)
+            $stmt->fetch()
         );
 
         // Check for login and personal data
@@ -698,25 +698,25 @@ function updateResellerUser(Form $form)
 
             if ($data['websoftwaredepot_allowed'] == 'no') {
                 $stmt = exec_query(
-                    'SELECT software_id FROM web_software WHERE software_depot = ? AND reseller_id = ?',
-                    ['yes', $resellerId]
+                    "SELECT software_id FROM web_software WHERE software_depot = 'yes' AND reseller_id = ?",
+                    [$resellerId]
                 );
 
                 if ($stmt->rowCount()) {
                     while ($row = $stmt->fetch()) {
-                        exec_query('UPDATE web_software_inst SET software_res_del = ? WHERE software_id = ?', [
-                            '1', $row['software_id']
+                        exec_query("UPDATE web_software_inst SET software_res_del = '1' WHERE software_id = ?", [
+                            $row['software_id']
                         ]);
                     }
 
-                    exec_query('DELETE FROM web_software WHERE software_depot = ? AND reseller_id = ?', [
-                        'yes', $resellerId
+                    exec_query("DELETE FROM web_software WHERE software_depot = 'yes' AND reseller_id = ?", [
+                        $resellerId
                     ]);
                 }
             }
 
             // Force user to login again (needed due to possible password or email change)
-            exec_query('DELETE FROM login WHERE user_name = ?', $data['fallback_admin_name']);
+            exec_query('DELETE FROM login WHERE user_name = ?', [$data['fallback_admin_name']]);
 
             EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
                 'userId'   => $resellerId,

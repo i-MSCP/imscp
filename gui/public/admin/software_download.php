@@ -27,7 +27,7 @@ isset($_GET['id']) or showBadRequestErrorPage();
 
 $softwareId = intval($_GET['id']);
 $stmt = exec_query(
-    'SELECT reseller_id, software_archive, software_depot FROM web_software WHERE software_id = ?', $softwareId
+    'SELECT reseller_id, software_archive, software_depot FROM web_software WHERE software_id = ?', [$softwareId]
 );
 
 if (!$stmt->rowCount()) {

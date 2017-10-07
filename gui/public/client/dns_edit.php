@@ -20,6 +20,7 @@
 
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Registry as Registry;
 use Net_DNS2_Exception as DnsResolverException;
 use Net_DNS2_Resolver as DnsResolver;
 
@@ -766,7 +767,8 @@ function client_saveDnsRecord($dnsRecordId)
     $dnsRecordName .= '.'; // Add trailing dot
     $dnsRecordName .= "\t$ttl"; // Add TTL
 
-    $db = iMSCP_Database::getInstance();
+    /** @var iMSCP_Database $db */
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -803,11 +805,11 @@ function client_saveDnsRecord($dnsRecordId)
                   WHERE domain_id = ?
                   AND domain_dns_status NOT IN('ok', 'toadd', 'tochange', 'todelete', 'disabled')
                 ",
-                $mainDmnId
+                [$mainDmnId]
             );
 
             EventsManager::getInstance()->dispatch(Events::onAfterAddCustomDNSrecord, [
-                'id'       => $db->insertId(),
+                'id'       => $db->lastInsertId(),
                 'domainId' => $mainDmnId,
                 'aliasId'  => $domainId,
                 'name'     => $dnsRecordName,
@@ -843,7 +845,7 @@ function client_saveDnsRecord($dnsRecordId)
                   WHERE domain_id = ?
                   AND domain_dns_status NOT IN('ok', 'toadd', 'tochange', 'todelete', 'disabled')
                 ",
-                $mainDmnId
+                [$mainDmnId]
             );
 
             EventsManager::getInstance()->dispatch(Events::onAfterEditCustomDNSrecord, [

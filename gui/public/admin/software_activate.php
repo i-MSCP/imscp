@@ -28,12 +28,12 @@ isset($_GET['id']) or showBadRequestErrorPage();
 $softwareId = intval($_GET['id']);
 $stmt = exec_query(
     'SELECT software_id, software_archive, reseller_id FROM web_software WHERE software_id = ? AND software_active = 0',
-    intval($softwareId)
+    [intval($softwareId)]
 );
 
 $stmt->rowCount() or showBadRequestErrorPage();
 
-exec_query('UPDATE web_software SET software_active = 1 WHERE software_id = ?', $softwareId);
+exec_query('UPDATE web_software SET software_active = 1 WHERE software_id = ?', [$softwareId]);
 
 $stmt = exec_query(
     '
@@ -41,7 +41,7 @@ $stmt = exec_query(
         FROM web_software
         WHERE software_id = ?
     ',
-    $softwareId
+    [$softwareId]
 );
 
 $row = $stmt->fetch();

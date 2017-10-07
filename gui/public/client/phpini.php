@@ -26,7 +26,6 @@
  * Tells whether or not the status of the given domain
  *
  * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  * @param int $domainId Domain unique identifier
  * @param string $domainType Domain type (dmn|als|sub|subals)
  * @return bool TRUE if domain status is 'ok', FALSE otherwise
@@ -50,7 +49,7 @@ function isDomainStatusOk($domainId, $domainType)
             throw new iMSCP_Exception('Unknown domain type');
     }
 
-    $stmt = exec_query($query, $domainId);
+    $stmt = exec_query($query, [$domainId]);
 
     if ($stmt->rowCount()) {
         $row = $stmt->fetch();
@@ -65,7 +64,6 @@ function isDomainStatusOk($domainId, $domainType)
 /**
  * Get domain data
  *
- * @throws iMSCP_Exception_Database
  * @param string $configLevel PHP configuration level
  * @return array
  */
@@ -107,8 +105,7 @@ function getDomainData($configLevel)
         ";
     }
 
-    $stmt = exec_query($query, ['admin_id' => $_SESSION['user_id'], 'domain_status' => 'todelete']);
-    return $stmt->fetchAll();
+    return exec_query($query, ['admin_id' => $_SESSION['user_id'], 'domain_status' => 'todelete'])->fetchAll();
 }
 
 /**

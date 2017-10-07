@@ -275,7 +275,9 @@ function generatePage($tpl)
     if ($senderName == ''
         && $senderEmail == ''
     ) {
-        $stmt = exec_query('SELECT admin_name, fname, lname, email FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
+        $stmt = exec_query('SELECT admin_name, fname, lname, email FROM admin WHERE admin_id = ?', [
+            $_SESSION['user_id']
+        ]);
         $row = $stmt->fetch();
 
         if (!empty($row['fname']) && !empty($row['lname'])) {

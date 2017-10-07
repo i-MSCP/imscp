@@ -68,28 +68,41 @@ class iMSCP_Config
     /**#@-*/
 
     /**
-     * Array that contain references to {@link iMSCP_Config_Handler} objects indexed
-     * by they class name.
+     * Array that contain references to {@link iMSCP_Config_Handler} objects
+     * indexed by they class name
      *
      * @staticvar array
      */
     private static $_instances = [];
 
     /**
+     * Wrapper for getter method of an iMSCP_Config_Handler object
+     *
+     * @see iMSCP_Config_Handler::get()
+     * @param string $index Configuration parameter key name
+     * @param string $className iMSCP_Config_Handler class name
+     * @return mixed Configuration parameter value
+     */
+    public static function get($index, $className = self::FILE)
+    {
+        return self::getInstance($className)->get($index);
+    }
+
+    /**
      * Get a iMSCP_Config_Handler instance
      *
-     * Returns a reference to a {@link iMSCP_Config_Handler} instance, only creating
-     * it if it doesn't already exist.
+     * Returns a reference to a {@link iMSCP_Config_Handler} instance, only
+     * creating it if it doesn't already exist.
      *
      * The default handler object is set to {@link iMSCP_Config_Handler_File}
      *
      * @throws iMSCP_Exception
      * @param string $className iMSCP_Config_Handler class name
-     * @param mixed $params Parameters that are passed to iMSCP_Config_Handler object
-     *                      constructor
+     * @param mixed $params Parameters that are passed to iMSCP_Config_Handler
+     *                      object constructor
      * @return iMSCP_Config_Handler An iMSCP_Config_Handler instance
      */
-    public static function getInstance($className = self::FILE, $params = null)
+    public static function getInstance($className = self::FILE, $params = NULL)
     {
         if (!array_key_exists($className, self::$_instances)) {
             if ($className === false) {
@@ -112,20 +125,7 @@ class iMSCP_Config
     }
 
     /**
-     * Wrapper for getter method of an iMSCP_Config_Handler object.
-     *
-     * @see iMSCP_Config_Handler::get()
-     * @param string $index Configuration parameter key name
-     * @param string $className iMSCP_Config_Handler class name
-     * @return mixed Configuration parameter value
-     */
-    public static function get($index, $className = self::FILE)
-    {
-        return self::getInstance($className)->get($index);
-    }
-
-    /**
-     * Wrapper for setter method of an iMSCP_Config_Handler object.
+     * Wrapper for setter method of an iMSCP_Config_Handler object
      *
      * @see iMSCP_Config_Handler::set()
      * @param string $index Configuration parameter key name
@@ -139,7 +139,7 @@ class iMSCP_Config
     }
 
     /**
-     * Wrapper for {@link iMSCP_Config_Handler::del()} method.
+     * Wrapper for {@link iMSCP_Config_Handler::del()} method
      *
      * @see iMSCP_Config_Handler::del()
      * @param string $index Configuration parameter key name

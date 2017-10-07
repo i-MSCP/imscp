@@ -57,7 +57,7 @@ function checkSqlUserPermissions(TemplateEngine $tpl, $sqldId)
         [$sqldId, $domainProps['domain_id']]
     );
 
-    if ($stmt->fetch(PDO::FETCH_COLUMN) < 1) {
+    if ($stmt->fetchColumn() < 1) {
         showBadRequestErrorPage();
     }
 }
@@ -91,7 +91,7 @@ function generateSqlUserList(TemplateEngine $tpl, $sqldId)
     );
 
     if ($stmt->rowCount()) {
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch()) {
             $tpl->assign([
                 'SQLUSER_ID'  => $row['sqlu_id'],
                 'SQLUSER_IDN' => tohtml($row['sqlu_name'] . '@' . decode_idna($row['sqlu_host'])),
@@ -118,9 +118,9 @@ function generateSqlUserList(TemplateEngine $tpl, $sqldId)
  */
 function isSqlUser($sqlUser, $sqlUserHost)
 {
-    return (bool)exec_query(
-        'SELECT COUNT(User) FROM mysql.user WHERE User = ? AND Host = ?', [$sqlUser, $sqlUserHost]
-    )->fetch(PDO::FETCH_COLUMN);
+    return exec_query(
+            'SELECT COUNT(User) FROM mysql.user WHERE User = ? AND Host = ?', [$sqlUser, $sqlUserHost]
+        )->fetchColumn() > 0;
 }
 
 /**
@@ -239,7 +239,7 @@ function addSqlUser($sqldId)
             showBadRequestErrorPage();
         }
 
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $row = $stmt->fetch();
         $user = $row['sqlu_name'];
         $host = $row['sqlu_host'];
     } else {
@@ -254,7 +254,7 @@ function addSqlUser($sqldId)
         showBadRequestErrorPage();
     }
 
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch();
     $mysqlConfig = new ConfigFile(Registry::get('config')['CONF_DIR'] . '/mysql/mysql.data');
 
     EventsManager::getInstance()->dispatch(Events::onBeforeAddSqlUser, [
@@ -287,12 +287,9 @@ function addSqlUser($sqldId)
     $row['sqld_name'] = preg_replace('/([%_])/', '\\\\$1', $row['sqld_name']);
 
     exec_query(sprintf('GRANT ALL PRIVILEGES ON %s.* to ?@?', quoteIdentifier($row['sqld_name'])), [$user, $host]);
-    exec_query('INSERT INTO sql_user (sqld_id, sqlu_name, sqlu_host) VALUES (?, ?, ?)', [
-        $sqldId, $user, $host
-    ]);
-
+    exec_query('INSERT INTO sql_user (sqld_id, sqlu_name, sqlu_host) VALUES (?, ?, ?)', [$sqldId, $user, $host]);
     EventsManager::getInstance()->dispatch(Events::onAfterAddSqlUser, [
-        'SqlUserId'       => iMSCP_Database::getInstance()->insertId(),
+        'SqlUserId'       => Registry::get('iMSCP_Application')->getDatabase()->lastInsertId(),
         'SqlUsername'     => $user,
         'SqlUserHost'     => $host,
         'SqlUserPassword' => isset($password) ? $password : '',

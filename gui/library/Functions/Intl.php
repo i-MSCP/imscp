@@ -322,8 +322,8 @@ function i18n_changeDefaultLanguage()
 
     // Ensures language change on next load for current user in case he has not yet his gui properties explicitly
     // set (eg. for the first admin user when i-MSCP was just installed
-    $stmt = exec_query('SELECT lang FROM user_gui_props WHERE user_id = ?', $_SESSION['user_id']);
-    if ($stmt->fetch(PDO::FETCH_COLUMN) == NULL) {
+    $stmt = exec_query('SELECT lang FROM user_gui_props WHERE user_id = ?', [$_SESSION['user_id']]);
+    if ($stmt->fetchColumn() == NULL) {
         unset($_SESSION['user_def_lang']);
     }
 

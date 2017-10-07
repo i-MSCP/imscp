@@ -31,7 +31,7 @@
 
 /**
  * Generate layout color form
- * 
+ *
  * @since iMSCP 1.0.1.6
  * @param $tpl iMSCP_pTemplate Template engine instance
  * @return void

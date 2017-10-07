@@ -38,12 +38,8 @@ function reseller_limits_check($resellerId, $hp)
         if (isset($_SESSION['ch_hpprops'])) {
             $hostingPlanProperties = $_SESSION['ch_hpprops'];
         } else {
-            $stmt = exec_query('SELECT props FROM hosting_plans WHERE id = ?', $hp);
-
-            if ($stmt->rowCount()) {
-                $data = $stmt->fetch();
-                $hostingPlanProperties = $data['props'];
-            } else {
+            $stmt = exec_query('SELECT props FROM hosting_plans WHERE id = ?', [$hp]);
+            if (($hostingPlanProperties = $stmt->fetchColumn()) === false) {
                 throw new iMSCPException('Hosting plan not found');
             }
         }
@@ -51,12 +47,10 @@ function reseller_limits_check($resellerId, $hp)
         $hostingPlanProperties = $hp;
     }
 
-    list(
-        , , $newSubLimit, $newAlsLimit, $newMailLimit, $newFtpLimit, $newSqlDbLimit, $newSqlUserLimit, $newTrafficLimit,
-        $newDiskspaceLimit
-        ) = explode(';', $hostingPlanProperties);
+    list(, , $newSubLimit, $newAlsLimit, $newMailLimit, $newFtpLimit, $newSqlDbLimit, $newSqlUserLimit, $newTrafficLimit,
+        $newDiskspaceLimit) = explode(';', $hostingPlanProperties);
 
-    $stmt = exec_query('SELECT * FROM reseller_props WHERE reseller_id = ?', $resellerId);
+    $stmt = exec_query('SELECT * FROM reseller_props WHERE reseller_id = ?', [$resellerId]);
     $data = $stmt->fetch();
     $currentDmnLimit = $data['current_dmn_cnt'];
     $maxDmnLimit = $data['max_dmn_cnt'];
@@ -251,9 +245,10 @@ function resellerHasCustomers($minNbCustomers = 1)
                 FROM admin
                 WHERE admin_type = 'user'
                 AND created_by = ?
-                AND admin_status <> 'todelete'",
-            $_SESSION['user_id']
-        )->fetch(PDO::FETCH_COLUMN);
+                AND admin_status <> 'todelete'
+            ",
+            [$_SESSION['user_id']]
+        )->fetchColumn();
     }
 
     return ($customerCount >= $minNbCustomers);

@@ -121,7 +121,7 @@ function generatePage($tpl)
             WHERE t1.domain_id = ?
             AND t1.subdomain_status = 'ok'
         ",
-        $dmnProps['domain_id']
+        [$dmnProps['domain_id']]
     );
 
     while ($data = $stmt->fetch()) {
@@ -149,7 +149,7 @@ function generatePage($tpl)
 
     $stmt = exec_query(
         "SELECT alias_id, alias_name FROM domain_aliasses WHERE domain_id = ? AND alias_status = 'ok'",
-        $dmnProps['domain_id']
+        [$dmnProps['domain_id']]
     );
 
     while ($data = $stmt->fetch()) {
@@ -182,7 +182,7 @@ function generatePage($tpl)
             WHERE t2.domain_id = ?
             AND t1.subdomain_alias_status = 'ok'
         ",
-        $dmnProps['domain_id']
+        [$dmnProps['domain_id']]
     );
 
     // Subdomain alias catch-all accounts

@@ -36,13 +36,13 @@ function get_user_gui_props($userId)
 {
     $cfg = Registry::get('config');
 
-    $stmt = exec_query('SELECT lang, layout FROM user_gui_props WHERE user_id = ?', $userId);
+    $stmt = exec_query('SELECT lang, layout FROM user_gui_props WHERE user_id = ?', [$userId]);
 
     if (!$stmt->rowCount()) {
         return [$cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']];
     }
 
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch();
 
     if (empty($row['lang'])
         && empty($row['layout'])
@@ -173,8 +173,8 @@ function get_menu_vars($menuLink)
             FROM admin
             WHERE admin_id = ?
         ',
-        $_SESSION['user_id']
-    )->fetch(PDO::FETCH_ASSOC);
+        [$_SESSION['user_id']]
+    )->fetch();
 
     $search = [];
     $replace = [];
@@ -209,8 +209,8 @@ function get_menu_vars($menuLink)
     $replace[] = tohtml($row['street2']);
 
     $row = exec_query(
-        'SELECT domain_name, domain_admin_id FROM domain WHERE domain_admin_id = ?', $_SESSION['user_id']
-    )->fetch(PDO::FETCH_ASSOC);
+        'SELECT domain_name, domain_admin_id FROM domain WHERE domain_admin_id = ?', [$_SESSION['user_id']]
+    )->fetch();
 
     $search [] = '{domain_name}';
     $replace[] = $row['domain_name'];
@@ -269,9 +269,7 @@ function layout_getUserLayoutColor($userId)
     }
 
     $allowedColors = layout_getAvailableColorSet();
-    $layoutColor = exec_query(
-        'SELECT layout_color FROM user_gui_props WHERE user_id = ?', $userId
-    )->fetch(PDO::FETCH_COLUMN);
+    $layoutColor = exec_query('SELECT layout_color FROM user_gui_props WHERE user_id = ?', [$userId])->fetchColumn();
 
     if (!$layoutColor || !in_array($layoutColor, $allowedColors)) {
         $layoutColor = array_shift($allowedColors);
@@ -394,17 +392,17 @@ function layout_getUserLogo($searchForCreator = true, $returnDefault = true)
         $userId = $_SESSION['user_id'];
     }
 
-    $stmt = exec_query('SELECT logo FROM user_gui_props WHERE user_id= ?', $userId);
+    $stmt = exec_query('SELECT logo FROM user_gui_props WHERE user_id= ?', [$userId]);
 
     // No logo is found for the user, let see for it creator
     if (!$stmt->rowCount() && $searchForCreator && $userId != 1) {
         $stmt = exec_query(
             'SELECT b.logo FROM admin a LEFT JOIN user_gui_props b ON (b.user_id = a.created_by) WHERE a.admin_id= ?',
-            $userId
+            [$userId]
         );
     }
 
-    $logo = $stmt->fetch(PDO::FETCH_COLUMN);
+    $logo = $stmt->fetchColumn();
 
     // No user logo found
     if (!$logo || !file_exists($cfg['GUI_ROOT_DIR'] . '/data/persistent/ispLogos/' . $logo)) {
@@ -587,13 +585,9 @@ function layout_LoadNavigation()
  */
 function layout_isMainMenuLabelsVisible($userId)
 {
-    $stmt = exec_query('SELECT show_main_menu_labels FROM user_gui_props WHERE user_id = ?', $userId);
-
-    if ($stmt->rowCount()) {
-        return (bool)$stmt->fetch(PDO::FETCH_COLUMN);
-    }
-
-    return true;
+    return (bool)exec_query('SELECT show_main_menu_labels FROM user_gui_props WHERE user_id = ?', [
+        $userId
+    ])->fetchColumn();
 }
 
 /**

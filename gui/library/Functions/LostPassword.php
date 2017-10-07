@@ -140,9 +140,7 @@ function setPassword($userType, $uniqueKey, $userPassword)
  */
 function uniqueKeyExists($uniqueKey)
 {
-    return (bool)exec_query(
-        'SELECT COUNT(admin_id) FROM admin WHERE uniqkey = ?', $uniqueKey
-    )->fetch(PDO::FETCH_COLUMN);
+    return (bool)exec_query('SELECT COUNT(admin_id) FROM admin WHERE uniqkey = ?', [$uniqueKey])->fetchColumn();
 }
 
 /**
@@ -167,7 +165,7 @@ function uniqkeygen()
  */
 function sendPasswordRequestValidation($adminName)
 {
-    $stmt = exec_query('SELECT admin_id, created_by, fname, lname, email FROM admin WHERE admin_name = ?', $adminName);
+    $stmt = exec_query('SELECT admin_id, created_by, fname, lname, email FROM admin WHERE admin_name = ?', [$adminName]);
 
     if (!$stmt->rowCount()) {
         set_page_message(tr('Wrong username.'), 'error');
@@ -223,7 +221,7 @@ function sendPassword($uniqueKey)
           FROM admin
           WHERE uniqkey = ?
         ",
-        $uniqueKey
+        [$uniqueKey]
     );
 
     if (!$stmt->rowCount()) {

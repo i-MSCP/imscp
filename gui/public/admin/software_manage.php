@@ -153,7 +153,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 
         /** @var $db iMSCP_Database */
         $db = iMSCP_Registry::get('db');
-        $sw_id = $db->insertId();
+        $sw_id = $db->lastInsertId();
 
         if ($file == 0) {
             $dest_dir = $cfg['GUI_APS_DEPOT_DIR'] . '/' . $filename . '-' . $sw_id . $extension;
@@ -164,8 +164,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 
             if (!move_uploaded_file($_FILES['sw_file']['tmp_name'], $dest_dir)) {
                 // Delete software entry
-                $query = "DELETE FROM `web_software` WHERE `software_id` = ?";
-                exec_query($query, $sw_id);
+                exec_query('DELETE FROM web_software WHERE software_id = ?', [$sw_id]);
 
                 $sw_wget = '';
 
@@ -198,8 +197,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 
                 if ($remote_file_size < 1) {
                     // Delete software entry
-                    $query = "DELETE FROM `web_software` WHERE `software_id` = ?";
-                    exec_query($query, $sw_id);
+                    exec_query('DELETE FROM web_software WHERE software_id = ?', [$sw_id]);
                     $show_max_remote_filesize = bytesHuman($cfg['APS_MAX_REMOTE_FILESIZE']);
                     set_page_message(
                         tr(
@@ -212,8 +210,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
                     $upload = 0;
                 } elseif ($remote_file_size > $cfg['APS_MAX_REMOTE_FILESIZE']) {
                     // Delete software entry
-                    $query = "DELETE FROM `web_software` WHERE `software_id` = ?";
-                    exec_query($query, $sw_id);
+                    exec_query('DELETE FROM web_software WHERE software_id = ?', [$sw_id]);
                     $show_max_remote_filesize = bytesHuman($cfg['APS_MAX_REMOTE_FILESIZE']);
                     set_page_message(
                         tr('Max. remote filesize (%s) is reached. Your remote file is %s',
@@ -228,16 +225,14 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
                         fclose($output_file);
                     } else {
                         // Delete software entry
-                        $query = "DELETE FROM `web_software` WHERE`software_id` = ?";
-                        exec_query($query, $sw_id);
+                        exec_query('DELETE FROM web_software WHERE software_id = ?', [$sw_id]);
                         set_page_message(tr('Error: Remote File not found!'), 'error');
                         $upload = 0;
                     }
                 }
             } else {
                 // Delete software entry
-                $query = "DELETE FROM `web_software` WHERE `software_id` = ?";
-                exec_query($query, $sw_id);
+                exec_query('DELETE FROM web_software WHERE software_id = ?', [$sw_id]);
                 set_page_message(tr('Could not upload file. File not found.'), 'error');
                 $upload = 0;
             }

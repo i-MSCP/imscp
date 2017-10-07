@@ -53,7 +53,6 @@ function isAllowedDir($directory)
 /**
  * Add/update protected area
  *
- * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  * @return void
  */
@@ -114,7 +113,7 @@ function handleProtectedArea()
               WHERE id IN(' . implode(',', array_map('quoteValue', (array)$_POST['users'])) . ')
               AND dmn_id = ?
             ',
-            $mainDmnProps['domain_id']
+            [$mainDmnProps['domain_id']]
         );
         if (!$stmt->rowCount()) {
             showBadRequestErrorPage();
@@ -130,7 +129,7 @@ function handleProtectedArea()
               WHERE id IN(' . implode(',', array_map('quoteValue', (array)$_POST['groups'])) . ')
               AND dmn_id = ?
             ',
-            $mainDmnProps['domain_id']
+            [$mainDmnProps['domain_id']]
         );
         if (!$stmt->rowCount()) {
             showBadRequestErrorPage();
@@ -140,7 +139,8 @@ function handleProtectedArea()
         $userIdList = 0;
     }
 
-    $db = iMSCP_Database::getInstance();
+    /** @var iMSCP_Database $db */
+    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -156,17 +156,14 @@ function handleProtectedArea()
         }
 
         exec_query(
-            '
+            "
                 INSERT INTO htaccess (
                     dmn_id, user_id, group_id, auth_type, auth_name, path, status
                 ) VALUES (
-                    ?, ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, 'Basic', ?, ?, 'toadd'
                 )
-            ',
-            [
-                $mainDmnProps['domain_id'], $userIdList, $groupIdList, 'Basic', $protectedAreaName, $protectedAreaPath,
-                'toadd'
-            ]
+            ",
+            [$mainDmnProps['domain_id'], $userIdList, $groupIdList, $protectedAreaName, $protectedAreaPath]
         );
 
         $db->commit();
@@ -252,7 +249,7 @@ function generatePage($tpl)
         ]);
     }
 
-    $stmt = exec_query('SELECT * FROM htaccess_users WHERE dmn_id = ?', $mainDmnProps['domain_id']);
+    $stmt = exec_query('SELECT * FROM htaccess_users WHERE dmn_id = ?', [$mainDmnProps['domain_id']]);
     if (!$stmt->rowCount()) {
         set_page_message(tr('You must first create a user.'), 'error');
         redirectTo('protected_areas.php');
@@ -270,7 +267,7 @@ function generatePage($tpl)
     }
 
     # Create htgroup list
-    $stmt = exec_query('SELECT * FROM htaccess_groups WHERE dmn_id = ?', $mainDmnProps['domain_id']);
+    $stmt = exec_query('SELECT * FROM htaccess_groups WHERE dmn_id = ?', [$mainDmnProps['domain_id']]);
     if (!$stmt->rowCount()) {
         $tpl->assign([
             'AUTH_SELECTORS_JS'      => '',

@@ -18,31 +18,38 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Database_Events_Database as EventsDatabase;
-use iMSCP_Database_ResultSet as ResultSet;
+namespace iMSCP\Database\Events;
+
+use iMSCP_Events_Event as Event;
 
 /**
- * Class iMSCP_Database_Events_Statement
+ * Class Statement
+ * @package iMSCP\Database\Events
  */
-class iMSCP_Database_Events_Statement extends EventsDatabase
+class Statement extends Event
 {
     /**
-     * Returns a PDOstatement
-     *
-     * @return ResultSet
+     * @var string SQL statement associated with this event
      */
-    public function getStatement()
+    protected $statement;
+
+    /**
+     * Statement constructor.
+     *
+     * @param string $statement SQL statement
+     */
+    public function __construct($statement)
     {
-        return $this->getParam('statement');
+        $this->statement = $statement;
     }
 
     /**
-     * Returns the query string
+     * Returns the result set associated with this event
      *
      * @return string
      */
-    public function getQueryString()
+    public function getStatement()
     {
-        return $this->getStatement()->queryString;
+        return $this->statement;
     }
 }

@@ -66,7 +66,7 @@ function addSqlDb()
     }
 
     if (in_array($dbName, ['information_schema', 'mysql', 'performance_schema', 'sys', 'test'])
-        || exec_query('SHOW DATABASES LIKE ?', $dbName)->rowCount()
+        || exec_query('SHOW DATABASES LIKE ?', $dbName)->rowCount() > 0
     ) {
         set_page_message(tr('Database name is unavailable or unallowed.'), 'error');
         return;
@@ -77,7 +77,7 @@ function addSqlDb()
         execute_query(sprintf('CREATE DATABASE IF NOT EXISTS %s', quoteIdentifier($dbName)));
         exec_query('INSERT INTO sql_database (domain_id, sqld_name) VALUES (?, ?)', [$mainDmnId, $dbName]);
         EventsManager::getInstance()->dispatch(Events::onAfterAddSqlDb, [
-            'dbId'   => iMSCP_Database::getInstance()->insertId(),
+            'dbId'   => Registry::get('iMSCP_Application')->getDatabase()->lastInsertId(),
             'dbName' => $dbName
         ]);
         set_page_message(tr('SQL database successfully created.'), 'success');

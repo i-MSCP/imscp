@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Database as Database;
+use iMSCP\Database\ResultSet;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
@@ -53,7 +53,8 @@ define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
  */
 function createDefaultMailAccounts($mainDmnId, $userEmail, $dmnName, $forwardType = MT_NORMAL_FORWARD, $subId = 0)
 {
-    $db = Database::getInstance();
+    /** @var iMSCP_Database $db */
+    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         if ($subId == 0 && $forwardType != MT_NORMAL_FORWARD) {
@@ -73,6 +74,12 @@ function createDefaultMailAccounts($mainDmnId, $userEmail, $dmnName, $forwardTyp
 
         $userEmail = encode_idna($userEmail);
 
+        if (in_array($forwardType, [MT_NORMAL_FORWARD, MT_ALIAS_FORWARD])) {
+            $mailAccounts = ['abuse', 'hostmaster', 'postmaster', 'webmaster'];
+        } else {
+            $mailAccounts = ['webmaster'];
+        }
+
         $db->beginTransaction();
 
         $stmt = $db->prepare(
@@ -80,27 +87,28 @@ function createDefaultMailAccounts($mainDmnId, $userEmail, $dmnName, $forwardTyp
                 INSERT INTO mail_users (
                     mail_acc, mail_forward, domain_id, mail_type, sub_id, status, po_active, mail_addr
                 ) VALUES (
-                    ?, ?, ?, ? ,?, 'toadd', 'no', ?
+                    ?, ?, ?, ? ,?, 'toadd', 'no', CONCAT(?, '@', ?)
                 )
             "
         );
 
-        if (in_array($forwardType, [MT_NORMAL_FORWARD, MT_ALIAS_FORWARD])) {
-            $mailAccounts = ['abuse', 'hostmaster', 'postmaster', 'webmaster'];
-        } else {
-            $mailAccounts = ['webmaster'];
-        }
+        $stmt->bindParam(1, $mailAccount, PDO::PARAM_STR);
+        $stmt->bindParam(2, $userEmail, PDO::PARAM_STR);
+        $stmt->bindParam(3, $mainDmnId, PDO::PARAM_STR);
+        $stmt->bindParam(4, $forwardType, PDO::PARAM_STR);
+        $stmt->bindParam(5, $subId, PDO::PARAM_STR);
+        $stmt->bindParam(6, $mailAccount, PDO::PARAM_STR);
+        $stmt->bindParam(7, $dmnName, PDO::PARAM_STR);
 
+        /** @noinspection PhpUnusedLocalVariableInspection */
         foreach ($mailAccounts as $mailAccount) {
-            $db->execute($stmt, [
-                $mailAccount, $userEmail, $mainDmnId, $forwardType, $subId, $mailAccount . '@' . $dmnName
-            ]);
+            $stmt->execute();
         }
 
         $db->commit();
     } catch (PDOException $e) {
         $db->rollBack();
-        throw new DatabaseException($e->getMessage(), $e->getCode(), NULL, $e);
+        throw new $e;
     }
 }
 
@@ -112,10 +120,7 @@ function createDefaultMailAccounts($mainDmnId, $userEmail, $dmnName, $forwardTyp
 function delete_autoreplies_log_entries()
 {
     exec_query(
-        "
-            DELETE FROM autoreplies_log
-            WHERE `from` NOT IN (SELECT mail_addr FROM mail_users WHERE status <> 'todelete')
-        "
+        "DELETE FROM autoreplies_log WHERE `from` NOT IN (SELECT mail_addr FROM mail_users WHERE status <> 'todelete')"
     );
 }
 
@@ -127,11 +132,11 @@ function delete_autoreplies_log_entries()
  * Returns user name matching identifier
  *
  * @param int $userId User unique identifier
- * @return string Username
+ * @return string|false Username
  */
 function get_user_name($userId)
 {
-    return exec_query('SELECT admin_name FROM admin WHERE admin_id = ?', $userId)->fetch(PDO::FETCH_COLUMN);
+    return exec_query('SELECT admin_name FROM admin WHERE admin_id = ?', [$userId])->fetchColumn();
 }
 
 /***********************************************************************************************************************
@@ -159,15 +164,15 @@ function imscp_domain_exists($domainName, $resellerId)
     $domainName = encode_idna($domainName);
 
     // $domainName already exist in the domain table?
-    $stmt = exec_query('SELECT COUNT(domain_id) FROM domain WHERE domain_name = ?', $domainName);
+    $stmt = exec_query('SELECT COUNT(domain_id) FROM domain WHERE domain_name = ?', [$domainName]);
 
-    if ($stmt->fetch(PDO::FETCH_COLUMN) > 0) {
+    if ($stmt->fetchColumn() > 0) {
         return true;
     }
 
     // $domainName already exists in the domain_aliasses table?
-    $stmt = exec_query('SELECT COUNT(alias_id) FROM domain_aliasses WHERE alias_name = ?', $domainName);
-    if ($stmt->fetch(PDO::FETCH_COLUMN) > 0) {
+    $stmt = exec_query('SELECT COUNT(alias_id) FROM domain_aliasses WHERE alias_name = ?', [$domainName]);
+    if ($stmt->fetchColumn() > 0) {
         return true;
     }
 
@@ -196,11 +201,11 @@ function imscp_domain_exists($domainName, $resellerId)
         $parentDomain = substr($domainName, $domainPartCnt);
 
         // Execute query the redefined queries for domains/accounts and aliases tables
-        if (exec_query($queryDomain, [$parentDomain, $resellerId])->fetch(PDO::FETCH_COLUMN) > 0) {
+        if (exec_query($queryDomain, [$parentDomain, $resellerId])->fetchColumn() > 0) {
             return true;
         }
 
-        if (exec_query($queryAliases, [$parentDomain, $resellerId])->fetch(PDO::FETCH_COLUMN) > 0) {
+        if (exec_query($queryAliases, [$parentDomain, $resellerId])->fetchColumn() > 0) {
             return true;
         }
     }
@@ -213,9 +218,9 @@ function imscp_domain_exists($domainName, $resellerId)
             JOIN domain USING(domain_id)
             WHERE CONCAT(subdomain_name, '.', domain_name) = ?
         ",
-        $domainName
+        [$domainName]
     );
-    if ($stmt->fetch(PDO::FETCH_COLUMN) > 0) {
+    if ($stmt->fetchColumn() > 0) {
         return true;
     }
 
@@ -226,9 +231,9 @@ function imscp_domain_exists($domainName, $resellerId)
             JOIN domain_aliasses USING(alias_id)
             WHERE CONCAT(subdomain_alias_name, '.', alias_name) = ?
         ",
-        $domainName
+        [$domainName]
     );
-    if ($stmt->fetch(PDO::FETCH_COLUMN) > 0) {
+    if ($stmt->fetchColumn() > 0) {
         return true;
     }
 
@@ -253,7 +258,7 @@ function get_domain_default_props($domainAdminId, $createdBy = NULL)
     }
 
     if (is_null($createdBy)) {
-        $stmt = exec_query('SELECT * FROM domain WHERE domain_admin_id = ?', $domainAdminId);
+        $stmt = exec_query('SELECT * FROM domain WHERE domain_admin_id = ?', [$domainAdminId]);
     } else {
         $stmt = exec_query(
             '
@@ -271,7 +276,7 @@ function get_domain_default_props($domainAdminId, $createdBy = NULL)
         showBadRequestErrorPage();
     }
 
-    $domainProperties = $stmt->fetch(PDO::FETCH_ASSOC);
+    $domainProperties = $stmt->fetch();
     return $domainProperties;
 }
 
@@ -290,12 +295,12 @@ function get_user_domain_id($customeId)
         return $domainId;
     }
 
-    $stmt = exec_query('SELECT domain_id FROM domain WHERE domain_admin_id = ?', $customeId);
-    if (!$stmt->rowCount()) {
+    $stmt = exec_query('SELECT domain_id FROM domain WHERE domain_admin_id = ?', [$customeId]);
+    if (($domainId = $stmt->fetchColumn()) === false) {
         throw new iMSCPException(sprintf("Couldn't find domain ID of user with ID %s", $customeId));
     }
 
-    return $stmt->fetch(PDO::FETCH_COLUMN);
+    return $domainId;
 }
 
 /**
@@ -378,7 +383,7 @@ function update_reseller_c_props($resellerId)
 /**
  * Activate or deactivate the given customer account
  *
- * @throws iMSCPException|DatabaseException
+ * @throws iMSCPException
  * @param int $customerId Customer unique identifier
  * @param string $action Action to schedule
  * @return void
@@ -403,7 +408,7 @@ function change_domain_status($customerId, $action)
             JOIN admin ON(admin_id = domain_admin_id)
             WHERE domain_admin_id = ?
         ',
-        $customerId
+        [$customerId]
     );
 
     if (!$stmt->rowCount()) {
@@ -413,7 +418,9 @@ function change_domain_status($customerId, $action)
     $row = $stmt->fetch();
     $domainId = $row['domain_id'];
     $adminName = decode_idna($row['admin_name']);
-    $db = Database::getInstance();
+
+    /** @var iMSCP_Database $db */
+    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -434,10 +441,10 @@ function change_domain_status($customerId, $action)
         } else {
             exec_query(
                 "
-                        UPDATE mail_users
-                        SET status = ?, po_active = IF(mail_type LIKE '%_mail%', 'yes', po_active)
-                        WHERE domain_id = ? AND status = ?
-                    ",
+                    UPDATE mail_users
+                    SET status = ?, po_active = IF(mail_type LIKE '%_mail%', 'yes', po_active)
+                    WHERE domain_id = ? AND status = ?
+                ",
                 ['toenable', $domainId, 'disabled']
             );
             exec_query(
@@ -445,7 +452,8 @@ function change_domain_status($customerId, $action)
                     UPDATE mail_users
                     SET po_active = IF(mail_type LIKE '%_mail%', 'yes', po_active)
                     WHERE domain_id = ?
-                    AND status <> ?",
+                    AND status <> ?
+                ",
                 [$domainId, 'disabled']
             );
         }
@@ -500,7 +508,6 @@ function change_domain_status($customerId, $action)
 /**
  * Deletes an SQL user
  *
- * @throws DatabaseException
  * @param int $dmnId Domain unique identifier
  * @param int $userId Sql user unique identifier
  * @return bool TRUE on success, FALSE otherwise
@@ -525,7 +532,7 @@ function sql_delete_user($dmnId, $userId)
         return false;
     }
 
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch();
     $user = $row['sqlu_name'];
     $host = $row['sqlu_host'];
     $dbName = $row['sqld_name'];
@@ -540,7 +547,7 @@ function sql_delete_user($dmnId, $userId)
         $user, $host
     ]);
 
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch();
 
     if ($row['cnt'] < 2) {
         exec_query('DELETE FROM mysql.user WHERE User = ? AND Host = ?', [$user, $host]);
@@ -550,7 +557,7 @@ function sql_delete_user($dmnId, $userId)
         exec_query('DELETE FROM mysql.db WHERE Host = ? AND Db = ? AND User = ?', [$host, $dbName, $user]);
     }
 
-    exec_query('DELETE FROM sql_user WHERE sqlu_id = ?', $userId);
+    exec_query('DELETE FROM sql_user WHERE sqlu_id = ?', [$userId]);
     execute_query('FLUSH PRIVILEGES');
 
     EventsManager::getInstance()->dispatch(Events::onAfterDeleteSqlUser, [
@@ -575,12 +582,9 @@ function delete_sql_database($dmnId, $dbId)
     set_time_limit(0);
 
     $stmt = exec_query('SELECT sqld_name FROM sql_database WHERE domain_id = ? AND sqld_id = ?', [$dmnId, $dbId]);
-    if (!$stmt->rowCount()) {
+    if (($dbName = $stmt->fetchColumn()) === false) {
         return false;
     }
-
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $dbName = $row['sqld_name'];
 
     EventsManager::getInstance()->dispatch(Events::onBeforeDeleteSqlDb, [
         'sqlDbId'         => $dbId,
@@ -592,13 +596,13 @@ function delete_sql_database($dmnId, $dbId)
         [$dbId, $dmnId]
     );
 
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch()) {
         if (!sql_delete_user($dmnId, $row['sqlu_id'])) {
             return false;
         }
     }
 
-    exec_query(sprintf('DROP DATABASE IF EXISTS %s', quoteIdentifier($dbName)));
+    execute_query(sprintf('DROP DATABASE IF EXISTS %s', quoteIdentifier($dbName)));
     exec_query('DELETE FROM sql_database WHERE domain_id = ? AND sqld_id = ?', [$dmnId, $dbId]);
 
     EventsManager::getInstance()->dispatch(Events::onAfterDeleteSqlDb, [
@@ -634,7 +638,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
         $query .= ' AND created_by = ?';
         $stmt = exec_query($query, [$customerId, $_SESSION['user_id']]);
     } else {
-        $stmt = exec_query($query, $customerId);
+        $stmt = exec_query($query, [$customerId]);
     }
 
     if (!$stmt->rowCount()) {
@@ -643,16 +647,17 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 
     $data = $stmt->fetch();
 
-    $db = Database::getInstance();
+    /** @var iMSCP_Database $db */
+    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         // Delete customer session data
-        exec_query('DELETE FROM login WHERE user_name = ?', $data['admin_name']);
+        exec_query('DELETE FROM login WHERE user_name = ?', [$data['admin_name']]);
 
         // Delete SQL databases and SQL users
-        $stmt = exec_query('SELECT sqld_id FROM sql_database WHERE domain_id = ?', $data['domain_id']);
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            delete_sql_database($data['domain_id'], $row['sqld_id']);
+        $stmt = exec_query('SELECT sqld_id FROM sql_database WHERE domain_id = ?', [$data['domain_id']]);
+        while ($sqlId = $stmt->fetchColumn()) {
+            delete_sql_database($data['domain_id'], $sqlId);
         }
 
         $db->beginTransaction();
@@ -671,34 +676,34 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
                 LEFT JOIN htaccess_groups AS t4 ON (t4.dmn_id = t1.domain_id)
                 WHERE t1.domain_id = ?
             ',
-            $data['domain_id']
+            [$data['domain_id']]
         );
 
         // Delete traffic data
-        exec_query('DELETE FROM domain_traffic WHERE domain_id = ?', $data['domain_id']);
+        exec_query('DELETE FROM domain_traffic WHERE domain_id = ?', [$data['domain_id']]);
 
         // Delete custom DNS
-        exec_query('DELETE FROM domain_dns WHERE domain_id = ?', $data['domain_id']);
+        exec_query('DELETE FROM domain_dns WHERE domain_id = ?', [$data['domain_id']]);
 
         // Delete FTP group and FTP accounting/limit data
-        exec_query('DELETE FROM ftp_group WHERE groupname = ?', $data['admin_name']);
-        exec_query('DELETE FROM quotalimits WHERE name = ?', $data['admin_name']);
-        exec_query('DELETE FROM quotatallies WHERE name = ?', $data['admin_name']);
+        exec_query('DELETE FROM ftp_group WHERE groupname = ?', [$data['admin_name']]);
+        exec_query('DELETE FROM quotalimits WHERE name = ?', [$data['admin_name']]);
+        exec_query('DELETE FROM quotatallies WHERE name = ?', [$data['admin_name']]);
 
         // Delete support tickets
         exec_query('DELETE FROM tickets WHERE ticket_from = ? OR ticket_to = ?', [$customerId, $customerId]);
 
         // Delete user gui properties
-        exec_query('DELETE FROM user_gui_props WHERE user_id = ?', $customerId);
+        exec_query('DELETE FROM user_gui_props WHERE user_id = ?', [$customerId]);
 
         // Delete PHP ini
-        exec_query('DELETE FROM php_ini WHERE admin_id = ?', $customerId);
+        exec_query('DELETE FROM php_ini WHERE admin_id = ?', [$customerId]);
 
         // Schedule FTP accounts deletion
-        exec_query("UPDATE ftp_users SET status = 'todelete' WHERE admin_id = ?", $customerId);
+        exec_query("UPDATE ftp_users SET status = 'todelete' WHERE admin_id = ?", [$customerId]);
 
         // Schedule mail accounts deletion
-        exec_query("UPDATE mail_users SET status = 'todelete' WHERE domain_id = ?", $data['domain_id']);
+        exec_query("UPDATE mail_users SET status = 'todelete' WHERE domain_id = ?", [$data['domain_id']]);
 
         // Schedule subdomain aliases deletion
         exec_query(
@@ -708,24 +713,24 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
                 SET t1.subdomain_alias_status = 'todelete'
                 WHERE t1.alias_id = t2.alias_id
             ",
-            $data['domain_id']
+            [$data['domain_id']]
         );
 
         // Schedule domain aliases deletion
-        exec_query("UPDATE domain_aliasses SET alias_status = 'todelete' WHERE domain_id = ?", $data['domain_id']);
+        exec_query("UPDATE domain_aliasses SET alias_status = 'todelete' WHERE domain_id = ?", [$data['domain_id']]);
 
         // Schedule subdomains deletion
-        exec_query("UPDATE subdomain SET subdomain_status = 'todelete' WHERE domain_id = ?", $data['domain_id']);
+        exec_query("UPDATE subdomain SET subdomain_status = 'todelete' WHERE domain_id = ?", [$data['domain_id']]);
 
         // Schedule domain deletion
-        exec_query("UPDATE domain SET domain_status = 'todelete' WHERE domain_id = ?", $data['domain_id']);
+        exec_query("UPDATE domain SET domain_status = 'todelete' WHERE domain_id = ?", [$data['domain_id']]);
 
         // Schedule customer deletion
-        exec_query("UPDATE admin SET admin_status = 'todelete' WHERE admin_id = ?", $customerId);
+        exec_query("UPDATE admin SET admin_status = 'todelete' WHERE admin_id = ?", [$customerId]);
 
         // Schedule SSL certificates deletion
         exec_query(
-            "UPDATE ssl_certs SET status = 'todelete' WHERE domain_type = 'dmn' AND domain_id = ?", $data['domain_id']
+            "UPDATE ssl_certs SET status = 'todelete' WHERE domain_type = 'dmn' AND domain_id = ?", [$data['domain_id']]
         );
         exec_query(
             "
@@ -735,7 +740,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
                 AND domain_type = 'als'
 
             ",
-            $data['domain_id']
+            [$data['domain_id']]
         );
         exec_query(
             "
@@ -744,7 +749,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
                 WHERE domain_id IN (SELECT subdomain_id FROM subdomain WHERE domain_id = ?)
                 AND domain_type = 'sub'
             ",
-            $data['domain_id']
+            [$data['domain_id']]
         );
         exec_query(
             "
@@ -757,7 +762,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
                 )
                 AND domain_type = 'alssub'
             ",
-            $data['domain_id']
+            [$data['domain_id']]
         );
 
         // Delete autoreplies log entries
@@ -787,7 +792,6 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 /**
  * Delete the given domain alias, including any entity that belong to it
  *
- * @throws DatabaseException|iMSCPException
  * @param int $customerId Customer unique identifier
  * @param int $mainDomainId Customer main domain identifier
  * @param int $aliasId Domain alias unique identifier
@@ -800,7 +804,8 @@ function deleteDomainAlias($customerId, $mainDomainId, $aliasId, $aliasName, $al
     ignore_user_abort(true);
     set_time_limit(0);
 
-    $db = Database::getInstance();
+    /** @var iMSCP_Database $db */
+    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -821,7 +826,7 @@ function deleteDomainAlias($customerId, $mainDomainId, $aliasId, $aliasName, $al
             [$customerId]
         );
         if ($stmt->rowCount()) {
-            $ftpGroupData = $stmt->fetch(PDO::FETCH_ASSOC);
+            $ftpGroupData = $stmt->fetch();
             $members = array_filter(
                 preg_split('/,/', $ftpGroupData['members'], -1, PREG_SPLIT_NO_EMPTY),
                 function ($member) use ($aliasName) {
@@ -830,9 +835,9 @@ function deleteDomainAlias($customerId, $mainDomainId, $aliasId, $aliasName, $al
             );
 
             if (empty($members)) {
-                exec_query('DELETE FROM ftp_group WHERE groupname = ?', $ftpGroupData['groupname']);
-                exec_query('DELETE FROM quotalimits WHERE name = ?', $ftpGroupData['groupname']);
-                exec_query('DELETE FROM quotatallies WHERE name = ?', $ftpGroupData['groupname']);
+                exec_query('DELETE FROM ftp_group WHERE groupname = ?', [$ftpGroupData['groupname']]);
+                exec_query('DELETE FROM quotalimits WHERE name = ?', [$ftpGroupData['groupname']]);
+                exec_query('DELETE FROM quotatallies WHERE name = ?', [$ftpGroupData['groupname']]);
             } else {
                 exec_query('UPDATE ftp_group SET members = ? WHERE groupname = ?', [
                     implode(',', $members), $ftpGroupData['groupname']
@@ -843,17 +848,17 @@ function deleteDomainAlias($customerId, $mainDomainId, $aliasId, $aliasName, $al
         }
 
         // Delete custom DNS
-        exec_query('DELETE FROM domain_dns WHERE alias_id = ?', $aliasId);
+        exec_query('DELETE FROM domain_dns WHERE alias_id = ?', [$aliasId]);
 
         // Delete PHP ini
-        exec_query("DELETE FROM php_ini WHERE domain_id = ? AND domain_type = 'als'", $aliasId);
+        exec_query("DELETE FROM php_ini WHERE domain_id = ? AND domain_type = 'als'", [$aliasId]);
         exec_query(
             "
                 DELETE t1 FROM php_ini AS t1
                 JOIN subdomain_alias AS t2 ON(t2.subdomain_alias_id = t1.domain_id  AND t1.domain_type = 'subals')
                 WHERE alias_id = ?
             ",
-            $aliasId
+            [$aliasId]
         );
 
         // Schedule FTP accounts deletion
@@ -869,7 +874,7 @@ function deleteDomainAlias($customerId, $mainDomainId, $aliasId, $aliasName, $al
                     userid LIKE CONCAT('%@', t2.alias_name)
                 )
             ",
-            $aliasId
+            [$aliasId]
         );
 
         // Schedule mail accounts deletion
@@ -895,9 +900,9 @@ function deleteDomainAlias($customerId, $mainDomainId, $aliasId, $aliasName, $al
                 WHERE domain_id IN (SELECT subdomain_alias_id FROM subdomain_alias WHERE alias_id = ?)
                 AND domain_type = 'alssub'
             ",
-            $aliasId
+            [$aliasId]
         );
-        exec_query("UPDATE ssl_certs SET status = 'todelete' WHERE domain_id = ? and domain_type = 'als'", $aliasId);
+        exec_query("UPDATE ssl_certs SET status = 'todelete' WHERE domain_id = ? and domain_type = 'als'", [$aliasId]);
 
         // Schedule protected areas deletion
         exec_query(
@@ -906,10 +911,10 @@ function deleteDomainAlias($customerId, $mainDomainId, $aliasId, $aliasName, $al
         );
 
         // Schedule subdomain aliases deletion
-        exec_query("UPDATE subdomain_alias SET subdomain_alias_status = 'todelete' WHERE alias_id = ?", $aliasId);
+        exec_query("UPDATE subdomain_alias SET subdomain_alias_status = 'todelete' WHERE alias_id = ?", [$aliasId]);
 
         // Schedule domain alias deletion
-        exec_query("UPDATE domain_aliasses SET alias_status = 'todelete' WHERE alias_id = ?", $aliasId);
+        exec_query("UPDATE domain_aliasses SET alias_status = 'todelete' WHERE alias_id = ?", [$aliasId]);
 
         EventsManager::getInstance()->dispatch(Events::onAfterDeleteDomainAlias, [
             'domainAliasId'   => $aliasId,
@@ -948,13 +953,13 @@ function imscp_getResellerProperties($resellerId, $forceReload = false)
     static $properties = NULL;
 
     if (NULL === $properties || $forceReload) {
-        $stmt = exec_query('SELECT * FROM reseller_props WHERE reseller_id = ? LIMIT 1', $resellerId);
+        $stmt = exec_query('SELECT * FROM reseller_props WHERE reseller_id = ? LIMIT 1', [$resellerId]);
 
         if (!$stmt->rowCount()) {
             throw new iMSCPException(tr('Properties for reseller with ID %d were not found in database.', $resellerId));
         }
 
-        $properties = $stmt->fetch(PDO::FETCH_ASSOC);
+        $properties = $stmt->fetch();
     }
 
     return $properties;
@@ -965,7 +970,7 @@ function imscp_getResellerProperties($resellerId, $forceReload = false)
  *
  * @param  int $resellerId Reseller unique identifier.
  * @param  array $props Array that contain new properties values
- * @return iMSCP_Database_ResultSet|null
+ * @return ResultSet|null
  */
 function update_reseller_props($resellerId, $props)
 {
@@ -976,10 +981,8 @@ function update_reseller_props($resellerId, $props)
         return NULL;
     }
 
-    list(
-        $dmnCur, $dmnMax, $subCur, $subMax, $alsCur, $alsMax, $mailCur, $mailMax, $ftpCur, $ftpMax, $sqlDbCur,
-        $sqlDbMax, $sqlUserCur, $sqlUserMax, $traffCur, $traffMax, $diskCur, $diskMax
-        ) = explode(';', $props);
+    list($dmnCur, $dmnMax, $subCur, $subMax, $alsCur, $alsMax, $mailCur, $mailMax, $ftpCur, $ftpMax, $sqlDbCur,
+        $sqlDbMax, $sqlUserCur, $sqlUserMax, $traffCur, $traffMax, $diskCur, $diskMax) = explode(';', $props);
 
     $stmt = exec_query(
         '
@@ -1037,13 +1040,13 @@ function sync_mailboxes_quota($domainId, $newQuota)
     }
 
     $cfg = Registry::get('config');
-    $stmt = exec_query('SELECT mail_id, quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL', $domainId);
+    $stmt = exec_query('SELECT mail_id, quota FROM mail_users WHERE domain_id = ? AND quota IS NOT NULL', [$domainId]);
 
     if (!$stmt->rowCount()) {
         return;
     }
 
-    $mailboxes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $mailboxes = $stmt->fetchAll();
     $totalQuota = 0;
 
     foreach ($mailboxes as $mailbox) {
@@ -1057,7 +1060,9 @@ function sync_mailboxes_quota($domainId, $newQuota)
         || (isset($cfg['EMAIL_QUOTA_SYNC_MODE']) && $cfg['EMAIL_QUOTA_SYNC_MODE'])
         || $totalQuota == 0
     ) {
-        $db = Database::getInstance();
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+
         $stmt = $db->prepare('UPDATE mail_users SET quota = ? WHERE mail_id = ?');
         $result = 0;
 
@@ -1070,7 +1075,7 @@ function sync_mailboxes_quota($domainId, $newQuota)
                 $result = 1;
             }
 
-            $db->execute($stmt, [((int)$result - (int)$oldResult) * 1048576, $mailbox['mail_id']]);
+            $stmt->execute([((int)$result - (int)$oldResult) * 1048576, $mailbox['mail_id']]);
         }
     }
 }
@@ -1664,7 +1669,7 @@ function write_log($msg, $logLevel = E_USER_WARNING)
     }
 
     $msg = '[' . getIpAddr() . '] ' . replace_html($msg);
-    exec_query('INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)', $msg);
+    exec_query('INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)', [$msg]);
 
     $cfg = Registry::get('config');
     if ($logLevel > $cfg['LOG_LEVEL']) {
@@ -1791,7 +1796,7 @@ function get_application_installer_conf()
  */
 function check_package_is_installed($packageInstallType, $packageName, $packageVersion, $packageLanguage, $userId)
 {
-    $stmt = exec_query('SELECT admin_type FROM admin WHERE admin_id = ?', $userId);
+    $stmt = exec_query('SELECT admin_type FROM admin WHERE admin_id = ?', [$userId]);
 
     if (!$stmt->rowCount()) {
         throw new iMSCPException("Couldn't found the given user in database");
@@ -1927,40 +1932,44 @@ function update_webdepot_software_list($repositoryIndexFile, $webRepositoryLastU
     $webRepositoryIndexFile->load($repositoryIndexFile);
     $webRepositoryIndexFile = simplexml_import_dom($webRepositoryIndexFile);
 
+    /** @noinspection PhpUndefinedFieldInspection */
     if (utf8_decode($webRepositoryIndexFile->LAST_UPDATE->DATE) != $webRepositoryLastUpdate) {
-        $truncatequery = 'TRUNCATE TABLE `web_software_depot`';
-        exec_query($truncatequery);
+        exec_query('TRUNCATE TABLE web_software_depot');
 
         $badSoftwarePackageDefinition = 0;
 
+        /** @noinspection PhpUndefinedFieldInspection */
         foreach ($webRepositoryIndexFile->PACKAGE as $package) {
             if (!empty($package->INSTALL_TYPE) && !empty($package->TITLE) && !empty($package->VERSION) &&
                 !empty($package->LANGUAGE) && !empty($package->TYPE) && !empty($package->DESCRIPTION) &&
                 !empty($package->VENDOR_HP) && !empty($package->DOWNLOAD_LINK) && !empty($package->SIGNATURE_LINK)
             ) {
-                $query = '
-                    INSERT INTO
-                        web_software_depot (
-                            package_install_type, package_title, package_version, package_language, package_type,
-                            package_description, package_vendor_hp, package_download_link, package_signature_link
-                        ) VALUES (
-                            ?, ?, ?, ?, ?, ?, ?, ?, ?
-                        )
-                ';
-                exec_query($query, [
-                    clean_input($package->INSTALL_TYPE), clean_input($package->TITLE), clean_input($package->VERSION),
-                    clean_input($package->LANGUAGE), clean_input($package->TYPE), clean_input($package->DESCRIPTION),
-                    encode_idna(strtolower(clean_input($package->VENDOR_HP))),
-                    encode_idna(strtolower(clean_input($package->DOWNLOAD_LINK))),
-                    encode_idna(strtolower(clean_input($package->SIGNATURE_LINK)))
-                ]);
+                exec_query(
+                    '
+                        INSERT INTO
+                            web_software_depot (
+                                package_install_type, package_title, package_version, package_language, package_type,
+                                package_description, package_vendor_hp, package_download_link, package_signature_link
+                            ) VALUES (
+                                ?, ?, ?, ?, ?, ?, ?, ?, ?
+                            )
+                    ',
+                    [
+                        clean_input($package->INSTALL_TYPE), clean_input($package->TITLE), clean_input($package->VERSION),
+                        clean_input($package->LANGUAGE), clean_input($package->TYPE), clean_input($package->DESCRIPTION),
+                        encode_idna(strtolower(clean_input($package->VENDOR_HP))),
+                        encode_idna(strtolower(clean_input($package->DOWNLOAD_LINK))),
+                        encode_idna(strtolower(clean_input($package->SIGNATURE_LINK)))
+                    ]
+                );
             } else {
                 $badSoftwarePackageDefinition++;
                 break;
             }
         }
         if (!$badSoftwarePackageDefinition) {
-            exec_query('UPDATE `web_software_options` SET `webdepot_last_update` = ?', [
+            /** @noinspection PhpUndefinedFieldInspection */
+            exec_query('UPDATE web_software_options SET webdepot_last_update = ?', [
                 $webRepositoryIndexFile->LAST_UPDATE->DATE
             ]);
             set_page_message(tr('Web software repository index been successfully updated.'), 'success');
@@ -2088,68 +2097,48 @@ function send_request()
  */
 
 /**
- * Executes a SQL statement
+ * Convenience function to prepare and execute a SQL statement
  *
- * Note: You may pass additional parameters. They will be treated as though you
- * called PDOStatement::setFetchMode() on the resultant statement object that is
- * wrapped by the iMSCP_Database_ResultSet object.
- *
- * @see Database::execute()
+ * @see iMSCP_Database::query()
  * @throws DatabaseException
- * @param string $query Sql statement to be executed
- * @param array|int|string $parameters OPTIONAL parameters - See Database::execute()
- * @return iMSCP_Database_ResultSet     An iMSCP_Database_ResultSet object
+ * @param string $statement SQL statement
+ * @param int $mode
+ * @param null $arg3
+ * @param array $ctorargs
+ * @return ResultSet|false
  */
-function execute_query($query, $parameters = NULL)
+function execute_query($statement, $mode = PDO::ATTR_DEFAULT_FETCH_MODE, $arg3 = NULL, array $ctorargs = array())
 {
-    static $db = NULL;
-
-    if (NULL === $db) {
-        $db = Database::getInstance();
-    }
-
     try {
-        if (NULL !== $parameters) {
-            $parameters = func_get_args();
-            array_shift($parameters);
-            $stmt = call_user_func_array([$db, 'execute'], $parameters);
-        } else {
-            $stmt = $db->execute($query);
-        }
-
-        if ($stmt == false) {
-            throw new DatabaseException($db->getLastErrorMessage(), $query);
-        }
+        /** @var iMSCP_Database $db */
+        $db = Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = func_num_args() > 1 ? call_user_func_array([$db, 'query'], func_get_args()) : $db->query($statement);
+        return $stmt;
     } catch (PDOException $e) {
-        throw new DatabaseException($e->getMessage(), $query, $e->getCode(), $e);
+        throw new DatabaseException($e->getMessage(), $statement, $e->getCode(), $e);
     }
-
-    return $stmt;
 }
 
 /**
- * Convenience method to prepare and execute a query.
+ * Convenience function to prepare and execute a SQL statement with optional parameters
  *
  * @throws DatabaseException When query fail
- * @param string $query Sql statement
- * @param string|int|array $bind Data to bind to the placeholders
- * @return iMSCP_Database_ResultSet|null A iMSCP_Database_ResultSet object that represents a result set
+ * @param string $statement SQL statement
+ * @param array $bind Data to bind to the placeholders
+ * @return ResultSet|false
  */
-function exec_query($query, $bind = NULL)
+function exec_query($statement, $bind = NULL)
 {
-    static $db = NULL;
-
-    if (NULL === $db) {
-        $db = Database::getInstance();
-    }
-
     try {
-        $stmt = $db->execute($db->prepare($query), $bind);
+        /** @var iMSCP_Database $db */
+        $db = Registry::get('iMSCP_Application')->getDatabase();
+        /** @var ResultSet $stmt */
+        $stmt = $db->prepare($statement);
+        $stmt->execute($bind);
+        return $stmt;
     } catch (PDOException $e) {
-        throw new DatabaseException($e->getMessage(), $query, $e->getCode(), $e);
+        throw new DatabaseException($e->getMessage(), $statement, $e->getCode(), $e);
     }
-
-    return $stmt;
 }
 
 /**
@@ -2162,13 +2151,7 @@ function exec_query($query, $bind = NULL)
  */
 function quoteIdentifier($identifier)
 {
-    static $db = NULL;
-
-    if (NULL === $db) {
-        $db = Database::getInstance();
-    }
-
-    return $db->quoteIdentifier($identifier);
+    return Registry::get('iMSCP_Application')->getDatabase()->quoteIdentifier($identifier);
 }
 
 /**
@@ -2180,13 +2163,7 @@ function quoteIdentifier($identifier)
  */
 function quoteValue($value, $parameterType = PDO::PARAM_STR)
 {
-    static $db = NULL;
-
-    if (NULL === $db) {
-        $db = Database::getInstance();
-    }
-
-    return $db->quote($value, $parameterType);
+    return Registry::get('iMSCP_Application')->getDatabase()->quote($value, $parameterType);
 }
 
 /***********************************************************************************************************************

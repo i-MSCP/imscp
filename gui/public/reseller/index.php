@@ -37,8 +37,8 @@ function generateSupportQuestionsMessage()
 {
     $ticketsCount = exec_query(
         'SELECT count(ticket_id) FROM tickets WHERE ticket_to = ? AND ticket_status IN (1, 4) AND ticket_reply = 0',
-        $_SESSION['user_id']
-    )->fetch(PDO::FETCH_COLUMN);
+        [$_SESSION['user_id']]
+    )->fetchColumn();
 
     if ($ticketsCount > 0) {
         set_page_message(
@@ -49,22 +49,22 @@ function generateSupportQuestionsMessage()
 }
 
 /**
- * Generates message for new domain aliases orders.
+ * Generates message for new domain aliases orders
  *
  * @return void
  */
 function generateOrdersAliasesMessage()
 {
     $stmt = exec_query(
-        '
+        "
             SELECT COUNT(alias_id) AS cnt
             FROM domain_aliasses
             JOIN domain USING(domain_id)
             JOIN admin ON(admin_id = domain_admin_id)
-            WHERE alias_status = ?
+            WHERE alias_status = 'ordered'
             AND created_by = ?
-        ',
-        ['ordered', $_SESSION['user_id']]
+        ",
+        [$_SESSION['user_id']]
     );
     $row = $stmt->fetch();
 
@@ -149,7 +149,7 @@ function generatePage($tpl, $resellerId, $resellerName)
             WHERE created_by = ?
         ',
         [getFirstDayOfMonth(), getLastDayOfMonth(), $_SESSION['user_id']]
-    )->fetch(PDO::FETCH_COLUMN);
+    )->fetchColumn();
     $monthlyTrafficLimit = $resellerProperties['max_traff_amnt'] * 1048576;
 
     generateTrafficUsageBar($tpl, $totalConsumedMonthlyTraffic, $monthlyTrafficLimit);
@@ -169,8 +169,8 @@ function generatePage($tpl, $resellerId, $resellerName)
             JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
             WHERE created_by = ?
         ',
-        $_SESSION['user_id']
-    )->fetch(PDO::FETCH_COLUMN);
+        [$_SESSION['user_id']]
+    )->fetchColumn();
     $diskUsageLimit = $resellerProperties['max_disk_amnt'] * 1048576;
     generateDiskUsageBar($tpl, $totalDiskUsage, $diskUsageLimit);
 

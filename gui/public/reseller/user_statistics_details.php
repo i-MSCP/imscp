@@ -88,10 +88,10 @@ function generatePage(TemplateEngine $tpl)
     $adminName = decode_idna($row['admin_name']);
     $month = isset($_GET['month']) ? filter_digits($_GET['month']) : date('n');
     $year = isset($_GET['year']) ? filter_digits($_GET['year']) : date('Y');
-    $stmt = exec_query(
-        'SELECT dtraff_time FROM domain_traffic WHERE domain_id = ? ORDER BY dtraff_time ASC LIMIT 1', $domainId
-    );
-    $nPastYears = $stmt->rowCount() ? date('Y') - date('Y', $stmt->fetch(PDO::FETCH_COLUMN)) : 0;
+    $stmt = exec_query('SELECT dtraff_time FROM domain_traffic WHERE domain_id = ? ORDER BY dtraff_time ASC LIMIT 1', [
+        $domainId
+    ]);
+    $nPastYears = $stmt->rowCount() ? date('Y') - date('Y', $stmt->fetchColumn()) : 0;
 
     generateDMYlists($tpl, 0, $month, $year, $nPastYears);
 
@@ -100,7 +100,7 @@ function generatePage(TemplateEngine $tpl)
         [getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)]
     );
 
-    if ($stmt->fetch(PDO::FETCH_COLUMN) < 1) {
+    if ($stmt->fetchColumn() < 1) {
         set_page_message(tr('No statistics found for the given period. Try another period.'), 'static_info');
         $tpl->assign([
             'USERNAME'                      => tohtml($adminName),

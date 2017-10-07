@@ -21,8 +21,8 @@
  * Script that allows to import mail accounts into i-MSCP using a CSV file as source.
  * CSV file entries must be as follow:
  *
- * user@domain.tld,password
- * user2@domain.tld,password
+ * user@domain.tld,plaintext_password
+ * user2@domain.tld,plaintext_password
  * ...
  */
 
@@ -37,73 +37,54 @@ function cli_getMailData($domainName)
 {
     static $data = [];
 
-    if (!array_key_exists($domainName, $data)) {
-        $stmt = exec_query('SELECT domain_id FROM domain WHERE domain_name = ?', $domainName);
-
-        if ($stmt->rowCount()) {
-            $row = $stmt->fetch();
-            $data[$domainName] = [
-                'domain_id' => $row['domain_id'],
-                'sub_id' => '0',
-                'mail_type' => MT_NORMAL_MAIL
-            ];
-        } else {
-            $stmt = exec_query(
-                "
-                    SELECT domain_id, subdomain_id
-                    FROM subdomain
-                    JOIN domain USING(domain_id)
-                    WHERE CONCAT(subdomain_name, '.', domain_name) = ?
-                ",
-                $domainName
-            );
-
-            if ($stmt->rowCount()) {
-                $row = $stmt->fetch();
-                $data[$domainName] = [
-                    'domain_id' => $row['domain_id'],
-                    'sub_id' => $row['subdomain_id'],
-                    'mail_type' => MT_SUBDOM_MAIL
-                ];
-            } else {
-                $stmt = exec_query('SELECT domain_id FROM domain_aliasses WHERE alias_name = ?', $domainName);
-                if ($stmt->rowCount()) {
-                    $row = $stmt->fetch();
-                    $data[$domainName] = [
-                        'domain_id' => $row['domain_id'],
-                        'sub_id' => '0',
-                        'mail_type' => MT_ALIAS_MAIL
-                    ];
-                } else {
-                    $stmt = exec_query(
-                        "
-                            SELECT domain_id, subdomain_alias_id
-                            FROM subdomain_alias
-                            JOIN domain_aliasses USING(alias_id)
-                            JOIN domain USING(domain_id)
-                            WHERE CONCAT(subdomain_alias_name, '.', alias_name) = ?
-                        ",
-                        $domainName
-                    );
-
-                    if ($stmt->rowCount()) {
-                        $row = $stmt->fetch();
-                        $data[$domainName] = [
-                            'domain_id' => $row['domain_id'],
-                            'sub_id' => $row['subdomain_alias_id'],
-                            'mail_type' => MT_ALSSUB_MAIL
-                        ];
-                    } else {
-                        $data[$domainName] = null;
-                    }
-                }
-            }
-        }
-    }
-
-    if ($data[$domainName] !== null) {
+    if (array_key_exists($domainName, $data) && $data[$domainName] !== NULL) {
         return $data[$domainName];
     }
+
+    $stmt = exec_query('SELECT domain_id FROM domain WHERE domain_name = ?', [$domainName]);
+    if ($stmt->rowCount()) {
+        $row = $stmt->fetch();
+        $data[$domainName] = [$row['domain_id'], 0, MT_NORMAL_MAIL];
+        return $data[$domainName];
+    }
+
+    $stmt = exec_query(
+        "
+            SELECT domain_id, subdomain_id
+            FROM subdomain
+            JOIN domain USING(domain_id)
+            WHERE CONCAT(subdomain_name, '.', domain_name) = ?
+        ",
+        [$domainName]
+    );
+    if ($stmt->rowCount()) {
+        $row = $stmt->fetch();
+        $data[$domainName] = [$row['domain_id'], $row['subdomain_id'], MT_SUBDOM_MAIL];
+        return $data[$domainName];
+    }
+
+    $stmt = exec_query('SELECT domain_id FROM domain_aliasses WHERE alias_name = ?', [$domainName]);
+    if ($stmt->rowCount()) {
+        $data[$domainName] = [$stmt->fetchColumn(), 0, MT_ALIAS_MAIL];
+        return $data[$domainName];
+    }
+
+    $stmt = exec_query(
+        "
+            SELECT domain_id, subdomain_alias_id
+            FROM subdomain_alias
+            JOIN domain_aliasses USING(alias_id)
+            JOIN domain USING(domain_id)
+            WHERE CONCAT(subdomain_alias_name, '.', alias_name) = ?
+        ",
+        [$domainName]
+    );
+    if ($stmt->rowCount()) {
+        $row = $stmt->fetch();
+        $data[$domainName] = [$row['domain_id'], $row['subdomain_alias_id'], MT_ALSSUB_MAIL];
+        return $data[$domainName];
+    }
+    $data[$domainName] = NULL;
 
     throw new iMSCP_Exception('This script can only add mail accounts for domains which are already managed by i-MSCP.');
 }
@@ -126,31 +107,37 @@ $csvFilePath = $argv[1];
 $csvDelimiter = ',';
 
 if (($handle = fopen($csvFilePath, 'r')) === false) {
-    fwrite(STDERR, sprintf("ERROR: Unable to open %s file.\n", $csvFilePath));
+    fwrite(STDERR, sprintf("ERROR: Couldn't open %s file.\n", $csvFilePath));
     exit(1);
 }
 
-$db = iMSCP_Database::getInstance();
+/** @var iMSCP_Database $db */
+$db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
 $stmt = $db->prepare(
-    '
+    "
         INSERT INTO mail_users (
             mail_acc, mail_pass, mail_forward, domain_id, mail_type, sub_id, status, mail_auto_respond,
             mail_auto_respond_text, quota, mail_addr
         ) VALUES (
-            :mail_acc, :mail_pass, :mail_forward, :domain_id, :mail_type, :sub_id, :status, :mail_auto_respond,
-            :mail_auto_respond_text, :quota, :mail_addr
+            ?, ?, '_no_', ?, ?, ?, 'toadd', '0', NULL, 0, ?
         )
-    '
+    "
 );
+$stmt->bindParam(1, $mailUser, PDO::PARAM_STR);
+$stmt->bindParam(2, $mailPassword, PDO::PARAM_STR);
+$stmt->bindParam(3, $domainId, PDO::PARAM_INT);
+$stmt->bindParam(4, $mailType, PDO::PARAM_STR);
+$stmt->bindParam(5, $subId, PDO::PARAM_INT);
+$stmt->bindParam(6, $mailAddrACE, PDO::PARAM_STR);
 
 // Create i-MSCP mail accounts using entries from CSV file
 while (($csvEntry = fgetcsv($handle, 1024, $csvDelimiter)) !== false) {
     $mailAddr = trim($csvEntry[0]);
-    $asciiMailAddr = encode_idna($mailAddr);
+    $mailAddrACE = encode_idna($mailAddr);
     $mailPassword = trim($csvEntry[1]);
 
     try {
-        if (!chk_email($asciiMailAddr)) {
+        if (!chk_email($mailAddrACE)) {
             throw new iMSCP_Exception(sprintf('%s is not a valid email address.', $mailAddr));
         }
 
@@ -158,21 +145,12 @@ while (($csvEntry = fgetcsv($handle, 1024, $csvDelimiter)) !== false) {
             throw new iMSCP_Exception(sprintf('Wrong password syntax or length for the %s mail account.', $mailAddr));
         }
 
-        list($mailUser, $mailDomain) = explode('@', $asciiMailAddr);
-
-        $mailAccount = array_merge(cli_getMailData($mailDomain), [
-            'mail_acc' => $mailUser,
-            'mail_pass' => $mailPassword,
-            'mail_forward' => '_no_',
-            'status' => 'toadd',
-            'mail_auto_respond' => '0',
-            'mail_auto_respond_text' => null,
-            'quota' => '0',
-            'mail_addr' => $asciiMailAddr
-        ]);
+        $mailPassword = \iMSCP\Crypt::sha512($mailPassword);
+        list($mailUser, $mailDomain) = explode('@', $mailAddrACE);
+        list($domainId, $subId, $mailType) = cli_getMailData($mailDomain);
 
         try {
-            $db->execute($stmt, $mailAccount);
+            $stmt->execute();
             printf("`%s` has been successfully inserted in database.\n", $mailAddr);
         } catch (PDOException $e) {
             if ($e->getCode() == 23000) {

@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP team
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,431 +18,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+namespace iMSCP\Update;
+
+use Crypt_RSA;
 use iMSCP\Crypt as Crypt;
-use iMSCP_Config_Handler_Db as ConfigDb;
-use iMSCP_Config_Handler_File as ConfigFile;
 use iMSCP_PHPini as PhpIni;
 use iMSCP_Registry as Registry;
-use iMSCP_Update_Exception as UpdateException;
 use iMSCP_Uri_Redirect as UriRedirect;
+use PDO;
 
 /**
- * Class iMSCP_Update_Database
+ * Class UpdateDatabase
+ * @package iMSCP\Update
  */
-class iMSCP_Update_Database extends iMSCP_Update
+class UpdateDatabase extends UpdateDatabaseAbstract
 {
-    /**
-     * @var iMSCP_Update
-     */
-    protected static $instance;
-
-    /**
-     * @var ConfigFile
-     */
-    protected $config;
-
-    /**
-     * @var ConfigDb
-     */
-    protected $dbConfig;
-
-    /**
-     * Database name being updated
-     *
-     * @var string
-     */
-    protected $databaseName;
-
-    /**
-     * Tells whether or not a request must be send to the i-MSCP daemon after that
-     * all database updates were applied.
-     *
-     * @var bool
-     */
-    protected $_daemonRequest = false;
-
     /**
      * @var int Last database update revision
      */
     protected $lastUpdate = 270;
 
     /**
-     * Singleton - Make new unavailable
-     */
-    protected function __construct()
-    {
-        $this->config = Registry::get('config');
-        $this->dbConfig = Registry::get('dbConfig');
-
-        if (!isset($this->config['DATABASE_NAME'])) {
-            throw new UpdateException('Database name not found.');
-        }
-
-        $this->databaseName = $this->config['DATABASE_NAME'];
-    }
-
-    /**
-     * Singleton - Make clone unavailable
-     *
-     * @return void
-     */
-    protected function __clone()
-    {
-
-    }
-
-    /**
-     * Implements Singleton design pattern
-     *
-     * @return iMSCP_Update_Database
-     */
-    public static function getInstance()
-    {
-        if (NULL === self::$instance) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
-    }
-
-    /**
-     * Checks for available database update
-     *
-     * @return bool TRUE if a database update is available, FALSE otherwise
-     */
-    public function isAvailableUpdate()
-    {
-        if ($this->getLastAppliedUpdate() < $this->getNextUpdate()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Return next database update revision
-     *
-     * @return int 0 if no update is available
-     */
-    public function getNextUpdate()
-    {
-        $lastAvailableUpdateRevision = $this->lastUpdate;
-        $nextUpdateRevision = $this->getLastAppliedUpdate();
-        if ($nextUpdateRevision < $lastAvailableUpdateRevision) {
-            return ++$nextUpdateRevision;
-        }
-
-        return 0;
-    }
-
-    /**
-     * Return last database update revision
-     *
-     * @return int
-     */
-    public function getLastUpdate()
-    {
-        return $this->lastUpdate;
-    }
-
-    /**
-     * Apply database updates
-     *
-     * @return bool TRUE on success, FALSE on failure
-     */
-    public function applyUpdates()
-    {
-        ignore_user_abort(true);
-        $db = iMSCP_Database::getInstance();
-
-        while ($this->isAvailableUpdate()) {
-            $revision = $this->getNextUpdate();
-
-            try {
-                $updateMethod = 'r' . $revision;
-                $queries = (array)$this->$updateMethod();
-
-                if (empty($queries)) {
-                    $this->dbConfig['DATABASE_REVISION'] = $revision;
-                    continue;
-                }
-
-                $db->beginTransaction();
-
-                foreach ($queries as $query) {
-                    if (!empty($query)) {
-                        $stmt = $db->prepare($query);
-                        $db->execute($stmt);
-                        while ($stmt->nextRowset()) {
-                            /* https://bugs.php.net/bug.php?id=61613 */
-                        };
-                    }
-                }
-
-                $this->dbConfig['DATABASE_REVISION'] = $revision;
-
-                # Make sure that we are still in transaction due to possible implicite commit
-                # See https://dev.mysql.com/doc/refman/5.7/en/implicit-commit.html
-                if ($db->inTransaction()) {
-                    $db->commit();
-                }
-            } catch (Exception $e) {
-                # Make sure that we are still in transaction due to possible implicite commit
-                # See https://dev.mysql.com/doc/refman/5.7/en/implicit-commit.html
-                if ($db->inTransaction()) {
-                    $db->rollBack();
-                }
-
-                $this->setError(sprintf('Database update %s failed: %s', $revision, $e->getMessage()));
-                return false;
-            }
-        }
-
-        if (PHP_SAPI != 'cli' && $this->_daemonRequest) {
-            send_request();
-        }
-
-        return true;
-    }
-
-    /**
-     * Returns last applied update
-     *
-     * @return int Revision number of the last applied database update
-     */
-    public function getLastAppliedUpdate()
-    {
-        if (!isset($this->dbConfig['DATABASE_REVISION'])) {
-            $this->dbConfig['DATABASE_REVISION'] = 1;
-        }
-
-        return $this->dbConfig['DATABASE_REVISION'];
-    }
-
-    /**
-     * Does the given table is known?
-     *
-     * @param string $table Table name
-     * @return bool TRUE if the given table is know, FALSE otherwise
-     */
-    protected function isKnownTable($table)
-    {
-        return (bool)exec_query('SHOW TABLES LIKE ?', $table)->rowCount();
-    }
-
-    /**
-     * Rename table
-     *
-     * @param string $table Table name
-     * @param string $newTableName New table name
-     * @return null|string SQL statement to be executed
-     * @throws iMSCP_Exception_Database
-     */
-    protected function renameTable($table, $newTableName)
-    {
-        $stmt = exec_query('SHOW TABLES LIKE ?', $table);
-
-        if ($stmt->rowCount()) {
-            $stmt = exec_query('SHOW TABLES LIKE ?', $newTableName);
-
-            if (!$stmt->rowCount()) {
-                return sprintf('ALTER TABLE %s RENAME TO %s', quoteIdentifier($table), quoteIdentifier($newTableName));
-            }
-        }
-
-        return NULL;
-    }
-
-    /**
-     * Drop table
-     *
-     * @param string $table Table name
-     * @return string SQL statement to be executed
-     */
-    public function dropTable($table)
-    {
-        return sprintf('DROP TABLE IF EXISTS %s', quoteIdentifier($table));
-    }
-
-    /**
-     * Add column
-     *
-     * @param string $table Table name
-     * @param string $column Column name
-     * @param string $columnDefinition Column definition
-     * @return null|string SQL statement to be executed
-     */
-    protected function addColumn($table, $column, $columnDefinition)
-    {
-        $table = quoteIdentifier($table);
-        $stmt = exec_query("SHOW COLUMNS FROM $table LIKE ?", $column);
-
-        if (!$stmt->rowCount()) {
-            return sprintf('ALTER TABLE %s ADD %s %s', $table, quoteIdentifier($column), $columnDefinition);
-        }
-
-        return NULL;
-    }
-
-    /**
-     * Change column
-     *
-     * @param string $table Table name
-     * @param string $column Column name
-     * @param string $columnDefinition Column definition
-     * @return null|string SQL statement to be executed
-     */
-    protected function changeColumn($table, $column, $columnDefinition)
-    {
-        $table = quoteIdentifier($table);
-        $stmt = exec_query("SHOW COLUMNS FROM $table LIKE ?", $column);
-
-        if ($stmt->rowCount()) {
-            return sprintf('ALTER TABLE %s CHANGE %s %s', $table, quoteIdentifier($column), $columnDefinition);
-        }
-
-        return NULL;
-    }
-
-    /**
-     * Drop column
-     *
-     * @param string $table Table name
-     * @param string $column Column name
-     * @return null|string SQL statement to be executed
-     */
-    protected function dropColumn($table, $column)
-    {
-        $table = quoteIdentifier($table);
-        $stmt = exec_query("SHOW COLUMNS FROM $table LIKE ?", $column);
-
-        if ($stmt->rowCount()) {
-            return sprintf('ALTER TABLE %s DROP %s', $table, quoteIdentifier($column));
-        }
-
-        return NULL;
-    }
-
-    /**
-     * Add index
-     *
-     * Be aware that no check is made for duplicate rows. Thus, if you want to add an UNIQUE contraint, you must make
-     * sure to remove duplicate rows first. We don't make use of the IGNORE clause for the following reasons:
-     *
-     * - The IGNORE clause is no standard and do not work with Fast Index Creation (MySQL #Bug #40344)
-     * - The IGNORE clause has been removed in MySQL 5.7
-     *
-     * @param string $table Database table name
-     * @param array|string $columns Column name(s) with OPTIONAL key length
-     * @param string $indexType Index type (PRIMARY KEY (default), INDEX|KEY, UNIQUE)
-     * @param string $indexName Index name (default is autogenerated)
-     * @return null|string SQL statement to be executed
-     */
-    protected function addIndex($table, $columns, $indexType = 'PRIMARY KEY', $indexName = '')
-    {
-        $table = quoteIdentifier($table);
-        $indexType = strtoupper($indexType);
-        $columnsTmp = (array)$columns;
-        $columns = [];
-
-        // Parse column definitions
-        foreach ($columnsTmp as $columnDef) {
-            if (preg_match('/^(?P<name>[^(]+)(?P<length>\(\d+\))$/', $columnDef, $matches)) {
-                $columns[$matches['name']] = $matches['length'];
-            } else {
-                $columns[$columnDef] = '';
-            }
-        }
-        unset($columnsTmp);
-
-        $indexName = $indexType == 'PRIMARY KEY' ? 'PRIMARY' : ($indexName == '' ? key($columns) : $indexName);
-        $stmt = exec_query("SHOW INDEX FROM $table WHERE KEY_NAME = ?", $indexName);
-
-        if (!$stmt->rowCount()) {
-            $columnsStr = '';
-            foreach ($columns as $column => $length) {
-                $columnsStr .= quoteIdentifier($column) . $length . ',';
-            }
-            unset($columns);
-
-            $indexName = $indexName == 'PRIMARY' ? '' : quoteIdentifier($indexName);
-            return sprintf('ALTER TABLE %s ADD %s %s (%s)', $table, $indexType, $indexName, rtrim($columnsStr, ','));
-        }
-
-        return NULL;
-    }
-
-    /**
-     * Drop any index which belong to the given column in the given table
-     *
-     * @param string $table Table name
-     * @param string $column Column name
-     * @return array SQL statements to be executed
-     */
-    protected function dropIndexByColumn($table, $column)
-    {
-        $sqlQueries = [];
-        $table = quoteIdentifier($table);
-        $stmt = exec_query("SHOW INDEX FROM $table WHERE COLUMN_NAME = ?", $column);
-
-        if ($stmt->rowCount()) {
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $row = array_change_key_case($row, CASE_UPPER);
-                $sqlQueries[] = sprintf('ALTER TABLE %s DROP INDEX %s', $table, quoteIdentifier($row['KEY_NAME']));
-            }
-        }
-
-        return $sqlQueries;
-    }
-
-    /**
-     * Drop the given index from the given table
-     *
-     * @param string $table Table name
-     * @param string $indexName Index name
-     * @return null|string SQL statement to be executed
-     */
-    protected function dropIndexByName($table, $indexName = 'PRIMARY')
-    {
-        $table = quoteIdentifier($table);
-        $stmt = exec_query("SHOW INDEX FROM $table WHERE KEY_NAME = ?", $indexName);
-
-        if ($stmt->rowCount()) {
-            return sprintf('ALTER TABLE %s DROP INDEX %s', $table, quoteIdentifier($indexName));
-        }
-
-        return NULL;
-    }
-
-    /**
-     * Catch any database updates that were removed
-     *
-     * @throws UpdateException
-     * @param  string $updateMethod Database update method name
-     * @param array $params Params
-     * @return null
-     */
-    public function __call($updateMethod, $params)
-    {
-        if (!preg_match('/^r[0-9]+$/', $updateMethod)) {
-            throw new UpdateException(sprintf('%s is not a valid database update method', $updateMethod));
-        }
-
-        return NULL;
-    }
-
-    /**
-     * Please, add all the database update methods below. Don't forget to update the `lastUpdate' field above.
-     */
-
-    /**
      * Prohibit upgrade from i-MSCP versions older than 1.1.x
      *
-     * @throws iMSCP_Exception
+     * @throws UpdateException
      */
     protected function r173()
     {
-        throw new iMSCP_Exception('Upgrade support for i-MSCP versions older than 1.1.0 has been removed. You must first upgrade to i-MSCP version 1.3.8, then upgrade to this newest version.');
+        throw new UpdateException('Upgrade support for i-MSCP versions older than 1.1.0 has been removed. You must first upgrade to i-MSCP version 1.3.8, then upgrade to this newest version.');
     }
 
     /**
@@ -504,7 +107,7 @@ class iMSCP_Update_Database extends iMSCP_Update
         $stmt = execute_query('SELECT DISTINCT sqlu_name FROM sql_user');
 
         if ($stmt->rowCount()) {
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            while ($row = $stmt->fetch()) {
                 $sqlUser = quoteValue($row['sqlu_name']);
 
                 $sqlQueries[] = "
@@ -541,7 +144,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             return NULL;
         }
 
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch()) {
             $certId = quoteValue($row['cert_id'], PDO::PARAM_INT);
             $privateKey = new Crypt_RSA();
 
@@ -673,7 +276,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             return NULL;
         }
 
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch()) {
             $certificateId = quoteValue($row['cert_id'], PDO::PARAM_INT);
             // Data normalization
             $privateKey = quoteValue(str_replace("\r\n", "\n", trim($row['private_key'])) . PHP_EOL);
@@ -877,12 +480,13 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected function r204()
     {
         $sqlQueries = [];
-        $stmt = exec_query('SELECT id, props FROM hosting_plans');
+        $stmt = execute_query('SELECT id, props FROM hosting_plans');
 
         if (!$stmt->rowCount()) {
             return NULL;
         }
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+        while ($row = $stmt->fetch()) {
             $needUpdate = true;
             $id = quoteValue($row['id'], PDO::PARAM_INT);
             $props = explode(';', $row['props']);
@@ -957,7 +561,6 @@ class iMSCP_Update_Database extends iMSCP_Update
      * - Adds domain.phpini_perm_mail_function permission column
      * - Adds PHP mail permission property in hosting plans if any
      *
-     * @throws iMSCP_Exception
      * @return array SQL statements to be executed
      */
     protected function r212()
@@ -1120,19 +723,18 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * Convert FTP usernames, groups and members to ACE form
      *
-     * @throws iMSCP_Exception_Database
      * @return null
      */
     protected function r222()
     {
-        $stmt = exec_query('SELECT userid FROM ftp_users');
+        $stmt = execute_query('SELECT userid FROM ftp_users');
         while ($row = $stmt->fetch()) {
             exec_query('UPDATE ftp_users SET userid = ? WHERE userid = ?', [
                 encode_idna($row['userid']), $row['userid']
             ]);
         }
 
-        $stmt = exec_query('SELECT groupname, members FROM ftp_group');
+        $stmt = execute_query('SELECT groupname, members FROM ftp_group');
         while ($row = $stmt->fetch()) {
             $members = implode(',', array_map('encode_idna', explode(',', $row['members'])));
             exec_query('UPDATE ftp_group SET groupname = ?, members = ? WHERE groupname = ?', [
@@ -1220,24 +822,22 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * #IP-1395: Domain redirect feature - Missing URL path separator
      *
-     * @throws Zend_Uri_Exception
-     * @throws iMSCP_Exception_Database
-     * @throws iMSCP_Uri_Exception
+     * @return void
      */
     protected function r226()
     {
-        $stmt = exec_query("SELECT alias_id, url_forward FROM domain_aliasses WHERE url_forward <> 'no'");
+        $stmt = execute_query("SELECT alias_id, url_forward FROM domain_aliasses WHERE url_forward <> 'no'");
 
         while ($row = $stmt->fetch()) {
             $uri = UriRedirect::fromString($row['url_forward']);
             $uriPath = rtrim(preg_replace('#/+#', '/', $uri->getPath()), '/') . '/';
             $uri->setPath($uriPath);
-            exec_query(
-                'UPDATE domain_aliasses SET url_forward = ? WHERE alias_id = ?', [$uri->getUri(), $row['alias_id']]
-            );
+            exec_query('UPDATE domain_aliasses SET url_forward = ? WHERE alias_id = ?', [
+                $uri->getUri(), $row['alias_id']
+            ]);
         }
 
-        $stmt = exec_query(
+        $stmt = execute_query(
             "SELECT subdomain_id, subdomain_url_forward FROM subdomain WHERE subdomain_url_forward <> 'no'"
         );
 
@@ -1250,7 +850,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             ]);
         }
 
-        $stmt = exec_query(
+        $stmt = execute_query(
             "
                 SELECT subdomain_alias_id, subdomain_alias_url_forward FROM subdomain_alias
                 WHERE subdomain_alias_url_forward <> 'no'
@@ -1352,9 +952,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * Creates missing entries in the php_ini table (one for each domain)
      *
-     * @throws iMSCP_Exception
-     * @throws iMSCP_Exception_Database
-     * @return null
+     * @return void
      */
     protected function r233()
     {
@@ -1366,7 +964,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             $phpini->loadResellerPermissions($reseller['admin_id']);
 
             // For each client of the reseller
-            $clients = exec_query("SELECT admin_id FROM admin WHERE created_by = {$reseller['admin_id']}");
+            $clients = exec_query("SELECT admin_id FROM admin WHERE created_by = ?", [$reseller['admin_id']]);
             while ($client = $clients->fetch()) {
                 $phpini->loadClientPermissions($client['admin_id']);
 
@@ -1428,8 +1026,6 @@ class iMSCP_Update_Database extends iMSCP_Update
                 unset($subdomainAliases);
             }
         }
-
-        return NULL;
     }
 
     /**
@@ -1653,7 +1249,7 @@ class iMSCP_Update_Database extends iMSCP_Update
         $stmt = exec_query('SELECT mail_id, mail_pass FROM mail_users WHERE mail_pass <> ? AND mail_pass NOT LIKE ?',
             ['_no_', '$6$%']
         );
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch()) {
             exec_query('UPDATE mail_users SET mail_pass = ? WHERE mail_id = ?', [
                 Crypt::sha512($row['mail_pass']), $row['mail_id']
             ]);
@@ -1668,7 +1264,9 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected function r250()
     {
         return $this->changeColumn(
-            'server_ips', 'ip_number', 'ip_number VARCHAR(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL'
+            'server_ips',
+            'ip_number',
+            'ip_number VARCHAR(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL'
         );
     }
 
@@ -1731,7 +1329,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                 WHERE mail_type LIKE '%_mail%'
                 AND SUBSTRING(mail_addr, LOCATE('@', mail_addr)+1) = ?
             ",
-            Registry::get('config')['SERVER_HOSTNAME']
+            [Registry::get('config')['SERVER_HOSTNAME']]
         );
 
         while ($row = $stmt->fetch()) {
@@ -1739,15 +1337,12 @@ class iMSCP_Update_Database extends iMSCP_Update
                 # Turn normal+forward account into forward only account
                 exec_query(
                     "UPDATE mail_users SET mail_pass = '_no_', mail_type = ?, quota = NULL WHERE mail_id = ?",
-                    [
-                        preg_replace('/,?\b\.*_mail\b,?/', '', $row['mail_type']),
-                        $row['mail_id']
-                    ]
+                    [preg_replace('/,?\b\.*_mail\b,?/', '', $row['mail_type']), $row['mail_id']]
                 );
             } else {
                 # Schedule deletion of the mail account as virtual mailboxes
                 # are prohibited for Postfix canonical domains.
-                exec_query("UPDATE mail_users SET status = 'todelete' WHERE mail_id = ?", $row['mail_id']);
+                exec_query("UPDATE mail_users SET status = 'todelete' WHERE mail_id = ?", [$row['mail_id']]);
             }
         }
 

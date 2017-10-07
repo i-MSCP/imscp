@@ -19,10 +19,10 @@
  */
 
 use iMSCP\Crypt as Crypt;
-use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
 use Zend_Form as Form;
 
 /***********************************************************************************************************************
@@ -41,9 +41,7 @@ function updateUserData(Form $form, $userId)
 {
     global $userType;
 
-    $data = exec_query('SELECT admin_name, admin_type FROM admin WHERE admin_id = ?', $userId)->fetch();
-
-    if (!$data) {
+    if (($data = exec_query('SELECT admin_name, admin_type FROM admin WHERE admin_id = ?', [$userId])->fetch()) === false) {
         showBadRequestErrorPage();
     }
 
@@ -60,7 +58,9 @@ function updateUserData(Form $form, $userId)
     }
 
     $passwordUpdated = $form->getValue('admin_pass') !== '';
-    $db = Database::getInstance();
+
+    /** @var iMSCP_Database $db */
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -88,7 +88,7 @@ function updateUserData(Form $form, $userId)
         );
 
         // Force user to login again (needed due to possible password or email change)
-        exec_query('DELETE FROM login WHERE user_name = ?', $data['admin_name']);
+        exec_query('DELETE FROM login WHERE user_name = ?', [$data['admin_name']]);
 
         EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
             'userId'   => $userId,
@@ -154,10 +154,10 @@ function generatePage(TemplateEngine $tpl, Form $form, $userId)
             FROM admin
             WHERE admin_id = ?
         ",
-        $userId
+        [$userId]
     );
 
-    if (!($data = $stmt->fetch())) {
+    if (($data = $stmt->fetch()) === false) {
         showBadRequestErrorPage();
     }
 

@@ -30,8 +30,7 @@
  */
 function generatePage($tpl)
 {
-    $cfg = iMSCP_Registry::get('config');
-    $stmt = exec_query('SELECT domain_created FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
+    $stmt = exec_query('SELECT domain_created FROM admin WHERE admin_id = ?', [$_SESSION['user_id']]);
     $row = $stmt->fetch();
     $tpl->assign([
         'TR_ACCOUNT_SUMMARY'   => tr('Account summary'),
@@ -41,7 +40,7 @@ function generatePage($tpl)
         'ACCOUNT_TYPE'         => tr('Customer'),
         'TR_REGISTRATION_DATE' => tr('Registration date'),
         'REGISTRATION_DATE'    => ($row['domain_created'] != 0)
-            ? tohtml(date($cfg['DATE_FORMAT'], $row['domain_created'])) : tr('Unknown')
+            ? tohtml(date(iMSCP_Registry::get('config')['DATE_FORMAT'], $row['domain_created'])) : tr('Unknown')
     ]);
 }
 

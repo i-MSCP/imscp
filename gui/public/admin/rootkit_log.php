@@ -68,9 +68,9 @@ if (!empty($antiRootkitLogFiles)) {
 
     foreach ($antiRootkitLogFiles AS $antiRootkit => $logVar) {
         $logFile = $config[$logVar];
-        $cacheId = 'iMSCP_Rootkit_'. pathinfo($logFile, PATHINFO_FILENAME);
+        $cacheId = 'iMSCP_Rootkit_' . pathinfo($logFile, PATHINFO_FILENAME);
 
-        if(!($content = $cache->load($cacheId))) {
+        if (!($content = $cache->load($cacheId))) {
             if (@is_readable($logFile) && @filesize($logFile) > 0) {
                 $handle = fopen($logFile, 'r');
                 $log = fread($handle, filesize($logFile));

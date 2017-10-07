@@ -120,7 +120,7 @@ function reseller_getDatatable()
             JOIN admin AS t3 ON(t3.admin_id = t2.domain_admin_id)
             WHERE t3.created_by = ?
         ",
-        $_SESSION['user_id']
+        [$_SESSION['user_id']]
     );
     $iTotalRecords = $stmt->fetch(PDO::FETCH_NUM);
     $iTotalRecords = $iTotalRecords[0];

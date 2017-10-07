@@ -58,8 +58,8 @@ function gen_mail_quota_limit_mgs()
 {
     $domainProps = get_domain_default_props($_SESSION['user_id']);
     $mailQuota = exec_query(
-        'SELECT IFNULL(SUM(quota), 0) FROM mail_users WHERE domain_id = ?', $domainProps['domain_id']
-    )->fetch(PDO::FETCH_COLUMN);
+        'SELECT IFNULL(SUM(quota), 0) FROM mail_users WHERE domain_id = ?', [$domainProps['domain_id']]
+    )->fetchColumn();
 
     if ($domainProps['mail_quota'] == 0) {
         return bytesHuman($mailQuota) . ' / ∞';
@@ -77,10 +77,10 @@ function client_generateSupportSystemNotices()
 {
     $ticketsCount = exec_query(
         "SELECT COUNT(ticket_id) FROM tickets WHERE ticket_from = ? AND ticket_status = '2' AND ticket_reply = '0'",
-        $_SESSION['user_id']
-    )->fetch(PDO::FETCH_COLUMN);
+        [$_SESSION['user_id']]
+    )->fetchColumn();
 
-    if ($ticketsCount) {
+    if ($ticketsCount > 0) {
         set_page_message(
             ntr(
                 'You have a new answer to your support ticket.', 'You have %d new answers to your support tickets.',

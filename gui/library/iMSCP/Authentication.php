@@ -39,27 +39,17 @@ class iMSCP_Authentication
      *
      * @var iMSCP_Authentication
      */
-    protected static $instance = NULL;
+    protected static $instance;
 
     /**
      * @var EventManagerInterface
      */
-    protected $eventManager = NULL;
+    protected $eventManager;
 
     /**
      * Singleton pattern implementation -  makes "new" unavailable
      */
     protected function __construct()
-    {
-
-    }
-
-    /**
-     * Singleton pattern implementation -  makes "clone" unavailable
-     *
-     * @return void
-     */
-    protected function __clone()
     {
 
     }
@@ -76,26 +66,6 @@ class iMSCP_Authentication
         }
 
         return self::$instance;
-    }
-
-    /**
-     * Return an iMSCP_Events_Manager instance
-     *
-     * @param EventManagerInterface $events
-     * @return EventManagerInterface
-     */
-    public function getEventManager(EventManagerInterface $events = NULL)
-    {
-        if (NULL !== $events) {
-            $this->eventManager = $events;
-            return $events;
-        }
-
-        if (NULL === $this->eventManager) {
-            $this->eventManager = EventManager::getInstance();
-        }
-
-        return $this->eventManager;
     }
 
     /**
@@ -148,34 +118,49 @@ class iMSCP_Authentication
     }
 
     /**
-     * Returns true if and only if an identity is available from storage
+     * Return an iMSCP_Events_Manager instance
      *
-     * @return boolean
+     * @param EventManagerInterface $events
+     * @return EventManagerInterface
      */
-    public function hasIdentity()
+    public function getEventManager(EventManagerInterface $events = NULL)
     {
-        if (!isset($_SESSION['user_id'])) {
-            return false;
+        if (NULL !== $events) {
+            $this->eventManager = $events;
+            return $events;
         }
 
-        return (bool)exec_query('SELECT COUNT(session_id) FROM login WHERE session_id = ? AND ipaddr = ?', [
-            session_id(), getipaddr()
-        ])->fetch(PDO::FETCH_COLUMN);
+        if (NULL === $this->eventManager) {
+            $this->eventManager = EventManager::getInstance();
+        }
+
+        return $this->eventManager;
     }
 
     /**
-     * Returns the identity from storage if any, redirect to login page otherwise
+     * Unset the current identity
      *
-     * @return stdClass
+     * @trigger onBeforeUnsetIdentity
+     * @trigger onAfterUnserIdentity
+     * @return void
      */
-    public function getIdentity()
+    public function unsetIdentity()
     {
-        if (!isset($_SESSION['user_identity'])) {
-            $this->unsetIdentity(); // Make sure that all identity data are removed
-            redirectTo('/index.php');
+        $this->getEventManager()->dispatch(Events::onBeforeUnsetIdentity, ['context' => $this]);
+
+        exec_query('DELETE FROM login WHERE session_id = ?', [session_id()]);
+
+        $preserveList = [
+            'user_def_lang', 'user_theme', 'user_theme_color', 'show_main_menu_labels', 'pageMessages'
+        ];
+
+        foreach (array_keys($_SESSION) as $sessionVariable) {
+            if (!in_array($sessionVariable, $preserveList)) {
+                unset($_SESSION[$sessionVariable]);
+            }
         }
 
-        return $_SESSION['user_identity'];
+        $this->getEventManager()->dispatch(Events::onAfterUnsetIdentity, ['context' => $this]);
     }
 
     /**
@@ -219,28 +204,43 @@ class iMSCP_Authentication
     }
 
     /**
-     * Unset the current identity
+     * Returns true if and only if an identity is available from storage
      *
-     * @trigger onBeforeUnsetIdentity
-     * @trigger onAfterUnserIdentity
-     * @return void
+     * @return boolean
      */
-    public function unsetIdentity()
+    public function hasIdentity()
     {
-        $this->getEventManager()->dispatch(Events::onBeforeUnsetIdentity, ['context' => $this]);
-
-        exec_query('DELETE FROM login WHERE session_id = ?', session_id());
-
-        $preserveList = [
-            'user_def_lang', 'user_theme', 'user_theme_color', 'show_main_menu_labels', 'pageMessages'
-        ];
-
-        foreach (array_keys($_SESSION) as $sessionVariable) {
-            if (!in_array($sessionVariable, $preserveList)) {
-                unset($_SESSION[$sessionVariable]);
-            }
+        if (!isset($_SESSION['user_id'])) {
+            return false;
         }
 
-        $this->getEventManager()->dispatch(Events::onAfterUnsetIdentity, ['context' => $this]);
+        return exec_query('SELECT COUNT(session_id) FROM login WHERE session_id = ? AND ipaddr = ?', [
+                session_id(), getipaddr()
+            ])->fetchColumn() > 0;
+    }
+
+    /**
+     * Returns the identity from storage if any, redirect to login page otherwise
+     *
+     * @return stdClass
+     */
+    public function getIdentity()
+    {
+        if (!isset($_SESSION['user_identity'])) {
+            $this->unsetIdentity(); // Make sure that all identity data are removed
+            redirectTo('/index.php');
+        }
+
+        return $_SESSION['user_identity'];
+    }
+
+    /**
+     * Singleton pattern implementation -  makes "clone" unavailable
+     *
+     * @return void
+     */
+    protected function __clone()
+    {
+
     }
 }

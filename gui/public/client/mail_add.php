@@ -23,6 +23,7 @@ use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception_Database as DatabaseException;
 use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -61,10 +62,13 @@ function getDomainsList()
               JOIN domain_aliasses AS t2 USING(alias_id)
               WHERE t2.domain_id = :domain_id AND subdomain_alias_status = :status_ok
           ",
-            ['domain_id' => $mainDmnProps['domain_id'], 'status_ok' => 'ok']
+            [
+                'domain_id' => $mainDmnProps['domain_id'],
+                'status_ok' => 'ok'
+            ]
         );
         if ($stmt->rowCount()) {
-            $domainsList = array_merge($domainsList, $stmt->fetchAll(PDO::FETCH_ASSOC));
+            $domainsList = array_merge($domainsList, $stmt->fetchAll());
             usort($domainsList, function ($a, $b) {
                 return strnatcmp(decode_idna($a['name']), decode_idna($b['name']));
             });
@@ -125,7 +129,7 @@ function addMailAccount()
         showBadRequestErrorPage();
     }
 
-    if (iMSCP_Registry::get('config')['SERVER_HOSTNAME'] == $domainName && $mailTypeNormal) {
+    if (Registry::get('config')['SERVER_HOSTNAME'] == $domainName && $mailTypeNormal) {
         # SERVER_HOSTNAME is a canonical domain (local domain) which cannot be
         # listed in both `mydestination' and `virtual_mailbox_domains' Postfix
         # parameters. See http://www.postfix.org/VIRTUAL_README.html#canonical
@@ -173,8 +177,8 @@ function addMailAccount()
             }
 
             $customerMailboxesQuotaSumBytes = exec_query(
-                'SELECT IFNULL(SUM(quota), 0) FROM mail_users WHERE domain_id = ?', $mainDmnProps['domain_id']
-            )->fetch(PDO::FETCH_COLUMN);
+                'SELECT IFNULL(SUM(quota), 0) FROM mail_users WHERE domain_id = ?', [$mainDmnProps['domain_id']]
+            )->fetchColumn();
 
             if ($customerMailboxesQuotaSumBytes >= $customerEmailQuotaLimitBytes) {
                 showBadRequestErrorPage(); # Customer should never goes here excepted if it try to bypass js code
@@ -251,7 +255,8 @@ function addMailAccount()
     }
 
     try {
-        $db = iMSCP_Database::getInstance();
+        /** @var iMSCP_Database $db */
+        $db = Registry::get('iMSCP_Application')->getDatabase();
 
         EventsManager::getInstance()->dispatch(Events::onBeforeAddMail, [
             'mailUsername' => $username,
@@ -274,7 +279,7 @@ function addMailAccount()
         EventsManager::getInstance()->dispatch(Events::onAfterAddMail, [
             'mailUsername' => $username,
             'mailAddress'  => $mailAddr,
-            'mailId'       => $db->insertId()
+            'mailId'       => $db->lastInsertId()
         ]);
         send_request();
         write_log(sprintf('A mail account has been added by %s', $_SESSION['user_logged']), E_USER_NOTICE);
@@ -297,10 +302,9 @@ function addMailAccount()
 function generatePage($tpl)
 {
     $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
-    $customerMailboxesQuotaSumBytes = exec_query(
-        'SELECT IFNULL(SUM(quota), 0) FROM mail_users WHERE domain_id = ?',
+    $customerMailboxesQuotaSumBytes = exec_query('SELECT IFNULL(SUM(quota), 0) FROM mail_users WHERE domain_id = ?', [
         $mainDmnProps['domain_id']
-    )->fetch(PDO::FETCH_COLUMN);
+    ])->fetchColumn();
     $customerEmailQuotaLimitBytes = filter_digits($mainDmnProps['mail_quota'], 0);
 
     if ($customerEmailQuotaLimitBytes < 1) {

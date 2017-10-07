@@ -98,8 +98,7 @@ function _generateResellerStatistics(TemplateEngine $tpl, $resellerId, $reseller
 function generatePage(TemplateEngine $tpl)
 {
     $stmt = execute_query("SELECT admin_id, admin_name FROM admin WHERE admin_type = 'reseller'");
-
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch()) {
         _generateResellerStatistics($tpl, $row['admin_id'], $row['admin_name']);
         $tpl->parse('RESELLER_STATISTICS_BLOCK', '.reseller_statistics_block');
     }

@@ -353,7 +353,7 @@ function getCustomMenus($userLevel)
         throw new iMSCPException("Unknown user level '$userLevel' for getCustomMenus() function.");
     }
 
-    $stmt = exec_query('SELECT * FROM custom_menus WHERE menu_level LIKE ?', "%$param%");
+    $stmt = exec_query('SELECT * FROM custom_menus WHERE menu_level LIKE ?', ["%$param%"]);
     if ($stmt->rowCount()) {
         return $stmt->fetchAll();
     }
@@ -390,7 +390,7 @@ function gen_admin_list(TemplateEngine $tpl)
 
     $cfg = Registry::get('config');
 
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'ADMINISTRATOR_USERNAME'   => tohtml($row['admin_name']),
             'ADMINISTRATOR_CREATED_ON' => tohtml(($row['domain_created'] == 0)
@@ -437,7 +437,7 @@ function gen_reseller_list(TemplateEngine $tpl)
 
     $cfg = Registry::get('config');
 
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'RESELLER_USERNAME'   => tohtml($row['admin_name']),
             'RESELLER_CREATED_ON' => tohtml(($row['domain_created'] == 0)
@@ -611,13 +611,15 @@ function gen_user_domain_aliases_list(TemplateEngine $tpl, $domainId)
         return;
     }
 
-    $stmt = exec_query('SELECT alias_name FROM domain_aliasses WHERE domain_id = ? ORDER BY alias_name ASC', $domainId);
+    $stmt = exec_query('SELECT alias_name FROM domain_aliasses WHERE domain_id = ? ORDER BY alias_name ASC', [
+        $domainId
+    ]);
 
     if (!$stmt->rowCount()) {
         return;
     }
 
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'CLIENT_DOMAIN_ALIAS_URL' => tohtml($row['alias_name'], 'htmlAttr'),
             'CLIENT_DOMAIN_ALIAS'     => tohtml(decode_idna($row['alias_name']))
@@ -679,9 +681,9 @@ function gen_user_list(TemplateEngine $tpl)
         ]);
     }
 
-    $rowCount = execute_query($cQuery)->fetch(PDO::FETCH_COLUMN);
+    $rowCount = execute_query($cQuery)->fetchColumn();
 
-    if ($rowCount == 0) {
+    if ($rowCount < 1) {
         if (!empty($_POST)) {
             $tpl->assign([
                 'CLIENT_DOMAIN_ALIASES_SWITCH' => '',
@@ -720,7 +722,7 @@ function gen_user_list(TemplateEngine $tpl)
     $tpl->assign('CLIENT_MESSAGE', '');
     $stmt = execute_query($sQuery);
 
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch()) {
         $statusOk = true;
         $statusTxt = $statusTooltip = translate_dmn_status(
             ($row['admin_status'] != 'ok') ? $row['admin_status'] : $row['domain_status']
@@ -801,9 +803,8 @@ function get_admin_manage_users(TemplateEngine $tpl)
  */
 function reseller_generate_ip_list(TemplateEngine $tpl, $resellerId, $domainIp)
 {
-    $stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', $resellerId);
-    $row = $stmt->fetch();
-    $resellerIps = explode(';', rtrim($row['reseller_ips'], ';'));
+    $stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', [$resellerId]);
+    $resellerIps = explode(';', rtrim($stmt->fetchColumn(), ';'));
 
     $stmt = execute_query('SELECT * FROM server_ips');
     while ($row = $stmt->fetch()) {

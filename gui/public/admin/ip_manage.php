@@ -269,7 +269,7 @@ function editIpAddr()
 
         $ipId = intval($_POST['ip_id']);
 
-        $stmt = exec_query('SELECT * FROM server_ips WHERE ip_id = ? AND ip_status = ?', [$ipId, 'ok']);
+        $stmt = exec_query("SELECT * FROM server_ips WHERE ip_id = ? AND ip_status = 'ok'", [$ipId]);
         if (!$stmt->rowCount()) {
             sendJsonResponse(400, ['message' => tr('Bad request.')]);
         }
@@ -295,12 +295,14 @@ function editIpAddr()
             'ip_card'        => $ipCard,
             'ip_config_mode' => $ipConfigMode
         ]);
-
         exec_query(
-            'UPDATE server_ips SET ip_netmask = ?, ip_card = ?, ip_config_mode = ?, ip_status = ? WHERE ip_id = ?',
-            [$ipNetmask, $ipCard, $ipConfigMode, 'tochange', $ipId
-            ]);
-
+            "
+                UPDATE server_ips
+                SET ip_netmask = ?, ip_card = ?, ip_config_mode = ?, ip_status = 'tochange'
+                WHERE ip_id = ?
+            ",
+            [$ipNetmask, $ipCard, $ipConfigMode, $ipId]
+        );
         send_request();
         write_log(sprintf("Configuration for the %s IP address has been updated by %s", $row['ip_number'], $_SESSION['user_logged']), E_USER_NOTICE);
         set_page_message(tr('IP address successfully scheduled for modification.'), 'success');
@@ -351,8 +353,8 @@ function addIpAddr()
     ]);
 
     exec_query(
-        'INSERT INTO server_ips (ip_number, ip_netmask, ip_card, ip_config_mode, ip_status) VALUES (?, ?, ?, ?, ?)',
-        [$ipAddr, $ipNetmask, $ipCard, $ipConfigMode, 'toadd']
+        "INSERT INTO server_ips (ip_number, ip_netmask, ip_card, ip_config_mode, ip_status) VALUES (?, ?, ?, ?, 'toadd')",
+        [$ipAddr, $ipNetmask, $ipCard, $ipConfigMode]
     );
 
     send_request();

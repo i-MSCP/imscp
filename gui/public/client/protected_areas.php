@@ -26,7 +26,7 @@
  */
 function generatePage($tpl)
 {
-    $stmt = exec_query('SELECT * FROM htaccess WHERE dmn_id = ?', get_user_domain_id($_SESSION['user_id']));
+    $stmt = exec_query('SELECT * FROM htaccess WHERE dmn_id = ?', [get_user_domain_id($_SESSION['user_id'])]);
 
     if (!$stmt->rowCount()) {
         $tpl->assign('PROTECTED_AREAS', '');

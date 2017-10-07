@@ -38,14 +38,18 @@ class iMSCP_Validate_AlnumAndHyphen extends Zend_Validate_Alnum
     /**
      * Defined by Zend_Validate_Interface
      *
-     * Returns true if and only if $value contains only alphabetic and digit characters
+     * Returns true if and only if $value contains only alphabetic and digit
+     * characters.
      *
-     * @param  string $value
+     * @param string $value
      * @return boolean
      */
     public function isValid($value)
     {
-        if (!is_string($value) && !is_int($value) && !is_float($value)) {
+        if (!is_string($value)
+            && !is_int($value)
+            && !is_float($value)
+        ) {
             $this->_error(self::INVALID);
             return false;
         }

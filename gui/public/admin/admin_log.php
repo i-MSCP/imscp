@@ -203,7 +203,7 @@ function admin_getLogs()
         $filteredTotal = $resultFilterTotal[0];
 
         /* Total data set length */
-        $resultTotal = exec_query("SELECT COUNT($indexColumn) FROM $table");
+        $resultTotal = execute_query("SELECT COUNT($indexColumn) FROM $table");
         $resultTotal = $resultTotal->fetch(\PDO::FETCH_NUM);
         $total = $resultTotal[0];
 
@@ -217,7 +217,7 @@ function admin_getLogs()
 
         $dateFormat = iMSCP_Registry::get('config')['DATE_FORMAT'] . ' H:i:s';
 
-        while ($data = $rResult->fetch(PDO::FETCH_ASSOC)) {
+        while ($data = $rResult->fetch()) {
             $row = [];
 
             for ($i = 0; $i < $nbColumns; $i++) {
@@ -251,7 +251,6 @@ function admin_getLogs()
         admin_sendJsonResponse(200, $output);
     } catch (iMSCP_Exception_Database $e) {
         write_log(sprintf('Unable to get logs: %s', $e->getMessage()), E_USER_ERROR);
-
         admin_sendJsonResponse(
             500, ['message' => tr('An unexpected error occurred: %s', $e->getMessage())]
         );

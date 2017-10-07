@@ -18,10 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -38,7 +38,8 @@ use iMSCP_pTemplate as TemplateEngine;
  */
 function moveReseller($resellerId, $fromAdministratorId, $toAdministratorId)
 {
-    $db = Database::getInstance();
+    /** @var iMSCP_Database $db */
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -107,8 +108,9 @@ function moveResellers()
  */
 function generatePage(TemplateEngine $tpl)
 {
-    $administrators = $stmt = execute_query("SELECT admin_id, admin_name FROM admin WHERE admin_type = 'admin'")
-        ->fetchAll(PDO::FETCH_ASSOC);
+    $administrators = $stmt = execute_query(
+        "SELECT admin_id, admin_name FROM admin WHERE admin_type = 'admin'"
+    )->fetchAll();
     $fromAdministratorId = isset($_POST['from_administrator'])
         ? intval($_POST['from_administrator']) : $administrators[0]['admin_id'];
     $toAdministratorId = isset($_POST['to_administrator'])
@@ -131,10 +133,9 @@ function generatePage(TemplateEngine $tpl)
     }
 
     // Generate resellers list for the selected (FROM) administrator
-    $resellers = exec_query(
-        "SELECT admin_id, admin_name FROM admin WHERE created_by = ? AND admin_type = 'reseller'",
+    $resellers = exec_query("SELECT admin_id, admin_name FROM admin WHERE created_by = ? AND admin_type = 'reseller'", [
         $fromAdministratorId
-    )->fetchAll(PDO::FETCH_ASSOC);
+    ])->fetchAll();
 
     if (empty($resellers)) {
         $tpl->assign('FROM_ADMINISTRATOR_RESELLERS_LIST', '');

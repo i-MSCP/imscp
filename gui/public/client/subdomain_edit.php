@@ -282,22 +282,22 @@ function client_editSubdomain()
     ]);
 
     if ($subdomainType == 'dmn') {
-        $query = '
+        $query = "
             UPDATE subdomain
             SET subdomain_document_root = ?, subdomain_url_forward = ?, subdomain_type_forward = ?,
-              subdomain_host_forward = ?, subdomain_status = ?
+              subdomain_host_forward = ?, subdomain_status = 'tochange'
             WHERE subdomain_id = ?
-        ';
+        ";
     } else {
-        $query = '
+        $query = "
             UPDATE subdomain_alias
             SET subdomain_alias_document_root = ?, subdomain_alias_url_forward = ?, subdomain_alias_type_forward = ?,
-              subdomain_alias_host_forward = ?, subdomain_alias_status = ?
+              subdomain_alias_host_forward = ?, subdomain_alias_status = 'tochange'
             WHERE subdomain_alias_id = ?
-        ';
+        ";
     }
 
-    exec_query($query, [$documentRoot, $forwardUrl, $forwardType, $forwardHost, 'tochange', $subdomainId]);
+    exec_query($query, [$documentRoot, $forwardUrl, $forwardType, $forwardHost, $subdomainId]);
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditSubdomain, [
         'subdomainId'   => $subdomainId,

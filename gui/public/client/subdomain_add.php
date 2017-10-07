@@ -67,11 +67,14 @@ function getDomainsList()
             WHERE t2.domain_id = :domain_id
             AND t1.subdomain_alias_status = :status_ok
         ",
-        ['domain_id' => $mainDmnProps['domain_id'], 'status_ok' => 'ok']
+        [
+            'domain_id' => $mainDmnProps['domain_id'],
+            'status_ok' => 'ok'
+        ]
     );
 
     if ($stmt->rowCount()) {
-        $domainsList = array_merge($domainsList, $stmt->fetchAll(PDO::FETCH_ASSOC));
+        $domainsList = array_merge($domainsList, $stmt->fetchAll());
         usort($domainsList, function ($a, $b) {
             return strnatcmp(decode_idna($a['name']), decode_idna($b['name']));
         });
@@ -306,7 +309,8 @@ function addSubdomain()
         }
     }
 
-    $db = iMSCP_Database::getInstance();
+    /** @var iMSCP_Database $db */
+    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -330,7 +334,7 @@ function addSubdomain()
                     subdomain_alias_url_forward, subdomain_alias_type_forward, subdomain_alias_host_forward,
                     subdomain_alias_status
                 ) VALUES (
-                    ?, ?, ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, ?, ?, ?, ?, 'toadd'
                 )
             ";
         } else {
@@ -339,16 +343,16 @@ function addSubdomain()
                     domain_id, subdomain_name, subdomain_mount, subdomain_document_root, subdomain_url_forward,
                     subdomain_type_forward, subdomain_host_forward, subdomain_status
                 ) VALUES (
-                    ?, ?, ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, ?, ?, ?, ?, 'toadd'
                 )
             ";
         }
 
         exec_query($query, [
-            $domainId, $subLabelAscii, $mountPoint, $documentRoot, $forwardUrl, $forwardType, $forwardHost, 'toadd'
+            $domainId, $subLabelAscii, $mountPoint, $documentRoot, $forwardUrl, $forwardType, $forwardHost
         ]);
 
-        $subdomainId = $db->insertId();
+        $subdomainId = $db->lastInsertId();
 
         // Create the phpini entry for that subdomain
         $phpini = iMSCP_PHPini::getInstance();

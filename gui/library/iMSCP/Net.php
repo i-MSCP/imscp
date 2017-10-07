@@ -56,74 +56,87 @@ class Net
     }
 
     /**
-     * Singleton pattern implementation -  makes "clone" unavailable
+     * Extract network device data
+     *
+     * @çeturn void
      */
-    protected function __clone()
+    protected function extractDevices()
     {
-    }
-
-    /**
-     * Get Net instance
-     * @return Net
-     */
-    static public function getInstance()
-    {
-        if (NULL === self::$instance) {
-            self::$instance = new self;
+        exec('/bin/ip -o link show', $output, $ret);
+        if ($ret > 0) {
+            throw new \RuntimeException("Couldn't extract network device.");
         }
 
-        return self::$instance;
+        foreach ($output as $line) {
+            if (preg_match(
+                '/
+                    ^
+                    [^\s]+       # identifier
+                    :
+                    \s+
+                    (.*?)        # device name
+                    (?:@[^\s]+)? # device name prefix
+                    :
+                    \s+
+                    <(.*)>       # flags
+                /x',
+                $line,
+                $matches
+            )) {
+                $this->devices[$matches[1]] = [
+                    'flags' => $matches[2]
+                ];
+            }
+        }
     }
 
     /**
-     * Get network devices list
+     * Extract IP addresses data
      *
-     * @return array List of network devices
+     * @return void
      */
-    public function getDevices()
+    protected function extractIpAddresses()
     {
-        $this->loadData();
-        return array_keys($this->devices);
-    }
-
-    /**
-     * Get IP addresses list
-     *
-     * @return array List of IP addresses
-     */
-    public function getIpAddresses()
-    {
-        $this->loadData();
-        return array_keys($this->ipAddresses);
-    }
-
-    /**
-     * Get version of the given IP address
-     *
-     * @param string $ipAddr IP address
-     * @return int IP address version
-     */
-    public function getVersion($ipAddr)
-    {
-        return (strpos($ipAddr, ':') !== false) ? 6 : 4;
-    }
-
-    /**
-     * Get prefix length of the given IP address
-     *
-     * @param string $ipAddr IP address
-     * @return array|null
-     */
-    public function getIpPrefixLength($ipAddr)
-    {
-        $this->loadData();
-        $ipAddr = $this->compress($ipAddr);
-
-        if (isset($this->ipAddresses[$ipAddr])) {
-            return $this->ipAddresses[$ipAddr]['prefix_length'];
+        exec('/bin/ip -o addr show', $output, $ret);
+        if ($ret > 0) {
+            throw new \RuntimeException("Couldn't extract IP addresses.");
         }
 
-        return NULL;
+        foreach ($output as $line) {
+            if (preg_match(
+                '/
+                    ^
+                    [^\s]+                    # identifier
+                    :
+                    \s+
+                    ([^\s]+)                  # device name
+                    \s+
+                    ([^\s]+)                  # protocol family identifier
+                    \s+
+                    (?:
+                        ([^\s]+)              # IP address
+                        (?:\s+peer\s+[^\s]+)? # peer address (pointopoint interfaces)
+                        \/
+                        ([\d]+)               # netmask in CIDR notation
+                    )
+                    \s+
+                    (?:
+                        .*?                   # optional broadcast address, scope information
+                        (\1(?::\d+)?)         # optional label
+                        \\\\
+                    )?
+                /x',
+                $line,
+                $matches
+            )) {
+                $this->ipAddresses[$this->compress($matches[3])] = [
+                    'device'        => $matches[1],
+                    'version'       => $matches[2] == 'inet' ? 'ipv4' : 'ipv6',
+                    'prefix_length' => $matches[4],
+                    'device_label'  => isset($matches[5]) ? $matches[5] : ''
+                ];
+            }
+        }
     }
 
     /**
@@ -213,6 +226,30 @@ class Net
     }
 
     /**
+     * Get Net instance
+     * @return Net
+     */
+    static public function getInstance()
+    {
+        if (NULL === self::$instance) {
+            self::$instance = new self;
+        }
+
+        return self::$instance;
+    }
+
+    /**
+     * Get network devices list
+     *
+     * @return array List of network devices
+     */
+    public function getDevices()
+    {
+        $this->loadData();
+        return array_keys($this->devices);
+    }
+
+    /**
      * Load IP data
      *
      * @return void
@@ -229,86 +266,49 @@ class Net
     }
 
     /**
-     * Extract network device data
+     * Get IP addresses list
      *
-     * @çeturn void
+     * @return array List of IP addresses
      */
-    protected function extractDevices()
+    public function getIpAddresses()
     {
-        exec('/bin/ip -o link show', $output, $ret);
-        if ($ret > 0) {
-            throw new \RuntimeException("Couldn't extract network device.");
-        }
-
-        foreach ($output as $line) {
-            if (preg_match(
-                '/
-                    ^
-                    [^\s]+       # identifier
-                    :
-                    \s+
-                    (.*?)        # device name
-                    (?:@[^\s]+)? # device name prefix
-                    :
-                    \s+
-                    <(.*)>       # flags
-                /x',
-                $line,
-                $matches
-            )) {
-                $this->devices[$matches[1]] = [
-                    'flags' => $matches[2]
-                ];
-            }
-        }
+        $this->loadData();
+        return array_keys($this->ipAddresses);
     }
 
     /**
-     * Extract IP addresses data
+     * Get version of the given IP address
      *
-     * @return void
+     * @param string $ipAddr IP address
+     * @return int IP address version
      */
-    protected function extractIpAddresses()
+    public function getVersion($ipAddr)
     {
-        exec('/bin/ip -o addr show', $output, $ret);
-        if ($ret > 0) {
-            throw new \RuntimeException("Couldn't extract IP addresses.");
+        return (strpos($ipAddr, ':') !== false) ? 6 : 4;
+    }
+
+    /**
+     * Get prefix length of the given IP address
+     *
+     * @param string $ipAddr IP address
+     * @return array|null
+     */
+    public function getIpPrefixLength($ipAddr)
+    {
+        $this->loadData();
+        $ipAddr = $this->compress($ipAddr);
+
+        if (isset($this->ipAddresses[$ipAddr])) {
+            return $this->ipAddresses[$ipAddr]['prefix_length'];
         }
 
-        foreach ($output as $line) {
-            if (preg_match(
-                '/
-                    ^
-                    [^\s]+                    # identifier
-                    :
-                    \s+
-                    ([^\s]+)                  # device name
-                    \s+
-                    ([^\s]+)                  # protocol family identifier
-                    \s+
-                    (?:
-                        ([^\s]+)              # IP address
-                        (?:\s+peer\s+[^\s]+)? # peer address (pointopoint interfaces)
-                        \/
-                        ([\d]+)               # netmask in CIDR notation
-                    )
-                    \s+
-                    (?:
-                        .*?                   # optional broadcast address, scope information
-                        (\1(?::\d+)?)         # optional label
-                        \\\\
-                    )?
-                /x',
-                $line,
-                $matches
-            )) {
-                $this->ipAddresses[$this->compress($matches[3])] = [
-                    'device'        => $matches[1],
-                    'version'       => $matches[2] == 'inet' ? 'ipv4' : 'ipv6',
-                    'prefix_length' => $matches[4],
-                    'device_label'  => isset($matches[5]) ? $matches[5] : ''
-                ];
-            }
-        }
+        return NULL;
+    }
+
+    /**
+     * Singleton pattern implementation -  makes "clone" unavailable
+     */
+    protected function __clone()
+    {
     }
 }

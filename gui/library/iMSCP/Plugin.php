@@ -68,13 +68,14 @@ abstract class iMSCP_Plugin
     }
 
     /**
-     * Get plugin manager
+     * Allow plugin initialization
      *
-     * @return iMSCP_Plugin_Manager
+     * This method allow to do some initialization tasks without overriding the constructor.
+     *
+     * @return void
      */
-    public function getPluginManager()
+    protected function init()
     {
-        return $this->pluginManager;
     }
 
     /**
@@ -147,17 +148,13 @@ abstract class iMSCP_Plugin
     }
 
     /**
-     * Returns plugin type
+     * Get plugin manager
      *
-     * @return string
+     * @return iMSCP_Plugin_Manager
      */
-    final public function getType()
+    public function getPluginManager()
     {
-        if (NULL === $this->pluginType) {
-            list(, , $this->pluginType) = explode('_', get_parent_class($this), 3);
-        }
-
-        return $this->pluginType;
+        return $this->pluginManager;
     }
 
     /**
@@ -175,6 +172,20 @@ abstract class iMSCP_Plugin
     }
 
     /**
+     * Returns plugin type
+     *
+     * @return string
+     */
+    final public function getType()
+    {
+        if (NULL === $this->pluginType) {
+            list(, , $this->pluginType) = explode('_', get_parent_class($this), 3);
+        }
+
+        return $this->pluginType;
+    }
+
+    /**
      * Return plugin configuration
      *
      * @return array An associative array which contain plugin configuration
@@ -186,6 +197,29 @@ abstract class iMSCP_Plugin
         }
 
         return $this->config;
+    }
+
+    /**
+     * Load plugin configuration from database
+     *
+     * @return void
+     */
+    final protected function loadConfig()
+    {
+        $stmt = exec_query(
+            'SELECT plugin_config, plugin_config_prev FROM plugin WHERE plugin_name = ?', [$this->getName()]
+        );
+
+        if ($stmt->rowCount()) {
+            $row = $stmt->fetch();
+            $this->config = json_decode($row['plugin_config'], true);
+            $this->configPrev = json_decode($row['plugin_config_prev'], true);
+            $this->isLoadedConfig = true;
+            return;
+        }
+
+        $this->config = [];
+        $this->configPrev = [];
     }
 
     /**
@@ -276,40 +310,6 @@ abstract class iMSCP_Plugin
         }
 
         return isset($this->configPrev[$paramName]) ? $this->configPrev[$paramName] : $default;
-    }
-
-    /**
-     * Load plugin configuration from database
-     *
-     * @return void
-     */
-    final protected function loadConfig()
-    {
-        $stmt = exec_query(
-            'SELECT plugin_config, plugin_config_prev FROM plugin WHERE plugin_name = ?', $this->getName()
-        );
-
-        if ($stmt->rowCount()) {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $this->config = json_decode($row['plugin_config'], true);
-            $this->configPrev = json_decode($row['plugin_config_prev'], true);
-            $this->isLoadedConfig = true;
-            return;
-        }
-
-        $this->config = [];
-        $this->configPrev = [];
-    }
-
-    /**
-     * Allow plugin initialization
-     *
-     * This method allow to do some initialization tasks without overriding the constructor.
-     *
-     * @return void
-     */
-    protected function init()
-    {
     }
 
     /**
@@ -530,7 +530,8 @@ abstract class iMSCP_Plugin
             $migrationFiles = array_reverse($migrationFiles);
         }
 
-        $db = iMSCP_Database::getInstance();
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
 
         try {
             foreach ($migrationFiles as $migrationFile) {
@@ -548,7 +549,9 @@ abstract class iMSCP_Plugin
                     $migrationFilesContent = include($migrationFile);
                     if (isset($migrationFilesContent[$migrationMode])) {
                         $stmt = $db->prepare($migrationFilesContent[$migrationMode]);
-                        $db->execute($stmt);
+                        $stmt->execute($stmt);
+
+                        /** @noinspection PhpStatementHasEmptyBodyInspection */
                         while ($stmt->nextRowset()) {
                             /* https://bugs.php.net/bug.php?id=61613 */
                         };

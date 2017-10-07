@@ -31,8 +31,9 @@ function systemHasResellers($minNbResellers = 1)
     static $resellersCount = NULL;
 
     if (NULL === $resellersCount) {
-        $stmt = execute_query("SELECT COUNT(admin_id) FROM admin WHERE admin_type = 'reseller'");
-        $resellersCount = $stmt->fetch(PDO::FETCH_COLUMN);
+        $resellersCount = execute_query(
+            "SELECT COUNT(admin_id) FROM admin WHERE admin_type = 'reseller'"
+        )->fetchColumn();
     }
 
     return ($resellersCount >= $minNbResellers);
@@ -49,10 +50,9 @@ function systemHasCustomers($minNbCustomers = 1)
     static $customersCount = NULL;
 
     if (NULL === $customersCount) {
-        $stmt = execute_query(
+        $customersCount = execute_query(
             "SELECT COUNT(admin_id) FROM admin WHERE admin_type = 'user' AND admin_status <> 'todelete'"
-        );
-        $customersCount = $stmt->fetch(PDO::FETCH_COLUMN);
+        )->fetchColumn();
     }
 
     return ($customersCount >= $minNbCustomers);
@@ -88,8 +88,8 @@ function systemHasManyAdmins()
     static $hasManyAdmins = NULL;
 
     if (NULL === $hasManyAdmins) {
-        $stmt = exec_query('SELECT admin_id FROM admin WHERE admin_type = ? LIMIT 2', 'admin');
-        $hasManyAdmins = ($stmt->rowCount() > 1);
+        $stmt = execute_query("SELECT COUNT(admin_id) FROM admin WHERE admin_type = 'admin'");
+        $hasManyAdmins = ($stmt->fetchColumn() > 1);
     }
 
     return $hasManyAdmins;

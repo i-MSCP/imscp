@@ -65,7 +65,7 @@ $stmt = exec_query(
         FROM web_software
         WHERE software_id = ?
     ',
-    $softwareId
+    [$softwareId]
 );
 
 if (!$stmt->rowCount()) {
@@ -74,16 +74,16 @@ if (!$stmt->rowCount()) {
 
 $row = $stmt->fetch();
 
-$stmt = exec_query('SELECT admin_name, email FROM admin WHERE admin_id = ?', $row['reseller_id']);
+$stmt = exec_query('SELECT admin_name, email FROM admin WHERE admin_id = ?', [$row['reseller_id']]);
 $row2 = $stmt->fetch();
 $tpl->assign('DELETE_SOFTWARE_RESELLER', tr('%1$s (%2$s)', $row2['admin_name'], $row2['email']));
 
 if ($row['software_depot'] == 'yes') {
     $cfg = iMSCP_Registry::get('config');
     @unlink($cfg['GUI_APS_DEPOT_DIR'] . '/' . $row['software_archive'] . '-' . $softwareId . '.tar.gz');
-    exec_query('UPDATE  web_software_inst SET software_res_del = 1 WHERE software_master_id = ?', $softwareId);
-    exec_query('DELETE FROM web_software WHERE software_id = ?', $softwareId);
-    exec_query('DELETE FROM web_software WHERE software_master_id = ?', $softwareId);
+    exec_query('UPDATE  web_software_inst SET software_res_del = 1 WHERE software_master_id = ?', [$softwareId]);
+    exec_query('DELETE FROM web_software WHERE software_id = ?', [$softwareId]);
+    exec_query('DELETE FROM web_software WHERE software_master_id = ?', [$softwareId]);
     set_page_message(tr('Software was deleted.'), 'success');
     redirectTo('software_manage.php');
 }
@@ -100,7 +100,7 @@ if (isset($_POST['id']) && $_POST['uaction'] === 'send_delmessage') {
             $row['software_id'], $row['reseller_id'], $row['software_id'], true
         );
         @unlink($cfg['GUI_APS_DIR'] . "/" . $row['reseller_id'] . '/' . $row['software_archive'] . '-' . $row['software_id'] . '.tar.gz');
-        exec_query('DELETE FROM web_software WHERE software_id = ?', $row['software_id']);
+        exec_query('DELETE FROM web_software WHERE software_id = ?', [$row['software_id']]);
         set_page_message(tr('Software has been deleted.'), 'success');
         redirectTo('software_manage.php');
     } else {

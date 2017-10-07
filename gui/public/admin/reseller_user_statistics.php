@@ -77,7 +77,7 @@ function _generateUserStatistics(TemplateEngine $tpl, $adminId)
  */
 function generatePage(TemplateEngine $tpl, $resellerId)
 {
-    $stmt = exec_query('SELECT admin_id FROM admin WHERE created_by = ?', $resellerId);
+    $stmt = exec_query('SELECT admin_id FROM admin WHERE created_by = ?', [$resellerId]);
 
     if (!$stmt->rowCount()) {
         $tpl->assign('RESELLER_USER_STATISTICS_BLOCK', '');

@@ -19,7 +19,6 @@
  */
 
 use iMSCP\Crypt as Crypt;
-use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
@@ -48,8 +47,9 @@ function addAdminUser(Form $form)
 
         return;
     }
-    
-    $db = Database::getInstance();
+
+    /** @var iMSCP_Database $db */
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -76,7 +76,7 @@ function addAdminUser(Form $form)
             ]
         );
 
-        $adminId = $db->insertId();
+        $adminId = $db->lastInsertId();
         $cfg = Registry::get('config');
 
         exec_query('INSERT INTO user_gui_props (user_id, lang, layout) VALUES (?, ?, ?)', [

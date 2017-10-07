@@ -73,8 +73,9 @@ abstract class iMSCP_Plugin_Action extends iMSCP_Plugin
      *
      * @param array $urlComponents Associative array containing URL components
      * @return string|null Either a string representing an action script path or null if not route match the URL
+     * @noinspection PhpUnusedParameterInspection
      */
-    public function route($urlComponents)
+    public function route(/** @noinspection PhpUnusedParameterInspection */ $urlComponents)
     {
         return NULL;
     }

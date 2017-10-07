@@ -31,9 +31,7 @@
  */
 function client_getHtaccessUsername($htuserId, $domainId)
 {
-    $stmt = exec_query('SELECT uname, status FROM htaccess_users WHERE id = ? AND dmn_id = ?', [
-        $htuserId, $domainId
-    ]);
+    $stmt = exec_query('SELECT uname, status FROM htaccess_users WHERE id = ? AND dmn_id = ?', [$htuserId, $domainId]);
 
     if (!$stmt->rowCount()) {
         showBadRequestErrorPage();
@@ -73,7 +71,7 @@ function client_generatePage($tpl)
     }
 
     // Get groups
-    $stmt = exec_query('SELECT * FROM htaccess_groups WHERE dmn_id = ?', $domainId);
+    $stmt = exec_query('SELECT * FROM htaccess_groups WHERE dmn_id = ?', [$domainId]);
 
     if (!$stmt->rowCount()) {
         set_page_message(tr('You have no groups.'), 'error');
@@ -171,10 +169,9 @@ function client_addHtaccessUserToHtaccessGroup()
         $members = $members . ',' . $htuserId;
     }
 
-    exec_query('UPDATE htaccess_groups SET members = ?, status = ? WHERE id = ? AND dmn_id = ?', [
-        $members, 'tochange', $htgroupId, $domainId
+    exec_query("UPDATE htaccess_groups SET members = ?, status = 'tochange' WHERE id = ? AND dmn_id = ?", [
+        $members, $htgroupId, $domainId
     ]);
-
     send_request();
     set_page_message(tr('Htaccess user successfully assigned to the %s htaccess group', $row['ugroup']), 'success');
     redirectTo('protected_user_manage.php');
@@ -230,10 +227,10 @@ function client_removeHtaccessUserFromHtaccessGroup()
 
     unset($members[$key]);
     $members = implode(',', $members);
-    exec_query('UPDATE htaccess_groups SET members = ?, status = ? WHERE id = ? AND dmn_id = ?', [
-        $members, 'tochange', $htgroupId, $domainId
-    ]);
 
+    exec_query("UPDATE htaccess_groups SET members = ?, status = 'tochange' WHERE id = ? AND dmn_id = ?", [
+        $members, $htgroupId, $domainId
+    ]);
     send_request();
     set_page_message(tr('Htaccess user successfully deleted from the %s htaccess group ', $row['ugroup']), 'success');
     redirectTo('protected_user_manage.php');

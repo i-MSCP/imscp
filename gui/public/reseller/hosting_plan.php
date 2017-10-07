@@ -30,9 +30,9 @@
  */
 function generatePage($tpl)
 {
-    $stmt = exec_query(
-        'SELECT id, name, status FROM hosting_plans WHERE reseller_id = ? ORDER BY id', $_SESSION['user_id']
-    );
+    $stmt = exec_query('SELECT id, name, status FROM hosting_plans WHERE reseller_id = ? ORDER BY id', [
+        $_SESSION['user_id']
+    ]);
 
     if (!$stmt->rowCount()) {
         $tpl->assign('HOSTING_PLANS', '');

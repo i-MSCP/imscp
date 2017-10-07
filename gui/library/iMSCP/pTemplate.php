@@ -32,7 +32,7 @@ use iMSCP_Registry as Registry;
 
 /**
  * Class iMSCP_pTemplate
- * 
+ *
  * @property Zend_Form form
  */
 class iMSCP_pTemplate
@@ -328,77 +328,6 @@ class iMSCP_pTemplate
     }
 
     /**
-     * Checks if the given template is a static template
-     *
-     * @param string $tplName namespace
-     * @return boolean TRUE if the given template is a static template, FALSE otherwise
-     */
-    public function is_static_tpl($tplName)
-    {
-        return isset($this->tplName[$tplName]);
-    }
-
-    /**
-     * Checks if the given template is a dynamic template
-     *
-     * @param string $tplName Dynamic template name
-     * @return boolean TRUE if the given template is a dynamic template, FALSE otherwise
-     */
-    public function is_dynamic_tpl($tplName)
-    {
-        return isset($this->dtplName[$tplName]);
-    }
-
-    /**
-     * Load a template file
-     *
-     * @throws iMSCPException If template file is not found
-     * @param string|array $fname Template file path or an array where the second item contain the template file path
-     * @return mixed|string
-     */
-    public function get_file($fname)
-    {
-        static $parentTplDir = NULL;
-
-        if (!is_array($fname)) {
-            $this->eventManager->dispatch(Events::onBeforeAssembleTemplateFiles, [
-                'context'      => $this,
-                'templatePath' => $this->rootDir . '/' . $fname
-            ]);
-        } else { // INCLUDED file
-            $fname = ($parentTplDir ?: $parentTplDir) . '/' . $fname[1];
-        }
-
-        if (!$this->is_safe($fname)) {
-            throw new iMSCPException(sprintf("Couldn't to find the %s template file", $this->rootDir . '/' . $fname));
-        }
-
-        $prevParentTplDir = $parentTplDir;
-        $parentTplDir = dirname($fname);
-        $this->eventManager->dispatch(Events::onBeforeLoadTemplateFile, [
-            'context'      => $this,
-            'templatePath' => $this->rootDir . '/' . $fname
-        ]);
-
-        ob_start();
-        $this->run(utils_normalizePath($this->rootDir . '/' . $fname));
-        $fileContent = ob_get_clean();
-        $this->eventManager->dispatch(Events::onAfterLoadTemplateFile, [
-            'context'         => $this,
-            'templateContent' => $fileContent
-        ]);
-
-        $fileContent = preg_replace_callback($this->tplInclude, [$this, 'get_file'], $fileContent);
-        $parentTplDir = $prevParentTplDir;
-        $this->eventManager->dispatch(Events::onAfterAssembleTemplateFiles, [
-            'context'         => $this,
-            'templateContent' => $fileContent
-        ]);
-
-        return $fileContent;
-    }
-
-    /**
      * Parse the given template namespace
      *
      * @param string $pname
@@ -474,6 +403,207 @@ class iMSCP_pTemplate
     }
 
     /**
+     * Checks if the given template is a static template
+     *
+     * @param string $tplName namespace
+     * @return boolean TRUE if the given template is a static template, FALSE otherwise
+     */
+    public function is_static_tpl($tplName)
+    {
+        return isset($this->tplName[$tplName]);
+    }
+
+    /**
+     * Load a template file
+     *
+     * @throws iMSCPException If template file is not found
+     * @param string|array $fname Template file path or an array where the second item contain the template file path
+     * @return mixed|string
+     */
+    public function get_file($fname)
+    {
+        static $parentTplDir = NULL;
+
+        if (!is_array($fname)) {
+            $this->eventManager->dispatch(Events::onBeforeAssembleTemplateFiles, [
+                'context'      => $this,
+                'templatePath' => $this->rootDir . '/' . $fname
+            ]);
+        } else { // INCLUDED file
+            $fname = ($parentTplDir ?: $parentTplDir) . '/' . $fname[1];
+        }
+
+        if (!$this->is_safe($fname)) {
+            throw new iMSCPException(sprintf("Couldn't to find the %s template file", $this->rootDir . '/' . $fname));
+        }
+
+        $prevParentTplDir = $parentTplDir;
+        $parentTplDir = dirname($fname);
+        $this->eventManager->dispatch(Events::onBeforeLoadTemplateFile, [
+            'context'      => $this,
+            'templatePath' => $this->rootDir . '/' . $fname
+        ]);
+
+        ob_start();
+        $this->run(utils_normalizePath($this->rootDir . '/' . $fname));
+        $fileContent = ob_get_clean();
+        $this->eventManager->dispatch(Events::onAfterLoadTemplateFile, [
+            'context'         => $this,
+            'templateContent' => $fileContent
+        ]);
+
+        $fileContent = preg_replace_callback($this->tplInclude, [$this, 'get_file'], $fileContent);
+        $parentTplDir = $prevParentTplDir;
+        $this->eventManager->dispatch(Events::onAfterAssembleTemplateFiles, [
+            'context'         => $this,
+            'templateContent' => $fileContent
+        ]);
+
+        return $fileContent;
+    }
+
+    /**
+     * @param string $fname
+     * @return bool
+     */
+    protected function is_safe($fname)
+    {
+        return file_exists($this->rootDir . '/' . $fname);
+    }
+
+    /**
+     * Includes the template script in a scope with only public $this variables.
+     *
+     * @param string $scriptPath The view script to execute.
+     */
+    protected function run($scriptPath)
+    {
+        include $scriptPath;
+    }
+
+    /**
+     * @param  $data
+     * @return mixed
+     */
+    protected function substitute_dynamic($data)
+    {
+        if (($curlB = strpos($data, '{')) === FALSE) {
+            return $data; // there is nothing to substitute in $data; return early
+        }
+
+        $this->sp = 0;
+        $startFrom = -1;
+        $this->stack[$this->sp++] = ['{', $curlB];
+        $curl = $this->find_next_curl($data, $startFrom);
+
+        while ($curl !== false) {
+            if ($curl[0] == '{') {
+                $this->stack[$this->sp++] = $curl;
+                $startFrom = $curl[1];
+            } else {
+                $curlE = $curl[1];
+
+                if ($this->sp > 0) {
+                    $curl = $this->stack[--$this->sp];
+                    // Check for empty stack must be done HERE !
+                    $curlB = $curl[1];
+
+                    if ($curlB < $curlE + 1) {
+                        $varName = substr($data, $curlB + 1, $curlE - $curlB - 1);
+
+                        // The whole work goes here :)
+                        if (preg_match('/[A-Z0-9][A-Z0-9\_]*/', $varName)) {
+                            if (isset($this->namespace[$varName])) {
+                                $data = substr_replace($data, $this->namespace[$varName], $curlB, $curlE - $curlB + 1);
+                                $startFrom = $curlB - 1; // new value may also begin with '{'
+                            } elseif (isset($this->dtplData[$varName])) {
+                                $data = substr_replace($data, $this->dtplData[$varName], $curlB, $curlE - $curlB + 1);
+                                $startFrom = $curlB - 1; // new value may also begin with '{'
+                            } else {
+                                $startFrom = $curlB; // no suitable value found -> go forward
+                            }
+                        } else {
+                            $startFrom = $curlB; // go forward, we have {no variable} here.
+                        }
+                    } else {
+                        $startFrom = $curlE; // go forward, we have {} here.
+                    }
+                } else {
+                    $startFrom = $curlE;
+                }
+            }
+
+            $curl = $this->find_next_curl($data, $startFrom);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Finds the next curly bracket in the given string, starting at the given position + 1
+     *
+     * @param string $string String in which pairs of curly bracket must be searched
+     * @param int $startPos Start search position in $string
+     * @return array|bool
+     */
+    protected function find_next_curl($string, $startPos)
+    {
+        $startPos++;
+        $curlStartPos = strpos($string, '{', $startPos);
+        $curlEndPos = strpos($string, '}', $startPos);
+
+        if ($curlStartPos !== false) {
+            if ($curlEndPos !== false) {
+                if ($curlStartPos < $curlEndPos) {
+                    return ['{', $curlStartPos];
+                }
+
+                return ['}', $curlEndPos];
+            }
+
+            return ['{', $curlStartPos];
+        }
+
+        if ($curlEndPos !== false) {
+            return ['}', $curlEndPos];
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if the given template is a dynamic template
+     *
+     * @param string $tplName Dynamic template name
+     * @return boolean TRUE if the given template is a dynamic template, FALSE otherwise
+     */
+    public function is_dynamic_tpl($tplName)
+    {
+        return isset($this->dtplName[$tplName]);
+    }
+
+    /**
+     * @param string $tname
+     * @return bool
+     */
+    protected function find_origin($tname)
+    {
+        if (!$this->is_dynamic_tpl($tname)) {
+            return false;
+        }
+
+        while ($this->is_dynamic_tpl($tname)
+            && strpos($this->dtplName[$tname], '__inline__') === false
+            && strpos($this->dtplName[$tname], '.tpl') === false
+            && strpos($this->dtplName[$tname], '.phtml') === false
+        ) {
+            $tname = $this->dtplName[$tname];
+        }
+
+        return $tname;
+    }
+
+    /**
      * Parse a dynamic template
      *
      * @param string $pname
@@ -539,80 +669,37 @@ class iMSCP_pTemplate
     }
 
     /**
-     * @param string $pname
-     * @return void
-     */
-    public function prnt($pname = '')
-    {
-        if ($pname) {
-            echo isset($this->namespace[$pname]) ? $this->namespace[$pname] : '';
-            return;
-        }
-
-        echo @$this->lastParsed;
-    }
-
-    /**
-     * @param string $pname
-     * @return void
-     */
-    public function fastPrint($pname = '')
-    {
-        if ($pname) {
-            $this->prnt($pname);
-            return;
-        }
-
-        $this->prnt();
-    }
-
-    /**
-     * Returns last parse result
      *
-     * @return string
+     * @param string $data
+     * @return mixed
      */
-    public function getLastParseResult()
+    protected function devide_dynamic($data)
     {
-        return $this->lastParsed;
-    }
+        $startFrom = -1;
+        $tag = $this->find_next($data, $startFrom);
 
-    /**
-     * Replaces last parse result with given content
-     *
-     * @param string $newContent New content
-     * @param string $namespace Namespace
-     * @return iMSCP_pTemplate Provides fluent interface, returns self
-     */
-    public function replaceLastParseResult($newContent, $namespace = NULL)
-    {
-        $this->lastParsed = (string)$newContent;
+        while ($tag !== false) {
+            if ($tag[1] == 'b') {
+                $this->stack[$this->sp++] = $tag;
+                $startFrom = $tag[3];
+                $tag = $this->find_next($data, $startFrom);
+                continue;
+            }
 
-        if (isset($this->namespace[$namespace])) {
-            $this->namespace[$namespace] = $newContent;
+            $tplName = $tag[0];
+            $tpl_eb_pos = $tag[2];
+            $tpl_ee_pos = $tag[3];
+            $tag = $this->stack [--$this->sp];
+            $tpl_bb_pos = $tag[2];
+            $tpl_be_pos = $tag[3];
+            $this->dtplData[strtoupper($tplName)] = substr($data, $tpl_be_pos + 1, $tpl_eb_pos - $tpl_be_pos - 1);
+            $this->dtplData[$tplName] = substr($data, $tpl_be_pos + 1, $tpl_eb_pos - $tpl_be_pos - 1);
+            $data = substr_replace($data, '{' . strtoupper($tplName) . '}', $tpl_bb_pos, $tpl_ee_pos - $tpl_bb_pos + 1);
+            $startFrom = $tpl_bb_pos + strlen("{" . $tplName . "}") - 1;
+            $tag = $this->find_next($data, $startFrom);
         }
 
-        return $this;
-    }
-
-    /**
-     * @param string $tname
-     * @return bool
-     */
-    protected function find_origin($tname)
-    {
-        if (!$this->is_dynamic_tpl($tname)) {
-            return false;
-        }
-
-        while ($this->is_dynamic_tpl($tname)
-            && strpos($this->dtplName[$tname], '__inline__') === false
-            && strpos($this->dtplName[$tname], '.tpl') === false
-            && strpos($this->dtplName[$tname], '.phtml') === false
-        ) {
-            $tname = $this->dtplName[$tname];
-        }
-
-        return $tname;
+        return $data;
     }
 
     /**
@@ -655,145 +742,58 @@ class iMSCP_pTemplate
     }
 
     /**
-     * Finds the next curly bracket in the given string, starting at the given position + 1
+     * @param string $pname
+     * @return void
+     */
+    public function fastPrint($pname = '')
+    {
+        if ($pname) {
+            $this->prnt($pname);
+            return;
+        }
+
+        $this->prnt();
+    }
+
+    /**
+     * @param string $pname
+     * @return void
+     */
+    public function prnt($pname = '')
+    {
+        if ($pname) {
+            echo isset($this->namespace[$pname]) ? $this->namespace[$pname] : '';
+            return;
+        }
+
+        echo @$this->lastParsed;
+    }
+
+    /**
+     * Returns last parse result
      *
-     * @param string $string String in which pairs of curly bracket must be searched
-     * @param int $startPos Start search position in $string
-     * @return array|bool
+     * @return string
      */
-    protected function find_next_curl($string, $startPos)
+    public function getLastParseResult()
     {
-        $startPos++;
-        $curlStartPos = strpos($string, '{', $startPos);
-        $curlEndPos = strpos($string, '}', $startPos);
-
-        if ($curlStartPos !== false) {
-            if ($curlEndPos !== false) {
-                if ($curlStartPos < $curlEndPos) {
-                    return ['{', $curlStartPos];
-                }
-
-                return ['}', $curlEndPos];
-            }
-
-            return ['{', $curlStartPos];
-        }
-
-        if ($curlEndPos !== false) {
-            return ['}', $curlEndPos];
-        }
-
-        return false;
+        return $this->lastParsed;
     }
 
     /**
+     * Replaces last parse result with given content
      *
-     * @param string $data
-     * @return mixed
+     * @param string $newContent New content
+     * @param string $namespace Namespace
+     * @return iMSCP_pTemplate Provides fluent interface, returns self
      */
-    protected function devide_dynamic($data)
+    public function replaceLastParseResult($newContent, $namespace = NULL)
     {
-        $startFrom = -1;
-        $tag = $this->find_next($data, $startFrom);
+        $this->lastParsed = (string)$newContent;
 
-        while ($tag !== false) {
-            if ($tag[1] == 'b') {
-                $this->stack[$this->sp++] = $tag;
-                $startFrom = $tag[3];
-                $tag = $this->find_next($data, $startFrom);
-                continue;
-            }
-
-            $tplName = $tag[0];
-            $tpl_eb_pos = $tag[2];
-            $tpl_ee_pos = $tag[3];
-            $tag = $this->stack [--$this->sp];
-            $tpl_bb_pos = $tag[2];
-            $tpl_be_pos = $tag[3];
-            $this->dtplData[strtoupper($tplName)] = substr($data, $tpl_be_pos + 1, $tpl_eb_pos - $tpl_be_pos - 1);
-            $this->dtplData[$tplName] = substr($data, $tpl_be_pos + 1, $tpl_eb_pos - $tpl_be_pos - 1);
-            $data = substr_replace($data, '{' . strtoupper($tplName) . '}', $tpl_bb_pos, $tpl_ee_pos - $tpl_bb_pos + 1);
-            $startFrom = $tpl_bb_pos + strlen("{" . $tplName . "}") - 1;
-            $tag = $this->find_next($data, $startFrom);
+        if (isset($this->namespace[$namespace])) {
+            $this->namespace[$namespace] = $newContent;
         }
 
-        return $data;
-    }
-
-    /**
-     * @param  $data
-     * @return mixed
-     */
-    protected function substitute_dynamic($data)
-    {
-        if (($curlB = strpos($data, '{')) === FALSE) {
-            return $data; // there is nothing to substitute in $data; return early
-        }
-
-        $this->sp = 0;
-        $startFrom = -1;
-        $this->stack[$this->sp++] = ['{', $curlB];
-        $curl = $this->find_next_curl($data, $startFrom);
-
-        while ($curl !== false) {
-            if ($curl[0] == '{') {
-                $this->stack[$this->sp++] = $curl;
-                $startFrom = $curl[1];
-            } else {
-                $curlE = $curl[1];
-
-                if ($this->sp > 0) {
-                    $curl = $this->stack[--$this->sp];
-                    // Check for empty stack must be done HERE !
-                    $curlB = $curl[1];
-
-                    if ($curlB < $curlE + 1) {
-                        $varName = substr($data, $curlB + 1, $curlE - $curlB - 1);
-
-                        // The whole work goes here :)
-                        if (preg_match('/[A-Z0-9][A-Z0-9\_]*/', $varName)) {
-                            if (isset($this->namespace[$varName])) {
-                                $data = substr_replace($data, $this->namespace[$varName], $curlB, $curlE - $curlB + 1);
-                                $startFrom = $curlB - 1; // new value may also begin with '{'
-                            } elseif (isset($this->dtplData[$varName])) {
-                                $data = substr_replace($data, $this->dtplData[$varName], $curlB, $curlE - $curlB + 1);
-                                $startFrom = $curlB - 1; // new value may also begin with '{'
-                            } else {
-                                $startFrom = $curlB; // no suitable value found -> go forward
-                            }
-                        } else {
-                            $startFrom = $curlB; // go forward, we have {no variable} here.
-                        }
-                    } else {
-                        $startFrom = $curlE; // go forward, we have {} here.
-                    }
-                } else {
-                    $startFrom = $curlE;
-                }
-            }
-
-            $curl = $this->find_next_curl($data, $startFrom);
-        }
-
-        return $data;
-    }
-
-    /**
-     * @param string $fname
-     * @return bool
-     */
-    protected function is_safe($fname)
-    {
-        return file_exists($this->rootDir . '/' . $fname);
-    }
-
-    /**
-     * Includes the template script in a scope with only public $this variables.
-     *
-     * @param string $scriptPath The view script to execute.
-     */
-    protected function run($scriptPath)
-    {
-        include $scriptPath;
+        return $this;
     }
 }

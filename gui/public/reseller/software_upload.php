@@ -129,7 +129,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
             $fname = substr($_POST['sw_wget'], (strrpos($_POST['sw_wget'], '/') + 1));
         }
 
-        
+
         $filename = substr($fname, 0, -7);
         $extension = substr($fname, -7);
 
@@ -140,18 +140,17 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
                     software_archive, software_installfile, software_prefix, software_link, software_desc,
                     software_status
                 ) VALUES (
-                    ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, 'toadd'
+                    ?, 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 0, ?,
+                    'waiting_for_input', 'waiting_for_input', 'waiting_for_input','waiting_for_input', 'toadd'
                 )
             ",
-            [
-                $_SESSION['user_id'], 'waiting_for_input', 'waiting_for_input', 'waiting_for_input',
-                'waiting_for_input', $filename, 'waiting_for_input', 'waiting_for_input', 'waiting_for_input',
-                'waiting_for_input'
-            ]
+            [$_SESSION['user_id'], $filename,]
         );
 
-        $db = iMSCP_Database::getInstance();
-        $softwareId = $db->insertId();
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+
+        $softwareId = $db->lastInsertId();
 
         if ($file == 0) {
             $destDir = $cfg['GUI_APS_DIR'] . '/' . $_SESSION['user_id'] . '/' . $filename . '-' . $softwareId .
@@ -163,7 +162,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 
             if (!move_uploaded_file($_FILES['sw_file']['tmp_name'], $destDir)) {
                 // Delete software entry
-                exec_query('DELETE FROM web_software WHERE software_id = ?', $softwareId);
+                exec_query('DELETE FROM web_software WHERE software_id = ?', [$softwareId]);
 
                 $sw_wget = '';
                 set_page_message(
@@ -195,7 +194,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 
                 if ($remote_file_size < 1) {
                     // Delete software entry
-                    exec_query('DELETE FROM web_software WHERE software_id = ?', $softwareId);
+                    exec_query('DELETE FROM web_software WHERE software_id = ?', [$softwareId]);
                     $show_max_remote_filesize = bytesHuman($cfg['APS_MAX_REMOTE_FILESIZE']);
                     set_page_message(
                         tr(
@@ -207,7 +206,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
                     $upload = 0;
                 } elseif ($remote_file_size > $cfg['APS_MAX_REMOTE_FILESIZE']) {
                     // Delete software entry
-                    exec_query('DELETE FROM web_software WHERE software_id = ?', $softwareId);
+                    exec_query('DELETE FROM web_software WHERE software_id = ?', [$softwareId]);
 
                     $show_max_remote_filesize = bytesHuman($cfg['APS_MAX_REMOTE_FILESIZE']);
                     set_page_message(
@@ -227,14 +226,14 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
                         fclose($outputFile);
                     } else {
                         // Delete software entry
-                        exec_query('DELETE FROM web_software WHERE software_id = ?', $softwareId);
+                        exec_query('DELETE FROM web_software WHERE software_id = ?', [$softwareId]);
                         set_page_message(tr('Remote file not found.'), 'error');
                         $upload = 0;
                     }
                 }
             } else {
                 // Delete software entry
-                exec_query('DELETE FROM web_software WHERE software_id = ?', $softwareId);
+                exec_query('DELETE FROM web_software WHERE software_id = ?', [$softwareId]);
                 set_page_message(tr('Could not upload file.'), 'error');
                 $upload = 0;
             }

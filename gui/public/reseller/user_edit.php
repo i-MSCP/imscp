@@ -19,10 +19,10 @@
  */
 
 use iMSCP\Crypt as Crypt;
-use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
 use Zend_Form as Form;
 
 /***********************************************************************************************************************
@@ -58,7 +58,9 @@ function updateUserData(Form $form, $userId)
     }
 
     $passwordUpdated = $form->getValue('admin_pass') !== '';
-    $db = Database::getInstance();
+
+    /** @var iMSCP_Database $db */
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -87,7 +89,7 @@ function updateUserData(Form $form, $userId)
 
 
         // Force user to login again (needed due to possible password or email change)
-        exec_query('DELETE FROM login WHERE user_name = ?', $data['admin_name']);
+        exec_query('DELETE FROM login WHERE user_name = ?', [$data['admin_name']]);
 
         EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
             'userId'   => $userId,
