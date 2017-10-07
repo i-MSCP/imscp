@@ -196,12 +196,7 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
             throw new iMSCPException("Couldn't get configuration parameters from database.");
         }
 
-        $keyColumn = $this->keyColumn;
-        $valueColumn = $this->valueColumn;
-
-        foreach ($stmt as $row) {
-            $this->parameters[$row[$keyColumn]] = $row[$valueColumn];
-        }
+        $this->parameters = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
     }
 
     /**

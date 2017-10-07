@@ -375,9 +375,9 @@ function getUserLoginDataForm($usernameRequired = true, $passwordRequired = true
                 ['StringLength', true, ['min' => 2, 'max' => 30, 'messages' => tr('The username must be between %d and %d characters.', 2, 30)]],
                 ['Callback', true, [
                     function ($username) {
-                        return !exec_query(
+                        return exec_query(
                             'SELECT COUNT(admin_id) FROM admin WHERE admin_name = ?', [$username]
-                        )->fetchColumn();
+                        )->fetchColumn() == 0;
                     },
                     'messages' => tr("The '%value%' username is not available.")
                 ]]

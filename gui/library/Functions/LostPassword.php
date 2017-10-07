@@ -140,7 +140,7 @@ function setPassword($userType, $uniqueKey, $userPassword)
  */
 function uniqueKeyExists($uniqueKey)
 {
-    return (bool)exec_query('SELECT COUNT(admin_id) FROM admin WHERE uniqkey = ?', [$uniqueKey])->fetchColumn();
+    return exec_query('SELECT 1 FROM admin WHERE uniqkey = ?', [$uniqueKey])->fetchColumn() !== false;
 }
 
 /**

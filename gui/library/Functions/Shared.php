@@ -119,7 +119,7 @@ function createDefaultMailAccounts($mainDmnId, $userEmail, $dmnName, $forwardTyp
  */
 function delete_autoreplies_log_entries()
 {
-    exec_query(
+    execute_query(
         "DELETE FROM autoreplies_log WHERE `from` NOT IN (SELECT mail_addr FROM mail_users WHERE status <> 'todelete')"
     );
 }

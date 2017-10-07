@@ -146,7 +146,7 @@ function getResellerStats($resellerId)
 {
     $stmt = exec_query(
         '
-            SELECT t1.domain_id, t1.domain_admin_id
+            SELECT t1.domain_admin_id
             FROM domain AS t1
             JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
             WHERE t2.created_by = ?
@@ -160,8 +160,8 @@ function getResellerStats($resellerId)
 
     $rtraffConsumed = $rdiskConsumed = 0;
 
-    while ($row = $stmt->fetch()) {
-        $customerStats = getClientTrafficAndDiskStats($row['domain_admin_id']);
+    while ($domainAdminId = $stmt->fetchColumn()) {
+        $customerStats = getClientTrafficAndDiskStats($domainAdminId);
         $rtraffConsumed += $customerStats[4];
         $rdiskConsumed += $customerStats[5];
     }

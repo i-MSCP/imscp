@@ -173,7 +173,7 @@ class iMSCP_Database extends PDO
             return;
         }
 
-        $this->exec("SAVEPOINT TRANSACTION_{$this->transactionSavePointCounter}");
+        parent::exec("SAVEPOINT TRANSACTION_{$this->transactionSavePointCounter}");
         $this->transactionSavePointCounter++;
     }
 
@@ -191,7 +191,7 @@ class iMSCP_Database extends PDO
             return;
         }
 
-        $this->exec("RELEASE SAVEPOINT TRANSACTION_{$this->transactionSavePointCounter}");
+        parent::exec("RELEASE SAVEPOINT TRANSACTION_{$this->transactionSavePointCounter}");
     }
 
     /**
@@ -212,6 +212,6 @@ class iMSCP_Database extends PDO
             return;
         }
 
-        $this->exec("ROLLBACK TO SAVEPOINT TRANSACTION_{$this->transactionSavePointCounter}");
+        parent::exec("ROLLBACK TO SAVEPOINT TRANSACTION_{$this->transactionSavePointCounter}");
     }
 }

@@ -129,7 +129,6 @@ class iMSCP_Filter_Compress_Gzip
      */
     public function __construct($mode = self::FILTER_FILE, $compressionLevel = 1)
     {
-
         if (extension_loaded('zlib')) {
             if ($mode === self::FILTER_BUFFER || $mode === self::FILTER_FILE) {
                 $this->_mode = $mode;
@@ -142,7 +141,8 @@ class iMSCP_Filter_Compress_Gzip
 
         if (in_array(
             $compressionLevel,
-            range($this->_minCompressionLevel, $this->_maxCompressionLevel))) {
+            range($this->_minCompressionLevel, $this->_maxCompressionLevel))
+        ) {
             $this->_compressionLevel = $compressionLevel;
         } else {
             throw new iMSCP_Exception('iMSCP_Filter_Compress_Gzip error: Wrong value for compression level.');
@@ -171,7 +171,6 @@ class iMSCP_Filter_Compress_Gzip
      */
     public function filter($data, $filePath = '')
     {
-
         $this->_data = $data;
 
         // Act as filter for the PHP ob_start function
@@ -219,7 +218,6 @@ class iMSCP_Filter_Compress_Gzip
      */
     protected function _getEncoding()
     {
-
         if (isset($_SERVER['HTTP_ACCEPT_ENCODING'])) {
             if (strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'x-gzip') !== false) {
                 $this->_browserAcceptedEncoding = 'x-gzip';
@@ -228,7 +226,6 @@ class iMSCP_Filter_Compress_Gzip
             } else {
                 return false;
             }
-
         } else {
             return false;
         }
@@ -258,7 +255,6 @@ class iMSCP_Filter_Compress_Gzip
      */
     protected function _addCompressionInformation($time)
     {
-
         $dataSize = round(strlen($this->_data) / 1024, 2);
         $gzipDataSize = round($this->_gzipDataSize / 1024, 2);
         $savingkb = $dataSize - $gzipDataSize;
@@ -291,7 +287,6 @@ class iMSCP_Filter_Compress_Gzip
      */
     protected function _sendHeaders()
     {
-
         header("Content-Encoding: {$this->_browserAcceptedEncoding}");
         header("Content-Length: {$this->_gzipDataSize}");
     }
@@ -306,7 +301,6 @@ class iMSCP_Filter_Compress_Gzip
      */
     protected function _writeFile($gzipData, $filePath)
     {
-
         $directory = dirname($filePath);
 
         if (is_dir($directory) && is_writable($directory) && $gzipData !== false) {

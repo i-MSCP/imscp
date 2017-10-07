@@ -36,7 +36,7 @@ function systemHasResellers($minNbResellers = 1)
         )->fetchColumn();
     }
 
-    return ($resellersCount >= $minNbResellers);
+    return $resellersCount >= $minNbResellers;
 }
 
 /**
@@ -55,7 +55,7 @@ function systemHasCustomers($minNbCustomers = 1)
         )->fetchColumn();
     }
 
-    return ($customersCount >= $minNbCustomers);
+    return $customersCount >= $minNbCustomers;
 }
 
 /**
@@ -65,7 +65,7 @@ function systemHasCustomers($minNbCustomers = 1)
  */
 function systemHasAdminsOrResellersOrCustomers()
 {
-    return (systemHasManyAdmins() || systemHasResellers() || systemHasCustomers());
+    return systemHasManyAdmins() || systemHasResellers() || systemHasCustomers();
 }
 
 /**
@@ -75,7 +75,7 @@ function systemHasAdminsOrResellersOrCustomers()
  */
 function systemHasResellersOrCustomers()
 {
-    return (systemHasResellers() || systemHasCustomers());
+    return systemHasResellers() || systemHasCustomers();
 }
 
 /**
@@ -89,7 +89,7 @@ function systemHasManyAdmins()
 
     if (NULL === $hasManyAdmins) {
         $stmt = execute_query("SELECT COUNT(admin_id) FROM admin WHERE admin_type = 'admin'");
-        $hasManyAdmins = ($stmt->fetchColumn() > 1);
+        $hasManyAdmins = $stmt->fetchColumn() > 1;
     }
 
     return $hasManyAdmins;
