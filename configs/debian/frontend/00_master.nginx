@@ -48,7 +48,7 @@ server {
         try_files $uri $uri/ @plugin;
     }
 
-    location ^~/fcache.php$ {
+    location ~ ^/fcache\.php$ {
         allow 127.0.0.1;
         deny all;
         include imscp_fastcgi.conf;
