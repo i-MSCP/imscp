@@ -82,7 +82,7 @@ $tpl->assign([
 
 if (!empty($_POST)) {
     if ($cfg['BRUTEFORCE']) {
-        $bruteForce = new BruteForcePlugin(iMSCP_Registry::get('pluginManager'), 'captcha');
+        $bruteForce = new BruteForcePlugin(iMSCP_Registry::get('iMSCP_Application')->getPluginManager(), 'captcha');
         if ($bruteForce->isWaiting() || $bruteForce->isBlocked()) {
             set_page_message($bruteForce->getLastMessage(), 'error');
             redirectTo('index.php');

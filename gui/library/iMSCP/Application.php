@@ -59,6 +59,11 @@ class Application
     protected $eventsManager;
 
     /**
+     * @var PluginManager
+     */
+    protected $pluginManager;
+
+    /**
      * @var ConfigFile Merged configuration (Main configuration, Database configuration)
      */
     protected $config;
@@ -559,6 +564,25 @@ class Application
     }
 
     /**
+     * Retrieve plugin manager
+     *
+     * @return PluginManager
+     */
+    public function getPluginManager()
+    {
+        if (NULL === $this->pluginManager) {
+            $this->pluginManager = new PluginManager(
+                $this->getConfig()['PLUGINS_DIR'], $this->getEventsManager(), $this->getCache()
+            );
+
+            // Make plugin manager available through registry (bc)
+            Registry::set('pluginManager', $this->pluginManager);
+        }
+
+        return $this->pluginManager;
+    }
+
+    /**
      * Sets timezone
      *
      * @throws iMSCPException
@@ -873,9 +897,7 @@ class Application
             return;
         }
 
-        /** @var \iMSCP_Plugin_Manager $pluginManager */
-        $pluginManager = Registry::set('pluginManager', new PluginManager($this->getConfig()['PLUGINS_DIR']));
-
+        $pluginManager = $this->getPluginManager();
         foreach ($pluginManager->pluginGetList() as $pluginName) {
             if (!$pluginManager->pluginLoad($pluginName)) {
                 throw new iMSCPException(sprintf("Couldn't load plugin: %s", $pluginName));

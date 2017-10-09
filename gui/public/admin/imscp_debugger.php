@@ -460,7 +460,7 @@ function debugger_getIpErrors($tpl)
 function debugger_getPluginItemErrors($tpl)
 {
     /** @var iMSCP_Plugin_Manager $pluginManager */
-    $pluginManager = iMSCP_Registry::get('pluginManager');
+    $pluginManager = iMSCP_Registry::get('iMSCP_Application')->getPluginManager();
 
     /** @var iMSCP_Plugin[] $plugins */
     $plugins = $pluginManager->pluginGetLoaded();
@@ -504,7 +504,7 @@ function debugger_getPluginItemErrors($tpl)
 function debugger_changePluginItemStatus($pluginName, $table, $field, $itemId)
 {
     /** @var iMSCP_Plugin_Manager $pluginManager */
-    $pluginManager = iMSCP_Registry::get('pluginManager');
+    $pluginManager = iMSCP_Registry::get('iMSCP_Application')->getPluginManager();
     if ($pluginManager->pluginIsLoaded($pluginName)) {
         $pluginManager->pluginGet($pluginName)->changeItemStatus($table, $field, $itemId);
         return true;
@@ -541,7 +541,7 @@ function debugger_countRequests($statusField = NULL, $tableName = NULL)
     }
 
     /** @var iMSCP_Plugin[] $plugins */
-    $plugins = iMSCP_Registry::get('pluginManager')->pluginGetLoaded();
+    $plugins = iMSCP_Registry::get('iMSCP_Application')->getPluginManager()->pluginGetLoaded();
     $nbRequests = 0;
 
     if (!empty($plugins)) {
@@ -564,7 +564,7 @@ check_login('admin');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 /** @var iMSCP_Plugin_Manager $plugingManager */
-$plugingManager = iMSCP_Registry::get('pluginManager');
+$plugingManager = iMSCP_Registry::get('iMSCP_Application')->getPluginManager();
 
 $rqstCount = debugger_countRequests('admin_status', 'admin');
 $rqstCount += debugger_countRequests('domain_status', 'domain');

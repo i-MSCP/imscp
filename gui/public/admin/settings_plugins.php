@@ -161,7 +161,7 @@ function translateStatus($pluginStatus)
  */
 function generatePage($tpl, $pluginManager)
 {
-    $pluginList = $pluginManager->pluginGetList('Action', false);
+    $pluginList = $pluginManager->pluginGetList('all', false, false);
 
     if (empty($pluginList)) {
         $tpl->assign('PLUGINS_BLOCK', '');
@@ -543,7 +543,7 @@ check_login('admin');
 EventManager::getInstance()->dispatch(Events::onAdminScriptStart);
 
 /** @var PluginManager $pluginManager */
-$pluginManager = Registry::get('pluginManager');
+$pluginManager = Registry::get('iMSCP_Application')->getPluginManager();
 
 if (!empty($_POST) || !empty($_GET) || !empty($_FILES)) {
     if (isset($_GET['update_plugin_list'])) {

@@ -40,7 +40,7 @@ function init_login($eventManager)
     do_session_timeout();
 
     if (Registry::get('config')['BRUTEFORCE']) {
-        $bruteforce = new BrutforcePlugin(Registry::get('pluginManager'));
+        $bruteforce = new BrutforcePlugin(Registry::get('iMSCP_Application')->getPluginManager());
         $bruteforce->register($eventManager);
     }
 
