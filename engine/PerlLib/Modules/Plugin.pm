@@ -31,8 +31,17 @@ use iMSCP::Database;
 use iMSCP::EventManager;
 use iMSCP::Plugins;
 use JSON;
+use LWP::Simple qw/ $ua get /;
 use version;
 use parent 'Common::Object';
+
+# Set timeout for LWP::Simple
+$ua->timeout( 3 );
+$ua->agent( 'i-MSCP/1.5' );
+$ua->ssl_opts(
+    verify_hostname => 0,
+    SSL_verify_mode => 0x00
+);
 
 =head1 DESCRIPTION
 
@@ -117,6 +126,14 @@ sub process
             ),
             $pluginId
         );
+
+        unless ( defined $main::execmode && $main::execmode eq 'setup' ) {
+            my $httpScheme = $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'};
+            my $url = "${httpScheme}127.0.0.1:" . ( $httpScheme eq 'http://'
+                ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'} : $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'}
+            ) . '/fcache.php?id=iMSCP_Plugin_Manager_Metadata';
+            get( $url ) or die( "Couldn't trigger flush of frontEnd cache" );
+        }
     };
     if ( $@ ) {
         error( $@ );

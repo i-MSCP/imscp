@@ -1,5 +1,6 @@
 server {
     listen {BASE_SERVER_IP}:{BASE_SERVER_VHOST_HTTPS_PORT} default_server ssl;
+    listen 127.0.0.1:{BASE_SERVER_VHOST_HTTPS_PORT} ssl;
     # SECTION IPv6 BEGIN.
     listen [::]:{BASE_SERVER_VHOST_HTTPS_PORT} default_server ssl ipv6only=on;
     # SECTION IPv6 END.
@@ -48,6 +49,12 @@ server {
 
     location / {
         try_files $uri $uri/ @plugin;
+    }
+
+    location ^~/fcache.php$ {
+        allow 127.0.0.1;
+        deny all;
+        include imscp_fastcgi.conf;
     }
 
     location ~ \.php$ {

@@ -880,6 +880,9 @@ function showErrorPage($code)
         case 404:
             $message = 'Not Found';
             break;
+        case 500:
+            $message = 'Internal Server Error';
+            break;
         default:
             throw new iMSCPException(500, 'Unknown error page');
     }
@@ -889,7 +892,10 @@ function showErrorPage($code)
     if (isset($_SERVER['HTTP_ACCEPT'])) {
         if (strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
             header("Content-type: application/json");
-            exit(json_encode(['code' => 404, 'message' => $message]));
+            exit(json_encode([
+                'code'    => $code,
+                'message' => $message
+            ]));
         }
 
         if (strpos($_SERVER['HTTP_ACCEPT'], 'application/xmls') !== false) {
@@ -927,6 +933,16 @@ function showBadRequestErrorPage()
  *
  * @return void
  */
+function showForbiddenErrorPage()
+{
+    showErrorPage(403);
+}
+
+/**
+ * Show 404 error page
+ *
+ * @return void
+ */
 function showNotFoundErrorPage()
 {
     showErrorPage(404);
@@ -937,7 +953,7 @@ function showNotFoundErrorPage()
  *
  * @return void
  */
-function showForbiddenErrorPage()
+function showInternalServerError()
 {
-    showErrorPage(403);
+    showErrorPage(500);
 }
