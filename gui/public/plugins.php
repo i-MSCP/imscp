@@ -34,7 +34,7 @@ $urlComponents['path'] = rtrim($urlComponents['path'], '/');
 
 /** @var iMSCP_Plugin_Manager $pluginManager */
 $pluginManager = Registry::get('pluginManager');
-$plugins = $pluginManager->pluginGetLoaded('Action');
+$plugins = $pluginManager->pluginGetLoaded();
 
 if (empty($plugins)) {
     showNotFoundErrorPage();

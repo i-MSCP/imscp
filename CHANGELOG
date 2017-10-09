@@ -30,6 +30,7 @@ DISTRIBUTIONS
     Relaxed: Permissions policy on /etc/apt/apt.conf.d/* files -- Files must be world-readable
 
 FRONTEND
+    Enhancement: Make use of application cache for caching of plugins metadata (lifetime: indefinitely till change)
     Fixed: Couldn't parse static (inline|file) templates due to wrong conditional statement (class iMSCP_pTemplate)
     Fixed: Couldn't update customer password (admin and reseller UI)
     Fixed: Disabled DNS resource records get re-enabled when editing a record (Custom DNS records -- Client UI)

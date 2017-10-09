@@ -877,10 +877,6 @@ class Application
         $pluginManager = Registry::set('pluginManager', new PluginManager($this->getConfig()['PLUGINS_DIR']));
 
         foreach ($pluginManager->pluginGetList() as $pluginName) {
-            if ($pluginManager->pluginHasError($pluginName)) {
-                continue;
-            }
-
             if (!$pluginManager->pluginLoad($pluginName)) {
                 throw new iMSCPException(sprintf("Couldn't load plugin: %s", $pluginName));
             }

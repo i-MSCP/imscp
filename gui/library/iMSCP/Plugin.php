@@ -20,9 +20,6 @@
 
 /**
  * iMSCP_Plugin class
- *
- * Please, do not inherit from this class. Instead, inherit from the specialized classes localized into
- * gui/library/iMSCP/Plugin/
  */
 abstract class iMSCP_Plugin
 {
@@ -390,6 +387,51 @@ abstract class iMSCP_Plugin
      */
     public function delete(iMSCP_Plugin_Manager $pluginManager)
     {
+    }
+
+    /**
+     * Get routes
+     *
+     * This method allow the plugin to provide its routes. For instance:
+     *
+     * <code>
+     * $pluginDir = $this->getPluginManager()->pluginGetDirectory() . '/' . $this->getName();
+     *
+     * return array(
+     *  '/admin/mailgraph.php' => $pluginDir . '/frontend/mailgraph.php',
+     *    '/admin/mailgraphics.php' => $pluginDir . '/frontend/mailgraphics.php'
+     * );
+     * </code>
+     *
+     * @return array An array containing action script paths
+     * @TODO merge this method with the route() method
+     */
+    public function getRoutes()
+    {
+        return [];
+    }
+
+    /**
+     * Route an URL
+     *
+     * This method allow the plugin to provide its own routing logic. If a route match the given URL, this method MUST
+     * return a string representing the action script to load, else, NULL must be returned. For instance:
+     *
+     * <code>
+     * if (strpos($urlComponents['path'], '/mydns/api/') === 0) {
+     *  return $this->getPluginManager()->pluginGetDirectory() . '/' . $this->getName() . '/api.php';
+     * }
+     *
+     * return null;
+     * </code>
+     *
+     * @param array $urlComponents Associative array containing URL components
+     * @return string|null Either a string representing an action script path or null if not route match the URL
+     * @noinspection PhpUnusedParameterInspection
+     */
+    public function route(/** @noinspection PhpUnusedParameterInspection */ $urlComponents)
+    {
+        return NULL;
     }
 
     /**
