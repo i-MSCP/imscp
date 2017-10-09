@@ -42,6 +42,7 @@ FRONTEND
     Fixed: Wrong order for parameters in mail delete.php (i18n -- client UI)
     Fixed: Wrong status shown in administrator overview interface for customers when a password is being modified
     Fixed: Wrong value passed-in the `onBeforeEditUser' and `onAfterEditUser' events for the `admin_pass' parameter
+    Review: Prepare the SQL statements once per session (objects counting, stats)
     Rewritten: iMSCP_Database class (now extends the PDO class)
     Rewritten: iMSCP_Database_ResultSet (now extends the PDOStatement class -- Renamed to iMSCP\Database\ResultSet)
 

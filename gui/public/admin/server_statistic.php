@@ -35,27 +35,32 @@ use iMSCP_pTemplate as TemplateEngine;
  */
 function getServerTraffic($startDate, $endDate)
 {
-    $stmt = exec_query(
-        '
-            SELECT IFNULL(SUM(bytes_in), 0) AS sbin,
-                IFNULL(SUM(bytes_out), 0) AS sbout,
-                IFNULL(SUM(bytes_mail_in), 0) AS smbin,
-                IFNULL(SUM(bytes_mail_out), 0) AS smbout,
-                IFNULL(SUM(bytes_pop_in), 0) AS spbin,
-                IFNULL(SUM(bytes_pop_out), 0) AS spbout,
-                IFNULL(SUM(bytes_web_in), 0) AS swbin,
-                IFNULL(SUM(bytes_web_out), 0) AS swbout
-            FROM server_traffic
-            WHERE traff_time BETWEEN ? AND ?
-        ',
-        [$startDate, $endDate]
-    );
+    static $stmt = NULL;
 
-    if (!$stmt->rowCount()) {
-        return array_fill(0, 10, 0);
+    if (NULL === $stmt) {
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare(
+            '
+                SELECT IFNULL(SUM(bytes_in), 0) AS sbin,
+                    IFNULL(SUM(bytes_out), 0) AS sbout,
+                    IFNULL(SUM(bytes_mail_in), 0) AS smbin,
+                    IFNULL(SUM(bytes_mail_out), 0) AS smbout,
+                    IFNULL(SUM(bytes_pop_in), 0) AS spbin,
+                    IFNULL(SUM(bytes_pop_out), 0) AS spbout,
+                    IFNULL(SUM(bytes_web_in), 0) AS swbin,
+                    IFNULL(SUM(bytes_web_out), 0) AS swbout
+                FROM server_traffic
+                WHERE traff_time BETWEEN ? AND ?
+            '
+        );
     }
 
-    $row = $stmt->fetch();
+    $stmt->execute([$startDate, $endDate]);
+
+    if (($row = $stmt->fetch()) === false) {
+        return array_fill(0, 10, 0);
+    }
 
     return [
         $row['swbin'], $row['swbout'], $row['smbin'], $row['smbout'], $row['spbin'], $row['spbout'],

@@ -136,7 +136,16 @@ function delete_autoreplies_log_entries()
  */
 function get_user_name($userId)
 {
-    return exec_query('SELECT admin_name FROM admin WHERE admin_id = ?', [$userId])->fetchColumn();
+    static $stmt = NULL;
+
+    if (NULL === $stmt) {
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare('SELECT admin_name FROM admin WHERE admin_id = ?');
+    }
+
+    $stmt->execute([$userId]);
+    return $stmt->fetchColumn();
 }
 
 /***********************************************************************************************************************
@@ -285,17 +294,26 @@ function get_domain_default_props($domainAdminId, $createdBy = NULL)
  *
  * @throws iMSCPException in case the domain id cannot be found
  * @param int $customeId Customer unique identifier
+ * @param int $forceReload Flag indicating whether or not data must be fetched again from database
  * @return int main domain unique identifier
  */
-function get_user_domain_id($customeId)
+function get_user_domain_id($customeId, $forceReload = false)
 {
     static $domainId = NULL;
+    static $stmt = NULL;
 
-    if (NULL !== $domainId) {
+    if (NULL === $stmt) {
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare('SELECT domain_id FROM domain WHERE domain_admin_id = ?');
+    }
+
+    if (!$forceReload && NULL !== $domainId) {
         return $domainId;
     }
 
-    $stmt = exec_query('SELECT domain_id FROM domain WHERE domain_admin_id = ?', [$customeId]);
+    $stmt->execute([$customeId]);
+
     if (($domainId = $stmt->fetchColumn()) === false) {
         throw new iMSCPException(sprintf("Couldn't find domain ID of user with ID %s", $customeId));
     }
@@ -1216,7 +1234,6 @@ function utils_getMaxFileUpload()
     $uploadMaxFilesize = utils_getPhpValueInBytes(ini_get('upload_max_filesize'));
     $postMaxSize = utils_getPhpValueInBytes(ini_get('post_max_size'));
     $memoryLimit = utils_getPhpValueInBytes(ini_get('memory_limit'));
-
     return min($uploadMaxFilesize, $postMaxSize, $memoryLimit);
 }
 
@@ -1307,8 +1324,9 @@ function utils_normalizePath($path, $posixCompliant = false)
 
     $path = implode('/', $newSegments);
 
-    if ($initialSlashes)
+    if ($initialSlashes) {
         $path = str_repeat('/', $initialSlashes) . $path;
+    }
 
     return (isset($path)) ? $path : '.';
 }

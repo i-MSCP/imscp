@@ -161,7 +161,6 @@ function get_objects_count($table, $idField, $where = '')
 {
     $table = quoteIdentifier($table);
     $idField = quoteIdentifier($idField);
-
     return execute_query("SELECT COUNT(DISTINCT $idField) FROM $table $where")->fetchColumn();
 }
 
@@ -170,23 +169,16 @@ function get_objects_count($table, $idField, $where = '')
  * SQL database and SQL users that belong to the given reseller, excluding
  * those that are being deleted
  *
- * @return array An array containing count of administrators, resellers,
- *              customers, domains, subdomains, domain aliases, mail accounts,
- *              FTP users, SQL databases and SQL users
+ * @return array An array containing in order, count of administrators,
+ *              resellers, customers, domains, subdomains, domain aliases,
+ *              mail accounts, FTP users, SQL databases and SQL users
  */
 function get_objects_counts()
 {
     return [
-        get_administrators_count(),
-        get_resellers_count(),
-        get_customers_count(),
-        get_domains_count(),
-        get_subdomains_count(),
-        get_domain_aliases_count(),
-        get_mail_accounts_count(),
-        get_ftp_users_count(),
-        get_sql_databases_count(),
-        get_sql_users_count()
+        get_administrators_count(), get_resellers_count(), get_customers_count(), get_domains_count(),
+        get_subdomains_count(), get_domain_aliases_count(), get_mail_accounts_count(), get_ftp_users_count(),
+        get_sql_databases_count(), get_sql_users_count()
     ];
 }
 
@@ -201,9 +193,16 @@ function get_objects_counts()
  */
 function get_reseller_customers_count($resellerId)
 {
-    return exec_query(
-        "SELECT COUNT(admin_id) FROM admin WHERE created_by = ? AND admin_status <> 'todelete'", [$resellerId]
-    )->fetchColumn();
+    static $stmt = NULL;
+
+    if (NULL === $stmt) {
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare("SELECT COUNT(admin_id) FROM admin WHERE created_by = ? AND admin_status <> 'todelete'");
+    }
+
+    $stmt->execute([$resellerId]);
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -215,16 +214,24 @@ function get_reseller_customers_count($resellerId)
  */
 function get_reseller_domains_count($resellerId)
 {
-    return exec_query(
-        "
-            SELECT COUNT(domain_id)
-            FROM domain
-            JOIN admin ON(admin_id = domain_admin_id)
-            WHERE created_by = ?
-            AND domain_status <> 'todelete'
-        ",
-        [$resellerId]
-    )->fetchColumn();
+    static $stmt = NULL;
+
+    if (NULL === $stmt) {
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare(
+            "
+               SELECT COUNT(domain_id)
+                FROM domain
+                JOIN admin ON(admin_id = domain_admin_id)
+                WHERE created_by = ?
+                AND domain_status <> 'todelete'
+            "
+        );
+    }
+
+    $stmt->execute([$resellerId]);
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -236,30 +243,35 @@ function get_reseller_domains_count($resellerId)
  */
 function get_reseller_subdomains_count($resellerId)
 {
-    return exec_query(
+    static $stmt = NULL;
+
+    if (NULL === $stmt) {
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare(
             "
-                SELECT COUNT(subdomain_id)
-                FROM subdomain
-                JOIN domain USING(domain_id)
-                JOIN admin ON(admin_id = domain_admin_id)
-                WHERE created_by = ?
-                AND subdomain_status <> 'todelete'
-            ",
-            [$resellerId]
-        )->fetchColumn()
-        +
-        exec_query(
+                SELECT (
+                    SELECT COUNT(subdomain_id)
+                    FROM subdomain
+                    JOIN domain USING(domain_id)
+                    JOIN admin ON(admin_id = domain_admin_id)
+                    WHERE created_by = ?
+                    AND subdomain_status <> 'todelete'
+                ) + (
+                    SELECT COUNT(subdomain_alias_id)
+                    FROM subdomain_alias
+                    JOIN domain_aliasses USING(alias_id)
+                    JOIN domain USING(domain_id)
+                    JOIN admin ON(admin_id = domain_admin_id)
+                    WHERE created_by = ?
+                    AND subdomain_alias_status <> 'todelete'
+                )
             "
-                SELECT COUNT(subdomain_alias_id)
-                FROM subdomain_alias
-                JOIN domain_aliasses USING(alias_id)
-                JOIN domain USING(domain_id)
-                JOIN admin ON(admin_id = domain_admin_id)
-                WHERE created_by = ?
-                AND subdomain_alias_status <> 'todelete'
-            ",
-            [$resellerId]
-        )->fetchColumn();
+        );
+    }
+
+    $stmt->execute([$resellerId, $resellerId]);
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -271,17 +283,25 @@ function get_reseller_subdomains_count($resellerId)
  */
 function get_reseller_domain_aliases_count($resellerId)
 {
-    return exec_query(
-        "
-            SELECT COUNT(alias_id)
-            FROM domain_aliasses
-            JOIN domain USING(domain_id)
-            JOIN admin ON(admin_id = domain_admin_id)
-            WHERE created_by = ?
-            AND alias_status <> 'todelete'
-        ",
-        [$resellerId]
-    )->fetchColumn();
+    static $stmt = NULL;
+
+    if (NULL === $stmt) {
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare(
+            "
+                SELECT COUNT(alias_id)
+                FROM domain_aliasses
+                JOIN domain USING(domain_id)
+                JOIN admin ON(admin_id = domain_admin_id)
+                WHERE created_by = ?
+                AND alias_status <> 'todelete'
+            "
+        );
+    }
+
+    $stmt->execute([$resellerId]);
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -295,34 +315,43 @@ function get_reseller_domain_aliases_count($resellerId)
  */
 function get_reseller_mail_accounts_count($resellerId)
 {
-    $query = '
-        SELECT COUNT(mail_id)
-        FROM mail_users
-        JOIN domain USING(domain_id)
-        JOIN admin ON(admin_id = domain_admin_id)
-        WHERE created_by = ?
-    ';
+    static $stmt = NULL;
 
-    if (!Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
-        # A default mail account is composed of a name matching with:
-        # - abuse, hostmaster, postmaster or webmaster for a domain
-        # - webmaster for a subdomain
-        # and is set as forward mail account. If the customeer turn a default
-        # mail account into a normal mail account, it is no longer seen as
-        # default mail account.
-        $query .= "
-            AND !(
-                mail_acc IN('abuse', 'hostmaster', 'postmaster', 'webmaster')
-                AND
-                mail_type IN('" . MT_NORMAL_FORWARD . "', '" . MT_ALIAS_FORWARD . "')
-            )    
-            AND !(mail_acc = 'webmaster' AND mail_type IN('" . MT_SUBDOM_FORWARD . "', '" . MT_ALSSUB_FORWARD . "'))
-        ";
+    if (NULL === $stmt) {
+        $query = '
+            SELECT COUNT(mail_id)
+            FROM mail_users
+            JOIN domain USING(domain_id)
+            JOIN admin ON(admin_id = domain_admin_id)
+            WHERE created_by = ?
+        ';
+
+        if (!Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
+            # A default mail account is composed of a name matching with:
+            # - abuse, hostmaster, postmaster or webmaster for a domain
+            # - webmaster for a subdomain
+            # and is set as forward mail account. If the customeer turn a default
+            # mail account into a normal mail account, it is no longer seen as
+            # default mail account.
+            $query .= "
+                AND !(
+                    mail_acc IN('abuse', 'hostmaster', 'postmaster', 'webmaster')
+                    AND
+                    mail_type IN('" . MT_NORMAL_FORWARD . "', '" . MT_ALIAS_FORWARD . "')
+                )    
+                AND !(mail_acc = 'webmaster' AND mail_type IN('" . MT_SUBDOM_FORWARD . "', '" . MT_ALSSUB_FORWARD . "'))
+            ";
+        }
+
+        $query .= "AND status <> 'todelete'";
+
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare($query);
     }
 
-    $query .= "AND status <> 'todelete'";
-
-    return exec_query($query, [$resellerId])->fetchColumn();
+    $stmt->execute([$resellerId]);
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -334,10 +363,24 @@ function get_reseller_mail_accounts_count($resellerId)
  */
 function get_reseller_ftp_users_count($resellerId)
 {
-    return exec_query(
-        "SELECT COUNT(userid) FROM ftp_users JOIN admin USING(admin_id) WHERE created_by = ? AND status <> 'todelete'",
-        [$resellerId]
-    )->fetchColumn();
+    static $stmt = NULL;
+
+    if (NULL === $stmt) {
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare(
+            "
+                SELECT COUNT(userid)
+                FROM ftp_users
+                JOIN admin USING(admin_id)
+                WHERE created_by = ?
+                AND status <> 'todelete'
+            "
+        );
+    }
+
+    $stmt->execute([$resellerId]);
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -348,16 +391,24 @@ function get_reseller_ftp_users_count($resellerId)
  */
 function get_reseller_sql_databases_count($resellerId)
 {
-    return exec_query(
-        '
-            SELECT COUNT(sqld_id)
-            FROM sql_database
-            JOIN domain USING(domain_id)
-            JOIN admin ON(admin_id = domain_admin_id)
-            WHERE created_by = ?
-        ',
-        [$resellerId]
-    )->fetchColumn();
+    static $stmt = NULL;
+
+    if (NULL === $stmt) {
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare(
+            '
+                SELECT COUNT(sqld_id)
+                FROM sql_database
+                JOIN domain USING(domain_id)
+                JOIN admin ON(admin_id = domain_admin_id)
+                WHERE created_by = ?
+            '
+        );
+    }
+
+    $stmt->execute([$resellerId]);
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -368,17 +419,25 @@ function get_reseller_sql_databases_count($resellerId)
  */
 function get_reseller_sql_users_count($resellerId)
 {
-    return exec_query(
-        '
-            SELECT COUNT(DISTINCT sqlu_name)
-            FROM sql_user
-            JOIN sql_database USING(sqld_id)
-            JOIN domain USING(domain_id)
-            JOIN admin ON(admin_id = domain_admin_id)
-            WHERE created_by = ?
-        ',
-        [$resellerId]
-    )->fetchColumn();
+    static $stmt = NULL;
+
+    if (NULL === $stmt) {
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare(
+            '
+                SELECT COUNT(DISTINCT sqlu_name)
+                FROM sql_user
+                JOIN sql_database USING(sqld_id)
+                JOIN domain USING(domain_id)
+                JOIN admin ON(admin_id = domain_admin_id)
+                WHERE created_by = ?
+            '
+        );
+    }
+
+    $stmt->execute([$resellerId]);
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -416,20 +475,28 @@ function get_reseller_objects_counts($resellerId)
  */
 function get_customer_subdomains_count($domainId)
 {
-    return exec_query(
-            "SELECT COUNT(subdomain_id) FROM subdomain WHERE domain_id = ? AND subdomain_status <> 'todelete'",
-            [$domainId]
-        )->fetchColumn()
-        + exec_query(
+    static $stmt = NULL;
+
+    if (NULL === $stmt) {
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare(
             "
-                SELECT COUNT(subdomain_alias_id)
-                FROM subdomain_alias
-                JOIN domain_aliasses USING(alias_id)
-                WHERE domain_id = ?
-                AND subdomain_alias_status <> 'todelete'
-            ",
-            [$domainId]
-        )->fetchColumn();
+                SELECT (
+                    SELECT COUNT(subdomain_id) FROM subdomain WHERE domain_id = ? AND subdomain_status <> 'todelete'
+                ) + (
+                    SELECT COUNT(subdomain_alias_id)
+                    FROM subdomain_alias
+                    JOIN domain_aliasses USING(alias_id)
+                    WHERE domain_id = ?
+                    AND subdomain_alias_status <> 'todelete'
+                )
+            "
+        );
+    }
+
+    $stmt->execute([$domainId, $domainId]);
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -441,10 +508,23 @@ function get_customer_subdomains_count($domainId)
  */
 function get_customer_domain_aliases_count($domainId)
 {
-    return exec_query(
-        "SELECT COUNT(alias_id) FROM domain_aliasses WHERE domain_id = ? AND alias_status NOT IN('ordered', 'todelete')",
-        [$domainId]
-    )->fetchColumn();
+    static $stmt = NULL;
+
+    if (NULL === $stmt) {
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare(
+            "
+                SELECT COUNT(alias_id)
+                FROM domain_aliasses
+                WHERE domain_id = ?
+                AND alias_status NOT IN('ordered', 'todelete')
+            "
+        );
+    }
+
+    $stmt->execute([$domainId]);
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -458,28 +538,37 @@ function get_customer_domain_aliases_count($domainId)
  */
 function get_customer_mail_accounts_count($domainId)
 {
-    $query = 'SELECT COUNT(mail_id) FROM mail_users WHERE domain_id = ?';
+    static $stmt = NULL;
 
-    if (!Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
-        # A default mail account is composed of a name matching with:
-        # - abuse, hostmaster, postmaster or webmaster for a domain
-        # - webmaster for a subdomain
-        # and is set as forward mail account. If the customeer turn a default
-        # mail account into a normal mail account, it is no longer seen as
-        # default mail account.
-        $query .= "
-            AND !(
-                mail_acc IN('abuse', 'hostmaster', 'postmaster', 'webmaster')
-                AND
-                mail_type IN('" . MT_NORMAL_FORWARD . "', '" . MT_ALIAS_FORWARD . "')
-            )    
-            AND !(mail_acc = 'webmaster' AND mail_type IN('" . MT_SUBDOM_FORWARD . "', '" . MT_ALSSUB_FORWARD . "'))
-        ";
+    if (NULL === $stmt) {
+        $query = 'SELECT COUNT(mail_id) FROM mail_users WHERE domain_id = ?';
+
+        if (!Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']) {
+            # A default mail account is composed of a name matching with:
+            # - abuse, hostmaster, postmaster or webmaster for a domain
+            # - webmaster for a subdomain
+            # and is set as forward mail account. If the customeer turn a default
+            # mail account into a normal mail account, it is no longer seen as
+            # default mail account.
+            $query .= "
+                AND !(
+                    mail_acc IN('abuse', 'hostmaster', 'postmaster', 'webmaster')
+                    AND
+                    mail_type IN('" . MT_NORMAL_FORWARD . "', '" . MT_ALIAS_FORWARD . "')
+                )    
+                AND !(mail_acc = 'webmaster' AND mail_type IN('" . MT_SUBDOM_FORWARD . "', '" . MT_ALSSUB_FORWARD . "'))
+            ";
+        }
+
+        $query .= "AND status <> 'todelete'";
+
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare($query);
     }
 
-    $query .= "AND status <> 'todelete'";
-
-    return exec_query($query, [$domainId])->fetchColumn();
+    $stmt->execute([$domainId]);
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -491,9 +580,16 @@ function get_customer_mail_accounts_count($domainId)
  */
 function get_customer_ftp_users_count($customerId)
 {
-    return exec_query(
-        "SELECT COUNT(userid) FROM ftp_users WHERE admin_id = ? AND status <> 'todelete'", [$customerId]
-    )->fetchColumn();
+    static $stmt = NULL;
+
+    if (NULL === $stmt) {
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare("SELECT COUNT(userid) FROM ftp_users WHERE admin_id = ? AND status <> 'todelete'");
+    }
+
+    $stmt->execute([$customerId]);
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -504,9 +600,16 @@ function get_customer_ftp_users_count($customerId)
  */
 function get_customer_sql_databases_count($domainId)
 {
-    return exec_query(
-        'SELECT COUNT(sqld_id) FROM sql_database WHERE domain_id = ?', [$domainId]
-    )->fetchColumn();
+    static $stmt = NULL;
+
+    if (NULL === $stmt) {
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare('SELECT COUNT(sqld_id) FROM sql_database WHERE domain_id = ?');
+    }
+
+    $stmt->execute([$domainId]);
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -517,10 +620,18 @@ function get_customer_sql_databases_count($domainId)
  */
 function get_customer_sql_users_count($domainId)
 {
-    return exec_query(
-        'SELECT COUNT(DISTINCT sqlu_name) FROM sql_user JOIN sql_database USING(sqld_id) WHERE domain_id = ?',
-        [$domainId]
-    )->fetchColumn();
+    static $stmt = NULL;
+
+    if (NULL === $stmt) {
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare(
+            'SELECT COUNT(DISTINCT sqlu_name) FROM sql_user JOIN sql_database USING(sqld_id) WHERE domain_id = ?'
+        );
+    }
+
+    $stmt->execute([$domainId]);
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -534,7 +645,7 @@ function get_customer_sql_users_count($domainId)
  */
 function get_customer_objects_counts($customerId)
 {
-    $domainId = get_user_domain_id($customerId);
+    $domainId = get_user_domain_id($customerId, true);
 
     return [
         get_customer_subdomains_count($domainId),

@@ -38,24 +38,29 @@ function getPercentUsage($usage, $usageMax)
  */
 function getClientMonthlyTrafficStats($domainId)
 {
-    $stmt = exec_query(
-        '
-          SELECT IFNULL(SUM(dtraff_web), 0) AS dtraff_web,
-            IFNULL(SUM(dtraff_ftp), 0) AS dtraff_ftp,
-            IFNULL(SUM(dtraff_mail), 0) AS dtraff_mail,
-            IFNULL(SUM(dtraff_pop), 0) AS dtraff_pop
-          FROM domain_traffic
-          WHERE dtraff_time BETWEEN ? AND ?
-          AND domain_id = ?
-        ',
-        [getFirstDayOfMonth(), getLastDayOfMonth(), $domainId]
-    );
+    static $stmt = NULL;
 
-    if (!$stmt->rowCount()) {
-        return array_fill(0, 5, 0);
+    if (NULL === $stmt) {
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare(
+            '
+                SELECT IFNULL(SUM(dtraff_web), 0) AS dtraff_web,
+                    IFNULL(SUM(dtraff_ftp), 0) AS dtraff_ftp,
+                    IFNULL(SUM(dtraff_mail), 0) AS dtraff_mail,
+                    IFNULL(SUM(dtraff_pop), 0) AS dtraff_pop
+                FROM domain_traffic
+                WHERE dtraff_time BETWEEN ? AND ?
+                AND domain_id = ?
+            '
+        );
     }
 
-    $row = $stmt->fetch();
+    $stmt->execute([getFirstDayOfMonth(), getLastDayOfMonth(), $domainId]);
+
+    if (($row = $stmt->fetch()) === false) {
+        return array_fill(0, 5, 0);
+    }
 
     return [
         $row['dtraff_web'],
@@ -74,16 +79,21 @@ function getClientMonthlyTrafficStats($domainId)
  */
 function getClientTrafficAndDiskStats($clientId)
 {
-    $stmt = exec_query(
-        'SELECT domain_id, IFNULL(domain_disk_usage, 0) AS disk_usage FROM domain WHERE domain_admin_id = ?',
-        [$clientId]
-    );
+    static $stmt = NULL;
 
-    if (!$stmt->rowCount()) {
-        showBadRequestErrorPage();
+    if (NULL === $stmt) {
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare(
+            'SELECT domain_id, IFNULL(domain_disk_usage, 0) AS disk_usage FROM domain WHERE domain_admin_id = ?'
+        );
     }
 
-    $row = $stmt->fetch();
+    $stmt->execute([$clientId]);
+
+    if (($row = $stmt->fetch()) === false) {
+        showBadRequestErrorPage();
+    }
 
     list($webTraffic, $ftpTraffic, $smtpTraffic, $popTraffic, $totalTraffic) = getClientMonthlyTrafficStats(
         $row['domain_id']
@@ -102,21 +112,26 @@ function getClientTrafficAndDiskStats($clientId)
  */
 function getClientItemCountsAndLimits($clientId)
 {
-    $stmt = exec_query(
-        '
-            SELECT domain_id, domain_subd_limit, domain_alias_limit, domain_mailacc_limit, domain_ftpacc_limit,
-                domain_sqld_limit, domain_sqlu_limit, domain_traffic_limit, domain_disk_limit
-            FROM domain
-            WHERE domain_admin_id = ?
-        ',
-        [$clientId]
-    );
+    $stmt = NULL;
 
-    if (!$stmt->rowCount()) {
-        return array_fill(0, 14, 0);
+    if (NULL === $stmt) {
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare(
+            '
+               SELECT domain_id, domain_subd_limit, domain_alias_limit, domain_mailacc_limit, domain_ftpacc_limit,
+                    domain_sqld_limit, domain_sqlu_limit, domain_traffic_limit, domain_disk_limit
+                FROM domain
+                WHERE domain_admin_id = ?
+            '
+        );
     }
 
-    $row = $stmt->fetch();
+    $stmt->execute([$clientId]);
+
+    if (($row = $stmt->fetch()) === false) {
+        return array_fill(0, 14, 0);
+    }
 
     return [
         ($row['domain_subd_limit'] == -1) ? 0 : get_customer_subdomains_count($row['domain_id']),
@@ -144,17 +159,24 @@ function getClientItemCountsAndLimits($clientId)
  */
 function getResellerStats($resellerId)
 {
-    $stmt = exec_query(
-        '
-            SELECT t1.domain_admin_id
-            FROM domain AS t1
-            JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
-            WHERE t2.created_by = ?
-        ',
-        [$resellerId]
-    );
+    static $stmt = NULL;
 
-    if (!$stmt->rowCount()) {
+    if (NULL === $stmt) {
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare(
+            '
+                SELECT t1.domain_admin_id
+                FROM domain AS t1
+                JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
+                WHERE t2.created_by = ?
+            '
+        );
+    }
+
+    $stmt->execute([$resellerId]);
+
+    if ($stmt->rowCount() < 1) {
         return array_fill(0, 9, 0);
     }
 
