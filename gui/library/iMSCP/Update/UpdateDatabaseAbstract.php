@@ -117,7 +117,7 @@ abstract class UpdateDatabaseAbstract extends UpdateAbstract
                 foreach ($queries as $query) {
                     if (!empty($query)) {
                         $stmt = $db->prepare($query);
-                        $stmt->execute($stmt);
+                        $stmt->execute();
 
                         /** @noinspection PhpStatementHasEmptyBodyInspection */
                         while ($stmt->nextRowset()) {

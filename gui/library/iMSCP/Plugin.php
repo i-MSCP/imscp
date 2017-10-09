@@ -591,7 +591,7 @@ abstract class iMSCP_Plugin
                     $migrationFilesContent = include($migrationFile);
                     if (isset($migrationFilesContent[$migrationMode])) {
                         $stmt = $db->prepare($migrationFilesContent[$migrationMode]);
-                        $stmt->execute($stmt);
+                        $stmt->execute();
 
                         /** @noinspection PhpStatementHasEmptyBodyInspection */
                         while ($stmt->nextRowset()) {
