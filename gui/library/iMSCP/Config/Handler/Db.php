@@ -304,8 +304,8 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
                 )
             );
 
-            $this->updateStmt->bindParam(1, $this->key, PDO::PARAM_STR);
-            $this->updateStmt->bindParam(2, $this->value, PDO::PARAM_STR);
+            $this->insertStmt->bindParam(1, $this->key, PDO::PARAM_STR);
+            $this->insertStmt->bindParam(2, $this->value, PDO::PARAM_STR);
         }
 
         if (!$this->insertStmt->execute()) {
