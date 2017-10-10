@@ -988,7 +988,7 @@ function reseller_checkAndUpdateData($domainId)
                     [$data['domain_ip_id'], $domainId]
                 );
                 exec_query(
-                    "UPDATE domain_aliasses SET alias_ip_id = ? WHERE domain_id = ? AND alias_status = 'ordered",
+                    "UPDATE domain_aliasses SET alias_ip_id = ? WHERE domain_id = ? AND alias_status = 'ordered'",
                     [$data['domain_ip_id'], $domainId]
                 );
             }
