@@ -155,7 +155,8 @@ EOF
                     }
                 }
             }
-        } while $rs < 30 && $iMSCP::Dialog::InputValidation::lastValidationError;
+        } while $rs < 30
+            && $iMSCP::Dialog::InputValidation::lastValidationError;
 
         return $rs unless $rs < 30;
 
@@ -250,6 +251,7 @@ sub askDomain
         || !isValidDomain( $domainName )
     ) {
         if ( $domainName eq '' ) {
+            $iMSCP::Dialog::InputValidation::lastValidationError = '';
             my @labels = split /\./, main::setupGetQuestion( 'SERVER_HOSTNAME' );
             $domainName = 'panel.' . join( '.', @labels[1 .. $#labels] );
         }
