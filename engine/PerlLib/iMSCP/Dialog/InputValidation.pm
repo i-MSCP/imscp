@@ -465,7 +465,7 @@ sub isNotEmpty( $ )
     defined $string or die( 'Missing $string parameter' );
 
     $lastValidationError = '';
-    return 1 if !$string || $string =~ /[^\s]/;
+    return 1 if length $string && $string =~ /[^\s]/;
 
     $lastValidationError = <<"EOF";
 \\Z1Entry cannot be empty.\\Zn
