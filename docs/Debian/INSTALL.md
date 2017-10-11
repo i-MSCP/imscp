@@ -2,7 +2,7 @@
 
 ## Supported Debian versions
 
-Any released version >= 8.x (Debian Jessie)
+Any released version ≥ Debian 8/Jessie
 
 ## Installation
 

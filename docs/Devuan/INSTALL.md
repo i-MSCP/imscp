@@ -2,7 +2,7 @@
 
 ## Supported Devuan versions
 
-Any released version >= 1.0 (Devuan Jessie)
+Devuan 1.0/Jessie
 
 ## Installation
 

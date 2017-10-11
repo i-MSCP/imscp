@@ -211,7 +211,7 @@ INSTALLER
 
 CONGIGS
 	Added: Dedicated configuration template file for Dovecot 2.1.x
-	Fixed: SSLv2 and SSLv3 must be disabled to prevent POODLE attacks ( Postfix, Dovecot >= 2.1, Proftpd )
+	Fixed: SSLv2 and SSLv3 must be disabled to prevent POODLE attacks ( Postfix, Dovecot ≥ 2.1, Proftpd )
 	Removed: The iterate_query parameter from the dovecot-sql.conf file ( Parameter not available in Dovecot 1.x )
 
 ENGINE
@@ -613,7 +613,7 @@ TICKETS
 	Fixed #1065: Bug - Unable to unsuspend customer account from admin UI
 	Fixed #1066: Bug - Customer's domains remain reachable through HTTPS when they are deactivated
 	Fixed #1075: Bug - mysqldump: Can't create/write to file
-	Fixed #1078: Defect - Defect - Table 'mysql.host' is not longer provided with MySQL >= 5.6.7
+	Fixed #1078: Defect - Defect - Table 'mysql.host' is not longer provided with MySQL ≥ 5.6.7
 
 ------------------------------------------------------------------------------------------------------------------------
 1.1.5

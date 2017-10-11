@@ -2,7 +2,7 @@
 
 ## Supported Ubuntu versions
 
-Any LTS version >= 14.04 (Ubuntu 16.04 recommended)
+Any LTS version 1.0 Ubuntu 14.04/Trusty Thar
 
 ## Installation
 

@@ -3,7 +3,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2017.09.28
+# Last update: 2017.10.11
 
 %main::questions = (
     # Mandatory parameters
@@ -90,7 +90,7 @@
     # for available options.
     #
     # Leave empty for default: Depend on distribution and codename.
-    SQL_SERVER                          => 'mariadb_10.2',
+    SQL_SERVER                          => '',
 
     # SQL root user (mandatory)
     #

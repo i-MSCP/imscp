@@ -406,7 +406,7 @@ i-MSCP 1.0.0-beta1
 Distributions:
 	Debian:
 		- Added support for testing (wheezy)
-		- Removed support for oldstable (lenny) - Perl >= v5.10.1 required
+		- Removed support for oldstable (lenny) - Perl ≥ v5.10.1 required
 
 Features / Enhancements:
 
@@ -418,7 +418,7 @@ Features / Enhancements:
 		Core:
 			- Improved logging system
 		Migration:
-			- Added migration script for ispCP version >= 1.0.7
+			- Added migration script for ispCP version ≥ 1.0.7
 		Setup/Update:
 			- New i-mscp tree builder
 			- New installer (Dialog - merged setup and update scripts)
