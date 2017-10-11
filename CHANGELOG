@@ -26,6 +26,7 @@ DATABASE
     Fixed: Deprecated columns not removed while updating from some older versions (r270)
 
 DISTRIBUTIONS
+    Added: Support for Debian 10/Buster (Experimental) 
     Review: Avoid APT pinning whenever as possible (All distributions)
     Relaxed: Permissions policy on /etc/apt/apt.conf.d/* files -- Files must be world-readable
 
