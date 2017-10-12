@@ -68,6 +68,7 @@ LISTENERS
 
 PACKAGES
     Fixed: Distribution packages not installed in `build' mode (Package::AntiRootkits, Package::Webstats)
+    Fixed: Limit number of Nginx worker processes in auto mode (Package::FrontEnd::Installer)
     Review: Cleanup production configuration files (Package::FrontEnd::Installer)
 
 PLUGINS

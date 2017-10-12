@@ -326,7 +326,8 @@ Please select your private key in next dialog.
 EOF
                     do {
                         ( $rs, $privateKeyPath ) = $dialog->fselect( $privateKeyPath );
-                    } while $rs < 30 && !( $privateKeyPath && -f $privateKeyPath );
+                    } while $rs < 30
+                        && !( $privateKeyPath && -f $privateKeyPath );
 
                     return $rs unless $rs < 30;
 
@@ -357,7 +358,8 @@ EOF
                 if ( $rs == 0 ) {
                     do {
                         ( $rs, $caBundlePath ) = $dialog->fselect( $caBundlePath );
-                    } while $rs < 30 && !( $caBundlePath && -f $caBundlePath );
+                    } while $rs < 30
+                        && !( $caBundlePath && -f $caBundlePath );
 
                     return $rs unless $rs < 30;
 
@@ -385,7 +387,8 @@ EOF
 
                     getMessageByType( 'error', { amount => 1, remove => 1 } );
                     $openSSL->{'certificate_container_path'} = $certificatePath;
-                } while $rs < 30 && $openSSL->validateCertificate();
+                } while $rs < 30
+                    && $openSSL->validateCertificate();
 
                 return $rs unless $rs < 30;
             } else {
@@ -403,7 +406,9 @@ EOF
         } else {
             $sslEnabled = 'no';
         }
-    } elsif ( $sslEnabled eq 'yes' && !iMSCP::Getopt->preseed ) {
+    } elsif ( $sslEnabled eq 'yes'
+        && !iMSCP::Getopt->preseed
+    ) {
         $openSSL->{'private_key_container_path'} = "$main::imscpConfig{'CONF_DIR'}/$domainName.pem";
         $openSSL->{'ca_bundle_container_path'} = "$main::imscpConfig{'CONF_DIR'}/$domainName.pem";
         $openSSL->{'certificate_container_path'} = "$main::imscpConfig{'CONF_DIR'}/$domainName.pem";
@@ -468,9 +473,7 @@ $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter the HTTP port for the control panel:
 EOF
         } while $rs < 30
-            && ( !isNumber( $httpPort )
-            || !isNumberInRange( $httpPort, 1025, 65535 )
-        );
+            && ( !isNumber( $httpPort ) || !isNumberInRange( $httpPort, 1025, 65535 ) );
 
         return $rs unless $rs < 30;
     }
@@ -496,10 +499,8 @@ $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter the HTTPS port for the control panel:
 EOF
             } while $rs < 30
-                && ( !isNumber( $httpsPort )
-                || !isNumberInRange( $httpsPort, 1025, 65535 )
-                || !isStringNotInList( $httpsPort, $httpPort )
-            );
+                && ( !isNumber( $httpsPort ) || !isNumberInRange( $httpsPort, 1025, 65535 )
+                || !isStringNotInList( $httpsPort, $httpPort ) );
 
             return $rs unless $rs < 30;
         }
@@ -708,15 +709,20 @@ sub _setupSsl
     my $domainName = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
 
     # Remove old certificate if any (handle case where panel hostname has been changed)
-    if ( $oldCertificate ne '' && $oldCertificate ne "$domainName.pem"
+    if ( $oldCertificate ne ''
+        && $oldCertificate ne "$domainName.pem"
         && -f "$main::imscpConfig{'CONF_DIR'}/$oldCertificate"
     ) {
         my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/$oldCertificate" )->delFile();
         return $rs if $rs;
     }
 
-    if ( $sslEnabled eq 'no' || main::setupGetQuestion( 'PANEL_SSL_SETUP', 'yes' ) eq 'no' ) {
-        if ( $sslEnabled eq 'no' && -f "$main::imscpConfig{'CONF_DIR'}/$domainName.pem" ) {
+    if ( $sslEnabled eq 'no'
+        || main::setupGetQuestion( 'PANEL_SSL_SETUP', 'yes' ) eq 'no'
+    ) {
+        if ( $sslEnabled eq 'no'
+            && -f "$main::imscpConfig{'CONF_DIR'}/$domainName.pem"
+        ) {
             my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/$domainName.pem" )->delFile();
             return $rs if $rs;
         }
@@ -809,7 +815,8 @@ sub _addMasterWebUser
         $row or die( "Couldn't find master administrator user in database" );
 
         my ($oldUser, $uid, $gid) = ( $row->{'admin_sys_uid'} && $row->{'admin_sys_uid'} ne '0' )
-            ? ( getpwuid( $row->{'admin_sys_uid'} ) )[0, 2, 3] : ();
+            ? ( getpwuid( $row->{'admin_sys_uid'} ) )[0, 2, 3]
+            : ();
 
         $rs = iMSCP::SystemUser->new(
             username       => $oldUser,
@@ -1006,12 +1013,25 @@ sub _buildHttpdConfig
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndBuildHttpdConfig' );
     return $rs if $rs;
 
+    my $availableCPUcores = $self->getNbCPUcores();
+    my $nbCPUcores = $self->{'config'}->{'HTTPD_WORKER_PROCESSES'};
+
+    if ( $self->{'config'}->{'HTTPD_WORKER_PROCESSES'} eq 'auto'
+        || $nbCPUcores > $availableCPUcores
+    ) {
+        $nbCPUcores = $availableCPUcores;
+    }
+
+    if ( $nbCPUcores > $self->{'config'}->{'HTTPD_WORKER_PROCESSES_LIMIT'} ) {
+        $nbCPUcores = $self->{'config'}->{'HTTPD_WORKER_PROCESSES_LIMIT'};
+    }
+
     # Build main nginx configuration file
     $rs = $self->{'frontend'}->buildConfFile(
         "$self->{'cfgDir'}/nginx.nginx",
         {
             HTTPD_USER               => $self->{'config'}->{'HTTPD_USER'},
-            HTTPD_WORKER_PROCESSES   => $self->{'config'}->{'HTTPD_WORKER_PROCESSES'},
+            HTTPD_WORKER_PROCESSES   => $nbCPUcores,
             HTTPD_WORKER_CONNECTIONS => $self->{'config'}->{'HTTPD_WORKER_CONNECTIONS'},
             HTTPD_RLIMIT_NOFILE      => $self->{'config'}->{'HTTPD_RLIMIT_NOFILE'},
             HTTPD_LOG_DIR            => $self->{'config'}->{'HTTPD_LOG_DIR'},
@@ -1078,7 +1098,9 @@ sub _buildHttpdConfig
 
             return 0 unless grep($_ eq $tplName, '00_master.nginx', '00_master_ssl.nginx');
 
-            if ( $baseServerIpVersion eq 'ipv6' || !main::setupGetQuestion( 'IPV6_SUPPORT' ) ) {
+            if ( $baseServerIpVersion eq 'ipv6'
+                || !main::setupGetQuestion( 'IPV6_SUPPORT' )
+            ) {
                 ${$cfgTpl} = replaceBloc( '# SECTION IPv6 BEGIN.', '# SECTION IPv6 END.', '', ${$cfgTpl} );
             }
 
@@ -1181,8 +1203,8 @@ sub _deleteDnsZone
 {
     my ($self) = @_;
 
-    return 0 unless $main::imscpOldConfig{'BASE_SERVER_VHOST'} &&
-        $main::imscpOldConfig{'BASE_SERVER_VHOST'} ne main::setupGetQuestion( 'BASE_SERVER_VHOST' );
+    return 0 unless $main::imscpOldConfig{'BASE_SERVER_VHOST'}
+        && $main::imscpOldConfig{'BASE_SERVER_VHOST'} ne main::setupGetQuestion( 'BASE_SERVER_VHOST' );
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedDeleteMasterZone' );
     $rs ||= Servers::named->factory()->deleteDmn(
@@ -1212,6 +1234,21 @@ sub getFullPhpVersionFor
     return undef unless $stdout;
     $stdout =~ /PHP\s+([^\s]+)/;
     $1;
+}
+
+=item getNbCPUcores( )
+
+ Get number of available CPU cores
+
+ Return int Number of CPU core
+
+=cut
+
+sub getNbCPUcores
+{
+    execute( 'grep processor /proc/cpuinfo 2>/dev/null | wc -l', \ my $stdout );
+    $stdout =~ /^(\d+)/;
+    $1 || 1;
 }
 
 =item _cleanup( )
