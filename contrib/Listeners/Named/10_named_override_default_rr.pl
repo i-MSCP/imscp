@@ -22,6 +22,8 @@
 
 package Listener::Named::OverrideDefaultRecords;
 
+our $VERSION = '1.0.0';
+
 use strict;
 use warnings;
 use iMSCP::Net;

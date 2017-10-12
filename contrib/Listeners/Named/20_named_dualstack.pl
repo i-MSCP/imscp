@@ -26,6 +26,8 @@
 
 package Listener::Bind9::DualStack;
 
+our $VERSION = '1.0.0';
+
 use strict;
 use warnings;
 use iMSCP::EventManager;

@@ -21,6 +21,8 @@
 
 package Listener::Bind9::Localnets;
 
+our $VERSION = '1.0.0';
+
 use strict;
 use warnings;
 use iMSCP::EventManager;

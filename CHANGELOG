@@ -62,6 +62,7 @@ INSTALLER
     Renamed: `if' attribute to 'copy_if' (copy_config xml node from install.xml files)
 
 LISTENERS
+    Fixed: All listener files should be versionned for easy update tracking
     Fixed: Listener::Php::ConfOptions::Override: PHP INI level not honoured
     Fixed: 10_named_slave_provisioning.pl: Global symbol "$rs" requires explicit package name
     Rewritten: 20_named_dualstack.pl listener file (require i-MSCP >= 1.5.2)

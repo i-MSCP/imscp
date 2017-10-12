@@ -29,6 +29,8 @@
 
 package Listener::Named::Slave::Provisioning;
 
+our $VERSION = '1.0.0';
+
 use strict;
 use warnings;
 use iMSCP::Debug qw/ error /;

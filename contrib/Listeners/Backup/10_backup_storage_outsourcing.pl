@@ -17,6 +17,7 @@
 
 package Listener::Backup::Storage::Outsourcing;
 
+
 # Stores customer backup directories elsewhere on local file system
 #
 # Howto setup and activate
@@ -24,6 +25,8 @@ package Listener::Backup::Storage::Outsourcing;
 # 2. Edit the /etc/imscp/listeners.d/10_backup_storage_outsourcing.pl file
 #    and set the $STORAGE_ROOT_PATH variable below according your needs
 # 3. Trigger an i-MSCP reconfiguration: perl /var/www/imscp/engine/setup/imscp-reconfigure -danv
+
+our $VERSION = '1.0.0';
 
 use strict;
 use warnings;

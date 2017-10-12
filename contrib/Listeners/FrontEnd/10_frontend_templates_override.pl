@@ -22,6 +22,8 @@
 
 package Listener::FrontEnd::Templates::Override;
 
+our $VERSION = '1.0.0';
+
 use strict;
 use warnings;
 use iMSCP::Dir;
