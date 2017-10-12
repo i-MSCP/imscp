@@ -26,5 +26,4 @@ namespace iMSCP\Update;
  */
 class UpdateException extends \iMSCP_Exception
 {
-
 }

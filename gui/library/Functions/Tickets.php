@@ -563,7 +563,7 @@ function _showTicketReplies($tpl, $ticketId)
 }
 
 /**
- * Notify users about new tickets and ticket answers
+ * Notify users for new tickets and ticket answers
  *
  * @access private
  * @usedby updateTicket()

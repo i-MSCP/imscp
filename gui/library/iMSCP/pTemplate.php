@@ -150,7 +150,7 @@ class iMSCP_pTemplate
     public function __construct()
     {
         $this->eventManager = EventsManager::getInstance();
-        $this->setRootDir(Registry::get('config')->ROOT_TEMPLATE_PATH);
+        $this->setRootDir(Registry::get('config')['ROOT_TEMPLATE_PATH']);
         $this->tplStartRexpr = '/';
         $this->tplStartRexpr .= $this->tplStartTag;
         $this->tplStartRexpr .= $this->tplStartTagName;
@@ -174,7 +174,7 @@ class iMSCP_pTemplate
     public function setRootDir($rootDir)
     {
         if (!is_dir($rootDir)) {
-            throw new iMSCPException('iMSCP_pTemplate::setRootDir expects a valid directory.');
+            throw new iMSCPException('Invalid directory.');
         }
 
         $this->rootDir = $rootDir;

@@ -21,7 +21,7 @@
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
-use iMSCP_I18n_Parser_Gettext as GettextParser;
+use iMSCP\i18n\GettextParser;
 use iMSCP_Registry as Registry;
 use iMSCP_Utility_OpcodeCache as OpcodeCacheManager;
 use Zend_Locale as Locale;

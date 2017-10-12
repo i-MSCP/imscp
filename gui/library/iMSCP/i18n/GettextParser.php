@@ -18,14 +18,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+namespace iMSCP\i18n;
+
 /**
- * Class iMSCP_I18n_Parser_Gettext
+ * Class GettextParser
  *
  * Gettext Machine Object (MO) file parser.
  *
  * @see http://www.gnu.org/software/gettext/manual/gettext.html#MO-Files
+ * @package iMSCP\i18n
  */
-class iMSCP_I18n_Parser_Gettext
+class GettextParser
 {
     /**
      * @var int Headers
@@ -50,12 +53,12 @@ class iMSCP_I18n_Parser_Gettext
     /**
      * @var string Headers from gettext file
      */
-    protected $headers = '';
+    protected $headers;
 
     /**
      * @var array Translation table
      */
-    protected $translationTable = [];
+    protected $translationTable;
 
     /**
      * @var string Whether the current file is little endian
@@ -85,7 +88,7 @@ class iMSCP_I18n_Parser_Gettext
     /**
      * Constructor
      *
-     * @throws iMSCP_i18n_Exception When file is not readable
+     * @throws GettextParserException When file is not readable
      * @param string $filePath Path to gettext file
      */
     public function __construct($filePath)
@@ -93,7 +96,7 @@ class iMSCP_I18n_Parser_Gettext
         $filePath = (string)$filePath;
 
         if (!is_readable($filePath)) {
-            throw new iMSCP_i18n_Parser_Exception(sprintf('%s is not readable', $filePath));
+            throw new GettextParserException(sprintf('%s is not readable', $filePath));
         }
 
         $this->filePath = $filePath;
@@ -112,12 +115,13 @@ class iMSCP_I18n_Parser_Gettext
     /**
      * Returns translation table
      *
-     * @return array An array of pairs key/value where the keys are the original strings (msgid) and the values, the
-     *               translated strings (msgstr)
+     * @return array An array of pairs key/value where the keys are the
+     *               original strings (msgid) and the values, the translated
+     *               strings (msgstr)
      */
     public function getTranslationTable()
     {
-        if (!$this->translationTable) {
+        if (null === $this->translationTable) {
             $this->translationTable = $this->_parse(self::TRANSLATION_TABLE);
         }
 
@@ -127,17 +131,18 @@ class iMSCP_I18n_Parser_Gettext
     /**
      * Parse a machine object file
      *
-     * @throws iMSCP_i18n_Parser_Exception on failure
-     * @param int $part iMSCP_I18n_Parser_Gettext::HEADERS|iMSCP_I18n_Parser_Gettext::TRANSLATION_TABLE
-     * @return array|string An array of pairs key/value where the keys are the original strings (msgid) and the values,
-     *                      the translated strings (msgstr) or a string that contains headers, eachof them separated by
-     *                      EOL.
+     * @throws GettextParserException on failure
+     * @param int $part self::HEADERS|self::TRANSLATION_TABLE
+     * @return array|string An array of pairs key/value where the keys are the
+     *                      original strings (msgid) and the values, the
+     *                      translated strings (msgstr), or a string that
+     *                      contains headers, each of them separated by EOL.
      */
     protected function _parse($part)
     {
         if ($this->fh === NULL) {
             if (!($this->fh = fopen($this->filePath, 'rb'))) {
-                throw new iMSCP_I18n_Parser_Exception('Unable to open ' . $this->filePath);
+                throw new GettextParserException(sprintf("Couldn't open %s file", $this->filePath));
             }
         }
 
@@ -151,7 +156,7 @@ class iMSCP_I18n_Parser_Gettext
                 $this->littleEndian = true;
             } else {
                 fclose($this->fh);
-                throw new iMSCP_I18n_Parser_Exception(sprintf('%s is not a valid gettext file', $this->filePath));
+                throw new GettextParserException(sprintf('%s is not a valid gettext file', $this->filePath));
             }
 
             // Verify major revision (only 0 and 1 supported)
@@ -159,7 +164,7 @@ class iMSCP_I18n_Parser_Gettext
 
             if ($majorRevision !== 0 && $majorRevision !== 1) {
                 fclose($this->fh);
-                throw new iMSCP_I18n_Parser_Exception(sprintf('%s has an unknown major revision', $this->filePath));
+                throw new GettextParserException(sprintf('%s has an unknown major revision', $this->filePath));
             }
 
             $this->nbStrings = $this->readInteger(); // Number of strings
@@ -177,11 +182,10 @@ class iMSCP_I18n_Parser_Gettext
             $this->isLoaded = true;
         }
 
-        switch ((int)$part) {
+        switch ($part) {
             case self::HEADERS:
                 fseek($this->fh, $this->msgstrIndexTable[2]);
                 return fread($this->fh, $this->msgstrIndexTable[1]);
-                break;
             case self::TRANSLATION_TABLE:
                 $nbString = $this->nbStrings;
                 $parseResult = [];
@@ -204,9 +208,8 @@ class iMSCP_I18n_Parser_Gettext
                 }
 
                 return $parseResult;
-                break;
             default:
-                throw new iMSCP_I18n_Parser_Exception('Unknown part type to parse');
+                throw new GettextParserException('Unknown part type to parse');
         }
     }
 
@@ -269,11 +272,12 @@ class iMSCP_I18n_Parser_Gettext
     /**
      * Returns headers
      *
-     * @return string A string that contains gettext file headers, each separed by EOL
+     * @return string A string that contains gettext file headers, each separed
+     *                by EOL
      */
     public function getHeaders()
     {
-        if (!$this->headers) {
+        if (null === $this->headers) {
             $this->headers = $this->_parse(self::HEADERS);
         }
 

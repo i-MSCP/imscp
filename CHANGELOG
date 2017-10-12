@@ -20,13 +20,13 @@ CONFIG
     Removed: Useless `DATABASE_TYPE` parameter (imscp.conf)
 
 CONTRIB
-    Added: get_imscp_master_sql_user_pwd.pl script: Print current i-MSCP master SQL user password
+    Added: get_imscp_master_sql_user_pwd.pl script: Print current i-MSCP master SQL user (imscp_user) password
 
 DATABASE
     Fixed: Deprecated columns not removed while updating from some older versions (r270)
 
 DISTRIBUTIONS
-    Added: Support for Debian 10/Buster (Experimental) 
+    Added: Support for Debian 10/Buster (Experimental)
     Review: Avoid APT pinning whenever as possible (All distributions)
     Relaxed: Permissions policy on /etc/apt/apt.conf.d/* files -- Files must be world-readable
 

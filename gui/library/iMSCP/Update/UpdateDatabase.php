@@ -111,11 +111,17 @@ class UpdateDatabase extends UpdateDatabaseAbstract
                 $sqlUser = quoteValue($row['sqlu_name']);
 
                 $sqlQueries[] = "
-                    UPDATE IGNORE mysql.user SET Host = $sqlUserHost WHERE User = $sqlUser AND Host NOT IN ($sqlUserHost, '%')
+                    UPDATE IGNORE mysql.user
+                    SET Host = $sqlUserHost
+                    WHERE User = $sqlUser
+                    AND Host NOT IN ($sqlUserHost, '%')
                 ";
 
                 $sqlQueries[] = "
-                    UPDATE IGNORE mysql.db SET Host = $sqlUserHost WHERE User = $sqlUser AND Host NOT IN ($sqlUserHost, '%')
+                    UPDATE IGNORE mysql.db
+                    SET Host = $sqlUserHost
+                    WHERE User = $sqlUser
+                    AND Host NOT IN ($sqlUserHost, '%')
                 ";
 
                 $sqlQueries[] = "
@@ -588,7 +594,9 @@ class UpdateDatabase extends UpdateDatabaseAbstract
 
             if (sizeof($props) < 26) {
                 array_splice($props, 18, 0, 'yes'); // Insert new property at position 18
-                $sqlQueries[] = 'UPDATE hosting_plans SET props = ' . quoteValue(implode(';', $props)) . 'WHERE id = ' . $id;
+                $sqlQueries[] = '
+                    UPDATE hosting_plans
+                    SET props = ' . quoteValue(implode(';', $props)) . ' WHERE id = ' . $id;
             }
         }
 
@@ -752,7 +760,9 @@ class UpdateDatabase extends UpdateDatabaseAbstract
      */
     protected function r223()
     {
-        if (isset($this->dbConfig['LOG_LEVEL']) && preg_match('/\D/', $this->dbConfig['LOG_LEVEL'])) {
+        if (isset($this->dbConfig['LOG_LEVEL'])
+            && preg_match('/\D/', $this->dbConfig['LOG_LEVEL'])
+        ) {
             $this->dbConfig['LOG_LEVEL'] = defined($this->dbConfig['LOG_LEVEL'])
                 ? constant($this->dbConfig['LOG_LEVEL']) : E_USER_ERROR;
         }
@@ -813,7 +823,11 @@ class UpdateDatabase extends UpdateDatabaseAbstract
 
         if ($sql !== NULL) {
             $sqlQueries[] = $sql;
-            $sqlQueries[] = "UPDATE subdomain_alias SET subdomain_alias_type_forward = '302' WHERE subdomain_alias_url_forward <> 'no'";
+            $sqlQueries[] = "
+                UPDATE subdomain_alias
+                SET subdomain_alias_type_forward = '302'
+                WHERE subdomain_alias_url_forward <> 'no'
+            ";
         }
 
         return $sqlQueries;
@@ -852,7 +866,8 @@ class UpdateDatabase extends UpdateDatabaseAbstract
 
         $stmt = execute_query(
             "
-                SELECT subdomain_alias_id, subdomain_alias_url_forward FROM subdomain_alias
+                SELECT subdomain_alias_id, subdomain_alias_url_forward
+                FROM subdomain_alias
                 WHERE subdomain_alias_url_forward <> 'no'
             "
         );
@@ -1139,8 +1154,11 @@ class UpdateDatabase extends UpdateDatabaseAbstract
     protected function r243()
     {
         $stmt = execute_query('SELECT ip_id, ip_number, ip_netmask FROM server_ips');
+
         while ($row = $stmt->fetch()) {
-            if ($this->config['BASE_SERVER_IP'] === $row['ip_number'] || $row['ip_netmask'] !== NULL) {
+            if ($this->config['BASE_SERVER_IP'] === $row['ip_number']
+                || $row['ip_netmask'] !== NULL
+            ) {
                 continue;
             }
 
@@ -1246,9 +1264,10 @@ class UpdateDatabase extends UpdateDatabaseAbstract
      */
     protected function r249()
     {
-        $stmt = exec_query('SELECT mail_id, mail_pass FROM mail_users WHERE mail_pass <> ? AND mail_pass NOT LIKE ?',
-            ['_no_', '$6$%']
-        );
+        $stmt = exec_query('SELECT mail_id, mail_pass FROM mail_users WHERE mail_pass <> ? AND mail_pass NOT LIKE ?', [
+            '_no_', '$6$%'
+        ]);
+
         while ($row = $stmt->fetch()) {
             exec_query('UPDATE mail_users SET mail_pass = ? WHERE mail_id = ?', [
                 Crypt::sha512($row['mail_pass']), $row['mail_id']
@@ -1335,10 +1354,9 @@ class UpdateDatabase extends UpdateDatabaseAbstract
         while ($row = $stmt->fetch()) {
             if (strpos($row['mail_type'], '_forward') !== FALSE) {
                 # Turn normal+forward account into forward only account
-                exec_query(
-                    "UPDATE mail_users SET mail_pass = '_no_', mail_type = ?, quota = NULL WHERE mail_id = ?",
-                    [preg_replace('/,?\b\.*_mail\b,?/', '', $row['mail_type']), $row['mail_id']]
-                );
+                exec_query("UPDATE mail_users SET mail_pass = '_no_', mail_type = ?, quota = NULL WHERE mail_id = ?", [
+                    preg_replace('/,?\b\.*_mail\b,?/', '', $row['mail_type']), $row['mail_id']
+                ]);
             } else {
                 # Schedule deletion of the mail account as virtual mailboxes
                 # are prohibited for Postfix canonical domains.
@@ -1409,7 +1427,9 @@ class UpdateDatabase extends UpdateDatabaseAbstract
     {
         return "
             DELETE FROM php_ini
-            WHERE domain_id NOT IN(SELECT subdomain_alias_id FROM subdomain_alias WHERE subdomain_alias_status <> 'todelete')
+            WHERE domain_id NOT IN(
+                SELECT subdomain_alias_id FROM subdomain_alias WHERE subdomain_alias_status <> 'todelete'
+            )
             AND domain_type = 'subals'
         ";
     }
