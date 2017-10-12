@@ -1240,7 +1240,7 @@ sub getFullPhpVersionFor
 
  Get number of available CPU cores
 
- Return int Number of CPU core
+ Return int Number of CPU cores
 
 =cut
 
