@@ -904,15 +904,7 @@ sub _processFolderNode
     my ($node) = @_;
 
     my $dir = iMSCP::Dir->new( dirname => $node->{'content'} );
-
-    # Needed to be sure to not keep any file from a previous build that has
-    # failed
-    if ( defined $main::{'INST_PREF'}
-        && $main::{'INST_PREF'} eq $node->{'content'}
-    ) {
-        $dir->remove();
-    }
-
+    $dir->remove() if $node->{'pre_remove'};
     $dir->make(
         {
             user  => defined $node->{'user'} ? _expandVars( $node->{'owner'} ) : undef,

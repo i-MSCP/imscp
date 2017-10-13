@@ -140,7 +140,7 @@ sub isEmpty
 
  Clear a full directory content or the files/diretories inside the directory that match the given regexp
 
- Param Regexp $regexp OPTIOANL regexp for directory content matching
+ Param Regexp $regexp OPTIONAL regexp for directory content matching
  Return int 0 on success or die on failure
 
 =cut

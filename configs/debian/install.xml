@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
     <folder mode="1777">/tmp</folder>
-    <folder export="INST_PREF">/tmp/imscp</folder>
+    <folder export="INST_PREF" pre_remove="1">/tmp/imscp</folder>
     <folder mode="0755" export="ROOT_CONF">${INST_PREF}/etc</folder>
     <folder export="SYSTEM_CONF">${INST_PREF}/etc/imscp</folder>
     <folder mode="0755">${INST_PREF}/usr</folder>
