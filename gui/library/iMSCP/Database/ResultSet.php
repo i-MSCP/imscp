@@ -27,7 +27,8 @@ use PDO;
 use PDOStatement;
 
 /**
- * Class iMSCP_Database_ResultSet
+ * Class ResultSet
+ * @package iMSCP\Database
  */
 class ResultSet extends PDOStatement
 {
@@ -42,7 +43,7 @@ class ResultSet extends PDOStatement
     protected $event;
 
     /**
-     * iMSCP_Database_ResultSet constructor.
+     * ResultSet constructor.
      *
      * @param EventsManagerInterface $em
      */
