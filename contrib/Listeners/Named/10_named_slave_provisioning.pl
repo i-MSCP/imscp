@@ -29,7 +29,7 @@
 
 package Listener::Named::Slave::Provisioning;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
@@ -152,7 +152,7 @@ $rowCount = $stmt->rowCount();
 if ($rowCount > 0) {
     echo "// $rowCount HOSTED DOMAINS LISTED ON $config->SERVER_HOSTNAME [$masterDnsServerIp]\n";
 
-    while ($row = $stmt->fetch()) {
+    while ($row = $stmt->fetchRow()) {
         echo "zone \"{$row['domain_name']}\" {\n";
         echo "\ttype slave;\n";
         echo "\tfile \"/var/cache/bind/{$row['domain_name']}.db\";\n";
@@ -167,7 +167,7 @@ $stmt = execute_query('SELECT alias_id, alias_name FROM domain_aliasses');
 $rowCount = $stmt->rowCount();
 if ($rowCount > 0) {
     echo "// $rowCount HOSTED ALIASES LISTED ON $config->SERVER_HOSTNAME [$masterDnsServerIp]\n";
-    while ($row = $stmt->fetch()) {
+    while ($row = $stmt->fetchRow()) {
         echo "zone \"{$row['alias_name']}\" {\n";
         echo "\ttype slave;\n";
         echo "\tfile \"/var/cache/bind/{$row['alias_name']}.db\";\n";
