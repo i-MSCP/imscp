@@ -244,7 +244,8 @@ sub _loadConfig
         ? ( $self->{'readonly'} ? O_RDONLY : O_RDWR )
         : ( $self->{'readonly'} ? O_RDONLY : O_RDWR | O_CREAT );
 
-    $self->{'tieFileObject'} = tie @{$self->{'tiefile'}}, 'Tie::File', $self->{'confFileName'}, mode => $mode;
+    $self->{'tieFileObject'} = tie @{$self->{'tiefile'}}, 'Tie::File', $self->{'confFileName'}, memory => 10_000_000,
+        mode => $mode;
     $self->{'tieFileObject'} or die( sprintf( "Couldn't tie %s file: %s", $self->{'confFileName'}, $! ));
     $self->{'tieFileObject'}->defer unless $self->{'nodeferring'} || $self->{'readonly'};
 

@@ -8,4 +8,5 @@
     <copy_config>${SYSTEM_CONF}/vsftpd/vsftpd.data.dist</copy_config>
     <copy_config>${SYSTEM_CONF}/vsftpd/vsftpd.pam</copy_config>
     <copy_config>${SYSTEM_CONF}/vsftpd/vsftpd_user.conf</copy_config>
+    <copy_config copy_if="'${FTPD_PACKAGE}' eq 'Servers::ftpd::vsftpd'">${ROOT_CONF}/logrotate.d/vsftpd</copy_config>
 </install>

@@ -28,6 +28,7 @@ use warnings;
 use Class::Autouse qw/ :nostat Servers::ftpd::vsftpd::installer Servers::ftpd::vsftpd::uninstaller /;
 use File::Basename;
 use File::Temp;
+use Fcntl 'O_RDONLY';
 use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::EventManager;
@@ -379,47 +380,70 @@ sub reload
     $self->{'eventManager'}->trigger( 'afterFtpdReload' );
 }
 
-=item getTraffic( $trafficDb )
+=item getTraffic( $trafficDb [, $logFile, $trafficIndexDb ] )
 
  Get VsFTPd traffic data
 
  Param hashref \%trafficDb Traffic database
+ Param string $logFile Path to VsFTPd traffic log file (only when self-called)
+ Param hashref $trafficIndexDb Traffic index database (only when self-called)
  Die on failure
 
 =cut
 
 sub getTraffic
 {
-    my ($self, $trafficDb) = @_;
+    my ($self, $trafficDb, $logFile, $trafficIndexDb) = @_;
 
-    my $logFile = $self->{'config'}->{'FTPD_TRAFF_LOG_PATH'};
+    $logFile ||= $self->{'config'}->{'FTPD_TRAFF_LOG_PATH'};
 
-    # The log file exists and is not empty
-    unless ( -f -s $logFile ) {
-        debug( sprintf( 'No new FTP logs found in %s file for processing', $logFile ));
+    unless ( -f $logFile ) {
+        debug( sprintf( "VsFTPd traffic %s log file doesn't exist. Skipping...", $logFile ));
         return;
     }
 
-    debug( sprintf( 'Processing FTP logs from the %s file', $logFile ));
+    debug( sprintf( 'Processing VsFTPd traffic %s log file', $logFile ));
 
-    # Create snapshot of traffic data source file
-    my $snapshotFH = File::Temp->new( UNLINK => 1 );
-    iMSCP::File->new( filename => $logFile )->copyFile( $snapshotFH->filename, { preserve => 'no' } ) == 0 or die(
-        getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+    # We use an index database to keep trace of the last processed logs
+    $trafficIndexDb or tie %{$trafficIndexDb},
+        'iMSCP::Config', fileName => "$main::imscpConfig{'IMSCP_HOMEDIR'}/traffic_index.db", nodie => 1;
+    my ($idx, $idxContent) = ( $trafficIndexDb->{'vsftpd_lineNo'} || 0, $trafficIndexDb->{'vsftpd_lineContent'} );
+
+    tie my @logs, 'Tie::File', $logFile, mode => O_RDONLY, memory => 0 or die(
+        sprintf( "Couldn't tie %s file in read-only mode", $logFile )
     );
 
-    # Reset log file
-    # FIXME: We should really avoid truncating. Instead, we should use logrotate.
-    truncate( $logFile, 0 ) or die( sprintf( "Couldn't truncate %s file: %s", $logFile, $! ));
+    # Retain index of the last log (log file can continue growing)
+    my $lastLogIdx = $#logs;
 
-    # Extract FTP traffic data
-    while ( <$snapshotFH> ) {
-        next unless /^(?:[^\s]+\s){7}(?<bytes>\d+)\s(?:[^\s]+\s){5}[^\s]+\@([^\s]+)/o
-            && exists $trafficDb->{$+{'domain'}};
+    if ( exists $logs[$idx] && $logs[$idx] eq $idxContent ) {
+        debug( sprintf( 'Skipping VsFTPd traffic logs that were already processed (lines %d to %d)', 1, ++$idx ));
+    } elsif ( $idxContent ne '' && substr( $logFile, -2 ) ne '.1' ) {
+        debug( 'Log rotation has been detected. Processing last rotated log file first' );
+        $self->getTraffic( $trafficDb, $logFile . '.1', $trafficIndexDb );
+        $idx = 0;
+    }
+
+    if ( $lastLogIdx < $idx ) {
+        debug( 'No new VsFTPd traffic logs found for processing' );
+        return;
+    }
+
+    debug( sprintf( 'Processing VsFTPd traffic logs (lines %d to %d)', $idx+1, $lastLogIdx+1 ));
+
+    my $regexp = qr/^(?:[^\s]+\s){7}(?<bytes>\d+)\s(?:[^\s]+\s){5}[^\s]+\@(?<domain>[^\s]+)/;
+
+    # In term of memory usage, C-Style loop provide better results than using 
+    # range operator in Perl-Style loop: for( @logs[$idx .. $lastLogIdx] ) ...
+    for ( my $i = $idx; $i <= $lastLogIdx; $i++ ) {
+        next unless $logs[$i] =~ /$regexp/ && exists $trafficDb->{$+{'domain'}};
         $trafficDb->{$+{'domain'}} += $+{'bytes'};
     }
 
-    $snapshotFH->close();
+    return if substr( $logFile, -2 ) eq '.1';
+
+    $trafficIndexDb->{'vsftpd_lineNo'} = $lastLogIdx;
+    $trafficIndexDb->{'vsftpd_lineContent'} = $logs[$lastLogIdx];
 }
 
 =back

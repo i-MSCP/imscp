@@ -26,6 +26,7 @@ package Servers::po::courier;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Servers::po::courier::installer Servers::po::courier::uninstaller /;
+use Fcntl 'O_RDONLY';
 use File::Temp;
 use iMSCP::Config;
 use iMSCP::Debug;
@@ -420,12 +421,12 @@ sub restart
     $self->{'eventManager'}->trigger( 'afterPoRestart' );
 }
 
-=item getTraffic( $trafficDb [, $trafficDataSrc, $indexDb ] )
+=item getTraffic( $trafficDb [, $logFile, $trafficIndexDb ] )
 
  Get IMAP/POP3 traffic data
 
  Param hashref \%trafficDb Traffic database
- Param string $logFile Path to SMTP log file from which traffic data must be extracted (only when self-called)
+ Param string $logFile Path to SMTP log file (only when self-called)
  Param hashref $trafficIndexDb Traffic index database (only when self-called)
  Return void, die on failure
 
@@ -435,78 +436,63 @@ sub getTraffic
 {
     my ($self, $trafficDb, $logFile, $trafficIndexDb) = @_;
 
-    $logFile ||= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
+    #$logFile ||= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
+    $logFile ||= "/var/local/logstest/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
 
-    if ( -f -s $logFile ) {
-        # We use an index database file to keep trace of the last processed log
-        $trafficIndexDb or tie %{$trafficIndexDb},
-            'iMSCP::Config', fileName => "$main::imscpConfig{'IMSCP_HOMEDIR'}/traffic_index.db", nodie => 1;
-
-        my ($idx, $idxContent) = ( $trafficIndexDb->{'po_lineNo'} || 0, $trafficIndexDb->{'po_lineContent'} );
-
-        # Create a snapshot of current log file state
-        my $snapshotFH = File::Temp->new( UNLINK => 1 );
-        iMSCP::File->new( filename => $logFile )->copyFile( $snapshotFH->filename, { preserve => 'no' } ) == 0 or die(
-            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-        );
-
-        # Tie the snapshot for easy handling
-        tie my @snapshot, 'Tie::File', $snapshotFH, memory => 10_485_760 or die(
-            sprintf( "Couldn't tie %s file", $snapshotFH )
-        );
-
-        # We keep trace of the index for the live log file only
-        unless ( $logFile =~ /\.1$/ ) {
-            $trafficIndexDb->{'po_lineNo'} = $#snapshot;
-            $trafficIndexDb->{'po_lineContent'} = $snapshot[$#snapshot];
-        }
-
-        debug( sprintf( 'Processing IMAP/POP3 logs from the %s file', $logFile ));
-
-        # We have already seen the log file in the past. We must skip logs that were already processed
-        if ( $snapshot[$idx] && $snapshot[$idx] eq $idxContent ) {
-            debug( sprintf( 'Skipping logs that were already processed (lines %d to %d)', 1, ++$idx ));
-
-            my $logsFound = ( @snapshot = @snapshot[$idx .. $#snapshot] ) > 0;
-            untie( @snapshot );
-
-            unless ( $logsFound ) {
-                debug( sprintf( 'No new IMAP/POP3 logs found in %s file for processing', $logFile ));
-                $snapshotFH->close();
-                return;
-            }
-        } elsif ( $logFile !~ /\.1$/ ) {
-            debug( 'Log rotation has been detected. Processing last rotated log file first' );
-            untie( @snapshot );
-            $self->getTraffic( $trafficDb, $logFile . '.1', $trafficIndexDb );
-        } else {
-            untie( @snapshot );
-        }
-
-        while ( <$snapshotFH> ) {
-            # Extract IMAP/POP3 traffic data
-            #
-            # Log line examples
-            # Apr 21 15:14:44 www pop3d: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.1], port=[36852], top=0, retr=0, rcvd=6, sent=30, time=0, stls=1
-            # Apr 21 15:14:55 www imapd: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.1], headers=0, body=0, rcvd=635, sent=1872, time=4477, starttls=1
-            # Apr 21 15:23:12 www pop3d-ssl: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.1], port=[59556], top=0, retr=0, rcvd=12, sent=39, time=0, stls=1
-            # Apr 21 15:24:36 www imapd-ssl: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.1], headers=0, body=0, rcvd=50, sent=374, time=10, starttls=1
-            next unless /(?:imapd|pop3d(:?-ssl)):.*user=[^\@]+\@(?<domain>[^,]+).*rcvd=(?<rcvd>\d+).*sent=(?<sent>\d+)/o
-                && exists $trafficDb->{$+{'domain'}};
-
-            $trafficDb->{$+{'domain'}} += ( $+{'rcvd'}+$+{'sent'} );
-        }
-
-        $snapshotFH->close();
-    } elsif ( $logFile !~ /\.1$/ && -f -s $logFile . '.1' ) {
-        # The log file is empty. We need to check the last rotated log file
-        # to extract traffic from possible unprocessed logs
-        debug( 'The %s log file is empty. Processing last rotated log file', $logFile );
-        $self->getTraffic( $trafficDb, $logFile . '.1', $trafficIndexDb );
-    } else {
-        # There are no new logs found for processing
-        debug( sprintf( 'No new IMAP/POP3 logs found in %s file for processing', $logFile ));
+    unless ( -f $logFile ) {
+        debug( sprintf( "IMAP/POP3 %s log file doesn't exist. Skipping...", $logFile ));
+        return;
     }
+
+    debug( sprintf( 'Processing IMAP/POP3 %s log file', $logFile ));
+
+    # We use an index database to keep trace of the last processed logs
+    $trafficIndexDb or tie %{$trafficIndexDb},
+        'iMSCP::Config', fileName => "$main::imscpConfig{'IMSCP_HOMEDIR'}/traffic_index.db", nodie => 1;
+    my ($idx, $idxContent) = ( $trafficIndexDb->{'po_lineNo'} || 0, $trafficIndexDb->{'po_lineContent'} );
+
+    tie my @logs, 'Tie::File', $logFile, mode => O_RDONLY, memory => 0 or die(
+        sprintf( "Couldn't tie %s file in read-only mode", $logFile )
+    );
+
+    # Retain index of the last log (log file can continue growing)
+    my $lastLogIdx = $#logs;
+
+    if ( exists $logs[$idx] && $logs[$idx] eq $idxContent ) {
+        debug( sprintf( 'Skipping IMAP/POP3 logs that were already processed (lines %d to %d)', 1, ++$idx ));
+    } elsif ( $idxContent ne '' && substr( $logFile, -2 ) ne '.1' ) {
+        debug( 'Log rotation has been detected. Processing last rotated log file first' );
+        $self->getTraffic( $trafficDb, $logFile . '.1', $trafficIndexDb );
+        $idx = 0;
+    }
+
+    if ( $lastLogIdx < $idx ) {
+        debug( 'No new IMAP/POP3 logs found for processing' );
+        return;
+    }
+
+    debug( sprintf( 'Processing IMAP/POP3 logs (lines %d to %d)', $idx+1, $lastLogIdx+1 ));
+
+    # Extract IMAP/POP3 traffic data
+    #
+    # Log line examples
+    # Apr 21 15:14:44 www pop3d: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.1], port=[36852], top=0, retr=0, rcvd=6, sent=30, time=0, stls=1
+    # Apr 21 15:14:55 www imapd: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.1], headers=0, body=0, rcvd=635, sent=1872, time=4477, starttls=1
+    # Apr 21 15:23:12 www pop3d-ssl: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.1], port=[59556], top=0, retr=0, rcvd=12, sent=39, time=0, stls=1
+    # Apr 21 15:24:36 www imapd-ssl: LOGOUT, user=user@domain.tld, ip=[::ffff:192.168.1.1], headers=0, body=0, rcvd=50, sent=374, time=10, starttls=1
+    my $regexp = qr/(?:imapd|pop3d(:?-ssl)):.*user=[^\@]+\@(?<domain>[^,]+).*rcvd=(?<rcvd>\d+).*sent=(?<sent>\d+)/;
+
+    # In term of memory usage, C-Style loop provide better results than using 
+    # range operator in Perl-Style loop: for( @logs[$idx .. $lastLogIdx] ) ...
+    for ( my $i = $idx; $i <= $lastLogIdx; $i++ ) {
+        next unless $logs[$i] =~ /$regexp/ && exists $trafficDb->{$+{'domain'}};
+        $trafficDb->{$+{'domain'}} += ( $+{'in'}+$+{'out'} );
+    }
+
+    return if substr( $logFile, -2 ) eq '.1';
+
+    $trafficIndexDb->{'po_lineNo'} = $lastLogIdx;
+    $trafficIndexDb->{'po_lineContent'} = $logs[$lastLogIdx];
 }
 
 =back

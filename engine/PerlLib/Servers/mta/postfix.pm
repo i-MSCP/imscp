@@ -28,6 +28,7 @@ use warnings;
 use Class::Autouse qw/ :nostat Servers::mta::postfix::installer Servers::mta::postfix::uninstaller /;
 use File::Basename;
 use File::Temp;
+use Fcntl 'O_RDONLY';
 use iMSCP::Config;
 use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::Dir;
@@ -683,12 +684,12 @@ sub deleteMail
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaDelMail', $data );
 }
 
-=item getTraffic( $trafficDb [, $trafficDataSrc, $indexDb ] )
+=item getTraffic( $trafficDb [, $logFile, $trafficIndexDb ] )
 
  Get SMTP traffic
 
  Param hashref \%trafficDb Traffic database
- Param string $logFile Path to SMTP log file from which traffic data must be extracted (only when self-called)
+ Param string $logFile Path to SMTP log file (only when self-called)
  Param hashref $trafficIndexDb Traffic index database (only when self-called)
  Die on failure
 
@@ -698,84 +699,65 @@ sub getTraffic
 {
     my ($self, $trafficDb, $logFile, $trafficIndexDb) = @_;
 
-    $logFile ||= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
+    #$logFile ||= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
+    $logFile ||= "/var/local/logstest/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
 
-    # The log file exists and is not empty
-    if ( -f -s $logFile ) {
-        # We use an index database file to keep trace of the last processed log
-        $trafficIndexDb or tie %{$trafficIndexDb},
-            'iMSCP::Config', fileName => "$main::imscpConfig{'IMSCP_HOMEDIR'}/traffic_index.db", nodie => 1;
-
-        my ($idx, $idxContent) = ( $trafficIndexDb->{'smtp_lineNo'} || 0, $trafficIndexDb->{'smtp_lineContent'} );
-
-        # Create a snapshot of current log file state
-        my $snapshotFH = File::Temp->new( UNLINK => 1 );
-        iMSCP::File->new( filename => $logFile )->copyFile( $snapshotFH->filename, { preserve => 'no' } ) == 0 or die(
-            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-        );
-
-        # Tie the snapshot for easy handling
-        tie my @snapshot, 'Tie::File', $snapshotFH, memory => 10_485_760 or die(
-            sprintf( "Couldn't tie %s file", $snapshotFH )
-        );
-
-        # We keep trace of the index for the live log file only
-        unless ( $logFile =~ /\.1$/ ) {
-            $trafficIndexDb->{'smtp_lineNo'} = $#snapshot;
-            $trafficIndexDb->{'smtp_lineContent'} = $snapshot[$#snapshot];
-        }
-
-        debug( sprintf( 'Processing SMTP logs from the %s file', $logFile ));
-
-        # We have already seen the log file in the past. We must skip logs that were already processed
-        if ( $snapshot[$idx] && $snapshot[$idx] eq $idxContent ) {
-            debug( sprintf( 'Skipping logs that were already processed (lines %d to %d)', 1, ++$idx ));
-
-            my $logsFound = ( @snapshot = @snapshot[$idx .. $#snapshot] ) > 0;
-            untie( @snapshot );
-            $snapshotFH->close();
-
-            unless ( $logsFound ) {
-                debug( sprintf( 'No new SMTP logs found in %s file for processing', $logFile ));
-                return;
-            }
-        } elsif ( $logFile !~ /\.1$/ ) {
-            debug( 'Log rotation has been detected. Processing last rotated log file first' );
-            untie( @snapshot );
-            $snapshotFH->close();
-            $self->getTraffic( $trafficDb, $logFile . '.1', $trafficIndexDb );
-        } else {
-            untie( @snapshot );
-            $snapshotFH->close();
-        }
-
-        # Extract and standardize SMTP logs using maillogconvert.pl script
-        open my $fh, '-|', "maillogconvert.pl standard < $snapshotFH 2>/dev/null" or die(
-            sprintf( "Couldn't pipe to maillogconvert.pl command for reading: %s", $! )
-        );
-
-        while ( <$fh> ) {
-            # Extract SMTP traffic data
-            #
-            # Log line example
-            # date       hour     from            to            relay_s            relay_r            proto  extinfo code size
-            # 2017-04-17 13:31:50 from@domain.tld to@domain.tld relay_s.domain.tld relay_r.domain.tld SMTP   -       1    1001
-            next unless /\@(?<from>[^\s]+)[^\@]+\@(?<to>[^\s]+)\s+(?<relay_s>[^\s]+)\s+(?<relay_r>[^\s]+).*?(?<size>\d+)$/o;
-
-            $trafficDb->{$+{'from'}} += $+{'size'} if exists $trafficDb->{$+{'from'}};
-            $trafficDb->{$+{'to'}} += $+{'size'} if exists $trafficDb->{$+{'to'}};
-        }
-
-        close( $fh );
-    } elsif ( $logFile !~ /\.1$/ && -f -s $logFile . '.1' ) {
-        # The log file is empty. We need to check the last rotated log file
-        # to extract traffic from possible unprocessed logs
-        debug( 'The %s log file is empty. Processing last rotated log file', $logFile );
-        $self->getTraffic( $trafficDb, $logFile . '.1', $trafficIndexDb );
-    } else {
-        # There are no new logs found for processing
-        debug( sprintf( 'No new SMTP logs found in %s file for processing', $logFile ));
+    unless ( -f $logFile ) {
+        debug( sprintf( "SMTP %s log file doesn't exist. Skipping...", $logFile ));
+        return;
     }
+
+    debug( sprintf( 'Processing SMTP %s log file', $logFile ));
+
+    # We use an index database to keep trace of the last processed logs
+    $trafficIndexDb or tie %{$trafficIndexDb},
+        'iMSCP::Config', fileName => "$main::imscpConfig{'IMSCP_HOMEDIR'}/traffic_index.db", nodie => 1;
+    my ($idx, $idxContent) = ( $trafficIndexDb->{'smtp_lineNo'} || 0, $trafficIndexDb->{'smtp_lineContent'} );
+
+    # Extract and standardize SMTP logs in temporary file, using
+    # maillogconvert.pl script
+    my $stdLogFile = File::Temp->new( UNLINK => 1 );
+    my $rs = execute( "/usr/local/sbin/maillogconvert.pl standard < $logFile > $stdLogFile", undef, \my $stderr );
+    $rs == 0 or die( sprintf( "Couldn't standardize SMTP logs: %s", $stderr || 'Unknown error' ));
+
+    tie my @logs, 'Tie::File', $stdLogFile, mode => O_RDONLY, memory => 0 or die(
+        sprintf( "Couldn't tie %s file in read-only mode", $logFile )
+    );
+
+    if ( exists $logs[$idx] && $logs[$idx] eq $idxContent ) {
+        debug( sprintf( 'Skipping SMTP logs that were already processed (lines %d to %d)', 1, ++$idx ));
+    } elsif ( $idxContent ne '' && substr( $logFile, -2 ) ne '.1' ) {
+        debug( 'Log rotation has been detected. Processing last rotated log file first' );
+        $self->getTraffic( $trafficDb, $logFile . '.1', $trafficIndexDb );
+        $idx = 0;
+    }
+
+    if ( $#logs < $idx ) {
+        debug( 'No new SMTP logs found for processing' );
+        return;
+    }
+
+    debug( sprintf( 'Processing SMTP logs (lines %d to %d)', $idx+1, $#logs+1 ));
+
+    # Extract SMTP traffic data
+    #
+    # Log line example
+    # date       hour     from            to            relay_s            relay_r            proto  extinfo code size
+    # 2017-04-17 13:31:50 from@domain.tld to@domain.tld relay_s.domain.tld relay_r.domain.tld SMTP   -       1    1001
+    my $regexp = qr/\@(?<from>[^\s]+)[^\@]+\@(?<to>[^\s]+)\s+(?<relay_s>[^\s]+)\s+(?<relay_r>[^\s]+).*?(?<size>\d+)$/;
+
+    # In term of memory usage, C-Style loop provide better results than using 
+    # range operator in Perl-Style loop: for( @logs[$idx .. $#logs] ) ...
+    for ( my $i = $idx; $i <= $#logs; $i++ ) {
+        next unless $logs[$i] =~ /$regexp/;
+        $trafficDb->{$+{'from'}} += $+{'size'} if exists $trafficDb->{$+{'from'}};
+        $trafficDb->{$+{'to'}} += $+{'size'} if exists $trafficDb->{$+{'to'}};
+    }
+
+    return if substr( $logFile, -2 ) eq '.1';
+
+    $trafficIndexDb->{'smtp_lineNo'} = $#logs;
+    $trafficIndexDb->{'smtp_lineContent'} = $logs[$#logs];
 }
 
 =item addMapEntry( $mapPath [, $entry ] )

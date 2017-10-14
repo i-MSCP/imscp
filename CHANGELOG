@@ -68,6 +68,10 @@ LISTENERS
     Fixed: 10_named_slave_provisioning.pl: Global symbol "$rs" requires explicit package name
     Rewritten: 20_named_dualstack.pl listener file (require i-MSCP >= 1.5.2)
 
+LOGROTATE
+    Added: LOGROTATE(8) configuration stanza for ProFTPD traffic log file
+    Added: LOGROTATE(8) configuration stanza for VSfTPD traffic log file
+
 PACKAGES
     Fixed: Distribution packages not installed in `build' mode (Package::AntiRootkits, Package::Webstats)
     Fixed: Limit number of Nginx worker processes in auto mode (Package::FrontEnd::Installer)
@@ -83,12 +87,19 @@ SCRIPTS
     Fixed: Avoid localization of `$@' variable (all scripts)
     Fixed: imscp-backup-all: Unexpected warning
     Fixed: Missing `--skip-distro-packages' (imscp-reconfigure)
+    Fixed: maillogconvert.pl script is broken leading to un-processing of SMTP logs
 
 SERVERS
     Fixed: Applications such as WHMCS behave unexpectedly with strict SQL mode -- Set SQL mode as with MySQL 5.5 (no SQL mode)
+    Fixed: Avoid truncating ProFTPD and VsFTPD traffic log files -- Make use of LOGROTATE(8) instead
     Fixed: Make use of the INADDR_ANY address, regadless of domain IP address when primary server IP is set with `None` option (Httpd)
     Fixed: Set timeout to 3 seconds for LWP::Simple; Default value is far too hight (Servers::server::local::installer)
     Review: Make use of ipify.org as default service for WAN IP retrieval (Servers::server::local::installer)
+    Rewritten: Servers::ftpd::courier::getTraffic() routine: Avoid IO operations (AMAP); Reduce memory consumption
+    Rewritten: Servers::ftpd::dovecot::getTraffic() routine: Avoid IO operations (AMAP); Reduce memory consumption
+    Rewritten: Servers::ftpd::postfix::getTraffic() routine: Avoid IO operations (AMAP), Reduce memory consumption
+    Rewritten: Servers::ftpd::proftpd::getTraffic() routine: Avoid IO operations (AMAP); Reduce memory consumption
+    Rewritten: Servers::ftpd::vsftpd::getTraffic() routine: Avoid IO operations (AMAP); Reduce memory consumption
 
 VAGRANT
     Enhancement: Make users able to choice between many distributions
