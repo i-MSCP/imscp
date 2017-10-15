@@ -15,7 +15,9 @@ BACKEND
     Security: Don't store i-MSCP master SQL user data into the /etc/mysql/conf.d/imscp.cnf configuration file
 
 CONFIG
-    Added: Specific LOGROTATE(8) configuration file for rsyslog (Ubuntu 14.04/Trusty Thar)
+    Added: LOGROTATE(8) configuration file for VSfTPD traffic log file
+    Added: LOGROTATE(8) configuration file for rsyslog (Ubuntu 14.04/Trusty Thar)
+    Added: LOGROTATE(8) configuration stanza for ProFTPD traffic log file
     Fixed: Make use of the `ssl' parameter of the `listen' directive in place of the `ssl' directive (Nginx)
     Removed: Useless `DATABASE_TYPE` parameter (imscp.conf)
 
@@ -67,10 +69,6 @@ LISTENERS
     Fixed: Listener::Php::ConfOptions::Override: PHP INI level not honoured
     Fixed: 10_named_slave_provisioning.pl: Global symbol "$rs" requires explicit package name
     Rewritten: 20_named_dualstack.pl listener file (require i-MSCP >= 1.5.2)
-
-LOGROTATE
-    Added: LOGROTATE(8) configuration stanza for ProFTPD traffic log file
-    Added: LOGROTATE(8) configuration stanza for VSfTPD traffic log file
 
 PACKAGES
     Fixed: Distribution packages not installed in `build' mode (Package::AntiRootkits, Package::Webstats)
