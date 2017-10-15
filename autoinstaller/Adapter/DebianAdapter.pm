@@ -499,8 +499,8 @@ sub _processPackagesFile
             . lc( $distroCodename ) . '.xml';
     }
 
-    my $arch = `dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null`;
-    if ( $? >> 8 != 0 || !$arch ) {
+    chomp( my $arch = `dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null` || '' );
+    if ( $? >> 8 != 0 || $arch eq '' ) {
         error( "Couldn't determine OS architecture" );
         return 1;
     }
@@ -561,9 +561,11 @@ sub _processPackagesFile
 
         # Whether user must be asked for alternative or not
         my $needDialog = 0;
+
         # Retrieve selected alternative if any
         my $sAlt = $main::questions{ uc( $section ) . '_SERVER' }
             || $main::imscpConfig{ uc( $section ) . '_SERVER' };
+
         # Resets alternative if selected alternative is no longer available
         $sAlt = '' if $sAlt ne '' && !grep($_ eq $sAlt, keys %{$data});
 
@@ -601,7 +603,7 @@ sub _processPackagesFile
         # forced, or if user explicitely asked for reconfiguration of that
         # alternative, show dialog for alternative selection
         if ( keys %altDescs > 1
-            && ( $needDialog || grep( $_ eq $main::reconfigure, ( $section, 'servers', 'all' ) ) )
+            && ( $needDialog || grep( $_ eq $main::reconfigure, $section, 'servers', 'all' ) )
         ) {
             ( my $ret, $sAlt ) = $dialog->radiolist(
                 <<"EOF", [ keys %altDescs ], $data->{$sAlt}->{'description'} || $sAlt );
