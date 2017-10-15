@@ -15,7 +15,7 @@ BACKEND
     Security: Don't store i-MSCP master SQL user data into the /etc/mysql/conf.d/imscp.cnf configuration file
 
 CONFIG
-    Added: LOGROTATE(8) configuration file for VSfTPD traffic log file
+    Added: LOGROTATE(8) configuration file for VsFTPD traffic log file
     Added: LOGROTATE(8) configuration file for rsyslog (Ubuntu 14.04/Trusty Thar)
     Added: LOGROTATE(8) configuration stanza for ProFTPD traffic log file
     Fixed: Make use of the `ssl' parameter of the `listen' directive in place of the `ssl' directive (Nginx)
