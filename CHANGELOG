@@ -29,6 +29,8 @@ DATABASE
 
 DISTRIBUTIONS
     Added: Support for Debian 10/Buster (Experimental)
+    Added: Support for Percona DB 5.5 -- Debian 9/Stretch (amd64 architecture only)
+    Added: Support for Percona DB 5.6 -- Debian 9/Stretch (amd64 architecture only)
     Review: Avoid APT pinning whenever as possible (All distributions)
     Relaxed: Permissions policy on /etc/apt/apt.conf.d/* files -- Files must be world-readable
 
