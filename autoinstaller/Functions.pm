@@ -61,7 +61,7 @@ my $eventManager;
 
  Load main i-MSCP configuration
 
- Return undef
+ Return void
 
 =cut
 
@@ -107,7 +107,6 @@ sub loadConfig
     $main::imscpConfig{'DISTRO_RELEASE'} = iMSCP::LsbRelease->getInstance()->getRelease( 'short', 'force_numeric' );
 
     $eventManager = iMSCP::EventManager->getInstance();
-    undef;
 }
 
 =item build( )
@@ -160,7 +159,7 @@ sub build
     my @steps = (
         [ \&_buildDistributionFiles, 'Building distribution files' ],
         ( ( $main::skippackages )
-            ? () : [ \&_installDistroPackages, 'Installing distribution packages' ]
+            ? () : [ \&_installDistributionPackages, 'Installing distribution packages' ]
         ),
         [ \&_checkRequirements, 'Checking for requirements' ],
         [ \&_compileDaemon, 'Compiling daemon' ],
@@ -169,7 +168,7 @@ sub build
     );
 
     $rs ||= $eventManager->trigger( 'preBuild', \@steps );
-    $rs ||= _getDistroAdapter()->preBuild( \@steps );
+    $rs ||= _getDistributionAdapter()->preBuild( \@steps );
     return $rs if $rs;
 
     my ($step, $nbSteps) = ( 1, scalar @steps );
@@ -183,7 +182,7 @@ sub build
     iMSCP::Dialog->getInstance()->endGauge();
 
     $rs = $eventManager->trigger( 'postBuild' );
-    $rs ||= _getDistroAdapter()->postBuild();
+    $rs ||= _getDistributionAdapter()->postBuild();
     return $rs if $rs;
 
     undef $autoinstallerAdapterInstance;
@@ -278,7 +277,7 @@ EOF
     );
 
     my $rs = $eventManager->trigger( 'preInstall', \@steps );
-    $rs ||= _getDistroAdapter()->preInstall( \@steps );
+    $rs ||= _getDistributionAdapter()->preInstall( \@steps );
     return $rs if $rs;
 
     my $step = 1;
@@ -293,7 +292,7 @@ EOF
     iMSCP::Dialog->getInstance()->endGauge();
 
     $rs = $eventManager->trigger( 'postInstall' );
-    $rs ||= _getDistroAdapter()->postInstall();
+    $rs ||= _getDistributionAdapter()->postInstall();
     return $rs if $rs;
 
     require Net::LibIDN;
@@ -334,7 +333,7 @@ EOF
 
 sub _installPreRequiredPackages
 {
-    _getDistroAdapter()->installPreRequiredPackages();
+    _getDistributionAdapter()->installPreRequiredPackages();
 }
 
 =item _showWelcomeMsg( \%dialog )
@@ -520,18 +519,17 @@ EOF
     0;
 }
 
-=item _installDistroPackages( )
+=item _installDistributionPackages( )
 
- Trigger packages installation/uninstallation tasks from distro autoinstaller adapter
+ Install distribution packages
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _installDistroPackages
+sub _installDistributionPackages
 {
-    my $rs = _getDistroAdapter()->installPackages();
-    $rs ||= _getDistroAdapter()->uninstallPackages();
+    _getDistributionAdapter()->installPackages();
 }
 
 =item _checkRequirements( )
@@ -1017,15 +1015,15 @@ sub _processCopyNode
     defined $node->{'mode'} ? $file->mode( oct( $node->{'mode'} )) : 0;
 }
 
-=item _getDistroAdapter( )
+=item _getDistributionAdapter( )
 
- Return distro autoinstaller adapter instance
+ Return distribution autoinstaller adapter instance
 
  Return autoinstaller::Adapter::Abstract, die on failure
 
 =cut
 
-sub _getDistroAdapter
+sub _getDistributionAdapter
 {
     return $autoinstallerAdapterInstance if $autoinstallerAdapterInstance;
 
