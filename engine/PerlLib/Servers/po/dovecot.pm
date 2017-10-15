@@ -400,8 +400,7 @@ sub getTraffic
 {
     my ($self, $trafficDb, $logFile, $trafficIndexDb) = @_;
 
-    #$logFile ||= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
-    $logFile ||= "/var/local/logstest/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
+    $logFile ||= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
 
     unless ( -f $logFile ) {
         debug( sprintf( "IMAP/POP3 %s log file doesn't exist. Skipping...", $logFile ));
