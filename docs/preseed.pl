@@ -3,7 +3,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2017.10.11
+# Last update: 2017.10.16
 
 %main::questions = (
     # Mandatory parameters
@@ -236,7 +236,7 @@
     # Leave empty for default: master
     BIND_MODE                           => '',
 
-    # Primary DNS server IP addresses (only relevant with master mode)
+    # Primary DNS server IP addresses (only relevant with slave mode)
     #
     # Possible value: 'no' or a list of IPv4/IPv6 each separated by semicolon
     # or space
@@ -244,7 +244,7 @@
     # Leave empty for default: no
     PRIMARY_DNS                         => '',
 
-    # Slave DNS server IP addresses (only relevant with slave mode)
+    # Slave DNS server IP addresses (only relevant with master mode)
     #
     # Possible value: 'no' or a list of IPv4/IPv6 each separated by semicolon
     # or space

@@ -82,6 +82,17 @@ class iMSCP_Database extends PDO
     }
 
     /**
+     * Returns main i-MSCP application database object (transitional)
+     *
+     * @return iMSCP_Database
+     * @deprecated WIll be removed in a later release
+     */
+    public static function getRawInstance()
+    {
+        return static::getInstance();
+    }
+
+    /**
      * Executes a SQL Statement or a prepared statement
      *
      * @param ResultSet $stmt

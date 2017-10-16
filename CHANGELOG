@@ -120,6 +120,7 @@ YOUTRACK
     IP-1745 Rsyslog log rotation failure -- Initctl command (Upstart) doesn't know the 'rotate' action -- Ubuntu 14.04/Trusty Thar
     IP-1746 Error when generating SSL certificate - Could not write in openssl temp file
     IP-1749 User profile fields validation too strict
+    IP-1753 Preseed SECONDARY_DNS does not accept spaces (as indicated in the text)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.5.1
