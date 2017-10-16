@@ -7,18 +7,22 @@ $ORIGIN {DOMAIN_NAME}.
 	2W; Expire
 	1H; Minimum TTL
 )
+@		IN	NS	ns1.entorndns.net.
+@		IN	NS	ns2.entorndns.net.
+@		IN	NS	ns1.entorndns.com.
+@		IN	NS	ns2.entorndns.com.
 ; dmn NS RECORD entry BEGIN
-@		IN	NS	{NS_NAME}
+;@		IN	NS	{NS_NAME}
 ; dmn NS RECORD entry ENDING
 @		IN	{IP_TYPE}	{DOMAIN_IP}
 ; dmn NS GLUE RECORD entry BEGIN
-{NS_NAME}	IN	{NS_IP_TYPE}	{NS_IP}
+;{NS_NAME}	IN	{NS_IP_TYPE}	{NS_IP}
 ; dmn NS GLUE RECORD entry ENDING
 www		IN	CNAME	@
 ftp		IN	{IP_TYPE}	{DOMAIN_IP}
 ; dmn MAIL entry BEGIN
 @		IN	MX	10	mail
-@		IN	TXT	"v=spf1 a mx -all"
+@		IN	TXT	"v=spf1 include:ewserver.net -all"
 mail	IN	{BASE_SERVER_IP_TYPE}	{BASE_SERVER_IP}
 imap	IN	{BASE_SERVER_IP_TYPE}	{BASE_SERVER_IP}
 pop		IN	{BASE_SERVER_IP_TYPE}	{BASE_SERVER_IP}
