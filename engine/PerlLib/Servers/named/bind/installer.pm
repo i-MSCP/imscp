@@ -120,39 +120,41 @@ sub askDnsServerIps
     my ($self, $dialog) = @_;
 
     my $dnsServerMode = $self->{'config'}->{'BIND_MODE'};
-    my @masterDnsIps = split ';', main::setupGetQuestion(
+    my @masterDnsIps = split /[; \t]+/, main::setupGetQuestion(
             'PRIMARY_DNS', $self->{'config'}->{'PRIMARY_DNS'} || ( iMSCP::Getopt->preseed ? 'no' : '' )
         );
-    my @slaveDnsIps = split ';', main::setupGetQuestion(
+    my @slaveDnsIps = split /[; \t]+/, main::setupGetQuestion(
             'SECONDARY_DNS', $self->{'config'}->{'SECONDARY_DNS'} || ( iMSCP::Getopt->preseed ? 'no' : '' )
         );
     my ($rs, $answer, $msg) = ( 0, '', '' );
 
     if ( $dnsServerMode eq 'master' ) {
         if ( $main::reconfigure =~ /^(?:named|servers|all|forced)$/
-            || "@slaveDnsIps" eq ''
-            || ( "@slaveDnsIps" ne 'no' && !$self->_checkIps( @slaveDnsIps ) )
+            || !@slaveDnsIps
+            || ( $slaveDnsIps[0] ne 'no' && !$self->_checkIps( @slaveDnsIps ) )
         ) {
             ( $rs, $answer ) = $dialog->radiolist(
-                <<"EOF", [ 'no', 'yes' ], grep($_ eq "@slaveDnsIps", ( '', 'no' )) ? 'no' : 'yes' );
+                <<"EOF", [ 'no', 'yes' ], !@slaveDnsIps || $slaveDnsIps[0] eq 'no' ? 'no' : 'yes' );
 
 Do you want to add slave DNS servers?
 EOF
-            if ( $rs < 30 && $answer eq 'yes' ) {
-                @slaveDnsIps = () if "@slaveDnsIps" eq 'no';
+            if ( $rs < 30 &&
+                $answer eq 'yes'
+            ) {
+                @slaveDnsIps = () if @slaveDnsIps && $slaveDnsIps[0] eq 'no';
 
                 do {
-                    ( $rs, $answer ) = $dialog->inputbox( <<"EOF", "@slaveDnsIps" );
+                    ( $rs, $answer ) = $dialog->inputbox( <<"EOF", join ' ', @slaveDnsIps );
 $msg
-Please enter the IP addresses for the slave DNS servers, each separated by a space:
+Please enter the IP addresses for the slave DNS servers, each separated by a space or semicolon:
 EOF
                     $msg = '';
                     if ( $rs < 30 ) {
-                        @slaveDnsIps = split /\s+/, $answer;
+                        @slaveDnsIps = split /[; ]+/, $answer;
 
-                        if ( "@slaveDnsIps" eq '' ) {
+                        if ( !@slaveDnsIps ) {
                             $msg = <<"EOF";
-\\Z1You must enter at least one IP address.\\Zn                         
+\\Z1You must enter at least one IP address.\\Zn
 EOF
 
                         } elsif ( !$self->_checkIps( @slaveDnsIps ) ) {
@@ -161,27 +163,29 @@ EOF
 EOF
                         }
                     }
-                } while $rs < 30 && $msg;
+                } while $rs < 30
+                    && $msg;
             } else {
                 @slaveDnsIps = ( 'no' );
             }
         }
     } elsif ( $main::reconfigure =~ /^(?:named|servers|all|forced)$/
-        || grep($_ eq "@masterDnsIps", ( '', 'no' ))
+        || !@slaveDnsIps
+        || $slaveDnsIps[0] eq 'no'
         || !$self->_checkIps( @masterDnsIps )
     ) {
-        @masterDnsIps = () if "@masterDnsIps" eq 'no';
+        @masterDnsIps = () if @masterDnsIps && $masterDnsIps[0] eq 'no';
 
         do {
-            ( $rs, $answer ) = $dialog->inputbox( <<"EOF", "@masterDnsIps" );
+            ( $rs, $answer ) = $dialog->inputbox( <<"EOF", join ' ', @masterDnsIps );
 $msg
-Please enter the IP addresses for the master DNS server, each separated by space:
+Please enter the IP addresses for the master DNS server, each separated by space or semicolon:
 EOF
             $msg = '';
             if ( $rs < 30 ) {
-                @masterDnsIps = split /\s+/, $answer;
+                @masterDnsIps = split /[; ]+/, $answer;
 
-                if ( "@masterDnsIps" eq '' ) {
+                if ( !@masterDnsIps ) {
                     $msg = <<"EOF";
 \\Z1You must enter a least one IP address.\\Zn
 EOF
@@ -191,19 +195,20 @@ EOF
 EOF
                 }
             }
-        } while $rs < 30 && $msg;
+        } while $rs < 30
+            && $msg;
     }
 
-    if ( $rs < 30 ) {
-        if ( $dnsServerMode eq 'master' ) {
-            $self->{'config'}->{'PRIMARY_DNS'} = 'no';
-            $self->{'config'}->{'SECONDARY_DNS'} = "@slaveDnsIps" ne 'no' ? join ';', @slaveDnsIps : 'no';
-        } else {
-            $self->{'config'}->{'PRIMARY_DNS'} = join ';', @masterDnsIps;
-            $self->{'config'}->{'SECONDARY_DNS'} = 'no';
-        }
+    return $rs unless $rs < 30;
+
+    if ( $dnsServerMode eq 'master' ) {
+        $self->{'config'}->{'PRIMARY_DNS'} = 'no';
+        $self->{'config'}->{'SECONDARY_DNS'} = join ';', @slaveDnsIps;
+        return $rs;
     }
 
+    $self->{'config'}->{'PRIMARY_DNS'} = join ';', @masterDnsIps;
+    $self->{'config'}->{'SECONDARY_DNS'} = 'no';
     $rs;
 }
 
