@@ -17,7 +17,7 @@
 
 /var/log/xferlog
 {
-    dayly
+    daily
     missingok
     rotate 1
     nocompress
