@@ -107,7 +107,9 @@ function addMailAccount()
     // Check for username
     $username = mb_strtolower(clean_input($_POST['username']));
 
-    if ($_POST['username'] == '' || !chk_email($username, true)) {
+    if ($_POST['username'] == ''
+        || !chk_email($username, true)
+    ) {
         set_page_message(tr('Invalid email username.'), 'error');
         return false;
     }
@@ -259,7 +261,9 @@ function addMailAccount()
         $db = Registry::get('iMSCP_Application')->getDatabase();
 
         EventsManager::getInstance()->dispatch(Events::onBeforeAddMail, [
+            'mailType'     => $mailTypeNormal ? ($mailTypeForward ? 'normal+forward' : 'normal') : 'forward',
             'mailUsername' => $username,
+            'forwardList'  => $mailTypeForward ? $forwardList : '',
             'MailAddress'  => $mailAddr
         ]);
         exec_query(
@@ -277,9 +281,11 @@ function addMailAccount()
             ]
         );
         EventsManager::getInstance()->dispatch(Events::onAfterAddMail, [
+            'mailId'       => $db->lastInsertId(),
+            'mailType'     => $mailTypeNormal ? ($mailTypeForward ? 'normal+forward' : 'normal') : 'forward',
             'mailUsername' => $username,
-            'mailAddress'  => $mailAddr,
-            'mailId'       => $db->lastInsertId()
+            'forwardList'  => $mailTypeForward ? $forwardList : '',
+            'mailAddress'  => $mailAddr
         ]);
         send_request();
         write_log(sprintf('A mail account has been added by %s', $_SESSION['user_logged']), E_USER_NOTICE);

@@ -1134,7 +1134,9 @@ class iMSCP_Events
      * Event triggered before mail account addition.
      *
      * iMSCP_Events_Event object parameters:
+     *  - mailType     : Mail account type (normal, forward, normal+forward)
      *  - mailUsername : Mail account local part
+     *  - forwardList  : Mail forward list (only relevant for forward and/or normal+forward mail accounts)
      *  - mailAddress  : Mail account address
      *
      * @const string
@@ -1146,6 +1148,8 @@ class iMSCP_Events
      *
      * iMSCP_Events_Event object parameters:
      *  - mailId       : Mail account unique identifier
+     *  - mailType     : Mail account type (normal, forward, normal+forward)
+     *  - forwardList  : Mail forward list (only relevant for forward and/or normal+forward mail accounts)
      *  - mailUsername : Mail account local part
      *  - mailAddress  : Mail account address
      *

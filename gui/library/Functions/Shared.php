@@ -53,15 +53,22 @@ define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
  */
 function createDefaultMailAccounts($mainDmnId, $userEmail, $dmnName, $forwardType = MT_NORMAL_FORWARD, $subId = 0)
 {
+    /** @var iMSCP_Events_Manager_Interface $em */
+    $em = Registry::get('iMSCP_Application')->getEventsManager();
+
     /** @var iMSCP_Database $db */
-    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
-        if ($subId == 0 && $forwardType != MT_NORMAL_FORWARD) {
+        if ($subId == 0
+            && $forwardType != MT_NORMAL_FORWARD
+        ) {
             throw new iMSCPException("Mail account forward type doesn't match with provided child domain ID");
         }
 
-        if (empty($userEmail) || !chk_email($userEmail)) {
+        if (empty($userEmail)
+            || !chk_email($userEmail)
+        ) {
             write_log(
                 sprintf(
                     "Couldn't create default mail accounts for the %s domain. Customer email address is not set or invalid.",
@@ -100,9 +107,21 @@ function createDefaultMailAccounts($mainDmnId, $userEmail, $dmnName, $forwardTyp
         $stmt->bindParam(6, $mailAccount, PDO::PARAM_STR);
         $stmt->bindParam(7, $dmnName, PDO::PARAM_STR);
 
-        /** @noinspection PhpUnusedLocalVariableInspection */
         foreach ($mailAccounts as $mailAccount) {
+            $em->dispatch(Events::onBeforeAddMail, [
+                'mailType'     => 'forward',
+                'mailUsername' => $mailAccount,
+                'forwardList'  => $userEmail,
+                'mailAddress'  => "$mailAccount@$dmnName"
+            ]);
             $stmt->execute();
+            $em->dispatch(Events::onAfterAddMail, [
+                'mailId'       => $db->lastInsertId(),
+                'mailType'     => 'forward',
+                'mailUsername' => $mailAccount,
+                'forwardList'  => $userEmail,
+                'mailAddress'  => "$mailAccount@$dmnName"
+            ]);
         }
 
         $db->commit();
@@ -140,7 +159,7 @@ function get_user_name($userId)
 
     if (NULL === $stmt) {
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
         $stmt = $db->prepare('SELECT admin_name FROM admin WHERE admin_id = ?');
     }
 
@@ -294,7 +313,7 @@ function get_domain_default_props($domainAdminId, $createdBy = NULL)
  *
  * @throws iMSCPException in case the domain id cannot be found
  * @param int $customeId Customer unique identifier
- * @param int $forceReload Flag indicating whether or not data must be fetched again from database
+ * @param bool $forceReload Flag indicating whether or not data must be fetched again from database
  * @return int main domain unique identifier
  */
 function get_user_domain_id($customeId, $forceReload = false)
@@ -304,7 +323,7 @@ function get_user_domain_id($customeId, $forceReload = false)
 
     if (NULL === $stmt) {
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
         $stmt = $db->prepare('SELECT domain_id FROM domain WHERE domain_admin_id = ?');
     }
 
@@ -438,7 +457,7 @@ function change_domain_status($customerId, $action)
     $adminName = decode_idna($row['admin_name']);
 
     /** @var iMSCP_Database $db */
-    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -666,7 +685,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
     $data = $stmt->fetch();
 
     /** @var iMSCP_Database $db */
-    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         // Delete customer session data
@@ -823,7 +842,7 @@ function deleteDomainAlias($customerId, $mainDomainId, $aliasId, $aliasName, $al
     set_time_limit(0);
 
     /** @var iMSCP_Database $db */
-    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -1079,7 +1098,7 @@ function sync_mailboxes_quota($domainId, $newQuota)
         || $totalQuota == 0
     ) {
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
 
         $stmt = $db->prepare('UPDATE mail_users SET quota = ? WHERE mail_id = ?');
         $result = 0;
