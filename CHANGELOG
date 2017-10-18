@@ -26,6 +26,7 @@ CONTRIB
     Added: get_imscp_master_sql_user_pwd.pl script: Print current i-MSCP master SQL user (imscp_user) password
 
 DATABASE
+    Fixed: Can't DROP 'domain_id'; check that column/key exists (Database update r267; fixed/repeated in r271)
     Fixed: Deprecated columns not removed while updating from some older versions (r270)
 
 DISTRIBUTIONS
