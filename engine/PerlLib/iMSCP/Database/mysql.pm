@@ -28,7 +28,7 @@ use warnings;
 use DBI;
 use File::Temp;
 use iMSCP::Debug qw/ debug /;
-use iMSCP::Execute qw / execute /;
+use iMSCP::Execute qw / execute escapeShell /;
 use POSIX ':signal_h';
 use parent 'Common::SingletonClass';
 
@@ -308,37 +308,64 @@ sub dumpdb
 {
     my ($self, $dbName, $dbDumpTargetDir) = @_;
 
-    # Encode slashes as SOLIDUS unicode character
-    # Encode dots as Full stop unicode character
-    ( my $encodedDbName = $dbName ) =~ s%([./])%{ '/', '@002f', '.', '@002e' }->{$1}%ge;
+    eval {
+        # Encode slashes as SOLIDUS unicode character
+        # Encode dots as Full stop unicode character
+        ( my $encodedDbName = $dbName ) =~ s%([./])%{ '/', '@002f', '.', '@002e' }->{$1}%ge;
 
-    debug( sprintf( 'Dump `%s` database into %s', $dbName, $dbDumpTargetDir . '/' . $encodedDbName . '.sql' ));
+        debug( sprintf( 'Dump `%s` database into %s', $dbName, $dbDumpTargetDir . '/' . $encodedDbName . '.sql' ));
 
-    unless ( $DEFAULT_MYSQL_CONFFILE ) {
-        $DEFAULT_MYSQL_CONFFILE = File::Temp->new();
-        print $DEFAULT_MYSQL_CONFFILE <<"EOF";
+        unless ( $DEFAULT_MYSQL_CONFFILE ) {
+            $DEFAULT_MYSQL_CONFFILE = File::Temp->new( UNLINK => 1 );
+            print $DEFAULT_MYSQL_CONFFILE <<"EOF";
 [mysqldump]
 host = $self->{'db'}->{'DATABASE_HOST'}
 port = $self->{'db'}->{'DATABASE_PORT'}
 user = "@{ [ $self->{'db'}->{'DATABASE_USER'} =~ s/"/\\"/gr ] }"
 password = "@{ [ $self->{'db'}->{'DATABASE_PASSWORD'} =~ s/"/\\"/gr ] }"
+socket = /var/run/mysqld/mysqld.sock
 max_allowed_packet = 500M
+add-drop-table = false
+add-locks = true
+create-options = true
+disable-keys = true
+extended-insert = true
+lock-tables = true
+quick = true
+set-charset = true
+add-drop-database = true
+allow-keywords = true
+quote-names = true
+complete-insert = true
+skip-comments = true
 EOF
-        $DEFAULT_MYSQL_CONFFILE->flush();
-    }
+            $DEFAULT_MYSQL_CONFFILE->flush();
+        }
 
-    my $stderr;
-    execute(
-        [
-            'mysqldump', "--defaults-file=$DEFAULT_MYSQL_CONFFILE", '--opt', '--complete-insert', '--add-drop-database',
-            '--allow-keywords', '--compress', '--quote-names', '-r', "$dbDumpTargetDir/$encodedDbName.sql",
-            '-B', $dbName
-        ],
-        undef,
-        \ $stderr
-    ) == 0 or die(
-        sprintf( "Couldn't dump the `%s` database: %s", $dbName, $stderr || 'Unknown error' )
-    );
+        my $dbh = $self->getRawDb();
+        local $dbh->{'RaiseError'} = 1;
+        my $innoDbOnly = !$self->getRawDb->selectrow_array(
+            "SELECT COUNT(ENGINE) FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND ENGINE <> 'InnoDB'",
+            undef,
+            $dbName
+        );
+
+        my $stderr;
+        execute(
+            "mysqldump --defaults-file=$DEFAULT_MYSQL_CONFFILE"
+                # Void tables locking whenever possible
+                . "@{ [ $innoDbOnly ? ' --single-transaction --skip-lock-tables' : '']}"
+                # Compress all information sent between the client and the server (only if remote SQL server).
+                . "@{[ $main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::remote' ? ' --compress' : '']}"
+                . " --databases @{[ escapeShell($dbName) ]}"
+                . ' > ' . escapeShell( "$dbDumpTargetDir/$encodedDbName.sql" ),
+            undef,
+            \ $stderr
+        ) == 0 or die( $stderr || 'Unknown error' );
+    };
+    if ( $@ ) {
+        die( sprintf( "Couldn't dump the `%s` database: %s", $dbName, $@ ));
+    }
 }
 
 =item quoteIdentifier( $identifier )
