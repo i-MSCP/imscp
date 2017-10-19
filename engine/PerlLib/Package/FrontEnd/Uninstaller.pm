@@ -54,7 +54,8 @@ sub uninstall
 {
     my ($self) = @_;
 
-    my $rs = $self->_deconfigurePHP();
+    my $rs = $self->_deleteSystemFiles();
+    $rs |= $self->_deconfigurePHP();
     $rs ||= $self->_deconfigureHTTPD();
     $rs ||= $self->_deleteMasterWebUser();
 }
@@ -80,6 +81,25 @@ sub _init
     $self->{'frontend'} = Package::FrontEnd->getInstance();
     $self->{'config'} = $self->{'frontend'}->{'config'};
     $self;
+}
+
+=item _deleteSystemFiles()
+
+ Delete system files
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _deleteSystemFiles
+{
+    for( 'cron.daily', 'logrotate.d' ) {
+        next unless -f "/etc/$_/imscp_frontend";
+        my $rs = iMSCP::File->new( filename => "/etc/$_/imscp_frontend" )->delFile();
+        return $rs if $rs;
+    }
+
+    0;
 }
 
 =item _deconfigurePHP( )

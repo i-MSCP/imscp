@@ -207,23 +207,23 @@ class Application
     /**
      * Set errors handling
      *
+     * Since 1.5.2:
+     *  - error_reporting now set in pool conffile with value: E_ALL
+     *  - error_log now set in pool conffile with value: {WEB_DIR}/data/logs/errors.log
+     *  - log_errors now set in pool conffile with value: On
+     *  - ignore_repeated_errors now set in pool conffile with value: On
+     *  - display_errors now set in pool conffile with value: On (overridden below in production environment)
+     *
      * @return void
      */
     protected function setErrorHandling()
     {
-        // Set default exception handler
-        Registry::set('exceptionHandler', new ExceptionHandler());
-
-        ini_set('log_errors', 1);
-        //ini_set('error_log', GUI_ROOT_DIR . '/data/logs/errors.log');
-        ini_set('display_errors', 1);
-
         if ($this->getEnvironment() == 'production') {
-            error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE & ~E_USER_NOTICE & ~E_DEPRECATED & ~E_USER_DEPRECATED);
-            return;
+            ini_set('display_errors', 0);
         }
 
-        error_reporting(E_ALL);
+        // Set default exception handler
+        Registry::set('exceptionHandler', new ExceptionHandler());
     }
 
     /**
