@@ -8,6 +8,8 @@
     <folder>${LOCAL_USR_LIB}/imscp_panel</folder>
     <folder>${LOCAL_CONF}/imscp_panel</folder>
     <folder>${SYSTEM_CONF}/frontend</folder>
+    <copy_config>${SYSTEM_CONF}/frontend/cron.daily</copy_config>
+    <copy_config>${SYSTEM_CONF}/frontend/logrotate.d</copy_config>
     <copy_config>${SYSTEM_CONF}/frontend/00_master.nginx</copy_config>
     <copy_config>${SYSTEM_CONF}/frontend/00_master_ssl.nginx</copy_config>
     <copy_config>${SYSTEM_CONF}/frontend/frontend.data.dist</copy_config>

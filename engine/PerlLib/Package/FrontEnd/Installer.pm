@@ -28,10 +28,10 @@ use warnings;
 use File::Basename;
 use iMSCP::Crypt qw/ apr1MD5 randomStr /;
 use iMSCP::Database;
-use iMSCP::Debug;
+use iMSCP::Debug qw / debug error getMessageByType /;
 use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::OpenSSL;
@@ -39,7 +39,7 @@ use iMSCP::Net;
 use iMSCP::ProgramFinder;
 use iMSCP::Service;
 use iMSCP::SystemUser;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ getBloc process replaceBloc /;
 use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
 use Package::FrontEnd;
 use Servers::named;
@@ -569,6 +569,7 @@ sub install
     $rs ||= $self->_buildHttpdConfig();
     $rs ||= $self->_deleteDnsZone();
     $rs ||= $self->_addDnsZone();
+    $rs ||= $self->_installSystemFiles();
     $rs ||= $self->_cleanup();
 }
 
@@ -598,8 +599,8 @@ sub dpkgPostInvokeTasks
     }
 
     if ( -f '/usr/local/sbin/imscp_panel' ) {
-        my $v1 = $self->getFullPhpVersionFor( $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} );
-        my $v2 = $self->getFullPhpVersionFor( '/usr/local/sbin/imscp_panel' );
+        my $v1 = $self->_getFullPhpVersionFor( $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} );
+        my $v2 = $self->_getFullPhpVersionFor( '/usr/local/sbin/imscp_panel' );
         return 0 unless defined $v1 && defined $v2 && $v1 ne $v2; # Don't act when not necessary
         debug( sprintf( "Updating imscp_panel service PHP binary from version `%s' to version `%s'", $v2, $v1 ));
     }
@@ -950,8 +951,7 @@ sub _buildPhpConfig
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndBuildPhpConfig' );
     return $rs if $rs;
 
-    my $user = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-    my $group = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $user = my $group = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
     $rs = $self->{'frontend'}->buildConfFile(
         "$self->{'cfgDir'}/php-fpm.conf",
@@ -1013,7 +1013,7 @@ sub _buildHttpdConfig
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndBuildHttpdConfig' );
     return $rs if $rs;
 
-    my $availableCPUcores = $self->getNbCPUcores();
+    my $availableCPUcores = $self->_getNbCPUcores();
     my $nbCPUcores = $self->{'config'}->{'HTTPD_WORKER_PROCESSES'};
 
     if ( $self->{'config'}->{'HTTPD_WORKER_PROCESSES'} eq 'auto'
@@ -1216,39 +1216,48 @@ sub _deleteDnsZone
     $rs ||= $self->{'eventManager'}->trigger( 'afterNamedDeleteMasterZone' );
 }
 
-=item getFullPhpVersionFor( $binaryPath )
+=item _installSystemFiles()
 
- Get full PHP version for the given PHP binary
+ Install system files
 
- Param string $binaryPath Path to PHP binary
- Return int 0 on success, other on failure
-
-=cut
-
-sub getFullPhpVersionFor
-{
-    my (undef, $binaryPath) = @_;
-
-    my $rs = execute( [ $binaryPath, '-nv' ], \ my $stdout, \ my $stderr );
-    error( $stderr || 'Unknown error' ) if $rs;
-    return undef unless $stdout;
-    $stdout =~ /PHP\s+([^\s]+)/;
-    $1;
-}
-
-=item getNbCPUcores( )
-
- Get number of available CPU cores
-
- Return int Number of CPU cores
+ Return int 0 on success, 1 on failure
 
 =cut
 
-sub getNbCPUcores
+sub _installSystemFiles
 {
-    execute( 'grep processor /proc/cpuinfo 2>/dev/null | wc -l', \ my $stdout );
-    $stdout =~ /^(\d+)/;
-    $1 || 1;
+    my ($self) = @_;
+
+    eval {
+        my $user = my $group = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+
+        for( 'cron.daily', 'logrotate.d' ) {
+            my $fileContent = iMSCP::File->new( filename => "$self->{'cfgDir'}/$_/imscp_frontend" )->get();
+            defined $fileContent or die(
+                sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/$_/imscp_frontend.conf" )
+            );
+
+            $fileContent = process(
+                {
+                    WEB_DIR     => $main::imscpConfig{'GUI_ROOT_DIR'},
+                    PANEL_USER  => $user,
+                    PANEL_GROUP => $group
+                },
+                $fileContent
+            );
+
+            my $file = iMSCP::File->new( filename => "/etc/$_/imscp_frontend" );
+            my $rs = $file->set( $fileContent );
+            $rs ||= $file->save();
+            $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ));
+        }
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    0;
 }
 
 =item _cleanup( )
@@ -1272,6 +1281,41 @@ sub _cleanup
     }
 
     $self->{'eventManager'}->trigger( 'afterFrontEndCleanup' );
+}
+
+=item _getFullPhpVersionFor( $binaryPath )
+
+ Get full PHP version for the given PHP binary
+
+ Param string $binaryPath Path to PHP binary
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _getFullPhpVersionFor
+{
+    my (undef, $binaryPath) = @_;
+
+    my $rs = execute( [ $binaryPath, '-nv' ], \ my $stdout, \ my $stderr );
+    error( $stderr || 'Unknown error' ) if $rs;
+    return undef unless $stdout;
+    $stdout =~ /PHP\s+([^\s]+)/;
+    $1;
+}
+
+=item _getNbCPUcores( )
+
+ Get number of available CPU cores
+
+ Return int Number of CPU cores
+
+=cut
+
+sub _getNbCPUcores
+{
+    execute( 'grep processor /proc/cpuinfo 2>/dev/null | wc -l', \ my $stdout );
+    $stdout =~ /^(\d+)/;
+    $1 || 1;
 }
 
 =back

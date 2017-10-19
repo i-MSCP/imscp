@@ -16,9 +16,11 @@ BACKEND
     Security: Don't store i-MSCP master SQL user data into the /etc/mysql/conf.d/imscp.cnf configuration file
 
 CONFIG
-    Added: LOGROTATE(8) configuration file for VsFTPD
+    Added: Daily CRON(8) configuration file for i-MSCP frontend (cleanup of tmp directory)
+    Added: LOGROTATE(8) configuration file for i-MSCP frontend (PHP errors.log file rotation)
+    Added: LOGROTATE(8) configuration file for VsFTPD (Traffic log file rotation)
     Added: LOGROTATE(8) configuration file for rsyslog (Ubuntu 14.04/Trusty Thar)
-    Added: LOGROTATE(8) configuration stanza for ProFTPD traffic log file
+    Updated: LOGROTATE(8) configuration filefor ProFTPD -- Added stanza for traffic log file rotation
     Fixed: Make use of the `ssl' parameter of the `listen' directive in place of the `ssl' directive (Nginx)
     Removed: Useless `DATABASE_TYPE` parameter (imscp.conf)
 
@@ -39,6 +41,7 @@ DISTRIBUTIONS
 FRONTEND
     Added: New `mailType' and `forwardList' parameters for both `onBeforeAddMail' and `onAfterAddMail' events
     Enhancement: Make use of application cache for caching of plugins metadata (lifetime: indefinitely till change)
+    Enhancement: PHP error messages are now stored in the data/logs/errors.log file which is rotated on a daily basis
     Fixed: Both `onBeforeAddMail' and `onAfterAddMail' events should be triggered on default mail accounts creation
     Fixed: Couldn't parse static (inline|file) templates due to wrong conditional statement (class iMSCP_pTemplate)
     Fixed: Couldn't update customer password (admin and reseller UI)
