@@ -358,7 +358,7 @@
                 pinning_package="libmariadbclient18 mariadb-client-10.1 mariadb-common mysql-common"
                 pinning_pin="release o=Debian,n=stretch"
                 pinning_pin_priority="1001"
-                allow_switch="mariadb_10.1,mysql_5.6,mysql_5.7,mariadb_10.2,percona_5.5,percona_5.6,percona_5.7"
+                allow_switch="mariadb_10.1,mariadb_10.2,mysql_5.6,mysql_5.7,percona_5.5,percona_5.6,percona_5.7"
         >
             <package>libmariadbclient18</package>
             <package>mariadb-common</package>
