@@ -93,7 +93,7 @@ sub setRights
                             chmod $mode, $_ or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ));
                         } elsif ( $dirmode && -d _ ) {
                             chmod $dirmode, $_ or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ));
-                        } elsif ( $filemode ) {
+                        } elsif ( $filemode && !-d _ ) {
                             chmod $filemode, $_ or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ));
                         }
                     },
@@ -114,7 +114,7 @@ sub setRights
                 chmod $mode, $target or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ));
             } elsif ( $dirmode && -d _ ) {
                 chmod $dirmode, $target or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ));
-            } elsif ( $filemode ) {
+            } elsif ( $filemode && !-d _ ) {
                 chmod $filemode, $target or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ));
             }
         }

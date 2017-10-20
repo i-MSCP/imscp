@@ -11,6 +11,7 @@ BACKEND
     Fixed: Existence of network devices must be checked before operating on them (iMSCP::Net)
     Fixed: Make sure to work with a well-known composer version (iMSCP::Composer)
     Fixed: Make use of the INADDR_ANY address, regadless of domain IP address when primary server IP is set with `None` option
+    Fixed: Unexpected permissions set on folders in recursive mode, and when dirmode parameter is not involved (iMSCP::Rights)
     Review: Avoid tables locking whenever possible while dump of databases (iMSCP::Database::mysql::dumpdb)
     Review: Prefer stable versions of composer packages (iMSCP::Composer)
     Security: Disallow connection to MySQL command-line tool without user password, even for root user
