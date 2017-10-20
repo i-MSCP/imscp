@@ -63,7 +63,7 @@ sub setRights
 
     eval {
         defined $target or die( '$target parameter is not defined' );
-        ref $options eq 'HASH' && %{$options} or die( '$options parameter is not defined' );
+        ref $options eq 'HASH' && %{$options} or die( '$options parameter is not defined or is not a hashref' );
 
         if ( defined $options->{'mode'} && ( defined $options->{'dirmode'} || defined $options->{'filemode'} ) ) {
             die( '`mode` option is not allowed when using dirmode/filemode options' );
