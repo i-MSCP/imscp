@@ -80,9 +80,7 @@ sub installComposer
     local $CWD = $self->{'homedir'};
 
     if ( -x "$self->{'homedir'}/composer.phar"
-        && version->parse(
-        `@{$self->_getSuCmd()} '$self->{'php_cmd'} composer.phar --no-ansi --version 2>/dev/null'` =~ /version\s+([\d.]+)/
-    ) == version->parse( $self->{'composer_version'} )
+        && version->parse( `@{$self->_getSuCmd()} '$self->{'php_cmd'} composer.phar --no-ansi --version 2>/dev/null'` =~ /version\s+([\d.]+)/ ) == version->parse( $self->{'composer_version'} )
     ) {
         debug( "composer.phar version is already $self->{'composer_version'}. Skipping installation..." );
         return 0;
