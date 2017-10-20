@@ -106,41 +106,6 @@ sub uninstall
     Package::Webmail::RainLoop::Uninstaller->getInstance()->uninstall();
 }
 
-=item setGuiPermissions( )
-
- Set gui permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setGuiPermissions
-{
-    return 0 unless -d "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop";
-
-    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-    my $rs = setRights(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop",
-        {
-            user      => $panelUName,
-            group     => $panelGName,
-            dirmode   => '0550',
-            filemode  => '0440',
-            recursive => 1
-        }
-    );
-    $rs ||= setRights(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop/data",
-        {
-            user      => $panelUName,
-            group     => $panelGName,
-            dirmode   => '0750',
-            filemode  => '0640',
-            recursive => 1
-        }
-    );
-}
-
 =item deleteMail( \%data )
 
  Process deleteMail tasks

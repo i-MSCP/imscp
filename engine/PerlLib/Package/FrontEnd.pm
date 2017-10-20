@@ -304,64 +304,13 @@ sub setGuiPermissions
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontendSetGuiPermissions' );
     return $rs if $rs;
 
-    my $panelUName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-    my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $user = my $group =  $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
     $rs = setRights(
         $main::imscpConfig{'GUI_ROOT_DIR'},
         {
-            user      => $panelUName,
-            group     => $panelGName,
-            dirmode   => '0550',
-            filemode  => '0440',
-            recursive => 1
-        }
-    );
-    $rs ||= setRights(
-        "$main::imscpConfig{'GUI_ROOT_DIR'}/themes",
-        {
-            user      => $panelUName,
-            group     => $panelGName,
-            dirmode   => '0550',
-            filemode  => '0440',
-            recursive => 1
-        }
-    );
-    $rs ||= setRights(
-        "$main::imscpConfig{'GUI_ROOT_DIR'}/data",
-        {
-            user      => $panelUName,
-            group     => $panelGName,
-            dirmode   => '0750',
-            filemode  => '0640',
-            recursive => 1
-        }
-    );
-    $rs ||= setRights(
-        "$main::imscpConfig{'GUI_ROOT_DIR'}/data/persistent",
-        {
-            user      => $panelUName,
-            group     => $panelGName,
-            dirmode   => '0750',
-            filemode  => '0640',
-            recursive => 1
-        }
-    );
-    $rs ||= setRights(
-        "$main::imscpConfig{'GUI_ROOT_DIR'}/i18n",
-        {
-            user      => $panelUName,
-            group     => $panelGName,
-            dirmode   => '0750',
-            filemode  => '0640',
-            recursive => 1
-        }
-    );
-    $rs ||= setRights(
-        $main::imscpConfig{'PLUGINS_DIR'},
-        {
-            user      => $panelUName,
-            group     => $panelGName,
+            user      => $user,
+            group     => $group,
             dirmode   => '0750',
             filemode  => '0640',
             recursive => 1
@@ -369,7 +318,6 @@ sub setGuiPermissions
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontendSetGuiPermissions' );
 }
-
 
 =item addUser( \%data )
 

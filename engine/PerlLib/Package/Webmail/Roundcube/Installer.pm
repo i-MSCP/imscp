@@ -196,20 +196,8 @@ sub setGuiPermissions
     my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
 
     return 0 unless -d "$guiPublicDir/tools/webmail";
-
-    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-
-    my $rs = setRights(
-        "$guiPublicDir/tools/webmail",
-        {
-            user      => $panelUName,
-            group     => $panelGName,
-            dirmode   => '0700',
-            filemode  => '0600',
-            recursive => 1
-        }
-    );
-    $rs ||= setRights(
+    
+    my $rs ||= setRights(
         "$guiPublicDir/tools/webmail/bin",
         {
             filemode  => '0700',

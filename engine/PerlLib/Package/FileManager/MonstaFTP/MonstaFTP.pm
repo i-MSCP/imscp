@@ -80,30 +80,6 @@ sub uninstall
     Package::FileManager::MonstaFTP::Uninstaller->getInstance()->uninstall();
 }
 
-=item setGuiPermissions( )
-
- Set file permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setGuiPermissions
-{
-    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-
-    setRights(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp",
-        {
-            user      => $panelUName,
-            group     => $panelGName,
-            dirmode   => '0550',
-            filemode  => '0440',
-            recursive => 1
-        }
-    );
-}
-
 =back
 
 =head1 AUTHOR
