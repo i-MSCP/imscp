@@ -25,7 +25,7 @@ package iMSCP::Composer;
 
 use strict;
 use warnings;
-use iMSCP::Debug / error /;
+use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dialog;
 use iMSCP::Dir;
 use iMSCP::Execute qw/ executeNoWait /;
