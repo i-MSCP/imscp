@@ -69,7 +69,7 @@ INSTALLER
     Fixed: `build' mode is broken for fresh installs -- Packages must be pre-installed regardless of install mode
     Fixed: `CLIENT_DOMAIN_ALT_URLS' configuration parameter reseted to 0 (disabled) while running installer
     Fixed: `CLIENT_DOMAIN_ALT_URLS' parameter is not set on fresh installations
-    Fixed: Don't assume RSYSLOGD(8 as system log daemon -- One drop-in replacement could be installed
+    Fixed: Don't assume RSYSLOGD(8) as system log daemon -- One drop-in replacement could be installed instead
     Fixed: Filtering of packages that must be uninstalled is made too early (autoinstaller::Adapter::DebianAdapter)
     Fixed: If a password is getting incorrect due to a password policy change, user must be warned
     Fixed: Setup dialog for the alternative URLs feature is not shown on fresh install
