@@ -157,8 +157,8 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/roundcube', '1.3.*' );
-    $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
+    iMSCP::Composer->getInstance()->requirePackage( 'imscp/roundcube', '1.3.*' );
+    $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 
 =item install( )
@@ -204,28 +204,22 @@ sub setGuiPermissions
         {
             user      => $panelUName,
             group     => $panelGName,
-            dirmode   => '0550',
-            filemode  => '0440',
-            recursive => 1
-        }
-    );
-    $rs ||= setRights(
-        "$guiPublicDir/tools/webmail/logs",
-        {
-            user      => $panelUName,
-            group     => $panelGName,
-            dirmode   => '0750',
-            filemode  => '0640',
+            dirmode   => '0700',
+            filemode  => '0600',
             recursive => 1
         }
     );
     $rs ||= setRights(
         "$guiPublicDir/tools/webmail/bin",
         {
-            user      => $panelUName,
-            group     => $panelGName,
-            dirmode   => '0750',
-            filemode  => '0750',
+            filemode  => '0700',
+            recursive => 1
+        }
+    );
+    $rs ||= setRights(
+        "$guiPublicDir/tools/webmail/vendor/bin",
+        {
+            filemode  => '0700',
             recursive => 1
         }
     );

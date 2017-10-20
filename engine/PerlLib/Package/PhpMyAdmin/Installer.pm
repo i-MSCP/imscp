@@ -175,8 +175,8 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/phpmyadmin', '0.4.7.*@dev' );
-    $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
+    iMSCP::Composer->getInstance()->requirePackage( 'imscp/phpmyadmin', '0.4.7.*@dev' );
+    $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 
 =item install( )

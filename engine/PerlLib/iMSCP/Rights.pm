@@ -87,7 +87,8 @@ sub setRights
                             lchown $uid, $gid, $_ or die( sprintf( "Couldn't set user/group on %s: %s", $_, $! ));
                         }
 
-                        return if -l; # We do not call chmod on symkink targets
+                        # We do not call chmod on symkink targets
+                        return if -l;
 
                         if ( $mode ) {
                             chmod $mode, $_ or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ));
