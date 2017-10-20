@@ -81,8 +81,8 @@ sub installComposer
 
     if ( -x "$self->{'homedir'}/composer.phar"
         && version->parse(
-            `@{$self->_getSuCmd()} '$self->{'php_cmd'} composer.phar --no-ansi --version 2>/dev/null'` =~ /version\s+([\d.]+)/
-        ) == version->parse( $self->{'composer_version'} )
+        `@{$self->_getSuCmd()} '$self->{'php_cmd'} composer.phar --no-ansi --version 2>/dev/null'` =~ /version\s+([\d.]+)/
+    ) == version->parse( $self->{'composer_version'} )
     ) {
         debug( "composer.phar version is already $self->{'composer_version'}. Skipping installation..." );
         return 0;
@@ -253,6 +253,9 @@ sub _checkRequirements
     my ($self) = @_;
 
     return 0 unless -d $self->{'packages_dir'};
+
+    local $ENV{'COMPOSER_HOME'} = "$self->{'homedir'}/.composer";
+    local $CWD = $self->{'homedir'};
 
     my $msgHeader = "Checking composer package requirements\n\n";
     my $stderr;
