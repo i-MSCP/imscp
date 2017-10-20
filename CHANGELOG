@@ -103,6 +103,7 @@ SCRIPTS
 SERVERS
     Fixed: Applications such as WHMCS behave unexpectedly with strict SQL mode -- Set SQL mode as with MySQL 5.5 (no SQL mode)
     Fixed: Avoid truncating ProFTPD and VsFTPD traffic log files -- Make use of LOGROTATE(8) instead
+    Fixed: Don't enforce SSL strict SNI (Apache2)
     Fixed: Make use of the INADDR_ANY address, regadless of domain IP address when primary server IP is set with `None` option (Httpd)
     Fixed: Set timeout to 3 seconds for LWP::Simple; Default value is far too hight (Servers::server::local::installer)
     Review: Make use of ipify.org as default service for WAN IP retrieval (Servers::server::local::installer)
