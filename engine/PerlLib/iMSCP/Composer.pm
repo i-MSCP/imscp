@@ -184,7 +184,6 @@ sub _init
     $self->{'group'} = $main::imscpConfig{'IMSCP_GROUP'};
     $self->{'homedir'} = $main::imscpConfig{'IMSCP_HOMEDIR'};
     $self->{'composer_version'} = '1.5.2'; # Make sure to work with a well-known composer version
-    $self->{'repositories'} = [];
     $self->{'packages'} = [];
     $self->{'packages_dir'} = "$self->{'homedir'}/packages";
     $self->{'php_cmd'} = "/usr/bin/php -d date.timezone=$main::imscpConfig{'TIMEZONE'} -d allow_url_fopen=1 "
