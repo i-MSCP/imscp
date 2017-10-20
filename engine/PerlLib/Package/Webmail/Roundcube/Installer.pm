@@ -30,14 +30,15 @@ use iMSCP::Composer;
 use iMSCP::Config;
 use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::TemplateParser;
+use iMSCP::Rights;
+use iMSCP::TemplateParser qw/ getBloc process replaceBloc /;
 use JSON;
 use Package::FrontEnd;
 use Servers::sqld;
@@ -96,7 +97,7 @@ sub showDialog
 
             ( $rs, $dbUser ) = $dialog->inputbox( <<"EOF", $dbUser );
 $iMSCP::Dialog::InputValidation::lastValidationError
-Please enter a username for the RoundCube SQL user (leave empty for default):
+Please enter a username for the Roundcube SQL user (leave empty for default):
 EOF
         } while $rs < 30
             && ( !isValidUsername( $dbUser )
@@ -123,7 +124,7 @@ EOF
 
                 ( $rs, $dbPass ) = $dialog->inputbox( <<"EOF", $dbPass );
 $iMSCP::Dialog::InputValidation::lastValidationError
-Please enter a password for the RoundCube SQL user (leave empty for autogeneration):
+Please enter a password for the Roundcube SQL user (leave empty for autogeneration):
 EOF
             } while $rs < 30
                 && !isValidPassword( $dbPass );
@@ -156,7 +157,7 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/roundcube', '1.2.x' );
+    my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/roundcube', 'dev-stamp' );
     $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 
@@ -175,12 +176,59 @@ sub install
     my $rs = $self->_backupConfigFile( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php" );
     $rs ||= $self->_installFiles();
     $rs ||= $self->_mergeConfig();
-    $rs ||= $self->_setupDatabase();
     $rs ||= $self->_buildRoundcubeConfig();
-    $rs ||= $self->_updateDatabase() unless $self->{'newInstall'};
+    $rs ||= $self->_setupDatabase();
     $rs ||= $self->_buildHttpdConfig();
     $rs ||= $self->_setVersion();
     $rs ||= $self->_cleanup();
+}
+
+=item setGuiPermissions( )
+
+ Set gui permissions
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setGuiPermissions
+{
+    my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
+
+    return 0 unless -d "$guiPublicDir/tools/webmail";
+
+    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+
+    my $rs = setRights(
+        "$guiPublicDir/tools/webmail",
+        {
+            user      => $panelUName,
+            group     => $panelGName,
+            dirmode   => '0550',
+            filemode  => '0440',
+            recursive => 1
+        }
+    );
+    $rs ||= setRights(
+        "$guiPublicDir/tools/webmail/logs",
+        {
+            user      => $panelUName,
+            group     => $panelGName,
+            dirmode   => '0750',
+            filemode  => '0640',
+            recursive => 1
+        }
+    );
+    $rs ||= setRights(
+        "$guiPublicDir/tools/webmail/bin",
+        {
+            user      => $panelUName,
+            group     => $panelGName,
+            dirmode   => '0750',
+            filemode  => '0750',
+            recursive => 1
+        }
+    );
 }
 
 =back
@@ -247,7 +295,6 @@ sub _init
     $self->{'cfgDir'} = $self->{'roundcube'}->{'cfgDir'};
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-    $self->{'newInstall'} = 1;
     $self->{'config'} = $self->{'roundcube'}->{'config'};
     $self;
 }
@@ -297,7 +344,7 @@ sub _backupConfigFile
 
  Install files
 
- Return int 0 on success, other on failure
+ Return int 0 on success, 1 on failure
 
 =cut
 
@@ -305,18 +352,50 @@ sub _installFiles
 {
     my ($self) = @_;
 
-    my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/roundcube";
+    eval {
+        my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/roundcube";
+        -d $packageDir or die( "Couldn't find the imscp/roundcube package into the packages cache directory" );
+        my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
 
-    unless ( -d $packageDir ) {
-        error( "Couldn't find the imscp/roundcube package into the packages cache directory" );
+        iMSCP::Dir->new( dirname => $destDir )->remove();
+        iMSCP::Dir->new( dirname => "$packageDir/iMSCP/config" )->rcopy( $self->{'cfgDir'}, { preserve => 'no' } );
+        iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( $destDir, { preserve => 'no' } );
+
+        my $panelUser = my $panelGroup = $main::imscpConfig{'SYSTEM_USER_PREFIX'}
+            . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+
+        for( 'cron.d', 'logrotate.d' ) {
+            next unless -f "$packageDir/iMSCP/$_/imscp_roundcube";
+
+            my $fileContent = iMSCP::File->new( filename => "$packageDir/iMSCP/$_/imscp_roundcube" )->get();
+            defined $fileContent or die(
+                sprintf( "Couldn't read %s file", "$packageDir/iMSCP/$_/imscp_roundcube.conf" )
+            );
+
+            $fileContent = process(
+                {
+                    GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'},
+                    PANEL_USER     => $panelUser,
+                    PANEL_GROUP    => $panelGroup
+                },
+                $fileContent
+            );
+
+            my $file = iMSCP::File->new( filename => "/etc/$_/imscp_roundcube" );
+            my $rs = $file->set( $fileContent );
+            $rs ||= $file->save();
+            $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ));
+        }
+
+        # Set permissions -- Needed at this stage to make scripts from the bin/
+        # directory executable
+        $self->setGuiPermissions() == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ));
+    };
+    if ( $@ ) {
+        error( $@ );
         return 1;
     }
 
-    my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
-
-    iMSCP::Dir->new( dirname => $destDir )->remove();
-    iMSCP::Dir->new( dirname => "$packageDir/iMSCP/config" )->rcopy( $self->{'cfgDir'}, { preserve => 'no' } );
-    iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( $destDir, { preserve => 'no' } );
     0;
 }
 
@@ -351,89 +430,6 @@ sub _mergeConfig
     0;
 }
 
-=item _setupDatabase( )
-
- Setup database
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _setupDatabase
-{
-    my ($self) = @_;
-
-    my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
-    my $imscpDbName = main::setupGetQuestion( 'DATABASE_NAME' );
-    my $roundcubeDbName = $imscpDbName . '_roundcube';
-    my $dbUser = main::setupGetQuestion( 'ROUNDCUBE_SQL_USER' );
-    my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
-    my $oldDbUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'};
-    my $dbPass = main::setupGetQuestion( 'ROUNDCUBE_SQL_PASSWORD' );
-    my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
-
-    eval {
-        my $db = iMSCP::Database->factory();
-        my $dbh = $db->getRawDb();
-        local $dbh->{'RaiseError'} = 1;
-
-        my $quotedDbName = $dbh->quote_identifier( $roundcubeDbName );
-
-        if ( !$dbh->selectrow_hashref( 'SHOW DATABASES LIKE ?', undef, $roundcubeDbName )
-            || !$dbh->selectrow_hashref( "SHOW TABLES FROM $quotedDbName" )
-        ) {
-            $dbh->do( "CREATE DATABASE IF NOT EXISTS $quotedDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci" );
-
-            my $oldDbName = $db->useDatabase( $roundcubeDbName );
-            main::setupImportSqlSchema( $db, "$roundcubeDir/SQL/mysql.initial.sql" ) == 0 or die(
-                getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-            );
-            $db->useDatabase( $oldDbName ) if $oldDbName;
-        } else {
-            $self->{'newInstall'} = 0;
-        }
-
-        my $sqlServer = Servers::sqld->factory();
-
-        # Drop old SQL user if required
-        for my $sqlUser ( $dbOldUser, $dbUser ) {
-            next unless $sqlUser;
-
-            for my $host( $dbUserHost, $oldDbUserHost ) {
-                next if !$host
-                    || exists $main::sqlUsers{$sqlUser . '@' . $host} && !defined $main::sqlUsers{$sqlUser . '@' . $host};
-                $sqlServer->dropUser( $sqlUser, $host );
-            }
-        }
-
-        # Create SQL user if required
-        if ( defined $main::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
-            debug( sprintf( 'Creating %s@%s SQL user', $dbUser, $dbUserHost ));
-            $sqlServer->createUser( $dbUser, $dbUserHost, $dbPass );
-            $main::sqlUsers{$dbUser . '@' . $dbUserHost} = undef;
-        }
-
-        # Give required privileges to this SQL user
-        $quotedDbName =~ s/([%_])/\\$1/g;
-        $dbh->do( "GRANT ALL PRIVILEGES ON $quotedDbName.* TO ?\@?", undef, $dbUser, $dbUserHost );
-
-        # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
-        $quotedDbName = $dbh->quote_identifier( $imscpDbName );
-        $dbh->do(
-            "GRANT SELECT (mail_addr, mail_pass), UPDATE (mail_pass) ON $quotedDbName.mail_users TO ?\@?",
-            undef, $dbUser, $dbUserHost
-        );
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'config'}->{'DATABASE_USER'} = $dbUser;
-    $self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
-    0;
-}
-
 =item _buildRoundcubeConfig( )
 
  Build roundcube configuration file
@@ -446,14 +442,13 @@ sub _buildRoundcubeConfig
 {
     my ($self) = @_;
 
-    my $panelUName =
-        my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}
+        . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
     my $dbName = main::setupGetQuestion( 'DATABASE_NAME' ) . '_roundcube';
     my $dbHost = main::setupGetQuestion( 'DATABASE_HOST' );
     my $dbPort = main::setupGetQuestion( 'DATABASE_PORT' );
     ( my $dbUser = main::setupGetQuestion( 'ROUNDCUBE_SQL_USER' ) ) =~ s%(')%\\$1%g;
     ( my $dbPass = main::setupGetQuestion( 'ROUNDCUBE_SQL_PASSWORD' ) ) =~ s%(')%\\$1%g;
-
     my $data = {
         BASE_SERVER_VHOST => main::setupGetQuestion( 'BASE_SERVER_VHOST' ),
         DB_NAME           => $dbName,
@@ -486,56 +481,127 @@ sub _buildRoundcubeConfig
     $rs ||= $file->copyFile( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php" );
 }
 
-=item _updateDatabase( )
+=item _setupDatabase( )
 
- Update database
+ Setup database
 
- Return int 0 on success other on failure
+ Return int 0 on success, other on failure
 
 =cut
 
-sub _updateDatabase
+sub _setupDatabase
 {
     my ($self) = @_;
 
-    my $roundcubeDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
-    my $roundcubeDbName = main::setupGetQuestion( 'DATABASE_NAME' ) . '_roundcube';
-    my $fromVersion = $self->{'config'}->{'ROUNDCUBE_VERSION'} || '0.8.4';
-
-    my $rs = execute(
-        "php $roundcubeDir/bin/updatedb.sh --version=$fromVersion --dir=$roundcubeDir/SQL --package=roundcube",
-        \ my $stdout,
-        \ my $stderr
-    );
-    debug( $stdout ) if $stdout;
-    error( $stderr || 'Unknown error' ) if $rs;
-    return $rs if $rs;
-
-    my $db = iMSCP::Database->factory();
-    my $dbh = $db->getRawDb();
+    my $rcDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
+    my $imscpDbName = main::setupGetQuestion( 'DATABASE_NAME' );
+    my $rcDbName = $imscpDbName . '_roundcube';
+    my $dbUser = main::setupGetQuestion( 'ROUNDCUBE_SQL_USER' );
+    my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
+    my $oldDbUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'};
+    my $dbPass = main::setupGetQuestion( 'ROUNDCUBE_SQL_PASSWORD' );
+    my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
     eval {
-        # Ensure tha users.mail_host entries are set with expected hostname (default to `localhost')
-        my $hostname = 'localhost';
-        $self->{'eventManager'}->trigger( 'beforeUpdateRoundCubeMailHostEntries', \$hostname ) == 0 or die(
-            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-        );
+        my $sqlServer = Servers::sqld->factory();
 
-        my $oldDbName = $db->useDatabase( $roundcubeDbName );
+        # Drop old SQL user if needed
+        for my $sqlUser ( $dbOldUser, $dbUser ) {
+            next unless $sqlUser;
 
-        {
-            local $dbh->{'RaiseError'} = 1;
-
-            $dbh->begin_work();
-            $dbh->do( 'UPDATE IGNORE users SET mail_host = ?', undef, $hostname );
-            $dbh->do( 'DELETE FROM users WHERE mail_host <> ?', undef, $hostname );
-            $dbh->commit();
+            for my $host( $dbUserHost, $oldDbUserHost ) {
+                next if !$host || (
+                    exists $main::sqlUsers{$sqlUser . '@' . $host} && !defined $main::sqlUsers{$sqlUser . '@' . $host}
+                );
+                $sqlServer->dropUser( $sqlUser, $host );
+            }
         }
 
-        $db->useDatabase( $oldDbName ) if $oldDbName;
+        # Create SQL user if required
+        if ( defined $main::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
+            debug( sprintf( 'Creating %s@%s SQL user', $dbUser, $dbUserHost ));
+            $sqlServer->createUser( $dbUser, $dbUserHost, $dbPass );
+            $main::sqlUsers{$dbUser . '@' . $dbUserHost} = undef;
+        }
+
+        my $db = iMSCP::Database->factory();
+        my $dbh = $db->getRawDb();
+        local $dbh->{'RaiseError'} = 1;
+
+        # Give required privileges on Roundcube database to SQL user
+        # According https://dev.mysql.com/doc/refman/5.7/en/grant.html,
+        # we can grant privileges on databases that doesn't exist yet.
+        my $quotedRcDbName = $dbh->quote_identifier( $rcDbName );
+        $dbh->do(
+            "
+                GRANT ALL PRIVILEGES ON @{[ $quotedRcDbName =~ s/([%_])/\\$1/gr ]}.*
+                TO ?\@?
+            ",
+            undef, $dbUser, $dbUserHost
+        );
+
+        # Give required privileges on the imscp.mail table
+        # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
+        $dbh->do(
+            "
+                GRANT SELECT (mail_addr, mail_pass), UPDATE (mail_pass)
+                ON @{[ $dbh->quote_identifier( $imscpDbName ) ]}.mail_users
+                TO ?\@?
+            ",
+            undef, $dbUser, $dbUserHost
+        );
+
+        # Create/Update Roundcube database
+
+        if ( !$dbh->selectrow_hashref( 'SHOW DATABASES LIKE ?', undef, $rcDbName )
+            || !$dbh->selectrow_hashref( "SHOW TABLES FROM $quotedRcDbName" )
+        ) {
+            $dbh->do( "CREATE DATABASE IF NOT EXISTS $quotedRcDbName CHARACTER SET utf8 COLLATE utf8_unicode_ci" );
+
+            # Create Roundcube database
+            my $rs = execute(
+                [ "$rcDir/bin/initdb.sh", "--dir", "$rcDir/SQL", '--package', 'roundcube' ],
+                \ my $stdout,
+                \ my $stderr
+            );
+            debug( $stdout ) if $stdout;
+            die( $stderr || 'Unknown error' ) if $rs;
+        } else {
+            # Update Roundcube database
+            my $rs = execute(
+                [ "$rcDir/bin/updatedb.sh", '--dir', "$rcDir/SQL", '--package', 'roundcube' ],
+                \ my $stdout,
+                \ my $stderr
+            );
+            debug( $stdout ) if $stdout;
+            die( $stderr || 'Unknown error' ) if $rs;
+
+            eval {
+                # Ensure tha users.mail_host entries are set with expected hostname (default to `localhost')
+                my $hostname = 'localhost';
+                $self->{'eventManager'}->trigger( 'beforeUpdateRoundCubeMailHostEntries', \$hostname ) == 0 or die(
+                    getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+                );
+
+                my $oldDbName = $db->useDatabase( $rcDbName );
+
+                $dbh->begin_work();
+                $dbh->do( 'UPDATE IGNORE users SET mail_host = ?', undef, $hostname );
+                $dbh->do( 'DELETE FROM users WHERE mail_host <> ?', undef, $hostname );
+                $dbh->commit();
+
+                $db->useDatabase( $oldDbName ) if $oldDbName;
+            };
+            if ( $@ ) {
+                $dbh->rollback() if $dbh->{'BegunWork'};
+                die( $@ );
+            }
+        }
+
+        $self->{'config'}->{'DATABASE_USER'} = $dbUser;
+        $self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
     };
     if ( $@ ) {
-        $dbh->rollback();
         error( $@ );
         return 1;
     }

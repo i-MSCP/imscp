@@ -29,7 +29,6 @@ use Class::Autouse qw/ :nostat Package::Webmail::Roundcube::Installer Package::W
 use iMSCP::Config;
 use iMSCP::Debug;
 use iMSCP::Database;
-use iMSCP::Rights;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -117,32 +116,7 @@ sub uninstall
 
 sub setGuiPermissions
 {
-    my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
-
-    return 0 unless -d "$guiPublicDir/tools/webmail";
-
-    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-
-    my $rs = setRights(
-        "$guiPublicDir/tools/webmail",
-        {
-            user      => $panelUName,
-            group     => $panelGName,
-            dirmode   => '0550',
-            filemode  => '0440',
-            recursive => 1
-        }
-    );
-    $rs ||= setRights(
-        "$guiPublicDir/tools/webmail/logs",
-        {
-            user      => $panelUName,
-            group     => $panelGName,
-            dirmode   => '0750',
-            filemode  => '0640',
-            recursive => 1
-        }
-    );
+    Package::Webmail::Roundcube::Installer->getInstance()->setGuiPermissions();
 }
 
 =item deleteMail( \%data )

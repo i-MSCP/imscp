@@ -194,6 +194,12 @@ sub _removeFiles
         return $rs if $rs;
     };
 
+    for( 'cron.d', 'logrotate.d' ) {
+        next unless -f "/etc/$_/imscp_roundcube";
+        my $rs = iMSCP::File->new( filename => "/etc/$_/imscp_roundcube" )->delFile();
+        return $rs if $rs;
+    }
+
     iMSCP::Dir->new( dirname => $self->{'cfgDir'} )->remove();
 }
 
