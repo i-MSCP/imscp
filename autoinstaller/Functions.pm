@@ -742,14 +742,14 @@ sub _removeObsoleteFiles
         "$main::imscpConfig{'CONF_DIR'}/apache/skel/alias/phptmp",
         "$main::imscpConfig{'CONF_DIR'}/apache/skel/subdomain/phptmp",
         "$main::imscpConfig{'CONF_DIR'}/apache/working",
+        "$main::imscpConfig{'CONF_DIR'}/courier/backup",
+        "$main::imscpConfig{'CONF_DIR'}/courier/working",
         "$main::imscpConfig{'CONF_DIR'}/cron.d",
         "$main::imscpConfig{'CONF_DIR'}/fcgi",
         "$main::imscpConfig{'CONF_DIR'}/hooks.d",
         "$main::imscpConfig{'CONF_DIR'}/init.d",
         "$main::imscpConfig{'CONF_DIR'}/nginx",
         "$main::imscpConfig{'CONF_DIR'}/php-fpm",
-        "$main::imscpConfig{'CONF_DIR'}/courier/backup",
-        "$main::imscpConfig{'CONF_DIR'}/courier/working",
         "$main::imscpConfig{'CONF_DIR'}/postfix/backup",
         "$main::imscpConfig{'CONF_DIR'}/postfix/imscp",
         "$main::imscpConfig{'CONF_DIR'}/postfix/parts",
@@ -770,7 +770,6 @@ sub _removeObsoleteFiles
         "$main::imscpConfig{'CONF_DIR'}/apache/parts/php5.itk.ini",
         "$main::imscpConfig{'CONF_DIR'}/dovecot/dovecot.conf.2.0",
         "$main::imscpConfig{'CONF_DIR'}/dovecot/dovecot.conf.2.1",
-        '/etc/default/imscp_panel',
         "$main::imscpConfig{'CONF_DIR'}/frontend/00_master.conf",
         "$main::imscpConfig{'CONF_DIR'}/frontend/00_master_ssl.conf",
         "$main::imscpConfig{'CONF_DIR'}/frontend/imscp_fastcgi.conf",
@@ -781,13 +780,13 @@ sub _removeObsoleteFiles
         "$main::imscpConfig{'CONF_DIR'}/skel/domain/.htgroup",
         "$main::imscpConfig{'CONF_DIR'}/skel/domain/.htpasswd",
         "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/composer.phar",
-        '/usr/sbin/maillogconvert.pl',
-        # Due to a mistake in previous i-MSCP versions (Upstart conffile copied into systemd confdir)
-        "/etc/systemd/system/php5-fpm.override",
-        "/etc/init/php5-fpm.override", # Removed in 1.4.x
         "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf",
-        "/usr/local/lib/imscp_panel/imscp_panel_checkconf" # Removed in 1.4.x,
-
+        '/etc/default/imscp_panel',
+        '/etc/init/php5-fpm.override',
+        '/etc/logrotate.d/imscp',
+        '/etc/systemd/system/php5-fpm.override',
+        '/usr/local/lib/imscp_panel/imscp_panel_checkconf',
+        '/usr/sbin/maillogconvert.pl'
     ) {
         next unless -f;
         my $rs = iMSCP::File->new( filename => $_ )->delFile();

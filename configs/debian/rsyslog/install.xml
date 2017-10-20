@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<install>
+    <folder mode="0755">${ROOT_CONF}/logrotate.d</folder>
+    <copy_config copy_if="-x '/usr/sbin/rsyslogd'">${ROOT_CONF}/logrotate.d/rsyslog</copy_config>
+</install>
