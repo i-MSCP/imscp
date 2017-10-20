@@ -157,7 +157,7 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/roundcube', 'dev-stamp' );
+    my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/roundcube', '1.3.*' );
     $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 
