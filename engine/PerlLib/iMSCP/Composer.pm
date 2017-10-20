@@ -298,6 +298,7 @@ sub _buildComposerFile
         "process-timeout": 2000,
         "discard-changes": true
     },
+    "prefer-stable": true,
     "minimum-stability": "dev"
 }
 TPL
