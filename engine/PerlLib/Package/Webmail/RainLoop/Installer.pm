@@ -155,7 +155,7 @@ sub preinstall
 {
     my ($self) = @_;
 
-    iMSCP::Composer->getInstance()->requirePackage( 'imscp/rainloop', $VERSION );
+    $self->{'frontend'}->getComposer()->requirePackage( 'imscp/rainloop', $VERSION );
     $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 

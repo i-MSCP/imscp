@@ -58,10 +58,13 @@ sub installPreRequiredPackages
 {
     my ($self) = @_;
 
-    print STDOUT output( 'Satisfying prerequisites... Please wait.', 'info' );
+    print STDOUT output( 'Satisfying prerequisites...', 'info' ) unless $main::buildonly;
 
     my $rs = $self->_updateAptSourceList();
     $rs ||= $self->_updatePackagesIndex();
+    return $rs if $rs;
+
+    system( 'clear 2>/dev/null' ) unless iMSCP::Getopt->noprompt;
 
     local $ENV{'UCF_FORCE_CONFFNEW'} = 1;
     local $ENV{'UCF_FORCE_CONFFMISS'} = 1;

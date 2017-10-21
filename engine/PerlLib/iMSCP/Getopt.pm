@@ -25,9 +25,9 @@ package iMSCP::Getopt;
 
 use strict;
 use warnings;
-use iMSCP::Debug qw/ debugRegisterCallBack /;
-use Text::Wrap;
-use fields qw / cleanPackageCache debug fixPermissions listener noprompt preseed reconfigure skipPackageUpdate verbose /;
+use Text::Wrap qw/ wrap /;
+use fields qw / clearPackageCache debug fixPermissions listener noprompt
+    preseed reconfigure skipPackageUpdate verbose /;
 
 $Text::Wrap::columns = 80;
 $Text::Wrap::break = qr/[\s\n\|]/;
@@ -48,15 +48,16 @@ my $showUsage;
 
  Parses command line options in @ARGV with GetOptions from Getopt::Long
 
- The first parameter should be basic usage text for the program. Usage text for the globally supported options will be
- prepended to this if usage help must be printed.
+ The first parameter should be basic usage text for the program. Usage text for
+ the globally supported options will be prepended to this if usage help must be
+ printed.
 
- If any additonal parameters are passed to this function, they are also passed to GetOptions. This can be used to handle
- additional options.
+ If any additonal parameters are passed to this function, they are also passed
+ to GetOptions. This can be used to handle additional options.
 
  Param string $usage Usage text
  Param list @options OPTIONAL Additional options
- Return undef
+ Return void
 
 =cut
 
@@ -69,20 +70,19 @@ sub parse
         print STDERR wrap( '', '', <<"EOF" );
 
 $usage
- -a,    --skip-package-update   Skip i-MSCP packages update.
- -c,    --clean-package-cache   Cleanup i-MSCP package cache.
- -d,    --debug                 Force debug mode.
+ -a,    --skip-package-update   Skip i-MSCP composer packages update.
+ -c,    --clean-package-cache   Clear i-MSCP composer package cache.
+ -d,    --debug                 Enable debug mode.
  -h,-?  --help                  Show this help.
  -l,    --listener <file>       Path to listener file.
  -n,    --noprompt              Switch to non-interactive mode.
  -p,    --preseed <file>        Path to preseed file.
  -r,    --reconfigure [item]    Type `help` for list of allowed items.
  -v,    --verbose               Enable verbose mode.
- -x,    --fix-permissions       Fix permissions recursively.
+ -x,    --fix-permissions       Fix permissions.
 
 $optionHelp
 EOF
-        debugRegisterCallBack( sub { exit $exitCode; } );
         exit $exitCode;
     };
 
@@ -98,7 +98,7 @@ EOF
     require Getopt::Long;
     Getopt::Long::Configure( 'bundling' );
     Getopt::Long::GetOptions(
-        'clean-package-cache|c', sub { $options->{'cleanPackageCache'} = 1 },
+        'clean-package-cache|c', sub { $options->{'clearPackageCache'} = 1 },
         'debug|d', sub { $options->{'debug'} = 1 },
         'help|?|h', sub { $class->showUsage() },
         'fix-permissions|x', sub { $options->{'fixPermissions'} = 1 },
@@ -109,20 +109,20 @@ EOF
         'skip-package-update|a', sub { $options->{'skipPackageUpdate'} = 1 },
         'verbose|v', sub { $options->{'verbose'} = 1 },
         @options,
-    ) or $class->showUsage( 1 );
-
-    undef;
+    ) or $class->showUsage();
 }
 
 =item parseNoDefault( $usage, @options )
 
- Parses command line options in @ARGV with GetOptions from Getopt::Long. Default options are excluded
+ Parses command line options in @ARGV with GetOptions from Getopt::Long.
+ Default options are excluded
 
- The first parameter should be basic usage text for the program. Any following parameters are passed to to GetOptions.
+ The first parameter should be basic usage text for the program. Any following
+ parameters are passed to to GetOptions.
 
  Param string $usage Usage text
  Param list @options Options
- Return undef
+ Return void
 
 =cut
 
@@ -131,15 +131,13 @@ sub parseNoDefault
     my ($class, $usage, @options) = @_;
 
     $showUsage = sub {
-        my $exitCode = shift || 0;
         print STDERR wrap( '', '', <<"EOF" );
 
 $usage
  -?,-h  --help          Show this help.
 
 EOF
-        debugRegisterCallBack( sub { exit $exitCode; } );
-        exit $exitCode;
+        exit 1;
     };
 
     # Do not load Getopt::Long if not needed
@@ -153,8 +151,7 @@ EOF
 
     require Getopt::Long;
     Getopt::Long::Configure( 'bundling' );
-    Getopt::Long::GetOptions( 'help|?|h', sub { $class->showUsage() }, @options ) or $class->showUsage( 1 );
-    undef;
+    Getopt::Long::GetOptions( 'help|?|h', sub { $class->showUsage() }, @options ) or $class->showUsage();
 }
 
 =item showUsage( $exitCode )
@@ -162,24 +159,23 @@ EOF
  Show usage
 
  Param int $exitCode OPTIONAL Exit code
- Return undef
+ Return void
 
 =cut
 
 sub showUsage
 {
-    my (undef, $exitCode) = @_;
-
-    $exitCode //= 1;
-    ref $showUsage eq 'CODE' or die( 'ShowUsage( ) is not defined.' );
-    $showUsage->( $exitCode );
+    ref $showUsage eq 'CODE' or die( 'showUsage( ) is not defined.' );
+    $showUsage->();
 }
 
 our @reconfigurationItems = sort(
-    'all', 'servers', 'httpd', 'mta', 'po', 'ftpd', 'named', 'sql', 'hostnames', 'system_hostname',
-    'panel_hostname', 'panel_ports', 'primary_ip', 'admin', 'admin_credentials', 'admin_email', 'php', 'timezone',
-    'panel', 'panel_ssl', 'system_server', 'services_ssl', 'ssl', 'backup', 'webstats', 'sqlmanager', 'webmails',
-    'filemanager', 'antirootkits', 'alt_urls_feature'
+    'all', 'servers', 'httpd', 'mta', 'po', 'ftpd', 'named', 'sql',
+    'hostnames', 'system_hostname', 'panel_hostname', 'panel_ports',
+    'primary_ip', 'admin', 'admin_credentials', 'admin_email', 'php',
+    'timezone', 'panel', 'panel_ssl', 'system_server', 'services_ssl',
+    'ssl', 'backup', 'webstats', 'sqlmanager', 'webmails', 'filemanager',
+    'antirootkits', 'alt_urls_feature'
 );
 
 =item reconfigure( [ $item = 'none' ] )

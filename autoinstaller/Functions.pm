@@ -31,7 +31,7 @@ use File::Find;
 use iMSCP::Bootstrapper;
 use iMSCP::Config;
 use iMSCP::Cwd;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error newDebug endDebug /;
 use iMSCP::Dialog;
 use iMSCP::Dir;
 use iMSCP::EventManager;
@@ -217,6 +217,7 @@ sub build
     }
 
     endDebug();
+    0;
 }
 
 =item install( )
@@ -315,6 +316,7 @@ Thank you for choosing i-MSCP.
 EOF
 
     endDebug();
+    0;
 }
 
 =back
@@ -779,6 +781,7 @@ sub _removeObsoleteFiles
         "$main::imscpConfig{'CONF_DIR'}/listeners.d/README",
         "$main::imscpConfig{'CONF_DIR'}/skel/domain/.htgroup",
         "$main::imscpConfig{'CONF_DIR'}/skel/domain/.htpasswd",
+        "$main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar",
         "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/composer.phar",
         "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf",
         '/etc/default/imscp_panel',

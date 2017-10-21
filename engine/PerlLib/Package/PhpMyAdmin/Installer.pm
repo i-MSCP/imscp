@@ -175,7 +175,7 @@ sub preinstall
 {
     my ($self) = @_;
 
-    iMSCP::Composer->getInstance()->requirePackage( 'imscp/phpmyadmin', '0.4.7.*@dev' );
+    $self->{'frontend'}->getComposer()->requirePackage( 'imscp/phpmyadmin', '0.4.7.*@dev' );
     $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 
@@ -263,6 +263,7 @@ sub _init
     my ($self) = @_;
 
     $self->{'phpmyadmin'} = Package::PhpMyAdmin->getInstance();
+    $self->{'frontend'} = Package::FrontEnd->getInstance();
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = $self->{'phpmyadmin'}->{'cfgDir'};
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
@@ -465,14 +466,15 @@ EOF
 
 sub _buildHttpdConfig
 {
-    my $frontEnd = Package::FrontEnd->getInstance();
-    $frontEnd->buildConfFile(
+    my ($self) = @_;
+
+    $self->{'frontend'}->buildConfFile(
         "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/PhpMyAdmin/config/nginx/imscp_pma.nginx",
         {
             GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'}
         },
         {
-            destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pma.conf"
+            destination => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pma.conf"
         }
     );
 }

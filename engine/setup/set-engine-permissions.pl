@@ -63,8 +63,6 @@ OPTIONS:
     'fix-permissions|x' => \&iMSCP::Getopt::fixPermissions
 );
 
-setVerbose( iMSCP::Getopt->verbose );
-
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-set-engine-permissions.lock', 'nowait' );
 

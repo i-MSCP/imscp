@@ -36,7 +36,6 @@ $bootstrapper->boot(
 
 setDebug(0);
 setVerbose(1);
-
 umount($main::imscpConfig{'USER_WEB_DIR'});
 
 1;

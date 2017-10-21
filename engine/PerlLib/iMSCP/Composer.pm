@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Composer - i-MSCP Composer packages installer
+ iMSCP::Composer - Perl frontEnd to PHP dependency manager (Composer)
 
 =cut
 
@@ -25,50 +25,54 @@ package iMSCP::Composer;
 
 use strict;
 use warnings;
+use File::HomeDir;
+use File::Spec;
+use File::Temp;
 use iMSCP::Cwd;
-use iMSCP::Debug qw/ debug error /;
-use iMSCP::Dialog;
+use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::Dir;
-use iMSCP::Execute qw/ executeNoWait /;
-use iMSCP::EventManager;
+use iMSCP::Execute qw/ execute executeNoWait /;
 use iMSCP::File;
-use iMSCP::Getopt;
-use iMSCP::Stepper;
-use iMSCP::TemplateParser;
+use JSON qw/ from_json to_json /;
 use version;
-use parent 'Common::SingletonClass';
+use parent 'Common::Object';
 
 =head1 DESCRIPTION
 
- Composer packages installer for i-MSCP.
+ Perl frontEnd to PHP dependency manager (Composer).
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item requirePackage( $package [, $packageVersion = 'dev-master' ] )
+=item requirePackage( $package [, $packageVersion = 'dev-master' [, $dev = false ] ] )
 
  Require the given composer package for installation
 
  Param string $package Package name
  Param string $packageVersion OPTIONAL Package version
+ Param bool $dev OPTIONAL Flag indicating if $package is a development package
  Return void
 
 =cut
 
 sub requirePackage
 {
-    my ($self, $package, $packageVersion) = @_;
+    my ($self, $package, $packageVersion, $dev) = @_;
 
-    $packageVersion ||= 'dev-master';
-    push @{$self->{'packages'}}, "        \"$package\": \"$packageVersion\"";
+    if ( $dev ) {
+        $self->{'composer_json'}->{'require_dev'}->{$package} = $packageVersion ||= 'dev-master';
+        return;
+    }
+
+    $self->{'composer_json'}->{'require'}->{$package} = $packageVersion ||= 'dev-master';
 }
 
 =item installComposer( )
 
- Install composer
+ Install composer globally (under /usr/local/bin as composer)
 
- Return 0 on success, other on failure
+ Return void, die on failure
 
 =cut
 
@@ -76,88 +80,185 @@ sub installComposer
 {
     my ($self) = @_;
 
-    local $ENV{'COMPOSER_HOME'} = "$self->{'homedir'}/.composer";
-    local $CWD = $self->{'homedir'};
+    local $ENV{'COMPOSER_HOME'} = File::HomeDir->users_home( $main::imscpConfig{'ROOT_USER'} ) . '/.composer';
 
-    if ( -x "$self->{'homedir'}/composer.phar"
-        && version->parse( `@{$self->_getSuCmd()} '$self->{'php_cmd'} composer.phar --no-ansi --version 2>/dev/null'` =~ /version\s+([\d.]+)/ ) == version->parse( $self->{'composer_version'} )
+    if ( -x "/usr/local/bin/composer"
+        && version->parse( `/usr/local/bin/composer --no-ansi --version 2>/dev/null` =~ /version\s+([\d.]+)/ )
+        == version->parse( $self->{'_composer_version'} )
     ) {
-        debug( "composer.phar version is already $self->{'composer_version'}. Skipping installation..." );
-        return 0;
+        debug( "Composer version is already $self->{'_composer_version'}. Skipping installation..." );
+        return;
     }
 
-    my $msgHeader = "Installing composer.phar from https://getcomposer.org\n\n";
-    my $msgFooter = "\nDepending on your connection, this may take few seconds...";
-    my ($rs, $stderr) = ( 0, undef );
+    iMSCP::Dir->new( dirname => $ENV{'COMPOSER_HOME'} )->clear( undef, qr/\Q.phar\E$/ ) if -d $ENV{'COMPOSER_HOME'};
 
-    if ( -d "$self->{'homedir'}/.composer" ) {
-        eval {
-            # Remove old versions if any
-            iMSCP::Dir->new( dirname => "$self->{'homedir'}/.composer" )->clear(
-                undef, qr/\Q.phar\E$/
-            );
-        };
-        if ( $@ ) {
-            error( $@ );
-            $rs = 1;
-        }
-    }
-
-    $rs ||= executeNoWait(
-        [
-            @{$self->_getSuCmd()}, "/usr/bin/curl -s https://getcomposer.org/installer | $self->{'php_cmd'} --"
-                . " --version=$self->{'composer_version'}"
-        ],
-        ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
-            ? sub {}
-            : sub { step( undef, $msgHeader . ( shift ) . $msgFooter, 3, 1 ); }
-        ),
-        sub { $stderr .= shift; }
+    my $composerInstaller = File::Temp->new( UNLINK => 1 );
+    my $rs = execute(
+        "/usr/bin/curl --fail --connect-timeout 5 -s -S https://getcomposer.org/installer 1> $composerInstaller ",
+        undef, \ my $stderr,
     );
-
-    error( sprintf( "Couldn't install composer.phar: %s", $stderr || 'Unknown error' )) if $rs;
-    $rs;
+    $rs == 0 or die( sprintf( "Couldn't download composer: %s", $stderr || 'Unknown error' ));
+    $rs = executeNoWait(
+        $self->_getCmd(
+            @{$self->{'_php_cmd'}}, $composerInstaller, '--', "--no-ansi", "--version=$self->{'_composer_version'}",
+            "--install-dir=/usr/local/bin", "--filename=composer"
+        ),
+        $self->{'_stdout'},
+        $self->{'_stderr'}
+    );
+    $rs == 0 or die( "Couldn't install composer" );
 }
 
-=item installPackages( [ $withDev = false ] )
+=item installPackages( [ $requireDev = false ] )
 
  Install or update packages
 
- Param bool $withDev Flag indicating whether or not packages listed in
-                     require-dev must be installed
- Return 0 on success, other on failure
+ Param bool $requireDev Flag indicating whether or not packages listed in
+                        require-dev must be installed
+ Return void, die on failure
 
 =cut
 
 sub installPackages
 {
-    my ($self, $withDev) = @_;
+    my ($self, $requireDev) = @_;
 
-    local $ENV{'COMPOSER_HOME'} = "$self->{'homedir'}/.composer";
-    local $CWD = $self->{'homedir'};
+    local $ENV{'COMPOSER_ALLOW_SUPERUSER'} = 1;
+    local $ENV{'COMPOSER_HOME'} = "$self->{'home_dir'}/.composer";
+    local $CWD = $self->{'home_dir'};
 
-    my $rs = $self->_buildComposerFile();
-    return $rs if $rs;
+    if ( $self->{'home_dir'} ne $self->{'working_dir'} ) {
+        iMSCP::Dir->new( dirname => $self->{'working_dir'} )->make(
+            {
+                user           => $self->{'user'},
+                group          => $self->{'group'},
+                mode           => 0750,
+                fixpermissions => 0 # Set permissions only on creation
+            }
+        );
+    }
 
-    my $msgHeader = "Installing/Updating composer packages from Github\n\n";
-    my $msgFooter = "\nDepending on your connection, this may take few seconds...";
+    my $file = iMSCP::File->new( filename => "$self->{'working_dir'}/composer.json" );
+    $file->set( $self->getComposerJson());
 
-    # Note: Any progress/status info goes to stderr (See https://github.com/composer/composer/issues/3795)
+    my $rs = $file->save();
+    $rs ||= $file->owner( $self->{'user'}, $self->{'group'} );
+    $rs ||= $file->mode( 0644 );
+    $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ));
     $rs = executeNoWait(
-        [
-            @{$self->_getSuCmd()}, "$self->{'php_cmd'} composer.phar update --no-ansi --no-interaction"
-                . "@{[ !$withDev ? ' --no-dev' : '' ]} --no-suggest --no-progress"
-                . " --classmap-authoritative --working-dir=$self->{'packages_dir'}"
-        ],
-        sub {},
-        ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
-            ? sub {}
-            : sub { step( undef, $msgHeader . ( shift ) . $msgFooter, 3, 3 ); }
-        )
+        $self->_getCmd(
+            @{$self->{'_php_cmd'}},
+            '/usr/local/bin/composer', 'update', '--no-progress', '--no-ansi', '--no-interaction',
+            ( $requireDev ? () : '--no-dev' ), '--no-suggest', '--classmap-authoritative',
+            "--working-dir=$self->{'working_dir'}"
+        ),
+        $self->{'_stdout'},
+        $self->{'_stderr'}
     );
+    $rs == 0 or die( "Couldn't install/update composer packages" );
+}
 
-    error( "Couldn't install/update i-MSCP packages from GitHub" ) if $rs;
-    $rs;
+=item clearPackageCache( )
+
+ Clear composer's internal package cache, including vendor directory
+
+ Return void, die on failure
+
+=cut
+
+sub clearPackageCache
+{
+    my ($self) = @_;
+
+    local $ENV{'COMPOSER_ALLOW_SUPERUSER'} = 1;
+    local $ENV{'COMPOSER_HOME'} = "$self->{'home_dir'}/.composer";
+    local $CWD = $self->{'home_dir'};
+
+    my $rs = executeNoWait(
+        $self->_getCmd( @{$self->{'_php_cmd'}}, '/usr/local/bin/composer', 'clearcache', '--no-ansi' ),
+        $self->{'_stderr'},
+        $self->{'_stdout'}
+    );
+    $rs == 0 or die( "Couldn't clear composer's internal package cache" );
+
+    # FIXME: https://getcomposer.org/doc/06-config.md#vendor-dir
+    iMSCP::Dir->new( dirname => "$self->{'working_dir'}/vendor" )->remove();
+}
+
+=item checkPackageRequirements( )
+
+ Check package requirements
+
+ Return void, die if requirements are not met
+
+=cut
+
+sub checkPackageRequirements
+{
+    my ($self) = @_;
+
+    -d $self->{'working_dir'} or die( "Unmet requirements (All packages)" );
+
+    local $ENV{'COMPOSER_ALLOW_SUPERUSER'} = 1;
+    local $ENV{'COMPOSER_HOME'} = "$self->{'home_dir'}/.composer";
+    local $CWD = $self->{'home_dir'};
+
+    while ( ( my $package, my $version ) = each( %{$self->{'composer_json'}->{'require'}} ) ) {
+        $self->{'_stdout'} && $self->{'_stdout'}(
+            sprintf( "Checking requirements for the %s (%s) composer package", $package, $version )
+        );
+
+        my $stderr;
+        executeNoWait(
+            $self->_getCmd(
+                @{$self->{'_php_cmd'}}, '/usr/local/bin/composer', 'show', '--no-ansi', '--no-interaction',
+                "--working-dir=$self->{'working_dir'}", $package, $version
+            ),
+            sub {},
+            sub { $stderr .= $_[0] =~ s /^\s+|\s+$//r; }
+        ) == 0 or die( sprintf( "Unmet requirements (%s %s): %s", $package, $version, $stderr ));
+    }
+}
+
+=item getComposerJson( )
+
+ Return composer.json file as string
+
+ Return void, die on failure
+
+=cut
+
+sub getComposerJson
+{
+    to_json(
+        $_[0]->{'composer_json'},
+        {
+            utf8      => 1,
+            indent    => 1,
+            canonical => 1,
+        }
+    );
+}
+
+=item setStdRoutines( [ $subStdout = sub { print STDOUT @_ } [, $subStderr = sub { print STDERR @_ }  ] ])
+
+ Set routines for processing of composer command STDOUT/STDERR
+
+ Param CODE $subStdout OPTIONAL Routine for processing of command STDOUT line by line
+ Param CODE $subStderr OPTIONAL Routine for processing of command STDERR line by line
+ Return void, die on invalid arguments
+
+=cut
+
+sub setStdRoutines
+{
+    my ($self, $subStdout, $subStderr) = @_;
+
+    $self->{'_stdout'} = $subStdout || sub { print STDOUT @_ };
+    ref $self->{'_stdout'} eq 'CODE' or die( 'Expects CODE as first parameter for STDOUT processing' );
+
+    $self->{'_stderr'} = $subStderr || sub { print STDERR @_ };
+    ref $self->{'_stderr'} eq 'CODE' or die( 'Expects CODE as second parameter for STDERR processing' );
 }
 
 =back
@@ -170,7 +271,7 @@ sub installPackages
 
  Initialize instance
 
- Return iMSCP::Composer
+ Return iMSCP::Composer, die on failure
 
 =cut
 
@@ -178,187 +279,49 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'user'} = $main::imscpConfig{'IMSCP_USER'};
-    $self->{'group'} = $main::imscpConfig{'IMSCP_GROUP'};
-    $self->{'homedir'} = $main::imscpConfig{'IMSCP_HOMEDIR'};
-    $self->{'composer_version'} = '1.5.2'; # Make sure to work with a well-known composer version
-    $self->{'packages'} = [];
-    $self->{'packages_dir'} = "$self->{'homedir'}/packages";
-    $self->{'php_cmd'} = "/usr/bin/php -d date.timezone=$main::imscpConfig{'TIMEZONE'} -d allow_url_fopen=1 "
-        . "-d suhosin.executor.include.whitelist=phar";
-
-    iMSCP::EventManager->getInstance()->register(
-        'afterSetupPreInstallPackages',
-        sub {
-            if ( iMSCP::Getopt->cleanPackageCache ) {
-                my $rs = $self->_cleanPackageCache();
-                return $rs if $rs;
-            }
-
-            eval {
-                iMSCP::Dir->new( dirname => $self->{'packages_dir'} )->make(
-                    {
-                        user  => $self->{'user'},
-                        group => $self->{'group'},
-                        mode  => 0755
-                    }
-                );
-            };
-            if ( $@ ) {
-                error( $@ );
-                return 1;
-            }
-
-            startDetail;
-
-            my $rs = step(
-                sub { $self->installComposer(); },
-                "Installing composer.phar ($self->{'composer_version'}) from https://getcomposer.org", 3, 1
-            );
-            $rs ||= step(
-                sub { iMSCP::Getopt->skipPackageUpdate ? $self->_checkRequirements() : 0; },
-                'Checking composer package requirements', 3, 2
-            );
-
-            if ( iMSCP::Getopt->skipPackageUpdate ) {
-                endDetail;
-                return $rs;
-            };
-
-            $rs ||= step(
-                sub { $self->installPackages(); },
-                'Installing/Updating composer packages from Github', 3, 3
-            );
-
-            endDetail;
-            $rs;
-        }
-    );
+    # Public attributes
+    $self->{'user'} //= $main::imscpConfig{'ROOT_USER'};
+    $self->{'group'} //= getgrgid(
+        ( getpwnam( $self->{'user'} ) )[3] // die( "Couldn't find user" )
+    ) // die( "Couldn't find group" );
+    $self->{'home_dir'} = File::Spec->canonpath( $self->{'home_dir'} // File::HomeDir->users_home( $self->{'user'} ));
+    $self->{'working_dir'} = File::Spec->canonpath( $self->{'working_dir'} // $self->{'home_dir'} );
+    $self->{'composer_json'} = from_json( $self->{'composer_json'} || <<'EOT', { utf8 => 1 } );
+{
+    "config": {
+        "preferred-install":"dist",
+        "process-timeout":2000,
+        "discard-changes":true
+    },
+    "prefer-stable":true,
+    "minimum-stability":"dev"
+}
+EOT
+    # Private attributes
+    $self->{'_composer_version'} = '1.5.2';
+    $self->{'_php_cmd'} = [
+        '/usr/bin/php', '-d', "date.timezone=$main::imscpConfig{'TIMEZONE'}", '-d', 'allow_url_fopen=1',
+        '-d suhosin.executor.include.whitelist=phar'
+    ];
 
     $self;
 }
 
-=item _checkRequirements( )
-
- Check package version requirements
-
- Return int 0 if all requirements are met, 1 otherwise
-
-=cut
-
-sub _checkRequirements
-{
-    my ($self) = @_;
-
-    return 0 unless -d $self->{'packages_dir'};
-
-    local $ENV{'COMPOSER_HOME'} = "$self->{'homedir'}/.composer";
-    local $CWD = $self->{'homedir'};
-
-    my $msgHeader = "Checking composer package requirements\n\n";
-    my $stderr;
-
-    for( @{$self->{'packages'}} ) {
-        my ($package, $version) = $_ =~ /"(.*)":\s*"(.*)"/;
-        my $msgShown;
-        my $msg = $msgHeader . "Checking package $package ($version)\n\n";
-        my $rs = executeNoWait(
-            [
-                @{$self->_getSuCmd()}, "$self->{'php_cmd'} composer.phar show --no-ansi --no-interaction "
-                    . "--working-dir=$self->{'packages_dir'} $package $version"
-            ],
-            ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
-                ? sub {}
-                : sub {
-                    return if $msgShown;
-                    step( undef, $msg, 3, 2 );
-                    $msgShown = 1;
-                }
-            ),
-            sub { $stderr .= shift; }
-        );
-        if ( $rs ) {
-            error( sprintf( "Package %s (%s) not found. Please retry without the '-a' option.", $package, $version ));
-            return 1;
-        }
-    }
-
-    0;
-}
-
-=item _buildComposerFile( )
-
- Build composer.json file
-
- Return 0 on success, other on failure
-
-=cut
-
-sub _buildComposerFile
-{
-    my ($self) = @_;
-
-    my $tpl = $self->{'composer_json_template'} || <<'TPL';
-{
-    "name": "imscp/packages",
-    "description": "i-MSCP composer packages",
-    "licence": "GPL-2.0+",
-    "require": {
-{PACKAGES}
-    },
-    "config": {
-        "preferred-install": "dist",
-        "process-timeout": 2000,
-        "discard-changes": true
-    },
-    "prefer-stable": true,
-    "minimum-stability": "dev"
-}
-TPL
-    # Make sure that default composer.json template file si overriden once per run
-    $self->{'composer_json_template'} = undef;
-    my $file = iMSCP::File->new( filename => "$self->{'packages_dir'}/composer.json" );
-    $file->set( process( { PACKAGES => join ",\n", @{$self->{'packages'}} }, $tpl ));
-    $file->save();
-}
-
-=item _cleanPackageCache( )
-
- Clear composer package cache
-
- Return 0 on success, other on failure
-
-=cut
-
-sub _cleanPackageCache
-{
-    my ($self) = @_;
-
-    eval {
-        for( "$self->{'homedir'}/.cache",
-            "$self->{'homedir'}/.composer",
-            $self->{'packages_dir'}
-        ) {
-            iMSCP::Dir->new( dirname => $_ )->remove();
-        }
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    0;
-}
-
 =item _getSuCmd( )
 
+ Return SU command
+
+ Return arrayref command to be executed
+
 =cut
 
-sub _getSuCmd
+sub _getCmd
 {
-    my ($self) = @_;
+    my ($self) = shift;
 
-    [ '/bin/su', '-l', $self->{'user'}, '-m', '-s', '/bin/sh', '-c' ];
+    return \@_ if $self->{'user'} eq $main::imscpConfig{'ROOT_USER'};
+
+    [ '/bin/su', '-l', $self->{'user'}, '-m', '-s', '/bin/sh', '-c', "@_" ];
 }
 
 =back

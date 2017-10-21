@@ -27,10 +27,12 @@ use strict;
 use warnings;
 use File::Spec;
 use iMSCP::Log;
+use iMSCP::Getopt;
 use parent 'Exporter';
 
-our @EXPORT = qw/ debug warning error fatal newDebug endDebug getMessage getLastError getMessageByType setVerbose
-    setDebug debugRegisterCallBack output silent /;
+our @EXPORT = qw/
+    debug warning error fatal newDebug endDebug getMessage getLastError getMessageByType debugRegisterCallBack
+    setVerbose setDebug output silent /;
 
 BEGIN {
     $SIG{'__DIE__'} = sub {
@@ -43,8 +45,12 @@ BEGIN {
 
 my $self;
 $self = {
-    debug           => 0,
-    verbose         => 0,
+    debug           => sub { iMSCP::Getopt->debug },
+    verbose         => sub {
+        ( defined $main::execmode && $main::execmode ne 'setup'
+            || !iMSCP::Getopt->noprompt
+        ) && iMSCP::Getopt->verbose
+    },
     debug_callbacks => [],
     loggers         => [ iMSCP::Log->new( id => 'default' ) ],
     logger          => sub { $self->{'loggers'}->[$#{$self->{'loggers'}}] }
@@ -58,64 +64,58 @@ $self = {
 
 =over 4
 
-=item setDebug( $debug )
+=item setDebug( [ $debug = false ] )
 
- Enable or disable debug mode
+ Enable/disable debug mode
 
- Param bool $debug Enable verbose mode if true, disable otherwise
- Return undef
+ Param bool $debug Flag indicating whether or not verbose mode must be enabled
+ Return void
 
 =cut
 
 sub setDebug
 {
-    if ( $_[0] ) {
-        $self->{'debug'} = 1;
-        return;
-    }
+    return if iMSCP::Getopt->debug( $_[0] // 0 );
 
-    for( @{$self->{'loggers'}} ) { # Remove any debug log message from all loggers
-        $_->retrieve( tag => 'debug', remove => 1 );
-    }
-
-    $self->{'debug'} = 0;
-    undef;
+    # Remove all debug messages from all loggers
+    $_->retrieve( tag => 'debug', remove => 1 ) for @{$self->{'loggers'}};
 }
 
-=item setVerbose( $verbose )
+=item setVerbose( [ $verbose = false ] )
 
- Enable or disable verbose mode
+ Enable/disable verbose mode
 
- Param bool $verbose Enable debug mode if true, disable otherwise
- Return undef
+ Param bool $verbose Flag indicating whether or not verbose mode must be enabled
+ Return void
 
 =cut
 
 sub setVerbose
 {
-    $self->{'verbose'} = $_[0] // 0;
-    undef;
+    return if iMSCP::Getopt->noprompt && $_[0];
+    iMSCP::Getopt->verbose( $_[0] // 0 );
 }
 
 =item silent( )
 
  Method kept for backward compatibility with plugins
 
- Return undef
+ Return void
 
 =cut
 
 sub silent
 {
-    undef;
+
 }
 
 =item newDebug( $logfileId )
 
- Create a new logger for the given log file identifier. New logger will becomes the current logger
+ Create a new logger for the given log file identifier.
+ New logger will become the current logger
 
  Param string $logfile Log file unique identifier (log file name)
- Return int 0
+ Return void
 
 =cut
 
@@ -123,21 +123,19 @@ sub newDebug
 {
     my ($logfileId) = @_;
 
-    fatal( "A log file unique identifier is expected" ) unless $logfileId;
-
-    for( @{$self->{'loggers'}} ) {
-        die( "A logger with same identifier already exists" ) if $_->getId() eq $logfileId;
-    }
-
+    defined $logfileId or die( 'A log file unique identifier is expected' );
+    !grep( $_->getId() eq $logfileId, @{$self->{'loggers'}} ) or die(
+        'A logger with same identifier already exists'
+    );
     push @{$self->{'loggers'}}, iMSCP::Log->new( id => $logfileId );
-    0;
 }
 
 =item endDebug( )
 
- Write all log messages from the current logger and remove it from loggers stack (unless it is the default logger)
+ Write all log messages from the current logger and remove it from loggers
+ stack (unless it is the default logger)
 
- Return int 0
+ Return void
 
 =cut
 
@@ -149,13 +147,16 @@ sub endDebug
 
     pop @{$self->{'loggers'}}; # Remove logger from loggers stack
 
-    # warn, error and fatal log messages must be always stored in default logger for later processing
+    # warn, error and fatal log messages must be always stored in default
+    # logger for later processing
     for( $logger->retrieve( tag => qr/(?:warn|error|fatal)/ ) ) {
         $self->{'loggers'}->[0]->store( %{$_} );
     }
 
     my $logDir = $main::imscpConfig{'LOG_DIR'} || '/tmp';
-    if ( $logDir ne '/tmp' && !-d $logDir ) {
+    if ( $logDir ne '/tmp'
+        && !-d $logDir
+    ) {
         require iMSCP::Dir;
 
         eval {
@@ -179,18 +180,17 @@ sub endDebug
 
  Param string $message Debug message
  Param string $caller OPTIONAL Caller
- Return undef
+ Return void
 
 =cut
 
 sub debug
 {
     my ($message, $caller) = @_;
-    $caller //= ( caller( 1 ) )[3] || 'main';
 
-    $self->{'logger'}()->store( message => "$caller: $message", tag => 'debug' ) if $self->{'debug'};
-    print STDOUT output( "$caller: $message", 'debug' ) if $self->{'verbose'};
-    undef;
+    $caller //= ( caller( 1 ) )[3] || 'main';
+    $self->{'logger'}()->store( message => "$caller: $message", tag => 'debug' ) if $self->{'debug'}();
+    print STDOUT output( "$caller: $message", 'debug' ) if $self->{'verbose'}();
 }
 
 =item warning( $message [, $caller ] )
@@ -199,17 +199,16 @@ sub debug
 
  Param string $message Warning message
  Param string $caller OPTIONAL Caller
- Return undef
+ Return void
 
 =cut
 
 sub warning
 {
     my ($message, $caller) = @_;
-    $caller //= ( caller( 1 ) )[3] || 'main';
 
+    $caller //= ( caller( 1 ) )[3] || 'main';
     $self->{'logger'}()->store( message => "$caller: $message", tag => 'warn' );
-    undef;
 }
 
 =item error( $message [, $caller ] )
@@ -218,17 +217,16 @@ sub warning
 
  Param string $message Error message
  Param string $caller OPTIONAL Caller
- Return undef
+ Return void
 
 =cut
 
 sub error
 {
     my ($message, $caller) = @_;
-    $caller //= ( caller( 1 ) )[3] || 'main';
 
+    $caller //= ( caller( 1 ) )[3] || 'main';
     $self->{'logger'}()->store( message => "$caller: $message", tag => 'error' );
-    undef;
 }
 
 =item fatal( $message [, $caller ] )
@@ -244,8 +242,8 @@ sub error
 sub fatal
 {
     my ($message, $caller) = @_;
-    $caller //= ( caller( 1 ) )[3] || 'main';
 
+    $caller //= ( caller( 1 ) )[3] || 'main';
     $self->{'logger'}()->store( message => "$caller: $message", tag => 'fatal' );
     exit 255;
 }
@@ -301,35 +299,44 @@ sub output
 {
     my ($text, $level) = @_;
 
-    return "$text\n" unless $level;
-
-    my $output = '';
+    return "$text\n" unless defined $level;
 
     if ( $level eq 'debug' ) {
-        $output = "[\033[0;34mDEBUG\033[0m] $text\n";
-    } elsif ( $level eq 'info' ) {
-        $output = "[\033[0;34mINFO\033[0m]  $text\n";
-    } elsif ( $level eq 'warn' ) {
-        $output = "[\033[0;33mWARN\033[0m]  $text\n";
-    } elsif ( $level eq 'error' ) {
-        $output = "[\033[0;31mERROR\033[0m] $text\n";
-    } elsif ( $level eq 'fatal' ) {
-        $output = "[\033[0;31mFATAL\033[0m] $text\n";
-    } elsif ( $level eq 'ok' ) {
-        $output = "[\033[0;32mDONE\033[0m]  $text\n";
-    } else {
-        $output = "$text\n";
+        return "[\033[0;34mDEBUG\033[0m] $text\n";
     }
 
-    $output;
+    if ( $level eq 'info' ) {
+        return "[\033[0;34mINFO\033[0m]  $text\n";
+    }
+
+    if ( $level eq 'warn' ) {
+        return "[\033[0;33mWARN\033[0m]  $text\n";
+    }
+
+    if ( $level eq 'error' ) {
+        return "[\033[0;31mERROR\033[0m] $text\n";
+    }
+
+    if ( $level eq 'fatal' ) {
+        return "[\033[0;31mFATAL\033[0m] $text\n";
+    }
+
+    if ( $level eq 'ok' ) {
+        return "[\033[0;32mDONE\033[0m]  $text\n";
+    }
+
+    "$text\n";
 }
 
 =item debugRegisterCallBack( $callback )
 
  Register the given debug callback
 
+ This function is deprecated and will be removed in later release.
+ Kept for backward compatibility only.
+
  Param callback Callback to register
- Return int 0
+ Return void
 
 =cut
 
@@ -338,7 +345,6 @@ sub debugRegisterCallBack
     my ($callback) = @_;
 
     push @{$self->{'debug_callbacks'}}, $callback;
-    0;
 }
 
 =back
@@ -353,8 +359,7 @@ sub debugRegisterCallBack
 
  Param iMSCP::Log $logger Logger
  Param string $logfilePath Logfile path in which log messages must be writen
-
- Return int 0
+ Return void
 
 =cut
 
@@ -365,16 +370,15 @@ sub _writeLogfile
     # Make error message free of any ANSI color and end of line codes
     ( my $messages = _getMessages( $logger ) ) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
 
-    return 0 if $messages eq '';
+    return if $messages eq '';
 
     if ( open( my $fh, '>', $logfilePath ) ) {
         print { $fh } $messages;
         close $fh;
-        return 0;
+        return;
     }
 
-    print output( sprintf( "Couldn't open log file `%s' for writing: %s", $logfilePath, $! ), 'error' );
-    0;
+    print output( sprintf( "Couldn't open `%s` log file for writing: %s", $logfilePath, $! ), 'error' );
 }
 
 =item _getMessages( $logger )
@@ -382,7 +386,7 @@ sub _writeLogfile
  Flush and return all log messages from the given logger as a string
 
  Param Param iMSCP::Log $logger Logger
- Return string String representing concatenation of all messages found in the given log object
+ Return string Concatenation of all messages found in the given log object
 
 =cut
 
@@ -404,8 +408,6 @@ sub _getMessages
 =cut
 
 END {
-    my $exitCode = $?;
-
     &{$_} for @{$self->{'debug_callbacks'}};
 
     my $countLoggers = scalar @{$self->{'loggers'}};
@@ -417,8 +419,6 @@ END {
     for( $self->{'logger'}()->retrieve( tag => qr/(?:warn|error|fatal)/, remove => 1 ) ) {
         print STDERR output( $_->{'message'}, $_->{'tag'} );
     }
-
-    $? = $exitCode;
 }
 
 =back

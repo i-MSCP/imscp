@@ -20,6 +20,7 @@
 use strict;
 use warnings;
 use iMSCP::Bootstrapper;
+use iMSCP::Composer;
 use iMSCP::Database;
 use iMSCP::DbTasksProcessor;
 use iMSCP::Debug;
@@ -140,6 +141,7 @@ sub setupTasks
         [ \&setupSaveConfig, 'Saving configuration' ],
         [ \&setupCreateMasterUser, 'Creating system master user' ],
         [ \&setupCoreServices, 'Setup core services' ],
+        [ \&setupComposer, 'Setup PHP dependency manager (composer)' ],
         [ \&setupRegisterPluginListeners, 'Registering plugin setup listeners' ],
         [ \&setupServersAndPackages, 'Processing servers/packages' ],
         [ \&setupSetPermissions, 'Setting up permissions' ],
@@ -226,6 +228,30 @@ sub setupCoreServices
     my $serviceMngr = iMSCP::Service->getInstance();
     $serviceMngr->enable( $_ ) for 'imscp_daemon', 'imscp_traffic', 'imscp_mountall';
     0;
+}
+
+sub setupComposer
+{
+    my $composer = iMSCP::Composer->new();
+    $composer->setStdRoutines(
+        sub {
+            my $line = $_[0] =~ s/^\s+|\s+$//r;
+            return if $line eq '';
+
+            step( undef, <<"EOT", 1, 1 );
+Installing composer from https://getcomposer.org
+
+$line
+
+Depending on connection speed, this may take few seconds...
+EOT
+        },
+        sub {}
+    );
+
+    startDetail;
+    $composer->installComposer();
+    endDetail;
 }
 
 sub setupImportSqlSchema

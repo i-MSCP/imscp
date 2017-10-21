@@ -33,7 +33,7 @@ use File::Basename;
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 use iMSCP::Bootstrapper;
-use iMSCP::Debug qw/ debug error getMessageByType newDebug setVerbose /;
+use iMSCP::Debug qw/ debug error getMessageByType newDebug /;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::Getopt;
 use iMSCP::Mail;
@@ -240,8 +240,6 @@ OPTIONS:
     'debug|d'   => \&iMSCP::Getopt::debug,
     'verbose|v' => \&iMSCP::Getopt::verbose
 );
-
-setVerbose( iMSCP::Getopt->verbose );
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-dsk-quota.lock', 'nowait' );

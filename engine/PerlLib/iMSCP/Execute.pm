@@ -89,26 +89,26 @@ sub execute( $;$$ )
     getExitCode();
 }
 
-=item executeNoWait( $command [, $subSTDOUT = CODE [, $subSTDERR = CODE ] ] )
+=item executeNoWait( $command [, $subStdout = sub { print STDOUT @_ } [, $subStderr = sub { print STDERR @_ } ] ] )
 
  Execute the given command without wait, processing command STDOUT|STDERR line by line
 
  Param string|array $command Command to execute
- Param CODE OPTIONAL Subroutine for processing of command STDOUT line by line (default: print to STDOUT)
- Param CODE OPTIONAL Subroutine for processing of command STDERR (line by line) (default: print to STDERR)
+ Param CODE $subStdout OPTIONAL routine for processing of command STDOUT line by line
+ Param CODE $subStderr OPTIONAL routine for processing of command STDERR line by line
  Return int Command exit code or die on failure
 
 =cut
 
 sub executeNoWait( $;$$ )
 {
-    my ($command, $subSTDOUT, $subSTDERR) = @_;
+    my ($command, $subStdout, $subStderr) = @_;
 
-    $subSTDOUT ||= $subSTDOUT = sub { print STDOUT @_ };
-    ref $subSTDOUT eq 'CODE' or die( 'Expects CODE as second parameter for STDOUT processing' );
+    $subStdout ||= sub { print STDOUT @_ };
+    ref $subStdout eq 'CODE' or die( 'Expects CODE as second parameter for STDOUT processing' );
 
-    $subSTDERR ||= $subSTDERR = sub { print STDERR @_ };
-    ref $subSTDERR eq 'CODE' or die( 'Expects CODE as third parameter for STDERR processing' );
+    $subStderr ||= sub { print STDERR @_ };
+    ref $subStderr eq 'CODE' or die( 'Expects CODE as third parameter for STDERR processing' );
 
     my $list = ref $command eq 'ARRAY';
     debug( $list ? "@{$command}" : $command );
@@ -138,7 +138,7 @@ sub executeNoWait( $;$$ )
             $buffers{$fh} .= $nextbyte;
 
             next unless $buffers{$fh} =~ /\n\z/;
-            $fh == $stdout ? $subSTDOUT->( $buffers{$fh} ) : $subSTDERR->( $buffers{$fh} );
+            $fh == $stdout ? $subStdout->( $buffers{$fh} ) : $subStderr->( $buffers{$fh} );
             $buffers{$fh} = ''; # Reset buffer for next line
         }
     }

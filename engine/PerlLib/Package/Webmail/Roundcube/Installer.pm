@@ -157,7 +157,7 @@ sub preinstall
 {
     my ($self) = @_;
 
-    iMSCP::Composer->getInstance()->requirePackage( 'imscp/roundcube', '1.3.*' );
+    $self->{'frontend'}->getComposer()->requirePackage( 'imscp/roundcube', '1.3.*' );
     $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 
@@ -196,7 +196,7 @@ sub setGuiPermissions
     my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
 
     return 0 unless -d "$guiPublicDir/tools/webmail";
-    
+
     my $rs ||= setRights(
         "$guiPublicDir/tools/webmail/bin",
         {
@@ -273,6 +273,7 @@ sub _init
     my ($self) = @_;
 
     $self->{'roundcube'} = Package::Webmail::Roundcube::Roundcube->getInstance();
+    $self->{'frontend'} = Package::FrontEnd->getInstance();
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = $self->{'roundcube'}->{'cfgDir'};
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";

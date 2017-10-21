@@ -32,7 +32,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 use iMSCP::Database;
-use iMSCP::Debug qw/ debug error newDebug setVerbose /;
+use iMSCP::Debug qw/ debug error newDebug /;
 use iMSCP::Bootstrapper;
 use iMSCP::DbTasksProcessor;
 use iMSCP::Getopt;
@@ -120,8 +120,6 @@ OPTIONS:
     'debug|d'   => \&iMSCP::Getopt::debug,
     'verbose|v' => \&iMSCP::Getopt::verbose
 );
-
-setVerbose( iMSCP::Getopt->verbose );
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-disable-accounts.lock', 'nowait' );

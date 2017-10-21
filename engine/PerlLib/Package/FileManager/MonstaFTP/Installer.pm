@@ -57,7 +57,7 @@ sub preinstall
 {
     my ($self) = @_;
 
-    iMSCP::Composer->getInstance()->requirePackage( 'imscp/monsta-ftp', $VERSION );
+    $self->{'frontend'}->getComposer()->requirePackage( 'imscp/monsta-ftp', $VERSION );
     $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 
@@ -136,6 +136,7 @@ sub _init
 {
     my ($self) = @_;
 
+    $self->{'frontend'} = Package::FrontEnd->getInstance();
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self;
 }
@@ -177,14 +178,15 @@ sub _installFiles
 
 sub _buildHttpdConfig
 {
-    my $frontEnd = Package::FrontEnd->getInstance();
-    $frontEnd->buildConfFile(
+    my ($self) = @_;
+
+    $self->{'frontend'}->buildConfFile(
         "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/monsta-ftp/iMSCP/nginx/imscp_monstaftp.conf",
         {
             GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'}
         },
         {
-            destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_monstaftp.conf"
+            destination => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_monstaftp.conf"
         }
     );
 }

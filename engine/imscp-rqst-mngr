@@ -56,8 +56,6 @@ OPTIONS:
     'verbose|v' => \&iMSCP::Getopt::verbose
 );
 
-setVerbose( iMSCP::Getopt->verbose );
-
 iMSCP::Bootstrapper->getInstance()->boot(
     {
         mode            => 'backend',

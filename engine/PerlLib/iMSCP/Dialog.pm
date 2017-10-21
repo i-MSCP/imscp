@@ -301,7 +301,6 @@ sub startGauge
         $percent // 0 or die( "Couldn't start gauge" );
 
     $self->{'gauge'}->autoflush( 1 );
-    debugRegisterCallBack( sub { $self->endGauge(); } );
     $SIG{'PIPE'} = sub { $self->endGauge(); };
     0;
 }

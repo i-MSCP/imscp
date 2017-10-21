@@ -34,7 +34,7 @@ use File::Spec;
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 use iMSCP::Bootstrapper;
-use iMSCP::Debug qw/ debug error getMessageByType newDebug setVerbose warning /;
+use iMSCP::Debug qw/ debug error getMessageByType newDebug warning /;
 use iMSCP::Dir;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::Ext2Attributes qw/ isImmutable setImmutable clearImmutable /;
@@ -370,8 +370,6 @@ OPTIONS:
     'debug|d'   => \&iMSCP::Getopt::debug,
     'verbose|v' => \&iMSCP::Getopt::verbose
 );
-
-setVerbose( iMSCP::Getopt->verbose );
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-backup-all.lock', 'nowait' );

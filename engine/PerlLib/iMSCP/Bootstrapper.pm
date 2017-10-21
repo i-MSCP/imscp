@@ -26,7 +26,7 @@ package iMSCP::Bootstrapper;
 use strict;
 use warnings;
 use File::Spec;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug getMessageByType setDebug /;
 use iMSCP::EventManager;
 use iMSCP::Getopt;
 use iMSCP::LockFile;
@@ -61,6 +61,7 @@ sub boot
 {
     my ($self, $options) = @_;
 
+    my $debug = iMSCP::Getopt->debug;
     setDebug( 1 ); # Set debug mode for booting time
 
     my $mode = $options->{'mode'} || 'backend';
@@ -75,7 +76,7 @@ sub boot
         tzset;
     }
 
-    setDebug( iMSCP::Getopt->debug || $main::imscpConfig{'DEBUG'} || 0 ); # Set debug mode
+    setDebug( $main::imscpConfig{'DEBUG'} || $debug ); # Set debug mode
 
     unless ( $options->{'norequirements'} ) {
         require iMSCP::Requirements;
@@ -184,7 +185,11 @@ sub _genKeys
 
     require "$keyFile" if -f $keyFile;
 
-    if ( $db_pass_key eq '{KEY}' || length( $db_pass_key ) != 32 || $db_pass_iv eq '{IV}' || length( $db_pass_iv ) != 16 ) {
+    if ( $db_pass_key eq '{KEY}'
+        || length( $db_pass_key ) != 32
+        || $db_pass_iv eq '{IV}'
+        || length( $db_pass_iv ) != 16
+    ) {
         require iMSCP::Crypt;
         require Data::Dumper;
 

@@ -146,14 +146,13 @@ sub _step
     }
 
     my $rs = _callback( $callback, iMSCP::Getopt->noprompt ? $text : undef );
-
     return $rs unless defined $callback;
     return $rs unless $rs && $rs != 50;
 
     # Make error message free of any ANSI color and end of line codes
     ( my $errorMessage = getLastError() ) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
     $errorMessage = 'An unexpected error occurred...' unless $errorMessage;
-    $errorMessage =~ s/\n+$//;
+    $errorMessage =~ s/^\s+|\s+$//;
     $dialog->endGauge();
     $dialog->msgbox( <<"EOF" );
 \\Z1[ERROR]\\Zn

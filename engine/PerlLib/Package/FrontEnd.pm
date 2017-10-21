@@ -76,6 +76,7 @@ sub preinstall
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndPreInstall' );
     $rs ||= $self->stop();
+    $rs ||= Package::FrontEnd::Installer->getInstance()->preinstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndPreInstall' );
 }
 
@@ -304,7 +305,7 @@ sub setGuiPermissions
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontendSetGuiPermissions' );
     return $rs if $rs;
 
-    my $user = my $group =  $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $user = my $group = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
     $rs = setRights(
         $main::imscpConfig{'GUI_ROOT_DIR'},
@@ -723,6 +724,19 @@ sub buildConfFile
         ( $options->{'group'} ? $options->{'group'} : $main::imscpConfig{'ROOT_GROUP'} )
     );
     $rs ||= $fileHandler->mode( $options->{'mode'} ? $options->{'mode'} : 0644 );
+}
+
+=item getComposer( )
+
+ Get iMSCP::Composer instance associated to this package
+
+ Return iMSCP::Composer
+
+=cut
+
+sub getComposer
+{
+    Package::FrontEnd::Installer->getInstance()->getComposer();
 }
 
 =back

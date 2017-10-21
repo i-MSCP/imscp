@@ -38,6 +38,7 @@ use iMSCP::OpenSSL;
 use iMSCP::Net;
 use iMSCP::ProgramFinder;
 use iMSCP::Service;
+use iMSCP::Stepper;
 use iMSCP::SystemUser;
 use iMSCP::TemplateParser qw/ getBloc process replaceBloc /;
 use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
@@ -547,6 +548,71 @@ EOF
     0;
 }
 
+=item preinstall( )
+
+ Process preinstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preinstall
+{
+    my ($self) = @_;
+
+    $self->{'eventManager'}->registerOne(
+        'afterSetupPreInstallPackages',
+        sub {
+            eval {
+                my ($composer, $step) = ( $self->getComposer(), 0 );
+                my $stdRoutine = sub {
+                    my $stdout = $_[0] =~ s/^\s+|\s+$//r;
+                    return if $stdout eq '';
+
+                    step( undef, <<"EOT", 3, $step )
+Processing i-MSCP frontEnd composer packages...
+
+$stdout
+
+Depending on connection speed, this may take few minutes...
+EOT
+                };
+
+                startDetail;
+
+                if ( iMSCP::Getopt->clearPackageCache ) {
+                    $step++;
+                    $composer->setStdRoutines( $stdRoutine );
+                    $composer->clearPackageCache();
+                }
+
+                if ( iMSCP::Getopt->skipPackageUpdate ) {
+                    $step++;
+                    $composer->setStdRoutines( $stdRoutine );
+                    eval { $composer->checkPackageRequirements(); };
+                    die( "Unmet requirements. Please rerun the the installer without the '-a' option." ) if $@;
+                    endDetail;
+                    return;
+                }
+
+                $step++;
+                $composer->setStdRoutines( undef, $stdRoutine );
+                $composer->installPackages();
+                undef $self->{'_composer'};
+                endDetail;
+            };
+            if ( $@ ) {
+                endDetail;
+                undef $self->{'_composer'};
+                error( $@ );
+                return 1;
+            }
+
+            0;
+        }
+    );
+}
+
 =item install( )
 
  Process install tasks
@@ -609,6 +675,25 @@ sub dpkgPostInvokeTasks
     return $rs if $rs || !-f '/usr/local/etc/imscp_panel/php-fpm.conf';
 
     $self->{'frontend'}->restartPhpFpm();
+}
+
+=item getComposer( )
+
+ Get iMSCP::Composer instance associated to the FrontEnd
+
+ Return iMSCP::Composer
+
+=cut
+
+sub getComposer
+{
+    my ($self) = @_;
+
+    $self->{'_composer'} ||= iMSCP::Composer->new(
+        user        => $main::imscpConfig{'IMSCP_USER'},
+        group       => $main::imscpConfig{'IMSCP_GROUP'},
+        working_dir => "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages"
+    );
 }
 
 =back
