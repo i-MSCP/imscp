@@ -25,7 +25,6 @@ package Servers::server;
 
 use strict;
 use warnings;
-use iMSCP::Debug qw/ fatal /;
 
 # system server instance
 my $instance;
@@ -51,9 +50,7 @@ sub factory
     return $instance if defined $instance;
 
     my $package = "Servers::server::local";
-
-    eval "require $package";
-    fatal( $@ ) if $@;
+    eval "require $package" or die( $@ );
     $instance = $package->getInstance();
 }
 
@@ -71,8 +68,7 @@ sub can
     my (undef, $method) = @_;
 
     my $package = "Servers::server::local";
-    eval "require $package";
-    fatal( $@ ) if $@;
+    eval "require $package" or die( $@ );
     $package->can( $method );
 }
 

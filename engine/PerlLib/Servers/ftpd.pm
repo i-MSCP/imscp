@@ -25,7 +25,6 @@ package Servers::ftpd;
 
 use strict;
 use warnings;
-use iMSCP::Debug qw/ fatal /;
 
 # ftpd server instance
 my $instance;
@@ -59,15 +58,13 @@ sub factory
         && $main::imscpOldConfig{'FTPD_PACKAGE'} ne ''
         && $main::imscpOldConfig{'FTPD_PACKAGE'} ne $package
     ) {
-        eval "require $main::imscpOldConfig{'FTPD_PACKAGE'}";
-        fatal( $@ ) if $@;
-
-        my $rs = $main::imscpOldConfig{'FTPD_PACKAGE'}->getInstance()->uninstall();
-        fatal( sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'FTPD_PACKAGE'} )) if $rs;
+        eval "require $main::imscpOldConfig{'FTPD_PACKAGE'}" or die( $@ );
+        $main::imscpOldConfig{'FTPD_PACKAGE'}->getInstance()->uninstall() == 0 or die(
+            sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'FTPD_PACKAGE'} )
+        );
     }
 
-    eval "require $package";
-    fatal( $@ ) if $@;
+    eval "require $package" or die( $@ );
     $instance = $package->getInstance();
 }
 
@@ -85,8 +82,7 @@ sub can
     my (undef, $method) = @_;
 
     my $package = $main::imscpConfig{'FTPD_PACKAGE'} || 'Servers::noserver';
-    eval "require $package";
-    fatal( $@ ) if $@;
+    eval "require $package" or die( $@ );
     $package->can( $method );
 }
 

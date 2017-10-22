@@ -366,13 +366,8 @@ sub _writeLogfile
 {
     my ($logger, $logfilePath) = @_;
 
-    # Make error message free of any ANSI escape sequences
-    ( my $messages = _getMessages( $logger ) ) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
-
-    return if $messages eq '';
-
     if ( open( my $fh, '>', $logfilePath ) ) {
-        print { $fh } $messages;
+        print { $fh } _getMessages( $logger );
         close $fh;
         return;
     }

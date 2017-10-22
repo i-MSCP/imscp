@@ -25,7 +25,6 @@ package Servers::httpd;
 
 use strict;
 use warnings;
-use iMSCP::Debug qw/ fatal /;
 
 # httpd server instance
 my $instance;
@@ -51,8 +50,7 @@ sub factory
     return $instance if $instance;
 
     my $package = $main::imscpConfig{'HTTPD_PACKAGE'} || 'Servers::noserver';
-    eval "require $package";
-    fatal( $@ ) if $@;
+    eval "require $package" or die( $@ );
     $instance = $package->getInstance();
 }
 
@@ -70,8 +68,7 @@ sub can
     my (undef, $method) = @_;
 
     my $package = $main::imscpConfig{'HTTPD_PACKAGE'} || 'Servers::noserver';
-    eval "require $package";
-    fatal( $@ ) if $@;
+    eval "require $package" or die( $@ );
     $package->can( $method );
 }
 

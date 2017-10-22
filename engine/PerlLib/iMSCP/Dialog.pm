@@ -25,7 +25,7 @@ package iMSCP::Dialog;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ error /;
 use iMSCP::Execute;
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
@@ -403,11 +403,11 @@ sub _init
     # Detect all the ways people have managed to screw up their
     # terminals (so far...)
     if ( !exists $ENV{'TERM'} || !defined $ENV{'TERM'} || $ENV{'TERM'} eq '' ) {
-        fatal ( 'TERM is not set, so the dialog frontend is not usable.' );
+        die ( 'TERM is not set, so the dialog frontend is not usable.' );
     } elsif ( $ENV{'TERM'} =~ /emacs/i ) {
-        fatal ( 'Dialog frontend is incompatible with emacs shell buffers' );
+        die ( 'Dialog frontend is incompatible with emacs shell buffers' );
     } elsif ( $ENV{'TERM'} eq 'dumb' || $ENV{'TERM'} eq 'unknown' ) {
-        fatal ( 'Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.' );
+        die ( 'Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.' );
     }
 
     # Return specific exit status when ESC is pressed
@@ -490,7 +490,7 @@ sub _resize
     }
 
     if ( $lines < 24 || $cols < 80 ) {
-        fatal ( 'A screen at least 24 lines tall and 80 columns wide is required. Please enlarge your screen.' );
+        die ( 'A screen at least 24 lines tall and 80 columns wide is required. Please enlarge your screen.' );
     }
 
     $self->{'lines'} = $lines-2;

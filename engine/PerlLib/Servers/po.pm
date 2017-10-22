@@ -59,15 +59,13 @@ sub factory
         && $main::imscpOldConfig{'PO_PACKAGE'} ne ''
         && $main::imscpOldConfig{'PO_PACKAGE'} ne $package
     ) {
-        eval "require $main::imscpOldConfig{'PO_PACKAGE'}";
-        fatal( $@ ) if $@;
-
-        my $rs = $main::imscpOldConfig{'PO_PACKAGE'}->getInstance()->uninstall();
-        fatal( sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'PO_PACKAGE'} )) if $rs;
+        eval "require $main::imscpOldConfig{'PO_PACKAGE'}" or die( $@ );
+        $main::imscpOldConfig{'PO_PACKAGE'}->getInstance()->uninstall() == 0 or die(
+            sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'PO_PACKAGE'} )
+        );
     }
 
-    eval "require $package";
-    fatal( $@ ) if $@;
+    eval "require $package" or die( $@ );
     $instance = $package->getInstance();
 }
 
@@ -85,8 +83,7 @@ sub can
     my (undef, $method) = @_;
 
     my $package = $main::imscpConfig{'PO_PACKAGE'} || 'Servers::noserver';
-    eval "require $package";
-    fatal( $@ ) if $@;
+    eval "require $package" or die( $@ );
     $package->can( $method );
 }
 
@@ -106,7 +103,6 @@ sub getPriority
 END
     {
         return if $? || !$instance || ( $main::execmode && $main::execmode eq 'setup' );
-
         $? = $instance->restart() if $instance->{'restart'};
     }
 

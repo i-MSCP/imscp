@@ -26,7 +26,7 @@ package Modules::Abstract;
 use strict;
 use warnings;
 use iMSCP::Database;
-use iMSCP::Debug qw/ debug fatal /;
+use iMSCP::Debug qw/ debug /;
 use iMSCP::EventManager;
 use iMSCP::Packages;
 use iMSCP::Servers;
@@ -50,7 +50,7 @@ use parent 'Common::Object';
 
 sub getType
 {
-    fatal( ref( $_[0] ) . ' module must implements the getType( ) method' );
+    die( ref( $_[0] ) . ' module must implements the getType( ) method' );
 }
 
 =item process( )
@@ -63,7 +63,7 @@ sub getType
 
 sub process
 {
-    fatal( ref( $_[0] ) . ' module must implements the process( ) method' );
+    die( ref( $_[0] ) . ' module must implements the process( ) method' );
 }
 
 =item add( )

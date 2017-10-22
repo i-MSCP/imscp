@@ -25,7 +25,6 @@ package Servers::cron;
 
 use strict;
 use warnings;
-use iMSCP::Debug qw/ fatal /;
 
 # cron server instance
 my $instance;
@@ -51,8 +50,7 @@ sub factory
     return $instance if $instance;
 
     my $package = 'Servers::cron::cron';
-    eval "require $package";
-    fatal( $@ ) if $@;
+    eval "require $package" or die( $@ );
     $instance = $package->getInstance();
 }
 
@@ -70,8 +68,7 @@ sub can
     my (undef, $method) = @_;
 
     my $package = 'Servers::cron::cron';
-    eval "require $package";
-    fatal( $@ ) if $@;
+    eval "require $package" or die( $@ );
     $package->can( $method );
 }
 

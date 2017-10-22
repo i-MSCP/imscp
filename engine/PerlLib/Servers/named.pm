@@ -25,7 +25,6 @@ package Servers::named;
 
 use strict;
 use warnings;
-use iMSCP::Debug qw/ fatal /;
 
 # named server instance
 my $instance;
@@ -59,15 +58,13 @@ sub factory
         && $main::imscpOldConfig{'NAMED_PACKAGE'} ne ''
         && $main::imscpOldConfig{'NAMED_PACKAGE'} ne $package
     ) {
-        eval "require $main::imscpOldConfig{'NAMED_PACKAGE'}";
-        fatal( $@ ) if $@;
-
-        my $rs = $main::imscpOldConfig{'NAMED_PACKAGE'}->getInstance()->uninstall();
-        fatal( sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'NAMED_PACKAGE'} )) if $rs;
+        eval "require $main::imscpOldConfig{'NAMED_PACKAGE'}" or die( $@ );
+        $main::imscpOldConfig{'NAMED_PACKAGE'}->getInstance()->uninstall() == 0 or die(
+            sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'NAMED_PACKAGE'} )
+        );
     }
 
-    eval "require $package";
-    fatal( $@ ) if $@;
+    eval "require $package" or die( $@ );
     $instance = $package->getInstance();
 }
 
@@ -85,9 +82,7 @@ sub can
     my (undef, $method) = @_;
 
     my $package = $main::imscpConfig{'NAMED_PACKAGE'} || 'Servers::noserver';
-    eval "require $package";
-    fatal( $@ ) if $@;
-
+    eval "require $package" or die( $@ );
     $package->can( $method );
 }
 
