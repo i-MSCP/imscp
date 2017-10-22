@@ -331,7 +331,7 @@ sub _parseAptPolicy
     my $priority;
 
     for( split /\n/, $stdout ) {
-        s/^\s+|\s+$//g; # Remove leading and trailing whitespaces
+        s/^\s+|\s+$//g;
         $priority = int( $1 ) if /^(\d+)/;
         if ( index( $_, 'release' ) == 0 ) {
             my @bits = split ' ', $_, 2;
@@ -454,7 +454,7 @@ sub _guessDebianRelease
                 local $/;
                 <$fh>
             };
-            $release =~ s/^\s+|\s+$//g; # Remove leading and trailing whitespaces
+            $release =~ s/^\s+|\s+$//g;
 
             close $fh;
         } else {
@@ -545,7 +545,7 @@ sub _getLsbInformation
     if ( -f $etcLsbFile ) {
         if ( open my $fh, '<', $etcLsbFile ) {
             while ( my $line = <$fh> ) {
-                $line =~ s/^\s+|\s+$//g; # Remove trailing and leading whitespaces
+                $line =~ s/^\s+|\s+$//g;
 
                 next unless $line && index( $line, '=' ) != -1; # Skip invalid lines
 

@@ -176,7 +176,6 @@ OPTIONS:
     'debug|d'   => \&iMSCP::Getopt::debug,
     'verbose|v' => \&iMSCP::Getopt::verbose
 );
-exit;
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-vrl-traff.lock', 'nowait' );

@@ -26,6 +26,7 @@ package Package::FrontEnd::Installer;
 use strict;
 use warnings;
 use File::Basename;
+use iMSCP::Composer;
 use iMSCP::Crypt qw/ apr1MD5 randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug qw / debug error getMessageByType /;
@@ -566,7 +567,7 @@ sub preinstall
             eval {
                 my ($composer, $step) = ( $self->getComposer(), 0 );
                 my $stdRoutine = sub {
-                    my $stdout = $_[0] =~ s/^\s+|\s+$//r;
+                    ( my $stdout = $_[0] ) =~ s/^\s+|\s+$//g;
                     return if $stdout eq '';
 
                     step( undef, <<"EOT", 3, $step )
@@ -582,13 +583,13 @@ EOT
 
                 if ( iMSCP::Getopt->clearPackageCache ) {
                     $step++;
-                    $composer->setStdRoutines( $stdRoutine );
+                    $composer->setStdRoutines( sub {}, $stdRoutine );
                     $composer->clearPackageCache();
                 }
 
                 if ( iMSCP::Getopt->skipPackageUpdate ) {
                     $step++;
-                    $composer->setStdRoutines( $stdRoutine );
+                    $composer->setStdRoutines( $stdRoutine, sub {} );
                     eval { $composer->checkPackageRequirements(); };
                     die( "Unmet requirements. Please rerun the the installer without the '-a' option." ) if $@;
                     endDetail;
@@ -596,7 +597,7 @@ EOT
                 }
 
                 $step++;
-                $composer->setStdRoutines( undef, $stdRoutine );
+                $composer->setStdRoutines( sub {}, $stdRoutine );
                 $composer->installPackages();
                 undef $self->{'_composer'};
                 endDetail;
@@ -690,9 +691,10 @@ sub getComposer
     my ($self) = @_;
 
     $self->{'_composer'} ||= iMSCP::Composer->new(
-        user        => $main::imscpConfig{'IMSCP_USER'},
-        group       => $main::imscpConfig{'IMSCP_GROUP'},
-        working_dir => "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages"
+        user          => $main::imscpConfig{'IMSCP_USER'},
+        group         => $main::imscpConfig{'IMSCP_GROUP'},
+        working_dir   => "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages",
+        composer_path => '/usr/local/bin/composer'
     );
 }
 

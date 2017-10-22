@@ -47,9 +47,8 @@ my $self;
 $self = {
     debug           => sub { iMSCP::Getopt->debug },
     verbose         => sub {
-        ( defined $main::execmode && $main::execmode ne 'setup'
-            || !iMSCP::Getopt->noprompt
-        ) && iMSCP::Getopt->verbose
+        ( ( !defined $main::execmode || $main::execmode ne 'setup' )
+            || iMSCP::Getopt->noprompt ) && iMSCP::Getopt->verbose
     },
     debug_callbacks => [],
     loggers         => [ iMSCP::Log->new( id => 'default' ) ],
@@ -302,27 +301,27 @@ sub output
     return "$text\n" unless defined $level;
 
     if ( $level eq 'debug' ) {
-        return "[\033[0;34mDEBUG\033[0m] $text\n";
+        return "[\x1b[0;34mDEBUG\x1b[0m] $text\n";
     }
 
     if ( $level eq 'info' ) {
-        return "[\033[0;34mINFO\033[0m]  $text\n";
+        return "[\x1b[0;34mINFO\x1b[0m]  $text\n";
     }
 
     if ( $level eq 'warn' ) {
-        return "[\033[0;33mWARN\033[0m]  $text\n";
+        return "[\x1b[0;33mWARN\x1b[0m]  $text\n";
     }
 
     if ( $level eq 'error' ) {
-        return "[\033[0;31mERROR\033[0m] $text\n";
+        return "[\x1b[0;31mERROR\x1b[0m] $text\n";
     }
 
     if ( $level eq 'fatal' ) {
-        return "[\033[0;31mFATAL\033[0m] $text\n";
+        return "[\x1b[0;31mFATAL\x1b[0m] $text\n";
     }
 
     if ( $level eq 'ok' ) {
-        return "[\033[0;32mDONE\033[0m]  $text\n";
+        return "[\x1b[0;32mDONE\x1b[0m]  $text\n";
     }
 
     "$text\n";
@@ -332,8 +331,8 @@ sub output
 
  Register the given debug callback
 
- This function is deprecated and will be removed in later release.
- Kept for backward compatibility only.
+ This function is deprecated and will be removed in a later release.
+ kept for backward compatibility.
 
  Param callback Callback to register
  Return void
@@ -367,7 +366,7 @@ sub _writeLogfile
 {
     my ($logger, $logfilePath) = @_;
 
-    # Make error message free of any ANSI color and end of line codes
+    # Make error message free of any ANSI escape sequences
     ( my $messages = _getMessages( $logger ) ) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
 
     return if $messages eq '';

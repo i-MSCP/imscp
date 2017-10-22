@@ -235,7 +235,7 @@ sub setupComposer
     my $composer = iMSCP::Composer->new();
     $composer->setStdRoutines(
         sub {
-            my $line = $_[0] =~ s/^\s+|\s+$//r;
+            (my $line = $_[0]) =~ s/^\s+|\s+$//g;
             return if $line eq '';
 
             step( undef, <<"EOT", 1, 1 );
@@ -250,7 +250,7 @@ EOT
     );
 
     startDetail;
-    $composer->installComposer();
+    $composer->installComposer( '/usr/local/bin', 'composer', '1.5.2' );
     endDetail;
 }
 
