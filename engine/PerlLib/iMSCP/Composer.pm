@@ -276,7 +276,7 @@ sub checkPackageRequirements
 
     -d $self->{'_attrs'}->{'working_dir'} or die( "Unmet requirements (all packages)" );
 
-    while ( ( my $package, my $version ) = each( %{$self->{'_attrs'}->{'composer_json'}->{'require'}} ) ) {
+    while ( my ( $package, $version ) = each( %{$self->{'_attrs'}->{'composer_json'}->{'require'}} ) ) {
         $self->{'_stdout'}( sprintf( "Checking requirements for the %s (%s) composer package\n", $package, $version ));
         my $rs = execute(
             $self->_getSuCmd(
@@ -292,17 +292,20 @@ sub checkPackageRequirements
     }
 }
 
-=item getComposerJson( )
+=item getComposerJson( $scalar = false )
 
  Return composer.json file as string
 
- Return void, die on failure
+ Param bool $scalar OPTIONAL Whether composer.json must be returned as scalar (default: false)
+ Return string|scalar, die on failure
 
 =cut
 
 sub getComposerJson
 {
-    to_json(
+    my (undef, $scalar) = @_;
+
+    $scalar ? $_[0]->{'_attrs'}->{'composer_json'} : to_json(
         $_[0]->{'_attrs'}->{'composer_json'},
         {
             utf8      => 1,
@@ -347,11 +350,9 @@ sub setStdRoutines
 sub getComposerVersion
 {
     my ($self, $composerPath) = @_;
-    
+
     my $rs = execute(
-        $self->_getSuCmd( @{$self->{'_php_cmd'}}, $composerPath, '--no-ansi', '--version' ),
-        \my $stdout,
-        \my $stderr
+        $self->_getSuCmd( @{$self->{'_php_cmd'}}, $composerPath, '--no-ansi', '--version' ), \my $stdout, \my $stderr
     );
     debug( $stdout ) if $stdout;
     $rs == 0 or die( sprintf( "Couldn't get composer (%s) version: %s", $composerPath, $stderr ));
