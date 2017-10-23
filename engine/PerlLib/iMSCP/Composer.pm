@@ -220,7 +220,7 @@ sub installPackages
     $file->set( $self->getComposerJson());
     my $rs = $file->save();
     $rs ||= $file->owner( $self->{'_attrs'}->{'user'}, $self->{'_attrs'}->{'group'} );
-    $rs ||= $file->mode( 0644 );
+    $rs ||= $file->mode( 0640 );
     $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ));
     $rs = executeNoWait(
         $self->_getSuCmd(
