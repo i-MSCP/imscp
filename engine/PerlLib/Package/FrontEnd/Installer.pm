@@ -583,22 +583,28 @@ EOT
 
                 if ( iMSCP::Getopt->clearPackageCache ) {
                     $step++;
-                    $composer->setStdRoutines( sub {}, $stdRoutine );
-                    $composer->clearPackageCache();
+                    $composer
+                        ->setStdRoutines( sub {}, $stdRoutine )
+                        ->clearPackageCache();
                 }
 
                 if ( iMSCP::Getopt->skipPackageUpdate ) {
                     $step++;
-                    $composer->setStdRoutines( $stdRoutine, sub {} );
-                    eval { $composer->checkPackageRequirements(); };
+
+                    eval {
+                        $composer
+                            ->setStdRoutines( $stdRoutine, sub {} )
+                            ->checkPackageRequirements();
+                    };
                     die( "Unmet requirements. Please rerun the the installer without the '-a' option." ) if $@;
                     endDetail;
                     return;
                 }
 
                 $step++;
-                $composer->setStdRoutines( sub {}, $stdRoutine );
-                $composer->installPackages();
+                $composer
+                    ->setStdRoutines( sub {}, $stdRoutine )
+                    ->installPackages();
                 undef $self->{'_composer'};
                 endDetail;
             };

@@ -157,7 +157,7 @@ sub preinstall
 {
     my ($self) = @_;
 
-    $self->{'frontend'}->getComposer()->requirePackage( 'imscp/roundcube', '1.3.*' );
+    $self->{'frontend'}->getComposer()->requirePackage( 'imscp/roundcube', '^1.3' );
     $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 
