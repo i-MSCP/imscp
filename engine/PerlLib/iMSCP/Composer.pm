@@ -115,7 +115,7 @@ EOT
  Param string $package Package name
  Param string $packageVersion OPTIONAL Package version
  Param bool $dev OPTIONAL Flag indicating if $package is a development package
- Return void
+ Return iMSCP::Composer, die on failure
 
 =cut
 
@@ -129,6 +129,8 @@ sub requirePackage
     }
 
     $self->{'_attrs'}->{'composer_json'}->{'require'}->{$package} = $packageVersion ||= 'dev-master';
+
+    $self;
 }
 
 =item installComposer( [ $installDir = <home_dir> [, $filename = 'composer.phar' [, $version = latest ] ] ] )
@@ -138,7 +140,7 @@ sub requirePackage
  Param string $installDir OPTIONAL Installation directory
  Param string $filename OPTIONAL Composer installation filename
  Param string $version OPTIONAL Composer version to install
- Return void, die on failure
+ Return iMSCP::Composer, die on failure
 
 =cut
 
@@ -189,6 +191,8 @@ sub installComposer
         $self->{'_stderr'}
     );
     $rs == 0 or die( "Couldn't install composer" );
+
+    $self;
 }
 
 =item installPackages( [ $requireDev = false ] )
@@ -197,7 +201,7 @@ sub installComposer
 
  Param bool $requireDev OPTIONAL Flag indicating whether or not packages listed
                         in require-dev must be installed
- Return void, die on failure
+ Return iMSCP::Composer, die on failure
 
 =cut
 
@@ -232,13 +236,15 @@ sub installPackages
         $self->{'_stderr'}
     );
     $rs == 0 or die( "Couldn't install/update composer packages" );
+
+    $self;
 }
 
 =item clearPackageCache( )
 
  Clear composer's internal package cache, including vendor directory
 
- Return void, die on failure
+ Return iMSCP::Composer, die on failure
 
 =cut
 
@@ -260,13 +266,15 @@ sub clearPackageCache
         ( $vendorDir = $composerJson->{'config'}->{'vendor-dir'} ) =~ s%(?:\$HOME|~)%$self->{'_attrs'}->{'home_dir'}%g;
     }
     iMSCP::Dir->new( dirname => $vendorDir )->remove();
+
+    $self;
 }
 
 =item checkPackageRequirements( )
 
  Check package requirements
 
- Return void, die if package requirements are not met
+ Return iMSCP::Composer, die if package requirements are not met
 
 =cut
 
@@ -290,6 +298,8 @@ sub checkPackageRequirements
         debug( $stdout ) if $stdout;
         $rs == 0 or die( sprintf( "Unmet requirements (%s %s): %s", $package, $version, $stderr ));
     }
+
+    $self;
 }
 
 =item getComposerJson( $scalar = false )
@@ -303,10 +313,10 @@ sub checkPackageRequirements
 
 sub getComposerJson
 {
-    my (undef, $scalar) = @_;
+    my ($self, $scalar) = @_;
 
-    $scalar ? $_[0]->{'_attrs'}->{'composer_json'} : to_json(
-        $_[0]->{'_attrs'}->{'composer_json'},
+    $scalar ? $self->{'_attrs'}->{'composer_json'} : to_json(
+        $self->{'_attrs'}->{'composer_json'},
         {
             utf8      => 1,
             indent    => 1,
@@ -321,7 +331,7 @@ sub getComposerJson
 
  Param CODE $subStdout OPTIONAL Routine for processing of command STDOUT line by line
  Param CODE $subStderr OPTIONAL Routine for processing of command STDERR line by line
- Return void, die on invalid arguments
+ Return iMSCP::Composer, die on invalid arguments
 
 =cut
 
@@ -336,6 +346,8 @@ sub setStdRoutines
     $subStderr ||= sub { print STDERR @_ };
     ref $subStderr eq 'CODE' or die( 'Expects a routine as second parameter for STDERR processing' );
     $self->{'_stderr'} = $subStderr;
+
+    $self;
 }
 
 =item getComposerVersion( $composerPath )
