@@ -27,29 +27,24 @@ if (strtolower($_SERVER['REQUEST_METHOD']) !== 'get') {
     showBadRequestErrorPage();
 }
 
-$id = isset($_GET['id']) ? clean_input((string)$_GET['id']) : NULL;
+$cacheIds = explode(';', isset($_GET['ids']) ? clean_input((string)$_GET['ids']) : []);
+if (empty($cacheIds)) {
+    showBadRequestErrorPage();
+}
 
 /** @var Cache $cache */
 $cache = Registry::get('iMSCP_Application')->getCache();
 
-if (NULL !== $id) {
-    if ($cache->test($id)) {
-        if (!($ret = $cache->remove($id))) {
-            showErrorPage(500);
+foreach ($cacheIds as $cacheId) {
+    if ($cacheId === 'opcache') {
+        iMSCP_Utility_OpcodeCache::clearAllActive();
+    } elseif ($cacheId === 'userland') {
+        if (!$cache->clean()) {
+            showInternalServerError();
         }
-    } else {
-        exit("No cache with ID $id has been found");
+    } elseif ($cache->test($cacheId) && !$cache->remove($cacheId)) {
+        showInternalServerError();
     }
-
-    if($cache->test($id)) {
-        print "Found again";
-    }
-
-    exit('OK');
 }
 
-if (!($ret = $cache->clean())) {
-    showErrorPage(500);
-}
-
-exit('OK');
+exit('success');
