@@ -915,7 +915,7 @@ EOF
         include(Registry::get('config')['GUI_ROOT_DIR'] . "/public/errordocs/$code.html");
     }
 
-    exit;
+    exit($code);
 }
 
 /**
