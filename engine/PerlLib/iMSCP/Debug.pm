@@ -365,9 +365,9 @@ sub debugRegisterCallBack
 sub _writeLogfile
 {
     my ($logger, $logfilePath) = @_;
-
+    
     if ( open( my $fh, '>', $logfilePath ) ) {
-        print { $fh } _getMessages( $logger );
+        print { $fh } _getMessages( $logger ) =~ s/\x1b\[[0-9;]*[mGKH]//gr;
         close $fh;
         return;
     }
