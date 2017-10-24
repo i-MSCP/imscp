@@ -224,8 +224,10 @@ function generatePage($tpl, $pluginManager)
             } elseif ($pluginManager->pluginIsUninstalled($pluginName)) { // Uninstalled plugin
                 $tpl->assign([
                     'PLUGIN_DEACTIVATE_LINK' => '',
-                    'ACTIVATE_ACTION'        => 'install',
-                    'TR_ACTIVATE_TOOLTIP'    => tr('Install this plugin'),
+                    'ACTIVATE_ACTION'        => $pluginManager->pluginIsInstallable($pluginName) 
+                         ? 'install' : 'enable',
+                    'TR_ACTIVATE_TOOLTIP'    => $pluginManager->pluginIsInstallable($pluginName) 
+                         ? tr('Install this plugin') : tr('Activate this plugin'),
                     'UNINSTALL_ACTION'       => 'delete',
                     'TR_UNINSTALL_TOOLTIP'   => tr('Delete this plugin'),
                     'PLUGIN_PROTECTED_LINK'  => ''
@@ -315,14 +317,14 @@ function checkAction($pluginManager, $pluginName, $action)
 
             break;
         case 'enable':
-            if (!in_array($pluginStatus, ['toenable', 'disabled'])) {
+            if (!in_array($pluginStatus, ['toenable', 'disabled', 'uninstalled'])) {
                 set_page_message(tr('Plugin %s cannot be activated.', $pluginName), 'warning');
                 $ret = false;
             }
 
             break;
         case 'disable':
-            if (!in_array($pluginStatus, ['todisable', 'enabled'])) {
+            if (!in_array($pluginStatus, ['todisable', 'enabled', 'installed'])) {
                 set_page_message(tr('Plugin %s cannot be deactivated.', $pluginName), 'warning');
                 $ret = false;
             }

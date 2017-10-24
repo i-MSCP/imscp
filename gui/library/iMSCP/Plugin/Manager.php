@@ -711,7 +711,7 @@ class iMSCP_Plugin_Manager
         $pluginStatus = $this->pluginGetStatus($pluginName);
 
         if (!$isSubAction
-            && !in_array($pluginStatus, ['toenable', 'disabled'])
+            && !in_array($pluginStatus, ['toenable', 'disabled', 'uninstalled'])
         ) {
             return self::ACTION_FAILURE;
         }
