@@ -134,6 +134,9 @@ VAGRANT
     Review: Copy i-MSCP archive directory content under /user/local/src/imscp Vagrant box directory
     Review: Disable automatic box update checking in VagrantFile
 
+VENDOR
+    Added: Perl library for exporting variables to PHP's expression (PHP::Var)
+
 YOUTRACK
     IP-1742 i-MSCP upgrade error - Unknown 'mail_user' database table in database update r254
     IP-1744 Couldn't go to support section -- 302 redirect to index.php -- reseller UI
