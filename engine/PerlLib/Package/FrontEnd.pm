@@ -26,6 +26,7 @@ package Package::FrontEnd;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Package::FrontEnd::Installer Package::FrontEnd::Uninstaller /;
+use Cwd qw/ realpath /;
 use File::Basename;
 use File::Spec;
 use iMSCP::Config;
@@ -359,18 +360,27 @@ sub enableSites
     return $rs if $rs;
 
     for my $site( @sites ) {
-        my $target = "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site";
-        my $link = $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'} . '/' . basename( $site, '.conf' );
+        my $target = File::Spec->canonpath( "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site" );
+        my $symlink = File::Spec->canonpath(
+            $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'} . '/' . basename( $site, '.conf' )
+        );
 
         unless ( -f $target ) {
             error( sprintf( "Site `%s` doesn't exist", $site ));
             return 1;
         }
 
-        next if -l $link;
+        next if -l $symlink && realpath( $symlink ) eq $target;
 
-        unless ( symlink( File::Spec->abs2rel( $target, $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'} ), $link ) ) {
-            error( sprintf( "Couldn't enable `%s` site: %s", $site, $! ));
+        if ( -e _ ) {
+            unless ( unlink( $symlink ) ) {
+                error( sprintf( "Couldn't unlink the %s file: %s", $! ));
+                return 1;
+            }
+        }
+
+        unless ( symlink( File::Spec->abs2rel( $target, $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'} ), $symlink ) ) {
+            error( sprintf( "Couldn't enable the `%s` site: %s", $site, $! ));
             return 1;
         }
 
@@ -397,11 +407,16 @@ sub disableSites
     return $rs if $rs;
 
     for my $site( @sites ) {
-        my $link = $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'} . '/' . basename( $site, '.conf' );
-        next unless -l $link;
+        my $symlink = File::Spec->canonpath(
+            $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'} . '/' . basename( $site, '.conf' )
+        );
 
-        $rs = iMSCP::File->new( filename => $link )->delFile();
-        return $rs if $rs;
+        next unless -e $symlink;
+
+        unless ( unlink( $symlink ) ) {
+            error( sprintf( "Couldn't unlink the %s file: %s", $! ));
+            return 1;
+        }
 
         $self->{'reload'} = 1;
     }
