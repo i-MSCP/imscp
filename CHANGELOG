@@ -96,6 +96,8 @@ PACKAGES
     Updated: Installer for use of Roundcube version 1.3.1 (Package::Webmail::Roundcube::Installer)
 
 PLUGINS
+    Enhancement: Make plugins able to trigger flush of cache (OPcache, userland cache (full or by ID)
+    Review: Avoid useless SQL query for plugin run action if there are no error (backend)
     Updated: Plugin API to version 1.5.1
 
 PRESEEDING

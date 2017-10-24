@@ -105,9 +105,10 @@ sub process
         'onBeforeSetPluginStatus', $self->{'pluginData'}->{'plugin_name'}, \$self->{'pluginData'}->{'plugin_status'}
     );
 
+    return 0 if $rs == 0 && $self->{'pluginAction'} eq 'run';
+
     eval {
-        my %plugin_next_state_map = (
-            enabled     => 'enabled',
+        my %pluginNextStateMap = (
             toinstall   => 'enabled',
             toenable    => 'enabled',
             toupdate    => 'enabled',
@@ -122,16 +123,23 @@ sub process
             undef,
             ( $rs
                 ? getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-                : $plugin_next_state_map{$self->{'pluginData'}->{'plugin_status'}}
+                : $pluginNextStateMap{$self->{'pluginData'}->{'plugin_status'}}
             ),
             $pluginId
         );
 
         unless ( defined $main::execmode && $main::execmode eq 'setup' ) {
+            my $cacheIds = 'iMSCP_Plugin_Manager_Metadata';
+
+            if ( $self->{'pluginData'}->{'info'}->{'require_cache_flush'} ) {
+                $cacheIds .= ";$self->{'pluginData'}->{'info'}->{'require_cache_flush'}";
+            }
+
             my $httpScheme = $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'};
             my $url = "${httpScheme}127.0.0.1:" . ( $httpScheme eq 'http://'
                 ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'} : $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'}
-            ) . '/fcache.php?id=iMSCP_Plugin_Manager_Metadata';
+            ) . "/fcache.php?ids=$cacheIds";
+
             get( $url ) or die( "Couldn't trigger flush of frontEnd cache" );
         }
     };
