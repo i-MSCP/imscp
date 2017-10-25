@@ -41,7 +41,8 @@ DATABASE
     Fixed: Deprecated columns not removed while updating from some older versions (r270)
 
 DISTRIBUTIONS
-    Added: libfile-chmod-perl distribution package (all distributions)
+    Added: unzip distribution package (all distributions -- required by the PHP dependency manager (composer)
+    Added: libfile-chmod-perl distribution package (all distributions -- Required by 3rd-party softwares)
     Added: Support for Debian 10/Buster (Experimental)
     Added: Support for Percona DB 5.5 -- Debian 9/Stretch (amd64 architecture only)
     Added: Support for Percona DB 5.6 -- Debian 9/Stretch (amd64 architecture only)
