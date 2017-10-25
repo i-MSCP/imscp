@@ -28,6 +28,7 @@ use warnings;
 use iMSCP::Config;
 use iMSCP::Execute;
 use iMSCP::File;
+use iMSCP::Dir;
 use Servers::mta;
 use Servers::po::dovecot;
 use Servers::sqld;
@@ -152,7 +153,7 @@ sub _removeConfig
         $rs ||= $file->mode( 0644 );
     }
 
-    0;
+    iMSCP::Dir->new( dirnname => '/etc/dovecot/imscp.d' )->remove();
 }
 
 =back
