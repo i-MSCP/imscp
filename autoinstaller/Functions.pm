@@ -890,6 +890,7 @@ sub _expandVars
  Process the given folder node
 
  Node attributes:
+  create_if: Create the folder only if the condition is met
   user: Target directory owner
   group: Target directory group
   mode: Target directory mode
@@ -903,6 +904,8 @@ sub _processFolderNode
 {
     my ($node) = @_;
 
+    return 0 if defined $node->{'create_if'} && !eval _expandVars( $node->{'create_if'} );
+    
     my $dir = iMSCP::Dir->new( dirname => $node->{'content'} );
     $dir->remove() if $node->{'pre_remove'};
     $dir->make(
@@ -935,8 +938,7 @@ sub _processCopyConfigNode
 {
     my ($node) = @_;
 
-    if ( defined $node->{'copy_if'} && !eval _expandVars( $node->{'copy_if'} )
-    ) {
+    if ( defined $node->{'copy_if'} && !eval _expandVars( $node->{'copy_if'} ) ) {
         return 0 if $node->{'keep_if_exist'};
         ( my $syspath = $node->{'content'} ) =~ s/^$main::{'INST_PREF'}//;
         return 0 unless $syspath ne '/' && -e $syspath;

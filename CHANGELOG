@@ -72,6 +72,7 @@ FRONTEND
 
 INSTALLER
     Added: `copy_as' attribute -- Allows to copy a file with specific name (copy_config xml node from install.xml files)
+    Added: `create_if` attribute -- Allows to conditionally create a folder (folder xml node from install.xml files)
     Added: `pre_remove' attribute -- Allows to remove previous directory (folder xml node from install.xml files)
     Enhancement: Make it possible to provide per distribution (codename) configuration file
     Enhancement: Provide good default values for installer whenever possible

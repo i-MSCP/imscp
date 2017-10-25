@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<install reverse_if="'${NAMED_PACKAGE}' ne 'Servers::named::bind'">
+<install>
     <folder>${SYSTEM_CONF}/bind</folder>
     <folder>${SYSTEM_CONF}/bind/backup</folder>
     <folder>${SYSTEM_CONF}/bind/working</folder>

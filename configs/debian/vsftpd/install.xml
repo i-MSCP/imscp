@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folder mode="0755">${ROOT_CONF}/vsftpd</folder>
-    <folder>${ROOT_CONF}/vsftpd/imscp</folder>
+    <folder mode="0755" create_if="'${FTPD_PACKAGE}' eq 'Servers::ftpd::vsftpd'">${ROOT_CONF}/vsftpd</folder>
+    <folder create_if="'${FTPD_PACKAGE}' eq 'Servers::ftpd::vsftpd'">${ROOT_CONF}/vsftpd/imscp</folder>
     <folder>${SYSTEM_CONF}/vsftpd</folder>
     <folder>${SYSTEM_CONF}/vsftpd/backup</folder>
     <copy_config>${SYSTEM_CONF}/vsftpd/vsftpd.conf</copy_config>

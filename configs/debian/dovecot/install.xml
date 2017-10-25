@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folder mode="0755">${ROOT_CONF}/dovecot</folder>
-    <folder mode="0755">${ROOT_CONF}/dovecot/imscp.d</folder>
+    <folder mode="0755" create_if="'${PO_PACKAGE}' eq 'Servers::po::dovecot'">${ROOT_CONF}/dovecot</folder>
+    <folder mode="0755" create_if="'${PO_PACKAGE}' eq 'Servers::po::dovecot'">${ROOT_CONF}/dovecot/imscp.d</folder>
     <folder>${SYSTEM_CONF}/dovecot</folder>
     <folder>${SYSTEM_CONF}/dovecot/backup</folder>
     <folder>${SYSTEM_CONF}/dovecot/working</folder>

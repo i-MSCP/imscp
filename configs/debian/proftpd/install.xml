@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folder mode="0755">${ROOT_CONF}/logrotate.d</folder>
+    <folder mode="0755" create_if="'${FTPD_PACKAGE}' eq 'Servers::ftpd::proftpd'">${ROOT_CONF}/logrotate.d</folder>
     <folder>${SYSTEM_CONF}/proftpd</folder>
     <folder>${SYSTEM_CONF}/proftpd/backup</folder>
     <folder>${SYSTEM_CONF}/proftpd/working</folder>
