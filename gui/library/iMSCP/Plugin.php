@@ -182,7 +182,13 @@ abstract class iMSCP_Plugin
     final public function getType()
     {
         if (NULL === $this->pluginType) {
-            list(, , $this->pluginType) = explode('_', get_parent_class($this), 3);
+            $class = get_parent_class($this);
+
+            if ($class === __CLASS__) {
+                $this->pluginType = 'Basic';
+            } else {
+                list(, , $this->pluginType) = explode('_', $class, 3);
+            }
         }
 
         return $this->pluginType;

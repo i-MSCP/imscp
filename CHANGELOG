@@ -41,8 +41,8 @@ DATABASE
     Fixed: Deprecated columns not removed while updating from some older versions (r270)
 
 DISTRIBUTIONS
-    Added: unzip distribution package (all distributions -- required by the PHP dependency manager (composer)
-    Added: libfile-chmod-perl distribution package (all distributions -- Required by 3rd-party softwares)
+    Added: `libfile-chmod-perl` distribution package (all distributions -- Required by 3rd-party softwares)
+    Added: `unzip` distribution package (all distributions -- required for correct symlinks handling (Composer))
     Added: Support for Debian 10/Buster (Experimental)
     Added: Support for Percona DB 5.5 -- Debian 9/Stretch (amd64 architecture only)
     Added: Support for Percona DB 5.6 -- Debian 9/Stretch (amd64 architecture only)
@@ -103,6 +103,7 @@ PACKAGES
 PLUGINS
     Enhancement: Make plugins able to trigger flush of cache (OPcache, userland cache (full or by ID)
     Fixed: Covers case of plugins that are uninstallable but not installable
+    Fixed: Undefined offset -- Couldn't infer `Basic` plugin type
     Review: Avoid useless SQL query for plugin run action if there are no error (backend)
     Updated: Plugin API to version 1.5.1
 
