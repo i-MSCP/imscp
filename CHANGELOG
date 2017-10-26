@@ -106,7 +106,7 @@ LISTENERS
 PACKAGES
     Fixed: Distribution packages not installed in `build' mode (Package::AntiRootkits, Package::Webstats)
     Fixed: Limit number of Nginx worker processes in auto mode (Package::FrontEnd::Installer)
-    Fixed: Logs must be preserved when upgrading/reconfiguring i-MSCP Package::Webmail::Roundcube::Installer)
+    Fixed: Logs must be preserved when upgrading/reconfiguring i-MSCP (Package::Webmail::Roundcube::Installer)
     Review: Cleanup production configuration files (Package::FrontEnd::Installer)
     Updated: Installer for use of Roundcube version 1.3.1 (Package::Webmail::Roundcube::Installer)
 

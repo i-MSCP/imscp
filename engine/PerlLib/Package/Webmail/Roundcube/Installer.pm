@@ -45,6 +45,8 @@ use Servers::sqld;
 use version;
 use parent 'Common::SingletonClass';
 
+our $VERSION = '~1.0.0';
+
 %main::sqlUsers = () unless %main::sqlUsers;
 
 =head1 DESCRIPTION
@@ -157,7 +159,7 @@ sub preinstall
 {
     my ($self) = @_;
 
-    $self->{'frontend'}->getComposer()->requirePackage( 'imscp/roundcube', '^1.3' );
+    $self->{'frontend'}->getComposer()->requirePackage( 'imscp/roundcube', $VERSION );
     $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 
@@ -179,7 +181,6 @@ sub install
     $rs ||= $self->_buildRoundcubeConfig();
     $rs ||= $self->_setupDatabase();
     $rs ||= $self->_buildHttpdConfig();
-    $rs ||= $self->_setVersion();
     $rs ||= $self->_cleanup();
 }
 
@@ -340,7 +341,7 @@ sub _installFiles
         -d $packageDir or die( "Couldn't find the imscp/roundcube package into the packages cache directory" );
         my $destDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
 
-        iMSCP::Dir->new( dirname => $destDir )->remove();
+        iMSCP::Dir->new( dirname => $destDir )->clear ( undef, qr/^logs$/, 'inverse_matching' ) if -d $destDir;
         iMSCP::Dir->new( dirname => "$packageDir/iMSCP/config" )->rcopy( $self->{'cfgDir'}, { preserve => 'no' } );
         iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( $destDir, { preserve => 'no' } );
 
@@ -592,31 +593,6 @@ sub _setupDatabase
     0;
 }
 
-=item _setVersion( )
-
- Set version
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _setVersion
-{
-    my ($self) = @_;
-
-    my $repoDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/roundcube";
-    my $json = iMSCP::File->new( filename => "$repoDir/composer.json" )->get();
-    unless ( defined $json ) {
-        error( sprintf( "Couldn't read %s file", "$repoDir/composer.json" ));
-        return 1;
-    }
-
-    $json = decode_json( $json );
-    debug( sprintf( 'Set new roundcube version to %s', $json->{'version'} ));
-    $self->{'config'}->{'ROUNDCUBE_VERSION'} = $json->{'version'};
-    0;
-}
-
 =item _buildHttpdConfig( )
 
  Build Httpd configuration
@@ -637,12 +613,8 @@ sub _buildHttpdConfig
     my $frontEnd = Package::FrontEnd->getInstance();
     my $rs = $frontEnd->buildConfFile(
         "$self->{'cfgDir'}/nginx/imscp_roundcube.conf",
-        {
-            WEB_DIR => $main::imscpConfig{'GUI_ROOT_DIR'}
-        },
-        {
-            destination => "$self->{'wrkDir'}/imscp_roundcube.conf"
-        }
+        { GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },
+        { destination => "$self->{'wrkDir'}/imscp_roundcube.conf" }
     );
     $rs ||= iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp_roundcube.conf" )->copyFile(
         "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf", { preserve => 'no' }
