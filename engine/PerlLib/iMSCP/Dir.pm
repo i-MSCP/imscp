@@ -326,6 +326,7 @@ sub remove
  Copy a directory recusively
 
  Symlinks are not dereferenced.
+ Only regular files, symlinks and directories are copied.
 
  Param string $destDir Destination directory
  Param hash \%options OPTIONAL Options:
@@ -366,12 +367,12 @@ sub rcopy
 
         if ( -l $src || -f _ ) {
             iMSCP::File->new( filename => $src )->copyFile( $dst, $options ) == 0 or die(
-                sprintf( "Couldn't copy `%s' file to `%s': %s", $src, $dst, getLastError())
+                sprintf( "Couldn't copy `%s' file/symlink to `%s': %s", $src, $dst, getLastError())
             );
             next;
         }
 
-        iMSCP::Dir->new( dirname => $src )->rcopy( $dst, $options );
+        iMSCP::Dir->new( dirname => $src )->rcopy( $dst, $options ) if -d _;
     }
 
     closedir $dh;
