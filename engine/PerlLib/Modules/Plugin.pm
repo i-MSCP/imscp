@@ -114,7 +114,7 @@ sub process
             toupdate    => 'enabled',
             tochange    => 'enabled',
             todisable   => 'disabled',
-            touninstall => ( $self->{'pluginData'}->{'info'}->{'__installable__'} ) ? 'uninstalled' : 'disabled'
+            touninstall => 'uninstalled'
         );
 
         local $self->{'dbh'}->{'RaiseError'} = 1;
