@@ -137,18 +137,19 @@ sub isEmpty
     1;
 }
 
-=item clear( [ $dirname = $self->{'dirname'} [, $regexp = undef ] ] )
+=item clear( [ $dirname = $self->{'dirname'} [, $regexp = undef, [ $inverseMatching ] ] ] )
 
  Clear a full directory content or the files/diretories inside the directory that match the given regexp
 
  Param Regexp $regexp OPTIONAL regexp for directory content matching
+ Param bool OPTIONAL $inverseMatching Flag allowing to inverse $regexp matching 
  Return int 0 on success or die on failure
 
 =cut
 
 sub clear
 {
-    my ($self, $dirname, $regexp ) = @_;
+    my ($self, $dirname, $regexp, $inverseMatching ) = @_;
     $dirname //= $self->{'dirname'};
 
     defined $dirname or die( '$dirname parameter is not defined.' );
@@ -162,7 +163,7 @@ sub clear
         my $dotReg = qr/^\.{1,2}\z/s;
 
         while ( my $file = readdir( $dh ) ) {
-            next if $file =~ /$dotReg/ || $file !~ /$regexp/;
+            next if $file =~ /$dotReg/ || ( $inverseMatching ? $file =~ /$regexp/ : $file !~ /$regexp/ );
             my $filePath = $dirname . '/' . $file;
 
             if ( -d $filePath ) {
