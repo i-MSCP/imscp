@@ -1,4 +1,5 @@
 # i-MSCP Listener::Dovecot::Connections listener file
+# Copyright (C) 2017 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2015-2017 Rene Schuster <mail@reneschuster.de>
 #
 # This library is free software; you can redistribute it and/or
@@ -21,11 +22,13 @@
 
 package Listener::Dovecot::Connections;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
 use iMSCP::EventManager;
+use iMSCP::File;
+use version;
 
 #
 ## Configuration parameters
@@ -38,20 +41,19 @@ my $maxConnections = 50;
 ## Please, don't edit anything below this line
 #
 
-iMSCP::EventManager->getInstance()->register(
-    'beforePoBuildConf',
+iMSCP::EventManager->getInstance()->registerOne(
+    'afterPoBuildConf',
     sub {
-        my ($cfgTpl, $tplName) = @_;
+        version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+            sprintf( "The 20_dovecot_connection.pl listener file version %s requires i-MSCP >= 1.5.2", $VERSION )
+        );
 
-        return 0 unless $tplName eq 'dovecot.conf';
-
-        $$cfgTpl .= <<EOF;
-
-# BEGIN Listener::Dovecot::Connections
+        my $dovecotConfdir = Servers::po->factory()->{'config'}->{'DOVECOT_CONF_DIR'};
+        my $file = iMSCP::File->new( filename => "$dovecotConfdir/imscp.d/20_dovecot_connection_listener.conf" );
+        $file->set( <<"EOT" );
 mail_max_userip_connections = $maxConnections
-# END Listener::Dovecot::Connections
-EOF
-        0;
+EOT
+        $file->save();
     }
 );
 

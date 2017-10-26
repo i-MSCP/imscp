@@ -23,11 +23,13 @@
 
 package Listener::Dovecot::Service::Login;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
 use iMSCP::EventManager;
+use iMSCP::File;
+use version;
 
 #
 ## Configuration parameters
@@ -42,10 +44,10 @@ my $imapsPort = 993;
 
 # Space separated list of IP addresses/hostnames to listen on.
 # For instance:
-#	- with 'localhost' as value the service-login will listen on localhost only
-#	- with '*' as value, the service-login will listen on all IPv4 addresses
-#	- with '::' as value, the servicel-login will listen on all IPv6 addresses
-#	- with '*, ::' as value, the service-login will listen on all IPv4/IPv6 addresses
+# - with 'localhost' as value the service-login will listen on localhost only
+# - with '*' as value, the service-login will listen on all IPv4 addresses
+# - with '::' as value, the servicel-login will listen on all IPv6 addresses
+# - with '*, ::' as value, the service-login will listen on all IPv4/IPv6 addresses
 my $imapListenAddr = '* ::';
 my $imapsListenAddr = '* ::';
 my $pop3ListenAddr = '* ::';
@@ -61,48 +63,47 @@ my $popServiceCount = 0;
 ## Please, don't edit anything below this line
 #
 
-iMSCP::EventManager->getInstance()->register(
-    'beforePoBuildConf',
+iMSCP::EventManager->getInstance()->registerOne(
+    'afterPoBuildConf',
     sub {
-        my ($cfgTpl, $tplName) = @_;
+        version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+            sprintf( "The 60_dovecot_service_login.pl listener file version %s requires i-MSCP >= 1.5.2", $VERSION )
+        );
 
-        return 0 unless $tplName eq 'dovecot.conf';
-
-        ${$cfgTpl} .= <<"EOF";
-
-# Begin Listener::Dovecot::Service::Login
+        my $dovecotConfdir = Servers::po->factory()->{'config'}->{'DOVECOT_CONF_DIR'};
+        my $file = iMSCP::File->new( filename => "$dovecotConfdir/imscp.d/60_dovecot_service_login_listener.conf" );
+        $file->set( <<"EOT" );
 service imap-login {
-	inet_listener imap {
-		port = $imapPort
-		address = $imapListenAddr
-	}
+    inet_listener imap {
+        port = $imapPort
+        address = $imapListenAddr
+    }
 
-	inet_listener imaps {
-		port = $imapsPort
-		address = $imapsListenAddr
-		ssl = yes
-	}
+    inet_listener imaps {
+        port = $imapsPort
+        address = $imapsListenAddr
+        ssl = yes
+    }
 
-	service_count = $imapServiceCount
+    service_count = $imapServiceCount
 }
 
 service pop3-login {
-	inet_listener pop3 {
-		port = $pop3Port
-		address = $pop3ListenAddr
-	}
+    inet_listener pop3 {
+        port = $pop3Port
+        address = $pop3ListenAddr
+    }
 
-	inet_listener pop3s {
-		port = $pop3sPort
-		address = $pop3sListenAddr
-		ssl = yes
-	}
+    inet_listener pop3s {
+        port = $pop3sPort
+        address = $pop3sListenAddr
+        ssl = yes
+    }
 
-	service_count = $popServiceCount
+    service_count = $popServiceCount
 }
-# Ending Listener::Dovecot::Service::Login
-EOF
-        0;
+EOT
+        $file->save();
     }
 );
 

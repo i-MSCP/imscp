@@ -453,6 +453,18 @@ sub _buildConf
 {
     my ($self) = @_;
 
+    eval {
+        # Make the /etc/dovecot/imscp.d direcetory free of any file that where
+        # installed by i-MSCP listener files.
+        iMSCP::Dir->new( dirname => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/imscp.d" )->clear(
+            undef, qr/_listener.conf$/
+        )
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
     ( my $dbName = main::setupGetQuestion( 'DATABASE_NAME' ) ) =~ s%('|"|\\)%\\$1%g;
     ( my $dbUser = $self->{'config'}->{'DATABASE_USER'} ) =~ s%('|"|\\)%\\$1%g;
     ( my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'} ) =~ s%('|"|\\)%\\$1%g;
@@ -474,7 +486,6 @@ sub _buildConf
         POSTFIX_SENDMAIL_PATH         => $self->{'mta'}->{'config'}->{'POSTFIX_SENDMAIL_PATH'},
         DOVECOT_CONF_DIR              => $self->{'config'}->{'DOVECOT_CONF_DIR'},
         DOVECOT_DELIVER_PATH          => $self->{'config'}->{'DOVECOT_DELIVER_PATH'},
-        DOVECOT_LDA_AUTH_SOCKET_PATH  => $self->{'config'}->{'DOVECOT_LDA_AUTH_SOCKET_PATH'},
         DOVECOT_SASL_AUTH_SOCKET_PATH => $self->{'config'}->{'DOVECOT_SASL_AUTH_SOCKET_PATH'},
         ENGINE_ROOT_DIR               => $main::imscpConfig{'ENGINE_ROOT_DIR'},
         POSTFIX_USER                  => $self->{'mta'}->{'config'}->{'POSTFIX_USER'},
@@ -524,8 +535,12 @@ sub _buildConf
 
             if ( $conffile eq 'dovecot.conf' ) {
                 my $ssl = main::setupGetQuestion( 'SERVICES_SSL_ENABLED' );
-                $cfgTpl .= "\nssl = $ssl\n";
+                $cfgTpl .= <<"EOF";
 
+# SSL
+
+ssl = $ssl
+EOF
                 # Fixme: Find a better way to guess libssl version
                 if ( $ssl eq 'yes' ) {
                     unless ( `ldd /usr/lib/dovecot/libdovecot-login.so | grep libssl.so` =~ /libssl.so.(\d.\d)/ ) {

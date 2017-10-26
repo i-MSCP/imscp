@@ -1,4 +1,5 @@
 # i-MSCP Listener::Dovecot::Namespace listener file
+# Copyright (C) 2017 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2015-2017 Rene Schuster <mail@reneschuster.de>
 #
 # This library is free software; you can redistribute it and/or
@@ -22,37 +23,39 @@
 
 package Listener::Dovecot::Namespace;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
 use iMSCP::EventManager;
+use iMSCP::File;
+use version;
 
-iMSCP::EventManager->getInstance()->register(
-    'beforePoBuildConf',
+iMSCP::EventManager->getInstance()->registerOne(
+    'afterPoBuildConf',
     sub {
-        my ($cfgTpl, $tplName) = @_;
+        version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+            sprintf( "The 30_dovecot_namespace.pl listener file version %s requires i-MSCP >= 1.5.2", $VERSION )
+        );
 
-        return 0 unless $tplName eq 'dovecot.conf';
-
-        my $cfgSnippet = <<EOF;
-
-# BEGIN Listener::Dovecot::Namespace
-namespace compat {
-	separator = .
-	prefix = INBOX.
-	inbox = no
-	hidden = yes
-	list = no
-	alias_for =
+        my $dovecotConfdir = Servers::po->factory()->{'config'}->{'DOVECOT_CONF_DIR'};
+        my $file = iMSCP::File->new( filename => "$dovecotConfdir/imscp.d/30_dovecot_namespace_listener.conf" );
+        $file->set( <<'EOT' );
+namespace inbox {
+    separator = /
+    prefix =
 }
-# END Listener::Dovecot::Namespace
-EOF
 
-        $$cfgTpl =~ s/(separator\s+=\s+)\./$1\//;
-        $$cfgTpl =~ s/(prefix\s+=\s+)INBOX\./$1/;
-        $$cfgTpl =~ s/^(namespace\s+inbox\s+\{.*?^\}\n)/$1$cfgSnippet/sm;
-        0;
+namespace compat {
+    separator = .
+    prefix = INBOX.
+    inbox = no
+    hidden = yes
+    list = no
+    alias_for =
+}
+EOT
+        $file->save();
     }
 );
 

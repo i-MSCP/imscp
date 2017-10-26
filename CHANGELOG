@@ -94,6 +94,12 @@ LISTENERS
     Fixed: Listener::Php::ConfOptions::Override: PHP INI level not honoured
     Fixed: 10_named_slave_provisioning.pl: Global symbol "$rs" requires explicit package name
     Rewritten: 20_named_dualstack.pl listener file (require i-MSCP >= 1.5.2)
+    Updated: 10_dovecot_compress.pl: Make use of /etc/dovecot/imscp.d directory to store configuration
+    Updated: 20_dovecot_connections.pl: Make use of /etc/dovecot/imscp.d directory to store configuration
+    Updated: 30_dovecot_namespace.pl: Make use of /etc/dovecot/imscp.d directory to store configuration
+    Updated: 40_dovecot_pfs.pl: Make use of /etc/dovecot/imscp.d directory to store configuration
+    Updated: 50_dovecot_plaintext.pl: Make use of /etc/dovecot/imscp.d directory to store configuration
+    Updated: 60_dovecot_service_login.pl: Make use of /etc/dovecot/imscp.d directory to store configuration
 
 PACKAGES
     Fixed: Distribution packages not installed in `build' mode (Package::AntiRootkits, Package::Webstats)

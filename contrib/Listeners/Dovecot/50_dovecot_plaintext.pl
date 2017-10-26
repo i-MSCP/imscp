@@ -1,4 +1,5 @@
 # i-MSCP Listener::Dovecot::Plaintext listener file
+# Copyright (C) 2017 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2015-2017 Rene Schuster <mail@reneschuster.de>
 #
 # This library is free software; you can redistribute it and/or
@@ -21,21 +22,27 @@
 
 package Listener::Dovecot::Plaintext;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
 use iMSCP::EventManager;
+use iMSCP::File;
+use version;
 
-iMSCP::EventManager->getInstance()->register(
+iMSCP::EventManager->getInstance()->registerOne(
     'afterPoBuildConf',
     sub {
-        my ($cfgTpl, $tplName) = @_;
+        version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+            sprintf( "The 50_dovecot_plaintext.pl listener file version %s requires i-MSCP >= 1.5.2", $VERSION )
+        );
 
-        return 0 unless $tplName eq 'dovecot.conf';
-
-        $$cfgTpl =~ s/^(disable_plaintext_auth\s+=\s+).*/$1yes/ if $cfgTpl =~ /^ssl\s+=\s+yes/;
-        0;
+        my $dovecotConfdir = Servers::po->factory()->{'config'}->{'DOVECOT_CONF_DIR'};
+        my $file = iMSCP::File->new( filename => "$dovecotConfdir/imscp.d/50_dovecot_plaintext_listener.conf" );
+        $file->set( <<"EOT" );
+disable_plaintext_auth = yes
+EOT
+        $file->save();
     }
 );
 

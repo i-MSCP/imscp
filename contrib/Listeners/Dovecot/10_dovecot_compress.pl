@@ -1,4 +1,5 @@
 # i-MSCP Listener::Dovecot::Compress listener file
+# Copyright (C) 2017 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2015-2017 Rene Schuster <mail@reneschuster.de>
 #
 # This library is free software; you can redistribute it and/or
@@ -25,11 +26,14 @@
 
 package Listener::Dovecot::Compress;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
 use iMSCP::EventManager;
+use iMSCP::File;
+use version;
+use Servers::po;
 
 #
 ## Configuration parameters
@@ -42,28 +46,28 @@ my $compressionLevel = 6;
 ## Please, don't edit anything below this line
 #
 
-iMSCP::EventManager->getInstance()->register(
-    'beforePoBuildConf',
+iMSCP::EventManager->getInstance()->registerOne(
+    'afterPoBuildConf',
     sub {
-        my ($cfgTpl, $tplName) = @_;
+        version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+            sprintf( "The 10_dovecot_compress.pl listener file version %s requires i-MSCP >= 1.5.2", $VERSION )
+        );
 
-        return 0 unless $tplName eq 'dovecot.conf';
+        my $dovecotConfdir = Servers::po->factory()->{'config'}->{'DOVECOT_CONF_DIR'};
+        my $file = iMSCP::File->new( filename => "$dovecotConfdir/imscp.d/10_dovecot_compress_listener.conf" );
+        $file->set( <<"EOT" );
+mail_plugins = \$mail_plugins zlib
 
-        my $cfgSnippet = <<EOF;
+plugin {
+    zlib_save = gz
+    zlib_save_level = $compressionLevel
+}
 
-	# BEGIN Listener::Dovecot::Compress
-	zlib_save = gz
-	zlib_save_level = $compressionLevel
-	# END Listener::Dovecot::Compress
-EOF
-
-        # Enable zlib plugin globally for reading/writing
-        $$cfgTpl =~ s/^(mail_plugins\s+=.*)/$1 zlib/m;
-        $$cfgTpl =~ s/^(protocol\simap\s+\{.*?mail_plugins.*?$)/$1 imap_zlib/sm;
-
-        # Enable these only if you want compression while saving
-        $$cfgTpl =~ s/^(plugin\s+\{.*?)(\})/$1$cfgSnippet$2/sm;
-        0;
+protocol imap {
+    mail_plugins = \$mail_plugins imap_zlib
+}
+EOT
+        $file->save();
     }
 );
 
