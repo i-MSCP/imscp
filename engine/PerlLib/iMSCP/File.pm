@@ -272,7 +272,7 @@ sub copyFile
 
     my ($mode, $uid, $gid) = ( lstat( $self->{'filename'} ) )[2, 4, 5];
     unless ( defined $mode ) {
-        error( sprintf( " Couldn't stat %s file: %s", $self->{'filename'}, $! ));
+        error( sprintf( "Couldn't stat `%s' file: %s", $self->{'filename'}, $! ));
         return 1;
     }
 

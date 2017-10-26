@@ -5,7 +5,7 @@ Git 1.5.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-    Enhancement: Make the iMSCP::Composer usable by 3rd-party components, without relying on event manager
+    Enhancement: Make the iMSCP::Composer package usable by 3rd-party components, without relying on event manager
     Enhancement: Make it possible to install Composer anywhere (iMSCP::Composer)
     Enhancement: Make it possible to override default composer.json (iMSCP::Composer)
     Fixed: Avoid localization of `$@' variable

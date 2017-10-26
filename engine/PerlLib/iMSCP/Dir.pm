@@ -344,7 +344,7 @@ sub rcopy
         my $opts = {};
         unless ( defined $options->{'preserve'} && $options->{'preserve'} eq 'no' ) {
             @{$opts}{ qw / mode user group /} = ( stat( $self->{'dirname'} ) )[2, 4, 5];
-            defined $opts->{'mode'} or die( sprinf( "Couldn't stat %s directory: %s", $self->{'dirname'}, $! ));
+            defined $opts->{'mode'} or die( sprinf( "Couldn't stat `%s' directory: %s", $self->{'dirname'}, $! ));
             $opts->{'mode'} &= 07777;
         }
 
