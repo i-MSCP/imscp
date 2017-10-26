@@ -454,7 +454,7 @@ sub _buildConf
     my ($self) = @_;
 
     eval {
-        # Make the /etc/dovecot/imscp.d direcetory free of any file that where
+        # Make the /etc/dovecot/imscp.d direcetory free of any file that were
         # installed by i-MSCP listener files.
         iMSCP::Dir->new( dirname => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/imscp.d" )->clear(
             undef, qr/_listener.conf$/
