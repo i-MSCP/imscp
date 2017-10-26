@@ -324,6 +324,8 @@ sub remove
 
  Copy a directory recusively
 
+ Symlinks are not dereferenced.
+
  Param string $destDir Destination directory
  Param hash \%options OPTIONAL Options:
   - preserve (yes|no): preserve ownership and permissions (default yes)
@@ -361,14 +363,14 @@ sub rcopy
         my $src = File::Spec->canonpath( $self->{'dirname'} . '/' . $entry );
         my $dst = File::Spec->canonpath( $destDir . '/' . $entry );
 
-        if ( -d $src ) {
-            iMSCP::Dir->new( dirname => $src )->rcopy( $dst, $options );
+        if ( -l $src || -f _ ) {
+            iMSCP::File->new( filename => $src )->copyFile( $dst, $options ) == 0 or die(
+                sprintf( "Couldn't copy `%s' file to `%s': %s", $src, $dst, getLastError())
+            );
             next;
         }
 
-        iMSCP::File->new( filename => $src )->copyFile( $dst, $options ) == 0 or die(
-            sprintf( "Couldn't copy `%s' file to `%s': %s", $src, $dst, getLastError())
-        );
+        iMSCP::Dir->new( dirname => $src )->rcopy( $dst, $options );
     }
 
     closedir $dh;

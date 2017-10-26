@@ -5,15 +5,16 @@ Git 1.5.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-    Enhancement: Make the iMSCP::Composer package usable by 3rd-party components, without relying on event manager
     Enhancement: Make it possible to install Composer anywhere (iMSCP::Composer)
     Enhancement: Make it possible to override default composer.json (iMSCP::Composer)
+    Enhancement: Make the iMSCP::Composer package usable by 3rd-party components, without relying on event manager
     Fixed: Avoid localization of `$@' variable
     Fixed: Couldn't restore SQL databases -- Can't locate object method "selectall_array" via package "DBI::db"
     Fixed: Couldn't restore uncompressed databases
     Fixed: Existence of network devices must be checked before operating on them (iMSCP::Net)
     Fixed: Make sure to work with a well-known composer version (iMSCP::Composer)
     Fixed: Make use of the INADDR_ANY address, regadless of domain IP address when primary server IP is set with `None` option
+    Fixed: Symlinks are dereferenced (followed) instead of being copied (iMSCP::Dir::rcopy)
     Fixed: Symlinks are dereferenced (followed) instead of being copied (iMSCP::File::copyFile)
     Fixed: Unexpected permissions set on folders in recursive mode, and when dirmode parameter is not involved (iMSCP::Rights)
     Review: Avoid tables locking whenever possible while dump of databases (iMSCP::Database::mysql::dumpdb)
@@ -104,6 +105,7 @@ LISTENERS
 PACKAGES
     Fixed: Distribution packages not installed in `build' mode (Package::AntiRootkits, Package::Webstats)
     Fixed: Limit number of Nginx worker processes in auto mode (Package::FrontEnd::Installer)
+    Fixed: Logs must be preserved when upgrading/reconfiguring i-MSCP Package::Webmail::Roundcube::Installer)
     Review: Cleanup production configuration files (Package::FrontEnd::Installer)
     Updated: Installer for use of Roundcube version 1.3.1 (Package::Webmail::Roundcube::Installer)
 
