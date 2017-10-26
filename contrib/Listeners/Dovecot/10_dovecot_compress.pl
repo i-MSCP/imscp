@@ -32,8 +32,8 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 use iMSCP::File;
-use version;
 use Servers::po;
+use version;
 
 #
 ## Configuration parameters

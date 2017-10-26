@@ -28,6 +28,7 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 use iMSCP::File;
+use Servers::po;
 use version;
 
 iMSCP::EventManager->getInstance()->registerOne(
