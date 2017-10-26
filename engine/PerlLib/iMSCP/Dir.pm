@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use File::Copy qw/ mv /;
 use File::Path qw/ mkpath remove_tree /;
+use File::Spec;
 use iMSCP::Debug qw / getLastError /;
 use iMSCP::File;
 use parent 'Common::Object';
@@ -343,6 +344,7 @@ sub rcopy
         my $opts = {};
         unless ( defined $options->{'preserve'} && $options->{'preserve'} eq 'no' ) {
             @{$opts}{ qw / mode user group /} = ( stat( $self->{'dirname'} ) )[2, 4, 5];
+            defined $opts->{'mode'} or die( sprinf( "Couldn't stat %s directory: %s", $self->{'dirname'}, $! ));
             $opts->{'mode'} &= 07777;
         }
 
@@ -356,8 +358,8 @@ sub rcopy
     while ( my $entry = readdir $dh ) {
         next if $entry =~ /$dotReg/;
 
-        my $src = $self->{'dirname'} . '/' . $entry;
-        my $dst = $destDir . '/' . $entry;
+        my $src = File::Spec->canonpath( $self->{'dirname'} . '/' . $entry );
+        my $dst = File::Spec->canonpath( $destDir . '/' . $entry );
 
         if ( -d $src ) {
             iMSCP::Dir->new( dirname => $src )->rcopy( $dst, $options );

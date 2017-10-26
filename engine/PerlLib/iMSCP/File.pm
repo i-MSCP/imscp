@@ -184,7 +184,7 @@ sub mode
     }
 
     unless ( defined $mode ) {
-        error( 'Missing $mode parameter' );
+        error( '$mode parameter is missing.' );
         return 1;
     }
 
@@ -220,12 +220,12 @@ sub owner
     }
 
     unless ( defined $owner ) {
-        error( 'Missing $owner parameter' );
+        error( '$owner parameter is missing.' );
         return 1;
     }
 
     unless ( defined $group ) {
-        error( 'Missing $group parameter' );
+        error( '$group parameter is missing.' );
         return 1;
     }
 
@@ -240,14 +240,14 @@ sub owner
     0;
 }
 
-=item copyFile( $destination [, \%options = { 'preserve' => 'yes' } ] )
+=item copyFile( $target [, \%options = { 'preserve' => 'yes' } ] )
 
  Copy file to the given destination
 
  Symlinks are not dereferenced. 
  Permissions are not set on symlink targets.
 
- Param string $destination Destination path (either a directory or file path)
+ Param string $target Target path (either a directory or file path)
  Param hash $options Options
   - preserve (yes|no): preserve ownership and permissions (default yes)
  Return int 0 on success, 1 on failure
@@ -256,7 +256,7 @@ sub owner
 
 sub copyFile
 {
-    my ($self, $destination, $options) = @_;
+    my ($self, $target, $options) = @_;
 
     $options = {} unless $options && ref $options eq 'HASH';
 
@@ -265,31 +265,49 @@ sub copyFile
         return 1;
     }
 
-    unless ( defined $destination && ref \$destination eq 'SCALAR' ) {
-        error( '$destination parameter is msissing or invalid.' );
+    unless ( defined $target ) {
+        error( '$target parameter is missing.' );
         return 1;
     }
 
-    unless ( copy( $self->{'filename'}, $destination ) ) {
-        error( sprintf( "Couldn't copy `%s' file to `%s': %s", $self->{'filename'}, $destination, $! ));
+    my ($mode, $uid, $gid) = ( lstat( $self->{'filename'} ) )[2, 4, 5];
+    unless ( defined $mode ) {
+        error( sprintf( " Couldn't stat %s file: %s", $self->{'filename'}, $! ));
+        return 1;
+    }
+
+    $target = File::Spec->canonpath( $target . '/' . basename( $self->{'filename'} )) if -d _;
+
+    if ( -l _ ) {
+        unless ( symlink( readlink( $self->{'filename'} ), $target ) ) {
+            error( sprintf( "Couldn't copy `%s' symlink to `%s': %s", $self->{'filename'}, $target, $! ));
+            return 1;
+        }
+
+        return 0 if defined $options->{'preserve'} && $options->{'preserve'} eq 'no';
+
+        unless ( lchown( $uid, $gid, $target ) ) {
+            error( sprintf( "Couldn't change `%s' symlink ownership: %s", $target, $! ));
+            return 1;
+        }
+
+        return 0;
+    }
+
+    if ( !copy( $self->{'filename'}, $target ) ) {
+        error( sprintf( "Couldn't copy `%s' file to `%s': %s", $self->{'filename'}, $target, $! ));
         return 1;
     }
 
     return 0 if defined $options->{'preserve'} && $options->{'preserve'} eq 'no';
 
-    $destination = File::Spec->catfile( $destination, basename( $self->{'filename'} )) if -d $destination;
-
-    my ($mode, $uid, $gid) = ( lstat( $self->{'filename'} ) )[2, 4, 5];
-
-    unless ( lchown( $uid, $gid, $destination ) ) {
-        error( sprintf( "Couldn't change `%s' file ownership: %s", $destination, $! ));
+    unless ( chown( $uid, $gid, $target ) ) {
+        error( sprintf( "Couldn't change `%s' file ownership: %s", $target, $! ));
         return 1;
     }
 
-    return if -l $destination; # We do not call chmod on symkink targets
-
-    unless ( chmod( $mode & 07777, $destination ) ) {
-        error( sprintf( "Couldn't change `%s' file permissions: %s", $destination, $! ));
+    unless ( chmod( $mode & 07777, $target ) ) {
+        error( sprintf( "Couldn't change `%s' file permissions: %s", $target, $! ));
         return 1;
     }
 
@@ -314,8 +332,8 @@ sub moveFile
         return 1;
     }
 
-    unless ( defined $destination && ref \$destination eq 'SCALAR' ) {
-        error( '$destination parameter is msissing or invalid.' );
+    unless ( defined $destination ) {
+        error( '$destination parameter is missing.' );
         return 1;
     }
 
