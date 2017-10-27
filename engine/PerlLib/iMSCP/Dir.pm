@@ -173,7 +173,19 @@ sub clear
                 next;
             }
 
-            $self->remove( $file ) if -d _;
+            next unless -d _;
+
+            remove_tree( $dirname, { error => \ my $errStack } );
+
+            if ( @{$errStack} ) {
+                my $errorStr = '';
+                for ( @{$errStack} ) {
+                    ( $file, my $message ) = %{$_};
+                    $errorStr .= ( $file eq '' ) ? "general error: $message\n" : "problem unlinking $file: $message\n";
+                }
+
+                die( sprintf( "Couldn't remove the `%s' directory: %s", $dirname, $errorStr ));
+            }
         }
 
         closedir( $dh );
@@ -264,8 +276,8 @@ sub make
         if ( @{$errStack} ) {
             my $errorStr = '';
 
-            for my $diag ( @{$errStack} ) {
-                my ($file, $message) = %{$diag};
+            for( @{$errStack} ) {
+                my ($file, $message) = %{$_};
                 $errorStr .= ( $file eq '' ) ? "general error: $message\n" : "problem creating $file: $message\n";
             }
 
@@ -286,7 +298,6 @@ sub make
     }
 
     $self->mode( $options->{'mode'} ) if defined $options->{'mode'};
-
     0;
 }
 
