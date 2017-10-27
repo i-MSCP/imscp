@@ -34,7 +34,7 @@ use iMSCP_Utility_OpcodeCache as OpcodeCacheUtils;
 /**
  * Upload plugin archive into the gui/plugins directory
  *
- * Supported archives: zip tar.gz and tar.bz2
+ * Supported archives: tar.gz and tar.bz2
  *
  * @param PluginManager $pluginManager
  * @return bool TRUE on success, FALSE on failure
@@ -50,7 +50,7 @@ function uploadPlugin($pluginManager)
     $tmpDirectory = GUI_ROOT_DIR . '/data/tmp';
     $ret = false;
 
-    # Upload plugin archive into gui/data/tmp directory (eg. gui/data/tmp/PluginName.zip)
+    # Upload plugin archive into gui/data/tmp directory (eg. gui/data/tmp/PluginName.tar.gz)
     $tmpArchPath = utils_uploadFile('plugin_archive', [function ($tmpDirectory) {
         $tmpFilePath = $_FILES['plugin_archive']['tmp_name'];
         if (!checkMimeType($tmpFilePath, ['application/x-gzip', 'application/x-bzip2',])) {
@@ -85,7 +85,7 @@ function uploadPlugin($pluginManager)
         // Check for plugin integrity (Any plugin must provide at least two files: $pluginName.php and info.php files
         foreach ([$pluginName, 'info'] as $file) {
             if (!isset($arch["$pluginName/$file.php"])) {
-                throw new iMSCPException(tr("%s doens't look like an i-MSCP plugin archive.", "$pluginName/$file.php"));
+                throw new iMSCPException(tr("%s doesn't look like an i-MSCP plugin archive.", "$pluginName/$file.php"));
             }
         }
 
@@ -656,7 +656,7 @@ $tpl->assign([
     'TR_PLUGIN_UPLOAD'          => tr('Plugins Upload'),
     'TR_UPLOAD'                 => tr('Upload'),
     'TR_PLUGIN_ARCHIVE'         => tr('Plugin archive'),
-    'TR_PLUGIN_ARCHIVE_TOOLTIP' => tr('Only tar.gz, tar.bz2 and zip archives are accepted.'),
+    'TR_PLUGIN_ARCHIVE_TOOLTIP' => tr('Only tar.gz and tar.bz2 archives are supported.'),
     'TR_PLUGIN_HINT'            => tr('Plugins hook into i-MSCP to extend its functionality with custom features. Plugins are developed independently from the core i-MSCP application by thousands of developers all over the world. You can find new plugins to install by browsing the %s.', '<a style="text-decoration: underline" href="https://i-mscp.net/filebase/" target="_blank">' . tr('i-MSCP plugin store') . '</a></u>'),
     'TR_CLICK_FOR_MORE_DETAILS' => tr('Click here for more details')
 ]);
