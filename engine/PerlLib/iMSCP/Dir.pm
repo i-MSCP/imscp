@@ -141,6 +141,8 @@ sub isEmpty
 
  Clear a full directory content or the files/diretories inside the directory that match the given regexp
 
+ When a regexp is provided, only regular files, symlinks and directories are considered.
+
  Param Regexp $regexp OPTIONAL regexp for directory content matching
  Param bool OPTIONAL $inverseMatching Flag allowing to inverse $regexp matching 
  Return int 0 on success or die on failure
@@ -164,14 +166,14 @@ sub clear
 
         while ( my $file = readdir( $dh ) ) {
             next if $file =~ /$dotReg/ || ( $inverseMatching ? $file =~ /$regexp/ : $file !~ /$regexp/ );
-            my $filePath = $dirname . '/' . $file;
+            $file = $dirname . '/' . $file;
 
-            if ( -d $filePath ) {
-                $self->remove( $filePath );
+            if ( -l $file || -f _ ) {
+                unlink $file or die( sprintf( "Couldn't remove the %s file: %s", $file, $! ));
                 next;
             }
 
-            unlink $filePath or die( sprintf( "Couldn't remove the %s file: %s", $filePath, $! ));
+            $self->remove( $file ) if -d _;
         }
 
         closedir( $dh );
