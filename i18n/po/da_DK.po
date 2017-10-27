@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR i-MSCP Team - All rights reserved
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the i-MSCP package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 #, fuzzy
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-10-01 16:38+0000\n"
+"POT-Creation-Date: 2017-10-27 22:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Torsten Widmann <info@goover.de>, 2017\n"
 "Language-Team: Danish (Denmark) (https://www.transifex.com/i-mscp/teams/576/da_DK/)\n"
@@ -77,12 +77,12 @@ msgid "%s account successfully deleted."
 msgstr "%s konto slettet."
 
 #, php-format
-msgid "%s doens't look like an i-MSCP plugin archive."
-msgstr ""
-
-#, php-format
 msgid "%s doesn't exist or is empty."
 msgstr "%s findes ikke eller er tom."
+
+#, php-format
+msgid "%s doesn't look like an i-MSCP plugin archive."
+msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -1261,6 +1261,11 @@ msgstr ""
 
 #, php-format
 msgid "Couldn't find domain properties for customer with ID %d."
+msgstr ""
+
+msgid ""
+"Couldn't get update information from Github. Consult the admin logs for more"
+" details."
 msgstr ""
 
 #, php-format
@@ -2566,9 +2571,6 @@ msgstr "Ugyldig menu rækkefølge."
 msgid "Invalid name."
 msgstr "Ugyldig navn."
 
-msgid "Invalid payload received from GitHub"
-msgstr "Ugyldig payload modtaget fra GitHub"
-
 msgid "Invalid phone."
 msgstr ""
 
@@ -3112,9 +3114,6 @@ msgstr "Kun positive tal er tilladt."
 
 msgid "Only tar.gz and tar.bz2 archives are supported."
 msgstr ""
-
-msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
-msgstr "Kun tar.gz, tar.bz2 og zip-arkiver accepteres."
 
 msgid "Open ticket"
 msgstr "Åben support ticket"
@@ -4760,17 +4759,8 @@ msgstr "Kunne ikke oprette '%s' mappe for sprog-fil."
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Kan ikke skabe 'LC_MESSAGES' mappe for sprog-fil."
 
-msgid "Unable to delete i-MSCP info file."
-msgstr "Kan ikke slette i-MSCP info fil."
-
 msgid "Unable to get the IP address list. Please fix this problem."
 msgstr "Kan ikke hente IP adresse listen. Venligst løs dette problem."
-
-msgid "Unable to get update info from Github"
-msgstr "Kunne ikke få update info fra Github"
-
-msgid "Unable to load i-MSCP info file."
-msgstr "Kan ikke indlæse i-MSCP info fil."
 
 msgid "Unable to move file."
 msgstr "Kan ikke flytte fil."
@@ -4806,12 +4796,6 @@ msgid ""
 msgstr ""
 "Kan ikke planlægge sletning af kundens konto. Venligst konsultere admin logs"
 " eller din e-mail for mere information."
-
-msgid "Unable to set sslallowselfsigned option"
-msgstr "Kunne ikke indstille sslallowselfsigned option"
-
-msgid "Unable to set sslverifypeer option"
-msgstr "Kan ikke indstille sslverifypeer option"
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
@@ -4849,9 +4833,6 @@ msgstr "Afinstalleret"
 
 msgid "Unknown"
 msgstr "Ukendt"
-
-msgid "Unknown Error"
-msgstr "Ukendt Fejl"
 
 #, php-format
 msgid "Unknown `%s' database. Database must exists."
@@ -5623,8 +5604,8 @@ msgstr "I-MSCP plugin opbevaring"
 msgid "i-MSCP updates"
 msgstr "i-MSCP opdateringer"
 
-msgid "i-MSCP version update checking is disabled"
-msgstr "i-MSCP version opdaterings kontrol er deaktiveret"
+msgid "i-MSCP version update checking is disabled."
+msgstr ""
 
 msgid "installed"
 msgstr "installeret"

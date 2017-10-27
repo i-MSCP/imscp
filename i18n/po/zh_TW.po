@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR i-MSCP Team - All rights reserved
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the i-MSCP package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 #, fuzzy
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-10-01 16:38+0000\n"
+"POT-Creation-Date: 2017-10-27 22:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/i-mscp/teams/576/zh_TW/)\n"
@@ -74,12 +74,12 @@ msgid "%s account successfully deleted."
 msgstr "%s 帳號已經成功地刪除"
 
 #, php-format
-msgid "%s doens't look like an i-MSCP plugin archive."
-msgstr "%s 看起來不像 i-MSCP 外掛壓縮檔。"
-
-#, php-format
 msgid "%s doesn't exist or is empty."
 msgstr "%s 不存在或是空的"
+
+#, php-format
+msgid "%s doesn't look like an i-MSCP plugin archive."
+msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -1239,6 +1239,11 @@ msgstr "無法刪除子網域。已產生無法預期的錯誤。"
 
 #, php-format
 msgid "Couldn't find domain properties for customer with ID %d."
+msgstr ""
+
+msgid ""
+"Couldn't get update information from Github. Consult the admin logs for more"
+" details."
 msgstr ""
 
 #, php-format
@@ -2683,9 +2688,6 @@ msgstr "無效的選單訂購。"
 msgid "Invalid name."
 msgstr "無效的名稱"
 
-msgid "Invalid payload received from GitHub"
-msgstr "從 GitHub 接收到無效的負載"
-
 msgid "Invalid phone."
 msgstr "無效的電話號碼。"
 
@@ -3223,9 +3225,6 @@ msgstr "只允許正數。"
 
 msgid "Only tar.gz and tar.bz2 archives are supported."
 msgstr "只支援 tar.gz 和 tar.bz2 壓縮檔。"
-
-msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
-msgstr "只允許 tar.gz，tar.bz2 和 zip 壓縮檔。"
 
 msgid "Open ticket"
 msgstr "待解答服務單"
@@ -4852,17 +4851,8 @@ msgstr "無法建立 '%s' 語言檔的目錄。"
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "無法建立 'LC_MESSAGES' 語言檔的目錄。"
 
-msgid "Unable to delete i-MSCP info file."
-msgstr "無法刪除 i-MSCP 資訊檔案。"
-
 msgid "Unable to get the IP address list. Please fix this problem."
 msgstr "無法取得 IP 地址，請修復這個問題。"
-
-msgid "Unable to get update info from Github"
-msgstr "無法從 Github 取得更新資訊"
-
-msgid "Unable to load i-MSCP info file."
-msgstr "無法讀取 i-MSCP 資訊檔案。"
 
 msgid "Unable to move file."
 msgstr "無法移動檔案"
@@ -4894,12 +4884,6 @@ msgid ""
 "Unable to schedule deletion of the customer account. Please consult admin "
 "logs or your mail for more information."
 msgstr "無法刪除客戶帳號裡面的行程。請查詢管理紀錄或是您的郵件裡有更多的資訊。"
-
-msgid "Unable to set sslallowselfsigned option"
-msgstr "無法設定 sslallowselfsigned 選項"
-
-msgid "Unable to set sslverifypeer option"
-msgstr "無法設定 sslverifypeer 選項"
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
@@ -4937,9 +4921,6 @@ msgstr "已經解除安裝"
 
 msgid "Unknown"
 msgstr "未知"
-
-msgid "Unknown Error"
-msgstr "未知錯誤"
 
 #, php-format
 msgid "Unknown `%s' database. Database must exists."
@@ -5705,7 +5686,7 @@ msgstr "i-MSCP 外掛商店"
 msgid "i-MSCP updates"
 msgstr "i-MSCP 更新"
 
-msgid "i-MSCP version update checking is disabled"
+msgid "i-MSCP version update checking is disabled."
 msgstr "i-MSCP 版本檢查已停用"
 
 msgid "installed"

@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR i-MSCP Team - All rights reserved
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the i-MSCP package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 #, fuzzy
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-10-01 16:38+0000\n"
+"POT-Creation-Date: 2017-10-27 22:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Japanese (Japan) (https://www.transifex.com/i-mscp/teams/576/ja_JP/)\n"
@@ -74,12 +74,12 @@ msgid "%s account successfully deleted."
 msgstr "%s のアカウントは削除されました。"
 
 #, php-format
-msgid "%s doens't look like an i-MSCP plugin archive."
-msgstr "%s は、 i-MSCP プラグインアーカイブには見えません。"
-
-#, php-format
 msgid "%s doesn't exist or is empty."
 msgstr "%s は存在しないか、空です。"
+
+#, php-format
+msgid "%s doesn't look like an i-MSCP plugin archive."
+msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -1242,6 +1242,11 @@ msgstr ""
 
 #, php-format
 msgid "Couldn't find domain properties for customer with ID %d."
+msgstr ""
+
+msgid ""
+"Couldn't get update information from Github. Consult the admin logs for more"
+" details."
 msgstr ""
 
 #, php-format
@@ -2688,9 +2693,6 @@ msgstr "無効なメニューの順序。"
 msgid "Invalid name."
 msgstr "名前が無効です。"
 
-msgid "Invalid payload received from GitHub"
-msgstr "無効なペイロードを、GitHubのから受け取りました"
-
 msgid "Invalid phone."
 msgstr ""
 
@@ -3228,9 +3230,6 @@ msgstr "正の数値のみが許可されます。"
 
 msgid "Only tar.gz and tar.bz2 archives are supported."
 msgstr "唯一、tar.gz形式とtar.bz2形式のアーカイブはサポートされています。"
-
-msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
-msgstr "tar.gz、tar.bz2、そしてzipアーカイブのみが受け入れられます。"
 
 msgid "Open ticket"
 msgstr "未解決のチケット"
@@ -4868,17 +4867,8 @@ msgstr "言語ファイルのための'%s' ディレクトリを作成できま�
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "言語ファイルのための\"LC_MESSAGES\"ディレクトリを作成できません。"
 
-msgid "Unable to delete i-MSCP info file."
-msgstr "i-MSCP情報ファイルを削除することができません。"
-
 msgid "Unable to get the IP address list. Please fix this problem."
 msgstr "IPアドレスリストを取得できません。この問題を修正してください。"
-
-msgid "Unable to get update info from Github"
-msgstr "GitHubからの更新情報を取得できません"
-
-msgid "Unable to load i-MSCP info file."
-msgstr "i-MSCP情報ファイルを読み込むことができません。"
 
 msgid "Unable to move file."
 msgstr "ファイルを移動することができません。"
@@ -4910,12 +4900,6 @@ msgid ""
 "Unable to schedule deletion of the customer account. Please consult admin "
 "logs or your mail for more information."
 msgstr "顧客アカウントの削除を予定することができません。詳細については、管理者ログやメールでご相談ください。"
-
-msgid "Unable to set sslallowselfsigned option"
-msgstr "自己署名オプションを許可するSSLを設定できません"
-
-msgid "Unable to set sslverifypeer option"
-msgstr "SSL verifypeerオプションを設定することができません"
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
@@ -4953,9 +4937,6 @@ msgstr "アンインストール"
 
 msgid "Unknown"
 msgstr "不明"
-
-msgid "Unknown Error"
-msgstr "不明なエラー"
 
 #, php-format
 msgid "Unknown `%s' database. Database must exists."
@@ -5722,8 +5703,8 @@ msgstr "i-MSCP プラグインストア"
 msgid "i-MSCP updates"
 msgstr "i-MSCP 更新"
 
-msgid "i-MSCP version update checking is disabled"
-msgstr "i-MSCPバージョンの更新チェックが無効になっています"
+msgid "i-MSCP version update checking is disabled."
+msgstr ""
 
 msgid "installed"
 msgstr "インストールされました"

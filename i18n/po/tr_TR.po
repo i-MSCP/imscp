@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR i-MSCP Team - All rights reserved
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the i-MSCP package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 #, fuzzy
@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-10-01 16:38+0000\n"
+"POT-Creation-Date: 2017-10-27 22:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: ugur tezer <utezer@hotmail.com>, 2017\n"
+"Last-Translator: Mehmet Çağdaş Saygılı <mcsaygili@gmail.com>, 2017\n"
 "Language-Team: Turkish (Turkey) (https://www.transifex.com/i-mscp/teams/576/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,7 +40,7 @@ msgstr ""
 
 #, php-format
 msgid "%%s cannot be greater than %%s."
-msgstr ""
+msgstr " %%'den büyük olamaz.%%"
 
 #, php-format
 msgid "%1$s (%2$s)"
@@ -65,7 +65,7 @@ msgstr ""
 #, php-format
 msgid "%d day remaining until account expiration"
 msgid_plural "%d days remaining until account expiration"
-msgstr[0] ""
+msgstr[0] "Hesap son kullanımına kadar %d gün kaldı"
 
 #, php-format
 msgid "%d strings translated"
@@ -76,12 +76,12 @@ msgid "%s account successfully deleted."
 msgstr "%s hesabı silindi."
 
 #, php-format
-msgid "%s doens't look like an i-MSCP plugin archive."
-msgstr ""
-
-#, php-format
 msgid "%s doesn't exist or is empty."
 msgstr "%s yok veya boş!"
+
+#, php-format
+msgid "%s doesn't look like an i-MSCP plugin archive."
+msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -138,7 +138,7 @@ msgstr ""
 "geliştiricilere bildirmelisiniz."
 
 msgid "(default)"
-msgstr ""
+msgstr "(varsayılan)"
 
 #, php-format
 msgid "(filtered from %s total records)"
@@ -159,10 +159,10 @@ msgid_plural "%d configuration parameters were created"
 msgstr[0] ""
 
 msgid "A new i-MSCP version is available"
-msgstr ""
+msgstr "Yeni i-MSCP sürümü mevcut"
 
 msgid "A new software package has been uploaded"
-msgstr ""
+msgstr "Yeni bir yazılım paketi yüklendi"
 
 msgid "A task is in progress for this htuser."
 msgstr ""
@@ -192,10 +192,10 @@ msgid "Action"
 msgstr "Eylem"
 
 msgid "Action has been stopped."
-msgstr ""
+msgstr "İşlem durduruldu."
 
 msgid "Action has failed."
-msgstr ""
+msgstr "Eylem başarısız oldu."
 
 msgid "Actions"
 msgstr "Eylem"
@@ -207,7 +207,7 @@ msgid "Activate autoresponder"
 msgstr ""
 
 msgid "Activate this plugin"
-msgstr ""
+msgstr "Bu eklentiyi etkinleştir"
 
 msgid "Activated"
 msgstr "Etkinleştirildi"
@@ -228,7 +228,7 @@ msgid "Add"
 msgstr "Ekle"
 
 msgid "Add DNS resource record"
-msgstr ""
+msgstr "DNS kaynak kaydı ekle"
 
 msgid "Add FTP account"
 msgstr "FTP hesabı ekle"
@@ -273,7 +273,7 @@ msgid "Add hosting plan"
 msgstr "Hosting planı ekle"
 
 msgid "Add mail account"
-msgstr ""
+msgstr "Posta hesabı ekle"
 
 msgid "Add new IP address"
 msgstr "Yeni IP adresi ekle"
@@ -1245,6 +1245,11 @@ msgstr ""
 
 #, php-format
 msgid "Couldn't find domain properties for customer with ID %d."
+msgstr ""
+
+msgid ""
+"Couldn't get update information from Github. Consult the admin logs for more"
+" details."
 msgstr ""
 
 #, php-format
@@ -2546,9 +2551,6 @@ msgstr "Geçersiz menü sırası."
 msgid "Invalid name."
 msgstr "Geçersiz isim."
 
-msgid "Invalid payload received from GitHub"
-msgstr "GitHub'tan alınan veri geçersiz."
-
 msgid "Invalid phone."
 msgstr ""
 
@@ -3085,9 +3087,6 @@ msgid "Only positive numbers are allowed."
 msgstr ""
 
 msgid "Only tar.gz and tar.bz2 archives are supported."
-msgstr ""
-
-msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
 msgid "Open ticket"
@@ -4293,13 +4292,13 @@ msgid "Subject"
 msgstr "Konu"
 
 msgid "Subject is missing."
-msgstr ""
+msgstr "Konu eksik."
 
 msgid "Submit changes"
 msgstr "Değişiklikleri onayla"
 
 msgid "Support"
-msgstr ""
+msgstr "Destek"
 
 msgid "Support system"
 msgstr "Destek sistemi"
@@ -4311,7 +4310,7 @@ msgid "Switch"
 msgstr "Oturum Aç"
 
 msgid "Switch to the backups directory"
-msgstr ""
+msgstr "Yedekleme dizinine geç"
 
 msgid "Switch to user interface"
 msgstr "Kullanıcı arayüzüne geç"
@@ -4323,19 +4322,19 @@ msgid "System"
 msgstr "Sistem"
 
 msgid "System data"
-msgstr ""
+msgstr "Sistem verileri"
 
 msgid "System error - custom error page was not updated."
-msgstr ""
+msgstr "Sistem hatası - özel hata sayfası güncellenemedi."
 
 msgid "System information"
-msgstr ""
+msgstr "Sistem bilgisi"
 
 msgid "System tools"
 msgstr "Sistem araçları"
 
 msgid "System under maintenance"
-msgstr ""
+msgstr "Sistem bakımda"
 
 msgid "TB"
 msgstr "TB"
@@ -4344,7 +4343,7 @@ msgid "TTL"
 msgstr "TTL"
 
 msgid "Target"
-msgstr ""
+msgstr "Hedef"
 
 msgid "Target domain"
 msgstr ""
@@ -4353,10 +4352,10 @@ msgid "Target port"
 msgstr "Hedef port"
 
 msgid "Target port must be a number."
-msgstr ""
+msgstr "Hedef bağlantı noktası bir numara olmalıdır."
 
 msgid "Temporary folder not found."
-msgstr ""
+msgstr "Geçici klasör bulunamadı."
 
 #, php-format
 msgid "The %s field cannot be empty."
@@ -4527,13 +4526,13 @@ msgid "The street 2 name must be between %d and %d characters."
 msgstr ""
 
 msgid "The uploaded file was only partially uploaded."
-msgstr ""
+msgstr "Yüklenen dosya kısmen yüklendi."
 
 msgid "The username cannot be empty."
-msgstr ""
+msgstr "Kullanıcı adı boş olamaz."
 
 msgid "The username field is empty."
-msgstr ""
+msgstr "Kullanıcı adı alanı boş."
 
 #, php-format
 msgid "The username must be between %d and %d characters."
@@ -4546,7 +4545,7 @@ msgid "The value has not been found in the stack"
 msgstr ""
 
 msgid "The values must not be equal"
-msgstr ""
+msgstr "Değerler eşit olmamalıdır."
 
 #, php-format
 msgid "The zipcode must be between %d and %d characters."
@@ -4578,10 +4577,10 @@ msgid ""
 msgstr ""
 
 msgid "This htaccess group already exists."
-msgstr ""
+msgstr "Bu htaccess grubu zaten var."
 
 msgid "This htaccess user already exist."
-msgstr ""
+msgstr "Bu htaccess kullanıcı zaten var."
 
 msgid "This interface allow to add or remove IP addresses."
 msgstr ""
@@ -4630,16 +4629,16 @@ msgid "TiB"
 msgstr "TiB"
 
 msgid "Ticket information"
-msgstr ""
+msgstr "Talep bilgileri"
 
 msgid "Ticket successfully closed."
-msgstr ""
+msgstr "Talep başarıyla kapatıldı."
 
 msgid "Ticket successfully deleted."
-msgstr ""
+msgstr "Talep başarıyla silindi."
 
 msgid "Ticket successfully reopened."
-msgstr ""
+msgstr "Talep başarıyla yeniden açıldı."
 
 #, php-format
 msgid "Ticket with Id '%d' was not found."
@@ -4715,16 +4714,7 @@ msgstr ""
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr ""
 
-msgid "Unable to delete i-MSCP info file."
-msgstr ""
-
 msgid "Unable to get the IP address list. Please fix this problem."
-msgstr ""
-
-msgid "Unable to get update info from Github"
-msgstr ""
-
-msgid "Unable to load i-MSCP info file."
 msgstr ""
 
 msgid "Unable to move file."
@@ -4756,12 +4746,6 @@ msgstr ""
 msgid ""
 "Unable to schedule deletion of the customer account. Please consult admin "
 "logs or your mail for more information."
-msgstr ""
-
-msgid "Unable to set sslallowselfsigned option"
-msgstr ""
-
-msgid "Unable to set sslverifypeer option"
 msgstr ""
 
 #, php-format
@@ -4800,9 +4784,6 @@ msgstr ""
 
 msgid "Unknown"
 msgstr "Bilinmiyor"
-
-msgid "Unknown Error"
-msgstr "Bilinmeyen hata"
 
 #, php-format
 msgid "Unknown `%s' database. Database must exists."
@@ -5354,17 +5335,17 @@ msgid "You must select at least one plugin."
 msgstr ""
 
 msgid "You must select at least one reseller."
-msgstr ""
+msgstr "En az bir bayi seçmelisiniz."
 
 msgid "You must specify a message."
-msgstr ""
+msgstr "Bir mesaj belirtmelisiniz."
 
 msgid "You must specify a subject."
-msgstr ""
+msgstr "Bir konu belirtmelisiniz."
 
 #, php-format
 msgid "You must wait %s minutes before the next attempt."
-msgstr ""
+msgstr "Bir sonraki denemeden önce %s dakika beklemelisiniz."
 
 msgid ""
 "You should enable this directive only if all subdomains of this domain are "
@@ -5373,7 +5354,7 @@ msgid ""
 msgstr ""
 
 msgid "Your account has been disabled. Please, contact your reseller."
-msgstr ""
+msgstr "Hesabınız engellendi. Lütfen bayinize başvurun."
 
 msgid "Your account has expired. Please renew your subscription."
 msgstr ""
@@ -5416,20 +5397,24 @@ msgid ""
 "Your request for password renewal cannot be honored. Please retry in few "
 "minutes."
 msgstr ""
+"Şifre yenileme talebiniz geçerli değildir. Lütfen birkaç dakika içinde "
+"tekrar deneyin."
 
 msgid ""
 "Your request for password renewal has been registered. You will receive a "
 "mail with instructions to complete the process."
 msgstr ""
+"Şifre yenileme talebiniz kaydedildi. Süreci tamamlamak için talimatlar "
+"içeren bir posta alacaksınız."
 
 msgid "Your request for password renewal is either invalid or has expired."
-msgstr ""
+msgstr "Şifre yenileme isteğiniz geçersiz veya süresi doldu."
 
 msgid "Your software package has been activated"
-msgstr ""
+msgstr "Yazılım paketiniz etkinleştirildi"
 
 msgid "Your software package has been deleted"
-msgstr ""
+msgstr "Yazılım paketiniz silindi"
 
 msgid "ZB"
 msgstr "ZB"
@@ -5474,16 +5459,16 @@ msgid "catch-all"
 msgstr ""
 
 msgid "city"
-msgstr ""
+msgstr "şehir"
 
 msgid "company"
-msgstr ""
+msgstr "firma"
 
 msgid "country"
-msgstr ""
+msgstr "ülke"
 
 msgid "created by"
-msgstr ""
+msgstr "tarafından oluşturulmuş"
 
 msgid "deleting"
 msgstr "siliniyor"
@@ -5492,7 +5477,7 @@ msgid "disabled"
 msgstr "devre dışı"
 
 msgid "disk space"
-msgstr ""
+msgstr "disk alanı"
 
 msgid "domain"
 msgstr "Domain"
@@ -5513,13 +5498,13 @@ msgid "domains"
 msgstr "Domain"
 
 msgid "error"
-msgstr ""
+msgstr "hata"
 
 msgid "everything"
 msgstr "hepsi"
 
 msgid "first name"
-msgstr ""
+msgstr "isim"
 
 msgid "from other browser"
 msgstr ""
@@ -5558,13 +5543,13 @@ msgid "i-MSCP Web software repository"
 msgstr ""
 
 msgid "i-MSCP plugin store"
-msgstr ""
+msgstr "i-MSCP eklenti mağazası"
 
 msgid "i-MSCP updates"
 msgstr "i-MSCP güncellemeleri"
 
-msgid "i-MSCP version update checking is disabled"
-msgstr "i-MSCP sürüm kontrolü devre dışı"
+msgid "i-MSCP version update checking is disabled."
+msgstr "i-MSCP sürüm güncelleme denetimi devre dışı bırakıldı."
 
 msgid "installed"
 msgstr "kuruldu"
@@ -5582,13 +5567,13 @@ msgid "kiB"
 msgstr "kiB"
 
 msgid "last name"
-msgstr ""
+msgstr "soyadı"
 
 msgid "mail"
 msgstr "eposta"
 
 msgid "mail account"
-msgstr ""
+msgstr "posta hesabı"
 
 msgid "mail accounts"
 msgstr "eposta hesapları"
@@ -5612,7 +5597,7 @@ msgid "not required"
 msgstr "gerekli değil"
 
 msgid "ok"
-msgstr ""
+msgstr "tamam"
 
 msgid "older than 1 month"
 msgstr "1 aydan eski"
@@ -5640,10 +5625,10 @@ msgid "required"
 msgstr "gerekli"
 
 msgid "reseller name"
-msgstr ""
+msgstr "bayi adı"
 
 msgid "state/province"
-msgstr ""
+msgstr "eyalet/bölge"
 
 msgid "subdomain"
 msgstr "Subdomain"
@@ -5652,7 +5637,7 @@ msgid "subdomains"
 msgstr "Subdomain"
 
 msgid "suspended"
-msgstr ""
+msgstr "askıya alındı"
 
 msgid "that match with"
 msgstr ""
@@ -5670,7 +5655,7 @@ msgid "update"
 msgstr "güncelle"
 
 msgid "waiting for activation"
-msgstr ""
+msgstr "Aktivasyon bekleniyor"
 
 msgid "which status is"
 msgstr ""
@@ -5679,7 +5664,7 @@ msgid "yes"
 msgstr "evet"
 
 msgid "{USERNAME} user statistics"
-msgstr ""
+msgstr "{USERNAME} kullanıcı istatistikleri"
 
 msgid "© 2010-2017 i-MSCP Team<br>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2017 i-MSCP Ekibi<br>Her hakkı saklıdır"

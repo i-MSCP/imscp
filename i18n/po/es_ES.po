@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR i-MSCP Team - All rights reserved
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the i-MSCP package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 #, fuzzy
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-10-01 16:38+0000\n"
+"POT-Creation-Date: 2017-10-27 22:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: kurgans <bongostudio@gmail.com>, 2017\n"
 "Language-Team: Spanish (Spain) (https://www.transifex.com/i-mscp/teams/576/es_ES/)\n"
@@ -77,12 +77,12 @@ msgid "%s account successfully deleted."
 msgstr "La cuenta %s ha sido eliminada correctamente."
 
 #, php-format
-msgid "%s doens't look like an i-MSCP plugin archive."
-msgstr "%s no parece ser un archivo de Plugin i-MSCP."
-
-#, php-format
 msgid "%s doesn't exist or is empty."
 msgstr "%s no existe o esta vacío"
+
+#, php-format
+msgid "%s doesn't look like an i-MSCP plugin archive."
+msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -1308,6 +1308,11 @@ msgstr ""
 
 #, php-format
 msgid "Couldn't find domain properties for customer with ID %d."
+msgstr ""
+
+msgid ""
+"Couldn't get update information from Github. Consult the admin logs for more"
+" details."
 msgstr ""
 
 #, php-format
@@ -2778,9 +2783,6 @@ msgstr "Orden de menú inválido."
 msgid "Invalid name."
 msgstr "Nombre inválido."
 
-msgid "Invalid payload received from GitHub"
-msgstr "Payload invalido recibido desde GitHub"
-
 msgid "Invalid phone."
 msgstr "Teléfono incorrecto."
 
@@ -3341,9 +3343,6 @@ msgstr "Solo se admiten números positivos."
 
 msgid "Only tar.gz and tar.bz2 archives are supported."
 msgstr "Solamente los archivos tar.gz y tar.bz2 son soportados."
-
-msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
-msgstr "Sólo tar.gz, tar.bz2 y archivos zip son aceptados."
 
 msgid "Open ticket"
 msgstr "Abrir tiquet"
@@ -5046,19 +5045,10 @@ msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr ""
 "Imposible crear el directorio 'LC_MESSAGES' para el fichero de idioma."
 
-msgid "Unable to delete i-MSCP info file."
-msgstr "No se pudo eliminar el archivo info de i-MSCP."
-
 msgid "Unable to get the IP address list. Please fix this problem."
 msgstr ""
 "No se puede obtener la lista de direcciones IP. Por favor, corrige este "
 "problema."
-
-msgid "Unable to get update info from Github"
-msgstr "No se ha podido obtener información para actualizar desde Github"
-
-msgid "Unable to load i-MSCP info file."
-msgstr "No se pudo cargar el archivo info de i-MSCP"
 
 msgid "Unable to move file."
 msgstr "No se puede mover el fichero."
@@ -5097,12 +5087,6 @@ msgstr ""
 "No se puede programar la eliminación de la cuenta del cliente. Por favor, "
 "consulte los logs de administración o su correo para obtener más "
 "información."
-
-msgid "Unable to set sslallowselfsigned option"
-msgstr "No se pudo establecer la opción sslallowselfsigned"
-
-msgid "Unable to set sslverifypeer option"
-msgstr "No se pudo establecer la opción sslverifypeer"
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
@@ -5144,9 +5128,6 @@ msgstr "Desinstalado"
 
 msgid "Unknown"
 msgstr "Desconocido"
-
-msgid "Unknown Error"
-msgstr "Error desconocido"
 
 #, php-format
 msgid "Unknown `%s' database. Database must exists."
@@ -5948,10 +5929,8 @@ msgstr "Tienda de plugins de i-MSCP"
 msgid "i-MSCP updates"
 msgstr "Actualizaciones de i-MSCP"
 
-msgid "i-MSCP version update checking is disabled"
+msgid "i-MSCP version update checking is disabled."
 msgstr ""
-"La comprobación de actualizaciones de la versión de i-MSCP esta "
-"deshabilitada"
 
 msgid "installed"
 msgstr "instalado"

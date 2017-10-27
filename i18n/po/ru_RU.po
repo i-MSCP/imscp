@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR i-MSCP Team - All rights reserved
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the i-MSCP package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 #, fuzzy
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-10-01 16:38+0000\n"
+"POT-Creation-Date: 2017-10-27 22:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Oleg Olegov <>, 2017\n"
 "Language-Team: Russian (Russia) (https://www.transifex.com/i-mscp/teams/576/ru_RU/)\n"
@@ -81,12 +81,12 @@ msgid "%s account successfully deleted."
 msgstr "%s учетная запись успешно удалена."
 
 #, php-format
-msgid "%s doens't look like an i-MSCP plugin archive."
-msgstr "%s не является архивом плагина i-MSCP."
-
-#, php-format
 msgid "%s doesn't exist or is empty."
 msgstr "%s не существует или пуст"
+
+#, php-format
+msgid "%s doesn't look like an i-MSCP plugin archive."
+msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -1292,6 +1292,13 @@ msgstr "Невозможно удалить поддомен. Произошла
 #, php-format
 msgid "Couldn't find domain properties for customer with ID %d."
 msgstr "Параметров домена пользователя с ID %d не найдено."
+
+msgid ""
+"Couldn't get update information from Github. Consult the admin logs for more"
+" details."
+msgstr ""
+"Не удалось получить информацию об обновлениях с Github-а. Пожалуйста, "
+"проверьте административные журналы, чтобы получить больше информации."
 
 #, php-format
 msgid "Couldn't move customer with ID %d: %s"
@@ -2759,9 +2766,6 @@ msgstr "Неверный заказ меню."
 msgid "Invalid name."
 msgstr "Неверное имя."
 
-msgid "Invalid payload received from GitHub"
-msgstr "Неверный запрос получен из GitHub"
-
 msgid "Invalid phone."
 msgstr "Неверный номер телефона."
 
@@ -3315,9 +3319,6 @@ msgstr "Разрешены только положительные числа"
 
 msgid "Only tar.gz and tar.bz2 archives are supported."
 msgstr "Поддерживаются только архивы tar.gz и tar.bz2"
-
-msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
-msgstr "Поддерживаются только tar.gz, tar.bz2 и zip архивы."
 
 msgid "Open ticket"
 msgstr "Открыть тикет"
@@ -5002,17 +5003,8 @@ msgstr "Невозможно создать каталог '%s' для язык�
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "Невозможно создать каталог 'LC_MESSAGES' для языкового файла."
 
-msgid "Unable to delete i-MSCP info file."
-msgstr "Невозможно удалить файл информации i-MSCP."
-
 msgid "Unable to get the IP address list. Please fix this problem."
 msgstr "Невозможно создать список IP адресов. Пожалуйста, исправьте проблему."
-
-msgid "Unable to get update info from Github"
-msgstr "Невозможно получить информацию об обновлении из Github"
-
-msgid "Unable to load i-MSCP info file."
-msgstr "Невозможно загрузить файл информации i-MSCP."
 
 msgid "Unable to move file."
 msgstr "Не удалось переместить файл."
@@ -5049,12 +5041,6 @@ msgid ""
 msgstr ""
 "Не удается удалить учетную запись клиента. Пожалуйста, просмотрите журнал "
 "администратора или почту для получения дополнительной информации."
-
-msgid "Unable to set sslallowselfsigned option"
-msgstr "Невозможно включить опцию sslallowselfsigned"
-
-msgid "Unable to set sslverifypeer option"
-msgstr "Невозможно включить опцию sslverifypeer"
 
 #, php-format
 msgid "Unable to upload file. Max. upload filesize (%1$d MB) reached?"
@@ -5096,9 +5082,6 @@ msgstr "Удалено"
 
 msgid "Unknown"
 msgstr "Неизвестно"
-
-msgid "Unknown Error"
-msgstr "Неизвестная ошибка"
 
 #, php-format
 msgid "Unknown `%s' database. Database must exists."
@@ -5926,7 +5909,7 @@ msgstr "магазин плагинов i-MSCP "
 msgid "i-MSCP updates"
 msgstr "Обновления i-MSCP"
 
-msgid "i-MSCP version update checking is disabled"
+msgid "i-MSCP version update checking is disabled."
 msgstr "Проверка обновлений отключена!"
 
 msgid "installed"

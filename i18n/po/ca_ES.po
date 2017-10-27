@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR i-MSCP Team - All rights reserved
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the i-MSCP package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 #, fuzzy
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-10-01 16:38+0000\n"
+"POT-Creation-Date: 2017-10-27 22:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Sagi Roca <sagi@canbasis.com>, 2017\n"
 "Language-Team: Catalan (Spain) (https://www.transifex.com/i-mscp/teams/576/ca_ES/)\n"
@@ -79,12 +79,12 @@ msgid "%s account successfully deleted."
 msgstr "compte %s eliminat correctament."
 
 #, php-format
-msgid "%s doens't look like an i-MSCP plugin archive."
-msgstr "%s no sembla un repositori de plugins d'i-MSCP."
-
-#, php-format
 msgid "%s doesn't exist or is empty."
 msgstr "%s no existeix o és buit."
+
+#, php-format
+msgid "%s doesn't look like an i-MSCP plugin archive."
+msgstr ""
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -1260,6 +1260,11 @@ msgstr ""
 
 #, php-format
 msgid "Couldn't find domain properties for customer with ID %d."
+msgstr ""
+
+msgid ""
+"Couldn't get update information from Github. Consult the admin logs for more"
+" details."
 msgstr ""
 
 #, php-format
@@ -2559,9 +2564,6 @@ msgstr "L'ordre dels menús no és vàlid."
 msgid "Invalid name."
 msgstr "Nom incorrecte."
 
-msgid "Invalid payload received from GitHub"
-msgstr ""
-
 msgid "Invalid phone."
 msgstr ""
 
@@ -3107,9 +3109,6 @@ msgid "Only positive numbers are allowed."
 msgstr "Només s'accepten nombres positius."
 
 msgid "Only tar.gz and tar.bz2 archives are supported."
-msgstr ""
-
-msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr ""
 
 msgid "Open ticket"
@@ -4753,16 +4752,7 @@ msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr ""
 "No s'ha pogut crear el directori 'LC_MESSAGES' per el fitxer d'idioma."
 
-msgid "Unable to delete i-MSCP info file."
-msgstr ""
-
 msgid "Unable to get the IP address list. Please fix this problem."
-msgstr ""
-
-msgid "Unable to get update info from Github"
-msgstr ""
-
-msgid "Unable to load i-MSCP info file."
 msgstr ""
 
 msgid "Unable to move file."
@@ -4794,12 +4784,6 @@ msgstr ""
 msgid ""
 "Unable to schedule deletion of the customer account. Please consult admin "
 "logs or your mail for more information."
-msgstr ""
-
-msgid "Unable to set sslallowselfsigned option"
-msgstr ""
-
-msgid "Unable to set sslverifypeer option"
 msgstr ""
 
 #, php-format
@@ -4838,9 +4822,6 @@ msgstr ""
 
 msgid "Unknown"
 msgstr "Desconegut"
-
-msgid "Unknown Error"
-msgstr "Error desconegut"
 
 #, php-format
 msgid "Unknown `%s' database. Database must exists."
@@ -5606,7 +5587,7 @@ msgstr ""
 msgid "i-MSCP updates"
 msgstr "Actualitzacions i-MSCP"
 
-msgid "i-MSCP version update checking is disabled"
+msgid "i-MSCP version update checking is disabled."
 msgstr ""
 
 msgid "installed"
