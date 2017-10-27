@@ -18,7 +18,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use \iMSCP\Update\UpdateVersion;
+use iMSCP\Update\UpdateVersion;
+use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -53,8 +57,8 @@ function admin_generateSupportQuestionsMessage()
  */
 function admin_generateUpdateMessages()
 {
-    if (!iMSCP_Registry::get('config')['CHECK_FOR_UPDATES']
-        || stripos(iMSCP_Registry::get('config')['Version'], 'git') !== false
+    if (!Registry::get('config')['CHECK_FOR_UPDATES']
+        || stripos(Registry::get('config')['Version'], 'git') !== false
     ) {
         return;
     }
@@ -71,7 +75,7 @@ function admin_generateUpdateMessages()
 /**
  * Generates admin general informations
  *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
+ * @param TemplateEngine $tpl
  * @return void
  */
 function admin_getAdminGeneralInfo($tpl)
@@ -84,7 +88,7 @@ function admin_getAdminGeneralInfo($tpl)
         'SUBDOMAINS'      => tohtml(get_subdomains_count()),
         'DOMAINS_ALIASES' => tohtml(get_domain_aliases_count()),
         'MAIL_ACCOUNTS'   => tohtml(get_mail_accounts_count())
-            . (!iMSCP_Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']
+            . (!Registry::get('config')['COUNT_DEFAULT_EMAIL_ADDRESSES']
                 ? ' (' . tohtml('Excl. default mail accounts') . ')' : ''
             ),
         'FTP_ACCOUNTS'    => tohtml(get_ftp_users_count()),
@@ -96,12 +100,12 @@ function admin_getAdminGeneralInfo($tpl)
 /**
  * Generates server traffic bar
  *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
+ * @param TemplateEngine $tpl
  * @return void
  */
 function admin_generateServerTrafficInfo($tpl)
 {
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
     $trafficLimitBytes = filter_digits($cfg['SERVER_TRAFFIC_LIMIT']) * 1048576;
     $trafficWarningBytes = filter_digits($cfg['SERVER_TRAFFIC_WARN']) * 1048576;
 
@@ -110,21 +114,14 @@ function admin_generateServerTrafficInfo($tpl)
     }
 
     // Get server traffic usage in bytes for the current month
-    $stmt = exec_query(
+    $trafficUsageBytes = $stmt = exec_query(
         '
-            SELECT IFNULL(SUM(bytes_in), 0) + IFNULL(SUM(bytes_out), 0) AS serverTrafficUsage
+            SELECT IFNULL(SUM(bytes_in), 0) + IFNULL(SUM(bytes_out), 0)
             FROM server_traffic
             WHERE traff_time BETWEEN ? AND ?
         ',
         [getFirstDayOfMonth(), getLastDayOfMonth()]
-    );
-
-    if ($stmt->rowCount()) {
-        $row = $stmt->fetch();
-        $trafficUsageBytes = $row['serverTrafficUsage'];
-    } else {
-        $trafficUsageBytes = 0;
-    }
+    )->fetchColumn();
 
     // Get traffic usage in percent
     $trafficUsagePercent = getPercentUsage($trafficUsageBytes, $trafficLimitBytes);
@@ -155,10 +152,10 @@ function admin_generateServerTrafficInfo($tpl)
 
 require 'imscp-lib.php';
 
-check_login('admin', iMSCP_Registry::get('config')['PREVENT_EXTERNAL_LOGIN_ADMIN']);
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+check_login('admin', Registry::get('config')['PREVENT_EXTERNAL_LOGIN_ADMIN']);
+EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                  => 'shared/layouts/ui.tpl',
     'page'                    => 'admin/index.tpl',
@@ -190,7 +187,7 @@ admin_generateServerTrafficInfo($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

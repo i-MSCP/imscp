@@ -20,6 +20,7 @@
 
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
@@ -78,7 +79,7 @@ function generateOrdersAliasesMessage()
 /**
  * Generates traffic usage bar
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @param int $trafficUsageBytes Current traffic usage
  * @param int $trafficLimitBytes Traffic max usage
  * @return void
@@ -99,7 +100,7 @@ function generateTrafficUsageBar($tpl, $trafficUsageBytes, $trafficLimitBytes)
 /**
  * Generates disk usage bar
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @param int $diskspaceUsageBytes Disk usage
  * @param int $diskspaceLimitBytes Max disk usage
  * @return void
@@ -120,7 +121,7 @@ function generateDiskUsageBar($tpl, $diskspaceUsageBytes, $diskspaceLimitBytes)
 /**
  * Generates page
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @param int $resellerId Reseller unique identifier
  * @param string $resellerName Reseller name
  * @return void
@@ -139,17 +140,41 @@ function generatePage($tpl, $resellerId, $resellerName)
     $sqlDatabasesCount = get_reseller_sql_databases_count($resellerId);
     $sqlUsersCount = get_reseller_sql_users_count($resellerId);
 
-    $totalConsumedMonthlyTraffic = exec_query(
-        '
-            SELECT IFNULL(SUM(dtraff_web), 0) + IFNULL(SUM(dtraff_ftp), 0) + IFNULL(SUM(dtraff_mail), 0) +
-                IFNULL(SUM(dtraff_pop), 0) AS monthly_traffic
-            FROM domain AS t1
-            JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
-            JOIN domain_traffic AS t3 ON(t3.domain_id = t1.domain_id AND t3.dtraff_time BETWEEN ? AND ?)
-            WHERE created_by = ?
-        ',
-        [getFirstDayOfMonth(), getLastDayOfMonth(), $_SESSION['user_id']]
-    )->fetchColumn();
+    $domainIds = exec_query(
+        'SELECT domain_id FROM domain JOIN admin ON(admin_id = domain_admin_id) WHERE created_by = ?',
+        [$_SESSION['user_id']]
+    )->fetchAll(PDO::FETCH_COLUMN);
+
+    $totalConsumedMonthlyTraffic = 0;
+
+    if (!empty($domainIds)) {
+        $firstDayOfMonth = getFirstDayOfMonth();
+        $lastDayOfMonth = getLastDayOfMonth();
+
+        /** @var \iMSCP\Database\ResultSet $stmt */
+        $stmt = Registry::get('iMSCP_Application')->getDatabase()->prepare(
+            '
+                SELECT
+                    IFNULL(SUM(dtraff_web), 0) +
+                    IFNULL(SUM(dtraff_ftp), 0) +
+                    IFNULL(SUM(dtraff_mail), 0) +
+                    IFNULL(SUM(dtraff_pop), 0)
+                FROM domain_traffic
+                WHERE domain_id = ?
+                AND dtraff_time BETWEEN ? AND ?
+            '
+        );
+        $stmt->bindParam(1, $domainId);
+        $stmt->bindParam(2, $firstDayOfMonth);
+        $stmt->bindParam(3, $lastDayOfMonth);
+
+        /** @noinspection PhpUnusedLocalVariableInspection $domainId */
+        foreach ($domainIds as $domainId) {
+            $stmt->execute();
+            $totalConsumedMonthlyTraffic += $stmt->fetchColumn();
+        }
+    }
+
     $monthlyTrafficLimit = $resellerProperties['max_traff_amnt'] * 1048576;
 
     generateTrafficUsageBar($tpl, $totalConsumedMonthlyTraffic, $monthlyTrafficLimit);
@@ -239,7 +264,7 @@ require 'imscp-lib.php';
 check_login('reseller', Registry::get('config')['PREVENT_EXTERNAL_LOGIN_RESELLER']);
 EventsManager::getInstance()->dispatch(Events::onResellerScriptStart);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                  => 'shared/layouts/ui.tpl',
     'page'                    => 'reseller/index.tpl',
