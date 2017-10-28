@@ -474,7 +474,7 @@ sub _buildConf
         }
 
         $fileContent = replaceBloc(
-            qr/(:?^\n)?# Servers::po::courier::installer - BEGIN\n/m,
+            qr/(?:^\n)?# Servers::po::courier::installer - BEGIN\n/m,
             qr/# Servers::po::courier::installer - ENDING\n/,
             '',
             $fileContent

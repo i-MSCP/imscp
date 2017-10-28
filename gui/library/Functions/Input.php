@@ -212,7 +212,7 @@ function checkPasswordSyntax($password, $unallowedChars = '/[^\x21-\x7e]/', $noE
  */
 function validates_username($username, $min_char = 2, $max_char = 30)
 {
-    $pattern = '@^[[:alnum:]](:?(?<![-_])(:?-*|[_.])?(?![-_])[[:alnum:]]*)*?(?<![-_.])$@';
+    $pattern = '@^[[:alnum:]](?:(?<![-_])(?:-*|[_.])?(?![-_])[[:alnum:]]*)*?(?<![-_.])$@';
     return (bool)(preg_match($pattern, $username) && strlen($username) >= $min_char && strlen($username) <= $max_char);
 }
 
@@ -371,7 +371,7 @@ function getUserLoginDataForm($usernameRequired = true, $passwordRequired = true
         'admin_name'              => ['text', [
             'validators' => [
                 ['NotEmpty', true, ['type' => 'string', 'messages' => tr('The username cannot be empty.')]],
-                ['Regex', true, '/^[[:alnum:]](:?(?<![-_])(:?-*|[_.])?(?![-_])[[:alnum:]]*)*?(?<![-_.])$/', 'messages' => tr('Invalid username.')],
+                ['Regex', true, '/^[[:alnum:]](?:(?<![-_])(?:-*|[_.])?(?![-_])[[:alnum:]]*)*?(?<![-_.])$/', 'messages' => tr('Invalid username.')],
                 ['StringLength', true, ['min' => 2, 'max' => 30, 'messages' => tr('The username must be between %d and %d characters.', 2, 30)]],
                 ['Callback', true, [
                     function ($username) {
