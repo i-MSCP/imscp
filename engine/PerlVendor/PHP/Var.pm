@@ -168,7 +168,7 @@ sub _dump
             }
             $str .= "$cur_indent$arr_end";
         } else {
-            $str .= "$arr_start$nl$arr_end";
+            $str .= "$arr_start$arr_end";
         }
     } elsif ( ref $obj eq 'ARRAY' ) {
         if ( @{$obj} ) {
@@ -178,7 +178,7 @@ sub _dump
             }
             $str .= $arr_end;
         } else {
-            $str .= "$arr_start$nl$arr_end";
+            $str .= "$arr_start$arr_end";
         }
     } elsif ( ref $obj eq 'SCALAR' ) {
         ${$obj} =~ s/\\/\\\\/go;
