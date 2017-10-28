@@ -9,6 +9,7 @@ our @EXPORT_OK = qw( export );
 
 our $Purity = 0;
 our $Enclose = 0;
+our $ShortArraySyntax = 0;
 
 =head1 NAME
 
@@ -20,8 +21,7 @@ Version 0.022
 
 =cut
 
-our $VERSION = '0.022';
-
+our $VERSION = '0.023';
 
 =head1 SYNOPSIS
 
@@ -94,93 +94,101 @@ When this variable is set, the expression is enclosed with '<?php' and  '?>' in 
         # array('foo'=>'1','bar'=>'2',);
         # ?>
     }
+=head2 $PHP::Var::ShortArraySyntax
+
+When this variable is set, the expression make use of short array syntax in default.
+
+    {
+        local $PHP::Var::ShortArraySyntax = 1;
+        export($var);
+        # ['foo'=>'1','bar'=>'2',];
+    }
 
 =cut
 
-sub export {
+sub export
+{
     my %opts = (
-        purity => $Purity,
+        purity  => $Purity,
         enclose => $Enclose,
+        short   => $ShortArraySyntax
     );
 
     my @exports = ();
-    for (my $i = 0; $i < scalar(@_); $i++) {
-        if (
-            (! ref($_[$i])) && (! ref($_[$i+1]))
-        ) {
+    for ( my $i = 0; $i < scalar( @_ ); $i++ ) {
+        if ( ( !ref( $_[$i] ) ) && ( !ref( $_[$i+1] ) ) ) {
             $opts{$_[$i]} = $_[$i+1];
             $i++;
-        }
-        else {
+        } else {
             my $key = undef;
-            if (! ref $_[$i]) {
+            if ( !ref $_[$i] ) {
                 $key = $_[$i];
                 $i++;
             }
-            push(@exports, $key, $_[$i]);
+            push( @exports, $key, $_[$i] );
         }
     }
 
     my $str = '';
-    for (my $i = 0; $i < scalar(@exports); $i += 2) {
-        $str .= &_dump($exports[$i+1], $exports[$i], $opts{purity}, 0) . ';';
+    for ( my $i = 0; $i < scalar( @exports ); $i += 2 ) {
+        $str .= &_dump( $exports[$i+1], $exports[$i], $opts{'purity'}, $opts{'short'}, 0 ) . ';';
     }
 
-    if ($opts{enclose}) {
+    if ( $opts{'enclose'} ) {
         "<?php\n$str\n?>";
-    }
-    else {
+    } else {
         $str;
     }
 }
 
-sub _dump {
-    my ($obj, $key, $purity, $indent) = @_;
+sub _dump
+{
+    my ($obj, $key, $purity, $short, $indent) = @_;
 
     my $ind = $purity ? "\t" : '';
     my $spc = $purity ? ' ' : '';
-    my $nl  = $purity ? "\n" : '';
+    my $nl = $purity ? "\n" : '';
     my $cur_indent = $ind x $indent;
-
+    my $arr_start = $short ? '[' : 'array(';
+    my $arr_end = $short ? ']' : ')';
     my $str = '';
 
-    if ($key) {
+    if ( $key ) {
         $str .= '$' . $key . "$spc=$spc";
     }
 
-    if (ref $obj eq 'HASH') {
-        $str .= "array($nl";
-        foreach my $k (keys(%$obj)) {
-            $k =~ s/\\/\\\\/go;
-            $k =~ s/'/\\'/go;
-            $str .=
-                "$cur_indent$ind'" . $k . "'$spc=>$spc" .
-                    &_dump($obj->{$k}, undef, $purity, $indent+1) .
-                    ",$nl";
+    if ( ref $obj eq 'HASH' ) {
+        if ( %{$obj} ) {
+            $str .= "$arr_start$nl";
+            for my $k ( keys( %{$obj} ) ) {
+                $k =~ s/\\/\\\\/go;
+                $k =~ s/'/\\'/go;
+                $str .= "$cur_indent$ind'" . $k . "'$spc=>$spc"
+                    . &_dump( $obj->{$k}, undef, $purity, $short, $indent+1 ) . ",$nl";
+            }
+            $str .= "$cur_indent$arr_end";
+        } else {
+            $str .= "$arr_start$nl$arr_end";
         }
-        $str .= "$cur_indent)";
-    }
-    elsif (ref $obj eq 'ARRAY') {
-        $str .= "array($nl";
-        for (my $i = 0; $i < scalar(@$obj); $i++) {
-            $str .=
-                "$cur_indent$ind" .
-                    &_dump($obj->[$i], undef, $purity, $indent+1) .
-                    ",$nl";
+    } elsif ( ref $obj eq 'ARRAY' ) {
+        if ( @{$obj} ) {
+            $str .= "$arr_start$nl";
+            for ( my $i = 0; $i < scalar( @{$obj} ); $i++ ) {
+                $str .= "$cur_indent$ind" . &_dump( $obj->[$i], undef, $purity, $short, $indent+1 ) . ",$nl";
+            }
+            $str .= $arr_end;
+        } else {
+            $str .= "$arr_start$nl$arr_end";
         }
-        $str .= "$cur_indent)";
-    }
-    elsif (ref $obj eq 'SCALAR') {
-        $$obj =~ s/\\/\\\\/go;
-        $$obj =~ s/'/\\'/go;
-        $str .= "'$$obj'";
-    }
-    elsif (defined($obj)) {
+    } elsif ( ref $obj eq 'SCALAR' ) {
+        ${$obj} =~ s/\\/\\\\/go;
+        ${$obj} =~ s/'/\\'/go;
+        $str .= "'${$obj}'";
+    } elsif ( defined( $obj ) ) {
         $obj =~ s/\\/\\\\/go;
         $obj =~ s/'/\\'/go;
         $str .= "'$obj'";
-    }
-    else {
+    } else {
         $str .= "false";
     }
 
@@ -199,8 +207,8 @@ PHP::Var::export cannot export the blessed object as data that can be restored.
 
 =head1 AUTHOR
 
+Laurent Derclercq, C<< <l.declercq at nuxwin.com>  >>
 Taku Amano, C<< <taku at toi-planning.net> >>
-
 
 =head1 SEE ALSO
 
