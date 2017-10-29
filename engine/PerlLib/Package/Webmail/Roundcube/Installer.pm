@@ -203,7 +203,7 @@ sub setGuiPermissions
         $File::chmod::UMASK = 0; # Stick to system CHMOD(1) behavior
         find(
             sub {
-                return unless substr( $_, -3 ) eq '.sh';
+                return unless substr( $_, -3 ) eq '.sh' && !-l;
                 chmod( 'u+x', $_ ) or die(
                     sprintf( "Couldn't set executable bit on the %s file: %s", $File::Find::name, $! )
                 );
