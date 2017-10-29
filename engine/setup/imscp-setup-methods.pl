@@ -19,6 +19,7 @@
 
 use strict;
 use warnings;
+use File::Spec;
 use iMSCP::Bootstrapper;
 use iMSCP::Composer;
 use iMSCP::Database;
@@ -235,7 +236,7 @@ sub setupComposer
     my $composer = iMSCP::Composer->new();
     $composer->setStdRoutines(
         sub {
-            (my $line = $_[0]) =~ s/^\s+|\s+$//g;
+            ( my $line = $_[0] ) =~ s/^\s+|\s+$//g;
             return if $line eq '';
 
             step( undef, <<"EOT", 1, 1 );
@@ -252,6 +253,19 @@ EOT
     startDetail;
     $composer->installComposer( '/usr/local/bin', 'composer', '1.5.2' );
     endDetail;
+
+    # Create composer.phar compatibility symlink for backward compatibility with plugins
+    unless ( symlink(
+        File::Spec->abs2rel( '/usr/local/bin/composer', $main::imscpConfig{'IMSCP_HOMEDIR'} ),
+        "$main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar"
+    ) ) {
+        error( sprintf( "Couldn't create backward compatibility symlink for composer.phar: %s", $! ));
+        return 1;
+    }
+
+    iMSCP::File->new( filename => "$main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar" )->owner(
+        $main::imscpConfig{'IMSCP_USER'}, $main::imscpConfig{'IMSCP_GROUP'}
+    );
 }
 
 sub setupImportSqlSchema

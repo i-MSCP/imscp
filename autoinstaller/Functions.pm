@@ -791,7 +791,7 @@ sub _removeObsoleteFiles
         '/usr/local/lib/imscp_panel/imscp_panel_checkconf',
         '/usr/sbin/maillogconvert.pl'
     ) {
-        next unless -f;
+        next unless -l || -f _;
         my $rs = iMSCP::File->new( filename => $_ )->delFile();
         return $rs if $rs;
     }

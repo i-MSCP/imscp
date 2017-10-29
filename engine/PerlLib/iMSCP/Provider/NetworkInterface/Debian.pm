@@ -202,7 +202,7 @@ sub _updateInterfacesFile
 
     my $fileContent = $file->get();
     $fileContent = replaceBloc(
-        qr/^[\s]*# i-MSCP \[(?:.*\Q:$data->{'ip_id'}\E|\Q$cAddr\E)\] entry BEGIN\n/m,
+        qr/^\s*# i-MSCP \[(?:.*\Q:$data->{'ip_id'}\E|\Q$cAddr\E)\] entry BEGIN\n/m,
         qr/# i-MSCP \[(?:.*\Q:$data->{'ip_id'}\E|\Q$cAddr\E)\] entry ENDING\n/,
         '',
         $fileContent
