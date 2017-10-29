@@ -185,12 +185,16 @@ sub _dump
         ${$obj} =~ s/\\/\\\\/go;
         ${$obj} =~ s/'/\\'/go;
 
-        if ( JSON::is_bool( ${$obj} ) ) {
-            $str .= ${$obj} ? 'true' : 'false';
-        } elsif ( ${$obj} =~ /^-?(0|[1-9]\d{0,8})$/ ) {
-            $str .= ${$obj};
+        if ( defined ${$obj} ) {
+            if ( JSON::is_bool( ${$obj} ) ) {
+                $str .= ${$obj} ? 'true' : 'false';
+            } elsif ( ${$obj} =~ /^-?(0|[1-9]\d{0,8})$/ ) {
+                $str .= ${$obj};
+            } else {
+                $str .= "'${$obj}'";
+            }
         } else {
-            $str .= "'${$obj}'";
+            $str .= 'null';
         }
     } elsif ( defined( $obj ) ) {
         $obj =~ s/\\/\\\\/go;
