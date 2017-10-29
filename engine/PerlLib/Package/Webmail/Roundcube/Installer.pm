@@ -204,7 +204,6 @@ sub setGuiPermissions
         find(
             sub {
                 return unless substr( $_, -3 ) eq '.sh';
-                debug( sprintf( 'Setting executable bit on the %s file', $File::Find::name ));
                 chmod( 'u+x', $_ ) or die(
                     sprintf( "Couldn't set executable bit on the %s file: %s", $File::Find::name, $! )
                 );
