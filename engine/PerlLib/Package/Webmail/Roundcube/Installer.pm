@@ -36,7 +36,7 @@ use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Rights;
