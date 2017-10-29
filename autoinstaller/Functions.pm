@@ -27,7 +27,7 @@ use strict;
 use warnings;
 use autouse 'iMSCP::Stepper' => qw/ step /;
 use File::Basename;
-use File::Find;
+use File::Find qw/ find /;
 use iMSCP::Bootstrapper;
 use iMSCP::Config;
 use iMSCP::Cwd;
@@ -191,7 +191,7 @@ sub build
     find(
         sub {
             return unless $_ eq '.gitkeep';
-            unlink or fatal( sprintf( "Couldn't remove %s file: %s", $File::Find::name, $! ));
+            unlink or die( sprintf( "Couldn't remove %s file: %s", $File::Find::name, $! ));
         },
         $main::{'INST_PREF'}
     );
@@ -813,7 +813,7 @@ sub _processXmlInstallFile
     my ($installFilePath) = @_;
 
     eval "use XML::Simple; 1";
-    fatal( "Couldn't load the XML::Simple perl module" ) if $@;
+    die( sprintf( "Couldn't load the XML::Simple perl module: %s", $@ ) ) if $@;
     my $xml = XML::Simple->new( ForceArray => 1, ForceContent => 1 );
     my $node = eval { $xml->XMLin( $installFilePath, VarAttr => 'export' ) };
     if ( $@ ) {

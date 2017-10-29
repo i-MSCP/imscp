@@ -26,6 +26,8 @@ package Package::Webmail::Roundcube::Installer;
 use strict;
 use warnings;
 use File::Basename;
+use File::chmod qw/ chmod /;
+use File::Find qw/ find /;
 use iMSCP::Composer;
 use iMSCP::Config;
 use iMSCP::Crypt qw/ randomStr /;
@@ -194,24 +196,28 @@ sub install
 
 sub setGuiPermissions
 {
-    my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
+    return 0 unless -d "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
 
-    return 0 unless -d "$guiPublicDir/tools/webmail";
+    # Set executable bit on *.sh scripts
+    eval {
+        $File::chmod::UMASK = 0; # Stick to system CHMOD(1) behavior
+        find(
+            sub {
+                return unless substr( $_, -3 ) eq '.sh';
+                debug( sprintf( 'Setting executable bit on the %s file', $File::Find::name ));
+                chmod( 'u+x', $_ ) or die(
+                    sprintf( "Couldn't set executable bit on the %s file: %s", $File::Find::name, $! )
+                );
+            },
+            "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail",
+        );
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
 
-    my $rs ||= setRights(
-        "$guiPublicDir/tools/webmail/bin",
-        {
-            filemode  => '0700',
-            recursive => 1
-        }
-    );
-    $rs ||= setRights(
-        "$guiPublicDir/tools/webmail/vendor/bin",
-        {
-            filemode  => '0700',
-            recursive => 1
-        }
-    );
+    0;
 }
 
 =back

@@ -42,7 +42,7 @@ no warnings qw / portable /;
         require 'sys/syscall.ph';
         1
     };
-    fatal( sprintf( "Couldn't load required Perl header files to perform syscalls: %s", $@ )) if $@;
+    die( sprintf( "Couldn't load required Perl header files to perform syscalls: %s", $@ ) ) if $@;
     # We need to force unload to not disturb other modules
     $unload->();
 }
