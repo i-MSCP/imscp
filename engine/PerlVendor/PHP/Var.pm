@@ -188,7 +188,7 @@ sub _dump
         if ( JSON::is_bool( ${$obj} ) ) {
             $str .= ${$obj} ? 'true' : 'false';
         } elsif ( ${$obj} =~ /^-?(0|[1-9]\d{0,8})$/ ) {
-            $str .= "${$obj}";
+            $str .= ${$obj};
         } else {
             $str .= "'${$obj}'";
         }
@@ -199,7 +199,7 @@ sub _dump
         if ( JSON::is_bool( $obj ) ) {
             $str .= $obj == $obj ? 'true' : 'false';
         } elsif ( $obj =~ /^-?(0|[1-9]\d{0,8})$/ ) {
-            $str .= "$obj";
+            $str .= $obj;
         } else {
             $str .= "'$obj'";
         }
