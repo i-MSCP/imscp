@@ -208,7 +208,7 @@ sub setGuiPermissions
                     sprintf( "Couldn't set executable bit on the %s file: %s", $File::Find::name, $! )
                 );
             },
-            "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail",
+            "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail"
         );
     };
     if ( $@ ) {
