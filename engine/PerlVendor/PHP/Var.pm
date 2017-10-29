@@ -3,6 +3,7 @@ package PHP::Var;
 use warnings;
 use strict;
 
+use JSON;
 use Exporter;
 use base qw( Exporter );
 our @EXPORT_OK = qw( export );
@@ -52,20 +53,20 @@ our $VERSION = '0.023';
     $var = {foo => 1, bar => 2};
 
     export($var);
-    # array('foo'=>'1','bar'=>'2',);
+    # array('foo'=>1,'bar'=>2,);
 
     export('name' => $var);
-    # $name=array('foo'=>'1','bar'=>'2',);
+    # $name=array('foo'=>1,'bar'=>2,);
 
     export($var, enclose => 1);
     # <?php
-    # array('foo'=>'1','bar'=>'2',);
+    # array('foo'=>1,'bar'=>2,);
     # ?>
 
     export($var, purity => 1);
     # array(
-    #    'foo' => '1',
-    #    'bar' => '2',
+    #    'foo' => 1,
+    #    'bar' => 2,
     # );
 
 =head1 Configuration Variables
@@ -78,8 +79,8 @@ When this variable is set, the expression becomes a Pretty print in default.
         local $PHP::Var::Purity = 1;
         export($var);
         # array(
-        #    'foo' => '1',
-        #    'bar' => '2',
+        #    'foo' => 1,
+        #    'bar' => 2,
         # );
     }
 
@@ -91,7 +92,7 @@ When this variable is set, the expression is enclosed with '<?php' and  '?>' in 
         local $PHP::Var::Enclose = 1;
         export($var);
         # <?php
-        # array('foo'=>'1','bar'=>'2',);
+        # array('foo'=>1,'bar'=>2,);
         # ?>
     }
 =head2 $PHP::Var::ShortArraySyntax
@@ -101,7 +102,7 @@ When this variable is set, the expression make use of short array syntax in defa
     {
         local $PHP::Var::ShortArraySyntax = 1;
         export($var);
-        # ['foo'=>'1','bar'=>'2',];
+        # ['foo'=>1,'bar'=>2,];
     }
 
 =cut
@@ -176,20 +177,34 @@ sub _dump
             for ( my $i = 0; $i < scalar( @{$obj} ); $i++ ) {
                 $str .= "$cur_indent$ind" . &_dump( $obj->[$i], undef, $purity, $short, $indent+1 ) . ",$nl";
             }
-            $str .= $arr_end;
+            $str .= "$cur_indent$arr_end";
         } else {
             $str .= "$arr_start$arr_end";
         }
     } elsif ( ref $obj eq 'SCALAR' ) {
         ${$obj} =~ s/\\/\\\\/go;
         ${$obj} =~ s/'/\\'/go;
-        $str .= "'${$obj}'";
+
+        if ( JSON::is_bool( ${$obj} ) ) {
+            $str .= ${$obj} ? 'true' : 'false';
+        } elsif ( ${$obj} =~ /^-?(0|[1-9]\d{0,8})$/ ) {
+            $str .= "${$obj}";
+        } else {
+            $str .= "'${$obj}'";
+        }
     } elsif ( defined( $obj ) ) {
         $obj =~ s/\\/\\\\/go;
         $obj =~ s/'/\\'/go;
-        $str .= "'$obj'";
+
+        if ( JSON::is_bool( $obj ) ) {
+            $str .= $obj == $obj ? 'true' : 'false';
+        } elsif ( $obj =~ /^-?(0|[1-9]\d{0,8})$/ ) {
+            $str .= "$obj";
+        } else {
+            $str .= "'$obj'";
+        }
     } else {
-        $str .= "false";
+        $str .= 'null';
     }
 
     $str;
@@ -220,7 +235,6 @@ L<PHP::Session::Serializer::PHP>
 You can find documentation for this module with the perldoc command.
 
     perldoc PHP::Var
-
 
 =head1 COPYRIGHT & LICENSE
 
