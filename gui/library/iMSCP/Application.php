@@ -20,6 +20,8 @@
 
 namespace iMSCP;
 
+use iMSCP\Loader\AutoloaderFactory;
+use iMSCP\Loader\StandardAutoloader;
 use iMSCP_Config_Handler_Db as ConfigDb;
 use iMSCP_Config_Handler_File as ConfigFile;
 use iMSCP_Database as Database;
@@ -31,7 +33,6 @@ use iMSCP_Exception_Handler as ExceptionHandler;
 use iMSCP_Plugin_Manager as PluginManager;
 use iMSCP_Registry as Registry;
 use Zend_Cache as Cache;
-use Zend_Loader_AutoloaderFactory as AutoloaderFactory;
 use Zend_Locale as Locale;
 use Zend_Session as Session;
 use Zend_Translate as Translator;
@@ -49,7 +50,7 @@ class Application
     protected $environment;
 
     /**
-     * @var \Zend_Loader_StandardAutoloader
+     * @var StandardAutoloader
      */
     protected $autoloader;
 
@@ -102,22 +103,25 @@ class Application
     {
         $this->environment = (string)$environment;
 
-        require_once 'Zend/Loader/AutoloaderFactory.php';
+        require_once __DIR__ . '/Loader/AutoloaderFactory.php';
+
+        # Create class alias for backward compatibility with plugins (Will be removed in a later release)
+        class_alias('iMSCP\Loader\AutoloaderFactory', 'Zend_Loader_AutoloaderFactory', false);
 
         AutoloaderFactory::factory([
             AutoloaderFactory::STANDARD_AUTOLOADER => [
-                'autoregister_zf'     => true,
                 'fallback_autoloader' => true,
                 'namespaces'          => [
-                    'iMSCP'           => LIBRARY_PATH . '/iMSCP',
-                    'Mso\IdnaConvert' => LIBRARY_PATH . '/vendor/idna_convert/src/Mso/IdnaConvert'
+                    'iMSCP\\'            => LIBRARY_PATH . '/iMSCP',
+                    'Mso\\IdnaConvert\\' => LIBRARY_PATH . '/vendor/idna-convert-1.1.0/src'
                 ],
                 'prefixes'            => [
                     'iMSCP' => LIBRARY_PATH . '/iMSCP',
                     'Crypt' => LIBRARY_PATH . '/vendor/phpseclib/Crypt',
                     'File'  => LIBRARY_PATH . '/vendor/phpseclib/File',
                     'Math'  => LIBRARY_PATH . '/vendor/phpseclib/Math',
-                    'Net'   => LIBRARY_PATH . '/vendor/Net'
+                    'Net'   => LIBRARY_PATH . '/vendor/Net',
+                    'Zend'  => LIBRARY_PATH . '/vendor/Zend/library/Zend'
                 ]
             ]
         ]);
@@ -129,7 +133,7 @@ class Application
     /**
      * Retrieve autoloader instance
      *
-     * @return \Zend_Loader_StandardAutoloader
+     * @return StandardAutoloader
      */
     public function getAutoloader()
     {
