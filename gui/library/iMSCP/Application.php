@@ -116,12 +116,12 @@ class Application
                     'Mso\\IdnaConvert\\' => LIBRARY_PATH . '/vendor/idna-convert-1.1.0/src'
                 ],
                 'prefixes'            => [
-                    'iMSCP' => LIBRARY_PATH . '/iMSCP',
-                    'Crypt' => LIBRARY_PATH . '/vendor/phpseclib/Crypt',
-                    'File'  => LIBRARY_PATH . '/vendor/phpseclib/File',
-                    'Math'  => LIBRARY_PATH . '/vendor/phpseclib/Math',
-                    'Net'   => LIBRARY_PATH . '/vendor/Net',
-                    'Zend'  => LIBRARY_PATH . '/vendor/Zend/library/Zend'
+                    'iMSCP_' => LIBRARY_PATH . '/iMSCP',
+                    'Crypt_' => LIBRARY_PATH . '/vendor/phpseclib/Crypt',
+                    'File_'  => LIBRARY_PATH . '/vendor/phpseclib/File',
+                    'Math_'  => LIBRARY_PATH . '/vendor/phpseclib/Math',
+                    'Net_'   => LIBRARY_PATH . '/vendor/Net',
+                    'Zend_'  => LIBRARY_PATH . '/vendor/Zend/library/Zend'
                 ]
             ]
         ]);

@@ -74,11 +74,11 @@ class StandardAutoloader implements SplAutoloader
      * <code>
      * [
      *     'namespaces' => [
-     *         'iMSCP'     => '/path/to/iMSCP/library',
-     *         'Doctrine' => '/path/to/Doctrine/library',
+     *         'iMSCP\\'     => '/path/to/iMSCP/library',
+     *         'Doctrine\\' => '/path/to/Doctrine/library',
      *     ],
      *     'prefixes' => [
-     *         'Zend'     => '/path/to/Zend/library',
+     *         'Zend_'     => '/path/to/Zend/library',
      *     ],
      *     'fallback_autoloader' => true,
      * ]
@@ -146,12 +146,13 @@ class StandardAutoloader implements SplAutoloader
      *
      * @param string $namespace
      * @param string $directory
+     * @return StandardAutoloader
      */
     public function registerNamespace($namespace, $directory)
     {
-        $namespace = trim($namespace, self::NS_SEPARATOR) . self::NS_SEPARATOR;
-        $baseDir = rtrim($directory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $this->namespaces[] = [$namespace, $baseDir];
+        $namespace = rtrim($namespace, self::NS_SEPARATOR) . self::NS_SEPARATOR;
+        $this->namespaces[$namespace] = $this->normalizeDirectory($directory);
+        return $this;
     }
 
     /**
@@ -312,7 +313,7 @@ class StandardAutoloader implements SplAutoloader
     {
         $class = ltrim($class, self::NS_SEPARATOR);
 
-        foreach ($this->namespaces as list($currentNamespace, $currentBaseDir)) {
+        foreach ($this->namespaces as $currentNamespace => $currentBaseDir) {
             if (0 === strpos($class, $currentNamespace)) {
                 $classWithoutPrefix = substr($class, strlen($currentNamespace));
                 $file = $currentBaseDir
