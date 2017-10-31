@@ -29,7 +29,7 @@
 
 package Listener::Named::Slave::Provisioning;
 
-our $VERSION = '1.0.1';
+our $VERSION = '1.0.2';
 
 use strict;
 use warnings;
@@ -132,10 +132,13 @@ EOF
 iMSCP::EventManager->getInstance()->register( 'afterFrontEndInstall', sub {
         my $fileContent = <<'EOF';
 <?php
+
+use iMSCP::Registry as Registry;
+
 require '../../library/imscp-lib.php';
-$config = iMSCP_Registry::get('config');
-if(iMSCP_Registry::isRegistered('bufferFilter')) {
-    $filter = iMSCP_Registry::get('bufferFilter');
+$config = Registry::get('config');
+if(Registry::isRegistered('bufferFilter')) {
+    $filter = Registry::get('bufferFilter');
     $filter->compressionInformation = false;
 }
 $masterDnsServerIp = $config['BASE_SERVER_PUBLIC_IP'];

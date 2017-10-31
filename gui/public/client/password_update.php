@@ -19,8 +19,7 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Main
@@ -28,10 +27,10 @@ use iMSCP_Events_Aggregator as EventsManager;
 
 require_once 'imscp-lib.php';
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptStart);
 require_once '../shared/password_update.php';
 $tpl->assign('TR_PAGE_TITLE', tohtml(tr('Client / Profile / Password')));
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 unsetMessages();

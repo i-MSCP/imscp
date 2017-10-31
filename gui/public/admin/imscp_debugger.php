@@ -25,6 +25,8 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -460,7 +462,7 @@ function debugger_getIpErrors($tpl)
 function debugger_getPluginItemErrors($tpl)
 {
     /** @var iMSCP_Plugin_Manager $pluginManager */
-    $pluginManager = iMSCP_Registry::get('iMSCP_Application')->getPluginManager();
+    $pluginManager = Registry::get('iMSCP_Application')->getPluginManager();
 
     /** @var iMSCP_Plugin[] $plugins */
     $plugins = $pluginManager->pluginGetLoaded();
@@ -504,7 +506,7 @@ function debugger_getPluginItemErrors($tpl)
 function debugger_changePluginItemStatus($pluginName, $table, $field, $itemId)
 {
     /** @var iMSCP_Plugin_Manager $pluginManager */
-    $pluginManager = iMSCP_Registry::get('iMSCP_Application')->getPluginManager();
+    $pluginManager = Registry::get('iMSCP_Application')->getPluginManager();
     if ($pluginManager->pluginIsLoaded($pluginName)) {
         $pluginManager->pluginGet($pluginName)->changeItemStatus($table, $field, $itemId);
         return true;
@@ -524,7 +526,7 @@ function debugger_changePluginItemStatus($pluginName, $table, $field, $itemId)
  */
 function debugger_countRequests($statusField = NULL, $tableName = NULL)
 {
-    if (null !== $statusField && null !== $tableName) {
+    if (NULL !== $statusField && NULL !== $tableName) {
         $statusField = quoteIdentifier($statusField);
         $tableName = quoteIdentifier($tableName);
         $stmt = execute_query(
@@ -541,7 +543,7 @@ function debugger_countRequests($statusField = NULL, $tableName = NULL)
     }
 
     /** @var iMSCP_Plugin[] $plugins */
-    $plugins = iMSCP_Registry::get('iMSCP_Application')->getPluginManager()->pluginGetLoaded();
+    $plugins = Registry::get('iMSCP_Application')->getPluginManager()->pluginGetLoaded();
     $nbRequests = 0;
 
     if (!empty($plugins)) {
@@ -561,10 +563,10 @@ function debugger_countRequests($statusField = NULL, $tableName = NULL)
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 /** @var iMSCP_Plugin_Manager $plugingManager */
-$plugingManager = iMSCP_Registry::get('iMSCP_Application')->getPluginManager();
+$plugingManager = Registry::get('iMSCP_Application')->getPluginManager();
 
 $rqstCount = debugger_countRequests('admin_status', 'admin');
 $rqstCount += debugger_countRequests('domain_status', 'domain');
@@ -727,7 +729,9 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptEnd, [
+    'templateEngine' => $tpl
+]);
 $tpl->prnt();
 
 unsetMessages();

@@ -19,6 +19,7 @@
  */
 
 use iMSCP\Crypt as Crypt;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -85,7 +86,7 @@ function client_editMailAccount()
         showBadRequestErrorPage();
     }
 
-    if (iMSCP_Registry::get('config')->{'SERVER_HOSTNAME'} == explode('@', $mailData['mail_addr'])[1]
+    if (Registry::get('config')['SERVER_HOSTNAME'] == explode('@', $mailData['mail_addr'])[1]
         && $mailTypeNormal
     ) {
         # SERVER_HOSTNAME is a canonical domain (local domain) which cannot be
@@ -215,7 +216,7 @@ function client_editMailAccount()
         }
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditMail, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onBeforeEditMail, [
         'mailId' => $mailData['mail_id']
     ]);
     exec_query(
@@ -232,12 +233,12 @@ function client_editMailAccount()
 
     # Force synching of quota info on next load (or remove cached data in case of normal account changed to forward account)
     $postfixConfig = new iMSCP_Config_Handler_File(
-        utils_normalizePath(iMSCP_Registry::get('config')['CONF_DIR'] . '/postfix/postfix.data')
+        utils_normalizePath(Registry::get('config')['CONF_DIR'] . '/postfix/postfix.data')
     );
     list($user, $domain) = explode('@', $mailAddr);
     unset($_SESSION['maildirsize'][utils_normalizePath($postfixConfig['MTA_VIRTUAL_MAIL_DIR'] . "/$domain/$user/maildirsize")]);
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditMail, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAfterEditMail, [
         'mailId' => $mailData['mail_id']
     ]);
     send_request();
@@ -338,7 +339,7 @@ function client_generatePage($tpl)
         'DOMAIN_NAME_SELECTED'   => ' selected'
     ]);
 
-    iMSCP_Events_Aggregator::getInstance()->registerListener(
+    Registry::get('iMSCP_Application')->getEventsManager()->registerListener(
         'onGetJsTranslations',
         function ($event) use ($mailTypeForwardOnly) {
             /** @var $event iMSCP_Events_Description */
@@ -354,7 +355,7 @@ function client_generatePage($tpl)
 require 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 
 if (!customerHasFeature('mail') ||
     !isset($_GET['id'])
@@ -394,7 +395,7 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

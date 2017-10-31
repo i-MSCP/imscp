@@ -19,7 +19,7 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Main
@@ -28,7 +28,7 @@ use iMSCP_Events_Aggregator as EventsManager;
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptStart);
 customerHasFeature('sql') && isset($_GET['sqlu_id']) or showBadRequestErrorPage();
 
 $sqluId = intval($_GET['sqlu_id']);

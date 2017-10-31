@@ -19,7 +19,6 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventManager;
 use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
@@ -57,7 +56,7 @@ function admin_generateLanguagesList($tpl)
 require 'imscp-lib.php';
 
 check_login('admin');
-EventManager::getInstance()->dispatch(Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptStart);
 
 if (isset($_POST['uaction'])) {
     if ($_POST['uaction'] == 'uploadLanguage') {
@@ -109,7 +108,7 @@ admin_generateLanguagesList($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

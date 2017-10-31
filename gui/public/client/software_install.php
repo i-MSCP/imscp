@@ -19,6 +19,7 @@
  */
 
 use iMSCP\VirtualFileSystem as VirtualFileSystem;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  *  Script functions
@@ -112,7 +113,7 @@ function client_generatePage($tpl, $softwareId)
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 customerHasFeature('aps') or showBadRequestErrorPage();
 
 isset($_GET['id']) or showBadRequestErrorPage();
@@ -380,7 +381,7 @@ $tpl->assign([
     'VAL_DATABASE_USER'           => tohtml($appSqlUser)
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+Registry::get('iMSCP_Application')->getEventsManager()->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e iMSCP_Events_Event */
     $translations = $e->getParam('translations');
     $translations['core']['close'] = tr('Close');
@@ -392,7 +393,7 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

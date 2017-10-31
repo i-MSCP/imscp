@@ -19,7 +19,6 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_Registry as Registry;
 
@@ -354,7 +353,8 @@ function encode_mime_header($string, $charset = 'UTF-8')
 function send_mail($data)
 {
     $data = new ArrayObject($data);
-    $response = EventsManager::getInstance()->dispatch(Events::onSendMail, ['mail_data' => new ArrayObject($data)]);
+    /** @var iMSCP_Events_Listener_ResponseCollection $response */
+    $response = Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onSendMail, ['mail_data' => new ArrayObject($data)]);
 
     if ($response->isStopped()) { // Allow third-party components to short-circuit this event.
         return true;

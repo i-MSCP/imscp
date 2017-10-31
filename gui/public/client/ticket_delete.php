@@ -25,6 +25,8 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Main
  */
@@ -33,7 +35,7 @@ require_once 'imscp-lib.php';
 require_once LIBRARY_PATH . '/Functions/Tickets.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 customerHasFeature('support') or showBadRequestErrorPage();
 
 $userId = $_SESSION['user_id'];

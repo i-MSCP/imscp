@@ -25,14 +25,16 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
+use iMSCP_Registry as Registry;
+
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 systemHasAntiRootkits() or showBadRequestErrorPage();
 
-$config = iMSCP_Registry::get('config');
+$config = Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
@@ -64,7 +66,7 @@ foreach ($antiRootkitLogFiles as $antiRootkit => $logVar) {
 
 if (!empty($antiRootkitLogFiles)) {
     /** @var Zend_Cache_Core $cache */
-    $cache = iMSCP_Registry::get('iMSCP_Application')->getCache();
+    $cache = Registry::get('iMSCP_Application')->getCache();
 
     foreach ($antiRootkitLogFiles AS $antiRootkit => $logVar) {
         $logFile = $config[$logVar];
@@ -149,7 +151,7 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

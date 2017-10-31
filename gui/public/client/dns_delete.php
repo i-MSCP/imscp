@@ -18,16 +18,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 
 if (!customerHasFeature('custom_dns_records') || !isset($_GET['id'])) {
     showBadRequestErrorPage();
 }
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteCustomDNSrecord, [
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onBeforeDeleteCustomDNSrecord, [
     'id' => $dnsRecordId
 ]);
 
@@ -49,7 +51,7 @@ if (!$stmt->rowCount()) {
     showBadRequestErrorPage();
 }
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteCustomDNSrecord, [
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAfterDeleteCustomDNSrecord, [
     'id' => $dnsRecordId
 ]);
 

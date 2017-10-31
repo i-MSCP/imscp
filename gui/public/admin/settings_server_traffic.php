@@ -25,6 +25,8 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Script functions
  */
@@ -57,7 +59,7 @@ function admin_updateServerTrafficSettings($trafficLimit, $trafficWarning)
 
     if ($retVal) {
         /** @var $db_cfg iMSCP_Config_Handler_Db */
-        $dbConfig = iMSCP_Registry::get('dbConfig');
+        $dbConfig = Registry::get('dbConfig');
 
         $dbConfig->SERVER_TRAFFIC_LIMIT = $trafficLimit;
         $dbConfig->SERVER_TRAFFIC_WARN = $trafficWarning;
@@ -88,7 +90,7 @@ function admin_updateServerTrafficSettings($trafficLimit, $trafficWarning)
  */
 function admin_generatePage($tpl, $trafficLimit, $trafficWarning)
 {
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     if (empty($_POST)) {
         $trafficLimit = $cfg['SERVER_TRAFFIC_LIMIT'];
@@ -108,7 +110,7 @@ function admin_generatePage($tpl, $trafficLimit, $trafficWarning)
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 $trafficLimit = $trafficWarning = 0;
 
@@ -139,7 +141,7 @@ admin_generatePage($tpl, $trafficLimit, $trafficWarning);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

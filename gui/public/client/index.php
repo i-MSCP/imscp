@@ -25,6 +25,8 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -272,7 +274,7 @@ function _client_getDomainRemainingTime($domainExpireDate)
  */
 function client_generateDomainExpiresInformation($tpl)
 {
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
     $domainProperties = get_domain_default_props($_SESSION['user_id']);
 
     if ($domainProperties['domain_expires'] != 0) {
@@ -312,9 +314,9 @@ function client_generateDomainExpiresInformation($tpl)
 
 require_once 'imscp-lib.php';
 
-$cfg = iMSCP_Registry::get('config');
+$cfg = Registry::get('config');
 check_login('user', $cfg['PREVENT_EXTERNAL_LOGIN_CLIENT']);
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
@@ -393,7 +395,7 @@ $tpl->assign([
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

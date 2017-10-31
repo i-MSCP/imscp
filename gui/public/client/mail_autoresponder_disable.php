@@ -19,8 +19,8 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -79,7 +79,7 @@ function deactivateAutoresponder($mailAccountId)
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptStart);
 
 if (!customerHasFeature('mail')
     || !isset($_GET['id'])

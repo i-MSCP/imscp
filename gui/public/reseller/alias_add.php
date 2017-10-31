@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -326,12 +328,12 @@ function addDomainAlias()
     $mainDmnProps = get_domain_default_props($customerId, $_SESSION['user_id']);
 
     /** @var iMSCP_Database $db */
-    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddDomainAlias, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onBeforeAddDomainAlias, [
             'domainId'        => $mainDmnProps['domain_id'],
             'domainAliasName' => $domainAliasNameAscii,
             'mountPoint'      => $mountPoint,
@@ -366,13 +368,13 @@ function addDomainAlias()
         $phpini->saveDomainIni($mainDmnProps['admin_id'], $id, 'als');
 
         // Create default email addresses if needed
-        if (iMSCP_Registry::get('config')['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
+        if (Registry::get('config')['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
             createDefaultMailAccounts(
                 $mainDmnProps['domain_id'], $mainDmnProps['email'], $domainAliasNameAscii, MT_ALIAS_FORWARD, $id
             );
         }
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddDomainAlias, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAfterAddDomainAlias, [
             'domainId'        => $mainDmnProps['domain_id'],
             'domainAliasName' => $domainAliasNameAscii,
             'domainAliasId'   => $id,
@@ -402,7 +404,7 @@ function addDomainAlias()
 require_once 'imscp-lib.php';
 
 check_login('reseller');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onResellerScriptStart);
 resellerHasFeature('domain_aliases') && resellerHasCustomers() or showBadRequestErrorPage();
 
 if (is_xhr() && isset($_POST['customer_id'])) {
@@ -460,7 +462,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

@@ -21,8 +21,8 @@
 use iMSCP_Authentication_AuthEvent as AuthEvent;
 use iMSCP_Authentication_Result as AuthResult;
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventManager;
-use iMSCP_Events_Manager_Interface as EventManagerInterface;
+use iMSCP_Events_Manager_Interface as EventsManagerInterface;
+use iMSCP_Registry as Registry;
 
 /**
  * Authentication class
@@ -42,9 +42,9 @@ class iMSCP_Authentication
     protected static $instance;
 
     /**
-     * @var EventManagerInterface
+     * @var EventsManagerInterface
      */
-    protected $eventManager;
+    protected $eventsManager;
 
     /**
      * Singleton pattern implementation -  makes "new" unavailable
@@ -74,11 +74,11 @@ class iMSCP_Authentication
      * @trigger onBeforeAuthentication
      * @trigger onAuthentication
      * @trigger onAfterAuthentication
-     * @return iMSCP_Authentication_Result
+     * @return AuthResult
      */
     public function authenticate()
     {
-        $em = $this->getEventManager();
+        $em = $this->getEventsManager();
         $response = $em->dispatch(Events::onBeforeAuthentication, ['context' => $this]);
 
         if (!$response->isStopped()) {
@@ -120,21 +120,21 @@ class iMSCP_Authentication
     /**
      * Return an iMSCP_Events_Manager instance
      *
-     * @param EventManagerInterface $events
-     * @return EventManagerInterface
+     * @param EventsManagerInterface $events
+     * @return EventsManagerInterface
      */
-    public function getEventManager(EventManagerInterface $events = NULL)
+    public function getEventsManager(EventsManagerInterface $events = NULL)
     {
         if (NULL !== $events) {
-            $this->eventManager = $events;
+            $this->eventsManager = $events;
             return $events;
         }
 
-        if (NULL === $this->eventManager) {
-            $this->eventManager = EventManager::getInstance();
+        if (NULL === $this->eventsManager) {
+            $this->eventsManager = Registry::get('iMSCP_Application')->getEventsManager();
         }
 
-        return $this->eventManager;
+        return $this->eventsManager;
     }
 
     /**
@@ -146,7 +146,7 @@ class iMSCP_Authentication
      */
     public function unsetIdentity()
     {
-        $this->getEventManager()->dispatch(Events::onBeforeUnsetIdentity, ['context' => $this]);
+        $this->getEventsManager()->dispatch(Events::onBeforeUnsetIdentity, ['context' => $this]);
 
         exec_query('DELETE FROM login WHERE session_id = ?', [session_id()]);
 
@@ -160,7 +160,7 @@ class iMSCP_Authentication
             }
         }
 
-        $this->getEventManager()->dispatch(Events::onAfterUnsetIdentity, ['context' => $this]);
+        $this->getEventsManager()->dispatch(Events::onAfterUnsetIdentity, ['context' => $this]);
     }
 
     /**
@@ -173,7 +173,7 @@ class iMSCP_Authentication
      */
     public function setIdentity($identity)
     {
-        $response = $this->getEventManager()->dispatch(
+        $response = $this->getEventsManager()->dispatch(
             Events::onBeforeSetIdentity, ['context' => $this, 'identity' => $identity]
         );
 
@@ -200,7 +200,7 @@ class iMSCP_Authentication
         $_SESSION['user_email'] = $identity->email;
         $_SESSION['user_created_by'] = $identity->created_by;
 
-        $this->getEventManager()->dispatch(Events::onAfterSetIdentity, ['context' => $this]);
+        $this->getEventsManager()->dispatch(Events::onAfterSetIdentity, ['context' => $this]);
     }
 
     /**

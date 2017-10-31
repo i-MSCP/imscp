@@ -25,6 +25,8 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Main
  */
@@ -33,7 +35,7 @@ require_once 'imscp-lib.php';
 require_once LIBRARY_PATH . '/Functions/Tickets.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 customerHasFeature('support') or showBadRequestErrorPage();
 
 if (isset($_GET['ticket_id'])) {
@@ -80,12 +82,12 @@ $tpl->assign([
 
 generateNavigation($tpl);
 generateTicketList(
-    $tpl, $_SESSION['user_id'], $start, iMSCP_Registry::get('config')['DOMAIN_ROWS_PER_PAGE'], 'client', 'closed'
+    $tpl, $_SESSION['user_id'], $start, Registry::get('config')['DOMAIN_ROWS_PER_PAGE'], 'client', 'closed'
 );
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

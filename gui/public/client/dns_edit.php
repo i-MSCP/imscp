@@ -19,7 +19,6 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Registry as Registry;
 use Net_DNS2_Exception as DnsResolverException;
 use Net_DNS2_Resolver as DnsResolver;
@@ -774,7 +773,7 @@ function client_saveDnsRecord($dnsRecordId)
         $db->beginTransaction();
 
         if (!$dnsRecordId) {
-            EventsManager::getInstance()->dispatch(Events::onBeforeAddCustomDNSrecord, [
+            Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeAddCustomDNSrecord, [
                 'domainId' => $mainDmnId,
                 'aliasId'  => $domainId,
                 'name'     => $dnsRecordName,
@@ -808,7 +807,7 @@ function client_saveDnsRecord($dnsRecordId)
                 [$mainDmnId]
             );
 
-            EventsManager::getInstance()->dispatch(Events::onAfterAddCustomDNSrecord, [
+            Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterAddCustomDNSrecord, [
                 'id'       => $db->lastInsertId(),
                 'domainId' => $mainDmnId,
                 'aliasId'  => $domainId,
@@ -818,7 +817,7 @@ function client_saveDnsRecord($dnsRecordId)
                 'data'     => $dnsRecordData
             ]);
         } else {
-            EventsManager::getInstance()->dispatch(Events::onBeforeEditCustomDNSrecord, [
+            Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeEditCustomDNSrecord, [
                 'id'       => $dnsRecordId,
                 'domainId' => $mainDmnId,
                 'aliasId'  => $domainId,
@@ -848,7 +847,7 @@ function client_saveDnsRecord($dnsRecordId)
                 [$mainDmnId]
             );
 
-            EventsManager::getInstance()->dispatch(Events::onAfterEditCustomDNSrecord, [
+            Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterEditCustomDNSrecord, [
                 'id'       => $dnsRecordId,
                 'domainId' => $mainDmnId,
                 'aliasId'  => $domainId,
@@ -975,7 +974,7 @@ function generatePage($tpl, $dnsRecordId)
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptStart);
 customerHasFeature('custom_dns_records') or showBadRequestErrorPage();
 
 $dnsRecordId = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -1035,7 +1034,7 @@ generatePage($tpl, $dnsRecordId);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

@@ -20,7 +20,6 @@
 
 use iMSCP\Crypt as Crypt;
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
 use Zend_Form as Form;
@@ -54,7 +53,7 @@ function addAdminUser(Form $form)
     try {
         $db->beginTransaction();
 
-        EventsManager::getInstance()->dispatch(Events::onBeforeAddUser, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeAddUser, [
             'userData' => $form->getValues()
         ]);
 
@@ -83,7 +82,7 @@ function addAdminUser(Form $form)
             $adminId, $cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']
         ]);
 
-        EventsManager::getInstance()->dispatch(Events::onAfterAddUser, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterAddUser, [
             'userId'   => $adminId,
             'userData' => $form->getValues()
         ]);
@@ -113,7 +112,7 @@ function addAdminUser(Form $form)
 require 'imscp-lib.php';
 
 check_login('admin');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptStart);
 
 $form = getUserLoginDataForm(true, true)->addElements(getUserPersonalDataForm()->getElements());
 $form->setDefault('gender', 'U');
@@ -135,7 +134,7 @@ generatePageMessage($tpl);
 $tpl->form = $form;
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

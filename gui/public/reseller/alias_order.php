@@ -25,6 +25,8 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Main
  */
@@ -32,7 +34,7 @@
 require 'imscp-lib.php';
 
 check_login('reseller');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onResellerScriptStart);
 resellerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
 if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['del_id'])) {
@@ -53,7 +55,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['del_i
     }
 
     /** @var iMSCP_Database $db */
-    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -95,25 +97,25 @@ if (!$stmt->rowCount()) {
 $row = $stmt->fetch();
 
 /** @var iMSCP_Database $db */
-$db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+$db = Registry::get('iMSCP_Application')->getDatabase();
 
 try {
     $db->beginTransaction();
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddDomainAlias, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onBeforeAddDomainAlias, [
         'domainId'        => $row['domain_id'],
         'domainAliasName' => $row['alias_name']
     ]);
 
     exec_query("UPDATE domain_aliasses SET alias_status = 'toadd' WHERE alias_id = ?", [$id]);
 
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
         createDefaultMailAccounts($row['domain_id'], $row['email'], $row['alias_name'], MT_ALIAS_FORWARD, $id);
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddDomainAlias, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAfterAddDomainAlias, [
         'domainId'        => $row['domain_id'],
         'domainAliasName' => $row['alias_name'],
         'domainAliasId'   => $id

@@ -26,7 +26,6 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventManager;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_Plugin_Bruteforce as BruteForcePlugin;
 use iMSCP_pTemplate as TemplateEngine;
@@ -35,7 +34,7 @@ use iMSCP_Registry as Registry;
 require_once 'imscp-lib.php';
 require_once LIBRARY_PATH . '/Functions/LostPassword.php';
 
-EventManager::getInstance()->dispatch(Events::onLostPasswordScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onLostPasswordScriptStart);
 do_session_timeout();
 
 $cfg = Registry::get('config');
@@ -82,7 +81,7 @@ $tpl->assign([
 
 if (!empty($_POST)) {
     if ($cfg['BRUTEFORCE']) {
-        $bruteForce = new BruteForcePlugin(iMSCP_Registry::get('iMSCP_Application')->getPluginManager(), 'captcha');
+        $bruteForce = new BruteForcePlugin(Registry::get('iMSCP_Application')->getPluginManager(), 'captcha');
         if ($bruteForce->isWaiting() || $bruteForce->isBlocked()) {
             set_page_message($bruteForce->getLastMessage(), 'error');
             redirectTo('index.php');
@@ -113,5 +112,5 @@ if (!empty($_POST)) {
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventManager::getInstance()->dispatch(Events::onLostPasswordScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onLostPasswordScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

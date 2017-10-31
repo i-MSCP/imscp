@@ -26,7 +26,7 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Events_Manager_Interface as EventsManagerInterface;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_Registry as Registry;
 
@@ -78,9 +78,9 @@ class iMSCP_pTemplate
     protected $namespace = [];
 
     /**
-     * @var EventsManager
+     * @var EventsManagerInterface
      */
-    protected $eventManager;
+    protected $eventsManager;
 
     /**
      * Templates root directory.
@@ -149,7 +149,7 @@ class iMSCP_pTemplate
      */
     public function __construct()
     {
-        $this->eventManager = EventsManager::getInstance();
+        $this->eventsManager = Registry::get('iMSCP_Application')->getEventsManager();
         $this->setRootDir(Registry::get('config')['ROOT_TEMPLATE_PATH']);
         $this->tplStartRexpr = '/';
         $this->tplStartRexpr .= $this->tplStartTag;
@@ -335,7 +335,7 @@ class iMSCP_pTemplate
      */
     public function parse($pname, $tname)
     {
-        $this->eventManager->dispatch(Events::onParseTemplate, [
+        $this->eventsManager->dispatch(Events::onParseTemplate, [
             'pname'          => $pname,
             'tname'          => $tname,
             'templateEngine' => $this
@@ -425,7 +425,7 @@ class iMSCP_pTemplate
         static $parentTplDir = NULL;
 
         if (!is_array($fname)) {
-            $this->eventManager->dispatch(Events::onBeforeAssembleTemplateFiles, [
+            $this->eventsManager->dispatch(Events::onBeforeAssembleTemplateFiles, [
                 'context'      => $this,
                 'templatePath' => $this->rootDir . '/' . $fname
             ]);
@@ -439,7 +439,7 @@ class iMSCP_pTemplate
 
         $prevParentTplDir = $parentTplDir;
         $parentTplDir = dirname($fname);
-        $this->eventManager->dispatch(Events::onBeforeLoadTemplateFile, [
+        $this->eventsManager->dispatch(Events::onBeforeLoadTemplateFile, [
             'context'      => $this,
             'templatePath' => $this->rootDir . '/' . $fname
         ]);
@@ -447,14 +447,14 @@ class iMSCP_pTemplate
         ob_start();
         $this->run(utils_normalizePath($this->rootDir . '/' . $fname));
         $fileContent = ob_get_clean();
-        $this->eventManager->dispatch(Events::onAfterLoadTemplateFile, [
+        $this->eventsManager->dispatch(Events::onAfterLoadTemplateFile, [
             'context'         => $this,
             'templateContent' => $fileContent
         ]);
 
         $fileContent = preg_replace_callback($this->tplInclude, [$this, 'get_file'], $fileContent);
         $parentTplDir = $prevParentTplDir;
-        $this->eventManager->dispatch(Events::onAfterAssembleTemplateFiles, [
+        $this->eventsManager->dispatch(Events::onAfterAssembleTemplateFiles, [
             'context'         => $this,
             'templateContent' => $fileContent
         ]);

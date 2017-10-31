@@ -19,7 +19,6 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_Registry as Registry;
 
@@ -30,7 +29,7 @@ use iMSCP_Registry as Registry;
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptStart);
 
 if (!customerHasFeature('ftp')
     || !isset($_GET['id'])
@@ -58,7 +57,7 @@ $db = Registry::get('iMSCP_Application')->getDatabase();
 try {
     $db->beginTransaction();
 
-    EventsManager::getInstance()->dispatch(Events::onBeforeDeleteFtp, ['ftpUserId' => $userid]);
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeDeleteFtp, ['ftpUserId' => $userid]);
 
     $stmt = exec_query('SELECT members FROM ftp_group WHERE groupname = ?', [$groupname]);
 
@@ -93,7 +92,7 @@ try {
         }
     }
 
-    EventsManager::getInstance()->dispatch(Events::onAfterDeleteFtp, ['ftpUserId' => $userid]);
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterDeleteFtp, ['ftpUserId' => $userid]);
 
     $db->commit();
     send_request();

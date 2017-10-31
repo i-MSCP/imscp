@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Main
  */
@@ -25,10 +27,10 @@
 require 'imscp-lib.php';
 
 check_login('reseller');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onResellerScriptStart);
 resellerHasFeature('aps') or showBadRequestErrorPage();
 
-$cfg = iMSCP_Registry::get('config');
+$cfg = Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
@@ -80,7 +82,7 @@ if (ask_reseller_is_allowed_web_depot($_SESSION['user_id']) == "yes") {
             'TR_WEBDEPOTSOFTWARE_ACT_NUM' => $packages_cnt
         ]);
 
-        iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+        Registry::get('iMSCP_Application')->getEventsManager()->registerListener('onGetJsTranslations', function ($e) {
             /** @var $e \iMSCP_Events_Event */
             $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
         });
@@ -148,7 +150,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
         );
 
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
 
         $softwareId = $db->lastInsertId();
 
@@ -290,7 +292,7 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

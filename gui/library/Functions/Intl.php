@@ -19,7 +19,6 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
 use iMSCP\i18n\GettextParser;
 use iMSCP_Registry as Registry;
@@ -375,7 +374,7 @@ function l10n_addTranslations($dirPath, $type = 'Array', $tag = 'iMSCP_Translate
  *
  * For instance:
  *
- * EventsManager::getInstance()->registerListener('onGetJsTranslations', function($e) {
+ * Registry::get('iMSCP_Application')->getEventsManager()->registerListener('onGetJsTranslations', function($e) {
  *    $e->getParam('translations')->my_namespace = array(
  *        'first_translation_string_identifier' => tr('my first translation string'),
  *        'second_translation_string_identifier' => tr('my second translation string')
@@ -411,6 +410,8 @@ function i18n_getJsTranslations()
         ArrayObject::ARRAY_AS_PROPS
     );
 
-    EventsManager::getInstance()->dispatch(Events::onGetJsTranslations, ['translations' => $translations]);
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onGetJsTranslations, [
+        'translations' => $translations
+    ]);
     return json_encode($translations, JSON_FORCE_OBJECT);
 }

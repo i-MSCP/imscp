@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Events_Manager_Interface as EventManagerInterface;
+use iMSCP_Events_Manager_Interface as EventsManagerInterface;
 
 /**
  * Class iMSCP_Plugin_Action
@@ -31,10 +31,10 @@ abstract class iMSCP_Plugin_Action extends iMSCP_Plugin
     /**
      * Register one or more event listeners
      *
-     * @param EventManagerInterface $eventsManager
+     * @param EventsManagerInterface $eventsManager
      * @return void
      */
-    public function register(EventManagerInterface $eventsManager)
+    public function register(EventsManagerInterface $eventsManager)
     {
     }
 }

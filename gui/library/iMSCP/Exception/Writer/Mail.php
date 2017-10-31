@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 /**
  * Class iMSCP_Exception_Writer_Mail
  *
@@ -91,11 +93,11 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer_Abstract
     protected function prepareMailData($exception)
     {
         $data = [];
-        if (!iMSCP_Registry::isRegistered('config')) {
+        if (!Registry::isRegistered('config')) {
             return $data;
         }
 
-        $config = iMSCP_Registry::get('config');
+        $config = Registry::get('config');
         if (!isset($config['DEFAULT_ADMIN_ADDRESS'])) {
             return $data;
         }

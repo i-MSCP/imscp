@@ -208,6 +208,17 @@ abstract class UpdateDatabaseAbstract extends UpdateAbstract
     }
 
     /**
+     * Drop a table
+     *
+     * @param string $table Table name
+     * @return string SQL statement to be executed
+     */
+    public function dropTable($table)
+    {
+        return sprintf('DROP TABLE IF EXISTS %s', quoteIdentifier($table));
+    }
+
+    /**
      * Add column in the given table
      *
      * @param string $table Table name
@@ -275,17 +286,6 @@ abstract class UpdateDatabaseAbstract extends UpdateAbstract
     protected function isKnownTable($table)
     {
         return exec_query('SHOW TABLES LIKE ?', [$table])->rowCount() > 0;
-    }
-
-    /**
-     * Drop a table
-     *
-     * @param string $table Table name
-     * @return string SQL statement to be executed
-     */
-    public function dropTable($table)
-    {
-        return sprintf('DROP TABLE IF EXISTS %s', quoteIdentifier($table));
     }
 
     /**

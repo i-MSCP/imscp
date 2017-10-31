@@ -19,8 +19,8 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
 use iMSCP_Services as Services;
 
 /***********************************************************************************************************************
@@ -75,7 +75,7 @@ function generatePage(TemplateEngine $tpl)
 require 'imscp-lib.php';
 
 check_login('admin');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptStart);
 
 $tpl = new TemplateEngine();
 $tpl->define_dynamic([
@@ -94,7 +94,7 @@ $tpl->assign([
     'TR_FORCE_REFRESH' => tohtml(tr('Force refresh', 'htmlAttr'))
 ]);
 
-EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
+Registry::get('iMSCP_Application')->getEventsManager()->registerListener(Events::onGetJsTranslations, function ($e) {
     /** @var $e \iMSCP_Events_Event */
     $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
 });
@@ -104,7 +104,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

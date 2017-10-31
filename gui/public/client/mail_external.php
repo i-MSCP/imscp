@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -155,7 +157,7 @@ function generateItemList($tpl, $domainId, $domainName)
  */
 function generatePage($tpl)
 {
-    iMSCP_Events_Aggregator::getInstance()->registerListener(iMSCP_Events::onGetJsTranslations, function ($e) {
+    Registry::get('iMSCP_Application')->getEventsManager()->registerListener(iMSCP_Events::onGetJsTranslations, function ($e) {
         /** @var iMSCP_Events_Description $e */
         $translations = $e->getParam('translations');
         $translations['core']['datatable'] = getDataTablesPluginTranslations(false);
@@ -184,7 +186,7 @@ function generatePage($tpl)
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 
 if (!customerHasFeature('external_mail')) {
     showBadRequestErrorPage();
@@ -226,7 +228,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

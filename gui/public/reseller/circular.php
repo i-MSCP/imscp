@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -144,7 +146,8 @@ function reseller_sendCircular()
         return false;
     }
 
-    $responses = iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeSendCircular, [
+    /** @var iMSCP_Events_Listener_ResponseCollection $responses */
+    $responses = Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onBeforeSendCircular, [
         'sender_name'  => $senderName,
         'sender_email' => $senderEmail,
         'rcpt_to'      => 'customers',
@@ -159,7 +162,7 @@ function reseller_sendCircular()
     set_time_limit(0);
     ignore_user_abort(true);
     reseller_sendToCustomers($senderName, $senderEmail, $subject, $body);
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterSendCircular, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAfterSendCircular, [
         'sender_name'  => $senderName,
         'sender_email' => $senderEmail,
         'rcpt_to'      => 'customers',
@@ -203,7 +206,7 @@ function reseller_generatePageData($tpl)
         if ($row['email'] != '') {
             $senderEmail = $row['email'];
         } else {
-            $config = iMSCP_Registry::get('config');
+            $config = Registry::get('config');
             if (isset($config['DEFAULT_ADMIN_ADDRESS']) && $config['DEFAULT_ADMIN_ADDRESS'] != '') {
                 $senderEmail = $config['DEFAULT_ADMIN_ADDRESS'];
             } else {
@@ -227,7 +230,7 @@ function reseller_generatePageData($tpl)
 require 'imscp-lib.php';
 
 check_login('reseller');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 if (!resellerHasCustomers()) {
     showBadRequestErrorPage();
@@ -260,7 +263,7 @@ reseller_generatePageData($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

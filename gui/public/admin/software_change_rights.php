@@ -18,10 +18,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 isset($_REQUEST['id']) or showBadRequestErrorPage();
 
@@ -50,7 +52,7 @@ if (isset($_POST['change']) && $_POST['change'] == 'add') {
         }
 
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
 
         while ($row2 = $stmt->fetch()) {
             $cnt = exec_query(
@@ -102,7 +104,7 @@ if (isset($_POST['change']) && $_POST['change'] == 'add') {
         );
 
         update_existing_client_installations_sw_depot(
-            iMSCP_Registry::get('iMSCP_Application')->getDatabase()->lastInsertId(), $softwareId, $resellerId
+            Registry::get('iMSCP_Application')->getDatabase()->lastInsertId(), $softwareId, $resellerId
         );
     }
 

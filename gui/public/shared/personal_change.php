@@ -20,8 +20,8 @@
 
 use iMSCP_Authentication as Authentication;
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
 use Zend_Form as Form;
 
 /***********************************************************************************************************************
@@ -48,7 +48,7 @@ function updatePersonalData(Form $form)
 
     $idnaEmail = $form->getValue('email');
 
-    EventsManager::getInstance()->dispatch(Events::onBeforeEditUser, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeEditUser, [
         'userId'   => $_SESSION['user_id'],
         'userData' => $form->getValues()
     ]);
@@ -71,7 +71,7 @@ function updatePersonalData(Form $form)
     Authentication::getInstance()->getIdentity()->email = $idnaEmail;
     $_SESSION['user_email'] = $idnaEmail; // Only for backward compatibility
 
-    EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterEditUser, [
         'userId'   => $_SESSION['user_id'],
         'userData' => $form->getValues()
     ]);

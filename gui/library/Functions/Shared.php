@@ -20,7 +20,6 @@
 
 use iMSCP\Database\ResultSet;
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_Exception_Database as DatabaseException;
 use iMSCP_Registry as Registry;
@@ -462,7 +461,7 @@ function change_domain_status($customerId, $action)
     try {
         $db->beginTransaction();
 
-        EventsManager::getInstance()->dispatch(Events::onBeforeChangeDomainStatus, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeChangeDomainStatus, [
             'customerId' => $customerId,
             'action'     => $action
         ]);
@@ -515,7 +514,7 @@ function change_domain_status($customerId, $action)
         );
         exec_query('UPDATE domain_dns SET domain_dns_status = ? WHERE domain_id = ?', [$newStatus, $domainId]);
 
-        EventsManager::getInstance()->dispatch(Events::onAfterChangeDomainStatus, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterChangeDomainStatus, [
             'customerId' => $customerId,
             'action'     => $action
         ]);
@@ -574,7 +573,7 @@ function sql_delete_user($dmnId, $userId)
     $host = $row['sqlu_host'];
     $dbName = $row['sqld_name'];
 
-    EventsManager::getInstance()->dispatch(Events::onBeforeDeleteSqlUser, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeDeleteSqlUser, [
         'sqlUserId'   => $userId,
         'sqlUsername' => $user,
         'sqlUserhost' => $host
@@ -597,7 +596,7 @@ function sql_delete_user($dmnId, $userId)
     exec_query('DELETE FROM sql_user WHERE sqlu_id = ?', [$userId]);
     execute_query('FLUSH PRIVILEGES');
 
-    EventsManager::getInstance()->dispatch(Events::onAfterDeleteSqlUser, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterDeleteSqlUser, [
         'sqlUserId'   => $userId,
         'sqlUsername' => $user,
         'sqlUserhost' => $host
@@ -623,7 +622,7 @@ function delete_sql_database($dmnId, $dbId)
         return false;
     }
 
-    EventsManager::getInstance()->dispatch(Events::onBeforeDeleteSqlDb, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeDeleteSqlDb, [
         'sqlDbId'         => $dbId,
         'sqlDatabaseName' => $dbName
     ]);
@@ -642,7 +641,7 @@ function delete_sql_database($dmnId, $dbId)
     execute_query(sprintf('DROP DATABASE IF EXISTS %s', quoteIdentifier($dbName)));
     exec_query('DELETE FROM sql_database WHERE domain_id = ? AND sqld_id = ?', [$dmnId, $dbId]);
 
-    EventsManager::getInstance()->dispatch(Events::onAfterDeleteSqlDb, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterDeleteSqlDb, [
         'sqlDbId'         => $dbId,
         'sqlDatabaseName' => $dbName
     ]);
@@ -699,7 +698,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 
         $db->beginTransaction();
 
-        EventsManager::getInstance()->dispatch(Events::onBeforeDeleteCustomer, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeDeleteCustomer, [
             'customerId' => $customerId
         ]);
 
@@ -808,7 +807,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
         // Update reseller properties
         update_reseller_c_props($data['created_by']);
 
-        EventsManager::getInstance()->dispatch(Events::onAfterDeleteCustomer, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterDeleteCustomer, [
             'customerId' => $customerId
         ]);
 
@@ -847,7 +846,7 @@ function deleteDomainAlias($customerId, $mainDomainId, $aliasId, $aliasName, $al
     try {
         $db->beginTransaction();
 
-        EventsManager::getInstance()->dispatch(Events::onBeforeDeleteDomainAlias, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeDeleteDomainAlias, [
             'domainAliasId'   => $aliasId,
             'domainAliasName' => $aliasName
         ]);
@@ -953,7 +952,7 @@ function deleteDomainAlias($customerId, $mainDomainId, $aliasId, $aliasName, $al
         // Schedule domain alias deletion
         exec_query("UPDATE domain_aliasses SET alias_status = 'todelete' WHERE alias_id = ?", [$aliasId]);
 
-        EventsManager::getInstance()->dispatch(Events::onAfterDeleteDomainAlias, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterDeleteDomainAlias, [
             'domainAliasId'   => $aliasId,
             'domainAliasName' => $aliasName
         ]);

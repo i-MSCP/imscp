@@ -26,8 +26,8 @@ use iMSCP_Config_Handler_Db as ConfigDb;
 use iMSCP_Config_Handler_File as ConfigFile;
 use iMSCP_Database as Database;
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Events_Event as Event;
+use iMSCP_Events_Manager as EventsManager;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_Exception_Handler as ExceptionHandler;
 use iMSCP_Plugin_Manager as PluginManager;
@@ -105,26 +105,21 @@ class Application
 
         require_once __DIR__ . '/Loader/AutoloaderFactory.php';
 
-        # Create class alias for backward compatibility with plugins (Will be removed in a later release)
-        class_alias('iMSCP\Loader\AutoloaderFactory', 'Zend_Loader_AutoloaderFactory', false);
-
         AutoloaderFactory::factory([
             AutoloaderFactory::STANDARD_AUTOLOADER => [
                 'fallback_autoloader' => true,
                 'namespaces'          => [
-                    'iMSCP\\'            => LIBRARY_PATH . '/iMSCP',
-                    'Mso\\IdnaConvert\\' => LIBRARY_PATH . '/vendor/idna-convert-1.1.0/src'
+                    'iMSCP\\' => LIBRARY_PATH . '/iMSCP',
                 ],
                 'prefixes'            => [
-                    'iMSCP_' => LIBRARY_PATH . '/iMSCP',
-                    'Crypt_' => LIBRARY_PATH . '/vendor/phpseclib/Crypt',
-                    'File_'  => LIBRARY_PATH . '/vendor/phpseclib/File',
-                    'Math_'  => LIBRARY_PATH . '/vendor/phpseclib/Math',
-                    'Net_'   => LIBRARY_PATH . '/vendor/Net',
-                    'Zend_'  => LIBRARY_PATH . '/vendor/Zend/library/Zend'
+                    'iMSCP_' => LIBRARY_PATH . '/iMSCP'
                 ]
             ]
         ]);
+
+        // Create class aliases for backward compatibility with plugins (Will be removed in a later release)
+        class_alias('iMSCP\Loader\AutoloaderFactory', 'Zend_Loader_AutoloaderFactory');
+        class_alias('iMSCP_Events_Manager', 'iMSCP_Events_Aggregator');
 
         // Make application available through registry
         Registry::set('iMSCP_Application', $this);
@@ -561,29 +556,10 @@ class Application
     public function getEventsManager()
     {
         if (NULL === $this->eventsManager) {
-            $this->eventsManager = EventsManager::getInstance();
+            $this->eventsManager = new EventsManager();
         }
 
         return $this->eventsManager;
-    }
-
-    /**
-     * Retrieve plugin manager
-     *
-     * @return PluginManager
-     */
-    public function getPluginManager()
-    {
-        if (NULL === $this->pluginManager) {
-            $this->pluginManager = new PluginManager(
-                $this->getConfig()['PLUGINS_DIR'], $this->getEventsManager(), $this->getCache()
-            );
-
-            // Make plugin manager available through registry (bc)
-            Registry::set('pluginManager', $this->pluginManager);
-        }
-
-        return $this->pluginManager;
     }
 
     /**
@@ -907,5 +883,24 @@ class Application
                 throw new iMSCPException(sprintf("Couldn't load plugin: %s", $pluginName));
             }
         }
+    }
+
+    /**
+     * Retrieve plugin manager
+     *
+     * @return PluginManager
+     */
+    public function getPluginManager()
+    {
+        if (NULL === $this->pluginManager) {
+            $this->pluginManager = new PluginManager(
+                $this->getConfig()['PLUGINS_DIR'], $this->getEventsManager(), $this->getCache()
+            );
+
+            // Make plugin manager available through registry (bc)
+            Registry::set('pluginManager', $this->pluginManager);
+        }
+
+        return $this->pluginManager;
     }
 }

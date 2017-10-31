@@ -19,7 +19,6 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
@@ -73,10 +72,10 @@ function addSqlDb()
     }
 
     try {
-        EventsManager::getInstance()->dispatch(Events::onBeforeAddSqlDb, ['dbName' => $dbName]);
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeAddSqlDb, ['dbName' => $dbName]);
         execute_query(sprintf('CREATE DATABASE IF NOT EXISTS %s', quoteIdentifier($dbName)));
         exec_query('INSERT INTO sql_database (domain_id, sqld_name) VALUES (?, ?)', [$mainDmnId, $dbName]);
-        EventsManager::getInstance()->dispatch(Events::onAfterAddSqlDb, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterAddSqlDb, [
             'dbId'   => Registry::get('iMSCP_Application')->getDatabase()->lastInsertId(),
             'dbName' => $dbName
         ]);
@@ -140,7 +139,7 @@ function generatePage(TemplateEngine $tpl)
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptStart);
 customerHasFeature('sql') && !customerSqlDbLimitIsReached() or showBadRequestErrorPage();
 
 if (!empty($_POST)) {
@@ -174,7 +173,7 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

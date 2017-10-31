@@ -76,9 +76,9 @@ class iMSCP_Database extends PDO
      * @return iMSCP_Database
      * @deprecated WIll be removed in a later release
      */
-    public static function getInstance()
+    public static function getRawInstance()
     {
-        return Registry::get('iMSCP_Application')->getDatabase();
+        return static::getInstance();
     }
 
     /**
@@ -87,9 +87,9 @@ class iMSCP_Database extends PDO
      * @return iMSCP_Database
      * @deprecated WIll be removed in a later release
      */
-    public static function getRawInstance()
+    public static function getInstance()
     {
-        return static::getInstance();
+        return Registry::get('iMSCP_Application')->getDatabase();
     }
 
     /**

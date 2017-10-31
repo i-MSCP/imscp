@@ -19,7 +19,6 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
 
@@ -262,7 +261,7 @@ function generatePage($tpl, $resellerId, $resellerName)
 require 'imscp-lib.php';
 
 check_login('reseller', Registry::get('config')['PREVENT_EXTERNAL_LOGIN_RESELLER']);
-EventsManager::getInstance()->dispatch(Events::onResellerScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onResellerScriptStart);
 
 $tpl = new TemplateEngine();
 $tpl->define_dynamic([
@@ -279,7 +278,7 @@ generatePage($tpl, $_SESSION['user_id'], $_SESSION['user_logged']);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

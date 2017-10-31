@@ -19,7 +19,6 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
@@ -92,7 +91,9 @@ function generatePageMessage(TemplateEngine $tpl)
 {
     $flashMessenger = Registry::isRegistered('flashMessenger') ? Registry::get('flashMessenger') : new FlashMessenger();
 
-    EventsManager::getInstance()->dispatch(Events::onGeneratePageMessages, ['flashMessenger' => $flashMessenger]);
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onGeneratePageMessages, [
+        'flashMessenger' => $flashMessenger
+    ]);
 
     $tpl->assign('PAGE_MESSAGE', '');
 
@@ -572,7 +573,7 @@ function layout_LoadNavigation()
     ));
 
     // Set main menu labels visibility for the current environment
-    EventsManager::getInstance()->registerListener(
+    Registry::get('iMSCP_Application')->getEventsManager()->registerListener(
         Events::onBeforeGenerateNavigation, 'layout_setMainMenuLabelsVisibilityEvt'
     );
 }

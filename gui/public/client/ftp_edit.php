@@ -21,7 +21,6 @@
 use iMSCP\Crypt as Crypt;
 use iMSCP\VirtualFileSystem as VirtualFileSystem;
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
@@ -82,7 +81,7 @@ function updateFtpAccount($userid)
         Registry::get('config')['USER_WEB_DIR'] . '/' . $mainDmnProps['domain_name'] . '/' . $homeDir
     );
 
-    EventsManager::getInstance()->dispatch(Events::onBeforeEditFtp, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeEditFtp, [
         'ftpUserId'   => $userid,
         'ftpPassword' => $passwd,
         'ftpUserHome' => $homeDir
@@ -99,7 +98,7 @@ function updateFtpAccount($userid)
         ]);
     }
 
-    EventsManager::getInstance()->dispatch(Events::onAfterEditFtp, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterEditFtp, [
         'ftpUserId'   => $userid,
         'ftpPassword' => $passwd,
         'ftpUserHome' => $homeDir
@@ -129,7 +128,7 @@ function generatePage($tpl, $ftpUserId)
     $_SESSION['ftp_chooser_hidden_dirs'] = [];
     $_SESSION['ftp_chooser_unselectable_dirs'] = [];
 
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
     $stmt = exec_query('SELECT homedir FROM ftp_users WHERE userid = ?', [$ftpUserId]);
     $row = $stmt->fetch();
 
@@ -156,7 +155,7 @@ function generatePage($tpl, $ftpUserId)
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptStart);
 
 if (!customerHasFeature('ftp') || !isset($_GET['id'])) {
     showBadRequestErrorPage();
@@ -195,7 +194,7 @@ $tpl->assign([
     'TR_CANCEL'          => tr('Cancel')
 ]);
 
-EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
+Registry::get('iMSCP_Application')->getEventsManager()->registerListener(Events::onGetJsTranslations, function ($e) {
     /** @var $e iMSCP_Events_Event */
     $translations = $e->getParam('translations');
     $translations['core']['close'] = tr('Close');
@@ -208,7 +207,7 @@ generatePage($tpl, $userid);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

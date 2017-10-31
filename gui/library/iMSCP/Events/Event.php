@@ -18,12 +18,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Events_Description as EventDescription;
+use iMSCP_Events_Exception as Exception;
+
 /**
  * Representation of an event
  *
  * Encapsulates the parameters passed, and provides some behavior for interacting with the events manager.
  */
-class iMSCP_Events_Event implements iMSCP_Events_Description
+class iMSCP_Events_Event implements EventDescription
 {
     /**
      * @var string Event name
@@ -95,14 +98,14 @@ class iMSCP_Events_Event implements iMSCP_Events_Description
      *
      * Overwrites parameters
      *
-     * @throws iMSCP_Events_Exception
+     * @throws Exception
      * @param  array|ArrayAccess|object $params
      * @return iMSCP_Events_Event Provides fluent interface, returns self
      */
     public function setParams($params)
     {
         if (!is_array($params) && !is_object($params)) {
-            throw new iMSCP_Events_Exception('Event parameters must be an array or object');
+            throw new Exception('Event parameters must be an array or object');
         }
 
         $this->params = $params;

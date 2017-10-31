@@ -19,6 +19,7 @@
  */
 
 use iMSCP\VirtualFileSystem as VirtualFileSystem;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -270,7 +271,7 @@ function client_editSubdomain()
         $documentRoot = utils_normalizePath('/htdocs' . $documentRoot);
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditSubdomain, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onBeforeEditSubdomain, [
         'subdomainId'   => $subdomainId,
         'subdomainName' => $subdomainData['subdomain_name'],
         'subdomainType' => $subdomainType,
@@ -299,7 +300,7 @@ function client_editSubdomain()
 
     exec_query($query, [$documentRoot, $forwardUrl, $forwardType, $forwardHost, $subdomainId]);
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditSubdomain, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAfterEditSubdomain, [
         'subdomainId'   => $subdomainId,
         'subdomainName' => $subdomainData['subdomain_name'],
         'subdomainType' => $subdomainType,
@@ -323,7 +324,7 @@ function client_editSubdomain()
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 customerHasFeature('subdomains') or showBadRequestErrorPage();
 
 if (!empty($_POST) && client_editSubdomain()) {
@@ -363,7 +364,7 @@ $tpl->assign([
     'TR_CANCEL'                 => tr('Cancel')
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+Registry::get('iMSCP_Application')->getEventsManager()->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e iMSCP_Events_Event */
     $translations = $e->getParam('translations');
     $translations['core']['close'] = tr('Close');
@@ -375,7 +376,7 @@ client_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

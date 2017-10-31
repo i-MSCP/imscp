@@ -4,7 +4,7 @@ body {
 }
 
 h1 {
-    color: rgb(255,0,0);
+    color: rgb(255, 0, 0);
     margin: 0;
     padding: 0;
 }
@@ -17,7 +17,7 @@ p {
 
 a {
     font-weight: bold;
-    color: rgb(102,102,102);
+    color: rgb(102, 102, 102);
     text-decoration: none;
     font-size: 14px;
     letter-spacing: normal;

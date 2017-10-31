@@ -19,7 +19,6 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Registry as Registry;
 
 require_once 'imscp-lib.php';
@@ -40,7 +39,10 @@ if (empty($plugins)) {
     showNotFoundErrorPage();
 }
 
-$eventsManager = EventsManager::getInstance();
+/** @var iMSCP_Events_Manager_Interface $eventsManager */
+$eventsManager = Registry::get('iMSCP_Application')->getEventsManager();
+
+/** @var iMSCP_Events_Listener_ResponseCollection $responses */
 $responses = $eventsManager->dispatch(Events::onBeforePluginsRoute, [
     'pluginManager' => $pluginManager
 ]);

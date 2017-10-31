@@ -20,7 +20,6 @@
 
 use iMSCP_Config_Handler_File as ConfigFile;
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_Registry as Registry;
 
@@ -62,7 +61,7 @@ function deleteMailAccount($mailId, $domainId, $config, $mtaConfig, &$nbDeletedM
         return;
     }
 
-    EventsManager::getInstance()->dispatch(Events::onBeforeDeleteMail, ['mailId' => $mailId]);
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeDeleteMail, ['mailId' => $mailId]);
     exec_query("UPDATE mail_users SET status = 'todelete' WHERE mail_id = ?", [$mailId]);
 
     if (strpos($row['mail_type'], '_mail') !== false) {
@@ -119,7 +118,7 @@ function deleteMailAccount($mailId, $domainId, $config, $mtaConfig, &$nbDeletedM
     }
 
     delete_autoreplies_log_entries();
-    EventsManager::getInstance()->dispatch(Events::onAfterDeleteMail, ['mailId' => $mailId]);
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterDeleteMail, ['mailId' => $mailId]);
     $nbDeletedMails++;
 }
 
@@ -130,7 +129,7 @@ function deleteMailAccount($mailId, $domainId, $config, $mtaConfig, &$nbDeletedM
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptStart);
 
 if (!customerHasFeature('mail')
     || !isset($_REQUEST['id'])

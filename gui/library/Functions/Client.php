@@ -19,7 +19,6 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_Registry as Registry;
 
@@ -410,12 +409,12 @@ function deleteSubdomain($id)
     $row = $stmt->fetch();
 
     /** @var iMSCP_Database $db */
-    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
 
-        EventsManager::getInstance()->dispatch(Events::onBeforeDeleteSubdomain, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeDeleteSubdomain, [
             'subdomainId'   => $id,
             'subdomainName' => $row['subdomain_name'],
             'subdomainType' => 'sub',
@@ -475,7 +474,7 @@ function deleteSubdomain($id)
         // Schedule subdomain deletion
         exec_query("UPDATE subdomain SET subdomain_status = 'todelete' WHERE subdomain_id = ?", [$id]);
 
-        EventsManager::getInstance()->dispatch(Events::onAfterDeleteSubdomain, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterDeleteSubdomain, [
             'subdomainId'   => $id,
             'subdomainName' => $row['subdomain_name'],
             'subdomainType' => 'sub',
@@ -531,12 +530,12 @@ function deleteSubdomainAlias($id)
     $row = $stmt->fetch();
 
     /** @var iMSCP_Database $db */
-    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
 
-        EventsManager::getInstance()->dispatch(Events::onBeforeDeleteSubdomain, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeDeleteSubdomain, [
             'subdomainId'   => $id,
             'subdomainName' => $row['subdomain_alias_name'],
             'subdomainType' => 'alssub',
@@ -596,7 +595,7 @@ function deleteSubdomainAlias($id)
         // Schedule subdomain aliases deletion
         exec_query("UPDATE subdomain_alias SET subdomain_alias_status = 'todelete' WHERE subdomain_alias_id = ?", $id);
 
-        EventsManager::getInstance()->dispatch(Events::onAfterDeleteSubdomain, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterDeleteSubdomain, [
             'subdomainId'   => $id,
             'subdomainName' => $row['subdomain_alias_name'],
             'subdomainType' => 'alssub',

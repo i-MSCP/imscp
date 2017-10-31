@@ -18,10 +18,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 isset($_GET['id']) or showBadRequestErrorPage();
 
@@ -36,7 +38,7 @@ if (!$stmt->rowCount()) {
 
 $row = $stmt->fetch();
 
-$cfg = iMSCP_Registry::get('config');
+$cfg = Registry::get('config');
 if ($row['software_depot'] == 'yes') {
     $filename = $cfg['GUI_APS_DEPOT_DIR'] . '/' . $row['software_archive'] . '-' . $softwareId . '.tar.gz';
 } else {

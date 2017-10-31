@@ -18,17 +18,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 
 if (!customerHasFeature('protected_areas') || !isset($_GET['gname'])) {
     showBadRequestErrorPage();
 }
 
 try {
-    iMSCP_Registry::get('iMSCP_Application')->getDatabase()->beginTransaction();
+    Registry::get('iMSCP_Application')->getDatabase()->beginTransaction();
 
     $htgroupId = intval($_GET['gname']);
     $domainId = get_user_domain_id($_SESSION['user_id']);
@@ -57,12 +59,12 @@ try {
 
     // Schedule htgroup deletion
     exec_query("UPDATE htaccess_groups SET status = 'todelete' WHERE id = ? AND dmn_id = ?", [$htgroupId, $domainId]);
-    iMSCP_Registry::get('iMSCP_Application')->getDatabase()->commit();
+    Registry::get('iMSCP_Application')->getDatabase()->commit();
     set_page_message(tr('Htaccess group successfully scheduled for deletion.'), 'success');
     send_request();
     write_log(sprintf('%s deleted Htaccess group ID: %s', $_SESSION['user_logged'], $htgroupId), E_USER_NOTICE);
 } catch (iMSCP_Exception_Database $e) {
-    iMSCP_Registry::get('iMSCP_Application')->getDatabase()->rollBack();
+    Registry::get('iMSCP_Application')->getDatabase()->rollBack();
     set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
     write_log(sprintf('Could not delete htaccess group: %s', $e->getMessage()));
 }

@@ -20,9 +20,7 @@
 
 namespace iMSCP\Loader;
 
-use Zend_Loader_SplAutoloader as SplAutoloader;
-
-require_once 'Zend/Loader/SplAutoloader.php';
+require_once 'SplAutoloaderInterface.php';
 
 /**
  * PSR-0/PSR-4 compliant autoloader
@@ -33,7 +31,7 @@ require_once 'Zend/Loader/SplAutoloader.php';
  *
  * @package iMSCP
  */
-class StandardAutoloader implements SplAutoloader
+class StandardAutoloader implements SplAutoloaderInterface
 {
     const NS_SEPARATOR = '\\';
     const PREFIX_SEPARATOR = '_';
@@ -120,42 +118,6 @@ class StandardAutoloader implements SplAutoloader
     }
 
     /**
-     * Set flag indicating fallback autoloader status
-     *
-     * @param  bool $flag
-     * @return StandardAutoloader
-     */
-    public function setFallbackAutoloader($flag)
-    {
-        $this->fallbackAutoloaderFlag = (bool)$flag;
-        return $this;
-    }
-
-    /**
-     * Is this autoloader acting as a fallback autoloader?
-     *
-     * @return bool
-     */
-    public function isFallbackAutoloader()
-    {
-        return $this->fallbackAutoloaderFlag;
-    }
-
-    /**
-     * Register a namespace/directory pair
-     *
-     * @param string $namespace
-     * @param string $directory
-     * @return StandardAutoloader
-     */
-    public function registerNamespace($namespace, $directory)
-    {
-        $namespace = rtrim($namespace, self::NS_SEPARATOR) . self::NS_SEPARATOR;
-        $this->namespaces[$namespace] = $this->normalizeDirectory($directory);
-        return $this;
-    }
-
-    /**
      * Register many namespace/directory pairs at once
      *
      * @throws \Zend_Loader_Exception_InvalidArgumentException
@@ -178,17 +140,34 @@ class StandardAutoloader implements SplAutoloader
     }
 
     /**
-     * Register a prefix/directory pair
+     * Register a namespace/directory pair
      *
-     * @param  string $prefix
-     * @param  string $directory
+     * @param string $namespace
+     * @param string $directory
      * @return StandardAutoloader
      */
-    public function registerPrefix($prefix, $directory)
+    public function registerNamespace($namespace, $directory)
     {
-        $prefix = rtrim($prefix, self::PREFIX_SEPARATOR) . self::PREFIX_SEPARATOR;
-        $this->prefixes[$prefix] = $this->normalizeDirectory($directory);
+        $namespace = rtrim($namespace, self::NS_SEPARATOR) . self::NS_SEPARATOR;
+        $this->namespaces[$namespace] = $this->normalizeDirectory($directory);
         return $this;
+    }
+
+    /**
+     * Normalize the directory to include a trailing directory separator
+     *
+     * @param  string $directory
+     * @return string
+     */
+    protected function normalizeDirectory($directory)
+    {
+        $last = $directory[strlen($directory) - 1];
+        if (in_array($last, ['/', '\\'])) {
+            $directory[strlen($directory) - 1] = DIRECTORY_SEPARATOR;
+            return $directory;
+        }
+
+        return $directory . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -209,6 +188,32 @@ class StandardAutoloader implements SplAutoloader
             $this->registerPrefix($prefix, $directory);
         }
 
+        return $this;
+    }
+
+    /**
+     * Register a prefix/directory pair
+     *
+     * @param  string $prefix
+     * @param  string $directory
+     * @return StandardAutoloader
+     */
+    public function registerPrefix($prefix, $directory)
+    {
+        $prefix = rtrim($prefix, self::PREFIX_SEPARATOR) . self::PREFIX_SEPARATOR;
+        $this->prefixes[$prefix] = $this->normalizeDirectory($directory);
+        return $this;
+    }
+
+    /**
+     * Set flag indicating fallback autoloader status
+     *
+     * @param  bool $flag
+     * @return StandardAutoloader
+     */
+    public function setFallbackAutoloader($flag)
+    {
+        $this->fallbackAutoloaderFlag = (bool)$flag;
         return $this;
     }
 
@@ -254,11 +259,13 @@ class StandardAutoloader implements SplAutoloader
     }
 
     /**
-     * @inheritdoc
+     * Is this autoloader acting as a fallback autoloader?
+     *
+     * @return bool
      */
-    public function register()
+    public function isFallbackAutoloader()
     {
-        spl_autoload_register([$this, 'autoload']);
+        return $this->fallbackAutoloaderFlag;
     }
 
     /**
@@ -304,6 +311,29 @@ class StandardAutoloader implements SplAutoloader
     }
 
     /**
+     * Transform the class name to a filename
+     *
+     * @param  string $class
+     * @param  string $directory
+     * @return string
+     */
+    protected function transformClassNameToFilename($class, $directory)
+    {
+        // $class may contain a namespace portion, in which case we need
+        // to preserve any underscores in that portion.
+        $matches = [];
+        preg_match('/(?P<namespace>.+\\\)?(?P<class>[^\\\]+$)/', $class, $matches);
+
+        $class = (isset($matches['class'])) ? $matches['class'] : '';
+        $namespace = (isset($matches['namespace'])) ? $matches['namespace'] : '';
+
+        return $directory
+            . str_replace(self::NS_SEPARATOR, '/', $namespace)
+            . str_replace(self::PREFIX_SEPARATOR, '/', $class)
+            . '.php';
+    }
+
+    /**
      * Find a file
      *
      * @param string $class
@@ -330,42 +360,10 @@ class StandardAutoloader implements SplAutoloader
     }
 
     /**
-     * Transform the class name to a filename
-     *
-     * @param  string $class
-     * @param  string $directory
-     * @return string
+     * @inheritdoc
      */
-    protected function transformClassNameToFilename($class, $directory)
+    public function register()
     {
-        // $class may contain a namespace portion, in which case we need
-        // to preserve any underscores in that portion.
-        $matches = [];
-        preg_match('/(?P<namespace>.+\\\)?(?P<class>[^\\\]+$)/', $class, $matches);
-
-        $class = (isset($matches['class'])) ? $matches['class'] : '';
-        $namespace = (isset($matches['namespace'])) ? $matches['namespace'] : '';
-
-        return $directory
-            . str_replace(self::NS_SEPARATOR, '/', $namespace)
-            . str_replace(self::PREFIX_SEPARATOR, '/', $class)
-            . '.php';
-    }
-
-    /**
-     * Normalize the directory to include a trailing directory separator
-     *
-     * @param  string $directory
-     * @return string
-     */
-    protected function normalizeDirectory($directory)
-    {
-        $last = $directory[strlen($directory) - 1];
-        if (in_array($last, ['/', '\\'])) {
-            $directory[strlen($directory) - 1] = DIRECTORY_SEPARATOR;
-            return $directory;
-        }
-
-        return $directory . DIRECTORY_SEPARATOR;
+        spl_autoload_register([$this, 'autoload']);
     }
 }

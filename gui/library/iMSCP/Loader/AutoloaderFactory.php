@@ -109,9 +109,9 @@ abstract class AutoloaderFactory
                     throw new \InvalidArgumentException(sprintf('Autoloader class "%s" not loaded', $class));
                 }
 
-                if (!is_subclass_of($class, 'Zend_Loader_SplAutoloader')) {
+                if (!is_subclass_of($class, 'iMSCP\\Loader\\SplAutoloaderInterface')) {
                     throw new \InvalidArgumentException(sprintf(
-                        'Autoloader class %s must implement Zend_Loader_SplAutoloader', $class
+                        'Autoloader class %s must implement iMSCP\\Loader\\SplAutoloaderInterface', $class
                     ));
                 }
 
@@ -134,15 +134,29 @@ abstract class AutoloaderFactory
     }
 
     /**
-     * Get an list of all autoloaders registered with the factory
+     * Get an instance of the standard autoloader
      *
-     * Returns an array of autoloader instances.
+     * Used to attempt to resolve autoloader classes, using the
+     * StandardAutoloader. The instance is marked as a fallback autoloader, to
+     * allow resolving autoloaders not under the "Zend" or "Zend" namespaces.
      *
-     * @return array
+     * @return StandardAutoloader
      */
-    public static function getRegisteredAutoloaders()
+    protected static function getStandardAutoloader()
     {
-        return self::$loaders;
+        if (NULL !== self::$standardAutoloader) {
+            return self::$standardAutoloader;
+        }
+
+        // Extract the filename from the classname
+        $stdAutoloader = substr(strrchr(self::STANDARD_AUTOLOADER, '\\'), 1);
+
+        if (!class_exists(self::STANDARD_AUTOLOADER)) {
+            require_once __DIR__ . "/$stdAutoloader.php";
+        }
+
+        self::$standardAutoloader = new StandardAutoloader();
+        return self::$standardAutoloader;
     }
 
     /**
@@ -185,6 +199,18 @@ abstract class AutoloaderFactory
     }
 
     /**
+     * Get an list of all autoloaders registered with the factory
+     *
+     * Returns an array of autoloader instances.
+     *
+     * @return array
+     */
+    public static function getRegisteredAutoloaders()
+    {
+        return self::$loaders;
+    }
+
+    /**
      * Unregister a single autoloader by class name
      *
      * @param  string $autoloaderClass
@@ -209,31 +235,5 @@ abstract class AutoloaderFactory
 
         unset(self::$loaders[$autoloaderClass]);
         return true;
-    }
-
-    /**
-     * Get an instance of the standard autoloader
-     *
-     * Used to attempt to resolve autoloader classes, using the
-     * StandardAutoloader. The instance is marked as a fallback autoloader, to
-     * allow resolving autoloaders not under the "Zend" or "Zend" namespaces.
-     *
-     * @return StandardAutoloader
-     */
-    protected static function getStandardAutoloader()
-    {
-        if (NULL !== self::$standardAutoloader) {
-            return self::$standardAutoloader;
-        }
-
-        // Extract the filename from the classname
-        $stdAutoloader = substr(strrchr(self::STANDARD_AUTOLOADER, '\\'), 1);
-
-        if (!class_exists(self::STANDARD_AUTOLOADER)) {
-            require_once __DIR__ . "/$stdAutoloader.php";
-        }
-
-        self::$standardAutoloader = new StandardAutoloader();
-        return self::$standardAutoloader;
     }
 }

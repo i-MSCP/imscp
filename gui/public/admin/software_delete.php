@@ -19,6 +19,7 @@
  */
 
 use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -47,7 +48,7 @@ function gen_page_data(TemplateEngine $tpl)
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 isset($_REQUEST['id']) or showBadRequestErrorPage();
 
@@ -79,7 +80,7 @@ $row2 = $stmt->fetch();
 $tpl->assign('DELETE_SOFTWARE_RESELLER', tr('%1$s (%2$s)', $row2['admin_name'], $row2['email']));
 
 if ($row['software_depot'] == 'yes') {
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
     @unlink($cfg['GUI_APS_DEPOT_DIR'] . '/' . $row['software_archive'] . '-' . $softwareId . '.tar.gz');
     exec_query('UPDATE  web_software_inst SET software_res_del = 1 WHERE software_master_id = ?', [$softwareId]);
     exec_query('DELETE FROM web_software WHERE software_id = ?', [$softwareId]);
@@ -90,7 +91,7 @@ if ($row['software_depot'] == 'yes') {
 
 if (isset($_POST['id']) && $_POST['uaction'] === 'send_delmessage') {
     if (!empty($_POST['id']) && !empty($_POST['delete_msg_text'])) {
-        $cfg = iMSCP_Registry::get('config');
+        $cfg = Registry::get('config');
         send_deleted_sw(
             $row['reseller_id'], $row['software_archive'] . '.tar.gz',
             $row['software_id'],

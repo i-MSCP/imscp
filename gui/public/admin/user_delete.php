@@ -25,6 +25,8 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -39,10 +41,10 @@
 function admin_deleteUser($userId)
 {
     $userId = intval($userId);
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     /** @var iMSCP_Database $db */
-    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     $stmt = exec_query(
         '
@@ -94,14 +96,14 @@ function admin_deleteUser($userId)
         // Cleanup database
         $db->beginTransaction();
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteUser, ['userId' => $userId]);
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onBeforeDeleteUser, ['userId' => $userId]);
 
         foreach ($itemsToDelete as $table => $where) {
             $query = "DELETE FROM " . quoteIdentifier($table) . ($where ? " WHERE $where" : '');
             exec_query($query, array_fill(0, substr_count($where, '?'), $userId));
         }
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteUser, ['userId' => $userId]);
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAfterDeleteUser, ['userId' => $userId]);
 
         $db->commit();
 
@@ -149,7 +151,7 @@ function admin_deleteUser($userId)
  */
 function _admin_deleteResellerSwPackages($userId, array $swPackages)
 {
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     // Remove all reseller's software packages if any
     foreach ($swPackages as $package) {
@@ -212,7 +214,7 @@ function admin_validateUserDeletion($userId)
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) { # admin/reseller deletion
     if (admin_validateUserDeletion($_GET['delete_id'])) {

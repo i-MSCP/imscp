@@ -19,7 +19,6 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
@@ -132,7 +131,9 @@ function generateDMYlists(TemplateEngine $tpl, $day, $month, $year, $nPastYears)
  */
 function generateNavigation(TemplateEngine $tpl)
 {
-    EventsManager::getInstance()->dispatch(Events::onBeforeGenerateNavigation, ['templateEngine' => $tpl]);
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeGenerateNavigation, [
+        'templateEngine' => $tpl
+    ]);
 
     $cfg = Registry::get('config');
     $tpl->define_dynamic([
@@ -330,7 +331,9 @@ function generateNavigation(TemplateEngine $tpl)
             ? $cfg['CodeName'] : tohtml(tr('Unknown'))
     ]);
 
-    EventsManager::getInstance()->dispatch(Events::onAfterGenerateNavigation, ['templateEngine' => $tpl]);
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterGenerateNavigation, [
+        'templateEngine' => $tpl
+    ]);
 }
 
 /**

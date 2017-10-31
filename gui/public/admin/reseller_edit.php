@@ -20,7 +20,6 @@
 
 use iMSCP\Crypt as Crypt;
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_PHPini as PhpIni;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
@@ -204,7 +203,7 @@ function generateIpListForm(TemplateEngine $tpl)
         'TR_STATUS'     => tr('Usage status')
     ]);
 
-    EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
+    Registry::get('iMSCP_Application')->getEventsManager()->registerListener(Events::onGetJsTranslations, function ($e) {
         /** @var $e \iMSCP_Events_Event */
         $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
     });
@@ -317,7 +316,7 @@ function generateFeaturesForm(TemplateEngine $tpl)
         'TR_SEC'                           => tr('Sec.')
     ]);
 
-    EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
+    Registry::get('iMSCP_Application')->getEventsManager()->registerListener(Events::onGetJsTranslations, function ($e) {
         /** @var iMSCP_Events_Event $e */
         $translations = $e->getParam('translations');
         $translations['core']['close'] = tr('Close');
@@ -586,7 +585,7 @@ function updateResellerUser(Form $form)
         }
 
         if (empty($errFieldsStack) && !$error) {
-            EventsManager::getInstance()->dispatch(Events::onBeforeEditUser, [
+            Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeEditUser, [
                 'userId'   => $resellerId,
                 'userData' => $form->getValues()
             ]);
@@ -718,7 +717,7 @@ function updateResellerUser(Form $form)
             // Force user to login again (needed due to possible password or email change)
             exec_query('DELETE FROM login WHERE user_name = ?', [$data['fallback_admin_name']]);
 
-            EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
+            Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterEditUser, [
                 'userId'   => $resellerId,
                 'userData' => $form->getValues()
             ]);
@@ -744,7 +743,7 @@ function updateResellerUser(Form $form)
             set_page_message('Reseller has been updated.', 'success');
             redirectTo('users.php');
         } elseif (!empty($errFieldsStack)) {
-            iMSCP_Registry::set('errFieldsStack', $errFieldsStack);
+            Registry::set('errFieldsStack', $errFieldsStack);
         }
     } catch (Exception $e) {
         $db->rollBack();
@@ -857,7 +856,7 @@ function generatePage(TemplateEngine $tpl, Form $form)
 require 'imscp-lib.php';
 
 check_login('admin');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptStart);
 
 if (!isset($_GET['edit_id'])) {
     showBadRequestErrorPage();
@@ -895,7 +894,7 @@ generatePage($tpl, $form);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

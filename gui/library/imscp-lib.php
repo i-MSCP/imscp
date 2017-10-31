@@ -37,6 +37,8 @@ set_include_path(implode(PATH_SEPARATOR, array_unique(array_merge(
     [LIBRARY_PATH, LIBRARY_PATH . '/vendor/Zend/library'], explode(PATH_SEPARATOR, get_include_path())
 ))));
 
+// Composer autoloader (classmap)
+require_once LIBRARY_PATH . '/vendor/autoload.php';
 require_once 'iMSCP/Application.php';
 
 // Bootstrap application

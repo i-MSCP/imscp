@@ -25,6 +25,8 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -50,7 +52,7 @@ function scheduleBackupRestoration($userId)
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 customerHasFeature('backup') or showBadRequestErrorPage();
 
 if (!empty($_POST)) {
@@ -64,7 +66,7 @@ $tpl->define_dynamic([
     'page_message' => 'layout'
 ]);
 
-$cfg = iMSCP_Registry::get('config');
+$cfg = Registry::get('config');
 $algo = strtolower($cfg['BACKUP_COMPRESS_ALGORITHM']);
 
 if ($algo == 'no') {
@@ -100,7 +102,7 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

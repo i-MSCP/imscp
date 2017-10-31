@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -40,7 +42,7 @@ function generatePage($tpl)
         'ACCOUNT_TYPE'         => tr('Administrator'),
         'TR_REGISTRATION_DATE' => tr('Registration date'),
         'REGISTRATION_DATE'    => ($row['domain_created'] != 0)
-            ? tohtml(date(iMSCP_Registry::get('config')['DATE_FORMAT'], $row['domain_created'])) : tr('N/A')
+            ? tohtml(date(Registry::get('config')['DATE_FORMAT'], $row['domain_created'])) : tr('N/A')
     ]);
 }
 
@@ -51,7 +53,7 @@ function generatePage($tpl)
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
@@ -66,7 +68,9 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptEnd, [
+    'templateEngine' => $tpl
+]);
 $tpl->prnt();
 
 unsetMessages();

@@ -20,16 +20,15 @@
 
 use iMSCP_Authentication as Auth;
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
 
 require 'imscp-lib.php';
 
-EventsManager::getInstance()->dispatch(Events::onLoginScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onLoginScriptStart);
 
 if (isset($_REQUEST['action'])) {
-    init_login(EventsManager::getInstance());
+    init_login(Registry::get('iMSCP_Application')->getEventsManager());
     $auth = Auth::getInstance();
 
     switch ($_REQUEST['action']) {
@@ -131,5 +130,5 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onLoginScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onLoginScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

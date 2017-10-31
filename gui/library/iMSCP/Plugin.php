@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 /**
  * iMSCP_Plugin class
  */
@@ -592,7 +594,7 @@ abstract class iMSCP_Plugin
         }
 
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
 
         try {
             foreach ($migrationFiles as $migrationFile) {

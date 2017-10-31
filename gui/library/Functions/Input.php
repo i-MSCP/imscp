@@ -19,9 +19,10 @@
  */
 
 use iMSCP_Exception as iMSCPException;
-use Zend_Escaper_Escaper as Escaper;
+use Zend\Escaper\Escaper as Escaper;
 use Zend_Filter_Digits as FilterDigits;
 use Zend_Validate_File_MimeType as FileMimeTypeValidator;
+use iMSCP_Registry as Registry;
 
 global $ESCAPER;
 $ESCAPER = new Escaper('UTF-8');
@@ -159,7 +160,7 @@ function tourl($string)
 function checkPasswordSyntax($password, $unallowedChars = '/[^\x21-\x7e]/', $noErrorMsg = false)
 {
     /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
     $ret = true;
     $passwordLength = strlen($password);
 
@@ -360,7 +361,7 @@ function checkMimeType($pathFile, array $mimeTypes)
  */
 function getUserLoginDataForm($usernameRequired = true, $passwordRequired = true)
 {
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
     $minPasswordLength = intval($cfg['PASSWD_CHARS']);
 
     if ($minPasswordLength < 6) {

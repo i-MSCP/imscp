@@ -19,6 +19,7 @@
  */
 
 use iMSCP\VirtualFileSystem as VirtualFileSystem;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -242,7 +243,7 @@ function reseller_editDomainAlias()
         $documentRoot = utils_normalizePath('/htdocs' . $documentRoot);
     }
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeEditDomainAlias, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onBeforeEditDomainAlias, [
         'domainAliasId' => $domainAliasId,
         'mountPoint'    => $domainAliasData['alias_mount'],
         'documentRoot'  => $documentRoot,
@@ -260,7 +261,7 @@ function reseller_editDomainAlias()
         [$documentRoot, $forwardUrl, $forwardType, $forwardHost, $domainAliasId]
     );
 
-    iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditDomainAlias, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAfterEditDomainAlias, [
         'domainAliasId' => $domainAliasId,
         'mountPoint'    => $domainAliasData['alias_mount'],
         'documentRoot'  => $documentRoot,
@@ -281,7 +282,7 @@ function reseller_editDomainAlias()
 require_once 'imscp-lib.php';
 
 check_login('reseller');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onResellerScriptStart);
 resellerHasFeature('domain_aliases') && resellerHasCustomers() or showBadRequestErrorPage();
 
 if (!empty($_POST) && reseller_editDomainAlias()) {
@@ -322,7 +323,7 @@ $tpl->assign([
     'TR_CANCEL'                 => tr('Cancel')
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+Registry::get('iMSCP_Application')->getEventsManager()->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e iMSCP_Events_Event */
     $translations = $e->getParam('translations');
     $translations['core']['close'] = tr('Close');
@@ -334,7 +335,7 @@ reseller_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

@@ -20,8 +20,8 @@
 
 use iMSCP\Crypt as Crypt;
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -46,7 +46,7 @@ function updatePassword()
         return;
     }
 
-    EventsManager::getInstance()->dispatch(Events::onBeforeEditUser, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeEditUser, [
         'userId'   => $_SESSION['user_id'],
         'userData' => [
             'admin_name' => get_user_name($_SESSION['user_id']),
@@ -61,7 +61,7 @@ function updatePassword()
         ",
         [Crypt::apr1MD5($form->getValue('admin_pass')), $_SESSION['user_id']]
     );
-    EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterEditUser, [
         'userId'   => $_SESSION['user_id'],
         'userData' => [
             'admin_name' => get_user_name($_SESSION['user_id']),

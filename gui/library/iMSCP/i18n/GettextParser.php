@@ -121,7 +121,7 @@ class GettextParser
      */
     public function getTranslationTable()
     {
-        if (null === $this->translationTable) {
+        if (NULL === $this->translationTable) {
             $this->translationTable = $this->_parse(self::TRANSLATION_TABLE);
         }
 
@@ -277,7 +277,7 @@ class GettextParser
      */
     public function getHeaders()
     {
-        if (null === $this->headers) {
+        if (NULL === $this->headers) {
             $this->headers = $this->_parse(self::HEADERS);
         }
 

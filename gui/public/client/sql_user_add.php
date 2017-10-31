@@ -20,7 +20,6 @@
 
 use iMSCP_Config_Handler_File as ConfigFile;
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
 use iMSCP_Validate as Validator;
@@ -257,7 +256,7 @@ function addSqlUser($sqldId)
     $row = $stmt->fetch();
     $mysqlConfig = new ConfigFile(Registry::get('config')['CONF_DIR'] . '/mysql/mysql.data');
 
-    EventsManager::getInstance()->dispatch(Events::onBeforeAddSqlUser, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeAddSqlUser, [
         'SqlUsername'     => $user,
         'SqlUserHost'     => $host,
         'SqlUserPassword' => isset($password) ? $password : ''
@@ -288,7 +287,7 @@ function addSqlUser($sqldId)
 
     exec_query(sprintf('GRANT ALL PRIVILEGES ON %s.* to ?@?', quoteIdentifier($row['sqld_name'])), [$user, $host]);
     exec_query('INSERT INTO sql_user (sqld_id, sqlu_name, sqlu_host) VALUES (?, ?, ?)', [$sqldId, $user, $host]);
-    EventsManager::getInstance()->dispatch(Events::onAfterAddSqlUser, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterAddSqlUser, [
         'SqlUserId'       => Registry::get('iMSCP_Application')->getDatabase()->lastInsertId(),
         'SqlUsername'     => $user,
         'SqlUserHost'     => $host,
@@ -369,7 +368,7 @@ function generatePage(TemplateEngine $tpl, $sqldId)
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptStart);
 customerHasFeature('sql') && isset($_REQUEST['sqld_id']) or showBadRequestErrorPage();
 
 $sqldId = intval($_REQUEST['sqld_id']);
@@ -415,7 +414,7 @@ generatePage($tpl, $sqldId);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

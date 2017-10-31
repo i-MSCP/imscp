@@ -19,8 +19,8 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Script functions
@@ -91,7 +91,7 @@ function generatePage(TemplateEngine $tpl)
 require 'imscp-lib.php';
 
 check_login('reseller');
-EventsManager::getInstance()->dispatch(Events::onResellerScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onResellerScriptStart);
 resellerHasCustomers() or showBadRequestErrorPage();
 
 $tpl = new TemplateEngine();
@@ -120,7 +120,7 @@ $tpl->assign([
     'TR_USER_TOOLTIP' => tohtml(tr('Show detailed statistics for this user'), 'htmlAttr')
 ]);
 
-EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
+Registry::get('iMSCP_Application')->getEventsManager()->registerListener(Events::onGetJsTranslations, function ($e) {
     /** @var $e \iMSCP_Events_Event */
     $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
 });
@@ -130,7 +130,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

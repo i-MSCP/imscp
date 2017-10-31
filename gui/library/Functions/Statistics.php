@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 /**
  * Return usage in percent
  *
@@ -42,7 +44,7 @@ function getClientMonthlyTrafficStats($domainId)
 
     if (NULL === $stmt) {
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
         $stmt = $db->prepare(
             '
                 SELECT IFNULL(SUM(dtraff_web), 0) AS dtraff_web,
@@ -83,7 +85,7 @@ function getClientTrafficAndDiskStats($clientId)
 
     if (NULL === $stmt) {
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
         $stmt = $db->prepare(
             'SELECT domain_id, IFNULL(domain_disk_usage, 0) AS disk_usage FROM domain WHERE domain_admin_id = ?'
         );
@@ -116,7 +118,7 @@ function getClientItemCountsAndLimits($clientId)
 
     if (NULL === $stmt) {
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
         $stmt = $db->prepare(
             '
                SELECT domain_id, domain_subd_limit, domain_alias_limit, domain_mailacc_limit, domain_ftpacc_limit,
@@ -163,7 +165,7 @@ function getResellerStats($resellerId)
 
     if (NULL === $stmt) {
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
         $stmt = $db->prepare(
             '
                 SELECT t1.domain_admin_id

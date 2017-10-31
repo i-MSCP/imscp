@@ -20,7 +20,6 @@
 
 use iMSCP\Crypt as Crypt;
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_PHPini as PhpIni;
 use iMSCP_pTemplate as TemplateEngine;
@@ -161,7 +160,7 @@ function addCustomer(Form $form)
 
         $adminId = $db->lastInsertId();
 
-        EventsManager::getInstance()->dispatch(Events::onBeforeAddDomain, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeAddDomain, [
             'createdBy'     => $_SESSION['user_id'],
             'customerId'    => $adminId,
             'customerEmail' => $form->getValue('email'),
@@ -222,7 +221,7 @@ function addCustomer(Form $form)
         ]);
         update_reseller_c_props($_SESSION['user_id']);
 
-        EventsManager::getInstance()->dispatch(Events::onAfterAddDomain, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterAddDomain, [
             'createdBy'     => $_SESSION['user_id'],
             'customerId'    => $adminId,
             'customerEmail' => $form->getValue('email'),
@@ -275,7 +274,7 @@ function generatePage(TemplateEngine $tpl, Form $form)
 require 'imscp-lib.php';
 
 check_login('reseller');
-EventsManager::getInstance()->dispatch(Events::onResellerScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onResellerScriptStart);
 
 if (!getPreviousStepData()) {
     set_page_message(tr('Data were altered. Please try again.'), 'error');
@@ -309,5 +308,5 @@ generatePage($tpl, $form);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

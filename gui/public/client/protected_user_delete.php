@@ -18,17 +18,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 
 if (!customerHasFeature('protected_areas') || !isset($_GET['uname'])) {
     showBadRequestErrorPage();
 }
 
 /** @var iMSCP_Database $db */
-$db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+$db = Registry::get('iMSCP_Application')->getDatabase();
 
 try {
     $db->beginTransaction();

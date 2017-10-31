@@ -19,7 +19,6 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
 
@@ -47,7 +46,7 @@ function moveReseller($resellerId, $fromAdministratorId, $toAdministratorId)
         // Move reseller to (TO) administrator
         exec_query('UPDATE admin SET created_by = ? WHERE admin_id = ?', [$toAdministratorId, $resellerId]);
 
-        EventsManager::getInstance()->dispatch(Events::onMoveReseller, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onMoveReseller, [
             'resellerId'          => $resellerId,
             'fromAdministratorId' => $fromAdministratorId,
             'toAdministratorId'   => $toAdministratorId
@@ -161,7 +160,7 @@ function generatePage(TemplateEngine $tpl)
 require 'imscp-lib.php';
 
 check_login('admin');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptStart);
 systemHasManyAdmins() or showBadRequestErrorPage();
 
 if (isset($_POST['uaction'])
@@ -189,7 +188,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

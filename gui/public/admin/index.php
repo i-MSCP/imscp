@@ -20,7 +20,6 @@
 
 use iMSCP\Update\UpdateVersion;
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
 
@@ -153,7 +152,7 @@ function admin_generateServerTrafficInfo($tpl)
 require 'imscp-lib.php';
 
 check_login('admin', Registry::get('config')['PREVENT_EXTERNAL_LOGIN_ADMIN']);
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptStart);
 
 $tpl = new TemplateEngine();
 $tpl->define_dynamic([
@@ -187,7 +186,7 @@ admin_generateServerTrafficInfo($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

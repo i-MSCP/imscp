@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -349,14 +351,14 @@ function generatePage($tpl, $phpini, $config, $configLevel)
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 customerHasFeature('php_editor') or showBadRequestErrorPage();
 
 $phpini = iMSCP_PHPini::getInstance();
 $phpini->loadResellerPermissions($_SESSION['user_created_by']); // Load reseller PHP permissions
 $phpini->loadClientPermissions($_SESSION['user_id']); // Load client PHP permissions
 
-$config = iMSCP_Registry::get('config');
+$config = Registry::get('config');
 $confDir = $config['CONF_DIR'];
 $srvConfig = new iMSCP_Config_Handler_File("$confDir/php/php.data");
 $configLevel = $srvConfig['PHP_CONFIG_LEVEL'];
@@ -394,7 +396,7 @@ generatePage($tpl, $phpini, $config, $configLevel);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

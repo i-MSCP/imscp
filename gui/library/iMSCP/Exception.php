@@ -28,7 +28,7 @@ class iMSCP_Exception extends Exception
      *
      * Note: We cannot enforce type declaration of Exception since we want be
      * compatible with both PHP5 and PHP 7.
-     * 
+     *
      * See http://php.net/manual/fr/migration70.incompatible.php
      *
      * @param string $msg Exception Message

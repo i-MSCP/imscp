@@ -20,6 +20,7 @@
 
 use iMSCP\Update\UpdateException;
 use iMSCP\Update\UpdateVersion;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -34,7 +35,7 @@ use iMSCP\Update\UpdateVersion;
 function admin_generatePage($tpl)
 {
     try {
-        $cfg = iMSCP_Registry::get('config');
+        $cfg = Registry::get('config');
 
         if (!$cfg['CHECK_FOR_UPDATES']) {
             set_page_message(tr('i-MSCP version update checking is disabled.'), 'static_info');
@@ -82,8 +83,8 @@ function admin_generatePage($tpl)
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
-stripos(iMSCP_Registry::get('config')['Version'], 'git') === false or showBadRequestErrorPage();
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptStart);
+stripos(Registry::get('config')['Version'], 'git') === false or showBadRequestErrorPage();
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
@@ -101,7 +102,9 @@ admin_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptEnd, [
+    'templateEngine' => $tpl
+]);
 $tpl->prnt();
 
 unsetMessages();

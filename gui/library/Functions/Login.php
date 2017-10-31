@@ -23,32 +23,32 @@ use iMSCP_Authentication as Auth;
 use iMSCP_Authentication_AuthEvent as AuthEvent;
 use iMSCP_Authentication_Result as AuthResult;
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Events_Event as Event;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_Plugin_Bruteforce as BrutforcePlugin;
 use iMSCP_Registry as Registry;
+use iMSCP_Events_Manager_Interface as EventsManagerInterface;
 
 /**
  * Initialize login
  *
- * @param iMSCP_Events_Manager_Interface $eventManager
+ * @param EventsManagerInterface $eventsManager
  * @return void
  */
-function init_login($eventManager)
+function init_login(EventsManagerInterface $eventsManager)
 {
     do_session_timeout();
 
     if (Registry::get('config')['BRUTEFORCE']) {
         $bruteforce = new BrutforcePlugin(Registry::get('iMSCP_Application')->getPluginManager());
-        $bruteforce->register($eventManager);
+        $bruteforce->register($eventsManager);
     }
 
     // Register default authentication handler with high-priority
-    $eventManager->registerListener(Events::onAuthentication, 'login_credentials', 99);
+    $eventsManager->registerListener(Events::onAuthentication, 'login_credentials', 99);
 
     // Register listener that is responsible to check domain status and expire date
-    $eventManager->registerListener(Events::onBeforeSetIdentity, 'login_checkDomainAccount');
+    $eventsManager->registerListener(Events::onBeforeSetIdentity, 'login_checkDomainAccount');
 }
 
 /**
@@ -106,7 +106,7 @@ function login_credentials(AuthEvent $authEvent)
     if (strpos($identity->admin_pass, '$apr1$') !== 0) { # Not an APR-1 hashed password, we recreate the hash
         // We must postpone update until the onAfterAuthentication event to handle cases where the authentication process
         // fail later on (case of a multi-factor authentication process)
-        EventsManager::getInstance()->registerListener(
+        Registry::get('iMSCP_Application')->getEventsManager()->registerListener(
             Events::onAfterAuthentication,
             function (Event $event) use ($password) {
                 /** @var AuthResult $authResult */

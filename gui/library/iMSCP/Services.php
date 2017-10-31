@@ -73,6 +73,22 @@ class iMSCP_Services implements iterator, countable
     }
 
     /**
+     * Get a service property value
+     *
+     * @throws iMSCP_Exception
+     * @param int $index Service property index
+     * @return mixed Service property value
+     */
+    private function getProperty($index)
+    {
+        if (!is_null($this->queriedService)) {
+            return $this->services[$this->queriedService][$index];
+        } else {
+            throw new iMSCP_Exception('Name of service to query is not set');
+        }
+    }
+
+    /**
      * Check if a service is running
      *
      * @param bool $refresh Flag indicating whether or not cached values must
@@ -157,22 +173,6 @@ class iMSCP_Services implements iterator, countable
     public function getPort()
     {
         return $this->getProperty(0);
-    }
-
-    /**
-     * Get a service property value
-     *
-     * @throws iMSCP_Exception
-     * @param int $index Service property index
-     * @return mixed Service property value
-     */
-    private function getProperty($index)
-    {
-        if (!is_null($this->queriedService)) {
-            return $this->services[$this->queriedService][$index];
-        } else {
-            throw new iMSCP_Exception('Name of service to query is not set');
-        }
     }
 
     /**

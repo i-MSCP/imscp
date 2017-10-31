@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 /**
  * Script that allows to import mail accounts into i-MSCP using a CSV file as source.
  * CSV file entries must be as follow:
@@ -112,7 +114,7 @@ if (($handle = fopen($csvFilePath, 'r')) === false) {
 }
 
 /** @var iMSCP_Database $db */
-$db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+$db = Registry::get('iMSCP_Application')->getDatabase();
 $stmt = $db->prepare(
     "
         INSERT INTO mail_users (

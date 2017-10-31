@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -310,12 +312,12 @@ function addSubdomain()
     }
 
     /** @var iMSCP_Database $db */
-    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeAddSubdomain, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onBeforeAddSubdomain, [
             'subdomainName'  => $subdomainName,
             'subdomainType'  => $domainType,
             'parentDomainId' => $domainId,
@@ -361,7 +363,7 @@ function addSubdomain()
         $phpini->loadDomainIni($_SESSION['user_id'], $mainDmnProps['domain_id'], 'dmn'); // Load main domain PHP configuration options
         $phpini->saveDomainIni($_SESSION['user_id'], $subdomainId, $domainType == 'dmn' ? 'sub' : 'subals');
 
-        $cfg = iMSCP_Registry::get('config');
+        $cfg = Registry::get('config');
 
         if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
             createDefaultMailAccounts(
@@ -372,7 +374,7 @@ function addSubdomain()
             );
         }
 
-        iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterAddSubdomain, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAfterAddSubdomain, [
             'subdomainName'  => $subdomainName,
             'subdomainType'  => $domainType,
             'parentDomainId' => $domainId,
@@ -404,7 +406,7 @@ function addSubdomain()
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 customerHasFeature('subdomains') or showBadRequestErrorPage();
 
 $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
@@ -459,7 +461,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

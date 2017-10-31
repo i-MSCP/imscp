@@ -55,7 +55,7 @@ use fields qw/ _php_cmd _stdout _stderr _attrs /;
     home_dir:       Unix user homedir (default: <user> homedir)
     working_dir:    Composer working directory (default: <home_dir>)
     composer_path:  Composer path (default: <home_dir>/composer.phar)
-    composer_json:  Composer json file (default: self-generated)
+    composer_json:  Composer json file content (default: self-generated)
  Return iMSCP::Composer, die on failure
 
 =cut

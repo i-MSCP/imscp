@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 /**
  * iMSCP validation class
  */
@@ -57,7 +59,7 @@ class iMSCP_Validate
      */
     private function __construct()
     {
-        $this->config = iMSCP_Registry::get('config');
+        $this->config = Registry::get('config');
     }
 
     /**

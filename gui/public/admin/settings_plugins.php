@@ -23,7 +23,6 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventManager;
 use iMSCP_Events_Listener_ResponseCollection as EventCollection;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_Plugin_Manager as PluginManager;
@@ -224,10 +223,10 @@ function generatePage($tpl, $pluginManager)
             } elseif ($pluginManager->pluginIsUninstalled($pluginName)) { // Uninstalled plugin
                 $tpl->assign([
                     'PLUGIN_DEACTIVATE_LINK' => '',
-                    'ACTIVATE_ACTION'        => $pluginManager->pluginIsInstallable($pluginName) 
-                         ? 'install' : 'enable',
-                    'TR_ACTIVATE_TOOLTIP'    => $pluginManager->pluginIsInstallable($pluginName) 
-                         ? tr('Install this plugin') : tr('Activate this plugin'),
+                    'ACTIVATE_ACTION'        => $pluginManager->pluginIsInstallable($pluginName)
+                        ? 'install' : 'enable',
+                    'TR_ACTIVATE_TOOLTIP'    => $pluginManager->pluginIsInstallable($pluginName)
+                        ? tr('Install this plugin') : tr('Activate this plugin'),
                     'UNINSTALL_ACTION'       => 'delete',
                     'TR_UNINSTALL_TOOLTIP'   => tr('Delete this plugin'),
                     'PLUGIN_PROTECTED_LINK'  => ''
@@ -516,16 +515,20 @@ function doBulkAction($pluginManager)
  * @param iMSCP
  * @return void
  */
-function updatePluginList($pluginManager)
+function updatePluginList(PluginManager $pluginManager)
 {
     /** @var EventCollection $responses */
-    $responses = EventManager::getInstance()->dispatch(Events::onBeforeUpdatePluginList, ['pluginManager' => $pluginManager]);
+    $responses = $pluginManager->getEventsManager()->dispatch(Events::onBeforeUpdatePluginList, [
+        'pluginManager' => $pluginManager
+    ]);
     if ($responses->isStopped()) {
         return;
     }
 
     $updateInfo = $pluginManager->pluginUpdateList();
-    EventManager::getInstance()->dispatch(Events::onAfterUpdatePluginList, ['pluginManager' => $pluginManager]);
+    $pluginManager->getEventsManager()->dispatch(Events::onAfterUpdatePluginList, [
+        'pluginManager' => $pluginManager
+    ]);
     set_page_message(
         tr(
             'Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated, %s plugin(s) reconfigured, and %s plugin(s) deleted.',
@@ -542,12 +545,14 @@ function updatePluginList($pluginManager)
 require 'imscp-lib.php';
 
 check_login('admin');
-EventManager::getInstance()->dispatch(Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptStart);
 
 /** @var PluginManager $pluginManager */
 $pluginManager = Registry::get('iMSCP_Application')->getPluginManager();
 
-if (!empty($_POST) || !empty($_GET) || !empty($_FILES)) {
+if (!empty($_REQUEST)
+    || !empty($_FILES)
+) {
     if (isset($_GET['update_plugin_list'])) {
         updatePluginList($pluginManager);
     } elseif (isset($_GET['install'])) {
@@ -623,15 +628,17 @@ $tpl->define_dynamic([
     'plugin_protected_link'       => 'plugin_block'
 ]);
 
-EventManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($event) {
-    /** @var $event \iMSCP_Events_Event $translations */
-    $event->getParam('translations')->core = array_merge($event->getParam('translations')->core, [
-        'dataTable'     => getDataTablesPluginTranslations(false),
-        'force_retry'   => tr('Force retry'),
-        'close'         => tr('Close'),
-        'error_details' => tr('Error details')
-    ]);
-});
+Registry::get('iMSCP_Application')->getEventsManager()->registerListener(
+    Events::onGetJsTranslations,
+    function (iMSCP_Events_Event $event) {
+        $event->getParam('translations')->core = array_merge($event->getParam('translations')->core, [
+            'dataTable'     => getDataTablesPluginTranslations(false),
+            'force_retry'   => tr('Force retry'),
+            'close'         => tr('Close'),
+            'error_details' => tr('Error details')
+        ]);
+    }
+);
 
 $tpl->assign([
     'TR_PAGE_TITLE'             => tr('Admin / Settings / Plugin Management'),
@@ -666,7 +673,7 @@ generatePage($tpl, $pluginManager);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

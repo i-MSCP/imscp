@@ -20,7 +20,6 @@
 
 use iMSCP_Authentication as Authentication;
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
 
@@ -309,7 +308,7 @@ function addDomainAlias()
     try {
         $db->beginTransaction();
 
-        EventsManager::getInstance()->dispatch(Events::onBeforeAddDomainAlias, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeAddDomainAlias, [
             'domainId'        => $mainDmnProps['domain_id'],
             'domainAliasName' => $domainAliasNameAscii,
             'mountPoint'      => $mountPoint,
@@ -357,7 +356,7 @@ function addDomainAlias()
             }
         }
 
-        EventsManager::getInstance()->dispatch(Events::onAfterAddDomainAlias, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterAddDomainAlias, [
             'domainId'        => $mainDmnProps['domain_id'],
             'domainAliasName' => $domainAliasNameAscii,
             'domainAliasId'   => $id,
@@ -396,7 +395,7 @@ function addDomainAlias()
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptStart);
 customerHasFeature('domain_aliases') or showBadRequestErrorPage();
 
 $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
@@ -449,7 +448,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

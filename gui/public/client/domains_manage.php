@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -56,7 +58,7 @@ function generateDomainRedirectAndEditLink($id, $status, $redirectUrl)
 function generateDomainsList($tpl)
 {
     global $baseServerVhostUtf8;
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     $stmt = exec_query(
         "
@@ -198,7 +200,7 @@ function generateDomainAliasesList($tpl)
     }
 
     global $baseServerVhostUtf8;
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
 
     $domainId = get_user_domain_id($_SESSION['user_id']);
     $stmt = exec_query(
@@ -361,7 +363,7 @@ function generateSubdomainsList($tpl)
     }
 
     global $baseServerVhostUtf8;
-    $cfg = iMSCP_Registry::get('config');
+    $cfg = Registry::get('config');
     $domainId = get_user_domain_id($_SESSION['user_id']);
 
     $stmt = exec_query(
@@ -605,7 +607,7 @@ function generateCustomDnsRecordsList($tpl)
 require_once 'imscp-lib.php';
 
 check_login('user');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
@@ -662,7 +664,7 @@ $tpl->assign([
     'TR_DOMAIN_NAME'    => tr('Domain')
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+Registry::get('iMSCP_Application')->getEventsManager()->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e \iMSCP_Events_Event */
     $translations = $e->getParam('translations');
     $translations['core']['als_delete_alert'] = tr('Are you sure you want to delete this domain alias?');
@@ -673,8 +675,8 @@ iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', 
 
 global $baseServerVhostUtf8;
 
-if (iMSCP_Registry::get('config')->get('CLIENT_DOMAIN_ALT_URLS')) {
-    $baseServerVhostUtf8 = decode_idna(iMSCP_Registry::get('config')->get('BASE_SERVER_VHOST'));
+if (Registry::get('config')->get('CLIENT_DOMAIN_ALT_URLS')) {
+    $baseServerVhostUtf8 = decode_idna(Registry::get('config')->get('BASE_SERVER_VHOST'));
 }
 
 generateNavigation($tpl);
@@ -685,7 +687,7 @@ generateCustomDnsRecordsList($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

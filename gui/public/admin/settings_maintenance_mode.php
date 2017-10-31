@@ -25,10 +25,12 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
+use iMSCP_Registry as Registry;
+
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
@@ -37,12 +39,12 @@ $tpl->define_dynamic([
     'page_message' => 'layout'
 ]);
 
-$cfg = iMSCP_Registry::get('config');
+$cfg = Registry::get('config');
 
 if (isset($_POST['uaction']) and $_POST['uaction'] == 'apply') {
     $maintenancemode = $_POST['maintenancemode'];
     $maintenancemode_message = clean_input($_POST['maintenancemode_message']);
-    $db_cfg = iMSCP_Registry::get('dbConfig');
+    $db_cfg = Registry::get('dbConfig');
     $db_cfg->MAINTENANCEMODE = $maintenancemode;
     $db_cfg->MAINTENANCEMODE_MESSAGE = $maintenancemode_message;
     $cfg->merge($db_cfg);
@@ -79,7 +81,7 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

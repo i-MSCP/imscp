@@ -6,6 +6,7 @@ nbproject
 .project
 .vagrant
 .settings
-/Vagrantfile
 .DS_Store
 _Deparsed_XSubs.pm
+gui/library/vendor
+composer.phar

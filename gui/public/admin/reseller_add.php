@@ -20,7 +20,6 @@
 
 use iMSCP\Crypt as Crypt;
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_PHPini as PhpIni;
 use iMSCP_pTemplate as TemplateEngine;
@@ -117,10 +116,12 @@ function generateIpListForm(TemplateEngine $tpl)
         'TR_ASSIGN'     => tr('Assign')
     ]);
 
-    EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
-        /** @var $e \iMSCP_Events_Event */
-        $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
-    });
+    Registry::get('iMSCP_Application')->getEventsManager()->registerListener(
+        Events::onGetJsTranslations,
+        function (iMSCP_Events_Description $e) {
+            $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
+        }
+    );
 
     $checkFirst = sizeof($data['server_ips']) == 1;
 
@@ -221,16 +222,19 @@ function generateFeaturesForm(TemplateEngine $tpl)
         'TR_SEC'                           => tr('Sec.')
     ]);
 
-    EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
-        /** @var iMSCP_Events_Event $e */
-        $translations = $e->getParam('translations');
-        $translations['core']['close'] = tr('Close');
-        $translations['core']['fields_ok'] = tr('All fields are valid.');
-        $translations['core']['out_of_range_value_error'] = tr('Value for the PHP %%s directive must be in range %%d to %%d.');
-        $translations['core']['lower_value_expected_error'] = tr('%%s cannot be greater than %%s.');
-        $translations['core']['error_field_stack'] = Registry::isRegistered('errFieldsStack')
-            ? Registry::get('errFieldsStack') : [];
-    });
+    Registry::get('iMSCP_Application')->getEventsManager()->registerListener(
+        Events::onGetJsTranslations,
+        function (iMSCP_Events_Description $e) {
+            /** @var iMSCP_Events_Event $e */
+            $translations = $e->getParam('translations');
+            $translations['core']['close'] = tr('Close');
+            $translations['core']['fields_ok'] = tr('All fields are valid.');
+            $translations['core']['out_of_range_value_error'] = tr('Value for the PHP %%s directive must be in range %%d to %%d.');
+            $translations['core']['lower_value_expected_error'] = tr('%%s cannot be greater than %%s.');
+            $translations['core']['error_field_stack'] = Registry::isRegistered('errFieldsStack')
+                ? Registry::get('errFieldsStack') : [];
+        }
+    );
 
     if (Registry::get('config')['HTTPD_PACKAGE'] != 'Servers::httpd::apache_itk') {
         $tpl->assign([
@@ -370,7 +374,7 @@ function addResellerUser(Form $form)
         }
 
         if (empty($errFieldsStack) && !$error) {
-            EventsManager::getInstance()->dispatch(Events::onBeforeAddUser, [
+            Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeAddUser, [
                 'userData' => $form->getValues()
             ]);
 
@@ -439,7 +443,7 @@ function addResellerUser(Form $form)
                 throw new iMSCPException(sprintf('Could not create directory for software repository'));
             }
 
-            EventsManager::getInstance()->dispatch(Events::onAfterAddUser, [
+            Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterAddUser, [
                 'userId'   => $resellerId,
                 'userData' => $form->getValues()
             ]);
@@ -488,7 +492,7 @@ function generatePage(TemplateEngine $tpl, Form $form)
 require 'imscp-lib.php';
 
 check_login('admin');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptStart);
 
 $phpini = PhpIni::getInstance();
 $phpini->loadResellerPermissions(); // Load reseller default PHP permissions
@@ -517,7 +521,7 @@ generatePage($tpl, $form);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

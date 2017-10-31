@@ -25,6 +25,8 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Main
  */
@@ -32,7 +34,7 @@
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 if (!isset($_GET['ip_id'])) {
     showBadRequestErrorPage();
@@ -64,7 +66,7 @@ if ($row ['cnt'] < 2) {
     redirectTo('ip_manage.php');
 }
 
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onDeleteIpAddr);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onDeleteIpAddr);
 exec_query('UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', ['todelete', $ipId]);
 send_request();
 write_log(sprintf("An IP address (%s) has been deleted by %s", $ipAddr, $_SESSION['user_logged']), E_USER_NOTICE);

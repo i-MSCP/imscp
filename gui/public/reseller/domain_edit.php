@@ -19,7 +19,6 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_PHPini as PhpIni;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
@@ -530,7 +529,7 @@ function generateFeaturesForm(TemplateEngine $tpl, &$data)
         ]);
     }
 
-    EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
+    Registry::get('iMSCP_Application')->getEventsManager()->registerListener(Events::onGetJsTranslations, function ($e) {
         /** @var iMSCP_Events_Event $e */
         $translations = $e->getParam('translations');
         $translations['core']['close'] = tr('Close');
@@ -913,7 +912,7 @@ function reseller_checkAndUpdateData($domainId)
 
             $db->beginTransaction();
 
-            EventsManager::getInstance()->dispatch(Events::onBeforeEditDomain, ['domainId' => $domainId]);
+            Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeEditDomain, ['domainId' => $domainId]);
 
             if ($phpini->updateClientDomainIni($phpini->getDomainIni(), $data['admin_id'])) {
                 $needDaemonRequest = true;
@@ -1016,7 +1015,7 @@ function reseller_checkAndUpdateData($domainId)
             // Update reseller properties
             update_reseller_c_props($data['reseller_id']);
 
-            EventsManager::getInstance()->dispatch(Events::onAfterEditDomain, ['domainId' => $domainId]);
+            Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterEditDomain, ['domainId' => $domainId]);
 
             $db->commit();
 
@@ -1121,7 +1120,7 @@ function isValidServiceLimit(
 require 'imscp-lib.php';
 
 check_login('reseller');
-EventsManager::getInstance()->dispatch(Events::onResellerScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onResellerScriptStart);
 
 $cfg = Registry::get('config');
 
@@ -1191,7 +1190,7 @@ generatePage($tpl, $data);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onResellerScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

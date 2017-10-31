@@ -19,7 +19,7 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Manager_Interface as EventManagerInterface;
+use iMSCP_Events_Manager_Interface as EventsManagerInterface;
 use iMSCP_Plugin_Action as PluginAction;
 use iMSCP_Plugin_Exception as PluginException;
 use iMSCP_Plugin_Manager as PluginManager;
@@ -152,9 +152,9 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
     /**
      * Register listeners
      *
-     * @param EventManagerInterface $eventsManager
+     * @param EventsManagerInterface $eventsManager
      */
-    public function register(EventManagerInterface $eventsManager)
+    public function register(EventsManagerInterface $eventsManager)
     {
         // That plugin must acts early in the authentication process
         $eventsManager->registerListener(Events::onBeforeAuthentication, $this, 100);

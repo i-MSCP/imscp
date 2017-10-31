@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 /**
  * Class iMSCP_PHPini
  */
@@ -437,6 +439,26 @@ class iMSCP_PHPini
     }
 
     /**
+     * Gets reseller PHP permission(s)
+     *
+     * @throws iMSCP_Exception if $permission is unknown
+     * @param string|null $permission Permission name or null for all permissions
+     * @return mixed
+     */
+    public function getResellerPermission($permission = NULL)
+    {
+        if (NULL === $permission) {
+            return $this->resellerPermissions;
+        }
+
+        if (!array_key_exists($permission, $this->resellerPermissions)) {
+            throw new iMSCP_Exception(sprintf('Unknown reseller PHP permission: %s', $permission));
+        }
+
+        return $this->resellerPermissions[$permission];
+    }
+
+    /**
      * Synchronise client PHP permissions (including domain INI options) with reseller PHP permissions
      *
      * @param int $resellerId Reseller unique identifier
@@ -635,7 +657,7 @@ class iMSCP_PHPini
 
     /**
      * Update client domain INI options for the given client
-     * 
+     *
      * @param null|array $domainIni New Domain INI values
      * @param int $clientId Client identifier
      * @param bool $needChange OPTIONAL whether or not client domains must be updated
@@ -919,26 +941,6 @@ class iMSCP_PHPini
     }
 
     /**
-     * Gets reseller PHP permission(s)
-     *
-     * @throws iMSCP_Exception if $permission is unknown
-     * @param string|null $permission Permission name or null for all permissions
-     * @return mixed
-     */
-    public function getResellerPermission($permission = NULL)
-    {
-        if (NULL === $permission) {
-            return $this->resellerPermissions;
-        }
-
-        if (!array_key_exists($permission, $this->resellerPermissions)) {
-            throw new iMSCP_Exception(sprintf('Unknown reseller PHP permission: %s', $permission));
-        }
-
-        return $this->resellerPermissions[$permission];
-    }
-
-    /**
      * Update domain statuses
      *
      * @throws iMSCP_Exception
@@ -1027,7 +1029,7 @@ class iMSCP_PHPini
     {
         if (NULL === $this->iniLevel) {
             $phpConfig = new iMSCP_Config_Handler_File(utils_normalizePath(
-                iMSCP_Registry::get('config')->CONF_DIR . '/php/php.data'
+                Registry::get('config')->CONF_DIR . '/php/php.data'
             ));
             $this->iniLevel = $phpConfig['PHP_CONFIG_LEVEL'];
         }

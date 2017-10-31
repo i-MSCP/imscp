@@ -20,7 +20,6 @@
 
 use iMSCP\Crypt as Crypt;
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
 use Zend_Form as Form;
@@ -65,7 +64,7 @@ function updateUserData(Form $form, $userId)
     try {
         $db->beginTransaction();
 
-        EventsManager::getInstance()->dispatch(Events::onBeforeEditUser, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeEditUser, [
             'userId'   => $userId,
             'userData' => $form->getValues()
         ]);
@@ -90,7 +89,7 @@ function updateUserData(Form $form, $userId)
         // Force user to login again (needed due to possible password or email change)
         exec_query('DELETE FROM login WHERE user_name = ?', [$data['admin_name']]);
 
-        EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterEditUser, [
             'userId'   => $userId,
             'userData' => $form->getValues()
         ]);
@@ -172,7 +171,7 @@ function generatePage(TemplateEngine $tpl, Form $form, $userId)
 require 'imscp-lib.php';
 
 check_login('admin');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptStart);
 
 if (!isset($_GET['edit_id'])) {
     showBadRequestErrorPage();
@@ -218,7 +217,7 @@ if ($userType == 'admin') {
 }
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

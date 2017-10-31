@@ -39,6 +39,69 @@ class UpdateDatabase extends UpdateDatabaseAbstract
     protected $lastUpdate = 271;
 
     /**
+     * Decrypt any SSL private key
+     *
+     * @return array|null SQL statements to be executed
+     */
+    public function r178()
+    {
+        $sqlQueries = [];
+        $stmt = execute_query('SELECT cert_id, password, `key` FROM ssl_certs');
+
+        if (!$stmt->rowCount()) {
+            return NULL;
+        }
+
+        while ($row = $stmt->fetch()) {
+            $certId = quoteValue($row['cert_id'], PDO::PARAM_INT);
+            $privateKey = new Crypt_RSA();
+
+            if ($row['password'] != '') {
+                $privateKey->setPassword($row['password']);
+            }
+
+            if (!$privateKey->loadKey($row['key'], CRYPT_RSA_PRIVATE_FORMAT_PKCS1)) {
+                $sqlQueries[] = "DELETE FROM ssl_certs WHERE cert_id = $certId";
+                continue;
+            }
+
+            // Clear out passphrase
+            $privateKey->setPassword();
+            // Get unencrypted private key
+            $privateKey = $privateKey->getPrivateKey();
+            $privateKey = quoteValue($privateKey);
+            $sqlQueries[] = "UPDATE ssl_certs SET `key` = $privateKey WHERE cert_id = $certId";
+        }
+
+
+        return $sqlQueries;
+    }
+
+    /**
+     * Remove password column from the ssl_certs table
+     *
+     * @return null|string SQL statements to be executed
+     */
+    public function r179()
+    {
+        return $this->dropColumn('ssl_certs', 'password');
+    }
+
+    /**
+     * Drop deprecated columns -- Those are not removed when upgrading from some older versions
+     *
+     * @return array SQL statements to be executed
+     */
+    public function r270()
+    {
+        return [
+            $this->dropColumn('reseller_props', 'php_ini_al_register_globals'),
+            $this->dropColumn('domain', 'phpini_perm_register_globals'),
+            $this->dropColumn('php_ini', 'register_globals'),
+        ];
+    }
+
+    /**
      * Prohibit upgrade from i-MSCP versions older than 1.1.x
      *
      * @throws UpdateException
@@ -134,55 +197,6 @@ class UpdateDatabase extends UpdateDatabaseAbstract
         }
 
         return $sqlQueries;
-    }
-
-    /**
-     * Decrypt any SSL private key
-     *
-     * @return array|null SQL statements to be executed
-     */
-    public function r178()
-    {
-        $sqlQueries = [];
-        $stmt = execute_query('SELECT cert_id, password, `key` FROM ssl_certs');
-
-        if (!$stmt->rowCount()) {
-            return NULL;
-        }
-
-        while ($row = $stmt->fetch()) {
-            $certId = quoteValue($row['cert_id'], PDO::PARAM_INT);
-            $privateKey = new Crypt_RSA();
-
-            if ($row['password'] != '') {
-                $privateKey->setPassword($row['password']);
-            }
-
-            if (!$privateKey->loadKey($row['key'], CRYPT_RSA_PRIVATE_FORMAT_PKCS1)) {
-                $sqlQueries[] = "DELETE FROM ssl_certs WHERE cert_id = $certId";
-                continue;
-            }
-
-            // Clear out passphrase
-            $privateKey->setPassword();
-            // Get unencrypted private key
-            $privateKey = $privateKey->getPrivateKey();
-            $privateKey = quoteValue($privateKey);
-            $sqlQueries[] = "UPDATE ssl_certs SET `key` = $privateKey WHERE cert_id = $certId";
-        }
-
-
-        return $sqlQueries;
-    }
-
-    /**
-     * Remove password column from the ssl_certs table
-     *
-     * @return null|string SQL statements to be executed
-     */
-    public function r179()
-    {
-        return $this->dropColumn('ssl_certs', 'password');
     }
 
     /**
@@ -1559,20 +1573,6 @@ class UpdateDatabase extends UpdateDatabaseAbstract
             $this->addIndex('httpd_vlogger', ['vhost', 'ldate']),
             'INSERT IGNORE INTO httpd_vlogger SELECT * FROM old_httpd_vlogger',
             $this->dropTable('old_httpd_vlogger')
-        ];
-    }
-
-    /**
-     * Drop deprecated columns -- Those are not removed when upgrading from some older versions
-     *
-     * @return array SQL statements to be executed
-     */
-    public function r270()
-    {
-        return [
-            $this->dropColumn('reseller_props', 'php_ini_al_register_globals'),
-            $this->dropColumn('domain', 'phpini_perm_register_globals'),
-            $this->dropColumn('php_ini', 'register_globals'),
         ];
     }
 

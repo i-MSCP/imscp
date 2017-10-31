@@ -20,7 +20,6 @@
 
 use iMSCP_Config_Handler_File as ConfigFile;
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
 
@@ -75,7 +74,7 @@ function updateSqlUserPassword($sqluId)
     $config = Registry::get('config');
     $mysqlConfig = new ConfigFile($config['CONF_DIR'] . '/mysql/mysql.data');
 
-    EventsManager::getInstance()->dispatch(Events::onBeforeEditSqlUser, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeEditSqlUser, [
         'sqlUserId'       => $sqluId,
         'sqlUserPassword' => $password
     ]);
@@ -98,7 +97,7 @@ function updateSqlUserPassword($sqluId)
         sprintf('%s updated %s@%s SQL user password.', $_SESSION['user_logged'], $row['sqlu_name'], $row['sqlu_host']),
         E_USER_NOTICE
     );
-    EventsManager::getInstance()->dispatch(Events::onAfterEditSqlUser, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterEditSqlUser, [
         'sqlUserId'       => $sqluId,
         'sqlUserPassword' => $password
     ]);
@@ -155,7 +154,7 @@ function checkSqlUserPerms($sqlUserId)
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptStart);
 customerHasFeature('sql') && isset($_REQUEST['sqlu_id']) or showBadRequestErrorPage();
 
 $sqluId = intval($_REQUEST['sqlu_id']);
@@ -189,7 +188,7 @@ generatePage($tpl, $sqluId);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

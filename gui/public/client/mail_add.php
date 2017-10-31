@@ -20,7 +20,6 @@
 
 use iMSCP\Crypt as Crypt;
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception_Database as DatabaseException;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
@@ -260,7 +259,7 @@ function addMailAccount()
         /** @var iMSCP_Database $db */
         $db = Registry::get('iMSCP_Application')->getDatabase();
 
-        EventsManager::getInstance()->dispatch(Events::onBeforeAddMail, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeAddMail, [
             'mailType'     => $mailTypeNormal ? ($mailTypeForward ? 'normal+forward' : 'normal') : 'forward',
             'mailUsername' => $username,
             'forwardList'  => $mailTypeForward ? $forwardList : '',
@@ -280,7 +279,7 @@ function addMailAccount()
                 $mailTypeNormal ? 'yes' : 'no', '0', NULL, $mailQuotaLimitBytes, $mailAddr
             ]
         );
-        EventsManager::getInstance()->dispatch(Events::onAfterAddMail, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterAddMail, [
             'mailId'       => $db->lastInsertId(),
             'mailType'     => $mailTypeNormal ? ($mailTypeForward ? 'normal+forward' : 'normal') : 'forward',
             'mailUsername' => $username,
@@ -368,7 +367,7 @@ function generatePage($tpl)
         $tpl->parse('DOMAIN_NAME_ITEM', '.domain_name_item');
     }
 
-    EventsManager::getInstance()->registerListener(
+    Registry::get('iMSCP_Application')->getEventsManager()->registerListener(
         'onGetJsTranslations',
         function ($event) use ($mailTypeForwardOnly) {
             /** @var $event iMSCP_Events_Description */
@@ -384,7 +383,7 @@ function generatePage($tpl)
 require 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptStart);
 customerHasFeature('mail') or showBadRequestErrorPage();
 
 $dmnProps = get_domain_default_props($_SESSION['user_id']);
@@ -432,7 +431,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

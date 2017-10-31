@@ -197,7 +197,7 @@ function get_reseller_customers_count($resellerId)
 
     if (NULL === $stmt) {
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
         $stmt = $db->prepare("SELECT COUNT(admin_id) FROM admin WHERE created_by = ? AND admin_status <> 'todelete'");
     }
 
@@ -218,7 +218,7 @@ function get_reseller_domains_count($resellerId)
 
     if (NULL === $stmt) {
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
         $stmt = $db->prepare(
             "
                SELECT COUNT(domain_id)
@@ -247,7 +247,7 @@ function get_reseller_subdomains_count($resellerId)
 
     if (NULL === $stmt) {
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
         $stmt = $db->prepare(
             "
                 SELECT (
@@ -287,7 +287,7 @@ function get_reseller_domain_aliases_count($resellerId)
 
     if (NULL === $stmt) {
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
         $stmt = $db->prepare(
             "
                 SELECT COUNT(alias_id)
@@ -346,7 +346,7 @@ function get_reseller_mail_accounts_count($resellerId)
         $query .= "AND status <> 'todelete'";
 
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
         $stmt = $db->prepare($query);
     }
 
@@ -367,7 +367,7 @@ function get_reseller_ftp_users_count($resellerId)
 
     if (NULL === $stmt) {
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
         $stmt = $db->prepare(
             "
                 SELECT COUNT(userid)
@@ -395,7 +395,7 @@ function get_reseller_sql_databases_count($resellerId)
 
     if (NULL === $stmt) {
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
         $stmt = $db->prepare(
             '
                 SELECT COUNT(sqld_id)
@@ -423,7 +423,7 @@ function get_reseller_sql_users_count($resellerId)
 
     if (NULL === $stmt) {
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
         $stmt = $db->prepare(
             '
                 SELECT COUNT(DISTINCT sqlu_name)
@@ -479,7 +479,7 @@ function get_customer_subdomains_count($domainId)
 
     if (NULL === $stmt) {
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
         $stmt = $db->prepare(
             "
                 SELECT (
@@ -512,7 +512,7 @@ function get_customer_domain_aliases_count($domainId)
 
     if (NULL === $stmt) {
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
         $stmt = $db->prepare(
             "
                 SELECT COUNT(alias_id)
@@ -563,7 +563,7 @@ function get_customer_mail_accounts_count($domainId)
         $query .= "AND status <> 'todelete'";
 
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
         $stmt = $db->prepare($query);
     }
 
@@ -584,7 +584,7 @@ function get_customer_ftp_users_count($customerId)
 
     if (NULL === $stmt) {
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
         $stmt = $db->prepare("SELECT COUNT(userid) FROM ftp_users WHERE admin_id = ? AND status <> 'todelete'");
     }
 
@@ -604,7 +604,7 @@ function get_customer_sql_databases_count($domainId)
 
     if (NULL === $stmt) {
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
         $stmt = $db->prepare('SELECT COUNT(sqld_id) FROM sql_database WHERE domain_id = ?');
     }
 
@@ -624,7 +624,7 @@ function get_customer_sql_users_count($domainId)
 
     if (NULL === $stmt) {
         /** @var iMSCP_Database $db */
-        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $db = Registry::get('iMSCP_Application')->getDatabase();
         $stmt = $db->prepare(
             'SELECT COUNT(DISTINCT sqlu_name) FROM sql_user JOIN sql_database USING(sqld_id) WHERE domain_id = ?'
         );

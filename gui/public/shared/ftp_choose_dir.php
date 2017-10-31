@@ -19,6 +19,7 @@
  */
 
 use iMSCP\VirtualFileSystem as VirtualFileSystem;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -143,7 +144,7 @@ function generateDirectoryList($tpl)
 require_once 'imscp-lib.php';
 
 check_login('all');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onSharedScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onSharedScriptStart);
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
@@ -189,5 +190,5 @@ if (!isset($_SESSION['ftp_chooser_user']) || !isset($_SESSION['ftp_chooser_domai
 generatePageMessage($tpl);
 
 $tpl->parse('PARTIAL', 'partial');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onSharedScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onSharedScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();

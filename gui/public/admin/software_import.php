@@ -19,11 +19,12 @@
  */
 
 use iMSCP_Exception_Database as DatabaseException;
+use iMSCP_Registry as Registry;
 
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 isset($_GET['id']) or showBadRequestErrorPage();
 
@@ -35,7 +36,7 @@ if (!$stmt->rowCount()) {
 }
 
 $row = $stmt->fetch();
-$cfg = iMSCP_Registry::get('config');
+$cfg = Registry::get('config');
 $srcFile = $cfg['GUI_APS_DIR'] . '/' . $row['reseller_id'] . '/' . $row['software_archive'] . '-' . $row['software_id'] . '.tar.gz';
 $destFile = $cfg['GUI_APS_DEPOT_DIR'] . '/' . $row['software_archive'] . '-' . $row['software_id'] . '.tar.gz';
 
@@ -43,7 +44,7 @@ $destFile = $cfg['GUI_APS_DEPOT_DIR'] . '/' . $row['software_archive'] . '-' . $
 @unlink($srcFile);
 
 /** @var iMSCP_Database $db */
-$db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+$db = Registry::get('iMSCP_Application')->getDatabase();
 
 try {
     $db->beginTransaction();

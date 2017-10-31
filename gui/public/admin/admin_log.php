@@ -25,6 +25,8 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -215,7 +217,7 @@ function admin_getLogs()
             'aaData'               => []
         ];
 
-        $dateFormat = iMSCP_Registry::get('config')['DATE_FORMAT'] . ' H:i:s';
+        $dateFormat = Registry::get('config')['DATE_FORMAT'] . ' H:i:s';
 
         while ($data = $rResult->fetch()) {
             $row = [];
@@ -266,7 +268,7 @@ function admin_getLogs()
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 if (isset($_REQUEST['action'])) {
     if (is_xhr()) {
@@ -294,7 +296,7 @@ $tpl->define_dynamic([
 $tpl->assign([
     'TR_PAGE_TITLE'           => tr('Admin / General / Admin Log'),
     'TR_CLEAR_LOG'            => tr('Clear log'),
-    'ROWS_PER_PAGE'           => json_encode(iMSCP_Registry::get('config')['DOMAIN_ROWS_PER_PAGE']),
+    'ROWS_PER_PAGE'           => json_encode(Registry::get('config')['DOMAIN_ROWS_PER_PAGE']),
     'TR_DATE'                 => tr('Date'),
     'TR_MESSAGE'              => tr('Message'),
     'TR_CLEAR_LOG_MESSAGE'    => tr('Delete from log:'),
@@ -309,16 +311,20 @@ $tpl->assign([
     'TR_UNEXPECTED_ERROR'     => json_encode(tr('An unexpected error occurred.'))
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
-    /** @var $e \iMSCP_Events_Event */
-    $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
-});
+Registry::get('iMSCP_Application')->getEventsManager()->registerListener(
+    'onGetJsTranslations',
+    function (iMSCP_Events_Description $e) {
+        $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
+    }
+);
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptEnd, [
+    'templateEngine' => $tpl
+]);
 $tpl->prnt();
 
 unsetMessages();

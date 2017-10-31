@@ -72,7 +72,9 @@ FRONTEND
     Fixed: Wrong order for parameters in mail delete.php (i18n -- client UI)
     Fixed: Wrong status shown in administrator overview interface for customers when a password is being modified
     Fixed: Wrong value passed-in the `onBeforeEditUser' and `onAfterEditUser' events for the `admin_pass' parameter
+    Review: Make use of composer autoloader for loading of vendor dependencies 
     Review: Prepare the SQL statements once per session (objects counting, stats)
+    Removed: iMSCP_Events_Aggregator class (now an alias of iMSCP_Events_Manager)
     Rewritten: iMSCP_Database class (now extends the PDO class)
     Rewritten: iMSCP_Database_ResultSet (now extends the PDOStatement class -- Renamed to iMSCP\Database\ResultSet)
 
@@ -114,6 +116,7 @@ PACKAGES
     Updated: Installer for use of Roundcube version 1.3.1 (Package::Webmail::Roundcube::Installer)
 
 PLUGINS
+    Added: Own event manager for plugin manager
     Enhancement: Make plugins able to trigger flush of cache (OPcache, userland cache (full or by ID)
     Fixed: Covers case of plugins that are uninstallable but not installable
     Fixed: Undefined offset -- Couldn't infer `Basic` plugin type
@@ -155,6 +158,7 @@ VAGRANT
     Review: Disable automatic box update checking in VagrantFile
 
 VENDOR
+    Enhancement: Download and install all frontEnd dependencies through composer
     Added: Perl library for exporting variables to PHP's expression (PHP::Var)
     Updated: IDNA Convert library to version 1.1.0
 

@@ -71,7 +71,7 @@ sub registerSetupListeners
 {
     my ($self, $eventManager) = @_;
 
-    $eventManager->register(
+    my $rs = $eventManager->register(
         'beforeSetupDialog',
         sub {
             push @{$_[0]},
@@ -81,6 +81,80 @@ sub registerSetupListeners
                 sub { $self->askSsl( @_ ) },
                 sub { $self->askHttpPorts( @_ ) },
                 sub { $self->askAltUrlsFeature( @_ ) };
+            0;
+        }
+    );
+    $rs ||= $eventManager->registerOne(
+        'beforeSetupPreInstallServers',
+        sub {
+            eval {
+                my $composer = iMSCP::Composer->new(
+                    user          => $main::imscpConfig{'ROOT_USER'},
+                    group         => $main::imscpConfig{'ROOT_GROUP'},
+                    home_dir      => $main::imscpConfig{'IMSCP_HOMEDIR'},
+                    working_dir   => $main::imscpConfig{'GUI_ROOT_DIR'},
+                    composer_json => iMSCP::File->new(
+                        filename => "$main::imscpConfig{'GUI_ROOT_DIR'}/composer.json"
+                    )->get(),
+                    composer_path => '/usr/local/bin/composer'
+                );
+                $composer->getComposerJson( 'scalar' )->{'config'} = {
+                    %{$composer->getComposerJson( 'scalar' )->{'config'}},
+                    cafile => $main::imscpConfig{'DISTRO_CA_BUNDLE'},
+                    capath => $main::imscpConfig{'DISTRO_CA_PATH'}
+                };
+                #use Data::Dumper;
+                #print Dumper($composer->getComposerJson('scalar'));
+                #exit;
+
+                my $step = 0;
+                my $stdRoutine = sub {
+                    ( my $stdout = $_[0] ) =~ s/^\s+|\s+$//g;
+                    return if $stdout eq '';
+
+                    step( undef, <<"EOT", 3, $step )
+Processing i-MSCP frontEnd (dependencies) composer packages...
+
+$stdout
+
+Depending on connection speed, this may take few minutes...
+EOT
+                };
+
+                startDetail;
+
+                if ( iMSCP::Getopt->clearPackageCache ) {
+                    $step++;
+                    $composer
+                        ->setStdRoutines( sub {}, $stdRoutine )
+                        ->clearPackageCache();
+                }
+
+                if ( iMSCP::Getopt->skipPackageUpdate ) {
+                    $step++;
+
+                    eval {
+                        $composer
+                            ->setStdRoutines( $stdRoutine, sub {} )
+                            ->checkPackageRequirements();
+                    };
+                    die( "Unmet requirements. Please rerun the the installer without the '-a' option." ) if $@;
+                    endDetail;
+                    return;
+                }
+
+                $step++;
+                $composer
+                    ->setStdRoutines( sub {}, $stdRoutine )
+                    ->installPackages();
+                endDetail;
+            };
+            if ( $@ ) {
+                endDetail;
+                error( $@ );
+                return 1;
+            }
+
             0;
         }
     );
@@ -571,7 +645,7 @@ sub preinstall
                     return if $stdout eq '';
 
                     step( undef, <<"EOT", 3, $step )
-Processing i-MSCP frontEnd composer packages...
+Processing i-MSCP frontEnd (tools) composer packages...
 
 $stdout
 

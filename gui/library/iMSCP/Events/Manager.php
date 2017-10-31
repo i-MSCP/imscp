@@ -18,51 +18,63 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+use iMSCP_Events_Listener_ResponseCollection as ResponseCollection;
+use iMSCP_Events_Description as EventDescription;
+use iMSCP_Events_Event as Event;
+use iMSCP_Events_Manager_Interface as EventsManagerInterface;
+use iMSCP_Events_Listener_PriorityQueue as PriorityQueue;
+use iMSCP_Events_Exception as Exception;
+use iMSCP_Events_Listener as Listener;
+
 /**
  * Class iMSCP_Events_Manager
  */
-class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
+class iMSCP_Events_Manager implements EventsManagerInterface
 {
     /**
-     * @var iMSCP_Events_Listener_PriorityQueue[] Array that contains events listeners stacks.
+     * @var PriorityQueue[] Array that contains events listeners stacks.
      */
     protected $events = [];
 
     /**
-     * Return iMSCP_Events_Aggregator instance
+     * Return iMSCP_Events_Manager instance
      *
-     * @return iMSCP_Events_Aggregator
-     * @deprecated 1.1.6 (will be removed in later version
+     * @return EventsManagerInterface
+     * @deprecated Will be removed in later version
      */
     public static function getInstance()
     {
-        return iMSCP_Events_Aggregator::getInstance();
+        return Registry::get('iMSCP_Application')->getEventsManager();
     }
 
     /**
      * Dispatches an event to all registered listeners
      *
-     * @param string|iMSCP_Events_Description $event Event name or iMSCP_Events_Description object
+     * @param string|EventDescription $event Event name or EventDescription object
      * @param array|ArrayAccess $arguments Array of arguments (eg. an associative array)
-     * @return iMSCP_Events_Listener_ResponseCollection
+     * @return ResponseCollection
      */
     public function dispatch($event, $arguments = [])
     {
-        $responses = new iMSCP_Events_Listener_ResponseCollection();
+        $responses = new ResponseCollection();
 
-        if ($event instanceof iMSCP_Events_Description) {
+        if ($event instanceof EventDescription) {
             $eventObject = $event;
             $event = $eventObject->getName();
         } else {
-            $eventObject = new iMSCP_Events_Event($event, $arguments);
+            $eventObject = new Event($event, $arguments);
         }
 
         $listeners = $this->getListeners($event);
-        //$listeners = clone $listeners;
 
-        /** @var $listener iMSCP_Events_Listener */
+        if($listeners->isEmpty()) {
+            return $responses;
+        }
+        
+        /** @var $listener Listener */
         foreach ($listeners as $listener) {
-            $responses->push(call_user_func($listener->getHandler(), $eventObject));
+            $responses->push(call_user_func($listener->getListener(), $eventObject));
 
             if ($eventObject->propagationIsStopped()) {
                 $responses->setStopped(true);
@@ -77,12 +89,13 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
      * Retrieve all listeners which listen to a particular event
      *
      * @param string $event Event name
-     * @return iMSCP_Events_Listener_PriorityQueue
+     * @return PriorityQueue
      */
     public function getListeners($event)
     {
-        if (!array_key_exists($event, $this->events)) {
-            return new iMSCP_Events_Listener_PriorityQueue();
+        #if (!array_key_exists($event, $this->events)) {
+        if (!isset($this->events[$event])) {
+            return new PriorityQueue();
         }
 
         return $this->events[$event];
@@ -94,13 +107,12 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
      * @param string|array $event The event(s) to listen on
      * @param callable|object $listener PHP callback or object which implement method with same name as event
      * @param int $priority Higher values have higher priority
-     * @return iMSCP_Events_Listener|iMSCP_Events_Listener[]
+     * @return Listener|Listener[]
      */
     public function registerListener($event, $listener, $priority = 1)
     {
         if (is_array($event)) {
             $listeners = [];
-
             foreach ($event as $name) {
                 $listeners[] = $this->registerListener($name, $listener, $priority);
             }
@@ -109,40 +121,39 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
         }
 
         if (empty($this->events[$event])) {
-            $this->events[$event] = new iMSCP_Events_Listener_PriorityQueue();
+            $this->events[$event] = new PriorityQueue();
         }
 
-        $listener = new iMSCP_Events_Listener($listener, ['event' => $event, 'priority' => $priority]);
+        $listener = new Listener($listener, ['event' => $event, 'priority' => $priority]);
         $this->events[$event]->addListener($listener, $priority);
-
         return $listener;
     }
 
     /**
      * Unregister all listeners which listen on the given event
      *
-     * @throws iMSCP_Events_Exception If $event is not a string
+     * @throws Exception If $event is not a string
      * @param  string $event The event for which any event must be removed.
      * @return void
      */
     public function unregisterListeners($event)
     {
-        if (is_string($event)) {
-            unset($this->events[$event]);
-        } else {
-            throw new iMSCP_Events_Exception(
+        if (!is_string($event)) {
+            throw new Exception(
                 sprintf(__CLASS__ . '::' . __FUNCTION__ . '() expects a string, %s given.', gettype($event))
             );
         }
+
+        unset($this->events[$event]);
     }
 
     /**
      * Unregister a listener from an event
      *
-     * @param iMSCP_Events_Listener $listener The listener object to remove
+     * @param Listener $listener The listener object to remove
      * @return bool TRUE if $listener is found and unregistered, FALSE otherwise
      */
-    public function unregisterListener(iMSCP_Events_Listener $listener)
+    public function unregisterListener(Listener $listener)
     {
         $event = $listener->getMetadatum('event');
 

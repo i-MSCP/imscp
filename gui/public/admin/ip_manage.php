@@ -20,7 +20,6 @@
 
 use iMSCP\Net as Net;
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventManager;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
 use Zend_Session as Session;
@@ -105,7 +104,6 @@ function generateIpsList($tpl)
         }
     }
 
-    /** @var \iMSCP_Database_ResultSet $stmt */
     $stmt = execute_query('SELECT * FROM server_ips');
     if (!$stmt->rowCount()) {
         $tpl->assign('IP_ADDRESSES_BLOCK', '');
@@ -288,7 +286,7 @@ function editIpAddr()
             sendJsonResponse(400, ['message' => tr('Bad request.')]);
         }
 
-        EventManager::getInstance()->dispatch(Events::onEditIpAddr, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onEditIpAddr, [
             'ip_id'          => $ipId,
             'ip_number'      => $row['ip_number'],
             'ip_netmask'     => $ipNetmask,
@@ -345,7 +343,7 @@ function addIpAddr()
         }
     }
 
-    EventManager::getInstance()->dispatch(Events::onAddIpAddr, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAddIpAddr, [
         'ip_number'      => $ipAddr,
         'ip_netmask'     => $ipNetmask,
         'ip_card'        => $ipCard,
@@ -370,7 +368,7 @@ function addIpAddr()
 require 'imscp-lib.php';
 
 check_login('admin');
-EventManager::getInstance()->dispatch(Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptStart);
 
 if (!empty($_POST)) {
     if (is_xhr()) {
@@ -411,7 +409,7 @@ $tpl->assign([
     'TR_MANUAL'               => tr('Manual')
 ]);
 
-EventManager::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+Registry::get('iMSCP_Application')->getEventsManager()->registerListener('onGetJsTranslations', function ($e) {
     /** @var $e \iMSCP_Events_Event */
     $translation = $e->getParam('translations');
     $translation['core']['datatable'] = getDataTablesPluginTranslations(false);
@@ -425,7 +423,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventManager::getInstance()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

@@ -24,14 +24,9 @@
 class iMSCP_Events_Listener
 {
     /**
-     * @var bool PHP version is greater than 5.4rc1?
-     */
-    protected static $isPhp54;
-
-    /**
      * @var string|array|callable
      */
-    protected $handler;
+    protected $listener;
 
     /**
      * @var array Listener metadata, if any
@@ -41,33 +36,43 @@ class iMSCP_Events_Listener
     /**
      * Constructor
      *
-     * @param string|array|object|callable $listener PHP callback
+     * @param string|array|object|callable $listener
      * @param array $metadata Listener metadata
      */
     public function __construct($listener, array $metadata = [])
     {
         $this->metadata = $metadata;
-        $this->registerHandler($listener);
+        $this->registerListener($listener);
     }
 
     /**
      * Registers the listener provided in the constructor
      *
-     * @param callable $handler Listener handler
+     * @param callable $listener Listener handler
      * @throws iMSCP_Events_Listener_Exception
      * @return void
      */
-    protected function registerHandler($handler)
+    protected function registerListener($listener)
     {
-        $event = $this->getMetadatum('event');
+        // functor
+        if (is_object($listener)
+            && !($listener instanceof Closure)
+        ) {
+            $event = $this->getMetadatum('event');
 
-        if ($event && is_callable([$handler, $event])) {
-            $this->handler = [$handler, $event];
-        } elseif (is_callable($handler)) {
-            $this->handler = $handler;
-        } else {
-            throw new iMSCP_Events_Listener_Exception('Invalid handler provided; not callable');
+            if (is_callable([$listener, $event])) {
+                $this->listener = [$listener, $event];
+                return;
+            }
         }
+
+        // Callable
+        if (is_callable($listener)) {
+            $this->listener = $listener;
+            return;
+        }
+
+        throw new iMSCP_Events_Listener_Exception('Invalid handler provided; not callable');
     }
 
     /**
@@ -103,59 +108,36 @@ class iMSCP_Events_Listener
      */
     public function call(array $args = [])
     {
-        $handler = $this->getHandler();
-
-        // Minor performance tweak, if the listener gets called more than once
-        if (!isset(static::$isPhp54)) {
-            static::$isPhp54 = version_compare(PHP_VERSION, '5.4.0rc1', '>=');
-        }
-
+        $listener = $this->getListener();
         $argCount = count($args);
 
-        if (static::$isPhp54 && is_string($handler)) {
-            $result = $this->validateStringCallbackFor54($handler);
+        if (is_string($listener)) {
+            $result = $this->validateStringCallback($listener);
 
-            if ($result !== true && $argCount <= 3) {
-                $handler = $result;
-                $this->handler = $result; // Minor performance tweak, if the listener gets called more than once
+            if ($result !== true
+                && $argCount <= 3
+            ) {
+                $listener = $result;
+                $this->listener = $result; // Minor performance tweak, if the listener gets called more than once
             }
         }
 
-        // Minor performance tweak; use call_user_func() until > 3 arguments reached
         switch ($argCount) {
             case 0:
-                if (static::$isPhp54) {
-                    return $handler();
-                }
-
-                return call_user_func($handler);
+                return $listener();
             case 1:
-                if (static::$isPhp54) {
-                    return $handler(array_shift($args));
-                }
-
-                return call_user_func($handler, array_shift($args));
+                return $listener(array_shift($args));
             case 2:
                 $arg1 = array_shift($args);
                 $arg2 = array_shift($args);
-
-                if (static::$isPhp54) {
-                    return $handler($arg1, $arg2);
-                }
-
-                return call_user_func($handler, $arg1, $arg2);
+                return $listener($arg1, $arg2);
             case 3:
                 $arg1 = array_shift($args);
                 $arg2 = array_shift($args);
                 $arg3 = array_shift($args);
-
-                if (static::$isPhp54) {
-                    return $handler($arg1, $arg2, $arg3);
-                }
-
-                return call_user_func($handler, $arg1, $arg2, $arg3);
+                return $listener($arg1, $arg2, $arg3);
             default:
-                return call_user_func_array($handler, $args);
+                return call_user_func_array($listener, $args);
         }
     }
 
@@ -164,31 +146,31 @@ class iMSCP_Events_Listener
      *
      * @return callable
      */
-    public function getHandler()
+    public function getListener()
     {
-        return $this->handler;
+        return $this->listener;
     }
 
     /**
      * Validate a static method call
      *
-     * Validates that a static method call in PHP 5.4 will actually work
+     * Validates that a static method call will actually work
      *
-     * @param string $handler
+     * @param string $listener
      * @return bool|array
      * @throws iMSCP_Events_Listener_Exception if invalid
      */
-    protected function validateStringCallbackFor54($handler)
+    protected function validateStringCallback($listener)
     {
-        if (!strstr($handler, '::')) {
+        if (!strstr($listener, '::')) {
             return true;
         }
 
-        list($class, $method) = explode('::', $handler, 2);
+        list($class, $method) = explode('::', $listener, 2);
 
         if (!class_exists($class)) {
             throw new iMSCP_Events_Listener_Exception(
-                sprintf('Static method call "%s" refers to a class which does not exist', $handler)
+                sprintf('Static method call "%s" refers to a class which does not exist', $listener)
             );
         }
 
@@ -196,7 +178,7 @@ class iMSCP_Events_Listener
 
         if (!$reflection->hasMethod($method)) {
             throw new iMSCP_Events_Listener_Exception(
-                sprintf('Static method call "%s" refers to a method which does not exist', $handler)
+                sprintf('Static method call "%s" refers to a method which does not exist', $listener)
             );
         }
 
@@ -204,12 +186,13 @@ class iMSCP_Events_Listener
 
         if (!$reflectionMethod->isStatic()) {
             throw new iMSCP_Events_Listener_Exception(
-                sprintf('Static method call "%s" refers to a method which is not static', $handler)
+                sprintf('Static method call "%s" refers to a method which is not static', $listener)
             );
         }
 
-        // Returning a non boolean value may not be nice for a validate method, but that allows the usage of a static
-        // string listener without using the call_user_func function.
+        // Returning a non boolean value may not be nice for a validate
+        // method, but that allows the usage of a static string listener
+        // without using the call_user_func function.
         return [$class, $method];
     }
 

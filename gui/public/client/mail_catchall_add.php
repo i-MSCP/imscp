@@ -19,7 +19,6 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
 
@@ -166,7 +165,7 @@ function addCatchallAccount($catchallDomainId, $catchallDomain, $catchallType)
             exit;
     }
 
-    EventsManager::getInstance()->dispatch(Events::onBeforeAddMailCatchall, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeAddMailCatchall, [
         'mailCatchallDomain'    => $catchallDomain,
         'mailCatchallAddresses' => $catchallAddresses
     ]);
@@ -180,7 +179,7 @@ function addCatchallAccount($catchallDomainId, $catchallDomain, $catchallType)
         ",
         [implode(',', $catchallAddresses), $domainId, $catchallType, $subId, '@' . $catchallDomain]
     );
-    EventsManager::getInstance()->dispatch(Events::onAfterAddMailCatchall, [
+    Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterAddMailCatchall, [
         'mailCatchallId'        => Registry::get('iMSCP_Application')->getDatabase()->lastInsertId(),
         'mailCatchallDomain'    => $catchallDomain,
         'mailCatchallAddresses' => $catchallAddresses
@@ -364,7 +363,7 @@ function generatePage($tpl, $catchallDomainId, $catchallType)
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptStart);
 
 if (!customerHasFeature('mail')
     || !isset($_GET['id'])
@@ -410,7 +409,7 @@ generatePage($tpl, $matches['catchallDomainId'], $matches['catchallType']);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

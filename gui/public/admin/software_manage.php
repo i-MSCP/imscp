@@ -18,14 +18,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/** Include core library */
+use iMSCP_Registry as Registry;
+
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 /** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
+$cfg = Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
@@ -83,7 +84,7 @@ if ($use_webdepot) {
         'TR_WEBDEPOTSOFTWARE_ACT_NUM' => $packages_cnt
     ]);
 
-    iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
+    Registry::get('iMSCP_Application')->getEventsManager()->registerListener('onGetJsTranslations', function ($e) {
         /** @var $e \iMSCP_Events_Event */
         $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
     });
@@ -152,7 +153,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
         );
 
         /** @var $db iMSCP_Database */
-        $db = iMSCP_Registry::get('db');
+        $db = Registry::get('db');
         $sw_id = $db->lastInsertId();
 
         if ($file == 0) {
@@ -304,7 +305,7 @@ generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

@@ -21,7 +21,6 @@
 use iMSCP\Crypt as Crypt;
 use iMSCP\VirtualFileSystem as VirtualFileSystem;
 use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_Registry as Registry;
 
@@ -214,7 +213,7 @@ function addAccount()
     try {
         $db->beginTransaction();
 
-        EventsManager::getInstance()->dispatch(Events::onBeforeAddFtp, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeAddFtp, [
             'ftpUserId'    => $username,
             'ftpPassword'  => $passwd,
             'ftpUserUid'   => $row1['admin_sys_uid'],
@@ -259,7 +258,7 @@ function addAccount()
             );
         }
 
-        EventsManager::getInstance()->dispatch(Events::onAfterAddFtp, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterAddFtp, [
             'ftpUserId'    => $username,
             'ftpPassword'  => $passwd,
             'ftpUserUid'   => $row1['admin_sys_uid'],
@@ -334,7 +333,7 @@ function generatePage($tpl)
 require_once 'imscp-lib.php';
 
 check_login('user');
-EventsManager::getInstance()->dispatch(Events::onClientScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptStart);
 customerHasFeature('ftp') or showBadRequestErrorPage();
 
 $mainDmnProps = get_domain_default_props($_SESSION['user_id']);
@@ -382,7 +381,7 @@ $tpl->assign([
     'TR_CANCEL'            => tr('Cancel')
 ]);
 
-EventsManager::getInstance()->registerListener(Events::onGetJsTranslations, function ($e) {
+Registry::get('iMSCP_Application')->getEventsManager()->registerListener(Events::onGetJsTranslations, function ($e) {
     /** @var $e iMSCP_Events_Event */
     $translations = $e->getParam('translations');
     $translations['core']['close'] = tr('Close');
@@ -394,7 +393,7 @@ generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-EventsManager::getInstance()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptEnd, ['templateEngine' => $tpl]);
 $tpl->prnt();
 
 unsetMessages();

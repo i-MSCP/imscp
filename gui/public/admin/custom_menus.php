@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -187,7 +189,7 @@ function admin_isValidMenu($menuName, $menuLink, $menuTarget, $menuLevel, $menuO
     }
 
     if (!empty($errorFieldsStack)) {
-        iMSCP_Registry::set('errorFieldsStack', $errorFieldsStack);
+        Registry::set('errorFieldsStack', $errorFieldsStack);
         return false;
     }
 
@@ -276,7 +278,7 @@ function admin_deleteMenu($menuId)
 require 'imscp-lib.php';
 
 check_login('admin');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 if (isset($_POST['uaction'])) {
     if ($_POST['uaction'] == 'menu_add') {
@@ -324,14 +326,16 @@ $tpl->assign([
     'TR_TH_ORDER'               => tr('Order'),
     'TR_CANCEL'                 => tr('Cancel'),
     'TR_MESSAGE_DELETE_JS'      => tojs(tr('Are you sure you want to delete the %s menu?', '%s')),
-    'ERR_FIELDS_STACK'          => iMSCP_Registry::isRegistered('errorFieldsStack')
-        ? json_encode(iMSCP_Registry::get('errorFieldsStack')) : '[]'
+    'ERR_FIELDS_STACK'          => Registry::isRegistered('errorFieldsStack')
+        ? json_encode(Registry::get('errorFieldsStack')) : '[]'
 ]);
 
-iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', function ($e) {
-    /** @var $e \iMSCP_Events_Event */
-    $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
-});
+Registry::get('iMSCP_Application')->getEventsManager()->registerListener(
+    'onGetJsTranslations',
+    function (iMSCP_Events_Description $e) {
+        $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
+    }
+);
 
 generateNavigation($tpl);
 admin_generateMenusList($tpl);
@@ -339,7 +343,9 @@ admin_generateForm($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
-iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ['templateEngine' => $tpl]);
+Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptEnd, [
+    'templateEngine' => $tpl
+]);
 $tpl->prnt();
 
 unsetMessages();

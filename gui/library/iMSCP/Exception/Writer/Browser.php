@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
+
 /**
  * iMSCP_Exception_Writer_Browser
  *
@@ -58,8 +60,8 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer_Abstract
     {
         $exception = $event->getException();
 
-        if (iMSCP_Registry::isRegistered('config')) {
-            $debug = iMSCP_Registry::get('config')['DEBUG'];
+        if (Registry::isRegistered('config')) {
+            $debug = Registry::get('config')['DEBUG'];
         } else {
             $debug = 1;
         }
@@ -145,7 +147,7 @@ HTML;
      */
     protected function render()
     {
-        if (!iMSCP_Registry::isRegistered('db')) {
+        if (!Registry::isRegistered('db')) {
             return;
         }
 
@@ -157,8 +159,8 @@ HTML;
             'backlink_block' => 'page'
         ]);
 
-        if (iMSCP_Registry::isRegistered('backButtonDestination')) {
-            $backButtonDestination = iMSCP_Registry::get('backButtonDestination');
+        if (Registry::isRegistered('backButtonDestination')) {
+            $backButtonDestination = Registry::get('backButtonDestination');
         } else {
             $backButtonDestination = 'javascript:history.go(-1)';
         }
