@@ -27,27 +27,34 @@ use iMSCP_Registry as Registry;
  */
 
 /**
- * Get traffic information for the given period
+ * Get traffic data for the given user and period
  *
  * @param int $domainId User main domain unique identifier
  * @param int $startDate An UNIX timestamp representing a start date
  * @param int $endDate An UNIX timestamp representing an end date
  * @return array
  */
-function getDomainTraffic($domainId, $startDate, $endDate)
+function getUserTraffic($domainId, $startDate, $endDate)
 {
-    $stmt = exec_query(
-        '
-          SELECT IFNULL(SUM(dtraff_web), 0) AS web_traffic,
-            IFNULL(SUM(dtraff_ftp), 0) AS ftp_traffic,
-            IFNULL(SUM(dtraff_mail), 0) AS mail_traffic,
-            IFNULL(SUM(dtraff_pop), 0) AS pop_traffic
-          FROM domain_traffic
-          WHERE domain_id = ?
-          AND dtraff_time BETWEEN ? AND ?
-        ',
-        [$domainId, $startDate, $endDate]
-    );
+    static $stmt;
+
+    if (NULL === $stmt) {
+        /** @var iMSCP_Database $db */
+        $db = Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare(
+            '
+               SELECT IFNULL(SUM(dtraff_web), 0) AS web_traffic,
+                    IFNULL(SUM(dtraff_ftp), 0) AS ftp_traffic,
+                    IFNULL(SUM(dtraff_mail), 0) AS smtp_traffic,
+                    IFNULL(SUM(dtraff_pop),0) AS pop_traffic
+                FROM domain_traffic
+                WHERE domain_id = ?
+                AND dtraff_time BETWEEN ? AND ?
+            '
+        );
+    }
+
+    $stmt->execute([$domainId, $startDate, $endDate]);
 
     if (!$stmt->rowCount()) {
         return [0, 0, 0, 0];
@@ -55,7 +62,7 @@ function getDomainTraffic($domainId, $startDate, $endDate)
 
     $row = $stmt->fetch();
 
-    return [$row['web_traffic'], $row['ftp_traffic'], $row['mail_traffic'], $row['pop_traffic']];
+    return [$row['web_traffic'], $row['ftp_traffic'], $row['smtp_traffic'], $row['pop_traffic']];
 }
 
 /**
@@ -69,11 +76,11 @@ function generatePage(TemplateEngine $tpl)
     $userId = intval($_GET['user_id']);
     $stmt = exec_query(
         '
-          SELECT admin_name, domain_id
-          FROM admin
-          JOIN domain ON(domain_admin_id = admin_id)
-          WHERE admin_id = ?
-          AND created_by = ?
+            SELECT admin_name, domain_id
+            FROM admin
+            JOIN domain ON(domain_admin_id = admin_id)
+            WHERE admin_id = ?
+            AND created_by = ?
         ',
         [$userId, $_SESSION['user_id']]
     );
@@ -95,11 +102,11 @@ function generatePage(TemplateEngine $tpl)
     generateDMYlists($tpl, 0, $month, $year, $nPastYears);
 
     $stmt = exec_query(
-        'SELECT COUNT(dtraff_id) FROM domain_traffic WHERE dtraff_time BETWEEN ? AND ? LIMIT 1',
-        [getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)]
+        'SELECT domain_id FROM domain_traffic WHERE domain_id = ? AND dtraff_time BETWEEN ? AND ? LIMIT 1',
+        [$domainId, getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)]
     );
 
-    if ($stmt->fetchColumn() < 1) {
+    if (!$stmt->rowCount()) {
         set_page_message(tr('No statistics found for the given period. Try another period.'), 'static_info');
         $tpl->assign([
             'USERNAME'                      => tohtml($adminName),
@@ -118,7 +125,7 @@ function generatePage(TemplateEngine $tpl)
         $beginTime = mktime(0, 0, 0, $month, $fromDay, $year);
         $endTime = mktime(23, 59, 59, $month, $fromDay, $year);
 
-        list($webTraffic, $ftpTraffic, $smtpTraffic, $popTraffic) = getDomainTraffic($domainId, $beginTime, $endTime);
+        list($webTraffic, $ftpTraffic, $smtpTraffic, $popTraffic) = getUserTraffic($domainId, $beginTime, $endTime);
 
         $tpl->assign([
             'DATE'         => date($dateFormat, strtotime($year . '-' . $month . '-' . $fromDay)),

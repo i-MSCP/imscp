@@ -20,12 +20,12 @@
 
 namespace iMSCP\Update;
 
-use Crypt_RSA;
 use iMSCP\Crypt as Crypt;
 use iMSCP_PHPini as PhpIni;
 use iMSCP_Registry as Registry;
 use iMSCP_Uri_Redirect as UriRedirect;
 use PDO;
+use phpseclib\Crypt\RSA;
 
 /**
  * Class UpdateDatabase
@@ -36,70 +36,7 @@ class UpdateDatabase extends UpdateDatabaseAbstract
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 271;
-
-    /**
-     * Decrypt any SSL private key
-     *
-     * @return array|null SQL statements to be executed
-     */
-    public function r178()
-    {
-        $sqlQueries = [];
-        $stmt = execute_query('SELECT cert_id, password, `key` FROM ssl_certs');
-
-        if (!$stmt->rowCount()) {
-            return NULL;
-        }
-
-        while ($row = $stmt->fetch()) {
-            $certId = quoteValue($row['cert_id'], PDO::PARAM_INT);
-            $privateKey = new Crypt_RSA();
-
-            if ($row['password'] != '') {
-                $privateKey->setPassword($row['password']);
-            }
-
-            if (!$privateKey->loadKey($row['key'], CRYPT_RSA_PRIVATE_FORMAT_PKCS1)) {
-                $sqlQueries[] = "DELETE FROM ssl_certs WHERE cert_id = $certId";
-                continue;
-            }
-
-            // Clear out passphrase
-            $privateKey->setPassword();
-            // Get unencrypted private key
-            $privateKey = $privateKey->getPrivateKey();
-            $privateKey = quoteValue($privateKey);
-            $sqlQueries[] = "UPDATE ssl_certs SET `key` = $privateKey WHERE cert_id = $certId";
-        }
-
-
-        return $sqlQueries;
-    }
-
-    /**
-     * Remove password column from the ssl_certs table
-     *
-     * @return null|string SQL statements to be executed
-     */
-    public function r179()
-    {
-        return $this->dropColumn('ssl_certs', 'password');
-    }
-
-    /**
-     * Drop deprecated columns -- Those are not removed when upgrading from some older versions
-     *
-     * @return array SQL statements to be executed
-     */
-    public function r270()
-    {
-        return [
-            $this->dropColumn('reseller_props', 'php_ini_al_register_globals'),
-            $this->dropColumn('domain', 'phpini_perm_register_globals'),
-            $this->dropColumn('php_ini', 'register_globals'),
-        ];
-    }
+    protected $lastUpdate = 273;
 
     /**
      * Prohibit upgrade from i-MSCP versions older than 1.1.x
@@ -197,6 +134,55 @@ class UpdateDatabase extends UpdateDatabaseAbstract
         }
 
         return $sqlQueries;
+    }
+
+    /**
+     * Decrypt any SSL private key
+     *
+     * @return array|null SQL statements to be executed
+     */
+    public function r178()
+    {
+        $sqlQueries = [];
+        $stmt = execute_query('SELECT cert_id, password, `key` FROM ssl_certs');
+
+        if (!$stmt->rowCount()) {
+            return NULL;
+        }
+
+        while ($row = $stmt->fetch()) {
+            $certId = quoteValue($row['cert_id'], PDO::PARAM_INT);
+            $privateKey = new RSA();
+
+            if ($row['password'] != '') {
+                $privateKey->setPassword($row['password']);
+            }
+
+            if (!$privateKey->loadKey($row['key'], RSA::PRIVATE_FORMAT_PKCS1)) {
+                $sqlQueries[] = "DELETE FROM ssl_certs WHERE cert_id = $certId";
+                continue;
+            }
+
+            // Clear out passphrase
+            $privateKey->setPassword();
+            // Get unencrypted private key
+            $privateKey = $privateKey->getPrivateKey();
+            $privateKey = quoteValue($privateKey);
+            $sqlQueries[] = "UPDATE ssl_certs SET `key` = $privateKey WHERE cert_id = $certId";
+        }
+
+
+        return $sqlQueries;
+    }
+
+    /**
+     * Remove password column from the ssl_certs table
+     *
+     * @return null|string SQL statements to be executed
+     */
+    public function r179()
+    {
+        return $this->dropColumn('ssl_certs', 'password');
     }
 
     /**
@@ -1472,7 +1458,7 @@ class UpdateDatabase extends UpdateDatabaseAbstract
      */
     protected function r265()
     {
-        if (($renameQuery = $this->renameTable('mail_users', 'old_mail_users')) !== NULL) {
+        if ($renameQuery = $this->renameTable('mail_users', 'old_mail_users')) {
             execute_query($renameQuery);
         }
 
@@ -1480,7 +1466,7 @@ class UpdateDatabase extends UpdateDatabaseAbstract
             execute_query('CREATE TABLE mail_users LIKE old_mail_users');
         }
 
-        if (($dropQuery = $this->dropIndexByName('mail_users', 'mail_addr')) !== NULL) {
+        if ($dropQuery = $this->dropIndexByName('mail_users', 'mail_addr')) {
             execute_query($dropQuery);
         }
 
@@ -1500,7 +1486,7 @@ class UpdateDatabase extends UpdateDatabaseAbstract
      */
     protected function r266()
     {
-        if (($renameQuery = $this->renameTable('server_traffic', 'old_server_traffic')) !== NULL) {
+        if ($renameQuery = $this->renameTable('server_traffic', 'old_server_traffic')) {
             execute_query($renameQuery);
         }
 
@@ -1508,7 +1494,7 @@ class UpdateDatabase extends UpdateDatabaseAbstract
             execute_query('CREATE TABLE server_traffic LIKE old_server_traffic');
         }
 
-        if (($dropQuery = $this->dropIndexByName('server_traffic', 'traff_time')) !== NULL) {
+        if ($dropQuery = $this->dropIndexByName('server_traffic', 'traff_time')) {
             execute_query($dropQuery);
         }
 
@@ -1529,7 +1515,7 @@ class UpdateDatabase extends UpdateDatabaseAbstract
      */
     protected function r268()
     {
-        if (($renameQuery = $this->renameTable('domain_traffic', 'old_domain_traffic')) !== NULL) {
+        if ($renameQuery = $this->renameTable('domain_traffic', 'old_domain_traffic')) {
             execute_query($renameQuery);
         }
 
@@ -1537,7 +1523,7 @@ class UpdateDatabase extends UpdateDatabaseAbstract
             execute_query('CREATE TABLE domain_traffic LIKE old_domain_traffic');
         }
 
-        if (($dropQuery = $this->dropIndexByName('domain_traffic', 'i_unique_timestamp')) !== NULL) {
+        if ($dropQuery = $this->dropIndexByName('domain_traffic', 'i_unique_timestamp')) {
             execute_query($dropQuery);
         }
 
@@ -1557,7 +1543,7 @@ class UpdateDatabase extends UpdateDatabaseAbstract
      */
     protected function r269()
     {
-        if (($renameQuery = $this->renameTable('httpd_vlogger', 'old_httpd_vlogger')) !== NULL) {
+        if ($renameQuery = $this->renameTable('httpd_vlogger', 'old_httpd_vlogger')) {
             execute_query($renameQuery);
         }
 
@@ -1565,7 +1551,7 @@ class UpdateDatabase extends UpdateDatabaseAbstract
             execute_query('CREATE TABLE httpd_vlogger LIKE old_httpd_vlogger');
         }
 
-        if (($dropQuery = $this->dropIndexByName('httpd_vlogger', 'PRIMARY')) !== NULL) {
+        if ($dropQuery = $this->dropIndexByName('httpd_vlogger', 'PRIMARY')) {
             execute_query($dropQuery);
         }
 
@@ -1577,15 +1563,29 @@ class UpdateDatabase extends UpdateDatabaseAbstract
     }
 
     /**
+     * Drop deprecated columns -- Those are not removed when upgrading from some older versions
+     *
+     * @return array SQL statements to be executed
+     */
+    public function r270()
+    {
+        return [
+            $this->dropColumn('reseller_props', 'php_ini_al_register_globals'),
+            $this->dropColumn('domain', 'phpini_perm_register_globals'),
+            $this->dropColumn('php_ini', 'register_globals')
+        ];
+    }
+
+    /**
      * Adds compound unique key on the php_ini table
      *
      * Note: Repeated update due to mistake in previous implementation (was r234, r262 and r267)
      *
-     * @return array SQL statement to be executed
+     * @return array SQL statements to be executed
      */
     protected function r271()
     {
-        if (($renameQuery = $this->renameTable('php_ini', 'old_php_ini')) !== NULL) {
+        if ($renameQuery = $this->renameTable('php_ini', 'old_php_ini')) {
             execute_query($renameQuery);
         }
 
@@ -1616,5 +1616,48 @@ class UpdateDatabase extends UpdateDatabaseAbstract
             'INSERT IGNORE INTO php_ini SELECT * FROM old_php_ini',
             $this->dropTable('old_php_ini')
         ];
+    }
+
+    /**
+     * Schema review (domain_traffic table):
+     *  - Fix for #IP-1756:
+     *   - Remove domain_traffic.dtraff_id column (PRIMARY KEY, AUTO_INCREMENT)
+     *   - Remove `i_unique_timestamp` unique index (domain_id, dtraff_time)
+     *   - Create new PRIMARY KEY (domain_id, dtraff_time)
+     * 
+     * @return string|null string SQL statement to be executed
+     */
+    protected function r272()
+    {
+        if ($dropQuery = $this->dropColumn('domain_traffic', 'dtraff_id')) {
+            execute_query($dropQuery);
+        }
+
+        if ($dropQuery = $this->dropIndexByName('domain_traffic', 'i_unique_timestamp')) {
+            execute_query($dropQuery);
+        }
+
+        return $this->addIndex('domain_traffic', ['domain_id', 'dtraff_time']);
+    }
+
+    /**
+     * Schema review (server_traffic table):
+     *  - Remove server_traffic.dtraff_id column (PRIMARY KEY, AUTO_INCREMENT)
+     *  - Remove `traff_time` unique index (traff_time)
+     *  - Create new PRIMARY KEY (traff_time)
+     * 
+     * @return string|null string SQL statement to be executed
+     */
+    protected function r273()
+    {
+        if ($dropQuery = $this->dropColumn('server_traffic', 'straff_id')) {
+            execute_query($dropQuery);
+        }
+
+        if ($dropQuery = $this->dropIndexByName('server_traffic', 'traff_time')) {
+            execute_query($dropQuery);
+        }
+
+        return $this->addIndex('server_traffic', 'traff_time');
     }
 }

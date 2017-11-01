@@ -49,16 +49,16 @@ function getClientMonthlyTrafficStats($domainId)
             '
                 SELECT IFNULL(SUM(dtraff_web), 0) AS dtraff_web,
                     IFNULL(SUM(dtraff_ftp), 0) AS dtraff_ftp,
-                    IFNULL(SUM(dtraff_mail), 0) AS dtraff_mail,
+                    IFNULL(SUM(dtraff_mail), 0) AS dtraff_smtp,
                     IFNULL(SUM(dtraff_pop), 0) AS dtraff_pop
                 FROM domain_traffic
-                WHERE dtraff_time BETWEEN ? AND ?
-                AND domain_id = ?
+                WHERE domain_id = ? 
+                AND dtraff_time BETWEEN ? AND ?
             '
         );
     }
 
-    $stmt->execute([getFirstDayOfMonth(), getLastDayOfMonth(), $domainId]);
+    $stmt->execute([$domainId, getFirstDayOfMonth(), getLastDayOfMonth()]);
 
     if (($row = $stmt->fetch()) === false) {
         return array_fill(0, 5, 0);
@@ -67,9 +67,9 @@ function getClientMonthlyTrafficStats($domainId)
     return [
         $row['dtraff_web'],
         $row['dtraff_ftp'],
-        $row['dtraff_mail'],
+        $row['dtraff_smtp'],
         $row['dtraff_pop'],
-        $row['dtraff_web'] + $row['dtraff_ftp'] + $row['dtraff_mail'] + $row['dtraff_pop']
+        $row['dtraff_web'] + $row['dtraff_ftp'] + $row['dtraff_smtp'] + $row['dtraff_pop']
     ];
 }
 

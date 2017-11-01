@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '271');
+  ('DATABASE_REVISION', '273');
 
 -- --------------------------------------------------------
 
@@ -199,15 +199,13 @@ CREATE TABLE IF NOT EXISTS `domain_dns` (
 --
 
 CREATE TABLE IF NOT EXISTS `domain_traffic` (
-  `dtraff_id` int(10) unsigned NOT NULL auto_increment,
   `domain_id` int(10) unsigned NOT NULL,
   `dtraff_time` bigint(20) unsigned NOT NULL,
   `dtraff_web` bigint(20) unsigned DEFAULT '0',
   `dtraff_ftp` bigint(20) unsigned DEFAULT '0',
   `dtraff_mail` bigint(20) unsigned DEFAULT '0',
   `dtraff_pop` bigint(20) unsigned DEFAULT '0',
-  PRIMARY KEY (`dtraff_id`),
-  UNIQUE `i_unique_timestamp` (`domain_id`, `dtraff_time`)
+  PRIMARY KEY (`domain_id` `dtraff_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -549,7 +547,6 @@ CREATE TABLE IF NOT EXISTS `server_ips` (
 --
 
 CREATE TABLE IF NOT EXISTS `server_traffic` (
-  `straff_id` int(10) unsigned NOT NULL auto_increment,
   `traff_time` int(10) unsigned DEFAULT NULL,
   `bytes_in` bigint(20) unsigned DEFAULT NULL,
   `bytes_out` bigint(20) unsigned DEFAULT NULL,
@@ -559,8 +556,7 @@ CREATE TABLE IF NOT EXISTS `server_traffic` (
   `bytes_pop_out` bigint(20) unsigned DEFAULT NULL,
   `bytes_web_in` bigint(20) unsigned DEFAULT NULL,
   `bytes_web_out` bigint(20) unsigned DEFAULT NULL,
-  PRIMARY KEY (`straff_id`),
-  UNIQUE KEY `traff_time` (`traff_time`)
+  PRIMARY KEY (`traff_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

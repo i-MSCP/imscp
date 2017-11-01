@@ -160,7 +160,6 @@ VAGRANT
 VENDOR
     Enhancement: Download and install all frontEnd dependencies through composer
     Added: Perl library for exporting variables to PHP's expression (PHP::Var)
-    Updated: IDNA Convert library to version 1.1.0
 
 YOUTRACK
     IP-1742 i-MSCP upgrade error - Unknown 'mail_user' database table in database update r254
@@ -169,6 +168,7 @@ YOUTRACK
     IP-1746 Error when generating SSL certificate - Could not write in openssl temp file
     IP-1749 User profile fields validation too strict
     IP-1753 Preseed SECONDARY_DNS does not accept spaces (as indicated in the text)
+    IP-1756 Reseller overview page is loading too slow due to a slow SQL query
 
 ------------------------------------------------------------------------------------------------------------------------
 1.5.1

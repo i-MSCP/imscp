@@ -55,9 +55,9 @@ function generateSupportQuestionsMessage()
  */
 function generateOrdersAliasesMessage()
 {
-    $stmt = exec_query(
+    $countAliasOrders = exec_query(
         "
-            SELECT COUNT(alias_id) AS cnt
+            SELECT COUNT(alias_id)
             FROM domain_aliasses
             JOIN domain USING(domain_id)
             JOIN admin ON(admin_id = domain_admin_id)
@@ -65,12 +65,11 @@ function generateOrdersAliasesMessage()
             AND created_by = ?
         ",
         [$_SESSION['user_id']]
-    );
-    $row = $stmt->fetch();
+    )->fetchColumn();
 
-    if ($row['cnt'] > 0) {
+    if ($countAliasOrders > 0) {
         set_page_message(
-            ntr('You have a new domain alias order.', 'You have %d new domain alias orders', $row['cnt']), 'static_info'
+            ntr('You have a new domain alias order.', 'You have %d new domain alias orders', $countAliasOrders), 'static_info'
         );
     }
 }

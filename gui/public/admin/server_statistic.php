@@ -157,11 +157,11 @@ function generateServerStatsByDay(TemplateEngine $tpl, $day, $month, $year)
  */
 function generateServerStatsByMonth(TemplateEngine $tpl, $month, $year)
 {
-    $stmt = exec_query('SELECT COUNT(straff_id) FROM server_traffic WHERE traff_time BETWEEN ? AND ?', [
+    $stmt = exec_query('SELECT traff_time FROM server_traffic WHERE traff_time BETWEEN ? AND ? LIMIT 1', [
         getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)
     ]);
 
-    if ($stmt->fetchColumn() < 1) {
+    if (!$stmt->rowCount()) {
         set_page_message(tr('No statistics found for the given period. Try another period.'), 'static_info');
         $tpl->assign('SERVER_STATS_BY_MONTH', '');
         return;
