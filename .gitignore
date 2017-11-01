@@ -8,5 +8,5 @@ nbproject
 .settings
 .DS_Store
 _Deparsed_XSubs.pm
-gui/library/vendor
+gui/vendor
 composer.phar

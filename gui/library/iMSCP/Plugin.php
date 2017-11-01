@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Plugin_Exception as PluginException;
+use iMSCP_Plugin_Manager as PluginManager;
 use iMSCP_Registry as Registry;
 
 /**
@@ -51,16 +53,16 @@ abstract class iMSCP_Plugin
     private $pluginType;
 
     /**
-     * @var iMSCP_Plugin_Manager
+     * @var PluginManager
      */
     private $pluginManager;
 
     /**
      * Constructor
      *
-     * @param iMSCP_Plugin_Manager $pluginManager
+     * @param PluginManager $pluginManager
      */
-    public function __construct(iMSCP_Plugin_Manager $pluginManager)
+    public function __construct(PluginManager $pluginManager)
     {
         $this->pluginManager = $pluginManager;
         $this->init();
@@ -108,7 +110,7 @@ abstract class iMSCP_Plugin
      * __need_change__    : Tell that the plugin need change
      * db_schema_version  : Plugin database schema version
      *
-     * @throws iMSCP_Plugin_Exception in case plugin info file cannot be read
+     * @throws PluginException in case plugin info file cannot be read
      * @return array An array containing information about plugin
      */
     function getInfo()
@@ -121,7 +123,7 @@ abstract class iMSCP_Plugin
             iMSCP_Utility_OpcodeCache::clearAllActive($file); // Be sure to load newest version on next call
         } else {
             if (file_exists($file)) {
-                throw new iMSCP_Plugin_Exception(tr("Unable to read the %s file.", $file));
+                throw new PluginException(tr("Unable to read the %s file.", $file));
             }
 
             set_page_message(
@@ -155,7 +157,7 @@ abstract class iMSCP_Plugin
     /**
      * Get plugin manager
      *
-     * @return iMSCP_Plugin_Manager
+     * @return PluginManager
      */
     public function getPluginManager()
     {
@@ -165,12 +167,21 @@ abstract class iMSCP_Plugin
     /**
      * Returns plugin name
      *
+     * @throws PluginException
      * @return string
      */
     final public function getName()
     {
         if (NULL === $this->pluginName) {
-            list(, , $this->pluginName) = explode('_', get_class($this), 3);
+            $class = get_class($this);
+
+            if ((false !== $pos = strrpos($class, '\\'))
+                || (false !== $pos = strrpos($class, '_'))
+            ) {
+                $this->pluginName = substr($class, $pos + 1);
+            } else {
+                throw new PluginException(tr("Couldn't retrieve plugin name from the plugin class name."));
+            }
         }
 
         return $this->pluginName;
@@ -179,6 +190,7 @@ abstract class iMSCP_Plugin
     /**
      * Returns plugin type
      *
+     * @throws PluginException
      * @return string
      */
     final public function getType()
@@ -186,10 +198,12 @@ abstract class iMSCP_Plugin
         if (NULL === $this->pluginType) {
             $class = get_parent_class($this);
 
-            if ($class === __CLASS__) {
-                $this->pluginType = 'Basic';
+            if ($class == self::class) {
+                $this->pluginType = 'Standard';
+            } elseif ((false !== $pos = strrpos($class, '_'))) {
+                $this->pluginType = substr($class, $pos + 1);
             } else {
-                list(, , $this->pluginType) = explode('_', $class, 3);
+                throw new PluginException(tr("Couldn't retrieve plugin type from the plugin parent class name."));
             }
         }
 
@@ -217,9 +231,9 @@ abstract class iMSCP_Plugin
      */
     final protected function loadConfig()
     {
-        $stmt = exec_query(
-            'SELECT plugin_config, plugin_config_prev FROM plugin WHERE plugin_name = ?', [$this->getName()]
-        );
+        $stmt = exec_query('SELECT plugin_config, plugin_config_prev FROM plugin WHERE plugin_name = ?', [
+            $this->getName()
+        ]);
 
         if ($stmt->rowCount()) {
             $row = $stmt->fetch();
@@ -250,7 +264,7 @@ abstract class iMSCP_Plugin
     /**
      * Return plugin configuration from file
      *
-     * @throws iMSCP_Plugin_Exception in case plugin configuration file is not readable
+     * @throws PluginException in case plugin configuration file is not readable
      * @return array
      */
     final public function getConfigFromFile()
@@ -265,9 +279,7 @@ abstract class iMSCP_Plugin
         }
 
         if (!@is_readable($file)) {
-            throw new iMSCP_Plugin_Exception(
-                tr('Unable to read the plugin %s file. Please check file permissions', $file)
-            );
+            throw new PluginException(tr('Unable to read the plugin %s file. Please check file permissions', $file));
         }
 
         $config = include($file);
@@ -329,11 +341,11 @@ abstract class iMSCP_Plugin
      * This method is automatically called by the plugin manager when the
      * plugin is being installed.
      *
-     * @throws iMSCP_Plugin_Exception
-     * @param iMSCP_Plugin_Manager $pluginManager
+     * @throws PluginException
+     * @param PluginManager $pluginManager
      * @return void
      */
-    public function install(iMSCP_Plugin_Manager $pluginManager)
+    public function install(PluginManager $pluginManager)
     {
     }
 
@@ -343,11 +355,11 @@ abstract class iMSCP_Plugin
      * This method is automatically called by the plugin manager when the
      * plugin is being enabled (activated).
      *
-     * @throws iMSCP_Plugin_Exception
-     * @param iMSCP_Plugin_Manager $pluginManager
+     * @throws PluginException
+     * @param PluginManager $pluginManager
      * @return void
      */
-    public function enable(iMSCP_Plugin_Manager $pluginManager)
+    public function enable(PluginManager $pluginManager)
     {
     }
 
@@ -357,11 +369,11 @@ abstract class iMSCP_Plugin
      * This method is automatically called by the plugin manager when the
      * plugin is being disabled (deactivated).
      *
-     * @throws iMSCP_Plugin_Exception
-     * @param iMSCP_Plugin_Manager $pluginManager
+     * @throws PluginException
+     * @param PluginManager $pluginManager
      * @return void
      */
-    public function disable(iMSCP_Plugin_Manager $pluginManager)
+    public function disable(PluginManager $pluginManager)
     {
     }
 
@@ -371,13 +383,13 @@ abstract class iMSCP_Plugin
      * This method is automatically called by the plugin manager when
      * the plugin is being updated.
      *
-     * @throws iMSCP_Plugin_Exception
-     * @param iMSCP_Plugin_Manager $pluginManager
+     * @throws PluginException
+     * @param PluginManager $pluginManager
      * @param string $fromVersion Version from which plugin update is initiated
      * @param string $toVersion Version to which plugin is updated
      * @return void
      */
-    public function update(iMSCP_Plugin_Manager $pluginManager, $fromVersion, $toVersion)
+    public function update(PluginManager $pluginManager, $fromVersion, $toVersion)
     {
     }
 
@@ -387,11 +399,11 @@ abstract class iMSCP_Plugin
      * This method is automatically called by the plugin manager when the
      * plugin is being uninstalled.
      *
-     * @throws iMSCP_Plugin_Exception
-     * @param iMSCP_Plugin_Manager $pluginManager
+     * @throws PluginException
+     * @param PluginManager $pluginManager
      * @return void
      */
-    public function uninstall(iMSCP_Plugin_Manager $pluginManager)
+    public function uninstall(PluginManager $pluginManager)
     {
     }
 
@@ -401,11 +413,11 @@ abstract class iMSCP_Plugin
      * This method is automatically called by the plugin manager when the
      * plugin is being deleted.
      *
-     * @throws iMSCP_Plugin_Exception
-     * @param iMSCP_Plugin_Manager $pluginManager
+     * @throws PluginException
+     * @param PluginManager $pluginManager
      * @return void
      */
-    public function delete(iMSCP_Plugin_Manager $pluginManager)
+    public function delete(PluginManager $pluginManager)
     {
     }
 
@@ -560,7 +572,7 @@ abstract class iMSCP_Plugin
      * );
      * </code>
      *
-     * @throws iMSCP_Plugin_Exception When an error occurs
+     * @throws PluginException When an error occurs
      * @param string $migrationMode Migration mode (up|down)
      * @return void
      */
@@ -573,7 +585,7 @@ abstract class iMSCP_Plugin
         $sqlDir = $pluginManager->pluginGetDirectory() . '/' . $pluginName . '/sql';
 
         if (!@is_dir($sqlDir)) {
-            throw new iMSCP_Plugin_Exception(tr("Directory %s doesn't exist.", $sqlDir));
+            throw new PluginException(tr("Directory %s doesn't exist.", $sqlDir));
         }
 
         $pluginInfo = $pluginManager->pluginGetInfo($pluginName);
@@ -599,11 +611,11 @@ abstract class iMSCP_Plugin
         try {
             foreach ($migrationFiles as $migrationFile) {
                 if (!@is_readable($migrationFile)) {
-                    throw new iMSCP_Plugin_Exception(tr('Migration file %s is not readable.', $migrationFile));
+                    throw new PluginException(tr('Migration file %s is not readable.', $migrationFile));
                 }
 
                 if (!preg_match('/(\d+)_[^\/]+\.php$/i', $migrationFile, $version)) {
-                    throw new iMSCP_Plugin_Exception(tr("File %s doesn't look like a migration file.", $migrationFile));
+                    throw new PluginException(tr("File %s doesn't look like a migration file.", $migrationFile));
                 }
 
                 if (($migrationMode == 'up' && $version[1] > $dbSchemaVersion)
@@ -629,7 +641,7 @@ abstract class iMSCP_Plugin
         } catch (Exception $e) {
             $pluginInfo['db_schema_version'] = $dbSchemaVersion;
             $pluginManager->pluginUpdateInfo($pluginName, $pluginInfo->toArray());
-            throw new iMSCP_Plugin_Exception($e->getMessage(), $e->getCode(), $e);
+            throw new PluginException($e->getMessage(), $e->getCode(), $e);
         }
     }
 }

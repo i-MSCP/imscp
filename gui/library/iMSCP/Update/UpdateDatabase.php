@@ -171,7 +171,6 @@ class UpdateDatabase extends UpdateDatabaseAbstract
             $sqlQueries[] = "UPDATE ssl_certs SET `key` = $privateKey WHERE cert_id = $certId";
         }
 
-
         return $sqlQueries;
     }
 

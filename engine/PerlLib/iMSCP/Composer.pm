@@ -85,7 +85,7 @@ sub new
             $self->{'_attrs'}->{'composer_json'} || <<"EOT", { utf8 => 1 } );
 {
     "config": {
-        "cache-files-ttl":0,
+        "cache-files-ttl":15780000,
         "cafile":"$main::imscpConfig{'DISTRO_CA_BUNDLE'}",
         "capath":"$main::imscpConfig{'DISTRO_CA_PATH'}",
         "discard-changes":true,
@@ -195,19 +195,21 @@ sub installComposer
     $self;
 }
 
-=item installPackages( [ $requireDev = false ] )
+=item installPackages( [ $requireDev = false, [ $noautoloader = false] ])
 
  Install or update packages
 
  Param bool $requireDev OPTIONAL Flag indicating whether or not packages listed
                         in require-dev must be installed
+ Param bool $noautoloader OPTIONAL flag indicating whether or not autoloader
+                          generation must be skipped
  Return iMSCP::Composer, die on failure
 
 =cut
 
 sub installPackages
 {
-    my ($self, $requireDev) = @_;
+    my ($self, $requireDev, $noautoloader) = @_;
 
     if ( $self->{'_attrs'}->{'home_dir'} ne $self->{'_attrs'}->{'working_dir'} ) {
         iMSCP::Dir->new( dirname => $self->{'_attrs'}->{'working_dir'} )->make(
@@ -229,8 +231,8 @@ sub installPackages
     $rs = executeNoWait(
         $self->_getSuCmd(
             @{$self->{'_php_cmd'}}, $self->{'_attrs'}->{'composer_path'}, 'update', '--no-progress', '--no-ansi',
-            '--no-interaction', ( $requireDev ? () : '--no-dev' ), '--no-suggest', '--classmap-authoritative',
-            "--working-dir=$self->{'_attrs'}->{'working_dir'}"
+            '--no-interaction', ( $requireDev ? () : '--no-dev' ), '--no-suggest',
+            ( $noautoloader ? '--no-autoloader' : () ), "--working-dir=$self->{'_attrs'}->{'working_dir'}"
         ),
         $self->{'_stdout'},
         $self->{'_stderr'}
@@ -288,8 +290,7 @@ sub checkPackageRequirements
         $self->{'_stdout'}( sprintf( "Checking requirements for the %s (%s) composer package\n", $package, $version ));
         my $rs = execute(
             $self->_getSuCmd(
-                @{$self->{'_php_cmd'}}, $self->{'_attrs'}->{'composer_path'}, 'show', '--no-ansi',
-                '--no-interaction',
+                @{$self->{'_php_cmd'}}, $self->{'_attrs'}->{'composer_path'}, 'show', '--no-ansi', '--no-interaction',
                 "--working-dir=$self->{'_attrs'}->{'working_dir'}", $package, $version
             ),
             \my $stdout,

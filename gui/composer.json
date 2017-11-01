@@ -10,7 +10,7 @@
   "license": "LGPL-2.1",
   "support": {
     "issues": "https://youtrack.i-mscp.net/",
-    "source": "https://github.com/i-MSCP/imscp"
+    "source": "https://github.com/i-MSCP/imscp/"
   },
   "authors": [
     {
@@ -29,13 +29,25 @@
     "phpseclib/phpseclib": "^2.0.0"
   },
   "config": {
-    "cache-files-ttl":15780000,
-    "discard-changes":true,
-    "htaccess-protect":false,
-    "preferred-install":"dist",
-    "process-timeout":2000,
-    "vendor-dir": "library/vendor/"
+    "classmap-authoritative": false,
+    "discard-changes": true,
+    "htaccess-protect": false,
+    "optimize-autoloader": true,
+    "apcu-autoloader": true,
+    "preferred-install": "dist",
+    "process-timeout": 2000
   },
-  "minimum-stability":"dev",
-  "prefer-stable":true
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "include-path": [
+    "library/"
+  ],
+  "autoload": {
+    "psr-0": {
+      "iMSCP_": "library/"
+    },
+    "psr-4": {
+      "iMSCP\\": "library/iMSCP/"
+    }
+  }
 }

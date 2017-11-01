@@ -91,7 +91,7 @@ sub registerSetupListeners
                 my $composer = iMSCP::Composer->new(
                     user          => $main::imscpConfig{'ROOT_USER'},
                     group         => $main::imscpConfig{'ROOT_GROUP'},
-                    home_dir      => $main::imscpConfig{'IMSCP_HOMEDIR'},
+                    home_dir      => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/persistent",
                     working_dir   => $main::imscpConfig{'GUI_ROOT_DIR'},
                     composer_json => iMSCP::File->new(
                         filename => "$main::imscpConfig{'GUI_ROOT_DIR'}/composer.json"
@@ -113,7 +113,7 @@ sub registerSetupListeners
                     return if $stdout eq '';
 
                     step( undef, <<"EOT", 3, $step )
-Processing i-MSCP frontEnd (dependencies) composer packages...
+Installing/Updating i-MSCP frontEnd (dependencies) composer packages...
 
 $stdout
 
@@ -132,7 +132,6 @@ EOT
 
                 if ( iMSCP::Getopt->skipPackageUpdate ) {
                     $step++;
-
                     eval {
                         $composer
                             ->setStdRoutines( $stdRoutine, sub {} )
@@ -645,7 +644,7 @@ sub preinstall
                     return if $stdout eq '';
 
                     step( undef, <<"EOT", 3, $step )
-Processing i-MSCP frontEnd (tools) composer packages...
+Installing/Updating i-MSCP frontEnd (tools) composer packages...
 
 $stdout
 
@@ -664,7 +663,6 @@ EOT
 
                 if ( iMSCP::Getopt->skipPackageUpdate ) {
                     $step++;
-
                     eval {
                         $composer
                             ->setStdRoutines( $stdRoutine, sub {} )
@@ -678,7 +676,7 @@ EOT
                 $step++;
                 $composer
                     ->setStdRoutines( sub {}, $stdRoutine )
-                    ->installPackages();
+                    ->installPackages( undef, 'skip-autoloader' );
                 undef $self->{'_composer'};
                 endDetail;
             };
@@ -760,7 +758,7 @@ sub dpkgPostInvokeTasks
 
 =item getComposer( )
 
- Get iMSCP::Composer instance associated to the FrontEnd
+ Get iMSCP::Composer instance used for FrontEnd tools installation
 
  Return iMSCP::Composer
 

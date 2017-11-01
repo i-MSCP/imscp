@@ -20,8 +20,7 @@
 
 namespace iMSCP;
 
-use iMSCP\Loader\AutoloaderFactory;
-use iMSCP\Loader\StandardAutoloader;
+use Composer\Autoload\ClassLoader as Autoloader;
 use iMSCP_Config_Handler_Db as ConfigDb;
 use iMSCP_Config_Handler_File as ConfigFile;
 use iMSCP_Database as Database;
@@ -33,11 +32,10 @@ use iMSCP_Exception_Handler as ExceptionHandler;
 use iMSCP_Plugin_Manager as PluginManager;
 use iMSCP_Registry as Registry;
 use Zend_Cache as Cache;
+use Zend_Loader_AutoloaderFactory as AutoloaderFactory;
 use Zend_Locale as Locale;
 use Zend_Session as Session;
 use Zend_Translate as Translator;
-
-//use Zend_Translate_Adapter_Array as TranslatorArray;
 
 /**
  * Class Appplication
@@ -50,7 +48,7 @@ class Application
     protected $environment;
 
     /**
-     * @var StandardAutoloader
+     * @var Autoloader
      */
     protected $autoloader;
 
@@ -97,28 +95,20 @@ class Application
     /**
      * Application constructor
      *
+     * @param Autoloader $autoloader
      * @param string $environment
      */
-    public function __construct($environment)
+    public function __construct(Autoloader $autoloader, $environment = 'production')
     {
+        $this->autoloader = $autoloader;
         $this->environment = (string)$environment;
 
-        require_once __DIR__ . '/Loader/AutoloaderFactory.php';
+        // For backward compatibility with plugins only. Will be replaced by
+        //composer loader in a later release
+        AutoloaderFactory::factory();
 
-        AutoloaderFactory::factory([
-            AutoloaderFactory::STANDARD_AUTOLOADER => [
-                'fallback_autoloader' => true,
-                'namespaces'          => [
-                    'iMSCP\\' => LIBRARY_PATH . '/iMSCP',
-                ],
-                'prefixes'            => [
-                    'iMSCP_' => LIBRARY_PATH . '/iMSCP'
-                ]
-            ]
-        ]);
-
-        // Create class aliases for backward compatibility with plugins (Will be removed in a later release)
-        class_alias('iMSCP\Loader\AutoloaderFactory', 'Zend_Loader_AutoloaderFactory');
+        // Create class aliases for backward compatibility with plugins. Will
+        // be removed in a later release
         class_alias('iMSCP_Events_Manager', 'iMSCP_Events_Aggregator');
 
         // Make application available through registry
@@ -128,16 +118,10 @@ class Application
     /**
      * Retrieve autoloader instance
      *
-     * @return StandardAutoloader
+     * @return Autoloader
      */
     public function getAutoloader()
     {
-        if (NULL === $this->autoloader) {
-            $this->autoloader = AutoloaderFactory::getRegisteredAutoloader(
-                AutoloaderFactory::STANDARD_AUTOLOADER
-            );
-        }
-
         return $this->autoloader;
     }
 
@@ -266,7 +250,7 @@ class Application
         }
 
         if (!is_writable(GUI_ROOT_DIR . '/data/sessions')) {
-            throw new iMSCPException('The gui/data/sessions directory must be writable.');
+            throw new iMSCPException('The gui/data/sessions directory is not writable.');
         }
 
         Session::setOptions([
@@ -789,22 +773,6 @@ class Application
                 'zh' => 'zh_CN'
             ]
         ]);
-
-        // Setup additional translator for Zend_Validate
-        // Not used yet
-        /*$zendTranslator = new TranslatorArray([
-            'content'        => LIBRARY_PATH . '/vendor/Zend/resources/languages',
-            'disableNotices' => true,
-            'locale'         => $locale,
-            'scan'           => Translator::LOCALE_DIRECTORY
-        ]);
-        
-        if ($zendTranslator->isAvailable($locale->getLanguage()) || $zendTranslator->isAvailable($locale)) {
-            $this->translator->getAdapter()->addTranslation([
-                'content' => $zendTranslator,
-                'locale' => 'fr'
-            ]);
-        }*/
 
         // Make Zend_Locale and Zend_Translate available for i-MSCP core,
         // i-MSCP plugins and Zend libraries

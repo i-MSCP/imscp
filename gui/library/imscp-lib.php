@@ -22,7 +22,7 @@ namespace iMSCP;
 
 // Define application paths
 defined('GUI_ROOT_DIR') || define('GUI_ROOT_DIR', dirname(__DIR__));
-defined('LIBRARY_PATH') || define('LIBRARY_PATH', GUI_ROOT_DIR . '/library');
+defined('LIBRARY_PATH') || define('LIBRARY_PATH', __DIR__);
 defined('CACHE_PATH') || define('CACHE_PATH', GUI_ROOT_DIR . '/data/cache');
 defined('PERSISTENT_PATH') || define('PERSISTENT_PATH', GUI_ROOT_DIR . '/data/persistent');
 defined('CONFIG_FILE_PATH') || define('CONFIG_FILE_PATH', getenv('IMSCP_CONF') ?: '/etc/imscp/imscp.conf');
@@ -32,15 +32,13 @@ defined('APPLICATION_ENV') || define(
     'APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production')
 );
 
-// Setup include path
-set_include_path(implode(PATH_SEPARATOR, array_unique(array_merge(
-    [LIBRARY_PATH, LIBRARY_PATH . '/vendor/Zend/library'], explode(PATH_SEPARATOR, get_include_path())
-))));
+// Composer autoloading
+/** @var \Composer\Autoload\ClassLoader $loader */
+$autoloader = include GUI_ROOT_DIR . '/vendor/autoload.php';
 
-// Composer autoloader (classmap)
-require_once LIBRARY_PATH . '/vendor/autoload.php';
-require_once 'iMSCP/Application.php';
+// Create application
+$application = new Application($autoloader, APPLICATION_ENV);
+unset($autoloader);
 
 // Bootstrap application
-$application = new Application(APPLICATION_ENV);
 $application->bootstrap(CONFIG_FILE_PATH);

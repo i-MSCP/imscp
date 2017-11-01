@@ -55,7 +55,8 @@ DISTRIBUTIONS
 
 FRONTEND
     Added: New `mailType' and `forwardList' parameters for both `onBeforeAddMail' and `onAfterAddMail' events
-    Added: Support for PSR-4 autoloading with our own class with Zend_Loader_AutoloaderFactory as alias (BC reasons)
+    Added: Support for PSR-4 autoloading through PHP dependency manager (composer) autoloader
+    Changed iMSCP\Application::getAutoloader() now return the Composer Composer\Autoload\ClassLoader instance
     Enhancement: Make use of application cache for caching of plugins metadata (lifetime: indefinitely till change)
     Enhancement: PHP error messages are now stored in the data/logs/errors.log file which is rotated on a daily basis
     Fixed: Both `onBeforeAddMail' and `onAfterAddMail' events should be triggered on default mail accounts creation
