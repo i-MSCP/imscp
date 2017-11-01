@@ -114,7 +114,15 @@ class iMSCP_Plugin_Manager
         $this->eventsManager = new EventsManager($em);
         $this->cache = $cache;
         $this->pluginLoadData();
-        spl_autoload_register([$this, '_autoload']);
+        
+        /** @var \iMSCP\Application $app */
+        $app = Registry::get('iMSCP_Application');
+        foreach(array_keys($this->pluginData) as $plugin) {
+            $app->getAutoloader()->addPsr4('iMSCP\\Plugin\\', $this->pluginGetDirectory() . "/$plugin/");
+        }
+
+        // register self-autoloader for old-way plugin names
+        spl_autoload_register([$this, 'autoload']);
     }
 
     /**
@@ -192,10 +200,10 @@ class iMSCP_Plugin_Manager
      * @param string $className Plugin class to load
      * @return void
      */
-    public function _autoload($className)
+    public function autoload($className)
     {
         if (strpos($className, 'iMSCP_Plugin_', 0) !== 0) {
-            return;
+            false;
         }
 
         $basename = substr($className, 13);
@@ -827,13 +835,17 @@ class iMSCP_Plugin_Manager
             return $this->loadedPlugins[$pluginName];
         }
 
-        $className = "iMSCP_Plugin_$pluginName";
+        $className = "iMSCP\\Plugin\\$pluginName";
+
         if (!class_exists($className, true)) {
-            write_log(
-                sprintf("Plugin Manager: Couldn't load %s plugin - Class %s not found.", $pluginName, $className),
-                E_USER_ERROR
-            );
-            return false;
+            $className = "iMSCP_Plugin_$pluginName";
+            if (!class_exists($className, true)) {
+                write_log(
+                    sprintf("Plugin Manager: Couldn't load %s plugin - Plugin class not found.", $pluginName),
+                    E_USER_ERROR
+                );
+                return false;
+            }
         }
 
         $this->loadedPlugins[$pluginName] = new $className($this);

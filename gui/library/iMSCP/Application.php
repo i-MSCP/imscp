@@ -104,7 +104,7 @@ class Application
         $this->environment = (string)$environment;
 
         // For backward compatibility with plugins only. Will be replaced by
-        //composer loader in a later release
+        // composer loader in a later release
         AutoloaderFactory::factory();
 
         // Create class aliases for backward compatibility with plugins. Will
