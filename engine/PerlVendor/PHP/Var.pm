@@ -201,7 +201,7 @@ sub _dump
         $obj =~ s/'/\\'/go;
 
         if ( JSON::is_bool( $obj ) ) {
-            $str .= $obj == $obj ? 'true' : 'false';
+            $str .= $obj ? 'true' : 'false';
         } elsif ( $obj =~ /^-?(0|[1-9]\d{0,8})$/ ) {
             $str .= $obj;
         } else {
@@ -232,7 +232,6 @@ Taku Amano, C<< <taku at toi-planning.net> >>
 =head1 SEE ALSO
 
 L<PHP::Session::Serializer::PHP>
-
 
 =head1 SUPPORT
 
