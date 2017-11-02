@@ -74,7 +74,7 @@ FRONTEND
     Fixed: Wrong order for parameters in mail delete.php (i18n -- client UI)
     Fixed: Wrong status shown in administrator overview interface for customers when a password is being modified
     Fixed: Wrong value passed-in the `onBeforeEditUser' and `onAfterEditUser' events for the `admin_pass' parameter
-    Review: Make use of composer autoloader for loading of vendor dependencies 
+    Review: Make use of composer autoloader for loading of vendor dependencies
     Review: Prepare the SQL statements once per session (objects counting, stats)
     Removed: iMSCP_Events_Aggregator class (now an alias of iMSCP_Events_Manager)
     Rewritten: iMSCP_Database class (now extends the PDO class)
@@ -121,8 +121,8 @@ PLUGINS
     Added: Own event manager for plugin manager
     Enhancement: Make plugins able to trigger flush of cache (OPcache, userland cache (full or by ID)
     Fixed: Covers case of plugins that are uninstallable but not installable
-    Fixed: Undefined offset -- Couldn't infer `Basic` plugin type
-    Review: Avoid useless SQL query for plugin run action if there are no error (backend)
+    Fixed: Undefined offset -- Couldn't infer `Standard` plugin type
+    Review: Avoid useless SQL query for plugin `run` action if there are no error (backend)
     Updated: Plugin API to version 1.5.1
 
 PRESEEDING
