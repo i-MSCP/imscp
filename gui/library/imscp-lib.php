@@ -33,7 +33,6 @@ defined('APPLICATION_ENV') || define(
 );
 
 // Composer autoloading
-/** @var \Composer\Autoload\ClassLoader $loader */
 $autoloader = include GUI_ROOT_DIR . '/vendor/autoload.php';
 
 // Create application

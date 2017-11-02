@@ -205,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `domain_traffic` (
   `dtraff_ftp` bigint(20) unsigned DEFAULT '0',
   `dtraff_mail` bigint(20) unsigned DEFAULT '0',
   `dtraff_pop` bigint(20) unsigned DEFAULT '0',
-  PRIMARY KEY (`domain_id` `dtraff_time`)
+  PRIMARY KEY (`domain_id`, `dtraff_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
