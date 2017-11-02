@@ -38,12 +38,19 @@ $cache = Registry::get('iMSCP_Application')->getCache();
 foreach ($cacheIds as $cacheId) {
     if ($cacheId === 'opcache') {
         iMSCP_Utility_OpcodeCache::clearAllActive();
+        write_log('OPcache has been flushed.', E_NOTICE);
     } elseif ($cacheId === 'userland') {
         if (!$cache->clean()) {
             showInternalServerError();
         }
-    } elseif ($cache->test($cacheId) && !$cache->remove($cacheId)) {
-        showInternalServerError();
+
+        write_log('APCu userland cache has been flushed.', E_NOTICE);
+    } elseif ($cache->test($cacheId)) {
+        if (!$cache->remove($cacheId)) {
+            showInternalServerError();
+        }
+
+        write_log(sprintf('APCu userland cache with ID `%s` has been flushed.', $cacheId), E_NOTICE);
     }
 }
 
