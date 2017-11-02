@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-10-27 22:15+0000\n"
+"POT-Creation-Date: 2017-11-02 01:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: krok <krok@totalynet.fr>, 2017\n"
 "Language-Team: French (France) (https://www.transifex.com/i-mscp/teams/576/fr_FR/)\n"
@@ -86,7 +86,7 @@ msgstr "%s n'existe pas ou est vide."
 
 #, php-format
 msgid "%s doesn't look like an i-MSCP plugin archive."
-msgstr ""
+msgstr "%s ne ressemble pas à une archive d'extension pour i-MSCP."
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -1349,6 +1349,12 @@ msgstr "Impossible de déplacer le client avec l'identifiant %d: %s"
 #, php-format
 msgid "Couldn't move reseller with ID %d: %s"
 msgstr "Impossible de déplacer le revendeur avec l'identifiant %d: %s"
+
+msgid "Couldn't retrieve plugin name from the plugin class name."
+msgstr ""
+
+msgid "Couldn't retrieve plugin type from the plugin parent class name."
+msgstr ""
 
 #, php-format
 msgid "Couldn't validate DNS resource record: %s"
