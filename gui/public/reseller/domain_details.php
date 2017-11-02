@@ -164,7 +164,7 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
     'layout'        => 'shared/layouts/ui.tpl',
     'page'          => 'reseller/domain_details.tpl',
-    'page_messages' => 'layout'
+    'page_message' => 'layout'
 ]);
 $tpl->assign([
     'TR_PAGE_TITLE'        => tr('Reseller / Customers / Overview / Domain Details'),
