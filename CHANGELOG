@@ -34,6 +34,7 @@ CONFIG
     Enhancement: Make it possible to override default config by including *.conf files from the /etc/dovecot/imscp.d directory (Dovecot)
     Fixed: Make use of the `ssl' parameter of the `listen' directive in place of the `ssl' directive (Nginx)
     Updated: LOGROTATE(8) configuration file for ProFTPD -- Added stanza for traffic log file rotation
+    Removed: Support for SQL server versions that are too old (MySQL < 5.7, MariaDB < 10.1, Percona < 5.7)
     Removed: Useless `DATABASE_TYPE` parameter (imscp.conf)
     Removed: Useless imscp LOGROTATE(8) configuration file
 
@@ -48,8 +49,6 @@ DISTRIBUTIONS
     Added: `libfile-chmod-perl` distribution package (all distributions -- Required by 3rd-party softwares)
     Added: `unzip` distribution package (all distributions -- required for correct symlinks handling (Composer))
     Added: Support for Debian 10/Buster (Experimental)
-    Added: Support for Percona DB 5.5 -- Debian 9/Stretch (amd64 architecture only)
-    Added: Support for Percona DB 5.6 -- Debian 9/Stretch (amd64 architecture only)
     Review: Avoid APT pinning whenever as possible (All distributions)
     Relaxed: Permissions policy on /etc/apt/apt.conf.d/* files -- Files must be world-readable
 

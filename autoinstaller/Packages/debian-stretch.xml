@@ -229,23 +229,6 @@
         </external_server>
     </named>
     <sql>
-        <mysql_5.6
-                description="MySQL 5.6 server"
-                class="Servers::sqld::mysql"
-                repository="http://repo.mysql.com/apt/debian/ stretch mysql-5.6"
-                repository_key_id="5072E1F5"
-                repository_key_srv="keyserver.ubuntu.com"
-                pinning_package="*"
-                pinning_pin="origin repo.mysql.com"
-                pinning_pin_priority="1001"
-                allow_switch="mysql_5.7,remote_server"
-        >
-            <package>libmariadbclient18</package>
-            <package>libmysqlclient18</package>
-            <package>mysql-community-client</package>
-            <package>mysql-common</package>
-            <package>mysql-community-server</package>
-        </mysql_5.6>
         <mysql_5.7
                 description="MySQL 5.7 server"
                 class="Servers::sqld::mysql"
@@ -255,7 +238,7 @@
                 pinning_package="*"
                 pinning_pin="origin repo.mysql.com"
                 pinning_pin_priority="1001"
-                allow_switch="mysql_5.7,remote_server"
+                allow_switch="remote_server"
         >
             <package>libmariadbclient18</package>
             <package>libmysqlclient20</package>
@@ -295,44 +278,6 @@
             <package pre_install_tasks="/bin/mkdir -p /etc/mysql/mariadb.conf.d">mariadb-server-10.2</package>
             <package>mysql-common</package>
         </mariadb_10.2>
-        <percona_5.5
-                description="Percona 5.5 server"
-                class="Servers::sqld::percona"
-                repository="http://repo.percona.com/apt stretch main"
-                repository_key_id="8507EFA5"
-                repository_key_srv="keyserver.ubuntu.com"
-                pinning_package="libperconaserverclient18 libperconaserverclient18-dev percona-server-client-5.5 percona-server-common-5.5 percona-server-server-5.5"
-                pinning_pin="origin repo.percona.com"
-                pinning_pin_priority="1001"
-                allow_switch="percona_5.6,percona_5.7,remote_server"
-                required_arch="amd64"
-        >
-            <package>libmariadbclient18</package>
-            <package>libperconaserverclient18</package>
-            <package>mysql-common</package>
-            <package>percona-server-client-5.5</package>
-            <package>percona-server-common-5.5</package>
-            <package>percona-server-server-5.5</package>
-        </percona_5.5>
-        <percona_5.6
-                description="Percona 5.6 server"
-                class="Servers::sqld::percona"
-                repository="http://repo.percona.com/apt stretch main"
-                repository_key_id="8507EFA5"
-                repository_key_srv="keyserver.ubuntu.com"
-                pinning_package="libperconaserverclient18.1 libperconaserverclient18.1-dev percona-server-client-5.6 percona-server-common-5.6 percona-server-server-5.6"
-                pinning_pin="origin repo.percona.com"
-                pinning_pin_priority="1001"
-                allow_switch="percona_5.7,remote_server"
-                required_arch="amd64"
-        >
-            <package>libmariadbclient18</package>
-            <package>libperconaserverclient18.1</package>
-            <package>mysql-common</package>
-            <package>percona-server-client-5.6</package>
-            <package>percona-server-common-5.6</package>
-            <package>percona-server-server-5.6</package>
-        </percona_5.6>
         <percona_5.7
                 description="Percona 5.7 server"
                 class="Servers::sqld::percona"
@@ -358,7 +303,7 @@
                 pinning_package="libmariadbclient18 mariadb-client-10.1 mariadb-common mysql-common"
                 pinning_pin="release o=Debian,n=stretch"
                 pinning_pin_priority="1001"
-                allow_switch="mariadb_10.1,mariadb_10.2,mysql_5.6,mysql_5.7,percona_5.5,percona_5.6,percona_5.7"
+                allow_switch="mariadb_10.1,mariadb_10.2,mysql_5.7,percona_5.7"
         >
             <package>libmariadbclient18</package>
             <package>mariadb-common</package>
