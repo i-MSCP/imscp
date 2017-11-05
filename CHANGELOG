@@ -159,8 +159,9 @@ VAGRANT
     Review: Disable automatic box update checking in VagrantFile
 
 VENDOR
-    Enhancement: Download and install all frontEnd dependencies through composer
+    Added: Perl Array::Utils library
     Added: Perl library for exporting variables to PHP's expression (PHP::Var)
+    Enhancement: Download and install all frontEnd dependencies through composer
 
 YOUTRACK
     IP-1742 i-MSCP upgrade error - Unknown 'mail_user' database table in database update r254
