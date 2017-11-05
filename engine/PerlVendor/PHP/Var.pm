@@ -18,7 +18,7 @@ PHP::Var - export variable to PHP's expression.
 
 =head1 VERSION
 
-Version 0.022
+Version 0.023
 
 =cut
 
