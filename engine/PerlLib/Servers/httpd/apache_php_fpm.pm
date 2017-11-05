@@ -1529,7 +1529,7 @@ sub _addCfg
 
     # If INADDR_ANY is found, map it to the wildcard sign and discard any other
     # IP, else, remove any duplicate IP address from the list
-    @domainIPs = grep($_ eq '0.0.0.0', @domainIPs) ? ( '*' ) : uniq( map { $net->normalizeAddr( $_ ) } @domainIPs );
+    @domainIPs = grep($_ eq '0.0.0.0', @domainIPs) ? ( '*' ) : unique( map { $net->normalizeAddr( $_ ) } @domainIPs );
 
     $self->setData(
         {
