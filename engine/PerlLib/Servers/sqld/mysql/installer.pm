@@ -35,9 +35,7 @@ use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::ProgramFinder;
 use iMSCP::TemplateParser qw/ process /;
-use iMSCP::Umask;
 use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
 use Servers::sqld::mysql;
 use version;
@@ -331,7 +329,8 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->_setTypeAndVersion();
+    my $rs = $self->_setType();
+    $rs ||= $self->_setVersion();
     $rs ||= $self->_buildConf();
     $rs ||= $self->_updateServerConfig();
     $rs ||= $self->_setupMasterSqlUser();
@@ -473,15 +472,32 @@ EOF
     0;
 }
 
-=item _setTypeAndVersion( )
+=item _setType( )
 
- Set SQL server type and version
+ Set SQL server type
 
  Return 0 on success, other on failure
 
 =cut
 
-sub _setTypeAndVersion
+sub _setType
+{
+    my ($self) = @_;
+
+    debug( sprintf( 'SQL server type set to: %s', 'mysql' ));
+    $self->{'config'}->{'SQLD_TYPE'} = 'mysql';
+    0;
+}
+
+=item _setVersion( )
+
+ Set SQL server version
+
+ Return 0 on success, other on failure
+
+=cut
+
+sub _setVersion
 {
     my ($self) = @_;
 
@@ -489,25 +505,12 @@ sub _setTypeAndVersion
         my $dbh = iMSCP::Database->factory()->getRawDb();
 
         local $dbh->{'RaiseError'} = 1;
-        my $row = $dbh->selectrow_hashref( 'SELECT @@version, @@version_comment' ) or die(
-            "Could't find SQL server type and version"
-        );
-
-        my $type = 'mysql';
-        if ( index( lc $row->{'@@version'}, 'mariadb' ) != -1 ) {
-            $type = 'mariadb';
-        } elsif ( index( lc $row->{'@@version_comment'}, 'percona' ) != -1 ) {
-            $type = 'percona';
-        }
-
+        my $row = $dbh->selectrow_hashref( 'SELECT @@version' ) or die( "Could't find SQL server version" );
         my ($version) = $row->{'@@version'} =~ /^([0-9]+(?:\.[0-9]+){1,2})/;
         unless ( defined $version ) {
             error( "Couldn't find SQL server version" );
             return 1;
         }
-
-        debug( sprintf( 'SQL server type set to: %s', $type ));
-        $self->{'config'}->{'SQLD_TYPE'} = $type;
 
         debug( sprintf( 'SQL server version set to: %s', $version ));
         $self->{'config'}->{'SQLD_VERSION'} = $version;
@@ -587,23 +590,10 @@ max_allowed_packet = 500M
 sql_mode =
 EOF
 
-    if ( version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.5.0' ) ) {
-        my $innoDbUseNativeAIO = $self->_isMysqldInsideCt() ? '0' : '1';
-        $cfgTpl .= "innodb_use_native_aio = $innoDbUseNativeAIO\n";
-    }
-
-    # Fix For: The 'INFORMATION_SCHEMA.SESSION_VARIABLES' feature is disabled; see the documentation for
-    # 'show_compatibility_56' (3167) - Occurs when executing mysqldump with Percona server 5.7.x
-    if ( $main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::percona'
-        && version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.7.6' ) ) {
-        $cfgTpl .= "show_compatibility_56 = 1\n";
-    }
+    $cfgTpl .= "innodb_use_native_aio = @{[ $self->_isMysqldInsideCt() ? 0 : 1 ]}\n";
 
     # For backward compatibility - We will review this in later version
-    # TODO Handle mariadb case when ready. See https://mariadb.atlassian.net/browse/MDEV-7597
-    if ( version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.7.4' )
-        && $main::imscpConfig{'SQL_PACKAGE'} ne 'Servers::sqld::mariadb'
-    ) {
+    if ( version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.7.4' ) ) {
         $cfgTpl .= "default_password_lifetime = 0\n";
     }
 
@@ -634,44 +624,37 @@ sub _updateServerConfig
 {
     my ($self) = @_;
 
-    if ( iMSCP::ProgramFinder::find( 'dpkg' ) && iMSCP::ProgramFinder::find( 'mysql_upgrade' ) ) {
-        my $rs = execute(
-            "dpkg -l mysql-community* percona-server-* | cut -d' ' -f1 | grep -q 'ii'", \ my $stdout, \ my $stderr
-        );
-        debug( $stdout ) if $stdout;
-        debug( $stderr ) if $stderr;
+    # Upgrade MySQL tables if necessary.
 
-        # Upgrade server system tables
-        # See #IP-1482 for further details.
-        unless ( $rs ) {
-            my $mysqlConffile = File::Temp->new();
-            print $mysqlConffile <<"EOF";
+    # Need to ignore SIGHUP, as otherwise a SIGHUP can sometimes abort the upgrade
+    # process in the middle.
+    {
+        local $SIG{'HUP'} = 'IGNORE';
+
+        my $mysqlConffile = File::Temp->new();
+        print $mysqlConffile <<"EOF";
 [mysql_upgrade]
 host = @{[ main::setupGetQuestion( 'DATABASE_HOST' ) ]}
 port = @{[ main::setupGetQuestion( 'DATABASE_PORT' ) ]}
 user = "@{ [ main::setupGetQuestion( 'DATABASE_USER' ) =~ s/"/\\"/gr ] }"
-password = "@{ [ decryptRijndaelCBC($main::imscpDBKey, $main::imscpDBiv, main::setupGetQuestion( 'DATABASE_PASSWORD' )) =~ s/"/\\"/gr ] }"
+password = "@{ [ decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv, main::setupGetQuestion( 'DATABASE_PASSWORD' )) =~ s/"/\\"/gr ] }"
 EOF
-            $mysqlConffile->flush();
+        $mysqlConffile->flush();
 
-            # Filter all "duplicate column", "duplicate key" and "unknown column"
-            # errors as the command is designed to be idempotent.
-            $rs = execute(
-                "mysql_upgrade --defaults-file=$mysqlConffile 2>&1 | egrep -v '^(1|\@had|ERROR (1054|1060|1061))'",
-                \$stdout
-            );
-            error( sprintf( "Couldn't upgrade SQL server system tables: %s", $stdout )) if $rs;
-            return $rs if $rs;
-            debug( $stdout ) if $stdout;
-        }
+        # Filter all "duplicate column", "duplicate key" and "unknown column"
+        # errors as the command is designed to be idempotent.
+        my $rs = execute(
+            "mysql_upgrade --defaults-file=$mysqlConffile 2>&1 | egrep -v '^(1|\@had|ERROR (1054|1060|1061))'",
+            \my $stdout
+        );
+        error( sprintf( "Couldn't upgrade SQL server system tables: %s", $stdout )) if $rs;
+        return $rs if $rs;
+        debug( $stdout ) if $stdout;
     }
 
-    if ( !( $main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::mariadb'
-        && version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '10.0' ) )
-        && !( version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.6.6' ) )
-    ) {
-        return 0;
-    }
+    # Disable unwanted plugins
+
+    return 0 unless version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.6.6' );
 
     eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
@@ -887,7 +870,7 @@ sub _setupIsImscpDb
     return 0 unless $dbh->selectrow_hashref( 'SHOW DATABASES LIKE ?', undef, $dbName );
 
     my $tables = $db->getDbTables( $dbName );
-    return 0 unless @{$tables};
+    return 1 unless @{$tables};
 
     for my $table( qw/ server_ips user_gui_props reseller_props / ) {
         return 0 unless grep( $_ eq $table, @{$tables} );
