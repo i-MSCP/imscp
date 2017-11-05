@@ -299,10 +299,6 @@ sub uninstallPackages
         @{$packagesToUninstall} = grep(exists $apkgs{$_}, @{$packagesToUninstall});
         undef %apkgs;
 
-        #use Data::Dumper;
-        #print Dumper( $packagesToUninstall );
-        #exit;
-
         if ( @{$packagesToUninstall} ) {
             # Filter packages that must be kept
             my @packagesToKeep = (
