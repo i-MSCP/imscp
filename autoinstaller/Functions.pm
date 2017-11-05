@@ -158,9 +158,7 @@ sub build
 
     my @steps = (
         [ \&_buildDistributionFiles, 'Building distribution files' ],
-        ( ( $main::skippackages )
-            ? () : [ \&_installDistributionPackages, 'Installing distribution packages' ]
-        ),
+        ( ( $main::skippackages ) ? () : [ \&_installDistributionPackages, 'Installing distribution packages' ] ),
         [ \&_checkRequirements, 'Checking for requirements' ],
         [ \&_compileDaemon, 'Compiling daemon' ],
         [ \&_removeObsoleteFiles, 'Removing obsolete files' ],

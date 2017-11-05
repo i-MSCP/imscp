@@ -26,14 +26,14 @@
 
 package Listener::Bind9::DualStack;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
+use Array::Utils qw/ unique /;
 use iMSCP::EventManager;
 use iMSCP::Net;
 use iMSCP::TemplateParser qw/ getBloc replaceBloc /;
-use List::MoreUtils qw/ uniq /;
 use version;
 
 #
@@ -162,7 +162,7 @@ EOT
                     <<"EOT",
 ; dualstack DNS entries BEGIN
 \$ORIGIN $data->{'DOMAIN_NAME'}.
-@{[ join( '', uniq @names ) ]}; dualstack DNS entries END
+@{[ join( '', unique @names ) ]}; dualstack DNS entries END
 EOT
                     ${$tplContent}
                 );
@@ -173,7 +173,7 @@ EOT
             ${$tplContent} .= <<"EOT",
 ; dualstack DNS entries BEGIN
 \$ORIGIN $data->{'DOMAIN_NAME'}.
-@{[ join( '', uniq @names ) ]}; dualstack DNS entries END
+@{[ join( '', unique @names ) ]}; dualstack DNS entries END
 EOT
                 return 0;
         }
@@ -188,7 +188,7 @@ EOT
                 ${$tplContent}
             )
                 . "\$ORIGIN $data->{'DOMAIN_NAME'}.\n"
-                . join( '', uniq @names )
+                . join( '', unique @names )
                 . "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
             ${$tplContent}
         );

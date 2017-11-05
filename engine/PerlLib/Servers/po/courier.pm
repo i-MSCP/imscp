@@ -25,6 +25,7 @@ package Servers::po::courier;
 
 use strict;
 use warnings;
+use Array::Utils qw/ unique /;
 use Class::Autouse qw/ :nostat Servers::po::courier::installer Servers::po::courier::uninstaller /;
 use Fcntl 'O_RDONLY';
 use File::Temp;
@@ -37,7 +38,6 @@ use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Rights;
 use iMSCP::Service;
-use List::MoreUtils qw/ uniq /;
 use Servers::mta;
 use Sort::Naturally;
 use Tie::File;
@@ -287,7 +287,7 @@ sub addMail
         }
 
         if ( $subscriptionsFileContent ne '' ) {
-            @subscribedFolders = nsort uniq ( @subscribedFolders, split( /\n/, $subscriptionsFileContent ));
+            @subscribedFolders = nsort unique ( @subscribedFolders, split( /\n/, $subscriptionsFileContent ));
         }
     }
 

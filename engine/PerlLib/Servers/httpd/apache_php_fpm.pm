@@ -25,6 +25,7 @@ package Servers::httpd::apache_php_fpm;
 
 use strict;
 use warnings;
+use Array::Utils qw/ unique /;
 use autouse 'Date::Format' => qw/ time2str /;
 use Class::Autouse qw/ :nostat Servers::httpd::apache_php_fpm::installer Servers::httpd::apache_php_fpm::uninstaller /;
 use File::Basename;
@@ -46,7 +47,6 @@ use iMSCP::Rights;
 use iMSCP::Service;
 use iMSCP::TemplateParser;
 use iMSCP::Umask;
-use List::MoreUtils qw/ uniq /;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -351,7 +351,7 @@ sub disableDmn
 
     # If INADDR_ANY is found, map it to the wildcard sign and discard any other
     # IP, else, remove any duplicate IP address from the list
-    @domainIPs = ( grep($_ eq '0.0.0.0', @domainIPs) ) ? ( '*' ) : uniq( map { $net->normalizeAddr( $_ ) } @domainIPs );
+    @domainIPs = grep($_ eq '0.0.0.0', @domainIPs) ? ( '*' ) : unique( map { $net->normalizeAddr( $_ ) } @domainIPs );
 
     $self->setData(
         {

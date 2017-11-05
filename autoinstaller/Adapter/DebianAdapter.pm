@@ -21,6 +21,7 @@ package autoinstaller::Adapter::DebianAdapter;
 
 use strict;
 use warnings;
+use Array::Utils qw/ array_minus unique /;
 use autouse 'iMSCP::Stepper' => qw/ startDetail endDetail step /;
 use Class::Autouse qw/ :nostat File::HomeDir /;
 use Fcntl qw/ :flock /;
@@ -88,7 +89,7 @@ sub installPreRequiredPackages
     $rs ||= $self->{'eventManager'}->trigger( 'afterInstallPreRequiredPackages' );
 }
 
-=item preBuild(\@steps)
+=item preBuild( \@steps )
 
  Process preBuild tasks
 
@@ -111,7 +112,6 @@ sub preBuild
             [ sub { $self->_processAptPreferences() }, 'Processing APT preferences' ],
             [ sub { $self->_updatePackagesIndex() }, 'Updating packages index' ]
         );
-
     0
 }
 
@@ -149,7 +149,6 @@ if [ "$action" = "start" ] || [ "$action" = "restart" ]; then
     done
 fi
 EOF
-
     $policyrcd->flush();
     $policyrcd->close();
     chmod( 0750, $policyrcd->filename ) or die(
@@ -165,15 +164,12 @@ EOF
     );
     return $rs if $rs;
 
-    my $nPackages = scalar keys %{$self->{'packagesPreInstallTasks'}};
-    my $cPackage = 1;
-
-    local $ENV{'LANG'} = 'C';
-
-    startDetail();
-
     {
+        startDetail();
+
         local $CWD = "$FindBin::Bin/autoinstaller/preinstall";
+        my $nPackages = scalar keys %{$self->{'packagesPreInstallTasks'}};
+        my $cPackage = 1;
 
         for my $package( sort keys %{$self->{'packagesPreInstallTasks'}} ) {
             $rs ||= step(
@@ -183,10 +179,9 @@ EOF
                         $self->{'packagesPreInstallTasks'}->{$package},
                         ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout ), \ my $stderr
                     );
-                    error(
-                        $stderr || sprintf( "Unknown error while executing preinstall tasks for the `%s' package",
-                            $package )
-                    ) if $rs;
+                    error( $stderr || sprintf(
+                        "Unknown error while executing preinstall tasks for the `%s' package", $package
+                    )) if $rs;
                     $rs;
                 },
                 sprintf( "Executing preinstall tasks for the `%s' package... Please be patient.", $package ),
@@ -196,10 +191,10 @@ EOF
             last if $rs;
             $cPackage++;
         }
-    }
 
-    endDetail();
-    return $rs if $rs;
+        endDetail();
+        return $rs if $rs;
+    }
 
     # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
     execute(
@@ -234,13 +229,12 @@ EOF
         }
     }
 
-    $nPackages = scalar keys %{$self->{'packagesPostInstallTasks'}};
-    $cPackage = 1;
-
-    startDetail();
-
     {
+        startDetail();
+
         local $CWD = "$FindBin::Bin/autoinstaller/postinstall";
+        my $nPackages = scalar keys %{$self->{'packagesPostInstallTasks'}};
+        my $cPackage = 1;
 
         for my $package( sort keys %{$self->{'packagesPostInstallTasks'}} ) {
             $rs ||= step(
@@ -251,8 +245,7 @@ EOF
                         \ $stderr
                     );
                     error( $stderr || sprintf(
-                        "Unknown error while executing postinstall tasks for the `%s' package",
-                        $package
+                        "Unknown error while executing postinstall tasks for the `%s' package", $package
                     )) if $rs;
                     $rs;
                 },
@@ -263,10 +256,10 @@ EOF
             last if $rs;
             $cPackage++;
         }
-    }
 
-    endDetail();
-    return $rs if $rs;
+        endDetail();
+        return $rs if $rs;
+    }
 
     while ( my ($package, $metadata) = each( %{$self->{'packagesToRebuild'}} ) ) {
         $rs = $self->_rebuildAndInstallPackage(
@@ -297,50 +290,57 @@ sub uninstallPackages
     return $rs if $rs;
 
     if ( @{$packagesToUninstall} ) {
-        # Filter packages that must not be removed
-        my @packagesToUninstall = ();
-        for my $package( @{$packagesToUninstall} ) {
-            next if grep(
-                $_ eq $package,
-                (
-                    @{$self->{'packagesToInstall'}},
-                    @{$self->{'packagesToInstallDelayed'}},
-                    keys %{$self->{'packagesToRebuild'}}
-                )
-            );
-            push @packagesToUninstall, $package;
-        }
+        # Filter packages that are no longer available
+        $rs = execute( [ 'apt-cache', '--generate', 'pkgnames' ], \my $stdout, \my $stderr );
+        error( $stderr || "Couldn't generate list of available packages" ) if $rs > 2;
+        my %apkgs;
+        @apkgs{split /\n/, $stdout} = undef;
+        undef $stdout;
+        @{$packagesToUninstall} = grep(exists $apkgs{$_}, @{$packagesToUninstall});
+        undef %apkgs;
 
-        @{$packagesToUninstall} = @packagesToUninstall;
-        undef @packagesToUninstall;
+        #use Data::Dumper;
+        #print Dumper( $packagesToUninstall );
+        #exit;
 
         if ( @{$packagesToUninstall} ) {
-            # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
-            execute( [ 'apt-mark', 'unhold', @{$packagesToUninstall} ], \my $stdout, \my $stderr );
-            debug( $stderr ) if $stderr;
-
-            iMSCP::Dialog->getInstance()->endGauge() unless iMSCP::Getopt->noprompt;
-
-            $rs = execute(
-                [
-                    ( !iMSCP::Getopt->noprompt ? ( 'debconf-apt-progress', '--logstderr', '--' ) : () ),
-                    'apt-get', '--assume-yes', '--auto-remove', '--purge', '--no-install-recommends', 'remove',
-                    @{$packagesToUninstall}
-                ],
-                ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef ),
-                \$stderr
+            # Filter packages that must be kept
+            my @packagesToKeep = (
+                @{$self->{'packagesToInstall'}}, @{$self->{'packagesToInstallDelayed'}},
+                keys %{$self->{'packagesToRebuild'}}
             );
-            error( sprintf( "Couldn't uninstall packages: %s", $stderr || 'Unknown error' )) if $rs;
-            return $rs if $rs;
+            @{$packagesToUninstall} = array_minus( @{$packagesToUninstall}, @packagesToKeep );
+            undef @packagesToKeep;
 
-            # Purge packages that were indirectly removed
-            $rs = execute(
-                "apt-get -y purge \$(dpkg -l | grep ^rc | awk '{print \$2}')",
-                ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout ),
-                \$stderr
-            );
-            error( sprintf( "Couldn't purge packages that are in RC state: %s", $stderr || 'Unknown error' )) if $rs;
-            return $rs if $rs;
+            if ( @{$packagesToUninstall} ) {
+                # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
+                execute( [ 'apt-mark', 'unhold', @{$packagesToUninstall} ], \$stdout, \$stderr );
+                debug( $stderr ) if $stderr;
+
+                iMSCP::Dialog->getInstance()->endGauge() unless iMSCP::Getopt->noprompt;
+
+                $rs = execute(
+                    [
+                        ( !iMSCP::Getopt->noprompt ? ( 'debconf-apt-progress', '--logstderr', '--' ) : () ),
+                        'apt-get', '--assume-yes', '--auto-remove', 'purge', @{$packagesToUninstall}
+                    ],
+                    ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef ),
+                    \$stderr
+                );
+                error( sprintf( "Couldn't uninstall packages: %s", $stderr || 'Unknown error' )) if $rs;
+                return $rs if $rs;
+
+                # Purge packages that were indirectly removed
+                $rs = execute(
+                    "apt-get -y purge \$(dpkg -l | grep ^rc | awk '{print \$2}')",
+                    ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout ),
+                    \$stderr
+                );
+                error( sprintf(
+                    "Couldn't purge packages that are in RC state: %s", $stderr || 'Unknown error'
+                )) if $rs;
+                return $rs if $rs;
+            }
         }
     }
 
@@ -696,32 +696,10 @@ EOF
         $main::imscpConfig{uc( $section ) . '_PACKAGE'} = $data->{$sAlt}->{'class'} || $sAlt;
     }
 
-    require List::MoreUtils;
-    List::MoreUtils->import( 'uniq' );
-
-    @{$self->{'packagesToPreUninstall'}} = sort(uniq( @{$self->{'packagesToPreUninstall'}} ));
-    @{$self->{'packagesToUninstall'}} = sort(uniq( @{$self->{'packagesToUninstall'}} ));
-    @{$self->{'packagesToInstall'}} = sort(uniq( @{$self->{'packagesToInstall'}} ));
-    @{$self->{'packagesToInstallDelayed'}} = sort(uniq( @{$self->{'packagesToInstallDelayed'}} ));
-
-    # Filter packages that are no longer available
-
-    # Clear information about available packages
-    $rs = execute( 'dpkg --clear-avail', \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr || "Couldn't clear information about available packages" ) if $rs;
-    return $rs if $rs;
-
-    # Get list of available packages
-    $rs = execute( [ 'apt-cache', '--generate', 'pkgnames' ], \$stdout, \$stderr );
-    error( $stderr || "Couldn't generate list of available packages" ) if $rs > 2;
-    my %apkgs;
-    @apkgs{split /\n/, $stdout} = undef;
-    undef $stdout;
-
-    for( $self->{'packagesToPreUninstall'}, $self->{'packagesToUninstall'} ) {
-        @{$_} = grep(exists $apkgs{$_}, @{$_});
-    }
+    @{$self->{'packagesToPreUninstall'}} = sort(unique( @{$self->{'packagesToPreUninstall'}} ));
+    @{$self->{'packagesToUninstall'}} = sort(unique( @{$self->{'packagesToUninstall'}} ));
+    @{$self->{'packagesToInstall'}} = sort(unique( @{$self->{'packagesToInstall'}} ));
+    @{$self->{'packagesToInstallDelayed'}} = sort(unique( @{$self->{'packagesToInstallDelayed'}} ));
 
     $dialog->set( 'no-cancel', '' );
     0;
@@ -1021,12 +999,11 @@ EOF
 
     # Pre-fill questions for SQL server (MySQL, MariaDB or Percona) if required
     if ( my ($sqlServerVendor, $sqlServerVersion) = $main::imscpConfig{'SQL_SERVER'} =~ /^(mysql|mariadb|percona)_(\d+\.\d+)/ ) {
-        if ( $main::imscpConfig{'DATABASE_PASSWORD'} ne '' && -d $main::imscpConfig{'DATABASE_DIR'} ) {
+        if ( $main::imscpConfig{'DATABASE_PASSWORD'} ne '' &&
+            -d $main::imscpConfig{'DATABASE_DIR'}
+        ) {
             # Only show critical questions
             $ENV{'DEBIAN_PRIORITY'} = 'critical';
-
-            # Allow switching to other vendor (e.g: MariaDB 10.0 to MySQL >= 5.6)
-            # unlink glob "$main::imscpConfig{'DATABASE_DIR'}/debian-*.flag";
 
             # Don't show SQL root password dialog from package maintainer script
             # when switching to another vendor or a newest version
@@ -1063,8 +1040,8 @@ EOF
 
             $fileContent .= <<"EOF";
 $qOwner $qNamePrefix/root_password password $main::questions{'SQL_ROOT_PASSWORD'}
-$qOwner $qNamePrefix/root-pass password $main::questions{'SQL_ROOT_PASSWORD'}
 $qOwner $qNamePrefix/root_password_again password $main::questions{'SQL_ROOT_PASSWORD'}
+$qOwner $qNamePrefix/root-pass password $main::questions{'SQL_ROOT_PASSWORD'}
 $qOwner $qNamePrefix/re-root-pass password $main::questions{'SQL_ROOT_PASSWORD'}
 EOF
             # Register an event listener to empty the password fields in Debconf database after package installation
