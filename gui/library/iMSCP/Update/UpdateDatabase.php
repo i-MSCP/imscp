@@ -36,7 +36,7 @@ class UpdateDatabase extends UpdateDatabaseAbstract
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 273;
+    protected $lastUpdate = 274;
 
     /**
      * Prohibit upgrade from i-MSCP versions older than 1.1.x
@@ -1644,19 +1644,27 @@ class UpdateDatabase extends UpdateDatabaseAbstract
      *  - Remove server_traffic.dtraff_id column (PRIMARY KEY, AUTO_INCREMENT)
      *  - Remove `traff_time` unique index (traff_time)
      *  - Create new PRIMARY KEY (traff_time)
-     * 
-     * @return string|null string SQL statement to be executed
+     *
+     * Note: Repeated update due to mistake in previous implementation (was r273)
+     *
+     * @return array string SQL statement to be executed
      */
-    protected function r273()
+    protected function r274()
     {
         if ($dropQuery = $this->dropColumn('server_traffic', 'straff_id')) {
             execute_query($dropQuery);
         }
 
-        if ($dropQuery = $this->dropIndexByName('server_traffic', 'traff_time')) {
-            execute_query($dropQuery);
+        if ($dropQueries = $this->dropIndexByColumn('server_traffic', 'traff_time')) {
+            foreach ($dropQueries as $dropQuery) {
+                execute_query($dropQuery);
+            }
         }
 
-        return $this->addIndex('server_traffic', 'traff_time');
+        return [
+            // All parts of a PRIMARY KEY must be NOT NULL
+            'ALTER TABLE server_traffic MODIFY `traff_time` INT(10) UNSIGNED NOT NULL',
+            $this->addIndex('server_traffic', 'traff_time')
+        ];
     }
 }

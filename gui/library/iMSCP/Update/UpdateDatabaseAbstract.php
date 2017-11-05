@@ -379,7 +379,7 @@ abstract class UpdateDatabaseAbstract extends UpdateAbstract
     }
 
     /**
-     * Drop any index which belong to the given column in the given table
+     * Drop indexes that belongs to the given column in the given table
      *
      * @param string $table Table name
      * @param string $column Column name

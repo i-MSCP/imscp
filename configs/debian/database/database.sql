@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '273');
+  ('DATABASE_REVISION', '274');
 
 -- --------------------------------------------------------
 
@@ -547,7 +547,7 @@ CREATE TABLE IF NOT EXISTS `server_ips` (
 --
 
 CREATE TABLE IF NOT EXISTS `server_traffic` (
-  `traff_time` int(10) unsigned DEFAULT NULL,
+  `traff_time` int(10) unsigned NOT NULL,
   `bytes_in` bigint(20) unsigned DEFAULT NULL,
   `bytes_out` bigint(20) unsigned DEFAULT NULL,
   `bytes_mail_in` bigint(20) unsigned DEFAULT NULL,
