@@ -93,9 +93,9 @@ sub registerSetupListeners
                     group         => $main::imscpConfig{'ROOT_GROUP'},
                     home_dir      => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/frontend",
                     working_dir   => $main::imscpConfig{'GUI_ROOT_DIR'},
-                    composer_json => iMSCP::File->new(
+                    composer_json => ( iMSCP::File->new(
                         filename => "$main::imscpConfig{'GUI_ROOT_DIR'}/composer.json"
-                    )->get(),
+                    )->get() or die( getMessageByType( 'error', { amount => 1, remove => 1 } )) ),
                     composer_path => '/usr/local/bin/composer'
                 );
                 $composer->getComposerJson( 'scalar' )->{'config'} = {
