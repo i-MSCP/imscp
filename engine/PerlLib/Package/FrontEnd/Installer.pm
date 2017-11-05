@@ -103,48 +103,21 @@ sub registerSetupListeners
                     cafile => $main::imscpConfig{'DISTRO_CA_BUNDLE'},
                     capath => $main::imscpConfig{'DISTRO_CA_PATH'}
                 };
-                #use Data::Dumper;
-                #print Dumper($composer->getComposerJson('scalar'));
-                #exit;
+                startDetail;
+                $composer
+                    ->setStdRoutines( sub {}, sub {
+                        ( my $stdout = $_[0] ) =~ s/^\s+|\s+$//g;
+                        return if $stdout eq '';
 
-                my $step = 0;
-                my $stdRoutine = sub {
-                    ( my $stdout = $_[0] ) =~ s/^\s+|\s+$//g;
-                    return if $stdout eq '';
-
-                    step( undef, <<"EOT", 3, $step )
+                        step( undef, <<"EOT", 1, 1 )
 Installing/Updating i-MSCP frontEnd (dependencies) composer packages...
 
 $stdout
 
-Depending on connection speed, this may take few minutes...
+Depending on your connection speed, this may take few minutes...
 EOT
-                };
-
-                startDetail;
-
-                if ( iMSCP::Getopt->clearPackageCache ) {
-                    $step++;
-                    $composer
-                        ->setStdRoutines( sub {}, $stdRoutine )
-                        ->clearPackageCache();
-                }
-
-                if ( iMSCP::Getopt->skipPackageUpdate ) {
-                    $step++;
-                    eval {
-                        $composer
-                            ->setStdRoutines( $stdRoutine, sub {} )
-                            ->checkPackageRequirements();
-                    };
-                    die( "Unmet requirements. Please rerun the the installer without the '-a' option." ) if $@;
-                    endDetail;
-                    return;
-                }
-
-                $step++;
-                $composer
-                    ->setStdRoutines( sub {}, $stdRoutine )
+                    }
+                )
                     ->installPackages();
                 endDetail;
             };
@@ -648,7 +621,7 @@ Installing/Updating i-MSCP frontEnd (tools) composer packages...
 
 $stdout
 
-Depending on connection speed, this may take few minutes...
+Depending on your connection speed, this may take few minutes...
 EOT
                 };
 

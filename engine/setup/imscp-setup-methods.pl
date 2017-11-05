@@ -244,7 +244,7 @@ Installing composer from https://getcomposer.org
 
 $line
 
-Depending on connection speed, this may take few seconds...
+Depending on your connection speed, this may take few seconds...
 EOT
         },
         sub {}
