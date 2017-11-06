@@ -197,7 +197,12 @@ sub installComposer
 
 =item installPackages( [ $requireDev = false, [ $noautoloader = false] ])
 
- Install or update packages
+ Install packages
+ 
+ Composer workflow:
+    - Check if composer.lock file exists (if not, run composer-update and create it)
+    - Read composer.lock file
+    - Install the packages specified in the composer.lock file
 
  Param bool $requireDev OPTIONAL Flag indicating whether or not packages listed
                         in require-dev must be installed
@@ -230,6 +235,60 @@ sub installPackages
     $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ));
     $rs = executeNoWait(
         $self->_getSuCmd(
+            @{$self->{'_php_cmd'}}, $self->{'_attrs'}->{'composer_path'}, 'install', '--no-progress', '--no-ansi',
+            '--no-interaction', ( $requireDev ? () : '--no-dev' ), '--no-suggest',
+            ( $noautoloader ? '--no-autoloader' : () ), "--working-dir=$self->{'_attrs'}->{'working_dir'}"
+        ),
+        $self->{'_stdout'},
+        $self->{'_stderr'}
+    );
+    $rs == 0 or die( "Couldn't install composer packages" );
+
+    $self;
+}
+
+=item updatePackages( [ $requireDev = false, [ $noautoloader = false] ])
+
+ Update packages
+ 
+ Composer workflow:
+    - Read composer.json
+    - Remove installed packages that are not more required in composer.json
+    - Check the availability of the latest version of the required packages
+    - Install the latest version of the packages
+    - Update the composer.lock file to store the installed packages version
+
+ Param bool $requireDev OPTIONAL Flag indicating whether or not packages listed
+                        in require-dev must be installed
+ Param bool $noautoloader OPTIONAL flag indicating whether or not autoloader
+                          generation must be skipped
+ Return iMSCP::Composer, die on failure
+
+=cut
+
+sub updatePackages
+{
+    my ($self, $requireDev, $noautoloader) = @_;
+
+    if ( $self->{'_attrs'}->{'home_dir'} ne $self->{'_attrs'}->{'working_dir'} ) {
+        iMSCP::Dir->new( dirname => $self->{'_attrs'}->{'working_dir'} )->make(
+            {
+                user           => $self->{'_attrs'}->{'user'},
+                group          => $self->{'_attrs'}->{'group'},
+                mode           => 0750,
+                fixpermissions => 0 # Set permissions only on creation
+            }
+        );
+    }
+
+    my $file = iMSCP::File->new( filename => "$self->{'_attrs'}->{'working_dir'}/composer.json" );
+    $file->set( $self->getComposerJson());
+    my $rs = $file->save();
+    $rs ||= $file->owner( $self->{'_attrs'}->{'user'}, $self->{'_attrs'}->{'group'} );
+    $rs ||= $file->mode( 0640 );
+    $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ));
+    $rs = executeNoWait(
+        $self->_getSuCmd(
             @{$self->{'_php_cmd'}}, $self->{'_attrs'}->{'composer_path'}, 'update', '--no-progress', '--no-ansi',
             '--no-interaction', ( $requireDev ? () : '--no-dev' ), '--no-suggest',
             ( $noautoloader ? '--no-autoloader' : () ), "--working-dir=$self->{'_attrs'}->{'working_dir'}"
@@ -237,7 +296,7 @@ sub installPackages
         $self->{'_stdout'},
         $self->{'_stderr'}
     );
-    $rs == 0 or die( "Couldn't install/update composer packages" );
+    $rs == 0 or die( "Couldn't Update composer packages" );
 
     $self;
 }

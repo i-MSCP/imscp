@@ -649,7 +649,7 @@ EOT
                 $step++;
                 $composer
                     ->setStdRoutines( sub {}, $stdRoutine )
-                    ->installPackages( undef, 'skip-autoloader' );
+                    ->updatePackages( undef, 'skip-autoloader' );
                 undef $self->{'_composer'};
                 endDetail;
             };
