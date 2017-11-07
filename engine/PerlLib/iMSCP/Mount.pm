@@ -152,13 +152,13 @@ my $iMSCP_FSTAB_FH;
 
 =head1 PUBLIC FUNCTIONS
 
- Get list of mounts
-
- Return List of mounts (duplicate mounts are discarded)
-
 =over 4
 
 =item getMounts( )
+
+ Get list of mounts
+
+ Return List of mounts (duplicate mounts are discarded)
 
 =cut
 
@@ -169,13 +169,16 @@ sub getMounts
 
 =item mount( \%fields )
 
- Create a new mount, or remount an existing mount, or/and change the propagation type of an existing mount
+ Create a new mount, or remount an existing mount, or/and change the
+ propagation type of an existing mount
 
  Param hashref \%fields Hash describing filesystem to mount:
-  - fs_spec         : Field describing the block special device or remote filesystem to be mounted
+  - fs_spec         : Field describing the block special device or remote
+                      filesystem to be mounted
   - fs_file         : Field describing the mount point for the filesystem
   - fs_vfstype      : Field describing the type of the filesystem
-  - fs_mntops       : Field describing the mount options associated with the filesystem
+  - fs_mntops       : Field describing the mount options associated with the
+                      filesystem
   - ignore_failures : Flag allowing to ignore mount operation failures
  Return int 0 on success, other on failure
 
@@ -212,7 +215,9 @@ sub mount( $ )
         # than MS_BIND and MS_REC, schedule an additional mount(2) call to
         # change mountflags on existing mount. This is needed since mountflags
         # other than MS_BIND and MS_REC are ignored in first call.
-        if ( !( $mflags & MS_REMOUNT ) && ( $mflags & ~( MS_BIND | MS_REC ) ) ) {
+        if ( !( $mflags & MS_REMOUNT )
+            && ( $mflags & ~( MS_BIND | MS_REC ) )
+        ) {
             push @mountArgv, [ $fsSpec, $fsFile, $fsVfstype, MS_REMOUNT | $mflags, $data ];
         }
     } elsif ( $fsSpec ne 'none' ) {
@@ -225,7 +230,9 @@ sub mount( $ )
 
     # Process the mount(2) calls
     for( @mountArgv ) {
-        unless ( syscall( &iMSCP::Syscall::SYS_mount, @{$_} ) == 0 || $fields->{'ignore_failures'} ) {
+        unless ( syscall( &iMSCP::Syscall::SYS_mount, @{$_} ) == 0
+            || $fields->{'ignore_failures'}
+        ) {
             error( sprintf( 'Error while executing mount(%s): %s', join( ', ', @{$_} ), $! || 'Unknown error' ));
             return 1;
         }
@@ -239,10 +246,12 @@ sub mount( $ )
 
  Umount the given file system
 
- Note: When umount operation is recursive, any mount below the given mount (or directory) will be umounted.
+ Note: When umount operation is recursive, any mount below the given mount
+ (or directory) will be umounted.
 
  Param string $fsFile Mount point of file system to umount
- Param bool $recursive Whether or not umount operation must be recursive (default: true)
+ Param bool $recursive OPTIONAL Flag indicating whether or not umount operation
+                       must be recursive
  Return int 0 on success, other on failure
 
 =cut
@@ -266,8 +275,10 @@ sub umount( $;$ )
 
         do {
             debug( $fsFile );
-            unless ( syscall( &iMSCP::Syscall::SYS_umount2, $fsFile,
-                MNT_DETACH ) == 0 || $!{'EINVAL'} || $!{'ENOENT'} ) {
+            unless ( syscall( &iMSCP::Syscall::SYS_umount2, $fsFile, MNT_DETACH ) == 0
+                || $!{'EINVAL'}
+                || $!{'ENOENT'}
+            ) {
                 error( sprintf( "Error while executing umount(%s): %s", $fsFile, $! || 'Unknown error' ));
                 return 1;
             }
@@ -293,12 +304,12 @@ sub umount( $;$ )
     0;
 }
 
-=item setPropagationFlag( $fsFile [, $flag = 'private' ] )
+=item setPropagationFlag( $fsFile [, $flag = private|slave|shared|unbindable|rprivate|rslave|rshared|runbindable ] )
 
  Change the propagation type of an existing mount
 
  Parameter string $fsFile Mount point
- Parameter string $flag Propagation flag as string (private,slave,shared,unbindable,rprivate,rslave,rshared,runbindable)
+ Parameter string $flag Propagation flag as string
 
 =cut
 
