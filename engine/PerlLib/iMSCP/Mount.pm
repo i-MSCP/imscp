@@ -25,7 +25,7 @@ package iMSCP::Mount;
 
 use strict;
 use warnings;
-use Errno qw / EINVAL /;
+use Errno qw / EINVAL ENOENT /;
 use File::Spec;
 use File::stat ();
 use iMSCP::Debug;
@@ -453,7 +453,7 @@ sub _parseOptions( $ )
     my $options = shift;
 
     # Turn options string into option list
-    my @options = map { s/\s+//gr } split ',', $options;
+    my @options = split /[\s,]+/, $options;
 
     # Parse mount flags (excluding any propagation flag)
     my ($mflags, @roptions) = ( 0 );
