@@ -233,6 +233,7 @@
     </named>
     <sql>
         <mysql_5.7
+                default="1"
                 description="MySQL 5.7 server"
                 class="Servers::sqld::mysql"
                 repository="http://repo.mysql.com/apt/debian/ jessie mysql-5.7"
