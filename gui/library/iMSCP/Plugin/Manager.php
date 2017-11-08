@@ -406,6 +406,17 @@ class iMSCP_Plugin_Manager
     }
 
     /**
+     * Return the event manager instance
+     *
+     * @return EventsManagerInterface
+     * @deprecated Use getEventsManager() instead
+     */
+    public function getEventManager()
+    {
+        return $this->getEventsManager();
+    }
+
+    /**
      * Unlock the given plugin
      *
      * @throws PluginException When $pluginName is not known
