@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
+    <folder mode="0755" create_if="'${FTPD_PACKAGE}' eq 'Servers::ftpd::vsftpd'">${ROOT_CONF}/logrotate.d</folder>
     <folder mode="0755" create_if="'${FTPD_PACKAGE}' eq 'Servers::ftpd::vsftpd'">${ROOT_CONF}/vsftpd</folder>
     <folder create_if="'${FTPD_PACKAGE}' eq 'Servers::ftpd::vsftpd'">${ROOT_CONF}/vsftpd/imscp</folder>
     <folder>${SYSTEM_CONF}/vsftpd</folder>
