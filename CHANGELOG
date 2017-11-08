@@ -66,6 +66,7 @@ FRONTEND
     Fixed: Exit with proper code on error (FrontEnd)
     Fixed: Fatal error: Call to a member function fetchRow() on string in client/mail_catchall_add.php on line 84
     Fixed: iMSCP_Authentication_AuthEvent badly initialized
+    Fixed: isSecureRequest() bad implementation -- `HTTP_X_FORWARDED_PROTO` must take precedence if set
     Fixed: List of customers is truncated due to wrong template variable name in loop (Customer assignments feature)
     Fixed: Misleading domain status due to missing `torestore' status in the translate_dmn_status() function
     Fixed: Notice: Undefined index: page_message (admin, reseller UI -- Domain details interface)

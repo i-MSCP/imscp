@@ -1533,24 +1533,17 @@ function isJson($string)
 }
 
 /**
- * Is https secure request
+ * Is the current request a secure request?
  *
  * @return boolean TRUE if is https secure request, FALSE otherwise
  */
 function isSecureRequest()
 {
-    if ((!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off')
-        || (
-            !empty($_SERVER['HTTP_X_FORWARDED_PROTO'])
-            && in_array(strtolower(
-                current(explode(',', $_SERVER['HTTP_X_FORWARDED_PROTO']))), ['https', 'on', 'ssl', '1']
-            )
-        )
-    ) {
-        return true;
+    if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+        return strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https';
     }
 
-    return false;
+    return !empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off';
 }
 
 /**
