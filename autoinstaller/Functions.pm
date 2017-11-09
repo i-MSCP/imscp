@@ -352,7 +352,7 @@ sub _showWelcomeMsg
     $dialog->msgbox( <<"EOF" );
 
 \\Zb\\Z4i-MSCP - internet Multi Server Control Panel
-============================================\\Zn\\ZB
+============================================\\Zn
 
 Welcome to the i-MSCP setup dialog.
 
@@ -360,7 +360,7 @@ i-MSCP (internet Multi Server Control Panel) is a software (OSS) easing shared h
 
 i-MSCP was designed for professional Hosting Service Providers (HSPs), Internet Service Providers (ISPs) and IT professionals.
 
-\\Zb\\Z4License\\Zn\\ZB
+\\Zb\\Z4License\\Zn
 
 Unless otherwise stated all code is licensed under GPL 2.0 and has the following copyright:
 
@@ -393,7 +393,7 @@ EOF
     } else {
         $warning = <<"EOF";
 
-The installer has detected that you intend to install an i-MSCP development version.
+The installer detected that you intend to install an i-MSCP development version.
 
 We would remind you that development versions can be highly unstable and that they are not supported by the i-MSCP team.
 
@@ -409,7 +409,7 @@ EOF
     $dialog->set( 'no-label', 'Abort' );
     return 50 if $dialog->yesno( <<"EOF", 'abort_by_default' );
 
-\\Zb\\Z1WARNING - PLEASE READ CAREFULLY\\Zn\\ZB
+\\Zb\\Z1WARNING \\Z0PLEASE READ CAREFULLY \\Z1WARNING\\Zn
 $warning
 You can now either continue or abort.
 EOF

@@ -562,10 +562,8 @@ sub _processPackagesFile
         # Retrieve selected alternative if any
         my $sAlt = $main::questions{ uc( $section ) . '_SERVER' }
             || $main::imscpConfig{ uc( $section ) . '_SERVER' };
-
-        #
-        # Build list of supported alternatives
-        #
+        
+        # List of supported alternatives
         my @supportedAlts = grep(
             # Discard alternative for which architecture requirement is not met
             !defined $data->{$_}->{'required_arch'} || $data->{$_}->{'required_arch'} eq $arch, keys %{$data}
