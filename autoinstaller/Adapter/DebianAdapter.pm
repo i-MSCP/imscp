@@ -574,9 +574,10 @@ sub _processPackagesFile
         if ( $section eq 'sql' && $sAlt ne '' ) {
             # Discard any SQL server vendor other than current selected
             ( my $sqlVendor = $sAlt ) =~ s/_.*$//;
+            my @sqlSupportedAlts = grep( index( $_, $sqlVendor ) == 0 || $_ eq 'remote_server', @supportedAlts );
 
             # Ask for confirmation if current SQL vendor is no longer available (safety measure)
-            unless ( grep( index( $_, $sqlVendor ) == 0 || $_ eq 'remote_server', @supportedAlts) > 1 ) {
+            if ( @sqlSupportedAlts < 2 ) {
                 $dialog->endGauge();
                 $dialog->set( 'no-cancel', undef );
                 return 50 if $dialog->yesno( <<"EOF", 'abort_by_default' );
@@ -588,6 +589,8 @@ If you continue, you'll be asked for another SQL vendor but bear in mind that th
                 
 Are you sure you want to continue?
 EOF
+            } else {
+                @supportedAlts = @sqlSupportedAlts;
             }
         }
 
