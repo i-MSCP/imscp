@@ -201,7 +201,7 @@ sub msgbox
  Show boolean dialog box
 
  Param string $text Text to show
- Param string bool defaultno Set the default value of the box to 'No'
+ Param bool $defaultno If TRUE, set the default value of the box to 'No'
  Return int Dialog exit code
 
 =cut
@@ -447,8 +447,8 @@ sub _init
     $self->{'_opts'}->{'insecure'} = undef;
     $self->{'_opts'}->{'item-help'} = undef;
     $self->{'_opts'}->{'max-input'} = undef;
-    $self->{'_opts'}->{'no-shadow'} = '';
-    $self->{'_opts'}->{'shadow'} = undef;
+    $self->{'_opts'}->{'no-shadow'} = undef;
+    $self->{'_opts'}->{'shadow'} = '';
     $self->{'_opts'}->{'single-quoted'} = undef;
     $self->{'_opts'}->{'tab-correct'} = undef;
     $self->{'_opts'}->{'tab-len'} = undef;
@@ -493,8 +493,8 @@ sub _resize
         die ( 'A screen at least 24 lines tall and 80 columns wide is required. Please enlarge your screen.' );
     }
 
-    $self->{'lines'} = $lines-2;
-    $self->{'columns'} = $cols-2;
+    $self->{'lines'} = $lines-10;
+    $self->{'columns'} = $cols-4;
 
     $self->endGauge();
 }
@@ -596,7 +596,7 @@ sub _execute
     $self->endGauge(); # Ensure that no gauge is currently running...
 
     if ( iMSCP::Getopt->noprompt ) {
-        if ( $type ne 'infobox' && $type ne 'msgbox' ) {
+        unless ( grep($type eq $_, 'infobox', 'msgbox') ) {
             error( sprintf( 'Failed dialog: %s', $text ));
             exit 5
         }

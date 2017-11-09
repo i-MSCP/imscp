@@ -111,7 +111,7 @@ EOF
         return $rs unless $rs < 30;
     }
 
-    ( $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} = $confLevel ) =~ s/ /_/;
+    $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} = $confLevel =~ s/ /_/gr;
     0;
 }
 

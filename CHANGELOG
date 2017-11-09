@@ -96,8 +96,10 @@ INSTALLER
     Fixed: If a password is getting incorrect due to a password policy change, user must be warned
     Fixed: Setup dialog for the alternative URLs feature is not shown on fresh install
     Merged: Distribution layout.xml file with distribution master install.xml file
+    Removed: `allow_switch` attribute from packages files (check is now done by the distribution adapter)
     Renamed: `kept` attribute to `keep_if_exist' (copy_config xml node from install.xml files)
     Renamed: `if' attribute to 'copy_if' (copy_config xml node from install.xml files)
+    Review: Ask for confirmation in case the current SQL vendor is no longer available (safety measure)
 
 LISTENERS
     Fixed: All listener files should be versionned for easy update tracking

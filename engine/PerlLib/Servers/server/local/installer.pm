@@ -175,7 +175,7 @@ sub primaryIpDialog
 
 Please select your server primary IP address:
 
-The \\Zb`None'\\Zn option means that i-MSCP will configure the services to listen on all interfaces.
+The \\Zb`None'\\ZB option means that i-MSCP will configure the services to listen on all interfaces.
 This option is more suitable for Cloud computing services such as Scaleway and Amazon EC2, or when using a Vagrant box where the IP that is set through DHCP can changes over the time.
 EOF
             $lanIP = '0.0.0.0' if $lanIP eq 'None';

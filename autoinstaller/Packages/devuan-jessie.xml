@@ -242,7 +242,6 @@
                 pinning_package="*"
                 pinning_pin="origin repo.mysql.com"
                 pinning_pin_priority="1001"
-                allow_switch="remote_server"
         >
             <package>libmysqlclient18</package>
             <package>libmysqlclient20</package>
@@ -259,7 +258,6 @@
                 pinning_package="*"
                 pinning_pin="release o=MariaDB,n=jessie"
                 pinning_pin_priority="1001"
-                allow_switch="mariadb_10.2,remote_server"
         >
             <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>
@@ -277,7 +275,6 @@
                 pinning_package="*"
                 pinning_pin="release o=MariaDB,n=jessie"
                 pinning_pin_priority="1001"
-                allow_switch="remote_server"
         >
             <package>libmariadbclient18</package>
             <package>libmysqlclient18</package>
@@ -295,7 +292,6 @@
                 pinning_package="libperconaserverclient20 libperconaserverclient20-dev percona-server-client-5.7 percona-server-common-5.7 percona-server-server-5.7"
                 pinning_pin="origin repo.percona.com"
                 pinning_pin_priority="1001"
-                allow_switch="remote_server"
         >
             <package>libmysqlclient18</package>
             <package>libperconaserverclient20</package>
@@ -310,7 +306,6 @@
                 pinning_package="libmysqlclient18 mysql-client-5.5 mysql-common"
                 pinning_pin="release o=Debian,n=jessie"
                 pinning_pin_priority="1001"
-                allow_switch="mysql_5.7,mariadb_10.1,mariadb_10.2,percona_5.7"
         >
             <package>libmysqlclient18</package>
             <package>mysql-client-5.5</package>

@@ -193,7 +193,6 @@
                 pinning_package="libmariadbclient18 mariadb-client-10.1 mariadb-common mariadb-server-core-10.1 mysql-common"
                 pinning_pin="release o=Debian,n=buster"
                 pinning_pin_priority="1001"
-                allow_switch="remote_server"
         >
             <package>libmariadbclient18</package>
             <package>mariadb-client-10.1</package>
@@ -207,7 +206,6 @@
                 pinning_package="libmariadbclient18 mariadb-client-10.1 mariadb-common mysql-common"
                 pinning_pin="release o=Debian,n=buster"
                 pinning_pin_priority="1001"
-                allow_switch="mariadb_10.1"
         >
             <package>libmariadbclient18</package>
             <package>mariadb-common</package>

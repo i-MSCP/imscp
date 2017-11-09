@@ -487,15 +487,14 @@ sub _processPackagesFile
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'onBuildPackageList', \ my $packageFilePath );
+    my $rs = $self->{'eventManager'}->trigger( 'onBuildPackageList', \ my $pkgFile );
     return $rs if $rs;
 
-    unless ( defined $packageFilePath ) {
+    unless ( defined $pkgFile ) {
         my $lsbRelease = iMSCP::LsbRelease->getInstance();
         my $distroID = $lsbRelease->getId( 'short' );
         my $distroCodename = $lsbRelease->getCodename( 'short' );
-        $packageFilePath = "$FindBin::Bin/autoinstaller/Packages/" . lc( $distroID ) . '-'
-            . lc( $distroCodename ) . '.xml';
+        $pkgFile = "$FindBin::Bin/autoinstaller/Packages/" . lc( $distroID ) . '-' . lc( $distroCodename ) . '.xml';
     }
 
     chomp( my $arch = `dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null` || '' );
@@ -508,7 +507,7 @@ sub _processPackagesFile
     my $xml = XML::Simple->new( NoEscape => 1 );
     my $pkgData = eval {
         $xml->XMLin(
-            $packageFilePath,
+            $pkgFile,
             ForceArray     => [ 'package', 'package_delayed', 'package_conflict' ],
             NormaliseSpace => 2
         );
@@ -519,7 +518,6 @@ sub _processPackagesFile
     }
 
     my $dialog = iMSCP::Dialog->getInstance();
-    $dialog->set( 'no-cancel', '' );
 
     while ( my ($section, $data) = each( %{$pkgData} ) ) {
         # List of packages to install
@@ -565,54 +563,72 @@ sub _processPackagesFile
         my $sAlt = $main::questions{ uc( $section ) . '_SERVER' }
             || $main::imscpConfig{ uc( $section ) . '_SERVER' };
 
-        # Resets alternative if selected alternative is no longer available
-        $sAlt = '' if $sAlt ne '' && !grep($_ eq $sAlt, keys %{$data});
+        #
+        # Build list of supported alternatives
+        #
+        my @supportedAlts = grep(
+            # Discard alternative for which architecture requirement is not met
+            !defined $data->{$_}->{'required_arch'} || $data->{$_}->{'required_arch'} eq $arch, keys %{$data}
+        );
 
-        my %altDescs;
-        for( keys %{$data} ) {
-            # Skip unsupported alternatives by arch
-            if ( defined $data->{$_}->{'required_arch'}
-                && $arch ne $data->{$_}->{'required_arch'}
-            ) {
-                next;
+        # Handle case of SQL server alternatives where it is not allowed to
+        # switch to another SQL server vendor through the installer
+        if ( $section eq 'sql' && $sAlt ne '' ) {
+            # Discard any SQL server vendor other than current selected
+            ( my $sqlVendor = $sAlt ) =~ s/_.*$//;
+
+            # Ask for confirmation if current SQL vendor is no longer available (safety measure)
+            unless ( grep( index( $_, $sqlVendor ) == 0 || $_ eq 'remote_server', @supportedAlts) > 1 ) {
+                $dialog->endGauge();
+                $dialog->set( 'no-cancel', undef );
+                return 50 if $dialog->yesno( <<"EOF", 'abort_by_default' );
+
+\\Zb\\Z1WARNING \\Z0CURRENT SQL SERVER VENDOR IS NO LONGER AVAILABLE \\Z1WARNING\\Zn
+
+The installer detected that your current SQL server vendor ($sqlVendor) is no longer available.
+If you continue, you'll be asked for another SQL vendor but bear in mind that the upgrade could fail.
+                
+Are you sure you want to continue?
+EOF
             }
+        }
 
-            # Map of alternative descriptions to alternative names
-            $altDescs{$data->{$_}->{'description'} || $_} = $_;
+        # Resets alternative if the selected alternative is no longer available
+        $sAlt = '' if $sAlt ne '' && !grep($_ eq $sAlt, @supportedAlts);
 
-            # If there is no software alternative selected yet, sets the
-            # alternative to default value as defined in packages file and
-            # force dialog to make user able to change it, unless the `nopromp'
-            # flag is set, in which case the default alternative will be enforced.
-            if ( $sAlt eq '' && $data->{$_}->{'default'} ) {
+        # If there is not alternative selected yet, we set select the default
+        # defined in packages file and we force dialog to make user able to
+        # change it, unless we are in preseed or noninteractive mode, in which
+        # case the default alternative will be enforced.
+        if ( $sAlt eq '' ) {
+            $needDialog = 1 unless iMSCP::Getopt->preseed;
+
+            for( @supportedAlts ) {
+                next unless $data->{$_}->{'default'};
                 $sAlt = $_;
-                $needDialog = 1 unless iMSCP::Getopt->preseed;
             }
+
+            # Fallback to first alternative if there is no default
+            $sAlt = $supportedAlts[0] if $sAlt eq '';
         }
 
-        # Filter unallowed alternatives
-        unless ( $needDialog || !$data->{$sAlt}->{'allow_switch'} ) {
-            my @allowedAlts = ( split( ',', $data->{$sAlt}->{'allow_switch'} ), $sAlt );
-            while ( my ($altDesc, $altName) = each( %altDescs ) ) {
-                delete $altDescs{$altDesc} unless grep( $altName eq $_, @allowedAlts );
-            }
-        }
+        $needDialog ||= grep( $_ eq $main::reconfigure, $section, 'servers', 'all' );
 
-        # If there are more than one alternative available and if dialog is
-        # forced, or if user explicitely asked for reconfiguration of that
-        # alternative, show dialog for alternative selection
-        if ( keys %altDescs > 1
-            && ( $needDialog || grep( $_ eq $main::reconfigure, $section, 'servers', 'all' ) )
-        ) {
+        if ( @supportedAlts > 1 && $needDialog ) {
+            $dialog->set( 'no-cancel', '' );
+
             ( my $ret, $sAlt ) = $dialog->radiolist(
-                <<"EOF", [ keys %altDescs ], $data->{$sAlt}->{'description'} || $sAlt );
+                <<"EOF", [ map { $data->{$_}->{'description'} || $_ } @supportedAlts ], $data->{$sAlt}->{'description'} || $sAlt );
 
 Please make your choice for the $section alternative:
 EOF
             return $ret if $ret; # Handle ESC case
 
             # Set real alternative name
-            $sAlt = $altDescs{$sAlt};
+            for( @supportedAlts ) {
+                next if ( $data->{$_}->{'description'} || $_ =~ s/_/ /gr ) ne $sAlt;
+                $sAlt = $_;
+            }
         }
 
         # Packages to install for the selected alternative
@@ -692,12 +708,12 @@ EOF
         $main::imscpConfig{uc( $section ) . '_PACKAGE'} = $data->{$sAlt}->{'class'} || $sAlt;
     }
 
-    @{$self->{'packagesToPreUninstall'}} = sort(unique( @{$self->{'packagesToPreUninstall'}} ));
-    @{$self->{'packagesToUninstall'}} = sort(unique( @{$self->{'packagesToUninstall'}} ));
-    @{$self->{'packagesToInstall'}} = sort(unique( @{$self->{'packagesToInstall'}} ));
-    @{$self->{'packagesToInstallDelayed'}} = sort(unique( @{$self->{'packagesToInstallDelayed'}} ));
+    @{$self->{'packagesToPreUninstall'}} = sort( unique( @{$self->{'packagesToPreUninstall'}} ) );
+    @{$self->{'packagesToUninstall'}} = sort( unique( @{$self->{'packagesToUninstall'}} ) );
+    @{$self->{'packagesToInstall'}} = sort( unique( @{$self->{'packagesToInstall'}} ) );
+    @{$self->{'packagesToInstallDelayed'}} = sort( unique( @{$self->{'packagesToInstallDelayed'}} ) );
 
-    $dialog->set( 'no-cancel', '' );
+    $dialog->set( 'no-cancel', undef );
     0;
 }
 
