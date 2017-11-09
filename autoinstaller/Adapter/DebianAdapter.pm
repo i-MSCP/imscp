@@ -572,9 +572,14 @@ sub _processPackagesFile
         # Handle case of SQL server alternatives where it is not allowed to
         # switch to another SQL server vendor through the installer
         if ( $section eq 'sql' && $sAlt ne '' ) {
-            # Discard any SQL server vendor other than current selected
-            ( my $sqlVendor = $sAlt ) =~ s/_.*$//;
-            my @sqlSupportedAlts = grep( index( $_, $sqlVendor ) == 0 || $_ eq 'remote_server', @supportedAlts );
+            my ( $sqlVendor, $sqlVersion ) = $sAlt =~ /(.*)_(.*)$/;
+            # Discard any SQL server vendor other than current
+            # Discard versions older than current
+            $sqlVersion = version->parse( $sqlVersion );
+            my @sqlSupportedAlts = grep {
+                ( index( $_, $sqlVendor ) == 0 && version->parse( $_ =~ s/^.*_//r ) >= $sqlVersion )
+                    || $_ eq 'remote_server'
+            } @supportedAlts;
 
             # Ask for confirmation if current SQL vendor is no longer available (safety measure)
             if ( @sqlSupportedAlts < 2 ) {
@@ -594,6 +599,9 @@ EOF
             }
         }
 
+        # sort list of supported alternatives
+        @supportedAlts = sort @supportedAlts;
+
         # Resets alternative if the selected alternative is no longer available
         $sAlt = '' if $sAlt ne '' && !grep($_ eq $sAlt, @supportedAlts);
 
@@ -609,7 +617,8 @@ EOF
                 $sAlt = $_;
             }
 
-            # Fallback to first alternative if there is no default
+            # Fallback to first alternative if there is no default in list of
+            # supported alternatives
             $sAlt = $supportedAlts[0] if $sAlt eq '';
         }
 
