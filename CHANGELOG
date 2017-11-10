@@ -71,6 +71,7 @@ FRONTEND
     Fixed: List of customers is truncated due to wrong template variable name in loop (Customer assignments feature)
     Fixed: Misleading domain status due to missing `torestore' status in the translate_dmn_status() function
     Fixed: Notice: Undefined index: page_message (admin, reseller UI -- Domain details interface)
+    Fixed: Notice: Undefined index: page_message (admin, UI -- IP usage interface)
     Fixed: Undefined offsets (Support feature - Tickets view interfaces)
     Fixed: Wrong alternative subject names in self-signed SSL certificates
     Fixed: Wrong order for parameters in mail delete.php (i18n -- client UI)

@@ -93,10 +93,11 @@ if (!systemHasCustomers()) {
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout'     => 'shared/layouts/ui.tpl',
-    'page'       => 'admin/ip_usage.tpl',
-    'ip_row'     => 'page',
-    'domain_row' => 'ip_row'
+    'layout'       => 'shared/layouts/ui.tpl',
+    'page'         => 'admin/ip_usage.tpl',
+    'page_message' => 'layout',
+    'ip_row'       => 'page',
+    'domain_row'   => 'ip_row'
 ]);
 $tpl->assign([
     'TR_PAGE_TITLE'                => tr('Admin / Statistics / IP Usage'),
