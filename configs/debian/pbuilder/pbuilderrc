@@ -1,21 +1,21 @@
 AUTO_DEBSIGN=${AUTO_DEBSIGN:-no}
-AUTOCLEANAPTCACHE="yes"
+AUTOCLEANAPTCACHE=yes
 APTCONFDIR=$(pwd)/.imscp
-#APTKEYRINGS="/usr/share/keyrings/debian-archive-keyring.gpg"
+#APTKEYRINGS=/usr/share/keyrings/debian-archive-keyring.gpg
 CODENAME=$(lsb_release -cs)
 DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--variant=buildd" "--keyring=/usr/share/keyrings/debian-archive-keyring.gpg")
 DEBBUILDOPTS=-b
-MIRRORSITE=http://deb.debian.org/debian/
+MIRRORSITE=http://deb.debian.org
 HOOKDIR=""
 
 mkdir -p $APTCONFDIR
 cat > "$APTCONFDIR/sources.list" <<EOF
-deb $MIRRORSITE $CODENAME main contrib non-free
-deb-src $MIRRORSITE $CODENAME main contrib non-free
+deb $MIRRORSITE/debian/ $CODENAME main contrib non-free
+deb-src deb $MIRRORSITE/debian/ $CODENAME main contrib non-free
 
-deb http://security.debian.org/ ${CODENAME}/updates main contrib non-free
-deb-src http://security.debian.org/ ${CODENAME}/updates main contrib non-free
+deb $MIRRORSITE/debian/ ${CODENAME}-updates main contrib non-free
+deb-src $MIRRORSITE/debian/ ${CODENAME}-updates main contrib non-free
 
-deb $MIRRORSITE ${CODENAME}-updates main contrib non-free
-deb-src $MIRRORSITE ${CODENAME}-updates main contrib non-free
+deb $MIRRORSITE/debian-security/ ${CODENAME}/updates main contrib non-free
+deb-src $MIRRORSITE/debian-security/ ${CODENAME}/updates main contrib non-free
 EOF

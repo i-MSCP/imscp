@@ -13,7 +13,7 @@ apt-get update
 apt-get --assume-yes --auto-remove --no-install-recommends dist-upgrade
 ```
 
-### 2. Install the pre-required packages for i-MSCP the installer
+### 2. Install the pre-required packages for the i-MSCP installer
 
 ```
 apt-get -y --auto-remove --no-install-recommends install ca-certificates perl libclone-perl \

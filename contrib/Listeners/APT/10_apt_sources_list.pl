@@ -39,11 +39,11 @@ my $APT_SOURCES_LIST_FILE_PATH = '/usr/local/src/sources.list';
 iMSCP::EventManager->getInstance()->register(
     'onLoadTemplate',
     sub {
-        my ($target, $filename, $fileContent) = @_;
+        my ($target, $tplFilename, $tplFileContent) = @_;
 
-        return unless $target eq 'apt' && $filename eq 'sources.list';
+        return 0 unless $target eq 'apt' && $tplFilename eq 'sources.list';
 
-        ${$fileContent} = iMSCP::File->new( filename => $APT_SOURCES_LIST_FILE_PATH )->get() or die(
+        ${$tplFileContent} = iMSCP::File->new( filename => $APT_SOURCES_LIST_FILE_PATH )->get() or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } )
         );
 
