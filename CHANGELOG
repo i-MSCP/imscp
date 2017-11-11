@@ -33,6 +33,7 @@ CONFIG
     Added: LOGROTATE(8) configuration file for VsFTPD (Traffic log file rotation)
     Added: LOGROTATE(8) configuration file for rsyslog (Ubuntu 14.04/Trusty Thar)
     Added: LOGROTATE(8) configuration file for syslog-ng (All distributions)
+    Added: Missing pbuilder configuration file -- Devuan 1.0/Jessie
     Enhancement: Make it possible to override default config by including *.conf files from the /etc/dovecot/imscp.d directory (Dovecot)
     Fixed: Make use of the `ssl' parameter of the `listen' directive in place of the `ssl' directive (Nginx)
     Updated: LOGROTATE(8) configuration file for ProFTPD -- Added stanza for traffic log file rotation
@@ -88,6 +89,7 @@ FRONTEND
 INSTALLER
     Added: `copy_as' attribute -- Allows to copy a file with specific name (copy_config xml node from install.xml files)
     Added: `create_if` attribute -- Allows to conditionally create a folder (folder xml node from install.xml files)
+    Added: Missing patches for pam-mysql -- Devuan 1.0/Jessie
     Added: `pre_remove' attribute -- Allows to remove previous directory (folder xml node from install.xml files)
     Enhancement: Make it possible to provide per distribution (codename) configuration file
     Enhancement: Provide good default values for installer whenever possible
@@ -100,6 +102,7 @@ INSTALLER
     Fixed: Setup dialog for the alternative URLs feature is not shown on fresh install
     Merged: Distribution layout.xml file with distribution master install.xml file
     Removed: `allow_switch` attribute from packages files (check is now done by the distribution adapter)
+    Removed: `imscp_allow_writeable_root.patch` patch for vsftpd (no longer needed with latest version)
     Removed: `repository_conflict` attribute (packages files)
     Renamed: `kept` attribute to `keep_if_exist' (copy_config xml node from install.xml files)
     Renamed: `if' attribute to 'copy_if' (copy_config xml node from install.xml files)

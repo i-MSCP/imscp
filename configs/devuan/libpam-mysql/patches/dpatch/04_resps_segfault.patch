@@ -1,0 +1,19 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 04_resps_segfault.patch by <l.declercq@nuxwin.com>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: d2list
+
+@DPATCH@
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' pam-mysql-0.7~RC1~/pam_mysql.c pam-mysql-0.7~RC1/pam_mysql.c
+--- pam-mysql-0.7~RC1~/pam_mysql.c	2016-05-19 09:09:25.567390706 +0200
++++ pam-mysql-0.7~RC1/pam_mysql.c	2016-05-19 09:10:47.547523914 +0200
+@@ -3207,7 +3207,7 @@
+ 	}
+
+ 	for (i = 0; i < nargs; i++) {
+-		if (resps[i].resp != NULL &&
++		if (resps != NULL && resps[i].resp != NULL &&
+ 				NULL == (retval[i] = xstrdup(resps[i].resp))) {
+ 			syslog(LOG_AUTHPRIV | LOG_CRIT, PAM_MYSQL_LOG_PREFIX "allocation failure at " __FILE__ ":%d", __LINE__);
+ 			err = PAM_MYSQL_ERR_ALLOC;

@@ -5,11 +5,11 @@
 # /etc/apt/sources.list.d/ directory or make use of the Listener::APT::Source::List
 # i-MSCP listener file to provide your own /etc/apt/sources.list file.
 
-deb http://de.archive.ubuntu.com/ubuntu/ {codename} main universe multiverse 
-deb-src http://de.archive.ubuntu.com/ubuntu/ {codename} main universe multiverse 
+deb http://archive.ubuntu.com/ubuntu/ {codename} main universe multiverse 
+deb-src http://archive.ubuntu.com/ubuntu/ {codename} main universe multiverse 
 
-deb http://de.archive.ubuntu.com/ubuntu/ {codename}-security main universe multiverse 
-deb http://de.archive.ubuntu.com/ubuntu/ {codename}-updates main universe multiverse
+deb http://archive.ubuntu.com/ubuntu/ {codename}-security main universe multiverse 
+deb-src http://archive.ubuntu.com/ubuntu/ {codename}-updates main universe multiverse
  
-deb-src http://de.archive.ubuntu.com/ubuntu/ {codename}-security main universe multiverse 
-deb-src http://de.archive.ubuntu.com/ubuntu/ {codename}-updates main universe multiverse 
+deb http://archive.ubuntu.com/ubuntu/ {codename}-security main universe multiverse 
+deb-src http://archive.ubuntu.com/ubuntu/ {codename}-updates main universe multiverse 

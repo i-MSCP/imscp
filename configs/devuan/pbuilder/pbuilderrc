@@ -1,0 +1,20 @@
+AUTO_DEBSIGN=${AUTO_DEBSIGN:-no}
+AUTOCLEANAPTCACHE=yes
+APTCONFDIR=$(pwd)/.imscp
+CODENAME=$(lsb_release -cs)
+DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--variant=buildd" "--keyring=/usr/share/keyrings/devuan-archive-keyring.gpg")
+DEBBUILDOPTS=-b
+MIRRORSITE=http://auto.mirror.devuan.org/merged/
+HOOKDIR=""
+
+mkdir -p $APTCONFDIR
+cat > "$APTCONFDIR/sources.list" <<EOF
+deb http://auto.mirror.devuan.org/merged/ $CODENAME main contrib non-free
+deb-src http://auto.mirror.devuan.org/merged/ $CODENAME main contrib non-free
+
+deb http://auto.mirror.devuan.org/merged/ ${CODENAME}-updates main contrib non-free
+deb-src http://auto.mirror.devuan.org/merged/ ${CODENAME}-updates main contrib non-free
+
+deb http://auto.mirror.devuan.org/merged/ ${CODENAME}-security main contrib non-free
+deb-src http://auto.mirror.devuan.org/merged/ ${CODENAME}-security main contrib non-free
+EOF

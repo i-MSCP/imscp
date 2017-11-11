@@ -220,11 +220,11 @@
                 class="Servers::ftpd::vsftpd"
         >
             <package rebuild_with_patches="libpam-mysql/patches/dpatch" patch_sys_type="dpatch"
-                     pkg_src_name="pam-mysql">libpam-mysql
+                     pkg_src_name="pam-mysql"
+            >
+                libpam-mysql
             </package>
-            <package rebuild_with_patches="vsftpd/patches/quilt" discard_patches="imscp_allow_writeable_root.patch">
-                vsftpd
-            </package>
+            <package rebuild_with_patches="vsftpd/patches/quilt">vsftpd</package>
             <package_conflict>proftpd-basic</package_conflict>
         </vsftpd>
     </ftpd>

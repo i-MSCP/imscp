@@ -5,11 +5,11 @@
 # /etc/apt/sources.list.d/ directory or make use of the Listener::APT::Source::List
 # i-MSCP listener file to provide your own /etc/apt/sources.list file.
 
-deb http://packages.devuan.org/merged/ {codename} main contrib non-free
-deb-src http://packages.devuan.org/merged/ {codename} main contrib non-free
+deb http://auto.mirror.devuan.org/merged/ {codename} main contrib non-free
+deb-src http://auto.mirror.devuan.org/merged/ {codename} main contrib non-free
 
-deb http://packages.devuan.org/merged/ {codename}-security main contrib non-free
-deb-src http://packages.devuan.org/merged/ {codename}-security main contrib non-free
+deb http://auto.mirror.devuan.org/merged/ {codename}-security main contrib non-free
+deb-src http://auto.mirror.devuan.org/merged/ {codename}-security main contrib non-free
 
-deb http://packages.devuan.org/merged/ {codename}-updates main contrib non-free
-deb-src http://packages.devuan.org/merged/ {codename}-updates main contrib non-free
+deb http://auto.mirror.devuan.org/merged/ {codename}-updates main contrib non-free
+deb-src http://auto.mirror.devuan.org/merged/ {codename}-updates main contrib non-free
