@@ -4,7 +4,7 @@
                 default="1"
                 description="Nginx server"
                 class="Package::FrontEnd"
-                repository_conflict="http://nginx.org/">
+        >
             <package>nginx-full</package>
         </nginx>
     </frontend>
@@ -63,7 +63,6 @@
                 default="1"
                 description="PHP 5.6"
                 class="Servers::php"
-                repository_conflict="http://packages.dotdeb.org"
                 repository="http://ppa.launchpad.net/ondrej/php/ubuntu trusty main"
                 repository_key_id="E5267A6C"
                 repository_key_srv="keyserver.ubuntu.com"
@@ -99,7 +98,6 @@
         <php7.0
                 description="PHP 7.0"
                 class="Servers::php"
-                repository_conflict="http://packages.dotdeb.org"
                 repository="http://ppa.launchpad.net/ondrej/php/ubuntu trusty main"
                 repository_key_id="E5267A6C"
                 repository_key_srv="keyserver.ubuntu.com"
@@ -136,7 +134,6 @@
         <php7.1
                 description="PHP 7.1"
                 class="Servers::php"
-                repository_conflict="http://packages.dotdeb.org"
                 repository="http://ppa.launchpad.net/ondrej/php/ubuntu trusty main"
                 repository_key_id="E5267A6C"
                 repository_key_srv="keyserver.ubuntu.com"

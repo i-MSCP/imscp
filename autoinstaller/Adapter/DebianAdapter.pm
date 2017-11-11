@@ -28,14 +28,15 @@ use Fcntl qw/ :flock /;
 use File::Temp;
 use FindBin;
 use iMSCP::Cwd;
-use iMSCP::Debug qw/ debug error output /;
+use iMSCP::Debug qw/ debug error getMessageByType output /;
 use iMSCP::Dialog;
 use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute executeNoWait /;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::LsbRelease;
 use iMSCP::ProgramFinder;
+use iMSCP::TemplateParser qw/ process /;
+use iMSCP::Umask;
 use version;
 use parent 'autoinstaller::Adapter::AbstractAdapter';
 
@@ -61,7 +62,7 @@ sub installPreRequiredPackages
 
     print STDOUT output( 'Satisfying prerequisites...', 'info' ) unless $main::buildonly;
 
-    my $rs = $self->_updateAptSourceList();
+    my $rs = $self->_installAPTsourcesList();
     $rs ||= $self->_updatePackagesIndex();
     return $rs if $rs;
 
@@ -106,9 +107,9 @@ sub preBuild
 
     unshift @{$steps},
         (
-            [ sub { $self->_processPackagesFile() }, 'Process distribution packages file' ],
+            [ sub { $self->_processPackagesFile() }, 'Processing distribution packages file' ],
             [ sub { $self->_prefillDebconfDatabase() }, 'Pre-fill Debconf database' ],
-            [ sub { $self->_processAptRepositories() }, 'Processing APT repositories' ],
+            [ sub { $self->_addAPTrepositories() }, 'Adding APT repositories' ],
             [ sub { $self->_processAptPreferences() }, 'Processing APT preferences' ],
             [ sub { $self->_updatePackagesIndex() }, 'Updating packages index' ]
         );
@@ -362,15 +363,12 @@ sub _init
     my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-
-    $self->{'repositorySections'} = [ 'main', 'contrib', 'non-free' ];
     $self->{'preRequiredPackages'} = [
         'apt-transport-https', 'binutils', 'ca-certificates', 'debconf-utils', 'dialog', 'dirmngr', 'dpkg-dev',
         'libbit-vector-perl', 'libclass-insideout-perl', 'libclone-perl', 'liblchown-perl', 'liblist-moreutils-perl',
         'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'lsb-release', 'policyrcd-script-zg2',
         'wget'
     ];
-    $self->{'aptRepositoriesToRemove'} = [];
     $self->{'aptRepositoriesToAdd'} = [];
     $self->{'aptPreferences'} = [];
     $self->{'packagesToInstall'} = [];
@@ -491,10 +489,8 @@ sub _processPackagesFile
     return $rs if $rs;
 
     unless ( defined $pkgFile ) {
-        my $lsbRelease = iMSCP::LsbRelease->getInstance();
-        my $distroID = $lsbRelease->getId( 'short' );
-        my $distroCodename = $lsbRelease->getCodename( 'short' );
-        $pkgFile = "$FindBin::Bin/autoinstaller/Packages/" . lc( $distroID ) . '-' . lc( $distroCodename ) . '.xml';
+        $pkgFile = "$FindBin::Bin/autoinstaller/Packages/$main::imscpConfig{'DISTRO_ID'}-"
+            . "$main::imscpConfig{'DISTRO_CODENAME'}.xml";
     }
 
     chomp( my $arch = `dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null` || '' );
@@ -562,7 +558,7 @@ sub _processPackagesFile
         # Retrieve selected alternative if any
         my $sAlt = $main::questions{ uc( $section ) . '_SERVER' }
             || $main::imscpConfig{ uc( $section ) . '_SERVER' };
-        
+
         # List of supported alternatives
         my @supportedAlts = grep(
             # Discard alternative for which architecture requirement is not met
@@ -685,21 +681,10 @@ EOF
                 };
         }
 
-        # Conflicting APT repositories to remove for the selected alternative
-        if ( defined $data->{$sAlt}->{'repository_conflict'} ) {
-            push @{$self->{'aptRepositoriesToRemove'}}, $data->{$sAlt}->{'repository_conflict'}
-        }
-
         # Schedule removal of APT repositories and packages that belongs to
         # unselected alternatives
         while ( my ($alt, $altData) = each( %{$data} ) ) {
             next if $alt eq $sAlt;
-
-            # APT repositories to remove
-            for( qw / repository repository_conflict / ) {
-                next unless defined $altData->{$_};
-                push @{$self->{'aptRepositoriesToRemove'}}, $altData->{$_};
-            }
 
             # Packages to uninstall
             for( qw / package package_delayed / ) {
@@ -728,100 +713,63 @@ EOF
     0;
 }
 
-=item _updateAptSourceList( )
+=item _installAPTsourcesList( )
 
- Add required sections to repositories that support them
-
- Note: Also enable source repositories for the sections when available.
- TODO: Implement better check by parsing apt-cache policy output
+ Installs i-MSCP provided SOURCES.LIST(5) configuration file
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _updateAptSourceList
+sub _installAPTsourcesList
 {
     my ($self) = @_;
 
-    local $ENV{'LANG'} = 'C';
+    eval {
+        $self->{'eventManager'}->trigger( 'onLoadTemplate', 'apt', 'sources.list', \ my $fileContent, {} ) == 0 or die(
+            getMessageByType ( 'error', { amount => 1, remove => 1 } )
+        );
 
-    my $file = iMSCP::File->new( filename => '/etc/apt/sources.list' );
-    my $fileContent = $file->get();
-
-    for my $section( @{$self->{'repositorySections'}} ) {
-        my @seenRepositories = ();
-        my $foundSection = 0;
-
-        while ( $fileContent =~ /^deb\s+(?<uri>(?:https?|ftp)[^\s]+)\s+(?<dist>[^\s]+)\s+(?<components>.+)$/gm ) {
-            my $rf = $&;
-            my %rc = %+;
-            next if grep($_ eq "$rc{'uri'} $rc{'dist'}", @seenRepositories);
-            push @seenRepositories, "$rc{'uri'} $rc{'dist'}";
-
-            if ( $fileContent !~ /^deb\s+$rc{'uri'}\s+$rc{'dist'}\s+.*\b$section\b/m ) {
-                my $rs = execute(
-                    [
-                        'wget', '--prefer-family=IPv4', '--timeout=30', '--spider',
-                        "$rc{'uri'}/dists/$rc{'dist'}/$section/" =~ s{([^:])//}{$1/}gr
-                    ],
-                    \ my $stdout,
-                    \ my $stderr
-                );
-                debug( $stdout ) if $stdout;
-                debug( $stderr || 'Unknown error' ) if $rs && $rs != 8;
-                next if $rs; # Don't check for source archive when binary archive has not been found
-                $foundSection = 1;
-                $fileContent =~ s/^($rf)$/$1 $section/m;
-                $rf .= " $section";
-            } else {
-                $foundSection = 1;
-            }
-
-            if ( $foundSection && $fileContent !~ /^deb-src\s+$rc{'uri'}\s+$rc{'dist'}\s+.*\b$section\b/m ) {
-                my $rs = execute(
-                    [
-                        'wget', '--prefer-family=IPv4', '--timeout=30', '--spider',
-                        "$rc{'uri'}/dists/$rc{'dist'}/$section/source/" =~ s{([^:])//}{$1/}gr
-                    ],
-                    \ my $stdout,
-                    \ my $stderr
-                );
-                debug( $stdout ) if $stdout;
-                debug( $stderr || 'Unknown error' ) if $rs && $rs != 8;
-
-                unless ( $rs ) {
-                    if ( $fileContent !~ /^deb-src\s+$rc{'uri'}\s+$rc{'dist'}\s.*/m ) {
-                        $fileContent =~ s/^($rf)/$1\ndeb-src $rc{'uri'} $rc{'dist'} $section/m;
-                    } else {
-                        $fileContent =~ s/^($&)$/$1 $section/m;
-                    }
-                }
-            }
+        unless ( defined $fileContent ) {
+            my $file = "$FindBin::Bin/configs/$main::imscpConfig{'DISTRO_ID'}/apt/sources.list";
+            $fileContent = iMSCP::File->new( filename => $file )->get() or die(
+                getMessageByType ( 'error', { amount => 1, remove => 1 } )
+            );
         }
 
-        unless ( $foundSection ) {
-            error( sprintf( "Couldn't find any repository supporting %s section", $section ));
-            return 1;
-        }
+        $fileContent = process(
+            {
+                codename => $main::imscpConfig{'DISTRO_CODENAME'}
+            },
+            $fileContent
+        );
+
+        local $UMASK = 022;
+        my $file = iMSCP::File->new( filename => '/etc/apt/sources.list' );
+        $file->set( $fileContent );
+        $file->save() == 0 or die( getMessageByType ( 'error', { amount => 1, remove => 1 } ));
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
     }
 
-    $file->set( $fileContent );
-    $file->save();
+    0;
 }
 
-=item _processAptRepositories( )
+=item _addAPTrepositories( )
 
- Process APT repositories
+ Add required APT repositories
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _processAptRepositories
+sub _addAPTrepositories
 {
     my ($self) = @_;
 
-    return 0 unless @{$self->{'aptRepositoriesToRemove'}} || @{$self->{'aptRepositoriesToAdd'}};
+    return 0 unless @{$self->{'aptRepositoriesToAdd'}};
 
     my $file = iMSCP::File->new( filename => '/etc/apt/sources.list' );
     my $rs = $file->copyFile( '/etc/apt/sources.list.bkp' );
@@ -831,12 +779,6 @@ sub _processAptRepositories
     unless ( defined $fileContent ) {
         error( "Couldn't read /etc/apt/sources.list file" );
         return 1;
-    }
-
-    # Cleanup APT sources.list file
-    for my $repository( @{$self->{'aptRepositoriesToRemove'}}, @{$self->{'aptRepositoriesToAdd'}} ) {
-        my $escapedRepository = ( ref $repository eq 'HASH' ) ? $repository->{'repository'} : $repository;
-        $fileContent =~ s/^\n?(?:#\s*)?deb(?:-src)?\s+\Q$escapedRepository\E.*?\n//gm;
     }
 
     # Add APT repositories
@@ -1136,8 +1078,7 @@ sub _rebuildAndInstallPackage
 
     local $ENV{'LANG'} = 'C';
 
-    my $lsbRelease = iMSCP::LsbRelease->getInstance();
-    $patchesDir = "$FindBin::Bin/configs/" . lc( $lsbRelease->getId( 1 )) . "/$patchesDir";
+    $patchesDir = "$FindBin::Bin/configs/$main::imscpConfig{'DISTRO_ID'}/$patchesDir";
     unless ( -d $patchesDir ) {
         error( sprintf( '%s is not a valid patches directory', $patchesDir ));
         return 1;
@@ -1174,8 +1115,8 @@ sub _rebuildAndInstallPackage
                 my $cmd = [
                     'pbuilder',
                     ( -f '/var/cache/pbuilder/base.tgz' ? ( '--update', '--autocleanaptcache' ) : '--create' ),
-                    '--distribution', lc( $lsbRelease->getCodename( 1 )),
-                    '--configfile', "$FindBin::Bin/configs/" . lc( $lsbRelease->getId( 1 )) . '/pbuilder/pbuilderrc',
+                    '--distribution', $main::imscpConfig{'DISTRO_CODENAME'},
+                    '--configfile', "$FindBin::Bin/configs/$main::imscpConfig{'DISTRO_ID'}/pbuilder/pbuilderrc",
                     '--override-config'
                 ];
                 $rs = executeNoWait(
@@ -1198,7 +1139,9 @@ sub _rebuildAndInstallPackage
     );
     $rs ||= step(
         sub {
-            my $msgHeader = sprintf( "Downloading %s %s source package\n\n - ", $pkgSrc, $lsbRelease->getId( 1 ));
+            my $msgHeader = sprintf(
+                "Downloading %s %s source package\n\n - ", $pkgSrc, $main::imscpConfig{'DISTRO_ID'}
+            );
             my $msgFooter = "\nDepending on your system this may take few seconds...";
 
             my $stderr = '';
@@ -1214,7 +1157,7 @@ sub _rebuildAndInstallPackage
                 $stderr || 'Unknown error' )) if $rs;
             $rs;
         },
-        sprintf( 'Downloading %s %s source package', $pkgSrc, $lsbRelease->getId( 1 )), 5, 2
+        sprintf( 'Downloading %s %s source package', $pkgSrc, $main::imscpConfig{'DISTRO_ID'} ), 5, 2
     );
 
     {
@@ -1255,11 +1198,11 @@ sub _rebuildAndInstallPackage
                 error( sprintf( "Couldn't add `imscp' local suffix: %s", $stderr || 'Unknown error' )) if $rs;
                 return $rs if $rs;
             },
-            sprintf( 'Patching %s %s source package...', $pkgSrc, $lsbRelease->getId( 1 )), 5, 3
+            sprintf( 'Patching %s %s source package...', $pkgSrc, $main::imscpConfig{'DISTRO_ID'} ), 5, 3
         );
         $rs ||= step(
             sub {
-                my $msgHeader = sprintf( "Building new %s %s package\n\n - ", $pkg, $lsbRelease->getId( 1 ));
+                my $msgHeader = sprintf( "Building new %s %s package\n\n - ", $pkg, $main::imscpConfig{'DISTRO_ID'} );
                 my $msgFooter = "\n\nPlease be patient. This may take few seconds...";
                 my $stderr;
 
@@ -1267,7 +1210,7 @@ sub _rebuildAndInstallPackage
                     [
                         'pdebuild',
                         '--use-pdebuild-internal',
-                        '--configfile', "$FindBin::Bin/configs/" . lc( $lsbRelease->getId( 1 )) . '/pbuilder/pbuilderrc'
+                        '--configfile', "$FindBin::Bin/configs/$main::imscpConfig{'DISTRO_ID'}/pbuilder/pbuilderrc"
                     ],
                     ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
                         ? sub {}
@@ -1278,11 +1221,11 @@ sub _rebuildAndInstallPackage
                     ),
                     sub { $stderr .= shift }
                 );
-                error( sprintf( "Couldn't build local %s %s package: %s", $pkg, $lsbRelease->getId( 1 ),
+                error( sprintf( "Couldn't build local %s %s package: %s", $pkg, $main::imscpConfig{'DISTRO_ID'},
                     $stderr || 'Unknown error' )) if $rs;
                 $rs;
             },
-            sprintf( 'Building local %s %s package', $pkg, $lsbRelease->getId( 1 )), 5, 4
+            sprintf( 'Building local %s %s package', $pkg, $main::imscpConfig{'DISTRO_ID'} ), 5, 4
         );
     }
 
@@ -1292,7 +1235,7 @@ sub _rebuildAndInstallPackage
             execute( [ 'apt-mark', 'unhold', $pkg ], \my $stdout, \my $stderr );
             debug( $stderr ) if $stderr;
 
-            my $msgHeader = sprintf( "Installing local %s %s package\n\n", $pkg, $lsbRelease->getId( 1 ));
+            my $msgHeader = sprintf( "Installing local %s %s package\n\n", $pkg, $main::imscpConfig{'DISTRO_ID'} );
             $stderr = '';
 
             $rs = executeNoWait(
@@ -1303,7 +1246,7 @@ sub _rebuildAndInstallPackage
                 ),
                 sub { $stderr .= shift }
             );
-            error( sprintf( "Couldn't install local %s %s package: %s", $pkg, $lsbRelease->getId( 1 ),
+            error( sprintf( "Couldn't install local %s %s package: %s", $pkg, $main::imscpConfig{'DISTRO_ID'},
                 $stderr || 'Unknown error' )) if $rs;
             return $rs if $rs;
 
@@ -1313,7 +1256,7 @@ sub _rebuildAndInstallPackage
             debug( $stderr ) if $stderr;
             0;
         },
-        sprintf( 'Installing local %s %s package', $pkg, $lsbRelease->getId( 1 )), 5, 5
+        sprintf( 'Installing local %s %s package', $pkg, $main::imscpConfig{'DISTRO_ID'} ), 5, 5
     );
     endDetail();
 

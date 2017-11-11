@@ -28,6 +28,7 @@ BACKEND
 
 CONFIG
     Added: Daily CRON(8) configuration file for i-MSCP frontend (cleanup of tmp directory)
+    Added: i-MSCP own SOURCES.LIST(5) file
     Added: LOGROTATE(8) configuration file for i-MSCP frontend (PHP errors.log file rotation)
     Added: LOGROTATE(8) configuration file for VsFTPD (Traffic log file rotation)
     Added: LOGROTATE(8) configuration file for rsyslog (Ubuntu 14.04/Trusty Thar)
@@ -40,6 +41,7 @@ CONFIG
     Removed: Useless imscp LOGROTATE(8) configuration file
 
 CONTRIB
+    Added: contrib/Listeners/APT/10_apt_sources_list.pl: Make it possible to provide it own SOURCES.LIST(5) file
     Added: get_imscp_master_sql_user_pwd.pl script: Print current i-MSCP master SQL user (imscp_user) password
 
 DATABASE
@@ -98,6 +100,7 @@ INSTALLER
     Fixed: Setup dialog for the alternative URLs feature is not shown on fresh install
     Merged: Distribution layout.xml file with distribution master install.xml file
     Removed: `allow_switch` attribute from packages files (check is now done by the distribution adapter)
+    Removed: `repository_conflict` attribute (packages files)
     Renamed: `kept` attribute to `keep_if_exist' (copy_config xml node from install.xml files)
     Renamed: `if' attribute to 'copy_if' (copy_config xml node from install.xml files)
     Review: Ask for confirmation in case the current SQL vendor is no longer available (safety measure)

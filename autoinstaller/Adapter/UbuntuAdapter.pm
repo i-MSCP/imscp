@@ -19,36 +19,11 @@
 
 package autoinstaller::Adapter::UbuntuAdapter;
 
-use strict;
-use warnings;
 use parent 'autoinstaller::Adapter::DebianAdapter';
 
 =head1 DESCRIPTION
 
  i-MSCP autoinstaller adapter implementation for Ubuntu.
-
-=head1 PRIVATE METHODS
-
-=over 4
-
-=item _init( )
-
- Initialize instance
-
- Return autoinstaller::Adapter::UbuntuAdapter
-
-=cut
-
-sub _init
-{
-    my $self = shift;
-
-    $self->SUPER::_init();
-    $self->{'repositorySections'} = [ 'main', 'universe', 'multiverse' ];
-    $self;
-}
-
-=back
 
 =head1 Author
 

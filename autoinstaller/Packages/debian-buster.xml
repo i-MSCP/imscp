@@ -4,7 +4,7 @@
                 default="1"
                 description="Nginx server"
                 class="Package::FrontEnd"
-                repository_conflict="http://nginx.org/">
+        >
             <package>nginx-full</package>
         </nginx>
     </frontend>

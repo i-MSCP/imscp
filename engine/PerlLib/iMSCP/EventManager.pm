@@ -25,7 +25,7 @@ package iMSCP::EventManager;
 
 use strict;
 use warnings;
-use autouse Clone => qw/ clone /;
+use Clone qw/ clone /;
 use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::EventManager::ListenerPriorityQueue;
 use Scalar::Util qw / blessed /;
