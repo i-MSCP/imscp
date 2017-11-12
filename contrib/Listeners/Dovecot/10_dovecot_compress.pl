@@ -50,7 +50,7 @@ iMSCP::EventManager->getInstance()->registerOne(
     'afterPoBuildConf',
     sub {
         version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
-            sprintf( "The 10_dovecot_compress.pl listener file version %s requires i-MSCP >= 1.5.2", $VERSION )
+            sprintf( "The 10_dovecot_compress.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
         );
 
         my $dovecotConfdir = Servers::po->factory()->{'config'}->{'DOVECOT_CONF_DIR'};

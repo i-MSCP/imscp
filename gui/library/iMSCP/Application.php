@@ -190,7 +190,7 @@ class Application
     /**
      * Set errors handling
      *
-     * Since 1.5.2:
+     * Since 1.6.0:
      *  - error_reporting now set in pool conffile with value: E_ALL
      *  - error_log now set in pool conffile with value: {WEB_DIR}/data/logs/errors.log
      *  - log_errors now set in pool conffile with value: On

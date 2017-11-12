@@ -64,7 +64,7 @@ nano preseed.pl
 ```
 
 Be careful to fill up all required parameters. If one of required parameters is
-missing, provisioning of the Vagrant box will fail. Starting with i-MSCP 1.5.2,
+missing, provisioning of the Vagrant box will fail. Starting with i-MSCP 1.6.0,
 only the following parameters are mandatory:
 
 - `SQL_ROOT_PASSWORD`: SQL root user password

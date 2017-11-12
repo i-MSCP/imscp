@@ -1318,12 +1318,12 @@ sub _addDnsZone
             BASE_SERVER_VHOST     => main::setupGetQuestion( 'BASE_SERVER_VHOST' ),
             BASE_SERVER_IP        => main::setupGetQuestion( 'BASE_SERVER_IP' ),
             BASE_SERVER_PUBLIC_IP => main::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' ),
-            DOMAIN_TYPE           => 'dmn', # (since 1.5.2)
-            PARENT_DOMAIN_NAME    => main::setupGetQuestion( 'BASE_SERVER_VHOST' ), # (since 1.5.2)
+            DOMAIN_TYPE           => 'dmn', # (since 1.6.0)
+            PARENT_DOMAIN_NAME    => main::setupGetQuestion( 'BASE_SERVER_VHOST' ), # (since 1.6.0)
             DOMAIN_NAME           => main::setupGetQuestion( 'BASE_SERVER_VHOST' ),
             DOMAIN_IP             => main::setupGetQuestion( 'BASE_SERVER_IP' ),
             MAIL_ENABLED          => 1,
-            STATUS                => 'toadd' # (since 1.5.2)
+            STATUS                => 'toadd' # (since 1.6.0)
         }
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterNamedAddMasterZone' );

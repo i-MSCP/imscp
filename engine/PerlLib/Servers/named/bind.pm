@@ -244,17 +244,17 @@ sub postaddDmn
                 # Listeners want probably know real parent domain name for the
                 # DNS name being added even if that entry is added in another
                 # zone. For instance, see the 20_named_dualstack.pl listener
-                # file. (since 1.5.2)
+                # file. (since 1.6.0)
                 REAL_PARENT_DOMAIN_NAME => $data->{'PARENT_DOMAIN_NAME'},
                 PARENT_DOMAIN_NAME      => $main::imscpConfig{'BASE_SERVER_VHOST'},
                 DOMAIN_NAME             => $data->{'ALIAS'} . '.' . $main::imscpConfig{'BASE_SERVER_VHOST'},
                 MAIL_ENABLED            => 0,
                 DOMAIN_IP               => $data->{'BASE_SERVER_PUBLIC_IP'},
-                # Listeners want probably know type of the entry being added (since 1.5.2)
+                # Listeners want probably know type of the entry being added (since 1.6.0)
                 DOMAIN_TYPE             => 'sub',
                 BASE_SERVER_PUBLIC_IP   => $data->{'BASE_SERVER_PUBLIC_IP'},
                 OPTIONAL_ENTRIES        => 0,
-                STATUS                  => $data->{'STATUS'} # (since 1.5.2)
+                STATUS                  => $data->{'STATUS'} # (since 1.6.0)
             }
         );
         return $rs if $rs;
@@ -507,17 +507,17 @@ sub postaddSub
                 # Listeners want probably know real parent domain name for the
                 # DNS name being added even if that entry is added in another
                 # zone. For instance, see the 20_named_dualstack.pl listener
-                # file. (since 1.5.2)
+                # file. (since 1.6.0)
                 REAL_PARENT_DOMAIN_NAME => $data->{'PARENT_DOMAIN_NAME'},
                 PARENT_DOMAIN_NAME      => $main::imscpConfig{'BASE_SERVER_VHOST'},
                 DOMAIN_NAME             => $data->{'ALIAS'} . '.' . $main::imscpConfig{'BASE_SERVER_VHOST'},
                 MAIL_ENABLED            => 0,
                 DOMAIN_IP               => $data->{'BASE_SERVER_PUBLIC_IP'},
-                # Listeners want probably know type of the entry being added (since 1.5.2)
+                # Listeners want probably know type of the entry being added (since 1.6.0)
                 DOMAIN_TYPE             => 'sub',
                 BASE_SERVER_PUBLIC_IP   => $data->{'BASE_SERVER_PUBLIC_IP'},
                 OPTIONAL_ENTRIES        => 0,
-                STATUS                  => $data->{'STATUS'} # (since 1.5.2)
+                STATUS                  => $data->{'STATUS'} # (since 1.6.0)
             }
         );
         return $rs if $rs;
