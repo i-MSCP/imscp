@@ -44,4 +44,4 @@ unless ( grep { $_ =~ /^-(?:.*?s|-skip-distro-packages)/ } @ARGV ) {
 # Execute the real installer
 require File::Basename;
 chdir( File::Basename::dirname( __FILE__ )) or die( sprintf( "Couldn't chdir: %s", $! || 'Unknown error' ));
-exec( '/usr/bin/perl', 'imscp-autoinstall.real', @ARGV );
+exec( '/usr/bin/perl', 'autoinstaller/installer.pl', @ARGV );
