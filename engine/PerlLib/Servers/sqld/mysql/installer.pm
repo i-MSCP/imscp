@@ -851,17 +851,19 @@ sub _isMysqldInsideCt
     0;
 }
 
-=item _setupIsImscpDb
+=item _setupIsImscpDb( $dbName )
 
  Is the given database an i-MSCP database?
 
- Return int 1 if database exists and look like an i-MSCP database, 0 otherwise, die on failure
+ Return bool TRUE if database exists and look like an i-MSCP database, FALSE otherwise, die on failure
 
 =cut
 
 sub _setupIsImscpDb
 {
     my (undef, $dbName) = @_;
+
+    return 0 unless defined $dbName && $dbName ne '';
 
     my $db = iMSCP::Database->factory();
     my $dbh = $db->getRawDb();

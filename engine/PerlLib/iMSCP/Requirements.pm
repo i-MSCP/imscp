@@ -63,7 +63,7 @@ sub all
 
 sub user
 {
-    die( 'This script must be run as root user.' ) if $< != 0;
+    $< == 0 or die( 'This script must be run as root user.' );
     undef;
 }
 
