@@ -255,6 +255,12 @@ EOT
     endDetail;
 
     # Create composer.phar compatibility symlink for backward compatibility with plugins
+    if ( -l "$main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar" ) {
+        unlink ( "$main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar" ) or die(
+            sprintf( "Couldn't delete %s symlink: %s", "$main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar", $! )
+        );
+    }
+
     unless ( symlink(
         File::Spec->abs2rel( '/usr/local/bin/composer', $main::imscpConfig{'IMSCP_HOMEDIR'} ),
         "$main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar"
