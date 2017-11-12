@@ -21,24 +21,27 @@
 
 $< == 0 or die( 'This script must be run as root user.' );
 
-print "Satisfying pre-requisites for the i-MSCP installer\n";
+unless ( grep { $_ =~ /^-(?:.*?s|-skip-distro-packages)/ } @ARGV ) {
+    print "Satisfying pre-requisites for the i-MSCP installer\n";
 
-print "  - Updating package index files...\n";
-system( 'apt-get', '--quiet=2', 'update' ) == 0 or "[ERROR] Couldn't update APT index";
+    print "  - Updating package index files...\n";
+    system( 'apt-get', '--quiet=2', 'update' ) == 0 or "[ERROR] Couldn't update APT index";
 
-print "  - Upgrading distribution packages (dist-upgrade)...\n";
-system( 'apt-get', '--assume-yes', '--no-install-recommends', '--quiet=2', 'dist-upgrade' ) == 0 or die(
-    "[ERROR] Couldn't upgrade distribution packages."
-);
-print "  - Installing pre-required distribution packages...\n";
-system(
-    'apt-get', '--assume-yes', '--no-install-recommends', '--quiet=2', 'install', 'libclone-perl', 'perl', 'whiptail'
-) == 0 or die(
-    "[ERROR] Couldn't install pre-required distribution packages."
-);
-system( 'clear 2>/dev/null' );
+    print "  - Upgrading distribution packages (dist-upgrade)...\n";
+    system( 'apt-get', '--assume-yes', '--no-install-recommends', '--quiet=2', 'dist-upgrade' ) == 0 or die(
+        "[ERROR] Couldn't upgrade distribution packages."
+    );
+    print "  - Installing pre-required distribution packages...\n";
+    system(
+        'apt-get', '--assume-yes', '--no-install-recommends', '--quiet=2', 'install', 'libclone-perl', 'perl',
+        'whiptail'
+    ) == 0 or die(
+        "[ERROR] Couldn't install pre-required distribution packages."
+    );
+    system( 'clear 2>/dev/null' );
+}
 
 # Execute the real installer
 require File::Basename;
-chdir( File::Basename::dirname( __FILE__ )) or die( sprintf( "Couldn't chdir: %s", $! || 'Unknown error' ) );
+chdir( File::Basename::dirname( __FILE__ )) or die( sprintf( "Couldn't chdir: %s", $! || 'Unknown error' ));
 exec( '/usr/bin/perl', 'imscp-autoinstall.real', @ARGV );
