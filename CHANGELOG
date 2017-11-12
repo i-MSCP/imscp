@@ -185,8 +185,8 @@ YOUTRACK
     IP-1746 Error when generating SSL certificate - Could not write in openssl temp file
     IP-1749 User profile fields validation too strict
     IP-1750 Admin password cannot be changed
-    IP-1753 Preseed SECONDARY_DNS does not accept spaces (as indicated in the text)
     IP-1751 CLIENT_DOMAIN_ALT_URLS reseted
+    IP-1753 Preseed SECONDARY_DNS does not accept spaces (as indicated in the text)
     IP-1756 Reseller overview page is loading too slow due to a slow SQL query
 
 ------------------------------------------------------------------------------------------------------------------------
