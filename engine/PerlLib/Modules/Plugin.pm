@@ -182,7 +182,7 @@ sub _loadData
 
  Install the plugin
 
- Return int 0 on success, other on failure
+ Return void on success, die on failure
 
 =cut
 
@@ -204,7 +204,7 @@ sub _install
 
  Uninstall the plugin
 
- Return int 0 on success, other on failure
+ Return void on success, die on failure
 
 =cut
 
