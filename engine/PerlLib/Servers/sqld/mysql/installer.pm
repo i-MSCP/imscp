@@ -868,11 +868,11 @@ sub _setupIsImscpDb
     my $db = iMSCP::Database->factory();
     my $dbh = $db->getRawDb();
 
-    local $dbh->{'RaiseError'};
+    local $dbh->{'RaiseError'} = 1;
     return 0 unless $dbh->selectrow_hashref( 'SHOW DATABASES LIKE ?', undef, $dbName );
 
     my $tables = $db->getDbTables( $dbName );
-    return 1 unless @{$tables};
+    ref $tables eq 'ARRAY' or die( $tables );
 
     for my $table( qw/ server_ips user_gui_props reseller_props / ) {
         return 0 unless grep( $_ eq $table, @{$tables} );
