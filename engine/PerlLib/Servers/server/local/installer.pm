@@ -38,10 +38,6 @@ use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
 use LWP::Simple qw/ $ua get /;
 use parent 'Common::SingletonClass';
 
-# Set timeout for LWP::Simple
-$ua->timeout( 3 );
-$ua->agent( 'i-MSCP/1.5' );
-
 =head1 DESCRIPTION
 
  i-MSCP local server implementation
@@ -329,6 +325,12 @@ sub _init
 {
     my ($self) = @_;
 
+    $ua->timeout( 5 );
+    $ua->agent( 'i-MSCP/1.6 (+https://i-mscp.net/)' );
+    $ua->ssl_opts(
+        verify_hostname => 0,
+        SSL_verify_mode => 0x00
+    );
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self;
 }

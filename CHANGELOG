@@ -153,7 +153,7 @@ SERVERS
     Fixed: Bad `X_FORWARDED_PROTO` header value for SSL redirect (proxy) vhosts (Apache2)
     Fixed: Don't enforce SSL strict SNI (Apache2)
     Fixed: Make use of the INADDR_ANY address, regadless of domain IP address when primary server IP is set with `None` option (Httpd)
-    Fixed: Set timeout to 3 seconds for LWP::Simple; Default value is far too hight (Servers::server::local::installer)
+    Fixed: Set timeout to 5 seconds for LWP::Simple; Default value is far too hight (Servers::server::local::installer)
     Review: Make use of ipify.org as default service for WAN IP retrieval (Servers::server::local::installer)
     Rewritten: Servers::ftpd::courier::getTraffic() routine: Avoid IO operations (AMAP); Reduce memory consumption
     Rewritten: Servers::ftpd::dovecot::getTraffic() routine: Avoid IO operations (AMAP); Reduce memory consumption
