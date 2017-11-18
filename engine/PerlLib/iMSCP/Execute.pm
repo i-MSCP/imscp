@@ -114,7 +114,7 @@ sub executeNoWait( $;$$ )
     debug( $list ? "@{$command}" : $command );
 
     my $pid = open3( my $stdin, my $stdout, my $stderr = gensym, $list ? @{$command} : $command );
-    close $stdin;
+    $stdin->close();
 
     my %buffers = ( $stdout => '', $stderr => '' );
     my $sel = IO::Select->new( $stdout, $stderr );
@@ -123,9 +123,7 @@ sub executeNoWait( $;$$ )
         for my $fh ( @ready ) {
             # Read 1 byte at a time to avoid ending with multiple lines
             my $ret = sysread( $fh, my $nextbyte, 1 );
-
             next if $!{'EINTR'}; # Ignore signal interrupt
-
             defined $ret or die( $! ); # Something is going wrong; Best is to abort early
 
             if ( $ret == 0 ) {
@@ -136,12 +134,14 @@ sub executeNoWait( $;$$ )
             }
 
             $buffers{$fh} .= $nextbyte;
-
             next unless $buffers{$fh} =~ /\n\z/;
             $fh == $stdout ? $subStdout->( $buffers{$fh} ) : $subStderr->( $buffers{$fh} );
             $buffers{$fh} = ''; # Reset buffer for next line
         }
     }
+
+    $stdout->close();
+    $stderr->close();
 
     waitpid( $pid, 0 );
     getExitCode();
