@@ -211,6 +211,18 @@ EOF
         return $rs unless $rs < 30;
     }
 
+    if ( $main::reconfigure =~ /^(?:local_server|primary_ip|all|forced)$/ ) {
+        if ( $dialog->yesno( <<"EOF", 'no_by_default' ) == 0 ) {
+Do you want to replace the IP address of all clients with the new primary IP address?
+EOF
+            main::setupSetQuestion( 'REPLACE_CLIENTS_IP_WITH_BASE_SERVER_IP', 1 );
+        } else {
+            main::setupSetQuestion( 'REPLACE_CLIENTS_IP_WITH_BASE_SERVER_IP', 0 );
+        }
+    } else {
+        main::setupSetQuestion( 'REPLACE_CLIENTS_IP_WITH_BASE_SERVER_IP', 0 );
+    }
+
     main::setupSetQuestion( 'BASE_SERVER_PUBLIC_IP', $wanIP );
     0;
 }
@@ -434,6 +446,31 @@ sub _setupPrimaryIP
             'INSERT INTO server_ips (ip_number, ip_card, ip_config_mode, ip_status) VALUES(?, ?, ?, ?)',
             undef, $primaryIP, $netCard, 'manual', 'ok'
         );
+
+        if ( main::setupGetQuestion( 'REPLACE_CLIENTS_IP_WITH_BASE_SERVER_IP' ) ) {
+            my $resellers = $dbh->selectall_arrayref(
+                'SELECT reseller_id, reseller_ips FROM reseller_props', { Slice => {} }
+            );
+
+            if ( @{$resellers} ) {
+                my $primaryIpID = $dbh->selectrow_array(
+                    'SELECT ip_id FROM server_ips WHERE ip_number = ?', undef, $primaryIP
+                );
+
+                for my $reseller( @{$resellers} ) {
+                    my @ipIDS = split( ';', $reseller->{'reseller_ips'} );
+                    next if grep($_ eq $primaryIpID, @ipIDS );
+                    push @ipIDS, $primaryIpID;
+                    $dbh->do(
+                        'UPDATE reseller_props SET reseller_ips = ? WHERE reseller_id = ?', undef,
+                        join( ';', @ipIDS ) . ';'
+                    );
+                }
+
+                $dbh->do( 'UPDATE domain SET domain_ip_id = ?', undef, $primaryIpID );
+                $dbh->do( 'UPDATE domain_aliasses SET alias_ip_id = ?', undef, $primaryIpID );
+            }
+        }
 
         $db->useDatabase( $oldDbName ) if $oldDbName;
     };

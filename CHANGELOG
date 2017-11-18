@@ -91,6 +91,7 @@ INSTALLER
     Added: Missing patches for pam-mysql -- Devuan 1.0/Jessie
     Added: `pre_remove' attribute -- Allows to remove previous directory (folder xml node from install.xml files)
     Enhancement: Make it possible to provide per distribution (codename) configuration file
+    Enhancement: Make it possible to replace IP address of all client with new primary IP (Servers::server::local::installer)
     Enhancement: Provide good default values for installer whenever possible
     Fixed: `build' mode is broken for fresh installs -- Packages must be pre-installed regardless of install mode
     Fixed: `CLIENT_DOMAIN_ALT_URLS' configuration parameter reseted to 0 (disabled) while running installer
