@@ -442,7 +442,7 @@ abstract class iMSCP_Plugin
      *     $pluginDir = $this->getPluginManager()->pluginGetDirectory() . '/' . $this->getName();
      *
      *     return [
-     *         '/admin/mailgraph.php'      => $pluginDir . '/frontend/mailgraph.php',
+     *         '/admin/mailgraph.php'    => $pluginDir . '/frontend/mailgraph.php',
      *         '/admin/mailgraphics.php' => $pluginDir . '/frontend/mailgraphics.php'
      *     ];
      * </code>
@@ -490,12 +490,12 @@ abstract class iMSCP_Plugin
      * Basically, a plugin item is an item (entity) that belong to and managed
      * by a specific plugin. A plugin item can have different status, depending
      * on it current state. If a status reflect an error state, the plugin
-     * should then make the i-MSCP debugger component aware of this fact by
+     * should make the i-MSCP debugger component aware of this fact by
      * providing the following set of information:
      *
      *  table    : Name of the database table that belongs to the entity
      *  item_id  : The entity unique identifier in the database table
-     *  item_name: An arbitrary string representing humanized entity name
+     *  item_name: An arbitrary string representing humanized item name
      *  status   : The status of the entity (generally an error string).
      *  field    : The name of the database field that holds item status
      *
@@ -507,7 +507,7 @@ abstract class iMSCP_Plugin
      *          'table'     => 'cron_jobs',
      *          'item_id'   => 1,
      *          'item_name' => 'Cron job ID 1 -- domain.tld',
-     *          'status'    => "Couldn't write crontable: Invalid syntax..."
+     *          'status'    => "Couldn't write cron table: Invalid syntax..."
      *          'field'     => 'cron_job_status'
      *      ],
      *      ...
@@ -534,12 +534,16 @@ abstract class iMSCP_Plugin
      * status field should be left untouched and the error field updated with
      * error string. Doing this make it possible to repeat the task that has
      * failed instead of triggering a fixed action (setting status to
-     * 'tochange' for tochange action)
+     * 'tochange' for change action)
      *
-     * Implementation example (method body):
+     * For instance:
      *
      * <code>
      *     if ($table == 'cron_jobs' && $field == 'cron_job_status') {
+     *          if($cron_job_status == 'todelete') {
+     *            // Do something specific when item is being deleted...
+     *          }
+     * 
      *         exec_query("UPDATE cron_jobs SET cron_job_error = NULL WHERE cron_job_id = ?", [$itemId]);
      *     }
      * <code>
