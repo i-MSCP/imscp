@@ -71,7 +71,18 @@ abstract class iMSCP_Plugin
     /**
      * Allow plugin initialization
      *
-     * This method allow to do some initialization tasks without overriding the constructor.
+     * This method allows to initialize a plugin. That is the best place for
+     * adding additional translation files, or operating on the autoloader.
+     *
+     * For instance:
+     *
+     * <code>
+     *     $loader = Registry::get('iMSCP_Application')->getAutoloader();
+     *     $loader->addPsr4('iMSCP\\Plugin\\CronJobs\\', __DIR__ . '/frontend/library/');
+     *     $loader->addPsr4('Cron\\', __DIR__ . '/frontend/library/vendor/cron-expression-master/src/Cron/');
+     *
+     *     l10n_addTranslations(__DIR__ . '/l10n/mo', 'Gettext', 'CronJobs');
+     * </code>
      *
      * @return void
      */
@@ -91,17 +102,18 @@ abstract class iMSCP_Plugin
      * date: Last modified date of the plugin in YYYY-MM-DD format
      * require_api: Required i-MSCP plugin API version
      * require_cache_flush: OPTIONAL info field allowing to trigger flush of
-     *  cache on plugin action (excepted run action). Value must be one of
-     *  'opcache' for OPcode cache, 'userland' for userland cache,
-     *  <userland_cache_id> for a specific userland cache ID
+     *                      cache on plugin action (excepted run action).
+     *                      Value must be one of 'opcache' for OPcode cache,
+     *                      'userland' for userland cache, <userland_cache_id>
+     *                      for a specific userland cache ID
      * name: Plugin name
      * desc: Plugin short description (text only)
      * url: Website in which it's possible to found more information about the
-     *  plugin
+     *      plugin
      * priority: OPTIONAL priority which define priority for plugin backend
-     *  processing
+     *           processing
      *
-     * A plugin can provide any other info for its own needs. However, the
+     * A plugin can provides any other info for its own needs. However, the
      * following keywords are reserved for internal use:
      *
      *  __nversion__      : Contain the last available plugin version
@@ -427,12 +439,12 @@ abstract class iMSCP_Plugin
      * This method allow the plugin to provide its routes. For instance:
      *
      * <code>
-     * $pluginDir = $this->getPluginManager()->pluginGetDirectory() . '/' . $this->getName();
+     *     $pluginDir = $this->getPluginManager()->pluginGetDirectory() . '/' . $this->getName();
      *
-     * return array(
-     *  '/admin/mailgraph.php' => $pluginDir . '/frontend/mailgraph.php',
-     *    '/admin/mailgraphics.php' => $pluginDir . '/frontend/mailgraphics.php'
-     * );
+     *     return [
+     *         '/admin/mailgraph.php'      => $pluginDir . '/frontend/mailgraph.php',
+     *         '/admin/mailgraphics.php' => $pluginDir . '/frontend/mailgraphics.php'
+     *     ];
      * </code>
      *
      * @return array An array containing action script paths
@@ -446,23 +458,24 @@ abstract class iMSCP_Plugin
     /**
      * Route an URL
      *
-     * This method allow the plugin to provide its own routing logic. If a
-     * route match the given URL, this method MUST return a string representing
+     * This method allows a plugin to provide its own routing logic. If a route
+     * matches the given URL, this method MUST return a string representing
      * the action script to load, else, NULL must be returned. For instance:
      *
      * <code>
-     * if (strpos($urlComponents['path'], '/mydns/api/') === 0) {
-     *  return $this->getPluginManager()->pluginGetDirectory() . '/' . $this->getName() . '/api.php';
-     * }
+     *     if (strpos($urlComponents['path'], '/mydns/api/') === 0) {
+     *         return $this->getPluginManager()->pluginGetDirectory() . '/' . $this->getName() . '/api.php';
+     *     }
      *
-     * return null;
+     *     return null;
      * </code>
      *
      * @param array $urlComponents Associative array containing URL components
      * @return string|null Action script path or null if not route match the URL
      * @noinspection PhpUnusedParameterInspection
      */
-    public function route(/** @noinspection PhpUnusedParameterInspection */
+    public function route(
+        /** @noinspection PhpUnusedParameterInspection */
         $urlComponents)
     {
         return NULL;
@@ -471,11 +484,38 @@ abstract class iMSCP_Plugin
     /**
      * Get plugin item with error status
      *
-     * This method is called by the i-MSCP debugger.
+     * This method is called by the i-MSCP debugger component to retrieve plugin
+     * items that are in error state.
      *
-     * *SHOULD* be implemented by any plugin which manage its own items.
+     * Basically, a plugin item is an item (entity) that belong to and managed
+     * by a specific plugin. A plugin item can have different status, depending
+     * on it current state. If a status reflect an error state, the plugin
+     * should then make the i-MSCP debugger component aware of this fact by
+     * providing the following set of information:
      *
-     * @return array
+     *  table    : Name of the database table that belongs to the entity
+     *  item_id  : The entity unique identifier in the database table
+     *  item_name: An arbitrary string representing humanized entity name
+     *  status   : The status of the entity (generally an error string).
+     *  field    : The name of the database field that holds item status
+     *
+     * For instance:
+     *
+     * <code>
+     *     return [
+     *      [
+     *          'table'     => 'cron_jobs',
+     *          'item_id'   => 1,
+     *          'item_name' => 'Cron job ID 1 -- domain.tld',
+     *          'status'    => "Couldn't write crontable: Invalid syntax..."
+     *          'field'     => 'cron_job_status'
+     *      ],
+     *      ...
+     *     ];
+     * </code>
+     *
+     * @return array Array describing list of plugin items that are in error
+     *               state
      */
     public function getItemWithErrorStatus()
     {
@@ -483,11 +523,26 @@ abstract class iMSCP_Plugin
     }
 
     /**
-     * Set status of the given plugin item to 'tochange'
+     * Change plugin item status for a new attemps
      *
-     * This method is called by the i-MSCP debugger.
+     * This method is called by the i-MSCP debugger component to recover items
+     * that are in error state, those provided by the getItemWithErrorStatus()
+     * method.
      *
-     * Note: *SHOULD* be implemented by any plugin which manage its own items.
+     * Best practice: For any plugin item, you *SHOULD* implement one status
+     * field and one error field. Then, when an item is in error state, the
+     * status field should be left untouched and the error field updated with
+     * error string. Doing this make it possible to repeat the task that has
+     * failed instead of triggering a fixed action (setting status to
+     * 'tochange' for tochange action)
+     *
+     * Implementation example (method body):
+     *
+     * <code>
+     *     if ($table == 'cron_jobs' && $field == 'cron_job_status') {
+     *         exec_query("UPDATE cron_jobs SET cron_job_error = NULL WHERE cron_job_id = ?", [$itemId]);
+     *     }
+     * <code>
      *
      * @param string $table Table name
      * @param string $field Status field name
@@ -499,9 +554,13 @@ abstract class iMSCP_Plugin
     }
 
     /**
-     * Return count of request in progress
+     * Return count of backend requests being processed
      *
-     * This method is called by the i-MSCP debugger.
+     * This method is called by the i-MSCP debugger component to get the count
+     * tof backend request being processed for item that belong to the plugin.
+     *
+     * Returned value must be an integer representing count of plugin items
+     * for which current state reflect an action being processed.
      *
      * Note: *MUST* be implemented by any plugin which manage its own items.
      *
