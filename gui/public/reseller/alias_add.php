@@ -423,7 +423,7 @@ if (!empty($_POST) && addDomainAlias()) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'                       => 'shared/layouts/ui.tpl',
     'page'                         => 'reseller/alias_add.tpl',
     'page_message'                 => 'layout',

@@ -263,7 +263,7 @@ check_login('reseller', Registry::get('config')['PREVENT_EXTERNAL_LOGIN_RESELLER
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onResellerScriptStart);
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'                  => 'shared/layouts/ui.tpl',
     'page'                    => 'reseller/index.tpl',
     'page_message'            => 'layout',

@@ -161,7 +161,7 @@ if (!isset($_GET['domain_id'])) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'        => 'shared/layouts/ui.tpl',
     'page'          => 'reseller/domain_details.tpl',
     'page_message' => 'layout'

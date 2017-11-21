@@ -252,7 +252,7 @@ client_addHtaccessUserToHtaccessGroup();
 client_removeHtaccessUserFromHtaccessGroup();
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'        => 'shared/layouts/ui.tpl',
     'page'          => 'client/puser_assign.tpl',
     'page_message'  => 'layout',

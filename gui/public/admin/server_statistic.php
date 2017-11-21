@@ -260,7 +260,7 @@ check_login('admin');
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptStart);
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'                => 'shared/layouts/ui.tpl',
     'page'                  => 'admin/server_statistic.tpl',
     'page_message'          => 'layout',

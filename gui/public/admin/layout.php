@@ -70,7 +70,7 @@ check_login('admin');
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'              => 'shared/layouts/ui.tpl',
     'page'                => 'admin/layout.tpl',
     'page_message'        => 'layout',

@@ -33,7 +33,7 @@ check_login('reseller');
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'         => 'shared/layouts/ui.tpl',
     'page'           => 'reseller/settings_lostpassword.tpl',
     'page_message'   => 'layout',

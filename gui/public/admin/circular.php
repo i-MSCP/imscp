@@ -368,7 +368,7 @@ if (!empty($_POST) && admin_sendCircular()) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'         => 'shared/layouts/ui.tpl',
     'page'           => 'admin/circular.tpl',
     'page_message'   => 'layout',

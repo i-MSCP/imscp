@@ -663,7 +663,7 @@ if (isset($_GET['action'])) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'              => 'shared/layouts/ui.tpl',
     'page'                => 'admin/imscp_debugger.tpl',
     'page_message'        => 'layout',

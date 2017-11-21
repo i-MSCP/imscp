@@ -123,7 +123,7 @@ if (!empty($_POST)) {
 }
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'shared/partials/personal_change.phtml',
     'page_message' => 'layout'

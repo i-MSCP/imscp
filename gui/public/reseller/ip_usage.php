@@ -93,7 +93,7 @@ if (!resellerHasCustomers()) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'reseller/ip_usage.tpl',
     'page_message' => 'layout',

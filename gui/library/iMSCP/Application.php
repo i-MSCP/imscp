@@ -110,6 +110,7 @@ class Application
         // Create class aliases for backward compatibility with plugins. Will
         // be removed in a later release
         class_alias('iMSCP_Events_Manager', 'iMSCP_Events_Aggregator');
+        class_alias('iMSCP\\TemplateEngine', 'iMSCP_pTemplate');
 
         // Make application available through registry
         Registry::set('iMSCP_Application', $this);
@@ -153,6 +154,25 @@ class Application
         }
 
         return $this->translator;
+    }
+
+    /**
+     * Retrieve plugin manager
+     *
+     * @return PluginManager
+     */
+    public function getPluginManager()
+    {
+        if (NULL === $this->pluginManager) {
+            $this->pluginManager = new PluginManager(
+                $this->getConfig()['PLUGINS_DIR'], $this->getEventsManager(), $this->getCache()
+            );
+
+            // Make plugin manager available through registry (bc)
+            Registry::set('pluginManager', $this->pluginManager);
+        }
+
+        return $this->pluginManager;
     }
 
     /**
@@ -787,7 +807,9 @@ class Application
      */
     protected function initLayout()
     {
-        if (PHP_SAPI == 'cli' || is_xhr()) {
+        if (PHP_SAPI == 'cli'
+            || is_xhr()
+        ) {
             return;
         }
 
@@ -847,28 +869,11 @@ class Application
 
         $pluginManager = $this->getPluginManager();
         foreach ($pluginManager->pluginGetList() as $pluginName) {
-            if (!$pluginManager->pluginLoad($pluginName)) {
-                throw new iMSCPException(sprintf("Couldn't load plugin: %s", $pluginName));
+            if($pluginManager->pluginHasError($pluginName)) {
+                continue;
             }
+
+            $pluginManager->pluginLoad($pluginName);
         }
-    }
-
-    /**
-     * Retrieve plugin manager
-     *
-     * @return PluginManager
-     */
-    public function getPluginManager()
-    {
-        if (NULL === $this->pluginManager) {
-            $this->pluginManager = new PluginManager(
-                $this->getConfig()['PLUGINS_DIR'], $this->getEventsManager(), $this->getCache()
-            );
-
-            // Make plugin manager available through registry (bc)
-            Registry::set('pluginManager', $this->pluginManager);
-        }
-
-        return $this->pluginManager;
     }
 }

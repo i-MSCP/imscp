@@ -121,7 +121,7 @@ isset($_GET['id']) or showBadRequestErrorPage();
 $softwareId = intval($_GET['id']);
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'            => 'shared/layouts/ui.tpl',
     'page'              => 'client/software_install.tpl',
     'page_message'      => 'layout',

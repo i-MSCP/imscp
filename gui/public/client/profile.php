@@ -56,7 +56,7 @@ check_login('user');
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'shared/partials/profile.tpl',
     'page_message' => 'layout'

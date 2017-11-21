@@ -80,7 +80,7 @@ Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::o
 $cfg = Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
+$tpl->define(
     [
         'layout'           => 'shared/layouts/ui.tpl',
         'page'             => 'client/webtools.tpl',

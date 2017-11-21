@@ -287,7 +287,7 @@ if (!empty($_POST) && client_editDomain()) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'             => 'shared/layouts/ui.tpl',
     'page'               => 'client/domain_edit.tpl',
     'page_message'       => 'layout',

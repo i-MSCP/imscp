@@ -97,36 +97,19 @@ function generatePageMessage(TemplateEngine $tpl)
 
     $tpl->assign('PAGE_MESSAGE', '');
 
-    foreach (
-        [
-            'success', 'error', 'warning', 'info', 'static_success', 'static_error', 'static_warning', 'static_info'
-        ] as $level
-    ) {
-        if (!$flashMessenger->hasCurrentMessages($level)) {
-            continue;
-        }
-
-        $tpl->assign([
-            'MESSAGE_CLS' => $level,
-            'MESSAGE'     => implode("<br>\n", $flashMessenger->getCurrentMessages($level))
-        ]);
-        $tpl->parse('PAGE_MESSAGE', '.page_message');
-
+    foreach (['success', 'error', 'warning', 'info', 'static_success', 'static_error', 'static_warning', 'static_info'] as $level) {
+        $messages = $flashMessenger->getCurrentMessages($level);
         $flashMessenger->clearCurrentMessages($level);
-    }
+        $messages = array_merge($messages, $flashMessenger->getMessages($level));
+        $flashMessenger->clearMessages($level);
 
-    foreach (
-        [
-            'success', 'error', 'warning', 'info', 'static_success', 'static_error', 'static_warning', 'static_info'
-        ] as $level
-    ) {
-        if (!$flashMessenger->hasMessages($level)) {
+        if(empty($messages)) {
             continue;
         }
 
         $tpl->assign([
             'MESSAGE_CLS' => $level,
-            'MESSAGE'     => implode("<br>\n", $flashMessenger->getMessages($level))
+            'MESSAGE'     => implode("<br>\n", array_unique($messages))
         ]);
         $tpl->parse('PAGE_MESSAGE', '.page_message');
     }
@@ -311,7 +294,7 @@ function layout_init($event)
     $tpl = $event->getParam('templateEngine');
     $tpl->assign([
         'THEME_CHARSET'        => 'UTF-8',
-        'THEME_ASSETS_PATH'    => '/themes/' . $cfg->USER_INITIAL_THEME . '/assets',
+        'THEME_ASSETS_PATH'    => '/themes/' . $cfg['USER_INITIAL_THEME'] . '/assets',
         'THEME_ASSETS_VERSION' => $themesAssetsVersion,
         'THEME_COLOR'          => $color,
         'ISP_LOGO'             => (isset($_SESSION['user_id'])) ? layout_getUserLogo() : '',

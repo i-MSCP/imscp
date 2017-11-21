@@ -63,7 +63,7 @@ if (isset($_POST['uaction'])) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'         => 'shared/layouts/ui.tpl',
     'page'           => 'reseller/ticket_view.tpl',
     'page_message'   => 'layout',

@@ -220,7 +220,7 @@ Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClien
 customerHasFeature('mail') or showBadRequestErrorPage();
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'               => 'shared/layouts/ui.tpl',
     'page'                 => 'client/mail_catchall.phtml',
     'page_message'         => 'layout',

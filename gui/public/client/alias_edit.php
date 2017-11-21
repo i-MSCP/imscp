@@ -290,7 +290,7 @@ if (!empty($_POST) && client_editDomainAlias()) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'             => 'shared/layouts/ui.tpl',
     'page'               => 'client/alias_edit.tpl',
     'page_message'       => 'layout',

@@ -58,7 +58,7 @@ if (isset($_GET['key'])) {
 }
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'       => 'shared/layouts/simple.tpl',
     'page'         => 'lostpassword.tpl',
     'page_message' => 'layout'

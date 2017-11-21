@@ -25,6 +25,28 @@ use iMSCP_Registry as Registry;
 
 require 'imscp-lib.php';
 
+/*
+$tpl = new TemplateEngine(null, new iMSCP_Events_Manager());
+$tpl->define_no_file_dynamic('layout', '<super><big>{TEMPLATE}</big></super>');
+$tpl->define_no_file_dynamic('template', 'my favorite template');
+
+// Parse layout into the LAYOUT variable
+// {TEMPLATE} variable from layout template will be susbstitued with our TEMPLATE variable
+$tpl->parse('LAYOUT', 'layout');
+
+// Parse template into the TEMPLATE variable
+$tpl->parse('TEMPLATE', 'template');
+
+echo '<pre>';
+//var_dump($tpl);
+print_r($tpl);
+print "\n\n";
+$tpl->prnt('LAYOUT');
+
+exit;
+*/
+
+
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onLoginScriptStart);
 
 if (isset($_REQUEST['action'])) {
@@ -58,7 +80,7 @@ if (isset($_REQUEST['action'])) {
 redirectToUiLevel();
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'         => 'shared/layouts/simple.tpl',
     'page_message'   => 'layout',
     'lostpwd_button' => 'page'
@@ -73,7 +95,7 @@ $tpl->assign([
 $cfg = Registry::get('config');
 
 if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
-    $tpl->define_dynamic('page', 'message.tpl');
+    $tpl->define('page', 'message.tpl');
     $tpl->assign([
         'TR_PAGE_TITLE'           => tr('i-MSCP - Multi Server Control Panel / Maintenance'),
         'HEADER_BLOCK'            => '',
@@ -85,7 +107,7 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
         'BACK_BUTTON_DESTINATION' => '/index.php?admin=1'
     ]);
 } else {
-    $tpl->define_dynamic([
+    $tpl->define([
         'page'                  => 'index.tpl',
         'lost_password_support' => 'page',
         'ssl_support'           => 'page'

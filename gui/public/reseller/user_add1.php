@@ -231,7 +231,7 @@ if (!empty($_POST)) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'                       => 'shared/layouts/ui.tpl',
     'page'                         => 'reseller/user_add1.tpl',
     'page_message'                 => 'layout',

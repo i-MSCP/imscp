@@ -31,7 +31,7 @@ Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::o
 customerHasFeature('custom_error_pages') or showBadRequestErrorPage();
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/error_pages.tpl',
     'page_message' => 'layout'

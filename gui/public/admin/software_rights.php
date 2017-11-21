@@ -39,7 +39,7 @@ if (!$stmt->rowCount()) {
 $row = $stmt->fetch();
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'             => 'shared/layouts/ui.tpl',
     'page'               => 'admin/software_rights.tpl',
     'page_message'       => 'layout',

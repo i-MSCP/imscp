@@ -136,8 +136,7 @@ EOF;
         $altNames .= "\nDNS.3 = alssub$domainId.{BASE_SERVER_VHOST}\n";
     }
 
-    $sslTpl = new TemplateEngine();
-    $sslTpl->setRootDir($config['CONF_DIR'] . '/openssl');
+    $sslTpl = new TemplateEngine($config['CONF_DIR'] . '/openssl');
     $sslTpl->define('tpl', 'openssl.cnf.tpl');
     $sslTpl->assign([
         'COMMON_NAME'       => $data['domain_name'],
@@ -568,7 +567,7 @@ check_login('user');
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptStart);
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'                  => 'shared/layouts/ui.tpl',
     'page'                    => 'client/cert_view.tpl',
     'page_message'            => 'layout',

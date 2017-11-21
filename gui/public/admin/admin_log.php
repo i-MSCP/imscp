@@ -288,7 +288,7 @@ if (isset($_REQUEST['action'])) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'admin/admin_log.tpl',
     'page_message' => 'layout'

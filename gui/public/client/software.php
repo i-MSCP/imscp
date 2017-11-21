@@ -49,7 +49,7 @@ Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::o
 customerHasFeature('aps') or showBadRequestErrorPage();
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'                  => 'shared/layouts/ui.tpl',
     'page'                    => 'client/software.tpl',
     'page_message'            => 'layout',

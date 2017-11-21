@@ -30,7 +30,7 @@ isset($_GET['id']) or showBadRequestErrorPage();
 $resellerId = intval($_GET['id']);
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'                           => 'shared/layouts/ui.tpl',
     'page'                             => 'admin/software_reseller.tpl',
     'page_message'                     => 'layout',

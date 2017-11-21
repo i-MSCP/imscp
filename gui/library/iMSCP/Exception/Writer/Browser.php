@@ -152,7 +152,7 @@ HTML;
         }
 
         $tpl = new iMSCP_pTemplate();
-        $tpl->define_dynamic([
+        $tpl->define([
             'layout'         => 'shared/layouts/simple.tpl',
             'page'           => $this->templateFile,
             'page_message'   => 'layout',

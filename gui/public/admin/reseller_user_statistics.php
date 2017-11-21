@@ -111,7 +111,7 @@ if (isset($_GET['reseller_id'])) {
 }
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'                         => 'shared/layouts/ui.tpl',
     'page'                           => 'admin/reseller_user_statistics.tpl',
     'page_message'                   => 'layout',

@@ -311,7 +311,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] != 'reset') {
 }
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'        => 'shared/layouts/ui.tpl',
     'page'          => 'admin/settings_ports.tpl',
     'page_message'  => 'layout',

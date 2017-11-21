@@ -214,7 +214,7 @@ if (isset($_GET['action'])
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'          => 'shared/layouts/ui.tpl',
     'page'            => 'client/mail_external.tpl',
     'page_message'    => 'layout',

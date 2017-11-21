@@ -616,7 +616,7 @@ if (!empty($_REQUEST)
 }
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'                      => 'shared/layouts/ui.tpl',
     'page'                        => 'admin/settings_plugins.tpl',
     'page_message'                => 'layout',
@@ -631,7 +631,7 @@ $tpl->define_dynamic([
 Registry::get('iMSCP_Application')->getEventsManager()->registerListener(
     Events::onGetJsTranslations,
     function (iMSCP_Events_Event $event) {
-        $event->getParam('translations')->core = array_merge($event->getParam('translations')->core, [
+        $event->getParam('translations')['core'] = array_merge($event->getParam('translations')['core'], [
             'dataTable'     => getDataTablesPluginTranslations(false),
             'force_retry'   => tr('Force retry'),
             'close'         => tr('Close'),

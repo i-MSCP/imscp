@@ -87,7 +87,7 @@ if (!empty($_POST)) {
 }
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'shared/partials/password_update.phtml',
     'page_message' => 'layout'

@@ -33,7 +33,7 @@ resellerHasFeature('aps') or showBadRequestErrorPage();
 $cfg = Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'                   => 'shared/layouts/ui.tpl',
     'page'                     => 'reseller/software_upload.tpl',
     'page_message'             => 'layout',

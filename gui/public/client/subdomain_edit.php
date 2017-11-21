@@ -333,7 +333,7 @@ if (!empty($_POST) && client_editSubdomain()) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'             => 'shared/layouts/ui.tpl',
     'page'               => 'client/subdomain_edit.tpl',
     'page_message'       => 'layout',

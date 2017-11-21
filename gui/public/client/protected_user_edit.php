@@ -88,7 +88,7 @@ $row = $stmt->fetch();
 client_updateHtaccessUser($domainId, $htuserId);
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/puser_edit.tpl',
     'page_message' => 'layout'

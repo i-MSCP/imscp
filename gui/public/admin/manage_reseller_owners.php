@@ -172,7 +172,7 @@ if (isset($_POST['uaction'])
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'                            => 'shared/layouts/ui.tpl',
     'page'                              => 'admin/manage_reseller_owners.phtml',
     'page_message'                      => 'layout',

@@ -115,7 +115,7 @@ Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdmin
 systemHasResellers() or showBadRequestErrorPage();
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'                    => 'shared/layouts/ui.tpl',
     'page'                      => 'admin/reseller_statistics.tpl',
     'page_message'              => 'layout',

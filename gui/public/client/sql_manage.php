@@ -147,7 +147,7 @@ Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClien
 customerHasFeature('sql') or showBadRequestErrorPage();
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'                   => 'shared/layouts/ui.tpl',
     'page'                     => 'client/sql_manage.tpl',
     'page_message'             => 'layout',

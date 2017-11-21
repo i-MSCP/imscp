@@ -165,7 +165,7 @@ Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onResel
 resellerHasCustomers() && isset($_GET['user_id']) or showBadRequestErrorPage();
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'                        => 'shared/layouts/ui.tpl',
     'page'                          => 'reseller/user_statistics_details.tpl',
     'page_message'                  => 'layout',

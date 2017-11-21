@@ -610,7 +610,7 @@ check_login('user');
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'                     => 'shared/layouts/ui.tpl',
     'page'                       => 'client/domains_manage.tpl',
     'page_message'               => 'layout',

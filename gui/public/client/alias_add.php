@@ -411,7 +411,7 @@ if (!empty($_POST) && addDomainAlias()) {
 }
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'                       => 'shared/layouts/ui.tpl',
     'page'                         => 'client/alias_add.tpl',
     'page_message'                 => 'layout',

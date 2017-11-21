@@ -138,7 +138,7 @@ check_login('user');
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onClientScriptStart);
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'             => 'shared/layouts/ui.tpl',
     'page'               => 'client/traffic_statistics.tpl',
     'page_message'       => 'layout',

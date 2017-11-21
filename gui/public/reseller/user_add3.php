@@ -295,7 +295,7 @@ if (isset($_POST['uaction'])
 }
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'reseller/user_add3.phtml',
     'page_message' => 'layout',

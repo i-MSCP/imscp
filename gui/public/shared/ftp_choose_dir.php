@@ -147,7 +147,7 @@ check_login('all');
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onSharedScriptStart);
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'partial'      => 'shared/partials/ftp_choose_dir.tpl',
     'page_message' => 'partial',
     'ftp_chooser'  => 'partial',

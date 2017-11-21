@@ -87,7 +87,7 @@ Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::o
 stripos(Registry::get('config')['Version'], 'git') === false or showBadRequestErrorPage();
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
+$tpl->define(
     [
         'layout'       => 'shared/layouts/ui.tpl',
         'page'         => 'admin/imscp_updates.tpl',

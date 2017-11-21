@@ -155,7 +155,7 @@ check_login('admin', Registry::get('config')['PREVENT_EXTERNAL_LOGIN_ADMIN']);
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptStart);
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'                  => 'shared/layouts/ui.tpl',
     'page'                    => 'admin/index.tpl',
     'page_message'            => 'layout',

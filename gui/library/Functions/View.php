@@ -34,7 +34,7 @@ use Zend_Navigation as Navigation;
  */
 function generateLoggedFrom(TemplateEngine $tpl)
 {
-    $tpl->define_dynamic('logged_from', 'layout');
+    $tpl->define('logged_from', 'layout');
 
     if (!isset($_SESSION['logged_from'])
         || !isset($_SESSION['logged_from_id'])
@@ -85,7 +85,7 @@ function generateDMYlists(TemplateEngine $tpl, $day, $month, $year, $nPastYears)
         $month = date('n');
     }
 
-    if ($tpl->is_dynamic_tpl('day_list')) {
+    if ($tpl->isTemplateVariable('day_list')) {
         $nDays = date('t', mktime(0, 0, 0, $month, 1, $year));
 
         // 0 = all days
@@ -136,7 +136,7 @@ function generateNavigation(TemplateEngine $tpl)
     ]);
 
     $cfg = Registry::get('config');
-    $tpl->define_dynamic([
+    $tpl->define([
         'main_menu'        => 'layout',
         'main_menu_block'  => 'main_menu',
         'menu'             => 'layout',
@@ -226,93 +226,96 @@ function generateNavigation(TemplateEngine $tpl)
             }
         }
 
-        if ($page->isVisible()) {
+        if (!$page->isVisible()) {
+            continue;
+        }
+
+        $tpl->assign([
+            'HREF'                    => $page->getHref(),
+            'CLASS'                   => $page->getClass()
+                . (($_SESSION['show_main_menu_labels']) ? ' show_labels' : ''),
+            'IS_ACTIVE_CLASS'         => ($page->isActive(true)) ? 'active' : 'dummy',
+            'TARGET'                  => ($page->getTarget()) ? tohtml($page->getTarget()) : '_self',
+            'MAIN_MENU_LABEL_TOOLTIP' => tohtml($page->getLabel(), 'htmlAttr'),
+            'MAIN_MENU_LABEL'         => ($_SESSION['show_main_menu_labels']) ? tohtml($page->getLabel()) : ''
+        ]);
+
+        // Add page to main menu
+        $tpl->parse('MAIN_MENU_BLOCK', '.main_menu_block');
+
+        if ($page->isActive(true)) {
             $tpl->assign([
-                'HREF'                    => $page->getHref(),
-                'CLASS'                   => $page->getClass()
-                    . (($_SESSION['show_main_menu_labels']) ? ' show_labels' : ''),
-                'IS_ACTIVE_CLASS'         => ($page->isActive(true)) ? 'active' : 'dummy',
-                'TARGET'                  => ($page->getTarget()) ? tohtml($page->getTarget()) : '_self',
-                'MAIN_MENU_LABEL_TOOLTIP' => tohtml($page->getLabel(), 'htmlAttr'),
-                'MAIN_MENU_LABEL'         => ($_SESSION['show_main_menu_labels']) ? tohtml($page->getLabel()) : ''
+                'TR_SECTION_TITLE'    => tohtml($page->getLabel()),
+                'SECTION_TITLE_CLASS' => $page->getClass()
             ]);
 
-            // Add page to main menu
-            $tpl->parse('MAIN_MENU_BLOCK', '.main_menu_block');
+            // Add page to breadcrumb
+            $tpl->assign('BREADCRUMB_LABEL', tohtml($page->getLabel()));
+            $tpl->parse('BREADCRUMB_BLOCK', '.breadcrumb_block');
 
-            if ($page->isActive(true)) {
-                $tpl->assign([
-                    'TR_SECTION_TITLE'    => tohtml($page->getLabel()),
-                    'SECTION_TITLE_CLASS' => $page->getClass()
-                ]);
+            if (!$page->hasPages()) {
+                $tpl->assign('MENU', '');
+                continue;
+            }
+            
+            $iterator = new RecursiveIteratorIterator($page, RecursiveIteratorIterator::SELF_FIRST);
 
-                // Add page to breadcrumb
-                $tpl->assign('BREADCRUMB_LABEL', tohtml($page->getLabel()));
-                $tpl->parse('BREADCRUMB_BLOCK', '.breadcrumb_block');
+            /** @var $subpage Zend_Navigation_Page_Uri */
+            foreach ($iterator as $subpage) {
+                if (NULL !== ($callbacks = $subpage->get('privilege_callback'))) {
+                    $callbacks = (isset($callbacks['name'])) ? [$callbacks] : $callbacks;
 
-                if ($page->hasPages()) {
-                    $iterator = new RecursiveIteratorIterator($page, RecursiveIteratorIterator::SELF_FIRST);
-
-                    /** @var $subpage Zend_Navigation_Page_Uri */
-                    foreach ($iterator as $subpage) {
-                        if (NULL !== ($callbacks = $subpage->get('privilege_callback'))) {
-                            $callbacks = (isset($callbacks['name'])) ? [$callbacks] : $callbacks;
-
-                            foreach ($callbacks AS $callback) {
-                                if (is_callable($callback['name'])) {
-                                    if (!call_user_func_array(
-                                        $callback['name'],
-                                        isset($callback['param']) ? (array)$callback['param'] : [])
-                                    ) {
-                                        continue 2;
-                                    }
-                                } else {
-                                    $name = (is_array($callback['name'])) ? $callback['name'][1] : $callback['name'];
-                                    throw new iMSCPException(sprintf('Privileges callback is not callable: %s', $name));
-                                }
+                    foreach ($callbacks AS $callback) {
+                        if (is_callable($callback['name'])) {
+                            if (!call_user_func_array(
+                                $callback['name'],
+                                isset($callback['param']) ? (array)$callback['param'] : [])
+                            ) {
+                                continue 2;
                             }
-                        }
-
-                        $tpl->assign([
-                            'HREF'            => $subpage->getHref(),
-                            'IS_ACTIVE_CLASS' => ($subpage->isActive(true)) ? 'active' : 'dummy',
-                            'LEFT_MENU_LABEL' => tohtml($subpage->getLabel()),
-                            'TARGET'          => ($subpage->getTarget()) ? $subpage->getTarget() : '_self'
-                        ]);
-
-                        if ($subpage->isVisible()) {
-                            // Add subpage to left menu
-                            $tpl->parse('LEFT_MENU_BLOCK', '.left_menu_block');
-                        }
-
-                        if ($subpage->isActive(true)) {
-                            $tpl->assign([
-                                'TR_TITLE'    => ($subpage->get('dynamic_title'))
-                                    ? $subpage->get('dynamic_title')
-                                    : tohtml($subpage->getLabel()),
-                                'TITLE_CLASS' => $subpage->get('title_class')
-                            ]);
-
-                            if (!$subpage->hasPages()) {
-                                $tpl->assign('HREF', $subpage->getHref() . "$query");
-                            }
-
-                            // add subpage to breadcrumbs
-                            if (NULL != ($label = $subpage->get('dynamic_title'))) {
-                                $tpl->assign('BREADCRUMB_LABEL', $label);
-                            } else {
-                                $tpl->assign('BREADCRUMB_LABEL', tohtml($subpage->getLabel()));
-                            }
-
-                            $tpl->parse('BREADCRUMB_BLOCK', '.breadcrumb_block');
+                        } else {
+                            $name = (is_array($callback['name'])) ? $callback['name'][1] : $callback['name'];
+                            throw new iMSCPException(sprintf('Privileges callback is not callable: %s', $name));
                         }
                     }
+                }
 
-                    $tpl->parse('MENU', 'menu');
-                } else {
-                    $tpl->assign('MENU', '');
+                $tpl->assign([
+                    'HREF'            => $subpage->getHref(),
+                    'IS_ACTIVE_CLASS' => ($subpage->isActive(true)) ? 'active' : 'dummy',
+                    'LEFT_MENU_LABEL' => tohtml($subpage->getLabel()),
+                    'TARGET'          => ($subpage->getTarget()) ? $subpage->getTarget() : '_self'
+                ]);
+
+                if ($subpage->isVisible()) {
+                    // Add subpage to left menu
+                    $tpl->parse('LEFT_MENU_BLOCK', '.left_menu_block');
+                }
+
+                if ($subpage->isActive(true)) {
+                    $tpl->assign([
+                        'TR_TITLE'    => ($subpage->get('dynamic_title'))
+                            ? $subpage->get('dynamic_title')
+                            : tohtml($subpage->getLabel()),
+                        'TITLE_CLASS' => $subpage->get('title_class')
+                    ]);
+
+                    if (!$subpage->hasPages()) {
+                        $tpl->assign('HREF', $subpage->getHref() . "$query");
+                    }
+
+                    // add subpage to breadcrumbs
+                    if (NULL != ($label = $subpage->get('dynamic_title'))) {
+                        $tpl->assign('BREADCRUMB_LABEL', $label);
+                    } else {
+                        $tpl->assign('BREADCRUMB_LABEL', tohtml($subpage->getLabel()));
+                    }
+
+                    $tpl->parse('BREADCRUMB_BLOCK', '.breadcrumb_block');
                 }
             }
+
+            $tpl->parse('MENU', 'menu');
         }
     }
 

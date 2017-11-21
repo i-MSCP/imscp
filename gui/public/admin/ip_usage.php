@@ -92,7 +92,7 @@ if (!systemHasCustomers()) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'admin/ip_usage.tpl',
     'page_message' => 'layout',

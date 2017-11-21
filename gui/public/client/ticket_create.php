@@ -81,8 +81,8 @@ $userdata['SUBJECT'] = isset($_POST['subject']) ? clean_input($_POST['subject'])
 $userdata['USER_MESSAGE'] = isset($_POST['user_message']) ? clean_input($_POST['user_message']) : '';
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic([
+$tpl->define('layout', 'shared/layouts/ui.tpl');
+$tpl->define([
     'page'         => 'client/ticket_create.tpl',
     'page_message' => 'layout'
 ]);

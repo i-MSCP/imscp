@@ -361,7 +361,7 @@ if (!empty($_POST)) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/ftp_add.tpl',
     'page_message' => 'layout',

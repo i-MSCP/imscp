@@ -379,7 +379,7 @@ if (!empty($_POST)) {
 }
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'                => 'shared/layouts/ui.tpl',
     'page'                  => 'admin/ip_manage.tpl',
     'page_message'          => 'layout',

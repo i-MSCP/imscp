@@ -68,7 +68,7 @@ Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::o
 customerHasFeature('ftp') or showBadRequestErrorPage();
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/ftp_accounts.tpl',
     'page_message' => 'layout',

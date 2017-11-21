@@ -84,6 +84,7 @@ FRONTEND
     Removed: iMSCP_Events_Aggregator class (now an alias of iMSCP_Events_Manager)
     Rewritten: iMSCP_Database class (now extends the PDO class)
     Rewritten: iMSCP_Database_ResultSet (now extends the PDOStatement class -- Renamed to iMSCP\Database\ResultSet)
+    Rewritten: iMSCP_pTemplate class (renamed to iMSCP\TemplateEngine; aliased to iMSCP_pTemplate for bacwkard compatibility)
 
 INSTALLER
     Added: `copy_as' attribute -- Allows to copy a file with specific name (copy_config xml node from install.xml files)

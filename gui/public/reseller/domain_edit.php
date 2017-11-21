@@ -1136,7 +1136,7 @@ if (!empty($_POST) && reseller_checkAndUpdateData($domainId)) {
 
 $data =& getData($domainId);
 $tpl = new TemplateEngine();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'                             => 'shared/layouts/ui.tpl',
     'page'                               => 'reseller/domain_edit.tpl',
     'page_message'                       => 'layout',

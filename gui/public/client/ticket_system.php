@@ -49,8 +49,8 @@ if (isset($_GET['psi'])) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic([
+$tpl->define('layout', 'shared/layouts/ui.tpl');
+$tpl->define([
     'page'             => 'client/ticket_system.tpl',
     'page_message'     => 'layout',
     'tickets_list'     => 'page',

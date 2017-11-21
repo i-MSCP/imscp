@@ -378,7 +378,7 @@ if (!empty($_POST)) {
 }
 
 $tpl = new TemplateEngine();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'               => 'shared/layouts/ui.tpl',
     'page'                 => 'client/sql_user_add.tpl',
     'page_message'         => 'layout',

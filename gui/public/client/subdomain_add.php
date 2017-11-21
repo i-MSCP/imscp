@@ -423,7 +423,7 @@ if (!empty($_POST) && addSubdomain()) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'                       => 'shared/layouts/ui.tpl',
     'page'                         => 'client/subdomain_add.tpl',
     'page_message'                 => 'layout',

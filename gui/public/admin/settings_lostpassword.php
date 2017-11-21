@@ -61,7 +61,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic([
+$tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'admin/settings_lostpassword.tpl',
     'page_message' => 'layout'
