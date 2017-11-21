@@ -352,6 +352,10 @@ class TemplateEngine
     {
         if (NULL === $varname) {
             $varname = $this->lastParsedVarname;
+
+            if (NULL === $varname) {
+                throw new \LogicException('Nothing to replace. Did you forgot to call parse()?');
+            }
         }
 
         if (!isset($this->runtimeVariables[$varname])) {
