@@ -119,7 +119,7 @@ class TemplateEngine
      * template containing the template block.
      *
      * <code>
-     * $tpl->define([
+     * $tpl->define_inline([
      *   'my_template' => '<!-- BDP: my_template_block -->Template block content<-- EDP: my_template_block -->',
      *   'my_template_block' => 'my_template'
      *   ...
@@ -306,7 +306,7 @@ class TemplateEngine
     {
         if (NULL === $varname) {
             if (NULL === $this->lastParsedVarname) {
-                throw new \LogicException('Nothing to print. Did you forgot to parse?');
+                throw new \LogicException('Nothing to print. Did you forgot to call parse()?');
             }
 
             $varname = $this->lastParsedVarname;
