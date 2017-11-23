@@ -180,11 +180,18 @@ class TemplateEngine
     {
         if (!is_array($varnames)) {
             unset($this->runtimeVariables[$varnames]);
+
+            if ($this->lastParsedVarname == $varnames)
+                $this->lastParsedVarname = NULL;
+
             return;
         }
 
         foreach ($varnames as $varname)
             unset($this->runtimeVariables[$varname]);
+
+        if (NULL !== $this->lastParsedVarname && !isset($this->runtimeVariables[$this->lastParsedVarname]))
+            $this->lastParsedVarname = NULL;
     }
 
     /**
@@ -453,13 +460,13 @@ class TemplateEngine
             $curlB = $curl[1];
 
             if ($curlB >= $curlE + 1) {
-                $startFrom = $curlE; // go ahead, we have {} here.
+                $startFrom = $curlE; // we have {} here; go ahead
                 $curl = $this->findNextCurl($tpl, $startFrom);
                 continue;
             }
 
             if ('' == $varname = trim(substr($tpl, $curlB + 1, $curlE - $curlB - 1))) {
-                $startFrom = $curlE; // go ahead, we have no {\w+} here.
+                $startFrom = $curlE; // we have no valid variable here; go ahead
                 $curl = $this->findNextCurl($tpl, $startFrom);
                 continue;
             }
@@ -471,7 +478,7 @@ class TemplateEngine
                 $tpl = substr_replace($tpl, $this->tplData[$varname], $curlB, $curlE - $curlB + 1);
                 $startFrom = $curlB - 1; // Substitution result can also be a variable
             } else
-                $startFrom = $curlE; // no suitable value found -> go ahead
+                $startFrom = $curlE; // no suitable value found; go ahead
 
             $curl = $this->findNextCurl($tpl, $startFrom);
         }
@@ -559,10 +566,10 @@ class TemplateEngine
             if (preg_match('/<!--\040+(B|E)DP:\040+(\w+)\040+-->/', $tag, $m))
                 return [$m[2], $m[1], $startPos, $endPos];
 
-            // Not a valid block tag, continue searching...
             if (strlen($tpl) < ++$endPos)
                 return false;
 
+            // Not a valid block tag, continue searching...
             $startPos = $endPos;
         }
 
