@@ -25,28 +25,6 @@ use iMSCP_Registry as Registry;
 
 require 'imscp-lib.php';
 
-/*
-$tpl = new TemplateEngine(null, new iMSCP_Events_Manager());
-$tpl->define_no_file_dynamic('layout', '<super><big>{TEMPLATE}</big></super>');
-$tpl->define_no_file_dynamic('template', 'my favorite template');
-
-// Parse layout into the LAYOUT variable
-// {TEMPLATE} variable from layout template will be susbstitued with our TEMPLATE variable
-$tpl->parse('LAYOUT', 'layout');
-
-// Parse template into the TEMPLATE variable
-$tpl->parse('TEMPLATE', 'template');
-
-echo '<pre>';
-//var_dump($tpl);
-print_r($tpl);
-print "\n\n";
-$tpl->prnt('LAYOUT');
-
-exit;
-*/
-
-
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onLoginScriptStart);
 
 if (isset($_REQUEST['action'])) {
