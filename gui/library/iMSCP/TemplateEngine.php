@@ -563,7 +563,7 @@ class TemplateEngine
             if (strlen($tpl) < ++$endPos)
                 return false;
 
-            $startPos = ++$endPos;
+            $startPos = $endPos;
         }
 
         return false;
