@@ -1259,28 +1259,6 @@ class iMSCP_Events
     const onAfterQueryExecute = 'onAfterQueryExecute';
 
     /**
-     * Event triggered before loading of first parent template
-     *
-     * iMSCP_Events_Event object parameters:
-     *  - context     : iMSCP_pTemplate instance
-     *  - templatePath: Template path
-     *
-     * @const string
-     */
-    const onBeforeAssembleTemplateFiles = 'onBeforeAssembleTemplateFiles';
-
-    /**
-     * Event triggered after loading of first parent template
-     *
-     * iMSCP_Events_Event object parameters:
-     *  - context         : An iMSCP_pTemplate instance
-     *  - templateContent : Template content
-     *
-     * @const string
-     */
-    const onAfterAssembleTemplateFiles = 'onBeforeAssembleTemplateFiles';
-
-    /**
      * Event triggered before template loading
      *
      * iMSCP_Events_Event object parameters:
@@ -1290,17 +1268,6 @@ class iMSCP_Events
      * @const string
      */
     const onBeforeLoadTemplateFile = 'onBeforeLoadTemplateFile';
-
-    /**
-     * Event triggered after template loading
-     *
-     * iMSCP_Events_Event object parameters:
-     *  - context         : iMSCP_pTemplate instance
-     *  - templateContent : Template content
-     *
-     * @const string
-     */
-    const onAfterLoadTemplateFile = 'onAfterLoadTemplateFile';
 
     /**
      * Event triggered on template parsing
