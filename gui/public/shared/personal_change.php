@@ -20,7 +20,7 @@
 
 use iMSCP_Authentication as Authentication;
 use iMSCP_Events as Events;
-use iMSCP_pTemplate as TemplateEngine;
+use iMSCP\TemplateEngine;
 use iMSCP_Registry as Registry;
 use Zend_Form as Form;
 

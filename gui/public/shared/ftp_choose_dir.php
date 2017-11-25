@@ -19,6 +19,7 @@
  */
 
 use iMSCP\VirtualFileSystem as VirtualFileSystem;
+use iMSCP\TemplateEngine;
 use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
@@ -64,7 +65,7 @@ function isUnselectable($directory)
 /**
  * Generates directory list
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
  */
 function generateDirectoryList($tpl)
@@ -146,7 +147,7 @@ require_once 'imscp-lib.php';
 check_login('all');
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onSharedScriptStart);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'partial'      => 'shared/partials/ftp_choose_dir.tpl',
     'page_message' => 'partial',
