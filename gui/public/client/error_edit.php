@@ -20,6 +20,7 @@
 
 use iMSCP\VirtualFileSystem as VirtualFileSystem;
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -61,7 +62,7 @@ function editErrorPage($eid)
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @param int $eid Error page unique identifier
  * @return void
  */
@@ -95,7 +96,7 @@ if (!empty($_POST) && editErrorPage($eid)) {
     redirectTo('error_pages.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/error_edit.tpl',

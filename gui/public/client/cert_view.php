@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP\TemplateEngine;
 use iMSCP_Events as Events;
-use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
@@ -119,37 +119,69 @@ function _client_generateOpenSSLConfFile($data)
 {
     global $domainType, $domainId;
 
-    $config = Registry::get('config');
+    $tpl = new TemplateEngine();
+    $tpl->define_inline([
+        'openssl'           => <<<'EOF'
+[req]
+distinguished_name = req_distinguished_name
+default_bits = 2048
+default_md = sha256
+default_days = 365
+x509_extensions = v3_req
+string_mask = utf8only
+prompt = no
 
-    $altNames = <<<'EOF'
-DNS.1 = {DOMAIN_NAME}
-DNS.2 = www.{DOMAIN_NAME}
-EOF;
+[req_distinguished_name]
+CN = {COMMON_NAME}
+O = N/A
+L = N/A
+ST = N/A
+C = US
+emailAddress = {EMAIL_ADDRESS}
 
-    if ($domainType == 'dmn') {
-        $altNames .= "\nDNS.3 = dmn$domainId.{BASE_SERVER_VHOST}\n";
-    } elseif ($domainType == 'als') {
-        $altNames .= "\nDNS.3 = als$domainId.{BASE_SERVER_VHOST}\n";
-    } elseif ($domainType == 'sub') {
-        $altNames .= "\nDNS.3 = sub$domainId.{BASE_SERVER_VHOST}\n";
-    } else {
-        $altNames .= "\nDNS.3 = alssub$domainId.{BASE_SERVER_VHOST}\n";
-    }
+[v3_req]
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always,issuer:always
+basicConstraints = critical,CA:FALSE
+keyUsage = keyCertSign, nonRepudiation, digitalSignature, keyEncipherment
+subjectAltName = @alt_names
+issuerAltName = issuer:copy
 
-    $sslTpl = new TemplateEngine($config['CONF_DIR'] . '/openssl');
-    $sslTpl->define('tpl', 'openssl.cnf.tpl');
-    $sslTpl->assign([
+[alt_names]
+<!-- BDP: openssl_alt_names -->
+DNS.{IDX} = {ALT_NAMES}
+<!-- EDP: openssl_alt_names -->
+
+EOF
+        ,
+        'openssl_alt_names' => 'openssl'
+    ]);
+    $tpl->assign([
         'COMMON_NAME'       => $data['domain_name'],
         'EMAIL_ADDRESS'     => $data['email'],
         'DOMAIN_NAME'       => $data['domain_name'],
-        'ALT_NAMES'         => $altNames,
-        'BASE_SERVER_VHOST' => $config['BASE_SERVER_VHOST']
+        'BASE_SERVER_VHOST' => Registry::get('config')['BASE_SERVER_VHOST']
     ]);
-    $sslTpl->parse('TPL', 'tpl');
+
+    foreach (
+        [
+            '{DOMAIN_NAME}',
+            'www.{DOMAIN_NAME}',
+            $domainType == 'als' ? "alssub$domainId.{BASE_SERVER_VHOST}" : "$domainType$domainId.{BASE_SERVER_VHOST}"
+        ] as $idx => $altName
+    ) {
+        $tpl->assign([
+            'ALT_NAMES' => $altName,
+            'IDX'       => $idx + 1
+        ]);
+        $tpl->parse('OPENSSL_ALT_NAMES', '.openssl_alt_names');
+    }
+
+    $tpl->parse('OPENSSL', 'openssl');
 
     $opensslConfFile = @tempnam(sys_get_temp_dir(), $_SESSION['user_id'] . '-openssl.cnf');
     if ($opensslConfFile === false) {
-        write_log('Could not create temporary openssl configuration file.', E_USER_ERROR);
+        write_log("Couldn't create temporary openssl configuration file.", E_USER_ERROR);
         return false;
     }
 
@@ -157,8 +189,8 @@ EOF;
         @unlink($file);
     }, $opensslConfFile);
 
-    if (!@file_put_contents($opensslConfFile, $sslTpl->getLastParseResult())) {
-        write_log(sprintf('Could not write in %s openssl temporary configuration file.', $opensslConfFile), E_USER_ERROR);
+    if (!@file_put_contents($opensslConfFile, $tpl->getLastParseResult())) {
+        write_log(sprintf("Couldn't write in %s openssl temporary configuration file.", $opensslConfFile), E_USER_ERROR);
         return false;
     }
 
@@ -200,23 +232,23 @@ function client_generateSelfSignedCert($domainName)
     $sslConfig = ['config' => $sslConfigFilePath];
     $csr = @openssl_csr_new($distinguishedName, $pkey, $sslConfig);
     if (!is_resource($csr)) {
-        write_log(sprintf('Could not generate SSL certificate signing request: %s', openssl_error_string()), E_USER_ERROR);
+        write_log(sprintf("Couldn't generate SSL certificate signing request: %s", openssl_error_string()), E_USER_ERROR);
         return false;
     }
 
     if (@openssl_pkey_export($pkey, $pkeyStr, NULL, $sslConfig) !== true) {
-        write_log(sprintf('Could not export private key: %s', openssl_error_string()), E_USER_ERROR);
+        write_log(sprintf("Coudln't export private key: %s", openssl_error_string()), E_USER_ERROR);
         return false;
     }
 
     $cert = @openssl_csr_sign($csr, NULL, $pkeyStr, 365, $sslConfig, (int)($_SESSION['user_id'] . time()));
     if (!is_resource($cert)) {
-        write_log(sprintf('Could not generate SSL certificate: %s', openssl_error_string()));
+        write_log(sprintf("Couldn't generate SSL certificate: %s", openssl_error_string()));
         return false;
     }
 
     if (@openssl_x509_export($cert, $certStr) !== true) {
-        write_log(sprintf('Could not export SSL certificate: %s', openssl_error_string()), E_USER_ERROR);
+        write_log(sprintf("Couldn't export SSL certificate: %s", openssl_error_string()), E_USER_ERROR);
         return false;
     }
 
@@ -298,7 +330,7 @@ function client_addSslCert($domainId, $domainType)
 
         $tmpfname = @tempnam(sys_get_temp_dir(), $_SESSION['user_id'] . 'ssl-ca');
         if ($tmpfname === false) {
-            write_log('Could not create temporary file for CA bundle.', E_USER_ERROR);
+            write_log("Couldn't create temporary file for CA bundle.", E_USER_ERROR);
             set_page_message(tr('Could not add/update SSL certificate. An unexpected error occurred.'), 'error');
             return;
         }
@@ -309,7 +341,7 @@ function client_addSslCert($domainId, $domainType)
 
         if ($caBundle !== '') {
             if (@file_put_contents($tmpfname, $caBundle) === false) {
-                write_log('Could not write CA bundle in temporary file.', E_USER_ERROR);
+                write_log("Couldn't write CA bundle in temporary file.", E_USER_ERROR);
                 set_page_message(tr('Could not add/update SSL certificate. An unexpected error occurred.'), 'error');
                 return;
             }
@@ -320,7 +352,7 @@ function client_addSslCert($domainId, $domainType)
             }
         } else {
             if (@file_put_contents($tmpfname, $certificateStr) === false) {
-                write_log('Could not write SSL certificate in temporary file.', E_USER_ERROR);
+                write_log("Couldn't write SSL certificate in temporary file.", E_USER_ERROR);
                 set_page_message(tr('Could not add/update SSL certificate. An unexpected error occurred.'), 'error');
                 return;
             }
@@ -336,14 +368,14 @@ function client_addSslCert($domainId, $domainType)
     // Preparing data for insertion in database
     if (!$selfSigned) {
         if (@openssl_pkey_export($privateKey, $privateKeyStr) === false) {
-            write_log('Could not export private key.', E_USER_ERROR);
+            write_log("Couldn't export private key.", E_USER_ERROR);
             set_page_message(tr('Could not add/update SSL certificate. An unexpected error occurred.'), 'error');
             return;
         }
 
         @openssl_pkey_free($privateKey);
         if (@openssl_x509_export($certificate, $certificateStr) === false) {
-            write_log('Could not export SSL certificate.', E_USER_ERROR);
+            write_log("Couldn't export SSL certificate.", E_USER_ERROR);
             set_page_message(tr('Could not add/update SSL certificate. An unexpected error occurred.'), 'error');
             return;
         }
@@ -410,7 +442,7 @@ function client_addSslCert($domainId, $domainType)
         redirectTo("cert_view.php?domain_id=$domainId&domain_type=$domainType");
     } catch (iMSCP_Exception $e) {
         $db->rollBack();
-        write_log('Unable to add/update SSL certificate in database', E_USER_ERROR);
+        write_log("Couldn't add/update SSL certificate in database", E_USER_ERROR);
         set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
     }
 }
@@ -456,7 +488,7 @@ function client_deleteSslCert($domainId, $domainType)
         redirectTo('domains_manage.php');
     } catch (iMSCP_Exception $e) {
         $db->rollBack();
-        write_log(sprintf('Could not export SSL certificate: %s', $e->getMessage()), E_USER_ERROR);
+        write_log(sprintf("Couldn't export SSL certificate: %s", $e->getMessage()), E_USER_ERROR);
         set_page_message(tr('Could not delete SSL certificate. An unexpected error occurred.'), 'error');
     }
 }

@@ -19,11 +19,12 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
  */
 function generatePage($tpl)
@@ -67,7 +68,7 @@ check_login('user');
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 customerHasFeature('protected_areas') or showBadRequestErrorPage();
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'          => 'shared/layouts/ui.tpl',
     'page'            => 'client/protected_areas.tpl',

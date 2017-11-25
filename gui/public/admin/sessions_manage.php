@@ -26,6 +26,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Script functions
@@ -73,7 +74,7 @@ function kill_session()
 /**
  * Generates users sessoion list.
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @return void
  */
 function client_generatePage($tpl)
@@ -126,7 +127,7 @@ require 'imscp-lib.php';
 check_login('admin');
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptStart);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'admin/sessions_manage.tpl',

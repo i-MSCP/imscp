@@ -26,13 +26,14 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 require 'imscp-lib.php';
 
 check_login('admin');
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onAdminScriptStart);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'admin/settings_maintenance_mode.tpl',

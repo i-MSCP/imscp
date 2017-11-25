@@ -26,9 +26,10 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
- * Script functions
+ * Functions
  */
 
 /**
@@ -83,7 +84,7 @@ function admin_updateServerTrafficSettings($trafficLimit, $trafficWarning)
 /**
  * Generates page.
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @param int $trafficLimit Monthly traffic limit
  * @param int $trafficWarning Traffic warning
  * @return void
@@ -104,7 +105,7 @@ function admin_generatePage($tpl, $trafficLimit, $trafficWarning)
 }
 
 /***********************************************************************************************************************
- * Main script
+ * Main
  */
 
 require 'imscp-lib.php';
@@ -120,7 +121,7 @@ if (!empty($_POST)) {
     admin_updateServerTrafficSettings($trafficLimit, $trafficWarning);
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'        => 'shared/layouts/ui.tpl',
     'page'          => 'admin/settings_server_traffic.tpl',

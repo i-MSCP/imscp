@@ -20,6 +20,7 @@
 
 use iMSCP\VirtualFileSystem as VirtualFileSystem;
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -63,7 +64,7 @@ function _client_getDomainData($domainId)
 /**
  * Generate page
  *
- * @param $tpl iMSCP_pTemplate
+ * @param $tpl TemplateEngine
  * @return void
  */
 function client_generatePage($tpl)
@@ -286,7 +287,7 @@ if (!empty($_POST) && client_editDomain()) {
     redirectTo('domains_manage.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'             => 'shared/layouts/ui.tpl',
     'page'               => 'client/domain_edit.tpl',

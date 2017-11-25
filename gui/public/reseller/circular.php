@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -177,7 +178,7 @@ function reseller_sendCircular()
 /**
  * Generate page data
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
  */
 function reseller_generatePageData($tpl)
@@ -240,7 +241,7 @@ if (!empty($_POST) && reseller_sendCircular()) {
     redirectTo('users.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'reseller/circular.tpl',

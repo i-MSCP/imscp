@@ -20,6 +20,7 @@
 
 use iMSCP\Crypt as Crypt;
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -87,7 +88,7 @@ $row = $stmt->fetch();
 
 client_updateHtaccessUser($domainId, $htuserId);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/puser_edit.tpl',

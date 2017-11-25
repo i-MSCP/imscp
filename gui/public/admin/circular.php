@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -264,7 +265,7 @@ function admin_sendCircular()
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
  */
 function generatePage($tpl)
@@ -367,7 +368,7 @@ if (!empty($_POST) && admin_sendCircular()) {
     redirectTo('users.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'         => 'shared/layouts/ui.tpl',
     'page'           => 'admin/circular.tpl',

@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -52,7 +53,7 @@ function generateDomainRedirectAndEditLink($id, $status, $redirectUrl)
 /**
  * Generates domains list
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @return void
  */
 function generateDomainsList($tpl)
@@ -189,7 +190,7 @@ function generateDomainAliasRedirectAndEditLink($id, $status, $redirectUrl)
 /**
  * Generates domain aliases list
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @return void
  */
 function generateDomainAliasesList($tpl)
@@ -352,7 +353,7 @@ function generateSubdomainRedirectAndEditLink($id, $subdomainType, $status, $red
 /**
  * Generates subdomains list
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @return void
  */
 function generateSubdomainsList($tpl)
@@ -511,7 +512,7 @@ function generateCustomDnsRecordAction($action, $id, $status, $ownedBy = 'custom
 /**
  * Generates custom DNS records list
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @return void
  */
 function generateCustomDnsRecordsList($tpl)
@@ -609,7 +610,7 @@ require_once 'imscp-lib.php';
 check_login('user');
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'                     => 'shared/layouts/ui.tpl',
     'page'                       => 'client/domains_manage.tpl',

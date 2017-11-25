@@ -26,6 +26,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Main
@@ -79,7 +80,7 @@ switch ($userdata['URGENCY']) {
 $userdata['SUBJECT'] = isset($_POST['subject']) ? clean_input($_POST['subject']) : '';
 $userdata['USER_MESSAGE'] = isset($_POST['user_message']) ? clean_input($_POST['user_message']) : '';
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'reseller/ticket_create.tpl',

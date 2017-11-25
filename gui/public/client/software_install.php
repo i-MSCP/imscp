@@ -20,6 +20,7 @@
 
 use iMSCP\VirtualFileSystem as VirtualFileSystem;
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  *  Script functions
@@ -28,7 +29,7 @@ use iMSCP_Registry as Registry;
 /**
  * Set FTP root dir
  *
- * @param null|iMSCP_pTemplate $tpl
+ * @param null|TemplateEngine $tpl
  * @return void
  */
 function setFtpRootDir($tpl = NULL)
@@ -87,7 +88,7 @@ function setFtpRootDir($tpl = NULL)
  * Generate Page
  *
  * @throws iMSCP_Exception
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @param int $softwareId Software unique identifier
  * @return void
  */
@@ -120,7 +121,7 @@ isset($_GET['id']) or showBadRequestErrorPage();
 
 $softwareId = intval($_GET['id']);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'            => 'shared/layouts/ui.tpl',
     'page'              => 'client/software_install.tpl',

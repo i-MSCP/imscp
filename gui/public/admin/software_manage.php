@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 require 'imscp-lib.php';
 
@@ -28,7 +29,7 @@ Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::o
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = Registry::get('config');
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define(
     [
         'layout'                   => 'shared/layouts/ui.tpl',

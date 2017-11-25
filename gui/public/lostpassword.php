@@ -28,7 +28,7 @@
 use iMSCP_Events as Events;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_Plugin_Bruteforce as BruteForcePlugin;
-use iMSCP_pTemplate as TemplateEngine;
+use iMSCP\TemplateEngine;
 use iMSCP_Registry as Registry;
 
 require_once 'imscp-lib.php';

@@ -26,6 +26,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -34,7 +35,7 @@ use iMSCP_Registry as Registry;
 /**
  * Hide disabled feature.
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  */
 function client_hideDisabledFeatures($tpl)
 {
@@ -79,7 +80,7 @@ Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::o
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = Registry::get('config');
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define(
     [
         'layout'           => 'shared/layouts/ui.tpl',
@@ -92,7 +93,6 @@ $tpl->define(
         'webstats_feature' => 'page'
     ]
 );
-
 $tpl->assign(
     [
         'TR_PAGE_TITLE'        => tr('Client / Webtools / Overview'),

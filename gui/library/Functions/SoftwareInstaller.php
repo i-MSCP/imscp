@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Database as Database;
+use iMSCP\TemplateEngine;
 use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
@@ -214,7 +215,7 @@ i-MSCP Mailer'),
 /**
  * Must be documented.
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @return int
  */
 function get_avail_software($tpl)
@@ -268,7 +269,7 @@ function get_avail_software($tpl)
 /**
  * Must be documented.
  *
- * @param iMSCP_pTemplate $tpl template engine
+ * @param TemplateEngine $tpl template engine
  * @return int
  */
 function get_avail_softwaredepot($tpl)
@@ -432,7 +433,7 @@ function get_avail_softwaredepot($tpl)
 /**
  * Must be documented.
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @param int $resellerId
  * @return int
  */
@@ -544,7 +545,7 @@ function get_installed_res_software($tpl, $resellerId)
 /**
  * Must be documented.
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @return int
  */
 function get_reseller_software($tpl)
@@ -627,7 +628,7 @@ function get_reseller_software($tpl)
 /**
  * Must be documented
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @param int $softwareId
  * @return int
  */
@@ -673,7 +674,7 @@ function get_reseller_rights($tpl, $softwareId)
 /**
  * Must be documented.
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @param int $softwareId software unique identifier
  * @return void
  */
@@ -803,7 +804,7 @@ function ask_reseller_is_allowed_web_depot($userId)
 /**
  * Must be documented.
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @param int $userId Reseller unique identifier
  * @return int
  */
@@ -985,7 +986,7 @@ function get_avail_software_reseller($tpl, $userId)
  *
  * @param int $softwareId Software unique identifier
  * @param int $dmnId Domain unique identifier
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return array
  */
 function gen_user_software_action($softwareId, $dmnId, $tpl)
@@ -1062,7 +1063,7 @@ function gen_user_software_action($softwareId, $dmnId, $tpl)
 /**
  * Generate available software list for a specific customer
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @param int $domainId Domain unique identifier
  * @param int $resellerId Reseller unique identifier
  * @return int Total number of available software
@@ -1210,7 +1211,7 @@ function check_software_avail($softwareId, $dmnCreatedId)
 /**
  * Check if the given software is installed for the given domain
  *
- * @param  iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @param $dmnId
  * @param int $softwareId
  * @return void
@@ -1254,7 +1255,7 @@ function check_is_installed($tpl, $dmnId, $softwareId)
 /**
  * Get software properties
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @param int $dmnId
  * @param int $softwareId
  * @param int $dmnCreatedId
@@ -1303,7 +1304,7 @@ function get_software_props($tpl, $dmnId, $softwareId, $dmnCreatedId)
 /**
  * Must be documented
  *
- * @param  iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @param int $dmnId
  * @param int $softwareId
  * @param int $dmnCreatedId
@@ -1354,7 +1355,7 @@ function get_software_props_install($tpl, $dmnId, $softwareId, $dmnCreatedId, $d
 /**
  * Generate domain list
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @param int $customerId Customer unique identifier
  * @return void
  */

@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -52,7 +53,7 @@ function client_getHtaccessUsername($htuserId, $domainId)
 /**
  * Generates page
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
  */
 function client_generatePage($tpl)
@@ -251,7 +252,7 @@ customerHasFeature('protected_areas') or showBadRequestErrorPage();
 client_addHtaccessUserToHtaccessGroup();
 client_removeHtaccessUserFromHtaccessGroup();
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'        => 'shared/layouts/ui.tpl',
     'page'          => 'client/puser_assign.tpl',

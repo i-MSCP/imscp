@@ -26,6 +26,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -34,7 +35,7 @@ use iMSCP_Registry as Registry;
 /**
  * Get user errors
  *
- * @param  iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
  */
 function debugger_getUserErrors($tpl)
@@ -69,7 +70,7 @@ function debugger_getUserErrors($tpl)
 /**
  * Get domain errors
  *
- * @param  iMSCP_pTemplate $tpl Template engine instance
+ * @param iMSCP\TemplateEngine $tpl Template engine instance
  * @return void
  */
 function debugger_getDmnErrors($tpl)
@@ -104,7 +105,7 @@ function debugger_getDmnErrors($tpl)
 /**
  * Get domain aliases errors
  *
- * @param  iMSCP_pTemplate $tpl Template engine instance
+ * @param iMSCP\TemplateEngine $tpl Template engine instance
  * @return void
  */
 function debugger_getAlsErrors($tpl)
@@ -140,7 +141,7 @@ function debugger_getAlsErrors($tpl)
 /**
  * Get subdomains errors
  *
- * @param  iMSCP_pTemplate $tpl Template engine instance
+ * @param iMSCP\TemplateEngine $tpl Template engine instance
  * @return void
  */
 function debugger_getSubErrors($tpl)
@@ -177,7 +178,7 @@ function debugger_getSubErrors($tpl)
 /**
  * Get subdomain aliases errors
  *
- * @param  iMSCP_pTemplate $tpl Template engine instance
+ * @param iMSCP\TemplateEngine $tpl Template engine instance
  * @return void
  */
 function debugger_getAlssubErrors($tpl)
@@ -214,7 +215,7 @@ function debugger_getAlssubErrors($tpl)
 /**
  * Get custom dns errors
  *
- * @param  iMSCP_pTemplate $tpl Template engine instance
+ * @param iMSCP\TemplateEngine $tpl Template engine instance
  * @return void
  */
 function debugger_getCustomDNSErrors($tpl)
@@ -250,7 +251,7 @@ function debugger_getCustomDNSErrors($tpl)
 /**
  * Gets htaccess errors
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
  */
 function debugger_getHtaccessErrors($tpl)
@@ -293,7 +294,7 @@ function debugger_getHtaccessErrors($tpl)
 /**
  * Get FTP user errors
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @throws iMSCP_Exception_Database
  */
 function debugger_getFtpUserErrors($tpl)
@@ -330,7 +331,7 @@ function debugger_getFtpUserErrors($tpl)
  * Get mails errors
  *
  * @throws iMSCP_Exception
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
  */
 function debugger_getMailsErrors($tpl)
@@ -420,7 +421,7 @@ function debugger_getMailsErrors($tpl)
 /**
  * Get IP errors
  *
- * @param  iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
  */
 function debugger_getIpErrors($tpl)
@@ -456,7 +457,7 @@ function debugger_getIpErrors($tpl)
 /**
  * Get plugin items errors
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
  */
 function debugger_getPluginItemErrors($tpl)
@@ -662,7 +663,7 @@ if (isset($_GET['action'])) {
     }
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'              => 'shared/layouts/ui.tpl',
     'page'                => 'admin/imscp_debugger.tpl',

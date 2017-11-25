@@ -20,7 +20,7 @@
 
 use iMSCP_Events as Events;
 use iMSCP_Exception as iMSCPException;
-use iMSCP_pTemplate as TemplateEngine;
+use iMSCP\TemplateEngine;
 use iMSCP_Registry as Registry;
 use Zend_Navigation as Navigation;
 
@@ -29,7 +29,7 @@ use Zend_Navigation as Navigation;
 /**
  * Generate logged from block
  *
- * @param  TemplateEngine $tpl
+ * @param TemplateEngine $tpl
  * @return void
  */
 function generateLoggedFrom(TemplateEngine $tpl)

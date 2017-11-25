@@ -20,6 +20,7 @@
 
 use iMSCP\VirtualFileSystem as VirtualFileSystem;
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -187,7 +188,7 @@ function handleProtectedArea()
 /**
  * Generates page
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
  */
 function generatePage($tpl)
@@ -306,7 +307,7 @@ $mountpoints = getMountpoints($mainDmnProps['domain_id']);
 if (!empty($_POST))
     handleProtectedArea();
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'              => 'shared/layouts/ui.tpl',
     'page'                => 'client/protect_it.tpl',

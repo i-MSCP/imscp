@@ -23,6 +23,7 @@ use iMSCP\VirtualFileSystem as VirtualFileSystem;
 use iMSCP_Events as Events;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -32,7 +33,7 @@ use iMSCP_Registry as Registry;
  * Generate domain type list
  *
  * @param int $mainDmnId Customer main domain id
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
  */
 function generateDomainTypeList($mainDmnId, $tpl)
@@ -289,7 +290,7 @@ function addAccount()
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
  */
 function generatePage($tpl)
@@ -360,7 +361,7 @@ if (!empty($_POST)) {
     }
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/ftp_add.tpl',

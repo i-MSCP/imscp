@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /**
  * iMSCP_Exception_Writer_Browser
@@ -28,7 +29,7 @@ use iMSCP_Registry as Registry;
 class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer_Abstract
 {
     /**
-     * @var iMSCP_pTemplate
+     * @var TemplateEngine
      */
     protected $templateEngine;
 
@@ -151,7 +152,7 @@ HTML;
             return;
         }
 
-        $tpl = new iMSCP_pTemplate();
+        $tpl = new TemplateEngine();
         $tpl->define([
             'layout'         => 'shared/layouts/simple.tpl',
             'page'           => $this->templateFile,

@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Main
@@ -32,7 +33,7 @@ resellerHasFeature('aps') or showBadRequestErrorPage();
 
 $cfg = Registry::get('config');
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'                   => 'shared/layouts/ui.tpl',
     'page'                     => 'reseller/software_upload.tpl',

@@ -26,6 +26,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Main
@@ -36,7 +37,7 @@ require_once 'imscp-lib.php';
 check_login('user');
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define('layout', 'shared/layouts/ui.tpl');
 $tpl->define([
     'page'                => 'client/language.tpl',

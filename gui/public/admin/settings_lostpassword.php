@@ -26,6 +26,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 require 'imscp-lib.php';
 
@@ -60,7 +61,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
     $passwordEmailData = get_lostpassword_password_email($_SESSION['user_id']);
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'admin/settings_lostpassword.tpl',

@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -74,7 +75,7 @@ function updateExternalMailFeature($action, $domainId, $domainType)
  * Generate an external mail server item
  *
  * @access private
- * @param iMSCP_pTemplate $tpl Template instance
+ * @param TemplateEngine $tpl Template instance
  * @param string $externalMail Status of external mail for the domain
  * @param int $domainId Domain id
  * @param string $domainName Domain name
@@ -122,7 +123,7 @@ function generateItem($tpl, $externalMail, $domainId, $domainName, $status, $typ
  * Generate external mail server item list
  *
  * @access private
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @param int $domainId Domain id
  * @param string $domainName Domain name
  * @return void
@@ -152,7 +153,7 @@ function generateItemList($tpl, $domainId, $domainName)
 /**
  * Generates page
  *
- * @param iMSCP_ptemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
  */
 function generatePage($tpl)
@@ -213,7 +214,7 @@ if (isset($_GET['action'])
     redirectTo('mail_external.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'          => 'shared/layouts/ui.tpl',
     'page'            => 'client/mail_external.tpl',

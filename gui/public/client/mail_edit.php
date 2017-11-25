@@ -20,6 +20,7 @@
 
 use iMSCP\Crypt as Crypt;
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -255,7 +256,7 @@ function client_editMailAccount()
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  */
 function client_generatePage($tpl)
 {
@@ -367,7 +368,7 @@ if (!empty($_POST) && client_editMailAccount()) {
     redirectTo('mail_accounts.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/mail_edit.tpl',

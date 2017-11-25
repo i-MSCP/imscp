@@ -20,6 +20,7 @@
 
 use iMSCP\VirtualFileSystem as VirtualFileSystem;
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -65,7 +66,7 @@ function _reseller_getAliasData($domainAliasId)
 /**
  * Generate page
  *
- * @param $tpl iMSCP_pTemplate
+ * @param $tpl TemplateEngine
  * @return void
  */
 function reseller_generatePage($tpl)
@@ -290,7 +291,7 @@ if (!empty($_POST) && reseller_editDomainAlias()) {
     redirectTo('alias.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'             => 'shared/layouts/ui.tpl',
     'page'               => 'reseller/alias_edit.tpl',

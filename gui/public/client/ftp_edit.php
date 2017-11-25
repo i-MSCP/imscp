@@ -22,6 +22,7 @@ use iMSCP\Crypt as Crypt;
 use iMSCP\VirtualFileSystem as VirtualFileSystem;
 use iMSCP_Events as Events;
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -113,7 +114,7 @@ function updateFtpAccount($userid)
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @param string $ftpUserId Ftp userid
  * @return void
  */
@@ -176,7 +177,7 @@ if (!empty($_POST)) {
     }
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/ftp_edit.tpl',

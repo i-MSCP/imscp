@@ -22,6 +22,7 @@ use iMSCP_Events as Events;
 use iMSCP_Registry as Registry;
 use Net_DNS2_Exception as DnsResolverException;
 use Net_DNS2_Resolver as DnsResolver;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -884,7 +885,7 @@ function client_saveDnsRecord($dnsRecordId)
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @param int $dnsRecordId DNS record unique identifier (0 for new record)
  * @return void
  */
@@ -991,7 +992,7 @@ if (!empty($_POST)) {
     }
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/dns_edit.tpl',

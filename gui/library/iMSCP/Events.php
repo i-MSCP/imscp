@@ -44,7 +44,7 @@ class iMSCP_Events
      * Event triggered at end of login script
      *
      * iMSCP_Events_Event object parameter:
-     *  - templateEngine : An iMSCP_pTemplate object
+     *  - templateEngine : An \iMSCP\TemplateEngine object
      *
      * @const string
      */
@@ -61,7 +61,7 @@ class iMSCP_Events
      * Event triggered at end of the lostpassword action script
      *
      * iMSCP_Events_Event object parameter:
-     *  - templateEngine : iMSCP_pTemplate instance
+     *  - templateEngine : \iMSCP\TemplateEngine instance
      *
      * @const string
      */
@@ -78,7 +78,7 @@ class iMSCP_Events
      * Event triggered at end of shared scripts
      *
      * iMSCP_Events_Event object parameter:
-     *  - templateEngine : iMSCP_pTemplate instance
+     *  - templateEngine : \iMSCP\TemplateEngine instance
      *
      * @const string
      */
@@ -95,7 +95,7 @@ class iMSCP_Events
      * Event triggered at end of admin scripts
      *
      * iMSCP_Events_Event object parameter:
-     *  - templateEngine : iMSCP_pTemplate instance
+     *  - templateEngine : \iMSCP\TemplateEngine instance
      *
      * @const string
      */
@@ -112,7 +112,7 @@ class iMSCP_Events
      * Event triggered at end of reseller scripts
      *
      * iMSCP_Events_Event object parameter:
-     *  - templateEngine : iMSCP_pTemplate instance
+     *  - templateEngine : \iMSCP\TemplateEngine instance
      *
      * @const string
      */
@@ -129,7 +129,7 @@ class iMSCP_Events
      * Event triggered end of client scripts
      *
      * iMSCP_Events_Event object parameter:
-     *  - templateEngine: An iMSCP_pTemplate instance
+     *  - templateEngine: An \iMSCP\TemplateEngine instance
      *
      * @const string
      */
@@ -151,7 +151,7 @@ class iMSCP_Events
      *
      * iMSCP_Events_Event object parameters:
      *  - context        : iMSCP_Exception_Writer_Browser object
-     *  - templateEngine : iMSCP_pTemplate instance
+     *  - templateEngine : \iMSCP\TemplateEngine instance
      *
      * @deprecated This event is deprecated and no longer triggered
      * @const string
@@ -1262,7 +1262,7 @@ class iMSCP_Events
      * Event triggered before template loading
      *
      * iMSCP_Events_Event object parameters:
-     *  - context      : iMSCP_pTemplate instance
+     *  - context      : \iMSCP\TemplateEngine instance
      *  - templatePath : Template path
      *
      * @const string
@@ -1275,7 +1275,7 @@ class iMSCP_Events
      * iMSCP_Events_Event object parameters:
      *  - pname          : Parent template name
      *  - tname          : template name
-     *  - templateEngine : iMSCP_pTemplate instance
+     *  - templateEngine : \iMSCP\TemplateEngine instance
      *
      * @const string
      */
@@ -1285,7 +1285,7 @@ class iMSCP_Events
      * Event triggered before navigation generation
      *
      * iMSCP_Events_Event object parameter:
-     *  - templateEngine: iMSCP_pTemplate instance
+     *  - templateEngine: \iMSCP\TemplateEngine instance
      *
      * @const string
      */
@@ -1295,7 +1295,7 @@ class iMSCP_Events
      * Event triggered after navigation generation
      *
      * iMSCP_Events_Event object parameter:
-     *  - templateEngine: iMSCP_pTemplate instance
+     *  - templateEngine: \iMSCP\TemplateEngine instance
      *
      * @const string
      *

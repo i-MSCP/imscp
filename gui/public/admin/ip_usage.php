@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -27,7 +28,7 @@ use iMSCP_Registry as Registry;
 /**
  * Generate List of Domains assigned to IPs
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
  */
 function listIPDomains($tpl)
@@ -91,7 +92,7 @@ if (!systemHasCustomers()) {
     showBadRequestErrorPage();
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'admin/ip_usage.tpl',

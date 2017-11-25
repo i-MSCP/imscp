@@ -19,7 +19,7 @@
  */
 
 use iMSCP_Events as Events;
-use iMSCP_pTemplate as TemplateEngine;
+use iMSCP\TemplateEngine;
 use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
@@ -171,7 +171,7 @@ if (isset($_POST['uaction'])
     redirectTo('users.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'                            => 'shared/layouts/ui.tpl',
     'page'                              => 'admin/manage_reseller_owners.phtml',

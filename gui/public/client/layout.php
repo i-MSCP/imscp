@@ -26,6 +26,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -34,7 +35,7 @@ use iMSCP_Registry as Registry;
 /**
  * Generate layout color form
  *
- * @param $tpl iMSCP_pTemplate Template engine instance
+ * @param TemplateEngine $tpl
  * @return void
  */
 function client_generateLayoutColorForm($tpl)
@@ -68,7 +69,7 @@ require 'imscp-lib.php';
 check_login('user');
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'              => 'shared/layouts/ui.tpl',
     'page'                => 'client/layout.tpl',

@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  *  Script functions
@@ -27,7 +28,7 @@ use iMSCP_Registry as Registry;
 /**
  * client_generatePageLists.
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
  */
 function client_generatePageLists($tpl)
@@ -48,7 +49,7 @@ check_login('user');
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 customerHasFeature('aps') or showBadRequestErrorPage();
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'                  => 'shared/layouts/ui.tpl',
     'page'                    => 'client/software.tpl',

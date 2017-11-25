@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -47,7 +48,7 @@ function getFirstStepData()
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @return void
  */
 function generatePage($tpl)
@@ -525,7 +526,7 @@ if (isset($_POST['uaction'])
     getHostingPlanData();
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'                             => 'shared/layouts/ui.tpl',
     'page'                               => 'reseller/user_add2.tpl',

@@ -26,13 +26,14 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 require 'imscp-lib.php';
 
 check_login('reseller');
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onResellerScriptStart);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'         => 'shared/layouts/ui.tpl',
     'page'           => 'reseller/settings_lostpassword.tpl',

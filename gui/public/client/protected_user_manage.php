@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -64,7 +65,7 @@ function _client_generateHtgroupAction($status)
 /**
  * Generates users list
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
  */
 function client_generateUsersList($tpl)
@@ -102,7 +103,7 @@ function client_generateUsersList($tpl)
 /**
  * Generates groups list
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
  */
 function client_generateGroupsList($tpl)
@@ -154,7 +155,7 @@ check_login('user');
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 customerHasFeature('protected_areas') or showBadRequestErrorPage();
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'               => 'shared/layouts/ui.tpl',
     'page'                 => 'client/puser_manage.tpl',

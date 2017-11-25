@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Exception_Database as DatabaseException;
+use iMSCP\TemplateEngine;
 use iMSCP_Registry as Registry;
 
 /**
@@ -64,7 +65,7 @@ function createTicket($userId, $adminId, $urgency, $subject, $message, $userLeve
 /**
  * Gets the content of the selected ticket and generates its output
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @param int $ticketId Id of the ticket to display
  * @param int $userId Id of the user
  * @return bool TRUE if ticket is found, FALSE otherwise
@@ -232,7 +233,7 @@ function deleteTickets($status, $userId)
 /**
  * Generates a ticket list
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @param int $userId User unique identifier
  * @param int $start First ticket to show (pagination)
  * @param int $count Maximal count of shown tickets (pagination)
@@ -532,7 +533,7 @@ function _ticketGetLastDate($ticketId)
  *
  * @access private
  * @usedby showTicketContent()
- * @param iMSCP_pTemplate $tpl The Template object
+ * @param TemplateEngine $tpl The Template object
  * @param int $ticketId Id of the ticket to display
  * @çeturn void
  */

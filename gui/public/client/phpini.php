@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -211,7 +212,7 @@ function updatePhpConfig($phpini, $configLevel)
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @param iMSCP_PHPini $phpini PHP editor instance
  * @param iMSCP_Config_Handler_File $config Configuration handler
  * @param string $configLevel PHP configuration level
@@ -367,7 +368,7 @@ if (!empty($_POST)) {
     updatePhpConfig($phpini, $configLevel);
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'                  => 'shared/layouts/ui.tpl',
     'page'                    => 'client/phpini.tpl',

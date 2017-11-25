@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -27,7 +28,7 @@ use iMSCP_Registry as Registry;
 /**
  * Generates menus list
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return void
  */
 function admin_generateMenusList($tpl)
@@ -73,7 +74,7 @@ function admin_generateMenusList($tpl)
 /**
  * Generate form.
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  */
 function admin_generateForm($tpl)
 {
@@ -296,7 +297,7 @@ if (isset($_POST['uaction'])) {
     admin_deleteMenu($_GET['delete_id']);
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'            => 'shared/layouts/ui.tpl',
     'page'              => 'admin/custom_menus.tpl',

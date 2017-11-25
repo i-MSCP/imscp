@@ -26,7 +26,7 @@ use iMSCP_Events as Events;
 use iMSCP_Events_Listener_ResponseCollection as EventCollection;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_Plugin_Manager as PluginManager;
-use iMSCP_pTemplate as TemplateEngine;
+use iMSCP\TemplateEngine;
 use iMSCP_Registry as Registry;
 use iMSCP_Utility_OpcodeCache as OpcodeCacheUtils;
 

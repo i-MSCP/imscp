@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -140,7 +141,7 @@ function getJsonDomainsList($customerId)
 /**
  * Generate page
  *
- * @param $tpl iMSCP_pTemplate
+ * @param $tpl TemplateEngine
  * @return void
  */
 function generatePage($tpl)
@@ -422,7 +423,7 @@ if (!empty($_POST) && addDomainAlias()) {
     redirectTo('alias.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'                       => 'shared/layouts/ui.tpl',
     'page'                         => 'reseller/alias_add.tpl',

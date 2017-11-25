@@ -26,6 +26,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -50,7 +51,7 @@ function reseller_gen_mail_quota_limit_mgs($customerId)
 /**
  * Generates page
  *
- * @param iMSCP_pTemplate $tpl Template instance engine
+ * @param TemplateEngine $tpl Template instance engine
  * @param int $domainId Domain unique identifier
  * @return void
  */
@@ -160,7 +161,7 @@ if (!isset($_GET['domain_id'])) {
     redirectTo('users.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'        => 'shared/layouts/ui.tpl',
     'page'          => 'reseller/domain_details.tpl',

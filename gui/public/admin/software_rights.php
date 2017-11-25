@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 require 'imscp-lib.php';
 
@@ -38,7 +39,7 @@ if (!$stmt->rowCount()) {
 
 $row = $stmt->fetch();
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'             => 'shared/layouts/ui.tpl',
     'page'               => 'admin/software_rights.tpl',

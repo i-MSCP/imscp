@@ -26,6 +26,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Main
@@ -63,7 +64,7 @@ if (isset($_POST['uaction'])) {
     }
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'         => 'shared/layouts/ui.tpl',
     'page'           => 'admin/ticket_view.tpl',

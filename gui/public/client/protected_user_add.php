@@ -20,6 +20,7 @@
 
 use iMSCP\Crypt as Crypt;
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -85,7 +86,7 @@ Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::o
 customerHasFeature('protected_areas') or showBadRequestErrorPage();
 client_addHtaccessUser();
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'       => 'shared/layouts/ui.tpl',
     'page'         => 'client/puser_uadd.tpl',

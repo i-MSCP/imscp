@@ -26,6 +26,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 require 'imscp-lib.php';
 
@@ -36,7 +37,7 @@ systemHasAntiRootkits() or showBadRequestErrorPage();
 
 $config = Registry::get('config');
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'           => 'shared/layouts/ui.tpl',
     'page'             => 'admin/rootkit_log.tpl',

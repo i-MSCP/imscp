@@ -20,6 +20,7 @@
 
 use iMSCP_Events as Events;
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -28,7 +29,7 @@ use iMSCP_Registry as Registry;
 /**
  * Generate page
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @return void
  */
 function admin_generateLanguagesList($tpl)
@@ -77,7 +78,7 @@ if (isset($_POST['uaction'])) {
     redirectTo('multilanguage.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'            => 'shared/layouts/ui.tpl',
     'page'              => 'admin/multilanguage.phtml',

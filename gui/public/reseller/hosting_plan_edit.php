@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -76,7 +77,7 @@ function loadHostingPlan()
 /**
  * Generate PHP editor block
  *
- * @param iMSCP_pTemplate $tpl
+ * @param TemplateEngine $tpl
  * @return void
  */
 function generatePhpBlock($tpl)
@@ -196,7 +197,7 @@ function generatePhpBlock($tpl)
 /**
  * Generate page
  *
- * @param $tpl iMSCP_pTemplate
+ * @param $tpl TemplateEngine
  * @return void
  */
 function generatePage($tpl)
@@ -546,7 +547,7 @@ if (!empty($_POST) && checkInputData() && updateHostingPlan()) {
     redirectTo('hosting_plan.php');
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'                             => 'shared/layouts/ui.tpl',
     'page'                               => 'reseller/hosting_plan_edit.tpl',

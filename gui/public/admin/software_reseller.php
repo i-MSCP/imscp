@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 require 'imscp-lib.php';
 
@@ -29,7 +30,7 @@ isset($_GET['id']) or showBadRequestErrorPage();
 
 $resellerId = intval($_GET['id']);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'                           => 'shared/layouts/ui.tpl',
     'page'                             => 'admin/software_reseller.tpl',

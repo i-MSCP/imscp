@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  *  Functions
@@ -27,7 +28,7 @@ use iMSCP_Registry as Registry;
 /**
  * Generate page and return software unique identifier
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param TemplateEngine $tpl Template engine instance
  * @return int software unique identifier
  */
 function client_generatePage($tpl)
@@ -49,7 +50,7 @@ check_login('user');
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 customerHasFeature('aps') && isset($_GET['id']) or showBadRequestErrorPage();
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'                  => 'shared/layouts/ui.tpl',
     'page'                    => 'client/software_view.tpl',

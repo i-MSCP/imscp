@@ -20,7 +20,7 @@
 
 use iMSCP_Events as Events;
 use iMSCP_PHPini as PhpIni;
-use iMSCP_pTemplate as TemplateEngine;
+use iMSCP\TemplateEngine;
 use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************

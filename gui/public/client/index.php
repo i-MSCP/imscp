@@ -26,6 +26,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -96,7 +97,7 @@ function client_generateSupportSystemNotices()
 /**
  * Generates traffic usage bar
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @param int $usage Usage in bytes
  * @param int $maxUsage Max usage in bytes
  * @return void
@@ -124,7 +125,7 @@ function client_generateTrafficUsageBar($tpl, $usage, $maxUsage)
 /**
  * Generates disk usage bar
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @param int $usage Usage in bytes
  * @param int $maxUsage Max usage in bytes
  * @return void
@@ -152,7 +153,7 @@ function client_generateDiskUsageBar($tpl, $usage, $maxUsage)
 /**
  * Generates feature status
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @return void
  * @todo hide features that are not available for reseller
  */
@@ -269,7 +270,7 @@ function _client_getDomainRemainingTime($domainExpireDate)
 /**
  * Generates domain expires information
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @return void
  */
 function client_generateDomainExpiresInformation($tpl)
@@ -318,7 +319,7 @@ $cfg = Registry::get('config');
 check_login('user', $cfg['PREVENT_EXTERNAL_LOGIN_CLIENT']);
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(iMSCP_Events::onClientScriptStart);
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'                 => 'shared/layouts/ui.tpl',
     'page'                   => 'client/index.tpl',

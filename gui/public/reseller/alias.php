@@ -19,6 +19,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -209,8 +210,8 @@ if (is_xhr()) {
     exit;
 }
 
-/** @var $tpl iMSCP_pTemplate */
-$tpl = new iMSCP_pTemplate();
+/** @var $tpl TemplateEngine */
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'         => 'shared/layouts/ui.tpl',
     'page'           => 'reseller/alias.tpl',

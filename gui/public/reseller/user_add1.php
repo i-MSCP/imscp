@@ -26,6 +26,7 @@
  */
 
 use iMSCP_Registry as Registry;
+use iMSCP\TemplateEngine;
 
 /***********************************************************************************************************************
  * Functions
@@ -162,7 +163,7 @@ function reseller_checkData()
 /**
  * Show first page of add user with data
  *
- * @param  iMSCP_pTemplate $tpl Template engine
+ * @param  TemplateEngine $tpl Template engine
  * @return void
  */
 function reseller_generatePage($tpl)
@@ -230,7 +231,7 @@ if (!empty($_POST)) {
     reseller_checkData();
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define([
     'layout'                       => 'shared/layouts/ui.tpl',
     'page'                         => 'reseller/user_add1.tpl',

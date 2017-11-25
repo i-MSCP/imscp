@@ -22,6 +22,7 @@ use iMSCP\Database\ResultSet;
 use iMSCP_Events as Events;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_Exception_Database as DatabaseException;
+use iMSCP\TemplateEngine;
 use iMSCP_Registry as Registry;
 use Mso\IdnaConvert\IdnaConvert;
 
@@ -1885,7 +1886,7 @@ function check_package_is_installed($packageInstallType, $packageName, $packageV
 /**
  * Get all software packages from database since last update from the websoftware depot
  *
- * @param iMSCP_pTemplate $tpl Template engine
+ * @param TemplateEngine $tpl Template engine
  * @param int $userId User unique identifier
  * @return int
  */
