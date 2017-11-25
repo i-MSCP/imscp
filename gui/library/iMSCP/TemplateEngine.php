@@ -56,14 +56,14 @@ class TemplateEngine
     protected $tplData = [];
 
     /**
-     * @var array Runtime variables
+     * @var array Template runtime variables
      */
-    protected $runtimeVariables = [];
+    protected $tplRuntimeVariables = [];
 
     /**
-     * @var array List of parent templates that were already parsed
+     * @var array List of resolved templates
      */
-    protected $seenParents = [];
+    protected $resolvedTemplates = [];
 
     /**
      * TemplateEngine constructor.
@@ -163,11 +163,11 @@ class TemplateEngine
     public function assign($varnames, $value = NULL)
     {
         if (!is_array($varnames)) {
-            $this->runtimeVariables[$varnames] = $value;
+            $this->tplRuntimeVariables[$varnames] = $value;
             return;
         }
 
-        $this->runtimeVariables = array_replace($this->runtimeVariables, $varnames);
+        $this->tplRuntimeVariables = array_replace($this->tplRuntimeVariables, $varnames);
     }
 
     /**
@@ -179,7 +179,7 @@ class TemplateEngine
     public function unsign($varnames)
     {
         if (!is_array($varnames)) {
-            unset($this->runtimeVariables[$varnames]);
+            unset($this->tplRuntimeVariables[$varnames]);
 
             if ($this->lastParsedVarname == $varnames)
                 $this->lastParsedVarname = NULL;
@@ -188,9 +188,9 @@ class TemplateEngine
         }
 
         foreach ($varnames as $varname)
-            unset($this->runtimeVariables[$varname]);
+            unset($this->tplRuntimeVariables[$varname]);
 
-        if (NULL !== $this->lastParsedVarname && !isset($this->runtimeVariables[$this->lastParsedVarname]))
+        if (NULL !== $this->lastParsedVarname && !isset($this->tplRuntimeVariables[$this->lastParsedVarname]))
             $this->lastParsedVarname = NULL;
     }
 
@@ -222,7 +222,7 @@ class TemplateEngine
      */
     public function isRuntimeTemplateVariable($varname)
     {
-        return isset($this->runtimeVariables[$varname]);
+        return isset($this->tplRuntimeVariables[$varname]);
     }
 
     /**
@@ -244,50 +244,18 @@ class TemplateEngine
         if ($tname[0] == '.') {
             $tname = substr($tname, 1);
             $addFlag = true;
-        } else
+        } else {
             $addFlag = false;
-
-        if (!isset($this->seenParents[$pname = $this->findParent($tname)])) {
-            if (NULL === $this->tplData[$pname]) { # Template file case
-                $this->tplData[$pname] = $this->loadFile($this->tplName[$pname]);
-                $this->interpolateBlocks($this->tplData[$pname]);
-            } elseif ($pname != $tname) # Inline template case
-                $this->interpolateBlocks($this->tplData[$pname]);
-
-            $this->seenParents[$pname] = 1;
         }
+
+        $this->resolveTemplate($tname);
+
+        if ($addFlag && isset($this->tplRuntimeVariables[$varname]))
+            $this->tplRuntimeVariables[$varname] .= $this->substituteVariables($this->tplData[$tname]);
+        else
+            $this->tplRuntimeVariables[$varname] = $this->substituteVariables($this->tplData[$tname]);
 
         $this->lastParsedVarname = $varname;
-
-        if ($addFlag && isset($this->runtimeVariables[$varname])) {
-            $this->runtimeVariables[$varname] .= $this->substituteVariables($this->tplData[$tname]);
-            return;
-        }
-
-        $this->runtimeVariables[$varname] = $this->substituteVariables($this->tplData[$tname]);
-    }
-
-    /**
-     * Print content of the given runtime template variable
-     *
-     * @param string $varname
-     * @return void
-     */
-    public function prnt($varname = NULL)
-    {
-        if (NULL === $varname) {
-            if (NULL === $this->lastParsedVarname)
-                throw new \LogicException('Nothing to print. Did you forgot to call parse()?');
-
-            $varname = $this->lastParsedVarname;
-        }
-
-        if (!isset($this->runtimeVariables[$varname]))
-            throw new \InvalidArgumentException(sprintf(
-                'Unknown `%s` runtime template variable. Did you forgot to call parse()?', $varname
-            ));
-
-        echo $this->runtimeVariables[$varname];
     }
 
     /**
@@ -300,12 +268,12 @@ class TemplateEngine
         if (NULL === $this->lastParsedVarname)
             throw new \LogicException('Nothing to return. Did you forgot to call parse()?');
 
-        if (!isset($this->runtimeVariables[$this->lastParsedVarname]))
+        if (!isset($this->tplRuntimeVariables[$this->lastParsedVarname]))
             throw new \InvalidArgumentException(sprintf(
                 'Unknown `%s` runtime template variable. Did you forgot to call parse()?', $this->lastParsedVarname
             ));
 
-        return $this->runtimeVariables[$this->lastParsedVarname];
+        return $this->tplRuntimeVariables[$this->lastParsedVarname];
     }
 
     /**
@@ -324,71 +292,257 @@ class TemplateEngine
                 throw new \LogicException('Nothing to replace. Did you forgot to call parse()?');
         }
 
-        if (!isset($this->runtimeVariables[$varname]))
+        if (!isset($this->tplRuntimeVariables[$varname]))
             throw new \InvalidArgumentException(sprintf(
                 'Unknown `%s` runtime template variable. Did you forgot to call parse()?', $varname
             ));
 
-        $this->runtimeVariables[$varname] = $content;
+        $this->tplRuntimeVariables[$varname] = $content;
         return $this;
     }
 
     /**
-     * Load a template file, including its childs (included template files)
+     * Print content of the given runtime template variable
      *
-     * @param string|array $fname Template file path or an array where the
-     *                            second item contains the template file path
-     * @return mixed|string
+     * @param string $varname
+     * @return void
      */
-    protected function loadFile($fname)
+    public function prnt($varname = NULL)
     {
-        static $parentTplDir = NULL;
+        if (NULL === $varname) {
+            if (NULL === $this->lastParsedVarname)
+                throw new \LogicException('Nothing to print. Did you forgot to call parse()?');
 
-        if (is_array($fname))
-            $fname = ($parentTplDir ?: $parentTplDir) . '/' . $fname[1];
+            $varname = $this->lastParsedVarname;
+        }
 
-        $prevParentTplDir = $parentTplDir;
-        $parentTplDir = dirname($fname);
-        $filepath = $this->tplDir . '/' . $fname;
+        if (!isset($this->tplRuntimeVariables[$varname]))
+            throw new \InvalidArgumentException(sprintf(
+                'Unknown `%s` runtime template variable. Did you forgot to call parse()?', $varname
+            ));
 
+        echo $this->tplRuntimeVariables[$varname];
+    }
+
+    /**
+     * Resolve the given template, including any template block defined into it
+     *
+     * @param string $tname Template name
+     * @return void
+     * TODO cache resolved templates
+     */
+    protected function resolveTemplate($tname)
+    {
+        // Return early if the template has been already resolved
+        if (isset($this->resolvedTemplates[$tname])
+            || isset($this->resolvedTemplates[$tname = $this->findParentTemplate($tname)]))
+            return;
+
+        if (NULL === $this->tplData[$tname])
+            $this->tplData[$tname] = $this->loadTemplateFile($this->tplName[$tname]);
+
+        // Mark the template as resolved
+        $this->resolvedTemplates[$tname] = 1;
+
+        // Resolve the template blocks within the template
+        $startPos = 0;
+        $stack = [];
+        $tpl =& $this->tplData[$tname];
+        while (strlen($tpl) > $startPos) {
+            if (false === $startPos = strpos($tpl, '<!-- ', $startPos)) break;
+            if (false === $endPos = strpos($tpl, ' -->', $startPos)) break;
+
+            $endPos += 4;
+            $tag = substr($tpl, $startPos, $endPos - $startPos);
+
+            if (!preg_match('/<!--\040+(?P<tagType>B|E)DP:\040+(?P<tagName>\w+)\040+-->/i', $tag, $m)) {
+                // Not a valid block tag, continue searching...
+                $startPos = ++$endPos;
+                continue;
+            }
+
+            if ($m['tagType'] == 'B') {
+                // Store begin block tag name and its start/end position for
+                // later processing
+                $stack[] = [$m['tagName'], $startPos, $endPos];
+
+                // Update the start position for next tag search
+                $startPos = ++$endPos;
+                continue;
+            }
+
+            // Retrieve start and end position of ending block tag
+            list($tagNamePrev, $startPosPrev, $endPosPrev) = array_pop($stack);
+
+            if ($m['tagName'] != $tagNamePrev)
+                throw new \LogicException(sprintf(
+                    'Block tag mismatch in the `%s` template:: (%s vs %s).', $tname, $m['tagName'], $tagNamePrev
+                ));
+
+            // Extract the template block content into its own template variable
+            $blockName = strtoupper($m['tagName']);
+            $this->tplData[$blockName] = substr($tpl, $endPosPrev, $startPos - $endPosPrev);
+            $this->tplData[$m['tagName']] =& $this->tplData[$blockName];
+
+            // Turn the template block into template variable within the template
+            $varname = '{' . $blockName . '}';
+            $tpl = substr_replace($tpl, $varname, $startPosPrev, $endPos - $startPosPrev);
+
+            // Mark the template block as resolved
+            $this->resolvedTemplates[$m['tagName']] = 1;
+
+            // Update the start position for next tag search
+            $startPos = $startPosPrev + strlen($varname);
+        }
+    }
+
+    /**
+     * Find the top most parent of the given template or template block
+     *
+     * @param string $tname Name of template or template block
+     * @return string|false
+     */
+    protected function findParentTemplate($tname)
+    {
+        $child = $tname;
+
+        if (!isset($this->tplName[$tname]))
+            throw new \LogicException(sprintf("Couldn't find parent. Is the `%s` template/block defined?", $tname));
+
+        if ($this->tplName[$tname] == '')
+            $searchInto =& $this->tplData;
+        else
+            $searchInto =& $this->tplName;
+
+        while (isset($searchInto[$tname])) {
+            $child = $tname;
+            $tname = $searchInto[$tname];
+        }
+
+        if (!isset($searchInto[$tname]))
+            $tname = $child;
+
+        return $tname;
+    }
+
+    /**
+     * Load the given template file, including its childs
+     *
+     * @param string $fpath Template file path
+     * @return string
+     */
+    protected function loadTemplateFile($fpath)
+    {
+        $fpath = utils_normalizePath($this->tplDir . '/' . $fpath);
         $this->em->dispatch(Events::onBeforeLoadTemplateFile, [
             'context'      => $this,
-            'templatePath' => $filepath
+            'templatePath' => $fpath
         ]);
 
+        // Turns off error reporting temporarily
+        // We do not want the errors as part of template content
         $errLevel = error_reporting(0);
         ob_start();
-        $this->run(utils_normalizePath($filepath));
-        $fileContent = ob_get_clean();
+        $this->run($fpath);
+        $fContent = ob_get_clean();
         error_reporting($errLevel);
 
-        if ($fileContent == '') {
-            $error = error_get_last();
-
-            if (empty($error))
-                throw new \RuntimeException(sprintf("The %s template file couldn't be loaded.", $filepath));
+        if ($fContent == '') {
+            if (empty($error = error_get_last()))
+                throw new \LengthException(sprintf('The %s template file is emtpy.', $fpath));
 
             throw new \RuntimeException(sprintf(
                 "The %s template file couldn't be loaded: %s -- File %s -- Line %d",
-                $filepath, $error['message'], $error['file'], $error['line']
+                $fpath, $error['message'], $error['file'], $error['line']
             ));
         }
 
-        if (false !== strpos($fileContent, '<!-- INCLUDE '))
-            $fileContent = preg_replace_callback('/<!-- INCLUDE "([^\"]+)" -->/m', [$this, 'loadFile'], $fileContent);
+        // Resolve include tags within the template
+        $startPos = 0;
+        while (strlen($fContent) > $startPos) {
+            if (false === $startPos = strpos($fContent, '<!-- INCLUDE ', $startPos)) break;
+            if (false === $endPos = strpos($fContent, ' -->', $startPos)) break;
 
-        $parentTplDir = $prevParentTplDir;
-        return $fileContent;
+            $fpath = substr($fContent, $startPos + 13, ($endPos - $startPos) - 13);
+            $incFContent = $this->loadTemplateFile(trim($fpath, "\x09\x0B\x20\x22\x27"));
+            $fContent = substr_replace($fContent, $incFContent, $startPos, strlen($fpath) + 17);
+            $startPos += strlen($incFContent) + 1;
+        }
+
+        return $fContent;
     }
 
     /**
      * Includes the given template file in a scope with only public $this variables
      *
-     * @param string $scriptPath The view script to execute
+     * @param string $fpath The view script to execute
      */
-    protected function run($scriptPath)
+    protected function run($fpath)
     {
-        include $scriptPath;
+        include $fpath;
+    }
+
+    /**
+     * Substitute variables within the given template
+     *
+     * @param string $tpl Reference to template
+     * @return string Processed template
+     */
+    protected function substituteVariables($tpl)
+    {
+        // There are no variables to substitute in the template; return early
+        if (false === $curlB = strpos($tpl, '{'))
+            return $tpl;
+
+        $startFrom = -1;
+        $stack = [['{', $curlB]];
+        $curl = $this->findNextCurl($tpl, $startFrom);
+
+        while (false !== $curl) {
+            if ($curl[0] == '{') {
+                $stack[] = $curl;
+                $startFrom = $curl[1];
+                $curl = $this->findNextCurl($tpl, $startFrom);
+                continue;
+            }
+
+            $curlE = $curl[1];
+
+            if (count($stack) < 1) {
+                $startFrom = $curlE;
+                $curl = $this->findNextCurl($tpl, $startFrom);
+                continue;
+            }
+
+            $curl = array_pop($stack);
+            $curlB = $curl[1];
+
+            if ($curlB >= $curlE + 1) {
+                $startFrom = $curlE; // we have {} here; go ahead
+                $curl = $this->findNextCurl($tpl, $startFrom);
+                continue;
+            }
+
+            if ('' == $varname = trim(substr($tpl, $curlB + 1, $curlE - $curlB - 1))) {
+                $startFrom = $curlE; // we have no valid variable here; go ahead
+                $curl = $this->findNextCurl($tpl, $startFrom);
+                continue;
+            }
+
+            //$varname = strtolower($varname);
+            if (isset($this->tplRuntimeVariables[$varname])) {
+                $tpl = substr_replace($tpl, $this->tplRuntimeVariables[$varname], $curlB, $curlE - $curlB + 1);
+                $startFrom = $curlB - 1; // Substitution result can also be a variable
+            } elseif (isset($this->tplData[$varname])) {
+                $tpl = substr_replace($tpl, $this->tplData[$varname], $curlB, $curlE - $curlB + 1);
+                $startFrom = $curlB - 1; // Substitution result can also be a variable
+            } else
+                $startFrom = $curlE; // no suitable value found; go ahead
+
+            $curl = $this->findNextCurl($tpl, $startFrom);
+        }
+
+        return $tpl;
     }
 
     /**
@@ -419,159 +573,6 @@ class TemplateEngine
 
         if (false !== $curlEndPos)
             return ['}', $curlEndPos];
-
-        return false;
-    }
-
-    /**
-     * Substitute variables within the given template
-     *
-     * @param string $tpl Reference to template
-     * @return string Processed template
-     */
-    protected function substituteVariables($tpl)
-    {
-        // There are no variables to substitute in the template; return early
-        if (false === $curlB = strpos($tpl, '{'))
-            return $tpl;
-
-        $startFrom = -1;
-        $stackIdx = 0;
-        $stack[$stackIdx++] = ['{', $curlB];
-        $curl = $this->findNextCurl($tpl, $startFrom);
-
-        while (false !== $curl) {
-            if ($curl[0] == '{') {
-                $stack[$stackIdx++] = $curl;
-                $startFrom = $curl[1];
-                $curl = $this->findNextCurl($tpl, $startFrom);
-                continue;
-            }
-
-            $curlE = $curl[1];
-
-            if ($stackIdx < 1) {
-                $startFrom = $curlE;
-                $curl = $this->findNextCurl($tpl, $startFrom);
-                continue;
-            }
-
-            $curl = $stack[--$stackIdx];
-            $curlB = $curl[1];
-
-            if ($curlB >= $curlE + 1) {
-                $startFrom = $curlE; // we have {} here; go ahead
-                $curl = $this->findNextCurl($tpl, $startFrom);
-                continue;
-            }
-
-            if ('' == $varname = trim(substr($tpl, $curlB + 1, $curlE - $curlB - 1))) {
-                $startFrom = $curlE; // we have no valid variable here; go ahead
-                $curl = $this->findNextCurl($tpl, $startFrom);
-                continue;
-            }
-
-            if (isset($this->runtimeVariables[$varname])) {
-                $tpl = substr_replace($tpl, $this->runtimeVariables[$varname], $curlB, $curlE - $curlB + 1);
-                $startFrom = $curlB - 1; // Substitution result can also be a variable
-            } elseif (isset($this->tplData[$varname])) {
-                $tpl = substr_replace($tpl, $this->tplData[$varname], $curlB, $curlE - $curlB + 1);
-                $startFrom = $curlB - 1; // Substitution result can also be a variable
-            } else
-                $startFrom = $curlE; // no suitable value found; go ahead
-
-            $curl = $this->findNextCurl($tpl, $startFrom);
-        }
-
-        return $tpl;
-    }
-
-    /**
-     * Find top most parent of the given template or template block
-     *
-     * @param string $tname Name of template or template block
-     * @return string|false
-     */
-    protected function findParent($tname)
-    {
-        $child = $tname;
-
-        if (!isset($this->tplName[$tname]))
-            throw new \LogicException(sprintf("Couldn't find parent. Is the `%s` template/block defined?", $tname));
-
-        if ($this->tplName[$tname] == '')
-            $searchInto =& $this->tplData;
-        else
-            $searchInto =& $this->tplName;
-
-        while (isset($searchInto[$tname])) {
-            $child = $tname;
-            $tname = $searchInto[$tname];
-        }
-
-        if (!isset($searchInto[$tname]))
-            $tname = $child;
-
-        return $tname;
-    }
-
-    /**
-     * Interpolate all template blocks within the given template
-     *
-     * @param string &$tpl Reference to template
-     * @return void
-     */
-    protected function interpolateBlocks(&$tpl)
-    {
-        $startPos = -1;
-        $stackIdx = 0;
-        $stack = [];
-
-        while (strlen($tpl) > $startPos && $tag = $this->findNextTag($tpl, ++$startPos)) {
-            if ($tag[1] == 'B') {
-                $startPos = $tag[3];
-                $stack[$stackIdx++] = $tag;
-                continue;
-            }
-
-            $tagPrev = $stack[--$stackIdx];
-            $blockNameUpper = strtoupper($tag[0]);
-            $this->tplData[$blockNameUpper] = substr($tpl, $tagPrev[3], $tag[2] - $tagPrev[3]);
-            $this->tplData[$tag[0]] =& $this->tplData[$blockNameUpper];
-            $tpl = substr_replace($tpl, '{' . $blockNameUpper . '}', $tagPrev[2], $tag[3] - $tagPrev[2]);
-            $startPos = $tagPrev[2] + strlen('{' . $blockNameUpper . '}');
-        }
-    }
-
-    /**
-     * Find the next block tag in the given template
-     *
-     * @param string $tpl Template
-     * @param int $startPos Position from which search must start
-     * @return array|false An array containing block tag info
-     *                     (tag type, tag name, tag start position, tag end
-     *                     position), FALSE if no block tag is found
-     */
-    protected function findNextTag($tpl, $startPos)
-    {
-        while (true) {
-            if (false === $startPos = strpos($tpl, '<!-- ', $startPos))
-                break;
-
-            if (false === $endPos = strpos($tpl, ' -->', $startPos))
-                break;
-
-            $endPos += 4;
-            $tag = substr($tpl, $startPos, $endPos - $startPos);
-            if (preg_match('/<!--\040+(B|E)DP:\040+(\w+)\040+-->/', $tag, $m))
-                return [$m[2], $m[1], $startPos, $endPos];
-
-            if (strlen($tpl) < ++$endPos)
-                return false;
-
-            // Not a valid block tag, continue searching...
-            $startPos = $endPos;
-        }
 
         return false;
     }

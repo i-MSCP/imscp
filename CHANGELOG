@@ -75,6 +75,9 @@ FRONTEND
     Fixed: Notice: Undefined index: page_message (admin, reseller UI -- Domain details interface)
     Fixed: Notice: Undefined index: page_message (admin, UI -- IP usage interface)
     Fixed: Undefined offsets (Support feature - Tickets view interfaces)
+    Fixed: Template block tag mismatch (administrator_list vs admin_list) in admin/users.phtml
+    Fixed: Template block tag mismatch (domain_list vs domains_list) in client/domain_manage.tpl
+    Fixed: Template block tag mismatch (no_webdepotsoftware_list vs no_webdepotsoftware_lists) in admin/software_manage.tpl
     Fixed: Wrong alternative subject names in self-signed SSL certificates
     Fixed: Wrong order for parameters in mail delete.php (i18n -- client UI)
     Fixed: Wrong status shown in administrator overview interface for customers when a password is being modified

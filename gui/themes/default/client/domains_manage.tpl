@@ -69,7 +69,7 @@
     <!-- EDP: domain_item -->
     </tbody>
 </table>
-<!-- EDP: domains_list -->
+<!-- EDP: domain_list -->
 
 <!-- BDP: domain_aliases_block -->
 <h3 class="domains"><span>{TR_DOMAIN_ALIASES}</span></h3>
