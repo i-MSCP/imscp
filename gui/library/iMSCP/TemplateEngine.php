@@ -65,16 +65,21 @@ class TemplateEngine
      */
     protected $resolvedTemplates = [];
 
+    /** @var \Zend_Cache_Core */
+    protected $cache;
+
     /**
      * TemplateEngine constructor.
      *
      * @param string $tpldir Templates root directory
      * @param EventsManagerInterface|NULL $em
+     * @param \Zend_Cache_Core|NULL $cache
      */
-    public function __construct($tpldir = NULL, EventsManagerInterface $em = NULL)
+    public function __construct($tpldir = NULL, EventsManagerInterface $em = NULL, \Zend_Cache_Core $cache = NULL)
     {
         $this->tplDir = utils_normalizePath($tpldir ?: Registry::get('config')['ROOT_TEMPLATE_PATH']);
         $this->em = $em ?: Registry::get('iMSCP_Application')->getEventsManager();
+        $this->cache = $cache ?: Registry::get('iMSCP_Application')->getCache();
     }
 
     /**
@@ -248,7 +253,12 @@ class TemplateEngine
             $addFlag = false;
         }
 
-        $this->resolveTemplate($tname);
+        if (!isset($this->resolvedTemplates[$tname])
+            && !isset($this->resolvedTemplates[$pname = $this->findParentTemplate($tname)])
+        ) {
+            $this->resolveTemplate($pname);
+            $this->resolvedTemplates[$tname] = 1;
+        }
 
         if ($addFlag && isset($this->tplRuntimeVariables[$varname]))
             $this->tplRuntimeVariables[$varname] .= $this->substituteVariables($this->tplData[$tname]);
@@ -329,23 +339,27 @@ class TemplateEngine
      *
      * @param string $tname Template name
      * @return void
-     * TODO cache resolved templates
      */
     protected function resolveTemplate($tname)
     {
-        // Return early if the template has been already resolved
-        if (isset($this->resolvedTemplates[$tname])
-            || isset($this->resolvedTemplates[$tname = $this->findParentTemplate($tname)]))
-            return;
+        $id = 'iMSCP_Template' . '_' . md5($_SERVER['SCRIPT_NAME']) . '_' . $tname;
 
-        if (NULL === $this->tplData[$tname])
+        // Load the template from cache if available
+        if (false !== $data = $this->cache->load($id)) {
+            $this->tplData = array_merge($this->tplData, $data['tplData']);
+            $this->resolvedTemplates = array_merge($this->resolvedTemplates, $data['resolvedTemplates']);
+            return;
+        }
+
+        if (NULL === $this->tplData[$tname]) {
             $this->tplData[$tname] = $this->loadTemplateFile($this->tplName[$tname]);
+        }
 
         // Mark the template as resolved
         $this->resolvedTemplates[$tname] = 1;
 
         // Resolve the template blocks within the template
-        $startPos = 0;
+        $startPos = $stackIdx = 0;
         $stack = [];
         $tpl =& $this->tplData[$tname];
         while (strlen($tpl) > $startPos) {
@@ -364,36 +378,45 @@ class TemplateEngine
             if ($m['tagType'] == 'B') {
                 // Store begin block tag name and its start/end position for
                 // later processing
-                $stack[] = [$m['tagName'], $startPos, $endPos];
+                $stack[$stackIdx++] = [$m['tagName'], $startPos, $endPos];
 
-                // Update the start position for next tag search
+                // Update the start position for next search
                 $startPos = ++$endPos;
                 continue;
             }
 
-            // Retrieve start and end position of ending block tag
-            list($tagNamePrev, $startPosPrev, $endPosPrev) = array_pop($stack);
+            // Retrieve name, start and end position of begin block tag
+            list($beginTagName, $beginTagStartPos, $beginTagEndPos) = $stack[--$stackIdx];
 
-            if ($m['tagName'] != $tagNamePrev)
+            if ($m['tagName'] != $beginTagName)
                 throw new \LogicException(sprintf(
-                    'Block tag mismatch in the `%s` template:: (%s vs %s).', $tname, $m['tagName'], $tagNamePrev
+                    'Block tag mismatch in the `%s` template:: (%s vs %s).', $tname, $beginTagName, $m['tagName']
                 ));
 
             // Extract the template block content into its own template variable
             $blockName = strtoupper($m['tagName']);
-            $this->tplData[$blockName] = substr($tpl, $endPosPrev, $startPos - $endPosPrev);
+            $this->tplData[$blockName] = substr($tpl, $beginTagEndPos, $startPos - $beginTagEndPos);
             $this->tplData[$m['tagName']] =& $this->tplData[$blockName];
 
             // Turn the template block into template variable within the template
             $varname = '{' . $blockName . '}';
-            $tpl = substr_replace($tpl, $varname, $startPosPrev, $endPos - $startPosPrev);
+            $tpl = substr_replace($tpl, $varname, $beginTagStartPos, $endPos - $beginTagStartPos);
 
             // Mark the template block as resolved
             $this->resolvedTemplates[$m['tagName']] = 1;
 
-            // Update the start position for next tag search
-            $startPos = $startPosPrev + strlen($varname);
+            // Update the start position for next search
+            $startPos = $beginTagStartPos + strlen($varname);
         }
+
+        // Cache the template
+        $this->cache->save(
+            [
+                'tplData'           => $this->tplData,
+                'resolvedTemplates' => $this->resolvedTemplates
+            ],
+            $id
+        );
     }
 
     /**
@@ -464,9 +487,9 @@ class TemplateEngine
             if (false === $endPos = strpos($fContent, ' -->', $startPos)) break;
 
             $fpath = substr($fContent, $startPos + 13, ($endPos - $startPos) - 13);
-            $incFContent = $this->loadTemplateFile(trim($fpath, "\x09\x0B\x20\x22\x27"));
-            $fContent = substr_replace($fContent, $incFContent, $startPos, strlen($fpath) + 17);
-            $startPos += strlen($incFContent) + 1;
+            $incFcontent = $this->loadTemplateFile(trim($fpath));
+            $fContent = substr_replace($fContent, $incFcontent, $startPos, strlen($fpath) + 17);
+            $startPos += strlen($incFcontent) + 1;
         }
 
         return $fContent;
@@ -495,12 +518,13 @@ class TemplateEngine
             return $tpl;
 
         $startFrom = -1;
-        $stack = [['{', $curlB]];
+        $stackIdx = 0;
+        $stack[$stackIdx++] = ['{', $curlB];
         $curl = $this->findNextCurl($tpl, $startFrom);
 
         while (false !== $curl) {
             if ($curl[0] == '{') {
-                $stack[] = $curl;
+                $stack[$stackIdx++] = $curl;
                 $startFrom = $curl[1];
                 $curl = $this->findNextCurl($tpl, $startFrom);
                 continue;
@@ -508,13 +532,13 @@ class TemplateEngine
 
             $curlE = $curl[1];
 
-            if (count($stack) < 1) {
+            if ($stackIdx < 1) {
                 $startFrom = $curlE;
                 $curl = $this->findNextCurl($tpl, $startFrom);
                 continue;
             }
 
-            $curl = array_pop($stack);
+            $curl = $stack[--$stackIdx];
             $curlB = $curl[1];
 
             if ($curlB >= $curlE + 1) {
@@ -529,7 +553,6 @@ class TemplateEngine
                 continue;
             }
 
-            //$varname = strtolower($varname);
             if (isset($this->tplRuntimeVariables[$varname])) {
                 $tpl = substr_replace($tpl, $this->tplRuntimeVariables[$varname], $curlB, $curlE - $curlB + 1);
                 $startFrom = $curlB - 1; // Substitution result can also be a variable

@@ -21,7 +21,7 @@
 <body>
 <div id="wrapper">
     <div class="header">
-        <!-- INCLUDE "/shared/partials/navigation/main_menu.tpl" -->
+        <!-- INCLUDE shared/partials/navigation/main_menu.tpl -->
         <div class="logo"><img src="{ISP_LOGO}" alt="i-MSCP logo"/></div>
     </div>
     <div class="location">
@@ -34,9 +34,9 @@
             <!-- EDP: logged_from -->
             <li><a class="logout" href="/index.php?action=logout">{TR_MENU_LOGOUT}</a></li>
         </ul>
-<!-- INCLUDE "shared/partials/navigation/breadcrumbs.tpl" -->
+        <!-- INCLUDE shared/partials/navigation/breadcrumbs.tpl -->
     </div>
-<!-- INCLUDE "shared/partials/navigation/left_menu.tpl" -->
+    <!-- INCLUDE shared/partials/navigation/left_menu.tpl -->
     <div class="body">
         <h2 class="{TITLE_CLASS}"><span>{TR_TITLE}</span></h2>
         <!-- BDP: page_message -->

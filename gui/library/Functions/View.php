@@ -18,9 +18,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP\TemplateEngine;
 use iMSCP_Events as Events;
 use iMSCP_Exception as iMSCPException;
-use iMSCP\TemplateEngine;
 use iMSCP_Registry as Registry;
 use Zend_Navigation as Navigation;
 
@@ -105,7 +105,7 @@ function generateDMYlists(TemplateEngine $tpl, $day, $month, $year, $nPastYears)
 
     foreach (range(1, 12) as $lmonth) {
         $tpl->assign([
-            'OPTION_SELECTED' => ($lmonth == $month) ? ' selected' : '',
+            'OPTION_SELECTED' => $lmonth == $month ? ' selected' : '',
             'MONTH_VALUE'     => tohtml($lmonth)
         ]);
         $tpl->parse('MONTH_LIST', '.month_list');
@@ -115,7 +115,7 @@ function generateDMYlists(TemplateEngine $tpl, $day, $month, $year, $nPastYears)
 
     foreach (range($curYear - $nPastYears, $curYear) as $lyear) {
         $tpl->assign([
-            'OPTION_SELECTED' => ($lyear == $year) ? ' selected' : '',
+            'OPTION_SELECTED' => $lyear == $year ? ' selected' : '',
             'YEAR_VALUE'      => tohtml($lyear, 'htmlAttr'),
         ]);
         $tpl->parse('YEAR_LIST', '.year_list');
@@ -137,12 +137,12 @@ function generateNavigation(TemplateEngine $tpl)
 
     $cfg = Registry::get('config');
     $tpl->define([
-        'main_menu'        => 'layout',
-        'main_menu_block'  => 'main_menu',
-        'menu'             => 'layout',
-        'left_menu_block'  => 'menu',
-        'breadcrumbs'      => 'layout',
-        'breadcrumb_block' => 'breadcrumbs'
+        'main_menu_block'  => 'layout',
+        'main_menu_link_block' => 'main_menu_block',
+        'left_menu_block'  => 'layout',
+        'left_menu_link_block' => 'left_menu_block',
+        'breadcrumb_block' => 'layout',
+        'breadcrumb_link_block' => 'breadcrumb_block'
     ]);
 
     generateLoggedFrom($tpl);
@@ -164,8 +164,8 @@ function generateNavigation(TemplateEngine $tpl)
 
                 foreach ($webmails as $webmail) {
                     $page = [
-                        'label'  => tr('%s webmail', $webmail),
-                        'uri'    => '/' . (($webmail == 'Roundcube') ? 'webmail' : strtolower($webmail)) . '/',
+                        'label'  => tohtml(tr('%s webmail', $webmail)),
+                        'uri'    => '/' . ($webmail == 'Roundcube' ? 'webmail' : strtolower($webmail)) . '/',
                         'target' => '_blank',
                     ];
                     $page1->addPage($page);
@@ -182,156 +182,121 @@ function generateNavigation(TemplateEngine $tpl)
     ]);
 
     // Remove support system page if feature is globally disabled
-    if (!$cfg['IMSCP_SUPPORT_SYSTEM']) {
+    if (!$cfg['IMSCP_SUPPORT_SYSTEM'])
         $navigation->removePage($navigation->findOneBy('class', 'support'));
-    }
 
     // Custom menus
-    if (NULL != ($customMenus = getCustomMenus($_SESSION['user_type']))) {
+    if (NULL !== $customMenus = getCustomMenus($_SESSION['user_type'])) {
         foreach ($customMenus as $customMenu) {
             $navigation->addPage([
                 'order'  => $customMenu['menu_order'],
                 'label'  => tohtml($customMenu['menu_name']),
                 'uri'    => get_menu_vars($customMenu['menu_link']),
-                'target' => (!empty($customMenu['menu_target']) ? tohtml($customMenu['menu_target']) : '_self'),
+                'target' => !empty($customMenu['menu_target']) ? tohtml($customMenu['menu_target']) : '_self',
                 'class'  => 'custom_link'
             ]);
         }
     }
 
     /** @var $activePage Zend_Navigation_Page_Uri */
-    foreach ($navigation->findAllBy('uri', $_SERVER['SCRIPT_NAME']) as $activePage) {
+    foreach ($navigation->findAllBy('uri', $_SERVER['SCRIPT_NAME']) as $activePage)
         $activePage->setActive();
-    }
 
-    $query = (!empty($_GET)) ? '?' . http_build_query($_GET) : '';
+    $query = !empty($_GET) ? '?' . http_build_query($_GET) : '';
 
     /** @var $page Zend_Navigation_Page */
     foreach ($navigation as $page) {
-        if (NULL !== ($callbacks = $page->get('privilege_callback'))) {
-            $callbacks = (isset($callbacks['name'])) ? [$callbacks] : $callbacks;
-
+        if (NULL !== $callbacks = $page->get('privilege_callback')) {
+            $callbacks = isset($callbacks['name']) ? [$callbacks] : $callbacks;
             foreach ($callbacks as $callback) {
-                if (is_callable($callback['name'])) {
-                    if (!call_user_func_array(
-                        $callback['name'], isset($callback['param']) ? (array)$callback['param'] : []
-                    )
-                    ) {
-                        continue 2;
-                    }
-                } else {
-                    $name = (is_array($callback['name'])) ? $callback['name'][1] : $callback['name'];
-                    throw new iMSCPException(sprintf('Privileges callback is not callable: %s', $name));
+                if (!call_user_func_array(
+                    $callback['name'], isset($callback['param']) ? (array)$callback['param'] : []
+                )) {
+                    continue 2;
                 }
             }
         }
 
-        if (!$page->isVisible()) {
-            continue;
-        }
+        if (!$page->isVisible()) continue;
 
         $tpl->assign([
             'HREF'                    => $page->getHref(),
             'CLASS'                   => $page->getClass()
-                . (($_SESSION['show_main_menu_labels']) ? ' show_labels' : ''),
-            'IS_ACTIVE_CLASS'         => ($page->isActive(true)) ? 'active' : 'dummy',
-            'TARGET'                  => ($page->getTarget()) ? tohtml($page->getTarget()) : '_self',
+                . ($_SESSION['show_main_menu_labels'] ? ' show_labels' : ''),
+            'IS_ACTIVE_CLASS'         => $page->isActive(true) ? 'active' : 'dummy',
+            'TARGET'                  => $page->getTarget() ? tohtml($page->getTarget()) : '_self',
             'MAIN_MENU_LABEL_TOOLTIP' => tohtml($page->getLabel(), 'htmlAttr'),
-            'MAIN_MENU_LABEL'         => ($_SESSION['show_main_menu_labels']) ? tohtml($page->getLabel()) : ''
+            'MAIN_MENU_LABEL'         => $_SESSION['show_main_menu_labels'] ? tohtml($page->getLabel()) : ''
         ]);
 
         // Add page to main menu
-        $tpl->parse('MAIN_MENU_BLOCK', '.main_menu_block');
+        $tpl->parse('MAIN_MENU_LINK_BLOCK', '.main_menu_link_block');
 
-        if ($page->isActive(true)) {
+        if (!$page->isActive(true)) continue;
+
+        $tpl->assign([
+            'TR_SECTION_TITLE'    => tohtml($page->getLabel()),
+            'SECTION_TITLE_CLASS' => $page->getClass()
+        ]);
+
+        // Add page to breadcrumb
+        $tpl->assign('BREADCRUMB_LABEL', tohtml($page->getLabel()));
+        $tpl->parse('BREADCRUMB_LINK_BLOCK', '.breadcrumb_link_block');
+
+        if (!$page->hasPages()) { // Should never occurs but...
             $tpl->assign([
-                'TR_SECTION_TITLE'    => tohtml($page->getLabel()),
-                'SECTION_TITLE_CLASS' => $page->getClass()
+                'LEFT_MENU_BLOCK' =>  '',
+                'BREADCRUMB_BLOCK' => ''
+            ]);
+            continue;
+        }
+
+        $page = new RecursiveIteratorIterator($page, RecursiveIteratorIterator::SELF_FIRST);
+        foreach ($page as $subpage) {
+            if (NULL !== $callbacks = $subpage->get('privilege_callback')) {
+                $callbacks = isset($callbacks['name']) ? [$callbacks] : $callbacks;
+                foreach ($callbacks AS $callback) {
+                    if (!call_user_func_array(
+                        $callback['name'], isset($callback['param']) ? (array)$callback['param'] : []
+                    )) {
+                        continue 2;
+                    }
+                }
+            }
+
+            $tpl->assign([
+                'HREF'            => $subpage->getHref(),
+                'IS_ACTIVE_CLASS' => $subpage->isActive(true) ? 'active' : 'dummy',
+                'LEFT_MENU_LABEL' => tohtml($subpage->getLabel()),
+                'TARGET'          => $subpage->getTarget() ?: '_self'
             ]);
 
-            // Add page to breadcrumb
-            $tpl->assign('BREADCRUMB_LABEL', tohtml($page->getLabel()));
-            $tpl->parse('BREADCRUMB_BLOCK', '.breadcrumb_block');
+            if ($subpage->isVisible())
+                $tpl->parse('LEFT_MENU_LINK_BLOCK', '.left_menu_link_block'  ); // Add subpage to left menu
 
-            if (!$page->hasPages()) {
-                $tpl->assign('MENU', '');
-                continue;
-            }
-            
-            $iterator = new RecursiveIteratorIterator($page, RecursiveIteratorIterator::SELF_FIRST);
+            if (!$subpage->isActive(true)) continue;
 
-            /** @var $subpage Zend_Navigation_Page_Uri */
-            foreach ($iterator as $subpage) {
-                if (NULL !== ($callbacks = $subpage->get('privilege_callback'))) {
-                    $callbacks = (isset($callbacks['name'])) ? [$callbacks] : $callbacks;
+            $tpl->assign([
+                'TR_TITLE'    => $subpage->get('dynamic_title')
+                    ? $subpage->get('dynamic_title') : tohtml($subpage->getLabel()),
+                'TITLE_CLASS' => $subpage->get('title_class')
+            ]);
 
-                    foreach ($callbacks AS $callback) {
-                        if (is_callable($callback['name'])) {
-                            if (!call_user_func_array(
-                                $callback['name'],
-                                isset($callback['param']) ? (array)$callback['param'] : [])
-                            ) {
-                                continue 2;
-                            }
-                        } else {
-                            $name = (is_array($callback['name'])) ? $callback['name'][1] : $callback['name'];
-                            throw new iMSCPException(sprintf('Privileges callback is not callable: %s', $name));
-                        }
-                    }
-                }
+            if (!$subpage->hasPages())
+                $tpl->assign('HREF', $subpage->getHref() . $query);
 
-                $tpl->assign([
-                    'HREF'            => $subpage->getHref(),
-                    'IS_ACTIVE_CLASS' => ($subpage->isActive(true)) ? 'active' : 'dummy',
-                    'LEFT_MENU_LABEL' => tohtml($subpage->getLabel()),
-                    'TARGET'          => ($subpage->getTarget()) ? $subpage->getTarget() : '_self'
-                ]);
-
-                if ($subpage->isVisible()) {
-                    // Add subpage to left menu
-                    $tpl->parse('LEFT_MENU_BLOCK', '.left_menu_block');
-                }
-
-                if ($subpage->isActive(true)) {
-                    $tpl->assign([
-                        'TR_TITLE'    => ($subpage->get('dynamic_title'))
-                            ? $subpage->get('dynamic_title')
-                            : tohtml($subpage->getLabel()),
-                        'TITLE_CLASS' => $subpage->get('title_class')
-                    ]);
-
-                    if (!$subpage->hasPages()) {
-                        $tpl->assign('HREF', $subpage->getHref() . "$query");
-                    }
-
-                    // add subpage to breadcrumbs
-                    if (NULL != ($label = $subpage->get('dynamic_title'))) {
-                        $tpl->assign('BREADCRUMB_LABEL', $label);
-                    } else {
-                        $tpl->assign('BREADCRUMB_LABEL', tohtml($subpage->getLabel()));
-                    }
-
-                    $tpl->parse('BREADCRUMB_BLOCK', '.breadcrumb_block');
-                }
-            }
-
-            $tpl->parse('MENU', 'menu');
+            // add subpage to breadcrumbs
+            $tpl->assign('BREADCRUMB_LABEL', tohtml($subpage->get('dynamic_title') ?: $subpage->getLabel()));
+            $tpl->parse('BREADCRUMB_LINK_BLOCK', '.breadcrumb_link_block');
         }
     }
 
-    $tpl->parse('MAIN_MENU', 'main_menu');
-    $tpl->parse('BREADCRUMBS', 'breadcrumbs');
-    $tpl->parse('MENU', 'menu');
-
     // Static variables
     $tpl->assign([
-        'TR_MENU_LOGOUT' => tr('Logout'),
-        'VERSION'        => (isset($cfg['Version']) && $cfg['Version'] != '')
-            ? $cfg['Version'] : tohtml(tr('Unknown')),
-        'BUILDDATE'      => (isset($cfg['BuildDate']) && $cfg['BuildDate'] != '')
-            ? $cfg['BuildDate'] : tohtml(tr('Unavailable')),
-        'CODENAME'       => (isset($cfg['CodeName']) && $cfg['CodeName'] != '')
-            ? $cfg['CodeName'] : tohtml(tr('Unknown'))
+        'TR_MENU_LOGOUT' => tohtml(tr('Logout')),
+        'VERSION'        => !empty($cfg['Version']) ? $cfg['Version'] : tohtml(tr('Unknown')),
+        'BUILDDATE'      => !empty($cfg['BuildDate']) ? $cfg['BuildDate'] : tohtml(tr('Unavailable')),
+        'CODENAME'       => !empty($cfg['CodeName']) ? $cfg['CodeName'] : tohtml(tr('Unknown'))
     ]);
 
     Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAfterGenerateNavigation, [
@@ -399,8 +364,8 @@ function gen_admin_list(TemplateEngine $tpl)
     while ($row = $stmt->fetch()) {
         $tpl->assign([
             'ADMINISTRATOR_USERNAME'   => tohtml($row['admin_name']),
-            'ADMINISTRATOR_CREATED_ON' => tohtml(($row['domain_created'] == 0)
-                ? tr('N/A') : date($cfg['DATE_FORMAT'], $row['domain_created'])
+            'ADMINISTRATOR_CREATED_ON' => tohtml(
+                $row['domain_created'] == 0 ? tr('N/A') : date($cfg['DATE_FORMAT'], $row['domain_created'])
             ),
             'ADMINISTRATPR_CREATED_BY' => tohtml(is_null($row['created_by']) ? tr('System') : $row['created_by']),
             'ADMINISTRATOR_ID'         => $row['admin_id']
@@ -446,8 +411,8 @@ function gen_reseller_list(TemplateEngine $tpl)
     while ($row = $stmt->fetch()) {
         $tpl->assign([
             'RESELLER_USERNAME'   => tohtml($row['admin_name']),
-            'RESELLER_CREATED_ON' => tohtml(($row['domain_created'] == 0)
-                ? tr('N/A') : date($cfg['DATE_FORMAT'], $row['domain_created'])
+            'RESELLER_CREATED_ON' => tohtml(
+                $row['domain_created'] == 0 ? tr('N/A') : date($cfg['DATE_FORMAT'], $row['domain_created'])
             ),
             'RESELLER_CREATED_BY' => tohtml(is_null($row['created_by']) ? tr('Unknown') : $row['created_by']),
             'RESELLER_ID'         => $row['admin_id']
@@ -479,8 +444,8 @@ function get_search_user_queries($sLimit, $eLimit, $searchField = NULL, $searchV
     }
 
     if ($searchStatus !== NULL && $searchStatus != 'anything') {
-        $where .= (($where == '') ? 'WHERE ' : ' AND ') . 't1.domain_status' . (
-            ($searchStatus == 'ok' || $searchStatus == 'disabled')
+        $where .= ($where == '' ? 'WHERE ' : ' AND ') . 't1.domain_status' . (
+            $searchStatus == 'ok' || $searchStatus == 'disabled'
                 ? ' = ' . quoteValue($searchStatus)
                 : " NOT IN ('ok', 'disabled', 'toadd', 'tochange', 'toenable', 'torestore', 'todisable', 'todelete')"
             );
@@ -488,21 +453,19 @@ function get_search_user_queries($sLimit, $eLimit, $searchField = NULL, $searchV
 
     if ($searchField !== NULL && $searchField != 'anything') {
         if ($searchField == 'domain_name') {
-            $where .= (($where == '') ? 'WHERE ' : ' AND ') . 't1.domain_name';
+            $where .= ($where == '' ? 'WHERE ' : ' AND ') . 't1.domain_name';
         } elseif ($_SESSION['user_type'] == 'admin' && $searchField == 'reseller_name') {
-            $where .= (($where == '') ? 'WHERE ' : ' AND ') . 't3.admin_name';
-        } elseif (in_array(
-            $searchField, ['fname', 'lname', 'firm', 'city', 'state', 'country'], true
-        )) {
-            $where .= (($where == '') ? 'WHERE ' : ' AND ') . "t2.$searchField";
+            $where .= ($where == '' ? 'WHERE ' : ' AND ') . 't3.admin_name';
+        } elseif (in_array($searchField, ['fname', 'lname', 'firm', 'city', 'state', 'country'], true)) {
+            $where .= ($where == '' ? 'WHERE ' : ' AND ') . "t2.$searchField";
         } else {
             showBadRequestErrorPage();
         }
 
         $searchValue = str_replace(['!', '_', '%'], ['!!!', '!_', '!%'], $searchValue);
-        $where .= ' LIKE ' . quoteValue(
-                '%' . (($searchField == 'domain_name') ? encode_idna($searchValue) : $searchValue) . '%'
-            ) . " ESCAPE '!'";
+        $where .= ' LIKE '
+            . quoteValue('%' . ($searchField == 'domain_name' ? encode_idna($searchValue) : $searchValue) . '%')
+            . " ESCAPE '!'";
     }
 
     return [
@@ -578,7 +541,7 @@ function gen_search_user_fields(TemplateEngine $tpl, $searchField = NULL, $searc
             showBadRequestErrorPage();
         }
 
-        $tpl->assign('SEARCH_VALUE', ($searchValue !== NULL) ? tohtml($searchValue, 'htmlAttr') : '');
+        $tpl->assign('SEARCH_VALUE', $searchValue !== NULL ? tohtml($searchValue, 'htmlAttr') : '');
     }
 
     $tpl->assign([
@@ -677,7 +640,7 @@ function gen_user_list(TemplateEngine $tpl)
     if (isset($_SESSION['client_domain_aliases_switch'])) {
         $tpl->assign([
             'CLIENT_DOMAIN_ALIASES_SWITCH_VALUE'                              => $_SESSION['client_domain_aliases_switch'],
-            ($_SESSION['client_domain_aliases_switch'] == 'show')
+            $_SESSION['client_domain_aliases_switch'] == 'show'
                 ? 'CLIENT_DOMAIN_ALIASES_SHOW' : 'CLIENT_DOMAIN_ALIASES_HIDE' => ''
         ]);
     } else {
@@ -731,7 +694,7 @@ function gen_user_list(TemplateEngine $tpl)
     while ($row = $stmt->fetch()) {
         $statusOk = true;
         $statusTxt = $statusTooltip = translate_dmn_status(
-            ($row['admin_status'] != 'ok') ? $row['admin_status'] : $row['domain_status']
+            $row['admin_status'] != 'ok' ? $row['admin_status'] : $row['domain_status']
         );
 
         if ($row['admin_status'] == 'ok' && $row['domain_status'] == 'ok') {
@@ -759,7 +722,7 @@ function gen_user_list(TemplateEngine $tpl)
             'CLIENT_DOMAIN_ID'         => $row['domain_id'],
             'CLIENT_ID'                => $row['admin_id'],
             'CLIENT_CREATED_ON'        => tohtml(
-                ($row['domain_created'] == 0) ? tr('N/A') : date($cfg['DATE_FORMAT'], $row['domain_created'])
+                $row['domain_created'] == 0 ? tr('N/A') : date($cfg['DATE_FORMAT'], $row['domain_created'])
             ),
             'CLIENT_CREATED_BY'        => tohtml($row['reseller_name'])
         ]);
@@ -819,8 +782,7 @@ function reseller_generate_ip_list(TemplateEngine $tpl, $resellerId, $domainIp)
         }
 
         $tpl->assign([
-            'IP_NUM'      => tohtml(($row['ip_number'] == '0.0.0.0')
-                ? tr('Any') : $row['ip_number'], 'htmlAttr'),
+            'IP_NUM'      => tohtml($row['ip_number'] == '0.0.0.0' ? tr('Any') : $row['ip_number'], 'htmlAttr'),
             'IP_VALUE'    => $row['ip_id'],
             'IP_SELECTED' => $domainIp === $row['ip_id'] ? ' selected' : ''
         ]);
