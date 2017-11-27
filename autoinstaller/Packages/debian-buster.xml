@@ -6,7 +6,7 @@
     </frontend>
     <httpd>
         <apache_fcgid
-                description="Apache2 (MPM event) server and PHP with CGI/FastCGI SAPI"
+                description="Apache2 (MPM Event) server and PHP with CGI/FastCGI SAPI"
                 class="Servers::httpd::apache_fcgid"
         >
             <package>apache2-suexec-pristine</package>
