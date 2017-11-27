@@ -34,6 +34,7 @@ CONFIG
     Added: LOGROTATE(8) configuration file for rsyslog (Ubuntu 14.04/Trusty Thar)
     Added: LOGROTATE(8) configuration file for syslog-ng (All distributions)
     Added: Missing pbuilder configuration file -- Devuan 1.0/Jessie
+    Added: Support for PHP 5.2 (only for distributions that support it)
     Enhancement: Make it possible to override default config by including *.conf files from the /etc/dovecot/imscp.d directory (Dovecot)
     Fixed: Make use of the `ssl' parameter of the `listen' directive in place of the `ssl' directive (Nginx)
     Updated: LOGROTATE(8) configuration file for ProFTPD -- Added stanza for traffic log file rotation
@@ -112,6 +113,7 @@ INSTALLER
     Renamed: `kept` attribute to `keep_if_exist' (copy_config xml node from install.xml files)
     Renamed: `if' attribute to 'copy_if' (copy_config xml node from install.xml files)
     Review: Ask for confirmation in case the current SQL vendor is no longer available (safety measure)
+    Review: Install all available PHP variants regardless of the selected PHP alternative (system PHP version)
     Review: Wrap the real i-MSCP installer for satisfying pre-requisites
 
 LISTENERS

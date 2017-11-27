@@ -167,30 +167,31 @@ EOF
 
     {
         startDetail();
-
         local $CWD = "$FindBin::Bin/autoinstaller/preinstall";
-        my $nPackages = scalar keys %{$self->{'packagesPreInstallTasks'}};
-        my $cPackage = 1;
 
-        for my $package( sort keys %{$self->{'packagesPreInstallTasks'}} ) {
-            $rs ||= step(
-                sub {
-                    my $stdout;
-                    $rs = execute(
-                        $self->{'packagesPreInstallTasks'}->{$package},
-                        ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout ), \ my $stderr
-                    );
-                    error( $stderr || sprintf(
-                        "Unknown error while executing preinstall tasks for the `%s' package", $package
-                    )) if $rs;
-                    $rs;
-                },
-                sprintf( "Executing preinstall tasks for the `%s' package... Please be patient.", $package ),
-                $nPackages,
-                $cPackage
-            );
+        for my $subject( keys %{$self->{'packagesPreInstallTasks'}} ) {
+            my $subjectH = $subject =~ s/_/ /gr;
+            my $nTasks = @{$self->{'packagesPreInstallTasks'}->{$subject}};
+            my $cTask = 1;
+
+            for( @{$self->{'packagesPreInstallTasks'}->{$subject}} ) {
+                $rs ||= step(
+                    sub {
+                        my $stdout;
+                        $rs = execute(
+                            $_, ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout ), \ my $stderr
+                        );
+                        error( sprintf( 'Error while executing pre-install tasks for %s: %s', $subjectH,
+                            $stderr || 'Unknown error' )) if $rs;
+                        $rs;
+                    },
+                    sprintf( 'Executing pre-install tasks for %s... Please be patient.', $subjectH ), $nTasks, $cTask
+                );
+                last if $rs;
+                $cTask++;
+            }
+
             last if $rs;
-            $cPackage++;
         }
 
         endDetail();
@@ -232,30 +233,30 @@ EOF
 
     {
         startDetail();
-
         local $CWD = "$FindBin::Bin/autoinstaller/postinstall";
-        my $nPackages = scalar keys %{$self->{'packagesPostInstallTasks'}};
-        my $cPackage = 1;
 
-        for my $package( sort keys %{$self->{'packagesPostInstallTasks'}} ) {
-            $rs ||= step(
-                sub {
-                    $rs = execute(
-                        $self->{'packagesPostInstallTasks'}->{$package},
-                        ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout ),
-                        \ $stderr
-                    );
-                    error( $stderr || sprintf(
-                        "Unknown error while executing postinstall tasks for the `%s' package", $package
-                    )) if $rs;
-                    $rs;
-                },
-                sprintf( "Executing postinstall tasks for the `%s' package... Please be patient.", $package ),
-                $nPackages,
-                $cPackage
-            );
+        for my $subject( keys %{$self->{'packagesPostInstallTasks'}} ) {
+            my $subjectH = $subject =~ s/_/ /gr;
+            my $nTasks = @{$self->{'packagesPostInstallTasks'}->{$subject}};
+            my $cTask = 1;
+
+            for( @{$self->{'packagesPostInstallTasks'}->{$subject}} ) {
+                $rs ||= step(
+                    sub {
+                        $rs = execute(
+                            $_, ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout ), \ $stderr
+                        );
+                        error( sprintf( 'Error while executing post-install tasks for %s: %s', $subjectH,
+                            $stderr || 'Unknown error' )) if $rs;
+                        $rs;
+                    },
+                    sprintf( 'Executing post-install tasks for %s... Please be patient.', $subjectH ), $nTasks, $cTask
+                );
+                last if $rs;
+                $cTask++;
+            }
+
             last if $rs;
-            $cPackage++;
         }
 
         endDetail();
@@ -298,7 +299,7 @@ sub uninstallPackages
         @apkgs{split /\n/, $stdout} = undef;
         undef $stdout;
         @{$packagesToUninstall} = grep(exists $apkgs{$_}, @{$packagesToUninstall});
-        undef %apkgs;
+        undef % apkgs;
 
         if ( @{$packagesToUninstall} ) {
             # Filter packages that must be kept
@@ -452,14 +453,14 @@ sub _parsePackageNode
         push @{$target}, $node->{'content'};
     }
 
-    # Package preinstall tasks
-    if ( defined $node->{'pre_install_tasks'} ) {
-        $self->{'packagesPreInstallTasks'}->{$node->{'content'}} = $node->{'pre_install_tasks'}
+    # Per package pre-install tasks
+    if ( defined $node->{'pre_install_task'} ) {
+        push @{ $self->{'packagesPreInstallTasks'}->{$node->{'content'}} }, $_ for @{$node->{'pre_install_task'}};
     }
 
-    # Package postinstall tasks
-    if ( defined $node->{'post_install_tasks'} ) {
-        $self->{'packagesPostInstallTasks'}->{$node->{'content'}} = $node->{'post_install_tasks'}
+    # Per package post-install tasks
+    if ( defined $node->{'post_install_task'} ) {
+        push @{$self->{'packagesPostInstallTasks'}->{$node->{'content'}}}, $_ for @{$node->{'post_install_task'}};
     }
 
     # Per package APT pinning
@@ -504,7 +505,9 @@ sub _processPackagesFile
     my $pkgData = eval {
         $xml->XMLin(
             $pkgFile,
-            ForceArray     => [ 'package', 'package_delayed', 'package_conflict' ],
+            ForceArray     => [
+                'package', 'package_delayed', 'package_conflict', 'pre_install_task', 'post_install_task'
+            ],
             NormaliseSpace => 2
         );
     };
@@ -525,9 +528,7 @@ sub _processPackagesFile
 
         # List of packages to install (delayed)
         if ( defined $data->{'package_delayed'} ) {
-            for( @{$data->{'package_delayed'}} ) {
-                $self->_parsePackageNode( $_, $self->{'packagesToInstallDelayed'} );
-            }
+            $self->_parsePackageNode( $_, $self->{'packagesToInstallDelayed'} ) for @{$data->{'package_delayed'}};
         }
 
         # List of conflicting packages that must be pre-removed
@@ -537,6 +538,17 @@ sub _processPackagesFile
             }
         }
 
+        # Per package section APT repository
+        if ( defined $data->{'repository'} ) {
+            push @{$self->{'aptRepositoriesToAdd'}},
+                {
+                    repository         => $data->{'repository'},
+                    repository_key_uri => $data->{'repository_key_uri'} || undef,
+                    repository_key_id  => $data->{'repository_key_id'} || undef,
+                    repository_key_srv => $data->{'repository_key_srv'} || undef
+                };
+        }
+        
         # Per package section APT pinning
         if ( defined $data->{'pinning_package'} ) {
             push @{$self->{'aptPreferences'}},
@@ -547,11 +559,23 @@ sub _processPackagesFile
                 };
         }
 
-        next if defined $data->{'package'}
-            || defined $data->{'package_delayed'}
-            || defined $data->{'package_conflict'}
-            || defined $data->{'pinning_package'};
+        # Per package section pre-install tasks
+        if ( defined $data->{'pre_install_task'} ) {
+            push @{$self->{'packagesPreInstallTasks'}->{$section}}, $_ for @{$data->{'pre_install_task'}};
+        }
 
+        # Per package section post-install tasks
+        if ( defined $data->{'post_install_task'} ) {
+            push @{$self->{'packagesPostInstallTasks'}->{$section}}, $_ for @{$data->{'post_install_task'}};
+        }
+
+        # Delete items that were already processed
+        delete @{$data}{qw/ package package_delayed package_conflict pinning_package repository repository_key_uri
+            repository_key_id repository_key_srv post_install_task post_install_task provide_alternatives /};
+
+        # Jump in next section, unless there is still data for alternatives
+        next unless %{$data};
+        
         # Whether user must be asked for alternative or not
         my $needDialog = 0;
 
@@ -660,7 +684,7 @@ EOF
             }
         }
 
-        # APT preferences to add for the selected alternative
+        # APT pinning for the selected alternative
         if ( defined $data->{$sAlt}->{'pinning_package'} ) {
             push @{$self->{'aptPreferences'}},
                 {
@@ -681,8 +705,18 @@ EOF
                 };
         }
 
-        # Schedule removal of APT repositories and packages that belongs to
-        # unselected alternatives
+        # Perl alternative pre-install tasks
+        if ( defined $data->{$sAlt}->{'pre_install_task'} ) {
+            push @{$self->{'packagesPreInstallTasks'}->{$sAlt}}, $_ for @{$data->{$sAlt}->{'pre_install_task'}};
+        }
+
+        # Perl alternative post-install tasks
+        if ( defined $data->{$sAlt}->{'post_install_task'} ) {
+            push @{$self->{'packagesPostInstallTasks'}->{$sAlt}}, $_ for @{$data->{$sAlt}->{'post_install_task'}};
+        }
+
+        # Schedule removal of APT repositories and packages that belong to
+        # unselected alternatives, unless required elsewhere
         while ( my ($alt, $altData) = each( %{$data} ) ) {
             next if $alt eq $sAlt;
 

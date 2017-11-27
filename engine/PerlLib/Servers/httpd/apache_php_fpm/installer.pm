@@ -339,7 +339,7 @@ sub _buildFastCgiConfFiles
 
     $rs = $self->{'httpd'}->disableModules(
         'actions', 'fastcgi', 'fcgid', 'fcgid_imscp', 'suexec', 'php5', 'php5_cgi', 'php5filter', 'php5.6', 'php7.0',
-        'php7.1', 'proxy_fcgi', 'proxy_handler', 'mpm_itk', 'mpm_event', 'mpm_prefork', 'mpm_worker'
+        'php7.1', 'php7.2', 'proxy_fcgi', 'proxy_handler', 'mpm_itk', 'mpm_event', 'mpm_prefork', 'mpm_worker'
     );
     $rs ||= $self->{'httpd'}->enableModules( 'authz_groupfile', 'mpm_event', 'proxy_fcgi', 'suexec', 'version' );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildFastCgiConfFiles' );

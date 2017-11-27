@@ -121,11 +121,13 @@ sub _init
             version_command => 'php -nv 2> /dev/null',
             version_regexp  => qr/PHP\s+([\d.]+)/,
             min_version     => '5.6.0',
-            max_version     => '7.1.999', # Arbitrary minor version is intentional. We only want reject PHP >= 7.2
+            max_version     => '7.2.999', # Arbitrary minor version is intentional. We only want reject PHP >= 7.2
             modules         => [
                 # 'apc', 'apcu', # These extensions are not provided for PHP 7.1 under Debian 10/Buster
                 'ctype', 'curl', 'date', 'dom', 'fileinfo', 'filter', 'ftp', 'gd', 'gettext', 'gmp',
-                'hash', 'iconv', 'imap', 'intl', 'json', 'libxml', 'mbstring', 'mcrypt', 'mysqlnd', 'mysqli', 'openssl',
+                'hash', 'iconv', 'imap', 'intl', 'json', 'libxml', 'mbstring',
+                # 'mcrypt', # This extension is not provided for PHP >= 7.2
+                'mysqlnd', 'mysqli', 'openssl',
                 'pcntl', 'pcre', 'PDO', 'pdo_mysql', 'Phar', 'posix', 'pspell', 'Reflection', 'session', 'SimpleXML',
                 'sockets', 'SPL', 'xml', 'xmlreader', 'xmlwriter', 'zip', 'zlib', 'Zend OPcache'
             ]
