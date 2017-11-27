@@ -299,7 +299,7 @@ sub uninstallPackages
         @apkgs{split /\n/, $stdout} = undef;
         undef $stdout;
         @{$packagesToUninstall} = grep(exists $apkgs{$_}, @{$packagesToUninstall});
-        undef % apkgs;
+        undef %apkgs;
 
         if ( @{$packagesToUninstall} ) {
             # Filter packages that must be kept

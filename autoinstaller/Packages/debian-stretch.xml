@@ -6,7 +6,7 @@
     </frontend>
     <httpd>
         <apache_fcgid
-                description="Apache2 server (MPM event) and PHP with CGI/FastCGI SAPI"
+                description="Apache2 (MPM event) server and PHP with CGI/FastCGI SAPI"
                 class="Servers::httpd::apache_fcgid"
         >
             <package>apache2-suexec-pristine</package>
@@ -23,7 +23,7 @@
         </apache_itk>
         <apache_php_fpm
                 default="1"
-                description="Apache2 server (MPM Event) and PHP with FPM/FastCGI SAPI"
+                description="Apache2 (MPM Event) server and PHP with FPM/FastCGI SAPI"
                 class="Servers::httpd::apache_php_fpm"
         >
             <package>apache2-suexec-pristine</package>
@@ -61,7 +61,7 @@
             <post_install_task>/usr/bin/update-alternatives --set phar.phar /usr/bin/phar.phar7.1</post_install_task>
             <post_install_task>sh php_apcu.sh 7.1</post_install_task>
         </php7.1>
-        <php7.2 default="1" description="PHP 7.2" class="Servers::php">
+        <php7.2 description="PHP 7.2" class="Servers::php">
             <package>libapache2-mod-php7.2</package>
             <post_install_task>/usr/bin/update-alternatives --set php /usr/bin/php7.2</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar /usr/bin/phar7.2</post_install_task>
