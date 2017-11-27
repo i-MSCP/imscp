@@ -266,7 +266,8 @@
         <package>php-pear</package>
         <package_conflict>php5-common</package_conflict>
         <package_conflict>libapache2-mod-php5</package_conflict>
-        <post_install_task>/usr/sbin/phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets curl gd gmp imap
+        <post_install_task>
+            /usr/sbin/phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets curl gd gmp imap
             intl json mbstring mcrypt mysqlnd mysqli pdo_mysql opcache pspell dom xml xmlreader xmlwriter zip
         </post_install_task>
     </php_packages>

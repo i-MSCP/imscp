@@ -716,7 +716,7 @@ EOF
         }
 
         # Schedule removal of APT repositories and packages that belong to
-        # unselected alternatives, unless required elsewhere
+        # unselected alternatives
         while ( my ($alt, $altData) = each( %{$data} ) ) {
             next if $alt eq $sAlt;
 
