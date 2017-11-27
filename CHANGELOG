@@ -113,7 +113,7 @@ INSTALLER
     Renamed: `kept` attribute to `keep_if_exist' (copy_config xml node from install.xml files)
     Renamed: `if' attribute to 'copy_if' (copy_config xml node from install.xml files)
     Review: Ask for confirmation in case the current SQL vendor is no longer available (safety measure)
-    Review: Install all available PHP variants regardless of the selected PHP alternative (system PHP version)
+    Review: Install all available PHP versions regardless of the selected PHP alternative (system PHP version)
     Review: Wrap the real i-MSCP installer for satisfying pre-requisites
 
 LISTENERS
