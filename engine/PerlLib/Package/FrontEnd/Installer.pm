@@ -1128,9 +1128,12 @@ sub _buildPhpConfig
     $rs ||= $self->{'frontend'}->buildConfFile(
         "$self->{'cfgDir'}/php.ini",
         {
-
-            PEAR_DIR => $self->{'config'}->{'PHP_PEAR_DIR_PATH'},
-            TIMEZONE => main::setupGetQuestion( 'TIMEZONE' )
+            PEAR_DIR                    => $self->{'config'}->{'PHP_PEAR_DIR_PATH'},
+            PHP_OPCODE_CACHE_ENABLED    => $self->{'config'}->{'PHP_OPCODE_CACHE_ENABLED'},
+            PHP_OPCODE_CACHE_MAX_MEMORY => $self->{'config'}->{'PHP_OPCODE_CACHE_MAX_MEMORY'},
+            PHP_APCU_CACHE_ENABLED      => $self->{'config'}->{'PHP_APCU_CACHE_ENABLED'},
+            PHP_APCU_CACHE_MAX_MEMORY   => $self->{'config'}->{'PHP_APCU_CACHE_MAX_MEMORY'},
+            TIMEZONE                    => main::setupGetQuestion( 'TIMEZONE' )
         },
         {
             destination => "$self->{'config'}->{'PHP_CONF_DIR_PATH'}/php.ini",
