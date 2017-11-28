@@ -137,11 +137,11 @@ function generateNavigation(TemplateEngine $tpl)
 
     $cfg = Registry::get('config');
     $tpl->define([
-        'main_menu_block'  => 'layout',
-        'main_menu_link_block' => 'main_menu_block',
-        'left_menu_block'  => 'layout',
-        'left_menu_link_block' => 'left_menu_block',
-        'breadcrumb_block' => 'layout',
+        'main_menu_block'       => 'layout',
+        'main_menu_link_block'  => 'main_menu_block',
+        'left_menu_block'       => 'layout',
+        'left_menu_link_block'  => 'left_menu_block',
+        'breadcrumb_block'      => 'layout',
         'breadcrumb_link_block' => 'breadcrumb_block'
     ]);
 
@@ -245,7 +245,7 @@ function generateNavigation(TemplateEngine $tpl)
 
         if (!$page->hasPages()) { // Should never occurs but...
             $tpl->assign([
-                'LEFT_MENU_BLOCK' =>  '',
+                'LEFT_MENU_BLOCK'  => '',
                 'BREADCRUMB_BLOCK' => ''
             ]);
             continue;
@@ -272,7 +272,7 @@ function generateNavigation(TemplateEngine $tpl)
             ]);
 
             if ($subpage->isVisible())
-                $tpl->parse('LEFT_MENU_LINK_BLOCK', '.left_menu_link_block'  ); // Add subpage to left menu
+                $tpl->parse('LEFT_MENU_LINK_BLOCK', '.left_menu_link_block'); // Add subpage to left menu
 
             if (!$subpage->isActive(true)) continue;
 

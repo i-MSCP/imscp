@@ -351,9 +351,8 @@ class TemplateEngine
             return;
         }
 
-        if (NULL === $this->tplData[$tname]) {
+        if (NULL === $this->tplData[$tname])
             $this->tplData[$tname] = $this->loadTemplateFile($this->tplName[$tname]);
-        }
 
         // Mark the template as resolved
         $this->resolvedTemplates[$tname] = 1;

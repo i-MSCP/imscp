@@ -77,11 +77,11 @@ abstract class iMSCP_Plugin
      * For instance:
      *
      * <code>
-     *     $loader = Registry::get('iMSCP_Application')->getAutoloader();
-     *     $loader->addPsr4('iMSCP\\Plugin\\CronJobs\\', __DIR__ . '/frontend/library/');
-     *     $loader->addPsr4('Cron\\', __DIR__ . '/frontend/library/vendor/cron-expression-master/src/Cron/');
+     * $loader = Registry::get('iMSCP_Application')->getAutoloader();
+     * $loader->addPsr4('iMSCP\\Plugin\\CronJobs\\', __DIR__ . '/frontend/library/');
+     * $loader->addPsr4('Cron\\', __DIR__ . '/frontend/library/vendor/cron-expression-master/src/Cron/');
      *
-     *     l10n_addTranslations(__DIR__ . '/l10n/mo', 'Gettext', 'CronJobs');
+     * l10n_addTranslations(__DIR__ . '/l10n/mo', 'Gettext', 'CronJobs');
      * </code>
      *
      * @return void
@@ -439,12 +439,12 @@ abstract class iMSCP_Plugin
      * This method allow the plugin to provide its routes. For instance:
      *
      * <code>
-     *     $pluginDir = $this->getPluginManager()->pluginGetDirectory() . '/' . $this->getName();
+     * $pluginDir = $this->getPluginManager()->pluginGetDirectory() . '/' . $this->getName();
      *
-     *     return [
-     *         '/admin/mailgraph.php'    => $pluginDir . '/frontend/mailgraph.php',
-     *         '/admin/mailgraphics.php' => $pluginDir . '/frontend/mailgraphics.php'
-     *     ];
+     * return [
+     *     '/admin/mailgraph.php'    => $pluginDir . '/frontend/mailgraph.php',
+     *     '/admin/mailgraphics.php' => $pluginDir . '/frontend/mailgraphics.php'
+     * ];
      * </code>
      *
      * @return array An array containing action script paths
@@ -463,11 +463,11 @@ abstract class iMSCP_Plugin
      * the action script to load, else, NULL must be returned. For instance:
      *
      * <code>
-     *     if (strpos($urlComponents['path'], '/mydns/api/') === 0) {
-     *         return $this->getPluginManager()->pluginGetDirectory() . '/' . $this->getName() . '/api.php';
-     *     }
+     * if (strpos($urlComponents['path'], '/mydns/api/') === 0) {
+     *     return $this->getPluginManager()->pluginGetDirectory() . '/' . $this->getName() . '/api.php';
+     * }
      *
-     *     return null;
+     * return null;
      * </code>
      *
      * @param array $urlComponents Associative array containing URL components
@@ -502,16 +502,16 @@ abstract class iMSCP_Plugin
      * For instance:
      *
      * <code>
-     *     return [
-     *      [
-     *          'table'     => 'cron_jobs',
-     *          'item_id'   => 1,
-     *          'item_name' => 'Cron job ID 1 -- domain.tld',
-     *          'status'    => "Couldn't write cron table: Invalid syntax..."
-     *          'field'     => 'cron_job_status'
-     *      ],
-     *      ...
-     *     ];
+     * return [
+     *  [
+     *      'table'     => 'cron_jobs',
+     *      'item_id'   => 1,
+     *      'item_name' => 'Cron job ID 1 -- domain.tld',
+     *      'status'    => "Couldn't write cron table: Invalid syntax..."
+     *      'field'     => 'cron_job_status'
+     *  ],
+     *  ...
+     * ];
      * </code>
      *
      * @return array Array describing list of plugin items that are in error
@@ -523,7 +523,7 @@ abstract class iMSCP_Plugin
     }
 
     /**
-     * Change plugin item status for a new attemps
+     * Change a plugin item status for a new attemps
      *
      * This method is called by the i-MSCP debugger component to recover items
      * that are in error state, those provided by the getItemWithErrorStatus()
@@ -539,13 +539,13 @@ abstract class iMSCP_Plugin
      * For instance:
      *
      * <code>
-     *     if ($table == 'cron_jobs' && $field == 'cron_job_status') {
-     *          if($cron_job_status == 'todelete') {
-     *            // Do something specific when item is being deleted...
-     *          }
+     * if ($table == 'cron_jobs' && $field == 'cron_job_status') {
+     *      if($cron_job_status == 'todelete') {
+     *        // Do something specific when item is being deleted...
+     *      }
      * 
-     *         exec_query("UPDATE cron_jobs SET cron_job_error = NULL WHERE cron_job_id = ?", [$itemId]);
-     *     }
+     *     exec_query("UPDATE cron_jobs SET cron_job_error = NULL WHERE cron_job_id = ?", [$itemId]);
+     * }
      * <code>
      *
      * @param string $table Table name
@@ -561,12 +561,20 @@ abstract class iMSCP_Plugin
      * Return count of backend requests being processed
      *
      * This method is called by the i-MSCP debugger component to get the count
-     * tof backend request being processed for item that belong to the plugin.
+     * of backend requests being processed for items that belong to the plugin.
      *
-     * Returned value must be an integer representing count of plugin items
-     * for which current state reflect an action being processed.
-     *
-     * Note: *MUST* be implemented by any plugin which manage its own items.
+     * For instance:
+     * 
+     * <code>
+     * return execute_query(
+     *     "
+     *         SELECT COUNT(cron_job_id)
+     *         FROM cron_jobs
+     *         WHERE cron_job_status IN ('toadd','tochange','toenable','todisable','tosuspend','tounsuspend','todelete')
+     *         AND cron_job_error IS NULL
+     *     "
+     * )->fetchColumn();
+     * </code>
      *
      * @return int
      */
@@ -622,15 +630,12 @@ abstract class iMSCP_Plugin
      * <code>
      * return array(
      *     'up' => '
-     *         ALTER TABLE
-     *             php_switcher_version
-     *         ADD
-     *             version_confdir_path_prev varchar(255) COLLATE utf8_unicode_ci NULL DEFAULT NULL
-     *         AFTER
-     *             version_binary_path
+     *         ALTER TABLE `php_switcher_version`
+     *         ADD `version_confdir_path_prev` varchar(255) COLLATE utf8_unicode_ci NULL DEFAULT NULL
+     *         AFTER `version_binary_path`;
      *      ',
      *      'down' => '
-     *          ALTER TABLE php_switcher_version DROP COLUMN version_confdir_path_prev
+     *          ALTER TABLE `php_switcher_version` DROP COLUMN `version_confdir_path_prev`;
      *      '
      * );
      * </code>
