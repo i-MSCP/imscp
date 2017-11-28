@@ -21,7 +21,6 @@
 
 #
 ## Provides slave DNS server(s) provisioning service.
-## This listener file requires i-MSCP 1.2.12 or newer.
 ## Slave provisioning service will be available at:
 ##   - http://<panel.domain.tld>:8080/provisioning/slave_provisioning.php
 ##   - https://<panel.domain.tld>:4443/provisioning/slave_provisioning.php (if you use ssl)
@@ -29,7 +28,7 @@
 
 package Listener::Named::Slave::Provisioning;
 
-our $VERSION = '1.0.2';
+our $VERSION = '1.0.3';
 
 use strict;
 use warnings;
@@ -39,6 +38,7 @@ use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::TemplateParser qw/ getBloc replaceBloc /;
 use iMSCP::Crypt qw/ htpasswd /;
+use version;
 
 #
 ## Configuration parameters
@@ -68,6 +68,10 @@ my $realm = 'i-MSCP provisioning service for slave DNS servers';
 #
 ## Please, don't edit anything below this line
 #
+
+version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+    sprintf( "The 10_named_slave_provisionning.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
+);
 
 # Routine that create the .htpasswd file for HTTP (Basic) authentication
 sub createHtpasswdFile
@@ -114,7 +118,6 @@ iMSCP::EventManager->getInstance()->register(
         }
     }
 EOF
-
         ${$tplContent} = replaceBloc(
             "# SECTION custom BEGIN.\n",
             "# SECTION custom END.\n",
@@ -137,10 +140,6 @@ use iMSCP::Registry as Registry;
 
 require '../../library/imscp-lib.php';
 $config = Registry::get('config');
-if(Registry::isRegistered('bufferFilter')) {
-    $filter = Registry::get('bufferFilter');
-    $filter->compressionInformation = false;
-}
 $masterDnsServerIp = $config['BASE_SERVER_PUBLIC_IP'];
 echo "// CONFIGURATION FOR MAIN DOMAIN\n";
 echo "zone \"$config->BASE_SERVER_VHOST\" {\n";
@@ -155,7 +154,7 @@ $rowCount = $stmt->rowCount();
 if ($rowCount > 0) {
     echo "// $rowCount HOSTED DOMAINS LISTED ON $config->SERVER_HOSTNAME [$masterDnsServerIp]\n";
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         echo "zone \"{$row['domain_name']}\" {\n";
         echo "\ttype slave;\n";
         echo "\tfile \"/var/cache/bind/{$row['domain_name']}.db\";\n";
@@ -170,7 +169,7 @@ $stmt = execute_query('SELECT alias_id, alias_name FROM domain_aliasses');
 $rowCount = $stmt->rowCount();
 if ($rowCount > 0) {
     echo "// $rowCount HOSTED ALIASES LISTED ON $config->SERVER_HOSTNAME [$masterDnsServerIp]\n";
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         echo "zone \"{$row['alias_name']}\" {\n";
         echo "\ttype slave;\n";
         echo "\tfile \"/var/cache/bind/{$row['alias_name']}.db\";\n";

@@ -110,7 +110,7 @@ Following DNS resource records can be overriden:
  - @   IN {IP_TYPE} {DOMAIN_IP}
  - www IN CNAME     @
 
-### 10_named_slave_provisioning.pl (requires i-MSCP 1.2.12 or newer)
+### 10_named_slave_provisioning.pl (requires i-MSCP 1.6.0 or newer)
 
 Provides slave DNS server(s) provisioning service.
 
