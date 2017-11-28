@@ -28,6 +28,8 @@ BACKEND
 
 CONFIG
     Added: Daily CRON(8) configuration file for i-MSCP frontend (cleanup of tmp directory)
+    Added: Dedicated parameters for APCu (PHP APC userland cache -- /etc/imscp/php/php.data)
+    Added: Dedicated PHP parameters for the i-MSCP frontend (/etc/imscp/frontend/frontend.data)
     Added: i-MSCP own SOURCES.LIST(5) file
     Added: LOGROTATE(8) configuration file for i-MSCP frontend (PHP errors.log file rotation)
     Added: LOGROTATE(8) configuration file for VsFTPD (Traffic log file rotation)
@@ -113,7 +115,7 @@ INSTALLER
     Renamed: `kept` attribute to `keep_if_exist' (copy_config xml node from install.xml files)
     Renamed: `if' attribute to 'copy_if' (copy_config xml node from install.xml files)
     Review: Ask for confirmation in case the current SQL vendor is no longer available (safety measure)
-    Review: Install all available PHP versions regardless of the selected PHP alternative (system PHP version)
+    Review: Install all available PHP versions regardless of the selected PHP alternative for customers
     Review: Wrap the real i-MSCP installer for satisfying pre-requisites
 
 LISTENERS

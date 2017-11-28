@@ -37,9 +37,9 @@ use iMSCP::Bootstrapper;
 use iMSCP::Getopt;
 use iMSCP::Servers;
 use iMSCP::Packages;
-use POSIX qw /locale_h /;
+use POSIX qw / locale_h /;
 
-setlocale(LC_MESSAGES, "C.UTF-8");
+setlocale(LC_MESSAGES, 'C.UTF-8');
 
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -69,21 +69,17 @@ $bootstrapper->getInstance()->boot(
 );
 
 my $rs = 0;
-my @items = ();
 
 for ( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
-    next unless $_->can( 'dpkgPostInvokeTasks' );
-    push @items, $_->factory();
+    next unless my $sub = $_->can( 'dpkgPostInvokeTasks' );
+    debug( sprintf( 'Executing %s dpkg post-invoke tasks', $_ ));
+    $rs |= $sub->($_->factory());
 }
 
 for ( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
-    next unless $_->can( 'dpkgPostInvokeTasks' );
-    push @items, $_->getInstance();
-}
-
-for( @items ) {
-    debug( sprintf( 'Executing %s dpkg post-invoke tasks', ref ));
-    $rs |= $_->dpkgPostInvokeTasks();
+    next unless my $sub = $_->can( 'dpkgPostInvokeTasks' );
+    debug( sprintf( 'Executing %s dpkg post-invoke tasks', $_ ));
+    $rs |= $sub->($_->getInstance());
 }
 
 exit $rs;

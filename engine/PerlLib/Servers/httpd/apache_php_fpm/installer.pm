@@ -376,7 +376,9 @@ sub _buildPhpConfFiles
             PHP_VERSION                         => $self->{'phpConfig'}->{'PHP_VERSION'},
             TIMEZONE                            => main::setupGetQuestion( 'TIMEZONE' ),
             PHP_OPCODE_CACHE_ENABLED            => $self->{'phpConfig'}->{'PHP_OPCODE_CACHE_ENABLED'},
-            PHP_OPCODE_CACHE_MAX_MEMORY         => $self->{'phpConfig'}->{'PHP_OPCODE_CACHE_MAX_MEMORY'}
+            PHP_OPCODE_CACHE_MAX_MEMORY         => $self->{'phpConfig'}->{'PHP_OPCODE_CACHE_MAX_MEMORY'},
+            PHP_APCU_CACHE_ENABLED              => $self->{'phpConfig'}->{'PHP_APCU_CACHE_ENABLED'},
+            PHP_APCU_CACHE_MAX_MEMORY           => $self->{'phpConfig'}->{'PHP_APCU_CACHE_MAX_MEMORY'}
         }
     );
 

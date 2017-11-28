@@ -46,7 +46,6 @@ use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
 use Package::FrontEnd;
 use Servers::named;
 use Servers::mta;
-use Servers::httpd;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -707,20 +706,18 @@ sub dpkgPostInvokeTasks
 
     $self->{'frontend'}->restartPhpFpm();
 
-    if ( -f '/usr/local/sbin/imscp_panel'
-        && ( $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} eq '' || !-f $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} )
-    ) {
-        # Cover case where administrator removed the package
-        my $rs = $self->{'frontend'}->stop();
-        $rs ||= iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
-        return $rs;
-    }
-
     if ( -f '/usr/local/sbin/imscp_panel' ) {
-        my $v1 = $self->_getFullPhpVersionFor( $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} );
+        unless ( -f $self->{'config'}->{'PHP_FPM_BIN_PATH'} ) {
+            # Cover case where administrator removed the package
+            my $rs = $self->{'frontend'}->stop();
+            $rs ||= iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
+            return $rs;
+        }
+
+        my $v1 = $self->_getFullPhpVersionFor( $self->{'config'}->{'PHP_FPM_BIN_PATH'} );
         my $v2 = $self->_getFullPhpVersionFor( '/usr/local/sbin/imscp_panel' );
         return 0 unless defined $v1 && defined $v2 && $v1 ne $v2; # Don't act when not necessary
-        debug( sprintf( "Updating imscp_panel service PHP binary from version `%s' to version `%s'", $v2, $v1 ));
+        debug( sprintf( "Updating i-MSCP frontEnd PHP-FPM binary from version `%s' to version `%s'", $v2, $v1 ));
     }
 
     my $rs = $self->_copyPhpBinary();
@@ -768,7 +765,6 @@ sub _init
     my ($self) = @_;
 
     $self->{'frontend'} = Package::FrontEnd->getInstance();
-    $self->{'phpConfig'} = Servers::httpd->factory()->{'phpConfig'};
     $self->{'eventManager'} = $self->{'frontend'}->{'eventManager'};
     $self->{'cfgDir'} = $self->{'frontend'}->{'cfgDir'};
     $self->{'config'} = $self->{'frontend'}->{'config'};
@@ -1059,16 +1055,12 @@ sub _copyPhpBinary
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndCopyPhpBinary' );
     return $rs if $rs;
 
-    if ( $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} eq '' ) {
+    if ( $self->{'config'}->{'PHP_FPM_BIN_PATH'} eq '' ) {
         error( "PHP `PHP_FPM_BIN_PATH' configuration parameter is not set." );
         return 1;
     }
 
-    if ( -f '/usr/local/sbin/imscp_panel' ) {
-        $rs ||= iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
-    }
-
-    $rs ||= iMSCP::File->new( filename => $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} )->copyFile(
+    $rs ||= iMSCP::File->new( filename => $self->{'config'}->{'PHP_FPM_BIN_PATH'} )->copyFile(
         '/usr/local/sbin/imscp_panel'
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndCopyPhpBinary' );
@@ -1094,26 +1086,40 @@ sub _buildPhpConfig
     $rs = $self->{'frontend'}->buildConfFile(
         "$self->{'cfgDir'}/php-fpm.conf",
         {
-            CHKROOTKIT_LOG            => $main::imscpConfig{'CHKROOTKIT_LOG'},
-            CONF_DIR                  => $main::imscpConfig{'CONF_DIR'},
-            DOMAIN                    => main::setupGetQuestion( 'BASE_SERVER_VHOST' ),
-            DISTRO_OPENSSL_CNF        => $main::imscpConfig{'DISTRO_OPENSSL_CNF'},
-            DISTRO_CA_BUNDLE          => $main::imscpConfig{'DISTRO_CA_BUNDLE'},
-            FRONTEND_FCGI_CHILDREN    => $self->{'config'}->{'FRONTEND_FCGI_CHILDREN'},
-            FRONTEND_FCGI_MAX_REQUEST => $self->{'config'}->{'FRONTEND_FCGI_MAX_REQUEST'},
-            FRONTEND_GROUP            => $group,
-            FRONTEND_USER             => $user,
-            HOME_DIR                  => $main::imscpConfig{'GUI_ROOT_DIR'},
-            MTA_VIRTUAL_MAIL_DIR      => Servers::mta->factory()->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
-            PEAR_DIR                  => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
-            OTHER_ROOTKIT_LOG         => $main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne ''
+            # FPM configuration
+            PHP_FPM_LOG_LEVEL                   => $self->{'config'}->{'PHP_FPM_LOG_LEVEL'},
+            PHP_FPM_EMERGENCY_RESTART_THRESHOLD => $self->{'config'}->{'PHP_FPM_EMERGENCY_RESTART_THRESHOLD'},
+            PHP_FPM_EMERGENCY_RESTART_INTERVAL  => $self->{'config'}->{'PHP_FPM_EMERGENCY_RESTART_INTERVAL'},
+            PHP_FPM_PROCESS_CONTROL_TIMEOUT     => $self->{'config'}->{'PHP_FPM_PROCESS_CONTROL_TIMEOUT'},
+            PHP_FPM_PROCESS_MAX                 => $self->{'config'}->{'PHP_FPM_PROCESS_MAX'},
+            PHP_FPM_RLIMIT_FILES                => $self->{'config'}->{'PHP_FPM_RLIMIT_FILES'},
+            # FPM imscp_panel pool configuration
+            USER                                => $user,
+            GROUP                               => $group,
+            PHP_FPM_PROCESS_MANAGER_MODE        => $self->{'config'}->{'PHP_FPM_PROCESS_MANAGER_MODE'},
+            PHP_FPM_MAX_CHILDREN                => $self->{'config'}->{'PHP_FPM_MAX_CHILDREN'},
+            PHP_FPM_START_SERVERS               => $self->{'config'}->{'PHP_FPM_START_SERVERS'},
+            PHP_FPM_MIN_SPARE_SERVERS           => $self->{'config'}->{'PHP_FPM_MIN_SPARE_SERVERS'},
+            PHP_FPM_MAX_SPARE_SERVERS           => $self->{'config'}->{'PHP_FPM_MAX_SPARE_SERVERS'},
+            PHP_FPM_PROCESS_IDLE_TIMEOUT        => $self->{'config'}->{'PHP_FPM_PROCESS_IDLE_TIMEOUT'},
+            PHP_FPM_MAX_REQUESTS                => $self->{'config'}->{'PHP_FPM_MAX_REQUESTS'},
+            PHP_FPM_PROCESS_MANAGER_MODE        => $self->{'config'}->{'PHP_FPM_PROCESS_MANAGER_MODE'},
+            CHKROOTKIT_LOG                      => $main::imscpConfig{'CHKROOTKIT_LOG'},
+            CONF_DIR                            => $main::imscpConfig{'CONF_DIR'},
+            DOMAIN                              => main::setupGetQuestion( 'BASE_SERVER_VHOST' ),
+            DISTRO_OPENSSL_CNF                  => $main::imscpConfig{'DISTRO_OPENSSL_CNF'},
+            DISTRO_CA_BUNDLE                    => $main::imscpConfig{'DISTRO_CA_BUNDLE'},
+            HOME_DIR                            => $main::imscpConfig{'GUI_ROOT_DIR'},
+            MTA_VIRTUAL_MAIL_DIR                => Servers::mta->factory()->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
+            PEAR_DIR                            => $self->{'config'}->{'PHP_PEAR_DIR_PATH'},
+            OTHER_ROOTKIT_LOG                   => $main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne ''
                 ? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : '',
-            RKHUNTER_LOG              => $main::imscpConfig{'RKHUNTER_LOG'},
-            TIMEZONE                  => main::setupGetQuestion( 'TIMEZONE' ),
-            WEB_DIR                   => $main::imscpConfig{'GUI_ROOT_DIR'}
+            RKHUNTER_LOG                        => $main::imscpConfig{'RKHUNTER_LOG'},
+            TIMEZONE                            => main::setupGetQuestion( 'TIMEZONE' ),
+            WEB_DIR                             => $main::imscpConfig{'GUI_ROOT_DIR'}
         },
         {
-            destination => "/usr/local/etc/imscp_panel/php-fpm.conf",
+            destination => "$self->{'config'}->{'PHP_CONF_DIR_PATH'}/php-fpm.conf",
             user        => $main::imscpConfig{'ROOT_USER'},
             group       => $main::imscpConfig{'ROOT_GROUP'},
             mode        => 0640
@@ -1123,14 +1129,14 @@ sub _buildPhpConfig
         "$self->{'cfgDir'}/php.ini",
         {
 
-            PEAR_DIR => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
+            PEAR_DIR => $self->{'config'}->{'PHP_PEAR_DIR_PATH'},
             TIMEZONE => main::setupGetQuestion( 'TIMEZONE' )
         },
         {
-            destination => "/usr/local/etc/imscp_panel/php.ini",
+            destination => "$self->{'config'}->{'PHP_CONF_DIR_PATH'}/php.ini",
             user        => $main::imscpConfig{'ROOT_USER'},
             group       => $main::imscpConfig{'ROOT_GROUP'},
-            mode        => 0640,
+            mode        => 0640
         }
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndBuildPhpConfig' );
@@ -1189,7 +1195,9 @@ sub _buildHttpdConfig
     # Build FastCGI configuration file
     $rs = $self->{'frontend'}->buildConfFile(
         "$self->{'cfgDir'}/imscp_fastcgi.nginx",
-        {},
+        {
+            APPLICATION_ENV => $self->{'config'}->{'APPLICATION_ENV'}
+        },
         {
             destination => "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf",
             user        => $main::imscpConfig{'ROOT_USER'},

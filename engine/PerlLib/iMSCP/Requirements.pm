@@ -117,6 +117,7 @@ sub _init
     my ($self) = @_;
 
     $self->{'programs'} = {
+        # FIXME this only check current system alternative. We should also check for frontEnd PHP version
         PHP  => {
             version_command => 'php -nv 2> /dev/null',
             version_regexp  => qr/PHP\s+([\d.]+)/,

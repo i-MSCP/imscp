@@ -30,6 +30,7 @@ use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::Getopt;
+use Package::FrontEnd;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -253,33 +254,12 @@ sub _init
         iMSCP::Dir->new( dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager" )->getDirs()
     } = ();
 
-    # Quick fix for disabling Pydio package if PHP >= 7 is detected
-    if ( defined $main::execmode && $main::execmode eq 'setup' ) {
-        delete $self->{'PACKAGES'}->{'Pydio'} if version->parse( $self->_getPhpVersion()) >= version->parse( '7.0.0' );
+    if ( version->parse( Package::FrontEnd->getInstance()->{'config'}->{'PHP_VERSION'} ) >= version->parse( '7.0' ) ) {
+        # Current Pydio version from our composer package is not compatible with PHP >= 7.0
+        delete $self->{'PACKAGES'}->{'Pydio'};
     }
 
     $self;
-}
-
-=item _getPhpVersion( )
-
- Get PHP version
-
- Return int PHP version on success, die on failure
-
-=cut
-
-sub _getPhpVersion
-{
-    my $rs = execute( 'php -nv', \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr || 'Unknown error' ) if $rs;
-    return $rs if $rs;
-
-    $stdout =~ /PHP\s+([\d.]+)/ or die(
-        sprintf( "Couldn't find PHP version from `php -nv` command output: %s", $stdout )
-    );
-    $1;
 }
 
 =back
