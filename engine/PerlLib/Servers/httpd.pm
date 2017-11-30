@@ -82,7 +82,7 @@ sub can
 
 sub getPriority
 {
-    70;
+    60;
 }
 
 END

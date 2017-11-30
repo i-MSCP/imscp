@@ -78,7 +78,6 @@ sub preinstall
 
         for my $phpVersion( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
             next unless $phpVersion =~ /^[\d.]+$/;
-            debug( "Processing pre-install tasks for System PHP $phpVersion version" );
 
             my $service = "php$phpVersion-fpm";
             if ( $serviceMngr->hasService( $service ) ) {
@@ -141,7 +140,6 @@ sub install
 
         for my $phpVersion( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
             next unless $phpVersion =~ /^[\d.]+$/;
-            debug( "Processing install tasks for System PHP $phpVersion version" );
 
             # FPM
             $self->{'httpd'}->setData(
@@ -171,7 +169,8 @@ sub install
                 "$self->{'httpd'}->{'phpCfgDir'}/apache/php.ini",
                 {},
                 { destination => "/etc/php/$phpVersion/apache2/php.ini" }
-            ) == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
+            );
+            $rs == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
         }
     };
     if ( $@ ) {
@@ -203,17 +202,19 @@ sub postinstall
         if ( $main::imscpConfig{'HTTPD_PACKAGE'} eq 'Servers::httpd::apache_php_fpm' ) {
             for my $phpVersion( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
                 next unless $phpVersion =~ /^[\d.]+$/;
-                debug( "Processing post-install tasks for System PHP $phpVersion version" );
+
                 my $service = "php$phpVersion-fpm";
                 iMSCP::Service->getInstance()->enable( $service );
-
                 $self->{'eventManager'}->register(
                     'beforeSetupRestartServices',
                     sub {
-                        push @{$_[0]}, [ sub { iMSCP::Service->getInstance()->start( $service ); }, "PHP-FPM $phpVersion" ];
+                        push @{$_[0]}, [ sub {
+                                    iMSCP::Service->getInstance()->start( $service );
+                                    0;
+                                }, "PHP-FPM $phpVersion" ];
                         0;
                     },
-                    2
+                    3
                 ) == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
             }
         }
@@ -236,7 +237,7 @@ sub postinstall
 
 sub getPriority
 {
-    60;
+    70;
 }
 
 =back
