@@ -76,6 +76,13 @@ sub preinstall
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
 
+        # Disable PHP session cleaner services as we don't rely on them
+        for my $service( qw/ phpsessionclean phpsessionclean.timer / ) {
+            next unless $serviceMngr->hasService( $service );
+            $serviceMngr->stop( $service );
+            $serviceMngr->disable( $service );
+        }
+
         for my $phpVersion( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
             next unless $phpVersion =~ /^[\d.]+$/;
 
@@ -208,10 +215,7 @@ sub postinstall
                 $self->{'eventManager'}->register(
                     'beforeSetupRestartServices',
                     sub {
-                        push @{$_[0]}, [ sub {
-                                    iMSCP::Service->getInstance()->start( $service );
-                                    0;
-                                }, "PHP-FPM $phpVersion" ];
+                        push @{$_[0]}, [ sub { iMSCP::Service->getInstance()->start( $service ); 0; }, "PHP-FPM $phpVersion" ];
                         0;
                     },
                     3

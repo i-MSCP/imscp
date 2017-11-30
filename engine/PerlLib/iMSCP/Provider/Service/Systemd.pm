@@ -66,7 +66,7 @@ sub isEnabled
     my ($self, $unit) = @_;
 
     defined $unit or die( 'parameter $unit is not defined' );
-    $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
+    $unit .= '.service' unless $unit =~ /\.(?:service|socket|timer)$/;
     $self->_exec( $COMMANDS{'systemctl'}, '--system', '--quiet', 'is-enabled', $unit ) == 0;
 }
 
@@ -81,7 +81,7 @@ sub enable
     my ($self, $unit) = @_;
 
     defined $unit or die( 'parameter $unit is not defined' );
-    $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
+    $unit .= '.service' unless $unit =~ /\.(?:service|socket|timer)$/;
     $self->_exec( $COMMANDS{'systemctl'}, '--system', '--force', '--quiet', 'enable', $unit ) == 0;
 }
 
@@ -96,7 +96,7 @@ sub disable
     my ($self, $unit) = @_;
 
     defined $unit or die( 'parameter $unit is not defined' );
-    $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
+    $unit .= '.service' unless $unit =~ /\.(?:service|socket|timer)$/;
     $self->_exec( $COMMANDS{'systemctl'}, '--system', '--quiet', 'disable', $unit ) == 0;
 }
 
@@ -111,7 +111,7 @@ sub remove
     my ($self, $unit) = @_;
 
     defined $unit or die( 'parameter $unit is not defined' );
-    $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
+    $unit .= '.service' unless $unit =~ /\.(?:service|socket|timer)$/;
     return 0 unless $self->stop( $unit ) && $self->disable( $unit );
 
     local $@;
@@ -134,7 +134,7 @@ sub start
     my ($self, $unit) = @_;
 
     defined $unit or die( 'parameter $unit is not defined' );
-    $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
+    $unit .= '.service' unless $unit =~ /\.(?:service|socket|timer)$/;
     $self->_exec( $COMMANDS{'systemctl'}, '--system', 'start', $unit ) == 0;
 }
 
@@ -149,7 +149,7 @@ sub stop
     my ($self, $unit) = @_;
 
     defined $unit or die( 'parameter $unit is not defined' );
-    $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
+    $unit .= '.service' unless $unit =~ /\.(?:service|socket|timer)$/;
     return 1 unless $self->isRunning( $unit );
     $self->_exec( $COMMANDS{'systemctl'}, '--system', 'stop', $unit ) == 0;
 }
@@ -165,7 +165,7 @@ sub restart
     my ($self, $unit) = @_;
 
     defined $unit or die( 'parameter $unit is not defined' );
-    $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
+    $unit .= '.service' unless $unit =~ /\.(?:service|socket|timer)$/;
     return $self->_exec( $COMMANDS{'systemctl'}, 'restart', $unit ) == 0 if $self->isRunning( $unit );
     $self->_exec( $COMMANDS{'systemctl'}, '--system', 'start', $unit ) == 0;
 }
@@ -197,7 +197,7 @@ sub isRunning
     my ($self, $service) = @_;
 
     defined $service or die( 'parameter $service is not defined' );
-    $service .= '.service' unless $service =~ /\.(?:service|socket)$/;
+    $service .= '.service' unless $service =~ /\.(?:service|socket|timer)$/;
     $self->_exec( $COMMANDS{'systemctl'}, '--system', 'is-active', $service ) == 0;
 }
 
@@ -229,7 +229,7 @@ sub getUnitFilePath
     my ($self, $unit) = @_;
 
     defined $unit or die( 'parameter $unit is not defined' );
-    $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
+    $unit .= '.service' unless $unit =~ /\.(?:service|socket|timer)$/;
     $self->_searchUnitFile( $unit );
 }
 
@@ -252,7 +252,7 @@ sub _isSystemd
 {
     my ($self, $unit) = @_;
 
-    $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
+    $unit .= '.service' unless $unit =~ /\.(?:service|socket|timer)$/;
     eval { $self->_searchUnitFile( $unit ); };
 }
 

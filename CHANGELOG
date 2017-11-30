@@ -6,6 +6,7 @@ Git 1.6.x
 
 BACKEND
     Added: composer.phar compatibility symlink for backward compatibility with plugins
+    Added: Support for .timer unit files (Systemd init provider)
     Enhancement: Make it possible to discard files/directories when clearing a directory (iMSCP::Dir::clear)
     Enhancement: Make it possible to install Composer anywhere (iMSCP::Composer)
     Enhancement: Make it possible to override default composer.json (iMSCP::Composer)
@@ -136,6 +137,7 @@ PACKAGES
     Fixed: Limit number of Nginx worker processes in auto mode (Package::FrontEnd::Installer)
     Fixed: Logs must be preserved when upgrading/reconfiguring i-MSCP (Package::Webmail::Roundcube::Installer)
     Review: Cleanup production configuration files (Package::FrontEnd::Installer)
+    Review: Disable both phpsessionclean timer and phpsessionclean service as we don't rely on them (Servers::php)
     Review: Set executable bit on *.sh scripts (Package::Webmail::Roundcube::Installer)
     Updated: Installer for use of Roundcube version 1.3.1 (Package::Webmail::Roundcube::Installer)
 
