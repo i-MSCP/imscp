@@ -78,8 +78,7 @@ sub preinstall
 
         for my $phpVersion( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
             next unless $phpVersion =~ /^[\d.]+$/;
-
-            debug( "Processing pre-install tasks for PHP $phpVersion version" );
+            debug( "Processing pre-install tasks for System PHP $phpVersion version" );
 
             my $service = "php$phpVersion-fpm";
             if ( $serviceMngr->hasService( $service ) ) {
@@ -142,8 +141,7 @@ sub install
 
         for my $phpVersion( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
             next unless $phpVersion =~ /^[\d.]+$/;
-
-            debug( "Processing install tasks for PHP $phpVersion version" );
+            debug( "Processing install tasks for System PHP $phpVersion version" );
 
             # FPM
             $self->{'httpd'}->setData(
@@ -205,11 +203,8 @@ sub postinstall
         if ( $main::imscpConfig{'HTTPD_PACKAGE'} eq 'Servers::httpd::apache_php_fpm' ) {
             for my $phpVersion( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
                 next unless $phpVersion =~ /^[\d.]+$/;
-
-                debug( "Processing post-install tasks for PHP $phpVersion version" );
-                
+                debug( "Processing post-install tasks for System PHP $phpVersion version" );
                 my $service = "php$phpVersion-fpm";
-
                 iMSCP::Service->getInstance()->enable( $service );
 
                 $self->{'eventManager'}->register(
@@ -254,14 +249,13 @@ sub getPriority
 
 1;
 __DATA__
-
 #!/usr/bin/perl
 
 use strict;
 use warnings;
 use lib '/usr/local/src/imscp/engine/PerlLib', '/usr/local/src/imscp/engine/PerlVendor';
 use iMSCP::Bootstrapper;
-use iMSCP::Debug qw/ output /;
+use iMSCP::Debug qw/ setVerbose output /;
 use iMSCP::EventManager;
 use Servers::php;
 
@@ -277,6 +271,9 @@ $phpSrv->postinstall();
 iMSCP::EventManager->getInstance()->trigger( 'beforeSetupRestartServices', \my @stack );
 
 for(@stack) {
-    print output("Starting/Restarting $_->[1]", 'info');
+    print output("Starting $_->[1] service...", 'info');
     $_->[0]->();
 }
+
+1;
+__END__
