@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::noserver - i-MSCP PHP server implementation
+ Servers::php - i-MSCP PHP server implementation
 
 =cut
 
@@ -23,17 +23,213 @@
 
 package Servers::php;
 
-use parent 'Servers::noserver';
+use strict;
+use warnings;
+use iMSCP::Debug qw/ debug error getMessageByType /;
+use iMSCP::Dir;
+use iMSCP::EventManager;
+use iMSCP::File;
+use iMSCP::Service;
+use Servers::httpd;
+use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
  i-MSCP PHP server implementation.
- 
- This class does nothing yet.
 
 =head1 PUBLIC METHODS
 
 =over 4
+
+=item factory( )
+
+ Create and return php server instance
+
+ Return Servers::php
+
+=cut
+
+sub factory
+{
+    __PACKAGE__->getInstance(
+        eventManager => iMSCP::EventManager->getInstance(),
+        httpd        => Servers::httpd->factory()
+    );
+}
+
+=item preinstall( )
+
+ Process preinstall tasks
+
+ Return int 0 on success, other on failure
+ FIXME: We are too close to Debian layout here.
+
+=cut
+
+sub preinstall
+{
+    my ($self) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpPreinstall' );
+    return $rs if $rs;
+
+    eval {
+        my $serviceMngr = iMSCP::Service->getInstance();
+
+        for my $phpVersion( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
+            next unless $phpVersion =~ /^[\d.]+$/;
+
+            debug( "Processing pre-install tasks for PHP $phpVersion version" );
+
+            my $service = "php$phpVersion-fpm";
+            if ( $serviceMngr->hasService( $service ) ) {
+                $serviceMngr->stop( $service );
+                $serviceMngr->disable( $service ) if $main::imscpConfig{'HTTPD_PACKAGE'} ne 'Servers::httpd::apache_php_fpm';
+            }
+
+            # Prevent orphaned pool configuration files when changing PHP configuration level
+            for my $conffile( grep !/www\.conf$/, glob "/etc/php/$phpVersion/fpm/pool.d/*.conf" ) {
+                iMSCP::File->new( filename => $conffile )->delFile() == 0 or die(
+                    getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+                );
+            }
+        }
+    };
+    if ( $@ ) {
+        error( $@ );
+        $rs = 1;
+    }
+
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpPreinstall' );
+}
+
+=item install( )
+
+ Process install tasks
+
+ Return int 0 on success, other on failure
+ FIXME: We are too close to Debian layout here.
+
+=cut
+
+sub install
+{
+    my ($self) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpInstall' );
+    $rs ||= $self->{'eventManager'}->trigger( 'beforePhpdBuildConfFiles' );
+    return $rs if $rs;
+
+    eval {
+        $self->{'httpd'}->setData(
+            {
+                HTTPD_USER                          => $self->{'httpd'}->{'config'}->{'HTTPD_USER'} // 'www-data',
+                HTTPD_GROUP                         => $self->{'httpd'}->{'config'}->{'HTTPD_GROUP'} // 'www-data',
+                PEAR_DIR                            => $self->{'httpd'}->{'phpConfig'}->{'PHP_PEAR_DIR'} // '/usr/share/php',
+                PHP_FPM_LOG_LEVEL                   => $self->{'httpd'}->{'phpConfig'}->{'PHP_FPM_LOG_LEVEL'} || 'error',
+                PHP_FPM_EMERGENCY_RESTART_THRESHOLD => $self->{'httpd'}->{'phpConfig'}->{'PHP_FPM_EMERGENCY_RESTART_THRESHOLD'} || 10,
+                PHP_FPM_EMERGENCY_RESTART_INTERVAL  => $self->{'httpd'}->{'phpConfig'}->{'PHP_FPM_EMERGENCY_RESTART_INTERVAL'} || '1m',
+                PHP_FPM_PROCESS_CONTROL_TIMEOUT     => $self->{'httpd'}->{'phpConfig'}->{'PHP_FPM_PROCESS_CONTROL_TIMEOUT'} || '60s',
+                PHP_FPM_PROCESS_MAX                 => $self->{'httpd'}->{'phpConfig'}->{'PHP_FPM_PROCESS_MAX'} // 0,
+                PHP_FPM_RLIMIT_FILES                => $self->{'httpd'}->{'phpConfig'}->{'PHP_FPM_RLIMIT_FILES'} // 4096,
+                PHP_OPCODE_CACHE_ENABLED            => $self->{'httpd'}->{'phpConfig'}->{'PHP_OPCODE_CACHE_ENABLED'} // 0,
+                PHP_OPCODE_CACHE_MAX_MEMORY         => $self->{'httpd'}->{'phpConfig'}->{'PHP_OPCODE_CACHE_MAX_MEMORY'} // 32,
+                PHP_APCU_CACHE_ENABLED              => $self->{'httpd'}->{'phpConfig'}->{'PHP_APCU_CACHE_ENABLED'} // 0,
+                PHP_APCU_CACHE_MAX_MEMORY           => $self->{'httpd'}->{'phpConfig'}->{'PHP_APCU_CACHE_MAX_MEMORY'} // 32,
+                TIMEZONE                            => $main::imscpConfig{'TIMEZONE'}
+            }
+        );
+
+        for my $phpVersion( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
+            next unless $phpVersion =~ /^[\d.]+$/;
+
+            debug( "Processing install tasks for PHP $phpVersion version" );
+
+            # FPM
+            $self->{'httpd'}->setData(
+                {
+                    PHP_CONF_DIR_PATH     => "/etc/php/$phpVersion/fpm/*.conf",
+                    PHP_FPM_POOL_DIR_PATH => "/etc/php/$phpVersion/fpm/pool.d",
+                    PHP_VERSION           => $phpVersion
+                }
+            );
+            $rs = $self->{'httpd'}->buildConfFile(
+                "$self->{'httpd'}->{'phpCfgDir'}/fpm/php.ini",
+                {},
+                { destination => "/etc/php/$phpVersion/fpm/php.ini" }
+            );
+            $rs ||= $self->{'httpd'}->buildConfFile(
+                "$self->{'httpd'}->{'phpCfgDir'}/fpm/php-fpm.conf",
+                {},
+                { destination => "/etc/php/$phpVersion/fpm/php-fpm.conf" }
+            );
+            $rs ||= $self->{'httpd'}->buildConfFile(
+                "$self->{'httpd'}->{'phpCfgDir'}/fpm/pool.conf.default",
+                {},
+                { destination => "/etc/php/$phpVersion/fpm/pool.d/www.conf" }
+            );
+            # ITK
+            $rs ||= $self->{'httpd'}->buildConfFile(
+                "$self->{'httpd'}->{'phpCfgDir'}/apache/php.ini",
+                {},
+                { destination => "/etc/php/$phpVersion/apache2/php.ini" }
+            ) == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
+        }
+    };
+    if ( $@ ) {
+        error( $@ );
+        $rs = 1;
+    }
+
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpdBuildConfFiles' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpInstall' );
+}
+
+=item postinstall( )
+
+ Process postinstall tasks
+
+ Return int 0 on success, other on failure
+ FIXME: We are too close to Debian layout here.
+
+=cut
+
+sub postinstall
+{
+    my ($self) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpPostInstall' );
+    return $rs if $rs;
+
+    eval {
+        if ( $main::imscpConfig{'HTTPD_PACKAGE'} eq 'Servers::httpd::apache_php_fpm' ) {
+            for my $phpVersion( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
+                next unless $phpVersion =~ /^[\d.]+$/;
+
+                debug( "Processing post-install tasks for PHP $phpVersion version" );
+                
+                my $service = "php$phpVersion-fpm";
+
+                iMSCP::Service->getInstance()->enable( $service );
+
+                $self->{'eventManager'}->register(
+                    'beforeSetupRestartServices',
+                    sub {
+                        push @{$_[0]}, [ sub { iMSCP::Service->getInstance()->start( $service ); }, "PHP-FPM $phpVersion" ];
+                        0;
+                    },
+                    2
+                ) == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
+            }
+        }
+    };
+    if ( $@ ) {
+        error( $@ );
+        $rs = 1;
+    }
+
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpPostInstall' );
+}
 
 =item getPriority( )
 
@@ -57,4 +253,30 @@ sub getPriority
 =cut
 
 1;
-__END__
+__DATA__
+
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use lib '/usr/local/src/imscp/engine/PerlLib', '/usr/local/src/imscp/engine/PerlVendor';
+use iMSCP::Bootstrapper;
+use iMSCP::Debug qw/ output /;
+use iMSCP::EventManager;
+use Servers::php;
+
+setVerbose(1);
+
+iMSCP::Bootstrapper->getInstance()->boot();
+
+my $phpSrv = Servers::php->factory();
+$phpSrv->preinstall();
+$phpSrv->install();
+$phpSrv->postinstall();
+
+iMSCP::EventManager->getInstance()->trigger( 'beforeSetupRestartServices', \my @stack );
+
+for(@stack) {
+    print output("Starting/Restarting $_->[1]", 'info');
+    $_->[0]->();
+}
