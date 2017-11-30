@@ -5,6 +5,8 @@
 PHP_CONFIG_LEVEL =
 PHP_CONF_DIR_PATH =
 PHP_PEAR_DIR = /usr/share/php
+
+# Selected PHP version for customers
 PHP_VERSION =
 
 ##
@@ -15,7 +17,7 @@ PHP_VERSION =
 PHP_OPCODE_CACHE_ENABLED = 1
 
 # Memory in MiB
-PHP_OPCODE_CACHE_MAX_MEMORY = 128
+PHP_OPCODE_CACHE_MAX_MEMORY = 32
 
 ##
 ### PHP APC userland cache (APCu) parameters
@@ -25,7 +27,7 @@ PHP_OPCODE_CACHE_MAX_MEMORY = 128
 PHP_APCU_CACHE_ENABLED = 1
 
 # Memory in MiB
-PHP_APCU_CACHE_MAX_MEMORY = 128
+PHP_APCU_CACHE_MAX_MEMORY = 32
 
 ##
 #### PHP CLI specific
