@@ -54,7 +54,6 @@ sub uninstall
     my $rs = $self->_removeVloggerSqlUser();
     $rs ||= $self->_removeDirs();
     $rs ||= $self->_restoreApacheConfig();
-    $rs ||= $self->_restorePhpfpmConfig();
 }
 
 =back
@@ -152,24 +151,6 @@ sub _restoreApacheConfig
     }
 
     0;
-}
-
-=item restorePhpfpmConfig( )
-
- Restore PHP-FPM configuration
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _restorePhpfpmConfig
-{
-
-    for( '5.6', '7.0', '7.1', '7.2' ) {
-        next unless -f "/etc/init/php$_-fpm.override";
-        my $rs = iMSCP::File->new( filename => "/etc/init/php$_-fpm.override" )->delFile();
-        return $rs if $rs;
-    }
 }
 
 =back

@@ -33,6 +33,9 @@ use iMSCP::Service;
 use Servers::httpd;
 use parent 'Common::SingletonClass';
 
+# php server instance
+my $instance;
+
 =head1 DESCRIPTION
 
  i-MSCP PHP server implementation.
@@ -51,7 +54,7 @@ use parent 'Common::SingletonClass';
 
 sub factory
 {
-    __PACKAGE__->getInstance(
+    $instance ||= __PACKAGE__->getInstance(
         eventManager => iMSCP::EventManager->getInstance(),
         httpd        => Servers::httpd->factory()
     );
@@ -89,10 +92,14 @@ sub preinstall
             my $service = "php$phpVersion-fpm";
             if ( $serviceMngr->hasService( $service ) ) {
                 $serviceMngr->stop( $service );
-                $serviceMngr->disable( $service ) if $main::imscpConfig{'HTTPD_PACKAGE'} ne 'Servers::httpd::apache_php_fpm';
+                if($main::imscpConfig{'HTTPD_PACKAGE'} ne 'Servers::httpd::apache_php_fpm'
+                    || $self->{'httpd'}->{'phpConfig'}->{'PHP_VERSION'} ne $phpVersion
+                ) {
+                    $serviceMngr->disable( $service );
+                }
             }
 
-            # Prevent orphaned pool configuration files when changing PHP configuration level
+            # Reset pool configuration directories
             for my $conffile( grep !/www\.conf$/, glob "/etc/php/$phpVersion/fpm/pool.d/*.conf" ) {
                 iMSCP::File->new( filename => $conffile )->delFile() == 0 or die(
                     getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
@@ -208,14 +215,25 @@ sub postinstall
     eval {
         if ( $main::imscpConfig{'HTTPD_PACKAGE'} eq 'Servers::httpd::apache_php_fpm' ) {
             for my $phpVersion( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
-                next unless $phpVersion =~ /^[\d.]+$/;
+                # We enable and start only selected PHP alternative as other PHP versions are managed through
+                # OPTIONAL PhpSwitcher plugin
+                next unless $phpVersion =~ /^[\d.]+$/ && $self->{'httpd'}->{'phpConfig'}->{'PHP_VERSION'} eq $phpVersion;
 
                 my $service = "php$phpVersion-fpm";
+
                 iMSCP::Service->getInstance()->enable( $service );
+
                 $self->{'eventManager'}->register(
                     'beforeSetupRestartServices',
                     sub {
-                        push @{$_[0]}, [ sub { iMSCP::Service->getInstance()->start( $service ); 0; }, "PHP-FPM $phpVersion" ];
+                        push @{$_[0]},
+                            [
+                                sub {
+                                    iMSCP::Service->getInstance()->start( $service );
+                                    0;
+                                },
+                                "PHP-FPM $phpVersion"
+                            ];
                         0;
                     },
                     3
@@ -229,6 +247,31 @@ sub postinstall
     }
 
     $rs ||= $self->{'eventManager'}->trigger( 'afterPhpPostInstall' );
+}
+
+=item uninstall( )
+
+ Process uninstall tasks
+
+ Return int 0 on success, other on failure
+ FIXME: We are too close to Debian layout here.
+
+=cut
+
+sub uninstall
+{
+    my ($self) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpUninstall' );
+    return $rs if $rs;
+
+    for ( iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
+        next unless /^[\d.]+$/ && -f "/etc/init/php$_-fpm.override";
+        $rs = iMSCP::File->new( filename => "/etc/init/php$_-fpm.override" )->delFile();
+        return $rs if $rs;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterPhpUninstall' );
 }
 
 =item getPriority( )

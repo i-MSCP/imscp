@@ -265,9 +265,7 @@ sub deleteUser
     my ($self, $data) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdDelUser', $data );
-    $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'HTTPD_USER'} )->removeFromGroup(
-        $data->{'GROUP'}
-    );
+    $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'HTTPD_USER'} )->removeFromGroup( $data->{'GROUP'} );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdDelUser', $data );
     $self->{'restart'} = 1 unless $rs;
     $rs;
@@ -346,9 +344,7 @@ sub disableDmn
     $self->setData( $data );
 
     my $net = iMSCP::Net->getInstance();
-    my @domainIPs = (
-        $data->{'DOMAIN_IP'}, ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} ? $data->{'BASE_SERVER_IP'} : () )
-    );
+    my @domainIPs = ( $data->{'DOMAIN_IP'}, ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} ? $data->{'BASE_SERVER_IP'} : () ) );
 
     $rs = $self->{'eventManager'}->trigger( 'onAddHttpdVhostIps', $data, \@domainIPs );
     return $rs if $rs;
@@ -359,9 +355,7 @@ sub disableDmn
 
     $self->setData(
         {
-            DOMAIN_IPS      => join(
-                ' ', map { ( ( $_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4' ) ? $_ : "[$_]" ) . ':80' } @domainIPs
-            ),
+            DOMAIN_IPS      => join( ' ', map { ( ( $_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4' ) ? $_ : "[$_]" ) . ':80' } @domainIPs ),
             HTTP_URI_SCHEME => 'http://',
             HTTPD_LOG_DIR   => $self->{'config'}->{'HTTPD_LOG_DIR'},
             USER_WEB_DIR    => $main::imscpConfig{'USER_WEB_DIR'},
@@ -388,9 +382,7 @@ sub disableDmn
     $rs = $self->buildConfFile(
         "$self->{'apacheTplDir'}/domain_disabled.tpl",
         $data,
-        {
-            destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}.conf"
-        }
+        { destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
     );
     $rs ||= $self->enableSites( "$data->{'DOMAIN_NAME'}.conf" );
     return $rs if $rs;
@@ -401,10 +393,7 @@ sub disableDmn
         $self->setData(
             {
                 CERTIFICATE     => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem",
-                DOMAIN_IPS      => join(
-                    ' ',
-                    map { ( ( $_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4' ) ? $_ : "[$_]" ) . ':443' } @domainIPs
-                ),
+                DOMAIN_IPS      => join( ' ', map { ( ( $_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4' ) ? $_ : "[$_]" ) . ':443' } @domainIPs ),
                 HTTP_URI_SCHEME => 'https://'
             }
         );
@@ -412,17 +401,13 @@ sub disableDmn
         $rs = $self->buildConfFile(
             "$self->{'apacheTplDir'}/domain_disabled.tpl",
             $data,
-            {
-                destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf"
-            }
+            { destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf" }
         );
         $rs ||= $self->enableSites( "$data->{'DOMAIN_NAME'}_ssl.conf" );
         return $rs if $rs;
     } elsif ( -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf" ) {
         $rs = $self->disableSites( "$data->{'DOMAIN_NAME'}_ssl.conf" );
-        $rs ||= iMSCP::File->new(
-            filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf"
-        )->delFile();
+        $rs ||= iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf" )->delFile();
         return $rs if $rs;
     }
 
@@ -432,9 +417,7 @@ sub disableDmn
         $rs = $self->buildConfFile(
             "$self->{'apacheTplDir'}/custom.conf.tpl",
             $data,
-            {
-                destination => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf"
-            }
+            { destination => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
         );
         return $rs if $rs;
     }
@@ -504,9 +487,7 @@ sub deleteDmn
 
     iMSCP::Dir->new( dirname => "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}" )->remove();
     iMSCP::Dir->new( dirname => "$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}" )->remove();
-    iMSCP::Dir->new(
-        dirname => "$self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}/$data->{'DOMAIN_NAME'}"
-    )->remove();
+    iMSCP::Dir->new( dirname => "$self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}/$data->{'DOMAIN_NAME'}" )->remove();
 
     $rs = $self->{'eventManager'}->trigger( 'afterHttpdDelDmn', $data );
     $self->{'restart'} = 1 unless $rs;
@@ -667,7 +648,6 @@ sub deleteHtpasswd
     return $rs if $rs;
 
     $file->set( $fileContent );
-
     $rs = $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
     $rs ||= $file->mode( 0640 );
@@ -752,7 +732,6 @@ sub deleteHtgroup
     return $rs if $rs;
 
     $file->set( $fileContent );
-
     $rs ||= $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
     $rs ||= $file->mode( 0640 );
@@ -851,16 +830,13 @@ sub deleteHtaccess
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdDelHtaccess', \$fileContent, $data );
     return $rs if $rs;
 
-    $fileContent = replaceBloc(
-        "### START i-MSCP PROTECTION ###\n", "### END i-MSCP PROTECTION ###\n", '', $fileContent
-    );
+    $fileContent = replaceBloc( "### START i-MSCP PROTECTION ###\n", "### END i-MSCP PROTECTION ###\n", '', $fileContent );
 
     $rs = $self->{'eventManager'}->trigger( 'afterHttpdDelHtaccess', \$fileContent, $data );
     return $rs if $rs;
 
     if ( $fileContent ne '' ) {
         $file->set( $fileContent );
-
         $rs = $file->save();
         $rs ||= $file->owner( $data->{'USER'}, $data->{'GROUP'} );
         $rs ||= $file->mode( 0640 );
@@ -940,9 +916,7 @@ sub buildConfFile
 
     my ($filename, $path) = fileparse( $file );
 
-    my $rs = $self->{'eventManager'}->trigger(
-        'onLoadTemplate', 'apache_fcgid', $filename, \ my $cfgTpl, $data, $options
-    );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'apache_fcgid', $filename, \ my $cfgTpl, $data, $options );
     return $rs if $rs;
 
     unless ( defined $cfgTpl ) {
@@ -967,9 +941,7 @@ sub buildConfFile
     my $fileHandler = iMSCP::File->new( filename => $options->{'destination'} );
     $rs = $fileHandler->set( $cfgTpl );
     $rs ||= $fileHandler->save();
-    $rs ||= $fileHandler->owner(
-        $options->{'user'} // $main::imscpConfig{'ROOT_USER'}, $options->{'group'} // $main::imscpConfig{'ROOT_GROUP'}
-    );
+    $rs ||= $fileHandler->owner( $options->{'user'} // $main::imscpConfig{'ROOT_USER'}, $options->{'group'} // $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $fileHandler->mode( $options->{'mode'} // 0644 );
 }
 
@@ -1525,9 +1497,7 @@ sub _addCfg
 
     $self->setData(
         {
-            DOMAIN_IPS             => join(
-                ' ', map { ( ( $_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4' ) ? $_ : "[$_]" ) . ':80' } @domainIPs
-            ),
+            DOMAIN_IPS             => join( ' ', map { ( ( $_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4' ) ? $_ : "[$_]" ) . ':80' } @domainIPs ),
             FCGID_NAME             => $confLevel,
             HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
             HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
@@ -1555,7 +1525,7 @@ sub _addCfg
             $self->setData(
                 {
                     X_FORWARDED_PROTOCOL => 'http',
-                    X_FORWARDED_PORT     =>  80
+                    X_FORWARDED_PORT     => 80
                 }
             );
         }
@@ -1566,9 +1536,7 @@ sub _addCfg
     $rs = $self->buildConfFile(
         "$self->{'apacheTplDir'}/domain.tpl",
         $data,
-        {
-            destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}.conf"
-        }
+        { destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
     );
     $rs ||= $self->enableSites( "$data->{'DOMAIN_NAME'}.conf" );
     return $rs if $rs;
@@ -1579,10 +1547,7 @@ sub _addCfg
         $self->setData(
             {
                 CERTIFICATE => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem",
-                DOMAIN_IPS  => join(
-                    ' ',
-                    map { ( ( $_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4' ) ? $_ : "[$_]" ) . ':443' } @domainIPs
-                )
+                DOMAIN_IPS  => join( ' ', map { ( ( $_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4' ) ? $_ : "[$_]" ) . ':443' } @domainIPs )
             }
         );
 
@@ -1610,9 +1575,7 @@ sub _addCfg
         $rs = $self->buildConfFile(
             "$self->{'apacheTplDir'}/domain.tpl",
             $data,
-            {
-                destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf"
-            }
+            { destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf" }
         );
         $rs ||= $self->enableSites( "$data->{'DOMAIN_NAME'}_ssl.conf" );
         return $rs if $rs;
@@ -1629,9 +1592,7 @@ sub _addCfg
         $rs = $self->buildConfFile(
             "$self->{'apacheTplDir'}/custom.conf.tpl",
             $data,
-            {
-                destination => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf"
-            }
+            { destination => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
         );
     }
 

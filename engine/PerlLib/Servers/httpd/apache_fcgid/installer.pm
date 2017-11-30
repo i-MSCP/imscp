@@ -130,8 +130,7 @@ sub install
     my $rs = $self->_setApacheVersion();
     $rs ||= $self->_makeDirs();
     $rs ||= $self->_copyDomainDisablePages();
-    $rs ||= $self->_buildFastCgiConfFiles();
-    $rs ||= $self->_buildApacheConfFiles();
+    $rs ||= $self->_configureApache2();
     $rs ||= $self->_installLogrotate();
     $rs ||= $self->_setupVlogger();
     $rs ||= $self->_cleanup();
@@ -198,9 +197,8 @@ sub _guessSystemPhpVariables
     $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-cgi$phpVersion" );
     $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-fpm$phpVersion" );
 
-    for( qw/ PHP_CLI_BIN_PATH PHP_FCGI_BIN_PATH PHP_FPM_BIN_PATH / ) {
-        next if $self->{'phpConfig'}->{$_};
-        die( sprintf( "Couldn't guess `%s' PHP configuration parameter value.", $_ ));
+    for ( qw/ PHP_CLI_BIN_PATH PHP_FCGI_BIN_PATH PHP_FPM_BIN_PATH / ) {
+        $self->{'phpConfig'}->{$_} ne '' or die( sprintf( "Couldn't guess `%s' PHP configuration parameter value.", $_ ));
     }
 
     0;
@@ -247,7 +245,7 @@ sub _makeDirs
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdMakeDirs' );
     return $rs if $rs;
 
-    # Remove any older fcgi starter directory (prevent possible orphaned file when changing PHP configuration level)
+    # Remove older fcgi starter directory (prevent possible orphaned file when changing PHP configuration level)
     iMSCP::Dir->new( dirname => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'} )->remove();
 
     for (
@@ -292,19 +290,21 @@ sub _copyDomainDisablePages
     0;
 }
 
-=item _buildFastCgiConfFiles( )
 
- Build FastCGI configuration files
+=item _configureApache2( )
+
+ Configure Apache2
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _buildFastCgiConfFiles
+sub _configureApache2
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdBuildFastCgiConfFiles' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeConfigureApache2' );
+    return $rs if $rs;
 
     $self->{'httpd'}->setData(
         {
@@ -317,14 +317,11 @@ sub _buildFastCgiConfFiles
     $rs = $self->{'httpd'}->buildConfFile(
         "$self->{'phpCfgDir'}/fcgi/apache_fcgid_module.conf",
         {},
-        {
-            destination => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/fcgid_imscp.conf"
-        }
+        { destination => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/fcgid_imscp.conf" }
     );
     return $rs if $rs;
 
     my $file = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/fcgid.load" );
-
     my $cfgTpl = $file->get();
     unless ( defined $cfgTpl ) {
         error( sprintf( "Couldn't read %s file", $file->{'filename'} ));
@@ -333,9 +330,7 @@ sub _buildFastCgiConfFiles
 
     $file = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/fcgid_imscp.load" );
     $cfgTpl = "<IfModule !mod_fcgid.c>\n" . $cfgTpl . "</IfModule>\n";
-
     $file->set( $cfgTpl );
-
     $rs = $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
@@ -345,25 +340,9 @@ sub _buildFastCgiConfFiles
     );
     $rs ||= $self->{'httpd'}->enableModules( 'actions', 'authz_groupfile', 'fcgid_imscp', 'mpm_event', 'version' );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildFastCgiConfFiles' );
-}
-
-=item _buildApacheConfFiles( )
-
- Build Apache configuration files
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _buildApacheConfFiles
-{
-    my ($self) = @_;
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdBuildApacheConfFiles' );
-    return $rs if $rs;
 
     if ( -f "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf" ) {
-        $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'apache_fcgid', 'ports.conf', \ my $cfgTpl, {} );
+        $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'apache_fcgid', 'ports.conf', \$cfgTpl, {} );
         return $rs if $rs;
 
         unless ( defined $cfgTpl ) {
@@ -382,9 +361,8 @@ sub _buildApacheConfFiles
         $rs = $self->{'eventManager'}->trigger( 'afterHttpdBuildConfFile', \$cfgTpl, 'ports.conf' );
         return $rs if $rs;
 
-        my $file = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf" );
+        $file = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf" );
         $file->set( $cfgTpl );
-
         $rs = $file->save();
         $rs ||= $file->mode( 0644 );
         return $rs if $rs;
@@ -396,8 +374,7 @@ sub _buildApacheConfFiles
 
     # Remove default access log file provided by Debian package
     if ( -f "$self->{'config'}->{'HTTPD_LOG_DIR'}/other_vhosts_access.log" ) {
-        $rs = iMSCP::File->new( filename =>
-            "$self->{'config'}->{'HTTPD_LOG_DIR'}/other_vhosts_access.log" )->delFile();
+        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_LOG_DIR'}/other_vhosts_access.log" )->delFile();
         return $rs if $rs;
     }
 
@@ -413,22 +390,16 @@ sub _buildApacheConfFiles
     $rs ||= $self->{'httpd'}->buildConfFile(
         '00_imscp.conf',
         {},
-        {
-            destination => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/00_imscp.conf"
-        }
+        { destination => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/00_imscp.conf" }
     );
-    $rs ||= $self->{'httpd'}->enableModules(
-        'cgid', 'headers', 'proxy', 'proxy_http', 'rewrite', 'setenvif', 'ssl', 'suexec'
-    );
+    $rs ||= $self->{'httpd'}->enableModules( 'cgid', 'headers', 'proxy', 'proxy_http', 'rewrite', 'setenvif', 'ssl', 'suexec' );
     $rs ||= $self->{'httpd'}->enableSites( '00_nameserver.conf' );
     $rs ||= $self->{'httpd'}->enableConfs( '00_imscp.conf' );
     $rs ||= $self->{'httpd'}->disableConfs(
-        'php5.6-cgi.conf', 'php7.0-cgi.conf', 'php7.1-cgi.conf',
-        'php5.6-fpm.conf', 'php7.0-fpm.conf', 'php7.1-fpm.conf',
-        'serve-cgi-bin.conf'
+        'php5.6-cgi.conf', 'php7.0-cgi.conf', 'php7.1-cgi.conf', 'php5.6-fpm.conf', 'php7.0-fpm.conf', 'php7.1-fpm.conf', 'serve-cgi-bin.conf'
     );
     $rs ||= $self->{'httpd'}->disableSites( 'default', 'default-ssl', '000-default.conf', 'default-ssl.conf' );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildApacheConfFiles' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterConfigureApache2' );
 }
 
 =item _installLogrotate( )
@@ -443,7 +414,8 @@ sub _installLogrotate
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdInstallLogrotate', 'apache2' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdInstallLogrotate' );
+    return $rs if $rs;
 
     $self->{'httpd'}->setData(
         {
@@ -457,11 +429,9 @@ sub _installLogrotate
     $rs ||= $self->{'httpd'}->buildConfFile(
         'logrotate.conf',
         {},
-        {
-            destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2"
-        }
+        { destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2" }
     );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdInstallLogrotate', 'apache2' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdInstallLogrotate' );
 }
 
 =item _setupVlogger( )
@@ -524,12 +494,8 @@ sub _setupVlogger
 
     $self->{'httpd'}->buildConfFile(
         "$self->{'apacheCfgDir'}/vlogger.conf.tpl",
-        {
-            SKIP_TEMPLATE_CLEANER => 1
-        },
-        {
-            destination => "$self->{'apacheCfgDir'}/vlogger.conf"
-        }
+        { SKIP_TEMPLATE_CLEANER => 1 },
+        { destination => "$self->{'apacheCfgDir'}/vlogger.conf" }
     );
 }
 
@@ -568,16 +534,14 @@ sub _cleanup
     $rs = $self->{'httpd'}->disableModules( 'php_fpm_imscp', 'fastcgi_imscp' );
     return $rs if $rs;
 
-    for( 'fastcgi_imscp.conf', 'fastcgi_imscp.load', 'php_fpm_imscp.conf', 'php_fpm_imscp.load' ) {
+    for ( 'fastcgi_imscp.conf', 'fastcgi_imscp.load', 'php_fpm_imscp.conf', 'php_fpm_imscp.load' ) {
         next unless -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_";
         $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_" )->delFile();
         return $rs if $rs;
     }
 
     if ( -d $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'} ) {
-        $rs = execute(
-            "rm -f $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}/*/php5-fastcgi-starter", \ my $stdout, \ my $stderr
-        );
+        $rs = execute( "rm -f $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}/*/php5-fastcgi-starter", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
@@ -603,21 +567,6 @@ sub _cleanup
     }
 
     iMSCP::Dir->new( dirname => '/etc/php5' )->remove();
-
-    # Some of PHP individual packages install their INI file once for all build
-    # variants, including for those not installed yet. Therefore, removing
-    # configuration directory for unused build variants is a mistake because
-    # when switching to one of them, INI files from individual packages won't
-    # be reinstalled.
-    # See https://github.com/oerdnj/deb.sury.org/issues/660
-    #for(grep!/^$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}$/,
-    #    glob dirname($self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}).'/*'
-    #) {
-    #    iMSCP::Dir->new( dirname => $_ )->remove( );
-    #}
-
-    # FPM
-    unlink grep !/www\.conf$/, glob "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/*.conf";
 
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();

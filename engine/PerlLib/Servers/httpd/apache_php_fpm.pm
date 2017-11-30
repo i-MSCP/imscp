@@ -123,11 +123,7 @@ sub postinstall
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdPostInstall', 'apache_php_fpm' );
     return $rs if $rs;
 
-    eval {
-        my $serviceMngr = iMSCP::Service->getInstance();
-        $serviceMngr->enable( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ));
-        $serviceMngr->enable( $self->{'config'}->{'HTTPD_SNAME'} );
-    };
+    eval { iMSCP::Service->getInstance()->enable( $self->{'config'}->{'HTTPD_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
         return 1;
@@ -136,7 +132,10 @@ sub postinstall
     $rs = $self->{'eventManager'}->register(
         'beforeSetupRestartServices',
         sub {
-            push @{$_[0]}, [ sub { $self->start(); }, 'Httpd (Apache2/php-fpm)' ];
+            push @{$_[0]}, [ sub {
+                        iMSCP::Service->getInstance()->start( $self->{'config'}->{'HTTPD_SNAME'} );
+                        0;
+                    }, 'Httpd (Apache2)' ];
             0;
         },
         3
@@ -355,9 +354,7 @@ sub disableDmn
 
     $self->setData(
         {
-            DOMAIN_IPS      => join(
-                ' ', map { ( ( $_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4' ) ? $_ : "[$_]" ) . ':80' } @domainIPs
-            ),
+            DOMAIN_IPS      => join( ' ', map { ( ( $_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4' ) ? $_ : "[$_]" ) . ':80' } @domainIPs ),
             HTTP_URI_SCHEME => 'http://',
             HTTPD_LOG_DIR   => $self->{'config'}->{'HTTPD_LOG_DIR'},
             USER_WEB_DIR    => $main::imscpConfig{'USER_WEB_DIR'},
@@ -384,9 +381,7 @@ sub disableDmn
     $rs = $self->buildConfFile(
         "$self->{'apacheTplDir'}/domain_disabled.tpl",
         $data,
-        {
-            destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}.conf"
-        }
+        { destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
     );
 
     $rs ||= $self->enableSites( "$data->{'DOMAIN_NAME'}.conf" );
@@ -398,10 +393,7 @@ sub disableDmn
         $self->setData(
             {
                 CERTIFICATE     => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem",
-                DOMAIN_IPS      => join(
-                    ' ',
-                    map { ( ( $_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4' ) ? $_ : "[$_]" ) . ':443' } @domainIPs
-                ),
+                DOMAIN_IPS      => join( ' ', map { ( ( $_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4' ) ? $_ : "[$_]" ) . ':443' } @domainIPs ),
                 HTTP_URI_SCHEME => 'https://'
             }
         );
@@ -409,17 +401,13 @@ sub disableDmn
         $rs = $self->buildConfFile(
             "$self->{'apacheTplDir'}/domain_disabled.tpl",
             $data,
-            {
-                destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf"
-            }
+            { destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf" }
         );
         $rs ||= $self->enableSites( "$data->{'DOMAIN_NAME'}_ssl.conf" );
         return $rs if $rs;
     } elsif ( -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf" ) {
         $rs = $self->disableSites( "$data->{'DOMAIN_NAME'}_ssl.conf" );
-        $rs ||= iMSCP::File->new(
-            filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf"
-        )->delFile();
+        $rs ||= iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf" )->delFile();
         return $rs if $rs;
     }
 
@@ -429,9 +417,7 @@ sub disableDmn
         $rs = $self->buildConfFile(
             "$self->{'apacheTplDir'}/custom.conf.tpl",
             $data,
-            {
-                destination => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf"
-            }
+            { destination => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
         );
         return $rs if $rs;
     }
@@ -847,16 +833,12 @@ sub deleteHtaccess
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdDelHtaccess', \$fileContent, $data );
     return $rs if $rs;
 
-    $fileContent = replaceBloc(
-        "### START i-MSCP PROTECTION ###\n", "### END i-MSCP PROTECTION ###\n", '', $fileContent
-    );
-
+    $fileContent = replaceBloc( "### START i-MSCP PROTECTION ###\n", "### END i-MSCP PROTECTION ###\n", '', $fileContent );
     $rs = $self->{'eventManager'}->trigger( 'afterHttpdDelHtaccess', \$fileContent, $data );
     return $rs if $rs;
 
     if ( $fileContent ne '' ) {
         $file->set( $fileContent );
-
         $rs = $file->save();
         $rs ||= $file->owner( $data->{'USER'}, $data->{'GROUP'} );
         $rs ||= $file->mode( 0640 );
@@ -936,9 +918,7 @@ sub buildConfFile
 
     my ($filename, $path) = fileparse( $file );
 
-    my $rs = $self->{'eventManager'}->trigger(
-        'onLoadTemplate', 'apache_php_fpm', $filename, \ my $cfgTpl, $data, $options
-    );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'apache_php_fpm', $filename, \ my $cfgTpl, $data, $options );
     return $rs if $rs;
 
     unless ( defined $cfgTpl ) {
@@ -963,9 +943,7 @@ sub buildConfFile
     my $fileHandler = iMSCP::File->new( filename => $options->{'destination'} );
     $rs = $fileHandler->set( $cfgTpl );
     $rs ||= $fileHandler->save();
-    $rs ||= $fileHandler->owner(
-        $options->{'user'} // $main::imscpConfig{'ROOT_USER'}, $options->{'group'} // $main::imscpConfig{'ROOT_GROUP'}
-    );
+    $rs ||= $fileHandler->owner( $options->{'user'} // $main::imscpConfig{'ROOT_USER'}, $options->{'group'} // $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $fileHandler->mode( $options->{'mode'} // 0644 );
 }
 
@@ -1533,19 +1511,15 @@ sub _addCfg
 
     $self->setData(
         {
-            DOMAIN_IPS             => join(
-                ' ', map { ( ( $_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4' ) ? $_ : "[$_]" ) . ':80' } @domainIPs
-            ),
+            DOMAIN_IPS             => join( ' ', map { ( ( $_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4' ) ? $_ : "[$_]" ) . ':80' } @domainIPs ),
             HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
             HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
             PHP_VERSION            => $phpVersion,
             POOL_NAME              => $confLevel,
             PROXY_FCGI_PATH        => $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
-                ? "unix:/run/php/php$phpVersion-fpm-$confLevel.sock|"
-                : '',
+                ? "unix:/run/php/php$phpVersion-fpm-$confLevel.sock|" : '',
             PROXY_FCGI_URL         => 'fcgi://' . ( $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
-                ? $confLevel
-                : '127.0.0.1:' . ( $self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'}+$data->{'PHP_FPM_LISTEN_PORT'} )
+                ? $confLevel : '127.0.0.1:' . ( $self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'}+$data->{'PHP_FPM_LISTEN_PORT'} )
             ),
             SERVER_ALIASES         => "www.$data->{'DOMAIN_NAME'}" . ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'}
                 ? " $data->{'ALIAS'}.$main::imscpConfig{'BASE_SERVER_VHOST'}" : ''
@@ -1570,7 +1544,7 @@ sub _addCfg
             $self->setData(
                 {
                     X_FORWARDED_PROTOCOL => 'http',
-                    X_FORWARDED_PORT     =>  80
+                    X_FORWARDED_PORT     => 80
                 }
             );
         }
@@ -1581,9 +1555,7 @@ sub _addCfg
     $rs = $self->buildConfFile(
         "$self->{'apacheTplDir'}/domain.tpl",
         $data,
-        {
-            destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}.conf"
-        }
+        { destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
     );
     $rs ||= $self->enableSites( "$data->{'DOMAIN_NAME'}.conf" );
     return $rs if $rs;
@@ -1594,10 +1566,7 @@ sub _addCfg
         $self->setData(
             {
                 CERTIFICATE   => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$data->{'DOMAIN_NAME'}.pem",
-                DOMAIN_IPS    => join(
-                    ' ',
-                    map { ( ( $_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4' ) ? $_ : "[$_]" ) . ':443' } @domainIPs
-                ),
+                DOMAIN_IPS    => join( ' ', map { ( ( $_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4' ) ? $_ : "[$_]" ) . ':443' } @domainIPs ),
                 FASTCGI_CLASS => $data->{'DOMAIN_NAME'} . '-ssl'
             }
         );
@@ -1626,17 +1595,13 @@ sub _addCfg
         $rs = $self->buildConfFile(
             "$self->{'apacheTplDir'}/domain.tpl",
             $data,
-            {
-                destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf"
-            }
+            { destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf" }
         );
         $rs ||= $self->enableSites( "$data->{'DOMAIN_NAME'}_ssl.conf" );
         return $rs if $rs;
     } elsif ( -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf" ) {
         $rs = $self->disableSites( "$data->{'DOMAIN_NAME'}_ssl.conf" );
-        $rs ||= iMSCP::File->new(
-            filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf"
-        )->delFile();
+        $rs ||= iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$data->{'DOMAIN_NAME'}_ssl.conf" )->delFile();
         return $rs if $rs;
     }
 
@@ -1645,9 +1610,7 @@ sub _addCfg
         $rs = $self->buildConfFile(
             "$self->{'apacheTplDir'}/custom.conf.tpl",
             $data,
-            {
-                destination => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf"
-            }
+            { destination => "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$data->{'DOMAIN_NAME'}.conf" }
         );
     }
 
@@ -1946,8 +1909,7 @@ sub _buildPHPConfig
                 EMAIL_DOMAIN                 => $emailDomain,
                 PHP_FPM_LISTEN_ENDPOINT      => ( $self->{'phpConfig'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds' )
                     ? "/run/php/php$phpVersion-fpm-$poolName.sock"
-                    : '127.0.0.1:' . ( $self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'}+$data->{'PHP_FPM_LISTEN_PORT'} )
-                ,
+                    : '127.0.0.1:' . ( $self->{'phpConfig'}->{'PHP_FPM_LISTEN_PORT_START'}+$data->{'PHP_FPM_LISTEN_PORT'} ),
                 PHP_FPM_MAX_CHILDREN         => $self->{'phpConfig'}->{'PHP_FPM_MAX_CHILDREN'} || 6,
                 PHP_FPM_MAX_REQUESTS         => $self->{'phpConfig'}->{'PHP_FPM_MAX_REQUESTS'} || 1000,
                 PHP_FPM_MAX_SPARE_SERVERS    => $self->{'phpConfig'}->{'PHP_FPM_MAX_SPARE_SERVERS'} || 2,
@@ -1964,9 +1926,7 @@ sub _buildPHPConfig
         $rs = $self->buildConfFile(
             "$self->{'phpCfgDir'}/fpm/pool.conf",
             $data,
-            {
-                destination => "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/$poolName.conf"
-            }
+            { destination => "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/$poolName.conf" }
         );
         return $rs if $rs;
     } elsif ( ( $data->{'PHP_SUPPORT'} ne 'yes'
@@ -1975,9 +1935,7 @@ sub _buildPHPConfig
         || $confLevel eq 'per_site' )
         && -f "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/$data->{'DOMAIN_NAME'}.conf"
     ) {
-        $rs = iMSCP::File->new(
-            filename => "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/$data->{'DOMAIN_NAME'}.conf"
-        )->delFile();
+        $rs = iMSCP::File->new( filename => "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/$data->{'DOMAIN_NAME'}.conf" )->delFile();
         return $rs if $rs;
     }
 
@@ -2022,7 +1980,6 @@ sub _cleanTemplate
         } elsif ( $data->{'FORWARD'} ne 'no' ) {
             if ( $data->{'FORWARD_TYPE'} eq 'proxy' && ( !$data->{'HSTS_SUPPORT'} || $data->{'VHOST_TYPE'} =~ /ssl/ ) ) {
                 ${$tpl} = replaceBloc( "# SECTION std_fwd BEGIN.\n", "# SECTION std_fwd END.\n", '', ${$tpl} );
-
                 if ( index( $data->{'FORWARD'}, 'https' ) != 0 ) {
                     ${$tpl} = replaceBloc( "# SECTION ssl_proxy BEGIN.\n", "# SECTION ssl_proxy END.\n", '', ${$tpl} );
                 }
