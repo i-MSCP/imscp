@@ -36,9 +36,6 @@ use iMSCP::Service;
 use Servers::httpd;
 use parent 'Common::SingletonClass';
 
-# php server instance
-my $instance;
-
 =head1 DESCRIPTION
 
  i-MSCP PHP server implementation.
@@ -57,7 +54,7 @@ my $instance;
 
 sub factory
 {
-    $instance ||= __PACKAGE__->getInstance();
+    __PACKAGE__->getInstance();
 }
 
 =item preinstall( )
@@ -385,7 +382,7 @@ sub getPriority
 
  Initialize instance
 
- Return Servers::httpd::apache_php_fpm
+ Return Servers::php
 
 =cut
 
