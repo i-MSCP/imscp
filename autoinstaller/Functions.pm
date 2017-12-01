@@ -158,7 +158,7 @@ sub build
 
     my @steps = (
         [ \&_buildDistributionFiles, 'Building distribution files' ],
-        ( ( $main::skippackages ) ? () : [ \&_installDistributionPackages, 'Installing distribution packages' ] ),
+        ( $main::skippackages ? () : [ \&_installDistributionPackages, 'Installing distribution packages' ] ),
         [ \&_checkRequirements, 'Checking for requirements' ],
         [ \&_compileDaemon, 'Compiling daemon' ],
         [ \&_removeObsoleteFiles, 'Removing obsolete files' ],
@@ -777,6 +777,7 @@ sub _removeObsoleteFiles
         "$main::imscpConfig{'CONF_DIR'}/frontend/nginx.conf",
         "$main::imscpConfig{'CONF_DIR'}/frontend/php-fcgi-starter",
         "$main::imscpConfig{'CONF_DIR'}/listeners.d/README",
+        "$main::imscpConfig{'CONF_DIR'}/php/fpm/logrotate.tpl",
         "$main::imscpConfig{'CONF_DIR'}/skel/domain/.htgroup",
         "$main::imscpConfig{'CONF_DIR'}/skel/domain/.htpasswd",
         "$main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar",

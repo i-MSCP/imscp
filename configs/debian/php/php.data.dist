@@ -8,6 +8,7 @@ PHP_PEAR_DIR = /usr/share/php
 
 # Selected PHP version for customers
 PHP_VERSION =
+PHP_VERSION_FULL =
 
 ##
 ### PHP OPcode cache (OPcache) parameters

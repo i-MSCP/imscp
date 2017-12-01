@@ -47,6 +47,7 @@ use iMSCP::Rights;
 use iMSCP::Service;
 use iMSCP::TemplateParser;
 use iMSCP::Umask;
+use Servers::php;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -1390,25 +1391,17 @@ sub _init
     $self->{'start'} = 0;
     $self->{'restart'} = 0;
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'php'} = Servers::php->factory();
     $self->{'apacheCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
     $self->{'apacheTplDir'} = "$self->{'apacheCfgDir'}/parts";
-
     $self->_mergeConfig( $self->{'apacheCfgDir'}, 'apache.data' ) if -f "$self->{'apacheCfgDir'}/apache.data.dist";
     tie %{$self->{'config'}},
         'iMSCP::Config',
         fileName    => "$self->{'apacheCfgDir'}/apache.data",
         readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
         nodeferring => ( defined $main::execmode && $main::execmode eq 'setup' );
-
-    $self->{'phpCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/php";
-
-    $self->_mergeConfig( $self->{'phpCfgDir'}, 'php.data' ) if -f "$self->{'phpCfgDir'}/php.data.dist";
-    tie %{$self->{'phpConfig'}},
-        'iMSCP::Config',
-        fileName    => "$self->{'phpCfgDir'}/php.data",
-        readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
-        nodeferring => ( defined $main::execmode && $main::execmode eq 'setup' );
-
+    $self->{'phpConfig'} = $self->{'php'}->{'config'};
+    $self->{'phpCfgDir'} = $self->{'php'}->{'phpCfgDir'};
     $self->{'eventManager'}->register( 'afterHttpdBuildConfFile', sub { $self->_cleanTemplate( @_ ) }, -999 );
     $self;
 }

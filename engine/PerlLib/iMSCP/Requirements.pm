@@ -48,8 +48,8 @@ sub all
 
     $self->user();
     $self->_checkPrograms();
+    $self->_checkPhpModules( $self->{'programs'}->{'php7.1'}->{'command_path'} );
     $self->_checkPerlModules();
-    $self->_checkPhpModules();
     undef;
 }
 
@@ -117,24 +117,21 @@ sub _init
     my ($self) = @_;
 
     $self->{'programs'} = {
-        # FIXME this only check current system alternative. We should also check for frontEnd PHP version
-        PHP  => {
-            version_command => 'php -nv 2> /dev/null',
-            version_regexp  => qr/PHP\s+([\d.]+)/,
-            min_version     => '5.6.0',
-            max_version     => '7.2.999', # Arbitrary minor version is intentional. We only want reject PHP > 7.2.x
+        # We only check the PHP version that is required for the i-MSCP frontEnd
+        'php7.1' => {
+            #version_command => "%s -nv 2> /dev/null",
+            #version_regexp  => qr/PHP\s+([\d.]+)/,
+            #min_version     => '7.1.0',
+            #max_version     => '7.1.999', # Arbitrary minor version is intentional. We only want reject PHP > 7.1.x
             modules         => [
                 # 'apc', 'apcu', # These extensions are not provided for PHP 7.1 under Debian 10/Buster
-                'ctype', 'curl', 'date', 'dom', 'fileinfo', 'filter', 'ftp', 'gd', 'gettext', 'gmp',
-                'hash', 'iconv', 'imap', 'intl', 'json', 'libxml', 'mbstring',
-                # 'mcrypt', # This extension is not provided for PHP >= 7.2
-                'mysqlnd', 'mysqli', 'openssl',
-                'pcntl', 'pcre', 'PDO', 'pdo_mysql', 'Phar', 'posix', 'pspell', 'Reflection', 'session', 'SimpleXML',
-                'sockets', 'SPL', 'xml', 'xmlreader', 'xmlwriter', 'zip', 'zlib', 'Zend OPcache'
+                'ctype', 'curl', 'date', 'dom', 'fileinfo', 'filter', 'ftp', 'gd', 'gettext', 'gmp', 'hash', 'iconv', 'imap', 'intl', 'json',
+                'libxml', 'mbstring', 'mcrypt', 'mysqlnd', 'mysqli', 'openssl', 'pcntl', 'pcre', 'PDO', 'pdo_mysql', 'Phar', 'posix', 'pspell',
+                'Reflection', 'session', 'SimpleXML', 'sockets', 'SPL', 'xml', 'xmlreader', 'xmlwriter', 'zip', 'zlib', 'Zend OPcache'
             ]
         },
-        Perl => {
-            version_command => 'perl -V:version 2> /dev/null',
+        perl     => {
+            version_command => "%s -V:version 2> /dev/null",
             version_regexp  => qr/version='([\d.]+)'/,
             min_version     => '5.18.2',
             max_version     => '5.999', # Arbitrary minor version is intentional. We only want reject Perl >= 6
@@ -172,7 +169,7 @@ sub _checkPrograms
     my ($self) = @_;
 
     for ( keys %{$self->{'programs'}} ) {
-        iMSCP::ProgramFinder::find( lc $_ ) or die(
+        $self->{'programs'}->{$_}->{'command_path'} = iMSCP::ProgramFinder::find( $_ ) or die(
             sprintf( "Couldn't find the `%s' command in search path", $_ )
         );
 
@@ -180,7 +177,7 @@ sub _checkPrograms
 
         eval {
             $self->_programVersions(
-                $self->{'programs'}->{$_}->{'version_command'},
+                sprintf( $self->{'programs'}->{$_}->{'version_command'}, $self->{'programs'}->{$_}->{'command_path'} ),
                 $self->{'programs'}->{$_}->{'version_regexp'},
                 $self->{'programs'}->{$_}->{'min_version'},
                 $self->{'programs'}->{$_}->{'max_version'}
@@ -191,63 +188,6 @@ sub _checkPrograms
     }
 
     undef;
-}
-
-=item _checkPerlModules( )
-
- Checks Perl modules requirements
-
- Return undef on success, die on failure
-
-=cut
-
-sub _checkPerlModules
-{
-    my ($self) = @_;
-
-    my @missingModules = ();
-    while ( my ($moduleName, $moduleVersion) = each %{$self->{'programs'}->{'Perl'}->{'modules'}} ) {
-        push( @missingModules, $moduleName ) unless check_install( module => $moduleName, version => $moduleVersion );
-    }
-
-    return undef unless @missingModules;
-
-    @missingModules < 2 or die(
-        sprintf( "The following Perl modules are not installed: %s\n", join ', ', @missingModules )
-    );
-
-    die( sprintf( "The `%s' Perl module is not installed\n", pop @missingModules ));
-}
-
-=item _checkPhpModules( )
-
- Checks PHP modules requirements
-
- Return undef on success, die on failure
-
-=cut
-
-sub _checkPhpModules
-{
-    my ($self) = @_;
-
-    open my $fh, '-|', 'php', '-d', 'date.timezone=UTC', '-m' or die(
-        sprintf( "Couldn't pipe to php command: %s", $! )
-    );
-    chomp( my @modules = <$fh> );
-
-    my @missingModules = ();
-    for my $module( @{$self->{'programs'}->{'PHP'}->{'modules'}} ) {
-        push @missingModules, $module unless grep(lc( $_ ) eq lc( $module ), @modules);
-    }
-
-    return undef unless @missingModules;
-
-    @missingModules < 2 or die(
-        sprintf( "The following PHP modules are not installed or not enabled: %s\n", join ', ', @missingModules )
-    );
-
-    die( sprintf( "The `%s' PHP module is not installed or not enabled.\n", pop @missingModules ));
 }
 
 =item _programVersions( $versionCommand, $versionRegexp, $minVersion [, $maxVersion ] )
@@ -279,6 +219,63 @@ sub _programVersions
     }
 
     $self->checkVersion( $stdout, $minversion, $maxVersion );
+}
+
+=item _checkPhpModules( )
+
+ Checks PHP modules requirements
+
+ Return undef on success, die on failure
+
+=cut
+
+sub _checkPhpModules
+{
+    my ($self) = @_;
+
+    open my $fh, '-|', $self->{'programs'}->{'php7.1'}->{'command_path'}, '-d', 'date.timezone=UTC', '-m' or die(
+        sprintf( "Couldn't pipe to php command: %s", $! )
+    );
+    chomp( my @modules = <$fh> );
+
+    my @missingModules = ();
+    for my $module( @{$self->{'programs'}->{'PHP'}->{'modules'}} ) {
+        push @missingModules, $module unless grep(lc( $_ ) eq lc( $module ), @modules);
+    }
+
+    return undef unless @missingModules;
+
+    @missingModules < 2 or die(
+        sprintf( "The following PHP modules are not installed or not enabled: %s\n", join ', ', @missingModules )
+    );
+
+    die( sprintf( "The `%s' PHP module is not installed or not enabled.\n", pop @missingModules ));
+}
+
+=item _checkPerlModules( )
+
+ Checks Perl modules requirements
+
+ Return undef on success, die on failure
+
+=cut
+
+sub _checkPerlModules
+{
+    my ($self) = @_;
+
+    my @missingModules = ();
+    while ( my ($moduleName, $moduleVersion) = each %{$self->{'programs'}->{'Perl'}->{'modules'}} ) {
+        push( @missingModules, $moduleName ) unless check_install( module => $moduleName, version => $moduleVersion );
+    }
+
+    return undef unless @missingModules;
+
+    @missingModules < 2 or die(
+        sprintf( "The following Perl modules are not installed: %s\n", join ', ', @missingModules )
+    );
+
+    die( sprintf( "The `%s' Perl module is not installed\n", pop @missingModules ));
 }
 
 =back

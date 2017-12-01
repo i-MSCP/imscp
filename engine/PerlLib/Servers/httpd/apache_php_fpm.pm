@@ -47,6 +47,7 @@ use iMSCP::Rights;
 use iMSCP::Service;
 use iMSCP::TemplateParser;
 use iMSCP::Umask;
+use Servers::php;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -132,10 +133,7 @@ sub postinstall
     $rs = $self->{'eventManager'}->register(
         'beforeSetupRestartServices',
         sub {
-            push @{$_[0]}, [ sub {
-                        iMSCP::Service->getInstance()->start( $self->{'config'}->{'HTTPD_SNAME'} );
-                        0;
-                    }, 'Httpd (Apache2)' ];
+            push @{$_[0]}, [ sub { $self->start(); }, 'Httpd (Apache2)' ];
             0;
         },
         3
@@ -1246,7 +1244,7 @@ sub start
 
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
-        $serviceMngr->start( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ));
+        $self->{'php'}->start();
         $serviceMngr->start( $self->{'config'}->{'HTTPD_SNAME'} );
     };
     if ( $@ ) {
@@ -1274,7 +1272,7 @@ sub stop
 
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
-        $serviceMngr->stop( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ));
+        $self->{'php'}->stop();
         $serviceMngr->stop( $self->{'config'}->{'HTTPD_SNAME'} );
     };
     if ( $@ ) {
@@ -1319,10 +1317,10 @@ sub restart
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
         if ( $self->{'forceRestart'} ) {
-            $serviceMngr->restart( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ));
+            $self->{'php'}->restart();
             $serviceMngr->restart( $self->{'config'}->{'HTTPD_SNAME'} );
         } else {
-            $serviceMngr->reload( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ));
+            $self->{'php'}->reload();
             $serviceMngr->reload( $self->{'config'}->{'HTTPD_SNAME'} );
         }
     };
@@ -1411,25 +1409,17 @@ sub _init
     $self->{'start'} = 0;
     $self->{'restart'} = 0;
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'php'} = Servers::php->factory();
     $self->{'apacheCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
     $self->{'apacheTplDir'} = "$self->{'apacheCfgDir'}/parts";
-
     $self->_mergeConfig( $self->{'apacheCfgDir'}, 'apache.data' ) if -f "$self->{'apacheCfgDir'}/apache.data.dist";
     tie %{$self->{'config'}},
         'iMSCP::Config',
         fileName    => "$self->{'apacheCfgDir'}/apache.data",
         readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
         nodeferring => ( defined $main::execmode && $main::execmode eq 'setup' );
-
-    $self->{'phpCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/php";
-
-    $self->_mergeConfig( $self->{'phpCfgDir'}, 'php.data' ) if -f "$self->{'phpCfgDir'}/php.data.dist";
-    tie %{$self->{'phpConfig'}},
-        'iMSCP::Config',
-        fileName    => "$self->{'phpCfgDir'}/php.data",
-        readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
-        nodeferring => ( defined $main::execmode && $main::execmode eq 'setup' );
-
+    $self->{'phpConfig'} = $self->{'php'}->{'config'};
+    $self->{'phpCfgDir'} = $self->{'php'}->{'phpCfgDir'};
     $self->{'eventManager'}->register( 'afterHttpdBuildConfFile', sub { $self->_cleanTemplate( @_ ) }, -999 );
     $self;
 }

@@ -199,47 +199,7 @@ sub _init
     $self->{'config'} = $self->{'httpd'}->{'config'};
     $self->{'phpCfgDir'} = $self->{'httpd'}->{'phpCfgDir'};
     $self->{'phpConfig'} = $self->{'httpd'}->{'phpConfig'};
-    $self->_guessSystemPhpVariables();
     $self;
-}
-
-=item _guessSystemPhpVariables
-
- Guess system PHP Variables
-
- Return int 0 on success, die on failure
-
-=cut
-
-sub _guessSystemPhpVariables
-{
-    my ($self) = @_;
-
-    my ($phpVersion) = `php -nv 2> /dev/null` =~ /^PHP\s+(\d+.\d+)/ or die( "Couldn't guess system PHP version" );
-    $self->{'phpConfig'}->{'PHP_VERSION'} = $phpVersion;
-
-    my ($phpConfDir) = `php -ni 2> /dev/null | grep '(php.ini) Path'` =~ /([^\s]+)$/ or die(
-        "Couldn't guess system PHP configuration directory path"
-    );
-
-    my $phpConfBaseDir = dirname( $phpConfDir );
-    $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = $phpConfBaseDir;
-    $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = "$phpConfBaseDir/fpm/pool.d";
-
-    unless ( -d $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} ) {
-        $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = '';
-        die( sprintf( "Couldn't guess `%s' PHP configuration parameter value: directory doesn't exist.", $_ ));
-    }
-
-    $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php$phpVersion" );
-    $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-cgi$phpVersion" );
-    $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-fpm$phpVersion" );
-
-    for ( qw/ PHP_CLI_BIN_PATH PHP_FCGI_BIN_PATH PHP_FPM_BIN_PATH / ) {
-        $self->{'phpConfig'}->{$_} ne '' or die( sprintf( "Couldn't guess `%s' PHP configuration parameter value.", $_ ));
-    }
-
-    0;
 }
 
 =item _setApacheVersion
@@ -430,19 +390,6 @@ sub _installLogrotate
         { destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2" }
     );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdInstallLogrotate' );
-    return $rs if $rs;
-
-    #    if ( version->parse( "$self->{'phpConfig'}->{'PHP_VERSION'}" ) < version->parse( '7.0' ) ) {
-    #        $rs ||= $self->{'eventManager'}->trigger( 'beforeHttpdInstallLogrotate', 'php5-fpm' );
-    #        $rs ||= $self->{'httpd'}->buildConfFile(
-    #            "$self->{'phpCfgDir'}/fpm/logrotate.tpl",
-    #            {},
-    #            { destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm" }
-    #        );
-    #        $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdInstallLogrotate', 'php5-fpm' );
-    #    }
-
-    $rs;
 }
 
 =item _setupVlogger( )

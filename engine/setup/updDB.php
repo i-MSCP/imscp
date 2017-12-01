@@ -18,50 +18,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP\Update\UpdateDatabase;
-
 define('IMSCP_SETUP', true);
 
-function upddb_process()
-{
+try {
     chdir(dirname(__FILE__));
     require_once '../../gui/library/imscp-lib.php';
 
-    $dbUpdater = new UpdateDatabase();
+    $dbUpdater = new iMSCP\Update\UpdateDatabase();
 
     if ($dbUpdater->getLastAppliedUpdate() > $dbUpdater->getLastUpdate()) {
-        throw new iMSCP_Exception('An i-MSCP downgrade attempt has been detected. Downgrade is not supported.');
+        throw new \RuntimeException(
+            'An i-MSCP downgrade attempt has been detected. Downgrade is not supported.'
+        );
     }
 
     if (!$dbUpdater->applyUpdates()) {
-        fwrite(STDERR, sprintf("[ERROR] %s\n", $dbUpdater->getError()));
-        exit(1);
+        throw new \RuntimeException(sprintf("[ERROR] %s\n", $dbUpdater->getError()));
     }
 
     i18n_buildLanguageIndex();
-}
-
-try {
-    if (version_compare(PHP_VERSION, '7', '<')) {
-        upddb_process();
-    } else {
-        try {
-            upddb_process();
-        } catch (Throwable $e) {
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
-
-        }
-    }
 } catch (Exception $e) {
-    $prevException = $e->getPrevious();
-
-    fwrite(
-        STDERR,
-        sprintf(
-            "[ERROR] %s \n\nStack trace:\n\n%s\n",
-            $e->getMessage(),
-            ($prevException) ? $prevException->getTraceAsString() : $e->getTraceAsString()
-        )
-    );
+    fwrite(STDERR, sprintf("[ERROR] %s \n\nStack trace:\n\n%s\n", $e->getMessage(), $e->getTraceAsString()));
     exit(1);
 }

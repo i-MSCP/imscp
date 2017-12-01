@@ -288,27 +288,6 @@ sub _init
     $self;
 }
 
-=item _getPhpVersion( )
-
- Get PHP version
-
- Return int PHP version on success, die on failure
-
-=cut
-
-sub _getPhpVersion
-{
-    my $rs = execute( 'php -nv', \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr || 'Unknown error' ) if $rs;
-    return $rs if $rs;
-
-    $stdout =~ /PHP\s+([\d.]+)/ or die(
-        sprintf( "Couldn't find PHP version from `php -v` command output: %s", $stdout )
-    );
-    $1;
-}
-
 =item _backupConfigFile( $cfgFile )
 
  Backup the given configuration file

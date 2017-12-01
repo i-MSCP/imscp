@@ -25,10 +25,13 @@ package Servers::php;
 
 use strict;
 use warnings;
+use File::Basename;
+use iMSCP::Config;
 use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::File;
+use iMSCP::ProgramFinder;
 use iMSCP::Service;
 use Servers::httpd;
 use parent 'Common::SingletonClass';
@@ -54,10 +57,7 @@ my $instance;
 
 sub factory
 {
-    $instance ||= __PACKAGE__->getInstance(
-        eventManager => iMSCP::EventManager->getInstance(),
-        httpd        => Servers::httpd->factory()
-    );
+    $instance ||= __PACKAGE__->getInstance();
 }
 
 =item preinstall( )
@@ -65,7 +65,6 @@ sub factory
  Process preinstall tasks
 
  Return int 0 on success, other on failure
- FIXME: We are too close to Debian layout here.
 
 =cut
 
@@ -91,9 +90,12 @@ sub preinstall
 
             my $service = "php$phpVersion-fpm";
             if ( $serviceMngr->hasService( $service ) ) {
-                $serviceMngr->stop( $service );
+                $self->stop( $phpVersion ) == 0 or die(
+                    getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+                );
+
                 if ( $main::imscpConfig{'HTTPD_PACKAGE'} ne 'Servers::httpd::apache_php_fpm'
-                    || $self->{'httpd'}->{'phpConfig'}->{'PHP_VERSION'} ne $phpVersion
+                    || $self->{'config'}->{'PHP_VERSION'} ne $phpVersion
                 ) {
                     $serviceMngr->disable( $service );
                 }
@@ -106,6 +108,8 @@ sub preinstall
                 );
             }
         }
+
+        $self->_guessVariablesForSelectedPhpAlternative();
     };
     if ( $@ ) {
         error( $@ );
@@ -120,7 +124,6 @@ sub preinstall
  Process install tasks
 
  Return int 0 on success, other on failure
- FIXME: We are too close to Debian layout here.
 
 =cut
 
@@ -134,26 +137,25 @@ sub install
     eval {
         $self->{'httpd'}->setData(
             {
-                HTTPD_USER                          => $self->{'httpd'}->{'config'}->{'HTTPD_USER'} // 'www-data',
-                HTTPD_GROUP                         => $self->{'httpd'}->{'config'}->{'HTTPD_GROUP'} // 'www-data',
-                PEAR_DIR                            => $self->{'httpd'}->{'phpConfig'}->{'PHP_PEAR_DIR'} // '/usr/share/php',
-                PHP_FPM_LOG_LEVEL                   => $self->{'httpd'}->{'phpConfig'}->{'PHP_FPM_LOG_LEVEL'} || 'error',
-                PHP_FPM_EMERGENCY_RESTART_THRESHOLD => $self->{'httpd'}->{'phpConfig'}->{'PHP_FPM_EMERGENCY_RESTART_THRESHOLD'} || 10,
-                PHP_FPM_EMERGENCY_RESTART_INTERVAL  => $self->{'httpd'}->{'phpConfig'}->{'PHP_FPM_EMERGENCY_RESTART_INTERVAL'} || '1m',
-                PHP_FPM_PROCESS_CONTROL_TIMEOUT     => $self->{'httpd'}->{'phpConfig'}->{'PHP_FPM_PROCESS_CONTROL_TIMEOUT'} || '60s',
-                PHP_FPM_PROCESS_MAX                 => $self->{'httpd'}->{'phpConfig'}->{'PHP_FPM_PROCESS_MAX'} // 0,
-                PHP_FPM_RLIMIT_FILES                => $self->{'httpd'}->{'phpConfig'}->{'PHP_FPM_RLIMIT_FILES'} // 4096,
-                PHP_OPCODE_CACHE_ENABLED            => $self->{'httpd'}->{'phpConfig'}->{'PHP_OPCODE_CACHE_ENABLED'} // 0,
-                PHP_OPCODE_CACHE_MAX_MEMORY         => $self->{'httpd'}->{'phpConfig'}->{'PHP_OPCODE_CACHE_MAX_MEMORY'} // 32,
-                PHP_APCU_CACHE_ENABLED              => $self->{'httpd'}->{'phpConfig'}->{'PHP_APCU_CACHE_ENABLED'} // 0,
-                PHP_APCU_CACHE_MAX_MEMORY           => $self->{'httpd'}->{'phpConfig'}->{'PHP_APCU_CACHE_MAX_MEMORY'} // 32,
+                HTTPD_USER                          => $self->{'httpd'}->{'config'}->{'HTTPD_USER'} || 'www-data',
+                HTTPD_GROUP                         => $self->{'httpd'}->{'config'}->{'HTTPD_GROUP'} || 'www-data',
+                PEAR_DIR                            => $self->{'config'}->{'PHP_PEAR_DIR'} || '/usr/share/php',
+                PHP_FPM_LOG_LEVEL                   => $self->{'config'}->{'PHP_FPM_LOG_LEVEL'} || 'error',
+                PHP_FPM_EMERGENCY_RESTART_THRESHOLD => $self->{'config'}->{'PHP_FPM_EMERGENCY_RESTART_THRESHOLD'} // 10,
+                PHP_FPM_EMERGENCY_RESTART_INTERVAL  => $self->{'config'}->{'PHP_FPM_EMERGENCY_RESTART_INTERVAL'} || '1m',
+                PHP_FPM_PROCESS_CONTROL_TIMEOUT     => $self->{'config'}->{'PHP_FPM_PROCESS_CONTROL_TIMEOUT'} || '60s',
+                PHP_FPM_PROCESS_MAX                 => $self->{'config'}->{'PHP_FPM_PROCESS_MAX'} // 0,
+                PHP_FPM_RLIMIT_FILES                => $self->{'config'}->{'PHP_FPM_RLIMIT_FILES'} // 4096,
+                PHP_OPCODE_CACHE_ENABLED            => $self->{'config'}->{'PHP_OPCODE_CACHE_ENABLED'} // 0,
+                PHP_OPCODE_CACHE_MAX_MEMORY         => $self->{'config'}->{'PHP_OPCODE_CACHE_MAX_MEMORY'} // 32,
+                PHP_APCU_CACHE_ENABLED              => $self->{'config'}->{'PHP_APCU_CACHE_ENABLED'} // 0,
+                PHP_APCU_CACHE_MAX_MEMORY           => $self->{'config'}->{'PHP_APCU_CACHE_MAX_MEMORY'} // 32,
                 TIMEZONE                            => $main::imscpConfig{'TIMEZONE'}
             }
         );
 
         for my $phpVersion( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
             next unless $phpVersion =~ /^[\d.]+$/;
-
             # FPM
             $self->{'httpd'}->setData(
                 {
@@ -162,26 +164,16 @@ sub install
                     PHP_VERSION           => $phpVersion
                 }
             );
-            $rs = $self->{'httpd'}->buildConfFile(
-                "$self->{'httpd'}->{'phpCfgDir'}/fpm/php.ini",
-                {},
-                { destination => "/etc/php/$phpVersion/fpm/php.ini" }
+            $rs = $self->{'httpd'}->buildConfFile( "$self->{'phpCfgDir'}/fpm/php.ini", {}, { destination => "/etc/php/$phpVersion/fpm/php.ini" } );
+            $rs ||= $self->{'httpd'}->buildConfFile(
+                "$self->{'phpCfgDir'}/fpm/php-fpm.conf", {}, { destination => "/etc/php/$phpVersion/fpm/php-fpm.conf" }
             );
             $rs ||= $self->{'httpd'}->buildConfFile(
-                "$self->{'httpd'}->{'phpCfgDir'}/fpm/php-fpm.conf",
-                {},
-                { destination => "/etc/php/$phpVersion/fpm/php-fpm.conf" }
-            );
-            $rs ||= $self->{'httpd'}->buildConfFile(
-                "$self->{'httpd'}->{'phpCfgDir'}/fpm/pool.conf.default",
-                {},
-                { destination => "/etc/php/$phpVersion/fpm/pool.d/www.conf" }
+                "$self->{'phpCfgDir'}/fpm/pool.conf.default", {}, { destination => "/etc/php/$phpVersion/fpm/pool.d/www.conf" }
             );
             # ITK
             $rs ||= $self->{'httpd'}->buildConfFile(
-                "$self->{'httpd'}->{'phpCfgDir'}/apache/php.ini",
-                {},
-                { destination => "/etc/php/$phpVersion/apache2/php.ini" }
+                "$self->{'phpCfgDir'}/apache/php.ini", {}, { destination => "/etc/php/$phpVersion/apache2/php.ini" }
             );
             $rs == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
         }
@@ -199,7 +191,6 @@ sub install
  Process postinstall tasks
 
  Return int 0 on success, other on failure
- FIXME: We are too close to Debian layout here.
 
 =cut
 
@@ -215,23 +206,14 @@ sub postinstall
             for my $phpVersion( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
                 # We enable and start only selected PHP alternative as other PHP versions are managed through
                 # OPTIONAL PhpSwitcher plugin
-                next unless $phpVersion =~ /^[\d.]+$/ && $self->{'httpd'}->{'phpConfig'}->{'PHP_VERSION'} eq $phpVersion;
+                next unless $phpVersion =~ /^[\d.]+$/ && $self->{'config'}->{'PHP_VERSION'} eq $phpVersion;
 
-                my $service = "php$phpVersion-fpm";
-
-                iMSCP::Service->getInstance()->enable( $service );
+                iMSCP::Service->getInstance()->enable( "php$phpVersion-fpm" );
 
                 $self->{'eventManager'}->register(
                     'beforeSetupRestartServices',
                     sub {
-                        push @{$_[0]},
-                            [
-                                sub {
-                                    iMSCP::Service->getInstance()->start( $service );
-                                    0;
-                                },
-                                "PHP-FPM $phpVersion"
-                            ];
+                        push @{$_[0]}, [ sub { $self->start(); }, "PHP-FPM $phpVersion" ];
                         0;
                     },
                     3
@@ -252,7 +234,6 @@ sub postinstall
  Process uninstall tasks
 
  Return int 0 on success, other on failure
- FIXME: We are too close to Debian layout here.
 
 =cut
 
@@ -272,6 +253,115 @@ sub uninstall
     $self->{'eventManager'}->trigger( 'afterPhpUninstall' );
 }
 
+=item start( [ $version = $self->{'config'}->{'PHP_VERSION'} ] )
+
+ Start PHP-FPM instance
+
+ Param string $version OPTIONAL PHP-FPM version to start
+ Return int 0 on success, other on failure
+
+=cut
+
+sub start
+{
+    my ($self, $version) = @_;
+
+    $version ||= $self->{'config'}->{'PHP_VERSION'};
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpFpmStart', $version );
+    return $rs if $rs;
+
+    eval { iMSCP::Service->getInstance()->start( "php$version-fpm" ); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterPhpFpmStart', $version );
+}
+
+=item stop( [ $version = $self->{'config'}->{'PHP_VERSION'} ] )
+
+ Stop PHP-FPM instance
+
+ Param string $version OPTIONAL PHP-FPM version to stop
+ Return int 0 on success, other on failure
+
+=cut
+
+sub stop
+{
+    my ($self, $version) = @_;
+
+    $version ||= $self->{'config'}->{'PHP_VERSION'};
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpFpmStop', $version );
+    return $rs if $rs;
+
+    eval { iMSCP::Service->getInstance()->stop( "php$version-fpm" ); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterPhpFpmStop', $version );
+}
+
+=item reload( [ $version = $self->{'config'}->{'PHP_VERSION'} ] )
+
+ Reload PHP-FPM instance
+
+ Param string $version OPTIONAL PHP-FPM version to reload
+ Return int 0
+
+=cut
+
+sub reload
+{
+    my ($self, $version) = @_;
+
+    $version ||= $self->{'config'}->{'PHP_VERSION'};
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpFpmReload', $version );
+    return $rs if $rs;
+
+    eval { iMSCP::Service->getInstance()->reload( "php$version-fpm" ); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterPhpFpmReload', $version );
+    0;
+}
+
+=item restart( [ $version = $self->{'config'}->{'PHP_VERSION'} ] )
+
+ Restart PHP-FPM instance
+
+ Param string $version OPTIONAL PHP-FPM version to restart
+ Return int 0 on success, other on failure
+
+=cut
+
+sub restart
+{
+    my ($self, $version) = @_;
+
+    $version ||= $self->{'config'}->{'PHP_VERSION'};
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpFpmRestart', $version );
+    return $rs if $rs;
+
+    eval { iMSCP::Service->getInstance()->restart( "php$version-fpm" ); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterPhpFpmRestart', $version );
+}
+
 =item getPriority( )
 
  Get server priority
@@ -283,6 +373,114 @@ sub uninstall
 sub getPriority
 {
     70;
+}
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init( )
+
+ Initialize instance
+
+ Return Servers::httpd::apache_php_fpm
+
+=cut
+
+sub _init
+{
+    my ($self) = @_;
+
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'httpd'} = Servers::httpd->factory();
+    $self->{'phpCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/php";
+    $self->_mergeConfig( $self->{'phpCfgDir'}, 'php.data' ) if -f "$self->{'phpCfgDir'}/php.data.dist";
+    tie %{$self->{'config'}},
+        'iMSCP::Config',
+        fileName    => "$self->{'phpCfgDir'}/php.data",
+        readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
+        nodeferring => ( defined $main::execmode && $main::execmode eq 'setup' );
+    $self;
+}
+
+=item _mergeConfig( $confDir, $confName )
+
+ Merge distribution configuration with production configuration
+
+ Param string $confDir Configuration directory
+ Param string $confName Configuration filename
+ Die on failure
+
+=cut
+
+sub _mergeConfig
+{
+    my (undef, $confDir, $confName) = @_;
+
+    if ( -f "$confDir/$confName" ) {
+        tie my %newConfig, 'iMSCP::Config', fileName => "$confDir/$confName.dist";
+        tie my %oldConfig, 'iMSCP::Config', fileName => "$confDir/$confName", readonly => 1;
+
+        debug( 'Merging old configuration with new configuration...' );
+
+        while ( my ($key, $value) = each( %oldConfig ) ) {
+            next unless exists $newConfig{$key};
+            $newConfig{$key} = $value;
+        }
+
+        untie( %newConfig );
+        untie( %oldConfig );
+    }
+
+    iMSCP::File->new( filename => "$confDir/$confName.dist" )->moveFile( "$confDir/$confName" ) == 0 or die(
+        getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+    );
+}
+
+=item _guessVariablesForSelectedPhpAlternative( )
+
+ Guess variable for the selected PHP alternative
+
+ Return int 0 on success, die on failure
+
+=cut
+
+sub _guessVariablesForSelectedPhpAlternative
+{
+    my ($self) = @_;
+
+    my $phpPath = iMSCP::ProgramFinder::find( 'php' ) or die( "Couldn't find the PHP (CLI) command in search path" );
+
+    my ($phpVersion) = `$phpPath -nv 2> /dev/null` =~ /^PHP\s+([\d.]+)/ or die( "Couldn't guess system PHP version" );
+
+    $self->{'config'}->{'PHP_VERSION_FULL'} = $phpVersion;
+    $phpVersion =~ s/\.\d+$//;
+    $self->{'config'}->{'PHP_VERSION'} = $phpVersion;
+
+    my ($phpConfDir) = `$phpPath -ni 2> /dev/null | grep '(php.ini) Path'` =~ /([^\s]+)$/ or die(
+        "Couldn't guess system PHP configuration directory path"
+    );
+
+    my $phpConfBaseDir = dirname( $phpConfDir );
+    $self->{'config'}->{'PHP_CONF_DIR_PATH'} = $phpConfBaseDir;
+    $self->{'config'}->{'PHP_FPM_POOL_DIR_PATH'} = "$phpConfBaseDir/fpm/pool.d";
+
+    unless ( -d $self->{'config'}->{'PHP_FPM_POOL_DIR_PATH'} ) {
+        $self->{'config'}->{'PHP_FPM_POOL_DIR_PATH'} = '';
+        die( sprintf( "Couldn't guess `%s' PHP configuration parameter value: directory doesn't exist.", $_ ));
+    }
+
+    $self->{'config'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php$phpVersion" );
+    $self->{'config'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-cgi$phpVersion" );
+    $self->{'config'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-fpm$phpVersion" );
+
+    for ( qw/ PHP_CLI_BIN_PATH PHP_FCGI_BIN_PATH PHP_FPM_BIN_PATH / ) {
+        $self->{'config'}->{$_} ne '' or die( sprintf( "Couldn't guess `%s' PHP configuration parameter value.", $_ ));
+    }
+
+    0;
 }
 
 =back

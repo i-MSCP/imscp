@@ -29,14 +29,9 @@ class iMSCP_Exception_Database extends iMSCP_Exception
     protected $query = NULL;
 
     /**
-     * Constructor
-     *
-     * @param string $msg Exception Message
-     * @param string $query query Last query executed
-     * @param int $code Exception code
-     * @param Exception $previous OPTIONAL Previous exception
+     * @inheritdoc
      */
-    public function __construct($msg = '', $query = NULL, $code = 0, Exception $previous = NULL)
+    public function __construct($msg = '', $query = NULL, $code = 0, Throwable $previous = NULL)
     {
         $this->query = (string)preg_replace("/[\t\n]+/", ' ', $query);
         parent::__construct($msg, $code, $previous);

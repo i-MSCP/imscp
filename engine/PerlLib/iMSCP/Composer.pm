@@ -98,8 +98,7 @@ sub new
 }
 EOT
         $self->{'_php_cmd'} = [
-            '/usr/bin/php', '-d', "date.timezone=$main::imscpConfig{'TIMEZONE'}", '-d', 'allow_url_fopen=1',
-            '-d suhosin.executor.include.whitelist=phar'
+            '/usr/bin/php7.1', '-d', "date.timezone=$main::imscpConfig{'TIMEZONE'}", '-d', 'allow_url_fopen=1'
         ];
         # Set default STD routines
         $self->setStdRoutines();
