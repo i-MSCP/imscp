@@ -340,6 +340,9 @@ sub _configureApache2
     );
     $rs ||= $self->{'httpd'}->enableModules( 'actions', 'authz_groupfile', 'fcgid_imscp', 'mpm_event', 'version' );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildFastCgiConfFiles' );
+    
+    # Reset template variable
+    undef $cfgTpl;
 
     if ( -f "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf" ) {
         $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'apache_fcgid', 'ports.conf', \$cfgTpl, {} );

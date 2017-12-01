@@ -92,7 +92,7 @@ sub preinstall
             my $service = "php$phpVersion-fpm";
             if ( $serviceMngr->hasService( $service ) ) {
                 $serviceMngr->stop( $service );
-                if($main::imscpConfig{'HTTPD_PACKAGE'} ne 'Servers::httpd::apache_php_fpm'
+                if ( $main::imscpConfig{'HTTPD_PACKAGE'} ne 'Servers::httpd::apache_php_fpm'
                     || $self->{'httpd'}->{'phpConfig'}->{'PHP_VERSION'} ne $phpVersion
                 ) {
                     $serviceMngr->disable( $service );
@@ -129,7 +129,6 @@ sub install
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpInstall' );
-    $rs ||= $self->{'eventManager'}->trigger( 'beforePhpdBuildConfFiles' );
     return $rs if $rs;
 
     eval {
@@ -192,7 +191,6 @@ sub install
         $rs = 1;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpdBuildConfFiles' );
     $rs ||= $self->{'eventManager'}->trigger( 'afterPhpInstall' );
 }
 
