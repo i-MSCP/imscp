@@ -23,10 +23,8 @@ $< == 0 or die( 'This script must be run as root user.' );
 
 unless ( grep { $_ =~ /^-(?:.*?s|-skip-distro-packages)/ } @ARGV ) {
     print "Satisfying pre-requisites for the i-MSCP installer\n";
-
     print "  - Updating package index files...\n";
-    system( 'apt-get', '--quiet=2', 'update' ) == 0 or "[ERROR] Couldn't update APT index";
-
+    system( 'apt-get', '--quiet=2', 'update' ) == 0 or die( "[ERROR] Couldn't update APT index" );
     print "  - Upgrading distribution packages (dist-upgrade)...\n";
     system( 'apt-get', '--assume-yes', '--no-install-recommends', '--quiet=2', 'dist-upgrade' ) == 0 or die(
         "[ERROR] Couldn't upgrade distribution packages."
@@ -35,9 +33,7 @@ unless ( grep { $_ =~ /^-(?:.*?s|-skip-distro-packages)/ } @ARGV ) {
     system(
         'apt-get', '--assume-yes', '--no-install-recommends', '--quiet=2', 'install', 'libclone-perl', 'perl',
         'whiptail'
-    ) == 0 or die(
-        "[ERROR] Couldn't install pre-required distribution packages."
-    );
+    ) == 0 or die( "[ERROR] Couldn't install pre-required distribution packages." );
     system( 'clear 2>/dev/null' );
 }
 
