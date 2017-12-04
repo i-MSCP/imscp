@@ -19,25 +19,43 @@
 
 # Wrap real i-MSCP installer for satisfying pre-requisites
 
-$< == 0 or die( 'This script must be run as root user.' );
+$< == 0 or die( "[\x1b[0;31mERROR\x1b[0m] The i-MSCP installer must be run as root user.\n" );
+system( 'clear 2>/dev/null' );
 
-unless ( grep { $_ =~ /^-(?:.*?s|-skip-distro-packages)/ } @ARGV ) {
-    print "Satisfying pre-requisites for the i-MSCP installer\n";
-    print "  - Updating package index files...\n";
-    system( 'apt-get', '--quiet=2', 'update' ) == 0 or die( "[ERROR] Couldn't update APT index" );
-    print "  - Upgrading distribution packages (dist-upgrade)...\n";
-    system( 'apt-get', '--assume-yes', '--no-install-recommends', '--quiet=2', 'dist-upgrade' ) == 0 or die(
-        "[ERROR] Couldn't upgrade distribution packages."
-    );
-    print "  - Installing pre-required distribution packages...\n";
-    system(
-        'apt-get', '--assume-yes', '--no-install-recommends', '--quiet=2', 'install', 'libclone-perl', 'perl',
-        'whiptail'
-    ) == 0 or die( "[ERROR] Couldn't install pre-required distribution packages." );
+unless ( grep (/^-(?:[^-]*?[hs?][^-]*|-(?:help|skip-distro-packages))$/, @ARGV) ) {
+    my $noprompt = grep(/^-(?:[^-]*?n[^-]*|-noprompt)$/, @ARGV);
     system( 'clear 2>/dev/null' );
+
+    my @progressCmd;
+    my $quiet = !$noprompt;
+    if ( !$noprompt && chomp( @progressCmd = `which debconf-apt-progress 2>/dev/null` ) ) {
+        $ENV{'DEBIAN_FRONTEND'} = 'dialog';
+        push @progressCmd, '--logstderr', '--';
+        $quiet = 1;
+    }
+
+    unless ( @progressCmd ) {
+        print "Satisfying pre-requisites for the i-MSCP installer\n";
+        print " [\x1b[0;34mINFO\x1b[0m] Updating package index files ...\n";
+    }
+    system( @progressCmd, 'apt-get', ( $quiet ? '--quiet=2' : () ), 'update' ) == 0 or die( "[\x1b[0;31mERROR\x1b[0m] Couldn't update APT index.\n" );
+
+    print " [\x1b[0;34mINFO\x1b[0m] Upgrading distribution packages (dist-upgrade) ...\n" unless @progressCmd;
+    system( @progressCmd, 'apt-get', '--assume-yes', '--no-install-recommends', ( $quiet ? '--quiet=2' : () ), 'dist-upgrade' ) == 0 or die(
+        "[\x1b[0;31mERROR\x1b[0m] Couldn't upgrade distribution packages.\n"
+    );
+
+    print " [\x1b[0;34mINFO\x1b[0m] Installing pre-required distribution packages ...\n" unless @progressCmd;
+    system(
+        @progressCmd, 'apt-get', '--assume-yes', '--no-install-recommends', ( $quiet ? '--quiet=2' : () ), 'install', 'debconf-utils',
+        'libclone-perl', 'perl', 'wget', 'whiptail'
+    ) == 0 or die( "[\x1b[0;31mERROR\x1b[0m] Couldn't install pre-required distribution packages.\n" );
 }
 
 # Execute the real installer
 require File::Basename;
 chdir( File::Basename::dirname( __FILE__ )) or die( sprintf( "Couldn't chdir: %s", $! || 'Unknown error' ));
 exec( '/usr/bin/perl', 'autoinstaller/installer.pl', @ARGV );
+
+1;
+__END__
