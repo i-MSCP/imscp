@@ -48,7 +48,7 @@ unless ( grep (/^-(?:[^-]*?[hs?][^-]*|-(?:help|skip-distro-packages))$/, @ARGV) 
     print " [\x1b[0;34mINFO\x1b[0m] Installing pre-required distribution packages ...\n" unless @progressCmd;
     system(
         @progressCmd, 'apt-get', '--assume-yes', '--no-install-recommends', ( $quiet ? '--quiet=2' : () ), 'install', 'debconf-utils',
-        'libclone-perl', 'perl', 'wget', 'whiptail'
+        'libclone-perl', 'libdata-compare-perl', 'perl', 'wget', 'whiptail'
     ) == 0 or die( "[\x1b[0;31mERROR\x1b[0m] Couldn't install pre-required distribution packages.\n" );
 }
 
