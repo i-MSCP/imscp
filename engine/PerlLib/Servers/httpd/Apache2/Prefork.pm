@@ -47,7 +47,7 @@ sub _init
     my ($self) = @_;
 
     $self->SUPER::_init();
-    $self->{'eventManager'}->register( 'afterHttpdBuildConfFile', sub { $self->_cleanTemplate( @_ ) }, -999 );
+    $self->{'eventManager'}->register( 'afterHttpdBuildConfFile', \&_cleanTemplate, -999 );
     $self;
 }
 
@@ -89,7 +89,7 @@ sub _setupModules
 
 sub _cleanTemplate
 {
-    my (undef, $tpl, $name, $moduleData) = @_;
+    my ($tpl, $name, $moduleData) = @_;
 
     if ( $moduleData->{'SKIP_TEMPLATE_CLEANER'} ) {
         delete $moduleData->{'SKIP_TEMPLATE_CLEANER'};
