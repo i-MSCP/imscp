@@ -26,15 +26,21 @@ package Servers::php;
 use strict;
 use warnings;
 use File::Basename;
+use File::Spec;
+use autouse 'iMSCP::Dialog::InputValidation' => qw/ isStringInList /;
+use autouse 'iMSCP::Rights' => qw/ setRights /;
+use Class::Autouse qw/ :nostat iMSCP::Getopt iMSCP::ProgramFinder Servers::httpd /;
 use iMSCP::Config;
 use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::File;
-use iMSCP::ProgramFinder;
 use iMSCP::Service;
-use Servers::httpd;
+use iMSCP::TemplateParser qw/ process getBloc replaceBloc /;
 use parent 'Common::SingletonClass';
+
+# php server instance
+my $INSTANCE;
 
 =head1 DESCRIPTION
 
@@ -54,7 +60,160 @@ use parent 'Common::SingletonClass';
 
 sub factory
 {
-    __PACKAGE__->getInstance();
+    $INSTANCE ||= __PACKAGE__->getInstance();
+}
+
+=item registerSetupListeners( \%eventManager )
+
+ Register setup event listeners
+
+ Param iMSCP::EventManager \%eventManager
+ Return int 0 on success, other on failure
+
+=cut
+
+sub registerSetupListeners
+{
+    my ($self, $eventManager) = @_;
+
+    my $rs = $eventManager->register(
+        'beforeSetupDialog',
+        sub {
+            push @{$_[0]}, sub { $self->factory()->askForPhpSapi( @_ ) };
+            0;
+        }
+    );
+    $rs ||= $eventManager->register(
+        'beforeSetupDialog',
+        sub {
+            push @{$_[0]}, sub { $self->factory()->askForPhpConfigLevel( @_ ) };
+            0;
+        }
+    );
+    $rs ||= $eventManager->register(
+        'beforeSetupDialog',
+        sub {
+            push @{$_[0]}, sub { $self->factory()->askForFastCGIconnectionType( @_ ) };
+            0;
+        }
+    );
+}
+
+=item askForPhpSapi( \%dialog )
+
+ Ask for PHP SAPI
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 to go on next question, 30 to go back to the previous question
+
+=cut
+
+sub askForPhpSapi
+{
+    my ($self, $dialog) = @_;
+
+    my $value = main::setupGetQuestion( 'PHP_SAPI', $self->{'config'}->{'PHP_SAPI'} || ( iMSCP::Getopt->preseed ? 'fpm' : '' ));
+    my %choices = ( 'fpm', 'PHP through PHP fastCGI Process Manager (fpm SAPI)' );
+
+    # Apache2 Fcgid module doesn't work with Apache's ITK MPM
+    # https://lists.debian.org/debian-apache/2013/07/msg00147.html
+    if ( $main::imscpConfig{'HTTPD_PACKAGE'} ne 'Servers::httpd::Apache2::Itk' ) {
+        $choices{'cgi'} = 'PHP through Apache2 Fcgid module (cgi SAPI)';
+    }
+
+    # Apache2 PHP module only works with Apache's prefork MPM
+    # We allow it only with the Apache's ITK MPM because the Apache's prefork MPM
+    # doesn't allow to constrain each individual vhost to a particular system user and group.
+    if ( $main::imscpConfig{'HTTPD_PACKAGE'} eq 'Servers::httpd::Apache2::Itk' ) {
+        $choices{'apache2handler'} = 'PHP through Apache2 PHP module (apache2handler SAPI)';
+    }
+
+    if ( isStringInList( $main::reconfigure, 'php', 'servers', 'all', 'forced' )
+        || !isStringInList( $value, keys %choices )
+    ) {
+        ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'fpm' );
+\\Z4\\Zb\\ZuPHP configuration level\\Zn
+
+Please choose the PHP SAPI for customers.
+\\Z \\Zn
+EOF
+        return $rs unless $rs < 30;
+    }
+
+    $self->{'config'}->{'PHP_SAPI'} = $value;
+    0;
+}
+
+=item askForPhpConfigLevel( \%dialog )
+
+ Ask for PHP config level
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 to go on next question, 30 to go back to the previous question
+
+=cut
+
+sub askForPhpConfigLevel
+{
+    my ($self, $dialog) = @_;
+
+    my $value = main::setupGetQuestion( 'PHP_CONFIG_LEVEL', $self->{'config'}->{'PHP_CONFIG_LEVEL'} || ( iMSCP::Getopt->preseed ? 'per_site' : '' ));
+    my %choices = ( 'per_site', 'Per site', 'per_domain', 'Per domain', 'per_user', 'Per user' );
+
+    if ( isStringInList( $main::reconfigure, 'php', 'servers', 'all', 'forced' )
+        || !isStringInList( $value, keys %choices )
+    ) {
+        ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'per_site' );
+\\Z4\\Zb\\ZuPHP configuration level\\Zn
+
+Please choose the PHP configuration level for customers.
+
+Available levels are:
+
+\\Z4Per site  :\\Zn Different PHP configuration for each site (recommended)
+\\Z4Per domain:\\Zn Identical PHP configuration for each domain, including subdomains
+\\Z4Per user  :\\Zn Idnetical PHP configuration for all domains, including subdomains
+\\Z \\Zn
+EOF
+        return $rs unless $rs < 30;
+    }
+
+    $self->{'config'}->{'PHP_CONFIG_LEVEL'} = $value;
+    0;
+}
+
+=item askForFastCGIconnectionType( )
+
+ Ask for FastCGI connection type (PHP-FPM)
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 to go on next question, 30 to go back to the previous question
+
+=cut
+
+sub askForFastCGIconnectionType
+{
+    my ($self, $dialog) = @_;
+
+    return 0 unless $self->{'config'}->{'PHP_SAPI'} eq 'fpm';
+
+    my $value = main::setupGetQuestion( 'PHP_FPM_LISTEN_MODE', $self->{'config'}->{'PHP_FPM_LISTEN_MODE'} || ( iMSCP::Getopt->preseed ? 'uds' : '' ));
+    my %choices = ( 'tcp', 'TCP sockets over the loopback interface', 'uds', 'Unix Domain Sockets (recommended)' );
+
+    if ( isStringInList( $main::reconfigure, 'php', 'servers', 'all', 'forced' )
+        || !isStringInList( $value, keys %choices )
+    ) {
+        ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'uds' );
+\\Z4\\Zb\\ZuPHP-FPM - FastCGI address type\\Zn
+
+Please choose the FastCGI connection type that you want use.
+\\Z \\Zn
+EOF
+        return $rs unless $rs < 30;
+    }
+
+    $self->{'config'}->{'PHP_FPM_LISTEN_MODE'} = $value;
+    0;
 }
 
 =item preinstall( )
@@ -73,47 +232,81 @@ sub preinstall
     return $rs if $rs;
 
     eval {
+        my $httpd = Servers::httpd->factory();
+
+        # Disable Apache2 modules. If one is required, it will be re-enabled in postinstall
+        $httpd->disableModules( qw/ fastcgi fcgid fcgid_imscp php5 php5_cgi php5filter proxy_fcgi proxy_handler / ) == 0 or die(
+            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+        );
+
+        # Disable default Apache2 conffile for CGI programs 
+        $httpd->disableConfs( 'serve-cgi-bin.conf' ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
+
         my $serviceMngr = iMSCP::Service->getInstance();
 
         # Disable PHP session cleaner services as we don't rely on them
-        for my $service( qw/ phpsessionclean phpsessionclean.timer / ) {
-            next unless $serviceMngr->hasService( $service );
-            $serviceMngr->stop( $service );
-            $serviceMngr->disable( $service );
+        for ( qw/ phpsessionclean phpsessionclean.timer / ) {
+            next unless $serviceMngr->hasService( $_ );
+            $serviceMngr->stop( $_ );
+            $serviceMngr->disable( $_ );
         }
 
-        for my $phpVersion( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
-            next unless $phpVersion =~ /^[\d.]+$/;
+        for ( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
+            next unless /^[\d.]+$/;
 
-            my $service = "php$phpVersion-fpm";
-            if ( $serviceMngr->hasService( $service ) ) {
-                $self->stop( $phpVersion ) == 0 or die(
-                    getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-                );
+            # Tasks for apache2handler SAPI
 
-                if ( $main::imscpConfig{'HTTPD_PACKAGE'} ne 'Servers::httpd::apache_php_fpm'
-                    || $self->{'config'}->{'PHP_VERSION'} ne $phpVersion
-                ) {
-                    $serviceMngr->disable( $service );
-                }
+            if ( $self->{'config'}->{'PHP_SAPI'} ne 'apache2handler' || $self->{'config'}->{'PHP_VERSION'} ne $_ ) {
+                # Disable Apache2 PHP module if PHP version is other than selected
+                $httpd->disableModules( "php$_" ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
             }
 
-            # Reset pool configuration directories
-            for my $conffile( grep !/www\.conf$/, glob "/etc/php/$phpVersion/fpm/pool.d/*.conf" ) {
-                iMSCP::File->new( filename => $conffile )->delFile() == 0 or die(
+            # Tasks for cgi SAPI
+
+            # Disable default Apache2 conffile
+            $httpd->disableConfs( "php$_-cgi.conf" ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
+
+            # Tasks for fpm SAPI
+
+            if ( $serviceMngr->hasService( "php$_-fpm" ) ) {
+                # Stop PHP-FPM instance
+                $self->stop( $_ ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
+
+                # Disable PHP-FPM service if selected SAPI for customer is not FPM or if PHP version
+                # is other than selected
+                $serviceMngr->disable( "php$_-fpm" ) if $self->{'config'}->{'PHP_SAPI'} ne 'fpm' || $self->{'config'}->{'PHP_VERSION'} ne $_;
+            }
+
+            # Disable default Apache2 conffile file
+            $httpd->disableConfs( "php$_-fpm.conf " ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
+
+            # Reset PHP-FPM pool confdir
+            for ( grep !/www\.conf$/, glob "/etc/php/$_/fpm/pool.d/*.conf" ) {
+                iMSCP::File->new( filename => $_ )->delFile() == 0 or die(
                     getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
                 );
             }
+        }
+
+        # Create/Reset/Remove FCGI starter rootdir, depending of selected PHP SAPI
+        my $dir = iMSCP::Dir->new( dirname => $self->{'config'}->{'PHP_FCGI_STARTER_DIR'} );
+        $dir->remove();
+        if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+            $dir->make( {
+                user  => $main::imscpConfig{'ROOT_USER'},
+                group => $main::imscpConfig{'ROOT_GROUP'},
+                mode  => 0555
+            } );
         }
 
         $self->_guessVariablesForSelectedPhpAlternative();
     };
     if ( $@ ) {
         error( $@ );
-        $rs = 1;
+        return 1;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpPreinstall' );
+    $self->{'eventManager'}->trigger( 'afterPhpPreinstall' );
 }
 
 =item install( )
@@ -132,46 +325,40 @@ sub install
     return $rs if $rs;
 
     eval {
-        $self->{'httpd'}->setData(
-            {
-                HTTPD_USER                          => $self->{'httpd'}->{'config'}->{'HTTPD_USER'} || 'www-data',
-                HTTPD_GROUP                         => $self->{'httpd'}->{'config'}->{'HTTPD_GROUP'} || 'www-data',
-                PEAR_DIR                            => $self->{'config'}->{'PHP_PEAR_DIR'} || '/usr/share/php',
-                PHP_FPM_LOG_LEVEL                   => $self->{'config'}->{'PHP_FPM_LOG_LEVEL'} || 'error',
-                PHP_FPM_EMERGENCY_RESTART_THRESHOLD => $self->{'config'}->{'PHP_FPM_EMERGENCY_RESTART_THRESHOLD'} // 10,
-                PHP_FPM_EMERGENCY_RESTART_INTERVAL  => $self->{'config'}->{'PHP_FPM_EMERGENCY_RESTART_INTERVAL'} || '1m',
-                PHP_FPM_PROCESS_CONTROL_TIMEOUT     => $self->{'config'}->{'PHP_FPM_PROCESS_CONTROL_TIMEOUT'} || '60s',
-                PHP_FPM_PROCESS_MAX                 => $self->{'config'}->{'PHP_FPM_PROCESS_MAX'} // 0,
-                PHP_FPM_RLIMIT_FILES                => $self->{'config'}->{'PHP_FPM_RLIMIT_FILES'} // 4096,
-                PHP_OPCODE_CACHE_ENABLED            => $self->{'config'}->{'PHP_OPCODE_CACHE_ENABLED'} // 0,
-                PHP_OPCODE_CACHE_MAX_MEMORY         => $self->{'config'}->{'PHP_OPCODE_CACHE_MAX_MEMORY'} // 32,
-                PHP_APCU_CACHE_ENABLED              => $self->{'config'}->{'PHP_APCU_CACHE_ENABLED'} // 0,
-                PHP_APCU_CACHE_MAX_MEMORY           => $self->{'config'}->{'PHP_APCU_CACHE_MAX_MEMORY'} // 32,
-                TIMEZONE                            => $main::imscpConfig{'TIMEZONE'}
-            }
-        );
+        my $httpd = Servers::httpd->factory();
+        my $runtimeData = {
+            HTTPD_USER                          => $httpd->getRunningUser() || 'www-data',
+            HTTPD_GROUP                         => $httpd->getRunningGroup() || 'www-data',
+            PEAR_DIR                            => $self->{'config'}->{'PHP_PEAR_DIR'} || '/usr/share/php',
+            PHP_FPM_LOG_LEVEL                   => $self->{'config'}->{'PHP_FPM_LOG_LEVEL'} || 'error',
+            PHP_FPM_EMERGENCY_RESTART_THRESHOLD => $self->{'config'}->{'PHP_FPM_EMERGENCY_RESTART_THRESHOLD'},
+            PHP_FPM_EMERGENCY_RESTART_INTERVAL  => $self->{'config'}->{'PHP_FPM_EMERGENCY_RESTART_INTERVAL'},
+            PHP_FPM_PROCESS_CONTROL_TIMEOUT     => $self->{'config'}->{'PHP_FPM_PROCESS_CONTROL_TIMEOUT'},
+            PHP_FPM_PROCESS_MAX                 => $self->{'config'}->{'PHP_FPM_PROCESS_MAX'},
+            PHP_FPM_RLIMIT_FILES                => $self->{'config'}->{'PHP_FPM_RLIMIT_FILES'},
+            PHP_OPCODE_CACHE_ENABLED            => $self->{'config'}->{'PHP_OPCODE_CACHE_ENABLED'},
+            PHP_OPCODE_CACHE_MAX_MEMORY         => $self->{'config'}->{'PHP_OPCODE_CACHE_MAX_MEMORY'},
+            PHP_APCU_CACHE_ENABLED              => $self->{'config'}->{'PHP_APCU_CACHE_ENABLED'},
+            PHP_APCU_CACHE_MAX_MEMORY           => $self->{'config'}->{'PHP_APCU_CACHE_MAX_MEMORY'},
+            TIMEZONE                            => $main::imscpConfig{'TIMEZONE'},
+            PHP_CONF_DIR_PATH                   => '/etc/php'
+        };
 
         for my $phpVersion( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
             next unless $phpVersion =~ /^[\d.]+$/;
-            # FPM
-            $self->{'httpd'}->setData(
-                {
-                    PHP_CONF_DIR_PATH     => "/etc/php/$phpVersion/fpm/*.conf",
-                    PHP_FPM_POOL_DIR_PATH => "/etc/php/$phpVersion/fpm/pool.d",
-                    PHP_VERSION           => $phpVersion
-                }
-            );
-            $rs = $self->{'httpd'}->buildConfFile( "$self->{'phpCfgDir'}/fpm/php.ini", {}, { destination => "/etc/php/$phpVersion/fpm/php.ini" } );
-            $rs ||= $self->{'httpd'}->buildConfFile(
-                "$self->{'phpCfgDir'}/fpm/php-fpm.conf", {}, { destination => "/etc/php/$phpVersion/fpm/php-fpm.conf" }
-            );
-            $rs ||= $self->{'httpd'}->buildConfFile(
-                "$self->{'phpCfgDir'}/fpm/pool.conf.default", {}, { destination => "/etc/php/$phpVersion/fpm/pool.d/www.conf" }
-            );
-            # ITK
-            $rs ||= $self->{'httpd'}->buildConfFile(
-                "$self->{'phpCfgDir'}/apache/php.ini", {}, { destination => "/etc/php/$phpVersion/apache2/php.ini" }
-            );
+
+            @{$runtimeData}{qw/ PHP_FPM_POOL_DIR_PATH PHP_VERSION /} = ( "/etc/php/$phpVersion/fpm/pool.d", $phpVersion );
+
+            # Master php.ini file for apache2handler, cli, cgi and fpm SAPIs
+            for ( qw/ apache2 cgi cli fpm / ) {
+                $rs = $self->_buildConfFile( "$_/php.ini", "/etc/php/$phpVersion/$_/php.ini", {}, $runtimeData );
+                last if $rs;
+            }
+
+            # Master conffile for fpm SAPI
+            $rs ||= $self->_buildConfFile( 'fpm/php-fpm.conf', "/etc/php/$phpVersion/fpm/php-fpm.conf", {}, $runtimeData );
+            # Primary pool conffile for fpm SAPI
+            $rs ||= $self->_buildConfFile( 'fpm/pool.conf.default', "/etc/php/$phpVersion/fpm/pool.d/www.conf", {}, $runtimeData );
             $rs == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
         }
     };
@@ -180,6 +367,7 @@ sub install
         $rs = 1;
     }
 
+    $rs ||= $self->_cleanup();
     $rs ||= $self->{'eventManager'}->trigger( 'afterPhpInstall' );
 }
 
@@ -199,23 +387,54 @@ sub postinstall
     return $rs if $rs;
 
     eval {
-        if ( $main::imscpConfig{'HTTPD_PACKAGE'} eq 'Servers::httpd::apache_php_fpm' ) {
-            for my $phpVersion( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
-                # We enable and start only selected PHP alternative as other PHP versions are managed through
-                # OPTIONAL PhpSwitcher plugin
-                next unless $phpVersion =~ /^[\d.]+$/ && $self->{'config'}->{'PHP_VERSION'} eq $phpVersion;
+        my $httpd = Servers::httpd->factory();
 
-                iMSCP::Service->getInstance()->enable( "php$phpVersion-fpm" );
+        if ( $self->{'config'}->{'PHP_SAPI'} eq 'apache2handler' ) {
+            # Enable Apache2 PHP module for selected PHP version
+            $httpd->enableModules( "php$self->{'config'}->{'PHP_VERSION'}" ) == 0 or die (
+                getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+            );
+        } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+            # Build apache2 conffile for Fcgid module
+            $httpd->buildConfFile( "$self->{'cfgDir'}/cgi/apache_fcgid_module.conf", {},
+                { destination => "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/fcgid_imscp.conf" }
+            ) == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
 
-                $self->{'eventManager'}->register(
-                    'beforeSetupRestartServices',
-                    sub {
-                        push @{$_[0]}, [ sub { $self->start(); }, "PHP-FPM $phpVersion" ];
-                        0;
-                    },
-                    3
-                ) == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
-            }
+            my $file = iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/fcgid.load" );
+            my $cfgTpl = $file->get();
+            defined $cfgTpl or die( sprintf( "Couldn't read %s file", $file->{'filename'} ));
+
+            $file = iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/fcgid_imscp.load" );
+            $cfgTpl = "<IfModule !mod_fcgid.c>\n" . $cfgTpl . "</IfModule>\n";
+            $file->set( $cfgTpl );
+            $rs = $file->save();
+            $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+            $rs ||= $file->mode( 0644 );
+            $rs == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
+
+            # Enable fcgid module
+            $httpd->enableModules( qw/ fcgid fcgid_imscp / ) == 0 or die (
+                getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+            );
+        } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+            # Enable PHP-FPM service for selected PHP version
+            iMSCP::Service->getInstance()->enable( "php$self->{'config'}->{'PHP_VERSION'}-fpm" );
+
+            # Schedule start of PHP-FPM service for selected PHP version
+            $self->{'eventManager'}->register(
+                'beforeSetupRestartServices',
+                sub {
+                    push @{$_[0]}, [ sub { $self->start(); }, "PHP-FPM $self->{'config'}->{'PHP_VERSION'}" ];
+                    0;
+                },
+                3
+            ) == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
+
+            # Enable proxy_fcgi module
+            $httpd->enableModules( qw/ proxy_fcgi setenvif / ) == 0 or die ( getMessageByType( 'error',
+                { amount => 1, remove => 1 } ) || 'Unknown error' );
+        } else {
+            die( 'Unknown PHP SAPI' );
         }
     };
     if ( $@ ) {
@@ -241,18 +460,286 @@ sub uninstall
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpUninstall' );
     return $rs if $rs;
 
-    for ( iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
-        next unless /^[\d.]+$/ && -f "/etc/init/php$_-fpm.override";
-        $rs = iMSCP::File->new( filename => "/etc/init/php$_-fpm.override" )->delFile();
+    my $httpd = Servers::httpd->factory();
+
+    $rs = $httpd->disableModules( 'fcgid_imscp' ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
+    return $rs if $rs;
+
+    for ( 'fcgid_imscp.conf', 'fcgid_imscp.load' ) {
+        next unless -f "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_";
+        $rs = iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_" )->delFile();
         return $rs if $rs;
     }
 
-    $self->{'eventManager'}->trigger( 'afterPhpUninstall' );
+    for ( iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
+        next unless /^[\d.]+$/ && -f "/etc/init/php$_-fpm.override";
+        $rs = iMSCP::File->new( filename => "/etc/init/php$_-fpm.override" )->delFile();
+        last if $rs;
+    }
+
+    eval { iMSCP::Dir->new( dirname => $self->{'config'}->{'PHP_FCGI_STARTER_DIR'} )->remove(); };
+    if ( $@ ) {
+        error( $@ );
+        $rs = 1;
+    }
+
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpUninstall' );
+}
+
+=item setEnginePermissions( )
+
+ Set engine permissions
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub setEnginePermissions
+{
+    my ($self) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpSetEnginePermissions' );
+    return $rs if $rs;
+
+    if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+        $rs = setRights( $self->{'config'}->{'PHP_FCGI_STARTER_DIR'},
+            {
+                user  => $main::imscpConfig{'ROOT_USER'},
+                group => $main::imscpConfig{'ROOT_GROUP'},
+                mode  => '0555'
+            }
+        );
+    }
+
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpSetEnginePermissions' );
+}
+
+=item addDmn( \%moduleData )
+
+ Process addDmn tasks
+
+ Param hash \%moduleData Data as provided by Alias|Domain modules
+ Return int 0 on success, other on failure
+
+=cut
+
+sub addDmn
+{
+    my ($self, $moduleData) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpAddDmn', $moduleData );
+    return $rs if $rs;
+
+    if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+        $rs = $self->_buildFpmConfig( $moduleData );
+    } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+        $rs = $self->_buildCgiConfig( $moduleData );
+    } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'apache2handler' ) {
+        $rs = $self->_buildApache2HandlerConfig( $moduleData );
+    } else {
+        error( 'Unknown PHP SAPI' );
+        return 1;
+    }
+
+    $rs ||= $self->{'eventManager'}->registerOne(
+        'afterHttpdAddFiles',
+        sub {
+            eval {
+                iMSCP::Dir->new( dirname => "$moduleData->{'WEB_DIR'}/phptmp" )->make( {
+                    user  => $moduleData->{'USER'},
+                    group => $moduleData->{'GROUP'},
+                    perm  => 0750
+                } )
+            };
+            if ( $@ ) {
+                error( $@ );
+                return 1;
+            }
+
+            0;
+        }
+    ) if $moduleData->{'DOMAIN_TYPE'} eq 'dmn';
+
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpAddDmn', $moduleData );
+}
+
+=item disableDmn( \%moduleData )
+
+ Process disableDmn tasks
+
+ Param hash \%moduleData Data as provided by Alias|Domain modules
+ Return int 0 on success, other on failure
+
+=cut
+
+sub disableDmn
+{
+    my ($self, $moduleData) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpdDisableDmn', $moduleData );
+    return $rs if $rs;
+
+    if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+        if ( -f "$self->{'config'}->{'PHP_FPM_POOL_DIR_PATH'}/$moduleData->{'DOMAIN_NAME'}.conf" ) {
+            $rs = iMSCP::File->new( filename => "$self->{'config'}->{'PHP_FPM_POOL_DIR_PATH'}/$moduleData->{'DOMAIN_NAME'}.conf" )->delFile();
+            $self->{'reload'} = 1;
+        }
+    } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+        eval { iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove() };
+        if ( $@ ) {
+            error( $@ );
+            $rs = 1;
+        }
+    }
+
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpDisableDmn', $moduleData );
+}
+
+=item deleteDmn( \%moduleData )
+
+ Process deleteDmn tasks
+
+ Param hash \%moduleData Data as provided by Alias|Domain modules
+ Return int 0 on success, other on failure
+
+=cut
+
+sub deleteDmn
+{
+    my ($self, $moduleData) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpDelDmn', $moduleData );
+    return $rs if $rs;
+
+    if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+        if ( -f "$self->{'config'}->{'PHP_FPM_POOL_DIR_PATH'}/$moduleData->{'DOMAIN_NAME'}.conf" ) {
+            $rs = iMSCP::File->new( filename => "$self->{'config'}->{'PHP_FPM_POOL_DIR_PATH'}/$moduleData->{'DOMAIN_NAME'}.conf" )->delFile();
+        }
+    } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+        eval { iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove() };
+        if ( $@ ) {
+            error( $@ );
+            $rs = 1;
+        }
+    }
+
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpdDelDmn', $moduleData );
+}
+
+=item addSub( \%moduleData )
+
+ Process addSub tasks
+
+ Param hash \%moduleData Data as provided by SubAlias|Subdomain modules
+ Return int 0 on success, other on failure
+
+=cut
+
+sub addSub
+{
+    my ($self, $moduleData) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpAddSub', $moduleData );
+    return $rs if $rs;
+
+    if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+        $rs = $self->_buildFpmConfig( $moduleData );
+    } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+        $rs = $self->_buildCgiConfig( $moduleData );
+    } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'apache2handler' ) {
+        $rs = $self->_buildApache2HandlerConfig( $moduleData );
+    } else {
+        error( 'Unknown PHP SAPI' );
+        return 1;
+    }
+
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpAddSub', $moduleData );
+}
+
+=item disableSub( \%moduleData )
+
+ Process disableSub tasks
+
+ Param hash \%moduleData Data as provided by SubAlias|Subdomain modules
+ Return int 0 on success, other on failure
+
+=cut
+
+sub disableSub
+{
+    my ($self, $moduleData) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpDisableSub', $moduleData );
+    return $rs if $rs;
+
+    if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+        for ( glob "/etc/php/*/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf" ) {
+            $rs = iMSCP::File->new( filename => $_ )->delFile();
+            last if $rs;
+        }
+
+        $self->{'reload'} ||= 1;
+    } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+        eval { iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove() };
+        if ( $@ ) {
+            error( $@ );
+            $rs = 1;
+        }
+    }
+
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpdDisableSub', $moduleData );
+}
+
+=item deleteSub( \%moduleData )
+
+ Process deleteSub tasks
+
+ Param hash \%moduleData Data as provided by SubAlias|Subdomain modules
+ Return int 0 on success, other on failure
+
+=cut
+
+sub deleteSub
+{
+    my ($self, $moduleData) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpDelSub', $moduleData );
+    return $rs if $rs;
+
+    if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+        for ( glob "/etc/php/*/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf" ) {
+            $rs = iMSCP::File->new( filename => $_ )->delFile();
+            last if $rs;
+        }
+
+        $self->{'reload'} ||= 1;
+    } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+        eval { iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove() };
+        if ( $@ ) {
+            error( $@ );
+            $rs = 1;
+        }
+    }
+
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpDelSub', $moduleData );
+}
+
+=item getPriority( )
+
+ Get server priority
+
+ Return int Server priority
+
+=cut
+
+sub getPriority
+{
+    70;
 }
 
 =item start( [ $version = $self->{'config'}->{'PHP_VERSION'} ] )
 
- Start PHP-FPM instance
+ Start PHP FastCGI Process Manager 'PHP-FPM'
 
  Param string $version OPTIONAL PHP-FPM version to start
  Return int 0 on success, other on failure
@@ -271,15 +758,15 @@ sub start
     eval { iMSCP::Service->getInstance()->start( "php$version-fpm" ); };
     if ( $@ ) {
         error( $@ );
-        return 1;
+        $rs = 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterPhpFpmStart', $version );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpFpmStart', $version );
 }
 
 =item stop( [ $version = $self->{'config'}->{'PHP_VERSION'} ] )
 
- Stop PHP-FPM instance
+ Stop PHP FastCGI Process Manager 'PHP-FPM'
 
  Param string $version OPTIONAL PHP-FPM version to stop
  Return int 0 on success, other on failure
@@ -298,15 +785,15 @@ sub stop
     eval { iMSCP::Service->getInstance()->stop( "php$version-fpm" ); };
     if ( $@ ) {
         error( $@ );
-        return 1;
+        $rs = 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterPhpFpmStop', $version );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpFpmStop', $version );
 }
 
 =item reload( [ $version = $self->{'config'}->{'PHP_VERSION'} ] )
 
- Reload PHP-FPM instance
+ Reload PHP FastCGI Process Manager 'PHP-FPM'
 
  Param string $version OPTIONAL PHP-FPM version to reload
  Return int 0
@@ -325,16 +812,15 @@ sub reload
     eval { iMSCP::Service->getInstance()->reload( "php$version-fpm" ); };
     if ( $@ ) {
         error( $@ );
-        return 1;
+        $rs = 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterPhpFpmReload', $version );
-    0;
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpFpmReload', $version );
 }
 
 =item restart( [ $version = $self->{'config'}->{'PHP_VERSION'} ] )
 
- Restart PHP-FPM instance
+ Restart PHP FastCGI Process Manager 'PHP-FPM'
 
  Param string $version OPTIONAL PHP-FPM version to restart
  Return int 0 on success, other on failure
@@ -353,23 +839,10 @@ sub restart
     eval { iMSCP::Service->getInstance()->restart( "php$version-fpm" ); };
     if ( $@ ) {
         error( $@ );
-        return 1;
+        $rs = 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterPhpFpmRestart', $version );
-}
-
-=item getPriority( )
-
- Get server priority
-
- Return int Server priority
-
-=cut
-
-sub getPriority
-{
-    70;
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpFpmRestart', $version );
 }
 
 =back
@@ -390,37 +863,36 @@ sub _init
 {
     my ($self) = @_;
 
+    @{$self}{qw/ start restart reload /} = ( 0, 0, 0 );
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'httpd'} = Servers::httpd->factory();
-    $self->{'phpCfgDir'} = "$main::imscpConfig{'CONF_DIR'}/php";
-    $self->_mergeConfig( $self->{'phpCfgDir'}, 'php.data' ) if -f "$self->{'phpCfgDir'}/php.data.dist";
+    $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/php";
+    $self->_mergeConfig() if defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/php.data.dist";
     tie %{$self->{'config'}},
         'iMSCP::Config',
-        fileName    => "$self->{'phpCfgDir'}/php.data",
+        fileName    => "$self->{'cfgDir'}/php.data",
         readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
-        nodeferring => ( defined $main::execmode && $main::execmode eq 'setup' );
+        nodeferring => defined $main::execmode && $main::execmode eq 'setup';
+    $self->{'eventManager'}->register( 'beforeHttpdBuildConfFile', \&_buildApache2Config, 100 );
     $self;
 }
 
-=item _mergeConfig( $confDir, $confName )
+=item _mergeConfig()
 
  Merge distribution configuration with production configuration
 
- Param string $confDir Configuration directory
- Param string $confName Configuration filename
  Die on failure
 
 =cut
 
 sub _mergeConfig
 {
-    my (undef, $confDir, $confName) = @_;
+    my ($self) = @_;
 
-    if ( -f "$confDir/$confName" ) {
-        tie my %newConfig, 'iMSCP::Config', fileName => "$confDir/$confName.dist";
-        tie my %oldConfig, 'iMSCP::Config', fileName => "$confDir/$confName", readonly => 1;
+    if ( -f "$self->{'cfgDir'}/php.data" ) {
+        tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/php.data.dist";
+        tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/php.data", readonly => 1;
 
-        debug( 'Merging old configuration with new configuration...' );
+        debug( 'Merging old configuration with new configuration ...' );
 
         while ( my ($key, $value) = each( %oldConfig ) ) {
             next unless exists $newConfig{$key};
@@ -431,7 +903,7 @@ sub _mergeConfig
         untie( %oldConfig );
     }
 
-    iMSCP::File->new( filename => "$confDir/$confName.dist" )->moveFile( "$confDir/$confName" ) == 0 or die(
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/php.data.dist" )->moveFile( "$self->{'cfgDir'}/php.data" ) == 0 or die(
         getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
     );
 }
@@ -448,16 +920,16 @@ sub _guessVariablesForSelectedPhpAlternative
 {
     my ($self) = @_;
 
-    my $phpPath = iMSCP::ProgramFinder::find( 'php' ) or die( "Couldn't find the PHP (CLI) command in search path" );
+    my $phpPath = iMSCP::ProgramFinder::find( 'php' ) or die( "Couldn't find the PHP (CLI) command in search path for the selected PHP alternative" );
 
-    my ($phpVersion) = `$phpPath -nv 2> /dev/null` =~ /^PHP\s+([\d.]+)/ or die( "Couldn't guess system PHP version" );
+    my ($phpVersion) = `$phpPath -nv 2> /dev/null` =~ /^PHP\s+([\d.]+)/ or die( "Couldn't guess version for selected PHP alternative" );
 
     $self->{'config'}->{'PHP_VERSION_FULL'} = $phpVersion;
     $phpVersion =~ s/\.\d+$//;
     $self->{'config'}->{'PHP_VERSION'} = $phpVersion;
 
     my ($phpConfDir) = `$phpPath -ni 2> /dev/null | grep '(php.ini) Path'` =~ /([^\s]+)$/ or die(
-        "Couldn't guess system PHP configuration directory path"
+        "Couldn't guess the PHP configuration directory path for the selected PHP alternative"
     );
 
     my $phpConfBaseDir = dirname( $phpConfDir );
@@ -466,7 +938,7 @@ sub _guessVariablesForSelectedPhpAlternative
 
     unless ( -d $self->{'config'}->{'PHP_FPM_POOL_DIR_PATH'} ) {
         $self->{'config'}->{'PHP_FPM_POOL_DIR_PATH'} = '';
-        die( sprintf( "Couldn't guess `%s' PHP configuration parameter value: directory doesn't exist.", $_ ));
+        die( sprintf( "Couldn't guess the `%s' PHP configuration parameter value for the selected PHP alternative: directory doesn't exist.", $_ ));
     }
 
     $self->{'config'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php$phpVersion" );
@@ -474,11 +946,516 @@ sub _guessVariablesForSelectedPhpAlternative
     $self->{'config'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-fpm$phpVersion" );
 
     for ( qw/ PHP_CLI_BIN_PATH PHP_FCGI_BIN_PATH PHP_FPM_BIN_PATH / ) {
-        $self->{'config'}->{$_} ne '' or die( sprintf( "Couldn't guess `%s' PHP configuration parameter value.", $_ ));
+        $self->{'config'}->{$_} or die( sprintf( "Couldn't guess the `%s' PHP configuration parameter value for the selected PHP alternative.", $_ ));
     }
 
     0;
 }
+
+=item _buildConfFile( $file, $target, [, \%moduleData = { } [, \%runtimeData [, \%parameters = { } ] ] ] )
+
+ Build the given configuration file
+
+ Param string $file Config file path relative to the i-MSCP php config directory
+ Param string $target Target path
+ Param hash \%data OPTIONAL Data as provided by Alias|Domain|SubAlias|Subdomain modules
+ Param hash \%data OPTIONAL Runtime data (Runtime data have higher precedence than modules data)
+ Param hash \%options OPTIONAL Options:
+  - user  : File owner (default: root)
+  - group : File group (default: root
+  - mode  : File mode (default: 0644)
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _buildConfFile
+{
+    my ($self, $file, $target, $moduleData, $runtimeData, $parameters) = @_;
+
+    $moduleData ||= {};
+    $runtimeData ||= {};
+    $parameters ||= {};
+
+    my ($filename, $path) = fileparse( $file );
+
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', __PACKAGE__, $filename, \ my $cfgTpl, $moduleData, $runtimeData );
+    return $rs if $rs;
+
+    unless ( defined $cfgTpl ) {
+        $file = File::Spec->canonpath( "$self->{'cfgDir'}/$path/$filename" );
+        $cfgTpl = iMSCP::File->new( filename => $file )->get();
+        unless ( defined $cfgTpl ) {
+            error( sprintf( "Couldn't read %s file", $file ));
+            return 1;
+        }
+    }
+
+    $rs = $self->{'eventManager'}->trigger( 'beforePhpBuildConfFile', \$cfgTpl, $filename, $moduleData, $runtimeData );
+    return $rs if $rs;
+
+    $cfgTpl = process( { %{$moduleData}, %{$runtimeData} }, $cfgTpl );
+
+    $rs = $self->{'eventManager'}->trigger( 'afterPhpdBuildConfFile', \$cfgTpl, $filename, $moduleData, $runtimeData );
+    return $rs if $rs;
+
+    my $fh = iMSCP::File->new( filename => $target );
+    $rs = $fh->set( $cfgTpl );
+    $rs ||= $fh->save();
+    $rs ||= $fh->owner( $parameters->{'user'} // $main::imscpConfig{'ROOT_USER'}, $parameters->{'group'} // $main::imscpConfig{'ROOT_GROUP'} );
+    $rs ||= $fh->mode( $parameters->{'mode'} // 0644 );
+}
+
+=item _buildFpmConfig( \%moduleData )
+
+ Build PHP fpm configuration for the given domain
+
+ Param hash \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
+ Return int 0 on sucess, other on failure
+
+=cut
+
+sub _buildFpmConfig
+{
+    my ($self, $moduleData) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpFpmSapiBuildConf', $moduleData );
+    return $rs if $rs;
+
+    my ($poolName, $emailDomain);
+    if ( $self->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_user' ) {
+        $poolName = $moduleData->{'ROOT_DOMAIN_NAME'};
+        $emailDomain = $moduleData->{'ROOT_DOMAIN_NAME'};
+    } elsif ( $self->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_domain' ) {
+        $poolName = $moduleData->{'PARENT_DOMAIN_NAME'};
+        $emailDomain = $moduleData->{'DOMAIN_NAME'};
+    } else {
+        $poolName = $moduleData->{'DOMAIN_NAME'};
+        $emailDomain = $moduleData->{'DOMAIN_NAME'};
+    }
+
+    if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
+        my $runtimeData = {
+            EMAIL_DOMAIN                 => $emailDomain,
+            PHP_FPM_LISTEN_ENDPOINT      => ( $self->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds' )
+                ? "/run/php/php$self->{'config'}->{'PHP_VERSION'}-fpm-$poolName.sock"
+                : '127.0.0.1:' . ( $self->{'config'}->{'PHP_FPM_LISTEN_PORT_START'}+$moduleData->{'PHP_FPM_LISTEN_PORT'} ),
+            PHP_FPM_MAX_CHILDREN         => $self->{'config'}->{'PHP_FPM_MAX_CHILDREN'} // 6,
+            PHP_FPM_MAX_REQUESTS         => $self->{'config'}->{'PHP_FPM_MAX_REQUESTS'} // 1000,
+            PHP_FPM_MAX_SPARE_SERVERS    => $self->{'config'}->{'PHP_FPM_MAX_SPARE_SERVERS'} // 2,
+            PHP_FPM_MIN_SPARE_SERVERS    => $self->{'config'}->{'PHP_FPM_MIN_SPARE_SERVERS'} // 1,
+            PHP_FPM_PROCESS_IDLE_TIMEOUT => $self->{'config'}->{'PHP_FPM_PROCESS_IDLE_TIMEOUT'} || '60s',
+            PHP_FPM_PROCESS_MANAGER_MODE => $self->{'config'}->{'PHP_FPM_PROCESS_MANAGER_MODE'} || 'ondemand',
+            PHP_FPM_START_SERVERS        => $self->{'config'}->{'PHP_FPM_START_SERVERS'} // 1,
+            PHP_VERSION                  => $self->{'config'}->{'PHP_VERSION'},
+            POOL_NAME                    => $poolName,
+            TMPDIR                       => "$moduleData->{'HOME_DIR'}/phptmp"
+        };
+
+        $rs = $self->_buildConfFile( 'fpm/pool.conf', "$self->{'config'}->{'PHP_FPM_POOL_DIR_PATH'}/$poolName.conf", $moduleData, $runtimeData );
+        $self->{'reload'} ||= 1;
+    } elsif ( ( $moduleData->{'PHP_SUPPORT'} ne 'yes'
+        || ( $self->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_user' && $moduleData->{'DOMAIN_TYPE'} ne 'dmn' )
+        || ( $self->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_domain' && $moduleData->{'DOMAIN_TYPE'} !~ /^(?:dmn|als)$/ )
+        || ( $self->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_site' ) )
+        && -f "$self->{'config'}->{'PHP_FPM_POOL_DIR_PATH'}/$moduleData->{'DOMAIN_NAME'}.conf"
+    ) {
+        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'PHP_FPM_POOL_DIR_PATH'}/$moduleData->{'DOMAIN_NAME'}.conf" )->delFile();
+        $self->{'reload'} ||= 1;
+    }
+
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpFpmSapiBuildConf', $moduleData );
+}
+
+=item _buildCgiConfig( \%moduleData )
+
+ Build PHP cgi configuration for the given domain
+
+ Param hash \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
+ Return int 0 on sucess, other on failure
+
+=cut
+
+sub _buildCgiConfig
+{
+    my ($self, $moduleData) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpCgiSapiBuildConf', $moduleData );
+    return $rs if $rs;
+
+    my ($configLevelName, $emailDomain);
+    if ( $self->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_user' ) {
+        $configLevelName = $moduleData->{'ROOT_DOMAIN_NAME'};
+        $emailDomain = $moduleData->{'ROOT_DOMAIN_NAME'};
+    } elsif ( $self->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_domain' ) {
+        $configLevelName = $moduleData->{'PARENT_DOMAIN_NAME'};
+        $emailDomain = $moduleData->{'PARENT_DOMAIN_NAME'};
+    } else {
+        $configLevelName = $moduleData->{'DOMAIN_NAME'};
+        $emailDomain = $moduleData->{'DOMAIN_NAME'};
+    }
+
+    if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
+        eval {
+            iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$configLevelName" )->remove();
+            iMSCP::Dir->new( dirname => $self->{'config'}->{'PHP_FCGI_STARTER_DIR'} )->make( {
+                user  => $main::imscpConfig{'ROOT_USER'},
+                group => $main::imscpConfig{'ROOT_GROUP'},
+                mode  => 0555
+            } );
+
+            for ( "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$configLevelName",
+                "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$configLevelName/php$self->{'config'}->{'PHP_VERSION'}"
+            ) {
+                iMSCP::Dir->new( dirname => $_ )->make( {
+                    user  => $moduleData->{'USER'},
+                    group => $moduleData->{'GROUP'},
+                    mode  => 0550
+                } );
+            }
+        };
+        if ( $@ ) {
+            error( $@ );
+            return 1;
+        }
+
+        my $runtimeData = {
+            EMAIL_DOMAIN          => $emailDomain,
+            FCGID_NAME            => $configLevelName,
+            PHP_VERSION           => $self->{'config'}->{'PHP_VERSION'},
+            PHP_FCGI_BIN_PATH     => $self->{'config'}->{'PHP_FCGI_BIN_PATH'},
+            PHP_FCGI_CHILDREN     => $self->{'config'}->{'PHP_FCGI_CHILDREN'},
+            PHP_FCGI_MAX_REQUESTS => $self->{'config'}->{'PHP_FCGI_MAX_REQUESTS'},
+            TMPDIR                => $moduleData->{'HOME_DIR'} . '/phptmp'
+        };
+
+        $rs = $self->_buildConfFile(
+            'cgi/php-fcgi-starter', "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$configLevelName/php-fcgi-starter", $moduleData, $runtimeData,
+            {
+                user  => $moduleData->{'USER'},
+                group => $moduleData->{'GROUP'},
+                mode  => 0550
+            }
+        );
+        $rs ||= $self->_buildConfFile(
+            'cgi/php.ini.user',
+            "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$configLevelName/php$self->{'config'}->{'PHP_VERSION'}/php.ini",
+            $moduleData,
+            $runtimeData,
+            {
+                user  => $moduleData->{'USER'},
+                group => $moduleData->{'GROUP'},
+                mode  => 0440
+            }
+        );
+        return $rs if $rs;
+    } elsif ( $moduleData->{'PHP_SUPPORT'} ne 'yes'
+        || ( $self->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_user' && $moduleData->{'DOMAIN_TYPE'} ne 'dmn' )
+        || ( $self->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_domain' && $moduleData->{'DOMAIN_TYPE'} !~ /^(?:dmn|als)$/ )
+        || $self->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_site'
+    ) {
+        eval { iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove(); };
+        if ( $@ ) {
+            error( $@ );
+            return 1;
+        }
+    }
+
+    $self->{'eventManager'}->trigger( 'afterPhpCgiSapiBuildConf', $moduleData );
+}
+
+=item _buildApache2HandlerConfig( \%moduleData )
+
+ Build PHP apache2handler configuration for the given domain
+ 
+ There are nothing special to do here. We trigger event for consistency reasons.
+
+ Param hash \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
+ Return int 0 on sucess, other on failure
+
+=cut
+
+sub _buildApache2HandlerConfig
+{
+    my ($self, $moduleData) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpApache2HandlerSapiBuildConf', $moduleData );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpApache2HandlerSapiBuildConf', $moduleData );
+}
+
+=item _cleanup( )
+
+ Process cleanup tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _cleanup
+{
+    my ($self) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpCleanup' );
+    return $rs if $rs;
+
+    for ( "$self->{'cfgDir'}/php.old.data", "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm" ) {
+        next unless -f;
+        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/php.old.data" )->delFile();
+        return $rs if $rs;
+    }
+
+    eval { iMSCP::Dir->new( dirname => '/etc/php5' )->remove(); };
+    if ( $@ ) {
+        error( $@ );
+        return $rs if $rs;
+    }
+
+    my $httpd = Servers::httpd->factory();
+    $rs = $httpd->disableModules( 'php_fpm_imscp', 'fastcgi_imscp' );
+    return $rs if $rs;
+
+    for ( 'fastcgi_imscp.conf', 'fastcgi_imscp.load', 'php_fpm_imscp.conf', 'php_fpm_imscp.load' ) {
+        next unless -f "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_";
+        $rs = iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_" )->delFile();
+        return $rs if $rs;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterPhpCleanup' );
+}
+
+=back
+
+=head1 EVENT LISTENERS
+
+=over 4
+
+=item _buildApache2Config( \$cfgTpl, $filename, \%moduleData )
+
+ Event listener that inject PHP configuration stanzas in Apache2 vhost files
+
+ Param scalar \$scalar Reference to Apache2 vhost content
+ Param string $filename Apache2 template name
+ Param hash \%moduleData Data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _buildApache2Config
+{
+    my ($cfgTpl, $filename, $moduleData) = @_;
+
+    return 0 unless $INSTANCE && $filename eq 'domain.tpl'
+        && grep( $_ eq $moduleData->{'VHOST_TYPE'}, ( 'domain', 'domain_ssl' ) );
+
+    my ($configLevelName, $emailDomain);
+    if ( $INSTANCE->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_user' ) {
+        $configLevelName = $moduleData->{'ROOT_DOMAIN_NAME'};
+        $emailDomain = $moduleData->{'ROOT_DOMAIN_NAME'};
+    } elsif ( $INSTANCE->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_domain' ) {
+        $configLevelName = $moduleData->{'PARENT_DOMAIN_NAME'};
+        $emailDomain = $moduleData->{'DOMAIN_NAME'};
+    } else {
+        $configLevelName = $moduleData->{'DOMAIN_NAME'};
+        $emailDomain = $moduleData->{'DOMAIN_NAME'};
+    }
+
+    if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
+        debug( sprintf( 'Injecting PHP configuration into Apache2 vhost for the %s domain', $moduleData->{'DOMAIN_NAME'} ));
+    }
+
+    if ( $INSTANCE->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+        if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
+            Servers::httpd->factory()->setData( {
+                PROXY_FCGI_PATH => $INSTANCE->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
+                    ? "unix:/run/php/php$INSTANCE->{'config'}->{'PHP_VERSION'}-fpm-$configLevelName.sock|" : '',
+                PROXY_FCGI_URL  => 'fcgi://' . ( $INSTANCE->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
+                    ? $configLevelName : '127.0.0.1:' . ( $INSTANCE->{'config'}->{'PHP_FPM_LISTEN_PORT_START'}+$moduleData->{'PHP_FPM_LISTEN_PORT'} )
+                ),
+                # Set timeout to PHP max_excution_time + 10 seconds
+                # See IP-1762
+                PROXY_TIMEOUT   => $moduleData->{'MAX_EXECUTION_TIME'}+10
+            } );
+
+            ${$cfgTpl} = replaceBloc( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF"
+        # SECTION document root addons BEGIN.
+@{[ getBloc("# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", ${$cfgTpl}) ]}
+        # SECTION php_fpm BEGIN.
+        AllowOverride All
+        DirectoryIndex index.php
+        <If "%{REQUEST_FILENAME} =~ /\.ph(?:p[3457]?|t|tml)\$/ && -f %{REQUEST_FILENAME}">
+        SetEnvIfNoCase ^Authorization\$ "(.+)" HTTP_AUTHORIZATION=\$1
+        SetHandler proxy:{PROXY_FCGI_URL}
+        </If>
+        # SECTION php_fpm END.
+        # SECTION document root addons END.
+EOF
+                ,
+                ${$cfgTpl}
+            );
+            ${$cfgTpl} = replaceBloc( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", <<"EOF"
+    # SECTION addons BEGIN.
+@{[ getBloc("# SECTION addons BEGIN.\n", "# SECTION addons END.\n", ${$cfgTpl}) ]}
+    # SECTION php_fpm_proxy BEGIN.
+    <Proxy "{PROXY_FCGI_PATH}{PROXY_FCGI_URL}" retry=0>
+        ProxySet connectiontimeout=5 timeout={PROXY_TIMEOUT}
+    </Proxy>
+    # SECTION php_fpm_proxy END.
+    # SECTION addons END.
+EOF
+                ,
+                ${$cfgTpl}
+            );
+        } else {
+            ${$cfgTpl} = replaceBloc( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF"
+        # SECTION document root addons BEGIN.
+@{[ getBloc("# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", ${$cfgTpl}) ]}
+        AllowOverride AuthConfig Indexes Limit Options=Indexes,MultiViews \
+          Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule Nonfatal=Override
+EOF
+                ,
+                ${$cfgTpl}
+            );
+            ${$cfgTpl} = replaceBloc( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", <<"EOF"
+    # SECTION addons BEGIN.
+@{[ getBloc("# SECTION addons BEGIN.\n", "# SECTION addons END.\n", ${$cfgTpl}) ]}
+    RemoveHandler .php .php3 .php4 .php5 .php7 .pht .phtml
+    # SECTION addons END.
+EOF
+                ,
+                ${$cfgTpl}
+            );
+        }
+    } elsif ( $INSTANCE->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+        if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
+            Servers::httpd->factory()->setData( {
+                PHP_FCGI_STARTER_DIR => $INSTANCE->{'config'}->{'PHP_FCGI_STARTER_DIR'},
+                FCGID_NAME           => $configLevelName
+
+            } );
+
+            ${$cfgTpl} = replaceBloc( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF"
+        # SECTION document root addons BEGIN.
+@{[ getBloc("# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", ${$cfgTpl}) ]}
+        # SECTION php_cgi BEGIN.
+        AllowOverride All
+        DirectoryIndex index.php
+        Options +ExecCGI
+        FCGIWrapper {PHP_FCGI_STARTER_DIR}/{FCGID_NAME}/php-fcgi-starter
+        # SECTION php_cgi END.
+        # SECTION document root addons END.
+EOF
+                ,
+                ${$cfgTpl}
+            );
+        } else {
+            ${$cfgTpl} = replaceBloc( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF"
+        # SECTION document root addons BEGIN.
+@{[ getBloc("# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", ${$cfgTpl}) ]}
+        AllowOverride AuthConfig Indexes Limit Options=Indexes,MultiViews \
+          Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule Nonfatal=Override
+EOF
+                ,
+                ${$cfgTpl}
+            );
+            ${$cfgTpl} = replaceBloc( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", <<"EOF"
+    # SECTION addons BEGIN.
+@{[ getBloc("# SECTION addons BEGIN.\n", "# SECTION addons END.\n", ${$cfgTpl}) ]}
+    RemoveHandler .php .php3 .php4 .php5 .php7 .pht .phtml
+    # SECTION addons END.
+EOF
+                ,
+                ${$cfgTpl}
+            );
+        }
+    } elsif ( $INSTANCE->{'config'}->{'PHP_SAPI'} eq 'apache2handler' ) {
+        if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
+            Servers::httpd->factory()->setData( {
+                EMAIL_DOMAIN => $emailDomain,
+                TMPDIR       => $moduleData->{'HOME_DIR'} . '/phptmp'
+            } );
+
+            ${$cfgTpl} = replaceBloc( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF"
+        # SECTION document root addons BEGIN.
+@{[ getBloc("# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", ${$cfgTpl}) ]}
+        # SECTION php_apache2handler BEGIN.
+        AllowOverride All
+        DirectoryIndex index.php
+        php_admin_value open_basedir "{HOME_DIR}/:{PEAR_DIR}/:dev/random:/dev/urandom"
+        php_admin_value upload_tmp_dir "{TMPDIR}"
+        php_admin_value session.save_path "{TMPDIR}"
+        php_admin_value soap.wsdl_cache_dir "{TMPDIR}"
+        php_admin_value sendmail_path "/usr/sbin/sendmail -t -i -f webmaster\@{EMAIL_DOMAIN}"
+        php_admin_value max_execution_time {MAX_EXECUTION_TIME}
+        php_admin_value max_input_time {MAX_INPUT_TIME}
+        php_admin_value memory_limit "{MEMORY_LIMIT}M"
+        php_flag display_errors {DISPLAY_ERRORS}
+        php_admin_value post_max_size "{POST_MAX_SIZE}M"
+        php_admin_value upload_max_filesize "{UPLOAD_MAX_FILESIZE}M"
+        php_admin_flag allow_url_fopen {ALLOW_URL_FOPEN}
+        # SECTION php_apache2handler END.
+        # SECTION document root addons END.
+EOF
+                ,
+                ${$cfgTpl}
+            );
+        } else {
+            ${$cfgTpl} = replaceBloc( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF"
+      # SECTION document root addons BEGIN.
+@{[ getBloc("# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", ${$cfgTpl}) ]}
+      AllowOverride AuthConfig Indexes Limit Options=Indexes,MultiViews \
+        Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule Nonfatal=Override
+EOF
+                ,
+                ${$cfgTpl}
+            );
+            ${$cfgTpl} = replaceBloc( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", <<"EOF"
+    # SECTION addons BEGIN.
+@{[ getBloc("# SECTION addons BEGIN.\n", "# SECTION addons END.\n", ${$cfgTpl}) ]}
+    RemoveHandler .php .php3 .php4 .php5 .php7 .pht .phtml
+    php_admin_flag engine off
+    # SECTION addons END.
+EOF
+                ,
+                ${$cfgTpl}
+            );
+        }
+    } else {
+        error( 'Unknown PHP SAPI' );
+        return 1;
+    }
+
+    0;
+}
+
+=back
+
+=head1 SHUTDOWN TASKS
+
+=over 4
+
+=item END
+
+ Restart, reload or start PHP-FPM when needed
+
+=cut
+
+END
+    {
+        return if $? || !$INSTANCE || $INSTANCE->{'config'}->{'PHP_SAPI'} ne 'fpm' || ( defined $main::execmode && $main::execmode eq 'setup' );
+
+        if ( $INSTANCE->{'restart'} ) {
+            iMSCP::Service->getInstance()->registerDelayedAction(
+                "php$INSTANCE->{'config'}->{'PHP_VERSION'}-fpm", [ 'restart', sub { $INSTANCE->restart(); } ], __PACKAGE__->getPriority()
+            );
+        } elsif ( $INSTANCE->{'reload'} ) {
+            iMSCP::Service->getInstance()->registerDelayedAction(
+                "php$INSTANCE->{'config'}->{'PHP_VERSION'}-fpm", [ 'reload', sub { $INSTANCE->reload(); } ], __PACKAGE__->getPriority()
+            );
+        } elsif ( $INSTANCE->{'start'} ) {
+            iMSCP::Service->getInstance()->registerDelayedAction(
+                "php$INSTANCE->{'config'}->{'PHP_VERSION'}-fpm", [ 'start', sub { $INSTANCE->start(); } ], __PACKAGE__->getPriority()
+            );
+        }
+    }
 
 =back
 
@@ -487,34 +1464,6 @@ sub _guessVariablesForSelectedPhpAlternative
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
-
-1;
-__DATA__
-#!/usr/bin/perl
-
-use strict;
-use warnings;
-use lib '/usr/local/src/imscp/engine/PerlLib', '/usr/local/src/imscp/engine/PerlVendor';
-use iMSCP::Bootstrapper;
-use iMSCP::Debug qw/ setVerbose output /;
-use iMSCP::EventManager;
-use Servers::php;
-
-setVerbose(1);
-
-iMSCP::Bootstrapper->getInstance()->boot();
-
-my $phpSrv = Servers::php->factory();
-$phpSrv->preinstall();
-$phpSrv->install();
-$phpSrv->postinstall();
-
-iMSCP::EventManager->getInstance()->trigger( 'beforeSetupRestartServices', \my @stack );
-
-for(@stack) {
-    print output("Starting $_->[1] service...", 'info');
-    $_->[0]->();
-}
 
 1;
 __END__
