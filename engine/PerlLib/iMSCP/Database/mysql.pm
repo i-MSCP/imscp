@@ -100,8 +100,7 @@ sub connect
         eval {
             alarm 5;
             $self->{'connection'} = DBI->connect(
-                $dsn, $self->{'db'}->{'DATABASE_USER'}, $self->{'db'}->{'DATABASE_PASSWORD'},
-                $self->{'db'}->{'DATABASE_SETTINGS'}
+                $dsn, $self->{'db'}->{'DATABASE_USER'}, $self->{'db'}->{'DATABASE_PASSWORD'}, $self->{'db'}->{'DATABASE_SETTINGS'}
             );
         };
 
@@ -257,9 +256,7 @@ sub getDbTables
     my @tables = eval {
         my $dbh = $self->getRawDb();
         local $dbh->{'RaiseError'} = 1;
-        keys %{$dbh->selectall_hashref(
-                'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ?', 'TABLE_NAME', undef, $dbName
-            )};
+        keys %{$dbh->selectall_hashref( 'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ?', 'TABLE_NAME', undef, $dbName )};
     };
 
     return "$@" if $@;
@@ -345,14 +342,12 @@ EOF
         my $dbh = $self->getRawDb();
         local $dbh->{'RaiseError'} = 1;
         my $innoDbOnly = !$self->getRawDb->selectrow_array(
-            "SELECT COUNT(ENGINE) FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND ENGINE <> 'InnoDB'",
-            undef,
-            $dbName
+            "SELECT COUNT(ENGINE) FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND ENGINE <> 'InnoDB'", undef, $dbName
         );
 
         my $stderr;
         execute(
-            "mysqldump --defaults-file=$DEFAULT_MYSQL_CONFFILE"
+            "/usr/bin/nice -n 19 /usr/bin/ionice -c2 -n7 /usr/bin/mysqldump --defaults-file=$DEFAULT_MYSQL_CONFFILE"
                 # Void tables locking whenever possible
                 . "@{ [ $innoDbOnly ? ' --single-transaction --skip-lock-tables' : '']}"
                 # Compress all information sent between the client and the server (only if remote SQL server).
@@ -371,7 +366,6 @@ EOF
 =item quoteIdentifier( $identifier )
 
  Quote the given identifier (database name, table name or column name)
-
 
  Param string $identifier Identifier to be quoted
  Return string Quoted identifier
@@ -437,7 +431,7 @@ sub _init
             mysql_auto_reconnect => 1,
             mysql_enable_utf8    => 1,
             PrintError           => 0,
-            RaiseError           => 1,
+            RaiseError           => 1
         }
     };
 

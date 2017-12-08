@@ -286,7 +286,7 @@ function generatePage($tpl, $phpini, $config, $configLevel)
         ]);
     }
 
-    if (!$phpini->clientHasPermission('phpiniDisplayErrors') || $config['HTTPD_SERVER'] == 'apache_itk') {
+    if (!$phpini->clientHasPermission('phpiniDisplayErrors') || $config['HTTPD_SERVER'] == 'apache2_mpm_itk') {
         $tpl->assign('ERROR_REPORTING_BLOCK', '');
     } else {
         $errorReporting = $phpini->getDomainIni('phpiniErrorReporting');
@@ -301,7 +301,7 @@ function generatePage($tpl, $phpini, $config, $configLevel)
         ]);
     }
 
-    if ($config['HTTPD_SERVER'] == 'apache_itk' || !$phpini->clientHasPermission('phpiniDisableFunctions')) {
+    if ($config['HTTPD_SERVER'] == 'apache2_mpm_itk' || !$phpini->clientHasPermission('phpiniDisableFunctions')) {
         $tpl->assign([
             'DISABLE_FUNCTIONS_BLOCK' => '',
             'DISABLE_EXEC_BLOCK'      => ''

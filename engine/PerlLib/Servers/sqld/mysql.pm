@@ -142,16 +142,14 @@ sub setEnginePermissions
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldSetEnginePermissions' );
-    $rs ||= setRights(
-        "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf",
+    $rs ||= setRights( "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf",
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ROOT_GROUP'},
             mode  => '0644'
         }
     );
-    $rs ||= setRights(
-        "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf",
+    $rs ||= setRights( "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf",
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $self->{'config'}->{'SQLD_GROUP'},
@@ -208,8 +206,7 @@ sub createUser
         my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
         $dbh->do(
-            'CREATE USER ?@? IDENTIFIED BY ?'
-                . ( version->parse( $self->getVersion()) >= version->parse( '5.7.6' ) ? ' PASSWORD EXPIRE NEVER' : '' ),
+            'CREATE USER ?@? IDENTIFIED BY ?' . ( version->parse( $self->getVersion()) >= version->parse( '5.7.6' ) ? ' PASSWORD EXPIRE NEVER' : '' ),
             undef, $user, $host, $password
         );
     };
@@ -240,9 +237,7 @@ sub dropUser
     eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
-        return unless $dbh->selectrow_hashref(
-            'SELECT 1 FROM mysql.user WHERE user = ? AND host = ?', undef, $user, $host
-        );
+        return unless $dbh->selectrow_hashref( 'SELECT 1 FROM mysql.user WHERE user = ? AND host = ?', undef, $user, $host );
         $dbh->do( 'DROP USER ?@?', undef, $user, $host );
     };
     !$@ or die( sprintf( "Couldn't drop the %s\@%s SQL user: %s", $user, $host, $@ ));
@@ -299,12 +294,12 @@ sub _init
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/mysql";
-    $self->_mergeConfig() if -f "$self->{'cfgDir'}/mysql.data.dist";
+    $self->_mergeConfig() if defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/mysql.data.dist";
     tie %{$self->{'config'}},
         'iMSCP::Config',
         fileName    => "$self->{'cfgDir'}/mysql.data",
         readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
-        nodeferring => ( defined $main::execmode && $main::execmode eq 'setup' );
+        nodeferring => defined $main::execmode && $main::execmode eq 'setup';
     $self;
 }
 
@@ -324,7 +319,7 @@ sub _mergeConfig
         tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/mysql.data.dist";
         tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/mysql.data", readonly => 1;
 
-        debug( 'Merging old configuration with new configuration...' );
+        debug( 'Merging old configuration with new configuration ...' );
 
         while ( my ($key, $value) = each( %oldConfig ) ) {
             next unless exists $newConfig{$key};
@@ -335,9 +330,7 @@ sub _mergeConfig
         untie( %oldConfig );
     }
 
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/mysql.data.dist" )->moveFile(
-        "$self->{'cfgDir'}/mysql.data"
-    ) == 0 or die(
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/mysql.data.dist" )->moveFile( "$self->{'cfgDir'}/mysql.data" ) == 0 or die(
         getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
     );
 }

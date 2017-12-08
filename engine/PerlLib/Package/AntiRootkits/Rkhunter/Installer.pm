@@ -101,16 +101,12 @@ sub _disableDebianConfig
     }
 
     if ( -f '/etc/cron.daily/rkhunter' ) {
-        my $rs = iMSCP::File->new( filename => '/etc/cron.daily/rkhunter' )->moveFile(
-            '/etc/cron.daily/rkhunter.disabled'
-        );
+        my $rs = iMSCP::File->new( filename => '/etc/cron.daily/rkhunter' )->moveFile( '/etc/cron.daily/rkhunter.disabled' );
         return $rs if $rs;
     }
 
     if ( -f '/etc/cron.weekly/rkhunter' ) {
-        my $rs = iMSCP::File->new( filename => '/etc/cron.weekly/rkhunter' )->moveFile(
-            '/etc/cron.weekly/rkhunter.disabled'
-        );
+        my $rs = iMSCP::File->new( filename => '/etc/cron.weekly/rkhunter' )->moveFile( '/etc/cron.weekly/rkhunter.disabled' );
         return $rs if $rs;
     }
 
@@ -134,21 +130,19 @@ sub _disableDebianConfig
 
 sub _addCronTask
 {
-    Servers::cron->factory()->addTask(
-        {
-            TASKID  => 'Package::AntiRootkits::Rkhunter',
-            MINUTE  => '@weekly',
-            HOUR    => '',
-            DAY     => '',
-            MONTH   => '',
-            DWEEK   => '',
-            USER    => $main::imscpConfig{'ROOT_USER'},
-            COMMAND =>
-            'nice -n 10 ionice -c2 -n5 '
-                . "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl "
-                . "> /dev/null 2>&1"
-        }
-    );
+    Servers::cron->factory()->addTask( {
+        TASKID  => 'Package::AntiRootkits::Rkhunter',
+        MINUTE  => '@weekly',
+        HOUR    => '',
+        DAY     => '',
+        MONTH   => '',
+        DWEEK   => '',
+        USER    => $main::imscpConfig{'ROOT_USER'},
+        COMMAND =>
+        'nice -n 10 ionice -c2 -n5 '
+            . "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl "
+            . "> /dev/null 2>&1"
+    } );
 }
 
 =item _scheduleCheck( )
@@ -165,15 +159,13 @@ sub _scheduleCheck
 
     # Create an empty file to avoid planning multiple check if installer is run many time
     my $file = iMSCP::File->new( filename => $main::imscpConfig{'RKHUNTER_LOG'} );
-    $file->set( "Check scheduled...\n" );
+    $file->set( "Check scheduled ...\n" );
     my $rs = $file->save();
     return $rs if $rs;
 
     $rs = execute(
-        "echo 'perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl > /dev/null 2>&1' "
-            . "| at now + 10 minutes",
-        \ my $stdout,
-        \ my $stderr
+        "echo 'perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl > /dev/null 2>&1' | at now + 10 minutes",
+        \ my $stdout, \ my $stderr
     );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;

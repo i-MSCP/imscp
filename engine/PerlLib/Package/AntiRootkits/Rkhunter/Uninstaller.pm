@@ -81,16 +81,12 @@ sub _restoreDebianConfig
     }
 
     if ( -f '/etc/cron.daily/rkhunter.disabled' ) {
-        my $rs = iMSCP::File->new( filename => '/etc/cron.daily/rkhunter.disabled' )->moveFile(
-            '/etc/cron.daily/rkhunter'
-        );
+        my $rs = iMSCP::File->new( filename => '/etc/cron.daily/rkhunter.disabled' )->moveFile( '/etc/cron.daily/rkhunter' );
         return $rs if $rs;
     }
 
     if ( -f '/etc/cron.weekly/rkhunter.disabled' ) {
-        my $rs = iMSCP::File->new( filename => '/etc/cron.weekly/rkhunter.disabled' )->moveFile(
-            '/etc/cron.weekly/rkhunter'
-        );
+        my $rs = iMSCP::File->new( filename => '/etc/cron.weekly/rkhunter.disabled' )->moveFile( '/etc/cron.weekly/rkhunter' );
         return $rs if $rs;
     }
 

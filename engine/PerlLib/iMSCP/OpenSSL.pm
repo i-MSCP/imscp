@@ -73,7 +73,7 @@ sub validatePrivateKey
     }
 
     my $cmd = [
-        'openssl', 'pkey', '-in', $self->{'private_key_container_path'}, '-noout',
+        '/usr/bin/openssl', 'pkey', '-in', $self->{'private_key_container_path'}, '-noout',
         ( ( $passphraseFile ) ? ( '-passin', 'file:' . $passphraseFile->filename ) : () )
     ];
 
@@ -130,7 +130,7 @@ sub validateCertificate
     }
 
     my $cmd = [
-        'openssl', 'verify',
+        '/usr/bin/openssl', 'verify',
         ( ( $self->{'ca_bundle_container_path'} ne '' ) ? ( '-CAfile', $self->{'ca_bundle_container_path'} ) : () ),
         '-purpose', 'sslserver', $self->{'certificate_container_path'}
     ];
@@ -138,8 +138,7 @@ sub validateCertificate
     my $rs = execute( $cmd, \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( sprintf(
-        "SSL certificate is not valid: %s",
-        ( $stderr || $stdout || 'Unknown error' ) =~ s/$self->{'certificate_container_path'}:\s+//r
+        "SSL certificate is not valid: %s", ( $stderr || $stdout || 'Unknown error' ) =~ s/$self->{'certificate_container_path'}:\s+//r
     )) if $rs;
 
     $self->{'ca_bundle_container_path'} = '' unless $caBundle;
@@ -184,7 +183,7 @@ sub importPrivateKey
     }
 
     my $cmd = [
-        'openssl', 'pkey', '-in', $self->{'private_key_container_path'},
+        '/usr/bin/openssl', 'pkey', '-in', $self->{'private_key_container_path'},
         '-out', "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem",
         ( ( $passphraseFile ) ? ( '-passin', 'file:' . $passphraseFile->filename ) : () )
     ];
@@ -221,7 +220,7 @@ sub importCertificate
     return $rs if $rs;
 
     my @cmd = (
-        'cat', escapeShell( $self->{'certificate_container_path'} ),
+        '/bin/cat', escapeShell( $self->{'certificate_container_path'} ),
         '>>', escapeShell( "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem" )
     );
 
@@ -259,7 +258,7 @@ sub importCaBundle
     return $rs if $rs;
 
     my @cmd = (
-        'cat', escapeShell( $self->{'ca_bundle_container_path'} ),
+        '/bin/cat', escapeShell( $self->{'ca_bundle_container_path'} ),
         '>>', escapeShell( "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem" )
     );
 
@@ -303,9 +302,7 @@ sub createSelfSignedCertificate
         {
             COMMON_NAME   => $commonName,
             EMAIL_ADDRESS => $data->{'email'},
-            ALT_NAMES     => ( $data->{'wildcard'}
-                ? "DNS.1 = $commonName\n" : "DNS.1 = $commonName\nDNS.2 = www.$commonName\n"
-            )
+            ALT_NAMES     => ( $data->{'wildcard'} ? "DNS.1 = $commonName\n" : "DNS.1 = $commonName\nDNS.2 = www.$commonName\n" )
         },
         $openSSLConffileTplContent
     );
@@ -313,7 +310,7 @@ sub createSelfSignedCertificate
     $openSSLConffile->close();
 
     my $cmd = [
-        'openssl', 'req', '-x509', '-nodes', '-days', '365', '-config', $openSSLConffile->filename, '-newkey', 'rsa',
+        '/usr/bin/openssl', 'req', '-x509', '-nodes', '-days', '365', '-config', $openSSLConffile->filename, '-newkey', 'rsa',
         '-keyout', "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem",
         '-out', "$self->{'certificate_chains_storage_dir'}/$self->{'certificate_chain_name'}.pem"
     ];
@@ -360,9 +357,7 @@ sub getCertificateExpiryTime
         return undef;
     }
 
-    my $rs = execute(
-        [ 'openssl', 'x509', '-enddate', '-noout', '-in', $certificatePath ], \ my $stdout, \ my $stderr
-    );
+    my $rs = execute( [ '/usr/bin/openssl', 'x509', '-enddate', '-noout', '-in', $certificatePath ], \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
 
     unless ( $rs == 0 && $stdout =~ /^notAfter=(.*)/i ) {

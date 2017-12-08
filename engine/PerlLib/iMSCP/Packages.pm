@@ -80,9 +80,7 @@ sub _init
 {
     my ($self) = @_;
 
-    $_ = basename( $_, '.pm' ) for @{$self->{'packages'}} = glob (
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/*.pm"
-    );
+    $_ = basename( $_, '.pm' ) for @{$self->{'packages'}} = glob ( "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/*.pm" );
 
     # Load all package classes
     for ( @{$self->{'packages'}} ) {
@@ -91,12 +89,8 @@ sub _init
     }
 
     # Sort packages in descending order of priority
-    @{$self->{'packages'}} = sort {
-        "Package::${b}"->getPriority() <=> "Package::${a}"->getPriority()
-    } @{$self->{'packages'}};
-
+    @{$self->{'packages'}} = sort { "Package::${b}"->getPriority() <=> "Package::${a}"->getPriority() } @{$self->{'packages'}};
     @{$self->{'packages_full_names'}} = map { "Package::${_}" } @{$self->{'packages'}};
-
     $self;
 }
 

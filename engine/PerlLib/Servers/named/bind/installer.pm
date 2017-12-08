@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use File::Basename;
 use iMSCP::Debug;
+use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
@@ -87,22 +88,20 @@ sub askDnsServerMode
 {
     my ($self, $dialog) = @_;
 
-    my $dnsServerMode = main::setupGetQuestion(
-        'BIND_MODE', $self->{'config'}->{'BIND_MODE'} || ( iMSCP::Getopt->preseed ? 'master' : '' )
-    );
+    my $value = main::setupGetQuestion( 'BIND_MODE', $self->{'config'}->{'BIND_MODE'} || ( iMSCP::Getopt->preseed ? 'master' : '' ));
+    my %choices = ( 'master', 'Master DNS server', 'slave', 'Slave DNS server' );
 
-    if ( $main::reconfigure =~ /^(?:named|servers|all|forced)$/
-        || $dnsServerMode !~ /^(?:master|slave)$/
+    if ( isStringInList( $main::reconfigure, 'named', 'servers', 'all', 'forced' )
+        || !isStringInList( $value, keys %choices )
     ) {
-        ( my $rs, $dnsServerMode ) = $dialog->radiolist(
-            <<"EOF", [ 'master', 'slave' ], $dnsServerMode eq 'slave' ? 'slave' : 'master' );
-
-Please select the DNS server type to configure
+        ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'master' );
+Please choose the type of DNS server to configure:
+\\Z \\Zn
 EOF
         return $rs unless $rs < 30;
     }
 
-    $self->{'config'}->{'BIND_MODE'} = $dnsServerMode;
+    $self->{'config'}->{'BIND_MODE'} = $value;
     $self->askDnsServerIps( $dialog );
 }
 
@@ -129,18 +128,16 @@ sub askDnsServerIps
     my ($rs, $answer, $msg) = ( 0, '', '' );
 
     if ( $dnsServerMode eq 'master' ) {
-        if ( $main::reconfigure =~ /^(?:named|servers|all|forced)$/
+        if ( isStringInList( $main::reconfigure, 'named', 'servers', 'all', 'forced' )
             || !@slaveDnsIps
             || ( $slaveDnsIps[0] ne 'no' && !$self->_checkIps( @slaveDnsIps ) )
         ) {
-            ( $rs, $answer ) = $dialog->radiolist(
-                <<"EOF", [ 'no', 'yes' ], !@slaveDnsIps || $slaveDnsIps[0] eq 'no' ? 'no' : 'yes' );
-
+            my %choices = ( 'yes', 'Yes', 'no', 'No' );
+            ( $rs, $answer ) = $dialog->radiolist( <<"EOF", \%choices, !@slaveDnsIps || $slaveDnsIps[0] eq 'no' ? 'no' : 'yes' );
 Do you want to add slave DNS servers?
+\\Z \\Zn
 EOF
-            if ( $rs < 30 &&
-                $answer eq 'yes'
-            ) {
+            if ( $rs < 30 && $answer eq 'yes' ) {
                 @slaveDnsIps = () if @slaveDnsIps && $slaveDnsIps[0] eq 'no';
 
                 do {
@@ -169,7 +166,7 @@ EOF
                 @slaveDnsIps = ( 'no' );
             }
         }
-    } elsif ( $main::reconfigure =~ /^(?:named|servers|all|forced)$/
+    } elsif ( isStringInList( $main::reconfigure, 'named', 'servers', 'all', 'forced' )
         || !@slaveDnsIps
         || $slaveDnsIps[0] eq 'no'
         || !$self->_checkIps( @masterDnsIps )
@@ -230,21 +227,20 @@ sub askIPv6Support
         return 0;
     }
 
-    my $ipv6 = main::setupGetQuestion(
-        'BIND_IPV6', $self->{'config'}->{'BIND_IPV6'} || ( iMSCP::Getopt->preseed ? 'no' : '' )
-    );
+    my $value = main::setupGetQuestion( 'BIND_IPV6', $self->{'config'}->{'BIND_IPV6'} || ( iMSCP::Getopt->preseed ? 'no' : '' ));
+    my %choices = ( 'yes', 'Yes', 'no', 'No' );
 
-    if ( $main::reconfigure =~ /^(?:named|servers|all|forced)$/
-        || $ipv6 !~ /^(?:yes|no)$/
+    if ( isStringInList( $main::reconfigure, 'named', 'servers', 'all', 'forced' )
+        || !isStringInList( $value, keys %choices )
     ) {
-        ( my $rs, $ipv6 ) = $dialog->radiolist( <<"EOF", [ 'yes', 'no' ], $ipv6 eq 'yes' ? 'yes' : 'no' );
-
+        ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'no' );
 Do you want to enable IPv6 support for the DNS server?
+\\Z \\Zn
 EOF
         return $rs unless $rs < 30;
     }
 
-    $self->{'config'}->{'BIND_IPV6'} = $ipv6;
+    $self->{'config'}->{'BIND_IPV6'} = $value;
     0;
 }
 
@@ -261,22 +257,20 @@ sub askLocalDnsResolver
 {
     my ($self, $dialog) = @_;
 
-    my $localDnsResolver = main::setupGetQuestion(
-        'LOCAL_DNS_RESOLVER', $self->{'config'}->{'LOCAL_DNS_RESOLVER'} || ( iMSCP::Getopt->preseed ? 'yes' : '' )
-    );
+    my $value = main::setupGetQuestion( 'LOCAL_DNS_RESOLVER', $self->{'config'}->{'LOCAL_DNS_RESOLVER'} || ( iMSCP::Getopt->preseed ? 'yes' : '' ));
+    my %choices = ( 'yes', 'Yes', 'no', 'No' );
 
-    if ( $main::reconfigure =~ /^(?:resolver|named|all|forced)$/
-        || $localDnsResolver !~ /^(?:yes|no)$/
+    if ( isStringInList( $main::reconfigure, 'resolver', 'named', 'servers', 'all', 'forced' )
+        || !isStringInList( $value, keys %choices )
     ) {
-        ( my $rs, $localDnsResolver ) = $dialog->radiolist(
-            <<"EOF", [ 'yes', 'no' ], $localDnsResolver ne 'no' ? 'yes' : 'no' );
-
+        ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'no' );
 Do you want to use the local DNS resolver?
+\\Z \\Zn
 EOF
         return $rs unless $rs < 30;
     }
 
-    $self->{'config'}->{'LOCAL_DNS_RESOLVER'} = $localDnsResolver;
+    $self->{'config'}->{'LOCAL_DNS_RESOLVER'} = $value;
     0;
 }
 
@@ -393,13 +387,11 @@ sub _makeDirs
     return $rs if $rs;
 
     for my $directory( @directories ) {
-        iMSCP::Dir->new( dirname => $directory->[0] )->make(
-            {
+        iMSCP::Dir->new( dirname => $directory->[0] )->make( {
                 user  => $directory->[1],
                 group => $directory->[2],
                 mode  => $directory->[3]
-            }
-        );
+            } );
     }
 
     iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_MASTER_DIR'} )->clear();
@@ -597,8 +589,7 @@ sub _checkIps
     my $net = iMSCP::Net->getInstance();
 
     for my $ipAddr( @ips ) {
-        return 0 unless $net->isValidAddr( $ipAddr )
-            && $net->getAddrType( $ipAddr ) =~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/;
+        return 0 unless $net->isValidAddr( $ipAddr ) && $net->getAddrType( $ipAddr ) =~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/;
     }
 
     1;
@@ -655,7 +646,6 @@ sub _oldEngineCompatibility
     }
 
     iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_ROOT_DIR'} )->clear( undef, qr/\.db$/ );
-
     $self->{'eventManager'}->trigger( 'afterNameddOldEngineCompatibility' );
 }
 

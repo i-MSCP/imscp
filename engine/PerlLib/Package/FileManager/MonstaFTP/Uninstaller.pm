@@ -91,9 +91,7 @@ sub _unregisterConfig
 
     return 0 unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf";
 
-    my $file = iMSCP::File->new(
-        filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf"
-    );
+    my $file = iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf" );
     my $fileContentRef = $file->getAsRef();
     unless ( defined $fileContentRef ) {
         error( sprintf( "Couldn't read %s file", $file->{'filename'} ));
@@ -124,9 +122,8 @@ sub _removeFiles
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
 
     return 0 unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_monstaftp.conf";
-    iMSCP::File->new(
-        filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_monstaftp.conf"
-    )->delFile();
+
+    iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_monstaftp.conf" )->delFile();
 }
 
 =back

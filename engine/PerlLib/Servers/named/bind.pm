@@ -166,8 +166,7 @@ sub setEnginePermissions
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedSetEnginePermissions' );
-    $rs ||= setRights(
-        $self->{'config'}->{'BIND_CONF_DIR'},
+    $rs ||= setRights( $self->{'config'}->{'BIND_CONF_DIR'},
         {
             user      => $main::imscpConfig{'ROOT_USER'},
             group     => $self->{'config'}->{'BIND_GROUP'},
@@ -176,8 +175,7 @@ sub setEnginePermissions
             recursive => 1
         }
     );
-    $rs ||= setRights(
-        $self->{'config'}->{'BIND_DB_ROOT_DIR'},
+    $rs ||= setRights( $self->{'config'}->{'BIND_DB_ROOT_DIR'},
         {
             user      => $self->{'config'}->{'BIND_USER'},
             group     => $self->{'config'}->{'BIND_GROUP'},
@@ -239,24 +237,22 @@ sub postaddDmn
         && $self->{'config'}->{'BIND_MODE'} eq 'master'
         && defined $data->{'ALIAS'}
     ) {
-        $rs = $self->addSub(
-            {
-                # Listeners want probably know real parent domain name for the
-                # DNS name being added even if that entry is added in another
-                # zone. For instance, see the 20_named_dualstack.pl listener
-                # file. (since 1.6.0)
-                REAL_PARENT_DOMAIN_NAME => $data->{'PARENT_DOMAIN_NAME'},
-                PARENT_DOMAIN_NAME      => $main::imscpConfig{'BASE_SERVER_VHOST'},
-                DOMAIN_NAME             => $data->{'ALIAS'} . '.' . $main::imscpConfig{'BASE_SERVER_VHOST'},
-                MAIL_ENABLED            => 0,
-                DOMAIN_IP               => $data->{'BASE_SERVER_PUBLIC_IP'},
-                # Listeners want probably know type of the entry being added (since 1.6.0)
-                DOMAIN_TYPE             => 'sub',
-                BASE_SERVER_PUBLIC_IP   => $data->{'BASE_SERVER_PUBLIC_IP'},
-                OPTIONAL_ENTRIES        => 0,
-                STATUS                  => $data->{'STATUS'} # (since 1.6.0)
-            }
-        );
+        $rs = $self->addSub( {
+            # Listeners want probably know real parent domain name for the
+            # DNS name being added even if that entry is added in another
+            # zone. For instance, see the 20_named_dualstack.pl listener
+            # file. (since 1.6.0)
+            REAL_PARENT_DOMAIN_NAME => $data->{'PARENT_DOMAIN_NAME'},
+            PARENT_DOMAIN_NAME      => $main::imscpConfig{'BASE_SERVER_VHOST'},
+            DOMAIN_NAME             => $data->{'ALIAS'} . '.' . $main::imscpConfig{'BASE_SERVER_VHOST'},
+            MAIL_ENABLED            => 0,
+            DOMAIN_IP               => $data->{'BASE_SERVER_PUBLIC_IP'},
+            # Listeners want probably know type of the entry being added (since 1.6.0)
+            DOMAIN_TYPE             => 'sub',
+            BASE_SERVER_PUBLIC_IP   => $data->{'BASE_SERVER_PUBLIC_IP'},
+            OPTIONAL_ENTRIES        => 0,
+            STATUS                  => $data->{'STATUS'} # (since 1.6.0)
+        } );
         return $rs if $rs;
     }
 
@@ -327,9 +323,7 @@ sub deleteDmn
     return $rs if $rs;
 
     if ( $self->{'config'}->{'BIND_MODE'} eq 'master' ) {
-        for( "$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}.db",
-            "$self->{'config'}->{'BIND_DB_MASTER_DIR'}/$data->{'DOMAIN_NAME'}.db"
-        ) {
+        for ( "$self->{'wrkDir'}/$data->{'DOMAIN_NAME'}.db", "$self->{'config'}->{'BIND_DB_MASTER_DIR'}/$data->{'DOMAIN_NAME'}.db" ) {
             next unless -f;
             $rs = iMSCP::File->new( filename => $_ )->delFile();
             return $rs if $rs;
@@ -362,12 +356,10 @@ sub postdeleteDmn
         && $self->{'config'}->{'BIND_MODE'} eq 'master'
         && defined $data->{'ALIAS'}
     ) {
-        $rs = $self->deleteSub(
-            {
-                PARENT_DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
-                DOMAIN_NAME        => $data->{'ALIAS'} . '.' . $main::imscpConfig{'BASE_SERVER_VHOST'}
-            }
-        );
+        $rs = $self->deleteSub( {
+            PARENT_DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
+            DOMAIN_NAME        => $data->{'ALIAS'} . '.' . $main::imscpConfig{'BASE_SERVER_VHOST'}
+        } );
         return $rs if $rs;
     }
 
@@ -447,8 +439,7 @@ sub addSub
         $subEntry = replaceBloc( "; sub OPTIONAL entries BEGIN\n", "; sub OPTIONAL entries ENDING\n", '', $subEntry );
     }
 
-    my $domainIP = $net->isRoutableAddr( $data->{'DOMAIN_IP'} )
-        ? $data->{'DOMAIN_IP'} : $data->{'BASE_SERVER_PUBLIC_IP'};
+    my $domainIP = $net->isRoutableAddr( $data->{'DOMAIN_IP'} ) ? $data->{'DOMAIN_IP'} : $data->{'BASE_SERVER_PUBLIC_IP'};
 
     $subEntry = process(
         {
@@ -461,19 +452,12 @@ sub addSub
 
     # Remove previous entry if any
     $wrkDbFileContent = replaceBloc(
-        "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
-        "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
-        '',
-        $wrkDbFileContent
+        "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n", "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n", '', $wrkDbFileContent
     );
 
     # Add new entry
     $wrkDbFileContent = replaceBloc(
-        "; sub [{SUBDOMAIN_NAME}] entry BEGIN\n",
-        "; sub [{SUBDOMAIN_NAME}] entry ENDING\n",
-        $subEntry,
-        $wrkDbFileContent,
-        'preserve'
+        "; sub [{SUBDOMAIN_NAME}] entry BEGIN\n", "; sub [{SUBDOMAIN_NAME}] entry ENDING\n", $subEntry, $wrkDbFileContent, 'preserve'
     );
 
     $rs = $self->{'eventManager'}->trigger( 'afterNamedAddSub', \$wrkDbFileContent, $data );
@@ -502,24 +486,22 @@ sub postaddSub
         && $self->{'config'}->{'BIND_MODE'} eq 'master'
         && defined $data->{'ALIAS'}
     ) {
-        $rs = $self->addSub(
-            {
-                # Listeners want probably know real parent domain name for the
-                # DNS name being added even if that entry is added in another
-                # zone. For instance, see the 20_named_dualstack.pl listener
-                # file. (since 1.6.0)
-                REAL_PARENT_DOMAIN_NAME => $data->{'PARENT_DOMAIN_NAME'},
-                PARENT_DOMAIN_NAME      => $main::imscpConfig{'BASE_SERVER_VHOST'},
-                DOMAIN_NAME             => $data->{'ALIAS'} . '.' . $main::imscpConfig{'BASE_SERVER_VHOST'},
-                MAIL_ENABLED            => 0,
-                DOMAIN_IP               => $data->{'BASE_SERVER_PUBLIC_IP'},
-                # Listeners want probably know type of the entry being added (since 1.6.0)
-                DOMAIN_TYPE             => 'sub',
-                BASE_SERVER_PUBLIC_IP   => $data->{'BASE_SERVER_PUBLIC_IP'},
-                OPTIONAL_ENTRIES        => 0,
-                STATUS                  => $data->{'STATUS'} # (since 1.6.0)
-            }
-        );
+        $rs = $self->addSub( {
+            # Listeners want probably know real parent domain name for the
+            # DNS name being added even if that entry is added in another
+            # zone. For instance, see the 20_named_dualstack.pl listener
+            # file. (since 1.6.0)
+            REAL_PARENT_DOMAIN_NAME => $data->{'PARENT_DOMAIN_NAME'},
+            PARENT_DOMAIN_NAME      => $main::imscpConfig{'BASE_SERVER_VHOST'},
+            DOMAIN_NAME             => $data->{'ALIAS'} . '.' . $main::imscpConfig{'BASE_SERVER_VHOST'},
+            MAIL_ENABLED            => 0,
+            DOMAIN_IP               => $data->{'BASE_SERVER_PUBLIC_IP'},
+            # Listeners want probably know type of the entry being added (since 1.6.0)
+            DOMAIN_TYPE             => 'sub',
+            BASE_SERVER_PUBLIC_IP   => $data->{'BASE_SERVER_PUBLIC_IP'},
+            OPTIONAL_ENTRIES        => 0,
+            STATUS                  => $data->{'STATUS'} # (since 1.6.0)
+        } );
         return $rs if $rs;
     }
 
@@ -605,10 +587,7 @@ sub deleteSub
     return $rs if $rs;
 
     $wrkDbFileContent = replaceBloc(
-        "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
-        "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
-        '',
-        $wrkDbFileContent
+        "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n", "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n", '', $wrkDbFileContent
     );
 
     $rs = $self->{'eventManager'}->trigger( 'afterNamedDelSub', \$wrkDbFileContent, $data );
@@ -637,12 +616,10 @@ sub postdeleteSub
         && $self->{'config'}->{'BIND_MODE'} eq 'master'
         && defined $data->{'ALIAS'}
     ) {
-        $rs = $self->deleteSub(
-            {
-                PARENT_DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
-                DOMAIN_NAME        => $data->{'ALIAS'} . '.' . $main::imscpConfig{'BASE_SERVER_VHOST'}
-            }
-        );
+        $rs = $self->deleteSub( {
+            PARENT_DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
+            DOMAIN_NAME        => $data->{'ALIAS'} . '.' . $main::imscpConfig{'BASE_SERVER_VHOST'}
+        } );
         return $rs if $rs;
     }
 
@@ -794,8 +771,7 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'restart'} = 0;
-    $self->{'reload'} = 0;
+    @{$self}{qw/ restart reload /} = ( 0, 0 );
     $self->{'serials'} = {};
     $self->{'seen_zones'} = {};
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
@@ -803,12 +779,12 @@ sub _init
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'tplDir'} = "$self->{'cfgDir'}/parts";
-    $self->_mergeConfig() if -f "$self->{'cfgDir'}/bind.data.dist";
+    $self->_mergeConfig() if defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/bind.data.dist";
     tie %{$self->{'config'}},
         'iMSCP::Config',
         fileName    => "$self->{'cfgDir'}/bind.data",
         readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
-        nodeferring => ( defined $main::execmode && $main::execmode eq 'setup' );
+        nodeferring => defined $main::execmode && $main::execmode eq 'setup';
     $self;
 }
 
@@ -828,7 +804,7 @@ sub _mergeConfig
         tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/bind.data.dist";
         tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/bind.data", readonly => 1;
 
-        debug( 'Merging old configuration with new configuration...' );
+        debug( 'Merging old configuration with new configuration ...' );
 
         while ( my ($key, $value) = each( %oldConfig ) ) {
             next unless exists $newConfig{$key};
@@ -839,9 +815,7 @@ sub _mergeConfig
         untie( %oldConfig );
     }
 
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/bind.data.dist" )->moveFile(
-        "$self->{'cfgDir'}/bind.data"
-    ) == 0 or die(
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/bind.data.dist" )->moveFile( "$self->{'cfgDir'}/bind.data" ) == 0 or die(
         getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
     );
 }
@@ -881,9 +855,7 @@ sub _addDmnConfig
     }
 
     my $tplFileName = "cfg_$self->{'config'}->{'BIND_MODE'}.tpl";
-    my $rs = $self->{'eventManager'}->trigger(
-        'onLoadTemplate', 'bind', $tplFileName, \ my $tplCfgEntryContent, $data
-    );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind', $tplFileName, \ my $tplCfgEntryContent, $data );
     return $rs if $rs;
 
     unless ( defined $tplCfgEntryContent ) {
@@ -914,15 +886,11 @@ sub _addDmnConfig
         $tags->{'PRIMARY_DNS'} = join( '; ', split( ';', $self->{'config'}->{'PRIMARY_DNS'} )) . ';';
     }
 
-    $tplCfgEntryContent = "// imscp [$data->{'DOMAIN_NAME'}] entry BEGIN\n"
-        . process( $tags, $tplCfgEntryContent )
+    $tplCfgEntryContent = "// imscp [$data->{'DOMAIN_NAME'}] entry BEGIN\n" . process( $tags, $tplCfgEntryContent )
         . "// imscp [$data->{'DOMAIN_NAME'}] entry ENDING\n";
 
     $cfgWrkFileContent = replaceBloc(
-        "// imscp [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
-        "// imscp [$data->{'DOMAIN_NAME'}] entry ENDING\n",
-        '',
-        $cfgWrkFileContent
+        "// imscp [$data->{'DOMAIN_NAME'}] entry BEGIN\n", "// imscp [$data->{'DOMAIN_NAME'}] entry ENDING\n", '', $cfgWrkFileContent
     );
     $cfgWrkFileContent = replaceBloc(
         "// imscp [{ENTRY_ID}] entry BEGIN\n",
@@ -973,10 +941,7 @@ sub _deleteDmnConfig
     return $rs if $rs;
 
     $cfgWrkFileContent = replaceBloc(
-        "// imscp [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
-        "// imscp [$data->{'DOMAIN_NAME'}] entry ENDING\n",
-        '',
-        $cfgWrkFileContent
+        "// imscp [$data->{'DOMAIN_NAME'}] entry BEGIN\n", "// imscp [$data->{'DOMAIN_NAME'}] entry ENDING\n", '', $cfgWrkFileContent
     );
 
     $rs = $self->{'eventManager'}->trigger( 'afterNamedDelDmnConfig', \$cfgWrkFileContent, $data );
@@ -1029,14 +994,10 @@ sub _addDmnDb
     );
 
     my $net = iMSCP::Net->getInstance();
-    my $domainIP = $net->isRoutableAddr( $data->{'DOMAIN_IP'} )
-        ? $data->{'DOMAIN_IP'} : $data->{'BASE_SERVER_PUBLIC_IP'};
+    my $domainIP = $net->isRoutableAddr( $data->{'DOMAIN_IP'} ) ? $data->{'DOMAIN_IP'} : $data->{'BASE_SERVER_PUBLIC_IP'};
 
     unless ( $nsRecordB eq '' && $glueRecordB eq '' ) {
-        my @nsIPs = (
-            $domainIP,
-            ( ( $self->{'config'}->{'SECONDARY_DNS'} eq 'no' ) ? () : split ';', $self->{'config'}->{'SECONDARY_DNS'} )
-        );
+        my @nsIPs = ( $domainIP, ( ( $self->{'config'}->{'SECONDARY_DNS'} eq 'no' ) ? () : split ';', $self->{'config'}->{'SECONDARY_DNS'} ) );
 
         my ($nsRecords, $glueRecords) = ( '', '' );
 
@@ -1045,11 +1006,7 @@ sub _addDmnDb
 
             for my $ipAddr( @nsIPs ) {
                 next unless $net->getAddrVersion( $ipAddr ) eq $ipAddrType;
-                $nsRecords .= process(
-                    { NS_NAME => 'ns' . $nsNumber },
-                    $nsRecordB
-                ) if $nsRecordB ne '';
-
+                $nsRecords .= process( { NS_NAME => 'ns' . $nsNumber }, $nsRecordB ) if $nsRecordB ne '';
                 $glueRecords .= process(
                     {
                         NS_NAME    => 'ns' . $nsNumber,
@@ -1063,10 +1020,7 @@ sub _addDmnDb
             }
         }
 
-        $tplDbFileC = replaceBloc(
-            "; dmn NS RECORD entry BEGIN\n", "; dmn NS RECORD entry ENDING\n", $nsRecords, $tplDbFileC
-        ) if $nsRecordB ne '';
-
+        $tplDbFileC = replaceBloc( "; dmn NS RECORD entry BEGIN\n", "; dmn NS RECORD entry ENDING\n", $nsRecords, $tplDbFileC ) if $nsRecordB ne '';
         $tplDbFileC = replaceBloc(
             "; dmn NS GLUE RECORD entry BEGIN\n", "; dmn NS GLUE RECORD entry ENDING\n", $glueRecords, $tplDbFileC
         ) if $glueRecordB ne '';

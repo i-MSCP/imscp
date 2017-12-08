@@ -101,13 +101,11 @@ sub _buildConf
     my $confDir = $self->{'config'}->{'SQLD_CONF_DIR'};
 
     # Make sure that the conf.d directory exists
-    iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make(
-        {
+    iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make( {
             user  => $rootUName,
             group => $rootGName,
             mode  => 0755
-        }
-    );
+        } );
 
     # Create the /etc/mysql/my.cnf file if missing
     unless ( -f "$confDir/my.cnf" ) {
@@ -195,10 +193,7 @@ EOF
 
         # Filter all "duplicate column", "duplicate key" and "unknown column"
         # errors as the command is designed to be idempotent.
-        my $rs = execute(
-            "mysql_upgrade --defaults-file=$mysqlConffile 2>&1 | egrep -v '^(1|\@had|ERROR (1054|1060|1061))'",
-            \my $stdout
-        );
+        my $rs = execute( "/usr/bin/mysql_upgrade --defaults-file=$mysqlConffile 2>&1 | egrep -v '^(1|\@had|ERROR (1054|1060|1061))'", \my $stdout );
         error( sprintf( "Couldn't upgrade SQL server system tables: %s", $stdout )) if $rs;
         return $rs if $rs;
         debug( $stdout ) if $stdout;
@@ -214,9 +209,7 @@ EOF
 
         # Disable unwanted plugins (bc reasons)
         for ( qw/ cracklib_password_check simple_password_check unix_socket validate_password / ) {
-            $dbh->do( "UNINSTALL PLUGIN $_" ) if $dbh->selectrow_hashref(
-                "SELECT name FROM mysql.plugin WHERE name = '$_'"
-            );
+            $dbh->do( "UNINSTALL PLUGIN $_" ) if $dbh->selectrow_hashref( "SELECT name FROM mysql.plugin WHERE name = '$_'" );
         }
     };
     if ( $@ ) {

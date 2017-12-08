@@ -100,13 +100,11 @@ sub _buildConf
     my $confDir = $self->{'config'}->{'SQLD_CONF_DIR'};
 
     # Make sure that the conf.d directory exists
-    iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make(
-        {
+    iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make( {
             user  => $rootUName,
             group => $rootGName,
             mode  => 0755
-        }
-    );
+        } );
 
     # Create the /etc/mysql/my.cnf file if missing
     unless ( -f "$confDir/my.cnf" ) {
@@ -154,10 +152,8 @@ EOF
     # Fix For: The 'INFORMATION_SCHEMA.SESSION_VARIABLES' feature is disabled; see the documentation for
     # 'show_compatibility_56' (3167) - Occurs when executing mysqldump with Percona server 5.7.x
     $cfgTpl .= "show_compatibility_56 = 1\n" if $version >= version->parse( '5.7.6' );
-
     # For backward compatibility - We will review this in later version
     $cfgTpl .= "default_password_lifetime = 0\n" if $version >= version->parse( '5.7.4' );
-
     $cfgTpl .= "event_scheduler = DISABLED\n";
     $cfgTpl = process( { SQLD_SOCK_DIR => $self->{'config'}->{'SQLD_SOCK_DIR'} }, $cfgTpl );
 
@@ -204,10 +200,7 @@ EOF
 
         # Filter all "duplicate column", "duplicate key" and "unknown column"
         # errors as the command is designed to be idempotent.
-        my $rs = execute(
-            "mysql_upgrade --defaults-file=$mysqlConffile 2>&1 | egrep -v '^(1|\@had|ERROR (1054|1060|1061))'",
-            \my $stdout
-        );
+        my $rs = execute( "/usr/bin/mysql_upgrade --defaults-file=$mysqlConffile 2>&1 | egrep -v '^(1|\@had|ERROR (1054|1060|1061))'", \my $stdout );
         error( sprintf( "Couldn't upgrade SQL server system tables: %s", $stdout )) if $rs;
         return $rs if $rs;
         debug( $stdout ) if $stdout;
@@ -223,9 +216,7 @@ EOF
 
         # Disable unwanted plugins (bc reasons)
         for ( qw/ cracklib_password_check simple_password_check validate_password / ) {
-            $dbh->do( "UNINSTALL PLUGIN $_" ) if $dbh->selectrow_hashref(
-                "SELECT name FROM mysql.plugin WHERE name = '$_'"
-            );
+            $dbh->do( "UNINSTALL PLUGIN $_" ) if $dbh->selectrow_hashref( "SELECT name FROM mysql.plugin WHERE name = '$_'" );
         }
     };
     if ( $@ ) {

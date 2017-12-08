@@ -27,7 +27,7 @@ use strict;
 use warnings;
 
 # system server instance
-my $instance;
+my $INSTANCE;
 
 =head1 DESCRIPTION
 
@@ -47,11 +47,11 @@ my $instance;
 
 sub factory
 {
-    return $instance if defined $instance;
+    return $INSTANCE if $INSTANCE;
 
     my $package = "Servers::server::local";
     eval "require $package" or die( $@ );
-    $instance = $package->getInstance();
+    $INSTANCE = $package->getInstance();
 }
 
 =item can( $method )

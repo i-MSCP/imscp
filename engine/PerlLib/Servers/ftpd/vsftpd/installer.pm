@@ -94,8 +94,7 @@ sub sqlUserDialog
     );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
     my $dbPass = main::setupGetQuestion(
-        'FTPD_SQL_PASSWORD',
-        ( iMSCP::Getopt->preseed ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
+        'FTPD_SQL_PASSWORD', ( iMSCP::Getopt->preseed ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
     );
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
@@ -116,6 +115,7 @@ sub sqlUserDialog
             ( $rs, $dbUser ) = $dialog->inputbox( <<"EOF", $dbUser );
 $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter a username for the VsFTPd SQL user (leave empty for default):
+\\Z \\Zn
 EOF
         } while $rs < 30
             && ( !isValidUsername( $dbUser )
@@ -143,6 +143,7 @@ EOF
                 ( $rs, $dbPass ) = $dialog->inputbox( <<"EOF", $dbPass );
 $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter a password for the VsFTPd SQL user (leave empty for autogeneration):
+\\Z \\Zn
 EOF
             } while $rs < 30
                 && !isValidPassword( $dbPass );
@@ -201,9 +202,10 @@ sub passivePortRangeDialog
 $iMSCP::Dialog::InputValidation::lastValidationError
 \\Z4\\Zb\\ZuVsFTPd passive port range\\Zn
 
-Please choose the passive port range for VsFTPd.
+Please enter the passive port range for VsFTPd.
 
 Note that if you're behind a NAT, you must forward those ports to this server.
+\\Z \\Zn
 EOF
         } while $rs < 30
             && ( !isValidNumberRange( $passivePortRange, \$startOfRange, \$endOfRange )

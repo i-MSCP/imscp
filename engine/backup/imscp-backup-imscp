@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-imscp-backup-imscp backup i-MSCP configuration files and database.
+ imscp-backup-imscp backup i-MSCP configuration files and database.
 
 =head1 SYNOPSIS
 
@@ -42,7 +42,7 @@ use iMSCP::Getopt;
 use iMSCP::Mail;
 use POSIX qw/ strftime locale_h /;
 
-setlocale(LC_MESSAGES, "C.UTF-8");
+setlocale( LC_MESSAGES, "C.UTF-8" );
 
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -50,27 +50,27 @@ $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 our $command = {
     pbzip2 => {
         extension => 'bz2',
-        command   => 'pbzip2'
+        command   => '/usr/bin/nice -n 19 /usr/bin/ionice -c2 -n7 pbzip2'
     },
     bzip2  => {
         extension => 'bz2',
-        command   => 'bzip2'
+        command   => '/usr/bin/nice -n 19 /usr/bin/ionice -c2 -n7 bzip2'
     },
     gzip   => {
         extension => 'gz',
-        command   => 'gzip'
+        command   => '/usr/bin/nice -n 19 /usr/bin/ionice -c2 -n7 gzip'
     },
     pigz   => {
         extension => 'gz',
-        command   => 'pigz'
+        command   => '/usr/bin/nice -n 19 /usr/bin/ionice -c2 -n7 pigz'
     },
     lzma   => {
         extension => 'lzma',
-        command   => 'lzma'
+        command   => '/usr/bin/nice -n 19 /usr/bin/ionice -c2 -n7 lzma'
     },
     xz     => {
         extension => 'xz',
-        command   => 'xz'
+        command   => '/usr/bin/nice -n 19 /usr/bin/ionice -c2 -n7 xz'
     }
 };
 
@@ -86,13 +86,11 @@ sub run
     }
 
     # Make sure that backup directory exists
-    iMSCP::Dir->new( dirname => $main::imscpConfig{'BACKUP_FILE_DIR'} )->make(
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'ROOT_GROUP'},
-            mode  => 0750
-        }
-    );
+    iMSCP::Dir->new( dirname => $main::imscpConfig{'BACKUP_FILE_DIR'} )->make( {
+        user  => $main::imscpConfig{'ROOT_USER'},
+        group => $main::imscpConfig{'ROOT_GROUP'},
+        mode  => 0750
+    } );
 
     # Backup i-MSCP database
     my $rs = _backupDatabase();
@@ -103,18 +101,13 @@ sub run
     return $rs if $rs;
 
     # Remove any backup older than 7 days
-    $rs = execute(
-        "find $main::imscpConfig{'BACKUP_FILE_DIR'}/* -maxdepth 0 -type f -mtime +7 -print | xargs -r rm",
-        \ my $stdout,
-        \ my $stderr
-    );
+    $rs = execute( "find $main::imscpConfig{'BACKUP_FILE_DIR'}/* -maxdepth 0 -type f -mtime +7 -print | xargs -r rm", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
 
     if ( $rs ) {
         my @warningMessages = getMessageByType( 'warn' );
         iMSCP::Mail->new()->warnMsg( "@warningMessages" ) if @warningMessages;
-
         my @errorMessages = getMessageByType( 'error' );
         iMSCP::Mail->new()->errmsg( "@errorMessages" ) if @errorMessages;
     }
@@ -135,12 +128,9 @@ sub _backupDatabase
     # Encode slashes as SOLIDUS unicode character
     # Encode dots as Full stop unicode character
     ( my $encodedDbName = $main::imscpConfig{'DATABASE_NAME'} ) =~ s%([./])%{ '/', '@002f', '.', '@002e' }->{$1}%ge;
-
     my $date = strftime "%Y.%m.%d-%H-%M", localtime;
 
-    my $rs = iMSCP::File->new(
-        filename => $main::imscpConfig{'BACKUP_FILE_DIR'} . '/' . $encodedDbName . '.sql'
-    )->moveFile(
+    my $rs = iMSCP::File->new( filename => $main::imscpConfig{'BACKUP_FILE_DIR'} . '/' . $encodedDbName . '.sql' )->moveFile(
         $main::imscpConfig{'BACKUP_FILE_DIR'} . '/' . $encodedDbName . '-' . $date . '.sql'
     );
     return $rs if $rs;
@@ -151,9 +141,7 @@ sub _backupDatabase
 
     if ( $algo ne 'no' ) {
         my @cmd = (
-            $command->{$algo}->{'command'},
-            "-$level",
-            '--force',
+            $command->{$algo}->{'command'}, "-$level", '--force',
             escapeShell( $main::imscpConfig{'BACKUP_FILE_DIR'} . '/' . $encodedDbName . '-' . $date . '.sql' )
         );
         $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
@@ -182,11 +170,9 @@ sub _backupConfig
     }
 
     my @backupCommand = (
-        "tar -c -C $main::imscpConfig{'CONF_DIR'}",
+        "/usr/bin/nice -n 19 /usr/bin/ionice -c2 -n7 tar -c -C $main::imscpConfig{'CONF_DIR'}",
         '--exclude=?*[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]',
-        '--preserve-permissions',
-        '.',
-        ( $algo eq 'no' ? "-f $archivePath" : "| $command->{$algo}->{'command'} -$level > $archivePath" )
+        '--preserve-permissions', '.', ( $algo eq 'no' ? "-f $archivePath" : "| $command->{$algo}->{'command'} -$level > $archivePath" )
     );
 
     my $rs = execute( "@backupCommand", \ my $stdout, \ my $stderr );
@@ -227,3 +213,6 @@ exit run();
  i-MSCP Team <team@i-mscp.net>
 
 =cut
+
+1;
+__END__

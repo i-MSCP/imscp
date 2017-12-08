@@ -38,9 +38,9 @@ use iMSCP::Execute qw/ execute /;
 use iMSCP::Getopt;
 use iMSCP::Mail;
 use Servers::mta;
-use POSIX qw /locale_h /;
+use POSIX qw / locale_h /;
 
-setlocale(LC_MESSAGES, "C.UTF-8");
+setlocale( LC_MESSAGES, "C.UTF-8" );
 
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -67,7 +67,7 @@ sub quotaFiles
         my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
 
-        my $rows = $dbh->selectall_hashref(
+        my $rows = $dbh->selectall_hashref( 
             "SELECT domain_id, domain_name FROM domain WHERE domain_status NOT IN ('disabled', 'todelete')", 'domain_id'
         );
 
@@ -88,17 +88,13 @@ sub quotaFiles
                         FROM domain_aliasses
                         WHERE domain_id = ?
                         AND alias_status <> 'todelete'
-        
                         UNION ALL
-        
                         SELECT CONCAT(subdomain_name, '.', domain_name) AS domain_name
                         FROM subdomain
                         JOIN domain USING(domain_id)
                         WHERE domain_id = ?
                         AND subdomain_status <> 'todelete'
-        
                         UNION ALL
-        
                         SELECT CONCAT(subdomain_alias_name, '.',  alias_name) AS domain_name
                         FROM subdomain_alias
                         JOIN domain_aliasses USING(alias_id)
@@ -114,19 +110,24 @@ sub quotaFiles
                 push @items, { maildir => "$virtualMailDir/$_" } for keys %{$rows2};
             }
 
-            for( @items ) {
+            for ( @items ) {
                 my ($dirType, $dir) = %{$_};
                 next unless -d $dir;
 
                 if ( $dirType eq 'webdir' ) {
                     my $rs = execute(
-                        [ 'du', '--exclude=backups/*', '--exclude=logs/*', '-s', '-B1', $dir ], \ my $stdout,
+                        [
+                            '/usr/bin/nice', '-n', '19',
+                            '/usr/bin/ionice', '-c2', '-n7',
+                            'du', '--exclude=backups/*', '--exclude=logs/*', '-s', '-B1', $dir
+                        ],
+                        \ my $stdout,
                         \ my $stderr
                     );
                     error( $stderr || 'Unknown error' ) if $rs;
                     $webDiskUsage = $1 if $stdout && $stdout =~ /^(\d+)/;
                 } else {
-                    my $rs = execute( [ 'du', '-s', '-B1', $dir ], \ my $stdout, \ my $stderr );
+                    my $rs = execute( [ 'nice', '-n', '19', 'ionice', '-c2', '-n7', 'du', '-s', '-B1', $dir ], \ my $stdout, \ my $stderr );
                     error( $stderr || 'Unknown error' ) if $rs;
                     $mailDiskUsage += $1 if $stdout && $stdout =~ /^(\d+)/;
                 }
@@ -137,17 +138,10 @@ sub quotaFiles
             eval {
                 $dbh->begin_work();
                 $dbh->do(
-                    '
-                        UPDATE domain
-                        SET domain_disk_usage = ?, domain_disk_file = ?, domain_disk_mail = ?
-                        WHERE domain_id = ?
-                    ',
+                    'UPDATE domain SET domain_disk_usage = ?, domain_disk_file = ?, domain_disk_mail = ? WHERE domain_id = ?',
                     undef, $totalDiskUsage, $webDiskUsage, $mailDiskUsage, $dmnId
                 );
-                $dbh->do(
-                    'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?',
-                    undef, $totalDiskUsage, $dmnData->{'domain_name'}
-                );
+                $dbh->do( 'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?', undef, $totalDiskUsage, $dmnData->{'domain_name'} );
                 $dbh->commit();
             };
             if ( $@ ) {
@@ -174,12 +168,7 @@ sub quotaSql
         local $dbh->{'RaiseError'} = 1;
 
         my $rows = $dbh->selectall_hashref(
-            "
-                SELECT domain_id, domain_name, domain_disk_usage
-                FROM domain
-                WHERE domain_status NOT IN ('disabled', 'todelete')
-            ",
-            'domain_id'
+            "SELECT domain_id, domain_name, domain_disk_usage FROM domain WHERE domain_status NOT IN ('disabled', 'todelete')", 'domain_id'
         );
 
         return 0 unless %{$rows};
@@ -188,18 +177,11 @@ sub quotaSql
 
         while ( my ($dmnId, $dmnData) = each( %{$rows} ) ) {
             my ($size, $sqlSize) = ( 0, 0 );
-
-            my $customerDatabases = $dbh->selectall_hashref(
-                'SELECT sqld_name FROM sql_database WHERE domain_id = ?', 'sqld_name', undef, $dmnId
-            );
+            my $customerDatabases = $dbh->selectall_hashref( 'SELECT sqld_name FROM sql_database WHERE domain_id = ?', 'sqld_name', undef, $dmnId );
 
             for my $sqlDbName ( keys %{$customerDatabases} ) {
                 next unless grep($_ eq $sqlDbName, @{$databases});
-
-                my $sqlDbTables = $dbh->selectall_hashref(
-                    "SHOW TABLE STATUS FROM " . $dbh->quote_identifier( $sqlDbName ), 1
-                );
-
+                my $sqlDbTables = $dbh->selectall_hashref( "SHOW TABLE STATUS FROM " . $dbh->quote_identifier( $sqlDbName ), 1 );
                 next unless %{$sqlDbTables};
                 $size += $_->{'Data_length'}+$_->{'Index_length'} for values %{$sqlDbTables};
             }
@@ -209,14 +191,8 @@ sub quotaSql
 
             eval {
                 local $dbh->{'AutoCommit'} = 0;
-
-                $dbh->do(
-                    'UPDATE domain SET domain_disk_usage = ?, domain_disk_sql = ? WHERE domain_id = ?',
-                    undef, $size, $sqlSize, $dmnId
-                );
-                $dbh->do(
-                    'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?', undef, $size, $dmnData->{'domain_name'}
-                );
+                $dbh->do( 'UPDATE domain SET domain_disk_usage = ?, domain_disk_sql = ? WHERE domain_id = ?', undef, $size, $sqlSize, $dmnId );
+                $dbh->do( 'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?', undef, $size, $dmnData->{'domain_name'} );
                 $dbh->commit();
             };
             if ( $@ ) {

@@ -106,16 +106,14 @@ sub setEnginePermissions
 {
     my ($self) = @_;
 
-    my $rs = setRights(
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_updateall.pl",
+    my $rs = setRights( "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_updateall.pl",
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ROOT_USER'},
             mode  => '0700'
         }
     );
-    $rs ||= setRights(
-        $main::imscpConfig{'AWSTATS_CACHE_DIR'},
+    $rs ||= setRights( $main::imscpConfig{'AWSTATS_CACHE_DIR'},
         {
             user      => $main::imscpConfig{'ROOT_USER'},
             group     => $self->{'httpd'}->getRunningGroup(),
@@ -124,8 +122,7 @@ sub setEnginePermissions
             recursive => 1
         }
     );
-    $rs ||= setRights(
-        "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats",
+    $rs ||= setRights( "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats",
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $self->{'httpd'}->getRunningGroup(),
@@ -236,13 +233,12 @@ sub deleteDmn
     return 0 unless -d $awstatsCacheDir;
 
     my @awstatsCacheFiles = iMSCP::Dir->new(
-        dirname  => $awstatsCacheDir,
-        fileType => '^(?:awstats[0-9]+|dnscachelastupdate)' . quotemeta( ".$data->{'DOMAIN_NAME'}.txt" )
+        dirname => $awstatsCacheDir, fileType => '^(?:awstats[0-9]+|dnscachelastupdate)' . quotemeta( ".$data->{'DOMAIN_NAME'}.txt" )
     )->getFiles();
 
     return 0 unless @awstatsCacheFiles;
 
-    for( @awstatsCacheFiles ) {
+    for ( @awstatsCacheFiles ) {
         my $file = iMSCP::File->new( filename => "$awstatsCacheDir/$_" );
         my $rs = $file->delFile();
         return $rs if $rs;
@@ -370,10 +366,7 @@ sub _addAwstatsConfig
     my $row = eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
-
-        $dbh->selectrow_hashref(
-            'SELECT admin_name FROM admin WHERE admin_id = ?', undef, $data->{'DOMAIN_ADMIN_ID'}
-        );
+        $dbh->selectrow_hashref( 'SELECT admin_name FROM admin WHERE admin_id = ?', undef, $data->{'DOMAIN_ADMIN_ID'} );
     };
     if ( $@ ) {
         error( $@ );
@@ -400,9 +393,7 @@ sub _addAwstatsConfig
         return 1;
     }
 
-    my $file = iMSCP::File->new(
-        filename => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DOMAIN_NAME'}.conf"
-    );
+    my $file = iMSCP::File->new( filename => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DOMAIN_NAME'}.conf" );
     $file->set( $tplFileContent );
     my $rs = $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );

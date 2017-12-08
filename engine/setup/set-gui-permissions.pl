@@ -38,9 +38,9 @@ use iMSCP::EventManager;
 use iMSCP::Getopt;
 use iMSCP::Servers;
 use iMSCP::Packages;
-use POSIX qw /locale_h /;
+use POSIX qw / locale_h /;
 
-setlocale(LC_MESSAGES, "C.UTF-8");
+setlocale( LC_MESSAGES, "C.UTF-8" );
 
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -64,15 +64,13 @@ OPTIONS
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-set-engine-permissions.lock', 'nowait' );
 
-$bootstrapper->boot(
-    {
-        mode            => $main::execmode,
-        nolock          => 1,
-        nodatabase      => 1,
-        nokeys          => 1,
-        config_readonly => 1
-    }
-);
+$bootstrapper->boot( {
+    mode            => $main::execmode,
+    nolock          => 1,
+    nodatabase      => 1,
+    nokeys          => 1,
+    config_readonly => 1
+} );
 
 my $rs = 0;
 my @items = ();
@@ -89,9 +87,9 @@ for my $package( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
 
 iMSCP::EventManager->getInstance()->trigger( 'beforeSetGuiPermissions' );
 
-my $totalItems = scalar @items;
+my $totalItems = @items;
 my $count = 1;
-for( @items ) {
+for ( @items ) {
     debug( sprintf( 'Setting %s frontEnd permissions', $_->[0] ));
     printf( "Setting %s frontEnd permissions\t%s\t%s\n", $_->[0], $totalItems, $count ) if $main::execmode eq 'setup';
     $rs |= $_->[1]->();

@@ -35,9 +35,10 @@ use parent 'Common::SingletonClass';
 
  Roundcube package for i-MSCP.
 
- RoundCube Webmail is a browser-based multilingual IMAP client with an application-like user interface. It provides full
- functionality expected from an email client, including MIME support, address book, folder manipulation and message
- filters.
+ RoundCube Webmail is a browser-based multilingual IMAP client with an
+ application-like user interface. It provides full functionality expected from
+ an email client, including MIME support, address book, folder manipulation and
+ message filters.
 
  The user interface is fully skinnable using XHTML and CSS 2.
 

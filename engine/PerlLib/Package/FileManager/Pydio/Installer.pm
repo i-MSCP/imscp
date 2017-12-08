@@ -95,9 +95,8 @@ sub afterFrontEndBuildConfFile
 {
     my ($tplContent, $tplName) = @_;
 
-    return 0 unless ( $tplName eq '00_master.nginx'
-        && main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) ne 'https://'
-    ) || $tplName eq '00_master_ssl.nginx';
+    return 0 unless ( $tplName eq '00_master.nginx' && main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) ne 'https://' )
+        || $tplName eq '00_master_ssl.nginx';
 
     ${$tplContent} = replaceBloc(
         "# SECTION custom BEGIN.\n",
@@ -155,12 +154,8 @@ sub _installFiles
     }
 
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
-    iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' }
-    );
-    iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' }
-    );
+    iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' } );
+    iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' } );
     0;
 }
 
@@ -178,12 +173,8 @@ sub _buildHttpdConfig
 
     $self->{'frontend'}->buildConfFile(
         "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/ajaxplorer/iMSCP/config/nginx/imscp_pydio.conf",
-        {
-            GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'}
-        },
-        {
-            destination => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pydio.conf"
-        }
+        { GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },
+        { destination => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pydio.conf" }
     );
 }
 

@@ -57,13 +57,9 @@ sub run
     # Get list of domains for which traffic must be collected
     my $sth = $dbh->prepare(
         "
-           SELECT domain_id AS upper_domain_id, domain_name
-           FROM domain
-           WHERE domain_status <> 'todelete'
+           SELECT domain_id AS upper_domain_id, domain_name FROM domain WHERE domain_status <> 'todelete'
            UNION ALL
-           SELECT domain_id AS upper_domain_id, alias_name
-           FROM domain_aliasses
-           WHERE alias_status <> 'todelete'
+           SELECT domain_id AS upper_domain_id, alias_name FROM domain_aliasses WHERE alias_status <> 'todelete'
            UNION ALL
            SELECT domain_id AS upper_domain_id, CONCAT(subdomain_name, '.', domain_name)
            FROM subdomain
@@ -99,11 +95,9 @@ sub run
     # Collects traffic data from servers that implement the getTraffic() method
     for ( @servers ) {
         next unless $_->can( 'getTraffic' );
-
         eval {
             # Initialize intermediate traffic database
-            tie %{$trafficDb{$_}}, 'iMSCP::Config',
-                fileName => "$main::imscpConfig{'IMSCP_HOMEDIR'}/$_-vrl-traff.db", nodie => 1;
+            tie %{$trafficDb{$_}}, 'iMSCP::Config', fileName => "$main::imscpConfig{'IMSCP_HOMEDIR'}/$_-vrl-traff.db", nodie => 1;
             %{$trafficDb{$_}} = ( %domains, %{$trafficDb{$_}} );
             $_->factory()->getTraffic( $trafficDb{$_} );
         };

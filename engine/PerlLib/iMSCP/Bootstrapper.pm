@@ -65,7 +65,7 @@ sub boot
     setDebug( 1 ); # Set debug mode for booting time
 
     my $mode = $options->{'mode'} || 'backend';
-    debug( sprintf( 'Booting %s...', $mode ));
+    debug( sprintf( 'Booting %s ...', $mode ));
 
     $self->lock() unless $options->{'nolock'};
     $self->loadMainConfig( $options );
@@ -108,8 +108,7 @@ sub loadMainConfig
 
     require iMSCP::Config;
     untie %main::imscpConfig;
-    tie
-        %main::imscpConfig,
+    tie %main::imscpConfig,
         'iMSCP::Config',
         fileName    => ( $^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/' ) . 'imscp/imscp.conf',
         nocreate    => $options->{'nocreate'} // 1,
@@ -193,11 +192,9 @@ sub _genKeys
         require iMSCP::Crypt;
         require Data::Dumper;
 
-        debug( 'Generating database keys...' );
+        debug( 'Generating database keys ...' );
 
-        -d $main::imscpConfig{'CONF_DIR'} or die(
-            sprintf( "%s doesn't exist or is not a directory", $main::imscpConfig{'CONF_DIR'} )
-        );
+        -d $main::imscpConfig{'CONF_DIR'} or die( sprintf( "%s doesn't exist or is not a directory", $main::imscpConfig{'CONF_DIR'} ));
 
         local $UMASK = 027; # imscp-db-keys file must not be created world-readable
 
@@ -205,9 +202,7 @@ sub _genKeys
             sprintf( "Couldn't open %s file for writing: %s", "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys", $! )
         );
 
-        print { $fh } Data::Dumper->Dump(
-            [ iMSCP::Crypt::randomStr( 32 ), iMSCP::Crypt::randomStr( 16 ) ], [ qw/ db_pass_key db_pass_iv / ]
-        );
+        print { $fh } Data::Dumper->Dump( [ iMSCP::Crypt::randomStr( 32 ), iMSCP::Crypt::randomStr( 16 ) ], [ qw/ db_pass_key db_pass_iv / ] );
 
         close $fh;
         delete $INC{$keyFile}; # Force reload of keyfile
@@ -239,10 +234,7 @@ sub _setDbSettings
     $db->set( 'DATABASE_PORT', $main::imscpConfig{'DATABASE_PORT'} );
     $db->set( 'DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'} );
     $db->set( 'DATABASE_USER', $main::imscpConfig{'DATABASE_USER'} );
-    $db->set(
-        'DATABASE_PASSWORD',
-        iMSCP::Crypt::decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'} )
-    );
+    $db->set( 'DATABASE_PASSWORD', iMSCP::Crypt::decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'} ));
     0;
 }
 

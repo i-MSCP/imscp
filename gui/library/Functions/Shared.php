@@ -2567,6 +2567,24 @@ function getWebmailList()
 }
 
 /**
+ * Get list of available FTP filemanagers
+ *
+ * @return array
+ */
+function getFilemanagerList()
+{
+    $config = Registry::get('config');
+
+    if (isset($config['FILEMANAGER_PACKAGES'])
+        && strtolower($config['FILEMANAGER_PACKAGES']) != 'no'
+    ) {
+        return explode(',', $config['FILEMANAGER_PACKAGES']);
+    }
+
+    return [];
+}
+
+/**
  * Returns the user Ip address
  *
  * @return string User's Ip address

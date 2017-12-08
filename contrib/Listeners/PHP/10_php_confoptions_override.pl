@@ -41,12 +41,13 @@
 
 package Listener::Php::ConfOptions::Override;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.1.0';
 
 use strict;
 use warnings;
 use iMSCP::EventManager;
-use Servers::httpd;
+use Servers::php;
+use versions;
 
 #
 ## Configuration parameters
@@ -86,17 +87,21 @@ my %phpDirectives = (
 ## Please, don't edit anything below this line
 #
 
+version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+    sprintf( "The 10_php_confoptions_override.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
+);
+
 # PHP INI level
 my $iniLevel;
 
 iMSCP::EventManager->getInstance()->register(
-    'beforeHttpdBuildConfFile',
+    'beforePhpBuildConfFile',
     sub {
-        my ($tplContent, $tplName, $data) = @_;
+        my ($tplContent, $tplName, $moduleData) = @_;
 
-        return unless grep($_ eq $tplName, 'php.ini', 'pool.conf');
+        return 0 unless defined $moduleData->{'DOMAIN_NAME'} && grep($_ eq $tplName, 'php.ini', 'pool.conf');
 
-        if ( $tplName eq 'php.ini' && $main::imscpConfig{'HTTPD_SERVER'} eq 'apache_fcgid' ) {
+        if ( $tplName eq 'php.ini' ) {
             # Adds/Overrides PHP directive values globally
             if ( exists $phpDirectives{'*'} ) {
                 while ( my ($directive, $value) = each( %{$phpDirectives{'*'}} ) ) {
@@ -105,7 +110,7 @@ iMSCP::EventManager->getInstance()->register(
                 }
             }
 
-            return 0 unless exists $phpDirectives{my $domain = _getIniLevel( $data )};
+            return 0 unless exists $phpDirectives{my $domain = _getIniLevel( $moduleData )};
 
             # Adds/Overrides per domain PHP directive values
             while ( my ($directive, $value) = each( %{$phpDirectives{$domain}} ) ) {
@@ -116,7 +121,7 @@ iMSCP::EventManager->getInstance()->register(
             return 0;
         }
 
-        return 0 unless $tplName eq 'pool.conf' && $main::imscpConfig{'HTTPD_SERVER'} eq 'apache_php_fpm';
+        return 0 unless $tplName eq 'pool.conf';
 
         # Adds/Overrides PHP directive values globally
         if ( exists $phpDirectives{'*'} ) {
@@ -132,7 +137,7 @@ iMSCP::EventManager->getInstance()->register(
             }
         }
 
-        return 0 unless exists $phpDirectives{my $domain = _getIniLevel( $data )};
+        return 0 unless exists $phpDirectives{my $domain = _getIniLevel( $moduleData )};
 
         # Adds/Overrides per domain PHP directive values
         while ( my ($directive, $value) = each( %{$phpDirectives{$domain}} ) ) {
@@ -152,12 +157,12 @@ iMSCP::EventManager->getInstance()->register(
 
 sub _getIniLevel
 {
-    my ($data) = @_;
+    my ($moduleData) = @_;
 
-    $iniLevel ||= Servers::httpd->factory()->{'phpConfig'}->{'PHP_CONFIG_LEVEL'};
-    return $data->{'ROOT_DOMAIN_NAME'} if $iniLevel eq 'per_user';
-    return $data->{'PARENT_DOMAIN_NAME'} if $iniLevel eq 'per_domain';
-    $data->{'DOMAIN_NAME'};
+    $iniLevel ||= Servers::php->factory()->{'config'}->{'PHP_CONFIG_LEVEL'};
+    return $moduleData->{'ROOT_DOMAIN_NAME'} if $iniLevel eq 'per_user';
+    return $moduleData->{'PARENT_DOMAIN_NAME'} if $iniLevel eq 'per_domain';
+    $moduleData->{'DOMAIN_NAME'};
 }
 
 1;

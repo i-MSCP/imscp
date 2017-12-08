@@ -25,9 +25,10 @@ package Servers::named;
 
 use strict;
 use warnings;
+use iMSCP::Service;
 
 # named server instance
-my $instance;
+my $INSTANCE;
 
 =head1 DESCRIPTION
 
@@ -49,7 +50,7 @@ my $instance;
 
 sub factory
 {
-    return $instance if $instance;
+    return $INSTANCE if $INSTANCE;
 
     my $package = $main::imscpConfig{'NAMED_PACKAGE'} || 'Servers::noserver';
 
@@ -65,7 +66,7 @@ sub factory
     }
 
     eval "require $package" or die( $@ );
-    $instance = $package->getInstance();
+    $INSTANCE = $package->getInstance();
 }
 
 =item can( $method )
@@ -99,14 +100,30 @@ sub getPriority
     20;
 }
 
+=back
+
+=head1 SHUTDOWN TASKS
+
+=over 4
+
+=item END
+
+ Schedule restart, reload or start of NAMED server when needed
+
+=cut
+
 END
     {
-        return if $? || !$instance || ( $main::execmode && $main::execmode eq 'setup' );
+        return if $? || !$INSTANCE || ( defined $main::execmode && $main::execmode eq 'setup' );
 
-        if ( $instance->{'restart'} ) {
-            $? = $instance->restart();
-        } elsif ( $instance->{'reload'} ) {
-            $? = $instance->reload();
+        if ( $INSTANCE->{'restart'} ) {
+            iMSCP::Service->getInstance()->registerDelayedAction(
+                __PACKAGE__, [ 'restart', sub { $INSTANCE->restart(); } ], __PACKAGE__->getPriority()
+            );
+        } elsif ( $INSTANCE->{'reload'} ) {
+            iMSCP::Service->getInstance()->registerDelayedAction(
+                __PACKAGE__, [ 'reload', sub { $INSTANCE->reload(); } ], __PACKAGE__->getPriority()
+            );
         }
     }
 

@@ -3,12 +3,12 @@
 
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-0,30 * * * * root nice -n 10 ionice -c2 -n5 perl {TRAFF_ROOT_DIR}/imscp-srv-traff > {LOG_DIR}/imscp-srv-traff.log 2>&1
-0,30 * * * * root nice -n 10 ionice -c2 -n5 perl {TRAFF_ROOT_DIR}/imscp-vrl-traff > {LOG_DIR}/imscp-vrl-traff.log 2>&1
-@daily root nice -n 10 ionice -c2 -n5 perl {QUOTA_ROOT_DIR}/imscp-dsk-quota > {LOG_DIR}/imscp-dsk-quota.log 2>&1
-@daily root nice -n 10 ionice -c2 -n5 perl {TOOLS_ROOT_DIR}/imscp-disable-accounts >/dev/null 2>&1
-@daily root nice -n 10 ionice -c2 -n5 perl {BACKUP_ROOT_DIR}/imscp-backup-imscp > {LOG_DIR}/imscp-backup-imscp-mngr.log 2>&1
-@weekly root find {CONF_DIR}/*/backup -type f -mtime +7 -regextype sed -regex '.*/.*[0-9]\{10\}$' -exec rm -- {} +
-@weekly root find {BACKUP_FILE_DIR} -type f -mtime +7 -exec rm -- {} +
-@weekly root find {LOG_DIR} -type f -mtime +7 -exec rm -- {} +
-{BACKUP_MINUTE} {BACKUP_HOUR} * * * root nice -n 10 ionice -c2 -n5 perl {BACKUP_ROOT_DIR}/imscp-backup-all > {LOG_DIR}/imscp-backup-all-mngr.log 2>&1
+0,30 * * * * root /usr/bin/perl {TRAFF_ROOT_DIR}/imscp-srv-traff > {LOG_DIR}/imscp-srv-traff.log 2>&1
+0,30 * * * * root /usr/bin/perl {TRAFF_ROOT_DIR}/imscp-vrl-traff > {LOG_DIR}/imscp-vrl-traff.log 2>&1
+@daily root /usr/bin/perl {QUOTA_ROOT_DIR}/imscp-dsk-quota > {LOG_DIR}/imscp-dsk-quota.log 2>&1
+@daily root /usr/bin/perl {TOOLS_ROOT_DIR}/imscp-disable-accounts >/dev/null 2>&1
+@daily root /usr/bin/perl {BACKUP_ROOT_DIR}/imscp-backup-imscp > {LOG_DIR}/imscp-backup-imscp-mngr.log 2>&1
+@weekly root /usr/bin/find {CONF_DIR}/*/backup -type f -mtime +7 -regextype sed -regex '.*/.*[0-9]\{10\}$' -exec rm -- {} +
+@weekly root /usr/bin/find {BACKUP_FILE_DIR} -type f -mtime +7 -exec rm -- {} +
+@weekly root /usr/bin/find {LOG_DIR} -type f -mtime +7 -exec rm -- {} +
+{BACKUP_MINUTE} {BACKUP_HOUR} * * * root /usr/bin/perl {BACKUP_ROOT_DIR}/imscp-backup-all > {LOG_DIR}/imscp-backup-all-mngr.log 2>&1

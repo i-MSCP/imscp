@@ -5,48 +5,28 @@
         </nginx>
     </frontend>
     <httpd>
-        <apache_fcgid
-                description="Apache2 (MPM Event) server and PHP with CGI/FastCGI SAPI"
-                class="Servers::httpd::apache_fcgid"
-        >
-            <package>apache2-suexec-pristine</package>
-            <package>libapache2-mod-fcgid</package>
-            <post_install_task>
-                /usr/bin/update-alternatives --set suexec /usr/lib/apache2/suexec-pristine
-            </post_install_task>
-        </apache_fcgid>
-        <apache_itk
-                description="Apache2 (MPM ITK) server and PHP with Apache2 SAPI"
-                class="Servers::httpd::apache_itk"
-        >
-            <package_delayed>libapache2-mpm-itk</package_delayed>
-        </apache_itk>
-        <apache_php_fpm
-                default="1"
-                description="Apache2 (MPM Event) server and PHP with FPM/FastCGI SAPI"
-                class="Servers::httpd::apache_php_fpm"
-        >
-            <package>apache2-suexec-pristine</package>
-            <post_install_task>
-                /usr/bin/update-alternatives --set suexec /usr/lib/apache2/suexec-pristine
-            </post_install_task>
-        </apache_php_fpm>
+        <apache2_mpm_event default="1" description="Apache2 (MPM Event) server (recommended)" class="Servers::httpd::Apache2::Event"/>
+        <apache2_mpm_itk description="Apache2 (MPM ITK) server" class="Servers::httpd::Apache2::Itk"/>
+        <apache2_mpm_prefork description="Apache2 (MPM Prefork) server" class="Servers::httpd::Apache2::Prefork"/>
+        <apache2_mpm_worker description="Apache2 (MPM Worker) server" class="Servers::httpd::Apache2::Worker"/>
         <package>apache2</package>
         <package>apache2-bin</package>
         <package>apache2-data</package>
         <package>apache2-dev</package>
+        <package>libapache2-mod-fcgid</package>
+        <package>libapache2-mpm-itk</package>
+        <package>apache2-suexec-pristine</package>
+        <post_install_task>/usr/bin/update-alternatives --set suexec /usr/lib/apache2/suexec-pristine</post_install_task>
         <post_install_task>sh apache2_postinst.sh</post_install_task>
     </httpd>
     <php>
         <php5.6 description="PHP 5.6" class="Servers::php">
-            <package>libapache2-mod-php5.6</package>
             <post_install_task>/usr/bin/update-alternatives --set php /usr/bin/php5.6</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar /usr/bin/phar5.6</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar.phar /usr/bin/phar.phar5.6</post_install_task>
             <post_install_task>sh php_apcu.sh 5.6</post_install_task>
         </php5.6>
         <php7.0 description="PHP 7.0" class="Servers::php">
-            <package>libapache2-mod-php7.0</package>
             <package_conflict>php5-common</package_conflict>
             <package_conflict>libapache2-mod-php5</package_conflict>
             <post_install_task>/usr/bin/update-alternatives --set php /usr/bin/php7.0</post_install_task>
@@ -55,19 +35,22 @@
             <post_install_task>sh php_apcu.sh 7.0</post_install_task>
         </php7.0>
         <php7.1 default="1" description="PHP 7.1" class="Servers::php">
-            <package>libapache2-mod-php7.1</package>
             <post_install_task>/usr/bin/update-alternatives --set php /usr/bin/php7.1</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar /usr/bin/phar7.1</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar.phar /usr/bin/phar.phar7.1</post_install_task>
             <post_install_task>sh php_apcu.sh 7.1</post_install_task>
         </php7.1>
         <php7.2 description="PHP 7.2" class="Servers::php">
-            <package>libapache2-mod-php7.2</package>
             <post_install_task>/usr/bin/update-alternatives --set php /usr/bin/php7.2</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar /usr/bin/phar7.2</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar.phar /usr/bin/phar.phar7.2</post_install_task>
             <post_install_task>sh php_apcu.sh 7.2</post_install_task>
         </php7.2>
+        <package>libapache2-mod-php5.6</package>
+        <package>libapache2-mod-php7.0</package>
+        <package>libapache2-mod-php7.1</package>
+        <package>libapache2-mod-php7.2</package>
+        <package_conflict>libapache2-mod-php5</package_conflict>
     </php>
     <po>
         <courier description="Courier IMAP/POP3 servers" class="Servers::po::courier">
@@ -90,7 +73,7 @@
         </dovecot>
     </po>
     <mta>
-        <postfix default="1" description="Postfix server" class="Servers::mta::postfix">
+        <postfix default="1" description="Postfix server (recommended)" class="Servers::mta::postfix">
             <package>postfix</package>
             <package_conflict>procmail</package_conflict>
         </postfix>
@@ -186,10 +169,7 @@
         <package>libmariadbclient18</package>
         <package>mysql-common</package>
     </sql>
-    <php_packages
-            repository="https://packages.sury.org/php/ stretch main"
-            repository_key_uri="https://packages.sury.org/php/apt.gpg"
-    >
+    <php_packages repository="https://packages.sury.org/php/ stretch main" repository_key_uri="https://packages.sury.org/php/apt.gpg">
         <package>php5.6</package>
         <package>php5.6-cgi</package>
         <package>php5.6-cli</package>
@@ -265,7 +245,6 @@
         <package>php-apcu-bc</package>
         <package>php-pear</package>
         <package_conflict>php5-common</package_conflict>
-        <package_conflict>libapache2-mod-php5</package_conflict>
         <post_install_task>
             /usr/sbin/phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets curl gd gmp imap
             intl json mbstring mcrypt mysqlnd mysqli pdo_mysql opcache pspell dom xml xmlreader xmlwriter zip

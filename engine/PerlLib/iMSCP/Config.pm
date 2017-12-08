@@ -50,9 +50,7 @@ sub flush
 {
     my ($self) = @_;
 
-    return 0 if $self->{'readonly'}
-        || !( $self->{'tieFileObject'}->{'defer'} || $self->{'tieFileObject'}->{'autodeferring'} );
-
+    return 0 if $self->{'readonly'} || !( $self->{'tieFileObject'}->{'defer'} || $self->{'tieFileObject'}->{'autodeferring'} );
     $self->{'tieFileObject'}->flush();
 }
 
@@ -96,15 +94,7 @@ sub FETCH
     my ($self, $param) = @_;
 
     $self->{'configValues'}->{$param} // ( $self->{'nodie'}
-        ? ''
-        : die(
-            sprintf(
-                'Accessing a non-existing parameter: %s in %s file from: %s (line %s)',
-                $param,
-                $self->{'fileName'},
-                ( caller )[1, 2]
-            )
-        )
+        ? '' : die( sprintf( 'Accessing a non-existing parameter: %s in %s file from: %s (line %s)', $param, $self->{'fileName'}, ( caller )[1, 2] ))
     );
 }
 
@@ -122,9 +112,7 @@ sub STORE
 {
     my ($self, $param, $value) = @_;
 
-    !$self->{'readonly'} || $self->{'temporary'} or die(
-        sprintf( "Couldn't store value for the `%s' parameter: config object is readonly", $param )
-    );
+    !$self->{'readonly'} || $self->{'temporary'} or die( sprintf( "Couldn't store value for the `%s' parameter: config object is readonly", $param ));
 
     return $self->_insertConfig( $param, $value ) unless exists $self->{'configValues'}->{$param};
     $self->_replaceConfig( $param, $value );
@@ -240,12 +228,9 @@ sub _loadConfig
 {
     my ($self) = @_;
 
-    my $mode = $self->{'nocreate'}
-        ? ( $self->{'readonly'} ? O_RDONLY : O_RDWR )
-        : ( $self->{'readonly'} ? O_RDONLY : O_RDWR | O_CREAT );
+    my $mode = $self->{'nocreate'} ? ( $self->{'readonly'} ? O_RDONLY : O_RDWR ) : ( $self->{'readonly'} ? O_RDONLY : O_RDWR | O_CREAT );
 
-    $self->{'tieFileObject'} = tie @{$self->{'tiefile'}}, 'Tie::File', $self->{'confFileName'}, memory => 10_000_000,
-        mode => $mode;
+    $self->{'tieFileObject'} = tie @{$self->{'tiefile'}}, 'Tie::File', $self->{'confFileName'}, memory => 10_000_000, mode => $mode;
     $self->{'tieFileObject'} or die( sprintf( "Couldn't tie %s file: %s", $self->{'confFileName'}, $! ));
     $self->{'tieFileObject'}->defer unless $self->{'nodeferring'} || $self->{'readonly'};
 

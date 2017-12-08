@@ -76,13 +76,9 @@ sub addAddr
     return 0 if $self->isKnownAddr( $addr );
 
     my ($stdout, $stderr);
-    my @cmd = ( 'ip', ( ( $self->getAddrVersion( $addr ) eq 'ipv4' ) ? '-4' : '-6' ), 'addr', 'add', "$addr/$cidr",
-        'dev',
-        $dev );
+    my @cmd = ( 'ip', ( ( $self->getAddrVersion( $addr ) eq 'ipv4' ) ? '-4' : '-6' ), 'addr', 'add', "$addr/$cidr", 'dev', $dev );
     push @cmd, 'label', $label if $label;
-    execute( [ @cmd ], \$stdout, \$stderr ) == 0 or die(
-        sprintf( "Couldn't add the %s IP address: %s", $addr, $dev, $stderr || 'Unknown error' )
-    );
+    execute( [ @cmd ], \$stdout, \$stderr ) == 0 or die( sprintf( "Couldn't add the %s IP address: %s", $addr, $dev, $stderr || 'Unknown error' ));
     $self->{'addresses'}->{$addr} = {
         addr_label    => $label,
         device        => $dev,
@@ -251,9 +247,7 @@ sub isRoutableAddr
 {
     my ($self, $addr) = @_;
 
-    return 1 if $self->isValidAddr( $addr )
-        && $self->getAddrType( $addr ) =~ /^(?:PUBLIC|GLOBAL-UNICAST)$/;
-
+    return 1 if $self->isValidAddr( $addr ) && $self->getAddrType( $addr ) =~ /^(?:PUBLIC|GLOBAL-UNICAST)$/;
     0;
 }
 
@@ -275,10 +269,7 @@ sub isValidNetmask
 
     my $addrVersion = ip_get_version( $addr );
 
-    if ( $cidr < 1 || ( $addrVersion eq 'ipv4' && $cidr > 32 ) || $cidr > 128 ) {
-        return 0;
-    }
-
+    return 0 if $cidr < 1 || ( $addrVersion eq 'ipv4' && $cidr > 32 ) || $cidr > 128;
     1;
 }
 

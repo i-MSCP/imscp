@@ -78,9 +78,7 @@ sub servicesSslDialog
     my $hostname = main::setupGetQuestion( 'SERVER_HOSTNAME' );
     my $hostnameUnicode = idn_to_unicode( $hostname, 'utf-8' ) // '';
     my $sslEnabled = main::setupGetQuestion( 'SERVICES_SSL_ENABLED', iMSCP::Getopt->preseed ? 'yes' : '' );
-    my $selfSignedCertificate = main::setupGetQuestion(
-        'SERVICES_SSL_SELFSIGNED_CERTIFICATE', iMSCP::Getopt->preseed ? 'yes' : 'no'
-    );
+    my $selfSignedCertificate = main::setupGetQuestion( 'SERVICES_SSL_SELFSIGNED_CERTIFICATE', iMSCP::Getopt->preseed ? 'yes' : 'no' );
     my $privateKeyPath = main::setupGetQuestion( 'SERVICES_SSL_PRIVATE_KEY_PATH', '/root' );
     my $passphrase = main::setupGetQuestion( 'SERVICES_SSL_PRIVATE_KEY_PASSPHRASE' );
     my $certificatePath = main::setupGetQuestion( 'SERVICES_SSL_CERTIFICATE_PATH', '/root' );
@@ -92,14 +90,12 @@ sub servicesSslDialog
         || ( $sslEnabled eq 'yes' && $main::reconfigure =~ /^(?:system_hostname|hostnames)$/ )
     ) {
         my $rs = $dialog->yesno( <<'EOF', $sslEnabled eq 'no' ? 1 : 0 );
-
 Do you want to enable SSL for FTP and MAIL services?
 EOF
         if ( $rs == 0 ) {
             $sslEnabled = 'yes';
 
             $rs = $dialog->yesno( <<"EOF", $selfSignedCertificate eq 'no' ? 1 : 0 );
-
 Do you have a SSL certificate for the $hostnameUnicode domain?
 EOF
             if ( $rs == 0 ) {
@@ -116,9 +112,9 @@ EOF
 
                     return $rs unless $rs < 30;
 
-                    ( $rs, $passphrase ) = $dialog->passwordbox( <<'EOF', $passphrase );
-
+                    ( $rs, $passphrase ) = $dialog->passwordbox( <<"EOF", $passphrase );
 Please enter the passphrase for your private key if any:
+\\Z \\Zn
 EOF
                     return $rs unless $rs < 30;
 
@@ -137,7 +133,6 @@ EOF
                 return $rs unless $rs < 30;
 
                 $rs = $dialog->yesno( <<'EOF' );
-
 Do you have a SSL CA Bundle?
 EOF
                 if ( $rs == 0 ) {
@@ -153,14 +148,12 @@ EOF
                 }
 
                 $dialog->msgbox( <<'EOF' );
-
 Please select your SSL certificate in next dialog.
 EOF
                 $rs = 1;
 
                 do {
                     $dialog->msgbox( <<"EOF" ) unless $rs;
-
 \\Z1Invalid SSL certificate.\\Zn
 EOF
                     do {
@@ -190,7 +183,6 @@ EOF
         if ( $openSSL->validateCertificateChain() ) {
             getMessageByType( 'error', { amount => 1, remove => 1 } );
             $dialog->getInstance()->msgbox( <<'EOF' );
-
 Your SSL certificate for the FTP and MAIL services is missing or invalid.
 EOF
             main::setupSetQuestion( 'SERVICES_SSL_ENABLED', '' );

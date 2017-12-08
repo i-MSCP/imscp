@@ -470,7 +470,7 @@ function generateFeaturesForm(TemplateEngine $tpl, &$data)
             $permissionsBlock = true;
         }
 
-        if (Registry::get('config')['HTTPD_SERVER'] == 'apache_itk') {
+        if (Registry::get('config')['HTTPD_SERVER'] == 'apache2_mpm_itk') {
             $tpl->assign([
                 'PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK' => '',
                 'PHP_EDITOR_MAIL_FUNCTION_BLOCK'     => ''

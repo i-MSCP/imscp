@@ -50,9 +50,9 @@ use iMSCP::Stepper;
 use iMSCP::SystemUser;
 use Servers::sqld;
 use Servers::sqld;
-use POSIX qw /locale_h /;
+use POSIX qw / locale_h /;
 
-setlocale(LC_MESSAGES, "C.UTF-8");
+setlocale( LC_MESSAGES, "C.UTF-8" );
 
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -106,8 +106,9 @@ EOF
     );
 
     my ($step, $rs) = ( 1, 0 );
+    my $nbSteps = @steps;
     for ( @steps ) {
-        $rs = step( @{$_}, scalar @steps, $step );
+        $rs = step( @{$_}, $nbSteps, $step );
         last if $rs;
         $step++;
     }
@@ -203,14 +204,14 @@ sub _uninstallPackages
     startDetail();
 
     my @packages = iMSCP::Packages->getInstance()->getListWithFullNames();
-    my $nbSteps = scalar @packages;
+    my $nbSteps = @packages;
     my ($step, $rs) = ( 1, 0 );
 
     for my $package( @packages ) {
         ( my $subref = $package->can( 'uninstall' ) ) or $step++ && next;
         $rs = step(
             sub { $subref->( $package->getInstance()) },
-            sprintf( 'Executing %s uninstall tasks...', $package ),
+            sprintf( 'Executing %s uninstall tasks ...', $package ),
             $nbSteps,
             $step
         );
@@ -226,14 +227,14 @@ sub _uninstallServers
     startDetail();
 
     my @servers = iMSCP::Servers->getInstance()->getListWithFullNames();
-    my $nbSteps = scalar @servers;
+    my $nbSteps = @servers;
     my ($step, $rs) = ( 1, 0 );
 
     for my $server( @servers ) {
         ( my $subref = $server->can( 'uninstall' ) ) or $step++ && next;
         $rs = step(
             sub { $subref->( $server->factory()) },
-            sprintf( 'Executing %s uninstall tasks...', $server ),
+            sprintf( 'Executing %s uninstall tasks ...', $server ),
             $nbSteps,
             $step
         );
@@ -321,7 +322,7 @@ sub _removeFiles
 {
     chdir( '/' );
 
-    for( '/usr/local/sbin/imscp-dpkg-post-invoke.pl', '/etc/apt/apt.conf.d/90imscp' ) {
+    for ( '/usr/local/sbin/imscp-dpkg-post-invoke.pl', '/etc/apt/apt.conf.d/90imscp' ) {
         next unless -f;
         my $rs = iMSCP::File->new( filename => $_ )->delFile();
         return $rs if $rs;
@@ -347,3 +348,6 @@ exit $rs;
  i-MSCP Team <team@i-mscp.net>
 
 =cut
+
+1;
+__END__

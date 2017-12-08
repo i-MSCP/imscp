@@ -77,7 +77,7 @@ require iMSCP::Getopt->listener if iMSCP::Getopt->listener;
 
 system( 'clear 2>/dev/null' );
 
-print STDOUT output( 'Installation in progress... Please wait.', 'info' ) if iMSCP::Getopt->noprompt;
+print STDOUT output( 'Installation in progress ... Please wait.', 'info' ) if iMSCP::Getopt->noprompt;
 
 sub run
 {
@@ -114,8 +114,7 @@ EOF
     return $rs if $rs || iMSCP::Getopt->noprompt;
 
     my $port = $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://'
-        ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
-        : $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
+        ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'} : $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
     my $vhost = idn_to_unicode( $main::imscpConfig{'BASE_SERVER_VHOST'}, 'utf-8' ) // '';
 
     iMSCP::Dialog->getInstance()->infobox( <<"EOF" );
@@ -155,3 +154,6 @@ END {
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
+
+1;
+__END__

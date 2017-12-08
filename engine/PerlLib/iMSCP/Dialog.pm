@@ -81,52 +81,63 @@ sub fselect
     wantarray ? ( $ret, $output ) : $output;
 }
 
-=item radiolist( $text, \@choices [, $default = '' ] )
+=item radiolist( $text, \%choices [, $defaultTag = '' ] )
 
  Show radio list dialog
+ 
+ eg: dialog --no-tags --radiolist 'text' 0 0 0 'first' 'First option' on 'second' 'Second option' 0
 
  Param string $text Text to show
- Param array \@choices List of choices
- Param string $default Default choice
- Return string|array Dialog output or array containing both dialog exit code and dialog output
+ Param array \%choices List of choices where keys are tags and values are items.
+ Param string $default Default selected tag
+ Return list|string Selected tag or list containing both the dialog exit code and selected tag
 
 =cut
 
 sub radiolist
 {
-    my ($self, $text, $choices, $default) = @_;
+    my ($self, $text, $choices, $defaultTag) = @_;
+    $defaultTag //= '';
 
-    my (@init, %choices);
-    $choices{s/_/ /gr} = $_ for @{$choices};
-    ( $default ||= '' ) =~ s/_/ /g;
-    push @init, ( escapeShell( $_ ), "''", $default eq $_ ? 'on' : 'off' ) for sort keys %choices;
-    my ($ret, $output) = $self->_textbox( $text, 'radiolist', scalar @{$choices} . " @init" );
-    wantarray ? ( $ret, $choices{$output} ) : $choices{$output};
+    my @init;
+    my %choices = reverse( %{$choices} );
+    for my $item( sort keys %choices ) {
+        push @init, escapeShell( $choices{$item} ), escapeShell( $item ), $defaultTag eq $choices{$item} ? 'on' : 'off';
+    }
+
+    $self->{'_opts'}->{'no-tags'} = ''; # Don't display tags in dialog
+    my ($ret, $tag) = $self->_textbox( $text, 'radiolist', "@{[scalar keys %{$choices}]} @init" );
+    $self->{'_opts'}->{'no-tags'} = undef;
+
+    wantarray ? ( $ret, $tag ) : $tag;
 }
 
-=item checkbox( $text, \$choices [, @defaults = ( ) ] )
+=item checkbox( $text, \%choices [, @defaults = ( ) ] )
 
  Show check list dialog
 
  Param string $text Text to show
- Param array \@choices Reference to an array containing list of choices
- Param array @default Default choices
- Return array An array of choices or array containing both dialog exit code and array of choices
+ Param array \%choices List of choices where keys are tags and values are items.
+ Param array @default Default tag
+ Return List A list containing array of selected tags or a list containing both the dialog exit code and array of selected tags
 
 =cut
 
 sub checkbox
 {
-    my ($self, $text, $choices, @defaults) = @_;
+    my ($self, $text, $choices, @defaultTags) = @_;
 
-    my (@init, %choices);
-    $choices{s/_/ /gr} = $_ for @{$choices};
-    my %defaults = map { s/_/ /gr => 1 } @defaults;
-    push @init, ( escapeShell( $_ ), "''", $defaults{$_} ? 'on' : 'off' ) for sort keys %choices;
-    my ($ret, $output) = $self->_textbox( $text, 'checklist', scalar @{$choices} . " @init" );
-    @{$choices} = ();
-    push @{$choices}, $choices{$_} = $_ for split /\n/, $output;
-    wantarray ? ( $ret, $choices ) : $choices;
+    my @init;
+    my %choices = reverse( %{$choices} );
+    for my $item( sort keys %choices ) {
+        push @init, escapeShell( $choices{$item} ), escapeShell( $item ), grep( $choices{$item} eq $_, @defaultTags ) ? 'on' : 'off';
+    }
+
+    $self->{'_opts'}->{'no-tags'} = ''; # Don't display tags in dialog
+    my ($ret, $tags) = $self->_textbox( $text, 'checklist', "@{[scalar keys %{$choices}]} @init" );
+    $self->{'_opts'}->{'no-tags'} = undef;
+
+    wantarray ? ( $ret, [ split /\n/, $tags ] ) : [ split /\n/, $tags ];
 }
 
 =item tailbox( $file )
@@ -268,9 +279,7 @@ sub infobox
 
     my $clear = $self->{'_opts'}->{'clear'};
     $self->{'_opts'}->{'clear'} = undef;
-
     my ($ret) = $self->_textbox( $text, 'infobox' );
-
     $self->{'_opts'}->{'clear'} = $clear;
     $ret;
 }
@@ -457,6 +466,7 @@ sub _init
     $self->{'_opts'}->{'width'} = undef;
     $self->{'_opts'}->{'aspect'} = undef;
     $self->{'_opts'}->{'separate-output'} = undef;
+    $self->{'_opts'}->{'no-tags'} = undef;
     $self->_findBin( $^O =~ /bsd$/ ? 'cdialog' : 'dialog' );
     $self->_resize();
     $SIG{'WINCH'} = sub { $self->_resize(); };

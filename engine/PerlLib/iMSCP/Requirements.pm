@@ -87,12 +87,7 @@ sub checkVersion
     }
 
     if ( $maxVersion && version->parse( $version ) > version->parse( $maxVersion ) ) {
-        die(
-            sprintf(
-                "version %s is not supported. Supported versions are %s to %s\n", $version, $minVersion,
-                $maxVersion
-            )
-        );
+        die( sprintf( "version %s is not supported. Supported versions are %s to %s\n", $version, $minVersion, $maxVersion ));
     }
 
     undef;
@@ -123,7 +118,7 @@ sub _init
             #version_regexp  => qr/PHP\s+([\d.]+)/,
             #min_version     => '7.1.0',
             #max_version     => '7.1.999', # Arbitrary minor version is intentional. We only want reject PHP > 7.1.x
-            modules         => [
+            modules => [
                 # 'apc', 'apcu', # These extensions are not provided for PHP 7.1 under Debian 10/Buster
                 'ctype', 'curl', 'date', 'dom', 'fileinfo', 'filter', 'ftp', 'gd', 'gettext', 'gmp', 'hash', 'iconv', 'imap', 'intl', 'json',
                 'libxml', 'mbstring', 'mcrypt', 'mysqlnd', 'mysqli', 'openssl', 'pcntl', 'pcre', 'PDO', 'pdo_mysql', 'Phar', 'posix', 'pspell',
@@ -245,10 +240,7 @@ sub _checkPhpModules
 
     return undef unless @missingModules;
 
-    @missingModules < 2 or die(
-        sprintf( "The following PHP modules are not installed or not enabled: %s\n", join ', ', @missingModules )
-    );
-
+    @missingModules < 2 or die( sprintf( "The following PHP modules are not installed or not enabled: %s\n", join ', ', @missingModules ));
     die( sprintf( "The `%s' PHP module is not installed or not enabled.\n", pop @missingModules ));
 }
 
@@ -271,10 +263,7 @@ sub _checkPerlModules
 
     return undef unless @missingModules;
 
-    @missingModules < 2 or die(
-        sprintf( "The following Perl modules are not installed: %s\n", join ', ', @missingModules )
-    );
-
+    @missingModules < 2 or die( sprintf( "The following Perl modules are not installed: %s\n", join ', ', @missingModules ));
     die( sprintf( "The `%s' Perl module is not installed\n", pop @missingModules ));
 }
 

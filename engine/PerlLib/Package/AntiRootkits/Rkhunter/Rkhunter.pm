@@ -86,8 +86,7 @@ sub uninstall
 
 sub setEnginePermissions
 {
-    my $rs = setRights(
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl",
+    my $rs = setRights( "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl",
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ROOT_USER'},
@@ -97,8 +96,7 @@ sub setEnginePermissions
 
     return $rs if $rs || !-f $main::imscpConfig{'RKHUNTER_LOG'};
 
-    setRights(
-        $main::imscpConfig{'RKHUNTER_LOG'},
+    setRights( $main::imscpConfig{'RKHUNTER_LOG'},
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'IMSCP_GROUP'},

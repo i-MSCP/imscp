@@ -106,8 +106,7 @@ sub _dropSqlUser
     my ($self) = @_;
 
     # In setup context, take value from old conffile, else take value from current conffile
-    my $dbUserHost = ( $main::execmode eq 'setup' )
-        ? $main::imscpOldConfig{'DATABASE_USER_HOST'} : $main::imscpConfig{'DATABASE_USER_HOST'};
+    my $dbUserHost = ( $main::execmode eq 'setup' ) ? $main::imscpOldConfig{'DATABASE_USER_HOST'} : $main::imscpConfig{'DATABASE_USER_HOST'};
 
     return 0 unless $self->{'config'}->{'DATABASE_USER'} && $dbUserHost;
 

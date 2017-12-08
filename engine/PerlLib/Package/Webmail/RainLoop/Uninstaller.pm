@@ -102,9 +102,7 @@ sub _removeSqlUser
     my $sqlServer = Servers::sqld->factory();
     return 0 unless $self->{'config'}->{'DATABASE_USER'};
 
-    for ( $main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1',
-        '%'
-    ) {
+    for ( $main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1', '%' ) {
         next unless $_;
         $sqlServer->dropUser( $self->{'config'}->{'DATABASE_USER'}, $_ );
     }
@@ -127,9 +125,7 @@ sub _removeSqlDatabase
     eval {
         my $dbh = $self->{'db'}->getRawDb();
         $dbh->{'RaiseError'} = 1;
-        $dbh->do(
-            'DROP DATABASE IF EXISTS ' . $dbh->quote_identifier( $main::imscpConfig{'DATABASE_NAME'} . '_rainloop' )
-        );
+        $dbh->do( 'DROP DATABASE IF EXISTS ' . $dbh->quote_identifier( $main::imscpConfig{'DATABASE_NAME'} . '_rainloop' ));
     };
     if ( $@ ) {
         error( $@ );
@@ -152,9 +148,7 @@ sub _unregisterConfig
 
     return 0 unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf";
 
-    my $file = iMSCP::File->new(
-        filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf"
-    );
+    my $file = iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf" );
     my $fileContentRef = $file->getAsRef();
     unless ( defined $fileContentRef ) {
         error( sprintf( "Couldn't read %s file", $file->{'filename'} ));
@@ -185,9 +179,7 @@ sub _removeFiles
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop" )->remove();
 
     if ( -f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf" ) {
-        my $rs = iMSCP::File->new(
-            filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf"
-        )->delFile();
+        my $rs = iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf" )->delFile();
         return $rs if $rs;
     }
 

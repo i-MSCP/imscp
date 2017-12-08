@@ -88,13 +88,11 @@ loadConfig();
 # Handle the listener option
 require iMSCP::Getopt->listener if iMSCP::Getopt->listener;
 
-system( 'clear 2>/dev/null' );
-
 if ( iMSCP::Getopt->noprompt ) {
     if ( $main::buildonly ) {
-        print STDOUT output( 'Build steps in progress... Please wait.', 'info' )
+        print STDOUT output( 'Build steps in progress ... Please wait.', 'info' )
     } else {
-        print STDOUT output( 'Installation in progress... Please wait.', 'info' );
+        print STDOUT output( 'Installation in progress ... Please wait.', 'info' );
     }
 }
 

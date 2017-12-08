@@ -168,14 +168,12 @@ sub _makeDirs
     iMSCP::Dir->new( dirname => $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'} )->remove();
 
     for my $dir( @directories ) {
-        iMSCP::Dir->new( dirname => $dir->[0] )->make(
-            {
-                user           => $dir->[1],
-                group          => $dir->[2],
-                mode           => $dir->[3],
-                fixpermissions => iMSCP::Getopt->fixPermissions
-            }
-        );
+        iMSCP::Dir->new( dirname => $dir->[0] )->make( {
+            user           => $dir->[1],
+            group          => $dir->[2],
+            mode           => $dir->[3],
+            fixpermissions => iMSCP::Getopt->fixPermissions
+        } );
     }
 
     $self->{'eventManager'}->trigger( 'afterMtaMakeDirs' );

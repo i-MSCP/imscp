@@ -89,9 +89,7 @@ sub hostnameDialog
 {
     my (undef, $dialog) = @_;
 
-    my $hostname = main::setupGetQuestion(
-        'SERVER_HOSTNAME', iMSCP::Getopt->preseed ? `hostname --fqdn 2>/dev/null` || '' : ''
-    );
+    my $hostname = main::setupGetQuestion( 'SERVER_HOSTNAME', iMSCP::Getopt->preseed ? `hostname --fqdn 2>/dev/null` || '' : '' );
     chomp( $hostname );
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
@@ -112,6 +110,7 @@ sub hostnameDialog
             ( $rs, $hostname ) = $dialog->inputbox( <<"EOF", $hostname );
 $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter your server fully qualified hostname (leave empty for autodetection):
+\\Z \\Zn
 EOF
         } while $rs < 30
             && !isValidHostname( $hostname );
@@ -137,10 +136,7 @@ sub primaryIpDialog
     my (undef, $dialog) = @_;
 
     my @ipList = sort
-        grep(isValidIpAddr( $_, qr/(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)/ ),
-            iMSCP::Net->getInstance()->getAddresses()
-        ),
-        'None';
+        grep(isValidIpAddr( $_, qr/(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)/ ), iMSCP::Net->getInstance()->getAddresses()), 'None';
     unless ( @ipList ) {
         error( "Couldn't get list of server IP addresses. At least one IP address must be configured." );
         return 1;
@@ -166,13 +162,14 @@ sub primaryIpDialog
         my $rs = 0;
 
         do {
-            ( $rs, $lanIP ) = $dialog->radiolist(
-                <<"EOF", [ @ipList ], grep( $_ eq $lanIP, @ipList ) ? $lanIP : $ipList[0] );
-
+            my %choices;
+            @choices{@ipList} = @ipList;
+            ( $rs, $lanIP ) = $dialog->radiolist( <<"EOF", \%choices, grep( $_ eq $lanIP, @ipList ) ? $lanIP : $ipList[0] );
 Please select your server primary IP address:
 
 The \\Zb`None'\\ZB option means that i-MSCP will configure the services to listen on all interfaces.
 This option is more suitable for Cloud computing services such as Scaleway and Amazon EC2, or when using a Vagrant box where the IP that is set through DHCP can changes over the time.
+\\Z \\Zn
 EOF
             $lanIP = '0.0.0.0' if $lanIP eq 'None';
         } while $rs < 30
@@ -204,6 +201,7 @@ EOF
             ( $rs, $wanIP ) = $dialog->inputbox( <<"EOF", $wanIP );
 $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter your public IP address (leave empty for default):
+\\Z \\Zn
 EOF
         } while $rs < 30
             && !isValidIpAddr( $wanIP );
@@ -240,9 +238,7 @@ sub timezoneDialog
 {
     my (undef, $dialog) = @_;
 
-    my $timezone = main::setupGetQuestion(
-        'TIMEZONE', iMSCP::Getopt->preseed ? DateTime::TimeZone->new( name => 'local' )->name() : ''
-    );
+    my $timezone = main::setupGetQuestion( 'TIMEZONE', iMSCP::Getopt->preseed ? DateTime::TimeZone->new( name => 'local' )->name() : '' );
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
@@ -260,6 +256,7 @@ sub timezoneDialog
             ( $rs, $timezone ) = $dialog->inputbox( <<"EOF", $timezone );
 $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter your timezone (leave empty for autodetection):
+\\Z \\Zn
 EOF
         } while $rs < 30
             && !isValidTimezone( $timezone );
@@ -289,11 +286,7 @@ sub preinstall
     if ( -f "$main::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf" ) {
         # Don't catch any error here to avoid permission denied error on some
         # vps due to restrictions set by provider
-        $rs = execute(
-            "$main::imscpConfig{'CMD_SYSCTL'} -p $main::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf",
-            \ my $stdout,
-            \ my $stderr
-        );
+        $rs = execute( "$main::imscpConfig{'CMD_SYSCTL'} -p $main::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         debug( $stderr ) if $stderr;
     }
@@ -443,28 +436,20 @@ sub _setupPrimaryIP
         $dbh->selectrow_hashref( 'SELECT 1 FROM server_ips WHERE ip_number = ?', undef, $primaryIP )
             ? $dbh->do( 'UPDATE server_ips SET ip_card = ? WHERE ip_number = ?', undef, $netCard, $primaryIP )
             : $dbh->do(
-            'INSERT INTO server_ips (ip_number, ip_card, ip_config_mode, ip_status) VALUES(?, ?, ?, ?)',
-            undef, $primaryIP, $netCard, 'manual', 'ok'
+            'INSERT INTO server_ips (ip_number, ip_card, ip_config_mode, ip_status) VALUES(?, ?, ?, ?)', undef, $primaryIP, $netCard, 'manual', 'ok'
         );
 
         if ( main::setupGetQuestion( 'REPLACE_CLIENTS_IP_WITH_BASE_SERVER_IP' ) ) {
-            my $resellers = $dbh->selectall_arrayref(
-                'SELECT reseller_id, reseller_ips FROM reseller_props', { Slice => {} }
-            );
+            my $resellers = $dbh->selectall_arrayref( 'SELECT reseller_id, reseller_ips FROM reseller_props', { Slice => {} } );
 
             if ( @{$resellers} ) {
-                my $primaryIpID = $dbh->selectrow_array(
-                    'SELECT ip_id FROM server_ips WHERE ip_number = ?', undef, $primaryIP
-                );
+                my $primaryIpID = $dbh->selectrow_array( 'SELECT ip_id FROM server_ips WHERE ip_number = ?', undef, $primaryIP );
 
                 for my $reseller( @{$resellers} ) {
                     my @ipIDS = split( ';', $reseller->{'reseller_ips'} );
                     next if grep($_ eq $primaryIpID, @ipIDS );
                     push @ipIDS, $primaryIpID;
-                    $dbh->do(
-                        'UPDATE reseller_props SET reseller_ips = ? WHERE reseller_id = ?', undef,
-                        join( ';', @ipIDS ) . ';'
-                    );
+                    $dbh->do( 'UPDATE reseller_props SET reseller_ips = ? WHERE reseller_id = ?', undef, join( ';', @ipIDS ) . ';' );
                 }
 
                 $dbh->do( 'UPDATE domain SET domain_ip_id = ?', undef, $primaryIpID );

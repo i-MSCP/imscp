@@ -306,13 +306,13 @@ sub setGuiPermissions
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontendSetGuiPermissions' );
     return $rs if $rs;
 
-    my $user = my $group = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $usergroup = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
     $rs = setRights(
         $main::imscpConfig{'GUI_ROOT_DIR'},
         {
-            user      => $user,
-            group     => $group,
+            user      => $usergroup,
+            group     => $usergroup,
             dirmode   => '0750',
             filemode  => '0640',
             recursive => 1
@@ -338,9 +338,7 @@ sub addUser
 
     iMSCP::SystemUser->new(
         username => $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'}
-    )->addToGroup(
-        $data->{'GROUP'}
-    );
+    )->addToGroup( $data->{'GROUP'} );
 }
 
 =item enableSites( @sites )
@@ -777,12 +775,12 @@ sub _init
     $self->{'restart'} = 0;
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/frontend";
-    $self->_mergeConfig() if -f "$self->{'cfgDir'}/frontend.data.dist";
+    $self->_mergeConfig() if defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/frontend.data.dist";
     tie %{$self->{'config'}},
         'iMSCP::Config',
         fileName    => "$self->{'cfgDir'}/frontend.data",
         readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
-        nodeferring => ( defined $main::execmode && $main::execmode eq 'setup' );
+        nodeferring => defined $main::execmode && $main::execmode eq 'setup';
     $self;
 }
 
@@ -802,7 +800,7 @@ sub _mergeConfig
         tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.data.dist";
         tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/frontend.data", readonly => 1;
 
-        debug( 'Merging old configuration with new configuration...' );
+        debug( 'Merging old configuration with new configuration ...' );
 
         while ( my ($key, $value) = each( %oldConfig ) ) {
             next unless exists $newConfig{$key};
@@ -813,9 +811,7 @@ sub _mergeConfig
         untie( %oldConfig );
     }
 
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/frontend.data.dist" )->moveFile(
-        "$self->{'cfgDir'}/frontend.data"
-    ) == 0 or die(
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/frontend.data.dist" )->moveFile( "$self->{'cfgDir'}/frontend.data" ) == 0 or die(
         getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
     );
 }

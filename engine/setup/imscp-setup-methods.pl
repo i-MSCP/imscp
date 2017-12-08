@@ -49,7 +49,7 @@ sub setupInstallFiles
     iMSCP::Service->getInstance()->stop( 'imscp_daemon' );
 
     # Process cleanup to avoid any security risks and conflicts
-    for( qw/ daemon engine gui / ) {
+    for ( qw/ daemon engine gui / ) {
         iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/$_" )->remove();
     }
 
@@ -59,13 +59,11 @@ sub setupInstallFiles
 
 sub setupBoot
 {
-    iMSCP::Bootstrapper->getInstance()->boot(
-        {
-            mode            => 'setup', # Backend mode
-            config_readonly => 1, # We do not allow writing in conffile at this time
-            nodatabase      => 1 # We do not establish connection to the database at this time
-        }
-    );
+    iMSCP::Bootstrapper->getInstance()->boot( {
+        mode            => 'setup', # Backend mode
+        config_readonly => 1, # We do not allow writing in conffile at this time
+        nodatabase      => 1 # We do not establish connection to the database at this time
+    } );
 
     untie( %main::imscpOldConfig ) if %main::imscpOldConfig;
 
@@ -183,13 +181,11 @@ sub setupSaveConfig
     return $rs if $rs;
 
     # Re-open main configuration file in read/write mode
-    iMSCP::Bootstrapper->getInstance()->loadMainConfig(
-        {
-            nocreate        => 1,
-            nodeferring     => 1,
-            config_readonly => 0
-        }
-    );
+    iMSCP::Bootstrapper->getInstance()->loadMainConfig( {
+        nocreate        => 1,
+        nodeferring     => 1,
+        config_readonly => 0
+    } );
 
     while ( my ($key, $value) = each( %main::questions ) ) {
         next unless exists $main::imscpConfig{$key};
@@ -213,14 +209,12 @@ sub setupCreateMasterUser
     return $rs if $rs;
 
     # Ensure that correct permissions are set on i-MSCP master user homedir (handle upgrade case)
-    iMSCP::Dir->new( dirname => $main::imscpConfig{'IMSCP_HOMEDIR'} )->make(
-        {
-            user           => $main::imscpConfig{'IMSCP_USER'},
-            group          => $main::imscpConfig{'IMSCP_GROUP'},
-            mode           => 0755,
-            fixpermissions => 1 # We fix permissions in any case
-        }
-    );
+    iMSCP::Dir->new( dirname => $main::imscpConfig{'IMSCP_HOMEDIR'} )->make( {
+        user           => $main::imscpConfig{'IMSCP_USER'},
+        group          => $main::imscpConfig{'IMSCP_GROUP'},
+        mode           => 0755,
+        fixpermissions => 1 # We fix permissions in any case
+    } );
     iMSCP::EventManager->getInstance()->trigger( 'afterSetupCreateMasterUser' );
 }
 
@@ -244,7 +238,7 @@ Installing composer from https://getcomposer.org
 
 $line
 
-Depending on your connection speed, this may take few seconds...
+Depending on your connection speed, this may take few seconds ...
 EOT
         },
         sub {}
@@ -262,8 +256,7 @@ EOT
     }
 
     unless ( symlink(
-        File::Spec->abs2rel( '/usr/local/bin/composer', $main::imscpConfig{'IMSCP_HOMEDIR'} ),
-        "$main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar"
+        File::Spec->abs2rel( '/usr/local/bin/composer', $main::imscpConfig{'IMSCP_HOMEDIR'} ), "$main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar"
     ) ) {
         error( sprintf( "Couldn't create backward compatibility symlink for composer.phar: %s", $! ));
         return 1;
@@ -381,9 +374,7 @@ sub setupDbTasks
                     "
                         UPDATE $table
                         SET $field = 'tochange'
-                        WHERE $field NOT IN(
-                            'toadd', 'torestore', 'toenable', 'todisable', 'disabled', 'ordered', 'todelete'
-                        )
+                        WHERE $field NOT IN('toadd', 'torestore', 'toenable', 'todisable', 'disabled', 'ordered', 'todelete')
                         $aditionalCondition
                     "
                 );
@@ -469,9 +460,7 @@ sub setupServersAndPackages
 
         for ( @servers ) {
             ( my $subref = $_->can( $lcTask ) ) or $nStep++ && next;
-            $rs = step(
-                sub { $subref->( $_->factory()) }, sprintf( "Executing %s %s tasks...", $_, $lcTask ), $nSteps, $nStep
-            );
+            $rs = step( sub { $subref->( $_->factory()) }, sprintf( "Executing %s %s tasks ...", $_, $lcTask ), $nSteps, $nStep );
             last if $rs;
             $nStep++;
         }
@@ -485,7 +474,7 @@ sub setupServersAndPackages
                     ( my $subref = $_->can( $lcTask ) ) or $nStep++ && next;
                     $rs = step(
                         sub { $subref->( $_->getInstance()) },
-                        sprintf( "Executing %s %s tasks...", $_, $lcTask ), $nSteps, $nStep
+                        sprintf( "Executing %s %s tasks ...", $_, $lcTask ), $nSteps, $nStep
                     );
                     last if $rs;
                     $nStep++;
@@ -563,7 +552,7 @@ sub setupRestartServices
     my $step = 1;
 
     for ( @services ) {
-        $rs = step( $_->[0], sprintf( 'Restarting/Starting %s service...', $_->[1] ), $nbSteps, $step );
+        $rs = step( $_->[0], sprintf( 'Starting/Restarting %s service ...', $_->[1] ), $nbSteps, $step );
         last if $rs;
         $step++;
     }

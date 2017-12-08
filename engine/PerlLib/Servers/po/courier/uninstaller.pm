@@ -110,8 +110,7 @@ sub _dropSqlUser
     my ($self) = @_;
 
     # In setup context, take value from old conffile, else take value from current conffile
-    my $dbUserHost = ( $main::execmode eq 'setup' )
-        ? $main::imscpOldConfig{'DATABASE_USER_HOST'} : $main::imscpConfig{'DATABASE_USER_HOST'};
+    my $dbUserHost = ( $main::execmode eq 'setup' ) ? $main::imscpOldConfig{'DATABASE_USER_HOST'} : $main::imscpConfig{'DATABASE_USER_HOST'};
 
     return 0 unless $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} && $dbUserHost;
 
@@ -137,9 +136,7 @@ sub _removeConfig
     my ($self) = @_;
 
     # Umount the courier-authdaemond rundir from the Postfix chroot
-    my $fsFile = File::Spec->canonpath(
-        "$self->{'mta'}->{'config'}->{'POSTFIX_QUEUE_DIR'}/$self->{'config'}->{'AUTHLIB_SOCKET_DIR'}"
-    );
+    my $fsFile = File::Spec->canonpath( "$self->{'mta'}->{'config'}->{'POSTFIX_QUEUE_DIR'}/$self->{'config'}->{'AUTHLIB_SOCKET_DIR'}" );
     my $rs = removeMountEntry( qr%.*?[ \t]+\Q$fsFile\E(?:/|[ \t]+)[^\n]+% );
     $rs ||= umount( $fsFile );
     return $rs if $rs;
@@ -162,10 +159,7 @@ sub _removeConfig
         }
 
         $fileContent = replaceBloc(
-            qr/(?:^\n)?# Servers::po::courier::installer - BEGIN\n/m,
-            qr/# Servers::po::courier::installer - ENDING\n/,
-            '',
-            $fileContent
+            qr/(?:^\n)?# Servers::po::courier::installer - BEGIN\n/m, qr/# Servers::po::courier::installer - ENDING\n/, '', $fileContent
         );
 
         $file->set( $fileContent );

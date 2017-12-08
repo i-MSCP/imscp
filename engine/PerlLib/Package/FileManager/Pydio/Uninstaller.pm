@@ -92,9 +92,7 @@ sub _unregisterConfig
 
     return 0 unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
 
-    my $file = iMSCP::File->new(
-        filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf"
-    );
+    my $file = iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf" );
     my $fileContentRef = $file->getAsRef();
     unless ( defined $fileContentRef ) {
         error( sprintf( "Couldn't read %s file", $file->{'filename'} ));

@@ -25,9 +25,10 @@ package Servers::httpd;
 
 use strict;
 use warnings;
+use iMSCP::Service;
 
 # httpd server instance
-my $instance;
+my $INSTANCE;
 
 =head1 DESCRIPTION
 
@@ -47,11 +48,11 @@ my $instance;
 
 sub factory
 {
-    return $instance if $instance;
+    return $INSTANCE if $INSTANCE;
 
     my $package = $main::imscpConfig{'HTTPD_PACKAGE'} || 'Servers::noserver';
     eval "require $package" or die( $@ );
-    $instance = $package->getInstance();
+    $INSTANCE = $package->getInstance();
 }
 
 =item can( $method )
@@ -85,14 +86,34 @@ sub getPriority
     60;
 }
 
+=back
+
+=head1 SHUTDOWN TASKS
+
+=over 4
+
+=item END
+
+ Schedule restart, reload or start of HTTP server when needed
+
+=cut
+
 END
     {
-        return if $? || !$instance || ( $main::execmode && $main::execmode eq 'setup' );
+        return if $? || !$INSTANCE || ( defined $main::execmode && $main::execmode eq 'setup' );
 
-        if ( $instance->{'start'} ) {
-            $? = $instance->start();
-        } elsif ( $instance->{'restart'} ) {
-            $? = $instance->restart();
+        if ( $INSTANCE->{'restart'} ) {
+            iMSCP::Service->getInstance()->registerDelayedAction(
+                $INSTANCE->{'config'}->{'HTTPD_SNAME'}, [ 'restart', sub { $INSTANCE->restart(); } ], __PACKAGE__->getPriority()
+            );
+        } elsif ( $INSTANCE->{'reload'} ) {
+            iMSCP::Service->getInstance()->registerDelayedAction(
+                $INSTANCE->{'config'}->{'HTTPD_SNAME'}, [ 'reload', sub { $INSTANCE->start(); } ], __PACKAGE__->getPriority()
+            );
+        } elsif ( $INSTANCE->{'start'} ) {
+            iMSCP::Service->getInstance()->registerDelayedAction(
+                $INSTANCE->{'config'}->{'HTTPD_SNAME'}, [ 'start', sub { $INSTANCE->start(); } ], __PACKAGE__->getPriority()
+            );
         }
     }
 

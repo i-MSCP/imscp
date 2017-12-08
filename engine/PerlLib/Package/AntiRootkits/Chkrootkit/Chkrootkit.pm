@@ -89,8 +89,7 @@ sub uninstall
 
 sub setEnginePermissions
 {
-    setRights(
-        $main::imscpConfig{'CHKROOTKIT_LOG'},
+    setRights( $main::imscpConfig{'CHKROOTKIT_LOG'},
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'IMSCP_GROUP'},

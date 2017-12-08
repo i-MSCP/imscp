@@ -159,12 +159,8 @@ sub _installFiles
     }
 
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
-    iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' }
-    );
-    iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' }
-    );
+    iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' } );
+    iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' } );
     0;
 }
 
@@ -182,12 +178,8 @@ sub _buildHttpdConfig
 
     $self->{'frontend'}->buildConfFile(
         "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/monsta-ftp/iMSCP/nginx/imscp_monstaftp.conf",
-        {
-            GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'}
-        },
-        {
-            destination => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_monstaftp.conf"
-        }
+        { GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },
+        { destination => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_monstaftp.conf" }
     );
 }
 
@@ -203,8 +195,7 @@ sub _buildConfig
 {
     my ($self) = @_;
 
-    my $panelUName = my $panelGName =
-        $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $usergroup = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
     # config.php file
 
@@ -230,7 +221,7 @@ sub _buildConfig
     my $file = iMSCP::File->new( filename => $conffile );
     $file->set( $cfgTpl );
     $rs = $file->save();
-    $rs ||= $file->owner( $panelUName, $panelGName );
+    $rs ||= $file->owner( $usergroup, $usergroup );
     $rs ||= $file->mode( 0440 );
     return $rs if $rs;
 
@@ -243,9 +234,7 @@ sub _buildConfig
         hideProUpgradeMessages  => JSON::true,
         disableMasterLogin      => JSON::true,
         connectionRestrictions  => {
-            types => [
-                'ftp'
-            ],
+            types => [ 'ftp' ],
             ftp   => {
                 host             => '127.0.0.1',
                 port             => 21,
@@ -266,7 +255,7 @@ sub _buildConfig
     $file = iMSCP::File->new( filename => $conffile );
     $file->set( $cfgTpl || JSON->new()->utf8( 1 )->pretty( 1 )->encode( $data ));
     $rs = $file->save();
-    $rs ||= $file->owner( $panelUName, $panelGName );
+    $rs ||= $file->owner( $usergroup, $usergroup );
     $rs ||= $file->mode( 0440 );
 }
 

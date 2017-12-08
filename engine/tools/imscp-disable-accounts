@@ -37,9 +37,9 @@ use iMSCP::Bootstrapper;
 use iMSCP::DbTasksProcessor;
 use iMSCP::Getopt;
 use File::Basename;
-use POSIX qw /locale_h /;
+use POSIX qw / locale_h /;
 
-setlocale(LC_MESSAGES, "C.UTF-8");
+setlocale( LC_MESSAGES, "C.UTF-8" );
 
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -72,10 +72,7 @@ sub run
                 $dbh->begin_work();
 
                 if ( $row->{'value'} ) { # SMTP/IMAP/POP disabled
-                    $dbh->do(
-                        'UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ?',
-                        undef, 'todisable', 'no', $_
-                    );
+                    $dbh->do( 'UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ?', undef, 'todisable', 'no', $_ );
                 } else { # IMAP/POP disabled
                     $dbh->do( 'UPDATE mail_users SET po_active = ? WHERE domain_id = ?', undef, 'no', $_ );
                 }
@@ -124,12 +121,10 @@ OPTIONS:
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-disable-accounts.lock', 'nowait' );
 
-$bootstrapper->getInstance()->boot(
-    {
-        config_readonly => 1,
-        mode            => 'backend'
-    }
-);
+$bootstrapper->getInstance()->boot( {
+    config_readonly => 1,
+    mode            => 'backend'
+} );
 
 exit run();
 
@@ -138,3 +133,6 @@ exit run();
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
+
+1;
+__END__

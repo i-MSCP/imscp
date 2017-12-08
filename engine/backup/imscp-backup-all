@@ -43,7 +43,7 @@ use iMSCP::Mail;
 use Servers::mta;
 use POSIX qw/ strftime locale_h /;
 
-setlocale(LC_MESSAGES, "C.UTF-8");
+setlocale( LC_MESSAGES, "C.UTF-8" );
 
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -51,27 +51,27 @@ $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 my $command = {
     bzip2  => {
         extension => 'bz2',
-        command   => 'bzip2'
+        command   => '/usr/bin/nice -n 19 /usr/bin/ionice -c2 -n7 bzip2'
     },
     pbzip2 => {
         extension => 'bz2',
-        command   => 'pbzip2'
+        command   => '/usr/bin/nice -n 19 /usr/bin/ionice -c2 -n7 pbzip2'
     },
     gzip   => {
         extension => 'gz',
-        command   => 'gzip'
+        command   => '/usr/bin/nice -n 19 /usr/bin/ionice -c2 -n7 gzip'
     },
     pigz   => {
         extension => 'gz',
-        command   => 'pigz'
+        command   => '/usr/bin/nice -n 19 /usr/bin/ionice -c2 -n7 pigz'
     },
     lzma   => {
         extension => 'lzma',
-        command   => 'lzma'
+        command   => '/usr/bin/nice -n 19 /usr/bin/ionice -c2 -n7 lzma'
     },
     xz     => {
         extension => 'xz',
-        command   => 'xz'
+        command   => '/usr/bin/nice -n 19 /usr/bin/ionice -c2 -n7 xz'
     }
 };
 
@@ -107,10 +107,8 @@ sub backupHomedir
     my $bkpArchName = "web-backup-$mainDmnName-$bkpDate.tar$bkpExt";
 
     my @cmd = (
-        "tar -c -C $homeDir --exclude=logs --exclude=phptmp --exclude=backups .",
-        ( $cmpAlgo eq 'no'
-            ? "-f $bkpDir/$bkpArchName" : "| $command->{$cmpAlgo}->{'command'} -$cmpLevel > $bkpDir/$bkpArchName"
-        )
+        "/usr/bin/nice -n 19 /usr/bin/ionice -c2 -n7 tar -c -C $homeDir --exclude=logs --exclude=phptmp --exclude=backups .",
+        ( $cmpAlgo eq 'no' ? "-f $bkpDir/$bkpArchName" : "| $command->{$cmpAlgo}->{'command'} -$cmpLevel > $bkpDir/$bkpArchName" )
     );
 
     my $rs = execute( "@cmd", \my $stdout, \my $stderr );
@@ -151,10 +149,7 @@ sub backupDatabases
     my $rows = eval {
         my $dbh = $db->getRawDb();
         local $dbh->{'RaiseError'} = 1;
-
-        $dbh->selectall_hashref(
-            'SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?', 'sqld_name', undef, $mainDmnId
-        );
+        $dbh->selectall_hashref( 'SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?', 'sqld_name', undef, $mainDmnId );
     };
     if ( $@ ) {
         error( $@ );
@@ -176,12 +171,8 @@ sub backupDatabases
         my $file = iMSCP::File->new( filename => $dbDumpFilePath );
         my $rs = $file->owner( $user, $group );
         $rs ||= $file->mode( 0640 );
-
         next if $rs || $cmpAlgo eq 'no';
-
-        $rs = execute(
-            [ $command->{$cmpAlgo}->{'command'}, "-$cmpLevel", '--force', $dbDumpFilePath ], \ my $stdout, \ my $stderr
-        );
+        $rs = execute( [ $command->{$cmpAlgo}->{'command'}, "-$cmpLevel", '--force', $dbDumpFilePath ], \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         error( sprintf( "Couldn't compress %s database dump: %s", $dbName, $stderr || 'Unknown error' )) if $rs;
     }
@@ -212,10 +203,7 @@ sub backupMaildirs
 
         $dbh->selectall_hashref(
             "
-                SELECT domain_name
-                FROM domain
-                WHERE domain_id = ?
-                AND domain_status <> 'todelete'
+                SELECT domain_name FROM domain WHERE domain_id = ? AND domain_status <> 'todelete'
                 UNION ALL
                 SELECT CONCAT(subdomain_name, '.', domain_name)
                 FROM subdomain
@@ -223,10 +211,7 @@ sub backupMaildirs
                 WHERE domain_id = ?
                 AND subdomain_status <> 'todelete'
                 UNION ALL
-                SELECT alias_name
-                FROM domain_aliasses
-                WHERE domain_id = ?
-                AND alias_status <> 'todelete'
+                SELECT alias_name FROM domain_aliasses WHERE domain_id = ? AND alias_status <> 'todelete'
                 UNION ALL
                 SELECT CONCAT(subdomain_alias_name, '.', alias_name)
                 FROM subdomain_alias
@@ -247,17 +232,12 @@ sub backupMaildirs
     for ( keys %{$rows} ) {
         my $mailDirPath = "$virtualMailDir/$_";
         next unless -d $mailDirPath;
-
         my $bkpDate = strftime "%Y.%m.%d-%H-%M", localtime();
         my $bkpArchName = "mail-backup-$_-$bkpDate.tar$bkpExt";
-
         my @cmd = (
-            "tar -c -C $mailDirPath .",
-            ( $cmpAlgo eq 'no'
-                ? "-f $bkpDir/$bkpArchName" : "| $command->{$cmpAlgo}->{'command'} -$cmpLevel > $bkpDir/$bkpArchName"
-            )
+            "/usr/bin/nice -n 19 /usr/bin/ionice -c2 -n7 tar -c -C $mailDirPath .",
+            ( $cmpAlgo eq 'no' ? "-f $bkpDir/$bkpArchName" : "| $command->{$cmpAlgo}->{'command'} -$cmpLevel > $bkpDir/$bkpArchName" )
         );
-
         my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr || 'Unknown error' ) if $rs > 1;
@@ -291,7 +271,6 @@ sub backupAll
     my $rows = eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
-
         $dbh->selectall_hashref(
             "
                 SELECT domain_id, domain_name, domain_admin_id, allowbackup, admin_sys_name, admin_sys_gname
@@ -311,9 +290,7 @@ sub backupAll
     while ( my ($dmnId, $dmnData) = each( %{$rows} ) ) {
         next unless $dmnData->{'allowbackup'} && $dmnData->{'allowbackup'} =~ /\b(?:dmn|sql|mail)\b/;
         my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$dmnData->{'domain_name'}";
-
         next unless -d $homeDir;
-
         my $bkpDir = "$homeDir/backups";
         my $user = $dmnData->{'admin_sys_name'};
         my $group = $dmnData->{'admin_sys_gname'};
@@ -321,19 +298,16 @@ sub backupAll
         eval {
             unless ( -d $bkpDir ) {
                 my $isProtectedHomedir = 0;
-
                 if ( isImmutable( $homeDir ) ) {
                     $isProtectedHomedir = 1;
                     clearImmutable( $homeDir );
                 }
 
-                iMSCP::Dir->new( dirname => $bkpDir )->make(
-                    {
-                        user  => $user,
-                        group => $group,
-                        mode  => 0750
-                    }
-                );
+                iMSCP::Dir->new( dirname => $bkpDir )->make( {
+                    user  => $user,
+                    group => $group,
+                    mode  => 0750
+                } );
 
                 setImmutable( $homeDir ) if $isProtectedHomedir;
             } else {
@@ -349,13 +323,8 @@ sub backupAll
             backupHomedir( $dmnData->{'domain_name'}, $homeDir, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group )
         }
 
-        if ( $dmnData->{'allowbackup'} =~ /\bsql\b/ ) {
-            backupDatabases( $dmnId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group );
-        }
-
-        if ( $dmnData->{'allowbackup'} =~ /\bmail\b/ ) {
-            backupMaildirs( $dmnId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group );
-        }
+        backupDatabases( $dmnId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group ) if $dmnData->{'allowbackup'} =~ /\bsql\b/;
+        backupMaildirs( $dmnId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group ) if $dmnData->{'allowbackup'} =~ /\bmail\b/;
     }
 }
 
@@ -374,12 +343,10 @@ OPTIONS:
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-backup-all.lock', 'nowait' );
 
-$bootstrapper->boot(
-    {
-        config_readonly => 1,
-        nolock          => 1
-    }
-);
+$bootstrapper->boot( {
+    config_readonly => 1,
+    nolock          => 1
+} );
 
 backupAll();
 

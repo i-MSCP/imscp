@@ -129,7 +129,7 @@ sub postinstall
         my $serviceMngr = iMSCP::Service->getInstance();
         $serviceMngr->enable( $self->{'config'}->{$_} ) for @toEnableServices;
 
-        for( @toDisableServices ) {
+        for ( @toDisableServices ) {
             $serviceMngr->stop( $self->{'config'}->{$_} );
             $serviceMngr->disable( $self->{'config'}->{$_} );
         }
@@ -191,8 +191,7 @@ sub setEnginePermissions
     return $rs if $rs;
 
     if ( -d $self->{'config'}->{'AUTHLIB_SOCKET_DIR'} ) {
-        $rs ||= setRights(
-            $self->{'config'}->{'AUTHLIB_SOCKET_DIR'},
+        $rs ||= setRights( $self->{'config'}->{'AUTHLIB_SOCKET_DIR'},
             {
                 user  => $self->{'config'}->{'AUTHDAEMON_USER'},
                 group => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
@@ -202,16 +201,14 @@ sub setEnginePermissions
         return $rs if $rs;
     }
 
-    $rs = setRights(
-        "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/authmysqlrc",
+    $rs = setRights( "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/authmysqlrc",
         {
             user  => $self->{'config'}->{'AUTHDAEMON_USER'},
             group => $self->{'config'}->{'AUTHDAEMON_GROUP'},
             mode  => '0660'
         }
     );
-    $rs ||= setRights(
-        $self->{'config'}->{'QUOTA_WARN_MSG_PATH'},
+    $rs ||= setRights( $self->{'config'}->{'QUOTA_WARN_MSG_PATH'},
         {
             user  => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
             group => $main::imscpConfig{'ROOT_GROUP'},
@@ -221,8 +218,7 @@ sub setEnginePermissions
     return $rs if $rs;
 
     if ( -f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem" ) {
-        $rs = setRights(
-            "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem",
+        $rs = setRights( "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem",
             {
                 user  => $self->{'config'}->{'AUTHDAEMON_USER'},
                 group => $self->{'config'}->{'AUTHDAEMON_GROUP'},
@@ -255,24 +251,20 @@ sub addMail
     my $mailGidName = $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
     for my $mailbox( '.Drafts', '.Junk', '.Sent', '.Trash' ) {
-        iMSCP::Dir->new( dirname => "$mailDir/$mailbox" )->make(
-            {
+        iMSCP::Dir->new( dirname => "$mailDir/$mailbox" )->make( {
+            user           => $mailUidName,
+            group          => $mailGidName,
+            mode           => 0750,
+            fixpermissions => iMSCP::Getopt->fixPermissions
+        } );
+
+        for ( 'cur', 'new', 'tmp' ) {
+            iMSCP::Dir->new( dirname => "$mailDir/$mailbox/$_" )->make( {
                 user           => $mailUidName,
                 group          => $mailGidName,
                 mode           => 0750,
                 fixpermissions => iMSCP::Getopt->fixPermissions
-            }
-        );
-
-        for ( 'cur', 'new', 'tmp' ) {
-            iMSCP::Dir->new( dirname => "$mailDir/$mailbox/$_" )->make(
-                {
-                    user           => $mailUidName,
-                    group          => $mailGidName,
-                    mode           => 0750,
-                    fixpermissions => iMSCP::Getopt->fixPermissions
-                }
-            );
+            } );
         }
     }
 
@@ -439,20 +431,17 @@ sub getTraffic
     $logFile ||= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
 
     unless ( -f $logFile ) {
-        debug( sprintf( "IMAP/POP3 %s log file doesn't exist. Skipping...", $logFile ));
+        debug( sprintf( "IMAP/POP3 %s log file doesn't exist. Skipping ...", $logFile ));
         return;
     }
 
     debug( sprintf( 'Processing IMAP/POP3 %s log file', $logFile ));
 
     # We use an index database to keep trace of the last processed logs
-    $trafficIndexDb or tie %{$trafficIndexDb},
-        'iMSCP::Config', fileName => "$main::imscpConfig{'IMSCP_HOMEDIR'}/traffic_index.db", nodie => 1;
+    $trafficIndexDb or tie %{$trafficIndexDb}, 'iMSCP::Config', fileName => "$main::imscpConfig{'IMSCP_HOMEDIR'}/traffic_index.db", nodie => 1;
     my ($idx, $idxContent) = ( $trafficIndexDb->{'po_lineNo'} || 0, $trafficIndexDb->{'po_lineContent'} );
 
-    tie my @logs, 'Tie::File', $logFile, mode => O_RDONLY, memory => 0 or die(
-        sprintf( "Couldn't tie %s file in read-only mode", $logFile )
-    );
+    tie my @logs, 'Tie::File', $logFile, mode => O_RDONLY, memory => 0 or die( sprintf( "Couldn't tie %s file in read-only mode", $logFile ));
 
     # Retain index of the last log (log file can continue growing)
     my $lastLogIdx = $#logs;
@@ -518,12 +507,12 @@ sub _init
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'mta'} = Servers::mta->factory();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
-    $self->_mergeConfig() if -f "$self->{'cfgDir'}/courier.data.dist";
+    $self->_mergeConfig() if defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/courier.data.dist";
     tie %{$self->{'config'}},
         'iMSCP::Config',
         fileName    => "$self->{'cfgDir'}/courier.data",
         readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
-        nodeferring => ( defined $main::execmode && $main::execmode eq 'setup' );
+        nodeferring => defined $main::execmode && $main::execmode eq 'setup';
     $self;
 }
 
@@ -543,7 +532,7 @@ sub _mergeConfig
         tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/courier.data.dist";
         tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/courier.data", readonly => 1;
 
-        debug( 'Merging old configuration with new configuration...' );
+        debug( 'Merging old configuration with new configuration ...' );
 
         while ( my ($key, $value) = each( %oldConfig ) ) {
             next unless exists $newConfig{$key};
@@ -554,9 +543,7 @@ sub _mergeConfig
         untie( %oldConfig );
     }
 
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/courier.data.dist" )->moveFile(
-        "$self->{'cfgDir'}/courier.data"
-    ) == 0 or die(
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/courier.data.dist" )->moveFile( "$self->{'cfgDir'}/courier.data" ) == 0 or die(
         getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
     );
 }

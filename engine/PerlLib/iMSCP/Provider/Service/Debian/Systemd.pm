@@ -125,9 +125,7 @@ sub remove
     # Remove the underlying sysvinit script if any and make systemd aware of changes
     if ( $self->_isSysvinit( $unit ) ) {
         return $self->iMSCP::Provider::Service::Debian::Sysvinit::remove( $unit )
-            && $self->_exec(
-            $iMSCP::Provider::Service::Systemd::COMMANDS{'systemctl'}, '--system', 'daemon-reload'
-        ) == 0;
+            && $self->_exec( $iMSCP::Provider::Service::Systemd::COMMANDS{'systemctl'}, '--system', 'daemon-reload' ) == 0;
     }
 
     1;

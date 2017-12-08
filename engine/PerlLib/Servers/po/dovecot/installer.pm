@@ -95,8 +95,7 @@ sub showDialog
     );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
     my $dbPass = main::setupGetQuestion(
-        'DOVECOT_SQL_PASSWORD',
-        ( iMSCP::Getopt->preseed ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
+        'DOVECOT_SQL_PASSWORD', ( iMSCP::Getopt->preseed ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
     );
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
@@ -117,6 +116,7 @@ sub showDialog
             ( $rs, $dbUser ) = $dialog->inputbox( <<"EOF", $dbUser );
 $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter a username for the Dovecot SQL user (leave empty for default):
+\\Z \\Zn
 EOF
         } while $rs < 30
             && ( !isValidUsername( $dbUser )
@@ -144,6 +144,7 @@ EOF
                 ( $rs, $dbPass ) = $dialog->inputbox( <<"EOF", $dbPass );
 $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter a password for the Dovecot SQL user (leave empty for autogeneration):
+\\Z \\Zn
 EOF
             } while $rs < 30
                 && !isValidPassword( $dbPass );
@@ -216,64 +217,62 @@ sub configurePostfix
         return $self->{'eventManager'}->register(
             'afterMtaBuildConf',
             sub {
-                $self->{'mta'}->postconf(
-                    (
-                        # Dovecot LDA parameters
-                        virtual_transport                     => {
-                            action => 'replace',
-                            values => [ 'dovecot' ]
-                        },
-                        dovecot_destination_concurrency_limit => {
-                            action => 'replace',
-                            values => [ '2' ]
-                        },
-                        dovecot_destination_recipient_limit   => {
-                            action => 'replace',
-                            values => [ '1' ]
-                        },
-                        # Dovecot SASL parameters
-                        smtpd_sasl_type                       => {
-                            action => 'replace',
-                            values => [ 'dovecot' ]
-                        },
-                        smtpd_sasl_path                       => {
-                            action => 'replace',
-                            values => [ 'private/auth' ]
-                        },
-                        smtpd_sasl_auth_enable                => {
-                            action => 'replace',
-                            values => [ 'yes' ]
-                        },
-                        smtpd_sasl_security_options           => {
-                            action => 'replace',
-                            values => [ 'noanonymous' ]
-                        },
-                        smtpd_sasl_authenticated_header       => {
-                            action => 'replace',
-                            values => [ 'yes' ]
-                        },
-                        broken_sasl_auth_clients              => {
-                            action => 'replace',
-                            values => [ 'yes' ]
-                        },
-                        # SMTP restrictions
-                        smtpd_helo_restrictions               => {
-                            action => 'add',
-                            values => [ 'permit_sasl_authenticated' ],
-                            after  => qr/permit_mynetworks/
-                        },
-                        smtpd_sender_restrictions             => {
-                            action => 'add',
-                            values => [ 'permit_sasl_authenticated' ],
-                            after  => qr/permit_mynetworks/
-                        },
-                        smtpd_recipient_restrictions          => {
-                            action => 'add',
-                            values => [ 'permit_sasl_authenticated' ],
-                            after  => qr/permit_mynetworks/
-                        }
-                    )
-                );
+                $self->{'mta'}->postconf( (
+                    # Dovecot LDA parameters
+                    virtual_transport                     => {
+                        action => 'replace',
+                        values => [ 'dovecot' ]
+                    },
+                    dovecot_destination_concurrency_limit => {
+                        action => 'replace',
+                        values => [ '2' ]
+                    },
+                    dovecot_destination_recipient_limit   => {
+                        action => 'replace',
+                        values => [ '1' ]
+                    },
+                    # Dovecot SASL parameters
+                    smtpd_sasl_type                       => {
+                        action => 'replace',
+                        values => [ 'dovecot' ]
+                    },
+                    smtpd_sasl_path                       => {
+                        action => 'replace',
+                        values => [ 'private/auth' ]
+                    },
+                    smtpd_sasl_auth_enable                => {
+                        action => 'replace',
+                        values => [ 'yes' ]
+                    },
+                    smtpd_sasl_security_options           => {
+                        action => 'replace',
+                        values => [ 'noanonymous' ]
+                    },
+                    smtpd_sasl_authenticated_header       => {
+                        action => 'replace',
+                        values => [ 'yes' ]
+                    },
+                    broken_sasl_auth_clients              => {
+                        action => 'replace',
+                        values => [ 'yes' ]
+                    },
+                    # SMTP restrictions
+                    smtpd_helo_restrictions               => {
+                        action => 'add',
+                        values => [ 'permit_sasl_authenticated' ],
+                        after  => qr/permit_mynetworks/
+                    },
+                    smtpd_sender_restrictions             => {
+                        action => 'add',
+                        values => [ 'permit_sasl_authenticated' ],
+                        after  => qr/permit_mynetworks/
+                    },
+                    smtpd_recipient_restrictions          => {
+                        action => 'add',
+                        values => [ 'permit_sasl_authenticated' ],
+                        after  => qr/permit_mynetworks/
+                    }
+                ));
             }
         );
     }
@@ -410,8 +409,7 @@ sub _setupSqlUser
             next unless $sqlUser;
 
             for my $host( $dbUserHost, $oldDbUserHost ) {
-                next if !$host
-                    || exists $main::sqlUsers{$sqlUser . '@' . $host} && !defined $main::sqlUsers{$sqlUser . '@' . $host};
+                next if !$host || exists $main::sqlUsers{$sqlUser . '@' . $host} && !defined $main::sqlUsers{$sqlUser . '@' . $host};
                 $sqlServer->dropUser( $sqlUser, $host );
             }
         }
@@ -456,9 +454,7 @@ sub _buildConf
     eval {
         # Make the /etc/dovecot/imscp.d direcetory free of any file that were
         # installed by i-MSCP listener files.
-        iMSCP::Dir->new( dirname => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/imscp.d" )->clear(
-            undef, qr/_listener\.conf$/
-        )
+        iMSCP::Dir->new( dirname => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/imscp.d" )->clear( undef, qr/_listener\.conf$/ )
     };
     if ( $@ ) {
         error( $@ );

@@ -29,6 +29,7 @@ use Encode qw / encode_utf8 /;
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Execute;
+use iMSCP::Getopt;
 use iMSCP::Stepper;
 use JSON;
 use MIME::Base64 qw/ encode_base64 /;
@@ -74,21 +75,13 @@ sub processDbTasks
     # Process server IP addresses
     $self->_processModuleDbTasks(
         'Modules::ServerIP',
-        "
-            SELECT ip_id AS id, ip_number AS name
-            FROM server_ips
-            WHERE ip_status IN( 'toadd', 'tochange', 'todelete' )
-        "
+        "SELECT ip_id AS id, ip_number AS name FROM server_ips WHERE ip_status IN( 'toadd', 'tochange', 'todelete' )"
     );
 
     # Process SSL certificate toadd|tochange SSL certificates tasks
     $self->_processModuleDbTasks(
         'Modules::SSLcertificate',
-        "
-            SELECT cert_id AS id, domain_type AS name
-            FROM ssl_certs
-            WHERE status IN ('toadd', 'tochange', 'todelete') ORDER BY cert_id ASC
-        "
+        "SELECT cert_id AS id, domain_type AS name FROM ssl_certs WHERE status IN ('toadd', 'tochange', 'todelete') ORDER BY cert_id ASC"
     );
 
     # Process toadd|tochange users tasks
@@ -346,27 +339,22 @@ sub processDbTasks
 
         for ( values %{$rows} ) {
             my $pushString = encode_base64(
-                encode_json(
-                    [
-                        $_->{'domain_id'}, $_->{'software_id'}, $_->{'path'}, $_->{'software_prefix'}, $_->{'db'},
-                        $_->{'database_user'}, $_->{'database_tmp_pwd'}, $_->{'install_username'},
-                        $_->{'install_password'}, $_->{'install_email'}, $_->{'software_status'},
-                        $_->{'software_depot'}, $_->{'software_master_id'}, $_->{'alias_id'},
-                        $_->{'subdomain_id'}, $_->{'subdomain_alias_id'}
-                    ]
-                ),
+                encode_json( [
+                    $_->{'domain_id'}, $_->{'software_id'}, $_->{'path'}, $_->{'software_prefix'}, $_->{'db'},
+                    $_->{'database_user'}, $_->{'database_tmp_pwd'}, $_->{'install_username'},
+                    $_->{'install_password'}, $_->{'install_email'}, $_->{'software_status'},
+                    $_->{'software_depot'}, $_->{'software_master_id'}, $_->{'alias_id'},
+                    $_->{'subdomain_id'}, $_->{'subdomain_alias_id'}
+                ] ),
                 ''
             );
 
             my ($stdout, $stderr);
-            execute(
-                "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-sw-mngr " . escapeShell( $pushString ), \$stdout,
-                \$stderr
-            ) == 0 or die( $stderr || 'Unknown error' );
-            debug( $stdout ) if $stdout;
-            execute( "rm -fR /tmp/sw-$_->{'domain_id'}-$_->{'software_id'}", \$stdout, \$stderr ) == 0 or die(
+            execute( "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-sw-mngr " . escapeShell( $pushString ), \$stdout, \$stderr ) == 0 or die(
                 $stderr || 'Unknown error'
             );
+            debug( $stdout ) if $stdout;
+            execute( "rm -fR /tmp/sw-$_->{'domain_id'}-$_->{'software_id'}", \$stdout, \$stderr ) == 0 or die( $stderr || 'Unknown error' );
             debug( $stdout ) if $stdout;
         }
 
@@ -389,24 +377,19 @@ sub processDbTasks
 
         for ( values %{$rows} ) {
             my $pushstring = encode_base64(
-                encode_json(
-                    [
-                        $_->{'software_id'}, $_->{'reseller_id'}, $_->{'software_archive'}, $_->{'software_status'},
-                        $_->{'software_depot'}
-                    ]
-                ),
+                encode_json( [
+                    $_->{'software_id'}, $_->{'reseller_id'}, $_->{'software_archive'}, $_->{'software_status'},
+                    $_->{'software_depot'}
+                ] ),
                 ''
             );
 
             my ($stdout, $stderr);
-            execute(
-                "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-pkt-mngr " . escapeShell( $pushstring ), \$stdout,
-                \$stderr
-            ) == 0 or die( $stderr || 'Unknown error' );
-            debug( $stdout ) if $stdout;
-            execute( "rm -fR /tmp/sw-$_->{'software_archive'}-$_->{'software_id'}", \$stdout, \$stderr ) == 0 or die(
+            execute( "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-pkt-mngr " . escapeShell( $pushstring ), \$stdout, \$stderr ) == 0 or die(
                 $stderr || 'Unknown error'
             );
+            debug( $stdout ) if $stdout;
+            execute( "rm -fR /tmp/sw-$_->{'software_archive'}-$_->{'software_id'}", \$stdout, \$stderr ) == 0 or die( $stderr || 'Unknown error' );
             debug( $stdout ) if $stdout;
         }
 
@@ -453,7 +436,7 @@ sub _processModuleDbTasks
     my ($self, $module, $sql, $perItemLogFile) = @_;
 
     eval {
-        debug( sprintf( 'Processing %s tasks...', $module ), ( caller( 2 ) )[3] );
+        debug( sprintf( 'Processing %s tasks ...', $module ), ( caller( 2 ) )[3] );
 
         local $self->{'_dbh'}->{'RaiseError'} = 1;
 
@@ -470,7 +453,7 @@ sub _processModuleDbTasks
         eval "require $module" or die;
 
         my ($nStep, $rs) = ( 0, 0 );
-        my $needStepper = grep( $self->{'mode'} eq $_, ( 'setup', 'uninstall' ) );
+        my $needStepper = !iMSCP::Getopt->noprompt && grep( $self->{'mode'} eq $_, ( 'setup', 'uninstall' ) );
 
         while ( my $row = $sth->fetchrow_hashref() ) {
             my $name = encode_utf8( $row->{'name'} );
@@ -516,9 +499,8 @@ sub _processModuleTasks
     my ($self, $module, $dbItemId) = @_;
 
     # Only for backward compatibility with 3rd-party software.
-    # Will be removed when RaiseError will be default in version 1.5.0
+    # Will be removed when RaiseError will be default
     local $self->{'_dbh'}->{'RaiseError'} = 0;
-
     $module->new()->process( $dbItemId );
 }
 

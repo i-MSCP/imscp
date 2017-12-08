@@ -7,6 +7,7 @@ Git 1.6.x
 BACKEND
     Added: composer.phar compatibility symlink for backward compatibility with plugins
     Added: Support for .timer unit files (Systemd init provider)
+    Enhancement: Make it possible to delay execution of the 'start', 'restart' and 'reload' actions (iMSCP::Service)
     Enhancement: Make it possible to discard files/directories when clearing a directory (iMSCP::Dir::clear)
     Enhancement: Make it possible to install Composer anywhere (iMSCP::Composer)
     Enhancement: Make it possible to override default composer.json (iMSCP::Composer)
@@ -105,6 +106,7 @@ INSTALLER
     Fixed: `build' mode is broken for fresh installs -- Packages must be pre-installed regardless of install mode
     Fixed: `CLIENT_DOMAIN_ALT_URLS' configuration parameter reseted to 0 (disabled) while running installer
     Fixed: `CLIENT_DOMAIN_ALT_URLS' parameter is not set on fresh installations
+    Fixed: DIRMNGR(8) daemon not being terminated when expected (APT key management -- Debian adapter)
     Fixed: Don't assume RSYSLOGD(8) as system log daemon -- One drop-in replacement could be installed instead
     Fixed: Filtering of packages that must be uninstalled is made too early (autoinstaller::Adapter::DebianAdapter)
     Fixed: If a password is getting incorrect due to a password policy change, user must be warned
@@ -201,6 +203,8 @@ YOUTRACK
     IP-1751 CLIENT_DOMAIN_ALT_URLS reseted
     IP-1753 Preseed SECONDARY_DNS does not accept spaces (as indicated in the text)
     IP-1756 Reseller overview page is loading too slow due to a slow SQL query
+    IP-1761 Wrong customer password after change through admin and reseller interfaces
+    IP-1762 mod_proxy_fcgi - timeout too long
 
 ------------------------------------------------------------------------------------------------------------------------
 Older release series

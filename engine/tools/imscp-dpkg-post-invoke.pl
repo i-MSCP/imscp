@@ -39,7 +39,7 @@ use iMSCP::Servers;
 use iMSCP::Packages;
 use POSIX qw / locale_h /;
 
-setlocale(LC_MESSAGES, 'C.UTF-8');
+setlocale( LC_MESSAGES, 'C.UTF-8' );
 
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -60,26 +60,24 @@ OPTIONS:
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-dpkg-post-invoke.lock', 'nowait' );
 
-$bootstrapper->getInstance()->boot(
-    {
-        config_readonly => 1,
-        mode            => 'backend',
-        nolock          => 1
-    }
-);
+$bootstrapper->getInstance()->boot( {
+    config_readonly => 1,
+    mode            => 'backend',
+    nolock          => 1
+} );
 
 my $rs = 0;
 
 for ( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
     next unless my $sub = $_->can( 'dpkgPostInvokeTasks' );
     debug( sprintf( 'Executing %s dpkg post-invoke tasks', $_ ));
-    $rs |= $sub->($_->factory());
+    $rs |= $sub->( $_->factory());
 }
 
 for ( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
     next unless my $sub = $_->can( 'dpkgPostInvokeTasks' );
     debug( sprintf( 'Executing %s dpkg post-invoke tasks', $_ ));
-    $rs |= $sub->($_->getInstance());
+    $rs |= $sub->( $_->getInstance());
 }
 
 exit $rs;
@@ -89,3 +87,7 @@ exit $rs;
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
+
+
+1;
+__END__

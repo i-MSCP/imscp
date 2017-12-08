@@ -91,12 +91,8 @@ sub _init
     }
 
     # Sort servers in descending order of priority
-    @{$self->{'servers'}} = sort {
-        "Servers::${b}"->getPriority() <=> "Servers::${a}"->getPriority()
-    } @{$self->{'servers'}};
-
+    @{$self->{'servers'}} = sort { "Servers::${b}"->getPriority() <=> "Servers::${a}"->getPriority() } @{$self->{'servers'}};
     @{$self->{'servers_full_names'}} = map { "Servers::${_}" } @{$self->{'servers'}};
-
     $self;
 }
 

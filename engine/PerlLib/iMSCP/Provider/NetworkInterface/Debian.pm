@@ -69,12 +69,8 @@ sub addIpAddr
     $data->{'ip_id'} =~ /^\d+$/ or die( 'ip_id parameter must be an integer' );
     $data->{'ip_id'} += 1000;
 
-    $self->{'net'}->isKnownDevice( $data->{'ip_card'} ) or die(
-        sprintf( "The '%s` network interface is unknown", $data->{'ip_card'} )
-    );
-    $self->{'net'}->isValidAddr( $data->{'ip_address'} ) or die(
-        sprintf( "The `%s' IP address is not valid", $data->{'ip_address'} )
-    );
+    $self->{'net'}->isKnownDevice( $data->{'ip_card'} ) or die( sprintf( "The '%s` network interface is unknown", $data->{'ip_card'} ));
+    $self->{'net'}->isValidAddr( $data->{'ip_address'} ) or die( sprintf( "The `%s' IP address is not valid", $data->{'ip_address'} ));
 
     my $addrVersion = $self->{'net'}->getAddrVersion( $data->{'ip_address'} );
 
@@ -98,10 +94,7 @@ sub addIpAddr
 
         my ($stdout, $stderr);
         execute( [ $COMMANDS{'ifup'}, '--force', $netCard ], \$stdout, \$stderr ) == 0 or die(
-            sprintf(
-                "Couldn't bring up the `%s' network interface: %s", "$data->{'ip_card'}:$data->{'ip_id'}",
-                $stderr || 'Unknown error'
-            )
+            sprintf( "Couldn't bring up the `%s' network interface: %s", "$data->{'ip_card'}:$data->{'ip_id'}", $stderr || 'Unknown error' )
         );
         return $self;
     }
@@ -136,17 +129,12 @@ sub removeIpAddr
     ) {
         my ($stdout, $stderr);
         execute( "$COMMANDS{'ifdown'} --force $data->{'ip_card'}:$data->{'ip_id'}", \$stdout, \$stderr ) == 0 or die(
-            sprintf(
-                "Couldn't bring down the `%s' network interface: %s", "$data->{'ip_card'}:$data->{'ip_id'}",
-                $stderr || 'Unknown error'
-            )
+            sprintf( "Couldn't bring down the `%s' network interface: %s", "$data->{'ip_card'}:$data->{'ip_id'}", $stderr || 'Unknown error' )
         );
 
         my $ifupStateFile = $IFUP_STATE_DIR . "/ifup.$data->{'ip_card'}:$data->{'ip_id'}";
         if ( -f $ifupStateFile ) {
-            iMSCP::File->new( filename => $ifupStateFile )->delFile == 0 or die(
-                sprintf( "Couldn't remove `%s' ifup state file", $ifupStateFile )
-            );
+            iMSCP::File->new( filename => $ifupStateFile )->delFile == 0 or die( sprintf( "Couldn't remove `%s' ifup state file", $ifupStateFile ));
         }
     } elsif ( $data->{'ip_config_mode'} eq 'auto' ) {
         # Cover not aliased interface (IPv6) case

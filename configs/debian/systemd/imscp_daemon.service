@@ -5,7 +5,6 @@ Description=i-MSCP communication daemon
 After=local-fs.target network.target syslog.target
 
 [Service]
-Nice=10
 Type=forking
 PIDFile=/var/run/imscp_daemon.pid
 ExecStart=/var/www/imscp/daemon/imscp_daemon -b /var/www/imscp/engine/imscp-rqst-mngr -p /var/run/imscp_daemon.pid

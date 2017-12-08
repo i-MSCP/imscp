@@ -105,7 +105,7 @@ sub _removeSqlUser
     my $sqlServer = Servers::sqld->factory();
     return 0 unless $self->{'config'}->{'DATABASE_USER'};
 
-    for(
+    for (
         $main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1', '%'
     ) {
         next unless $_;
@@ -194,7 +194,7 @@ sub _removeFiles
         return $rs if $rs;
     };
 
-    for( 'cron.d', 'logrotate.d' ) {
+    for ( 'cron.d', 'logrotate.d' ) {
         next unless -f "/etc/$_/imscp_roundcube";
         my $rs = iMSCP::File->new( filename => "/etc/$_/imscp_roundcube" )->delFile();
         return $rs if $rs;

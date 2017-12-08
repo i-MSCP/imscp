@@ -135,7 +135,7 @@ function generatePhpBlock($tpl)
 
     $cfg = Registry::get('config');
 
-    if ($cfg['HTTPD_SERVER'] == 'apache_itk') {
+    if ($cfg['HTTPD_SERVER'] == 'apache2_mpm_itk') {
         $tpl->assign([
             'PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK' => '',
             'PHP_EDITOR_MAIL_FUNCTION_BLOCK'     => ''

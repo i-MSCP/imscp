@@ -81,10 +81,7 @@ sub getBloc( $$$;$ )
 
     $beginTag = "\Q$beginTag\E" unless ref $beginTag eq 'Regexp';
     $endingTag = "\Q$endingTag\E" unless ref $endingTag eq 'Regexp';
-    ( $includeTags
-        ? $template =~ /([\t ]*$beginTag.*?[\t ]*$endingTag)/s
-        : $template =~ /[\t ]*$beginTag(.*?)[\t ]*$endingTag/s
-    ) ? $1 : '';
+    ( $includeTags ? $template =~ /([\t ]*$beginTag.*?[\t ]*$endingTag)/s : $template =~ /[\t ]*$beginTag(.*?)[\t ]*$endingTag/s ) ? $1 : '';
 }
 
 =item replaceBloc( $beginTag, $endingTag, $repl, $template [, $preserveTags = false ] )

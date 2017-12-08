@@ -3,7 +3,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2017.10.16
+# Last update: 2017.12.06
 
 %main::questions = (
     # Mandatory parameters
@@ -268,26 +268,42 @@
 
     # HTTPd server implementation
     #
-    # Possible values: apache_itk, apache_fcgid, apache_php_fpm
+    # Possible values: apache2_mpm_event, apache2_mpm_itk,
+    # apache2_mpm_prefork, apache2_mpm_worker
     #
-    # Leave empty for default: apache_php_fpm
+    # Leave empty for default: apache2_mpm_event
     HTTPD_SERVER                        => '',
 
-    # PHP version to use
+    # PHP version for customers
     #
-    # Popssible values: php5.6, php7.0, php7.1
+    # Possible values (depending of your distribution):
+    #
+    #  php5.6, php7.0, php7.1, php7.2
     #
     # Leave empty for default: php5.6
     PHP_SERVER                          => '',
 
-    # PHP configuration level
+    # PHP SAPI for customers
+    #
+    # This parameter is only relevant when HTTPD_SERVER is other than
+    # apache2_mpm_itk. The apache2_mpm_itk server involve the apache2handler
+    # PHP SAPI (PHP as Apache2 module)
+    #
+    # Possible values: fpm, cgi
+    #
+    # Leave empty for default: fpm
+    PHP_SAPI                            => '', 
+    
+    # PHP configuration level for customers
     #
     # Possible values: per_user, per_domain, per_site
     #
     # Leave empty for default: per_site
     PHP_CONFIG_LEVEL                    => '',
 
-    # PHP-FPM listen socket type (only relevant with 'apache_php_fpm')
+    # PHP-FPM FastCGI connection type
+    #
+    # This parameter is only relevant with the fpm PHP SAPI.
     #
     # Possible values: uds, tcp
     #
@@ -394,16 +410,21 @@
 
     # Webstats package
     #
-    # Possible values: Awstats, No
+    # Possible values: 'no' or a list of comma separated packages names.
+    # Available packages:
+    # - Awstats (default)
     #
-    # Leave empty for default: Awstats
+    # Leave empty for default.
     WEBSTATS_PACKAGES                   => '',
 
     # FTP Web file manager packages
     #
-    # Possible values: Pydio (only if PHP < 7.0), Net2ftp and MonstaFTP
+    # Possible values: 'no' or a list of comma separated packages names.
+    # Available packages:
+    # - Pydio (currently not available due to PHP version constraint that is not met)
+    # - MonstaFTP (default)
     #
-    # Leave empty for default: MonstaFTP
+    # Leave empty for default.
     FILEMANAGER_PACKAGE                 => '',
 
     # SQL user for PhpMyAdmin
@@ -417,9 +438,12 @@
 
     # Webmmail packages
     #
-    # Possible values: 'No' or a list of comma separated packages.
+    # Possible values: 'no' or a list of comma separated packages names.
+    # Available packages:
+    # - RainLoop (default)
+    # - Roundcube (default)
     #
-    # Leave empty for default: RainLoop,Roundcube
+    # Leave empty for default.
     WEBMAIL_PACKAGES                    => '',
 
     # SQL user for Roundcube package (only if you use Roundcube)
@@ -442,7 +466,7 @@
 
     # Anti-rootkits packages
     #
-    # Possible values: 'No' or a list of comma separated packages.
+    # Possible values: 'no' or a list of comma separated packages names.
     #
     # Leave empty for default: Chkrootkit,Rkhunter
     ANTI_ROOTKITS_PACKAGES              => ''

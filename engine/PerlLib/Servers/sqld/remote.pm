@@ -115,16 +115,14 @@ sub setEnginePermissions
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldSetEnginePermissions' );
-    $rs ||= setRights(
-        "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf",
+    $rs ||= setRights( "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf",
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ROOT_GROUP'},
             mode  => '0644'
         }
     );
-    $rs ||= setRights(
-        "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf",
+    $rs ||= setRights( "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf",
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ROOT_GROUP'},
@@ -158,8 +156,7 @@ sub createUser
         local $dbh->{'RaiseError'} = 1;
         $dbh->do(
             'CREATE USER ?@? IDENTIFIED BY ?'
-                . ( ( $self->getType() ne 'mariadb'
-                    && version->parse( $self->getVersion()) >= version->parse( '5.7.6' ) )
+                . ( ( $self->getType() ne 'mariadb' && version->parse( $self->getVersion()) >= version->parse( '5.7.6' ) )
                 ? ' PASSWORD EXPIRE NEVER' : ''
             ),
             undef, $user, $host, $password

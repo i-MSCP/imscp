@@ -77,17 +77,15 @@ sub loadConfig
 
     # Load old configuration
     if ( -f "$main::imscpConfig{'CONF_DIR'}/imscpOld.conf" ) { # Recovering following an installation or upgrade failure
-        tie %main::imscpOldConfig,
-            'iMSCP::Config', fileName => "$main::imscpConfig{'CONF_DIR'}/imscpOld.conf", readonly => 1, temporary => 1;
+        tie %main::imscpOldConfig, 'iMSCP::Config', fileName => "$main::imscpConfig{'CONF_DIR'}/imscpOld.conf", readonly => 1, temporary => 1;
     } elsif ( -f "$main::imscpConfig{'CONF_DIR'}/imscp.conf" ) { # Upgrade case
-        tie %main::imscpOldConfig,
-            'iMSCP::Config', fileName => "$main::imscpConfig{'CONF_DIR'}/imscp.conf", readonly => 1, temporary => 1;
+        tie %main::imscpOldConfig, 'iMSCP::Config', fileName => "$main::imscpConfig{'CONF_DIR'}/imscp.conf", readonly => 1, temporary => 1;
     } else { # Frech installation case
         %main::imscpOldConfig = %main::imscpConfig;
     }
 
     if ( tied( %main::imscpOldConfig ) ) {
-        debug( 'Merging old configuration with new configuration...' );
+        debug( 'Merging old configuration with new configuration ...' );
         # Merge old configuration in new configuration, excluding upstream defined values
         while ( my ($key, $value) = each( %main::imscpOldConfig ) ) {
             next unless exists $main::imscpConfig{$key};
@@ -280,7 +278,7 @@ EOF
     return $rs if $rs;
 
     my $step = 1;
-    my $nbSteps = scalar @steps;
+    my $nbSteps = @steps;
     for ( @steps ) {
         $rs = step( @{$_}, $nbSteps, $step );
         error( 'An error occurred while performing installation steps' ) if $rs;
@@ -298,8 +296,7 @@ EOF
     Net::LibIDN->import( 'idn_to_unicode' );
 
     my $port = $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://'
-        ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
-        : $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
+        ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'} : $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
     my $vhost = idn_to_unicode( $main::imscpConfig{'BASE_SERVER_VHOST'}, 'utf-8' ) // '';
 
     iMSCP::Dialog->getInstance()->infobox( <<"EOF" );
@@ -431,7 +428,7 @@ sub _confirmDistro
 {
     my ($dialog) = @_;
 
-    $dialog->infobox( "\nDetecting target distribution..." );
+    $dialog->infobox( "\nDetecting target distribution ..." );
 
     if ( $main::imscpConfig{'DISTRO_ID'} =~ /^(?:de(?:bi|vu)an|ubuntu)$/
         && $main::imscpConfig{'DISTRO_RELEASE'} ne 'n/a'
@@ -504,17 +501,17 @@ sub _askInstallerMode
 
     $dialog->set( 'cancel-label', 'Abort' );
 
-    my ($rs, $mode) = $dialog->radiolist( <<"EOF", [ 'auto', 'manual' ], 'auto' );
-
+    my %choices = ( 'auto', 'Automatic installation', 'Manual installation', 'Manual' );
+    my ($rs, $value) = $dialog->radiolist( <<"EOF", \%choices, 'auto' );
 Please choose the installer mode:
 
 See https://wiki.i-mscp.net/doku.php?id=start:installer#installer_modes for a full description of the installer modes.
- 
+\\Z \\Zn
 EOF
 
     return 50 if $rs;
 
-    $main::buildonly = $mode eq 'manual' ? 1 : 0;
+    $main::buildonly = $value eq 'manual';
     $dialog->set( 'cancel-label', 'Back' );
     0;
 }
@@ -571,12 +568,10 @@ sub _buildDistributionFiles
 sub _buildConfigFiles
 {
     my $masterConfDir = "$FindBin::Bin/configs/debian";
-    my $distConfdir = $main::imscpConfig{'DISTRO_ID'} ne 'debian' &&
-            -d "$FindBin::Bin/configs/$main::imscpConfig{'DISTRO_ID'}"
+    my $distConfdir = $main::imscpConfig{'DISTRO_ID'} ne 'debian' && -d "$FindBin::Bin/configs/$main::imscpConfig{'DISTRO_ID'}"
         ? "$FindBin::Bin/configs/$main::imscpConfig{'DISTRO_ID'}" : $masterConfDir;
 
-    my $installFilePath = $distConfdir ne $masterConfDir && -f "$distConfdir/install.xml"
-        ? "$distConfdir/install.xml" : "$masterConfDir/install.xml";
+    my $installFilePath = $distConfdir ne $masterConfDir && -f "$distConfdir/install.xml" ? "$distConfdir/install.xml" : "$masterConfDir/install.xml";
 
     my $rs = _processXmlInstallFile( $installFilePath );
     return $rs if $rs;
@@ -647,11 +642,8 @@ sub _compileDaemon
     return $rs if $rs;
 
     iMSCP::Dir->new( dirname => "$main::{'SYSTEM_ROOT'}/daemon" )->make();
-    $rs = iMSCP::File->new( filename => 'imscp_daemon' )->copyFile(
-        "$main::{'SYSTEM_ROOT'}/daemon", { preserve => 'no' }
-    );
-    $rs ||= iMSCP::Rights::setRights(
-        "$main::{'SYSTEM_ROOT'}/daemon/imscp_daemon",
+    $rs = iMSCP::File->new( filename => 'imscp_daemon' )->copyFile( "$main::{'SYSTEM_ROOT'}/daemon", { preserve => 'no' } );
+    $rs ||= iMSCP::Rights::setRights( "$main::{'SYSTEM_ROOT'}/daemon/imscp_daemon",
         {
             user  => $main::imscpConfig{'ROOT_GROUP'},
             group => $main::imscpConfig{'ROOT_GROUP'},
@@ -737,7 +729,7 @@ sub _savePersistentData
 
 sub _removeObsoleteFiles
 {
-    for( "$main::imscpConfig{'CACHE_DATA_DIR'}/addons",
+    for ( "$main::imscpConfig{'CACHE_DATA_DIR'}/addons",
         "$main::imscpConfig{'CONF_DIR'}/apache/backup",
         "$main::imscpConfig{'CONF_DIR'}/apache/skel/alias/phptmp",
         "$main::imscpConfig{'CONF_DIR'}/apache/skel/subdomain/phptmp",
@@ -749,6 +741,8 @@ sub _removeObsoleteFiles
         "$main::imscpConfig{'CONF_DIR'}/hooks.d",
         "$main::imscpConfig{'CONF_DIR'}/init.d",
         "$main::imscpConfig{'CONF_DIR'}/nginx",
+        "$main::imscpConfig{'CONF_DIR'}/php/apache",
+        "$main::imscpConfig{'CONF_DIR'}/php/fcgi",
         "$main::imscpConfig{'CONF_DIR'}/php-fpm",
         "$main::imscpConfig{'CONF_DIR'}/postfix/backup",
         "$main::imscpConfig{'CONF_DIR'}/postfix/imscp",
@@ -761,7 +755,7 @@ sub _removeObsoleteFiles
         iMSCP::Dir->new( dirname => $_ )->remove();
     }
 
-    for( "$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_disabled_ssl.tpl",
+    for ( "$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_disabled_ssl.tpl",
         "$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_redirect.tpl",
         "$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_redirect_ssl.tpl",
         "$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_ssl.tpl",
@@ -786,6 +780,7 @@ sub _removeObsoleteFiles
         '/etc/default/imscp_panel',
         '/etc/init/php5-fpm.override',
         '/etc/logrotate.d/imscp',
+        '/etc/nginx/imscp_net2ftp.conf',
         '/etc/systemd/system/php5-fpm.override',
         '/usr/local/lib/imscp_panel/imscp_panel_checkconf',
         '/usr/sbin/maillogconvert.pl'
@@ -812,7 +807,7 @@ sub _processXmlInstallFile
     my ($installFilePath) = @_;
 
     eval "use XML::Simple; 1";
-    die( sprintf( "Couldn't load the XML::Simple perl module: %s", $@ ) ) if $@;
+    die( sprintf( "Couldn't load the XML::Simple perl module: %s", $@ )) if $@;
     my $xml = XML::Simple->new( ForceArray => 1, ForceContent => 1 );
     my $node = eval { $xml->XMLin( $installFilePath, VarAttr => 'export' ) };
     if ( $@ ) {
@@ -904,16 +899,14 @@ sub _processFolderNode
     my ($node) = @_;
 
     return 0 if defined $node->{'create_if'} && !eval _expandVars( $node->{'create_if'} );
-    
+
     my $dir = iMSCP::Dir->new( dirname => $node->{'content'} );
     $dir->remove() if $node->{'pre_remove'};
-    $dir->make(
-        {
-            user  => defined $node->{'user'} ? _expandVars( $node->{'owner'} ) : undef,
-            group => defined $node->{'group'} ? _expandVars( $node->{'group'} ) : undef,
-            mode  => defined $node->{'mode'} ? oct( $node->{'mode'} ) : undef
-        }
-    );
+    $dir->make( {
+        user  => defined $node->{'user'} ? _expandVars( $node->{'owner'} ) : undef,
+        group => defined $node->{'group'} ? _expandVars( $node->{'group'} ) : undef,
+        mode  => defined $node->{'mode'} ? oct( $node->{'mode'} ) : undef
+    } );
 }
 
 =item _processCopyConfigNode( \%node )
@@ -948,8 +941,7 @@ sub _processCopyConfigNode
     my ($name, $path) = fileparse( $node->{'content'} );
 
     # If $name isn't in current directory, take it from master configuration directory
-    my $source = -e $name
-        ? $name : $CWD =~ s%^($FindBin::Bin/configs/)$main::imscpConfig{'DISTRO_ID'}%${1}debian%r . "/$name";
+    my $source = -e $name ? $name : $CWD =~ s%^($FindBin::Bin/configs/)$main::imscpConfig{'DISTRO_ID'}%${1}debian%r . "/$name";
 
     # Override target name if requested
     $name = $node->{'copy_as'} if defined $node->{'copy_as'};
@@ -967,8 +959,7 @@ sub _processCopyConfigNode
 
     if ( defined $node->{'user'} || defined $node->{'group'} ) {
         my $rs = $file->owner(
-            ( defined $node->{'user'} ? _expandVars( $node->{'user'} ) : -1 ),
-            ( defined $node->{'group'} ? _expandVars( $node->{'group'} ) : -1 )
+            ( defined $node->{'user'} ? _expandVars( $node->{'user'} ) : -1 ), ( defined $node->{'group'} ? _expandVars( $node->{'group'} ) : -1 )
         );
         return $rs if $rs;
     }
@@ -1009,8 +1000,7 @@ sub _processCopyNode
 
     if ( defined $node->{'user'} || defined $node->{'group'} ) {
         my $rs = $file->owner(
-            ( defined $node->{'user'} ? _expandVars( $node->{'user'} ) : -1 ),
-            ( defined $node->{'group'} ? _expandVars( $node->{'group'} ) : -1 )
+            ( defined $node->{'user'} ? _expandVars( $node->{'user'} ) : -1 ), ( defined $node->{'group'} ? _expandVars( $node->{'group'} ) : -1 )
         );
         return $rs if $rs;
     }

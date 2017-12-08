@@ -93,7 +93,7 @@ sub _init
 
 sub _deleteSystemFiles
 {
-    for( 'cron.daily', 'logrotate.d' ) {
+    for ( 'cron.daily', 'logrotate.d' ) {
         next unless -f "/etc/$_/imscp_frontend";
         my $rs = iMSCP::File->new( filename => "/etc/$_/imscp_frontend" )->delFile();
         return $rs if $rs;
@@ -118,7 +118,7 @@ sub _deconfigurePHP
         return 1;
     }
 
-    for( '/etc/default/imscp_panel', '/etc/tmpfiles.d/imscp_panel.conf',
+    for ( '/etc/default/imscp_panel', '/etc/tmpfiles.d/imscp_panel.conf',
         "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/imscp_panel", '/usr/local/sbin/imscp_panel',
         '/var/log/imscp_panel.log'
     ) {

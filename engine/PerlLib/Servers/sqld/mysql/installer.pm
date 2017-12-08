@@ -96,13 +96,9 @@ sub masterSqlUserDialog
     my $port = main::setupGetQuestion( 'DATABASE_PORT' );
     my $user = main::setupGetQuestion( 'DATABASE_USER', iMSCP::Getopt->preseed ? 'imscp_user' : '' );
     $user = 'imscp_user' if lc( $user ) eq 'root'; # Handle upgrade case
-    my $pwd = main::setupGetQuestion(
-        'DATABASE_PASSWORD', iMSCP::Getopt->preseed ? randomStr( 16, iMSCP::Crypt::ALNUM ) : ''
-    );
+    my $pwd = main::setupGetQuestion( 'DATABASE_PASSWORD', iMSCP::Getopt->preseed ? randomStr( 16, iMSCP::Crypt::ALNUM ) : '' );
 
-    if ( $pwd ne ''
-        && !iMSCP::Getopt->preseed
-    ) {
+    if ( $pwd ne '' && !iMSCP::Getopt->preseed ) {
         $pwd = decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv, $pwd );
         $pwd = '' unless isValidPassword( $pwd ); # Handle case of badly decrypted password
     }
@@ -131,6 +127,7 @@ sub masterSqlUserDialog
             ( $rs, $user ) = $dialog->inputbox( <<"EOF", $user );
 $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter a username for the i-MSCP master SQL user (leave empty for default):
+\\Z \\Zn
 EOF
         } while $rs < 30
             && ( !isValidUsername( $user )
@@ -149,6 +146,7 @@ EOF
             ( $rs, $pwd ) = $dialog->inputbox( <<"EOF", $pwd );
 $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter a password for the master i-MSCP SQL user (leave empty for autogeneration):
+\\Z \\Zn
 EOF
         } while $rs < 30
             && !isValidPassword( $pwd );
@@ -198,6 +196,7 @@ sub sqlUserHostDialog
             ( $rs, $hostname ) = $dialog->inputbox( <<"EOF", idn_to_unicode( $hostname, 'utf-8' ) // '' );
 $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter the host from which SQL users created by i-MSCP must be allowed to connect:
+\\Z \\Zn
 EOF
         } while $rs < 30
             && ( $hostname ne '%'
@@ -243,6 +242,7 @@ sub databaseNameDialog
             ( $rs, $dbName ) = $dialog->inputbox( <<"EOF", $dbName );
 $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter a database name for i-MSCP:
+\\Z \\Zn
 EOF
             if ( isValidDbName( $dbName ) ) {
                 my $db = iMSCP::Database->factory();
@@ -293,27 +293,26 @@ sub databasePrefixDialog
 {
     my (undef, $dialog) = @_;
 
-    my $prefix = main::setupGetQuestion( 'MYSQL_PREFIX', iMSCP::Getopt->preseed ? 'none' : '' );
+    my $value = main::setupGetQuestion( 'MYSQL_PREFIX', iMSCP::Getopt->preseed ? 'none' : '' );
+    my %choices = ( 'behind', 'Behind', 'infront', 'Infront', 'none', 'None' );
 
-    if ( $main::reconfigure =~ /^(?:sql|servers|all|forced)$/
-        || !isStringInList( $prefix, 'behind', 'infront', 'none' )
+    if ( isStringInList( $main::reconfigure, 'sql', 'servers', 'all', 'forced' )
+        || !isStringInList( $value, keys %choices )
     ) {
-        ( my $rs, $prefix ) = $dialog->radiolist(
-            <<"EOF", [ 'infront', 'behind', 'none' ], $prefix =~ /^(?:behind|infront)$/ ? $prefix : 'none' );
+        ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'none' );
 \\Z4\\Zb\\ZuMySQL Database Prefix/Suffix\\Zn
 
 Do you want to use a prefix or suffix for customer's SQL databases?
 
-\\Z4Infront:\\Zn A numeric prefix such as '1_' will be added to each customer
-         SQL user and database name.
- \\Z4Behind:\\Zn A numeric suffix such as '_1' will be added to each customer
-         SQL user and database name.
+\\Z4Infront:\\Zn A numeric prefix such as '1_' will be added to each SQL user and database name.
+ \\Z4Behind:\\Zn A numeric suffix such as '_1' will be added to each SQL user and database name.
    \\Z4None\\Zn: Choice will be let to customer.
+\\Z \\Zn
 EOF
         return $rs unless $rs < 30;
     }
 
-    main::setupSetQuestion( 'MYSQL_PREFIX', $prefix );
+    main::setupSetQuestion( 'MYSQL_PREFIX', $value );
     0;
 }
 
@@ -406,6 +405,7 @@ sub _askSqlRootUser
         ( $rs, $hostname ) = $dialog->inputbox( <<"EOF", $hostname );
 $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter your SQL server hostname or IP address:
+\\Z \\Zn
 EOF
     } while $rs < 30 && ( $hostname ne 'localhost'
         && !isValidHostname( $hostname )
@@ -419,6 +419,7 @@ EOF
         ( $rs, $port ) = $dialog->inputbox( <<"EOF", $port );
 $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter your SQL server port:
+\\Z \\Zn
 EOF
     } while $rs < 30
         && !isNumber( $port )
@@ -434,6 +435,7 @@ Please enter your SQL root username:
 
 Note that this user must have full privileges on the SQL server.
 i-MSCP only uses that user while installation or reconfiguration.
+\\Z \\Zn
 EOF
     } while $rs < 30 && !isNotEmpty( $user );
 
@@ -444,6 +446,7 @@ EOF
         ( $rs, $pwd ) = $dialog->passwordbox( <<"EOF" );
 $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter your SQL root user password:
+\\Z \\Zn
 EOF
     } while $rs < 30 && !isNotEmpty( $pwd );
 
@@ -454,7 +457,6 @@ EOF
         chomp( $connectError );
 
         $rs = $dialog->msgbox( <<"EOF" );
-
 \\Z1Connection to SQL server failed\\Zn
 
 i-MSCP installer couldn't connect to SQL server using the following data:
@@ -543,13 +545,11 @@ sub _buildConf
     my $confDir = $self->{'config'}->{'SQLD_CONF_DIR'};
 
     # Make sure that the conf.d directory exists
-    iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make(
-        {
+    iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make( {
             user  => $rootUName,
             group => $rootGName,
             mode  => 0755
-        }
-    );
+        } );
 
     # Create the /etc/mysql/my.cnf file if missing
     unless ( -f "$confDir/my.cnf" ) {
@@ -643,10 +643,7 @@ EOF
 
         # Filter all "duplicate column", "duplicate key" and "unknown column"
         # errors as the command is designed to be idempotent.
-        my $rs = execute(
-            "mysql_upgrade --defaults-file=$mysqlConffile 2>&1 | egrep -v '^(1|\@had|ERROR (1054|1060|1061))'",
-            \my $stdout
-        );
+        my $rs = execute( "/usr/bin/mysql_upgrade --defaults-file=$mysqlConffile 2>&1 | egrep -v '^(1|\@had|ERROR (1054|1060|1061))'", \my $stdout );
         error( sprintf( "Couldn't upgrade SQL server system tables: %s", $stdout )) if $rs;
         return $rs if $rs;
         debug( $stdout ) if $stdout;
@@ -662,9 +659,7 @@ EOF
 
         # Disable unwanted plugins (bc reasons)
         for ( qw/ cracklib_password_check simple_password_check validate_password / ) {
-            $dbh->do( "UNINSTALL PLUGIN $_" ) if $dbh->selectrow_hashref(
-                "SELECT name FROM mysql.plugin WHERE name = '$_'"
-            );
+            $dbh->do( "UNINSTALL PLUGIN $_" ) if $dbh->selectrow_hashref( "SELECT name FROM mysql.plugin WHERE name = '$_'" );
         }
     };
     if ( $@ ) {
@@ -696,7 +691,6 @@ sub _setupMasterSqlUser
     # Remove old user if any
     for my $sqlUser ( $oldUser, $user ) {
         next unless $sqlUser;
-
         for my $host( $userHost, $oldUserHost ) {
             next unless $host;
             $self->{'sqld'}->dropUser( $sqlUser, $host );
@@ -750,10 +744,8 @@ sub _setupSecureInstallation
 
         # Remove anonymous users
         $dbh->do( "DELETE FROM user WHERE User = ''" );
-
         # Remove test database if any
         $dbh->do( 'DROP DATABASE IF EXISTS `test`' );
-
         # Remove privileges on test database
         $dbh->do( "DELETE FROM db WHERE Db = 'test' OR Db = 'test\\_%'" );
 
@@ -819,9 +811,7 @@ sub _setupDatbase
     # In all cases, we process database update. This is important because sometime some developer forget to update the
     # database revision in the main database.sql file.
     my $rs = $self->{'eventManager'}->getInstance()->trigger( 'beforeSetupUpdateDatabase' );
-    $rs ||= execute(
-        "/usr/bin/php7.1 -d date.timezone=UTC $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php", \ my $stdout, \ my $stderr
-    );
+    $rs ||= execute( "/usr/bin/php7.1 -d date.timezone=UTC $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     $rs ||= $self->{'eventManager'}->getInstance()->trigger( 'afterSetupUpdateDatabase' );

@@ -35,21 +35,14 @@ our @EXPORT = qw/
     setVerbose setDebug output silent /;
 
 BEGIN {
-    $SIG{'__DIE__'} = sub {
-        fatal( @_, ( caller( 1 ) )[3] || 'main' ) if defined $^S && !$^S
-    };
-    $SIG{'__WARN__'} = sub {
-        warning( @_, ( caller( 1 ) )[3] || 'main' );
-    };
+    $SIG{'__DIE__'} = sub { fatal( @_, ( caller( 1 ) )[3] || 'main' ) if defined $^S && !$^S };
+    $SIG{'__WARN__'} = sub { warning( @_, ( caller( 1 ) )[3] || 'main' ); };
 }
 
 my $self;
 $self = {
     debug           => sub { iMSCP::Getopt->debug },
-    verbose         => sub {
-        ( ( !defined $main::execmode || $main::execmode ne 'setup' )
-            || iMSCP::Getopt->noprompt ) && iMSCP::Getopt->verbose
-    },
+    verbose         => sub { ( ( !defined $main::execmode || $main::execmode ne 'setup' ) || iMSCP::Getopt->noprompt ) && iMSCP::Getopt->verbose },
     debug_callbacks => [],
     loggers         => [ iMSCP::Log->new( id => 'default' ) ],
     logger          => sub { $self->{'loggers'}->[$#{$self->{'loggers'}}] }
@@ -123,9 +116,7 @@ sub newDebug
     my ($logfileId) = @_;
 
     defined $logfileId or die( 'A log file unique identifier is expected' );
-    !grep( $_->getId() eq $logfileId, @{$self->{'loggers'}} ) or die(
-        'A logger with same identifier already exists'
-    );
+    !grep( $_->getId() eq $logfileId, @{$self->{'loggers'}} ) or die( 'A logger with same identifier already exists' );
     push @{$self->{'loggers'}}, iMSCP::Log->new( id => $logfileId );
 }
 
@@ -148,7 +139,7 @@ sub endDebug
 
     # warn, error and fatal log messages must be always stored in default
     # logger for later processing
-    for( $logger->retrieve( tag => qr/(?:warn|error|fatal)/ ) ) {
+    for ( $logger->retrieve( tag => qr/(?:warn|error|fatal)/ ) ) {
         $self->{'loggers'}->[0]->store( %{$_} );
     }
 
@@ -159,13 +150,11 @@ sub endDebug
         require iMSCP::Dir;
 
         eval {
-            iMSCP::Dir->new( dirname => $logDir )->make(
-                {
-                    user  => $main::imscpConfig{'ROOT_USER'},
-                    group => $main::imscpConfig{'ROOT_GROUP'},
-                    mode  => 0750
-                }
-            );
+            iMSCP::Dir->new( dirname => $logDir )->make( {
+                user  => $main::imscpConfig{'ROOT_USER'},
+                group => $main::imscpConfig{'ROOT_GROUP'},
+                mode  => 0750
+            } );
         };
         $logDir = '/tmp' if $@;
     }
@@ -281,6 +270,7 @@ sub getMessageByType
         chrono => $options->{'chrono'} // 1,
         remove => $options->{'remove'} // 0
     );
+
     wantarray ? @messages : join "\n", @messages;
 }
 
@@ -365,7 +355,7 @@ sub debugRegisterCallBack
 sub _writeLogfile
 {
     my ($logger, $logfilePath) = @_;
-    
+
     if ( open( my $fh, '>', $logfilePath ) ) {
         print { $fh } _getMessages( $logger ) =~ s/\x1b\[[0-9;]*[mGKH]//gr;
         close $fh;
@@ -389,7 +379,7 @@ sub _getMessages
     my ($logger) = @_;
 
     my $bf = '';
-    for( $logger->flush() ) {
+    for ( $logger->flush() ) {
         $bf .= "[$_->{'when'}] [$_->{'tag'}] $_->{'message'}\n";
     }
     $bf;
@@ -404,13 +394,13 @@ sub _getMessages
 END {
     &{$_} for @{$self->{'debug_callbacks'}};
 
-    my $countLoggers = scalar @{$self->{'loggers'}};
+    my $countLoggers = @{$self->{'loggers'}};
     while ( $countLoggers > 0 ) {
         endDebug();
         $countLoggers--;
     }
 
-    for( $self->{'logger'}()->retrieve( tag => qr/(?:warn|error|fatal)/, remove => 1 ) ) {
+    for ( $self->{'logger'}()->retrieve( tag => qr/(?:warn|error|fatal)/, remove => 1 ) ) {
         print STDERR output( $_->{'message'}, $_->{'tag'} );
     }
 }

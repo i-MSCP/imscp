@@ -103,9 +103,7 @@ sub _removeSqlUser
     my ($self) = @_;
 
     return 0 unless $self->{'config'}->{'DATABASE_USER'} && $main::imscpConfig{'DATABASE_USER_HOST'};
-    Servers::sqld->factory()->dropUser(
-        $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'}
-    );
+    Servers::sqld->factory()->dropUser( $self->{'config'}->{'DATABASE_USER'}, $main::imscpConfig{'DATABASE_USER_HOST'} );
 }
 
 =item _removeSqlDatabase( )
@@ -123,7 +121,6 @@ sub _removeSqlDatabase
     eval {
         my $dbh = $self->{'db'}->getRawDb();
         local $dbh->{'RaiseError'} = 1;
-
         $dbh->do( "DROP DATABASE IF EXISTS " . $dbh->quote_identifier( $main::imscpConfig{'DATABASE_NAME'} . '_pma' ));
     };
     if ( $@ ) {
@@ -148,9 +145,7 @@ sub _unregisterConfig
 
     return 0 unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf";
 
-    my $file = iMSCP::File->new(
-        filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf"
-    );
+    my $file = iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf" );
     my $fileContentRef = $file->getAsRef();
     unless ( defined $fileContentRef ) {
         error( sprintf( "Couldn't read %s file", $file->{'filename'} ));
@@ -181,9 +176,7 @@ sub _removeFiles
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma" )->remove();
 
     if ( -f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pma.conf" ) {
-        my $rs = iMSCP::File->new(
-            filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pma.conf"
-        )->delFile();
+        my $rs = iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pma.conf" )->delFile();
         return $rs if $rs;
     }
 

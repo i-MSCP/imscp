@@ -127,7 +127,7 @@ sub addSystemUser
         push @commands, [ $usermodCmd, [ 0 ] ] if @{$usermodCmd} > 2;
     }
 
-    for( @commands ) {
+    for ( @commands ) {
         my $rs = execute( $_->[0], \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         unless ( grep($_ == $rs, @{$_->[1]}) ) {
@@ -200,7 +200,7 @@ sub delSystemUser
         ]
     );
 
-    for( @commands ) {
+    for ( @commands ) {
         my $rs = execute( $_->[0], \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         unless ( grep($_ == $rs, @{$_->[1]}) ) {

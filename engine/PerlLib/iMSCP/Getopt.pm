@@ -174,7 +174,7 @@ our @reconfigurationItems = sort(
     'hostnames', 'system_hostname', 'panel_hostname', 'panel_ports',
     'primary_ip', 'admin', 'admin_credentials', 'admin_email', 'php',
     'timezone', 'panel', 'panel_ssl', 'system_server', 'services_ssl',
-    'ssl', 'backup', 'webstats', 'sqlmanager', 'webmails', 'filemanager',
+    'ssl', 'backup', 'webstats', 'sqlmanager', 'webmails', 'filemanagers',
     'antirootkits', 'alt_urls_feature'
 );
 

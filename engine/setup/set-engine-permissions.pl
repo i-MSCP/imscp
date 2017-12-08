@@ -38,9 +38,9 @@ use iMSCP::Getopt;
 use iMSCP::Rights;
 use iMSCP::Servers;
 use iMSCP::Packages;
-use POSIX qw /locale_h /;
+use POSIX qw / locale_h /;
 
-setlocale(LC_MESSAGES, "C.UTF-8");
+setlocale( LC_MESSAGES, "C.UTF-8" );
 
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -66,15 +66,13 @@ OPTIONS:
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-set-engine-permissions.lock', 'nowait' );
 
-$bootstrapper->boot(
-    {
-        mode            => $main::execmode,
-        nolock          => 1,
-        nodatabase      => 1,
-        nokeys          => 1,
-        config_readonly => 1
-    }
-);
+$bootstrapper->boot( {
+    mode            => $main::execmode,
+    nolock          => 1,
+    nodatabase      => 1,
+    nokeys          => 1,
+    config_readonly => 1
+} );
 
 my $rs = 0;
 my @items = ();
@@ -89,7 +87,7 @@ for my $package( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
     push @items, [ $package, sub { $subref->( $package->getInstance()); } ];
 }
 
-my $totalItems = scalar @items+1;
+my $totalItems = @items+1;
 my $count = 1;
 
 debug( 'Setting base (engine) permissions' );
@@ -102,8 +100,7 @@ my $confDir = $main::imscpConfig{'CONF_DIR'};
 my $rootDir = $main::imscpConfig{'ROOT_DIR'};
 
 # e.g: /etc/imscp
-$rs = setRights(
-    $confDir,
+$rs = setRights( $confDir,
     {
         user      => $rootUName,
         group     => $imscpGName,
@@ -113,8 +110,7 @@ $rs = setRights(
     }
 );
 # e.g: /var/www/imscp
-$rs |= setRights(
-    $rootDir,
+$rs |= setRights( $rootDir,
     {
         user  => $rootUName,
         group => $rootGName,
@@ -122,8 +118,7 @@ $rs |= setRights(
     }
 );
 # e.g: /var/www/imscp/daemon
-$rs |= setRights(
-    "$rootDir/daemon",
+$rs |= setRights( "$rootDir/daemon",
     {
         user      => $rootUName,
         group     => $imscpGName,
@@ -132,8 +127,7 @@ $rs |= setRights(
     }
 );
 # e.g: /var/www/imscp/engine
-$rs |= setRights(
-    "$rootDir/engine",
+$rs |= setRights( "$rootDir/engine",
     {
         user      => $rootUName,
         group     => $imscpGName,
@@ -142,8 +136,7 @@ $rs |= setRights(
     }
 );
 # e.g: /var/www/virtual
-$rs |= setRights(
-    $main::imscpConfig{'USER_WEB_DIR'},
+$rs |= setRights( $main::imscpConfig{'USER_WEB_DIR'},
     {
         user  => $rootUName,
         group => $rootGName,
@@ -151,8 +144,7 @@ $rs |= setRights(
     }
 );
 # e.g: /var/log/imscp
-$rs |= setRights(
-    $main::imscpConfig{'LOG_DIR'},
+$rs |= setRights( $main::imscpConfig{'LOG_DIR'},
     {
         user  => $rootUName,
         group => $imscpGName,
@@ -162,7 +154,7 @@ $rs |= setRights(
 
 $count++;
 
-for( @items ) {
+for ( @items ) {
     debug( sprintf( 'Setting %s engine permissions', $_->[0] ));
     printf( "Setting %s engine permissions\t%s\t%s\n", $_->[0], $totalItems, $count ) if $main::execmode eq 'setup';
     $rs |= $_->[1]->();

@@ -25,7 +25,7 @@ package Package::Backup;
 
 use strict;
 use warnings;
-use iMSCP::Dialog::InputValidation;
+use autouse 'iMSCP::Dialog::InputValidation' => qw/ isStringInList /;
 use iMSCP::Getopt;
 use parent 'Common::SingletonClass';
 
@@ -74,23 +74,22 @@ sub imscpBackupDialog
 {
     my (undef, $dialog) = @_;
 
-    my $backupImscp = main::setupGetQuestion( 'BACKUP_IMSCP', iMSCP::Getopt->preseed ? 'yes' : '' );
+    my $value = main::setupGetQuestion( 'BACKUP_IMSCP', iMSCP::Getopt->preseed ? 'yes' : '' );
+    my %choices = ( 'yes', 'Yes', 'no', 'No' );
 
-    if ( $main::reconfigure =~ /^(?:backup|all|forced)$/
-        || !isStringInList( $backupImscp, 'yes', 'no' )
+    if ( isStringInList( $main::reconfigure, 'backup', 'all', 'forced' )
+        || !isStringInList( $value, keys %choices )
     ) {
-        ( my $rs, $backupImscp ) = $dialog->radiolist( <<"EOF", [ 'yes', 'no' ], $backupImscp ne 'no' ? 'yes' : 'no' );
-
+        ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'yes' );
 \\Z4\\Zb\\Zui-MSCP Backup Feature\\Zn
 
 Do you want to activate the backup feature for i-MSCP?
-
-The backup feature for i-MSCP allows the daily save of all i-MSCP configuration files and its database.
+\\Z \\Zn
 EOF
         return $rs if $rs >= 30;
     }
 
-    main::setupSetQuestion( 'BACKUP_IMSCP', $backupImscp );
+    main::setupSetQuestion( 'BACKUP_IMSCP', $value );
     0;
 }
 
@@ -107,29 +106,22 @@ sub customerBackupDialog
 {
     my (undef, $dialog) = @_;
 
-    my $backupDomains = main::setupGetQuestion( 'BACKUP_DOMAINS', iMSCP::Getopt->preseed ? 'yes' : '' );
+    my $value = main::setupGetQuestion( 'BACKUP_DOMAINS', iMSCP::Getopt->preseed ? 'yes' : '' );
+    my %choices = ( 'yes', 'Yes', 'no', 'No' );
 
-    if ( $main::reconfigure =~ /^(?:backup|all|forced)$/
-        || !isStringInList( $backupDomains, 'yes', 'no' )
+    if ( isStringInList( $main::reconfigure, 'backup', 'all', 'forced' )
+        || !isStringInList( $value, keys %choices )
     ) {
-        ( my $rs, $backupDomains ) = $dialog->radiolist(
-            <<"EOF", [ 'yes', 'no' ], $backupDomains ne 'no' ? 'yes' : 'no' );
-
+        ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'yes' );
 \\Z4\\Zb\\ZuDomains Backup Feature\\Zn
 
 Do you want to activate the backup feature for customers?
-
-This feature allows resellers to enable backup for their customers such as:
-
- - Full (domains and SQL databases)
- - Domains only (Web files)
- - SQL databases only
- - None (no backup)
+\\Z \\Zn
 EOF
         return $rs unless $rs < 30;
     }
 
-    main::setupSetQuestion( 'BACKUP_DOMAINS', $backupDomains );
+    main::setupSetQuestion( 'BACKUP_DOMAINS', $value );
     0;
 }
 

@@ -92,8 +92,7 @@ sub sqlUserDialog
     );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
     my $dbPass = main::setupGetQuestion(
-        'FTPD_SQL_PASSWORD',
-        ( iMSCP::Getopt->preseed ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
+        'FTPD_SQL_PASSWORD', ( iMSCP::Getopt->preseed ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
     );
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
@@ -114,6 +113,7 @@ sub sqlUserDialog
             ( $rs, $dbUser ) = $dialog->inputbox( <<"EOF", $dbUser );
 $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter a username for the ProFTPD SQL user (leave empty for default):
+\\Z \\Zn
 EOF
         } while $rs < 30
             && ( !isValidUsername( $dbUser )
@@ -141,6 +141,7 @@ EOF
                 ( $rs, $dbPass ) = $dialog->inputbox( <<"EOF", $dbPass );
 $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter a password for the ProFTPD SQL user (leave empty for autogeneration):
+\\Z \\Zn
 EOF
             } while $rs < 30
                 && !isValidPassword( $dbPass );
@@ -199,9 +200,10 @@ sub passivePortRangeDialog
 $iMSCP::Dialog::InputValidation::lastValidationError
 \\Z4\\Zb\\ZuProFTPD passive port range\\Zn
 
-Please choose the passive port range for ProFTPD (leave empty for default).
+Please enter the passive port range for ProFTPD (leave empty for default).
 
 Note that if you're behind a NAT, you must forward those ports to this server.
+\\Z \\Zn
 EOF
         } while $rs < 30
             && ( !isValidNumberRange( $passivePortRange, \$startOfRange, \$endOfRange )
@@ -350,8 +352,7 @@ sub _setupDatabase
             next unless $sqlUser;
 
             for my $host( $dbUserHost, $oldDbUserHost ) {
-                next if !$host
-                    || exists $main::sqlUsers{$sqlUser . '@' . $host} && !defined $main::sqlUsers{$sqlUser . '@' . $host};
+                next if !$host || exists $main::sqlUsers{$sqlUser . '@' . $host} && !defined $main::sqlUsers{$sqlUser . '@' . $host};
                 $sqlServer->dropUser( $sqlUser, $host );
             }
         }
@@ -461,10 +462,7 @@ EOF
     my $baseServerPublicIp = main::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
 
     if ( $baseServerIp ne $baseServerPublicIp ) {
-        my @virtualHostIps = grep(
-            $_ ne '0.0.0.0',
-            ( '127.0.0.1', ( main::setupGetQuestion( 'IPV6_SUPPORT' ) ? '::1' : () ), $baseServerIp )
-        );
+        my @virtualHostIps = grep($_ ne '0.0.0.0', ( '127.0.0.1', ( main::setupGetQuestion( 'IPV6_SUPPORT' ) ? '::1' : () ), $baseServerIp ));
         $cfgTpl .= <<"EOF";
 
 # Server behind NAT - Advertise public IP address
@@ -501,7 +499,6 @@ EOF
         }
 
         ${$cfgTplRef} =~ s/^(LoadModule\s+mod_tls_memcache.c)/#$1/m;
-
         $rs ||= $file->save();
     }
 

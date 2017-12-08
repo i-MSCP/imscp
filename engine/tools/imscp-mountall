@@ -36,9 +36,9 @@ use iMSCP::Bootstrapper;
 use iMSCP::Debug;
 use iMSCP::Getopt;
 use iMSCP::Mount qw/ mount umount isMountpoint getMounts /;
-use POSIX qw /locale_h /;
+use POSIX qw / locale_h /;
 
-setlocale(LC_MESSAGES, "C.UTF-8");
+setlocale( LC_MESSAGES, "C.UTF-8" );
 
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -96,15 +96,13 @@ defined $action && $action =~ /^(?:start|stop)$/ or iMSCP::Getopt->showUsage();
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-mountall.lock', 'nowait' );
 
-$bootstrapper->boot(
-    {
-        config_readonly => 1,
-        mode            => 'backend',
-        nodatabase      => 1,
-        nokeys          => 1,
-        nolock          => 1
-    }
-);
+$bootstrapper->boot( {
+    config_readonly => 1,
+    mode            => 'backend',
+    nodatabase      => 1,
+    nokeys          => 1,
+    nolock          => 1
+} );
 
 exit run( $action );
 
@@ -113,3 +111,6 @@ exit run( $action );
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
+
+1;
+__END__

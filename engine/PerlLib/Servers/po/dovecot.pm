@@ -200,24 +200,20 @@ sub addMail
     my $mailGidName = $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
     for my $mailbox( '.Drafts', '.Junk', '.Sent', '.Trash' ) {
-        iMSCP::Dir->new( dirname => "$mailDir/$mailbox" )->make(
-            {
+        iMSCP::Dir->new( dirname => "$mailDir/$mailbox" )->make( {
+            user           => $mailUidName,
+            group          => $mailGidName,
+            mode           => 0750,
+            fixpermissions => iMSCP::Getopt->fixPermissions
+        } );
+
+        for ( 'cur', 'new', 'tmp' ) {
+            iMSCP::Dir->new( dirname => "$mailDir/$mailbox/$_" )->make( {
                 user           => $mailUidName,
                 group          => $mailGidName,
                 mode           => 0750,
                 fixpermissions => iMSCP::Getopt->fixPermissions
-            }
-        );
-
-        for ( 'cur', 'new', 'tmp' ) {
-            iMSCP::Dir->new( dirname => "$mailDir/$mailbox/$_" )->make(
-                {
-                    user           => $mailUidName,
-                    group          => $mailGidName,
-                    mode           => 0750,
-                    fixpermissions => iMSCP::Getopt->fixPermissions
-                }
-            );
+            } );
         }
     }
 
@@ -278,32 +274,28 @@ sub setEnginePermissions
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePoSetEnginePermissions' );
-    $rs ||= setRights(
-        $self->{'config'}->{'DOVECOT_CONF_DIR'},
+    $rs ||= setRights( $self->{'config'}->{'DOVECOT_CONF_DIR'},
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ROOT_GROUP'},
             mode  => '0755'
         }
     );
-    $rs ||= setRights(
-        "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot.conf",
+    $rs ||= setRights( "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot.conf",
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
             mode  => '0640'
         }
     );
-    $rs ||= setRights(
-        "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf",
+    $rs ||= setRights( "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf",
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
             mode  => '0640'
         }
     );
-    $rs ||= setRights(
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/quota/imscp-dovecot-quota.sh",
+    $rs ||= setRights( "$main::imscpConfig{'ENGINE_ROOT_DIR'}/quota/imscp-dovecot-quota.sh",
         {
             user  => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
             group => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
@@ -403,15 +395,14 @@ sub getTraffic
     $logFile ||= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
 
     unless ( -f $logFile ) {
-        debug( sprintf( "IMAP/POP3 %s log file doesn't exist. Skipping...", $logFile ));
+        debug( sprintf( "IMAP/POP3 %s log file doesn't exist. Skipping ...", $logFile ));
         return;
     }
 
     debug( sprintf( 'Processing IMAP/POP3 %s log file', $logFile ));
 
     # We use an index database to keep trace of the last processed logs
-    $trafficIndexDb or tie %{$trafficIndexDb},
-        'iMSCP::Config', fileName => "$main::imscpConfig{'IMSCP_HOMEDIR'}/traffic_index.db", nodie => 1;
+    $trafficIndexDb or tie %{$trafficIndexDb}, 'iMSCP::Config', fileName => "$main::imscpConfig{'IMSCP_HOMEDIR'}/traffic_index.db", nodie => 1;
     my ($idx, $idxContent) = ( $trafficIndexDb->{'po_lineNo'} || 0, $trafficIndexDb->{'po_lineContent'} );
 
     tie my @logs, 'Tie::File', $logFile, mode => O_RDONLY, memory => 0 or die(
@@ -482,12 +473,12 @@ sub _init
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-    $self->_mergeConfig() if -f "$self->{'cfgDir'}/dovecot.data.dist";
+    $self->_mergeConfig() if defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/dovecot.data.dist";
     tie %{$self->{'config'}},
         'iMSCP::Config',
         fileName    => "$self->{'cfgDir'}/dovecot.data",
         readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
-        nodeferring => ( defined $main::execmode && $main::execmode eq 'setup' );
+        nodeferring => defined $main::execmode && $main::execmode eq 'setup';
     $self;
 }
 
@@ -507,7 +498,7 @@ sub _mergeConfig
         tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/dovecot.data.dist";
         tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/dovecot.data", readonly => 1;
 
-        debug( 'Merging old configuration with new configuration...' );
+        debug( 'Merging old configuration with new configuration ...' );
 
         while ( my ($key, $value) = each( %oldConfig ) ) {
             next unless exists $newConfig{$key};
@@ -518,9 +509,7 @@ sub _mergeConfig
         untie( %oldConfig );
     }
 
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/dovecot.data.dist" )->moveFile(
-        "$self->{'cfgDir'}/dovecot.data"
-    ) == 0 or die(
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/dovecot.data.dist" )->moveFile( "$self->{'cfgDir'}/dovecot.data" ) == 0 or die(
         getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
     );
 }

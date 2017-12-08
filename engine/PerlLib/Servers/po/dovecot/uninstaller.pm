@@ -108,8 +108,7 @@ sub _dropSqlUser
     my ($self) = @_;
 
     # In setup context, take value from old conffile, else take value from current conffile
-    my $dbUserHost = ( $main::execmode eq 'setup' )
-        ? $main::imscpOldConfig{'DATABASE_USER_HOST'} : $main::imscpConfig{'DATABASE_USER_HOST'};
+    my $dbUserHost = ( $main::execmode eq 'setup' ) ? $main::imscpOldConfig{'DATABASE_USER_HOST'} : $main::imscpConfig{'DATABASE_USER_HOST'};
 
     return 0 unless $self->{'config'}->{'DATABASE_USER'} && $dbUserHost;
 
@@ -147,9 +146,7 @@ sub _removeConfig
 
     if ( -f "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf" ) {
         my $file = iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-sql.conf" );
-        my $rs ||= $file->owner(
-            $main::imscpConfig{'ROOT_USER'}, $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}
-        );
+        my $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'} );
         $rs ||= $file->mode( 0644 );
     }
 

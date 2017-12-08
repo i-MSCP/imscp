@@ -27,7 +27,7 @@ use strict;
 use warnings;
 use Clone qw/ clone /;
 use iMSCP::Debug qw/ debug error getMessageByType /;
-use iMSCP::EventManager::ListenerPriorityQueue;
+use iMSCP::PriorityQueue;
 use Scalar::Util qw / blessed /;
 use parent 'Common::SingletonClass';
 
@@ -44,7 +44,7 @@ use parent 'Common::SingletonClass';
 
 =item hasListener( $eventName, $listener )
 
- Does the given listener is registered for the given event?
+ Is the given listener registered for the given event?
 
  Param string $eventName Event name on which $listener listen on
  Param coderef $listener A CODE reference
@@ -54,11 +54,12 @@ use parent 'Common::SingletonClass';
 
 sub hasListener
 {
-    my ($self, $eventNames, $listener) = @_;
+    my ($self, $eventName, $listener) = @_;
 
-    defined $eventNames or die 'Missing $eventNames parameter';
+    defined $eventName or die 'Missing $eventName parameter';
+    defined $listener && ref $listener eq 'CODE' or die 'Missing or invalid $listener parameter';
 
-    $self->{'events'}->{$eventNames} && $self->{'events'}->{$eventNames}->hasListener( $listener );
+    $self->{'events'}->{$eventName} && $self->{'events'}->{$eventName}->hasItem( $listener );
 }
 
 =item register( $eventNames, $listener [, priority = 1 [, $once = FALSE ] ] )
@@ -91,12 +92,15 @@ sub register
             return;
         }
 
-        unless ( $self->{'events'}->{$eventNames} ) {
-            $self->{'events'}->{$eventNames} = iMSCP::EventManager::ListenerPriorityQueue->new();
+        defined $listener or die 'Missing  or undefined $listener parameter';
+
+        if ( blessed $listener ) {
+            $listener = sub { $listener->$eventNames( @_ ) } if blessed $listener;
+        } elsif ( ref $listener ne 'CODE' ) {
+            die 'Invalid $listener parameter. Expects a code reference';
         }
 
-        $listener = sub { $listener->$eventNames( @_ ) } if blessed $listener;
-        $self->{'events'}->{$eventNames}->addListener( $listener, $priority );
+        ( $self->{'events'}->{$eventNames} ||= iMSCP::PriorityQueue->new() )->addItem( $listener, $priority );
         $self->{'nonces'}->{$eventNames}->{$listener} = 1 if $once;
     };
     if ( $@ ) {
@@ -143,16 +147,20 @@ sub unregister
 
     local $@;
     eval {
-        defined $listener or die 'Missing $listener parameter';
+        defined $listener && ref $listener eq 'CODE' or die 'Missing or invalid $listener parameter';
 
         if ( defined $eventName ) {
             return unless $self->{'events'}->{$eventName};
 
-            $self->{'events'}->{$eventName}->removeListener( $listener ) if $self->{'events'}->{$eventName};
-            delete $self->{'events'}->{$eventName} if $self->{'events'}->{$eventName}->isEmpty();
+            $self->{'events'}->{$eventName}->removeItem( $listener );
 
-            if ( $self->{'nonces'}->{$eventName}->{$listener} ) {
-                delete $self->{'nonces'}->{$eventName}->{$listener};
+            if ( $self->{'events'}->{$eventName}->isEmpty() ) {
+                delete $self->{'events'}->{$eventName};
+                delete $self->{'nonces'}->{$eventName};
+                return;
+            }
+
+            if ( delete $self->{'nonces'}->{$eventName}->{$listener} ) {
                 delete $self->{'nonces'}->{$eventName} unless %{$self->{'nonces'}->{$eventName}};
             }
 
@@ -187,8 +195,8 @@ sub clearListeners
         return 1;
     }
 
-    delete $self->{'events'}->{$eventName};
-    delete $self->{'nonces'}->{$eventName};
+    delete $self->{'events'}->{$eventName} if $self->{'events'}->{$eventName};
+    delete $self->{'nonces'}->{$eventName} if $self->{'nonces'}->{$eventName};
     0;
 }
 
@@ -220,7 +228,7 @@ sub trigger
     my $rs = 0;
     while ( my $listener = $listenerPriorityQueue->pop() ) {
         if ( $self->{'nonces'}->{$eventName}->{$listener} ) {
-            $self->{'events'}->{$eventName}->removeListener( $listener );
+            $self->{'events'}->{$eventName}->removeItem( $listener );
             delete $self->{'nonces'}->{$eventName}->{$listener};
         }
 
@@ -230,13 +238,8 @@ sub trigger
 
     # We must test $self->{'events'}->{$eventName} here too because a listener
     # can self-unregister
-    if ( $self->{'events'}->{$eventName}
-        && $self->{'events'}->{$eventName}->isEmpty()
-    ) {
-        delete $self->{'events'}->{$eventName};
-    }
-
-    delete $self->{'nonces'}->{$eventName} if $self->{'nonces'}->{$eventName} && !%{$self->{'nonces'}->{$eventName}};
+    delete $self->{'events'}->{$eventName} if $self->{'events'}->{$eventName} && $self->{'events'}->{$eventName}->isEmpty();
+    delete $self->{'nonces'}->{$eventName} unless !$self->{'nonces'}->{$eventName} || %{$self->{'nonces'}->{$eventName}};
     $rs;
 }
 

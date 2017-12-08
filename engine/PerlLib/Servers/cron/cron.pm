@@ -131,7 +131,6 @@ sub postinstall
     $rs = eval {
         my $srvMngr = iMSCP::Service->getInstance();
         $srvMngr->enable( $self->{'config'}->{'CRON_SNAME'} );
-
         $self->{'eventManager'}->register(
             'beforeSetupRestartServices',
             sub {
@@ -211,10 +210,7 @@ sub addTask
 
         # Remove entry with same ID if any
         $fileContent = replaceBloc(
-            qr/^\s*\Q# imscp [$data->{'TASKID'}] entry BEGIN\E\n/m,
-            qr/\Q# imscp [$data->{'TASKID'}] entry ENDING\E\n/,
-            '',
-            $fileContent
+            qr/^\s*\Q# imscp [$data->{'TASKID'}] entry BEGIN\E\n/m, qr/\Q# imscp [$data->{'TASKID'}] entry ENDING\E\n/, '', $fileContent
         );
     } else {
         $fileContent = <<'EOF';
@@ -306,8 +302,7 @@ sub setEnginePermissions
     my $rs = $self->{'eventManager'}->trigger( 'beforeCronSetEnginePermissions' );
     return $rs if $rs || !-f "$self->{'config'}->{'CRON_D_DIR'}/imscp";
 
-    $rs = setRights(
-        "$self->{'config'}->{'CRON_D_DIR'}/imscp",
+    $rs = setRights( "$self->{'config'}->{'CRON_D_DIR'}/imscp",
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ROOT_GROUP'},
@@ -337,12 +332,12 @@ sub _init
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/cron";
-    $self->_mergeConfig() if -f "$self->{'cfgDir'}/cron.data.dist";
+    $self->_mergeConfig() if defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/cron.data.dist";
     tie %{$self->{'config'}},
         'iMSCP::Config',
         fileName    => "$self->{'cfgDir'}/cron.data",
         readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
-        nodeferring => ( defined $main::execmode && $main::execmode eq 'setup' );
+        nodeferring => defined $main::execmode && $main::execmode eq 'setup';
     $self;
 }
 
@@ -362,7 +357,7 @@ sub _mergeConfig
         tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/cron.data.dist";
         tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/cron.data", readonly => 1;
 
-        debug( 'Merging old configuration with new configuration...' );
+        debug( 'Merging old configuration with new configuration ...' );
 
         while ( my ($key, $value) = each( %oldConfig ) ) {
             next unless exists $newConfig{$key};
@@ -373,9 +368,7 @@ sub _mergeConfig
         untie( %oldConfig );
     }
 
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/cron.data.dist" )->moveFile(
-        "$self->{'cfgDir'}/cron.data"
-    ) == 0 or die(
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/cron.data.dist" )->moveFile( "$self->{'cfgDir'}/cron.data" ) == 0 or die(
         getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
     );
 }

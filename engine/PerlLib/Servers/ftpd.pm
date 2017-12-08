@@ -25,9 +25,10 @@ package Servers::ftpd;
 
 use strict;
 use warnings;
+use iMSCP::Service;
 
 # ftpd server instance
-my $instance;
+my $INSTANCE;
 
 =head1 DESCRIPTION
 
@@ -49,7 +50,7 @@ my $instance;
 
 sub factory
 {
-    return $instance if defined $instance;
+    return $INSTANCE if $INSTANCE;
 
     my $package = $main::imscpConfig{'FTPD_PACKAGE'} || 'Servers::noserver';
 
@@ -65,7 +66,7 @@ sub factory
     }
 
     eval "require $package" or die( $@ );
-    $instance = $package->getInstance();
+    $INSTANCE = $package->getInstance();
 }
 
 =item can( $method )
@@ -99,16 +100,34 @@ sub getPriority
     50;
 }
 
+=back
+
+=head1 SHUTDOWN TASKS
+
+=over 4
+
+=item END
+
+ Schedule restart, reload or start of FTP server when needed
+
+=cut
+
 END
     {
-        return if $? || !$instance || ( $main::execmode && $main::execmode eq 'setup' );
+        return if $? || !$INSTANCE || ( defined $main::execmode && $main::execmode eq 'setup' );
 
-        if ( $instance->{'start'} ) {
-            $? = $instance->start();
-        } elsif ( $instance->{'restart'} ) {
-            $? = $instance->restart();
-        } elsif ( $instance->{'reload'} ) {
-            $? = $instance->reload();
+        if ( $INSTANCE->{'restart'} ) {
+            iMSCP::Service->getInstance()->registerDelayedAction(
+                $INSTANCE->{'config'}->{'FTPD_SNAME'}, [ 'restart', sub { $INSTANCE->restart(); } ], __PACKAGE__->getPriority()
+            );
+        } elsif ( $INSTANCE->{'reload'} ) {
+            iMSCP::Service->getInstance()->registerDelayedAction(
+                $INSTANCE->{'config'}->{'FTPD_SNAME'}, [ 'reload', sub { $INSTANCE->reload(); } ], __PACKAGE__->getPriority()
+            );
+        } elsif ( $INSTANCE->{'start'} ) {
+            iMSCP::Service->getInstance()->registerDelayedAction(
+                $INSTANCE->{'config'}->{'FTPD_SNAME'}, [ 'start', sub { $INSTANCE->start(); } ], __PACKAGE__->getPriority()
+            );
         }
     }
 

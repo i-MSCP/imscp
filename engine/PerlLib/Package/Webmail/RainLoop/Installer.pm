@@ -75,8 +75,7 @@ sub showDialog
     );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
     my $dbPass = main::setupGetQuestion(
-        'RAINLOOP_SQL_PASSWORD',
-        ( iMSCP::Getopt->preseed ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
+        'RAINLOOP_SQL_PASSWORD', ( iMSCP::Getopt->preseed ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
     );
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
@@ -97,6 +96,7 @@ sub showDialog
             ( $rs, $dbUser ) = $dialog->inputbox( <<"EOF", $dbUser );
 $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter a username for the RainLoop SQL user (leave empty for default):
+\\Z \\Zn
 EOF
         } while $rs < 30
             && ( !isValidUsername( $dbUser )
@@ -123,6 +123,7 @@ EOF
                 ( $rs, $dbPass ) = $dialog->inputbox( <<"EOF", $dbPass );
 $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter a password for the RainLoop SQL user (leave empty for autogeneration):
+\\Z \\Zn
 EOF
             } while $rs < 30
                 && !isValidPassword( $dbPass );
@@ -201,9 +202,8 @@ sub afterFrontEndBuildConfFile
 {
     my ($tplContent, $tplName) = @_;
 
-    return 0 unless ( $tplName eq '00_master.nginx'
-        && main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) ne 'https://'
-    ) || $tplName eq '00_master_ssl.nginx';
+    return 0 unless ( $tplName eq '00_master.nginx' && main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) ne 'https://' )
+        || $tplName eq '00_master_ssl.nginx';
 
     ${$tplContent} = replaceBloc(
         "# SECTION custom BEGIN.\n",
@@ -276,9 +276,7 @@ sub _installFiles
 
     # Handle upgrade from old rainloop data structure
     if ( -d "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1" ) {
-        iMSCP::Dir->new( dirname => "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1" )->moveDir(
-            "$destDir/data/_data_"
-        );
+        iMSCP::Dir->new( dirname => "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1" )->moveDir( "$destDir/data/_data_" );
     }
 
     # Install new files
@@ -305,7 +303,7 @@ sub _mergeConfig
 
         tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/rainloop.data", nodeferring => 1;
 
-        debug( 'Merging old configuration with new configuration...' );
+        debug( 'Merging old configuration with new configuration ...' );
 
         while ( my ($key, $value) = each( %oldConfig ) ) {
             next unless exists $self->{'config'}->{$key};
@@ -354,8 +352,7 @@ sub _setupDatabase
             next unless $sqlUser;
 
             for my $host( $dbUserHost, $oldDbUserHost ) {
-                next if !$host
-                    || exists $main::sqlUsers{$sqlUser . '@' . $host} && !defined $main::sqlUsers{$sqlUser . '@' . $host};
+                next if !$host || exists $main::sqlUsers{$sqlUser . '@' . $host} && !defined $main::sqlUsers{$sqlUser . '@' . $host};
                 $sqlServer->dropUser( $sqlUser, $host );
             }
         }
@@ -372,10 +369,7 @@ sub _setupDatabase
 
         # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
         $quotedDbName = $dbh->quote_identifier( $imscpDbName );
-        $dbh->do(
-            "GRANT SELECT (mail_addr, mail_pass), UPDATE (mail_pass) ON $quotedDbName.mail_users TO ?\@?",
-            undef, $dbUser, $dbUserHost
-        );
+        $dbh->do( "GRANT SELECT (mail_addr, mail_pass), UPDATE (mail_pass) ON $quotedDbName.mail_users TO ?\@?", undef, $dbUser, $dbUserHost );
     };
     if ( $@ ) {
         error( $@ );
@@ -400,8 +394,7 @@ sub _buildConfig
     my ($self) = @_;
 
     my $confDir = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop/data/_data_/_default_/configs";
-    my $panelUName = my $panelGName =
-        $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $usergroup = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
     for my $confFile( 'application.ini', 'plugin-imscp-change-password.ini' ) {
         my $data = {
@@ -431,7 +424,7 @@ sub _buildConfig
         my $file = iMSCP::File->new( filename => "$confDir/$confFile" );
         $file->set( $cfgTpl );
         $rs = $file->save();
-        $rs ||= $file->owner( $panelUName, $panelGName );
+        $rs ||= $file->owner( $usergroup, $usergroup );
         $rs ||= $file->mode( 0640 );
         return $rs if $rs;
     }
@@ -498,12 +491,8 @@ sub _buildHttpdConfig
 
     $self->{'frontend'}->buildConfFile(
         "$self->{'cfgDir'}/nginx/imscp_rainloop.conf",
-        {
-            GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'}
-        },
-        {
-            destination => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf"
-        }
+        { GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },
+        { destination => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf" }
     );
 }
 

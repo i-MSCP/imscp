@@ -173,6 +173,25 @@ function generateNavigation(TemplateEngine $tpl)
                 }
             }
         }
+
+        if (customerHasFeature('ftp')) {
+            $filemanagers = getFilemanagerList();
+
+            if (!empty($filemanagers)) {
+                $page1 = $navigation->findOneBy('class', 'ftp');
+                $page2 = $navigation->findOneBy('class', 'webtools');
+
+                foreach ($filemanagers as $filemanager) {
+                    $page = [
+                        'label'  => tohtml(tr('%s webmail', $filemanager)),
+                        'uri'    => '/' . ($filemanager == 'MonstaFTP' ? 'ftp' : strtolower($filemanager)) . '/',
+                        'target' => '_blank',
+                    ];
+                    $page1->addPage($page);
+                    $page2->addPage($page);
+                }
+            }
+        }
     }
 
     // Dynamic links (All levels)

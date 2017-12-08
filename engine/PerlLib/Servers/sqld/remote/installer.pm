@@ -82,13 +82,11 @@ sub _buildConf
     my $confDir = $self->{'config'}->{'SQLD_CONF_DIR'};
 
     # Make sure that the conf.d directory exists
-    iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make(
-        {
+    iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make( {
             user  => $rootUName,
             group => $rootGName,
             mode  => 0755
-        }
-    );
+        } );
 
     # Create the /etc/mysql/my.cnf file if missing
     unless ( -f "$confDir/my.cnf" ) {
@@ -158,9 +156,7 @@ sub _updateServerConfig
 
         # Disable unwanted plugins (bc reasons)
         for ( qw/ cracklib_password_check simple_password_check validate_password / ) {
-            $dbh->do( "UNINSTALL PLUGIN $_" ) if $dbh->selectrow_hashref(
-                "SELECT name FROM mysql.plugin WHERE name = '$_'"
-            );
+            $dbh->do( "UNINSTALL PLUGIN $_" ) if $dbh->selectrow_hashref( "SELECT name FROM mysql.plugin WHERE name = '$_'" );
         }
     };
     if ( $@ ) {

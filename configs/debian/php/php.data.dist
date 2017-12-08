@@ -2,6 +2,7 @@
 #### PHP common parameters
 ##
 
+PHP_SAPI =
 PHP_CONFIG_LEVEL =
 PHP_CONF_DIR_PATH =
 PHP_PEAR_DIR = /usr/share/php

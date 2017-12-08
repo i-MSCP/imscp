@@ -39,9 +39,9 @@ use iMSCP::Execute;
 use iMSCP::Getopt;
 use iMSCP::Service;
 use iMSCP::ProgramFinder;
-use POSIX qw /locale_h /;
+use POSIX qw / locale_h /;
 
-setlocale(LC_MESSAGES, "C.UTF-8");
+setlocale( LC_MESSAGES, "C.UTF-8" );
 
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -148,18 +148,13 @@ OPTIONS:
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-srv-traff.lock', 'nowait' );
 
-$bootstrapper->boot(
-    {
-        config_readonly => 1,
-        mode            => 'backend',
-        nolock          => 1
-    }
-);
+$bootstrapper->boot( {
+    config_readonly => 1,
+    mode            => 'backend',
+    nolock          => 1
+} );
 
-@EXECS = (
-    iMSCP::ProgramFinder::find( 'iptables' ),
-    ( $main::imscpConfig{'IPV6_SUPPORT'} ? iMSCP::ProgramFinder::find( 'ip6tables' ) : undef )
-);
+@EXECS = ( iMSCP::ProgramFinder::find( 'iptables' ), ( $main::imscpConfig{'IPV6_SUPPORT'} ? iMSCP::ProgramFinder::find( 'ip6tables' ) : undef ) );
 
 exit run();
 
@@ -168,3 +163,6 @@ exit run();
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
+
+1;
+__END__

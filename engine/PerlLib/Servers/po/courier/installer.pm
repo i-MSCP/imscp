@@ -104,9 +104,7 @@ sub authdaemonSqlUserDialog
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
     my $dbPass = main::setupGetQuestion(
         'AUTHDAEMON_SQL_PASSWORD',
-        ( iMSCP::Getopt->preseed
-            ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'}
-        )
+        ( iMSCP::Getopt->preseed ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'} )
     );
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
@@ -127,6 +125,7 @@ sub authdaemonSqlUserDialog
             ( $rs, $dbUser ) = $dialog->inputbox( <<"EOF", $dbUser );
 $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter a username for the Courier Authdaemon SQL user (leave empty for default):
+\\Z \\Zn
 EOF
         } while $rs < 30
             && ( !isValidUsername( $dbUser )
@@ -154,6 +153,7 @@ EOF
                 ( $rs, $dbPass ) = $dialog->inputbox( <<"EOF", $dbPass );
 $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter a password for the Courier Authdaemon user (leave empty for autogeneration):
+\\Z \\Zn
 EOF
             } while $rs < 30
                 && !isValidPassword( $dbPass );
@@ -221,64 +221,62 @@ sub configurePostfix
         return $self->{'eventManager'}->register(
             'afterMtaBuildConf',
             sub {
-                $self->{'mta'}->postconf(
-                    (
-                        # Maildrop MDA parameters
-                        virtual_transport                      => {
-                            action => 'replace',
-                            values => [ 'maildrop' ]
-                        },
-                        maildrop_destination_concurrency_limit => {
-                            action => 'replace',
-                            values => [ '2' ]
-                        },
-                        maildrop_destination_recipient_limit   => {
-                            action => 'replace',
-                            values => [ '1' ]
-                        },
-                        # Cyrus SASL parameters
-                        smtpd_sasl_type                        => {
-                            action => 'replace',
-                            values => [ 'cyrus' ]
-                        },
-                        smtpd_sasl_path                        => {
-                            action => 'replace',
-                            values => [ 'smtpd' ]
-                        },
-                        smtpd_sasl_auth_enable                 => {
-                            action => 'replace',
-                            values => [ 'yes' ]
-                        },
-                        smtpd_sasl_security_options            => {
-                            action => 'replace',
-                            values => [ 'noanonymous' ]
-                        },
-                        smtpd_sasl_authenticated_header        => {
-                            action => 'replace',
-                            values => [ 'yes' ]
-                        },
-                        broken_sasl_auth_clients               => {
-                            action => 'replace',
-                            values => [ 'yes' ]
-                        },
-                        # SMTP restrictions
-                        smtpd_helo_restrictions                => {
-                            action => 'add',
-                            values => [ 'permit_sasl_authenticated' ],
-                            after  => qr/permit_mynetworks/
-                        },
-                        smtpd_sender_restrictions              => {
-                            action => 'add',
-                            values => [ 'permit_sasl_authenticated' ],
-                            after  => qr/permit_mynetworks/
-                        },
-                        smtpd_recipient_restrictions           => {
-                            action => 'add',
-                            values => [ 'permit_sasl_authenticated' ],
-                            after  => qr/permit_mynetworks/
-                        }
-                    )
-                );
+                $self->{'mta'}->postconf( (
+                    # Maildrop MDA parameters
+                    virtual_transport                      => {
+                        action => 'replace',
+                        values => [ 'maildrop' ]
+                    },
+                    maildrop_destination_concurrency_limit => {
+                        action => 'replace',
+                        values => [ '2' ]
+                    },
+                    maildrop_destination_recipient_limit   => {
+                        action => 'replace',
+                        values => [ '1' ]
+                    },
+                    # Cyrus SASL parameters
+                    smtpd_sasl_type                        => {
+                        action => 'replace',
+                        values => [ 'cyrus' ]
+                    },
+                    smtpd_sasl_path                        => {
+                        action => 'replace',
+                        values => [ 'smtpd' ]
+                    },
+                    smtpd_sasl_auth_enable                 => {
+                        action => 'replace',
+                        values => [ 'yes' ]
+                    },
+                    smtpd_sasl_security_options            => {
+                        action => 'replace',
+                        values => [ 'noanonymous' ]
+                    },
+                    smtpd_sasl_authenticated_header        => {
+                        action => 'replace',
+                        values => [ 'yes' ]
+                    },
+                    broken_sasl_auth_clients               => {
+                        action => 'replace',
+                        values => [ 'yes' ]
+                    },
+                    # SMTP restrictions
+                    smtpd_helo_restrictions                => {
+                        action => 'add',
+                        values => [ 'permit_sasl_authenticated' ],
+                        after  => qr/permit_mynetworks/
+                    },
+                    smtpd_sender_restrictions              => {
+                        action => 'add',
+                        values => [ 'permit_sasl_authenticated' ],
+                        after  => qr/permit_mynetworks/
+                    },
+                    smtpd_recipient_restrictions           => {
+                        action => 'add',
+                        values => [ 'permit_sasl_authenticated' ],
+                        after  => qr/permit_mynetworks/
+                    }
+                ));
             }
         );
     }
@@ -357,8 +355,7 @@ sub _setupAuthdaemonSqlUser
             next unless $sqlUser;
 
             for my $host( $dbUserHost, $oldDbUserHost ) {
-                next if !$host
-                    || exists $main::sqlUsers{$sqlUser . '@' . $host} && !defined $main::sqlUsers{$sqlUser . '@' . $host};
+                next if !$host || exists $main::sqlUsers{$sqlUser . '@' . $host} && !defined $main::sqlUsers{$sqlUser . '@' . $host};
                 $sqlServer->dropUser( $sqlUser, $host );
             }
         }
@@ -474,10 +471,7 @@ sub _buildConf
         }
 
         $fileContent = replaceBloc(
-            qr/(?:^\n)?# Servers::po::courier::installer - BEGIN\n/m,
-            qr/# Servers::po::courier::installer - ENDING\n/,
-            '',
-            $fileContent
+            qr/(?:^\n)?# Servers::po::courier::installer - BEGIN\n/m, qr/# Servers::po::courier::installer - ENDING\n/, '', $fileContent
         );
 
         $fileContent .= <<"EOF";
@@ -519,9 +513,7 @@ sub _setupSASL
     # Mount authdaemond socket directory in Postfix chroot
     # Postfix won't be able to connect to socket located outside of its chroot
     my $fsSpec = File::Spec->canonpath( $self->{'config'}->{'AUTHLIB_SOCKET_DIR'} );
-    my $fsFile = File::Spec->canonpath(
-        "$self->{'mta'}->{'config'}->{'POSTFIX_QUEUE_DIR'}/$self->{'config'}->{'AUTHLIB_SOCKET_DIR'}"
-    );
+    my $fsFile = File::Spec->canonpath( "$self->{'mta'}->{'config'}->{'POSTFIX_QUEUE_DIR'}/$self->{'config'}->{'AUTHLIB_SOCKET_DIR'}" );
     my $fields = { fs_spec => $fsSpec, fs_file => $fsFile, fs_vfstype => 'none', fs_mntops => 'bind,slave' };
     iMSCP::Dir->new( dirname => $fsFile )->make();
     $rs = addMountEntry( "$fields->{'fs_spec'} $fields->{'fs_file'} $fields->{'fs_vfstype'} $fields->{'fs_mntops'}" );
@@ -577,9 +569,7 @@ sub _buildDHparametersFile
 
     if ( -f "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem" ) {
         my $rs = execute(
-            [ 'openssl', 'dhparam', '-in', "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem", '-text', '-noout' ],
-            \ my $stdout,
-            \ my $stderr
+            [ 'openssl', 'dhparam', '-in', "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem", '-text', '-noout' ], \ my $stdout, \ my $stderr
         );
         debug( $stderr || 'Unknown error' ) if $rs;
         if ( $rs == 0 && $stdout =~ /\((\d+)\s+bit\)/ && $1 >= 2048 ) {
@@ -610,17 +600,10 @@ sub _buildDHparametersFile
                 step( undef, "Generating DH parameter file\n\n$output", 1, 1 );
             };
 
-            my $rs = executeNoWait(
-                $cmd,
-                ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
-                    ? sub {}
-                    : $outputHandler
-                ),
-                $outputHandler
-            );
+            my $rs = executeNoWait( $cmd, ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? sub {} : $outputHandler ), $outputHandler );
             error( $output || 'Unknown error' ) if $rs;
-            $rs ||= iMSCP::File->new( filename => $tmpFile->filename )->moveFile(
-                "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem"
+            $rs ||= iMSCP::File->new(
+                filename => $tmpFile->filename )->moveFile( "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/dhparams.pem"
             ) if $tmpFile;
             $rs;
         }, 'Generating DH parameter file', 1, 1
@@ -737,7 +720,7 @@ sub _migrateFromDovecot
 
     $rs = execute(
         [
-            'perl', "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl", '--to-courier',
+            '/usr/bin/perl', "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl", '--to-courier',
             '--quiet', '--convert', '--overwrite', '--recursive',
             $self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}
         ],
@@ -793,9 +776,7 @@ sub _oldEngineCompatibility
 
     # Remove postfix user from authdaemon group.
     # It is now added in mail group (since 1.5.0)
-    $rs = iMSCP::SystemUser->new()->removeFromGroup(
-        $self->{'config'}->{'AUTHDAEMON_GROUP'}, $self->{'mta'}->{'config'}->{'POSTFIX_USER'}
-    );
+    $rs = iMSCP::SystemUser->new()->removeFromGroup( $self->{'config'}->{'AUTHDAEMON_GROUP'}, $self->{'mta'}->{'config'}->{'POSTFIX_USER'} );
     return $rs if $rs;
 
     # Remove old authdaemon socket private/authdaemon mount directory.

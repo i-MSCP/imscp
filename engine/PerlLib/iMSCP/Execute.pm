@@ -185,8 +185,7 @@ sub getExitCode( ;$ )
     }
 
     if ( $ret & 127 ) {
-        debug( sprintf( 'Command died with signal %d, %s coredump', ( $ret & 127 ),
-                ( $? & 128 ) ? 'with' : 'without' ));
+        debug( sprintf( 'Command died with signal %d, %s coredump', ( $ret & 127 ), ( $? & 128 ) ? 'with' : 'without' ));
         return $ret;
     }
 

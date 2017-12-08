@@ -151,7 +151,7 @@ sub _step
 
     # Make error message free of most ANSI sequences
     ( my $errorMessage = getLastError() ) =~ s/\x1b\[[0-9;]*[mGKH]//g;
-    $errorMessage = 'An unexpected error occurred...' unless $errorMessage;
+    $errorMessage = 'An unexpected error occurred.' unless $errorMessage;
     $errorMessage =~ s/^[\s\n]+|[\s\n+]+$//g;
     $dialog->endGauge();
     $dialog->msgbox( <<"EOF" );

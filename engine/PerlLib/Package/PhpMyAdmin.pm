@@ -160,13 +160,13 @@ sub _init
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/pma";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-    $self->_mergeConfig() if -f "$self->{'cfgDir'}/phpmyadmin.data.dist";
+    $self->_mergeConfig() if defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/phpmyadmin.data.dist";
     eval {
         tie %{$self->{'config'}},
             'iMSCP::Config',
             fileName    => "$self->{'cfgDir'}/phpmyadmin.data",
             readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
-            nodeferring => ( defined $main::execmode && $main::execmode eq 'setup' );
+            nodeferring => defined $main::execmode && $main::execmode eq 'setup';
     };
     if ( $@ ) {
         die unless defined $main::execmode && $main::execmode eq 'uninstall';
@@ -191,7 +191,7 @@ sub _mergeConfig
         tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.data.dist";
         tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.data", readonly => 1;
 
-        debug( 'Merging old configuration with new configuration...' );
+        debug( 'Merging old configuration with new configuration ...' );
 
         while ( my ($key, $value) = each( %oldConfig ) ) {
             next unless exists $newConfig{$key};
@@ -202,9 +202,7 @@ sub _mergeConfig
         untie( %oldConfig );
     }
 
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/phpmyadmin.data.dist" )->moveFile(
-        "$self->{'cfgDir'}/phpmyadmin.data"
-    ) == 0 or die(
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/phpmyadmin.data.dist" )->moveFile( "$self->{'cfgDir'}/phpmyadmin.data" ) == 0 or die(
         getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
     );
 }

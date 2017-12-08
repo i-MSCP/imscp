@@ -25,6 +25,7 @@ package Package::FileManager;
 
 use strict;
 use warnings;
+use autouse 'iMSCP::Dialog::InputValidation' => qw/ isStringInList /;
 use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
@@ -79,29 +80,40 @@ sub showDialog
 {
     my ($self, $dialog) = @_;
 
-    my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE', iMSCP::Getopt->preseed ? 'MonstaFTP' : '' );
+    @{$self->{'SELECTED_PACKAGES'}} = split (
+        ',', main::setupGetQuestion( 'FILEMANAGER_PACKAGES', iMSCP::Getopt->preseed ? join( ',', @{$self->{'AVAILABLE_PACKAGES'}} ) : '' )
+    );
 
-    if ( $main::reconfigure =~ /^(?:filemanager|all|forced)$/
-        || $package eq ''
-        || !exists $self->{'PACKAGES'}->{$package}
+    my %choices;
+    @choices{@{$self->{'AVAILABLE_PACKAGES'}}} = @{$self->{'AVAILABLE_PACKAGES'}};
+
+    if ( isStringInList( $main::reconfigure, 'filemanagers', 'all', 'forced' )
+        || !@{$self->{'SELECTED_PACKAGES'}}
+        || grep { !exists $choices{$_} && $_ ne 'no' } @{$self->{'SELECTED_PACKAGES'}}
     ) {
-        ( my $rs, $package ) = $dialog->radiolist(
-            <<"EOF", [ keys %{$self->{'PACKAGES'}} ], exists $self->{'PACKAGES'}->{$package} ? $package : 'MonstaFTP' );
-
-Please select the Ftp Web file manager package you want to install:
+        ( my $rs, $self->{'SELECTED_PACKAGES'} ) = $dialog->checkbox(
+            <<"EOF", \%choices, grep { exists $choices{$_} && $_ ne 'no' } @{$self->{'SELECTED_PACKAGES'}} );
+Please select the FTP filemanager packages you want to install:
+\\Z \\Zn
 EOF
+        push @{$self->{'SELECTED_PACKAGES'}}, 'no' unless @{$self->{'SELECTED_PACKAGES'}};
         return $rs unless $rs < 30;
     }
 
-    main::setupSetQuestion( 'FILEMANAGER_PACKAGE', $package );
+    main::setupSetQuestion( 'FILEMANAGER_PACKAGES', join ',', @{$self->{'SELECTED_PACKAGES'}} );
 
-    $package = "Package::FileManager::${package}::${package}";
-    eval "require $package";
-    !$@ or die( $@ );
+    return 0 if $self->{'SELECTED_PACKAGES'}->[0] eq 'no';
 
-    return 0 unless my $subref = $package->can( 'showDialog' );
-    debug( sprintf( 'Executing showDialog action on %s', $package ));
-    $subref->( $package->getInstance(), $dialog );
+    for ( @{$self->{'SELECTED_PACKAGES'}} ) {
+        my $package = "Package::FileManager::${_}::${_}";
+        eval "require $package" or die( $@ );
+        ( my $subref = $package->can( 'showDialog' ) ) or next;
+        debug( sprintf( 'Executing showDialog action on %s', $package ));
+        my $rs = $subref->( $package->getInstance(), $dialog );
+        return $rs if $rs;
+    }
+
+    0;
 }
 
 =item preinstall( )
@@ -118,30 +130,43 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $oldPackage = exists $main::imscpOldConfig{'FILEMANAGER_ADDON'}
-        ? $main::imscpOldConfig{'FILEMANAGER_ADDON'} # backward compatibility with 1.1.x Serie (upgrade process)
-        : $main::imscpOldConfig{'FILEMANAGER_PACKAGE'};
+    my @distroPackages = ();
+    for my $package( @{$self->{'AVAILABLE_PACKAGES'}} ) {
+        next if grep( $package eq $_, @{$self->{'SELECTED_PACKAGES'}});
+        $package = "Package::FileManager::${package}::${package}";
+        eval "require $package" or die( $@ );
 
-    # For backward compatibility
-    if ( $oldPackage eq 'AjaXplorer' ) {
-        $oldPackage = 'Pydio';
-    } elsif ( $oldPackage eq 'Net2FTP' ) {
-        $oldPackage = 'Net2ftp';
+        if ( my $subref = $package->can( 'uninstall' ) ) {
+            debug( sprintf( 'Executing uninstall action on %s', $package ));
+            my $rs = $subref->( $package->getInstance());
+            return $rs if $rs;
+        }
+
+        ( my $subref = $package->can( 'getDistroPackages' ) ) or next;
+        debug( sprintf( 'Executing getDistroPackages action on %s', $package ));
+        push @distroPackages, $subref->( $package->getInstance());
     }
 
-    my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
-    if ( $oldPackage ne '' && $oldPackage ne $package ) {
-        my $rs = $self->uninstall( $oldPackage );
-        return $rs if $rs;
+    my $rs = $self->_removePackages( @distroPackages );
+    return $rs if $rs;
+
+    @distroPackages = ();
+    for ( @{$self->{'SELECTED_PACKAGES'}} ) {
+        my $package = "Package::FileManager::${_}::${_}";
+        eval "require $package" or die( $@ );
+
+        if ( my $subref = $package->can( 'preinstall' ) ) {
+            debug( sprintf( 'Executing preinstall action on %s', $package ));
+            $rs = $subref->( $package->getInstance());
+            return $rs if $rs;
+        }
+
+        ( my $subref = $package->can( 'getDistroPackages' ) ) or next;
+        debug( sprintf( 'Executing getDistroPackages action on %s', $package ));
+        push @distroPackages, $subref->( $package->getInstance());
     }
 
-    $package = "Package::FileManager::${package}::${package}";
-    eval "require $package";
-    !$@ or die( $@ );
-
-    return 0 unless my $subref = $package->can( 'preinstall' );
-    debug( sprintf( 'Executing preinstall action on %s', $package ));
-    $subref->( $package->getInstance());
+    $self->_installPackages( @distroPackages );
 }
 
 =item install( )
@@ -154,14 +179,42 @@ sub preinstall
 
 sub install
 {
-    my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
-    $package = "Package::FileManager::${package}::${package}";
-    eval "require $package";
-    !$@ or die( $@ );
+    my ($self) = @_;
 
-    return 0 unless my $subref = $package->can( 'install' );
-    debug( sprintf( 'Executing install action on %s', $package ));
-    $subref->( $package->getInstance());
+    for ( @{$self->{'SELECTED_PACKAGES'}} ) {
+        my $package = "Package::FileManager::${_}::${_}";
+        eval "require $package" or die( $@ );
+        ( my $subref = $package->can( 'install' ) ) or next;
+        debug( sprintf( 'Executing install action on %s', $package ));
+        my $rs = $subref->( $package->getInstance());
+        return $rs if $rs;
+    }
+
+    0;
+}
+
+=item postinstall( )
+
+ Process post install tasks
+
+ Return int 0 on success, other or die on failure
+
+=cut
+
+sub postinstall
+{
+    my ($self) = @_;
+
+    for ( @{$self->{'SELECTED_PACKAGES'}} ) {
+        my $package = "Package::FileManager::${_}::${_}";
+        eval "require $package" or die( $@ );
+        ( my $subref = $package->can( 'postinstall' ) ) or next;
+        debug( sprintf( 'Executing postinstall action on %s', $package ));
+        my $rs = $subref->( $package->getInstance());
+        return $rs if $rs;
+    }
+
+    0;
 }
 
 =item uninstall( [ $package ])
@@ -175,18 +228,25 @@ sub install
 
 sub uninstall
 {
-    my (undef, $package) = @_;
+    my ($self) = @_;
 
-    $package ||= $main::imscpConfig{'FILEMANAGER_PACKAGE'};
-    return 0 unless $package;
+    my @distroPackages = ();
+    for ( @{$self->{'SELECTED_PACKAGES'}} ) {
+        my $package = "Package::FileManager::${_}::${_}";
+        eval "require $package" or die( $@ );
 
-    $package = "Package::FileManager::${package}::${package}";
-    eval "require $package";
-    !$@ or die( $@ );
+        if ( my $subref = $package->can( 'uninstall' ) ) {
+            debug( sprintf( 'Executing preinstall action on %s', $package ));
+            my $rs = $subref->( $package->getInstance());
+            return $rs if $rs;
+        }
 
-    return 0 unless my $subref = $package->can( 'uninstall' );
-    debug( sprintf( 'Executing uninstall action on %s', $package ));
-    $subref->( $package->getInstance());
+        ( my $subref = $package->can( 'getDistroPackages' ) ) or next;
+        debug( sprintf( 'Executing getDistroPackages action on %s', $package ));
+        push @distroPackages, $subref->( $package->getInstance());
+    }
+
+    $self->_removePackages( @distroPackages );
 }
 
 =item getPriority( )
@@ -202,6 +262,33 @@ sub getPriority
     0;
 }
 
+=item setEnginePermissions( )
+
+ Set engine permissions
+
+ Return int 0 on success, other or die on failure
+
+=cut
+
+sub setEnginePermissions
+{
+    my ($self) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeFilemanagerSetGuiPermissions' );
+    return $rs if $rs;
+
+    for ( @{$self->{'SELECTED_PACKAGES'}} ) {
+        my $package = "Package::FileManager::${_}::${_}";
+        eval "require $package" or die( $@ );
+        ( my $subref = $package->can( 'setEnginePermissions' ) ) or next;
+        debug( sprintf( 'Executing setEnginePermissions action on %s', $package ));
+        $rs = $subref->( $package->getInstance());
+        return $rs if $rs;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterFilemanagerSetGuiPermissions' );
+}
+
 =item setGuiPermissions( )
 
  Set gui permissions
@@ -214,21 +301,19 @@ sub setGuiPermissions
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFileManagerSetGuiPermissions' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeFilemanagersSetGuiPermissions' );
     return $rs if $rs;
 
-    my $package = $main::imscpConfig{'FILEMANAGER_PACKAGE'};
-    return 0 unless exists $self->{'PACKAGES'}->{$package};
+    for ( @{$self->{'SELECTED_PACKAGES'}} ) {
+        my $package = "Package::FileManager::${_}::${_}";
+        eval "require $package" or die( $@ );
+        ( my $subref = $package->can( 'setGuiPermissions' ) ) or next;
+        debug( sprintf( 'Executing setGuiPermissions action on %s', $package ));
+        $rs = $subref->( $package->getInstance());
+        return $rs if $rs;
+    }
 
-    $package = "Package::FileManager::${package}::${package}";
-    eval "require $package";
-    !$@ or die( $@ );
-
-    return 0 unless my $subref = $package->can( 'setGuiPermissions' );
-
-    debug( sprintf( 'Executing setGuiPermissions action on %s', $package ));
-    $rs = $subref->( $package->getInstance());
-    $rs ||= $self->{'eventManager'}->trigger( 'afterFileManagerSetGuiPermissions' );
+    $self->{'eventManager'}->trigger( 'afterFilemanagersSetGuiPermissions' );
 }
 
 =back
@@ -250,16 +335,85 @@ sub _init
     my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    @{$self->{'PACKAGES'}}{
-        iMSCP::Dir->new( dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager" )->getDirs()
-    } = ();
-
-    if ( version->parse( Package::FrontEnd->getInstance()->{'config'}->{'PHP_VERSION'} ) >= version->parse( '7.0' ) ) {
-        # Current Pydio version from our composer package is not compatible with PHP >= 7.0
-        delete $self->{'PACKAGES'}->{'Pydio'};
-    }
-
+    # Pydio package temporarily disabled due to PHP version constraint that is not met
+    @{$self->{'AVAILABLE_PACKAGES'}} = grep( $_ ne 'Pydio', iMSCP::Dir->new(
+        dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager"
+    )->getDirs());
+    @{$self->{'SELECTED_PACKAGES'}} = grep( $_ ne 'no', split( ',', $main::imscpConfig{'FILEMANAGER_PACKAGES'} ));
     $self;
+}
+
+=item _installPackages( @packages )
+
+ Install distribution packages
+
+ Param list @packages List of packages to install
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _installPackages
+{
+    my (undef, @packages) = @_;
+
+    return 0 unless @packages && ( !defined $main::skippackages || !$main::skippackages );
+
+    iMSCP::Dialog->getInstance->endGauge() unless iMSCP::Getopt->noprompt;
+
+    local $ENV{'LANG'} = 'C';
+    local $ENV{'UCF_FORCE_CONFFNEW'} = 1;
+    local $ENV{'UCF_FORCE_CONFFMISS'} = 1;
+
+    my $stdout;
+    my $rs = execute(
+        [
+            ( !iMSCP::Getopt->noprompt ? ( 'debconf-apt-progress', '--logstderr', '--' ) : () ),
+            'apt-get', '--assume-yes', '--option', 'DPkg::Options::=--force-confnew',
+            '--option', 'DPkg::Options::=--force-confmiss', '--option', 'Dpkg::Options::=--force-overwrite',
+            ( $main::forcereinstall ? '--reinstall' : () ), '--auto-remove', '--purge', '--no-install-recommends',
+            ( version->parse( `apt-get --version 2>/dev/null` =~ /^apt\s+(\d\.\d)/ ) < version->parse( '1.1' )
+                ? '--force-yes' : '--allow-downgrades' ),
+            'install', @packages
+        ],
+        ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef ),
+        \ my $stderr
+    );
+    error( sprintf( "Couldn't install packages: %s", $stderr || 'Unknown error' )) if $rs;
+    $rs;
+}
+
+=item _removePackages( @packages )
+
+ Remove distribution packages
+
+ Param list @packages Packages to remove
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _removePackages
+{
+    my (undef, @packages) = @_;
+
+    return 0 unless @packages && ( !defined $main::skippackages || !$main::skippackages );
+
+    # Do not try to remove packages that are not available
+    my $rs = execute( "dpkg-query -W -f='\${Package}\\n' @packages 2>/dev/null", \ my $stdout );
+    @packages = split /\n/, $stdout;
+    return 0 unless @packages;
+
+    iMSCP::Dialog->getInstance()->endGauge() unless iMSCP::Getopt->noprompt;
+
+    $rs = execute(
+        [
+            ( !iMSCP::Getopt->noprompt ? ( 'debconf-apt-progress', '--logstderr', '--' ) : () ),
+            'apt-get', '--assume-yes', '--auto-remove', '--purge', '--no-install-recommends', 'remove', @packages
+        ],
+        ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef ),
+        \my $stderr
+    );
+    error( sprintf( "Couldn't remove packages: %s", $stderr || 'Unknown error' )) if $rs;
+    $rs;
 }
 
 =back

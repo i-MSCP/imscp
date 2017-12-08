@@ -50,14 +50,8 @@ sub getInstance
     return $class if ref $class;
 
     no strict 'refs';
-    my $instance = \${"${class}::_instance"};
-
-    unless ( defined ${$instance} ) {
-        ${$instance} = bless { @attrs && ref $attrs[0] eq 'HASH' ? %{$attrs[0]} : @attrs }, $class;
-        ${$instance}->_init();
-    }
-
-    ${$instance};
+    my $instance = \${"${class}::INSTANCE"};
+    ${$instance} ||= ( bless { @attrs && ref $attrs[0] eq 'HASH' ? %{$attrs[0]} : @attrs }, $class )->_init();
 }
 
 =back

@@ -269,7 +269,7 @@ sub _parsePolicyLine
     my @bits = split ',', $_[1];
 
     my %retval = ();
-    for( @bits ) {
+    for ( @bits ) {
         my @kv = split '=', $_, 2;
         $retval{$longnames{$kv[0]}} = $kv[1] if @kv > 1 && exists $longnames{$kv[0]};
     }
@@ -330,7 +330,7 @@ sub _parseAptPolicy
     my @data = ();
     my $priority;
 
-    for( split /\n/, $stdout ) {
+    for ( split /\n/, $stdout ) {
         s/^\s+|\s+$//g;
         $priority = int( $1 ) if /^(\d+)/;
         if ( index( $_, 'release' ) == 0 ) {
@@ -369,13 +369,9 @@ sub _guessReleaseFromApt
 
     # We only care about the specified origin, component, and label
     @releases = grep {
-        (
-            ( $_->[1]->{'origin'} || '' ) eq $origin and
-                ( $_->[1]->{'component'} || '' ) eq $component and
-                ( $_->[1]->{'label'} || '' ) eq $label
-        ) or (
-            exists $alternateOlabels->{$_->[1]->{'origin'} || ''} and
-                ( $_->[1]->{'label'} || '' ) eq $alternateOlabels->{( $_->[1]->{'origin'} || '' )}
+        ( ( $_->[1]->{'origin'} || '' ) eq $origin and ( $_->[1]->{'component'} || '' ) eq $component and ( $_->[1]->{'label'} || '' ) eq $label
+        ) or ( exists $alternateOlabels->{$_->[1]->{'origin'} || ''}
+            and ( $_->[1]->{'label'} || '' ) eq $alternateOlabels->{( $_->[1]->{'origin'} || '' )}
         )
     } @releases;
 

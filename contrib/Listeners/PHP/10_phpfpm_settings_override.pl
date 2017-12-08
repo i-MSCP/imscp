@@ -24,11 +24,12 @@
 
 package Listener::PhpFpm::Settings::Override;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.1.0';
 
 use strict;
 use warnings;
 use iMSCP::EventManager;
+use version;
 
 #
 ## Configuration parameters
@@ -65,12 +66,16 @@ my %SETTINGS = (
 ## Please, don't edit anything below this line
 #
 
-iMSCP::EventManager->getInstance()->register(
-    'beforeHttpdBuildConfFile',
-    sub {
-        my ($tplContent, $tplName, $data) = @_;
+version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+    sprintf( "The 10_phpfpm_settings_override.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
+);
 
-        return 0 unless $tplName eq 'pool.conf' && $main::imscpConfig{'HTTPD_SERVER'} eq 'apache_php_fpm';
+iMSCP::EventManager->getInstance()->register(
+    'beforePhpBuildConfFile',
+    sub {
+        my ($tplContent, $tplName, $moduleData) = @_;
+
+        return 0 unless $tplName eq 'pool.conf' && defined $moduleData->{'DOMAIN_NAME'};
 
         # Apply global PHP-FPM settings
         if (exists $SETTINGS{'*'}) {
@@ -79,10 +84,10 @@ iMSCP::EventManager->getInstance()->register(
             }
         }
 
-        return 0 unless exists $SETTINGS{$data->{'DOMAIN_NAME'}};
+        return 0 unless exists $SETTINGS{$moduleData->{'DOMAIN_NAME'}};
 
         # Apply per domain PHP-FPM settings
-        while(my ($setting, $value) = each( %{$SETTINGS{$data->{'DOMAIN_NAME'}}} )) {
+        while(my ($setting, $value) = each( %{$SETTINGS{$moduleData->{'DOMAIN_NAME'}}} )) {
             $$tplContent =~ s/^\Q$setting\E\s+=.*?\n/$setting = $value\n/gm;
         }
 

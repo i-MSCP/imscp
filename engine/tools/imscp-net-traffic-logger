@@ -37,9 +37,9 @@ use iMSCP::Bootstrapper;
 use iMSCP::Execute;
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
-use POSIX qw /locale_h /;
+use POSIX qw / locale_h /;
 
-setlocale(LC_MESSAGES, "C.UTF-8");
+setlocale( LC_MESSAGES, "C.UTF-8" );
 
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -135,7 +135,7 @@ sub stop
 
         # Delete i-MSCP rules on INPUT and OUTPUT chains if any
         if ( $data{'delete'} ) {
-            for( @{$data{'delete'}} ) {
+            for ( @{$data{'delete'}} ) {
                 $rs = execute( "$exec -t filter -D $_", \$stdout, \$stderr );
                 debug( $stdout ) if $stdout;
                 error( $stderr || 'Unknown error' ) if $rs;
@@ -145,7 +145,7 @@ sub stop
 
         # Flush and delete i-MSCP chains if any
         if ( $data{'flush'} ) {
-            for( keys %{$data{'flush'}} ) {
+            for ( keys %{$data{'flush'}} ) {
                 $rs = execute( "$exec -t filter -F $_", \$stdout, \$stderr );
                 debug( $stdout ) if $stdout;
                 error( $stderr || 'Unknown error' ) if $rs;
@@ -181,19 +181,14 @@ $action && $action =~ /^(?:start|stop)$/ or iMSCP::Getopt->showUsage();
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-net-traffic-logger.lock', 'nowait' );
 
-$bootstrapper->boot(
-    {
-        config_readonly => 1,
-        nodatabase      => 1,
-        nokeys          => 1,
-        nolock          => 1
-    }
-);
+$bootstrapper->boot( {
+    config_readonly => 1,
+    nodatabase      => 1,
+    nokeys          => 1,
+    nolock          => 1
+} );
 
-@EXECS = (
-    iMSCP::ProgramFinder::find( 'iptables' ),
-    ( $main::imscpConfig{'IPV6_SUPPORT'} ? iMSCP::ProgramFinder::find( 'ip6tables' ) : undef )
-);
+@EXECS = ( iMSCP::ProgramFinder::find( 'iptables' ), ( $main::imscpConfig{'IPV6_SUPPORT'} ? iMSCP::ProgramFinder::find( 'ip6tables' ) : undef ) );
 
 my %dispatch = (
     start => sub { stop() || start() },
@@ -207,3 +202,6 @@ exit $dispatch{ $action }->();
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
+
+1;
+__END__

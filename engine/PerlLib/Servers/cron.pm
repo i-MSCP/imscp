@@ -27,7 +27,7 @@ use strict;
 use warnings;
 
 # cron server instance
-my $instance;
+my $INSTANCE;
 
 =head1 DESCRIPTION
 
@@ -47,11 +47,11 @@ my $instance;
 
 sub factory
 {
-    return $instance if $instance;
+    return $INSTANCE if $INSTANCE;
 
     my $package = 'Servers::cron::cron';
     eval "require $package" or die( $@ );
-    $instance = $package->getInstance();
+    $INSTANCE = $package->getInstance();
 }
 
 =item can( $method )

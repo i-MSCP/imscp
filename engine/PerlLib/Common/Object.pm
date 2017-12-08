@@ -47,9 +47,7 @@ sub new
 {
     my ($class, @attrs) = @_;
 
-    my $self = bless { @attrs && ref $attrs[0] eq 'HASH' ? %{$attrs[0]} : @attrs }, $class;
-    $self->_init();
-    $self;
+    ( bless { @attrs && ref $attrs[0] eq 'HASH' ? %{$attrs[0]} : @attrs }, $class )->_init( );
 }
 
 =back

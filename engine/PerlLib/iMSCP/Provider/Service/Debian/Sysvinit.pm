@@ -118,8 +118,7 @@ sub remove
     my ($self, $service) = @_;
 
     defined $service or die( 'parameter $service is not defined' );
-    $self->stop( $service ) && $self->_exec( $COMMANDS{'update-rc.d'}, '-f', $service, 'remove' ) == 0
-        && $self->SUPER::remove( $service );
+    $self->stop( $service ) && $self->_exec( $COMMANDS{'update-rc.d'}, '-f', $service, 'remove' ) == 0 && $self->SUPER::remove( $service );
 }
 
 =back

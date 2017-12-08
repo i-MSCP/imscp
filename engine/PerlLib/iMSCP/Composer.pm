@@ -75,12 +75,8 @@ sub new
         $self->{'_attrs'}->{'home_dir'} = File::Spec->canonpath(
             $self->{'_attrs'}->{'home_dir'} || File::HomeDir->users_home( $self->{'_attrs'}->{'user'} )
         );
-        $self->{'_attrs'}->{'working_dir'} = File::Spec->canonpath(
-            $self->{'_attrs'}->{'working_dir'} || $self->{'_attrs'}->{'home_dir'}
-        );
-        $self->{'_attrs'}->{'composer_path'} ||= File::Spec->canonpath(
-            "$self->{'_attrs'}->{'home_dir'}/composer.phar"
-        );
+        $self->{'_attrs'}->{'working_dir'} = File::Spec->canonpath( $self->{'_attrs'}->{'working_dir'} || $self->{'_attrs'}->{'home_dir'} );
+        $self->{'_attrs'}->{'composer_path'} ||= File::Spec->canonpath( "$self->{'_attrs'}->{'home_dir'}/composer.phar" );
         $self->{'_attrs'}->{'composer_json'} = from_json(
             $self->{'_attrs'}->{'composer_json'} || <<"EOT", { utf8 => 1 } );
 {
@@ -128,7 +124,6 @@ sub requirePackage
     }
 
     $self->{'_attrs'}->{'composer_json'}->{'require'}->{$package} = $packageVersion ||= 'dev-master';
-
     $self;
 }
 
@@ -154,7 +149,7 @@ sub installComposer
         && -x "$installDir/$filename"
         && version->parse( $self->getComposerVersion( "$installDir/$filename" )) == version->parse( $version )
     ) {
-        $self->{'_stdout'}( "Composer version is already $version. Skipping installation...\n" );
+        $self->{'_stdout'}( "Composer version is already $version. Skipping installation ...\n" );
         return;
     }
 
@@ -216,14 +211,12 @@ sub installPackages
     my ($self, $requireDev, $noautoloader) = @_;
 
     if ( $self->{'_attrs'}->{'home_dir'} ne $self->{'_attrs'}->{'working_dir'} ) {
-        iMSCP::Dir->new( dirname => $self->{'_attrs'}->{'working_dir'} )->make(
-            {
-                user           => $self->{'_attrs'}->{'user'},
-                group          => $self->{'_attrs'}->{'group'},
-                mode           => 0750,
-                fixpermissions => 0 # Set permissions only on creation
-            }
-        );
+        iMSCP::Dir->new( dirname => $self->{'_attrs'}->{'working_dir'} )->make( {
+            user           => $self->{'_attrs'}->{'user'},
+            group          => $self->{'_attrs'}->{'group'},
+            mode           => 0750,
+            fixpermissions => 0 # Set permissions only on creation
+        } );
     }
 
     my $file = iMSCP::File->new( filename => "$self->{'_attrs'}->{'working_dir'}/composer.json" );
@@ -270,14 +263,12 @@ sub updatePackages
     my ($self, $requireDev, $noautoloader) = @_;
 
     if ( $self->{'_attrs'}->{'home_dir'} ne $self->{'_attrs'}->{'working_dir'} ) {
-        iMSCP::Dir->new( dirname => $self->{'_attrs'}->{'working_dir'} )->make(
-            {
-                user           => $self->{'_attrs'}->{'user'},
-                group          => $self->{'_attrs'}->{'group'},
-                mode           => 0750,
-                fixpermissions => 0 # Set permissions only on creation
-            }
-        );
+        iMSCP::Dir->new( dirname => $self->{'_attrs'}->{'working_dir'} )->make( {
+            user           => $self->{'_attrs'}->{'user'},
+            group          => $self->{'_attrs'}->{'group'},
+            mode           => 0750,
+            fixpermissions => 0 # Set permissions only on creation
+        } );
     }
 
     my $file = iMSCP::File->new( filename => "$self->{'_attrs'}->{'working_dir'}/composer.json" );
@@ -374,8 +365,7 @@ sub getComposerJson
 {
     my ($self, $scalar) = @_;
 
-    $scalar ? $self->{'_attrs'}->{'composer_json'} : to_json(
-        $self->{'_attrs'}->{'composer_json'},
+    $scalar ? $self->{'_attrs'}->{'composer_json'} : to_json( $self->{'_attrs'}->{'composer_json'},
         {
             utf8      => 1,
             indent    => 1,
@@ -405,7 +395,6 @@ sub setStdRoutines
     $subStderr ||= sub { print STDERR @_ };
     ref $subStderr eq 'CODE' or die( 'Expects a routine as second parameter for STDERR processing' );
     $self->{'_stderr'} = $subStderr;
-
     $self;
 }
 
@@ -422,9 +411,7 @@ sub getComposerVersion
 {
     my ($self, $composerPath) = @_;
 
-    my $rs = execute(
-        $self->_getSuCmd( @{$self->{'_php_cmd'}}, $composerPath, '--no-ansi', '--version' ), \my $stdout, \my $stderr
-    );
+    my $rs = execute( $self->_getSuCmd( @{$self->{'_php_cmd'}}, $composerPath, '--no-ansi', '--version' ), \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     $rs == 0 or die( sprintf( "Couldn't get composer (%s) version: %s", $composerPath, $stderr ));
     ( $stdout =~ /version\s+([\d.]+)/ );

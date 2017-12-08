@@ -25,10 +25,10 @@ package Servers::po;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Service;
 
 # po server instance
-my $instance;
+my $INSTANCE;
 
 =head1 DESCRIPTION
 
@@ -50,7 +50,7 @@ my $instance;
 
 sub factory
 {
-    return $instance if $instance;
+    return $INSTANCE if $INSTANCE;
 
     my $package = $main::imscpConfig{'PO_PACKAGE'} || 'Servers::noserver';
 
@@ -66,7 +66,7 @@ sub factory
     }
 
     eval "require $package" or die( $@ );
-    $instance = $package->getInstance();
+    $INSTANCE = $package->getInstance();
 }
 
 =item can( $method )
@@ -100,10 +100,28 @@ sub getPriority
     30;
 }
 
+
+=back
+
+=head1 SHUTDOWN TASKS
+
+=over 4
+
+=item END
+
+ Schedule restart PO server(s) when needed
+
+=cut
+
 END
     {
-        return if $? || !$instance || ( $main::execmode && $main::execmode eq 'setup' );
-        $? = $instance->restart() if $instance->{'restart'};
+        return if $? || !$INSTANCE || ( defined $main::execmode && $main::execmode eq 'setup' );
+
+        if ( $INSTANCE->{'restart'} ) {
+            iMSCP::Service->getInstance()->registerDelayedAction(
+                ref $INSTANCE, [ 'restart', sub { $INSTANCE->restart(); } ], __PACKAGE__->getPriority()
+            );
+        }
     }
 
 =back

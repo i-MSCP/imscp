@@ -55,7 +55,6 @@ sub getFiles
     $dirname //= $self->{'dirname'};
 
     defined $dirname or die( '$dirname parameter is not defined.' );
-
     opendir my $dh, $dirname or die( sprintf( "Couldn't open `%s' directory: %s", $dirname, $! ));
     my $dotReg = qr/^\.{1,2}\z/s;
     my @files = grep { !/$dotReg/ && -f "$dirname/$_" } readdir( $dh );
@@ -79,7 +78,6 @@ sub getDirs
     $dirname //= $self->{'dirname'};
 
     defined $dirname or die( '$dirname parameter is not defined.' );
-
     opendir my $dh, $dirname or die( sprintf( "Couldn't open `%s' directory: %s", $dirname, $! ));
     my @dirs = grep { !/^\.{1,2}\z/s && -d "$dirname/$_" } readdir( $dh );
     closedir( $dh );
@@ -101,7 +99,6 @@ sub getAll
     $dirname //= $self->{'dirname'};
 
     defined $dirname or die( '$dirname parameter is not defined.' );
-
     opendir my $dh, $dirname or die( sprintf( "Couldn't open `%s' directory: %s", $dirname, $! ));
     my @files = grep( !/^\.{1,2}\z/s, readdir( $dh ) );
     closedir( $dh );
@@ -123,9 +120,7 @@ sub isEmpty
     $dirname //= $self->{'dirname'};
 
     defined $dirname or die( '$dirname parameter is not defined.' );
-
     my $dotReg = qr/^\.{1,2}\z/s;
-
     opendir my $dh, $dirname or die( sprintf( "Couldn't open `%s' directory: %s", $dirname, $! ));
     while ( my $entry = readdir $dh ) {
         next if $entry =~ /$dotReg/;
@@ -242,10 +237,8 @@ sub owner
     defined $owner or die( '$owner parameter is not defined.' );
     defined $group or die( '$group parameter is not defined.' );
     defined $dirname or die( '$dirname parameter is not defined.' );
-
     my $uid = $owner =~ /^\d+$/ ? $owner : getpwnam( $owner ) // -1;
     my $gid = $group =~ /^\d+$/ ? $group : getgrnam( $group ) // -1;
-
     chown $uid, $gid, $dirname or die( sprintf( "Couldn't change `%s' directory ownership: %s", $dirname, $! ));
     0;
 }
@@ -276,7 +269,7 @@ sub make
         if ( @{$errStack} ) {
             my $errorStr = '';
 
-            for( @{$errStack} ) {
+            for ( @{$errStack} ) {
                 my ($file, $message) = %{$_};
                 $errorStr .= ( $file eq '' ) ? "general error: $message\n" : "problem creating $file: $message\n";
             }
@@ -409,9 +402,7 @@ sub moveDir
     defined $self->{'dirname'} or die( '`dirname` attribute is not defined.' );
 
     -d $self->{'dirname'} or die( sprintf( "Directory %s doesn't exits", $self->{'dirname'} ));
-    mv( $self->{'dirname'}, $destDir ) or die(
-        sprintf( "Couldn't move `%s' directory to `%s': %s", $self->{'dirname'}, $destDir, $! )
-    );
+    mv( $self->{'dirname'}, $destDir ) or die( sprintf( "Couldn't move `%s' directory to `%s': %s", $self->{'dirname'}, $destDir, $! ));
     0;
 }
 

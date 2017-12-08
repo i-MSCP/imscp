@@ -85,7 +85,7 @@ try {
 
     $cfg = Registry::get('config');
 
-    if (isset($cfg['FILEMANAGER_PACKAGE']) && $cfg['FILEMANAGER_PACKAGE'] == 'Pydio') {
+    if (in_array('Pydio', explode(',', $cfg['FILEMANAGER_PACKAGES']))) {
         $userPrefDir = $cfg['GUI_PUBLIC_DIR'] . '/tools/ftp/data/plugins/auth.serial/' . $userid;
         if (is_dir($userPrefDir)) {
             utils_removeDir($userPrefDir);

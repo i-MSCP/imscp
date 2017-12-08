@@ -168,8 +168,7 @@ sub setEnginePermissions
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdSetEnginePermissions' );
-    $rs ||= setRights(
-        $self->{'config'}->{'FTPD_USER_CONF_DIR'},
+    $rs ||= setRights( $self->{'config'}->{'FTPD_USER_CONF_DIR'},
         {
             user      => $main::imscpConfig{'ROOT_USER'},
             group     => $main::imscpConfig{'ROOT_GROUP'},
@@ -178,8 +177,7 @@ sub setEnginePermissions
             recursive => 1
         }
     );
-    $rs ||= setRights(
-        $self->{'config'}->{'FTPD_CONF_FILE'},
+    $rs ||= setRights( $self->{'config'}->{'FTPD_CONF_FILE'},
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ROOT_GROUP'},
@@ -213,12 +211,9 @@ sub addUser
 
         $dbh->begin_work();
         $dbh->do(
-            'UPDATE ftp_users SET uid = ?, gid = ? WHERE admin_id = ?',
-            undef, $data->{'USER_SYS_UID'}, $data->{'USER_SYS_GID'}, $data->{'USER_ID'}
+            'UPDATE ftp_users SET uid = ?, gid = ? WHERE admin_id = ?', undef, $data->{'USER_SYS_UID'}, $data->{'USER_SYS_GID'}, $data->{'USER_ID'}
         );
-        $dbh->do(
-            'UPDATE ftp_group SET gid = ? WHERE groupname = ?', undef, $data->{'USER_SYS_GID'}, $data->{'USERNAME'}
-        );
+        $dbh->do( 'UPDATE ftp_group SET gid = ? WHERE groupname = ?', undef, $data->{'USER_SYS_GID'}, $data->{'USERNAME'} );
         $dbh->commit();
     };
     if ( $@ ) {
@@ -398,20 +393,17 @@ sub getTraffic
     $logFile ||= $self->{'config'}->{'FTPD_TRAFF_LOG_PATH'};
 
     unless ( -f $logFile ) {
-        debug( sprintf( "VsFTPd traffic %s log file doesn't exist. Skipping...", $logFile ));
+        debug( sprintf( "VsFTPd traffic %s log file doesn't exist. Skipping ...", $logFile ));
         return;
     }
 
     debug( sprintf( 'Processing VsFTPd traffic %s log file', $logFile ));
 
     # We use an index database to keep trace of the last processed logs
-    $trafficIndexDb or tie %{$trafficIndexDb},
-        'iMSCP::Config', fileName => "$main::imscpConfig{'IMSCP_HOMEDIR'}/traffic_index.db", nodie => 1;
+    $trafficIndexDb or tie %{$trafficIndexDb}, 'iMSCP::Config', fileName => "$main::imscpConfig{'IMSCP_HOMEDIR'}/traffic_index.db", nodie => 1;
     my ($idx, $idxContent) = ( $trafficIndexDb->{'vsftpd_lineNo'} || 0, $trafficIndexDb->{'vsftpd_lineContent'} );
 
-    tie my @logs, 'Tie::File', $logFile, mode => O_RDONLY, memory => 0 or die(
-        sprintf( "Couldn't tie %s file in read-only mode", $logFile )
-    );
+    tie my @logs, 'Tie::File', $logFile, mode => O_RDONLY, memory => 0 or die( sprintf( "Couldn't tie %s file in read-only mode", $logFile ));
 
     # Retain index of the last log (log file can continue growing)
     my $lastLogIdx = $#logs;
@@ -464,18 +456,16 @@ sub _init
 {
     my ($self) = @_;
 
+    @{$self}{qw/ start restart reload /} = ( 0, 0, 0 );
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'start'} = 0;
-    $self->{'restart'} = 0;
-    $self->{'reload'} = 0;
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/vsftpd";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-    $self->_mergeConfig() if -f "$self->{'cfgDir'}/vsftpd.data.dist";
+    $self->_mergeConfig() if defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/vsftpd.data.dist";
     tie %{$self->{'config'}},
         'iMSCP::Config',
         fileName    => "$self->{'cfgDir'}/vsftpd.data",
         readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
-        nodeferring => ( defined $main::execmode && $main::execmode eq 'setup' );
+        nodeferring => defined $main::execmode && $main::execmode eq 'setup';
     $self;
 }
 
@@ -495,7 +485,7 @@ sub _mergeConfig
         tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/vsftpd.data.dist";
         tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/vsftpd.data", readonly => 1;
 
-        debug( 'Merging old configuration with new configuration...' );
+        debug( 'Merging old configuration with new configuration ...' );
 
         while ( my ($key, $value) = each( %oldConfig ) ) {
             next unless exists $newConfig{$key};
@@ -506,9 +496,7 @@ sub _mergeConfig
         untie( %oldConfig );
     }
 
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/vsftpd.data.dist" )->moveFile(
-        "$self->{'cfgDir'}/vsftpd.data"
-    ) == 0 or die(
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/vsftpd.data.dist" )->moveFile( "$self->{'cfgDir'}/vsftpd.data" ) == 0 or die(
         getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
     );
 }

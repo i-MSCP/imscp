@@ -61,9 +61,7 @@ sub addSystemGroup
         return 1;
     }
 
-    my $rs = execute(
-        [ '/usr/sbin/groupadd', '-f', ( $systemgroup ? '-r' : () ), $groupname ], \ my $stdout, \ my $stderr
-    );
+    my $rs = execute( [ '/usr/sbin/groupadd', '-f', ( $systemgroup ? '-r' : () ), $groupname ], \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     $rs;
