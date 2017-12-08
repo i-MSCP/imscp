@@ -51,7 +51,7 @@ sub _init
     $self;
 }
 
-=item _setupModules
+=item _setupModules( )
 
  See Servers::httpd::Apache2::Abstract::_setupModules()
 

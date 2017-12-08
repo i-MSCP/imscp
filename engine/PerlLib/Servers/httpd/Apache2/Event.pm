@@ -35,7 +35,7 @@ use parent 'Servers::httpd::Apache2::Prefork';
 
 =over 4
 
-=item _setupModules
+=item _setupModules( )
 
  See Servers::httpd::Apache2::Abstract::_setupModules()
 
