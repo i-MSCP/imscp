@@ -25,7 +25,7 @@ package iMSCP::Service;
 
 use strict;
 use warnings;
-use iMSCP::Debug qw/ debug getMessageByType /;
+use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::LsbRelease;
@@ -131,12 +131,10 @@ sub remove
             my $provider = $self->getProvider( ( $self->{'init'} eq 'upstart' ) ? 'systemd' : 'upstart' );
 
             if ( $self->{'init'} eq 'upstart' ) {
-                for( qw / service socket / ) {
+                for ( qw / service socket / ) {
                     my $unitFilePath = eval { $provider->getUnitFilePath( "$service.$_" ); };
                     if ( defined $unitFilePath ) {
-                        iMSCP::File->new( filename => $unitFilePath )->delFile() == 0 or die(
-                            $self->_getLastError()
-                        );
+                        iMSCP::File->new( filename => $unitFilePath )->delFile() == 0 or die( $self->_getLastError());
                     }
                 }
             } else {
@@ -349,6 +347,67 @@ sub getProvider
     $provider->getInstance();
 }
 
+=item registerDelayedAction( $service, $action [, $priority = 0] )
+
+ Register a service action that will be executed in __END__ block.
+ 
+ Only the 'start', 'restart' and 'reload' actions are supported, in following order of precedence:
+ 
+ - restart
+ - reload
+ - start
+ 
+ Param string $service Service name for which action must be executed
+ Param coderef|array $action Action name or an array containing action name and coderef representing action logic
+ Param int $priority Priority. Default (0) stands for 'no priority'.
+ Return void
+
+=cut
+
+sub registerDelayedAction
+{
+    my ($self, $service, $action, $priority) = @_;
+    $priority //= 0;
+
+    defined $service or die ( 'Missing $service parameter' );
+    defined $action or die( 'Missing $action parameter.' );
+    $priority =~ /^\d+$/ or die( 'Invalid $priority parameter.' );
+
+    if ( ref $action eq 'ARRAY' ) {
+        @{$action} == 2 or die( 'When defined as array, $action must contains both the action name and coderef for action logic.' );
+        grep($action->[0], 'restart', 'reload', 'start') or die( 'Unexpected action name. Only start, restart and reload actions can be delayed' );
+        ref $action->[1] eq 'CODE' or die( 'Unexpected action coderef.' );
+    } else {
+        grep($action eq $_, 'restart', 'reload', 'start') or die( 'Unexpected action. Only start, restart and reload actions can be delayed' );
+    }
+
+    unless ( $self->{'delayed_actions'}->{$service} ) {
+        $self->{'delayed_actions'}->{$service} = {
+            action   => $action,
+            priority => $priority
+        };
+
+        return;
+    }
+
+    # Identical action (coderef), return early
+    return if ref $self->{'delayed_actions'}->{$service}->{'action'} eq 'ARRAY' && ref $action eq 'ARRAY'
+        && $self->{'delayed_actions'}->{$service}->{'action'} eq $action;
+
+    my $oaction = ref $self->{'delayed_actions'}->{$service}->{'action'} eq 'ARRAY'
+        ? $self->{'delayed_actions'}->{$service}->{'action'}->[0] : $self->{'delayed_actions'}->{$service}->{'action'};
+    my $naction = ref $action eq 'ARRAY' ? $action->[0] : $action;
+
+    # reload action can be replaced by reload or restart action only
+    # restart action can be replaced by restart action only
+    return if ( $oaction eq 'reload' && !grep($action eq $_, 'restart', 'reload') ) || ( $oaction eq 'restart' && $naction ne 'restart' );
+
+    $self->{'delayed_actions'}->{$service} = {
+        action   => $action,
+        priority => $priority
+    };
+}
+
 =back
 
 =head1 PRIVATE METHODS
@@ -368,8 +427,8 @@ sub _init
     my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'init'} = _detectInit();
-    $self->{'provider'} = $self->getProvider( $self->{'init'} );
+    $self->{'provider'} = $self->getProvider( $self->{'init'} = _detectInit());
+    $self->{'delayed_actions'} = {};
     $self;
 }
 
@@ -388,9 +447,7 @@ sub _detectInit
         return 'systemd';
     }
 
-    if ( iMSCP::ProgramFinder::find( 'initctl' )
-        && execute( 'initctl version 2>/dev/null | grep -q upstart' ) == 0
-    ) {
+    if ( iMSCP::ProgramFinder::find( 'initctl' ) && execute( 'initctl version 2>/dev/null | grep -q upstart' ) == 0 ) {
         debug( 'Upstart init system has been detected' );
         return 'upstart';
     }
@@ -411,6 +468,48 @@ sub _getLastError
 {
     getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error';
 }
+
+=item _executeDelayedActions( )
+
+ Execute delayed actions
+
+ Return int 0 on success, 1 on failure
+
+=cut
+
+sub _executeDelayedActions
+{
+    my ($self) = @_;
+
+    return 0 unless %{$self->{'delayed_actions'}};
+
+    # Sort services by priority (DESC)
+    my @services = sort {
+        $self->{'delayed_actions'}->{$b}->{'priority'} <=> $self->{'delayed_actions'}->{$a}->{'priority'}
+    } keys %{$self->{'delayed_actions'}};
+
+    for my $service( @services ) {
+        my $action = $self->{'delayed_actions'}->{$service}->{'action'};
+
+        if ( ref $action eq 'ARRAY' ) {
+            eval { $action->[1]->(); };
+            if ( $@ ) {
+                error( $@ );
+                return 1;
+            }
+
+            next;
+        }
+
+        my $ret = eval { $self->$action->( $service ); };
+        if ( $@ || $ret ) {
+            error( $@ || $self->_getLastError());
+            return $ret || 1;
+        }
+    }
+}
+
+END { __PACKAGE__->getInstance()->_executeDelayedActions(); }
 
 =back
 
