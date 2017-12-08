@@ -68,8 +68,7 @@ sub process
     my @sql;
     if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
         $rs = $self->add();
-        @sql = ( 'UPDATE ftp_users SET status = ? WHERE userid = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $ftpUserId );
+        @sql = ( 'UPDATE ftp_users SET status = ? WHERE userid = ?', undef, ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $ftpUserId );
     } elsif ( $self->{'status'} eq 'todisable' ) {
         $rs = $self->disable();
         @sql = ( 'UPDATE ftp_users SET status = ? WHERE userid = ?', undef,
@@ -77,8 +76,7 @@ sub process
     } elsif ( $self->{'status'} eq 'todelete' ) {
         $rs = $self->delete();
         @sql = $rs
-            ? ( 'UPDATE ftp_users SET status = ? WHERE userid = ?', undef,
-                ( getLastError( 'error' ) || 'Unknown error' ), $ftpUserId )
+            ? ( 'UPDATE ftp_users SET status = ? WHERE userid = ?', undef, ( getLastError( 'error' ) || 'Unknown error' ), $ftpUserId )
             : ( 'DELETE FROM ftp_users WHERE userid = ?', undef, $ftpUserId );
     } else {
         warning( sprintf( 'Unknown action (%s) for ftp user (ID %d)', $self->{'status'}, $ftpUserId ));
@@ -143,28 +141,24 @@ sub _getData
 {
     my ($self, $action) = @_;
 
-    $self->{'_data'} = do {
-        my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . (
-            $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'}
-        );
+    return $self->{'_data'} if %{$self->{'_data'}};
 
-        {
-            ACTION         => $action,
-            STATUS         => $self->{'status'},
-            OWNER_ID       => $self->{'admin_id'},
-            USERNAME       => $self->{'userid'},
-            PASSWORD_CRYPT => $self->{'passwd'},
-            PASSWORD_CLEAR => $self->{'rawpasswd'},
-            SHELL          => $self->{'shell'},
-            HOMEDIR        => $self->{'homedir'},
-            USER_SYS_GID   => $self->{'uid'},
-            USER_SYS_GID   => $self->{'gid'},
-            USER_SYS_NAME  => $userName,
-            USER_SYS_GNAME => $groupName
-        }
-    } unless %{$self->{'_data'}};
+    my $usergroup = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'} );
 
-    $self->{'_data'};
+    $self->{'_data'} = {
+        ACTION         => $action,
+        STATUS         => $self->{'status'},
+        OWNER_ID       => $self->{'admin_id'},
+        USERNAME       => $self->{'userid'},
+        PASSWORD_CRYPT => $self->{'passwd'},
+        PASSWORD_CLEAR => $self->{'rawpasswd'},
+        SHELL          => $self->{'shell'},
+        HOMEDIR        => $self->{'homedir'},
+        USER_SYS_GID   => $self->{'uid'},
+        USER_SYS_GID   => $self->{'gid'},
+        USER_SYS_NAME  => $usergroup,
+        USER_SYS_GNAME => $usergroup
+    };
 }
 
 =back

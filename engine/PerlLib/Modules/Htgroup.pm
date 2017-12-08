@@ -69,8 +69,8 @@ sub process
     if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
         $rs = $self->add();
         @sql = (
-            'UPDATE htaccess_groups SET status = ? WHERE id = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $htgroupId );
+            'UPDATE htaccess_groups SET status = ? WHERE id = ?', undef, ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $htgroupId
+        );
     } elsif ( $self->{'status'} eq 'todisable' ) {
         $rs = $self->disable();
         @sql = ( 'UPDATE htaccess_groups SET status = ? WHERE id = ?', undef,
@@ -78,8 +78,7 @@ sub process
     } elsif ( $self->{'status'} eq 'todelete' ) {
         $rs = $self->delete();
         @sql = $rs
-            ? ( 'UPDATE htaccess_groups SET status = ? WHERE id = ?', undef,
-                getLastError( 'error' ) || 'Unknown error', $htgroupId )
+            ? ( 'UPDATE htaccess_groups SET status = ? WHERE id = ?', undef, getLastError( 'error' ) || 'Unknown error', $htgroupId )
             : ( 'DELETE FROM htaccess_groups WHERE id = ?', undef, $htgroupId );
     } else {
         warning( sprintf( 'Unknown action (%s) for htgroup (ID %d)', $self->{'status'}, $htgroupId ));
@@ -166,25 +165,22 @@ sub _getData
 {
     my ($self, $action) = @_;
 
-    $self->{'_data'} = do {
-        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-            ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'} );
+    return $self->{'_data'} if %{$self->{'_data'}};
 
-        {
-            ACTION                => $action,
-            STATUS                => $self->{'status'},
-            DOMAIN_ADMIN_ID       => $self->{'domain_admin_id'},
-            USER                  => $userName,
-            GROUP                 => $groupName,
-            WEB_DIR               => "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}",
-            HTGROUP_NAME          => $self->{'ugroup'},
-            HTGROUP_USERS         => $self->{'users'},
-            HTGROUP_DMN           => $self->{'domain_name'},
-            WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
-        }
-    } unless %{$self->{'_data'}};
+    my $usergroup = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'} );
 
-    $self->{'_data'};
+    $self->{'_data'} = {
+        ACTION                => $action,
+        STATUS                => $self->{'status'},
+        DOMAIN_ADMIN_ID       => $self->{'domain_admin_id'},
+        USER                  => $usergroup,
+        GROUP                 => $usergroup,
+        WEB_DIR               => "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}",
+        HTGROUP_NAME          => $self->{'ugroup'},
+        HTGROUP_USERS         => $self->{'users'},
+        HTGROUP_DMN           => $self->{'domain_name'},
+        WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
+    };
 }
 
 =back

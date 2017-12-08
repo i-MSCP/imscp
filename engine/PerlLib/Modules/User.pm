@@ -75,8 +75,7 @@ sub process
     } elsif ( $self->{'admin_status'} eq 'todelete' ) {
         $rs = $self->delete();
         @sql = $rs
-            ? ( 'UPDATE admin SET admin_status = ? WHERE admin_id = ?', undef,
-                getLastError( 'error' ) || 'Unknown error', $userId )
+            ? ( 'UPDATE admin SET admin_status = ? WHERE admin_id = ?', undef, getLastError( 'error' ) || 'Unknown error', $userId )
             : ( 'DELETE FROM admin WHERE admin_id = ?', undef, $userId );
     } else {
         warning( sprintf( 'Unknown action (%s) for user (ID %d)', $self->{'admin_status'}, $userId ));
@@ -109,13 +108,9 @@ sub add
 
     return $self->SUPER::add() if $self->{'admin_status'} eq 'tochangepwd';
 
-    my $user = my $group = $main::imscpConfig{'SYSTEM_USER_PREFIX'}
-        . ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'} );
+    my $user = my $group = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'} );
     my $home = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'admin_name'}";
-
-    my $rs = $self->{'eventManager'}->trigger(
-        'onBeforeAddImscpUnixUser', $self->{'admin_id'}, $user, \my $pwd, $home, \my $skelPath, \my $shell
-    );
+    my $rs = $self->{'eventManager'}->trigger( 'onBeforeAddImscpUnixUser', $self->{'admin_id'}, $user, \my $pwd, $home, \my $skelPath, \my $shell );
 
     $rs ||= iMSCP::SystemUser->new(
         username     => $self->{'admin_sys_name'}, # Old username
@@ -132,11 +127,7 @@ sub add
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         $self->{'_dbh'}->do(
-            '
-                UPDATE admin
-                SET admin_sys_name = ?, admin_sys_uid = ?, admin_sys_gname = ?, admin_sys_gid = ?
-                WHERE admin_id = ?
-            ',
+            'UPDATE admin SET admin_sys_name = ?, admin_sys_uid = ?, admin_sys_gname = ?, admin_sys_gid = ? WHERE admin_id = ?',
             undef, $user, $uid, $group, $gid, $self->{'admin_id'},
         );
     };
@@ -161,9 +152,7 @@ sub delete
 {
     my ($self) = @_;
 
-    my $user = my $group = $main::imscpConfig{'SYSTEM_USER_PREFIX'}
-        . ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'} );
-
+    my $user = my $group = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'} );
     my $rs = $self->{'eventManager'}->trigger( 'onBeforeDeleteImscpUnixUser', $user );
     $rs ||= $self->SUPER::delete();
     $rs ||= iMSCP::SystemUser->new( force => 1 )->delSystemUser( $user );
@@ -194,8 +183,7 @@ sub _loadData
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         my $row = $self->{'_dbh'}->selectrow_hashref(
             '
-                SELECT admin_id, admin_name, admin_pass, admin_sys_name, admin_sys_uid, admin_sys_gname, admin_sys_gid,
-                    admin_status
+                SELECT admin_id, admin_name, admin_pass, admin_sys_name, admin_sys_uid, admin_sys_gname, admin_sys_gid, admin_status
                 FROM admin
                 WHERE admin_id = ?
             ',
@@ -225,24 +213,21 @@ sub _getData
 {
     my ($self, $action) = @_;
 
-    $self->{'_data'} = do {
-        my $user = my $group = $main::imscpConfig{'SYSTEM_USER_PREFIX'}
-            . ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'} );
+    return $self->{'_data'} if %{$self->{'_data'}};
 
-        {
-            ACTION        => $action,
-            STATUS        => $self->{'admin_status'},
-            USER_ID       => $self->{'admin_id'},
-            USER_SYS_UID  => $self->{'admin_sys_uid'},
-            USER_SYS_GID  => $self->{'admin_sys_gid'},
-            USERNAME      => $self->{'admin_name'},
-            PASSWORD_HASH => $self->{'admin_pass'},
-            USER          => $user,
-            GROUP         => $group
-        }
-    } unless %{$self->{'_data'}};
+    my $usergroup = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'} );
 
-    $self->{'_data'};
+    $self->{'_data'} = {
+        ACTION        => $action,
+        STATUS        => $self->{'admin_status'},
+        USER_ID       => $self->{'admin_id'},
+        USER_SYS_UID  => $self->{'admin_sys_uid'},
+        USER_SYS_GID  => $self->{'admin_sys_gid'},
+        USERNAME      => $self->{'admin_name'},
+        PASSWORD_HASH => $self->{'admin_pass'},
+        USER          => $usergroup,
+        GROUP         => $usergroup
+    };
 }
 
 =back

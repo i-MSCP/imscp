@@ -70,8 +70,7 @@ sub process
     my @sql;
     if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
         $rs = $self->add();
-        @sql = ( 'UPDATE htaccess SET status = ? WHERE id = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $htaccessId );
+        @sql = ( 'UPDATE htaccess SET status = ? WHERE id = ?', undef, ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $htaccessId );
     } elsif ( $self->{'status'} eq 'todisable' ) {
         $rs = $self->disable();
         @sql = ( 'UPDATE htaccess SET status = ? WHERE id = ?', undef,
@@ -79,8 +78,7 @@ sub process
     } elsif ( $self->{'status'} eq 'todelete' ) {
         $rs = $self->delete();
         @sql = $rs
-            ? ( 'UPDATE htaccess SET status = ? WHERE id = ?', undef,
-                ( getLastError( 'error' ) || 'Unknown error' ), $htaccessId )
+            ? ( 'UPDATE htaccess SET status = ? WHERE id = ?', undef, ( getLastError( 'error' ) || 'Unknown error' ), $htaccessId )
             : ( 'DELETE FROM htaccess WHERE id = ?', undef, $htaccessId );
     } else {
         warning( sprintf( 'Unknown action (%s) for htaccess (ID %d)', $self->{'status'}, $htaccessId ));
@@ -175,29 +173,26 @@ sub _getData
 {
     my ($self, $action) = @_;
 
-    $self->{'_data'} = do {
-        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-            ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'} );
-        my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
-        my $pathDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}/$self->{'path'}" );
+    return $self->{'_data'} if %{$self->{'_data'}};
 
-        {
-            ACTION          => $action,
-            STATUS          => $self->{'status'},
-            DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
-            USER            => $userName,
-            GROUP           => $groupName,
-            AUTH_TYPE       => $self->{'auth_type'},
-            AUTH_NAME       => encode_utf8( $self->{'auth_name'} ),
-            AUTH_PATH       => $pathDir,
-            HOME_PATH       => $homeDir,
-            DOMAIN_NAME     => $self->{'domain_name'},
-            HTUSERS         => $self->{'users'},
-            HTGROUPS        => $self->{'groups'}
-        }
-    } unless %{$self->{'_data'}};
+    my $usergroup = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'} );
+    my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
+    my $pathDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}/$self->{'path'}" );
 
-    $self->{'_data'};
+    $self->{'_data'} = {
+        ACTION          => $action,
+        STATUS          => $self->{'status'},
+        DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
+        USER            => $usergroup,
+        GROUP           => $usergroup,
+        AUTH_TYPE       => $self->{'auth_type'},
+        AUTH_NAME       => encode_utf8( $self->{'auth_name'} ),
+        AUTH_PATH       => $pathDir,
+        HOME_PATH       => $homeDir,
+        DOMAIN_NAME     => $self->{'domain_name'},
+        HTUSERS         => $self->{'users'},
+        HTGROUPS        => $self->{'groups'}
+    };
 }
 
 =back

@@ -142,9 +142,7 @@ sub _init
     );
     $self->{'dbh'} = iMSCP::Database->factory()->getRawDb();
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    @{$self}{
-        qw/ pluginId pluginAction pluginInstance pluginName pluginInfo pluginConfig pluginConfigPrev pluginStatus /
-    } = undef;
+    @{$self}{qw/ pluginId pluginAction pluginInstance pluginName pluginInfo pluginConfig pluginConfigPrev pluginStatus /} = undef;
     $self;
 }
 
@@ -163,12 +161,7 @@ sub _loadData
 
     local $self->{'dbh'}->{'RaiseError'} = 1;
     my $row = $self->{'dbh'}->selectrow_hashref(
-        '
-            SELECT plugin_name, plugin_info, plugin_config, plugin_config_prev, plugin_status
-            FROM plugin
-            WHERE plugin_id = ?
-        ',
-        undef, $pluginId
+        'SELECT plugin_name, plugin_info, plugin_config, plugin_config_prev, plugin_status FROM plugin WHERE plugin_id = ?', undef, $pluginId
     );
     $row or die( sprintf( 'Data not found for plugin with ID %d', $pluginId ));
     $self->{'pluginName'} = $row->{'plugin_name'};
@@ -318,8 +311,7 @@ sub _update
     {
         local $self->{'dbh'}->{'RaiseError'} = 1;
         $self->{'dbh'}->do(
-            'UPDATE plugin SET plugin_info = ? WHERE plugin_id = ?',
-            undef, encode_json( $self->{'pluginInfo'} ), $self->{'pluginId'}
+            'UPDATE plugin SET plugin_info = ? WHERE plugin_id = ?', undef, encode_json( $self->{'pluginInfo'} ), $self->{'pluginId'}
         );
     }
     $self->{'eventManager'}->trigger( 'onAfterUpdatePlugin', $self->{'pluginName'} ) == 0 or die(

@@ -68,13 +68,11 @@ sub process
     my @sql;
     if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
         $rs = $self->add();
-        @sql = ( 'UPDATE mail_users SET status = ? WHERE mail_id = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $mailId );
+        @sql = ( 'UPDATE mail_users SET status = ? WHERE mail_id = ?', undef, ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $mailId );
     } elsif ( $self->{'status'} eq 'todelete' ) {
         $rs = $self->delete();
         @sql = $rs
-            ? ( 'UPDATE mail_users SET status = ? WHERE mail_id = ?', undef,
-                ( getLastError( 'error' ) || 'Unknown error' ), $mailId )
+            ? ( 'UPDATE mail_users SET status = ? WHERE mail_id = ?', undef, ( getLastError( 'error' ) || 'Unknown error' ), $mailId )
             : ( 'DELETE FROM mail_users WHERE mail_id = ?', undef, $self->{'mail_id'} );
 
     } elsif ( $self->{'status'} eq 'todisable' ) {
@@ -121,8 +119,7 @@ sub _loadData
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         my $row = $self->{'_dbh'}->selectrow_hashref(
             '
-                SELECT mail_id, mail_acc, mail_pass, mail_forward, mail_type, mail_auto_respond, status, quota,
-                    mail_addr
+                SELECT mail_id, mail_acc, mail_pass, mail_forward, mail_type, mail_auto_respond, status, quota, mail_addr
                 FROM mail_users
                 WHERE mail_id = ?
             ',
@@ -152,26 +149,24 @@ sub _getData
 {
     my ($self, $action) = @_;
 
-    $self->{'_data'} = do {
-        my ($user, $domain) = split '@', $self->{'mail_addr'};
+    return $self->{'_data'} if %{$self->{'_data'}};
 
-        {
-            ACTION                  => $action,
-            STATUS                  => $self->{'status'},
-            DOMAIN_NAME             => $domain,
-            MAIL_ACC                => $user,
-            MAIL_PASS               => $self->{'mail_pass'},
-            MAIL_FORWARD            => $self->{'mail_forward'},
-            MAIL_TYPE               => $self->{'mail_type'},
-            MAIL_QUOTA              => $self->{'quota'},
-            MAIL_HAS_AUTO_RESPONDER => $self->{'mail_auto_respond'},
-            MAIL_STATUS             => $self->{'status'},
-            MAIL_ADDR               => $self->{'mail_addr'},
-            MAIL_CATCHALL           => ( index( $self->{'mail_type'}, 'catchall' ) != -1 ) ? $self->{'mail_acc'} : undef
-        }
-    } unless %{$self->{'_data'}};
+    my ($user, $domain) = split '@', $self->{'mail_addr'};
 
-    $self->{'_data'};
+    $self->{'_data'} = {
+        ACTION                  => $action,
+        STATUS                  => $self->{'status'},
+        DOMAIN_NAME             => $domain,
+        MAIL_ACC                => $user,
+        MAIL_PASS               => $self->{'mail_pass'},
+        MAIL_FORWARD            => $self->{'mail_forward'},
+        MAIL_TYPE               => $self->{'mail_type'},
+        MAIL_QUOTA              => $self->{'quota'},
+        MAIL_HAS_AUTO_RESPONDER => $self->{'mail_auto_respond'},
+        MAIL_STATUS             => $self->{'status'},
+        MAIL_ADDR               => $self->{'mail_addr'},
+        MAIL_CATCHALL           => ( index( $self->{'mail_type'}, 'catchall' ) != -1 ) ? $self->{'mail_acc'} : undef
+    };
 }
 
 =back

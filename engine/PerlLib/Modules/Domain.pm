@@ -34,7 +34,7 @@ use iMSCP::Dir;
 use iMSCP::Ext2Attributes qw/ clearImmutable /;
 use iMSCP::Execute qw/ execute escapeShell /;
 use Net::LibIDN qw/ idn_to_unicode /;
-use Servers::httpd;
+use Servers::php;
 use Servers::sqld;
 use parent 'Modules::Abstract';
 
@@ -131,13 +131,7 @@ sub disable
 
         # Sets the status of any subdomain that belongs to this domain to 'todisable'.
         $self->{'_dbh'}->do(
-            "
-                UPDATE subdomain
-                SET subdomain_status = 'todisable'
-                WHERE domain_id = ?
-                AND subdomain_status <> 'todelete'
-            ",
-            undef, $self->{'domain_id'}
+            "UPDATE subdomain SET subdomain_status = 'todisable' WHERE domain_id = ? AND subdomain_status <> 'todelete'", undef, $self->{'domain_id'}
         );
     };
     if ( $@ ) {
@@ -176,7 +170,7 @@ sub restore
             # Encode dots as Full stop unicode character
             ( my $encodedDbName = $row->{'sqld_name'} ) =~ s%([./])%{ '/', '@002f', '.', '@002e' }->{$1}%ge;
 
-            for( '.sql', '.sql.bz2', '.sql.gz', '.sql.lzma', '.sql.xz' ) {
+            for ( '.sql', '.sql.bz2', '.sql.gz', '.sql.lzma', '.sql.xz' ) {
                 my $dbDumpFilePath = File::Spec->catfile( $bkpDir, $encodedDbName . $_ );
                 debug( $dbDumpFilePath );
                 next unless -f $dbDumpFilePath;
@@ -226,13 +220,9 @@ sub restore
             eval {
                 $self->{'_dbh'}->begin_work();
                 $self->{'_dbh'}->do(
-                    'UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', undef, 'torestore',
-                    $self->{'domain_id'}
+                    'UPDATE subdomain SET subdomain_status = ? WHERE domain_id = ?', undef, 'torestore', $self->{'domain_id'}
                 );
-                $self->{'_dbh'}->do(
-                    'UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', undef, 'torestore',
-                    $self->{'domain_id'}
-                );
+                $self->{'_dbh'}->do( 'UPDATE domain_aliasses SET alias_status = ? WHERE domain_id = ?', undef, 'torestore', $self->{'domain_id'} );
                 $self->{'_dbh'}->do(
                     "
                         UPDATE subdomain_alias
@@ -325,79 +315,71 @@ sub _getData
 {
     my ($self, $action) = @_;
 
-    $self->{'_data'} = do {
-        my $httpd = Servers::httpd->factory();
-        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}
-            . ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'} );
-        my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
-        my $documentRoot = File::Spec->canonpath( "$homeDir/$self->{'document_root'}" );
+    return $self->{'_data'} if %{$self->{'_data'}};
 
-        local $self->{'_dbh'}->{'RaiseError'} = 1;
-        my $phpini = $self->{'_dbh'}->selectrow_hashref(
-            "SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = 'dmn'", undef, $self->{'domain_id'}
-        ) || {};
+    my $php = Servers::php->factory();
+    my $usergroup = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'} );
+    my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
+    my $documentRoot = File::Spec->canonpath( "$homeDir/$self->{'document_root'}" );
 
-        my $haveCert = ( defined $self->{'certificate'}
-            && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'domain_name'}.pem"
-        );
-        my $allowHSTS = ( $haveCert && $self->{'allow_hsts'} eq 'on' );
-        my $hstsMaxAge = ( $allowHSTS ) ? $self->{'hsts_max_age'} : 0;
-        my $hstsIncludeSubDomains = ( $allowHSTS && $self->{'hsts_include_subdomains'} eq 'on' )
-            ? '; includeSubDomains' : ( ( $allowHSTS ) ? '' : '; includeSubDomains' );
+    local $self->{'_dbh'}->{'RaiseError'} = 1;
+    my $phpini = $self->{'_dbh'}->selectrow_hashref(
+        "SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = 'dmn'", undef, $self->{'domain_id'}
+    ) || {};
 
-        {
-            ACTION                  => $action,
-            STATUS                  => $self->{'domain_status'},
-            BASE_SERVER_VHOST       => $main::imscpConfig{'BASE_SERVER_VHOST'},
-            BASE_SERVER_IP          => $main::imscpConfig{'BASE_SERVER_IP'},
-            BASE_SERVER_PUBLIC_IP   => $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'},
-            DOMAIN_ADMIN_ID         => $self->{'domain_admin_id'},
-            DOMAIN_NAME             => $self->{'domain_name'},
-            DOMAIN_NAME_UNICODE     => idn_to_unicode( $self->{'domain_name'}, 'utf-8' ),
-            DOMAIN_IP               => $main::imscpConfig{'BASE_SERVER_IP'} eq '0.0.0.0'
-                ? '0.0.0.0' : $self->{'ip_number'},
-            DOMAIN_TYPE             => 'dmn',
-            PARENT_DOMAIN_NAME      => $self->{'domain_name'},
-            ROOT_DOMAIN_NAME        => $self->{'domain_name'},
-            HOME_DIR                => $homeDir,
-            WEB_DIR                 => $homeDir,
-            MOUNT_POINT             => '/',
-            DOCUMENT_ROOT           => $documentRoot,
-            SHARED_MOUNT_POINT      => 0,
-            PEAR_DIR                => $httpd->{'phpConfig'}->{'PHP_PEAR_DIR'},
-            TIMEZONE                => $main::imscpConfig{'TIMEZONE'},
-            USER                    => $userName,
-            GROUP                   => $groupName,
-            PHP_SUPPORT             => $self->{'domain_php'},
-            CGI_SUPPORT             => $self->{'domain_cgi'},
-            WEB_FOLDER_PROTECTION   => $self->{'web_folder_protection'},
-            SSL_SUPPORT             => $haveCert,
-            HSTS_SUPPORT            => $allowHSTS,
-            HSTS_MAX_AGE            => $hstsMaxAge,
-            HSTS_INCLUDE_SUBDOMAINS => $hstsIncludeSubDomains,
-            ALIAS                   => 'dmn' . $self->{'domain_id'},
-            FORWARD                 => $self->{'url_forward'} || 'no',
-            FORWARD_TYPE            => $self->{'type_forward'} || '',
-            FORWARD_PRESERVE_HOST   => $self->{'host_forward'} || 'Off',
-            DISABLE_FUNCTIONS       => $phpini->{'disable_functions'}
-                // 'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
-            MAX_EXECUTION_TIME      => $phpini->{'max_execution_time'} // 30,
-            MAX_INPUT_TIME          => $phpini->{'max_input_time'} // 60,
-            MEMORY_LIMIT            => $phpini->{'memory_limit'} // 128,
-            ERROR_REPORTING         => $phpini->{'error_reporting'} || 'E_ALL & ~E_DEPRECATED & ~E_STRICT',
-            DISPLAY_ERRORS          => $phpini->{'display_errors'} || 'off',
-            POST_MAX_SIZE           => $phpini->{'post_max_size'} // 8,
-            UPLOAD_MAX_FILESIZE     => $phpini->{'upload_max_filesize'} // 2,
-            ALLOW_URL_FOPEN         => $phpini->{'allow_url_fopen'} || 'off',
-            PHP_FPM_LISTEN_PORT     => ( $phpini->{'id'} // 1 )-1,
-            EXTERNAL_MAIL           => $self->{'external_mail'},
-            MAIL_ENABLED            => ( $self->{'external_mail'} eq 'off'
-                && ( $self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0 )
-            )
-        }
-    } unless %{$self->{'_data'}};
+    my $haveCert = ( defined $self->{'certificate'} && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'domain_name'}.pem" );
+    my $allowHSTS = ( $haveCert && $self->{'allow_hsts'} eq 'on' );
+    my $hstsMaxAge = ( $allowHSTS ) ? $self->{'hsts_max_age'} : 0;
+    my $hstsIncludeSubDomains = ( $allowHSTS && $self->{'hsts_include_subdomains'} eq 'on' )
+        ? '; includeSubDomains' : ( ( $allowHSTS ) ? '' : '; includeSubDomains' );
 
-    $self->{'_data'};
+    $self->{'_data'} = {
+        ACTION                  => $action,
+        STATUS                  => $self->{'domain_status'},
+        BASE_SERVER_VHOST       => $main::imscpConfig{'BASE_SERVER_VHOST'},
+        BASE_SERVER_IP          => $main::imscpConfig{'BASE_SERVER_IP'},
+        BASE_SERVER_PUBLIC_IP   => $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'},
+        DOMAIN_ADMIN_ID         => $self->{'domain_admin_id'},
+        DOMAIN_NAME             => $self->{'domain_name'},
+        DOMAIN_NAME_UNICODE     => idn_to_unicode( $self->{'domain_name'}, 'utf-8' ),
+        DOMAIN_IP               => $main::imscpConfig{'BASE_SERVER_IP'} eq '0.0.0.0' ? '0.0.0.0' : $self->{'ip_number'},
+        DOMAIN_TYPE             => 'dmn',
+        PARENT_DOMAIN_NAME      => $self->{'domain_name'},
+        ROOT_DOMAIN_NAME        => $self->{'domain_name'},
+        HOME_DIR                => $homeDir,
+        WEB_DIR                 => $homeDir,
+        MOUNT_POINT             => '/',
+        DOCUMENT_ROOT           => $documentRoot,
+        SHARED_MOUNT_POINT      => 0,
+        PEAR_DIR                => $php->{'config'}->{'PHP_PEAR_DIR'},
+        TIMEZONE                => $main::imscpConfig{'TIMEZONE'},
+        USER                    => $usergroup,
+        GROUP                   => $usergroup,
+        PHP_SUPPORT             => $self->{'domain_php'},
+        CGI_SUPPORT             => $self->{'domain_cgi'},
+        WEB_FOLDER_PROTECTION   => $self->{'web_folder_protection'},
+        SSL_SUPPORT             => $haveCert,
+        HSTS_SUPPORT            => $allowHSTS,
+        HSTS_MAX_AGE            => $hstsMaxAge,
+        HSTS_INCLUDE_SUBDOMAINS => $hstsIncludeSubDomains,
+        ALIAS                   => 'dmn' . $self->{'domain_id'},
+        FORWARD                 => $self->{'url_forward'} || 'no',
+        FORWARD_TYPE            => $self->{'type_forward'} || '',
+        FORWARD_PRESERVE_HOST   => $self->{'host_forward'} || 'Off',
+        DISABLE_FUNCTIONS       => $phpini->{'disable_functions'}
+            // 'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
+        MAX_EXECUTION_TIME      => $phpini->{'max_execution_time'} // 30,
+        MAX_INPUT_TIME          => $phpini->{'max_input_time'} // 60,
+        MEMORY_LIMIT            => $phpini->{'memory_limit'} // 128,
+        ERROR_REPORTING         => $phpini->{'error_reporting'} || 'E_ALL & ~E_DEPRECATED & ~E_STRICT',
+        DISPLAY_ERRORS          => $phpini->{'display_errors'} || 'off',
+        POST_MAX_SIZE           => $phpini->{'post_max_size'} // 8,
+        UPLOAD_MAX_FILESIZE     => $phpini->{'upload_max_filesize'} // 2,
+        ALLOW_URL_FOPEN         => $phpini->{'allow_url_fopen'} || 'off',
+        PHP_FPM_LISTEN_PORT     => ( $phpini->{'id'} // 1 )-1,
+        EXTERNAL_MAIL           => $self->{'external_mail'},
+        MAIL_ENABLED            => ( $self->{'external_mail'} eq 'off' && ( $self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0 ) )
+    };
 }
 
 =item _restoreDatabase( $dbName, $dbDumpFilePath )

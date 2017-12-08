@@ -74,16 +74,14 @@ sub process
         $rs = $self->add();
         @sql = ( 'UPDATE ssl_certs SET status = ? WHERE cert_id = ?', undef,
             ( $rs
-                ? ( getMessageByType( 'error', { amount => 1, remove => 1 } )
-                    || 'Unknown error' ) =~ s/iMSCP::OpenSSL::validateCertificate:\s+//r
+                ? ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' ) =~ s/iMSCP::OpenSSL::validateCertificate:\s+//r
                 : 'ok'
             ),
             $certificateId );
     } elsif ( $self->{'status'} eq 'todelete' ) {
         $rs = $self->delete();
         @sql = $rs
-            ? ( 'UPDATE ssl_certs SET status = ? WHERE cert_id = ?', undef,
-                getLastError( 'error' ) || 'Unknown error', $certificateId )
+            ? ( 'UPDATE ssl_certs SET status = ? WHERE cert_id = ?', undef, getLastError( 'error' ) || 'Unknown error', $certificateId )
             : ( 'DELETE FROM ssl_certs WHERE cert_id = ?', undef, $certificateId );
     } else {
         warning( sprintf( 'Unknown action (%s) for SSL certificate (ID %d)', $self->{'status'}, $certificateId ));
@@ -153,7 +151,6 @@ sub add
 
     # Check certificate chain
     $rs = $openSSL->validateCertificateChain();
-
     # Create certificate chain (private key, certificate and CA bundle)
     $rs ||= $openSSL->createCertificateChain();
 }
@@ -174,6 +171,12 @@ sub delete
     iMSCP::File->new( filename => "$self->{'certsDir'}/$self->{'domain_name'}.pem" )->delFile();
 }
 
+=back
+
+=head1 PRIVATES METHODS
+
+=over 4
+
 =item _init( )
 
  Initialize instance
@@ -187,14 +190,12 @@ sub _init
     my ($self) = @_;
 
     $self->{'certsDir'} = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs";
-    iMSCP::Dir->new( dirname => $self->{'certsDir'} )->make(
-        {
+    iMSCP::Dir->new( dirname => $self->{'certsDir'} )->make( {
 
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'ROOT_GROUP'},
-            mode  => 0750
-        }
-    );
+        user  => $main::imscpConfig{'ROOT_USER'},
+        group => $main::imscpConfig{'ROOT_GROUP'},
+        mode  => 0750
+    } );
     $self->SUPER::_init();
 }
 
@@ -213,16 +214,12 @@ sub _loadData
 
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
-        my $row = $self->{'_dbh'}->selectrow_hashref(
-            'SELECT * FROM ssl_certs WHERE cert_id = ?', undef, $certificateId
-        );
+        my $row = $self->{'_dbh'}->selectrow_hashref( 'SELECT * FROM ssl_certs WHERE cert_id = ?', undef, $certificateId );
         $row or die( sprintf( 'Data not found for SSL certificate (ID %d)', $certificateId ));
         %{$self} = ( %{$self}, %{$row} );
 
         if ( $self->{'domain_type'} eq 'dmn' ) {
-            $row = $self->{'_dbh'}->selectrow_hashref(
-                'SELECT domain_name FROM domain WHERE domain_id = ?', undef, $self->{'domain_id'}
-            );
+            $row = $self->{'_dbh'}->selectrow_hashref( 'SELECT domain_name FROM domain WHERE domain_id = ?', undef, $self->{'domain_id'} );
         } elsif ( $self->{'domain_type'} eq 'als' ) {
             $row = $self->{'_dbh'}->selectrow_hashref(
                 'SELECT alias_name AS domain_name FROM domain_aliasses WHERE alias_id = ?', undef, $self->{'domain_id'}

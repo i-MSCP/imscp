@@ -69,7 +69,7 @@ sub process
     my ($domainId, $aliasId ) = split ';', $dnsRecordsGroup;
 
     unless ( defined $domainId && defined $aliasId ) {
-        error( 'Bad input data...' );
+        error( 'Bad input data' );
         return 1;
     }
 
@@ -81,13 +81,7 @@ sub process
 
         if ( $@ || $self->add() ) {
             $self->{'_dbh'}->do(
-                "
-                    UPDATE domain_dns
-                    SET domain_dns_status = ?
-                    WHERE domain_id = ?
-                    AND alias_id = ?
-                    AND domain_dns_status <> 'disabled'
-                ",
+                "UPDATE domain_dns SET domain_dns_status = ? WHERE domain_id = ? AND alias_id = ? AND domain_dns_status <> 'disabled'",
                 undef, ( getMessageByType( 'error', { remove => 1, amount => 1 } ) || 'Invalid DNS record' ), $domainId,
                 $aliasId
             );
@@ -108,8 +102,7 @@ sub process
             undef, $domainId, $aliasId
         );
         $self->{'_dbh'}->do(
-            "DELETE FROM domain_dns WHERE domain_id = ? AND alias_id = ? AND domain_dns_status = 'todelete'",
-            undef, $domainId, $aliasId,
+            "DELETE FROM domain_dns WHERE domain_id = ? AND alias_id = ? AND domain_dns_status = 'todelete'", undef, $domainId, $aliasId,
         );
         $self->{'_dbh'}->commit();
     };
@@ -249,17 +242,15 @@ sub _getData
 {
     my ($self, $action) = @_;
 
-    $self->{'_data'} = do {
-        {
-            ACTION                => $action,
-            BASE_SERVER_PUBLIC_IP => $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'},
-            DOMAIN_NAME           => $self->{'domain_name'},
-            DOMAIN_IP             => $self->{'domain_ip'},
-            DNS_RECORDS           => [ @{$self->{'dns_records'}} ]
-        }
-    } unless %{$self->{'_data'}};
+    return $self->{'_data'} if %{$self->{'_data'}};
 
-    $self->{'_data'};
+    $self->{'_data'} = {
+        ACTION                => $action,
+        BASE_SERVER_PUBLIC_IP => $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'},
+        DOMAIN_NAME           => $self->{'domain_name'},
+        DOMAIN_IP             => $self->{'domain_ip'},
+        DNS_RECORDS           => [ @{$self->{'dns_records'}} ]
+    };
 }
 
 =back
