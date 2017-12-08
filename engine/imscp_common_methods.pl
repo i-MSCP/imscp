@@ -59,8 +59,8 @@ $SIG{'HUP'} = 'IGNORE';
 # Note:  Printing is only done in DEBUG mode
 #
 # @param arrayref $el Reference to the global logging stack array
-# @param scalar $sub_name Subroutine name that cause log message
-# @param scalar $msg message to be logged
+# @param string $sub_name Subroutine name that cause log message
+# @param string $msg message to be logged
 # @void
 #
 sub push_el
@@ -161,9 +161,7 @@ sub doSQL
         );
 
         unless ( defined $main::db ) {
-            push_el(
-                \@main::el, 'doSQL()', "[ERROR] Couldn't connect to SQL server with current DSN: @main::db_connect"
-            );
+            push_el( \@main::el, 'doSQL()', "[ERROR] Couldn't connect to SQL server with current DSN: @main::db_connect" );
             return ( -1, '' );
         }
     }
@@ -222,7 +220,7 @@ sub get_file
 
 # Delete a file
 #
-# @param scalar $fname File name to be deleted
+# @param string $fname File name to be deleted
 # @return 0 on sucess, -1 otherwise
 #
 sub del_file
@@ -275,10 +273,7 @@ sub getCmdExitValue()
     } elsif ( $? & 127 ) {
         push_el(
             \@main::el, 'getCmdExitValue()',
-            sprintf(
-                "[ERROR] External command died with signal %d, %s coredump", ( $? & 127 ),
-                    ( $? & 128 ) ? 'with' : 'without'
-            )
+            sprintf( "[ERROR] External command died with signal %d, %s coredump", ( $? & 127 ), ( $? & 128 ) ? 'with' : 'without' )
         );
     } else {
         $exitValue = $? >> 8;
@@ -408,7 +403,7 @@ sub setup_db_vars
 # each of them are represented by a pair of key/value separated by the equal
 # sign.
 #
-# @param [scalar $file_name filename from where the configuration must be loaded]
+# @param [string $file_name filename from where the configuration must be loaded]
 # Default value is the main i-MSCP configuration file (imscp.conf)
 # @return int 0 on success, 1 otherwise
 #

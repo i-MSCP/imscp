@@ -36,9 +36,9 @@ use iMSCP::Bootstrapper;
 use iMSCP::DbTasksProcessor;
 use iMSCP::Debug;
 use iMSCP::Getopt;
-use POSIX qw /locale_h /;
+use POSIX qw / locale_h /;
 
-setlocale(LC_MESSAGES, "C.UTF-8");
+setlocale( LC_MESSAGES, "C.UTF-8" );
 
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -56,12 +56,11 @@ OPTIONS:
     'verbose|v' => \&iMSCP::Getopt::verbose
 );
 
-iMSCP::Bootstrapper->getInstance()->boot(
-    {
-        mode            => 'backend',
-        config_readonly => 1
-    }
-);
+iMSCP::Bootstrapper->getInstance()->boot( {
+    mode            => 'backend',
+    config_readonly => 1
+} );
+
 iMSCP::DbTasksProcessor->getInstance( mode => 'backend' )->processDbTasks();
 
 =head1 AUTHOR
