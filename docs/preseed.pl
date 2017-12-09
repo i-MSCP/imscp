@@ -3,7 +3,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2017.12.06
+# Last update: 2017.12.08
 
 %main::questions = (
     # Mandatory parameters
@@ -97,7 +97,7 @@
     # This SQL user must have full privileges on the SQL server.
     # Note that this user used only while i-MSCP installation/reconfiguration.
     #
-    # Leave empty for default (root).
+    # Leave empty for default: root
     SQL_ROOT_USER                       => '',
 
     # Database name
@@ -268,28 +268,35 @@
 
     # HTTPd server implementation
     #
-    # Possible values: apache2_mpm_event, apache2_mpm_itk,
-    # apache2_mpm_prefork, apache2_mpm_worker
+    # Possible values:
+    # - apache2_mpm_event (default)
+    # - apache2_mpm_itk (not compatible with the PHP cgi SAPI)
+    # - apache2_mpm_prefork,
+    # - apache2_mpm_worker
     #
-    # Leave empty for default: apache2_mpm_event
+    # Leave empty for default.
     HTTPD_SERVER                        => '',
 
     # PHP version for customers
     #
     # Possible values (depending of your distribution):
+    # - php5.6 (default)
+    # - php7.0
+    # - php7.1
+    # - php7.2
     #
-    #  php5.6, php7.0, php7.1, php7.2
-    #
-    # Leave empty for default: php5.6
+    # Leave empty for default.
     PHP_SERVER                          => '',
 
     # PHP SAPI for customers
     #
-    # This parameter is only relevant when HTTPD_SERVER is other than
-    # apache2_mpm_itk. The apache2_mpm_itk server involve the apache2handler
-    # PHP SAPI (PHP as Apache2 module)
+    # Possible values: apache2handler, cgi, fpm
     #
-    # Possible values: fpm, cgi
+    # Restrictions:
+    # - The apache2_mpm_itk HTTPD server cannot be used with the PHP cgi SAPI as the
+    #   Apache's Fcgid module doesn't work with the Apache2's ITK MPM.
+    # - The apache2handler PHP sapi requires the apache2_mpm_itk HTTPD server
+    #   implementation.
     #
     # Leave empty for default: fpm
     PHP_SAPI                            => '', 
@@ -421,6 +428,7 @@
     #
     # Possible values: 'no' or a list of comma separated packages names.
     # Available packages:
+    # - no
     # - Pydio (currently not available due to PHP version constraint that is not met)
     # - MonstaFTP (default)
     #
@@ -440,6 +448,7 @@
     #
     # Possible values: 'no' or a list of comma separated packages names.
     # Available packages:
+    # - no
     # - RainLoop (default)
     # - Roundcube (default)
     #
@@ -466,9 +475,12 @@
 
     # Anti-rootkits packages
     #
-    # Possible values: 'no' or a list of comma separated packages names.
+    # Possible values:
+    # - no
+    # - Chkrootkit (default)
+    # - Rkhunter (default)
     #
-    # Leave empty for default: Chkrootkit,Rkhunter
+    # Leave empty for default. 
     ANTI_ROOTKITS_PACKAGES              => ''
 );
 

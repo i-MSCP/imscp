@@ -569,7 +569,7 @@ sub _processPackagesFile
 
         # Handle case of SQL server alternatives where it is not allowed to
         # switch to another SQL server vendor through the installer
-        if ( $section eq 'sql' && $sAlt ne '' && $sAlt ne 'remote_server' ) {
+        if ( $section eq 'sqld' && $sAlt ne '' && $sAlt ne 'remote_server' ) {
             my ( $sqlVendor, $sqlVersion ) = $sAlt =~ /(.*)_(.*)$/;
 
             # Discard any SQL server vendor other than current

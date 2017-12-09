@@ -45,6 +45,8 @@
         Options FollowSymLinks ExecCGI
         AddHandler cgi-script .cgi .pl .py .rb
         Require all granted
+        # SECTION cgi-bin addons BEGIN.
+        # SECTION cgi-bin addons END.
     </Directory>
     # SECTION cgi END.
     # SECTION dmn END.
@@ -54,8 +56,8 @@
         Options FollowSymLinks
         AllowOverride AuthConfig Indexes Limit Options=Indexes,MultiViews \
             Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule Nonfatal=Override
-        # DOCUMENT_ROOT_SECTION BEGIN.
-        # DOCUMENT_ROOT_SECTION END.
+        # SECTION document root addons BEGIN.
+        # SECTION document root addons END.
         Require all granted
     </Directory>
 

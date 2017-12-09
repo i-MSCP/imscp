@@ -5,196 +5,49 @@
         </nginx>
     </frontend>
     <httpd>
-        <apache_fcgid
-                description="Apache2 (MPM Event) server and PHP with CGI/FastCGI SAPI"
-                class="Servers::httpd::apache_fcgid"
-        >
-            <package>apache2-suexec-pristine</package>
-            <package>libapache2-mod-fcgid</package>
-            <post_install_task>
-                /usr/bin/update-alternatives --set suexec /usr/lib/apache2/suexec-pristine
-            </post_install_task>
-        </apache_fcgid>
-        <apache_itk
-                description="Apache2 (MPM ITK) server and PHP with Apache2 SAPI"
-                class="Servers::httpd::apache_itk"
-        >
-            <package_delayed>libapache2-mpm-itk</package_delayed>
-        </apache_itk>
-        <apache_php_fpm
-                default="1"
-                description="Apache2 (MPM Event) server and PHP with FPM/FastCGI SAPI"
-                class="Servers::httpd::apache_php_fpm"
-        >
-            <package>apache2-suexec-pristine</package>
-            <post_install_task>
-                /usr/bin/update-alternatives --set suexec /usr/lib/apache2/suexec-pristine
-            </post_install_task>
-        </apache_php_fpm>
+        <apache2_mpm_event default="1" description="Apache2 (MPM Event) server" class="Servers::httpd::Apache2::Event"/>
+        <apache2_mpm_itk description="Apache2 (MPM ITK) server" class="Servers::httpd::Apache2::Itk"/>
+        <apache2_mpm_prefork description="Apache2 (MPM Prefork) server" class="Servers::httpd::Apache2::Prefork"/>
+        <apache2_mpm_worker description="Apache2 (MPM Worker) server" class="Servers::httpd::Apache2::Worker"/>
         <package>apache2</package>
         <package>apache2-bin</package>
         <package>apache2-data</package>
         <package>apache2-dev</package>
+        <package>libapache2-mod-fcgid</package>
+        <package>libapache2-mpm-itk</package>
+        <package>apache2-suexec-pristine</package>
+        <post_install_task>/usr/bin/update-alternatives --set suexec /usr/lib/apache2/suexec-pristine</post_install_task>
         <post_install_task>sh apache2_postinst.sh</post_install_task>
     </httpd>
-    <php>
-        <php5.6 description="PHP 5.6" class="Servers::php">
-            <package>libapache2-mod-php5.6</package>
+    <php repository="https://packages.sury.org/php/ jessie main" repository_key_uri="https://packages.sury.org/php/apt.gpg">
+        <php5.6 default="1" description="PHP 5.6" class="Servers::php">
             <post_install_task>/usr/bin/update-alternatives --set php /usr/bin/php5.6</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar /usr/bin/phar5.6</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar.phar /usr/bin/phar.phar5.6</post_install_task>
             <post_install_task>sh php_apcu.sh 5.6</post_install_task>
         </php5.6>
         <php7.0 description="PHP 7.0" class="Servers::php">
-            <package>libapache2-mod-php7.0</package>
-            <package_conflict>php5-common</package_conflict>
-            <package_conflict>libapache2-mod-php5</package_conflict>
             <post_install_task>/usr/bin/update-alternatives --set php /usr/bin/php7.0</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar /usr/bin/phar7.0</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar.phar /usr/bin/phar.phar7.0</post_install_task>
             <post_install_task>sh php_apcu.sh 7.0</post_install_task>
         </php7.0>
-        <php7.1 default="1" description="PHP 7.1" class="Servers::php">
-            <package>libapache2-mod-php7.1</package>
+        <php7.1 description="PHP 7.1" class="Servers::php">
             <post_install_task>/usr/bin/update-alternatives --set php /usr/bin/php7.1</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar /usr/bin/phar7.1</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar.phar /usr/bin/phar.phar7.1</post_install_task>
             <post_install_task>sh php_apcu.sh 7.1</post_install_task>
         </php7.1>
         <php7.2 description="PHP 7.2" class="Servers::php">
-            <package>libapache2-mod-php7.2</package>
             <post_install_task>/usr/bin/update-alternatives --set php /usr/bin/php7.2</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar /usr/bin/phar7.2</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar.phar /usr/bin/phar.phar7.2</post_install_task>
             <post_install_task>sh php_apcu.sh 7.2</post_install_task>
         </php7.2>
-    </php>
-    <po>
-        <courier description="Courier IMAP/POP3 servers" class="Servers::po::courier">
-            <package>courier-authlib-mysql</package>
-            <package>courier-imap</package>
-            <package>courier-imap-ssl</package>
-            <package>courier-pop</package>
-            <package>courier-pop-ssl</package>
-            <package>libgamin0</package>
-            <package>libsasl2-modules</package>
-            <package>maildrop</package>
-            <package_conflict>libsasl2-modules-sql</package_conflict>
-            <package_conflict>sasl2-bin</package_conflict>
-        </courier>
-        <dovecot default="1" description="Dovecot IMAP/POP3 servers" class="Servers::po::dovecot">
-            <package>dovecot-core</package>
-            <package>dovecot-imapd</package>
-            <package>dovecot-pop3d</package>
-            <package>dovecot-mysql</package>
-        </dovecot>
-    </po>
-    <mta>
-        <postfix default="1" description="Postfix server" class="Servers::mta::postfix">
-            <package>postfix</package>
-            <package_conflict>procmail</package_conflict>
-        </postfix>
-    </mta>
-    <ftpd>
-        <proftpd default="1" description="ProFTPD server" class="Servers::ftpd::proftpd">
-            <package>proftpd-basic</package>
-            <package>proftpd-mod-mysql</package>
-            <package_conflict>vsftpd</package_conflict>
-        </proftpd>
-        <vsftpd description="VsFTPD server" class="Servers::ftpd::vsftpd">
-            <package rebuild_with_patches="libpam-mysql/patches" patch_sys_type="dpatch" pkg_src_name="pam-mysql">
-                libpam-mysql
-            </package>
-            <package>vsftpd</package>
-            <package_conflict>proftpd-basic</package_conflict>
-        </vsftpd>
-    </ftpd>
-    <named>
-        <bind default="1" description="Bind9 server" class="Servers::named::bind">
-            <package>bind9</package>
-        </bind>
-        <external_server description="No local DNS server" class="Servers::noserver"/>
-        <package>resolvconf</package>
-    </named>
-    <sql>
-        <mysql_5.7
-                default="1"
-                description="MySQL 5.7 server"
-                class="Servers::sqld::mysql"
-                repository="http://repo.mysql.com/apt/debian/ jessie mysql-5.7"
-                repository_key_id="5072E1F5"
-                repository_key_srv="keyserver.ubuntu.com"
-                pinning_package="*"
-                pinning_pin="origin repo.mysql.com"
-                pinning_pin_priority="1001"
-        >
-            <package>libmysqlclient20</package>
-            <package>mysql-community-client</package>
-            <package>mysql-community-server</package>
-        </mysql_5.7>
-        <mariadb_10.1
-                description="MariaDB 10.1 server"
-                class="Servers::sqld::mariadb"
-                repository="http://mirror.netcologne.de/mariadb/repo/10.1/debian jessie main"
-                repository_key_id="1BB943DB"
-                repository_key_srv="keyserver.ubuntu.com"
-                pinning_package="*"
-                pinning_pin="release o=MariaDB,n=jessie"
-                pinning_pin_priority="1001"
-        >
-            <package>libmariadbclient18</package>
-            <package>mariadb-client-10.1</package>
-            <package>mariadb-common</package>
-            <package>mariadb-server-10.1</package>
-            <pre_install_task>/bin/mkdir -p /etc/mysql/mariadb.conf.d</pre_install_task>
-        </mariadb_10.1>
-        <mariadb_10.2
-                description="MariaDB 10.2 server"
-                class="Servers::sqld::mariadb"
-                repository="http://mirror.netcologne.de/mariadb/repo/10.2/debian jessie main"
-                repository_key_id="1BB943DB"
-                repository_key_srv="keyserver.ubuntu.com"
-                pinning_package="*"
-                pinning_pin="release o=MariaDB,n=jessie"
-                pinning_pin_priority="1001"
-        >
-            <package>libmariadbclient18</package>
-            <package>mariadb-client-10.2</package>
-            <package>mariadb-common</package>
-            <package>mariadb-server-10.2</package>
-            <pre_install_task>/bin/mkdir -p /etc/mysql/mariadb.conf.d</pre_install_task>
-        </mariadb_10.2>
-        <percona_5.7
-                description="Percona 5.7 server"
-                class="Servers::sqld::percona"
-                repository="http://repo.percona.com/apt jessie main"
-                repository_key_id="8507EFA5"
-                repository_key_srv="keyserver.ubuntu.com"
-                pinning_package="libperconaserverclient20 libperconaserverclient20-dev percona-server-client-5.7 percona-server-common-5.7 percona-server-server-5.7"
-                pinning_pin="origin repo.percona.com"
-                pinning_pin_priority="1001"
-        >
-            <package>libperconaserverclient20</package>
-            <package>percona-server-client-5.7</package>
-            <package>percona-server-common-5.7</package>
-            <package>percona-server-server-5.7</package>
-        </percona_5.7>
-        <remote_server
-                description="Remote SQL server"
-                class="Servers::sqld::remote"
-                pinning_package="libmysqlclient18 mysql-client-5.5 mysql-common"
-                pinning_pin="release o=Debian,n=jessie"
-                pinning_pin_priority="1001"
-        >
-            <package>mysql-client-5.5</package>
-        </remote_server>
-        <package>libmysqlclient18</package>
-        <package>mysql-common</package>
-    </sql>
-    <php_packages
-            repository="https://packages.sury.org/php/ jessie main"
-            repository_key_uri="https://packages.sury.org/php/apt.gpg"
-    >
+        <package>libapache2-mod-php5.6</package>
+        <package>libapache2-mod-php7.0</package>
+        <package>libapache2-mod-php7.1</package>
+        <package>libapache2-mod-php7.2</package>
         <package>php5.6</package>
         <package>php5.6-cgi</package>
         <package>php5.6-cli</package>
@@ -269,14 +122,139 @@
         <package>php-apcu</package>
         <package>php-apcu-bc</package>
         <package>php-pear</package>
-        <package_conflict>php5-common</package_conflict>
         <package_conflict>libapache2-mod-php5</package_conflict>
+        <package_conflict>php5-common</package_conflict>
         <post_install_task>
-            /usr/sbin/phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets curl gd gmp imap
-            intl json mbstring mcrypt mysqlnd mysqli pdo_mysql opcache pspell dom xml xmlreader xmlwriter zip
+            /usr/sbin/phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets curl gd gmp imap intl json mbstring mcrypt mysqlnd mysqli
+            pdo_mysql opcache pspell dom xml xmlreader xmlwriter zip
         </post_install_task>
-    </php_packages>
-    <perl_packages>
+    </php>
+    <po>
+        <courier description="Courier IMAP/POP3 servers" class="Servers::po::courier">
+            <package>courier-authlib-mysql</package>
+            <package>courier-imap</package>
+            <package>courier-imap-ssl</package>
+            <package>courier-pop</package>
+            <package>courier-pop-ssl</package>
+            <package>libgamin0</package>
+            <package>libsasl2-modules</package>
+            <package>maildrop</package>
+            <package_conflict>libsasl2-modules-sql</package_conflict>
+            <package_conflict>sasl2-bin</package_conflict>
+        </courier>
+        <dovecot default="1" description="Dovecot IMAP/POP3 servers" class="Servers::po::dovecot">
+            <package>dovecot-core</package>
+            <package>dovecot-imapd</package>
+            <package>dovecot-pop3d</package>
+            <package>dovecot-mysql</package>
+        </dovecot>
+    </po>
+    <mta>
+        <postfix default="1" description="Postfix server" class="Servers::mta::postfix">
+            <package>postfix</package>
+            <package_conflict>procmail</package_conflict>
+            <package_conflict>sendmail</package_conflict>
+            <package_conflict>sendmail-base</package_conflict>
+            <package_conflict>sendmail-bin</package_conflict>
+            <package_conflict>sendmail-cf</package_conflict>
+            <package_conflict>sendmail-doc</package_conflict>
+        </postfix>
+    </mta>
+    <ftpd>
+        <proftpd default="1" description="ProFTPD server" class="Servers::ftpd::proftpd">
+            <package>proftpd-basic</package>
+            <package>proftpd-mod-mysql</package>
+            <package_conflict>vsftpd</package_conflict>
+        </proftpd>
+        <vsftpd description="VsFTPD server" class="Servers::ftpd::vsftpd">
+            <package rebuild_with_patches="libpam-mysql/patches" patch_sys_type="dpatch" pkg_src_name="pam-mysql">libpam-mysql</package>
+            <package>vsftpd</package>
+            <package_conflict>proftpd-basic</package_conflict>
+        </vsftpd>
+    </ftpd>
+    <named>
+        <bind default="1" description="Bind9 server" class="Servers::named::bind">
+            <package>bind9</package>
+        </bind>
+        <external_server description="No local DNS server" class="Servers::noserver"/>
+        <package>resolvconf</package>
+    </named>
+    <sqld>
+        <mysql_5.7
+                default="1"
+                description="MySQL 5.7 server"
+                class="Servers::sqld::mysql"
+                repository="http://repo.mysql.com/apt/debian/ jessie mysql-5.7"
+                repository_key_id="5072E1F5"
+                repository_key_srv="keyserver.ubuntu.com"
+                pinning_package="*"
+                pinning_pin="origin repo.mysql.com"
+                pinning_pin_priority="1001"
+        >
+            <package>libmysqlclient20</package>
+            <package>mysql-community-client</package>
+            <package>mysql-community-server</package>
+        </mysql_5.7>
+        <mariadb_10.1
+                description="MariaDB 10.1 server"
+                class="Servers::sqld::mariadb"
+                repository="http://mirror.netcologne.de/mariadb/repo/10.1/debian jessie main"
+                repository_key_id="1BB943DB"
+                repository_key_srv="keyserver.ubuntu.com"
+                pinning_package="*"
+                pinning_pin="release o=MariaDB,n=jessie"
+                pinning_pin_priority="1001"
+        >
+            <package>libmariadbclient18</package>
+            <package>mariadb-client-10.1</package>
+            <package>mariadb-common</package>
+            <package>mariadb-server-10.1</package>
+            <pre_install_task>/bin/mkdir -p /etc/mysql/mariadb.conf.d</pre_install_task>
+        </mariadb_10.1>
+        <mariadb_10.2
+                description="MariaDB 10.2 server"
+                class="Servers::sqld::mariadb"
+                repository="http://mirror.netcologne.de/mariadb/repo/10.2/debian jessie main"
+                repository_key_id="1BB943DB"
+                repository_key_srv="keyserver.ubuntu.com"
+                pinning_package="*"
+                pinning_pin="release o=MariaDB,n=jessie"
+                pinning_pin_priority="1001"
+        >
+            <package>libmariadbclient18</package>
+            <package>mariadb-client-10.2</package>
+            <package>mariadb-common</package>
+            <package>mariadb-server-10.2</package>
+            <pre_install_task>/bin/mkdir -p /etc/mysql/mariadb.conf.d</pre_install_task>
+        </mariadb_10.2>
+        <percona_5.7
+                description="Percona 5.7 server"
+                class="Servers::sqld::percona"
+                repository="http://repo.percona.com/apt jessie main"
+                repository_key_id="8507EFA5"
+                repository_key_srv="keyserver.ubuntu.com"
+                pinning_package="libperconaserverclient20 libperconaserverclient20-dev percona-server-client-5.7 percona-server-common-5.7 percona-server-server-5.7"
+                pinning_pin="origin repo.percona.com"
+                pinning_pin_priority="1001"
+        >
+            <package>libperconaserverclient20</package>
+            <package>percona-server-client-5.7</package>
+            <package>percona-server-common-5.7</package>
+            <package>percona-server-server-5.7</package>
+        </percona_5.7>
+        <remote_server
+                description="Remote SQL server"
+                class="Servers::sqld::remote"
+                pinning_package="libmysqlclient18 mysql-client-5.5 mysql-common"
+                pinning_pin="release o=Debian,n=jessie"
+                pinning_pin_priority="1001"
+        >
+            <package>mysql-client-5.5</package>
+        </remote_server>
+        <package>libmysqlclient18</package>
+        <package>mysql-common</package>
+    </sqld>
+    <perl>
         <package>perl</package>
         <package>libcrypt-blowfish-perl</package>
         <package>libcrypt-cbc-perl</package>
@@ -304,8 +282,8 @@
         <package>libwww-perl</package>
         <package>libxml-parser-perl</package>
         <package>libxml-simple-perl</package>
-    </perl_packages>
-    <other_package>
+    </perl>
+    <other>
         <package>apt-src</package>
         <package>at</package>
         <package>bash</package>
@@ -340,10 +318,5 @@
         <package>sudo</package>
         <package>tar</package>
         <package>unzip</package>
-        <package_conflict>sendmail</package_conflict>
-        <package_conflict>sendmail-base</package_conflict>
-        <package_conflict>sendmail-bin</package_conflict>
-        <package_conflict>sendmail-cf</package_conflict>
-        <package_conflict>sendmail-doc</package_conflict>
-    </other_package>
+    </other>
 </packages>

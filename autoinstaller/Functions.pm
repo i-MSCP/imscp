@@ -501,7 +501,7 @@ sub _askInstallerMode
 
     $dialog->set( 'cancel-label', 'Abort' );
 
-    my %choices = ( 'auto', 'Automatic installation', 'Manual installation', 'Manual' );
+    my %choices = ( 'auto', 'Automatic installation', 'manual', 'Manual installation' );
     my ($rs, $value) = $dialog->radiolist( <<"EOF", \%choices, 'auto' );
 Please choose the installer mode:
 
