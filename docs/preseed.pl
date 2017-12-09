@@ -10,9 +10,6 @@
     #
     # Parameters below must be filled. There is no default value for them.
 
-    # SQL user root password
-    SQL_ROOT_PASSWORD                   => '',
-
     # Panel administrator password
     #
     # Only ASCII alphabet characters and numbers are allowed in password.
@@ -104,6 +101,10 @@
     #
     # Leave empty for default: root
     SQL_ROOT_USER                       => '',
+    # Ignored when the (system) root user can connect without password (like 
+    # in recent Debian versions).
+    #
+    SQL_ROOT_PASSWORD                   => '',
 
     # Database name
     #
@@ -169,7 +170,7 @@
 
     # Control panel http port
     #
-    # Possible values: A port in range 1025-65535
+    # Possible values: A port in the 1025-65535 range
     #
     # Leave empty for default: 8880
     BASE_SERVER_VHOST_HTTP_PORT         => '',
@@ -177,7 +178,7 @@
     # Control panel https port (only relevant if SSL is enabled for the control
     # panel (see below))
     #
-    # Possible values: A port in range 1025-65535
+    # Possible values: A port in the 1025-65535 range
     #
     # Leave empty for default: 8443
     BASE_SERVER_VHOST_HTTPS_PORT        => '',
@@ -196,23 +197,29 @@
     # Leave empty for default: yes
     PANEL_SSL_SELFSIGNED_CERTIFICATE    => '',
 
-    # SSL private key path (only relevant for trusted SSL certificate)
+    # Settings to use a certificate emitted by a Certificate Authority
+    #
+    # NOT relevant if you use a self-signed certificate.
+    #
+    # These files are only used during setup. If you want to change
+    # those later (e.g.: when you renew the certificate) you must
+    # either replace it through the panel or re-run the setup.
+    #
+    # SSL private key path
     PANEL_SSL_PRIVATE_KEY_PATH          => '',
-
     # SSL private key passphrase (only if the private key is encrypted)
     PANEL_SSL_PRIVATE_KEY_PASSPHRASE    => '',
-
-    # SSL CA Bundle path (only relevant for trusted SSL certificate)
-    PANEL_SSL_CA_BUNDLE_PATH            => '',
-
-    # SSL certificate path (only relevant for trusted SSL certificate)
+    # SSL certificate path
     PANEL_SSL_CERTIFICATE_PATH          => '',
+    # SSL CA Bundle path (or root certificate if your CA doesn't use
+    # intermediates)
+    PANEL_SSL_CA_BUNDLE_PATH            => '',
 
     # Alternative URLs feature for client domains
     #
-    # Possible values: yes, no
+    # Possible values: 1 for enabling, 0 for disabling
     #
-    # Leave empty for default: yes
+    # Leave empty for default: 1
     CLIENT_DOMAIN_ALT_URLS              => '',
 
     # Control panel default access mode (only relevant if SSL is enabled)
@@ -241,7 +248,7 @@
     # Leave empty for default: master
     BIND_MODE                           => '',
 
-    # Primary DNS server IP addresses (only relevant with slave mode)
+    # Primary DNS server IP addresses (only relevant in slave mode)
     #
     # Possible value: 'no' or a list of IPv4/IPv6 each separated by semicolon
     # or space
@@ -249,7 +256,7 @@
     # Leave empty for default: no
     PRIMARY_DNS                         => '',
 
-    # Slave DNS server IP addresses (only relevant with master mode)
+    # Slave DNS server IP addresses (only relevant in master mode)
     #
     # Possible value: 'no' or a list of IPv4/IPv6 each separated by semicolon
     # or space
@@ -350,10 +357,10 @@
 
     # Passive port range
     #
-    # Possible values: A valid port range in range 32768-60999
+    # Possible values: A valid port range in the 32768-60999 range.
     #
     # Don't forgot to forward TCP traffic on those ports on your server if
-    # you're behind a firewall
+    # you're behind a firewall.
     #
     # Leave empty for default: 32800 33800
     FTPD_PASSIVE_PORT_RANGE             => '',
@@ -409,25 +416,24 @@
     # Leave empty for default: yes
     SERVICES_SSL_SELFSIGNED_CERTIFICATE => '',
 
-    # SSL private key path (only relevant for trusted SSL certificate)
+    # Settings to use a certificate emitted by a Certificate Authority
+    # for the services.
     #
-    # Possible values: Path to SSL private key
-    SERVICES_SSL_PRIVATE_KEY_PATH       => '',
-
+    # NOT relevant if you use a self-signed certificate.
+    #
+    # These files are only used during setup. If you want to change
+    # those later (e.g.: when you renew the certificate) you must
+    # either replace it through the panel or re-run the setup.
+    #
+    # SSL private key path
+    SERVICES_SSL_PRIVATE_KEY_PATH          => '',
     # SSL private key passphrase (only if the private key is encrypted)
-    #
-    # Possible values: SSL private key passphrase
-    SERVICES_SSL_PRIVATE_KEY_PASSPHRASE => '',
-
-    # SSL CA Bundle path (only relevant for trusted SSL certificate)
-    #
-    # Possible values: Path to the SSL CA Bundle
-    SERVICES_SSL_CA_BUNDLE_PATH         => '',
-
-    # SSL certificate path (only relevant for trusted SSL certificate)
-    #
-    # Possible values: Path to SSL certificate
-    SERVICES_SSL_CERTIFICATE_PATH       => '',
+    SERVICES_SSL_PRIVATE_KEY_PASSPHRASE    => '',
+    # SSL certificate path
+    SERVICES_SSL_CERTIFICATE_PATH          => '',
+    # SSL CA Bundle path (or root certificate if your CA doesn't use
+    # intermediates)
+    SERVICES_SSL_CA_BUNDLE_PATH            => '',
 
     # Webstats package
     #
