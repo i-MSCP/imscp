@@ -22,30 +22,34 @@
 
 package Listener::Apache2::Security::Headers;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
 use iMSCP::EventManager;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ getBloc process replaceBloc /;
+use Version;
+
+#
+## Please, don't edit anything below this line
+#
+
+version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+    sprintf( "The 40_apache2_security_headers.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
+);
 
 iMSCP::EventManager->getInstance()->register(
-    'beforeHttpdBuildConf',
+    'beforeApache2BuildConf',
     sub {
         my ($cfgTpl, $tplName, $data) = @_;
 
-        return 0 unless $tplName eq 'domain.tpl'
-            && grep( $_ eq $data->{'VHOST_TYPE'}, ( 'domain', 'domain_ssl' ) );
+        return 0 unless $tplName eq 'domain.tpl' && grep( $_ eq $data->{'VHOST_TYPE'}, ( 'domain', 'domain_ssl' ) );
 
         ${$cfgTpl} = replaceBloc(
             "# SECTION addons BEGIN.\n",
             "# SECTION addons END.\n",
-            "    # SECTION addons BEGIN.\n".
-                getBloc(
-                    "# SECTION addons BEGIN.\n",
-                    "# SECTION addons END.\n",
-                    ${$cfgTpl}
-                ).process({ PREFIX => ($data->{'VHOST_TYPE'} eq 'domain') ? 'http' : 'https' }, <<"EOF")
+            "    # SECTION addons BEGIN.\n" . getBloc( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", ${$cfgTpl} )
+                . process( { PREFIX => ( $data->{'VHOST_TYPE'} eq 'domain' ) ? 'http' : 'https' }, <<"EOF" )
     <IfModule mod_headers.c>
         Header always set Content-Security-Policy "default-src {PREFIX}: data: 'unsafe-inline' 'unsafe-eval'"
         Header always set Referrer-Policy "strict-origin-when-cross-origin"
@@ -54,7 +58,7 @@ iMSCP::EventManager->getInstance()->register(
         Header always set X-XSS-Protection "1; mode=block"
     </IfModule>
 EOF
-                ."    # SECTION addons END.\n",
+                . "    # SECTION addons END.\n",
             ${$cfgTpl}
         );
 

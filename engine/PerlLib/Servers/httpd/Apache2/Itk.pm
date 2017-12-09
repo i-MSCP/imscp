@@ -47,7 +47,7 @@ sub _init
     my ($self) = @_;
 
     $self->SUPER::_init();
-    $self->{'eventManager'}->register( 'afterHttpdBuildConfFile', \&_cleanTemplate, -999 );
+    $self->{'eventManager'}->register( 'afterApache2BuildConfFile', \&_cleanTemplate, -999 );
     $self;
 }
 
@@ -61,13 +61,13 @@ sub _setupModules
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSetupApache2Modules', __PACKAGE__ );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2SetupModules', __PACKAGE__ );
     $rs ||= $self->disableModules( qw/ mpm_event mpm_worker cgid suexec / );
     $rs ||= $self->enableModules(
         qw/mpm_prefork mpm_itk access_compat alias auth_basic auth_digest authn_core authn_file authz_core authz_groupfile authz_host authz_user
         autoindex cgi deflate dir env expires headers mime mime_magic negotiation proxy proxy_http rewrite ssl version/
     );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSetupApache2Modules', __PACKAGE__ );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2SetupModules', __PACKAGE__ );
 }
 
 =back

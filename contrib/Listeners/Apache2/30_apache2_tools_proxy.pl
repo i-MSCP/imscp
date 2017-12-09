@@ -26,39 +26,47 @@
 
 package Listener::Apache2::Tools::Proxy;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
 use iMSCP::EventManager;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ getBloc process replaceBloc/;
+use version;
+
+#
+## Please, don't edit anything below this line
+#
+
+version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+    sprintf( "The 30_apache2_tools_proxy.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
+);
 
 iMSCP::EventManager->getInstance()->register(
-    'beforeHttpdBuildConf',
+    'beforeApache2BuildConf',
     sub {
         my ($cfgTpl, $tplName, $data) = @_;
 
-        return 0 unless $tplName eq 'domain.tpl'
-            && grep( $_ eq $data->{'VHOST_TYPE'}, ( 'domain', 'domain_ssl' ) );
+        return 0 unless $tplName eq 'domain.tpl' && grep( $_ eq $data->{'VHOST_TYPE'}, ( 'domain', 'domain_ssl' ) );
 
-        if ($data->{'VHOST_TYPE'} eq 'domain' && $data->{'SSL_SUPPORT'}) {
+        if ( $data->{'VHOST_TYPE'} eq 'domain' && $data->{'SSL_SUPPORT'} ) {
             ${$cfgTpl} = replaceBloc(
                 "# SECTION addons BEGIN.\n",
                 "# SECTION addons END.\n",
-                "    # SECTION addons BEGIN.\n".
+                "    # SECTION addons BEGIN.\n" .
                     getBloc(
                         "# SECTION addons BEGIN.\n",
                         "# SECTION addons END.\n",
                         ${$cfgTpl}
-                    ).
+                    ) .
                     "    RedirectMatch 301 ^(/(?:ftp|pma|webmail)\/?)\$ https://$data->{'DOMAIN_NAME'}\$1\n"
-                    ."    # SECTION addons END.\n",
+                    . "    # SECTION addons END.\n",
                 ${$cfgTpl}
             );
             return 0;
         }
 
-        my $cfgProxy = ($main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes') ? "    SSLProxyEngine On\n" : '';
+        my $cfgProxy = ( $main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes' ) ? "    SSLProxyEngine On\n" : '';
         $cfgProxy .= <<'EOF';
     ProxyPass /ftp/ {HTTP_URI_SCHEME}{HTTP_HOST}:{HTTP_PORT}/ftp/ retry=1 acquire=3000 timeout=600 Keepalive=On
     ProxyPassReverse /ftp/ {HTTP_URI_SCHEME}{HTTP_HOST}:{HTTP_PORT}/ftp/
@@ -70,23 +78,18 @@ EOF
         ${$cfgTpl} = replaceBloc(
             "# SECTION addons BEGIN.\n",
             "# SECTION addons END.\n",
-            "    # SECTION addons BEGIN.\n".
-                getBloc(
-                    "# SECTION addons BEGIN.\n",
-                    "# SECTION addons END.\n",
-                    ${$cfgTpl}
-                ).
-                process(
-                    {
-                        HTTP_URI_SCHEME => ($main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes') ? 'https://' : 'http://',
-                        HTTP_HOST       => $main::imscpConfig{'BASE_SERVER_VHOST'},
-                        HTTP_PORT       => ($main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes')
-                            ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'}
-                            : $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
-                    },
-                    $cfgProxy
-                )
-                ."    # SECTION addons END.\n",
+            "    # SECTION addons BEGIN.\n" . getBloc( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", ${$cfgTpl} )
+                . process(
+                {
+                    HTTP_URI_SCHEME => ( $main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes' ) ? 'https://' : 'http://',
+                    HTTP_HOST       => $main::imscpConfig{'BASE_SERVER_VHOST'},
+                    HTTP_PORT       => ( $main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes' )
+                        ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'}
+                        : $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
+                },
+                $cfgProxy
+            )
+                . "    # SECTION addons END.\n",
             ${$cfgTpl}
         );
         0;

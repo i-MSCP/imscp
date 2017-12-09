@@ -21,7 +21,7 @@
 
 package Listener::Apache2::DualStack;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
@@ -49,8 +49,12 @@ my %PER_DMN_IPS = (
 ## Please, don't edit anything below this line
 #
 
+version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+    sprintf( "The 10_apache2_dualstack.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
+);
+
 iMSCP::EventManager->getInstance()->register(
-    'onAddHttpdVhostIps',
+    'onApache2AddVhostIps',
     sub {
         my ($data, $domainIps) = @_;
 

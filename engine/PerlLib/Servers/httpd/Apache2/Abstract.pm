@@ -70,9 +70,9 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdPreInstall', ref $self );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2PreInstall', ref $self );
     $rs ||= $self->stop();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdPreInstall', ref $self );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2PreInstall', ref $self );
 }
 
 =item install( )
@@ -87,7 +87,7 @@ sub install
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdInstall', ref $self );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2Install', ref $self );
     $rs ||= $self->_setVersion();
     $rs ||= $self->_makeDirs();
     $rs ||= $self->_copyDomainDisablePages();
@@ -96,7 +96,7 @@ sub install
     $rs ||= $self->_installLogrotate();
     $rs ||= $self->_setupVlogger();
     $rs ||= $self->_cleanup();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdInstall', ref $self );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2Install', ref $self );
 }
 
 =item postinstall( )
@@ -111,7 +111,7 @@ sub postinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdPostInstall', ref $self );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2PostInstall', ref $self );
     return $rs if $rs;
 
     eval { iMSCP::Service->getInstance()->enable( 'apache2' ); };
@@ -128,7 +128,7 @@ sub postinstall
         },
         3
     );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdPostInstall', ref $self );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2PostInstall', ref $self );
 }
 
 =item uninstall( )
@@ -143,11 +143,11 @@ sub uninstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdUninstall', ref $self );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2Uninstall', ref $self );
     $rs ||= $self->_removeVloggerSqlUser();
     $rs ||= $self->_removeDirs();
     $rs ||= $self->_restoreDefaultConfig();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdUninstall', ref $self );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2Uninstall', ref $self );
 
     if ( $rs || !iMSCP::Service->getInstance()->hasService( 'apache2' ) ) {
         $self->{'start'} = 0;
@@ -171,7 +171,7 @@ sub setEnginePermissions
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdSetEnginePermissions', ref $self );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2SetEnginePermissions', ref $self );
     $rs ||= setRights( '/usr/local/sbin/vlogger',
         {
             user  => $main::imscpConfig{'ROOT_USER'},
@@ -205,7 +205,7 @@ sub setEnginePermissions
             recursive => 1
         }
     );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdSetEnginePermissions', ref $self );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2SetEnginePermissions', ref $self );
 }
 
 =item addUser( \%moduleData )
@@ -223,11 +223,11 @@ sub addUser
 
     return 0 if $moduleData->{'STATUS'} eq 'tochangepwd';
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdAddUser', $moduleData );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2AddUser', $moduleData );
     $self->setData( $moduleData );
     $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'HTTPD_USER'} )->addToGroup( $moduleData->{'GROUP'} );
     $self->flushData();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdAddUser', $moduleData );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2AddUser', $moduleData );
     $self->{'restart'} ||= 1;
     $rs;
 }
@@ -245,9 +245,9 @@ sub deleteUser
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdDelUser', $moduleData );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2DelUser', $moduleData );
     $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'HTTPD_USER'} )->removeFromGroup( $moduleData->{'GROUP'} );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdDelUser', $moduleData );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2DelUser', $moduleData );
     $self->{'restart'} ||= 1;
     $rs;
 }
@@ -265,12 +265,12 @@ sub addDmn
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdAddDmn', $moduleData );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2AddDmn', $moduleData );
     $self->setData( $moduleData );
     $rs ||= $self->_addCfg( $moduleData );
     $rs ||= $self->_addFiles( $moduleData );
     $self->flushData();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdAddDmn', $moduleData );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2AddDmn', $moduleData );
     $self->{'restart'} ||= 1;
     $rs;
 }
@@ -288,11 +288,11 @@ sub restoreDmn
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdRestoreDmn', $moduleData );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2RestoreDmn', $moduleData );
     $self->setData( $moduleData );
     $rs ||= $self->_addFiles( $moduleData );
     $self->flushData();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdRestoreDmn', $moduleData );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2RestoreDmn', $moduleData );
 }
 
 =item disableDmn( \%moduleData )
@@ -308,7 +308,7 @@ sub disableDmn
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdDisableDmn', $moduleData );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2DisableDmn', $moduleData );
     return $rs if $rs;
 
     # Ensure that all required directories are present
@@ -331,7 +331,7 @@ sub disableDmn
     my $net = iMSCP::Net->getInstance();
     my @domainIPs = ( $moduleData->{'DOMAIN_IP'}, ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} eq 'yes' ? $moduleData->{'BASE_SERVER_IP'} : () ) );
 
-    $rs = $self->{'eventManager'}->trigger( 'onAddHttpdVhostIps', $moduleData, \@domainIPs );
+    $rs = $self->{'eventManager'}->trigger( 'onApache2AddVhostIps', $moduleData, \@domainIPs );
     return $rs if $rs;
 
     # If INADDR_ANY is found, map it to the wildcard sign and discard any other
@@ -411,7 +411,7 @@ sub disableDmn
     }
 
     $self->flushData();
-    $self->{'eventManager'}->trigger( 'afterHttpdDisableDmn', $moduleData );
+    $self->{'eventManager'}->trigger( 'afterApache2DisableDmn', $moduleData );
 }
 
 =item deleteDmn( \%moduleData )
@@ -427,7 +427,7 @@ sub deleteDmn
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdDelDmn', $moduleData );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2DelDmn', $moduleData );
     $rs ||= $self->disableSites( "$moduleData->{'DOMAIN_NAME'}.conf", "$moduleData->{'DOMAIN_NAME'}_ssl.conf" );
     return $rs if $rs;
 
@@ -488,7 +488,7 @@ sub deleteDmn
         return 1;
     }
 
-    $rs = $self->{'eventManager'}->trigger( 'afterHttpdDelDmn', $moduleData );
+    $rs = $self->{'eventManager'}->trigger( 'afterApache2DelDmn', $moduleData );
     $self->{'restart'} ||= 1;
     $rs;
 }
@@ -506,12 +506,12 @@ sub addSub
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdAddSub', $moduleData );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2AddSub', $moduleData );
     $self->setData( $moduleData );
     $rs ||= $self->_addCfg( $moduleData );
     $rs ||= $self->_addFiles( $moduleData );
     $self->flushData();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdAddSub', $moduleData );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2AddSub', $moduleData );
     $self->{'restart'} ||= 1;
     $rs;
 }
@@ -529,11 +529,11 @@ sub restoreSub
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdRestoreSub', $moduleData );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2RestoreSub', $moduleData );
     $self->setData( $moduleData );
     $rs ||= $self->_addFiles( $moduleData );
     $self->flushData();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdRestoreSub', $moduleData );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2RestoreSub', $moduleData );
 }
 
 =item disableSub( \%moduleData )
@@ -549,9 +549,9 @@ sub disableSub
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdDisableSub', $moduleData );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2DisableSub', $moduleData );
     $rs ||= $self->disableDmn( $moduleData );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdDisableSub', $moduleData );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2DisableSub', $moduleData );
 }
 
 =item deleteSub( \%moduleData )
@@ -567,9 +567,9 @@ sub deleteSub
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdDelSub', $moduleData );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2DelSub', $moduleData );
     $rs ||= $self->deleteDmn( $moduleData );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdDelSub', $moduleData );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2DelSub', $moduleData );
 }
 
 =item addHtpasswd( \%moduleData )
@@ -592,12 +592,12 @@ sub addHtpasswd
         my $file = iMSCP::File->new( filename => $filePath );
         my $fileContent = -f $filePath ? $file->get() : '';
 
-        $self->{'eventManager'}->trigger( 'beforeHttpdAddHtpasswd', \$fileContent, $moduleData ) == 0 or die(
+        $self->{'eventManager'}->trigger( 'beforeApache2AddHtpasswd', \$fileContent, $moduleData ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
         $fileContent =~ s/^$moduleData->{'HTUSER_NAME'}:[^\n]*\n//gim;
         $fileContent .= "$moduleData->{'HTUSER_NAME'}:$moduleData->{'HTUSER_PASS'}\n";
-        $self->{'eventManager'}->trigger( 'afterHttpdAddHtpasswd', \$fileContent, $moduleData ) == 0 or die(
+        $self->{'eventManager'}->trigger( 'afterApache2AddHtpasswd', \$fileContent, $moduleData ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
@@ -642,11 +642,11 @@ sub deleteHtpasswd
         my $file = iMSCP::File->new( filename => $filePath );
         my $fileContent = $file->get() // '';
 
-        $self->{'eventManager'}->trigger( 'beforeHttpdDelHtpasswd', \$fileContent, $moduleData ) == 0 or die(
+        $self->{'eventManager'}->trigger( 'beforeApache2DelHtpasswd', \$fileContent, $moduleData ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
         $fileContent =~ s/^$moduleData->{'HTUSER_NAME'}:[^\n]*\n//gim;
-        $self->{'eventManager'}->trigger( 'afterHttpdDelHtpasswd', \$fileContent, $moduleData ) == 0 or die(
+        $self->{'eventManager'}->trigger( 'afterApache2DelHtpasswd', \$fileContent, $moduleData ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
@@ -688,12 +688,12 @@ sub addHtgroup
         my $file = iMSCP::File->new( filename => $filePath );
         my $fileContent = -f $filePath ? $file->get() : '';
 
-        $self->{'eventManager'}->trigger( 'beforeHttpdAddHtgroup', \$fileContent, $moduleData ) == 0 or die(
+        $self->{'eventManager'}->trigger( 'beforeApache2AddHtgroup', \$fileContent, $moduleData ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
         $fileContent =~ s/^$moduleData->{'HTGROUP_NAME'}:[^\n]*\n//gim;
         $fileContent .= "$moduleData->{'HTGROUP_NAME'}:$moduleData->{'HTGROUP_USERS'}\n";
-        $self->{'eventManager'}->trigger( 'afterHttpdAddHtgroup', \$fileContent, $moduleData ) == 0 or die(
+        $self->{'eventManager'}->trigger( 'afterApache2AddHtgroup', \$fileContent, $moduleData ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
@@ -738,11 +738,11 @@ sub deleteHtgroup
         my $file = iMSCP::File->new( filename => $filePath );
         my $fileContent = $file->get() // '';
 
-        $self->{'eventManager'}->trigger( 'beforeHttpdDelHtgroup', \$fileContent, $moduleData ) == 0 or die(
+        $self->{'eventManager'}->trigger( 'beforeApache2DelHtgroup', \$fileContent, $moduleData ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
         $fileContent =~ s/^$moduleData->{'HTGROUP_NAME'}:[^\n]*\n//gim;
-        $self->{'eventManager'}->trigger( 'afterHttpdDelHtgroup', \$fileContent, $moduleData ) == 0 or die(
+        $self->{'eventManager'}->trigger( 'afterApache2DelHtgroup', \$fileContent, $moduleData ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
@@ -788,7 +788,7 @@ sub addHtaccess
         my $file = iMSCP::File->new( filename => $filePath );
         my $fileContent = -f $filePath ? $file->get() : '';
 
-        $self->{'eventManager'}->trigger( 'beforeHttpdAddHtaccess', \$fileContent, $moduleData ) == 0 or die(
+        $self->{'eventManager'}->trigger( 'beforeApache2AddHtaccess', \$fileContent, $moduleData ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
@@ -815,7 +815,7 @@ EOF
         $fileContent = replaceBloc( $bTag, $eTag, '', $fileContent );
         $fileContent = $bTag . $tagContent . $eTag . $fileContent;
 
-        $self->{'eventManager'}->trigger( 'afterHttpdAddHtaccess', \$fileContent, $moduleData ) == 0 or die(
+        $self->{'eventManager'}->trigger( 'afterApache2AddHtaccess', \$fileContent, $moduleData ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
@@ -865,11 +865,11 @@ sub deleteHtaccess
         my $fileContent = $file->get() // '';
         $fileContent = '' unless defined $fileContent;
 
-        $self->{'eventManager'}->trigger( 'beforeHttpdDelHtaccess', \$fileContent, $moduleData ) == 0 or die(
+        $self->{'eventManager'}->trigger( 'beforeApache2DelHtaccess', \$fileContent, $moduleData ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
         $fileContent = replaceBloc( "### START i-MSCP PROTECTION ###\n", "### END i-MSCP PROTECTION ###\n", '', $fileContent );
-        $self->{'eventManager'}->trigger( 'afterHttpdDelHtaccess', \$fileContent, $moduleData ) == 0 or die(
+        $self->{'eventManager'}->trigger( 'afterApache2DelHtaccess', \$fileContent, $moduleData ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
@@ -924,9 +924,9 @@ sub buildConf
         }
     }
 
-    $self->{'eventManager'}->trigger( 'beforeHttpdBuildConf', \$cfgTpl, $filename, $moduleData );
+    $self->{'eventManager'}->trigger( 'beforeApache2BuildConf', \$cfgTpl, $filename, $moduleData );
     $cfgTpl = process( $self->{'data'}, $cfgTpl );
-    $self->{'eventManager'}->trigger( 'afterHttpdBuildConf', \$cfgTpl, $filename, $moduleData );
+    $self->{'eventManager'}->trigger( 'afterApache2BuildConf', \$cfgTpl, $filename, $moduleData );
     $cfgTpl;
 }
 
@@ -966,10 +966,10 @@ sub buildConfFile
         }
     }
 
-    $rs = $self->{'eventManager'}->trigger( 'beforeHttpdBuildConfFile', \$cfgTpl, $filename, $moduleData, $options );
+    $rs = $self->{'eventManager'}->trigger( 'beforeApache2BuildConfFile', \$cfgTpl, $filename, $moduleData, $options );
     return $rs if $rs;
     $cfgTpl = $self->buildConf( $cfgTpl, $filename, $moduleData );
-    $rs = $self->{'eventManager'}->trigger( 'afterHttpdBuildConfFile', \$cfgTpl, $filename, $moduleData, $options );
+    $rs = $self->{'eventManager'}->trigger( 'afterApache2BuildConfFile', \$cfgTpl, $filename, $moduleData, $options );
     return $rs if $rs;
 
     my $fileHandler = iMSCP::File->new( filename => $options->{'destination'} || "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$filename" );
@@ -1094,7 +1094,7 @@ sub enableSites
 {
     my ($self, @sites) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdEnableSites', \@sites );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2EnableSites', \@sites );
     return $rs if $rs;
 
     for ( @sites ) {
@@ -1110,7 +1110,7 @@ sub enableSites
     }
 
     $self->{'restart'} ||= 1;
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdEnableSites', @sites );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2EnableSites', @sites );
 }
 
 =item disableSites( @sites )
@@ -1126,7 +1126,7 @@ sub disableSites
 {
     my ($self, @sites) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdDisableSites', \@sites );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2DisableSites', \@sites );
     return $rs if $rs;
 
     for ( @sites ) {
@@ -1138,7 +1138,7 @@ sub disableSites
     }
 
     $self->{'restart'} ||= 1;
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdDisableSites', @sites );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2DisableSites', @sites );
 }
 
 =item enableModules( @modules )
@@ -1154,7 +1154,7 @@ sub enableModules
 {
     my ($self, @modules) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdEnableModules', \@modules );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2EnableModules', \@modules );
     return $rs if $rs;
 
     for ( @modules ) {
@@ -1166,7 +1166,7 @@ sub enableModules
     }
 
     $self->{'restart'} ||= 1;
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdEnableModules', @modules );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2EnableModules', @modules );
 }
 
 =item disableModules( @modules )
@@ -1182,7 +1182,7 @@ sub disableModules
 {
     my ($self, @modules) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdDisableModules', \@modules );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2DisableModules', \@modules );
     return $rs if $rs;
 
     for ( @modules ) {
@@ -1194,7 +1194,7 @@ sub disableModules
     }
 
     $self->{'restart'} ||= 1;
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdDisableModules', @modules );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2DisableModules', @modules );
 }
 
 =item enableConfs( @conffiles )
@@ -1210,7 +1210,7 @@ sub enableConfs
 {
     my ($self, @conffiles) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdEnableConfs', \@conffiles );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2EnableConfs', \@conffiles );
     return $rs if $rs;
 
     for ( @conffiles ) {
@@ -1226,7 +1226,7 @@ sub enableConfs
     }
 
     $self->{'restart'} ||= 1;
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdEnableConfs', @conffiles );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2EnableConfs', @conffiles );
 }
 
 =item disableConfs( @conffiles )
@@ -1242,7 +1242,7 @@ sub disableConfs
 {
     my ($self, @conffiles) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdDisableConfs', \@conffiles );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2DisableConfs', \@conffiles );
     return $rs if $rs;
 
     for ( @conffiles ) {
@@ -1254,7 +1254,7 @@ sub disableConfs
     }
 
     $self->{'restart'} ||= 1;
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdDisableConfs', @conffiles );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2DisableConfs', @conffiles );
 }
 
 =item start( )
@@ -1269,7 +1269,7 @@ sub start
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdStart' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2Start' );
     return $rs if $rs;
 
     eval { iMSCP::Service->getInstance()->start( 'apache2' ); };
@@ -1278,7 +1278,7 @@ sub start
         return 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterHttpdStart' );
+    $self->{'eventManager'}->trigger( 'afterApache2Start' );
 }
 
 =item stop( )
@@ -1293,7 +1293,7 @@ sub stop
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdStop' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2Stop' );
     return $rs if $rs;
 
     eval { iMSCP::Service->getInstance()->stop( 'apache2' ); };
@@ -1302,7 +1302,7 @@ sub stop
         return 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterHttpdStop' );
+    $self->{'eventManager'}->trigger( 'afterApache2Stop' );
 }
 
 =item forceRestart( )
@@ -1332,7 +1332,7 @@ sub restart
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdRestart' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2Restart' );
     return $rs if $rs;
 
     eval {
@@ -1348,7 +1348,7 @@ sub restart
         return 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterHttpdRestart' );
+    $self->{'eventManager'}->trigger( 'afterApache2Restart' );
 }
 
 =item mountLogsFolder( \%moduleData )
@@ -1487,7 +1487,7 @@ sub _addCfg
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdAddCfg', $moduleData );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2AddCfg', $moduleData );
     $rs = $self->disableSites( "$moduleData->{'DOMAIN_NAME'}.conf", "$moduleData->{'DOMAIN_NAME'}_ssl.conf" );
     return $rs if $rs;
 
@@ -1496,7 +1496,7 @@ sub _addCfg
     my $net = iMSCP::Net->getInstance();
     my @domainIPs = ( $moduleData->{'DOMAIN_IP'}, ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} eq 'yes' ? $moduleData->{'BASE_SERVER_IP'} : () ) );
 
-    $rs = $self->{'eventManager'}->trigger( 'onAddHttpdVhostIps', $moduleData, \@domainIPs );
+    $rs = $self->{'eventManager'}->trigger( 'onApache2AddVhostIps', $moduleData, \@domainIPs );
     return $rs if $rs;
 
     # If INADDR_ANY is found, map it to the wildcard sign and discard any other
@@ -1582,7 +1582,7 @@ sub _addCfg
         );
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdAddCfg', $moduleData );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2AddCfg', $moduleData );
 }
 
 =item _dmnFolders( \%moduleData )
@@ -1598,7 +1598,7 @@ sub _dmnFolders
 {
     my ($self, $moduleData) = @_;
 
-    $self->{'eventManager'}->trigger( 'beforeHttpdDmnFolders', \my @folders );
+    $self->{'eventManager'}->trigger( 'beforeApache2DmnFolders', \my @folders );
 
     push(
         @folders,
@@ -1610,7 +1610,7 @@ sub _dmnFolders
         ]
     );
 
-    $self->{'eventManager'}->trigger( 'afterHttpdDmnFolders', \@folders );
+    $self->{'eventManager'}->trigger( 'afterApache2DmnFolders', \@folders );
     @folders;
 }
 
@@ -1628,7 +1628,7 @@ sub _addFiles
     my ($self, $moduleData) = @_;
 
     eval {
-        $self->{'eventManager'}->trigger( 'beforeHttpdAddFiles', $moduleData ) == 0 or die(
+        $self->{'eventManager'}->trigger( 'beforeApache2AddFiles', $moduleData ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
@@ -1809,7 +1809,7 @@ sub _addFiles
             $self->mountLogsFolder( $moduleData ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
         }
 
-        $self->{'eventManager'}->trigger( 'afterHttpdAddFiles', $moduleData ) == 0 or die(
+        $self->{'eventManager'}->trigger( 'afterApache2AddFiles', $moduleData ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
@@ -1882,7 +1882,7 @@ sub _makeDirs
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdMakeDirs' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2MakeDirs' );
     return $rs if $rs;
 
     eval {
@@ -1897,7 +1897,7 @@ sub _makeDirs
         return 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterHttpdMakeDirs' );
+    $self->{'eventManager'}->trigger( 'afterApache2MakeDirs' );
 }
 
 =item _copyDomainDisablePages( )
@@ -1964,10 +1964,10 @@ sub _configure
             }
         }
 
-        $rs = $self->{'eventManager'}->trigger( 'beforeHttpdBuildConfFile', \$cfgTpl, 'ports.conf' );
+        $rs = $self->{'eventManager'}->trigger( 'beforeApache2BuildConfFile', \$cfgTpl, 'ports.conf' );
         return $rs if $rs;
         $cfgTpl =~ s/^NameVirtualHost[^\n]+\n//gim;
-        $rs = $self->{'eventManager'}->trigger( 'afterHttpdBuildConfFile', \$cfgTpl, 'ports.conf' );
+        $rs = $self->{'eventManager'}->trigger( 'afterApache2BuildConfFile', \$cfgTpl, 'ports.conf' );
         return $rs if $rs;
 
         my $file = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf" );
@@ -2014,7 +2014,7 @@ sub _installLogrotate
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdInstallLogrotate' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2InstallLogrotate' );
     return $rs if $rs;
 
     $self->setData( {
@@ -2024,7 +2024,7 @@ sub _installLogrotate
     } );
 
     $rs = $self->buildConfFile( 'logrotate.conf', {}, { destination => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2" } );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdInstallLogrotate' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2InstallLogrotate' );
 }
 
 =item _setupVlogger( )
@@ -2097,7 +2097,7 @@ sub _cleanup
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdCleanup' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2Cleanup' );
     $rs ||= $self->disableSites( 'imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf' );
     return $rs if $rs;
 
@@ -2126,7 +2126,7 @@ sub _cleanup
     $rs = execute( "rm -f $main::imscpConfig{'USER_WEB_DIR'}/*/logs/*.log", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdCleanup' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2Cleanup' );
 }
 
 #

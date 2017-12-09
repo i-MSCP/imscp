@@ -183,9 +183,9 @@ sub preaddDmn
 {
     my ($self) = @_;
 
-    return 0 if $self->{'eventManager'}->hasListener( 'afterHttpdBuildConf', \&_addAwstatsSection );
+    return 0 if $self->{'eventManager'}->hasListener( 'afterApache2BuildConf', \&_addAwstatsSection );
 
-    $self->{'eventManager'}->register( 'afterHttpdBuildConf', \&_addAwstatsSection );
+    $self->{'eventManager'}->register( 'afterApache2BuildConf', \&_addAwstatsSection );
 }
 
 =item addDmn( \%data )

@@ -542,7 +542,7 @@ sub addDmn
     }
 
     $rs ||= $self->{'eventManager'}->registerOne(
-        'afterHttpdAddFiles',
+        'afterApache2AddFiles',
         sub {
             eval {
                 iMSCP::Dir->new( dirname => "$moduleData->{'WEB_DIR'}/phptmp" )->make( {
@@ -872,7 +872,7 @@ sub _init
         fileName    => "$self->{'cfgDir'}/php.data",
         readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
         nodeferring => defined $main::execmode && $main::execmode eq 'setup';
-    $self->{'eventManager'}->register( 'beforeHttpdBuildConfFile', \&_buildApache2Config, 100 );
+    $self->{'eventManager'}->register( 'beforeApache2BuildConfFile', \&_buildApache2Config, 100 );
     $self;
 }
 

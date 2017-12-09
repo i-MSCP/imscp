@@ -22,11 +22,12 @@
 
 package Listener::Apache2::ServerAlias::Override;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
 use iMSCP::EventManager;
+use version;
 
 #
 ## Configuration variables
@@ -42,13 +43,16 @@ my %serverAliases = (
 ## Please, don't edit anything below this line
 #
 
+version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+    sprintf( "The 20_apache2_serveralias_override.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
+);
+
 iMSCP::EventManager->getInstance()->register(
-    'afterHttpdBuildConf',
+    'afterApache2BuildConf',
     sub {
         my ($tplContent, $tplName, $data) = @_;
 
-        return 0 unless $tplName eq 'domain.tpl'
-            && $serverAliases{$data->{'DOMAIN_NAME'}};
+        return 0 unless $tplName eq 'domain.tpl' && $serverAliases{$data->{'DOMAIN_NAME'}};
 
         ${$tplContent} =~ s/^(\s+ServerAlias.*)/$1 $serverAliases{$data->{'DOMAIN_NAME'}}/m;
         0;

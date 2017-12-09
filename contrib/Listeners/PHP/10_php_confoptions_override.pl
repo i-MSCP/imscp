@@ -91,17 +91,14 @@ version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' )
     sprintf( "The 10_php_confoptions_override.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
 );
 
-# PHP INI level
-my $iniLevel;
-
 iMSCP::EventManager->getInstance()->register(
     'beforePhpBuildConfFile',
     sub {
         my ($tplContent, $tplName, $moduleData) = @_;
 
-        return 0 unless defined $moduleData->{'DOMAIN_NAME'} && grep($_ eq $tplName, 'php.ini', 'pool.conf');
+        return 0 unless defined $moduleData->{'DOMAIN_NAME'} && grep($tplName eq $_, 'php.ini.user', 'pool.conf');
 
-        if ( $tplName eq 'php.ini' ) {
+        if ( $tplName eq 'php.ini.user' ) {
             # Adds/Overrides PHP directive values globally
             if ( exists $phpDirectives{'*'} ) {
                 while ( my ($directive, $value) = each( %{$phpDirectives{'*'}} ) ) {
@@ -110,7 +107,7 @@ iMSCP::EventManager->getInstance()->register(
                 }
             }
 
-            return 0 unless exists $phpDirectives{my $domain = _getIniLevel( $moduleData )};
+            return 0 unless exists $phpDirectives{my $domain = _getPhpConfigLevel( $moduleData )};
 
             # Adds/Overrides per domain PHP directive values
             while ( my ($directive, $value) = each( %{$phpDirectives{$domain}} ) ) {
@@ -137,7 +134,7 @@ iMSCP::EventManager->getInstance()->register(
             }
         }
 
-        return 0 unless exists $phpDirectives{my $domain = _getIniLevel( $moduleData )};
+        return 0 unless exists $phpDirectives{my $domain = _getPhpConfigLevel( $moduleData )};
 
         # Adds/Overrides per domain PHP directive values
         while ( my ($directive, $value) = each( %{$phpDirectives{$domain}} ) ) {
@@ -155,13 +152,15 @@ iMSCP::EventManager->getInstance()->register(
     }
 );
 
-sub _getIniLevel
+my $PHP_CONFIG_LEVEL;
+
+sub _getPhpConfigLevel
 {
     my ($moduleData) = @_;
 
-    $iniLevel ||= Servers::php->factory()->{'config'}->{'PHP_CONFIG_LEVEL'};
-    return $moduleData->{'ROOT_DOMAIN_NAME'} if $iniLevel eq 'per_user';
-    return $moduleData->{'PARENT_DOMAIN_NAME'} if $iniLevel eq 'per_domain';
+    $PHP_CONFIG_LEVEL ||= Servers::php->factory()->{'config'}->{'PHP_CONFIG_LEVEL'};
+    return $moduleData->{'ROOT_DOMAIN_NAME'} if $PHP_CONFIG_LEVEL eq 'per_user';
+    return $moduleData->{'PARENT_DOMAIN_NAME'} if $PHP_CONFIG_LEVEL eq 'per_domain';
     $moduleData->{'DOMAIN_NAME'};
 }
 

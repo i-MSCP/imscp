@@ -26,7 +26,7 @@ package Listener::Backup::Storage::Outsourcing;
 #    and set the $STORAGE_ROOT_PATH variable below according your needs
 # 3. Trigger an i-MSCP reconfiguration: perl /var/www/imscp/engine/setup/imscp-reconfigure -danv
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
@@ -35,6 +35,7 @@ use iMSCP::EventManager;
 use iMSCP::Ext2Attributes qw/ setImmutable clearImmutable /;
 use iMSCP::Dir;
 use iMSCP::Mount qw/ addMountEntry removeMountEntry mount umount /;
+use version;
 
 #
 ## Configuration parameters
@@ -54,6 +55,10 @@ my $STORAGE_ROOT_PATH = '';
 ## Please, don't edit anything below this line
 #
 
+version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+    sprintf( "The 10_backup_storage_outsourcing.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
+);
+
 # Don't register event listeners if the listener file is not configured yet
 unless ( $STORAGE_ROOT_PATH eq '' ) {
     iMSCP::EventManager->getInstance()->register(
@@ -62,13 +67,11 @@ unless ( $STORAGE_ROOT_PATH eq '' ) {
             eval {
                 # Make sure that the root path for outsourced backup directories
                 # exists and that it is set with expected ownership and permissions
-                iMSCP::Dir->new( dirname => $STORAGE_ROOT_PATH )->make(
-                    {
-                        user  => $main::imscpConfig{'ROOT_USER'},
-                        group => $main::imscpConfig{'ROOT_GROUP'},
-                        mode  => 0750
-                    }
-                );
+                iMSCP::Dir->new( dirname => $STORAGE_ROOT_PATH )->make( {
+                    user  => $main::imscpConfig{'ROOT_USER'},
+                    group => $main::imscpConfig{'ROOT_GROUP'},
+                    mode  => 0750
+                } );
             };
             if ( $@ ) {
                 error( $@ );
@@ -80,12 +83,11 @@ unless ( $STORAGE_ROOT_PATH eq '' ) {
     );
 
     iMSCP::EventManager->getInstance()->register(
-        'beforeHttpdAddFiles',
+        'beforeApache2AddFiles',
         sub {
             my ($data) = @_;
 
-            return 0 unless $data->{'DOMAIN_TYPE'} eq 'dmn'
-                && -d "$data->{'WEB_DIR'}/backups";
+            return 0 unless $data->{'DOMAIN_TYPE'} eq 'dmn' && -d "$data->{'WEB_DIR'}/backups";
 
             # When files are being copied by i-MSCP httpd server, we must first
             # umount the outsourced backup directory
@@ -94,7 +96,7 @@ unless ( $STORAGE_ROOT_PATH eq '' ) {
     );
 
     iMSCP::EventManager->getInstance()->register(
-        'afterHttpdAddFiles',
+        'afterApache2AddFiles',
         sub {
             my ($data) = @_;
 
@@ -115,17 +117,14 @@ unless ( $STORAGE_ROOT_PATH eq '' ) {
 
                     # Empty directory by re-creating it from scratch (should never occurs)
                     $backupDirHandle->clear();
-
                     setImmutable( $data->{'WEB_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
                 } else {
                     # Create empty outsourced customer backup directory
-                    iMSCP::Dir->new( dirname => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" )->make(
-                        {
-                            user  => $data->{'USER'},
-                            group => $data->{'GROUP'},
-                            mode  => 0750
-                        }
-                    );
+                    iMSCP::Dir->new( dirname => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" )->make( {
+                        user  => $data->{'USER'},
+                        group => $data->{'GROUP'},
+                        mode  => 0750
+                    } );
                 }
             };
             if ( $@ ) {
@@ -134,22 +133,18 @@ unless ( $STORAGE_ROOT_PATH eq '' ) {
             }
 
             # Outsource customer backup directory by mounting new backup directory on top of it
-            my $rs ||= mount(
-                {
-                    fs_spec    => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}",
-                    fs_file    => "$data->{'WEB_DIR'}/backups",
-                    fs_vfstype => 'none',
-                    fs_mntops  => 'bind,slave'
-                }
-            );
-            $rs ||= addMountEntry(
-                "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'} $data->{'WEB_DIR'}/backups none bind,slave"
-            );
+            my $rs ||= mount( {
+                fs_spec    => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}",
+                fs_file    => "$data->{'WEB_DIR'}/backups",
+                fs_vfstype => 'none',
+                fs_mntops  => 'bind,slave'
+            } );
+            $rs ||= addMountEntry( "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'} $data->{'WEB_DIR'}/backups none bind,slave" );
         }
     );
 
     iMSCP::EventManager->getInstance()->register(
-        'beforeHttpdDelDmn',
+        'beforeApache2DelDmn',
         sub {
             my $data = shift;
 
