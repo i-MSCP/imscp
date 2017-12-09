@@ -556,7 +556,7 @@ EOF
  Ask for alternative URL feature
 
  Param iMSCP::Dialog \%dialog
- Return int 0 or 30
+ Return int 0 to go on next question, 30 to go back to the previous question
 
 =cut
 
@@ -564,22 +564,21 @@ sub askAltUrlsFeature
 {
     my (undef, $dialog) = @_;
 
-    my $altUrlsFeature = main::setupGetQuestion( 'CLIENT_DOMAIN_ALT_URLS', iMSCP::Getopt->preseed ? 1 : '' );
+    my $value = main::setupGetQuestion( 'CLIENT_DOMAIN_ALT_URLS', iMSCP::Getopt->preseed ? 'yes' : '' );
+    my %choices = ( 'yes', 'Yes', 'no', 'No' );
 
     if ( $main::reconfigure =~ /^(?:panel|alt_urls_feature|all|forced)$/
-        || !isNumber( $altUrlsFeature )
-        || !isNumberInRange( $altUrlsFeature, 0, 1 )
+        || !isStringInList( $value, keys %choices )
     ) {
-        $altUrlsFeature = $dialog->yesno( <<"EOF", !$altUrlsFeature );
+        ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'yes' );
 Do you want to enable the alternative URLs feature for client domains?
 
 The alternative URLs feature allows clients accessing their websites through alternative URLs such as http://dmn1.panel.domain.tld
+\\Z \\Zn
 EOF
-        return $altUrlsFeature unless $altUrlsFeature < 30;
+        return $rs unless $rs < 30;
 
-        main::setupSetQuestion( 'CLIENT_DOMAIN_ALT_URLS', $altUrlsFeature ? 0 : 1 );
-    } else {
-        main::setupSetQuestion( 'CLIENT_DOMAIN_ALT_URLS', $altUrlsFeature );
+        main::setupSetQuestion( 'CLIENT_DOMAIN_ALT_URLS', $value );
     }
 
     0;

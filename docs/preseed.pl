@@ -210,9 +210,9 @@
 
     # Alternative URLs feature for client domains
     #
-    # Possible values: 1 for enabling, 0 for disabling
+    # Possible values: yes, no
     #
-    # Leave empty for default: 1
+    # Leave empty for default: yes
     CLIENT_DOMAIN_ALT_URLS              => '',
 
     # Control panel default access mode (only relevant if SSL is enabled)

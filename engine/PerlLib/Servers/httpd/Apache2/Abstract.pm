@@ -329,7 +329,7 @@ sub disableDmn
     $self->setData( $moduleData );
 
     my $net = iMSCP::Net->getInstance();
-    my @domainIPs = ( $moduleData->{'DOMAIN_IP'}, ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} ? $moduleData->{'BASE_SERVER_IP'} : () ) );
+    my @domainIPs = ( $moduleData->{'DOMAIN_IP'}, ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} eq 'yes' ? $moduleData->{'BASE_SERVER_IP'} : () ) );
 
     $rs = $self->{'eventManager'}->trigger( 'onAddHttpdVhostIps', $moduleData, \@domainIPs );
     return $rs if $rs;
@@ -343,7 +343,7 @@ sub disableDmn
         HTTP_URI_SCHEME => 'http://',
         HTTPD_LOG_DIR   => $self->{'config'}->{'HTTPD_LOG_DIR'},
         USER_WEB_DIR    => $main::imscpConfig{'USER_WEB_DIR'},
-        SERVER_ALIASES  => "www.$moduleData->{'DOMAIN_NAME'}" . ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'}
+        SERVER_ALIASES  => "www.$moduleData->{'DOMAIN_NAME'}" . ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} eq 'yes'
             ? " $moduleData->{'ALIAS'}.$main::imscpConfig{'BASE_SERVER_VHOST'}" : ''
         )
     } );
@@ -1494,7 +1494,7 @@ sub _addCfg
     $self->setData( $moduleData );
 
     my $net = iMSCP::Net->getInstance();
-    my @domainIPs = ( $moduleData->{'DOMAIN_IP'}, ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} ? $moduleData->{'BASE_SERVER_IP'} : () ) );
+    my @domainIPs = ( $moduleData->{'DOMAIN_IP'}, ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} eq 'yes' ? $moduleData->{'BASE_SERVER_IP'} : () ) );
 
     $rs = $self->{'eventManager'}->trigger( 'onAddHttpdVhostIps', $moduleData, \@domainIPs );
     return $rs if $rs;
@@ -1507,7 +1507,7 @@ sub _addCfg
         DOMAIN_IPS             => join( ' ', map { ( ( $_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4' ) ? $_ : "[$_]" ) . ':80' } @domainIPs ),
         HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
         HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
-        SERVER_ALIASES         => "www.$moduleData->{'DOMAIN_NAME'}" . ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'}
+        SERVER_ALIASES         => "www.$moduleData->{'DOMAIN_NAME'}" . ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} eq 'yes'
             ? " $moduleData->{'ALIAS'}.$main::imscpConfig{'BASE_SERVER_VHOST'}" : ''
         )
     } );
