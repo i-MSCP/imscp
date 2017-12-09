@@ -1,9 +1,9 @@
 # i-MSCP preseed.pl template file for installer preseeding feature
 #
-# See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
+# See the documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2017.12.08
+# Last update: 2017.12.09
 
 %main::questions = (
     # Mandatory parameters
@@ -86,8 +86,13 @@
 
     # SQL server implementation
     #
-    # Please consult the ../autoinstaller/Packages/<distro>-<codename>.xml file
-    # for available options.
+    # Possible values:
+    # - mysql_5.7     (default for Debian Jessie, Devuan Jessie, Ubuntu
+    #                  Trusty/Xenial -- not available for Debian Buster)
+    # - mariadb_10.1  (default for Debian Buster)
+    # - mariadb_10.2  (not available for Debian Buster)
+    # - percona_5.7   (not available for Debian Buster)
+    # - remote_server
     #
     # Leave empty for default: Depend on distribution and codename.
     SQL_SERVER                          => '',
@@ -279,11 +284,12 @@
 
     # PHP version for customers
     #
-    # Possible values (depending of your distribution):
-    # - php5.6 (default)
-    # - php7.0
+    # Possible values:
+    # - php5.6 (default for Debian Jessie/Stretch, Devuan Jessie,
+    #           Ubuntu Trusty/Xenial -- not available for Debian Buster)
+    # - php7.0 (default for Debian Buster)
     # - php7.1
-    # - php7.2
+    # - php7.2 (not available for Debian Buster)
     #
     # Leave empty for default.
     PHP_SERVER                          => '',
@@ -293,8 +299,9 @@
     # Possible values: apache2handler, cgi, fpm
     #
     # Restrictions:
-    # - The apache2_mpm_itk HTTPD server cannot be used with the PHP cgi SAPI as the
-    #   Apache's Fcgid module doesn't work with the Apache2's ITK MPM.
+    # - The apache2_mpm_itk HTTPD server implementation cannot be used with the
+    #   PHP cgi SAPI as the Apache's Fcgid module doesn't work with the
+    #   Apache2's ITK MPM.
     # - The apache2handler PHP sapi requires the apache2_mpm_itk HTTPD server
     #   implementation.
     #
@@ -303,9 +310,15 @@
     
     # PHP configuration level for customers
     #
-    # Possible values: per_user, per_domain, per_site
+    # Possible values:
+    # - per_user   (Identical PHP configuration for all domains, including
+    #              subdomains)
+    # - per_domain (Identical PHP configuration for each domain, including
+    #               subdomains)
+    # - per_site:  (default -- Different PHP configuration for each domain,
+    #               including subdomains)
     #
-    # Leave empty for default: per_site
+    # Leave empty for default.
     PHP_CONFIG_LEVEL                    => '',
 
     # PHP-FPM FastCGI connection type
@@ -339,7 +352,8 @@
     #
     # Possible values: A valid port range in range 32768-60999
     #
-    # Don't forgot to forward TCP traffic on those ports on your server if you're behind a firewall
+    # Don't forgot to forward TCP traffic on those ports on your server if
+    # you're behind a firewall
     #
     # Leave empty for default: 32800 33800
     FTPD_PASSIVE_PORT_RANGE             => '',
@@ -485,3 +499,4 @@
 );
 
 1;
+__END__

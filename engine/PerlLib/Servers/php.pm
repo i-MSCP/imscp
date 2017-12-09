@@ -170,9 +170,9 @@ Please choose the PHP configuration level for customers.
 
 Available levels are:
 
-\\Z4Per site  :\\Zn Different PHP configuration for each site (recommended)
+\\Z4Per site  :\\Zn Different PHP configuration for each domain, including subdomains
 \\Z4Per domain:\\Zn Identical PHP configuration for each domain, including subdomains
-\\Z4Per user  :\\Zn Idnetical PHP configuration for all domains, including subdomains
+\\Z4Per user  :\\Zn Identical PHP configuration for all domains, including subdomains
 \\Z \\Zn
 EOF
         return $rs unless $rs < 30;
