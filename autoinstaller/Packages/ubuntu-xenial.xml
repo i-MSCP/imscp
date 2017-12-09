@@ -183,7 +183,7 @@
         <external_server description="No local DNS server" class="Servers::noserver"/>
         <package>resolvconf</package>
     </named>
-    <sqld>
+    <sql>
         <mysql_5.7
                 default="1"
                 description="MySQL 5.7 server"
@@ -256,7 +256,7 @@
         </remote_server>
         <package>libmysqlclient20</package>
         <package>mysql-common</package>
-    </sqld>
+    </sql>
     <perl>
         <package>perl</package>
         <package>libcrypt-blowfish-perl</package>

@@ -130,7 +130,7 @@
         <external_server description="No local DNS server" class="Servers::noserver"/>
         <package>resolvconf</package>
     </named>
-    <sqld>
+    <sql>
         <mariadb_10.1
                 default="1"
                 description="MariaDB 10.1 server"
@@ -156,7 +156,7 @@
         </remote_server>
         <package>libmariadbclient18</package>
         <package>mysql-common</package>
-    </sqld>
+    </sql>
     <perl>
         <package>perl</package>
         <package>libcrypt-blowfish-perl</package>
