@@ -1,4 +1,3 @@
-
 <script>
     $(function () {
         var $dataTable = $(".datatable").dataTable({
@@ -48,7 +47,7 @@
 
         $('#bulk_actions').on("change", function () {
             var $button = $("#bulk_actions_submit");
-            if ($(this).val() == 'noaction') {
+            if ($(this).val() === 'noaction') {
                 $button.prop("disabled", true);
             } else {
                 $button.prop("disabled", false);
