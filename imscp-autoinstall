@@ -23,32 +23,35 @@ $< == 0 or die( "[\x1b[0;31mERROR\x1b[0m] The i-MSCP installer must be run as ro
 system( 'clear 2>/dev/null' );
 
 unless ( grep (/^-(?:[^-]*?[hs?][^-]*|-(?:help|skip-distro-packages))$/, @ARGV) ) {
+    local $ENV{'LANG'} = 'C.UTF-8';
+
     my $noprompt = grep(/^-(?:[^-]*?n[^-]*|-noprompt)$/, @ARGV);
     system( 'clear 2>/dev/null' );
 
     my @progressCmd;
-    my $quiet = !$noprompt;
     if ( !$noprompt && chomp( @progressCmd = `which debconf-apt-progress 2>/dev/null` ) ) {
         $ENV{'DEBIAN_FRONTEND'} = 'dialog';
-        push @progressCmd, '--logstderr', '--';
-        $quiet = 1;
+        push @progressCmd, '--';
     }
 
     unless ( @progressCmd ) {
         print "Satisfying pre-requisites for the i-MSCP installer\n";
         print " [\x1b[0;34mINFO\x1b[0m] Updating package index files ...\n";
     }
-    system( @progressCmd, 'apt-get', ( $quiet ? '--quiet=2' : () ), 'update' ) == 0 or die( "[\x1b[0;31mERROR\x1b[0m] Couldn't update APT index.\n" );
+
+    system( @progressCmd, 'apt-get', 'update' ) == 0 or die( "[\x1b[0;31mERROR\x1b[0m] Couldn't update APT index.\n" );
 
     print " [\x1b[0;34mINFO\x1b[0m] Upgrading distribution packages (dist-upgrade) ...\n" unless @progressCmd;
-    system( @progressCmd, 'apt-get', '--assume-yes', '--no-install-recommends', ( $quiet ? '--quiet=2' : () ), 'dist-upgrade' ) == 0 or die(
+
+    system( @progressCmd, 'apt-get', '--assume-yes', '--no-install-recommends', 'dist-upgrade' ) == 0 or die(
         "[\x1b[0;31mERROR\x1b[0m] Couldn't upgrade distribution packages.\n"
     );
 
     print " [\x1b[0;34mINFO\x1b[0m] Installing pre-required distribution packages ...\n" unless @progressCmd;
+
     system(
-        @progressCmd, 'apt-get', '--assume-yes', '--no-install-recommends', ( $quiet ? '--quiet=2' : () ), 'install', 'debconf-utils',
-        'libclone-perl', 'libdata-compare-perl', 'perl', 'wget', 'whiptail'
+        @progressCmd, 'apt-get', '--assume-yes', '--no-install-recommends', 'install', 'debconf-utils', 'libclone-perl', 'libdata-compare-perl',
+        'perl', 'wget', 'whiptail'
     ) == 0 or die( "[\x1b[0;31mERROR\x1b[0m] Couldn't install pre-required distribution packages.\n" );
 }
 
