@@ -67,7 +67,7 @@ sub hasListener
  Registers an event listener for the given events
 
  Param string|arrayref $eventNames Event(s) that the listener listen to
- Param coderef|object $listener A CODE reference or an object implementing $eventNames method
+ Param coderef|object reference $listener A CODE reference or an object implementing $eventNames method
  Param int $priority OPTIONAL Listener priority in range [-1000 .. 1000] (Highest values have highest priority)
  Param bool $once OPTIONAL If TRUE, $listener will be executed at most once for the given events
  Return int 0 on success, 1 on failure
@@ -93,7 +93,7 @@ sub register
 
         my $sub = blessed $listener
                 ? sub { $listener->$eventNames( @_ ); } # Object as event listener
-                : ( ref $listener eq 'CODE' ? $listener : die( 'Invalid $listener parameter. Expects a code reference' ) );
+                : ( ref $listener eq 'CODE' ? $listener : die( 'Invalid $listener parameter. Expects an object or code reference.' ) );
 
         ( $self->{'events'}->{$eventNames} ||= iMSCP::PriorityQueue->new() )->addItem( $sub, $priority );
         $self->{'nonces'}->{$eventNames}->{$sub} = 1 if $once;

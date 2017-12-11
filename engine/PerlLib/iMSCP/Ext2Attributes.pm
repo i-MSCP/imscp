@@ -35,9 +35,7 @@ use iMSCP::Execute;
 no warnings 'File::Find';
 use Fcntl qw/ O_RDONLY O_NONBLOCK O_LARGEFILE /;
 use parent qw( Exporter );
-use vars qw( @EXPORT_OK );
-
-@EXPORT_OK = qw(
+our @EXPORT_OK = qw(
     setSecureDeletion clearSecureDeletion isSecureDelection
     setUndelete clearUndelete isUndelete
     setCompress clearCompress isCompress

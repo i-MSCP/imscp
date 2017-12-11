@@ -686,13 +686,11 @@ sub buildConfFile
     if ( $parameters->{'cached'} && exists $self->{'templates'}->{$filename} ) {
         $cfgTpl = $self->{'templates'}->{$filename};
     } else {
-        my $rs = $self->{'eventManager'}->trigger(
-            'onLoadTemplate', 'apache2', $filename, \ $cfgTpl, $moduleData, $serverData, $self->{'config'}
-        );
+        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'apache2', $filename, \ $cfgTpl, $moduleData, $serverData, $self->{'config'} );
         return $rs if $rs;
 
         unless ( defined $cfgTpl ) {
-            $srcFile = File::Spec->canonpath( "$self->{'cfgDir'}/$path/$filename" ) if $path eq './';
+            $srcFile = File::Spec->canonpath( "$self->{'cfgDir'}/$path/$filename" ) if index( $path, '/' ) != 0;
             $cfgTpl = iMSCP::File->new( filename => $srcFile )->get();
             unless ( defined $cfgTpl ) {
                 error( sprintf( "Couldn't read %s file", $srcFile ));
@@ -738,7 +736,7 @@ sub buildConfFile
     }
 
     if ( exists $parameters->{'mode'} ) {
-        $rs = $fh->mode( $parameters->{'mode'} // 0644 );
+        $rs = $fh->mode( $parameters->{'mode'} );
         return $rs if $rs;
     }
 
@@ -1137,7 +1135,6 @@ sub _init
     @{$self}{qw/ start restart reload templates /} = ( 0, 0, 0, {} );
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
-    $self->{'apacheTplDir'} = "$self->{'cfgDir'}/parts";
     $self->_mergeConfig() if defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/apache.data.dist";
     tie %{$self->{'config'}},
         'iMSCP::Config',
@@ -1313,7 +1310,7 @@ sub _disableDomain
     }
 
     $rs = $self->buildConfFile(
-        "$self->{'apacheTplDir'}/domain_disabled.tpl",
+        "parts/domain_disabled.tpl",
         "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$moduleData->{'DOMAIN_NAME'}.conf",
         $moduleData,
         $serverData,
@@ -1334,7 +1331,7 @@ sub _disableDomain
         );
 
         $rs = $self->buildConfFile(
-            "$self->{'apacheTplDir'}/domain_disabled.tpl",
+            "parts/domain_disabled.tpl",
             "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$moduleData->{'DOMAIN_NAME'}_ssl.conf",
             $moduleData,
             $serverData,
@@ -1352,7 +1349,7 @@ sub _disableDomain
     unless ( -f "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$moduleData->{'DOMAIN_NAME'}.conf" ) {
         $serverData->{'SKIP_TEMPLATE_CLEANER'} = 1;
         $rs = $self->buildConfFile(
-            "$self->{'apacheTplDir'}/custom.conf.tpl",
+            "parts/custom.conf.tpl",
             "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$moduleData->{'DOMAIN_NAME'}.conf",
             $moduleData,
             $serverData,
@@ -1426,7 +1423,7 @@ sub _addCfg
     }
 
     $rs = $self->buildConfFile(
-        "$self->{'apacheTplDir'}/domain.tpl",
+        "parts/domain.tpl",
         "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$moduleData->{'DOMAIN_NAME'}.conf",
         $moduleData,
         $serverData,
@@ -1452,7 +1449,7 @@ sub _addCfg
         }
 
         $rs = $self->buildConfFile(
-            "$self->{'apacheTplDir'}/domain.tpl",
+            "parts/domain.tpl",
             "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$moduleData->{'DOMAIN_NAME'}_ssl.conf",
             $moduleData,
             $serverData,
@@ -1469,7 +1466,7 @@ sub _addCfg
     unless ( -f "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$moduleData->{'DOMAIN_NAME'}.conf" ) {
         $serverData->{'SKIP_TEMPLATE_CLEANER'} = 1;
         $rs = $self->buildConfFile(
-            "$self->{'apacheTplDir'}/custom.conf.tpl",
+            "parts/custom.conf.tpl",
             "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$moduleData->{'DOMAIN_NAME'}.conf",
             $moduleData,
             $serverData,
@@ -1949,7 +1946,7 @@ sub _setupVlogger
     }
 
     $self->buildConfFile(
-        "$self->{'cfgDir'}/vlogger.conf.tpl",
+        "vlogger.conf.tpl",
         "$self->{'cfgDir'}/vlogger.conf",
         undef,
         {

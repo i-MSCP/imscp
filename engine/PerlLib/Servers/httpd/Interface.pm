@@ -302,7 +302,7 @@ sub deleteHtaccess
   - user  : File owner (default: root)
   - group : File group (default: root
   - mode  : File mode (default: 0644)
-  - cache : Whether or not loaded file must be cached in memory
+  - cached : Whether or not loaded file must be cached in memory
  Return int 0 on success, other on failure
 
 =cut
