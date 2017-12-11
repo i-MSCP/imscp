@@ -142,18 +142,21 @@ sub _setupApache2
 
     # Enable required Apache2 modules
 
-    $rs = $self->{'httpd'}->enableModules( 'rewrite', 'authn_core', 'authn_basic', 'authn_socache', 'proxy', 'proxy_http' );
+    $rs = $self->{'httpd'}->enableModules( 'authn_socache' );
     return $rs if $rs;
 
     # Create Apache2 vhost
 
-    $self->{'httpd'}->setData( {
-        AWSTATS_AUTH_USER_FILE_PATH => "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats",
-        AWSTATS_ENGINE_DIR          => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
-        AWSTATS_WEB_DIR             => $main::imscpConfig{'AWSTATS_WEB_DIR'}
-    } );
-
-    $rs = $self->{'httpd'}->buildConfFile( "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Config/01_awstats.conf" );
+    $rs = $self->{'httpd'}->buildConfFile(
+        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Config/01_awstats.conf",
+        "$self->{'httpd'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/01_awstats.conf",
+        undef,
+        {
+            AWSTATS_AUTH_USER_FILE_PATH => "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats",
+            AWSTATS_ENGINE_DIR          => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
+            AWSTATS_WEB_DIR             => $main::imscpConfig{'AWSTATS_WEB_DIR'}
+        }
+    );
     $rs ||= $self->{'httpd'}->enableSites( '01_awstats.conf' );
 }
 

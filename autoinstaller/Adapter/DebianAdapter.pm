@@ -35,7 +35,7 @@ use iMSCP::Execute qw/ execute executeNoWait /;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
-use iMSCP::TemplateParser qw/ process /;
+use iMSCP::TemplateParser qw/ processByRef /;
 use iMSCP::Umask;
 use version;
 use parent 'autoinstaller::Adapter::AbstractAdapter';
@@ -743,7 +743,7 @@ sub _installAPTsourcesList
             );
         }
 
-        $fileContent = process( { codename => $main::imscpConfig{'DISTRO_CODENAME'} }, $fileContent );
+        processByRef( { codename => $main::imscpConfig{'DISTRO_CODENAME'} }, \$fileContent );
 
         local $UMASK = 022;
         my $file = iMSCP::File->new( filename => '/etc/apt/sources.list' );

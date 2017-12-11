@@ -31,7 +31,7 @@ use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Mount qw/ removeMountEntry umount /;
 use iMSCP::SystemUser;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ replaceBlocByRef /;
 use Servers::mta;
 use Servers::po::courier;
 use Servers::sqld;
@@ -158,8 +158,8 @@ sub _removeConfig
             return 1;
         }
 
-        $fileContent = replaceBloc(
-            qr/(?:^\n)?# Servers::po::courier::installer - BEGIN\n/m, qr/# Servers::po::courier::installer - ENDING\n/, '', $fileContent
+        replaceBlocByRef(
+            qr/(?:^\n)?# Servers::po::courier::installer - BEGIN\n/m, qr/# Servers::po::courier::installer - ENDING\n/, '', \$fileContent
         );
 
         $file->set( $fileContent );

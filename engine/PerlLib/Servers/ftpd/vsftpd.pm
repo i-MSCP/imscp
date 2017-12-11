@@ -35,7 +35,7 @@ use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Rights;
 use iMSCP::Service;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ processByRef /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -528,7 +528,7 @@ sub _createFtpUserConffile
     $rs = $self->{'eventManager'}->trigger( 'beforeFtpdBuildConf', \$cfgTpl, 'vsftpd_user.conf' );
     return $rs if $rs;
 
-    $cfgTpl = process( $data, $cfgTpl );
+    processByRef( $data, \$cfgTpl );
 
     $rs = $self->{'eventManager'}->trigger( 'afterFtpdBuildConf', \$cfgTpl, 'vsftpd_user.conf' );
     return $rs if $rs;

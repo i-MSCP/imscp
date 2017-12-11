@@ -41,7 +41,7 @@ use iMSCP::ProgramFinder;
 use iMSCP::Service;
 use iMSCP::Stepper;
 use iMSCP::SystemUser;
-use iMSCP::TemplateParser qw/ getBloc process replaceBloc /;
+use iMSCP::TemplateParser qw/ getBloc processByRef replaceBlocByRef /;
 use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
 use Package::FrontEnd;
 use Servers::named;
@@ -1206,17 +1206,17 @@ sub _buildHttpdConfig
             return 0 unless grep($_ eq $tplName, '00_master.nginx', '00_master_ssl.nginx');
 
             if ( $baseServerIpVersion eq 'ipv6' || !main::setupGetQuestion( 'IPV6_SUPPORT' ) ) {
-                ${$cfgTpl} = replaceBloc( '# SECTION IPv6 BEGIN.', '# SECTION IPv6 END.', '', ${$cfgTpl} );
+                replaceBlocByRef( '# SECTION IPv6 BEGIN.', '# SECTION IPv6 END.', '', $cfgTpl );
             }
 
             return 0 unless $tplName eq '00_master.nginx';
 
             if ( main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) eq 'https://' ) {
-                ${$cfgTpl} = replaceBloc( "# SECTION http BEGIN.\n", "# SECTION http END.", '', ${$cfgTpl} );
+                replaceBlocByRef( "# SECTION http BEGIN.\n", "# SECTION http END.", '', $cfgTpl );
                 return 0;
             }
 
-            ${$cfgTpl} = replaceBloc( "# SECTION https redirect BEGIN.\n", "# SECTION https redirect END.", '', ${$cfgTpl} );
+            replaceBlocByRef( "# SECTION https redirect BEGIN.\n", "# SECTION https redirect END.", '', $cfgTpl );
             0;
         }
     );
@@ -1329,13 +1329,13 @@ sub _installSystemFiles
                 sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/$_/imscp_frontend.conf" )
             );
 
-            $fileContent = process(
+            processByRef(
                 {
                     WEB_DIR     => $main::imscpConfig{'GUI_ROOT_DIR'},
                     PANEL_USER  => $usergroup,
                     PANEL_GROUP => $usergroup
                 },
-                $fileContent
+                \$fileContent
             );
 
             my $file = iMSCP::File->new( filename => "/etc/$_/imscp_frontend" );

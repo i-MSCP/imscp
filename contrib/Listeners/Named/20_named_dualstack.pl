@@ -33,7 +33,7 @@ use warnings;
 use Array::Utils qw/ unique /;
 use iMSCP::EventManager;
 use iMSCP::Net;
-use iMSCP::TemplateParser qw/ getBloc replaceBloc /;
+use iMSCP::TemplateParser qw/ getBlocByRef replaceBlocByRef /;
 use version;
 
 #
@@ -70,7 +70,7 @@ our $DNS_TTL = '3600';
 our %ZONE_DEFS = (
     # The wildcard zone definition allows to target all zones.
     # There can only be one wildcard zone definition.
-    '*'                     => {
+    '*'           => {
         # The wildcard DNS name allows to add IP address(es) for all default
         # DNS names (names listed in @DEFAULT_DNS_NAMES).
         # There can only be one wildcard DNS name per zone definition.
@@ -107,7 +107,7 @@ our %ZONE_DEFS = (
     },
 
     # An empty named zone definition allows to discard a zone from processing.
-    'domain2.tld'           => {
+    'domain2.tld' => {
         # Zone discarded from processing.
     }
 );
@@ -116,21 +116,22 @@ our %ZONE_DEFS = (
 ## Please, don't edit anything below this line
 #
 
+version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+    sprintf( "The 20_named_dualstack.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
+);
+
 iMSCP::EventManager->getInstance()->register(
     [ 'afterNamedAddDmnDb', 'afterNamedAddSub' ],
     sub {
         my ($tplContent, $data) = @_;
 
-        my $zone = $ZONE_DEFS{$data->{'REAL_PARENT_DOMAIN_NAME'}
-            || $data->{'PARENT_DOMAIN_NAME'}} || $ZONE_DEFS{'*'} || undef;
+        my $zone = $ZONE_DEFS{$data->{'REAL_PARENT_DOMAIN_NAME'} || $data->{'PARENT_DOMAIN_NAME'}} || $ZONE_DEFS{'*'} || undef;
 
         return 0 unless defined $zone && %{$zone};
 
         local @DEFAULT_DNS_NAMES = @DEFAULT_DNS_NAMES;
 
-        if ( $data->{'REAL_PARENT_DOMAIN_NAME'}
-            && $data->{'REAL_PARENT_DOMAIN_NAME'} ne $data->{'PARENT_DOMAIN_NAME'}
-        ) {
+        if ( $data->{'REAL_PARENT_DOMAIN_NAME'} && $data->{'REAL_PARENT_DOMAIN_NAME'} ne $data->{'PARENT_DOMAIN_NAME'} ) {
             # When adding entry for the alternative URLs feature we do have
             # interest only in `@' DNS name
             @DEFAULT_DNS_NAMES = grep('@' eq $_, @DEFAULT_DNS_NAMES);
@@ -154,19 +155,13 @@ EOT
 
         return 0 unless @names;
 
-        if ( grep($data->{'DOMAIN_TYPE'} eq $_, 'dmn', 'als') ) {
-            if ( getBloc( "; dualstack DNS entries BEGIN\n", "; dualstack DNS entries END\n", ${$tplContent} ) ) {
-                ${$tplContent} = replaceBloc(
-                    "; dualstack DNS entries BEGIN\n",
-                    "; dualstack DNS entries END\n",
-                    <<"EOT",
+        if ( grep( $data->{'DOMAIN_TYPE'} eq $_, 'dmn', 'als' ) ) {
+            if ( getBlocByRef( "; dualstack DNS entries BEGIN\n", "; dualstack DNS entries END\n", $tplContent ) ) {
+                replaceBlocByRef( "; dualstack DNS entries BEGIN\n", "; dualstack DNS entries END\n", <<"EOT", $tplContent );
 ; dualstack DNS entries BEGIN
 \$ORIGIN $data->{'DOMAIN_NAME'}.
 @{[ join( '', unique @names ) ]}; dualstack DNS entries END
 EOT
-                    ${$tplContent}
-                );
-
                 return 0;
             }
 
@@ -178,25 +173,17 @@ EOT
                 return 0;
         }
 
-        ${$tplContent} = replaceBloc(
-            "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
-            "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
-            "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n"
-                . getBloc(
-                "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
-                "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
-                ${$tplContent}
-            )
-                . "\$ORIGIN $data->{'DOMAIN_NAME'}.\n"
-                . join( '', unique @names )
-                . "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
-            ${$tplContent}
-        );
-
+        replaceBlocByRef( "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n", "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n", <<"EOF", $tplContent );
+; sub [$data->{'DOMAIN_NAME'}] entry BEGIN
+@{ [ getBlocByRef("; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n","; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n", $tplContent) ] }
+\$ORIGIN $data->{'DOMAIN_NAME'}
+@{ [ join( '', unique @names ) ] }
+; sub [$data->{'DOMAIN_NAME'}] entry ENDING
+EOF
         0;
     },
     -99
-) unless version->parse( "$main::imscpConfig{'PluginApi'}" ) < version->parse( '1.5.1' );
+);
 
 1;
 __END__

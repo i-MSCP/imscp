@@ -28,7 +28,7 @@ use warnings;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::Net;
-use iMSCP::TemplateParser qw/ process replaceBloc /;
+use iMSCP::TemplateParser qw/ process replaceBlocByRef /;
 use parent qw/ Common::Object iMSCP::Provider::NetworkInterface::Interface /;
 
 # Commands used in that package
@@ -189,11 +189,11 @@ sub _updateInterfacesFile
     my $eAddr = $self->{'net'}->expandAddr( $data->{'ip_address'} );
 
     my $fileContent = $file->get();
-    $fileContent = replaceBloc(
+    replaceBlocByRef(
         qr/^\s*# i-MSCP \[(?:.*\Q:$data->{'ip_id'}\E|\Q$cAddr\E)\] entry BEGIN\n/m,
         qr/# i-MSCP \[(?:.*\Q:$data->{'ip_id'}\E|\Q$cAddr\E)\] entry ENDING\n/,
         '',
-        $fileContent
+        \$fileContent
     );
 
     if ( $action eq 'add'

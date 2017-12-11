@@ -25,7 +25,6 @@ package Servers::httpd::Interface;
 
 use strict;
 use warnings;
-use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 

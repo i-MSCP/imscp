@@ -23,12 +23,13 @@
 
 package Listener::ProFTPd::ServerIdent;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
 use iMSCP::EventManager;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ processByRef /;
+use version;
 
 #
 ## Configuration parameters
@@ -41,19 +42,19 @@ my $SERVER_IDENT_MESSAGE = 'i-MSCP FTP server.';
 ## Please, don't edit anything below this line
 #
 
+version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+    sprintf( "The 10_proftpd_serverident.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
+);
+
 iMSCP::EventManager->getInstance()->register(
     'beforeFtpdBuildConf',
     sub {
         my ($tplContent, $tplName) = @_;
 
         return 0 unless $tplName eq 'proftpd.conf';
+
         $SERVER_IDENT_MESSAGE =~ s%("|\\)%\\$1%g;
-        ${$tplContent} = process(
-            {
-                SERVER_IDENT_MESSAGE => qq/"$SERVER_IDENT_MESSAGE"/
-            },
-            ${$tplContent}
-        );
+        processByRef( { SERVER_IDENT_MESSAGE => qq/"$SERVER_IDENT_MESSAGE"/ }, $tplContent );
         0;
     }
 );

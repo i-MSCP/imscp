@@ -35,7 +35,7 @@ use iMSCP::Dialog::InputValidation;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ processByRef /;
 use iMSCP::Stepper;
 use iMSCP::Umask;
 use Servers::ftpd::vsftpd;
@@ -441,7 +441,7 @@ rsa_private_key_file=$main::imscpConfig{'CONF_DIR'}/imscp_services.pem
 EOF
     }
 
-    $cfgTpl = iMSCP::TemplateParser::process( $data, $cfgTpl );
+    processByRef( $data, \$cfgTpl );
 
     $rs = $self->{'eventManager'}->trigger( 'afterFtpdBuildConf', \$cfgTpl, 'vsftpd.conf' );
     return $rs if $rs;
@@ -473,7 +473,7 @@ EOF
     $rs = $self->{'eventManager'}->trigger( 'beforeFtpdBuildConf', \$cfgTpl, 'vsftpd.pam' );
     return $rs if $rs;
 
-    $cfgTpl = iMSCP::TemplateParser::process( $data, $cfgTpl );
+    processByRef( $data, \$cfgTpl );
 
     $rs = $self->{'eventManager'}->trigger( 'afterFtpdBuildConf', \$cfgTpl, 'vsftpd.pam' );
     return $rs if $rs;

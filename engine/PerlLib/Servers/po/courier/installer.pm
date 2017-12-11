@@ -42,7 +42,7 @@ use iMSCP::Mount qw/ addMountEntry isMountpoint mount umount /;
 use iMSCP::ProgramFinder;
 use iMSCP::Stepper;
 use iMSCP::SystemUser;
-use iMSCP::TemplateParser qw/ process replaceBloc /;
+use iMSCP::TemplateParser qw/ processByRef replaceBlocByRef /;
 use iMSCP::Umask;
 use Servers::mta::postfix;
 use Servers::po::courier;
@@ -282,16 +282,10 @@ sub configurePostfix
     }
 
     if ( $fileName eq 'master.cf' ) {
-        ${$fileContent} .= process(
-            {
-                MTA_MAILBOX_UID_NAME => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-                MTA_MAILBOX_GID_NAME => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}
-            },
-            <<'EOF'
+        ${$fileContent} .= <<"EOF"
 maildrop  unix  -       n       n       -       -       pipe
- flags=DRhu user={MTA_MAILBOX_UID_NAME}:{MTA_MAILBOX_GID_NAME} argv=maildrop -w 90 -d ${user}@${nexthop} ${extension} ${recipient} ${user} ${nexthop} ${sender}
+ flags=DRhu user=$self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'}:$self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'} argv=maildrop -w 90 -d \${user}\@\${nexthop} \${extension} \${recipient} \${user} \${nexthop} \${sender}
 EOF
-        );
     }
 
     0;
@@ -447,7 +441,7 @@ sub _buildConf
             $rs = $self->{'eventManager'}->trigger( 'beforePoBuildConf', \ $cfgTpl, $conffile );
             return $rs if $rs;
 
-            $cfgTpl = process( $data, $cfgTpl );
+            processByRef( $data, \$cfgTpl );
 
             $rs = $self->{'eventManager'}->trigger( 'afterPoBuildConf', \ $cfgTpl, $conffile );
             return $rs if $rs;
@@ -470,8 +464,8 @@ sub _buildConf
             return 1;
         }
 
-        $fileContent = replaceBloc(
-            qr/(?:^\n)?# Servers::po::courier::installer - BEGIN\n/m, qr/# Servers::po::courier::installer - ENDING\n/, '', $fileContent
+        replaceBlocByRef(
+            qr/(?:^\n)?# Servers::po::courier::installer - BEGIN\n/m, qr/# Servers::po::courier::installer - ENDING\n/, '', \$fileContent
         );
 
         $fileContent .= <<"EOF";
@@ -532,14 +526,14 @@ sub _setupSASL
         }
     }
 
-    $cfgTpl = process(
+    processByRef(
         {
             PWCHECK_METHOD  => $self->{'config'}->{'PWCHECK_METHOD'},
             LOG_LEVEL       => $self->{'config'}->{'LOG_LEVEL'},
             MECH_LIST       => $self->{'config'}->{'MECH_LIST'},
             AUTHDAEMON_PATH => $self->{'config'}->{'AUTHDAEMON_PATH'}
         },
-        $cfgTpl
+        \$cfgTpl
     );
 
     local $UMASK = 027; # smtpd.conf file must not be created/copied world-readable

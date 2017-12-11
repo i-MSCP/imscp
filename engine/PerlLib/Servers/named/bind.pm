@@ -33,7 +33,7 @@ use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::ProgramFinder;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ getBlocByRef process processByRef replaceBlocByRef /;
 use iMSCP::Net;
 use iMSCP::Rights;
 use iMSCP::Service;
@@ -415,49 +415,44 @@ sub addSub
 
     my $net = iMSCP::Net->getInstance();
 
-    if ( $data->{'MAIL_ENABLED'} ) {
-        $subEntry = replaceBloc(
-            "; sub MAIL entry BEGIN\n",
-            "; sub MAIL entry ENDING\n",
-            process(
+    replaceBlocByRef(
+        "; sub MAIL entry BEGIN\n",
+        "; sub MAIL entry ENDING\n",
+        ( $data->{'MAIL_ENABLED'}
+            ? process(
                 {
-                    BASE_SERVER_IP_TYPE => ( $net->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4' )
-                        ? 'A'
-                        : 'AAAA',
+                    BASE_SERVER_IP_TYPE => ( $net->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4' ) ? 'A' : 'AAAA',
                     BASE_SERVER_IP      => $data->{'BASE_SERVER_PUBLIC_IP'},
                     DOMAIN_NAME         => $data->{'PARENT_DOMAIN_NAME'}
                 },
-                getBloc( "; sub MAIL entry BEGIN\n", "; sub MAIL entry ENDING\n", $subEntry )
-            ),
-            $subEntry
-        );
-    } else {
-        $subEntry = replaceBloc( "; sub MAIL entry BEGIN\n", "; sub MAIL entry ENDING\n", '', $subEntry );
-    }
+                getBlocByRef( "; sub MAIL entry BEGIN\n", "; sub MAIL entry ENDING\n", \$subEntry )
+            )
+            : ''
+        ),
+        \$subEntry
+    );
 
     if ( defined $data->{'OPTIONAL_ENTRIES'} && !$data->{'OPTIONAL_ENTRIES'} ) {
-        $subEntry = replaceBloc( "; sub OPTIONAL entries BEGIN\n", "; sub OPTIONAL entries ENDING\n", '', $subEntry );
+        replaceBlocByRef( "; sub OPTIONAL entries BEGIN\n", "; sub OPTIONAL entries ENDING\n", '', \$subEntry );
     }
 
     my $domainIP = $net->isRoutableAddr( $data->{'DOMAIN_IP'} ) ? $data->{'DOMAIN_IP'} : $data->{'BASE_SERVER_PUBLIC_IP'};
 
-    $subEntry = process(
+    processByRef(
         {
             SUBDOMAIN_NAME => $data->{'DOMAIN_NAME'},
-            IP_TYPE        => ( $net->getAddrVersion( $domainIP ) eq 'ipv4' ) ? 'A' : 'AAAA',
+            IP_TYPE        => $net->getAddrVersion( $domainIP ) eq 'ipv4' ? 'A' : 'AAAA',
             DOMAIN_IP      => $domainIP
         },
-        $subEntry
+        \$subEntry
     );
 
     # Remove previous entry if any
-    $wrkDbFileContent = replaceBloc(
-        "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n", "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n", '', $wrkDbFileContent
-    );
+    replaceBlocByRef( "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n", "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n", '', \$wrkDbFileContent );
 
     # Add new entry
-    $wrkDbFileContent = replaceBloc(
-        "; sub [{SUBDOMAIN_NAME}] entry BEGIN\n", "; sub [{SUBDOMAIN_NAME}] entry ENDING\n", $subEntry, $wrkDbFileContent, 'preserve'
+    replaceBlocByRef(
+        "; sub [{SUBDOMAIN_NAME}] entry BEGIN\n", "; sub [{SUBDOMAIN_NAME}] entry ENDING\n", $subEntry, \$wrkDbFileContent, 'preserve'
     );
 
     $rs = $self->{'eventManager'}->trigger( 'afterNamedAddSub', \$wrkDbFileContent, $data );
@@ -586,9 +581,7 @@ sub deleteSub
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedDelSub', \$wrkDbFileContent, $data );
     return $rs if $rs;
 
-    $wrkDbFileContent = replaceBloc(
-        "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n", "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n", '', $wrkDbFileContent
-    );
+    replaceBlocByRef( "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n", "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n", '', \$wrkDbFileContent );
 
     $rs = $self->{'eventManager'}->trigger( 'afterNamedDelSub', \$wrkDbFileContent, $data );
     $rs ||= $wrkDbFile->set( $wrkDbFileContent );
@@ -690,11 +683,11 @@ sub addCustomDNS
     close( $fh );
     undef $wrkDbFileContent;
 
-    $newWrkDbFileContent = replaceBloc(
+    replaceBlocByRef(
         "; custom DNS entries BEGIN\n",
         "; custom DNS entries ENDING\n",
         "; custom DNS entries BEGIN\n" . ( join "\n", @customDNS, '' ) . "; custom DNS entries ENDING\n",
-        $newWrkDbFileContent
+        \$newWrkDbFileContent
     );
 
     $rs = $self->{'eventManager'}->trigger( 'afterNamedAddCustomDNS', \$newWrkDbFileContent, $data );
@@ -866,9 +859,7 @@ sub _addDmnConfig
         }
     }
 
-    $rs = $self->{'eventManager'}->trigger(
-        'beforeNamedAddDmnConfig', \$cfgWrkFileContent, \$tplCfgEntryContent, $data
-    );
+    $rs = $self->{'eventManager'}->trigger( 'beforeNamedAddDmnConfig', \$cfgWrkFileContent, \$tplCfgEntryContent, $data );
     return $rs if $rs;
 
     my $tags = {
@@ -886,19 +877,15 @@ sub _addDmnConfig
         $tags->{'PRIMARY_DNS'} = join( '; ', split( ';', $self->{'config'}->{'PRIMARY_DNS'} )) . ';';
     }
 
-    $tplCfgEntryContent = "// imscp [$data->{'DOMAIN_NAME'}] entry BEGIN\n" . process( $tags, $tplCfgEntryContent )
-        . "// imscp [$data->{'DOMAIN_NAME'}] entry ENDING\n";
+    replaceBlocByRef(
+        "// imscp [$data->{'DOMAIN_NAME'}] entry BEGIN\n", "// imscp [$data->{'DOMAIN_NAME'}] entry ENDING\n", '', \$cfgWrkFileContent
+    );
 
-    $cfgWrkFileContent = replaceBloc(
-        "// imscp [$data->{'DOMAIN_NAME'}] entry BEGIN\n", "// imscp [$data->{'DOMAIN_NAME'}] entry ENDING\n", '', $cfgWrkFileContent
-    );
-    $cfgWrkFileContent = replaceBloc(
-        "// imscp [{ENTRY_ID}] entry BEGIN\n",
-        "// imscp [{ENTRY_ID}] entry ENDING\n",
-        $tplCfgEntryContent,
-        $cfgWrkFileContent,
-        'preserve'
-    );
+    replaceBlocByRef( "// imscp [{ENTRY_ID}] entry BEGIN\n", "// imscp [{ENTRY_ID}] entry ENDING\n", <<"EOF", \$cfgWrkFileContent, 'preserve' );
+// imscp [$data->{'DOMAIN_NAME'}] entry BEGIN
+@{ [ process( $tags, $tplCfgEntryContent ) ] }
+// imscp [$data->{'DOMAIN_NAME'}] entry ENDING
+EOF
 
     $rs = $self->{'eventManager'}->trigger( 'afterNamedAddDmnConfig', \$cfgWrkFileContent, $data );
     $rs ||= $cfgFile->set( $cfgWrkFileContent );
@@ -940,8 +927,8 @@ sub _deleteDmnConfig
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedDelDmnConfig', \$cfgWrkFileContent, $data );
     return $rs if $rs;
 
-    $cfgWrkFileContent = replaceBloc(
-        "// imscp [$data->{'DOMAIN_NAME'}] entry BEGIN\n", "// imscp [$data->{'DOMAIN_NAME'}] entry ENDING\n", '', $cfgWrkFileContent
+    replaceBlocByRef(
+        "// imscp [$data->{'DOMAIN_NAME'}] entry BEGIN\n", "// imscp [$data->{'DOMAIN_NAME'}] entry ENDING\n", '', \$cfgWrkFileContent
     );
 
     $rs = $self->{'eventManager'}->trigger( 'afterNamedDelDmnConfig', \$cfgWrkFileContent, $data );
@@ -988,10 +975,8 @@ sub _addDmnDb
     $rs ||= $self->{'eventManager'}->trigger( 'beforeNamedAddDmnDb', \$tplDbFileC, $data );
     return $rs if $rs;
 
-    my $nsRecordB = getBloc( "; dmn NS RECORD entry BEGIN\n", "; dmn NS RECORD entry ENDING\n", $tplDbFileC );
-    my $glueRecordB = getBloc(
-        "; dmn NS GLUE RECORD entry BEGIN\n", "; dmn NS GLUE RECORD entry ENDING\n", $tplDbFileC
-    );
+    my $nsRecordB = getBlocByRef( "; dmn NS RECORD entry BEGIN\n", "; dmn NS RECORD entry ENDING\n", \$tplDbFileC );
+    my $glueRecordB = getBlocByRef( "; dmn NS GLUE RECORD entry BEGIN\n", "; dmn NS GLUE RECORD entry ENDING\n", \$tplDbFileC );
 
     my $net = iMSCP::Net->getInstance();
     my $domainIP = $net->isRoutableAddr( $data->{'DOMAIN_IP'} ) ? $data->{'DOMAIN_IP'} : $data->{'BASE_SERVER_PUBLIC_IP'};
@@ -1020,49 +1005,53 @@ sub _addDmnDb
             }
         }
 
-        $tplDbFileC = replaceBloc( "; dmn NS RECORD entry BEGIN\n", "; dmn NS RECORD entry ENDING\n", $nsRecords, $tplDbFileC ) if $nsRecordB ne '';
-        $tplDbFileC = replaceBloc(
-            "; dmn NS GLUE RECORD entry BEGIN\n", "; dmn NS GLUE RECORD entry ENDING\n", $glueRecords, $tplDbFileC
-        ) if $glueRecordB ne '';
+
+        if($nsRecordB ne '') {
+            replaceBlocByRef( "; dmn NS RECORD entry BEGIN\n", "; dmn NS RECORD entry ENDING\n", $nsRecords, \$tplDbFileC );
+        }
+
+        if($glueRecordB ne '') {
+            replaceBlocByRef( "; dmn NS GLUE RECORD entry BEGIN\n", "; dmn NS GLUE RECORD entry ENDING\n", $glueRecords, \$tplDbFileC );
+        }
     }
 
     my $dmnMailEntry = '';
     if ( $data->{'MAIL_ENABLED'} ) {
         $dmnMailEntry = process(
             {
-                BASE_SERVER_IP_TYPE => ( $net->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4' )
-                    ? 'A' : 'AAAA',
+                BASE_SERVER_IP_TYPE => ( $net->getAddrVersion( $data->{'BASE_SERVER_PUBLIC_IP'} ) eq 'ipv4' ) ? 'A' : 'AAAA',
                 BASE_SERVER_IP      => $data->{'BASE_SERVER_PUBLIC_IP'}
             },
-            getBloc( "; dmn MAIL entry BEGIN\n", "; dmn MAIL entry ENDING\n", $tplDbFileC )
+            getBlocByRef( "; dmn MAIL entry BEGIN\n", "; dmn MAIL entry ENDING\n", \$tplDbFileC )
         )
     }
 
-    $tplDbFileC = replaceBloc( "; dmn MAIL entry BEGIN\n", "; dmn MAIL entry ENDING\n", $dmnMailEntry, $tplDbFileC );
-    $tplDbFileC = process(
+    replaceBlocByRef( "; dmn MAIL entry BEGIN\n", "; dmn MAIL entry ENDING\n", $dmnMailEntry, \$tplDbFileC );
+
+    processByRef(
         {
             DOMAIN_NAME => $data->{'DOMAIN_NAME'},
             IP_TYPE     => ( $net->getAddrVersion( $domainIP ) eq 'ipv4' ) ? 'A' : 'AAAA',
             DOMAIN_IP   => $domainIP
         },
-        $tplDbFileC
+        \$tplDbFileC
     );
 
     unless ( !defined $wrkDbFileContent || defined $main::execmode && $main::execmode eq 'setup' ) {
         # Re-add subdomain entries
-        $tplDbFileC = replaceBloc(
+        replaceBlocByRef(
             "; sub entries BEGIN\n",
             "; sub entries ENDING\n",
-            getBloc( "; sub entries BEGIN\n", "; sub entries ENDING\n", $wrkDbFileContent, 'with_tags' ),
-            $tplDbFileC
+            getBlocByRef( "; sub entries BEGIN\n", "; sub entries ENDING\n", \$wrkDbFileContent, 'with_tags' ),
+            \$tplDbFileC
         );
 
         # Re-add custom DNS entries
-        $tplDbFileC = replaceBloc(
+        replaceBlocByRef(
             "; custom DNS entries BEGIN\n",
             "; custom DNS entries ENDING\n",
-            getBloc( "; custom DNS entries BEGIN\n", "; custom DNS entries ENDING\n", $wrkDbFileContent, 'with_tags' ),
-            $tplDbFileC
+            getBlocByRef( "; custom DNS entries BEGIN\n", "; custom DNS entries ENDING\n", \$wrkDbFileContent, 'with_tags' ),
+            \$tplDbFileC
         );
     }
 
@@ -1079,8 +1068,8 @@ sub _addDmnDb
  Note: Format follows RFC 1912 section 2.2 recommendations.
 
  Param string zone Zone name
- Param scalarref \$zoneFileContent Zone file content
- Param scalarref \$oldZoneFileContent Old zone file content
+ Param scalarref \$zoneFileContent Reference to zone file content
+ Param scalarref \$oldZoneFileContent Reference to old zone file content
  Return int 0 on success, other on failure
 
 =cut
@@ -1102,7 +1091,7 @@ sub _updateSOAserialNumber
 
     if ( exists $+{'placeholder'} ) {
         $self->{'serials'}->{$zone} = $nowDate . '00';
-        ${$zoneFileContent} = process( { TIMESTAMP => $self->{'serials'}->{$zone} }, ${$zoneFileContent} );
+        processByRef( { TIMESTAMP => $self->{'serials'}->{$zone} }, $zoneFileContent );
         return 0;
     }
 

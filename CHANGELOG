@@ -6,7 +6,7 @@ Git 1.6.x
 
 BACKEND
     Added: composer.phar compatibility symlink for backward compatibility with plugins
-    Added: getBlocByRef(), processByRef() and replaceBlocByRef() methods (iMSCP::TemplateParser)
+    Added: getBlocByRef(), processByRef() and replaceBlocByRef() subroutines (iMSCP::TemplateParser)
     Added: Support for .timer unit files (Systemd init provider)
     Enhancement: Make it possible to delay execution of the 'start', 'restart' and 'reload' actions (iMSCP::Service)
     Enhancement: Make it possible to discard files/directories when clearing a directory (iMSCP::Dir::clear)

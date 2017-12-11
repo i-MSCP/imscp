@@ -40,7 +40,7 @@ use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Rights;
-use iMSCP::TemplateParser qw/ getBloc process replaceBloc /;
+use iMSCP::TemplateParser qw/ getBlocByRef processByRef replaceBlocByRef /;
 use JSON;
 use Package::FrontEnd;
 use Servers::sqld;
@@ -229,7 +229,7 @@ sub setGuiPermissions
 
  Include httpd configuration into frontEnd vhost files
 
- Param string \$tplContent Template file tplContent
+ Param string \$tplContent Reference to template file content
  Param string $tplName Template name
  Return int 0 on success, other on failure
 
@@ -243,20 +243,12 @@ sub afterFrontEndBuildConfFile
         && main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) ne 'https://'
     ) || $tplName eq '00_master_ssl.nginx';
 
-    ${$tplContent} = replaceBloc(
-        "# SECTION custom BEGIN.\n",
-        "# SECTION custom END.\n",
-        "    # SECTION custom BEGIN.\n" .
-            getBloc(
-                "# SECTION custom BEGIN.\n",
-                "# SECTION custom END.\n",
-                ${$tplContent}
-            ) .
-            "    include imscp_roundcube.conf;\n" .
-            "    # SECTION custom END.\n",
-        ${$tplContent}
-    );
-
+    replaceBlocByRef( "# SECTION custom BEGIN.\n", "# SECTION custom END.\n", <<"EOF", $tplContent );
+    # SECTION custom BEGIN.
+@{ [ getBlocByRef( "# SECTION custom BEGIN.\n", "# SECTION custom END.\n", $tplContent ) ] } 
+    include imscp_roundcube.conf;
+    # SECTION custom END.
+EOF
     0;
 }
 
@@ -335,13 +327,13 @@ sub _installFiles
             my $fileContent = iMSCP::File->new( filename => "$packageDir/iMSCP/$_/imscp_roundcube" )->get();
             defined $fileContent or die( sprintf( "Couldn't read %s file", "$packageDir/iMSCP/$_/imscp_roundcube.conf" ));
 
-            $fileContent = process(
+            processByRef(
                 {
                     GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'},
                     PANEL_USER     => $usergroup,
                     PANEL_GROUP    => $usergroup
                 },
-                $fileContent
+                \$fileContent
             );
 
             my $file = iMSCP::File->new( filename => "/etc/$_/imscp_roundcube" );
@@ -433,7 +425,7 @@ sub _buildRoundcubeConfig
         }
     }
 
-    $cfgTpl = process( $data, $cfgTpl );
+    processByRef( $data, \$cfgTpl );
 
     my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/config.inc.php" );
     $file->set( $cfgTpl );

@@ -35,7 +35,7 @@ use iMSCP::Getopt;
 use iMSCP::Net;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
-use iMSCP::TemplateParser qw/ process /;
+use iMSCP::TemplateParser qw/ processByRef /;
 use Servers::mta::postfix;
 use version;
 use parent 'Common::SingletonClass';
@@ -328,7 +328,7 @@ sub _buildMasterCfFile
     $rs = $self->{'eventManager'}->trigger( 'beforeMtaBuildMasterCfFile', \ $cfgTpl, 'master.cf' );
     return $rs if $rs;
 
-    $cfgTpl = process( $data, $cfgTpl );
+    processByRef( $data, \$cfgTpl );
 
     $rs = $self->{'eventManager'}->trigger( 'afterMtaBuildMasterCfFile', \ $cfgTpl, 'master.cf' );
     return $rs if $rs;
@@ -389,7 +389,7 @@ sub _buildMainCfFile
     $rs = $self->{'eventManager'}->trigger( 'beforeMtaBuildMainCfFile', \$cfgTpl, 'main.cf' );
     return $rs if $rs;
 
-    $cfgTpl = process( $data, $cfgTpl );
+    processByRef( $data, \$cfgTpl );
 
     $rs = $self->{'eventManager'}->trigger( 'afterMtaBuildMainCfFile', \ $cfgTpl, 'main.cf' );
     return $rs if $rs;

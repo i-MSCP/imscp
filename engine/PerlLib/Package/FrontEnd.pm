@@ -36,7 +36,7 @@ use iMSCP::Execute;
 use iMSCP::Rights;
 use iMSCP::Service;
 use iMSCP::SystemUser;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ processByRef /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -833,7 +833,7 @@ sub _buildConf
 
     $tplVars ||= {};
     $self->{'eventManager'}->trigger( 'beforeFrontEndBuildConf', \$cfgTpl, $filename, $tplVars );
-    $cfgTpl = process( $tplVars, $cfgTpl );
+    processByRef( $tplVars, \$cfgTpl );
     $self->{'eventManager'}->trigger( 'afterFrontEndBuildConf', \$cfgTpl, $filename, $tplVars );
     $cfgTpl;
 }

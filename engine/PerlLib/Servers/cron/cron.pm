@@ -30,7 +30,7 @@ use iMSCP::Config;
 use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Rights;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ processByRef replaceBlocByRef /;
 use iMSCP::Service;
 use parent 'Common::SingletonClass';
 
@@ -90,7 +90,7 @@ sub install
         }
     }
 
-    $cfgTpl = process(
+    processByRef(
         {
             QUOTA_ROOT_DIR  => $main::imscpConfig{'QUOTA_ROOT_DIR'},
             LOG_DIR         => $main::imscpConfig{'LOG_DIR'},
@@ -102,7 +102,7 @@ sub install
             CONF_DIR        => $main::imscpConfig{'CONF_DIR'},
             BACKUP_FILE_DIR => $main::imscpConfig{'BACKUP_FILE_DIR'}
         },
-        $cfgTpl
+        \$cfgTpl
     );
 
     my $file = iMSCP::File->new( filename => "$self->{'config'}->{'CRON_D_DIR'}/imscp" );
@@ -209,8 +209,8 @@ sub addTask
         }
 
         # Remove entry with same ID if any
-        $fileContent = replaceBloc(
-            qr/^\s*\Q# imscp [$data->{'TASKID'}] entry BEGIN\E\n/m, qr/\Q# imscp [$data->{'TASKID'}] entry ENDING\E\n/, '', $fileContent
+        replaceBlocByRef(
+            qr/^\s*\Q# imscp [$data->{'TASKID'}] entry BEGIN\E\n/m, qr/\Q# imscp [$data->{'TASKID'}] entry ENDING\E\n/, '', \$fileContent
         );
     } else {
         $fileContent = <<'EOF';
@@ -273,11 +273,8 @@ sub deleteTask
     my $rs = $self->{'eventManager'}->trigger( 'beforeCronDelTask', \$fileContent, $data );
     return $rs if $rs;
 
-    $fileContent = replaceBloc(
-        qr/^\s*\Q# imscp [$data->{'TASKID'}] entry BEGIN\E\n/m,
-        qr/\Q# imscp [$data->{'TASKID'}] entry ENDING\E\n/,
-        '',
-        $fileContent
+    replaceBlocByRef(
+        qr/^\s*\Q# imscp [$data->{'TASKID'}] entry BEGIN\E\n/m, qr/\Q# imscp [$data->{'TASKID'}] entry ENDING\E\n/, '', \$fileContent
     );
 
     $rs = $self->{'eventManager'}->trigger( 'afterCronDelTask', \$fileContent, $data );

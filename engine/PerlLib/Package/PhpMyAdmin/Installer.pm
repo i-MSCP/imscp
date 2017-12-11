@@ -36,7 +36,7 @@ use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::TemplateParser qw/ process getBloc replaceBloc /;
+use iMSCP::TemplateParser qw/ getBlocByRef processByRef replaceBlocByRef /;
 use Package::FrontEnd;
 use Package::PhpMyAdmin;
 use Servers::sqld;
@@ -210,7 +210,7 @@ sub install
 
  Include httpd configuration into frontEnd vhost files
 
- Param string \$tplContent Template file tplContent
+ Param string \$tplContent Reference to template file content
  Param string $tplName Template name
  Return int 0 on success, other on failure
 
@@ -220,23 +220,16 @@ sub afterFrontEndBuildConfFile
 {
     my ($tplContent, $tplName) = @_;
 
-    return 0 unless ( $tplName eq '00_master.nginx'
-        && main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) ne 'https://'
-    ) || $tplName eq '00_master_ssl.nginx';
+    return 0 unless ( $tplName eq '00_master.nginx' && main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) ne 'https://' )
+        || $tplName eq '00_master_ssl.nginx';
 
-    ${$tplContent} = replaceBloc(
-        "# SECTION custom BEGIN.\n",
-        "# SECTION custom END.\n",
-        "    # SECTION custom BEGIN.\n" .
-            getBloc(
-                "# SECTION custom BEGIN.\n",
-                "# SECTION custom END.\n",
-                ${$tplContent}
-            ) .
-            "    include imscp_pma.conf;\n" .
-            "    # SECTION custom END.\n",
-        ${$tplContent}
-    );
+    replaceBlocByRef( "# SECTION custom BEGIN.\n", "# SECTION custom END.\n", <<"EOF", $tplContent );
+    # SECTION custom BEGIN.
+    @{ [ getBlocByRef( "# SECTION custom BEGIN.\n", "# SECTION custom END.\n", $tplContent ) ] }
+    include imscp_pma.conf;
+    # SECTION custom END.
+EOF
+
     0;
 }
 
@@ -545,7 +538,7 @@ sub _buildConfig
         }
     }
 
-    $cfgTpl = process( $data, $cfgTpl );
+    processByRef( $data, \$cfgTpl );
 
     my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/config.inc.php" );
     $file->set( $cfgTpl );

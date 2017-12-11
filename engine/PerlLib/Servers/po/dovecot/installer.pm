@@ -34,7 +34,7 @@ use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ processByRef /;
 use iMSCP::Umask;
 use Servers::mta::postfix;
 use Servers::po::dovecot;
@@ -278,18 +278,10 @@ sub configurePostfix
     }
 
     if ( $fileName eq 'master.cf' ) {
-        my $configSnippet = <<'EOF';
+        ${$fileContent} .= <<"EOF";
 dovecot   unix  -       n       n       -       -       pipe
- flags=DRhu user={MTA_MAILBOX_UID_NAME}:{MTA_MAILBOX_GID_NAME} argv={DOVECOT_DELIVER_PATH} -f ${sender} -d ${user}@${nexthop} -m INBOX.${extension}
+ flags=DRhu user=$self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'}:$self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'} argv=$self->{'config'}->{'DOVECOT_DELIVER_PATH'} -f \${sender} -d \${user}\@\${nexthop} -m INBOX.\${extension}
 EOF
-        ${$fileContent} .= process(
-            {
-                MTA_MAILBOX_UID_NAME => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-                MTA_MAILBOX_GID_NAME => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
-                DOVECOT_DELIVER_PATH => $self->{'config'}->{'DOVECOT_DELIVER_PATH'}
-            },
-            $configSnippet
-        );
     }
 
     0;
@@ -555,7 +547,7 @@ EOF
             $rs = $self->{'eventManager'}->trigger( 'beforePoBuildConf', \$cfgTpl, $conffile );
             return $rs if $rs;
 
-            $cfgTpl = process( $data, $cfgTpl );
+            processByRef( $data, \$cfgTpl );
 
             $rs = $self->{'eventManager'}->trigger( 'afterPoBuildConf', \$cfgTpl, $conffile );
             return $rs if $rs;

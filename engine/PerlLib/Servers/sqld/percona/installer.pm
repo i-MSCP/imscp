@@ -32,7 +32,7 @@ use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
-use iMSCP::TemplateParser qw/ process /;
+use iMSCP::TemplateParser qw/ processByRef /;
 use Servers::sqld::percona;
 use parent 'Servers::sqld::mysql::installer';
 
@@ -155,7 +155,8 @@ EOF
     # For backward compatibility - We will review this in later version
     $cfgTpl .= "default_password_lifetime = 0\n" if $version >= version->parse( '5.7.4' );
     $cfgTpl .= "event_scheduler = DISABLED\n";
-    $cfgTpl = process( { SQLD_SOCK_DIR => $self->{'config'}->{'SQLD_SOCK_DIR'} }, $cfgTpl );
+
+    processByRef( { SQLD_SOCK_DIR => $self->{'config'}->{'SQLD_SOCK_DIR'} }, \$cfgTpl );
 
     my $file = iMSCP::File->new( filename => "$confDir/conf.d/imscp.cnf" );
     $file->set( $cfgTpl );

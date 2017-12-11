@@ -33,7 +33,7 @@ use iMSCP::Dir;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::EventManager;
 use iMSCP::File;
-use iMSCP::TemplateParser qw/ process /;
+use iMSCP::TemplateParser qw/ processByRef /;
 use Servers::sqld::mariadb;
 use parent 'Servers::sqld::mysql::installer';
 
@@ -148,7 +148,8 @@ EOF
 
     $cfgTpl .= "innodb_use_native_aio = @{[ $self->_isMysqldInsideCt() ? 0 : 1 ]}\n";
     $cfgTpl .= "event_scheduler = DISABLED\n";
-    $cfgTpl = process( { SQLD_SOCK_DIR => $self->{'config'}->{'SQLD_SOCK_DIR'} }, $cfgTpl );
+
+    processByRef( { SQLD_SOCK_DIR => $self->{'config'}->{'SQLD_SOCK_DIR'} }, \$cfgTpl );
 
     my $file = iMSCP::File->new( filename => "$confDir/conf.d/imscp.cnf" );
     $file->set( $cfgTpl );

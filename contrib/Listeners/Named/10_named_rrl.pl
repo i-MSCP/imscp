@@ -30,7 +30,7 @@ use strict;
 use warnings;
 use File::Basename;
 use iMSCP::EventManager;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ replaceBlocByRef /;
 use Servers::named;
 
 #
@@ -51,13 +51,10 @@ iMSCP::EventManager->getInstance()->register(
 
         return 0 unless $tplName eq basename( Servers::named->factory()->{'config'}->{'BIND_OPTIONS_CONF_FILE'} );
 
-        $$tplContent = replaceBloc(
-            "// imscp [{ENTRY_ID}] entry BEGIN\n",
-            "// imscp [{ENTRY_ID}] entry ENDING\n", <<"EOF", $$tplContent, 'preserveTags' );
-        rate-limit {
-            responses-per-second $responsesPerSecond;
-        };
-
+        replaceBlocByRef( "// imscp [{ENTRY_ID}] entry BEGIN\n", "// imscp [{ENTRY_ID}] entry ENDING\n", <<"EOF", $tplContent, 'preserveTags' );
+    rate-limit {
+        responses-per-second $responsesPerSecond;
+    };
 EOF
         0;
     }

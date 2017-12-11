@@ -36,7 +36,7 @@ use iMSCP::Debug qw/ error /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::File;
-use iMSCP::TemplateParser qw/ getBloc replaceBloc /;
+use iMSCP::TemplateParser qw/ getBlocByRef replaceBlocByRef /;
 use iMSCP::Crypt qw/ htpasswd /;
 use version;
 
@@ -118,15 +118,12 @@ iMSCP::EventManager->getInstance()->register(
         }
     }
 EOF
-        ${$tplContent} = replaceBloc(
-            "# SECTION custom BEGIN.\n",
-            "# SECTION custom END.\n",
-            "    # SECTION custom BEGIN.\n"
-                . getBloc( "# SECTION custom BEGIN.\n", "# SECTION custom END.\n", ${$tplContent} )
-                . "$locationSnippet\n"
-                . "    # SECTION custom END.\n",
-            ${$tplContent}
-        );
+        replaceBlocByRef( "# SECTION custom BEGIN.\n", "# SECTION custom END.\n", <<"EOF", $tplContent );
+    # SECTION custom BEGIN.
+@{ [ getBlocByRef( "# SECTION custom BEGIN.\n", "# SECTION custom END.\n", $tplContent ) ] }
+    $locationSnippet
+    # SECTION custom END
+EOF
         0;
     }
 ) if defined $AUTH_USERNAME;

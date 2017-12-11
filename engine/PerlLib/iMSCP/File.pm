@@ -75,7 +75,7 @@ sub get
 
  Get file content as scalar reference
 
- Return scalarref Reference to scalar containing file content
+ Return scalarref Reference to scalar containing file content, undef on failure
 
 =cut
 

@@ -25,19 +25,15 @@ package Package::Webstats::Awstats::Awstats;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ :nostat Package::Webstats::Awstats::Installer Package::Webstats::Awstats::Uninstaller /;
+use autouse 'iMSCP::Rights' => qw/ setRights /;
+use Class::Autouse qw/ :nostat Package::Webstats::Awstats::Installer Package::Webstats::Awstats::Uninstaller Servers::httpd /;
 use iMSCP::Database;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::Execute;
 use iMSCP::Ext2Attributes qw( setImmutable clearImmutable );
 use iMSCP::File;
-use iMSCP::Rights;
-use iMSCP::TemplateParser;
-use Servers::cron;
-use Servers::httpd;
-use version;
+use iMSCP::TemplateParser qw/ getBlocByRef processByRef replaceBlocByRef /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -104,7 +100,7 @@ sub uninstall
 
 sub setEnginePermissions
 {
-    my ($self) = @_;
+    my $httpd = Servers::httpd->factory();
 
     my $rs = setRights( "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_updateall.pl",
         {
@@ -116,16 +112,16 @@ sub setEnginePermissions
     $rs ||= setRights( $main::imscpConfig{'AWSTATS_CACHE_DIR'},
         {
             user      => $main::imscpConfig{'ROOT_USER'},
-            group     => $self->{'httpd'}->getRunningGroup(),
+            group     => $httpd->getRunningGroup(),
             dirmode   => '02750',
             filemode  => '0640',
             recursive => 1
         }
     );
-    $rs ||= setRights( "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats",
+    $rs ||= setRights( "$httpd->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats",
         {
             user  => $main::imscpConfig{'ROOT_USER'},
-            group => $self->{'httpd'}->getRunningGroup(),
+            group => $httpd->getRunningGroup(),
             mode  => '0640'
         }
     );
@@ -144,37 +140,37 @@ sub getDistroPackages
     ( 'awstats' );
 }
 
-=item addUser( \%data )
+=item addUser( \%moduleData )
 
  Process addUser tasks
 
- Param hash \%data User data
+ Param hashref \%moduleData Data as provided by User module
  Return int 0 on success, other on failure
 
 =cut
 
 sub addUser
 {
-    my ($self, $data) = @_;
+    my (undef, $moduleData) = @_;
 
-    my $filePath = "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats";
-    my $file = iMSCP::File->new( filename => $filePath );
+    my $httpd = Servers::httpd->factory();
+    my $file = iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats" );
     my $fileContentRef = $file->getAsRef();
     ${$fileContentRef} = '' unless defined $fileContentRef;
-    ${$fileContentRef} =~ s/^$data->{'USERNAME'}:[^\n]*\n//gim;
-    ${$fileContentRef} .= "$data->{'USERNAME'}:$data->{'PASSWORD_HASH'}\n";
+    ${$fileContentRef} =~ s/^$moduleData->{'USERNAME'}:[^\n]*\n//gim;
+    ${$fileContentRef} .= "$moduleData->{'USERNAME'}:$moduleData->{'PASSWORD_HASH'}\n";
 
     my $rs = $file->save();
+    return $rs if $rs;
 
-    $self->{'httpd'}->{'restart'} = 1 unless $rs;
-    $rs;
+    $httpd->{'reload'} ||= 1;
+    0;
 }
 
-=item preaddDmn( \%data )
+=item preaddDmn( )
 
  Process preaddDmn tasks
 
- Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
@@ -183,100 +179,108 @@ sub preaddDmn
 {
     my ($self) = @_;
 
-    return 0 if $self->{'eventManager'}->hasListener( 'afterApache2BuildConf', \&_addAwstatsSection );
+    return 0 if $self->{'_is_registered_event_listener'};
 
-    $self->{'eventManager'}->register( 'afterApache2BuildConf', \&_addAwstatsSection );
+    $self->{'_is_registered_event_listener'} = 1;
+    $self->{'eventManager'}->register( 'beforeApache2BuildConfFile', \&_addAwstatsSection );
 }
 
-=item addDmn( \%data )
+=item addDmn( \%moduleData )
 
  Process addDmn tasks
 
- Param hash \%data Domain data
+ Param hashref \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
  Return int 0 on success, other on failure
 
 =cut
 
 sub addDmn
 {
-    my ($self, $data) = @_;
+    my ($self, $moduleData) = @_;
 
-    my $rs = $self->_addAwstatsConfig( $data );
-    $rs ||= clearImmutable( $data->{'HOME_DIR'} );
+    my $rs = $self->_addAwstatsConfig( $moduleData );
     return $rs if $rs;
 
-    iMSCP::Dir->new( dirname => "$data->{'HOME_DIR'}/statistics" )->remove();
-    setImmutable( $data->{'HOME_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
+    clearImmutable( $moduleData->{'HOME_DIR'} );
+
+    eval { iMSCP::Dir->new( dirname => "$moduleData->{'HOME_DIR'}/statistics" )->remove(); };
+    if ( $@ ) {
+        error( $@ );
+
+        # Set immutable bit if needed (even on error)
+        setImmutable( $moduleData->{'HOME_DIR'} ) if $moduleData->{'WEB_FOLDER_PROTECTION'} eq 'yes';
+        return 1;
+    }
+
+    setImmutable( $moduleData->{'HOME_DIR'} ) if $moduleData->{'WEB_FOLDER_PROTECTION'} eq 'yes';
     0;
 }
 
-=item deleteDmn( \%data )
+=item deleteDmn( \%moduleData )
 
  Process deleteDmn tasks
 
- Param hash \%data Domain data
+ Param hashref \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
  Return int 0 on success, other on failure
 
 =cut
 
 sub deleteDmn
 {
-    my (undef, $data) = @_;
+    my (undef, $moduleData) = @_;
 
-    my $cfgFileName = "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DOMAIN_NAME'}.conf";
-    if ( -f $cfgFileName ) {
-        my $rs = iMSCP::File->new( filename => $cfgFileName )->delFile();
+    if ( -f "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$moduleData->{'DOMAIN_NAME'}.conf" ) {
+        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$moduleData->{'DOMAIN_NAME'}.conf" )->delFile();
         return $rs if $rs;
     }
 
-    my $awstatsCacheDir = $main::imscpConfig{'AWSTATS_CACHE_DIR'};
-    return 0 unless -d $awstatsCacheDir;
+    return 0 unless -d $main::imscpConfig{'AWSTATS_CACHE_DIR'};
 
     my @awstatsCacheFiles = iMSCP::Dir->new(
-        dirname => $awstatsCacheDir, fileType => '^(?:awstats[0-9]+|dnscachelastupdate)' . quotemeta( ".$data->{'DOMAIN_NAME'}.txt" )
+        dirname  => $main::imscpConfig{'AWSTATS_CACHE_DIR'},
+        fileType => '^(?:awstats[0-9]+|dnscachelastupdate)' . quotemeta( ".$moduleData->{'DOMAIN_NAME'}.txt" )
     )->getFiles();
 
     return 0 unless @awstatsCacheFiles;
 
     for ( @awstatsCacheFiles ) {
-        my $file = iMSCP::File->new( filename => "$awstatsCacheDir/$_" );
-        my $rs = $file->delFile();
+        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'AWSTATS_CACHE_DIR'}/$_" )->delFile();
         return $rs if $rs;
     }
 
     0;
 }
 
-=item addSub( \%data )
+=item addSub( \%moduleData )
 
  Process addSub tasks
 
- Param hash \%data Subdomain data
+ Param hashref \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
  Return int 0 on success, other on failure
 
 =cut
 
 sub addSub
 {
-    my ($self, $data) = @_;
+    my ($self, $moduleData) = @_;
 
-    $self->addDmn( $data );
+    $self->addDmn( $moduleData );
 }
 
-=item deleteSub( \%data )
+=item deleteSub( \%moduleData )
 
  Process deleteSub tasks
 
- Param hash \%data Subdomain data
+ Param hashref \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
  Return int 0 on success, other on failure
 
 =cut
 
 sub deleteSub
 {
-    my ($self, $data) = @_;
+    my ($self, $moduleData) = @_;
 
-    $self->deleteDmn( $data );
+    $self->deleteDmn( $moduleData );
 }
 
 =back
@@ -297,107 +301,104 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'httpd'} = Servers::httpd->factory();
+    $self->{'_is_registered_event_listener'} = 0;
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self;
 }
 
-=item _addAwstatsSection( \$cfgTpl, $filename, \%data )
-
- Listener responsible to build and insert Apache configuration snipped for
- AWStats in the given domain vhost file.
-
- Param string \$cfgTpl Template file content
- Param string $filename Template filename
- Param hash \%data Domain data
- Return int 0 on success, 1 on failure
-
-=cut
-
-sub _addAwstatsSection
-{
-    my ($cfgTpl, $tplName, $data) = @_;
-
-    return 0 if $tplName ne 'domain.tpl' || $data->{'FORWARD'} ne 'no';
-
-    ${$cfgTpl} = replaceBloc(
-        "# SECTION addons BEGIN.\n",
-        "# SECTION addons END.\n",
-        "    # SECTION addons BEGIN.\n" .
-            getBloc(
-                "# SECTION addons BEGIN.\n",
-                "# SECTION addons END.\n",
-                ${$cfgTpl}
-            ) .
-            process( { DOMAIN_NAME => $data->{'DOMAIN_NAME'} }, <<'EOF' )
-    <Location /stats>
-        ProxyErrorOverride On
-        ProxyPreserveHost Off
-        ProxyPass http://127.0.0.1:8889/stats/{DOMAIN_NAME} retry=1 acquire=3000 timeout=600 Keepalive=On
-        ProxyPassReverse http://127.0.0.1:8889/stats/{DOMAIN_NAME}
-    </Location>
-EOF
-            . "    # SECTION addons END.\n",
-        ${$cfgTpl}
-    );
-    0;
-}
-
-=item _addAwstatsConfig( \%data )
+=item _addAwstatsConfig( \%moduleData )
 
  Add awstats configuration file for the given domain
 
- Param hash \%data Domain data
+ Param hashref \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
  Return int 0 on success, other on failure
 
 =cut
 
 sub _addAwstatsConfig
 {
-    my ($self, $data) = @_;
-
-    my $awstatsPackageRootDir = "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats";
-    my $tplFileContent = iMSCP::File->new( filename => "$awstatsPackageRootDir/Config/awstats.imscp_tpl.conf" )->get();
-    unless ( defined $tplFileContent ) {
-        error( sprintf( "Couldn't read %s file", $tplFileContent->{'filename'} ));
-        return 1;
-    }
+    my (undef, $moduleData) = @_;
 
     my $row = eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
-        $dbh->selectrow_hashref( 'SELECT admin_name FROM admin WHERE admin_id = ?', undef, $data->{'DOMAIN_ADMIN_ID'} );
+        $dbh->selectrow_hashref( 'SELECT admin_name FROM admin WHERE admin_id = ?', undef, $moduleData->{'DOMAIN_ADMIN_ID'} );
     };
     if ( $@ ) {
         error( $@ );
         return 1;
     } elsif ( !$row ) {
-        error( sprintf( "Couldn't retrieve data for admin with ID %d", $data->{'DOMAIN_ADMIN_ID'} ));
+        error( sprintf( "Couldn't retrieve data for admin with ID %d", $moduleData->{'DOMAIN_ADMIN_ID'} ));
         return 1;
     }
 
-    my $tags = {
-        ALIAS               => $data->{'ALIAS'},
-        AUTH_USER           => "$row->{'admin_name'}",
-        AWSTATS_CACHE_DIR   => $main::imscpConfig{'AWSTATS_CACHE_DIR'},
-        AWSTATS_ENGINE_DIR  => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
-        AWSTATS_WEB_DIR     => $main::imscpConfig{'AWSTATS_WEB_DIR'},
-        CMD_LOGRESOLVEMERGE => "perl $awstatsPackageRootDir/Scripts/logresolvemerge.pl",
-        DOMAIN_NAME         => $data->{'DOMAIN_NAME'},
-        LOG_DIR             => "$self->{'httpd'}->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}"
-    };
-
-    $tplFileContent = process( $tags, $tplFileContent );
-    unless ( defined $tplFileContent ) {
-        error( 'Error while building Awstats configuration file' );
+    my $file = iMSCP::File->new( filename => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Config/awstats.imscp_tpl.conf" );
+    my $fileContentRef = $file->getAsRef();
+    unless ( defined $fileContentRef ) {
+        error( sprintf( "Couldn't read %s file", $file->{'filename'} ));
         return 1;
     }
 
-    my $file = iMSCP::File->new( filename => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DOMAIN_NAME'}.conf" );
-    $file->set( $tplFileContent );
+    my $httpd = Servers::httpd->factory();
+
+    processByRef(
+        {
+            ALIAS               => $moduleData->{'ALIAS'},
+            AUTH_USER           => "$row->{'admin_name'}",
+            AWSTATS_CACHE_DIR   => $main::imscpConfig{'AWSTATS_CACHE_DIR'},
+            AWSTATS_ENGINE_DIR  => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
+            AWSTATS_WEB_DIR     => $main::imscpConfig{'AWSTATS_WEB_DIR'},
+            CMD_LOGRESOLVEMERGE => "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/logresolvemerge.pl",
+            DOMAIN_NAME         => $moduleData->{'DOMAIN_NAME'},
+            LOG_DIR             => "$httpd->{'config'}->{'HTTPD_LOG_DIR'}/$moduleData->{'DOMAIN_NAME'}"
+        },
+        $fileContentRef
+    );
+
+    $file->{'filename'} = "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$moduleData->{'DOMAIN_NAME'}.conf";
     my $rs = $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
+}
+
+=back
+
+=head1 EVENT LISTENERS
+
+=over 4
+
+=item _addAwstatsSection( \$cfgTpl, $filename, \%moduleData )
+
+ Event listener that inject AWstats configuration in Apache2 vhosts
+
+ Param string \$cfgTpl Reference to template file content
+ Param string $filename Template filename
+ Param hashref \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
+ Return int 0 on success, 1 on failure
+
+=cut
+
+sub _addAwstatsSection
+{
+    my ($cfgTpl, $tplName, $moduleData) = @_;
+
+    return 0 if $tplName ne 'domain.tpl' || $moduleData->{'FORWARD'} ne 'no';
+
+    debug( sprintf( 'Injecting AWStats configuration in Apache2 vhost for the %s domain', $moduleData->{'DOMAIN_NAME'} ));
+
+    replaceBlocByRef( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", <<"EOF", $cfgTpl );
+    # SECTION addons BEGIN.
+@{[ getBlocByRef( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", $cfgTpl ) ] }
+    <Location /stats>
+        ProxyErrorOverride On
+        ProxyPreserveHost Off
+        ProxyPass http://127.0.0.1:8889/stats/{DOMAIN_NAME} retry=0 acquire=3000 timeout=30 Keepalive=On
+        ProxyPassReverse http://127.0.0.1:8889/stats/{DOMAIN_NAME}
+    </Location>
+    # SECTION addons END.
+EOF
+
+    0;
 }
 
 =back

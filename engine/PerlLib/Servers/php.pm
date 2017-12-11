@@ -36,7 +36,7 @@ use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Service;
-use iMSCP::TemplateParser qw/ process getBloc replaceBloc /;
+use iMSCP::TemplateParser qw/ processByRef getBlocByRef replaceBlocByRef /;
 use parent 'Common::SingletonClass';
 
 # php server instance
@@ -326,7 +326,7 @@ sub install
 
     eval {
         my $httpd = Servers::httpd->factory();
-        my $runtimeData = {
+        my $serverData = {
             HTTPD_USER                          => $httpd->getRunningUser() || 'www-data',
             HTTPD_GROUP                         => $httpd->getRunningGroup() || 'www-data',
             PEAR_DIR                            => $self->{'config'}->{'PHP_PEAR_DIR'} || '/usr/share/php',
@@ -347,18 +347,18 @@ sub install
         for my $phpVersion( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
             next unless $phpVersion =~ /^[\d.]+$/;
 
-            @{$runtimeData}{qw/ PHP_FPM_POOL_DIR_PATH PHP_VERSION /} = ( "/etc/php/$phpVersion/fpm/pool.d", $phpVersion );
+            @{$serverData}{qw/ PHP_FPM_POOL_DIR_PATH PHP_VERSION /} = ( "/etc/php/$phpVersion/fpm/pool.d", $phpVersion );
 
             # Master php.ini file for apache2handler, cli, cgi and fpm SAPIs
             for ( qw/ apache2 cgi cli fpm / ) {
-                $rs = $self->_buildConfFile( "$_/php.ini", "/etc/php/$phpVersion/$_/php.ini", {}, $runtimeData );
+                $rs = $self->_buildConfFile( "$_/php.ini", "/etc/php/$phpVersion/$_/php.ini", {}, $serverData );
                 last if $rs;
             }
 
             # Master conffile for fpm SAPI
-            $rs ||= $self->_buildConfFile( 'fpm/php-fpm.conf', "/etc/php/$phpVersion/fpm/php-fpm.conf", {}, $runtimeData );
+            $rs ||= $self->_buildConfFile( 'fpm/php-fpm.conf', "/etc/php/$phpVersion/fpm/php-fpm.conf", {}, $serverData );
             # Primary pool conffile for fpm SAPI
-            $rs ||= $self->_buildConfFile( 'fpm/pool.conf.default', "/etc/php/$phpVersion/fpm/pool.d/www.conf", {}, $runtimeData );
+            $rs ||= $self->_buildConfFile( 'fpm/pool.conf.default', "/etc/php/$phpVersion/fpm/pool.d/www.conf", {}, $serverData );
             $rs == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
         }
     };
@@ -518,7 +518,7 @@ sub setEnginePermissions
 
  Process addDmn tasks
 
- Param hash \%moduleData Data as provided by Alias|Domain modules
+ Param hashref \%moduleData Data as provided by Alias|Domain modules
  Return int 0 on success, other on failure
 
 =cut
@@ -567,7 +567,7 @@ sub addDmn
 
  Process disableDmn tasks
 
- Param hash \%moduleData Data as provided by Alias|Domain modules
+ Param hashref \%moduleData Data as provided by Alias|Domain modules
  Return int 0 on success, other on failure
 
 =cut
@@ -599,7 +599,7 @@ sub disableDmn
 
  Process deleteDmn tasks
 
- Param hash \%moduleData Data as provided by Alias|Domain modules
+ Param hashref \%moduleData Data as provided by Alias|Domain modules
  Return int 0 on success, other on failure
 
 =cut
@@ -630,7 +630,7 @@ sub deleteDmn
 
  Process addSub tasks
 
- Param hash \%moduleData Data as provided by SubAlias|Subdomain modules
+ Param hashref \%moduleData Data as provided by SubAlias|Subdomain modules
  Return int 0 on success, other on failure
 
 =cut
@@ -660,7 +660,7 @@ sub addSub
 
  Process disableSub tasks
 
- Param hash \%moduleData Data as provided by SubAlias|Subdomain modules
+ Param hashref \%moduleData Data as provided by SubAlias|Subdomain modules
  Return int 0 on success, other on failure
 
 =cut
@@ -694,7 +694,7 @@ sub disableSub
 
  Process deleteSub tasks
 
- Param hash \%moduleData Data as provided by SubAlias|Subdomain modules
+ Param hashref \%moduleData Data as provided by SubAlias|Subdomain modules
  Return int 0 on success, other on failure
 
 =cut
@@ -952,15 +952,15 @@ sub _guessVariablesForSelectedPhpAlternative
     0;
 }
 
-=item _buildConfFile( $file, $target, [, \%moduleData = { } [, \%runtimeData [, \%parameters = { } ] ] ] )
+=item _buildConfFile( $srcFile, $trgFile, [, \%moduleData = { } [, \%serverData [, \%parameters = { } ] ] ] )
 
- Build the given configuration file
+ Build the given PHP configuration file
 
- Param string $file Config file path relative to the i-MSCP php config directory
- Param string $target Target path
- Param hash \%data OPTIONAL Data as provided by Alias|Domain|SubAlias|Subdomain modules
- Param hash \%data OPTIONAL Runtime data (Runtime data have higher precedence than modules data)
- Param hash \%options OPTIONAL Options:
+ Param string $srcFile Source file path relative to the i-MSCP php configuration directory
+ Param string $trgFile Target file path
+ Param hashref \%data OPTIONAL Data as provided by Alias|Domain|SubAlias|Subdomain modules
+ Param hashref \%data OPTIONAL Server data (Server data have higher precedence than modules data)
+ Param hashref \%parameters OPTIONAL parameters:
   - user  : File owner (default: root)
   - group : File group (default: root
   - mode  : File mode (default: 0644)
@@ -970,38 +970,40 @@ sub _guessVariablesForSelectedPhpAlternative
 
 sub _buildConfFile
 {
-    my ($self, $file, $target, $moduleData, $runtimeData, $parameters) = @_;
+    my ($self, $srcFile, $trgFile, $moduleData, $serverData, $parameters) = @_;
+    $moduleData //= {};
+    $serverData //= {};
+    $parameters //= {};
 
-    $moduleData ||= {};
-    $runtimeData ||= {};
-    $parameters ||= {};
+    my ($filename, $path) = fileparse( $srcFile );
 
-    my ($filename, $path) = fileparse( $file );
-
-    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', __PACKAGE__, $filename, \ my $cfgTpl, $moduleData, $runtimeData );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'php', $filename, \ my $cfgTpl, $moduleData, $serverData );
     return $rs if $rs;
 
     unless ( defined $cfgTpl ) {
-        $file = File::Spec->canonpath( "$self->{'cfgDir'}/$path/$filename" );
-        $cfgTpl = iMSCP::File->new( filename => $file )->get();
+        $srcFile = File::Spec->canonpath( "$self->{'cfgDir'}/$path/$filename" );
+        $cfgTpl = iMSCP::File->new( filename => $srcFile )->get();
         unless ( defined $cfgTpl ) {
-            error( sprintf( "Couldn't read %s file", $file ));
+            error( sprintf( "Couldn't read %s file", $srcFile ));
             return 1;
         }
     }
 
-    $rs = $self->{'eventManager'}->trigger( 'beforePhpBuildConfFile', \$cfgTpl, $filename, $moduleData, $runtimeData );
+    $rs = $self->{'eventManager'}->trigger( 'beforePhpBuildConfFile', \$cfgTpl, $filename, $moduleData, $serverData );
     return $rs if $rs;
 
-    $cfgTpl = process( { %{$moduleData}, %{$runtimeData} }, $cfgTpl );
+    processByRef( $serverData, \$cfgTpl );
+    processByRef( $moduleData, \$cfgTpl );
 
-    $rs = $self->{'eventManager'}->trigger( 'afterPhpdBuildConfFile', \$cfgTpl, $filename, $moduleData, $runtimeData );
+    $rs = $self->{'eventManager'}->trigger( 'afterPhpdBuildConfFile', \$cfgTpl, $filename, $moduleData, $serverData );
     return $rs if $rs;
 
-    my $fh = iMSCP::File->new( filename => $target );
+    my $fh = iMSCP::File->new( filename => $trgFile );
     $rs = $fh->set( $cfgTpl );
     $rs ||= $fh->save();
-    $rs ||= $fh->owner( $parameters->{'user'} // $main::imscpConfig{'ROOT_USER'}, $parameters->{'group'} // $main::imscpConfig{'ROOT_GROUP'} );
+    return $rs unless %{$parameters};
+
+    $rs = $fh->owner( $parameters->{'user'} // $main::imscpConfig{'ROOT_USER'}, $parameters->{'group'} // $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $fh->mode( $parameters->{'mode'} // 0644 );
 }
 
@@ -1009,7 +1011,7 @@ sub _buildConfFile
 
  Build PHP fpm configuration for the given domain
 
- Param hash \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
+ Param hashref \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
  Return int 0 on sucess, other on failure
 
 =cut
@@ -1034,7 +1036,7 @@ sub _buildFpmConfig
     }
 
     if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
-        my $runtimeData = {
+        my $serverData = {
             EMAIL_DOMAIN                 => $emailDomain,
             PHP_FPM_LISTEN_ENDPOINT      => ( $self->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds' )
                 ? "/run/php/php$self->{'config'}->{'PHP_VERSION'}-fpm-$poolName.sock"
@@ -1051,7 +1053,7 @@ sub _buildFpmConfig
             TMPDIR                       => "$moduleData->{'HOME_DIR'}/phptmp"
         };
 
-        $rs = $self->_buildConfFile( 'fpm/pool.conf', "$self->{'config'}->{'PHP_FPM_POOL_DIR_PATH'}/$poolName.conf", $moduleData, $runtimeData );
+        $rs = $self->_buildConfFile( 'fpm/pool.conf', "$self->{'config'}->{'PHP_FPM_POOL_DIR_PATH'}/$poolName.conf", $moduleData, $serverData );
         $self->{'reload'} ||= 1;
     } elsif ( ( $moduleData->{'PHP_SUPPORT'} ne 'yes'
         || ( $self->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_user' && $moduleData->{'DOMAIN_TYPE'} ne 'dmn' )
@@ -1070,7 +1072,7 @@ sub _buildFpmConfig
 
  Build PHP cgi configuration for the given domain
 
- Param hash \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
+ Param hashref \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
  Return int 0 on sucess, other on failure
 
 =cut
@@ -1118,7 +1120,7 @@ sub _buildCgiConfig
             return 1;
         }
 
-        my $runtimeData = {
+        my $serverData = {
             EMAIL_DOMAIN          => $emailDomain,
             FCGID_NAME            => $configLevelName,
             PHP_VERSION           => $self->{'config'}->{'PHP_VERSION'},
@@ -1129,7 +1131,10 @@ sub _buildCgiConfig
         };
 
         $rs = $self->_buildConfFile(
-            'cgi/php-fcgi-starter', "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$configLevelName/php-fcgi-starter", $moduleData, $runtimeData,
+            'cgi/php-fcgi-starter',
+            "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$configLevelName/php-fcgi-starter",
+            $moduleData,
+            $serverData,
             {
                 user  => $moduleData->{'USER'},
                 group => $moduleData->{'GROUP'},
@@ -1140,7 +1145,7 @@ sub _buildCgiConfig
             'cgi/php.ini.user',
             "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$configLevelName/php$self->{'config'}->{'PHP_VERSION'}/php.ini",
             $moduleData,
-            $runtimeData,
+            $serverData,
             {
                 user  => $moduleData->{'USER'},
                 group => $moduleData->{'GROUP'},
@@ -1169,7 +1174,7 @@ sub _buildCgiConfig
  
  There are nothing special to do here. We trigger event for consistency reasons.
 
- Param hash \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
+ Param hashref \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
  Return int 0 on sucess, other on failure
 
 =cut
@@ -1228,56 +1233,54 @@ sub _cleanup
 
 =over 4
 
-=item _buildApache2Config( \$cfgTpl, $filename, \%moduleData )
+=item _buildApache2Config( \$cfgTpl, $filename, \%moduleData, \%serverData )
 
- Event listener that inject PHP configuration stanzas in Apache2 vhost files
+ Event listener that inject PHP configuration in Apache2 vhosts
 
  Param scalar \$scalar Reference to Apache2 vhost content
  Param string $filename Apache2 template name
- Param hash \%moduleData Data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hashref \%moduleData Data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hashref \%serverData Server data
  Return int 0 on success, other on failure
 
 =cut
 
 sub _buildApache2Config
 {
-    my ($cfgTpl, $filename, $moduleData) = @_;
+    my ($cfgTpl, $filename, $moduleData, $serverData) = @_;
 
     return 0 unless $INSTANCE && $filename eq 'domain.tpl'
-        && grep( $_ eq $moduleData->{'VHOST_TYPE'}, ( 'domain', 'domain_ssl' ) );
+        && grep( $_ eq $serverData->{'VHOST_TYPE'}, ( 'domain', 'domain_ssl' ) );
 
-    my ($configLevelName, $emailDomain);
+    my ($configLevel, $emailDomain);
     if ( $INSTANCE->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_user' ) {
-        $configLevelName = $moduleData->{'ROOT_DOMAIN_NAME'};
+        $configLevel = $moduleData->{'ROOT_DOMAIN_NAME'};
         $emailDomain = $moduleData->{'ROOT_DOMAIN_NAME'};
     } elsif ( $INSTANCE->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_domain' ) {
-        $configLevelName = $moduleData->{'PARENT_DOMAIN_NAME'};
+        $configLevel = $moduleData->{'PARENT_DOMAIN_NAME'};
         $emailDomain = $moduleData->{'DOMAIN_NAME'};
     } else {
-        $configLevelName = $moduleData->{'DOMAIN_NAME'};
+        $configLevel = $moduleData->{'DOMAIN_NAME'};
         $emailDomain = $moduleData->{'DOMAIN_NAME'};
     }
 
     if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
-        debug( sprintf( 'Injecting PHP configuration into Apache2 vhost for the %s domain', $moduleData->{'DOMAIN_NAME'} ));
+        debug( sprintf( 'Injecting PHP configuration in Apache2 vhost for the %s domain', $moduleData->{'DOMAIN_NAME'} ));
     }
 
     if ( $INSTANCE->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
         if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
-            Servers::httpd->factory()->setData( {
-                PROXY_FCGI_PATH => $INSTANCE->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
-                    ? "unix:/run/php/php$INSTANCE->{'config'}->{'PHP_VERSION'}-fpm-$configLevelName.sock|" : '',
-                PROXY_FCGI_URL  => 'fcgi://' . ( $INSTANCE->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
-                    ? $configLevelName : '127.0.0.1:' . ( $INSTANCE->{'config'}->{'PHP_FPM_LISTEN_PORT_START'}+$moduleData->{'PHP_FPM_LISTEN_PORT'} )
-                ),
-                # Set timeout to PHP max_excution_time + 10 seconds
-                # See IP-1762
-                PROXY_TIMEOUT   => $moduleData->{'MAX_EXECUTION_TIME'}+10
-            } );
+            @{$serverData}{qw/ PROXY_FCGI_PATH PROXY_FCGI_URL PROXY_TIMEOUT /} = (
+                    $INSTANCE->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
+                    ? "unix:/run/php/php$INSTANCE->{'config'}->{'PHP_VERSION'}-fpm-$configLevel.sock|" : '',
+                'fcgi://' . ( $INSTANCE->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
+                    ? $configLevel : '127.0.0.1:' . ( $INSTANCE->{'config'}->{'PHP_FPM_LISTEN_PORT_START'}+$moduleData->{'PHP_FPM_LISTEN_PORT'} ) ),
+                $moduleData->{'MAX_EXECUTION_TIME'}+10 # See IP-1762
+            );
 
-            ${$cfgTpl} = replaceBloc( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF"
+            replaceBlocByRef( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF", $cfgTpl );
         # SECTION document root addons BEGIN.
-@{[ getBloc("# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", ${$cfgTpl}) ]}
+@{[ getBlocByRef( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", $cfgTpl ) ]}
         # SECTION php_fpm BEGIN.
         AllowOverride All
         DirectoryIndex index.php
@@ -1288,12 +1291,9 @@ sub _buildApache2Config
         # SECTION php_fpm END.
         # SECTION document root addons END.
 EOF
-                ,
-                ${$cfgTpl}
-            );
-            ${$cfgTpl} = replaceBloc( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", <<"EOF"
+            replaceBlocByRef( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", <<"EOF", $cfgTpl );
     # SECTION addons BEGIN.
-@{[ getBloc("# SECTION addons BEGIN.\n", "# SECTION addons END.\n", ${$cfgTpl}) ]}
+@{[ getBlocByRef( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", $cfgTpl ) ]}
     # SECTION php_fpm_proxy BEGIN.
     <Proxy "{PROXY_FCGI_PATH}{PROXY_FCGI_URL}" retry=0>
         ProxySet connectiontimeout=5 timeout={PROXY_TIMEOUT}
@@ -1301,40 +1301,27 @@ EOF
     # SECTION php_fpm_proxy END.
     # SECTION addons END.
 EOF
-                ,
-                ${$cfgTpl}
-            );
         } else {
-            ${$cfgTpl} = replaceBloc( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF"
+            replaceBlocByRef( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF", $cfgTpl );
         # SECTION document root addons BEGIN.
-@{[ getBloc("# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", ${$cfgTpl}) ]}
+@{[ getBlocByRef( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", $cfgTpl ) ]}
         AllowOverride AuthConfig Indexes Limit Options=Indexes,MultiViews \
           Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule Nonfatal=Override
 EOF
-                ,
-                ${$cfgTpl}
-            );
-            ${$cfgTpl} = replaceBloc( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", <<"EOF"
+            replaceBlocByRef( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", <<"EOF", $cfgTpl );
     # SECTION addons BEGIN.
-@{[ getBloc("# SECTION addons BEGIN.\n", "# SECTION addons END.\n", ${$cfgTpl}) ]}
+@{[ getBlocByRef( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", $cfgTpl ) ]}
     RemoveHandler .php .php3 .php4 .php5 .php7 .pht .phtml
     # SECTION addons END.
 EOF
-                ,
-                ${$cfgTpl}
-            );
         }
     } elsif ( $INSTANCE->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
         if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
-            Servers::httpd->factory()->setData( {
-                PHP_FCGI_STARTER_DIR => $INSTANCE->{'config'}->{'PHP_FCGI_STARTER_DIR'},
-                FCGID_NAME           => $configLevelName
+            @{$serverData}{qw/ PHP_FCGI_STARTER_DIR FCGID_NAME /} = ( $INSTANCE->{'config'}->{'PHP_FCGI_STARTER_DIR'}, $configLevel );
 
-            } );
-
-            ${$cfgTpl} = replaceBloc( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF"
+            replaceBlocByRef( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF", $cfgTpl );
         # SECTION document root addons BEGIN.
-@{[ getBloc("# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", ${$cfgTpl}) ]}
+@{[ getBlocByRef( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", $cfgTpl ) ]}
         # SECTION php_cgi BEGIN.
         AllowOverride All
         DirectoryIndex index.php
@@ -1343,39 +1330,27 @@ EOF
         # SECTION php_cgi END.
         # SECTION document root addons END.
 EOF
-                ,
-                ${$cfgTpl}
-            );
         } else {
-            ${$cfgTpl} = replaceBloc( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF"
+            replaceBlocByRef( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF", $cfgTpl );
         # SECTION document root addons BEGIN.
-@{[ getBloc("# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", ${$cfgTpl}) ]}
+@{[ getBlocByRef( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", $cfgTpl ) ]}
         AllowOverride AuthConfig Indexes Limit Options=Indexes,MultiViews \
           Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule Nonfatal=Override
 EOF
-                ,
-                ${$cfgTpl}
-            );
-            ${$cfgTpl} = replaceBloc( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", <<"EOF"
+            replaceBlocByRef( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", <<"EOF", $cfgTpl );
     # SECTION addons BEGIN.
-@{[ getBloc("# SECTION addons BEGIN.\n", "# SECTION addons END.\n", ${$cfgTpl}) ]}
+@{[ getBlocByRef( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", $cfgTpl ) ]}
     RemoveHandler .php .php3 .php4 .php5 .php7 .pht .phtml
     # SECTION addons END.
 EOF
-                ,
-                ${$cfgTpl}
-            );
         }
     } elsif ( $INSTANCE->{'config'}->{'PHP_SAPI'} eq 'apache2handler' ) {
         if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
-            Servers::httpd->factory()->setData( {
-                EMAIL_DOMAIN => $emailDomain,
-                TMPDIR       => $moduleData->{'HOME_DIR'} . '/phptmp'
-            } );
+            @{$serverData}{qw/ EMAIL_DOMAIN TMPDIR /} = ( $emailDomain, $moduleData->{'HOME_DIR'} . '/phptmp' );
 
-            ${$cfgTpl} = replaceBloc( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF"
+            replaceBlocByRef( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF", $cfgTpl );
         # SECTION document root addons BEGIN.
-@{[ getBloc("# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", ${$cfgTpl}) ]}
+@{[ getBlocByRef( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", $cfgTpl ) ]}
         # SECTION php_apache2handler BEGIN.
         AllowOverride All
         DirectoryIndex index.php
@@ -1394,29 +1369,20 @@ EOF
         # SECTION php_apache2handler END.
         # SECTION document root addons END.
 EOF
-                ,
-                ${$cfgTpl}
-            );
         } else {
-            ${$cfgTpl} = replaceBloc( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF"
+            replaceBlocByRef( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF", $cfgTpl );
       # SECTION document root addons BEGIN.
-@{[ getBloc("# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", ${$cfgTpl}) ]}
+@{[ getBlocByRef( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", $cfgTpl ) ]}
       AllowOverride AuthConfig Indexes Limit Options=Indexes,MultiViews \
         Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule Nonfatal=Override
 EOF
-                ,
-                ${$cfgTpl}
-            );
-            ${$cfgTpl} = replaceBloc( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", <<"EOF"
+            replaceBlocByRef( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", <<"EOF", $cfgTpl );
     # SECTION addons BEGIN.
-@{[ getBloc("# SECTION addons BEGIN.\n", "# SECTION addons END.\n", ${$cfgTpl}) ]}
+@{[ getBlocByRef( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", $cfgTpl ) ]}
     RemoveHandler .php .php3 .php4 .php5 .php7 .pht .phtml
     php_admin_flag engine off
     # SECTION addons END.
 EOF
-                ,
-                ${$cfgTpl}
-            );
         }
     } else {
         error( 'Unknown PHP SAPI' );

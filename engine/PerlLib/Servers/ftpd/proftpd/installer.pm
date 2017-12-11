@@ -35,7 +35,7 @@ use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ processByRef /;
 use iMSCP::Umask;
 use Servers::ftpd::proftpd;
 use Servers::sqld;
@@ -475,7 +475,7 @@ MasqueradeAddress $baseServerPublicIp
 EOF
     }
 
-    $cfgTpl = process( $data, $cfgTpl );
+    processByRef( $data, \$cfgTpl );
 
     $rs = $self->{'eventManager'}->trigger( 'afterFtpdBuildConf', \$cfgTpl, 'proftpd.conf' );
     return $rs if $rs;

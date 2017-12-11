@@ -30,7 +30,7 @@ use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::File;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ getBlocByRef processByRef replaceBlocByRef /;
 use JSON;
 use Package::FrontEnd;
 use parent 'Common::SingletonClass';
@@ -88,7 +88,7 @@ sub install
 
  Include httpd configuration into frontEnd vhost files
 
- Param string \$tplContent Template file tplContent
+ Param string \$tplContent Reference to template file content
  Param string $tplName Template name
  Return int 0 on success, other on failure
 
@@ -98,23 +98,15 @@ sub afterFrontEndBuildConfFile
 {
     my ($tplContent, $tplName) = @_;
 
-    return 0 unless ( $tplName eq '00_master.nginx'
-        && main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) ne 'https://'
-    ) || $tplName eq '00_master_ssl.nginx';
+    return 0 unless ( $tplName eq '00_master.nginx' && main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) ne 'https://' )
+        || $tplName eq '00_master_ssl.nginx';
 
-    ${$tplContent} = replaceBloc(
-        "# SECTION custom BEGIN.\n",
-        "# SECTION custom END.\n",
-        "    # SECTION custom BEGIN.\n" .
-            getBloc(
-                "# SECTION custom BEGIN.\n",
-                "# SECTION custom END.\n",
-                ${$tplContent}
-            ) .
-            "    include imscp_monstaftp.conf;\n" .
-            "    # SECTION custom END.\n",
-        ${$tplContent}
-    );
+    replaceBlocByRef( "# SECTION custom BEGIN.\n", "# SECTION custom END.\n", <<"EOF", $tplContent );
+    # SECTION custom BEGIN.
+@{ [ getBlocByRef( "# SECTION custom BEGIN.\n", "# SECTION custom END.\n", $tplContent ) ] }
+    include imscp_monstaftp.conf;
+    # SECTION custom END.
+EOF
     0;
 }
 
@@ -216,7 +208,7 @@ sub _buildConfig
         }
     }
 
-    $cfgTpl = process( $data, $cfgTpl );
+    processByRef( $data, \$cfgTpl );
 
     my $file = iMSCP::File->new( filename => $conffile );
     $file->set( $cfgTpl );

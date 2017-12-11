@@ -25,7 +25,7 @@ package Servers::httpd::Apache2::Prefork;
 
 use strict;
 use warnings;
-use iMSCP::TemplateParser qw/ replaceBloc /;
+use iMSCP::TemplateParser qw/ replaceBlocByRef /;
 use parent 'Servers::httpd::Apache2::Abstract';
 
 =head1 DESCRIPTION
@@ -76,49 +76,47 @@ sub _setupModules
 
 =over 4
 
-=item _cleanTemplate( \$tpl, $filename, \%moduleData )
+=item _cleanTemplate( \$cfgTpl, $filename, \%moduleData, \%serverData )
 
  Event listener which is responsible to cleanup production configuration files
 
- Param string \$tpl Template content
+ Param string \$cfgTpl Template content
  Param string $name Template name
- Param hash \%moduleData Data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hashref \%moduleData Data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hashref \%serverData Server data
  Return int 0
 
 =cut
 
 sub _cleanTemplate
 {
-    my ($tpl, $name, $moduleData) = @_;
+    my ($cfgTpl, $name, $moduleData, $serverData) = @_;
 
-    if ( $moduleData->{'SKIP_TEMPLATE_CLEANER'} ) {
-        delete $moduleData->{'SKIP_TEMPLATE_CLEANER'};
-        return 0;
-    }
+    return $serverData->{'SKIP_TEMPLATE_CLEANER'} = 0 if $serverData->{'SKIP_TEMPLATE_CLEANER'};
 
     if ( $name eq 'domain.tpl' ) {
-        if ( $moduleData->{'VHOST_TYPE'} !~ /fwd/ ) {
-            unless ( $moduleData->{'CGI_SUPPORT'} eq 'yes' ) {
-                ${$tpl} = replaceBloc( "# SECTION suexec BEGIN.\n", "# SECTION suexec END.\n", '', ${$tpl} );
-                ${$tpl} = replaceBloc( "# SECTION cgi BEGIN.\n", "# SECTION cgi END.\n", '', ${$tpl} );
-            }
+        if ( index( $serverData->{'VHOST_TYPE'}, 'fwd' ) == -1 ) {
+            replaceBlocByRef( "# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', $cfgTpl );
 
-            ${$tpl} = replaceBloc( "# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', ${$tpl} );
+            if ( $moduleData->{'CGI_SUPPORT'} ne 'yes' ) {
+                replaceBlocByRef( "# SECTION cgi BEGIN.\n", "# SECTION cgi END.\n", '', $cfgTpl );
+            }
         } elsif ( $moduleData->{'FORWARD'} ne 'no' ) {
-            if ( $moduleData->{'FORWARD_TYPE'} eq 'proxy' && ( !$moduleData->{'HSTS_SUPPORT'} || $moduleData->{'VHOST_TYPE'} =~ /ssl/ ) ) {
-                ${$tpl} = replaceBloc( "# SECTION std_fwd BEGIN.\n", "# SECTION std_fwd END.\n", '', ${$tpl} );
+            if ( $moduleData->{'FORWARD_TYPE'} eq 'proxy' && ( !$moduleData->{'HSTS_SUPPORT'} || index($serverData->{'VHOST_TYPE'}, 'ssl') != -1) ) {
+                replaceBlocByRef( "# SECTION std_fwd BEGIN.\n", "# SECTION std_fwd END.\n", '', $cfgTpl );
+
                 if ( index( $moduleData->{'FORWARD'}, 'https' ) != 0 ) {
-                    ${$tpl} = replaceBloc( "# SECTION ssl_proxy BEGIN.\n", "# SECTION ssl_proxy END.\n", '', ${$tpl} );
+                    replaceBlocByRef( "# SECTION ssl_proxy BEGIN.\n", "# SECTION ssl_proxy END.\n", '', $cfgTpl );
                 }
             } else {
-                ${$tpl} = replaceBloc( "# SECTION proxy_fwd BEGIN.\n", "# SECTION proxy_fwd END.\n", '', ${$tpl} );
+                replaceBlocByRef( "# SECTION proxy_fwd BEGIN.\n", "# SECTION proxy_fwd END.\n", '', $cfgTpl );
             }
         } else {
-            ${$tpl} = replaceBloc( "# SECTION proxy_fwd BEGIN.\n", "# SECTION proxy_fwd END.\n", '', ${$tpl} );
+            replaceBlocByRef( "# SECTION proxy_fwd BEGIN.\n", "# SECTION proxy_fwd END.\n", '', $cfgTpl );
         }
     }
 
-    ${$tpl} =~ s/^\s*(?:[#;].*)?\n//gm;
+    ${$cfgTpl} =~ s/^\s*(?:[#;].*)?\n//gm;
     0;
 }
 

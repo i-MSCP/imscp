@@ -108,7 +108,7 @@ END
             );
         } elsif ( $INSTANCE->{'reload'} ) {
             iMSCP::Service->getInstance()->registerDelayedAction(
-                $INSTANCE->{'config'}->{'HTTPD_SNAME'}, [ 'reload', sub { $INSTANCE->start(); } ], __PACKAGE__->getPriority()
+                $INSTANCE->{'config'}->{'HTTPD_SNAME'}, [ 'reload', sub { $INSTANCE->reload(); } ], __PACKAGE__->getPriority()
             );
         } elsif ( $INSTANCE->{'start'} ) {
             iMSCP::Service->getInstance()->registerDelayedAction(

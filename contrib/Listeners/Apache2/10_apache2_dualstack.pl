@@ -26,6 +26,7 @@ our $VERSION = '1.0.1';
 use strict;
 use warnings;
 use iMSCP::EventManager;
+use version;
 
 #
 ## Configuration variables

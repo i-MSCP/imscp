@@ -31,7 +31,7 @@ our $VERSION = '1.0.1';
 use strict;
 use warnings;
 use iMSCP::EventManager;
-use iMSCP::TemplateParser qw/ getBloc process replaceBloc/;
+use iMSCP::TemplateParser qw/ getBlocByRef processByRef replaceBlocByRef /;
 use version;
 
 #
@@ -45,24 +45,17 @@ version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' )
 iMSCP::EventManager->getInstance()->register(
     'beforeApache2BuildConf',
     sub {
-        my ($cfgTpl, $tplName, $data) = @_;
+        my ($cfgTpl, $tplName, $moduleData, $serverData) = @_;
 
-        return 0 unless $tplName eq 'domain.tpl' && grep( $_ eq $data->{'VHOST_TYPE'}, ( 'domain', 'domain_ssl' ) );
+        return 0 unless $tplName eq 'domain.tpl' && grep( $_ eq $moduleData->{'VHOST_TYPE'}, ( 'domain', 'domain_ssl' ) );
 
-        if ( $data->{'VHOST_TYPE'} eq 'domain' && $data->{'SSL_SUPPORT'} ) {
-            ${$cfgTpl} = replaceBloc(
-                "# SECTION addons BEGIN.\n",
-                "# SECTION addons END.\n",
-                "    # SECTION addons BEGIN.\n" .
-                    getBloc(
-                        "# SECTION addons BEGIN.\n",
-                        "# SECTION addons END.\n",
-                        ${$cfgTpl}
-                    ) .
-                    "    RedirectMatch 301 ^(/(?:ftp|pma|webmail)\/?)\$ https://$data->{'DOMAIN_NAME'}\$1\n"
-                    . "    # SECTION addons END.\n",
-                ${$cfgTpl}
-            );
+        if ( $serverData->{'VHOST_TYPE'} eq 'domain' && $moduleData->{'SSL_SUPPORT'} ) {
+            replaceBlocByRef( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", <<"EOF", $cfgTpl );
+    # SECTION addons BEGIN.
+@{ [ getBlocByRef( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", $cfgTpl ) ] }
+    RedirectMatch 301 ^(/(?:ftp|pma|webmail)\/?)\$ https://$moduleData->{'DOMAIN_NAME'}\$1
+    # SECTION addons END.
+EOF
             return 0;
         }
 
@@ -75,23 +68,21 @@ iMSCP::EventManager->getInstance()->register(
     ProxyPass /webmail/ {HTTP_URI_SCHEME}{HTTP_HOST}:{HTTP_PORT}/webmail/ retry=1 acquire=3000 timeout=600 Keepalive=On
     ProxyPassReverse /webmail/ {HTTP_URI_SCHEME}{HTTP_HOST}:{HTTP_PORT}/webmail/
 EOF
-        ${$cfgTpl} = replaceBloc(
-            "# SECTION addons BEGIN.\n",
-            "# SECTION addons END.\n",
-            "    # SECTION addons BEGIN.\n" . getBloc( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", ${$cfgTpl} )
-                . process(
-                {
-                    HTTP_URI_SCHEME => ( $main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes' ) ? 'https://' : 'http://',
-                    HTTP_HOST       => $main::imscpConfig{'BASE_SERVER_VHOST'},
-                    HTTP_PORT       => ( $main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes' )
-                        ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'}
-                        : $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
-                },
-                $cfgProxy
-            )
-                . "    # SECTION addons END.\n",
-            ${$cfgTpl}
+        processByRef(
+            {
+                HTTP_URI_SCHEME => ( $main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes' ) ? 'https://' : 'http://',
+                HTTP_HOST       => $main::imscpConfig{'BASE_SERVER_VHOST'},
+                HTTP_PORT       => ( $main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes' )
+                    ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'} : $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
+            },
+            \$cfgProxy
         );
+        replaceBlocByRef( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", <<"EOF", $cfgTpl );
+    # SECTION addons BEGIN.
+@{ [ getBlocByRef( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", $cfgTpl ) ] }
+    $cfgProxy
+    # SECTION addons END.
+EOF
         0;
     }
 );
