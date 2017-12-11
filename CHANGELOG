@@ -61,6 +61,7 @@ DISTRIBUTIONS
     Relaxed: Permissions policy on /etc/apt/apt.conf.d/* files -- Files must be world-readable
 
 FRONTEND
+    Added: Distribution and i-MSCP information in the system information page (admin UI)
     Added: New `mailType' and `forwardList' parameters for both `onBeforeAddMail' and `onAfterAddMail' events
     Added: Support for PSR-4 autoloading through PHP dependency manager (composer) autoloader
     Changed iMSCP\Application::getAutoloader() now return the Composer Composer\Autoload\ClassLoader instance

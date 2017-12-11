@@ -16,6 +16,73 @@
 <table class="firstColFixed">
     <thead>
     <tr>
+        <th colspan="2">{TR_iMSCP_INFO}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>{TR_IMSCP_RELEASE}</td>
+        <td><?= ucfirst($this->config['Version']); ?></td>
+    </tr>
+    <tr>
+        <td>{TR_IMSCP_CODENAME}</td>
+        <td><?= $this->config['CodeName']; ?></td>
+    </tr>
+    <tr>
+        <td>{TR_IMSCP_PLUGIN_API_VERSION}</td>
+        <td><?= $this->config['PluginApi']; ?></td>
+    </tr>
+        <tr>
+        <td>{TR_IMSCP_HTTPD_SERVER}</td>
+        <td><?= $this->config['HTTPD_SERVER']; ?></td>
+    </tr>
+        <tr>
+        <td>{TR_IMSCP_FTPD_SERVER}</td>
+        <td><?= $this->config['FTPD_SERVER']; ?></td>
+    </tr>
+        <tr>
+        <td>{TR_IMSCP_MTA_SERVER}</td>
+        <td><?= $this->config['MTA_SERVER']; ?></td>
+    </tr>
+        <tr>
+        <td>{TR_IMSCP_PHP_SERVER}</td>
+        <td><?= $this->config['PHP_SERVER']; ?></td>
+    </tr>
+        <tr>
+        <td>{TR_IMSCP_PO_SERVER}</td>
+        <td><?= $this->config['PO_SERVER']; ?></td>
+    </tr>
+    <tr>
+        <tr>
+        <td>{TR_IMSCP_SQL_SERVER}</td>
+        <td><?= $this->config['SQL_SERVER']; ?></td>
+    </tr>
+    </tbody>
+</table>
+<table class="firstColFixed">
+    <thead>
+    <tr>
+        <th colspan="2">{TR_DISTRIBUTION_INFO}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>{TR_DISTRIBUTION_ID}</td>
+        <td><?= ucfirst($this->config['DISTRO_ID']); ?></td>
+    </tr>
+    <tr>
+        <td>{TR_DISTRIBUTION_RELEASE}</td>
+        <td><?= $this->config['DISTRO_RELEASE']; ?></td>
+    </tr>
+    <tr>
+        <td>{TR_DISTRIBUTION_CODENAME}</td>
+        <td><?= ucfirst($this->config['DISTRO_CODENAME']); ?></td>
+    </tr>
+    </tbody>
+</table>
+<table class="firstColFixed">
+    <thead>
+    <tr>
         <th colspan="2">{TR_SYSTEM_INFO}</th>
     </tr>
     </thead>
@@ -34,7 +101,7 @@
     </tr>
     </tbody>
 </table>
-<h2 class="system_cpu"><span>{TR_CPU_INFO}</span></h2>
+<h2 class="tools"><span>{TR_CPU_INFO}</span></h2>
 <table class="firstColFixed">
     <thead>
     <tr>
