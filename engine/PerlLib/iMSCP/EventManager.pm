@@ -78,7 +78,6 @@ sub register
 {
     my ($self, $eventNames, $listener, $priority, $once) = @_;
 
-    local $@;
     eval {
         defined $eventNames or die 'Missing $eventNames parameter';
 
@@ -92,16 +91,12 @@ sub register
             return;
         }
 
-        defined $listener or die 'Missing  or undefined $listener parameter';
+        my $sub = blessed $listener
+                ? sub { $listener->$eventNames( @_ ); } # Object as event listener
+                : ( ref $listener eq 'CODE' ? $listener : die( 'Invalid $listener parameter. Expects a code reference' ) );
 
-        if ( blessed $listener ) {
-            $listener = sub { $listener->$eventNames( @_ ) } if blessed $listener;
-        } elsif ( ref $listener ne 'CODE' ) {
-            die 'Invalid $listener parameter. Expects a code reference';
-        }
-
-        ( $self->{'events'}->{$eventNames} ||= iMSCP::PriorityQueue->new() )->addItem( $listener, $priority );
-        $self->{'nonces'}->{$eventNames}->{$listener} = 1 if $once;
+        ( $self->{'events'}->{$eventNames} ||= iMSCP::PriorityQueue->new() )->addItem( $sub, $priority );
+        $self->{'nonces'}->{$eventNames}->{$sub} = 1 if $once;
     };
     if ( $@ ) {
         error( $@ );
@@ -145,7 +140,6 @@ sub unregister
 {
     my ($self, $listener, $eventName) = @_;
 
-    local $@;
     eval {
         defined $listener && ref $listener eq 'CODE' or die 'Missing or invalid $listener parameter';
 
