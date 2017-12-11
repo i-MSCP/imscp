@@ -777,7 +777,7 @@ sub buildConfFile
 
     if ( exists $parameters->{'user'} || exists $parameters->{'group'} ) {
         $rs = $fh->owner( $parameters->{'user'} // $main::imscpConfig{'ROOT_USER'}, $parameters->{'group'} // $main::imscpConfig{'ROOT_GROUP'} );
-        return ${$rs} if $rs;
+        return $rs if $rs;
     }
 
     if ( exists $parameters->{'mode'} ) {
