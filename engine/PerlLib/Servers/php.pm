@@ -52,7 +52,7 @@ my $INSTANCE;
 
 =item factory( )
 
- Create and return php server instance
+ Create and return a Servers::php instance
 
  Return Servers::php
 
@@ -113,18 +113,18 @@ sub askForPhpSapi
     my ($self, $dialog) = @_;
 
     my $value = main::setupGetQuestion( 'PHP_SAPI', $self->{'config'}->{'PHP_SAPI'} || ( iMSCP::Getopt->preseed ? 'fpm' : '' ));
-    my %choices = ( 'fpm', 'PHP through PHP fastCGI Process Manager (recommended)' );
+    my %choices = ( 'fpm', 'PHP through PHP fastCGI Process Manager (fpm SAPI)' );
 
     if ( $main::imscpConfig{'HTTPD_PACKAGE'} ne 'Servers::httpd::Apache2::Itk' ) {
         # Apache2 Fcgid module doesn't work with Apache's ITK MPM
         # https://lists.debian.org/debian-apache/2013/07/msg00147.html
-        $choices{'cgi'} = 'PHP through Apache2 Fcgid module';
+        $choices{'cgi'} = 'PHP through Apache2 Fcgid module (cgi SAPI)';
     } else {
         # Apache2 PHP module only works with Apache's prefork MPM
         # We allow it only with the Apache's ITK MPM because the Apache's prefork MPM
         # doesn't allow to constrain each individual vhost to a particular system user and group.
         # when used with Apache2 PHP module.
-        $choices{'apache2handler'} = 'PHP through Apache2 PHP module';
+        $choices{'apache2handler'} = 'PHP through Apache2 PHP module (apache2handler SAPI)';
     }
 
     if ( isStringInList( $main::reconfigure, 'php', 'servers', 'all', 'forced' )
@@ -360,6 +360,30 @@ sub install
             $rs ||= $self->buildConfFile( 'fpm/pool.conf.default', "/etc/php/$phpVersion/fpm/pool.d/www.conf", undef, $serverData );
             $rs == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
         }
+
+        # Build the Apache2 FCGID module configuration file
+        $httpd->buildConfFile(
+            "$self->{'cfgDir'}/cgi/apache_fcgid_module.conf",
+            "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/fcgid_imscp.conf",
+            {},
+            {
+                PHP_FCGID_MAX_REQUESTS_PER_PROCESS => $self->{'config'}->{'PHP_FCGID_MAX_REQUESTS_PER_PROCESS'} || 900,
+                PHP_FCGID_MAX_REQUEST_LEN          => $self->{'config'}->{'PHP_FCGID_MAX_REQUEST_LEN'} || 1073741824,
+                PHP_FCGID_IO_TIMEOUT               => $self->{'config'}->{'PHP_FCGID_IO_TIMEOUT'} || 600,
+                PHP_FCGID_MAX_PROCESS              => $self->{'config'}->{'PHP_FCGID_MAX_PROCESS'} || 1000,
+            }
+        ) == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
+
+        my $file = iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/fcgid.load" );
+        my $cfgTpl = $file->getAsRef();
+        defined $cfgTpl or die( sprintf( "Couldn't read %s file", $file->{'filename'} ));
+
+        $file = iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/fcgid_imscp.load" );
+        $file->set( "<IfModule !mod_fcgid.c>\n" . ${$cfgTpl} . "</IfModule>\n" );
+        $rs = $file->save();
+        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+        $rs ||= $file->mode( 0644 );
+        $rs == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
     };
     if ( $@ ) {
         error( $@ );
@@ -394,28 +418,12 @@ sub postinstall
                 getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
             );
         } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
-            # Build apache2 conffile for Fcgid module
-            $httpd->buildConfFile( "$self->{'cfgDir'}/cgi/apache_fcgid_module.conf", {},
-                { destination => "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/fcgid_imscp.conf" }
-            ) == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
-
-            my $file = iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/fcgid.load" );
-            my $cfgTpl = $file->get();
-            defined $cfgTpl or die( sprintf( "Couldn't read %s file", $file->{'filename'} ));
-
-            $file = iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/fcgid_imscp.load" );
-            $cfgTpl = "<IfModule !mod_fcgid.c>\n" . $cfgTpl . "</IfModule>\n";
-            $file->set( $cfgTpl );
-            $rs = $file->save();
-            $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-            $rs ||= $file->mode( 0644 );
-            $rs == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
-
             # Enable fcgid module
             $httpd->enableModules( qw/ fcgid fcgid_imscp / ) == 0 or die (
                 getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
             );
-        } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+        }
+        if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
             # Enable PHP-FPM service for selected PHP version
             iMSCP::Service->getInstance()->enable( "php$self->{'config'}->{'PHP_VERSION'}-fpm" );
 
@@ -1269,12 +1277,14 @@ sub beforeApache2BuildConfFile
 
     if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
         if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
-            @{$serverData}{qw/ PROXY_FCGI_PATH PROXY_FCGI_URL PROXY_TIMEOUT /} = (
+            @{$serverData}{qw/ PROXY_FCGI_PATH PROXY_FCGI_URL PROXY_FCGI_RETRY PROXY_FCGI_CONNECTION_TIMEOUT PROXY_FCGI_TIMEOUT /} = (
                     $self->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
                     ? "unix:/run/php/php$self->{'config'}->{'PHP_VERSION'}-fpm-$configLevel.sock|" : '',
                 'fcgi://' . ( $self->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
                     ? $configLevel : '127.0.0.1:' . ( $self->{'config'}->{'PHP_FPM_LISTEN_PORT_START'}+$moduleData->{'PHP_FPM_LISTEN_PORT'} ) ),
-                $moduleData->{'MAX_EXECUTION_TIME'}+10 # See IP-1762
+                0,
+                5,
+                $moduleData->{'MAX_EXECUTION_TIME'}+10
             );
 
             replaceBlocByRef( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF", $cfgTpl );
@@ -1294,8 +1304,8 @@ EOF
     # SECTION addons BEGIN.
 @{[ getBlocByRef( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", $cfgTpl ) ]}
     # SECTION php_fpm_proxy BEGIN.
-    <Proxy "{PROXY_FCGI_PATH}{PROXY_FCGI_URL}" retry=0>
-        ProxySet connectiontimeout=5 timeout={PROXY_TIMEOUT}
+    <Proxy "{PROXY_FCGI_PATH}{PROXY_FCGI_URL}" retry={PROXY_FCGI_RETRY}>
+        ProxySet connectiontimeout={PROXY_FCGI_CONNECTION_TIMEOUT} timeout={PROXY_FCGI_TIMEOUT}
     </Proxy>
     # SECTION php_fpm_proxy END.
     # SECTION addons END.
@@ -1320,7 +1330,15 @@ EOF
 
     if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
         if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
-            @{$serverData}{qw/ PHP_FCGI_STARTER_DIR FCGID_NAME /} = ( $self->{'config'}->{'PHP_FCGI_STARTER_DIR'}, $configLevel );
+            @{$serverData}{
+                qw/ PHP_FCGI_STARTER_DIR FCGID_NAME PHP_FCGID_BUSY_TIMEOUT PHP_FCGID_MIN_PROCESSES_PER_CLASS PHP_FCGID_MAX_PROCESS_PER_CLASS /
+            } = (
+                $self->{'config'}->{'PHP_FCGI_STARTER_DIR'},
+                $configLevel,
+                $moduleData->{'MAX_EXECUTION_TIME'}+10,
+                $self->{'config'}->{'PHP_FCGID_MIN_PROCESSES_PER_CLASS'} || 0,
+                $self->{'config'}->{'PHP_FCGID_MAX_PROCESS_PER_CLASS'} || 6
+            );
 
             replaceBlocByRef( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF", $cfgTpl );
         # SECTION document root addons BEGIN.
@@ -1332,6 +1350,14 @@ EOF
         FCGIWrapper {PHP_FCGI_STARTER_DIR}/{FCGID_NAME}/php-fcgi-starter
         # SECTION php_cgi END.
         # SECTION document root addons END.
+EOF
+            replaceBlocByRef( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", <<"EOF", $cfgTpl );
+    # SECTION addons BEGIN.
+@{[ getBlocByRef( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", $cfgTpl ) ]}
+    FcgiBusyTimeout {PHP_FCGID_BUSY_TIMEOUT}
+    FcgidMinProcessesPerClass {PHP_FCGID_MIN_PROCESSES_PER_CLASS}
+    FcgidMaxProcessesPerClass {PHP_FCGID_MAX_PROCESS_PER_CLASS}
+    # SECTION addons END.
 EOF
         } else {
             replaceBlocByRef( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF", $cfgTpl );

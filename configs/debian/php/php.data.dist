@@ -2,8 +2,12 @@
 #### PHP common parameters
 ##
 
+# Either apache2handler, cgi or fpm
 PHP_SAPI =
+
+# Either per_domain, per_site or per_user
 PHP_CONFIG_LEVEL =
+
 PHP_CONF_DIR_PATH =
 PHP_PEAR_DIR = /usr/share/php
 
@@ -13,22 +17,26 @@ PHP_VERSION_FULL =
 
 ##
 ### PHP OPcode cache (OPcache) parameters
-### Note: Only relevant if you use PHP as Apache2 module (ITK), or through PHP-FPM
+### Only relevant with the apache2handler or fpm PHP SAPI
 ##
 
 PHP_OPCODE_CACHE_ENABLED = 1
 
 # Memory in MiB
+# Default value fits for small configurations.
+# You should raise this value if you have enough memory.
 PHP_OPCODE_CACHE_MAX_MEMORY = 32
 
 ##
 ### PHP APC userland cache (APCu) parameters
-### Note: Only relevant if you use PHP as Apache2 module (ITK), or through PHP-FPM
+### Only relevant with the apache2handler or fpm PHP SAPI
 ##
 
 PHP_APCU_CACHE_ENABLED = 1
 
 # Memory in MiB
+# Default value fits for small configurations.
+# You should raise this value if you have enough memory.
 PHP_APCU_CACHE_MAX_MEMORY = 32
 
 ##
@@ -38,23 +46,50 @@ PHP_APCU_CACHE_MAX_MEMORY = 32
 PHP_CLI_BIN_PATH =
 
 ##
-#### PHP FCGI specific
+#### PHP FCGI specific (PHP CGI through Apache2 mod_fcgid module)
 ##
+
+#
+## Global parameters
+#
 
 PHP_FCGI_BIN_PATH =
 PHP_FCGI_CHILDREN = 0
 PHP_FCGI_MAX_REQUESTS = 1000
 PHP_FCGI_STARTER_DIR = /var/www/fcgi
 
+# Max requests handled by each FastCGI application
+# Must be lower than the PHP_FCGI_MAX_REQUESTS parameter value
+PHP_FCGID_MAX_REQUESTS_PER_PROCESS = 900
+
+# Maximum HTTP request length
+PHP_FCGID_MAX_REQUEST_LEN = 1073741824
+
+# Maximum number of FastCGI application processes
+PHP_FCGID_MAX_PROCESS = 1000
+
+# Communication timeout to FastCGI server
+PHP_FCGID_IO_TIMEOUT = 600
+
+#
+## Vhost parameters
+#
+
+# Min process count of one class of FastCGI application
+PHP_FCGID_MIN_PROCESSES_PER_CLASS = 0
+
+# Max process count of one class of FastCGI application
+PHP_FCGID_MAX_PROCESS_PER_CLASS = 6
+
 ##
-#### PHP FPM specific
+#### PHP FPM specific (PHP through PHP FastCGI Process Manager (FPM) and Apache2 mod_proxy_fcgi module)
 ##
 
 PHP_FPM_BIN_PATH =
 PHP_FPM_POOL_DIR_PATH =
 
 #
-## FPM global parameters
+## Global parameters
 #
 
 PHP_FPM_LOG_LEVEL = error
@@ -65,7 +100,7 @@ PHP_FPM_PROCESS_MAX = 0
 PHP_FPM_RLIMIT_FILES = 4096
 
 #
-## PHP-FPM pool parameters
+## Pool parameters
 #
 
 # Listen mode (FPM FastCGI addresse type):
