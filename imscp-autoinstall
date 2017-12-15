@@ -22,40 +22,47 @@
 $< == 0 or die( "[\x1b[0;31mERROR\x1b[0m] The i-MSCP installer must be run as root user.\n" );
 system( 'clear 2>/dev/null' );
 
-unless ( grep (/^-(?:[^-]*?[hs?][^-]*|-(?:help|skip-distro-packages))$/, @ARGV) ) {
+`which apt-get 2>/dev/null` or die( 'i-MSCP only supports Debian-Like OS.' );
+
+if ( !-f '/etc/imscp/imscp.conf' || !grep (/^-(?:[^-]*?[hs?][^-]*|-(?:help|skip-distro-packages))$/, @ARGV) ) {
     local $ENV{'LANG'} = 'C.UTF-8';
 
-    my $noprompt = grep(/^-(?:[^-]*?n[^-]*|-noprompt)$/, @ARGV);
-    system( 'clear 2>/dev/null' );
+    # List of pre-required distribution packages
+    my @distPackages = qw/
+        apt-transport-https build-essential ca-certificates debconf-utils dialog dirmngr libbit-vector-perl libcapture-tiny-perl
+        libclass-autouse-perl libdata-compare-perl libdata-validate-domain-perl libfile-homedir-perl liblchown-perl liblist-moreutils-perl
+        libnet-ip-perl libnet-domain-tld-perl libscalar-defer-perl libsort-versions-perl libxml-simple-perl lsb-release policyrcd-script-zg2 wget
+        whiptail /;
 
-    my @progressCmd;
-    if ( !$noprompt && chomp( @progressCmd = `which debconf-apt-progress 2>/dev/null` ) ) {
-        $ENV{'DEBIAN_FRONTEND'} = 'dialog';
-        push @progressCmd, '--';
-    }
+    # List of pre-required Perl modules
+    # Only Perl modules that are not available as package in all distributions
+    my @perlModules = qw/ Array::Utils Data::Clone /;
 
-    unless ( @progressCmd ) {
-        print "Satisfying pre-requisites for the i-MSCP installer\n";
-        print " [\x1b[0;34mINFO\x1b[0m] Updating package index files ...\n";
-    }
+    print "Satisfying pre-requisites for the i-MSCP installer\n";
+    print " [\x1b[0;34mINFO\x1b[0m] Updating package index files ...\n";
 
-    system( @progressCmd, 'apt-get', 'update' ) == 0 or die( "[\x1b[0;31mERROR\x1b[0m] Couldn't update APT index.\n" );
+    system( 'apt-get', '--quiet=1', 'update' ) == 0 or die( "[\x1b[0;31mERROR\x1b[0m] Couldn't update APT index.\n" );
+    print " [\x1b[0;32mOK\x1b[0m] Package index files were successfuly updated.\n";
 
-    print " [\x1b[0;34mINFO\x1b[0m] Upgrading distribution packages (dist-upgrade) ...\n" unless @progressCmd;
-
-    system( @progressCmd, 'apt-get', '--assume-yes', '--no-install-recommends', 'dist-upgrade' ) == 0 or die(
+    print " [\x1b[0;34mINFO\x1b[0m] Upgrading distribution packages (dist-upgrade) ...\n";
+    system( 'apt-get', '--assume-yes', '--no-install-recommends', '--quiet=1', 'dist-upgrade' ) == 0 or die(
         "[\x1b[0;31mERROR\x1b[0m] Couldn't upgrade distribution packages.\n"
     );
+    print " [\x1b[0;32mOK\x1b[0m] Distribution package were successfuly updated.\n";
 
-    print " [\x1b[0;34mINFO\x1b[0m] Installing pre-required distribution packages ...\n" unless @progressCmd;
+    print " [\x1b[0;34mINFO\x1b[0m] Installing pre-required distribution packages ...\n";
+    system( 'apt-get', '--assume-yes', '--no-install-recommends', '--quiet=1', 'install', @distPackages ) == 0 or die(
+        "[\x1b[0;31mERROR\x1b[0m] Couldn't install pre-required distribution packages.\n"
+    );
+    print " [\x1b[0;32mOK\x1b[0m] Pre-required package were successfuly installed.\n";
 
-    system(
-        @progressCmd, 'apt-get', '--assume-yes', '--no-install-recommends', 'install', 'debconf-utils', 'libclone-perl', 'libdata-compare-perl',
-        'perl', 'wget', 'whiptail'
-    ) == 0 or die( "[\x1b[0;31mERROR\x1b[0m] Couldn't install pre-required distribution packages.\n" );
+    print " [\x1b[0;34mINFO\x1b[0m] Installing Perl packages from CPAN ...\n";
+    system( "echo 'yes' | cpan -T @perlModules" ) == 0 or die( "[\x1b[0;31mERROR\x1b[0m] Couldn't install perl package from CPAN.\n" );
+    print " [\x1b[0;32mOK\x1b[0m] Perl package were successfuly installed/updated.\n";
+
+    system( 'clear 2>/dev/null' );
 }
 
-# Execute the real installer
 require File::Basename;
 chdir( File::Basename::dirname( __FILE__ )) or die( sprintf( "Couldn't chdir: %s", $! || 'Unknown error' ));
 exec( '/usr/bin/perl', 'autoinstaller/installer.pl', @ARGV );

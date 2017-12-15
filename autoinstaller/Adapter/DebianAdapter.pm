@@ -22,8 +22,7 @@ package autoinstaller::Adapter::DebianAdapter;
 use strict;
 use warnings;
 use Array::Utils qw/ array_minus unique /;
-use autouse 'iMSCP::Stepper' => qw/ startDetail endDetail step /;
-use Class::Autouse qw/ :nostat File::HomeDir /;
+use File::HomeDir;
 use Fcntl qw/ :flock /;
 use File::Temp;
 use FindBin;
@@ -35,8 +34,10 @@ use iMSCP::Execute qw/ execute executeNoWait /;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
+use iMSCP::Stepper qw/ startDetail endDetail step /;
 use iMSCP::TemplateParser qw/ processByRef /;
 use iMSCP::Umask;
+use XML::Simple;
 use version;
 use parent 'autoinstaller::Adapter::AbstractAdapter';
 
@@ -47,45 +48,6 @@ use parent 'autoinstaller::Adapter::AbstractAdapter';
 =head1 PUBLIC METHODS
 
 =over 4
-
-=item installPreRequiredPackages( )
-
- Install pre-required packages
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub installPreRequiredPackages
-{
-    my ($self) = @_;
-
-    my $rs = $self->_installAPTsourcesList();
-    $rs ||= $self->_updatePackagesIndex();
-    return $rs if $rs;
-
-    local $ENV{'DEBIAN_FRONTEND'} = 'dialog';
-    local $ENV{'UCF_FORCE_CONFFNEW'} = 1;
-    local $ENV{'UCF_FORCE_CONFFMISS'} = 1;
-    local $ENV{'LANG'} = 'C';
-
-    my $stdout;
-    $rs = execute(
-        [
-            ( !iMSCP::Getopt->noprompt && iMSCP::ProgramFinder::find( 'debconf-apt-progress' )
-                ? ( 'debconf-apt-progress', '--logstderr', '--' ) : ()
-            ),
-            'apt-get', '--assume-yes', '--option', 'DPkg::Options::=--force-confnew',
-            '--option', 'DPkg::Options::=--force-confmiss', '--auto-remove', '--purge', '--no-install-recommends',
-            'install', @{$self->{'preRequiredPackages'}}
-        ],
-        ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef ),
-        \ my $stderr
-    );
-    error( sprintf( "Couldn't install pre-required packages: %s", $stderr || 'Unknown error' )) if $rs;
-
-    $rs ||= $self->{'eventManager'}->trigger( 'afterInstallPreRequiredPackages' );
-}
 
 =item preBuild( \@steps )
 
@@ -106,6 +68,7 @@ sub preBuild
         (
             [ sub { $self->_processPackagesFile() }, 'Processing distribution packages file' ],
             [ sub { $self->_prefillDebconfDatabase() }, 'Pre-fill Debconf database' ],
+            [ sub { $self->_installAPTsourcesList();}, 'Installing new APT sources.list(5) file' ],
             [ sub { $self->_addAPTrepositories() }, 'Adding APT repositories' ],
             [ sub { $self->_processAptPreferences() }, 'Processing APT preferences' ],
             [ sub { $self->_updatePackagesIndex() }, 'Updating packages index' ]
@@ -346,11 +309,6 @@ sub _init
     my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'preRequiredPackages'} = [
-        'apt-transport-https', 'binutils', 'ca-certificates', 'dialog', 'dirmngr', 'dpkg-dev', 'libbit-vector-perl', 'libclass-insideout-perl',
-        'liblchown-perl', 'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'lsb-release',
-        'policyrcd-script-zg2'
-    ];
     $self->{'aptRepositoriesToAdd'} = [];
     $self->{'aptPreferences'} = [];
     $self->{'packagesToInstall'} = [];
@@ -480,7 +438,6 @@ sub _processPackagesFile
         return 1;
     }
 
-    eval "use XML::Simple; 1" or die( $@ );
     my $xml = XML::Simple->new( NoEscape => 1 );
     my $pkgData = eval {
         $xml->XMLin(
@@ -597,9 +554,6 @@ EOF
             }
         }
 
-        # sort list of supported alternatives
-        @supportedAlts = sort @supportedAlts;
-
         # Resets alternative if the selected alternative is no longer available
         $sAlt = '' if $sAlt ne '' && !grep($_ eq $sAlt, @supportedAlts);
 
@@ -625,7 +579,7 @@ EOF
         if ( @supportedAlts > 1 && $needDialog ) {
             $dialog->set( 'no-cancel', '' );
             my %choices;
-            @choices{ values @supportedAlts } = map { $data->{$_}->{'description'} || $_ } @supportedAlts;
+            @choices{ values @supportedAlts } = map { $data->{$_}->{'description'} // $_ } @supportedAlts;
 
             ( my $ret, $sAlt ) = $dialog->radiolist( <<"EOF", \%choices, $sAlt );
 Please make your choice for the $section alternative:
@@ -1000,9 +954,7 @@ $qOwner $qNamePrefix/remove-data-dir boolean false
 $qOwner $qNamePrefix/postrm_remove_databases boolean false
 EOF
         # Preset root SQL password using value from preseed file if required
-        if ( iMSCP::Getopt->preseed ) {
-            exit 5 unless exists $main::questions{'SQL_ROOT_PASSWORD'} & $main::questions{'SQL_ROOT_PASSWORD'} ne '';
-
+        if ( iMSCP::Getopt->preseed && $main::questions{'SQL_ROOT_PASSWORD'} ne '') {
             $fileContent .= <<"EOF";
 $qOwner $qNamePrefix/root_password password $main::questions{'SQL_ROOT_PASSWORD'}
 $qOwner $qNamePrefix/root_password_again password $main::questions{'SQL_ROOT_PASSWORD'}

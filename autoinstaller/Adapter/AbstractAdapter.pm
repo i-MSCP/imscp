@@ -36,19 +36,6 @@ use parent 'Common::Object';
 
 =over 4
 
-=item installPreRequiredPackages( )
-
- Install pre-required packages
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub installPreRequiredPackages
-{
-    0;
-}
-
 =item preBuild( \@steps )
 
  Process preBuild tasks

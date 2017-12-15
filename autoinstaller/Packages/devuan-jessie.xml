@@ -255,33 +255,25 @@
         <package>mysql-common</package>
     </sql>
     <perl>
-        <package>perl</package>
         <package>libcrypt-blowfish-perl</package>
         <package>libcrypt-cbc-perl</package>
         <package>libcrypt-eksblowfish-perl</package>
         <package>libcrypt-rijndael-perl</package>
         <package>libdata-validate-ip-perl</package>
-        <package>libdate-simple-perl</package>
         <package>libdatetime-perl</package>
         <package>libdbd-mysql-perl</package>
         <package>libdbi-perl</package>
         <package>libdigest-md5-perl</package>
         <package>libemail-valid-perl</package>
         <package>libfile-chmod-perl</package>
-        <package>libfile-copy-recursive-perl</package>
-        <package>libfile-homedir-perl</package>
         <package>libhash-merge-perl</package>
         <package>libjson-perl</package>
-        <package>libmailtools-perl</package>
+        <package>libjson-xs-perl</package>
         <package>libmime-tools-perl</package>
-        <package>libnet-dns-perl</package>
         <package>libnet-libidn-perl</package>
         <package>libsort-naturally-perl</package>
-        <package>libtimedate-perl</package>
-        <package>libunix-mknod-perl</package>
         <package>libwww-perl</package>
         <package>libxml-parser-perl</package>
-        <package>libxml-simple-perl</package>
     </perl>
     <other>
         <package>apt-src</package>
@@ -289,33 +281,18 @@
         <package>bash</package>
         <package>bash-completion</package>
         <package>bzip2</package>
-        <package>ca-certificates</package>
-        <package>coreutils</package>
         <package>cron</package>
         <package>curl</package>
         <package>devscripts</package>
-        <package>dnsutils</package>
-        <package>dpkg-dev</package>
-        <package>findutils</package>
-        <package>gcc</package>
         <package>git</package>
         <package>gzip</package>
         <package>ifupdown</package>
         <package>iptables</package>
-        <package>iproute</package>
-        <package>ispell</package>
-        <package>libc6-dev</package>
-        <package>locales-all</package>
         <package>lzma</package>
-        <package>make</package>
-        <package>mawk</package>
-        <package>openssl</package>
-        <package>patch</package>
+        <package>net-tools</package>
         <package>pbuilder</package>
         <package>pbzip2</package>
         <package>pigz</package>
-        <package>ssh</package>
-        <package>sudo</package>
         <package>tar</package>
         <package>unzip</package>
     </other>

@@ -25,7 +25,6 @@ package autoinstaller::Functions;
 
 use strict;
 use warnings;
-use autouse 'iMSCP::Stepper' => qw/ step /;
 use File::Basename;
 use File::Find qw/ find /;
 use iMSCP::Bootstrapper;
@@ -39,8 +38,10 @@ use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::LsbRelease;
-use iMSCP::Umask;
+use iMSCP::Stepper qw/ step /;
 use iMSCP::Rights;
+use iMSCP::Umask;
+use XML::Simple;
 use version;
 use parent 'Exporter';
 
@@ -132,14 +133,10 @@ sub build
         $main::skippackages = 0;
     }
 
-    my $rs = 0;
-    $rs = _installPreRequiredPackages() unless $main::skippackages;
-    return $rs if $rs;
-
     my $dialog = iMSCP::Dialog->getInstance();
 
     unless ( iMSCP::Getopt->noprompt || $main::reconfigure ne 'none' ) {
-        $rs = _showWelcomeMsg( $dialog );
+        my $rs = _showWelcomeMsg( $dialog );
         return $rs if $rs;
 
         if ( %main::imscpOldConfig ) {
@@ -151,8 +148,9 @@ sub build
         return $rs if $rs;
     }
 
-    $rs = _askInstallerMode( $dialog ) unless iMSCP::Getopt->noprompt || $main::buildonly
-        || $main::reconfigure ne 'none';
+    my $rs = 0;
+    $rs = _askInstallerMode( $dialog ) unless iMSCP::Getopt->noprompt || $main::buildonly || $main::reconfigure ne 'none';
+    return $rs if $rs;
 
     my @steps = (
         [ \&_buildDistributionFiles, 'Building distribution files' ],
@@ -163,7 +161,7 @@ sub build
         [ \&_savePersistentData, 'Saving persistent data' ]
     );
 
-    $rs ||= $eventManager->trigger( 'preBuild', \@steps );
+    $rs = $eventManager->trigger( 'preBuild', \@steps );
     $rs ||= _getDistributionAdapter()->preBuild( \@steps );
     return $rs if $rs;
 
@@ -442,8 +440,6 @@ sub _confirmDistro
 \\Z1@{[ ucfirst $main::imscpConfig{'DISTRO_ID'} ]}  $main::imscpConfig{'DISTRO_RELEASE'}/@{[ $main::imscpConfig{'DISTRO_CODENAME'} =~ s/\b(\w)/\u$1/gr ]} not supported yet\\Zn
 
 We are sorry but no packages file has been found for your @{[ ucfirst $main::imscpConfig{'DISTRO_ID'} ]} version.
-
-This either means that your distribution is far too recent or that support for it has been dropped.
 
 Thanks for choosing i-MSCP.
 EOF
@@ -762,6 +758,7 @@ sub _removeObsoleteFiles
         "$main::imscpConfig{'CONF_DIR'}/vsftpd/imscp_allow_writeable_root.patch",
         "$main::imscpConfig{'CONF_DIR'}/vsftpd/imscp_pthread_cancel.patch",
         "$main::imscpConfig{'CONF_DIR'}/apache/parts/php5.itk.ini",
+        "$main::imscpConfig{'CONF_DIR'}/apache/vlogger.sql",
         "$main::imscpConfig{'CONF_DIR'}/dovecot/dovecot.conf.2.0",
         "$main::imscpConfig{'CONF_DIR'}/dovecot/dovecot.conf.2.1",
         "$main::imscpConfig{'CONF_DIR'}/frontend/00_master.conf",
@@ -777,6 +774,7 @@ sub _removeObsoleteFiles
         "$main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar",
         "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/composer.phar",
         "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf",
+        "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys",
         '/etc/default/imscp_panel',
         '/etc/init/php5-fpm.override',
         '/etc/logrotate.d/imscp',
@@ -806,8 +804,6 @@ sub _processXmlInstallFile
 {
     my ($installFilePath) = @_;
 
-    eval "use XML::Simple; 1";
-    die( sprintf( "Couldn't load the XML::Simple perl module: %s", $@ )) if $@;
     my $xml = XML::Simple->new( ForceArray => 1, ForceContent => 1 );
     my $node = eval { $xml->XMLin( $installFilePath, VarAttr => 'export' ) };
     if ( $@ ) {
@@ -938,33 +934,38 @@ sub _processCopyConfigNode
         return iMSCP::File->new( filename => $syspath )->delFile();
     }
 
-    my ($name, $path) = fileparse( $node->{'content'} );
+    my ($filename, $dirs) = fileparse( $node->{'content'} );
 
-    # If $name isn't in current directory, take it from master configuration directory
-    my $source = -e $name ? $name : $CWD =~ s%^($FindBin::Bin/configs/)$main::imscpConfig{'DISTRO_ID'}%${1}debian%r . "/$name";
+    my $source = $filename;
+    if ( $main::imscpConfig{'DISTRO_ID'} ne 'debian' ) {
+        # If $filename isn't in current directory, take it from master configuration directory
+        $source = $CWD =~ s%^($FindBin::Bin/configs/)$main::imscpConfig{'DISTRO_ID'}%${1}debian%r . "/$filename" unless -e $filename;
+    }
 
-    # Override target name if requested
-    $name = $node->{'copy_as'} if defined $node->{'copy_as'};
+    # Override target filename if requested
+    $filename = $node->{'copy_as'} if defined $node->{'copy_as'};
+
+    my $target = File::Spec->canonpath( "$dirs/$filename" );
 
     if ( -d $source ) {
-        iMSCP::Dir->new( dirname => $source )->rcopy( "$path/$name", { preserve => 'no' } );
+        iMSCP::Dir->new( dirname => $source )->rcopy( $target, { preserve => 'no' } );
     } else {
-        my $rs = iMSCP::File->new( filename => $source )->copyFile( "$path/$name", { preserve => 'no' } );
+        my $rs = iMSCP::File->new( filename => $source )->copyFile( $target, { preserve => 'no' } );
         return $rs if $rs;
     }
 
     return 0 unless defined $node->{'user'} || defined $node->{'group'} || defined $node->{'mode'};
 
-    my $file = iMSCP::File->new( filename => -e "$path/$name" ? "$path/$name" : $path );
+    my $handle = -l $target || !-d _ ? iMSCP::File->new( filename => $target ) : iMSCP::Dir->new( dirname => $target );
 
     if ( defined $node->{'user'} || defined $node->{'group'} ) {
-        my $rs = $file->owner(
+        my $rs = $handle->owner(
             ( defined $node->{'user'} ? _expandVars( $node->{'user'} ) : -1 ), ( defined $node->{'group'} ? _expandVars( $node->{'group'} ) : -1 )
         );
         return $rs if $rs;
     }
 
-    defined $node->{'mode'} ? $file->mode( oct( $node->{'mode'} )) : 0;
+    defined $node->{'mode'} ? $handle->mode( oct( $node->{'mode'} )) : 0;
 }
 
 =item _processCopyNode( \%node )
@@ -985,27 +986,28 @@ sub _processCopyNode
 {
     my ($node) = @_;
 
-    my ($name, $path) = fileparse( $node->{'content'} );
+    my ($filename, $dirs) = fileparse( $node->{'content'} );
+    my $target = File::Spec->canonpath( "$dirs/$filename" );
 
-    if ( -d $name ) {
-        iMSCP::Dir->new( dirname => $name )->rcopy( "$path/$name", { preserve => 'no' } );
+    if ( -d $filename ) {
+        iMSCP::Dir->new( dirname => $filename )->rcopy( $target, { preserve => 'no' } );
     } else {
-        my $rs = iMSCP::File->new( filename => $name )->copyFile( $path, { preserve => 'no' } );
+        my $rs = iMSCP::File->new( filename => $filename )->copyFile( $target, { preserve => 'no' } );
         return $rs if $rs;
     }
 
     return 0 unless defined $node->{'user'} || defined $node->{'group'} || defined $node->{'mode'};
 
-    my $file = iMSCP::File->new( filename => -e "$path/$name" ? "$path/$name" : $path );
+    my $handle = -l $target || !-d _ ? iMSCP::File->new( filename => $target ) : iMSCP::Dir->new( dirname => $target );
 
     if ( defined $node->{'user'} || defined $node->{'group'} ) {
-        my $rs = $file->owner(
+        my $rs = $handle->owner(
             ( defined $node->{'user'} ? _expandVars( $node->{'user'} ) : -1 ), ( defined $node->{'group'} ? _expandVars( $node->{'group'} ) : -1 )
         );
         return $rs if $rs;
     }
 
-    defined $node->{'mode'} ? $file->mode( oct( $node->{'mode'} )) : 0;
+    defined $node->{'mode'} ? $handle->mode( oct( $node->{'mode'} )) : 0;
 }
 
 =item _getDistributionAdapter( )
