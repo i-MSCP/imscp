@@ -180,7 +180,6 @@ SERVERS
     Rewritten: Servers::ftpd::postfix::getTraffic() routine: Avoid IO operations (AMAP), Reduce memory consumption
     Rewritten: Servers::ftpd::proftpd::getTraffic() routine: Avoid IO operations (AMAP); Reduce memory consumption
     Rewritten: Servers::ftpd::vsftpd::getTraffic() routine: Avoid IO operations (AMAP); Reduce memory consumption
-    
 
 VAGRANT
     Enhancement: Make users able to choice between many distributions

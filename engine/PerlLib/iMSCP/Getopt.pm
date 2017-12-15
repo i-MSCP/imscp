@@ -33,8 +33,8 @@ $Text::Wrap::columns = 80;
 $Text::Wrap::break = qr/[\s\n\|]/;
 
 my $options = fields::new( 'iMSCP::Getopt' );
-my $optionHelp = '';
-my $showUsage;
+my $OPTION_HELP = '';
+my $SHOW_USAGE;
 
 =head1 DESCRIPTION
 
@@ -65,8 +65,7 @@ sub parse
 {
     my ($class, $usage, @options) = @_;
 
-    $showUsage = sub {
-        my $exitCode = shift || 0;
+    $SHOW_USAGE = sub {
         print STDERR wrap( '', '', <<"EOF" );
 
 $usage
@@ -81,9 +80,8 @@ $usage
  -v,    --verbose               Enable verbose mode.
  -x,    --fix-permissions       Fix permissions.
 
-$optionHelp
+$OPTION_HELP
 EOF
-        exit $exitCode;
     };
 
     # Do not load Getopt::Long if not needed
@@ -130,14 +128,13 @@ sub parseNoDefault
 {
     my ($class, $usage, @options) = @_;
 
-    $showUsage = sub {
+    $SHOW_USAGE = sub {
         print STDERR wrap( '', '', <<"EOF" );
 
 $usage
  -?,-h  --help          Show this help.
 
 EOF
-        exit 1;
     };
 
     # Do not load Getopt::Long if not needed
@@ -165,11 +162,12 @@ EOF
 
 sub showUsage
 {
-    ref $showUsage eq 'CODE' or die( 'showUsage( ) is not defined.' );
-    $showUsage->();
+    ref $SHOW_USAGE eq 'CODE' or die( 'showUsage( ) is not defined.' );
+    $SHOW_USAGE->();
+    exit 1;
 }
 
-our @reconfigurationItems = sort(
+my @RECONFIGURATION_ITEMS = sort(
     'all', 'servers', 'httpd', 'mta', 'po', 'ftpd', 'named', 'sql',
     'hostnames', 'system_hostname', 'panel_hostname', 'panel_ports',
     'primary_ip', 'admin', 'admin_credentials', 'admin_email', 'php',
@@ -194,7 +192,7 @@ sub reconfigure
     return $options->{'reconfigure'} ||= 'none' unless defined $item;
 
     if ( $item eq 'help' ) {
-        $optionHelp = <<'EOF';
+        $OPTION_HELP = <<'EOF';
 Reconfigure option usage:
 
 Without any argument, this option allows to reconfigure all items. You can reconfigure a specific item by passing it name as argument.
@@ -202,13 +200,13 @@ Without any argument, this option allows to reconfigure all items. You can recon
 Available items are:
 
 EOF
-        $optionHelp .= ' ' . ( join '|', @reconfigurationItems );
+        $OPTION_HELP .= ' ' . ( join '|', @RECONFIGURATION_ITEMS );
         die();
     } elsif ( $item eq '' ) {
         $item = 'all';
     }
 
-    $item eq 'none' || grep($_ eq $item, @reconfigurationItems) or die(
+    $item eq 'none' || grep($_ eq $item, @RECONFIGURATION_ITEMS) or die(
         sprintf( "Error: '%s' is not a valid argument for the --reconfigure option.", $item )
     );
     $options->{'reconfigure'} = $item;
