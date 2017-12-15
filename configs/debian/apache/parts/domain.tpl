@@ -24,7 +24,7 @@
     # SECTION suexec BEGIN.
     SuexecUserGroup {USER} {GROUP}
     # SECTION suexec END.
-    
+
     <Directory {DOCUMENT_ROOT}>
         DirectoryIndex index.html index.xhtml index.htm
         Options FollowSymLinks
