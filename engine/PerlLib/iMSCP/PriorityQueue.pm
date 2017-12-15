@@ -25,6 +25,7 @@ package iMSCP::PriorityQueue;
 
 use strict;
 use warnings;
+use Data::Clone qw/ clone /;
 use Data::Compare;
 use List::Util qw/ max /;
 use Scalar::Util qw / looks_like_number /;
@@ -72,7 +73,7 @@ sub hasItem
 
     for my $items( values %{$self->{'queue'}} ) {
         for ( @{$items} ) {
-            return 1 if $item eq $_;
+            return 1 if Compare $item, $_;
         }
     }
 
@@ -132,13 +133,13 @@ sub removeItem
                 $self->{'highest_priority'} = $self->{'count_items'} ? max keys( %{$self->{'queue'}} ) : undef;
             }
 
-            # Reset hash iterator; see http://www.perlmonks.org/?node_id=294285
+            # Reset internal hash iterator; see http://www.perlmonks.org/?node_id=294285
             keys %{$self->{'queue'}};
             return 1;
         }
     }
 
-    # Reset hash iterator; see http://www.perlmonks.org/?node_id=294285
+    # Reset internal hash iterator; see http://www.perlmonks.org/?node_id=294285
     keys %{$self->{'queue'}};
     return;
 }

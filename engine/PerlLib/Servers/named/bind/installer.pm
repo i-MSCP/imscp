@@ -263,7 +263,7 @@ sub askLocalDnsResolver
     if ( isStringInList( $main::reconfigure, 'resolver', 'named', 'servers', 'all', 'forced' )
         || !isStringInList( $value, keys %choices )
     ) {
-        ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'no' );
+        ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'yes' );
 Do you want to use the local DNS resolver?
 \\Z \\Zn
 EOF

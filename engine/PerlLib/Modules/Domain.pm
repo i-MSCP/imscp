@@ -161,7 +161,7 @@ sub restore
         # Restore know databases only
         local $self->{'_dbh'}->{'RaiseError'} = 1;
 
-        my $rows = iMSCP::Database->factory()->getRawDb()->selectall_arrayref(
+        my $rows = iMSCP::Database->getInstance()->getRawDb()->selectall_arrayref(
             'SELECT sqld_name FROM sql_database WHERE domain_id = ?', { Slice => {} }, $self->{'domain_id'}
         );
 
@@ -419,14 +419,14 @@ sub _restoreDatabase
 host = $main::imscpConfig{'DATABASE_HOST'}
 port = $main::imscpConfig{'DATABASE_PORT'}
 user = "@{ [ $main::imscpConfig{'DATABASE_USER'} =~ s/"/\\"/gr ] }"
-password = "@{ [ decryptRijndaelCBC($main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'}) =~ s/"/\\"/gr ] }"
+password = "@{ [ decryptRijndaelCBC($main::imscpKEY, $main::imscpIV, $main::imscpConfig{'DATABASE_PASSWORD'}) =~ s/"/\\"/gr ] }"
 max_allowed_packet = 500M
 EOF
         $DEFAULT_MYSQL_CONFFILE->flush();
     }
 
     my @cmd = (
-        $cmd, escapeShell( $dbDumpFilePath ), '|', "mysql --defaults-file=$DEFAULT_MYSQL_CONFFILE",
+        $cmd, escapeShell( $dbDumpFilePath ), '|', "mysql --defaults-extra-file=$DEFAULT_MYSQL_CONFFILE",
         escapeShell( $dbName )
     );
     my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );

@@ -48,6 +48,7 @@ CONFIG
     Removed: Support for SQL server versions that are too old (MySQL < 5.7, MariaDB < 10.1, Percona < 5.7)
     Removed: Useless `DATABASE_TYPE` parameter (imscp.conf)
     Removed: Useless imscp LOGROTATE(8) configuration file
+    Review: Make use of dedicated files (PHP/Perl) for storing encryption key and initialization vector
 
 CONTRIB
     Added: get_imscp_master_sql_user_pwd.pl script: Print current i-MSCP master SQL user (imscp_user) password

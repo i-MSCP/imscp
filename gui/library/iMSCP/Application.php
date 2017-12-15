@@ -607,22 +607,26 @@ class Application
     {
         $cache = $this->getCache();
         $config = $this->getConfig();
-        $db_pass_key = $cache->load('iMSCP_DATABASE_KEY');
-        $db_pass_iv = $cache->load('iMSCP_DATABASE_IV');
+        $imscpKEY = $cache->load('iMSCP_DATABASE_KEY');
+        $imscpIV = $cache->load('iMSCP_DATABASE_IV');
 
-        if (empty($db_pass_key) || empty($db_pass_iv)) {
-            eval(@file_get_contents($this->getConfig()['CONF_DIR'] . '/imscp-db-keys'));
+        if (empty($imscpKEY) || empty($imscpIV)) {
+            $cache->remove('DATABASE_PASSWORD_PLAIN');
+            $keyFile = $config['CONF_DIR'] . '/imscp-db-keys.php';
 
-            if (empty($db_pass_key) || empty($db_pass_iv)) {
-                throw new iMSCPException('Missing encryption key and/or initialization vector.');
+            if (!(@include_once $keyFile) || empty($imscpKEY) || empty($imscpIV)) {
+                throw new iMSCPException(sprintf(
+                    'Missing or invalid key file. Delete the %s key file if any and run the imscp-reconfigure script.',
+                    $config['CONF_DIR'] . '/imscp-db-keys.php'
+                ));
             }
 
-            $cache->save($db_pass_key, 'iMSCP_DATABASE_KEY');
-            $cache->save($db_pass_iv, 'iMSCP_DATABASE_IV');
+            $cache->save($imscpKEY, 'iMSCP_DATABASE_KEY');
+            $cache->save($imscpIV, 'iMSCP_DATABASE_IV');
         }
 
         if (!($plainPasswd = $cache->load('DATABASE_PASSWORD_PLAIN'))) {
-            $plainPasswd = Crypt::decryptRijndaelCBC($db_pass_key, $db_pass_iv, $config['DATABASE_PASSWORD']);
+            $plainPasswd = Crypt::decryptRijndaelCBC($imscpKEY, $imscpIV, $config['DATABASE_PASSWORD']);
             $cache->save($plainPasswd, 'DATABASE_PASSWORD_PLAIN');
         }
 

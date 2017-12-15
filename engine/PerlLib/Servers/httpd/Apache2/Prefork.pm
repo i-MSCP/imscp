@@ -61,13 +61,11 @@ sub _setupModules
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2SetupModules', __PACKAGE__ );
-    $rs ||= $self->disableModules( qw/ mpm_event mpm_itk mpm_worker cgid / );
+    my $rs = $self->disableModules( qw/ mpm_event mpm_itk mpm_worker cgid / );
     $rs ||= $self->enableModules(
         qw/mpm_prefork access_compat alias auth_basic auth_digest authn_core authn_file authz_core authz_groupfile authz_host authz_user autoindex
         cgi deflate dir env expires headers mime mime_magic negotiation proxy proxy_http rewrite ssl suexec version/
     );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2SetupModules', __PACKAGE__ );
 }
 
 =back
@@ -102,7 +100,8 @@ sub _cleanTemplate
                 replaceBlocByRef( "# SECTION cgi BEGIN.\n", "# SECTION cgi END.\n", '', $cfgTpl );
             }
         } elsif ( $moduleData->{'FORWARD'} ne 'no' ) {
-            if ( $moduleData->{'FORWARD_TYPE'} eq 'proxy' && ( !$moduleData->{'HSTS_SUPPORT'} || index($serverData->{'VHOST_TYPE'}, 'ssl') != -1) ) {
+            if ( $moduleData->{'FORWARD_TYPE'} eq 'proxy' && ( !$moduleData->{'HSTS_SUPPORT'} || index( $serverData->{'VHOST_TYPE'},
+                'ssl' ) != -1 ) ) {
                 replaceBlocByRef( "# SECTION std_fwd BEGIN.\n", "# SECTION std_fwd END.\n", '', $cfgTpl );
 
                 if ( index( $moduleData->{'FORWARD'}, 'https' ) != 0 ) {

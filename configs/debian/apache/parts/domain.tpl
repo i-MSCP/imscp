@@ -5,9 +5,6 @@
 
     DocumentRoot {DOCUMENT_ROOT}
 
-    # Reset list of resources to look for when the client requests a directory
-    DirectoryIndex disabled
-    
     LogLevel error
     ErrorLog {HTTPD_LOG_DIR}/{DOMAIN_NAME}/error.log
 
@@ -27,10 +24,10 @@
     # SECTION suexec BEGIN.
     SuexecUserGroup {USER} {GROUP}
     # SECTION suexec END.
-
+    
     <Directory {DOCUMENT_ROOT}>
-        Options FollowSymLinks
         DirectoryIndex index.html index.xhtml index.htm
+        Options FollowSymLinks
         Require all granted
         # SECTION document root addons BEGIN.
         # SECTION document root addons END.

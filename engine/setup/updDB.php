@@ -23,21 +23,18 @@ define('IMSCP_SETUP', true);
 try {
     chdir(dirname(__FILE__));
     require_once '../../gui/library/imscp-lib.php';
-
     $dbUpdater = new iMSCP\Update\UpdateDatabase();
 
     if ($dbUpdater->getLastAppliedUpdate() > $dbUpdater->getLastUpdate()) {
-        throw new \RuntimeException(
-            'An i-MSCP downgrade attempt has been detected. Downgrade is not supported.'
-        );
+        throw new \RuntimeException('An i-MSCP downgrade attempt has been detected. Downgrade is not supported.');
     }
 
     if (!$dbUpdater->applyUpdates()) {
-        throw new \RuntimeException(sprintf("[ERROR] %s\n", $dbUpdater->getError()));
+        throw new \RuntimeException($dbUpdater->getError());
     }
 
     i18n_buildLanguageIndex();
-} catch (Exception $e) {
-    fwrite(STDERR, sprintf("[ERROR] %s \n\nStack trace:\n\n%s\n", $e->getMessage(), $e->getTraceAsString()));
+} catch (Throwable $e) {
+    fwrite(STDERR, sprintf("[ERROR] %s \n\nStack trace:\n%s\n", $e->getMessage(), $e->getTraceAsString()));
     exit(1);
 }

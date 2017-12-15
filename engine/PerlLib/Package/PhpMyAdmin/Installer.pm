@@ -339,7 +339,7 @@ sub _setupSqlUser
             $main::sqlUsers{$dbUser . '@' . $dbUserHost} = undef;
         }
 
-        my $dbh = iMSCP::Database->factory()->getRawDb();
+        my $dbh = iMSCP::Database->getInstance()->getRawDb();
         $dbh->{'RaiseError'} = 1;
 
         # Give required privileges to this SQL user
@@ -391,7 +391,7 @@ sub _setupDatabase
     my $phpmyadminDbName = main::setupGetQuestion( 'DATABASE_NAME' ) . '_pma';
 
     eval {
-        my $dbh = iMSCP::Database->factory()->getRawDb();
+        my $dbh = iMSCP::Database->getInstance()->getRawDb();
         $dbh->{'RaiseError'} = 1;
 
         # Drop previous database
@@ -427,12 +427,11 @@ sub _setupDatabase
 host = @{[ main::setupGetQuestion( 'DATABASE_HOST' ) ]}
 port = @{[ main::setupGetQuestion( 'DATABASE_PORT' ) ]}
 user = "@{ [ main::setupGetQuestion( 'DATABASE_USER' ) =~ s/"/\\"/gr ] }"
-password = "@{ [ decryptRijndaelCBC($main::imscpDBKey, $main::imscpDBiv, main::setupGetQuestion( 'DATABASE_PASSWORD' )) =~ s/"/\\"/gr ] }"
-max_allowed_packet = 500M
+password = "@{ [ decryptRijndaelCBC($main::imscpKEY, $main::imscpIV, main::setupGetQuestion( 'DATABASE_PASSWORD' )) =~ s/"/\\"/gr ] }"
 EOF
     $mysqlConffile->flush();
 
-    $rs = execute( "cat $schemaFilePath | mysql --defaults-file=$mysqlConffile", \ my $stdout, \ my $stderr );
+    $rs = execute( "cat $schemaFilePath | /usr/bin/mysql --defaults-extra-file=$mysqlConffile", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     $rs;

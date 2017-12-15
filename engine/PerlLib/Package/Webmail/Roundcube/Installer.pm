@@ -476,7 +476,7 @@ sub _setupDatabase
             $main::sqlUsers{$dbUser . '@' . $dbUserHost} = undef;
         }
 
-        my $db = iMSCP::Database->factory();
+        my $db = iMSCP::Database->getInstance();
         my $dbh = $db->getRawDb();
         local $dbh->{'RaiseError'} = 1;
 

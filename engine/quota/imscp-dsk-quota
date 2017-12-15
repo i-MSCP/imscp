@@ -31,7 +31,7 @@ use strict;
 use warnings;
 use File::Basename;
 use FindBin;
-use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use lib "$FindBin::Bin/../PerlLib";
 use iMSCP::Bootstrapper;
 use iMSCP::Debug qw/ debug error getMessageByType newDebug /;
 use iMSCP::Execute qw/ execute /;
@@ -64,7 +64,7 @@ $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 sub quotaFiles
 {
     eval {
-        my $dbh = iMSCP::Database->factory()->getRawDb();
+        my $dbh = iMSCP::Database->getInstance()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
 
         my $rows = $dbh->selectall_hashref( 
@@ -164,7 +164,7 @@ sub quotaFiles
 sub quotaSql
 {
     eval {
-        my $dbh = iMSCP::Database->factory()->getRawDb();
+        my $dbh = iMSCP::Database->getInstance()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
 
         my $rows = $dbh->selectall_hashref(

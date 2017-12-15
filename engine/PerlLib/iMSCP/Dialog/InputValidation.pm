@@ -493,7 +493,7 @@ sub isAvailableSqlUser ( $ )
 
     $lastValidationError = '';
 
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->getInstance();
 
     local $@;
     my $oldDbName = eval { $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' )); };

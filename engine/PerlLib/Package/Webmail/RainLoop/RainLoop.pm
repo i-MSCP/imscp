@@ -122,7 +122,7 @@ sub deleteMail
     return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
 
     eval {
-        my $db = iMSCP::Database->factory();
+        my $db = iMSCP::Database->getInstance();
         my $dbh = $db->getRawDb();
         $dbh->{'RaiseError'} = 1;
 

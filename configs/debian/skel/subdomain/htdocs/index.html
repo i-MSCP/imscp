@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Homepage of {DOMAIN_NAME_UNICODE}</title>
+        <title>Default Homepage</title>
         <meta charset="utf-8">
         <meta name="application-name" content="i-MSCP">
         <link rel="icon" href="images/favicon.ico">
@@ -120,11 +120,11 @@
         </div>
         <div id="center">
             <div id="content">
-                <h1>{DOMAIN_NAME_UNICODE}</h1>
-                <p>This is the default page for <strong>{DOMAIN_NAME_UNICODE}</strong>. This
-                    page was generated automatically by i-MSCP. Please, upload your
-                    own index.html file.
+                <h1><script>document.write(window.location.hostname)</script></h1>
                 <p>
+                    This is the default page for <strong><script>document.write(window.location.hostname)</script></strong>.
+                    This page was generated automatically. Please upload your own index.html file.
+                </p>
             </div>
         </div>
     </body>

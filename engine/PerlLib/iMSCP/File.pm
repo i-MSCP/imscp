@@ -25,11 +25,11 @@ package iMSCP::File;
 
 use strict;
 use warnings;
-use autouse Lchown => qw/ lchown /;
 use File::Basename qw/ basename /;
 use File::Copy qw/ copy mv /;
 use File::Spec;
 use iMSCP::Debug qw/ error /;
+use Lchown qw/ lchown /;
 use parent 'Common::Object';
 
 =head1 DESCRIPTION

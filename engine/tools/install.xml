@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folder export="LOCAL_SBIN_DIR">${INST_PREF}/usr/local/sbin</folder>
-    <copy mode="0750">${LOCAL_SBIN_DIR}/imscp-dpkg-post-invoke.pl</copy>
+    <copy mode="0750">${LOCAL_USR_SBIN}/imscp-dpkg-post-invoke.pl</copy>
     <copy>${SYSTEM_ENGINE_ROOT}/tools/imscp-disable-accounts</copy>
     <copy>${SYSTEM_ENGINE_ROOT}/tools/imscp-mountall</copy>
     <copy>${SYSTEM_ENGINE_ROOT}/tools/imscp-net-traffic-logger</copy>

@@ -82,7 +82,7 @@ sub _init
 
     $self->{'rainloop'} = Package::Webmail::RainLoop::RainLoop->getInstance();
     $self->{'frontend'} = Package::FrontEnd->getInstance();
-    $self->{'db'} = iMSCP::Database->factory();
+    $self->{'db'} = iMSCP::Database->getInstance();
     $self->{'config'} = $self->{'rainloop'}->{'config'};
     $self;
 }

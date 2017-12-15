@@ -145,7 +145,7 @@ sub _init
     my ($self) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'_dbh'} = iMSCP::Database->factory()->getRawDb();
+    $self->{'_dbh'} = iMSCP::Database->getInstance()->getRawDb();
     $self->{'_data'} = {};
     $self;
 }

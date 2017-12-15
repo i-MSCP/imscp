@@ -27,7 +27,7 @@ use strict;
 use warnings;
 use Array::Utils qw/ unique /;
 use autouse 'Date::Format' => qw/ time2str /;
-use autouse 'iMSCP::Crypt' => qw/ ALNUM randomStr /;
+use autouse 'iMSCP::Crypt' => qw/ ALNUM decryptRijndaelCBC randomStr /;
 use Class::Autouse qw/ :nostat iMSCP::Database Servers::sqld /;
 use File::Basename;
 use File::Spec;
@@ -47,8 +47,25 @@ use iMSCP::Service;
 use iMSCP::SystemUser;
 use iMSCP::TemplateParser qw/ processByRef replaceBlocByRef /;
 use iMSCP::Umask;
-use version;
+use Scalar::Defer;
 use parent qw/ Servers::httpd::Interface Common::SingletonClass /;
+
+my $HAS_TMPFS;
+my $TMPFS = lazy
+    {
+        my $tmpfs = File::Temp->newdir( CLEANUP => 0 );
+        mount(
+            {
+                fs_spec         => 'tmpfs',
+                fs_file         => $tmpfs,
+                fs_vfstype      => 'tmpfs',
+                fs_mntops       => 'noexec,nosuid,size=32m',
+                ignore_failures => 1 # Ignore failures in case tmpfs isn't supported/allowed
+            }
+        );
+        $HAS_TMPFS = 1;
+        $tmpfs;
+    };
 
 =head1 DESCRIPTION
 
@@ -163,29 +180,20 @@ sub setEnginePermissions
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2SetEnginePermissions' );
-    $rs ||= setRights( '/usr/local/sbin/vlogger',
+    my $rs ||= setRights( '/usr/local/sbin/vlogger',
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ROOT_GROUP'},
             mode  => '0750'
         }
     );
-    # Fix permissions on root log dir (e.g: /var/log/apache2) in any cases
-    # Fix permissions on root log dir (e.g: /var/log/apache2) content only with --fix-permissions option
     $rs ||= setRights( $self->{'config'}->{'HTTPD_LOG_DIR'},
         {
             user      => $main::imscpConfig{'ROOT_USER'},
-            group     => $main::imscpConfig{'ROOT_GROUP'},
+            group     => $main::imscpConfig{'ADM_GROUP'},
             dirmode   => '0755',
             filemode  => '0644',
-            recursive => 1
-        }
-    );
-    $rs ||= setRights( $self->{'config'}->{'HTTPD_LOG_DIR'},
-        {
-            group => $main::imscpConfig{'ADM_GROUP'},
-            mode  => '0750'
+            recursive => iMSCP::Getopt->fixPermissions
         }
     );
     $rs ||= setRights( "$main::imscpConfig{'USER_WEB_DIR'}/domain_disabled_pages",
@@ -194,10 +202,9 @@ sub setEnginePermissions
             group     => $self->{'config'}->{'HTTPD_GROUP'},
             dirmode   => '0550',
             filemode  => '0440',
-            recursive => 1
+            recursive => iMSCP::Getopt->fixPermissions
         }
     );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2SetEnginePermissions' );
 }
 
 =item addUser( \%moduleData )
@@ -274,7 +281,7 @@ sub disableDmn
     my ($self, $moduleData) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeApache2DisableDmn', $moduleData );
-    $rs ||= $self->_disableDmn( $moduleData );
+    $rs ||= $self->_disableDomain( $moduleData );
     $rs ||= $self->{'eventManager'}->trigger( 'afterApache2DisableDmn', $moduleData );
 }
 
@@ -350,7 +357,7 @@ sub deleteSub
     my ($self, $moduleData) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeApache2DeleteSub', $moduleData );
-    $rs ||= $self->_disableDomain( $moduleData );
+    $rs ||= $self->_deleteDomain( $moduleData );
     $rs ||= $self->{'eventManager'}->trigger( 'afterApache2DeleteSub', $moduleData );
 }
 
@@ -683,8 +690,8 @@ sub buildConfFile
     my ($filename, $path) = fileparse( $srcFile );
     my $cfgTpl;
 
-    if ( $parameters->{'cached'} && exists $self->{'templates'}->{$filename} ) {
-        $cfgTpl = $self->{'templates'}->{$filename};
+    if ( $parameters->{'cached'} && exists $self->{'_templates'}->{$filename} ) {
+        $cfgTpl = $self->{'_templates'}->{$filename};
     } else {
         my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'apache2', $filename, \ $cfgTpl, $moduleData, $serverData, $self->{'config'} );
         return $rs if $rs;
@@ -698,7 +705,7 @@ sub buildConfFile
             }
         }
 
-        $self->{'templates'}->{$filename} = $cfgTpl if $parameters->{'cached'};
+        $self->{'_templates'}->{$filename} = $cfgTpl if $parameters->{'cached'};
     }
 
     if ( grep( $_ eq $filename, ( 'domain.tpl', 'domain_disabled.tpl' ) ) ) {
@@ -756,7 +763,7 @@ sub getTraffic
     my (undef, $trafficDb) = @_;
 
     my $ldate = time2str( '%Y%m%d', time());
-    my $dbh = iMSCP::Database->factory()->getRawDb();
+    my $dbh = iMSCP::Database->getInstance()->getRawDb();
 
     debug( sprintf( 'Collecting HTTP traffic data' ));
 
@@ -1055,65 +1062,6 @@ sub reload
     $self->{'eventManager'}->trigger( 'afterApache2Reload' );
 }
 
-=item mountLogsFolder( \%moduleData )
-
- Mount logs folder which belong to the given domain into customer's logs folder
-
- Param hashref \%moduleData Domain data as provided by Alias|Domain|Subdomain|SubAlias modules
- Return int 0 on success, other on failure
-
-=cut
-
-sub mountLogsFolder
-{
-    my ($self, $moduleData) = @_;
-
-    my $fsSpec = File::Spec->canonpath( "$self->{'config'}->{'HTTPD_LOG_DIR'}/$moduleData->{'DOMAIN_NAME'}" );
-    my $fsFile = File::Spec->canonpath( "$moduleData->{'HOME_DIR'}/logs/$moduleData->{'DOMAIN_NAME'}" );
-    my $fields = { fs_spec => $fsSpec, fs_file => $fsFile, fs_vfstype => 'none', fs_mntops => 'bind' };
-    my $rs = $self->{'eventManager'}->trigger( 'beforeMountLogsFolder', $moduleData, $fields );
-    return $rs if $rs;
-
-    eval { iMSCP::Dir->new( dirname => $fsFile )->make(); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $rs = addMountEntry( "$fields->{'fs_spec'} $fields->{'fs_file'} $fields->{'fs_vfstype'} $fields->{'fs_mntops'}" );
-    $rs ||= mount( $fields ) unless isMountpoint( $fields->{'fs_file'} );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterMountLogsFolder', $moduleData, $fields );
-}
-
-=item umountLogsFolder( \%moduleData )
-
- Umount logs folder which belong to the given domain from customer's logs folder
-
- Param hashref \%moduleData Domain data as provided by Alias|Domain|Subdomain|SubAlias modules
- Return int 0 on success, other on failure
-
-=cut
-
-sub umountLogsFolder
-{
-    my ($self, $moduleData) = @_;
-
-    my $recursive = 1;
-    my $fsFile = "$moduleData->{'HOME_DIR'}/logs";
-
-    # We operate recursively only if domain type is 'dmn' (full account)
-    if ( $moduleData->{'DOMAIN_TYPE'} ne 'dmn' ) {
-        $recursive = 0;
-        $fsFile .= "/$moduleData->{'DOMAIN_NAME'}";
-    }
-
-    $fsFile = File::Spec->canonpath( $fsFile );
-    my $rs = $self->{'eventManager'}->trigger( 'beforeUnmountLogsFolder', $moduleData, $fsFile );
-    $rs ||= removeMountEntry( qr%.*?[ \t]+\Q$fsFile\E(?:/|[ \t]+)[^\n]+% );
-    $rs ||= umount( $fsFile, $recursive );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterUmountMountLogsFolder', $moduleData, $fsFile );
-}
-
 =back
 
 =head1 PRIVATE METHODS
@@ -1132,7 +1080,7 @@ sub _init
 {
     my ($self) = @_;
 
-    @{$self}{qw/ start restart reload templates /} = ( 0, 0, 0, {} );
+    @{$self}{qw/ start restart reload _templates _web_folder_skeleton /} = ( 0, 0, 0, {}, undef );
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/apache";
     $self->_mergeConfig() if defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/apache.data.dist";
@@ -1201,7 +1149,7 @@ sub _deleteDomain
         return $rs if $rs;
     }
 
-    $rs = $self->umountLogsFolder( $moduleData );
+    $rs = $self->_umountLogsFolder( $moduleData );
     return $rs if $rs;
 
     unless ( $moduleData->{'SHARED_MOUNT_POINT'} || !-d $moduleData->{'WEB_DIR'} ) {
@@ -1253,6 +1201,68 @@ sub _deleteDomain
     0;
 }
 
+=item _mountLogsFolder( \%moduleData )
+
+ Mount logs folder which belong to the given domain into customer's logs folder
+
+ Param hashref \%moduleData Domain data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _mountLogsFolder
+{
+    my ($self, $moduleData) = @_;
+
+    my $fsSpec = File::Spec->canonpath( "$self->{'config'}->{'HTTPD_LOG_DIR'}/$moduleData->{'DOMAIN_NAME'}" );
+    my $fsFile = File::Spec->canonpath( "$moduleData->{'HOME_DIR'}/logs/$moduleData->{'DOMAIN_NAME'}" );
+    my $fields = { fs_spec => $fsSpec, fs_file => $fsFile, fs_vfstype => 'none', fs_mntops => 'bind' };
+
+    unless ( -d $fsFile ) {
+        eval {
+            iMSCP::Dir->new( dirname => $fsFile )->make( {
+                user  => $main::imscpConfig{'ROOT_USER'},
+                group => $moduleData->{'GROUP'},
+                mode  => 0750
+            } );
+        };
+        if ( $@ ) {
+            error( $@ );
+            return 1;
+        }
+    }
+
+    my $rs = addMountEntry( "$fields->{'fs_spec'} $fields->{'fs_file'} $fields->{'fs_vfstype'} $fields->{'fs_mntops'}" );
+    $rs ||= mount( $fields ) unless isMountpoint( $fields->{'fs_file'} );
+}
+
+=item _umountLogsFolder( \%moduleData )
+
+ Umount logs folder which belong to the given domain from customer's logs folder
+
+ Param hashref \%moduleData Domain data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _umountLogsFolder
+{
+    my (undef, $moduleData) = @_;
+
+    my $recursive = 1;
+    my $fsFile = "$moduleData->{'HOME_DIR'}/logs";
+
+    # We operate recursively only if domain type is 'dmn' (full account)
+    if ( $moduleData->{'DOMAIN_TYPE'} ne 'dmn' ) {
+        $recursive = 0;
+        $fsFile .= "/$moduleData->{'DOMAIN_NAME'}";
+    }
+
+    $fsFile = File::Spec->canonpath( $fsFile );
+    my $rs ||= removeMountEntry( qr%.*?[ \t]+\Q$fsFile\E(?:/|[ \t]+)[^\n]+% );
+    $rs ||= umount( $fsFile, $recursive );
+}
+
 =item _disableDomain( \%moduleData )
 
  Disable a domain
@@ -1266,15 +1276,12 @@ sub _disableDomain
 {
     my ($self, $moduleData) = @_;
 
-    # Ensure that all required directories are present
     eval {
-        for ( $self->_dmnFolders( $moduleData ) ) {
-            iMSCP::Dir->new( dirname => $_->[0] )->make( {
-                user  => $_->[1],
-                group => $_->[2],
-                mode  => $_->[3]
-            } );
-        }
+        iMSCP::Dir->new( dirname => "$self->{'config'}->{'HTTPD_LOG_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->make( {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ADM_GROUP'},
+            mode  => 0755
+        } );
     };
     if ( $@ ) {
         error( $@ );
@@ -1345,7 +1352,7 @@ sub _disableDomain
         return $rs if $rs;
     }
 
-    # Ensure that custom httpd conffile exists (cover case where file has been removed for any reasons)
+    # Make sure that custom httpd conffile exists (cover case where file has been removed for any reasons)
     unless ( -f "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$moduleData->{'DOMAIN_NAME'}.conf" ) {
         $serverData->{'SKIP_TEMPLATE_CLEANER'} = 1;
         $rs = $self->buildConfFile(
@@ -1406,8 +1413,8 @@ sub _addCfg
         DOMAIN_IPS             => join( ' ', map { ( ( $_ eq '*' || $net->getAddrVersion( $_ ) eq 'ipv4' ) ? $_ : "[$_]" ) . ':80' } @domainIPs ),
         HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
         HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
-        SERVER_ALIASES         => "www.$moduleData->{'DOMAIN_NAME'}" . ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} eq 'yes'
-            ? " $moduleData->{'ALIAS'}.$main::imscpConfig{'BASE_SERVER_VHOST'}" : ''
+        SERVER_ALIASES         => "www.$moduleData->{'DOMAIN_NAME'}" . (
+                $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} eq 'yes' ? " $moduleData->{'ALIAS'}.$main::imscpConfig{'BASE_SERVER_VHOST'}" : ''
         )
     };
 
@@ -1477,33 +1484,38 @@ sub _addCfg
     $rs ||= $self->{'eventManager'}->trigger( 'afterApache2AddCfg', $moduleData );
 }
 
-=item _dmnFolders( \%moduleData )
 
- Get Web folders list to create for the given domain
+=item _getWebfolderSkeleton( \%moduleData )
+
+ Get Web folder skeleton
 
  Param hashref \%moduleData Data as provided by Alias|Domain|Subdomain|SubAlias modules
- Return array List of Web folders to create
+ Return string Path to Web folder skeleton on success, die on failure
 
 =cut
 
-sub _dmnFolders
+sub _getWebfolderSkeleton
 {
-    my ($self, $moduleData) = @_;
+    my (undef, $moduleData) = @_;
 
-    $self->{'eventManager'}->trigger( 'beforeApache2DmnFolders', \my @folders );
+    my $webFolderSkeleton = $moduleData->{'DOMAIN_TYPE'} eq 'dmn' ? 'domain' : ( $moduleData->{'DOMAIN_TYPE'} eq 'als' ? 'alias' : 'subdomain' );
 
-    push(
-        @folders,
-        [
-            "$self->{'config'}->{'HTTPD_LOG_DIR'}/$moduleData->{'DOMAIN_NAME'}",
-            $main::imscpConfig{'ROOT_USER'},
-            $main::imscpConfig{'ADM_GROUP'},
-            0755
-        ]
-    );
+    unless ( -d "$TMPFS/$webFolderSkeleton" ) {
+        iMSCP::Dir->new(
+            dirname => "$main::imscpConfig{'CONF_DIR'}/skel/$webFolderSkeleton" )->rcopy( "$TMPFS/$webFolderSkeleton", { preserve => 'no' }
+        );
 
-    $self->{'eventManager'}->trigger( 'afterApache2DmnFolders', \@folders );
-    @folders;
+        if ( $moduleData->{'DOMAIN_TYPE'} eq 'dmn' ) {
+            for ( qw/ errors logs / ) {
+                next if -d "$TMPFS/$webFolderSkeleton/$_";
+                iMSCP::Dir->new( dirname => "$TMPFS/$webFolderSkeleton/$_" )->make();
+            }
+        }
+
+        iMSCP::Dir->new( dirname => "$TMPFS/$webFolderSkeleton/htdocs" )->make() unless -d "$TMPFS/$webFolderSkeleton/htdocs";
+    }
+
+    "$TMPFS/$webFolderSkeleton";
 }
 
 =item _addFiles( \%moduleData )
@@ -1524,64 +1536,37 @@ sub _addFiles
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
-        for ( $self->_dmnFolders( $moduleData ) ) {
-            iMSCP::Dir->new( dirname => $_->[0] )->make( {
-                user  => $_->[1],
-                group => $_->[2],
-                mode  => $_->[3]
-            } );
-        }
+        iMSCP::Dir->new( dirname => "$self->{'config'}->{'HTTPD_LOG_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->make( {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ADM_GROUP'},
+            mode  => 0755
+        } );
 
         # Whether or not permissions must be fixed recursively
         my $fixPermissions = iMSCP::Getopt->fixPermissions || grep( $moduleData->{'ACTION'} eq $_, 'restoreDmn', 'restoreSub' );
 
-        # Prepare Web folder
-        my $skelDir = "$main::imscpConfig{'CONF_DIR'}/skel/"
-            . ( $moduleData->{'DOMAIN_TYPE'} eq 'dmn' ? 'domain' : ( $moduleData->{'DOMAIN_TYPE'} eq 'als' ? 'alias' : 'subdomain' ) );
+        #
+        ## Prepare Web folder
+        #
 
-        # Copy skeleton in tmp dir
-        my $tmpDir = File::Temp->newdir();
-        iMSCP::Dir->new( dirname => $skelDir )->rcopy( $tmpDir, { preserve => 'no' } );
+        my $webFolderSkeleton = $self->_getWebfolderSkeleton( $moduleData );
+        my $workingWebFolder = File::Temp->newdir( DIR => $TMPFS );
 
-        # Build default page if needed (if htdocs doesn't exist or is empty)
-        if ( !-d "$moduleData->{'WEB_DIR'}/htdocs" || iMSCP::Dir->new( dirname => "$moduleData->{'WEB_DIR'}/htdocs" )->isEmpty() ) {
-            -d "$tmpDir/htdocs" or die( "Web folder skeleton must provides the `htdocs' directory." );
+        iMSCP::Dir->new( dirname => $webFolderSkeleton )->rcopy( $workingWebFolder );
 
-            # Test needed in case admin removed the index.html file from the skeleton
-            if ( -f "$tmpDir/htdocs/index.html" ) {
-                my $srcFile = "$tmpDir/htdocs/index.html";
-                $self->buildConfFile( $srcFile, $srcFile, $moduleData, { SKIP_TEMPLATE_CLEANER => 1 } ) == 0 or die(
-                    getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-                );
-            }
-
-            # Force recursive permissions for newly created Web folders
-            $fixPermissions = 1;
+        if ( -d "$moduleData->{'WEB_DIR'}/htdocs" ) {
+            iMSCP::Dir->new( dirname => "$workingWebFolder/htdocs" )->remove();
         } else {
-            iMSCP::Dir->new( dirname => "$tmpDir/htdocs" )->remove();
+            # Always fix permissions recursively for newly created Web folders
+            $fixPermissions = 1;
         }
 
-        if ( $moduleData->{'DOMAIN_TYPE'} eq 'dmn' ) {
-            -d "$moduleData->{'WEB_DIR'}/errors" or die( "The `domain' Web folder skeleton must provides the `errors' directory." );
-
-            if ( !iMSCP::Dir->new( dirname => "$moduleData->{'WEB_DIR'}/errors" )->isEmpty() ) {
-                iMSCP::Dir->new( dirname => "$tmpDir/errors" )->remove();
-            } else {
-                $fixPermissions = 1;
-            }
-
-            if ( $self->{'config'}->{'MOUNT_CUSTOMER_LOGS'} ne 'yes' ) {
-                $self->umountLogsFolder( $moduleData ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
-                iMSCP::Dir->new( dirname => "$moduleData->{'WEB_DIR'}/logs" )->remove();
-                iMSCP::Dir->new( dirname => "$tmpDir/logs" )->remove();
-            } elsif ( !-d "$tmpDir/logs" ) {
-                die( "Web folder skeleton must provides the `logs' directory." );
-            }
+        if ( $moduleData->{'DOMAIN_TYPE'} eq 'dmn' && -d "$moduleData->{'WEB_DIR'}/errors" ) {
+            iMSCP::Dir->new( dirname => "$workingWebFolder/errors" )->remove();
         }
 
+        # Make sure that parent Web folder exists
         my $parentDir = dirname( $moduleData->{'WEB_DIR'} );
-
-        # Fix #IP-1327 - Ensure that parent Web folder exists
         unless ( -d $parentDir ) {
             clearImmutable( dirname( $parentDir ));
             iMSCP::Dir->new( dirname => $parentDir )->make( {
@@ -1595,23 +1580,24 @@ sub _addFiles
 
         clearImmutable( $moduleData->{'WEB_DIR'} ) if -d $moduleData->{'WEB_DIR'};
 
-        # Copy Web folder
-        iMSCP::Dir->new( dirname => $tmpDir )->rcopy( $moduleData->{'WEB_DIR'}, { preserve => 'no' } );
-
-        # Cleanup (Transitional)
         if ( $moduleData->{'DOMAIN_TYPE'} eq 'dmn' ) {
-            # Remove deprecated `domain_disable_page' directory if any
-            iMSCP::Dir->new( dirname => "$moduleData->{'WEB_DIR'}/domain_disable_page" )->remove();
+            $self->_umountLogsFolder( $moduleData ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
+
+            if ( $self->{'config'}->{'MOUNT_CUSTOMER_LOGS'} ne 'yes' ) {
+                iMSCP::Dir->new( dirname => "$moduleData->{'WEB_DIR'}/logs" )->remove();
+                iMSCP::Dir->new( dirname => "$workingWebFolder/logs" )->remove();
+            }
         }
-        #    elsif ( !$moduleData->{'SHARED_MOUNT_POINT'} ) {
-        #        # Remove deprecated phptmp directory if any
-        #        iMSCP::Dir->new( dirname => "$moduleData->{'WEB_DIR'}/phptmp" )->remove();
-        #        iMSCP::Dir->new( dirname => "$tmpDir/phptmp" )->remove();
-        #    }
+
+        #
+        ## Create Web folder
+        #
+
+        iMSCP::Dir->new( dirname => $workingWebFolder )->rcopy( $moduleData->{'WEB_DIR'}, { preserve => 'no' } );
 
         # Set ownership and permissions
 
-        # Set ownership and permissions for Web folder root
+        # Set ownership and permissions for the Web folder root
         # Web folder root vuxxx:vuxxx 0750 (no recursive)
         setRights( $moduleData->{'WEB_DIR'},
             {
@@ -1621,21 +1607,13 @@ sub _addFiles
             }
         ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
 
-        # Get list of files inside Web folder root
-        my @files = iMSCP::Dir->new( dirname => $skelDir )->getAll();
+        # Get list of possible files inside Web folder root
+        my @files = iMSCP::Dir->new( dirname => $webFolderSkeleton )->getAll();
 
-        # Set ownership for first Web folder depth, e.g:
-        # 00_private vuxxx:vuxxx (recursive with --fix-permissions) -- main domain Web folder only
-        # backups    vuxxx:vuxxx (recursive with --fix-permissions) -- main domain Web folder only
-        # cgi-bin    vuxxx:vuxxx (recursive with --fix-permissions) -- main domain Web folder only
-        # error      vuxxx:vuxxx (recursive with --fix-permissions) -- main domain Web folder only
-        # htdocs     vuxxx:vuxxx (recursive with --fix-permissions)
-        # logs       skipped -- main domain Web folder only
-        # phptmp     vuxxx:vuxxx (recursive with --fix-permissions) -- main domain Web folder only
-        for my $file( grep( $_ ne 'logs', @files ) ) {
-            next unless -e "$moduleData->{'WEB_DIR'}/$file";
-
-            setRights( "$moduleData->{'WEB_DIR'}/$file",
+        # Set ownership for Web folder
+        for ( @files ) {
+            next unless -e "$moduleData->{'WEB_DIR'}/$_";
+            setRights( "$moduleData->{'WEB_DIR'}/$_",
                 {
                     user      => $moduleData->{'USER'},
                     group     => $moduleData->{'GROUP'},
@@ -1645,53 +1623,44 @@ sub _addFiles
         }
 
         if ( $moduleData->{'DOMAIN_TYPE'} eq 'dmn' ) {
-            # Set ownership and permissions for .htgroup and .htpasswd files if any
-            # .htgroup  root:www-data
-            # .htpasswd root:www-data
-            for my $file( qw/ .htgroup .htpasswd / ) {
-                next unless -f "$moduleData->{'WEB_DIR'}/$file";
-                setRights( "$moduleData->{'WEB_DIR'}/$file",
+            # Set ownership and permissions for .htgroup and .htpasswd files
+            for ( qw/ .htgroup .htpasswd / ) {
+                next unless -f "$moduleData->{'WEB_DIR'}/$_";
+                setRights( "$moduleData->{'WEB_DIR'}/$_",
                     {
                         user  => $main::imscpConfig{'ROOT_USER'},
-                        group => $self->{'config'}->{'HTTPD_GROUP'},
+                        group => $self->getRunningGroup(),
                         mode  => '0640'
                     }
                 ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
             }
 
-            # Set ownership for logs directory if any
-            # logs root:vuxxx (no recursive)
-            if ( -d "$moduleData->{'WEB_DIR'}/logs" ) {
+            # Set ownership for logs directory
+            if ( $self->{'config'}->{'MOUNT_CUSTOMER_LOGS'} eq 'yes' ) {
                 setRights( "$moduleData->{'WEB_DIR'}/logs",
                     {
-                        user  => $main::imscpConfig{'ROOT_USER'},
-                        group => $moduleData->{'GROUP'}
+                        user      => $main::imscpConfig{'ROOT_USER'},
+                        group     => $moduleData->{'GROUP'},
+                        recursive => $fixPermissions
                     }
                 ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
             }
         }
 
-        # Set permissions for first Web folder depth, e.g:
-        # 00_private 0750 (no recursive) -- main domain Web folder only
-        # backups    0750 (recursive with --fix-permissions) -- main domain Web folder only
-        # cgi-bin    0750 (no recursive) -- main domain Web folder only
-        # error      0750 (recursive with --fix-permissions) -- main domain Web folder only
-        # htdocs     0750 (no recursive)
-        # logs       0750 (no recursive) -- main domain Web folder only
-        # phptmp     0750 (recursive with --fix-permissions) -- main domain Web folder only
+        # Set permissions for Web folder
         for my $file ( @files ) {
             next unless -e "$moduleData->{'WEB_DIR'}/$file";
             setRights( "$moduleData->{'WEB_DIR'}/$file",
                 {
                     dirmode   => '0750',
                     filemode  => '0640',
-                    recursive => $file =~ /^(?:00_private|cgi-bin|logs|htdocs)$/ ? 0 : $fixPermissions
+                    recursive => $file =~ /^(?:00_private|cgi-bin|htdocs)$/ ? 0 : $fixPermissions
                 }
             ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
         }
 
         if ( $self->{'config'}->{'MOUNT_CUSTOMER_LOGS'} eq 'yes' ) {
-            $self->mountLogsFolder( $moduleData ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
+            $self->_mountLogsFolder( $moduleData ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
         }
 
         $self->{'eventManager'}->trigger( 'afterApache2AddFiles', $moduleData ) == 0 or die(
@@ -1767,9 +1736,6 @@ sub _makeDirs
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2MakeDirs' );
-    return $rs if $rs;
-
     eval {
         iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_LOG_DIR'} )->make( {
             user  => $main::imscpConfig{'ROOT_USER'},
@@ -1781,8 +1747,6 @@ sub _makeDirs
         error( $@ );
         return 1;
     }
-
-    $self->{'eventManager'}->trigger( 'afterApache2MakeDirs' );
 }
 
 =item _copyDomainDisablePages( )
@@ -1834,8 +1798,7 @@ sub _configure
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeConfigureApache2' );
-    $rs ||= $self->{'eventManager'}->registerOne(
+    my $rs = $self->{'eventManager'}->registerOne(
         'beforeApache2BuildConfFile',
         sub {
             my ($cfgTpl) = @_;
@@ -1867,7 +1830,6 @@ sub _configure
     $rs ||= $self->buildConfFile( '00_imscp.conf', "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/00_imscp.conf", undef, $serverData );
     $rs ||= $self->enableConfs( '00_imscp.conf' );
     $rs ||= $self->disableSites( 'default', 'default-ssl', '000-default.conf', 'default-ssl.conf' );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterConfigureApache2' );
 }
 
 =item _installLogrotate( )
@@ -1882,9 +1844,7 @@ sub _installLogrotate
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2InstallLogrotate' );
-    return $rs if $rs;
-    $rs = $self->buildConfFile(
+    $self->buildConfFile(
         'logrotate.conf',
         "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2",
         undef,
@@ -1894,7 +1854,6 @@ sub _installLogrotate
             HTTPD_LOG_DIR => $self->{'config'}->{'HTTPD_LOG_DIR'}
         }
     );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2InstallLogrotate' );
 }
 
 =item _setupVlogger( )
@@ -1909,6 +1868,36 @@ sub _setupVlogger
 {
     my ($self) = @_;
 
+    {
+        my $vloggerDbSchemaFile = File::Temp->new();
+        print $vloggerDbSchemaFile <<"EOF";
+USE `@{ [ main::setupGetQuestion( 'DATABASE_NAME' ) ] }`;
+
+CREATE TABLE IF NOT EXISTS httpd_vlogger (
+  vhost varchar(255) NOT NULL,
+  ldate int(8) UNSIGNED NOT NULL,
+  bytes int(32) UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY(vhost,ldate)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+EOF
+        $vloggerDbSchemaFile->flush();
+
+        my $mysqlConffile = File::Temp->new();
+        print $mysqlConffile <<"EOF";
+[mysql]
+host = @{[ main::setupGetQuestion( 'DATABASE_HOST' ) ]}
+port = @{[ main::setupGetQuestion( 'DATABASE_PORT' ) ]}
+user = "@{ [ main::setupGetQuestion( 'DATABASE_USER' ) =~ s/"/\\"/gr ] }"
+password = "@{ [ decryptRijndaelCBC($main::imscpKEY, $main::imscpIV, main::setupGetQuestion( 'DATABASE_PASSWORD' )) =~ s/"/\\"/gr ] }"
+EOF
+        $mysqlConffile->flush();
+
+        my $rs = execute( "cat $vloggerDbSchemaFile | /usr/bin/mysql --defaults-extra-file=$mysqlConffile", \ my $stdout, \ my $stderr );
+        debug( $stdout ) if $stdout;
+        error( $stderr || 'Unknown error' ) if $rs;
+        return $rs if $rs;
+    }
+
     my $host = main::setupGetQuestion( 'DATABASE_HOST' );
     $host = '127.0.0.1' if $host eq 'localhost';
     my $port = main::setupGetQuestion( 'DATABASE_PORT' );
@@ -1918,10 +1907,6 @@ sub _setupVlogger
     $userHost = '127.0.0.1' if $userHost eq 'localhost';
     my $oldUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'};
     my $pass = randomStr( 16, ALNUM );
-
-    my $db = iMSCP::Database->factory();
-    my $rs = main::setupImportSqlSchema( $db, "$self->{'cfgDir'}/vlogger.sql" );
-    return $rs if $rs;
 
     eval {
         my $sqlServer = Servers::sqld->factory();
@@ -1933,7 +1918,7 @@ sub _setupVlogger
 
         $sqlServer->createUser( $user, $userHost, $pass );
 
-        my $dbh = iMSCP::Database->factory()->getRawDb();
+        my $dbh = iMSCP::Database->getInstance()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
 
         # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
@@ -1972,8 +1957,7 @@ sub _cleanup
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2Cleanup' );
-    $rs ||= $self->disableSites( 'imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf' );
+    my $rs = $self->disableSites( 'imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf' );
     return $rs if $rs;
 
     if ( -f "$self->{'cfgDir'}/apache.old.data" ) {
@@ -2001,7 +1985,7 @@ sub _cleanup
     $rs = execute( "rm -f $main::imscpConfig{'USER_WEB_DIR'}/*/logs/*.log", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
-    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2Cleanup' );
+    $rs;
 }
 
 #
@@ -2072,7 +2056,13 @@ sub _restoreDefaultConfig
         return $rs if $rs;
     }
 
-    eval { iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove(); };
+    eval {
+        for ( glob( "$main::imscpConfig{'USER_WEB_DIR'}/*/domain_disable_page" ) ) {
+            iMSCP::Dir->new( dirname => $_ )->remove();
+        }
+
+        iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove();
+    };
     if ( $@ ) {
         error( $@ );
         return 1;
@@ -2085,6 +2075,24 @@ sub _restoreDefaultConfig
     }
 
     0;
+}
+
+=back
+
+=head1 SHUTDOWN TASKS
+
+=over 4
+
+=item END
+
+ Umount and remove tmpfs
+
+=cut
+
+END {
+    return unless $HAS_TMPFS;
+    umount( $TMPFS );
+    iMSCP::Dir->new( dirname => $TMPFS )->remove();
 }
 
 =back

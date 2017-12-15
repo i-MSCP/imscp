@@ -32,7 +32,7 @@ iMSCP::Bootstrapper->getInstance()->boot(
     }
 );
 
-my $passwd = decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'} );
+my $passwd = decryptRijndaelCBC( $main::imscpKEY, $main::imscpIV, $main::imscpConfig{'DATABASE_PASSWORD'} );
 print output( sprintf( "Your i-MSCP master SQL user is         : \x1b[1m%s\x1b[0m", $main::imscpConfig{'DATABASE_USER'} ), 'info' );
 print output( sprintf( "Your i-MSCP master SQL user password is: \x1b[1m%s\x1b[0m", $passwd ), 'info' );
 print output( 'Information based on data from your /etc/imscp/imscp.conf file.', 'warn' );

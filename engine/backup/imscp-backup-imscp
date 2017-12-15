@@ -32,7 +32,7 @@ use warnings;
 use File::Basename;
 use File::Spec;
 use FindBin;
-use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use lib "$FindBin::Bin/../PerlLib";
 use iMSCP::Bootstrapper;
 use iMSCP::Debug;
 use iMSCP::Execute;
@@ -117,7 +117,7 @@ sub run
 
 sub _backupDatabase
 {
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->getInstance();
 
     eval { $db->dumpdb( $main::imscpConfig{'DATABASE_NAME'}, $main::imscpConfig{'BACKUP_FILE_DIR'} ) };
     if ( $@ ) {

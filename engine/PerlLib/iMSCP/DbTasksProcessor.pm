@@ -416,7 +416,7 @@ sub _init
     my ($self) = @_;
 
     defined $self->{'mode'} or die( 'mode attribute is not defined' );
-    $self->{'_dbh'} = iMSCP::Database->factory()->getRawDb();
+    $self->{'_dbh'} = iMSCP::Database->getInstance()->getRawDb();
     $self;
 }
 

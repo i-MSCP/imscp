@@ -267,32 +267,6 @@ EOT
     );
 }
 
-sub setupImportSqlSchema
-{
-    my ($db, $file) = @_;
-
-    my $rs = iMSCP::EventManager->getInstance()->trigger( 'beforeSetupImportSqlSchema', \$file );
-    return $rs if $rs;
-
-    my $content = iMSCP::File->new( filename => $file )->get();
-    unless ( defined $content ) {
-        error( sprintf( "Couldn't read %s file", $file ));
-        return 1;
-    }
-
-    eval {
-        my $dbh = $db->getRawDb();
-        local $dbh->{'RaiseError'} = 1;
-        $dbh->do( $_ ) for split /;\n/, $content =~ s/^(--[^\n]{0,})?\n//gmr;
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    iMSCP::EventManager->getInstance()->trigger( 'afterSetupImportSqlSchema' );
-}
-
 sub setupSetPermissions
 {
     my $rs = iMSCP::EventManager->getInstance()->trigger( 'beforeSetupSetPermissions' );
@@ -355,7 +329,7 @@ sub setupDbTasks
             };
             my $aditionalCondition;
 
-            my $db = iMSCP::Database->factory();
+            my $db = iMSCP::Database->getInstance();
             my $oldDbName = $db->useDatabase( setupGetQuestion( 'DATABASE_NAME' ));
 
             my $dbh = $db->getRawDb();
@@ -410,7 +384,7 @@ sub setupRegisterPluginListeners
     my $rs = iMSCP::EventManager->getInstance()->trigger( 'beforeSetupRegisterPluginListeners' );
     return $rs if $rs;
 
-    my ($db, $pluginNames) = ( iMSCP::Database->factory(), undef );
+    my ($db, $pluginNames) = ( iMSCP::Database->getInstance(), undef );
     my $oldDbName = eval { $db->useDatabase( setupGetQuestion( 'DATABASE_NAME' )); };
     return 0 if $@; # Fresh install case
 

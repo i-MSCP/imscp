@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 use FindBin;
-use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use lib "$FindBin::Bin/../PerlLib";
 use Encode qw/ encode /;
 use iMSCP::Bootstrapper;
 use Mail::Address;
@@ -35,7 +35,7 @@ iMSCP::Bootstrapper->getInstance()->boot(
 );
 
 eval {
-    my $dbh = iMSCP::Database->factory()->getRawDb();
+    my $dbh = iMSCP::Database->getInstance()->getRawDb();
     $dbh->{'RaiseError'} = 1;
     $dbh->do( "DELETE FROM `autoreplies_log` WHERE ADDTIME(`time`, '24:00:00') < NOW()" );
 

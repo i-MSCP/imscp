@@ -30,7 +30,7 @@
 use strict;
 use warnings;
 use FindBin;
-use lib "/var/www/imscp/engine/PerlLib", "/var/www/imscp/engine/PerlVendor"; # FIXME: shouldn't be hardcoded
+use lib "/var/www/imscp/engine/PerlLib"; # FIXME: shouldn't be hardcoded
 use File::Basename;
 use iMSCP::Debug;
 use iMSCP::Bootstrapper;

@@ -152,7 +152,7 @@ sub createUser
     defined $password or die( '$password parameter is not defined' );
 
     eval {
-        my $dbh = iMSCP::Database->factory()->getRawDb();
+        my $dbh = iMSCP::Database->getInstance()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
         $dbh->do(
             'CREATE USER ?@? IDENTIFIED BY ?'

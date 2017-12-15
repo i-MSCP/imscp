@@ -30,7 +30,7 @@
 use strict;
 use warnings;
 use FindBin;
-use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use lib "$FindBin::Bin/../PerlLib";
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug error newDebug /;
 use iMSCP::Bootstrapper;
@@ -46,7 +46,7 @@ $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
 sub run
 {
-    my $dbh = iMSCP::Database->factory()->getRawDb();
+    my $dbh = iMSCP::Database->getInstance()->getRawDb();
 
     eval {
         local $dbh->{'RaiseError'} = 1;

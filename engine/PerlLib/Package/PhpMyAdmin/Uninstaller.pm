@@ -82,7 +82,7 @@ sub _init
 
     $self->{'phpmyadmin'} = Package::PhpMyAdmin->getInstance();
     $self->{'frontend'} = Package::FrontEnd->getInstance();
-    $self->{'db'} = iMSCP::Database->factory();
+    $self->{'db'} = iMSCP::Database->getInstance();
     $self->{'cfgDir'} = $self->{'phpmyadmin'}->{'cfgDir'};
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";

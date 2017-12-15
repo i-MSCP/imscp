@@ -136,7 +136,7 @@ sub deleteMail
     return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
 
     eval {
-        my $db = iMSCP::Database->factory();
+        my $db = iMSCP::Database->getInstance();
         my $oldDbName = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'} . '_roundcube' );
         my $dbh = $db->getRawDb();
         local $dbh->{'RaiseError'} = 1;

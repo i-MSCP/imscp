@@ -31,7 +31,7 @@ use strict;
 use warnings;
 use File::Basename;
 use FindBin;
-use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use lib "$FindBin::Bin/../PerlLib";
 use iMSCP::Bootstrapper;
 use iMSCP::Config;
 use iMSCP::Database;
@@ -40,7 +40,6 @@ use iMSCP::EventManager;
 use iMSCP::Getopt;
 use iMSCP::Servers;
 use POSIX qw / locale_h /;
-use Data::Dumper;
 
 setlocale( LC_MESSAGES, "C.UTF-8" );
 
@@ -52,7 +51,7 @@ sub run
     my $rs = iMSCP::EventManager->getInstance()->trigger( 'beforeVrlTraffic' );
     return $rs if $rs;
 
-    my $dbh = iMSCP::Database->factory()->getRawDb();
+    my $dbh = iMSCP::Database->getInstance()->getRawDb();
 
     # Get list of domains for which traffic must be collected
     my $sth = $dbh->prepare(

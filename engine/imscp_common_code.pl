@@ -47,21 +47,23 @@ if ( $main::cfg{'DEBUG'} ) {
     $main::engine_debug = '_on_';
 }
 
-# Load i-MSCP Db key and initialization vector
-my $key_file = "$main::cfg{'CONF_DIR'}/imscp-db-keys";
-our $db_pass_key = '{KEY}';
-our $db_pass_iv = '{IV}';
+# Load i-MSCP key and initialization vector
+my $keyFile = "$main::cfg{'CONF_DIR'}/imscp-db-keys.pl";
+$main::imscpKEY = '{KEY}';
+$main::imscpIV = '{IV}';
 
-require "$key_file" if -f $key_file;
+eval { require "$keyFile"; };
 
 # Check for i-MSCP Db key and initialization vector
-if ( $db_pass_key eq '{KEY}' || $db_pass_iv eq '{IV}' ) {
-    print STDERR ( "Key file not found at $main::cfg{'CONF_DIR'}/imscp-db-keys. Run imscp-reconfigure script to fix." );
+if ( $@
+    || $main::imscpKEY eq '{KEY}'
+    || length( $main::imscpKEY ) != 32
+    || $main::imscpIV eq '{IV}'
+    || length( $main::imscpIV ) != 16
+) {
+    print STDERR ( "Missing or invalid keys file. Run the imscp-reconfigure script to fix." );
     exit 1;
 }
-
-$main::db_pass_key = $db_pass_key;
-$main::db_pass_iv = $db_pass_iv;
 
 die( "FATAL: Couldn't load database parameters" ) if setup_db_vars();
 

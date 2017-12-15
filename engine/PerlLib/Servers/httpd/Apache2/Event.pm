@@ -45,13 +45,11 @@ sub _setupModules
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2SetupModules', __PACKAGE__ );
-    $rs ||= $self->disableModules( qw/ mpm_itk mpm_prefork mpm_worker cgi / );
+    my $rs = $self->disableModules( qw/ mpm_itk mpm_prefork mpm_worker cgi / );
     $rs ||= $self->enableModules(
         qw/mpm_event access_compat alias auth_basic auth_digest authn_core authn_file authz_core authz_groupfile authz_host authz_user autoindex cgid
         deflate dir env expires headers mime mime_magic negotiation proxy proxy_http rewrite ssl suexec version/
     );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2SetupModules', __PACKAGE__ );
 }
 
 =back

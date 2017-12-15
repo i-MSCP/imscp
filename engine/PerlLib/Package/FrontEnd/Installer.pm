@@ -143,7 +143,7 @@ sub askMasterAdminCredentials
     my (undef, $dialog) = @_;
 
     my ($username, $password) = ( '', '' );
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->getInstance();
 
     eval { $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' )); };
     $db = undef if $@;
@@ -436,7 +436,7 @@ EOF
             if ( $sslEnabled eq 'yes' ) {
                 my %choices = ( 'http://', 'No secure access (No SSL)', 'https://', 'Secure access (SSL)' );
                 ( $rs, $baseServerVhostPrefix ) = $dialog->radiolist(
-                    <<'EOF', \%choices, grep( $baseServerVhostPrefix eq $_, keys %choices ) || 'https://' );
+                    <<"EOF", \%choices, ( grep( $baseServerVhostPrefix eq $_, keys %choices ) )[0] || 'https://' );
 Please choose the default access mode for the control panel:
 \\Z \\Zn
 EOF
@@ -573,14 +573,13 @@ sub askAltUrlsFeature
         ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'yes' );
 Do you want to enable the alternative URLs feature for client domains?
 
-The alternative URLs feature allows clients accessing their websites through alternative URLs such as http://dmn1.panel.domain.tld
+This feature allows the clients to access their websites through alternative URLs such as http://dmn1.panel.domain.tld
 \\Z \\Zn
 EOF
         return $rs unless $rs < 30;
-
-        main::setupSetQuestion( 'CLIENT_DOMAIN_ALT_URLS', $value );
     }
 
+    main::setupSetQuestion( 'CLIENT_DOMAIN_ALT_URLS', $value );
     0;
 }
 
@@ -774,7 +773,7 @@ sub _setupMasterAdmin
 
     $password = apr1MD5( $password );
 
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->getInstance();
     my $dbh = $db->getRawDb();
 
     eval {
@@ -913,7 +912,7 @@ sub _addMasterWebUser
 
         my $usergroup = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-        my $db = iMSCP::Database->factory();
+        my $db = iMSCP::Database->getInstance();
         my $dbh = $db->getRawDb();
         local $dbh->{'RaiseError'} = 1;
 

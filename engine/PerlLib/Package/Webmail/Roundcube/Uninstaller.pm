@@ -82,7 +82,7 @@ sub _init
 
     $self->{'frontend'} = Package::FrontEnd->getInstance();
     $self->{'roundcube'} = Package::Webmail::Roundcube::Roundcube->getInstance();
-    $self->{'db'} = iMSCP::Database->factory();
+    $self->{'db'} = iMSCP::Database->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/roundcube";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";

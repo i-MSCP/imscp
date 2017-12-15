@@ -332,7 +332,7 @@ sub _setupDatabase
     my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
     eval {
-        my $dbh = iMSCP::Database->factory()->getRawDb();
+        my $dbh = iMSCP::Database->getInstance()->getRawDb();
         $dbh->{'RaiseError'} = 1;
 
         my $quotedDbName = $dbh->quote_identifier( $rainLoopDbName );

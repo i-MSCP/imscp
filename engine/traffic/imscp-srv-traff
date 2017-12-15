@@ -30,7 +30,7 @@
 use strict;
 use warnings;
 use FindBin;
-use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use lib "$FindBin::Bin/../PerlLib";
 use File::Basename;
 use iMSCP::Debug;
 use iMSCP::Bootstrapper;
@@ -87,7 +87,7 @@ sub run
     return 0 unless $smtpIn || $poIn || $httpIn || $allIn || $smtpOut || $poOut || $httpOut || $allOut;
 
     # Update traffic data in database
-    my $dbh = iMSCP::Database->factory()->getRawDb();
+    my $dbh = iMSCP::Database->getInstance()->getRawDb();
     $dbh->do(
         '
             INSERT INTO server_traffic (

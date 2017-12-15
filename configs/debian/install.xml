@@ -9,6 +9,7 @@
     <folder mode="0755">${INST_PREF}/usr/local</folder>
     <folder mode="0755" export="LOCAL_CONF">${INST_PREF}/usr/local/etc</folder>
     <folder mode="0755" export="LOCAL_USR_LIB">${INST_PREF}/usr/local/lib</folder>
+    <folder mode="0755" export="LOCAL_USR_SBIN">${INST_PREF}/usr/local/sbin</folder>
     <folder mode="0755">${INST_PREF}/var</folder>
     <folder mode="0755">${INST_PREF}/var/log</folder>
     <folder export="SYSTEM_LOG">${INST_PREF}/var/log/imscp</folder>

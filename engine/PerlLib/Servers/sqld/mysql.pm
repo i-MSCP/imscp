@@ -203,7 +203,7 @@ sub createUser
     defined $password or die( '$password parameter is not defined' );
 
     eval {
-        my $dbh = iMSCP::Database->factory()->getRawDb();
+        my $dbh = iMSCP::Database->getInstance()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
         $dbh->do(
             'CREATE USER ?@? IDENTIFIED BY ?' . ( version->parse( $self->getVersion()) >= version->parse( '5.7.6' ) ? ' PASSWORD EXPIRE NEVER' : '' ),
@@ -235,7 +235,7 @@ sub dropUser
     return 0 if grep($_ eq lc $user, 'debian-sys-maint', 'mysql.sys', 'root');
 
     eval {
-        my $dbh = iMSCP::Database->factory()->getRawDb();
+        my $dbh = iMSCP::Database->getInstance()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
         return unless $dbh->selectrow_hashref( 'SELECT 1 FROM mysql.user WHERE user = ? AND host = ?', undef, $user, $host );
         $dbh->do( 'DROP USER ?@?', undef, $user, $host );

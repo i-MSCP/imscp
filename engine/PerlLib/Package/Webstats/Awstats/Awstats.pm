@@ -137,7 +137,7 @@ sub setEnginePermissions
 
 sub getDistroPackages
 {
-    ( 'awstats' );
+    ( 'awstats', 'libnet-dns-perl' );
 }
 
 =item addUser( \%moduleData )
@@ -320,7 +320,7 @@ sub _addAwstatsConfig
     my (undef, $moduleData) = @_;
 
     my $row = eval {
-        my $dbh = iMSCP::Database->factory()->getRawDb();
+        my $dbh = iMSCP::Database->getInstance()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
         $dbh->selectrow_hashref( 'SELECT admin_name FROM admin WHERE admin_id = ?', undef, $moduleData->{'DOMAIN_ADMIN_ID'} );
     };

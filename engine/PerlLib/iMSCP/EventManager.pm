@@ -25,10 +25,9 @@ package iMSCP::EventManager;
 
 use strict;
 use warnings;
-use Clone qw/ clone /;
 use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::PriorityQueue;
-use Scalar::Util qw / blessed /;
+use Scalar::Util qw / blessed refaddr /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -57,18 +56,18 @@ sub hasListener
     my ($self, $eventName, $listener) = @_;
 
     defined $eventName or die 'Missing $eventName parameter';
-    defined $listener && ref $listener eq 'CODE' or die 'Missing or invalid $listener parameter';
+    ref $listener eq 'CODE' or die 'Missing or invalid $listener parameter';
 
-    $self->{'events'}->{$eventName} && $self->{'events'}->{$eventName}->hasItem( $listener );
+    exists $self->{'events'}->{$eventName} && $self->{'events'}->{$eventName}->hasItem( $listener );
 }
 
-=item register( $eventNames, $listener [, priority = 1 [, $once = FALSE ] ] )
+=item register( $eventNames, $listener [, priority = 0 [, $once = FALSE ] ] )
 
  Registers an event listener for the given events
 
  Param string|arrayref $eventNames Event(s) that the listener listen to
- Param coderef|object reference $listener A CODE reference or an object implementing $eventNames method
- Param int $priority OPTIONAL Listener priority in range [-1000 .. 1000] (Highest values have highest priority)
+ Param coderef|object $listener A CODE reference or an object implementing $eventNames method
+ Param int $priority OPTIONAL Listener priority (Highest values have highest priority)
  Param bool $once OPTIONAL If TRUE, $listener will be executed at most once for the given events
  Return int 0 on success, 1 on failure
 
@@ -91,12 +90,12 @@ sub register
             return;
         }
 
-        my $sub = blessed $listener
-                ? sub { $listener->$eventNames( @_ ); } # Object as event listener
-                : ( ref $listener eq 'CODE' ? $listener : die( 'Invalid $listener parameter. Expects an object or code reference.' ) );
+        ( ref $listener eq 'CODE' || blessed $listener ) or die(
+            'Invalid $listener parameter. Expects an object or code reference.'
+        );
 
-        ( $self->{'events'}->{$eventNames} ||= iMSCP::PriorityQueue->new() )->addItem( $sub, $priority );
-        $self->{'nonces'}->{$eventNames}->{$sub} = 1 if $once;
+        ( $self->{'events'}->{$eventNames} //= iMSCP::PriorityQueue->new() )->addItem( $listener, $priority );
+        $self->{'nonces'}->{$eventNames}->{$listener}++ if $once;
     };
     if ( $@ ) {
         error( $@ );
@@ -106,7 +105,7 @@ sub register
     0;
 }
 
-=item registerOne( $eventNames, $listener [, priority = 1 ] )
+=item registerOne( $eventNames, $listener [, priority = 0 ] )
 
  Registers an event listener that will be executed at most once for the given events
  
@@ -114,7 +113,7 @@ sub register
 
  Param string|arrayref $eventNames Event(s) that the listener listen to
  Param coderef|object $listener A CODE reference or object implementing $eventNames method
- Param int $priority OPTIONAL Listener priority in range [-1000 .. 1000] (Highest values have highest priority)
+ Param int $priority OPTIONAL Listener priority (Highest values have highest priority)
  Return int 0 on success, 1 on failure
 
 =cut
@@ -141,10 +140,10 @@ sub unregister
     my ($self, $listener, $eventName) = @_;
 
     eval {
-        defined $listener && ref $listener eq 'CODE' or die 'Missing or invalid $listener parameter';
+        ref $listener eq 'CODE' or die 'Missing or invalid $listener parameter';
 
         if ( defined $eventName ) {
-            return unless $self->{'events'}->{$eventName};
+            return unless exists $self->{'events'}->{$eventName};
 
             $self->{'events'}->{$eventName}->removeItem( $listener );
 
@@ -189,8 +188,8 @@ sub clearListeners
         return 1;
     }
 
-    delete $self->{'events'}->{$eventName} if $self->{'events'}->{$eventName};
-    delete $self->{'nonces'}->{$eventName} if $self->{'nonces'}->{$eventName};
+    delete $self->{'events'}->{$eventName} if exists $self->{'events'}->{$eventName};
+    delete $self->{'nonces'}->{$eventName} if exists $self->{'nonces'}->{$eventName};
     0;
 }
 
@@ -213,27 +212,31 @@ sub trigger
         return 1;
     }
 
-    return 0 unless $self->{'events'}->{$eventName};
+    return 0 unless exists $self->{'events'}->{$eventName};
+
     debug( sprintf( 'Triggering %s event', $eventName ));
 
     # The priority queue acts as a heap, which implies that as items are popped
-    # they are also removed. Thus we clone it for purposes of iteration.
-    my $listenerPriorityQueue = clone( $self->{'events'}->{$eventName} );
-    my $rs = 0;
-    while ( my $listener = $listenerPriorityQueue->pop() ) {
+    # they are also removed. Thus we clone it (in surface) for purposes of iteration.
+    my ($rs, $priorityQueue) = ( 0, $self->{'events'}->{$eventName}->clone() );
+    while ( my $listener = $priorityQueue->pop ) {
+        $rs = blessed $listener ? $listener->$eventName( @params ) : $listener->( @params );
+        last if $rs;
+
         if ( $self->{'nonces'}->{$eventName}->{$listener} ) {
             $self->{'events'}->{$eventName}->removeItem( $listener );
-            delete $self->{'nonces'}->{$eventName}->{$listener};
+            delete $self->{'nonces'}->{$eventName}->{$listener} if --$self->{'nonces'}->{$eventName}->{$listener} < 1;
         }
-
-        $rs = $listener->( @params );
-        last if $rs;
     }
 
-    # We must test $self->{'events'}->{$eventName} here too because a listener
-    # can self-unregister
-    delete $self->{'events'}->{$eventName} if $self->{'events'}->{$eventName} && $self->{'events'}->{$eventName}->isEmpty();
-    delete $self->{'nonces'}->{$eventName} unless !$self->{'nonces'}->{$eventName} || %{$self->{'nonces'}->{$eventName}};
+    # We must test for priority queue existence here too because a listener can self-unregister
+    if ( exists $self->{'events'}->{$eventName} && $self->{'events'}->{$eventName}->isEmpty() ) {
+        delete $self->{'events'}->{$eventName};
+        delete $self->{'nonces'}->{$eventName};
+        return $rs;
+    }
+
+    delete $self->{'nonces'}->{$eventName} if $self->{'nonces'}->{$eventName} && !%{$self->{'nonces'}->{$eventName}};
     $rs;
 }
 

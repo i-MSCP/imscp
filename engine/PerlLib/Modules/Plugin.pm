@@ -140,7 +140,7 @@ sub _init
         verify_hostname => 0,
         SSL_verify_mode => 0x00
     );
-    $self->{'dbh'} = iMSCP::Database->factory()->getRawDb();
+    $self->{'dbh'} = iMSCP::Database->getInstance()->getRawDb();
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     @{$self}{qw/ pluginId pluginAction pluginInstance pluginName pluginInfo pluginConfig pluginConfigPrev pluginStatus /} = undef;
     $self;

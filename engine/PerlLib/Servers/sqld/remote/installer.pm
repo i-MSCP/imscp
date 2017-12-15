@@ -83,10 +83,10 @@ sub _buildConf
 
     # Make sure that the conf.d directory exists
     iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make( {
-            user  => $rootUName,
-            group => $rootGName,
-            mode  => 0755
-        } );
+        user  => $rootUName,
+        group => $rootGName,
+        mode  => 0755
+    } );
 
     # Create the /etc/mysql/my.cnf file if missing
     unless ( -f "$confDir/my.cnf" ) {
@@ -143,15 +143,14 @@ sub _updateServerConfig
 {
     my ($self) = @_;
 
-    if ( !( $main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::mariadb'
-        && version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '10.0' ) )
-        && !( version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.6.6' ) )
-    ) {
+    if ( $main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::mariadb' ) {
+        return 0 if version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) < version->parse( '10.0' );
+    } elsif ( version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) < version->parse( '5.6.6' ) ) {
         return 0;
     }
 
     eval {
-        my $dbh = iMSCP::Database->factory()->getRawDb();
+        my $dbh = iMSCP::Database->getInstance()->getRawDb();
         local $dbh->{'RaiseError'};
 
         # Disable unwanted plugins (bc reasons)

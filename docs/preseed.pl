@@ -23,6 +23,18 @@
     # email.
     DEFAULT_ADMIN_ADDRESS               => '',
 
+    # SQL root user (mandatory)
+    #
+    # This SQL user must have full privileges on the SQL server.
+    # Note that this user used only while i-MSCP installation/reconfiguration.
+    #
+    # Leave empty for default: root
+    SQL_ROOT_USER                       => '',
+    # Ignored when the (system) root user can connect without password (like 
+    # in recent Debian versions).
+    #
+    SQL_ROOT_PASSWORD                   => '',
+
     # Optional parameters
     #
     # Parameters below are optional. If they are not filled, default value
@@ -93,18 +105,6 @@
     #
     # Leave empty for default: Depend on distribution and codename.
     SQL_SERVER                          => '',
-
-    # SQL root user (mandatory)
-    #
-    # This SQL user must have full privileges on the SQL server.
-    # Note that this user used only while i-MSCP installation/reconfiguration.
-    #
-    # Leave empty for default: root
-    SQL_ROOT_USER                       => '',
-    # Ignored when the (system) root user can connect without password (like 
-    # in recent Debian versions).
-    #
-    SQL_ROOT_PASSWORD                   => '',
 
     # Database name
     #

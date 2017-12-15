@@ -27,7 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use File::Find;
-use autouse Lchown => qw/ lchown /;
+use Lchown qw/ lchown /;
 use parent 'Exporter';
 
 our @EXPORT = qw/ setRights /;

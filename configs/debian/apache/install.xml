@@ -9,7 +9,6 @@
     <copy_config>${SYSTEM_CONF}/apache/00_nameserver.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/apache.data.dist</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/logrotate.conf</copy_config>
-    <copy_config mode="0750">/usr/local/sbin/vlogger</copy_config>
+    <copy_config mode="0750">${LOCAL_USR_SBIN}/vlogger</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/vlogger.conf.tpl</copy_config>
-    <copy_config>${SYSTEM_CONF}/apache/vlogger.sql</copy_config>
 </install>

@@ -187,7 +187,7 @@ sub _updateServerConfig
     {
         # Need to ignore SIGHUP, as otherwise a SIGHUP can sometimes abort the upgrade
         # process in the middle.
-        #local $SIG{'HUP'} = 'IGNORE';
+        local $SIG{'HUP'} = 'IGNORE';
 
         my $mysqlConffile = File::Temp->new();
         print $mysqlConffile <<"EOF";
@@ -195,24 +195,22 @@ sub _updateServerConfig
 host = @{[ main::setupGetQuestion( 'DATABASE_HOST' ) ]}
 port = @{[ main::setupGetQuestion( 'DATABASE_PORT' ) ]}
 user = "@{ [ main::setupGetQuestion( 'DATABASE_USER' ) =~ s/"/\\"/gr ] }"
-password = "@{ [ decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv, main::setupGetQuestion( 'DATABASE_PASSWORD' )) =~ s/"/\\"/gr ] }"
+password = "@{ [ decryptRijndaelCBC( $main::imscpKEY, $main::imscpIV, main::setupGetQuestion( 'DATABASE_PASSWORD' )) =~ s/"/\\"/gr ] }"
 EOF
         $mysqlConffile->flush();
 
-        # Filter all "duplicate column", "duplicate key" and "unknown column"
-        # errors as the command is designed to be idempotent.
-        my $rs = execute( "/usr/bin/mysql_upgrade --defaults-file=$mysqlConffile 2>&1 | egrep -v '^(1|\@had|ERROR (1054|1060|1061))'", \my $stdout );
-        error( sprintf( "Couldn't upgrade SQL server system tables: %s", $stdout )) if $rs;
-        return $rs if $rs;
+        my $rs = execute( "/usr/bin/mysql_upgrade --defaults-extra-file=$mysqlConffile", \my $stdout, \my $stderr );
         debug( $stdout ) if $stdout;
+        error( sprintf( "Couldn't upgrade SQL server system tables: %s", $stderr || 'Unknown error' )) if $rs;
+        return $rs if $rs;
     }
 
     # Disable unwanted plugins
 
-    return 0 unless version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.6.6' );
+    return 0 if version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) < version->parse( '5.6.6' );
 
     eval {
-        my $dbh = iMSCP::Database->factory()->getRawDb();
+        my $dbh = iMSCP::Database->getInstance()->getRawDb();
         local $dbh->{'RaiseError'};
 
         # Disable unwanted plugins (bc reasons)

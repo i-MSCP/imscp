@@ -32,7 +32,7 @@ use warnings;
 use File::Basename;
 use File::Spec;
 use FindBin;
-use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use lib "$FindBin::Bin/../PerlLib";
 use iMSCP::Bootstrapper;
 use iMSCP::Debug qw/ debug error getMessageByType newDebug warning /;
 use iMSCP::Dir;
@@ -145,7 +145,7 @@ sub backupDatabases
 {
     my ($mainDmnId, $bkpDir, $cmpAlgo, $cmpLevel, $user, $group) = @_;
 
-    my $db = iMSCP::Database->factory();
+    my $db = iMSCP::Database->getInstance();
     my $rows = eval {
         my $dbh = $db->getRawDb();
         local $dbh->{'RaiseError'} = 1;
@@ -198,7 +198,7 @@ sub backupMaildirs
     my ($dmnId, $bkpDir, $cmpAlgo, $cmpLevel, $bkpExt, $user, $group) = @_;
 
     my $rows = eval {
-        my $dbh = iMSCP::Database->factory()->getRawDb();
+        my $dbh = iMSCP::Database->getInstance()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
 
         $dbh->selectall_hashref(
@@ -269,7 +269,7 @@ sub backupAll
     my $bkpExt = ( $cmpAlgo ne 'no' ) ? '.' . $command->{$cmpAlgo}->{'extension'} : '';
 
     my $rows = eval {
-        my $dbh = iMSCP::Database->factory()->getRawDb();
+        my $dbh = iMSCP::Database->getInstance()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
         $dbh->selectall_hashref(
             "

@@ -361,7 +361,7 @@ sub _setupAuthdaemonSqlUser
             $main::sqlUsers{$dbUser . '@' . $dbUserHost} = undef;
         }
 
-        my $dbh = iMSCP::Database->factory()->getRawDb();
+        my $dbh = iMSCP::Database->getInstance()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
 
         # Give required privileges to this SQL user

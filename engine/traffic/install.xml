@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folder export="MAIL_LOG_CONVERT_PATH">${INST_PREF}/usr/local/sbin</folder>
-    <copy>${MAIL_LOG_CONVERT_PATH}/maillogconvert.pl</copy>
+    <copy>${LOCAL_USR_SBIN}/maillogconvert.pl</copy>
     <copy>${SYSTEM_ENGINE_ROOT}/traffic/imscp-srv-traff</copy>
     <copy>${SYSTEM_ENGINE_ROOT}/traffic/imscp-vrl-traff</copy>
 </install>

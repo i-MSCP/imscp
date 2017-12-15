@@ -347,18 +347,13 @@ sub decrypt_db_password
         return ( 1, '' );
     }
 
-    if ( length( $main::db_pass_key ) != 32 || length( $main::db_pass_iv ) != 16 ) {
-        push_el( \@main::el, 'decrypt_db_password()', '[ERROR] KEY or IV has invalid length' );
-        return ( 1, '' );
-    }
-
     my $plaintext = Crypt::CBC->new(
         -cipher      => 'Crypt::Rijndael',
-        -key         => $main::db_pass_key,
-        -keysize     => length $main::db_pass_key,
-        -blocksize   => length $main::db_pass_iv,
+        -key         => $main::imscpKEY,
+        -keysize     => length $main::imscpKEY,
+        -blocksize   => length $main::imscpIV,
         -literal_key => 1,
-        -iv          => $main::db_pass_iv,
+        -iv          => $main::imscpIV,
         -header      => 'none',
         -padding     => 'standard'
     )->decrypt(

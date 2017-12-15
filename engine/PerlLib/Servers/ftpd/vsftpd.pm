@@ -204,7 +204,7 @@ sub addUser
 
     $self->{'eventManager'}->trigger( 'beforeFtpdAddUser', $data );
 
-    my $dbh = iMSCP::Database->factory()->getRawDb();
+    my $dbh = iMSCP::Database->getInstance()->getRawDb();
 
     eval {
         local $dbh->{'RaiseError'} = 1;

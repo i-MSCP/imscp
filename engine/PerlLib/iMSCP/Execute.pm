@@ -25,7 +25,7 @@ package iMSCP::Execute;
 
 use strict;
 use warnings;
-use autouse 'Capture::Tiny' => qw/ capture capture_stdout capture_stderr /;
+use Capture::Tiny qw/ capture capture_stdout capture_stderr /;
 use Errno qw/ EINTR /;
 use iMSCP::Debug qw/ debug error /;
 use IO::Select;

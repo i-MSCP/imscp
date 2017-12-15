@@ -61,13 +61,11 @@ sub _setupModules
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2SetupModules', __PACKAGE__ );
-    $rs ||= $self->disableModules( qw/ mpm_event mpm_worker cgid suexec / );
+    my $rs = $self->disableModules( qw/ mpm_event mpm_worker cgid suexec / );
     $rs ||= $self->enableModules(
         qw/mpm_prefork mpm_itk access_compat alias auth_basic auth_digest authn_core authn_file authz_core authz_groupfile authz_host authz_user
         autoindex cgi deflate dir env expires headers mime mime_magic negotiation proxy proxy_http rewrite ssl version/
     );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2SetupModules', __PACKAGE__ );
 }
 
 =back
@@ -98,7 +96,7 @@ sub _cleanTemplate
         if ( index( $serverData->{'VHOST_TYPE'}, 'fwd' ) == -1 ) {
             replaceBlocByRef( "# SECTION suexec BEGIN.\n", "# SECTION suexec END.\n", '', $cfgTpl );
 
-            if($moduleData->{'CGI_SUPPORT'} ne 'yes') {
+            if ( $moduleData->{'CGI_SUPPORT'} ne 'yes' ) {
                 replaceBlocByRef( "# SECTION cgi BEGIN.\n", "# SECTION cgi END.\n", '', $cfgTpl );
             }
         } elsif ( $moduleData->{'FORWARD'} ne 'no' ) {
