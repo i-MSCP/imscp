@@ -26,9 +26,6 @@ package Servers::httpd;
 use strict;
 use warnings;
 use iMSCP::Service;
-use iMSCP::LsbRelease;
-use Module::Load::Conditional qw/ check_install can_load /;
-
 
 $Module::Load::Conditional::FIND_VERSION = 0;
 $Module::Load::Conditional::VERBOSE = 0;

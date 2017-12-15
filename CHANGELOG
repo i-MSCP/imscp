@@ -169,6 +169,7 @@ SCRIPTS
     Fixed: maillogconvert.pl script is broken leading to un-processing of SMTP logs
 
 SERVERS
+    Enhancement: Enhancement: Make use of in memory tmpfs to build Web folders whenever possible (Servers::Httpd::Apache2::Abstract)
     Fixed: Applications such as WHMCS behave unexpectedly with strict SQL mode -- Set SQL mode as with MySQL 5.5 (no SQL mode)
     Fixed: Avoid truncating ProFTPD and VsFTPD traffic log files -- Make use of LOGROTATE(8) instead
     Fixed: Bad `X_FORWARDED_PORT` header value for SSL redirect (proxy) vhosts (Apache2)
