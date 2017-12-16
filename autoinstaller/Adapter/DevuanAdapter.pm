@@ -19,6 +19,8 @@
 
 package autoinstaller::Adapter::DevuanAdapter;
 
+use strict;
+use warnings;
 use parent 'autoinstaller::Adapter::DebianAdapter';
 
 =head1 DESCRIPTION

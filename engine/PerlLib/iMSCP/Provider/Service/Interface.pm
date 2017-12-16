@@ -23,7 +23,8 @@
 
 package iMSCP::Provider::Service::Interface;
 
-use Carp;
+use strict;
+use warnings;
 
 =head1 DESCRIPTION
 
@@ -43,7 +44,7 @@ use Carp;
 
 sub isEnabled
 {
-    confess 'not implemented';
+    die 'not implemented';
 }
 
 =item enable( $service )
@@ -57,7 +58,7 @@ sub isEnabled
 
 sub enable
 {
-    confess 'not implemented';
+    die 'not implemented';
 }
 
 =item disable( $service )
@@ -71,7 +72,7 @@ sub enable
 
 sub disable
 {
-    confess 'not implemented';
+    die 'not implemented';
 }
 
 =item remove( $service )
@@ -85,7 +86,7 @@ sub disable
 
 sub remove
 {
-    confess 'not implemented';
+    die 'not implemented';
 }
 
 =item start( $service )
@@ -99,7 +100,7 @@ sub remove
 
 sub start
 {
-    confess 'not implemented';
+    die 'not implemented';
 }
 
 =item stop( $service )
@@ -113,7 +114,7 @@ sub start
 
 sub stop
 {
-    confess 'not implemented';
+    die 'not implemented';
 }
 
 =item restart( $service )
@@ -127,7 +128,7 @@ sub stop
 
 sub restart
 {
-    confess 'not implemented';
+    die 'not implemented';
 }
 
 =item reload( $service )
@@ -141,7 +142,7 @@ sub restart
 
 sub reload
 {
-    confess 'not implemented';
+    die 'not implemented';
 }
 
 
@@ -156,7 +157,7 @@ sub reload
 
 sub isRunning
 {
-    confess 'not implemented';
+    die 'not implemented';
 }
 
 =item hasService( $service )
@@ -169,7 +170,7 @@ sub isRunning
 
 sub hasService
 {
-    confess 'not implemented';
+    die 'not implemented';
 }
 
 =back

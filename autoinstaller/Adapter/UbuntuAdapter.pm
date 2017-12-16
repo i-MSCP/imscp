@@ -19,6 +19,8 @@
 
 package autoinstaller::Adapter::UbuntuAdapter;
 
+use strict;
+use warnings;
 use parent 'autoinstaller::Adapter::DebianAdapter';
 
 =head1 DESCRIPTION

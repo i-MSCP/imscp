@@ -8,6 +8,7 @@ BACKEND
     Added: composer.phar compatibility symlink for backward compatibility with plugins
     Added: getBlocByRef(), processByRef() and replaceBlocByRef() subroutines (iMSCP::TemplateParser)
     Added: Support for .timer unit files (Systemd init provider)
+    Added: Version check (minimum version) for non-core Perl modules (iMSCP::Requirements)
     Enhancement: Make it possible to delay execution of the 'start', 'restart' and 'reload' actions (iMSCP::Service)
     Enhancement: Make it possible to discard files/directories when clearing a directory (iMSCP::Dir::clear)
     Enhancement: Make it possible to install Composer anywhere (iMSCP::Composer)
@@ -169,7 +170,7 @@ SCRIPTS
     Fixed: maillogconvert.pl script is broken leading to un-processing of SMTP logs
 
 SERVERS
-    Enhancement: Enhancement: Make use of in memory tmpfs to build Web folders whenever possible (Servers::Httpd::Apache2::Abstract)
+    Enhancement: Make use of in memory tmpfs to build Web folders whenever possible (Servers::Httpd::Apache2::Abstract)
     Fixed: Applications such as WHMCS behave unexpectedly with strict SQL mode -- Set SQL mode as with MySQL 5.5 (no SQL mode)
     Fixed: Avoid truncating ProFTPD and VsFTPD traffic log files -- Make use of LOGROTATE(8) instead
     Fixed: Bad `X_FORWARDED_PORT` header value for SSL redirect (proxy) vhosts (Apache2)

@@ -266,9 +266,11 @@
         <package>libhash-merge-perl</package>
         <package>libjson-perl</package>
         <package>libjson-xs-perl</package>
+        <package>libmailtools-perl</package>
         <package>libmime-tools-perl</package>
         <package>libnet-libidn-perl</package>
         <package>libsort-naturally-perl</package>
+        <package>libtimedate-perl</package>
         <package>libwww-perl</package>
         <package>libxml-parser-perl</package>
     </perl>

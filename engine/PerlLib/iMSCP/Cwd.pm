@@ -19,10 +19,13 @@
 
 package iMSCP::Cwd;
 
+use strict;
+use warnings;
 use Exporter qw/ import /;
 
-our @EXPORT = qw/ $CWD /;
 our $CWD;
+
+our @EXPORT = qw/ $CWD /;
 
 tie $CWD, 'iMSCP::Cwd::SCALAR' or die "Can't tie \$CWD";
 

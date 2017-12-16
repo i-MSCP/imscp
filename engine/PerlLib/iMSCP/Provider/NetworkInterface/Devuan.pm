@@ -23,6 +23,8 @@
 
 package iMSCP::Provider::NetworkInterface::Devuan;
 
+use strict;
+use warnings;
 use parent 'iMSCP::Provider::NetworkInterface::Debian';
 
 =head1 DESCRIPTION

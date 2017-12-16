@@ -71,7 +71,7 @@ sub loadConfig
     my $lsbRelease = iMSCP::LsbRelease->getInstance();
     my $distroConffile = "$FindBin::Bin/configs/" . lc( $lsbRelease->getId( 1 )) . '/imscp.conf';
     my $defaultConffile = "$FindBin::Bin/configs/debian/imscp.conf";
-    my $newConffile = ( -f $distroConffile ) ? $distroConffile : $defaultConffile;
+    my $newConffile = -f $distroConffile ? $distroConffile : $defaultConffile;
 
     # Load new configuration
     tie %main::imscpConfig, 'iMSCP::Config', fileName => $newConffile, readonly => 1, temporary => 1;
@@ -639,7 +639,7 @@ sub _compileDaemon
 
     iMSCP::Dir->new( dirname => "$main::{'SYSTEM_ROOT'}/daemon" )->make();
     $rs = iMSCP::File->new( filename => 'imscp_daemon' )->copyFile( "$main::{'SYSTEM_ROOT'}/daemon", { preserve => 'no' } );
-    $rs ||= iMSCP::Rights::setRights( "$main::{'SYSTEM_ROOT'}/daemon/imscp_daemon",
+    $rs ||= setRights( "$main::{'SYSTEM_ROOT'}/daemon/imscp_daemon",
         {
             user  => $main::imscpConfig{'ROOT_GROUP'},
             group => $main::imscpConfig{'ROOT_GROUP'},

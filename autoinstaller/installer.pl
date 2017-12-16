@@ -31,15 +31,14 @@ BEGIN { $0 = 'imscp-autoinstall'; }
 
 use strict;
 use warnings;
+use File::Basename;
 use FindBin;
 use lib $FindBin::Bin, "$FindBin::Bin/engine/PerlLib";
 use autoinstaller::Functions qw/ loadConfig build install /;
 use iMSCP::Debug;
-use iMSCP::Requirements;
 use iMSCP::Dialog;
 use iMSCP::Getopt;
-use File::Basename;
-
+use iMSCP::Requirements;
 use POSIX qw / locale_h /;
 
 setlocale( LC_MESSAGES, "C.UTF-8" );

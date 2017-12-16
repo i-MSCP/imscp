@@ -23,6 +23,8 @@
 
 package iMSCP::Provider::NetworkInterface::Interface;
 
+use strict;
+use warnings;
 use Carp;
 
 =head1 DESCRIPTION
