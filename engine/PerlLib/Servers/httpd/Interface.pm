@@ -39,8 +39,8 @@ use warnings;
  Process addUser tasks
  
  The following events *MUST* be triggered:
-  - before<SNAME>2AddUser( \%moduleData )
-  - after<SNAME>2AddUser( \%moduleData )
+  - before<SNAME>AddUser( \%moduleData )
+  - after<SNAME>AddUser( \%moduleData )
 
  Param hashref \%moduleData User data as provided by User module
  Return int 0 on success, other on failure
@@ -59,8 +59,8 @@ sub addUser
  Process deleteUser tasks
 
  The following events *MUST* be triggered:
-  - before<SNAME>2DeleteUser( \%moduleData )
-  - after<SNAME>2DelteUser( \%moduleData )
+  - before<SNAME>DeleteUser( \%moduleData )
+  - after<SNAME>DelteUser( \%moduleData )
 
  Param hashref \%moduleData User data as provided by User module
  Return int 0 on success, other on failure
@@ -79,8 +79,8 @@ sub deleteUser
  Process addDmn tasks
 
  The following events *MUST* be triggered:
-  - before<SNAME>2AddDomain( \%moduleData )
-  - after<SNAME>2AddDomain( \%moduleData )
+  - before<SNAME>AddDomain( \%moduleData )
+  - after<SNAME>AddDomain( \%moduleData )
 
  Param hashref \%moduleData Domain data as provided by Alias|Domain modules
  Return int 0 on success, other on failure
