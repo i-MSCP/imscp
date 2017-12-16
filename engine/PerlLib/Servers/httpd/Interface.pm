@@ -37,6 +37,10 @@ use warnings;
 =item addUser( \%moduleData )
 
  Process addUser tasks
+ 
+ The following events *MUST* be triggered:
+  - before<SNAME>2AddUser( \%moduleData )
+  - after<SNAME>2AddUser( \%moduleData )
 
  Param hashref \%moduleData User data as provided by User module
  Return int 0 on success, other on failure
@@ -54,6 +58,10 @@ sub addUser
 
  Process deleteUser tasks
 
+ The following events *MUST* be triggered:
+  - before<SNAME>2DeleteUser( \%moduleData )
+  - after<SNAME>2DelteUser( \%moduleData )
+
  Param hashref \%moduleData User data as provided by User module
  Return int 0 on success, other on failure
 
@@ -69,6 +77,10 @@ sub deleteUser
 =item addDmn( \%moduleData )
 
  Process addDmn tasks
+
+ The following events *MUST* be triggered:
+  - before<SNAME>2AddDomain( \%moduleData )
+  - after<SNAME>2AddDomain( \%moduleData )
 
  Param hashref \%moduleData Domain data as provided by Alias|Domain modules
  Return int 0 on success, other on failure
@@ -86,6 +98,10 @@ sub addDmn
 
  Process restoreDmn tasks
 
+ The following events *MUST* be triggered:
+  - before<SNAME>RestoreDomain( \%moduleData )
+  - after<SNAME>RestoreDomain( \%moduleData )
+
  Param hashref \%moduleData Domain data as provided by Alias|Domain modules
  Return int 0 on success, other on failure
 
@@ -101,6 +117,10 @@ sub restoreDmn
 =item disableDmn( \%moduleData )
 
  Process disableDmn tasks
+
+ The following events *MUST* be triggered:
+  - before<SNAME>DisableDomain( \%moduleData )
+  - after<SNAME>DisableDomain( \%moduleData )
 
  Param hashref \%moduleData Domain data as provided by Alias|Domain modules
  Return int 0 on success, other on failure
@@ -118,6 +138,10 @@ sub disableDmn
 
  Process deleteDmn tasks
 
+ The following events *MUST* be triggered:
+  - before<SNAME>DeleteDomain( \%moduleData )
+  - after<SNAME>DeleteDomain( \%moduleData )
+
  Param hashref \%moduleData Domain data as provided by Alias|Domain modules
  Return int 0 on success, other on failure
 
@@ -133,6 +157,10 @@ sub deleteDmn
 =item addSub( \%moduleData )
 
  Process addSub tasks
+
+ The following events *MUST* be triggered:
+  - before<SNAME>DisableSubdomain( \%moduleData )
+  - after<SNAME>DisableSubdomain( \%moduleData )
 
  Param hashref \%moduleData Subdomain data as provided by Subdomain|SubAlias modules
  Return int 0 on success, other on failure
@@ -150,6 +178,10 @@ sub addSub
 
  Process restoreSub tasks
 
+ The following events *MUST* be triggered:
+  - before<SNAME>RestoreSubdomain( \%moduleData )
+  - after<SNAME>RestoreSubdomain( \%moduleData )
+
  Param hashref \%moduleData Subdomain data as provided by Subdomain|SubAlias modules
  Return int 0 on success, other on failure
 
@@ -165,6 +197,10 @@ sub restoreSub
 =item disableSub( \%moduleData )
 
  Process disableSub tasks
+
+ The following events *MUST* be triggered:
+  - before<SNAME>DisableSubdomain( \%moduleData )
+  - after<SNAME>DisableSubdomain( \%moduleData )
 
  Param hashref \%moduleData Subdomain data as provided by Subdomain|SubAlias modules
  Return int 0 on success, other on failure
@@ -182,6 +218,10 @@ sub disableSub
 
  Process deleteSub tasks
 
+ The following events *MUST* be triggered:
+  - before<SNAME>DeleteSubdomain( \%moduleData )
+  - after<SNAME>DeleteSubdomain( \%moduleData )
+
  Param hashref \%moduleData Subdomain data as provided by Subdomain|SubAlias modules
  Return int 0 on success, other on failure
 
@@ -197,6 +237,10 @@ sub deleteSub
 =item addHtpasswd( \%moduleData )
 
  Process addHtpasswd tasks
+
+ The following events *MUST* be triggered:
+  - before<SNAME>AddHtpasswd( \%moduleData )
+  - after<SNAME>AddHtpasswd( \%moduleData )
 
  Param hashref \%moduleData Htpasswd entry data as provided by htpasswd module
  Return int 0 on success, other on failure
@@ -214,6 +258,10 @@ sub addHtpasswd
 
  Process deleteHtpasswd tasks
 
+ The following events *MUST* be triggered:
+  - before<SNAME>DeketeHtpasswd( \%moduleData )
+  - after<SNAME>DeleteHtpasswd( \%moduleData )
+
  Param hashref \%moduleData Htpasswd entry data as provided by Htpasswd module
  Return int 0 on success, other on failure
 
@@ -229,6 +277,10 @@ sub deleteHtpasswd
 =item addHtgroup( \%moduleData )
 
  Process addHtgroup tasks
+
+ The following events *MUST* be triggered:
+  - before<SNAME>AddHtgroup( \%moduleData )
+  - after<SNAME>AddHtgroup( \%moduleData )
 
  Param hashref \%moduleData Htgroup data as provided by Htgroup module
  Return int 0 on success, other on failure
@@ -246,6 +298,10 @@ sub addHtgroup
 
  Process deleteHtgroup tasks
 
+ The following events *MUST* be triggered:
+  - before<SNAME>deleteHtgroup( \%moduleData )
+  - after<SNAME>deleteHtgroup( \%moduleData )
+
  Param hashref \%moduleData Htgroup data as provided by Htgroup module
  Return int 0 on success, other on failure
 
@@ -261,6 +317,10 @@ sub deleteHtgroup
 =item addHtaccess( \%moduleData )
 
  Process addHtaccess tasks
+
+ The following events *MUST* be triggered:
+  - before<SNAME>AddHtaccess( \%moduleData )
+  - after<SNAME>AddHtaccess( \%moduleData )
 
  Param hashref \%moduleData Htaccess data as provided by Htaccess module
  Return int 0 on success, other on failure
@@ -278,6 +338,10 @@ sub addHtaccess
 
  Process deleteHtaccess tasks
 
+ The following events *MUST* be triggered:
+  - before<SNAME>DeleteHtaccess( \%moduleData )
+  - after<SNAME>DeleteHtaccess( \%moduleData )
+
  Param hashref \%moduleData Htaccess data as provided by Htaccess module
  Return int 0 on success, other on failure
 
@@ -294,11 +358,17 @@ sub deleteHtaccess
 
  Build the given httpd configuration file
 
+ The following events *MUST* be triggered:
+  -
+  - onLoadTemplate( '<SNAME>', basename($srcFile), \$cfgTpl, \%moduleData, \%serverData, $self->{'config'} )
+  - before<SNAME>BuildConfFile( \$cfgTpl, basename($srcFile), \$trgFile, \%moduleData, \%serverData, $self->{'config'}, $parameters )
+  - after<SNAME>BuildConfFile( \$cfgTpl, basename($srcFile), \$trgFile, \%moduleData, \%serverData, $self->{'config'}, $parameters )
+
  Param string $srcFile Source file path relative to the i-MSCP httpd configuration directory
  Param string $trgFile Target file path
- Param hash \%data OPTIONAL Data as provided by Alias|Domain|SubAlias|Subdomain modules
- Param hash \%data OPTIONAL Server data (Runtime data have higher precedence than modules data)
- Param hash \%parameters OPTIONAL Parameters:
+ Param hashref \%data OPTIONAL Data as provided by Alias|Domain|SubAlias|Subdomain modules
+ Param hashref \%data OPTIONAL Server data (Runtime data have higher precedence than modules data)
+ Param hashref \%parameters OPTIONAL Parameters:
   - user  : File owner (default: root)
   - group : File group (default: root
   - mode  : File mode (default: 0644)
@@ -364,6 +434,10 @@ sub getRunningGroup
 
  Enable the given httpd sites
 
+ The following events *MUST* be triggered:
+  - before<SNAME>EnableSites( \@sites )
+  - after<SNAME>EnableSites( @sites )
+
  Param array @sites List of sites to enable
  Return int 0 on sucess, other on failure
 
@@ -379,6 +453,10 @@ sub enableSites
 =item disableSites( @sites )
 
  Disable the given httpd sites
+
+ The following events *MUST* be triggered:
+  - before<SNAME>DisableSites( \@sites )
+  - after<SNAME>DisableSites( @sites )
 
  Param array @sites List of sites to disable
  Return int 0 on sucess, other on failure
@@ -396,6 +474,10 @@ sub disableSites
 
  Enable the given httpd modules
 
+ The following events *MUST* be triggered:
+  - before<SNAME>EnableModules( \@modules )
+  - after<SNAME>EnableModules( @modules )
+
  Param array $modules List of modules to enable
  Return int 0 on sucess, other on failure
 
@@ -411,6 +493,10 @@ sub enableModules
 =item disableModules( @modules )
 
  Disable the given httpd modules
+
+ The following events *MUST* be triggered:
+  - before<SNAME>DisableModules( \@modules )
+  - after<SNAME>DisableModules( @modules )
 
  Param array @modules List of modules to disable
  Return int 0 on sucess, other on failure
@@ -428,6 +514,10 @@ sub disableModules
 
  Enable the given httpd configuration files
 
+ The following events *MUST* be triggered:
+  - before<SNAME>EnableConfs( \@conffiles )
+  - after<SNAME>EnableConfs( @conffiles )
+
  Param array @conffiles List of configuration files to enable
  Return int 0 on sucess, other on failure
 
@@ -443,6 +533,10 @@ sub enableConfs
 =item disableConfs( @conffiles )
 
  Disable the given httpd configuration files
+
+ The following events *MUST* be triggered:
+  - before<SNAME>DisableConfs( \@conffiles )
+  - after<SNAME>DisableConfs( @conffiles )
 
  Param array @conffiles Lilst of configuration files to disable
  Return int 0 on sucess, other on failure
@@ -460,6 +554,10 @@ sub disableConfs
 
  Start httpd service
 
+ The following events *MUST* be triggered:
+  - before<SNAME>Start()
+  - after<SNAME>Start()
+
  Return int 0 on success, other on failure
 
 =cut
@@ -474,6 +572,10 @@ sub start
 =item stop( )
 
  Stop httpd service
+
+ The following events *MUST* be triggered:
+  - before<SNAME>Stop()
+  - after<SNAME>Stop()
 
  Return int 0 on success, other on failure
 
@@ -490,6 +592,10 @@ sub stop
 
  Restart httpd service
 
+ The following events *MUST* be triggered:
+  - before<SNAME>Restart()
+  - after<SNAME>Restart()
+
  Return int 0 on success, other on failure
 
 =cut
@@ -504,6 +610,10 @@ sub restart
 =item reload( )
 
  Reload httpd service
+
+ The following events *MUST* be triggered:
+  - before<SNAME>Reload()
+  - after<SNAME>Reload()
 
  Return int 0 on success, other on failure
 
