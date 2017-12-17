@@ -26,7 +26,7 @@ package Servers::po::courier::uninstaller;
 use strict;
 use warnings;
 use iMSCP::Config;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ error /;
 use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Mount qw/ removeMountEntry umount /;

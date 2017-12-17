@@ -29,10 +29,10 @@ use File::Basename;
 use iMSCP::Config;
 use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
-use iMSCP::Debug;
-use iMSCP::Dialog::InputValidation;
+use iMSCP::Debug qw/ debug error /;
+use iMSCP::Dialog::InputValidation qw/ isAvailableSqlUser isNumberInRange isStringNotInList isValidNumberRange isValidPassword isValidUsername /;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::TemplateParser qw/ processByRef /;
@@ -124,9 +124,7 @@ EOF
 
     main::setupSetQuestion( 'FTPD_SQL_USER', $dbUser );
 
-    if ( $main::reconfigure =~ /^(?:ftpd|servers|all|forced)$/
-        || !isValidPassword( $dbPass )
-    ) {
+    if ( $main::reconfigure =~ /^(?:ftpd|servers|all|forced)$/ || !isValidPassword( $dbPass ) ) {
         unless ( defined $main::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
             my $rs = 0;
 
@@ -141,8 +139,7 @@ $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter a password for the ProFTPD SQL user (leave empty for autogeneration):
 \\Z \\Zn
 EOF
-            } while $rs < 30
-                && !isValidPassword( $dbPass );
+            } while $rs < 30 && !isValidPassword( $dbPass );
 
             return $rs unless $rs < 30;
 
@@ -231,7 +228,7 @@ sub install
     $rs ||= $self->_setVersion();
     $rs ||= $self->_setupDatabase();
     $rs ||= $self->_buildConfigFile();
-    $rs ||= $self->_oldEngineCompatibility();
+    $rs ||= $self->_cleanup();
 }
 
 =back
@@ -273,17 +270,17 @@ sub _bkpConfFile
 {
     my ($self, $cfgFile) = @_;
 
-    if ( -f $cfgFile ) {
-        my $file = iMSCP::File->new( filename => $cfgFile );
-        my ($filename, undef, $suffix) = fileparse( $cfgFile );
+    return 0 unless -f $cfgFile;
 
-        unless ( -f "$self->{'bkpDir'}/$filename$suffix.system" ) {
-            my $rs = $file->copyFile( "$self->{'bkpDir'}/$filename$suffix.system", { preserve => 'no' } );
-            return $rs if $rs;
-        } else {
-            my $rs = $file->copyFile( "$self->{'bkpDir'}/$filename$suffix." . time, { preserve => 'no' } );
-            return $rs if $rs;
-        }
+    my $file = iMSCP::File->new( filename => $cfgFile );
+    my ($filename, undef, $suffix) = fileparse( $cfgFile );
+
+    unless ( -f "$self->{'bkpDir'}/$filename$suffix.system" ) {
+        my $rs = $file->copyFile( "$self->{'bkpDir'}/$filename$suffix.system", { preserve => 'no' } );
+        return $rs if $rs;
+    } else {
+        my $rs = $file->copyFile( "$self->{'bkpDir'}/$filename$suffix." . time, { preserve => 'no' } );
+        return $rs if $rs;
     }
 
     0;
@@ -499,15 +496,15 @@ EOF
     $rs;
 }
 
-=item _oldEngineCompatibility( )
+=item _cleanup( )
 
- Remove old files
+ Process cleanup tasks
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _oldEngineCompatibility
+sub _cleanup
 {
     my ($self) = @_;
 

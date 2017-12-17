@@ -80,7 +80,7 @@ sub install
     $rs ||= $self->_createPostfixMaps();
     $rs ||= $self->_buildConf();
     $rs ||= $self->_buildAliasesDb();
-    $rs ||= $self->_oldEngineCompatibility();
+    $rs ||= $self->_cleanup();
 }
 
 =back
@@ -298,7 +298,6 @@ sub _buildAliasesDb
     $rs = execute( 'newaliases', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
-
     $rs ||= $self->{'eventManager'}->trigger( 'afterPostfixBuildAliasesDb' );
 }
 
@@ -509,15 +508,15 @@ sub _buildMainCfFile
     );
 }
 
-=item _oldEngineCompatibility( )
+=item _cleanup( )
 
- Remove old files
+ Process cleanup tasks
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _oldEngineCompatibility
+sub _cleanup
 {
     my ($self) = @_;
 

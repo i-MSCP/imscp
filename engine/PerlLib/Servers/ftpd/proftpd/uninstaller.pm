@@ -140,10 +140,12 @@ sub _removeConfig
         }
 
         my $filename = basename( $self->{'config'}->{'FTPD_CONF_FILE'} );
+
         if ( -f "$self->{'bkpDir'}/$filename.system" ) {
             my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->delFile();
             return $rs if $rs;
         }
+
         return 0;
     }
 

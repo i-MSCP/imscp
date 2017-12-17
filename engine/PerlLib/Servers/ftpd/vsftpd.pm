@@ -145,7 +145,7 @@ sub uninstall
     $rs ||= Servers::ftpd::vsftpd::uninstaller->getInstance()->uninstall();
 
     unless ( $rs || !iMSCP::Service->getInstance()->hasService( $self->{'config'}->{'FTPD_SNAME'} ) ) {
-        $self->{'restart'} = 1;
+        $self->{'restart'} ||= 1;
     } else {
         $self->{'start'} = 0;
         $self->{'restart'} = 0;

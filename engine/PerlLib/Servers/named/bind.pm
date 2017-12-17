@@ -31,7 +31,7 @@ use File::Basename;
 use iMSCP::Config;
 use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::ProgramFinder;
 use iMSCP::TemplateParser qw/ getBlocByRef process processByRef replaceBlocByRef /;
@@ -231,10 +231,7 @@ sub postaddDomain
     my $rs = $self->{'eventManager'}->trigger( 'beforeBind9PostAddDomain', $data );
     return $rs if $rs;
 
-    if ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} eq 'yes'
-        && $self->{'config'}->{'BIND_MODE'} eq 'master'
-        && defined $data->{'ALIAS'}
-    ) {
+    if ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} eq 'yes' && $self->{'config'}->{'BIND_MODE'} eq 'master' && defined $data->{'ALIAS'} ) {
         $rs = $self->addSubbdomain( {
             # Listeners want probably know real parent domain name for the
             # DNS name being added even if that entry is added in another
@@ -343,8 +340,7 @@ sub postdeleteDomain
 {
     my ($self, $data) = @_;
 
-    return 0 if $data->{'PARENT_DOMAIN_NAME'} eq $main::imscpConfig{'BASE_SERVER_VHOST'}
-        && !$data->{'FORCE_DELETION'};
+    return 0 if $data->{'PARENT_DOMAIN_NAME'} eq $main::imscpConfig{'BASE_SERVER_VHOST'} && !$data->{'FORCE_DELETION'};
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeBind9PostDeleteDomain', $data );
     return $rs if $rs;
@@ -441,10 +437,7 @@ sub addSubbdomain
         \$subEntry
     );
 
-    # Remove previous entry if any
     replaceBlocByRef( "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n", "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n", '', \$wrkDbFileContent );
-
-    # Add new entry
     replaceBlocByRef(
         "; sub [{SUBDOMAIN_NAME}] entry BEGIN\n", "; sub [{SUBDOMAIN_NAME}] entry ENDING\n", $subEntry, \$wrkDbFileContent, 'preserve'
     );
@@ -868,7 +861,6 @@ sub _addDmnConfig
     replaceBlocByRef(
         "// imscp [$data->{'DOMAIN_NAME'}] entry BEGIN\n", "// imscp [$data->{'DOMAIN_NAME'}] entry ENDING\n", '', \$cfgWrkFileContent
     );
-
     replaceBlocByRef( "// imscp [{ENTRY_ID}] entry BEGIN\n", "// imscp [{ENTRY_ID}] entry ENDING\n", <<"EOF", \$cfgWrkFileContent, 'preserve' );
 // imscp [$data->{'DOMAIN_NAME'}] entry BEGIN
 @{ [ process( $tags, $tplCfgEntryContent ) ] }

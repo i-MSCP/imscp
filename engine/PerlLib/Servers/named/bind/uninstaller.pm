@@ -96,6 +96,7 @@ sub _removeConfig
 
     if ( exists $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} ) {
         my $dirname = dirname( $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} );
+
         if ( -d $dirname ) {
             my $filename = basename( $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} );
 
@@ -122,9 +123,7 @@ sub _removeConfig
         my $filename = basename( $self->{'config'}->{$_} );
         next unless -f "$self->{'bkpDir'}/$filename.system";
 
-        my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
-            $self->{'config'}->{$_}, { preserve => 'no' }
-        );
+        my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile( $self->{'config'}->{$_}, { preserve => 'no' } );
         return $rs if $rs;
 
         my $file = iMSCP::File->new( filename => $self->{'config'}->{$_} );

@@ -145,7 +145,7 @@ sub uninstall
     $rs ||= $self->{'eventManager'}->trigger( 'afterProftpdUninstall' );
 
     unless ( $rs || !iMSCP::Service->getInstance()->hasService( $self->{'config'}->{'FTPD_SNAME'} ) ) {
-        $self->{'restart'} = 1;
+        $self->{'restart'} ||= 1;
     } else {
         $self->{'start'} = 0;
         $self->{'restart'} = 0;
@@ -198,7 +198,6 @@ sub addUser
 
     eval {
         local $dbh->{'RaiseError'} = 1;
-
         $dbh->begin_work();
         $dbh->do(
             'UPDATE ftp_users SET uid = ?, gid = ? WHERE admin_id = ?', undef, $data->{'USER_SYS_UID'}, $data->{'USER_SYS_GID'}, $data->{'USER_ID'}

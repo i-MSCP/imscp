@@ -31,10 +31,10 @@ use Class::Autouse qw/ :nostat Servers::po::courier::installer Servers::po::cour
 use Fcntl 'O_RDONLY';
 use File::Temp;
 use iMSCP::Config;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Service;
@@ -167,7 +167,7 @@ sub uninstall
     $rs ||= $self->{'eventManager'}->trigger( 'afterCourierUninstall' );
 
     unless ( $rs || !iMSCP::Service->getInstance()->hasService( $self->{'config'}->{'AUTHDAEMON_SNAME'} ) ) {
-        $self->{'restart'} = 1;
+        $self->{'restart'} ||= 1;
     } else {
         $self->{'restart'} = 0;
     }

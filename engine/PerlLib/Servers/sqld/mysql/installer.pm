@@ -330,7 +330,7 @@ sub preinstall
     $rs ||= $self->_updateServerConfig();
     $rs ||= $self->_setupSecureInstallation();
     $rs ||= $self->_setupDatbase();
-    $rs ||= $self->_oldEngineCompatibility();
+    $rs ||= $self->_cleanup();
 }
 
 =back
@@ -883,15 +883,15 @@ sub _tryDbConnect
     $db->connect();
 }
 
-=item _oldEngineCompatibility( )
+=item _cleanup( )
 
- Remove old files
+ Process cleanup tasks
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _oldEngineCompatibility
+sub _cleanup
 {
     my ($self) = @_;
 

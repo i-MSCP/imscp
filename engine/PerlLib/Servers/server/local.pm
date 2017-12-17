@@ -64,9 +64,9 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeServerPreInstall', 'local' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeLocalServerPreInstall' );
     $rs ||= Servers::server::local::installer->getInstance()->preinstall();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterServerPreInstall', 'local' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterLocalServerPreInstall' );
 }
 
 =item install( )
@@ -81,9 +81,9 @@ sub install
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeServerInstall', 'local' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeLocalServerInstall' );
     $rs ||= Servers::server::local::installer->getInstance()->install();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterServerInstall', 'local' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterLocalServerInstall' );
 }
 
 =back

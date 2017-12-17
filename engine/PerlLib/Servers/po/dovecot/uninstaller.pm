@@ -26,7 +26,6 @@ package Servers::po::dovecot::uninstaller;
 use strict;
 use warnings;
 use iMSCP::Config;
-use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Dir;
 use Servers::mta;

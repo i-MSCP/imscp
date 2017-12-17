@@ -27,8 +27,8 @@ use strict;
 use warnings;
 use File::Basename;
 use iMSCP::Config;
-use iMSCP::EventManager;
 use iMSCP::Dir;
+use iMSCP::EventManager;
 use iMSCP::File;
 use Servers::ftpd::vsftpd;
 use parent 'Common::SingletonClass';
@@ -140,6 +140,7 @@ sub _removeConfig
             }
 
             my $filename = basename( $_ );
+
             if ( -f "$self->{'bkpDir'}/$filename.system" ) {
                 my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->delFile();
                 return $rs if $rs;

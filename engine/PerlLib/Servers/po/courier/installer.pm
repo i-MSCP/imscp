@@ -31,8 +31,8 @@ use File::Temp;
 use iMSCP::Config;
 use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
-use iMSCP::Debug;
-use iMSCP::Dialog::InputValidation;
+use iMSCP::Debug qw/ debug error /;
+use iMSCP::Dialog::InputValidation qw/ isAvailableSqlUser isStringNotInList isValidPassword isValidUsername /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute executeNoWait /;
@@ -40,11 +40,11 @@ use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Mount qw/ addMountEntry isMountpoint mount umount /;
 use iMSCP::ProgramFinder;
-use iMSCP::Stepper;
+use iMSCP::Stepper qw/ endDetail startDetail step /;
 use iMSCP::SystemUser;
 use iMSCP::TemplateParser qw/ processByRef replaceBlocByRef /;
 use iMSCP::Umask;
-use Servers::mta::postfix;
+use Servers::mta;
 use Servers::po::courier;
 use Servers::sqld;
 use parent 'Common::SingletonClass';
@@ -137,9 +137,7 @@ EOF
 
     main::setupSetQuestion( 'AUTHDAEMON_SQL_USER', $dbUser );
 
-    if ( $main::reconfigure =~ /^(?:po|servers|all|forced)$/
-        || !isValidPassword( $dbPass )
-    ) {
+    if ( $main::reconfigure =~ /^(?:po|servers|all|forced)$/ || !isValidPassword( $dbPass ) ) {
         unless ( defined $main::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
             my $rs = 0;
 
@@ -154,8 +152,7 @@ $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter a password for the Courier Authdaemon user (leave empty for autogeneration):
 \\Z \\Zn
 EOF
-            } while $rs < 30
-                && !isValidPassword( $dbPass );
+            } while $rs < 30 && !isValidPassword( $dbPass );
 
             return $rs unless $rs < 30;
 
@@ -189,7 +186,7 @@ sub install
     $rs ||= $self->_buildConf();
     $rs ||= $self->_setupSASL();
     $rs ||= $self->_migrateFromDovecot();
-    $rs ||= $self->_oldEngineCompatibility();
+    $rs ||= $self->_cleanup();
 }
 
 =back
@@ -310,7 +307,7 @@ sub _init
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'po'} = Servers::po::courier->getInstance();
-    $self->{'mta'} = Servers::mta::postfix->getInstance();
+    $self->{'mta'} = Servers::mta->factory();
     $self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
     $self->{'config'} = $self->{'po'}->{'config'};
     $self;
@@ -472,7 +469,6 @@ sub _buildConf
 # Servers::po::courier::installer - ENDING
 EOF
         $file->set( $fileContent );
-
         $rs = $file->save();
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
         $rs ||= $file->mode( 0644 );
@@ -729,15 +725,15 @@ sub _migrateFromDovecot
     $rs;
 }
 
-=item _oldEngineCompatibility( )
+=item _cleanup( )
 
- Remove old files
+ Processc cleanup tasks
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _oldEngineCompatibility
+sub _cleanup
 {
     my ($self) = @_;
 

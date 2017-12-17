@@ -41,9 +41,6 @@ use iMSCP::Service;
 use Tie::File;
 use parent 'Common::SingletonClass';
 
-# Selfref for use in END block
-my $instance;
-
 =head1 DESCRIPTION
 
  i-MSCP Postfix server implementation.
@@ -152,7 +149,7 @@ sub uninstall
     $rs ||= $self->{'eventManager'}->trigger( 'afterPostfixUninstall' );
 
     unless ( $rs || !iMSCP::Service->getInstance()->hasService( $self->{'config'}->{'MTA_SNAME'} ) ) {
-        $self->{'restart'} = 1;
+        $self->{'restart'} ||= 1;
     } else {
         $self->{'restart'} = 0;
         $self->{'reload'} = 0;
@@ -400,7 +397,12 @@ sub deleteDomain
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
     return $rs if $rs;
 
-    iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}" )->remove();
+    eval { iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}" )->remove(); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
     $self->{'eventManager'}->trigger( 'afterPostfixDeleteDomain', $data );
 }
 
@@ -463,7 +465,12 @@ sub deleteSubdomain
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
     return $rs if $rs;
 
-    iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}" )->remove();
+    eval { iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}" )->remove(); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
     $self->{'eventManager'}->trigger( 'afterPostfixDeleteSubdomain', $data );
 }
 
@@ -504,7 +511,6 @@ sub addMail
             my $maildir = "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
 
             # Create mailbox
-
             eval {
                 for ( $data->{'DOMAIN_NAME'}, "$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}" ) {
                     iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$_" )->make( {
@@ -659,7 +665,6 @@ sub deleteMail
 sub getTraffic
 {
     my ($self, $trafficDb, $logFile, $trafficIndexDb) = @_;
-
     $logFile ||= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
 
     unless ( -f $logFile ) {
@@ -943,9 +948,7 @@ sub postconf
                 }
             },
             sub { $stderr .= shift }
-        ) == 0 or die(
-            $stderr || 'Unknown error'
-        );
+        ) == 0 or die( $stderr || 'Unknown error' );
 
         if ( %params ) {
             my $cmd = [ 'postconf', '-e', '-c', $conffile ];
@@ -986,8 +989,6 @@ sub postconf
 sub _init
 {
     my ($self) = @_;
-
-    $instance = $self; # Self ref for use in END block
 
     @{$self}{qw/ restart reload /} = ( 0, 0 );
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
@@ -1073,7 +1074,9 @@ EOF
 
 END
     {
-        return if $? || !$instance || ( $main::execmode && $main::execmode eq 'setup' );
+        return if $? || ( defined $main::execmode && $main::execmode eq 'setup' );
+
+        return unless my $instance = __PACKAGE__->hasInstance();
 
         my ($ret, $rs) = ( 0, 0 );
 

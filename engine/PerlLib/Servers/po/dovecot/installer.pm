@@ -28,15 +28,15 @@ use warnings;
 use File::Basename;
 use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
-use iMSCP::Debug;
-use iMSCP::Dialog::InputValidation;
+use iMSCP::Debug qw/ debug error /;
+use iMSCP::Dialog::InputValidation qw/ isAvailableSqlUser isStringNotInList isValidPassword isValidUsername /;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::TemplateParser qw/ processByRef /;
 use iMSCP::Umask;
-use Servers::mta::postfix;
+use Servers::mta;
 use Servers::po::dovecot;
 use Servers::sqld;
 use version;
@@ -129,9 +129,7 @@ EOF
 
     main::setupSetQuestion( 'DOVECOT_SQL_USER', $dbUser );
 
-    if ( $main::reconfigure =~ /^(?:po|servers|all|forced)$/
-        || !isValidPassword( $dbPass )
-    ) {
+    if ( $main::reconfigure =~ /^(?:po|servers|all|forced)$/ || !isValidPassword( $dbPass ) ) {
         unless ( defined $main::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
             my $rs = 0;
 
@@ -146,8 +144,7 @@ $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter a password for the Dovecot SQL user (leave empty for autogeneration):
 \\Z \\Zn
 EOF
-            } while $rs < 30
-                && !isValidPassword( $dbPass );
+            } while $rs < 30 && !isValidPassword( $dbPass );
 
             return $rs unless $rs < 30;
 
@@ -186,7 +183,7 @@ sub install
     $rs ||= $self->_setupSqlUser();
     $rs ||= $self->_buildConf();
     $rs ||= $self->_migrateFromCourier();
-    $rs ||= $self->_oldEngineCompatibility();
+    $rs ||= $self->_cleanup();
 }
 
 =back
@@ -307,7 +304,7 @@ sub _init
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'po'} = Servers::po::dovecot->getInstance();
-    $self->{'mta'} = Servers::mta::postfix->getInstance();
+    $self->{'mta'} = Servers::mta->factory();
     $self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
@@ -599,15 +596,15 @@ sub _migrateFromCourier
     $rs;
 }
 
-=item _oldEngineCompatibility( )
+=item _cleanup( )
 
- Remove old files
+ Process cleanup tasks
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _oldEngineCompatibility
+sub _cleanup
 {
     my ($self) = @_;
 

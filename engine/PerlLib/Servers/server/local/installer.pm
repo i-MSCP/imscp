@@ -28,7 +28,7 @@ use warnings;
 use iMSCP::Database;
 use DateTime::TimeZone;
 use iMSCP::Debug qw/ debug error /;
-use iMSCP::Dialog::InputValidation;
+use iMSCP::Dialog::InputValidation qw/ isValidIpAddr isValidHostname isValidTimezone /;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::EventManager;
 use iMSCP::File;
@@ -94,9 +94,7 @@ sub hostnameDialog
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
-    if ( $main::reconfigure =~ /^(?:local_server|system_hostname|hostnames|all|forced)$/
-        || !isValidHostname( $hostname )
-    ) {
+    if ( $main::reconfigure =~ /^(?:local_server|system_hostname|hostnames|all|forced)$/ || !isValidHostname( $hostname ) ) {
         my $rs = 0;
 
         do {
@@ -112,8 +110,7 @@ $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter your server fully qualified hostname (leave empty for autodetection):
 \\Z \\Zn
 EOF
-        } while $rs < 30
-            && !isValidHostname( $hostname );
+        } while $rs < 30 && !isValidHostname( $hostname );
 
         return $rs unless $rs < 30;
     }
@@ -156,9 +153,7 @@ sub primaryIpDialog
         )
     );
 
-    if ( $main::reconfigure =~ /^(?:local_server|primary_ip|all|forced)$/
-        || !grep( $_ eq $lanIP, @ipList )
-    ) {
+    if ( $main::reconfigure =~ /^(?:local_server|primary_ip|all|forced)$/ || !grep( $_ eq $lanIP, @ipList ) ) {
         my $rs = 0;
 
         do {
@@ -172,8 +167,7 @@ This option is more suitable for Cloud computing services such as Scaleway and A
 \\Z \\Zn
 EOF
             $lanIP = '0.0.0.0' if $lanIP eq 'None';
-        } while $rs < 30
-            && !isValidIpAddr( $lanIP );
+        } while $rs < 30 && !isValidIpAddr( $lanIP );
 
         return $rs unless $rs < 30;
     } elsif ( $lanIP eq 'None' ) {
@@ -184,9 +178,7 @@ EOF
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
-    if ( $main::reconfigure =~ /^(?:local_server|primary_ip|all|forced)$/
-        || !isValidIpAddr( $wanIP )
-    ) {
+    if ( $main::reconfigure =~ /^(?:local_server|primary_ip|all|forced)$/ || !isValidIpAddr( $wanIP ) ) {
         my $rs = 0;
 
         do {
@@ -203,8 +195,7 @@ $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter your public IP address (leave empty for default):
 \\Z \\Zn
 EOF
-        } while $rs < 30
-            && !isValidIpAddr( $wanIP );
+        } while $rs < 30 && !isValidIpAddr( $wanIP );
 
         return $rs unless $rs < 30;
     }
@@ -242,9 +233,7 @@ sub timezoneDialog
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
-    if ( $main::reconfigure =~ /^(?:local_server|timezone|all|forced)$/
-        || !isValidTimezone( $timezone )
-    ) {
+    if ( $main::reconfigure =~ /^(?:local_server|timezone|all|forced)$/ || !isValidTimezone( $timezone ) ) {
         my $rs = 0;
 
         do {
@@ -258,8 +247,7 @@ $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter your timezone (leave empty for autodetection):
 \\Z \\Zn
 EOF
-        } while $rs < 30
-            && !isValidTimezone( $timezone );
+        } while $rs < 30 && !isValidTimezone( $timezone );
 
         return $rs unless $rs < 30;
     }
@@ -280,7 +268,7 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSetupKernel' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeLocalServerSetupKernel' );
     return $rs if $rs;
 
     if ( -f "$main::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf" ) {
@@ -291,7 +279,7 @@ sub preinstall
         debug( $stderr ) if $stderr;
     }
 
-    $self->{'eventManager'}->trigger( 'afterSetupKernel' );
+    $self->{'eventManager'}->trigger( 'afterLocalServerSetupKernel' );
 
     0;
 }
@@ -355,7 +343,7 @@ sub _setupHostname
     my $hostname = main::setupGetQuestion( 'SERVER_HOSTNAME' );
     my $lanIP = main::setupGetQuestion( 'BASE_SERVER_IP' );
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSetupServerHostname', \$hostname, \$lanIP );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeLocalServerSetupHostname', \$hostname, \$lanIP );
     return $rs if $rs;
 
     my @labels = split /\./, $hostname;
@@ -401,7 +389,7 @@ EOF
     $rs = execute( 'hostname -F /etc/hostname', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || "Couldn't set server hostname" ) if $rs;
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSetupServerHostname' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterLocalServerSetupHostname' );
 }
 
 =item _setupPrimaryIP( )
@@ -417,7 +405,7 @@ sub _setupPrimaryIP
     my ($self) = @_;
 
     my $primaryIP = main::setupGetQuestion( 'BASE_SERVER_IP' );
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSetupPrimaryIP', $primaryIP );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeLocalServerSetupPrimaryIP', $primaryIP );
     return $rs if $rs;
 
     eval {
@@ -461,7 +449,7 @@ sub _setupPrimaryIP
         return 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterSetupPrimaryIP', $primaryIP );
+    $self->{'eventManager'}->trigger( 'afterLocalServerSetupPrimaryIP', $primaryIP );
 }
 
 =back

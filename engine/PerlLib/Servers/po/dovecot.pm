@@ -31,10 +31,9 @@ use Class::Autouse qw/ :nostat Servers::po::dovecot::installer Servers::po::dove
 use File::Temp;
 use Fcntl 'O_RDONLY';
 use iMSCP::Config;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Service;
@@ -172,7 +171,7 @@ sub uninstall
     $rs ||= $self->{'eventManager'}->trigger( 'afterDovecotUninstall' );
 
     unless ( $rs || !iMSCP::Service->getInstance()->hasService( $self->{'config'}->{'DOVECOT_SNAME'} ) ) {
-        $self->{'restart'} = 1;
+        $self->{'restart'} ||= 1;
     } else {
         $self->{'restart'} = 0;
     }

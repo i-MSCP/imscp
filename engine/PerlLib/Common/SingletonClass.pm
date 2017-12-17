@@ -108,8 +108,6 @@ sub _init
 
  Explicitly destroy all Common::SingletonClass objects
 
- Return Common::SingletonClass
-
 =cut
 
 sub END

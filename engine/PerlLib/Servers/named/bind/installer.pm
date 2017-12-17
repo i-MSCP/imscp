@@ -26,17 +26,16 @@ package Servers::named::bind::installer;
 use strict;
 use warnings;
 use File::Basename;
-use iMSCP::Debug;
-use iMSCP::Dialog::InputValidation;
+use iMSCP::Debug qw/ debug error /;
+use iMSCP::Dialog::InputValidation qw/ isStringInList /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Net;
 use iMSCP::ProgramFinder;
 use iMSCP::Service;
-use iMSCP::TemplateParser;
 use iMSCP::Umask;
 use Servers::named::bind;
 use version;
@@ -91,9 +90,7 @@ sub askDnsServerMode
     my $value = main::setupGetQuestion( 'BIND_MODE', $self->{'config'}->{'BIND_MODE'} || ( iMSCP::Getopt->preseed ? 'master' : '' ));
     my %choices = ( 'master', 'Master DNS server', 'slave', 'Slave DNS server' );
 
-    if ( isStringInList( $main::reconfigure, 'named', 'servers', 'all', 'forced' )
-        || !isStringInList( $value, keys %choices )
-    ) {
+    if ( isStringInList( $main::reconfigure, 'named', 'servers', 'all', 'forced' ) || !isStringInList( $value, keys %choices ) ) {
         ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'master' );
 Please choose the type of DNS server to configure:
 \\Z \\Zn
@@ -160,8 +157,7 @@ EOF
 EOF
                         }
                     }
-                } while $rs < 30
-                    && $msg;
+                } while $rs < 30 && $msg;
             } else {
                 @slaveDnsIps = ( 'no' );
             }
@@ -230,9 +226,7 @@ sub askIPv6Support
     my $value = main::setupGetQuestion( 'BIND_IPV6', $self->{'config'}->{'BIND_IPV6'} || ( iMSCP::Getopt->preseed ? 'no' : '' ));
     my %choices = ( 'yes', 'Yes', 'no', 'No' );
 
-    if ( isStringInList( $main::reconfigure, 'named', 'servers', 'all', 'forced' )
-        || !isStringInList( $value, keys %choices )
-    ) {
+    if ( isStringInList( $main::reconfigure, 'named', 'servers', 'all', 'forced' ) || !isStringInList( $value, keys %choices ) ) {
         ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'no' );
 Do you want to enable IPv6 support for the DNS server?
 \\Z \\Zn
@@ -260,9 +254,7 @@ sub askLocalDnsResolver
     my $value = main::setupGetQuestion( 'LOCAL_DNS_RESOLVER', $self->{'config'}->{'LOCAL_DNS_RESOLVER'} || ( iMSCP::Getopt->preseed ? 'yes' : '' ));
     my %choices = ( 'yes', 'Yes', 'no', 'No' );
 
-    if ( isStringInList( $main::reconfigure, 'resolver', 'named', 'servers', 'all', 'forced' )
-        || !isStringInList( $value, keys %choices )
-    ) {
+    if ( isStringInList( $main::reconfigure, 'resolver', 'named', 'servers', 'all', 'forced' ) || !isStringInList( $value, keys %choices ) ) {
         ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'yes' );
 Do you want to use the local DNS resolver?
 \\Z \\Zn
@@ -295,7 +287,7 @@ sub install
 
     my $rs = $self->_makeDirs();
     $rs ||= $self->_buildConf();
-    $rs ||= $self->_oldEngineCompatibility();
+    $rs ||= $self->_cleanup();
 }
 
 =back
@@ -338,17 +330,17 @@ sub _bkpConfFile
 {
     my ($self, $cfgFile) = @_;
 
-    if ( -f $cfgFile ) {
-        my $file = iMSCP::File->new( filename => $cfgFile );
-        my $filename = basename( $cfgFile );
+    return 0 unless -f $cfgFile;
 
-        unless ( -f "$self->{'bkpDir'}/$filename.system" ) {
-            my $rs = $file->copyFile( "$self->{'bkpDir'}/$filename.system", { preserve => 'no' } );
-            return $rs if $rs;
-        } else {
-            my $rs = $file->copyFile( "$self->{'bkpDir'}/$filename." . time, { preserve => 'no' } );
-            return $rs if $rs;
-        }
+    my $file = iMSCP::File->new( filename => $cfgFile );
+    my $filename = basename( $cfgFile );
+
+    unless ( -f "$self->{'bkpDir'}/$filename.system" ) {
+        my $rs = $file->copyFile( "$self->{'bkpDir'}/$filename.system", { preserve => 'no' } );
+        return $rs if $rs;
+    } else {
+        my $rs = $file->copyFile( "$self->{'bkpDir'}/$filename." . time, { preserve => 'no' } );
+        return $rs if $rs;
     }
 
     0;
@@ -461,7 +453,6 @@ sub _buildConf
 
         my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$tplName" );
         $file->set( $tplContent );
-
         $rs = $file->save();
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
         $rs ||= $file->mode( 0644 );
@@ -500,10 +491,9 @@ sub _buildConf
         $rs = $self->{'eventManager'}->trigger( 'afterBind9BuildConf', \$tplContent, $tplName );
         return $rs if $rs;
 
+        local $UMASK = 027;
         my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$tplName" );
         $file->set( $tplContent );
-
-        local $UMASK = 027;
         $rs = $file->save();
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
         $rs ||= $file->mode( 0640 );
@@ -532,10 +522,9 @@ sub _buildConf
         $rs = $self->{'eventManager'}->trigger( 'afterBind9BuildConf', \$tplContent, $tplName );
         return $rs if $rs;
 
+        local $UMASK = 027;
         my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$tplName" );
         $file->set( $tplContent );
-
-        local $UMASK = 027;
         $rs = $file->save();
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
         $rs ||= $file->mode( 0640 );
@@ -560,11 +549,9 @@ sub _buildConf
         $rs = $self->{'eventManager'}->trigger( 'afterBind9BuildConf', \$tplContent, $tplName );
         return $rs if $rs;
 
+        local $UMASK = 027;
         my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$tplName" );
         $file->set( $tplContent );
-
-        local $UMASK = 027;
-
         $rs = $file->save();
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
         $rs ||= $file->mode( 0640 );
@@ -620,15 +607,15 @@ sub _getVersion
     undef;
 }
 
-=item _oldEngineCompatibility( )
+=item _cleanup( )
 
- Remove old files
+ Process cleanup tasks
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _oldEngineCompatibility
+sub _cleanup
 {
     my ($self) = @_;
 

@@ -21,7 +21,7 @@
 
 package Listener::System::Hosts;
 
-our $VERSION = '1.0.1';
+our $VERSION = '1.0.2';
 
 use strict;
 use warnings;
@@ -44,23 +44,28 @@ my @hostsFileEntries = (
 );
 
 #
-## Please, don't edit anything below this line
+## Please don't edit anything below this line
 #
+
+version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+    sprintf( "The 10_system_hosts.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
+);
 
 # Listener responsible to add host entries in the system hosts file, once it was built by i-MSCP
 iMSCP::EventManager->getInstance()->register(
-    'afterSetupServerHostname',
+    'afterLocalServerSetupHostname',
     sub {
         return 0 unless -f $hostsFilePath;
 
         my $file = iMSCP::File->new( filename => $hostsFilePath );
-        my $fileContent = $file->get();
-        unless ( defined $fileContent ) {
-            error( sprintf( "Couldn't read the %s file", $hostsFilePath ));
+        my $fileContentRef = $file->getAsRef();
+        unless ( defined $fileContentRef ) {
+            error( sprintf( "Couldn't read the %s file", $file->{'filename'} ));
             return 1;
         }
 
-        $file->set( $fileContent . ( join "\n", @hostsFileEntries ) . "\n" );
+        ${$fileContentRef} .= join( "\n", @hostsFileEntries ) . "\n";
+
         $file->save();
     }
 );
