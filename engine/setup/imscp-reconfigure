@@ -32,7 +32,7 @@ use warnings;
 use File::Basename;
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib";
-use iMSCP::Debug;
+use iMSCP::Debug qw/ output /;
 use iMSCP::Dialog;
 use iMSCP::EventManager;
 use iMSCP::Getopt;

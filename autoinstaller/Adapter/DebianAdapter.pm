@@ -68,7 +68,7 @@ sub preBuild
         (
             [ sub { $self->_processPackagesFile() }, 'Processing distribution packages file' ],
             [ sub { $self->_prefillDebconfDatabase() }, 'Pre-fill Debconf database' ],
-            [ sub { $self->_installAPTsourcesList();}, 'Installing new APT sources.list(5) file' ],
+            [ sub { $self->_installAPTsourcesList(); }, 'Installing new APT sources.list(5) file' ],
             [ sub { $self->_addAPTrepositories() }, 'Adding APT repositories' ],
             [ sub { $self->_processAptPreferences() }, 'Processing APT preferences' ],
             [ sub { $self->_updatePackagesIndex() }, 'Updating packages index' ]
@@ -152,11 +152,7 @@ EOF
     }
 
     # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
-    execute(
-        [ 'apt-mark', 'unhold', @{$self->{'packagesToInstall'}}, @{$self->{'packagesToInstallDelayed'}} ],
-        \my $stdout,
-        \my $stderr
-    );
+    execute( [ 'apt-mark', 'unhold', @{$self->{'packagesToInstall'}}, @{$self->{'packagesToInstallDelayed'}} ], \my $stdout, \my $stderr );
     debug( $stderr ) if $stderr;
 
     {
@@ -246,7 +242,7 @@ sub uninstallPackages
         @apkgs{split /\n/, $stdout} = undef;
         undef $stdout;
         @{$packagesToUninstall} = grep(exists $apkgs{$_}, @{$packagesToUninstall});
-        undef(%apkgs);
+        undef( %apkgs );
 
         if ( @{$packagesToUninstall} ) {
             # Filter packages that must be kept
@@ -515,8 +511,7 @@ sub _processPackagesFile
         my $needDialog = 0;
 
         # Retrieve selected alternative if any
-        my $sAlt = $main::questions{ uc( $section ) . '_SERVER' }
-            || $main::imscpConfig{ uc( $section ) . '_SERVER' };
+        my $sAlt = $main::questions{ uc( $section ) . '_SERVER' } || $main::imscpConfig{ uc( $section ) . '_SERVER' };
 
         # List of supported alternatives
         my @supportedAlts = grep(
@@ -692,9 +687,7 @@ sub _installAPTsourcesList
 
         unless ( defined $fileContent ) {
             my $file = "$FindBin::Bin/configs/$main::imscpConfig{'DISTRO_ID'}/apt/sources.list";
-            $fileContent = iMSCP::File->new( filename => $file )->get() or die(
-                getMessageByType ( 'error', { amount => 1, remove => 1 } )
-            );
+            $fileContent = iMSCP::File->new( filename => $file )->get() or die( getMessageByType ( 'error', { amount => 1, remove => 1 } ));
         }
 
         processByRef( { codename => $main::imscpConfig{'DISTRO_CODENAME'} }, \$fileContent );
@@ -918,9 +911,7 @@ EOF
 
     # Pre-fill questions for SQL server (MySQL, MariaDB or Percona) if required
     if ( my ($sqlServerVendor, $sqlServerVersion) = $main::imscpConfig{'SQL_SERVER'} =~ /^(mysql|mariadb|percona)_(\d+\.\d+)/ ) {
-        if ( $main::imscpConfig{'DATABASE_PASSWORD'} ne '' &&
-            -d $main::imscpConfig{'DATABASE_DIR'}
-        ) {
+        if ( $main::imscpConfig{'DATABASE_PASSWORD'} ne '' && -d $main::imscpConfig{'DATABASE_DIR'} ) {
             # Only show critical questions
             $ENV{'DEBIAN_PRIORITY'} = 'critical';
 
@@ -954,7 +945,7 @@ $qOwner $qNamePrefix/remove-data-dir boolean false
 $qOwner $qNamePrefix/postrm_remove_databases boolean false
 EOF
         # Preset root SQL password using value from preseed file if required
-        if ( iMSCP::Getopt->preseed && $main::questions{'SQL_ROOT_PASSWORD'} ne '') {
+        if ( iMSCP::Getopt->preseed && $main::questions{'SQL_ROOT_PASSWORD'} ne '' ) {
             $fileContent .= <<"EOF";
 $qOwner $qNamePrefix/root_password password $main::questions{'SQL_ROOT_PASSWORD'}
 $qOwner $qNamePrefix/root_password_again password $main::questions{'SQL_ROOT_PASSWORD'}
@@ -1089,9 +1080,7 @@ sub _rebuildAndInstallPackage
     );
     $rs ||= step(
         sub {
-            my $msgHeader = sprintf(
-                "Downloading %s %s source package\n\n - ", $pkgSrc, $main::imscpConfig{'DISTRO_ID'}
-            );
+            my $msgHeader = sprintf( "Downloading %s %s source package\n\n - ", $pkgSrc, $main::imscpConfig{'DISTRO_ID'} );
             my $msgFooter = "\nDepending on your system this may take few seconds ...";
 
             my $stderr = '';
@@ -1114,9 +1103,7 @@ sub _rebuildAndInstallPackage
 
         $rs ||= step(
             sub {
-                my $serieFile = iMSCP::File->new(
-                    filename => "debian/patches/" . ( $patchFormat eq 'quilt' ? 'series' : '00list' )
-                );
+                my $serieFile = iMSCP::File->new( filename => "debian/patches/" . ( $patchFormat eq 'quilt' ? 'series' : '00list' ));
                 my $serieFileContent = $serieFile->get();
                 unless ( defined $serieFileContent ) {
                     error( sprintf( "Couldn't read %s", $serieFile->{'filename'} ));

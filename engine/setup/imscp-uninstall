@@ -37,18 +37,16 @@ use File::Basename;
 use iMSCP::Bootstrapper;
 use iMSCP::Database;
 use iMSCP::DbTasksProcessor;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug newDebug /;
 use iMSCP::Dialog;
 use iMSCP::Dir;
-use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Packages;
 use iMSCP::Servers;
 use iMSCP::Service;
-use iMSCP::Stepper;
+use iMSCP::Stepper qw/ endDetail startDetail step /;
 use iMSCP::SystemUser;
-use Servers::sqld;
 use Servers::sqld;
 use POSIX qw / locale_h /;
 
@@ -270,18 +268,21 @@ sub _uninstallServices
 sub _removeCrontabFile
 {
     return 0 unless -f '/etc/cron.d/imscp';
+
     iMSCP::File->new( filename => '/etc/cron.d/imscp' )->delFile();
 }
 
 sub _removeLogrotateFile
 {
     return 0 unless -f "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/imscp";
+
     iMSCP::File->new( filename => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/imscp" )->delFile();
 }
 
 sub _removeSysctlFile
 {
     return 0 unless -f '/etc/sysctl.d/imscp.conf';
+
     iMSCP::File->new( filename => '/etc/sysctl.d/imscp.conf' )->delFile();
 }
 
@@ -328,10 +329,16 @@ sub _removeFiles
         return $rs if $rs;
     }
 
-    for ( $main::imscpConfig{'CONF_DIR'}, $main::imscpConfig{'USER_WEB_DIR'}, $main::imscpConfig{'LOG_DIR'},
-        $main::imscpConfig{'ROOT_DIR'}
-    ) {
-        iMSCP::Dir->new( dirname => $_ )->remove();
+    eval {
+        for ( $main::imscpConfig{'CONF_DIR'}, $main::imscpConfig{'USER_WEB_DIR'}, $main::imscpConfig{'LOG_DIR'},
+            $main::imscpConfig{'ROOT_DIR'}
+        ) {
+            iMSCP::Dir->new( dirname => $_ )->remove();
+        }
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
     }
 
     0;

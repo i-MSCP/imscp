@@ -35,7 +35,7 @@ use File::Basename;
 use FindBin;
 use lib $FindBin::Bin, "$FindBin::Bin/engine/PerlLib";
 use autoinstaller::Functions qw/ loadConfig build install /;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ newDebug output /;
 use iMSCP::Dialog;
 use iMSCP::Getopt;
 use iMSCP::Requirements;

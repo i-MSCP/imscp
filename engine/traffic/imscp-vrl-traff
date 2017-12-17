@@ -35,7 +35,7 @@ use lib "$FindBin::Bin/../PerlLib";
 use iMSCP::Bootstrapper;
 use iMSCP::Config;
 use iMSCP::Database;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error newDebug /;
 use iMSCP::EventManager;
 use iMSCP::Getopt;
 use iMSCP::Servers;

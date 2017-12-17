@@ -33,7 +33,7 @@ use FindBin;
 use lib "$FindBin::Bin/../PerlLib";
 use File::Basename;
 use iMSCP::Bootstrapper;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug newDebug /;
 use iMSCP::Getopt;
 use iMSCP::Rights;
 use iMSCP::Servers;

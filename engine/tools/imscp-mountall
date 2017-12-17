@@ -33,7 +33,7 @@ use File::Basename;
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib";
 use iMSCP::Bootstrapper;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug newDebug /;
 use iMSCP::Getopt;
 use iMSCP::Mount qw/ mount umount isMountpoint getMounts /;
 use POSIX qw / locale_h /;

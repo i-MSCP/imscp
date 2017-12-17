@@ -34,7 +34,7 @@ use iMSCP::Debug qw/ debug error newDebug endDebug /;
 use iMSCP::Dialog;
 use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::LsbRelease;

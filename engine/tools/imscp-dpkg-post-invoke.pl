@@ -32,8 +32,8 @@ use warnings;
 use FindBin;
 use lib "/var/www/imscp/engine/PerlLib"; # FIXME: shouldn't be hardcoded
 use File::Basename;
-use iMSCP::Debug;
 use iMSCP::Bootstrapper;
+use iMSCP::Debug qw / debug newDebug /;
 use iMSCP::Getopt;
 use iMSCP::Servers;
 use iMSCP::Packages;

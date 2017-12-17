@@ -24,7 +24,7 @@ use iMSCP::Bootstrapper;
 use iMSCP::Composer;
 use iMSCP::Database;
 use iMSCP::DbTasksProcessor;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ error /;
 use iMSCP::Dialog;
 use iMSCP::Dir;
 use iMSCP::EventManager;
@@ -35,7 +35,7 @@ use iMSCP::Packages;
 use iMSCP::Plugins;
 use iMSCP::Servers;
 use iMSCP::Service;
-use iMSCP::Stepper;
+use iMSCP::Stepper qw/ endDetail startDetail step /;
 use iMSCP::SystemGroup;
 use iMSCP::SystemUser;
 use iMSCP::Umask;
@@ -48,12 +48,19 @@ sub setupInstallFiles
     # i-MSCP daemon must be stopped before changing any file on the files system
     iMSCP::Service->getInstance()->stop( 'imscp_daemon' );
 
-    # Process cleanup to avoid any security risks and conflicts
-    for ( qw/ daemon engine gui / ) {
-        iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/$_" )->remove();
+    eval {
+        # Process cleanup to avoid any security risks and conflicts
+        for ( qw/ daemon engine gui / ) {
+            iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/$_" )->remove();
+        }
+
+        iMSCP::Dir->new( dirname => $main::{'INST_PREF'} )->rcopy( '/' );
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
     }
 
-    iMSCP::Dir->new( dirname => $main::{'INST_PREF'} )->rcopy( '/' );
     iMSCP::EventManager->getInstance()->trigger( 'afterSetupInstallFiles', $main::{'INST_PREF'} );
 }
 
@@ -166,7 +173,12 @@ sub setupDeleteBuildDir
     my $rs = iMSCP::EventManager->getInstance()->trigger( 'beforeSetupDeleteBuildDir', $main::{'INST_PREF'} );
     return $rs if $rs;
 
-    iMSCP::Dir->new( dirname => $main::{'INST_PREF'} )->remove();
+    eval { iMSCP::Dir->new( dirname => $main::{'INST_PREF'} )->remove(); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
     iMSCP::EventManager->getInstance()->trigger( 'afterSetupDeleteBuildDir', $main::{'INST_PREF'} );
 }
 
@@ -207,13 +219,20 @@ sub setupCreateMasterUser
     )->addSystemUser();
     return $rs if $rs;
 
-    # Ensure that correct permissions are set on i-MSCP master user homedir (handle upgrade case)
-    iMSCP::Dir->new( dirname => $main::imscpConfig{'IMSCP_HOMEDIR'} )->make( {
-        user           => $main::imscpConfig{'IMSCP_USER'},
-        group          => $main::imscpConfig{'IMSCP_GROUP'},
-        mode           => 0755,
-        fixpermissions => 1 # We fix permissions in any case
-    } );
+    eval {
+        # Ensure that correct permissions are set on i-MSCP master user homedir (handle upgrade case)
+        iMSCP::Dir->new( dirname => $main::imscpConfig{'IMSCP_HOMEDIR'} )->make( {
+            user           => $main::imscpConfig{'IMSCP_USER'},
+            group          => $main::imscpConfig{'IMSCP_GROUP'},
+            mode           => 0755,
+            fixpermissions => 1 # We fix permissions in any case
+        } );
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
     iMSCP::EventManager->getInstance()->trigger( 'afterSetupCreateMasterUser' );
 }
 
