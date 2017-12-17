@@ -39,9 +39,6 @@ use iMSCP::Service;
 use iMSCP::TemplateParser qw/ processByRef getBlocByRef replaceBlocByRef /;
 use parent 'Common::SingletonClass';
 
-# php server instance
-my $INSTANCE;
-
 =head1 DESCRIPTION
 
  i-MSCP PHP server implementation.
@@ -70,7 +67,7 @@ my $INSTANCE;
 
 sub factory
 {
-    $INSTANCE ||= __PACKAGE__->getInstance();
+    __PACKAGE__->hasInstance() || __PACKAGE__->getInstance();
 }
 
 =item registerSetupListeners( \%eventManager )
@@ -385,7 +382,7 @@ sub install
 
         my $file = iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/fcgid.load" );
         my $cfgTpl = $file->getAsRef();
-        defined $cfgTpl or die( sprintf( "Couldn't read %s file", $file->{'filename'} ));
+        defined $cfgTpl or die( sprintf( "Couldn't read the %s file", $file->{'filename'} ));
 
         $file = iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/fcgid_imscp.load" );
         $file->set( "<IfModule !mod_fcgid.c>\n" . ${$cfgTpl} . "</IfModule>\n" );
@@ -525,16 +522,16 @@ sub setEnginePermissions
     );
 }
 
-=item addDmn( \%moduleData )
+=item addDomain( \%moduleData )
 
- Process addDmn tasks
+ Process addDomain tasks
 
  Param hashref \%moduleData Data as provided by Alias|Domain modules
  Return int 0 on success, other on failure
 
 =cut
 
-sub addDmn
+sub addDomain
 {
     my ($self, $moduleData) = @_;
 
@@ -555,16 +552,16 @@ sub addDmn
     $rs ||= $self->{'eventManager'}->trigger( 'afterPhpAddDmn', $moduleData );
 }
 
-=item disableDmn( \%moduleData )
+=item disableDomain( \%moduleData )
 
- Process disableDmn tasks
+ Process disableDomain tasks
 
  Param hashref \%moduleData Data as provided by Alias|Domain modules
  Return int 0 on success, other on failure
 
 =cut
 
-sub disableDmn
+sub disableDomain
 {
     my ($self, $moduleData) = @_;
 
@@ -587,16 +584,16 @@ sub disableDmn
     $rs ||= $self->{'eventManager'}->trigger( 'afterPhpDisableDmn', $moduleData );
 }
 
-=item deleteDmn( \%moduleData )
+=item deleteDomain( \%moduleData )
 
- Process deleteDmn tasks
+ Process deleteDomain tasks
 
  Param hashref \%moduleData Data as provided by Alias|Domain modules
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteDmn
+sub deleteDomain
 {
     my ($self, $moduleData) = @_;
 
@@ -618,16 +615,16 @@ sub deleteDmn
     $rs ||= $self->{'eventManager'}->trigger( 'afterPhpdDeleteDmn', $moduleData );
 }
 
-=item addSub( \%moduleData )
+=item addSubbdomain( \%moduleData )
 
- Process addSub tasks
+ Process addSubbdomain tasks
 
  Param hashref \%moduleData Data as provided by SubAlias|Subdomain modules
  Return int 0 on success, other on failure
 
 =cut
 
-sub addSub
+sub addSubbdomain
 {
     my ($self, $moduleData) = @_;
 
@@ -681,20 +678,20 @@ sub disableSub
     $rs ||= $self->{'eventManager'}->trigger( 'afterPhpdDisableSub', $moduleData );
 }
 
-=item deleteSub( \%moduleData )
+=item deleteSubdomain( \%moduleData )
 
- Process deleteSub tasks
+ Process deleteSubdomain tasks
 
  Param hashref \%moduleData Data as provided by SubAlias|Subdomain modules
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteSub
+sub deleteSubdomain
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePhpDeleteSub', $moduleData );
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpDeleteSubdomain', $moduleData );
     return $rs if $rs;
 
     if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
@@ -711,7 +708,7 @@ sub deleteSub
         }
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpDeleteSub', $moduleData );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpDeleteSubdomain', $moduleData );
 }
 
 =item getPriority( )
@@ -764,7 +761,7 @@ sub buildConfFile
             $srcFile = File::Spec->canonpath( "$self->{'cfgDir'}/$path/$filename" ) if index( $path, '/' ) != 0;
             $cfgTpl = iMSCP::File->new( filename => $srcFile )->get();
             unless ( defined $cfgTpl ) {
-                error( sprintf( "Couldn't read %s file", $srcFile ));
+                error( sprintf( "Couldn't read the %s file", $srcFile ));
                 return 1;
             }
         }
@@ -772,13 +769,17 @@ sub buildConfFile
         $self->{'templates'}->{$filename} = $cfgTpl if $parameters->{'cached'};
     }
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePhpBuildConfFile', \$cfgTpl, $filename, $moduleData, $serverData, $self->{'config'} );
+    my $rs = $self->{'eventManager'}->trigger(
+        'beforePhpBuildConfFile', \$cfgTpl, $filename, \$trgFile, $moduleData, $serverData, $self->{'config'}, $parameters
+    );
     return $rs if $rs;
 
     processByRef( $serverData, \$cfgTpl );
     processByRef( $moduleData, \$cfgTpl );
 
-    $rs = $self->{'eventManager'}->trigger( 'afterPhpdBuildConfFile', \$cfgTpl, $filename, $moduleData, $serverData, $self->{'config'} );
+    $rs = $self->{'eventManager'}->trigger(
+        'afterPhpdBuildConfFile', \$cfgTpl, $filename, \$trgFile, $moduleData, $serverData, $self->{'config'}, $parameters
+    );
     return $rs if $rs;
 
     my $fh = iMSCP::File->new( filename => $trgFile );
@@ -1246,31 +1247,39 @@ sub _cleanup
 
 =over 4
 
-=item beforeApache2BuildConfFile( \$cfgTpl, $filename, \%moduleData, \%serverData )
+=item beforeApache2BuildConfFile( $phpServer, \$cfgTpl, $filename, \$trgFile, \%moduleData, \%apache2ServerData, \%apache2ServerConfig, $parameters )
 
  Event listener that inject PHP configuration in Apache2 vhosts
 
+ Param scalar $phpServer Servers::php instance
  Param scalar \$scalar Reference to Apache2 vhost content
  Param string $filename Apache2 template name
+ Param scalar \$trgFile Target file path
  Param hashref \%moduleData Data as provided by Alias|Domain|Subdomain|SubAlias modules
- Param hashref \%serverData Server data
+ Param hashref \%apache2ServerData Apache2 server data
+ Param hashref \%apache2ServerConfig Apache2 server data
+ Param hashref \%parameters OPTIONAL Parameters:
+  - user  : File owner (default: root)
+  - group : File group (default: root
+  - mode  : File mode (default: 0644)
+  - cached : Whether or not loaded file must be cached in memory
  Return int 0 on success, other on failure
 
 =cut
 
 sub beforeApache2BuildConfFile
 {
-    my ($self, $cfgTpl, $filename, $moduleData, $serverData) = @_;
+    my ($phpServer, $cfgTpl, $filename, undef, $moduleData, $apache2ServerData) = @_;
 
-    return 0 unless $filename eq 'domain.tpl' && grep( $_ eq $serverData->{'VHOST_TYPE'}, ( 'domain', 'domain_ssl' ) );
+    return 0 unless $filename eq 'domain.tpl' && grep( $_ eq $apache2ServerData->{'VHOST_TYPE'}, ( 'domain', 'domain_ssl' ) );
 
     debug( sprintf( 'Injecting PHP configuration in Apache2 vhost for the %s domain', $moduleData->{'DOMAIN_NAME'} ));
 
     my ($configLevel, $emailDomain);
-    if ( $self->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_user' ) {
+    if ( $phpServer->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_user' ) {
         $configLevel = $moduleData->{'ROOT_DOMAIN_NAME'};
         $emailDomain = $moduleData->{'ROOT_DOMAIN_NAME'};
-    } elsif ( $self->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_domain' ) {
+    } elsif ( $phpServer->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_domain' ) {
         $configLevel = $moduleData->{'PARENT_DOMAIN_NAME'};
         $emailDomain = $moduleData->{'DOMAIN_NAME'};
     } else {
@@ -1278,9 +1287,9 @@ sub beforeApache2BuildConfFile
         $emailDomain = $moduleData->{'DOMAIN_NAME'};
     }
 
-    if ( $self->{'config'}->{'PHP_SAPI'} eq 'apache2handler' ) {
+    if ( $phpServer->{'config'}->{'PHP_SAPI'} eq 'apache2handler' ) {
         if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
-            @{$serverData}{qw/ EMAIL_DOMAIN TMPDIR /} = ( $emailDomain, $moduleData->{'HOME_DIR'} . '/phptmp' );
+            @{$apache2ServerData}{qw/ EMAIL_DOMAIN TMPDIR /} = ( $emailDomain, $moduleData->{'HOME_DIR'} . '/phptmp' );
 
             replaceBlocByRef( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF", $cfgTpl );
         # SECTION document root addons BEGIN.
@@ -1322,16 +1331,16 @@ EOF
         return 0;
     }
 
-    if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+    if ( $phpServer->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
         if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
-            @{$serverData}{
+            @{$apache2ServerData}{
                 qw/ PHP_FCGI_STARTER_DIR FCGID_NAME PHP_FCGID_BUSY_TIMEOUT PHP_FCGID_MIN_PROCESSES_PER_CLASS PHP_FCGID_MAX_PROCESS_PER_CLASS /
             } = (
-                $self->{'config'}->{'PHP_FCGI_STARTER_DIR'},
+                $phpServer->{'config'}->{'PHP_FCGI_STARTER_DIR'},
                 $configLevel,
                 $moduleData->{'MAX_EXECUTION_TIME'}+10,
-                $self->{'config'}->{'PHP_FCGID_MIN_PROCESSES_PER_CLASS'} || 0,
-                $self->{'config'}->{'PHP_FCGID_MAX_PROCESS_PER_CLASS'} || 6
+                $phpServer->{'config'}->{'PHP_FCGID_MIN_PROCESSES_PER_CLASS'} || 0,
+                $phpServer->{'config'}->{'PHP_FCGID_MAX_PROCESS_PER_CLASS'} || 6
             );
 
             replaceBlocByRef( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF", $cfgTpl );
@@ -1371,13 +1380,15 @@ EOF
         return 0;
     }
 
-    if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+    if ( $phpServer->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
         if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
-            @{$serverData}{qw/ PROXY_FCGI_PATH PROXY_FCGI_URL PROXY_FCGI_RETRY PROXY_FCGI_CONNECTION_TIMEOUT PROXY_FCGI_TIMEOUT /} = (
-                    $self->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
-                    ? "unix:/run/php/php$self->{'config'}->{'PHP_VERSION'}-fpm-$configLevel.sock|" : '',
-                'fcgi://' . ( $self->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
-                    ? $configLevel : '127.0.0.1:' . ( $self->{'config'}->{'PHP_FPM_LISTEN_PORT_START'}+$moduleData->{'PHP_FPM_LISTEN_PORT'} ) ),
+            @{$apache2ServerData}{qw/ PROXY_FCGI_PATH PROXY_FCGI_URL PROXY_FCGI_RETRY PROXY_FCGI_CONNECTION_TIMEOUT PROXY_FCGI_TIMEOUT /} = (
+                ( $phpServer->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
+                    ? "unix:/run/php/php$phpServer->{'config'}->{'PHP_VERSION'}-fpm-$configLevel.sock|" : ''
+                ),
+                ( 'fcgi://' . ( $phpServer->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
+                    ? $configLevel : '127.0.0.1:' . ( $phpServer->{'config'}->{'PHP_FPM_LISTEN_PORT_START'}+$moduleData->{'PHP_FPM_LISTEN_PORT'} ) )
+                ),
                 0,
                 5,
                 $moduleData->{'MAX_EXECUTION_TIME'}+10
@@ -1473,21 +1484,17 @@ sub afterApache2AddFiles
 
 END
     {
-        return if $? || !$INSTANCE || $INSTANCE->{'config'}->{'PHP_SAPI'} ne 'fpm' || ( defined $main::execmode && $main::execmode eq 'setup' );
+        return if $? || ( defined $main::execmode && $main::execmode eq 'setup' );
 
-        if ( $INSTANCE->{'restart'} ) {
-            iMSCP::Service->getInstance()->registerDelayedAction(
-                "php$INSTANCE->{'config'}->{'PHP_VERSION'}-fpm", [ 'restart', sub { $INSTANCE->restart(); } ], __PACKAGE__->getPriority()
-            );
-        } elsif ( $INSTANCE->{'reload'} ) {
-            iMSCP::Service->getInstance()->registerDelayedAction(
-                "php$INSTANCE->{'config'}->{'PHP_VERSION'}-fpm", [ 'reload', sub { $INSTANCE->reload(); } ], __PACKAGE__->getPriority()
-            );
-        } elsif ( $INSTANCE->{'start'} ) {
-            iMSCP::Service->getInstance()->registerDelayedAction(
-                "php$INSTANCE->{'config'}->{'PHP_VERSION'}-fpm", [ 'start', sub { $INSTANCE->start(); } ], __PACKAGE__->getPriority()
-            );
-        }
+        my $instance = __PACKAGE__->hasInstance();
+
+        return 0 unless $instance && $instance->{'config'}->{'PHP_SAPI'} ne 'fpm'
+            && ( my $action = $instance->{'restart'}
+            ? 'restart' : ( $instance->{'reload'} ? 'reload' : ( $instance->{'start'} ? ' start' : undef ) ) );
+
+        iMSCP::Service->getInstance()->registerDelayedAction(
+            "php$instance->{'config'}->{'PHP_VERSION'}-fpm", [ $action, sub { $instance->$action(); } ], __PACKAGE__->getPriority()
+        );
     }
 
 =back

@@ -47,7 +47,7 @@ sub _init
     my ($self) = @_;
 
     $self->SUPER::_init();
-    $self->{'eventManager'}->register( 'afterApache2BuildConfFile', \&_cleanTemplate, -999 );
+    $self->{'eventManager'}->register( 'afterApache2BuildConfFile', $self, -999 );
     $self;
 }
 
@@ -74,33 +74,41 @@ sub _setupModules
 
 =over 4
 
-=item _cleanTemplate( \$cfgTpl, $filename, \%moduleData, \%serverData )
+=item afterApache2BuildConfFile( $apache2Server, \$cfgTpl, $filename, \$trgFile, \%moduleData, \%apache2ServerData, \%apache2ServerConfig, \%parameters )
 
- Event listener which is responsible to cleanup production configuration files
+ Event listener that cleanup production files
 
- Param string \$cfgTpl Template content
- Param string $name Template name
+ Param scalar $apache2Server Servers::httpd::Apache2::Prefork instance
+ Param scalar \$scalar Reference to Apache2 conffile
+ Param string $filename Apache2 template name
+ Param scalar \$trgFile Target file path
  Param hashref \%moduleData Data as provided by Alias|Domain|Subdomain|SubAlias modules
- Param hashref \%serverData Server data
- Return int 0
+ Param hashref \%apache2ServerData Apache2 server data
+ Param hashref \%apache2ServerConfig Apache2 server data
+ Param hashref \%parameters OPTIONAL Parameters:
+  - user  : File owner (default: root)
+  - group : File group (default: root
+  - mode  : File mode (default: 0644)
+  - cached : Whether or not loaded file must be cached in memory
+ Return int 0 on success, other on failure
 
 =cut
 
-sub _cleanTemplate
+sub afterApache2BuildConfFile
 {
-    my ($cfgTpl, $name, $moduleData, $serverData) = @_;
+    my (undef, $cfgTpl, $filename, undef, $moduleData, $apache2ServerData) = @_;
 
-    return $serverData->{'SKIP_TEMPLATE_CLEANER'} = 0 if $serverData->{'SKIP_TEMPLATE_CLEANER'};
+    return $apache2ServerData->{'SKIP_TEMPLATE_CLEANER'} = 0 if $apache2ServerData->{'SKIP_TEMPLATE_CLEANER'};
 
-    if ( $name eq 'domain.tpl' ) {
-        if ( index( $serverData->{'VHOST_TYPE'}, 'fwd' ) == -1 ) {
+    if ( $filename eq 'domain.tpl' ) {
+        if ( index( $apache2ServerData->{'VHOST_TYPE'}, 'fwd' ) == -1 ) {
             replaceBlocByRef( "# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', $cfgTpl );
 
             if ( $moduleData->{'CGI_SUPPORT'} ne 'yes' ) {
                 replaceBlocByRef( "# SECTION cgi BEGIN.\n", "# SECTION cgi END.\n", '', $cfgTpl );
             }
         } elsif ( $moduleData->{'FORWARD'} ne 'no' ) {
-            if ( $moduleData->{'FORWARD_TYPE'} eq 'proxy' && ( !$moduleData->{'HSTS_SUPPORT'} || index( $serverData->{'VHOST_TYPE'},
+            if ( $moduleData->{'FORWARD_TYPE'} eq 'proxy' && ( !$moduleData->{'HSTS_SUPPORT'} || index( $apache2ServerData->{'VHOST_TYPE'},
                 'ssl' ) != -1 ) ) {
                 replaceBlocByRef( "# SECTION std_fwd BEGIN.\n", "# SECTION std_fwd END.\n", '', $cfgTpl );
 

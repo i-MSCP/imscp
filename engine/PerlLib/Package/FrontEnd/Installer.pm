@@ -30,22 +30,23 @@ use iMSCP::Composer;
 use iMSCP::Crypt qw/ apr1MD5 randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug qw / debug error getMessageByType /;
-use iMSCP::Dialog::InputValidation;
+use iMSCP::Dialog::InputValidation qw/
+    isNumber isNumberInRange isStringInList isStringNotInList isValidDomain isValidEmail isValidPassword isValidUsername 
+    /;
 use iMSCP::Dir;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::OpenSSL;
 use iMSCP::Net;
-use iMSCP::ProgramFinder;
 use iMSCP::Service;
-use iMSCP::Stepper;
+use iMSCP::Stepper qw/ step startDetail endDetail /;
 use iMSCP::SystemUser;
 use iMSCP::TemplateParser qw/ getBloc processByRef replaceBlocByRef /;
 use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
 use Package::FrontEnd;
-use Servers::named;
 use Servers::mta;
+use Servers::named;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -289,9 +290,7 @@ sub askDomain
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
-    if ( isStringInList( $main::reconfigure, 'panel', 'panel_hostname', 'hostnames', 'all', 'forced' )
-        || !isValidDomain( $domainName )
-    ) {
+    if ( isStringInList( $main::reconfigure, 'panel', 'panel_hostname', 'hostnames', 'all', 'forced' ) || !isValidDomain( $domainName ) ) {
         if ( $domainName eq '' ) {
             $iMSCP::Dialog::InputValidation::lastValidationError = '';
             my @labels = split /\./, main::setupGetQuestion( 'SERVER_HOSTNAME' );
@@ -308,8 +307,7 @@ $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter a domain name for the control panel: (leave empty for autodetection)
 \\Z \\Zn
 EOF
-        } while $rs < 30
-            && !isValidDomain( $domainName );
+        } while $rs < 30 && !isValidDomain( $domainName );
 
         return $rs unless $rs < 30;
     }
@@ -334,9 +332,7 @@ sub askSsl
     my $domainName = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
     my $domainNameUnicode = idn_to_unicode( $domainName, 'utf-8' ) // '';
     my $sslEnabled = main::setupGetQuestion( 'PANEL_SSL_ENABLED', iMSCP::Getopt->preseed ? 'yes' : '' );
-    my $selfSignedCertificate = main::setupGetQuestion(
-        'PANEL_SSL_SELFSIGNED_CERTIFICATE', iMSCP::Getopt->preseed ? 'yes' : 'no'
-    );
+    my $selfSignedCertificate = main::setupGetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE', iMSCP::Getopt->preseed ? 'yes' : 'no' );
     my $privateKeyPath = main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH', '/root' );
     my $passphrase = main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PASSPHRASE' );
     my $certificatePath = main::setupGetQuestion( 'PANEL_SSL_CERTIFICATE_PATH', '/root' );
@@ -444,9 +440,7 @@ EOF
         } else {
             $sslEnabled = 'no';
         }
-    } elsif ( $sslEnabled eq 'yes'
-        && !iMSCP::Getopt->preseed
-    ) {
+    } elsif ( $sslEnabled eq 'yes' && !iMSCP::Getopt->preseed ) {
         $openSSL->{'private_key_container_path'} = "$main::imscpConfig{'CONF_DIR'}/$domainName.pem";
         $openSSL->{'ca_bundle_container_path'} = "$main::imscpConfig{'CONF_DIR'}/$domainName.pem";
         $openSSL->{'certificate_container_path'} = "$main::imscpConfig{'CONF_DIR'}/$domainName.pem";
@@ -493,10 +487,7 @@ sub askHttpPorts
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
-    if ( $main::reconfigure =~ /^(?:panel|panel_ports|all|forced)$/
-        || !isNumber( $httpPort )
-        || !isNumberInRange( $httpPort, 1025, 65535 )
-    ) {
+    if ( $main::reconfigure =~ /^(?:panel|panel_ports|all|forced)$/ || !isNumber( $httpPort ) || !isNumberInRange( $httpPort, 1025, 65535 ) ) {
         my $rs = 0;
 
         do {
@@ -510,8 +501,7 @@ $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter the HTTP port for the control panel:
 \\Z \\Zn
 EOF
-        } while $rs < 30
-            && ( !isNumber( $httpPort ) || !isNumberInRange( $httpPort, 1025, 65535 ) );
+        } while $rs < 30 && ( !isNumber( $httpPort ) || !isNumberInRange( $httpPort, 1025, 65535 ) );
 
         return $rs unless $rs < 30;
     }
@@ -537,9 +527,8 @@ $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter the HTTPS port for the control panel:
 \\Z \\Zn
 EOF
-            } while $rs < 30
-                && ( !isNumber( $httpsPort ) || !isNumberInRange( $httpsPort, 1025, 65535 )
-                || !isStringNotInList( $httpsPort, $httpPort ) );
+            } while $rs < 30 && ( !isNumber( $httpsPort ) || !isNumberInRange( $httpsPort, 1025, 65535 ) || !isStringNotInList( $httpsPort,
+                $httpPort ) );
 
             return $rs unless $rs < 30;
         }
@@ -567,9 +556,7 @@ sub askAltUrlsFeature
     my $value = main::setupGetQuestion( 'CLIENT_DOMAIN_ALT_URLS', iMSCP::Getopt->preseed ? 'yes' : '' );
     my %choices = ( 'yes', 'Yes', 'no', 'No' );
 
-    if ( $main::reconfigure =~ /^(?:panel|alt_urls_feature|all|forced)$/
-        || !isStringInList( $value, keys %choices )
-    ) {
+    if ( $main::reconfigure =~ /^(?:panel|alt_urls_feature|all|forced)$/ || !isStringInList( $value, keys %choices ) ) {
         ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'yes' );
 Do you want to enable the alternative URLs feature for client domains?
 
@@ -702,7 +689,6 @@ sub dpkgPostInvokeTasks
     }
 
     my $rs = $self->{'frontend'}->stopPhpFpm();
-
     $rs ||= $self->_copyPhpBinary();
     return $rs if $rs || !-f '/usr/local/etc/imscp_panel/php-fpm.conf';
 
@@ -826,18 +812,13 @@ sub _setupSsl
     my $domainName = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
 
     # Remove old certificate if any (handle case where panel hostname has been changed)
-    if ( $oldCertificate ne ''
-        && $oldCertificate ne "$domainName.pem"
-        && -f "$main::imscpConfig{'CONF_DIR'}/$oldCertificate"
-    ) {
+    if ( $oldCertificate ne '' && $oldCertificate ne "$domainName.pem" && -f "$main::imscpConfig{'CONF_DIR'}/$oldCertificate" ) {
         my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/$oldCertificate" )->delFile();
         return $rs if $rs;
     }
 
     if ( $sslEnabled eq 'no' || main::setupGetQuestion( 'PANEL_SSL_SETUP', 'yes' ) eq 'no' ) {
-        if ( $sslEnabled eq 'no'
-            && -f "$main::imscpConfig{'CONF_DIR'}/$domainName.pem"
-        ) {
+        if ( $sslEnabled eq 'no' && -f "$main::imscpConfig{'CONF_DIR'}/$domainName.pem" ) {
             my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/$domainName.pem" )->delFile();
             return $rs if $rs;
         }
@@ -919,19 +900,12 @@ sub _addMasterWebUser
         $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ));
 
         my $row = $dbh->selectrow_hashref(
-            "
-                SELECT admin_sys_name, admin_sys_uid, admin_sys_gname
-                FROM admin
-                WHERE admin_type = 'admin'
-                AND created_by = 0
-                LIMIT 1
-            "
+            "SELECT admin_sys_name, admin_sys_uid, admin_sys_gname FROM admin WHERE admin_type = 'admin' AND created_by = 0 LIMIT 1"
         );
         $row or die( "Couldn't find master administrator user in database" );
 
         my ($oldUser, $uid, $gid) = ( $row->{'admin_sys_uid'} && $row->{'admin_sys_uid'} ne '0' )
-            ? ( getpwuid( $row->{'admin_sys_uid'} ) )[0, 2, 3]
-            : ();
+            ? ( getpwuid( $row->{'admin_sys_uid'} ) )[0, 2, 3] : ();
 
         $rs = iMSCP::SystemUser->new(
             username       => $oldUser,
@@ -982,29 +956,35 @@ sub _makeDirs
     my $nginxTmpDir = $self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'};
     $nginxTmpDir = $self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'} unless -d $nginxTmpDir;
 
-    # Force re-creation of cache directory tree (needed to prevent any permissions problem from an old installation)
-    # See #IP-1530
-    iMSCP::Dir->new( dirname => $nginxTmpDir )->remove();
+    eval {
+        # Force re-creation of cache directory tree (needed to prevent any permissions problem from an old installation)
+        # See #IP-1530
+        iMSCP::Dir->new( dirname => $nginxTmpDir )->remove();
 
-    for ( [ $nginxTmpDir, $rootUName, $rootGName, 0755 ],
-        [ $self->{'config'}->{'HTTPD_CONF_DIR'}, $rootUName, $rootGName, 0755 ],
-        [ $self->{'config'}->{'HTTPD_LOG_DIR'}, $rootUName, $rootGName, 0755 ],
-        [ $self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}, $rootUName, $rootGName, 0755 ],
-        [ $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}, $rootUName, $rootGName, 0755 ]
-    ) {
-        iMSCP::Dir->new( dirname => $_->[0] )->make( {
-            user  => $_->[1],
-            group => $_->[2],
-            mode  => $_->[3]
-        } );
-    }
+        for ( [ $nginxTmpDir, $rootUName, $rootGName, 0755 ],
+            [ $self->{'config'}->{'HTTPD_CONF_DIR'}, $rootUName, $rootGName, 0755 ],
+            [ $self->{'config'}->{'HTTPD_LOG_DIR'}, $rootUName, $rootGName, 0755 ],
+            [ $self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}, $rootUName, $rootGName, 0755 ],
+            [ $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}, $rootUName, $rootGName, 0755 ]
+        ) {
+            iMSCP::Dir->new( dirname => $_->[0] )->make( {
+                user  => $_->[1],
+                group => $_->[2],
+                mode  => $_->[3]
+            } );
+        }
 
-    if ( iMSCP::Service->getInstance->isSystemd() ) {
-        iMSCP::Dir->new( dirname => '/run/imscp' )->make( {
-            user  => $self->{'config'}->{'HTTPD_USER'},
-            group => $self->{'config'}->{'HTTPD_GROUP'},
-            mode  => 0755
-        } );
+        if ( iMSCP::Service->getInstance->isSystemd() ) {
+            iMSCP::Dir->new( dirname => '/run/imscp' )->make( {
+                user  => $self->{'config'}->{'HTTPD_USER'},
+                group => $self->{'config'}->{'HTTPD_GROUP'},
+                mode  => 0755
+            } );
+        }
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
     }
 
     $self->{'eventManager'}->trigger( 'afterFrontEndMakeDirs' );
@@ -1022,16 +1002,12 @@ sub _copyPhpBinary
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndCopyPhpBinary' );
-    return $rs if $rs;
-
     if ( $self->{'config'}->{'PHP_FPM_BIN_PATH'} eq '' ) {
         error( "PHP `PHP_FPM_BIN_PATH' configuration parameter is not set." );
         return 1;
     }
 
-    $rs ||= iMSCP::File->new( filename => $self->{'config'}->{'PHP_FPM_BIN_PATH'} )->copyFile( '/usr/local/sbin/imscp_panel' );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndCopyPhpBinary' );
+    iMSCP::File->new( filename => $self->{'config'}->{'PHP_FPM_BIN_PATH'} )->copyFile( '/usr/local/sbin/imscp_panel' );
 }
 
 =item _buildPhpConfig( )
@@ -1127,14 +1103,9 @@ sub _buildHttpdConfig
 
     my $availableCPUcores = $self->_getNbCPUcores();
     my $nbCPUcores = $self->{'config'}->{'HTTPD_WORKER_PROCESSES'};
+    $nbCPUcores = $availableCPUcores if $self->{'config'}->{'HTTPD_WORKER_PROCESSES'} eq 'auto' || $nbCPUcores > $availableCPUcores;
+    $nbCPUcores = $self->{'config'}->{'HTTPD_WORKER_PROCESSES_LIMIT'} if $nbCPUcores > $self->{'config'}->{'HTTPD_WORKER_PROCESSES_LIMIT'};
 
-    if ( $self->{'config'}->{'HTTPD_WORKER_PROCESSES'} eq 'auto' || $nbCPUcores > $availableCPUcores ) {
-        $nbCPUcores = $availableCPUcores;
-    }
-
-    if ( $nbCPUcores > $self->{'config'}->{'HTTPD_WORKER_PROCESSES_LIMIT'} ) {
-        $nbCPUcores = $self->{'config'}->{'HTTPD_WORKER_PROCESSES_LIMIT'};
-    }
 
     # Build main nginx configuration file
     $rs = $self->{'frontend'}->buildConfFile( "$self->{'cfgDir'}/nginx.nginx",
@@ -1270,7 +1241,7 @@ sub _addDnsZone
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedAddMasterZone' );
-    $rs ||= Servers::named->factory()->addDmn( {
+    $rs ||= Servers::named->factory()->addDomain( {
         BASE_SERVER_VHOST     => main::setupGetQuestion( 'BASE_SERVER_VHOST' ),
         BASE_SERVER_IP        => main::setupGetQuestion( 'BASE_SERVER_IP' ),
         BASE_SERVER_PUBLIC_IP => main::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' ),
@@ -1300,7 +1271,7 @@ sub _deleteDnsZone
         && $main::imscpOldConfig{'BASE_SERVER_VHOST'} ne main::setupGetQuestion( 'BASE_SERVER_VHOST' );
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedDeleteMasterZone' );
-    $rs ||= Servers::named->factory()->deleteDmn( {
+    $rs ||= Servers::named->factory()->deleteDomain( {
         DOMAIN_NAME    => $main::imscpOldConfig{'BASE_SERVER_VHOST'},
         FORCE_DELETION => 1
     } );
@@ -1324,9 +1295,7 @@ sub _installSystemFiles
 
         for ( 'cron.daily', 'logrotate.d' ) {
             my $fileContent = iMSCP::File->new( filename => "$self->{'cfgDir'}/$_/imscp_frontend" )->get();
-            defined $fileContent or die(
-                sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/$_/imscp_frontend.conf" )
-            );
+            defined $fileContent or die( sprintf( "Couldn't read the %s file", "$self->{'cfgDir'}/$_/imscp_frontend.conf" ));
 
             processByRef(
                 {
@@ -1363,15 +1332,9 @@ sub _cleanup
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndCleanup' );
-    return $rs if $rs;
+    return 0 unless -f "$self->{'cfgDir'}/frontend.old.data";
 
-    if ( -f "$self->{'cfgDir'}/frontend.old.data" ) {
-        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/frontend.old.data" )->delFile();
-        return $rs if $rs;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterFrontEndCleanup' );
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/frontend.old.data" )->delFile();
 }
 
 =item _getFullPhpVersionFor( $binaryPath )

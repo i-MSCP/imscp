@@ -21,7 +21,7 @@
 
 package Listener::PhpMyAdmin::Conffile;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
@@ -46,7 +46,7 @@ iMSCP::EventManager->getInstance()->register(
 
         return 0 unless $pkgName eq 'phpmyadmin' && $tplName eq 'imscp.config.inc.php' && -f $tplFilePath;
 
-        $$tplContent = iMSCP::File->new( filename => $tplFilePath )->get();
+        ${$tplContent} = iMSCP::File->new( filename => $tplFilePath )->get();
         0;
     }
 );

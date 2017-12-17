@@ -22,21 +22,19 @@ use iMSCP::Bootstrapper;
 use iMSCP::Debug;
 use iMSCP::Mount qw/ umount /;
 
-my $bootstrapper = iMSCP::Bootstrapper->getInstance( );
+my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-mountall.lock', 'nowait' );
 
-$bootstrapper->boot(
-    {
-        mode            => 'backend',
-        nokeys          => 1,
-        nodatabase      => 1,
-        config_readonly => 1
-    }
-);
+$bootstrapper->boot( {
+    mode            => 'backend',
+    nokeys          => 1,
+    nodatabase      => 1,
+    config_readonly => 1
+} );
 
-setDebug(0);
-setVerbose(1);
-umount($main::imscpConfig{'USER_WEB_DIR'});
+setDebug( 0 );
+setVerbose( 1 );
+umount( $main::imscpConfig{'USER_WEB_DIR'} );
 
 1;
 __END__

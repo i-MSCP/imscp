@@ -25,11 +25,11 @@ package Servers::cron::cron;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use autouse 'iMSCP::Rights' => qw/ setRights /;
 use iMSCP::Config;
+use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::EventManager;
 use iMSCP::File;
-use iMSCP::Rights;
 use iMSCP::TemplateParser qw/ processByRef replaceBlocByRef /;
 use iMSCP::Service;
 use parent 'Common::SingletonClass';
@@ -54,7 +54,7 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeCronPreinstall', 'cron' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeCronPreinstall' );
     return $rs if $rs;
 
     eval { iMSCP::Service->getInstance()->stop( 'cron' ); };
@@ -63,7 +63,7 @@ sub preinstall
         return 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterCronPreinstall', 'cron' );
+    $self->{'eventManager'}->trigger( 'afterCronPreinstall' );
 }
 
 =item install( )
@@ -78,7 +78,7 @@ sub install
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeCronInstall', 'cron' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeCronInstall' );
     $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'cron', 'imscp', \ my $cfgTpl, {} );
     return $rs if $rs;
 
@@ -110,7 +110,7 @@ sub install
     $rs = $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0640 );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterCronInstall', 'cron' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterCronInstall' );
 }
 
 =item postinstall( )
@@ -125,7 +125,7 @@ sub postinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeCronPostInstall', 'cron' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeCronPostInstall' );
     return $rs if $rs;
 
     $rs = eval {
@@ -152,7 +152,7 @@ sub postinstall
         return 1;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'afterCronPostInstall', 'cron' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterCronPostInstall' );
 }
 
 =item addTask( \%data [, $filepath = "$self->{'config'}->{'CRON_D_DIR'}/imscp" ] )
@@ -176,8 +176,8 @@ sub postinstall
 sub addTask
 {
     my ($self, $data, $filepath) = @_;
-
     $data = {} unless ref $data eq 'HASH';
+
     unless ( exists $data->{'COMMAND'} && exists $data->{'TASKID'} ) {
         error( 'Missing command or task ID' );
         return 1;
@@ -204,7 +204,7 @@ sub addTask
     if ( -f $filepath ) {
         $fileContent = $file->get();
         unless ( defined $fileContent ) {
-            error( sprintf( "Couldn't read %s file", $filepath ));
+            error( sprintf( "Couldn't read the %s file", $filepath ));
             return 1;
         }
 
@@ -253,8 +253,8 @@ EOF
 sub deleteTask
 {
     my ($self, $data, $filepath) = @_;
-
     $data = {} unless ref $data eq 'HASH';
+
     unless ( exists $data->{'TASKID'} ) {
         error( 'Missing task ID' );
         return 1;
@@ -266,16 +266,14 @@ sub deleteTask
     my $file = iMSCP::File->new( filename => $filepath );
     my $fileContent = $file->get();
     unless ( defined $fileContent ) {
-        error( sprintf( "Couldn't read %s file", $filepath ));
+        error( sprintf( "Couldn't read the %s file", $filepath ));
         return 1;
     }
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeCronDelTask', \$fileContent, $data );
     return $rs if $rs;
 
-    replaceBlocByRef(
-        qr/^\s*\Q# imscp [$data->{'TASKID'}] entry BEGIN\E\n/m, qr/\Q# imscp [$data->{'TASKID'}] entry ENDING\E\n/, '', \$fileContent
-    );
+    replaceBlocByRef( qr/^\s*\Q# imscp [$data->{'TASKID'}] entry BEGIN\E\n/m, qr/\Q# imscp [$data->{'TASKID'}] entry ENDING\E\n/, '', \$fileContent );
 
     $rs = $self->{'eventManager'}->trigger( 'afterCronDelTask', \$fileContent, $data );
     return $rs if $rs;
@@ -296,17 +294,15 @@ sub setEnginePermissions
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeCronSetEnginePermissions' );
-    return $rs if $rs || !-f "$self->{'config'}->{'CRON_D_DIR'}/imscp";
+    return 0 unless -f "$self->{'config'}->{'CRON_D_DIR'}/imscp";
 
-    $rs = setRights( "$self->{'config'}->{'CRON_D_DIR'}/imscp",
+    setRights( "$self->{'config'}->{'CRON_D_DIR'}/imscp",
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ROOT_GROUP'},
             mode  => '0640'
         }
     );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterCronSetEnginePermissions' );
 }
 
 =back

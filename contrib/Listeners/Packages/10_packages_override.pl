@@ -21,7 +21,7 @@
 
 package Listener::Packages::Override;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
@@ -30,13 +30,15 @@ use iMSCP::EventManager;
 # Path to your own package file
 my $DISTRO_PACKAGES_FILE = '/path/to/your/own/package/file';
 
-# Please don't edit anything below this line
+#
+## Please don't edit anything below this line
+#
 
 iMSCP::EventManager->getInstance()->register(
     'onBuildPackageList',
     sub {
-        my $pkgFile = shift;
-        $$pkgFile = $DISTRO_PACKAGES_FILE;
+        my ($pkgFile) = @_;
+        ${$pkgFile} = $DISTRO_PACKAGES_FILE;
         0;
     }
 );

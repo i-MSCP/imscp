@@ -67,15 +67,15 @@ sub _restoreDebianConfig
 {
     if ( -f '/etc/default/rkhunter' ) {
         my $file = iMSCP::File->new( filename => '/etc/default/rkhunter' );
-        my $fileContent = $file->get();
-        unless ( defined $fileContent ) {
-            error( "Couldn't read /etc/default/rkhunter file" );
+        my $fileContentRef = $file->getAsRef();
+        unless ( defined $fileContentRef ) {
+            error( "Couldn't read the /etc/default/rkhunter file" );
             return 1;
         }
 
-        $fileContent =~ s/CRON_DAILY_RUN=".*"/CRON_DAILY_RUN=""/i;
-        $fileContent =~ s/CRON_DB_UPDATE=".*"/CRON_DB_UPDATE=""/i;
-        $file->set( $fileContent );
+        ${$fileContentRef} =~ s/CRON_DAILY_RUN=".*"/CRON_DAILY_RUN=""/i;
+        ${$fileContentRef} =~ s/CRON_DB_UPDATE=".*"/CRON_DB_UPDATE=""/i;
+
         my $rs = $file->save();
         return $rs if $rs;
     }

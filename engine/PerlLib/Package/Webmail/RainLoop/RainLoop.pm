@@ -27,10 +27,9 @@ use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Package::Webmail::RainLoop::Installer Package::Webmail::RainLoop::Uninstaller /;
 use iMSCP::Config;
-use iMSCP::Debug;
 use iMSCP::Database;
+use iMSCP::Debug qw/ error /;
 use iMSCP::Dir;
-use iMSCP::Rights;
 use parent 'Common::SingletonClass';
 
 my $dbInitialized = undef;
@@ -156,12 +155,18 @@ sub deleteMail
     ( my $email = $data->{'MAIL_ADDR'} ) =~ s/[^a-z0-9\-\.@]+/_/;
     ( my $storagePath = substr( $email, 0, 2 ) ) =~ s/\@$//;
 
-    for my $storageType( qw/ cfg data files / ) {
-        iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath/$email" )->remove();
-        next unless -d "$storageDir/$storageType/$storagePath";
-        my $dir = iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath" );
-        next unless $dir->isEmpty();
-        $dir->remove();
+    eval {
+        for my $storageType( qw/ cfg data files / ) {
+            iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath/$email" )->remove();
+            next unless -d "$storageDir/$storageType/$storagePath";
+            my $dir = iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath" );
+            next unless $dir->isEmpty();
+            $dir->remove();
+        }
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
     }
 
     0;

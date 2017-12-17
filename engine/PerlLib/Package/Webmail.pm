@@ -273,19 +273,16 @@ sub setEnginePermissions
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeWebmailsSetGuiPermissions' );
-    return $rs if $rs;
-
     for ( @{$self->{'SELECTED_PACKAGES'}} ) {
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package" or die( $@ );
         ( my $subref = $package->can( 'setEnginePermissions' ) ) or next;
         debug( sprintf( 'Executing setEnginePermissions action on %s', $package ));
-        $rs = $subref->( $package->getInstance());
+        my $rs = $subref->( $package->getInstance());
         return $rs if $rs;
     }
 
-    $self->{'eventManager'}->trigger( 'afterWebmailsSetGuiPermissions' );
+    0;
 }
 
 =item setGuiPermissions( )
@@ -300,19 +297,16 @@ sub setGuiPermissions
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeWebmailsSetGuiPermissions' );
-    return $rs if $rs;
-
     for ( @{$self->{'SELECTED_PACKAGES'}} ) {
         my $package = "Package::Webmail::${_}::${_}";
         eval "require $package" or die( $@ );
         ( my $subref = $package->can( 'setGuiPermissions' ) ) or next;
         debug( sprintf( 'Executing setGuiPermissions action on %s', $package ));
-        $rs = $subref->( $package->getInstance());
+        my $rs = $subref->( $package->getInstance());
         return $rs if $rs;
     }
 
-    $self->{'eventManager'}->trigger( 'afterWebmailsSetGuiPermissions' );
+    0;
 }
 
 =item deleteMail( \%data )
@@ -350,7 +344,7 @@ sub deleteMail
 
  Initialize insance
 
- Return Package::AntiRootkits
+ Return Package::Webmails, die on failure
 
 =cut
 

@@ -26,7 +26,7 @@ package Package::FileManager::MonstaFTP::Installer;
 use strict;
 use warnings;
 use iMSCP::Composer;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ error /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::File;
@@ -150,9 +150,16 @@ sub _installFiles
         return 1;
     }
 
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
-    iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' } );
-    iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' } );
+    eval {
+        iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
+        iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' } );
+        iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' } );
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
     0;
 }
 
@@ -203,7 +210,7 @@ sub _buildConfig
     unless ( defined $cfgTpl ) {
         $cfgTpl = iMSCP::File->new( filename => $conffile )->get();
         unless ( defined $cfgTpl ) {
-            error( sprintf( "Couldn't read %s file", $conffile ));
+            error( sprintf( "Couldn't read the %s file", $conffile ));
             return 1;
         }
     }

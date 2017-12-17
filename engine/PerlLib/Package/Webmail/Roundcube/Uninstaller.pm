@@ -25,10 +25,10 @@ package Package::Webmail::Roundcube::Uninstaller;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Database;
+use iMSCP::Debug qw/ error /;
 use iMSCP::Dir;
 use iMSCP::File;
-use iMSCP::Database;
 use Package::FrontEnd;
 use Package::Webmail::Roundcube::Roundcube;
 use Servers::sqld;
@@ -160,7 +160,7 @@ sub _unregisterConfig
     );
     my $fileContentRef = $file->getAsRef();
     unless ( defined $fileContentRef ) {
-        error( sprintf( "Couldn't read %s file", $file->{'filename'} ));
+        error( sprintf( "Couldn't read the %s file", $file->{'filename'} ));
         return 1;
     }
 
@@ -169,7 +169,8 @@ sub _unregisterConfig
     my $rs = $file->save();
     return $rs if $rs;
 
-    $self->{'frontend'}->{'reload'} = 1;
+    $self->{'frontend'}->{'reload'} ||= 1;
+
     0;
 }
 
@@ -185,12 +186,8 @@ sub _removeFiles
 {
     my ($self) = @_;
 
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail" )->remove();
-
     if ( -f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf" ) {
-        my $rs = iMSCP::File->new(
-            filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf"
-        )->delFile();
+        my $rs = iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf" )->delFile();
         return $rs if $rs;
     };
 
@@ -200,7 +197,14 @@ sub _removeFiles
         return $rs if $rs;
     }
 
-    iMSCP::Dir->new( dirname => $self->{'cfgDir'} )->remove();
+    eval {
+        iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail" )->remove();
+        iMSCP::Dir->new( dirname => $self->{'cfgDir'} )->remove();
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
 }
 
 =back

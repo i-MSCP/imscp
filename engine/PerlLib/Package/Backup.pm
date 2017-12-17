@@ -77,9 +77,7 @@ sub imscpBackupDialog
     my $value = main::setupGetQuestion( 'BACKUP_IMSCP', iMSCP::Getopt->preseed ? 'yes' : '' );
     my %choices = ( 'yes', 'Yes', 'no', 'No' );
 
-    if ( isStringInList( $main::reconfigure, 'backup', 'all', 'forced' )
-        || !isStringInList( $value, keys %choices )
-    ) {
+    if ( isStringInList( $main::reconfigure, 'backup', 'all', 'forced' ) || !isStringInList( $value, keys %choices ) ) {
         ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'yes' );
 \\Z4\\Zb\\Zui-MSCP Backup Feature\\Zn
 
@@ -109,9 +107,7 @@ sub customerBackupDialog
     my $value = main::setupGetQuestion( 'BACKUP_DOMAINS', iMSCP::Getopt->preseed ? 'yes' : '' );
     my %choices = ( 'yes', 'Yes', 'no', 'No' );
 
-    if ( isStringInList( $main::reconfigure, 'backup', 'all', 'forced' )
-        || !isStringInList( $value, keys %choices )
-    ) {
+    if ( isStringInList( $main::reconfigure, 'backup', 'all', 'forced' ) || !isStringInList( $value, keys %choices ) ) {
         ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'yes' );
 \\Z4\\Zb\\ZuDomains Backup Feature\\Zn
 

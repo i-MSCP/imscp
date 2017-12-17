@@ -25,12 +25,12 @@ package Package::Webstats::Awstats::Uninstaller;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
-use Servers::httpd;
 use Servers::cron;
+use Servers::httpd;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -81,7 +81,11 @@ sub _deleteFiles
         return $rs if $rs;
     }
 
-    iMSCP::Dir->new( dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'} )->remove();
+    eval { iMSCP::Dir->new( dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'} )->remove(); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
 
     return 0 unless -d $main::imscpConfig{'AWSTATS_CONFIG_DIR'};
 
@@ -128,6 +132,7 @@ sub _restoreDebianConfig
 
     my $cronDir = Servers::cron->factory()->{'config'}->{'CRON_D_DIR'};
     return 0 unless -f "$cronDir/awstats.disable";
+
     iMSCP::File->new( filename => "$cronDir/awstats.disable" )->moveFile( "$cronDir/awstats" );
 }
 

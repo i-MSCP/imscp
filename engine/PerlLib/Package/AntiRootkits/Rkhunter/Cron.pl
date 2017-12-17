@@ -21,9 +21,9 @@ use strict;
 use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../../../../PerlLib";
-use iMSCP::Debug;
 use iMSCP::Bootstrapper;
-use iMSCP::Execute;
+use iMSCP::Debug qw/ debug /;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::ProgramFinder;
 

@@ -228,9 +228,7 @@ sub databaseNameDialog
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
-    if ( $main::reconfigure =~ /^(?:sql|servers|all|forced)$/
-        || ( !$self->_setupIsImscpDb( $dbName ) && !iMSCP::Getopt->preseed )
-    ) {
+    if ( $main::reconfigure =~ /^(?:sql|servers|all|forced)$/ || ( !$self->_setupIsImscpDb( $dbName ) && !iMSCP::Getopt->preseed ) ) {
         my $rs = 0;
 
         do {
@@ -259,10 +257,7 @@ EOF
 
         my $oldDbName = main::setupGetQuestion( 'DATABASE_NAME' );
 
-        if ( $oldDbName
-            && $dbName ne $oldDbName
-            && $self->setupIsImscpDb( $oldDbName )
-        ) {
+        if ( $oldDbName && $dbName ne $oldDbName && $self->setupIsImscpDb( $oldDbName ) ) {
             if ( $dialog->yesno( <<"EOF", 1 ) ) {
 A database '$main::imscpConfig{'DATABASE_NAME'}' for i-MSCP already exists.
 
@@ -377,9 +372,7 @@ sub _askSqlRootUser
         'DATABASE_HOST', $main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::remote' ? '' : 'localhost'
     );
 
-    if ( $main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::remote'
-        && grep { $hostname eq $_ } ( 'localhost', '127.0.0.1', '::1' )
-    ) {
+    if ( $main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::remote' && grep { $hostname eq $_ } ( 'localhost', '127.0.0.1', '::1' ) ) {
         $hostname = '';
     }
 
@@ -407,10 +400,7 @@ $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter your SQL server hostname or IP address:
 \\Z \\Zn
 EOF
-    } while $rs < 30 && ( $hostname ne 'localhost'
-        && !isValidHostname( $hostname )
-        && !isValidIpAddr( $hostname )
-    );
+    } while $rs < 30 && ( $hostname ne 'localhost' && !isValidHostname( $hostname ) && !isValidIpAddr( $hostname ) );
 
     main::setupSetQuestion( 'DATABASE_HOST', idn_to_ascii( $hostname, 'utf-8' ) // '' );
     return $rs if $rs >= 30;
@@ -421,9 +411,7 @@ $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter your SQL server port:
 \\Z \\Zn
 EOF
-    } while $rs < 30
-        && !isNumber( $port )
-        || !isNumberInRange( $port, 1025, 65535 );
+    } while $rs < 30 && !isNumber( $port ) || !isNumberInRange( $port, 1025, 65535 );
 
     main::setupSetQuestion( 'DATABASE_PORT', $port );
     return $rs if $rs >= 30;
@@ -537,36 +525,37 @@ sub _buildConf
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldBuildConf' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeMysqlBuildConf' );
     return $rs if $rs;
 
-    my $rootUName = $main::imscpConfig{'ROOT_USER'};
-    my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-    my $confDir = $self->{'config'}->{'SQLD_CONF_DIR'};
-
-    # Make sure that the conf.d directory exists
-    iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make( {
-        user  => $rootUName,
-        group => $rootGName,
-        mode  => 0755
-    } );
+    eval {
+        # Make sure that the conf.d directory exists
+        iMSCP::Dir->new( dirname => "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d" )->make( {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
+            mode  => 0755
+        } );
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
 
     # Create the /etc/mysql/my.cnf file if missing
-    unless ( -f "$confDir/my.cnf" ) {
+    unless ( -f "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf" ) {
         $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'my.cnf', \ my $cfgTpl, {} );
         return $rs if $rs;
 
         unless ( defined $cfgTpl ) {
-            $cfgTpl = "!includedir $confDir/conf.d/\n";
-        } elsif ( $cfgTpl !~ m%^!includedir\s+$confDir/conf.d/\n%m ) {
-            $cfgTpl .= "!includedir $confDir/conf.d/\n";
+            $cfgTpl = "!includedir $self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n";
+        } elsif ( $cfgTpl !~ m%^!includedir\s+$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n%m ) {
+            $cfgTpl .= "!includedir $self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n";
         }
 
-        my $file = iMSCP::File->new( filename => "$confDir/my.cnf" );
+        my $file = iMSCP::File->new( filename => "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf" );
         $file->set( $cfgTpl );
-
         $rs = $file->save();
-        $rs ||= $file->owner( $rootUName, $rootGName );
+        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
         $rs ||= $file->mode( 0644 );
         return $rs if $rs;
     }
@@ -601,13 +590,12 @@ EOF
 
     processByRef( { SQLD_SOCK_DIR => $self->{'config'}->{'SQLD_SOCK_DIR'} }, \$cfgTpl );
 
-    my $file = iMSCP::File->new( filename => "$confDir/conf.d/imscp.cnf" );
+    my $file = iMSCP::File->new( filename => "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf" );
     $file->set( $cfgTpl );
-
     $rs = $file->save();
-    $rs ||= $file->owner( $rootUName, $rootGName );
+    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldBuildConf' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterMysqlBuildConf' );
 }
 
 =item _setupMasterSqlUser( )
@@ -631,6 +619,7 @@ sub _setupMasterSqlUser
     # Remove old user if any
     for my $sqlUser ( $oldUser, $user ) {
         next unless $sqlUser;
+
         for my $host( $userHost, $oldUserHost ) {
             next unless $host;
             $self->{'sqld'}->dropUser( $sqlUser, $host );
@@ -731,7 +720,7 @@ sub _setupSecureInstallation
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->getInstance()->trigger( 'beforeSetupSecureSqlInstallation' );
+    my $rs = $self->{'eventManager'}->getInstance()->trigger( 'beforeSetupSecureMysqlInstallation' );
     return $rs if $rs;
 
     eval {
@@ -761,7 +750,7 @@ sub _setupSecureInstallation
         return 1;
     }
 
-    $self->{'eventManager'}->getInstance()->trigger( 'afterSetupSecureSqlInstallation' );
+    $self->{'eventManager'}->getInstance()->trigger( 'afterSetupSecureMysqlInstallation' );
 }
 
 =item _setupDatbase( )
@@ -906,15 +895,9 @@ sub _oldEngineCompatibility
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldOldEngineCompatibility' );
-    return $rs if $rs;
+    return 0 unless -f "$self->{'cfgDir'}/mysql.old.data";
 
-    if ( -f "$self->{'cfgDir'}/mysql.old.data" ) {
-        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/mysql.old.data" )->delFile();
-        return $rs if $rs;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterSqldOldEngineCompatibility' );
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/mysql.old.data" )->delFile();
 }
 
 =back

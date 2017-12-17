@@ -209,7 +209,7 @@ sub importCertificate
     my $file = iMSCP::File->new( filename => $self->{'certificate_container_path'} );
     my $certificateRef = $file->getAsRef();
     unless ( defined $certificateRef ) {
-        error( sprintf( "Couldn't read %s file", $self->{'certificate_container_path'} ));
+        error( sprintf( "Couldn't read the %s file", $self->{'certificate_container_path'} ));
         return 1;
     }
 
@@ -247,7 +247,7 @@ sub importCaBundle
     my $file = iMSCP::File->new( filename => $self->{'ca_bundle_container_path'} );
     my $caBundleRef = $file->getAsRef();
     unless ( defined $caBundleRef ) {
-        error( sprintf( "Couldn't read %s file", $self->{'ca_bundle_container_path'} ));
+        error( sprintf( "Couldn't read the %s file", $self->{'ca_bundle_container_path'} ));
         return 1;
     }
 

@@ -74,9 +74,9 @@ sub deleteUser
     die( sprintf( 'The %s package must implement the deleteUser() method', ref $self ));
 }
 
-=item addDmn( \%moduleData )
+=item addDomain( \%moduleData )
 
- Process addDmn tasks
+ Process addDomain tasks
 
  The following events *MUST* be triggered:
   - before<SNAME>AddDomain( \%moduleData )
@@ -87,11 +87,11 @@ sub deleteUser
 
 =cut
 
-sub addDmn
+sub addDomain
 {
     my ($self) = @_;
 
-    die( sprintf( 'The %s package must implement the addDmn() method', ref $self ));
+    die( sprintf( 'The %s package must implement the addDomain() method', ref $self ));
 }
 
 =item restoreDmn( \%moduleData )
@@ -114,9 +114,9 @@ sub restoreDmn
     die( sprintf( 'The %s package must implement the restoreDmn() method', ref $self ));
 }
 
-=item disableDmn( \%moduleData )
+=item disableDomain( \%moduleData )
 
- Process disableDmn tasks
+ Process disableDomain tasks
 
  The following events *MUST* be triggered:
   - before<SNAME>DisableDomain( \%moduleData )
@@ -127,16 +127,16 @@ sub restoreDmn
 
 =cut
 
-sub disableDmn
+sub disableDomain
 {
     my ($self) = @_;
 
-    die( sprintf( 'The %s package must implement the disableDmn() method', ref $self ));
+    die( sprintf( 'The %s package must implement the disableDomain() method', ref $self ));
 }
 
-=item deleteDmn( \%moduleData )
+=item deleteDomain( \%moduleData )
 
- Process deleteDmn tasks
+ Process deleteDomain tasks
 
  The following events *MUST* be triggered:
   - before<SNAME>DeleteDomain( \%moduleData )
@@ -147,16 +147,16 @@ sub disableDmn
 
 =cut
 
-sub deleteDmn
+sub deleteDomain
 {
     my ($self) = @_;
 
-    die( sprintf( 'The %s package must implement the deleteDmn() method', ref $self ));
+    die( sprintf( 'The %s package must implement the deleteDomain() method', ref $self ));
 }
 
-=item addSub( \%moduleData )
+=item addSubbdomain( \%moduleData )
 
- Process addSub tasks
+ Process addSubbdomain tasks
 
  The following events *MUST* be triggered:
   - before<SNAME>DisableSubdomain( \%moduleData )
@@ -167,16 +167,16 @@ sub deleteDmn
 
 =cut
 
-sub addSub
+sub addSubbdomain
 {
     my ($self) = @_;
 
-    die( sprintf( 'The %s package must implement the addSub() method', ref $self ));
+    die( sprintf( 'The %s package must implement the addSubbdomain() method', ref $self ));
 }
 
-=item restoreSub( \%moduleData )
+=item restoreSubdomain( \%moduleData )
 
- Process restoreSub tasks
+ Process restoreSubdomain tasks
 
  The following events *MUST* be triggered:
   - before<SNAME>RestoreSubdomain( \%moduleData )
@@ -187,11 +187,11 @@ sub addSub
 
 =cut
 
-sub restoreSub
+sub restoreSubdomain
 {
     my ($self) = @_;
 
-    die( sprintf( 'The %s package must implement the restoreSub() method', ref $self ));
+    die( sprintf( 'The %s package must implement the restoreSubdomain() method', ref $self ));
 }
 
 =item disableSub( \%moduleData )
@@ -214,9 +214,9 @@ sub disableSub
     die( sprintf( 'The %s package must implement the disableSub() method', ref $self ));
 }
 
-=item deleteSub( \%moduleData )
+=item deleteSubdomain( \%moduleData )
 
- Process deleteSub tasks
+ Process deleteSubdomain tasks
 
  The following events *MUST* be triggered:
   - before<SNAME>DeleteSubdomain( \%moduleData )
@@ -227,11 +227,11 @@ sub disableSub
 
 =cut
 
-sub deleteSub
+sub deleteSubdomain
 {
     my ($self) = @_;
 
-    die( sprintf( 'The %s package must implement the deleteSub() method', ref $self ));
+    die( sprintf( 'The %s package must implement the deleteSubdomain() method', ref $self ));
 }
 
 =item addHtpasswd( \%moduleData )

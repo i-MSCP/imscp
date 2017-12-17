@@ -25,7 +25,7 @@ package Package::FrontEnd::Uninstaller;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ error /;
 use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::SystemUser;
@@ -127,9 +127,16 @@ sub _deconfigurePHP
         return $rs if $rs;
     }
 
-    iMSCP::Dir->new( dirname => '/usr/local/lib/imscp_panel' )->remove();
-    iMSCP::Dir->new( dirname => '/usr/local/etc/imscp_panel' )->remove();
-    iMSCP::Dir->new( dirname => '/var/run/imscp' )->remove();
+    eval {
+        iMSCP::Dir->new( dirname => '/usr/local/lib/imscp_panel' )->remove();
+        iMSCP::Dir->new( dirname => '/usr/local/etc/imscp_panel' )->remove();
+        iMSCP::Dir->new( dirname => '/var/run/imscp' )->remove();
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
     0;
 }
 

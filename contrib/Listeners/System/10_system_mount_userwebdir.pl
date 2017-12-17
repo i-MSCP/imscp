@@ -23,7 +23,7 @@
 
 package Listener::System::Mount::Userwebdir;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
@@ -44,16 +44,14 @@ my $USER_WEB_DIR = '/home/virtual';
 iMSCP::EventManager->getInstance()->register(
     'afterSetupInstallFiles',
     sub {
-        my $rs = umount($main::imscpConfig{'USER_WEB_DIR'});
-        $rs ||= mount(
-            {
-                fs_spec    => $USER_WEB_DIR,
-                fs_file    => $main::imscpConfig{'USER_WEB_DIR'},
-                fs_vfstype => 'none',
-                fs_mntops  => 'rbind,rslave'
-            }
-        );
-        $rs ||= addMountEntry("$USER_WEB_DIR $main::imscpConfig{'USER_WEB_DIR'} none rbind,rslave");
+        my $rs = umount( $main::imscpConfig{'USER_WEB_DIR'} );
+        $rs ||= mount( {
+            fs_spec    => $USER_WEB_DIR,
+            fs_file    => $main::imscpConfig{'USER_WEB_DIR'},
+            fs_vfstype => 'none',
+            fs_mntops  => 'rbind,rslave'
+        } );
+        $rs ||= addMountEntry( "$USER_WEB_DIR $main::imscpConfig{'USER_WEB_DIR'} none rbind,rslave" );
     }
 );
 

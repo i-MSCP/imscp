@@ -137,9 +137,7 @@ sub addSystemUser
     }
 
     if ( @userProps && $oldUsername ne $username && defined $newGroupname ) {
-        my $rs = execute(
-            [ '/usr/sbin/groupmod', '-n', $newGroupname, scalar getgrgid( $userProps[3] ) ], \ my $stdout, \ my $stderr
-        );
+        my $rs = execute( [ '/usr/sbin/groupmod', '-n', $newGroupname, scalar getgrgid( $userProps[3] ) ], \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs && $rs;

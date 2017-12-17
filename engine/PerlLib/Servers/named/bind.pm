@@ -25,17 +25,17 @@ package Servers::named::bind;
 
 use strict;
 use warnings;
+use autouse 'iMSCP::Rights' => qw/ setRights /;
 use Class::Autouse qw/ :nostat Servers::named::bind::installer Servers::named::bind::uninstaller /;
 use File::Basename;
-use iMSCP::Debug;
 use iMSCP::Config;
+use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::ProgramFinder;
 use iMSCP::TemplateParser qw/ getBlocByRef process processByRef replaceBlocByRef /;
 use iMSCP::Net;
-use iMSCP::Rights;
 use iMSCP::Service;
 use iMSCP::Umask;
 use parent 'Common::SingletonClass';
@@ -76,8 +76,8 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPreInstall', 'bind' );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterNamedPreInstall', 'bind' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeBind9PreInstall' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterBind9PreInstall' );
 }
 
 =item install( )
@@ -92,9 +92,9 @@ sub install
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedInstall', 'bind' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeBind9Install' );
     $rs ||= Servers::named::bind::installer->getInstance()->install();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterNamedInstall', 'bind' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterBind9Install' );
 }
 
 =item postinstall( )
@@ -109,7 +109,7 @@ sub postinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostInstall' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeBind9PostInstall' );
     return $rs if $rs;
 
     eval { iMSCP::Service->getInstance()->enable( $self->{'config'}->{'NAMED_SNAME'} ); };
@@ -126,7 +126,7 @@ sub postinstall
         },
         100
     );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterNamedPostInstall' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterBind9PostInstall' );
 }
 
 =item uninstall( )
@@ -141,7 +141,7 @@ sub uninstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedUninstall', 'bind' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeBind9Uninstall' );
     $rs ||= Servers::named::bind::uninstaller->getInstance()->uninstall();
     return $rs if $rs;
 
@@ -150,7 +150,7 @@ sub uninstall
         return $rs if $rs;
     }
 
-    $self->{'eventManager'}->trigger( 'afterNamedUninstall', 'bind' );
+    $self->{'eventManager'}->trigger( 'afterBind9Uninstall' );
 }
 
 =item setEnginePermissions( )
@@ -165,8 +165,7 @@ sub setEnginePermissions
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedSetEnginePermissions' );
-    $rs ||= setRights( $self->{'config'}->{'BIND_CONF_DIR'},
+    my $rs = setRights( $self->{'config'}->{'BIND_CONF_DIR'},
         {
             user      => $main::imscpConfig{'ROOT_USER'},
             group     => $self->{'config'}->{'BIND_GROUP'},
@@ -184,19 +183,18 @@ sub setEnginePermissions
             recursive => 1
         }
     );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterNamedSetEnginePermissions' );
 }
 
-=item addDmn( \%data )
+=item addDomain( \%data )
 
- Process addDmn tasks
+ Process addDomain tasks
 
  Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub addDmn
+sub addDomain
 {
     my ($self, $data) = @_;
 
@@ -204,7 +202,7 @@ sub addDmn
     # Occurs only in few contexts (eg. when using BASE_SERVER_VHOST as customer domain)
     return 0 if $self->{'seen_zones'}->{$data->{'DOMAIN_NAME'}};
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedAddDmn', $data );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeBind9AddDomain', $data );
     $rs ||= $self->_addDmnConfig( $data );
     return $rs if $rs;
 
@@ -213,31 +211,31 @@ sub addDmn
         return $rs if $rs;
     }
 
-    $self->{'seen_zones'}->{$data->{'DOMAIN_NAME'}} = 1;
-    $self->{'eventManager'}->trigger( 'afterNamedAddDmn', $data );
+    $self->{'seen_zones'}->{$data->{'DOMAIN_NAME'}} ||= 1;
+    $self->{'eventManager'}->trigger( 'afterBind9AddDomain', $data );
 }
 
-=item postaddDmn( \%data )
+=item postaddDomain( \%data )
 
- Process postaddDmn tasks
+ Process postaddDomain tasks
 
  Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub postaddDmn
+sub postaddDomain
 {
     my ($self, $data) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostAddDmn', $data );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeBind9PostAddDomain', $data );
     return $rs if $rs;
 
     if ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} eq 'yes'
         && $self->{'config'}->{'BIND_MODE'} eq 'master'
         && defined $data->{'ALIAS'}
     ) {
-        $rs = $self->addSub( {
+        $rs = $self->addSubbdomain( {
             # Listeners want probably know real parent domain name for the
             # DNS name being added even if that entry is added in another
             # zone. For instance, see the 20_named_dualstack.pl listener
@@ -256,69 +254,68 @@ sub postaddDmn
         return $rs if $rs;
     }
 
-    $self->{'reload'} = 1;
-    $self->{'eventManager'}->trigger( 'afterNamedPostAddDmn', $data );
+    $self->{'reload'} ||= 1;
+    $self->{'eventManager'}->trigger( 'afterBind9PostAddDomain', $data );
 }
 
-=item disableDmn( \%data )
+=item disableDomain( \%data )
 
- Process disableDmn tasks
+ Process disableDomain tasks
 
  When a domain is being disabled, we must ensure that the DNS data are still
  present for it (eg: when doing a full upgrade or reconfiguration). This
- explain here why we are executing the addDmn( ) action.
+ explain here why we are executing the addDomain() method.
 
  Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub disableDmn
+sub disableDomain
 {
     my ($self, $data) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedDisableDmn', $data );
-    $rs ||= $self->addDmn( $data );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterNamedDisableDmn', $data );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeBind9DisableDomain', $data );
+    $rs ||= $self->addDomain( $data );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterBind9DisableDomain', $data );
 }
 
-=item postdisableDmn( \%data )
+=item postdisableDomain( \%data )
 
- Process postdisableDmn tasks
+ Process postdisableDomain tasks
 
- See the disableDmn( ) method for explaination.
+ See the disableDomain() method for explaination.
 
  Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub postdisableDmn
+sub postdisableDomain
 {
     my ($self, $data) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostDisableDmn', $data );
-    $rs ||= $self->postaddDmn( $data );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterNamedPostDisableDmn', $data );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeBind9PostDisableDomain', $data );
+    $rs ||= $self->postaddDomain( $data );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterBind9PostDisableDomain', $data );
 }
 
-=item deleteDmn( \%data )
+=item deleteDomain( \%data )
 
- Process deleteDmn tasks
+ Process deleteDomain tasks
 
  Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteDmn
+sub deleteDomain
 {
     my ($self, $data) = @_;
 
-    return 0 if $data->{'PARENT_DOMAIN_NAME'} eq $main::imscpConfig{'BASE_SERVER_VHOST'}
-        && !$data->{'FORCE_DELETION'};
+    return 0 if $data->{'PARENT_DOMAIN_NAME'} eq $main::imscpConfig{'BASE_SERVER_VHOST'} && !$data->{'FORCE_DELETION'};
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedDelDmn', $data );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeBind9DeleteDomain', $data );
     $rs ||= $self->_deleteDmnConfig( $data );
     return $rs if $rs;
 
@@ -330,53 +327,50 @@ sub deleteDmn
         }
     }
 
-    $self->{'eventManager'}->trigger( 'afterNamedDelDmn', $data );
+    $self->{'eventManager'}->trigger( 'afterBind9DeleteDomain', $data );
 }
 
-=item postdeleteDmn( \%data )
+=item postdeleteDomain( \%data )
 
- Process postdeleteDmn tasks
+ Process postdeleteDomain tasks
 
  Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub postdeleteDmn
+sub postdeleteDomain
 {
     my ($self, $data) = @_;
 
     return 0 if $data->{'PARENT_DOMAIN_NAME'} eq $main::imscpConfig{'BASE_SERVER_VHOST'}
         && !$data->{'FORCE_DELETION'};
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostDelDmn', $data );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeBind9PostDeleteDomain', $data );
     return $rs if $rs;
 
-    if ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} eq 'yes'
-        && $self->{'config'}->{'BIND_MODE'} eq 'master'
-        && defined $data->{'ALIAS'}
-    ) {
-        $rs = $self->deleteSub( {
+    if ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} eq 'yes' && $self->{'config'}->{'BIND_MODE'} eq 'master' && defined $data->{'ALIAS'} ) {
+        $rs = $self->deleteSubdomain( {
             PARENT_DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
             DOMAIN_NAME        => $data->{'ALIAS'} . '.' . $main::imscpConfig{'BASE_SERVER_VHOST'}
         } );
         return $rs if $rs;
     }
 
-    $self->{'reload'} = 1;
-    $self->{'eventManager'}->trigger( 'afterNamedPostDelDmn', $data );
+    $self->{'reload'} ||= 1;
+    $self->{'eventManager'}->trigger( 'afterBind9PostDeleteDomain', $data );
 }
 
-=item addSub( \%data )
+=item addSubbdomain( \%data )
 
- Process addSub tasks
+ Process addSubbdomain tasks
 
  Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub addSub
+sub addSubbdomain
 {
     my ($self, $data) = @_;
 
@@ -391,17 +385,17 @@ sub addSub
     $wrkDbFile = iMSCP::File->new( filename => $wrkDbFile );
     my $wrkDbFileContent = $wrkDbFile->get();
     unless ( defined $wrkDbFileContent ) {
-        error( sprintf( "Couldn't read %s file", $wrkDbFile->{'filename'} ));
+        error( sprintf( "Couldn't read the %s file", $wrkDbFile->{'filename'} ));
         return 1;
     }
 
-    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind', 'db_sub.tpl', \ my $subEntry, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind9', 'db_sub.tpl', \ my $subEntry, $data );
     return $rs if $rs;
 
     unless ( defined $subEntry ) {
         $subEntry = iMSCP::File->new( filename => "$self->{'tplDir'}/db_sub.tpl" )->get();
         unless ( defined $subEntry ) {
-            error( sprintf( "Couldn't read %s file", "$self->{'tplDir'}/db_sub.tpl file" ));
+            error( sprintf( "Couldn't read the %s file", "$self->{'tplDir'}/db_sub.tpl file" ));
             return 1;
         }
     }
@@ -410,7 +404,7 @@ sub addSub
         $rs = $self->_updateSOAserialNumber( $data->{'PARENT_DOMAIN_NAME'}, \$wrkDbFileContent, \$wrkDbFileContent );
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'beforeNamedAddSub', \$wrkDbFileContent, \$subEntry, $data );
+    $rs ||= $self->{'eventManager'}->trigger( 'beforeBind9AddSubdomain', \$wrkDbFileContent, \$subEntry, $data );
     return $rs if $rs;
 
     my $net = iMSCP::Net->getInstance();
@@ -455,33 +449,30 @@ sub addSub
         "; sub [{SUBDOMAIN_NAME}] entry BEGIN\n", "; sub [{SUBDOMAIN_NAME}] entry ENDING\n", $subEntry, \$wrkDbFileContent, 'preserve'
     );
 
-    $rs = $self->{'eventManager'}->trigger( 'afterNamedAddSub', \$wrkDbFileContent, $data );
+    $rs = $self->{'eventManager'}->trigger( 'afterBind9AddSubdomain', \$wrkDbFileContent, $data );
     $rs ||= $wrkDbFile->set( $wrkDbFileContent );
     $rs ||= $wrkDbFile->save();
     $rs ||= $self->_compileZone( $data->{'PARENT_DOMAIN_NAME'}, $wrkDbFile->{'filename'} );
 }
 
-=item postaddSub( \%data )
+=item postaddSubdomain( \%data )
 
- Process postaddSub tasks
+ Process postaddSubdomain tasks
 
  Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub postaddSub
+sub postaddSubdomain
 {
     my ($self, $data) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostAddSub', $data );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeBind9PostAddSubdomain', $data );
     return $rs if $rs;
 
-    if ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} eq 'yes'
-        && $self->{'config'}->{'BIND_MODE'} eq 'master'
-        && defined $data->{'ALIAS'}
-    ) {
-        $rs = $self->addSub( {
+    if ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} eq 'yes' && $self->{'config'}->{'BIND_MODE'} eq 'master' && defined $data->{'ALIAS'} ) {
+        $rs = $self->addSubbdomain( {
             # Listeners want probably know real parent domain name for the
             # DNS name being added even if that entry is added in another
             # zone. For instance, see the 20_named_dualstack.pl listener
@@ -500,29 +491,29 @@ sub postaddSub
         return $rs if $rs;
     }
 
-    $self->{'reload'} = 1;
-    $self->{'eventManager'}->trigger( 'afterNamedPostAddSub', $data );
+    $self->{'reload'} ||= 1;
+    $self->{'eventManager'}->trigger( 'afterBind9PostAddSubdomain', $data );
 }
 
-=item disableSub( \%data )
+=item disableSubdomain( \%data )
 
- Process disableSub tasks
+ Process disableSubdomain tasks
 
  When a subdomain is being disabled, we must ensure that the DNS data are still present for it (eg: when doing a full
- upgrade or reconfiguration). This explain here why we are executing the addSub( ) action.
+ upgrade or reconfiguration). This explain here why we are executing the addSubbdomain() action.
 
  Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub disableSub
+sub disableSubdomain
 {
     my ($self, $data) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedDisableSub', $data );
-    $rs ||= $self->addSub( $data );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterNamedDisableSub', $data );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeBind9DisableSubdomain', $data );
+    $rs ||= $self->addSubbdomain( $data );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterBind9DisableSubdomain', $data );
 }
 
 =item postdisableSub( \%data )
@@ -540,21 +531,21 @@ sub postdisableSub
 {
     my ($self, $data) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostDisableSub', $data );
-    $rs ||= $self->postaddSub( $data );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterNamedPostDisableSub', $data );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeBind9PostDisableSubdomain', $data );
+    $rs ||= $self->postaddSubdomain( $data );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterBind9PostDisableSubdomain', $data );
 }
 
-=item deleteSub( \%data )
+=item deleteSubdomain( \%data )
 
- Process deleteSub tasks
+ Process deleteSubdomain tasks
 
  Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteSub
+sub deleteSubdomain
 {
     my ($self, $data) = @_;
 
@@ -569,7 +560,7 @@ sub deleteSub
     $wrkDbFile = iMSCP::File->new( filename => $wrkDbFile );
     my $wrkDbFileContent = $wrkDbFile->get();
     unless ( defined $wrkDbFileContent ) {
-        error( sprintf( "Couldn't read %s file", $wrkDbFile->{'filename'} ));
+        error( sprintf( "Couldn't read the %s file", $wrkDbFile->{'filename'} ));
         return 1;
     }
 
@@ -578,46 +569,43 @@ sub deleteSub
         return $rs if $rs;
     }
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedDelSub', \$wrkDbFileContent, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeBind9DeleteSubdomain', \$wrkDbFileContent, $data );
     return $rs if $rs;
 
     replaceBlocByRef( "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n", "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n", '', \$wrkDbFileContent );
 
-    $rs = $self->{'eventManager'}->trigger( 'afterNamedDelSub', \$wrkDbFileContent, $data );
+    $rs = $self->{'eventManager'}->trigger( 'afterBind9DeleteSubdomain', \$wrkDbFileContent, $data );
     $rs ||= $wrkDbFile->set( $wrkDbFileContent );
     $rs ||= $wrkDbFile->save();
     $rs ||= $self->_compileZone( $data->{'PARENT_DOMAIN_NAME'}, $wrkDbFile->{'filename'} );
 }
 
-=item postdeleteSub( \%data )
+=item postdeleteSubdomain( \%data )
 
- Process postdeleteSub tasks
+ Process postdeleteSubdomain tasks
 
  Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub postdeleteSub
+sub postdeleteSubdomain
 {
     my ($self, $data) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostDelSub', $data );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeBind9PostDeleteSubdomain', $data );
     return $rs if $rs;
 
-    if ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} eq 'yes'
-        && $self->{'config'}->{'BIND_MODE'} eq 'master'
-        && defined $data->{'ALIAS'}
-    ) {
-        $rs = $self->deleteSub( {
+    if ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} eq 'yes' && $self->{'config'}->{'BIND_MODE'} eq 'master' && defined $data->{'ALIAS'} ) {
+        $rs = $self->deleteSubdomain( {
             PARENT_DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
             DOMAIN_NAME        => $data->{'ALIAS'} . '.' . $main::imscpConfig{'BASE_SERVER_VHOST'}
         } );
         return $rs if $rs;
     }
 
-    $self->{'reload'} = 1;
-    $self->{'eventManager'}->trigger( 'afterNamedPostDelSub', $data );
+    $self->{'reload'} ||= 1;
+    $self->{'eventManager'}->trigger( 'afterBind9PostDeleteSubdomain', $data );
 }
 
 =item addCustomDNS( \%data )
@@ -644,7 +632,7 @@ sub addCustomDNS
     $wrkDbFile = iMSCP::File->new( filename => $wrkDbFile );
     my $wrkDbFileContent = $wrkDbFile->get();
     unless ( defined $wrkDbFileContent ) {
-        error( sprintf( "Couldn't read %s file", $wrkDbFile->{'filename'} ));
+        error( sprintf( "Couldn't read the %s file", $wrkDbFile->{'filename'} ));
         return 1;
     }
 
@@ -653,7 +641,7 @@ sub addCustomDNS
         return $rs if $rs;
     }
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedAddCustomDNS', \$wrkDbFileContent, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeBind9AddCustomDNS', \$wrkDbFileContent, $data );
     return $rs if $rs;
 
     my @customDNS = ();
@@ -690,11 +678,11 @@ sub addCustomDNS
         \$newWrkDbFileContent
     );
 
-    $rs = $self->{'eventManager'}->trigger( 'afterNamedAddCustomDNS', \$newWrkDbFileContent, $data );
+    $rs = $self->{'eventManager'}->trigger( 'afterBind9AddCustomDNS', \$newWrkDbFileContent, $data );
     $rs ||= $wrkDbFile->set( $newWrkDbFileContent );
     $rs ||= $wrkDbFile->save();
     $rs ||= $self->_compileZone( $data->{'DOMAIN_NAME'}, $wrkDbFile->{'filename'} );
-    $self->{'reload'} = 1 unless $rs;
+    $self->{'reload'} ||= 1 unless $rs;
     $rs;
 }
 
@@ -710,7 +698,7 @@ sub restart
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedRestart' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeBind9Restart' );
     return $rs if $rs;
 
     eval { iMSCP::Service->getInstance()->restart( $self->{'config'}->{'NAMED_SNAME'} ); };
@@ -719,7 +707,7 @@ sub restart
         return 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterNamedRestart' );
+    $self->{'eventManager'}->trigger( 'afterBind9Restart' );
 }
 
 =item reload( )
@@ -734,7 +722,7 @@ sub reload
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedReload' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeBind9Reload' );
     return $rs if $rs;
 
     eval { iMSCP::Service->getInstance()->reload( $self->{'config'}->{'NAMED_SNAME'} ); };
@@ -743,7 +731,7 @@ sub reload
         return 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterNamedReload' );
+    $self->{'eventManager'}->trigger( 'afterBind9Reload' );
 }
 
 =back
@@ -843,23 +831,23 @@ sub _addDmnConfig
     my $cfgFile = iMSCP::File->new( filename => "$self->{'wrkDir'}/$cfgFileName" );
     my $cfgWrkFileContent = $cfgFile->get();
     unless ( defined $cfgWrkFileContent ) {
-        error( sprintf( "Couldn't read %s file", "$self->{'wrkDir'}/$cfgFileName" ));
+        error( sprintf( "Couldn't read the %s file", "$self->{'wrkDir'}/$cfgFileName" ));
         return 1;
     }
 
     my $tplFileName = "cfg_$self->{'config'}->{'BIND_MODE'}.tpl";
-    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind', $tplFileName, \ my $tplCfgEntryContent, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind9', $tplFileName, \ my $tplCfgEntryContent, $data );
     return $rs if $rs;
 
     unless ( defined $tplCfgEntryContent ) {
         $tplCfgEntryContent = iMSCP::File->new( filename => "$self->{'tplDir'}/$tplFileName" )->get();
         unless ( defined $tplCfgEntryContent ) {
-            error( sprintf( "Couldn't read %s file", "$self->{'tplDir'}/$tplFileName" ));
+            error( sprintf( "Couldn't read the %s file", "$self->{'tplDir'}/$tplFileName" ));
             return 1;
         }
     }
 
-    $rs = $self->{'eventManager'}->trigger( 'beforeNamedAddDmnConfig', \$cfgWrkFileContent, \$tplCfgEntryContent, $data );
+    $rs = $self->{'eventManager'}->trigger( 'beforeBind9AddDmnConfig', \$cfgWrkFileContent, \$tplCfgEntryContent, $data );
     return $rs if $rs;
 
     my $tags = {
@@ -887,7 +875,7 @@ sub _addDmnConfig
 // imscp [$data->{'DOMAIN_NAME'}] entry ENDING
 EOF
 
-    $rs = $self->{'eventManager'}->trigger( 'afterNamedAddDmnConfig', \$cfgWrkFileContent, $data );
+    $rs = $self->{'eventManager'}->trigger( 'afterBind9AddDmnConfig', \$cfgWrkFileContent, $data );
     $rs ||= $cfgFile->set( $cfgWrkFileContent );
     $rs ||= $cfgFile->save();
     $rs ||= $cfgFile->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
@@ -920,18 +908,18 @@ sub _deleteDmnConfig
     my $cfgFile = iMSCP::File->new( filename => "$self->{'wrkDir'}/$cfgFileName" );
     my $cfgWrkFileContent = $cfgFile->get();
     unless ( defined $cfgWrkFileContent ) {
-        error( sprintf( "Couldn't read %s file", "$self->{'wrkDir'}/$cfgFileName" ));
+        error( sprintf( "Couldn't read the %s file", "$self->{'wrkDir'}/$cfgFileName" ));
         return 1;
     }
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedDelDmnConfig', \$cfgWrkFileContent, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeBind9DelDmnConfig', \$cfgWrkFileContent, $data );
     return $rs if $rs;
 
     replaceBlocByRef(
         "// imscp [$data->{'DOMAIN_NAME'}] entry BEGIN\n", "// imscp [$data->{'DOMAIN_NAME'}] entry ENDING\n", '', \$cfgWrkFileContent
     );
 
-    $rs = $self->{'eventManager'}->trigger( 'afterNamedDelDmnConfig', \$cfgWrkFileContent, $data );
+    $rs = $self->{'eventManager'}->trigger( 'afterBind9DelDmnConfig', \$cfgWrkFileContent, $data );
     $rs ||= $cfgFile->set( $cfgWrkFileContent );
     $rs ||= $cfgFile->save();
     $rs ||= $cfgFile->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
@@ -956,23 +944,23 @@ sub _addDmnDb
     my $wrkDbFileContent;
 
     if ( -f $wrkDbFile->{'filename'} && !defined ( $wrkDbFileContent = $wrkDbFile->get()) ) {
-        error( sprintf( "Couldn't read %s file", $wrkDbFile->{'filename'} ));
+        error( sprintf( "Couldn't read the %s file", $wrkDbFile->{'filename'} ));
         return 1;
     }
 
-    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind', 'db.tpl', \ my $tplDbFileC, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind9', 'db.tpl', \ my $tplDbFileC, $data );
     return $rs if $rs;
 
     unless ( defined $tplDbFileC ) {
         $tplDbFileC = iMSCP::File->new( filename => "$self->{'tplDir'}/db.tpl" )->get();
         unless ( defined $tplDbFileC ) {
-            error( sprintf( "Couldn't read %s file", "$self->{'tplDir'}/db.tpl" ));
+            error( sprintf( "Couldn't read the %s file", "$self->{'tplDir'}/db.tpl" ));
             return 1;
         }
     }
 
     $rs = $self->_updateSOAserialNumber( $data->{'DOMAIN_NAME'}, \$tplDbFileC, \$wrkDbFileContent );
-    $rs ||= $self->{'eventManager'}->trigger( 'beforeNamedAddDmnDb', \$tplDbFileC, $data );
+    $rs ||= $self->{'eventManager'}->trigger( 'beforeBind9AddDomainDb', \$tplDbFileC, $data );
     return $rs if $rs;
 
     my $nsRecordB = getBlocByRef( "; dmn NS RECORD entry BEGIN\n", "; dmn NS RECORD entry ENDING\n", \$tplDbFileC );
@@ -983,7 +971,6 @@ sub _addDmnDb
 
     unless ( $nsRecordB eq '' && $glueRecordB eq '' ) {
         my @nsIPs = ( $domainIP, ( ( $self->{'config'}->{'SECONDARY_DNS'} eq 'no' ) ? () : split ';', $self->{'config'}->{'SECONDARY_DNS'} ) );
-
         my ($nsRecords, $glueRecords) = ( '', '' );
 
         for my $ipAddrType( qw/ ipv4 ipv6 / ) {
@@ -1005,12 +992,9 @@ sub _addDmnDb
             }
         }
 
+        replaceBlocByRef( "; dmn NS RECORD entry BEGIN\n", "; dmn NS RECORD entry ENDING\n", $nsRecords, \$tplDbFileC ) if $nsRecordB ne '';
 
-        if($nsRecordB ne '') {
-            replaceBlocByRef( "; dmn NS RECORD entry BEGIN\n", "; dmn NS RECORD entry ENDING\n", $nsRecords, \$tplDbFileC );
-        }
-
-        if($glueRecordB ne '') {
+        if ( $glueRecordB ne '' ) {
             replaceBlocByRef( "; dmn NS GLUE RECORD entry BEGIN\n", "; dmn NS GLUE RECORD entry ENDING\n", $glueRecords, \$tplDbFileC );
         }
     }
@@ -1055,7 +1039,7 @@ sub _addDmnDb
         );
     }
 
-    $rs = $self->{'eventManager'}->trigger( 'afterNamedAddDmnDb', \$tplDbFileC, $data );
+    $rs = $self->{'eventManager'}->trigger( 'afterBind9AddDomainDb', \$tplDbFileC, $data );
     $rs ||= $wrkDbFile->set( $tplDbFileC );
     $rs ||= $wrkDbFile->save();
     $rs ||= $self->_compileZone( $data->{'DOMAIN_NAME'}, $wrkDbFile->{'filename'} );

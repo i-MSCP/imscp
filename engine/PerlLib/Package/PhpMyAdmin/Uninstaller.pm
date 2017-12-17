@@ -25,12 +25,12 @@ package Package::PhpMyAdmin::Uninstaller;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ error /;
 use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::Database;
-use Package::PhpMyAdmin;
 use Package::FrontEnd;
+use Package::PhpMyAdmin;
 use Servers::sqld;
 use parent 'Common::SingletonClass';
 
@@ -148,7 +148,7 @@ sub _unregisterConfig
     my $file = iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf" );
     my $fileContentRef = $file->getAsRef();
     unless ( defined $fileContentRef ) {
-        error( sprintf( "Couldn't read %s file", $file->{'filename'} ));
+        error( sprintf( "Couldn't read the %s file", $file->{'filename'} ));
         return 1;
     }
 
@@ -173,14 +173,21 @@ sub _removeFiles
 {
     my ($self) = @_;
 
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma" )->remove();
-
     if ( -f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pma.conf" ) {
         my $rs = iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pma.conf" )->delFile();
         return $rs if $rs;
     }
 
-    iMSCP::Dir->new( dirname => $self->{'cfgDir'} )->remove();
+    eval {
+        iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma" )->remove();
+        iMSCP::Dir->new( dirname => $self->{'cfgDir'} )->remove();
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    0;
 }
 
 =back

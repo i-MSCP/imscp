@@ -338,22 +338,20 @@ sub _bkpConfFile
 {
     my ($self, $cfgFile) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedBkpConfFile', $cfgFile );
-    return $rs if $rs;
-
     if ( -f $cfgFile ) {
         my $file = iMSCP::File->new( filename => $cfgFile );
         my $filename = basename( $cfgFile );
+
         unless ( -f "$self->{'bkpDir'}/$filename.system" ) {
-            $rs = $file->copyFile( "$self->{'bkpDir'}/$filename.system", { preserve => 'no' } );
+            my $rs = $file->copyFile( "$self->{'bkpDir'}/$filename.system", { preserve => 'no' } );
             return $rs if $rs;
         } else {
-            $rs = $file->copyFile( "$self->{'bkpDir'}/$filename." . time, { preserve => 'no' } );
+            my $rs = $file->copyFile( "$self->{'bkpDir'}/$filename." . time, { preserve => 'no' } );
             return $rs if $rs;
         }
     }
 
-    $self->{'eventManager'}->trigger( 'afterNamedBkpConfFile', $cfgFile );
+    0;
 }
 
 =item _makeDirs( )
@@ -383,24 +381,30 @@ sub _makeDirs
         ]
     );
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedMakeDirs', \@directories );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeBind9dMakeDirs', \@directories );
     return $rs if $rs;
 
-    for my $directory( @directories ) {
-        iMSCP::Dir->new( dirname => $directory->[0] )->make( {
+    eval {
+        for my $directory( @directories ) {
+            iMSCP::Dir->new( dirname => $directory->[0] )->make( {
                 user  => $directory->[1],
                 group => $directory->[2],
                 mode  => $directory->[3]
             } );
+        }
+
+        iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_MASTER_DIR'} )->clear();
+
+        if ( $self->{'config'}->{'BIND_MODE'} ne 'slave' ) {
+            iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_SLAVE_DIR'} )->clear();
+        }
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
     }
 
-    iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_MASTER_DIR'} )->clear();
-
-    if ( $self->{'config'}->{'BIND_MODE'} ne 'slave' ) {
-        iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_SLAVE_DIR'} )->clear();
-    }
-
-    $self->{'eventManager'}->trigger( 'afterNamedMakeDirs', \@directories );
+    $self->{'eventManager'}->trigger( 'afterBind9MakeDirs', \@directories );
 }
 
 =item _buildConf( )
@@ -418,13 +422,13 @@ sub _buildConf
     # default conffile (Debian/Ubuntu specific)
     if ( $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} && -f $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} ) {
         my $tplName = basename( $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} );
-        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind', $tplName, \ my $tplContent, {} );
+        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind9', $tplName, \ my $tplContent, {} );
         return $rs if $rs;
 
         unless ( defined $tplContent ) {
             $tplContent = iMSCP::File->new( filename => $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} )->get();
             unless ( defined $tplContent ) {
-                error( sprintf( "Couldn't read %s file", $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} ));
+                error( sprintf( "Couldn't read the %s file", $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} ));
                 return 1;
             }
         }
@@ -452,7 +456,7 @@ sub _buildConf
             $tplContent =~ s/OPTIONS=".*"/OPTIONS="$options"/;
         }
 
-        $rs = $self->{'eventManager'}->trigger( 'afterNamedBuildConf', \$tplContent, $tplName );
+        $rs = $self->{'eventManager'}->trigger( 'afterBind9BuildConf', \$tplContent, $tplName );
         return $rs if $rs;
 
         my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$tplName" );
@@ -468,13 +472,13 @@ sub _buildConf
     # option conffile
     if ( $self->{'config'}->{'BIND_OPTIONS_CONF_FILE'} ) {
         my $tplName = basename( $self->{'config'}->{'BIND_OPTIONS_CONF_FILE'} );
-        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind', $tplName, \ my $tplContent, {} );
+        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind9', $tplName, \ my $tplContent, {} );
         return $rs if $rs;
 
         unless ( defined $tplContent ) {
             $tplContent = iMSCP::File->new( filename => "$self->{'cfgDir'}/$tplName" )->get();
             unless ( defined $tplContent ) {
-                error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/$tplName" ));
+                error( sprintf( "Couldn't read the %s file", "$self->{'cfgDir'}/$tplName" ));
                 return 1;
             }
         }
@@ -493,14 +497,13 @@ sub _buildConf
             $tplContent =~ s%//\s+(check-spf\s+ignore;)%$1%;
         }
 
-        $rs = $self->{'eventManager'}->trigger( 'afterNamedBuildConf', \$tplContent, $tplName );
+        $rs = $self->{'eventManager'}->trigger( 'afterBind9BuildConf', \$tplContent, $tplName );
         return $rs if $rs;
 
         my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$tplName" );
         $file->set( $tplContent );
 
         local $UMASK = 027;
-
         $rs = $file->save();
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
         $rs ||= $file->mode( 0640 );
@@ -511,13 +514,13 @@ sub _buildConf
     # master conffile
     if ( $self->{'config'}->{'BIND_CONF_FILE'} ) {
         my $tplName = basename( $self->{'config'}->{'BIND_CONF_FILE'} );
-        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind', $tplName, \ my $tplContent, {} );
+        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind9', $tplName, \ my $tplContent, {} );
         return $rs if $rs;
 
         unless ( defined $tplContent ) {
             $tplContent = iMSCP::File->new( filename => "$self->{'cfgDir'}/$tplName" )->get();
             unless ( defined $tplContent ) {
-                error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/$tplName" ));
+                error( sprintf( "Couldn't read the %s file", "$self->{'cfgDir'}/$tplName" ));
                 return 1;
             }
         }
@@ -526,14 +529,13 @@ sub _buildConf
             $tplContent =~ s%include\s+\Q"$self->{'config'}->{'BIND_CONF_DIR'}\E/bind.keys";\n%%;
         }
 
-        $rs = $self->{'eventManager'}->trigger( 'afterNamedBuildConf', \$tplContent, $tplName );
+        $rs = $self->{'eventManager'}->trigger( 'afterBind9BuildConf', \$tplContent, $tplName );
         return $rs if $rs;
 
         my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$tplName" );
         $file->set( $tplContent );
 
         local $UMASK = 027;
-
         $rs = $file->save();
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
         $rs ||= $file->mode( 0640 );
@@ -544,18 +546,18 @@ sub _buildConf
     # local conffile
     if ( $self->{'config'}->{'BIND_LOCAL_CONF_FILE'} ) {
         my $tplName = basename( $self->{'config'}->{'BIND_LOCAL_CONF_FILE'} );
-        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind', $tplName, \ my $tplContent, {} );
+        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'bind9', $tplName, \ my $tplContent, {} );
         return $rs if $rs;
 
         unless ( defined $tplContent ) {
             $tplContent = iMSCP::File->new( filename => "$self->{'cfgDir'}/$tplName" )->get();
             unless ( defined $tplContent ) {
-                error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/$tplName" ));
+                error( sprintf( "Couldn't read the %s file", "$self->{'cfgDir'}/$tplName" ));
                 return 1;
             }
         }
 
-        $rs = $self->{'eventManager'}->trigger( 'afterNamedBuildConf', \$tplContent, $tplName );
+        $rs = $self->{'eventManager'}->trigger( 'afterBind9BuildConf', \$tplContent, $tplName );
         return $rs if $rs;
 
         my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$tplName" );
@@ -630,23 +632,25 @@ sub _oldEngineCompatibility
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedOldEngineCompatibility' );
-    return $rs if $rs;
-
     if ( -f "$self->{'cfgDir'}/bind.old.data" ) {
-        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/bind.old.data" )->delFile();
+        my $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/bind.old.data" )->delFile();
         return $rs if $rs;
     }
 
     if ( iMSCP::ProgramFinder::find( 'resolvconf' ) ) {
-        $rs = execute( "resolvconf -d lo.imscp", \ my $stdout, \ my $stderr );
+        my $rs = execute( "resolvconf -d lo.imscp", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
     }
 
-    iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_ROOT_DIR'} )->clear( undef, qr/\.db$/ );
-    $self->{'eventManager'}->trigger( 'afterNameddOldEngineCompatibility' );
+    eval { iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_ROOT_DIR'} )->clear( undef, qr/\.db$/ ); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    0;
 }
 
 =back

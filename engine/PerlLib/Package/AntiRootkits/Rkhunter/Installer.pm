@@ -25,10 +25,9 @@ package Package::AntiRootkits::Rkhunter::Installer;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw / debug error /;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
-use iMSCP::TemplateParser;
-use iMSCP::Execute;
 use Servers::cron;
 use parent 'Common::SingletonClass';
 
@@ -89,7 +88,7 @@ sub _disableDebianConfig
         my $file = iMSCP::File->new( filename => '/etc/default/rkhunter' );
         my $fileContentRef = $file->getAsRef();
         unless ( defined $fileContentRef ) {
-            error( sprintf( "Couldn't read %s file", $file->{'filename'} ));
+            error( sprintf( "Couldn't read the %s file", $file->{'filename'} ));
             return 1;
         }
 
@@ -165,7 +164,8 @@ sub _scheduleCheck
 
     $rs = execute(
         "echo 'perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl > /dev/null 2>&1' | at now + 10 minutes",
-        \ my $stdout, \ my $stderr
+        \ my $stdout,
+        \ my $stderr
     );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;

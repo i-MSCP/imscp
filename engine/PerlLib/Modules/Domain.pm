@@ -43,23 +43,23 @@ my $DEFAULT_MYSQL_CONFFILE;
 
 =head1 DESCRIPTION
 
- i-MSCP Domain module.
+ Module for processing of SSL domain entities
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item getType( )
+=item getEntityType( )
 
- Get module type
+ Get entity type
 
- Return string Module type
+ Return string entity type
 
 =cut
 
-sub getType
+sub getEntityType
 {
-    'Dmn';
+    'Domain';
 }
 
 =item process( $domainId )

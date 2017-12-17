@@ -25,14 +25,13 @@ package Servers::sqld::mysql;
 
 use strict;
 use warnings;
+use autouse 'iMSCP::Rights' => qw/ setRights /;
 use Class::Autouse qw/ :nostat Servers::sqld::mysql::installer Servers::sqld::mysql::uninstaller /;
 use iMSCP::Config;
 use iMSCP::Database;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::EventManager;
-use iMSCP::Execute;
 use iMSCP::File;
-use iMSCP::Rights;
 use iMSCP::Service;
 use version;
 use parent 'Common::SingletonClass';
@@ -73,9 +72,9 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'mysql' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeMysqlPreinstall' );
     $rs ||= Servers::sqld::mysql::installer->getInstance()->preinstall();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPreinstall', 'mysql' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterMysqlPreinstall' );
 }
 
 =item postinstall( )
@@ -90,7 +89,7 @@ sub postinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'mysql' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeMysqlPostInstall' );
     return $rs if $rs;
 
     eval { iMSCP::Service->getInstance()->enable( 'mysql' ); };
@@ -107,7 +106,7 @@ sub postinstall
         },
         7
     );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'mysql' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterMysqlPostInstall' );
 }
 
 =item uninstall( )
@@ -122,9 +121,9 @@ sub uninstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'mysql' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeMysqlUninstall' );
     $rs ||= Servers::sqld::mysql::uninstaller->getInstance()->uninstall();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldUninstall', 'mysql' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterMysqlUninstall' );
     $rs ||= $self->restart() unless $rs;
     $rs;
 }
@@ -141,8 +140,7 @@ sub setEnginePermissions
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldSetEnginePermissions' );
-    $rs ||= setRights( "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf",
+    my $rs = setRights( "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf",
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ROOT_GROUP'},
@@ -156,7 +154,6 @@ sub setEnginePermissions
             mode  => '0640'
         }
     );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldSetEnginePermissions' );
 }
 
 =item restart( )
@@ -171,7 +168,7 @@ sub restart
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldRestart' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeMysqlRestart' );
     return $rs if $rs;
 
     eval { iMSCP::Service->getInstance()->restart( 'mysql' ); };
@@ -180,7 +177,7 @@ sub restart
         return 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterSqldRestart' );
+    $self->{'eventManager'}->trigger( 'afterMysqlRestart' );
 }
 
 =item createUser( $user, $host, $password )

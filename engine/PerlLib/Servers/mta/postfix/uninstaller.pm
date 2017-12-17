@@ -145,8 +145,14 @@ sub _removeFiles
 {
     my ($self) = @_;
 
-    for ( $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'} ) {
-        iMSCP::Dir->new( dirname => $_ )->remove();
+    eval {
+        for ( $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'} ) {
+            iMSCP::Dir->new( dirname => $_ )->remove();
+        }
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
     }
 
     return 0 unless -f $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'};

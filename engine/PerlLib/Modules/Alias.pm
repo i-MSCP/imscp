@@ -32,28 +32,28 @@ use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
 
- i-MSCP domain alias module.
+ Module for processing of domain alias entities
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item getType( )
+=item getEntityType( )
 
- Get module type
+ Get entity type
 
- Return string Module type
+ Return string entity type
 
 =cut
 
-sub getType
+sub getEntityType
 {
-    'Dmn';
+    'Domain';
 }
 
 =item process( $aliasId )
 
- Process module
+ Process the given domain alias entity
 
  Param int $aliasId Domain alias unique identifier
  Return int 0 on success, other on failure

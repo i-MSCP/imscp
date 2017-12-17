@@ -24,7 +24,7 @@
 
 package Listener::PhpFpm::Settings::Override;
 
-our $VERSION = '1.1.0';
+our $VERSION = '1.1.1';
 
 use strict;
 use warnings;
@@ -42,8 +42,8 @@ use version;
 # Note that domain names must be in ASCII format.
 my %SETTINGS = (
     # Global PHP-FPM settings - Any setting added here will apply to all domains (globally).
-    '*'                    => {
-        'pm'                      => 'ondemand',
+    '*'               => {
+        pm                        => 'ondemand',
         'pm.max_children'         => 6,
         'pm.start_servers '       => 1,
         'pm.min_spare_servers'    => 1,
@@ -54,7 +54,7 @@ my %SETTINGS = (
 
     # Per domain PHP-FPM settings - Any setting added here will apply to the `test.domain.tld' domains only
     'test.domain.tld' => {
-        'pm'                   => 'dynamic',
+        pm                     => 'dynamic',
         'pm.max_children'      => 10,
         'pm.start_servers '    => 2,
         'pm.min_spare_servers' => 1,
@@ -73,22 +73,22 @@ version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' )
 iMSCP::EventManager->getInstance()->register(
     'beforePhpBuildConfFile',
     sub {
-        my ($tplContent, $tplName, $moduleData) = @_;
+        my ($tplContent, $tplName, undef, $moduleData) = @_;
 
         return 0 unless $tplName eq 'pool.conf' && defined $moduleData->{'DOMAIN_NAME'};
 
         # Apply global PHP-FPM settings
-        if (exists $SETTINGS{'*'}) {
-            while(my ($setting, $value) = each( %{$SETTINGS{'*'}} )) {
-                $$tplContent =~ s/^\Q$setting\E\s+=.*?\n/$setting = $value\n/gm;
+        if ( exists $SETTINGS{'*'} ) {
+            while ( my ($setting, $value) = each( %{$SETTINGS{'*'}} ) ) {
+                ${$tplContent} =~ s/^\Q$setting\E\s+=.*?\n/$setting = $value\n/gm;
             }
         }
 
         return 0 unless exists $SETTINGS{$moduleData->{'DOMAIN_NAME'}};
 
         # Apply per domain PHP-FPM settings
-        while(my ($setting, $value) = each( %{$SETTINGS{$moduleData->{'DOMAIN_NAME'}}} )) {
-            $$tplContent =~ s/^\Q$setting\E\s+=.*?\n/$setting = $value\n/gm;
+        while ( my ($setting, $value) = each( %{$SETTINGS{$moduleData->{'DOMAIN_NAME'}}} ) ) {
+            ${$tplContent} =~ s/^\Q$setting\E\s+=.*?\n/$setting = $value\n/gm;
         }
 
         0;

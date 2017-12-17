@@ -21,13 +21,14 @@
 
 package Listener::Postfix::Smarthost;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
 use iMSCP::EventManager;
 use iMSCP::File;
 use Servers::mta;
+use version;
 
 #
 ## Configuration variables
@@ -43,6 +44,10 @@ my $saslPasswdMapsPath = '/etc/postfix/relay_passwd';
 ## Please, don't edit anything below this line unless you known what you're doing
 #
 
+version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+    sprintf( "The 10_postfix_smarthost.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
+);
+
 iMSCP::EventManager->getInstance()->register(
     'beforeInstallPackages',
     sub {
@@ -52,7 +57,7 @@ iMSCP::EventManager->getInstance()->register(
 );
 
 iMSCP::EventManager->getInstance()->register(
-    'afterMtaBuildConf',
+    'afterPostfixBuildConf',
     sub {
         my $mta = Servers::mta->factory();
         my $rs = $mta->addMapEntry( $saslPasswdMapsPath, "$relayhost:$relayport\t$saslAuthUser:$saslAuthPasswd" );

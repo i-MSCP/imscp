@@ -58,7 +58,7 @@ sub uninstall
         return iMSCP::EventManager->getInstance()->register(
             'afterSqldPreinstall',
             sub {
-                my $rs ||= $self->_dropSqlUser();
+                my $rs = $self->_dropSqlUser();
                 $rs ||= $self->_removeConfig();
             }
         );
@@ -107,8 +107,7 @@ sub _dropSqlUser
     my ($self) = @_;
 
     # In setup context, take value from old conffile, else take value from current conffile
-    my $dbUserHost = ( $main::execmode eq 'setup' )
-        ? $main::imscpOldConfig{'DATABASE_USER_HOST'} : $main::imscpConfig{'DATABASE_USER_HOST'};
+    my $dbUserHost = ( $main::execmode eq 'setup' ) ? $main::imscpOldConfig{'DATABASE_USER_HOST'} : $main::imscpConfig{'DATABASE_USER_HOST'};
 
     return 0 unless $self->{'config'}->{'DATABASE_USER'} && $dbUserHost;
 
@@ -153,9 +152,7 @@ sub _removeConfig
 
     return 0 unless -d $dirname && -f "$self->{'bkpDir'}/$filename.system";
 
-    iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
-        $self->{'config'}->{'FTPD_CONF_FILE'}, { preserve => 'no' }
-    );
+    iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile( $self->{'config'}->{'FTPD_CONF_FILE'}, { preserve => 'no' } );
 }
 
 =back

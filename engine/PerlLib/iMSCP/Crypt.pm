@@ -199,8 +199,7 @@ sub bcrypt($;$$)
     }
 
     # FIXME Add support for new $2y$ prefix by re-implementing bcrypt
-    Crypt::Eksblowfish::Bcrypt::bcrypt( $password,
-        '$2a$' . $cost . '$' . Crypt::Eksblowfish::Bcrypt::en_base64( $salt ));
+    Crypt::Eksblowfish::Bcrypt::bcrypt( $password, '$2a$' . $cost . '$' . Crypt::Eksblowfish::Bcrypt::en_base64( $salt ));
 }
 
 =item apr1MD5( $password [, $salt = randomStr(8, ALPHA64) ] )

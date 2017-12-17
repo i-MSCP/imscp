@@ -26,6 +26,7 @@ package Servers::po::courier;
 use strict;
 use warnings;
 use Array::Utils qw/ unique /;
+use autouse 'iMSCP::Rights' => qw/ setRights /;
 use Class::Autouse qw/ :nostat Servers::po::courier::installer Servers::po::courier::uninstaller /;
 use Fcntl 'O_RDONLY';
 use File::Temp;
@@ -36,7 +37,6 @@ use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::Rights;
 use iMSCP::Service;
 use Servers::mta;
 use Sort::Naturally;
@@ -79,9 +79,9 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoPreinstall', 'courier' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeCourierPoPreinstall' );
     $rs ||= $self->stop();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPoPreinstall', 'courier' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterCourierPreinstall' );
 }
 
 =item install( )
@@ -96,9 +96,9 @@ sub install
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoInstall', 'courier' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeCourierInstall' );
     $rs ||= Servers::po::courier::installer->getInstance()->install();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPoInstall', 'courier' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterCourierInstall' );
 }
 
 =item postinstall( )
@@ -113,7 +113,7 @@ sub postinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoPostinstall', 'courier' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeCourierPostinstall' );
     return $rs if $rs;
 
     eval {
@@ -147,7 +147,7 @@ sub postinstall
         },
         5
     );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPoPostinstall', 'courier' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterCourierPostinstall' );
 }
 
 =item uninstall( )
@@ -162,9 +162,9 @@ sub uninstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoUninstall', 'courier' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeCourierUninstall' );
     $rs ||= Servers::po::courier::uninstaller->getInstance()->uninstall();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPoUninstall', 'courier' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterCourierUninstall' );
 
     unless ( $rs || !iMSCP::Service->getInstance()->hasService( $self->{'config'}->{'AUTHDAEMON_SNAME'} ) ) {
         $self->{'restart'} = 1;
@@ -187,11 +187,8 @@ sub setEnginePermissions
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoSetEnginePermissions' );
-    return $rs if $rs;
-
     if ( -d $self->{'config'}->{'AUTHLIB_SOCKET_DIR'} ) {
-        $rs ||= setRights( $self->{'config'}->{'AUTHLIB_SOCKET_DIR'},
+        my $rs ||= setRights( $self->{'config'}->{'AUTHLIB_SOCKET_DIR'},
             {
                 user  => $self->{'config'}->{'AUTHDAEMON_USER'},
                 group => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
@@ -201,7 +198,7 @@ sub setEnginePermissions
         return $rs if $rs;
     }
 
-    $rs = setRights( "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/authmysqlrc",
+    my $rs = setRights( "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/authmysqlrc",
         {
             user  => $self->{'config'}->{'AUTHDAEMON_USER'},
             group => $self->{'config'}->{'AUTHDAEMON_GROUP'},
@@ -228,7 +225,7 @@ sub setEnginePermissions
         return $rs if $rs;
     }
 
-    $self->{'eventManager'}->trigger( 'afterPoSetEnginePermissions' );
+    0;
 }
 
 =item addMail( \%data )
@@ -250,22 +247,28 @@ sub addMail
     my $mailUidName = $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'};
     my $mailGidName = $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
-    for my $mailbox( '.Drafts', '.Junk', '.Sent', '.Trash' ) {
-        iMSCP::Dir->new( dirname => "$mailDir/$mailbox" )->make( {
-            user           => $mailUidName,
-            group          => $mailGidName,
-            mode           => 0750,
-            fixpermissions => iMSCP::Getopt->fixPermissions
-        } );
-
-        for ( 'cur', 'new', 'tmp' ) {
-            iMSCP::Dir->new( dirname => "$mailDir/$mailbox/$_" )->make( {
+    eval {
+        for my $mailbox( '.Drafts', '.Junk', '.Sent', '.Trash' ) {
+            iMSCP::Dir->new( dirname => "$mailDir/$mailbox" )->make( {
                 user           => $mailUidName,
                 group          => $mailGidName,
                 mode           => 0750,
                 fixpermissions => iMSCP::Getopt->fixPermissions
             } );
+
+            for ( 'cur', 'new', 'tmp' ) {
+                iMSCP::Dir->new( dirname => "$mailDir/$mailbox/$_" )->make( {
+                    user           => $mailUidName,
+                    group          => $mailGidName,
+                    mode           => 0750,
+                    fixpermissions => iMSCP::Getopt->fixPermissions
+                } );
+            }
         }
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
     }
 
     my @subscribedFolders = ( 'INBOX.Drafts', 'INBOX.Junk', 'INBOX.Sent', 'INBOX.Trash' );
@@ -328,7 +331,7 @@ sub start
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoStart' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeCourierStart' );
     return $rs if $rs;
 
     eval {
@@ -349,7 +352,7 @@ sub start
         return 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterPoStart' );
+    $self->{'eventManager'}->trigger( 'afterCourierStart' );
 }
 
 =item stop( )
@@ -364,7 +367,7 @@ sub stop
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoStop' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeCourierStop' );
     return $rs if $rs;
 
     eval {
@@ -378,7 +381,7 @@ sub stop
         return 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterPoStop' );
+    $self->{'eventManager'}->trigger( 'afterCourierStop' );
 }
 
 =item restart( )
@@ -393,7 +396,7 @@ sub restart
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoRestart' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeCourierRestart' );
     return $rs if $rs;
 
     eval {
@@ -410,7 +413,7 @@ sub restart
         return 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterPoRestart' );
+    $self->{'eventManager'}->trigger( 'afterCourierRestart' );
 }
 
 =item getTraffic( $trafficDb [, $logFile, $trafficIndexDb ] )
@@ -427,7 +430,6 @@ sub restart
 sub getTraffic
 {
     my ($self, $trafficDb, $logFile, $trafficIndexDb) = @_;
-
     $logFile ||= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
 
     unless ( -f $logFile ) {

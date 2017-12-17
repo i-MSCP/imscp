@@ -27,8 +27,8 @@ use strict;
 use warnings;
 use iMSCP::Service;
 
-# ftpd server instance
-my $INSTANCE;
+# ftpd server package name
+my $PACKAGE;
 
 =head1 DESCRIPTION
 
@@ -50,23 +50,23 @@ my $INSTANCE;
 
 sub factory
 {
-    return $INSTANCE if $INSTANCE;
+    return $PACKAGE->getInstance() if $PACKAGE;
 
-    my $package = $main::imscpConfig{'FTPD_PACKAGE'} || 'Servers::noserver';
+    $PACKAGE = $main::imscpConfig{'FTPD_PACKAGE'} || 'Servers::noserver';
 
     if ( %main::imscpOldConfig
         && exists $main::imscpOldConfig{'FTPD_PACKAGE'}
         && $main::imscpOldConfig{'FTPD_PACKAGE'} ne ''
-        && $main::imscpOldConfig{'FTPD_PACKAGE'} ne $package
+        && $main::imscpOldConfig{'FTPD_PACKAGE'} ne $PACKAGE
     ) {
-        eval "require $main::imscpOldConfig{'FTPD_PACKAGE'}" or die( $@ );
+        eval "require $main::imscpOldConfig{'FTPD_PACKAGE'}; 1" or die( $@ );
         $main::imscpOldConfig{'FTPD_PACKAGE'}->getInstance()->uninstall() == 0 or die(
             sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'FTPD_PACKAGE'} )
         );
     }
 
-    eval "require $package" or die( $@ );
-    $INSTANCE = $package->getInstance();
+    eval "require $PACKAGE; 1" or die( $@ );
+    $PACKAGE->getInstance();
 }
 
 =item can( $method )
@@ -82,8 +82,10 @@ sub can
 {
     my (undef, $method) = @_;
 
+    return $PACKAGE->can( $method ) if $PACKAGE;
+
     my $package = $main::imscpConfig{'FTPD_PACKAGE'} || 'Servers::noserver';
-    eval "require $package" or die( $@ );
+    eval "require $package; 1" or die( $@ );
     $package->can( $method );
 }
 
@@ -114,21 +116,18 @@ sub getPriority
 
 END
     {
-        return if $? || !$INSTANCE || ( defined $main::execmode && $main::execmode eq 'setup' );
+        return if $? || !$PACKAGE || ( defined $main::execmode && $main::execmode eq 'setup' );
 
-        if ( $INSTANCE->{'restart'} ) {
-            iMSCP::Service->getInstance()->registerDelayedAction(
-                $INSTANCE->{'config'}->{'FTPD_SNAME'}, [ 'restart', sub { $INSTANCE->restart(); } ], __PACKAGE__->getPriority()
-            );
-        } elsif ( $INSTANCE->{'reload'} ) {
-            iMSCP::Service->getInstance()->registerDelayedAction(
-                $INSTANCE->{'config'}->{'FTPD_SNAME'}, [ 'reload', sub { $INSTANCE->reload(); } ], __PACKAGE__->getPriority()
-            );
-        } elsif ( $INSTANCE->{'start'} ) {
-            iMSCP::Service->getInstance()->registerDelayedAction(
-                $INSTANCE->{'config'}->{'FTPD_SNAME'}, [ 'start', sub { $INSTANCE->start(); } ], __PACKAGE__->getPriority()
-            );
-        }
+        my $instance = $PACKAGE->hasInstance();
+
+        return 0 unless $instance
+            && ( my $action = $instance->{'restart'}
+            ? 'restart' : ( $instance->{'reload'} ? 'reload' : ( $instance->{'start'} ? ' start' : undef ) )
+        );
+
+        iMSCP::Service->getInstance()->registerDelayedAction(
+            $instance->{'config'}->{'FTPD_SNAME'}, [ $action, sub { $instance->$action(); } ], __PACKAGE__->getPrirority()
+        );
     }
 
 =back

@@ -26,10 +26,9 @@ package Package::Webstats::Awstats::Installer;
 use strict;
 use warnings;
 use iMSCP::Database;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ error /;
 use iMSCP::Dir;
 use iMSCP::File;
-use iMSCP::TemplateParser;
 use Servers::cron;
 use Servers::httpd;
 use version;
@@ -111,11 +110,18 @@ sub _createCacheDir
 {
     my ($self) = @_;
 
-    iMSCP::Dir->new( dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'} )->make( {
-        user  => $main::imscpConfig{'ROOT_USER'},
-        group => $self->{'httpd'}->getRunningGroup(),
-        mode  => 02750
-    } );
+    eval {
+        iMSCP::Dir->new( dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'} )->make( {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $self->{'httpd'}->getRunningGroup(),
+            mode  => 02750
+        } );
+    };
+    if($@) {
+        error($@);
+        return 1;
+    }
+
     0;
 }
 
@@ -170,21 +176,17 @@ sub _setupApache2
 
 sub _disableDefaultConfig
 {
-    my $rs = 0;
-
     if ( -f "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf" ) {
-        $rs = iMSCP::File->new( filename => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf" )->moveFile(
+        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf" )->moveFile(
             "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf.disabled"
         );
         return $rs if $rs;
     }
 
     my $cronDir = Servers::cron->factory()->{'config'}->{'CRON_D_DIR'};
-    if ( -f "$cronDir/awstats" ) {
-        $rs = iMSCP::File->new( filename => "$cronDir/awstats" )->moveFile( "$cronDir/awstats.disable" );
-    }
+    return 0 unless -f "$cronDir/awstats";
 
-    $rs;
+    iMSCP::File->new( filename => "$cronDir/awstats" )->moveFile( "$cronDir/awstats.disable" );
 }
 
 =item _addAwstatsCronTask( )

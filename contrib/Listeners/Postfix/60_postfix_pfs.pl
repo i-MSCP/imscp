@@ -29,14 +29,23 @@
 
 package Listener::Postfix::PFS;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
 use iMSCP::EventManager;
+use version;
+
+#
+## Please, don't edit anything below this line
+#
+
+version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+    sprintf( "The 60_postfix_pfs.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
+);
 
 iMSCP::EventManager->getInstance()->register(
-    'afterMtaBuildConf',
+    'afterPostfixBuildConf',
     sub {
         return 0 unless -f '/etc/postfix/dh2048.pem' && -f '/etc/postfix/dh512.pem';
 

@@ -26,6 +26,7 @@ package Servers::po::dovecot;
 use strict;
 use warnings;
 use Array::Utils qw/ unique /;
+use autouse 'iMSCP::Rights' => qw/ setRights /;
 use Class::Autouse qw/ :nostat Servers::po::dovecot::installer Servers::po::dovecot::uninstaller /;
 use File::Temp;
 use Fcntl 'O_RDONLY';
@@ -36,7 +37,6 @@ use iMSCP::EventManager;
 use iMSCP::Execute;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::Rights;
 use iMSCP::Service;
 use Servers::mta;
 use Sort::Naturally;
@@ -79,7 +79,7 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoPreinstall', 'dovecot' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeDovecotPreinstall' );
     $rs ||= $self->stop();
     return $rs if $rs;
 
@@ -103,7 +103,7 @@ sub preinstall
         return 1;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPoPreinstall', 'dovecot' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterDovecotPreinstall' );
 }
 
 =item install( )
@@ -118,9 +118,9 @@ sub install
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoInstall', 'dovecot' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeDovecotInstall' );
     $rs ||= Servers::po::dovecot::installer->getInstance()->install();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPoInstall', 'dovecot' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterDovecotInstall' );
 }
 
 =item postinstall( )
@@ -135,7 +135,7 @@ sub postinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoPostinstall', 'dovecot' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeDovecotPostinstall' );
     return $rs if $rs;
 
     eval { iMSCP::Service->getInstance()->enable( $self->{'config'}->{'DOVECOT_SNAME'} ); };
@@ -152,7 +152,7 @@ sub postinstall
         },
         5
     );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPoPostinstall', 'dovecot' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterDovecotPostinstall' );
 }
 
 =item uninstall( )
@@ -167,9 +167,9 @@ sub uninstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoUninstall', 'dovecot' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeDovecotUninstall' );
     $rs ||= Servers::po::dovecot::uninstaller->getInstance()->uninstall();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPoUninstall', 'dovecot' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterDovecotUninstall' );
 
     unless ( $rs || !iMSCP::Service->getInstance()->hasService( $self->{'config'}->{'DOVECOT_SNAME'} ) ) {
         $self->{'restart'} = 1;
@@ -199,22 +199,28 @@ sub addMail
     my $mailUidName = $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'};
     my $mailGidName = $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'};
 
-    for my $mailbox( '.Drafts', '.Junk', '.Sent', '.Trash' ) {
-        iMSCP::Dir->new( dirname => "$mailDir/$mailbox" )->make( {
-            user           => $mailUidName,
-            group          => $mailGidName,
-            mode           => 0750,
-            fixpermissions => iMSCP::Getopt->fixPermissions
-        } );
-
-        for ( 'cur', 'new', 'tmp' ) {
-            iMSCP::Dir->new( dirname => "$mailDir/$mailbox/$_" )->make( {
+    eval {
+        for my $mailbox( '.Drafts', '.Junk', '.Sent', '.Trash' ) {
+            iMSCP::Dir->new( dirname => "$mailDir/$mailbox" )->make( {
                 user           => $mailUidName,
                 group          => $mailGidName,
                 mode           => 0750,
                 fixpermissions => iMSCP::Getopt->fixPermissions
             } );
+
+            for ( 'cur', 'new', 'tmp' ) {
+                iMSCP::Dir->new( dirname => "$mailDir/$mailbox/$_" )->make( {
+                    user           => $mailUidName,
+                    group          => $mailGidName,
+                    mode           => 0750,
+                    fixpermissions => iMSCP::Getopt->fixPermissions
+                } );
+            }
         }
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
     }
 
     my @subscribedFolders = ( 'Drafts', 'Junk', 'Sent', 'Trash' );
@@ -273,8 +279,7 @@ sub setEnginePermissions
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoSetEnginePermissions' );
-    $rs ||= setRights( $self->{'config'}->{'DOVECOT_CONF_DIR'},
+    my $rs = setRights( $self->{'config'}->{'DOVECOT_CONF_DIR'},
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ROOT_GROUP'},
@@ -302,7 +307,6 @@ sub setEnginePermissions
             mode  => '0750'
         }
     );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPoSetEnginePermissions' );
 }
 
 =item start( )
@@ -317,7 +321,7 @@ sub start
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoStart' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeDovecotStart' );
     return $rs if $rs;
 
     eval { iMSCP::Service->getInstance()->start( $self->{'config'}->{'DOVECOT_SNAME'} ); };
@@ -326,7 +330,7 @@ sub start
         return 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterPoStart' );
+    $self->{'eventManager'}->trigger( 'afterDovecotStart' );
 }
 
 =item stop( )
@@ -341,7 +345,7 @@ sub stop
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoStop' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeDovecotStop' );
     return $rs if $rs;
 
     eval { iMSCP::Service->getInstance()->stop( $self->{'config'}->{'DOVECOT_SNAME'} ); };
@@ -350,7 +354,7 @@ sub stop
         return 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterPoStop' );
+    $self->{'eventManager'}->trigger( 'afterDovecotStop' );
 }
 
 =item restart( )
@@ -365,7 +369,7 @@ sub restart
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoRestart' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeDovecotRestart' );
     return $rs if $rs;
 
     eval { iMSCP::Service->getInstance()->restart( $self->{'config'}->{'DOVECOT_SNAME'} ); };
@@ -374,7 +378,7 @@ sub restart
         return 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterPoRestart' );
+    $self->{'eventManager'}->trigger( 'afterDovecotRestart' );
 }
 
 =item getTraffic( $trafficDb [, $logFile, $trafficIndexDb ] )
@@ -391,7 +395,6 @@ sub restart
 sub getTraffic
 {
     my ($self, $trafficDb, $logFile, $trafficIndexDb) = @_;
-
     $logFile ||= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
 
     unless ( -f $logFile ) {

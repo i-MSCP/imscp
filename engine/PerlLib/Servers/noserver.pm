@@ -27,9 +27,6 @@ use strict;
 use warnings;
 use parent 'Common::SingletonClass';
 
-# noserver server instance
-my $instance;
-
 =head1 DESCRIPTION
 
  i-MSCP noserver server implementation.
@@ -48,11 +45,7 @@ my $instance;
 
 sub factory
 {
-    return $instance if $instance;
-
-    $instance = __PACKAGE__->getInstance();
-    @{$instance}{qw/ start restart reload /} = ( 0, 0, 0 );
-    $instance;
+    __PACKAGE__->getInstance();
 }
 
 =item can( $method )
@@ -93,6 +86,28 @@ sub getPriority
 sub AUTOLOAD
 {
     0;
+}
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init( )
+
+ Initialize instance
+
+ Return Servers::php
+
+=cut
+
+sub _init
+{
+    my ($self) = @_;
+
+    @{$self}{qw/ start restart reload /} = ( 0, 0, 0 );
+    $self;
 }
 
 =back

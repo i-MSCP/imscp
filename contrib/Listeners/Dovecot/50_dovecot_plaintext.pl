@@ -31,12 +31,17 @@ use iMSCP::File;
 use Servers::po;
 use version;
 
+#
+## Please, don't edit anything below this line
+#
+
+version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+    sprintf( "The 50_dovecot_plaintext.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
+);
+
 iMSCP::EventManager->getInstance()->registerOne(
-    'afterPoBuildConf',
+    'afterDovecotBuildConf',
     sub {
-        version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
-            sprintf( "The 50_dovecot_plaintext.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
-        );
 
         my $dovecotConfdir = Servers::po->factory()->{'config'}->{'DOVECOT_CONF_DIR'};
         my $file = iMSCP::File->new( filename => "$dovecotConfdir/imscp.d/50_dovecot_plaintext_listener.conf" );

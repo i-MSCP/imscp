@@ -30,21 +30,21 @@ use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
 
- i-MSCP Htgroup module.
+ Module for processing of htgroup entities
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item getType( )
+=item getEntityType( )
 
- Get module type
+ Get entity type
 
- Return string Module type
+ Return string entity type
 
 =cut
 
-sub getType
+sub getEntityType
 {
     'Htgroup';
 }

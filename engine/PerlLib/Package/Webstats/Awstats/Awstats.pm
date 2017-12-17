@@ -167,34 +167,34 @@ sub addUser
     0;
 }
 
-=item preaddDmn( )
+=item preaddDomain( )
 
- Process preaddDmn tasks
+ Process preaddDomain tasks
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub preaddDmn
+sub preaddDomain
 {
     my ($self) = @_;
 
     return 0 if $self->{'_is_registered_event_listener'};
 
     $self->{'_is_registered_event_listener'} = 1;
-    $self->{'eventManager'}->register( 'beforeApache2BuildConfFile', \&_addAwstatsSection );
+    $self->{'eventManager'}->register( 'beforeApache2BuildConfFile', $self );
 }
 
-=item addDmn( \%moduleData )
+=item addDomain( \%moduleData )
 
- Process addDmn tasks
+ Process addDomain tasks
 
  Param hashref \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
  Return int 0 on success, other on failure
 
 =cut
 
-sub addDmn
+sub addDomain
 {
     my ($self, $moduleData) = @_;
 
@@ -216,16 +216,16 @@ sub addDmn
     0;
 }
 
-=item deleteDmn( \%moduleData )
+=item deleteDomain( \%moduleData )
 
- Process deleteDmn tasks
+ Process deleteDomain tasks
 
  Param hashref \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteDmn
+sub deleteDomain
 {
     my (undef, $moduleData) = @_;
 
@@ -236,10 +236,16 @@ sub deleteDmn
 
     return 0 unless -d $main::imscpConfig{'AWSTATS_CACHE_DIR'};
 
-    my @awstatsCacheFiles = iMSCP::Dir->new(
-        dirname  => $main::imscpConfig{'AWSTATS_CACHE_DIR'},
-        fileType => '^(?:awstats[0-9]+|dnscachelastupdate)' . quotemeta( ".$moduleData->{'DOMAIN_NAME'}.txt" )
-    )->getFiles();
+    my @awstatsCacheFiles = eval {
+        iMSCP::Dir->new(
+            dirname  => $main::imscpConfig{'AWSTATS_CACHE_DIR'},
+            fileType => '^(?:awstats[0-9]+|dnscachelastupdate)' . quotemeta( ".$moduleData->{'DOMAIN_NAME'}.txt" )
+        )->getFiles();
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
 
     return 0 unless @awstatsCacheFiles;
 
@@ -251,36 +257,36 @@ sub deleteDmn
     0;
 }
 
-=item addSub( \%moduleData )
+=item addSubdomain( \%moduleData )
 
- Process addSub tasks
+ Process addSubdomain tasks
 
  Param hashref \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
  Return int 0 on success, other on failure
 
 =cut
 
-sub addSub
+sub addSubdomain
 {
     my ($self, $moduleData) = @_;
 
-    $self->addDmn( $moduleData );
+    $self->addDomain( $moduleData );
 }
 
-=item deleteSub( \%moduleData )
+=item deleteSubdomain( \%moduleData )
 
- Process deleteSub tasks
+ Process deleteSubdomain tasks
 
  Param hashref \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteSub
+sub deleteSubdomain
 {
     my ($self, $moduleData) = @_;
 
-    $self->deleteDmn( $moduleData );
+    $self->deleteDomain( $moduleData );
 }
 
 =back
@@ -335,7 +341,7 @@ sub _addAwstatsConfig
     my $file = iMSCP::File->new( filename => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Config/awstats.imscp_tpl.conf" );
     my $fileContentRef = $file->getAsRef();
     unless ( defined $fileContentRef ) {
-        error( sprintf( "Couldn't read %s file", $file->{'filename'} ));
+        error( sprintf( "Couldn't read the %s file", $file->{'filename'} ));
         return 1;
     }
 
@@ -367,22 +373,31 @@ sub _addAwstatsConfig
 
 =over 4
 
-=item _addAwstatsSection( \$cfgTpl, $filename, \%moduleData )
+=item afterApache2BuildConfFile( $awstats, \$cfgTpl, $filename, \$trgFile, \%moduleData, \%apache2ServerData, \%apache2ServerConfig, \%parameters )
 
  Event listener that inject AWstats configuration in Apache2 vhosts
 
- Param string \$cfgTpl Reference to template file content
- Param string $filename Template filename
- Param hashref \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
- Return int 0 on success, 1 on failure
+ Param scalar $awstats Package::Webstats::Awstats::Awstats instance
+ Param scalar \$scalar Reference to Apache2 conffile
+ Param string $filename Apache2 template name
+ Param scalar \$trgFile Target file path
+ Param hashref \%moduleData Data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hashref \%apache2ServerData Apache2 server data
+ Param hashref \%apache2ServerConfig Apache2 server data
+ Param hashref \%parameters OPTIONAL Parameters:
+  - user  : File owner (default: root)
+  - group : File group (default: root
+  - mode  : File mode (default: 0644)
+  - cached : Whether or not loaded file must be cached in memory
+ Return int 0 on success, other on failure
 
 =cut
 
-sub _addAwstatsSection
+sub beforeApache2BuildConfFile
 {
-    my ($cfgTpl, $tplName, $moduleData) = @_;
+    my (undef, $cfgTpl, $filename, undef, $moduleData) = @_;
 
-    return 0 if $tplName ne 'domain.tpl' || $moduleData->{'FORWARD'} ne 'no';
+    return 0 if $filename ne 'domain.tpl' || $moduleData->{'FORWARD'} ne 'no';
 
     debug( sprintf( 'Injecting AWStats configuration in Apache2 vhost for the %s domain', $moduleData->{'DOMAIN_NAME'} ));
 

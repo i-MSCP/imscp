@@ -50,9 +50,9 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'mariadb' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeMariaDbPreinstall' );
     $rs ||= Servers::sqld::mariadb::installer->getInstance()->preinstall();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPreinstall', 'mariadb' )
+    $rs ||= $self->{'eventManager'}->trigger( 'afterMariaDbPreinstall' )
 }
 
 =item postinstall( )
@@ -67,7 +67,7 @@ sub postinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'mariadb' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeMariaDbPostInstall' );
     return $rs if $rs;
 
     eval { iMSCP::Service->getInstance()->enable( 'mysql' ); };
@@ -84,7 +84,7 @@ sub postinstall
         },
         7
     );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'mariadb' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterMariaDbPostInstall' );
 }
 
 =item uninstall( )
@@ -99,9 +99,9 @@ sub uninstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'mariadb' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeMariaDbUninstall' );
     $rs ||= Servers::sqld::mariadb::uninstaller->getInstance()->uninstall();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldUninstall', 'mariadb' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterMariaDbUninstall' );
 }
 
 =item createUser( $user, $host, $password )

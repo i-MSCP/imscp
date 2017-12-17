@@ -33,23 +33,23 @@ use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
 
- i-MSCP SubAlias module.
+ Module for processing of Subdomain alias entities
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item getType( )
+=item getEntityType( )
 
- Get module type
+ Get entity type
 
- Return string Module type
+ Return string entity type
 
 =cut
 
-sub getType
+sub getEntityType
 {
-    'Sub';
+    'Subdomain';
 }
 
 =item process( $subAliasId )

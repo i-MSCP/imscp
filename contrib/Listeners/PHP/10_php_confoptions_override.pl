@@ -41,7 +41,7 @@
 
 package Listener::Php::ConfOptions::Override;
 
-our $VERSION = '1.1.0';
+our $VERSION = '1.1.1';
 
 use strict;
 use warnings;
@@ -94,7 +94,7 @@ version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' )
 iMSCP::EventManager->getInstance()->register(
     'beforePhpBuildConfFile',
     sub {
-        my ($tplContent, $tplName, $moduleData) = @_;
+        my ($tplContent, $tplName, undef, $moduleData) = @_;
 
         return 0 unless defined $moduleData->{'DOMAIN_NAME'} && grep($tplName eq $_, 'php.ini.user', 'pool.conf');
 

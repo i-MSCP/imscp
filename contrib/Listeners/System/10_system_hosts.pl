@@ -21,7 +21,7 @@
 
 package Listener::System::Hosts;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
@@ -55,12 +55,12 @@ iMSCP::EventManager->getInstance()->register(
 
         my $file = iMSCP::File->new( filename => $hostsFilePath );
         my $fileContent = $file->get();
-        unless (defined $fileContent) {
-            error( sprintf( "Couldn't read %s file", $hostsFilePath ) );
+        unless ( defined $fileContent ) {
+            error( sprintf( "Couldn't read the %s file", $hostsFilePath ));
             return 1;
         }
 
-        $file->set( $fileContent.( join "\n", @hostsFileEntries )."\n" );
+        $file->set( $fileContent . ( join "\n", @hostsFileEntries ) . "\n" );
         $file->save();
     }
 );

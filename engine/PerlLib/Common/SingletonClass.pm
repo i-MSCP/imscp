@@ -26,9 +26,32 @@ package Common::SingletonClass;
 use strict;
 use warnings;
 
+my %_INSTANCES = ();
+
 =head1 DESCRIPTION
 
  Base class implementing Singleton Design Pattern.
+
+=head1 CLASS METHODS
+
+=over 4
+
+=item hasInstance( [ %attrs ] )
+
+ Return the current instance if it exists
+
+ Return Common::SingletonClass|undef
+
+=cut
+
+sub hasInstance
+{
+    my $class = shift;
+    
+    $_INSTANCES{ref $class || $class};
+}
+
+=back
 
 =head1 PUBLIC METHODS
 
@@ -47,11 +70,11 @@ sub getInstance
 {
     my ($class, @attrs) = @_;
 
+    # Already got an object
     return $class if ref $class;
 
-    no strict 'refs';
-    my $instance = \${"${class}::INSTANCE"};
-    ${$instance} ||= ( bless { @attrs && ref $attrs[0] eq 'HASH' ? %{$attrs[0]} : @attrs }, $class )->_init();
+    # We store the instance against the $class key of %_INSTANCES
+    $_INSTANCES{$class} ||= ( bless { @attrs && ref $attrs[0] eq 'HASH' ? %{$attrs[0]} : @attrs }, $class )->_init();
 }
 
 =back
@@ -73,6 +96,25 @@ sub _init
     my ($self) = @_;
 
     $self;
+}
+
+=back
+
+=head1 SHUTDOWN tasks
+
+=over 4
+
+=item END( )
+
+ Explicitly destroy all Common::SingletonClass objects
+
+ Return Common::SingletonClass
+
+=cut
+
+sub END
+{
+    undef(%_INSTANCES);
 }
 
 =back

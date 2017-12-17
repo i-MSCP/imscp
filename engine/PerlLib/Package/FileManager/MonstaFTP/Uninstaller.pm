@@ -25,7 +25,7 @@ package Package::FileManager::MonstaFTP::Uninstaller;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ error /;
 use iMSCP::Dir;
 use iMSCP::File;
 use Package::FrontEnd;
@@ -94,7 +94,7 @@ sub _unregisterConfig
     my $file = iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf" );
     my $fileContentRef = $file->getAsRef();
     unless ( defined $fileContentRef ) {
-        error( sprintf( "Couldn't read %s file", $file->{'filename'} ));
+        error( sprintf( "Couldn't read the %s file", $file->{'filename'} ));
         return 1;
     }
 
@@ -103,7 +103,8 @@ sub _unregisterConfig
     my $rs = $file->save();
     return $rs if $rs;
 
-    $self->{'frontend'}->{'reload'} = 1;
+    $self->{'frontend'}->{'reload'} ||= 1;
+
     0;
 }
 
@@ -119,7 +120,11 @@ sub _removeFiles
 {
     my ($self) = @_;
 
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
+    eval { iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove(); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
 
     return 0 unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_monstaftp.conf";
 

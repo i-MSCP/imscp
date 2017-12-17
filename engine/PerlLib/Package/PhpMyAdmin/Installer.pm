@@ -30,7 +30,7 @@ use iMSCP::Composer;
 use iMSCP::Crypt qw/ decryptRijndaelCBC randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug error /;
-use iMSCP::Dialog::InputValidation;
+use iMSCP::Dialog::InputValidation qw/ isAvailableSqlUser isStringNotInList isValidPassword isValidUsername /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute /;
@@ -274,6 +274,7 @@ sub _backupConfigFile
     my ($self, $cfgFile) = @_;
 
     return 0 unless -f $cfgFile && -d $self->{'bkpDir'};
+
     iMSCP::File->new( filename => $cfgFile )->copyFile( $self->{'bkpDir'} . '/' . fileparse( $cfgFile ) . '.' . time, { preserve => 'no' } );
 }
 
@@ -294,8 +295,14 @@ sub _installFiles
         return 1;
     }
 
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma" )->remove();
-    iMSCP::Dir->new( dirname => "$packageDir" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma", { preserve => 'no' } );
+    eval {
+        iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma" )->remove();
+        iMSCP::Dir->new( dirname => "$packageDir" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma", { preserve => 'no' } );
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
     0;
 }
 
@@ -393,7 +400,6 @@ sub _setupDatabase
     eval {
         my $dbh = iMSCP::Database->getInstance()->getRawDb();
         $dbh->{'RaiseError'} = 1;
-
         # Drop previous database
         # FIXME: Find a better way to handle upgrade
         $dbh->do( "DROP DATABASE IF EXISTS " . $dbh->quote_identifier( $phpmyadminDbName ));
@@ -532,7 +538,7 @@ sub _buildConfig
     unless ( defined $cfgTpl ) {
         $cfgTpl = iMSCP::File->new( filename => "$confDir/imscp.config.inc.php" )->get();
         unless ( defined $cfgTpl ) {
-            error( sprintf( "Couldn't read %s file", "$confDir/imscp.config.inc.php" ));
+            error( sprintf( "Couldn't read the %s file", "$confDir/imscp.config.inc.php" ));
             return 1;
         }
     }
@@ -559,15 +565,9 @@ sub _cleanup
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePhpMyAdminCleanup' );
-    return $rs if $rs;
+    return 0 unless -f "$self->{'cfgDir'}/phpmyadmin.old.data";
 
-    if ( -f "$self->{'cfgDir'}/phpmyadmin.old.data" ) {
-        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/phpmyadmin.old.data" )->delFile();
-        return $rs if $rs;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterPhpMyAdminCleanup' );
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/phpmyadmin.old.data" )->delFile();
 }
 
 =back

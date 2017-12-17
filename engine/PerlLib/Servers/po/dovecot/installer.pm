@@ -72,8 +72,8 @@ sub registerSetupListeners
             0;
         }
     );
-    $rs ||= $eventManager->register( 'beforeMtaBuildMainCfFile', sub { $self->configurePostfix( @_ ); } );
-    $rs ||= $eventManager->register( 'beforeMtaBuildMasterCfFile', sub { $self->configurePostfix( @_ ); } );
+    $rs ||= $eventManager->register( 'beforePostfixBuildMainCfFile', sub { $self->configurePostfix( @_ ); } );
+    $rs ||= $eventManager->register( 'beforePostfixBuildMasterCfFile', sub { $self->configurePostfix( @_ ); } );
 }
 
 =item showDialog( \%dialog )
@@ -200,8 +200,8 @@ sub install
  Injects configuration for both, Dovecot LDA and Dovecot SASL in Postfix configuration files.
 
  Listener that listen on the following events:
-  - beforeMtaBuildMainCfFile
-  - beforeMtaBuildMasterCfFile
+  - beforePostfixBuildMainCfFile
+  - beforePostfixBuildMasterCfFile
 
  Param string \$fileContent Configuration file content
  Param string $fileName Configuration file name
@@ -215,7 +215,7 @@ sub configurePostfix
 
     if ( $fileName eq 'main.cf' ) {
         return $self->{'eventManager'}->register(
-            'afterMtaBuildConf',
+            'afterPostfixBuildConf',
             sub {
                 $self->{'mta'}->postconf( (
                     # Dovecot LDA parameters
@@ -354,21 +354,18 @@ sub _bkpConfFile
 {
     my ($self, $cfgFile) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoBkpConfFile', $cfgFile );
-    return $rs if $rs;
+    return 0 unless -f "$self->{'config'}->{'DOVECOT_CONF_DIR'}/$cfgFile";
 
-    if ( -f "$self->{'config'}->{'DOVECOT_CONF_DIR'}/$cfgFile" ) {
-        my $file = iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/$cfgFile" );
-        unless ( -f "$self->{'bkpDir'}/$cfgFile.system" ) {
-            $rs = $file->copyFile( "$self->{'bkpDir'}/$cfgFile.system", { preserve => 'no' } );
-            return $rs if $rs;
-        } else {
-            $rs = $file->copyFile( "$self->{'bkpDir'}/$cfgFile." . time, { preserve => 'no' } );
-            return $rs if $rs;
-        }
+    my $file = iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/$cfgFile" );
+    unless ( -f "$self->{'bkpDir'}/$cfgFile.system" ) {
+        my $rs = $file->copyFile( "$self->{'bkpDir'}/$cfgFile.system", { preserve => 'no' } );
+        return $rs if $rs;
+    } else {
+        my $rs = $file->copyFile( "$self->{'bkpDir'}/$cfgFile." . time, { preserve => 'no' } );
+        return $rs if $rs;
     }
 
-    $self->{'eventManager'}->trigger( 'afterPoBkpConfFile', $cfgFile );
+    0;
 }
 
 =item _setupSqlUser( )
@@ -390,7 +387,7 @@ sub _setupSqlUser
     my $dbPass = main::setupGetQuestion( 'DOVECOT_SQL_PASSWORD' );
     my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeDovecotSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost );
     return $rs if $rs;
 
     eval {
@@ -428,7 +425,7 @@ sub _setupSqlUser
 
     $self->{'config'}->{'DATABASE_USER'} = $dbUser;
     $self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
-    $self->{'eventManager'}->trigger( 'afterPoSetupDb' );
+    $self->{'eventManager'}->trigger( 'afterDovecotSetupDb' );
 }
 
 =item _buildConf( )
@@ -482,7 +479,8 @@ sub _buildConf
 
     # Transitional code (should be removed in later version)
     if ( -f "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-dict-sql.conf" ) {
-        iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-dict-sql.conf" )->delFile();
+        my $rs = iMSCP::File->new( filename => "$self->{'config'}->{'DOVECOT_CONF_DIR'}/dovecot-dict-sql.conf" )->delFile();
+        return $rs if $rs;
     }
 
     my %cfgFiles = (
@@ -516,7 +514,7 @@ sub _buildConf
             unless ( defined $cfgTpl ) {
                 $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/$conffile" )->get();
                 unless ( defined $cfgTpl ) {
-                    error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/$conffile" ));
+                    error( sprintf( "Couldn't read the %s file", "$self->{'cfgDir'}/$conffile" ));
                     return 1;
                 }
             }
@@ -544,18 +542,17 @@ EOF
                 }
             }
 
-            $rs = $self->{'eventManager'}->trigger( 'beforePoBuildConf', \$cfgTpl, $conffile );
+            $rs = $self->{'eventManager'}->trigger( 'beforeDovecotBuildConf', \$cfgTpl, $conffile );
             return $rs if $rs;
 
             processByRef( $data, \$cfgTpl );
 
-            $rs = $self->{'eventManager'}->trigger( 'afterPoBuildConf', \$cfgTpl, $conffile );
+            $rs = $self->{'eventManager'}->trigger( 'afterDovecotBuildConf', \$cfgTpl, $conffile );
             return $rs if $rs;
 
             my $filename = fileparse( $cfgFiles{$conffile}->[0] );
             my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$filename" );
             $file->set( $cfgTpl );
-
             $rs = $file->save();
             $rs ||= $file->owner( $cfgFiles{$conffile}->[1], $cfgFiles{$conffile}->[2] );
             $rs ||= $file->mode( $cfgFiles{$conffile}->[3] );
@@ -581,10 +578,7 @@ sub _migrateFromCourier
 
     return 0 unless $main::imscpOldConfig{'PO_SERVER'} eq 'courier';
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoMigrateFromCourier' );
-    return $rs if $rs;
-
-    $rs = execute(
+    my $rs = execute(
         [
             'perl', "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl", '--to-dovecot',
             '--quiet', '--convert', '--overwrite', '--recursive', $self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}
@@ -602,7 +596,7 @@ sub _migrateFromCourier
         $main::imscpOldConfig{'PO_PACKAGE'} = 'Servers::po::dovecot';
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPoMigrateFromCourier' );
+    $rs;
 }
 
 =item _oldEngineCompatibility( )
@@ -617,15 +611,9 @@ sub _oldEngineCompatibility
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoOldEngineCompatibility' );
-    return $rs if $rs;
+    return 0 unless -f "$self->{'cfgDir'}/dovecot.old.data";
 
-    if ( -f "$self->{'cfgDir'}/dovecot.old.data" ) {
-        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/dovecot.old.data" )->delFile();
-        return $rs if $rs;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterPodOldEngineCompatibility' );
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/dovecot.old.data" )->delFile();
 }
 
 =back

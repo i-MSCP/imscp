@@ -87,9 +87,7 @@ sub sqlUserDialog
     my ($self, $dialog) = @_;
 
     my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER' );
-    my $dbUser = main::setupGetQuestion(
-        'FTPD_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || ( iMSCP::Getopt->preseed ? 'imscp_srv_user' : '' )
-    );
+    my $dbUser = main::setupGetQuestion( 'FTPD_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || ( iMSCP::Getopt->preseed ? 'imscp_srv_user' : '' ));
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
     my $dbPass = main::setupGetQuestion(
         'FTPD_SQL_PASSWORD', ( iMSCP::Getopt->preseed ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
@@ -176,8 +174,7 @@ sub passivePortRangeDialog
     my ($self, $dialog) = @_;
 
     my $passivePortRange = main::setupGetQuestion(
-        'FTPD_PASSIVE_PORT_RANGE',
-        $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'} || ( iMSCP::Getopt->preseed ? '32768 60999' : '' )
+        'FTPD_PASSIVE_PORT_RANGE', $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'} || ( iMSCP::Getopt->preseed ? '32768 60999' : '' )
     );
     my ($startOfRange, $endOfRange);
 
@@ -276,23 +273,20 @@ sub _bkpConfFile
 {
     my ($self, $cfgFile) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdBkpConfFile', $cfgFile );
-    return $rs if $rs;
-
     if ( -f $cfgFile ) {
         my $file = iMSCP::File->new( filename => $cfgFile );
         my ($filename, undef, $suffix) = fileparse( $cfgFile );
 
         unless ( -f "$self->{'bkpDir'}/$filename$suffix.system" ) {
-            $rs = $file->copyFile( "$self->{'bkpDir'}/$filename$suffix.system", { preserve => 'no' } );
+            my $rs = $file->copyFile( "$self->{'bkpDir'}/$filename$suffix.system", { preserve => 'no' } );
             return $rs if $rs;
         } else {
-            $rs = $file->copyFile( "$self->{'bkpDir'}/$filename$suffix." . time, { preserve => 'no' } );
+            my $rs = $file->copyFile( "$self->{'bkpDir'}/$filename$suffix." . time, { preserve => 'no' } );
             return $rs if $rs;
         }
     }
 
-    $self->{'eventManager'}->trigger( 'afterFtpdBkpConfFile', $cfgFile );
+    0;
 }
 
 =item _setVersion
@@ -341,7 +335,7 @@ sub _setupDatabase
     my $dbPass = main::setupGetQuestion( 'FTPD_SQL_PASSWORD' );
     my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdSetupDb', $dbUser, $dbPass );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeProftpdSetupDb', $dbUser, $dbPass );
     return $rs if $rs;
 
     eval {
@@ -385,7 +379,7 @@ sub _setupDatabase
 
     $self->{'config'}->{'DATABASE_USER'} = $dbUser;
     $self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
-    $self->{'eventManager'}->trigger( 'afterFtpSetupDb', $dbUser, $dbPass );
+    $self->{'eventManager'}->trigger( 'afterProftpdSetupDb', $dbUser, $dbPass );
 }
 
 =item _buildConfigFile( )
@@ -434,7 +428,7 @@ sub _buildConfigFile
         }
     }
 
-    $rs = $self->{'eventManager'}->trigger( 'beforeFtpdBuildConf', \$cfgTpl, 'proftpd.conf' );
+    $rs = $self->{'eventManager'}->trigger( 'beforeProftpdBuildConf', \$cfgTpl, 'proftpd.conf' );
     return $rs if $rs;
 
     if ( main::setupGetQuestion( 'SERVICES_SSL_ENABLED' ) eq 'yes' ) {
@@ -477,7 +471,7 @@ EOF
 
     processByRef( $data, \$cfgTpl );
 
-    $rs = $self->{'eventManager'}->trigger( 'afterFtpdBuildConf', \$cfgTpl, 'proftpd.conf' );
+    $rs = $self->{'eventManager'}->trigger( 'afterProftpdBuildConf', \$cfgTpl, 'proftpd.conf' );
     return $rs if $rs;
 
     local $UMASK = 027; # proftpd.conf file must not be created/copied world-readable
@@ -494,7 +488,7 @@ EOF
         $file = iMSCP::File->new( filename => "$self->{'config'}->{'FTPD_CONF_DIR'}/modules.conf" );
         my $cfgTplRef = $file->getAsRef();
         unless ( defined $cfgTplRef ) {
-            error( sprintf( "Couldn't read %s file", "$self->{'config'}->{'FTPD_CONF_DIR'}/modules.conf" ));
+            error( sprintf( "Couldn't read the %s file", "$self->{'config'}->{'FTPD_CONF_DIR'}/modules.conf" ));
             return 1;
         }
 
@@ -517,15 +511,9 @@ sub _oldEngineCompatibility
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdOldEngineCompatibility' );
-    return $rs if $rs;
+    return 0 unless -f "$self->{'cfgDir'}/proftpd.old.data";
 
-    if ( -f "$self->{'cfgDir'}/proftpd.old.data" ) {
-        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.old.data" )->delFile();
-        return $rs if $rs;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterFtpdOldEngineCompatibility' );
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.old.data" )->delFile();
 }
 
 =back

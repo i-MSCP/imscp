@@ -31,28 +31,28 @@ use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
 
- i-MSCP CustomDNS module.
+ Module for processing of Custom DNS records entities
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item getType( )
+=item getEntityType( )
 
- Get module type
+ Get entity type
 
- Return string Module type
+ Return string entity type
 
 =cut
 
-sub getType
+sub getEntityType
 {
     'CustomDNS';
 }
 
 =item process( $dnsRecordsGroup )
 
- Process module
+ Process the given custom DNS record group
 
  Note: Even if a DNS resource record is invalid, we always return 0 (success).
  It is the responsability of customers to fix their DNS resource records.
@@ -171,11 +171,8 @@ sub _loadData
         undef,
         ( $aliasId eq '0' ? $domainId : $aliasId )
     );
-
     %{$row} or die( sprintf( 'Data not found for custom DNS records group (%d;%d)', $domainId, $aliasId ));
-
-    $self->{'domain_name'} = $row->{'domain_name'};
-    $self->{'domain_ip'} = $row->{'ip_number'};
+    @{$self}{qw/ domain_name domain_ip/} = ($row->{'domain_name'}, $row->{'ip_number'});
     undef $row;
 
     my $rows = $self->{'_dbh'}->selectall_arrayref(

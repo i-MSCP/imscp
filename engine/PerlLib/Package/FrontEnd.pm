@@ -25,15 +25,14 @@ package Package::FrontEnd;
 
 use strict;
 use warnings;
+use autouse 'iMSCP::Rights' => qw/ setRights /;
 use Class::Autouse qw/ :nostat Package::FrontEnd::Installer Package::FrontEnd::Uninstaller /;
 use Cwd qw/ realpath /;
 use File::Basename;
 use File::Spec;
 use iMSCP::Config;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::EventManager;
-use iMSCP::Execute;
-use iMSCP::Rights;
 use iMSCP::Service;
 use iMSCP::SystemUser;
 use iMSCP::TemplateParser qw/ processByRef /;
@@ -193,9 +192,7 @@ sub setEnginePermissions
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndSetEnginePermissions' );
-
-    $rs ||= setRights(
+    my $rs ||= setRights(
         $self->{'config'}->{'HTTPD_CONF_DIR'},
         {
             user      => $main::imscpConfig{'ROOT_USER'},
@@ -288,7 +285,7 @@ sub setEnginePermissions
         return $rs if $rs;
     }
 
-    $self->{'eventManager'}->trigger( 'afterFrontEndSetEnginePermissions' );
+    0;
 }
 
 =item setGuiPermissions( )
@@ -301,14 +298,9 @@ sub setEnginePermissions
 
 sub setGuiPermissions
 {
-    my ($self) = @_;
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFrontendSetGuiPermissions' );
-    return $rs if $rs;
-
     my $usergroup = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-    $rs = setRights(
+    setRights(
         $main::imscpConfig{'GUI_ROOT_DIR'},
         {
             user      => $usergroup,
@@ -318,7 +310,6 @@ sub setGuiPermissions
             recursive => 1
         }
     );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterFrontendSetGuiPermissions' );
 }
 
 =item addUser( \%data )
@@ -332,7 +323,7 @@ sub setGuiPermissions
 
 sub addUser
 {
-    my $data = $_[1];
+    my (undef, $data) = @_;
 
     return 0 if $data->{'STATUS'} eq 'tochangepwd';
 
@@ -539,7 +530,7 @@ sub stopNginx
         return 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterFrontEndStop' );
+    $self->{'eventManager'}->trigger( 'afterFrontEndStopNginx' );
 }
 
 =item reloadNginx( )
@@ -712,7 +703,7 @@ sub buildConfFile
         $file = "$self->{'cfgDir'}/$file" unless -d $path && $path ne './';
         $cfgTpl = iMSCP::File->new( filename => $file )->get();
         unless ( defined $cfgTpl ) {
-            error( sprintf( "Couldn't read %s file", $file ));
+            error( sprintf( "Couldn't read the %s file", $file ));
             return 1;
         }
     }

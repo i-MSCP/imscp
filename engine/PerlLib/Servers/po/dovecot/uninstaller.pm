@@ -150,7 +150,13 @@ sub _removeConfig
         $rs ||= $file->mode( 0644 );
     }
 
-    iMSCP::Dir->new( dirnname => '/etc/dovecot/imscp.d' )->remove();
+    eval { iMSCP::Dir->new( dirnname => '/etc/dovecot/imscp.d' )->remove(); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    0;
 }
 
 =back

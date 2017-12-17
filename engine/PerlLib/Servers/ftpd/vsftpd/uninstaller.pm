@@ -58,7 +58,7 @@ sub uninstall
         return iMSCP::EventManager->getInstance()->register(
             'afterSqldPreinstall',
             sub {
-                my $rs ||= $self->_dropSqlUser();
+                my $rs = $self->_dropSqlUser();
                 $rs ||= $self->_removeConfig();
             }
         );
@@ -159,7 +159,13 @@ sub _removeConfig
         }
     }
 
-    iMSCP::Dir->new( dirname => $self->{'config'}->{'FTPD_USER_CONF_DIR'} )->remove();
+    eval { iMSCP::Dir->new( dirname => $self->{'config'}->{'FTPD_USER_CONF_DIR'} )->remove(); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    0;
 }
 
 =back

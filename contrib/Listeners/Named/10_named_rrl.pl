@@ -24,7 +24,7 @@
 
 package Listener::Named::Rrl;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
@@ -32,6 +32,7 @@ use File::Basename;
 use iMSCP::EventManager;
 use iMSCP::TemplateParser qw/ replaceBlocByRef /;
 use Servers::named;
+use version;
 
 #
 ## Configuration variables
@@ -44,8 +45,12 @@ my $responsesPerSecond = 10;
 ## Please, don't edit anything below this line
 #
 
+version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+    sprintf( "The 10_named_rrl.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
+);
+
 iMSCP::EventManager->getInstance()->register(
-    'afterNamedBuildConf',
+    'afterBind9BuildConf',
     sub {
         my ($tplContent, $tplName) = @_;
 

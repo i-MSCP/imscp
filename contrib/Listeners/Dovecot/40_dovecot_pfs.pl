@@ -31,8 +31,12 @@ use iMSCP::File;
 use Servers::po;
 use version;
 
+#
+## Please, don't edit anything below this line
+#
+
 iMSCP::EventManager->getInstance()->registerOne(
-    'afterPoBuildConf',
+    'afterDovecotBuildConf',
     sub {
         version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
             sprintf( "The 40_dovecot_pfs.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )

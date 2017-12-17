@@ -93,9 +93,7 @@ sub new
     "prefer-stable":true
 }
 EOT
-        $self->{'_php_cmd'} = [
-            '/usr/bin/php7.1', '-d', "date.timezone=$main::imscpConfig{'TIMEZONE'}", '-d', 'allow_url_fopen=1'
-        ];
+        $self->{'_php_cmd'} = [ '/usr/bin/php7.1', '-d', "date.timezone=$main::imscpConfig{'TIMEZONE'}", '-d', 'allow_url_fopen=1' ];
         # Set default STD routines
         $self->setStdRoutines();
     }
@@ -444,6 +442,7 @@ sub _getSuCmd
     }
 
     delete $ENV{'COMPOSER_ALLOW_SUPERUSER'};
+
     [
         '/bin/su', '-l', $self->{'_attrs'}->{'user'}, '-s', '/bin/sh', '-c',
         "COMPOSER_HOME=$self->{'_attrs'}->{'home_dir'}/.composer @_"

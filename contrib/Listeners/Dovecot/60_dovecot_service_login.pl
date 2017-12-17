@@ -64,13 +64,13 @@ my $popServiceCount = 0;
 ## Please, don't edit anything below this line
 #
 
-iMSCP::EventManager->getInstance()->registerOne(
-    'afterPoBuildConf',
-    sub {
-        version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
-            sprintf( "The 60_dovecot_service_login.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
-        );
+version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+    sprintf( "The 60_dovecot_service_login.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
+);
 
+iMSCP::EventManager->getInstance()->registerOne(
+    'afterDovecotBuildConf',
+    sub {
         my $dovecotConfdir = Servers::po->factory()->{'config'}->{'DOVECOT_CONF_DIR'};
         my $file = iMSCP::File->new( filename => "$dovecotConfdir/imscp.d/60_dovecot_service_login_listener.conf" );
         $file->set( <<"EOT" );

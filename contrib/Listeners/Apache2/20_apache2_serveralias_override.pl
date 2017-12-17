@@ -22,7 +22,7 @@
 
 package Listener::Apache2::ServerAlias::Override;
 
-our $VERSION = '1.0.1';
+our $VERSION = '1.0.2';
 
 use strict;
 use warnings;
@@ -50,11 +50,11 @@ version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' )
 iMSCP::EventManager->getInstance()->register(
     'afterApache2BuildConf',
     sub {
-        my ($tplContent, $tplName, $data) = @_;
+        my ($tplContent, $tplName, undef, $moduleData) = @_;
 
-        return 0 unless $tplName eq 'domain.tpl' && $serverAliases{$data->{'DOMAIN_NAME'}};
+        return 0 unless $tplName eq 'domain.tpl' && $serverAliases{$moduleData->{'DOMAIN_NAME'}};
 
-        ${$tplContent} =~ s/^(\s+ServerAlias.*)/$1 $serverAliases{$data->{'DOMAIN_NAME'}}/m;
+        ${$tplContent} =~ s/^(\s+ServerAlias.*)/$1 $serverAliases{$moduleData->{'DOMAIN_NAME'}}/m;
         0;
     }
 );

@@ -21,7 +21,7 @@
 
 package Listener::Roundcube::TLS;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
@@ -34,12 +34,10 @@ use iMSCP::EventManager;
 iMSCP::EventManager->getInstance()->register(
     'afterSetupTasks',
     sub {
-        my $file = iMSCP::File->new(
-            filename => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php"
-        );
+        my $file = iMSCP::File->new( filename => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php" );
         my $fileContent = $file->get();
-        unless (defined $fileContent) {
-            error( sprintf( "Couldn't read %s file", $file->{'filename'} ) );
+        unless ( defined $fileContent ) {
+            error( sprintf( "Couldn't read the %s file", $file->{'filename'} ));
             return 1;
         }
 
@@ -52,7 +50,7 @@ iMSCP::EventManager->getInstance()->register(
 iMSCP::EventManager->getInstance()->register(
     'beforeUpdateRoundCubeMailHostEntries',
     sub {
-        my $hostname = shift;
+        my ($hostname) = @_;
         ${$hostname} = $main::imscpConfig{'BASE_SERVER_VHOST'};
         0;
     }

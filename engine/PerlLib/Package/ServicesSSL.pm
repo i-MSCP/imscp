@@ -173,9 +173,7 @@ EOF
         } else {
             $sslEnabled = 'no';
         }
-    } elsif ( $sslEnabled eq 'yes'
-        && !iMSCP::Getopt->preseed
-    ) {
+    } elsif ( $sslEnabled eq 'yes' && !iMSCP::Getopt->preseed ) {
         $openSSL->{'private_key_container_path'} = "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem";
         $openSSL->{'ca_bundle_container_path'} = "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem";
         $openSSL->{'certificate_container_path'} = "$main::imscpConfig{'CONF_DIR'}/imscp_services.pem";

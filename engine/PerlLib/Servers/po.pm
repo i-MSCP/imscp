@@ -27,8 +27,8 @@ use strict;
 use warnings;
 use iMSCP::Service;
 
-# po server instance
-my $INSTANCE;
+# po server package name
+my $PACKAGE;
 
 =head1 DESCRIPTION
 
@@ -50,23 +50,23 @@ my $INSTANCE;
 
 sub factory
 {
-    return $INSTANCE if $INSTANCE;
+    return $PACKAGE->getInstance() if $PACKAGE;
 
-    my $package = $main::imscpConfig{'PO_PACKAGE'} || 'Servers::noserver';
+    $PACKAGE = $main::imscpConfig{'PO_PACKAGE'} || 'Servers::noserver';
 
     if ( %main::imscpOldConfig
         && exists $main::imscpOldConfig{'PO_PACKAGE'}
         && $main::imscpOldConfig{'PO_PACKAGE'} ne ''
-        && $main::imscpOldConfig{'PO_PACKAGE'} ne $package
+        && $main::imscpOldConfig{'PO_PACKAGE'} ne $PACKAGE
     ) {
-        eval "require $main::imscpOldConfig{'PO_PACKAGE'}" or die( $@ );
+        eval "require $main::imscpOldConfig{'PO_PACKAGE'}; 1" or die( $@ );
         $main::imscpOldConfig{'PO_PACKAGE'}->getInstance()->uninstall() == 0 or die(
             sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'PO_PACKAGE'} )
         );
     }
 
-    eval "require $package" or die( $@ );
-    $INSTANCE = $package->getInstance();
+    eval "require $PACKAGE; 1" or die( $@ );
+    $PACKAGE->getInstance();
 }
 
 =item can( $method )
@@ -82,8 +82,10 @@ sub can
 {
     my (undef, $method) = @_;
 
+    return $PACKAGE->can( $method ) if $PACKAGE;
+
     my $package = $main::imscpConfig{'PO_PACKAGE'} || 'Servers::noserver';
-    eval "require $package" or die( $@ );
+    eval "require $package; 1" or die( $@ );
     $package->can( $method );
 }
 
@@ -115,13 +117,15 @@ sub getPriority
 
 END
     {
-        return if $? || !$INSTANCE || ( defined $main::execmode && $main::execmode eq 'setup' );
+        return if $? || !$PACKAGE || ( defined $main::execmode && $main::execmode eq 'setup' );
 
-        if ( $INSTANCE->{'restart'} ) {
-            iMSCP::Service->getInstance()->registerDelayedAction(
-                ref $INSTANCE, [ 'restart', sub { $INSTANCE->restart(); } ], __PACKAGE__->getPriority()
-            );
-        }
+        my $instance = $PACKAGE->hasInstance();
+
+        return 0 unless $instance;
+
+        iMSCP::Service->getInstance()->registerDelayedAction(
+            ref $instance, [ 'restart', sub { $instance->restart(); } ], __PACKAGE__->getPrirority()
+        );
     }
 
 =back

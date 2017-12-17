@@ -215,9 +215,7 @@ sub mount( $ )
         # than MS_BIND and MS_REC, schedule an additional mount(2) call to
         # change mountflags on existing mount. This is needed since mountflags
         # other than MS_BIND and MS_REC are ignored in first call.
-        if ( !( $mflags & MS_REMOUNT )
-            && ( $mflags & ~( MS_BIND | MS_REC ) )
-        ) {
+        if ( !( $mflags & MS_REMOUNT ) && ( $mflags & ~( MS_BIND | MS_REC ) ) ) {
             push @mountArgv, [ $fsSpec, $fsFile, $fsVfstype, MS_REMOUNT | $mflags, $data ];
         }
     } elsif ( $fsSpec ne 'none' ) {
@@ -230,9 +228,7 @@ sub mount( $ )
 
     # Process the mount(2) calls
     for( @mountArgv ) {
-        unless ( syscall( &iMSCP::Syscall::SYS_mount, @{$_} ) == 0
-            || $fields->{'ignore_failures'}
-        ) {
+        unless ( syscall( &iMSCP::Syscall::SYS_mount, @{$_} ) == 0 || $fields->{'ignore_failures'} ) {
             error( sprintf( 'Error while executing mount(%s): %s', join( ', ', @{$_} ), $! || 'Unknown error' ));
             return 1;
         }
@@ -275,13 +271,11 @@ sub umount( $;$ )
 
         do {
             debug( $fsFile );
-            unless ( syscall( &iMSCP::Syscall::SYS_umount2, $fsFile, MNT_DETACH ) == 0
-                || $!{'EINVAL'}
-                || $!{'ENOENT'}
-            ) {
+            unless ( syscall( &iMSCP::Syscall::SYS_umount2, $fsFile, MNT_DETACH ) == 0 || $!{'EINVAL'} || $!{'ENOENT'} ) {
                 error( sprintf( "Error while executing umount(%s): %s", $fsFile, $! || 'Unknown error' ));
                 return 1;
             }
+
             ( $MOUNTS->{$fsFile} > 1 ) ? $MOUNTS->{$fsFile}-- : delete $MOUNTS->{$fsFile};
         } while $MOUNTS->{$fsFile};
 
@@ -297,6 +291,7 @@ sub umount( $;$ )
                 error( sprintf( "Error while executing umount(%s): %s", $_, $! || 'Unknown error' ));
                 return 1;
             }
+
             ( $MOUNTS->{$_} > 1 ) ? $MOUNTS->{$_}-- : delete $MOUNTS->{$_};
         } while $MOUNTS->{$_};
     }
@@ -424,7 +419,7 @@ sub removeMountEntry( $;$ )
 
     my $fileContent = $iMSCP_FSTAB_FH->getAsRef();
     unless ( defined $fileContent ) {
-        error( sprintf( "Couldn't read %s file", $iMSCP_FSTAB_FH->{'filename'} ));
+        error( sprintf( "Couldn't read the %s file", $iMSCP_FSTAB_FH->{'filename'} ));
         return 1;
     }
 

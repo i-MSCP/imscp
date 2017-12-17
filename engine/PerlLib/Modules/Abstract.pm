@@ -40,22 +40,22 @@ use parent 'Common::Object';
 
 =over 4
 
-=item getType( )
+=item getEntityType( )
 
- Get module type
+ Get entity type
 
- Return string Module type
+ Return string entity type
 
 =cut
 
-sub getType
+sub getEntityType
 {
-    die( ref( $_[0] ) . ' module must implements the getType( ) method' );
+    die( ref( $_[0] ) . ' module must implements the getEntityType( ) method' );
 }
 
 =item process( )
 
- Process add|delete|restore|disable action according item status.
+ Process an entity according to its current state
 
  Return int 0 on success, other on failure
 
@@ -198,12 +198,12 @@ sub _execAllActions
 {
     my ($self, $action) = @_;
 
-    my $moduleType = $self->getType();
+    my $entityType = $self->getEntityType();
 
     if ( $action =~ /^(?:add|restore)$/ ) {
         for( 'pre', '', 'post' ) {
-            my $rs = $self->_execAction( "$_$action$moduleType", 'server' );
-            $rs ||= $self->_execAction( "$_$action$moduleType", 'package' );
+            my $rs = $self->_execAction( "$_$action$entityType", 'server' );
+            $rs ||= $self->_execAction( "$_$action$entityType", 'package' );
             return $rs if $rs;
         }
 
@@ -211,8 +211,8 @@ sub _execAllActions
     }
 
     for( 'pre', '', 'post' ) {
-        my $rs = $self->_execAction( "$_$action$moduleType", 'package' );
-        $rs ||= $self->_execAction( "$_$action$moduleType", 'server' );
+        my $rs = $self->_execAction( "$_$action$entityType", 'package' );
+        $rs ||= $self->_execAction( "$_$action$entityType", 'server' );
         return $rs if $rs;
     }
 
@@ -223,7 +223,7 @@ sub _execAllActions
 
  Data provider method for i-MSCP servers and packages
 
- Param string $action Action being executed (<pre|post><action><moduleType>) on servers, packages
+ Param string $action Action being executed (<pre|post><action><entityType>) on servers, packages
  Return hashref Reference to a hash containing data, die on failure
 
 =cut

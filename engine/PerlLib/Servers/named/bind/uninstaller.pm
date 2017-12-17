@@ -26,7 +26,7 @@ package Servers::named::bind::uninstaller;
 use strict;
 use warnings;
 use File::Basename;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ error /;
 use iMSCP::Dir;
 use iMSCP::File;
 use Servers::named::bind;
@@ -133,9 +133,16 @@ sub _removeConfig
         return $rs if $rs;
     }
 
-    iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_MASTER_DIR'} )->remove();
-    iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_SLAVE_DIR'} )->remove();
-    iMSCP::Dir->new( dirname => $self->{'wrkDir'} )->clear();
+    eval {
+        iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_MASTER_DIR'} )->remove();
+        iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_SLAVE_DIR'} )->remove();
+        iMSCP::Dir->new( dirname => $self->{'wrkDir'} )->clear();
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
     0;
 }
 

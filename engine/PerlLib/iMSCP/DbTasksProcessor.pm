@@ -74,8 +74,7 @@ sub processDbTasks
 
     # Process server IP addresses
     $self->_processModuleDbTasks(
-        'Modules::ServerIP',
-        "SELECT ip_id AS id, ip_number AS name FROM server_ips WHERE ip_status IN( 'toadd', 'tochange', 'todelete' )"
+        'Modules::ServerIP', "SELECT ip_id AS id, ip_number AS name FROM server_ips WHERE ip_status IN( 'toadd', 'tochange', 'todelete' )"
     );
 
     # Process SSL certificate toadd|tochange SSL certificates tasks
@@ -450,7 +449,7 @@ sub _processModuleDbTasks
             return 0;
         }
 
-        eval "require $module" or die;
+        eval "require $module; 1" or die;
 
         my ($nStep, $rs) = ( 0, 0 );
         my $needStepper = !iMSCP::Getopt->noprompt && grep( $self->{'mode'} eq $_, ( 'setup', 'uninstall' ) );

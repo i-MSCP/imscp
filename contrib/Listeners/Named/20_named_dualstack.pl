@@ -26,7 +26,7 @@
 
 package Listener::Bind9::DualStack;
 
-our $VERSION = '1.0.1';
+our $VERSION = '1.0.2';
 
 use strict;
 use warnings;
@@ -121,7 +121,7 @@ version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' )
 );
 
 iMSCP::EventManager->getInstance()->register(
-    [ 'afterNamedAddDmnDb', 'afterNamedAddSub' ],
+    [ 'afterBind9AddDomainDb', 'afterBind9AddSubdomain' ],
     sub {
         my ($tplContent, $data) = @_;
 

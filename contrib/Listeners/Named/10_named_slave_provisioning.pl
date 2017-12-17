@@ -28,7 +28,7 @@
 
 package Listener::Named::Slave::Provisioning;
 
-our $VERSION = '1.0.3';
+our $VERSION = '1.0.4';
 
 use strict;
 use warnings;
@@ -101,9 +101,8 @@ iMSCP::EventManager->getInstance()->register(
     sub {
         my ($tplContent, $tplName) = @_;
 
-        return 0 unless ( $tplName eq '00_master.nginx'
-            && main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) ne 'https://'
-        ) || $tplName eq '00_master_ssl.nginx';
+        return 0 unless ( $tplName eq '00_master.nginx' && main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) ne 'https://' )
+            || $tplName eq '00_master_ssl.nginx';
 
         my $locationSnippet = <<"EOF";
     location ^~ /provisioning/ {
@@ -129,7 +128,9 @@ EOF
 ) if defined $AUTH_USERNAME;
 
 # Event listener that create the provisioning script
-iMSCP::EventManager->getInstance()->register( 'afterFrontEndInstall', sub {
+iMSCP::EventManager->getInstance()->register(
+    'afterFrontEndInstall',
+    sub {
         my $fileContent = <<'EOF';
 <?php
 
@@ -177,20 +178,22 @@ if ($rowCount > 0) {
     echo "// END ALIASES LIST\n";
 }
 EOF
-        my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning" )->make(
-            {
+        eval {
+            iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning" )->make( {
                 user  => "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
                 group => "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
                 mode  => 0550
-            }
-        );
+            } );
+        };
+        if ( $@ ) {
+            error( $@ );
+            return 1;
+        }
 
-        $rs ||= createHtpasswdFile() if defined $AUTH_USERNAME;
+        my $rs = createHtpasswdFile() if defined $AUTH_USERNAME;
         return $rs if $rs;
 
-        my $file = iMSCP::File->new(
-            filename => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning/slave_provisioning.php"
-        );
+        my $file = iMSCP::File->new( filename => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning/slave_provisioning.php" );
         $file->set( $fileContent );
         $rs = $file->save();
         $rs ||= $file->owner(

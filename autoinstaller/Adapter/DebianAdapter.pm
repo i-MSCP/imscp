@@ -246,7 +246,7 @@ sub uninstallPackages
         @apkgs{split /\n/, $stdout} = undef;
         undef $stdout;
         @{$packagesToUninstall} = grep(exists $apkgs{$_}, @{$packagesToUninstall});
-        undef %apkgs;
+        undef(%apkgs);
 
         if ( @{$packagesToUninstall} ) {
             # Filter packages that must be kept
@@ -346,7 +346,7 @@ sub _setupGetAddrinfoPrecedence
     if ( -f '/etc/gai.conf' ) {
         $fileContent = $file->get();
         unless ( defined $fileContent ) {
-            error( sprintf( "Couldn't read %s file ", $file->{'filename'} ));
+            error( sprintf( "Couldn't read the %s file ", $file->{'filename'} ));
             return 1;
         }
 

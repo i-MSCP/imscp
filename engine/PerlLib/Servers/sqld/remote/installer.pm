@@ -74,58 +74,58 @@ sub _buildConf
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldBuildConf' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeRemoteSqldBuildConf' );
     return $rs if $rs;
 
-    my $rootUName = $main::imscpConfig{'ROOT_USER'};
-    my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
-    my $confDir = $self->{'config'}->{'SQLD_CONF_DIR'};
-
-    # Make sure that the conf.d directory exists
-    iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make( {
-        user  => $rootUName,
-        group => $rootGName,
-        mode  => 0755
-    } );
+    eval {
+        # Make sure that the conf.d directory exists
+        iMSCP::Dir->new( dirname => "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d" )->make( {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $main::imscpConfig{'ROOT_GROUP'},
+            mode  => 0755
+        } );
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
 
     # Create the /etc/mysql/my.cnf file if missing
-    unless ( -f "$confDir/my.cnf" ) {
-        $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'my.cnf', \ my $cfgTpl, {} );
+    unless ( -f "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf" ) {
+        $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'remote_sqld', 'my.cnf', \ my $cfgTpl, {} );
         return $rs if $rs;
 
         unless ( defined $cfgTpl ) {
-            $cfgTpl = "!includedir $confDir/conf.d/\n";
-        } elsif ( $cfgTpl !~ m%^!includedir\s+$confDir/conf.d/\n%m ) {
-            $cfgTpl .= "!includedir $confDir/conf.d/\n";
+            $cfgTpl = "!includedir $self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n";
+        } elsif ( $cfgTpl !~ m%^!includedir\s+$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n%m ) {
+            $cfgTpl .= "!includedir $self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n";
         }
 
-        my $file = iMSCP::File->new( filename => "$confDir/my.cnf" );
+        my $file = iMSCP::File->new( filename => "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf" );
         $file->set( $cfgTpl );
-
         $rs = $file->save();
-        $rs ||= $file->owner( $rootUName, $rootGName );
+        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
         $rs ||= $file->mode( 0644 );
         return $rs if $rs;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'imscp.cnf', \ my $cfgTpl, {} );
+    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'remote_sqld', 'imscp.cnf', \ my $cfgTpl, {} );
     return $rs if $rs;
 
     unless ( defined $cfgTpl ) {
         $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp.cnf" )->get();
         unless ( defined $cfgTpl ) {
-            error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/imscp.cnf" ));
+            error( sprintf( "Couldn't read the %s file", "$self->{'cfgDir'}/imscp.cnf" ));
             return 1;
         }
     }
 
-    my $file = iMSCP::File->new( filename => "$confDir/conf.d/imscp.cnf" );
+    my $file = iMSCP::File->new( filename => "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf" );
     $file->set( $cfgTpl );
-
     $rs = $file->save();
-    $rs ||= $file->owner( $rootUName, $rootGName );
+    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldBuildConf' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterRemoteSqldBuildConf' );
 }
 
 =item _updateServerConfig( )

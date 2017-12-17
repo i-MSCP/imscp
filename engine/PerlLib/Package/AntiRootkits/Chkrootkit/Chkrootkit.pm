@@ -25,8 +25,8 @@ package Package::AntiRootkits::Chkrootkit::Chkrootkit;
 
 use strict;
 use warnings;
+use autouse 'iMSCP::Rights' => qw/ setRights /;
 use Class::Autouse qw/ :nostat Package::AntiRootkits::Chkrootkit::Installer Package::AntiRootkits::Chkrootkit::Uninstaller /;
-use iMSCP::Rights;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

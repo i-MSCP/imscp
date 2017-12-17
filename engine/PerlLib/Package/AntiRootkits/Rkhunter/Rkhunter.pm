@@ -25,8 +25,8 @@ package Package::AntiRootkits::Rkhunter::Rkhunter;
 
 use strict;
 use warnings;
+use autouse 'iMSCP::Rights' => qw/ setRights /;
 use Class::Autouse qw/ :nostat Package::AntiRootkits::Rkhunter::Installer Package::AntiRootkits::Rkhunter::Uninstaller /;
-use iMSCP::Rights;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

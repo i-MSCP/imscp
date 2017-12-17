@@ -5,7 +5,6 @@
     <folder mode="0755" export="ROOT_CONF">${INST_PREF}/etc</folder>
     <folder export="SYSTEM_CONF">${INST_PREF}/etc/imscp</folder>
     <folder mode="0755">${INST_PREF}/usr</folder>
-    <folder mode="0755" export="SYSTEM_LIB">${INST_PREF}/usr/lib</folder>
     <folder mode="0755">${INST_PREF}/usr/local</folder>
     <folder mode="0755" export="LOCAL_CONF">${INST_PREF}/usr/local/etc</folder>
     <folder mode="0755" export="LOCAL_USR_LIB">${INST_PREF}/usr/local/lib</folder>

@@ -439,8 +439,7 @@ sub _guessDebianRelease
 
     $distInfo{'DESCRIPTION'} = sprintf( '%s %s', $distInfo{'ID'}, $distInfo{'OS'} );
 
-    my $etcDebianVersion = $ENV{'LSB_ETC_DEBIAN_VERSION'}
-        || ( ( $IS_DEVUAN ) ? '/etc/devuan_version' : '/etc/debian_version' );
+    my $etcDebianVersion = $ENV{'LSB_ETC_DEBIAN_VERSION'} || ( ( $IS_DEVUAN ) ? '/etc/devuan_version' : '/etc/debian_version' );
 
     if ( -f $etcDebianVersion ) {
         my $release = 'unknown';
@@ -479,20 +478,14 @@ sub _guessDebianRelease
     # upgraded the system.
     unless ( exists $distInfo{'CODENAME'} ) {
         my %rInfo = ( $distInfo{'ID'} eq 'Devuan' )
-            ? $self->_guessReleaseFromApt(
-                'Devuan', 'main', 'experimental', 'Devuan', { 'Devuan Ports' => 'packages.devuan.org' }
-            )
+            ? $self->_guessReleaseFromApt( 'Devuan', 'main', 'experimental', 'Devuan', { 'Devuan Ports' => 'packages.devuan.org' } )
             : $self->_guessReleaseFromApt();
 
         if ( %rInfo ) {
             my $release = $rInfo{'version'} || '';
 
             # Special case Debian-Ports as their Release file has 'version': '1.0'
-            if ( !$IS_DEVUAN &&
-                $release eq '1.0'
-                && $rInfo{'origin'} eq 'Debian Ports'
-                && $rInfo{'label'} == 'ftp.debian-ports.org'
-            ) {
+            if ( !$IS_DEVUAN && $release eq '1.0' && $rInfo{'origin'} eq 'Debian Ports' && $rInfo{'label'} == 'ftp.debian-ports.org' ) {
                 $release = undef;
                 $rInfo{'suite'} = 'unstable';
             }

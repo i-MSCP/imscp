@@ -274,19 +274,16 @@ sub setEnginePermissions
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFilemanagerSetGuiPermissions' );
-    return $rs if $rs;
-
     for ( @{$self->{'SELECTED_PACKAGES'}} ) {
         my $package = "Package::FileManager::${_}::${_}";
         eval "require $package" or die( $@ );
         ( my $subref = $package->can( 'setEnginePermissions' ) ) or next;
         debug( sprintf( 'Executing setEnginePermissions action on %s', $package ));
-        $rs = $subref->( $package->getInstance());
+        my $rs = $subref->( $package->getInstance());
         return $rs if $rs;
     }
-
-    $self->{'eventManager'}->trigger( 'afterFilemanagerSetGuiPermissions' );
+    
+    0;
 }
 
 =item setGuiPermissions( )
@@ -301,19 +298,16 @@ sub setGuiPermissions
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFilemanagersSetGuiPermissions' );
-    return $rs if $rs;
-
     for ( @{$self->{'SELECTED_PACKAGES'}} ) {
         my $package = "Package::FileManager::${_}::${_}";
         eval "require $package" or die( $@ );
         ( my $subref = $package->can( 'setGuiPermissions' ) ) or next;
         debug( sprintf( 'Executing setGuiPermissions action on %s', $package ));
-        $rs = $subref->( $package->getInstance());
+        my $rs = $subref->( $package->getInstance());
         return $rs if $rs;
     }
 
-    $self->{'eventManager'}->trigger( 'afterFilemanagersSetGuiPermissions' );
+    0;
 }
 
 =back
@@ -326,7 +320,7 @@ sub setGuiPermissions
 
  Initialize insance
 
- Return Package::AntiRootkits
+ Return Package::FileManager, die on failure
 
 =cut
 

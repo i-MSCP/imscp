@@ -23,14 +23,23 @@
 
 package Listener::ProFTPd::TLS;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
 use iMSCP::EventManager;
+use version;
+
+#
+## Please, don't edit anything below this line
+#
+
+version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+    sprintf( "The 10_proftpd_serverident.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
+);
 
 iMSCP::EventManager->getInstance()->register(
-    'afterFtpdBuildConf',
+    'afterProftpdBuildConf',
     sub {
         my ($tplContent, $tplName) = @_;
 

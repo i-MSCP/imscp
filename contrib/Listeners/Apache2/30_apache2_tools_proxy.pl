@@ -45,7 +45,7 @@ version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' )
 iMSCP::EventManager->getInstance()->register(
     'beforeApache2BuildConf',
     sub {
-        my ($cfgTpl, $tplName, $moduleData, $serverData) = @_;
+        my ($cfgTpl, $tplName, undef, $moduleData, $serverData) = @_;
 
         return 0 unless $tplName eq 'domain.tpl' && grep( $_ eq $moduleData->{'VHOST_TYPE'}, ( 'domain', 'domain_ssl' ) );
 

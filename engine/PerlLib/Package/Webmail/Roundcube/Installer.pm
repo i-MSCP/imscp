@@ -33,7 +33,7 @@ use iMSCP::Config;
 use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug error getMessageByType /;
-use iMSCP::Dialog::InputValidation;
+use iMSCP::Dialog::InputValidation qw/ isAvailableSqlUser isStringNotInList isValidPassword isValidUsername /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute /;
@@ -115,9 +115,7 @@ EOF
 
     main::setupSetQuestion( 'ROUNDCUBE_SQL_USER', $dbUser );
 
-    if ( $main::reconfigure =~ /^(?:webmails|all|forced)$/
-        || !isValidPassword( $dbPass )
-    ) {
+    if ( $main::reconfigure =~ /^(?:webmails|all|forced)$/ || !isValidPassword( $dbPass ) ) {
         unless ( defined $main::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
             my $rs = 0;
 
@@ -132,8 +130,7 @@ $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter a password for the Roundcube SQL user (leave empty for autogeneration):
 \\Z \\Zn
 EOF
-            } while $rs < 30
-                && !isValidPassword( $dbPass );
+            } while $rs < 30 && !isValidPassword( $dbPass );
 
             return $rs unless $rs < 30;
 
@@ -239,9 +236,8 @@ sub afterFrontEndBuildConfFile
 {
     my ($tplContent, $tplName) = @_;
 
-    return 0 unless ( $tplName eq '00_master.nginx'
-        && main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) ne 'https://'
-    ) || $tplName eq '00_master_ssl.nginx';
+    return 0 unless ( $tplName eq '00_master.nginx' && main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) ne 'https://' )
+        || $tplName eq '00_master_ssl.nginx';
 
     replaceBlocByRef( "# SECTION custom BEGIN.\n", "# SECTION custom END.\n", <<"EOF", $tplContent );
     # SECTION custom BEGIN.
@@ -325,7 +321,7 @@ sub _installFiles
             next unless -f "$packageDir/iMSCP/$_/imscp_roundcube";
 
             my $fileContent = iMSCP::File->new( filename => "$packageDir/iMSCP/$_/imscp_roundcube" )->get();
-            defined $fileContent or die( sprintf( "Couldn't read %s file", "$packageDir/iMSCP/$_/imscp_roundcube.conf" ));
+            defined $fileContent or die( sprintf( "Couldn't read the %s file", "$packageDir/iMSCP/$_/imscp_roundcube.conf" ));
 
             processByRef(
                 {
@@ -420,7 +416,7 @@ sub _buildRoundcubeConfig
     unless ( defined $cfgTpl ) {
         $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/config.inc.php" )->get();
         unless ( defined $cfgTpl ) {
-            error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/config.inc.php" ));
+            error( sprintf( "Couldn't read the %s file", "$self->{'cfgDir'}/config.inc.php" ));
             return 1;
         }
     }
@@ -489,11 +485,7 @@ sub _setupDatabase
         # Give required privileges on the imscp.mail table
         # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
         $dbh->do(
-            "
-                GRANT SELECT (mail_addr, mail_pass), UPDATE (mail_pass)
-                ON @{[ $dbh->quote_identifier( $imscpDbName ) ]}.mail_users
-                TO ?\@?
-            ",
+            "GRANT SELECT (mail_addr, mail_pass), UPDATE (mail_pass) ON @{[ $dbh->quote_identifier( $imscpDbName ) ]}.mail_users TO ?\@?",
             undef, $dbUser, $dbUserHost
         );
 
@@ -587,15 +579,9 @@ sub _cleanup
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeRoundcubeCleanup' );
-    return $rs if $rs;
+    return 0 unless -f "$self->{'cfgDir'}/roundcube.old.data";
 
-    if ( -f "$self->{'cfgDir'}/roundcube.old.data" ) {
-        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/roundcube.old.data" )->delFile();
-        return $rs if $rs;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterRoundcubeCleanup' );
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/roundcube.old.data" )->delFile();
 }
 
 =back

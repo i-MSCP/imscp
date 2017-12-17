@@ -55,8 +55,8 @@ my $TMPFS = lazy
     {
         mount(
             {
-                fs_spec         => 'tmpfs',
-                fs_file         => my $tmpfs = File::Temp->newdir( CLEANUP => 0 ),
+                    fs_spec => 'tmpfs',
+                    fs_file => my $tmpfs = File::Temp->newdir( CLEANUP => 0 ),
                 fs_vfstype      => 'tmpfs',
                 fs_mntops       => 'noexec,nosuid,size=32m',
                 ignore_failures => 1 # Ignore failures in case tmpfs isn't supported/allowed
@@ -238,20 +238,20 @@ sub deleteUser
     $rs ||= $self->{'eventManager'}->trigger( 'afterApache2DeleteUser', $moduleData );
 }
 
-=item addDmn( \%moduleData )
+=item addDomain( \%moduleData )
 
- See Servers::httpd::Interface::addDmn()
+ See Servers::httpd::Interface::addDomain()
 
 =cut
 
-sub addDmn
+sub addDomain
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2AddDmn', $moduleData );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2AddDomain', $moduleData );
     $rs ||= $self->_addCfg( $moduleData );
     $rs ||= $self->_addFiles( $moduleData );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2AddDmn', $moduleData );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2AddDomain', $moduleData );
 }
 
 =item restoreDmn( \%moduleData )
@@ -264,70 +264,70 @@ sub restoreDmn
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2RestoreDmn', $moduleData );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2RestoreDomain', $moduleData );
     $rs ||= $self->_addFiles( $moduleData );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2RestoreDmn', $moduleData );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2RestoreDomain', $moduleData );
 }
 
-=item disableDmn( \%moduleData )
+=item disableDomain( \%moduleData )
 
- See Servers::httpd::Interface::disableDmn()
+ See Servers::httpd::Interface::disableDomain()
 
 =cut
 
-sub disableDmn
+sub disableDomain
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2DisableDmn', $moduleData );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2DisableDomain', $moduleData );
     $rs ||= $self->_disableDomain( $moduleData );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2DisableDmn', $moduleData );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2DisableDomain', $moduleData );
 }
 
-=item deleteDmn( \%moduleData )
+=item deleteDomain( \%moduleData )
 
- See Servers::httpd::Interface::deleteDmn()
+ See Servers::httpd::Interface::deleteDomain()
 
 =cut
 
-sub deleteDmn
+sub deleteDomain
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2DeleteDmn', $moduleData );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2DeleteDomain', $moduleData );
     $rs ||= $self->_deleteDomain( $moduleData );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2DeleteDmn', $moduleData );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2DeleteDomain', $moduleData );
 }
 
-=item addSub( \%moduleData )
+=item addSubbdomain( \%moduleData )
 
- See Servers::httpd::Interface::addSub()
+ See Servers::httpd::Interface::addSubbdomain()
 
 =cut
 
-sub addSub
+sub addSubbdomain
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2AddSub', $moduleData );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2AddSubdomain', $moduleData );
     $rs ||= $self->_addCfg( $moduleData );
     $rs ||= $self->_addFiles( $moduleData );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2AddSub', $moduleData );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2AddSubdomain', $moduleData );
 }
 
-=item restoreSub( \%moduleData )
+=item restoreSubdomain( \%moduleData )
 
- See Servers::httpd::Interface::restoreSub()
+ See Servers::httpd::Interface::restoreSubdomain()
 
 =cut
 
-sub restoreSub
+sub restoreSubdomain
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2RestoreSub', $moduleData );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2RestoreSubdomain', $moduleData );
     $rs ||= $self->_addFiles( $moduleData );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2RestoreSub', $moduleData );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2RestoreSubdomain', $moduleData );
 }
 
 =item disableSub( \%moduleData )
@@ -340,24 +340,24 @@ sub disableSub
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2DisableSub', $moduleData );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2DisableSubdomain', $moduleData );
     $rs ||= $self->_disableDomain( $moduleData );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2DisableSub', $moduleData );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2DisableSubdomain', $moduleData );
 }
 
-=item deleteSub( \%moduleData )
+=item deleteSubdomain( \%moduleData )
 
- See Servers::httpd::Interface::deleteSub()
+ See Servers::httpd::Interface::deleteSubdomain()
 
 =cut
 
-sub deleteSub
+sub deleteSubdomain
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2DeleteSub', $moduleData );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2DeleteSubdomain', $moduleData );
     $rs ||= $self->_deleteDomain( $moduleData );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2DeleteSub', $moduleData );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterApache2DeleteSubdomain', $moduleData );
 }
 
 =item addHtpasswd( \%moduleData )
@@ -425,11 +425,11 @@ sub deleteHtpasswd
         my $file = iMSCP::File->new( filename => $filePath );
         my $fileContent = $file->get() // '';
 
-        $self->{'eventManager'}->trigger( 'beforeApache2DelHtpasswd', \$fileContent, $moduleData ) == 0 or die(
+        $self->{'eventManager'}->trigger( 'beforeApache2DeleteHtpasswd', \$fileContent, $moduleData ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
         $fileContent =~ s/^$moduleData->{'HTUSER_NAME'}:[^\n]*\n//gim;
-        $self->{'eventManager'}->trigger( 'afterApache2DelHtpasswd', \$fileContent, $moduleData ) == 0 or die(
+        $self->{'eventManager'}->trigger( 'afterApache2DeleteHtpasswd', \$fileContent, $moduleData ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
@@ -517,11 +517,11 @@ sub deleteHtgroup
         my $file = iMSCP::File->new( filename => $filePath );
         my $fileContent = $file->get() // '';
 
-        $self->{'eventManager'}->trigger( 'beforeApache2DelHtgroup', \$fileContent, $moduleData ) == 0 or die(
+        $self->{'eventManager'}->trigger( 'beforeApache2DeleteHtgroup', \$fileContent, $moduleData ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
         $fileContent =~ s/^$moduleData->{'HTGROUP_NAME'}:[^\n]*\n//gim;
-        $self->{'eventManager'}->trigger( 'afterApache2DelHtgroup', \$fileContent, $moduleData ) == 0 or die(
+        $self->{'eventManager'}->trigger( 'afterApache2DeleteHtgroup', \$fileContent, $moduleData ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
@@ -640,13 +640,13 @@ sub deleteHtaccess
         my $fileContent = $file->get() // '';
         $fileContent = '' unless defined $fileContent;
 
-        $self->{'eventManager'}->trigger( 'beforeApache2DelHtaccess', \$fileContent, $moduleData ) == 0 or die(
+        $self->{'eventManager'}->trigger( 'beforeApache2DeleteHtaccess', \$fileContent, $moduleData ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
         replaceBlocByRef( "### START i-MSCP PROTECTION ###\n", "### END i-MSCP PROTECTION ###\n", '', \$fileContent );
 
-        $self->{'eventManager'}->trigger( 'afterApache2DelHtaccess', \$fileContent, $moduleData ) == 0 or die(
+        $self->{'eventManager'}->trigger( 'afterApache2DeleteHtaccess', \$fileContent, $moduleData ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
 
@@ -692,14 +692,14 @@ sub buildConfFile
     if ( $parameters->{'cached'} && exists $self->{'_templates'}->{$filename} ) {
         $cfgTpl = $self->{'_templates'}->{$filename};
     } else {
-        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'apache2', $filename, \ $cfgTpl, $moduleData, $serverData, $self->{'config'} );
+        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'apache2', $filename, \$cfgTpl, $moduleData, $serverData, $self->{'config'} );
         return $rs if $rs;
 
         unless ( defined $cfgTpl ) {
             $srcFile = File::Spec->canonpath( "$self->{'cfgDir'}/$path/$filename" ) if index( $path, '/' ) != 0;
             $cfgTpl = iMSCP::File->new( filename => $srcFile )->get();
             unless ( defined $cfgTpl ) {
-                error( sprintf( "Couldn't read %s file", $srcFile ));
+                error( sprintf( "Couldn't read the %s file", $srcFile ));
                 return 1;
             }
         }
@@ -722,13 +722,17 @@ sub buildConfFile
         }
     }
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeApache2BuildConfFile', \$cfgTpl, $filename, $moduleData, $serverData, $self->{'config'} );
+    my $rs = $self->{'eventManager'}->trigger(
+        'beforeApache2BuildConfFile', \$cfgTpl, $filename, \$trgFile, $moduleData, $serverData, $self->{'config'}, $parameters
+    );
     return $rs if $rs;
 
     processByRef( $serverData, \$cfgTpl );
     processByRef( $moduleData, \$cfgTpl );
 
-    $rs = $self->{'eventManager'}->trigger( 'afterApache2BuildConfFile', \$cfgTpl, $filename, $moduleData, $serverData, $self->{'config'} );
+    $rs = $self->{'eventManager'}->trigger(
+        'afterApache2BuildConfFile', \$cfgTpl, $filename, \$trgFile, $moduleData, $serverData, $self->{'config'}, $parameters
+    );
     return $rs if $rs;
 
     my $fh = iMSCP::File->new( filename => $trgFile );
@@ -1125,7 +1129,7 @@ sub _mergeConfig
 
 =item _deleteDomain( \%moduleData )
 
- Process deleteDmn tasks
+ Process deleteDomain tasks
 
  Param hashref \%moduleData Domain data as provided by Alias|Domain modules
  Return int 0 on success, other on failure
@@ -1542,7 +1546,7 @@ sub _addFiles
         } );
 
         # Whether or not permissions must be fixed recursively
-        my $fixPermissions = iMSCP::Getopt->fixPermissions || grep( $moduleData->{'ACTION'} eq $_, 'restoreDmn', 'restoreSub' );
+        my $fixPermissions = iMSCP::Getopt->fixPermissions || grep( $moduleData->{'ACTION'} eq $_, 'restoreDomain', 'restoreSubdomain' );
 
         #
         ## Prepare Web folder

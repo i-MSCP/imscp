@@ -379,7 +379,6 @@ ff02::2 ip6-allrouters
 ff02::3 ip6-allhosts
 EOF
     $file->set( $content );
-
     $rs = $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
@@ -387,7 +386,6 @@ EOF
 
     $file = iMSCP::File->new( filename => '/etc/hostname' );
     $file->set( $host );
-
     $rs = $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
@@ -395,7 +393,6 @@ EOF
 
     $file = iMSCP::File->new( filename => '/etc/mailname' );
     $file->set( $hostname );
-
     $rs = $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );

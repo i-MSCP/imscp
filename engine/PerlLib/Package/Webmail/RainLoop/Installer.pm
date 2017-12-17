@@ -30,8 +30,8 @@ use iMSCP::Composer;
 use iMSCP::Config;
 use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
-use iMSCP::Debug;
-use iMSCP::Dialog::InputValidation;
+use iMSCP::Debug qw/ debug error /;
+use iMSCP::Dialog::InputValidation qw/ isAvailableSqlUser isStringNotInList isValidPassword isValidUsername /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::File;
@@ -109,9 +109,7 @@ EOF
 
     main::setupSetQuestion( 'RAINLOOP_SQL_USER', $dbUser );
 
-    if ( $main::reconfigure =~ /^(?:webmails|all|forced)$/
-        || !isValidPassword( $dbPass )
-    ) {
+    if ( $main::reconfigure =~ /^(?:webmails|all|forced)$/ || !isValidPassword( $dbPass ) ) {
         unless ( defined $main::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
             my $rs = 0;
             do {
@@ -125,8 +123,7 @@ $iMSCP::Dialog::InputValidation::lastValidationError
 Please enter a password for the RainLoop SQL user (leave empty for autogeneration):
 \\Z \\Zn
 EOF
-            } while $rs < 30
-                && !isValidPassword( $dbPass );
+            } while $rs < 30 && !isValidPassword( $dbPass );
 
             return $rs unless $rs < 30;
 
@@ -268,15 +265,22 @@ sub _installFiles
         return $rs if $rs;
     }
 
-    # Handle upgrade from old rainloop data structure
-    if ( -d "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1" ) {
-        iMSCP::Dir->new( dirname => "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1" )->moveDir( "$destDir/data/_data_" );
+    eval {
+        # Handle upgrade from old rainloop data structure
+        if ( -d "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1" ) {
+            iMSCP::Dir->new( dirname => "$destDir/data/_data_11c052c218cd2a2febbfb268624efdc1" )->moveDir( "$destDir/data/_data_" );
+        }
+
+        # Install new files
+        iMSCP::Dir->new( dirname => "$srcDir/src" )->rcopy( $destDir, { preserve => 'no' } );
+        iMSCP::Dir->new( dirname => "$srcDir/iMSCP/src" )->rcopy( $destDir, { preserve => 'no' } );
+        iMSCP::Dir->new( dirname => "$srcDir/iMSCP/config" )->rcopy( $self->{'cfgDir'}, { preserve => 'no' } );
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
     }
 
-    # Install new files
-    iMSCP::Dir->new( dirname => "$srcDir/src" )->rcopy( $destDir, { preserve => 'no' } );
-    iMSCP::Dir->new( dirname => "$srcDir/iMSCP/src" )->rcopy( $destDir, { preserve => 'no' } );
-    iMSCP::Dir->new( dirname => "$srcDir/iMSCP/config" )->rcopy( $self->{'cfgDir'}, { preserve => 'no' } );
     0;
 }
 
@@ -408,7 +412,7 @@ sub _buildConfig
         unless ( defined $cfgTpl ) {
             $cfgTpl = iMSCP::File->new( filename => "$confDir/$confFile" )->get();
             unless ( defined $cfgTpl ) {
-                error( sprintf( "Couldn't read %s file", "$confDir/$confFile" ));
+                error( sprintf( "Couldn't read the %s file", "$confDir/$confFile" ));
                 return 1;
             }
         }
@@ -441,7 +445,7 @@ sub _setVersion
     my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/rainloop";
     my $json = iMSCP::File->new( filename => "$packageDir/composer.json" )->get();
     unless ( defined $json ) {
-        error( sprintf( "Couldn't read %s file", "$packageDir/composer.json" ));
+        error( sprintf( "Couldn't read the %s file", "$packageDir/composer.json" ));
         return 1;
     }
 

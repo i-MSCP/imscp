@@ -51,7 +51,7 @@ iMSCP::EventManager->getInstance()->register(
     'afterCreatePostfixMaps',
     sub {
         my $mta = Servers::mta->factory();
-        while(my ($recipient, $transport) = each(%transportTableEntries)) {
+        while ( my ($recipient, $transport) = each( %transportTableEntries ) ) {
             my $rs = $mta->addMapEntry( $mta->{'config'}->{'MTA_TRANSPORT_HASH'}, "$recipient\t$transport" );
             return $rs if $rs;
         }

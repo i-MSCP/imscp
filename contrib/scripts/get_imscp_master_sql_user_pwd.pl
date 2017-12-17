@@ -24,13 +24,11 @@ use iMSCP::Bootstrapper;
 use iMSCP::Crypt qw/ decryptRijndaelCBC /;
 use iMSCP::Debug qw/ output /;
 
-iMSCP::Bootstrapper->getInstance()->boot(
-    {
-        mode            => 'backend',
-        nodatabase      => 1,
-        config_readonly => 1
-    }
-);
+iMSCP::Bootstrapper->getInstance()->boot( {
+    mode            => 'backend',
+    nodatabase      => 1,
+    config_readonly => 1
+} );
 
 my $passwd = decryptRijndaelCBC( $main::imscpKEY, $main::imscpIV, $main::imscpConfig{'DATABASE_PASSWORD'} );
 print output( sprintf( "Your i-MSCP master SQL user is         : \x1b[1m%s\x1b[0m", $main::imscpConfig{'DATABASE_USER'} ), 'info' );

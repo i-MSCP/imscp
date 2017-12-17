@@ -21,20 +21,29 @@
 
 package Listener::Bind9::Localnets;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
 use iMSCP::EventManager;
+use version;
+
+#
+## Please, don't edit anything below this line
+#
+
+version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+    sprintf( "The 10_named_localnets.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
+);
 
 iMSCP::EventManager->getInstance()->register(
-    'beforeNamedBuildConf',
+    'afterBind9BuildConf',
     sub {
         my ($tplContent, $tplName) = @_;
 
         return 0 unless $tplName eq 'named.conf.options';
 
-        $$tplContent =~ s/^(\s*allow-(?:recursion|query-cache|transfer)).*$/$1 { localnets; };/gm;
+        ${$tplContent} =~ s/^(\s*allow-(?:recursion|query-cache|transfer)).*$/$1 { localnets; };/gm;
         0;
     }
 );

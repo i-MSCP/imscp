@@ -32,7 +32,6 @@ use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::Getopt;
-use iMSCP::ProgramFinder;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -276,19 +275,16 @@ sub setEnginePermissions
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeWebstatsSetGuiPermissions' );
-    return $rs if $rs;
-
     for ( @{$self->{'SELECTED_PACKAGES'}} ) {
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package" or die( $@ );
         ( my $subref = $package->can( 'setEnginePermissions' ) ) or next;
         debug( sprintf( 'Executing setEnginePermissions action on %s', $package ));
-        $rs = $subref->( $package->getInstance());
+        my $rs = $subref->( $package->getInstance());
         return $rs if $rs;
     }
 
-    $self->{'eventManager'}->trigger( 'afterWebstatsSetGuiPermissions' );
+    0;
 }
 
 =item setGuiPermissions( )
@@ -303,19 +299,16 @@ sub setGuiPermissions
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeWebstatsSetGuiPermissions' );
-    return $rs if $rs;
-
     for ( @{$self->{'SELECTED_PACKAGES'}} ) {
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package" or die( $@ );
         ( my $subref = $package->can( 'setGuiPermissions' ) ) or next;
         debug( sprintf( 'Executing setGuiPermissions action on %s', $package ));
-        $rs = $subref->( $package->getInstance());
+        my $rs = $subref->( $package->getInstance());
         return $rs if $rs;
     }
 
-    $self->{'eventManager'}->trigger( 'afterWebstatsSetGuiPermissions' );
+    0;
 }
 
 =item addUser( \%data )
@@ -343,24 +336,24 @@ sub addUser
     0;
 }
 
-=item preaddDmn( \%data )
+=item preaddDomain( \%data )
 
- Process preAddDmn tasks
+ Process preaddDomain tasks
 
  Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub preaddDmn
+sub preaddDomain
 {
     my ($self, $data) = @_;
 
     for ( @{$self->{'SELECTED_PACKAGES'}} ) {
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package" or die( $@ );
-        ( my $subref = $package->can( 'preaddDmn' ) ) or next;
-        debug( sprintf( 'Executing preaddDmn action on %s', $package ));
+        ( my $subref = $package->can( 'preaddDomain' ) ) or next;
+        debug( sprintf( 'Executing preaddDomain action on %s', $package ));
         my $rs = $subref->( $package->getInstance(), $data );
         return $rs if $rs;
     }
@@ -368,24 +361,24 @@ sub preaddDmn
     0;
 }
 
-=item addDmn( \%data )
+=item addDomain( \%data )
 
- Process addDmn tasks
+ Process addDomain tasks
 
  Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub addDmn
+sub addDomain
 {
     my ($self, $data) = @_;
 
     for ( @{$self->{'SELECTED_PACKAGES'}} ) {
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package" or die( $@ );
-        ( my $subref = $package->can( 'addDmn' ) ) or next;
-        debug( sprintf( 'Executing addDmn action on %s', $package ));
+        ( my $subref = $package->can( 'addDomain' ) ) or next;
+        debug( sprintf( 'Executing addDomain action on %s', $package ));
         my $rs = $subref->( $package->getInstance(), $data );
         return $rs if $rs;
     }
@@ -393,24 +386,24 @@ sub addDmn
     0;
 }
 
-=item deleteDmn( \%data )
+=item deleteDomain( \%data )
 
- Process deleteDmn tasks
+ Process deleteDomain tasks
 
  Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteDmn
+sub deleteDomain
 {
     my ($self, $data) = @_;
 
     for ( @{$self->{'SELECTED_PACKAGES'}} ) {
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package" or die( $@ );
-        ( my $subref = $package->can( 'deleteDmn' ) ) or next;
-        debug( sprintf( 'Executing deleteDmn action on %s', $package ));
+        ( my $subref = $package->can( 'deleteDomain' ) ) or next;
+        debug( sprintf( 'Executing deleteDomain action on %s', $package ));
         my $rs = $subref->( $package->getInstance(), $data );
         return $rs if $rs;
     }
@@ -418,52 +411,52 @@ sub deleteDmn
     0;
 }
 
-=item preaddSub(\%data)
+=item preaddSubdomain(\%data)
 
- Process preaddSub tasks
+ Process preaddSubdomain tasks
 
  Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub preaddSub
+sub preaddSubdomain
 {
     my ($self, $data) = @_;
 
-    $self->preaddDmn( $data );
+    $self->preaddDomain( $data );
 }
 
-=item addSub( \%data )
+=item addSubbdomain( \%data )
 
- Process addSub tasks
+ Process addSubbdomain tasks
 
  Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub addSub
+sub addSubbdomain
 {
     my ($self, $data) = @_;
 
-    $self->addDmn( $data );
+    $self->addDomain( $data );
 }
 
-=item deleteSub( \%data )
+=item deleteSubdomain( \%data )
 
- Process deleteSub tasks
+ Process deleteSubdomain tasks
 
  Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub deleteSub
+sub deleteSubdomain
 {
     my ($self, $data) = @_;
 
-    $self->deleteDmn( $data );
+    $self->deleteDomain( $data );
 }
 
 =back
@@ -476,7 +469,7 @@ sub deleteSub
 
  Initialize instance
 
- Return Package::Webstats
+ Return Package::Webstats, die on failure
 
 =cut
 

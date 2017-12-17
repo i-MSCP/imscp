@@ -25,9 +25,9 @@ package Servers::sqld::remote;
 
 use strict;
 use warnings;
+use autouse 'iMSCP::Rights' => qw/ setRights /;
 use Class::Autouse qw/ :nostat Servers::sqld::remote::installer Servers::sqld::remote::uninstaller /;
 use iMSCP::Database;
-use iMSCP::Rights;
 use version;
 use parent 'Servers::sqld::mysql';
 
@@ -51,9 +51,9 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'remote' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeRemoteSqldPreinstall' );
     $rs ||= Servers::sqld::remote::installer->getInstance()->preinstall();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPreinstall', 'remote' )
+    $rs ||= $self->{'eventManager'}->trigger( 'afterRemoteSqldPreinstall' )
 }
 
 =item postinstall( )
@@ -68,8 +68,8 @@ sub postinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'remote' );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'remote' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeRemoteSqldPostInstall' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterRemoteSqldPostInstall' );
 }
 
 =item uninstall( )
@@ -84,9 +84,9 @@ sub uninstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'remote' );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeRemoteSqldUninstall' );
     $rs ||= Servers::sqld::remote::uninstaller->getInstance()->uninstall();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldUninstall', 'remote' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterRemoteSqldUninstall' );
 }
 
 =item restart( )
@@ -114,8 +114,7 @@ sub setEnginePermissions
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldSetEnginePermissions' );
-    $rs ||= setRights( "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf",
+    my $rs = setRights( "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf",
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ROOT_GROUP'},
@@ -129,7 +128,6 @@ sub setEnginePermissions
             mode  => '0640'
         }
     );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldSetEnginePermissions' );
 }
 
 =item createUser( $user, $host, $password )

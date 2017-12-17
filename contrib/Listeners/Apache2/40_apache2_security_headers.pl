@@ -22,7 +22,7 @@
 
 package Listener::Apache2::Security::Headers;
 
-our $VERSION = '1.0.1';
+our $VERSION = '1.0.2';
 
 use strict;
 use warnings;
@@ -41,7 +41,7 @@ version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' )
 iMSCP::EventManager->getInstance()->register(
     'beforeApache2BuildConf',
     sub {
-        my ($cfgTpl, $tplName, undef, $serverData) = @_;
+        my ($cfgTpl, $tplName, undef, undef, $serverData) = @_;
 
         return 0 unless $tplName eq 'domain.tpl' && grep( $_ eq $serverData->{'VHOST_TYPE'}, ( 'domain', 'domain_ssl' ) );
 

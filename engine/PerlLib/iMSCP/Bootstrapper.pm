@@ -185,10 +185,8 @@ sub _genKeys
     eval { require "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys.pl"; };
 
     if ( $@
-        || $main::imscpKEY eq '{KEY}'
-        || length( $main::imscpKEY ) != 32
-        || $main::imscpIV eq '{IV}'
-        || length( $main::imscpIV ) != 16
+        || $main::imscpKEY eq '{KEY}' || length( $main::imscpKEY ) != 32
+        || $main::imscpIV eq '{IV}' || length( $main::imscpIV ) != 16
         || ( defined $main::execmode && $main::execmode eq 'setup' && !-f "$main::imscpConfig{'CONF_DIR'}/imscp-db-keys.php" )
     ) {
         debug( 'Missing or invalid i-MSCP key files. Generating a new key files ...' );

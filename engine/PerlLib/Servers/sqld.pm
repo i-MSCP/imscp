@@ -26,8 +26,8 @@ package Servers::sqld;
 use strict;
 use warnings;
 
-# sqld server instance
-my $INSTANCE;
+# sqld server package name
+my $PACKAGE;
 
 =head1 DESCRIPTION
 
@@ -47,11 +47,11 @@ my $INSTANCE;
 
 sub factory
 {
-    return $INSTANCE if $INSTANCE;
+    return $PACKAGE->getInstance() if $PACKAGE;
 
-    my $package = $main::imscpConfig{'SQL_PACKAGE'} || 'Servers::noserver';
-    eval "require $package" or die( $@ );
-    $INSTANCE = $package->getInstance();
+    $PACKAGE = $main::imscpConfig{'SQL_PACKAGE'} || 'Servers::noserver';
+    eval "require $PACKAGE; 1" or die( $@ );
+    $PACKAGE->getInstance();
 }
 
 =item can( $method )
@@ -67,8 +67,10 @@ sub can
 {
     my (undef, $method) = @_;
 
+    return $PACKAGE->can( $method ) if $PACKAGE;
+
     my $package = $main::imscpConfig{'SQL_PACKAGE'} || 'Servers::noserver';
-    eval "require $package" or die( $@ );
+    eval "require $package; 1" or die( $@ );
     $package->can( $method );
 }
 

@@ -141,7 +141,11 @@ sub _removeConfig
     $rs ||= umount( $fsFile );
     return $rs if $rs;
 
-    iMSCP::Dir->new( dirname => $fsFile )->remove();
+    eval { iMSCP::Dir->new( dirname => $fsFile )->remove(); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
 
     # Remove the `postfix' user from the `mail' group
     $rs = iMSCP::SystemUser->new()->removeFromGroup(
@@ -154,7 +158,7 @@ sub _removeConfig
         my $file = iMSCP::File->new( filename => "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd" );
         my $fileContent = $file->get();
         unless ( defined $fileContent ) {
-            error( sprintf( "Couldn't read %s file", $file->{'filename'} ));
+            error( sprintf( "Couldn't read the %s file", $file->{'filename'} ));
             return 1;
         }
 
@@ -163,7 +167,6 @@ sub _removeConfig
         );
 
         $file->set( $fileContent );
-
         $rs = $file->save();
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
         $rs ||= $file->mode( 0644 );

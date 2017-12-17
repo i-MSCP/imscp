@@ -215,9 +215,7 @@ sub retrieve
         %hash = @_;
     }
 
-    my $args = check( $tmpl, \%hash ) or (
-        warn( sprintf( "Couldn't parse input: %s", Params::Check->last_error )), return
-    );
+    my $args = check( $tmpl, \%hash ) or ( warn( sprintf( "Couldn't parse input: %s", Params::Check->last_error )), return );
 
     my @list = ();
     for( @{$self->{'stack'}} ) {

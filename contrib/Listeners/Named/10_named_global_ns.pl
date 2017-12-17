@@ -64,8 +64,12 @@ my @NAMESERVERS = (
 ## Please, don't edit anything below this line
 #
 
+version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+    sprintf( "The 10_named_global_ns.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
+);
+
 iMSCP::EventManager->getInstance()->register(
-    'beforeNamedAddDmnDb',
+    'beforeBind9AddDomainDb',
     sub {
         my ($tpl, $moduleData) = @_;
 

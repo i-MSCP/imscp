@@ -26,7 +26,6 @@ package Package::FileManager::Pydio::Pydio;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Package::FileManager::Pydio::Installer Package::FileManager::Pydio::Uninstaller /;
-use iMSCP::Rights;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

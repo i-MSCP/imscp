@@ -76,7 +76,6 @@ sub setupBoot
     }
 
     tie %main::imscpOldConfig, 'iMSCP::Config', fileName => "$main::imscpConfig{'CONF_DIR'}/imscpOld.conf";
-
     0;
 }
 

@@ -27,8 +27,8 @@ use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Package::Webmail::Roundcube::Installer Package::Webmail::Roundcube::Uninstaller /;
 use iMSCP::Config;
-use iMSCP::Debug;
 use iMSCP::Database;
+use iMSCP::Debug qw/ error /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION

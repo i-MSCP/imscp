@@ -21,15 +21,24 @@
 
 package Listener::Postfix::Submission::TLS;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
 use iMSCP::EventManager;
 use Servers::mta;
+use version;
+
+#
+## Please, don't edit anything below this line
+#
+
+version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' ) or die(
+    sprintf( "The 70_postfix_submission_tls.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
+);
 
 iMSCP::EventManager->getInstance()->register(
-    'afterMtaBuildMasterCfFile',
+    'afterPostfixBuildMasterCfFile',
     sub {
         my $content = shift;
 
@@ -48,7 +57,7 @@ EOF
 );
 
 iMSCP::EventManager->getInstance()->register(
-    'afterMtaBuildConf',
+    'afterPostfixBuildConf',
     sub {
         # smtpd_tls_security_level=encrypt means mandatory.
         # Make sure to disable vulnerable SSL versions
@@ -61,7 +70,7 @@ iMSCP::EventManager->getInstance()->register(
             )
         );
     },
-    - 99
+    -99
 );
 
 1;

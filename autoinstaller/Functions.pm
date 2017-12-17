@@ -47,9 +47,6 @@ use parent 'Exporter';
 
 our @EXPORT_OK = qw/ loadConfig build install /;
 
-my $autoinstallerAdapterInstance;
-my $eventManager;
-
 =head1 DESCRIPTION
 
  Common functions for the i-MSCP installer
@@ -105,7 +102,8 @@ sub loadConfig
     $main::imscpConfig{'DISTRO_CODENAME'} = lc( iMSCP::LsbRelease->getInstance()->getCodename( 'short' ));
     $main::imscpConfig{'DISTRO_RELEASE'} = iMSCP::LsbRelease->getInstance()->getRelease( 'short', 'force_numeric' );
 
-    $eventManager = iMSCP::EventManager->getInstance();
+    # Load listener files
+    iMSCP::EventManager->getInstance();
 }
 
 =item build( )
@@ -161,7 +159,7 @@ sub build
         [ \&_savePersistentData, 'Saving persistent data' ]
     );
 
-    $rs = $eventManager->trigger( 'preBuild', \@steps );
+    $rs = iMSCP::EventManager->getInstance()->trigger( 'preBuild', \@steps );
     $rs ||= _getDistributionAdapter()->preBuild( \@steps );
     return $rs if $rs;
 
@@ -175,11 +173,9 @@ sub build
 
     iMSCP::Dialog->getInstance()->endGauge();
 
-    $rs = $eventManager->trigger( 'postBuild' );
+    $rs = iMSCP::EventManager->getInstance()->trigger( 'postBuild' );
     $rs ||= _getDistributionAdapter()->postBuild();
     return $rs if $rs;
-
-    undef $autoinstallerAdapterInstance;
 
     # Clean build directory (remove any .gitkeep file)
     find(
@@ -190,7 +186,7 @@ sub build
         $main::{'INST_PREF'}
     );
 
-    $rs = $eventManager->trigger( 'afterPostBuild' );
+    $rs = iMSCP::EventManager->getInstance()->trigger( 'afterPostBuild' );
     return $rs if $rs;
 
     my %confmap = (
@@ -271,7 +267,7 @@ EOF
         [ \&main::setupDeleteBuildDir, 'Deleting build directory' ]
     );
 
-    my $rs = $eventManager->trigger( 'preInstall', \@steps );
+    my $rs = iMSCP::EventManager->getInstance()->trigger( 'preInstall', \@steps );
     $rs ||= _getDistributionAdapter()->preInstall( \@steps );
     return $rs if $rs;
 
@@ -286,7 +282,7 @@ EOF
 
     iMSCP::Dialog->getInstance()->endGauge();
 
-    $rs = $eventManager->trigger( 'postInstall' );
+    $rs = iMSCP::EventManager->getInstance()->trigger( 'postInstall' );
     $rs ||= _getDistributionAdapter()->postInstall();
     return $rs if $rs;
 
@@ -1020,14 +1016,9 @@ sub _processCopyNode
 
 sub _getDistributionAdapter
 {
-    return $autoinstallerAdapterInstance if $autoinstallerAdapterInstance;
-
-    my $adapterName = ucfirst( $main::imscpConfig{'DISTRO_ID'} ) . 'Adapter';
-    my $file = "$FindBin::Bin/autoinstaller/Adapter/$adapterName.pm";
-    my $adapterClass = "autoinstaller::Adapter::${adapterName}";
-
-    require $file;
-    $autoinstallerAdapterInstance = $adapterClass->new();
+    my $package = 'autoinstaller::Adapter::'.ucfirst( $main::imscpConfig{'DISTRO_ID'} ) . 'Adapter';
+    eval "require $package; 1" or die( $@ );
+    $package->getInstance();
 }
 
 =back

@@ -27,9 +27,8 @@ use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Package::PhpMyAdmin::Installer Package::PhpMyAdmin::Uninstaller /;
 use iMSCP::Config;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::EventManager;
-use iMSCP::Rights;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
