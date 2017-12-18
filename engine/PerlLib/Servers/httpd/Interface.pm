@@ -60,7 +60,7 @@ sub addUser
 
  The following events *MUST* be triggered:
   - before<SNAME>DeleteUser( \%moduleData )
-  - after<SNAME>DelteUser( \%moduleData )
+  - after<SNAME>DeleteUser( \%moduleData )
 
  Param hashref \%moduleData User data as provided by User module
  Return int 0 on success, other on failure
