@@ -87,6 +87,7 @@ PHP_FCGID_MAX_PROCESS_PER_CLASS = 6
 
 PHP_FPM_BIN_PATH =
 PHP_FPM_POOL_DIR_PATH =
+PHP_FPM_RUN_DIR =
 
 #
 ## Global parameters
@@ -106,7 +107,7 @@ PHP_FPM_RLIMIT_FILES = 4096
 # Listen mode (FPM FastCGI addresse type):
 # Available modes:
 #  - 'tcp' (e.g. 192.168.1.136:9001)
-#  - 'uds' (e.g. /run/php/php<version>-fpm-domain.tld.sock)
+#  - 'uds' (e.g. {PHP_FPM_RUN_DIR}/php<version>-fpm-domain.tld.sock)
 PHP_FPM_LISTEN_MODE =
 
 # Starting port for TCP/IP FastCGI address type
