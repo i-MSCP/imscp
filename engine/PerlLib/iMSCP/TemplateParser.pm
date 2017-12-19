@@ -76,7 +76,7 @@ sub processByRef( $$ )
     ref $data eq 'HASH' or die( 'Invalid $data parameter. Hash expected.' );
     ref $template eq 'SCALAR' or die( 'Invalid $template parameter. Scalar expected.' );
 
-    # Process twice to covers cases where there are placeholders containing other placeholder(s)
+    # Process twice to cover cases where there are placeholders defining other placeholder(s)
     ${$template} =~ s#(?<!%)\{([a-zA-Z0-9_]+)\}#$data->{$1} // "{$1}"#ge for 0 .. 1;
 }
 
