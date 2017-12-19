@@ -832,7 +832,7 @@ END
 
         my $instance = __PACKAGE__->hasInstance();
 
-        return 0 unless $instance && $instance->{'config'}->{'PHP_SAPI'} ne 'fpm' && (
+        return 0 unless $instance && $instance->{'config'}->{'PHP_SAPI'} eq 'fpm' && (
             my $action = $instance->{'restart'} ? 'restart' : ( $instance->{'reload'} ? 'reload' : ( $instance->{'start'} ? ' start' : undef ) )
         );
 
