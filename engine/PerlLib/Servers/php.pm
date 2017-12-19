@@ -27,7 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Service;
 
-# PHP server package name
+# PHP Servers::php::Abstract concret implementation package name
 my $PACKAGE;
 
 =head1 DESCRIPTION
@@ -53,7 +53,7 @@ sub getPriority
 
 =item factory( )
 
- Create and return a Servers::php instance
+ Create and return a Servers::php::Abstract instance
 
  Return Servers::php
 

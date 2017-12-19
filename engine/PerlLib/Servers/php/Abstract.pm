@@ -64,12 +64,12 @@ sub preinstall
     my ($self) = @_;
 
     eval { $self->_guessVariablesForSelectedPhpAlternative(); };
-    if($@) {
-        error( $@);
+    if ( $@ ) {
+        error( $@ );
         return 1;
     }
 
-    1;
+    0;
 }
 
 =item setEnginePermissions( )
@@ -607,7 +607,7 @@ sub _buildFpmConfig
             EMAIL_DOMAIN                 => $emailDomain,
             PHP_CONFIG_LEVEL             => $phpConfigLevel,
             PHP_FPM_LISTEN_ENDPOINT      => ( $self->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds' )
-                ? "/run/php/php{PHP_VERSION}-fpm-{PHP_CONFIG_LEVEL}.sock"
+                ? "$self->{'config'}->{'PHP_FPM_RUN_DIR'}/php$self->{'config'}->{'PHP_VERSION'}-fpm-$phpConfigLevel.sock"
                 : '127.0.0.1:' . ( $self->{'config'}->{'PHP_FPM_LISTEN_PORT_START'}+$moduleData->{'PHP_FPM_LISTEN_PORT'} ),
             PHP_FPM_MAX_CHILDREN         => $self->{'config'}->{'PHP_FPM_MAX_CHILDREN'} // 6,
             PHP_FPM_MAX_REQUESTS         => $self->{'config'}->{'PHP_FPM_MAX_REQUESTS'} // 1000,
@@ -616,7 +616,6 @@ sub _buildFpmConfig
             PHP_FPM_PROCESS_IDLE_TIMEOUT => $self->{'config'}->{'PHP_FPM_PROCESS_IDLE_TIMEOUT'} || '60s',
             PHP_FPM_PROCESS_MANAGER_MODE => $self->{'config'}->{'PHP_FPM_PROCESS_MANAGER_MODE'} || 'ondemand',
             PHP_FPM_START_SERVERS        => $self->{'config'}->{'PHP_FPM_START_SERVERS'} // 1,
-            PHP_VERSION                  => $self->{'config'}->{'PHP_VERSION'},
             TMPDIR                       => "$moduleData->{'HOME_DIR'}/phptmp"
         };
 
@@ -662,11 +661,11 @@ sub _cleanup
 
 =over 4
 
-=item beforeApache2BuildConfFile( $phpServer, \$cfgTpl, $filename, \$trgFile, \%moduleData, \%apache2ServerData, \%apache2ServerConfig, $parameters )
+=item beforeApache2BuildConfFile( $self, \$cfgTpl, $filename, \$trgFile, \%moduleData, \%apache2ServerData, \%apache2ServerConfig, $parameters )
 
  Event listener that inject PHP configuration in Apache2 vhosts
 
- Param scalar $phpServer Servers::php::Abstract instance
+ Param scalar self Servers::php::Abstract instance
  Param scalar \$scalar Reference to Apache2 vhost content
  Param string $filename Apache2 template name
  Param scalar \$trgFile Target file path
@@ -684,21 +683,21 @@ sub _cleanup
 
 sub beforeApache2BuildConfFile
 {
-    my ($phpServer, $cfgTpl, $filename, $trgFile, $moduleData, $apache2ServerData, $apache2ServerConfig, $parameters) = @_;
+    my ($self, $cfgTpl, $filename, $trgFile, $moduleData, $apache2ServerData, $apache2ServerConfig, $parameters) = @_;
 
     return 0 unless $filename eq 'domain.tpl' && grep( $_ eq $apache2ServerData->{'VHOST_TYPE'}, ( 'domain', 'domain_ssl' ) );
 
-    $phpServer->{'eventManager'}->trigger(
-        'beforePhpApache2BuildConfFile', $phpServer, $cfgTpl, $filename, $trgFile, $moduleData, $apache2ServerData, $apache2ServerConfig, $parameters
+    $self->{'eventManager'}->trigger(
+        'beforePhpApache2BuildConfFile', $self, $cfgTpl, $filename, $trgFile, $moduleData, $apache2ServerData, $apache2ServerConfig, $parameters
     );
 
     debug( sprintf( 'Injecting PHP configuration in Apache2 vhost for the %s domain', $moduleData->{'DOMAIN_NAME'} ));
 
     my ($phpConfigLevel, $emailDomain);
-    if ( $phpServer->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_user' ) {
+    if ( $self->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_user' ) {
         $phpConfigLevel = $moduleData->{'ROOT_DOMAIN_NAME'};
         $emailDomain = $moduleData->{'ROOT_DOMAIN_NAME'};
-    } elsif ( $phpServer->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_domain' ) {
+    } elsif ( $self->{'config'}->{'PHP_CONFIG_LEVEL'} eq 'per_domain' ) {
         $phpConfigLevel = $moduleData->{'PARENT_DOMAIN_NAME'};
         $emailDomain = $moduleData->{'DOMAIN_NAME'};
     } else {
@@ -706,7 +705,7 @@ sub beforeApache2BuildConfFile
         $emailDomain = $moduleData->{'DOMAIN_NAME'};
     }
 
-    if ( $phpServer->{'config'}->{'PHP_SAPI'} eq 'apache2handler' ) {
+    if ( $self->{'config'}->{'PHP_SAPI'} eq 'apache2handler' ) {
         if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
             @{$apache2ServerData}{qw/ EMAIL_DOMAIN TMPDIR /} = ( $emailDomain, $moduleData->{'HOME_DIR'} . '/phptmp' );
 
@@ -746,16 +745,16 @@ EOF
     # SECTION addons END.
 EOF
         }
-    } elsif ( $phpServer->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+    } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
         if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
             @{$apache2ServerData}{
                 qw/ PHP_CONFIG_LEVEL PHP_FCGI_STARTER_DIR PHP_FCGID_BUSY_TIMEOUT PHP_FCGID_MIN_PROCESSES_PER_CLASS PHP_FCGID_MAX_PROCESS_PER_CLASS /
             } = (
                 $phpConfigLevel,
-                $phpServer->{'config'}->{'PHP_FCGI_STARTER_DIR'},
+                $self->{'config'}->{'PHP_FCGI_STARTER_DIR'},
                 $moduleData->{'MAX_EXECUTION_TIME'}+10,
-                $phpServer->{'config'}->{'PHP_FCGID_MIN_PROCESSES_PER_CLASS'} || 0,
-                $phpServer->{'config'}->{'PHP_FCGID_MAX_PROCESS_PER_CLASS'} || 6
+                $self->{'config'}->{'PHP_FCGID_MIN_PROCESSES_PER_CLASS'} || 0,
+                $self->{'config'}->{'PHP_FCGID_MAX_PROCESS_PER_CLASS'} || 6
             );
 
             replaceBlocByRef( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF", $cfgTpl );
@@ -791,18 +790,17 @@ EOF
     # SECTION addons END.
 EOF
         }
-    } elsif ( $phpServer->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+    } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
         if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
             @{$apache2ServerData}{
                 qw/ PHP_CONFIG_LEVEL PROXY_FCGI_PATH PROXY_FCGI_URL PROXY_FCGI_RETRY PROXY_FCGI_CONNECTION_TIMEOUT PROXY_FCGI_TIMEOUT /
             } = (
                 $phpConfigLevel,
-                ( $phpServer->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
-                    ? "unix:/run/php/php$phpServer->{'config'}->{'PHP_VERSION'}-fpm-{PHP_CONFIG_LEVEL}.sock|" : ''
+                ( $self->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
+                    ? "unix:$self->{'config'}->{'PHP_FPM_RUN_DIR'}/php$self->{'config'}->{'PHP_VERSION'}-fpm-$phpConfigLevel.sock|" : ''
                 ),
-                ( 'fcgi://' . ( $phpServer->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
-                    ? '{PHP_CONFIG_LEVEL}'
-                    : '127.0.0.1:' . ( $phpServer->{'config'}->{'PHP_FPM_LISTEN_PORT_START'}+$moduleData->{'PHP_FPM_LISTEN_PORT'} ) )
+                ( 'fcgi://' . ( $self->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
+                    ? $phpConfigLevel : '127.0.0.1:' . ( $self->{'config'}->{'PHP_FPM_LISTEN_PORT_START'}+$moduleData->{'PHP_FPM_LISTEN_PORT'} ) )
                 ),
                 0,
                 5,
@@ -851,8 +849,8 @@ EOF
         return 1;
     }
 
-    $phpServer->{'eventManager'}->trigger(
-        'afterPhpApache2BuildConfFile', $phpServer, $cfgTpl, $filename, $trgFile, $moduleData, $apache2ServerData, $apache2ServerConfig, $parameters
+    $self->{'eventManager'}->trigger(
+        'afterPhpApache2BuildConfFile', $self, $cfgTpl, $filename, $trgFile, $moduleData, $apache2ServerData, $apache2ServerConfig, $parameters
     );
 }
 

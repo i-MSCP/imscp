@@ -305,16 +305,17 @@ sub install
             PEAR_DIR                            => $self->{'config'}->{'PHP_PEAR_DIR'} || '/usr/share/php',
             PHP_APCU_CACHE_ENABLED              => $self->{'config'}->{'PHP_APCU_CACHE_ENABLED'} // 1,
             PHP_APCU_CACHE_MAX_MEMORY           => $self->{'config'}->{'PHP_APCU_CACHE_MAX_MEMORY'} || 32,
-            PHP_CONF_DIR_PATH                   => '/etc/php',
-            PHP_FPM_LOG_LEVEL                   => $self->{'config'}->{'PHP_FPM_LOG_LEVEL'} || 'error',
+            PHP_CONF_DIR_PATH                   => $self->{'PHP_CONF_DIR_PATH'} || '/etc/php',
             PHP_FPM_EMERGENCY_RESTART_THRESHOLD => $self->{'config'}->{'PHP_FPM_EMERGENCY_RESTART_THRESHOLD'} || 10,
             PHP_FPM_EMERGENCY_RESTART_INTERVAL  => $self->{'config'}->{'PHP_FPM_EMERGENCY_RESTART_INTERVAL'} || '1m',
+            PHP_FPM_LOG_LEVEL                   => $self->{'config'}->{'PHP_FPM_LOG_LEVEL'} || 'error',
             PHP_FPM_PROCESS_CONTROL_TIMEOUT     => $self->{'config'}->{'PHP_FPM_PROCESS_CONTROL_TIMEOUT'} || '60s',
             PHP_FPM_PROCESS_MAX                 => $self->{'config'}->{'PHP_FPM_PROCESS_MAX'} || 0,
             PHP_FPM_RLIMIT_FILES                => $self->{'config'}->{'PHP_FPM_RLIMIT_FILES'} || 4096,
+            PHP_FPM_RUN_DIR                     => $self->{'PHP_FPM_RUN_DIR'} || '/run/php',
             PHP_OPCODE_CACHE_ENABLED            => $self->{'config'}->{'PHP_OPCODE_CACHE_ENABLED'} // 1,
             PHP_OPCODE_CACHE_MAX_MEMORY         => $self->{'config'}->{'PHP_OPCODE_CACHE_MAX_MEMORY'} || 32,
-            TIMEZONE                            => $main::imscpConfig{'TIMEZONE'} || 'UTC'
+            TIMEZONE                            => $main::imscpConfig{'TIMEZONE'} || 'UTC',
         };
 
         for my $phpVersion( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
@@ -778,6 +779,8 @@ sub _guessVariablesForSelectedPhpAlternative
     for ( qw/ PHP_CLI_BIN_PATH PHP_FCGI_BIN_PATH PHP_FPM_BIN_PATH / ) {
         $self->{'config'}->{$_} or die( sprintf( "Couldn't guess the `%s' PHP configuration parameter value for the selected PHP alternative.", $_ ));
     }
+
+    $self->{'config'}->{'PHP_FPM_RUN_DIR'} = '/run/php';
 }
 
 =item _cleanup( )
@@ -790,19 +793,19 @@ sub _cleanup
 {
     my ($self) = @_;
 
-    if ( "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm" ) {
-        my $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/php.old.data" )->delFile();
+    if ( -f "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm" ) {
+        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm" )->delFile();
         return $rs if $rs;
     }
 
     eval { iMSCP::Dir->new( dirname => '/etc/php5' )->remove(); };
     if ( $@ ) {
         error( $@ );
-        return $rs if $rs;
+        return 1;
     }
 
     my $httpd = Servers::httpd->factory();
-    $rs = $httpd->disableModules( qw/ fastcgi_imscp php5 php5_cgi php5filter php_fpm_imscp proxy_handler / );
+    my $rs = $httpd->disableModules( qw/ fastcgi_imscp php5 php5_cgi php5filter php_fpm_imscp proxy_handler / );
     return $rs if $rs;
 
     for ( 'fastcgi_imscp.conf', 'fastcgi_imscp.load', 'php_fpm_imscp.conf', 'php_fpm_imscp.load' ) {
