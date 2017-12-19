@@ -28,6 +28,10 @@
         <td>{TR_IMSCP_CODENAME}</td>
         <td><?= $this->config['CodeName']; ?></td>
     </tr>
+        <tr>
+        <td>{TR_IMSCP_BUILD}</td>
+        <td><?= $this->config['BuildDate'] ?: tr('Unknown'); ?></td>
+    </tr>
     <tr>
         <td>{TR_IMSCP_PLUGIN_API_VERSION}</td>
         <td><?= $this->config['PluginApi']; ?></td>
