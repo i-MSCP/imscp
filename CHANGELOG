@@ -9,6 +9,7 @@ BACKEND
     Added: getBlocByRef(), processByRef() and replaceBlocByRef() subroutines (iMSCP::TemplateParser)
     Added: Support for .timer unit files (Systemd init provider)
     Added: Version check (minimum version) for non-core Perl modules (iMSCP::Requirements)
+    Enhancement: Make it possible to define placeholders in placeholders (iMSCP::TemplateParser)
     Enhancement: Make it possible to delay execution of the 'start', 'restart' and 'reload' actions (iMSCP::Service)
     Enhancement: Make it possible to discard files/directories when clearing a directory (iMSCP::Dir::clear)
     Enhancement: Make it possible to install Composer anywhere (iMSCP::Composer)

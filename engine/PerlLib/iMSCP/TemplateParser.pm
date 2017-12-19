@@ -53,11 +53,7 @@ sub process( $$ )
 {
     my ($data, $template) = @_;
 
-    while ( my ($placeholder, $value) = each( %{$data} ) ) {
-        next unless defined $value;
-        $template =~ s/(?<!%)\Q{$placeholder}\E/$value/gim
-    }
-
+    processByRef( $data, \$template );
     $template;
 }
 
@@ -66,7 +62,8 @@ sub process( $$ )
  Replace placeholders in the given template
 
  Param hashref \%data A hash of data where the keys are the pseudo-variable
-                      names and the values, the replacement values
+                      names (composed of a-zA-Z0-9_ characters) and the values,
+                      the replacement values
  Param scalaref \$template Reference to template content
  Return void
 
@@ -76,10 +73,11 @@ sub processByRef( $$ )
 {
     my ($data, $template) = @_;
 
-    while ( my ($placeholder, $value) = each( %{$data} ) ) {
-        next unless defined $value;
-        ${$template} =~ s/(?<!%)\Q{$placeholder}\E/$value/gim
-    }
+    ref $data eq 'HASH' or die( 'Invalid $data parameter. Hash expected.' );
+    ref $template eq 'SCALAR' or die( 'Invalid $template parameter. Scalar expected.' );
+
+    # Process twice to covers cases where there are placeholders containing other placeholder(s)
+    ${$template} =~ s#(?<!%)\{([a-zA-Z0-9_]+)\}#$data->{$1} // "{$1}"#ge for 0 .. 1;
 }
 
 =item getBloc( $beginTag, $endingTag, $template [, $includeTags = false ] )
