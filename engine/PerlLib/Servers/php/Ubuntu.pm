@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::php:::Devuan - i-MSCP (Ubuntu) PHP server implementation
+ Servers::php:::Ubuntu - i-MSCP (Ubuntu) PHP server implementation
 
 =cut
 
