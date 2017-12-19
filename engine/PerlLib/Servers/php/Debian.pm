@@ -305,17 +305,17 @@ sub install
             PEAR_DIR                            => $self->{'config'}->{'PHP_PEAR_DIR'} || '/usr/share/php',
             PHP_APCU_CACHE_ENABLED              => $self->{'config'}->{'PHP_APCU_CACHE_ENABLED'} // 1,
             PHP_APCU_CACHE_MAX_MEMORY           => $self->{'config'}->{'PHP_APCU_CACHE_MAX_MEMORY'} || 32,
-            PHP_CONF_DIR_PATH                   => $self->{'PHP_CONF_DIR_PATH'} || '/etc/php',
+            PHP_CONF_DIR_PATH                   => $self->{'config'}->{'PHP_CONF_DIR_PATH'} || '/etc/php',
             PHP_FPM_EMERGENCY_RESTART_THRESHOLD => $self->{'config'}->{'PHP_FPM_EMERGENCY_RESTART_THRESHOLD'} || 10,
             PHP_FPM_EMERGENCY_RESTART_INTERVAL  => $self->{'config'}->{'PHP_FPM_EMERGENCY_RESTART_INTERVAL'} || '1m',
             PHP_FPM_LOG_LEVEL                   => $self->{'config'}->{'PHP_FPM_LOG_LEVEL'} || 'error',
             PHP_FPM_PROCESS_CONTROL_TIMEOUT     => $self->{'config'}->{'PHP_FPM_PROCESS_CONTROL_TIMEOUT'} || '60s',
             PHP_FPM_PROCESS_MAX                 => $self->{'config'}->{'PHP_FPM_PROCESS_MAX'} || 0,
             PHP_FPM_RLIMIT_FILES                => $self->{'config'}->{'PHP_FPM_RLIMIT_FILES'} || 4096,
-            PHP_FPM_RUN_DIR                     => $self->{'PHP_FPM_RUN_DIR'} || '/run/php',
+            PHP_FPM_RUN_DIR                     => $self->{'config'}->{'PHP_FPM_RUN_DIR'} || '/run/php',
             PHP_OPCODE_CACHE_ENABLED            => $self->{'config'}->{'PHP_OPCODE_CACHE_ENABLED'} // 1,
             PHP_OPCODE_CACHE_MAX_MEMORY         => $self->{'config'}->{'PHP_OPCODE_CACHE_MAX_MEMORY'} || 32,
-            TIMEZONE                            => $main::imscpConfig{'TIMEZONE'} || 'UTC',
+            TIMEZONE                            => $main::imscpConfig{'TIMEZONE'} || 'UTC'
         };
 
         for my $phpVersion( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
