@@ -28,7 +28,7 @@ use warnings;
 use File::Basename;
 use File::Spec;
 use autouse 'iMSCP::Dialog::InputValidation' => qw/ isStringInList /;
-use Class::Autouse qw/ :nostat iMSCP::Getopt iMSCP::ProgramFinder /;
+use Class::Autouse qw/ :nostat iMSCP::Getopt iMSCP::ProgramFinder Servers::httpd /;
 use iMSCP::Debug qw/ error getMessageByType /;
 use iMSCP::Dir;
 use iMSCP::File;
