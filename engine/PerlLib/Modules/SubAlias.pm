@@ -186,7 +186,7 @@ sub _getData
     my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}" );
     my $webDir = File::Spec->canonpath( "$homeDir/$self->{'subdomain_alias_mount'}" );
     my $documentRoot = File::Spec->canonpath( "$webDir/$self->{'subdomain_alias_document_root'}" );
-    my $confLevel = ${$php}->{'config'}->{'PHP_CONFIG_LEVEL'};
+    my $confLevel = $php->{'config'}->{'PHP_CONFIG_LEVEL'};
 
     if ( $confLevel eq 'per_user' ) {
         $confLevel = 'dmn';
