@@ -29,11 +29,9 @@ use iMSCP::Crypt qw/ decryptRijndaelCBC /;
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
-use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::TemplateParser qw/ processByRef /;
-use Servers::sqld::percona;
 use parent 'Servers::sqld::mysql::installer';
 
 =head1 DESCRIPTION
@@ -43,25 +41,6 @@ use parent 'Servers::sqld::mysql::installer';
 =head1 PRIVATE METHODS
 
 =over 4
-
-=item _init( )
-
- Initialize instance
-
- Return Servers::sqld::percona:installer
-
-=cut
-
-sub _init
-{
-    my ($self) = @_;
-
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'sqld'} = Servers::sqld::percona->getInstance();
-    $self->{'cfgDir'} = $self->{'sqld'}->{'cfgDir'};
-    $self->{'config'} = $self->{'sqld'}->{'config'};
-    $self;
-}
 
 =item _setType( )
 
@@ -76,7 +55,7 @@ sub _setType
     my ($self) = @_;
 
     debug( sprintf( 'SQL server type set to: %s', 'percona' ));
-    $self->{'config'}->{'SQLD_TYPE'} = 'mysql';
+    $self->{'sqld'}->{'config'}->{'SQLD_TYPE'} = 'mysql';
     0;
 }
 
@@ -92,12 +71,12 @@ sub _buildConf
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePerconaBuildConf' );
+    my $rs = $self->{'sqld'}->{'eventManager'}->trigger( 'beforePerconaBuildConf' );
     return $rs if $rs;
 
     eval {
         # Make sure that the conf.d directory exists
-        iMSCP::Dir->new( dirname => "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d" )->make( {
+        iMSCP::Dir->new( dirname => "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d" )->make( {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ROOT_GROUP'},
             mode  => 0755
@@ -109,17 +88,17 @@ sub _buildConf
     }
 
     # Create the /etc/mysql/my.cnf file if missing
-    unless ( -f "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf" ) {
-        $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'my.cnf', \ my $cfgTpl, {} );
+    unless ( -f "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/my.cnf" ) {
+        $rs = $self->{'sqld'}->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'my.cnf', \ my $cfgTpl, {} );
         return $rs if $rs;
 
         unless ( defined $cfgTpl ) {
-            $cfgTpl = "!includedir $self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n";
-        } elsif ( $cfgTpl !~ m%^!includedir\s+$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n%m ) {
-            $cfgTpl .= "!includedir $self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n";
+            $cfgTpl = "!includedir $self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n";
+        } elsif ( $cfgTpl !~ m%^!includedir\s+$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n%m ) {
+            $cfgTpl .= "!includedir $self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n";
         }
 
-        my $file = iMSCP::File->new( filename => "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf" );
+        my $file = iMSCP::File->new( filename => "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/my.cnf" );
         $file->set( $cfgTpl );
         $rs = $file->save();
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
@@ -127,13 +106,13 @@ sub _buildConf
         return $rs if $rs;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'percona', 'imscp.cnf', \ my $cfgTpl, {} );
+    $rs ||= $self->{'sqld'}->{'eventManager'}->trigger( 'onLoadTemplate', 'percona', 'imscp.cnf', \ my $cfgTpl, {} );
     return $rs if $rs;
 
     unless ( defined $cfgTpl ) {
-        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp.cnf" )->get();
+        $cfgTpl = iMSCP::File->new( filename => "$self->{'sqld'}->{'cfgDir'}/imscp.cnf" )->get();
         unless ( defined $cfgTpl ) {
-            error( sprintf( "Couldn't read %s", "$self->{'cfgDir'}/imscp.cnf" ));
+            error( sprintf( "Couldn't read %s", "$self->{'sqld'}->{'cfgDir'}/imscp.cnf" ));
             return 1;
         }
     }
@@ -148,7 +127,7 @@ EOF
 
     $cfgTpl .= "innodb_use_native_aio = @{[ $self->_isMysqldInsideCt() ? 0 : 1 ]}\n";
 
-    my $version = version->parse( "$self->{'config'}->{'SQLD_VERSION'}" );
+    my $version = version->parse( "$self->{'sqld'}->{'config'}->{'SQLD_VERSION'}" );
 
     # Fix For: The 'INFORMATION_SCHEMA.SESSION_VARIABLES' feature is disabled; see the documentation for
     # 'show_compatibility_56' (3167) - Occurs when executing mysqldump with Percona server 5.7.x
@@ -157,14 +136,14 @@ EOF
     $cfgTpl .= "default_password_lifetime = 0\n" if $version >= version->parse( '5.7.4' );
     $cfgTpl .= "event_scheduler = DISABLED\n";
 
-    processByRef( { SQLD_SOCK_DIR => $self->{'config'}->{'SQLD_SOCK_DIR'} }, \$cfgTpl );
+    processByRef( { SQLD_SOCK_DIR => $self->{'sqld'}->{'config'}->{'SQLD_SOCK_DIR'} }, \$cfgTpl );
 
-    my $file = iMSCP::File->new( filename => "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf" );
+    my $file = iMSCP::File->new( filename => "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf" );
     $file->set( $cfgTpl );
     $rs = $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPerconaBuildConf' );
+    $rs ||= $self->{'sqld'}->{'eventManager'}->trigger( 'afterPerconaBuildConf' );
 }
 
 =item _updateServerConfig( )
@@ -207,7 +186,7 @@ EOF
 
     # Disable unwanted plugins
 
-    return 0 if version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) < version->parse( '5.6.6' );
+    return 0 if version->parse( "$self->{'sqld'}->{'config'}->{'SQLD_VERSION'}" ) < version->parse( '5.6.6' );
 
     eval {
         my $dbh = iMSCP::Database->getInstance()->getRawDb();

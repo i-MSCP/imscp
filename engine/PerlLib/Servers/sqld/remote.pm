@@ -52,7 +52,7 @@ sub preinstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeRemoteSqldPreinstall' );
-    $rs ||= Servers::sqld::remote::installer->getInstance()->preinstall();
+    $rs ||= Servers::sqld::remote::installer->getInstance( sqld => $self )->preinstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterRemoteSqldPreinstall' )
 }
 
@@ -85,7 +85,7 @@ sub uninstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeRemoteSqldUninstall' );
-    $rs ||= Servers::sqld::remote::uninstaller->getInstance()->uninstall();
+    $rs ||= Servers::sqld::remote::uninstaller->getInstance( sqld => $self )->uninstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterRemoteSqldUninstall' );
 }
 

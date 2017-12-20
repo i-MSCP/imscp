@@ -51,7 +51,7 @@ sub preinstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMariaDbPreinstall' );
-    $rs ||= Servers::sqld::mariadb::installer->getInstance()->preinstall();
+    $rs ||= Servers::sqld::mariadb::installer->getInstance( sqld => $self )->preinstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterMariaDbPreinstall' )
 }
 
@@ -100,7 +100,7 @@ sub uninstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMariaDbUninstall' );
-    $rs ||= Servers::sqld::mariadb::uninstaller->getInstance()->uninstall();
+    $rs ||= Servers::sqld::mariadb::uninstaller->getInstance( sqld => $self )->uninstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterMariaDbUninstall' );
 }
 

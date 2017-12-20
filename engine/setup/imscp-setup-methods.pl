@@ -88,13 +88,14 @@ sub setupBoot
 
 sub setupRegisterListeners
 {
-    my $eventManager = iMSCP::EventManager->getInstance();
 
     for ( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
         ( my $subref = $_->can( 'registerSetupListeners' ) ) or next;
-        my $rs = $subref->( $_->factory(), $eventManager );
+        my $rs = $subref->( $_->factory() );
         return $rs if $rs;
     }
+
+    my $eventManager = iMSCP::EventManager->getInstance();
 
     for ( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
         ( my $subref = $_->can( 'registerSetupListeners' ) ) or next;

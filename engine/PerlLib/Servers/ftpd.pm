@@ -25,6 +25,7 @@ package Servers::ftpd;
 
 use strict;
 use warnings;
+use iMSCP::EventManager;
 use iMSCP::Service;
 
 # ftpd server package name
@@ -34,9 +35,22 @@ my $PACKAGE;
 
  i-MSCP ftpd server implementation.
 
-=head1 PUBLIC METHODS
+=head1 CLASS METHODS
 
 =over 4
+
+=item getPriority( )
+
+ Get server priority
+
+ Return int Server priority
+
+=cut
+
+sub getPriority
+{
+    50;
+}
 
 =item factory( )
 
@@ -60,13 +74,13 @@ sub factory
         && $main::imscpOldConfig{'FTPD_PACKAGE'} ne $PACKAGE
     ) {
         eval "require $main::imscpOldConfig{'FTPD_PACKAGE'}; 1" or die( $@ );
-        $main::imscpOldConfig{'FTPD_PACKAGE'}->getInstance()->uninstall() == 0 or die(
+        $main::imscpOldConfig{'FTPD_PACKAGE'}->getInstance( eventManager => iMSCP::EventManager->getInstance())->uninstall() == 0 or die(
             sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'FTPD_PACKAGE'} )
         );
     }
 
     eval "require $PACKAGE; 1" or die( $@ );
-    $PACKAGE->getInstance();
+    $PACKAGE->getInstance( eventManager => iMSCP::EventManager->getInstance());
 }
 
 =item can( $method )
@@ -89,17 +103,17 @@ sub can
     $package->can( $method );
 }
 
-=item getPriority( )
+=item AUTOLOAD()
 
- Get server priority
-
- Return int Server priority
+ Implement autoloading for inexistent methods
 
 =cut
 
-sub getPriority
+sub AUTOLOAD
 {
-    50;
+    ( my $method = our $AUTOLOAD ) =~ s/.*:://;
+
+    __PACKAGE__->factory()->$method( @_ );
 }
 
 =back
@@ -120,10 +134,8 @@ END
 
         my $instance = $PACKAGE->hasInstance();
 
-        return 0 unless $instance
-            && ( my $action = $instance->{'restart'}
-            ? 'restart' : ( $instance->{'reload'} ? 'reload' : ( $instance->{'start'} ? ' start' : undef ) )
-        );
+        return 0 unless $instance && ( my $action = $instance->{'restart'}
+            ? 'restart' : ( $instance->{'reload'} ? 'reload' : ( $instance->{'start'} ? ' start' : undef ) ) );
 
         iMSCP::Service->getInstance()->registerDelayedAction(
             $instance->{'config'}->{'FTPD_SNAME'}, [ $action, sub { $instance->$action(); } ], __PACKAGE__->getPrirority()

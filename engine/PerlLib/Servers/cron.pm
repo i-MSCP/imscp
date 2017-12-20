@@ -25,6 +25,7 @@ package Servers::cron;
 
 use strict;
 use warnings;
+use iMSCP::EventManager;
 
 # cron server package name
 my $PACKAGE;
@@ -33,9 +34,22 @@ my $PACKAGE;
 
  i-MSCP cron server implementation.
 
-=head1 PUBLIC METHODS
+=head1 CLASS METHODS
 
 =over 4
+
+=item getPriority( )
+
+ Get server priority
+
+ Return int Server priority
+
+=cut
+
+sub getPriority
+{
+    10;
+}
 
 =item factory( )
 
@@ -51,7 +65,7 @@ sub factory
 
     $PACKAGE = 'Servers::cron::cron';
     eval "require $PACKAGE; 1" or die( $@ );
-    $PACKAGE->getInstance();
+    $PACKAGE->getInstance( eventManager => iMSCP::EventManager->getInstance());
 }
 
 =item can( $method )
@@ -74,17 +88,17 @@ sub can
     $package->can( $method );
 }
 
-=item getPriority( )
+=item AUTOLOAD()
 
- Get server priority
-
- Return int Server priority
+ Implement autoloading for inexistent methods
 
 =cut
 
-sub getPriority
+sub AUTOLOAD
 {
-    10;
+    ( my $method = our $AUTOLOAD ) =~ s/.*:://;
+
+    __PACKAGE__->factory()->$method( @_ );
 }
 
 =back

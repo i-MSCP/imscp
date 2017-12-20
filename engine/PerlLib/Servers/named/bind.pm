@@ -30,7 +30,6 @@ use Class::Autouse qw/ :nostat Servers::named::bind::installer Servers::named::b
 use File::Basename;
 use iMSCP::Config;
 use iMSCP::Debug qw/ debug error getMessageByType /;
-use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::ProgramFinder;
@@ -48,20 +47,19 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my (undef, $eventManager) = @_;
+    my ($self) = @_;
 
-    Servers::named::bind::installer->getInstance()->registerSetupListeners( $eventManager );
+    Servers::named::bind::installer->getInstance( named => $self )->registerSetupListeners();
 }
 
 =item preinstall( )
@@ -93,7 +91,7 @@ sub install
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeBind9Install' );
-    $rs ||= Servers::named::bind::installer->getInstance()->install();
+    $rs ||= Servers::named::bind::installer->getInstance( named => $self )->install();
     $rs ||= $self->{'eventManager'}->trigger( 'afterBind9Install' );
 }
 
@@ -142,7 +140,7 @@ sub uninstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeBind9Uninstall' );
-    $rs ||= Servers::named::bind::uninstaller->getInstance()->uninstall();
+    $rs ||= Servers::named::bind::uninstaller->getInstance( named => $self )->uninstall();
     return $rs if $rs;
 
     if ( iMSCP::ProgramFinder::find( $self->{'config'}->{'NAMED_BNAME'} ) ) {
@@ -509,18 +507,18 @@ sub disableSubdomain
     $rs ||= $self->{'eventManager'}->trigger( 'afterBind9DisableSubdomain', $data );
 }
 
-=item postdisableSub( \%data )
+=item postdisableSubdomain( \%data )
 
- Process postdisableSub tasks
+ Process postdisableSubdomain tasks
 
- See the disableSub( ) method for explaination.
+ See the disableSubdomain( ) method for explaination.
 
  Param hash \%data Domain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub postdisableSub
+sub postdisableSubdomain
 {
     my ($self, $data) = @_;
 
@@ -745,10 +743,7 @@ sub _init
 {
     my ($self) = @_;
 
-    @{$self}{qw/ restart reload /} = ( 0, 0 );
-    $self->{'serials'} = {};
-    $self->{'seen_zones'} = {};
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    @{$self}{qw/ restart reload serials seen_zones /} = ( 0, 0, {}, {} );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";

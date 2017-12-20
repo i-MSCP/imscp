@@ -58,6 +58,7 @@ sub uninstall
     $rs |= $self->_deconfigurePHP();
     $rs ||= $self->_deconfigureHTTPD();
     $rs ||= $self->_deleteMasterWebUser();
+    $rs ||= $self->{'frontend'}->restartNginx() if iMSCP::Service->getInstance()->hasService( 'nginx' );
 }
 
 =back

@@ -47,7 +47,7 @@ my %_INSTANCES = ();
 sub hasInstance
 {
     my $class = shift;
-    
+
     $_INSTANCES{ref $class || $class};
 }
 
@@ -112,7 +112,7 @@ sub _init
 
 sub END
 {
-    undef(%_INSTANCES);
+    undef( %_INSTANCES );
 }
 
 =back

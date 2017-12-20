@@ -62,7 +62,7 @@ sub addIpAddr
 
     defined $data && ref $data eq 'HASH' or die( '$data parameter is not defined or not a hashref' );
 
-    for( qw/ ip_id ip_card ip_address ip_config_mode / ) {
+    for ( qw/ ip_id ip_card ip_address ip_config_mode / ) {
         defined $data->{$_} or die( sprintf( "The `%s' parameter is not defined", $_ ));
     }
 
@@ -116,7 +116,7 @@ sub removeIpAddr
 
     defined $data && ref $data eq 'HASH' or die( '$data parameter is not defined or not a hashref' );
 
-    for( qw/ ip_id ip_card ip_address ip_config_mode / ) {
+    for ( qw/ ip_id ip_card ip_address ip_config_mode / ) {
         defined $data->{$_} or die( sprintf( "The `%s' parameter is not defined", $_ ));
     }
 
@@ -188,21 +188,21 @@ sub _updateInterfacesFile
     my $cAddr = $self->{'net'}->normalizeAddr( $data->{'ip_address'} );
     my $eAddr = $self->{'net'}->expandAddr( $data->{'ip_address'} );
 
-    my $fileContent = $file->get();
+    my $fileContentRef = $file->getAsRef();
     replaceBlocByRef(
         qr/^\s*# i-MSCP \[(?:.*\Q:$data->{'ip_id'}\E|\Q$cAddr\E)\] entry BEGIN\n/m,
         qr/# i-MSCP \[(?:.*\Q:$data->{'ip_id'}\E|\Q$cAddr\E)\] entry ENDING\n/,
         '',
-        \$fileContent
+        $fileContentRef
     );
 
     if ( $action eq 'add'
         && $data->{'ip_config_mode'} eq 'auto'
-        && $fileContent !~ /^[^#]*(?:address|ip\s+addr.*?)\s+(?:$cAddr|$eAddr|$data->{'ip_address'})(?:\s+|\n)/gm
+        && ${$fileContentRef} !~ /^[^#]*(?:address|ip\s+addr.*?)\s+(?:$cAddr|$eAddr|$data->{'ip_address'})(?:\s+|\n)/gm
     ) {
         my $iface = $data->{'ip_card'} . ( ( $addrVersion eq 'ipv4' ) ? ':' . $data->{'ip_id'} : '' );
 
-        $fileContent .= process(
+        ${$fileContentRef} .= process(
             {
                 ip_id       => $data->{'ip_id'},
                 # For IPv6 addr, we do not create aliased interface because that is not suppported everywhere.
@@ -222,10 +222,9 @@ STANZA
         );
 
         # We do add the `auto' stanza only for aliased interfaces, hence, for IPv4 only
-        $fileContent =~ s/^(# i-MSCP \[$cAddr\] entry BEGIN\n)/${1}auto $iface\n/m if $addrVersion eq 'ipv4';
+        ${$fileContentRef} =~ s/^(# i-MSCP \[$cAddr\] entry BEGIN\n)/${1}auto $iface\n/m if $addrVersion eq 'ipv4';
     }
 
-    $file->set( $fileContent );
     $file->save();
 }
 

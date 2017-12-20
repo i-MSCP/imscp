@@ -30,7 +30,6 @@ use DateTime::TimeZone;
 use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dialog::InputValidation qw/ isValidIpAddr isValidHostname isValidTimezone /;
 use iMSCP::Execute qw/ execute /;
-use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Net;
@@ -46,23 +45,22 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners()
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ($self, $eventManager) = @_;
+    my ($self) = @_;
 
     # Must be done here because installers can rely on this configuration parameter
     main::setupSetQuestion( 'IPV6_SUPPORT', -f '/proc/net/if_inet6' ? 1 : 0 );
 
-    $eventManager->register(
+    $self->{'server'}->{'eventManager'}->register(
         'beforeSetupDialog',
         sub {
             push @{$_[0]},
@@ -268,7 +266,7 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeLocalServerSetupKernel' );
+    my $rs = $self->{'server'}->{'eventManager'}->trigger( 'beforeLocalServerSetupKernel' );
     return $rs if $rs;
 
     if ( -f "$main::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf" ) {
@@ -279,7 +277,7 @@ sub preinstall
         debug( $stderr ) if $stderr;
     }
 
-    $self->{'eventManager'}->trigger( 'afterLocalServerSetupKernel' );
+    $self->{'server'}->{'eventManager'}->trigger( 'afterLocalServerSetupKernel' );
 
     0;
 }
@@ -324,7 +322,6 @@ sub _init
         verify_hostname => 0,
         SSL_verify_mode => 0x00
     );
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self;
 }
 
@@ -343,7 +340,7 @@ sub _setupHostname
     my $hostname = main::setupGetQuestion( 'SERVER_HOSTNAME' );
     my $lanIP = main::setupGetQuestion( 'BASE_SERVER_IP' );
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeLocalServerSetupHostname', \$hostname, \$lanIP );
+    my $rs = $self->{'server'}->{'eventManager'}->trigger( 'beforeLocalServerSetupHostname', \$hostname, \$lanIP );
     return $rs if $rs;
 
     my @labels = split /\./, $hostname;
@@ -389,7 +386,7 @@ EOF
     $rs = execute( 'hostname -F /etc/hostname', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || "Couldn't set server hostname" ) if $rs;
-    $rs ||= $self->{'eventManager'}->trigger( 'afterLocalServerSetupHostname' );
+    $rs ||= $self->{'server'}->{'eventManager'}->trigger( 'afterLocalServerSetupHostname' );
 }
 
 =item _setupPrimaryIP( )
@@ -405,7 +402,7 @@ sub _setupPrimaryIP
     my ($self) = @_;
 
     my $primaryIP = main::setupGetQuestion( 'BASE_SERVER_IP' );
-    my $rs = $self->{'eventManager'}->trigger( 'beforeLocalServerSetupPrimaryIP', $primaryIP );
+    my $rs = $self->{'server'}->{'eventManager'}->trigger( 'beforeLocalServerSetupPrimaryIP', $primaryIP );
     return $rs if $rs;
 
     eval {
@@ -449,7 +446,7 @@ sub _setupPrimaryIP
         return 1;
     }
 
-    $self->{'eventManager'}->trigger( 'afterLocalServerSetupPrimaryIP', $primaryIP );
+    $self->{'server'}->{'eventManager'}->trigger( 'afterLocalServerSetupPrimaryIP', $primaryIP );
 }
 
 =back

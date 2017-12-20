@@ -25,6 +25,7 @@ package Servers::po;
 
 use strict;
 use warnings;
+use iMSCP::EventManager;
 use iMSCP::Service;
 
 # po server package name
@@ -34,9 +35,22 @@ my $PACKAGE;
 
  i-MSCP po server implementation.
 
-=head1 PUBLIC METHODS
+=head1 CLASS METHODS
 
 =over 4
+
+=item getPriority( )
+
+ Get server priority
+
+ Return int Server priority
+
+=cut
+
+sub getPriority
+{
+    30;
+}
 
 =item factory( )
 
@@ -60,13 +74,13 @@ sub factory
         && $main::imscpOldConfig{'PO_PACKAGE'} ne $PACKAGE
     ) {
         eval "require $main::imscpOldConfig{'PO_PACKAGE'}; 1" or die( $@ );
-        $main::imscpOldConfig{'PO_PACKAGE'}->getInstance()->uninstall() == 0 or die(
+        $main::imscpOldConfig{'PO_PACKAGE'}->getInstance( eventManager => iMSCP::EventManager->getInstance())->uninstall() == 0 or die(
             sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'PO_PACKAGE'} )
         );
     }
 
     eval "require $PACKAGE; 1" or die( $@ );
-    $PACKAGE->getInstance();
+    $PACKAGE->getInstance( eventManager => iMSCP::EventManager->getInstance());
 }
 
 =item can( $method )
@@ -89,19 +103,18 @@ sub can
     $package->can( $method );
 }
 
-=item getPriority( )
+=item AUTOLOAD()
 
- Get server priority
-
- Return int Server priority
+ Implement autoloading for inexistent methods
 
 =cut
 
-sub getPriority
+sub AUTOLOAD
 {
-    30;
-}
+    ( my $method = our $AUTOLOAD ) =~ s/.*:://;
 
+    __PACKAGE__->factory()->$method( @_ );
+}
 
 =back
 

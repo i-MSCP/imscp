@@ -44,34 +44,33 @@ use parent 'Servers::php::Abstract';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners()
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ($self, $eventManager) = @_;
+    my ($self) = @_;
 
-    my $rs = $eventManager->register(
+    my $rs = $self->{'eventManager'}->register(
         'beforeSetupDialog',
         sub {
             push @{$_[0]}, sub { $self->askForPhpSapi( @_ ) };
             0;
         }
     );
-    $rs ||= $eventManager->register(
+    $rs ||= $self->{'eventManager'}->register(
         'beforeSetupDialog',
         sub {
             push @{$_[0]}, sub { $self->askForPhpConfigLevel( @_ ) };
             0;
         }
     );
-    $rs ||= $eventManager->register(
+    $rs ||= $self->{'eventManager'}->register(
         'beforeSetupDialog',
         sub {
             push @{$_[0]}, sub { $self->askForFastCGIconnectionType( @_ ) };
@@ -208,7 +207,7 @@ sub preinstall
         my $httpd = Servers::httpd->factory();
 
         # Disable i-MSCP Apache2 fcgid modules. It will be re-enabled in postinstall if needed
-        $httpd->disableModules( qw/ fcgid_imscp / ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
+        $httpd->disableModules( 'fcgid_imscp' ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
 
         # Disable default Apache2 conffile for CGI programs
         # FIXME: One administrator could rely on default configuration (outside of i-MSCP)
@@ -506,21 +505,26 @@ sub disableDomain
     my ($self, $moduleData) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpdDisableDomain', $moduleData );
-    return $rs if $rs;
+    $rs ||= eval {
+        if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+            iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove();
+        } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+            for ( iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
+                next unless /^[\d.]+$/ && -f "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf";
 
-    if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
-        eval { iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove() };
-        if ( $@ ) {
-            error( $@ );
-            $rs = 1;
+                $rs = iMSCP::File->new( filename => "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf" )->delFile();
+                return $rs if $rs;
+
+                $self->{'reload'}->{$_} ||= 1;
+            }
         }
-    } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
-        if ( -f "$self->{'config'}->{'PHP_FPM_POOL_DIR_PATH'}/$moduleData->{'DOMAIN_NAME'}.conf" ) {
-            $rs = iMSCP::File->new( filename => "$self->{'config'}->{'PHP_FPM_POOL_DIR_PATH'}/$moduleData->{'DOMAIN_NAME'}.conf" )->delFile();
-            $self->{'reload'} = 1;
-        }
+
+        0;
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
     }
-
     $rs ||= $self->{'eventManager'}->trigger( 'afterPhpDisableDomain', $moduleData );
 }
 
@@ -535,20 +539,26 @@ sub deleteDomain
     my ($self, $moduleData) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpDeleteDomain', $moduleData );
-    return $rs if $rs;
+    $rs ||= eval {
+        if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+            iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove();
+        } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+            for ( iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
+                next unless /^[\d.]+$/ && -f "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf";
 
-    if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
-        eval { iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove() };
-        if ( $@ ) {
-            error( $@ );
-            $rs = 1;
+                $rs = iMSCP::File->new( filename => "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf" )->delFile();
+                return $rs if $rs;
+
+                $self->{'reload'}->{$_} ||= 1;
+            }
         }
-    } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
-        if ( -f "$self->{'config'}->{'PHP_FPM_POOL_DIR_PATH'}/$moduleData->{'DOMAIN_NAME'}.conf" ) {
-            $rs = iMSCP::File->new( filename => "$self->{'config'}->{'PHP_FPM_POOL_DIR_PATH'}/$moduleData->{'DOMAIN_NAME'}.conf" )->delFile();
-        }
+
+        0;
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
     }
-
     $rs ||= $self->{'eventManager'}->trigger( 'afterPhpdDeleteDomain', $moduleData );
 }
 
@@ -579,33 +589,37 @@ sub addSubbdomain
     $rs ||= $self->{'eventManager'}->trigger( 'afterPhpAddSubdomain', $moduleData );
 }
 
-=item disableSub( \%moduleData )
+=item disableSubdomain( \%moduleData )
 
- See Servers::php::Abstract::disableSub()
+ See Servers::php::Abstract::disableSubdomain()
 
 =cut
 
-sub disableSub
+sub disableSubdomain
 {
     my ($self, $moduleData) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpDisableSubdomain', $moduleData );
-    return $rs if $rs;
+    $rs ||= eval {
+        if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+            iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove();
+        } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+            for ( iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
+                next unless /^[\d.]+$/ && -f "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf";
 
-    if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
-        eval { iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove() };
-        if ( $@ ) {
-            error( $@ );
-            $rs = 1;
+                $rs = iMSCP::File->new( filename => "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf" )->delFile();
+                return $rs if $rs;
+
+                $self->{'reload'}->{$_} ||= 1;
+            }
         }
-    } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
-        for ( glob "/etc/php/*/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf" ) {
-            $rs = iMSCP::File->new( filename => $_ )->delFile();
-            last if $rs;
-            $self->{'reload'} ||= 1;
-        }
+
+        0;
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
     }
-
     $rs ||= $self->{'eventManager'}->trigger( 'afterPhpdDisableSubdomain', $moduleData );
 }
 
@@ -620,26 +634,82 @@ sub deleteSubdomain
     my ($self, $moduleData) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpDeleteSubdomain', $moduleData );
-    return $rs if $rs;
+    $rs ||= eval {
+        if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+            iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove();
+        } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+            for ( iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
+                next unless /^[\d.]+$/ && -f "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf";
 
-    if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
-        eval { iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove() };
-        if ( $@ ) {
-            error( $@ );
-            $rs = 1;
+                $rs = iMSCP::File->new( filename => "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf" )->delFile();
+                return $rs if $rs;
+
+                $self->{'reload'}->{$_} ||= 1;
+            }
         }
-    } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
-        for ( glob "/etc/php/*/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf" ) {
-            $rs = iMSCP::File->new( filename => $_ )->delFile();
-            last if $rs;
-            $self->{'reload'} ||= 1;
-        }
+
+        0;
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
     }
-
     $rs ||= $self->{'eventManager'}->trigger( 'afterPhpDeleteSubdomain', $moduleData );
 }
 
-=item start( [ $version = $self->{'config'}->{'PHP_VERSION'} ] )
+=item enableModules( \@modules [, $phpVersion = $self->{'config'}->{'PHP_VERSION'} [, $phpSapi = $self->{'config'}->{'PHP_SAPI'} ] ] )
+
+ See Servers::php::Abstract::enableModules()
+
+=cut
+
+sub enableModules
+{
+    my ($self, $modules, $phpVersion, $phpSapi) = @_;
+    $phpVersion ||= $self->{'config'}->{'PHP_VERSION'};
+    $phpSapi ||= $self->{'config'}->{'PHP_SAPI'};
+
+    ref $modules eq 'ARRAY' or die( 'Invalid $module parameter. Array expected' );
+
+    for ( @{$modules} ) {
+        my $rs = execute( [ '/usr/sbin/phpenmod', $_ ], \ my $stdout, \ my $stderr );
+        debug( $stdout ) if $stdout;
+        error( $stderr || 'Unknown error' ) if $rs;
+        return $rs if $rs;
+    }
+
+    $self->{'restart'} ||= 1;
+
+    0;
+}
+
+=item disableModules( \@modules [, $phpVersion = $self->{'config'}->{'PHP_VERSION'} [, $phpSapi = $self->{'config'}->{'PHP_SAPI'} ] ] )
+
+ See Servers::php::Abstract::disableModules()
+
+=cut
+
+sub disableModules
+{
+    my ($self, $modules, $phpVersion, $phpSapi) = @_;
+    $phpVersion ||= $self->{'config'}->{'PHP_VERSION'};
+    $phpSapi ||= $self->{'config'}->{'PHP_SAPI'};
+
+    ref $modules eq 'ARRAY' or die( 'Invalid $module parameter. Array expected' );
+
+    for ( @{$modules} ) {
+        my $rs = execute( [ '/usr/sbin/phpdismod', $_ ], \ my $stdout, \ my $stderr );
+        debug( $stdout ) if $stdout;
+        error( $stderr || 'Unknown error' ) if $rs;
+        return $rs if $rs;
+    }
+
+    $self->{'restart'} ||= 1;
+
+    0;
+}
+
+=item start( [ $phpVersion = $self->{'config'}->{'PHP_VERSION'} ] )
 
  See Servers::php::Abstract::start()
 
@@ -647,23 +717,22 @@ sub deleteSubdomain
 
 sub start
 {
-    my ($self, $version) = @_;
+    my ($self, $phpVersion) = @_;
+    $phpVersion ||= $self->{'config'}->{'PHP_VERSION'};
 
-    $version ||= $self->{'config'}->{'PHP_VERSION'};
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforePhpFpmStart', $version );
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpFpmStart', $phpVersion );
     return $rs if $rs;
 
-    eval { iMSCP::Service->getInstance()->start( "php$version-fpm" ); };
+    eval { iMSCP::Service->getInstance()->start( "php$phpVersion-fpm" ); };
     if ( $@ ) {
         error( $@ );
         $rs = 1;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpFpmStart', $version );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpFpmStart', $phpVersion );
 }
 
-=item stop( [ $version = $self->{'config'}->{'PHP_VERSION'} ] )
+=item stop( [ $phpVersion = $self->{'config'}->{'PHP_VERSION'} ] )
 
  See Servers::php::Abstract::stop()
 
@@ -671,23 +740,22 @@ sub start
 
 sub stop
 {
-    my ($self, $version) = @_;
+    my ($self, $phpVersion) = @_;
+    $phpVersion ||= $self->{'config'}->{'PHP_VERSION'};
 
-    $version ||= $self->{'config'}->{'PHP_VERSION'};
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforePhpFpmStop', $version );
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpFpmStop', $phpVersion );
     return $rs if $rs;
 
-    eval { iMSCP::Service->getInstance()->stop( "php$version-fpm" ); };
+    eval { iMSCP::Service->getInstance()->stop( "php$phpVersion-fpm" ); };
     if ( $@ ) {
         error( $@ );
         $rs = 1;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpFpmStop', $version );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpFpmStop', $phpVersion );
 }
 
-=item reload( [ $version = $self->{'config'}->{'PHP_VERSION'} ] )
+=item reload( [ $phpVersion = $self->{'config'}->{'PHP_VERSION'} ] )
 
  See Servers::php::Abstract::reload()
 
@@ -695,23 +763,22 @@ sub stop
 
 sub reload
 {
-    my ($self, $version) = @_;
+    my ($self, $phpVersion) = @_;
+    $phpVersion ||= $self->{'config'}->{'PHP_VERSION'};
 
-    $version ||= $self->{'config'}->{'PHP_VERSION'};
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforePhpFpmReload', $version );
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpFpmReload', $phpVersion );
     return $rs if $rs;
 
-    eval { iMSCP::Service->getInstance()->reload( "php$version-fpm" ); };
+    eval { iMSCP::Service->getInstance()->reload( "php$phpVersion-fpm" ); };
     if ( $@ ) {
         error( $@ );
         $rs = 1;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpFpmReload', $version );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpFpmReload', $phpVersion );
 }
 
-=item restart( [ $version = $self->{'config'}->{'PHP_VERSION'} ] )
+=item restart( [ $phpVersion = $self->{'config'}->{'PHP_VERSION'} ] )
 
  See Servers::php::Abstract::restart()
 
@@ -719,20 +786,19 @@ sub reload
 
 sub restart
 {
-    my ($self, $version) = @_;
+    my ($self, $phpVersion) = @_;
+    $phpVersion ||= $self->{'config'}->{'PHP_VERSION'};
 
-    $version ||= $self->{'config'}->{'PHP_VERSION'};
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforePhpFpmRestart', $version );
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpFpmRestart', $phpVersion );
     return $rs if $rs;
 
-    eval { iMSCP::Service->getInstance()->restart( "php$version-fpm" ); };
+    eval { iMSCP::Service->getInstance()->restart( "php$phpVersion-fpm" ); };
     if ( $@ ) {
         error( $@ );
         $rs = 1;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpFpmRestart', $version );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpFpmRestart', $phpVersion );
 }
 
 =back
@@ -751,15 +817,15 @@ sub _guessVariablesForSelectedPhpAlternative
 {
     my ($self) = @_;
 
-    my $phpPath = iMSCP::ProgramFinder::find( 'php' ) or die( "Couldn't find the PHP (CLI) command in search path for the selected PHP alternative" );
+    my $phpCliPath = iMSCP::ProgramFinder::find( 'php' ) or die( "Couldn't find the PHP (CLI) command in search path for the selected PHP alternative" );
 
-    my ($phpVersion) = `$phpPath -nv 2> /dev/null` =~ /^PHP\s+([\d.]+)/ or die( "Couldn't guess version for selected PHP alternative" );
+    ( $self->{'config'}->{'PHP_VERSION_FULL'} ) = `$phpCliPath -nv 2> /dev/null` =~ /^PHP\s+([\d.]+)/ or die(
+        "Couldn't guess PHP version for the selected PHP alternative"
+    );
 
-    $self->{'config'}->{'PHP_VERSION_FULL'} = $phpVersion;
-    $phpVersion =~ s/\.\d+$//;
-    $self->{'config'}->{'PHP_VERSION'} = $phpVersion;
+    $self->{'config'}->{'PHP_VERSION'} = $self->{'config'}->{'PHP_VERSION_FULL'} =~ s/\.\d+$//r;
 
-    my ($phpConfDir) = `$phpPath -ni 2> /dev/null | grep '(php.ini) Path'` =~ /([^\s]+)$/ or die(
+    my ($phpConfDir) = `$phpCliPath -ni 2> /dev/null | grep '(php.ini) Path'` =~ /([^\s]+)$/ or die(
         "Couldn't guess the PHP configuration directory path for the selected PHP alternative"
     );
 
@@ -772,9 +838,9 @@ sub _guessVariablesForSelectedPhpAlternative
         die( sprintf( "Couldn't guess the `%s' PHP configuration parameter value for the selected PHP alternative: directory doesn't exist.", $_ ));
     }
 
-    $self->{'config'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php$phpVersion" );
-    $self->{'config'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-cgi$phpVersion" );
-    $self->{'config'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-fpm$phpVersion" );
+    $self->{'config'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php$self->{'config'}->{'PHP_VERSION'}" );
+    $self->{'config'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-cgi$self->{'config'}->{'PHP_VERSION'}" );
+    $self->{'config'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-fpm$self->{'config'}->{'PHP_VERSION'}" );
 
     for ( qw/ PHP_CLI_BIN_PATH PHP_FCGI_BIN_PATH PHP_FPM_BIN_PATH / ) {
         $self->{'config'}->{$_} or die( sprintf( "Couldn't guess the `%s' PHP configuration parameter value for the selected PHP alternative.", $_ ));

@@ -32,7 +32,6 @@ use File::Temp;
 use Fcntl 'O_RDONLY';
 use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::Config;
-use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Service;
 use parent 'Common::SingletonClass';
@@ -45,20 +44,19 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my (undef, $eventManager) = @_;
+    my ($self) = @_;
 
-    Servers::ftpd::proftpd::installer->getInstance()->registerSetupListeners( $eventManager );
+    Servers::ftpd::proftpd::installer->getInstance( ftpd => $self )->registerSetupListeners();
 }
 
 =item preinstall( )
@@ -91,7 +89,7 @@ sub install
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeProftpdInstall' );
-    $rs ||= Servers::ftpd::proftpd::installer->getInstance()->install();
+    $rs ||= Servers::ftpd::proftpd::installer->getInstance( ftpd => $self )->install();
     $rs ||= $self->{'eventManager'}->trigger( 'afterProftpdInstall' );
 }
 
@@ -141,15 +139,13 @@ sub uninstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeProftpdUninstall' );
-    $rs ||= Servers::ftpd::proftpd::uninstaller->getInstance()->uninstall();
+    $rs ||= Servers::ftpd::proftpd::uninstaller->getInstance( ftpd => $self )->uninstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterProftpdUninstall' );
 
     unless ( $rs || !iMSCP::Service->getInstance()->hasService( $self->{'config'}->{'FTPD_SNAME'} ) ) {
         $self->{'restart'} ||= 1;
     } else {
-        $self->{'start'} = 0;
-        $self->{'restart'} = 0;
-        $self->{'reload'} = 0;
+        @{$self}{ qw/ start restart reload / } = ( 0, 0, 0 );
     }
 
     $rs;
@@ -443,7 +439,6 @@ sub _init
     my ($self) = @_;
 
     @{$self}{qw/ start restart reload /} = ( 0, 0, 0 );
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/proftpd";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";

@@ -50,7 +50,7 @@ sub preinstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePerconaPreinstall' );
-    $rs ||= Servers::sqld::percona::installer->getInstance()->preinstall();
+    $rs ||= Servers::sqld::percona::installer->getInstance( sqld => $self )->preinstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterPerconaPreinstall' )
 }
 
@@ -99,7 +99,7 @@ sub uninstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePerconaUninstall' );
-    $rs ||= Servers::sqld::percona::uninstaller->getInstance()->uninstall();
+    $rs ||= Servers::sqld::percona::uninstaller->getInstance( sqld => $self )->uninstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterPerconaUninstall' );
 }
 

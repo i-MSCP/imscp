@@ -33,7 +33,6 @@ use File::Temp;
 use iMSCP::Config;
 use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::Dir;
-use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::Getopt;
@@ -51,20 +50,19 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners(\%eventManager)
+=item registerSetupListeners()
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my (undef, $eventManager) = @_;
+    my ($self) = @_;
 
-    Servers::po::courier::installer->getInstance()->registerSetupListeners( $eventManager );
+    Servers::po::courier::installer->getInstance( po => $self )->registerSetupListeners();
 }
 
 =item preinstall( )
@@ -97,7 +95,7 @@ sub install
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeCourierInstall' );
-    $rs ||= Servers::po::courier::installer->getInstance()->install();
+    $rs ||= Servers::po::courier::installer->getInstance( po => $self )->install();
     $rs ||= $self->{'eventManager'}->trigger( 'afterCourierInstall' );
 }
 
@@ -163,13 +161,13 @@ sub uninstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeCourierUninstall' );
-    $rs ||= Servers::po::courier::uninstaller->getInstance()->uninstall();
+    $rs ||= Servers::po::courier::uninstaller->getInstance( po => $self )->uninstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterCourierUninstall' );
 
     unless ( $rs || !iMSCP::Service->getInstance()->hasService( $self->{'config'}->{'AUTHDAEMON_SNAME'} ) ) {
         $self->{'restart'} ||= 1;
     } else {
-        $self->{'restart'} = 0;
+        $self->{'restart'} ||= 0;
     }
 
     $rs;
@@ -294,7 +292,7 @@ sub addMail
 
     if ( $data->{'MAIL_QUOTA'} ) {
         if ( $self->{'forceMailboxesQuotaRecalc'}
-            || ( $self->{'execMode'} eq 'backend' && $data->{'STATUS'} eq 'tochange' )
+            || ( defined $main::execmode && $main::execmode eq 'backend' && $data->{'STATUS'} eq 'tochange' )
             || !-f "$mailDir/maildirsize"
         ) {
             $rs = execute( [ 'maildirmake', '-q', "$data->{'MAIL_QUOTA'}S", $mailDir ], \ my $stdout, \ my $stderr );
@@ -503,11 +501,7 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'restart'} = 0;
-    $self->{'forceMailboxesQuotaRecalc'} = 0;
-    $self->{'execMode'} = ( defined $main::execmode && $main::execmode eq 'setup' ) ? 'setup' : 'backend';
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'mta'} = Servers::mta->factory();
+    @{$self}{qw/ restart forceMailboxesQuotaRecalc mta /} = ( 0, 0, Servers::mta->factory() );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/courier";
     $self->_mergeConfig() if defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/courier.data.dist";
     tie %{$self->{'config'}},

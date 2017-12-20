@@ -26,18 +26,18 @@ package Servers::sqld::mysql::installer;
 use strict;
 use warnings;
 use File::Temp;
-use iMSCP::Crypt qw/ encryptRijndaelCBC decryptRijndaelCBC randomStr /;
+use iMSCP::Crypt qw/ ALNUM encryptRijndaelCBC decryptRijndaelCBC randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug error /;
-use iMSCP::Dialog::InputValidation;
+use iMSCP::Dialog::InputValidation qw/
+    isNotEmpty isStringInList isStringNotInList isValidHostname isValidIpAddr isValidPassword isValidUsername isValidDbName
+    /;
 use iMSCP::Dir;
-use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::TemplateParser qw/ processByRef /;
 use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
-use Servers::sqld::mysql;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -49,20 +49,19 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ($self, $eventManager) = @_;
+    my ($self) = @_;
 
-    $eventManager->register(
+    $self->{'sqld'}->{'eventManager'}->register(
         'beforeSetupDialog',
         sub {
             push @{$_[0]},
@@ -96,7 +95,7 @@ sub masterSqlUserDialog
     my $port = main::setupGetQuestion( 'DATABASE_PORT' );
     my $user = main::setupGetQuestion( 'DATABASE_USER', iMSCP::Getopt->preseed ? 'imscp_user' : '' );
     $user = 'imscp_user' if lc( $user ) eq 'root'; # Handle upgrade case
-    my $pwd = main::setupGetQuestion( 'DATABASE_PASSWORD', iMSCP::Getopt->preseed ? randomStr( 16, iMSCP::Crypt::ALNUM ) : '' );
+    my $pwd = main::setupGetQuestion( 'DATABASE_PASSWORD', iMSCP::Getopt->preseed ? randomStr( 16, ALNUM ) : '' );
 
     if ( $pwd ne '' && !iMSCP::Getopt->preseed ) {
         $pwd = decryptRijndaelCBC( $main::imscpKEY, $main::imscpIV, $pwd );
@@ -140,7 +139,7 @@ EOF
         do {
             if ( $pwd eq '' ) {
                 $iMSCP::Dialog::InputValidation::lastValidationError = '';
-                $pwd = randomStr( 16, iMSCP::Crypt::ALNUM );
+                $pwd = randomStr( 16, ALNUM );
             }
 
             ( $rs, $pwd ) = $dialog->inputbox( <<"EOF", $pwd );
@@ -339,25 +338,6 @@ sub preinstall
 
 =over 4
 
-=item _init( )
-
- Initialize instance
-
- Return Servers::sqld::mysql:installer
-
-=cut
-
-sub _init
-{
-    my ($self) = @_;
-
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'sqld'} = Servers::sqld::mysql->getInstance();
-    $self->{'cfgDir'} = $self->{'sqld'}->{'cfgDir'};
-    $self->{'config'} = $self->{'sqld'}->{'config'};
-    $self;
-}
-
 =item _askSqlRootUser( )
 
  Ask for SQL root user
@@ -475,7 +455,7 @@ sub _setType
     my ($self) = @_;
 
     debug( sprintf( 'SQL server type set to: %s', 'mysql' ));
-    $self->{'config'}->{'SQLD_TYPE'} = 'mysql';
+    $self->{'sqld'}->{'config'}->{'SQLD_TYPE'} = 'mysql';
     0;
 }
 
@@ -503,7 +483,7 @@ sub _setVersion
         }
 
         debug( sprintf( 'SQL server version set to: %s', $version ));
-        $self->{'config'}->{'SQLD_VERSION'} = $version;
+        $self->{'sqld'}->{'config'}->{'SQLD_VERSION'} = $version;
     };
     if ( $@ ) {
         error( $@ );
@@ -525,12 +505,12 @@ sub _buildConf
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeMysqlBuildConf' );
+    my $rs = $self->{'sqld'}->{'eventManager'}->trigger( 'beforeMysqlBuildConf' );
     return $rs if $rs;
 
     eval {
         # Make sure that the conf.d directory exists
-        iMSCP::Dir->new( dirname => "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d" )->make( {
+        iMSCP::Dir->new( dirname => "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d" )->make( {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ROOT_GROUP'},
             mode  => 0755
@@ -542,17 +522,17 @@ sub _buildConf
     }
 
     # Create the /etc/mysql/my.cnf file if missing
-    unless ( -f "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf" ) {
-        $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'my.cnf', \ my $cfgTpl, {} );
+    unless ( -f "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/my.cnf" ) {
+        $rs = $self->{'sqld'}->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'my.cnf', \ my $cfgTpl, {} );
         return $rs if $rs;
 
         unless ( defined $cfgTpl ) {
-            $cfgTpl = "!includedir $self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n";
-        } elsif ( $cfgTpl !~ m%^!includedir\s+$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n%m ) {
-            $cfgTpl .= "!includedir $self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n";
+            $cfgTpl = "!includedir $self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n";
+        } elsif ( $cfgTpl !~ m%^!includedir\s+$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n%m ) {
+            $cfgTpl .= "!includedir $self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n";
         }
 
-        my $file = iMSCP::File->new( filename => "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf" );
+        my $file = iMSCP::File->new( filename => "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/my.cnf" );
         $file->set( $cfgTpl );
         $rs = $file->save();
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
@@ -560,13 +540,13 @@ sub _buildConf
         return $rs if $rs;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'imscp.cnf', \ my $cfgTpl, {} );
+    $rs ||= $self->{'sqld'}->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'imscp.cnf', \ my $cfgTpl, {} );
     return $rs if $rs;
 
     unless ( defined $cfgTpl ) {
-        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp.cnf" )->get();
+        $cfgTpl = iMSCP::File->new( filename => "$self->{'sqld'}->{'cfgDir'}/imscp.cnf" )->get();
         unless ( defined $cfgTpl ) {
-            error( sprintf( "Couldn't read %s", "$self->{'cfgDir'}/imscp.cnf" ));
+            error( sprintf( "Couldn't read %s", "$self->{'sqld'}->{'cfgDir'}/imscp.cnf" ));
             return 1;
         }
     }
@@ -582,20 +562,20 @@ EOF
     $cfgTpl .= "innodb_use_native_aio = @{[ $self->_isMysqldInsideCt() ? 0 : 1 ]}\n";
 
     # For backward compatibility - We will review this in later version
-    if ( version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.7.4' ) ) {
+    if ( version->parse( "$self->{'sqld'}->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.7.4' ) ) {
         $cfgTpl .= "default_password_lifetime = 0\n";
     }
 
     $cfgTpl .= "event_scheduler = DISABLED\n";
 
-    processByRef( { SQLD_SOCK_DIR => $self->{'config'}->{'SQLD_SOCK_DIR'} }, \$cfgTpl );
+    processByRef( { SQLD_SOCK_DIR => $self->{'sqld'}->{'config'}->{'SQLD_SOCK_DIR'} }, \$cfgTpl );
 
-    my $file = iMSCP::File->new( filename => "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf" );
+    my $file = iMSCP::File->new( filename => "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf" );
     $file->set( $cfgTpl );
     $rs = $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterMysqlBuildConf' );
+    $rs ||= $self->{'sqld'}->{'eventManager'}->trigger( 'afterMysqlBuildConf' );
 }
 
 =item _setupMasterSqlUser( )
@@ -683,7 +663,7 @@ EOF
 
     # Disable unwanted plugins
 
-    return 0 if version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) < version->parse( '5.6.6' );
+    return 0 if version->parse( "$self->{'sqld'}->{'config'}->{'SQLD_VERSION'}" ) < version->parse( '5.6.6' );
 
     eval {
         my $dbh = iMSCP::Database->getInstance()->getRawDb();
@@ -720,7 +700,7 @@ sub _setupSecureInstallation
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->getInstance()->trigger( 'beforeSetupSecureMysqlInstallation' );
+    my $rs = $self->{'sqld'}->{'eventManager'}->getInstance()->trigger( 'beforeSetupSecureMysqlInstallation' );
     return $rs if $rs;
 
     eval {
@@ -750,7 +730,7 @@ sub _setupSecureInstallation
         return 1;
     }
 
-    $self->{'eventManager'}->getInstance()->trigger( 'afterSetupSecureMysqlInstallation' );
+    $self->{'sqld'}->{'eventManager'}->getInstance()->trigger( 'afterSetupSecureMysqlInstallation' );
 }
 
 =item _setupDatbase( )
@@ -895,9 +875,9 @@ sub _cleanup
 {
     my ($self) = @_;
 
-    return 0 unless -f "$self->{'cfgDir'}/mysql.old.data";
+    return 0 unless -f "$self->{'sqld'}->{'cfgDir'}/mysql.old.data";
 
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/mysql.old.data" )->delFile();
+    iMSCP::File->new( filename => "$self->{'sqld'}->{'cfgDir'}/mysql.old.data" )->delFile();
 }
 
 =back

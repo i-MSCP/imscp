@@ -33,7 +33,6 @@ use Fcntl 'O_RDONLY';
 use iMSCP::Config;
 use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::Dir;
-use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Service;
@@ -50,20 +49,19 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my (undef, $eventManager) = @_;
+    my ($self) = @_;
 
-    Servers::po::dovecot::installer->getInstance()->registerSetupListeners( $eventManager );
+    Servers::po::dovecot::installer->getInstance( po => $self )->registerSetupListeners();
 }
 
 =item preinstall( )
@@ -118,7 +116,7 @@ sub install
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeDovecotInstall' );
-    $rs ||= Servers::po::dovecot::installer->getInstance()->install();
+    $rs ||= Servers::po::dovecot::installer->getInstance( po => $self )->install();
     $rs ||= $self->{'eventManager'}->trigger( 'afterDovecotInstall' );
 }
 
@@ -167,13 +165,13 @@ sub uninstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeDovecotUninstall' );
-    $rs ||= Servers::po::dovecot::uninstaller->getInstance()->uninstall();
+    $rs ||= Servers::po::dovecot::uninstaller->getInstance( po => $self )->uninstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterDovecotUninstall' );
 
     unless ( $rs || !iMSCP::Service->getInstance()->hasService( $self->{'config'}->{'DOVECOT_SNAME'} ) ) {
         $self->{'restart'} ||= 1;
     } else {
-        $self->{'restart'} = 0;
+        $self->{'restart'} ||= 0;
     }
 
     $rs;
@@ -245,7 +243,7 @@ sub addMail
 
     if ( $data->{'MAIL_QUOTA'} ) {
         if ( $self->{'forceMailboxesQuotaRecalc'}
-            || ( $self->{'execMode'} eq 'backend' && $data->{'STATUS'} eq 'tochange' )
+            || ( defined $main::execmode && $main::execmode && $data->{'STATUS'} eq 'tochange' )
             || !-f "$mailDir/maildirsize"
         ) {
             # TODO create maildirsize file manually (set quota definition and recalculate byte and file counts)
@@ -467,11 +465,7 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'restart'} = 0;
-    $self->{'forceMailboxesQuotaRecalc'} = 0;
-    $self->{'execMode'} = ( defined $main::execmode && $main::execmode eq 'setup' ) ? 'setup' : 'backend';
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'mta'} = Servers::mta->factory();
+    @{$self}{qw/ restart forceMailboxesQuotaRecalc mta /} = ( 0, 0, Servers::mta->factory() );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/dovecot";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";

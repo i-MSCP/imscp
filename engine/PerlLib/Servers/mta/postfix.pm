@@ -33,7 +33,6 @@ use Fcntl 'O_RDONLY';
 use iMSCP::Config;
 use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::Dir;
-use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute executeNoWait /;
 use iMSCP::File;
 use iMSCP::Getopt;
@@ -63,7 +62,7 @@ sub preinstall
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePostfixPreInstall' );
     $rs ||= $self->stop();
-    $rs ||= $rs = Servers::mta::postfix::installer->getInstance()->preinstall();
+    $rs ||= $rs = Servers::mta::postfix::installer->getInstance( mta => $self )->preinstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterPostfixPreInstall' );
 }
 
@@ -80,7 +79,7 @@ sub install
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePostfixInstall' );
-    $rs ||= Servers::mta::postfix::installer->getInstance()->install();
+    $rs ||= Servers::mta::postfix::installer->getInstance( mta => $self )->install();
     $rs ||= $self->{'eventManager'}->trigger( 'afterPostfixInstall' );
 }
 
@@ -145,14 +144,13 @@ sub uninstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePostfixUninstall' );
-    $rs ||= Servers::mta::postfix::uninstaller->getInstance()->uninstall();
+    $rs ||= Servers::mta::postfix::uninstaller->getInstance( mta => $self )->uninstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterPostfixUninstall' );
 
     unless ( $rs || !iMSCP::Service->getInstance()->hasService( $self->{'config'}->{'MTA_SNAME'} ) ) {
         $self->{'restart'} ||= 1;
     } else {
-        $self->{'restart'} = 0;
-        $self->{'reload'} = 0;
+        @{$self}{qw/ restart reload /} = ( 0, 0 );
     }
 
     $rs;
@@ -428,16 +426,16 @@ sub addSubbdomain
     $rs ||= $self->{'eventManager'}->trigger( 'afterPostfixAddSubdomain', $data );
 }
 
-=item disableSub( \%data )
+=item disableSubdomain( \%data )
 
- Process disableSub tasks
+ Process disableSubdomain tasks
 
  Param hashref \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub disableSub
+sub disableSubdomain
 {
     my ($self, $data) = @_;
 
@@ -763,7 +761,7 @@ sub addMapEntry
     ${$mapFileContentRef} .= "$entry\n";
 
     $rs ||= $file->save();
-    $self->{'_postmap'}->{$mapPath} = 1 unless $rs || $self->{'_postmap'}->{$mapPath};
+    $self->{'_postmap'}->{$mapPath} ||= 1 unless $rs || $self->{'_postmap'}->{$mapPath};
     $rs ||= $self->{'eventManager'}->trigger( 'afterAddPostfixMapEntry', $mapPath, $entry );
 }
 
@@ -832,20 +830,19 @@ sub postmap
 
  Param hash %params A hash where each key is a Postfix parameter name and the value, a hashes describing in order:
   - action : Action to be performed (add|replace|remove) -- Default add
-  - values : An array containing parameter value(s) to add, replace or remove. For values to be removed, both strings
-             and Regexp are supported.
+  - values : An array containing parameter value(s) to add, replace or remove. For values to be removed, both strings and Regexp are supported.
   - empty  : OPTIONAL Flag that allows to force adding of empty parameter
   - before : OPTIONAL Option that allows to add values before the given value (expressed as a Regexp)
   - after  : OPTIONAL Option that allows to add values after the given value (expressed as a Regexp)
 
   `replace' action versus `remove' action
-    The `replace' action replace the full value of the given parameter while the `remove' action only remove the
-    specified value portion in the parameter value. Note that when the resulting value is an empty value, the paramerter
-    is removed from the configuration file unless the `empty' flag has been specified.
+    The `replace' action replace the full value of the given parameter while the `remove' action only remove the specified value portion in the
+    parameter value. Note that when the resulting value is an empty value, the paramerter is removed from the configuration file unless the `empty'
+    flag has been specified.
 
   `before' and `after' options:
-    The `before' and `after' options are only relevant for the `add' action. Note also that the `before' option has a
-    highter precedence than the `after' option.
+    The `before' and `after' options are only relevant for the `add' action. Note also that the `before' option has a highter precedence than the
+    `after' option.
   
   Unknown postfix parameters
     Unknown Postfix parameter are silently ignored
@@ -854,9 +851,8 @@ sub postmap
 
     Adding parameters
 
-    Let's assume that we want add both, the `check_client_access <table>' value and the `check_recipient_access <table>'
-    value to the `smtpd_recipient_restrictions' parameter, before the `check_policy_service ...' service.
-    The following would do the job:
+    Let's assume that we want add both, the `check_client_access <table>' value and the `check_recipient_access <table>' value to the
+    `smtpd_recipient_restrictions' parameter, before the `check_policy_service ...' service. The following would do the job:
 
     Servers::mta::postfix->getInstance(
         (
@@ -962,7 +958,7 @@ sub postconf
             debug( $stdout ) if $stdout;
         };
 
-        $self->{'reload'} = 1;
+        $self->{'reload'} ||= 1;
     };
     if ( $@ ) {
         error( $@ );
@@ -991,7 +987,6 @@ sub _init
     my ($self) = @_;
 
     @{$self}{qw/ restart reload /} = ( 0, 0 );
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
     $self->_mergeConfig() if defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/postfix.data.dist";
     tie %{$self->{'config'}},
@@ -1059,7 +1054,7 @@ sub _getMapFileObject
 EOF
             );
             $file->save() == 0 && $file->mode( 0640 ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
-            $self->{'_postmap'}->{$mapPath} = 1;
+            $self->{'_postmap'}->{$mapPath} ||= 1;
         }
 
         $file;

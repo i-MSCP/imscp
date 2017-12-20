@@ -31,9 +31,22 @@ use parent 'Common::SingletonClass';
 
  i-MSCP noserver server implementation.
 
-=head1 PUBLIC METHODS
+=head1 CLASS METHODS
 
 =over 4
+
+=item getPriority( )
+
+ Get server priority
+
+ Return int Server priority
+
+=cut
+
+sub getPriority
+{
+    0;
+}
 
 =item factory( )
 
@@ -62,24 +75,9 @@ sub can
     undef;
 }
 
-=item getPriority( )
+=item AUTOLOAD
 
- Get server priority
-
- Return int Server priority
-
-=cut
-
-sub getPriority
-{
-    0;
-}
-
-=item AUTOLOAD( )
-
- Catch any call to unexistent method
-
- Return int 0
+ Implement autoloading for inexistent methods
 
 =cut
 

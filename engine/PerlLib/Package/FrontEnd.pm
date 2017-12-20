@@ -42,6 +42,25 @@ use parent 'Common::SingletonClass';
 
  i-MSCP FrontEnd package.
 
+=head1 CLASS METHODS
+
+=over 4
+
+=item getPriority( )
+
+ Get package priority
+
+ Return int package priority
+
+=cut
+
+sub getPriority
+{
+    100;
+}
+
+=back
+
 =head1 PUBLIC METHODS
 
 =over 4
@@ -75,7 +94,8 @@ sub preinstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndPreInstall' );
-    $rs ||= $self->stop();
+    $rs ||= $self->stopNginx();
+    $rs ||= $self->stopPhpFpm();
     $rs ||= Package::FrontEnd::Installer->getInstance()->preinstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndPreInstall' );
 }
@@ -114,7 +134,7 @@ sub postinstall
 
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
-        $serviceMngr->enable( $self->{'config'}->{'HTTPD_SNAME'} );
+        $serviceMngr->enable( 'nginx' );
         $serviceMngr->enable( 'imscp_panel' );
     };
     if ( $@ ) {
@@ -125,7 +145,8 @@ sub postinstall
     $rs = $self->{'eventManager'}->register(
         'beforeSetupRestartServices',
         sub {
-            push @{$_[0]}, [ sub { $self->start(); }, 'i-MSCP FrontEnd services' ];
+            push @{$_[0]}, [ sub { $self->startNginx(); }, 'Nginx' ];
+            push @{$_[0]}, [ sub { $self->startPhpFpm(); }, 'i-MSCP panel (PHP FastCGI process manager)' ];
             0;
         },
         2
@@ -165,19 +186,6 @@ sub uninstall
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndUninstall' );
     $rs ||= Package::FrontEnd::Uninstaller->getInstance()->uninstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndUninstall' );
-}
-
-=item getPriority( )
-
- Get package priority
-
- Return int package priority
-
-=cut
-
-sub getPriority
-{
-    100;
 }
 
 =item setEnginePermissions( )
@@ -350,9 +358,7 @@ sub enableSites
 
     for my $site( @sites ) {
         my $target = File::Spec->canonpath( "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site" );
-        my $symlink = File::Spec->canonpath(
-            $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'} . '/' . basename( $site, '.conf' )
-        );
+        my $symlink = File::Spec->canonpath( $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'} . '/' . basename( $site, '.conf' ));
 
         unless ( -f $target ) {
             error( sprintf( "Site `%s` doesn't exist", $site ));
@@ -839,22 +845,23 @@ sub _buildConf
 
 END
     {
-        return if $?;
+        return if $? || ( defined $main::execmode && $main::execmode eq 'setup' );
 
-        if ( defined $main::execmode ) {
-            return if $main::execmode eq 'setup';
-            $? = Package::FrontEnd->getInstance()->restartNginx() if $main::execmode eq 'uninstaller';
-            return;
-        }
+        my $instance = __PACKAGE__->hasInstance();
 
-        my $self = Package::FrontEnd->getInstance();
-        if ( $self->{'start'} ) {
-            $? = $self->start();
-        } elsif ( $self->{'restart'} ) {
-            $? = $self->restart();
-        } elsif ( $self->{'reload'} ) {
-            $? = $self->reload();
-        }
+        return 0 unless $instance && ( my $action = $instance->{'restart'}
+            ? 'restart' : ( $instance->{'reload'} ? 'reload' : ( $instance->{'start'} ? ' start' : undef ) ) );
+
+        my $nginxAction = "${action}Nginx";
+        my $fpmAction = "${action}PhpFpm";
+
+        iMSCP::Service->getInstance()->registerDelayedAction(
+            "nginx", [ $action, sub { $instance->$nginxAction(); } ], __PACKAGE__->getPriority()
+        );
+
+        iMSCP::Service->getInstance()->registerDelayedAction(
+            "imscp_panel", [ $action, sub { $instance->$fpmAction(); } ], __PACKAGE__->getPriority()
+        );
     }
 
 =back

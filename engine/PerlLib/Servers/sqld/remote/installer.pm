@@ -28,10 +28,7 @@ use warnings;
 use iMSCP::Database;
 use iMSCP::Debug qw/ error /;
 use iMSCP::Dir;
-use iMSCP::EventManager;
 use iMSCP::File;
-use iMSCP::Umask;
-use Servers::sqld::remote;
 use version;
 use parent 'Servers::sqld::mysql::installer';
 
@@ -42,25 +39,6 @@ use parent 'Servers::sqld::mysql::installer';
 =head1 PRIVATE METHODS
 
 =over 4
-
-=item _init( )
-
- Initialize instance
-
- Return Servers::sqld::remote:installer
-
-=cut
-
-sub _init
-{
-    my ($self) = @_;
-
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'sqld'} = Servers::sqld::remote->getInstance();
-    $self->{'cfgDir'} = $self->{'sqld'}->{'cfgDir'};
-    $self->{'config'} = $self->{'sqld'}->{'config'};
-    $self;
-}
 
 =item _buildConf( )
 
@@ -74,12 +52,12 @@ sub _buildConf
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeRemoteSqldBuildConf' );
+    my $rs = $self->{'sqld'}->{'eventManager'}->trigger( 'beforeRemoteSqldBuildConf' );
     return $rs if $rs;
 
     eval {
         # Make sure that the conf.d directory exists
-        iMSCP::Dir->new( dirname => "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d" )->make( {
+        iMSCP::Dir->new( dirname => "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d" )->make( {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ROOT_GROUP'},
             mode  => 0755
@@ -91,17 +69,17 @@ sub _buildConf
     }
 
     # Create the /etc/mysql/my.cnf file if missing
-    unless ( -f "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf" ) {
-        $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'remote_sqld', 'my.cnf', \ my $cfgTpl, {} );
+    unless ( -f "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/my.cnf" ) {
+        $rs = $self->{'sqld'}->{'eventManager'}->trigger( 'onLoadTemplate', 'remote_sqld', 'my.cnf', \ my $cfgTpl, {} );
         return $rs if $rs;
 
         unless ( defined $cfgTpl ) {
-            $cfgTpl = "!includedir $self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n";
-        } elsif ( $cfgTpl !~ m%^!includedir\s+$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n%m ) {
-            $cfgTpl .= "!includedir $self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n";
+            $cfgTpl = "!includedir $self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n";
+        } elsif ( $cfgTpl !~ m%^!includedir\s+$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n%m ) {
+            $cfgTpl .= "!includedir $self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/\n";
         }
 
-        my $file = iMSCP::File->new( filename => "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf" );
+        my $file = iMSCP::File->new( filename => "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/my.cnf" );
         $file->set( $cfgTpl );
         $rs = $file->save();
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
@@ -109,23 +87,23 @@ sub _buildConf
         return $rs if $rs;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'remote_sqld', 'imscp.cnf', \ my $cfgTpl, {} );
+    $rs ||= $self->{'sqld'}->{'eventManager'}->trigger( 'onLoadTemplate', 'remote_sqld', 'imscp.cnf', \ my $cfgTpl, {} );
     return $rs if $rs;
 
     unless ( defined $cfgTpl ) {
-        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp.cnf" )->get();
+        $cfgTpl = iMSCP::File->new( filename => "$self->{'sqld'}->{'cfgDir'}/imscp.cnf" )->get();
         unless ( defined $cfgTpl ) {
-            error( sprintf( "Couldn't read the %s file", "$self->{'cfgDir'}/imscp.cnf" ));
+            error( sprintf( "Couldn't read the %s file", "$self->{'sqld'}->{'cfgDir'}/imscp.cnf" ));
             return 1;
         }
     }
 
-    my $file = iMSCP::File->new( filename => "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf" );
+    my $file = iMSCP::File->new( filename => "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf" );
     $file->set( $cfgTpl );
     $rs = $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterRemoteSqldBuildConf' );
+    $rs ||= $self->{'sqld'}->{'eventManager'}->trigger( 'afterRemoteSqldBuildConf' );
 }
 
 =item _updateServerConfig( )
@@ -144,8 +122,8 @@ sub _updateServerConfig
     my ($self) = @_;
 
     if ( $main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::mariadb' ) {
-        return 0 if version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) < version->parse( '10.0' );
-    } elsif ( version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) < version->parse( '5.6.6' ) ) {
+        return 0 if version->parse( "$self->{'sqld'}->{'config'}->{'SQLD_VERSION'}" ) < version->parse( '10.0' );
+    } elsif ( version->parse( "$self->{'sqld'}->{'config'}->{'SQLD_VERSION'}" ) < version->parse( '5.6.6' ) ) {
         return 0;
     }
 

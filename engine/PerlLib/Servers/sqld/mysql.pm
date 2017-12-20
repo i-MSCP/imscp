@@ -30,7 +30,6 @@ use Class::Autouse qw/ :nostat Servers::sqld::mysql::installer Servers::sqld::my
 use iMSCP::Config;
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug error getMessageByType /;
-use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Service;
 use version;
@@ -44,20 +43,19 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my (undef, $eventManager) = @_;
+    my ($self) = @_;
 
-    Servers::sqld::mysql::installer->getInstance()->registerSetupListeners( $eventManager );
+    Servers::sqld::mysql::installer->getInstance( sqld => $self )->registerSetupListeners();
 }
 
 =item preinstall( )
@@ -73,7 +71,7 @@ sub preinstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMysqlPreinstall' );
-    $rs ||= Servers::sqld::mysql::installer->getInstance()->preinstall();
+    $rs ||= Servers::sqld::mysql::installer->getInstance( sqld => $self )->preinstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterMysqlPreinstall' );
 }
 
@@ -122,7 +120,7 @@ sub uninstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMysqlUninstall' );
-    $rs ||= Servers::sqld::mysql::uninstaller->getInstance()->uninstall();
+    $rs ||= Servers::sqld::mysql::uninstaller->getInstance( sqld => $self )->uninstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterMysqlUninstall' );
     $rs ||= $self->restart() unless $rs;
     $rs;
@@ -289,7 +287,6 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/mysql";
     $self->_mergeConfig() if defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/mysql.data.dist";
     tie %{$self->{'config'}},

@@ -29,7 +29,6 @@ use File::Basename;
 use iMSCP::Debug qw/ error /;
 use iMSCP::Dir;
 use iMSCP::File;
-use Servers::named::bind;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -61,27 +60,6 @@ sub uninstall
 
 =over 4
 
-=item _init( )
-
- Initialize instance
-
- Return Servers::named::bind::uninstaller
-
-=cut
-
-sub _init
-{
-    my ($self) = @_;
-
-    $self->{'named'} = Servers::named::bind->getInstance();
-    $self->{'cfgDir'} = $self->{'named'}->{'cfgDir'};
-    $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-    $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-    $self->{'vrlDir'} = "$self->{'cfgDir'}/imscp";
-    $self->{'config'} = $self->{'named'}->{'config'};
-    $self;
-}
-
 =item _removeConfig( )
 
  Remove configuration
@@ -94,48 +72,50 @@ sub _removeConfig
 {
     my ($self) = @_;
 
-    if ( exists $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} ) {
-        my $dirname = dirname( $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} );
+    if ( exists $self->{'named'}->{'config'}->{'BIND_CONF_DEFAULT_FILE'} ) {
+        my $dirname = dirname( $self->{'named'}->{'config'}->{'BIND_CONF_DEFAULT_FILE'} );
 
         if ( -d $dirname ) {
-            my $filename = basename( $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} );
+            my $filename = basename( $self->{'named'}->{'config'}->{'BIND_CONF_DEFAULT_FILE'} );
 
-            if ( -f "$self->{'bkpDir'}/$filename.system" ) {
-                my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile(
-                    $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'}, { preserve => 'no' }
+            if ( -f "$self->{'named'}->{'bkpDir'}/$filename.system" ) {
+                my $rs = iMSCP::File->new( filename => "$self->{'named'}->{'bkpDir'}/$filename.system" )->copyFile(
+                    $self->{'named'}->{'config'}->{'BIND_CONF_DEFAULT_FILE'}, { preserve => 'no' }
                 );
                 return $rs if $rs;
 
-                my $file = iMSCP::File->new( filename => $self->{'config'}->{'BIND_CONF_DEFAULT_FILE'} );
+                my $file = iMSCP::File->new( filename => $self->{'named'}->{'config'}->{'BIND_CONF_DEFAULT_FILE'} );
                 $rs = $file->mode( 0640 );
-                $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
+                $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'named'}->{'config'}->{'BIND_GROUP'} );
                 return $rs if $rs;
             }
         }
     }
 
     for ( 'BIND_CONF_FILE', 'BIND_LOCAL_CONF_FILE', 'BIND_OPTIONS_CONF_FILE' ) {
-        next unless exists $self->{'config'}->{$_};
+        next unless exists $self->{'named'}->{'config'}->{$_};
 
-        my $dirname = dirname( $self->{'config'}->{$_} );
+        my $dirname = dirname( $self->{'named'}->{'config'}->{$_} );
         next unless -d $dirname;
 
-        my $filename = basename( $self->{'config'}->{$_} );
-        next unless -f "$self->{'bkpDir'}/$filename.system";
+        my $filename = basename( $self->{'named'}->{'config'}->{$_} );
+        next unless -f "$self->{'named'}->{'bkpDir'}/$filename.system";
 
-        my $rs = iMSCP::File->new( filename => "$self->{'bkpDir'}/$filename.system" )->copyFile( $self->{'config'}->{$_}, { preserve => 'no' } );
+        my $rs = iMSCP::File->new( filename => "$self->{'named'}->{'bkpDir'}/$filename.system" )->copyFile(
+            $self->{'named'}->{'config'}->{$_}, { preserve => 'no' }
+        );
         return $rs if $rs;
 
-        my $file = iMSCP::File->new( filename => $self->{'config'}->{$_} );
+        my $file = iMSCP::File->new( filename => $self->{'named'}->{'config'}->{$_} );
         $rs = $file->mode( 0640 );
-        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'BIND_GROUP'} );
+        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'named'}->{'config'}->{'BIND_GROUP'} );
         return $rs if $rs;
     }
 
     eval {
-        iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_MASTER_DIR'} )->remove();
-        iMSCP::Dir->new( dirname => $self->{'config'}->{'BIND_DB_SLAVE_DIR'} )->remove();
-        iMSCP::Dir->new( dirname => $self->{'wrkDir'} )->clear();
+        iMSCP::Dir->new( dirname => $self->{'named'}->{'config'}->{'BIND_DB_MASTER_DIR'} )->remove();
+        iMSCP::Dir->new( dirname => $self->{'named'}->{'config'}->{'BIND_DB_SLAVE_DIR'} )->remove();
+        iMSCP::Dir->new( dirname => $self->{'named'}->{'wrkDir'} )->clear();
     };
     if ( $@ ) {
         error( $@ );

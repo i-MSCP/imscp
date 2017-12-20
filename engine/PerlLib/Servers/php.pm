@@ -25,7 +25,7 @@ package Servers::php;
 
 use strict;
 use warnings;
-use iMSCP::Service;
+use iMSCP::EventManager;
 
 # PHP Servers::php::Abstract concret implementation package name
 my $PACKAGE;
@@ -65,7 +65,7 @@ sub factory
 
     $PACKAGE = "Servers::php::@{[ ucfirst $main::imscpConfig{'DISTRO_ID'} ] }";
     eval "require $PACKAGE; 1" or die( $@ );
-    $PACKAGE->getInstance();
+    $PACKAGE->getInstance( eventManager => iMSCP::EventManager->getInstance());
 }
 
 =item can( $method )
@@ -86,6 +86,19 @@ sub can
     my $package = "Servers::php::@{[ ucfirst $main::imscpConfig{'DISTRO_ID'} ] }";
     eval "require $package; 1" or die( $@ );
     $package->can( $method );
+}
+
+=item AUTOLOAD()
+
+ Implement autoloading for inexistent methods
+
+=cut
+
+sub AUTOLOAD
+{
+    ( my $method = our $AUTOLOAD ) =~ s/.*:://;
+
+    __PACKAGE__->factory()->$method( @_ );
 }
 
 =back

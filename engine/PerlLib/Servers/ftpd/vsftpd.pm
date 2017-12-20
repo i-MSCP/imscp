@@ -32,7 +32,6 @@ use File::Temp;
 use Fcntl 'O_RDONLY';
 use iMSCP::Config;
 use iMSCP::Debug qw/ debug error getMessageByType /;
-use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Service;
 use iMSCP::TemplateParser qw/ processByRef /;
@@ -46,20 +45,19 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my (undef, $eventManager) = @_;
+    my ($self) = @_;
 
-    Servers::ftpd::vsftpd::installer->getInstance()->registerSetupListeners( $eventManager );
+    Servers::ftpd::vsftpd::installer->getInstance( vsftpd => $self )->registerSetupListeners();
 }
 
 =item preinstall( )
@@ -92,7 +90,7 @@ sub install
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeVsftpdInstall' );
-    $rs ||= Servers::ftpd::vsftpd::installer->getInstance()->install();
+    $rs ||= Servers::ftpd::vsftpd::installer->getInstance( vsftpd => $self )->install();
     $rs ||= $self->{'eventManager'}->trigger( 'afterVsftpdInstall' );
 }
 
@@ -142,14 +140,12 @@ sub uninstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeVsftpdUninstall' );
-    $rs ||= Servers::ftpd::vsftpd::uninstaller->getInstance()->uninstall();
+    $rs ||= Servers::ftpd::vsftpd::uninstaller->getInstance( vsftpd => $self )->uninstall();
 
     unless ( $rs || !iMSCP::Service->getInstance()->hasService( $self->{'config'}->{'FTPD_SNAME'} ) ) {
         $self->{'restart'} ||= 1;
     } else {
-        $self->{'start'} = 0;
-        $self->{'restart'} = 0;
-        $self->{'reload'} = 0;
+        @{$self}{ qw/ start restart reload / } = ( 0, 0, 0 );
     }
 
     $rs ||= $self->{'eventManager'}->trigger( 'afterVsftpdUninstall' );
@@ -454,7 +450,6 @@ sub _init
     my ($self) = @_;
 
     @{$self}{qw/ start restart reload /} = ( 0, 0, 0 );
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/vsftpd";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->_mergeConfig() if defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/vsftpd.data.dist";

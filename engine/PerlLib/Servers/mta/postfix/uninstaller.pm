@@ -31,7 +31,6 @@ use iMSCP::Dir;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::SystemUser;
-use Servers::mta::postfix;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -65,23 +64,6 @@ sub uninstall
 =head1 PRIVATE METHODS
 
 =over 4
-
-=item _init( )
-
- Initialize instance
-
- Return Servers::mta::postfix::uninstaller
-
-=cut
-
-sub _init
-{
-    my ($self) = @_;
-
-    $self->{'mta'} = Servers::mta::postfix->getInstance();
-    $self->{'config'} = $self->{'mta'}->{'config'};
-    $self;
-}
 
 =item _restoreConffiles( )
 
@@ -146,7 +128,7 @@ sub _removeFiles
     my ($self) = @_;
 
     eval {
-        for ( $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'} ) {
+        for ( $self->{'mta'}->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, $self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'} ) {
             iMSCP::Dir->new( dirname => $_ )->remove();
         }
     };
@@ -155,9 +137,9 @@ sub _removeFiles
         return 1;
     }
 
-    return 0 unless -f $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'};
+    return 0 unless -f $self->{'mta'}->{'config'}->{'MAIL_LOG_CONVERT_PATH'};
 
-    iMSCP::File->new( filename => $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'} )->delFile();
+    iMSCP::File->new( filename => $self->{'mta'}->{'config'}->{'MAIL_LOG_CONVERT_PATH'} )->delFile();
 }
 
 =back

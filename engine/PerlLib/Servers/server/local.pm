@@ -36,20 +36,19 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my (undef, $eventManager) = @_;
+    my ($self) = @_;
 
-    Servers::server::local::installer->getInstance()->registerSetupListeners( $eventManager );
+    Servers::server::local::installer->getInstance( server => $self )->registerSetupListeners();
 }
 
 =item preinstall( )
@@ -65,7 +64,7 @@ sub preinstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeLocalServerPreInstall' );
-    $rs ||= Servers::server::local::installer->getInstance()->preinstall();
+    $rs ||= Servers::server::local::installer->getInstance( server => $self )->preinstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterLocalServerPreInstall' );
 }
 
@@ -82,30 +81,8 @@ sub install
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeLocalServerInstall' );
-    $rs ||= Servers::server::local::installer->getInstance()->install();
+    $rs ||= Servers::server::local::installer->getInstance( server => $self )->install();
     $rs ||= $self->{'eventManager'}->trigger( 'afterLocalServerInstall' );
-}
-
-=back
-
-=head1 PRIVATE METHODS
-
-=over 4
-
-=item _init( )
-
- Initialize instance
-
- Return Servers::server::local::installer
-
-=cut
-
-sub _init
-{
-    my ($self) = @_;
-
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self;
 }
 
 =back

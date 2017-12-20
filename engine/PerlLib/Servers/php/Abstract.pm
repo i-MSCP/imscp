@@ -31,7 +31,6 @@ use autouse 'iMSCP::Rights' => qw/ setRights /;
 use iMSCP::Config;
 use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::Dir;
-use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::TemplateParser qw/ processByRef getBlocByRef replaceBlocByRef /;
 use parent 'Common::SingletonClass';
@@ -175,9 +174,9 @@ sub addSubbdomain
     die( sprintf( 'The %s package must implement the addDomain() method', ref $self ));
 }
 
-=item disableSub( \%moduleData )
+=item disableSubdomain( \%moduleData )
 
- Process disableSub tasks
+ Process disableSubdomain tasks
  
   The following events *MUST* be triggered:
   - beforePhpDisableSubdomain( \%moduleData )
@@ -188,11 +187,11 @@ sub addSubbdomain
 
 =cut
 
-sub disableSub
+sub disableSubdomain
 {
     my ($self) = @_;
 
-    die( sprintf( 'The %s package must implement the addDomain() method', ref $self ));
+    die( sprintf( 'The %s package must implement the disableSubdomain() method', ref $self ));
 }
 
 =item deleteSubdomain( \%moduleData )
@@ -295,7 +294,43 @@ sub buildConfFile
     0;
 }
 
-=item start( [ $version = $self->{'config'}->{'PHP_VERSION'} ] )
+=item enableModules( \@modules [, $phpVersion = $self->{'config'}->{'PHP_VERSION'} [, $phpSapi = $self->{'config'}->{'PHP_SAPI'} ] ] )
+
+ Enable the given PHP modules
+
+ Param array \@modules Array containing list of modules to enable
+ Param string $phpVersion OPTIONAL PHP version to operate on (default to selected PHP alternative)
+ Param string phpSApi OPTIONAL PHP SAPI to operate on (default to selected PHP SAPI)
+ Return int 0 on sucess, other on failure
+
+=cut
+
+sub enableModules
+{
+    my ($self) = @_;
+
+    die( sprintf( 'The %s package must implement the enableModules() method', ref $self ));
+}
+
+=item disableModules( \@modules [, $phpVersion = $self->{'config'}->{'PHP_VERSION'} [, $phpSapi = $self->{'config'}->{'PHP_SAPI'} ] ] )
+
+ Disable the given PHP modules
+
+ Param array \@modules Array containing list of modules to disable
+ Param string $phpVersion OPTIONAL PHP version to operate on (default to selected PHP alternative)
+ Param string phpSApi OPTIONAL PHP SAPI to operate on (default to selected PHP SAPI)
+ Return int 0 on sucess, other on failure
+
+=cut
+
+sub disableModules
+{
+    my ($self) = @_;
+
+    die( sprintf( 'The %s package must implement the disableModules() method', ref $self ));
+}
+
+=item start( [ $phpVersion = $self->{'config'}->{'PHP_VERSION'} ] )
 
  Start PHP FastCGI Process Manager 'PHP-FPM' for the given PHP version (default to selected PHP alternative for customers)
 
@@ -303,7 +338,7 @@ sub buildConfFile
   - beforePhpDeleteSubdomain( \%moduleData )
   - afterPhpDeleteSubdomain( \%moduleData )
 
- Param string $version OPTIONAL PHP-FPM version to start
+ Param string $phpVersion OPTIONAL PHP-FPM version to start
  Return int 0 on success, other on failure
 
 =cut
@@ -315,15 +350,15 @@ sub start
     die( sprintf( 'The %s package must implement the start() method', ref $self ));
 }
 
-=item stop( [ $version = $self->{'config'}->{'PHP_VERSION'} ] )
+=item stop( [ $phpVersion = $self->{'config'}->{'PHP_VERSION'} ] )
 
  Stop PHP FastCGI Process Manager 'PHP-FPM' for the given PHP version (default to selected PHP alternative for customers)
 
   The following events *MUST* be triggered:
-  - beforePhpFpmStop( $version )
-  - afterPhpFpmStop( $version )
+  - beforePhpFpmStop( $phpVersion )
+  - afterPhpFpmStop( $phpVersion )
 
- Param string $version OPTIONAL PHP-FPM version to stop
+ Param string $phpVersion OPTIONAL PHP-FPM version to stop
  Return int 0 on success, other on failure
 
 =cut
@@ -335,15 +370,15 @@ sub stop
     die( sprintf( 'The %s package must implement the stop() method', ref $self ));
 }
 
-=item reload( [ $version = $self->{'config'}->{'PHP_VERSION'} ] )
+=item reload( [ $phpVersion = $self->{'config'}->{'PHP_VERSION'} ] )
 
  Reload PHP FastCGI Process Manager 'PHP-FPM' for the given PHP version (default to selected PHP alternative for customers)
 
   The following events *MUST* be triggered:
-  - beforePhpFpmReload( $version )
-  - afterPhpFpmReload( $version )
+  - beforePhpFpmReload( $phpVersion )
+  - afterPhpFpmReload( $phpVersion )
 
- Param string $version OPTIONAL PHP-FPM version to reload
+ Param string $phpVersion OPTIONAL PHP-FPM version to reload
  Return int 0
 
 =cut
@@ -355,15 +390,15 @@ sub reload
     die( sprintf( 'The %s package must implement the reload() method', ref $self ));
 }
 
-=item restart( [ $version = $self->{'config'}->{'PHP_VERSION'} ] )
+=item restart( [ $phpVersion = $self->{'config'}->{'PHP_VERSION'} ] )
 
  Restart PHP FastCGI Process Manager 'PHP-FPM' for the given PHP version (default to selected PHP alternative for customers)
 
   The following events *MUST* be triggered:
-  - beforePhpFpmRestart( $version )
-  - afterPhpFpmRestart( $version )
+  - beforePhpFpmRestart( $phpVersion )
+  - afterPhpFpmRestart( $phpVersion )
 
- Param string $version OPTIONAL PHP-FPM version to restart
+ Param string $phpVersion OPTIONAL PHP-FPM version to restart
  Return int 0 on success, other on failure
 
 =cut
@@ -394,7 +429,6 @@ sub _init
     my ($self) = @_;
 
     @{$self}{qw/ start restart reload _templates /} = ( 0, 0, 0, {} );
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/php";
     $self->_mergeConfig() if defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/php.data.dist";
     tie %{$self->{'config'}},
@@ -607,7 +641,7 @@ sub _buildFpmConfig
             EMAIL_DOMAIN                 => $emailDomain,
             PHP_CONFIG_LEVEL             => $phpConfigLevel,
             PHP_FPM_LISTEN_ENDPOINT      => ( $self->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds' )
-                ? "$self->{'config'}->{'PHP_FPM_RUN_DIR'}/php$self->{'config'}->{'PHP_VERSION'}-fpm-$phpConfigLevel.sock"
+                ? "{PHP_FPM_RUN_DIR}/php{PHP_VERSION}-fpm-{PHP_CONFIG_LEVEL}.sock"
                 : '127.0.0.1:' . ( $self->{'config'}->{'PHP_FPM_LISTEN_PORT_START'}+$moduleData->{'PHP_FPM_LISTEN_PORT'} ),
             PHP_FPM_MAX_CHILDREN         => $self->{'config'}->{'PHP_FPM_MAX_CHILDREN'} // 6,
             PHP_FPM_MAX_REQUESTS         => $self->{'config'}->{'PHP_FPM_MAX_REQUESTS'} // 1000,
@@ -615,7 +649,9 @@ sub _buildFpmConfig
             PHP_FPM_MIN_SPARE_SERVERS    => $self->{'config'}->{'PHP_FPM_MIN_SPARE_SERVERS'} // 1,
             PHP_FPM_PROCESS_IDLE_TIMEOUT => $self->{'config'}->{'PHP_FPM_PROCESS_IDLE_TIMEOUT'} || '60s',
             PHP_FPM_PROCESS_MANAGER_MODE => $self->{'config'}->{'PHP_FPM_PROCESS_MANAGER_MODE'} || 'ondemand',
+            PHP_FPM_RUN_DIR              => $self->{'config'}->{'PHP_FPM_RUN_DIR'},
             PHP_FPM_START_SERVERS        => $self->{'config'}->{'PHP_FPM_START_SERVERS'} // 1,
+            PHP_VERSION                  => $self->{'config'}->{'PHP_VERSION'},
             TMPDIR                       => "$moduleData->{'HOME_DIR'}/phptmp"
         };
 
@@ -793,14 +829,16 @@ EOF
     } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
         if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
             @{$apache2ServerData}{
-                qw/ PHP_CONFIG_LEVEL PROXY_FCGI_PATH PROXY_FCGI_URL PROXY_FCGI_RETRY PROXY_FCGI_CONNECTION_TIMEOUT PROXY_FCGI_TIMEOUT /
+                qw/
+                    PHP_CONFIG_LEVEL PHP_FPM_RUN_DIR PHP_VERSION PROXY_FCGI_PATH PROXY_FCGI_URL PROXY_FCGI_RETRY PROXY_FCGI_CONNECTION_TIMEOUT
+                    PROXY_FCGI_TIMEOUT /
             } = (
                 $phpConfigLevel,
-                ( $self->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
-                    ? "unix:$self->{'config'}->{'PHP_FPM_RUN_DIR'}/php$self->{'config'}->{'PHP_VERSION'}-fpm-$phpConfigLevel.sock|" : ''
-                ),
+                $self->{'config'}->{'PHP_FPM_RUN_DIR'},
+                $self->{'config'}->{'PHP_VERSION'},
+                ( $self->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds' ? "unix:{PHP_FPM_RUN_DIR}/php{PHP_VERSION}-fpm-{PHP_CONFIG_LEVEL}.sock|" : '' ),
                 ( 'fcgi://' . ( $self->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds'
-                    ? $phpConfigLevel : '127.0.0.1:' . ( $self->{'config'}->{'PHP_FPM_LISTEN_PORT_START'}+$moduleData->{'PHP_FPM_LISTEN_PORT'} ) )
+                    ? '{PHP_CONFIG_LEVEL}' : '127.0.0.1:' . ( $self->{'config'}->{'PHP_FPM_LISTEN_PORT_START'}+$moduleData->{'PHP_FPM_LISTEN_PORT'} ) )
                 ),
                 0,
                 5,
