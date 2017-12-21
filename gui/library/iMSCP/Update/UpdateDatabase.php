@@ -1669,7 +1669,7 @@ class UpdateDatabase extends UpdateDatabaseAbstract
     }
 
     /**
-     * Added columns for PHP configuration level (PHP Editor)
+     * Add columns for PHP configuration level (PHP Editor)
      *
      * Prior version 1.6.0, the PHP configuration level was set at system wide, in the /etc/imscp/php/php.data file.
      * 
@@ -1686,7 +1686,7 @@ class UpdateDatabase extends UpdateDatabaseAbstract
             $this->addColumn(
                 'reseller_props',
                 'php_ini_config_level',
-                "ENUM( 'per_domain', 'per_site', 'per_user' ) NOT NULL DEFAULT 'per_site'AFTER php_ini_max_memory_limit"
+                "ENUM( 'per_domain', 'per_site', 'per_user' ) NOT NULL DEFAULT 'per_site' AFTER php_ini_max_memory_limit"
             )
         ];
     }
