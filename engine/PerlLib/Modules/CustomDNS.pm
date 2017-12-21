@@ -93,8 +93,7 @@ sub process
             "
                 UPDATE domain_dns
                 SET domain_dns_status = IF(
-                    domain_dns_status = 'todisable', 'disabled',
-                    IF(domain_dns_status NOT IN('todelete', 'disabled'), 'ok', domain_dns_status)
+                    domain_dns_status = 'todisable', 'disabled', IF(domain_dns_status NOT IN('todelete', 'disabled'), 'ok', domain_dns_status)
                 )
                 WHERE domain_id = ?
                 AND alias_id = ?
@@ -155,12 +154,7 @@ sub _loadData
 
     my $row = $self->{'_dbh'}->selectrow_hashref(
         ( $aliasId eq '0'
-            ? '
-                SELECT t1.domain_name, t2.ip_number
-                FROM domain AS t1
-                JOIN server_ips AS t2 ON(t2.ip_id = t1.domain_ip_id)
-                WHERE t1.domain_id = ?
-              '
+            ? 'SELECT t1.domain_name, t2.ip_number FROM domain AS t1 JOIN server_ips AS t2 ON(t2.ip_id = t1.domain_ip_id) WHERE t1.domain_id = ?'
             : '
                 SELECT t1.alias_name AS domain_name, t2.ip_number
                 FROM domain_aliasses AS t1
@@ -172,7 +166,7 @@ sub _loadData
         ( $aliasId eq '0' ? $domainId : $aliasId )
     );
     %{$row} or die( sprintf( 'Data not found for custom DNS records group (%d;%d)', $domainId, $aliasId ));
-    @{$self}{qw/ domain_name domain_ip/} = ($row->{'domain_name'}, $row->{'ip_number'});
+    @{$self}{qw/ domain_name domain_ip /} = ( $row->{'domain_name'}, $row->{'ip_number'} );
     undef $row;
 
     my $rows = $self->{'_dbh'}->selectall_arrayref(

@@ -1054,14 +1054,13 @@ sub _buildPhpConfig
             DISTRO_CA_BUNDLE                    => $main::imscpConfig{'DISTRO_CA_BUNDLE'},
             HOME_DIR                            => $main::imscpConfig{'GUI_ROOT_DIR'},
             MTA_VIRTUAL_MAIL_DIR                => Servers::mta->factory()->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
-            PEAR_DIR                            => $self->{'config'}->{'PHP_PEAR_DIR_PATH'},
             OTHER_ROOTKIT_LOG                   => $main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne '' ? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : '',
             RKHUNTER_LOG                        => $main::imscpConfig{'RKHUNTER_LOG'},
             TIMEZONE                            => main::setupGetQuestion( 'TIMEZONE' ),
             WEB_DIR                             => $main::imscpConfig{'GUI_ROOT_DIR'}
         },
         {
-            destination => "$self->{'config'}->{'PHP_CONF_DIR_PATH'}/php-fpm.conf",
+            destination => "/usr/local/etc/imscp_panel/php-fpm.conf",
             user        => $main::imscpConfig{'ROOT_USER'},
             group       => $main::imscpConfig{'ROOT_GROUP'},
             mode        => 0640
@@ -1069,7 +1068,6 @@ sub _buildPhpConfig
     );
     $rs ||= $self->{'frontend'}->buildConfFile( "$self->{'cfgDir'}/php.ini",
         {
-            PEAR_DIR                    => $self->{'config'}->{'PHP_PEAR_DIR_PATH'},
             PHP_OPCODE_CACHE_ENABLED    => $self->{'config'}->{'PHP_OPCODE_CACHE_ENABLED'},
             PHP_OPCODE_CACHE_MAX_MEMORY => $self->{'config'}->{'PHP_OPCODE_CACHE_MAX_MEMORY'},
             PHP_APCU_CACHE_ENABLED      => $self->{'config'}->{'PHP_APCU_CACHE_ENABLED'},
@@ -1077,7 +1075,7 @@ sub _buildPhpConfig
             TIMEZONE                    => main::setupGetQuestion( 'TIMEZONE' )
         },
         {
-            destination => "$self->{'config'}->{'PHP_CONF_DIR_PATH'}/php.ini",
+            destination => "/usr/local/etc/imscp_panel/php.ini",
             user        => $main::imscpConfig{'ROOT_USER'},
             group       => $main::imscpConfig{'ROOT_GROUP'},
             mode        => 0640

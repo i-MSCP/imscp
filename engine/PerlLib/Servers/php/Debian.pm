@@ -34,6 +34,7 @@ use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::Service;
 use Servers::php;
+use Scalar::Defer;
 use parent 'Servers::php::Abstract';
 
 =head1 DESCRIPTION
@@ -60,13 +61,6 @@ sub registerSetupListeners
         'beforeSetupDialog',
         sub {
             push @{$_[0]}, sub { $self->askForPhpSapi( @_ ) };
-            0;
-        }
-    );
-    $rs ||= $self->{'eventManager'}->register(
-        'beforeSetupDialog',
-        sub {
-            push @{$_[0]}, sub { $self->askForPhpConfigLevel( @_ ) };
             0;
         }
     );
@@ -120,42 +114,6 @@ EOF
     0;
 }
 
-=item askForPhpConfigLevel( \%dialog )
-
- Ask for PHP config level
-
- Param iMSCP::Dialog \%dialog
- Return int 0 to go on next question, 30 to go back to the previous question
-
-=cut
-
-sub askForPhpConfigLevel
-{
-    my ($self, $dialog) = @_;
-
-    my $value = main::setupGetQuestion( 'PHP_CONFIG_LEVEL', $self->{'config'}->{'PHP_CONFIG_LEVEL'} || ( iMSCP::Getopt->preseed ? 'per_site' : '' ));
-    my %choices = ( 'per_site', 'Per site (recommended)', 'per_domain', 'Per domain', 'per_user', 'Per user' );
-
-    if ( isStringInList( $main::reconfigure, 'php', 'servers', 'all', 'forced' ) || !isStringInList( $value, keys %choices ) ) {
-        ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'per_site' );
-\\Z4\\Zb\\ZuPHP configuration level\\Zn
-
-Please choose the PHP configuration level for customers.
-
-Available levels are:
-
-\\Z4Per site  :\\Zn Different PHP configuration for each domain, including subdomains
-\\Z4Per domain:\\Zn Identical PHP configuration for each domain, including subdomains
-\\Z4Per user  :\\Zn Identical PHP configuration for all domains, including subdomains
-\\Z \\Zn
-EOF
-        return $rs unless $rs < 30;
-    }
-
-    $self->{'config'}->{'PHP_CONFIG_LEVEL'} = $value;
-    0;
-}
-
 =item askForFastCGIconnectionType( )
 
  Ask for FastCGI connection type (PHP-FPM)
@@ -204,6 +162,8 @@ sub preinstall
     return $rs if $rs;
 
     eval {
+        $self->_setVersion();
+
         my $httpd = Servers::httpd->factory();
 
         # Disable i-MSCP Apache2 fcgid modules. It will be re-enabled in postinstall if needed
@@ -229,7 +189,7 @@ sub preinstall
             # Tasks for apache2handler SAPI
 
             if ( $self->{'config'}->{'PHP_SAPI'} ne 'apache2handler' || $self->{'config'}->{'PHP_VERSION'} ne $_ ) {
-                # Disable Apache2 PHP module if PHP version is other than selected PHP alternative for customers
+                # Disable Apache2 PHP module if PHP version is other than selected PHP alternative
                 $httpd->disableModules( "php$_" ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
             }
 
@@ -245,7 +205,7 @@ sub preinstall
                 $self->stop( $_ ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
 
                 # Disable PHP-FPM service if selected SAPI for customer is not FPM or if PHP version
-                # is other than selected PHP alternative for customers
+                # is other than selected PHP alternative
                 $serviceMngr->disable( "php$_-fpm" ) if $self->{'config'}->{'PHP_SAPI'} ne 'fpm' || $self->{'config'}->{'PHP_VERSION'} ne $_;
             }
 
@@ -270,8 +230,6 @@ sub preinstall
                 mode  => 0555
             } );
         }
-
-        $self->SUPER::preinstall() == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
     };
     if ( $@ ) {
         error( $@ );
@@ -299,39 +257,37 @@ sub install
     eval {
         my $httpd = Servers::httpd->factory();
         my $serverData = {
-            HTTPD_USER                          => $httpd->getRunningUser() || 'www-data',
-            HTTPD_GROUP                         => $httpd->getRunningGroup() || 'www-data',
-            PEAR_DIR                            => $self->{'config'}->{'PHP_PEAR_DIR'} || '/usr/share/php',
+            HTTPD_USER                          => $httpd->getRunningUser(),
+            HTTPD_GROUP                         => $httpd->getRunningGroup(),
             PHP_APCU_CACHE_ENABLED              => $self->{'config'}->{'PHP_APCU_CACHE_ENABLED'} // 1,
             PHP_APCU_CACHE_MAX_MEMORY           => $self->{'config'}->{'PHP_APCU_CACHE_MAX_MEMORY'} || 32,
-            PHP_CONF_DIR_PATH                   => $self->{'config'}->{'PHP_CONF_DIR_PATH'} || '/etc/php',
             PHP_FPM_EMERGENCY_RESTART_THRESHOLD => $self->{'config'}->{'PHP_FPM_EMERGENCY_RESTART_THRESHOLD'} || 10,
             PHP_FPM_EMERGENCY_RESTART_INTERVAL  => $self->{'config'}->{'PHP_FPM_EMERGENCY_RESTART_INTERVAL'} || '1m',
             PHP_FPM_LOG_LEVEL                   => $self->{'config'}->{'PHP_FPM_LOG_LEVEL'} || 'error',
             PHP_FPM_PROCESS_CONTROL_TIMEOUT     => $self->{'config'}->{'PHP_FPM_PROCESS_CONTROL_TIMEOUT'} || '60s',
             PHP_FPM_PROCESS_MAX                 => $self->{'config'}->{'PHP_FPM_PROCESS_MAX'} || 0,
             PHP_FPM_RLIMIT_FILES                => $self->{'config'}->{'PHP_FPM_RLIMIT_FILES'} || 4096,
-            PHP_FPM_RUN_DIR                     => $self->{'config'}->{'PHP_FPM_RUN_DIR'} || '/run/php',
             PHP_OPCODE_CACHE_ENABLED            => $self->{'config'}->{'PHP_OPCODE_CACHE_ENABLED'} // 1,
             PHP_OPCODE_CACHE_MAX_MEMORY         => $self->{'config'}->{'PHP_OPCODE_CACHE_MAX_MEMORY'} || 32,
             TIMEZONE                            => $main::imscpConfig{'TIMEZONE'} || 'UTC'
         };
 
-        for my $phpVersion( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
-            next unless $phpVersion =~ /^[\d.]+$/;
+        # We configure all PHP alternatives
+        for ( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
+            next unless /^[\d.]+$/;
 
-            @{$serverData}{qw/ PHP_FPM_POOL_DIR_PATH PHP_VERSION /} = ( "/etc/php/$phpVersion/fpm/pool.d", $phpVersion );
+            $serverData->{'PHP_VERSION'} = $_;
 
             # Master php.ini file for apache2handler, cli, cgi and fpm SAPIs
-            for ( qw/ apache2 cgi cli fpm / ) {
-                $rs = $self->buildConfFile( "$_/php.ini", "/etc/php/$phpVersion/$_/php.ini", undef, $serverData );
+            for my $sapiDir( qw/ apache2 cgi cli fpm / ) {
+                $rs = $self->buildConfFile( "$sapiDir/php.ini", "/etc/php/$_/$sapiDir/php.ini", undef, $serverData );
                 last if $rs;
             }
 
             # Master conffile for fpm SAPI
-            $rs ||= $self->buildConfFile( 'fpm/php-fpm.conf', "/etc/php/$phpVersion/fpm/php-fpm.conf", undef, $serverData );
+            $rs ||= $self->buildConfFile( 'fpm/php-fpm.conf', "/etc/php/$_/fpm/php-fpm.conf", undef, $serverData );
             # Default pool conffile for fpm SAPI
-            $rs ||= $self->buildConfFile( 'fpm/pool.conf.default', "/etc/php/$phpVersion/fpm/pool.d/www.conf", undef, $serverData );
+            $rs ||= $self->buildConfFile( 'fpm/pool.conf.default', "/etc/php/$_/fpm/pool.d/www.conf", undef, $serverData );
             $rs == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
         }
 
@@ -387,7 +343,7 @@ sub postinstall
         my $httpd = Servers::httpd->factory();
 
         if ( $self->{'config'}->{'PHP_SAPI'} eq 'apache2handler' ) {
-            # Enable Apache2 PHP module for selected PHP alternative for customers
+            # Enable Apache2 PHP module for selected PHP alternative
             $httpd->enableModules( "php$self->{'config'}->{'PHP_VERSION'}" ) == 0 or die (
                 getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
             );
@@ -402,10 +358,10 @@ sub postinstall
                 getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
             );
 
-            # Enable PHP-FPM service for selected PHP alternative for customers
+            # Enable PHP-FPM service for selected PHP alternative
             iMSCP::Service->getInstance()->enable( "php$self->{'config'}->{'PHP_VERSION'}-fpm" );
 
-            # Schedule start of PHP-FPM service for selected PHP alternative for customers
+            # Schedule start of PHP-FPM service for selected PHP alternative
             $self->{'eventManager'}->register(
                 'beforeSetupRestartServices',
                 sub {
@@ -807,46 +763,43 @@ sub restart
 
 =over 4
 
-=item _guessVariablesForSelectedPhpAlternative( )
+=item _init( )
 
- See Servers::php::Abstract::_guessVariablesForSelectedPhpAlternative()
+ Initialize instance
+
+ Return Servers::php::Abstract
 
 =cut
 
-sub _guessVariablesForSelectedPhpAlternative
+sub _init
 {
     my ($self) = @_;
 
-    my $phpCliPath = iMSCP::ProgramFinder::find( 'php' ) or die( "Couldn't find the PHP (CLI) command in search path for the selected PHP alternative" );
+    # Define properties that are expected by parent class
+    @{$self}{qw/ PEAR_DIR PHP_FPM_POOL_DIR PHP_FPM_RUN_DIR /} = (
+        '/usr/share/php', lazy { "/etc/php/$self->{'config'}->{'PHP_VERSION'}/fpm/pool.d" }, '/run/php'
+    );
 
-    ( $self->{'config'}->{'PHP_VERSION_FULL'} ) = `$phpCliPath -nv 2> /dev/null` =~ /^PHP\s+([\d.]+)/ or die(
+    $self->SUPER::_init();
+}
+
+=item _setVersion()
+
+ Set version data for selected PHP alternative
+
+ return void, die on failure
+
+=cut
+
+sub _setVersion
+{
+    my ($self) = @_;
+
+    ( $self->{'config'}->{'PHP_VERSION_FULL'} ) = `/usr/bin/php -nv 2> /dev/null` =~ /^PHP\s+([\d.]+)/ or die(
         "Couldn't guess PHP version for the selected PHP alternative"
     );
 
     $self->{'config'}->{'PHP_VERSION'} = $self->{'config'}->{'PHP_VERSION_FULL'} =~ s/\.\d+$//r;
-
-    my ($phpConfDir) = `$phpCliPath -ni 2> /dev/null | grep '(php.ini) Path'` =~ /([^\s]+)$/ or die(
-        "Couldn't guess the PHP configuration directory path for the selected PHP alternative"
-    );
-
-    my $phpConfBaseDir = dirname( $phpConfDir );
-    $self->{'config'}->{'PHP_CONF_DIR_PATH'} = $phpConfBaseDir;
-    $self->{'config'}->{'PHP_FPM_POOL_DIR_PATH'} = "$phpConfBaseDir/fpm/pool.d";
-
-    unless ( -d $self->{'config'}->{'PHP_FPM_POOL_DIR_PATH'} ) {
-        $self->{'config'}->{'PHP_FPM_POOL_DIR_PATH'} = '';
-        die( sprintf( "Couldn't guess the `%s' PHP configuration parameter value for the selected PHP alternative: directory doesn't exist.", $_ ));
-    }
-
-    $self->{'config'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php$self->{'config'}->{'PHP_VERSION'}" );
-    $self->{'config'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-cgi$self->{'config'}->{'PHP_VERSION'}" );
-    $self->{'config'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-fpm$self->{'config'}->{'PHP_VERSION'}" );
-
-    for ( qw/ PHP_CLI_BIN_PATH PHP_FCGI_BIN_PATH PHP_FPM_BIN_PATH / ) {
-        $self->{'config'}->{$_} or die( sprintf( "Couldn't guess the `%s' PHP configuration parameter value for the selected PHP alternative.", $_ ));
-    }
-
-    $self->{'config'}->{'PHP_FPM_RUN_DIR'} = '/run/php';
 }
 
 =item _cleanup( )

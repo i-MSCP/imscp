@@ -110,7 +110,6 @@ if [ "$action" = "start" ] || [ "$action" = "restart" ]; then
     done
 fi
 EOF
-    $policyrcd->flush();
     $policyrcd->close();
     chmod( 0750, $policyrcd->filename ) or die( sprintf( "Couldn't change permissions on %s: %s", $policyrcd->filename, $! ));
 
@@ -973,7 +972,6 @@ EOF
 
     my $debconfSelectionsFile = File::Temp->new();
     print $debconfSelectionsFile $fileContent;
-    $debconfSelectionsFile->flush();
     $debconfSelectionsFile->close();
 
     my $rs = execute( [ 'debconf-set-selections', $debconfSelectionsFile->filename ], \ my $stdout, \ my $stderr );

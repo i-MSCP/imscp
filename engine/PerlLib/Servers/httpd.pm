@@ -25,6 +25,7 @@ package Servers::httpd;
 
 use strict;
 use warnings;
+use iMSCP::EventManager;
 use iMSCP::Service;
 
 # Servers::httpd::Interface server package name
@@ -34,9 +35,22 @@ my $PACKAGE;
 
  i-MSCP httpd server implementation.
 
-=head1 PUBLIC METHODS
+=head1 CLASS METHODS
 
 =over 4
+
+=item getPriority( )
+
+ Get server priority
+
+ Return int Server priority
+
+=cut
+
+sub getPriority
+{
+    60;
+}
 
 =item factory( )
 
@@ -50,9 +64,10 @@ sub factory
 {
     return $PACKAGE->getInstance() if $PACKAGE;
 
-    $PACKAGE = $main::imscpConfig{'HTTPD_PACKAGE'} || 'Servers::noserver';
+    my $sname = ( split '::', $main::imscpConfig{'HTTPD_PACKAGE'} )[2] or die( "Couldn't guess httpd server implementation" );
+    $PACKAGE = "Servers::httpd::${sname}::@{[ ucfirst $main::imscpConfig{'DISTRO_ID'} ] }";
     eval "require $PACKAGE; 1" or die( $@ );
-    $PACKAGE->getInstance();
+    $PACKAGE->getInstance( eventManager => iMSCP::EventManager->getInstance());
 }
 
 =item can( $method )
@@ -70,22 +85,23 @@ sub can
 
     return $PACKAGE->can( $method ) if $PACKAGE;
 
-    my $package = $main::imscpConfig{'HTTPD_PACKAGE'} || 'Servers::noserver';
+    my $sname = ( split'::', $main::imscpConfig{'HTTPD_PACKAGE'} )[2] or die( "Couldn't guess httpd server implementation" );
+    my $package = "Servers::httpd::${sname}::@{[ ucfirst $main::imscpConfig{'DISTRO_ID'} ] }";
     eval "require $package; 1" or die( $@ );
     $package->can( $method );
 }
 
-=item getPriority( )
+=item AUTOLOAD()
 
- Get server priority
-
- Return int Server priority
+ Implement autoloading for inexistent methods
 
 =cut
 
-sub getPriority
+sub AUTOLOAD
 {
-    60;
+    ( my $method = our $AUTOLOAD ) =~ s/.*:://;
+
+    __PACKAGE__->factory()->$method( @_ );
 }
 
 =back
@@ -106,8 +122,7 @@ END
 
         my $instance = $PACKAGE->hasInstance();
 
-        return 0 unless $instance
-            && ( my $action = $instance->{'restart'}
+        return 0 unless $instance && ( my $action = $instance->{'restart'}
             ? 'restart' : ( $instance->{'reload'} ? 'reload' : ( $instance->{'start'} ? ' start' : undef ) ) );
 
         iMSCP::Service->getInstance()->registerDelayedAction(

@@ -120,23 +120,20 @@ sub add
     return $rs if $rs;
 
     # Private key
-    my $privateKeyContainer = File::Temp->new( UNLINK => 1 );
+    my $privateKeyContainer = File::Temp->new();
     print $privateKeyContainer $self->{'private_key'};
-    $privateKeyContainer->flush();
     $privateKeyContainer->close();
 
     # Certificate
-    my $certificateContainer = File::Temp->new( UNLINK => 1 );
+    my $certificateContainer = File::Temp->new();
     print $certificateContainer $self->{'certificate'};
-    $certificateContainer->flush();
     $certificateContainer->close();
 
     # CA Bundle (intermediate certificate(s))
     my $caBundleContainer;
     if ( $self->{'ca_bundle'} ) {
-        $caBundleContainer = File::Temp->new( UNLINK => 1 );
+        $caBundleContainer = File::Temp->new();
         print $caBundleContainer $self->{'ca_bundle'};
-        $caBundleContainer->flush();
         $caBundleContainer->close();
     }
 
@@ -151,6 +148,7 @@ sub add
 
     # Check certificate chain
     $rs = $openSSL->validateCertificateChain();
+
     # Create certificate chain (private key, certificate and CA bundle)
     $rs ||= $openSSL->createCertificateChain();
 }
@@ -190,12 +188,13 @@ sub _init
     my ($self) = @_;
 
     $self->{'certsDir'} = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs";
-    iMSCP::Dir->new( dirname => $self->{'certsDir'} )->make( {
 
+    iMSCP::Dir->new( dirname => $self->{'certsDir'} )->make( {
         user  => $main::imscpConfig{'ROOT_USER'},
         group => $main::imscpConfig{'ROOT_GROUP'},
         mode  => 0750
     } );
+
     $self->SUPER::_init();
 }
 
@@ -226,12 +225,7 @@ sub _loadData
             );
         } elsif ( $self->{'domain_type'} eq 'sub' ) {
             $row = $self->{'_dbh'}->selectrow_hashref(
-                "
-                    SELECT CONCAT(subdomain_name, '.', domain_name) AS domain_name
-                    FROM subdomain
-                    JOIN domain USING(domain_id)
-                    WHERE subdomain_id = ?
-                ",
+                "SELECT CONCAT(subdomain_name, '.', domain_name) AS domain_name FROM subdomain JOIN domain USING(domain_id) WHERE subdomain_id = ?",
                 undef, $self->{'domain_id'}
             );
         } else {

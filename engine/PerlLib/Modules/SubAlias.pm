@@ -27,8 +27,6 @@ use strict;
 use warnings;
 use File::Spec;
 use iMSCP::Debug qw/ debug error getLastError warning /;
-use Net::LibIDN qw/ idn_to_unicode /;
-use Servers::php;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -132,7 +130,7 @@ sub _loadData
                 SELECT t1.*,
                     t2.alias_name, t2.external_mail, t3.domain_name AS user_home,
                     t3.domain_id, t3.domain_admin_id, t3.domain_mailacc_limit, t3.domain_php, t3.domain_cgi,
-                    t3.web_folder_protection,
+                    t3.web_folder_protection, t3.phpini_config_level AS php_config_level,
                     IFNULL(t4.ip_number, '0.0.0.0') AS ip_number,
                     t5.private_key, t5.certificate, t5.ca_bundle, t5.allow_hsts, t5.hsts_max_age,
                     t5.hsts_include_subdomains,
@@ -181,36 +179,35 @@ sub _getData
 
     return $self->{'_data'} if %{$self->{'_data'}};
 
-    my $php = Servers::php->factory();
     my $usergroup = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'} );
     my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'user_home'}" );
     my $webDir = File::Spec->canonpath( "$homeDir/$self->{'subdomain_alias_mount'}" );
     my $documentRoot = File::Spec->canonpath( "$webDir/$self->{'subdomain_alias_document_root'}" );
-    my $confLevel = $php->{'config'}->{'PHP_CONFIG_LEVEL'};
+    my ($ssl, $hstsMaxAge, $hstsIncSub, $phpini) = ( 0, 0, 0, {} );
 
-    if ( $confLevel eq 'per_user' ) {
-        $confLevel = 'dmn';
-    } elsif ( $confLevel eq 'per_domain' ) {
-        $confLevel = 'als';
-    } else {
-        $confLevel = 'subals';
+    if ( $self->{'certificate'}
+        && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'subdomain_alias_name'}.$self->{'alias_name'}.pem.pem"
+    ) {
+        $ssl = 1;
+
+        if ( $self->{'allow_hsts'} eq 'on' ) {
+            $hstsMaxAge = $self->{'hsts_max_age'} || 0;
+            $hstsIncSub = $self->{'hsts_include_subdomains'} eq 'on' ? '; includeSubDomains' : '';
+        }
     }
 
-    local $self->{'_dbh'}->{'RaiseError'} = 1;
-    my $phpini = $self->{'_dbh'}->selectrow_hashref(
-        'SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = ?',
-        undef,
-        ( $confLevel eq 'dmn' ? $self->{'domain_id'} : ( $confLevel eq 'als' ? $self->{'alias_id'} : $self->{'subdomain_alias_id'} ) ),
-        $confLevel
-    ) || {};
-
-    my $haveCert = ( defined $self->{'certificate'}
-        && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'subdomain_alias_name'}.$self->{'alias_name'}.pem"
-    );
-    my $allowHSTS = ( $haveCert && $self->{'allow_hsts'} eq 'on' );
-    my $hstsMaxAge = ( $allowHSTS ) ? $self->{'hsts_max_age'} : 0;
-    my $hstsIncludeSubDomains = ( $allowHSTS && $self->{'hsts_include_subdomains'} eq 'on' )
-        ? '; includeSubDomains' : ( ( $allowHSTS ) ? '' : '; includeSubDomains' );
+    if ( $self->{'domain_php'} eq 'yes' ) {
+        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        $phpini = $self->{'_dbh'}->selectrow_hashref(
+            'SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = ?',
+            undef,
+            ( $self->{'php_config_level'} eq 'per_user'
+                ? $self->{'domain_id'}
+                : ( $self->{'php_config_level'} eq 'per_domain' ? $self->{'subdomain_alias_id'} : $self->{'subdomain_id'} )
+            ),
+            ( $self->{'php_config_level'} eq 'per_user' ? 'dmn' : ( $self->{'php_config_level'} eq 'per_domain' ? 'als' : 'subals' ) )
+        ) || {};
+    }
 
     $self->{'_data'} = {
         ACTION                  => $action,
@@ -220,7 +217,6 @@ sub _getData
         BASE_SERVER_PUBLIC_IP   => $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'},
         DOMAIN_ADMIN_ID         => $self->{'domain_admin_id'},
         DOMAIN_NAME             => $self->{'subdomain_alias_name'} . '.' . $self->{'alias_name'},
-        DOMAIN_NAME_UNICODE     => idn_to_unicode( $self->{'subdomain_alias_name'} . '.' . $self->{'alias_name'}, 'utf-8' ),
         DOMAIN_IP               => $main::imscpConfig{'BASE_SERVER_IP'} eq '0.0.0.0' ? '0.0.0.0' : $self->{'ip_number'},
         DOMAIN_TYPE             => 'alssub',
         PARENT_DOMAIN_NAME      => $self->{'alias_name'},
@@ -230,34 +226,35 @@ sub _getData
         MOUNT_POINT             => $self->{'subdomain_alias_mount'},
         DOCUMENT_ROOT           => $documentRoot,
         SHARED_MOUNT_POINT      => $self->_sharedMountPoint(),
-        PEAR_DIR                => ${$php}->{'config'}->{'PHP_PEAR_DIR'},
-        TIMEZONE                => $main::imscpConfig{'TIMEZONE'},
         USER                    => $usergroup,
         GROUP                   => $usergroup,
         PHP_SUPPORT             => $self->{'domain_php'},
+        PHP_CONFIG_LEVEL        => $self->{'php_config_level'},
+        PHP_CONFIG_LEVEL_DOMAIN => $self->{'php_config_level'} eq 'per_user'
+            ? $self->{'user_home'}
+            : ( $self->{'php_config_level'} eq 'per_domain' ? $self->{'alias_name'} : $self->{'subdomain_alias_name'} . '.' . $self->{'alias_name'} ),
         CGI_SUPPORT             => $self->{'domain_cgi'},
         WEB_FOLDER_PROTECTION   => $self->{'web_folder_protection'},
-        SSL_SUPPORT             => $haveCert,
-        HSTS_SUPPORT            => $allowHSTS,
+        SSL_SUPPORT             => $ssl,
+        HSTS_SUPPORT            => $ssl && $self->{'allow_hsts'} eq 'on',
         HSTS_MAX_AGE            => $hstsMaxAge,
-        HSTS_INCLUDE_SUBDOMAINS => $hstsIncludeSubDomains,
+        HSTS_INCLUDE_SUBDOMAINS => $hstsIncSub,
         ALIAS                   => 'alssub' . $self->{'subdomain_alias_id'},
         FORWARD                 => $self->{'subdomain_alias_url_forward'} || 'no',
         FORWARD_TYPE            => $self->{'subdomain_alias_type_forward'} || '',
         FORWARD_PRESERVE_HOST   => $self->{'subdomain_alias_host_forward'} || 'Off',
-        DISABLE_FUNCTIONS       => $phpini->{'disable_functions'}
-            // 'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
-        MAX_EXECUTION_TIME      => $phpini->{'max_execution_time'} // 30,
-        MAX_INPUT_TIME          => $phpini->{'max_input_time'} // 60,
-        MEMORY_LIMIT            => $phpini->{'memory_limit'} // 128,
+        DISABLE_FUNCTIONS       => $phpini->{'disable_functions'} || 'exec,passthru,popen,proc_open,show_source,shell,shell_exec,symlink,system',
+        MAX_EXECUTION_TIME      => $phpini->{'max_execution_time'} || 30,
+        MAX_INPUT_TIME          => $phpini->{'max_input_time'} || 60,
+        MEMORY_LIMIT            => $phpini->{'memory_limit'} || 128,
         ERROR_REPORTING         => $phpini->{'error_reporting'} || 'E_ALL & ~E_DEPRECATED & ~E_STRICT',
         DISPLAY_ERRORS          => $phpini->{'display_errors'} || 'off',
-        POST_MAX_SIZE           => $phpini->{'post_max_size'} // 8,
-        UPLOAD_MAX_FILESIZE     => $phpini->{'upload_max_filesize'} // 2,
+        POST_MAX_SIZE           => $phpini->{'post_max_size'} || 8,
+        UPLOAD_MAX_FILESIZE     => $phpini->{'upload_max_filesize'} || 2,
         ALLOW_URL_FOPEN         => $phpini->{'allow_url_fopen'} || 'off',
         PHP_FPM_LISTEN_PORT     => ( $phpini->{'id'} // 1 )-1,
         EXTERNAL_MAIL           => $self->{'external_mail'},
-        MAIL_ENABLED            => ( $self->{'external_mail'} eq 'off' && ( $self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0 ) )
+        MAIL_ENABLED            => $self->{'external_mail'} eq 'off' && ( $self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0 )
     };
 }
 
@@ -291,11 +288,10 @@ sub _sharedMountPoint
                 AND subdomain_alias_mount RLIKE ?
             ) AS tmp
         ",
-        undef, $self->{'domain_id'}, $regexp, $self->{'domain_id'}, $regexp, $self->{'subdomain_alias_id'},
-        $self->{'domain_id'}, $regexp
+        undef, $self->{'domain_id'}, $regexp, $self->{'domain_id'}, $regexp, $self->{'subdomain_alias_id'}, $self->{'domain_id'}, $regexp
     );
 
-    ( $nbSharedMountPoints || $self->{'subdomain_alias_mount'} eq '/' );
+    $nbSharedMountPoints || $self->{'subdomain_alias_mount'} eq '/';
 }
 
 =back

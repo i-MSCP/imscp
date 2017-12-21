@@ -71,8 +71,9 @@ sub process
         @sql = ( 'UPDATE htaccess_users SET status = ? WHERE id = ?', undef, ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $htuserId );
     } elsif ( $self->{'status'} eq 'todisable' ) {
         $rs = $self->disable();
-        @sql = ( 'UPDATE htaccess_users SET status = ? WHERE id = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $htuserId );
+        @sql = (
+            'UPDATE htaccess_users SET status = ? WHERE id = ?', undef, ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $htuserId
+        );
     } elsif ( $self->{'status'} eq 'todelete' ) {
         $rs = $self->delete();
         @sql = $rs
@@ -118,8 +119,7 @@ sub _loadData
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         my $row = $self->{'_dbh'}->selectrow_hashref(
             '
-                SELECT t1.uname, t1.upass, t1.status, t1.id, t2.domain_name, t2.domain_admin_id,
-                    t2.web_folder_protection
+                SELECT t1.uname, t1.upass, t1.status, t1.id, t2.domain_name, t2.domain_admin_id, t2.web_folder_protection
                 FROM htaccess_users AS t1
                 JOIN domain AS t2 ON (t1.dmn_id = t2.domain_id)
                 WHERE t1.id = ?

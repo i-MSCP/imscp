@@ -180,9 +180,7 @@ EOF
         my $rs = 0;
 
         do {
-            if ( $wanIP eq ''
-                || $wanIP eq 'None'
-            ) {
+            if ( $wanIP eq '' || $wanIP eq 'None' ) {
                 $iMSCP::Dialog::InputValidation::lastValidationError = '';
                 chomp( $wanIP = get( 'https://api.ipify.org/' ) || get( 'https://ipinfo.io/ip/' ) || $lanIP );
                 $wanIP = '' if $wanIP eq '0.0.0.0';

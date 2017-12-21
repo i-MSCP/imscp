@@ -71,8 +71,9 @@ sub process
         @sql = ( 'UPDATE ftp_users SET status = ? WHERE userid = ?', undef, ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $ftpUserId );
     } elsif ( $self->{'status'} eq 'todisable' ) {
         $rs = $self->disable();
-        @sql = ( 'UPDATE ftp_users SET status = ? WHERE userid = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $ftpUserId );
+        @sql = ( 'UPDATE ftp_users SET status = ? WHERE userid = ?', undef, ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ),
+            $ftpUserId
+        );
     } elsif ( $self->{'status'} eq 'todelete' ) {
         $rs = $self->delete();
         @sql = $rs

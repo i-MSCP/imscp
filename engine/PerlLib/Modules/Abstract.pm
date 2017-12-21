@@ -165,7 +165,7 @@ sub _execAction
     my ($self, $action, $pkgType) = @_;
 
     if ( $pkgType eq 'server' ) {
-        for  ( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
+        for ( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
             ( my $subref = $_->can( $action ) ) or next;
             debug( sprintf( "Executing `%s' action on %s", $action, $_ ));
             my $rs = $subref->( $_->factory(), $self->_getData( $action ));
@@ -201,7 +201,7 @@ sub _execAllActions
     my $entityType = $self->getEntityType();
 
     if ( $action =~ /^(?:add|restore)$/ ) {
-        for( 'pre', '', 'post' ) {
+        for ( 'pre', '', 'post' ) {
             my $rs = $self->_execAction( "$_$action$entityType", 'server' );
             $rs ||= $self->_execAction( "$_$action$entityType", 'package' );
             return $rs if $rs;
@@ -210,7 +210,7 @@ sub _execAllActions
         return 0;
     }
 
-    for( 'pre', '', 'post' ) {
+    for ( 'pre', '', 'post' ) {
         my $rs = $self->_execAction( "$_$action$entityType", 'package' );
         $rs ||= $self->_execAction( "$_$action$entityType", 'server' );
         return $rs if $rs;

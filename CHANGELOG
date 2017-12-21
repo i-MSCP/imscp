@@ -47,6 +47,7 @@ CONFIG
     Enhancement: Make it possible to override most of default Apache2 Fcgid module configuration parameters (/etc/imscp/php/php.data)
     Fixed: Make use of the `ssl' parameter of the `listen' directive in place of the `ssl' directive (Nginx)
     Updated: LOGROTATE(8) configuration file for ProFTPD -- Added stanza for traffic log file rotation
+    Removed: PHP_CONFIG_LEVEL parameter (PHP configuration level is now configured through PHP editor)
     Removed: Support for SQL server versions that are too old (MySQL < 5.7, MariaDB < 10.1, Percona < 5.7)
     Removed: Useless `DATABASE_TYPE` parameter (imscp.conf)
     Removed: Useless imscp LOGROTATE(8) configuration file
@@ -73,6 +74,7 @@ FRONTEND
     Changed iMSCP\Application::getAutoloader() now return the Composer Composer\Autoload\ClassLoader instance
     Enhancement: Make use of application cache for caching of plugins metadata (lifetime: indefinitely till change)
     Enhancement: Make use of application cache for caching of resolved templates (TemplateEngine)
+    Enhancement: PHP configuration level is now configurable through PHP editor (On a per reseller and customer basis)
     Enhancement: PHP error messages are now stored in the data/logs/errors.log file which is rotated on a daily basis
     Fixed: Both `onBeforeAddMail' and `onAfterAddMail' events should be triggered on default mail accounts creation
     Fixed: Couldn't execute /usr/local/lib/imscp_panel/imscp_panel_reopenlogs logrotate script

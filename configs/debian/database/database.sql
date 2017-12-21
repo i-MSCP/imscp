@@ -86,7 +86,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '274');
+  ('DATABASE_REVISION', '275');
 
 -- --------------------------------------------------------
 
@@ -141,6 +141,7 @@ CREATE TABLE IF NOT EXISTS `domain` (
   `phpini_perm_display_errors` VARCHAR(20) NOT NULL DEFAULT 'no',
   `phpini_perm_disable_functions` VARCHAR(20) NOT NULL DEFAULT 'no',
   `phpini_perm_mail_function` VARCHAR(20) NOT NULL DEFAULT 'yes',
+  `phpini_config_level` ENUM( 'per_domain', 'per_site', 'per_user' ) NOT NULL DEFAULT 'per_site',
   `domain_external_mail` varchar(15) collate utf8_unicode_ci NOT NULL DEFAULT 'no',
   `external_mail` varchar(15) collate utf8_unicode_ci NOT NULL DEFAULT 'off',
   `web_folder_protection` varchar(5) collate utf8_unicode_ci NOT NULL DEFAULT 'yes',
@@ -523,6 +524,7 @@ CREATE TABLE IF NOT EXISTS `reseller_props` (
   `php_ini_max_max_execution_time` int(11) NOT NULL DEFAULT '0',
   `php_ini_max_max_input_time` int(11) NOT NULL DEFAULT '0',
   `php_ini_max_memory_limit` int(11) NOT NULL DEFAULT '0',
+  `php_ini_config_level` ENUM( 'per_domain', 'per_site', 'per_user' ) NOT NULL DEFAULT 'per_site',
   PRIMARY KEY (`id`),
   INDEX `reseller_id` (`reseller_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

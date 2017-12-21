@@ -73,8 +73,9 @@ sub process
         @sql = ( 'UPDATE htaccess SET status = ? WHERE id = ?', undef, ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $htaccessId );
     } elsif ( $self->{'status'} eq 'todisable' ) {
         $rs = $self->disable();
-        @sql = ( 'UPDATE htaccess SET status = ? WHERE id = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $htaccessId );
+        @sql = (
+            'UPDATE htaccess SET status = ? WHERE id = ?', undef, ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $htaccessId
+        );
     } elsif ( $self->{'status'} eq 'todelete' ) {
         $rs = $self->delete();
         @sql = $rs
@@ -126,20 +127,14 @@ sub _loadData
                     (
                         SELECT group_concat(uname SEPARATOR ' ')
                         FROM htaccess_users
-                        WHERE id regexp (
-                            CONCAT('^(', (SELECT REPLACE((SELECT user_id FROM htaccess WHERE id = ?), ',', '|')), ')\$')
-                        )
+                        WHERE id regexp (CONCAT('^(', (SELECT REPLACE((SELECT user_id FROM htaccess WHERE id = ?), ',', '|')), ')\$'))
                         GROUP BY dmn_id
                     ), '') AS users) AS t1, (SELECT IFNULL(
                         (
                             SELECT group_concat(ugroup SEPARATOR ' ')
                             FROM htaccess_groups
                             WHERE id regexp (
-                                CONCAT(
-                                    '^(',
-                                    (SELECT REPLACE((SELECT group_id FROM htaccess WHERE id = ?), ',', '|')),
-                                    ')\$'
-                                )
+                                CONCAT('^(', (SELECT REPLACE((SELECT group_id FROM htaccess WHERE id = ?), ',', '|')), ')\$')
                             )
                             GROUP BY dmn_id
                         ), '') AS groups) AS t2

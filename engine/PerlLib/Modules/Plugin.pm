@@ -379,9 +379,7 @@ sub _executePluginAction
         my $pluginClass = iMSCP::Plugins->getInstance()->getClass( $self->{'pluginName'} );
         return undef unless $pluginClass->can( $action ); # Do not instantiate plugin when not necessary
 
-        $self->{'pluginInstance'} = (
-            $pluginClass->can( 'getInstance' ) || $pluginClass->can( 'new' ) || die( 'Bad plugin class' )
-        )->(
+        $self->{'pluginInstance'} = ( $pluginClass->can( 'getInstance' ) || $pluginClass->can( 'new' ) || die( 'Bad plugin class' ) )->(
             $pluginClass,
             action       => $self->{'pluginAction'},
             config       => $self->{'pluginConfig'},

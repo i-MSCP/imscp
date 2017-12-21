@@ -194,9 +194,9 @@ sub restoreSubdomain
     die( sprintf( 'The %s package must implement the restoreSubdomain() method', ref $self ));
 }
 
-=item disableSub( \%moduleData )
+=item disableSubdomain( \%moduleData )
 
- Process disableSub tasks
+ Process disableSubdomain tasks
 
  The following events *MUST* be triggered:
   - before<SNAME>DisableSubdomain( \%moduleData )
@@ -207,11 +207,11 @@ sub restoreSubdomain
 
 =cut
 
-sub disableSub
+sub disableSubdomain
 {
     my ($self) = @_;
 
-    die( sprintf( 'The %s package must implement the disableSub() method', ref $self ));
+    die( sprintf( 'The %s package must implement the disableSubdomain() method', ref $self ));
 }
 
 =item deleteSubdomain( \%moduleData )
@@ -434,10 +434,6 @@ sub getRunningGroup
 
  Enable the given httpd sites
 
- The following events *MUST* be triggered:
-  - before<SNAME>EnableSites( \@sites )
-  - after<SNAME>EnableSites( @sites )
-
  Param array @sites List of sites to enable
  Return int 0 on sucess, other on failure
 
@@ -453,10 +449,6 @@ sub enableSites
 =item disableSites( @sites )
 
  Disable the given httpd sites
-
- The following events *MUST* be triggered:
-  - before<SNAME>DisableSites( \@sites )
-  - after<SNAME>DisableSites( @sites )
 
  Param array @sites List of sites to disable
  Return int 0 on sucess, other on failure
@@ -474,10 +466,6 @@ sub disableSites
 
  Enable the given httpd modules
 
- The following events *MUST* be triggered:
-  - before<SNAME>EnableModules( \@modules )
-  - after<SNAME>EnableModules( @modules )
-
  Param array $modules List of modules to enable
  Return int 0 on sucess, other on failure
 
@@ -493,10 +481,6 @@ sub enableModules
 =item disableModules( @modules )
 
  Disable the given httpd modules
-
- The following events *MUST* be triggered:
-  - before<SNAME>DisableModules( \@modules )
-  - after<SNAME>DisableModules( @modules )
 
  Param array @modules List of modules to disable
  Return int 0 on sucess, other on failure
@@ -514,10 +498,6 @@ sub disableModules
 
  Enable the given httpd configuration files
 
- The following events *MUST* be triggered:
-  - before<SNAME>EnableConfs( \@conffiles )
-  - after<SNAME>EnableConfs( @conffiles )
-
  Param array @conffiles List of configuration files to enable
  Return int 0 on sucess, other on failure
 
@@ -533,10 +513,6 @@ sub enableConfs
 =item disableConfs( @conffiles )
 
  Disable the given httpd configuration files
-
- The following events *MUST* be triggered:
-  - before<SNAME>DisableConfs( \@conffiles )
-  - after<SNAME>DisableConfs( @conffiles )
 
  Param array @conffiles Lilst of configuration files to disable
  Return int 0 on sucess, other on failure

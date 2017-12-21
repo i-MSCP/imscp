@@ -313,20 +313,7 @@
     #   implementation.
     #
     # Leave empty for default: fpm
-    PHP_SAPI                            => '', 
-    
-    # PHP configuration level for customers
-    #
-    # Possible values:
-    # - per_user   (Identical PHP configuration for all domains, including
-    #              subdomains)
-    # - per_domain (Identical PHP configuration for each domain, including
-    #               subdomains)
-    # - per_site:  (default -- Different PHP configuration for each domain,
-    #               including subdomains)
-    #
-    # Leave empty for default.
-    PHP_CONFIG_LEVEL                    => '',
+    PHP_SAPI                            => '',
 
     # PHP-FPM FastCGI connection type
     #

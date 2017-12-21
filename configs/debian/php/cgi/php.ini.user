@@ -335,7 +335,7 @@ allow_call_time_pass_reference = Off
 ; or per-virtualhost web server configuration file. This directive is
 ; *NOT* affected by whether Safe Mode is turned On or Off.
 ; http://php.net/open-basedir
-open_basedir = "{HOME_DIR}/:{PEAR_DIR}/:/dev/random:/dev/urandom"
+open_basedir = "{HOME_DIR}/:/usr/share/php/:/dev/random:/dev/urandom"
 
 ; This directive allows you to disable certain functions for security reasons.
 ; It receives a comma-delimited list of function names. This directive is
@@ -766,7 +766,7 @@ default_mimetype = "text/html"
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ; UNIX: "/path1:/path2"
-include_path = ".:{PEAR_DIR}"
+include_path = ".:/usr/share/php"
 
 ; Windows: "\path1;\path2"
 ;include_path = ".;c:\php\includes"

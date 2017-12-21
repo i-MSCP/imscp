@@ -62,7 +62,6 @@ use versions;
 # Placeholders that can be used in PHP directive values:
 #
 # {HOME_DIR} Will be replaced by client homedir path
-# {PEAR_DIR} Will be replaced by PHP Pear directory path
 # {TMPDIR}   Will be replaced by PHP temporary directory
 #
 # Note that domain names must be in ACE form.
@@ -107,7 +106,7 @@ iMSCP::EventManager->getInstance()->register(
                 }
             }
 
-            return 0 unless exists $phpDirectives{my $domain = _getPhpConfigLevel( $moduleData )};
+            return 0 unless exists $phpDirectives{my $domain = $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}};
 
             # Adds/Overrides per domain PHP directive values
             while ( my ($directive, $value) = each( %{$phpDirectives{$domain}} ) ) {
@@ -134,7 +133,7 @@ iMSCP::EventManager->getInstance()->register(
             }
         }
 
-        return 0 unless exists $phpDirectives{my $domain = _getPhpConfigLevel( $moduleData )};
+        return 0 unless exists $phpDirectives{my $domain = $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'} };
 
         # Adds/Overrides per domain PHP directive values
         while ( my ($directive, $value) = each( %{$phpDirectives{$domain}} ) ) {
@@ -151,18 +150,6 @@ iMSCP::EventManager->getInstance()->register(
         0;
     }
 );
-
-my $PHP_CONFIG_LEVEL;
-
-sub _getPhpConfigLevel
-{
-    my ($moduleData) = @_;
-
-    $PHP_CONFIG_LEVEL ||= Servers::php->factory()->{'config'}->{'PHP_CONFIG_LEVEL'};
-    return $moduleData->{'ROOT_DOMAIN_NAME'} if $PHP_CONFIG_LEVEL eq 'per_user';
-    return $moduleData->{'PARENT_DOMAIN_NAME'} if $PHP_CONFIG_LEVEL eq 'per_domain';
-    $moduleData->{'DOMAIN_NAME'};
-}
 
 1;
 __END__

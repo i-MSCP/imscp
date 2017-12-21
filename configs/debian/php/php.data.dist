@@ -1,23 +1,18 @@
 ##
-#### PHP common parameters
+### PHP common parameters
 ##
 
+# PHP SAPI for customers
 # Either apache2handler, cgi or fpm
 PHP_SAPI =
 
-# Either per_domain, per_site or per_user
-PHP_CONFIG_LEVEL =
-
-PHP_CONF_DIR_PATH =
-PHP_PEAR_DIR = /usr/share/php
-
-# Selected PHP version for customers
+# Selected PHP alternative for customers
 PHP_VERSION =
 PHP_VERSION_FULL =
 
 ##
 ### PHP OPcode cache (OPcache) parameters
-### Only relevant with the apache2handler or fpm PHP SAPI
+### Only relevant for the apache2handler and fpm PHP SAPIs
 ##
 
 PHP_OPCODE_CACHE_ENABLED = 1
@@ -29,7 +24,7 @@ PHP_OPCODE_CACHE_MAX_MEMORY = 32
 
 ##
 ### PHP APC userland cache (APCu) parameters
-### Only relevant with the apache2handler or fpm PHP SAPI
+### Only relevant for the apache2handler and fpm PHP SAPIs
 ##
 
 PHP_APCU_CACHE_ENABLED = 1
@@ -40,20 +35,11 @@ PHP_APCU_CACHE_ENABLED = 1
 PHP_APCU_CACHE_MAX_MEMORY = 32
 
 ##
-#### PHP CLI specific
+### PHP cgi SAPI parameters
 ##
 
-PHP_CLI_BIN_PATH =
-
-##
-#### PHP FCGI specific (PHP CGI through Apache2 mod_fcgid module)
-##
-
-#
 ## Global parameters
-#
 
-PHP_FCGI_BIN_PATH =
 PHP_FCGI_CHILDREN = 0
 PHP_FCGI_MAX_REQUESTS = 1000
 PHP_FCGI_STARTER_DIR = /var/www/fcgi
@@ -71,9 +57,7 @@ PHP_FCGID_MAX_PROCESS = 1000
 # Communication timeout to FastCGI server
 PHP_FCGID_IO_TIMEOUT = 600
 
-#
 ## Vhost parameters
-#
 
 # Min process count of one class of FastCGI application
 PHP_FCGID_MIN_PROCESSES_PER_CLASS = 0
@@ -82,16 +66,10 @@ PHP_FCGID_MIN_PROCESSES_PER_CLASS = 0
 PHP_FCGID_MAX_PROCESS_PER_CLASS = 6
 
 ##
-#### PHP FPM specific (PHP through PHP FastCGI Process Manager (FPM) and Apache2 mod_proxy_fcgi module)
+### PHP fpm SAPI parameters
 ##
 
-PHP_FPM_BIN_PATH =
-PHP_FPM_POOL_DIR_PATH =
-PHP_FPM_RUN_DIR =
-
-#
 ## Global parameters
-#
 
 PHP_FPM_LOG_LEVEL = error
 PHP_FPM_EMERGENCY_RESTART_THRESHOLD = 10
@@ -100,14 +78,12 @@ PHP_FPM_PROCESS_CONTROL_TIMEOUT = 60s
 PHP_FPM_PROCESS_MAX = 0
 PHP_FPM_RLIMIT_FILES = 4096
 
-#
 ## Pool parameters
-#
 
 # Listen mode (FPM FastCGI addresse type):
 # Available modes:
 #  - 'tcp' (e.g. 192.168.1.136:9001)
-#  - 'uds' (e.g. {PHP_FPM_RUN_DIR}/php<version>-fpm-domain.tld.sock)
+#  - 'uds' (e.g. /run/php/php<version>-fpm-domain.tld.sock)
 PHP_FPM_LISTEN_MODE =
 
 # Starting port for TCP/IP FastCGI address type

@@ -653,7 +653,7 @@ port = @{[ main::setupGetQuestion( 'DATABASE_PORT' ) ]}
 user = "@{ [ main::setupGetQuestion( 'DATABASE_USER' ) =~ s/"/\\"/gr ] }"
 password = "@{ [ decryptRijndaelCBC( $main::imscpKEY, $main::imscpIV, main::setupGetQuestion( 'DATABASE_PASSWORD' )) =~ s/"/\\"/gr ] }"
 EOF
-        $mysqlConffile->flush();
+        $mysqlConffile->close();
 
         my $rs = execute( "/usr/bin/mysql_upgrade --defaults-extra-file=$mysqlConffile", \my $stdout, \my $stderr );
         debug( $stdout ) if $stdout;
@@ -769,7 +769,7 @@ port = @{[ main::setupGetQuestion( 'DATABASE_PORT' ) ]}
 user = "@{ [ main::setupGetQuestion( 'DATABASE_USER' ) =~ s/"/\\"/gr ] }"
 password = "@{ [ decryptRijndaelCBC( $main::imscpKEY, $main::imscpIV, main::setupGetQuestion( 'DATABASE_PASSWORD' ) ) =~ s/"/\\"/gr ] }"
 EOF
-        $mysqlConffile->flush();
+        $mysqlConffile->close();
 
         $rs = execute( "cat $file->{'filename'} | /usr/bin/mysql --defaults-extra-file=$mysqlConffile", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;

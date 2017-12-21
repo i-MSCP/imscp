@@ -36,7 +36,7 @@ class UpdateDatabase extends UpdateDatabaseAbstract
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 274;
+    protected $lastUpdate = 275;
 
     /**
      * Prohibit upgrade from i-MSCP versions older than 1.1.x
@@ -1623,7 +1623,7 @@ class UpdateDatabase extends UpdateDatabaseAbstract
      *   - Remove domain_traffic.dtraff_id column (PRIMARY KEY, AUTO_INCREMENT)
      *   - Remove `i_unique_timestamp` unique index (domain_id, dtraff_time)
      *   - Create new PRIMARY KEY (domain_id, dtraff_time)
-     * 
+     *
      * @return string|null string SQL statement to be executed
      */
     protected function r272()
@@ -1665,6 +1665,29 @@ class UpdateDatabase extends UpdateDatabaseAbstract
             // All parts of a PRIMARY KEY must be NOT NULL
             'ALTER TABLE server_traffic MODIFY `traff_time` INT(10) UNSIGNED NOT NULL',
             $this->addIndex('server_traffic', 'traff_time')
+        ];
+    }
+
+    /**
+     * Added columns for PHP configuration level (PHP Editor)
+     *
+     * Prior version 1.6.0, the PHP configuration level was set at system wide, in the /etc/imscp/php/php.data file.
+     * 
+     * @return array string SQL statement to be executed
+     */
+    protected function r275()
+    {
+        return [
+            $this->addColumn(
+                'domain',
+                'phpini_config_level',
+                "ENUM( 'per_domain', 'per_site', 'per_user' ) NOT NULL DEFAULT 'per_site' AFTER phpini_perm_mail_function"
+            ),
+            $this->addColumn(
+                'reseller_props',
+                'php_ini_config_level',
+                "ENUM( 'per_domain', 'per_site', 'per_user' ) NOT NULL DEFAULT 'per_site'AFTER php_ini_max_memory_limit"
+            )
         ];
     }
 }

@@ -31,7 +31,6 @@ HTTPD_PID_FILE = /var/run/nginx.pid
 ## PHP parameters
 #
 
-PHP_CONF_DIR_PATH = /usr/local/etc/imscp_panel
 PHP_PEAR_DIR_PATH = /usr/share/php
 PHP_VERSION = 7.1
 

@@ -25,8 +25,9 @@ package iMSCP::Bootstrapper;
 
 use strict;
 use warnings;
+use autouse 'Data::Dumper' => qw/ Dumper /;
 use autouse 'iMSCP::Crypt' => qw/ decryptRijndaelCBC randomStr /;
-use Class::Autouse qw/ :nostat Data::Dumper iMSCP::Database iMSCP::Requirements /;
+use Class::Autouse qw/ :nostat iMSCP::Database iMSCP::Requirements /;
 use File::Spec;
 use iMSCP::Debug qw/ debug getMessageByType setDebug /;
 use iMSCP::Config;

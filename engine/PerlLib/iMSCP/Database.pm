@@ -349,7 +349,7 @@ quote-names = true
 complete-insert = true
 skip-comments = true
 EOF
-            $self->{'_default_mysql_conffile'}->flush();
+            $self->{'_default_mysql_conffile'}->close();
         }
 
         my $dbh = $self->getRawDb();

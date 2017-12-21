@@ -73,8 +73,9 @@ sub process
         );
     } elsif ( $self->{'status'} eq 'todisable' ) {
         $rs = $self->disable();
-        @sql = ( 'UPDATE htaccess_groups SET status = ? WHERE id = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $htgroupId );
+        @sql = (
+            'UPDATE htaccess_groups SET status = ? WHERE id = ?', undef, ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $htgroupId
+        );
     } elsif ( $self->{'status'} eq 'todelete' ) {
         $rs = $self->delete();
         @sql = $rs
@@ -120,19 +121,12 @@ sub _loadData
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         my $row = $self->{'_dbh'}->selectrow_hashref(
             "
-                SELECT t2.id, t2.ugroup, t2.status, t2.users,
-                    t3.domain_name, t3.domain_admin_id, t3.web_folder_protection
+                SELECT t2.id, t2.ugroup, t2.status, t2.users, t3.domain_name, t3.domain_admin_id, t3.web_folder_protection
                 FROM (SELECT * from htaccess_groups, (SELECT IFNULL(
                     (
                         SELECT group_concat(uname SEPARATOR ' ')
                         FROM htaccess_users
-                        WHERE id regexp (
-                            CONCAT(
-                                '^(',
-                                (SELECT REPLACE((SELECT members FROM htaccess_groups WHERE id = ?), ',', '|')),
-                                ')\$'
-                            )
-                        )
+                        WHERE id regexp (CONCAT('^(', (SELECT REPLACE((SELECT members FROM htaccess_groups WHERE id = ?), ',', '|')), ')\$'))
                         GROUP BY dmn_id
                     ), '') AS users) AS t1
                 ) AS t2
