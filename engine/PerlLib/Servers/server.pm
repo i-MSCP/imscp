@@ -48,7 +48,7 @@ my $PACKAGE;
 
 sub getPriority
 {
-    75;
+    350;
 }
 
 =item factory( )
