@@ -137,7 +137,7 @@ END
         return 0 unless $instance;
 
         iMSCP::Service->getInstance()->registerDelayedAction(
-            ref $instance, [ 'restart', sub { $instance->restart(); } ], __PACKAGE__->getPrirority()
+            ref $instance, [ 'restart', sub { $instance->restart(); } ], __PACKAGE__->getPriority()
         );
     }
 

@@ -138,7 +138,7 @@ END
             ? 'restart' : ( $instance->{'reload'} ? 'reload' : ( $instance->{'start'} ? ' start' : undef ) ) );
 
         iMSCP::Service->getInstance()->registerDelayedAction(
-            $instance->{'config'}->{'FTPD_SNAME'}, [ $action, sub { $instance->$action(); } ], __PACKAGE__->getPrirority()
+            $instance->{'config'}->{'FTPD_SNAME'}, [ $action, sub { $instance->$action(); } ], __PACKAGE__->getPriority()
         );
     }
 
