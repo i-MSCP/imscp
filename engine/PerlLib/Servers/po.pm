@@ -134,7 +134,7 @@ END
 
         my $instance = $PACKAGE->hasInstance();
 
-        return 0 unless $instance;
+        return 0 unless $instance && $instance->{'restart'};
 
         iMSCP::Service->getInstance()->registerDelayedAction(
             ref $instance, [ 'restart', sub { $instance->restart(); } ], __PACKAGE__->getPriority()
