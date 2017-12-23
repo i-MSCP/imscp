@@ -159,7 +159,7 @@ sub _loadData
             "
                 SELECT t1.*,
                     t2.domain_name AS user_home, t2.domain_admin_id, t2.domain_mailacc_limit, t2.domain_php,
-                    t2.domain_cgi, t2.web_folder_protection, t2.phpini_config_level AS php_config_level,
+                    t2.domain_cgi, t2.web_folder_protection, t2.phpini_perm_config_level AS php_config_level,
                     IFNULL(t3.ip_number, '0.0.0.0') AS ip_number,
                     t4.private_key, t4.certificate, t4.ca_bundle, t4.allow_hsts, t4.hsts_max_age,
                     t4.hsts_include_subdomains,
@@ -256,7 +256,7 @@ sub _getData
         SSL_SUPPORT             => $ssl,
         HSTS_SUPPORT            => $ssl && $self->{'allow_hsts'} eq 'on',
         HSTS_MAX_AGE            => $hstsMaxAge,
-        HSTS_INCLUDE_SUBDOMAINS => ${$hstsIncSub},
+        HSTS_INCLUDE_SUBDOMAINS => $hstsIncSub,
         ALIAS                   => 'als' . $self->{'alias_id'},
         FORWARD                 => $self->{'url_forward'} || 'no',
         FORWARD_TYPE            => $self->{'type_forward'} || '',
