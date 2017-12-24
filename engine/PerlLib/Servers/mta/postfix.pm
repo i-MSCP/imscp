@@ -404,16 +404,16 @@ sub deleteDomain
     $self->{'eventManager'}->trigger( 'afterPostfixDeleteDomain', $data );
 }
 
-=item addSubbdomain( \%data )
+=item addSubdomain( \%data )
 
- Process addSubbdomain tasks
+ Process addSubdomain tasks
 
  Param hashref \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub addSubbdomain
+sub addSubdomain
 {
     my ($self, $data) = @_;
 

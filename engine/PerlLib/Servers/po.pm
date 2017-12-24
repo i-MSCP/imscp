@@ -124,7 +124,7 @@ sub AUTOLOAD
 
 =item END
 
- Schedule restart PO server(s) when needed
+ Schedule restart of PO server when needed
 
 =cut
 

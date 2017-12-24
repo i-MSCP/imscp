@@ -124,7 +124,7 @@ sub AUTOLOAD
 
 =item END
 
- Schedule restart or reload named server when needed
+ Schedule restart or reload  of named server when needed
 
 =cut
 

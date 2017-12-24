@@ -518,13 +518,13 @@ sub deleteDomain
     $rs ||= $self->{'eventManager'}->trigger( 'afterPhpdDeleteDomain', $moduleData );
 }
 
-=item addSubbdomain( \%moduleData )
+=item addSubdomain( \%moduleData )
 
- See Servers::php::Abstract::addSubbdomain()
+ See Servers::php::Abstract::addSubdomain()
 
 =cut
 
-sub addSubbdomain
+sub addSubdomain
 {
     my ($self, $moduleData) = @_;
 

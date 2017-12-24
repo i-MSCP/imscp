@@ -133,9 +133,9 @@ sub deleteDomain
     die( sprintf( 'The %s package must implement the addDomain() method', ref $self ));
 }
 
-=item addSubbdomain( \%moduleData )
+=item addSubdomain( \%moduleData )
 
- Process addSubbdomain tasks
+ Process addSubdomain tasks
  
   The following events *MUST* be triggered:
   - beforePhpAddSubdomain( \%moduleData )
@@ -146,7 +146,7 @@ sub deleteDomain
 
 =cut
 
-sub addSubbdomain
+sub addSubdomain
 {
     my ($self) = @_;
 

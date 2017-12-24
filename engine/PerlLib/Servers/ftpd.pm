@@ -124,7 +124,7 @@ sub AUTOLOAD
 
 =item END
 
- Schedule restart, reload or start of FTP server when needed
+ Schedule restart, reload or start of ftpd server when needed
 
 =cut
 

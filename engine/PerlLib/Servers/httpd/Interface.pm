@@ -154,9 +154,9 @@ sub deleteDomain
     die( sprintf( 'The %s package must implement the deleteDomain() method', ref $self ));
 }
 
-=item addSubbdomain( \%moduleData )
+=item addSubdomain( \%moduleData )
 
- Process addSubbdomain tasks
+ Process addSubdomain tasks
 
  The following events *MUST* be triggered:
   - before<SNAME>DisableSubdomain( \%moduleData )
@@ -167,11 +167,11 @@ sub deleteDomain
 
 =cut
 
-sub addSubbdomain
+sub addSubdomain
 {
     my ($self) = @_;
 
-    die( sprintf( 'The %s package must implement the addSubbdomain() method', ref $self ));
+    die( sprintf( 'The %s package must implement the addSubdomain() method', ref $self ));
 }
 
 =item restoreSubdomain( \%moduleData )

@@ -230,7 +230,7 @@ sub postaddDomain
     return $rs if $rs;
 
     if ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} eq 'yes' && $self->{'config'}->{'BIND_MODE'} eq 'master' && defined $data->{'ALIAS'} ) {
-        $rs = $self->addSubbdomain( {
+        $rs = $self->addSubdomain( {
             # Listeners want probably know real parent domain name for the
             # DNS name being added even if that entry is added in another
             # zone. For instance, see the 20_named_dualstack.pl listener
@@ -355,16 +355,16 @@ sub postdeleteDomain
     $self->{'eventManager'}->trigger( 'afterBind9PostDeleteDomain', $data );
 }
 
-=item addSubbdomain( \%data )
+=item addSubdomain( \%data )
 
- Process addSubbdomain tasks
+ Process addSubdomain tasks
 
  Param hash \%data Subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub addSubbdomain
+sub addSubdomain
 {
     my ($self, $data) = @_;
 
@@ -463,7 +463,7 @@ sub postaddSubdomain
     return $rs if $rs;
 
     if ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} eq 'yes' && $self->{'config'}->{'BIND_MODE'} eq 'master' && defined $data->{'ALIAS'} ) {
-        $rs = $self->addSubbdomain( {
+        $rs = $self->addSubdomain( {
             # Listeners want probably know real parent domain name for the
             # DNS name being added even if that entry is added in another
             # zone. For instance, see the 20_named_dualstack.pl listener
@@ -491,7 +491,7 @@ sub postaddSubdomain
  Process disableSubdomain tasks
 
  When a subdomain is being disabled, we must ensure that the DNS data are still present for it (eg: when doing a full
- upgrade or reconfiguration). This explain here why we are executing the addSubbdomain() action.
+ upgrade or reconfiguration). This explain here why we are executing the addSubdomain() action.
 
  Param hash \%data Domain data
  Return int 0 on success, other on failure
@@ -503,7 +503,7 @@ sub disableSubdomain
     my ($self, $data) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeBind9DisableSubdomain', $data );
-    $rs ||= $self->addSubbdomain( $data );
+    $rs ||= $self->addSubdomain( $data );
     $rs ||= $self->{'eventManager'}->trigger( 'afterBind9DisableSubdomain', $data );
 }
 
