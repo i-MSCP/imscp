@@ -108,7 +108,7 @@ EOF
 
     for ( @{$self->{'SELECTED_PACKAGES'}} ) {
         my $package = "Package::Webstats::${_}::${_}";
-        eval "require $package" or die( $@ );
+        eval "require $package; 1" or die( $@ );
         ( my $subref = $package->can( 'showDialog' ) ) or next;
         debug( sprintf( 'Executing showDialog action on %s', $package ));
         my $rs = $subref->( $package->getInstance(), $dialog );
@@ -136,7 +136,7 @@ sub preinstall
     for my $package( @{$self->{'AVAILABLE_PACKAGES'}} ) {
         next if grep( $package eq $_, @{$self->{'SELECTED_PACKAGES'}});
         $package = "Package::Webstats::${package}::${package}";
-        eval "require $package" or die( $@ );
+        eval "require $package; 1" or die( $@ );
 
         if ( my $subref = $package->can( 'uninstall' ) ) {
             debug( sprintf( 'Executing uninstall action on %s', $package ));
@@ -155,7 +155,7 @@ sub preinstall
     @distroPackages = ();
     for ( @{$self->{'SELECTED_PACKAGES'}} ) {
         my $package = "Package::Webstats::${_}::${_}";
-        eval "require $package" or die( $@ );
+        eval "require $package; 1" or die( $@ );
 
         if ( my $subref = $package->can( 'preinstall' ) ) {
             debug( sprintf( 'Executing preinstall action on %s', $package ));
@@ -185,7 +185,7 @@ sub install
 
     for ( @{$self->{'SELECTED_PACKAGES'}} ) {
         my $package = "Package::Webstats::${_}::${_}";
-        eval "require $package" or die( $@ );
+        eval "require $package; 1" or die( $@ );
         ( my $subref = $package->can( 'install' ) ) or next;
         debug( sprintf( 'Executing install action on %s', $package ));
         my $rs = $subref->( $package->getInstance());
@@ -209,7 +209,7 @@ sub postinstall
 
     for ( @{$self->{'SELECTED_PACKAGES'}} ) {
         my $package = "Package::Webstats::${_}::${_}";
-        eval "require $package" or die( $@ );
+        eval "require $package; 1" or die( $@ );
         ( my $subref = $package->can( 'postinstall' ) ) or next;
         debug( sprintf( 'Executing postinstall action on %s', $package ));
         my $rs = $subref->( $package->getInstance());
@@ -234,10 +234,10 @@ sub uninstall
     my @distroPackages = ();
     for ( @{$self->{'SELECTED_PACKAGES'}} ) {
         my $package = "Package::Webstats::${_}::${_}";
-        eval "require $package" or die( $@ );
+        eval "require $package; 1" or die( $@ );
 
         if ( my $subref = $package->can( 'uninstall' ) ) {
-            debug( sprintf( 'Executing preinstall action on %s', $package ));
+            debug( sprintf( 'Executing uninstall action on %s', $package ));
             my $rs = $subref->( $package->getInstance());
             return $rs if $rs;
         }
@@ -277,7 +277,7 @@ sub setEnginePermissions
 
     for ( @{$self->{'SELECTED_PACKAGES'}} ) {
         my $package = "Package::Webstats::${_}::${_}";
-        eval "require $package" or die( $@ );
+        eval "require $package; 1" or die( $@ );
         ( my $subref = $package->can( 'setEnginePermissions' ) ) or next;
         debug( sprintf( 'Executing setEnginePermissions action on %s', $package ));
         my $rs = $subref->( $package->getInstance());
@@ -301,7 +301,7 @@ sub setGuiPermissions
 
     for ( @{$self->{'SELECTED_PACKAGES'}} ) {
         my $package = "Package::Webstats::${_}::${_}";
-        eval "require $package" or die( $@ );
+        eval "require $package; 1" or die( $@ );
         ( my $subref = $package->can( 'setGuiPermissions' ) ) or next;
         debug( sprintf( 'Executing setGuiPermissions action on %s', $package ));
         my $rs = $subref->( $package->getInstance());
@@ -311,152 +311,179 @@ sub setGuiPermissions
     0;
 }
 
-=item addUser( \%data )
+=item addUser( \%moduleData )
 
  Process addUser tasks
 
- Param hash \%data User data
+ Param hash \%moduleData Data as provided by User module
  Return int 0 on success, other or die on failure
 
 =cut
 
 sub addUser
 {
-    my ($self, $data) = @_;
+    my ($self, $moduleData) = @_;
 
     for ( @{$self->{'SELECTED_PACKAGES'}} ) {
         my $package = "Package::Webstats::${_}::${_}";
-        eval "require $package" or die( $@ );
+        eval "require $package; 1" or die( $@ );
         ( my $subref = $package->can( 'addUser' ) ) or next;
         debug( sprintf( 'Executing addUser action on %s', $package ));
-        my $rs = $subref->( $package->getInstance(), $data );
+        my $rs = $subref->( $package->getInstance(), $moduleData );
         return $rs if $rs;
     }
 
     0;
 }
 
-=item preaddDomain( \%data )
+=item preaddDomain( \%moduleData )
 
  Process preaddDomain tasks
 
- Param hash \%data Domain data
+ Param hash \%moduleData Data as provided by Alias|Domain modules
  Return int 0 on success, other on failure
 
 =cut
 
 sub preaddDomain
 {
-    my ($self, $data) = @_;
+    my ($self, $moduleData) = @_;
 
     for ( @{$self->{'SELECTED_PACKAGES'}} ) {
         my $package = "Package::Webstats::${_}::${_}";
-        eval "require $package" or die( $@ );
+        eval "require $package; 1" or die( $@ );
         ( my $subref = $package->can( 'preaddDomain' ) ) or next;
         debug( sprintf( 'Executing preaddDomain action on %s', $package ));
-        my $rs = $subref->( $package->getInstance(), $data );
+        my $rs = $subref->( $package->getInstance(), $moduleData );
         return $rs if $rs;
     }
 
     0;
 }
 
-=item addDomain( \%data )
+=item addDomain( \%moduleData )
 
  Process addDomain tasks
 
- Param hash \%data Domain data
+ Param hash \%moduleData Data as provided by Alias|Domain modules
  Return int 0 on success, other on failure
 
 =cut
 
 sub addDomain
 {
-    my ($self, $data) = @_;
+    my ($self, $moduleData) = @_;
 
     for ( @{$self->{'SELECTED_PACKAGES'}} ) {
         my $package = "Package::Webstats::${_}::${_}";
-        eval "require $package" or die( $@ );
+        eval "require $package; 1" or die( $@ );
         ( my $subref = $package->can( 'addDomain' ) ) or next;
         debug( sprintf( 'Executing addDomain action on %s', $package ));
-        my $rs = $subref->( $package->getInstance(), $data );
+        my $rs = $subref->( $package->getInstance(), $moduleData );
         return $rs if $rs;
     }
 
     0;
 }
 
-=item deleteDomain( \%data )
+=item deleteDomain( \%moduleData )
 
  Process deleteDomain tasks
 
- Param hash \%data Domain data
+ Param hash \%moduleData Data as provided by Alias|Domain modules
  Return int 0 on success, other on failure
 
 =cut
 
 sub deleteDomain
 {
-    my ($self, $data) = @_;
+    my ($self, $moduleData) = @_;
 
     for ( @{$self->{'SELECTED_PACKAGES'}} ) {
         my $package = "Package::Webstats::${_}::${_}";
-        eval "require $package" or die( $@ );
+        eval "require $package; 1" or die( $@ );
         ( my $subref = $package->can( 'deleteDomain' ) ) or next;
         debug( sprintf( 'Executing deleteDomain action on %s', $package ));
-        my $rs = $subref->( $package->getInstance(), $data );
+        my $rs = $subref->( $package->getInstance(), $moduleData );
         return $rs if $rs;
     }
 
     0;
 }
 
-=item preaddSubdomain(\%data)
+=item preaddSubdomain(\%moduleData)
 
  Process preaddSubdomain tasks
 
- Param hash \%data Subdomain data
+ Param hash \%moduleData Data as provided by SubAlias|Subdomain modules
  Return int 0 on success, other on failure
 
 =cut
 
 sub preaddSubdomain
 {
-    my ($self, $data) = @_;
+    my ($self, $moduleData) = @_;
 
-    $self->preaddDomain( $data );
+    for ( @{$self->{'SELECTED_PACKAGES'}} ) {
+        my $package = "Package::Webstats::${_}::${_}";
+        eval "require $package; 1" or die( $@ );
+        ( my $subref = $package->can( 'preaddSubdomain' ) ) or next;
+        debug( sprintf( 'Executing preaddSubdomain action on %s', $package ));
+        my $rs = $subref->( $package->getInstance(), $moduleData );
+        return $rs if $rs;
+    }
+
+    0;
 }
 
-=item addSubbdomain( \%data )
+=item addSubdomain( \%moduleData )
 
- Process addSubbdomain tasks
+ Process addSubdomain tasks
 
- Param hash \%data Subdomain data
+ Param hash \%moduleData Data as provided by SubAlias|Subdomain modules
  Return int 0 on success, other on failure
 
 =cut
 
-sub addSubbdomain
+sub addSubdomain
 {
-    my ($self, $data) = @_;
+    my ($self, $moduleData) = @_;
 
-    $self->addDomain( $data );
+    for ( @{$self->{'SELECTED_PACKAGES'}} ) {
+        my $package = "Package::Webstats::${_}::${_}";
+        eval "require $package; 1" or die( $@ );
+        ( my $subref = $package->can( 'addSubdomain' ) ) or next;
+        debug( sprintf( 'Executing addSubdomain action on %s', $package ));
+        my $rs = $subref->( $package->getInstance(), $moduleData );
+        return $rs if $rs;
+    }
+
+    0;
 }
 
-=item deleteSubdomain( \%data )
+=item deleteSubdomain( \%moduleData )
 
  Process deleteSubdomain tasks
 
- Param hash \%data Subdomain data
+ Param hash \%moduleData Data as provided by SubAlias|Subdomain modules
  Return int 0 on success, other on failure
 
 =cut
 
 sub deleteSubdomain
 {
-    my ($self, $data) = @_;
+    my ($self, $moduleData) = @_;
 
-    $self->deleteDomain( $data );
+    for ( @{$self->{'SELECTED_PACKAGES'}} ) {
+        my $package = "Package::Webstats::${_}::${_}";
+        eval "require $package; 1" or die( $@ );
+        ( my $subref = $package->can( 'deleteSubdomain' ) ) or next;
+        debug( sprintf( 'Executing deleteSubdomain action on %s', $package ));
+        my $rs = $subref->( $package->getInstance(), $moduleData );
+        return $rs if $rs;
+    }
+
+    0;
 }
 
 =back

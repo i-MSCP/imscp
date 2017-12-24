@@ -134,7 +134,7 @@ END
 
         my $instance = $PACKAGE->hasInstance();
 
-        return 0 unless $instance && ( my $action = $instance->{'restart'} ? 'restart' : ( $instance->{'reload'} ? 'reload' : undef ) );
+        return unless $instance && ( my $action = $instance->{'restart'} ? 'restart' : ( $instance->{'reload'} ? 'reload' : undef ) );
 
         iMSCP::Service->getInstance()->registerDelayedAction(
             $instance->{'config'}->{'NAMED_SNAME'}, [ $action, sub { $instance->$action(); } ], __PACKAGE__->getPriority()

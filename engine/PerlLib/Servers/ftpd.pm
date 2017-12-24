@@ -134,7 +134,7 @@ END
 
         my $instance = $PACKAGE->hasInstance();
 
-        return 0 unless $instance && ( my $action = $instance->{'restart'}
+        return unless $instance && ( my $action = $instance->{'restart'}
             ? 'restart' : ( $instance->{'reload'} ? 'reload' : ( $instance->{'start'} ? ' start' : undef ) ) );
 
         iMSCP::Service->getInstance()->registerDelayedAction(

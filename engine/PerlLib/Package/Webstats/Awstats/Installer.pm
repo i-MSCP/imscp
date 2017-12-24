@@ -25,9 +25,9 @@ package Package::Webstats::Awstats::Installer;
 
 use strict;
 use warnings;
-use iMSCP::Database;
 use iMSCP::Debug qw/ error /;
 use iMSCP::Dir;
+use iMSCP::Ext2Attributes qw/ clearImmutable /;
 use iMSCP::File;
 use Servers::cron;
 use Servers::httpd;
@@ -59,6 +59,7 @@ sub install
     my $rs = $self->_disableDefaultConfig();
     $rs ||= $self->_createCacheDir();
     $rs ||= $self->_setupApache2();
+    $rs ||= $self->_cleanup();
 }
 
 =item postinstall( )
@@ -98,74 +99,6 @@ sub _init
     $self;
 }
 
-=item _createCacheDir( )
-
- Create cache directory
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _createCacheDir
-{
-    my ($self) = @_;
-
-    eval {
-        iMSCP::Dir->new( dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'} )->make( {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $self->{'httpd'}->getRunningGroup(),
-            mode  => 02750
-        } );
-    };
-    if($@) {
-        error($@);
-        return 1;
-    }
-
-    0;
-}
-
-=item _setupApache2( )
-
- Setup Apache2 for AWStats
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _setupApache2
-{
-    my ($self) = @_;
-
-    # Create Basic authentication file
-
-    my $file = iMSCP::File->new( filename => "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats" );
-    $file->set( '' ); # Make sure to start with an empty file on update/reconfiguration
-    my $rs = $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'httpd'}->getRunningGroup());
-    $rs ||= $file->mode( 0640 );
-    return $rs if $rs;
-
-    # Enable required Apache2 modules
-
-    $rs = $self->{'httpd'}->enableModules( 'authn_socache' );
-    return $rs if $rs;
-
-    # Create Apache2 vhost
-
-    $rs = $self->{'httpd'}->buildConfFile(
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Config/01_awstats.conf",
-        "$self->{'httpd'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/01_awstats.conf",
-        undef,
-        {
-            AWSTATS_AUTH_USER_FILE_PATH => "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats",
-            AWSTATS_ENGINE_DIR          => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
-            AWSTATS_WEB_DIR             => $main::imscpConfig{'AWSTATS_WEB_DIR'}
-        }
-    );
-    $rs ||= $self->{'httpd'}->enableSites( '01_awstats.conf' );
-}
-
 =item _disableDefaultConfig( )
 
  Disable default configuration
@@ -187,6 +120,69 @@ sub _disableDefaultConfig
     return 0 unless -f "$cronDir/awstats";
 
     iMSCP::File->new( filename => "$cronDir/awstats" )->moveFile( "$cronDir/awstats.disable" );
+}
+
+=item _createCacheDir( )
+
+ Create cache directory
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _createCacheDir
+{
+    my ($self) = @_;
+
+    eval {
+        iMSCP::Dir->new( dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'} )->make( {
+            user  => $main::imscpConfig{'ROOT_USER'},
+            group => $self->{'httpd'}->getRunningGroup(),
+            mode  => 02750
+        } );
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    0;
+}
+
+=item _setupApache2( )
+
+ Setup Apache2 for AWStats
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _setupApache2
+{
+    my ($self) = @_;
+
+    # Create Basic authentication file
+    my $file = iMSCP::File->new( filename => "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats" );
+    $file->set( '' ); # Make sure to start with an empty file on update/reconfiguration
+    my $rs = $file->save();
+    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'httpd'}->getRunningGroup());
+    $rs ||= $file->mode( 0640 );
+
+    # Enable required Apache2 modules
+    $rs ||= $self->{'httpd'}->enableModules( 'authn_socache' );
+
+    # Create Apache2 vhost
+    $rs ||= $self->{'httpd'}->buildConfFile(
+        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Config/01_awstats.conf",
+        "$self->{'httpd'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/01_awstats.conf",
+        undef,
+        {
+            AWSTATS_AUTH_USER_FILE_PATH => "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats",
+            AWSTATS_ENGINE_DIR          => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
+            AWSTATS_WEB_DIR             => $main::imscpConfig{'AWSTATS_WEB_DIR'}
+        }
+    );
+    $rs ||= $self->{'httpd'}->enableSites( '01_awstats.conf' );
 }
 
 =item _addAwstatsCronTask( )
@@ -211,6 +207,31 @@ sub _addAwstatsCronTask
             "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_updateall.pl now " .
             "-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl > /dev/null 2>&1"
     } );
+}
+
+=item _cleanup()
+
+ Process cleanup tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _cleanup
+{
+    eval {
+        for ( iMSCP::Dir->new( dirname => $main::imscpConfig{'USER_WEB_DIR'} )->getDirs() ) {
+            next unless -d "$main::imscpConfig{'USER_WEB_DIR'}/$_/statistics";
+            clearImmutable( "$main::imscpConfig{'USER_WEB_DIR'}/$_" );
+            iMSCP::Dir->new( dirname => "/var/www/virtual/$_/statistics" )->remove();
+        }
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    0;
 }
 
 =back

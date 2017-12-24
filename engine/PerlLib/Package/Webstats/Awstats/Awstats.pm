@@ -31,7 +31,6 @@ use iMSCP::Database;
 use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::Ext2Attributes qw( setImmutable clearImmutable );
 use iMSCP::File;
 use iMSCP::TemplateParser qw/ getBlocByRef processByRef replaceBlocByRef /;
 use parent 'Common::SingletonClass';
@@ -198,22 +197,7 @@ sub addDomain
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->_addAwstatsConfig( $moduleData );
-    return $rs if $rs;
-
-    clearImmutable( $moduleData->{'HOME_DIR'} );
-
-    eval { iMSCP::Dir->new( dirname => "$moduleData->{'HOME_DIR'}/statistics" )->remove(); };
-    if ( $@ ) {
-        error( $@ );
-
-        # Set immutable bit if needed (even on error)
-        setImmutable( $moduleData->{'HOME_DIR'} ) if $moduleData->{'WEB_FOLDER_PROTECTION'} eq 'yes';
-        return 1;
-    }
-
-    setImmutable( $moduleData->{'HOME_DIR'} ) if $moduleData->{'WEB_FOLDER_PROTECTION'} eq 'yes';
-    0;
+    $self->_addAwstatsConfig( $moduleData );
 }
 
 =item deleteDomain( \%moduleData )
@@ -257,11 +241,30 @@ sub deleteDomain
     0;
 }
 
+=item preaddSubdomain( )
+
+ Process preaddSubdomain tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preaddSubdomain
+{
+    my ($self) = @_;
+
+    return 0 if $self->{'_is_registered_event_listener'};
+
+    $self->{'_is_registered_event_listener'} = 1;
+    $self->{'eventManager'}->register( 'beforeApache2BuildConfFile', $self );
+
+}
+
 =item addSubdomain( \%moduleData )
 
  Process addSubdomain tasks
 
- Param hashref \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
+ Param hashref \%moduleData Data as provided by SubAlias|Subdomain modules
  Return int 0 on success, other on failure
 
 =cut
@@ -270,23 +273,48 @@ sub addSubdomain
 {
     my ($self, $moduleData) = @_;
 
-    $self->addDomain( $moduleData );
+    $self->_addAwstatsConfig( $moduleData );
 }
 
 =item deleteSubdomain( \%moduleData )
 
  Process deleteSubdomain tasks
 
- Param hashref \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
+ Param hashref \%moduleData Data as provided by SubAlias|Subdomain modules
  Return int 0 on success, other on failure
 
 =cut
 
 sub deleteSubdomain
 {
-    my ($self, $moduleData) = @_;
+    my (undef, $moduleData) = @_;
 
-    $self->deleteDomain( $moduleData );
+    if ( -f "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$moduleData->{'DOMAIN_NAME'}.conf" ) {
+        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$moduleData->{'DOMAIN_NAME'}.conf" )->delFile();
+        return $rs if $rs;
+    }
+
+    return 0 unless -d $main::imscpConfig{'AWSTATS_CACHE_DIR'};
+
+    my @awstatsCacheFiles = eval {
+        iMSCP::Dir->new(
+            dirname  => $main::imscpConfig{'AWSTATS_CACHE_DIR'},
+            fileType => '^(?:awstats[0-9]+|dnscachelastupdate)' . quotemeta( ".$moduleData->{'DOMAIN_NAME'}.txt" )
+        )->getFiles();
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    return 0 unless @awstatsCacheFiles;
+
+    for ( @awstatsCacheFiles ) {
+        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'AWSTATS_CACHE_DIR'}/$_" )->delFile();
+        return $rs if $rs;
+    }
+
+    0;
 }
 
 =back
@@ -307,8 +335,7 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'_is_registered_event_listener'} = 0;
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    @{$self}{qw/ eventManager _is_registered_event_listener _admin_names /} = ( 0, {}, iMSCP::EventManager->getInstance() );
     $self;
 }
 
@@ -323,19 +350,21 @@ sub _init
 
 sub _addAwstatsConfig
 {
-    my (undef, $moduleData) = @_;
+    my ($self, $moduleData) = @_;
 
-    my $row = eval {
-        my $dbh = iMSCP::Database->getInstance()->getRawDb();
-        local $dbh->{'RaiseError'} = 1;
-        $dbh->selectrow_hashref( 'SELECT admin_name FROM admin WHERE admin_id = ?', undef, $moduleData->{'DOMAIN_ADMIN_ID'} );
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    } elsif ( !$row ) {
-        error( sprintf( "Couldn't retrieve data for admin with ID %d", $moduleData->{'DOMAIN_ADMIN_ID'} ));
-        return 1;
+    unless ( $self->{'_admin_names'}->{$moduleData->{'DOMAIN_ADMIN_ID'}} ) {
+        $self->{'_admin_names'}->{$moduleData->{'DOMAIN_ADMIN_ID'}} = eval {
+            my $dbh = iMSCP::Database->getInstance()->getRawDb();
+            local $dbh->{'RaiseError'} = 1;
+            $dbh->selectrow_hashref( 'SELECT admin_name FROM admin WHERE admin_id = ?', undef, $moduleData->{'DOMAIN_ADMIN_ID'} );
+        };
+        if ( $@ ) {
+            error( $@ );
+            return 1;
+        } elsif ( !$self->{'_admin_names'}->{$moduleData->{'DOMAIN_ADMIN_ID'}} ) {
+            error( sprintf( "Couldn't retrieve data for admin with ID %d", $moduleData->{'DOMAIN_ADMIN_ID'} ));
+            return 1;
+        }
     }
 
     my $file = iMSCP::File->new( filename => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Config/awstats.imscp_tpl.conf" );
@@ -350,7 +379,7 @@ sub _addAwstatsConfig
     processByRef(
         {
             ALIAS               => $moduleData->{'ALIAS'},
-            AUTH_USER           => "$row->{'admin_name'}",
+            AUTH_USER           => "$self->{'_admin_names'}->{$moduleData->{'DOMAIN_ADMIN_ID'}}->{'admin_name'}",
             AWSTATS_CACHE_DIR   => $main::imscpConfig{'AWSTATS_CACHE_DIR'},
             AWSTATS_ENGINE_DIR  => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
             AWSTATS_WEB_DIR     => $main::imscpConfig{'AWSTATS_WEB_DIR'},

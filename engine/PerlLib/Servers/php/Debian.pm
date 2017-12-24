@@ -908,13 +908,13 @@ END
 
         my $instance = __PACKAGE__->hasInstance();
 
-        return 0 unless $instance && $instance->{'config'}->{'PHP_SAPI'} eq 'fpm';
+        return unless $instance && $instance->{'config'}->{'PHP_SAPI'} eq 'fpm';
 
         my $serviceMngr = iMSCP::Service->getInstance();
 
         for my $action( qw/ start reload restart / ) {
             for my $phpVersion( keys %{$instance->{$action}} ) {
-                # Check for actions precedence. The 'reload' and restart actions have higher precedence than the 'start' action
+                # Check for actions precedence. The 'reload' and 'restart' actions both have higher precedence than the 'start' action
                 next if $action eq 'start' && ( $instance->{'reload'}->{$phpVersion} || $instance->{'restart'}->{$phpVersion} );
                 # Check for actions precedence. The 'restart' action has higher precedence than the 'reload' action
                 next if $action eq 'reload' && $instance->{'restart'}->{$phpVersion};
