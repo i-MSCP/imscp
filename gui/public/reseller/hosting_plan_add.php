@@ -431,11 +431,13 @@ function checkInputData()
                 $phpini->setClientPermission('phpiniMailFunction', clean_input($_POST['phpini_perm_mail_function']));
             }
 
-            if (isset($_POST['memory_limit'])) { // Must be set before phpiniPostMaxSize
+            // Must be set before phpiniPostMaxSize
+            if (isset($_POST['memory_limit'])) {
                 $phpini->setIniOption('phpiniMemoryLimit', clean_input($_POST['memory_limit']));
             }
 
-            if (isset($_POST['post_max_size'])) { // Must be set before phpiniUploadMaxFileSize
+            // Must be set before phpiniUploadMaxFileSize
+            if (isset($_POST['post_max_size'])) {
                 $phpini->setIniOption('phpiniPostMaxSize', clean_input($_POST['post_max_size']));
             }
 
@@ -523,9 +525,9 @@ $status = 1;
 $backup = [];
 
 $phpini = PHPini::getInstance();
-$phpini->loadResellerPermissions($_SESSION['user_id']); // Load reseller permissions
-$phpini->loadClientPermissions(); // Load client default PHP permissions
-$phpini->loadIniOptions(); // Load domain default PHP configuration options
+$phpini->loadResellerPermissions($_SESSION['user_id']);
+$phpini->loadClientPermissions();
+$phpini->loadIniOptions();
 
 if (!empty($_POST) && checkInputData() && addHostingPlan()) {
     set_page_message(tr('Hosting plan successfully created.'), 'success');

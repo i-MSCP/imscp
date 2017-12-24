@@ -56,9 +56,9 @@ function loadHostingPlan()
     $mailQuota = $mailQuota / 1048576;
 
     $phpini = PHPini::getInstance();
-    $phpini->loadResellerPermissions($_SESSION['user_id']); // Load reseller permissions
-    $phpini->loadClientPermissions(); // Load client default PHP permissions
-    $phpini->loadIniOptions(); // Load domain default PHP configuration options
+    $phpini->loadResellerPermissions($_SESSION['user_id']);
+    $phpini->loadClientPermissions();
+    $phpini->loadIniOptions();
 
     $phpini->setClientPermission('phpiniSystem', $phpEditor);
     $phpini->setClientPermission('phpiniConfigLevel', $phpConfigLevel);
@@ -66,8 +66,10 @@ function loadHostingPlan()
     $phpini->setClientPermission('phpiniDisplayErrors', $phpDisplayErrors);
     $phpini->setClientPermission('phpiniDisableFunctions', $phpDisableFunctions);
     $phpini->setClientPermission('phpiniMailFunction', $phpiniMailFunction);
-    $phpini->setIniOption('phpiniMemoryLimit', $phpMemoryLimitValue); // Must be set before phpiniPostMaxSize
-    $phpini->setIniOption('phpiniPostMaxSize', $phpPostMaxSizeValue); // Must be set before phpiniUploadMaxFileSize
+    // Must be set before phpiniPostMaxSize
+    $phpini->setIniOption('phpiniMemoryLimit', $phpMemoryLimitValue);
+    // Must be set before phpiniUploadMaxFileSize
+    $phpini->setIniOption('phpiniPostMaxSize', $phpPostMaxSizeValue);
     $phpini->setIniOption('phpiniUploadMaxFileSize', $phpUploadMaxFilesizeValue);
     $phpini->setIniOption('phpiniMaxExecutionTime', $phpMaxExecutionTimeValue);
     $phpini->setIniOption('phpiniMaxInputTime', $phpMaxInputTimeValue);
@@ -481,11 +483,13 @@ function checkInputData()
                 $phpini->setClientPermission('phpiniMailFunction', clean_input($_POST['phpini_perm_mail_function']));
             }
 
-            if (isset($_POST['memory_limit'])) { // Must be set before phpiniPostMaxSize
+            // Must be set before phpiniPostMaxSize
+            if (isset($_POST['memory_limit'])) {
                 $phpini->setIniOption('phpiniMemoryLimit', clean_input($_POST['memory_limit']));
             }
 
-            if (isset($_POST['post_max_size'])) { // Must be set before phpiniUploadMaxFileSize
+            // Must be set before phpiniUploadMaxFileSize
+            if (isset($_POST['post_max_size'])) {
                 $phpini->setIniOption('phpiniPostMaxSize', clean_input($_POST['post_max_size']));
             }
 
@@ -501,12 +505,12 @@ function checkInputData()
                 $phpini->setIniOption('phpiniMaxInputTime', clean_input($_POST['max_input_time']));
             }
         } else {
-            $phpini->loadClientPermissions(); // Reset client PHP permissions to default values
-            $phpini->loadIniOptions(); // Reset domain PHP configuration options to default values
+            $phpini->loadClientPermissions(); // Reset client permissions to their default value
+            $phpini->loadIniOptions(); // Reset INI options to their default values
         }
     } else {
-        $phpini->loadClientPermissions(); // Reset client PHP permissions to default values
-        $phpini->loadIniOptions(); // Reset domain PHP configuration options to default values
+        $phpini->loadClientPermissions(); // Reset client permissions to their default value
+        $phpini->loadIniOptions(); // Reset INI options to their default values
     }
 
     if (!empty($errFieldsStack)) {

@@ -51,23 +51,6 @@ sub _init
     $self;
 }
 
-=item _setupModules( )
-
- See Servers::httpd::Apache2::Abstract::_setupModules()
-
-=cut
-
-sub _setupModules
-{
-    my ($self) = @_;
-
-    my $rs = $self->disableModules( qw/ mpm_event mpm_itk mpm_worker cgid / );
-    $rs ||= $self->enableModules(
-        qw/mpm_prefork access_compat alias auth_basic auth_digest authn_core authn_file authz_core authz_groupfile authz_host authz_user autoindex
-        cgi deflate dir env expires headers mime mime_magic negotiation proxy proxy_http rewrite ssl suexec version/
-    );
-}
-
 =back
 
 =head1 EVENT LISTENERS

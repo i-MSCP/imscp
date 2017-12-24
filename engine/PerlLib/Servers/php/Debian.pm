@@ -251,9 +251,6 @@ sub install
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePhpInstall' );
-    return $rs if $rs;
-
     eval {
         my $httpd = Servers::httpd->factory();
         my $serverData = {
@@ -280,12 +277,12 @@ sub install
 
             # Master php.ini file for apache2handler, cli, cgi and fpm SAPIs
             for my $sapiDir( qw/ apache2 cgi cli fpm / ) {
-                $rs = $self->buildConfFile( "$sapiDir/php.ini", "/etc/php/$_/$sapiDir/php.ini", undef, $serverData );
+                my $rs = $self->buildConfFile( "$sapiDir/php.ini", "/etc/php/$_/$sapiDir/php.ini", undef, $serverData );
                 last if $rs;
             }
 
             # Master conffile for fpm SAPI
-            $rs ||= $self->buildConfFile( 'fpm/php-fpm.conf', "/etc/php/$_/fpm/php-fpm.conf", undef, $serverData );
+            my $rs = $self->buildConfFile( 'fpm/php-fpm.conf', "/etc/php/$_/fpm/php-fpm.conf", undef, $serverData );
             # Default pool conffile for fpm SAPI
             $rs ||= $self->buildConfFile( 'fpm/pool.conf.default', "/etc/php/$_/fpm/pool.d/www.conf", undef, $serverData );
             $rs == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
@@ -310,18 +307,17 @@ sub install
 
         $file = iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/fcgid_imscp.load" );
         $file->set( "<IfModule !mod_fcgid.c>\n" . ${$cfgTpl} . "</IfModule>\n" );
-        $rs = $file->save();
+        my $rs = $file->save();
         $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
         $rs ||= $file->mode( 0644 );
         $rs == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
     };
     if ( $@ ) {
         error( $@ );
-        $rs = 1;
+        return 1;
     }
 
-    $rs ||= $self->_cleanup();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpInstall' );
+    $self->_cleanup();
 }
 
 =item postinstall( )
@@ -335,9 +331,6 @@ sub install
 sub postinstall
 {
     my ($self) = @_;
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforePhpPostInstall' );
-    return $rs if $rs;
 
     eval {
         my $httpd = Servers::httpd->factory();
@@ -376,10 +369,10 @@ sub postinstall
     };
     if ( $@ ) {
         error( $@ );
-        $rs = 1;
+        return 1;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpPostInstall' );
+    0;
 }
 
 =item uninstall( )
@@ -394,12 +387,9 @@ sub uninstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePhpUninstall' );
-    return $rs if $rs;
-
     my $httpd = Servers::httpd->factory();
 
-    $rs = $httpd->disableModules( 'fcgid_imscp' ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
+    my $rs = $httpd->disableModules( 'fcgid_imscp' ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
     return $rs if $rs;
 
     for ( 'fcgid_imscp.conf', 'fcgid_imscp.load' ) {
@@ -417,10 +407,10 @@ sub uninstall
     eval { iMSCP::Dir->new( dirname => $self->{'config'}->{'PHP_FCGI_STARTER_DIR'} )->remove(); };
     if ( $@ ) {
         error( $@ );
-        $rs = 1;
+        return 1;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpUninstall' );
+    0;
 }
 
 =item addDomain( \%moduleData )
