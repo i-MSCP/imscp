@@ -127,7 +127,7 @@ sub _loadData
             "
                 SELECT t1.*,
                     t2.domain_name AS user_home, t2.domain_admin_id, t2.domain_mailacc_limit, t2.domain_php, t2.domain_cgi,
-                    t2.external_mail, t2.web_folder_protection, t2.phpini_config_level AS php_config_level,
+                    t2.external_mail, t2.web_folder_protection, t2.phpini_perm_config_level AS php_config_level,
                     IFNULL(t3.ip_number, '0.0.0.0') AS ip_number,
                     t4.private_key, t4.certificate, t4.ca_bundle, t4.allow_hsts, t4.hsts_max_age,
                     t4.hsts_include_subdomains,
@@ -231,7 +231,7 @@ sub _getData
         FORWARD                 => $self->{'subdomain_url_forward'} || 'no',
         FORWARD_TYPE            => $self->{'subdomain_type_forward'} || '',
         FORWARD_PRESERVE_HOST   => $self->{'subdomain_host_forward'} || 'Off',
-        DISABLE_FUNCTIONS       => $phpini->{'disable_functions'} || 'exec,passthru,popen,proc_open,show_source,shell,shell_exec,symlink,system',
+        DISABLE_FUNCTIONS       => $phpini->{'disable_functions'} || 'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
         MAX_EXECUTION_TIME      => $phpini->{'max_execution_time'} || 30,
         MAX_INPUT_TIME          => $phpini->{'max_input_time'} || 60,
         MEMORY_LIMIT            => $phpini->{'memory_limit'} || 128,

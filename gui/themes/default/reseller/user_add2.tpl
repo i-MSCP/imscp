@@ -145,15 +145,35 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <!-- BDP: phpini_perm_config_level_block -->
+                        <tr>
+                            <td>
+                                {TR_PHPINI_PERM_CONFIG_LEVEL}
+                                <span class="icon i_help" title="{TR_PHPINI_PERM_CONFIG_LEVEL_HELP}"></span>
+                            </td>
+                            <td>
+                                <div class="radio">
+                                    <!-- BDP: phpini_perm_config_level_per_site_block -->
+                                    <input type="radio" name="phpini_perm_config_level" id="phpini_perm_config_level_per_site" value="per_site"{PHP_INI_CONFIG_LEVEL_PER_SITE}>
+                                    <label for="phpini_perm_config_level_per_site">{TR_PER_SITE}</label>
+                                    <!-- EDP: phpini_perm_config_level_per_site_block -->
+                                    <input type="radio" name="phpini_perm_config_level" id="phpini_perm_config_level_per_domain" value="per_domain"{PHP_INI_CONFIG_LEVEL_PER_DOMAIN}>
+                                    <label for="phpini_perm_config_level_per_domain">{TR_PER_DOMAIN}</label>
+                                    <input type="radio" name="phpini_perm_config_level" id="phpini_perm_config_level_per_user" value="per_user"{PHP_INI_CONFIG_LEVEL_PER_USER}>
+                                    <label for="phpini_perm_config_level_per_user">{TR_PER_USER}</label>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- EDP: phpini_perm_config_level_block -->
                         <!-- BDP: php_editor_allow_url_fopen_block -->
                         <tr>
                             <td>{TR_CAN_EDIT_ALLOW_URL_FOPEN}</td>
                             <td>
                                 <div class="radio">
-                                    <input type="radio" name="phpini_perm_allow_url_fopen" id="phpiniAllowUrlFopenYes" value="yes"{ALLOW_URL_FOPEN_YES}>
-                                    <label for="phpiniAllowUrlFopenYes">{TR_YES}</label>
-                                    <input type="radio" name="phpini_perm_allow_url_fopen" id="phpiniAllowUrlFopenNo" value="no"{ALLOW_URL_FOPEN_NO}>
-                                    <label for="phpiniAllowUrlFopenNo">{TR_NO}</label>
+                                    <input type="radio" name="phpini_perm_allow_url_fopen" id="phpini_perm_allow_url_fopen_yes" value="yes"{ALLOW_URL_FOPEN_YES}>
+                                    <label for="phpini_perm_allow_url_fopen_yes">{TR_YES}</label>
+                                    <input type="radio" name="phpini_perm_allow_url_fopen" id="phpini_perm_allow_url_fopen_no" value="no"{ALLOW_URL_FOPEN_NO}>
+                                    <label for="phpini_perm_allow_url_fopen_no">{TR_NO}</label>
                                 </div>
                             </td>
                         </tr>
@@ -163,10 +183,10 @@
                             <td>{TR_CAN_EDIT_DISPLAY_ERRORS}</td>
                             <td>
                                 <div class="radio">
-                                    <input type="radio" name="phpini_perm_display_errors" id="phpiniDisplayErrorsYes" value="yes"{DISPLAY_ERRORS_YES}>
-                                    <label for="phpiniDisplayErrorsYes">{TR_YES}</label>
-                                    <input type="radio" name="phpini_perm_display_errors" id="phpiniDisplayErrorsNo" value="no"{DISPLAY_ERRORS_NO}>
-                                    <label for="phpiniDisplayErrorsNo">{TR_NO}</label>
+                                    <input type="radio" name="phpini_perm_display_errors" id="phpini_perm_display_errors_yes" value="yes"{DISPLAY_ERRORS_YES}>
+                                    <label for="phpini_perm_display_errors_yes">{TR_YES}</label>
+                                    <input type="radio" name="phpini_perm_display_errors" id="phpini_perm_display_errors_no" value="no"{DISPLAY_ERRORS_NO}>
+                                    <label for="phpini_perm_display_errors_no">{TR_NO}</label>
                                 </div>
                             </td>
                         </tr>
@@ -176,12 +196,12 @@
                             <td>{TR_CAN_EDIT_DISABLE_FUNCTIONS}</td>
                             <td>
                                 <div class="radio">
-                                    <input type="radio" name="phpini_perm_disable_functions" id="phpiniDisableFunctionsYes" value="yes"{DISABLE_FUNCTIONS_YES}>
-                                    <label for="phpiniDisableFunctionsYes">{TR_YES}</label>
-                                    <input type="radio" name="phpini_perm_disable_functions" id="phpiniDisableFunctionsNo" value="no"{DISABLE_FUNCTIONS_NO}>
-                                    <label for="phpiniDisableFunctionsNo">{TR_NO}</label>
-                                    <input type="radio" name="phpini_perm_disable_functions" id="phpiniDisableFunctionsExec" value="exec"{DISABLE_FUNCTIONS_EXEC}>
-                                    <label for="phpiniDisableFunctionsExec">{TR_ONLY_EXEC}</label>
+                                    <input type="radio" name="phpini_perm_disable_functions" id="phpini_perm_disable_functions_yes" value="yes"{DISABLE_FUNCTIONS_YES}>
+                                    <label for="phpini_perm_disable_functions_yes">{TR_YES}</label>
+                                    <input type="radio" name="phpini_perm_disable_functions" id="phpini_perm_disable_functions_no" value="no"{DISABLE_FUNCTIONS_NO}>
+                                    <label for="phpini_perm_disable_functions_no">{TR_NO}</label>
+                                    <input type="radio" name="phpini_perm_disable_functions" id="phpini_perm_disable_functions_exec" value="exec"{DISABLE_FUNCTIONS_EXEC}>
+                                    <label for="phpini_perm_disable_functions_exec">{TR_ONLY_EXEC}</label>
                                 </div>
                             </td>
                         </tr>
@@ -191,10 +211,10 @@
                             <td>{TR_CAN_USE_MAIL_FUNCTION}</td>
                             <td>
                                 <div class="radio">
-                                    <input type="radio" name="phpini_perm_mail_function" id="phpiniMailFunctionYes" value="yes"{MAIL_FUNCTION_YES}>
-                                    <label for="phpiniMailFunctionYes">{TR_YES}</label>
-                                    <input type="radio" name="phpini_perm_mail_function" id="phpiniMailFunctionNo" value="no"{MAIL_FUNCTION_NO}>
-                                    <label for="phpiniMailFunctionNo">{TR_NO}</label>
+                                    <input type="radio" name="phpini_perm_mail_function" id="phpini_perm_mail_function_yes" value="yes"{MAIL_FUNCTION_YES}>
+                                    <label for="phpini_perm_mail_function_yes">{TR_YES}</label>
+                                    <input type="radio" name="phpini_perm_mail_function" id="phpini_perm_mail_function_no" value="no"{MAIL_FUNCTION_NO}>
+                                    <label for="phpini_perm_mail_function_no">{TR_NO}</label>
                                 </div>
                             </td>
                         </tr>

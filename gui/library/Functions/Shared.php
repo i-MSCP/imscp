@@ -19,10 +19,10 @@
  */
 
 use iMSCP\Database\ResultSet;
+use iMSCP\TemplateEngine;
 use iMSCP_Events as Events;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_Exception_Database as DatabaseException;
-use iMSCP\TemplateEngine;
 use iMSCP_Registry as Registry;
 use Mso\IdnaConvert\IdnaConvert;
 
@@ -2093,13 +2093,17 @@ function daemon_sendCommand(&$socket, $command)
  */
 function send_request()
 {
-    if (
-        ($socket = @socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === false ||
-        @socket_connect($socket, '127.0.0.1', 9876) === false
+    static $isAlreadySent = false;
+
+    # Make sure that a backend request will not be sent twice
+    if ($isAlreadySent) {
+        return true;
+    }
+
+    if (false === ($socket = @socket_create(AF_INET, SOCK_STREAM, SOL_TCP))
+        || false === @socket_connect($socket, '127.0.0.1', 9876)
     ) {
-        write_log(
-            sprintf("Couldn't connect to the i-MSCP daemon: %s", socket_strerror(socket_last_error())), E_USER_ERROR
-        );
+        write_log(sprintf("Couldn't connect to the i-MSCP daemon: %s", socket_strerror(socket_last_error())), E_USER_ERROR);
         return false;
     }
 
@@ -2113,7 +2117,7 @@ function send_request()
         daemon_sendCommand($socket, 'bye') && // Send bye command to i-MSCP daemon
         daemon_readAnswer($socket) // Read answer from i-MSCP daemon
     ) {
-        $ret = true;
+        $isAlreadySent = $ret = true;
     } else {
         $ret = false;
     }

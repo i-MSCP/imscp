@@ -134,6 +134,22 @@
                         </tr>
                         </thead>
                         <tbody>
+                       <tr>
+                            <td>
+                                {TR_PHP_INI_AL_CONFIG_LEVEL}
+                                <span class="icon i_help" title="{TR_PHP_INI_AL_CONFIG_LEVEL_HELP}"></span>
+                            </td>
+                            <td>
+                                <div class="radio">
+                                    <input type="radio" name="php_ini_al_config_level" id="php_ini_al_config_level_per_site" value="per_site"{PHP_INI_AL_CONFIG_LEVEL_PER_SITE}>
+                                    <label for="php_ini_al_config_level_per_site">{TR_PER_SITE}</label>
+                                    <input type="radio" name="php_ini_al_config_level" id="php_ini_al_config_level_per_domain" value="per_domain"{PHP_INI_AL_CONFIG_LEVEL_PER_DOMAIN}>
+                                    <label for="php_ini_al_config_level_per_domain">{TR_PER_DOMAIN}</label>
+                                    <input type="radio" name="php_ini_al_config_level" id="php_ini_al_config_level_per_user" value="per_user"{PHP_INI_AL_CONFIG_LEVEL_PER_USER}>
+                                    <label for="php_ini_al_config_level_per_user">{TR_PER_USER}</label>
+                                </div>
+                            </td>
+                        </tr>
                         <tr>
                             <td>
                                 {TR_PHP_INI_AL_ALLOW_URL_FOPEN}

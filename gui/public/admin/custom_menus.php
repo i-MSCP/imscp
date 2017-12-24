@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Registry as Registry;
 use iMSCP\TemplateEngine;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -103,14 +103,14 @@ function admin_generateForm($tpl)
     if (isset($_REQUEST['edit_id'])) {
         $tpl->assign([
             'TR_DYNAMIC_TITLE' => tohtml(tr('Edit custom menu')),
-            'TR_UPDATE'        => tohtml(tr('Update')),
+            'TR_UPDATE'        => tohtml(tr('Update'), 'htmlAttr'),
             'EDIT_ID'          => tohtml($_REQUEST['edit_id'], 'htmlAttr'),
             'ADD_MENU'         => ''
         ]);
     } else {
         $tpl->assign([
             'TR_DYNAMIC_TITLE' => tohtml(tr('Add custom menu')),
-            'TR_ADD'           => tohtml(tr('Add')),
+            'TR_ADD'           => tohtml(tr('Add'), 'htmlAttr'),
             'EDIT_MENU'        => ''
         ]);
     }
@@ -214,16 +214,9 @@ function admin_addMenu()
         return false;
     }
 
-    exec_query(
-        '
-            INSERT INTO custom_menus (
-                menu_level, menu_order, menu_name, menu_link, menu_target
-            ) VALUES (
-                ?, ?, ?, ?, ?
-            )
-        ',
-        [$visibilityLevel, $menuOrder, $menuName, $menuLink, $menuTarget]
-    );
+    exec_query('INSERT INTO custom_menus (menu_level, menu_order, menu_name, menu_link, menu_target) VALUES (?, ?, ?, ?, ?)', [
+        $visibilityLevel, $menuOrder, $menuName, $menuLink, $menuTarget
+    ]);
     set_page_message(tr('Custom menu successfully added.'), 'success');
     return true;
 }
@@ -246,14 +239,9 @@ function admin_updateMenu($menuId)
         return false;
     }
 
-    exec_query(
-        '
-            UPDATE custom_menus
-            SET menu_level = ?, menu_order = ?, menu_name = ?, menu_link = ?, menu_target = ?
-            WHERE menu_id = ?
-        ',
-        [$menuLevel, $menuOrder, $menuName, $menuLink, $menuTarget, intval($menuId)]
-    );
+    exec_query('UPDATE custom_menus SET menu_level = ?, menu_order = ?, menu_name = ?, menu_link = ?, menu_target = ? WHERE menu_id = ?', [
+        $menuLevel, $menuOrder, $menuName, $menuLink, $menuTarget, intval($menuId)
+    ]);
     set_page_message(tr('Custom menu successfully updated.'), 'success');
     return true;
 }
@@ -302,7 +290,6 @@ $tpl->define([
     'layout'            => 'shared/layouts/ui.tpl',
     'page'              => 'admin/custom_menus.tpl',
     'page_message'      => 'layout',
-    'hosting_plans'     => 'page',
     'menus_list_block'  => 'page',
     'menu_block'        => 'menus_list_block',
     'menu_target_block' => 'page',
@@ -311,32 +298,28 @@ $tpl->define([
     'edit_menu'         => 'page'
 ]);
 $tpl->assign([
-    'TR_PAGE_TITLE'             => tr('Admin / Settings / {TR_DYNAMIC_TITLE}'),
-    'TR_CUSTOM_MENU_PROPERTIES' => tr('Custom menu properties'),
-    'TR_MENU_NAME'              => tr('Name'),
-    'TR_MENU_LINK'              => tr('Link'),
-    'TR_MENU_TARGET'            => tr('Target'),
-    'TR_VIEW_FROM'              => tr('Show in'),
-    'TR_MENU_NAME_AND_LINK'     => tr('Custom menu name and link'),
-    'TR_MENU_ORDER'             => tr('Order'),
-    'TR_OPTIONAL'               => tr('Optional'),
-    'TR_ACTIONS'                => tr('Actions'),
-    'TR_EDIT'                   => tr('Edit'),
-    'TR_DELETE'                 => tr('Delete'),
-    'TR_TH_LEVEL'               => tr('Level'),
-    'TR_TH_ORDER'               => tr('Order'),
-    'TR_CANCEL'                 => tr('Cancel'),
+    'TR_PAGE_TITLE'             => tohtml(tr('Admin / Settings / {TR_DYNAMIC_TITLE}')),
+    'TR_CUSTOM_MENU_PROPERTIES' => tohtml(tr('Custom menu properties')),
+    'TR_MENU_NAME'              => tohtml(tr('Name')),
+    'TR_MENU_LINK'              => tohtml(tr('Link')),
+    'TR_MENU_TARGET'            => tohtml(tr('Target')),
+    'TR_VIEW_FROM'              => tohtml(tr('Show in')),
+    'TR_MENU_NAME_AND_LINK'     => tohtml(tr('Custom menu name and link')),
+    'TR_MENU_ORDER'             => tohtml(tr('Order')),
+    'TR_OPTIONAL'               => tohtml(tr('Optional')),
+    'TR_ACTIONS'                => tohtml(tr('Actions')),
+    'TR_EDIT'                   => tohtml(tr('Edit')),
+    'TR_DELETE'                 => tohtml(tr('Delete')),
+    'TR_TH_LEVEL'               => tohtml(tr('Level')),
+    'TR_TH_ORDER'               => tohtml(tr('Order')),
+    'TR_CANCEL'                 => tohtml(tr('Cancel')),
     'TR_MESSAGE_DELETE_JS'      => tojs(tr('Are you sure you want to delete the %s menu?', '%s')),
-    'ERR_FIELDS_STACK'          => Registry::isRegistered('errorFieldsStack')
-        ? json_encode(Registry::get('errorFieldsStack')) : '[]'
+    'ERR_FIELDS_STACK'          => Registry::isRegistered('errorFieldsStack') ? json_encode(Registry::get('errorFieldsStack')) : '[]'
 ]);
 
-Registry::get('iMSCP_Application')->getEventsManager()->registerListener(
-    'onGetJsTranslations',
-    function (iMSCP_Events_Description $e) {
-        $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
-    }
-);
+Registry::get('iMSCP_Application')->getEventsManager()->registerListener('onGetJsTranslations', function (iMSCP_Events_Description $e) {
+    $e->getParam('translations')->core['dataTable'] = getDataTablesPluginTranslations(false);
+});
 
 generateNavigation($tpl);
 admin_generateMenusList($tpl);

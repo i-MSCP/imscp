@@ -34,7 +34,6 @@ use iMSCP::Dir;
 use iMSCP::Ext2Attributes qw/ clearImmutable /;
 use iMSCP::Execute qw/ execute escapeShell /;
 use Servers::sqld;
-use diagnostics -verbose;
 use parent 'Modules::Abstract';
 
 # See _restoreDatabase() below
@@ -270,7 +269,7 @@ sub _loadData
             "
                 SELECT t1.domain_id, t1.domain_admin_id, t1.domain_mailacc_limit, t1.domain_name, t1.domain_status,
                     t1.domain_php, t1.domain_cgi, t1.external_mail, t1.web_folder_protection, t1.document_root,
-                    t1.url_forward, t1.type_forward, t1.host_forward, t1.phpini_config_level AS php_config_level,
+                    t1.url_forward, t1.type_forward, t1.host_forward, t1.phpini_perm_config_level AS php_config_level,
                     IFNULL(t2.ip_number, '0.0.0.0') AS ip_number,
                     t3.private_key, t3.certificate, t3.ca_bundle, t3.allow_hsts, t3.hsts_max_age,
                     t3.hsts_include_subdomains,
@@ -369,7 +368,7 @@ sub _getData
         FORWARD                 => $self->{'url_forward'} || 'no',
         FORWARD_TYPE            => $self->{'type_forward'} || '',
         FORWARD_PRESERVE_HOST   => $self->{'host_forward'} || 'Off',
-        DISABLE_FUNCTIONS       => $phpini->{'disable_functions'} || 'exec,passthru,popen,proc_open,show_source,shell,shell_exec,symlink,system',
+        DISABLE_FUNCTIONS       => $phpini->{'disable_functions'} || 'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
         MAX_EXECUTION_TIME      => $phpini->{'max_execution_time'} || 30,
         MAX_INPUT_TIME          => $phpini->{'max_input_time'} || 60,
         MEMORY_LIMIT            => $phpini->{'memory_limit'} || 128,

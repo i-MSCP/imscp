@@ -19,10 +19,10 @@
  */
 
 use iMSCP\Crypt as Crypt;
+use iMSCP\TemplateEngine;
 use iMSCP_Events as Events;
 use iMSCP_Exception as iMSCPException;
-use iMSCP_PHPini as PhpIni;
-use iMSCP\TemplateEngine;
+use iMSCP\PHPini;
 use iMSCP_Registry as Registry;
 use Zend_Form as Form;
 
@@ -114,16 +114,13 @@ function addCustomer(Form $form)
         $props = $_SESSION['ch_hpprops'];
         unset($_SESSION['ch_hpprops']);
     } else {
-        $stmt = exec_query('SELECT props FROM hosting_plans WHERE reseller_id = ? AND id = ?', [
-            $_SESSION['user_id'], $hpId
-        ]);
+        $stmt = exec_query('SELECT props FROM hosting_plans WHERE reseller_id = ? AND id = ?', [$_SESSION['user_id'], $hpId]);
         $props = $stmt->fetchColumn();
     }
 
-    list($php, $cgi, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $backup, $dns, $aps, $phpEditor,
-        $phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniDisableFunctions, $phpMailFunction, $phpiniPostMaxSize,
-        $phpiniUploadMaxFileSize, $phpiniMaxExecutionTime, $phpiniMaxInputTime, $phpiniMemoryLimit, $extMailServer,
-        $webFolderProtection, $mailQuota
+    list($php, $cgi, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $backup, $dns, $aps, $phpEditor, $phpConfigLevel,
+        $phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniDisableFunctions, $phpMailFunction, $phpiniPostMaxSize, $phpiniUploadMaxFileSize,
+        $phpiniMaxExecutionTime, $phpiniMaxInputTime, $phpiniMemoryLimit, $extMailServer, $webFolderProtection, $mailQuota
         ) = explode(';', $props);
 
     $php = str_replace('_', '', $php);
@@ -143,17 +140,16 @@ function addCustomer(Form $form)
         exec_query(
             "
                 INSERT INTO admin (
-                    admin_name, admin_pass, admin_type, domain_created, created_by, fname, lname, firm, zip, city, state,
-                    country, email, phone, fax, street1, street2, gender, admin_status
+                    admin_name, admin_pass, admin_type, domain_created, created_by, fname, lname, firm, zip, city, state, country, email, phone, fax,
+                    street1, street2, gender, admin_status
                 ) VALUES (
                     ?, ?, ?, unix_timestamp(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'toadd'
                 )
             ",
             [
-                $adminName, Crypt::apr1MD5($form->getValue('admin_pass')), 'user', $_SESSION['user_id'],
-                $form->getValue('fname'), $form->getValue('lname'), $form->getValue('firm'), $form->getValue('zip'),
-                $form->getValue('city'), $form->getValue('state'), $form->getValue('country'),
-                encode_idna($form->getValue('email')), $form->getValue('phone'), $form->getValue('fax'),
+                $adminName, Crypt::apr1MD5($form->getValue('admin_pass')), 'user', $_SESSION['user_id'], $form->getValue('fname'),
+                $form->getValue('lname'), $form->getValue('firm'), $form->getValue('zip'), $form->getValue('city'), $form->getValue('state'),
+                $form->getValue('country'), encode_idna($form->getValue('email')), $form->getValue('phone'), $form->getValue('fax'),
                 $form->getValue('street1'), $form->getValue('street2'), $form->getValue('gender')
             ]
         );
@@ -175,22 +171,19 @@ function addCustomer(Form $form)
         exec_query(
             '
                 INSERT INTO domain (
-                    domain_name, domain_admin_id, domain_created, domain_expires, domain_mailacc_limit,
-                    domain_ftpacc_limit, domain_traffic_limit, domain_sqld_limit, domain_sqlu_limit, domain_status,
-                    domain_alias_limit, domain_subd_limit, domain_ip_id, domain_disk_limit, domain_disk_usage,
-                    domain_php, domain_cgi, allowbackup, domain_dns, domain_software_allowed, phpini_perm_system,
-                    phpini_perm_allow_url_fopen, phpini_perm_display_errors, phpini_perm_disable_functions,
-                    phpini_perm_mail_function, domain_external_mail, web_folder_protection, mail_quota, url_forward,
-                    type_forward, host_forward
+                    domain_name, domain_admin_id, domain_created, domain_expires, domain_mailacc_limit, domain_ftpacc_limit, domain_traffic_limit,
+                    domain_sqld_limit, domain_sqlu_limit, domain_status, domain_alias_limit, domain_subd_limit, domain_ip_id, domain_disk_limit,
+                    domain_disk_usage, domain_php, domain_cgi, allowbackup, domain_dns, domain_software_allowed, phpini_perm_system,
+                    phpini_perm_config_level, phpini_perm_allow_url_fopen, phpini_perm_display_errors, phpini_perm_disable_functions,
+                    phpini_perm_mail_function, domain_external_mail, web_folder_protection, mail_quota, url_forward,type_forward, host_forward
                 ) VALUES (
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                 )
             ',
             [
-                $dmnName, $adminId, time(), $dmnExpire, $mail, $ftp, $traff, $sql_db, $sql_user, 'toadd', $als, $sub,
-                $domainIp, $disk, 0, $php, $cgi, $backup, $dns, $aps, $phpEditor, $phpiniAllowUrlFopen,
-                $phpiniDisplayErrors, $phpiniDisableFunctions, $phpMailFunction, $extMailServer, $webFolderProtection,
-                $mailQuota, $dmnUrlForward, $dmnTypeForward, $dmnHostForward
+                $dmnName, $adminId, time(), $dmnExpire, $mail, $ftp, $traff, $sql_db, $sql_user, 'toadd', $als, $sub, $domainIp, $disk, 0, $php,
+                $cgi, $backup, $dns, $aps, $phpEditor, $phpConfigLevel, $phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniDisableFunctions,
+                $phpMailFunction, $extMailServer, $webFolderProtection, $mailQuota, $dmnUrlForward, $dmnTypeForward, $dmnHostForward
             ]
         );
 
@@ -199,22 +192,22 @@ function addCustomer(Form $form)
         $phpini = PhpIni::getInstance();
         $phpini->loadResellerPermissions($_SESSION['user_id']); // Load reseller PHP permissions
         $phpini->loadClientPermissions(); // Load client default PHP permissions
-        $phpini->loadDomainIni(); // Load domain default PHP configuration options
+        $phpini->loadIniOptions(); // Load domain default PHP configuration options
 
-        $phpini->setDomainIni('phpiniMemoryLimit', $phpiniMemoryLimit); // Must be set before phpiniPostMaxSize
-        $phpini->setDomainIni('phpiniPostMaxSize', $phpiniPostMaxSize); // Must be set before phpiniUploadMaxFileSize
-        $phpini->setDomainIni('phpiniUploadMaxFileSize', $phpiniUploadMaxFileSize);
-        $phpini->setDomainIni('phpiniMaxExecutionTime', $phpiniMaxExecutionTime);
-        $phpini->setDomainIni('phpiniMaxInputTime', $phpiniMaxInputTime);
-        $phpini->saveDomainIni($adminId, $dmnId, 'dmn');
+        $phpini->setIniOption('phpiniMemoryLimit', $phpiniMemoryLimit); // Must be set before phpiniPostMaxSize
+        $phpini->setIniOption('phpiniPostMaxSize', $phpiniPostMaxSize); // Must be set before phpiniUploadMaxFileSize
+        $phpini->setIniOption('phpiniUploadMaxFileSize', $phpiniUploadMaxFileSize);
+        $phpini->setIniOption('phpiniMaxExecutionTime', $phpiniMaxExecutionTime);
+        $phpini->setIniOption('phpiniMaxInputTime', $phpiniMaxInputTime);
+        $phpini->saveIniOptions($adminId, $dmnId, 'dmn');
 
         if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
             createDefaultMailAccounts($dmnId, $form->getValue('email'), $dmnName);
         }
 
         send_add_user_auto_msg(
-            $_SESSION['user_id'], $adminName, $form->getValue('admin_pass'), $form->getValue('email'),
-            $form->getValue('fname'), $form->getValue('lname'), tr('Customer')
+            $_SESSION['user_id'], $adminName, $form->getValue('admin_pass'), $form->getValue('email'), $form->getValue('fname'),
+            $form->getValue('lname'), tr('Customer')
         );
         exec_query('INSERT INTO user_gui_props (user_id, lang, layout) VALUES (?, ?, ?)', [
             $adminId, $cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']
@@ -236,10 +229,7 @@ function addCustomer(Form $form)
 
         $db->commit();
         send_request();
-        write_log(
-            sprintf('A new customer (%s) has been created by: %s:', $adminName, $_SESSION['user_logged']),
-            E_USER_NOTICE
-        );
+        write_log(sprintf('A new customer (%s) has been created by: %s:', $adminName, $_SESSION['user_logged']), E_USER_NOTICE);
         set_page_message(tr('Customer account successfully scheduled for creation.'), 'success');
         unsetMessages();
         redirectTo('users.php');
@@ -285,10 +275,7 @@ if (!getPreviousStepData()) {
 $form = getUserLoginDataForm(false, true)->addElements(getUserPersonalDataForm()->getElements());
 $form->setDefault('gender', 'U');
 
-if (isset($_POST['uaction'])
-    && 'user_add3_nxt' == $_POST['uaction']
-    && !isset($_SESSION['step_two_data'])
-) {
+if (isset($_POST['uaction']) && 'user_add3_nxt' == $_POST['uaction'] && !isset($_SESSION['step_two_data'])) {
     addCustomer($form);
 } else {
     unset($_SESSION['step_two_data']);

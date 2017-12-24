@@ -122,9 +122,9 @@
             <td>{TR_PHP}</td>
             <td>
                 <div class="radio">
-                    <input type="radio" name="php" id="php_yes" value="_yes_"{TR_PHP_YES} >
+                    <input type="radio" name="php" id="php_yes" value="_yes_"{PHP_YES} >
                     <label for="php_yes">{TR_YES}</label>
-                    <input type="radio" name="php" id="php_no" value="_no_"{TR_PHP_NO} >
+                    <input type="radio" name="php" id="php_no" value="_no_"{PHP_NO} >
                     <label for="php_no">{TR_NO}</label>
                 </div>
             </td>
@@ -153,15 +153,35 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <!-- BDP: phpini_perm_config_level_block -->
+                        <tr>
+                            <td>
+                                {TR_PHPINI_PERM_CONFIG_LEVEL}
+                                <span class="icon i_help" title="{TR_PHPINI_PERM_CONFIG_LEVEL_HELP}"></span>
+                            </td>
+                            <td>
+                                <div class="radio">
+                                    <!-- BDP: phpini_perm_config_level_per_site_block -->
+                                    <input type="radio" name="phpini_perm_config_level" id="phpini_perm_config_level_per_site" value="per_site"{PHP_INI_CONFIG_LEVEL_PER_SITE}>
+                                    <label for="phpini_perm_config_level_per_site">{TR_PER_SITE}</label>
+                                    <!-- EDP: phpini_perm_config_level_per_site_block -->
+                                    <input type="radio" name="phpini_perm_config_level" id="phpini_perm_config_level_per_domain" value="per_domain"{PHP_INI_CONFIG_LEVEL_PER_DOMAIN}>
+                                    <label for="phpini_perm_config_level_per_domain">{TR_PER_DOMAIN}</label>
+                                    <input type="radio" name="phpini_perm_config_level" id="phpini_perm_config_level_per_user" value="per_user"{PHP_INI_CONFIG_LEVEL_PER_USER}>
+                                    <label for="phpini_perm_config_level_per_user">{TR_PER_USER}</label>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- EDP: phpini_perm_config_level_block -->
                         <!-- BDP: php_editor_allow_url_fopen_block -->
                         <tr>
                             <td>{TR_CAN_EDIT_ALLOW_URL_FOPEN}</td>
                             <td>
                                 <div class="radio">
-                                    <input type="radio" name="phpini_perm_allow_url_fopen" id="phpiniAllowUrlFopenYes" value="yes"{ALLOW_URL_FOPEN_YES}>
-                                    <label for="phpiniAllowUrlFopenYes">{TR_YES}</label>
-                                    <input type="radio" name="phpini_perm_allow_url_fopen" id="phpiniAllowUrlFopenNo" value="no"{ALLOW_URL_FOPEN_NO}>
-                                    <label for="phpiniAllowUrlFopenNo">{TR_NO}</label>
+                                    <input type="radio" name="phpini_perm_allow_url_fopen" id="phpini_perm_allow_url_fopen_yes" value="yes"{ALLOW_URL_FOPEN_YES}>
+                                    <label for="phpini_perm_allow_url_fopen_yes">{TR_YES}</label>
+                                    <input type="radio" name="phpini_perm_allow_url_fopen" id="phpini_perm_allow_url_fopen_no" value="no"{ALLOW_URL_FOPEN_NO}>
+                                    <label for="phpini_perm_allow_url_fopen_no">{TR_NO}</label>
                                 </div>
                             </td>
                         </tr>
@@ -171,10 +191,10 @@
                             <td>{TR_CAN_EDIT_DISPLAY_ERRORS}</td>
                             <td>
                                 <div class="radio">
-                                    <input type="radio" name="phpini_perm_display_errors" id="phpiniDisplayErrorsYes" value="yes"{DISPLAY_ERRORS_YES}>
-                                    <label for="phpiniDisplayErrorsYes">{TR_YES}</label>
-                                    <input type="radio" name="phpini_perm_display_errors" id="phpiniDisplayErrorsNo" value="no"{DISPLAY_ERRORS_NO}>
-                                    <label for="phpiniDisplayErrorsNo">{TR_NO}</label>
+                                    <input type="radio" name="phpini_perm_display_errors" id="phpini_perm_display_errors_yes" value="yes"{DISPLAY_ERRORS_YES}>
+                                    <label for="phpini_perm_display_errors_yes">{TR_YES}</label>
+                                    <input type="radio" name="phpini_perm_display_errors" id="phpini_perm_display_errors_no" value="no"{DISPLAY_ERRORS_NO}>
+                                    <label for="phpini_perm_display_errors_no">{TR_NO}</label>
                                 </div>
                             </td>
                         </tr>
@@ -184,12 +204,12 @@
                             <td>{TR_CAN_EDIT_DISABLE_FUNCTIONS}</td>
                             <td>
                                 <div class="radio">
-                                    <input type="radio" name="phpini_perm_disable_functions" id="phpiniDisableFunctionsYes" value="yes"{DISABLE_FUNCTIONS_YES}>
-                                    <label for="phpiniDisableFunctionsYes">{TR_YES}</label>
-                                    <input type="radio" name="phpini_perm_disable_functions" id="phpiniDisableFunctionsNo" value="no"{DISABLE_FUNCTIONS_NO}>
-                                    <label for="phpiniDisableFunctionsNo">{TR_NO}</label>
-                                    <input type="radio" name="phpini_perm_disable_functions" id="phpiniDisableFunctionsExec" value="exec"{DISABLE_FUNCTIONS_EXEC}>
-                                    <label for="phpiniDisableFunctionsExec">{TR_ONLY_EXEC}</label>
+                                    <input type="radio" name="phpini_perm_disable_functions" id="phpini_perm_disable_functions_yes" value="yes"{DISABLE_FUNCTIONS_YES}>
+                                    <label for="phpini_perm_disable_functions_yes">{TR_YES}</label>
+                                    <input type="radio" name="phpini_perm_disable_functions" id="phpini_perm_disable_functions_no" value="no"{DISABLE_FUNCTIONS_NO}>
+                                    <label for="phpini_perm_disable_functions_no">{TR_NO}</label>
+                                    <input type="radio" name="phpini_perm_disable_functions" id="phpini_perm_disable_functions_exec" value="exec"{DISABLE_FUNCTIONS_EXEC}>
+                                    <label for="phpini_perm_disable_functions_exec">{TR_ONLY_EXEC}</label>
                                 </div>
                             </td>
                         </tr>
@@ -199,10 +219,10 @@
                             <td>{TR_CAN_USE_MAIL_FUNCTION}</td>
                             <td>
                                 <div class="radio">
-                                    <input type="radio" name="phpini_perm_mail_function" id="phpiniMailFunctionYes" value="yes"{MAIL_FUNCTION_YES}>
-                                    <label for="phpiniMailFunctionYes">{TR_YES}</label>
-                                    <input type="radio" name="phpini_perm_mail_function" id="phpiniMailFunctionNo" value="no"{MAIL_FUNCTION_NO}>
-                                    <label for="phpiniMailFunctionNo">{TR_NO}</label>
+                                    <input type="radio" name="phpini_perm_mail_function" id="phpini_perm_mail_function_yes" value="yes"{MAIL_FUNCTION_YES}>
+                                    <label for="phpini_perm_mail_function_yes">{TR_YES}</label>
+                                    <input type="radio" name="phpini_perm_mail_function" id="phpini_perm_mail_function_no" value="no"{MAIL_FUNCTION_NO}>
+                                    <label for="phpini_perm_mail_function_no">{TR_NO}</label>
                                 </div>
                             </td>
                         </tr>
@@ -250,9 +270,9 @@
             <td>{TR_CGI}</td>
             <td>
                 <div class="radio">
-                    <input type="radio" name="cgi" value="_yes_" id="cgi_yes"{TR_CGI_YES}>
+                    <input type="radio" name="cgi" value="_yes_" id="cgi_yes"{CGI_YES}>
                     <label for="cgi_yes">{TR_YES}</label>
-                    <input type="radio" name="cgi" value="_no_" id="cgi_no"{TR_CGI_NO}>
+                    <input type="radio" name="cgi" value="_no_" id="cgi_no"{CGI_NO}>
                     <label for="cgi_no">{TR_NO}</label>
                 </div>
             </td>
@@ -263,9 +283,9 @@
             <td>{TR_DNS}</td>
             <td>
                 <div class="radio">
-                    <input type="radio" name="dns" value="_yes_" id="dns_yes"{TR_DNS_YES}>
+                    <input type="radio" name="dns" value="_yes_" id="dns_yes"{DNS_YES}>
                     <label for="dns_yes">{TR_YES}</label>
-                    <input type="radio" name="dns" value="_no_" id="dns_no"{TR_DNS_NO}>
+                    <input type="radio" name="dns" value="_no_" id="dns_no"{DNS_NO}>
                     <label for="dns_no">{TR_NO}</label>
                 </div>
             </td>
@@ -276,9 +296,9 @@
             <td>{TR_SOFTWARE_SUPP}</td>
             <td>
                 <div class="radio">
-                    <input type="radio" name="softwares_installer" value="_yes_" id="softwares_installer_yes"{TR_SOFTWARE_YES}>
+                    <input type="radio" name="softwares_installer" value="_yes_" id="softwares_installer_yes"{SOFTWARE_YES}>
                     <label for="softwares_installer_yes">{TR_YES}</label>
-                    <input type="radio" name="softwares_installer" value="_no_" id="softwares_installer_no"{TR_SOFTWARE_NO}>
+                    <input type="radio" name="softwares_installer" value="_no_" id="softwares_installer_no"{SOFTWARE_NO}>
                     <label for="softwares_installer_no">{TR_NO}</label>
                 </div>
             </td>
@@ -289,9 +309,9 @@
             <td>{TR_EXTMAIL}</td>
             <td>
                 <div class="radio">
-                    <input type="radio" name="external_mail" value="_yes_" id="extmail_yes"{TR_EXTMAIL_YES}>
+                    <input type="radio" name="external_mail" value="_yes_" id="extmail_yes"{EXTMAIL_YES}>
                     <label for="extmail_yes">{TR_YES}</label>
-                    <input type="radio" name="external_mail" value="_no_" id="extmail_no"{TR_EXTMAIL_NO}>
+                    <input type="radio" name="external_mail" value="_no_" id="extmail_no"{EXTMAIL_NO}>
                     <label for="extmail_no">{TR_NO}</label>
                 </div>
             </td>
@@ -319,9 +339,9 @@
             </td>
             <td>
                 <div class="radio">
-                    <input type="radio" name="protected_webfolders" value="_yes_" id="protected_webfolders_yes"{TR_PROTECT_WEB_FOLDERS_YES}>
+                    <input type="radio" name="protected_webfolders" value="_yes_" id="protected_webfolders_yes"{PROTECT_WEB_FOLDERS_YES}>
                     <label for="protected_webfolders_yes">{TR_YES}</label>
-                    <input type="radio" name="protected_webfolders" value="_no_" id="protected_webfolders_no"{TR_PROTECT_WEB_FOLDERS_NO}>
+                    <input type="radio" name="protected_webfolders" value="_no_" id="protected_webfolders_no"{PROTECT_WEB_FOLDERS_NO}>
                     <label for="protected_webfolders_no">{TR_NO}</label>
                 </div>
             </td>
@@ -339,9 +359,9 @@
             <td>{TR_STATUS}</td>
             <td>
                 <div class="radio">
-                    <input type="radio" name="status" value="1" id="status_yes"{TR_STATUS_YES}>
+                    <input type="radio" name="status" value="1" id="status_yes"{STATUS_YES}>
                     <label for="status_yes">{TR_YES}</label>
-                    <input type="radio" name="status" value="0" id="status_no"{TR_STATUS_NO}>
+                    <input type="radio" name="status" value="0" id="status_no"{STATUS_NO}>
                     <label for="status_no">{TR_NO}</label>
                 </div>
             </td>

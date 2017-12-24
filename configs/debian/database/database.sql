@@ -86,7 +86,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '275');
+  ('DATABASE_REVISION', '276');
 
 -- --------------------------------------------------------
 
@@ -137,11 +137,11 @@ CREATE TABLE IF NOT EXISTS `domain` (
   `domain_dns` varchar(15) collate utf8_unicode_ci NOT NULL DEFAULT 'no',
   `domain_software_allowed` varchar(15) collate utf8_unicode_ci NOT NULL DEFAULT 'no',
   `phpini_perm_system` VARCHAR(20) NOT NULL DEFAULT 'no',
+  `phpini_perm_config_level` ENUM( 'per_domain', 'per_site', 'per_user' ) NOT NULL DEFAULT 'per_site',
   `phpini_perm_allow_url_fopen` VARCHAR(20) NOT NULL DEFAULT 'no',
   `phpini_perm_display_errors` VARCHAR(20) NOT NULL DEFAULT 'no',
   `phpini_perm_disable_functions` VARCHAR(20) NOT NULL DEFAULT 'no',
   `phpini_perm_mail_function` VARCHAR(20) NOT NULL DEFAULT 'yes',
-  `phpini_config_level` ENUM( 'per_domain', 'per_site', 'per_user' ) NOT NULL DEFAULT 'per_site',
   `domain_external_mail` varchar(15) collate utf8_unicode_ci NOT NULL DEFAULT 'no',
   `external_mail` varchar(15) collate utf8_unicode_ci NOT NULL DEFAULT 'off',
   `web_folder_protection` varchar(5) collate utf8_unicode_ci NOT NULL DEFAULT 'yes',
@@ -515,6 +515,7 @@ CREATE TABLE IF NOT EXISTS `reseller_props` (
   `softwaredepot_allowed` varchar(15) collate utf8_general_ci NOT NULL DEFAULT 'yes',
   `websoftwaredepot_allowed` varchar(15) collate utf8_general_ci NOT NULL DEFAULT 'yes',
   `php_ini_system` VARCHAR(15) NOT NULL DEFAULT 'no',
+  `php_ini_al_config_level` ENUM( 'per_domain', 'per_site', 'per_user' ) NOT NULL DEFAULT 'per_site',
   `php_ini_al_disable_functions` VARCHAR(15) NOT NULL DEFAULT 'no',
   `php_ini_al_mail_function` VARCHAR(15) NOT NULL DEFAULT 'yes',
   `php_ini_al_allow_url_fopen` VARCHAR(15) NOT NULL DEFAULT 'no',
@@ -524,7 +525,7 @@ CREATE TABLE IF NOT EXISTS `reseller_props` (
   `php_ini_max_max_execution_time` int(11) NOT NULL DEFAULT '0',
   `php_ini_max_max_input_time` int(11) NOT NULL DEFAULT '0',
   `php_ini_max_memory_limit` int(11) NOT NULL DEFAULT '0',
-  `php_ini_config_level` ENUM( 'per_domain', 'per_site', 'per_user' ) NOT NULL DEFAULT 'per_site',
+  
   PRIMARY KEY (`id`),
   INDEX `reseller_id` (`reseller_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

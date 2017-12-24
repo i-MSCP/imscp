@@ -21,7 +21,7 @@
 namespace iMSCP\Update;
 
 use iMSCP\Crypt as Crypt;
-use iMSCP_PHPini as PhpIni;
+use iMSCP\PHPini;
 use iMSCP_Registry as Registry;
 use iMSCP_Uri_Redirect as UriRedirect;
 use PDO;
@@ -36,7 +36,7 @@ class UpdateDatabase extends UpdateDatabaseAbstract
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 275;
+    protected $lastUpdate = 276;
 
     /**
      * Prohibit upgrade from i-MSCP versions older than 1.1.x
@@ -982,41 +982,38 @@ class UpdateDatabase extends UpdateDatabaseAbstract
             while ($client = $clients->fetch()) {
                 $phpini->loadClientPermissions($client['admin_id']);
 
-                $domain = exec_query(
-                    "SELECT domain_id FROM domain WHERE domain_admin_id = ? AND domain_status <> ?",
-                    [$client['admin_id'], 'todelete']
-                );
+                $domain = exec_query("SELECT domain_id FROM domain WHERE domain_admin_id = ? AND domain_status <> 'todelete' ?", [
+                    $client['admin_id']
+                ]);
 
                 if (!$domain->rowCount()) {
                     continue;
                 }
 
                 $domain = $domain->fetch();
-                $phpini->loadDomainIni($client['admin_id'], $domain['domain_id'], 'dmn');
-                if ($phpini->isDefaultDomainIni()) {
-                    $phpini->saveDomainIni($client['admin_id'], $domain['domain_id'], 'dmn');
+                $phpini->loadIniOptions($client['admin_id'], $domain['domain_id'], 'dmn');
+                if ($phpini->isDefaultIniOptions()) {
+                    $phpini->saveIniOptions($client['admin_id'], $domain['domain_id'], 'dmn');
                 }
 
-                $subdomains = exec_query(
-                    'SELECT subdomain_id FROM subdomain WHERE domain_id = ? AND subdomain_status <> ?',
-                    [$domain['domain_id'], 'todelete']
-                );
+                $subdomains = exec_query("SELECT subdomain_id FROM subdomain WHERE domain_id = ? AND subdomain_status <> 'todelete'", [
+                    $domain['domain_id']
+                ]);
                 while ($subdomain = $subdomains->fetch()) {
-                    $phpini->loadDomainIni($client['admin_id'], $subdomain['subdomain_id'], 'sub');
-                    if ($phpini->isDefaultDomainIni()) {
-                        $phpini->saveDomainIni($client['admin_id'], $subdomain['subdomain_id'], 'sub');
+                    $phpini->loadIniOptions($client['admin_id'], $subdomain['subdomain_id'], 'sub');
+                    if ($phpini->isDefaultIniOptions()) {
+                        $phpini->saveIniOptions($client['admin_id'], $subdomain['subdomain_id'], 'sub');
                     }
                 }
                 unset($subdomains);
 
-                $domainAliases = exec_query(
-                    'SELECT alias_id FROM domain_aliasses WHERE domain_id = ? AND alias_status <> ?',
-                    [$domain['domain_id'], 'todelete']
-                );
+                $domainAliases = exec_query("SELECT alias_id FROM domain_aliasses WHERE domain_id = ? AND alias_status <> 'todelete'", [
+                    $domain['domain_id']
+                ]);
                 while ($domainAlias = $domainAliases->fetch()) {
-                    $phpini->loadDomainIni($client['admin_id'], $domainAlias['alias_id'], 'als');
-                    if ($phpini->isDefaultDomainIni()) {
-                        $phpini->saveDomainIni($client['admin_id'], $domainAlias['alias_id'], 'als');
+                    $phpini->loadIniOptions($client['admin_id'], $domainAlias['alias_id'], 'als');
+                    if ($phpini->isDefaultIniOptions()) {
+                        $phpini->saveIniOptions($client['admin_id'], $domainAlias['alias_id'], 'als');
                     }
                 }
                 unset($domainAliases);
@@ -1032,9 +1029,9 @@ class UpdateDatabase extends UpdateDatabaseAbstract
                     [$domain['domain_id'], 'todelete']
                 );
                 while ($subdomainAlias = $subdomainAliases->fetch()) {
-                    $phpini->loadDomainIni($client['admin_id'], $subdomainAlias['subdomain_alias_id'], 'subals');
-                    if ($phpini->isDefaultDomainIni()) {
-                        $phpini->saveDomainIni($client['admin_id'], $subdomainAlias['subdomain_alias_id'], 'subals');
+                    $phpini->loadIniOptions($client['admin_id'], $subdomainAlias['subdomain_alias_id'], 'subals');
+                    if ($phpini->isDefaultIniOptions()) {
+                        $phpini->saveIniOptions($client['admin_id'], $subdomainAlias['subdomain_alias_id'], 'subals');
                     }
                 }
                 unset($subdomainAliases);
@@ -1672,7 +1669,7 @@ class UpdateDatabase extends UpdateDatabaseAbstract
      * Add columns for PHP configuration level (PHP Editor)
      *
      * Prior version 1.6.0, the PHP configuration level was set at system wide, in the /etc/imscp/php/php.data file.
-     * 
+     *
      * @return array string SQL statement to be executed
      */
     protected function r275()
@@ -1680,14 +1677,38 @@ class UpdateDatabase extends UpdateDatabaseAbstract
         return [
             $this->addColumn(
                 'domain',
-                'phpini_config_level',
-                "ENUM( 'per_domain', 'per_site', 'per_user' ) NOT NULL DEFAULT 'per_site' AFTER phpini_perm_mail_function"
+                'phpini_perm_config_level',
+                "ENUM( 'per_domain', 'per_site', 'per_user' ) NOT NULL DEFAULT 'per_site' AFTER phpini_perm_system"
             ),
             $this->addColumn(
                 'reseller_props',
-                'php_ini_config_level',
-                "ENUM( 'per_domain', 'per_site', 'per_user' ) NOT NULL DEFAULT 'per_site' AFTER php_ini_max_memory_limit"
+                'php_ini_al_config_level',
+                "ENUM( 'per_domain', 'per_site', 'per_user' ) NOT NULL DEFAULT 'per_site' AFTER php_ini_system"
             )
         ];
+    }
+
+    /**
+     * Add PHP configuration level property in hosting plans if any
+     *
+     * @return array SQL statements to be executed
+     */
+    protected function r276()
+    {
+        $sqlQueries = [];
+
+        // Add PHP mail permission property in hosting plans if any
+        $stmt = execute_query('SELECT id, props FROM hosting_plans');
+        while ($row = $stmt->fetch()) {
+            $id = quoteValue($row['id'], PDO::PARAM_INT);
+            $props = explode(';', $row['props']);
+
+            if (sizeof($props) < 27) {
+                array_splice($props, 14, 0, 'per_site'); // Insert new property at position 14
+                $sqlQueries[] = 'UPDATE hosting_plans SET props = ' . quoteValue(implode(';', $props)) . ' WHERE id = ' . $id;
+            }
+        }
+
+        return $sqlQueries;
     }
 }

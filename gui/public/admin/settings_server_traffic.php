@@ -25,8 +25,8 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
-use iMSCP_Registry as Registry;
 use iMSCP\TemplateEngine;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -61,7 +61,6 @@ function admin_updateServerTrafficSettings($trafficLimit, $trafficWarning)
     if ($retVal) {
         /** @var $db_cfg iMSCP_Config_Handler_Db */
         $dbConfig = Registry::get('dbConfig');
-
         $dbConfig->SERVER_TRAFFIC_LIMIT = $trafficLimit;
         $dbConfig->SERVER_TRAFFIC_WARN = $trafficWarning;
 
@@ -123,18 +122,17 @@ if (!empty($_POST)) {
 
 $tpl = new TemplateEngine();
 $tpl->define([
-    'layout'        => 'shared/layouts/ui.tpl',
-    'page'          => 'admin/settings_server_traffic.tpl',
-    'page_message'  => 'layout',
-    'hosting_plans' => 'page'
+    'layout'       => 'shared/layouts/ui.tpl',
+    'page'         => 'admin/settings_server_traffic.tpl',
+    'page_message' => 'layout'
 ]);
 $tpl->assign([
-    'TR_PAGE_TITLE'                  => tr('Admin / Settings / Monthly Server Traffic'),
-    'TR_SET_SERVER_TRAFFIC_SETTINGS' => tr('Monthly server traffic settings'),
-    'TR_MAX_TRAFFIC'                 => tr('Max traffic'),
-    'TR_WARNING'                     => tr('Warning traffic'),
-    'TR_MIB'                         => tr('MiB'),
-    'TR_UPDATE'                      => tr('Update'),
+    'TR_PAGE_TITLE'                  => tohtml(tr('Admin / Settings / Monthly Server Traffic')),
+    'TR_SET_SERVER_TRAFFIC_SETTINGS' => tohtml(tr('Monthly server traffic settings')),
+    'TR_MAX_TRAFFIC'                 => tohtml(tr('Max traffic')),
+    'TR_WARNING'                     => tohtml(tr('Warning traffic')),
+    'TR_MIB'                         => tohtml(tr('MiB')),
+    'TR_UPDATE'                      => tohtml(tr('Update'), 'htmlAttr')
 ]);
 
 generateNavigation($tpl);

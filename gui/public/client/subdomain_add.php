@@ -18,8 +18,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Registry as Registry;
+use iMSCP\PHPini;
 use iMSCP\TemplateEngine;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -55,25 +56,22 @@ function getDomainsList()
                 'sub' AS type, t1.subdomain_mount AS mount_point, t1.subdomain_url_forward AS url_forward
             FROM subdomain AS t1
             JOIN domain AS t2 USING(domain_id)
-            WHERE t1.domain_id = :domain_id
-            AND t1.subdomain_status = :status_ok
+            WHERE t1.domain_id = ?
+            AND t1.subdomain_status = 'ok'
             UNION ALL
             SELECT alias_name, alias_id, 'als', alias_mount, url_forward
             FROM domain_aliasses
-            WHERE domain_id = :domain_id
-            AND alias_status = :status_ok
+            WHERE domain_id = ?
+            AND alias_status = 'ok'
             UNION ALL
-            SELECT CONCAT(t1.subdomain_alias_name, '.', t2.alias_name), t1.subdomain_alias_id, 'alssub',
-                t1.subdomain_alias_mount, t1.subdomain_alias_url_forward AS url_forward
+            SELECT CONCAT(t1.subdomain_alias_name, '.', t2.alias_name), t1.subdomain_alias_id, 'alssub', t1.subdomain_alias_mount,
+                t1.subdomain_alias_url_forward AS url_forward
             FROM subdomain_alias AS t1
             JOIN domain_aliasses AS t2 USING(alias_id)
-            WHERE t2.domain_id = :domain_id
-            AND t1.subdomain_alias_status = :status_ok
+            WHERE t2.domain_id = ?
+            AND t1.subdomain_alias_status = 'ok'
         ",
-        [
-            'domain_id' => $mainDmnProps['domain_id'],
-            'status_ok' => 'ok'
-        ]
+        [$mainDmnProps['domain_id'], $mainDmnProps['domain_id'], $mainDmnProps['domain_id']]
     );
 
     if ($stmt->rowCount()) {
@@ -94,25 +92,23 @@ function getDomainsList()
  */
 function generatePage($tpl)
 {
-    $forwardType = (
-        isset($_POST['forward_type'])
-        && in_array($_POST['forward_type'], ['301', '302', '303', '307', 'proxy'], true)
-    ) ? $_POST['forward_type'] : '302';
-    $forwardHost = ($forwardType == 'proxy' && isset($_POST['forward_host'])) ? 'On' : 'Off';
+    $forwardType = isset($_POST['forward_type']) && in_array($_POST['forward_type'], ['301', '302', '303', '307', 'proxy'], true)
+        ? $_POST['forward_type'] : '302';
+    $forwardHost = $forwardType == 'proxy' && isset($_POST['forward_host']) ? 'On' : 'Off';
 
     $tpl->assign([
-        'SUBDOMAIN_NAME'     => (isset($_POST['subdomain_name'])) ? tohtml($_POST['subdomain_name']) : '',
-        'FORWARD_URL_YES'    => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? ' checked' : '',
-        'FORWARD_URL_NO'     => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? '' : ' checked',
-        'HTTP_YES'           => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'http://') ? ' selected' : '',
-        'HTTPS_YES'          => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'https://') ? ' selected' : '',
-        'FORWARD_URL'        => (isset($_POST['forward_url'])) ? tohtml($_POST['forward_url']) : '',
-        'FORWARD_TYPE_301'   => ($forwardType == '301') ? ' checked' : '',
-        'FORWARD_TYPE_302'   => ($forwardType == '302') ? ' checked' : '',
-        'FORWARD_TYPE_303'   => ($forwardType == '303') ? ' checked' : '',
-        'FORWARD_TYPE_307'   => ($forwardType == '307') ? ' checked' : '',
-        'FORWARD_TYPE_PROXY' => ($forwardType == 'proxy') ? ' checked' : '',
-        'FORWARD_HOST'       => ($forwardHost == 'On') ? ' checked' : ''
+        'SUBDOMAIN_NAME'     => isset($_POST['subdomain_name']) ? tohtml($_POST['subdomain_name']) : '',
+        'FORWARD_URL_YES'    => isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes' ? ' checked' : '',
+        'FORWARD_URL_NO'     => isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes' ? '' : ' checked',
+        'HTTP_YES'           => isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'http://' ? ' selected' : '',
+        'HTTPS_YES'          => isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'https://' ? ' selected' : '',
+        'FORWARD_URL'        => isset($_POST['forward_url']) ? tohtml($_POST['forward_url']) : '',
+        'FORWARD_TYPE_301'   => $forwardType == '301' ? ' checked' : '',
+        'FORWARD_TYPE_302'   => $forwardType == '302' ? ' checked' : '',
+        'FORWARD_TYPE_303'   => $forwardType == '303' ? ' checked' : '',
+        'FORWARD_TYPE_307'   => $forwardType == '307' ? ' checked' : '',
+        'FORWARD_TYPE_PROXY' => $forwardType == 'proxy' ? ' checked' : '',
+        'FORWARD_HOST'       => $forwardHost == 'On' ? ' checked' : ''
     ]);
 
     $shareableMountpointCount = 0;
@@ -124,7 +120,7 @@ function generatePage($tpl)
         $tpl->assign([
             'DOMAIN_NAME'          => tohtml($domain['name']),
             'DOMAIN_NAME_UNICODE'  => tohtml(decode_idna($domain['name'])),
-            'DOMAIN_NAME_SELECTED' => (isset($_POST['domain_name']) && $_POST['domain_name'] == $domain['name']) ? ' selected' : '',
+            'DOMAIN_NAME_SELECTED' => isset($_POST['domain_name']) && $_POST['domain_name'] == $domain['name'] ? ' selected' : '',
         ]);
 
         if ($domain['type'] == 'dmn' || $domain['type'] == 'als') {
@@ -134,7 +130,7 @@ function generatePage($tpl)
         if ($domain['url_forward'] == 'no') {
             $tpl->assign(
                 'SHARED_MOUNT_POINT_DOMAIN_SELECTED',
-                (isset($_POST['shared_mount_point_domain']) && $_POST['shared_mount_point_domain'] == $domain['name']) ? ' selected' : ''
+                isset($_POST['shared_mount_point_domain']) && $_POST['shared_mount_point_domain'] == $domain['name'] ? ' selected' : ''
             );
             $tpl->parse('SHARED_MOUNT_POINT_DOMAIN', '.shared_mount_point_domain');
         }
@@ -145,8 +141,8 @@ function generatePage($tpl)
         $tpl->assign('SHARED_MOUNT_POINT_OPTION', '');
     } else {
         $tpl->assign([
-            'SHARED_MOUNT_POINT_YES' => (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes') ? ' checked' : '',
-            'SHARED_MOUNT_POINT_NO'  => (isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes') ? '' : ' checked'
+            'SHARED_MOUNT_POINT_YES' => isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes' ? ' checked' : '',
+            'SHARED_MOUNT_POINT_NO'  => isset($_POST['shared_mount_point']) && $_POST['shared_mount_point'] == 'yes' ? '' : ' checked'
         ]);
     }
 }
@@ -202,11 +198,13 @@ function addSubdomain()
     }
 
     // Ensure that this subdomain doesn't already exists as domain or domain alias
-    $stmt = exec_query('
-        SELECT domain_id FROM domain WHERE domain_name = :subdomain_name
-        UNION ALL
-        SELECT alias_id FROM domain_aliasses WHERE alias_name = :subdomain_name',
-        ['subdomain_name' => $subdomainName]
+    $stmt = exec_query(
+        '
+            SELECT domain_id FROM domain WHERE domain_name = ?
+            UNION ALL
+            SELECT alias_id FROM domain_aliasses WHERE alias_name = ?
+        ',
+        [$subdomainName, $subdomainName]
     );
     if ($stmt->rowCount()) {
         set_page_message(tr('Subdomain %s is unavailable.', "<strong>$subdomainName</strong>"), 'error');
@@ -226,17 +224,9 @@ function addSubdomain()
 
     // Set default mount point
     if ($domainType == 'dmn') {
-        if (in_array($subLabelAscii, ['backups', 'cgi-bin', 'errors', 'logs', 'phptmp'])) {
-            $mountPoint = "/sub_$subLabelAscii";
-        } else {
-            $mountPoint = "/$subLabelAscii";
-        }
+        $mountPoint = in_array($subLabelAscii, ['backups', 'cgi-bin', 'errors', 'logs', 'phptmp'], true) ? "/sub_$subLabelAscii" : "/$subLabelAscii";
     } else {
-        if ($subLabelAscii === 'cgi-bin') {
-            $mountPoint = "/$domainName/sub_$subLabelAscii";
-        } else {
-            $mountPoint = "/$domainName/$subLabelAscii";
-        }
+        $mountPoint = $subLabelAscii == 'cgi-bin' ? "/$domainName/sub_$subLabelAscii" : "/$domainName/$subLabelAscii";
     }
 
     // Check for shared mount point option
@@ -254,7 +244,6 @@ function addSubdomain()
             }
         }
     }
-
 
     // Default values
     $documentRoot = '/htdocs';
@@ -289,9 +278,7 @@ function addSubdomain()
             $uri->setHost(encode_idna(mb_strtolower($uri->getHost()))); // Normalize URI host
             $uri->setPath(rtrim(utils_normalizePath($uri->getPath()), '/') . '/'); // Normalize URI path
 
-            if ($uri->getHost() == $subdomainNameAscii
-                && ($uri->getPath() == '/' && in_array($uri->getPort(), ['', 80, 443]))
-            ) {
+            if ($uri->getHost() == $subdomainNameAscii && ($uri->getPath() == '/' && in_array($uri->getPort(), ['', 80, 443]))) {
                 throw new iMSCP_Exception(
                     tr('Forward URL %s is not valid.', "<strong>$forwardUrl</strong>") . ' ' .
                     tr('Subdomain %s cannot be forwarded on itself.', "<strong>$subdomainName</strong>")
@@ -351,18 +338,28 @@ function addSubdomain()
             ";
         }
 
-        exec_query($query, [
-            $domainId, $subLabelAscii, $mountPoint, $documentRoot, $forwardUrl, $forwardType, $forwardHost
-        ]);
+        exec_query($query, [$domainId, $subLabelAscii, $mountPoint, $documentRoot, $forwardUrl, $forwardType, $forwardHost]);
 
         $subdomainId = $db->lastInsertId();
 
         // Create the phpini entry for that subdomain
-        $phpini = iMSCP_PHPini::getInstance();
-        $phpini->loadResellerPermissions($_SESSION['user_created_by']); // Load reseller PHP permissions
-        $phpini->loadClientPermissions($_SESSION['user_id']); // Load client PHP permissions
-        $phpini->loadDomainIni($_SESSION['user_id'], $mainDmnProps['domain_id'], 'dmn'); // Load main domain PHP configuration options
-        $phpini->saveDomainIni($_SESSION['user_id'], $subdomainId, $domainType == 'dmn' ? 'sub' : 'subals');
+        $phpini = PHPini::getInstance();
+        $phpini->loadResellerPermissions($_SESSION['user_created_by']);
+        $phpini->loadClientPermissions($_SESSION['user_id']);
+
+        if ($phpini->getClientPermission('phpiniConfigLevel') != 'per_site') {
+            // Set INI options, based on parent domain
+            if ($domainType == 'dmn') {
+                $phpini->loadIniOptions($_SESSION['user_id'], $mainDmnProps['domain_id'], 'dmn');
+            } else {
+                $phpini->loadIniOptions($_SESSION['user_id'], $domainId, 'als');
+            }
+        } else {
+            // Set default INI options
+            $phpini->loadIniOptions();
+        }
+
+        $phpini->saveIniOptions($_SESSION['user_id'], $subdomainId, $domainType == 'dmn' ? 'sub' : 'subals');
 
         $cfg = Registry::get('config');
 
@@ -371,7 +368,7 @@ function addSubdomain()
                 $mainDmnProps['domain_id'],
                 iMSCP_Authentication::getInstance()->getIdentity()->email,
                 $subdomainNameAscii,
-                ($domainType == 'dmn') ? MT_SUBDOM_FORWARD : MT_ALSSUB_FORWARD, $subdomainId
+                $domainType == 'dmn' ? MT_SUBDOM_FORWARD : MT_ALSSUB_FORWARD, $subdomainId
             );
         }
 
@@ -434,27 +431,27 @@ $tpl->define([
     'shared_mount_point_domain'    => 'shared_mount_point_option'
 ]);
 $tpl->assign([
-    'TR_PAGE_TITLE'                 => tr('Client / Domains / Add Subdomain'),
-    'TR_SUBDOMAIN'                  => tr('Subdomain'),
-    'TR_SUBDOMAIN_NAME'             => tr('Subdomain name'),
-    'TR_SHARED_MOUNT_POINT'         => tr('Shared mount point'),
-    'TR_SHARED_MOUNT_POINT_TOOLTIP' => tr('Allows to share the mount point of another domain.'),
-    'TR_URL_FORWARDING'             => tr('URL forwarding'),
-    'TR_URL_FORWARDING_TOOLTIP'     => tr('Allows to forward any request made to this domain to a specific URL.'),
-    'TR_FORWARD_TO_URL'             => tr('Forward to URL'),
-    'TR_YES'                        => tr('Yes'),
-    'TR_NO'                         => tr('No'),
+    'TR_PAGE_TITLE'                 => tohtml(tr('Client / Domains / Add Subdomain')),
+    'TR_SUBDOMAIN'                  => tohtml(tr('Subdomain')),
+    'TR_SUBDOMAIN_NAME'             => tohtml(tr('Subdomain name')),
+    'TR_SHARED_MOUNT_POINT'         => tohtml(tr('Shared mount point')),
+    'TR_SHARED_MOUNT_POINT_TOOLTIP' => tohtml(tr('Allows to share the mount point of another domain.')),
+    'TR_URL_FORWARDING'             => tohtml(tr('URL forwarding')),
+    'TR_URL_FORWARDING_TOOLTIP'     => tohtml(tr('Allows to forward any request made to this domain to a specific URL.')),
+    'TR_FORWARD_TO_URL'             => tohtml(tr('Forward to URL')),
+    'TR_YES'                        => tohtml(tr('Yes')),
+    'TR_NO'                         => tohtml(tr('No')),
     'TR_HTTP'                       => 'http://',
     'TR_HTTPS'                      => 'https://',
-    'TR_FORWARD_TYPE'               => tr('Forward type'),
+    'TR_FORWARD_TYPE'               => tohtml(tr('Forward type')),
     'TR_301'                        => '301',
     'TR_302'                        => '302',
     'TR_303'                        => '303',
     'TR_307'                        => '307',
     'TR_PROXY'                      => 'PROXY',
-    'TR_PROXY_PRESERVE_HOST'        => tr('Preserve Host'),
-    'TR_ADD'                        => tr('Add'),
-    'TR_CANCEL'                     => tr('Cancel')
+    'TR_PROXY_PRESERVE_HOST'        => tohtml(tr('Preserve Host')),
+    'TR_ADD'                        => tohtml(tr('Add'), 'htmlAttr'),
+    'TR_CANCEL'                     => tohtml(tr('Cancel'))
 ]);
 
 generateNavigation($tpl);

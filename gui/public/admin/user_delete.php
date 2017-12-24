@@ -46,13 +46,9 @@ function admin_deleteUser($userId)
     /** @var iMSCP_Database $db */
     $db = Registry::get('iMSCP_Application')->getDatabase();
 
-    $stmt = exec_query(
-        '
-            SELECT a.admin_type, b.logo FROM admin a LEFT JOIN user_gui_props b ON (b.user_id = a.admin_id)
-            WHERE admin_id = ?
-        ',
-        [$userId]
-    );
+    $stmt = exec_query('SELECT a.admin_type, b.logo FROM admin a LEFT JOIN user_gui_props b ON (b.user_id = a.admin_id) WHERE admin_id = ?', [
+        $userId
+    ]);
     $row = $stmt->fetch();
     $userType = $row['admin_type'];
 
@@ -68,8 +64,6 @@ function admin_deleteUser($userId)
         'user_gui_props' => 'user_id = ?'
     ];
 
-    // Note: Admin can also have they own hosting_plans bug must not be considered
-    // as common item since first admin must be never removed
     if ($userType == 'reseller') {
         // Getting reseller's software packages to remove if any
         $stmt = exec_query('SELECT software_id, software_archive FROM web_software WHERE reseller_id = ?', [$userId]);
@@ -115,10 +109,7 @@ function admin_deleteUser($userId)
         // Deleting reseller software installer local repository
         if (isset($swPackages) && !empty($swPackages)) {
             _admin_deleteResellerSwPackages($userId, $swPackages);
-        } elseif ($userType == 'reseller'
-            && is_dir($cfg['GUI_APS_DIR'] . '/' . $userId)
-            && @rmdir($cfg['GUI_APS_DIR'] . '/' . $userId) == false
-        ) {
+        } elseif ($userType == 'reseller' && is_dir($cfg['GUI_APS_DIR'] . '/' . $userId) && @rmdir($cfg['GUI_APS_DIR'] . '/' . $userId) == false) {
             write_log(sprintf('Could not remove reseller software directory: %s', $cfg['GUI_APS_DIR'] . '/' . $userId), E_USER_ERROR);
         }
 
@@ -177,10 +168,7 @@ function _admin_deleteResellerSwPackages($userId, array $swPackages)
 function admin_validateUserDeletion($userId)
 {
     $stmt = exec_query('SELECT admin_type, created_by FROM admin WHERE admin_id = ?', [$userId]);
-    if (!$stmt->rowCount()) {
-        showBadRequestErrorPage(); # No user found; assume a bad request
-    }
-
+    $stmt->rowCount() or showBadRequestErrorPage(); # No user found; assume a bad request
     $row = $stmt->fetch();
 
     if ($row['created_by'] == 0) {
@@ -231,22 +219,17 @@ if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) { # admin/reseller 
         set_page_message(tr('Customer account successfully scheduled for deletion.'), 'success');
         write_log(sprintf('%s scheduled deletion of the customer account with ID %d', $_SESSION['user_logged'], $userId), E_USER_NOTICE);
     } catch (iMSCP_Exception $e) {
-        if (($previous = $e->getPrevious())
-            && $previous instanceof iMSCP_Exception_Database
-        ) {
-            $queryMessagePart = ' Query was: ' . $previous->getQuery();
+        if (($previous = $e->getPrevious()) && $previous instanceof iMSCP_Exception_Database) {
+            $queryMsgPart = ' Query was: ' . $previous->getQuery();
         } elseif ($e instanceof iMSCP_Exception_Database) {
-            $queryMessagePart = ' Query was: ' . $e->getQuery();
+            $queryMsgPart = ' Query was: ' . $e->getQuery();
         } else {
-            $queryMessagePart = '';
+            $queryMsgPart = '';
         }
 
         set_page_message(tr('Unable to schedule deletion of the customer account. Please consult admin logs or your mail for more information.'), 'error');
         write_log(
-            sprintf(
-                "System was unable to schedule deletion of customer account with ID %s. Message was: %s.",
-                $userId, $e->getMessage() . $queryMessagePart
-            ),
+            sprintf("System was unable to schedule deletion of customer account with ID %s. Message was: %s.", $userId, $e->getMessage() . $queryMsgPart),
             E_USER_ERROR
         );
     }

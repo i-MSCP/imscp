@@ -18,8 +18,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Events as Events;
+use iMSCP\PHPini;
 use iMSCP\TemplateEngine;
+use iMSCP_Events as Events;
 use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
@@ -121,12 +122,10 @@ function moveCustomer($customerId, $fromResellerId, $toResellerId)
         }
 
         // Adjust customer PHP permissions
-        iMSCP_PHPini::getInstance()->syncClientPermissionsWithResellerPermissions($toResellerId, $customerId);
+        PhpIni::getInstance()->syncClientPermissionsAndIniOptions($toResellerId, $customerId);
 
         // Customer IP must be in reseller IP addresses list
-        $toRprops['reseller_ips'] = implode(
-            ';', array_unique(explode(';', $toRprops['reseller_ips'] . $cProps['domain_ip_id'] . ';'))
-        );
+        $toRprops['reseller_ips'] = implode(';', array_unique(explode(';', $toRprops['reseller_ips'] . $cProps['domain_ip_id'] . ';')));
 
         // Move customer to (TO) reseller
         exec_query('UPDATE admin SET created_by = ? WHERE admin_id = ?', [$toResellerId, $customerId]);
@@ -166,9 +165,7 @@ function moveCustomer($customerId, $fromResellerId, $toResellerId)
     } catch (Exception $e) {
         $db->rollBack();
         write_log(sprintf("Couldn't move customer with ID %d: %s", $customerId, $e->getMessage()));
-        throw new Exception(
-            tr("Couldn't move customer with ID %d: %s", $customerId, $e->getMessage()), $e->getCode(), $e
-        );
+        throw new Exception(tr("Couldn't move customer with ID %d: %s", $customerId, $e->getMessage()), $e->getCode(), $e);
     }
 }
 
@@ -217,9 +214,7 @@ function moveCustomers()
  */
 function generatePage(TemplateEngine $tpl)
 {
-    $resellers = $stmt = execute_query(
-        "SELECT admin_id, admin_name FROM admin WHERE admin_type = 'reseller'"
-    )->fetchAll();
+    $resellers = $stmt = execute_query("SELECT admin_id, admin_name FROM admin WHERE admin_type = 'reseller'")->fetchAll();
     $fromResellerId = isset($_POST['from_reseller']) ? intval($_POST['from_reseller']) : $resellers[0]['admin_id'];
     $toResellerId = isset($_POST['to_reseller']) ? intval($_POST['to_reseller']) : $resellers[1]['admin_id'];
 
@@ -228,27 +223,20 @@ function generatePage(TemplateEngine $tpl)
         $tpl->assign([
             'FROM_RESELLER_ID'       => tohtml($reseller['admin_id'], 'htmlAttr'),
             'FROM_RESELLER_NAME'     => tohtml($reseller['admin_name']),
-            'FROM_RESELLER_SELECTED' => ($fromResellerId == $reseller['admin_id']) ? ' selected' : ''
+            'FROM_RESELLER_SELECTED' => $fromResellerId == $reseller['admin_id'] ? ' selected' : ''
         ]);
         $tpl->parse('FROM_RESELLER_ITEM', '.from_reseller_item');
         $tpl->assign([
             'TO_RESELLER_ID'       => tohtml($reseller['admin_id'], 'htmlAttr'),
             'TO_RESELLER_NAME'     => tohtml($reseller['admin_name']),
-            'TO_RESELLER_SELECTED' => ($toResellerId == $reseller['admin_id']) ? ' selected' : ''
+            'TO_RESELLER_SELECTED' => $toResellerId == $reseller['admin_id'] ? ' selected' : ''
         ]);
         $tpl->parse('TO_RESELLER_ITEM', '.to_reseller_item');
     }
 
     // Generate customers list for the selected (FROM) reseller
     $customers = exec_query(
-        "
-            SELECT admin_id, admin_name
-            FROM admin
-            WHERE created_by = ?
-            AND admin_type = 'user'
-            AND admin_status <> 'todelete'
-        ",
-        [$fromResellerId]
+        "SELECT admin_id, admin_name FROM admin WHERE created_by = ? AND admin_type = 'user' AND admin_status <> 'todelete'", [$fromResellerId]
     )->fetchAll();
 
     if (empty($customers)) {
@@ -278,10 +266,7 @@ check_login('admin');
 Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onAdminScriptStart);
 systemHasResellers(2) or showBadRequestErrorPage();
 
-if (isset($_POST['uaction'])
-    && $_POST['uaction'] == 'move_customers'
-    && moveCustomers()
-) {
+if (isset($_POST['uaction']) && $_POST['uaction'] == 'move_customers' && moveCustomers()) {
     set_page_message(tr('Customer(s) successfully moved.'), 'success');
     redirectTo('users.php');
 }
