@@ -154,12 +154,12 @@
                             <td>
                                 <div class="radio">
                                     <!-- BDP: phpini_perm_config_level_per_site_block -->
-                                    <input type="radio" name="phpini_perm_config_level" id="phpini_perm_config_level_per_site" value="per_site"{PHP_INI_CONFIG_LEVEL_PER_SITE}>
+                                    <input type="radio" name="phpini_perm_config_level" id="phpini_perm_config_level_per_site" value="per_site"{PHPINI_PERM_CONFIG_LEVEL_PER_SITE}>
                                     <label for="phpini_perm_config_level_per_site">{TR_PER_SITE}</label>
                                     <!-- EDP: phpini_perm_config_level_per_site_block -->
-                                    <input type="radio" name="phpini_perm_config_level" id="phpini_perm_config_level_per_domain" value="per_domain"{PHP_INI_CONFIG_LEVEL_PER_DOMAIN}>
+                                    <input type="radio" name="phpini_perm_config_level" id="phpini_perm_config_level_per_domain" value="per_domain"{PHPINI_PERM_CONFIG_LEVEL_PER_DOMAIN}>
                                     <label for="phpini_perm_config_level_per_domain">{TR_PER_DOMAIN}</label>
-                                    <input type="radio" name="phpini_perm_config_level" id="phpini_perm_config_level_per_user" value="per_user"{PHP_INI_CONFIG_LEVEL_PER_USER}>
+                                    <input type="radio" name="phpini_perm_config_level" id="phpini_perm_config_level_per_user" value="per_user"{PHPINI_PERM_CONFIG_LEVEL_PER_USER}>
                                     <label for="phpini_perm_config_level_per_user">{TR_PER_USER}</label>
                                 </div>
                             </td>
