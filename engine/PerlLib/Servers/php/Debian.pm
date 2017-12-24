@@ -439,8 +439,33 @@ sub addDomain
     if ( $self->{'config'}->{'PHP_SAPI'} eq 'apache2handler' ) {
         $rs = $self->_buildApache2HandlerConfig( $moduleData );
     } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+        if ( $moduleData->{'DOMAIN_NAME'} ne $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'} ) {
+            eval { iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove(); };
+            if ( $@ ) {
+                error( $@ );
+                return 1;
+            }
+        }
+
         $rs = $self->_buildCgiConfig( $moduleData );
     } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+        if ( $moduleData->{'DOMAIN_NAME'} ne $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'} ) {
+            $rs = eval {
+                for ( iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
+                    next unless /^[\d.]+$/ && -f "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf";
+
+                    $rs = iMSCP::File->new( filename => "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf" )->delFile();
+                    return $rs if $rs;
+
+                    $self->{'reload'}->{$_} ||= 1;
+                }
+            };
+            if ( $@ ) {
+                error( $@ );
+                return 1;
+            }
+        }
+
         $rs = $self->_buildFpmConfig( $moduleData );
     } else {
         error( 'Unknown PHP SAPI' );
@@ -534,8 +559,33 @@ sub addSubdomain
     if ( $self->{'config'}->{'PHP_SAPI'} eq 'apache2handler' ) {
         $rs = $self->_buildApache2HandlerConfig( $moduleData );
     } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+        if ( $moduleData->{'DOMAIN_NAME'} ne $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'} ) {
+            eval { iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove(); };
+            if ( $@ ) {
+                error( $@ );
+                return 1;
+            }
+        }
+
         $rs = $self->_buildCgiConfig( $moduleData );
     } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+        if ( $moduleData->{'DOMAIN_NAME'} ne $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'} ) {
+            eval {
+                for ( iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
+                    next unless /^[\d.]+$/ && -f "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf";
+
+                    $rs = iMSCP::File->new( filename => "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf" )->delFile();
+                    return $rs if $rs;
+
+                    $self->{'reload'}->{$_} ||= 1;
+                }
+            };
+            if ( $@ ) {
+                error( $@ );
+                return 1;
+            }
+        }
+
         $rs = $self->_buildFpmConfig( $moduleData );
     } else {
         error( 'Unknown PHP SAPI' );
@@ -777,7 +827,11 @@ sub _init
 
     # Define properties that are expected by parent class
     @{$self}{qw/ PEAR_DIR PHP_FPM_POOL_DIR PHP_FPM_RUN_DIR /} = (
-        '/usr/share/php', lazy { "/etc/php/$self->{'config'}->{'PHP_VERSION'}/fpm/pool.d" }, '/run/php'
+        '/usr/share/php',
+        # We are deferring evaluation because the PHP version can be
+        # overriden by 3rd-party components.
+        ( defer { "/etc/php/$self->{'config'}->{'PHP_VERSION'}/fpm/pool.d" } ),
+        '/run/php'
     );
 
     $self->SUPER::_init();
@@ -854,13 +908,22 @@ END
 
         my $instance = __PACKAGE__->hasInstance();
 
-        return 0 unless $instance && $instance->{'config'}->{'PHP_SAPI'} eq 'fpm' && (
-            my $action = $instance->{'restart'} ? 'restart' : ( $instance->{'reload'} ? 'reload' : ( $instance->{'start'} ? ' start' : undef ) )
-        );
+        return 0 unless $instance && $instance->{'config'}->{'PHP_SAPI'} eq 'fpm';
 
-        iMSCP::Service->getInstance()->registerDelayedAction(
-            "php$instance->{'config'}->{'PHP_VERSION'}-fpm", [ $action, sub { $instance->$action(); } ], Servers::php::getPriority()
-        );
+        my $serviceMngr = iMSCP::Service->getInstance();
+
+        for my $action( qw/ start reload restart / ) {
+            for my $phpVersion( keys %{$instance->{$action}} ) {
+                # Check for actions precedence. The 'reload' and restart actions have higher precedence than the 'start' action
+                next if $action eq 'start' && ( $instance->{'reload'}->{$phpVersion} || $instance->{'restart'}->{$phpVersion} );
+                # Check for actions precedence. The 'restart' action has higher precedence than the 'reload' action
+                next if $action eq 'reload' && $instance->{'restart'}->{$phpVersion};
+                # Do not act if the PHP version is not enabled
+                next unless $serviceMngr->isEnabled( "php$phpVersion-fpm" );
+
+                $serviceMngr->registerDelayedAction( "php$phpVersion-fpm", [ $action, sub { $instance->$action(); } ], Servers::php::getPriority());
+            }
+        }
     }
 
 =back

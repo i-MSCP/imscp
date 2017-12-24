@@ -268,8 +268,6 @@ sub buildConfFile
         return $rs if $rs;
     }
 
-    # On configuration file change, schedule server reload
-    $self->{'reload'} ||= 1;
     0;
 }
 
@@ -410,7 +408,7 @@ sub _init
     # Check for properties that must be defined in concret implementation package
     defined $self->{$_ } or die( sprintf( 'The %s package must define the %s property', ref $self )) for qw/ PHP_FPM_POOL_DIR PEAR_DIR /;
 
-    @{$self}{qw/ start restart reload _templates /} = ( 0, 0, 0, {} );
+    @{$self}{qw/ start restart reload _templates /} = ( {}, {}, {}, {} );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/php";
     $self->_mergeConfig() if defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/php.data.dist";
     tie %{$self->{'config'}},
@@ -598,16 +596,19 @@ sub _buildFpmConfig
         $rs = $self->buildConfFile(
             'fpm/pool.conf', "$self->{'PHP_FPM_POOL_DIR'}/$moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}.conf", $moduleData, $serverData, { cached => 1 }
         );
-    } elsif ( ( $moduleData->{'PHP_SUPPORT'} ne 'yes'
-        || ( $moduleData eq 'per_user' && $moduleData->{'DOMAIN_TYPE'} ne 'dmn' )
-        || ( $moduleData eq 'per_domain' && $moduleData->{'DOMAIN_TYPE'} !~ /^(?:dmn|als)$/ )
-        || ( $moduleData eq 'per_site' ) ) && -f "$self->{'PHP_FPM_POOL_DIR'}/$moduleData->{'DOMAIN_NAME'}.conf"
+        return $rs if $rs;
+
+        $self->{'reload'}->{$serverData->{'PHP_VERSION'}} ||= 1;
+    } elsif ( $moduleData->{'DOMAIN_NAME'} ne $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}
+        && -f "$self->{'PHP_FPM_POOL_DIR'}/$moduleData->{'DOMAIN_NAME'}.conf"
     ) {
         $rs = iMSCP::File->new( filename => "$self->{'PHP_FPM_POOL_DIR'}/$moduleData->{'DOMAIN_NAME'}.conf" )->delFile();
-        $self->{'reload'} ||= 1;
+        return $rs if $rs;
+
+        $self->{'reload'}->{$self->{'config'}->{'PHP_VERSION'}} ||= 1;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpFpmSapiBuildConf', $moduleData );
+    $rs = $self->{'eventManager'}->trigger( 'afterPhpFpmSapiBuildConf', $moduleData );
 }
 
 =item _cleanup( )
