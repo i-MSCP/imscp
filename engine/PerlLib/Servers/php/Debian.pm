@@ -851,7 +851,7 @@ sub _deleteFpmPoolFiles
         next unless /^[\d.]+$/ && -f "/etc/php/$phpVersion/fpm/pool.d/$domain.conf";
 
         iMSCP::File->new( filename => "/etc/php/$phpVersion/fpm/pool.d/$domain.conf" )->delFile() == 0 or die(
-            getMessageByType( 'error', { amount => 1, remove => 1 } )
+            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unkown error'
         );
 
         if ( $self->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'tcp' && ( !defined $main::execmode || $main::execmode ne 'setup' ) ) {

@@ -117,7 +117,6 @@ sub uninstall
     my ($self) = @_;
 
     my $rs ||= $self->_removeVloggerSqlUser();
-    $rs ||= $self->_removeDirs();
     $rs ||= $self->restart();
 }
 
@@ -1525,26 +1524,6 @@ sub _removeVloggerSqlUser
     }
 
     Servers::sqld->factory()->dropUser( 'vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'} );
-}
-
-=item _removeDirs( )
-
- Remove non-default Apache2 directories
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _removeDirs
-{
-    my ($self) = @_;
-
-    eval { iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove(); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-    0;
 }
 
 =back

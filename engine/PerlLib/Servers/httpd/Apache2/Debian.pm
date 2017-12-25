@@ -102,7 +102,8 @@ sub uninstall
 {
     my ($self) = @_;
 
-    my $rs = $self->_restoreDefaultConfig();
+    my $rs = $self->_removeDirs();
+    $rs ||= $self->_restoreDefaultConfig();
     $rs ||= $self->SUPER::uninstall();
 }
 
@@ -528,6 +529,27 @@ sub _cleanup
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     $rs;
+}
+
+=item _removeDirs( )
+
+ Remove non-default Apache2 directories
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _removeDirs
+{
+    my ($self) = @_;
+
+    eval { iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove(); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    0;
 }
 
 =item _restoreDefaultConfig( )
