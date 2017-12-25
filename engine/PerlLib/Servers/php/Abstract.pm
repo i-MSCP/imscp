@@ -770,7 +770,7 @@ EOF
             replaceBlocByRef( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", <<"EOF", $cfgTpl );
     # SECTION addons BEGIN.
 @{[ getBlocByRef( "# SECTION addons BEGIN.\n", "# SECTION addons END.\n", $cfgTpl ) ]}
-    FcgiBusyTimeout {PHP_FCGID_BUSY_TIMEOUT}
+    FcgidBusyTimeout {PHP_FCGID_BUSY_TIMEOUT}
     FcgidMinProcessesPerClass {PHP_FCGID_MIN_PROCESSES_PER_CLASS}
     FcgidMaxProcessesPerClass {PHP_FCGID_MAX_PROCESS_PER_CLASS}
     # SECTION addons END.

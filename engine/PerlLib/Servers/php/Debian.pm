@@ -201,7 +201,7 @@ sub preinstall
                 # Stop PHP-FPM instance
                 $self->stop( $_ ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
 
-                # Disable PHP-FPM service if selected SAPI for customer is not FPM or if PHP version
+                # Disable PHP-FPM service if selected SAPI for customer is not fpm or if PHP version
                 # is other than selected PHP alternative
                 $serviceMngr->disable( "php$_-fpm" ) if $self->{'config'}->{'PHP_SAPI'} ne 'fpm' || $self->{'config'}->{'PHP_VERSION'} ne $_;
             }
@@ -268,7 +268,7 @@ sub install
             TIMEZONE                            => $main::imscpConfig{'TIMEZONE'} || 'UTC'
         };
 
-        # We configure all PHP alternatives
+        # Configure all PHP alternatives
         for ( sort iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
             next unless /^[\d.]+$/;
 
