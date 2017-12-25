@@ -1,5 +1,5 @@
 # i-MSCP Listener::Dovecot::Connections listener file
-# Copyright (C) 2017 Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2017-2018 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2015-2017 Rene Schuster <mail@reneschuster.de>
 #
 # This library is free software; you can redistribute it and/or

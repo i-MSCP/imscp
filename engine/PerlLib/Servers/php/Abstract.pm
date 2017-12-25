@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -152,7 +152,7 @@ sub disableDomain
 {
     my ($self) = @_;
 
-    die( sprintf( 'The %s package must implement the addDomain() method', ref $self ));
+    die( sprintf( 'The %s package must implement the disableDomain() method', ref $self ));
 }
 
 =item deleteDomain( \%moduleData )
@@ -172,7 +172,7 @@ sub deleteDomain
 {
     my ($self) = @_;
 
-    die( sprintf( 'The %s package must implement the addDomain() method', ref $self ));
+    die( sprintf( 'The %s package must implement the deleteDomain() method', ref $self ));
 }
 
 =item addSubdomain( \%moduleData )
@@ -192,7 +192,7 @@ sub addSubdomain
 {
     my ($self) = @_;
 
-    die( sprintf( 'The %s package must implement the addDomain() method', ref $self ));
+    die( sprintf( 'The %s package must implement the addSubdomain() method', ref $self ));
 }
 
 =item disableSubdomain( \%moduleData )
@@ -232,7 +232,7 @@ sub deleteSubdomain
 {
     my ($self) = @_;
 
-    die( sprintf( 'The %s package must implement the addDomain() method', ref $self ));
+    die( sprintf( 'The %s package must implement the deleteSubdomain() method', ref $self ));
 }
 
 =item buildConfFile( $srcFile, $trgFile, [, \%moduleData = { } [, \%serverData [, \%parameters = { } ] ] ] )
@@ -635,7 +635,7 @@ sub _buildFpmConfig
 
 =item _setVersion()
 
- Set version data for selected PHP alternative
+ Set version for selected PHP alternative
 
  return void, die on failure
 

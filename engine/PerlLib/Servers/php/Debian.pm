@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -874,6 +874,8 @@ sub _cleanup
 {
     my ($self) = @_;
 
+    $self->SUPER::_cleanup();
+
     if ( -f "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm" ) {
         iMSCP::File->new( filename => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm" )->delFile() == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
@@ -895,8 +897,6 @@ sub _cleanup
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
         );
     }
-
-    $self->SUPER::_cleanup();
 }
 
 =back

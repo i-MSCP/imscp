@@ -1,5 +1,5 @@
 # i-MSCP Listener::Named::Slave::Provisioning listener file
-# Copyright (C) 2016-2017 Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2016-2018 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2015 UncleJ, Arthur Mayer <mayer.arthur@gmail.com>
 #
 # This library is free software; you can redistribute it and/or

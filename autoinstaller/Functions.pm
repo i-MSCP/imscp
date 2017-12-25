@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright 2010-2017 by internet Multi Server Control Panel
+# Copyright 2010-2018 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -355,7 +355,7 @@ i-MSCP was designed for professional Hosting Service Providers (HSPs), Internet 
 
 Unless otherwise stated all code is licensed under GPL 2.0 and has the following copyright:
 
-\\ZbCopyright 2010-2017, Laurent Declercq (i-MSCP)
+\\ZbCopyright 2010-2018, Laurent Declercq (i-MSCP)
 All rights reserved\\ZB
 EOF
 }
