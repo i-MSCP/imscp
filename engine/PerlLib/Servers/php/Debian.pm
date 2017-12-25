@@ -426,43 +426,53 @@ sub addDomain
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpAddDomain', $moduleData );
     return $rs if $rs;
 
-    if ( $self->{'config'}->{'PHP_SAPI'} eq 'apache2handler' ) {
-        $rs = $self->_buildApache2HandlerConfig( $moduleData );
-    } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
-        if ( $moduleData->{'DOMAIN_NAME'} ne $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'} ) {
-            eval { iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove(); };
-            if ( $@ ) {
-                error( $@ );
-                return 1;
-            }
+    eval {
+        if ( $self->{'config'}->{'PHP_SAPI'} eq 'apache2handler'
+            && $moduleData->{'FORWARD'} eq 'no'
+            && $moduleData->{'PHP_SUPPORT'} eq 'yes'
+        ) {
+            $self->_buildApache2HandlerConfig( $moduleData );
+            return;
         }
 
-        $rs = $self->_buildCgiConfig( $moduleData );
-    } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
-        if ( $moduleData->{'DOMAIN_NAME'} ne $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'} ) {
-            $rs = eval {
-                for ( iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
-                    next unless /^[\d.]+$/ && -f "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf";
-
-                    $rs = iMSCP::File->new( filename => "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf" )->delFile();
-                    return $rs if $rs;
-
-                    $self->{'reload'}->{$_} ||= 1;
-                }
-            };
-            if ( $@ ) {
-                error( $@ );
-                return 1;
+        if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+            if ( $moduleData->{'DOMAIN_NAME'} ne $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}
+                || $moduleData->{'FORWARD'} eq 'yes'
+                || $moduleData->{'PHP_SUPPORT'} eq 'no'
+            ) {
+                iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove();
             }
+
+            if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
+                $self->_buildCgiConfig( $moduleData );
+            }
+
+            return;
         }
 
-        $rs = $self->_buildFpmConfig( $moduleData );
-    } else {
-        error( 'Unknown PHP SAPI' );
-        $rs = 1;
+        if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+            if ( $moduleData->{'DOMAIN_NAME'} ne $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}
+                || $moduleData->{'FORWARD'} eq 'yes'
+                || $moduleData->{'PHP_SUPPORT'} eq 'no'
+            ) {
+                $self->_deleteFpmPoolFiles( $moduleData->{'DOMAIN_NAME'} );
+            }
+
+            if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
+                $self->_buildFpmConfig( $moduleData );
+            }
+
+            return;
+        }
+
+        die( 'Unknown PHP SAPI' );
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpAddDomain', $moduleData );
+    $self->{'eventManager'}->trigger( 'afterPhpAddDomain', $moduleData );
 }
 
 =item disableDomain( \%moduleData )
@@ -476,27 +486,24 @@ sub disableDomain
     my ($self, $moduleData) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpdDisableDomain', $moduleData );
-    $rs ||= eval {
+    return $rs if $rs;
+
+    eval {
         if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
             iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove();
-        } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
-            for ( iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
-                next unless /^[\d.]+$/ && -f "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf";
-
-                $rs = iMSCP::File->new( filename => "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf" )->delFile();
-                return $rs if $rs;
-
-                $self->{'reload'}->{$_} ||= 1;
-            }
+            return;
         }
 
-        0;
+        if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+            $self->_deleteFpmPoolFiles( $moduleData->{'DOMAIN_NAME'} );
+        }
     };
     if ( $@ ) {
         error( $@ );
         return 1;
     }
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpDisableDomain', $moduleData );
+
+    $self->{'eventManager'}->trigger( 'afterPhpDisableDomain', $moduleData );
 }
 
 =item deleteDomain( \%moduleData )
@@ -510,27 +517,24 @@ sub deleteDomain
     my ($self, $moduleData) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpDeleteDomain', $moduleData );
-    $rs ||= eval {
+    return $rs if $rs;
+
+    eval {
         if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
             iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove();
-        } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
-            for ( iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
-                next unless /^[\d.]+$/ && -f "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf";
-
-                $rs = iMSCP::File->new( filename => "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf" )->delFile();
-                return $rs if $rs;
-
-                $self->{'reload'}->{$_} ||= 1;
-            }
+            return;
         }
 
-        0;
+        if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+            $self->_deleteFpmPoolFiles( $moduleData->{'DOMAIN_NAME'} );
+        }
     };
     if ( $@ ) {
         error( $@ );
         return 1;
     }
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpdDeleteDomain', $moduleData );
+
+    $self->{'eventManager'}->trigger( 'afterPhpdDeleteDomain', $moduleData );
 }
 
 =item addSubdomain( \%moduleData )
@@ -546,43 +550,53 @@ sub addSubdomain
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpAddSubdomain', $moduleData );
     return $rs if $rs;
 
-    if ( $self->{'config'}->{'PHP_SAPI'} eq 'apache2handler' ) {
-        $rs = $self->_buildApache2HandlerConfig( $moduleData );
-    } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
-        if ( $moduleData->{'DOMAIN_NAME'} ne $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'} ) {
-            eval { iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove(); };
-            if ( $@ ) {
-                error( $@ );
-                return 1;
-            }
+    eval {
+        if ( $self->{'config'}->{'PHP_SAPI'} eq 'apache2handler'
+            && $moduleData->{'FORWARD'} eq 'no'
+            && $moduleData->{'PHP_SUPPORT'} eq 'yes'
+        ) {
+            $self->_buildApache2HandlerConfig( $moduleData );
+            return;
         }
 
-        $rs = $self->_buildCgiConfig( $moduleData );
-    } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
-        if ( $moduleData->{'DOMAIN_NAME'} ne $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'} ) {
-            eval {
-                for ( iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
-                    next unless /^[\d.]+$/ && -f "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf";
-
-                    $rs = iMSCP::File->new( filename => "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf" )->delFile();
-                    return $rs if $rs;
-
-                    $self->{'reload'}->{$_} ||= 1;
-                }
-            };
-            if ( $@ ) {
-                error( $@ );
-                return 1;
+        if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+            if ( $moduleData->{'DOMAIN_NAME'} ne $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}
+                || $moduleData->{'FORWARD'} eq 'yes'
+                || $moduleData->{'PHP_SUPPORT'} eq 'no'
+            ) {
+                iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove();
             }
+
+            if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
+                $self->_buildCgiConfig( $moduleData );
+            }
+
+            return;
         }
 
-        $rs = $self->_buildFpmConfig( $moduleData );
-    } else {
-        error( 'Unknown PHP SAPI' );
+        if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+            if ( $moduleData->{'DOMAIN_NAME'} ne $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}
+                || $moduleData->{'FORWARD'} eq 'yes'
+                || $moduleData->{'PHP_SUPPORT'} eq 'no'
+            ) {
+                $self->_deleteFpmPoolFiles( $moduleData->{'DOMAIN_NAME'} );
+            }
+
+            if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
+                $self->_buildFpmConfig( $moduleData );
+            }
+
+            return;
+        }
+
+        die( 'Unknown PHP SAPI' );
+    };
+    if ( $@ ) {
+        error( $@ );
         return 1;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpAddSubdomain', $moduleData );
+    $self->{'eventManager'}->trigger( 'afterPhpAddSubdomain', $moduleData );
 }
 
 =item disableSubdomain( \%moduleData )
@@ -596,27 +610,24 @@ sub disableSubdomain
     my ($self, $moduleData) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpDisableSubdomain', $moduleData );
-    $rs ||= eval {
+    return $rs if $rs;
+
+    eval {
         if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
             iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove();
-        } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
-            for ( iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
-                next unless /^[\d.]+$/ && -f "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf";
-
-                $rs = iMSCP::File->new( filename => "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf" )->delFile();
-                return $rs if $rs;
-
-                $self->{'reload'}->{$_} ||= 1;
-            }
+            return;
         }
 
-        0;
+        if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+            $self->_deleteFpmPoolFiles( $moduleData->{'DOMAIN_NAME'} );
+        }
     };
     if ( $@ ) {
         error( $@ );
         return 1;
     }
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpdDisableSubdomain', $moduleData );
+
+    $self->{'eventManager'}->trigger( 'afterPhpdDisableSubdomain', $moduleData );
 }
 
 =item deleteSubdomain( \%moduleData )
@@ -630,27 +641,24 @@ sub deleteSubdomain
     my ($self, $moduleData) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpDeleteSubdomain', $moduleData );
-    $rs ||= eval {
+    return $rs if $rs;
+
+    eval {
         if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
             iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove();
-        } elsif ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
-            for ( iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
-                next unless /^[\d.]+$/ && -f "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf";
-
-                $rs = iMSCP::File->new( filename => "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf" )->delFile();
-                return $rs if $rs;
-
-                $self->{'reload'}->{$_} ||= 1;
-            }
+            return;
         }
 
-        0;
+        if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+            $self->_deleteFpmPoolFiles( $moduleData->{'DOMAIN_NAME'} );
+        }
     };
     if ( $@ ) {
         error( $@ );
         return 1;
     }
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpDeleteSubdomain', $moduleData );
+
+    $self->{'eventManager'}->trigger( 'afterPhpDeleteSubdomain', $moduleData );
 }
 
 =item enableModules( \@modules [, $phpVersion = $self->{'config'}->{'PHP_VERSION'} [, $phpSapi = $self->{'config'}->{'PHP_SAPI'} ] ] )
@@ -825,6 +833,35 @@ sub _init
     );
 
     $self->SUPER::_init();
+}
+
+=item _deleteFpmPoolFiles( $domain )
+
+ Remove any FPM pool configuration files for the given domain
+
+ return void, die on failure
+
+=cut
+
+sub _deleteFpmPoolFiles
+{
+    my ($self, $domain) = @_;
+
+    for my $phpVersion( iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
+        next unless /^[\d.]+$/ && -f "/etc/php/$phpVersion/fpm/pool.d/$domain.conf";
+
+        iMSCP::File->new( filename => "/etc/php/$phpVersion/fpm/pool.d/$domain.conf" )->delFile() == 0 or die(
+            getMessageByType( 'error', { amount => 1, remove => 1 } )
+        );
+
+        if ( $self->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'tcp' && ( !defined $main::execmode || $main::execmode ne 'setup' ) ) {
+            # In TCP mode, we need reload the FPM instance immediately, else, one FPM instance could fail to reload due to port already in use
+            iMSCP::Service->getInstance()->reload( "php$phpVersion-fpm" );
+            next;
+        }
+
+        $self->{'reload'}->{$_} ||= 1;
+    }
 }
 
 =item _setVersion()

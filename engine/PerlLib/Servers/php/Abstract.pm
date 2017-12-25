@@ -459,7 +459,7 @@ sub _mergeConfig
  There are nothing special to do here. We trigger events for consistency reasons.
 
  Param hashref \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
- Return int 0 on sucess, other on failure
+ Return void, die on failure
 
 =cut
 
@@ -469,6 +469,7 @@ sub _buildApache2HandlerConfig
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpApache2HandlerSapiBuildConf', $moduleData );
     $rs ||= $self->{'eventManager'}->trigger( 'afterPhpApache2HandlerSapiBuildConf', $moduleData );
+    $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
 }
 
 =item _buildCgiConfig( \%moduleData )
@@ -476,7 +477,7 @@ sub _buildApache2HandlerConfig
  Build PHP cgi configuration for the given domain
 
  Param hashref \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
- Return int 0 on sucess, other on failure
+ Return void, die on failure
 
 =cut
 
@@ -484,79 +485,61 @@ sub _buildCgiConfig
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePhpCgiSapiBuildConf', $moduleData );
-    return $rs if $rs;
+    $self->{'eventManager'}->trigger( 'beforePhpCgiSapiBuildConf', $moduleData ) == 0 or die(
+        getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+    );
 
-    if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
-        eval {
-            iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}" )->remove();
-            iMSCP::Dir->new( dirname => $self->{'config'}->{'PHP_FCGI_STARTER_DIR'} )->make( {
-                user  => $main::imscpConfig{'ROOT_USER'},
-                group => $main::imscpConfig{'ROOT_GROUP'},
-                mode  => 0555
-            } );
+    #iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}" )->remove();
+    iMSCP::Dir->new( dirname => $self->{'config'}->{'PHP_FCGI_STARTER_DIR'} )->make( {
+        user  => $main::imscpConfig{'ROOT_USER'},
+        group => $main::imscpConfig{'ROOT_GROUP'},
+        mode  => 0555
+    } );
 
-            for ( "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}",
-                "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}/php$self->{'config'}->{'PHP_VERSION'}"
-            ) {
-                iMSCP::Dir->new( dirname => $_ )->make( {
-                    user  => $moduleData->{'USER'},
-                    group => $moduleData->{'GROUP'},
-                    mode  => 0550
-                } );
-            }
-        };
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        }
-
-        my $serverData = {
-            EMAIL_DOMAIN          => $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'},
-            PHP_FCGI_CHILDREN     => $self->{'config'}->{'PHP_FCGI_CHILDREN'},
-            PHP_FCGI_MAX_REQUESTS => $self->{'config'}->{'PHP_FCGI_MAX_REQUESTS'},
-            PHP_VERSION           => $self->{'config'}->{'PHP_VERSION'},
-            TMPDIR                => $moduleData->{'HOME_DIR'} . '/phptmp'
-        };
-
-        $rs = $self->buildConfFile(
-            'cgi/php-fcgi-starter',
-            "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}/php-fcgi-starter",
-            $moduleData,
-            $serverData,
-            {
-                user   => $moduleData->{'USER'},
-                group  => $moduleData->{'GROUP'},
-                mode   => 0550,
-                cached => 1
-            }
-        );
-        $rs ||= $self->buildConfFile(
-            'cgi/php.ini.user',
-            "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}/php$self->{'config'}->{'PHP_VERSION'}/php.ini",
-            $moduleData,
-            $serverData,
-            {
-                user   => $moduleData->{'USER'},
-                group  => $moduleData->{'GROUP'},
-                mode   => 0440,
-                cached => 1
-            }
-        );
-        return $rs if $rs;
-    } elsif ( $moduleData->{'PHP_SUPPORT'} ne 'yes'
-        || ( $moduleData->{'PHP_CONFIG_LEVEL'} eq 'per_user' && $moduleData->{'DOMAIN_TYPE'} ne 'dmn' )
-        || ( $moduleData->{'PHP_CONFIG_LEVEL'} eq 'per_domain' && $moduleData->{'DOMAIN_TYPE'} !~ /^(?:dmn|als)$/ )
-        || $moduleData->{'PHP_CONFIG_LEVEL'} eq 'per_site'
+    for ( "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}",
+        "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}/php$self->{'config'}->{'PHP_VERSION'}"
     ) {
-        eval { iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove(); };
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        }
+        iMSCP::Dir->new( dirname => $_ )->make( {
+            user  => $moduleData->{'USER'},
+            group => $moduleData->{'GROUP'},
+            mode  => 0550
+        } );
     }
 
-    $self->{'eventManager'}->trigger( 'afterPhpCgiSapiBuildConf', $moduleData );
+    my $serverData = {
+        EMAIL_DOMAIN          => $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'},
+        PHP_FCGI_CHILDREN     => $self->{'config'}->{'PHP_FCGI_CHILDREN'},
+        PHP_FCGI_MAX_REQUESTS => $self->{'config'}->{'PHP_FCGI_MAX_REQUESTS'},
+        PHP_VERSION           => $self->{'config'}->{'PHP_VERSION'},
+        TMPDIR                => $moduleData->{'HOME_DIR'} . '/phptmp'
+    };
+
+    my $rs = $self->buildConfFile(
+        'cgi/php-fcgi-starter',
+        "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}/php-fcgi-starter",
+        $moduleData,
+        $serverData,
+        {
+            user   => $moduleData->{'USER'},
+            group  => $moduleData->{'GROUP'},
+            mode   => 0550,
+            cached => 1
+        }
+    );
+    $rs ||= $self->buildConfFile(
+        'cgi/php.ini.user',
+        "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}/php$self->{'config'}->{'PHP_VERSION'}/php.ini",
+        $moduleData,
+        $serverData,
+        {
+            user   => $moduleData->{'USER'},
+            group  => $moduleData->{'GROUP'},
+            mode   => 0440,
+            cached => 1
+        }
+    );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpCgiSapiBuildConf', $moduleData );
+    $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
 }
 
 =item _buildFpmConfig( \%moduleData )
@@ -572,43 +555,33 @@ sub _buildFpmConfig
 {
     my ($self, $moduleData) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePhpFpmSapiBuildConf', $moduleData );
-    return $rs if $rs;
+    $self->{'eventManager'}->trigger( 'beforePhpFpmSapiBuildConf', $moduleData ) == 0 or die(
+        getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+    );
 
-    if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
-        my $serverData = {
-            EMAIL_DOMAIN                 => $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'},
-            PHP_FPM_LISTEN_ENDPOINT      => ( $self->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds' )
-                ? "{PHP_FPM_RUN_DIR}/php{PHP_VERSION}-fpm-{PHP_CONFIG_LEVEL_DOMAIN}.sock"
-                : '127.0.0.1:' . ( $self->{'config'}->{'PHP_FPM_LISTEN_PORT_START'}+$moduleData->{'PHP_FPM_LISTEN_PORT'} ),
-            PHP_FPM_MAX_CHILDREN         => $self->{'config'}->{'PHP_FPM_MAX_CHILDREN'} // 6,
-            PHP_FPM_MAX_REQUESTS         => $self->{'config'}->{'PHP_FPM_MAX_REQUESTS'} // 1000,
-            PHP_FPM_MAX_SPARE_SERVERS    => $self->{'config'}->{'PHP_FPM_MAX_SPARE_SERVERS'} // 2,
-            PHP_FPM_MIN_SPARE_SERVERS    => $self->{'config'}->{'PHP_FPM_MIN_SPARE_SERVERS'} // 1,
-            PHP_FPM_PROCESS_IDLE_TIMEOUT => $self->{'config'}->{'PHP_FPM_PROCESS_IDLE_TIMEOUT'} || '60s',
-            PHP_FPM_PROCESS_MANAGER_MODE => $self->{'config'}->{'PHP_FPM_PROCESS_MANAGER_MODE'} || 'ondemand',
-            PHP_FPM_RUN_DIR              => $self->{'PHP_FPM_RUN_DIR'},
-            PHP_FPM_START_SERVERS        => $self->{'config'}->{'PHP_FPM_START_SERVERS'} // 1,
-            PHP_VERSION                  => $self->{'config'}->{'PHP_VERSION'},
-            TMPDIR                       => "$moduleData->{'HOME_DIR'}/phptmp"
-        };
+    my $serverData = {
+        EMAIL_DOMAIN                 => $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'},
+        PHP_FPM_LISTEN_ENDPOINT      => ( $self->{'config'}->{'PHP_FPM_LISTEN_MODE'} eq 'uds' )
+            ? "{PHP_FPM_RUN_DIR}/php{PHP_VERSION}-fpm-{PHP_CONFIG_LEVEL_DOMAIN}.sock"
+            : '127.0.0.1:' . ( $self->{'config'}->{'PHP_FPM_LISTEN_PORT_START'}+$moduleData->{'PHP_FPM_LISTEN_PORT'} ),
+        PHP_FPM_MAX_CHILDREN         => $self->{'config'}->{'PHP_FPM_MAX_CHILDREN'} // 6,
+        PHP_FPM_MAX_REQUESTS         => $self->{'config'}->{'PHP_FPM_MAX_REQUESTS'} // 1000,
+        PHP_FPM_MAX_SPARE_SERVERS    => $self->{'config'}->{'PHP_FPM_MAX_SPARE_SERVERS'} // 2,
+        PHP_FPM_MIN_SPARE_SERVERS    => $self->{'config'}->{'PHP_FPM_MIN_SPARE_SERVERS'} // 1,
+        PHP_FPM_PROCESS_IDLE_TIMEOUT => $self->{'config'}->{'PHP_FPM_PROCESS_IDLE_TIMEOUT'} || '60s',
+        PHP_FPM_PROCESS_MANAGER_MODE => $self->{'config'}->{'PHP_FPM_PROCESS_MANAGER_MODE'} || 'ondemand',
+        PHP_FPM_RUN_DIR              => $self->{'PHP_FPM_RUN_DIR'},
+        PHP_FPM_START_SERVERS        => $self->{'config'}->{'PHP_FPM_START_SERVERS'} // 1,
+        PHP_VERSION                  => $self->{'config'}->{'PHP_VERSION'},
+        TMPDIR                       => "$moduleData->{'HOME_DIR'}/phptmp"
+    };
 
-        $rs = $self->buildConfFile(
-            'fpm/pool.conf', "$self->{'PHP_FPM_POOL_DIR'}/$moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}.conf", $moduleData, $serverData, { cached => 1 }
-        );
-        return $rs if $rs;
-
-        $self->{'reload'}->{$serverData->{'PHP_VERSION'}} ||= 1;
-    } elsif ( $moduleData->{'DOMAIN_NAME'} ne $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}
-        && -f "$self->{'PHP_FPM_POOL_DIR'}/$moduleData->{'DOMAIN_NAME'}.conf"
-    ) {
-        $rs = iMSCP::File->new( filename => "$self->{'PHP_FPM_POOL_DIR'}/$moduleData->{'DOMAIN_NAME'}.conf" )->delFile();
-        return $rs if $rs;
-
-        $self->{'reload'}->{$self->{'config'}->{'PHP_VERSION'}} ||= 1;
-    }
-
-    $rs = $self->{'eventManager'}->trigger( 'afterPhpFpmSapiBuildConf', $moduleData );
+    my $rs = $self->buildConfFile(
+        'fpm/pool.conf', "$self->{'PHP_FPM_POOL_DIR'}/$moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}.conf", $moduleData, $serverData, { cached => 1 }
+    );
+    $self->{'reload'}->{$serverData->{'PHP_VERSION'}} ||= 1 unless $rs;
+    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpFpmSapiBuildConf', $moduleData );
+    $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
 }
 
 =item _cleanup( )
