@@ -679,10 +679,9 @@ sub enableModules
     my $rs = execute( [ '/usr/sbin/phpenmod', '-v', $phpVersion, '-s', $phpSapi, @{$modules} ], \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
-    return $rs if $rs;
 
-    $self->{'restart'} ||= 1;
-    0;
+    $self->{'restart'}->{$phpVersion} ||= 1 unless $rs;
+    $rs;
 }
 
 =item disableModules( \@modules [, $phpVersion = $self->{'config'}->{'PHP_VERSION'} [, $phpSapi = $self->{'config'}->{'PHP_SAPI'} ] ] )
@@ -703,10 +702,9 @@ sub disableModules
     my $rs = execute( [ '/usr/sbin/phpdismod', '-v', $phpVersion, '-s', $phpSapi, @{$modules} ], \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
-    return $rs if $rs;
 
-    $self->{'restart'} ||= 1;
-    0;
+    $self->{'restart'}->{$phpVersion} ||= 1 unless $rs;
+    $rs;
 }
 
 =item start( [ $phpVersion = $self->{'config'}->{'PHP_VERSION'} ] )
