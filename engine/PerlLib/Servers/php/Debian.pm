@@ -672,18 +672,16 @@ sub enableModules
     my ($self, $modules, $phpVersion, $phpSapi) = @_;
     $phpVersion ||= $self->{'config'}->{'PHP_VERSION'};
     $phpSapi ||= $self->{'config'}->{'PHP_SAPI'};
+    $phpSapi = 'apache2' if $phpSapi eq 'apache2handler';
 
     ref $modules eq 'ARRAY' or die( 'Invalid $module parameter. Array expected' );
 
-    for ( @{$modules} ) {
-        my $rs = execute( [ '/usr/sbin/phpenmod', $_ ], \ my $stdout, \ my $stderr );
-        debug( $stdout ) if $stdout;
-        error( $stderr || 'Unknown error' ) if $rs;
-        return $rs if $rs;
-    }
+    my $rs = execute( [ '/usr/sbin/phpenmod', '-v', $phpVersion, '-s', $phpSapi, @{$modules} ], \ my $stdout, \ my $stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr || 'Unknown error' ) if $rs;
+    return $rs if $rs;
 
     $self->{'restart'} ||= 1;
-
     0;
 }
 
@@ -698,18 +696,16 @@ sub disableModules
     my ($self, $modules, $phpVersion, $phpSapi) = @_;
     $phpVersion ||= $self->{'config'}->{'PHP_VERSION'};
     $phpSapi ||= $self->{'config'}->{'PHP_SAPI'};
+    $phpSapi = 'apache2' if $phpSapi eq 'apache2handler';
 
     ref $modules eq 'ARRAY' or die( 'Invalid $module parameter. Array expected' );
 
-    for ( @{$modules} ) {
-        my $rs = execute( [ '/usr/sbin/phpdismod', $_ ], \ my $stdout, \ my $stderr );
-        debug( $stdout ) if $stdout;
-        error( $stderr || 'Unknown error' ) if $rs;
-        return $rs if $rs;
-    }
+    my $rs = execute( [ '/usr/sbin/phpdismod', '-v', $phpVersion, '-s', $phpSapi, @{$modules} ], \ my $stdout, \ my $stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr || 'Unknown error' ) if $rs;
+    return $rs if $rs;
 
     $self->{'restart'} ||= 1;
-
     0;
 }
 
