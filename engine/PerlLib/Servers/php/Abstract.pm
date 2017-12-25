@@ -468,6 +468,9 @@ sub _buildApache2HandlerConfig
     my ($self, $moduleData) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpApache2HandlerSapiBuildConf', $moduleData );
+
+    debug( sprintf( 'Building Apache2Handler configuration for the %s domain', $moduleData->{'DOMAIN_NAME'} ));
+
     $rs ||= $self->{'eventManager'}->trigger( 'afterPhpApache2HandlerSapiBuildConf', $moduleData );
     $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
 }
@@ -488,6 +491,8 @@ sub _buildCgiConfig
     $self->{'eventManager'}->trigger( 'beforePhpCgiSapiBuildConf', $moduleData ) == 0 or die(
         getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
     );
+
+    debug( sprintf( 'Building cgi configuration for the %s domain', $moduleData->{'DOMAIN_NAME'} ));
 
     #iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}" )->remove();
     iMSCP::Dir->new( dirname => $self->{'config'}->{'PHP_FCGI_STARTER_DIR'} )->make( {
@@ -558,6 +563,8 @@ sub _buildFpmConfig
     $self->{'eventManager'}->trigger( 'beforePhpFpmSapiBuildConf', $moduleData ) == 0 or die(
         getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
     );
+
+    debug( sprintf( 'Building fpm configuration for the %s domain', $moduleData->{'DOMAIN_NAME'} ));
 
     my $serverData = {
         EMAIL_DOMAIN                 => $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'},

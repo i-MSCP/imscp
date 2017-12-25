@@ -54,8 +54,8 @@ my $TMPFS = lazy
     {
         mount(
             {
-                fs_spec => 'tmpfs',
-                fs_file => my $tmpfs = File::Temp->newdir( CLEANUP => 0 ),
+                    fs_spec => 'tmpfs',
+                    fs_file => my $tmpfs = File::Temp->newdir( CLEANUP => 0 ),
                 fs_vfstype      => 'tmpfs',
                 fs_mntops       => 'noexec,nosuid,size=32m',
                 ignore_failures => 1 # Ignore failures in case tmpfs isn't supported/allowed
@@ -1050,10 +1050,17 @@ sub _disableDomain
         );
         $rs ||= $self->enableSites( "$moduleData->{'DOMAIN_NAME'}_ssl.conf" );
         return $rs if $rs;
-    } elsif ( -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$moduleData->{'DOMAIN_NAME'}_ssl.conf" ) {
+    } else {
+        # Try to disable the site in any case to cover possible dangling symlink
         $rs = $self->disableSites( "$moduleData->{'DOMAIN_NAME'}_ssl.conf" );
-        $rs ||= iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$moduleData->{'DOMAIN_NAME'}_ssl.conf" )->delFile();
         return $rs if $rs;
+
+        if ( -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$moduleData->{'DOMAIN_NAME'}_ssl.conf" ) {
+            $rs ||= iMSCP::File->new(
+                filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$moduleData->{'DOMAIN_NAME'}_ssl.conf"
+            )->delFile();
+            return $rs if $rs;
+        }
     }
 
     # Make sure that custom httpd conffile exists (cover case where file has been removed for any reasons)
@@ -1100,7 +1107,6 @@ sub _addCfg
     my ($self, $moduleData) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeApache2AddCfg', $moduleData );
-    $rs = $self->disableSites( "$moduleData->{'DOMAIN_NAME'}.conf", "$moduleData->{'DOMAIN_NAME'}_ssl.conf" );
     return $rs if $rs;
 
     my $net = iMSCP::Net->getInstance();
@@ -1168,10 +1174,17 @@ sub _addCfg
         );
         $rs ||= $self->enableSites( "$moduleData->{'DOMAIN_NAME'}_ssl.conf" );
         return $rs if $rs;
-    } elsif ( -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$moduleData->{'DOMAIN_NAME'}_ssl.conf" ) {
+    } else {
+        # Try to disable the site in any case to cover possible dangling symlink
         $rs = $self->disableSites( "$moduleData->{'DOMAIN_NAME'}_ssl.conf" );
-        $rs ||= iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$moduleData->{'DOMAIN_NAME'}_ssl.conf" )->delFile();
         return $rs if $rs;
+
+        if ( -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$moduleData->{'DOMAIN_NAME'}_ssl.conf" ) {
+            $rs ||= iMSCP::File->new(
+                filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$moduleData->{'DOMAIN_NAME'}_ssl.conf"
+            )->delFile();
+            return $rs if $rs;
+        }
     }
 
     unless ( -f "$self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}/$moduleData->{'DOMAIN_NAME'}.conf" ) {
