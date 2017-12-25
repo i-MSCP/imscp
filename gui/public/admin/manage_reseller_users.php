@@ -42,8 +42,8 @@ function moveCustomer($customerId, $fromResellerId, $toResellerId)
     $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
-        $toRprops = imscp_getResellerProperties($fromResellerId);
-        $cToRLimits = [
+        $toResellerProps = imscp_getResellerProperties($toResellerId);
+        $customerToResellerLimits = [
             'domain_subd_limit'    => ['current_sub_cnt', 'max_sub_cnt'],
             'domain_alias_limit'   => ['current_als_cnt', 'max_als_cnt'],
             'domain_mailacc_limit' => ['current_mail_cnt', 'max_mail_cnt'],
@@ -53,20 +53,14 @@ function moveCustomer($customerId, $fromResellerId, $toResellerId)
             'domain_traffic_limit' => ['current_traff_amnt', 'max_traff_amnt'],
             'domain_disk_limit'    => ['current_disk_amnt', 'max_disk_amnt']
         ];
-        $cPermsToRPerms = [
-            'domain_software_allowed'       => 'software_allowed',
-            'phpini_perm_system'            => 'php_ini_system',
-            'phpini_perm_allow_url_fopen'   => 'php_ini_al_allow_url_fopen',
-            'phpini_perm_display_errors'    => 'php_ini_al_display_errors',
-            'phpini_perm_disable_functions' => 'php_ini_al_disable_functions',
-            'phpini_perm_mail_function'     => 'php_ini_al_mail_function'
+        $resellerToCustomerPerms = [
+            'software_allowed' => 'domain_software_allowed'
         ];
+
         $stmt = exec_query(
             '
-                SELECT domain_subd_limit, domain_alias_limit, domain_mailacc_limit, domain_ftpacc_limit,
-                    domain_sqld_limit, domain_sqlu_limit, domain_traffic_limit, domain_disk_limit, domain_ip_id,
-                    domain_software_allowed, phpini_perm_system, phpini_perm_allow_url_fopen, 
-                    phpini_perm_display_errors, phpini_perm_disable_functions, phpini_perm_mail_function
+                SELECT domain_subd_limit, domain_alias_limit, domain_mailacc_limit, domain_ftpacc_limit, domain_sqld_limit, domain_sqlu_limit,
+                    domain_traffic_limit, domain_disk_limit, domain_ip_id, domain_software_allowed
                 FROM domain
                 WHERE domain_admin_id = ?
             ',
@@ -77,81 +71,85 @@ function moveCustomer($customerId, $fromResellerId, $toResellerId)
             throw new Exception(tr("Couldn't find domain properties for customer with ID %d.", $customerId));
         }
 
-        $cProps = $stmt->fetchAll();
+        $customerProps = $stmt->fetch();
+
         $db->beginTransaction();
 
-        // For each item (sub, mail, ftp....), adjust (TO) reseller limits
-        // according customer limits
-        foreach ($cToRLimits as $cLimit => $rLimit) {
-            if ($toRprops[$rLimit[1]] == 0 || $cProps[$cLimit] == -1) {
-                // Reseller is not limited for the item, or the customer has no
-                // rights for the item. There is no need to go further
+        // For each item (sub, mail, ftp....), we adjust the target reseller
+        // limits according the customer limits. We cannot do the reverse side
+        // because this would involve too much works and unpredictable result.
+        // Most of time, the administrator do not want downgrade limits of
+        // customers.
+        foreach ($customerToResellerLimits as $customerLimit => $resellerLimit) {
+            if ($toResellerProps[$resellerLimit[1]] == 0 || $customerProps[$customerLimit] == -1) {
+                // The target reseller is not limited for the item, or the
+                // customer has no rights for the item.
                 continue;
             }
 
-            if ($cProps[$cLimit] == 0) {
-                // Customer is not limited for the item. Reseller must not be
-                // limited.
-                // Fixme: It would be better to update reseller limit based on
-                // count of consumed item by customer and to limit the customer
-                // as well.
-                $toRprops[$rLimit[1]] = 0;
+            if ($customerProps[$customerLimit] == 0) {
+                // Customer is not limited for the item. The target reseller
+                // must not be limited.
+                $toResellerProps[$resellerLimit[1]] = 0;
                 continue;
             }
 
-            if ($toRprops[$rLimit[1]] == -1) {
-                // Reseller has no rights for the item but customer.
-                // Reseller limit must be at least equal to customer limit.
-                $toRprops[$rLimit[1]] = $cProps[$cLimit];
+            if ($toResellerProps[$resellerLimit[1]] == -1) {
+                // The target reseller has no rights for the item but customer.
+                // The Target reseller limit must be at least equal to customer
+                // limit.
+                $toResellerProps[$resellerLimit[1]] = $customerProps[$customerLimit];
                 continue;
             }
 
-            if (($toRprops[$rLimit[1]] - $toRprops[$rLimit[0]]) < $cProps[$cLimit]) {
-                // Reseller limit after soustracting total consumed items,
-                // taking into account customer limit would be negative.
-                // Reseller limit must be increased up to customer limit.
-                $toRprops[$rLimit[1]] += $cProps[$cLimit] - ($toRprops[$rLimit[1]] - $toRprops[$rLimit[0]]);
+            if (($toResellerProps[$resellerLimit[1]] - $toResellerProps[$resellerLimit[0]]) < $customerProps[$customerLimit]) {
+                // The target reseller limit after soustracting total consumed
+                // items, taking into account the customer limit would be
+                // negative. The target reseller limit must be increased up to customer limit.
+                $toResellerProps[$resellerLimit[1]] += $customerProps[$customerLimit] - (
+                        $toResellerProps[$resellerLimit[1]] - $toResellerProps[$resellerLimit[0]]);
             }
         }
 
-        // Adjust (TO) reseller permissions according customer permmissions when necessary
-        foreach ($cPermsToRPerms as $cPerm => $rPerm) {
-            if ($toRprops[$rPerm] == 'no' && $cProps[$cPerm] == 'yes') {
-                $toRprops[$rPerm] = 'yes';
+        // Adjust the customer permissions according target reseller permissions
+        foreach ($resellerToCustomerPerms as $resellerPerms => $customerPerm) {
+            if ($customerProps[$customerPerm] == 'yes' && $toResellerProps[$resellerPerms] != 'yes') {
+                $customerProps[$customerPerm] = 'no';
             }
         }
 
-        // Adjust customer PHP permissions
-        PhpIni::getInstance()->syncClientPermissionsAndIniOptions($toResellerId, $customerId);
+        // The customer IP address must be in the target reseller IP addresses list
+        $toResellerProps['reseller_ips'] = implode(
+            ';', array_unique(explode(';', $toResellerProps['reseller_ips'] . $customerProps['domain_ip_id'] . ';'))
+        );
 
-        // Customer IP must be in reseller IP addresses list
-        $toRprops['reseller_ips'] = implode(';', array_unique(explode(';', $toRprops['reseller_ips'] . $cProps['domain_ip_id'] . ';')));
-
-        // Move customer to (TO) reseller
+        // Move the customer to the target reseller
         exec_query('UPDATE admin SET created_by = ? WHERE admin_id = ?', [$toResellerId, $customerId]);
 
-        // Update (TO) reseller limits and permissions and IP addresses list 
+        // Update the customer permissions according the target reseller permissions
+
+        exec_query('UPDATE domain SET domain_software_allowed = ? WHERE domain_admin_id = ?', [
+            $customerProps['domain_software_allowed'], $customerId
+        ]);
+
+        PhpIni::getInstance()->syncClientPermissionsAndIniOptions($toResellerId, $customerId);
+
+        // Update the target reseller limits, permissions and IP addresses 
         exec_query(
             '
                 UPDATE reseller_props 
-                SET
-                    max_sub_cnt = ?, max_als_cnt = ?, max_mail_cnt = ?, max_ftp_cnt = ?, max_sql_db_cnt = ?,
-                    max_sql_user_cnt = ?, max_traff_amnt = ?, max_disk_amnt = ?, reseller_ips = ?, software_allowed = ?,
-                    php_ini_system = ?, php_ini_al_allow_url_fopen= ?, php_ini_al_display_errors= ?,
-                    php_ini_al_disable_functions= ?, php_ini_al_mail_function = ?
+                SET max_sub_cnt = ?, max_als_cnt = ?, max_mail_cnt = ?, max_ftp_cnt = ?, max_sql_db_cnt = ?, max_sql_user_cnt = ?, max_traff_amnt = ?,
+                    max_disk_amnt = ?, reseller_ips = ?, software_allowed = ?
                 WHERE reseller_id = ?
             ',
             [
-                $toRprops['max_sub_cnt'], $toRprops['max_als_cnt'], $toRprops['max_mail_cnt'], $toRprops['max_ftp_cnt'],
-                $toRprops['max_sql_db_cnt'], $toRprops['max_sql_user_cnt'], $toRprops['max_traff_amnt'],
-                $toRprops['max_disk_amnt'], $toRprops['reseller_ips'], $toRprops['software_allowed'],
-                $toRprops['php_ini_system'], $toRprops['php_ini_al_allow_url_fopen'],
-                $toRprops['php_ini_al_display_errors'], $toRprops['php_ini_al_disable_functions'],
-                $toRprops['php_ini_al_mail_function'], $toResellerId
+                $toResellerProps['max_sub_cnt'], $toResellerProps['max_als_cnt'], $toResellerProps['max_mail_cnt'], $toResellerProps['max_ftp_cnt'],
+                $toResellerProps['max_sql_db_cnt'], $toResellerProps['max_sql_user_cnt'], $toResellerProps['max_traff_amnt'],
+                $toResellerProps['max_disk_amnt'], $toResellerProps['reseller_ips'], $toResellerProps['software_allowed'], $toResellerId
             ]
         );
 
-        // Recalculate count of assigned items for (TO/FROM) resellers
+        // Recalculate count of assigned items for both source and target resellers
         update_reseller_c_props($toResellerId);
         update_reseller_c_props($fromResellerId);
 
@@ -164,7 +162,7 @@ function moveCustomer($customerId, $fromResellerId, $toResellerId)
         $db->commit();
     } catch (Exception $e) {
         $db->rollBack();
-        write_log(sprintf("Couldn't move customer with ID %d: %s", $customerId, $e->getMessage()));
+        write_log(sprintf("Couldn't move customer with ID %d: %s", $customerId, $e->getMessage()), E_USER_ERROR);
         throw new Exception(tr("Couldn't move customer with ID %d: %s", $customerId, $e->getMessage()), $e->getCode(), $e);
     }
 }
@@ -218,7 +216,7 @@ function generatePage(TemplateEngine $tpl)
     $fromResellerId = isset($_POST['from_reseller']) ? intval($_POST['from_reseller']) : $resellers[0]['admin_id'];
     $toResellerId = isset($_POST['to_reseller']) ? intval($_POST['to_reseller']) : $resellers[1]['admin_id'];
 
-    // Generate From/To reseller lists
+    // Generate source/target reseller lists
     foreach ($resellers as $reseller) {
         $tpl->assign([
             'FROM_RESELLER_ID'       => tohtml($reseller['admin_id'], 'htmlAttr'),
@@ -234,7 +232,7 @@ function generatePage(TemplateEngine $tpl)
         $tpl->parse('TO_RESELLER_ITEM', '.to_reseller_item');
     }
 
-    // Generate customers list for the selected (FROM) reseller
+    // Generate customers list for the selected source reseller
     $customers = exec_query(
         "SELECT admin_id, admin_name FROM admin WHERE created_by = ? AND admin_type = 'user' AND admin_status <> 'todelete'", [$fromResellerId]
     )->fetchAll();

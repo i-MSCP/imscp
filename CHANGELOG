@@ -95,6 +95,7 @@ FRONTEND
     Fixed: Template block tag mismatch (no_webdepotsoftware_list vs no_webdepotsoftware_lists) in admin/software_manage.tpl
     Fixed: Wrong alternative subject names in self-signed SSL certificates
     Fixed: Wrong order for parameters in mail delete.php (i18n -- client UI)
+    Fixed: Wrong properties used for target reseller when moving customer(s) (Customer assignments feature)
     Fixed: Wrong status shown in administrator overview interface for customers when a password is being modified
     Fixed: Wrong value passed-in the `onBeforeEditUser' and `onAfterEditUser' events for the `admin_pass' parameter
     Review: Make use of composer autoloader for loading of vendor dependencies

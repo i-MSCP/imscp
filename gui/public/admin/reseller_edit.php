@@ -556,7 +556,6 @@ function updateResellerUser(Form $form)
         $phpini->setResellerPermission('phpiniSystem', $data['php_ini_system']);
 
         if ($phpini->resellerHasPermission('phpiniSystem')) {
-            // We are safe here; If a value is not valid, previous value is used
             $phpini->setResellerPermission('phpiniConfigLevel', $data['php_ini_al_config_level']);
             $phpini->setResellerPermission('phpiniDisableFunctions', $data['php_ini_al_disable_functions']);
             $phpini->setResellerPermission('phpiniMailFunction', $data['php_ini_al_mail_function']);
@@ -571,7 +570,7 @@ function updateResellerUser(Form $form)
             $phpini->setResellerPermission('phpiniMaxExecutionTime', $data['max_execution_time']);
             $phpini->setResellerPermission('phpiniMaxInputTime', $data['max_input_time']);
         } else {
-            // Reset reseller PHP permissions to default values
+            // Reset reseller permissions to their default values
             $phpini->loadResellerPermissions();
         }
 
@@ -580,9 +579,6 @@ function updateResellerUser(Form $form)
                 'userId'   => $resellerId,
                 'userData' => $form->getValues()
             ]);
-
-            $phpini->saveResellerPermissions($resellerId);
-            $phpini->syncClientPermissionsAndIniOptions($resellerId);
 
             // Update reseller personal data (including password if needed)
 
@@ -609,6 +605,7 @@ function updateResellerUser(Form $form)
             );
 
             // Update limits and permissions
+
             exec_query(
                 '
                     UPDATE reseller_props
@@ -624,6 +621,9 @@ function updateResellerUser(Form $form)
                     $data['support_system'], $resellerId
                 ]
             );
+
+            $phpini->saveResellerPermissions($resellerId);
+            $phpini->syncClientPermissionsAndIniOptions($resellerId);
 
             // Update software installer properties
 

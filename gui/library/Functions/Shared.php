@@ -990,7 +990,7 @@ function imscp_getResellerProperties($resellerId, $forceReload = false)
     static $properties = NULL;
 
     if (NULL === $properties || $forceReload) {
-        $stmt = exec_query('SELECT * FROM reseller_props WHERE reseller_id = ? LIMIT 1', [$resellerId]);
+        $stmt = exec_query('SELECT * FROM reseller_props WHERE reseller_id = ?', [$resellerId]);
 
         if (!$stmt->rowCount()) {
             throw new iMSCPException(tr('Properties for reseller with ID %d were not found in database.', $resellerId));
@@ -2095,7 +2095,7 @@ function send_request()
 {
     static $isAlreadySent = false;
 
-    # Make sure that a backend request will not be sent twice
+    // Make sure that a backend request will not be sent twice
     if ($isAlreadySent) {
         return true;
     }

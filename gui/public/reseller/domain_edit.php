@@ -754,11 +754,13 @@ function reseller_checkAndUpdateData($domainId)
                     $phpini->setClientPermission('phpiniMailFunction', clean_input($_POST['phpini_perm_mail_function']));
                 }
 
-                if (isset($_POST['memory_limit'])) { // Must be set before phpiniPostMaxSize
+                if (isset($_POST['memory_limit'])) {
+                    // Must be set before phpiniPostMaxSize
                     $phpini->setIniOption('phpiniMemoryLimit', clean_input($_POST['memory_limit']));
                 }
 
-                if (isset($_POST['post_max_size'])) { // Must be set before phpiniUploadMaxFileSize
+                if (isset($_POST['post_max_size'])) {
+                    // Must be set before phpiniUploadMaxFileSize
                     $phpini->setIniOption('phpiniPostMaxSize', clean_input($_POST['post_max_size']));
                 }
 
@@ -774,10 +776,12 @@ function reseller_checkAndUpdateData($domainId)
                     $phpini->setIniOption('phpiniMaxInputTime', clean_input($_POST['max_input_time']));
                 }
             } else {
-                $phpini->loadClientPermissions(); // Reset client PHP permissions to default values
+                // Reset client permissions to their default values
+                $phpini->loadClientPermissions();
             }
         } else {
-            $phpini->loadClientPermissions(); // Reset client PHP permissions to default values
+            // Reset client permissions to their default values
+            $phpini->loadClientPermissions();
         }
 
         // Check for CGI support
@@ -815,7 +819,8 @@ function reseller_checkAndUpdateData($domainId)
                 $changeNeeded = true;
             }
 
-            // Update domain properties
+            // Update limits and permissions
+
             exec_query(
                 '
                     UPDATE domain
@@ -823,8 +828,7 @@ function reseller_checkAndUpdateData($domainId)
                         domain_sqld_limit = ?, domain_sqlu_limit = ?, domain_status = ?, domain_alias_limit = ?, domain_subd_limit = ?,
                         domain_ip_id = ?, domain_disk_limit = ?, domain_php = ?, domain_cgi = ?, allowbackup = ?, domain_dns = ?,
                         domain_software_allowed = ?,  domain_external_mail = ?, web_folder_protection = ?, mail_quota = ?
-                    WHERE
-                        domain_id = ?
+                    WHERE domain_id = ?
                 ',
                 [
                     $data['domain_expires'], time(), $data['domain_mailacc_limit'], $data['domain_ftpacc_limit'], $data['domain_traffic_limit'],
@@ -835,14 +839,14 @@ function reseller_checkAndUpdateData($domainId)
                 ]
             );
 
+            $phpini->saveClientPermissions($data['admin_id']);
+            $phpini->updateClientIniOptions($data['admin_id'], $phpConfigLevel != $phpini->getClientPermission('phpiniConfigLevel'));
+
             if ($data['domain_ip_id'] != $data['fallback_domain_ip_id']) {
                 // Update IP address for domain aliases
                 exec_query("UPDATE domain_aliasses SET alias_ip_id = ? WHERE domain_id = ?", [$data['domain_ip_id'], $domainId]);
                 $changeNeeded = true;
             }
-
-            $phpini->saveClientPermissions($data['admin_id']);
-            $phpini->updateClientIniOptions($data['admin_id'], $phpConfigLevel != $phpini->getClientPermission('phpiniConfigLevel'));
 
             if ($data['fallback_mail_quota'] != ($data['mail_quota'] * 1048576)) {
                 // Sync mailboxes quota

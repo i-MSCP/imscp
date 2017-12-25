@@ -685,12 +685,10 @@ class PHPini
             $configLevel = $this->getClientPermission('phpiniConfigLevel');
 
             if (!$this->resellerHasPermission('phpiniSystem')) {
-                // Reset client's permissions to their default values based on the
-                // permissions of its reseller.
+                // Reset client's permissions to their default values based on the permissions of its reseller.
                 $this->loadClientPermissions();
-
                 $this->saveClientPermissions($row['admin_id']);
-                $this->updateClientIniOptions($row['admin_id'], $configLevel != $this->getClientPermission('phpiniConfigLevel'));
+                $this->updateClientIniOptions($row['admin_id'], $configLevel != $this->getClientPermission('phpiniConfigLevel'), true);
                 continue;
             }
 
@@ -713,19 +711,24 @@ class PHPini
             }
 
             $this->saveClientPermissions($row['admin_id']);
-            $this->updateClientIniOptions($row['admin_id'], $configLevel != $this->getClientPermission('phpiniConfigLevel'));
+            $this->updateClientIniOptions($row['admin_id'], $configLevel != $this->getClientPermission('phpiniConfigLevel'), true);
         }
     }
 
     /**
-     * Update client INI options for all its domains
+     * Update client INI options for all its domains, including subdomains
      *
      * @param int $clientId Client unique identifier
-     * @param bool $isBackendRequestNeeded Is a request backend already needed for the given client?
+     * @param bool $isBackendRequestNeeded OPTIONAL Is a request backend needed for the given client?
+     * @param bool $loadIniOptions OPTIONAL Whether or not INI options must be loaded
      * @return void
      */
-    public function updateClientIniOptions($clientId, $isBackendRequestNeeded = false)
+    public function updateClientIniOptions($clientId, $isBackendRequestNeeded = false, $loadIniOptions = false)
     {
+        if (empty($this->clientPermissions)) {
+            $this->loadClientPermissions($clientId);
+        }
+
         $isBackendRequestNeededPrev = $this->isBackendRequestNeeded;
         $stmt = exec_query('SELECT id, domain_id, domain_type FROM php_ini WHERE admin_id = ?', [$clientId]);
 
@@ -740,7 +743,7 @@ class PHPini
                 continue;
             }
 
-            if (empty($this->iniOptions)) {
+            if ($loadIniOptions) {
                 // Load current INI options
                 $this->loadIniOptions($row['domain_id'], $row['domain_type']);
             }
@@ -773,7 +776,7 @@ class PHPini
             foreach (
                 ['phpiniMemoryLimit', 'phpiniPostMaxSize', 'phpiniUploadMaxFileSize', 'phpiniMaxExecutionTime', 'phpiniMaxInputTime'] as $iniOption
             ) {
-                $resellerLimit = $this->getResellerPermission($iniOption);
+                $resellerLimit = $this->resellerPermissions[$iniOption];
 
                 if ($this->iniOptions[$iniOption] > $resellerLimit) {
                     $this->iniOptions[$iniOption] = $resellerLimit;
@@ -801,7 +804,7 @@ class PHPini
     }
 
     /**
-     * Update domain statuses
+     * Update domain statuses if needed
      *
      * @param int $clientId Client unique identifier
      * @param int $domainId Domain unique identifier
