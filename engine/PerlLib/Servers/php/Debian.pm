@@ -427,11 +427,11 @@ sub addDomain
     return $rs if $rs;
 
     eval {
-        if ( $self->{'config'}->{'PHP_SAPI'} eq 'apache2handler'
-            && $moduleData->{'FORWARD'} eq 'no'
-            && $moduleData->{'PHP_SUPPORT'} eq 'yes'
-        ) {
-            $self->_buildApache2HandlerConfig( $moduleData );
+        if ( $self->{'config'}->{'PHP_SAPI'} eq 'apache2handler' ) {
+            if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
+                $self->_buildApache2HandlerConfig( $moduleData );
+            }
+
             return;
         }
 
@@ -551,11 +551,11 @@ sub addSubdomain
     return $rs if $rs;
 
     eval {
-        if ( $self->{'config'}->{'PHP_SAPI'} eq 'apache2handler'
-            && $moduleData->{'FORWARD'} eq 'no'
-            && $moduleData->{'PHP_SUPPORT'} eq 'yes'
-        ) {
-            $self->_buildApache2HandlerConfig( $moduleData );
+        if ( $self->{'config'}->{'PHP_SAPI'} eq 'apache2handler' ) {
+            if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
+                $self->_buildApache2HandlerConfig( $moduleData );
+            }
+
             return;
         }
 
