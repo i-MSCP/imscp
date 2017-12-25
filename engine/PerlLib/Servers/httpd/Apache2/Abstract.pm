@@ -54,8 +54,8 @@ my $TMPFS = lazy
     {
         mount(
             {
-                    fs_spec => 'tmpfs',
-                    fs_file => my $tmpfs = File::Temp->newdir( CLEANUP => 0 ),
+                fs_spec         => 'tmpfs',
+                fs_file         => my $tmpfs = File::Temp->newdir( CLEANUP => 0 ),
                 fs_vfstype      => 'tmpfs',
                 fs_mntops       => 'noexec,nosuid,size=32m',
                 ignore_failures => 1 # Ignore failures in case tmpfs isn't supported/allowed

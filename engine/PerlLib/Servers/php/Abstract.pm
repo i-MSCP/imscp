@@ -50,6 +50,48 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
+=item preinstall( )
+
+ Process preinstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preinstall
+{
+    my ($self) = @_;
+
+    eval { $self->_setVersion(); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    0;
+}
+
+=item install( )
+
+ Process install tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub install
+{
+    my ($self) = @_;
+
+    eval { $self->_cleanup(); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    0;
+}
+
 =item setEnginePermissions( )
 
  Set engine permissions
@@ -591,11 +633,26 @@ sub _buildFpmConfig
     $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
 }
 
+=item _setVersion()
+
+ Set version data for selected PHP alternative
+
+ return void, die on failure
+
+=cut
+
+sub _setVersion
+{
+    my ($self) = @_;
+
+    die( sprintf( 'The %s package must implement the _setVersion() method', ref $self ));
+}
+
 =item _cleanup( )
 
  Process cleanup tasks
 
- Return int 0 on success, other on failure
+ Return void, die on failure
 
 =cut
 
@@ -603,12 +660,11 @@ sub _cleanup
 {
     my ($self) = @_;
 
-    if ( -f "$self->{'cfgDir'}/php.old.data" ) {
-        my $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/php.old.data" )->delFile();
-        return $rs if $rs;
-    }
+    return unless -f "$self->{'cfgDir'}/php.old.data";
 
-    0;
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/php.old.data" )->delFile() == 0 or die(
+        getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+    );
 }
 
 =back

@@ -159,7 +159,7 @@ sub preinstall
     my ($self) = @_;
 
     eval {
-        $self->_setVersion();
+        $self->SUPER::preinstall() == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
 
         my $httpd = Servers::httpd->factory();
 
@@ -249,6 +249,8 @@ sub install
     my ($self) = @_;
 
     eval {
+        $self->SUPER::install() == 0 or die ( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
+
         my $httpd = Servers::httpd->factory();
         my $serverData = {
             HTTPD_USER                          => $httpd->getRunningUser(),
@@ -314,7 +316,7 @@ sub install
         return 1;
     }
 
-    $self->_cleanup();
+    0;
 }
 
 =item postinstall( )
@@ -384,24 +386,27 @@ sub uninstall
 {
     my ($self) = @_;
 
-    my $httpd = Servers::httpd->factory();
+    eval {
+        my $httpd = Servers::httpd->factory();
 
-    my $rs = $httpd->disableModules( 'fcgid_imscp' ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
-    return $rs if $rs;
+        $httpd->disableModules( 'fcgid_imscp' ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
 
-    for ( 'fcgid_imscp.conf', 'fcgid_imscp.load' ) {
-        next unless -f "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_";
-        $rs = iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_" )->delFile();
-        return $rs if $rs;
-    }
+        for ( 'fcgid_imscp.conf', 'fcgid_imscp.load' ) {
+            next unless -f "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_";
+            iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_" )->delFile() == 0 or die(
+                getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+            );
+        }
 
-    for ( iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
-        next unless /^[\d.]+$/ && -f "/etc/init/php$_-fpm.override";
-        $rs = iMSCP::File->new( filename => "/etc/init/php$_-fpm.override" )->delFile();
-        last if $rs;
-    }
+        for ( iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
+            next unless /^[\d.]+$/ && -f "/etc/init/php$_-fpm.override";
+            iMSCP::File->new( filename => "/etc/init/php$_-fpm.override" )->delFile() == 0 or die(
+                getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+            );
+        }
 
-    eval { iMSCP::Dir->new( dirname => $self->{'config'}->{'PHP_FCGI_STARTER_DIR'} )->remove(); };
+        iMSCP::Dir->new( dirname => $self->{'config'}->{'PHP_FCGI_STARTER_DIR'} )->remove();
+    };
     if ( $@ ) {
         error( $@ );
         return 1;
@@ -844,9 +849,7 @@ sub _deleteFpmPoolFile
 
 =item _setVersion()
 
- Set version data for selected PHP alternative
-
- return void, die on failure
+ See Servers::php::Abstract::_setVersion()
 
 =cut
 
@@ -872,24 +875,25 @@ sub _cleanup
     my ($self) = @_;
 
     if ( -f "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm" ) {
-        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm" )->delFile();
-        return $rs if $rs;
+        iMSCP::File->new( filename => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/php5-fpm" )->delFile() == 0 or die(
+            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+        );
     }
 
-    eval { iMSCP::Dir->new( dirname => '/etc/php5' )->remove(); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
+    iMSCP::Dir->new( dirname => '/etc/php5' )->remove();
 
     my $httpd = Servers::httpd->factory();
-    my $rs = $httpd->disableModules( qw/ fastcgi_imscp php5 php5_cgi php5filter php_fpm_imscp proxy_handler / );
-    return $rs if $rs;
+
+    $httpd->disableModules( qw/ fastcgi_imscp php5 php5_cgi php5filter php_fpm_imscp proxy_handler / ) == 0 or die(
+        getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+    );
 
     for ( 'fastcgi_imscp.conf', 'fastcgi_imscp.load', 'php_fpm_imscp.conf', 'php_fpm_imscp.load' ) {
         next unless -f "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_";
-        $rs = iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_" )->delFile();
-        return $rs if $rs;
+
+        iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_" )->delFile() == 0 or die(
+            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+        );
     }
 
     $self->SUPER::_cleanup();
