@@ -15,13 +15,6 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
-#
-## Allows to override PHP-FPM settings in pool configuration files
-##
-## Note: When you want operate on a per domain basis, don't forget to set the PHP configuration level to 'per_site'.
-## You can do this by running: perl /var/www/imscp/engine/setup/imscp-reconfigure -dar php
-#
-
 package Listener::PhpFpm::Settings::Override;
 
 our $VERSION = '1.1.1';
@@ -35,13 +28,41 @@ use version;
 ## Configuration parameters
 #
 
-# Overrides the PHP-FPM settings globally or per domain.
-# - The per domain PHP-FPM settings take precedence over global PHP-FPM settings.
-# - The PHP-FPM settings take precedence over those which are defined in the /etc/imscp/php/php.data file.
+# Allows to override PHP-FPM settings in pool configuration files
 #
+# This listener is only compatible with the fpm PHP SAPI.
+#
+# PHP configuration level (Per site, per domain or per user FPM settings):
+#
+# Depending on the PHP configuration level set for a given customer, this
+# listener file acts differently:
+#
+# - Per site   : FPM settings can be set for the main domain, domain aliases
+#                and subdomains. FPM settings set will apply only to the
+#                targeted domain, domain alias or subdomain.
+#
+# - Per domain : FPM settings can be set for the main domain and domain aliases
+#                only. FPM settings set for the main domain will also apply to
+#                the main domain's subdomains, and PHP directives set for domain
+#                aliases will also apply to domain aliases's subdomains.
+#
+# - Per user   : FPM settings can be set for the main domain name only. They
+#                will apply to the main domain, domain aliases and subdomains.
+#
+# The PHP configuration level is set on a per customer basis. You can change it
+# for a specific customer as follows:
+#
+#  1. Connect as administrator and edit the PHP settings for the customer'
+#     reseller, then set the PHP configuration level that fit your needs.
+#  2. Connect as reseller and edit the PHP settings for the customer, then set
+#     the PHP configuration level that fit your needs.
+#
+
+
 # Note that domain names must be in ASCII format.
 my %SETTINGS = (
-    # Global PHP-FPM settings - Any setting added here will apply to all domains (globally).
+    # Global FPM settings 
+    # These settings apply to all domains.
     '*'               => {
         pm                        => 'ondemand',
         'pm.max_children'         => 6,
@@ -52,7 +73,10 @@ my %SETTINGS = (
         'pm.max_requests'         => 1000
     },
 
-    # Per domain PHP-FPM settings - Any setting added here will apply to the `test.domain.tld' domains only
+    # Per site, per domain or per user FPM settings
+    # FPM settings added here apply according the current PHP
+    # configuration level that is set for the customer that owns the domain.
+    # These settings have higher precedence than global settings.
     'test.domain.tld' => {
         pm                     => 'dynamic',
         'pm.max_children'      => 10,
@@ -73,14 +97,16 @@ version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' )
 iMSCP::EventManager->getInstance()->register(
     'beforePhpBuildConfFile',
     sub {
-        my ($tplContent, $tplName, undef, $moduleData) = @_;
+        my ($cfgTpl, $filename, undef, $moduleData) = @_;
 
-        return 0 unless $tplName eq 'pool.conf' && defined $moduleData->{'DOMAIN_NAME'};
+        return 0 unless $filename eq 'pool.conf'
+            && $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'} eq $moduleData->{'DOMAIN_NAME'};
 
-        # Apply global PHP-FPM settings
         if ( exists $SETTINGS{'*'} ) {
+            # Apply global PHP-FPM settings
             while ( my ($setting, $value) = each( %{$SETTINGS{'*'}} ) ) {
-                ${$tplContent} =~ s/^\Q$setting\E\s+=.*?\n/$setting = $value\n/gm;
+                next if exists $SETTINGS{$moduleData->{'DOMAIN_NAME'}}->{$setting};
+                ${$cfgTpl} =~ s/^\Q$setting\E\s+=.*?\n/$setting = $value\n/gm;
             }
         }
 
@@ -88,7 +114,7 @@ iMSCP::EventManager->getInstance()->register(
 
         # Apply per domain PHP-FPM settings
         while ( my ($setting, $value) = each( %{$SETTINGS{$moduleData->{'DOMAIN_NAME'}}} ) ) {
-            ${$tplContent} =~ s/^\Q$setting\E\s+=.*?\n/$setting = $value\n/gm;
+            ${$cfgTpl} =~ s/^\Q$setting\E\s+=.*?\n/$setting = $value\n/gm;
         }
 
         0;

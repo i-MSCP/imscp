@@ -48,10 +48,10 @@ PHP_FCGI_STARTER_DIR = /var/www/fcgi
 # Must be lower than the PHP_FCGI_MAX_REQUESTS parameter value
 PHP_FCGID_MAX_REQUESTS_PER_PROCESS = 900
 
-# Maximum HTTP request length
+# Max HTTP request length
 PHP_FCGID_MAX_REQUEST_LEN = 1073741824
 
-# Maximum number of FastCGI application processes
+# Max number of FastCGI application processes
 PHP_FCGID_MAX_PROCESS = 1000
 
 # Communication timeout to FastCGI server
@@ -59,10 +59,12 @@ PHP_FCGID_IO_TIMEOUT = 600
 
 ## Vhost parameters
 
-# Min process count of one class of FastCGI application
+# Min PHP process count for a domain
+# The class is set on a per vhost basis
 PHP_FCGID_MIN_PROCESSES_PER_CLASS = 0
 
-# Max process count of one class of FastCGI application
+# Max PHP process count for a domain
+# The class is set on a per vhost basis
 PHP_FCGID_MAX_PROCESS_PER_CLASS = 6
 
 ##
