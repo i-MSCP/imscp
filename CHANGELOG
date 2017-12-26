@@ -135,6 +135,7 @@ INSTALLER
 
 LISTENERS
     Added: contrib/Listeners/APT/10_apt_sources_list.pl: Make it possible to provide it own SOURCES.LIST(5) file
+    Added: contrib/Listeners/PHP/10_phpfcgid_settings_override.pl: Make it possible to override Apache2 vhost fcgid settings
     Fixed: All listener files should be versionned for easy update tracking
     Fixed: Listener::Php::ConfOptions::Override: PHP INI level not honoured
     Fixed: 10_named_slave_provisioning.pl: Global symbol "$rs" requires explicit package name
