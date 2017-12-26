@@ -47,7 +47,10 @@ sub new
 {
     my ($class, @attrs) = @_;
 
-    ( bless { @attrs && ref $attrs[0] eq 'HASH' ? %{$attrs[0]} : @attrs }, $class )->_init( );
+    # Already got an object
+    return $class if ref $class;
+
+    ( bless { @attrs && ref $attrs[0] eq 'HASH' ? %{$attrs[0]} : @attrs }, $class )->_init();
 }
 
 =back

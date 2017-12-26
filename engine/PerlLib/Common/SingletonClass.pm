@@ -74,7 +74,12 @@ sub getInstance
     return $class if ref $class;
 
     # We store the instance against the $class key of %_INSTANCES
-    $_INSTANCES{$class} ||= ( bless { @attrs && ref $attrs[0] eq 'HASH' ? %{$attrs[0]} : @attrs }, $class )->_init();
+    unless ( defined $_INSTANCES{$class} ) {
+        $_INSTANCES{$class} = bless { @attrs && ref $attrs[0] eq 'HASH' ? %{$attrs[0]} : @attrs }, $class;
+        $_INSTANCES{$class}->_init();
+    }
+
+    $_INSTANCES{$class};
 }
 
 =back
@@ -112,7 +117,7 @@ sub _init
 
 sub END
 {
-    undef( %_INSTANCES );
+    #undef( %_INSTANCES );
 }
 
 =back
