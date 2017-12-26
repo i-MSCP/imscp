@@ -27,7 +27,6 @@ use strict;
 use warnings;
 use File::Basename;
 use File::Find qw/ find /;
-
 use iMSCP::Bootstrapper;
 use iMSCP::Config;
 use iMSCP::Cwd;
