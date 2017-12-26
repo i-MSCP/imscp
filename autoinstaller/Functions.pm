@@ -27,11 +27,13 @@ use strict;
 use warnings;
 use File::Basename;
 use File::Find qw/ find /;
+
 use iMSCP::Bootstrapper;
 use iMSCP::Config;
 use iMSCP::Cwd;
 use iMSCP::Debug qw/ debug error newDebug endDebug /;
 use iMSCP::Dialog;
+use iMSCP::Dialog::InputValidation qw/ isStringInList /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute /;
@@ -133,7 +135,7 @@ sub build
 
     my $dialog = iMSCP::Dialog->getInstance();
 
-    unless ( iMSCP::Getopt->noprompt || $main::reconfigure ne 'none' ) {
+    unless ( iMSCP::Getopt->noprompt || !isStringInList( 'none', @{iMSCP::Getopt->reconfigure} ) ) {
         my $rs = _showWelcomeMsg( $dialog );
         return $rs if $rs;
 
@@ -147,7 +149,7 @@ sub build
     }
 
     my $rs = 0;
-    $rs = _askInstallerMode( $dialog ) unless iMSCP::Getopt->noprompt || $main::buildonly || $main::reconfigure ne 'none';
+    $rs = _askInstallerMode( $dialog ) unless iMSCP::Getopt->noprompt || $main::buildonly || !isStringInList( 'none', @{iMSCP::Getopt->reconfigure} );
     return $rs if $rs;
 
     my @steps = (

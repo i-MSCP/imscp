@@ -27,7 +27,7 @@ use strict;
 use warnings;
 use File::Basename;
 use iMSCP::Debug qw/ debug error /;
-use iMSCP::Dialog::InputValidation qw/ isStringInList /;
+use iMSCP::Dialog::InputValidation qw/ isOneOfStringsInList isStringInList /;
 use iMSCP::Dir;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
@@ -87,7 +87,7 @@ sub askDnsServerMode
     my $value = main::setupGetQuestion( 'BIND_MODE', $self->{'named'}->{'config'}->{'BIND_MODE'} || ( iMSCP::Getopt->preseed ? 'master' : '' ));
     my %choices = ( 'master', 'Master DNS server', 'slave', 'Slave DNS server' );
 
-    if ( isStringInList( $main::reconfigure, 'named', 'servers', 'all', 'forced' ) || !isStringInList( $value, keys %choices ) ) {
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'named', 'servers', 'all', 'forced' ] ) || !isStringInList( $value, keys %choices ) ) {
         ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'master' );
 Please choose the type of DNS server to configure:
 \\Z \\Zn
@@ -122,7 +122,7 @@ sub askDnsServerIps
     my ($rs, $answer, $msg) = ( 0, '', '' );
 
     if ( $dnsServerMode eq 'master' ) {
-        if ( isStringInList( $main::reconfigure, 'named', 'servers', 'all', 'forced' )
+        if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'named', 'servers', 'all', 'forced' ] )
             || !@slaveDnsIps
             || ( $slaveDnsIps[0] ne 'no' && !$self->_checkIps( @slaveDnsIps ) )
         ) {
@@ -159,7 +159,7 @@ EOF
                 @slaveDnsIps = ( 'no' );
             }
         }
-    } elsif ( isStringInList( $main::reconfigure, 'named', 'servers', 'all', 'forced' )
+    } elsif ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'named', 'servers', 'all', 'forced' ] )
         || !@slaveDnsIps
         || $slaveDnsIps[0] eq 'no'
         || !$self->_checkIps( @masterDnsIps )
@@ -223,7 +223,7 @@ sub askIPv6Support
     my $value = main::setupGetQuestion( 'BIND_IPV6', $self->{'named'}->{'config'}->{'BIND_IPV6'} || ( iMSCP::Getopt->preseed ? 'no' : '' ));
     my %choices = ( 'yes', 'Yes', 'no', 'No' );
 
-    if ( isStringInList( $main::reconfigure, 'named', 'servers', 'all', 'forced' ) || !isStringInList( $value, keys %choices ) ) {
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'named', 'servers', 'all', 'forced' ] ) || !isStringInList( $value, keys %choices ) ) {
         ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'no' );
 Do you want to enable IPv6 support for the DNS server?
 \\Z \\Zn
@@ -253,7 +253,9 @@ sub askLocalDnsResolver
     );
     my %choices = ( 'yes', 'Yes', 'no', 'No' );
 
-    if ( isStringInList( $main::reconfigure, 'resolver', 'named', 'servers', 'all', 'forced' ) || !isStringInList( $value, keys %choices ) ) {
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'resolver', 'named', 'servers', 'all', 'forced' ] )
+        || !isStringInList( $value, keys %choices )
+    ) {
         ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'yes' );
 Do you want to use the local DNS resolver?
 \\Z \\Zn

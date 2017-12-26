@@ -29,9 +29,8 @@ use File::Temp;
 use iMSCP::Crypt qw/ ALNUM encryptRijndaelCBC decryptRijndaelCBC randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug error /;
-use iMSCP::Dialog::InputValidation qw/
-    isNotEmpty isStringInList isStringNotInList isValidHostname isValidIpAddr isValidPassword isValidUsername isValidDbName
-    /;
+use iMSCP::Dialog::InputValidation qw/isNotEmpty isOneOfStringsInList isStringInList isStringNotInList isValidHostname isValidIpAddr isValidPassword
+    isValidUsername isValidDbName/;
 use iMSCP::Dir;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
@@ -104,7 +103,7 @@ sub masterSqlUserDialog
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
-    if ( $main::reconfigure =~ /(?:sql|servers|all|forced)$/
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'sql', 'servers', 'all', 'forced' ] )
         || !isNotEmpty( $hostname )
         || !isNotEmpty( $port )
         || !isNotEmpty( $user )
@@ -184,7 +183,7 @@ sub sqlUserHostDialog
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
-    if ( $main::reconfigure =~ /^(?:sql|servers|all|forced)$/
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'sql', 'servers', 'all', 'forced' ] )
         || ( $hostname ne '%'
         && !isValidHostname( $hostname )
         && !isValidIpAddr( $hostname, qr/^(?:PUBLIC|GLOBAL-UNICAST)$/ ) )
@@ -227,7 +226,9 @@ sub databaseNameDialog
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
-    if ( $main::reconfigure =~ /^(?:sql|servers|all|forced)$/ || ( !$self->_setupIsImscpDb( $dbName ) && !iMSCP::Getopt->preseed ) ) {
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'sql', 'servers', 'all', 'forced' ] )
+        || ( !$self->_setupIsImscpDb( $dbName ) && !iMSCP::Getopt->preseed )
+    ) {
         my $rs = 0;
 
         do {
@@ -290,7 +291,7 @@ sub databasePrefixDialog
     my $value = main::setupGetQuestion( 'MYSQL_PREFIX', iMSCP::Getopt->preseed ? 'none' : '' );
     my %choices = ( 'behind', 'Behind', 'infront', 'Infront', 'none', 'None' );
 
-    if ( isStringInList( $main::reconfigure, 'sql', 'servers', 'all', 'forced' )
+    if ( isStringInList( iMSCP::Getopt->reconfigure, 'sql', 'servers', 'all', 'forced' )
         || !isStringInList( $value, keys %choices )
     ) {
         ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'none' );

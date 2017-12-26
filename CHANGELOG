@@ -14,6 +14,7 @@ BACKEND
     Enhancement: Make it possible to discard files/directories when clearing a directory (iMSCP::Dir::clear)
     Enhancement: Make it possible to install Composer anywhere (iMSCP::Composer)
     Enhancement: Make it possible to override default composer.json (iMSCP::Composer)
+    Enhancement: Make it possible to reconfigure many items at once by passing comma separated list of items (iMSCP::Getopt)
     Enhancement: Make the iMSCP::Composer package usable by 3rd-party components, without relying on event manager
     Fixed: Avoid localization of `$@' variable
     Fixed: Can't call method "XXXXXX" on unblessed reference -- Object as event listener (iMSCP::EventManager -- regression fix)

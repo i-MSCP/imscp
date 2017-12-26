@@ -31,7 +31,7 @@ use iMSCP::Crypt qw/ apr1MD5 randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug qw / debug error getMessageByType /;
 use iMSCP::Dialog::InputValidation qw/
-    isNumber isNumberInRange isStringInList isStringNotInList isValidDomain isValidEmail isValidPassword isValidUsername 
+    isNumber isNumberInRange isOneOfStringsInList isStringInList isStringNotInList isValidDomain isValidEmail isValidPassword isValidUsername 
     /;
 use iMSCP::Dir;
 use iMSCP::Execute qw/ execute /;
@@ -167,7 +167,7 @@ sub askMasterAdminCredentials
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
-    if ( isStringInList( $main::reconfigure, 'admin', 'admin_credentials', 'all', 'forced' )
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'admin', 'admin_credentials', 'all', 'forced' ] )
         || !isValidUsername( $username )
         || $password eq ''
     ) {
@@ -244,7 +244,7 @@ sub askMasterAdminEmail
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
-    if ( isStringInList( $main::reconfigure, 'admin', 'admin_email', 'all', 'forced' ) || !isValidEmail( $email ) ) {
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'admin', 'admin_email', 'all', 'forced' ] ) || !isValidEmail( $email ) ) {
         my $rs = 0;
         $iMSCP::Dialog::InputValidation::lastValidationError = '' if $email eq '';
 
@@ -290,7 +290,9 @@ sub askDomain
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
-    if ( isStringInList( $main::reconfigure, 'panel', 'panel_hostname', 'hostnames', 'all', 'forced' ) || !isValidDomain( $domainName ) ) {
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'panel', 'panel_hostname', 'hostnames', 'all', 'forced' ] )
+        || !isValidDomain( $domainName )
+    ) {
         if ( $domainName eq '' ) {
             $iMSCP::Dialog::InputValidation::lastValidationError = '';
             my @labels = split /\./, main::setupGetQuestion( 'SERVER_HOSTNAME' );
@@ -340,9 +342,9 @@ sub askSsl
     my $baseServerVhostPrefix = main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX', 'http://' );
     my $openSSL = iMSCP::OpenSSL->new();
 
-    if ( isStringInList( $main::reconfigure, 'panel', 'panel_ssl', 'ssl', 'all', 'forced' )
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'panel', 'panel_ssl', 'ssl', 'all', 'forced' ] )
         || !isStringInList( $sslEnabled, 'yes', 'no' )
-        || ( $sslEnabled eq 'yes' && isStringInList( $main::reconfigure, 'panel_hostname', 'hostnames' ) )
+        || ( $sslEnabled eq 'yes' && isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'panel_hostname', 'hostnames' ] ) )
     ) {
         my $rs = $dialog->yesno( <<'EOF', $sslEnabled eq 'no' ? 1 : 0 );
 Do you want to enable SSL for the control panel?
@@ -487,7 +489,10 @@ sub askHttpPorts
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
-    if ( $main::reconfigure =~ /^(?:panel|panel_ports|all|forced)$/ || !isNumber( $httpPort ) || !isNumberInRange( $httpPort, 1025, 65535 ) ) {
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'panel', 'panel_ports', 'all', 'forced' ] )
+        || !isNumber( $httpPort )
+        || !isNumberInRange( $httpPort, 1025, 65535 )
+    ) {
         my $rs = 0;
 
         do {
@@ -509,7 +514,7 @@ EOF
     main::setupSetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT', $httpPort );
 
     if ( $ssl eq 'yes' ) {
-        if ( $main::reconfigure =~ /^(?:panel|panel_ports|panel_ssl|ssl|all|forced)$/
+        if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'panel', 'panel_ports', 'panel_ssl', 'ssl', 'all', 'forced' ] )
             || !isNumber( $httpsPort )
             || !isNumberInRange( $httpsPort, 1025, 65535 )
             || !isStringNotInList( $httpsPort, $httpPort )
@@ -556,7 +561,9 @@ sub askAltUrlsFeature
     my $value = main::setupGetQuestion( 'CLIENT_DOMAIN_ALT_URLS', iMSCP::Getopt->preseed ? 'yes' : '' );
     my %choices = ( 'yes', 'Yes', 'no', 'No' );
 
-    if ( $main::reconfigure =~ /^(?:panel|alt_urls_feature|all|forced)$/ || !isStringInList( $value, keys %choices ) ) {
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'panel', 'alt_urls_feature', 'all', 'forced' ] )
+        || !isStringInList( $value, keys %choices )
+    ) {
         ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'yes' );
 Do you want to enable the alternative URLs feature for client domains?
 

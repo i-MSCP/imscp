@@ -30,7 +30,7 @@ use iMSCP::Composer;
 use iMSCP::Crypt qw/ decryptRijndaelCBC randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug error /;
-use iMSCP::Dialog::InputValidation qw/ isAvailableSqlUser isStringNotInList isValidPassword isValidUsername /;
+use iMSCP::Dialog::InputValidation qw/ isAvailableSqlUser isOneOfStringsInList isStringNotInList isValidPassword isValidUsername /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute /;
@@ -98,7 +98,7 @@ sub showDialog
         'PHPMYADMIN_SQL_PASSWORD', ( iMSCP::Getopt->preseed ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
     );
 
-    if ( $main::reconfigure =~ /^(?:sqlmanager|all|forced)$/
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'sqlmanager', 'all', 'forced' ] )
         || !isValidUsername( $dbUser )
         || !isStringNotInList( lc $dbUser, 'root', 'debian-sys-maint', lc $masterSqlUser, 'vlogger_user' )
         || !isAvailableSqlUser( $dbUser )
@@ -127,7 +127,7 @@ EOF
 
     main::setupSetQuestion( 'PHPMYADMIN_SQL_USER', $dbUser );
 
-    if ( $main::reconfigure =~ /^(?:sqlmanager|all|forced)$/ || !isValidPassword( $dbPass ) ) {
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'sqlmanager', 'all', 'forced' ] ) || !isValidPassword( $dbPass ) ) {
         unless ( defined $main::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
             my $rs = 0;
 

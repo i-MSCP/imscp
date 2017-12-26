@@ -27,7 +27,7 @@ use strict;
 use warnings;
 use File::Basename;
 use File::Spec;
-use autouse 'iMSCP::Dialog::InputValidation' => qw/ isStringInList /;
+use autouse 'iMSCP::Dialog::InputValidation' => qw/ isOneOfStringsInList isStringInList /;
 use Class::Autouse qw/ :nostat iMSCP::Getopt iMSCP::ProgramFinder Servers::httpd /;
 use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::Dir;
@@ -100,7 +100,7 @@ sub askForPhpSapi
         $choices{'cgi'} = 'PHP through Apache2 Fcgid module (cgi SAPI)';
     }
 
-    if ( isStringInList( $main::reconfigure, 'php', 'servers', 'all', 'forced' ) || !isStringInList( $value, keys %choices ) ) {
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'php', 'servers', 'all', 'forced' ] ) || !isStringInList( $value, keys %choices ) ) {
         ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'fpm' );
 \\Z4\\Zb\\ZuPHP configuration level\\Zn
 
@@ -132,7 +132,7 @@ sub askForFastCGIconnectionType
     my $value = main::setupGetQuestion( 'PHP_FPM_LISTEN_MODE', $self->{'config'}->{'PHP_FPM_LISTEN_MODE'} || ( iMSCP::Getopt->preseed ? 'uds' : '' ));
     my %choices = ( 'tcp', 'TCP sockets over the loopback interface', 'uds', 'Unix Domain Sockets (recommended)' );
 
-    if ( isStringInList( $main::reconfigure, 'php', 'servers', 'all', 'forced' ) || !isStringInList( $value, keys %choices ) ) {
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'php', 'servers', 'all', 'forced' ] ) || !isStringInList( $value, keys %choices ) ) {
         ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'uds' );
 \\Z4\\Zb\\ZuPHP-FPM - FastCGI address type\\Zn
 
@@ -428,37 +428,7 @@ sub addDomain
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpAddDomain', $moduleData );
     return $rs if $rs;
 
-    eval {
-        if ( $self->{'config'}->{'PHP_SAPI'} eq 'apache2handler' ) {
-            if ( $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
-                $self->_buildApache2HandlerConfig( $moduleData );
-            }
-
-            return;
-        }
-
-        if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
-            iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove();
-
-            if ( $moduleData->{'DOMAIN_NAME'} eq $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'} && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
-                $self->_buildCgiConfig( $moduleData );
-            }
-
-            return;
-        }
-
-        if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
-            $self->_deleteFpmPoolFile( $moduleData->{'DOMAIN_NAME'} );
-
-            if ( $moduleData->{'DOMAIN_NAME'} eq $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'} && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
-                $self->_buildFpmConfig( $moduleData );
-            }
-
-            return;
-        }
-
-        die( 'Unknown PHP SAPI' );
-    };
+    eval { $self->_buildPhpConfig( $moduleData ); };
     if ( $@ ) {
         error( $@ );
         return 1;
@@ -480,16 +450,7 @@ sub disableDomain
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpdDisableDomain', $moduleData );
     return $rs if $rs;
 
-    eval {
-        if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
-            iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove();
-            return;
-        }
-
-        if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
-            $self->_deleteFpmPoolFile( $moduleData->{'DOMAIN_NAME'} );
-        }
-    };
+    eval { $self->_deletePhpConfig( $moduleData, 0 ); };
     if ( $@ ) {
         error( $@ );
         return 1;
@@ -511,16 +472,7 @@ sub deleteDomain
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpDeleteDomain', $moduleData );
     return $rs if $rs;
 
-    eval {
-        if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
-            iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove();
-            return;
-        }
-
-        if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
-            $self->_deleteFpmPoolFile( $moduleData->{'DOMAIN_NAME'} );
-        }
-    };
+    eval { $self->_deletePhpConfig( $moduleData, 0 ); };
     if ( $@ ) {
         error( $@ );
         return 1;
@@ -542,37 +494,7 @@ sub addSubdomain
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpAddSubdomain', $moduleData );
     return $rs if $rs;
 
-    eval {
-        if ( $self->{'config'}->{'PHP_SAPI'} eq 'apache2handler' ) {
-            if ( $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
-                $self->_buildApache2HandlerConfig( $moduleData );
-            }
-
-            return;
-        }
-
-        if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
-            iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove();
-
-            if ( $moduleData->{'DOMAIN_NAME'} eq $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'} && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
-                $self->_buildCgiConfig( $moduleData );
-            }
-
-            return;
-        }
-
-        if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
-            $self->_deleteFpmPoolFile( $moduleData->{'DOMAIN_NAME'} );
-
-            if ( $moduleData->{'DOMAIN_NAME'} eq $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'} && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
-                $self->_buildFpmConfig( $moduleData );
-            }
-
-            return;
-        }
-
-        die( 'Unknown PHP SAPI' );
-    };
+    eval { $self->_buildPhpConfig( $moduleData ); };
     if ( $@ ) {
         error( $@ );
         return 1;
@@ -594,16 +516,7 @@ sub disableSubdomain
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpDisableSubdomain', $moduleData );
     return $rs if $rs;
 
-    eval {
-        if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
-            iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove();
-            return;
-        }
-
-        if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
-            $self->_deleteFpmPoolFile( $moduleData->{'DOMAIN_NAME'} );
-        }
-    };
+    eval { $self->_deletePhpConfig( $moduleData, 0 ); };
     if ( $@ ) {
         error( $@ );
         return 1;
@@ -625,16 +538,7 @@ sub deleteSubdomain
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpDeleteSubdomain', $moduleData );
     return $rs if $rs;
 
-    eval {
-        if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
-            iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove();
-            return;
-        }
-
-        if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
-            $self->_deleteFpmPoolFile( $moduleData->{'DOMAIN_NAME'} );
-        }
-    };
+    eval { $self->_deletePhpConfig( $moduleData, 0 ); };
     if ( $@ ) {
         error( $@ );
         return 1;
@@ -799,37 +703,124 @@ sub _init
 {
     my ($self) = @_;
 
-    # Define properties that are expected by parent class
-    @{$self}{qw/ PEAR_DIR PHP_FPM_POOL_DIR PHP_FPM_RUN_DIR /} = (
-        '/usr/share/php',
+    # Define properties that are expected by parent package
+    @{$self}{qw/ PHP_FPM_POOL_DIR PHP_FPM_RUN_DIR PHP_PEAR_DIR /} = (
         # We are deferring evaluation because the PHP version can be
         # overriden by 3rd-party components.
         ( defer { "/etc/php/$self->{'config'}->{'PHP_VERSION'}/fpm/pool.d" } ),
-        '/run/php'
+        '/run/php',
+        '/usr/share/php'
     );
 
     $self->SUPER::_init();
 }
 
-=item _deleteFpmPoolFile( $domain )
+=item _buildPhpConfig( \$moduleData )
 
- Remove FPM pool configuration file for the given domain
+ Build PHP config for a domain or subdomain
 
- Param string $domain Domain name
+ Param hashref \%moduleData Data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Return void, die on failure
+
+=cut
+
+sub _buildPhpConfig
+{
+    my ($self, $moduleData) = @_;
+
+    if ( $self->{'config'}->{'PHP_SAPI'} eq 'apache2handler' ) {
+        $self->_buildApache2HandlerConfig( $moduleData );
+        return;
+    }
+
+    $self->_deletePhpConfig( $moduleData );
+
+    if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+        $self->_buildCgiConfig( $moduleData );
+        return;
+    }
+
+    if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+        $self->_buildFpmConfig( $moduleData );
+        return;
+    }
+}
+
+=item _deletePhpConfig( \%moduleData [, $checkContext = TRUE ] )
+
+ Delete PHP config for a domain or subdomain
+
+ Param hashref \%moduleData Data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param bool $checkContext Whether or not context must be checked
+ Return void, die on failure
+
+=cut
+
+sub _deletePhpConfig
+{
+    my ($self, $moduleData, $checkContext) = @_;
+    $checkContext //= 1;
+
+    if ( $self->{'config'}->{'PHP_SAPI'} eq 'cgi' ) {
+        $self->_deleteCgiConfig( $moduleData, 0 );
+        return;
+    }
+
+    if ( $self->{'config'}->{'PHP_SAPI'} eq 'fpm' ) {
+        $self->_deleteFpmConfig( $moduleData, 0 );
+    }
+}
+
+=item _deleteCgiConfig( \%moduleData [, $checkContext = TRUE ] )
+
+ Delete CGI/FastCGI configuration for a domain or subdomain
+
+ Param hashref \%module Data as provided by Alias|Domain|SubAlias|Subdomain modules
+ Param bool $checkContext Whether or not context must be checked
  return void, die on failure
 
 =cut
 
-sub _deleteFpmPoolFile
+sub _deleteCgiConfig
 {
-    my ($self, $domain) = @_;
+    my ($self, $moduleData, $checkContext) = @_;
+    $checkContext //= 1;
+
+    iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'DOMAIN_NAME'}" )->remove();
+}
+
+=item _deleteFpmConfig( \%moduleData [, $checkContext = TRUE ] )
+
+ Delete PHP-FPM configuration for a domain or subdomain
+
+ Param hashref \%module Data as provided by Alias|Domain|SubAlias|Subdomain modules
+ Param bool $checkContext Whether or not context must be checked
+ return void, die on failure
+
+=cut
+
+sub _deleteFpmConfig
+{
+    my ($self, $moduleData, $checkContext) = @_;
+    $checkContext //= 1;
 
     for ( iMSCP::Dir->new( dirname => '/etc/php' )->getDirs() ) {
-        next unless /^[\d.]+$/ && -f "/etc/php/$_/fpm/pool.d/$domain.conf";
+        if ( !/^[\d.]+$/
+            || ( $checkContext
+            && $self->{'config'}->{'PHP_VERSION'} eq $_
+            && ( $moduleData->{'PHP_SUPPORT'} eq 'yes'
+            && ( $moduleData->{'PHP_CONFIG_LEVEL'} eq 'per_user' && $moduleData->{'DOMAIN_TYPE'} eq 'dmn' )
+            || ( $moduleData->{'PHP_CONFIG_LEVEL'} eq 'per_domain' && grep($moduleData->{'DOMAIN_TYPE'} eq $_, 'dmn', 'als') )
+            || ( $moduleData->{'PHP_CONFIG_LEVEL'} eq 'per_site' && $moduleData->{'FORWARD'} eq 'no' ) ) )
+        ) {
+            next;
+        }
 
-        debug( sprintf( 'Deleting the %s FPM pool configuration file', "/etc/php/$_/fpm/pool.d/$domain.conf" ));
+        next unless -f "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf";
 
-        iMSCP::File->new( filename => "/etc/php/$_/fpm/pool.d/$domain.conf" )->delFile() == 0 or die(
+        debug( sprintf( 'Deleting the %s FPM pool configuration file', "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf" ));
+
+        iMSCP::File->new( filename => "/etc/php/$_/fpm/pool.d/$moduleData->{'DOMAIN_NAME'}.conf" )->delFile() == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unkown error'
         );
 

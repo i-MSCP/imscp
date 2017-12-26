@@ -31,7 +31,7 @@ use File::Temp;
 use iMSCP::Crypt qw/ ALNUM randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug error /;
-use iMSCP::Dialog::InputValidation qw/ isAvailableSqlUser isStringNotInList isValidPassword isValidUsername /;
+use iMSCP::Dialog::InputValidation qw/ isAvailableSqlUser isOneOfStringsInList isStringNotInList isValidPassword isValidUsername /;
 use iMSCP::Dir;
 use iMSCP::Execute qw/ execute executeNoWait /;
 use iMSCP::File;
@@ -103,7 +103,7 @@ sub authdaemonSqlUserDialog
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
-    if ( $main::reconfigure =~ /^(?:po|servers|all|forced)$/
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'po', 'servers', 'all', 'forced' ] )
         || !isValidUsername( $dbUser )
         || !isStringNotInList( lc $dbUser, 'root', 'debian-sys-maint', lc $masterSqlUser, 'vlogger_user' )
         || !isAvailableSqlUser( $dbUser )
@@ -132,7 +132,7 @@ EOF
 
     main::setupSetQuestion( 'AUTHDAEMON_SQL_USER', $dbUser );
 
-    if ( $main::reconfigure =~ /^(?:po|servers|all|forced)$/ || !isValidPassword( $dbPass ) ) {
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'po', 'servers', 'all', 'forced' ] ) || !isValidPassword( $dbPass ) ) {
         unless ( defined $main::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
             my $rs = 0;
 

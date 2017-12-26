@@ -29,6 +29,7 @@ use FindBin;
 use iMSCP::Cwd;
 use iMSCP::Debug qw/ debug error getMessageByType output /;
 use iMSCP::Dialog;
+use iMSCP::Dialog::InputValidation qw/ isOneOfStringsInList /;
 use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute executeNoWait /;
 use iMSCP::File;
@@ -568,7 +569,7 @@ EOF
             $sAlt = $supportedAlts[0] if $sAlt eq '';
         }
 
-        $needDialog ||= grep( $_ eq $main::reconfigure, $section, 'servers', 'all' );
+        $needDialog ||= isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ $section, 'servers', 'all' ] );
 
         if ( @supportedAlts > 1 && $needDialog ) {
             $dialog->set( 'no-cancel', '' );

@@ -235,15 +235,15 @@ sub deleteSubdomain
     die( sprintf( 'The %s package must implement the deleteSubdomain() method', ref $self ));
 }
 
-=item buildConfFile( $srcFile, $trgFile, [, \%moduleData = { } [, \%serverData [, \%parameters = { } ] ] ] )
+=item buildConfFile( $srcFile, $trgFile, [, \%mdata = { } [, \%sdata [, \%params = { } ] ] ] )
 
  Build the given PHP configuration file
 
  Param string $srcFile Source file path (full path or path relative to the i-MSCP php configuration directory)
  Param string $trgFile Target file path
- Param hashref \%data OPTIONAL Data as provided by Alias|Domain|SubAlias|Subdomain modules
- Param hashref \%data OPTIONAL Server data (Server data have higher precedence than modules data)
- Param hashref \%parameters OPTIONAL parameters:
+ Param hashref \%mdata OPTIONAL Data as provided by Alias|Domain|SubAlias|Subdomain modules
+ Param hashref \%sdata OPTIONAL Server data (Server data have higher precedence than modules data)
+ Param hashref \%params OPTIONAL parameters:
   - user  : File owner (default: root)
   - group : File group (default: root
   - mode  : File mode (default: 0644)
@@ -254,20 +254,18 @@ sub deleteSubdomain
 
 sub buildConfFile
 {
-    my ($self, $srcFile, $trgFile, $moduleData, $serverData, $parameters) = @_;
-    $moduleData //= {};
-    $serverData //= {};
-    $parameters //= {};
+    my ($self, $srcFile, $trgFile, $mdata, $sdata, $params) = @_;
+    $mdata //= {};
+    $sdata //= {};
+    $params //= {};
 
     my ($filename, $path) = fileparse( $srcFile );
     my $cfgTpl;
 
-    if ( $parameters->{'cached'} && exists $self->{'_templates'}->{$srcFile} ) {
+    if ( $params->{'cached'} && exists $self->{'_templates'}->{$srcFile} ) {
         $cfgTpl = $self->{'_templates'}->{$srcFile};
     } else {
-        my $rs = $self->{'eventManager'}->trigger(
-            'onLoadTemplate', 'php', $filename, \$cfgTpl, $moduleData, $serverData, $self->{'config'}, $parameters
-        );
+        my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'php', $filename, \$cfgTpl, $mdata, $sdata, $self->{'config'}, $params );
         return $rs if $rs;
 
         unless ( defined $cfgTpl ) {
@@ -279,20 +277,16 @@ sub buildConfFile
             }
         }
 
-        $self->{'_templates'}->{$srcFile} = $cfgTpl if $parameters->{'cached'};
+        $self->{'_templates'}->{$srcFile} = $cfgTpl if $params->{'cached'};
     }
 
-    my $rs = $self->{'eventManager'}->trigger(
-        'beforePhpBuildConfFile', \$cfgTpl, $filename, \$trgFile, $moduleData, $serverData, $self->{'config'}, $parameters
-    );
+    my $rs = $self->{'eventManager'}->trigger( 'beforePhpBuildConfFile', \$cfgTpl, $filename, \$trgFile, $mdata, $sdata, $self->{'config'}, $params );
     return $rs if $rs;
 
-    processByRef( $serverData, \$cfgTpl );
-    processByRef( $moduleData, \$cfgTpl );
+    processByRef( $sdata, \$cfgTpl );
+    processByRef( $mdata, \$cfgTpl );
 
-    $rs = $self->{'eventManager'}->trigger(
-        'afterPhpdBuildConfFile', \$cfgTpl, $filename, \$trgFile, $moduleData, $serverData, $self->{'config'}, $parameters
-    );
+    $rs = $self->{'eventManager'}->trigger( 'afterPhpdBuildConfFile', \$cfgTpl, $filename, \$trgFile, $mdata, $sdata, $self->{'config'}, $params );
     return $rs if $rs;
 
     my $fh = iMSCP::File->new( filename => $trgFile );
@@ -300,13 +294,13 @@ sub buildConfFile
     $rs ||= $fh->save();
     return $rs if $rs;
 
-    if ( exists $parameters->{'user'} || exists $parameters->{'group'} ) {
-        $rs = $fh->owner( $parameters->{'user'} // $main::imscpConfig{'ROOT_USER'}, $parameters->{'group'} // $main::imscpConfig{'ROOT_GROUP'} );
+    if ( exists $params->{'user'} || exists $params->{'group'} ) {
+        $rs = $fh->owner( $params->{'user'} // $main::imscpConfig{'ROOT_USER'}, $params->{'group'} // $main::imscpConfig{'ROOT_GROUP'} );
         return $rs if $rs;
     }
 
-    if ( exists $parameters->{'mode'} ) {
-        $rs = $fh->mode( $parameters->{'mode'} );
+    if ( exists $params->{'mode'} ) {
+        $rs = $fh->mode( $params->{'mode'} );
         return $rs if $rs;
     }
 
@@ -448,7 +442,9 @@ sub _init
     my ($self) = @_;
 
     # Check for properties that must be defined in concret implementation package
-    defined $self->{$_ } or die( sprintf( 'The %s package must define the %s property', ref $self )) for qw/ PHP_FPM_POOL_DIR PEAR_DIR /;
+    for ( qw/ PHP_FPM_POOL_DIR PHP_FPM_RUN_DIR PHP_PEAR_DIR / ) {
+        defined $self->{$_ } or die( sprintf( 'The %s package must define the %s property', ref $self ))
+    }
 
     @{$self}{qw/ start restart reload _templates /} = ( {}, {}, {}, {} );
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/php";
@@ -509,6 +505,13 @@ sub _buildApache2HandlerConfig
 {
     my ($self, $moduleData) = @_;
 
+    if ( $moduleData->{'PHP_SUPPORT'} eq 'no'
+        || $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'} ne $moduleData->{'DOMAIN_NAME'}
+        || ( $moduleData->{'PHP_CONFIG_LEVEL'} eq 'per_site' && $moduleData->{'FORWARD'} eq 'yes' )
+    ) {
+        return;
+    }
+
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpApache2HandlerSapiBuildConf', $moduleData );
 
     debug( sprintf( 'Building Apache2Handler configuration for the %s domain', $moduleData->{'DOMAIN_NAME'} ));
@@ -519,7 +522,7 @@ sub _buildApache2HandlerConfig
 
 =item _buildCgiConfig( \%moduleData )
 
- Build PHP cgi configuration for the given domain
+ Build PHP CGI/FastCGI configuration for the given domain
 
  Param hashref \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
  Return void, die on failure
@@ -530,11 +533,18 @@ sub _buildCgiConfig
 {
     my ($self, $moduleData) = @_;
 
+    if ( $moduleData->{'PHP_SUPPORT'} eq 'no'
+        || $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'} ne $moduleData->{'DOMAIN_NAME'}
+        || ( $moduleData->{'PHP_CONFIG_LEVEL'} eq 'per_site' && $moduleData->{'FORWARD'} eq 'yes' )
+    ) {
+        return;
+    }
+
     $self->{'eventManager'}->trigger( 'beforePhpCgiSapiBuildConf', $moduleData ) == 0 or die(
         getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
     );
 
-    debug( sprintf( 'Building cgi configuration for the %s domain', $moduleData->{'DOMAIN_NAME'} ));
+    debug( sprintf( 'Building PHP CGI/FastCGI configuration for the %s domain', $moduleData->{'DOMAIN_NAME'} ));
 
     #iMSCP::Dir->new( dirname => "$self->{'config'}->{'PHP_FCGI_STARTER_DIR'}/$moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}" )->remove();
     iMSCP::Dir->new( dirname => $self->{'config'}->{'PHP_FCGI_STARTER_DIR'} )->make( {
@@ -594,7 +604,7 @@ sub _buildCgiConfig
  Build PHP fpm configuration for the given domain
 
  Param hashref \%moduleData Data as provided by Alias|Domain|SubAlias|Subdomain modules
- Return int 0 on sucess, other on failure
+ Return void, die on failure
 
 =cut
 
@@ -602,11 +612,18 @@ sub _buildFpmConfig
 {
     my ($self, $moduleData) = @_;
 
+    if ( $moduleData->{'PHP_SUPPORT'} eq 'no'
+        || $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'} ne $moduleData->{'DOMAIN_NAME'}
+        || ( $moduleData->{'PHP_CONFIG_LEVEL'} eq 'per_site' && $moduleData->{'FORWARD'} eq 'yes' )
+    ) {
+        return;
+    }
+
     $self->{'eventManager'}->trigger( 'beforePhpFpmSapiBuildConf', $moduleData ) == 0 or die(
         getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
     );
 
-    debug( sprintf( 'Building fpm configuration for the %s domain', $moduleData->{'DOMAIN_NAME'} ));
+    debug( sprintf( 'Building PHP-FPM configuration for the %s domain', $moduleData->{'DOMAIN_NAME'} ));
 
     my $serverData = {
         EMAIL_DOMAIN                 => $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'},
@@ -707,7 +724,11 @@ sub beforeApache2BuildConfFile
 
     if ( $self->{'config'}->{'PHP_SAPI'} eq 'apache2handler' ) {
         if ( $moduleData->{'FORWARD'} eq 'no' && $moduleData->{'PHP_SUPPORT'} eq 'yes' ) {
-            @{$apache2ServerData}{qw/ EMAIL_DOMAIN TMPDIR /} = ( $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'}, $moduleData->{'HOME_DIR'} . '/phptmp' );
+            @{$apache2ServerData}{qw/ EMAIL_DOMAIN PHP_PEAR_DIR TMPDIR /} = (
+                $moduleData->{'PHP_CONFIG_LEVEL_DOMAIN'},
+                $self->{'PHP_PEAR_DIR'},
+                $moduleData->{'HOME_DIR'} . '/phptmp'
+            );
 
             replaceBlocByRef( "# SECTION document root addons BEGIN.\n", "# SECTION document root addons END.\n", <<"EOF", $cfgTpl );
         # SECTION document root addons BEGIN.
@@ -715,7 +736,7 @@ sub beforeApache2BuildConfFile
         # SECTION php_apache2handler BEGIN.
         AllowOverride All
         DirectoryIndex index.php
-        php_admin_value open_basedir "{HOME_DIR}/:{PEAR_DIR}/:dev/random:/dev/urandom"
+        php_admin_value open_basedir "{HOME_DIR}/:{PHP_PEAR_DIR}/:dev/random:/dev/urandom"
         php_admin_value upload_tmp_dir "{TMPDIR}"
         php_admin_value session.save_path "{TMPDIR}"
         php_admin_value soap.wsdl_cache_dir "{TMPDIR}"

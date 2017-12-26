@@ -25,7 +25,7 @@ package Package::Backup;
 
 use strict;
 use warnings;
-use autouse 'iMSCP::Dialog::InputValidation' => qw/ isStringInList /;
+use autouse 'iMSCP::Dialog::InputValidation' => qw/ isOneOfStringsInList isStringInList /;
 use iMSCP::Getopt;
 use parent 'Common::SingletonClass';
 
@@ -77,7 +77,7 @@ sub imscpBackupDialog
     my $value = main::setupGetQuestion( 'BACKUP_IMSCP', iMSCP::Getopt->preseed ? 'yes' : '' );
     my %choices = ( 'yes', 'Yes', 'no', 'No' );
 
-    if ( isStringInList( $main::reconfigure, 'backup', 'all', 'forced' ) || !isStringInList( $value, keys %choices ) ) {
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'backup', 'all', 'forced' ] ) || !isStringInList( $value, keys %choices ) ) {
         ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'yes' );
 \\Z4\\Zb\\Zui-MSCP Backup Feature\\Zn
 
@@ -107,7 +107,7 @@ sub customerBackupDialog
     my $value = main::setupGetQuestion( 'BACKUP_DOMAINS', iMSCP::Getopt->preseed ? 'yes' : '' );
     my %choices = ( 'yes', 'Yes', 'no', 'No' );
 
-    if ( isStringInList( $main::reconfigure, 'backup', 'all', 'forced' ) || !isStringInList( $value, keys %choices ) ) {
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'backup', 'all', 'forced' ] ) || !isStringInList( $value, keys %choices ) ) {
         ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'yes' );
 \\Z4\\Zb\\ZuDomains Backup Feature\\Zn
 

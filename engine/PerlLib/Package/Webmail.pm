@@ -25,7 +25,7 @@ package Package::Webmail;
 
 use strict;
 use warnings;
-use autouse 'iMSCP::Dialog::InputValidation' => qw/ isStringInList /;
+use autouse 'iMSCP::Dialog::InputValidation' => qw/ isOneOfStringsInList /;
 use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
 use iMSCP::Execute qw/ execute /;
@@ -86,7 +86,7 @@ sub showDialog
     my %choices;
     @choices{@{$self->{'AVAILABLE_PACKAGES'}}} = @{$self->{'AVAILABLE_PACKAGES'}};
 
-    if ( isStringInList( $main::reconfigure, 'webmails', 'all', 'forced' )
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'webmails', 'all', 'forced' ] )
         || !@{$self->{'SELECTED_PACKAGES'}}
         || grep { !exists $choices{$_} && $_ ne 'no' } @{$self->{'SELECTED_PACKAGES'}}
     ) {

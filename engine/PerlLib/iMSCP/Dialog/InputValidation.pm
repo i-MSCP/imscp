@@ -30,12 +30,13 @@ use DateTime::TimeZone;
 use Email::Valid;
 use iMSCP::Database;
 use iMSCP::Net;
+use List::Compare::Functional qw/ get_intersection /;
 use Net::LibIDN qw/ idn_to_ascii /;
 use parent 'Exporter';
 
 our @EXPORT = qw/
     isValidUsername isValidPassword isValidEmail isValidHostname isValidDomain isValidIpAddr isRoutableIpAddr
-    isValidTimezone isValidDbName isNumber isNumberInRange isStringInList isStringNotInList isValidNumberRange
+    isValidTimezone isValidDbName isNumber isNumberInRange isStringInList isStringNotInList isOneOfStringsInList isValidNumberRange
     isNotEmpty isAvailableSqlUser /;
 
 our $lastValidationError = '';
@@ -447,6 +448,25 @@ sub isStringNotInList( $@ )
 EOF
 
     0;
+}
+
+=item isOneOfStringsInList( \@stringsListL, \@stringListR )
+
+ Is at least one string of the first list of strings in the the second list of strings?
+
+ Note: Comparison is case-sensitive.
+
+ Param array \@stringsListL List of strings to search in the second list of strings
+ Param array \@stringListR  List of string in which to search strings from the first list of strings
+ Return bool TRUE if at least one string of the first list of strings is found in the second list of string, FALSE otherwise
+
+=cut
+
+sub isOneOfStringsInList
+{
+    my ($stringsListL, $stringListR) = @_;
+
+    scalar get_intersection( '-u', [ $stringsListL, $stringListR ] );
 }
 
 =item isNotEmpty( $string )

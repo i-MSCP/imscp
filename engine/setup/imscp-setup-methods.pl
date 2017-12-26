@@ -26,6 +26,7 @@ use iMSCP::Database;
 use iMSCP::DbTasksProcessor;
 use iMSCP::Debug qw/ error /;
 use iMSCP::Dialog;
+use iMSCP::Dialog::InputValidation qw/ isStringInList /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute qw/ executeNoWait /;
@@ -126,12 +127,12 @@ sub setupDialog
         return $rs if $rs && $rs < 30;
 
         if ( $rs == 30 ) {
-            $main::reconfigure = 'forced' if $main::reconfigure eq 'none';
+            iMSCP::Getopt->reconfigure('forced') if isStringInList( 'none', @{iMSCP::Getopt->reconfigure});
             $state--;
             next;
         }
 
-        $main::reconfigure = 'none' if $main::reconfigure eq 'forced';
+        iMSCP::Getopt->reconfigure('none') if isStringInList( 'forced', @{iMSCP::Getopt->reconfigure});
         $state++;
     }
 

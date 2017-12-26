@@ -25,6 +25,7 @@ package Package::ServicesSSL;
 
 use strict;
 use warnings;
+use autouse 'iMSCP::Dialog::InputValidation' => qw/ isOneOfStringsInList /;
 use iMSCP::Debug qw/ getMessageByType /;
 use iMSCP::File;
 use iMSCP::Getopt;
@@ -85,9 +86,9 @@ sub servicesSslDialog
     my $caBundlePath = main::setupGetQuestion( 'SERVICES_SSL_CA_BUNDLE_PATH', '/root' );
     my $openSSL = iMSCP::OpenSSL->new();
 
-    if ( $main::reconfigure =~ /^(?:services_ssl|ssl|all|forced)$/
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'services_ssl', 'ssl', 'all', 'forced' ] )
         || $sslEnabled !~ /^(?:yes|no)$/
-        || ( $sslEnabled eq 'yes' && $main::reconfigure =~ /^(?:system_hostname|hostnames)$/ )
+        || ( $sslEnabled eq 'yes' && isOneOfStringsInList( iMSCP::Getopt->reconfigure,  [ 'system_hostname', 'hostnames' ] ) )
     ) {
         my $rs = $dialog->yesno( <<'EOF', $sslEnabled eq 'no' ? 1 : 0 );
 Do you want to enable SSL for FTP and MAIL services?

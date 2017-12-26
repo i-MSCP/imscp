@@ -28,7 +28,7 @@ use warnings;
 use iMSCP::Database;
 use DateTime::TimeZone;
 use iMSCP::Debug qw/ debug error /;
-use iMSCP::Dialog::InputValidation qw/ isValidIpAddr isValidHostname isValidTimezone /;
+use iMSCP::Dialog::InputValidation qw/ isOneOfStringsInList isValidIpAddr isValidHostname isValidTimezone /;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::Getopt;
@@ -92,7 +92,9 @@ sub hostnameDialog
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
-    if ( $main::reconfigure =~ /^(?:local_server|system_hostname|hostnames|all|forced)$/ || !isValidHostname( $hostname ) ) {
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'local_server', 'system_hostname', 'hostnames', 'all', 'forced' ] )
+        || !isValidHostname( $hostname )
+    ) {
         my $rs = 0;
 
         do {
@@ -151,7 +153,7 @@ sub primaryIpDialog
         )
     );
 
-    if ( $main::reconfigure =~ /^(?:local_server|primary_ip|all|forced)$/ || !grep( $_ eq $lanIP, @ipList ) ) {
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'local_server', 'primary_ip', 'all', 'forced' ] ) || !grep( $_ eq $lanIP, @ipList ) ) {
         my $rs = 0;
 
         do {
@@ -176,7 +178,7 @@ EOF
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
-    if ( $main::reconfigure =~ /^(?:local_server|primary_ip|all|forced)$/ || !isValidIpAddr( $wanIP ) ) {
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'local_server', 'primary_ip', 'all', 'forced' ] ) || !isValidIpAddr( $wanIP ) ) {
         my $rs = 0;
 
         do {
@@ -196,7 +198,7 @@ EOF
         return $rs unless $rs < 30;
     }
 
-    if ( $main::reconfigure =~ /^(?:local_server|primary_ip|all|forced)$/ ) {
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'local_server', 'primary_ip', 'all', 'forced' ] ) ) {
         if ( $dialog->yesno( <<"EOF", 'no_by_default' ) == 0 ) {
 Do you want to replace the IP address of all clients with the new primary IP address?
 EOF
@@ -229,7 +231,7 @@ sub timezoneDialog
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
-    if ( $main::reconfigure =~ /^(?:local_server|timezone|all|forced)$/ || !isValidTimezone( $timezone ) ) {
+    if (isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'local_server', 'timezone', 'all', 'forced' ] ) || !isValidTimezone( $timezone ) ) {
         my $rs = 0;
 
         do {

@@ -29,7 +29,8 @@ use File::Basename;
 use iMSCP::Crypt qw/ ALNUM randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug error /;
-use iMSCP::Dialog::InputValidation qw/ isAvailableSqlUser isNumberInRange isStringNotInList isValidNumberRange isValidPassword isValidUsername /;
+use iMSCP::Dialog::InputValidation qw/ isAvailableSqlUser isNumberInRange isOneOfStringsInList isStringNotInList isValidNumberRange isValidPassword
+    isValidUsername /;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::Getopt;
@@ -93,7 +94,7 @@ sub sqlUserDialog
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
-    if ( $main::reconfigure =~ /^(?:ftpd|servers|all|forced)$/
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'ftpd', 'servers', 'all', 'forced' ] )
         || !isValidUsername( $dbUser )
         || !isStringNotInList( lc $dbUser, 'root', 'debian-sys-maint', lc $masterSqlUser, 'vlogger_user' )
         || !isAvailableSqlUser( $dbUser )
@@ -122,7 +123,7 @@ EOF
 
     main::setupSetQuestion( 'FTPD_SQL_USER', $dbUser );
 
-    if ( $main::reconfigure =~ /^(?:ftpd|servers|all|forced)$/ || !isValidPassword( $dbPass ) ) {
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'ftpd', 'servers', 'all', 'forced' ] ) || !isValidPassword( $dbPass ) ) {
         unless ( defined $main::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
             my $rs = 0;
 
@@ -175,7 +176,7 @@ sub passivePortRangeDialog
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
-    if ( $main::reconfigure =~ /^(?:ftpd|servers|all|forced)$/
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'ftpd', 'servers', 'all', 'forced' ] )
         || !isValidNumberRange( $passivePortRange, \$startOfRange, \$endOfRange )
         || !isNumberInRange( $startOfRange, 32768, 60999 )
         || !isNumberInRange( $endOfRange, $startOfRange, 60999 )

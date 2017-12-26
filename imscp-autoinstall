@@ -30,9 +30,9 @@ if ( !-f '/etc/imscp/imscp.conf' || !grep (/^-(?:[^-]*?[hs?][^-]*|-(?:help|skip-
     # List of pre-required distribution packages
     my @distPackages = qw/
         apt-transport-https build-essential ca-certificates debconf-utils dialog dirmngr libbit-vector-perl libcapture-tiny-perl
-        libclass-autouse-perl libdata-compare-perl libdata-validate-domain-perl libfile-homedir-perl liblchown-perl liblist-moreutils-perl
-        libnet-ip-perl libnet-domain-tld-perl libscalar-defer-perl libsort-versions-perl libxml-simple-perl lsb-release policyrcd-script-zg2 wget
-        whiptail /;
+        libclass-autouse-perl libdata-compare-perl libdata-validate-domain-perl libfile-homedir-perl liblchown-perl liblist-compare-perl
+        liblist-moreutils-perl libnet-ip-perl libnet-domain-tld-perl libscalar-defer-perl libsort-versions-perl libxml-simple-perl lsb-release
+        policyrcd-script-zg2 wget whiptail /;
 
     # List of pre-required Perl modules
     # Only Perl modules that are not available as package in all distributions

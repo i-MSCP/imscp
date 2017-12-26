@@ -69,16 +69,16 @@ sub parse
         print STDERR wrap( '', '', <<"EOF" );
 
 $usage
- -a,    --skip-package-update   Skip i-MSCP composer packages update.
- -c,    --clean-package-cache   Clear i-MSCP composer package cache.
- -d,    --debug                 Enable debug mode.
- -h,-?  --help                  Show this help.
- -l,    --listener <file>       Path to listener file.
- -n,    --noprompt              Switch to non-interactive mode.
- -p,    --preseed <file>        Path to preseed file.
- -r,    --reconfigure [item]    Type `help` for list of allowed items.
- -v,    --verbose               Enable verbose mode.
- -x,    --fix-permissions       Fix permissions.
+ -a,    --skip-package-update    Skip i-MSCP composer packages update.
+ -c,    --clean-package-cache    Clear i-MSCP composer package cache.
+ -d,    --debug                  Enable debug mode.
+ -h,-?  --help                   Show this help.
+ -l,    --listener <file>        Path to listener file.
+ -n,    --noprompt               Switch to non-interactive mode.
+ -p,    --preseed <file>         Path to preseed file.
+ -r,    --reconfigure [item ...] Type `help` for list of allowed items.
+ -v,    --verbose                Enable verbose mode.
+ -x,    --fix-permissions        Fix permissions.
 
 $OPTION_HELP
 EOF
@@ -176,40 +176,45 @@ my @RECONFIGURATION_ITEMS = sort(
     'antirootkits', 'alt_urls_feature'
 );
 
-=item reconfigure( [ $item = 'none' ] )
+=item reconfigure( [ $items = 'none' ] )
 
- Reconfiguration item
+ Reconfiguration items
 
- Param string $item OPTIONAL Reconfiguration item
+ Param string $items OPTIONAL List of comma separated items to reconfigure
  Return string Name of item to reconfigure or none
 
 =cut
 
 sub reconfigure
 {
-    my (undef, $item) = @_;
+    my (undef, $items) = @_;
 
-    return $options->{'reconfigure'} ||= 'none' unless defined $item;
+    return $options->{'reconfigure'} ||= [ 'none' ] unless defined $items;
 
-    if ( $item eq 'help' ) {
+    my @items = split /,/, $items;
+
+    if ( grep( 'help' eq $_, @items ) ) {
         $OPTION_HELP = <<'EOF';
 Reconfigure option usage:
 
-Without any argument, this option allows to reconfigure all items. You can reconfigure a specific item by passing it name as argument.
+Without any argument, this option allows to reconfigure all items. You can reconfigure one or many items by passing a list of comma separated items as argument.
 
 Available items are:
 
 EOF
         $OPTION_HELP .= ' ' . ( join '|', @RECONFIGURATION_ITEMS );
         die();
-    } elsif ( $item eq '' ) {
-        $item = 'all';
+    } elsif ( !@items ) {
+        push @items, 'all';
     }
 
-    $item eq 'none' || grep($_ eq $item, @RECONFIGURATION_ITEMS) or die(
-        sprintf( "Error: '%s' is not a valid argument for the --reconfigure option.", $item )
-    );
-    $options->{'reconfigure'} = $item;
+    for my $item( @items ) {
+        $item eq 'none' || grep($_ eq $item, @RECONFIGURATION_ITEMS) or die(
+            sprintf( "Error: '%s' is not a valid item for the the --reconfigure option.", $item )
+        );
+    }
+
+    $options->{'reconfigure'} = [ @items ];
 }
 
 =item preseed( [ $file = undef ] )

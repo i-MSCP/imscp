@@ -77,10 +77,7 @@ if ( iMSCP::Getopt->preseed ) {
     require iMSCP::Getopt->preseed;
     # The preseed option supersede the reconfigure option
     iMSCP::Getopt->reconfigure( 'none' );
-    $main::reconfigure = 'none';
     iMSCP::Getopt->noprompt( 1 );
-} else {
-    $main::reconfigure = iMSCP::Getopt->reconfigure;
 }
 
 loadConfig();

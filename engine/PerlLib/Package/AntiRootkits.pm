@@ -25,7 +25,7 @@ package Package::AntiRootkits;
 
 use strict;
 use warnings;
-use autouse 'iMSCP::Dialog::InputValidation' => qw/ isStringInList /;
+use autouse 'iMSCP::Dialog::InputValidation' => qw/ isOneOfStringsInList /;
 use iMSCP::Debug qw / debug error /;
 use iMSCP::Dialog;
 use iMSCP::Dir;
@@ -87,7 +87,7 @@ sub showDialog
     my %choices;
     @choices{@{$self->{'AVAILABLE_PACKAGES'}}} = @{$self->{'AVAILABLE_PACKAGES'}};
 
-    if ( isStringInList( $main::reconfigure, 'antirootkits', 'all', 'forced' )
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'antirootkits', 'all', 'forced' ] )
         || !@{$self->{'SELECTED_PACKAGES'}}
         || grep { !exists $choices{$_} && $_ ne 'no' } @{$self->{'SELECTED_PACKAGES'}}
     ) {
