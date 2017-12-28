@@ -657,6 +657,7 @@ EOF
         $main::questions{uc( $section ) . '_SERVER'} = $sAlt;
         $main::imscpConfig{uc( $section ) . '_SERVER'} = $sAlt;
         $main::imscpConfig{uc( $section ) . '_PACKAGE'} = $data->{$sAlt}->{'class'} || $sAlt;
+        $main::imscpConfig{"Servers::${section}"} = $data->{$sAlt}->{'class'} if $data->{$sAlt}->{'class'};
     }
 
     @{$self->{'packagesToPreUninstall'}} = sort( unique( @{$self->{'packagesToPreUninstall'}} ) );
