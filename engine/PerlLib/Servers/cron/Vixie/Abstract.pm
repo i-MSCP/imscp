@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::cron::Abstract - i-MSCP Cron server abstract implementation
+ Servers::cron::Vixie::Abstract - i-MSCP Vixie Cron server abstract implementation
 
 =cut
 
@@ -21,7 +21,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package Servers::cron::Abstract;
+package Servers::cron::Vixie::Abstract;
 
 use strict;
 use warnings;
@@ -35,7 +35,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP Cron server abstract implementation.
+ i-MSCP Vixie Cron server abstract implementation.
 
 =head1 PUBLIC METHODS
 
@@ -310,7 +310,7 @@ sub setEnginePermissions
 
  Initialize instance
 
- Return Servers::cron::Abstract
+ Return Servers::cron::Vixie::Abstract
 
 =cut
 

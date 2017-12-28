@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::cron::Devuan - i-MSCP (Devuan) Apache2 server implementation
+ Servers::cron::Vixie::Devuan - i-MSCP (Devuan) Vixie cron server implementation
 
 =cut
 
@@ -21,15 +21,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package Servers::cron::Devuan;
+package Servers::cron::Vixie::Devuan;
 
 use strict;
 use warnings;
-use parent 'Servers::cron::Debian';
+use parent 'Servers::cron::Vixie::Debian';
 
 =head1 DESCRIPTION
 
- i-MSCP (Devuan) cron server implementation.
+ i-MSCP (Devuan) Vixie cron server implementation.
 
 =head1 AUTHOR
 

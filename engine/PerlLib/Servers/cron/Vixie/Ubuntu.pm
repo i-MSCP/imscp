@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::cron::Ubuntu - i-MSCP (Ubuntu) cron server implementation
+ Servers::cron::Vixie::Ubuntu - i-MSCP (Ubuntu) Vixie cron server implementation
 
 =cut
 
@@ -21,15 +21,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package Servers::cron::Ubuntu;
+package Servers::cron::Vixie::Ubuntu;
 
 use strict;
 use warnings;
-use parent 'Servers::cron::Debian';
+use parent 'Servers::cron::Vixie::Debian';
 
 =head1 DESCRIPTION
 
- i-MSCP (Ubuntu) cron server implementation.
+ i-MSCP (Ubuntu) Vixie cron server implementation.
 
 =head1 AUTHOR
 
