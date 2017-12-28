@@ -74,11 +74,24 @@ sub factory
     $package->getInstance( eventManager => iMSCP::EventManager->getInstance());
 }
 
+=item getInstance( )
+
+ See Servers::abstract
+
+=cut
+
+sub getInstance()
+{
+    my ($self) = @_;
+
+    $self->factory();
+}
+
 =item can( $method )
 
- Checks if the httpd server package provides the given method
+ Checks if the server package implements the given method
 
- Bear in mind that this method always operate on the selected alternative.
+ Bear in mind that this method always operates on the selected alternative.
 
  Param string $method Method name
  Return subref|undef
@@ -89,9 +102,7 @@ sub can
 {
     my ($class, $method) = @_;
 
-    return $class if ref $class;
-
-    return $PACKAGES{$class}->getInstance() if $PACKAGES{$class};
+    return $PACKAGES{$class}->can( $method ) if $PACKAGES{$class};
 
     my $package = $main::imscpConfig{$class} || 'Servers::noserver';
 
