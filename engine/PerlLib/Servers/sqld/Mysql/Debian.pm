@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::sqld::mariadb::uninstaller - i-MSCP MariaDB server uninstaller implementation
+ Servers::sqld::Mysql::Debian - i-MSCP (Debian) MySQL SQL server implementation
 
 =cut
 
@@ -21,38 +21,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package Servers::sqld::mariadb::uninstaller;
+package Servers::po::Dovecot::Debian;
 
 use strict;
 use warnings;
-use Servers::sqld::mariadb;
-use parent 'Servers::sqld::mysql::uninstaller';
+use parent 'Servers::sqld::Mysql::Abstract';
 
 =head1 DESCRIPTION
 
- i-MSCP MariaDB server uninstaller implementation.
-
-=head1 PRIVATE METHODS
-
-=over 4
-
-=item _init( )
-
- Initialize instance
-
- Return Servers::sqld::mariadb:uninstaller
-
-=cut
-
-sub _init
-{
-    my ($self) = @_;
-
-    $self->{'sqld'} = Servers::sqld::mariadb->getInstance();
-    $self;
-}
-
-=back
+ i-MSCP (Debian) MySQL SQL server implementation
 
 =head1 AUTHOR
 
