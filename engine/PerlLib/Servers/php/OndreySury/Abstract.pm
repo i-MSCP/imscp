@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::php::Abstract - i-MSCP PHP server abstract class
+ Servers::php::OndreySury::Abstract - i-MSCP PHP server abstract implementation
 
 =cut
 
@@ -21,7 +21,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package Servers::php::Abstract;
+package Servers::php::OndreySury::Abstract;
 
 use strict;
 use warnings;
@@ -37,7 +37,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP PHP server implementation.
+ i-MSCP PHP server abstract implementation.
 
  TODO (Enterprise Edition):
  - Depending of selected Httpd server, customer should be able to choose between several SAPI:
@@ -433,7 +433,7 @@ sub restart
 
  Initialize instance
 
- Return Servers::php::Abstract
+ Return Servers::php::OndreySury::Abstract
 
 =cut
 
@@ -694,7 +694,7 @@ sub _cleanup
 
  Event listener that inject PHP configuration in Apache2 vhosts
 
- Param scalar self Servers::php::Abstract instance
+ Param scalar self Servers::php::OndreySury::Abstract instance
  Param scalar \$scalar Reference to Apache2 vhost content
  Param string $filename Apache2 template name
  Param scalar \$trgFile Target file path

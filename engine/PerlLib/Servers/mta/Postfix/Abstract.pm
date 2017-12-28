@@ -25,7 +25,7 @@ package Servers::mta::Postfix::Abstract;
 
 use strict;
 use warnings;
-use autouse Fcntl => qw/ O_READONLY /;
+use autouse Fcntl => qw/ O_RDONLY /;
 use autouse 'iMSCP::Rights' => qw/ setRights /;
 use autouse 'iMSCP::TemplateParser' => qw/ processByRef /;
 use Class::Autouse qw/ :nostat iMSCP::Getopt iMSCP::Net iMSCP::SystemGroup iMSCP::SystemUser /;
@@ -79,7 +79,7 @@ sub install
 {
     my ($self) = @_;
 
-    $rs ||= $self->_createPostfixMaps();
+    my $rs = $self->_createPostfixMaps();
     $rs ||= $self->_buildConf();
     $rs ||= $self->_buildAliasesDb();
     $rs ||= $self->_cleanup();
@@ -111,15 +111,15 @@ sub postinstall
                     sub {
                         for ( keys %{$self->{'_postmap'}} ) {
                             if ( $self->{'_maps'}->{$_} ) {
-                                $rs = $self->{'_maps'}->{$_}->mode( 0640 );
-                                last if $rs;
+                                my $rs = $self->{'_maps'}->{$_}->mode( 0640 );
+                                return $rs if $rs;
                             }
 
-                            $rs = $self->postmap( $_ );
-                            last if $rs;
+                            my $rs = $self->postmap( $_ );
+                            return $rs if $rs;
                         }
 
-                        $rs ||= $self->start();
+                        $self->start();
                     },
                     'Postfix'
                 ];

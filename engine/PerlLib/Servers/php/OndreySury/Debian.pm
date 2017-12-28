@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::php::Debian - i-MSCP (Debian) PHP server implementation
+ Servers::php::OndreySury::Debian - i-MSCP (Debian) PHP server implementation
 
 =cut
 
@@ -21,7 +21,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package Servers::php::Debian;
+package Servers::php::OndreySury::Debian;
 
 use strict;
 use warnings;
@@ -35,7 +35,7 @@ use iMSCP::File;
 use iMSCP::Service;
 use Servers::php;
 use Scalar::Defer;
-use parent 'Servers::php::Abstract';
+use parent 'Servers::php::OndreySury::Abstract';
 
 =head1 DESCRIPTION
 
@@ -417,7 +417,7 @@ sub uninstall
 
 =item addDomain( \%moduleData )
 
- See Servers::php::Abstract::addDomain()
+ See Servers::php::OndreySury::Abstract::addDomain()
 
 =cut
 
@@ -439,7 +439,7 @@ sub addDomain
 
 =item disableDomain( \%moduleData )
 
- See Servers::php::Abstract::disableDomain()
+ See Servers::php::OndreySury::Abstract::disableDomain()
 
 =cut
 
@@ -461,7 +461,7 @@ sub disableDomain
 
 =item deleteDomain( \%moduleData )
 
- See Servers::php::Abstract::deleteDomain()
+ See Servers::php::OndreySury::Abstract::deleteDomain()
 
 =cut
 
@@ -483,7 +483,7 @@ sub deleteDomain
 
 =item addSubdomain( \%moduleData )
 
- See Servers::php::Abstract::addSubdomain()
+ See Servers::php::OndreySury::Abstract::addSubdomain()
 
 =cut
 
@@ -505,7 +505,7 @@ sub addSubdomain
 
 =item disableSubdomain( \%moduleData )
 
- See Servers::php::Abstract::disableSubdomain()
+ See Servers::php::OndreySury::Abstract::disableSubdomain()
 
 =cut
 
@@ -527,7 +527,7 @@ sub disableSubdomain
 
 =item deleteSubdomain( \%moduleData )
 
- See Servers::php::Abstract::deleteSubdomain()
+ See Servers::php::OndreySury::Abstract::deleteSubdomain()
 
 =cut
 
@@ -549,7 +549,7 @@ sub deleteSubdomain
 
 =item enableModules( \@modules [, $phpVersion = $self->{'config'}->{'PHP_VERSION'} [, $phpSapi = $self->{'config'}->{'PHP_SAPI'} ] ] )
 
- See Servers::php::Abstract::enableModules()
+ See Servers::php::OndreySury::Abstract::enableModules()
 
 =cut
 
@@ -572,7 +572,7 @@ sub enableModules
 
 =item disableModules( \@modules [, $phpVersion = $self->{'config'}->{'PHP_VERSION'} [, $phpSapi = $self->{'config'}->{'PHP_SAPI'} ] ] )
 
- See Servers::php::Abstract::disableModules()
+ See Servers::php::OndreySury::Abstract::disableModules()
 
 =cut
 
@@ -595,7 +595,7 @@ sub disableModules
 
 =item start( [ $phpVersion = $self->{'config'}->{'PHP_VERSION'} ] )
 
- See Servers::php::Abstract::start()
+ See Servers::php::OndreySury::Abstract::start()
 
 =cut
 
@@ -618,7 +618,7 @@ sub start
 
 =item stop( [ $phpVersion = $self->{'config'}->{'PHP_VERSION'} ] )
 
- See Servers::php::Abstract::stop()
+ See Servers::php::OndreySury::Abstract::stop()
 
 =cut
 
@@ -641,7 +641,7 @@ sub stop
 
 =item reload( [ $phpVersion = $self->{'config'}->{'PHP_VERSION'} ] )
 
- See Servers::php::Abstract::reload()
+ See Servers::php::OndreySury::Abstract::reload()
 
 =cut
 
@@ -664,7 +664,7 @@ sub reload
 
 =item restart( [ $phpVersion = $self->{'config'}->{'PHP_VERSION'} ] )
 
- See Servers::php::Abstract::restart()
+ See Servers::php::OndreySury::Abstract::restart()
 
 =cut
 
@@ -695,7 +695,7 @@ sub restart
 
  Initialize instance
 
- Return Servers::php::Abstract
+ Return Servers::php::OndreySury::Abstract
 
 =cut
 
@@ -840,7 +840,7 @@ sub _deleteFpmConfig
 
 =item _setVersion()
 
- See Servers::php::Abstract::_setVersion()
+ See Servers::php::OndreySury::Abstract::_setVersion()
 
 =cut
 
@@ -857,7 +857,7 @@ sub _setVersion
 
 =item _cleanup( )
 
- See Servers::php::Abstract::_cleanup()
+ See Servers::php::OndreySury::Abstract::_cleanup()
 
 =cut
 
@@ -896,35 +896,36 @@ sub _cleanup
 
 =over 4
 
-=item END
+=item shutdown( $priority )
 
  Restart, reload or start PHP FastCGI process manager for selected PHP alternative when needed
 
+ Param $int $priority Server priority
+ Return void
+
 =cut
 
-END
-    {
-        return if $? || ( defined $main::execmode && $main::execmode eq 'setup' );
+sub shutdown
+{
+    my ($self, $priority) = @_;
 
-        my $instance = __PACKAGE__->hasInstance();
+    return unless $self->{'config'}->{'PHP_SAPI'} eq 'fpm';
 
-        return unless $instance && $instance->{'config'}->{'PHP_SAPI'} eq 'fpm';
+    my $serviceMngr = iMSCP::Service->getInstance();
 
-        my $serviceMngr = iMSCP::Service->getInstance();
+    for my $action( qw/ start reload restart / ) {
+        for my $phpVersion( keys %{$self->{$action}} ) {
+            # Check for actions precedence. The 'reload' and 'restart' actions both have higher precedence than the 'start' action
+            next if $action eq 'start' && ( $self->{'reload'}->{$phpVersion} || $self->{'restart'}->{$phpVersion} );
+            # Check for actions precedence. The 'restart' action has higher precedence than the 'reload' action
+            next if $action eq 'reload' && $self->{'restart'}->{$phpVersion};
+            # Do not act if the PHP version is not enabled
+            next unless $serviceMngr->isEnabled( "php$phpVersion-fpm" );
 
-        for my $action( qw/ start reload restart / ) {
-            for my $phpVersion( keys %{$instance->{$action}} ) {
-                # Check for actions precedence. The 'reload' and 'restart' actions both have higher precedence than the 'start' action
-                next if $action eq 'start' && ( $instance->{'reload'}->{$phpVersion} || $instance->{'restart'}->{$phpVersion} );
-                # Check for actions precedence. The 'restart' action has higher precedence than the 'reload' action
-                next if $action eq 'reload' && $instance->{'restart'}->{$phpVersion};
-                # Do not act if the PHP version is not enabled
-                next unless $serviceMngr->isEnabled( "php$phpVersion-fpm" );
-
-                $serviceMngr->registerDelayedAction( "php$phpVersion-fpm", [ $action, sub { $instance->$action(); } ], Servers::php::getPriority());
-            }
+            $serviceMngr->registerDelayedAction( "php$phpVersion-fpm", [ $action, sub { $self->$action(); } ], $priority );
         }
     }
+}
 
 =back
 

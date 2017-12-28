@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::cron::Vixie::Devuan - i-MSCP (Debian) Vixie cron server abstract implementation
+ Servers::cron::Vixie::Debian - i-MSCP (Debian) Vixie cron server abstract implementation
 
 =cut
 

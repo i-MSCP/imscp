@@ -29,8 +29,8 @@ use autouse 'iMSCP::Debug' => qw/ debug error /;
 use autouse 'iMSCP::Dialog::InputValidation' => qw/ isOneOfStringsInList isValidIpAddr isValidHostname isValidTimezone /;
 use autouse 'iMSCP::Execute' => qw/ execute /;
 use autouse 'Net::LibIDN' => qw/ idn_to_ascii idn_to_unicode /;
-use autouse 'LWP::Simple' => qw/ $ua get /;
 use Class::Autouse qw/ :nostat DateTime::TimeZone iMSCP::Database iMSCP::File iMSCP::Getopt iMSCP::Net /;
+use LWP::Simple qw/ $ua get /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -263,7 +263,7 @@ sub preinstall
     if ( -f "$main::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf" ) {
         # Don't catch any error here to avoid permission denied error on some
         # vps due to restrictions set by provider
-        $rs = execute( "$main::imscpConfig{'CMD_SYSCTL'} -p $main::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf", \ my $stdout, \ my $stderr );
+        execute( "$main::imscpConfig{'CMD_SYSCTL'} -p $main::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf", \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
         debug( $stderr ) if $stderr;
     }
