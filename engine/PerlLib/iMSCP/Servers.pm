@@ -80,14 +80,14 @@ sub _init
 {
     my ($self) = @_;
 
-    $_ = basename( $_, '.pm' ) for @{$self->{'servers'}} = grep { $_ !~ /noserver.pm$/ } glob(
+    $_ = basename( $_, '.pm' ) for @{$self->{'servers'}} = grep { $_ !~ /(?:abstract|noserver)\.pm$/ } glob(
         "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers/*.pm"
     );
 
     # Load all server classes
     for ( @{$self->{'servers'}} ) {
         my $server = "Servers::${_}";
-        eval "require $server" or die( sprintf( "Couldn't load %s server class: %s", $server, $@ ));
+        eval "require $server; 1" or die( sprintf( "Couldn't load %s server class: %s", $server, $@ ));
     }
 
     # Sort servers in descending order of priority
