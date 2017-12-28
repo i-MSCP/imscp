@@ -85,7 +85,7 @@ sub factory
 
 =cut
 
-sub canj
+sub can
 {
     my ($class, $method) = @_;
 
