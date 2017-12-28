@@ -117,7 +117,7 @@ sub _init
 
 sub END
 {
-    #undef( %_INSTANCES );
+    undef( %_INSTANCES );
 }
 
 =back
