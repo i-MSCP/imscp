@@ -28,12 +28,12 @@ use warnings;
 use iMSCP::EventManager;
 use iMSCP::Service;
 
-# Servers::httpd::Interface server package names
+# Server package names
 my %PACKAGES;
 
 =head1 DESCRIPTION
 
- i-MSCP httpd server implementation.
+ i-MSCP server abstract implementation.
 
 =head1 CLASS METHODS
 
