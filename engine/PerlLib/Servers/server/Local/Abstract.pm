@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::server::local::installer - i-MSCP local server implementation
+ Servers::server::Local::Abstract - i-MSCP Local server implementation
 
 =cut
 
@@ -21,31 +21,27 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package Servers::server::local::installer;
+package Servers::server::Local::Abstract;
 
 use strict;
 use warnings;
-use iMSCP::Database;
-use DateTime::TimeZone;
-use iMSCP::Debug qw/ debug error /;
-use iMSCP::Dialog::InputValidation qw/ isOneOfStringsInList isValidIpAddr isValidHostname isValidTimezone /;
-use iMSCP::Execute qw/ execute /;
-use iMSCP::File;
-use iMSCP::Getopt;
-use iMSCP::Net;
-use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
-use LWP::Simple qw/ $ua get /;
+use autouse 'iMSCP::Debug' => qw/ debug error /;
+use autouse 'iMSCP::Dialog::InputValidation' => qw/ isOneOfStringsInList isValidIpAddr isValidHostname isValidTimezone /;
+use autouse 'iMSCP::Execute' => qw/ execute /;
+use autouse 'Net::LibIDN' => qw/ idn_to_ascii idn_to_unicode /;
+use autouse 'LWP::Simple' => qw/ $ua get /;
+use Class::Autouse qw/ :nostat DateTime::TimeZone iMSCP::Database iMSCP::File iMSCP::Getopt iMSCP::Net /;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- i-MSCP local server implementation
+ i-MSCP Local server abstract implementation.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item registerSetupListeners()
+=item registerSetupListeners( )
 
  Register setup event listeners
 
@@ -231,7 +227,7 @@ sub timezoneDialog
 
     $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
-    if (isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'local_server', 'timezone', 'all', 'forced' ] ) || !isValidTimezone( $timezone ) ) {
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'local_server', 'timezone', 'all', 'forced' ] ) || !isValidTimezone( $timezone ) ) {
         my $rs = 0;
 
         do {
@@ -264,11 +260,6 @@ EOF
 
 sub preinstall
 {
-    my ($self) = @_;
-
-    my $rs = $self->{'server'}->{'eventManager'}->trigger( 'beforeLocalServerSetupKernel' );
-    return $rs if $rs;
-
     if ( -f "$main::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf" ) {
         # Don't catch any error here to avoid permission denied error on some
         # vps due to restrictions set by provider
@@ -276,10 +267,6 @@ sub preinstall
         debug( $stdout ) if $stdout;
         debug( $stderr ) if $stderr;
     }
-
-    $self->{'server'}->{'eventManager'}->trigger( 'afterLocalServerSetupKernel' );
-
-    0;
 }
 
 =item install( )
@@ -308,13 +295,15 @@ sub install
 
  Initialize instance
 
- Return Servers::server::local::installer
+ Return Servers::server::Local::Abstract
 
 =cut
 
 sub _init
 {
     my ($self) = @_;
+
+    return $self unless defined $main::execmode && $main::execmode eq 'setup';
 
     $ua->timeout( 5 );
     $ua->agent( 'i-MSCP/1.6 (+https://i-mscp.net/)' );
@@ -456,6 +445,8 @@ sub _setupPrimaryIP
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
+
+
 
 1;
 __END__
