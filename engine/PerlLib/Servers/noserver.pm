@@ -35,19 +35,6 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item getPriority( )
-
- Get server priority
-
- Return int Server priority
-
-=cut
-
-sub getPriority
-{
-    0;
-}
-
 =item factory( )
 
  Create and return noserver server instance
@@ -58,32 +45,9 @@ sub getPriority
 
 sub factory
 {
-    __PACKAGE__->getInstance();
-}
+    my ($class) = @_;
 
-=item can( $method )
-
- Checks if the server class provide the given method
-
- Param string $method Method name
- Return undef
-
-=cut
-
-sub can
-{
-    undef;
-}
-
-=item AUTOLOAD
-
- Implement autoloading for inexistent methods
-
-=cut
-
-sub AUTOLOAD
-{
-    0;
+    $class->getInstance();
 }
 
 =back
@@ -106,6 +70,19 @@ sub _init
 
     @{$self}{qw/ start restart reload /} = ( 0, 0, 0 );
     $self;
+}
+
+=item AUTOLOAD()
+
+ Implement autoloading for inexistent methods
+
+ Return void
+
+=cut
+
+sub AUTOLOAD
+{
+
 }
 
 =back

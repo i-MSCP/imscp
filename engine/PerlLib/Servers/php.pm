@@ -25,10 +25,7 @@ package Servers::php;
 
 use strict;
 use warnings;
-use iMSCP::EventManager;
-
-# PHP Servers::php::Abstract concret implementation package name
-my $PACKAGE;
+use parent 'Servers::abstract';
 
 =head1 DESCRIPTION
 
@@ -49,56 +46,6 @@ my $PACKAGE;
 sub getPriority
 {
     250;
-}
-
-=item factory( )
-
- Create and return a Servers::php::Abstract instance
-
- Return Servers::php
-
-=cut
-
-sub factory
-{
-    return $PACKAGE->getInstance() if $PACKAGE;
-
-    $PACKAGE = "Servers::php::@{[ ucfirst $main::imscpConfig{'DISTRO_ID'} ] }";
-    eval "require $PACKAGE; 1" or die( $@ );
-    $PACKAGE->getInstance( eventManager => iMSCP::EventManager->getInstance());
-}
-
-=item can( $method )
-
- Checks if the httpd server package provides the given method
-
- Param string $method Method name
- Return subref|undef
-
-=cut
-
-sub can
-{
-    my (undef, $method) = @_;
-
-    return $PACKAGE->can( $method ) if $PACKAGE;
-
-    my $package = "Servers::php::@{[ ucfirst $main::imscpConfig{'DISTRO_ID'} ] }";
-    eval "require $package; 1" or die( $@ );
-    $package->can( $method );
-}
-
-=item AUTOLOAD()
-
- Implement autoloading for inexistent methods
-
-=cut
-
-sub AUTOLOAD
-{
-    ( my $method = our $AUTOLOAD ) =~ s/.*:://;
-
-    __PACKAGE__->factory()->$method( @_ );
 }
 
 =back

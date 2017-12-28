@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::server - i-MSCP local server implementation
+ Servers::server - i-MSCP server implementation
 
 =cut
 
@@ -25,14 +25,11 @@ package Servers::server;
 
 use strict;
 use warnings;
-use iMSCP::EventManager;
-
-# system server package name
-my $PACKAGE;
+use parent 'Servers::abstract';
 
 =head1 DESCRIPTION
 
- i-MSCP local server implementation.
+ i-MSCP server implementation.
 
 =head1 CLASS METHODS
 
@@ -49,56 +46,6 @@ my $PACKAGE;
 sub getPriority
 {
     350;
-}
-
-=item factory( )
-
- Create and return system server instance
-
- Return local server instance
-
-=cut
-
-sub factory
-{
-    return $PACKAGE->getInstance() if $PACKAGE;
-
-    $PACKAGE = "Servers::server::local";
-    eval "require $PACKAGE; 1" or die( $@ );
-    $PACKAGE->getInstance( eventManager => iMSCP::EventManager->getInstance());
-}
-
-=item can( $method )
-
- Checks if the ftpd server package provides the given method
-
- Param string $method Method name
- Return subref|undef
-
-=cut
-
-sub can
-{
-    my (undef, $method) = @_;
-
-    return $PACKAGE->can( $method ) if $PACKAGE;
-
-    my $package = "Servers::server::local";
-    eval "require $package; 1" or die( $@ );
-    $package->can( $method );
-}
-
-=item AUTOLOAD()
-
- Implement autoloading for inexistent methods
-
-=cut
-
-sub AUTOLOAD
-{
-    ( my $method = our $AUTOLOAD ) =~ s/.*:://;
-
-    __PACKAGE__->factory()->$method( @_ );
 }
 
 =back

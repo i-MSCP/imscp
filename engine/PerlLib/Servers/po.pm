@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::po - i-MSCP po server implementation
+ Servers::po - i-MSCP IMAP/PO server implementation
 
 =cut
 
@@ -25,15 +25,11 @@ package Servers::po;
 
 use strict;
 use warnings;
-use iMSCP::EventManager;
-use iMSCP::Service;
-
-# po server package name
-my $PACKAGE;
+use parent 'Servers::abstract';
 
 =head1 DESCRIPTION
 
- i-MSCP po server implementation.
+ i-MSCP IMAP/POP server implementation.
 
 =head1 CLASS METHODS
 
@@ -51,95 +47,6 @@ sub getPriority
 {
     50;
 }
-
-=item factory( )
-
- Create and return po server instance
-
- Also trigger uninstallation of old po server when required.
-
- Return po server instance
-
-=cut
-
-sub factory
-{
-    return $PACKAGE->getInstance() if $PACKAGE;
-
-    $PACKAGE = $main::imscpConfig{'PO_PACKAGE'} || 'Servers::noserver';
-
-    if ( %main::imscpOldConfig
-        && exists $main::imscpOldConfig{'PO_PACKAGE'}
-        && $main::imscpOldConfig{'PO_PACKAGE'} ne ''
-        && $main::imscpOldConfig{'PO_PACKAGE'} ne $PACKAGE
-    ) {
-        eval "require $main::imscpOldConfig{'PO_PACKAGE'}; 1" or die( $@ );
-        $main::imscpOldConfig{'PO_PACKAGE'}->getInstance( eventManager => iMSCP::EventManager->getInstance())->uninstall() == 0 or die(
-            sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'PO_PACKAGE'} )
-        );
-    }
-
-    eval "require $PACKAGE; 1" or die( $@ );
-    $PACKAGE->getInstance( eventManager => iMSCP::EventManager->getInstance());
-}
-
-=item can( $method )
-
- Checks if the po server package provides the given method
-
- Param string $method Method name
- Return subref|undef
-
-=cut
-
-sub can
-{
-    my (undef, $method) = @_;
-
-    return $PACKAGE->can( $method ) if $PACKAGE;
-
-    my $package = $main::imscpConfig{'PO_PACKAGE'} || 'Servers::noserver';
-    eval "require $package; 1" or die( $@ );
-    $package->can( $method );
-}
-
-=item AUTOLOAD()
-
- Implement autoloading for inexistent methods
-
-=cut
-
-sub AUTOLOAD
-{
-    ( my $method = our $AUTOLOAD ) =~ s/.*:://;
-
-    __PACKAGE__->factory()->$method( @_ );
-}
-
-=back
-
-=head1 SHUTDOWN TASKS
-
-=over 4
-
-=item END
-
- Schedule restart of PO server when needed
-
-=cut
-
-END
-    {
-        return if $? || !$PACKAGE || ( defined $main::execmode && $main::execmode eq 'setup' );
-
-        my $instance = $PACKAGE->hasInstance();
-
-        return unless $instance && $instance->{'restart'};
-
-        iMSCP::Service->getInstance()->registerDelayedAction(
-            ref $instance, [ 'restart', sub { $instance->restart(); } ], __PACKAGE__->getPriority()
-        );
-    }
 
 =back
 

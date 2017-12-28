@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::mta - i-MSCP mta server implementation
+ Servers::mta - i-MSCP MTA server implementation
 
 =cut
 
@@ -25,15 +25,11 @@ package Servers::mta;
 
 use strict;
 use warnings;
-use iMSCP::EventManager;
-use iMSCP::Service;
-
-# mta server package name
-my $PACKAGE;
+use parent 'Servers::abstract';
 
 =head1 DESCRIPTION
 
- i-MSCP mta server implementation.
+ i-MSCP MTA server implementation.
 
 =head1 CLASS METHODS
 
@@ -51,81 +47,6 @@ sub getPriority
 {
     100;
 }
-
-=item factory( )
-
- Create and return mta server instance
-
- Return mta server instance
-
-=cut
-
-sub factory
-{
-    return $PACKAGE->getInstance() if $PACKAGE;
-
-    $PACKAGE ||= $main::imscpConfig{'MTA_PACKAGE'} || 'Servers::noserver';
-    eval "require $PACKAGE; 1" or die( $@ );
-    $PACKAGE->getInstance( eventManager => iMSCP::EventManager->getInstance());
-}
-
-=item can( $method )
-
- Checks if the mta server package provides the given method
-
- Param string $method Method name
- Return subref|undef
-
-=cut
-
-sub can
-{
-    my (undef, $method) = @_;
-
-    return $PACKAGE->can( $method ) if $PACKAGE;
-
-    my $package = $main::imscpConfig{'MTA_PACKAGE'} || 'Servers::noserver';
-    eval "require $package; 1" or die( $@ );
-    $package->can( $method );
-}
-
-=item AUTOLOAD()
-
- Implement autoloading for inexistent methods
-
-=cut
-
-sub AUTOLOAD
-{
-    ( my $method = our $AUTOLOAD ) =~ s/.*:://;
-
-    __PACKAGE__->factory()->$method( @_ );
-}
-
-=back
-
-=head1 SHUTDOWN TASKS
-
-=over 4
-
-=item END
-
- Schedule restart, reload or start of MTA server when needed
-
-=cut
-
-END
-    {
-        return if $? || !$PACKAGE || ( defined $main::execmode && $main::execmode eq 'setup' );
-
-        my $instance = $PACKAGE->hasInstance();
-
-        return unless $instance && ( my $action = $instance->{'restart'} ? 'restart' : ( $instance->{'reload'} ? 'reload' : undef ) );
-
-        iMSCP::Service->getInstance()->registerDelayedAction(
-            $instance->{'config'}->{'MTA_SNAME'}, [ $action, sub { $instance->$action(); } ], __PACKAGE__->getPriority()
-        );
-    }
 
 =back
 

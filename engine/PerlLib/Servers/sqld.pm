@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::sqld - i-MSCP sqld server implementation
+ Servers::sqld - i-MSCP SQL server implementation
 
 =cut
 
@@ -25,14 +25,11 @@ package Servers::sqld;
 
 use strict;
 use warnings;
-use iMSCP::EventManager;
-
-# sqld server package name
-my $PACKAGE;
+use parent 'Servers::abstract';
 
 =head1 DESCRIPTION
 
- i-MSCP sqld server implementation.
+ i-MSCP SQL server implementation.
 
 =head1 CLASS METHODS
 
@@ -49,56 +46,6 @@ my $PACKAGE;
 sub getPriority
 {
     400;
-}
-
-=item factory( )
-
- Create and return sqld server instance
-
- Return sqld server instance
-
-=cut
-
-sub factory
-{
-    return $PACKAGE->getInstance() if $PACKAGE;
-
-    $PACKAGE = $main::imscpConfig{'SQL_PACKAGE'} || 'Servers::noserver';
-    eval "require $PACKAGE; 1" or die( $@ );
-    $PACKAGE->getInstance( eventManager => iMSCP::EventManager->getInstance());
-}
-
-=item can( $method )
-
- Checks if the sqld server package provides the given method
-
- Param string $method Method name
- Return subref|undef
-
-=cut
-
-sub can
-{
-    my (undef, $method) = @_;
-
-    return $PACKAGE->can( $method ) if $PACKAGE;
-
-    my $package = $main::imscpConfig{'SQL_PACKAGE'} || 'Servers::noserver';
-    eval "require $package; 1" or die( $@ );
-    $package->can( $method );
-}
-
-=item AUTOLOAD()
-
- Implement autoloading for inexistent methods
-
-=cut
-
-sub AUTOLOAD
-{
-    ( my $method = our $AUTOLOAD ) =~ s/.*:://;
-
-    __PACKAGE__->factory()->$method( @_ );
 }
 
 =back
