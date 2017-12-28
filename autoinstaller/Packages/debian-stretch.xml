@@ -4,11 +4,19 @@
             <package>nginx-full</package>
         </nginx>
     </frontend>
+    <cron>
+        <vixie default="1" class="Servers::cron::Vixie::Debian">
+            <package>cron</package>
+        </vixie>
+    </cron>
+    <server>
+        <local default="1" class="Servers::server::Local::Debian"/>
+    </server>
     <httpd>
-        <apache2_mpm_event default="1" description="Apache2 (MPM Event) server" class="Servers::httpd::Apache2::Event"/>
-        <apache2_mpm_itk description="Apache2 (MPM ITK) server" class="Servers::httpd::Apache2::Itk"/>
-        <apache2_mpm_prefork description="Apache2 (MPM Prefork) server" class="Servers::httpd::Apache2::Prefork"/>
-        <apache2_mpm_worker description="Apache2 (MPM Worker) server" class="Servers::httpd::Apache2::Worker"/>
+        <apache2_mpm_event default="1" description="Apache2 (MPM Event) server" class="Servers::httpd::Apache2::Debian"/>
+        <apache2_mpm_itk description="Apache2 (MPM ITK) server" class="Servers::httpd::Apache2::Debian"/>
+        <apache2_mpm_prefork description="Apache2 (MPM Prefork) server" class="Servers::httpd::Apache2::Debian"/>
+        <apache2_mpm_worker description="Apache2 (MPM Worker) server" class="Servers::httpd::Apache2::Debian"/>
         <package>apache2</package>
         <package>apache2-bin</package>
         <package>apache2-data</package>
@@ -20,25 +28,25 @@
         <post_install_task>sh apache2_postinst.sh</post_install_task>
     </httpd>
     <php repository="https://packages.sury.org/php/ stretch main" repository_key_uri="https://packages.sury.org/php/apt.gpg">
-        <php5.6 default="1" description="PHP 5.6" class="Servers::php">
+        <php5.6 default="1" description="PHP 5.6" class="Servers::php::OndreySury::Debian">
             <post_install_task>/usr/bin/update-alternatives --set php /usr/bin/php5.6</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar /usr/bin/phar5.6</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar.phar /usr/bin/phar.phar5.6</post_install_task>
             <post_install_task>sh php_apcu.sh 5.6</post_install_task>
         </php5.6>
-        <php7.0 description="PHP 7.0" class="Servers::php">
+        <php7.0 description="PHP 7.0" class="Servers::php::OndreySury::Debian">
             <post_install_task>/usr/bin/update-alternatives --set php /usr/bin/php7.0</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar /usr/bin/phar7.0</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar.phar /usr/bin/phar.phar7.0</post_install_task>
             <post_install_task>sh php_apcu.sh 7.0</post_install_task>
         </php7.0>
-        <php7.1 description="PHP 7.1" class="Servers::php">
+        <php7.1 description="PHP 7.1" class="Servers::php::OndreySury::Debian">
             <post_install_task>/usr/bin/update-alternatives --set php /usr/bin/php7.1</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar /usr/bin/phar7.1</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar.phar /usr/bin/phar.phar7.1</post_install_task>
             <post_install_task>sh php_apcu.sh 7.1</post_install_task>
         </php7.1>
-        <php7.2 description="PHP 7.2" class="Servers::php">
+        <php7.2 description="PHP 7.2" class="Servers::php::OndreySury::Debian">
             <post_install_task>/usr/bin/update-alternatives --set php /usr/bin/php7.2</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar /usr/bin/phar7.2</post_install_task>
             <post_install_task>/usr/bin/update-alternatives --set phar.phar /usr/bin/phar.phar7.2</post_install_task>
@@ -130,7 +138,7 @@
         </post_install_task>
     </php>
     <po>
-        <courier description="Courier IMAP/POP3 servers" class="Servers::po::courier">
+        <courier description="Courier IMAP/POP3 servers" class="Servers::po::Courier::Debian">
             <package>courier-authlib-mysql</package>
             <package>courier-imap</package>
             <package>courier-imap-ssl</package>
@@ -142,7 +150,7 @@
             <package_conflict>libsasl2-modules-sql</package_conflict>
             <package_conflict>sasl2-bin</package_conflict>
         </courier>
-        <dovecot default="1" description="Dovecot IMAP/POP3 servers" class="Servers::po::dovecot">
+        <dovecot default="1" description="Dovecot IMAP/POP3 servers" class="Servers::po::Dovecot::Debian">
             <package>dovecot-core</package>
             <package>dovecot-imapd</package>
             <package>dovecot-pop3d</package>
@@ -150,7 +158,7 @@
         </dovecot>
     </po>
     <mta>
-        <postfix default="1" description="Postfix server" class="Servers::mta::postfix">
+        <postfix default="1" description="Postfix server" class="Servers::mta::Postfix::Debian">
             <package>postfix</package>
             <package_conflict>procmail</package_conflict>
             <package_conflict>sendmail</package_conflict>
@@ -161,28 +169,28 @@
         </postfix>
     </mta>
     <ftpd>
-        <proftpd default="1" description="ProFTPD server" class="Servers::ftpd::proftpd">
+        <proftpd default="1" description="ProFTPD server" class="Servers::ftpd::Proftpd::Debian">
             <package>proftpd-basic</package>
             <package>proftpd-mod-mysql</package>
             <package_conflict>vsftpd</package_conflict>
         </proftpd>
-        <vsftpd description="VsFTPD server" class="Servers::ftpd::vsftpd">
+        <vsftpd description="VsFTPD server" class="Servers::ftpd::Vsftpd::Debian">
             <package>libpam-mysql</package>
             <package>vsftpd</package>
             <package_conflict>proftpd-basic</package_conflict>
         </vsftpd>
     </ftpd>
     <named>
-        <bind default="1" description="Bind9 server" class="Servers::named::bind">
+        <bind default="1" description="Bind9 server" class="Servers::named::Bind9::Debian">
             <package>bind9</package>
         </bind>
         <external_server description="No local DNS server" class="Servers::noserver"/>
         <package>resolvconf</package>
     </named>
-    <sql>
+    <sqld>
         <mysql_5.7
                 description="MySQL 5.7 server"
-                class="Servers::sqld::mysql"
+                class="Servers::sqld::MySQL::Debian"
                 repository="http://repo.mysql.com/apt/debian/ stretch mysql-5.7"
                 repository_key_id="5072E1F5"
                 repository_key_srv="keyserver.ubuntu.com"
@@ -197,7 +205,7 @@
         <mariadb_10.1
                 default="1"
                 description="MariaDB 10.1 server"
-                class="Servers::sqld::mariadb"
+                class="Servers::sqld::Mariadb::Debian"
                 pinning_package="libmariadbclient18 mariadb-client-10.1 mariadb-common mariadb-server-core-10.1 mysql-common"
                 pinning_pin="release o=Debian,n=stretch"
                 pinning_pin_priority="1001"
@@ -209,7 +217,7 @@
         </mariadb_10.1>
         <mariadb_10.2
                 description="MariaDB 10.2 server"
-                class="Servers::sqld::mariadb"
+                class="Servers::sqld::Mariadb::Debian"
                 repository="http://mirror.netcologne.de/mariadb/repo/10.2/debian stretch main"
                 repository_key_id="C74CD1D8"
                 repository_key_srv="keyserver.ubuntu.com"
@@ -224,7 +232,7 @@
         </mariadb_10.2>
         <percona_5.7
                 description="Percona 5.7 server"
-                class="Servers::sqld::percona"
+                class="Servers::sqld::Percona::Debian"
                 repository="http://repo.percona.com/apt stretch main"
                 repository_key_id="8507EFA5"
                 repository_key_srv="keyserver.ubuntu.com"
@@ -240,7 +248,7 @@
         </percona_5.7>
         <remote_server
                 description="Remote SQL server"
-                class="Servers::sqld::remote"
+                class="Servers::sqld::Remote::Debian"
                 pinning_package="libmariadbclient18 mariadb-client-10.1 mariadb-common mysql-common"
                 pinning_pin="release o=Debian,n=stretch"
                 pinning_pin_priority="1001"
@@ -250,7 +258,7 @@
         </remote_server>
         <package>libmariadbclient18</package>
         <package>mysql-common</package>
-    </sql>
+    </sqld>
     <perl>
         <package>libcrypt-blowfish-perl</package>
         <package>libcrypt-cbc-perl</package>
@@ -280,7 +288,6 @@
         <package>bash</package>
         <package>bash-completion</package>
         <package>bzip2</package>
-        <package>cron</package>
         <package>curl</package>
         <package>devscripts</package>
         <package>git</package>
