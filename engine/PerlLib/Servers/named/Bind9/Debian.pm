@@ -25,11 +25,38 @@ package Servers::named::Bind9::Debian;
 
 use strict;
 use warnings;
+use iMSCP::Service;
 use parent 'Servers::named::Bind9::Abstract';
 
 =head1 DESCRIPTION
 
  i-MSCP (Debian) Bind9 server implementation.
+ 
+=head1 SHUTDOWN TASKS
+
+=over 4
+
+=item shutdown( $priority )
+
+ Restart or reload the Bind9 server when needed
+
+ This method is called automatically before the program exit.
+
+ Param int $priority Server priority
+ Return void
+
+=cut
+
+sub shutdown
+{
+    my ($self, $priority) = @_;
+
+    return unless my $action = $self->{'restart'} ? 'restart' : ( $self->{'reload'} ? 'reload' : undef );
+
+    iMSCP::Service->getInstance()->registerDelayedAction( 'bind9', [ $action, sub { $self->$action(); } ], $priority );
+}
+
+=back
 
 =head1 AUTHOR
 
