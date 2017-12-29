@@ -26,7 +26,6 @@ package Servers::abstract;
 use strict;
 use warnings;
 use iMSCP::EventManager;
-use iMSCP::Service;
 
 # Server package names
 my %PACKAGES;
@@ -82,9 +81,9 @@ sub factory
 
 sub getInstance
 {
-    my ($self) = @_;
+    my ($class, $package) = @_;
 
-    $self->factory( @_  );
+    $class->factory( $package );
 }
 
 =item can( $method )
