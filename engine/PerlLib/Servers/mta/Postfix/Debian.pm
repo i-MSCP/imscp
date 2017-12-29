@@ -25,11 +25,38 @@ package Servers::mta::Postfix::Debian;
 
 use strict;
 use warnings;
+use iMSCP::Service;
 use parent 'Servers::mta::Postfix::Abstract';
 
 =head1 DESCRIPTION
 
  i-MSCP (Debian) Postfix server implementation.
+
+=head1 SHUTDOWN TASKS
+
+=over 4
+
+=item shutdown( $priority )
+
+ Restart or reload the Postfix server when needed
+
+ This method is called automatically before the program exit.
+
+ Param int $priority Server priority
+ Return void
+
+=cut
+
+sub shutdown
+{
+    my ($self, $priority) = @_;
+
+    return unless my $action = $instance->{'restart'} ? 'restart' : ( $instance->{'reload'} ? 'reload' : undef );
+
+    iMSCP::Service->getInstance()->registerDelayedAction( 'postfix', [ $action, sub { $self->$action(); } ], $priority );
+}
+
+=back
 
 =head1 AUTHOR
 

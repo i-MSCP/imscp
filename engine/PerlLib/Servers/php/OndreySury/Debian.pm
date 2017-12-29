@@ -89,7 +89,8 @@ sub askForPhpSapi
     my $value = main::setupGetQuestion( 'PHP_SAPI', $self->{'config'}->{'PHP_SAPI'} || ( iMSCP::Getopt->preseed ? 'fpm' : '' ));
     my %choices = ( 'fpm', 'PHP through PHP FastCGI Process Manager (fpm SAPI)' );
 
-    if ( $main::imscpConfig{'HTTPD_PACKAGE'} eq 'Servers::httpd::Apache2::Itk' ) {
+    my $httpd = Servers::httpd->factory();
+    if ( $httpd->{'config'}->{'APACHE2_MPM'} eq 'itk' ) {
         # Apache2 PHP module only works with Apache's prefork based MPM
         # We allow it only with the Apache's ITK MPM because the Apache's prefork MPM
         # doesn't allow to constrain each individual vhost to a particular system user/group.
@@ -900,7 +901,9 @@ sub _cleanup
 
  Restart, reload or start PHP FastCGI process manager for selected PHP alternative when needed
 
- Param $int $priority Server priority
+ This method is called automatically before the program exit.
+
+ Param int $priority Server priority
  Return void
 
 =cut

@@ -119,14 +119,10 @@ sub build
 {
     newDebug( 'imscp-build.log' );
 
-    if ( $main::imscpConfig{'FRONTEND_SERVER'} eq '' || $main::imscpConfig{'FTPD_SERVER'} eq ''
-        || $main::imscpConfig{'HTTPD_SERVER'} eq '' || $main::imscpConfig{'NAMED_SERVER'} eq ''
-        || $main::imscpConfig{'MTA_SERVER'} eq '' || $main::imscpConfig{'PHP_SERVER'} eq ''
-        || $main::imscpConfig{'PO_SERVER'} eq '' || $main::imscpConfig{'SQL_SERVER'} eq ''
-        || $main::imscpConfig{'FRONTEND_PACKAGE'} eq '' || $main::imscpConfig{'FTPD_PACKAGE'} eq ''
-        || $main::imscpConfig{'HTTPD_PACKAGE'} eq '' || $main::imscpConfig{'NAMED_PACKAGE'} eq ''
-        || $main::imscpConfig{'MTA_PACKAGE'} eq '' || $main::imscpConfig{'PHP_PACKAGE'} eq ''
-        || $main::imscpConfig{'PO_PACKAGE'} eq '' || $main::imscpConfig{'SQL_PACKAGE'} eq ''
+    if ( $main::imscpConfig{'Package::FrontEnd'} eq '' || $main::imscpConfig{'Servers::ftpd'} eq ''
+        || $main::imscpConfig{'Servers::httpd'} eq '' || $main::imscpConfig{'Servers::named'} eq ''
+        || $main::imscpConfig{'Servers::mta'} eq '' || $main::imscpConfig{'Servers::php'} eq ''
+        || $main::imscpConfig{'Servers::po'} eq '' || $main::imscpConfig{'Servers::sqld'} eq ''
     ) {
         iMSCP::Getopt->noprompt( 0 ) unless iMSCP::Getopt->preseed;
         $main::skippackages = 0;

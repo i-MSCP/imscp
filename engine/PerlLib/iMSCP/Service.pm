@@ -36,6 +36,8 @@ use parent qw/ Common::SingletonClass iMSCP::Provider::Service::Interface /;
 $Module::Load::Conditional::FIND_VERSION = 0;
 $Module::Load::Conditional::VERBOSE = 0;
 
+my %DELAYED_ACTIONS;
+
 =head1 DESCRIPTION
 
  High-level interface for service providers.
@@ -366,7 +368,7 @@ sub getProvider
 
 sub registerDelayedAction
 {
-    my ($self, $service, $action, $priority) = @_;
+    my (undef, $service, $action, $priority) = @_;
     $priority //= 0;
 
     defined $service or die ( 'Missing $service parameter' );
@@ -381,8 +383,8 @@ sub registerDelayedAction
         grep($action eq $_, 'restart', 'reload', 'start') or die( 'Unexpected action. Only start, restart and reload actions can be delayed' );
     }
 
-    unless ( $self->{'delayed_actions'}->{$service} ) {
-        $self->{'delayed_actions'}->{$service} = {
+    unless ( $DELAYED_ACTIONS{$service} ) {
+        $DELAYED_ACTIONS{$service} = {
             action   => $action,
             priority => $priority
         };
@@ -391,18 +393,17 @@ sub registerDelayedAction
     }
 
     # Identical action (coderef), return early
-    return if ref $self->{'delayed_actions'}->{$service}->{'action'} eq 'ARRAY' && ref $action eq 'ARRAY'
-        && $self->{'delayed_actions'}->{$service}->{'action'} eq $action;
+    return if ref $DELAYED_ACTIONS{$service}->{'action'} eq 'ARRAY' && ref $action eq 'ARRAY' && $DELAYED_ACTIONS{$service}->{'action'} eq $action;
 
-    my $oaction = ref $self->{'delayed_actions'}->{$service}->{'action'} eq 'ARRAY'
-        ? $self->{'delayed_actions'}->{$service}->{'action'}->[0] : $self->{'delayed_actions'}->{$service}->{'action'};
+    my $oaction = ref $DELAYED_ACTIONS{$service}->{'action'} eq 'ARRAY'
+        ? $DELAYED_ACTIONS{$service}->{'action'}->[0] : $DELAYED_ACTIONS{$service}->{'action'};
     my $naction = ref $action eq 'ARRAY' ? $action->[0] : $action;
 
     # reload action can be replaced by reload or restart action only
     # restart action can be replaced by restart action only
     return if ( $oaction eq 'reload' && !grep($action eq $_, 'restart', 'reload') ) || ( $oaction eq 'restart' && $naction ne 'restart' );
 
-    $self->{'delayed_actions'}->{$service} = {
+    $DELAYED_ACTIONS{$service} = {
         action   => $action,
         priority => $priority
     };
@@ -428,8 +429,6 @@ sub _init
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'provider'} = $self->getProvider( $self->{'init'} = _detectInit());
-    $self->{'delayed_actions'} = {};
-    $self;
 }
 
 =item _detectInit( )
@@ -481,15 +480,13 @@ sub _executeDelayedActions
 {
     my ($self) = @_;
 
-    return 0 unless %{$self->{'delayed_actions'}};
+    return 0 unless %DELAYED_ACTIONS;
 
     # Sort services by priority (DESC)
-    my @services = sort {
-        $self->{'delayed_actions'}->{$b}->{'priority'} <=> $self->{'delayed_actions'}->{$a}->{'priority'}
-    } keys %{$self->{'delayed_actions'}};
+    my @services = sort { $DELAYED_ACTIONS{$b}->{'priority'} <=> $DELAYED_ACTIONS{$a}->{'priority'} } keys %DELAYED_ACTIONS;
 
     for my $service( @services ) {
-        my $action = $self->{'delayed_actions'}->{$service}->{'action'};
+        my $action = $DELAYED_ACTIONS{$service}->{'action'};
 
         if ( ref $action eq 'ARRAY' ) {
             eval { $action->[1]->(); };
@@ -501,7 +498,7 @@ sub _executeDelayedActions
             next;
         }
 
-        my $ret = eval { $self->$action->( $service ); };
+        my $ret = eval { $self->$action( $service ); };
         if ( $@ || $ret ) {
             error( $@ || $self->_getLastError());
             return $ret || 1;
@@ -509,7 +506,21 @@ sub _executeDelayedActions
     }
 }
 
-END { __PACKAGE__->getInstance()->_executeDelayedActions(); }
+=back
+
+=head1 SHUTDOWN TASKS
+
+=over 4
+
+=item END
+
+ Execute delayed actions
+
+=cut
+
+END {
+    __PACKAGE__->getInstance()->_executeDelayedActions();
+}
 
 =back
 

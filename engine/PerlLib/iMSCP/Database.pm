@@ -364,7 +364,7 @@ EOF
                 # Void tables locking whenever possible
                 . "@{ [ $innoDbOnly ? ' --single-transaction --skip-lock-tables' : '']}"
                 # Compress all information sent between the client and the server (only if remote SQL server).
-                . "@{[ $main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::remote' ? ' --compress' : '']}"
+                . "@{[ index( $main::imscpConfig{'Servers::sqld'}, 'Servers::sqld::Remote' ) == 0 ? ' --compress' : '']}"
                 . " --databases @{[ escapeShell($dbName) ]}"
                 . ' > ' . escapeShell( "$dbDumpTargetDir/$encodedDbName.sql" ),
             undef,

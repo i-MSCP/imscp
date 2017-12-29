@@ -803,7 +803,8 @@ sub _buildConf
         }
 
         replaceBlocByRef(
-            qr/(?:^\n)?# Servers::po::Courier::Abstract::installer - BEGIN\n/m, qr/# Servers::po::Courier::Abstract::installer - ENDING\n/, '', $fileContentRef
+            qr/(?:^\n)?# Servers::po::Courier::Abstract::installer - BEGIN\n/m, qr/# Servers::po::Courier::Abstract::installer - ENDING\n/, '',
+            $fileContentRef
         );
 
         ${$fileContentRef} .= <<"EOF";
@@ -1049,7 +1050,7 @@ sub _migrateFromDovecot
 {
     my ($self) = @_;
 
-    return 0 unless $main::imscpOldConfig{'PO_SERVER'} eq 'dovecot';
+    return 0 unless index( $main::imscpOldConfig{'Servers::po'}, 'Dovecot' ) != -1;
 
     my $rs = execute(
         [
@@ -1064,8 +1065,7 @@ sub _migrateFromDovecot
 
     unless ( $rs ) {
         $self->{'forceMailboxesQuotaRecalc'} = 1;
-        $main::imscpOldConfig{'PO_SERVER'} = 'courier';
-        $main::imscpOldConfig{'PO_PACKAGE'} = 'Servers::po::Courier::Abstract';
+        $main::imscpOldConfig{'Servers::po'} = $main::imscpConfig{'Servers::po'};
     }
 
     $rs;
@@ -1189,7 +1189,8 @@ sub _removeConfig
         }
 
         replaceBlocByRef(
-            qr/(?:^\n)?# Servers::po::Courier::Abstract::installer - BEGIN\n/m, qr/# Servers::po::Courier::Abstract::installer - ENDING\n/, '', $fileContentRef
+            qr/(?:^\n)?# Servers::po::Courier::Abstract::installer - BEGIN\n/m, qr/# Servers::po::Courier::Abstract::installer - ENDING\n/, '',
+            $fileContentRef
         );
 
         $rs = $file->save();

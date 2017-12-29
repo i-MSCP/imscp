@@ -74,17 +74,17 @@ sub factory
     $package->getInstance( eventManager => iMSCP::EventManager->getInstance());
 }
 
-=item getInstance( )
+=item getInstance( [ $package = $main::imscpConfig{$class} ] )
 
- See Servers::abstract
+ See Servers::abstract::factory()
 
 =cut
 
-sub getInstance()
+sub getInstance
 {
     my ($self) = @_;
 
-    $self->factory();
+    $self->factory( @_  );
 }
 
 =item can( $method )

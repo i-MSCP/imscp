@@ -84,7 +84,7 @@ function updateSqlUserPassword($sqluId)
     // See https://dev.mysql.com/doc/refman/5.7/en/implicit-commit.html for more details
 
     // Update SQL user password in the mysql system tables;
-    if ($mysqlConfig['SQLD_TYPE'] == 'mariadb' || version_compare($mysqlConfig['SQLD_VERSION'], '5.7.6', '<')) {
+    if ($mysqlConfig['SQLD_VENDOR'] == 'mariadb' || version_compare($mysqlConfig['SQLD_VERSION'], '5.7.6', '<')) {
         exec_query('SET PASSWORD FOR ?@? = PASSWORD(?)', [$row['sqlu_name'], $row['sqlu_host'], $password]);
     } else {
         exec_query('ALTER USER ?@? IDENTIFIED BY ? PASSWORD EXPIRE NEVER', [
