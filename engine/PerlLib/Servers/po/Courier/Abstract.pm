@@ -938,23 +938,23 @@ sub _buildSslConfFiles
     0;
 }
 
-=item _migrateFromCourier( )
+=item _migrateFromDovecot( )
 
- Migrate mailboxes from Courier
+ Migrate mailboxes from Dovecot
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _migrateFromCourier
+sub _migrateFromDovecot
 {
     my ($self) = @_;
 
-    return 0 unless index( $main::imscpOldConfig{'Servers::po'}, 'Courier' ) != -1;
+    return 0 unless index( $main::imscpOldConfig{'Servers::po'}, 'Dovecot' ) != -1;
 
     my $rs = execute(
         [
-            '/usr/bin/perl', "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-Courier-migrate.pl", '--to-courier', '--quiet', '--convert',
+            '/usr/bin/perl', "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl", '--to-courier', '--quiet', '--convert',
             '--overwrite', '--recursive', $self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}
         ],
         \ my $stdout,
