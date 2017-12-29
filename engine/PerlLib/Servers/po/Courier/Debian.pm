@@ -32,13 +32,166 @@ use parent 'Servers::po::Courier::Abstract';
 
  i-MSCP (Debian) Courier IMAP/POP3 server implementation.
 
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item preinstall( )
+
+ Process preinstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preinstall
+{
+    my ($self) = @_;
+
+    $self->stop();
+}
+
+=item postinstall( )
+
+ Process postinstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub postinstall
+{
+    my ($self) = @_;
+
+    eval {
+        my @toEnableServices = ( 'courier-authdaemon', 'courier-pop', 'courier-pop' );
+        my @toDisableServices = ();
+
+        if ( $main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes' ) {
+            push @toEnableServices, 'courier-pop-ssl', 'courier-imap-ssl';
+        } else {
+            push @toDisableServices, 'courier-pop-ssl', 'courier-imap-ssl';
+        }
+
+        my $serviceMngr = iMSCP::Service->getInstance();
+        $serviceMngr->enable( $_ ) for @toEnableServices;
+
+        for ( @toDisableServices ) {
+            $serviceMngr->stop( $_ );
+            $serviceMngr->disable( $_ );
+        }
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'eventManager'}->register(
+        'beforeSetupRestartServices',
+        sub {
+            push @{$_[0]}, [ sub { $self->start(); }, 'Courier IMAP/POP, Courier Authdaemon' ];
+            0;
+        },
+        5
+    );
+}
+
+=item start( )
+
+ See Servers::po::Courier::abstract::start()
+
+=cut
+
+sub start
+{
+    my ($self) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeCourierStart' );
+    return $rs if $rs;
+
+    eval {
+        my $serviceMngr = iMSCP::Service->getInstance();
+        $serviceMngr->start( $_ ) for 'courier-authdaemon', 'courier-pop', 'courier-imap';
+
+        if ( $main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes' ) {
+            $serviceMngr->start( $_ ) for 'courier-pop-ssl', 'courier-imap-ssl';
+        }
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterCourierStart' );
+}
+
+=item stop( )
+
+ See Servers::po::Courier::abstract::stop()
+
+=cut
+
+sub stop
+{
+    my ($self) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeCourierStop' );
+    return $rs if $rs;
+
+    eval {
+        my $serviceMngr = iMSCP::Service->getInstance();
+
+        for ( 'courier-authdaemon', 'courier-pop', 'courier-imap', 'courier-pop-ssl', 'courier-imap-ssl' ) {
+            $serviceMngr->stop( $_ );
+        }
+
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterCourierStop' );
+}
+
+=item restart( )
+
+ See Servers::po::Courier::abstract::restart()
+
+=cut
+
+sub restart
+{
+    my ($self) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeCourierRestart' );
+    return $rs if $rs;
+
+    eval {
+        my $serviceMngr = iMSCP::Service->getInstance();
+        $serviceMngr->restart( $_ ) for 'courier-authdaemon', 'courier-pop', 'courier-imap';
+
+        if ( $main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes' ) {
+            $serviceMngr->restart( $_ ) for 'courier-pop-ssl', 'courier-imap-ssl';
+        }
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterCourierRestart' );
+}
+
+=back
+
 =head1 SHUTDOWN TASKS
 
 =over 4
 
 =item shutdown( $priority )
 
- Restart the Courier IMAP/POP serverr when needed
+ Restart the Courier IMAP/POP servers when needed
 
  This method is called automatically before the program exit.
 

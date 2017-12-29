@@ -172,21 +172,6 @@ EOF
     0;
 }
 
-=item preinstall( )
-
- Process preinstall tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub preinstall
-{
-    my ($self) = @_;
-
-    $self->stop();
-}
-
 =item install( )
 
  Process install tasks
@@ -202,53 +187,8 @@ sub install
     my $rs = $self->_setupAuthdaemonSqlUser();
     $rs ||= $self->_buildConf();
     $rs ||= $self->_setupSASL();
-    $rs ||= $self->_migrateFromDovecot();
+    $rs ||= $self->_migrateFromCourier();
     $rs ||= $self->_cleanup();
-}
-
-=item postinstall( )
-
- Process postinstall tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub postinstall
-{
-    my ($self) = @_;
-
-    eval {
-        my @toEnableServices = ( 'AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME' );
-        my @toDisableServices = ();
-
-        if ( $main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes' ) {
-            push @toEnableServices, 'POPD_SSL_SNAME', 'IMAPD_SSL_SNAME';
-        } else {
-            push @toDisableServices, 'POPD_SSL_SNAME', 'IMAPD_SSL_SNAME';
-        }
-
-        my $serviceMngr = iMSCP::Service->getInstance();
-        $serviceMngr->enable( $self->{'config'}->{$_} ) for @toEnableServices;
-
-        for ( @toDisableServices ) {
-            $serviceMngr->stop( $self->{'config'}->{$_} );
-            $serviceMngr->disable( $self->{'config'}->{$_} );
-        }
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'eventManager'}->register(
-        'beforeSetupRestartServices',
-        sub {
-            push @{$_[0]}, [ sub { $self->start(); }, 'Courier IMAP/POP, Courier Authdaemon' ];
-            0;
-        },
-        5
-    );
 }
 
 =item uninstall( )
@@ -433,6 +373,10 @@ sub addMail
 =item start( )
 
  Start courier servers
+ 
+  The following event *MUST* be triggered:
+  - beforeCourierStart()
+  - afterCourierStart()
 
  Return int 0 on success, other on failure
 
@@ -442,33 +386,16 @@ sub start
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeCourierStart' );
-    return $rs if $rs;
-
-    eval {
-        my $serviceMngr = iMSCP::Service->getInstance();
-
-        for my $service( 'AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME' ) {
-            $serviceMngr->start( $self->{'config'}->{$service} );
-        }
-
-        if ( $main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes' ) {
-            for my $service( 'POPD_SSL_SNAME', 'IMAPD_SSL_SNAME' ) {
-                $serviceMngr->start( $self->{'config'}->{$service} );
-            }
-        }
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterCourierStart' );
+    die( sprintf( 'The %s package must implement the start() method', $self ));
 }
 
 =item stop( )
 
  Stop courier servers
+
+ The following event *MUST* be triggered:
+  - beforeCourierStop()
+  - afterCourierStop()
 
  Return int 0 on success, other on failure
 
@@ -478,26 +405,16 @@ sub stop
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeCourierStop' );
-    return $rs if $rs;
-
-    eval {
-        my $serviceMngr = iMSCP::Service->getInstance();
-        for my $service( 'AUTHDAEMON_SNAME', 'POPD_SNAME', 'POPD_SSL_SNAME', 'IMAPD_SNAME', 'IMAPD_SSL_SNAME' ) {
-            $serviceMngr->stop( $self->{'config'}->{$service} );
-        }
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterCourierStop' );
+    die( sprintf( 'The %s package must implement the stop() method', $self ));
 }
 
 =item restart( )
 
  Restart courier servers
+
+ The following event *MUST* be triggered:
+  - beforeCourierRestart()
+  - afterCourierRestart()
 
  Return int 0 on success, other on failure
 
@@ -507,24 +424,7 @@ sub restart
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeCourierRestart' );
-    return $rs if $rs;
-
-    eval {
-        my @toRestartServices = ( 'AUTHDAEMON_SNAME', 'POPD_SNAME', 'IMAPD_SNAME' );
-        if ( $main::imscpConfig{'SERVICES_SSL_ENABLED'} eq 'yes' ) {
-            push @toRestartServices, 'POPD_SSL_SNAME', 'IMAPD_SSL_SNAME';
-        }
-
-        my $serviceMngr = iMSCP::Service->getInstance();
-        $serviceMngr->restart( $self->{'config'}->{$_} ) for @toRestartServices;
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterCourierRestart' );
+    die( sprintf( 'The %s package must implement the restart() method', $self ));
 }
 
 =item getTraffic( $trafficDb [, $logFile, $trafficIndexDb ] )
@@ -1038,23 +938,23 @@ sub _buildSslConfFiles
     0;
 }
 
-=item _migrateFromDovecot( )
+=item _migrateFromCourier( )
 
- Migrate mailboxes from Dovecot
+ Migrate mailboxes from Courier
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _migrateFromDovecot
+sub _migrateFromCourier
 {
     my ($self) = @_;
 
-    return 0 unless index( $main::imscpOldConfig{'Servers::po'}, 'Dovecot' ) != -1;
+    return 0 unless index( $main::imscpOldConfig{'Servers::po'}, 'Courier' ) != -1;
 
     my $rs = execute(
         [
-            '/usr/bin/perl', "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl", '--to-courier', '--quiet', '--convert',
+            '/usr/bin/perl', "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-Courier-migrate.pl", '--to-courier', '--quiet', '--convert',
             '--overwrite', '--recursive', $self->{'mta'}->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}
         ],
         \ my $stdout,

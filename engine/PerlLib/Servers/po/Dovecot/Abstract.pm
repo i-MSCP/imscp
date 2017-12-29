@@ -166,41 +166,6 @@ EOF
     0;
 }
 
-=item preinstall( )
-
- Process preinstall tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub preinstall
-{
-    my ($self) = @_;
-
-    eval {
-        my $serviceMngr = iMSCP::Service->getInstance();
-
-        # Disable dovecot.socket unit if any
-        # Dovecot as configured by i-MSCP doesn't rely on systemd activation socket
-        # This also solve problem on boxes where IPv6 is not available; default dovecot.socket unit file make
-        # assumption that IPv6 is available without further checks...
-        # See also: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=814999
-        if ( $serviceMngr->isSystemd() && $serviceMngr->hasService( 'dovecot.socket' ) ) {
-            $serviceMngr->stop( 'dovecot.socket' );
-            $serviceMngr->disable( 'dovecot.socket' );
-        }
-
-        $self->stop();
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    0;
-}
-
 =item install( )
 
  Process install tasks
@@ -223,38 +188,6 @@ sub install
     $rs ||= $self->_buildConf();
     $rs ||= $self->_migrateFromCourier();
     $rs ||= $self->_cleanup();
-}
-
-=item postinstall( )
-
- Process postinstall tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub postinstall
-{
-    my ($self) = @_;
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeDovecotPostinstall' );
-    return $rs if $rs;
-
-    eval { iMSCP::Service->getInstance()->enable( $self->{'config'}->{'DOVECOT_SNAME'} ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $rs = $self->{'eventManager'}->register(
-        'beforeSetupRestartServices',
-        sub {
-            push @{$_[0]}, [ sub { $self->start(); }, 'Dovecot' ];
-            0;
-        },
-        5
-    );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterDovecotPostinstall' );
 }
 
 =item uninstall( )
@@ -282,14 +215,6 @@ sub uninstall
 
     my $rs = $self->_dropSqlUser();
     $rs ||= $self->_removeConfig();
-
-    unless ( $rs || !iMSCP::Service->getInstance()->hasService( $self->{'config'}->{'DOVECOT_SNAME'} ) ) {
-        $self->{'restart'} ||= 1;
-    } else {
-        $self->{'restart'} ||= 0;
-    }
-
-    $rs;
 }
 
 =item addMail( \%data )
@@ -425,6 +350,10 @@ sub setEnginePermissions
 
  Start Dovecot
 
+ The following event *MUST* be triggered:
+  - beforeDovecotStart()
+  - afterDovecotStart()
+
  Return int 0 on success, other on failure
 
 =cut
@@ -433,21 +362,16 @@ sub start
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeDovecotStart' );
-    return $rs if $rs;
-
-    eval { iMSCP::Service->getInstance()->start( $self->{'config'}->{'DOVECOT_SNAME'} ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterDovecotStart' );
+    die( sprintf( 'The %s package must implement the start() method', $self ));
 }
 
 =item stop( )
 
  Stop Dovecot
+
+ The following event *MUST* be triggered:
+  - beforeDovecotStop()
+  - afterDovecotStop()
 
  Return int 0 on success, other on failure
 
@@ -457,21 +381,17 @@ sub stop
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeDovecotStop' );
-    return $rs if $rs;
+    die( sprintf( 'The %s package must implement the stop() method', $self ));
 
-    eval { iMSCP::Service->getInstance()->stop( $self->{'config'}->{'DOVECOT_SNAME'} ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterDovecotStop' );
 }
 
 =item restart( )
 
  Restart Dovecot
+
+ The following event *MUST* be triggered:
+  - beforeDovecotRestart()
+  - afterDovecotRestart()
 
  Return int 0 on success, other on failure
 
@@ -481,16 +401,7 @@ sub restart
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeDovecotRestart' );
-    return $rs if $rs;
-
-    eval { iMSCP::Service->getInstance()->restart( $self->{'config'}->{'DOVECOT_SNAME'} ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterDovecotRestart' );
+    die( sprintf( 'The %s package must implement the restart() method', $self ));
 }
 
 =item getTraffic( $trafficDb [, $logFile, $trafficIndexDb ] )

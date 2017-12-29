@@ -32,6 +32,160 @@ use parent 'Servers::po::Dovecot::Abstract';
 
  i-MSCP (Debian) Dovecot IMAP/POP3 server implementation.
 
+=head1 PUBLIC METHODS
+
+=over 4
+
+=item preinstall( )
+
+ See Servers::po::Dovecot::Abstract::preinstall()
+
+=cut
+
+sub preinstall
+{
+    my ($self) = @_;
+
+    eval {
+        my $serviceMngr = iMSCP::Service->getInstance();
+
+        # Disable dovecot.socket unit if any
+        # Dovecot as configured by i-MSCP doesn't rely on systemd activation socket
+        # This also solve problem on boxes where IPv6 is not available; default dovecot.socket unit file make
+        # assumption that IPv6 is available without further checks...
+        # See also: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=814999
+        if ( $serviceMngr->isSystemd() && $serviceMngr->hasService( 'dovecot.socket' ) ) {
+            $serviceMngr->stop( 'dovecot.socket' );
+            $serviceMngr->disable( 'dovecot.socket' );
+        }
+
+        $self->stop();
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    0;
+}
+
+=item postinstall( )
+
+ Process postinstall tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub postinstall
+{
+    my ($self) = @_;
+
+    eval { iMSCP::Service->getInstance()->enable( 'dovecot' ); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'eventManager'}->register(
+        'beforeSetupRestartServices',
+        sub {
+            push @{$_[0]}, [ sub { $self->start(); }, 'Dovecot' ];
+            0;
+        },
+        5
+    );
+}
+
+=item uninstall( )
+
+ See Servers::po::Dovecot::Abstract::uninstall()
+
+=cut
+
+sub uninstall
+{
+    my ($self) = @_;
+
+    my $rs = $self->SUPER::uninstall();
+
+    unless ( $rs || !iMSCP::Service->getInstance()->hasService( 'dovecot' ) ) {
+        $self->{'restart'} ||= 1;
+    } else {
+        $self->{'restart'} ||= 0;
+    }
+
+    $rs;
+}
+
+=item start( )
+
+ See Servers::po::Dovecot::Abstract::start()
+
+=cut
+
+sub start
+{
+    my ($self) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeDovecotStart' );
+    return $rs if $rs;
+
+    eval { iMSCP::Service->getInstance()->start( 'dovecot' ); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterDovecotStart' );
+}
+
+=item stop( )
+
+ See Servers::po::Dovecot::Abstract::stop()
+
+=cut
+
+sub stop
+{
+    my ($self) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeDovecotStop' );
+    return $rs if $rs;
+
+    eval { iMSCP::Service->getInstance()->stop( 'dovecot' ); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterDovecotStop' );
+}
+
+=item restart( )
+
+ See Servers::po::Dovecot::Abstract::restart()
+
+=cut
+
+sub restart
+{
+    my ($self) = @_;
+
+    my $rs = $self->{'eventManager'}->trigger( 'beforeDovecotRestart' );
+    return $rs if $rs;
+
+    eval { iMSCP::Service->getInstance()->restart( 'dovecot' ); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    $self->{'eventManager'}->trigger( 'afterDovecotRestart' );
+}
+
+=back
+
 =head1 SHUTDOWN TASKS
 
 =over 4
