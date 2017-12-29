@@ -38,7 +38,7 @@ use parent 'Servers::ftpd::Proftpd::Abstract';
 
 =item shutdown( $priority )
 
- Restart, reload or start the Vsftpd server when needed
+ Restart, reload or start the ProFTPD server when needed
 
  This method is called automatically before the program exit.
 
