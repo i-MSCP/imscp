@@ -20,6 +20,7 @@
 
 use iMSCP\PHPini;
 use iMSCP\TemplateEngine;
+use iMSCP_Config_Handler_File as ConfigFile;
 use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
@@ -56,8 +57,6 @@ function generatePage($tpl)
 {
     global $hpName, $php, $cgi, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $traffic, $diskspace, $backup, $dns, $aps, $extMail,
            $webFolderProtection;
-
-    $cfg = Registry::get('config');
 
     $tpl->assign([
         'VL_TEMPLATE_NAME'  => tohtml($hpName, 'htmlAttr'),
@@ -215,7 +214,14 @@ function generatePage($tpl)
         $permissionsBlock = true;
     }
 
-    if ($cfg['HTTPD_SERVER'] == 'apache2_mpm_itk') {
+    if (strpos(Registry::get('config')['Servers:httpd'], 'apache2') !== false) {
+        $apache2Config = new ConfigFile(utils_normalizePath(Registry::get('config')['CONF_DIR'] . '/apache2/apache.data'));
+        $isApache2Itk = $apache2Config['APACHE2_MPM'] == 'itk';
+    } else {
+        $isApache2Itk = false;
+    }
+
+    if ($isApache2Itk) {
         $tpl->assign([
             'PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK' => '',
             'PHP_EDITOR_MAIL_FUNCTION_BLOCK'     => ''

@@ -1,7 +1,10 @@
+#
+## Parameter common to all httpd server implementations
+#
+
 HTTPD_VERSION =
 HTTPD_USER = www-data
 HTTPD_GROUP = www-data
-HTTPD_SNAME = apache2
 HTTPD_CONF_DIR = /etc/apache2
 HTTPD_MODS_AVAILABLE_DIR = /etc/apache2/mods-available
 HTTPD_MODS_ENABLED_DIR = /etc/apache2/mods-enabled
@@ -11,9 +14,18 @@ HTTPD_CUSTOM_SITES_DIR = /etc/apache2/imscp
 HTTPD_ROOT_DIR = /var/www
 HTTPD_LOG_DIR = /var/log/apache2
 
-HTACCESS_USERS_FILENAME = .htpasswd
-HTACCESS_GROUPS_FILENAME = .htgroup
-
 # Whether or not bind mount logs in customer logs directory
 # Allowed value: yes|no
 MOUNT_CUSTOMER_LOGS = yes
+
+#
+## Parameters specific to Apache2 server implementation
+#
+
+HTACCESS_USERS_FILENAME = .htpasswd
+HTACCESS_GROUPS_FILENAME = .htgroup
+
+# Either event, itk, prefork or worker
+APACHE2_MPM = 
+
+

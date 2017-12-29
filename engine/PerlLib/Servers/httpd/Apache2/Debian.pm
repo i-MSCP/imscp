@@ -25,13 +25,15 @@ package Servers::httpd::Apache2::Debian;
 
 use strict;
 use warnings;
+use autouse 'iMSCP::Dialog::InputValidation' => qw/ isOneOfStringsInList isStringInList /;
 use autouse 'iMSCP::Mount' => qw/ umount /;
+use Class::Autouse qw/ :nostat iMSCP::Getopt /;
 use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::Service;
-use parent $main::imscpConfig{'HTTPD_PACKAGE'}, 'Servers::httpd::Interface';
+use parent 'Servers::httpd::Apache2::Abstract';
 
 =head1 DESCRIPTION
 
@@ -41,11 +43,66 @@ use parent $main::imscpConfig{'HTTPD_PACKAGE'}, 'Servers::httpd::Interface';
 
 =over 4
 
-=item install( )
+=item registerSetupListeners()
 
- Process install tasks
+ Register setup event listeners
 
  Return int 0 on success, other on failure
+
+=cut
+
+sub registerSetupListeners
+{
+    my ($self) = @_;
+
+    $self->{'eventManager'}->register(
+        'beforeSetupDialog',
+        sub {
+            push @{$_[0]}, sub { $self->askForApache2MPM( @_ ) };
+            0;
+        },
+        10 # We must ask for Apache2 FPM before PHP SAPI because available PHP SAPIs depend on selected Apache2 MPM
+    );
+}
+
+=item askForApache2MPM( \%dialog )
+
+ Ask for Apache2 FPM
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 to go on next question, 30 to go back to the previous question
+
+=cut
+
+sub askForApache2MPM
+{
+    my ($self, $dialog) = @_;
+
+    my $value = main::setupGetQuestion( 'APACHE2_MPM', $self->{'config'}->{'APACHE2_MPM'} || ( iMSCP::Getopt->preseed ? 'event' : '' ));
+    my %choices = (
+        'event', 'Apache2 Event MPM',
+        'itk', 'Apache2 ITK MPM',
+        'prefork', 'Apache2 Prefork MPM',
+        'worker', 'Apache2 Worker MPM'
+    );
+
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'httpd', 'servers', 'all', 'forced' ] ) || !isStringInList( $value, keys %choices ) ) {
+        ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'event' );
+\\Z4\\Zb\\ZuApache2 MPM\\Zn
+
+Please choose the Apache2 MPM you want use.
+\\Z \\Zn
+EOF
+        return $rs unless $rs < 30;
+    }
+
+    $self->{'config'}->{'APACHE2_MPM'} = $value;
+    0;
+}
+
+=item install( )
+
+ See Servers::httpd::Apache2::Abstract
 
 =cut
 
@@ -53,12 +110,11 @@ sub install
 {
     my ($self) = @_;
 
-    my $rs ||= $self->_setVersion();
+    my $rs = $self->SUPER::install();
     $rs ||= $self->_makeDirs();
     $rs ||= $self->_setupModules();
     $rs ||= $self->_configure();
     $rs ||= $self->_installLogrotate();
-    $rs ||= $self->SUPER::install();
     $rs ||= $self->_cleanup();
 }
 
@@ -155,7 +211,7 @@ sub enableModules
     my ($self, @modules) = @_;
 
     for ( @modules ) {
-        next unless -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_.load";
+        next unless -f "/etc/apache2/mods-availables/$_.load";
 
         my $rs = execute( [ '/usr/sbin/a2enmod', $_ ], \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
@@ -318,9 +374,7 @@ sub reload
 
 =item _setVersion( )
 
- Set Apache version
-
- Return int 0 on success, other on failure
+ See Servers::httpd::Interface
 
 =cut
 
@@ -337,7 +391,7 @@ sub _setVersion
         return 1;
     }
 
-    $self->{'config'}->{'HTTPD_VERSION'} = $1;
+    $self->{'config'}->{'APACHE2_VERSION'} = $1;
     debug( sprintf( 'Apache2 version set to: %s', $1 ));
     0;
 }
@@ -352,10 +406,8 @@ sub _setVersion
 
 sub _makeDirs
 {
-    my ($self) = @_;
-
     eval {
-        iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_LOG_DIR'} )->make( {
+        iMSCP::Dir->new( dirname => '/var/log/apache2' )->make( {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ADM_GROUP'},
             mode  => 0750
@@ -369,16 +421,17 @@ sub _makeDirs
 
 =item _setupModules( )
 
- See Apache2 module according selected MPM
+ Setup Apache2 modules according selected MPM
 
  return 0 on success, other on failure
+
 =cut
 
 sub _setupModules
 {
     my ($self) = @_;
 
-    if ( $main::imscpConfig{'HTTPD_PACKAGE'} eq 'Servers::httpd::Apache2::Event' ) {
+    if ( $self->{'config'}->{'APACHE2_MPM'} eq 'event' ) {
         my $rs = $self->disableModules( qw/ mpm_itk mpm_prefork mpm_worker cgi / );
         $rs ||= $self->enableModules(
             qw/ mpm_event access_compat alias auth_basic auth_digest authn_core authn_file authz_core authz_groupfile authz_host authz_user autoindex
@@ -387,7 +440,7 @@ sub _setupModules
         return 0;
     }
 
-    if ( $main::imscpConfig{'HTTPD_PACKAGE'} eq 'Servers::httpd::Apache2::Itk' ) {
+    if ( $self->{'config'}->{'APACHE2_MPM'} eq 'itk' ) {
         my $rs = $self->disableModules( qw/ mpm_event mpm_worker cgid suexec / );
         $rs ||= $self->enableModules(
             qw/ mpm_prefork mpm_itk access_compat alias auth_basic auth_digest authn_core authn_file authz_core authz_groupfile authz_host
@@ -396,7 +449,7 @@ sub _setupModules
         return 0;
     }
 
-    if ( $main::imscpConfig{'HTTPD_PACKAGE'} eq 'Servers::httpd::Apache2::Prefork' ) {
+    if ( $self->{'config'}->{'APACHE2_MPM'} eq 'prefork' ) {
         my $rs = $self->disableModules( qw/ mpm_event mpm_itk mpm_worker cgid / );
         $rs ||= $self->enableModules(
             qw/ mpm_prefork access_compat alias auth_basic auth_digest authn_core authn_file authz_core authz_groupfile authz_host authz_user
@@ -405,7 +458,7 @@ sub _setupModules
         return 0;
     }
 
-    if ( $main::imscpConfig{'HTTPD_PACKAGE'} eq 'Servers::httpd::Apache2::Worker' ) {
+    if ( $self->{'config'}->{'APACHE2_MPM'} eq 'worker' ) {
         my $rs = $self->disableModules( qw/ mpm_event mpm_itk mpm_prefork cgi / );
         $rs ||= $self->enableModules(
             qw/ mpm_worker access_compat alias auth_basic auth_digest authn_core authn_file authz_core authz_groupfile authz_host authz_user autoindex
@@ -414,7 +467,7 @@ sub _setupModules
         return 0;
     }
 
-    error( 'Unknown Apache2  server implementation' );
+    error( 'Unknown Apache2 server implementation' );
     1;
 }
 
@@ -438,28 +491,28 @@ sub _configure
             0;
         }
     );
-    $rs ||= $self->buildConfFile( "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf", "$self->{'config'}->{'HTTPD_CONF_DIR'}/ports.conf" );
+    $rs ||= $self->buildConfFile( "/etc/apache2/ports.conf", "/etc/apache2//ports.conf" );
 
     # Turn off default access log provided by Debian package
     $rs = $self->disableConfs( 'other-vhosts-access-log.conf' );
     return $rs if $rs;
 
     # Remove default access log file provided by Debian package
-    if ( -f "$self->{'config'}->{'HTTPD_LOG_DIR'}/other_vhosts_access.log" ) {
-        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_LOG_DIR'}/other_vhosts_access.log" )->delFile();
+    if ( -f "/var/log/apache2/other_vhosts_access.log" ) {
+        $rs = iMSCP::File->new( filename => "/var/log/apache2/other_vhosts_access.log" )->delFile();
         return $rs if $rs;
     }
 
     my $serverData = {
-        HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
-        HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
-        HTTPD_ROOT_DIR         => $self->{'config'}->{'HTTPD_ROOT_DIR'},
+        HTTPD_CUSTOM_SITES_DIR => '/etc/apache2/imscp',
+        HTTPD_LOG_DIR          => '/var/log/apache2',
+        HTTPD_ROOT_DIR         => '/var/www',
         VLOGGER_CONF           => "$self->{'cfgDir'}/vlogger.conf"
     };
 
-    $rs = $self->buildConfFile( '00_nameserver.conf', "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf", undef, $serverData );
+    $rs = $self->buildConfFile( '00_nameserver.conf', "/etc/apache2/sites-available/00_nameserver.conf", undef, $serverData );
     $rs ||= $self->enableSites( '00_nameserver.conf' );
-    $rs ||= $self->buildConfFile( '00_imscp.conf', "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/00_imscp.conf", undef, $serverData );
+    $rs ||= $self->buildConfFile( '00_imscp.conf', "/etc/apache2/conf-available/00_imscp.conf", undef, $serverData );
     $rs ||= $self->enableConfs( '00_imscp.conf' );
     $rs ||= $self->disableSites( 'default', 'default-ssl', '000-default.conf', 'default-ssl.conf' );
 }
@@ -478,7 +531,7 @@ sub _installLogrotate
 
     $self->buildConfFile(
         'logrotate.conf',
-        "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/apache2",
+        '/etc/logrotate.d/apache2',
         undef,
         {
             ROOT_USER     => $main::imscpConfig{'ROOT_USER'},
@@ -509,8 +562,8 @@ sub _cleanup
     }
 
     for ( 'imscp.conf', '00_modcband.conf', '00_master.conf', '00_master_ssl.conf' ) {
-        next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
-        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_" )->delFile();
+        next unless -f "/etc/apache2/sites-availables/$_";
+        $rs = iMSCP::File->new( filename => "/etc/apache2/sites-availables/$_" )->delFile();
         return $rs if $rs;
     }
 
@@ -541,9 +594,7 @@ sub _cleanup
 
 sub _removeDirs
 {
-    my ($self) = @_;
-
-    eval { iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove(); };
+    eval { iMSCP::Dir->new( dirname => '/etc/apache2/imscp' )->remove(); };
     if ( $@ ) {
         error( $@ );
         return 1;
@@ -564,14 +615,13 @@ sub _restoreDefaultConfig
 {
     my ($self) = @_;
 
-    if ( -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf" ) {
+    if ( -f "/etc/apache2/sites-available/00_nameserver.conf" ) {
         my $rs = $self->disableSites( '00_nameserver.conf' );
-        $rs ||= iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf" )->delFile();
+        $rs ||= iMSCP::File->new( filename => "/etc/apache2/sites-available/00_nameserver.conf" )->delFile();
         return $rs if $rs;
     }
 
-    my $confDir = -d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available"
-        ? "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available" : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d";
+    my $confDir = -d "/etc/apache2/conf-available" ? "/etc/apache2/conf-available" : "/etc/apache2/conf.d";
 
     if ( -f "$confDir/00_imscp.conf" ) {
         my $rs = $self->disableConfs( '00_imscp.conf' );
@@ -584,7 +634,7 @@ sub _restoreDefaultConfig
             iMSCP::Dir->new( dirname => $_ )->remove();
         }
 
-        iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove();
+        iMSCP::Dir->new( dirname => '/etc/apache2/imscp' )->remove();
     };
     if ( $@ ) {
         error( $@ );
@@ -592,12 +642,38 @@ sub _restoreDefaultConfig
     }
 
     for ( '000-default', 'default' ) {
-        next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
+        next unless -f "/etc/apache2/sites-available/$_";
         my $rs = $self->enableSites( $_ );
         return $rs if $rs;
     }
 
     0;
+}
+
+=back
+
+=head1 SHUTDOWN TASKS
+
+=over 4
+
+=item shutdown( $priority )
+
+ Restart, reload or start Apache2 server wheen needed
+
+ This method is called automatically before the program exit.
+
+ Param int $priority Server priority
+ Return void
+
+=cut
+
+sub shutdown
+{
+    my ($self, $priority) = @_;
+
+    return unless my $action = $self->{'restart'} ? 'restart' : ( $self->{'reload'} ? 'reload' : ( $self->{'start'} ? ' start' : undef ) );
+
+    iMSCP::Service->getInstance()->registerDelayedAction( 'apache2', [ $action, sub { $self->$action(); } ], $priority );
 }
 
 =back

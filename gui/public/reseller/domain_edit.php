@@ -20,6 +20,7 @@
 
 use iMSCP\PHPini;
 use iMSCP\TemplateEngine;
+use iMSCP_Config_Handler_File as ConfigFile;
 use iMSCP_Events as Events;
 use iMSCP_Registry as Registry;
 
@@ -438,7 +439,14 @@ function generateFeaturesForm(TemplateEngine $tpl, &$data)
             $permissionsBlock = true;
         }
 
-        if (Registry::get('config')['HTTPD_SERVER'] == 'apache2_mpm_itk') {
+        if (strpos(Registry::get('config')['Servers:httpd'], 'apache2') !== false) {
+            $apache2Config = new ConfigFile(utils_normalizePath(Registry::get('config')['CONF_DIR'] . '/apache2/apache.data'));
+            $isApache2Itk = $apache2Config['APACHE2_MPM'] == 'itk';
+        } else {
+            $isApache2Itk = false;
+        }
+
+        if ($isApache2Itk) {
             $tpl->assign([
                 'PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK' => '',
                 'PHP_EDITOR_MAIL_FUNCTION_BLOCK'     => ''

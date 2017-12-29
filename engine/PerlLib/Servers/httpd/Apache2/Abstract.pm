@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::httpd::Apache2::Abstract - i-MSCP Apache2 server abstract class
+ Servers::httpd::Apache2::Abstract - i-MSCP Apache2 server abstract implementation
 
 =cut
 
@@ -42,7 +42,6 @@ use iMSCP::Getopt;
 use iMSCP::Mount qw/ mount umount isMountpoint addMountEntry removeMountEntry /;
 use iMSCP::Net;
 use iMSCP::Rights;
-use iMSCP::Service;
 use iMSCP::SystemUser;
 use iMSCP::TemplateParser qw/ processByRef replaceBlocByRef /;
 use iMSCP::Umask;
@@ -54,8 +53,8 @@ my $TMPFS = lazy
     {
         mount(
             {
-                fs_spec         => 'tmpfs',
-                fs_file         => my $tmpfs = File::Temp->newdir( CLEANUP => 0 ),
+                fs_spec => 'tmpfs',
+                fs_file => my $tmpfs = File::Temp->newdir( CLEANUP => 0 ),
                 fs_vfstype      => 'tmpfs',
                 fs_mntops       => 'noexec,nosuid,size=32m',
                 ignore_failures => 1 # Ignore failures in case tmpfs isn't supported/allowed
@@ -67,7 +66,7 @@ my $TMPFS = lazy
 
 =head1 DESCRIPTION
 
- Abstract class for i-MSCP Apache2 server implementations.
+ i-MSCP Apache2 server abstract implementation.
 
 =head1 PUBLIC METHODS
 
@@ -100,7 +99,8 @@ sub install
 {
     my ($self) = @_;
 
-    my $rs ||= $self->_copyDomainDisablePages();
+    my $rs ||= $self->_setVersion();
+    $rs ||= $self->_copyDomainDisablePages();
     $rs ||= $self->_setupVlogger();
 }
 
@@ -151,7 +151,7 @@ sub setEnginePermissions
     $rs ||= setRights( "$main::imscpConfig{'USER_WEB_DIR'}/domain_disabled_pages",
         {
             user      => $main::imscpConfig{'ROOT_USER'},
-            group     => $self->{'config'}->{'HTTPD_GROUP'},
+            group     => $self->{'config'}->{'APACHE2_GROUP'},
             dirmode   => '0550',
             filemode  => '0440',
             recursive => iMSCP::Getopt->fixPermissions
@@ -172,7 +172,7 @@ sub addUser
     return 0 if $moduleData->{'STATUS'} eq 'tochangepwd';
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeApache2AddUser', $moduleData );
-    $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'HTTPD_USER'} )->addToGroup( $moduleData->{'GROUP'} );
+    $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'APACHE2_USER'} )->addToGroup( $moduleData->{'GROUP'} );
     $rs ||= $self->{'eventManager'}->trigger( 'afterApache2AddUser', $moduleData );
 }
 
@@ -187,7 +187,7 @@ sub deleteUser
     my ($self, $moduleData) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeApache2DeleteUser', $moduleData );
-    $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'HTTPD_USER'} )->removeFromGroup( $moduleData->{'GROUP'} );
+    $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'APACHE2_USER'} )->removeFromGroup( $moduleData->{'GROUP'} );
     $rs ||= $self->{'eventManager'}->trigger( 'afterApache2DeleteUser', $moduleData );
 }
 
@@ -342,7 +342,7 @@ sub addHtpasswd
 
         local $UMASK = 027;
         my $rs = $file->save();
-        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
+        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'APACHE2_GROUP'} );
         $rs ||= $file->mode( 0640 );
         $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
 
@@ -388,7 +388,7 @@ sub deleteHtpasswd
         );
 
         my $rs = $file->save();
-        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
+        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'APACHE2_GROUP'} );
         $rs ||= $file->mode( 0640 );
         $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
 
@@ -434,7 +434,7 @@ sub addHtgroup
 
         local $UMASK = 027;
         my $rs = $file->save();
-        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
+        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'APACHE2_GROUP'} );
         $rs ||= $file->mode( 0640 );
         $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
 
@@ -480,7 +480,7 @@ sub deleteHtgroup
         );
 
         my $rs = $file->save();
-        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
+        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'APACHE2_GROUP'} );
         $rs ||= $file->mode( 0640 );
         $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
 
@@ -751,7 +751,7 @@ sub getRunningUser
 {
     my ($self) = @_;
 
-    $self->{'config'}->{'HTTPD_USER'};
+    $self->{'config'}->{'APACHE2_USER'};
 }
 
 =item getRunningGroup( )
@@ -764,7 +764,7 @@ sub getRunningGroup
 {
     my ($self) = @_;
 
-    $self->{'config'}->{'HTTPD_GROUP'};
+    $self->{'config'}->{'APACHE2_GROUP'};
 }
 
 =back
@@ -793,6 +793,7 @@ sub _init
         fileName    => "$self->{'cfgDir'}/apache.data",
         readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
         nodeferring => defined $main::execmode && $main::execmode eq 'setup';
+    $self->{'eventManager'}->register( 'afterApache2BuildConfFile', $self, -999 );
     $self;
 }
 
@@ -1430,6 +1431,7 @@ sub _copyDomainDisablePages
         error( $@ );
         return 1;
     }
+
     0;
 }
 
@@ -1541,22 +1543,87 @@ sub _removeVloggerSqlUser
 
 =back
 
-=head1 SHUTDOWN TASKS
+=head1 EVENT LISTENERS
 
 =over 4
 
-=item END
+=item afterApache2BuildConfFile( $apache2Server, \$cfgTpl, $filename, \$trgFile, \%moduleData, \%apache2ServerData, \%apache2ServerConfig, \%parameters )
+
+ Event listener that cleanup production files
+
+ Param scalar $apache2Server Servers::httpd::Apache2::Prefork instance
+ Param scalar \$scalar Reference to Apache2 conffile
+ Param string $filename Apache2 template name
+ Param scalar \$trgFile Target file path
+ Param hashref \%moduleData Data as provided by Alias|Domain|Subdomain|SubAlias modules
+ Param hashref \%apache2ServerData Apache2 server data
+ Param hashref \%apache2ServerConfig Apache2 server data
+ Param hashref \%parameters OPTIONAL Parameters:
+  - user  : File owner (default: root)
+  - group : File group (default: root
+  - mode  : File mode (default: 0644)
+  - cached : Whether or not loaded file must be cached in memory
+ Return int 0 on success, other on failure
+
+=cut
+
+sub afterApache2BuildConfFile
+{
+    my ($self, $cfgTpl, $filename, undef, $moduleData, $apache2ServerData) = @_;
+
+    return $apache2ServerData->{'SKIP_TEMPLATE_CLEANER'} = 0 if $apache2ServerData->{'SKIP_TEMPLATE_CLEANER'};
+
+    if ( $filename eq 'domain.tpl' ) {
+        if ( index( $apache2ServerData->{'VHOST_TYPE'}, 'fwd' ) == -1 ) {
+            if ( $self->{'config'}->{'APACHE2_MPM'} eq 'itk' ) {
+                replaceBlocByRef( "# SECTION suexec BEGIN.\n", "# SECTION suexec END.\n", '', $cfgTpl );
+            } else {
+                replaceBlocByRef( "# SECTION itk BEGIN.\n", "# SECTION itk END.\n", '', $cfgTpl );
+            }
+
+            if ( $moduleData->{'CGI_SUPPORT'} ne 'yes' ) {
+                replaceBlocByRef( "# SECTION cgi BEGIN.\n", "# SECTION cgi END.\n", '', $cfgTpl );
+            }
+        } elsif ( $moduleData->{'FORWARD'} ne 'no' ) {
+            if ( $moduleData->{'FORWARD_TYPE'} eq 'proxy'
+                && ( !$moduleData->{'HSTS_SUPPORT'} || index( $apache2ServerData->{'VHOST_TYPE'}, 'ssl' ) != -1 )
+            ) {
+                replaceBlocByRef( "# SECTION std_fwd BEGIN.\n", "# SECTION std_fwd END.\n", '', $cfgTpl );
+
+                if ( index( $moduleData->{'FORWARD'}, 'https' ) != 0 ) {
+                    replaceBlocByRef( "# SECTION ssl_proxy BEGIN.\n", "# SECTION ssl_proxy END.\n", '', $cfgTpl );
+                }
+            } else {
+                replaceBlocByRef( "# SECTION proxy_fwd BEGIN.\n", "# SECTION proxy_fwd END.\n", '', $cfgTpl );
+            }
+        } else {
+            replaceBlocByRef( "# SECTION proxy_fwd BEGIN.\n", "# SECTION proxy_fwd END.\n", '', $cfgTpl );
+        }
+    }
+
+    ${$cfgTpl} =~ s/^\s*(?:[#;].*)?\n//gm;
+    0;
+}
+
+=back
+
+=head1 CLEANUP TASKS
+
+=over 4
+
+=item DESTROY
 
  Umount and remove tmpfs
 
 =cut
 
-END {
-    return unless $HAS_TMPFS;
+DESTROY
+    {
+        return unless $HAS_TMPFS;
 
-    umount( $TMPFS );
-    iMSCP::Dir->new( dirname => $TMPFS )->remove();
-}
+        umount( $TMPFS );
+        iMSCP::Dir->new( dirname => $TMPFS )->remove();
+    }
 
 =back
 

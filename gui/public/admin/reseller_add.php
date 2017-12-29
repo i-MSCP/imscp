@@ -19,10 +19,11 @@
  */
 
 use iMSCP\Crypt as Crypt;
+use iMSCP\PHPini;
 use iMSCP\TemplateEngine;
+use iMSCP_Config_Handler_File as ConfigFile;
 use iMSCP_Events as Events;
 use iMSCP_Exception as iMSCPException;
-use iMSCP\PHPini;
 use iMSCP_Registry as Registry;
 use Zend_Form as Form;
 
@@ -238,7 +239,15 @@ function generateFeaturesForm(TemplateEngine $tpl)
         $translations['core']['error_field_stack'] = Registry::isRegistered('errFieldsStack') ? Registry::get('errFieldsStack') : [];
     });
 
-    if (Registry::get('config')['HTTPD_PACKAGE'] != 'Servers::httpd::apache_itk') {
+
+    if (strpos(Registry::get('config')['Servers:httpd'], 'apache2') !== false) {
+        $apache2Config = new ConfigFile(utils_normalizePath(Registry::get('config')['CONF_DIR'] . '/apache2/apache.data'));
+        $isApache2Itk = $apache2Config['APACHE2_MPM'] == 'itk';
+    } else {
+        $isApache2Itk = false;
+    }
+
+    if (!$isApache2Itk) {
         $tpl->assign([
             'TR_PHP_INI_AL_DISABLE_FUNCTIONS'  => tr('Can edit the PHP %s configuration option', '<strong>disable_functions</strong>'),
             'PHP_INI_AL_DISABLE_FUNCTIONS_YES' => $data['php_ini_al_disable_functions'] == 'yes' ? ' checked' : '',
@@ -380,7 +389,7 @@ function addResellerUser(Form $form)
             Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onBeforeAddUser, [
                 'userData' => $form->getValues()
             ]);
-            
+
             exec_query(
                 '
                     INSERT INTO admin (

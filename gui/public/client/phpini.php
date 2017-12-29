@@ -20,6 +20,7 @@
 
 use iMSCP\PHPini;
 use iMSCP\TemplateEngine;
+use iMSCP_Config_Handler_File as ConfigFile;
 use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
@@ -280,7 +281,14 @@ function generatePage($tpl, $phpini)
         ]);
     }
 
-    if (!$phpini->clientHasPermission('phpiniDisplayErrors') || $config['HTTPD_SERVER'] == 'apache2_mpm_itk') {
+    if (strpos($config{'Servers::httpd'}, 'apache2') !== false) {
+        $apache2Config = new ConfigFile(utils_normalizePath(Registry::get('config')['CONF_DIR'] . '/apache2/apache.data'));
+        $isApache2Itk = $apache2Config['APACHE2_MPM'] == 'itk';
+    } else {
+        $isApache2Itk = false;
+    }
+
+    if (!$phpini->clientHasPermission('phpiniDisplayErrors') || $isApache2Itk) {
         $tpl->assign('ERROR_REPORTING_BLOCK', '');
     } else {
         $errorReporting = $phpini->getIniOption('phpiniErrorReporting');
@@ -295,7 +303,14 @@ function generatePage($tpl, $phpini)
         ]);
     }
 
-    if ($config['HTTPD_SERVER'] == 'apache2_mpm_itk' || !$phpini->clientHasPermission('phpiniDisableFunctions')) {
+    if (strpos($config['Servers:httpd'], 'apache2') !== false) {
+        $apache2Config = new ConfigFile(utils_normalizePath(Registry::get('config')['CONF_DIR'] . '/apache2/apache.data'));
+        $isApache2Itk = $apache2Config['APACHE2_MPM'] == 'itk';
+    } else {
+        $isApache2Itk = false;
+    }
+
+    if ($isApache2Itk || !$phpini->clientHasPermission('phpiniDisableFunctions')) {
         $tpl->assign([
             'DISABLE_FUNCTIONS_BLOCK' => '',
             'DISABLE_EXEC_BLOCK'      => ''

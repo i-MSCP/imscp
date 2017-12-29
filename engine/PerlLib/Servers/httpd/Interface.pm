@@ -1,6 +1,6 @@
 =head1 NAME
 
- Servers::httpd::Interface - Interface for i-MSCP httpd servers implementations
+ Servers::httpd::Interface - i-MSCP httpd server interface
 
 =cut
 
@@ -28,7 +28,7 @@ use warnings;
 
 =head1 DESCRIPTION
 
- Interface for i-MSCP httpd servers implementations.
+ i-MSCP httpd server interface.
 
 =head1 PUBLIC METHODS
 
@@ -600,6 +600,51 @@ sub reload
     my ($self) = @_;
 
     die( sprintf( 'The %s package must implement the reload() method', ref $self ));
+}
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _setVersion( )
+
+ Set Httpd server version
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _setVersion
+{
+    my ($self) = @_;
+
+    die( sprintf( 'The %s package must implement the _setVersion() method', ref $self ));
+    0;
+}
+
+=back
+
+=head1 SHUTDOWN TASKS
+
+=over 4
+
+=item shutdown( $priority )
+
+ Restart, reload or start the httpd server wheen needed
+
+ This method is automatically before the program exit.
+
+ Return void
+
+=cut
+
+sub shutdown
+{
+    my ($self) = @_;
+
+    die( sprintf( 'The %s package must implement the shutdown() method', ref $self ));
 }
 
 =back
