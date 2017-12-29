@@ -8,24 +8,25 @@
         <vixie default="1" class="Servers::cron::Vixie::Debian">
             <package>cron</package>
         </vixie>
+        <systemd class="Servers::cron::Systemd::Debian">
+            <package>systemd-cron</package>
+        </systemd>
     </cron>
     <server>
         <local default="1" class="Servers::server::Local::Debian"/>
     </server>
     <httpd>
-        <apache2_mpm_event default="1" description="Apache2 (MPM Event) server" class="Servers::httpd::Apache2::Debian"/>
-        <apache2_mpm_itk description="Apache2 (MPM ITK) server" class="Servers::httpd::Apache2::Debian"/>
-        <apache2_mpm_prefork description="Apache2 (MPM Prefork) server" class="Servers::httpd::Apache2::Debian"/>
-        <apache2_mpm_worker description="Apache2 (MPM Worker) server" class="Servers::httpd::Apache2::Debian"/>
-        <package>apache2</package>
-        <package>apache2-bin</package>
-        <package>apache2-data</package>
-        <package>apache2-dev</package>
-        <package>libapache2-mod-fcgid</package>
-        <package>libapache2-mpm-itk</package>
-        <package>apache2-suexec-pristine</package>
-        <post_install_task>/usr/bin/update-alternatives --set suexec /usr/lib/apache2/suexec-pristine</post_install_task>
-        <post_install_task>sh apache2_postinst.sh</post_install_task>
+        <apache2 default="1" description="Apache2 server" class="Servers::httpd::Apache2::Debian">
+            <package>apache2</package>
+            <package>apache2-bin</package>
+            <package>apache2-data</package>
+            <package>apache2-dev</package>
+            <package>libapache2-mod-fcgid</package>
+            <package>libapache2-mpm-itk</package>
+            <package>apache2-suexec-pristine</package>
+            <post_install_task>/usr/bin/update-alternatives --set suexec /usr/lib/apache2/suexec-pristine</post_install_task>
+            <post_install_task>sh apache2_postinst.sh</post_install_task>
+        </apache2>
     </httpd>
     <php repository="https://packages.sury.org/php/ stretch main" repository_key_uri="https://packages.sury.org/php/apt.gpg">
         <php5.6 default="1" description="PHP 5.6" class="Servers::php::OndreySury::Debian">
