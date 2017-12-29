@@ -51,7 +51,7 @@ sub shutdown
 {
     my ($self, $priority) = @_;
 
-    return unless my $action = $instance->{'restart'} ? 'restart' : ( $instance->{'reload'} ? 'reload' : undef );
+    return unless my $action = $self->{'restart'} ? 'restart' : ( $self->{'reload'} ? 'reload' : undef );
 
     iMSCP::Service->getInstance()->registerDelayedAction( 'postfix', [ $action, sub { $self->$action(); } ], $priority );
 }
