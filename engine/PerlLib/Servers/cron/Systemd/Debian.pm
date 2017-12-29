@@ -41,14 +41,14 @@ use parent 'Servers::cron::Vixie::Debian';
 
 =item preinstall( )
 
- Process preinstall tasks
-
- Return int 0 on success, other on failure
+ See Servers::cron::Vixie::Debian::preinstall()
 
 =cut
 
 sub preinstall
 {
+    my ($self) = @_;
+
     eval { iMSCP::Service->getInstance()->stop( 'cron.target' ); };
     if ( $@ ) {
         error( $@ );
@@ -60,9 +60,7 @@ sub preinstall
 
 =item postinstall( )
 
- Process postinstall tasks
-
- Return int 0 on success, other on failure
+ See Servers::cron::Vixie::Debian::postinstall()
 
 =cut
 

@@ -29,6 +29,7 @@ use autouse 'iMSCP::Rights' => qw/ setRights /;
 use Class::Autouse qw/ :nostat iMSCP::Service /;
 use iMSCP::Debug qw/ error /;
 use iMSCP::File;
+use iMSCP::TemplateParser qw/ processByRef /;
 use parent 'Servers::cron::Abstract';
 
 =head1 DESCRIPTION
@@ -51,6 +52,8 @@ use parent 'Servers::cron::Abstract';
 
 sub preinstall
 {
+    my ($self) = @_;
+
     eval { iMSCP::Service->getInstance()->stop( 'cron' ); };
     if ( $@ ) {
         error( $@ );
@@ -152,9 +155,9 @@ sub postinstall
 
 sub setEnginePermissions
 {
-    return 0 unless -f "/etc/cron.d/imscp";
+    return 0 unless -f '/etc/cron.d/imscp';
 
-    setRights( "/etc/cron.d//imscp",
+    setRights( '/etc/cron.d//imscp',
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ROOT_GROUP'},
@@ -165,19 +168,7 @@ sub setEnginePermissions
 
 =item addTask( \%data [, $filepath = '/etc/cron.d/imscp' ] )
 
- Add a new cron task
-
- Param hash \%data Cron task data:
-  - TASKID :Cron task unique identifier
-  - MINUTE  : OPTIONAL Minute or shortcut such as @daily, @monthly... (Default: @daily)
-  - HOUR    : OPTIONAL Hour - ignored if the MINUTE field defines a shortcut (Default: *)
-  - DAY     : OPTIONAL Day of month - ignored if the MINUTE field defines a shortcut (Default: *)
-  - MONTH   : OPTIONAL Month - ignored if the MINUTE field defines a shortcut - Default (Default: *)
-  - DWEEK   : OPTIONAL Day of week - ignored if the MINUTE field defines a shortcut - (Default: *)
-  - USER    : OPTIONAL Use under which the command must be run (default: root)
-  - COMMAND : Command to run
-  Param string $filepath OPTIONAL Cron file path (default: imscp cron file)
-  Return int 0 on success, other on failure
+ See Servers::cron::Interface::addTask
 
 =cut
 
@@ -246,12 +237,7 @@ EOF
 
 =item deleteTask( \%data [, $filepath = '/etc/cron.d/imscp' ] )
 
- Delete a cron task
-
- Param hash \%data Cron task data:
-  - TASKID Cron task unique identifier
- Param string $filepath OPTIONAL Cron file path (default: imscp cron file)
- Return int 0 on success, other on failure
+ See Servers::cron::Interface::deleteTask
 
 =cut
 
