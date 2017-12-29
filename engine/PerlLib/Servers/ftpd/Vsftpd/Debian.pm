@@ -25,11 +25,38 @@ package Servers::ftpd::Vsftpd::Debian;
 
 use strict;
 use warnings;
+use iMSCP::Service;
 use parent 'Servers::ftpd::Vsftpd::Abstract';
 
 =head1 DESCRIPTION
 
  i-MSCP (Debian) Vsftpd server implementation.
+
+=head1 SHUTDOWN TASKS
+
+=over 4
+
+=item shutdown( $priority )
+
+ Restart, reload or start the Vsftpd server when needed
+
+ This method is called automatically before the program exit.
+
+ Param int $priority Server priority
+ Return void
+
+=cut
+
+sub shutdown
+{
+    my ($self, $priority) = @_;
+
+    return unless my $action = $self->{'restart'} ? 'restart' : ( $self->{'reload'} ? 'reload' : ( $self->{'start'} ? ' start' : undef ) );
+
+    iMSCP::Service->getInstance()->registerDelayedAction( 'vsftpd', [ $action, sub { $self->$action(); } ], $priority );
+}
+
+=back
 
 =head1 AUTHOR
 

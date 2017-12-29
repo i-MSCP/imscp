@@ -25,11 +25,38 @@ package Servers::ftpd::Proftpd::Debian;
 
 use strict;
 use warnings;
+use iMSCP::Service;
 use parent 'Servers::ftpd::Proftpd::Abstract';
 
 =head1 DESCRIPTION
 
  i-MSCP (Debian) Proftpd server implementation.
+
+=head1 SHUTDOWN TASKS
+
+=over 4
+
+=item shutdown( $priority )
+
+ Restart, reload or start the Vsftpd server when needed
+
+ This method is called automatically before the program exit.
+
+ Param int $priority Server priority
+ Return void
+
+=cut
+
+sub shutdown
+{
+    my ($self, $priority) = @_;
+
+    return unless my $action = $self->{'restart'} ? 'restart' : ( $self->{'reload'} ? 'reload' : ( $self->{'start'} ? ' start' : undef ) );
+
+    iMSCP::Service->getInstance()->registerDelayedAction( 'proftpd', [ $action, sub { $self->$action(); } ], $priority );
+}
+
+=back
 
 =head1 AUTHOR
 
