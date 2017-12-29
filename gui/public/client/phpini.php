@@ -303,7 +303,7 @@ function generatePage($tpl, $phpini)
         ]);
     }
 
-    if (strpos($config['Servers:httpd'], 'apache2') !== false) {
+    if (strpos($config['Servers:httpd'], 'Apache2') !== false) {
         $apache2Config = new ConfigFile(utils_normalizePath(Registry::get('config')['CONF_DIR'] . '/apache2/apache.data'));
         $isApache2Itk = $apache2Config['APACHE2_MPM'] == 'itk';
     } else {
