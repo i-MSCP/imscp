@@ -11,10 +11,6 @@ AUTHDAEMON_DATABASE_PASSWORD =
 COURIER_CONF_DIR = /etc/courier
 COURIER_IMAP_SSL = imapd-ssl
 COURIER_POP_SSL = pop3d-ssl
-IMAPD_SNAME = courier-imap
-IMAPD_SSL_SNAME = courier-imap-ssl
-POPD_SNAME = courier-pop
-POPD_SSL_SNAME = courier-pop-ssl
 
 # Cyrus SASL
 SASL_CONF_DIR = /etc/postfix/sasl
