@@ -53,8 +53,8 @@ my $TMPFS = lazy
     {
         mount(
             {
-                fs_spec => 'tmpfs',
-                fs_file => my $tmpfs = File::Temp->newdir( CLEANUP => 0 ),
+                fs_spec         => 'tmpfs',
+                fs_file         => my $tmpfs = File::Temp->newdir( CLEANUP => 0 ),
                 fs_vfstype      => 'tmpfs',
                 fs_mntops       => 'noexec,nosuid,size=32m',
                 ignore_failures => 1 # Ignore failures in case tmpfs isn't supported/allowed
@@ -151,7 +151,7 @@ sub setEnginePermissions
     $rs ||= setRights( "$main::imscpConfig{'USER_WEB_DIR'}/domain_disabled_pages",
         {
             user      => $main::imscpConfig{'ROOT_USER'},
-            group     => $self->{'config'}->{'APACHE2_GROUP'},
+            group     => $self->{'config'}->{'HTTPD_GROUP'},
             dirmode   => '0550',
             filemode  => '0440',
             recursive => iMSCP::Getopt->fixPermissions
@@ -172,7 +172,7 @@ sub addUser
     return 0 if $moduleData->{'STATUS'} eq 'tochangepwd';
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeApache2AddUser', $moduleData );
-    $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'APACHE2_USER'} )->addToGroup( $moduleData->{'GROUP'} );
+    $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'HTTPD_USER'} )->addToGroup( $moduleData->{'GROUP'} );
     $rs ||= $self->{'eventManager'}->trigger( 'afterApache2AddUser', $moduleData );
 }
 
@@ -187,7 +187,7 @@ sub deleteUser
     my ($self, $moduleData) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeApache2DeleteUser', $moduleData );
-    $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'APACHE2_USER'} )->removeFromGroup( $moduleData->{'GROUP'} );
+    $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'HTTPD_USER'} )->removeFromGroup( $moduleData->{'GROUP'} );
     $rs ||= $self->{'eventManager'}->trigger( 'afterApache2DeleteUser', $moduleData );
 }
 
@@ -342,7 +342,7 @@ sub addHtpasswd
 
         local $UMASK = 027;
         my $rs = $file->save();
-        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'APACHE2_GROUP'} );
+        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
         $rs ||= $file->mode( 0640 );
         $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
 
@@ -388,7 +388,7 @@ sub deleteHtpasswd
         );
 
         my $rs = $file->save();
-        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'APACHE2_GROUP'} );
+        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
         $rs ||= $file->mode( 0640 );
         $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
 
@@ -434,7 +434,7 @@ sub addHtgroup
 
         local $UMASK = 027;
         my $rs = $file->save();
-        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'APACHE2_GROUP'} );
+        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
         $rs ||= $file->mode( 0640 );
         $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
 
@@ -480,7 +480,7 @@ sub deleteHtgroup
         );
 
         my $rs = $file->save();
-        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'APACHE2_GROUP'} );
+        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'config'}->{'HTTPD_GROUP'} );
         $rs ||= $file->mode( 0640 );
         $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
 
@@ -751,7 +751,7 @@ sub getRunningUser
 {
     my ($self) = @_;
 
-    $self->{'config'}->{'APACHE2_USER'};
+    $self->{'config'}->{'HTTPD_USER'};
 }
 
 =item getRunningGroup( )
@@ -764,7 +764,7 @@ sub getRunningGroup
 {
     my ($self) = @_;
 
-    $self->{'config'}->{'APACHE2_GROUP'};
+    $self->{'config'}->{'HTTPD_GROUP'};
 }
 
 =back
