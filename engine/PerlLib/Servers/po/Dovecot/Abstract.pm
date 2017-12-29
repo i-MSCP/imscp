@@ -25,7 +25,7 @@ package Servers::po::Dovecot::Abstract;
 
 use strict;
 use warnings;
-use autouse 'Fcntl' =>  qw/ O_RDONLY /;
+use autouse Fcntl => qw/ O_RDONLY /;
 use autouse 'iMSCP::Crypt' => qw/ ALNUM randomStr /;
 use autouse 'iMSCP::Dialog::InputValidation' => qw/ isAvailableSqlUser isOneOfStringsInList isStringNotInList isValidPassword isValidUsername /;
 use autouse 'iMSCP::Execute' => qw/ execute /;
@@ -94,7 +94,7 @@ sub showDialog
     my ($self, $dialog) = @_;
 
     my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER' );
-    my $dbUser = main::setupGetQuestion( 
+    my $dbUser = main::setupGetQuestion(
         'DOVECOT_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || ( iMSCP::Getopt->preseed ? 'imscp_srv_user' : '' )
     );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
@@ -886,7 +886,7 @@ sub _migrateFromCourier
 {
     my ($self) = @_;
 
-    return 0 unless $main::imscpOldConfig{'PO_SERVER'} eq 'courier';
+    return 0 unless index( $main::imscpOldConfig{'Servers::po'}, 'Courier' ) != -1;
 
     my $rs = execute(
         [
@@ -902,8 +902,7 @@ sub _migrateFromCourier
 
     unless ( $rs ) {
         $self->{'forceMailboxesQuotaRecalc'} = 1;
-        $main::imscpOldConfig{'PO_SERVER'} = 'dovecot';
-        $main::imscpOldConfig{'PO_PACKAGE'} = 'Servers::po::Dovecot::Abstract';
+        $main::imscpOldConfig{'Servers::po'} = $main::imscpConfig{'Servers::po'};
     }
 
     $rs;

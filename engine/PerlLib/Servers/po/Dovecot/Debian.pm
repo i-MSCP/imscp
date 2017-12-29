@@ -31,6 +31,32 @@ use parent 'Servers::po::Dovecot::Abstract';
 
  i-MSCP (Debian) Dovecot IMAP/POP3 server implementation.
 
+=head1 SHUTDOWN TASKS
+
+=over 4
+
+=item shutdown( $priority )
+
+ Restart the Dovecot IMAP/POP server when needed
+
+ This method is called automatically before the program exit.
+
+ Param int $priority Server priority
+ Return void
+
+=cut
+
+sub shutdown
+{
+    my ($self, $priority) = @_;
+
+    return unless $self->{'restart'};
+
+    iMSCP::Service->getInstance()->registerDelayedAction( 'courier', [ 'restart', sub { $self->restart(); } ], $priority );
+}
+
+=back
+
 =head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>
