@@ -275,14 +275,14 @@ sub deleteTask
         return 1;
     }
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeCronDelTask', $fileContentRef, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeCronDeleteTask', $fileContentRef, $data );
     return $rs if $rs;
 
     replaceBlocByRef(
         qr/^\s*\Q# imscp [$data->{'TASKID'}] entry BEGIN\E\n/m, qr/\Q# imscp [$data->{'TASKID'}] entry ENDING\E\n/, '', $fileContentRef
     );
 
-    $rs = $self->{'eventManager'}->trigger( 'afterCronDelTask', $fileContentRef, $data );
+    $rs = $self->{'eventManager'}->trigger( 'afterCronDeleteTask', $fileContentRef, $data );
     $rs ||= $file->save();
 }
 

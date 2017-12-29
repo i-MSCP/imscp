@@ -34,12 +34,6 @@ use warnings;
 
 =over 4
 
-=back
-
-=head1 PRIVATE METHODS
-
-=over 4
-
 =item addTask( \%data [, $filepath = '/path/to/default/cron/file' ] )
 
  Add a new cron task
@@ -66,7 +60,7 @@ sub addTask
 {
     my ($self) = @_;
 
-    die ( sprintf( 'The %s package must implement the %s method', ref $self ));
+    die ( sprintf( 'The %s package must implement the addTask() method', ref $self ));
 }
 
 =item deleteTask( \%data [, $filepath = '/path/to/default/cron/file' ] )
@@ -87,7 +81,7 @@ sub addTask
 sub deleteTask
 {
     my ($self) = @_;
-    die ( sprintf( 'The %s package must implement the %s method', ref $self ));
+    die ( sprintf( 'The %s package must implement the deleteTask() method', ref $self ));
 }
 
 =back

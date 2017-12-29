@@ -31,12 +31,6 @@ use parent 'Servers::cron::Interface', 'Common::SingletonClass';
 
  i-MSCP Cron server abstract implementation.
 
-=head1 PUBLIC METHODS
-
-=over 4
-
-=back
-
 =head1 PRIVATE METHODS
 
 =over 4

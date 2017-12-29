@@ -2,5 +2,4 @@
 <install>
     <folder>${SYSTEM_CONF}/cron</folder>
     <copy_config>${SYSTEM_CONF}/cron/imscp</copy_config>
-    <copy_config>${SYSTEM_CONF}/cron/cron.data.dist</copy_config>
 </install>
