@@ -22,45 +22,65 @@
 $< == 0 or die( "[\x1b[0;31mERROR\x1b[0m] The i-MSCP installer must be run as root user.\n" );
 system( 'clear 2>/dev/null' );
 
-`which apt-get 2>/dev/null` or die( 'i-MSCP only supports Debian-Like OS.' );
-
 if ( !-f '/etc/imscp/imscp.conf' || !grep (/^-(?:[^-]*?[hs?][^-]*|-(?:help|skip-distro-packages))$/, @ARGV) ) {
-    local $ENV{'LANG'} = 'C.UTF-8';
+    # Debian like distributions specific routines
+    if ( `which apt-get 2>/dev/null` ) {
+        local $ENV{'LANG'} = 'C.UTF-8';
 
-    # List of pre-required distribution packages
-    my @distPackages = qw/
-        apt-transport-https build-essential ca-certificates debconf-utils dialog dirmngr libbit-vector-perl libcapture-tiny-perl
-        libclass-autouse-perl libdata-compare-perl libdata-validate-domain-perl libfile-homedir-perl liblchown-perl liblist-compare-perl
-        liblist-moreutils-perl libnet-ip-perl libnet-domain-tld-perl libscalar-defer-perl libsort-versions-perl libxml-simple-perl lsb-release
-        policyrcd-script-zg2 wget whiptail /;
+        # List of pre-required distribution packages
+        my @distPackages = qw/
+            apt-transport-https apt-utils build-essential ca-certificates debconf-utils dialog dirmngr libbit-vector-perl libcapture-tiny-perl
+            libclass-autouse-perl libdata-compare-perl libdata-validate-domain-perl libfile-homedir-perl liblchown-perl liblist-compare-perl
+            liblist-moreutils-perl libnet-ip-perl libnet-domain-tld-perl libscalar-defer-perl libsort-versions-perl libxml-simple-perl lsb-release
+            policyrcd-script-zg2 wget whiptail /;
 
-    # List of pre-required Perl modules
-    # Only Perl modules that are not available as package in all distributions
-    my @perlModules = qw/ Array::Utils Data::Clone /;
+        print "Satisfying pre-requisites for the i-MSCP installer\n";
+        print " [\x1b[0;34mINFO\x1b[0m] Updating package index files ...\n";
 
-    print "Satisfying pre-requisites for the i-MSCP installer\n";
-    print " [\x1b[0;34mINFO\x1b[0m] Updating package index files ...\n";
+        system( 'apt-get', '--quiet=1', 'update' ) == 0 or die( "[\x1b[0;31mERROR\x1b[0m] Couldn't update APT index.\n" );
+        print " [\x1b[0;32mOK\x1b[0m] Package index files were successfuly updated.\n";
 
-    system( 'apt-get', '--quiet=1', 'update' ) == 0 or die( "[\x1b[0;31mERROR\x1b[0m] Couldn't update APT index.\n" );
-    print " [\x1b[0;32mOK\x1b[0m] Package index files were successfuly updated.\n";
+        # Make sure that packages are up-to-date (upgrade, not dist-upgrade)
+        print " [\x1b[0;34mINFO\x1b[0m] Upgrading distribution packages (upgrade) ...\n";
+        system( 'apt-get', '--assume-yes', '--no-install-recommends', '--quiet=1', 'upgrade' ) == 0 or die(
+            "[\x1b[0;31mERROR\x1b[0m] Couldn't upgrade distribution packages.\n"
+        );
+        print " [\x1b[0;32mOK\x1b[0m] Distribution package were successfuly updated.\n";
 
-    print " [\x1b[0;34mINFO\x1b[0m] Upgrading distribution packages (dist-upgrade) ...\n";
-    system( 'apt-get', '--assume-yes', '--no-install-recommends', '--quiet=1', 'dist-upgrade' ) == 0 or die(
-        "[\x1b[0;31mERROR\x1b[0m] Couldn't upgrade distribution packages.\n"
-    );
-    print " [\x1b[0;32mOK\x1b[0m] Distribution package were successfuly updated.\n";
+        print " [\x1b[0;34mINFO\x1b[0m] Installing pre-required distribution packages ...\n";
+        system( 'apt-get', '--assume-yes', '--no-install-recommends', '--quiet=1', 'install', @distPackages ) == 0 or die(
+            "[\x1b[0;31mERROR\x1b[0m] Couldn't install pre-required distribution packages.\n"
+        );
+        print " [\x1b[0;32mOK\x1b[0m] Pre-required package were successfuly installed.\n";
 
-    print " [\x1b[0;34mINFO\x1b[0m] Installing pre-required distribution packages ...\n";
-    system( 'apt-get', '--assume-yes', '--no-install-recommends', '--quiet=1', 'install', @distPackages ) == 0 or die(
-        "[\x1b[0;31mERROR\x1b[0m] Couldn't install pre-required distribution packages.\n"
-    );
-    print " [\x1b[0;32mOK\x1b[0m] Pre-required package were successfuly installed.\n";
+        # Install Perl modules from CPAN if needed
+        if ( eval "require Module::Load::Conditional; 1;" ) {
+            Module::Load::Conditional->import( 'check_install' );
+            local $Module::Load::Conditional::DEPRECATED = 1;
+            local $Module::Load::Conditional::FIND_VERSION = 1;
+            local $Module::Load::Conditional::FORCE_SAFE_INC = 1;
+            local $Module::Load::Conditional::VERBOSE = 0;
 
-    print " [\x1b[0;34mINFO\x1b[0m] Installing Perl packages from CPAN ...\n";
-    system( "echo 'yes' | cpan -T @perlModules" ) == 0 or die( "[\x1b[0;31mERROR\x1b[0m] Couldn't install perl package from CPAN.\n" );
-    print " [\x1b[0;32mOK\x1b[0m] Perl package were successfuly installed/updated.\n";
+            # List of pre-required Perl modules
+            # Only Perl modules that are not available as package in all distributions
+            my @perlModules;
+            my %hash = ( 'Array::Utils', 0.5, 'Data::Clone', 0.004 );
+            while ( my ($module, $version) = each %hash ) {
+                my $rv = check_install( module => $module, version => $version );
+                push @perlModules, $module unless $rv && $rv->{'uptodate'};
+            }
 
-    system( 'clear 2>/dev/null' );
+            if ( @perlModules ) {
+                print " [\x1b[0;34mINFO\x1b[0m] Installing Perl module(s) from CPAN ...\n";
+                system( "echo 'yes' | cpan -T @perlModules" ) == 0 or die( "[\x1b[0;31mERROR\x1b[0m] Couldn't install Perl module(s) from CPAN.\n" );
+                print " [\x1b[0;32mOK\x1b[0m] Perl module(s) were successfuly installed.\n";
+            }
+        } else {
+            die "Module::Load::Conditional Perl module not available\n";
+        }
+
+        system( 'clear 2>/dev/null' );
+    }
 }
 
 require File::Basename;
