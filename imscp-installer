@@ -29,7 +29,7 @@ if ( !-f '/etc/imscp/imscp.conf' || !grep (/^-(?:[^-]*?[hs?][^-]*|-(?:help|skip-
 
         # List of pre-required distribution packages
         my @distPackages = qw/
-            apt-transport-https apt-utils build-essential ca-certificates debconf-utils dialog dirmngr libbit-vector-perl libcapture-tiny-perl
+            apt-transport-https apt-utils build-essential ca-certificates debconf-utils dialog dirmngr facter libbit-vector-perl libcapture-tiny-perl
             libclass-autouse-perl libdata-compare-perl libdata-validate-domain-perl libfile-homedir-perl liblchown-perl liblist-compare-perl
             liblist-moreutils-perl libnet-ip-perl libnet-domain-tld-perl libscalar-defer-perl libsort-versions-perl libxml-simple-perl lsb-release
             policyrcd-script-zg2 wget whiptail /;
@@ -85,7 +85,7 @@ if ( !-f '/etc/imscp/imscp.conf' || !grep (/^-(?:[^-]*?[hs?][^-]*|-(?:help|skip-
 
 require File::Basename;
 chdir( File::Basename::dirname( __FILE__ )) or die( sprintf( "Couldn't chdir: %s", $! || 'Unknown error' ));
-exec( '/usr/bin/perl', 'autoinstaller/installer.pl', @ARGV );
+exec( '/usr/bin/perl', 'installer/installer.pl', @ARGV );
 
 1;
 __END__
