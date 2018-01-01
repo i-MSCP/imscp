@@ -826,7 +826,7 @@ sub _processXmlInstallFile
     my ($installFilePath) = @_;
 
     my $xml = XML::Simple->new( ForceArray => 1, ForceContent => 1 );
-    my $node = eval { $xml->XMLin( $installFilePath, VarAttr => 'export' ) };
+    my $node = eval { $xml->XMLin( $installFilePath, VarAttr => 'export', NormaliseSpace => 2 ) };
     if ( $@ ) {
         error( $@ );
         return 1;
