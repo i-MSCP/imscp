@@ -28,7 +28,7 @@ use warnings;
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug /;
 use iMSCP::EventManager;
-use iMSCP::Packagess;
+use iMSCP::Packages;
 use iMSCP::Servers;
 use parent 'iMSCP::Common::Object';
 
@@ -175,7 +175,7 @@ sub _execAction
         return 0;
     }
 
-    for ( iMSCP::Packagess->getInstance()->getListWithFullNames() ) {
+    for ( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
         ( my $subref = $_->can( $action ) ) or next;
         debug( sprintf( "Executing `%s' action on %s", $action, $_ ));
         my $rs = $subref->( $_->getInstance(), $self->_getData( $action ));

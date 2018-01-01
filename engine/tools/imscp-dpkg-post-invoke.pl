@@ -36,7 +36,7 @@ use iMSCP::Bootstrapper;
 use iMSCP::Debug qw / debug newDebug /;
 use iMSCP::Getopt;
 use iMSCP::Servers;
-use iMSCP::Packagess;
+use iMSCP::Packages;
 use POSIX qw / locale_h /;
 
 setlocale( LC_MESSAGES, 'C.UTF-8' );
@@ -74,7 +74,7 @@ for ( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
     $rs |= $sub->( $_->factory());
 }
 
-for ( iMSCP::Packagess->getInstance()->getListWithFullNames() ) {
+for ( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
     next unless my $sub = $_->can( 'dpkgPostInvokeTasks' );
     debug( sprintf( 'Executing %s dpkg post-invoke tasks', $_ ));
     $rs |= $sub->( $_->getInstance());

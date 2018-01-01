@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Packagess - Package that allows to load and get list of available i-MSCP packages
+ iMSCP::Packages - Package that allows to load and get list of available i-MSCP packages
 
 =cut
 
@@ -21,7 +21,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package iMSCP::Packagess;
+package iMSCP::Packages;
 
 use strict;
 use warnings;
@@ -72,7 +72,7 @@ sub getListWithFullNames
 
  Initialize instance
  
- Return iMSCP::Packagess
+ Return iMSCP::Packages
 
 =cut
 

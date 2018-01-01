@@ -42,7 +42,7 @@ use iMSCP::Dialog;
 use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::Packagess;
+use iMSCP::Packages;
 use iMSCP::Servers;
 use iMSCP::Service;
 use iMSCP::Stepper qw/ endDetail startDetail step /;
@@ -201,7 +201,7 @@ sub _uninstallPackages
 {
     startDetail();
 
-    my @packages = iMSCP::Packagess->getInstance()->getListWithFullNames();
+    my @packages = iMSCP::Packages->getInstance()->getListWithFullNames();
     my $nbSteps = @packages;
     my ($step, $rs) = ( 1, 0 );
 
