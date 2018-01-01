@@ -1,4 +1,4 @@
-# i-MSCP Listener::FrontEnd::Templates::Override listener file
+# i-MSCP iMSCP::Listener::FrontEnd::Templates::Override listener file
 # Copyright (C) 2016-2018 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -20,7 +20,7 @@
 ##
 #
 
-package Listener::FrontEnd::Templates::Override;
+package iMSCP::Listener::FrontEnd::Templates::Override;
 
 our $VERSION = '1.0.0';
 

@@ -1,4 +1,4 @@
-# i-MSCP Listener::Named::Rrl listener file
+# i-MSCP iMSCP::Listener::Named::Rrl listener file
 # Copyright (C) 2010-2018 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 ##
 #
 
-package Listener::Named::Rrl;
+package iMSCP::Listener::Named::Rrl;
 
 our $VERSION = '1.0.1';
 
@@ -31,7 +31,7 @@ use warnings;
 use File::Basename;
 use iMSCP::EventManager;
 use iMSCP::TemplateParser qw/ replaceBlocByRef /;
-use Servers::named;
+use iMSCP::Servers::Named;
 use version;
 
 #
@@ -54,7 +54,7 @@ iMSCP::EventManager->getInstance()->register(
     sub {
         my ($tplContent, $tplName) = @_;
 
-        return 0 unless $tplName eq basename( Servers::named->factory()->{'config'}->{'BIND_OPTIONS_CONF_FILE'} );
+        return 0 unless $tplName eq basename( iMSCP::Servers::Named->factory()->{'config'}->{'BIND_OPTIONS_CONF_FILE'} );
 
         replaceBlocByRef( "// imscp [{ENTRY_ID}] entry BEGIN\n", "// imscp [{ENTRY_ID}] entry ENDING\n", <<"EOF", $tplContent, 'preserveTags' );
     rate-limit {

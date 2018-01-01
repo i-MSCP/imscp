@@ -1,4 +1,4 @@
-# i-MSCP Listener::Dovecot::Compress listener file
+# i-MSCP iMSCP::Listener::Dovecot::Compress listener file
 # Copyright (C) 2017-2018 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2015-2017 Rene Schuster <mail@reneschuster.de>
 #
@@ -24,7 +24,7 @@
 ##   http://wiki2.dovecot.org/Plugins/Zlib
 #
 
-package Listener::Dovecot::Compress;
+package iMSCP::Listener::Dovecot::Compress;
 
 our $VERSION = '1.0.1';
 
@@ -32,7 +32,7 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 use iMSCP::File;
-use Servers::po;
+use iMSCP::Servers::Po;
 use version;
 
 #
@@ -53,7 +53,7 @@ version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' )
 iMSCP::EventManager->getInstance()->registerOne(
     'afterDovecotBuildConf',
     sub {
-        my $dovecotConfdir = Servers::po->factory()->{'config'}->{'DOVECOT_CONF_DIR'};
+        my $dovecotConfdir = iMSCP::Servers::Po->factory()->{'config'}->{'DOVECOT_CONF_DIR'};
         my $file = iMSCP::File->new( filename => "$dovecotConfdir/imscp.d/10_dovecot_compress_listener.conf" );
         $file->set( <<"EOT" );
 mail_plugins = \$mail_plugins zlib

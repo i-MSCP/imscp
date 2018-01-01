@@ -1,4 +1,4 @@
-# i-MSCP Listener::PhpFcgid::Settings::Override listener file
+# i-MSCP iMSCP::Listener::PhpFcgid::Settings::Override listener file
 # Copyright (C) 2018 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
 ## Allows to override the *_PER_CLASS fcgid settings in Apache2 vhost files
 ##
 
-package Listener::PhpFcgid::Settings::Override;
+package iMSCP::Listener::PhpFcgid::Settings::Override;
 
 our $VERSION = '1.0.0';
 

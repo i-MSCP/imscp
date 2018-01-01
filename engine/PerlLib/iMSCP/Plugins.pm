@@ -26,7 +26,7 @@ package iMSCP::Plugins;
 use strict;
 use warnings;
 use File::Basename;
-use parent 'Common::SingletonClass';
+use parent 'iMSCP::Common::SingletonClass';
 
 =head1 DESCRIPTION
 

@@ -1,4 +1,4 @@
-# i-MSCP Listener::Bind9::Localnets listener file
+# i-MSCP iMSCP::Listener::Bind9::Localnets listener file
 # Copyright (C) 2013-2018 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
 ## Allows to setup Bind9 for local network.
 #
 
-package Listener::Bind9::Localnets;
+package iMSCP::Listener::Bind9::Localnets;
 
 our $VERSION = '1.0.1';
 

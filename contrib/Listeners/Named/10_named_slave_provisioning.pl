@@ -1,4 +1,4 @@
-# i-MSCP Listener::Named::Slave::Provisioning listener file
+# i-MSCP iMSCP::Listener::Named::Slave::Provisioning listener file
 # Copyright (C) 2016-2018 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2015 UncleJ, Arthur Mayer <mayer.arthur@gmail.com>
 #
@@ -26,7 +26,7 @@
 ##   - https://<panel.domain.tld>:4443/provisioning/slave_provisioning.php (if you use ssl)
 #
 
-package Listener::Named::Slave::Provisioning;
+package iMSCP::Listener::Named::Slave::Provisioning;
 
 our $VERSION = '1.0.4';
 

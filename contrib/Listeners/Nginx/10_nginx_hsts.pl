@@ -1,4 +1,4 @@
-# i-MSCP Listener::Nginx::HSTS listener file
+# i-MSCP iMSCP::Listener::Nginx::HSTS listener file
 # Copyright (C) 2017-2018 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2015-2017 Rene Schuster <mail@reneschuster.de>
 #
@@ -20,7 +20,7 @@
 ## Activates HTTP Strict Transport Security (HSTS).
 #
 
-package Listener::Nginx::HSTS;
+package iMSCP::Listener::Nginx::HSTS;
 
 our $VERSION = '1.0.1';
 

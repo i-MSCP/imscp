@@ -19,7 +19,7 @@
 ## Configure Postfix to route all mails to a smarthost using SASL authentication.
 #
 
-package Listener::Postfix::Smarthost;
+package iMSCP::Listener::Postfix::Smarthost;
 
 our $VERSION = '1.0.1';
 
@@ -27,7 +27,7 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 use iMSCP::File;
-use Servers::mta;
+use iMSCP::Servers::Mta;
 use version;
 
 #
@@ -59,7 +59,7 @@ iMSCP::EventManager->getInstance()->register(
 iMSCP::EventManager->getInstance()->register(
     'afterPostfixBuildConf',
     sub {
-        my $mta = Servers::mta->factory();
+        my $mta = iMSCP::Servers::Mta->factory();
         my $rs = $mta->addMapEntry( $saslPasswdMapsPath, "$relayhost:$relayport\t$saslAuthUser:$saslAuthPasswd" );
         $rs ||= $mta->postconf(
             (

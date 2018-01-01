@@ -31,7 +31,7 @@ use iMSCP::Debug qw/ error debug /;
 use iMSCP::Execute qw/ execute escapeShell /;
 use iMSCP::File;
 use iMSCP::TemplateParser;
-use parent 'Common::Object';
+use parent 'iMSCP::Common::Object';
 
 =head1 DESCRIPTION
 

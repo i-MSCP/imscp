@@ -1,4 +1,4 @@
-# i-MSCP Listener::Named::Global::NS listener file
+# i-MSCP iMSCP::Listener::Named::Global::NS listener file
 # Copyright (C) 2016-2018 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 #   perl /var/www/imscp/engine/setup/imscp-reconfigure -dr named
 #
 
-package Listener::Named::Global::NS;
+package iMSCP::Listener::Named::Global::NS;
 
 our $VERSION = '1.0.0';
 

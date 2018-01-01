@@ -30,7 +30,7 @@ use File::Copy qw/ copy mv /;
 use File::Spec;
 use iMSCP::Debug qw/ error /;
 use Lchown qw/ lchown /;
-use parent 'Common::Object';
+use parent 'iMSCP::Common::Object';
 
 =head1 DESCRIPTION
 

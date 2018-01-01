@@ -1,4 +1,4 @@
-# i-MSCP Listener::Dovecot::Service::Login listener file
+# i-MSCP iMSCP::Listener::Dovecot::Service::Login listener file
 # Copyright (C) 2017-2018 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2016-2017 Sven Jantzen <info@svenjantzen.de>
 #
@@ -21,7 +21,7 @@
 ## This listener file requires dovecot version 2.1.0 or newer.
 #
 
-package Listener::Dovecot::Service::Login;
+package iMSCP::Listener::Dovecot::Service::Login;
 
 our $VERSION = '1.0.1';
 
@@ -29,7 +29,7 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 use iMSCP::File;
-use Servers::po;
+use iMSCP::Servers::Po;
 use version;
 
 #
@@ -71,7 +71,7 @@ version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' )
 iMSCP::EventManager->getInstance()->registerOne(
     'afterDovecotBuildConf',
     sub {
-        my $dovecotConfdir = Servers::po->factory()->{'config'}->{'DOVECOT_CONF_DIR'};
+        my $dovecotConfdir = iMSCP::Servers::Po->factory()->{'config'}->{'DOVECOT_CONF_DIR'};
         my $file = iMSCP::File->new( filename => "$dovecotConfdir/imscp.d/60_dovecot_service_login_listener.conf" );
         $file->set( <<"EOT" );
 service imap-login {

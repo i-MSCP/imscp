@@ -1,4 +1,4 @@
-# i-MSCP Listener::Dovecot::Plaintext listener file
+# i-MSCP iMSCP::Listener::Dovecot::Plaintext listener file
 # Copyright (C) 2017-2018 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2015-2017 Rene Schuster <mail@reneschuster.de>
 #
@@ -20,7 +20,7 @@
 ## Dissallow plaintext authentication if TLS is not used by client.
 #
 
-package Listener::Dovecot::Plaintext;
+package iMSCP::Listener::Dovecot::Plaintext;
 
 our $VERSION = '1.0.1';
 
@@ -28,7 +28,7 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 use iMSCP::File;
-use Servers::po;
+use iMSCP::Servers::Po;
 use version;
 
 #
@@ -43,7 +43,7 @@ iMSCP::EventManager->getInstance()->registerOne(
     'afterDovecotBuildConf',
     sub {
 
-        my $dovecotConfdir = Servers::po->factory()->{'config'}->{'DOVECOT_CONF_DIR'};
+        my $dovecotConfdir = iMSCP::Servers::Po->factory()->{'config'}->{'DOVECOT_CONF_DIR'};
         my $file = iMSCP::File->new( filename => "$dovecotConfdir/imscp.d/50_dovecot_plaintext_listener.conf" );
         $file->set( <<"EOT" );
 disable_plaintext_auth = yes

@@ -37,7 +37,7 @@ use iMSCP::Debug qw/ debug newDebug /;
 use iMSCP::EventManager;
 use iMSCP::Getopt;
 use iMSCP::Servers;
-use iMSCP::Packages;
+use iMSCP::Packagess;
 use POSIX qw / locale_h /;
 
 setlocale( LC_MESSAGES, "C.UTF-8" );
@@ -80,7 +80,7 @@ for my $server( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
     push @items, [ $server, sub { $subref->( $server->factory()); } ];
 }
 
-for my $package( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
+for my $package( iMSCP::Packagess->getInstance()->getListWithFullNames() ) {
     ( my $subref = $package->can( 'setGuiPermissions' ) ) or next;
     push @items, [ $package, sub { $subref->( $package->getInstance()); } ];
 }

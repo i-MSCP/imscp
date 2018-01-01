@@ -19,7 +19,7 @@
 ## Allows to override default PhpMyAdmin configuration template file
 #
 
-package Listener::PhpMyAdmin::Conffile;
+package iMSCP::Listener::PhpMyAdmin::Conffile;
 
 our $VERSION = '1.0.1';
 

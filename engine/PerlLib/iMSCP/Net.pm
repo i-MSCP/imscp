@@ -28,7 +28,7 @@ use warnings;
 use Data::Validate::IP qw/ is_ipv4 is_ipv6 /;
 use iMSCP::Execute qw/ execute /;
 use Net::IP qw/ :PROC /;
-use parent 'Common::SingletonClass';
+use parent 'iMSCP::Common::SingletonClass';
 
 =head1 DESCRIPTION
 

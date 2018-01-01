@@ -1,4 +1,4 @@
-# i-MSCP Listener::ProFTPd::ServerIdent listener file
+# i-MSCP iMSCP::Listener::ProFTPd::ServerIdent listener file
 # Copyright (C) 2017-2018 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2015-2017 Rene Schuster <mail@reneschuster.de>
 #
@@ -21,7 +21,7 @@
 ## See See http://www.proftpd.org/docs/directives/linked/config_ref_ServerIdent.html
 #
 
-package Listener::ProFTPd::ServerIdent;
+package iMSCP::Listener::ProFTPd::ServerIdent;
 
 our $VERSION = '1.0.2';
 

@@ -1,4 +1,4 @@
-# i-MSCP Listener::Dovecot::PFS listener file
+# i-MSCP iMSCP::Listener::Dovecot::PFS listener file
 # Copyright (C) 2017-2018 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2016-2017 Rene Schuster <mail@reneschuster.de>
 #
@@ -20,7 +20,7 @@
 ## Activates the Perfect Forward Secrecy logging.
 #
 
-package Listener::Dovecot::PFS;
+package iMSCP::Listener::Dovecot::PFS;
 
 our $VERSION = '1.0.1';
 
@@ -28,7 +28,7 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 use iMSCP::File;
-use Servers::po;
+use iMSCP::Servers::Po;
 use version;
 
 #
@@ -42,7 +42,7 @@ iMSCP::EventManager->getInstance()->registerOne(
             sprintf( "The 40_dovecot_pfs.pl listener file version %s requires i-MSCP >= 1.6.0", $VERSION )
         );
 
-        my $dovecotConfdir = Servers::po->factory()->{'config'}->{'DOVECOT_CONF_DIR'};
+        my $dovecotConfdir = iMSCP::Servers::Po->factory()->{'config'}->{'DOVECOT_CONF_DIR'};
         my $file = iMSCP::File->new( filename => "$dovecotConfdir/imscp.d/40_dovecot_pfs_listener.conf" );
         $file->set( <<'EOT' );
 login_log_format_elements = user=<%u> method=%m rip=%r lip=%l mpid=%e %c %k session=<%{session}>

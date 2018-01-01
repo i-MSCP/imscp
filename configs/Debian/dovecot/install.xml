@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<install>
+    <folder mode="0755" create_if="index('${iMSCP::Servers::Po}', 'Dovecot') != -1">${ROOT_CONF}/dovecot</folder>
+    <folder mode="0755" create_if="index('${iMSCP::Servers::Po}', 'Dovecot') != -1">${ROOT_CONF}/dovecot/imscp.d</folder>
+    <folder>${SYSTEM_CONF}/dovecot</folder>
+    <folder>${SYSTEM_CONF}/dovecot/backup</folder>
+    <folder>${SYSTEM_CONF}/dovecot/working</folder>
+    <copy_config>${SYSTEM_CONF}/dovecot/dovecot.data.dist</copy_config>
+    <copy_config>${SYSTEM_CONF}/dovecot/dovecot.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/dovecot/dovecot-sql.conf</copy_config>
+    <copy_config>${SYSTEM_CONF}/dovecot/quota-warning</copy_config>
+</install>

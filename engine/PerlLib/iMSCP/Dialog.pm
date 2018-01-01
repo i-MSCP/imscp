@@ -29,7 +29,7 @@ use iMSCP::Debug qw/ error /;
 use iMSCP::Execute;
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
-use parent 'Common::SingletonClass';
+use parent 'iMSCP::Common::SingletonClass';
 
 =head1 DESCRIPTION
 

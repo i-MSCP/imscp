@@ -1,4 +1,4 @@
-# i-MSCP Listener::Named::OverrideDefaultRecords listener file
+# i-MSCP iMSCP::Listener::Named::OverrideDefaultRecords listener file
 # Copyright (C) 2016-2018 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -20,7 +20,7 @@
 # - @   IN {IP_TYPE} {DOMAIN_IP}
 # - www IN CNAME     @
 
-package Listener::Named::OverrideDefaultRecords;
+package iMSCP::Listener::Named::OverrideDefaultRecords;
 
 our $VERSION = '1.0.1';
 

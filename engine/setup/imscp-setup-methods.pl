@@ -32,7 +32,7 @@ use iMSCP::EventManager;
 use iMSCP::Execute qw/ executeNoWait /;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::Packages;
+use iMSCP::Packagess;
 use iMSCP::Plugins;
 use iMSCP::Servers;
 use iMSCP::Service;
@@ -98,7 +98,7 @@ sub setupRegisterListeners
 
     my $eventManager = iMSCP::EventManager->getInstance();
 
-    for ( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
+    for ( iMSCP::Packagess->getInstance()->getListWithFullNames() ) {
         ( my $subref = $_->can( 'registerSetupListeners' ) ) or next;
         my $rs = $subref->( $_->getInstance(), $eventManager );
         return $rs if $rs;
@@ -439,7 +439,7 @@ sub setupServersAndPackages
 {
     my $eventManager = iMSCP::EventManager->getInstance();
     my @servers = iMSCP::Servers->getInstance()->getListWithFullNames();
-    my @packages = iMSCP::Packages->getInstance()->getListWithFullNames();
+    my @packages = iMSCP::Packagess->getInstance()->getListWithFullNames();
     my $nSteps = @servers+@packages;
     my $rs = 0;
 

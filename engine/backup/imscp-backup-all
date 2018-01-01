@@ -40,7 +40,7 @@ use iMSCP::Execute qw/ execute /;
 use iMSCP::Ext2Attributes qw/ isImmutable setImmutable clearImmutable /;
 use iMSCP::Getopt;
 use iMSCP::Mail;
-use Servers::mta;
+use iMSCP::Servers::Mta;
 use POSIX qw/ strftime locale_h /;
 
 setlocale( LC_MESSAGES, "C.UTF-8" );
@@ -227,7 +227,7 @@ sub backupMaildirs
         return;
     }
 
-    my $virtualMailDir = Servers::mta->factory()->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
+    my $virtualMailDir = iMSCP::Servers::Mta->factory()->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
 
     for ( keys %{$rows} ) {
         my $mailDirPath = "$virtualMailDir/$_";

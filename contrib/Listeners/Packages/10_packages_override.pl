@@ -1,4 +1,4 @@
-# i-MSCP Listener::Packages::Override listener file
+# i-MSCP iMSCP::Listener::Packages::Override listener file
 # Copyright (C) 2010-2018 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
 ## Replaces package file with custom one.
 #
 
-package Listener::Packages::Override;
+package iMSCP::Listener::Packages::Override;
 
 our $VERSION = '1.0.1';
 

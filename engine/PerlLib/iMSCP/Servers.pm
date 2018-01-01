@@ -26,7 +26,7 @@ package iMSCP::Servers;
 use strict;
 use warnings;
 use File::Basename;
-use parent 'Common::SingletonClass';
+use parent 'iMSCP::Common::SingletonClass';
 
 =head1 DESCRIPTION
 
@@ -80,19 +80,19 @@ sub _init
 {
     my ($self) = @_;
 
-    $_ = basename( $_, '.pm' ) for @{$self->{'servers'}} = grep { $_ !~ /(?:abstract|noserver)\.pm$/ } glob(
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers/*.pm"
+    $_ = basename( $_, '.pm' ) for @{$self->{'servers'}} = grep { $_ !~ /(?:Abstract|Noserver)\.pm$/ } glob(
+        dirname(__FILE__) . '/Servers/*.pm'
     );
 
     # Load all server classes
     for ( @{$self->{'servers'}} ) {
-        my $server = "Servers::${_}";
+        my $server = "iMSCP::Servers::${_}";
         eval "require $server; 1" or die( sprintf( "Couldn't load %s server class: %s", $server, $@ ));
     }
 
-    # Sort servers in descending order of priority
-    @{$self->{'servers'}} = sort { "Servers::${b}"->getPriority() <=> "Servers::${a}"->getPriority() } @{$self->{'servers'}};
-    @{$self->{'servers_full_names'}} = map { "Servers::${_}" } @{$self->{'servers'}};
+    # Sort servers by priority (descending order)
+    @{$self->{'servers'}} = sort { "iMSCP::Servers::${b}"->getPriority() <=> "iMSCP::Servers::${a}"->getPriority() } @{$self->{'servers'}};
+    @{$self->{'servers_full_names'}} = map { "iMSCP::Servers::${_}" } @{$self->{'servers'}};
     $self;
 }
 

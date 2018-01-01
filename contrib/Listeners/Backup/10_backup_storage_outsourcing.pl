@@ -1,4 +1,4 @@
-# i-MSCP Listener::Backup::Storage::Outsourcing listener file
+# i-MSCP iMSCP::Listener::Backup::Storage::Outsourcing listener file
 # Copyright (C) 2017-2018 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -15,7 +15,7 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
-package Listener::Backup::Storage::Outsourcing;
+package iMSCP::Listener::Backup::Storage::Outsourcing;
 
 
 # Stores customer backup directories elsewhere on local file system

@@ -33,7 +33,7 @@ use iMSCP::Getopt;
 use iMSCP::Stepper qw/ step /;
 use JSON;
 use MIME::Base64 qw/ encode_base64 /;
-use parent 'Common::SingletonClass';
+use parent 'iMSCP::Common::SingletonClass';
 
 # Ensure backward compatibility with plugins
 BEGIN { *process = \&processDbTasks; }

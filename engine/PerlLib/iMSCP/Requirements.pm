@@ -21,7 +21,7 @@ use strict;
 use warnings;
 use iMSCP::ProgramFinder;
 use version;
-use parent 'Common::Object';
+use parent 'iMSCP::Common::Object';
 
 =head1 DESCRIPTION
 

@@ -23,7 +23,7 @@ cd imscp-<version>
 ### 3. Install i-MSCP by running its installer
 
 ```
-perl imscp-autoinstall -d
+perl imscp-installer -d
 ```
 
 ## i-MSCP Upgrade
@@ -46,6 +46,8 @@ following directories:
 These directories hold the data of your customers and it is really important to
 backup them for an easy recovering in case something goes wrong during upgrade
 
+You should also backup all SQL databases.
+
 ### 3. Download and untar the distribution files
 
 ```
@@ -63,5 +65,5 @@ cd imscp-<version>
 ### 5. Update i-MSCP by running its installer
 
 ```
-perl imscp-autoinstall -d
+perl imscp-installer -d
 ```

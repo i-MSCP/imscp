@@ -1,10 +1,9 @@
 ## i-MSCP - internet Multi Server Control Panel
 
-i-MSCP (internet Multi Server Control Panel) is a software (OSS) easing shared
-hosting environments management on Linux servers. It comes with a large choice
-of modules for various services such as Apache2, ProFTPd, Dovecot, Courier,
-Bind9, and can be easily extended through plugins, or listener files using its
-events-based API.
+i-MSCP (internet Multi Server Control Panel) is a software easing shared
+hosting environments management on Linux servers. It support various services
+such as Apache2, ProFTPd, Dovecot, Courier, Bind9, and can be easily extended
+through plugins.
 
 i-MSCP was designed for professional Hosting Service Providers (HSPs), Internet
 Service Providers (ISPs) and IT professionals.
@@ -23,7 +22,7 @@ Service Providers (ISPs) and IT professionals.
 
 ### License
 
-Unless otherwise stated all code is licensed under GPL 2.0 and has the
+Unless otherwise stated all code is licensed under LGPL 2.1 and has the
 following copyright:
 
 ```

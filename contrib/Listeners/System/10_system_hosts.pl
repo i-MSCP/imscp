@@ -1,4 +1,4 @@
-# i-MSCP Listener::System::Hosts listener file
+# i-MSCP iMSCP::Listener::System::Hosts listener file
 # Copyright (C) 2010-2018 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
 ## Allows to add host entries in the system hosts file (eg. /etc/hosts).
 #
 
-package Listener::System::Hosts;
+package iMSCP::Listener::System::Hosts;
 
 our $VERSION = '1.0.2';
 

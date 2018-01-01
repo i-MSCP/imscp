@@ -28,7 +28,7 @@ use warnings;
 use Errno qw / ENOENT EWOULDBLOCK /;
 use Fcntl qw/ :flock /;
 use iMSCP::Debug qw/ debug /;
-use parent 'Common::Object';
+use parent 'iMSCP::Common::Object';
 
 =head1 DESCRIPTION
 

@@ -1,4 +1,4 @@
-# i-MSCP Listener::APT::Source::List listener file
+# i-MSCP iMSCP::Listener::APT::Source::List listener file
 # Copyright (C) 2017-2018 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -21,7 +21,7 @@
 # Warning: Bear in mind that if you replace the i-MSCP provided sources.list,
 # you must make sure that all required repositories for i-MSCP are available.
 
-package Listener::APT::Source::List;
+package iMSCP::Listener::APT::Source::List;
 
 our $VERSION = '1.0.0';
 

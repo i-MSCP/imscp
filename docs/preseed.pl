@@ -3,7 +3,7 @@
 # See the documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2017.12.09
+# Last update: 2017.12.29
 
 %main::questions = (
     # Mandatory parameters
@@ -95,16 +95,18 @@
 
     # SQL server implementation
     #
-    # Possible values:
-    # - mysql_5.7     (default for Debian Jessie, Devuan Jessie, Ubuntu
-    #                  Trusty/Xenial -- not available for Debian Buster)
-    # - mariadb_10.1  (default for Debian Buster)
-    # - mariadb_10.2  (not available for Debian Buster)
-    # - percona_5.7   (not available for Debian Buster)
-    # - remote_server
+    # Possible values, depending on your distributions:
+    # - Debian-like distributions:
+    #  - iMSCP::Servers:Sqld::Mariadb::Debian (Default for Debian Buster)
+    #  - iMSCP::Servers:Sqld::Mysql::Debian   (default for Debian/Devuan Jessie, Ubuntu Trusty/Xenial, not available for Debian Buster)
+    #  - iMSCP::Servers:Sqld::Percona::Debian (Not available for Debian Buster)
+    #  - iMSCP::Servers:Sqld::Remote::Debian
+    #
+    # Note that it is not possible to choose SQL server version in preseed mode.
+    # The installer will automatically choose the newest available version.
     #
     # Leave empty for default: Depend on distribution and codename.
-    SQL_SERVER                          => '',
+    'iMSCP::Servers::Sqld'              => '',
 
     # Database name
     #
@@ -236,10 +238,13 @@
 
     # DNS server implementation
     #
-    # Possible values: bind, external_server
+    # Possible values:
+    # - Debian-like distributions:
+    #   - iMSCP::Servers::Named::Bind9::Debian
+    #   - iMSCP::Servers::Noserver
     #
-    # Leave empty for default: bind
-    NAMED_SERVER                        => '',
+    # Leave empty for default: iMSCP::Servers::Named::Bind9::Debian
+    'iMSCP::Servers::Named'             => '',
 
     # DNS server mode (Only relevant with 'bind')
     #
@@ -277,40 +282,53 @@
     #
     # Leave empty for default: yes
     LOCAL_DNS_RESOLVER                  => '',
-
+    
+    # Cron server implementation
+    #
+    # Possible values, depending on your distribution:
+    # - Debian-like distributions:
+    #   - iMSCP::Servers::Cron::Vixie::Debian   (Historical CRON(8) daemon)
+    #   - iMSCP::Servers::Cron::Systemd::Debian (cron daemon functionality as provided by SYSTEMD.CRON(7), not available for Ubuntu Trusty)
+    #
+    # Leave empty for default: iMSCP::Servers::Cron::Vixie::Debian
+    'iMSCP::Servers::Cron'              => '',
+    
     # HTTPd server implementation
     #
     # Possible values:
-    # - apache2_mpm_event (default)
-    # - apache2_mpm_itk (not compatible with the PHP cgi SAPI)
-    # - apache2_mpm_prefork,
-    # - apache2_mpm_worker
+    # - Debian-like distributions:
+    #   - iMSCP::Servers::Httpd::Apache2::Debian
     #
-    # Leave empty for default.
-    HTTPD_SERVER                        => '',
+    # Leave empty for default: iMSCP::Servers::Httpd::Apache2
+    'iMSCP::Servers::Httpd'             => '',
 
+    # Apache2 MPM (only relevant for the Apache2 httpd server)
+    #
+    # Possibles values: event, itk, prefork, worker
+    #
+    # Leave empty for default: event
+    'APACHE2_MPM'                       => '',
+    
     # PHP version for customers
     #
     # Possible values:
-    # - php5.6 (default for Debian Jessie/Stretch, Devuan Jessie,
-    #           Ubuntu Trusty/Xenial -- not available for Debian Buster)
-    # - php7.0 (default for Debian Buster)
-    # - php7.1
-    # - php7.2 (not available for Debian Buster)
+    # - Debian-like distributions:
+    #   - 5.6 (default)
+    #   - 7.0 
+    #   - 7.1
+    #   - 7.2 
     #
-    # Leave empty for default.
-    PHP_SERVER                          => '',
-
+    # Leave empty for default: 5.6
+    'PHP_VERSION'                       => '',
+    
     # PHP SAPI for customers
     #
     # Possible values: apache2handler, cgi, fpm
     #
     # Restrictions:
-    # - The apache2_mpm_itk HTTPD server implementation cannot be used with the
-    #   PHP cgi SAPI as the Apache's Fcgid module doesn't work with the
-    #   Apache2's ITK MPM.
-    # - The apache2handler PHP sapi requires the apache2_mpm_itk HTTPD server
-    #   implementation.
+    # - The apache2handler PHP SAPI require the Apache2 server with the itk MPM
+    # - The cgi (cgi/FastCGI) PHP sapi cannot be used with the Apache2 itk MPM
+    #   as the Apache's Fcgid module doesn't work with that MPM.
     #
     # Leave empty for default: fpm
     PHP_SAPI                            => '',
@@ -326,10 +344,13 @@
 
     # FTPd server implementation
     #
-    # Possible values: proftpd, vsftpd
+    # Possible values:
+    # - Debian-like distributions:
+    #   - iMSCP::Servers::Ftpd::Proftpd::Debian
+    #   - iMSCP::Servers::Ftpd::Vsftpd::Debian
     #
-    # Leave empty for default: proftpd
-    FTPD_SERVER                         => '',
+    # Leave empty for default: iMSCP::Servers::Ftpd::Proftpd::Debian 
+    'iMSCP::Servers::Ftpd'              => '',
 
     # FTP SQL user
     #
@@ -357,14 +378,17 @@
     # Possible values: postfix
     #
     # Leave empty for default: postfix
-    MTA_SERVER                          => '',
+    'iMSCP::Servers::Mta'               => '',
 
     # POP/IMAP servers implementation
     #
-    # Possible values: courier, dovecot
+    # Possible values:
+    # - Debian-like distributions:
+    #   - iMSCP::Servers::Po::Courier::Debian
+    #   - iMSCP::Servers::Po::Dovecot::Debian
     #
-    # Leave empty for default: dovecot
-    PO_SERVER                           => '',
+    # Leave empty for default: iMSCP::Servers::Po::Dovecot::Debian
+    'iMSCP::Servers::Po'                => '',
 
     # Authdaemon SQL user (only relevant with 'courier')
     #
@@ -413,14 +437,14 @@
     # either replace it through the panel or re-run the setup.
     #
     # SSL private key path
-    SERVICES_SSL_PRIVATE_KEY_PATH          => '',
+    SERVICES_SSL_PRIVATE_KEY_PATH       => '',
     # SSL private key passphrase (only if the private key is encrypted)
-    SERVICES_SSL_PRIVATE_KEY_PASSPHRASE    => '',
+    SERVICES_SSL_PRIVATE_KEY_PASSPHRASE => '',
     # SSL certificate path
-    SERVICES_SSL_CERTIFICATE_PATH          => '',
+    SERVICES_SSL_CERTIFICATE_PATH       => '',
     # SSL CA Bundle path (or root certificate if your CA doesn't use
     # intermediates)
-    SERVICES_SSL_CA_BUNDLE_PATH            => '',
+    SERVICES_SSL_CA_BUNDLE_PATH         => '',
 
     # Webstats package
     #

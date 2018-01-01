@@ -1,4 +1,4 @@
-# i-MSCP Listener::Postfix::Tuning listener file
+# i-MSCP iMSCP::Listener::Postfix::Tuning listener file
 # Copyright (C) 2010-2018 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
 ## Tune up Postfix configuration files (main.cf and master.cf).
 #
 
-package Listener::Postfix::Tuning;
+package iMSCP::Listener::Postfix::Tuning;
 
 our $VERSION = '1.0.1';
 
@@ -27,7 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug;
 use iMSCP::EventManager;
-use Servers::mta;
+use iMSCP::Servers::Mta;
 use version;
 
 #
@@ -72,7 +72,7 @@ iMSCP::EventManager->getInstance()->register(
         }
 
         if ( %params ) {
-            my $rs = Servers::mta->factory()->postconf( %params );
+            my $rs = iMSCP::Servers::Mta->factory()->postconf( %params );
             return $rs if $rs;
         }
 

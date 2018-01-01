@@ -1,4 +1,4 @@
-# i-MSCP Listener::Php::ConfOptions::Override listener file
+# i-MSCP iMSCP::Listener::Php::ConfOptions::Override listener file
 # Copyright (C) 2016-2018 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -15,14 +15,14 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
-package Listener::Php::IniOptions::Override;
+package iMSCP::Listener::Php::IniOptions::Override;
 
 our $VERSION = '1.1.1';
 
 use strict;
 use warnings;
 use iMSCP::EventManager;
-use Servers::php;
+use iMSCP::Servers::Php;
 use versions;
 
 #

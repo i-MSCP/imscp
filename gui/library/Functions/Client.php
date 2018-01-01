@@ -98,7 +98,7 @@ function customerHasFeature($featureNames, $forceReload = false)
             'mail'               => ($dmnProps['domain_mailacc_limit'] != '-1'),
             'subdomains'         => ($dmnProps['domain_subd_limit'] != '-1'),
             'domain_aliases'     => ($dmnProps['domain_alias_limit'] != '-1'),
-            'custom_dns_records' => ($dmnProps['domain_dns'] != 'no' && $cfg['Servers::named'] != 'Servers::noserver'),
+            'custom_dns_records' => ($dmnProps['domain_dns'] != 'no' && $cfg['iMSCP::Servers::Named'] != 'iMSCP::Servers::Noserver'),
             'webstats'           => ($cfg['WEBSTATS_PACKAGES'] != 'No'),
             'backup'             => ($cfg['BACKUP_DOMAINS'] != 'no' && $dmnProps['allowbackup'] != ''),
             'protected_areas'    => true,

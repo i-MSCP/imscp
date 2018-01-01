@@ -20,7 +20,7 @@
 ## Allows to add additional server aliases in the given Apache2 vhosts.
 #
 
-package Listener::Apache2::ServerAlias::Override;
+package iMSCP::Listener::Apache2::ServerAlias::Override;
 
 our $VERSION = '1.0.2';
 

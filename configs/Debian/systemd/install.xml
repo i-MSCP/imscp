@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<install>
+    <folder mode="0755">${ROOT_CONF}/systemd</folder>
+    <folder mode="0755">${ROOT_CONF}/systemd/system</folder>
+    <folder mode="0755">${ROOT_CONF}/tmpfiles.d</folder>
+    <copy_config copy_if="index('${iMSCP::Servers::Named}', 'Bind9') != -1" mode="0644">${ROOT_CONF}/systemd/system/bind9.service</copy_config>
+    <copy_config copy_if="index('${iMSCP::Servers::Named}', 'Bind9') != -1" mode="0644">
+        ${ROOT_CONF}/systemd/system/bind9-resolvconf.service
+    </copy_config>
+    <copy_config copy_if="index('${iMSCP::Servers::Po}', 'Courier') != -1" mode="0644">${ROOT_CONF}/tmpfiles.d/courier-authdaemon.conf</copy_config>
+    <copy_config mode="0644">${ROOT_CONF}/tmpfiles.d/imscp_panel.conf</copy_config>
+    <copy_config mode="0644">${ROOT_CONF}/systemd/system/imscp_daemon.service</copy_config>
+    <copy_config mode="0644">${ROOT_CONF}/systemd/system/imscp_mountall.service</copy_config>
+    <copy_config mode="0644">${ROOT_CONF}/systemd/system/imscp_panel.service</copy_config>
+    <copy_config mode="0644">${ROOT_CONF}/systemd/system/imscp_traffic.service</copy_config>
+</install>

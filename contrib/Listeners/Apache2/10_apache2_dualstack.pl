@@ -1,4 +1,4 @@
-# i-MSCP Listener::Apache2::DualStack listener file
+# i-MSCP iMSCP::Listener::Apache2::DualStack listener file
 # Copyright (C) 2010-2018 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
 ## Provides dual stack support for Apache2.
 #
 
-package Listener::Apache2::DualStack;
+package iMSCP::Listener::Apache2::DualStack;
 
 our $VERSION = '1.0.1';
 

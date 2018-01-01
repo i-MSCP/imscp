@@ -30,7 +30,7 @@ use File::Temp;
 use iMSCP::Debug qw/ debug /;
 use iMSCP::Execute qw / execute escapeShell /;
 use POSIX ':signal_h';
-use parent 'Common::SingletonClass';
+use parent 'iMSCP::Common::SingletonClass';
 
 =head1 DESCRIPTION
 
@@ -364,7 +364,7 @@ EOF
                 # Void tables locking whenever possible
                 . "@{ [ $innoDbOnly ? ' --single-transaction --skip-lock-tables' : '']}"
                 # Compress all information sent between the client and the server (only if remote SQL server).
-                . "@{[ index( $main::imscpConfig{'Servers::sqld'}, 'Servers::sqld::Remote' ) == 0 ? ' --compress' : '']}"
+                . "@{[ index( $main::imscpConfig{'iMSCP::Servers::Sqld'}, 'Remote' ) != -1 ? ' --compress' : '']}"
                 . " --databases @{[ escapeShell($dbName) ]}"
                 . ' > ' . escapeShell( "$dbDumpTargetDir/$encodedDbName.sql" ),
             undef,

@@ -20,14 +20,14 @@
 ## Setup Postfix whilelist tables for policy servers.
 #
 
-package Listener::Postfix::Policy::Whitelist;
+package iMSCP::Listener::Postfix::Policy::Whitelist;
 
 our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
 use iMSCP::EventManager;
-use Servers::mta;
+use iMSCP::Servers::Mta;
 use version;
 
 #
@@ -48,7 +48,7 @@ version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' )
 iMSCP::EventManager->getInstance()->register(
     'afterPostfixBuildConf',
     sub {
-        my $mta = Servers::mta->factory();
+        my $mta = iMSCP::Servers::Mta->factory();
         my $rs = $mta->addMapEntry( $policyClientWhitelistTable );
         $rs ||= $mta->addMapEntry( $policyRecipientWhitelistTable );
         $rs ||= $mta->postconf(

@@ -37,7 +37,7 @@ use iMSCP::Debug qw/ debug error getMessageByType newDebug /;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::Getopt;
 use iMSCP::Mail;
-use Servers::mta;
+use iMSCP::Servers::Mta;
 use POSIX qw / locale_h /;
 
 setlocale( LC_MESSAGES, "C.UTF-8" );
@@ -71,7 +71,7 @@ sub quotaFiles
             "SELECT domain_id, domain_name FROM domain WHERE domain_status NOT IN ('disabled', 'todelete')", 'domain_id'
         );
 
-        my $virtualMailDir = Servers::mta->factory()->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
+        my $virtualMailDir = iMSCP::Servers::Mta->factory()->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
 
         while ( my ($dmnId, $dmnData) = each( %{$rows} ) ) {
             my $totalDiskUsage = my $webDiskUsage = my $mailDiskUsage = 0;

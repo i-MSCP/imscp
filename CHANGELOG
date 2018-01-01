@@ -15,7 +15,9 @@ BACKEND
     Enhancement: Make it possible to install Composer anywhere (iMSCP::Composer)
     Enhancement: Make it possible to override default composer.json (iMSCP::Composer)
     Enhancement: Make it possible to reconfigure many items at once by passing comma separated list of items (iMSCP::Getopt)
+    Enhancement: Make it possible to support multiple distributions (other than Debian like distributions) by providing abstract classes for all i-MSCP servers.
     Enhancement: Make the iMSCP::Composer package usable by 3rd-party components, without relying on event manager
+    Fixed: All Perl packages must be in iMSCP namespace
     Fixed: Avoid localization of `$@' variable
     Fixed: Can't call method "XXXXXX" on unblessed reference -- Object as event listener (iMSCP::EventManager -- regression fix)
     Fixed: Couldn't restore SQL databases -- Can't locate object method "selectall_array" via package "DBI::db"
@@ -32,6 +34,7 @@ BACKEND
     Review: Prefer stable versions of composer packages (iMSCP::Composer)
     Security: Disallow connection to MySQL command-line tool without user password, even for root user
     Security: Don't store i-MSCP master SQL user data into the /etc/mysql/conf.d/imscp.cnf configuration file
+    Removed: iMSCP::LsbRelease package -- We now make use of FACTER(8) to gather system information from various distributions
 
 CONFIG
     Added: Daily CRON(8) configuration file for i-MSCP frontend (cleanup of tmp directory)
@@ -112,14 +115,15 @@ INSTALLER
     Added: Missing patches for pam-mysql -- Devuan 1.0/Jessie
     Added: `pre_remove' attribute -- Allows to remove previous directory (folder xml node from install.xml files)
     Enhancement: Make it possible to provide per distribution (codename) configuration file
-    Enhancement: Make it possible to replace IP address of all client with new primary IP (Servers::server::local::installer)
+    Enhancement: Make it possible to replace IP address of all client with new primary IP (iMSCP::Servers::Server::local::installer)
     Enhancement: Provide good default values for installer whenever possible
+    Fixed: All Perl packages must be in iMSCP namespace
     Fixed: `build' mode is broken for fresh installs -- Packages must be pre-installed regardless of install mode
     Fixed: `CLIENT_DOMAIN_ALT_URLS' configuration parameter reseted to 0 (disabled) while running installer
     Fixed: `CLIENT_DOMAIN_ALT_URLS' parameter is not set on fresh installations
     Fixed: DIRMNGR(8) daemon not being terminated when expected (APT key management -- Debian adapter)
     Fixed: Don't assume RSYSLOGD(8) as system log daemon -- One drop-in replacement could be installed instead
-    Fixed: Filtering of packages that must be uninstalled is made too early (autoinstaller::Adapter::DebianAdapter)
+    Fixed: Filtering of packages that must be uninstalled is made too early (iMSCP::Installer::Debian)
     Fixed: If a password is getting incorrect due to a password policy change, user must be warned
     Fixed: Setup dialog for the alternative URLs feature is not shown on fresh install
     Merged: Distribution layout.xml file with distribution master install.xml file
@@ -128,6 +132,7 @@ INSTALLER
     Removed: `repository_conflict` attribute (packages files)
     Renamed: `kept` attribute to `keep_if_exist' (copy_config xml node from install.xml files)
     Renamed: `if' attribute to 'copy_if' (copy_config xml node from install.xml files)
+    Renamed: imscp-autoinstall script to imscp-installer
     Review: Ask for confirmation in case the current SQL vendor is no longer available (safety measure)
     Review: Install all available PHP versions regardless of the selected PHP alternative for customers
     Review: Install external Perl modules through CPAN
@@ -138,7 +143,8 @@ LISTENERS
     Added: contrib/Listeners/APT/10_apt_sources_list.pl: Make it possible to provide it own SOURCES.LIST(5) file
     Added: contrib/Listeners/PHP/10_phpfcgid_settings_override.pl: Make it possible to override Apache2 vhost fcgid settings
     Fixed: All listener files should be versionned for easy update tracking
-    Fixed: Listener::Php::ConfOptions::Override: PHP INI level not honoured
+    Fixed: All listener files must be in iMSCP namespace
+    Fixed: iMSCP::Listener::Php::ConfOptions::Override: PHP INI level not honoured
     Fixed: 10_named_slave_provisioning.pl: Global symbol "$rs" requires explicit package name
     Rewritten: 20_named_dualstack.pl listener file (require i-MSCP >= 1.6.0)
     Updated: 10_dovecot_compress.pl: Make use of /etc/dovecot/imscp.d directory to store configuration
@@ -149,14 +155,14 @@ LISTENERS
     Updated: 60_dovecot_service_login.pl: Make use of /etc/dovecot/imscp.d directory to store configuration
 
 PACKAGES
-    Fixed: Distribution packages not installed in `build' mode (Package::AntiRootkits, Package::Webstats)
-    Fixed: Limit number of Nginx worker processes in auto mode (Package::FrontEnd::Installer)
-    Fixed: Logs must be preserved when upgrading/reconfiguring i-MSCP (Package::Webmail::Roundcube::Installer)
-    Removed: Package::FileManager::Net2ftp::Net2ftp package -- The software is no longer maintained which make it unsafe
-    Review: Cleanup production configuration files (Package::FrontEnd::Installer)
-    Review: Disable both phpsessionclean timer and phpsessionclean service as we don't rely on them (Servers::php)
-    Review: Set executable bit on *.sh scripts (Package::Webmail::Roundcube::Installer)
-    Updated: Installer for use of Roundcube version 1.3.1 (Package::Webmail::Roundcube::Installer)
+    Fixed: Distribution packages not installed in `build' mode (iMSCP::Packages::AntiRootkits, iMSCP::Packages::Webstats)
+    Fixed: Limit number of Nginx worker processes in auto mode (iMSCP::Packages::FrontEnd::Installer)
+    Fixed: Logs must be preserved when upgrading/reconfiguring i-MSCP (iMSCP::Packages::Webmail::Roundcube::Installer)
+    Removed: iMSCP::Packages::FileManager::Net2ftp::Net2ftp package -- The software is no longer maintained which make it unsafe
+    Review: Cleanup production configuration files (iMSCP::Packages::FrontEnd::Installer)
+    Review: Disable both phpsessionclean timer and phpsessionclean service as we don't rely on them (iMSCP::Servers::Php)
+    Review: Set executable bit on *.sh scripts (iMSCP::Packages::Webmail::Roundcube::Installer)
+    Updated: Installer for use of Roundcube version 1.3.1 (iMSCP::Packages::Webmail::Roundcube::Installer)
 
 PLUGINS
     Added: Own event manager for plugin manager
@@ -176,21 +182,22 @@ SCRIPTS
     Fixed: maillogconvert.pl script is broken leading to un-processing of SMTP logs
 
 SERVERS
-    Enhancement: Make use of in memory tmpfs to build Web folders whenever possible (Servers::Httpd::Apache2::Abstract)
+    Added: SYSTEMD.CRON(7) cron server implementation as alternative to the historical Vixie CRON(8) daemon 
+    Enhancement: Make use of in memory tmpfs to build Web folders whenever possible (iMSCP::Servers::Httpd::Apache2::Abstract)
     Fixed: Applications such as WHMCS behave unexpectedly with strict SQL mode -- Set SQL mode as with MySQL 5.5 (no SQL mode)
     Fixed: Avoid truncating ProFTPD and VsFTPD traffic log files -- Make use of LOGROTATE(8) instead
     Fixed: Bad `X_FORWARDED_PORT` header value for SSL redirect (proxy) vhosts (Apache2)
     Fixed: Bad `X_FORWARDED_PROTO` header value for SSL redirect (proxy) vhosts (Apache2)
     Fixed: Don't enforce SSL strict SNI (Apache2)
     Fixed: Make use of the INADDR_ANY address, regadless of domain IP address when primary server IP is set with `None` option (Httpd)
-    Fixed: Set timeout to 5 seconds for LWP::Simple; Default value is far too hight (Servers::server::local::installer)
-    Review: The FcgidBusyTimeout, FcgidMinProcessesPerClass and FcgidMaxProcessesPerClass Apache2 FCGID module parameters are now set on per vhost basis (Servers::php)
-    Review: Make use of ipify.org as default service for WAN IP retrieval (Servers::server::local::installer)
-    Rewritten: Servers::ftpd::courier::getTraffic() routine: Avoid IO operations (AMAP); Reduce memory consumption
-    Rewritten: Servers::ftpd::dovecot::getTraffic() routine: Avoid IO operations (AMAP); Reduce memory consumption
-    Rewritten: Servers::ftpd::postfix::getTraffic() routine: Avoid IO operations (AMAP), Reduce memory consumption
-    Rewritten: Servers::ftpd::proftpd::getTraffic() routine: Avoid IO operations (AMAP); Reduce memory consumption
-    Rewritten: Servers::ftpd::vsftpd::getTraffic() routine: Avoid IO operations (AMAP); Reduce memory consumption
+    Fixed: Set timeout to 5 seconds for LWP::Simple; Default value is far too hight (iMSCP::Servers::Server::local::installer)
+    Review: The FcgidBusyTimeout, FcgidMinProcessesPerClass and FcgidMaxProcessesPerClass Apache2 FCGID module parameters are now set on per vhost basis
+    Review: Make use of ipify.org as default service for WAN IP retrieval (iMSCP::Servers::Server::local::installer)
+    Rewritten: iMSCP::Servers::Ftpd::courier::getTraffic() routine: Avoid IO operations (AMAP); Reduce memory consumption
+    Rewritten: iMSCP::Servers::Ftpd::dovecot::getTraffic() routine: Avoid IO operations (AMAP); Reduce memory consumption
+    Rewritten: iMSCP::Servers::Ftpd::Postfix::getTraffic() routine: Avoid IO operations (AMAP), Reduce memory consumption
+    Rewritten: iMSCP::Servers::Ftpd::Proftpd::getTraffic() routine: Avoid IO operations (AMAP); Reduce memory consumption
+    Rewritten: iMSCP::Servers::Ftpd::vsftpd::getTraffic() routine: Avoid IO operations (AMAP); Reduce memory consumption
 
 VAGRANT
     Enhancement: Make users able to choice between many distributions

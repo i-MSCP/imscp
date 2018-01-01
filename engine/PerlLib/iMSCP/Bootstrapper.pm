@@ -36,7 +36,7 @@ use iMSCP::Getopt;
 use iMSCP::LockFile;
 use iMSCP::Umask;
 use POSIX qw / tzset /;
-use parent 'Common::SingletonClass';
+use parent 'iMSCP::Common::SingletonClass';
 
 $SIG{'INT'} = 'IGNORE';
 

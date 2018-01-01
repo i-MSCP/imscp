@@ -1,4 +1,4 @@
-# i-MSCP Listener::Apache2::Tools::Proxy listener file
+# i-MSCP iMSCP::Listener::Apache2::Tools::Proxy listener file
 # Copyright (C) 2017-2018 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2015-2017 Rene Schuster <mail@reneschuster.de>
 #
@@ -24,7 +24,7 @@
 #  https://customer.tld/webmail/ will proxy to i-MSCP webmail transparently
 #
 
-package Listener::Apache2::Tools::Proxy;
+package iMSCP::Listener::Apache2::Tools::Proxy;
 
 our $VERSION = '1.0.1';
 

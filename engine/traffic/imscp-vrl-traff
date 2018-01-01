@@ -84,10 +84,10 @@ sub run
     my $timestamp = time();
     my $halfTimestamp = $timestamp-( $timestamp % 1800 );
     my %trafficDb = (
-        'Servers::httpd' => {},
-        'Servers::ftpd'  => {},
-        'Servers::mta'   => {},
-        'Servers::po'    => {}
+        'iMSCP::Servers::Httpd' => {},
+        'iMSCP::Servers::Ftpd'  => {},
+        'iMSCP::Servers::Mta'   => {},
+        'iMSCP::Servers::Po'    => {}
     );
     my @servers = grep(/::(?:httpd|ftpd|mta|po)$/, iMSCP::Servers->getInstance()->getListWithFullNames() );
 
@@ -132,11 +132,11 @@ sub run
         next unless $newEntriesFound;
 
         $sth->execute(
-            $domainData->{'upper_domain_id'}, $halfTimestamp, $trafficDb{'Servers::httpd'}->{$domainName},
-            $trafficDb{'Servers::ftpd'}->{$domainName}, $trafficDb{'Servers::mta'}->{$domainName},
-            $trafficDb{'Servers::po'}->{$domainName},
-            $trafficDb{'Servers::httpd'}->{$domainName}, $trafficDb{'Servers::ftpd'}->{$domainName},
-            $trafficDb{'Servers::mta'}->{$domainName}, $trafficDb{'Servers::po'}->{$domainName}
+            $domainData->{'upper_domain_id'}, $halfTimestamp, $trafficDb{'iMSCP::Servers::Httpd'}->{$domainName},
+            $trafficDb{'iMSCP::Servers::Ftpd'}->{$domainName}, $trafficDb{'iMSCP::Servers::Mta'}->{$domainName},
+            $trafficDb{'iMSCP::Servers::Po'}->{$domainName},
+            $trafficDb{'iMSCP::Servers::Httpd'}->{$domainName}, $trafficDb{'iMSCP::Servers::Ftpd'}->{$domainName},
+            $trafficDb{'iMSCP::Servers::Mta'}->{$domainName}, $trafficDb{'iMSCP::Servers::Po'}->{$domainName}
         );
 
         if ( $dbh->err ) {

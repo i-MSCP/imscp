@@ -1,4 +1,4 @@
-# i-MSCP Listener::Apache2::Security::Headers listener file
+# i-MSCP iMSCP::Listener::Apache2::Security::Headers listener file
 # Copyright (C) 2017-2018 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2016-2017 Rene Schuster <mail@reneschuster.de>
 #
@@ -20,7 +20,7 @@
 ## Listener file that add security headers (https://securityheaders.io) in customer Apache2 vhosts
 #
 
-package Listener::Apache2::Security::Headers;
+package iMSCP::Listener::Apache2::Security::Headers;
 
 our $VERSION = '1.0.2';
 

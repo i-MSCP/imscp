@@ -209,7 +209,7 @@ function resellerHasFeature($featureName, $forceReload = false)
             'php'                => true,
             'php_editor'         => ($resellerProps['php_ini_system'] == 'yes'),
             'cgi'                => true,
-            'custom_dns_records' => ($cfg['Servers::named'] != 'Servers::noserver'),
+            'custom_dns_records' => ($cfg['iMSCP::Servers::Named'] != 'iMSCP::Servers::Noserver'),
             'aps'                => ($resellerProps['software_allowed'] != 'no'), // aps feature check must be revisted
             'external_mail'      => true,
             'backup'             => ($cfg['BACKUP_DOMAINS'] != 'no'),

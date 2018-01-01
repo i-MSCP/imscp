@@ -168,12 +168,9 @@ sub showUsage
 }
 
 my @RECONFIGURATION_ITEMS = sort(
-    'all', 'servers', 'httpd', 'mta', 'po', 'ftpd', 'named', 'sql',
-    'hostnames', 'system_hostname', 'panel_hostname', 'panel_ports',
-    'primary_ip', 'admin', 'admin_credentials', 'admin_email', 'php',
-    'timezone', 'panel', 'panel_ssl', 'system_server', 'services_ssl',
-    'ssl', 'backup', 'webstats', 'sqlmanager', 'webmails', 'filemanagers',
-    'antirootkits', 'alt_urls_feature'
+    'all', 'servers', 'httpd', 'mta', 'po', 'ftpd', 'named', 'sqld', 'hostnames', 'system_hostname', 'panel_hostname', 'panel_ports', 'primary_ip',
+    'admin', 'admin_credentials', 'admin_email', 'php', 'timezone', 'panel', 'panel_ssl', 'system_server', 'services_ssl',  'ssl', 'backup',
+    'webstats', 'sqlmanager', 'webmails', 'filemanagers', 'antirootkits', 'alt_urls_feature'
 );
 
 =item reconfigure( [ $items = 'none' ] )

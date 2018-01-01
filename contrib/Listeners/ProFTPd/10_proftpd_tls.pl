@@ -1,4 +1,4 @@
-# i-MSCP Listener::ProFTPd::TLS listener file
+# i-MSCP iMSCP::Listener::ProFTPd::TLS listener file
 # Copyright (C) 2017-2018 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2015-2017 Rene Schuster <mail@reneschuster.de>
 #
@@ -21,7 +21,7 @@
 ## See http://www.proftpd.org/docs/directives/linked/config_ref_TLSRequired.html
 #
 
-package Listener::ProFTPd::TLS;
+package iMSCP::Listener::ProFTPd::TLS;
 
 our $VERSION = '1.0.1';
 

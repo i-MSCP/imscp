@@ -1,4 +1,4 @@
-# i-MSCP Listener::System::Mount::Userwebdir listener file
+# i-MSCP iMSCP::Listener::System::Mount::Userwebdir listener file
 # Copyright (C) 2010-2018 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -21,7 +21,7 @@
 ## Listener file compatible with i-MSCP >= 1.3.4
 #
 
-package Listener::System::Mount::Userwebdir;
+package iMSCP::Listener::System::Mount::Userwebdir;
 
 our $VERSION = '1.0.1';
 

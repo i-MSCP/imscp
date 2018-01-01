@@ -42,12 +42,12 @@ use iMSCP::Dialog;
 use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::Packages;
+use iMSCP::Packagess;
 use iMSCP::Servers;
 use iMSCP::Service;
 use iMSCP::Stepper qw/ endDetail startDetail step /;
 use iMSCP::SystemUser;
-use Servers::sqld;
+use iMSCP::Servers::Sqld;
 use POSIX qw / locale_h /;
 
 setlocale( LC_MESSAGES, "C.UTF-8" );
@@ -201,7 +201,7 @@ sub _uninstallPackages
 {
     startDetail();
 
-    my @packages = iMSCP::Packages->getInstance()->getListWithFullNames();
+    my @packages = iMSCP::Packagess->getInstance()->getListWithFullNames();
     my $nbSteps = @packages;
     my ($step, $rs) = ( 1, 0 );
 
@@ -289,7 +289,7 @@ sub _removeSysctlFile
 sub _removeSqlData
 {
     eval {
-        my $sqlServer = Servers::sqld->factory();
+        my $sqlServer = iMSCP::Servers::Sqld->factory();
         my $dbh = iMSCP::Database->getInstance()->getRawDb();
 
         # Remove customer's sql users

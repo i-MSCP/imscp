@@ -1,4 +1,4 @@
-# i-MSCP Listener::Postfix::Submission::TLS listener file
+# i-MSCP iMSCP::Listener::Postfix::Submission::TLS listener file
 # Copyright (C) 2017-2018 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2015-2017 Rene Schuster <mail@reneschuster.de>
 #
@@ -20,14 +20,14 @@
 ## Enforces TLS connection on Postfix submission.
 #
 
-package Listener::Postfix::Submission::TLS;
+package iMSCP::Listener::Postfix::Submission::TLS;
 
 our $VERSION = '1.0.1';
 
 use strict;
 use warnings;
 use iMSCP::EventManager;
-use Servers::mta;
+use iMSCP::Servers::Mta;
 use version;
 
 #
@@ -62,7 +62,7 @@ iMSCP::EventManager->getInstance()->register(
     sub {
         # smtpd_tls_security_level=encrypt means mandatory.
         # Make sure to disable vulnerable SSL versions
-        Servers::mta->factory()->postconf(
+        iMSCP::Servers::Mta->factory()->postconf(
             (
                 smtpd_tls_mandatory_protocols => {
                     action => 'replace',

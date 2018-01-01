@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Packages - Package that allows to load and get list of available i-MSCP packages
+ iMSCP::Packagess - Package that allows to load and get list of available i-MSCP packages
 
 =cut
 
@@ -21,12 +21,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package iMSCP::Packages;
+package iMSCP::Packagess;
 
 use strict;
 use warnings;
 use File::Basename;
-use parent 'Common::SingletonClass';
+use parent 'iMSCP::Common::SingletonClass';
 
 =head1 DESCRIPTION
 
@@ -72,7 +72,7 @@ sub getListWithFullNames
 
  Initialize instance
  
- Return iMSCP::Packages
+ Return iMSCP::Packagess
 
 =cut
 
@@ -84,13 +84,13 @@ sub _init
 
     # Load all package classes
     for ( @{$self->{'packages'}} ) {
-        my $package = "Package::${_}";
+        my $package = "iMSCP::Packages::${_}";
         eval "require $package" or die( sprintf( "Couldn't load %s package class: %s", $package, $@ ));
     }
 
-    # Sort packages in descending order of priority
-    @{$self->{'packages'}} = sort { "Package::${b}"->getPriority() <=> "Package::${a}"->getPriority() } @{$self->{'packages'}};
-    @{$self->{'packages_full_names'}} = map { "Package::${_}" } @{$self->{'packages'}};
+    # Sort packages by priority (descending order)
+    @{$self->{'packages'}} = sort { "iMSCP::Packages::${b}"->getPriority() <=> "iMSCP::Packages::${a}"->getPriority() } @{$self->{'packages'}};
+    @{$self->{'packages_full_names'}} = map { "iMSCP::Packages::${_}" } @{$self->{'packages'}};
     $self;
 }
 

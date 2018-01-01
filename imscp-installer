@@ -19,20 +19,24 @@
 
 # Wrap real i-MSCP installer for satisfying pre-requisites
 
+use strict;
+use warnings;
+
 $< == 0 or die( "[\x1b[0;31mERROR\x1b[0m] The i-MSCP installer must be run as root user.\n" );
 system( 'clear 2>/dev/null' );
 
 if ( !-f '/etc/imscp/imscp.conf' || !grep (/^-(?:[^-]*?[hs?][^-]*|-(?:help|skip-distro-packages))$/, @ARGV) ) {
     # Debian like distributions specific routines
+    # FIXME check on apt-get isn't sufficient as some other distributions can provide it (eg. OpenSUSE)
     if ( `which apt-get 2>/dev/null` ) {
         local $ENV{'LANG'} = 'C.UTF-8';
 
         # List of pre-required distribution packages
         my @distPackages = qw/
             apt-transport-https apt-utils build-essential ca-certificates debconf-utils dialog dirmngr facter libbit-vector-perl libcapture-tiny-perl
-            libclass-autouse-perl libdata-compare-perl libdata-validate-domain-perl libfile-homedir-perl liblchown-perl liblist-compare-perl
-            liblist-moreutils-perl libnet-ip-perl libnet-domain-tld-perl libscalar-defer-perl libsort-versions-perl libxml-simple-perl lsb-release
-            policyrcd-script-zg2 wget whiptail /;
+            libclass-autouse-perl libdata-compare-perl libdata-validate-domain-perl libfile-homedir-perl libjson-perl libjson-xs-perl liblchown-perl
+            liblist-compare-perl liblist-moreutils-perl libnet-ip-perl libnet-domain-tld-perl libscalar-defer-perl libsort-versions-perl
+            libxml-simple-perl lsb-release policyrcd-script-zg2 wget whiptail virt-what /;
 
         print "Satisfying pre-requisites for the i-MSCP installer\n";
         print " [\x1b[0;34mINFO\x1b[0m] Updating package index files ...\n";

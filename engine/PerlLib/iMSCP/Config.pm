@@ -29,7 +29,7 @@ use 5.014;
 use iMSCP::Debug;
 use Fcntl 'O_RDWR', 'O_CREAT', 'O_RDONLY';
 use Tie::File;
-use parent 'Common::Object';
+use parent 'iMSCP::Common::Object';
 
 =head1 DESCRIPTION
 

@@ -362,7 +362,7 @@ sub isMountpoint($)
     return 1 if $MOUNTS->{$path};
     return 0 unless -d $path;
 
-    my $st = File::stat::populate( CORE::stat( _ ));
+    my $st = File::stat::Populate( CORE::stat( _ ));
     my $st2 = File::stat::stat( "$path/.." );
     ( $st->dev != $st2->dev ) || ( $st->dev == $st2->dev && $st->ino == $st2->ino );
 }

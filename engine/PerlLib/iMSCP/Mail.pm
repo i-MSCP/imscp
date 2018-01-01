@@ -30,7 +30,7 @@ use iMSCP::Debug;
 use iMSCP::ProgramFinder;
 use MIME::Entity;
 use Text::Wrap;
-use parent 'Common::Object';
+use parent 'iMSCP::Common::Object';
 
 $Text::Wrap::huge = 'wrap';
 $Text::Wrap::columns = 75;

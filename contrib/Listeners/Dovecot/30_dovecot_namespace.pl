@@ -1,4 +1,4 @@
-# i-MSCP Listener::Dovecot::Namespace listener file
+# i-MSCP iMSCP::Listener::Dovecot::Namespace listener file
 # Copyright (C) 2017-2018 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2015-2017 Rene Schuster <mail@reneschuster.de>
 #
@@ -21,7 +21,7 @@
 ## empty prefix namespace.
 #
 
-package Listener::Dovecot::Namespace;
+package iMSCP::Listener::Dovecot::Namespace;
 
 our $VERSION = '1.0.1';
 
@@ -29,7 +29,7 @@ use strict;
 use warnings;
 use iMSCP::EventManager;
 use iMSCP::File;
-use Servers::po;
+use iMSCP::Servers::Po;
 use version;
 
 #
@@ -43,7 +43,7 @@ version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' )
 iMSCP::EventManager->getInstance()->registerOne(
     'afterDovecotBuildConf',
     sub {
-        my $dovecotConfdir = Servers::po->factory()->{'config'}->{'DOVECOT_CONF_DIR'};
+        my $dovecotConfdir = iMSCP::Servers::Po->factory()->{'config'}->{'DOVECOT_CONF_DIR'};
         my $file = iMSCP::File->new( filename => "$dovecotConfdir/imscp.d/30_dovecot_namespace_listener.conf" );
         $file->set( <<'EOT' );
 namespace inbox {

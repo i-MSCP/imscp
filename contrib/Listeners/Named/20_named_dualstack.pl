@@ -1,4 +1,4 @@
-# i-MSCP Listener::Bind9::DualStack listener file
+# i-MSCP iMSCP::Listener::Bind9::DualStack listener file
 # Copyright (C) 2010-2018 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 #
 # The listener can acts globally or on a per zone basis.
 
-package Listener::Bind9::DualStack;
+package iMSCP::Listener::Bind9::DualStack;
 
 our $VERSION = '1.0.2';
 

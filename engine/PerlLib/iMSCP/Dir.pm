@@ -30,7 +30,7 @@ use File::Path qw/ mkpath remove_tree /;
 use File::Spec;
 use iMSCP::Debug qw / getLastError /;
 use iMSCP::File;
-use parent 'Common::Object';
+use parent 'iMSCP::Common::Object';
 
 =head1 DESCRIPTION
 

@@ -1,4 +1,4 @@
-# i-MSCP Listener::Postfix::PFS listener file
+# i-MSCP iMSCP::Listener::Postfix::PFS listener file
 # Copyright (C) 2017-2018 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2015-2017 Rene Schuster <mail@reneschuster.de>
 #
@@ -28,7 +28,7 @@
 ##   chmod 644 dh512.pem dh2048.pem
 #
 
-package Listener::Postfix::PFS;
+package iMSCP::Listener::Postfix::PFS;
 
 our $VERSION = '1.0.1';
 
@@ -50,7 +50,7 @@ iMSCP::EventManager->getInstance()->register(
     sub {
         return 0 unless -f '/etc/postfix/dh2048.pem' && -f '/etc/postfix/dh512.pem';
 
-        Servers::mta->factory()->postconf(
+        iMSCP::Servers::Mta->factory()->postconf(
             (
                 smtpd_tls_dh1024_param_file => {
                     action => 'replace',
