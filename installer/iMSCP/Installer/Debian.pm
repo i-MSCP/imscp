@@ -656,7 +656,7 @@ EOF
         # Set server/package class name
         $main::imscpConfig{$sectionClass} = $data->{$sAlt}->{'class'} || 'iMSCP::Servers::Noserver';
         # Set alternative name for processing (volatile data)
-        $main::questions{$section} = $sAlt;
+        $main::questions{'_' . $section} = $sAlt;
     }
 
     @{$self->{'packagesToPreUninstall'}} = sort( unique( @{$self->{'packagesToPreUninstall'}} ) );
@@ -866,7 +866,7 @@ sub _prefillDebconfDatabase
 
     my $fileContent = '';
 
-    if ( $main::questions{'mta'} eq 'postfix' ) {
+    if ( $main::questions{'_mta'} eq 'postfix' ) {
         chomp( my $mailname = `hostname --fqdn 2>/dev/null` || 'localdomain' );
         my $hostname = ( $mailname ne 'localdomain' ) ? $mailname : 'localhost';
         chomp( my $domain = `hostname --domain 2>/dev/null` || 'localdomain' );
@@ -884,12 +884,12 @@ postfix postfix/destinations string $destinations
 EOF
     }
 
-    if ( $main::questions{'ftpd'} eq 'proftpd' ) {
+    if ( $main::questions{'_ftpd'} eq 'proftpd' ) {
         # Pre-fill debconf database for Proftpd
         $fileContent .= "proftpd-basic shared/proftpd/inetd_or_standalone select standalone\n";
     }
 
-    if ( $main::questions{'po'} eq 'courier' ) {
+    if ( $main::questions{'_po'} eq 'courier' ) {
         # Pre-fill debconf database for Courier
         $fileContent .= <<'EOF';
 courier-base courier-base/courier-user note
@@ -899,7 +899,7 @@ EOF
     }
 
     # Pre-fill debconf database for Dovecot
-    if ( $main::questions{'po'} eq 'dovecot' ) {
+    if ( $main::questions{'_po'} eq 'dovecot' ) {
         # Pre-fill debconf database for Dovecot
         $fileContent .= <<'EOF';
 dovecot-core dovecot-core/ssl-cert-name string localhost
@@ -912,7 +912,7 @@ EOF
         $fileContent .= "sasl2-bin cyrus-sasl2/purge-sasldb2 boolean true\n";
     }
 
-    if ( my ($sqldVendor, $sqldVersion) = $main::questions{'sqld'} =~ /^(mysql|mariadb|percona)_(\d+\.\d+)/ ) {
+    if ( my ($sqldVendor, $sqldVersion) = $main::questions{'_sqld'} =~ /^(mysql|mariadb|percona)_(\d+\.\d+)/ ) {
         my ($package);
         if ( $sqldVendor eq 'mysql' ) {
             $package = grep($_ eq 'mysql-community-server', @{$self->{'packagesToInstall'}}) ? 'mysql-community-server' : "mysql-server-$sqldVersion";
@@ -938,7 +938,7 @@ EOF
                 return 1;
             }
 
-            # The debconf template is not available (the package has not been installed yet or something went wrong the with debconf database)
+            # The debconf template is not available (the package has not been installed yet or something went wrong with the debconf database)
             # In such case, we download the package into a temporary directory, we extract the debconf template manually and we load it into the
             # debconf database. Once done, we process as usually. This is lot of work but we have not choice as question names for different SQL
             # servers are not consistent.
@@ -1295,7 +1295,7 @@ sub processSqldSection
 \\Zb\\Z1WARNING \\Z0CURRENT SQL SERVER VENDOR IS NOT SUPPORTED \\Z1WARNING\\Zn
 
 The installer detected that your current SQL server ($sqldVendor $sqldVersion) is not supported and that there is no alternative version for that vendor.
-If you continue, you'll be asked for another SQL server vendor but bear in mind that the upgrade could fail.
+If you continue, you'll be asked for another SQL server vendor but bear in mind that the upgrade could fail. You should really considere backuping all your database before continue.
                 
 Are you sure you want to continue?
 EOF
