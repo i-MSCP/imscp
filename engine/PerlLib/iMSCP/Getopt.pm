@@ -244,7 +244,7 @@ EOF
         push @items, 'all';
     } else {
         for my $item( @items ) {
-            $item eq 'none' || grep($_ eq $item, keys %RECONFIGURATION_ITEMS) or die(
+            grep($_ eq $item, keys %RECONFIGURATION_ITEMS, 'none', 'forced') or die(
                 sprintf( "Error: '%s' is not a valid item for the the --reconfigure option.", $item )
             );
         }
