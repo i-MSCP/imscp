@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Servers::Po - i-MSCP IMAP/PO server implementation
+ iMSCP::Servers::Po - i-MSCP po (imap/pop) server factory implementation
 
 =cut
 
@@ -29,7 +29,7 @@ use parent 'iMSCP::Servers::Abstract';
 
 =head1 DESCRIPTION
 
- i-MSCP IMAP/POP server implementation.
+ i-MSCP po (imap/pop) server factory implementation.
 
 =head1 CLASS METHODS
 

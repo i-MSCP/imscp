@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Servers::Abstract - i-MSCP server abstract implementation
+ iMSCP::Servers::Abstract - i-MSCP server abstract factory implementation
 
 =cut
 
@@ -32,7 +32,7 @@ my %PACKAGES;
 
 =head1 DESCRIPTION
 
- i-MSCP server abstract implementation.
+ i-MSCP server factory abstract implementation.
 
 =head1 CLASS METHODS
 
@@ -149,7 +149,7 @@ END {
     return if $? || !%PACKAGES || ( defined $main::execmode && $main::execmode eq 'setup' );
 
     while ( my ( $server, $package ) = each( %PACKAGES ) ) {
-        ( $package->can( 'shutdown' ) or next )->( $package->getInstance(), $server->getPriority())
+        ( $package->can( 'shutdown' ) or next )->( $package->getInstance(), $server->getPriority());
     }
 }
 

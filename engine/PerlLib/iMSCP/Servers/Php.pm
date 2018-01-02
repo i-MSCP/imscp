@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Servers::Php - i-MSCP PHP server implementation
+ iMSCP::Servers::Php - i-MSCP php server factory implementation
 
 =cut
 
@@ -29,7 +29,7 @@ use parent 'iMSCP::Servers::Abstract';
 
 =head1 DESCRIPTION
 
- i-MSCP PHP server implementation.
+ i-MSCP php server factory implementation.
 
 =head1 CLASS METHODS
 

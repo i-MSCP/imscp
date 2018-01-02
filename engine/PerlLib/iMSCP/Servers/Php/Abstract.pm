@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Servers::Php::OndreySury::Abstract - i-MSCP PHP server abstract implementation
+ iMSCP::Servers::Php::Abstract - i-MSCP PHP server abstract implementation
 
 =cut
 
@@ -21,7 +21,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package iMSCP::Servers::Php::OndreySury::Abstract;
+package iMSCP::Servers::Php::Abstract;
 
 use strict;
 use warnings;
@@ -433,7 +433,7 @@ sub restart
 
  Initialize instance
 
- Return iMSCP::Servers::Php::OndreySury::Abstract
+ Return iMSCP::Servers::Php::Abstract
 
 =cut
 
@@ -694,7 +694,7 @@ sub _cleanup
 
  Event listener that inject PHP configuration in Apache2 vhosts
 
- Param scalar self iMSCP::Servers::Php::OndreySury::Abstract instance
+ Param scalar self iMSCP::Servers::Php::Abstract instance
  Param scalar \$scalar Reference to Apache2 vhost content
  Param string $filename Apache2 template name
  Param scalar \$trgFile Target file path

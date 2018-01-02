@@ -8,7 +8,7 @@
         <vixie default="1" class="iMSCP::Servers::Cron::Vixie::Debian">
             <package>cron</package>
         </vixie>
-        <systemd class="iMSCP::Servers::Cron::Systemd::Debian" required_init="systemd">
+        <systemd class="iMSCP::Servers::Cron::Systemd::Debian" required_init="Systemd">
             <package>systemd-cron</package>
         </systemd>
     </cron>
@@ -29,8 +29,8 @@
         </apache2>
     </httpd>
     <php class="iMSCP::Servers::Php">
-        <ondrey_sury
-                class="iMSCP::Servers::Php::OndreySury::Debian"
+        <php
+                class="iMSCP::Servers::Php::Debian"
                 repository="https://packages.sury.org/php/ stretch main"
                 repository_key_uri="https://packages.sury.org/php/apt.gpg"
         >
@@ -118,7 +118,7 @@
                 /usr/sbin/phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets curl gd gmp imap intl json mbstring mcrypt mysqlnd mysqli
                 pdo_mysql opcache pspell dom xml xmlreader xmlwriter zip
             </post_install_task>
-        </ondrey_sury>
+        </php>
     </php>
     <po class="iMSCP::Servers::Po" description="IMAP/POP server">
         <courier description="Courier IMAP/POP3 servers" class="iMSCP::Servers::Po::Courier::Debian">

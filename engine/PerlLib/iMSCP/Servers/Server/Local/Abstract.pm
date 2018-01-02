@@ -56,7 +56,7 @@ sub registerSetupListeners
     # Must be done here because installers can rely on this configuration parameter
     main::setupSetQuestion( 'IPV6_SUPPORT', -f '/proc/net/if_inet6' ? 1 : 0 );
 
-    $self->{'server'}->{'eventManager'}->register(
+    $self->{'eventManager'}->register(
         'beforeSetupDialog',
         sub {
             push @{$_[0]},
@@ -329,7 +329,7 @@ sub _setupHostname
     my $hostname = main::setupGetQuestion( 'SERVER_HOSTNAME' );
     my $lanIP = main::setupGetQuestion( 'BASE_SERVER_IP' );
 
-    my $rs = $self->{'server'}->{'eventManager'}->trigger( 'beforeLocalServerSetupHostname', \$hostname, \$lanIP );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeLocalServerSetupHostname', \$hostname, \$lanIP );
     return $rs if $rs;
 
     my @labels = split /\./, $hostname;
@@ -375,7 +375,7 @@ EOF
     $rs = execute( 'hostname -F /etc/hostname', \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || "Couldn't set server hostname" ) if $rs;
-    $rs ||= $self->{'server'}->{'eventManager'}->trigger( 'afterLocalServerSetupHostname' );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterLocalServerSetupHostname' );
 }
 
 =item _setupPrimaryIP( )
@@ -391,7 +391,7 @@ sub _setupPrimaryIP
     my ($self) = @_;
 
     my $primaryIP = main::setupGetQuestion( 'BASE_SERVER_IP' );
-    my $rs = $self->{'server'}->{'eventManager'}->trigger( 'beforeLocalServerSetupPrimaryIP', $primaryIP );
+    my $rs = $self->{'eventManager'}->trigger( 'beforeLocalServerSetupPrimaryIP', $primaryIP );
     return $rs if $rs;
 
     eval {
@@ -435,7 +435,7 @@ sub _setupPrimaryIP
         return 1;
     }
 
-    $self->{'server'}->{'eventManager'}->trigger( 'afterLocalServerSetupPrimaryIP', $primaryIP );
+    $self->{'eventManager'}->trigger( 'afterLocalServerSetupPrimaryIP', $primaryIP );
 }
 
 =back

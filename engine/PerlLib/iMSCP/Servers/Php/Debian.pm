@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Servers::Php::OndreySury::Debian - i-MSCP (Debian) PHP server implementation
+ iMSCP::Servers::Php::Debian - i-MSCP (Debian) PHP server implementation
 
 =cut
 
@@ -21,7 +21,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package iMSCP::Servers::Php::OndreySury::Debian;
+package iMSCP::Servers::Php::Debian;
 
 use strict;
 use warnings;
@@ -35,7 +35,7 @@ use iMSCP::File;
 use iMSCP::Service;
 use iMSCP::Servers::Php;
 use Scalar::Defer;
-use parent 'iMSCP::Servers::Php::OndreySury::Abstract';
+use parent 'iMSCP::Servers::Php::Abstract';
 
 =head1 DESCRIPTION
 
@@ -94,11 +94,11 @@ sub askForPhpVersion
     my $value = main::setupGetQuestion( 'PHP_VERSION', $self->{'config'}->{'PHP_VERSION'} || ( iMSCP::Getopt->preseed ? ( keys %choices )[0] : '' ));
 
     if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'php', 'servers', 'all', 'forced' ] ) || !isStringInList( $value, keys %choices ) ) {
-        ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || ( keys %choices )[0] );
-\\Z4\\Zb\\ZuPHP version for customers\\Zn
+        ( my $rs, $value ) = $dialog->radiolist( <<'EOF', \%choices, ( grep( $value eq $_, keys %choices ) )[0] || ( keys %choices )[0] );
+\Z4\Zb\ZuPHP version for customers\Zn
 
 Please choose the PHP version for the customers.
-\\Z \\Zn
+\Z \Zn
 EOF
         return $rs unless $rs < 30;
     }
@@ -137,11 +137,11 @@ sub askForPhpSapi
     }
 
     if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'php', 'servers', 'all', 'forced' ] ) || !isStringInList( $value, keys %choices ) ) {
-        ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'fpm' );
-\\Z4\\Zb\\ZuPHP SAPI for customers\Zn
+        ( my $rs, $value ) = $dialog->radiolist( <<'EOF', \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'fpm' );
+\Z4\Zb\ZuPHP SAPI for customers\Zn
 
 Please choose the PHP SAPI for the customers.
-\\Z \\Zn
+\Z \Zn
 EOF
         return $rs unless $rs < 30;
     }
@@ -169,11 +169,11 @@ sub askForFastCGIconnectionType
     my %choices = ( 'tcp', 'TCP sockets over the loopback interface', 'uds', 'Unix Domain Sockets (recommended)' );
 
     if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'php', 'servers', 'all', 'forced' ] ) || !isStringInList( $value, keys %choices ) ) {
-        ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'uds' );
-\\Z4\\Zb\\ZuPHP-FPM - FastCGI connection type\\Zn
+        ( my $rs, $value ) = $dialog->radiolist( <<'EOF', \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'uds' );
+\Z4\Zb\ZuPHP-FPM - FastCGI connection type\Zn
 
 Please choose the FastCGI connection type that you want use.
-\\Z \\Zn
+\Z \Zn
 EOF
         return $rs unless $rs < 30;
     }
@@ -462,7 +462,7 @@ sub uninstall
 
 =item addDomain( \%moduleData )
 
- See iMSCP::Servers::Php::OndreySury::Abstract::addDomain()
+ See iMSCP::Servers::Php::Abstract::addDomain()
 
 =cut
 
@@ -484,7 +484,7 @@ sub addDomain
 
 =item disableDomain( \%moduleData )
 
- See iMSCP::Servers::Php::OndreySury::Abstract::disableDomain()
+ See iMSCP::Servers::Php::Abstract::disableDomain()
 
 =cut
 
@@ -506,7 +506,7 @@ sub disableDomain
 
 =item deleteDomain( \%moduleData )
 
- See iMSCP::Servers::Php::OndreySury::Abstract::deleteDomain()
+ See iMSCP::Servers::Php::Abstract::deleteDomain()
 
 =cut
 
@@ -528,7 +528,7 @@ sub deleteDomain
 
 =item addSubdomain( \%moduleData )
 
- See iMSCP::Servers::Php::OndreySury::Abstract::addSubdomain()
+ See iMSCP::Servers::Php::Abstract::addSubdomain()
 
 =cut
 
@@ -550,7 +550,7 @@ sub addSubdomain
 
 =item disableSubdomain( \%moduleData )
 
- See iMSCP::Servers::Php::OndreySury::Abstract::disableSubdomain()
+ See iMSCP::Servers::Php::Abstract::disableSubdomain()
 
 =cut
 
@@ -572,7 +572,7 @@ sub disableSubdomain
 
 =item deleteSubdomain( \%moduleData )
 
- See iMSCP::Servers::Php::OndreySury::Abstract::deleteSubdomain()
+ See iMSCP::Servers::Php::Abstract::deleteSubdomain()
 
 =cut
 
@@ -594,7 +594,7 @@ sub deleteSubdomain
 
 =item enableModules( \@modules [, $phpVersion = $self->{'config'}->{'PHP_VERSION'} [, $phpSapi = $self->{'config'}->{'PHP_SAPI'} ] ] )
 
- See iMSCP::Servers::Php::OndreySury::Abstract::enableModules()
+ See iMSCP::Servers::Php::Abstract::enableModules()
 
 =cut
 
@@ -617,7 +617,7 @@ sub enableModules
 
 =item disableModules( \@modules [, $phpVersion = $self->{'config'}->{'PHP_VERSION'} [, $phpSapi = $self->{'config'}->{'PHP_SAPI'} ] ] )
 
- See iMSCP::Servers::Php::OndreySury::Abstract::disableModules()
+ See iMSCP::Servers::Php::Abstract::disableModules()
 
 =cut
 
@@ -640,7 +640,7 @@ sub disableModules
 
 =item start( [ $phpVersion = $self->{'config'}->{'PHP_VERSION'} ] )
 
- See iMSCP::Servers::Php::OndreySury::Abstract::start()
+ See iMSCP::Servers::Php::Abstract::start()
 
 =cut
 
@@ -663,7 +663,7 @@ sub start
 
 =item stop( [ $phpVersion = $self->{'config'}->{'PHP_VERSION'} ] )
 
- See iMSCP::Servers::Php::OndreySury::Abstract::stop()
+ See iMSCP::Servers::Php::Abstract::stop()
 
 =cut
 
@@ -686,7 +686,7 @@ sub stop
 
 =item reload( [ $phpVersion = $self->{'config'}->{'PHP_VERSION'} ] )
 
- See iMSCP::Servers::Php::OndreySury::Abstract::reload()
+ See iMSCP::Servers::Php::Abstract::reload()
 
 =cut
 
@@ -709,7 +709,7 @@ sub reload
 
 =item restart( [ $phpVersion = $self->{'config'}->{'PHP_VERSION'} ] )
 
- See iMSCP::Servers::Php::OndreySury::Abstract::restart()
+ See iMSCP::Servers::Php::Abstract::restart()
 
 =cut
 
@@ -740,7 +740,7 @@ sub restart
 
  Initialize instance
 
- Return iMSCP::Servers::Php::OndreySury::Abstract
+ Return iMSCP::Servers::Php::Abstract
 
 =cut
 
@@ -884,7 +884,7 @@ sub _deleteFpmConfig
 
 =item _setFullVersion()
 
- See iMSCP::Servers::Php::OndreySury::Abstract::_setFullVersion()
+ See iMSCP::Servers::Php::Abstract::_setFullVersion()
 
 =cut
 
@@ -899,7 +899,7 @@ sub _setFullVersion
 
 =item _cleanup( )
 
- See iMSCP::Servers::Php::OndreySury::Abstract::_cleanup()
+ See iMSCP::Servers::Php::Abstract::_cleanup()
 
 =cut
 

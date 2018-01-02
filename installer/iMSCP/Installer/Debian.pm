@@ -664,12 +664,6 @@ EOF
     @{$self->{'packagesToInstall'}} = sort( unique( @{$self->{'packagesToInstall'}} ) );
     @{$self->{'packagesToInstallDelayed'}} = sort( unique( @{$self->{'packagesToInstallDelayed'}} ) );
 
-    #$dialog->endGauge;
-    #use Data::Dumper;
-    #print Dumper( \%main::questions );
-    #print Dumper( $self );
-    #exit;
-
     $dialog->set( 'no-cancel', undef );
     0;
 }
@@ -1248,8 +1242,9 @@ sub _getSqldInfo
             sprintf( "Couldn't guess SQL server info: %s", $stderr || 'Unknown error' )
         );
 
-        if ( my ($version, $vendor) = $stdout =~ /^.*?(\d+.\d+).*?-(\w+)-/ ) {
-            return ( $vendor, $version );
+        # mysqld  Ver 10.1.26-MariaDB-0+deb9u1 for debian-linux-gnu on x86_64 (Debian 9.1)
+        if ( my ($version, $vendor) = $stdout =~ /Ver\s+(\d+.\d+).*?(mariadb|mysql|percona)/i ) {
+            return ( lc $vendor, $version );
         }
     }
 
@@ -1284,7 +1279,7 @@ sub processSqldSection
         # Discard any SQL server version older than current installed, excepted remote
         $sqldVersion = version->parse( $sqldVersion );
         my @sqlSupportedAlts = grep {
-            $_ eq 'remote_server' || ( index( $_, lc $sqldVendor ) == 0 && version->parse( $_ =~ s/^.*_//r ) >= $sqldVersion )
+            $_ eq 'remote_server' || ( index( $_, $sqldVendor ) == 0 && version->parse( $_ =~ s/^.*_//r ) >= $sqldVersion )
         } @{$supportedAlts};
 
         # Ask for confirmation if current SQL server vendor is no longer supported (safety measure)

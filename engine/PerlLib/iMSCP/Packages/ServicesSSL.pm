@@ -86,7 +86,7 @@ sub servicesSslDialog
     my $caBundlePath = main::setupGetQuestion( 'SERVICES_SSL_CA_BUNDLE_PATH', '/root' );
     my $openSSL = iMSCP::OpenSSL->new();
 
-    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'services_ssl', 'ssl', 'all', 'forced' ] )
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'servers_ssl', 'ssl', 'all', 'forced' ] )
         || $sslEnabled !~ /^(?:yes|no)$/
         || ( $sslEnabled eq 'yes' && isOneOfStringsInList( iMSCP::Getopt->reconfigure,  [ 'system_hostname', 'hostnames' ] ) )
     ) {

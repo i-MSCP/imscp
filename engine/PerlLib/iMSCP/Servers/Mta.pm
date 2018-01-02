@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Servers::Mta - i-MSCP MTA server implementation
+ iMSCP::Servers::Mta - i-MSCP mta server factory implementation
 
 =cut
 
@@ -29,7 +29,7 @@ use parent 'iMSCP::Servers::Abstract';
 
 =head1 DESCRIPTION
 
- i-MSCP MTA server implementation.
+ i-MSCP mta server factory implementation.
 
 =head1 CLASS METHODS
 

@@ -28,7 +28,7 @@ use warnings;
 use autouse 'iMSCP::Crypt' => qw/ decryptRijndaelCBC /;
 use autouse 'iMSCP::Execute' => qw/ execute /;
 use autouse 'iMSCP::TemplateParser' => qw/ processByRef /;
-use Clas::Autouse qw/ :nostat iMSCP::Dir iMSCP::File /;
+use Class::Autouse qw/ :nostat iMSCP::Dir iMSCP::File /;
 use File::Temp;
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug error /;

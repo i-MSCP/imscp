@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Servers::Ftpd - i-MSCP FTP Server implementation
+ iMSCP::Servers::Ftpd - i-MSCP ftp server factory implementation
 
 =cut
 
@@ -29,7 +29,7 @@ use parent 'iMSCP::Servers::Abstract';
 
 =head1 DESCRIPTION
 
- i-MSCP FTP server implementation.
+ i-MSCP ftp server factory implementation.
 
 =head1 CLASS METHODS
 

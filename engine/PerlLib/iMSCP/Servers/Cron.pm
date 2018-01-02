@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Servers::Cron - i-MSCP cron server implementation
+ iMSCP::Servers::Cron - i-MSCP cron server factory implementation
 
 =cut
 
@@ -29,7 +29,7 @@ use parent 'iMSCP::Servers::Abstract';
 
 =head1 DESCRIPTION
 
- i-MSCP cron server implementation.
+ i-MSCP cron server factory implementation.
 
 =head1 CLASS METHODS
 
