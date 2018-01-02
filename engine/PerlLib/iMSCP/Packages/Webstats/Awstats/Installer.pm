@@ -116,6 +116,12 @@ sub _disableDefaultConfig
         return $rs if $rs;
     }
 
+    if ( -f '/etc/cron.d/awstats.disable' ) {
+        # Transitional -- Will be removed in a later release
+        my $rs = iMSCP::File->new( filename => '/etc/cron.d/awstats.disable' )->moveFile( '/etc/cron.d/awstats' );
+        return $rs if $rs;
+    }
+
     iMSCP::Servers::Cron->factory()->disableSystemCrontask( 'awstats', 'cron.d' );
 }
 

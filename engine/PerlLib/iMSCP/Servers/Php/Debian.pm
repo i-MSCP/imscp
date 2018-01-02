@@ -403,7 +403,7 @@ sub postinstall
             iMSCP::Service->getInstance()->enable( "php$self->{'config'}->{'PHP_VERSION'}-fpm" );
 
             # Schedule start of PHP-FPM service for selected PHP alternative
-            $self->{'eventManager'}->register(
+            $self->{'eventManager'}->registerOne(
                 'beforeSetupRestartServices',
                 sub {
                     push @{$_[0]}, [ sub { $self->start(); }, "PHP-FPM $self->{'config'}->{'PHP_VERSION'}" ];

@@ -84,9 +84,7 @@ sub postinstall
 
 sub _disableDebianConfig
 {
-    return 0 unless -f '/etc/cron.daily/chkrootkit';
-
-    iMSCP::File->new( filename => '/etc/cron.daily/chkrootkit' )->moveFile( '/etc/cron.daily/chkrootkit.disabled' );
+    iMSCP::Servers::Cron->factory()->disableSystemCrontask( 'chkrootkit', 'cron.daily' );
 }
 
 =item _addCronTask( )

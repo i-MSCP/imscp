@@ -332,7 +332,7 @@ sub postinstall
         return 1;
     }
 
-    $rs ||= $self->{'eventManager'}->register(
+    $rs ||= $self->{'eventManager'}->registerOne(
         'beforeSetupRestartServices',
         sub {
             push @{$_[0]}, [ sub { $self->restart(); }, 'Bind9' ];

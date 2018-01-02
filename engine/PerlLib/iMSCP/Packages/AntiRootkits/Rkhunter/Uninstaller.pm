@@ -26,6 +26,7 @@ package iMSCP::Packages::AntiRootkits::Rkhunter::Uninstaller;
 use strict;
 use warnings;
 use iMSCP::File;
+use iMSCP::Servers::Cron;
 use parent 'iMSCP::Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -80,13 +81,8 @@ sub _restoreDebianConfig
         return $rs if $rs;
     }
 
-    if ( -f '/etc/cron.daily/rkhunter.disabled' ) {
-        my $rs = iMSCP::File->new( filename => '/etc/cron.daily/rkhunter.disabled' )->moveFile( '/etc/cron.daily/rkhunter' );
-        return $rs if $rs;
-    }
-
-    if ( -f '/etc/cron.weekly/rkhunter.disabled' ) {
-        my $rs = iMSCP::File->new( filename => '/etc/cron.weekly/rkhunter.disabled' )->moveFile( '/etc/cron.weekly/rkhunter' );
+    for ( qw/ cron.daily cron.weekly / ) {
+        my $rs = iMSCP::Servers::Cron->factory()->enableSystemCrontask( 'rkhunter', $_ );
         return $rs if $rs;
     }
 

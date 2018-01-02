@@ -103,7 +103,7 @@ sub postinstall
         return 1;
     }
 
-    $self->{'eventManager'}->register(
+    $self->{'eventManager'}->registerOne(
         'beforeSetupRestartServices',
         sub {
             push @{$_[0]},

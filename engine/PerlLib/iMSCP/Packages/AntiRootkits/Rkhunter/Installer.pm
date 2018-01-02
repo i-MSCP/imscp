@@ -99,19 +99,14 @@ sub _disableDebianConfig
         return $rs if $rs;
     }
 
-    if ( -f '/etc/cron.daily/rkhunter' ) {
-        my $rs = iMSCP::File->new( filename => '/etc/cron.daily/rkhunter' )->moveFile( '/etc/cron.daily/rkhunter.disabled' );
-        return $rs if $rs;
-    }
-
-    if ( -f '/etc/cron.weekly/rkhunter' ) {
-        my $rs = iMSCP::File->new( filename => '/etc/cron.weekly/rkhunter' )->moveFile( '/etc/cron.weekly/rkhunter.disabled' );
+    for ( qw/ cron.daily cron.weekly / ) {
+        my $rs = iMSCP::Servers::Cron->factory()->disableSystemCrontask( 'rkhunter', $_ );
         return $rs if $rs;
     }
 
     if ( -f "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/rkhunter" ) {
-        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/rkhunter" )->moveFile(
-            '/etc/logrotate.d/rkhunter.disabled'
+        my $rs = iMSCP::File->new(
+            filename => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/rkhunter" )->moveFile( '/etc/logrotate.d/rkhunter.disabled'
         );
         return $rs if $rs;
     }

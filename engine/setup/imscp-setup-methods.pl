@@ -490,7 +490,7 @@ sub setupRestartServices
 
     # This is a bit annoying but we have not choice.
     # Not doing this would prevent propagation of upstream changes (eg: static mount entries)
-    my $rs = $eventManager->register(
+    my $rs = $eventManager->registerOne(
         'beforeSetupRestartServices',
         sub {
             push @{$_[0]},
@@ -506,7 +506,7 @@ sub setupRestartServices
         999
     );
 
-    $rs ||= $eventManager->register(
+    $rs ||= $eventManager->registerOne(
         'beforeSetupRestartServices',
         sub {
             push @{$_[0]},
@@ -521,7 +521,7 @@ sub setupRestartServices
         },
         99
     );
-    $rs ||= $eventManager->register(
+    $rs ||= $eventManager->registerOne(
         'beforeSetupRestartServices',
         sub {
             push @{$_[0]},

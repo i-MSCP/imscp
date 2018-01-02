@@ -27,7 +27,8 @@ use strict;
 use warnings;
 use autouse 'iMSCP::Rights' => qw/ setRights /;
 use Class::Autouse qw/ :nostat iMSCP::Service /;
-use iMSCP::Debug qw/ error /;
+use iMSCP::Debug qw/ debug error /;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::TemplateParser qw/ processByRef replaceBlocByRef /;
 use parent 'iMSCP::Servers::Cron::Abstract';
@@ -101,12 +102,11 @@ sub install
         \$cfgTpl
     );
 
-    my $file = iMSCP::File->new( filename => "/etc/cron.d/imscp" );
+    my $file = iMSCP::File->new( filename => '/etc/cron.d/imscp' );
     $file->set( $cfgTpl );
     $rs = $file->save();
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0640 );
-
     $rs || $self->_cleanup();
 }
 
@@ -128,7 +128,7 @@ sub postinstall
         return 1;
     }
 
-    $self->{'eventManager'}->register(
+    $self->{'eventManager'}->registerOne(
         'beforeSetupRestartServices',
         sub {
             push @{$_[0]},
@@ -168,7 +168,7 @@ sub setEnginePermissions
 
 =item addTask( \%data [, $filepath = '/etc/cron.d/imscp' ] )
 
- See iMSCP::Servers::Cron::Interface::addTask()
+ See iMSCP::Servers::Cron::Abstract::addTask()
 
 =cut
 
@@ -237,7 +237,7 @@ EOF
 
 =item deleteTask( \%data [, $filepath = '/etc/cron.d/imscp' ] )
 
- See iMSCP::Servers::Cron::Interface::deleteTask()
+ See iMSCP::Servers::Cron::Abstract::deleteTask()
 
 =cut
 
@@ -274,7 +274,7 @@ sub deleteTask
 
 =item enableSystemCronTask( $cronTask [, $directory = ALL ] )
 
- See iMSCP::Servers::Cron::Interface::enableSystemCronTask()
+ See iMSCP::Servers::Cron::Abstract::enableSystemCronTask()
 
 =cut
 
@@ -289,8 +289,9 @@ sub enableSystemCronTask
 
     unless ( $directory ) {
         for ( qw/ cron.d cron.hourly cron.daily cron.weekly cron.monthly / ) {
-            next unless -f "/etc/$_/$crontask.disabled";
-            my $rs = iMSCP::File->new( filename => "/etc/$_/$crontask.disabled" )->moveFile( "/etc/$_/$crontask" );
+            my $rs = execute( [ '/usr/bin/dpkg-divert', '--rename', '--remove', "/etc/$_/$crontask" ], \my $stdout, \my $stderr );
+            debug( $stdout ) if $stdout;
+            error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
         }
 
@@ -302,14 +303,15 @@ sub enableSystemCronTask
         return 1;
     }
 
-    return 0 unless -f "/etc/$directory/$crontask.disabled";
-
-    iMSCP::File->new( filename => "/etc/$directory/$crontask.disabled" )->moveFile( "/etc/$_/$crontask" );
+    my $rs = execute( [ '/usr/bin/dpkg-divert', '--rename', '--remove', "/etc/$directory/$crontask" ], \my $stdout, \my $stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr || 'Unknown error' ) if $rs;
+    return $rs if $rs;
 }
 
 =item disableSystemCrontask( $cronTask [, $directory = ALL ] )
 
- See iMSCP::Servers::Cron::Interface::disableSystemCrontask()
+ See iMSCP::Servers::Cron::Abstract::disableSystemCrontask()
 
 =cut
 
@@ -324,8 +326,11 @@ sub disableSystemCrontask
 
     unless ( $directory ) {
         for ( qw/ cron.d cron.hourly cron.daily cron.weekly cron.monthly / ) {
-            next unless -f "/etc/$_/$crontask";
-            my $rs = iMSCP::File->new( filename => "/etc/$_/$crontask" )->moveFile( "/etc/$_/$crontask.disabled" );
+            my $rs = execute(
+                [ '/usr/bin/dpkg-divert', '--divert', "/etc/$_/$crontask.disabled", '--rename', "/etc/$_/$crontask" ], \my $stdout, \my $stderr
+            );
+            debug( $stdout ) if $stdout;
+            error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
         }
 
@@ -337,9 +342,14 @@ sub disableSystemCrontask
         return 1;
     }
 
-    return 0 unless -f "/etc/$directory/$crontask";
-
-    iMSCP::File->new( filename => "/etc/$directory/$crontask" )->moveFile( "/etc/$_/$crontask.disabled" );
+    my $rs ||= execute(
+        [ '/usr/bin/dpkg-divert', '--divert', "/etc/$directory/$crontask.disabled", '--rename', "/etc/$directory/$crontask" ],
+        \my $stdout,
+        \my $stderr
+    );
+    debug( $stdout ) if $stdout;
+    error( $stderr || 'Unknown error' ) if $rs;
+    $rs;
 }
 
 =back

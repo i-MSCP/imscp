@@ -267,7 +267,7 @@ sub postinstall
         return 1;
     }
 
-    $self->{'eventManager'}->register(
+    $self->{'eventManager'}->registerOne(
         'beforeSetupRestartServices',
         sub {
             # We must do a restart here because vsftpd from local package is started while installation
