@@ -239,12 +239,15 @@ sub setPidPattern
 
  Initialize instance
 
- Return iMSCP::Providers::Service::Sysvinit
+ Return iMSCP::Providers::Service::Sysvinit, die on failure
+
 =cut
 
 sub _init
 {
     my ($self) = @_;
+
+    exists $main::imscpConfig{'DISTRO_FAMILY'} or die( sprintf( 'You must first bootstrap the i-MSCP backend' ));
 
     if ( $main::imscpConfig{'DISTRO_FAMILY'} =~ /^(?:FreeBSD|DragonFly)$/ ) {
         $self->{'sysvinitscriptpaths'} = [ '/etc/rc.d', '/usr/local/etc/rc.d' ];

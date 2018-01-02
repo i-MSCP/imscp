@@ -64,9 +64,9 @@ $main::skippackages = 0;
 
 # Parse installer options
 iMSCP::Getopt->parse( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq {
- -b,    --build-only            Process build steps only.
- -f,    --force-reinstall       Reinstall distribution packages.
- -s,    --skip-distro-packages  Do not install/update distribution packages.},
+ -b,    --build-only              Process build steps only.
+ -f,    --force-reinstall         Reinstall distribution packages.
+ -s,    --skip-distro-packages    Do not install/update distribution packages.},
     'build-only|b'           => \$main::buildonly,
     'force-reinstall|f'      => \$main::forcereinstall,
     'skip-distro-packages|s' => \$main::skippackages
@@ -133,10 +133,10 @@ END {
     print STDOUT output( <<"EOF", 'info' );
 To continue, you must execute the following commands:
 
-rm -fR $main::imscpConfig{'ROOT_DIR'}/{daemon,engine,gui}
-cp -fR $main::{'INST_PREF'}/* /
-rm -fR $main::{'INST_PREF'}
-perl $main::imscpConfig{'ROOT_DIR'}/engine/setup/imscp-reconfigure -d
+  # rm -fR $main::imscpConfig{'ROOT_DIR'}/{daemon,engine,gui}
+  # cp -fR $main::{'INST_PREF'}/* /
+  # rm -fR $main::{'INST_PREF'}
+  # perl $main::imscpConfig{'ROOT_DIR'}/engine/setup/imscp-reconfigure -d
 EOF
 }
 

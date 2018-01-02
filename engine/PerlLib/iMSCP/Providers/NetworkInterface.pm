@@ -79,6 +79,8 @@ sub getProvider
 {
     my ($self) = @_;
 
+    exists $main::imscpConfig{'DISTRO_FAMILY'} or die( sprintf( 'You must first bootstrap the i-MSCP backend' ));
+
     $self->{'_provider'} ||= do {
         my $provider = __PACKAGE__ . '::' . $main::imscpConfig{'DISTRO_FAMILY'};
         can_load( modules => { $provider => undef } ) or die(

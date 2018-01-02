@@ -323,7 +323,7 @@ sub getProvider
     my ($self, $providerName) = @_;
 
     my $provider = 'iMSCP::Providers::Service::'
-        . "@{[ $main::imscpConfig{'DISTRO_FAMILY'} ? $main::imscpConfig{'DISTRO_FAMILY'}.'::': '' ]}"
+        . "@{[ $main::imscpConfig{'DISTRO_FAMILY'} && $main::imscpConfig{'DISTRO_FAMILY'} ? $main::imscpConfig{'DISTRO_FAMILY'}.'::': '' ]}"
         . "@{[$providerName // $self->{'init'}]}";
 
     unless ( can_load( modules => { $provider => undef } ) ) {
@@ -407,7 +407,7 @@ sub registerDelayedAction
 
  Initialize instance
 
- Return iMSCP::Service
+ Return iMSCP::Service, die on failure
 
 =cut
 
@@ -415,6 +415,7 @@ sub _init
 {
     my ($self) = @_;
 
+    exists $main::imscpConfig{'DISTRO_FAMILY'} or die( sprintf( 'You must first bootstrap the i-MSCP backend' ));
     $self->{'provider'} = $self->getProvider( $self->{'init'} = _detectInit());
     $self;
 }
@@ -429,7 +430,7 @@ sub _init
 
 sub _detectInit
 {
-    return $main::imscpConfig{'SYSTEM_INIT'} if $main::imscpConfig{'SYSTEM_INIT'} ne '';
+    return $main::imscpConfig{'SYSTEM_INIT'} if exists $main::imscpConfig{'SYSTEM_INIT'} && $main::imscpConfig{'SYSTEM_INIT'} ne '';
 
     if ( -d '/run/systemd/system' ) {
         debug( 'Systemd init system has been detected' );
@@ -509,6 +510,8 @@ sub _executeDelayedActions
 =cut
 
 END {
+    return unless exists $main::imscpConfig{'DISTRO_FAMILY'};
+
     __PACKAGE__->getInstance()->_executeDelayedActions();
 }
 
