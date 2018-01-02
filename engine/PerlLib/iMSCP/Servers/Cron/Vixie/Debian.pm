@@ -272,7 +272,7 @@ sub deleteTask
     $rs ||= $file->save();
 }
 
-=item enableSystemCronTask( $cronTask )
+=item enableSystemCronTask( $cronTask [, $directory = ALL ] )
 
  See iMSCP::Servers::Cron::Interface::enableSystemCronTask()
 
@@ -280,7 +280,7 @@ sub deleteTask
 
 sub enableSystemCronTask
 {
-    my (undef, $crontask, $directory);
+    my ($self, $crontask, $directory) = @_;
 
     unless ( defined $crontask ) {
         error( 'Undefined $crontask parameter' );
@@ -307,7 +307,7 @@ sub enableSystemCronTask
     iMSCP::File->new( filename => "/etc/$directory/$crontask.disabled" )->moveFile( "/etc/$_/$crontask" );
 }
 
-=item disableSystemCrontask( $cronTask )
+=item disableSystemCrontask( $cronTask [, $directory = ALL ] )
 
  See iMSCP::Servers::Cron::Interface::disableSystemCrontask()
 
@@ -315,7 +315,7 @@ sub enableSystemCronTask
 
 sub disableSystemCrontask
 {
-    my (undef, $crontask, $directory);
+    my ($self, $crontask, $directory) = @_;
 
     unless ( defined $crontask ) {
         error( 'Undefined $crontask parameter' );
