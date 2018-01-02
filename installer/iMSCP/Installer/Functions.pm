@@ -123,7 +123,7 @@ sub loadConfig
     # Set system info
     $main::imscpConfig{'SYSTEM_INIT'} = iMSCP::Service->getInstance()->getInitSystem();
     $main::imscpConfig{'SYSTEM_VIRTUALIZER'} = $systemInfo->{'virtual'} || '';
-    
+
     # Load listener files
     iMSCP::EventManager->getInstance();
 }
