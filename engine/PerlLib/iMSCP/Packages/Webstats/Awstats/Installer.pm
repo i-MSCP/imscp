@@ -116,10 +116,7 @@ sub _disableDefaultConfig
         return $rs if $rs;
     }
 
-    my $cronDir = iMSCP::Servers::Cron->factory()->{'config'}->{'CRON_D_DIR'};
-    return 0 unless -f "$cronDir/awstats";
-
-    iMSCP::File->new( filename => "$cronDir/awstats" )->moveFile( "$cronDir/awstats.disable" );
+    iMSCP::Servers::Cron->factory()->disableSystemCrontask( 'awstats', 'cron.d' );
 }
 
 =item _createCacheDir( )

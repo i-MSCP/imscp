@@ -130,10 +130,7 @@ sub _restoreDebianConfig
         return $rs if $rs;
     }
 
-    my $cronDir = iMSCP::Servers::Cron->factory()->{'config'}->{'CRON_D_DIR'};
-    return 0 unless -f "$cronDir/awstats.disable";
-
-    iMSCP::File->new( filename => "$cronDir/awstats.disable" )->moveFile( "$cronDir/awstats" );
+    iMSCP::Servers::Cron->factory()->enableSystemCrontask( 'awstats', 'cron.d' );
 }
 
 =back

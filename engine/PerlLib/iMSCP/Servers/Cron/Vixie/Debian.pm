@@ -168,7 +168,7 @@ sub setEnginePermissions
 
 =item addTask( \%data [, $filepath = '/etc/cron.d/imscp' ] )
 
- See iMSCP::Servers::Cron::Interface::addTask
+ See iMSCP::Servers::Cron::Interface::addTask()
 
 =cut
 
@@ -237,7 +237,7 @@ EOF
 
 =item deleteTask( \%data [, $filepath = '/etc/cron.d/imscp' ] )
 
- See iMSCP::Servers::Cron::Interface::deleteTask
+ See iMSCP::Servers::Cron::Interface::deleteTask()
 
 =cut
 
@@ -270,6 +270,76 @@ sub deleteTask
 
     $rs = $self->{'eventManager'}->trigger( 'afterCronDeleteTask', $fileContentRef, $data );
     $rs ||= $file->save();
+}
+
+=item enableSystemCronTask( $cronTask )
+
+ See iMSCP::Servers::Cron::Interface::enableSystemCronTask()
+
+=cut
+
+sub enableSystemCronTask
+{
+    my (undef, $crontask, $directory);
+
+    unless ( defined $crontask ) {
+        error( 'Undefined $crontask parameter' );
+        return 1;
+    }
+
+    unless ( $directory ) {
+        for ( qw/ cron.d cron.hourly cron.daily cron.weekly cron.monthly / ) {
+            next unless -f "/etc/$_/$crontask.disabled";
+            my $rs = iMSCP::File->new( filename => "/etc/$_/$crontask.disabled" )->moveFile( "/etc/$_/$crontask" );
+            return $rs if $rs;
+        }
+
+        return 0;
+    }
+
+    unless ( grep( $directory eq $_, qw/ cron.d cron.hourly cron.daily cron.weekly cron.monthly / ) ) {
+        error( 'Invalid cron directory' );
+        return 1;
+    }
+
+    return 0 unless -f "/etc/$directory/$crontask.disabled";
+
+    iMSCP::File->new( filename => "/etc/$directory/$crontask.disabled" )->moveFile( "/etc/$_/$crontask" );
+}
+
+=item disableSystemCrontask( $cronTask )
+
+ See iMSCP::Servers::Cron::Interface::disableSystemCrontask()
+
+=cut
+
+sub disableSystemCrontask
+{
+    my (undef, $crontask, $directory);
+
+    unless ( defined $crontask ) {
+        error( 'Undefined $crontask parameter' );
+        return 1;
+    }
+
+    unless ( $directory ) {
+        for ( qw/ cron.d cron.hourly cron.daily cron.weekly cron.monthly / ) {
+            next unless -f "/etc/$_/$crontask";
+            my $rs = iMSCP::File->new( filename => "/etc/$_/$crontask" )->moveFile( "/etc/$_/$crontask.disabled" );
+            return $rs if $rs;
+        }
+
+        return 0;
+    }
+
+    unless ( grep( $directory eq $_, qw/ cron.d cron.hourly cron.daily cron.weekly cron.monthly / ) ) {
+        error( 'Invalid cron directory' );
+        return 1;
+    }
+
+    return 0 unless -f "/etc/$directory/$crontask";
+
+    iMSCP::File->new( filename => "/etc/$directory/$crontask" )->moveFile( "/etc/$_/$crontask.disabled" );
 }
 
 =back

@@ -81,7 +81,42 @@ sub addTask
 sub deleteTask
 {
     my ($self) = @_;
+
     die ( sprintf( 'The %s package must implement the deleteTask() method', ref $self ));
+}
+
+=item enableSystemCronTask( $cronTask [, $directory = ALL ] )
+
+ Enable a system cron tasks
+
+ Param string $cronTask Cron task name
+ Param string $directory OPTIONAL Directory in which cron task must be searched (e.g: cron.d,cron.hourly,cron.daily,cron.weekly,cron.monthly)
+ Return int 0 on success, other on failure
+
+=cut
+
+sub enableSystemCronTask
+{
+    my ($self) = @_;
+
+    die ( sprintf( 'The %s package must implement the enableSystemCronTask() method', ref $self ));
+}
+
+=item disableSystemCrontask( $cronTask [, $directory = ALL ] )
+
+ Disable a system cron task
+ 
+ Param string $cronTask Cron task name
+ Param string $directory OPTIONAL Directory in which cron task must be searched (e.g: cron.d,cron.hourly,cron.daily,cron.weekly,cron.monthly)
+ Return int 0 on success, other on failure
+
+=cut
+
+sub disableSystemCrontask
+{
+    my ($self) = @_;
+
+    die ( sprintf( 'The %s package must implement the disableSystemCrontask() method', ref $self ));
 }
 
 =back
