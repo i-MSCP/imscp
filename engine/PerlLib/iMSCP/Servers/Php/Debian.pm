@@ -57,21 +57,19 @@ sub registerSetupListeners
 {
     my ($self) = @_;
 
-    for my $dialogRoutine( qw/ askForPhpVersion askForPhpSapi askForFastCGIconnectionType / ) {
-        my $rs = $self->{'eventManager'}->registerOne(
-            'beforeSetupDialog',
-            sub {
-                push @{$_[0]}, sub { $self->$dialogRoutine( @_ ) };
-                0;
-            },
-            # We want show these dialogs after the httpd server dialog because
-            # we rely on httpd server configuration parameters (httpd priority - 10)
-            190 
-        );
-        return $rs if $rs;
-    }
-
-    0;
+    $self->{'eventManager'}->registerOne(
+        'beforeSetupDialog',
+        sub {
+            push @{$_[0]},
+                sub { $self->askForPhpVersion( @_ ) },
+                sub { $self->askForPhpSapi( @_ ) },
+                sub { $self->askForFastCGIconnectionType( @_ ) };
+            0;
+        },
+        # We want show these dialogs after the httpd server dialog because
+        # we rely on httpd server configuration parameters (httpd priority - 10)
+        190
+    );
 }
 
 =item askForPhpVersion( \%dialog )
