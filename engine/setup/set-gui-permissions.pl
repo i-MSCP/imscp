@@ -82,7 +82,7 @@ for my $server( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
 
 for my $package( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
     ( my $subref = $package->can( 'setGuiPermissions' ) ) or next;
-    push @items, [ $package, sub { $subref->( $package->getInstance()); } ];
+    push @items, [ $package, sub { $subref->( $package->getInstance( eventManager => iMSCP::EventManager->getInstance())); } ];
 }
 
 iMSCP::EventManager->getInstance()->trigger( 'beforeSetGuiPermissions' );

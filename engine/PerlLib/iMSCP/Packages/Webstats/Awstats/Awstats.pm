@@ -30,7 +30,6 @@ use Class::Autouse qw/ :nostat iMSCP::Packages::Webstats::Awstats::Installer iMS
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
-use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::TemplateParser qw/ getBlocByRef processByRef replaceBlocByRef /;
 use parent 'iMSCP::Common::SingletonClass';
@@ -60,7 +59,9 @@ use parent 'iMSCP::Common::SingletonClass';
 
 sub install
 {
-    iMSCP::Packages::Webstats::Awstats::Installer->getInstance()->install();
+    my ($self) = @_;
+
+    iMSCP::Packages::Webstats::Awstats::Installer->getInstance( eventManager => $self->{'eventManager'} )->install();
 }
 
 =item postinstall( )
@@ -73,7 +74,9 @@ sub install
 
 sub postinstall
 {
-    iMSCP::Packages::Webstats::Awstats::Installer->getInstance()->postinstall();
+    my ($self) = @_;
+
+    iMSCP::Packages::Webstats::Awstats::Installer->getInstance( eventManager => $self->{'eventManager'} )->postinstall();
 }
 
 =item uninstall( )
@@ -86,7 +89,9 @@ sub postinstall
 
 sub uninstall
 {
-    iMSCP::Packages::Webstats::Awstats::Uninstaller->getInstance()->uninstall();
+    my ($self) = @_;
+
+    iMSCP::Packages::Webstats::Awstats::Uninstaller->getInstance( eventManager => $self->{'eventManager'} )->uninstall();
 }
 
 =item setEnginePermissions( )
@@ -101,7 +106,7 @@ sub setEnginePermissions
 {
     my $httpd = iMSCP::Servers::Httpd->factory();
 
-    my $rs = setRights( "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_updateall.pl",
+    my $rs = setRights( "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/iMSCP/Packages/Webstats/Awstats/Scripts/awstats_updateall.pl",
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ROOT_USER'},
@@ -335,7 +340,7 @@ sub _init
 {
     my ($self) = @_;
 
-    @{$self}{qw/ eventManager _is_registered_event_listener _admin_names /} = ( 0, {}, iMSCP::EventManager->getInstance() );
+    @{$self}{qw/ _is_registered_event_listener _admin_names /} = ( 0, {} );
     $self;
 }
 
@@ -367,7 +372,9 @@ sub _addAwstatsConfig
         }
     }
 
-    my $file = iMSCP::File->new( filename => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Config/awstats.imscp_tpl.conf" );
+    my $file = iMSCP::File->new(
+        filename => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/iMSCP/Packages/Webstats/Awstats/Config/awstats.imscp_tpl.conf"
+    );
     my $fileContentRef = $file->getAsRef();
     unless ( defined $fileContentRef ) {
         error( sprintf( "Couldn't read the %s file", $file->{'filename'} ));
@@ -383,7 +390,7 @@ sub _addAwstatsConfig
             AWSTATS_CACHE_DIR   => $main::imscpConfig{'AWSTATS_CACHE_DIR'},
             AWSTATS_ENGINE_DIR  => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
             AWSTATS_WEB_DIR     => $main::imscpConfig{'AWSTATS_WEB_DIR'},
-            CMD_LOGRESOLVEMERGE => "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/logresolvemerge.pl",
+            CMD_LOGRESOLVEMERGE => "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/iMSCP/Packages/Webstats/Awstats/Scripts/logresolvemerge.pl",
             DOMAIN_NAME         => $moduleData->{'DOMAIN_NAME'},
             LOG_DIR             => "$httpd->{'config'}->{'HTTPD_LOG_DIR'}/$moduleData->{'DOMAIN_NAME'}"
         },

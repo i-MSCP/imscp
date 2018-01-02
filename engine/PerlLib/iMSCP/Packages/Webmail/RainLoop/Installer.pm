@@ -33,7 +33,6 @@ use iMSCP::Database;
 use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dialog::InputValidation qw/ isAvailableSqlUser isOneOfStringsInList isStringNotInList isValidPassword isValidUsername /;
 use iMSCP::Dir;
-use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::TemplateParser qw/ getBlocByRef processByRef replaceBlocByRef /;
@@ -232,7 +231,6 @@ sub _init
 
     $self->{'rainloop'} = iMSCP::Packages::Webmail::RainLoop::RainLoop->getInstance();
     $self->{'frontend'} = iMSCP::Packages::FrontEnd->getInstance();
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = $self->{'rainloop'}->{'cfgDir'};
     $self->{'config'} = $self->{'rainloop'}->{'config'};
     $self;

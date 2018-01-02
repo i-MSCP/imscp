@@ -27,7 +27,6 @@ use strict;
 use warnings;
 use iMSCP::Debug qw/ error /;
 use iMSCP::Dir;
-use iMSCP::EventManager;
 use iMSCP::Composer;
 use iMSCP::TemplateParser qw/ getBlocByRef replaceBlocByRef /;
 use iMSCP::Packages::FrontEnd;
@@ -126,7 +125,6 @@ sub _init
     my ($self) = @_;
 
     $self->{'frontend'} = iMSCP::Packages::FrontEnd->getInstance();
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self;
 }
 

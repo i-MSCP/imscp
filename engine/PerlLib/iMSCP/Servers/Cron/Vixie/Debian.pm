@@ -288,7 +288,7 @@ sub deleteTask
 
 sub _cleanup
 {
-    return 0 unless '/etc/imscp/cron/cron.data';
+    return 0 unless -f '/etc/imscp/cron/cron.data';
 
     iMSCP::File->new( filename => '/etc/imscp/cron/cron.data' )->delFile();
 }

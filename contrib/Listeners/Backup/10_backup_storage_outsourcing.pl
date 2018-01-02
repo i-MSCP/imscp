@@ -60,10 +60,17 @@ version->parse( "$main::imscpConfig{'PluginApi'}" ) >= version->parse( '1.5.1' )
 );
 
 # Don't register event listeners if the listener file is not configured yet
+# FIXME: We should avoid listening on the onBoot event which is far too generic
 unless ( $STORAGE_ROOT_PATH eq '' ) {
     iMSCP::EventManager->getInstance()->register(
         'onBoot',
         sub {
+            
+            # Make sure that the current script is run by root user, else we
+            # can end with permissions error.
+            # See #IP-1770
+            return 0 unless $< == 0;
+
             eval {
                 # Make sure that the root path for outsourced backup directories
                 # exists and that it is set with expected ownership and permissions

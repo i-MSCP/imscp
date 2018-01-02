@@ -59,9 +59,9 @@ use parent 'iMSCP::Common::SingletonClass';
 
 sub showDialog
 {
-    my (undef, $dialog) = @_;
+    my ($self, $dialog) = @_;
 
-    iMSCP::Packages::Webmail::Roundcube::Installer->getInstance()->showDialog( $dialog );
+    iMSCP::Packages::Webmail::Roundcube::Installer->getInstance( eventManager => $self->{'eventManager'} )->showDialog( $dialog );
 }
 
 =item preinstall( )
@@ -74,7 +74,9 @@ sub showDialog
 
 sub preinstall
 {
-    iMSCP::Packages::Webmail::Roundcube::Installer->getInstance()->preinstall();
+    my ($self) = @_;
+
+    iMSCP::Packages::Webmail::Roundcube::Installer->getInstance( eventManager => $self->{'eventManager'} )->preinstall();
 }
 
 =item install( )
@@ -87,7 +89,9 @@ sub preinstall
 
 sub install
 {
-    iMSCP::Packages::Webmail::Roundcube::Installer->getInstance()->install();
+    my ($self) = @_;
+
+    iMSCP::Packages::Webmail::Roundcube::Installer->getInstance( eventManager => $self->{'eventManager'} )->install();
 }
 
 =item uninstall( )
@@ -104,7 +108,7 @@ sub uninstall
 
     return 0 if $self->{'skip_uninstall'};
 
-    iMSCP::Packages::Webmail::Roundcube::Uninstaller->getInstance()->uninstall();
+    iMSCP::Packages::Webmail::Roundcube::Uninstaller->getInstance( eventManager => $self->{'eventManager'} )->uninstall();
 }
 
 =item setGuiPermissions( )
@@ -117,7 +121,9 @@ sub uninstall
 
 sub setGuiPermissions
 {
-    iMSCP::Packages::Webmail::Roundcube::Installer->getInstance()->setGuiPermissions();
+    my ($self) = @_;
+
+    iMSCP::Packages::Webmail::Roundcube::Installer->getInstance( eventManager => $self->{'eventManager'} )->setGuiPermissions();
 }
 
 =item deleteMail( \%data )

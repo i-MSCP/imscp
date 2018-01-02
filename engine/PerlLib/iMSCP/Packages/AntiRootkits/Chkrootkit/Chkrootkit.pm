@@ -50,7 +50,9 @@ use parent 'iMSCP::Common::SingletonClass';
 
 sub preinstall
 {
-    iMSCP::Packages::AntiRootkits::Chkrootkit::Installer->getInstance()->preinstall();
+    my ($self) = @_;
+
+    iMSCP::Packages::AntiRootkits::Chkrootkit::Installer->getInstance( eventManager => $self->{'eventManager'} )->preinstall();
 }
 
 =item postinstall( )
@@ -63,7 +65,9 @@ sub preinstall
 
 sub postinstall
 {
-    iMSCP::Packages::AntiRootkits::Chkrootkit::Installer->getInstance()->postinstall();
+    my ($self) = @_;
+
+    iMSCP::Packages::AntiRootkits::Chkrootkit::Installer->getInstance( eventManager => $self->{'eventManager'} )->postinstall();
 }
 
 =item uninstall( )
@@ -76,7 +80,9 @@ sub postinstall
 
 sub uninstall
 {
-    iMSCP::Packages::AntiRootkits::Chkrootkit::Uninstaller->getInstance()->uninstall();
+    my ($self) = @_;
+
+    iMSCP::Packages::AntiRootkits::Chkrootkit::Uninstaller->getInstance( eventManager => $self->{'eventManager'} )->uninstall();
 }
 
 =item setEnginePermissions( )

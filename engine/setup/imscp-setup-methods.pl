@@ -89,10 +89,9 @@ sub setupBoot
 
 sub setupRegisterListeners
 {
-
     for ( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
         ( my $subref = $_->can( 'registerSetupListeners' ) ) or next;
-        my $rs = $subref->( $_->factory() );
+        my $rs = $subref->( $_->factory());
         return $rs if $rs;
     }
 
@@ -100,7 +99,7 @@ sub setupRegisterListeners
 
     for ( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
         ( my $subref = $_->can( 'registerSetupListeners' ) ) or next;
-        my $rs = $subref->( $_->getInstance(), $eventManager );
+        my $rs = $subref->( $_->getInstance( eventManager => $eventManager ));
         return $rs if $rs;
     }
 
@@ -127,12 +126,12 @@ sub setupDialog
         return $rs if $rs && $rs < 30;
 
         if ( $rs == 30 ) {
-            iMSCP::Getopt->reconfigure('forced') if isStringInList( 'none', @{iMSCP::Getopt->reconfigure});
+            iMSCP::Getopt->reconfigure( 'forced' ) if isStringInList( 'none', @{iMSCP::Getopt->reconfigure} );
             $state--;
             next;
         }
 
-        iMSCP::Getopt->reconfigure('none') if isStringInList( 'forced', @{iMSCP::Getopt->reconfigure});
+        iMSCP::Getopt->reconfigure( 'none' ) if isStringInList( 'forced', @{iMSCP::Getopt->reconfigure} );
         $state++;
     }
 
@@ -467,7 +466,7 @@ sub setupServersAndPackages
                 for ( @packages ) {
                     ( my $subref = $_->can( $lcTask ) ) or $nStep++ && next;
                     $rs = step(
-                        sub { $subref->( $_->getInstance()) },
+                        sub { $subref->( $_->getInstance( eventManager => $eventManager )) },
                         sprintf( "Executing %s %s tasks ...", $_, $lcTask ), $nSteps, $nStep
                     );
                     last if $rs;

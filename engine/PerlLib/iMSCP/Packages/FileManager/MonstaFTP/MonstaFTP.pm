@@ -50,7 +50,9 @@ use parent 'iMSCP::Common::SingletonClass';
 
 sub preinstall
 {
-    iMSCP::Packages::FileManager::MonstaFTP::Installer->getInstance()->preinstall();
+    my ($self) = @_;
+
+    iMSCP::Packages::FileManager::MonstaFTP::Installer->getInstance( eventManager => $self->{'eventManager'} )->preinstall();
 }
 
 =item install( )
@@ -63,7 +65,9 @@ sub preinstall
 
 sub install
 {
-    iMSCP::Packages::FileManager::MonstaFTP::Installer->getInstance()->install();
+    my ($self) = @_;
+
+    iMSCP::Packages::FileManager::MonstaFTP::Installer->getInstance( eventManager => $self->{'eventManager'} )->install();
 }
 
 =item uninstall( )
@@ -76,7 +80,9 @@ sub install
 
 sub uninstall
 {
-    iMSCP::Packages::FileManager::MonstaFTP::Uninstaller->getInstance()->uninstall();
+    my ($self) = @_;
+
+    iMSCP::Packages::FileManager::MonstaFTP::Uninstaller->getInstance( eventManager => $self->{'eventManager'} )->uninstall();
 }
 
 =back

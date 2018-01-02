@@ -57,9 +57,9 @@ my $dbInitialized = undef;
 
 sub showDialog
 {
-    my (undef, $dialog) = @_;
+    my ($self, $dialog) = @_;
 
-    iMSCP::Packages::Webmail::RainLoop::Installer->getInstance()->showDialog( $dialog );
+    iMSCP::Packages::Webmail::RainLoop::Installer->getInstance( eventManager => $self->{'eventManager'} )->showDialog( $dialog );
 }
 
 =item preinstall( )
@@ -72,7 +72,9 @@ sub showDialog
 
 sub preinstall
 {
-    iMSCP::Packages::Webmail::RainLoop::Installer->getInstance()->preinstall();
+    my ($self) = @_;
+
+    iMSCP::Packages::Webmail::RainLoop::Installer->getInstance( eventManager => $self->{'eventManager'} )->preinstall();
 }
 
 =item install( )
@@ -85,7 +87,9 @@ sub preinstall
 
 sub install
 {
-    iMSCP::Packages::Webmail::RainLoop::Installer->getInstance()->install();
+    my ($self) = @_;
+
+    iMSCP::Packages::Webmail::RainLoop::Installer->getInstance( eventManager => $self->{'eventManager'} )->install();
 }
 
 =item uninstall( )
@@ -102,7 +106,7 @@ sub uninstall
 
     return 0 if $self->{'skip_uninstall'};
 
-    iMSCP::Packages::Webmail::RainLoop::Uninstaller->getInstance()->uninstall();
+    iMSCP::Packages::Webmail::RainLoop::Uninstaller->getInstance( eventManager => $self->{'eventManager'} )->uninstall();
 }
 
 =item deleteMail( \%data )

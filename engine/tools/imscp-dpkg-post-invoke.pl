@@ -34,6 +34,7 @@ use lib "/var/www/imscp/engine/PerlLib"; # FIXME: shouldn't be hardcoded
 use File::Basename;
 use iMSCP::Bootstrapper;
 use iMSCP::Debug qw / debug newDebug /;
+use iMSCP::EventManager;
 use iMSCP::Getopt;
 use iMSCP::Servers;
 use iMSCP::Packages;
@@ -77,7 +78,7 @@ for ( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
 for ( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
     next unless my $sub = $_->can( 'dpkgPostInvokeTasks' );
     debug( sprintf( 'Executing %s dpkg post-invoke tasks', $_ ));
-    $rs |= $sub->( $_->getInstance());
+    $rs |= $sub->( $_->getInstance( eventManager => iMSCP::EventManager->getInstance()));
 }
 
 exit $rs;

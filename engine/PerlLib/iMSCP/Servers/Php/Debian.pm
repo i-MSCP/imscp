@@ -31,6 +31,7 @@ use autouse 'iMSCP::Dialog::InputValidation' => qw/ isOneOfStringsInList isStrin
 use Class::Autouse qw/ :nostat iMSCP::Getopt iMSCP::ProgramFinder iMSCP::Servers::Httpd /;
 use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::Dir;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::Service;
 use iMSCP::Servers::Php;
@@ -98,7 +99,7 @@ sub askForPhpVersion
         ( my $rs, $value ) = $dialog->radiolist( <<'EOF', \%choices, ( grep( $value eq $_, keys %choices ) )[0] || ( keys %choices )[0] );
 \Z4\Zb\ZuPHP version for customers\Zn
 
-Please choose the PHP version for the customers.
+Please choose the PHP version for the customers:
 \Z \Zn
 EOF
         return $rs unless $rs < 30;
@@ -141,7 +142,7 @@ sub askForPhpSapi
         ( my $rs, $value ) = $dialog->radiolist( <<'EOF', \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'fpm' );
 \Z4\Zb\ZuPHP SAPI for customers\Zn
 
-Please choose the PHP SAPI for the customers.
+Please choose the PHP SAPI for the customers:
 \Z \Zn
 EOF
         return $rs unless $rs < 30;
@@ -173,7 +174,7 @@ sub askForFastCGIconnectionType
         ( my $rs, $value ) = $dialog->radiolist( <<'EOF', \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'uds' );
 \Z4\Zb\ZuPHP-FPM - FastCGI connection type\Zn
 
-Please choose the FastCGI connection type that you want use.
+Please choose the FastCGI connection type that you want use:
 \Z \Zn
 EOF
         return $rs unless $rs < 30;
@@ -288,13 +289,15 @@ sub install
 
         # Set default alternatives according PHP version for customers
         my ($stdout, $stderr);
-        execute( [ 'update-alternatives', '--set', 'php', "/usr/bin/php$self->{'PHP_VERSION'}" ], \$stdout, \$stderr ) == 0 or die(
+        execute( [ 'update-alternatives', '--set', 'php', "/usr/bin/php$self->{'config'}->{'PHP_VERSION'}" ], \$stdout, \$stderr ) == 0 or die(
             $stderr || 'Unknown error'
         );
-        execute( [ 'update-alternatives', '--set', 'phar', "/usr/bin/phar$self->{'PHP_VERSION'}" ], \$stdout, \$stderr ) == 0 or die(
+        execute( [ 'update-alternatives', '--set', 'phar', "/usr/bin/phar$self->{'config'}->{'PHP_VERSION'}" ], \$stdout, \$stderr ) == 0 or die(
             $stderr || 'Unknown error'
         );
-        execute( [ 'update-alternatives', '--set', 'phar.phar', "/usr/bin/phar.phar$self->{'PHP_VERSION'}" ], \$stdout, \$stderr ) == 0 or die(
+        execute(
+            [ 'update-alternatives', '--set', 'phar.phar', "/usr/bin/phar.phar$self->{'config'}->{'PHP_VERSION'}" ], \$stdout, \$stderr
+        ) == 0 or die(
             $stderr || 'Unknown error'
         );
 

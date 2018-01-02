@@ -26,10 +26,10 @@ package iMSCP::Packages::Webmail;
 use strict;
 use warnings;
 use autouse 'iMSCP::Dialog::InputValidation' => qw/ isOneOfStringsInList /;
+use File::Basename;
 use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
 use iMSCP::Execute qw/ execute /;
-use iMSCP::EventManager;
 use iMSCP::Getopt;
 use version;
 use parent 'iMSCP::Common::SingletonClass';
@@ -44,20 +44,19 @@ use parent 'iMSCP::Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ($self, $eventManager) = @_;
+    my ($self) = @_;
 
-    $eventManager->register(
+    $self->{'eventManager'}->registerOne(
         'beforeSetupDialog',
         sub {
             push @{$_[0]}, sub { $self->showDialog( @_ ) };
@@ -108,7 +107,7 @@ EOF
         eval "require $package" or die( $@ );
         ( my $subref = $package->can( 'showDialog' ) ) or next;
         debug( sprintf( 'Executing showDialog action on %s', $package ));
-        my $rs = $subref->( $package->getInstance(), $dialog );
+        my $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ), $dialog );
         return $rs if $rs;
     }
 
@@ -137,13 +136,13 @@ sub preinstall
 
         if ( my $subref = $package->can( 'uninstall' ) ) {
             debug( sprintf( 'Executing uninstall action on %s', $package ));
-            my $rs = $subref->( $package->getInstance());
+            my $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ));
             return $rs if $rs;
         }
 
         ( my $subref = $package->can( 'getDistroPackages' ) ) or next;
         debug( sprintf( 'Executing getDistroPackages action on %s', $package ));
-        push @distroPackages, $subref->( $package->getInstance());
+        push @distroPackages, $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ));
     }
 
     my $rs = $self->_removePackages( @distroPackages );
@@ -156,13 +155,13 @@ sub preinstall
 
         if ( my $subref = $package->can( 'preinstall' ) ) {
             debug( sprintf( 'Executing preinstall action on %s', $package ));
-            $rs = $subref->( $package->getInstance());
+            $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ));
             return $rs if $rs;
         }
 
         ( my $subref = $package->can( 'getDistroPackages' ) ) or next;
         debug( sprintf( 'Executing getDistroPackages action on %s', $package ));
-        push @distroPackages, $subref->( $package->getInstance());
+        push @distroPackages, $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ));
     }
 
     $self->_installPackages( @distroPackages );
@@ -185,7 +184,7 @@ sub install
         eval "require $package" or die( $@ );
         ( my $subref = $package->can( 'install' ) ) or next;
         debug( sprintf( 'Executing install action on %s', $package ));
-        my $rs = $subref->( $package->getInstance());
+        my $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ));
         return $rs if $rs;
     }
 
@@ -209,7 +208,7 @@ sub postinstall
         eval "require $package" or die( $@ );
         ( my $subref = $package->can( 'postinstall' ) ) or next;
         debug( sprintf( 'Executing postinstall action on %s', $package ));
-        my $rs = $subref->( $package->getInstance());
+        my $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ));
         return $rs if $rs;
     }
 
@@ -236,13 +235,13 @@ sub uninstall
 
         if ( my $subref = $package->can( 'uninstall' ) ) {
             debug( sprintf( 'Executing preinstall action on %s', $package ));
-            my $rs = $subref->( $package->getInstance());
+            my $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ));
             return $rs if $rs;
         }
 
         ( my $subref = $package->can( 'getDistroPackages' ) ) or next;
         debug( sprintf( 'Executing getDistroPackages action on %s', $package ));
-        push @distroPackages, $subref->( $package->getInstance());
+        push @distroPackages, $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ));
     }
 
     $self->_removePackages( @distroPackages );
@@ -278,7 +277,7 @@ sub setEnginePermissions
         eval "require $package" or die( $@ );
         ( my $subref = $package->can( 'setEnginePermissions' ) ) or next;
         debug( sprintf( 'Executing setEnginePermissions action on %s', $package ));
-        my $rs = $subref->( $package->getInstance());
+        my $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ));
         return $rs if $rs;
     }
 
@@ -302,7 +301,7 @@ sub setGuiPermissions
         eval "require $package" or die( $@ );
         ( my $subref = $package->can( 'setGuiPermissions' ) ) or next;
         debug( sprintf( 'Executing setGuiPermissions action on %s', $package ));
-        my $rs = $subref->( $package->getInstance());
+        my $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ));
         return $rs if $rs;
     }
 
@@ -327,7 +326,7 @@ sub deleteMail
         eval "require $package" or die( $@ );
         ( my $subref = $package->can( 'deleteMail' ) ) or next;
         debug( sprintf( 'Executing deleteMail action on %s', $package ));
-        my $rs = $subref->( $package->getInstance(), $data );
+        my $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ), $data );
         return $rs if $rs;
     }
 
@@ -352,8 +351,7 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    @{$self->{'AVAILABLE_PACKAGES'}} = iMSCP::Dir->new( dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webmail" )->getDirs();
+    @{$self->{'AVAILABLE_PACKAGES'}} = iMSCP::Dir->new( dirname => dirname( __FILE__ ) . '/Webmail' )->getDirs();
     @{$self->{'SELECTED_PACKAGES'}} = grep( $_ ne 'no', split( ',', $main::imscpConfig{'WEBMAIL_PACKAGES'} ));
     $self;
 }

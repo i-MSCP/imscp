@@ -32,7 +32,6 @@ use File::Basename;
 use File::Spec;
 use iMSCP::Config;
 use iMSCP::Debug qw/ debug error getMessageByType /;
-use iMSCP::EventManager;
 use iMSCP::Service;
 use iMSCP::SystemUser;
 use iMSCP::TemplateParser qw/ processByRef /;
@@ -65,7 +64,7 @@ sub getPriority
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( )
 
  Register setup event listeners
 
@@ -76,9 +75,9 @@ sub getPriority
 
 sub registerSetupListeners
 {
-    my (undef, $eventManager) = @_;
+    my ($self) = @_;
 
-    iMSCP::Packages::FrontEnd::Installer->getInstance()->registerSetupListeners( $eventManager );
+    iMSCP::Packages::FrontEnd::Installer->getInstance( eventManager => $self->{'eventManager'} )->registerSetupListeners();
 }
 
 =item preinstall( )
@@ -96,7 +95,7 @@ sub preinstall
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndPreInstall' );
     $rs ||= $self->stopNginx();
     $rs ||= $self->stopPhpFpm();
-    $rs ||= iMSCP::Packages::FrontEnd::Installer->getInstance()->preinstall();
+    $rs ||= iMSCP::Packages::FrontEnd::Installer->getInstance( eventManager => $self->{'eventManager'} )->preinstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndPreInstall' );
 }
 
@@ -113,7 +112,7 @@ sub install
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndInstall' );
-    $rs ||= iMSCP::Packages::FrontEnd::Installer->getInstance()->install();
+    $rs ||= iMSCP::Packages::FrontEnd::Installer->getInstance( eventManager => $self->{'eventManager'} )->install();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndInstall' );
 }
 
@@ -133,7 +132,7 @@ sub postinstall
     return $rs if $rs;
 
     eval {
-        my $serviceMngr = iMSCP::Service->getInstance();
+        my $serviceMngr = iMSCP::Service->getInstance( eventManager => $self->{'eventManager'} );
         $serviceMngr->enable( 'nginx' );
         $serviceMngr->enable( 'imscp_panel' );
     };
@@ -167,7 +166,7 @@ sub dpkgPostInvokeTasks
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndDpkgPostInvokeTasks' );
-    $rs ||= iMSCP::Packages::FrontEnd::Installer->getInstance()->dpkgPostInvokeTasks();
+    $rs ||= iMSCP::Packages::FrontEnd::Installer->getInstance( eventManager => $self->{'eventManager'} )->dpkgPostInvokeTasks();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndDpkgPostInvokeTasks' );
 }
 
@@ -184,7 +183,7 @@ sub uninstall
     my ($self) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndUninstall' );
-    $rs ||= iMSCP::Packages::FrontEnd::Uninstaller->getInstance()->uninstall();
+    $rs ||= iMSCP::Packages::FrontEnd::Uninstaller->getInstance( eventManager => $self->{'eventManager'} )->uninstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndUninstall' );
 }
 
@@ -687,7 +686,7 @@ sub restartPhpFpm
 
  Build the given configuration file
 
- Param string $file Absolute config file path or config filename relative to the nginx configuration directory
+ Param string $file Absolute filepath or filepath relative to the frontend configuration directory
  Param hash \%tplVars OPTIONAL Template variables
  Param hash \%options OPTIONAL Options such as destination, mode, user and group for final file
  Return int 0 on success, other on failure
@@ -706,7 +705,7 @@ sub buildConfFile
     return $rs if $rs;
 
     unless ( defined $cfgTpl ) {
-        $file = "$self->{'cfgDir'}/$file" unless -d $path && $path ne './';
+        $file = File::Spec->canonpath( "$self->{'cfgDir'}/$path/$filename" ) if index( $path, '/' ) != 0;
         $cfgTpl = iMSCP::File->new( filename => $file )->get();
         unless ( defined $cfgTpl ) {
             error( sprintf( "Couldn't read the %s file", $file ));
@@ -746,7 +745,9 @@ sub buildConfFile
 
 sub getComposer
 {
-    iMSCP::Packages::FrontEnd::Installer->getInstance()->getComposer();
+    my ($self) = @_;
+
+    iMSCP::Packages::FrontEnd::Installer->getInstance( eventManager => $self->{'eventManager'} )->getComposer();
 }
 
 =back
@@ -770,7 +771,6 @@ sub _init
     $self->{'start'} = 0;
     $self->{'reload'} = 0;
     $self->{'restart'} = 0;
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/frontend";
     $self->_mergeConfig() if defined $main::execmode && $main::execmode eq 'setup' && -f "$self->{'cfgDir'}/frontend.data.dist";
     tie %{$self->{'config'}},

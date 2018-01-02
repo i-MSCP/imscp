@@ -28,7 +28,6 @@ use warnings;
 use iMSCP::Composer;
 use iMSCP::Debug qw/ error /;
 use iMSCP::Dir;
-use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::TemplateParser qw/ getBlocByRef processByRef replaceBlocByRef /;
 use JSON;
@@ -129,7 +128,6 @@ sub _init
     my ($self) = @_;
 
     $self->{'frontend'} = iMSCP::Packages::FrontEnd->getInstance();
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self;
 }
 
@@ -239,7 +237,7 @@ sub _buildConfig
                 port             => 21,
                 # Enable passive mode excepted if the FTP daemon is vsftpd
                 # vsftpd doesn't allows to operate on a per IP basic (IP masquerading)
-                passive          => ( index( $main::imscpConfig{'iMSCP::Servers::Ftpd'}, 'Vsftpd' ) != -1 ? JSON::false : JSON::true,
+                passive          => index( $main::imscpConfig{'iMSCP::Servers::Ftpd'}, 'Vsftpd' ) != -1 ? JSON::false : JSON::true,
                 ssl              => main::setupGetQuestion( 'SERVICES_SSL_ENABLED' ) eq 'yes'
                     ? JSON::true : JSON::false,
                 initialDirectory => '/' # Home directory as set for the FTP user

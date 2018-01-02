@@ -26,10 +26,10 @@ package iMSCP::Packages::Webstats;
 use strict;
 use warnings;
 use autouse 'iMSCP::Dialog::InputValidation' => qw/ isOneOfStringsInList /;
+use File::Basename;
 use iMSCP::Debug qw / debug error /;
 use iMSCP::Dialog;
 use iMSCP::Dir;
-use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute /;
 use iMSCP::Getopt;
 use version;
@@ -47,20 +47,19 @@ use parent 'iMSCP::Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ($self, $eventManager) = @_;
+    my ($self) = @_;
 
-    $eventManager->register(
+    $self->{'eventManager'}->registerOne(
         'beforeSetupDialog',
         sub {
             push @{$_[0]}, sub { $self->showDialog( @_ ) };
@@ -89,7 +88,7 @@ sub showDialog
     my %choices;
     @choices{@{$self->{'AVAILABLE_PACKAGES'}}} = @{$self->{'AVAILABLE_PACKAGES'}};
 
-    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure,  [ 'webstats', 'all', 'forced' ] )
+    if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'webstats', 'all', 'forced' ] )
         || !@{$self->{'SELECTED_PACKAGES'}}
         || grep { !exists $choices{$_} && $_ ne 'no' } @{$self->{'SELECTED_PACKAGES'}}
     ) {
@@ -140,13 +139,13 @@ sub preinstall
 
         if ( my $subref = $package->can( 'uninstall' ) ) {
             debug( sprintf( 'Executing uninstall action on %s', $package ));
-            my $rs = $subref->( $package->getInstance());
+            my $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ));
             return $rs if $rs;
         }
 
         ( my $subref = $package->can( 'getDistroPackages' ) ) or next;
         debug( sprintf( 'Executing getDistroPackages action on %s', $package ));
-        push @distroPackages, $subref->( $package->getInstance());
+        push @distroPackages, $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ));
     }
 
     my $rs = $self->_removePackages( @distroPackages );
@@ -159,13 +158,13 @@ sub preinstall
 
         if ( my $subref = $package->can( 'preinstall' ) ) {
             debug( sprintf( 'Executing preinstall action on %s', $package ));
-            $rs = $subref->( $package->getInstance());
+            $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ));
             return $rs if $rs;
         }
 
         ( my $subref = $package->can( 'getDistroPackages' ) ) or next;
         debug( sprintf( 'Executing getDistroPackages action on %s', $package ));
-        push @distroPackages, $subref->( $package->getInstance());
+        push @distroPackages, $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ));
     }
 
     $self->_installPackages( @distroPackages );
@@ -188,7 +187,7 @@ sub install
         eval "require $package; 1" or die( $@ );
         ( my $subref = $package->can( 'install' ) ) or next;
         debug( sprintf( 'Executing install action on %s', $package ));
-        my $rs = $subref->( $package->getInstance());
+        my $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ));
         return $rs if $rs;
     }
 
@@ -212,7 +211,7 @@ sub postinstall
         eval "require $package; 1" or die( $@ );
         ( my $subref = $package->can( 'postinstall' ) ) or next;
         debug( sprintf( 'Executing postinstall action on %s', $package ));
-        my $rs = $subref->( $package->getInstance());
+        my $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ));
         return $rs if $rs;
     }
 
@@ -238,13 +237,13 @@ sub uninstall
 
         if ( my $subref = $package->can( 'uninstall' ) ) {
             debug( sprintf( 'Executing uninstall action on %s', $package ));
-            my $rs = $subref->( $package->getInstance());
+            my $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ));
             return $rs if $rs;
         }
 
         ( my $subref = $package->can( 'getDistroPackages' ) ) or next;
         debug( sprintf( 'Executing getDistroPackages action on %s', $package ));
-        push @distroPackages, $subref->( $package->getInstance());
+        push @distroPackages, $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ));
     }
 
     $self->_removePackages( @distroPackages );
@@ -280,7 +279,7 @@ sub setEnginePermissions
         eval "require $package; 1" or die( $@ );
         ( my $subref = $package->can( 'setEnginePermissions' ) ) or next;
         debug( sprintf( 'Executing setEnginePermissions action on %s', $package ));
-        my $rs = $subref->( $package->getInstance());
+        my $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ));
         return $rs if $rs;
     }
 
@@ -304,7 +303,7 @@ sub setGuiPermissions
         eval "require $package; 1" or die( $@ );
         ( my $subref = $package->can( 'setGuiPermissions' ) ) or next;
         debug( sprintf( 'Executing setGuiPermissions action on %s', $package ));
-        my $rs = $subref->( $package->getInstance());
+        my $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ));
         return $rs if $rs;
     }
 
@@ -329,7 +328,7 @@ sub addUser
         eval "require $package; 1" or die( $@ );
         ( my $subref = $package->can( 'addUser' ) ) or next;
         debug( sprintf( 'Executing addUser action on %s', $package ));
-        my $rs = $subref->( $package->getInstance(), $moduleData );
+        my $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ), $moduleData );
         return $rs if $rs;
     }
 
@@ -354,7 +353,7 @@ sub preaddDomain
         eval "require $package; 1" or die( $@ );
         ( my $subref = $package->can( 'preaddDomain' ) ) or next;
         debug( sprintf( 'Executing preaddDomain action on %s', $package ));
-        my $rs = $subref->( $package->getInstance(), $moduleData );
+        my $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ), $moduleData );
         return $rs if $rs;
     }
 
@@ -379,7 +378,7 @@ sub addDomain
         eval "require $package; 1" or die( $@ );
         ( my $subref = $package->can( 'addDomain' ) ) or next;
         debug( sprintf( 'Executing addDomain action on %s', $package ));
-        my $rs = $subref->( $package->getInstance(), $moduleData );
+        my $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ), $moduleData );
         return $rs if $rs;
     }
 
@@ -404,7 +403,7 @@ sub deleteDomain
         eval "require $package; 1" or die( $@ );
         ( my $subref = $package->can( 'deleteDomain' ) ) or next;
         debug( sprintf( 'Executing deleteDomain action on %s', $package ));
-        my $rs = $subref->( $package->getInstance(), $moduleData );
+        my $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ), $moduleData );
         return $rs if $rs;
     }
 
@@ -429,7 +428,7 @@ sub preaddSubdomain
         eval "require $package; 1" or die( $@ );
         ( my $subref = $package->can( 'preaddSubdomain' ) ) or next;
         debug( sprintf( 'Executing preaddSubdomain action on %s', $package ));
-        my $rs = $subref->( $package->getInstance(), $moduleData );
+        my $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ), $moduleData );
         return $rs if $rs;
     }
 
@@ -454,7 +453,7 @@ sub addSubdomain
         eval "require $package; 1" or die( $@ );
         ( my $subref = $package->can( 'addSubdomain' ) ) or next;
         debug( sprintf( 'Executing addSubdomain action on %s', $package ));
-        my $rs = $subref->( $package->getInstance(), $moduleData );
+        my $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ), $moduleData );
         return $rs if $rs;
     }
 
@@ -479,7 +478,7 @@ sub deleteSubdomain
         eval "require $package; 1" or die( $@ );
         ( my $subref = $package->can( 'deleteSubdomain' ) ) or next;
         debug( sprintf( 'Executing deleteSubdomain action on %s', $package ));
-        my $rs = $subref->( $package->getInstance(), $moduleData );
+        my $rs = $subref->( $package->getInstance( eventManager => $self->{'eventManager'} ), $moduleData );
         return $rs if $rs;
     }
 
@@ -504,8 +503,7 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    @{$self->{'AVAILABLE_PACKAGES'}} = iMSCP::Dir->new( dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats" )->getDirs();
+    @{$self->{'AVAILABLE_PACKAGES'}} = iMSCP::Dir->new( dirname => dirname( __FILE__ ) . '/Webstats' )->getDirs();
     @{$self->{'SELECTED_PACKAGES'}} = grep( $_ ne 'no', split( ',', $main::imscpConfig{'WEBSTATS_PACKAGES'} ));
     $self;
 }

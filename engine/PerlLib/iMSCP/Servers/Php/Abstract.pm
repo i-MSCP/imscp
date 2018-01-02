@@ -239,7 +239,7 @@ sub deleteSubdomain
 
  Build the given PHP configuration file
 
- Param string $srcFile Source file path (full path or path relative to the i-MSCP php configuration directory)
+ Param string $srcFile Absolute source filepath or source filepath relative to the i-MSCP php configuration directory
  Param string $trgFile Target file path
  Param hashref \%mdata OPTIONAL Data as provided by Alias|Domain|SubAlias|Subdomain modules
  Param hashref \%sdata OPTIONAL Server data (Server data have higher precedence than modules data)

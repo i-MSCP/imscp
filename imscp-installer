@@ -34,9 +34,9 @@ if ( !-f '/etc/imscp/imscp.conf' || !grep (/^-(?:[^-]*?[hs?][^-]*|-(?:help|skip-
         # List of pre-required distribution packages
         my @distPackages = qw/
             apt-transport-https apt-utils build-essential ca-certificates debconf-utils dialog dirmngr facter libbit-vector-perl libcapture-tiny-perl
-            libclass-autouse-perl libdata-compare-perl libdata-validate-domain-perl libfile-homedir-perl libjson-perl libjson-xs-perl liblchown-perl
-            liblist-compare-perl liblist-moreutils-perl libnet-ip-perl libnet-domain-tld-perl libscalar-defer-perl libsort-versions-perl
-            libxml-simple-perl lsb-release policyrcd-script-zg2 wget whiptail virt-what /;
+            libcarp-always-perl libclass-autouse-perl libdata-compare-perl libdata-validate-domain-perl libfile-homedir-perl libjson-perl
+            libjson-xs-perl liblchown-perl liblist-compare-perl liblist-moreutils-perl libnet-ip-perl libnet-domain-tld-perl libscalar-defer-perl
+            libsort-versions-perl libxml-simple-perl lsb-release policyrcd-script-zg2 wget whiptail virt-what /;
 
         print "Satisfying pre-requisites for the i-MSCP installer\n";
         print " [\x1b[0;34mINFO\x1b[0m] Updating package index files ...\n";
@@ -60,11 +60,6 @@ if ( !-f '/etc/imscp/imscp.conf' || !grep (/^-(?:[^-]*?[hs?][^-]*|-(?:help|skip-
         # Install Perl modules from CPAN if needed
         if ( eval "require Module::Load::Conditional; 1;" ) {
             Module::Load::Conditional->import( 'check_install' );
-            local $Module::Load::Conditional::DEPRECATED = 1;
-            local $Module::Load::Conditional::FIND_VERSION = 1;
-            local $Module::Load::Conditional::FORCE_SAFE_INC = 1;
-            local $Module::Load::Conditional::VERBOSE = 0;
-
             # List of pre-required Perl modules
             # Only Perl modules that are not available as package in all distributions
             my @perlModules;

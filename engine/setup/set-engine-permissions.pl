@@ -34,6 +34,7 @@ use lib "$FindBin::Bin/../PerlLib";
 use File::Basename;
 use iMSCP::Bootstrapper;
 use iMSCP::Debug qw/ debug newDebug /;
+use iMSCP::EventManager;
 use iMSCP::Getopt;
 use iMSCP::Rights;
 use iMSCP::Servers;
@@ -84,7 +85,7 @@ for my $server( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
 
 for my $package( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
     ( my $subref = $package->can( 'setEnginePermissions' ) ) or next;
-    push @items, [ $package, sub { $subref->( $package->getInstance()); } ];
+    push @items, [ $package, sub { $subref->( $package->getInstance( eventManager => iMSCP::EventManager->getInstance())); } ];
 }
 
 my $totalItems = @items+1;

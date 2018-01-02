@@ -76,9 +76,9 @@ use parent 'iMSCP::Common::SingletonClass';
 
 sub registerSetupListeners
 {
-    my (undef, $eventManager) = @_;
+    my ($self) = @_;
 
-    iMSCP::Packages::PhpMyAdmin::Installer->getInstance()->registerSetupListeners( $eventManager );
+    iMSCP::Packages::PhpMyAdmin::Installer->getInstance( eventManager => $self->{'eventManager'} )->registerSetupListeners();
 }
 
 =item preinstall( )
@@ -91,7 +91,9 @@ sub registerSetupListeners
 
 sub preinstall
 {
-    iMSCP::Packages::PhpMyAdmin::Installer->getInstance()->preinstall();
+    my ($self) = @_;
+
+    iMSCP::Packages::PhpMyAdmin::Installer->getInstance( eventManager => $self->{'eventManager'} )->preinstall();
 }
 
 =item install( )
@@ -104,7 +106,9 @@ sub preinstall
 
 sub install
 {
-    iMSCP::Packages::PhpMyAdmin::Installer->getInstance()->install();
+    my ($self) = @_;
+
+    iMSCP::Packages::PhpMyAdmin::Installer->getInstance( eventManager => $self->{'eventManager'} )->install();
 }
 
 =item uninstall( )
@@ -121,7 +125,7 @@ sub uninstall
 
     return 0 if $self->{'skip_uninstall'};
 
-    iMSCP::Packages::PhpMyAdmin::Uninstaller->getInstance()->uninstall();
+    iMSCP::Packages::PhpMyAdmin::Uninstaller->getInstance( eventManager => $self->{'eventManager'} )->uninstall();
 }
 
 =item getPriority( )
@@ -155,7 +159,6 @@ sub _init
 {
     my ($self) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/pma";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";

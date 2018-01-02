@@ -25,6 +25,7 @@ package iMSCP::Getopt;
 
 use strict;
 use warnings;
+use File::Basename;
 use Text::Wrap qw/ wrap /;
 use fields qw / clearPackageCache debug fixPermissions listener noprompt
     preseed reconfigure skipPackageUpdate verbose /;
@@ -66,7 +67,13 @@ sub parse
     my ($class, $usage, @options) = @_;
 
     $SHOW_USAGE = sub {
-        print STDERR wrap( '', '', <<"EOF" );
+        if ( $OPTION_HELP ne '' ) {
+            print STDERR wrap( '', '', <<"EOF" );
+$OPTION_HELP
+EOF
+
+        } else {
+            print STDERR wrap( '', '', <<"EOF" );
 
 $usage
  -a,    --skip-package-update     Skip i-MSCP composer packages update.
@@ -79,9 +86,8 @@ $usage
  -r,    --reconfigure [item,...]  Type `help` for list of allowed items.
  -v,    --verbose                 Enable verbose mode.
  -x,    --fix-permissions         Fix permissions.
-
-$OPTION_HELP
 EOF
+        }
     };
 
     # Do not load Getopt::Long if not needed
@@ -217,12 +223,12 @@ sub reconfigure
     my @items = split /,/, $items;
 
     if ( grep( 'help' eq $_, @items ) ) {
-        $OPTION_HELP = <<'EOF';
+        $OPTION_HELP = <<"EOF";
 Reconfiguration option usage:
 
-Without any argument, this option make it possible to reconfigure all items. You can reconfigure many items at once by providing a list of comma separated items such as:
+Without any argument, this option make it possible to reconfigure all items. You can reconfigure many items at once by providing a list of comma separated items as follows
 
- http,php,po
+ perl @{[ basename( $0 ) ]} --reconfigure http,php,po
 
 Bear in mind that even when only one item is reconfigured, all i-MSCP configuration files are regenerated, even those that don't belong to the item being reconfigured.
 

@@ -41,20 +41,19 @@ use parent 'iMSCP::Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ($self, $eventManager) = @_;
+    my ($self) = @_;
 
-    $eventManager->register(
+    $self->{'eventManager'}->registerOne(
         'beforeSetupDialog',
         sub {
             push @{$_[0]}, sub { $self->servicesSslDialog( @_ ) };
@@ -88,7 +87,7 @@ sub servicesSslDialog
 
     if ( isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'servers_ssl', 'ssl', 'all', 'forced' ] )
         || $sslEnabled !~ /^(?:yes|no)$/
-        || ( $sslEnabled eq 'yes' && isOneOfStringsInList( iMSCP::Getopt->reconfigure,  [ 'system_hostname', 'hostnames' ] ) )
+        || ( $sslEnabled eq 'yes' && isOneOfStringsInList( iMSCP::Getopt->reconfigure, [ 'system_hostname', 'hostnames' ] ) )
     ) {
         my $rs = $dialog->yesno( <<'EOF', $sslEnabled eq 'no' ? 1 : 0 );
 Do you want to enable SSL for FTP and MAIL services?

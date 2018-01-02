@@ -26,6 +26,7 @@ package iMSCP::Servers::Po::Dovecot::Abstract;
 use strict;
 use warnings;
 use autouse Fcntl => qw/ O_RDONLY /;
+use autouse 'File::Basename' => qw/ fileparse /;
 use autouse 'iMSCP::Crypt' => qw/ ALNUM randomStr /;
 use autouse 'iMSCP::Dialog::InputValidation' => qw/ isAvailableSqlUser isOneOfStringsInList isStringNotInList isValidPassword isValidUsername /;
 use autouse 'iMSCP::Execute' => qw/ execute /;

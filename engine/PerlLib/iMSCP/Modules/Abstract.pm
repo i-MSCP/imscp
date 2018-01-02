@@ -178,7 +178,7 @@ sub _execAction
     for ( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
         ( my $subref = $_->can( $action ) ) or next;
         debug( sprintf( "Executing `%s' action on %s", $action, $_ ));
-        my $rs = $subref->( $_->getInstance(), $self->_getData( $action ));
+        my $rs = $subref->( $_->getInstance( eventManager => $self->{'eventManager'} ), $self->_getData( $action ));
         return $rs if $rs;
     }
 

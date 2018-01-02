@@ -47,7 +47,9 @@ use parent 'iMSCP::Common::SingletonClass';
 
 sub preinstall
 {
-    iMSCP::Packages::AntiRootkits::Rkhunter::Installer->getInstance()->preinstall();
+    my ($self) = @_;
+
+    iMSCP::Packages::AntiRootkits::Rkhunter::Installer->getInstance( eventManager => $self->{'eventManager'} )->preinstall();
 }
 
 =item postinstall( )
@@ -60,7 +62,9 @@ sub preinstall
 
 sub postinstall
 {
-    iMSCP::Packages::AntiRootkits::Rkhunter::Installer->getInstance()->postinstall();
+    my ($self) = @_;
+
+    iMSCP::Packages::AntiRootkits::Rkhunter::Installer->getInstance( eventManager => $self->{'eventManager'} )->postinstall();
 }
 
 =item uninstall( )
@@ -73,7 +77,9 @@ sub postinstall
 
 sub uninstall
 {
-    iMSCP::Packages::AntiRootkits::Rkhunter::Uninstaller->getInstance()->uninstall();
+    my ($self) = @_;
+
+    iMSCP::Packages::AntiRootkits::Rkhunter::Uninstaller->getInstance( eventManager => $self->{'eventManager'} )->uninstall();
 }
 
 =item setEnginePermissions( )
@@ -86,7 +92,7 @@ sub uninstall
 
 sub setEnginePermissions
 {
-    my $rs = setRights( "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl",
+    my $rs = setRights( "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/iMSCP/Packages/AntiRootkits/Rkhunter/Cron.pl",
         {
             user  => $main::imscpConfig{'ROOT_USER'},
             group => $main::imscpConfig{'ROOT_USER'},

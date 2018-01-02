@@ -364,7 +364,7 @@ sub deleteHtaccess
   - before<SNAME>BuildConfFile( \$cfgTpl, basename($srcFile), \$trgFile, \%moduleData, \%serverData, $self->{'config'}, $parameters )
   - after<SNAME>BuildConfFile( \$cfgTpl, basename($srcFile), \$trgFile, \%moduleData, \%serverData, $self->{'config'}, $parameters )
 
- Param string $srcFile Source file path relative to the i-MSCP httpd configuration directory
+ Param string $srcFile SAbsolute source filepath or source filepath relative to the i-MSCP httpd configuration directory
  Param string $trgFile Target file path
  Param hashref \%data OPTIONAL Data as provided by Alias|Domain|SubAlias|Subdomain modules
  Param hashref \%data OPTIONAL Server data (Runtime data have higher precedence than modules data)

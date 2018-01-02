@@ -31,7 +31,7 @@ use iMSCP::Crypt qw/ apr1MD5 randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug qw / debug error getMessageByType /;
 use iMSCP::Dialog::InputValidation qw/
-    isNumber isNumberInRange isOneOfStringsInList isStringInList isStringNotInList isValidDomain isValidEmail isValidPassword isValidUsername 
+    isNumber isNumberInRange isOneOfStringsInList isStringInList isStringNotInList isValidDomain isValidEmail isValidPassword isValidUsername
     /;
 use iMSCP::Dir;
 use iMSCP::Execute qw/ execute /;
@@ -58,20 +58,19 @@ use parent 'iMSCP::Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ($self, $eventManager) = @_;
+    my ($self) = @_;
 
-    my $rs = $eventManager->register( 'beforeSetupDialog',
+    my $rs = $self->{'eventManager'}->registerOne( 'beforeSetupDialog',
         sub {
             push @{$_[0]},
                 sub { $self->askMasterAdminCredentials( @_ ) },
@@ -83,7 +82,7 @@ sub registerSetupListeners
             0;
         }
     );
-    $rs ||= $eventManager->registerOne( 'beforeSetupPreInstallServers',
+    $rs ||= $self->{'eventManager'}->registerOne( 'beforeSetupPreInstallServers',
         sub {
             eval {
                 my $composer = iMSCP::Composer->new(
@@ -102,8 +101,7 @@ sub registerSetupListeners
                     capath => $main::imscpConfig{'DISTRO_CA_PATH'}
                 };
                 startDetail;
-                $composer
-                    ->setStdRoutines( sub {}, sub {
+                $composer->setStdRoutines( sub {}, sub {
                         ( my $stdout = $_[0] ) =~ s/^\s+|\s+$//g;
                         return if $stdout eq '';
 
@@ -115,8 +113,7 @@ $stdout
 Depending on your connection speed, this may take few minutes ...
 EOT
                     }
-                )
-                    ->installPackages();
+                )->installPackages();
                 endDetail;
             };
             if ( $@ ) {
