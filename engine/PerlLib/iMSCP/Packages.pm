@@ -80,7 +80,7 @@ sub _init
 {
     my ($self) = @_;
 
-    $_ = basename( $_, '.pm' ) for @{$self->{'packages'}} = glob ( "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/*.pm" );
+    $_ = basename( $_, '.pm' ) for @{$self->{'packages'}} = glob ( "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/iMSCP/Packages/*.pm" );
 
     # Load all package classes
     for ( @{$self->{'packages'}} ) {
