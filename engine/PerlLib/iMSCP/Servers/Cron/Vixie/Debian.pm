@@ -29,7 +29,7 @@ use autouse 'iMSCP::Rights' => qw/ setRights /;
 use Class::Autouse qw/ :nostat iMSCP::Service /;
 use iMSCP::Debug qw/ error /;
 use iMSCP::File;
-use iMSCP::TemplateParser qw/ processByRef /;
+use iMSCP::TemplateParser qw/ processByRef replaceBlocByRef /;
 use parent 'iMSCP::Servers::Cron::Abstract';
 
 =head1 DESCRIPTION
