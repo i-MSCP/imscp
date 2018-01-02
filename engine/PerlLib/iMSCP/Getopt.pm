@@ -69,16 +69,16 @@ sub parse
         print STDERR wrap( '', '', <<"EOF" );
 
 $usage
- -a,    --skip-package-update    Skip i-MSCP composer packages update.
- -c,    --clean-package-cache    Clear i-MSCP composer package cache.
- -d,    --debug                  Enable debug mode.
- -h,-?  --help                   Show this help.
- -l,    --listener <file>        Path to listener file.
- -n,    --noprompt               Switch to non-interactive mode.
- -p,    --preseed <file>         Path to preseed file.
- -r,    --reconfigure [item ...] Type `help` for list of allowed items.
- -v,    --verbose                Enable verbose mode.
- -x,    --fix-permissions        Fix permissions.
+ -a,    --skip-package-update     Skip i-MSCP composer packages update.
+ -c,    --clean-package-cache     Clear i-MSCP composer package cache.
+ -d,    --debug                   Enable debug mode.
+ -h,-?  --help                    Show this help.
+ -l,    --listener <file>         Path to listener file.
+ -n,    --noprompt                Switch to non-interactive mode.
+ -p,    --preseed <file>          Path to preseed file.
+ -r,    --reconfigure [item,item] Type `help` for list of allowed items.
+ -v,    --verbose                 Enable verbose mode.
+ -x,    --fix-permissions         Fix permissions.
 
 $OPTION_HELP
 EOF
@@ -167,10 +167,36 @@ sub showUsage
     exit 1;
 }
 
-my @RECONFIGURATION_ITEMS = sort(
-    'all', 'servers', 'httpd', 'mta', 'po', 'ftpd', 'named', 'sqld', 'hostnames', 'system_hostname', 'panel_hostname', 'panel_ports', 'primary_ip',
-    'admin', 'admin_credentials', 'admin_email', 'php', 'timezone', 'panel', 'panel_ssl', 'system_server', 'services_ssl',  'ssl', 'backup',
-    'webstats', 'sqlmanager', 'webmails', 'filemanagers', 'antirootkits', 'alt_urls_feature'
+my %RECONFIGURATION_ITEMS = (
+    admin             => 'Reconfigure the master administrator',
+    admin_credentials => 'Reconfigure credential for the master administrator',
+    admin_email       => 'Reconfigure the email for the master administrator',
+    alt_urls          => 'Reconfigure the alternative URL feature',
+    antirootkits      => 'Reconfigure the anti-rootkits',
+    backup            => 'Reconfigure backup options',
+    filemanagers      => 'Reconfigure the file managers',
+    ftpd              => 'Reconfigure the FTP server',
+    hostnames         => 'Reconfigure server and control panel hostnames',
+    httpd             => 'Reconfigure the httpd server',
+    mta               => 'Reconfigure the SMTP server',
+    named             => 'Reconfigure the DNS server',
+    panel             => 'Reconfigure the control panel',
+    panel_hostname    => 'Reconfigure the hostname for the control panel',
+    panel_ports       => 'Reconfigure the http(s) ports for the control panel',
+    panel_ssl         => 'Reconfigure SSL for the control panel',
+    php               => 'Reconfigure PHP',
+    po                => 'Reconfigure the IMAP/POP servers',
+    primary_ip        => 'Reconfigure the server primary IP address',
+    servers           => 'Reconfigure all servers',
+    servers_ssl       => 'Reconfigure SSL for the IMAP/POP, SMTP and FTP servers',
+    sqld              => 'Reconfigure the SQL server',
+    sqlmanager        => 'Reconfigure the SQL manager',
+    ssl               => 'Reconfigure SSL for the servers and control panel',
+    system_hostname   => 'Reconfigure the system hostname',
+    system_server     => 'Reconfigure the system server',
+    timezone          => 'Reconfigure the system timezone',
+    webmails          => 'Reconfigure the Webmails',
+    webstats          => 'Reconfigure Webstats packages'
 );
 
 =item reconfigure( [ $items = 'none' ] )
@@ -192,23 +218,30 @@ sub reconfigure
 
     if ( grep( 'help' eq $_, @items ) ) {
         $OPTION_HELP = <<'EOF';
-Reconfigure option usage:
+Reconfiguration option usage:
 
-Without any argument, this option allows to reconfigure all items. You can reconfigure one or many items by passing a list of comma separated items as argument.
+Without any argument, this option make it possible to reconfigure all items. You can reconfigure many items at once by providing a list of comma separated items such as:
 
-Available items are:
+ http,php,po
+
+Bear in mind that even when only one item is reconfigured, all i-MSCP configuration files are regenerated, even those that don't belong to the item being reconfigured.
+
+Each item belong to one i-MSCP package/server.
+
+The following items are available:
 
 EOF
-        $OPTION_HELP .= ' ' . ( join '|', @RECONFIGURATION_ITEMS );
+
+        $OPTION_HELP .= " - $_" . ( ' ' x ( 17-length( $_ ) ) ) . " : $RECONFIGURATION_ITEMS{$_}\n" for sort keys %RECONFIGURATION_ITEMS;
         die();
     } elsif ( !@items ) {
         push @items, 'all';
-    }
-
-    for my $item( @items ) {
-        $item eq 'none' || grep($_ eq $item, @RECONFIGURATION_ITEMS) or die(
-            sprintf( "Error: '%s' is not a valid item for the the --reconfigure option.", $item )
-        );
+    } else {
+        for my $item( @items ) {
+            $item eq 'none' || grep($_ eq $item, keys %RECONFIGURATION_ITEMS) or die(
+                sprintf( "Error: '%s' is not a valid item for the the --reconfigure option.", $item )
+            );
+        }
     }
 
     $options->{'reconfigure'} = [ @items ];
