@@ -76,7 +76,7 @@ $usage
  -l,    --listener <file>         Path to listener file.
  -n,    --noprompt                Switch to non-interactive mode.
  -p,    --preseed <file>          Path to preseed file.
- -r,    --reconfigure [item,item] Type `help` for list of allowed items.
+ -r,    --reconfigure [item,...]  Type `help` for list of allowed items.
  -v,    --verbose                 Enable verbose mode.
  -x,    --fix-permissions         Fix permissions.
 
