@@ -69,12 +69,14 @@ sub registerSetupListeners
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->register(
+    my $rs = $self->{'eventManager'}->registerOne(
         'beforeSetupDialog',
         sub {
             push @{$_[0]}, sub { $self->showDialog( @_ ) };
             0;
-        }
+        },
+        # Same priority as the factory
+        50
     );
     $rs ||= $self->{'eventManager'}->register( 'beforePostfixBuildMainCfFile', sub { $self->configurePostfix( @_ ); } );
     $rs ||= $self->{'eventManager'}->register( 'beforePostfixBuildMasterCfFile', sub { $self->configurePostfix( @_ ); } );

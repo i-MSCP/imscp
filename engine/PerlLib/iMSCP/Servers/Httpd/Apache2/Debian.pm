@@ -55,13 +55,14 @@ sub registerSetupListeners
 {
     my ($self) = @_;
 
-    $self->{'eventManager'}->register(
+    $self->{'eventManager'}->registerOne(
         'beforeSetupDialog',
         sub {
             push @{$_[0]}, sub { $self->askForApache2MPM( @_ ) };
             0;
         },
-        10 # We must ask for Apache2 FPM before PHP SAPI because available PHP SAPIs depend on selected Apache2 MPM
+        # Same priority as the factory
+        200
     );
 }
 
@@ -90,7 +91,7 @@ sub askForApache2MPM
         ( my $rs, $value ) = $dialog->radiolist( <<"EOF", \%choices, ( grep( $value eq $_, keys %choices ) )[0] || 'event' );
 \\Z4\\Zb\\ZuApache2 MPM\\Zn
 
-Please choose the Apache2 MPM you want use.
+Please choose the Apache2 MPM you want use:
 \\Z \\Zn
 EOF
         return $rs unless $rs < 30;

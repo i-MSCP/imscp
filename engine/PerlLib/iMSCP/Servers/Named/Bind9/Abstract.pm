@@ -62,7 +62,7 @@ sub registerSetupListeners
 {
     my ($self) = @_;
 
-    $self->{'eventManager'}->register(
+    $self->{'eventManager'}->registerOne(
         'beforeSetupDialog',
         sub {
             push @{$_[0]},
@@ -70,7 +70,9 @@ sub registerSetupListeners
                 sub { $self->askIPv6Support( @_ ) },
                 sub { $self->askLocalDnsResolver( @_ ) };
             0;
-        }
+        },
+        # Same priority as the factory
+        300
     );
 }
 

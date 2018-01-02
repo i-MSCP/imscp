@@ -63,12 +63,14 @@ sub registerSetupListeners
 {
     my ($self) = @_;
 
-    $self->{'eventManager'}->register(
+    $self->{'eventManager'}->registerOne(
         'beforeSetupDialog',
         sub {
             push @{$_[0]}, sub { $self->sqlUserDialog( @_ ) }, sub { $self->passivePortRangeDialog( @_ ) };
             0;
-        }
+        },
+        # Same priority as the factory
+        150
     );
 }
 

@@ -61,7 +61,7 @@ sub registerSetupListeners
 {
     my ($self) = @_;
 
-    $self->{'eventManager'}->register(
+    $self->{'eventManager'}->registerOne(
         'beforeSetupDialog',
         sub {
             push @{$_[0]},
@@ -71,6 +71,8 @@ sub registerSetupListeners
                 sub { $self->databasePrefixDialog( @_ ) };
             0;
         },
+        # Same priority as the factory
+        400
     );
 }
 

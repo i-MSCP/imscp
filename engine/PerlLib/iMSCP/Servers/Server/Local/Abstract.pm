@@ -56,7 +56,7 @@ sub registerSetupListeners
     # Must be done here because installers can rely on this configuration parameter
     main::setupSetQuestion( 'IPV6_SUPPORT', -f '/proc/net/if_inet6' ? 1 : 0 );
 
-    $self->{'eventManager'}->register(
+    $self->{'eventManager'}->registerOne(
         'beforeSetupDialog',
         sub {
             push @{$_[0]},
@@ -65,8 +65,8 @@ sub registerSetupListeners
                 sub { $self->timezoneDialog( @_ ) };
             0;
         },
-        # We register these dialogs with a hightest priority to show them before any other server/package dialog
-        999
+        # We want show these dialog before the sqld server dialogs (sqld priority + 10)
+        410
     );
 }
 
