@@ -61,7 +61,7 @@ sub processDbTasks
     # Process plugins tasks
     # Must always be processed first to allow the plugins registering their listeners on the event manager
     $self->_processModuleDbTasks(
-        'Modules::Plugin',
+        'iMSCP::Modules::Plugin',
         "
             SELECT plugin_id AS id, plugin_name AS name
             FROM plugin
@@ -74,18 +74,18 @@ sub processDbTasks
 
     # Process server IP addresses
     $self->_processModuleDbTasks(
-        'Modules::ServerIP', "SELECT ip_id AS id, ip_number AS name FROM server_ips WHERE ip_status IN( 'toadd', 'tochange', 'todelete' )"
+        'iMSCP::Modules::ServerIP', "SELECT ip_id AS id, ip_number AS name FROM server_ips WHERE ip_status IN( 'toadd', 'tochange', 'todelete' )"
     );
 
     # Process SSL certificate toadd|tochange SSL certificates tasks
     $self->_processModuleDbTasks(
-        'Modules::SSLcertificate',
+        'iMSCP::Modules::SSLcertificate',
         "SELECT cert_id AS id, domain_type AS name FROM ssl_certs WHERE status IN ('toadd', 'tochange', 'todelete') ORDER BY cert_id ASC"
     );
 
     # Process toadd|tochange users tasks
     $self->_processModuleDbTasks(
-        'Modules::User',
+        'iMSCP::Modules::User',
         "
             SELECT admin_id AS id, admin_name AS name
             FROM admin
@@ -98,7 +98,7 @@ sub processDbTasks
     # Process toadd|tochange|torestore|toenable|todisable domain tasks
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_processModuleDbTasks(
-        'Modules::Domain',
+        'iMSCP::Modules::Domain',
         "
             SELECT domain_id AS id, domain_name AS name
             FROM domain
@@ -112,7 +112,7 @@ sub processDbTasks
     # Process toadd|tochange|torestore|toenable|todisable subdomains tasks
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_processModuleDbTasks(
-        'Modules::Subdomain',
+        'iMSCP::Modules::Subdomain',
         "
             SELECT subdomain_id AS id, CONCAT(subdomain_name, '.', domain_name) AS name
             FROM subdomain
@@ -126,7 +126,7 @@ sub processDbTasks
     # Process toadd|tochange|torestore|toenable|todisable domain aliases tasks
     # (for each entitty, process only if the parent entity is in a consistent state)
     $self->_processModuleDbTasks(
-        'Modules::Alias',
+        'iMSCP::Modules::Alias',
         "
            SELECT alias_id AS id, alias_name AS name
            FROM domain_aliasses
@@ -140,7 +140,7 @@ sub processDbTasks
     # Process toadd|tochange|torestore|toenable|todisable subdomains of domain aliases tasks
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_processModuleDbTasks(
-        'Modules::SubAlias',
+        'iMSCP::Modules::SubAlias',
         "
             SELECT subdomain_alias_id AS id, CONCAT(subdomain_alias_name, '.', alias_name) AS name
             FROM subdomain_alias
@@ -154,7 +154,7 @@ sub processDbTasks
     # Process toadd|tochange|toenable||todisable|todelete custom DNS records group which belong to domains
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_processModuleDbTasks(
-        'Modules::CustomDNS',
+        'iMSCP::Modules::CustomDNS',
         "
             SELECT CONCAT(t1.domain_id, ';', 0) AS id, t2.domain_name AS name
             FROM domain_dns AS t1
@@ -169,7 +169,7 @@ sub processDbTasks
     # Process toadd|tochange|toenable|todisable|todelete custom DNS records group which belong to domain aliases
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_processModuleDbTasks(
-        'Modules::CustomDNS',
+        'iMSCP::Modules::CustomDNS',
         "
             SELECT CONCAT(t1.domain_id, ';', t1.alias_id) AS id, t2.alias_name AS name
             FROM domain_dns AS t1
@@ -184,7 +184,7 @@ sub processDbTasks
     # Process toadd|tochange|toenable|todisable|todelete ftp users tasks
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_processModuleDbTasks(
-        'Modules::FtpUser',
+        'iMSCP::Modules::FtpUser',
         "
             SELECT userid AS id, userid AS name
             FROM ftp_users
@@ -198,7 +198,7 @@ sub processDbTasks
     # Process toadd|tochange|toenable|todisable|todelete mail tasks
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_processModuleDbTasks(
-        'Modules::Mail',
+        'iMSCP::Modules::Mail',
         "
             SELECT mail_id AS id, mail_addr AS name
             FROM mail_users
@@ -212,7 +212,7 @@ sub processDbTasks
     # Process toadd|tochange|toenable|todisable|todelete Htusers tasks
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_processModuleDbTasks(
-        'Modules::Htpasswd',
+        'iMSCP::Modules::Htpasswd',
         "
             SELECT id, uname AS name
             FROM htaccess_users
@@ -226,7 +226,7 @@ sub processDbTasks
     # Process toadd|tochange|toenable|todisable|todelete Htgroups tasks
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_processModuleDbTasks(
-        'Modules::Htgroup',
+        'iMSCP::Modules::Htgroup',
         "
             SELECT id, ugroup AS name
             FROM htaccess_groups
@@ -240,7 +240,7 @@ sub processDbTasks
     # Process toadd|tochange|toenable|todisable|todelete Htaccess tasks
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_processModuleDbTasks(
-        'Modules::Htaccess',
+        'iMSCP::Modules::Htaccess',
         "
             SELECT id, auth_name AS name
             FROM htaccess
@@ -253,7 +253,7 @@ sub processDbTasks
 
     # Process todelete subdomain aliases tasks
     $self->_processModuleDbTasks(
-        'Modules::SubAlias',
+        'iMSCP::Modules::SubAlias',
         "
             SELECT subdomain_alias_id AS id, concat(subdomain_alias_name, '.', alias_name) AS name
             FROM subdomain_alias
@@ -266,7 +266,7 @@ sub processDbTasks
     # Process todelete domain aliases tasks
     # For each entity, process only if the entity do not have any direct children
     $self->_processModuleDbTasks(
-        'Modules::Alias',
+        'iMSCP::Modules::Alias',
         "
             SELECT alias_id AS id, alias_name AS name
             FROM domain_aliasses
@@ -279,7 +279,7 @@ sub processDbTasks
 
     # Process todelete subdomains tasks
     $self->_processModuleDbTasks(
-        'Modules::Subdomain',
+        'iMSCP::Modules::Subdomain',
         "
             SELECT subdomain_id AS id, CONCAT(subdomain_name, '.', domain_name) AS name
             FROM subdomain
@@ -292,7 +292,7 @@ sub processDbTasks
     # Process todelete domains tasks
     # For each entity, process only if the entity do not have any direct children
     $self->_processModuleDbTasks(
-        'Modules::Domain',
+        'iMSCP::Modules::Domain',
         "
             SELECT domain_id AS id, domain_name AS name
             FROM domain
@@ -306,7 +306,7 @@ sub processDbTasks
     # Process todelete users tasks
     # For each entity, process only if the entity do not have any direct children
     $self->_processModuleDbTasks(
-        'Modules::User',
+        'iMSCP::Modules::User',
         "
             SELECT admin_id AS id, admin_name AS name
             FROM admin
