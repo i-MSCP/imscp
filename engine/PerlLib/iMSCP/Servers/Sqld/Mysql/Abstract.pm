@@ -322,7 +322,7 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->_setType();
+    my $rs = $self->_setVendor();
     $rs ||= $self->_setVersion();
     $rs ||= $self->_buildConf();
     $rs ||= $self->_setupMasterSqlUser();

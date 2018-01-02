@@ -80,9 +80,7 @@ sub _init
 {
     my ($self) = @_;
 
-    $_ = basename( $_, '.pm' ) for @{$self->{'servers'}} = grep { $_ !~ /(?:Abstract|Noserver)\.pm$/ } glob(
-        dirname(__FILE__) . '/Servers/*.pm'
-    );
+    $_ = basename( $_, '.pm' ) for @{$self->{'servers'}} = grep { $_ !~ /(?:Abstract|Noserver)\.pm$/ } glob( dirname( __FILE__ ) . '/Servers/*.pm' );
 
     # Load all server classes
     for ( @{$self->{'servers'}} ) {
