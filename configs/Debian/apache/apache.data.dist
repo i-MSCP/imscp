@@ -26,6 +26,4 @@ HTACCESS_USERS_FILENAME = .htpasswd
 HTACCESS_GROUPS_FILENAME = .htgroup
 
 # Either event, itk, prefork or worker
-APACHE2_MPM = 
-
-
+APACHE2_MPM =

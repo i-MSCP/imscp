@@ -134,7 +134,7 @@ sub postinstall
             push @{$_[0]},
                 [
                     sub {
-                        iMSCP::Service->getInstance()->enable( 'cron' )->start( 'cron' );
+                        iMSCP::Service->getInstance()->start( 'cron' );
                         0;
                     },
                     'Cron'

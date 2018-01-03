@@ -212,7 +212,7 @@ sub enableModules
     my ($self, @modules) = @_;
 
     for ( @modules ) {
-        next unless -f "/etc/apache2/mods-availables/$_.load";
+        next unless -f "/etc/apache2/mods-available/$_.load";
 
         my $rs = execute( [ '/usr/sbin/a2enmod', $_ ], \ my $stdout, \ my $stderr );
         debug( $stdout ) if $stdout;
@@ -392,7 +392,7 @@ sub _setVersion
         return 1;
     }
 
-    $self->{'config'}->{'APACHE2_VERSION'} = $1;
+    $self->{'config'}->{'HTTPD_VERSION'} = $1;
     debug( sprintf( 'Apache2 version set to: %s', $1 ));
     0;
 }
@@ -468,7 +468,7 @@ sub _setupModules
         return 0;
     }
 
-    error( 'Unknown Apache2 server implementation' );
+    error( 'Unknown Apache2 MPM' );
     1;
 }
 
