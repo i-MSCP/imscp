@@ -1,136 +1,127 @@
 <packages>
-    <frontend>
+    <frontend class="iMSCP::Packages::FrontEnd">
         <nginx default="1" description="Nginx server" class="iMSCP::Packages::FrontEnd">
             <package>nginx-full</package>
         </nginx>
     </frontend>
-    <httpd>
-        <apache2_mpm_event default="1" description="Apache2 (MPM Event) server" class="iMSCP::Servers::Httpd::Apache2::Event"/>
-        <apache2_mpm_itk description="Apache2 (MPM ITK) server" class="iMSCP::Servers::Httpd::Apache2::Itk"/>
-        <apache2_mpm_prefork description="Apache2 (MPM Prefork) server" class="iMSCP::Servers::Httpd::Apache2::Prefork"/>
-        <apache2_mpm_worker description="Apache2 (MPM Worker) server" class="iMSCP::Servers::Httpd::Apache2::Worker"/>
-        <package>apache2</package>
-        <package>apache2-bin</package>
-        <package>apache2-data</package>
-        <package>apache2-dev</package>
-        <package>libapache2-mod-fcgid</package>
-        <package>libapache2-mpm-itk</package>
-        <package>apache2-suexec-pristine</package>
-        <post_install_task>/usr/bin/update-alternatives --set suexec /usr/lib/apache2/suexec-pristine</post_install_task>
-        <post_install_task>sh debian_apache2_postinst.sh</post_install_task>
+    <cron class="iMSCP::Servers::Cron">
+        <vixie default="1" class="iMSCP::Servers::Cron::Vixie::Debian">
+            <package>cron</package>
+        </vixie>
+        <systemd class="iMSCP::Servers::Cron::Systemd::Debian" required_init="Systemd">
+            <package>systemd-cron</package>
+        </systemd>
+    </cron>
+    <server class="iMSCP::Servers::Server">
+        <local default="1" class="iMSCP::Servers::Server::Local::Debian"/>
+    </server>
+    <httpd class="iMSCP::Servers::Httpd" description="Web server">
+        <apache2 default="1" description="Apache2 server" class="iMSCP::Servers::Httpd::Apache2::Debian">
+            <package>apache2</package>
+            <package>apache2-bin</package>
+            <package>apache2-data</package>
+            <package>apache2-dev</package>
+            <package>libapache2-mod-fcgid</package>
+            <package>libapache2-mpm-itk</package>
+            <package>apache2-suexec-pristine</package>
+            <post_install_task>/usr/bin/update-alternatives --set suexec /usr/lib/apache2/suexec-pristine</post_install_task>
+            <post_install_task>sh debian_apache2_postinst.sh</post_install_task>
+        </apache2>
     </httpd>
-    <php repository="https://packages.sury.org/php/ jessie main" repository_key_uri="https://packages.sury.org/php/apt.gpg">
-        <php5.6 default="1" description="PHP 5.6" class="iMSCP::Servers::Php">
-            <post_install_task>/usr/bin/update-alternatives --set php /usr/bin/php5.6</post_install_task>
-            <post_install_task>/usr/bin/update-alternatives --set phar /usr/bin/phar5.6</post_install_task>
-            <post_install_task>/usr/bin/update-alternatives --set phar.phar /usr/bin/phar.phar5.6</post_install_task>
-            <post_install_task>sh php_apcu.sh 5.6</post_install_task>
-        </php5.6>
-        <php7.0 description="PHP 7.0" class="iMSCP::Servers::Php">
-            <post_install_task>/usr/bin/update-alternatives --set php /usr/bin/php7.0</post_install_task>
-            <post_install_task>/usr/bin/update-alternatives --set phar /usr/bin/phar7.0</post_install_task>
-            <post_install_task>/usr/bin/update-alternatives --set phar.phar /usr/bin/phar.phar7.0</post_install_task>
-            <post_install_task>sh php_apcu.sh 7.0</post_install_task>
-        </php7.0>
-        <php7.1 description="PHP 7.1" class="iMSCP::Servers::Php">
-            <post_install_task>/usr/bin/update-alternatives --set php /usr/bin/php7.1</post_install_task>
-            <post_install_task>/usr/bin/update-alternatives --set phar /usr/bin/phar7.1</post_install_task>
-            <post_install_task>/usr/bin/update-alternatives --set phar.phar /usr/bin/phar.phar7.1</post_install_task>
-            <post_install_task>sh php_apcu.sh 7.1</post_install_task>
-        </php7.1>
-        <php7.2 description="PHP 7.2" class="iMSCP::Servers::Php">
-            <post_install_task>/usr/bin/update-alternatives --set php /usr/bin/php7.2</post_install_task>
-            <post_install_task>/usr/bin/update-alternatives --set phar /usr/bin/phar7.2</post_install_task>
-            <post_install_task>/usr/bin/update-alternatives --set phar.phar /usr/bin/phar.phar7.2</post_install_task>
-            <post_install_task>sh php_apcu.sh 7.2</post_install_task>
-        </php7.2>
-        <package>libapache2-mod-php5.6</package>
-        <package>libapache2-mod-php7.0</package>
-        <package>libapache2-mod-php7.1</package>
-        <package>libapache2-mod-php7.2</package>
-        <package>php5.6</package>
-        <package>php5.6-cgi</package>
-        <package>php5.6-cli</package>
-        <package>php5.6-fpm</package>
-        <package>php5.6-common</package>
-        <package>php5.6-curl</package>
-        <package>php5.6-gd</package>
-        <package>php5.6-gmp</package>
-        <package>php5.6-imap</package>
-        <package>php5.6-intl</package>
-        <package>php5.6-json</package>
-        <package>php5.6-mbstring</package>
-        <package>php5.6-mcrypt</package>
-        <package>php5.6-mysql</package>
-        <package>php5.6-opcache</package>
-        <package>php5.6-pspell</package>
-        <package>php5.6-xml</package>
-        <package>php5.6-zip</package>
-        <package>php7.0</package>
-        <package>php7.0-cgi</package>
-        <package>php7.0-cli</package>
-        <package>php7.0-fpm</package>
-        <package>php7.0-common</package>
-        <package>php7.0-curl</package>
-        <package>php7.0-gd</package>
-        <package>php7.0-gmp</package>
-        <package>php7.0-imap</package>
-        <package>php7.0-intl</package>
-        <package>php7.0-json</package>
-        <package>php7.0-mbstring</package>
-        <package>php7.0-mcrypt</package>
-        <package>php7.0-mysql</package>
-        <package>php7.0-opcache</package>
-        <package>php7.0-pspell</package>
-        <package>php7.0-xml</package>
-        <package>php7.0-zip</package>
-        <package>php7.1</package>
-        <package>php7.1-cli</package>
-        <package>php7.1-cgi</package>
-        <package>php7.1-fpm</package>
-        <package>php7.1-common</package>
-        <package>php7.1-curl</package>
-        <package>php7.1-gd</package>
-        <package>php7.1-gmp</package>
-        <package>php7.1-imap</package>
-        <package>php7.1-intl</package>
-        <package>php7.1-json</package>
-        <package>php7.1-mbstring</package>
-        <package>php7.1-mcrypt</package>
-        <package>php7.1-mysql</package>
-        <package>php7.1-opcache</package>
-        <package>php7.1-pspell</package>
-        <package>php7.1-xml</package>
-        <package>php7.1-zip</package>
-        <package>php7.2</package>
-        <package>php7.2-cli</package>
-        <package>php7.2-cgi</package>
-        <package>php7.2-fpm</package>
-        <package>php7.2-common</package>
-        <package>php7.2-curl</package>
-        <package>php7.2-gd</package>
-        <package>php7.2-gmp</package>
-        <package>php7.2-imap</package>
-        <package>php7.2-intl</package>
-        <package>php7.2-json</package>
-        <package>php7.2-mbstring</package>
-        <package>php7.2-mysql</package>
-        <package>php7.2-opcache</package>
-        <package>php7.2-pspell</package>
-        <package>php7.2-xml</package>
-        <package>php7.2-zip</package>
-        <package>php-apcu</package>
-        <package>php-apcu-bc</package>
-        <package>php-pear</package>
-        <package_conflict>libapache2-mod-php5</package_conflict>
-        <package_conflict>php5-common</package_conflict>
-        <post_install_task>
-            /usr/sbin/phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets curl gd gmp imap intl json mbstring mcrypt mysqlnd mysqli
-            pdo_mysql opcache pspell dom xml xmlreader xmlwriter zip
-        </post_install_task>
+    <php class="iMSCP::Servers::Php">
+        <php
+                class="iMSCP::Servers::Php::Debian"
+                repository="https://packages.sury.org/php/ jessie main"
+                repository_key_uri="https://packages.sury.org/php/apt.gpg"
+        >
+            <package>libapache2-mod-php5.6</package>
+            <package>libapache2-mod-php7.0</package>
+            <package>libapache2-mod-php7.1</package>
+            <package>libapache2-mod-php7.2</package>
+            <package>php5.6</package>
+            <package>php5.6-cgi</package>
+            <package>php5.6-cli</package>
+            <package>php5.6-fpm</package>
+            <package>php5.6-common</package>
+            <package>php5.6-curl</package>
+            <package>php5.6-gd</package>
+            <package>php5.6-gmp</package>
+            <package>php5.6-imap</package>
+            <package>php5.6-intl</package>
+            <package>php5.6-json</package>
+            <package>php5.6-mbstring</package>
+            <package>php5.6-mcrypt</package>
+            <package>php5.6-mysql</package>
+            <package>php5.6-opcache</package>
+            <package>php5.6-pspell</package>
+            <package>php5.6-xml</package>
+            <package>php5.6-zip</package>
+            <package>php7.0</package>
+            <package>php7.0-cgi</package>
+            <package>php7.0-cli</package>
+            <package>php7.0-fpm</package>
+            <package>php7.0-common</package>
+            <package>php7.0-curl</package>
+            <package>php7.0-gd</package>
+            <package>php7.0-gmp</package>
+            <package>php7.0-imap</package>
+            <package>php7.0-intl</package>
+            <package>php7.0-json</package>
+            <package>php7.0-mbstring</package>
+            <package>php7.0-mcrypt</package>
+            <package>php7.0-mysql</package>
+            <package>php7.0-opcache</package>
+            <package>php7.0-pspell</package>
+            <package>php7.0-xml</package>
+            <package>php7.0-zip</package>
+            <package>php7.1</package>
+            <package>php7.1-cli</package>
+            <package>php7.1-cgi</package>
+            <package>php7.1-fpm</package>
+            <package>php7.1-common</package>
+            <package>php7.1-curl</package>
+            <package>php7.1-gd</package>
+            <package>php7.1-gmp</package>
+            <package>php7.1-imap</package>
+            <package>php7.1-intl</package>
+            <package>php7.1-json</package>
+            <package>php7.1-mbstring</package>
+            <package>php7.1-mcrypt</package>
+            <package>php7.1-mysql</package>
+            <package>php7.1-opcache</package>
+            <package>php7.1-pspell</package>
+            <package>php7.1-xml</package>
+            <package>php7.1-zip</package>
+            <package>php7.2</package>
+            <package>php7.2-cli</package>
+            <package>php7.2-cgi</package>
+            <package>php7.2-fpm</package>
+            <package>php7.2-common</package>
+            <package>php7.2-curl</package>
+            <package>php7.2-gd</package>
+            <package>php7.2-gmp</package>
+            <package>php7.2-imap</package>
+            <package>php7.2-intl</package>
+            <package>php7.2-json</package>
+            <package>php7.2-mbstring</package>
+            <package>php7.2-mysql</package>
+            <package>php7.2-opcache</package>
+            <package>php7.2-pspell</package>
+            <package>php7.2-xml</package>
+            <package>php7.2-zip</package>
+            <package>php-apcu</package>
+            <package>php-apcu-bc</package>
+            <package>php-pear</package>
+            <package_conflict>libapache2-mod-php5</package_conflict>
+            <package_conflict>php5-common</package_conflict>
+            <post_install_task>
+                /usr/sbin/phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets curl gd gmp imap intl json mbstring mcrypt mysqlnd mysqli
+                pdo_mysql opcache pspell dom xml xmlreader xmlwriter zip
+            </post_install_task>
+        </php>
     </php>
-    <po>
-        <courier description="Courier IMAP/POP3 servers" class="iMSCP::Servers::Po::courier">
+    <po class="iMSCP::Servers::Po" description="IMAP/POP server">
+        <courier description="Courier IMAP/POP3 servers" class="iMSCP::Servers::Po::Courier::Debian">
             <package>courier-authlib-mysql</package>
             <package>courier-imap</package>
             <package>courier-imap-ssl</package>
@@ -142,15 +133,15 @@
             <package_conflict>libsasl2-modules-sql</package_conflict>
             <package_conflict>sasl2-bin</package_conflict>
         </courier>
-        <dovecot default="1" description="Dovecot IMAP/POP3 servers" class="iMSCP::Servers::Po::dovecot">
+        <dovecot default="1" description="Dovecot IMAP/POP3 servers" class="iMSCP::Servers::Po::Dovecot::Debian">
             <package>dovecot-core</package>
             <package>dovecot-imapd</package>
             <package>dovecot-pop3d</package>
             <package>dovecot-mysql</package>
         </dovecot>
     </po>
-    <mta>
-        <postfix default="1" description="Postfix server" class="iMSCP::Servers::Mta::Postfix">
+    <mta class="iMSCP::Servers::Mta" description="SMTP server">
+        <postfix default="1" description="Postfix server" class="iMSCP::Servers::Mta::Postfix::Debian">
             <package>postfix</package>
             <package_conflict>procmail</package_conflict>
             <package_conflict>sendmail</package_conflict>
@@ -160,30 +151,30 @@
             <package_conflict>sendmail-doc</package_conflict>
         </postfix>
     </mta>
-    <ftpd>
-        <proftpd default="1" description="ProFTPD server" class="iMSCP::Servers::Ftpd::Proftpd">
+    <ftpd class="iMSCP::Servers::Ftpd" description="FTP server">
+        <proftpd default="1" description="ProFTPD server" class="iMSCP::Servers::Ftpd::Proftpd::Debian">
             <package>proftpd-basic</package>
             <package>proftpd-mod-mysql</package>
             <package_conflict>vsftpd</package_conflict>
         </proftpd>
-        <vsftpd description="VsFTPD server" class="iMSCP::Servers::Ftpd::vsftpd">
+        <vsftpd description="VsFTPD server" class="iMSCP::Servers::Ftpd::Vsftpd::Debian">
             <package rebuild_with_patches="libpam-mysql/patches" patch_sys_type="dpatch" pkg_src_name="pam-mysql">libpam-mysql</package>
             <package>vsftpd</package>
             <package_conflict>proftpd-basic</package_conflict>
         </vsftpd>
     </ftpd>
-    <named>
-        <bind default="1" description="Bind9 server" class="iMSCP::Servers::Named::bind">
+    <named class="iMSCP::Servers::Named" description="DNS server">
+        <bind default="1" description="Bind9 server" class="iMSCP::Servers::Named::Bind9::Debian">
             <package>bind9</package>
         </bind>
         <external_server description="No local DNS server" class="iMSCP::Servers::Noserver"/>
         <package>resolvconf</package>
     </named>
-    <sql>
+    <sqld class="iMSCP::Servers::Sqld" description="SQL server">
         <mysql_5.7
                 default="1"
                 description="MySQL 5.7 server"
-                class="iMSCP::Servers::Sqld::mysql"
+                class="iMSCP::Servers::Sqld::MySQL::Debian"
                 repository="http://repo.mysql.com/apt/debian/ jessie mysql-5.7"
                 repository_key_id="5072E1F5"
                 repository_key_srv="keyserver.ubuntu.com"
@@ -197,7 +188,7 @@
         </mysql_5.7>
         <mariadb_10.1
                 description="MariaDB 10.1 server"
-                class="iMSCP::Servers::Sqld::mariadb"
+                class="iMSCP::Servers::Sqld::Mariadb::Debian"
                 repository="http://mirror.netcologne.de/mariadb/repo/10.1/debian jessie main"
                 repository_key_id="1BB943DB"
                 repository_key_srv="keyserver.ubuntu.com"
@@ -213,7 +204,7 @@
         </mariadb_10.1>
         <mariadb_10.2
                 description="MariaDB 10.2 server"
-                class="iMSCP::Servers::Sqld::mariadb"
+                class="iMSCP::Servers::Sqld::Mariadb::Debian"
                 repository="http://mirror.netcologne.de/mariadb/repo/10.2/debian jessie main"
                 repository_key_id="1BB943DB"
                 repository_key_srv="keyserver.ubuntu.com"
@@ -229,7 +220,7 @@
         </mariadb_10.2>
         <percona_5.7
                 description="Percona 5.7 server"
-                class="iMSCP::Servers::Sqld::percona"
+                class="iMSCP::Servers::Sqld::Percona::Debian"
                 repository="http://repo.percona.com/apt jessie main"
                 repository_key_id="8507EFA5"
                 repository_key_srv="keyserver.ubuntu.com"
@@ -244,7 +235,7 @@
         </percona_5.7>
         <remote_server
                 description="Remote SQL server"
-                class="iMSCP::Servers::Sqld::remote"
+                class="iMSCP::Servers::Sqld::Remote::Debian"
                 pinning_package="libmysqlclient18 mysql-client-5.5 mysql-common"
                 pinning_pin="release o=Debian,n=jessie"
                 pinning_pin_priority="1001"
@@ -253,7 +244,7 @@
         </remote_server>
         <package>libmysqlclient18</package>
         <package>mysql-common</package>
-    </sql>
+    </sqld>
     <perl>
         <package>libcrypt-blowfish-perl</package>
         <package>libcrypt-cbc-perl</package>
@@ -267,8 +258,6 @@
         <package>libemail-valid-perl</package>
         <package>libfile-chmod-perl</package>
         <package>libhash-merge-perl</package>
-        <package>libjson-perl</package>
-        <package>libjson-xs-perl</package>
         <package>libmailtools-perl</package>
         <package>libmime-tools-perl</package>
         <package>libnet-libidn-perl</package>
@@ -283,7 +272,6 @@
         <package>bash</package>
         <package>bash-completion</package>
         <package>bzip2</package>
-        <package>cron</package>
         <package>curl</package>
         <package>devscripts</package>
         <package>git</package>
