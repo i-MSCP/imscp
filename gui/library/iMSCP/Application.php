@@ -278,6 +278,8 @@ class Application
             'use_only_cookies'    => 'on',
             'use_trans_sid'       => 'off',
             'strict'              => false,
+            'cookie_secure'       => true,
+            'cookie_httponly'     => true,
             'remember_me_seconds' => 0,
             'name'                => 'iMSCP_Session',
             'gc_divisor'          => 100,
