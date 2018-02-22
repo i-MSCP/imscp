@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-08 08:36+0000\n"
+"POT-Creation-Date: 2017-10-01 16:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
 "Language-Team: Japanese (Japan) (https://www.transifex.com/i-mscp/teams/576/ja_JP/)\n"
@@ -1842,12 +1842,12 @@ msgid "Details"
 msgstr "詳細"
 
 #, php-format
-msgid "Directory %s doesn't exists."
-msgstr "ディレクトリ%sは存在しません。"
+msgid "Directory %s doesn't exist."
+msgstr ""
 
 #, php-format
-msgid "Directory '%s' doesn't exists."
-msgstr "ディレクトリ '%s' は存在しません。"
+msgid "Directory '%s' doesn't exist."
+msgstr ""
 
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
@@ -2663,15 +2663,6 @@ msgid ""
 "and line breaks are allowed."
 msgstr ""
 
-msgid "Invalid city."
-msgstr ""
-
-msgid "Invalid company."
-msgstr ""
-
-msgid "Invalid country."
-msgstr ""
-
 msgid "Invalid domain name."
 msgstr "無効なドメイン名。"
 
@@ -2685,17 +2676,11 @@ msgstr "無効なEメールユーザ名です。"
 msgid "Invalid field: %s"
 msgstr ""
 
-msgid "Invalid first name."
-msgstr ""
-
 msgid "Invalid gender."
 msgstr ""
 
 msgid "Invalid group name!"
 msgstr "無効なグループ名！"
-
-msgid "Invalid last name."
-msgstr ""
 
 msgid "Invalid menu order."
 msgstr "無効なメニューの順序。"
@@ -2720,23 +2705,11 @@ msgstr "秘密鍵もしくはパスフレーズに誤りがあります。"
 msgid "Invalid service name: %s"
 msgstr ""
 
-msgid "Invalid state/province."
-msgstr ""
-
-msgid "Invalid street 1."
-msgstr ""
-
-msgid "Invalid street 2."
-msgstr ""
-
 msgid "Invalid target."
 msgstr "ターゲットが無効です。"
 
 msgid "Invalid username."
 msgstr "無効なユーザ名です。"
-
-msgid "Invalid zipcode."
-msgstr ""
 
 msgid "Kernel Version"
 msgstr "カーネルバージョン"
@@ -3125,9 +3098,6 @@ msgstr ""
 
 msgid "No anti-rootkits logs"
 msgstr "アンチルートキットログはありません"
-
-msgid "No available"
-msgstr "使用不可"
 
 msgid "No custom menu found."
 msgstr "カスタムメニューが見つかりません。"
@@ -4615,9 +4585,9 @@ msgstr ""
 
 #, php-format
 msgid ""
-"The directory %s doesn't exists. Please create that directory using your "
-"file manager."
-msgstr "ディレクトリ%sは存在しません。ファイルマネージャを使用してディレクトリを作成してください。"
+"The directory %s doesn't exist. Please create that directory using your file"
+" manager."
+msgstr ""
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -5258,9 +5228,6 @@ msgstr "リセラーIDに誤りがあります。"
 
 msgid "Wrong security code"
 msgstr "暗証番号に誤りがあります"
-
-msgid "Wrong software id."
-msgstr "ソフトウェアIDに誤りがあります。"
 
 msgid "Wrong syntax for new expire date."
 msgstr "新しい有効期限の構文に誤りがあります。"

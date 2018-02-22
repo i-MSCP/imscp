@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-08 08:36+0000\n"
+"POT-Creation-Date: 2017-10-01 16:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: hossam bahaa <hossambahaa2@ymail.com>, 2017\n"
 "Language-Team: Arabic (https://www.transifex.com/i-mscp/teams/576/ar/)\n"
@@ -1701,11 +1701,11 @@ msgid "Details"
 msgstr ""
 
 #, php-format
-msgid "Directory %s doesn't exists."
+msgid "Directory %s doesn't exist."
 msgstr ""
 
 #, php-format
-msgid "Directory '%s' doesn't exists."
+msgid "Directory '%s' doesn't exist."
 msgstr ""
 
 #, php-format
@@ -2521,15 +2521,6 @@ msgid ""
 "and line breaks are allowed."
 msgstr ""
 
-msgid "Invalid city."
-msgstr ""
-
-msgid "Invalid company."
-msgstr ""
-
-msgid "Invalid country."
-msgstr ""
-
 msgid "Invalid domain name."
 msgstr ""
 
@@ -2543,16 +2534,10 @@ msgstr ""
 msgid "Invalid field: %s"
 msgstr ""
 
-msgid "Invalid first name."
-msgstr ""
-
 msgid "Invalid gender."
 msgstr ""
 
 msgid "Invalid group name!"
-msgstr ""
-
-msgid "Invalid last name."
 msgstr ""
 
 msgid "Invalid menu order."
@@ -2578,22 +2563,10 @@ msgstr ""
 msgid "Invalid service name: %s"
 msgstr ""
 
-msgid "Invalid state/province."
-msgstr ""
-
-msgid "Invalid street 1."
-msgstr ""
-
-msgid "Invalid street 2."
-msgstr ""
-
 msgid "Invalid target."
 msgstr ""
 
 msgid "Invalid username."
-msgstr ""
-
-msgid "Invalid zipcode."
 msgstr ""
 
 msgid "Kernel Version"
@@ -2987,9 +2960,6 @@ msgid "No account found."
 msgstr ""
 
 msgid "No anti-rootkits logs"
-msgstr ""
-
-msgid "No available"
 msgstr ""
 
 msgid "No custom menu found."
@@ -4480,8 +4450,8 @@ msgstr ""
 
 #, php-format
 msgid ""
-"The directory %s doesn't exists. Please create that directory using your "
-"file manager."
+"The directory %s doesn't exist. Please create that directory using your file"
+" manager."
 msgstr ""
 
 msgid ""
@@ -5113,9 +5083,6 @@ msgid "Wrong reseller id."
 msgstr ""
 
 msgid "Wrong security code"
-msgstr ""
-
-msgid "Wrong software id."
 msgstr ""
 
 msgid "Wrong syntax for new expire date."

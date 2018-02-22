@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders>${ROOT_CONF}/logrotate.d</folders>
-    <folders export="ROOT_NGINX_CONF">${ROOT_CONF}/nginx</folders>
-    <folders>${ROOT_NGINX_CONF}/conf.d</folders>
-    <folders>${ROOT_NGINX_CONF}/sites-available</folders>
-    <folders>${ROOT_NGINX_CONF}/sites-enabled</folders>
-    <folders>${LOCAL_USR_LIB}/imscp_panel</folders>
-    <folders>${LOCAL_CONF}/imscp_panel</folders>
-    <folders>${SYSTEM_CONF}/frontend</folders>
+    <folder mode="0755">${ROOT_CONF}/logrotate.d</folder>
+    <folder mode="0755" export="ROOT_NGINX_CONF">${ROOT_CONF}/nginx</folder>
+    <folder mode="0755">${ROOT_NGINX_CONF}/conf.d</folder>
+    <folder mode="0755">${ROOT_NGINX_CONF}/sites-available</folder>
+    <folder mode="0755">${ROOT_NGINX_CONF}/sites-enabled</folder>
+    <folder>${LOCAL_USR_LIB}/imscp_panel</folder>
+    <folder>${LOCAL_CONF}/imscp_panel</folder>
+    <folder>${SYSTEM_CONF}/frontend</folder>
     <copy_config>${SYSTEM_CONF}/frontend/00_master.nginx</copy_config>
     <copy_config>${SYSTEM_CONF}/frontend/00_master_ssl.nginx</copy_config>
     <copy_config>${SYSTEM_CONF}/frontend/frontend.data.dist</copy_config>

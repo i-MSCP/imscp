@@ -67,7 +67,7 @@ sub hasListener
 
  Param string|arrayref $eventNames Event(s) that the listener listen to
  Param coderef|object $listener A CODE reference or an object implementing $eventNames method
- Param int $priority OPTIONAL Listener priority (Highest values have highest priority)
+ Param int $priority OPTIONAL Listener priority in range [-1000 .. 1000] (Highest values have highest priority)
  Param bool $once OPTIONAL If TRUE, $listener will be executed at most once for the given events
  Return int 0 on success, 1 on failure
 
@@ -115,7 +115,7 @@ sub register
 
  Param string|arrayref $eventNames Event(s) that the listener listen to
  Param coderef|object $listener A CODE reference or object implementing $eventNames method
- Param int $priority OPTIONAL Listener priority (Highest values have highest priority)
+ Param int $priority OPTIONAL Listener priority in range [-1000 .. 1000] (Highest values have highest priority)
  Return int 0 on success, 1 on failure
 
 =cut

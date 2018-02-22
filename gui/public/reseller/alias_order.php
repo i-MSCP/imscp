@@ -52,12 +52,13 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['del_i
         showBadRequestErrorPage();
     }
 
-    $db = iMSCP_Database::getInstance();
+    /** @var iMSCP_Database $db */
+    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
-        exec_query('DELETE FROM php_ini WHERE domain_id = ? AND domain_type = ?', [$id, 'als']);
-        exec_query('DELETE FROM domain_aliasses WHERE alias_id = ? AND alias_status = ?', [$id, 'ordered']);
+        exec_query("DELETE FROM php_ini WHERE domain_id = ? AND domain_type = 'als'", [$id]);
+        exec_query("DELETE FROM domain_aliasses WHERE alias_id = ? AND alias_status = 'ordered'", [$id]);
         $db->commit();
         write_log(sprintf('An alias order has been deleted by %s.', $_SESSION['user_logged']), E_USER_NOTICE);
         set_page_message('Alias order successfully deleted.', 'success');
@@ -76,23 +77,25 @@ if (!isset($_GET['action']) || $_GET['action'] !== 'activate' || !isset($_GET['a
 
 $id = intval($_GET['act_id']);
 $stmt = exec_query(
-    '
+    "
         SELECT alias_name, domain_id, email
         FROM domain_aliasses
         JOIN domain USING(domain_id)
         JOIN admin ON(admin_id = domain_admin_id)
         WHERE alias_id = ?
-        AND alias_status = ?
+        AND alias_status = 'ordered'
         AND created_by = ?
-    ',
-    [$id, 'ordered', $_SESSION['user_id']]
+    ",
+    [$id, $_SESSION['user_id']]
 );
 if (!$stmt->rowCount()) {
     showBadRequestErrorPage();
 }
 
-$row = $stmt->fetchRow();
-$db = iMSCP_Database::getInstance();
+$row = $stmt->fetch();
+
+/** @var iMSCP_Database $db */
+$db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
 
 try {
     $db->beginTransaction();
@@ -102,7 +105,7 @@ try {
         'domainAliasName' => $row['alias_name']
     ]);
 
-    exec_query('UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', ['toadd', $id]);
+    exec_query("UPDATE domain_aliasses SET alias_status = 'toadd' WHERE alias_id = ?", [$id]);
 
     $cfg = iMSCP_Registry::get('config');
 

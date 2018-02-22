@@ -140,9 +140,7 @@ function setPassword($userType, $uniqueKey, $userPassword)
  */
 function uniqueKeyExists($uniqueKey)
 {
-    return (bool)exec_query(
-        'SELECT COUNT(admin_id) FROM admin WHERE uniqkey = ?', $uniqueKey
-    )->fetchRow(PDO::FETCH_COLUMN);
+    return exec_query('SELECT 1 FROM admin WHERE uniqkey = ?', [$uniqueKey])->fetchColumn() !== false;
 }
 
 /**
@@ -167,14 +165,14 @@ function uniqkeygen()
  */
 function sendPasswordRequestValidation($adminName)
 {
-    $stmt = exec_query('SELECT admin_id, created_by, fname, lname, email FROM admin WHERE admin_name = ?', $adminName);
+    $stmt = exec_query('SELECT admin_id, created_by, fname, lname, email FROM admin WHERE admin_name = ?', [$adminName]);
 
     if (!$stmt->rowCount()) {
         set_page_message(tr('Wrong username.'), 'error');
         return false;
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
     $createdBy = $row['created_by'];
 
     if ($createdBy == 0) {
@@ -223,7 +221,7 @@ function sendPassword($uniqueKey)
           FROM admin
           WHERE uniqkey = ?
         ",
-        $uniqueKey
+        [$uniqueKey]
     );
 
     if (!$stmt->rowCount()) {
@@ -231,7 +229,7 @@ function sendPassword($uniqueKey)
         return false;
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     if ($row['admin_status'] != 'ok') {
         set_page_message(tr('Your request for password renewal cannot be honored. Please retry in few minutes.'), 'error');

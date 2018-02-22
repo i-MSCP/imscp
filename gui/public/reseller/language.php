@@ -58,8 +58,8 @@ if (!empty($_POST)) {
 
     if ($resellerCurrentLanguage != $resellerNewLanguage) {
         exec_query('UPDATE user_gui_props SET lang = ? WHERE user_id = ?', [
-                $resellerNewLanguage, $_SESSION['user_id']]
-        );
+            $resellerNewLanguage, $_SESSION['user_id']
+        ]);
 
         if (!isset($_SESSION['logged_from_id'])) {
             unset($_SESSION['user_def_lang']);

@@ -44,4 +44,3 @@
     <input name="subject" type="hidden" value="{TICKET_SUBJECT_VAL}">
     <input name="urgency" type="hidden" value="{TICKET_URGENCY_ID_VAL}">
 </form>
-<!-- EDP: tickets_list -->

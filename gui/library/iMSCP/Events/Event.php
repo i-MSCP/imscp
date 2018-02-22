@@ -68,6 +68,29 @@ class iMSCP_Events_Event implements iMSCP_Events_Description
     }
 
     /**
+     * Set the event name
+     *
+     * @param  string $name Event Name
+     * @return iMSCP_Events_Event Provides fluent interface, returns self
+     */
+    public function setName($name)
+    {
+        $this->name = (string)$name;
+
+        return $this;
+    }
+
+    /**
+     * Returns all parameters
+     *
+     * @return array|object|ArrayAccess
+     */
+    public function getParams()
+    {
+        return $this->params;
+    }
+
+    /**
      * Set parameters
      *
      * Overwrites parameters
@@ -85,16 +108,6 @@ class iMSCP_Events_Event implements iMSCP_Events_Description
         $this->params = $params;
 
         return $this;
-    }
-
-    /**
-     * Returns all parameters
-     *
-     * @return array|object|ArrayAccess
-     */
-    public function getParams()
-    {
-        return $this->params;
     }
 
     /**
@@ -123,19 +136,6 @@ class iMSCP_Events_Event implements iMSCP_Events_Description
         }
 
         return $this->params->{$name};
-    }
-
-    /**
-     * Set the event name
-     *
-     * @param  string $name Event Name
-     * @return iMSCP_Events_Event Provides fluent interface, returns self
-     */
-    public function setName($name)
-    {
-        $this->name = (string)$name;
-
-        return $this;
     }
 
     /**

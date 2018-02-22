@@ -28,7 +28,7 @@ class iMSCP_Exception_Event extends iMSCP_Events_Event
      *
      * Note: We cannot enforce type declaraction of Exception since we want be compatible with both PHP5 and PHP 7.
      *       See http://php.net/manual/fr/migration70.incompatible.php
-     * 
+     *
      * @param Exception|Throwable $exception
      */
     public function __construct($exception)

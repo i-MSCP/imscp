@@ -34,14 +34,7 @@ require_once LIBRARY_PATH . '/Functions/Tickets.php';
 
 check_login('reseller');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
-
-if (!resellerHasFeature('support') || !hasTicketSystem($_SESSION['user_id'])) {
-    redirectTo('index.php');
-}
-
-if (!isset($_GET['ticket_id'])) {
-    showBadRequestErrorPage();
-}
+resellerHasFeature('support') && isset($_GET['ticket_id']) or showBadRequestErrorPage();
 
 $ticketId = intval($_GET['ticket_id']);
 $status = getTicketStatus($ticketId);

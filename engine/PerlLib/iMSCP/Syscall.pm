@@ -26,7 +26,6 @@ package iMSCP::Syscall;
 use strict;
 use warnings;
 no warnings qw / portable /;
-use iMSCP::Debug;
 
 {
     my $unload = sub {

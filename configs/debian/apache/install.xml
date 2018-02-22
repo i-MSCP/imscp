@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders export="ROOT_APACHE_CONF">${ROOT_CONF}/apache2</folders>
-    <folders>${ROOT_APACHE_CONF}/imscp</folders>
-    <folders>${ROOT_APACHE_CONF}/imscp/before</folders>
-    <folders>${SYSTEM_CONF}/apache</folders>
+    <folder mode="0755" export="ROOT_APACHE_CONF">${ROOT_CONF}/apache2</folder>
+    <folder>${ROOT_APACHE_CONF}/imscp</folder>
+    <folder>${ROOT_APACHE_CONF}/imscp/before</folder>
+    <folder>${SYSTEM_CONF}/apache</folder>
     <copy_config>${SYSTEM_CONF}/apache/parts</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/00_imscp.conf</copy_config>
     <copy_config>${SYSTEM_CONF}/apache/00_nameserver.conf</copy_config>

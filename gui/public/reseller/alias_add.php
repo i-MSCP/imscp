@@ -36,15 +36,15 @@ function getCustomersList()
     }
 
     $stmt = exec_query(
-        '
+        "
             SELECT admin_id, admin_name, domain_id
             FROM admin
             JOIN domain ON(domain_admin_id = admin_id)
             WHERE created_by = ?
-            AND admin_status = ?
+            AND admin_status = 'ok'
             ORDER BY admin_name
-        ',
-        [$_SESSION['user_id'], 'ok']
+        ",
+        [$_SESSION['user_id']]
     );
 
     if (!$stmt->rowCount()) {
@@ -87,25 +87,22 @@ function getDomainsList($customerId)
             FROM subdomain AS t1
             JOIN domain AS t2 USING(domain_id)
             WHERE t1.domain_id = :domain_id
-            AND t1.subdomain_status = :status_ok
+            AND t1.subdomain_status = 'ok'
             AND t1.subdomain_url_forward = 'no'
             UNION ALL
             SELECT alias_name AS name, alias_mount AS mount_point
             FROM domain_aliasses WHERE domain_id = :domain_id
-            AND alias_status = :status_ok
+            AND alias_status = 'ok'
             AND url_forward = 'no'
             UNION ALL
             SELECT CONCAT(t1.subdomain_alias_name, '.', t2.alias_name) AS name, t1.subdomain_alias_mount AS mount_point
             FROM subdomain_alias AS t1
             JOIN domain_aliasses AS t2 USING(alias_id)
             WHERE t2.domain_id = :domain_id
-            AND t1.subdomain_alias_status = :status_ok
+            AND t1.subdomain_alias_status = 'ok'
             AND t1.subdomain_alias_url_forward = 'no'
         ",
-        [
-            'domain_id' => $mainDmnProps['domain_id'],
-            'status_ok' => 'ok'
-        ]
+        ['domain_id' => $mainDmnProps['domain_id']]
     );
 
     if ($stmt->rowCount()) {
@@ -207,10 +204,8 @@ function generatePage($tpl)
 /**
  * Add new domain alias
  *
- * @return bool
- * @throws Exception
  * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
+ * @return bool
  */
 function addDomainAlias()
 {
@@ -329,7 +324,9 @@ function addDomainAlias()
     }
 
     $mainDmnProps = get_domain_default_props($customerId, $_SESSION['user_id']);
-    $db = iMSCP_Database::getInstance();
+
+    /** @var iMSCP_Database $db */
+    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -345,21 +342,21 @@ function addDomainAlias()
         ]);
 
         exec_query(
-            '
+            "
                 INSERT INTO domain_aliasses (
                     domain_id, alias_name, alias_mount, alias_document_root, alias_status, alias_ip_id, url_forward,
                     type_forward, host_forward
                 ) VALUES (
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, ?, 'toadd', ?, ?, ?, ?
                 )
-            ',
+            ",
             [
-                $mainDmnProps['domain_id'], $domainAliasNameAscii, $mountPoint, $documentRoot, 'toadd',
+                $mainDmnProps['domain_id'], $domainAliasNameAscii, $mountPoint, $documentRoot,
                 $mainDmnProps['domain_ip_id'], $forwardUrl, $forwardType, $forwardHost
             ]
         );
 
-        $id = $db->insertId();
+        $id = $db->lastInsertId();
 
         // Create the phpini entry for that domain alias
         $phpini = iMSCP_PHPini::getInstance();

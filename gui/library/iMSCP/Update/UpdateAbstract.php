@@ -18,10 +18,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+namespace iMSCP\Update;
+
 /**
- * Base class for update
+ * Class UpdateAbstract
+ * @package iMSCP\Update
  */
-abstract class iMSCP_Update
+abstract class UpdateAbstract
 {
     /**
      * Last error message
@@ -29,19 +32,6 @@ abstract class iMSCP_Update
      * @var string|null
      */
     protected $lastError;
-
-    /**
-     * Set error
-     *
-     * @param string $error
-     * @return self
-     */
-    protected function setError($error)
-    {
-        $this->lastError = $error;
-
-        return $this;
-    }
 
     /**
      * Returns last error that occurred
@@ -84,4 +74,16 @@ abstract class iMSCP_Update
      * @return mixed next update info
      */
     abstract public function getNextUpdate();
+
+    /**
+     * Set error
+     *
+     * @param string $error
+     * @return self
+     */
+    protected function setError($error)
+    {
+        $this->lastError = $error;
+        return $this;
+    }
 }

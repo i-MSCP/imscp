@@ -64,7 +64,7 @@ sub boot
     setDebug( 1 ); # Set debug mode for booting time
 
     my $mode = $options->{'mode'} || 'backend';
-    debug( sprintf( 'Booting %s....', $mode ));
+    debug( sprintf( 'Booting %s...', $mode ));
 
     $self->lock() unless $options->{'nolock'};
     $self->loadMainConfig( $options );

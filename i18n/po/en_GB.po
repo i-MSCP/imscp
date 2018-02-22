@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-08 08:36+0000\n"
+"POT-Creation-Date: 2017-10-01 16:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Torsten Widmann <info@goover.de>, 2017\n"
 "Language-Team: English (United Kingdom) (https://www.transifex.com/i-mscp/teams/576/en_GB/)\n"
@@ -425,7 +425,7 @@ msgid "Admin / Users / Circular"
 msgstr "Admin / Users / Circular"
 
 msgid "Admin / Users / Customer Assignments"
-msgstr ""
+msgstr "Admin / Users / Customer Assignments"
 
 msgid "Admin / Users / Edit Reseller"
 msgstr "Admin / Users / Edit Reseller"
@@ -443,7 +443,7 @@ msgid "Admin / Users / Overview / Edit Customer"
 msgstr "Admin / Users / Overview / Edit Customer"
 
 msgid "Admin / Users / Reseller Assignments"
-msgstr ""
+msgstr "Admin / Users / Reseller Assignments"
 
 msgid "Admin / Users / Sessions"
 msgstr "Admin / Users / Sessions"
@@ -700,10 +700,10 @@ msgstr ""
 "repository?"
 
 msgid "Are you sure you want to move the selected customers?"
-msgstr ""
+msgstr "Are you sure you want to move the selected customers?"
 
 msgid "Are you sure you want to move the selected resellers?"
-msgstr ""
+msgstr "Are you sure you want to move the selected resellers?"
 
 msgid "Are you sure you want to restore the backup?"
 msgstr "Are you sure you want to restore the backup?"
@@ -808,11 +808,15 @@ msgid ""
 "Below you can move customers from a reseller to another reseller by "
 "selecting them and clicking the submit button."
 msgstr ""
+"Below you can move customers from a reseller to another reseller by "
+"selecting them and clicking the submit button."
 
 msgid ""
 "Below you can move resellers from an administrator to another administrator "
 "by selecting them and clicking the submit button."
 msgstr ""
+"Below you can move resellers from an administrator to another administrator "
+"by selecting them and clicking the submit button."
 
 msgid ""
 "Below, you can activate the external mail feature for one or many of your "
@@ -1276,15 +1280,15 @@ msgstr "Couldn't delete subdomain. An unexpected error occurred."
 
 #, php-format
 msgid "Couldn't find domain properties for customer with ID %d."
-msgstr ""
+msgstr "Couldn't find domain properties for customer with ID %d."
 
 #, php-format
 msgid "Couldn't move customer with ID %d: %s"
-msgstr ""
+msgstr "Couldn't move customer with ID %d: %s"
 
 #, php-format
 msgid "Couldn't move reseller with ID %d: %s"
-msgstr ""
+msgstr "Couldn't move reseller with ID %d: %s"
 
 #, php-format
 msgid "Couldn't validate DNS resource record: %s"
@@ -1375,7 +1379,7 @@ msgid "Customer level"
 msgstr "Customer level"
 
 msgid "Customer name"
-msgstr ""
+msgstr "Customer name"
 
 msgid "Customer successfully scheduled for addition."
 msgstr "Customer successfully scheduled for addition."
@@ -1878,12 +1882,12 @@ msgid "Details"
 msgstr "Details"
 
 #, php-format
-msgid "Directory %s doesn't exists."
-msgstr "Directory %s doesn't exists."
+msgid "Directory %s doesn't exist."
+msgstr "Directory %s doesn't exist."
 
 #, php-format
-msgid "Directory '%s' doesn't exists."
-msgstr "Directory '%s' doesn't exists."
+msgid "Directory '%s' doesn't exist."
+msgstr "Directory '%s' doesn't exist."
 
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
@@ -2351,7 +2355,7 @@ msgid "From"
 msgstr "From"
 
 msgid "From administrator"
-msgstr ""
+msgstr "From administrator"
 
 msgid "From reseller"
 msgstr "From reseller"
@@ -2710,15 +2714,6 @@ msgstr ""
 "Invalid character found in the '%s' field. Only printable ASCII characters "
 "and line breaks are allowed."
 
-msgid "Invalid city."
-msgstr "Invalid city."
-
-msgid "Invalid company."
-msgstr "Invalid company."
-
-msgid "Invalid country."
-msgstr "Invalid country."
-
 msgid "Invalid domain name."
 msgstr "Invalid domain name."
 
@@ -2732,17 +2727,11 @@ msgstr "Invalid email username."
 msgid "Invalid field: %s"
 msgstr "Invalid field: %s"
 
-msgid "Invalid first name."
-msgstr "Invalid first name."
-
 msgid "Invalid gender."
 msgstr "Invalid gender."
 
 msgid "Invalid group name!"
 msgstr "Invalid group name!"
-
-msgid "Invalid last name."
-msgstr "Invalid last name."
 
 msgid "Invalid menu order."
 msgstr "Invalid menu order."
@@ -2767,23 +2756,11 @@ msgstr "Invalid private key or passphrase."
 msgid "Invalid service name: %s"
 msgstr "Invalid service name: %s"
 
-msgid "Invalid state/province."
-msgstr "Invalid state/province."
-
-msgid "Invalid street 1."
-msgstr "Invalid street 1."
-
-msgid "Invalid street 2."
-msgstr "Invalid street 2."
-
 msgid "Invalid target."
 msgstr "Invalid target."
 
 msgid "Invalid username."
 msgstr "Invalid username."
-
-msgid "Invalid zipcode."
-msgstr "Invalid zipcode."
 
 msgid "Kernel Version"
 msgstr "Kernel Version"
@@ -3124,10 +3101,10 @@ msgid "Mount point"
 msgstr "Mount point"
 
 msgid "Move selected customers"
-msgstr ""
+msgstr "Move selected customers"
 
 msgid "Move selected resellers"
-msgstr ""
+msgstr "Move selected resellers"
 
 msgid "N/A"
 msgstr "N/A"
@@ -3178,14 +3155,11 @@ msgstr "No account found."
 msgid "No anti-rootkits logs"
 msgstr "No anti-rootkits logs"
 
-msgid "No available"
-msgstr "No available"
-
 msgid "No custom menu found."
 msgstr "No custom menu found."
 
 msgid "No customer found for the selected reseller."
-msgstr ""
+msgstr "No customer found for the selected reseller."
 
 msgid "No domain available for new software instance."
 msgstr "No domain available for new software instance."
@@ -3209,7 +3183,7 @@ msgid "No reseller available to add the permissions."
 msgstr "No reseller available to add the permissions."
 
 msgid "No reseller found for the selected administrator."
-msgstr ""
+msgstr "No reseller found for the selected administrator."
 
 msgid "No reseller with activated software installer found!"
 msgstr "No reseller with activated software installer found!"
@@ -4095,7 +4069,7 @@ msgid "Reseller's layout color successfully updated."
 msgstr "Reseller's layout colour successfully updated."
 
 msgid "Reseller(s) successfully moved."
-msgstr ""
+msgstr "Reseller(s) successfully moved."
 
 msgid "Reseller/IP usage statistics"
 msgstr "Reseller/IP usage statistics"
@@ -4688,11 +4662,11 @@ msgstr "The country name must be between %d and %d characters."
 
 #, php-format
 msgid ""
-"The directory %s doesn't exists. Please create that directory using your "
-"file manager."
+"The directory %s doesn't exist. Please create that directory using your file"
+" manager."
 msgstr ""
-"The directory %s doesn't exists. Please create that directory using your "
-"file manager."
+"The directory %s doesn't exist. Please create that directory using your file"
+" manager."
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -5340,6 +5314,9 @@ msgid ""
 " reseller are automatically extended when necessary, according the customer "
 "own limits and permissions."
 msgstr ""
+"When you move a customer to another reseller, limits and permissions of that"
+" reseller are automatically extended when necessary, according the customer "
+"own limits and permissions."
 
 msgid "Wrong or unallowed IP address."
 msgstr "Wrong or unallowed IP address."
@@ -5352,9 +5329,6 @@ msgstr "Wrong reseller id."
 
 msgid "Wrong security code"
 msgstr "Wrong security code"
-
-msgid "Wrong software id."
-msgstr "Wrong software id."
 
 msgid "Wrong syntax for new expire date."
 msgstr "Wrong syntax for new expire date."
@@ -5666,7 +5640,7 @@ msgid "You must select at least one catch-all address."
 msgstr "You must select at least one catch-all address."
 
 msgid "You must select at least one customer."
-msgstr ""
+msgstr "You must select at least one customer."
 
 msgid "You must select at least one mail account to delete."
 msgstr "You must select at least one mail account to delete."
@@ -5675,7 +5649,7 @@ msgid "You must select at least one plugin."
 msgstr "You must select at least one plugin."
 
 msgid "You must select at least one reseller."
-msgstr ""
+msgstr "You must select at least one reseller."
 
 msgid "You must specify a message."
 msgstr "You must specify a message."
@@ -5990,10 +5964,10 @@ msgid "that match with"
 msgstr "that match with"
 
 msgid "to administrator"
-msgstr ""
+msgstr "to administrator"
 
 msgid "to reseller"
-msgstr ""
+msgstr "to reseller"
 
 msgid "traffic"
 msgstr "traffic"

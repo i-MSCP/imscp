@@ -40,19 +40,19 @@ use iMSCP_Exception as iMSCPException;
  */
 function checkMailAccount($mailAccountId)
 {
-    return (bool)exec_query(
-        "
+    return exec_query(
+            "
             SELECT COUNT(t1.mail_id) FROM mail_users AS t1
             JOIN domain AS t2 USING(domain_id)
             WHERE t1.mail_id = ? AND t2.domain_admin_id = ? AND t1.mail_type NOT RLIKE ? AND t1.status = 'ok'
             AND t1.mail_auto_respond = 1
         ",
-        [
-            $mailAccountId,
-            $_SESSION['user_id'],
-            MT_NORMAL_CATCHALL . '|' . MT_SUBDOM_CATCHALL . '|' . MT_ALIAS_CATCHALL . '|' . MT_ALSSUB_CATCHALL
-        ]
-    )->fetchRow(PDO::FETCH_COLUMN);
+            [
+                $mailAccountId,
+                $_SESSION['user_id'],
+                MT_NORMAL_CATCHALL . '|' . MT_SUBDOM_CATCHALL . '|' . MT_ALIAS_CATCHALL . '|' . MT_ALSSUB_CATCHALL
+            ]
+        )->fetchColumn() > 0;
 }
 
 /**
@@ -64,7 +64,9 @@ function checkMailAccount($mailAccountId)
  */
 function deactivateAutoresponder($mailAccountId)
 {
-    exec_query("UPDATE mail_users SET status = 'tochange', mail_auto_respond = 0 WHERE mail_id = ?", $mailAccountId);
+    exec_query("UPDATE mail_users SET status = 'tochange', mail_auto_respond = 0 WHERE mail_id = ?", [
+        $mailAccountId
+    ]);
     send_request();
     write_log(sprintf('A mail autoresponder has been deactivated by %s', $_SESSION['user_logged']), E_USER_NOTICE);
     set_page_message(tr('Autoresponder has been deactivated.'), 'success');

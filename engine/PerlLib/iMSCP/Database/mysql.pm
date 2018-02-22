@@ -26,10 +26,14 @@ package iMSCP::Database::mysql;
 use strict;
 use warnings;
 use DBI;
+use File::Temp;
 use iMSCP::Debug qw/ debug /;
 use iMSCP::Execute qw / execute /;
 use POSIX ':signal_h';
 use parent 'Common::SingletonClass';
+
+# See dumpdb() below
+my $DEFAULT_MYSQL_CONFFILE;
 
 =head1 DESCRIPTION
 
@@ -223,7 +227,6 @@ sub doQuery
 {
     my ($self, $key, $query, @bindValues) = @_;
 
-    local $@;
     my $qrs = eval {
         defined $query or die 'No query provided';
         my $dbh = $self->getRawDb();
@@ -251,7 +254,6 @@ sub getDbTables
     my ($self, $dbName) = @_;
     $dbName //= $self->{'db'}->{'DATABASE_NAME'};
 
-    local $@;
     my @tables = eval {
         my $dbh = $self->getRawDb();
         local $dbh->{'RaiseError'} = 1;
@@ -279,7 +281,6 @@ sub getTableColumns
     my ($self, $tableName, $dbName) = @_;
     $dbName //= $self->{'db'}->{'DATABASE_NAME'};
 
-    local $@;
     my @columns = eval {
         my $dbh = $self->getRawDb();
         local $dbh->{'RaiseError'} = 1;
@@ -305,7 +306,7 @@ sub getTableColumns
 
 sub dumpdb
 {
-    my (undef, $dbName, $dbDumpTargetDir) = @_;
+    my ($self, $dbName, $dbDumpTargetDir) = @_;
 
     # Encode slashes as SOLIDUS unicode character
     # Encode dots as Full stop unicode character
@@ -313,11 +314,25 @@ sub dumpdb
 
     debug( sprintf( 'Dump `%s` database into %s', $dbName, $dbDumpTargetDir . '/' . $encodedDbName . '.sql' ));
 
+    unless ( $DEFAULT_MYSQL_CONFFILE ) {
+        $DEFAULT_MYSQL_CONFFILE = File::Temp->new();
+        print $DEFAULT_MYSQL_CONFFILE <<"EOF";
+[mysqldump]
+host = $self->{'db'}->{'DATABASE_HOST'}
+port = $self->{'db'}->{'DATABASE_PORT'}
+user = "@{ [ $self->{'db'}->{'DATABASE_USER'} =~ s/"/\\"/gr ] }"
+password = "@{ [ $self->{'db'}->{'DATABASE_PASSWORD'} =~ s/"/\\"/gr ] }"
+max_allowed_packet = 500M
+EOF
+        $DEFAULT_MYSQL_CONFFILE->flush();
+    }
+
     my $stderr;
     execute(
         [
-            'mysqldump', '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords', '--compress',
-            '--quote-names', '-r', "$dbDumpTargetDir/$encodedDbName.sql", '-B', $dbName
+            'mysqldump', "--defaults-file=$DEFAULT_MYSQL_CONFFILE", '--opt', '--complete-insert', '--add-drop-database',
+            '--allow-keywords', '--compress', '--quote-names', '-r', "$dbDumpTargetDir/$encodedDbName.sql",
+            '-B', $dbName
         ],
         undef,
         \ $stderr

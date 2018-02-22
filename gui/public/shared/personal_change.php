@@ -37,8 +37,10 @@ use Zend_Form as Form;
 function updatePersonalData(Form $form)
 {
     if (!$form->isValid($_POST)) {
-        foreach ($form->getMessages() as $fieldname => $msgsStack) {
-            set_page_message(reset($msgsStack), 'error');
+        foreach ($form->getMessages() as $msgsStack) {
+            foreach ($msgsStack as $msg) {
+                set_page_message(tohtml($msg), 'error');
+            }
         }
 
         return;
@@ -53,8 +55,8 @@ function updatePersonalData(Form $form)
     exec_query(
         "
             UPDATE admin
-            SET fname = ?, lname = ?, firm = ?, zip = ?, city = ?, state = ?, country = ?, email = ?, phone = ?, fax = ?,
-                street1 = ?, street2 = ?, gender = ?
+            SET fname = ?, lname = ?, firm = ?, zip = ?, city = ?, state = ?, country = ?, email = ?, phone = ?,
+                fax = ?, street1 = ?, street2 = ?, gender = ?
             WHERE admin_id = ?
         ",
         [
@@ -100,10 +102,10 @@ function generatePage(TemplateEngine $tpl, Form $form)
             FROM admin
             WHERE admin_id = ?
         ",
-        $_SESSION['user_id']
+        [$_SESSION['user_id']]
     );
 
-    if (!($data = $stmt->fetchRow())) {
+    if (!($data = $stmt->fetch())) {
         showBadRequestErrorPage();
     }
 

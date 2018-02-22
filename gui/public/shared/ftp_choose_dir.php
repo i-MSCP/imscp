@@ -26,7 +26,7 @@ use iMSCP\VirtualFileSystem as VirtualFileSystem;
 
 /**
  * Is the given directory hidden inside the mountpoints?
- * 
+ *
  * @param string $directory Directory path
  * @return bool
  */
@@ -44,7 +44,7 @@ function isHiddenDir($directory)
 
 /**
  * Is the given directory unselectable inside the mountpoints?
- * 
+ *
  * @param string $directory Directory path
  * @return bool
  */

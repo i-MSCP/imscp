@@ -25,13 +25,14 @@ package Package::Webstats;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw / debug error /;
 use iMSCP::Dialog;
 use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
+use version;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -73,7 +74,7 @@ sub registerSetupListeners
  Show dialog
 
  Param iMSCP::Dialog \%dialog
- Return int 0 or 30
+ Return int 0 or 30, die on failure
 
 =cut
 
@@ -82,37 +83,40 @@ sub showDialog
     my ($self, $dialog) = @_;
 
     my %selectedPackages;
-    @{selectedPackages}{ split ',', main::setupGetQuestion( 'WEBSTATS_PACKAGES' ) } = ();
+    @{selectedPackages}{
+        split (
+            ',', main::setupGetQuestion(
+                'WEBSTATS_PACKAGES', iMSCP::Getopt->preseed ? keys %{$self->{'PACKAGES'}} : ''
+            )
+        )
+    } = ();
 
-    my $rs = 0;
     if ( $main::reconfigure =~ /^(?:webstats|all|forced)$/ || !%selectedPackages
         || grep { !exists $self->{'PACKAGES'}->{$_} && $_ ne 'No' } keys %selectedPackages
     ) {
-        ( $rs, my $packages ) = $dialog->checkbox(
+        ( my $rs, my $packages ) = $dialog->checkbox(
             <<'EOF', [ keys %{$self->{'PACKAGES'}} ], grep { exists $self->{'PACKAGES'}->{$_} && $_ ne 'No' } keys %selectedPackages );
 
-Please select the Webstats packages you want to install
+Please select the Webstats packages you want to install:
 EOF
         %selectedPackages = ();
         @{selectedPackages}{@{$packages}} = ();
-    }
 
-    return $rs unless $rs < 30;
+        return $rs unless $rs < 30;
+    }
 
     main::setupSetQuestion( 'WEBSTATS_PACKAGES', %selectedPackages ? join ',', keys %selectedPackages : 'No' );
 
     for ( keys %{$self->{'PACKAGES'}} ) {
         next unless exists $selectedPackages{$_};
+
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        }
+        !$@ or die( $@ );
 
         return 0 unless my $subref = $package->can( 'showDialog' );
         debug( sprintf( 'Executing showDialog action on %s', $package ));
-        $rs = $subref->( $package->getInstance(), $dialog );
+        my $rs = $subref->( $package->getInstance(), $dialog );
         return $rs if $rs;
     }
 
@@ -125,7 +129,7 @@ EOF
 
  /!\ This method also triggers uninstallation of unselected Webstats packages.
 
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -139,12 +143,10 @@ sub preinstall
     my @distroPackages = ();
     for( keys %{$self->{'PACKAGES'}} ) {
         next if exists $selectedPackages{$_};
+
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        }
+        !$@ or die( $@ );
 
         if ( my $subref = $package->can( 'uninstall' ) ) {
             debug( sprintf( 'Executing uninstall action on %s', $package ));
@@ -157,7 +159,7 @@ sub preinstall
         push @distroPackages, $subref->( $package->getInstance());
     }
 
-    if ( defined $main::skippackages && !$main::skippackages && @distroPackages ) {
+    if ( @distroPackages && ( !defined $main::skippackages || !$main::skippackages ) ) {
         my $rs = $self->_removePackages( @distroPackages );
         return $rs if $rs;
     }
@@ -165,12 +167,10 @@ sub preinstall
     @distroPackages = ();
     for ( keys %{$self->{'PACKAGES'}} ) {
         next unless exists $selectedPackages{$_};
+
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        }
+        !$@ or die( $@ );
 
         if ( my $subref = $package->can( 'preinstall' ) ) {
             debug( sprintf( 'Executing preinstall action on %s', $package ));
@@ -183,7 +183,7 @@ sub preinstall
         push @distroPackages, $subref->( $package->getInstance());
     }
 
-    if ( defined $main::skippackages && !$main::skippackages && @distroPackages ) {
+    if ( @distroPackages && ( !defined $main::skippackages || !$main::skippackages ) ) {
         my $rs = $self->_installPackages( @distroPackages );
         return $rs if $rs;
     }
@@ -195,7 +195,7 @@ sub preinstall
 
  Process install tasks
 
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -208,12 +208,10 @@ sub install
 
     for ( keys %{$self->{'PACKAGES'}} ) {
         next unless exists $selectedPackages{$_} && $_ ne 'No';
+
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        }
+        !$@ or die( $@ );
 
         ( my $subref = $package->can( 'install' ) ) or next;
         debug( sprintf( 'Executing install action on %s', $package ));
@@ -228,7 +226,7 @@ sub install
 
  Process post install tasks
 
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -243,10 +241,7 @@ sub postinstall
         next unless exists $selectedPackages{$_} && $_ ne 'No';
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        }
+        !$@ or die( $@ );
 
         ( my $subref = $package->can( 'postinstall' ) ) or next;
         debug( sprintf( 'Executing postinstall action on %s', $package ));
@@ -261,7 +256,7 @@ sub postinstall
 
  Process uninstall tasks
 
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -273,10 +268,7 @@ sub uninstall
     for ( keys %{$self->{'PACKAGES'}} ) {
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        }
+        !$@ or die( $@ );
 
         if ( my $subref = $package->can( 'uninstall' ) ) {
             debug( sprintf( 'Executing uninstall action on %s', $package ));
@@ -309,7 +301,7 @@ sub getPriority
 
  Set engine permissions
 
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -322,12 +314,10 @@ sub setEnginePermissions
 
     for ( keys %{$self->{'PACKAGES'}} ) {
         next unless exists $selectedPackages{$_};
+
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        }
+        !$@ or die( $@ );
 
         ( my $subref = $package->can( 'setEnginePermissions' ) ) or next;
         debug( sprintf( 'Executing setEnginePermissions action on %s', $package ));
@@ -343,7 +333,7 @@ sub setEnginePermissions
  Process addUser tasks
 
  Param hash \%data User data
- Return int 0 on success, other on failure
+ Return int 0 on success, other or die on failure
 
 =cut
 
@@ -356,12 +346,10 @@ sub addUser
 
     for ( keys %{$self->{'PACKAGES'}} ) {
         next unless exists $selectedPackages{$_};
+
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        }
+        !$@ or die( $@ );
 
         ( my $subref = $package->can( 'addUser' ) ) or next;
         debug( sprintf( 'Executing addUser action on %s', $package ));
@@ -390,6 +378,7 @@ sub preaddDmn
 
     for ( keys %{$self->{'PACKAGES'}} ) {
         next unless exists $selectedPackages{$_};
+
         my $package = "Package::Webstats::${_}::${_}";
         eval "require $package";
         if ( $@ ) {
@@ -566,7 +555,6 @@ sub _installPackages
     local $ENV{'UCF_FORCE_CONFFNEW'} = 1;
     local $ENV{'UCF_FORCE_CONFFMISS'} = 1;
 
-    my ($aptVersion) = `apt-get --version` =~ /^apt\s+([\d.]+)/;
     my $stdout;
     my $rs = execute(
         [
@@ -574,7 +562,8 @@ sub _installPackages
             'apt-get', '--assume-yes', '--option', 'DPkg::Options::=--force-confnew',
             '--option', 'DPkg::Options::=--force-confmiss', '--option', 'Dpkg::Options::=--force-overwrite',
             ( $main::forcereinstall ? '--reinstall' : () ), '--auto-remove', '--purge', '--no-install-recommends',
-            ( ( version->parse( $aptVersion ) < version->parse( '1.1.0' ) ) ? '--force-yes' : '--allow-downgrades' ),
+            ( version->parse( `apt-get --version 2>/dev/null` =~ /^apt\s+(\d\.\d)/ ) < version->parse( '1.1' )
+                ? '--force-yes' : '--allow-downgrades' ),
             'install', @packages
         ],
         ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef ),

@@ -46,7 +46,7 @@ function client_getEmailAccountData($mailId)
         showBadRequestErrorPage();
     }
 
-    return $stmt->fetchRow();
+    return $stmt->fetch();
 }
 
 /**
@@ -142,7 +142,7 @@ function client_editMailAccount()
             $customerMailboxesQuotaSumBytes = exec_query(
                 'SELECT IFNULL(SUM(quota), 0) FROM mail_users WHERE mail_id <> ? AND domain_id = ?',
                 [$mailData['mail_id'], $mainDmnProps['domain_id']]
-            )->fetchRow(PDO::FETCH_COLUMN);
+            )->fetchColumn();
 
             if ($customerMailboxesQuotaSumBytes >= $customerEmailQuotaLimitBytes) {
                 showBadRequestErrorPage(); # Customer should never goes here excepted if it try to bypass js code
@@ -266,7 +266,7 @@ function client_generatePage($tpl)
     $customerMailboxesQuotaSumBytes = exec_query(
         'SELECT IFNULL(SUM(quota), 0) FROM mail_users WHERE mail_id <> ? AND domain_id = ?',
         [$mailId, $mainDmnProps['domain_id']]
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetchColumn();
 
     $customerEmailQuotaLimitBytes = filter_digits($mainDmnProps['mail_quota'], 0);
 

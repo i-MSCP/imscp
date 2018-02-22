@@ -28,8 +28,7 @@
  * @param string $action Action to be done (activate|deactivate)
  * @param int $domainId Domain unique identifier
  * @param string $domainType Domain type
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
+ * @return void
  */
 function updateExternalMailFeature($action, $domainId, $domainType)
 {
@@ -128,22 +127,21 @@ function generateItem($tpl, $externalMail, $domainId, $domainName, $status, $typ
  */
 function generateItemList($tpl, $domainId, $domainName)
 {
-    $stmt = exec_query('SELECT domain_status, external_mail FROM domain WHERE domain_id = ?', $domainId);
-    $data = $stmt->fetchRow();
+    $stmt = exec_query('SELECT domain_status, external_mail FROM domain WHERE domain_id = ?', [$domainId]);
+    $data = $stmt->fetch();
 
     generateItem($tpl, $data['external_mail'], $domainId, $domainName, $data['domain_status'], 'dmn');
 
     $tpl->parse('ITEM', '.item');
-
     $stmt = exec_query(
-        'SELECT alias_id, alias_name, alias_status, external_mail FROM domain_aliasses WHERE domain_id = ?', $domainId
+        'SELECT alias_id, alias_name, alias_status, external_mail FROM domain_aliasses WHERE domain_id = ?', [$domainId]
     );
 
     if (!$stmt->rowCount()) {
         return;
     }
 
-    while ($data = $stmt->fetchRow()) {
+    while ($data = $stmt->fetch()) {
         generateItem($tpl, $data['external_mail'], $data['alias_id'], $data['alias_name'], $data['alias_status'], 'als');
         $tpl->parse('ITEM', '.item');
     }

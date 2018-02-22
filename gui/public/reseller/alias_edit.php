@@ -44,17 +44,17 @@ function _reseller_getAliasData($domainAliasId)
                 JOIN domain AS t2 USING(domain_id)
                 JOIN admin AS t3 ON(admin_id = domain_admin_id)
                 WHERE t1.alias_id = ?
-                AND t1.alias_status = ?
+                AND t1.alias_status = 'ok'
                 AND t3.created_by = ?
             ",
-            [$domainAliasId, 'ok', $_SESSION['user_id']]
+            [$domainAliasId, $_SESSION['user_id']]
         );
 
         if (!$stmt->rowCount()) {
             return false;
         }
 
-        $domainAliasData = $stmt->fetchRow(PDO::FETCH_ASSOC);
+        $domainAliasData = $stmt->fetch();
         $domainAliasData['alias_name_utf8'] = decode_idna($domainAliasData['alias_name']);
     }
 
@@ -134,7 +134,7 @@ function reseller_generatePage($tpl)
     ]);
 
     // Cover the case where URL forwarding feature is activated and that the
-    // default /htdocs directory doesn't exists yet
+    // default /htdocs directory doesn't exist yet
     if ($domainAliasData['url_forward'] != 'no') {
         $vfs = new VirtualFileSystem($_SESSION['user_logged'], $domainAliasData['alias_mount']);
 
@@ -252,12 +252,12 @@ function reseller_editDomainAlias()
     ]);
 
     exec_query(
-        '
+        "
           UPDATE domain_aliasses
-          SET alias_document_root = ?, url_forward = ?, type_forward = ?, host_forward = ?, alias_status = ?
+          SET alias_document_root = ?, url_forward = ?, type_forward = ?, host_forward = ?, alias_status = 'tochange'
           WHERE alias_id = ?
-        ',
-        [$documentRoot, $forwardUrl, $forwardType, $forwardHost, 'tochange', $domainAliasId]
+        ",
+        [$documentRoot, $forwardUrl, $forwardType, $forwardHost, $domainAliasId]
     );
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditDomainAlias, [

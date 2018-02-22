@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-08 08:36+0000\n"
+"POT-Creation-Date: 2017-10-01 16:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Tommaso <redmail@hotmail.it>, 2017\n"
 "Language-Team: Italian (Italy) (https://www.transifex.com/i-mscp/teams/576/it_IT/)\n"
@@ -428,7 +428,7 @@ msgid "Admin / Users / Circular"
 msgstr "Admin / Utenti / Circolare"
 
 msgid "Admin / Users / Customer Assignments"
-msgstr ""
+msgstr "Admin / Utenti / Assegna clienti"
 
 msgid "Admin / Users / Edit Reseller"
 msgstr "Admin / Utenti / Edita Rivenditore"
@@ -446,7 +446,7 @@ msgid "Admin / Users / Overview / Edit Customer"
 msgstr "Admin / Utenti / Panoramica / Modifica Cliente"
 
 msgid "Admin / Users / Reseller Assignments"
-msgstr ""
+msgstr "Admin / Utenti / Assegna rivenditori"
 
 msgid "Admin / Users / Sessions"
 msgstr "Admin / Utenti / Sessioni"
@@ -707,10 +707,10 @@ msgid ""
 msgstr "Sicuro che vuoi installare questo pacchetto dal tuo repository Web?"
 
 msgid "Are you sure you want to move the selected customers?"
-msgstr ""
+msgstr "Sicuro di voler spostare il cliente selezionato?"
 
 msgid "Are you sure you want to move the selected resellers?"
-msgstr ""
+msgstr "Sicuro di voler spostare il rivenditore selezionato?"
 
 msgid "Are you sure you want to restore the backup?"
 msgstr "Siete sicuri di voler ripristinare il backup?"
@@ -815,11 +815,15 @@ msgid ""
 "Below you can move customers from a reseller to another reseller by "
 "selecting them and clicking the submit button."
 msgstr ""
+"Di seguito puoi spostare i clienti da un rivenditore ad un altro rivenditore"
+" selezionandoli e facendo clic sul pulsante Invia."
 
 msgid ""
 "Below you can move resellers from an administrator to another administrator "
 "by selecting them and clicking the submit button."
 msgstr ""
+"Di seguito puoi spostare i rivenditori da un amministratore a un altro "
+"amministratore selezionandoli e facendo clic sul pulsante Invia."
 
 msgid ""
 "Below, you can activate the external mail feature for one or many of your "
@@ -1311,15 +1315,15 @@ msgstr ""
 
 #, php-format
 msgid "Couldn't find domain properties for customer with ID %d."
-msgstr ""
+msgstr "Impossibile trovare le proprietà del dominio del cliente con ID %d."
 
 #, php-format
 msgid "Couldn't move customer with ID %d: %s"
-msgstr ""
+msgstr "Impossibile spostare il cliente con ID %d : %s"
 
 #, php-format
 msgid "Couldn't move reseller with ID %d: %s"
-msgstr ""
+msgstr "Impossibile spostare il rivenditore con ID %d :%s"
 
 #, php-format
 msgid "Couldn't validate DNS resource record: %s"
@@ -1411,7 +1415,7 @@ msgid "Customer level"
 msgstr "Livello cliente"
 
 msgid "Customer name"
-msgstr ""
+msgstr "Nome cliente"
 
 msgid "Customer successfully scheduled for addition."
 msgstr ""
@@ -1914,11 +1918,11 @@ msgid "Details"
 msgstr "Dettagli"
 
 #, php-format
-msgid "Directory %s doesn't exists."
+msgid "Directory %s doesn't exist."
 msgstr "La directory %s non esiste."
 
 #, php-format
-msgid "Directory '%s' doesn't exists."
+msgid "Directory '%s' doesn't exist."
 msgstr "La directory '%s' non esiste."
 
 #, php-format
@@ -2392,7 +2396,7 @@ msgid "From"
 msgstr "Da"
 
 msgid "From administrator"
-msgstr ""
+msgstr "Dall' amministratore"
 
 msgid "From reseller"
 msgstr "Dal rivenditore"
@@ -2758,15 +2762,6 @@ msgstr ""
 "Carattere non valido trovato nel campo '%s' . Sono consentiti solo caratteri"
 " ASCII stampabili e interruzioni di riga."
 
-msgid "Invalid city."
-msgstr "Città non valida"
-
-msgid "Invalid company."
-msgstr "Nome azienda non valido"
-
-msgid "Invalid country."
-msgstr "Nazione non valida"
-
 msgid "Invalid domain name."
 msgstr "Nome dominio non valido."
 
@@ -2780,17 +2775,11 @@ msgstr "Email utente non valido."
 msgid "Invalid field: %s"
 msgstr "Campo %s non valido."
 
-msgid "Invalid first name."
-msgstr "Nome non valido."
-
 msgid "Invalid gender."
 msgstr "Sesso non valido"
 
 msgid "Invalid group name!"
 msgstr "Nome gruppo non valido!"
-
-msgid "Invalid last name."
-msgstr "Cognome non valido"
 
 msgid "Invalid menu order."
 msgstr "Ordine del menù non valido."
@@ -2815,23 +2804,11 @@ msgstr "Private key o passphrase non valida"
 msgid "Invalid service name: %s"
 msgstr "Il nome '%s' non è un nome di servizio valido."
 
-msgid "Invalid state/province."
-msgstr "Stato/provincia non valido"
-
-msgid "Invalid street 1."
-msgstr "Indirizzo 1 non valido"
-
-msgid "Invalid street 2."
-msgstr "Indirizzo 2 non valido."
-
 msgid "Invalid target."
 msgstr "Obiettivo non valido."
 
 msgid "Invalid username."
 msgstr "Nome utente non valido."
-
-msgid "Invalid zipcode."
-msgstr "Cap non valido"
 
 msgid "Kernel Version"
 msgstr "Versione del kernel"
@@ -3184,10 +3161,10 @@ msgid "Mount point"
 msgstr "Mount point"
 
 msgid "Move selected customers"
-msgstr ""
+msgstr "Spostare i clienti selezionati"
 
 msgid "Move selected resellers"
-msgstr ""
+msgstr "Spostare i rivenditori selezionati"
 
 msgid "N/A"
 msgstr "N/D"
@@ -3240,14 +3217,11 @@ msgstr "Nessun account cliente trovato."
 msgid "No anti-rootkits logs"
 msgstr "Messun logs Anti-Rootkits"
 
-msgid "No available"
-msgstr "No disponibile"
-
 msgid "No custom menu found."
 msgstr "Nessun menù personalizzato trovato."
 
 msgid "No customer found for the selected reseller."
-msgstr ""
+msgstr "Nessun cliente trovate per il rivenditore selezionato"
 
 msgid "No domain available for new software instance."
 msgstr "Nessun dominio disponibile per l'istanza del nuovo software."
@@ -3271,7 +3245,7 @@ msgid "No reseller available to add the permissions."
 msgstr "Nessun rivenditore disponibile per aggiungere i permessi."
 
 msgid "No reseller found for the selected administrator."
-msgstr ""
+msgstr "Nessun rivenditore trovato per amministratore selezionato"
 
 msgid "No reseller with activated software installer found!"
 msgstr "Nessun rivenditore trovato con un'installazione software attiva!"
@@ -4172,7 +4146,7 @@ msgid "Reseller's layout color successfully updated."
 msgstr "Layout del rivenditore aggiornato con successo."
 
 msgid "Reseller(s) successfully moved."
-msgstr ""
+msgstr "Rivenditore(i) spostato(i) con successo"
 
 msgid "Reseller/IP usage statistics"
 msgstr "Statistiche di utilizzo Rivenditori/IP"
@@ -4776,8 +4750,8 @@ msgstr "La nazione deve essere compreso tra %de %d caratteri."
 
 #, php-format
 msgid ""
-"The directory %s doesn't exists. Please create that directory using your "
-"file manager."
+"The directory %s doesn't exist. Please create that directory using your file"
+" manager."
 msgstr "La directory %s non esiste. Si prega di crearla."
 
 msgid ""
@@ -5449,6 +5423,9 @@ msgid ""
 " reseller are automatically extended when necessary, according the customer "
 "own limits and permissions."
 msgstr ""
+"Quando sposti un cliente ad un altro rivenditore, i limiti e le "
+"autorizzazioni di tale rivenditore vengono automaticamente estesi quando "
+"necessario, in base ai limiti e alle autorizzazioni del cliente."
 
 msgid "Wrong or unallowed IP address."
 msgstr "Indirizzo IP errato oppure non autorizzato."
@@ -5461,9 +5438,6 @@ msgstr "ID rivenditore sbagliato."
 
 msgid "Wrong security code"
 msgstr "Codice si sicurezza non valido"
-
-msgid "Wrong software id."
-msgstr "ID software errato."
 
 msgid "Wrong syntax for new expire date."
 msgstr "Sintassi sbagliata per la nuova data di scadenza."
@@ -5776,7 +5750,7 @@ msgid "You must select at least one catch-all address."
 msgstr "È necessario selezionare almeno un indirizzo catch-all."
 
 msgid "You must select at least one customer."
-msgstr ""
+msgstr "È necessario selezionare almeno un cliente."
 
 msgid "You must select at least one mail account to delete."
 msgstr ""
@@ -5787,7 +5761,7 @@ msgid "You must select at least one plugin."
 msgstr "È necessario selezionare almeno un plugin."
 
 msgid "You must select at least one reseller."
-msgstr ""
+msgstr "È necessario selezionare almeno un rivenditore."
 
 msgid "You must specify a message."
 msgstr "Devi specificare un messaggio."
@@ -6107,10 +6081,10 @@ msgid "that match with"
 msgstr "that match with"
 
 msgid "to administrator"
-msgstr ""
+msgstr "all amministratore"
 
 msgid "to reseller"
-msgstr ""
+msgstr "al cliente"
 
 msgid "traffic"
 msgstr "traffico"

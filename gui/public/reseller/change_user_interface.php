@@ -42,11 +42,11 @@ if (isset($_SESSION['user_id']) && isset($_GET['to_id'])) {
     } else {
         // reseller to customer
         $fromUserId = $_SESSION['user_id'];
-        $stmt = exec_query(
-            'SELECT COUNT(admin_id) FROM admin WHERE admin_id = ? AND created_by = ?', [$toUserId, $fromUserId]
-        );
-        
-        if ($stmt->fetchRow(PDO::FETCH_COLUMN) == 0) {
+        $stmt = exec_query('SELECT COUNT(admin_id) FROM admin WHERE admin_id = ? AND created_by = ?', [
+            $toUserId, $fromUserId
+        ]);
+
+        if ($stmt->fetchColumn() < 1) {
             showBadRequestErrorPage();
         }
     }

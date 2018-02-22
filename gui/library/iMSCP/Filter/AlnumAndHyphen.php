@@ -44,12 +44,12 @@ class iMSCP_Filter_AlnumAndHyphen extends Zend_Filter_Alnum
             $pattern = '/[^a-zA-Z0-9' . $whiteSpace . '-]/';
         } else if (self::$_meansEnglishAlphabet) {
             //The Alphabet means english alphabet.
-            $pattern = '/[^a-zA-Z0-9'  . $whiteSpace . '-]/u';
+            $pattern = '/[^a-zA-Z0-9' . $whiteSpace . '-]/u';
         } else {
             //The Alphabet means each language's alphabet.
             $pattern = '/[^\p{L}\p{N}' . $whiteSpace . '-]/u';
         }
 
-        return preg_replace($pattern, '', (string) $value);
+        return preg_replace($pattern, '', (string)$value);
     }
 }

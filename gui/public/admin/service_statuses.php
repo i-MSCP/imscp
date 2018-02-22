@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Events as Events;
+use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Services as Services;
 
@@ -61,8 +61,8 @@ function generatePage(TemplateEngine $tpl)
         ]);
         $tpl->parse('SERVICE_STATUS', '.service_status');
     }
-    
-    if(isset($_GET['refresh'])) {
+
+    if (isset($_GET['refresh'])) {
         set_page_message('Service statuses were refreshed.', 'success');
         redirectTo('service_statuses.php');
     }

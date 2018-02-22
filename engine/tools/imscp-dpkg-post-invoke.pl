@@ -37,6 +37,9 @@ use iMSCP::Bootstrapper;
 use iMSCP::Getopt;
 use iMSCP::Servers;
 use iMSCP::Packages;
+use POSIX qw /locale_h /;
+
+setlocale(LC_MESSAGES, "C.UTF-8");
 
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';

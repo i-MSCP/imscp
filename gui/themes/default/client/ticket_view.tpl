@@ -44,4 +44,3 @@
         <input name="urgency" type="hidden" value="{TICKET_URGENCY_ID_VAL}">
     </div>
 </form>
-<!-- EDP: tickets_list -->

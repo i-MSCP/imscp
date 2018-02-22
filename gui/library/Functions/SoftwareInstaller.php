@@ -45,14 +45,14 @@ function update_existing_client_installations_res_upload(
           WHERE domain_software_allowed = 'yes'
           AND created_by = ?
         ",
-        $resellerId
+        [$resellerId]
     );
 
     if (!$stmt->rowCount()) {
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         if ($softwareDeleted === false) {
             exec_query(
                 '
@@ -66,10 +66,9 @@ function update_existing_client_installations_res_upload(
             continue;
         }
 
-        exec_query(
-            'UPDATE web_software_inst SET software_res_del = 1 WHERE software_id = ? AND domain_id = ?',
-            [$softwareId, $row['domain_id']]
-        );
+        exec_query('UPDATE web_software_inst SET software_res_del = 1 WHERE software_id = ? AND domain_id = ?', [
+            $softwareId, $row['domain_id']
+        ]);
     }
 }
 
@@ -91,14 +90,14 @@ function update_existing_client_installations_sw_depot($softwareId, $softwareMas
           WHERE domain_software_allowed = 'yes'
           AND created_by = ?
         ",
-        $resellerId
+        [$resellerId]
     );
 
     if (!$stmt->rowCount()) {
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         exec_query(
             '
               UPDATE web_software_inst
@@ -122,8 +121,10 @@ function update_existing_client_installations_sw_depot($softwareId, $softwareMas
  */
 function send_activated_sw($resellerId, $softwarePackage, $softwareId)
 {
-    $stmt = exec_query('SELECT admin_name, created_by, fname, lname, email FROM admin WHERE admin_id = ?', $resellerId);
-    $resellerData = $stmt->fetchRow();
+    $stmt = exec_query('SELECT admin_name, created_by, fname, lname, email FROM admin WHERE admin_id = ?', [
+        $resellerId
+    ]);
+    $resellerData = $stmt->fetch();
     $ret = send_mail([
         'mail_id'      => 'software-installer-activate-sw',
         'fname'        => $resellerData['fname'],
@@ -167,8 +168,10 @@ i-MSCP Mailer.'),
  */
 function send_deleted_sw($resellerId, $softwarePackage, $softwareId, $adminMessage)
 {
-    $stmt = exec_query('SELECT admin_name, created_by, fname, lname, email FROM admin WHERE admin_id = ?', $resellerId);
-    $resellerData = $stmt->fetchRow();
+    $stmt = exec_query('SELECT admin_name, created_by, fname, lname, email FROM admin WHERE admin_id = ?', [
+        $resellerId
+    ]);
+    $resellerData = $stmt->fetch();
     $ret = send_mail([
         'mail_id'      => 'software-installer-delete-sw',
         'fname'        => $resellerData['fname'],
@@ -228,7 +231,7 @@ function get_avail_software($tpl)
     );
 
     if ($stmt->rowCount()) {
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             $importURL = "software_import.php?id=" . $row['id'];
             $actURL = "software_activate.php?id=" . $row['id'];
             $delURL = "software_delete.php?id=" . $row['id'];
@@ -283,10 +286,10 @@ function get_avail_softwaredepot($tpl)
     );
 
     if ($stmt->rowCount()) {
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             if ($row['swstatus'] == 'ok' || $row['swstatus'] == 'ready') {
                 if ($row['swstatus'] == 'ready') {
-                    exec_query("UPDATE web_software SET software_status = 'ok' WHERE software_id = ?", $row['id']);
+                    exec_query("UPDATE web_software SET software_status = 'ok' WHERE software_id = ?", [$row['id']]);
                     set_page_message(tr('Package installed successfully!'), 'success');
                 }
 
@@ -394,13 +397,13 @@ function get_avail_softwaredepot($tpl)
                               JOIN web_software AS t2 ON(t2.reseller_id = t1.admin_id)
                               WHERE t2.software_id = ?
                             ",
-                            substr(strrchr($row['swstatus'], '_'), 1)
+                            [substr(strrchr($row['swstatus'], '_'), 1)]
                         );
                         if ($stmt2->rowCount()) {
                             set_page_message(
                                 tr(
                                     'This package already exists in the depot of the reseller "%1$s"!',
-                                    $stmt2->fetchRow(PDO::FETCH_COLUMN)
+                                    $stmt2->fetchColumn()
                                 ),
                                 'warning'
                             );
@@ -409,7 +412,7 @@ function get_avail_softwaredepot($tpl)
 
                     $cfg = Registry::get('config');
                     @unlink(utils_normalizePath($cfg['GUI_APS_DEPOT_DIR'] . '/' . $row['filename'] . '-' . $row['id'] . '.tar.gz'));
-                    exec_query('DELETE FROM web_software WHERE software_id = ?', $row['id']);
+                    exec_query('DELETE FROM web_software WHERE software_id = ?', [$row['id']]);
                 }
             }
 
@@ -447,11 +450,11 @@ function get_installed_res_software($tpl, $resellerId)
           AND a.software_status = 'ok'
           ORDER BY a.software_type ASC, a.software_name ASC
         ",
-        $resellerId
+        [$resellerId]
     );
 
     if ($stmt->rowCount()) {
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             $stmt2 = exec_query(
                 "
                   SELECT domain.domain_id AS did, domain.domain_name AS domain, web_software_inst.domain_id AS wdid,
@@ -461,14 +464,14 @@ function get_installed_res_software($tpl, $resellerId)
                   AND web_software.software_id = web_software_inst.software_id
                   AND domain.domain_id = web_software_inst.domain_id
                 ",
-                $row['id']
+                [$row['id']]
             );
 
             if ($stmt2->rowCount()) {
                 $swInstalledDomain = tr('This package is installed on following domain(s):');
                 $swInstalledDomain .= "<ul>";
 
-                while ($row2 = $stmt->fetchRow()) {
+                while ($row2 = $stmt->fetch()) {
                     $swInstalledDomain .= "<li>" . $row2['domain'] . "</li>";
                 }
 
@@ -519,7 +522,7 @@ function get_installed_res_software($tpl, $resellerId)
         return $stmt->rowCount();
     }
 
-    $stmt = exec_query('SELECT admin_name FROM admin WHERE admin_id = ?', $resellerId);
+    $stmt = exec_query('SELECT admin_name FROM admin WHERE admin_id = ?', [$resellerId]);
 
     if (!$stmt->rowCount()) {
         set_page_message(tr('Wrong reseller id.'), 'error');
@@ -528,7 +531,7 @@ function get_installed_res_software($tpl, $resellerId)
 
     $tpl->assign([
         'NO_SOFTWAREDEPOT'   => tr('No software available'),
-        'TR_SOFTWARE_DEPOT'  => tr('%1$ss - Software', $stmt->fetchRow(PDO::FETCH_COLUMN)),
+        'TR_SOFTWARE_DEPOT'  => tr('%1$ss - Software', $stmt->fetchColumn()),
         'TR_SOFTWARE_IMPORT' => tr('Depot import'),
         'TR_SOFTWARE_DELETE' => tr('Delete')
     ]);
@@ -558,11 +561,11 @@ function get_reseller_software($tpl)
     );
 
     if ($stmt->rowCount()) {
-        while ($row = $stmt->fetchRow()) {
-            $stmt2 = exec_query('SELECT software_id FROM web_software WHERE reseller_id = ?', $row['reseller_id']);
+        while ($row = $stmt->fetch()) {
+            $stmt2 = exec_query('SELECT software_id FROM web_software WHERE reseller_id = ?', [$row['reseller_id']]);
 
             $software_ids = [];
-            while ($data = $stmt2->fetchRow()) {
+            while ($data = $stmt2->fetch()) {
                 $software_ids[] = $data['software_id'];
             }
 
@@ -574,18 +577,18 @@ function get_reseller_software($tpl)
                   AND software_depot = 'yes'
                   AND reseller_id = ?
                 ",
-                $row['reseller_id']
-            )->fetchRow(PDO::FETCH_COLUMN);
+                [$row['reseller_id']]
+            )->fetchColumn();
 
             $countWaiting = exec_query(
                 "SELECT count(software_id) FROM web_software WHERE software_active = 0 AND reseller_id = ?",
-                $row['reseller_id']
-            )->fetchRow(PDO::FETCH_COLUMN);
+                [$row['reseller_id']]
+            )->fetchColumn();
 
             $countActivated = exec_query(
                 "SELECT count(software_id) FROM web_software WHERE software_active = 1 AND reseller_id = ?",
-                $row['reseller_id']
-            )->fetchRow(PDO::FETCH_COLUMN);
+                [$row['reseller_id']]
+            )->fetchColumn();
 
             if (count($software_ids) > 0) {
                 $swInUse = execute_query(
@@ -594,7 +597,7 @@ function get_reseller_software($tpl)
                       FROM web_software_inst
                       WHERE software_id IN (" . implode(',', $software_ids) . ") AND software_status = 'ok'
                     "
-                )->fetchRow(PDO::FETCH_COLUMN);
+                )->fetchColumn();
             } else {
                 $swInUse = 0;
             }
@@ -638,16 +641,15 @@ function get_reseller_rights($tpl, $softwareId)
           AND a.software_depot = 'yes'
           AND a.software_master_id = ?
         ",
-        $softwareId
+        [$softwareId]
     );
 
     if ($stmt->rowCount()) {
-        while ($row = $stmt->fetchRow()) {
-            $stmt2 = exec_query('SELECT admin_name FROM admin WHERE admin_id = ?', $row['rights_add_by']);
+        while ($row = $stmt->fetch()) {
+            $stmt2 = exec_query('SELECT admin_name FROM admin WHERE admin_id = ?', [$row['rights_add_by']]);
             $tpl->assign([
                 'RESELLER'          => $row['reseller'],
-                'ADMINISTRATOR'     => ($stmt2->rowCount())
-                    ? $stmt2->fetchRow(PDO::FETCH_COLUMN) : tr('Admin not available'),
+                'ADMINISTRATOR'     => ($stmt2->rowCount()) ? $stmt2->fetchColumn() : tr('Admin not available'),
                 'TR_REMOVE_RIGHT'   => tr('Remove'),
                 'TR_MESSAGE_REMOVE' => tr('Are you sure to remove the permissions ?'),
                 'REMOVE_RIGHT_LINK' => "software_change_rights.php?id=" . $row['software_master_id'] . "&reseller_id="
@@ -690,7 +692,7 @@ function get_reseller_list($tpl, $softwareId)
     if ($stmt->rowCount()) {
         $resellerCount = 0;
 
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             $stmt2 = exec_query(
                 'SELECT reseller_id FROM web_software WHERE reseller_id = ? AND software_master_id = ?',
                 [$row['reseller_id'], $softwareId]
@@ -745,12 +747,12 @@ function get_reseller_list($tpl, $softwareId)
  */
 function send_new_sw_upload($resellerId, $softwarePackage, $softwareId)
 {
-    $stmt = exec_query('SELECT created_by FROM admin WHERE admin_id = ?', $resellerId);
-    $resellerData = $stmt->fetchRow();
-    $stmt = exec_query(
-        'SELECT admin_name, fname, lname, email FROM admin WHERE admin_id = ?', $resellerData['created_by']
-    );
-    $adminData = $stmt->fetchRow();
+    $stmt = exec_query('SELECT created_by FROM admin WHERE admin_id = ?', [$resellerId]);
+    $resellerData = $stmt->fetch();
+    $stmt = exec_query('SELECT admin_name, fname, lname, email FROM admin WHERE admin_id = ?', [
+        $resellerData['created_by']
+    ]);
+    $adminData = $stmt->fetch();
     $ret = send_mail([
         'mail_id'      => 'software-installer-upload-sw',
         'fname'        => $adminData['fname'],
@@ -794,9 +796,8 @@ i-MSCP Mailer'),
 function ask_reseller_is_allowed_web_depot($userId)
 {
     return exec_query(
-        'SELECT websoftwaredepot_allowed FROM reseller_props WHERE reseller_id = ?', $userId
-    )->fetchRow(PDO::FETCH_COLUMN);
-
+        'SELECT websoftwaredepot_allowed FROM reseller_props WHERE reseller_id = ?', [$userId]
+    )->fetchColumn();
 }
 
 /**
@@ -810,8 +811,8 @@ function get_avail_software_reseller($tpl, $userId)
 {
     ini_set('display_errors', 1);
     $softwareAllowed = exec_query(
-        'SELECT software_allowed FROM reseller_props WHERE reseller_id = ?', $userId
-    )->fetchRow(PDO::FETCH_COLUMN);
+        'SELECT software_allowed FROM reseller_props WHERE reseller_id = ?', [$userId]
+    )->fetchColumn();
 
     if ($softwareAllowed == 'yes') {
         $stmt = exec_query(
@@ -823,14 +824,14 @@ function get_avail_software_reseller($tpl, $userId)
               FROM web_software
               WHERE reseller_id = ?
             ",
-            $userId
+            [$userId]
         );
 
         if ($stmt->rowCount()) {
-            while ($row = $stmt->fetchRow()) {
+            while ($row = $stmt->fetch()) {
                 if ($row['swstatus'] == 'ok' || $row['swstatus'] == 'ready') {
                     if ($row['swstatus'] == 'ready') {
-                        exec_query("UPDATE web_software SET software_status = 'ok' WHERE software_id = ?", $row['id']);
+                        exec_query("UPDATE web_software SET software_status = 'ok' WHERE software_id = ?", [$row['id']]);
                         send_new_sw_upload($userId, $row['filename'] . '.tar.gz', $row['id']);
                         set_page_message(
                             tr('Package installed successfully... Awaiting release from admin!'), 'success'
@@ -838,7 +839,6 @@ function get_avail_software_reseller($tpl, $userId)
                     }
 
                     $url = "software_delete.php?id=" . $row['id'];
-
                     $stmt2 = exec_query(
                         "
                           SELECT domain.domain_id AS did, domain.domain_name AS domain,
@@ -849,14 +849,14 @@ function get_avail_software_reseller($tpl, $userId)
                           AND web_software.software_id = web_software_inst.software_id
                           AND domain.domain_id = web_software_inst.domain_id
                         ",
-                        $row['id']
+                        [$row['id']]
                     );
 
                     if ($stmt2->rowCount()) {
                         $swInstalledDomain = tr('This software is installed on following domain(s):');
                         $swInstalledDomain .= '<ul>';
 
-                        while ($row2 = $stmt2->fetchRow()) {
+                        while ($row2 = $stmt2->fetch()) {
                             $swInstalledDomain .= '<li>' . $row2['domain'] . '</li>';
                         }
 
@@ -947,10 +947,10 @@ function get_avail_software_reseller($tpl, $userId)
 
                         $cfg = Registry::get('config');
                         @unlink(utils_normalizePath(
-                            $cfg['GUI_APS_DIR'] . '/' . $row['resellerid'] . '/' . $row['filename'] . '-'
-                            . $row['id'] . '.tar.gz')
+                                $cfg['GUI_APS_DIR'] . '/' . $row['resellerid'] . '/' . $row['filename'] . '-'
+                                . $row['id'] . '.tar.gz')
                         );
-                        exec_query('DELETE FROM web_software WHERE software_id = ?', $row['id']);
+                        exec_query('DELETE FROM web_software WHERE software_id = ?', [$row['id']]);
                     }
                 }
                 $tpl->parse('LIST_SOFTWARE', '.list_software');
@@ -998,7 +998,7 @@ function gen_user_software_action($softwareId, $dmnId, $tpl)
         $software_status = 'not installed';
         $software_icon = 'edit';
     } else {
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
 
         if ($row['software_status'] == 'ok') {
             $software_status = 'installed';
@@ -1085,7 +1085,7 @@ function gen_software_list($tpl, $domainId, $resellerId)
             'DEL_SOFTWARE_SUPPORT' => ''
         ]);
     } else {
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             if ($row['software_status'] == 'ok') {
                 $delsoftware_status = 'installed';
                 $del_software_action_script = "software_delete.php?id=" . $row['software_id'];
@@ -1133,7 +1133,7 @@ function gen_software_list($tpl, $domainId, $resellerId)
     }
 
     $domainProperties = get_domain_default_props($_SESSION['user_id']);
-    $optCond = ($domainProperties['sqld_limit'] == '-1') ? 'AND software_db <> 1' : '';
+    $optCond = ($domainProperties['domain_sqld_limit'] == '-1') ? 'AND software_db <> 1' : '';
     $stmt = exec_query(
         "
           SELECT software_id, software_name, software_version, software_language, software_type, software_db,
@@ -1157,7 +1157,7 @@ function gen_software_list($tpl, $domainId, $resellerId)
 
     $tpl->assign('NO_SOFTWARE_SUPPORT', '');
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         list(
             $software_action, $software_action_script, $view_software_script, $software_status, $software_icon
             ) = gen_user_software_action($row['software_id'], $domainId, $tpl);
@@ -1202,9 +1202,9 @@ function gen_software_list($tpl, $domainId, $resellerId)
  */
 function check_software_avail($softwareId, $dmnCreatedId)
 {
-    return (bool)exec_query('SELECT COUNT(software_id) FROM web_software WHERE software_id = ? AND reseller_id = ?', [
-        $softwareId, $dmnCreatedId
-    ])->fetchRow(PDO::FETCH_COLUMN);
+    return exec_query('SELECT COUNT(software_id) FROM web_software WHERE software_id = ? AND reseller_id = ?', [
+            $softwareId, $dmnCreatedId
+        ])->fetchColumn() > 0;
 }
 
 /**
@@ -1236,7 +1236,7 @@ function check_is_installed($tpl, $dmnId, $softwareId)
         return;
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
     $tpl->assign([
         'SOFTWARE_INSTALL_BUTTON'      => '',
         'SOFTWARE_STATUS'              => tr('installed'),
@@ -1277,7 +1277,7 @@ function get_software_props($tpl, $dmnId, $softwareId, $dmnCreatedId)
         ',
         [$softwareId, $dmnCreatedId]
     );
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     $tpl->assign('SOFTWARE_DB', ($row['software_db'] == 1) ? tr('Yes') : tr('No'));
 
@@ -1326,7 +1326,7 @@ function get_software_props_install($tpl, $dmnId, $softwareId, $dmnCreatedId, $d
         ',
         [$softwareId, $dmnCreatedId]
     );
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     check_is_installed($tpl, $dmnId, $softwareId);
 
@@ -1379,11 +1379,11 @@ function gen_user_domain_list($tpl, $customerId)
           AND domain_status = 'ok'
           AND url_forward = 'no'
         ",
-        $domainId
+        [$domainId]
     );
     if ($stmt->rowCount()) {
         $domainFound = true;
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
         $tpl->assign([
             'SELECTED_DOMAIN'    => ($postDomainType == 'dmn' && $postDomainId == $row['domain_id']) ? ' selected' : '',
             'DOMAIN_NAME_VALUES' => tohtml($row['domain_id'] . ';dmn', 'htmlAttr'),
@@ -1401,12 +1401,12 @@ function gen_user_domain_list($tpl, $customerId)
             AND alias_status = 'ok'
             AND url_forward = 'no'
         ",
-        $domainId
+        [$domainId]
     );
     if ($stmt->rowCount()) {
         $domainFound = true;
 
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             $tpl->assign([
                 'SELECTED_DOMAIN'    => ($postDomainType == 'als' && $postDomainId == $row['alias_id'])
                     ? ' selected' : '',
@@ -1427,12 +1427,12 @@ function gen_user_domain_list($tpl, $customerId)
             AND subdomain_status = 'ok'
             AND domain_id = ?
         ",
-        $domainId
+        [$domainId]
     );
     if ($stmt->rowCount()) {
         $domainFound = true;
 
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             $tpl->assign([
                 'SELECTED_DOMAIN'    => ($postDomainType == 'sub' && $postDomainId == $row['subdomain_id'])
                     ? ' selected' : '',
@@ -1453,12 +1453,12 @@ function gen_user_domain_list($tpl, $customerId)
             AND subdomain_alias_status = 'ok'
             AND domain_id = ?
         ",
-        $domainId
+        [$domainId]
     );
     if ($stmt->rowCount()) {
         $domainFound = true;
 
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             $tpl->assign([
                 'SELECTED_DOMAIN'    => ($postDomainType == 'alssub' && $postDomainId == $row['subdomain_alias_id'])
                     ? ' selected' : '',
@@ -1488,7 +1488,7 @@ function check_db_connection($dbName, $dbUser, $dbPass)
     $cfg = Registry::get('config');
 
     try {
-        Database::connect($dbUser, $dbPass, $cfg['DATABASE_TYPE'], $cfg['DATABASE_HOST'], $dbName, 'testConn');
+        new Database($dbUser, $dbPass, 'mysql', $cfg['DATABASE_HOST'], $dbName);
     } catch (PDOException $e) {
         return false;
     }

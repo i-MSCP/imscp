@@ -20,9 +20,6 @@
 
 /**
  * iMSCP_Plugin class
- *
- * Please, do not inherit from this class. Instead, inherit from the specialized classes localized into
- * gui/library/iMSCP/Plugin/
  */
 abstract class iMSCP_Plugin
 {
@@ -68,13 +65,14 @@ abstract class iMSCP_Plugin
     }
 
     /**
-     * Get plugin manager
+     * Allow plugin initialization
      *
-     * @return iMSCP_Plugin_Manager
+     * This method allow to do some initialization tasks without overriding the constructor.
+     *
+     * @return void
      */
-    public function getPluginManager()
+    protected function init()
     {
-        return $this->pluginManager;
     }
 
     /**
@@ -147,17 +145,13 @@ abstract class iMSCP_Plugin
     }
 
     /**
-     * Returns plugin type
+     * Get plugin manager
      *
-     * @return string
+     * @return iMSCP_Plugin_Manager
      */
-    final public function getType()
+    public function getPluginManager()
     {
-        if (NULL === $this->pluginType) {
-            list(, , $this->pluginType) = explode('_', get_parent_class($this), 3);
-        }
-
-        return $this->pluginType;
+        return $this->pluginManager;
     }
 
     /**
@@ -175,6 +169,20 @@ abstract class iMSCP_Plugin
     }
 
     /**
+     * Returns plugin type
+     *
+     * @return string
+     */
+    final public function getType()
+    {
+        if (NULL === $this->pluginType) {
+            list(, , $this->pluginType) = explode('_', get_parent_class($this), 3);
+        }
+
+        return $this->pluginType;
+    }
+
+    /**
      * Return plugin configuration
      *
      * @return array An associative array which contain plugin configuration
@@ -186,6 +194,29 @@ abstract class iMSCP_Plugin
         }
 
         return $this->config;
+    }
+
+    /**
+     * Load plugin configuration from database
+     *
+     * @return void
+     */
+    final protected function loadConfig()
+    {
+        $stmt = exec_query(
+            'SELECT plugin_config, plugin_config_prev FROM plugin WHERE plugin_name = ?', [$this->getName()]
+        );
+
+        if ($stmt->rowCount()) {
+            $row = $stmt->fetch();
+            $this->config = json_decode($row['plugin_config'], true);
+            $this->configPrev = json_decode($row['plugin_config_prev'], true);
+            $this->isLoadedConfig = true;
+            return;
+        }
+
+        $this->config = [];
+        $this->configPrev = [];
     }
 
     /**
@@ -279,40 +310,6 @@ abstract class iMSCP_Plugin
     }
 
     /**
-     * Load plugin configuration from database
-     *
-     * @return void
-     */
-    final protected function loadConfig()
-    {
-        $stmt = exec_query(
-            'SELECT plugin_config, plugin_config_prev FROM plugin WHERE plugin_name = ?', $this->getName()
-        );
-
-        if ($stmt->rowCount()) {
-            $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-            $this->config = json_decode($row['plugin_config'], true);
-            $this->configPrev = json_decode($row['plugin_config_prev'], true);
-            $this->isLoadedConfig = true;
-            return;
-        }
-
-        $this->config = [];
-        $this->configPrev = [];
-    }
-
-    /**
-     * Allow plugin initialization
-     *
-     * This method allow to do some initialization tasks without overriding the constructor.
-     *
-     * @return void
-     */
-    protected function init()
-    {
-    }
-
-    /**
      * Plugin installation
      *
      * This method is automatically called by the plugin manager when the plugin is being installed.
@@ -390,6 +387,51 @@ abstract class iMSCP_Plugin
      */
     public function delete(iMSCP_Plugin_Manager $pluginManager)
     {
+    }
+
+    /**
+     * Get routes
+     *
+     * This method allow the plugin to provide its routes. For instance:
+     *
+     * <code>
+     * $pluginDir = $this->getPluginManager()->pluginGetDirectory() . '/' . $this->getName();
+     *
+     * return array(
+     *  '/admin/mailgraph.php' => $pluginDir . '/frontend/mailgraph.php',
+     *    '/admin/mailgraphics.php' => $pluginDir . '/frontend/mailgraphics.php'
+     * );
+     * </code>
+     *
+     * @return array An array containing action script paths
+     * @TODO merge this method with the route() method
+     */
+    public function getRoutes()
+    {
+        return [];
+    }
+
+    /**
+     * Route an URL
+     *
+     * This method allow the plugin to provide its own routing logic. If a route match the given URL, this method MUST
+     * return a string representing the action script to load, else, NULL must be returned. For instance:
+     *
+     * <code>
+     * if (strpos($urlComponents['path'], '/mydns/api/') === 0) {
+     *  return $this->getPluginManager()->pluginGetDirectory() . '/' . $this->getName() . '/api.php';
+     * }
+     *
+     * return null;
+     * </code>
+     *
+     * @param array $urlComponents Associative array containing URL components
+     * @return string|null Either a string representing an action script path or null if not route match the URL
+     * @noinspection PhpUnusedParameterInspection
+     */
+    public function route(/** @noinspection PhpUnusedParameterInspection */ $urlComponents)
+    {
+        return NULL;
     }
 
     /**
@@ -510,7 +552,7 @@ abstract class iMSCP_Plugin
         $sqlDir = $pluginManager->pluginGetDirectory() . '/' . $pluginName . '/sql';
 
         if (!@is_dir($sqlDir)) {
-            throw new iMSCP_Plugin_Exception(tr("Directory %s doesn't exists.", $sqlDir));
+            throw new iMSCP_Plugin_Exception(tr("Directory %s doesn't exist.", $sqlDir));
         }
 
         $pluginInfo = $pluginManager->pluginGetInfo($pluginName);
@@ -530,7 +572,8 @@ abstract class iMSCP_Plugin
             $migrationFiles = array_reverse($migrationFiles);
         }
 
-        $db = iMSCP_Database::getInstance();
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
 
         try {
             foreach ($migrationFiles as $migrationFile) {
@@ -548,7 +591,9 @@ abstract class iMSCP_Plugin
                     $migrationFilesContent = include($migrationFile);
                     if (isset($migrationFilesContent[$migrationMode])) {
                         $stmt = $db->prepare($migrationFilesContent[$migrationMode]);
-                        $db->execute($stmt);
+                        $stmt->execute();
+
+                        /** @noinspection PhpStatementHasEmptyBodyInspection */
                         while ($stmt->nextRowset()) {
                             /* https://bugs.php.net/bug.php?id=61613 */
                         };

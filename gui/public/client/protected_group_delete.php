@@ -28,15 +28,15 @@ if (!customerHasFeature('protected_areas') || !isset($_GET['gname'])) {
 }
 
 try {
-    iMSCP_Database::getInstance()->beginTransaction();
+    iMSCP_Registry::get('iMSCP_Application')->getDatabase()->beginTransaction();
 
     $htgroupId = intval($_GET['gname']);
     $domainId = get_user_domain_id($_SESSION['user_id']);
 
     // Schedule deletion or update of any .htaccess files in which the htgroup was used
-    $stmt = exec_query('SELECT * FROM htaccess WHERE dmn_id = ?', $domainId);
+    $stmt = exec_query('SELECT * FROM htaccess WHERE dmn_id = ?', [$domainId]);
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $htgroupList = explode(',', $row['group_id']);
         $candidate = array_search($htgroupId, $htgroupList);
 
@@ -52,23 +52,17 @@ try {
             $status = 'tochange';
         }
 
-        exec_query('UPDATE htaccess SET group_id = ?, status = ? WHERE id = ?', [
-            $htgroupList, $status, $row['id']
-        ]);
+        exec_query('UPDATE htaccess SET group_id = ?, status = ? WHERE id = ?', [$htgroupList, $status, $row['id']]);
     }
 
     // Schedule htgroup deletion
-    exec_query('UPDATE htaccess_groups SET status = ? WHERE id = ? AND dmn_id = ?', [
-        'todelete', $htgroupId, $domainId
-    ]);
-
-    iMSCP_Database::getInstance()->commit();
-
+    exec_query("UPDATE htaccess_groups SET status = 'todelete' WHERE id = ? AND dmn_id = ?", [$htgroupId, $domainId]);
+    iMSCP_Registry::get('iMSCP_Application')->getDatabase()->commit();
     set_page_message(tr('Htaccess group successfully scheduled for deletion.'), 'success');
     send_request();
     write_log(sprintf('%s deleted Htaccess group ID: %s', $_SESSION['user_logged'], $htgroupId), E_USER_NOTICE);
 } catch (iMSCP_Exception_Database $e) {
-    iMSCP_Database::getInstance()->rollBack();
+    iMSCP_Registry::get('iMSCP_Application')->getDatabase()->rollBack();
     set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
     write_log(sprintf('Could not delete htaccess group: %s', $e->getMessage()));
 }

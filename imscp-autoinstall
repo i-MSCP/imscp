@@ -43,6 +43,9 @@ use iMSCP::Dialog;
 use iMSCP::Getopt;
 use File::Basename;
 use autoinstaller::Functions qw/ loadConfig build install /;
+use POSIX qw /locale_h /;
+
+setlocale(LC_MESSAGES, "C.UTF-8");
 
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -76,21 +79,21 @@ iMSCP::Getopt->parse( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . q
     'skip-distro-packages|s' => \$main::skippackages
 );
 
-# Set debug and verbose mode
-setDebug( iMSCP::Getopt->debug );
-setVerbose( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose );
-
-# Getting reconfigure option value
-$main::reconfigure = iMSCP::Getopt->reconfigure;
-
 # Handle preseed option
 if ( iMSCP::Getopt->preseed ) {
     require iMSCP::Getopt->preseed;
+
     # The preseed option supersede the reconfigure option
     iMSCP::Getopt->reconfigure( 'none' );
     $main::reconfigure = 'none';
     iMSCP::Getopt->noprompt( 1 );
+} else {
+    $main::reconfigure = iMSCP::Getopt->reconfigure;
 }
+
+# Set debug and verbose options
+setDebug( iMSCP::Getopt->debug );
+setVerbose( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose );
 
 # Load config
 loadConfig();

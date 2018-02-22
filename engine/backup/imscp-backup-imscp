@@ -40,7 +40,12 @@ use iMSCP::File;
 use iMSCP::Dir;
 use iMSCP::Getopt;
 use iMSCP::Mail;
-use POSIX qw/ strftime /;
+use POSIX qw/ strftime locale_h /;
+
+setlocale(LC_MESSAGES, "C.UTF-8");
+
+$ENV{'LANG'} = 'C.UTF-8';
+$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
 our $command = {
     pbzip2 => {
@@ -121,7 +126,6 @@ sub _backupDatabase
 {
     my $db = iMSCP::Database->factory();
 
-    local $@;
     eval { $db->dumpdb( $main::imscpConfig{'DATABASE_NAME'}, $main::imscpConfig{'BACKUP_FILE_DIR'} ) };
     if ( $@ ) {
         error( $@ );

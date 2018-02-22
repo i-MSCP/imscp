@@ -262,18 +262,18 @@ function getHostingPlanData()
         showBadRequestErrorPage();
     }
 
-    $data = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     list(
         $php, $cgi, $sub, $als, $mail, $ftp, $sqld, $sqlu, $traffic, $diskspace, $backup, $dns, $aps, $phpEditor,
         $phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniDisableFunctions, $phpiniMailFunction, $phpiniPostMaxSize,
         $phpiniUploadMaxFileSize, $phpiniMaxExecutionTime, $phpiniMaxInputTime, $phpiniMemoryLimit, $extMail,
         $webFolderProtection, $mailQuota
-        ) = explode(';', $data['props']);
+        ) = explode(';', $row['props']);
 
     $backup = explode('|', $backup);
     $mailQuota = ($mailQuota != '0') ? $mailQuota / 1048576 : '0';
-    $hpName = $data['name'];
+    $hpName = $row['name'];
 
     $phpini = iMSCP_PHPini::getInstance();
     $phpini->setClientPermission('phpiniSystem', $phpEditor);

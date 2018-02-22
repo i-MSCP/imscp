@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-08 08:36+0000\n"
+"POT-Creation-Date: 2017-10-01 16:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: johnnyg_ro <johnnyg_ro@yahoo.com>, 2017\n"
+"Last-Translator: Victor Luca <suport.vl@gmail.com>, 2017\n"
 "Language-Team: Romanian (Romania) (https://www.transifex.com/i-mscp/teams/576/ro_RO/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,11 +34,11 @@ msgstr ""
 
 #, php-format
 msgid "$ORIGIN value is currently set to: %s"
-msgstr ""
+msgstr "valoarea $ORIGIN curent este setata la: %s"
 
 #, php-format
 msgid "%%s cannot be greater than %%s."
-msgstr ""
+msgstr "%%s nu poate fi mai mare decat %%s."
 
 #, php-format
 msgid "%1$s (%2$s)"
@@ -50,7 +50,7 @@ msgstr ""
 
 #, php-format
 msgid "%1$s - (Version: %2$s, Language: %3$s)"
-msgstr ""
+msgstr "%1$s - (Versiunea: %2$s, Limba: %3$s)"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -58,7 +58,7 @@ msgstr "%1$s esti autorizat ca si %2$s"
 
 #, php-format
 msgid "%1$ss - Software"
-msgstr ""
+msgstr "%1$ss - Software"
 
 #, php-format
 msgid "%d day remaining until account expiration"
@@ -69,19 +69,19 @@ msgstr[2] ""
 
 #, php-format
 msgid "%d strings translated"
-msgstr ""
+msgstr "%d randuri traduse"
 
 #, php-format
 msgid "%s account successfully deleted."
-msgstr ""
+msgstr "%s contul a fost sters cu succes."
 
 #, php-format
 msgid "%s doens't look like an i-MSCP plugin archive."
-msgstr ""
+msgstr "%s nu este o arhiva de pluginuri i-MSCP."
 
 #, php-format
 msgid "%s doesn't exist or is empty."
-msgstr ""
+msgstr "%s nu exista sau este gol."
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -93,7 +93,7 @@ msgstr ""
 
 #, php-format
 msgid "%s page"
-msgstr ""
+msgstr "%s pagina"
 
 #, php-format
 msgid "%s record"
@@ -158,7 +158,7 @@ msgstr[1] ""
 msgstr[2] ""
 
 msgid "A new i-MSCP version is available"
-msgstr ""
+msgstr "O versiune noua i-MSCP este disponibila"
 
 msgid "A new software package has been uploaded"
 msgstr ""
@@ -182,16 +182,16 @@ msgid "Account name"
 msgstr "Nume cont"
 
 msgid "Account summary"
-msgstr ""
+msgstr "Sumarul contului"
 
 msgid "Account type"
-msgstr ""
+msgstr "Tipul contului"
 
 msgid "Action"
 msgstr "Actiune"
 
 msgid "Action has been stopped."
-msgstr ""
+msgstr "Contul a fost oprit"
 
 msgid "Action has failed."
 msgstr ""
@@ -206,19 +206,19 @@ msgid "Activate autoresponder"
 msgstr ""
 
 msgid "Activate this plugin"
-msgstr ""
+msgstr "Activeaza plugin"
 
 msgid "Activated"
-msgstr ""
+msgstr "Activat"
 
 msgid "Activated software"
-msgstr ""
+msgstr "Software activat"
 
 msgid "Activation email"
-msgstr ""
+msgstr "E-mail de activare"
 
 msgid "Activation in progress..."
-msgstr ""
+msgstr "Activare in proces..."
 
 msgid "Activation link expire time in minutes"
 msgstr ""
@@ -1695,11 +1695,11 @@ msgid "Details"
 msgstr "Detalii"
 
 #, php-format
-msgid "Directory %s doesn't exists."
+msgid "Directory %s doesn't exist."
 msgstr ""
 
 #, php-format
-msgid "Directory '%s' doesn't exists."
+msgid "Directory '%s' doesn't exist."
 msgstr ""
 
 #, php-format
@@ -2515,15 +2515,6 @@ msgid ""
 "and line breaks are allowed."
 msgstr ""
 
-msgid "Invalid city."
-msgstr ""
-
-msgid "Invalid company."
-msgstr ""
-
-msgid "Invalid country."
-msgstr ""
-
 msgid "Invalid domain name."
 msgstr ""
 
@@ -2537,17 +2528,11 @@ msgstr ""
 msgid "Invalid field: %s"
 msgstr ""
 
-msgid "Invalid first name."
-msgstr ""
-
 msgid "Invalid gender."
 msgstr ""
 
 msgid "Invalid group name!"
 msgstr "Nume grup incorect!"
-
-msgid "Invalid last name."
-msgstr ""
 
 msgid "Invalid menu order."
 msgstr ""
@@ -2572,22 +2557,10 @@ msgstr ""
 msgid "Invalid service name: %s"
 msgstr ""
 
-msgid "Invalid state/province."
-msgstr ""
-
-msgid "Invalid street 1."
-msgstr ""
-
-msgid "Invalid street 2."
-msgstr ""
-
 msgid "Invalid target."
 msgstr ""
 
 msgid "Invalid username."
-msgstr ""
-
-msgid "Invalid zipcode."
 msgstr ""
 
 msgid "Kernel Version"
@@ -2978,9 +2951,6 @@ msgid "No account found."
 msgstr ""
 
 msgid "No anti-rootkits logs"
-msgstr ""
-
-msgid "No available"
 msgstr ""
 
 msgid "No custom menu found."
@@ -4465,8 +4435,8 @@ msgstr ""
 
 #, php-format
 msgid ""
-"The directory %s doesn't exists. Please create that directory using your "
-"file manager."
+"The directory %s doesn't exist. Please create that directory using your file"
+" manager."
 msgstr ""
 
 msgid ""
@@ -5098,9 +5068,6 @@ msgid "Wrong reseller id."
 msgstr ""
 
 msgid "Wrong security code"
-msgstr ""
-
-msgid "Wrong software id."
 msgstr ""
 
 msgid "Wrong syntax for new expire date."

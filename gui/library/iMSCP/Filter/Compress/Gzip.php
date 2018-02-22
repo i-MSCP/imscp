@@ -110,8 +110,8 @@ class iMSCP_Filter_Compress_Gzip
     protected $_gzipDataSize = 0;
 
     /**
-     * Tells if the filter should act as callback function for the PHP ob_start function or as simple filter for
-     * standard gz file creation.
+     * Tells if the filter should act as callback function for the PHP ob_start
+     * function or as simple filter for standard gz file creation
      *
      * @var int
      */
@@ -121,16 +121,16 @@ class iMSCP_Filter_Compress_Gzip
      * Constructor
      *
      * @throws iMSCP_Exception
-     * @param int $mode Tells if the filter should act as callback function for the PHP ob_start function or as function
-     *                    for create a standard gz file. The filter mode must be one of the
-     *                    iMSCP_Filter_Compress_Gzip::FILTER_* constants.
+     * @param int $mode Tells if the filter should act as callback function for
+     *                  the PHP ob_start function or as function for create a
+     *                  standard gz file. The filter mode must be one of the
+     *                  iMSCP_Filter_Compress_Gzip::FILTER_* constants.
      * @param int $compressionLevel Compression level
      */
     public function __construct($mode = self::FILTER_FILE, $compressionLevel = 1)
     {
-
         if (extension_loaded('zlib')) {
-            if ($mode === self::FILTER_BUFFER or $mode === self::FILTER_FILE) {
+            if ($mode === self::FILTER_BUFFER || $mode === self::FILTER_FILE) {
                 $this->_mode = $mode;
             } else {
                 throw new iMSCP_Exception('iMSCP_Filter_Compress_Gzip error: Unknown filter mode!');
@@ -141,7 +141,8 @@ class iMSCP_Filter_Compress_Gzip
 
         if (in_array(
             $compressionLevel,
-            range($this->_minCompressionLevel, $this->_maxCompressionLevel))) {
+            range($this->_minCompressionLevel, $this->_maxCompressionLevel))
+        ) {
             $this->_compressionLevel = $compressionLevel;
         } else {
             throw new iMSCP_Exception('iMSCP_Filter_Compress_Gzip error: Wrong value for compression level.');
@@ -151,15 +152,18 @@ class iMSCP_Filter_Compress_Gzip
     /**
      * Gzip Filter
      *
-     * This method can be used both for create standard gz files, and as filter for the ob_start() function to help
-     * facilitate sending gzip encoded data to the clients browsers that support the gzip content-coding.
+     * This method can be used both for create standard gz files, and as filter
+     * for the ob_start() function to help facilitate sending gzip encoded data
+     * to the clients browsers that support the gzip content-coding.
      *
-     * According the PHP documentation, when used as filter for the ob_start() function, and if any error occurs, FALSE
-     * is returned and then, content is sent to the client browser without compression. Note that FALSE is also
-     * returned when the data are already encoded.
+     * According the PHP documentation, when used as filter for the ob_start()
+     * function, and if any error occurs, FALSE is returned and then, content
+     * is sent to the client browser without compression. Note that FALSE is
+     * also returned when the data are already encoded.
      *
-     * If used in {@link self::FILTER_FILE} mode and if the $filePath is not specified, the encoded string is returned
-     * instead of be written in a file.
+     * If used in {@link self::FILTER_FILE} mode and if the $filePath is not
+     * specified, the encoded string is returned instead of be written in a
+     * file.
      *
      * @param string $data Data to be compressed
      * @param string $filePath File path to be used for gz file creation]
@@ -167,7 +171,6 @@ class iMSCP_Filter_Compress_Gzip
      */
     public function filter($data, $filePath = '')
     {
-
         $this->_data = $data;
 
         // Act as filter for the PHP ob_start function
@@ -208,27 +211,26 @@ class iMSCP_Filter_Compress_Gzip
     }
 
     /**
-     * Write gzip files
+     * Check and sets the acceptable content-coding for compression
      *
-     * @throws iMSCP_Exception
-     * @param string $gzipData Data in GZIP file format
-     * @param string $filePath File path for Gzip file
-     * @return void
+     * @return boolean TRUE if the client browser accept gzip content-coding as
+     *                 response, FALSE otherwise
      */
-    protected function _writeFile($gzipData, $filePath)
+    protected function _getEncoding()
     {
-
-        $directory = dirname($filePath);
-
-        if (is_dir($directory) && is_writable($directory) && $gzipData !== false) {
-            $fileHandle = fopen($filePath, 'w');
-            fwrite($fileHandle, $gzipData);
-            fclose($fileHandle);
+        if (isset($_SERVER['HTTP_ACCEPT_ENCODING'])) {
+            if (strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'x-gzip') !== false) {
+                $this->_browserAcceptedEncoding = 'x-gzip';
+            } elseif (strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false) {
+                $this->_browserAcceptedEncoding = 'gzip';
+            } else {
+                return false;
+            }
         } else {
-            throw new iMSCP_Exception(
-                "iMSCP_GzipFilter error: `$filePath` is not a valid directory or is not writable."
-            );
+            return false;
         }
+
+        return true;
     }
 
     /**
@@ -243,54 +245,16 @@ class iMSCP_Filter_Compress_Gzip
     }
 
     /**
-     * Check and sets the acceptable content-coding for compression
-     *
-     * @return boolean TRUE if the client browser accept gzip content-coding as response, FALSE otherwise
-     */
-    protected function _getEncoding()
-    {
-
-        if (isset($_SERVER['HTTP_ACCEPT_ENCODING'])) {
-            if (strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'x-gzip') !== false) {
-                $this->_browserAcceptedEncoding = 'x-gzip';
-            } elseif (strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false) {
-                $this->_browserAcceptedEncoding = 'gzip';
-            } else {
-                return false;
-            }
-
-        } else {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Send headers
-     *
-     * Note: Only called when the filter is used as callback function of the PHP ob_start function.
-     *
-     * @return void
-     */
-    protected function _sendHeaders()
-    {
-
-        header("Content-Encoding: {$this->_browserAcceptedEncoding}");
-        header("Content-Length: {$this->_gzipDataSize}");
-    }
-
-    /**
      * Adds compression information as HTML comment
      *
-     * Note: Only called when the filter is used as callback function of the PHP ob_start function.
+     * Note: Only called when the filter is used as callback function of the
+     * PHP ob_start function.
      *
      * @param string $time Time for data compression
      * @return string|bool Encoded data in gzip file format, FALSE on failure
      */
     protected function _addCompressionInformation($time)
     {
-
         $dataSize = round(strlen($this->_data) / 1024, 2);
         $gzipDataSize = round($this->_gzipDataSize / 1024, 2);
         $savingkb = $dataSize - $gzipDataSize;
@@ -311,5 +275,42 @@ class iMSCP_Filter_Compress_Gzip
         $this->_gzipDataSize = strlen($gzipData);
 
         return $gzipData;
+    }
+
+    /**
+     * Send headers
+     *
+     * Note: Only called when the filter is used as callback function of the
+     * PHP ob_start function.
+     *
+     * @return void
+     */
+    protected function _sendHeaders()
+    {
+        header("Content-Encoding: {$this->_browserAcceptedEncoding}");
+        header("Content-Length: {$this->_gzipDataSize}");
+    }
+
+    /**
+     * Write gzip files
+     *
+     * @throws iMSCP_Exception
+     * @param string $gzipData Data in GZIP file format
+     * @param string $filePath File path for Gzip file
+     * @return void
+     */
+    protected function _writeFile($gzipData, $filePath)
+    {
+        $directory = dirname($filePath);
+
+        if (is_dir($directory) && is_writable($directory) && $gzipData !== false) {
+            $fileHandle = fopen($filePath, 'w');
+            fwrite($fileHandle, $gzipData);
+            fclose($fileHandle);
+        } else {
+            throw new iMSCP_Exception(
+                "iMSCP_GzipFilter error: `$filePath` is not a valid directory or is not writable."
+            );
+        }
     }
 }

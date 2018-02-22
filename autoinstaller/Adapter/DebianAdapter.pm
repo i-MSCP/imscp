@@ -129,11 +129,9 @@ sub installPackages
 
     # Prevents invoke-rc.d (which is invoked by package maintainer scripts) to start some services
     #
-    # - Apache2: Prevent "bind() to 0.0.0.0:80 failed (98: Address already in use" failure
-    # - Nginx:   Prevent "bind() to 0.0.0.0:80 failed (98: Address already in use" failure
-    # - Nginx:   Prevent start failure when IPv6 stack is not enabled
-    # - Dovecot: Prevent start failure when IPv6 stack is not enabled
-    # - bind9:   Prevent failure when resolvconf is not configured yet
+    # - Prevent "bind() to 0.0.0.0:80 failed (98: Address already in use" failure (Apache2, Nginx)
+    # - Prevent start failure when IPv6 stack is not enabled (Dovecot, Nginx)
+    # - Prevent failure when resolvconf is not configured yet (bind9)
     print $policyrcd <<'EOF';
 #!/bin/sh
 
@@ -202,7 +200,7 @@ EOF
 
     # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
     execute(
-        "apt-mark unhold @{$self->{'packagesToInstall'}} @{$self->{'packagesToInstallDelayed'}}",
+        [ 'apt-mark', 'unhold', @{$self->{'packagesToInstall'}}, @{$self->{'packagesToInstallDelayed'}} ],
         \my $stdout,
         \my $stderr
     );
@@ -217,7 +215,7 @@ EOF
             'apt-get', '--assume-yes', '--option', 'DPkg::Options::=--force-confnew', '--option',
             'DPkg::Options::=--force-confmiss', '--option', 'Dpkg::Options::=--force-overwrite',
             ( $main::forcereinstall ? '--reinstall' : () ), '--auto-remove', '--purge', '--no-install-recommends',
-            ( version->parse( `apt-get --version` =~ /^apt\s+(\d\.\d)/ ) < version->parse( '1.1' )
+            ( version->parse( `apt-get --version 2>/dev/null` =~ /^apt\s+(\d\.\d)/ ) < version->parse( '1.1' )
                 ? '--force-yes' : '--allow-downgrades'
             ),
             'install'
@@ -275,14 +273,15 @@ EOF
         return $rs if $rs;
     }
 
-    $self->{'eventManager'}->trigger( 'afterInstallPackages' );
+    $rs = $self->uninstallPackages( $self->{'packagesToUninstall'} );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterInstallPackages' );
 }
 
-=item uninstallPackages( [ \@packagesToUninstall = $self->{'packagesToUninstall'} ] )
+=item uninstallPackages( \@packagesToUninstall )
 
  Uninstall Debian packages
 
- Param array \@packagesToUninstall OPTIONAL List of packages to uninstall
+ Param array \@packagesToUninstall List of packages to uninstall
  Return int 0 on success, other on failure
 
 =cut
@@ -291,21 +290,30 @@ sub uninstallPackages
 {
     my ($self, $packagesToUninstall) = @_;
 
-    $packagesToUninstall ||= $self->{'packagesToUninstall'};
-
     my $rs = $self->{'eventManager'}->trigger( 'beforeUninstallPackages', $packagesToUninstall );
     return $rs if $rs;
 
     if ( @{$packagesToUninstall} ) {
-        # Clear information about available packages
-        $rs = execute( 'dpkg --clear-avail', \ my $stdout, \ my $stderr );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $rs && $stderr;
-        return $rs if $rs;
+        # Filter packages that must not be removed
+        my @packagesToUninstall = ();
+        for my $package( @{$packagesToUninstall} ) {
+            next if grep(
+                $_ eq $package,
+                (
+                    @{$self->{'packagesToInstall'}},
+                    @{$self->{'packagesToInstallDelayed'}},
+                    keys %{$self->{'packagesToRebuild'}}
+                )
+            );
+            push @packagesToUninstall, $package;
+        }
+
+        @{$packagesToUninstall} = @packagesToUninstall;
+        undef @packagesToUninstall;
 
         if ( @{$packagesToUninstall} ) {
             # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
-            execute( [ 'apt-mark', 'unhold', @{$packagesToUninstall} ], \ $stdout, \ $stderr );
+            execute( [ 'apt-mark', 'unhold', @{$packagesToUninstall} ], \my $stdout, \my $stderr );
             debug( $stderr ) if $stderr;
 
             iMSCP::Dialog->getInstance()->endGauge() unless iMSCP::Getopt->noprompt;
@@ -328,7 +336,7 @@ sub uninstallPackages
                 ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout ),
                 \$stderr
             );
-            error( sprintf( "Couldn't purge packages that are in rc state: %s", $stderr || 'Unknown error' )) if $rs;
+            error( sprintf( "Couldn't purge packages that are in RC state: %s", $stderr || 'Unknown error' )) if $rs;
             return $rs if $rs;
         }
     }
@@ -491,8 +499,8 @@ sub _processPackagesFile
             . lc( $distroCodename ) . '.xml';
     }
 
-    my $arch = `dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null`;
-    if ( $? >> 8 != 0 || !$arch ) {
+    chomp( my $arch = `dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null` || '' );
+    if ( $? >> 8 != 0 || $arch eq '' ) {
         error( "Couldn't determine OS architecture" );
         return 1;
     }
@@ -529,7 +537,7 @@ sub _processPackagesFile
             }
         }
 
-        # List of conflicting packages which must be pre-removed
+        # List of conflicting packages that must be pre-removed
         if ( defined $data->{'package_conflict'} ) {
             for( @{$data->{'package_conflict'}} ) {
                 push @{$self->{'packagesToPreUninstall'}}, ref $_ eq 'HASH' ? $_->{'content'} : $_;
@@ -546,17 +554,21 @@ sub _processPackagesFile
                 };
         }
 
-        next if defined $data->{'package'} || defined $data->{'package_delayed'} || defined $data->{'package_conflict'}
+        next if defined $data->{'package'}
+            || defined $data->{'package_delayed'}
+            || defined $data->{'package_conflict'}
             || defined $data->{'pinning_package'};
 
         # Whether user must be asked for alternative or not
         my $needDialog = 0;
+
         # Retrieve selected alternative if any
-        my $sAlt = $main::questions{ uc( $section ) . '_SERVER' } || $main::imscpConfig{ uc( $section ) . '_SERVER' };
+        my $sAlt = $main::questions{ uc( $section ) . '_SERVER' }
+            || $main::imscpConfig{ uc( $section ) . '_SERVER' };
+
         # Resets alternative if selected alternative is no longer available
         $sAlt = '' if $sAlt ne '' && !grep($_ eq $sAlt, keys %{$data});
 
-        # Map of alternative descriptions to alternative names
         my %altDescs;
         for( keys %{$data} ) {
             # Skip unsupported alternatives by arch
@@ -566,13 +578,16 @@ sub _processPackagesFile
                 next;
             }
 
+            # Map of alternative descriptions to alternative names
             $altDescs{$data->{$_}->{'description'} || $_} = $_;
 
-            # If there is no alternative set yet, set selected alternative 
-            # to default alternative and force dialog to make user able to change it
+            # If there is no software alternative selected yet, sets the
+            # alternative to default value as defined in packages file and
+            # force dialog to make user able to change it, unless the `nopromp'
+            # flag is set, in which case the default alternative will be enforced.
             if ( $sAlt eq '' && $data->{$_}->{'default'} ) {
                 $sAlt = $_;
-                $needDialog = 1;
+                $needDialog = 1 unless iMSCP::Getopt->preseed;
             }
         }
 
@@ -588,7 +603,7 @@ sub _processPackagesFile
         # forced, or if user explicitely asked for reconfiguration of that
         # alternative, show dialog for alternative selection
         if ( keys %altDescs > 1
-            && ( $needDialog || grep( $_ eq $main::reconfigure, ( $section, 'servers', 'all' ) ) )
+            && ( $needDialog || grep( $_ eq $main::reconfigure, $section, 'servers', 'all' ) )
         ) {
             ( my $ret, $sAlt ) = $dialog->radiolist(
                 <<"EOF", [ keys %altDescs ], $data->{$sAlt}->{'description'} || $sAlt );
@@ -665,21 +680,15 @@ EOF
                 next unless defined $altData->{$_};
 
                 for( @{$altData->{$_}} ) {
-                    my $pkg = ref $_ eq 'HASH' ? $_->{'content'} : $_;
-                    next if grep(
-                        $pkg eq $_,
-                        (
-                            @{$self->{'packagesToInstall'}},
-                            @{$self->{'packagesToInstallDelayed'}},
-                            keys %{$self->{'packagesToRebuild'}}
-                        )
-                    );
-                    push @{$self->{'packagesToUninstall'}}, $pkg;
+                    my $package = ref $_ eq 'HASH' ? $_->{'content'} : $_;
+                    next if grep($package eq $_, @{$self->{'packagesToPreUninstall'}});
+                    push @{$self->{'packagesToUninstall'}}, $package;
                 }
             }
         }
 
-        # Set both alternative name and package name according selected alternative
+        # Set both server name and package name according selected alternative
+        $main::questions{uc( $section ) . '_SERVER'} = $sAlt;
         $main::imscpConfig{uc( $section ) . '_SERVER'} = $sAlt;
         $main::imscpConfig{uc( $section ) . '_PACKAGE'} = $data->{$sAlt}->{'class'} || $sAlt;
     }
@@ -694,7 +703,14 @@ EOF
 
     # Filter packages that are no longer available
 
-    $rs = execute( [ 'apt-cache', '--generate', 'pkgnames' ], \my $stdout, \my $stderr );
+    # Clear information about available packages
+    $rs = execute( 'dpkg --clear-avail', \ my $stdout, \ my $stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr || "Couldn't clear information about available packages" ) if $rs;
+    return $rs if $rs;
+
+    # Get list of available packages
+    $rs = execute( [ 'apt-cache', '--generate', 'pkgnames' ], \$stdout, \$stderr );
     error( $stderr || "Couldn't generate list of available packages" ) if $rs > 2;
     my %apkgs;
     @apkgs{split /\n/, $stdout} = undef;
@@ -828,7 +844,6 @@ sub _processAptRepositories
 deb $repository->{'repository'}
 deb-src $repository->{'repository'}
 EOF
-
         # Hide "apt-key output should not be parsed (stdout is not a terminal)" warning that
         # is raised in newest apt-key versions. Our usage of apt-key is not dangerous (not parsing)
         local $ENV{'APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE'} = 1;
@@ -1162,8 +1177,9 @@ sub _rebuildAndInstallPackage
                 ];
                 $rs = executeNoWait(
                     $cmd,
-                    ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                        ? undef : sub {
+                    ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
+                        ? sub {}
+                        : sub {
                             return unless ( shift ) =~ /^i:\s*(.*)/i;
                             step( undef, $msgHeader . ucfirst( $1 ) . $msgFooter, 5, 1 );
                         }
@@ -1185,8 +1201,9 @@ sub _rebuildAndInstallPackage
             my $stderr = '';
             $rs = executeNoWait(
                 [ 'apt-get', '-y', 'source', $pkgSrc ],
-                ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                    ? undef : sub { step( undef, $msgHeader . ( ( shift ) =~ s/^\s*//r ) . $msgFooter, 5, 2 ); }
+                ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
+                    ? sub {}
+                    : sub { step( undef, $msgHeader . ( ( shift ) =~ s/^\s*//r ) . $msgFooter, 5, 2 ); }
                 ),
                 sub { $stderr .= shift }
             );
@@ -1249,8 +1266,9 @@ sub _rebuildAndInstallPackage
                         '--use-pdebuild-internal',
                         '--configfile', "$FindBin::Bin/configs/" . lc( $lsbRelease->getId( 1 )) . '/pbuilder/pbuilderrc'
                     ],
-                    ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                        ? undef : sub {
+                    ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
+                        ? sub {}
+                        : sub {
                             return unless ( shift ) =~ /^i:\s*(.*)/i;
                             step( undef, $msgHeader . ucfirst( $1 ) . $msgFooter, 5, 4 );
                         }
@@ -1276,8 +1294,9 @@ sub _rebuildAndInstallPackage
 
             $rs = executeNoWait(
                 "dpkg --force-confnew -i /var/cache/pbuilder/result/${pkg}_*.deb",
-                ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                    ? undef : sub { step( undef, $msgHeader . ( shift ), 5, 5 ) }
+                ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
+                    ? sub {}
+                    : sub { step( undef, $msgHeader . ( shift ), 5, 5 ) }
                 ),
                 sub { $stderr .= shift }
             );

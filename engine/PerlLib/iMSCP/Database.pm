@@ -49,7 +49,7 @@ my %adapterInstances;
 
 sub factory
 {
-    my $adapterName = $_[1] || $main::imscpConfig{'DATABASE_TYPE'};
+    my $adapterName = $_[1] || 'mysql';
 
     return $adapterInstances{$adapterName} if $adapterInstances{$adapterName};
 

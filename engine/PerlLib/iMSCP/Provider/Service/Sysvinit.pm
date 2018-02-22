@@ -92,7 +92,6 @@ sub remove
 
     defined $service or die( 'parameter $service is not defined' );
 
-    local $@;
     my $initScriptPath = eval { $self->getInitScriptPath( $service ); };
     if ( defined $initScriptPath ) {
         return 0 if iMSCP::File->new( filename => $initScriptPath )->delFile();
@@ -276,7 +275,6 @@ sub _isSysvinit
 {
     my ($self, $service) = @_;
 
-    local $@;
     eval { $self->_searchInitScript( $service ); };
 }
 

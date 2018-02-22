@@ -74,7 +74,7 @@ function updateFtpAccount($userid)
     if ($homeDir !== '/'
         && !$vfs->exists($homeDir, VirtualFileSystem::VFS_TYPE_DIR)
     ) {
-        set_page_message(tr("Directory '%s' doesn't exists.", $homeDir), 'error');
+        set_page_message(tr("Directory '%s' doesn't exist.", $homeDir), 'error');
         return false;
     }
 
@@ -130,8 +130,8 @@ function generatePage($tpl, $ftpUserId)
     $_SESSION['ftp_chooser_unselectable_dirs'] = [];
 
     $cfg = iMSCP_Registry::get('config');
-    $stmt = exec_query('SELECT homedir FROM ftp_users WHERE userid = ?', $ftpUserId);
-    $row = $stmt->fetchRow();
+    $stmt = exec_query('SELECT homedir FROM ftp_users WHERE userid = ?', [$ftpUserId]);
+    $row = $stmt->fetch();
 
     $ftpHomeDir = utils_normalizePath('/' . $row['homedir']);
     $customerHomeDir = utils_normalizePath('/' . $cfg['USER_WEB_DIR'] . '/' . $mainDmnProps['domain_name']);
@@ -167,7 +167,7 @@ $stmt = exec_query('SELECT COUNT(admin_id) FROM ftp_users WHERE userid = ? AND a
     $userid, $_SESSION['user_id']
 ]);
 
-if ($stmt->fetchRow(PDO::FETCH_COLUMN) == 0) {
+if ($stmt->fetchColumn() < 1) {
     showBadRequestErrorPage();
 }
 

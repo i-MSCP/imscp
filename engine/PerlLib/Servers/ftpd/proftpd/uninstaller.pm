@@ -112,7 +112,6 @@ sub _dropSqlUser
 
     return 0 unless $self->{'config'}->{'DATABASE_USER'} && $dbUserHost;
 
-    local $@;
     eval { Servers::sqld->factory()->dropUser( $self->{'config'}->{'DATABASE_USER'}, $dbUserHost ); };
     if ( $@ ) {
         error( $@ );

@@ -27,7 +27,6 @@ use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Events_Event as Event;
 use iMSCP_Exception as iMSCPException;
-use iMSCP_Exception_Database as DatabaseException;
 use iMSCP_Exception_Handler as ExceptionHandler;
 use iMSCP_Plugin_Manager as PluginManager;
 use iMSCP_Registry as Registry;
@@ -58,6 +57,11 @@ class Application
      * @var EventsManager
      */
     protected $eventsManager;
+
+    /**
+     * @var PluginManager
+     */
+    protected $pluginManager;
 
     /**
      * @var ConfigFile Merged configuration (Main configuration, Database configuration)
@@ -123,16 +127,6 @@ class Application
     }
 
     /**
-     * Retrieve current environment
-     *
-     * @return string
-     */
-    public function getEnvironment()
-    {
-        return $this->environment;
-    }
-
-    /**
      * Retrieve autoloader instance
      *
      * @return \Zend_Loader_StandardAutoloader
@@ -149,70 +143,6 @@ class Application
     }
 
     /**
-     * Retrieve shared events manager instance
-     *
-     * @return EventsManager
-     */
-    public function getEventsManager()
-    {
-        if (NULL === $this->eventsManager) {
-            $this->eventsManager = EventsManager::getInstance();
-        }
-
-        return $this->eventsManager;
-    }
-
-    /**
-     * Retrieve application cache
-     *
-     * @return \Zend_Cache_Core
-     */
-    public function getCache()
-    {
-        if (NULL === $this->cache) {
-            $this->cache = Cache::factory(
-                'Core',
-                # Make use of 'APC' backend if APC(u) is available, else
-                # fallback to the 'File' backend
-                extension_loaded('apc') && ini_get('apc.enabled') ? 'Apc' : 'File',
-                [
-                    'caching'                   => (PHP_SAPI != 'cli'),
-                    // Cache is never flushed automatically (default)
-                    'lifetime'                  => 0,
-                    'automatic_serialization'   => true,
-                    'automatic_cleaning_factor' => 0,
-                    'ignore_user_abort'         => true
-                ],
-                // Options below are only relevant for the 'File' backend
-                // (fallback backend)
-                [
-                    'file_locking'           => true,
-                    'hashed_directory_level' => 0,
-                    'cache_dir'              => CACHE_PATH,
-                    'read_control'           => true
-                ]
-            );
-        }
-
-        return $this->cache;
-    }
-
-    /**
-     * Retrieve main configuration
-     *
-     * @throws iMSCPException if the configuration is not available yet
-     * @return ConfigFile
-     */
-    public function getConfig()
-    {
-        if (NULL === $this->config) {
-            throw new iMSCPException('Main configuration not available yet');
-        }
-
-        return $this->config;
-    }
-
-    /**
      * Retrieve database configuration
      *
      * @throws iMSCPException if the configuration is not available yet
@@ -225,21 +155,6 @@ class Application
         }
 
         return $this->dbConfig;
-    }
-
-    /**
-     * Retrieve database instance
-     *
-     * @throws iMSCPException if the Database instance is not available yet
-     * @return Database
-     */
-    public function getDatabase()
-    {
-        if (NULL === $this->database) {
-            throw new iMSCPException('Database instance not available yet');
-        }
-
-        return $this->database;
     }
 
     /**
@@ -312,6 +227,16 @@ class Application
     }
 
     /**
+     * Retrieve current environment
+     *
+     * @return string
+     */
+    public function getEnvironment()
+    {
+        return $this->environment;
+    }
+
+    /**
      * Set internal encoding
      *
      * @throws iMSCPException if mbstring extension is not available
@@ -327,6 +252,38 @@ class Application
 
         mb_internal_encoding('UTF-8');
         mb_regex_encoding('UTF-8');
+    }
+
+    /**
+     * Start the session
+     *
+     * @throws iMSCPException if session directory is not writable
+     * @return void
+     */
+    protected function startSession()
+    {
+        if (PHP_SAPI == 'cli') {
+            return;
+        }
+
+        if (!is_writable(GUI_ROOT_DIR . '/data/sessions')) {
+            throw new iMSCPException('The gui/data/sessions directory must be writable.');
+        }
+
+        Session::setOptions([
+            'use_cookies'         => 'on',
+            'use_only_cookies'    => 'on',
+            'use_trans_sid'       => 'off',
+            'strict'              => false,
+            'remember_me_seconds' => 0,
+            'name'                => 'iMSCP_Session',
+            'gc_divisor'          => 100,
+            'gc_maxlifetime'      => 1440,
+            'gc_probability'      => 1,
+            'save_path'           => GUI_ROOT_DIR . '/data/sessions'
+        ]);
+
+        Session::start();
     }
 
     /**
@@ -558,6 +515,74 @@ class Application
     }
 
     /**
+     * Retrieve application cache
+     *
+     * @return \Zend_Cache_Core
+     */
+    public function getCache()
+    {
+        if (NULL === $this->cache) {
+            $this->cache = Cache::factory(
+                'Core',
+                # Make use of 'APC' backend if APC(u) is available, else
+                # fallback to the 'File' backend
+                extension_loaded('apc') && ini_get('apc.enabled') ? 'Apc' : 'File',
+                [
+                    'caching'                   => (PHP_SAPI != 'cli'),
+                    // Cache is never flushed automatically (default)
+                    'lifetime'                  => 0,
+                    'automatic_serialization'   => true,
+                    'automatic_cleaning_factor' => 0,
+                    'ignore_user_abort'         => true
+                ],
+                // Options below are only relevant for the 'File' backend
+                // (fallback backend)
+                [
+                    'file_locking'           => true,
+                    'hashed_directory_level' => 0,
+                    'cache_dir'              => CACHE_PATH,
+                    'read_control'           => true
+                ]
+            );
+        }
+
+        return $this->cache;
+    }
+
+    /**
+     * Retrieve shared events manager instance
+     *
+     * @return EventsManager
+     */
+    public function getEventsManager()
+    {
+        if (NULL === $this->eventsManager) {
+            $this->eventsManager = EventsManager::getInstance();
+        }
+
+        return $this->eventsManager;
+    }
+
+    /**
+     * Retrieve plugin manager
+     *
+     * @return PluginManager
+     */
+    public function getPluginManager()
+    {
+        if (NULL === $this->pluginManager) {
+            $this->pluginManager = new PluginManager(
+                $this->getConfig()['PLUGINS_DIR'], $this->getEventsManager(), $this->getCache()
+            );
+
+            // Make plugin manager available through registry (bc)
+            Registry::set('pluginManager', $this->pluginManager);
+        }
+
+        return $this->pluginManager;
+    }
+
+    /**
      * Sets timezone
      *
      * @throws iMSCPException
@@ -574,6 +599,21 @@ class Application
     }
 
     /**
+     * Retrieve main configuration
+     *
+     * @throws iMSCPException if the configuration is not available yet
+     * @return ConfigFile
+     */
+    public function getConfig()
+    {
+        if (NULL === $this->config) {
+            throw new iMSCPException('Main configuration not available yet');
+        }
+
+        return $this->config;
+    }
+
+    /**
      * Establishes the connection to the database
      *
      * @throws iMSCPException if connection to the database cannot be established
@@ -581,37 +621,30 @@ class Application
      */
     protected function initDatabase()
     {
-        try {
-            $cache = $this->getCache();
-            $config = $this->getConfig();
-            $db_pass_key = $cache->load('iMSCP_DATABASE_KEY');
-            $db_pass_iv = $cache->load('iMSCP_DATABASE_IV');
+        $cache = $this->getCache();
+        $config = $this->getConfig();
+        $db_pass_key = $cache->load('iMSCP_DATABASE_KEY');
+        $db_pass_iv = $cache->load('iMSCP_DATABASE_IV');
+
+        if (empty($db_pass_key) || empty($db_pass_iv)) {
+            eval(@file_get_contents($this->getConfig()['CONF_DIR'] . '/imscp-db-keys'));
 
             if (empty($db_pass_key) || empty($db_pass_iv)) {
-                eval(@file_get_contents($this->getConfig()['CONF_DIR'] . '/imscp-db-keys'));
-
-                if (empty($db_pass_key) || empty($db_pass_iv)) {
-                    throw new iMSCPException('Missing encryption key and/or initialization vector.');
-                }
-
-                $cache->save($db_pass_key, 'iMSCP_DATABASE_KEY');
-                $cache->save($db_pass_iv, 'iMSCP_DATABASE_IV');
+                throw new iMSCPException('Missing encryption key and/or initialization vector.');
             }
 
-            if (!($plainPasswd = $cache->load('DATABASE_PASSWORD_PLAIN'))) {
-                $plainPasswd = Crypt::decryptRijndaelCBC($db_pass_key, $db_pass_iv, $config['DATABASE_PASSWORD']);
-                $cache->save($plainPasswd, 'DATABASE_PASSWORD_PLAIN');
-            }
-
-            $this->database = Database::connect(
-                $config['DATABASE_USER'], $plainPasswd, $config['DATABASE_TYPE'], $config['DATABASE_HOST'],
-                $config['DATABASE_NAME']
-            );
-        } catch (\PDOException $e) {
-            throw new DatabaseException(
-                sprintf("Couldn't establish connection to the database: %s", $e->getMessage()), NULL, $e->getCode(), $e
-            );
+            $cache->save($db_pass_key, 'iMSCP_DATABASE_KEY');
+            $cache->save($db_pass_iv, 'iMSCP_DATABASE_IV');
         }
+
+        if (!($plainPasswd = $cache->load('DATABASE_PASSWORD_PLAIN'))) {
+            $plainPasswd = Crypt::decryptRijndaelCBC($db_pass_key, $db_pass_iv, $config['DATABASE_PASSWORD']);
+            $cache->save($plainPasswd, 'DATABASE_PASSWORD_PLAIN');
+        }
+
+        $this->database = new Database(
+            $config['DATABASE_USER'], $plainPasswd, 'mysql', $config['DATABASE_HOST'], $config['DATABASE_NAME']
+        );
 
         // Make the database instance available through registry (bc)
         Registry::set('db', $this->database);
@@ -650,35 +683,18 @@ class Application
     }
 
     /**
-     * Start the session
+     * Retrieve database instance
      *
-     * @throws iMSCPException if session directory is not writable
-     * @return void
+     * @throws iMSCPException if the Database instance is not available yet
+     * @return Database
      */
-    protected function startSession()
+    public function getDatabase()
     {
-        if (PHP_SAPI == 'cli') {
-            return;
+        if (NULL === $this->database) {
+            throw new iMSCPException('Database instance not available yet');
         }
 
-        if (!is_writable(GUI_ROOT_DIR . '/data/sessions')) {
-            throw new iMSCPException('The gui/data/sessions directory must be writable.');
-        }
-
-        Session::setOptions([
-            'use_cookies'         => 'on',
-            'use_only_cookies'    => 'on',
-            'use_trans_sid'       => 'off',
-            'strict'              => false,
-            'remember_me_seconds' => 0,
-            'name'                => 'iMSCP_Session',
-            'gc_divisor'          => 100,
-            'gc_maxlifetime'      => 1440,
-            'gc_probability'      => 1,
-            'save_path'           => GUI_ROOT_DIR . '/data/sessions'
-        ]);
-
-        Session::start();
+        return $this->database;
     }
 
     /**
@@ -698,10 +714,10 @@ class Application
         }
 
         $config = $this->getConfig();
-        $stmt = exec_query('SELECT lang, layout FROM user_gui_props WHERE user_id = ?', $_SESSION['user_id']);
+        $stmt = exec_query('SELECT lang, layout FROM user_gui_props WHERE user_id = ?', [$_SESSION['user_id']]);
 
         if ($stmt->rowCount()) {
-            $row = $stmt->fetchRow();
+            $row = $stmt->fetch();
 
             if ((empty($row['lang']) && empty($row['layout']))) {
                 list($lang, $theme) = [$config['USER_INITIAL_LANG'], $config['USER_INITIAL_THEME']];
@@ -881,14 +897,8 @@ class Application
             return;
         }
 
-        /** @var \iMSCP_Plugin_Manager $pluginManager */
-        $pluginManager = Registry::set('pluginManager', new PluginManager($this->getConfig()['PLUGINS_DIR']));
-
+        $pluginManager = $this->getPluginManager();
         foreach ($pluginManager->pluginGetList() as $pluginName) {
-            if ($pluginManager->pluginHasError($pluginName)) {
-                continue;
-            }
-
             if (!$pluginManager->pluginLoad($pluginName)) {
                 throw new iMSCPException(sprintf("Couldn't load plugin: %s", $pluginName));
             }

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-08 08:36+0000\n"
+"POT-Creation-Date: 2017-10-01 16:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Dániel Bozsóki <bozsokidaniel5@gmail.com>, 2017\n"
 "Language-Team: Hungarian (Hungary) (https://www.transifex.com/i-mscp/teams/576/hu_HU/)\n"
@@ -1897,12 +1897,12 @@ msgid "Details"
 msgstr "Részletek"
 
 #, php-format
-msgid "Directory %s doesn't exists."
-msgstr "„%s” könyvtár nem létezik."
+msgid "Directory %s doesn't exist."
+msgstr ""
 
 #, php-format
-msgid "Directory '%s' doesn't exists."
-msgstr "'%s' könyvtár nem létezik."
+msgid "Directory '%s' doesn't exist."
+msgstr ""
 
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
@@ -2728,15 +2728,6 @@ msgid ""
 "and line breaks are allowed."
 msgstr ""
 
-msgid "Invalid city."
-msgstr "Érvénytelen város."
-
-msgid "Invalid company."
-msgstr "Érvénytelen vállalat."
-
-msgid "Invalid country."
-msgstr "Érvénytelen ország."
-
 msgid "Invalid domain name."
 msgstr "Hibás domain név."
 
@@ -2750,17 +2741,11 @@ msgstr "Érvénytelen e-mail felhasználónév."
 msgid "Invalid field: %s"
 msgstr "Hibás `%s` mező."
 
-msgid "Invalid first name."
-msgstr "Érvénytelen keresztnév."
-
 msgid "Invalid gender."
 msgstr "Érvénytelen nem."
 
 msgid "Invalid group name!"
 msgstr "Érvénytelen csoportnév"
-
-msgid "Invalid last name."
-msgstr "Érvénytelen vezetéknév."
 
 msgid "Invalid menu order."
 msgstr "Érvénytelen megrendelés menü"
@@ -2785,23 +2770,11 @@ msgstr "Érvénytelen személyes kulcs vagy jelszó."
 msgid "Invalid service name: %s"
 msgstr ""
 
-msgid "Invalid state/province."
-msgstr ""
-
-msgid "Invalid street 1."
-msgstr ""
-
-msgid "Invalid street 2."
-msgstr ""
-
 msgid "Invalid target."
 msgstr "Érvénytelen cél"
 
 msgid "Invalid username."
 msgstr "Érvénytelen felhasználónév."
-
-msgid "Invalid zipcode."
-msgstr "Érvénytelen irányítószám."
 
 msgid "Kernel Version"
 msgstr "Kernel verziója:"
@@ -3197,9 +3170,6 @@ msgstr ""
 
 msgid "No anti-rootkits logs"
 msgstr "Nincs anti-rootkits napló"
-
-msgid "No available"
-msgstr "Nem elérhető"
 
 msgid "No custom menu found."
 msgstr "Nem található egyéni menü"
@@ -4714,11 +4684,9 @@ msgstr ""
 
 #, php-format
 msgid ""
-"The directory %s doesn't exists. Please create that directory using your "
-"file manager."
+"The directory %s doesn't exist. Please create that directory using your file"
+" manager."
 msgstr ""
-"%s könyvtár nem létezik. Kérjük, hozd létre ezt a könyvtárat a "
-"fájlkezelőddel."
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -5383,9 +5351,6 @@ msgstr "Hibás viszonteladó azonosító"
 
 msgid "Wrong security code"
 msgstr "Hibás biztonsági kód"
-
-msgid "Wrong software id."
-msgstr "Hibás szoftver azonosító."
 
 msgid "Wrong syntax for new expire date."
 msgstr "Szintaktikai hiba az új lejárati dátumban"

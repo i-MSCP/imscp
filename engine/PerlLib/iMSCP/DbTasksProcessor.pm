@@ -159,31 +159,33 @@ sub processDbTasks
         "
     );
 
-    # Process toadd|tochange|toenable||todisable|todelete custom DNS records which belong to domains
+    # Process toadd|tochange|toenable||todisable|todelete custom DNS records group which belong to domains
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_processModuleDbTasks(
         'Modules::CustomDNS',
         "
-            SELECT DISTINCT CONCAT('domain_', domain_id) AS id, domain_name AS name
-            FROM domain_dns
-            JOIN domain USING(domain_id)
-            WHERE domain_dns_status IN ('toadd', 'tochange', 'toenable', 'todisable', 'todelete')
-            AND alias_id = '0'
-            AND domain_status IN('ok', 'disabled')
+            SELECT CONCAT(t1.domain_id, ';', 0) AS id, t2.domain_name AS name
+            FROM domain_dns AS t1
+            JOIN domain AS t2 ON(t2.domain_id = t1.domain_id)
+            WHERE t1.domain_dns_status IN ('toadd', 'tochange', 'toenable', 'todisable', 'todelete')
+            AND t1.alias_id = 0
+            AND t2.domain_status IN('ok', 'disabled')
+            GROUP BY t1.domain_id, t2.domain_name
         "
     );
 
-    # Process toadd|tochange|toenable|todisable|todelete custom DNS records which belong to domain aliases
+    # Process toadd|tochange|toenable|todisable|todelete custom DNS records group which belong to domain aliases
     # For each entitty, process only if the parent entity is in a consistent state
     $self->_processModuleDbTasks(
         'Modules::CustomDNS',
         "
-            SELECT DISTINCT CONCAT('alias_', alias_id) AS id, alias_name AS name
-            FROM domain_dns
-            JOIN domain_aliasses USING(alias_id)
-            WHERE domain_dns_status IN ('toadd', 'tochange', 'toenable', 'todisable', 'todelete')
-            AND alias_id <> '0'
-            AND alias_status IN('ok', 'disabled')
+            SELECT CONCAT(t1.domain_id, ';', t1.alias_id) AS id, t2.alias_name AS name
+            FROM domain_dns AS t1
+            JOIN domain_aliasses AS t2 ON(t2.alias_id = t1.alias_id)
+            WHERE t1.domain_dns_status IN ('toadd', 'tochange', 'toenable', 'todisable', 'todelete')
+            AND t1.alias_id <> 0
+            AND t2.alias_status IN('ok', 'disabled')
+            GROUP BY t1.alias_id, t1.domain_id, t2.alias_name
         "
     );
 

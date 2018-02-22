@@ -19,7 +19,6 @@
  */
 
 use iMSCP\Crypt as Crypt;
-use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
@@ -75,7 +74,7 @@ function getPreviousStepData()
 
 /**
  * Add customer user
- * 
+ *
  * @throws Exception
  * @throws iMSCP_Exception
  * @param Form $form
@@ -90,21 +89,22 @@ function addCustomer(Form $form)
     }
 
     if (!$form->isValid($_POST)) {
-        foreach ($form->getMessages() as $fieldname => $msgsStack) {
-            set_page_message(reset($msgsStack), 'error');
+        foreach ($form->getMessages() as $msgsStack) {
+            foreach ($msgsStack as $msg) {
+                set_page_message(tohtml($msg), 'error');
+            }
         }
 
         return;
     }
 
     $domainIp = intval($_POST['domain_ip']);
-    $stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', $_SESSION['user_id']);
+    $stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', [$_SESSION['user_id']]);
     if (!$stmt->rowCount()) {
         throw new iMSCPException(sprintf('Could not find IPs for reseller with ID %s', $_SESSION['user_id']));
     }
 
-    $resellerIps = $stmt->fetchRow();
-    $resellerIps = explode(';', rtrim($resellerIps['reseller_ips'], ';'));
+    $resellerIps = explode(';', rtrim($stmt->fetchColumn(), ';'));
     if (!in_array($domainIp, $resellerIps)) {
         showBadRequestErrorPage();
     }
@@ -118,12 +118,10 @@ function addCustomer(Form $form)
         $stmt = exec_query('SELECT props FROM hosting_plans WHERE reseller_id = ? AND id = ?', [
             $_SESSION['user_id'], $hpId
         ]);
-        $data = $stmt->fetchRow();
-        $props = $data['props'];
+        $props = $stmt->fetchColumn();
     }
 
-    list(
-        $php, $cgi, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $backup, $dns, $aps, $phpEditor,
+    list($php, $cgi, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $backup, $dns, $aps, $phpEditor,
         $phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniDisableFunctions, $phpMailFunction, $phpiniPostMaxSize,
         $phpiniUploadMaxFileSize, $phpiniMaxExecutionTime, $phpiniMaxInputTime, $phpiniMemoryLimit, $extMailServer,
         $webFolderProtection, $mailQuota
@@ -136,7 +134,9 @@ function addCustomer(Form $form)
     $aps = str_replace('_', '', $aps);
     $extMailServer = str_replace('_', '', $extMailServer);
     $webFolderProtection = str_replace('_', '', $webFolderProtection);
-    $db = Database::getInstance();
+
+    /** @var iMSCP_Database $db */
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -159,7 +159,7 @@ function addCustomer(Form $form)
             ]
         );
 
-        $adminId = $db->insertId();
+        $adminId = $db->lastInsertId();
 
         EventsManager::getInstance()->dispatch(Events::onBeforeAddDomain, [
             'createdBy'     => $_SESSION['user_id'],
@@ -195,7 +195,7 @@ function addCustomer(Form $form)
             ]
         );
 
-        $dmnId = $db->insertId();
+        $dmnId = $db->lastInsertId();
 
         $phpini = PhpIni::getInstance();
         $phpini->loadResellerPermissions($_SESSION['user_id']); // Load reseller PHP permissions

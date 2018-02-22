@@ -1,202 +1,88 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "ispCP - ISP Control Panel".
- *
- * The Initial Developer of the Original Code is ispCP Team.
- * Portions created by Initial Developer are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Exception_Database as DatabaseException;
+namespace iMSCP\Database;
+
+use iMSCP\Database\Events\Statement as StatementEvent;
+use iMSCP_Events as Events;
+use iMSCP_Events_Manager_Interface as EventsManagerInterface;
+use PDO;
+use PDOStatement;
 
 /**
- * Class iMSCP_Database_ResultSet
- *
- * @property mixed EOF
- * @property mixed fields
+ * Class ResultSet
+ * @package iMSCP\Database
  */
-class iMSCP_Database_ResultSet
+class ResultSet extends PDOStatement
 {
     /**
-     * PDOStatement object
-     *
-     * @var PDOStatement
+     * @var EventsManagerInterface
      */
-    protected $_stmt = NULL;
+    protected $em;
 
     /**
-     * A row from the result set associated with the referenced PDOStatement object
-     *
-     * @see fields()
-     * @see _get()
-     * @var array
+     * @var StatementEvent
      */
-    protected $_fields = NULL;
+    protected $event;
 
     /**
-     * Create a new DatabaseResult object
+     * ResultSet constructor.
      *
-     * @throws DatabaseException
-     * @param PDOStatement $stmt A PDOStatement instance
+     * @param EventsManagerInterface $em
      */
-    public function __construct($stmt)
+    protected function __construct(EventsManagerInterface $em)
     {
-        if (!($stmt instanceof PDOStatement)) {
-            throw new DatabaseException('Argument passed to ' . __METHOD__ . '() must be a PDOStatement object!');
+        $this->em = $em;
+        $this->event = new StatementEvent($this->queryString);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function execute($parameters = NULL)
+    {
+        // BC reasons -- Will be removed in a later release
+        if (NULL !== $parameters) {
+            $parameters = (array)$parameters;
         }
 
-        $this->_stmt = $stmt;
+        $this->event->setName(Events::onBeforeQueryExecute);
+        $this->em->dispatch($this->event);
+        $ret = parent::execute($parameters);
+        $this->event->setName(Events::onAfterQueryExecute);
+        $this->em->dispatch($this->event);
+        return $ret;
     }
 
     /**
-     * Php overloading
+     * Fetches the next row from a result set
      *
-     * Php overloading method that allows to fetch the first row in the result set or check if one row exist in the
-     * result set
-     *
-     * @throws DatabaseException
-     * @param string $param
-     * @return mixed Depending of the $param value, this method can returns the first row of a result set or a boolean
-     *         that indicate if any rows exists in the result set
+     * @see PDOStatement::fetch()
+     * @param null $fetchStyle
+     * @param int $cursorOriantation
+     * @param int $cursorOffset
+     * @return mixed
+     * @deprecated Will be removed in a later version
      */
-    public function __get($param)
+    public function fetchRow($fetchStyle = NULL, $cursorOriantation = PDO::FETCH_ORI_NEXT, $cursorOffset = 0)
     {
-        if ($param == 'fields') {
-            if (is_null($this->_fields)) {
-                $this->_fields = $this->fetchRow();
-            }
-
-            return $this->_fields;
-        }
-
-        if ($param == 'EOF') {
-            if ($this->_stmt->rowCount() == 0) {
-                return true;
-            }
-
-            return !is_null($this->_fields) && !is_array($this->_fields);
-        }
-
-        throw new DatabaseException("Unknown parameter: `$param`");
-    }
-
-    /**
-     * Gets column field value from the current row
-     *
-     * @see get()
-     * @param string $param Colum field name
-     * @return mixed Column value
-     */
-    public function fields($param)
-    {
-        return $this->fields[$param];
-    }
-
-    /**
-     * Returns the number of rows affected by the last SQL statement
-     *
-     * This method returns the number of rows affected by the last DELETE,
-     * INSERT, or UPDATE SQL statement
-     *
-     * If the last SQL statement executed by the associated PDOStatement was a SELECT statement, some RDBMS (like Mysql)
-     * may return the number of rows returned by that statement. However, this behaviour is not guaranteed for all RDBMS
-     * and should not be relied on for portable applications.
-     *
-     * @return int Number of rows affected by the last SQL statement
-     */
-    public function rowCount()
-    {
-        return $this->_stmt->rowCount();
-    }
-
-    /**
-     * Alias of the rowCount() method
-     *
-     * @see rowCount()
-     * @return int Number of rows affected by the last SQL statement
-     */
-    public function recordCount()
-    {
-        return $this->_stmt->rowCount();
-    }
-
-    /**
-     * Fetches the next row from the current result set
-     *
-     * Fetches a row from the result set. The fetch_style parameter determines
-     * how the row is returned.
-     *
-     * @param int $fetchStyle Controls how the next row will be returned to the caller. This value must be one of the
-     *                        PDO::FETCH_* constants
-     * @return mixed The return value of this function on success depends on the fetch style. In all cases, FALSE is
-     *               returned on failure.
-     * @todo Finish fetch style implementation
-     */
-    public function fetchRow($fetchStyle = NULL)
-    {
-        return $this->_stmt->fetch($fetchStyle);
-    }
-
-    /**
-     * Fetches all rows from the current result set
-     *
-     * Fetches all row from the result set. The fetch_style parameter determines how the rows are returned.
-     *
-     * @param int $fetchStyle Controls how the next row will be returned to the
-     * caller. This value must be one of the PDO::FETCH_* constants
-     * @return mixed The return value of this function on success depends on the
-     * fetch style. In all cases, FALSE is returned on failure.
-     * @todo Finish fetch style implementation
-     */
-    public function fetchAll($fetchStyle = NULL)
-    {
-        return $this->_stmt->fetchAll($fetchStyle);
-    }
-
-    /**
-     * Fetches the next row from the current result set
-     *
-     * @return void
-     */
-    public function moveNext()
-    {
-        $this->_fields = $this->fetchRow();
-    }
-
-    /**
-     * Error information associated with the last operation on the statement handle
-     *
-     * @return array Error information
-     */
-    public function errorInfo()
-    {
-        return $this->_stmt->errorInfo();
-    }
-
-    /**
-     * Stringified error information
-     *
-     * This method returns a stringified version of the error information associated with the last statement operation.
-     *
-     * @return string Error information
-     */
-    public function errorInfoToString()
-    {
-        return implode(' - ', $this->_stmt->errorInfo());
+        return $this->fetch($fetchStyle, $cursorOriantation, $cursorOffset);
     }
 }

@@ -253,7 +253,6 @@ sub _isSystemd
     my ($self, $unit) = @_;
 
     $unit .= '.service' unless $unit =~ /\.(?:service|socket)$/;
-    local $@;
     eval { $self->_searchUnitFile( $unit ); };
 }
 

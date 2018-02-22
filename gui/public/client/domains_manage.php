@@ -65,10 +65,10 @@ function generateDomainsList($tpl)
             LEFT JOIN ssl_certs AS t2 ON(t2.domain_id = t1.domain_id AND t2.domain_type = 'dmn')
             WHERE domain_admin_id = ? ORDER BY domain_name
         ",
-        $_SESSION['user_id']
+        [$_SESSION['user_id']]
     );
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         list($redirectUrl, $editLink, $edit) = generateDomainRedirectAndEditLink($row['domain_id'], $row['domain_status'], $row['url_forward']);
         $domainName = decode_idna($row['domain_name']);
         $redirectUrl = decode_idna($redirectUrl);
@@ -209,7 +209,7 @@ function generateDomainAliasesList($tpl)
             LEFT JOIN ssl_certs AS t2 ON(t1.alias_id = t2.domain_id AND t2.domain_type = 'als')
             WHERE t1.domain_id = ? ORDER BY t1.alias_mount, t1.alias_name
         ",
-        $domainId
+        [$domainId]
     );
 
     if (!$stmt->rowCount()) {
@@ -220,7 +220,7 @@ function generateDomainAliasesList($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         list($action, $actionScript, $isStatusOk, $certText, $certScript) = generateDomainAliasAction(
             $row['alias_id'], $row['alias_status']
         );
@@ -407,7 +407,7 @@ function generateSubdomainsList($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         list($action, $actionScript, $isStatusOk, $certText, $certScript) = generateSubdomainAction(
             $row['subdomain_id'], $row['sub_type'], $row['subdomain_status']
         );
@@ -527,7 +527,7 @@ function generateCustomDnsRecordsList($tpl)
             LEFT JOIN domain_aliasses AS t3 USING (alias_id)
             WHERE t1.domain_id = ? $filterCond ORDER BY t1.domain_id, t1.alias_id, t1.domain_dns, t1.domain_type
         ",
-        get_user_domain_id($_SESSION['user_id'])
+        [get_user_domain_id($_SESSION['user_id'])]
     );
 
     if (!$stmt->rowCount()) {
@@ -543,7 +543,7 @@ function generateCustomDnsRecordsList($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         list($actionEdit, $actionScriptEdit) = generateCustomDnsRecordAction(
             'edit', $row['domain_dns_id'], $row['domain_dns_status'], $row['owned_by']
         );

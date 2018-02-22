@@ -28,12 +28,41 @@ class iMSCP_Utility_OpcodeCache
     /**
      * @var array|null All supported cache types
      */
-    static protected $supportedCaches = NULL;
+    static protected $supportedCaches;
 
     /**
      * @var array|null Holds all currently active caches
      */
-    static protected $activeCaches = NULL;
+    static protected $activeCaches;
+
+    /**
+     * Clears a file from an opcache, if one exists
+     *
+     * @param string|NULL $fileAbsPath The file as absolute path to be cleared
+     *                                 or NULL to clear completely
+     * @return void
+     */
+    static public function clearAllActive($fileAbsPath = NULL)
+    {
+        foreach (static::getAllActive() as $properties) {
+            $callback = $properties['clearCallback'];
+            $callback($fileAbsPath);
+        }
+    }
+
+    /**
+     * Returns all supported and active opcaches
+     *
+     * @return array Array filled with supported and active opcaches
+     */
+    static public function getAllActive()
+    {
+        if (static::$activeCaches === NULL) {
+            static::initialize();
+        }
+
+        return static::$activeCaches;
+    }
 
     /**
      * Initialize the cache properties
@@ -58,7 +87,9 @@ class iMSCP_Utility_OpcodeCache
                 'canInvalidate' => function_exists('opcache_invalidate'),
                 'error'         => false,
                 'clearCallback' => function ($fileAbsPath) {
-                    if ($fileAbsPath !== NULL && function_exists('opcache_invalidate')) {
+                    if ($fileAbsPath !== NULL
+                        && function_exists('opcache_invalidate')
+                    ) {
                         opcache_invalidate($fileAbsPath, true);
                     } else {
                         opcache_reset();
@@ -69,10 +100,12 @@ class iMSCP_Utility_OpcodeCache
             // The Alternative PHP Cache aka APC
             // http://www.php.net/manual/de/book.apc.php
             'APC'               => [
-                // Currently APCu identifies itself both as "apcu" and "apc" (for compatibility) although it doesn't
-                // provide the APC-opcache functionality
+                // Currently APCu identifies itself both as "apcu" and "apc"
+                // (for compatibility) although it doesn't provide the
+                // APC-opcache functionality
                 //'active' => extension_loaded('apc') && !extension_loaded('apcu') && ini_get('apc.enabled') === '1',
-                'active'        => extension_loaded('apc') && !extension_loaded('apcu') && ini_get('apc.enabled') === '1',
+                'active'        => extension_loaded('apc')
+                    && !extension_loaded('apcu') && ini_get('apc.enabled') === '1',
                 'version'       => $apcVersion,
                 // apc_clear_cache() since APC 2.0.0 so default yes. In cli it do not clear the http cache.
                 'canReset'      => true,
@@ -147,6 +180,7 @@ class iMSCP_Utility_OpcodeCache
                 'canInvalidate' => false,
                 'error'         => false,
                 'clearCallback' => function () {
+                    /** @noinspection PhpUndefinedFunctionInspection */
                     eaccelerator_clear();
                 }
             ],
@@ -160,6 +194,7 @@ class iMSCP_Utility_OpcodeCache
                 'canInvalidate' => false,
                 'error'         => false,
                 'clearCallback' => function () {
+                    /** @noinspection PhpUndefinedFunctionInspection */
                     accelerator_reset();
                 }
             ],
@@ -173,45 +208,6 @@ class iMSCP_Utility_OpcodeCache
                 static::$activeCaches[$opcodeCache] = $properties;
             }
         }
-    }
-
-    /**
-     * Gets the state of canInvalidate for given cache system
-     *
-     * @param string $system The cache system to test (APC, ...)
-     * @return boolean The calculated value from array or FALSE if cache system not exists
-     */
-    static public function getCanInvalidate($system)
-    {
-        return isset(static::$supportedCaches[$system]) ? static::$supportedCaches[$system]['canInvalidate'] : false;
-    }
-
-    /**
-     * Clears a file from an opcache, if one exists
-     *
-     * @param string|NULL $fileAbsPath The file as absolute path to be cleared or NULL to clear completely
-     * @return void
-     */
-    static public function clearAllActive($fileAbsPath = NULL)
-    {
-        foreach (static::getAllActive() as $properties) {
-            $callback = $properties['clearCallback'];
-            $callback($fileAbsPath);
-        }
-    }
-
-    /**
-     * Returns all supported and active opcaches
-     *
-     * @return array Array filled with supported and active opcaches
-     */
-    static public function getAllActive()
-    {
-        if (static::$activeCaches === NULL) {
-            static::initialize();
-        }
-
-        return static::$activeCaches;
     }
 
     /**
@@ -245,5 +241,17 @@ class iMSCP_Utility_OpcodeCache
         }
 
         return $canInvalidate;
+    }
+
+    /**
+     * Gets the state of canInvalidate for given cache system
+     *
+     * @param string $system The cache system to test (APC, ...)
+     * @return boolean The calculated value from array or FALSE if cache system not exists
+     */
+    static public function getCanInvalidate($system)
+    {
+        return isset(static::$supportedCaches[$system])
+            ? static::$supportedCaches[$system]['canInvalidate'] : false;
     }
 }

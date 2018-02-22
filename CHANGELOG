@@ -1,13 +1,135 @@
 ﻿i-MSCP ChangeLog
 
 ------------------------------------------------------------------------------------------------------------------------
+Git 1.5.x
+------------------------------------------------------------------------------------------------------------------------
+
+BACKEND
+    Fixed: Avoid localization of `$@' variable
+    Fixed: Couldn't restore SQL databases -- Can't locate object method "selectall_array" via package "DBI::db"
+    Fixed: Couldn't restore uncompressed databases
+    Fixed: Existence of network devices must be checked before operating on them (iMSCP::Net)
+    Fixed: Make sure to work with a well-known composer version (iMSCP::Composer)
+    Fixed: Make use of the INADDR_ANY address, regadless of domain IP address when primary server IP is set with `None` option
+    Security: Disallow connection to MySQL command-line tool without user password, even for root user
+    Security: Don't store i-MSCP master SQL user data into the /etc/mysql/conf.d/imscp.cnf configuration file
+
+CONFIG
+    Added: LOGROTATE(8) configuration file for VsFTPD
+    Added: LOGROTATE(8) configuration file for rsyslog (Ubuntu 14.04/Trusty Thar)
+    Added: LOGROTATE(8) configuration stanza for ProFTPD traffic log file
+    Fixed: Make use of the `ssl' parameter of the `listen' directive in place of the `ssl' directive (Nginx)
+    Removed: Useless `DATABASE_TYPE` parameter (imscp.conf)
+
+CONTRIB
+    Added: get_imscp_master_sql_user_pwd.pl script: Print current i-MSCP master SQL user (imscp_user) password
+
+DATABASE
+    Fixed: Deprecated columns not removed while updating from some older versions (r270)
+
+DISTRIBUTIONS
+    Added: Support for Debian 10/Buster (Experimental)
+    Added: Support for Percona DB 5.5 -- Debian 9/Stretch (amd64 architecture only)
+    Added: Support for Percona DB 5.6 -- Debian 9/Stretch (amd64 architecture only)
+    Review: Avoid APT pinning whenever as possible (All distributions)
+    Relaxed: Permissions policy on /etc/apt/apt.conf.d/* files -- Files must be world-readable
+
+FRONTEND
+    Enhancement: Make use of application cache for caching of plugins metadata (lifetime: indefinitely till change)
+    Fixed: Couldn't parse static (inline|file) templates due to wrong conditional statement (class iMSCP_pTemplate)
+    Fixed: Couldn't update customer password (admin and reseller UI)
+    Fixed: Disabled DNS resource records get re-enabled when editing a record (Custom DNS records -- Client UI)
+    Fixed: Fatal error: Call to a member function fetchRow() on string in client/mail_catchall_add.php on line 84
+    Fixed: iMSCP_Authentication_AuthEvent badly initialized
+    Fixed: List of customers is truncated due to wrong template variable name in loop (Customer assignments feature)
+    Fixed: Misleading domain status due to missing `torestore' status in the translate_dmn_status() function
+    Fixed: Undefined offsets (Support feature - Tickets view interfaces)
+    Fixed: Wrong alternative subject names in self-signed SSL certificates
+    Fixed: Wrong order for parameters in mail delete.php (i18n -- client UI)
+    Fixed: Wrong status shown in administrator overview interface for customers when a password is being modified
+    Fixed: Wrong value passed-in the `onBeforeEditUser' and `onAfterEditUser' events for the `admin_pass' parameter
+    Review: Prepare the SQL statements once per session (objects counting, stats)
+    Rewritten: iMSCP_Database class (now extends the PDO class)
+    Rewritten: iMSCP_Database_ResultSet (now extends the PDOStatement class -- Renamed to iMSCP\Database\ResultSet)
+
+INSTALLER
+    Added: `copy_as' attribute -- Allows to copy a file with specific name (copy_config xml node from install.xml files)
+    Added: `pre_remove' attribute -- Allows to remove previous directory (folder xml node from install.xml files)
+    Enhancement: Make it possible to provide per distribution (codename) configuration file
+    Enhancement: Provide good default values for installer whenever possible
+    Fixed: `build' mode is broken for fresh installs -- Packages must be pre-installed regardless of install mode
+    Fixed: `CLIENT_DOMAIN_ALT_URLS' configuration parameter reseted to 0 (disabled) while running installer
+    Fixed: `CLIENT_DOMAIN_ALT_URLS' parameter is not set on fresh installations
+    Fixed: Filtering of packages that must be uninstalled is made too early (autoinstaller::Adapter::DebianAdapter)
+    Fixed: If a password is getting incorrect due to a password policy change, user must be warned
+    Fixed: Setup dialog for the alternative URLs feature is not shown on fresh install
+    Merged: Distribution layout.xml file with distribution master install.xml file
+    Renamed: `kept` attribute to `keep_if_exist' (copy_config xml node from install.xml files)
+    Renamed: `if' attribute to 'copy_if' (copy_config xml node from install.xml files)
+
+LISTENERS
+    Fixed: All listener files should be versionned for easy update tracking
+    Fixed: Listener::Php::ConfOptions::Override: PHP INI level not honoured
+    Fixed: 10_named_slave_provisioning.pl: Global symbol "$rs" requires explicit package name
+    Rewritten: 20_named_dualstack.pl listener file (require i-MSCP >= 1.5.2)
+
+PACKAGES
+    Fixed: Distribution packages not installed in `build' mode (Package::AntiRootkits, Package::Webstats)
+    Fixed: Limit number of Nginx worker processes in auto mode (Package::FrontEnd::Installer)
+    Review: Cleanup production configuration files (Package::FrontEnd::Installer)
+
+PLUGINS
+    Updated: Plugin API to version 1.5.1
+
+PRESEEDING
+    Enhancement: Make use of default alternatives when there is no value set for them
+
+SCRIPTS
+    Fixed: Avoid localization of `$@' variable (all scripts)
+    Fixed: imscp-backup-all: Unexpected warning
+    Fixed: Missing `--skip-distro-packages' (imscp-reconfigure)
+    Fixed: maillogconvert.pl script is broken leading to un-processing of SMTP logs
+
+SERVERS
+    Fixed: Applications such as WHMCS behave unexpectedly with strict SQL mode -- Set SQL mode as with MySQL 5.5 (no SQL mode)
+    Fixed: Avoid truncating ProFTPD and VsFTPD traffic log files -- Make use of LOGROTATE(8) instead
+    Fixed: Make use of the INADDR_ANY address, regadless of domain IP address when primary server IP is set with `None` option (Httpd)
+    Fixed: Set timeout to 3 seconds for LWP::Simple; Default value is far too hight (Servers::server::local::installer)
+    Review: Make use of ipify.org as default service for WAN IP retrieval (Servers::server::local::installer)
+    Rewritten: Servers::ftpd::courier::getTraffic() routine: Avoid IO operations (AMAP); Reduce memory consumption
+    Rewritten: Servers::ftpd::dovecot::getTraffic() routine: Avoid IO operations (AMAP); Reduce memory consumption
+    Rewritten: Servers::ftpd::postfix::getTraffic() routine: Avoid IO operations (AMAP), Reduce memory consumption
+    Rewritten: Servers::ftpd::proftpd::getTraffic() routine: Avoid IO operations (AMAP); Reduce memory consumption
+    Rewritten: Servers::ftpd::vsftpd::getTraffic() routine: Avoid IO operations (AMAP); Reduce memory consumption
+
+VAGRANT
+    Enhancement: Make users able to choice between many distributions
+    Fixed: Can't locate Data/Validate/IP.pm in @INC (i-MSCP provision scripts)
+    Fixed: Unable to locate package language-pack-en (i-MSCP provision scripts)
+    Fixed: Make sure that Vagrant box is up-to-date before i-MSCP provisioning
+    Fixed: Reboot the Vagrant box before provisioning it with i-MSCP (needed in case of kernel update)
+    Fixed: Setup i-MSCP with public IP address (i-MSCP provision scripts)
+    Merged: i-MSCP Vagrant provision scripts
+    Updated: Vagrant box to vanilla Debian 9.1/Stretch from Vagrant Cloud (default Vagrant box)
+    Review: Copy i-MSCP archive directory content under /user/local/src/imscp Vagrant box directory
+    Review: Disable automatic box update checking in VagrantFile
+
+YOUTRACK
+    IP-1742 i-MSCP upgrade error - Unknown 'mail_user' database table in database update r254
+    IP-1744 Couldn't go to support section -- 302 redirect to index.php -- reseller UI
+    IP-1745 Rsyslog log rotation failure -- Initctl command (Upstart) doesn't know the 'rotate' action -- Ubuntu 14.04/Trusty Thar
+    IP-1746 Error when generating SSL certificate - Could not write in openssl temp file
+    IP-1749 User profile fields validation too strict
+    IP-1753 Preseed SECONDARY_DNS does not accept spaces (as indicated in the text)
+
+------------------------------------------------------------------------------------------------------------------------
 1.5.1
 ------------------------------------------------------------------------------------------------------------------------
 
 2017-09-08: Laurent Declercq
     RELEASE i-MSCP 1.5.1
 
-Bakend
+BACKEND
     Fixed: Can't call method "isEmpty" on an undefined value when a listener self un-register (iMSCP::EventManager)
 
 FRONTEND
@@ -88,7 +210,7 @@ FRONTEND
     Fixed: Couldn't set value bigger than 2GB for mailbox quota due to integer type casting (i386 arch)
     Fixed: Couldn't generate self-signed SSL certificate (string passed as serial number while integer is expected)
     Fixed: Customers must stay able to login when their password or their main domain are being modified
-    Fixed: Don't decode IDNA names in list of DNS resource records (Client UI level)
+    Fixed: Don't decode ACE names in list of DNS resource records (Client UI level)
     Fixed: Erroneous ftp_group.members field (Subsequent FTP accounts members are never added)
     Fixed: Login check must be done prior triggering starting script event
     Fixed: Missing creation of default `webmaster' mail account for subdomains

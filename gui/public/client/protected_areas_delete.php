@@ -22,14 +22,11 @@ require_once 'imscp-lib.php';
 
 check_login('user');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
-if (!customerHasFeature('protected_areas') || !isset($_GET['id'])) {
-    showBadRequestErrorPage();
-}
+customerHasFeature('protected_areas') && isset($_GET['id']) or showBadRequestErrorPage();
 
 $id = intval($_GET['id']);
-$stmt = exec_query('UPDATE htaccess SET status = ? WHERE id = ? AND dmn_id = ? AND status = ?', [
-    'todelete', $id, get_user_domain_id($_SESSION['user_id']), 'ok'
+$stmt = exec_query("UPDATE htaccess SET status = 'todelete' WHERE id = ? AND dmn_id = ? AND status = 'ok'", [
+    $id, get_user_domain_id($_SESSION['user_id'])
 ]);
 
 if (!$stmt->rowCount()) {

@@ -84,7 +84,6 @@ use iMSCP_Exception as iMSCPException;
  * @property string GUI_EXCEPTION_WRITERS Exception writer list
  * @property string DATABASE_USER i-MSCP database username
  * @property string DATABASE_PASSWORD i-MSCP database password
- * @property string DATABASE_TYPE Database type
  * @property string DATABASE_HOST Database hostname
  * @property string DATABASE_NAME Database name
  * @property string GUI_ROOT_DIR path to GUI
@@ -110,7 +109,7 @@ class iMSCP_Config_Handler_File extends ConfigHandler
      *
      * @var string
      */
-    protected $_pathFile;
+    protected $pathFile;
 
     /**
      * Loads all configuration parameters from a flat file
@@ -138,8 +137,8 @@ class iMSCP_Config_Handler_File extends ConfigHandler
             }
         }
 
-        $this->_pathFile = $pathFile;
-        $this->_parseFile();
+        $this->pathFile = $pathFile;
+        $this->parseFile();
     }
 
     /**
@@ -148,10 +147,10 @@ class iMSCP_Config_Handler_File extends ConfigHandler
      * @throws iMSCPException
      * @return void
      */
-    protected function _parseFile()
+    protected function parseFile()
     {
-        if (($fd = @file_get_contents($this->_pathFile)) == false) {
-            throw new iMSCPException(sprintf("Couldn't open the %s configuration file", $this->_pathFile));
+        if (($fd = @file_get_contents($this->pathFile)) == false) {
+            throw new iMSCPException(sprintf("Couldn't open the %s configuration file", $this->pathFile));
         }
 
         foreach (explode(PHP_EOL, $fd) as $line) {

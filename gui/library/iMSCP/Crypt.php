@@ -23,7 +23,8 @@ namespace iMSCP;
 /**
  * Class Crypt
  *
- * Library that provides functions for passwords hashing, verification and data encryption.
+ * Library that provides functions for passwords hashing, verification and data
+ * encryption.
  *
  * @package iMSCP
  */
@@ -40,13 +41,16 @@ class Crypt
      * @param string $password The password to be hashed
      * @param null|string $salt An optional salt string to base the hashing on
      * @return string
-     * @deprecated As of 2012-6-7, this algorithm is "no longer considered safe" by its author. Use bcrypt instead.
+     * @deprecated As of 2012-6-7, this algorithm is "no longer considered
+     *             safe" by its author. Use bcrypt instead.
      */
     static public function md5($password, $salt = NULL)
     {
         if ($salt !== NULL) {
-            if (strlen($salt) < 8) {
-                throw new \InvalidArgumentException('The salt length must be at least 8 bytes long');
+            if (!is_string($salt)
+                || strlen($salt) < 8
+            ) {
+                throw new \InvalidArgumentException('The salt must be a string at least 8 bytes long');
             }
         } else {
             $salt = static::randomStr(8);
@@ -70,12 +74,14 @@ class Crypt
         }
 
         $length = (int)$length;
+
         if ($length < 1) {
             throw new \InvalidArgumentException('Length parameter value must be >= 1');
         }
 
-        $listLen = strlen($charList);
-        if ($listLen == 1) {
+        $charListLength = strlen($charList);
+
+        if ($charListLength == 1) {
             return str_repeat($charList, $length);
         }
 
@@ -84,7 +90,7 @@ class Crypt
         $str = '';
 
         for ($i = 0; $i < $length; $i++) {
-            $pos = ($pos + ord($bytes[$i])) % $listLen;
+            $pos = ($pos + ord($bytes[$i])) % $charListLength;
             $str .= $charList[$pos];
         }
 
@@ -96,22 +102,28 @@ class Crypt
      *
      * @throws \InvalidArgumentException
      * @param string $password Password to be hashed
-     * @param int $rounds A numeric value used to indicate how many times the hashing loop should be executed
+     * @param int $rounds A numeric value used to indicate how many times the
+     *                    hashing loop should be executed
      * @param null|string $salt An optional salt string to base the hashing on
      * @return string
      */
     static public function sha256($password, $rounds = 5000, $salt = NULL)
     {
         $rounds = (int)$rounds;
-        if ($rounds < 1000 || $rounds > 5000) {
+
+        if ($rounds < 1000
+            || $rounds > 5000
+        ) {
             throw new \InvalidArgumentException('The rounds parameter must be in range 1000-5000');
         }
 
         $rounds = sprintf('%1$04d', $rounds);
 
         if ($salt !== NULL) {
-            if (strlen($salt) < 16) {
-                throw new \InvalidArgumentException('The salt length must be at least 16 bytes long');
+            if (!is_string($salt)
+                || strlen($salt) < 16
+            ) {
+                throw new \InvalidArgumentException('The salt must be a string at least 16 bytes long');
             }
         } else {
             $salt = static::randomStr(16);
@@ -125,28 +137,82 @@ class Crypt
      *
      * @throws \InvalidArgumentException
      * @param string $password The password to be hashed
-     * @param int $rounds A numeric value  used to indicate how many times the hashing loop should be executed
+     * @param int $rounds A numeric value  used to indicate how many times the
+     *                    hashing loop should be executed
      * @param null||string $salt An optional salt string to base the hashing on
      * @return string
      */
     static public function sha512($password, $rounds = 5000, $salt = NULL)
     {
         $rounds = (int)$rounds;
-        if ($rounds < 1000 || $rounds > 5000) {
+
+        if ($rounds < 1000
+            || $rounds > 5000
+        ) {
             throw new \InvalidArgumentException('The rounds parameter must be in range 1000-5000');
         }
 
         $rounds = sprintf('%1$04d', $rounds);
 
         if ($salt !== NULL) {
-            if (strlen($salt) < 16) {
-                throw new \InvalidArgumentException('The salt length must be at least 16 bytes long');
+            if (!is_string($salt)
+                || strlen($salt) < 16
+            ) {
+                throw new \InvalidArgumentException('The salt must be a string at least 16 bytes long');
             }
         } else {
             $salt = static::randomStr(16);
         }
 
         return crypt($password, '$6$rounds=' . $rounds . '$' . $salt);
+    }
+
+    /**
+     * Create an htpasswd password hash of the given password using the given
+     * algorithm
+     *
+     * See http://httpd.apache.org/docs/2.4/misc/password_encryptions.html
+     *
+     * @throws \InvalidArgumentException
+     * @param string $password The password to be hashed
+     * @param int $cost Base-2 logarithm of the iteration count (only relevant
+     *                  for bcrypt format)
+     * @param null|string $salt An optional salt string to base the hashing on
+     *                          (only relevant for bcrypt, crypt and md5 formats)
+     * @param string $format Format in which the password must be hashed
+     *                       (bcrypt|crypt|md5|sha1) -  Default is md5 (APR1)
+     * @return string
+     */
+    static public function htpasswd($password, $cost = 10, $salt = NULL, $format = 'md5')
+    {
+        switch ($format) {
+            case 'bcrypt':
+                return static::bcrypt($password, $cost, $salt);
+            case 'crypt':
+                if ($salt !== NULL) {
+                    if (!is_string($salt)
+                        || strlen($salt) != 2
+                    ) {
+                        throw new \InvalidArgumentException('The salt must be a string 2 bytes long');
+                    }
+
+                    if (preg_match('%[^' . static::ALPHA64 . ']%', $salt)) {
+                        throw new \InvalidArgumentException('The salt must be a string in the alphabet "./0-9A-Za-z"');
+                    }
+                } else {
+                    $salt = static::randomStr(2, static::ALPHA64);
+                }
+
+                return crypt($password, $salt);
+            case 'sha1':
+                return '{SHA}' . base64_encode(sha1($password, true));
+            case 'md5':
+                return static::apr1MD5($password, $salt);
+            default:
+                throw new \InvalidArgumentException(sprintf(
+                    'The %s format is not valid. The supported formats are: %s', $format, 'bcrypt, crypt, md5 and sha1'
+                ));
+        }
     }
 
     /**
@@ -161,15 +227,20 @@ class Crypt
     static public function bcrypt($password, $cost = 10, $salt = NULL)
     {
         $cost = (int)$cost;
-        if ($cost < 4 || $cost > 31) {
+
+        if ($cost < 4
+            || $cost > 31
+        ) {
             throw new \InvalidArgumentException('The cost parameter must be in range 04-31');
         }
 
         $cost = sprintf('%1$02d', $cost);
 
         if ($salt !== NULL) {
-            if (strlen($salt) < 16) {
-                throw new \InvalidArgumentException('The salt length must be at least 16 bytes long');
+            if (!is_string($salt)
+                || strlen($salt) < 16
+            ) {
+                throw new \InvalidArgumentException('The salt must be a string at least 16 bytes long');
             }
         } else {
             $salt = static::randomStr(16);
@@ -187,8 +258,9 @@ class Crypt
     }
 
     /**
-     * APR1 MD5 algorithm (see http://svn.apache.org/viewvc/apr/apr/trunk/crypto/apr_md5.c?view=markup)
+     * APR1 MD5 algorithm
      *
+     * @øee http://svn.apache.org/viewvc/apr/apr/trunk/crypto/apr_md5.c?view=markup
      * @param string $password The password to be hashed
      * @param null|string $salt Salt An optional salt string to base the hashing on
      * @return string
@@ -196,8 +268,10 @@ class Crypt
     static public function apr1MD5($password, $salt = NULL)
     {
         if ($salt !== NULL) {
-            if (strlen($salt) !== 8) {
-                throw new \InvalidArgumentException('The salt for APR1 algorithm must be 8 characters long');
+            if (!is_string($salt)
+                || strlen($salt) != 8
+            ) {
+                throw new \InvalidArgumentException('The salt must be a string 8 bytes long');
             }
 
             if (preg_match('%[^' . static::ALPHA64 . ']%', $salt)) {
@@ -253,48 +327,6 @@ class Crypt
     }
 
     /**
-     * Create an htpasswd password hash of the given password using the given algorithm
-     *
-     * See http://httpd.apache.org/docs/2.4/misc/password_encryptions.html
-     *
-     * @throws \InvalidArgumentException
-     * @param string $password The password to be hashed
-     * @param int $cost Base-2 logarithm of the iteration count (only relevant for bcrypt format)
-     * @param null|string $salt An optional salt string to base the hashing on (only relevant for bcrypt, crypt and md5 formats)
-     * @param string $format Format in which the password must be hashed (bcrypt|crypt|md5|sha1) -  Default is md5 (APR1)
-     * @return string
-     */
-    static public function htpasswd($password, $cost = 10, $salt = NULL, $format = 'md5')
-    {
-        switch ($format) {
-            case 'bcrypt':
-                return static::bcrypt($password, $cost, $salt);
-            case 'crypt':
-                if ($salt !== NULL) {
-                    if (strlen($salt) != 2) {
-                        throw new \InvalidArgumentException('The salt length must be 2 bytes long');
-                    }
-
-                    if (preg_match('%[^' . static::ALPHA64 . ']%', $salt)) {
-                        throw new \InvalidArgumentException('The salt must be a string in the alphabet "./0-9A-Za-z"');
-                    }
-                } else {
-                    $salt = static::randomStr(2, static::ALPHA64);
-                }
-
-                return crypt($password, $salt);
-            case 'sha1':
-                return '{SHA}' . base64_encode(sha1($password, true));
-            case 'md5':
-                return static::apr1MD5($password, $salt);
-            default:
-                throw new \InvalidArgumentException(sprintf(
-                    'The %s format is not valid. The supported formats are: %s', $format, 'bcrypt, crypt, md5 and sha1'
-                ));
-        }
-    }
-
-    /**
      * Convert a binary string using the "./0-9A-Za-z" alphabet
      *
      * @param string $string String to be converted
@@ -315,11 +347,11 @@ class Crypt
      */
     static public function verify($password, $hash)
     {
-        if (substr($hash, 0, 5) === '{SHA}') { // htpasswd sha1 hashed passwords
+        if (substr($hash, 0, 5) == '{SHA}') { // htpasswd sha1 hashed passwords
             return static::hashEqual($hash, '{SHA}' . base64_encode(sha1($password, true)));
         }
 
-        if (substr($hash, 0, 6) === '$apr1$') { // htpasswd APR-1 hashed passwords
+        if (substr($hash, 0, 6) == '$apr1$') { // htpasswd APR-1 hashed passwords
             $token = explode('$', $hash);
 
             if (empty($token[2])) {
@@ -379,6 +411,22 @@ class Crypt
     }
 
     /**
+     * Encrypt the given data using the given algorithm (Cipher)
+     *
+     * Note: PKCS#5/PKCS#7 padding is assumed.
+     *
+     * @param int $algorithm Algorithm
+     * @param string $key Encryption key
+     * @param string $iv Initialization vector
+     * @param string $data Data to encrypt
+     * @return string A base64 encoded string representing encrypted data
+     */
+    static protected function encrypt($algorithm, $key, $iv, $data)
+    {
+        return openssl_encrypt($data, $algorithm, $key, 0, $iv);
+    }
+
+    /**
      * Decrypt the given data using the Blowfish algorithm (Cipher) in CBC mode
      *
      * Note: PKCS#5/PKCS#7 padding is assumed.
@@ -394,11 +442,32 @@ class Crypt
     }
 
     /**
+     * Decrypt the given data using the given algorithm (Cipher)
+     *
+     * Note: PKCS#5/PKCS#7 padding assumed.
+     *
+     * @throws \RuntimeException
+     * @param int $algorithm Algorithm
+     * @param string $key Decryption key
+     * @param string $iv Initialization vector
+     * @param string $data A base64 encoded string representing encrypted data
+     * @return string
+     */
+    static protected function decrypt($algorithm, $key, $iv, $data)
+    {
+        if (!extension_loaded('openssl')) {
+            throw new \RuntimeException('OpenSSL extension is not available');
+        }
+
+        return openssl_decrypt($data, $algorithm, $key, 0, $iv);
+    }
+
+    /**
      * Encrypt the given data using the AES (Rijndael) algorithm (Cipher) in CBC mode
      *
      * Note: PKCS#5/PKCS#7 padding is assumed.
      *
-     * @param string $key Encryption key (16, 24, 32 or bytes long (128, 192 or 256 bits))
+     * @param string $key Encryption key (16, 24 or 32 bytes long (128, 192 or 256 bits))
      * @param string $iv Initialization vector (16 bytes long (128 bits))
      * @param string $data Data to encrypt
      * @return string A base64 encoded string representing encrypted data
@@ -427,7 +496,7 @@ class Crypt
      *
      * Note: PKCS#5/PKCS#7 padding is assumed.
      *
-     * @param string $key Decryption key (16, 24, 32 or bytes long (128, 192 or 256 bits))
+     * @param string $key Decryption key (16, 24 or 32 bytes long (128, 192 or 256 bits))
      * @param string $iv Initialization vector (16 bytes long (128 bits))
      * @param string $data A base64 encoded string representing encrypted data
      * @return string
@@ -449,42 +518,5 @@ class Crypt
         }
 
         return static::decrypt($algorithm, $key, $iv, $data);
-    }
-
-    /**
-     * Encrypt the given data using the given algorithm (Cipher)
-     *
-     * Note: PKCS#5/PKCS#7 padding is assumed.
-     *
-     * @param int $algorithm Algorithm
-     * @param string $key Encryption key
-     * @param string $iv Initialization vector
-     * @param string $data Data to encrypt
-     * @return string A base64 encoded string representing encrypted data
-     */
-    static protected function encrypt($algorithm, $key, $iv, $data)
-    {
-        return openssl_encrypt($data, $algorithm, $key, 0, $iv);
-    }
-
-    /**
-     * Decrypt the given data using the given algorithm (Cipher)
-     *
-     * Note: PKCS#5/PKCS#7 padding assumed.
-     *
-     * @throws \RuntimeException
-     * @param int $algorithm Algorithm
-     * @param string $key Decryption key
-     * @param string $iv Initialization vector
-     * @param string $data A base64 encoded string representing encrypted data
-     * @return string
-     */
-    static protected function decrypt($algorithm, $key, $iv, $data)
-    {
-        if (!extension_loaded('openssl')) {
-            throw new \RuntimeException('OpenSSL extension is not available');
-        }
-
-        return openssl_decrypt($data, $algorithm, $key, 0, $iv);
     }
 }

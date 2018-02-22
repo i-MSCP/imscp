@@ -18,10 +18,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/**
- * Class iMSCP_Update_Exception
- */
-class iMSCP_Update_Exception extends iMSCP_Exception
-{
+namespace iMSCP\i18n;
 
+/**
+ * Class GettextParserException
+ * @package iMSCP\i18n
+ */
+class GettextParserException extends \iMSCP_Exception
+{
 }

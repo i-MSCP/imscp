@@ -28,7 +28,7 @@ use warnings;
 use File::Basename;
 use File::Spec;
 use File::Temp;
-use iMSCP::Crypt qw/ randomStr /;
+use iMSCP::Crypt qw/ decryptRijndaelCBC randomStr /;
 use iMSCP::Debug qw/ debug error getLastError warning /;
 use iMSCP::Dir;
 use iMSCP::Ext2Attributes qw/ clearImmutable /;
@@ -36,8 +36,10 @@ use iMSCP::Execute qw/ execute escapeShell /;
 use Net::LibIDN qw/ idn_to_unicode /;
 use Servers::httpd;
 use Servers::sqld;
-
 use parent 'Modules::Abstract';
+
+# See _restoreDatabase() below
+my $DEFAULT_MYSQL_CONFFILE;
 
 =head1 DESCRIPTION
 
@@ -100,7 +102,6 @@ sub process
         return 0;
     }
 
-    local $@;
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         $self->{'_dbh'}->do( @sql );
@@ -125,7 +126,6 @@ sub disable
 {
     my ($self) = @_;
 
-    local $@;
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
 
@@ -163,16 +163,15 @@ sub restore
     my $homeDir = "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}";
     my $bkpDir = "$homeDir/backups";
 
-    local $@;
     eval {
         # Restore know databases only
         local $self->{'_dbh'}->{'RaiseError'} = 1;
 
-        my @rows = $self->{'_dbh'}->selectall_array(
+        my $rows = iMSCP::Database->factory()->getRawDb()->selectall_arrayref(
             'SELECT sqld_name FROM sql_database WHERE domain_id = ?', { Slice => {} }, $self->{'domain_id'}
         );
 
-        for my $row( @rows ) {
+        for my $row( @{$rows} ) {
             # Encode slashes as SOLIDUS unicode character
             # Encode dots as Full stop unicode character
             ( my $encodedDbName = $row->{'sqld_name'} ) =~ s%([./])%{ '/', '@002f', '.', '@002e' }->{$1}%ge;
@@ -276,7 +275,6 @@ sub _loadData
 {
     my ($self, $domainId) = @_;
 
-    local $@;
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         my $row = $self->{'_dbh'}->selectrow_hashref(
@@ -356,7 +354,8 @@ sub _getData
             DOMAIN_ADMIN_ID         => $self->{'domain_admin_id'},
             DOMAIN_NAME             => $self->{'domain_name'},
             DOMAIN_NAME_UNICODE     => idn_to_unicode( $self->{'domain_name'}, 'utf-8' ),
-            DOMAIN_IP               => $self->{'ip_number'},
+            DOMAIN_IP               => $main::imscpConfig{'BASE_SERVER_IP'} eq '0.0.0.0'
+                ? '0.0.0.0' : $self->{'ip_number'},
             DOMAIN_TYPE             => 'dmn',
             PARENT_DOMAIN_NAME      => $self->{'domain_name'},
             ROOT_DOMAIN_NAME        => $self->{'domain_name'},
@@ -418,24 +417,36 @@ sub _restoreDatabase
     my (undef, undef, $archFormat) = fileparse( $dbDumpFilePath, qr/\.(?:bz2|gz|lzma|xz)/ );
 
     my $cmd;
-    if ( defined $archFormat ) {
-        if ( $archFormat eq '.bz2' ) {
-            $cmd = 'bzcat -d ';
-        } elsif ( $archFormat eq '.gz' ) {
-            $cmd = 'zcat -d ';
-        } elsif ( $archFormat eq '.lzma' ) {
-            $cmd = 'lzma -dc ';
-        } elsif ( $archFormat eq '.xz' ) {
-            $cmd = 'xz -dc ';
-        } else {
-            warning( sprintf( "Unsupported `%s' database dump archive format. skipping...", $archFormat ));
-            return 0;
-        }
+
+    if ( $archFormat eq '.bz2' ) {
+        $cmd = 'bzcat -d ';
+    } elsif ( $archFormat eq '.gz' ) {
+        $cmd = 'zcat -d ';
+    } elsif ( $archFormat eq '.lzma' ) {
+        $cmd = 'lzma -dc ';
+    } elsif ( $archFormat eq '.xz' ) {
+        $cmd = 'xz -dc ';
     } else {
         $cmd = 'cat ';
     }
 
-    my @cmd = ( $cmd, escapeShell( $dbDumpFilePath ), '|', 'mysql', escapeShell( $dbName ) );
+    unless ( $DEFAULT_MYSQL_CONFFILE ) {
+        $DEFAULT_MYSQL_CONFFILE = File::Temp->new();
+        print $DEFAULT_MYSQL_CONFFILE <<"EOF";
+[mysql]
+host = $main::imscpConfig{'DATABASE_HOST'}
+port = $main::imscpConfig{'DATABASE_PORT'}
+user = "@{ [ $main::imscpConfig{'DATABASE_USER'} =~ s/"/\\"/gr ] }"
+password = "@{ [ decryptRijndaelCBC($main::imscpDBKey, $main::imscpDBiv, $main::imscpConfig{'DATABASE_PASSWORD'}) =~ s/"/\\"/gr ] }"
+max_allowed_packet = 500M
+EOF
+        $DEFAULT_MYSQL_CONFFILE->flush();
+    }
+
+    my @cmd = (
+        $cmd, escapeShell( $dbDumpFilePath ), '|', "mysql --defaults-file=$DEFAULT_MYSQL_CONFFILE",
+        escapeShell( $dbName )
+    );
     my $rs = execute( "@cmd", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     $rs == 0 or die( error( sprintf( "Couldn't restore SQL database: %s", $stderr || 'Unknown error' )));

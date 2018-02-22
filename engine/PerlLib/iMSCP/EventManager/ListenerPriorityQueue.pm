@@ -82,7 +82,7 @@ sub hasListener
  Note that if a $listener is added twice, it replace the old-one.
 
  Param coderef $listener Listener
- Param int $priority OPTIONAL Listener priority (Highest values have highest priority)
+ Param int $priority OPTIONAL Listener priority in range [-1000 .. 1000] (Highest values have highest priority)
  Return iMSCP::EventManager::ListenerPriorityQueue, die on failure
  
 =cut

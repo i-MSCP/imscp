@@ -48,18 +48,6 @@ class iMSCP_Config_Handler implements ArrayAccess
     }
 
     /**
-     * Sets a configuration parameter
-     *
-     * @param string $key Configuration parameter key name
-     * @param mixed $value Configuration parameter value
-     * @return void
-     */
-    public function set($key, $value)
-    {
-        $this->{$key} = $value;
-    }
-
-    /**
      * PHP overloading on inaccessible members
      *
      * @param string $key Configuration parameter key name
@@ -83,18 +71,7 @@ class iMSCP_Config_Handler implements ArrayAccess
             throw new iMSCPException("Configuration variable `$key` is missing.");
         }
 
-        return $this->$key;
-    }
-
-    /**
-     * Deletes a configuration parameters
-     *
-     * @param string $key Configuration parameter key name
-     * @return void
-     */
-    public function del($key)
-    {
-        unset($this->$key);
+        return $this->{$key};
     }
 
     /**
@@ -107,6 +84,17 @@ class iMSCP_Config_Handler implements ArrayAccess
     public function exists($key)
     {
         return property_exists($this, $key);
+    }
+
+    /**
+     * Deletes a configuration parameters
+     *
+     * @param string $key Configuration parameter key name
+     * @return void
+     */
+    public function del($key)
+    {
+        unset($this->{$key});
     }
 
     /**
@@ -125,6 +113,18 @@ class iMSCP_Config_Handler implements ArrayAccess
         foreach ($config as $key => $value) {
             $this->set($key, $value);
         }
+    }
+
+    /**
+     * Sets a configuration parameter
+     *
+     * @param string $key Configuration parameter key name
+     * @param mixed $value Configuration parameter value
+     * @return void
+     */
+    public function set($key, $value)
+    {
+        $this->{$key} = $value;
     }
 
     /**
@@ -147,11 +147,7 @@ class iMSCP_Config_Handler implements ArrayAccess
     }
 
     /**
-     * Assigns a value to the specified offset
-     *
-     * @param mixed $offset The offset to assign the value to
-     * @param mixed $value The value to set.
-     * @return void
+     * @inheritdoc
      */
     public function offsetSet($offset, $value)
     {
@@ -159,10 +155,7 @@ class iMSCP_Config_Handler implements ArrayAccess
     }
 
     /**
-     * Returns the value at specified offset
-     *
-     * @param  mixed $offset The offset to retrieve
-     * @return mixed Offset value
+     * @inheritdoc
      */
     public function offsetGet($offset)
     {
@@ -170,10 +163,7 @@ class iMSCP_Config_Handler implements ArrayAccess
     }
 
     /**
-     * Whether or not an offset exists
-     *
-     * @param mixed $offset An offset to check for existence
-     * @return boolean TRUE on success or FALSE on failure
+     * @inheritdoc
      */
     public function offsetExists($offset)
     {
@@ -181,10 +171,7 @@ class iMSCP_Config_Handler implements ArrayAccess
     }
 
     /**
-     * Unsets an offset
-     *
-     * @param  mixed $offset The offset to unset
-     * @return void
+     * @inheritdoc
      */
     public function offsetUnset($offset)
     {

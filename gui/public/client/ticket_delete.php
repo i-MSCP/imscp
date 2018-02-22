@@ -39,20 +39,12 @@ customerHasFeature('support') or showBadRequestErrorPage();
 $userId = $_SESSION['user_id'];
 $previousPage = 'ticket_system';
 
-if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
+if (isset($_GET['ticket_id'])) {
     $ticketId = intval($_GET['ticket_id']);
-
-    $query = "
-		SELECT
-			`ticket_status`
-		FROM
-			`tickets`
-		WHERE
-			`ticket_id` = ?
-		AND
-			(`ticket_from` = ? OR `ticket_to` = ?)
-	";
-    $stmt = exec_query($query, [$ticketId, $userId, $userId]);
+    $stmt = exec_query(
+        'SELECT ticket_status FROM tickets WHERE ticket_id = ? AND (ticket_from = ? OR ticket_to = ?)',
+        [$ticketId, $userId, $userId]
+    );
 
     if ($stmt->rowCount() == 0) {
         set_page_message(tr("Ticket with Id '%d' was not found.", $ticketId), 'error');
@@ -60,7 +52,7 @@ if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
     }
 
     // The ticket status was 0 so we come from ticket_closed.php
-    if ($stmt->fields['ticket_status'] == 0) {
+    if ($stmt->fetchColumn() == 0) {
         $previousPage = 'ticket_closed';
     }
 

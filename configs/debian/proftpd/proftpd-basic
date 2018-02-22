@@ -12,7 +12,20 @@
     create 640 root adm
     sharedscripts
     postrotate
-        # reload could be not sufficient for all logs, a restart is safer
-        invoke-rc.d proftpd restart 2>/dev/null >/dev/null || true
+        invoke-rc.d proftpd restart > /dev/null 2>&1 || true
+    endscript
+}
+
+/var/log/proftpd/xferlog
+{
+    daily
+    missingok
+    rotate 1
+    nocompress
+    notifempty
+    create 640 root adm
+    sharedscripts
+    postrotate
+        invoke-rc.d proftpd restart > /dev/null 2>&1 || true
     endscript
 }

@@ -171,10 +171,7 @@ class iMSCP_Events
     /**
      * Event triggered on authentication process
      *
-     * iMSCP_Events_Event object parameters:
-     *  - context  : iMSCP_Authentication instance
-     *  - username : Username
-     *  - password : Password
+     * Listeners receive an iMSCP_Authentication_AuthEvent object.
      *
      * @const string
      */
@@ -312,8 +309,8 @@ class iMSCP_Events
     const onAfterDeleteUser = 'onAfterDeleteUser';
 
     /**
-     * Event triggered when a reseller account is moved from one administrator to
-     * another administrator
+     * Event triggered when a reseller account is moved from one administrator
+     * to another administrator
      *
      * iMSCP_Events_Event object parameter:
      *  - resellerId          : Reseller unique identifier
@@ -1240,50 +1237,18 @@ class iMSCP_Events
     const onAfterDeleteMailCatchall = 'onAfterDeleteMailCatchall';
 
     /**
-     * Event triggered before preparation of SQL statement
+     * Event triggered before execution of an SQL statement
      *
-     * iMSCP_Database_Events_Database object parameters:
-     *  - context : iMSCP_Database object
-     *  - query   : SQL statement being prepared
-     *
-     * @const string
-     */
-    const onBeforeQueryPrepare = 'onBeforeQueryPrepare';
-
-    /**
-     * Event triggered after preparation of a SQL statement
-     *
-     * iMSCP_Database_Events_Statement object parameters:
-     *  - context   : iMSCP_Database object
-     *  - statement : PDOStatement object
-     *
-     * @const string
-     */
-    const onAfterQueryPrepare = 'onAfterQueryPrepare';
-
-    /**
-     * Event triggered before execution of a SQL prepared statement
-     *
-     * Depending on context:
-     *
-     * iMSCP_Database_Events_Statement object parameters:
-     *   - context  : iMSCP_Database object
-     *   - statement: PDOStatement object
-     * or
-     * iMSCP_Database_Events_Database object parameters:
-     *   - context : iMSCP_Database object
-     *   - query   : SQL statement being prepared and executed (PDO::query())
      *
      * @const string
      */
     const onBeforeQueryExecute = 'onBeforeQueryExecute';
 
     /**
-     * Event triggered after execution of a SQL prepared statement
+     * Event triggered after execution of an SQL prepared statement
      *
      * iMSCP_Database_Events_Statement object parameters:
-     *  - context   : An iMSCP_Database object
-     *  - statement : PDOStatement object
+     *  - statement : iMSCP_Database_ResultSet object object
      *
      * @const string
      */

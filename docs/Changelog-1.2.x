@@ -159,7 +159,7 @@ INSTALLER
     Fixed: Possible use of uninitialized value $sqlServer in autoinstaller/Adapter/DebianAdapter.pm
     Fixed: sysvinit scripts are not enabled when using systemd (regression fix)
     Fixed: Missing APT source repositories for i-MSCP required sections
-    Updated: PhpMyAdmin addon installer to support PhpMyAdmin 4.5.x serie (require MySQL >= 5.5 and PHP >= 5.5)
+    Updated: PhpMyAdmin addon installer to support PhpMyAdmin 4.5.x serie (require MySQL ≥ 5.5 and PHP ≥ 5.5)
 
 SERVERS
     Added: SQLNegativeCache directive to cache negative responses from SQL lookups (ProFTPD)
@@ -201,7 +201,7 @@ CONTRIB
     Fixed: "my" variable $cfgTpl masks earlier declaration in same scope (40_dovecot_pfs.pl)
 
 INSTALLER
-    Fixed: Ensure that authentication plugin is set to 'mysql_native_password' for SQL root user (MySQL >= 5.7)
+    Fixed: Ensure that authentication plugin is set to 'mysql_native_password' for SQL root user (MySQL ≥ 5.7)
     Fixed: Perl DBI (mysql) package removed when using MariaDB server, leading to installation/update failure
     Fixed: Switch policy is ignored (SQL servers)
     Fixed: Wrong package names in Debian Strech package file (MySQL 5.6)
@@ -210,7 +210,7 @@ FRONTEND
     Fixed: Unable to handle uncaught exception thrown... Data `translator` is not registered
     Fixed: Exception browser writer doesn't display the expected exception in some contexts
     Fixed: Exception mail writer cache do not work
-    Fixed: Unable to establish the connection to the database when using MySQL >= 5.7
+    Fixed: Unable to establish the connection to the database when using MySQL ≥ 5.7
 
 ------------------------------------------------------------------------------------------------------------------------
 1.2.12
@@ -537,7 +537,7 @@ BACKEND
     Added: onBeforeSetPluginStatus event (Modules::Plugin)
     Added: PHP_FCGI_CHILDREN, PHP_FCGI_MAX_REQUESTS and PHP_VERSION configuration parameters (apache_fcgid)
     Added: Service providers (Sysvinit, Upstart and Systemd)
-    Changed: Perl version >= 5.14.2 is now required
+    Changed: Perl version ≥ 5.14.2 is now required
     Changed: Service configuration files are now lazy-loaded
     Fixed: Any task which belongs to the custom DNS records layer must not involve HTTPD configuration change
     Fixed: Bind9 must not be restarted each time a DNS zone is updated. A simple reload is sufficient

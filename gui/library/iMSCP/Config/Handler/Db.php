@@ -42,27 +42,27 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
     /**
      * @var Database Database instance
      */
-    protected $_db;
+    protected $db;
 
     /**
      * @var array Configuration parameters
      */
-    protected $_parameters = [];
+    protected $parameters = [];
 
     /**
      * @var PDOStatement to insert a configuration parameter in the database
      */
-    protected $_insertStmt = NULL;
+    protected $insertStmt;
 
     /**
      * @var PDOStatement to update a configuration parameter in the database
      */
-    protected $_updateStmt = NULL;
+    protected $updateStmt;
 
     /**
      * @var PDOStatement PDOStatement to delete a configuration parameter in the database
      */
-    protected $_deleteStmt = NULL;
+    protected $deleteStmt;
 
     /**
      * Variable bound to the PDOStatement instances
@@ -72,7 +72,7 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      *
      * @var string Configuration parameter key name
      */
-    protected $_key = NULL;
+    protected $key;
 
     /**
      * Variable bound to the PDOStatement objects
@@ -82,37 +82,37 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      *
      * @var mixed Configuration parameter value
      */
-    protected $_value = NULL;
+    protected $value;
 
     /**
      * @var int Counter for SQL update queries
      */
-    protected $_insertQueriesCounter = 0;
+    protected $insertQueriesCounter = 0;
 
     /**
      * @var int Counter for SQL insert queries
      */
-    protected $_updateQueriesCounter = 0;
+    protected $updateQueriesCounter = 0;
 
     /**
      * @var int Counter for SQL delete queries
      */
-    protected $_deleteQueriesCounter = 0;
+    protected $deleteQueriesCounter = 0;
 
     /**
      * @var string Database table name for configuration parameters
      */
-    protected $_tableName = 'config';
+    protected $tableName = 'config';
 
     /**
      * @var string Database column name for configuration parameters keys
      */
-    protected $_keysColumn = 'name';
+    protected $keyColumn = 'name';
 
     /**
      * @var string Database column name for configuration parameters values
      */
-    protected $_valuesColumn = 'value';
+    protected $valueColumn = 'value';
 
     /**
      * @var bool Internal flag indicating whether or not cached dbconfig object
@@ -123,19 +123,19 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
     /**
      * Loads all configuration parameters from the database
      *
-     * <b>Parameters:</b>
+     * Parameters:
      *
      * The constructor accepts one or more parameters passed in a array where
      * each key represent a parameter name.
      *
      * For an array, the possible parameters are:
      *
-     * - db: A Database instance
+     * - db: A Database name
      * - table_name: Table that contain configuration parameters
      * - key_column: Column name for configuration parameters key names
      * - value_column: Column name for configuration parameters values
      *
-     * <b>Note:</b> The three last parameters are optionals.
+     * Note: The three last parameters are optionals.
      *
      * For a single parameter, only a Database instance is accepted.
      *
@@ -151,29 +151,52 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
                 throw new iMSCPException('A Database instance is requested for ' . __CLASS__);
             }
 
-            $this->_db = (string)$params['db'];
+            $this->db = $params['db'];
 
             // Overrides the database table name for configuration parameters
             if (isset($params['table_name'])) {
-                $this->_tableName = (string)$params['table_name'];
+                $this->tableName = $params['table_name'];
             }
 
             // Override the column name for configuration parameters keys
             if (isset($params['keys_column'])) {
-                $this->_keysColumn = (string)$params['keys_column'];
+                $this->keyColumn = $params['keys_column'];
             }
 
             // Set the column name for configuration parameters values
             if (isset($params['values_column'])) {
-                $this->_valuesColumn = (string)$params['values_column'];
+                $this->valueColumn = $params['values_column'];
             }
-
         } elseif (!$params instanceof Database) {
             throw new iMSCPException('Database instance requested for ' . __CLASS__);
         }
 
-        $this->_db = $params;
+        $this->db = $params;
         $this->_loadAll();
+    }
+
+    /**
+     * Load all configuration parameters from the database
+     *
+     * @throws iMSCPException
+     * @return void
+     */
+    protected function _loadAll()
+    {
+        $stmt = $this->db->query(
+            sprintf(
+                'SELECT %s, %s FROM %s',
+                $this->db->quoteIdentifier($this->keyColumn),
+                $this->db->quoteIdentifier($this->valueColumn),
+                $this->db->quoteIdentifier($this->tableName)
+            )
+        );
+
+        if (!$stmt) {
+            throw new iMSCPException("Couldn't get configuration parameters from database.");
+        }
+
+        $this->parameters = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
     }
 
     /**
@@ -183,7 +206,7 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      */
     public function setDb(Database $db)
     {
-        $this->_db = $db;
+        $this->db = $db;
     }
 
     /**
@@ -193,7 +216,7 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      */
     public function setTable($tableName)
     {
-        $this->_tableName = (string)$tableName;
+        $this->tableName = (string)$tableName;
     }
 
     /**
@@ -203,7 +226,7 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      */
     public function setKeyColumn($columnName)
     {
-        $this->_keysColumn = (string)$columnName;
+        $this->keyColumn = (string)$columnName;
     }
 
     /**
@@ -213,7 +236,7 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      */
     public function setValueColumn($columnName)
     {
-        $this->_valuesColumn = (string)$columnName;
+        $this->valueColumn = (string)$columnName;
     }
 
     /**
@@ -238,18 +261,89 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      */
     public function set($key, $value)
     {
-        $this->_key = $key;
-        $this->_value = $value;
+        $this->key = $key;
+        $this->value = $value;
 
         if (!$this->exists($key)) {
             $this->_insert();
-        } elseif ($this->_parameters[$key] != $value) {
+        } elseif ($this->parameters[$key] != $value) {
             $this->_update();
         } else {
             return;
         }
 
-        $this->_parameters[$key] = $value;
+        $this->parameters[$key] = $value;
+    }
+
+    /**
+     * Checks if a configuration parameters exists
+     *
+     * @param string $key Configuration parameter key name
+     * @return boolean TRUE if configuration parameter exists, FALSE otherwise
+     */
+    public function exists($key)
+    {
+        return array_key_exists($key, $this->parameters);
+    }
+
+    /**
+     * Store a new configuration parameter in the database
+     *
+     * @throws DatabaseException
+     * @return void
+     */
+    protected function _insert()
+    {
+        if (!$this->insertStmt instanceof PDOStatement) {
+            $this->insertStmt = $this->db->prepare(
+                sprintf(
+                    'INSERT INTO %s (%s, %s) VALUES (?,?)',
+                    $this->db->quoteIdentifier($this->tableName),
+                    $this->db->quoteIdentifier($this->keyColumn),
+                    $this->db->quoteIdentifier($this->valueColumn)
+                )
+            );
+
+            $this->insertStmt->bindParam(1, $this->key, PDO::PARAM_STR);
+            $this->insertStmt->bindParam(2, $this->value, PDO::PARAM_STR);
+        }
+
+        if (!$this->insertStmt->execute()) {
+            throw new DatabaseException("Couldn't insert new entry `{$this->key}` in config table.");
+        }
+
+        $this->flushCache = true;
+        $this->insertQueriesCounter++;
+    }
+
+    /**
+     * Update a configuration parameter in the database
+     *
+     * @throws DatabaseException
+     * @return void
+     */
+    protected function _update()
+    {
+        if (!$this->updateStmt instanceof PDOStatement) {
+            $this->updateStmt = $this->db->prepare(
+                sprintf(
+                    'UPDATE %s SET %s = ? WHERE %s = ?',
+                    $this->db->quoteIdentifier($this->tableName),
+                    $this->db->quoteIdentifier($this->valueColumn),
+                    $this->db->quoteIdentifier($this->keyColumn)
+                )
+            );
+
+            $this->updateStmt->bindParam(1, $this->value, PDO::PARAM_STR);
+            $this->updateStmt->bindParam(2, $this->key, PDO::PARAM_STR);
+        }
+
+        if (!$this->updateStmt->execute()) {
+            throw new DatabaseException("Couldn't update entry `{$this->key}` in config table.");
+        }
+
+        $this->flushCache = true;
+        $this->updateQueriesCounter++;
     }
 
     /**
@@ -261,22 +355,11 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      */
     public function get($key)
     {
-        if (!isset($this->_parameters[$key])) {
+        if (!isset($this->parameters[$key])) {
             throw new iMSCPException("Configuration variable `$key` is missing.");
         }
 
-        return $this->_parameters[$key];
-    }
-
-    /**
-     * Checks if a configuration parameters exists
-     *
-     * @param string $key Configuration parameter key name
-     * @return boolean TRUE if configuration parameter exists, FALSE otherwise
-     */
-    public function exists($key)
-    {
-        return array_key_exists($key, $this->_parameters);
+        return $this->parameters[$key];
     }
 
     /**
@@ -299,13 +382,11 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
     public function merge(ConfigHandler $config)
     {
         try {
-            $this->_db->beginTransaction();
-
+            $this->db->beginTransaction();
             parent::merge($config);
-
-            $this->_db->commit();
+            $this->db->commit();
         } catch (PDOException $e) {
-            $this->_db->rollBack();
+            $this->db->rollBack();
             return false;
         }
 
@@ -327,7 +408,7 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      */
     public function __isset($key)
     {
-        return isset($this->_parameters[$key]);
+        return isset($this->parameters[$key]);
     }
 
     /**
@@ -345,6 +426,48 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
     }
 
     /**
+     * Deletes a configuration parameters from the database
+     *
+     * @param string $key Configuration parameter key name
+     * @return void
+     */
+    public function del($key)
+    {
+        $this->key = $key;
+        $this->_delete();
+
+        unset($this->parameters[$key]);
+    }
+
+    /**
+     * Deletes a configuration parameter from the database
+     *
+     * @throws DatabaseException
+     * @return void
+     */
+    protected function _delete()
+    {
+        if (!$this->deleteStmt instanceof PDOStatement) {
+            $this->deleteStmt = $this->db->prepare(
+                sprintf(
+                    'DELETE FROM %s WHERE %s = ?',
+                    $this->db->quoteIdentifier($this->tableName),
+                    $this->db->quoteIdentifier($this->keyColumn)
+                )
+            );
+
+            $this->deleteStmt->bindParam(1, $this->key, PDO::PARAM_STR);
+        }
+
+        if (!$this->deleteStmt->execute()) {
+            throw new DatabaseException("Couldn't delete entry in config table.");
+        }
+
+        $this->flushCache = true;
+        $this->deleteQueriesCounter++;
+    }
+
+    /**
      * Force reload of all configuration parameters from the database
      *
      * This method will remove all the current loaded parameters and reload it
@@ -354,7 +477,7 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      */
     public function forceReload()
     {
-        $this->_parameters = [];
+        $this->parameters = [];
         $this->_loadAll();
     }
 
@@ -372,13 +495,13 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
     {
         switch ($queriesCounterType) {
             case 'update':
-                return $this->_updateQueriesCounter;
+                return $this->updateQueriesCounter;
                 break;
             case 'insert':
-                return $this->_insertQueriesCounter;
+                return $this->insertQueriesCounter;
                 break;
             case 'delete':
-                return $this->_deleteQueriesCounter;
+                return $this->deleteQueriesCounter;
                 break;
             default:
                 throw new iMSCPException('Unknown queries counter.');
@@ -396,13 +519,13 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
     {
         switch ($queriesCounterType) {
             case 'update':
-                $this->_updateQueriesCounter = 0;
+                $this->updateQueriesCounter = 0;
                 break;
             case 'insert':
-                $this->_insertQueriesCounter = 0;
+                $this->insertQueriesCounter = 0;
                 break;
             case 'delete':
-                $this->_deleteQueriesCounter = 0;
+                $this->deleteQueriesCounter = 0;
                 break;
             default:
                 throw new iMSCPException('Unknown queries counter.');
@@ -410,117 +533,11 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
     }
 
     /**
-     * Deletes a configuration parameters from the database
-     *
-     * @param string $key Configuration parameter key name
-     * @return void
-     */
-    public function del($key)
-    {
-        $this->_key = $key;
-        $this->_delete();
-
-        unset($this->_parameters[$key]);
-    }
-
-    /**
-     * Load all configuration parameters from the database
-     *
-     * @throws iMSCPException
-     * @return void
-     */
-    protected function _loadAll()
-    {
-        if (!($stmt = $this->_db->execute(
-            "SELECT `{$this->_keysColumn}`, `{$this->_valuesColumn}` FROM `{$this->_tableName}`")
-        )) {
-            throw new iMSCPException("Couldn't get configuration parameters from database.");
-        }
-
-        $keyColumn = $this->_keysColumn;
-        $valueColumn = $this->_valuesColumn;
-
-        foreach ($stmt->fetchAll() as $row) {
-            $this->_parameters[$row[$keyColumn]] = $row[$valueColumn];
-        }
-
-    }
-
-    /**
-     * Store a new configuration parameter in the database
-     *
-     * @throws DatabaseException
-     * @return void
-     */
-    protected function _insert()
-    {
-        if (!$this->_insertStmt instanceof PDOStatement) {
-            $this->_insertStmt = $this->_db->prepare(
-                "INSERT INTO `{$this->_tableName}` (`{$this->_keysColumn}`, `{$this->_valuesColumn}`) VALUES (?, ?)"
-            );
-        }
-
-        if (!$this->_db->execute($this->_insertStmt, [$this->_key, $this->_value])) {
-            throw new DatabaseException("Couldn't insert new entry `{$this->_key}` in config table.");
-        }
-
-        $this->flushCache = true;
-        $this->_insertQueriesCounter++;
-    }
-
-    /**
-     * Update a configuration parameter in the database
-     *
-     * @throws DatabaseException
-     * @return void
-     */
-    protected function _update()
-    {
-        if (!$this->_updateStmt instanceof PDOStatement) {
-            $this->_updateStmt = $this->_db->prepare(
-                "UPDATE `{$this->_tableName}` SET `{$this->_valuesColumn}` = ? WHERE `{$this->_keysColumn}` = ?"
-            );
-        }
-
-        if (!$this->_db->execute($this->_updateStmt, [$this->_value, $this->_key])) {
-            throw new DatabaseException("Couldn't update entry `{$this->_key}` in config table.");
-        }
-
-        $this->flushCache = true;
-        $this->_updateQueriesCounter++;
-    }
-
-    /**
-     * Deletes a configuration parameter from the database
-     *
-     * @throws DatabaseException
-     * @return void
-     */
-    protected function _delete()
-    {
-        if (!$this->_deleteStmt instanceof PDOStatement) {
-            $this->_deleteStmt = $this->_db->prepare(
-                "DELETE FROM `{$this->_tableName}` WHERE `{$this->_keysColumn}` = ?"
-            );
-        }
-
-        if (!$this->_db->execute($this->_deleteStmt, $this->_key)) {
-            throw new DatabaseException("Couldn't delete entry in config table.");
-        }
-
-        $this->flushCache = true;
-        $this->_deleteQueriesCounter++;
-    }
-
-    /**
-     * Whether or not an offset exists
-     *
-     * @param mixed $offset An offset to check for existence
-     * @return boolean TRUE on success or FALSE on failure
+     * @inheritdoc
      */
     public function offsetExists($offset)
     {
-        return array_key_exists($offset, $this->_parameters);
+        return array_key_exists($offset, $this->parameters);
     }
 
     /**
@@ -530,86 +547,63 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      */
     public function toArray()
     {
-        return $this->_parameters;
+        return $this->parameters;
     }
 
     /**
-     * Returns the current element
-     *
-     * @return mixed Returns the current element
+     * @inheritdoc
      */
     public function current()
     {
-        return current($this->_parameters);
+        return current($this->parameters);
     }
 
     /**
-     * Returns the key of the current element
-     *
-     * @return string|null Return the key of the current element or NULL on failure
+     * @inheritdoc
      */
     public function key()
     {
-        return key($this->_parameters);
+        return key($this->parameters);
     }
 
     /**
-     * Moves the current position to the next element
-     *
-     * @return void
+     * @inheritdoc
      */
     public function next()
     {
-        next($this->_parameters);
+        next($this->parameters);
     }
 
     /**
-     * Rewinds back to the first element of the Iterator.
-     *
-     * <b>Note:</b> This is the first method called when starting a foreach
-     * loop. It will not be executed after foreach loops.
-     *
-     * @return void
+     * @inheritdoc
      */
     public function rewind()
     {
-        reset($this->_parameters);
+        reset($this->parameters);
     }
 
     /**
-     * Checks if current position is valid
-     *
-     * @return boolean TRUE on success or FALSE on failure
+     * @inheritdoc
      */
     public function valid()
     {
-        return array_key_exists(key($this->_parameters), $this->_parameters);
+        return array_key_exists(key($this->parameters), $this->parameters);
     }
 
-
     /**
-     * (PHP 5 &gt;= 5.1.0)<br/>
-     * String representation of object
-     * @link http://php.net/manual/en/serializable.serialize.php
-     * @return string the string representation of the object or null
+     * @inheritdoc
      */
     public function serialize()
     {
-        return serialize($this->_parameters);
+        return serialize($this->parameters);
     }
 
     /**
-     * (PHP 5 &gt;= 5.1.0)<br/>
-     * Constructs the object
-     * @link http://php.net/manual/en/serializable.unserialize.php
-     * @param string $serialized <p>
-     * The string representation of the object.
-     * </p>
-     * @return void
+     * @inheritdoc
      */
     public function unserialize($serialized)
     {
-        $this->_parameters = unserialize($serialized);
+        $this->parameters = unserialize($serialized);
     }
 
     /**

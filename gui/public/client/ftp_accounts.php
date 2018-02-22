@@ -30,7 +30,7 @@
  */
 function generatePage($tpl)
 {
-    $stmt = exec_query('SELECT userid, status FROM ftp_users WHERE admin_id = ?', $_SESSION['user_id']);
+    $stmt = exec_query('SELECT userid, status FROM ftp_users WHERE admin_id = ?', [$_SESSION['user_id']]);
 
     if (!$stmt->rowCount()) {
         set_page_message(tr('You do not have FTP accounts.'), 'static_info');
@@ -38,19 +38,19 @@ function generatePage($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'FTP_ACCOUNT'        => tohtml($row['userid']),
             'UID'                => tohtml($row['userid'], 'htmlAttr'),
             'FTP_ACCOUNT_STATUS' => translate_dmn_status($row['status'])
         ]);
-        
-        if($row['status'] != 'ok') {
+
+        if ($row['status'] != 'ok') {
             $tpl->assign('FTP_ACTIONS', '');
         } else {
             $tpl->parse('FTP_ACTIONS', 'ftp_actions');
         }
-        
+
         $tpl->parse('FTP_ITEM', '.ftp_item');
     }
 }

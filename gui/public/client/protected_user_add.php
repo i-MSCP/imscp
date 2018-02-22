@@ -64,10 +64,9 @@ function client_addHtaccessUser()
         return;
     }
 
-    exec_query('INSERT INTO htaccess_users (dmn_id, uname, upass, status) VALUES (?, ?, ?, ?)', [
-        $domainId, $uname, Crypt::apr1MD5($passwd), 'toadd'
+    exec_query("INSERT INTO htaccess_users (dmn_id, uname, upass, status) VALUES (?, ?, ?, 'toadd')", [
+        $domainId, $uname, Crypt::apr1MD5($passwd)
     ]);
-
     send_request();
     set_page_message(tr('Htaccess user successfully scheduled for addition.'), 'success');
     write_log(sprintf('%s added new htaccess user: %s', $uname, $_SESSION['user_logged']), E_USER_NOTICE);

@@ -82,7 +82,7 @@ function admin_sendToAdministrators($senderName, $senderEmail, $subject, $body)
         "
     );
 
-    while ($rcptToData = $stmt->fetchRow()) {
+    while ($rcptToData = $stmt->fetch()) {
         admin_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData);
     }
 }
@@ -110,7 +110,7 @@ function admin_sendToResellers($senderName, $senderEmail, $subject, $body)
             GROUP BY email
         "
     );
-    while ($rcptToData = $stmt->fetchRow()) {
+    while ($rcptToData = $stmt->fetch()) {
         admin_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData);
     }
 }
@@ -138,7 +138,7 @@ function admin_sendToCustomers($senderName, $senderEmail, $subject, $body)
             GROUP BY email
         "
     );
-    while ($rcptToData = $stmt->fetchRow()) {
+    while ($rcptToData = $stmt->fetch()) {
         admin_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData);
     }
 }
@@ -275,8 +275,10 @@ function generatePage($tpl)
     if ($senderName == ''
         && $senderEmail == ''
     ) {
-        $stmt = exec_query('SELECT admin_name, fname, lname, email FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
-        $row = $stmt->fetchRow();
+        $stmt = exec_query('SELECT admin_name, fname, lname, email FROM admin WHERE admin_id = ?', [
+            $_SESSION['user_id']
+        ]);
+        $row = $stmt->fetch();
 
         if (!empty($row['fname']) && !empty($row['lname'])) {
             $senderName = $row['fname'] . ' ' . $row['lname'];

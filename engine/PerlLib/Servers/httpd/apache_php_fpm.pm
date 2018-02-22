@@ -123,7 +123,6 @@ sub postinstall
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdPostInstall', 'apache_php_fpm' );
     return $rs if $rs;
 
-    local $@;
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
         $serviceMngr->enable( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ));
@@ -344,15 +343,15 @@ sub disableDmn
 
     my $net = iMSCP::Net->getInstance();
     my @domainIPs = (
-        $data->{'DOMAIN_IP'},
-        ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} ? $data->{'BASE_SERVER_IP'} : () )
+        $data->{'DOMAIN_IP'}, ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} ? $data->{'BASE_SERVER_IP'} : () )
     );
 
     $rs = $self->{'eventManager'}->trigger( 'onAddHttpdVhostIps', $data, \@domainIPs );
     return $rs if $rs;
 
-    # Remove duplicate IP if any and map the INADDR_ANY IP to *
-    @domainIPs = uniq( map { $net->normalizeAddr( $_ ) =~ s/^\Q0.0.0.0\E$/*/r } @domainIPs );
+    # If INADDR_ANY is found, map it to the wildcard sign and discard any other
+    # IP, else, remove any duplicate IP address from the list
+    @domainIPs = ( grep($_ eq '0.0.0.0', @domainIPs) ) ? ( '*' ) : uniq( map { $net->normalizeAddr( $_ ) } @domainIPs );
 
     $self->setData(
         {
@@ -684,7 +683,7 @@ sub deleteHtpasswd
 
 sub addHtgroup
 {
-    my ($self, $data) = @_;;
+    my ($self, $data) = @_;
 
     my $fileName = $self->{'config'}->{'HTACCESS_GROUPS_FILENAME'};
     my $filePath = "$data->{'WEB_DIR'}/$fileName";
@@ -1021,7 +1020,6 @@ sub getTraffic
 
     debug( sprintf( 'Collecting HTTP traffic data' ));
 
-    local $@;
     eval {
         local $dbh->{'RaiseError'} = 1;
 
@@ -1095,7 +1093,7 @@ sub enableSites
 
     for ( @sites ) {
         unless ( -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_" ) {
-            warning( sprintf( "Site %s doesn't exists", $_ ));
+            warning( sprintf( "Site %s doesn't exist", $_ ));
             next;
         }
 
@@ -1211,7 +1209,7 @@ sub enableConfs
 
     for ( @conffiles ) {
         unless ( -f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available/$_" ) {
-            warning( sprintf( "Configuration file %s doesn't exists", $_ ));
+            warning( sprintf( "Configuration file %s doesn't exist", $_ ));
             next;
         }
 
@@ -1268,7 +1266,6 @@ sub start
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdStart' );
     return $rs if $rs;
 
-    local $@;
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
         $serviceMngr->start( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ));
@@ -1297,7 +1294,6 @@ sub stop
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdStop' );
     return $rs if $rs;
 
-    local $@;
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
         $serviceMngr->stop( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ));
@@ -1342,7 +1338,6 @@ sub restart
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdRestart' );
     return $rs if $rs;
 
-    local $@;
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
         if ( $self->{'forceRestart'} ) {
@@ -1457,7 +1452,7 @@ sub _init
         readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
         nodeferring => ( defined $main::execmode && $main::execmode eq 'setup' );
 
-    $self->{'eventManager'}->register( 'afterHttpdBuildConfFile', sub { $self->_cleanTemplate( @_ ) } );
+    $self->{'eventManager'}->register( 'afterHttpdBuildConfFile', sub { $self->_cleanTemplate( @_ ) }, -999 );
     $self;
 }
 
@@ -1526,15 +1521,15 @@ sub _addCfg
     my $net = iMSCP::Net->getInstance();
     my $phpVersion = $self->{'phpConfig'}->{'PHP_VERSION'};
     my @domainIPs = (
-        $data->{'DOMAIN_IP'},
-        ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} ? $data->{'BASE_SERVER_IP'} : () )
+        $data->{'DOMAIN_IP'}, ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'} ? $data->{'BASE_SERVER_IP'} : () )
     );
 
     $rs = $self->{'eventManager'}->trigger( 'onAddHttpdVhostIps', $data, \@domainIPs );
     return $rs if $rs;
 
-    # Remove duplicate IP if any and map the INADDR_ANY IP to *
-    @domainIPs = uniq( map { $net->normalizeAddr( $_ ) =~ s/^\Q0.0.0.0\E$/*/r } @domainIPs );
+    # If INADDR_ANY is found, map it to the wildcard sign and discard any other
+    # IP, else, remove any duplicate IP address from the list
+    @domainIPs = grep($_ eq '0.0.0.0', @domainIPs) ? ( '*' ) : uniq( map { $net->normalizeAddr( $_ ) } @domainIPs );
 
     $self->setData(
         {
@@ -1697,8 +1692,6 @@ sub _addFiles
         );
     }
 
-    local $@;
-
     # Whether or not permissions must be fixed recursively
     my $fixPermissions = iMSCP::Getopt->fixPermissions || $data->{'ACTION'} =~ /^restore(?:Dmn|Sub)$/;
 
@@ -1716,7 +1709,7 @@ sub _addFiles
     my $tmpDir = File::Temp->newdir();
     iMSCP::Dir->new( dirname => $skelDir )->rcopy( $tmpDir, { preserve => 'no' } );
 
-    # Build default page if needed (if htdocs doesn't exists or is empty)
+    # Build default page if needed (if htdocs doesn't exist or is empty)
     if ( !-d "$data->{'WEB_DIR'}/htdocs" || iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/htdocs" )->isEmpty() ) {
         if ( -d "$tmpDir/htdocs" ) {
             # Test needed in case admin removed the index.html file from the skeleton

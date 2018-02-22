@@ -46,7 +46,7 @@ $stmt = exec_query(
 );
 
 if ($stmt->rowCount()) {
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
     deleteDomainAlias($row['domain_admin_id'], $row['domain_id'], $id, $row['alias_name'], $row['alias_mount']);
     redirectTo('alias.php');
 }

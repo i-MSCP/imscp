@@ -27,16 +27,16 @@ use strict;
 use warnings;
 use File::Basename;
 use iMSCP::Composer;
-use iMSCP::Crypt qw/ randomStr /;
+use iMSCP::Crypt qw/ decryptRijndaelCBC randomStr /;
 use iMSCP::Database;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ execute /;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ process getBloc replaceBloc /;
 use Package::FrontEnd;
 use Package::PhpMyAdmin;
 use Servers::sqld;
@@ -91,45 +91,62 @@ sub showDialog
 
     my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER' );
     my $dbUser = main::setupGetQuestion(
-        'PHPMYADMIN_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || 'imscp_srv_user'
+        'PHPMYADMIN_SQL_USER',
+        ( $self->{'config'}->{'DATABASE_USER'} || ( iMSCP::Getopt->preseed ? 'imscp_srv_user' : '' ) )
     );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
     my $dbPass = main::setupGetQuestion(
         'PHPMYADMIN_SQL_PASSWORD',
-        ( ( iMSCP::Getopt->preseed ) ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
+        ( iMSCP::Getopt->preseed ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
     );
 
     if ( $main::reconfigure =~ /^(?:sqlmanager|all|forced)$/
         || !isValidUsername( $dbUser )
-        || !isStringNotInList( $dbUser, 'root', 'debian-sys-maint', $masterSqlUser, 'vlogger_user' )
-        || !isValidPassword( $dbPass )
+        || !isStringNotInList( lc $dbUser, 'root', 'debian-sys-maint', lc $masterSqlUser, 'vlogger_user' )
         || !isAvailableSqlUser( $dbUser )
     ) {
-        my ($rs, $msg) = ( 0, '' );
+        my $rs = 0;
 
         do {
-            ( $rs, $dbUser ) = $dialog->inputbox( <<"EOF", $dbUser );
-
-Please enter a username for the PhpMyAdmin SQL user:$msg
-EOF
-            $msg = '';
-            if ( !isValidUsername( $dbUser )
-                || !isStringNotInList( $dbUser, 'root', 'debian-sys-maint', $masterSqlUser, 'vlogger_user' )
-                || !isAvailableSqlUser( $dbUser )
-            ) {
-                $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
+            if ( $dbUser eq '' ) {
+                $iMSCP::Dialog::InputValidation::lastValidationError = '';
+                $dbUser = 'imscp_srv_user';
             }
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
 
-        unless ( defined $main::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
-            do {
-                ( $rs, $dbPass ) = $dialog->inputbox( <<"EOF", $dbPass || randomStr( 16, iMSCP::Crypt::ALNUM ));
-
-Please enter a password for the PhpMyAdmin SQL user:$msg
+            ( $rs, $dbUser ) = $dialog->inputbox( <<"EOF", $dbUser );
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter a username for the PhpMyAdmin SQL user (leave empty for default):
 EOF
-                $msg = isValidPassword( $dbPass ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
-            } while $rs < 30 && $msg;
+        } while $rs < 30
+            && ( !isValidUsername( $dbUser )
+            || !isStringNotInList( lc $dbUser, 'root', 'debian-sys-maint', lc $masterSqlUser, 'vlogger_user' )
+            || !isAvailableSqlUser( $dbUser )
+        );
+
+        return $rs unless $rs < 30;
+    }
+
+    main::setupSetQuestion( 'PHPMYADMIN_SQL_USER', $dbUser );
+
+    if ( $main::reconfigure =~ /^(?:sqlmanager|all|forced)$/
+        || !isValidPassword( $dbPass )
+    ) {
+        unless ( defined $main::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
+            my $rs = 0;
+
+            do {
+                if ( $dbPass eq '' ) {
+                    $iMSCP::Dialog::InputValidation::lastValidationError = '';
+                    $dbPass = randomStr( 16, iMSCP::Crypt::ALNUM );
+                }
+
+                ( $rs, $dbPass ) = $dialog->inputbox( <<"EOF", $dbPass );
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter a password for the PhpMyAdmin SQL user (leave empty for autogeneration):
+EOF
+            } while $rs < 30
+                && !isValidPassword( $dbPass );
+
             return $rs if $rs >= 30;
 
             $main::sqlUsers{$dbUser . '@' . $dbUserHost} = $dbPass;
@@ -142,7 +159,6 @@ EOF
         $main::sqlUsers{$dbUser . '@' . $dbUserHost} = $dbPass;
     }
 
-    main::setupSetQuestion( 'PHPMYADMIN_SQL_USER', $dbUser );
     main::setupSetQuestion( 'PHPMYADMIN_SQL_PASSWORD', $dbPass );
     0;
 }
@@ -208,7 +224,9 @@ sub afterFrontEndBuildConfFile
 {
     my ($tplContent, $tplName) = @_;
 
-    return 0 unless grep($_ eq $tplName, '00_master.nginx', '00_master_ssl.nginx');
+    return 0 unless ( $tplName eq '00_master.nginx'
+        && main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) ne 'https://'
+    ) || $tplName eq '00_master_ssl.nginx';
 
     ${$tplContent} = replaceBloc(
         "# SECTION custom BEGIN.\n",
@@ -314,7 +332,6 @@ sub _setupSqlUser
     my $dbPass = main::setupGetQuestion( 'PHPMYADMIN_SQL_PASSWORD' );
     my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
 
-    local $@;
     eval {
         my $sqlServer = Servers::sqld->factory();
 
@@ -421,7 +438,18 @@ sub _setupDatabase
     my $rs = $file->save();
     return $rs if $rs;
 
-    $rs = execute( "cat $schemaFilePath | mysql", \ my $stdout, \ my $stderr );
+    my $mysqlConffile = File::Temp->new();
+    print $mysqlConffile <<"EOF";
+[mysql]
+host = @{[ main::setupGetQuestion( 'DATABASE_HOST' ) ]}
+port = @{[ main::setupGetQuestion( 'DATABASE_PORT' ) ]}
+user = "@{ [ main::setupGetQuestion( 'DATABASE_USER' ) =~ s/"/\\"/gr ] }"
+password = "@{ [ decryptRijndaelCBC($main::imscpDBKey, $main::imscpDBiv, main::setupGetQuestion( 'DATABASE_PASSWORD' )) =~ s/"/\\"/gr ] }"
+max_allowed_packet = 500M
+EOF
+    $mysqlConffile->flush();
+
+    $rs = execute( "cat $schemaFilePath | mysql --defaults-file=$mysqlConffile", \ my $stdout, \ my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     $rs;

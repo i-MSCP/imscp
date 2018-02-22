@@ -54,7 +54,7 @@ function getUserTraffic($domainId, $startDate, $endDate)
         return array_fill(0, 4, 0);
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     return [$row['web_traffic'], $row['ftp_traffic'], $row['smtp_traffic'], $row['pop_traffic']];
 }
@@ -70,22 +70,23 @@ function generatePage(TemplateEngine $tpl)
     $userId = intval($_GET['user_id']);
 
     $stmt = exec_query(
-        'SELECT admin_name, domain_id FROM admin JOIN domain ON(domain_admin_id = admin_id) WHERE admin_id = ?', $userId
+        'SELECT admin_name, domain_id FROM admin JOIN domain ON(domain_admin_id = admin_id) WHERE admin_id = ?',
+        [$userId]
     );
 
     if (!$stmt->rowCount()) {
         showBadRequestErrorPage();
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
     $domainId = $row['domain_id'];
     $adminName = decode_idna($row['admin_name']);
     $month = isset($_GET['month']) ? filter_digits($_GET['month']) : date('n');
     $year = isset($_GET['year']) ? filter_digits($_GET['year']) : date('Y');
-    $stmt = exec_query(
-        'SELECT dtraff_time FROM domain_traffic WHERE domain_id = ? ORDER BY dtraff_time ASC LIMIT 1', $domainId
-    );
-    $nPastYears = $stmt->rowCount() ? date('Y') - date('Y', $stmt->fetchRow(PDO::FETCH_COLUMN)) : 0;
+    $stmt = exec_query('SELECT dtraff_time FROM domain_traffic WHERE domain_id = ? ORDER BY dtraff_time ASC LIMIT 1', [
+        $domainId
+    ]);
+    $nPastYears = $stmt->rowCount() ? date('Y') - date('Y', $stmt->fetchColumn()) : 0;
 
     generateDMYlists($tpl, 0, $month, $year, $nPastYears);
 
@@ -94,7 +95,7 @@ function generatePage(TemplateEngine $tpl)
         [$domainId, getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)]
     );
 
-    if ($stmt->fetchRow(PDO::FETCH_COLUMN) < 1) {
+    if ($stmt->fetchColumn() < 1) {
         set_page_message(tr('No statistics found for the given period. Try another period.'), 'static_info');
         $tpl->assign([
             'USERNAME'                              => tohtml($adminName),

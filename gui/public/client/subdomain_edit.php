@@ -73,7 +73,7 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
         return false;
     }
 
-    $subdomainData = $stmt->fetchRow();
+    $subdomainData = $stmt->fetch();
 
     if ($subdomainType == 'dmn') {
         $subdomainData['subdomain_name'] .= '.' . $domainName;
@@ -160,7 +160,7 @@ function client_generatePage($tpl)
     ]);
 
     // Cover the case where URL forwarding feature is activated and that the
-    // default /htdocs directory doesn't exists yet
+    // default /htdocs directory doesn't exist yet
     if ($subdomainData['url_forward'] != 'no') {
         $vfs = new VirtualFileSystem($_SESSION['user_logged'], $subdomainData['subdomain_mount']);
 
@@ -282,22 +282,22 @@ function client_editSubdomain()
     ]);
 
     if ($subdomainType == 'dmn') {
-        $query = '
+        $query = "
             UPDATE subdomain
             SET subdomain_document_root = ?, subdomain_url_forward = ?, subdomain_type_forward = ?,
-              subdomain_host_forward = ?, subdomain_status = ?
+              subdomain_host_forward = ?, subdomain_status = 'tochange'
             WHERE subdomain_id = ?
-        ';
+        ";
     } else {
-        $query = '
+        $query = "
             UPDATE subdomain_alias
             SET subdomain_alias_document_root = ?, subdomain_alias_url_forward = ?, subdomain_alias_type_forward = ?,
-              subdomain_alias_host_forward = ?, subdomain_alias_status = ?
+              subdomain_alias_host_forward = ?, subdomain_alias_status = 'tochange'
             WHERE subdomain_alias_id = ?
-        ';
+        ";
     }
 
-    exec_query($query, [$documentRoot, $forwardUrl, $forwardType, $forwardHost, 'tochange', $subdomainId]);
+    exec_query($query, [$documentRoot, $forwardUrl, $forwardType, $forwardHost, $subdomainId]);
 
     iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterEditSubdomain, [
         'subdomainId'   => $subdomainId,

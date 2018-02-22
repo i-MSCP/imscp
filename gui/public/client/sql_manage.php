@@ -28,7 +28,7 @@ use iMSCP_pTemplate as TemplateEngine;
 
 /**
  * Can add SQL user for the given SQL database?
- * 
+ *
  * @param int $sqldId SQL database unique identifier
  * @return bool
  */
@@ -36,15 +36,15 @@ function canAddSQLUserForDatabase($sqldId)
 {
     $domainProps = get_domain_default_props($_SESSION['user_id']);
 
-    if($domainProps['domain_sqlu_limit'] == 0) {
+    if ($domainProps['domain_sqlu_limit'] == 0) {
         return true;
     }
-    
+
     if (get_customer_sql_users_count($domainProps['domain_id']) >= $domainProps['domain_sqlu_limit']) {
         // Count all SQL users that are owned by the customer, excluding those
         // that are already assigned to $sqldId
-        return (bool) exec_query(
-            '
+        return exec_query(
+                '
                 SELECT COUNT(sqlu_id)
                 FROM sql_user AS t1
                 JOIN sql_database as t2 USING(sqld_id)
@@ -54,8 +54,8 @@ function canAddSQLUserForDatabase($sqldId)
                 SELECT CONCAT(sqlu_name, sqlu_host) FROM sql_user WHERE sqld_id = ?
             )
             ',
-            [$sqldId, get_user_domain_id($_SESSION['user_id']), $sqldId]
-        )->fetchRow(PDO::FETCH_COLUMN);
+                [$sqldId, get_user_domain_id($_SESSION['user_id']), $sqldId]
+            )->fetchColumn() > 0;
     }
 
     return true;
@@ -70,9 +70,9 @@ function canAddSQLUserForDatabase($sqldId)
  */
 function generateDatabaseSqlUserList(TemplateEngine $tpl, $sqldId)
 {
-    $stmt = exec_query(
-        'SELECT sqlu_id, sqlu_name, sqlu_host FROM sql_user WHERE sqld_id = ? ORDER BY sqlu_name', $sqldId
-    );
+    $stmt = exec_query('SELECT sqlu_id, sqlu_name, sqlu_host FROM sql_user WHERE sqld_id = ? ORDER BY sqlu_name', [
+        $sqldId
+    ]);
 
     if (!$stmt->rowCount()) {
         $tpl->assign('SQL_USERS_LIST', '');
@@ -88,14 +88,14 @@ function generateDatabaseSqlUserList(TemplateEngine $tpl, $sqldId)
         )
     ]);
 
-    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'DB_USER'      => tohtml($row['sqlu_name']),
             'DB_USER_HOST' => tohtml(decode_idna($row['sqlu_host'])),
             'DB_USER_JS'   => tojs($row['sqlu_name']),
             'SQLU_ID'      => tohtml($row['sqlu_id'], 'htmlAttr')
         ]);
-        
+
         $tpl->parse('SQL_USERS_LIST', '.sql_users_list');
     }
 }
@@ -108,10 +108,9 @@ function generateDatabaseSqlUserList(TemplateEngine $tpl, $sqldId)
  */
 function generatePage(TemplateEngine $tpl)
 {
-    $stmt = exec_query(
-        'SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ? ORDER BY sqld_name ',
+    $stmt = exec_query('SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ? ORDER BY sqld_name ', [
         get_user_domain_id($_SESSION['user_id'])
-    );
+    ]);
 
     if (!$stmt->rowCount()) {
         set_page_message(tr('You do not have databases.'), 'static_info');
@@ -119,19 +118,19 @@ function generatePage(TemplateEngine $tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'SQLD_ID'    => $row['sqld_id'],
             'DB_NAME'    => tohtml($row['sqld_name']),
             'DB_NAME_JS' => tojs($row['sqld_name'])
         ]);
 
-        if(!canAddSQLUserForDatabase($row['sqld_id'])) {
+        if (!canAddSQLUserForDatabase($row['sqld_id'])) {
             $tpl->assign('SQL_USER_ADD_LINK', '');
         } else {
             $tpl->parse('SQL_USER_ADD_LINK', 'sql_user_add_link');
         }
-        
+
         generateDatabaseSqlUserList($tpl, $row['sqld_id']);
         $tpl->parse('SQL_DATABASES_LIST', '.sql_databases_list');
     }

@@ -30,8 +30,8 @@
  */
 function generatePage($tpl)
 {
-    $stmt = exec_query('SELECT domain_created FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
-    $row = $stmt->fetchRow();
+    $stmt = exec_query('SELECT domain_created FROM admin WHERE admin_id = ?', [$_SESSION['user_id']]);
+    $row = $stmt->fetch();
     $tpl->assign([
         'TR_ACCOUNT_SUMMARY'   => tr('Account summary'),
         'TR_USERNAME'          => tr('Username'),

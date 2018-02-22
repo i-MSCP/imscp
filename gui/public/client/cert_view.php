@@ -18,10 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Registry as Registry;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -77,7 +77,7 @@ function _client_getDomainName($domainId, $domainType)
             return false;
         }
 
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
         $domainName = $row['domain_name'];
     }
 
@@ -87,7 +87,6 @@ function _client_getDomainName($domainId, $domainType)
 /**
  * Update status for the given domain
  *
- * @throws iMSCP_Exception_Database
  * @param int $domainId Domain entity unique identifier
  * @param string $domainType Domain entity type to update (dmn|als|sub|alssub)
  * @return void
@@ -108,13 +107,12 @@ function _client_updateDomainStatus($domainId, $domainType)
             $query = "UPDATE subdomain_alias SET subdomain_alias_status = 'tochange' WHERE subdomain_alias_id = ?";
     }
 
-    exec_query($query, $domainId);
+    exec_query($query, [$domainId]);
 }
 
 /**
  * Generate temporary openssl configuration file
  *
- * @throws iMSCP_Exception_Database
  * @param array $data User data
  * @return bool|string Path to generate openssl temporary file, FALSE on failure
  */
@@ -130,13 +128,13 @@ DNS.2 = www.{DOMAIN_NAME}
 EOF;
 
     if ($domainType == 'dmn') {
-        $altNames .= "\nDNS.3 = {ADMIN_SYS_NAME}.{BASE_SERVER_VHOST}\n";
+        $altNames .= "\nDNS.3 = dmn$domainId.{BASE_SERVER_VHOST}\n";
     } elseif ($domainType == 'als') {
-        $altNames .= "\nDNS.3 = {ADMIN_SYS_NAME}als$domainId.{BASE_SERVER_VHOST}\n";
+        $altNames .= "\nDNS.3 = als$domainId.{BASE_SERVER_VHOST}\n";
     } elseif ($domainType == 'sub') {
-        $altNames .= "\nDNS.3 = {ADMIN_SYS_NAME}sub$domainId.{BASE_SERVER_VHOST}\n";
+        $altNames .= "\nDNS.3 = sub$domainId.{BASE_SERVER_VHOST}\n";
     } else {
-        $altNames .= "\nDNS.3 = {ADMIN_SYS_NAME}alssub$domainId.{BASE_SERVER_VHOST}\n";
+        $altNames .= "\nDNS.3 = alssub$domainId.{BASE_SERVER_VHOST}\n";
     }
 
     $sslTpl = new TemplateEngine();
@@ -147,7 +145,6 @@ EOF;
         'EMAIL_ADDRESS'     => $data['email'],
         'DOMAIN_NAME'       => $data['domain_name'],
         'ALT_NAMES'         => $altNames,
-        'ADMIN_SYS_NAME'    => $data['admin_sys_name'],
         'BASE_SERVER_VHOST' => $config['BASE_SERVER_VHOST']
     ]);
     $sslTpl->parse('TPL', 'tpl');
@@ -178,15 +175,15 @@ EOF;
  */
 function client_generateSelfSignedCert($domainName)
 {
-    $stmt = exec_query(
-        'SELECT admin_sys_name, firm, city, state, country, email FROM admin WHERE admin_id = ?', $_SESSION['user_id']
-    );
+    $stmt = exec_query('SELECT firm, city, state, country, email FROM admin WHERE admin_id = ?', [
+        $_SESSION['user_id']
+    ]);
 
     if (!$stmt->rowCount()) {
         return false;
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
     $row['domain_name'] = $domainName;
 
     if (!($sslConfigFilePath = _client_generateOpenSSLConfFile($row))) {
@@ -240,7 +237,6 @@ function client_generateSelfSignedCert($domainName)
  * Add or update an SSL certificate
  *
  * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  * @param int $domainId domain unique identifier
  * @param string $domainType Domain type (dmn|als|sub|alssub)
  * @return void
@@ -362,7 +358,8 @@ function client_addSslCert($domainId, $domainType)
         $caBundleStr = $caBundle;
     }
 
-    $db = iMSCP_Database::getInstance();
+    /** @var iMSCP_Database $db */
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -423,8 +420,6 @@ function client_addSslCert($domainId, $domainType)
 /**
  * Delete an SSL certificate
  *
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  * @param int $domainId domain unique identifier
  * @param string $domainType Domain type (dmn, als, sub, alssub)
  * @return void
@@ -442,7 +437,9 @@ function client_deleteSslCert($domainId, $domainType)
     }
 
     $certId = intval($_POST['cert_id']);
-    $db = iMSCP_Database::getInstance();
+
+    /** @var iMSCP_Database $db */
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -469,8 +466,6 @@ function client_deleteSslCert($domainId, $domainType)
 /**
  * Generate page
  *
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  * @param TemplateEngine $tpl
  * @param int $domainId Domain entity unique identifier
  * @param string $domainType Domain entity type
@@ -487,7 +482,7 @@ function client_generatePage(TemplateEngine $tpl, $domainId, $domainType)
     $stmt = exec_query('SELECT * FROM ssl_certs WHERE domain_id = ? AND domain_type = ?', [$domainId, $domainType]);
 
     if ($stmt->rowCount()) {
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
         $dynTitle = (customerHasFeature('ssl') && $row['status'] == 'ok')
             ? tr('Edit SSL certificate') : tr('Show SSL certificate');
         $certId = $row['cert_id'];

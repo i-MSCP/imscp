@@ -37,7 +37,8 @@ use iMSCP_Registry as Registry;
 class iMSCP_Plugin_Bruteforce extends PluginAction
 {
     /**
-     * @var int Tells whether or not waiting time between login|captcha attempts is enabled
+     * @var int Tells whether or not waiting time between login|captcha
+     *          attempts is enabled
      */
     protected $waitTimeEnabled = 0;
 
@@ -52,7 +53,8 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
     protected $waitingTime = 0;
 
     /**
-     * @var int Max. login/captcha attempts before blocking time is taking effect
+     * @var int Max. login/captcha attempts before blocking time is taking
+     *          effect
      */
     protected $maxAttemptsBeforeBlocking = 0;
 
@@ -124,38 +126,8 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
         $this->waitingTime = $cfg['BRUTEFORCE_BETWEEN_TIME'];
         $this->blockingTime = $cfg['BRUTEFORCE_BLOCK_TIME'];
 
-        exec_query('DELETE FROM login WHERE UNIX_TIMESTAMP() > (lastaccess + ?)', $this->blockingTime * 60);
+        exec_query('DELETE FROM login WHERE UNIX_TIMESTAMP() > (lastaccess + ?)', [$this->blockingTime * 60]);
         parent::__construct($pluginManager);
-    }
-
-    /**
-     * Initialization
-     *
-     * @return void
-     */
-    protected function init()
-    {
-        $stmt = exec_query(
-            'SELECT lastaccess, login_count, captcha_count FROM login WHERE ipaddr = ? AND user_name IS NULL',
-            $this->clientIpAddr
-        );
-
-        if (!$stmt->rowCount()) {
-            return;
-        }
-
-        $row = $stmt->fetchRow();
-        $this->recordExists = true;
-
-        if ($row[$this->targetForm . '_count'] >= $this->maxAttemptsBeforeBlocking) {
-            $this->isBlockedFor = $row['lastaccess'] + ($this->blockingTime * 60);
-            return;
-        }
-
-        if ($this->waitTimeEnabled && $row[$this->targetForm . '_count'] >= $this->maxAttemptsBeforeWaitingTime) {
-            $this->isWaitingFor = $row['lastaccess'] + $this->waitingTime;
-            return;
-        }
     }
 
     /**
@@ -196,13 +168,39 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
      */
     public function onBeforeAuthentication($event)
     {
-        if ($this->isWaiting() || $this->isBlocked()) {
+        if ($this->isWaiting()
+            || $this->isBlocked()
+        ) {
             $event->stopPropagation();
             return $this->getLastMessage();
         }
 
         $this->logAttempt();
         return NULL;
+    }
+
+    /**
+     * Is waiting IP address?
+     *
+     * @return bool TRUE if the client have to wait for a next login/captcha
+     *              attempts, FALSE otherwise
+     */
+    public function isWaiting()
+    {
+        if ($this->isWaitingFor == 0) {
+            return false;
+        }
+
+        $time = time();
+        if ($time < $this->isWaitingFor) {
+            $this->message = tr(
+                'You must wait %s minutes before the next attempt.',
+                strftime('%M:%S', $this->isWaitingFor - $time)
+            );
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -218,7 +216,10 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
 
         $time = time();
         if ($time < $this->isBlockedFor) {
-            $this->message = tr('You have been blocked for %s minutes.', strftime('%M:%S', $this->isBlockedFor - $time));
+            $this->message = tr(
+                'You have been blocked for %s minutes.',
+                strftime('%M:%S', $this->isBlockedFor - $time)
+            );
             return true;
         }
 
@@ -226,25 +227,13 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
     }
 
     /**
-     * Is waiting IP address?
+     * Returns last message raised
      *
-     * @return bool TRUE if the client have to wait for a next login/captcha attempts, FALSE otherwise
+     * @return string
      */
-    public function isWaiting()
+    public function getLastMessage()
     {
-        if ($this->isWaitingFor == 0) {
-            return false;
-        }
-
-        $time = time();
-        if ($time < $this->isWaitingFor) {
-            $this->message = tr(
-                'You must wait %s minutes before the next attempt.', strftime('%M:%S', $this->isWaitingFor - $time)
-            );
-            return true;
-        }
-
-        return false;
+        return $this->message;
     }
 
     /**
@@ -263,13 +252,20 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
     }
 
     /**
-     * Returns last message raised
+     * Create bruteforce detection record
      *
-     * @return string
+     * @return void
      */
-    public function getLastMessage()
+    protected function createRecord()
     {
-        return $this->message;
+        exec_query(
+            "
+                REPLACE INTO login (session_id, ipaddr, {$this->targetForm}_count, user_name, lastaccess) VALUES (
+                    ?, ?, 1, NULL, UNIX_TIMESTAMP()
+                )
+            ",
+            [$this->sessionId, $this->clientIpAddr]
+        );
     }
 
     /**
@@ -286,24 +282,39 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
                 WHERE ipaddr= ?
                 AND user_name IS NULL
             ",
-            $this->clientIpAddr
+            [$this->clientIpAddr]
         );
     }
 
     /**
-     * Create bruteforce detection record
+     * Initialization
      *
      * @return void
      */
-    protected function createRecord()
+    protected function init()
     {
-        exec_query(
-            "
-                REPLACE INTO login (session_id, ipaddr, {$this->targetForm}_count, user_name, lastaccess) VALUES (
-                    ?, ?, 1, NULL, UNIX_TIMESTAMP()
-                )
-            ",
-            [$this->sessionId, $this->clientIpAddr]
-        );
+        $stmt = exec_query(
+            'SELECT lastaccess, login_count, captcha_count FROM login WHERE ipaddr = ? AND user_name IS NULL', [
+            $this->clientIpAddr
+        ]);
+
+        if (!$stmt->rowCount()) {
+            return;
+        }
+
+        $row = $stmt->fetch();
+        $this->recordExists = true;
+
+        if ($row[$this->targetForm . '_count'] >= $this->maxAttemptsBeforeBlocking) {
+            $this->isBlockedFor = $row['lastaccess'] + ($this->blockingTime * 60);
+            return;
+        }
+
+        if ($this->waitTimeEnabled
+            && $row[$this->targetForm . '_count'] >= $this->maxAttemptsBeforeWaitingTime
+        ) {
+            $this->isWaitingFor = $row['lastaccess'] + $this->waitingTime;
+            return;
+        }
     }
 }

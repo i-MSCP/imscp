@@ -36,9 +36,7 @@ class iMSCP_Events_Listener_PriorityQueue implements Countable, IteratorAggregat
     protected $queue;
 
     /**
-     * Constructor
-     *
-     * @return iMSCP_Events_Listener_PriorityQueue
+     * iMSCP_Events_Listener_PriorityQueue constructor.
      */
     public function __construct()
     {

@@ -35,27 +35,32 @@ use iMSCP_pTemplate as TemplateEngine;
  */
 function getServerTraffic($startDate, $endDate)
 {
-    $stmt = exec_query(
-        '
-            SELECT IFNULL(SUM(bytes_in), 0) AS sbin,
-                IFNULL(SUM(bytes_out), 0) AS sbout,
-                IFNULL(SUM(bytes_mail_in), 0) AS smbin,
-                IFNULL(SUM(bytes_mail_out), 0) AS smbout,
-                IFNULL(SUM(bytes_pop_in), 0) AS spbin,
-                IFNULL(SUM(bytes_pop_out), 0) AS spbout,
-                IFNULL(SUM(bytes_web_in), 0) AS swbin,
-                IFNULL(SUM(bytes_web_out), 0) AS swbout
-            FROM server_traffic
-            WHERE traff_time BETWEEN ? AND ?
-        ',
-        [$startDate, $endDate]
-    );
+    static $stmt = NULL;
 
-    if (!$stmt->rowCount()) {
-        return array_fill(0, 10, 0);
+    if (NULL === $stmt) {
+        /** @var iMSCP_Database $db */
+        $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
+        $stmt = $db->prepare(
+            '
+                SELECT IFNULL(SUM(bytes_in), 0) AS sbin,
+                    IFNULL(SUM(bytes_out), 0) AS sbout,
+                    IFNULL(SUM(bytes_mail_in), 0) AS smbin,
+                    IFNULL(SUM(bytes_mail_out), 0) AS smbout,
+                    IFNULL(SUM(bytes_pop_in), 0) AS spbin,
+                    IFNULL(SUM(bytes_pop_out), 0) AS spbout,
+                    IFNULL(SUM(bytes_web_in), 0) AS swbin,
+                    IFNULL(SUM(bytes_web_out), 0) AS swbout
+                FROM server_traffic
+                WHERE traff_time BETWEEN ? AND ?
+            '
+        );
     }
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $stmt->execute([$startDate, $endDate]);
+
+    if (($row = $stmt->fetch()) === false) {
+        return array_fill(0, 10, 0);
+    }
 
     return [
         $row['swbin'], $row['swbout'], $row['smbin'], $row['smbout'], $row['spbin'], $row['spbout'],
@@ -94,7 +99,7 @@ function generateServerStatsByDay(TemplateEngine $tpl, $day, $month, $year)
 
     $all = array_fill(0, 8, 0);
 
-    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetch()) {
         $otherIn = $row['all_in'] - ($row['mail_in'] + $row['pop_in'] + $row['web_in']);
         $otherOut = $row['all_out'] - ($row['mail_out'] + $row['pop_out'] + $row['web_out']);
 
@@ -152,12 +157,11 @@ function generateServerStatsByDay(TemplateEngine $tpl, $day, $month, $year)
  */
 function generateServerStatsByMonth(TemplateEngine $tpl, $month, $year)
 {
-    $stmt = exec_query(
-        'SELECT COUNT(straff_id) FROM server_traffic WHERE traff_time BETWEEN ? AND ?',
-        [getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)]
-    );
+    $stmt = exec_query('SELECT COUNT(straff_id) FROM server_traffic WHERE traff_time BETWEEN ? AND ?', [
+        getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)
+    ]);
 
-    if ($stmt->fetchRow(PDO::FETCH_COLUMN) < 1) {
+    if ($stmt->fetchColumn() < 1) {
         set_page_message(tr('No statistics found for the given period. Try another period.'), 'static_info');
         $tpl->assign('SERVER_STATS_BY_MONTH', '');
         return;
@@ -205,7 +209,6 @@ function generateServerStatsByMonth(TemplateEngine $tpl, $month, $year)
 
     $allOtherIn = $all[6] - ($all[0] + $all[2] + $all[4]);
     $allOtherOut = $all[7] - ($all[1] + $all[3] + $all[5]);
-
     $tpl->assign([
         'WEB_IN_ALL'    => tohtml(bytesHuman($all[0])),
         'WEB_OUT_ALL'   => tohtml(bytesHuman($all[1])),
@@ -232,8 +235,8 @@ function generatePage(TemplateEngine $tpl)
     $day = isset($_GET['day']) ? filter_digits($_GET['day']) : 0;
     $month = isset($_GET['month']) ? filter_digits($_GET['month']) : date('n');
     $year = isset($_GET['year']) ? filter_digits($_GET['year']) : date('Y');
-    $stmt = exec_query('SELECT traff_time FROM server_traffic ORDER BY traff_time ASC LIMIT 1');
-    $nPastYears = $stmt->rowCount() ? date('Y') - date('Y', $stmt->fetchRow(PDO::FETCH_COLUMN)) : 0;
+    $stmt = execute_query('SELECT traff_time FROM server_traffic ORDER BY traff_time ASC LIMIT 1');
+    $nPastYears = $stmt->rowCount() ? date('Y') - date('Y', $stmt->fetchColumn()) : 0;
 
     generateDMYlists($tpl, $day, $month, $year, $nPastYears);
 

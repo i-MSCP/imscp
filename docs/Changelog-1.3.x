@@ -632,7 +632,7 @@ YOUTRACK
     #IP-1575 When editing forwarding URL, scheme field is not set with current value
     #IP-1576 Feature - Proxy support through Apache2 mod_proxy for customers
     #IP-1577 i-MSCP installer - Dialog exit with code 255 when console size is too small
-    #IP-1579 APT (>= 1.1) - The `--force-yes' option has been replaced by various options starting with `--allow'
+    #IP-1579 APT (≥ 1.1) - The `--force-yes' option has been replaced by various options starting with `--allow'
     #IP-1581 Allow to disable auto-configuration of network interfaces (IP addresses managed by i-MSCP)
     #IP-1587 Slow query on domain_traffic table when admin or reseller want to login into customer's area
     #IP-1588 Alternative URL vHosts tagged on default IP of I-MSCP
@@ -761,7 +761,7 @@ FRONTEND
     Fixed: Could not remove database; There is no such grant defined for user... (stdlib)
     Fixed: Could not set URL redirect when adding domain alias; Bad request error page (client level)
     Fixed: Email template inconsistencies
-    Fixed: IDNs are shown in IDNA form in several places
+    Fixed: IDNs are shown in ACE form in several places
     Fixed: iMSCP_Update_Database::addIndex() doesn't allows to set index length (stdlib)
     Fixed: Lostpasword feature is broken
     Fixed: Mails sent from FrontEnd could be rejected if sender email domain is hosted externally
@@ -802,12 +802,12 @@ INSTALLER
 
 PACKAGES
     Added: Monsta FTP package
-    Disabled: Pydio in case PHP >= 7.0.0 is detected (Pydio)
+    Disabled: Pydio in case PHP ≥ 7.0.0 is detected (Pydio)
     Fixed: As of 2012-6-7, the md5 algorithm is "no longer considered safe" (FrontEnd)
     Fixed: `ERR_INCOMPLETE_CHUNKED_ENCODING' error due to wrong permissions on nginx fastCGI cache directory (FrontEnd)
     Fixed: Missing IP version check (FrontEnd)
     Fixed: White page due to `net::ERR_INCOMPLETE_CHUNKED_ENCODING' errors (related to #IP-1530) (PhpMyAdmin)
-    Updated: PhpMyAdmin version to 4.6.0 - Only for servers with PHP/MySQL >= 5.5 (PhpMyAdmin)
+    Updated: PhpMyAdmin version to 4.6.0 - Only for servers with PHP/MySQL ≥ 5.5 (PhpMyAdmin)
 
 PLUGINS
     Enhancement: Plugin backend packages can now be simple objects
@@ -838,7 +838,7 @@ SERVERS
     Fixed: maillogconvert.pl not removed on uninstallation
     Fixed: maillogconvert.pl path must not be hardcoded
     Fixed: ON|OFF strings not recognized as boolean value in imscp.cnf file (MySQL)
-    Fixed: Postfix (>= 3.0) is showing many warnings about backwards-compatible settings (default setting chroot=y)
+    Fixed: Postfix (≥ 3.0) is showing many warnings about backwards-compatible settings (default setting chroot=y)
     Fixed: Postfix maps must not be world-readable (Postfix)
     Fixed: The SOA serial number must be incremented only once when a DNS zone is updated (Servers::named::bind)
     Fixed: Traffic accounting routines must not remove log files (ProFTPD/VsFTPd). Files are now truncated instead
@@ -852,7 +852,7 @@ SERVICES
     Added: imscp_mountall service - Mount filesystems on server reboot
 
 VENDOR
-    Patched: phpseclib library (deprecated constructor method - PHP >= 7.0)
+    Patched: phpseclib library (deprecated constructor method - PHP ≥ 7.0)
     Updated: phpseclib library to version 1.0.2
 
 VLOGGER

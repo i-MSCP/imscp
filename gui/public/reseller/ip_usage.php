@@ -30,13 +30,11 @@
  */
 function generatePage($tpl)
 {
-    $stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', $_SESSION['user_id']);
-    $data = $stmt->fetchRow();
-    $resellerIps = explode(';', substr($data['reseller_ips'], 0, -1));
-
+    $stmt = exec_query('SELECT reseller_ips FROM reseller_props WHERE reseller_id = ?', [$_SESSION['user_id']]);
+    $resellerIps = explode(';', substr($stmt->fetchColumn(), 0, -1));
     $stmt = execute_query('SELECT ip_id, ip_number FROM server_ips WHERE ip_id IN (' . implode(',', $resellerIps) . ')');
 
-    while ($ip = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+    while ($ip = $stmt->fetch()) {
         $stmt2 = exec_query(
             '
                 SELECT domain_name
@@ -65,7 +63,7 @@ function generatePage($tpl)
         );
 
         if ($domainsCount) {
-            while ($data = $stmt2->fetchRow(PDO::FETCH_ASSOC)) {
+            while ($data = $stmt2->fetch()) {
                 $tpl->assign('DOMAIN_NAME', tohtml(idn_to_utf8($data['domain_name'])));
                 $tpl->parse('DOMAIN_ROW', '.domain_row');
             }

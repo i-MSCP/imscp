@@ -31,6 +31,9 @@ use XML::Parser;
 use warnings;
 use JSON;
 use MIME::Base64 qw/ encode_base64 decode_base64 /;
+use POSIX qw /locale_h /;
+
+setlocale(LC_MESSAGES, "C.UTF-8");
 
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';

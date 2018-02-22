@@ -375,7 +375,9 @@ function getUserLoginDataForm($usernameRequired = true, $passwordRequired = true
                 ['StringLength', true, ['min' => 2, 'max' => 30, 'messages' => tr('The username must be between %d and %d characters.', 2, 30)]],
                 ['Callback', true, [
                     function ($username) {
-                        return !exec_query('SELECT COUNT(admin_id) FROM admin WHERE admin_name = ?', $username)->fetchRow(PDO::FETCH_COLUMN);
+                        return exec_query(
+                            'SELECT COUNT(admin_id) FROM admin WHERE admin_name = ?', [$username]
+                        )->fetchColumn() == 0;
                     },
                     'messages' => tr("The '%value%' username is not available.")
                 ]]
@@ -433,42 +435,42 @@ function getUserPersonalDataForm()
         'elementPrefixPath' => ['validate' => ['prefix' => 'iMSCP_Validate', 'path' => 'iMSCP/Validate/']],
         'elements'          => [
             'fname'   => ['text', ['validators' => [
-                ['AlnumAndHyphen', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid first name.')]],
+                //['AlnumAndHyphen', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid first name.')]],
                 ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('The first name must be between %d and %d characters.', 1, 200)]]
             ]]],
             'lname'   => ['text', ['validators' => [
-                ['AlnumAndHyphen', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid last name.')]],
+                //['AlnumAndHyphen', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid last name.')]],
                 ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('The last name must be between %d and %d characters.', 1, 200)]]
             ]]],
             'gender'  => ['select', ['validators' => [
                 ['InArray', true, ['haystack' => ['M', 'F', 'U'], 'strict' => true, 'messages' => tr('Invalid gender.')]],
             ]]],
             'firm'    => ['text', ['validators' => [
-                ['AlnumAndHyphen', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid company.')]],
+                //['AlnumAndHyphen', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid company.')]],
                 ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('The company name must be between %d and %d characters.', 1, 200)]]
             ]]],
             'street1' => ['text', ['validators' => [
-                ['AlnumAndHyphen', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid street 1.')]],
+                //['AlnumAndHyphen', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid street 1.')]],
                 ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('The street 1 name must be between %d and %d characters', 1, 200)]]
             ]]],
             'street2' => ['text', ['validators' => [
-                ['AlnumAndHyphen', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid street 2.')]],
+                //['AlnumAndHyphen', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid street 2.')]],
                 ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('The street 2 name must be between %d and %d characters.', 1, 200)]]
             ]]],
             'zip'     => ['text', ['validators' => [
-                ['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid zipcode.')]],
+                //['Alnum', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid zipcode.')]],
                 ['StringLength', true, ['min' => 1, 'max' => 10, 'messages' => tr('The zipcode must be between %d and %d characters.', 1, 10)]]
             ]]],
             'city'    => ['text', ['validators' => [
-                ['AlnumAndHyphen', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid city.')]],
+                //['AlnumAndHyphen', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid city.')]],
                 ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('The city name must be between %d and %d characters.', 1, 200)]]
             ]]],
             'state'   => ['text', ['validators' => [
-                ['AlnumAndHyphen', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid state/province.')]],
+                //['AlnumAndHyphen', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid state/province.')]],
                 ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('The state/province name must be between %d and %d characters.', 1, 200)]]
             ]]],
             'country' => ['text', ['validators' => [
-                ['AlnumAndHyphen', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid country.')]],
+                //['AlnumAndHyphen', true, ['allowWhiteSpace' => true, 'messages' => tr('Invalid country.')]],
                 ['StringLength', true, ['min' => 1, 'max' => 200, 'messages' => tr('The country name must be between %d and %d characters.', 1, 200)]]
             ]]],
             'email'   => ['text', [

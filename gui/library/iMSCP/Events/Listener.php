@@ -24,6 +24,11 @@
 class iMSCP_Events_Listener
 {
     /**
+     * @var bool PHP version is greater than 5.4rc1?
+     */
+    protected static $isPhp54;
+
+    /**
      * @var string|array|callable
      */
     protected $handler;
@@ -32,11 +37,6 @@ class iMSCP_Events_Listener
      * @var array Listener metadata, if any
      */
     protected $metadata;
-
-    /**
-     * @var bool PHP version is greater than 5.4rc1?
-     */
-    protected static $isPhp54;
 
     /**
      * Constructor
@@ -71,13 +71,28 @@ class iMSCP_Events_Listener
     }
 
     /**
-     * Return listener handler
+     * Retrieve a single metadatum
      *
-     * @return callable
+     * @param string $name
+     * @return mixed
      */
-    public function getHandler()
+    public function getMetadatum($name)
     {
-        return $this->handler;
+        if (array_key_exists($name, $this->metadata)) {
+            return $this->metadata[$name];
+        }
+
+        return NULL;
+    }
+
+    /**
+     * Invoke as functor
+     *
+     * @return mixed
+     */
+    public function __invoke()
+    {
+        return $this->call(func_get_args());
     }
 
     /**
@@ -145,38 +160,13 @@ class iMSCP_Events_Listener
     }
 
     /**
-     * Invoke as functor
+     * Return listener handler
      *
-     * @return mixed
+     * @return callable
      */
-    public function __invoke()
+    public function getHandler()
     {
-        return $this->call(func_get_args());
-    }
-
-    /**
-     * Get all listener metadata
-     *
-     * @return array
-     */
-    public function getMetadata()
-    {
-        return $this->metadata;
-    }
-
-    /**
-     * Retrieve a single metadatum
-     *
-     * @param string $name
-     * @return mixed
-     */
-    public function getMetadatum($name)
-    {
-        if (array_key_exists($name, $this->metadata)) {
-            return $this->metadata[$name];
-        }
-
-        return NULL;
+        return $this->handler;
     }
 
     /**
@@ -221,5 +211,15 @@ class iMSCP_Events_Listener
         // Returning a non boolean value may not be nice for a validate method, but that allows the usage of a static
         // string listener without using the call_user_func function.
         return [$class, $method];
+    }
+
+    /**
+     * Get all listener metadata
+     *
+     * @return array
+     */
+    public function getMetadata()
+    {
+        return $this->metadata;
     }
 }

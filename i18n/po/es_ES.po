@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-08 08:36+0000\n"
+"POT-Creation-Date: 2017-10-01 16:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: kurgans <bongostudio@gmail.com>, 2017\n"
 "Language-Team: Spanish (Spain) (https://www.transifex.com/i-mscp/teams/576/es_ES/)\n"
@@ -1910,12 +1910,12 @@ msgid "Details"
 msgstr "Detalles"
 
 #, php-format
-msgid "Directory %s doesn't exists."
-msgstr "El Directorio %s no existe."
+msgid "Directory %s doesn't exist."
+msgstr ""
 
 #, php-format
-msgid "Directory '%s' doesn't exists."
-msgstr "El Directorio '%s' no existe."
+msgid "Directory '%s' doesn't exist."
+msgstr ""
 
 #, php-format
 msgid "Directory '%s' is not allowed or invalid."
@@ -2753,15 +2753,6 @@ msgid ""
 "and line breaks are allowed."
 msgstr ""
 
-msgid "Invalid city."
-msgstr "Ciudad erróneo."
-
-msgid "Invalid company."
-msgstr "Empresa erróneo."
-
-msgid "Invalid country."
-msgstr "País erróneo."
-
 msgid "Invalid domain name."
 msgstr "Nombre de dominio inválido."
 
@@ -2775,17 +2766,11 @@ msgstr "Nombre de usuario inválido para correo electrónico."
 msgid "Invalid field: %s"
 msgstr "Campo: %s erróneo"
 
-msgid "Invalid first name."
-msgstr "Nombre no válido."
-
 msgid "Invalid gender."
 msgstr "Sexo no válido."
 
 msgid "Invalid group name!"
 msgstr "¡Nombre de grupo inválido!"
-
-msgid "Invalid last name."
-msgstr "Apellido no válido."
 
 msgid "Invalid menu order."
 msgstr "Orden de menú inválido."
@@ -2810,23 +2795,11 @@ msgstr "Clave privada o frase de contraseña inválida."
 msgid "Invalid service name: %s"
 msgstr "Nombre de servicio: %s incorrecto"
 
-msgid "Invalid state/province."
-msgstr "Población incorrecta."
-
-msgid "Invalid street 1."
-msgstr "Dirección primaria incorrecta."
-
-msgid "Invalid street 2."
-msgstr "Dirección secundaria incorrecta."
-
 msgid "Invalid target."
 msgstr "Destino no válido."
 
 msgid "Invalid username."
 msgstr "Nombre de usuario incorrecto"
-
-msgid "Invalid zipcode."
-msgstr "Código Postal incorrecto."
 
 msgid "Kernel Version"
 msgstr "Versión del Kernel"
@@ -3231,9 +3204,6 @@ msgstr "Cuenta no encontrada."
 
 msgid "No anti-rootkits logs"
 msgstr "No hay logs anti-rootkits"
-
-msgid "No available"
-msgstr "No disponible"
 
 msgid "No custom menu found."
 msgstr "No se encontró menú personalizado."
@@ -4772,11 +4742,9 @@ msgstr ""
 
 #, php-format
 msgid ""
-"The directory %s doesn't exists. Please create that directory using your "
-"file manager."
+"The directory %s doesn't exist. Please create that directory using your file"
+" manager."
 msgstr ""
-"El directorio %s no existe. Por favor, cree ese directorio utilizando su "
-"gestor de archivos."
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -5459,9 +5427,6 @@ msgstr "Id. del revendedor incorrecto."
 
 msgid "Wrong security code"
 msgstr "Código de seguridad incorrecto"
-
-msgid "Wrong software id."
-msgstr "Id de software incorrecto."
 
 msgid "Wrong syntax for new expire date."
 msgstr "Sintaxis errónea para la nueva fecha de expiración."

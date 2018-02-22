@@ -36,10 +36,6 @@ check_login('reseller');
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 resellerHasFeature('support') or showBadRequestErrorPage();
 
-if (!hasTicketSystem($_SESSION['user_id'])) {
-    redirectTo('index.php');
-}
-
 if (isset($_POST['uaction'])) {
     if (empty($_POST['subject'])) {
         set_page_message(tr('You must specify a subject.'), 'error');

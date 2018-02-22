@@ -49,6 +49,7 @@ use parent 'Common::SingletonClass';
 sub getAddresses
 {
     my ($self) = @_;
+
     wantarray ? keys %{$self->{'addresses'}} : join ' ', keys %{$self->{'addresses'}};
 }
 
@@ -403,7 +404,7 @@ sub isDeviceUp
 {
     my ($self, $dev) = @_;
 
-    $self->{'devices'}->{$dev}->{'flags'} =~ /^(?:.*,)?UP(?:,.*)?$/ ? 1 : 0;
+    $self->isKnownDevice( $dev ) && $self->{'devices'}->{$dev}->{'flags'} =~ /^(?:.*,)?UP(?:,.*)?$/;
 }
 
 =item isDeviceDown( $dev )
@@ -419,7 +420,7 @@ sub isDeviceDown
 {
     my ($self, $dev) = @_;
 
-    $self->{'devices'}->{$dev}->{'flags'} =~ /^(?:.*,)?UP(?:,.*)?$/ ? 0 : 1;
+    $self->isKnownDevice( $dev ) && $self->{'devices'}->{$dev}->{'flags'} !~ /^(?:.*,)?UP(?:,.*)?$/;
 }
 
 =item resetInstance( )

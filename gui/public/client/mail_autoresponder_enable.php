@@ -42,7 +42,8 @@ function checkMailAccount($mailAccountId)
 {
     return exec_query(
         "
-            SELECT IFNULL(mail_auto_respond_text, '') FROM mail_users AS t1
+            SELECT IFNULL(mail_auto_respond_text, '')
+            FROM mail_users AS t1
             JOIN domain AS t2 USING(domain_id)
             WHERE t1.mail_id = ? AND t2.domain_admin_id = ? AND t1.mail_type NOT RLIKE ? AND t1.status = 'ok'
             AND t1.mail_auto_respond = 0
@@ -52,7 +53,7 @@ function checkMailAccount($mailAccountId)
             $_SESSION['user_id'],
             MT_NORMAL_CATCHALL . '|' . MT_SUBDOM_CATCHALL . '|' . MT_ALIAS_CATCHALL . '|' . MT_ALSSUB_CATCHALL
         ]
-    )->fetchRow(PDO::FETCH_COLUMN);
+    )->fetchColumn();
 }
 
 /**
@@ -91,8 +92,8 @@ function activateAutoresponder($mailAccountId, $autoresponderMessage)
  */
 function generatePage($tpl, $mailAccountId)
 {
-    $stmt = exec_query('SELECT mail_auto_respond_text FROM mail_users WHERE mail_id = ?', $mailAccountId);
-    $row = $stmt->fetchRow();
+    $stmt = exec_query('SELECT mail_auto_respond_text FROM mail_users WHERE mail_id = ?', [$mailAccountId]);
+    $row = $stmt->fetch();
     $tpl->assign('AUTORESPONDER_MESSAGE', tohtml($row['mail_auto_respond_text']));
 }
 

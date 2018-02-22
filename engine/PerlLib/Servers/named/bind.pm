@@ -112,7 +112,6 @@ sub postinstall
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostInstall' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->enable( $self->{'config'}->{'NAMED_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -242,12 +241,20 @@ sub postaddDmn
     ) {
         $rs = $self->addSub(
             {
-                PARENT_DOMAIN_NAME    => $main::imscpConfig{'BASE_SERVER_VHOST'},
-                DOMAIN_NAME           => $data->{'ALIAS'} . '.' . $main::imscpConfig{'BASE_SERVER_VHOST'},
-                MAIL_ENABLED          => 0,
-                DOMAIN_IP             => $data->{'BASE_SERVER_PUBLIC_IP'},
-                BASE_SERVER_PUBLIC_IP => $data->{'BASE_SERVER_PUBLIC_IP'},
-                OPTIONAL_ENTRIES      => 0
+                # Listeners want probably know real parent domain name for the
+                # DNS name being added even if that entry is added in another
+                # zone. For instance, see the 20_named_dualstack.pl listener
+                # file. (since 1.5.2)
+                REAL_PARENT_DOMAIN_NAME => $data->{'PARENT_DOMAIN_NAME'},
+                PARENT_DOMAIN_NAME      => $main::imscpConfig{'BASE_SERVER_VHOST'},
+                DOMAIN_NAME             => $data->{'ALIAS'} . '.' . $main::imscpConfig{'BASE_SERVER_VHOST'},
+                MAIL_ENABLED            => 0,
+                DOMAIN_IP               => $data->{'BASE_SERVER_PUBLIC_IP'},
+                # Listeners want probably know type of the entry being added (since 1.5.2)
+                DOMAIN_TYPE             => 'sub',
+                BASE_SERVER_PUBLIC_IP   => $data->{'BASE_SERVER_PUBLIC_IP'},
+                OPTIONAL_ENTRIES        => 0,
+                STATUS                  => $data->{'STATUS'} # (since 1.5.2)
             }
         );
         return $rs if $rs;
@@ -497,12 +504,20 @@ sub postaddSub
     ) {
         $rs = $self->addSub(
             {
-                PARENT_DOMAIN_NAME    => $main::imscpConfig{'BASE_SERVER_VHOST'},
-                DOMAIN_NAME           => $data->{'ALIAS'} . '.' . $main::imscpConfig{'BASE_SERVER_VHOST'},
-                MAIL_ENABLED          => 0,
-                DOMAIN_IP             => $data->{'BASE_SERVER_PUBLIC_IP'},
-                BASE_SERVER_PUBLIC_IP => $data->{'BASE_SERVER_PUBLIC_IP'},
-                OPTIONAL_ENTRIES      => 0
+                # Listeners want probably know real parent domain name for the
+                # DNS name being added even if that entry is added in another
+                # zone. For instance, see the 20_named_dualstack.pl listener
+                # file. (since 1.5.2)
+                REAL_PARENT_DOMAIN_NAME => $data->{'PARENT_DOMAIN_NAME'},
+                PARENT_DOMAIN_NAME      => $main::imscpConfig{'BASE_SERVER_VHOST'},
+                DOMAIN_NAME             => $data->{'ALIAS'} . '.' . $main::imscpConfig{'BASE_SERVER_VHOST'},
+                MAIL_ENABLED            => 0,
+                DOMAIN_IP               => $data->{'BASE_SERVER_PUBLIC_IP'},
+                # Listeners want probably know type of the entry being added (since 1.5.2)
+                DOMAIN_TYPE             => 'sub',
+                BASE_SERVER_PUBLIC_IP   => $data->{'BASE_SERVER_PUBLIC_IP'},
+                OPTIONAL_ENTRIES        => 0,
+                STATUS                  => $data->{'STATUS'} # (since 1.5.2)
             }
         );
         return $rs if $rs;
@@ -728,7 +743,6 @@ sub restart
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedRestart' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->restart( $self->{'config'}->{'NAMED_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -753,7 +767,6 @@ sub reload
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedReload' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->reload( $self->{'config'}->{'NAMED_SNAME'} ); };
     if ( $@ ) {
         error( $@ );

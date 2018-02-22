@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use \iMSCP\Update\UpdateVersion;
+
 /***********************************************************************************************************************
  * Functions
  */
@@ -31,8 +33,8 @@ function admin_generateSupportQuestionsMessage()
 {
     $ticketsCount = exec_query(
         'SELECT COUNT(ticket_id) FROM tickets WHERE ticket_to = ? AND ticket_status IN (1, 2) AND ticket_reply = 0',
-        $_SESSION['user_id']
-    )->fetchRow(PDO::FETCH_COLUMN);
+        [$_SESSION['user_id']]
+    )->fetchColumn();
 
     if ($ticketsCount > 0) {
         set_page_message(
@@ -57,7 +59,7 @@ function admin_generateUpdateMessages()
         return;
     }
 
-    $updateVersion = iMSCP_Update_Version::getInstance();
+    $updateVersion = new UpdateVersion();
 
     if ($updateVersion->isAvailableUpdate()) {
         set_page_message('<a href="imscp_updates.php" class="link">' . tr('A new i-MSCP version is available') . '</a>', 'static_info');
@@ -118,7 +120,7 @@ function admin_generateServerTrafficInfo($tpl)
     );
 
     if ($stmt->rowCount()) {
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
         $trafficUsageBytes = $row['serverTrafficUsage'];
     } else {
         $trafficUsageBytes = 0;

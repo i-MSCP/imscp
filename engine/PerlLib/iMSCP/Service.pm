@@ -123,7 +123,6 @@ sub remove
 
     defined $service or die( 'parameter $service is not defined' );
 
-    local $@;
     eval {
         $self->{'eventManager'}->trigger( 'onBeforeRemoveService', $service ) == 0 or die( $self->_getLastError());
         $self->{'provider'}->remove( $service ) or die( $self->_getLastError());
@@ -170,7 +169,7 @@ sub start
     my ($self, $service) = @_;
 
     defined $service or die( 'parameter $service is not defined' );
-    local $@;
+
     my $ret = eval {
         $self->{'eventManager'}->trigger( 'onBeforeStartService', $service ) == 0
             && $self->{'provider'}->start( $service )
@@ -194,7 +193,7 @@ sub stop
     my ($self, $service) = @_;
 
     defined $service or die( 'parameter $service is not defined' );
-    local $@;
+
     my $ret = eval {
         $self->{'eventManager'}->trigger( 'onBeforeStopService', $service ) == 0
             && $self->{'provider'}->stop( $service )
@@ -218,7 +217,7 @@ sub restart
     my ($self, $service) = @_;
 
     defined $service or die( 'parameter $service is not defined' );
-    local $@;
+
     my $ret = eval {
         $self->{'eventManager'}->trigger( 'onBeforeRestartService', $service ) == 0
             && $self->{'provider'}->restart( $service )
@@ -242,7 +241,7 @@ sub reload
     my ($self, $service) = @_;
 
     defined $service or die( 'parameter $service is not defined' );
-    local $@;
+
     my $ret = eval {
         $self->{'eventManager'}->trigger( 'onBeforeReloadService', $service ) == 0
             && $self->{'provider'}->reload( $service )
@@ -266,7 +265,6 @@ sub isRunning
     my ($self, $service) = @_;
 
     defined $service or die( 'parameter $service is not defined' );
-    local $@;
     eval { $self->{'provider'}->isRunning( $service ); };
 }
 

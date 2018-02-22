@@ -26,14 +26,16 @@ class iMSCP_Exception extends Exception
     /**
      * Constructor
      *
-     * Note: We cannot enforce type declaration of Exception since we want be compatible with both PHP5 and PHP 7.
-     *       See http://php.net/manual/fr/migration70.incompatible.php
+     * Note: We cannot enforce type declaration of Exception since we want be
+     * compatible with both PHP5 and PHP 7.
      * 
+     * See http://php.net/manual/fr/migration70.incompatible.php
+     *
      * @param string $msg Exception Message
      * @param int $code Exception code
      * @param Exception $previous OPTIONAL Previous exception
      */
-    public function __construct($msg = '', $code = 0, $previous = null)
+    public function __construct($msg = '', $code = 0, $previous = NULL)
     {
         parent::__construct($msg, (int)$code, $previous);
     }

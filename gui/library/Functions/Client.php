@@ -18,7 +18,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
@@ -112,11 +111,10 @@ function customerHasFeature($featureNames, $forceReload = false)
         ];
 
         if ($cfg['IMSCP_SUPPORT_SYSTEM']) {
-            $stmt = exec_query(
-                'SELECT support_system FROM reseller_props WHERE reseller_id = ?', $_SESSION['user_created_by']
-            );
-            $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-            $availableFeatures['support'] = ($row['support_system'] == 'yes');
+            $stmt = exec_query('SELECT support_system FROM reseller_props WHERE reseller_id = ?', [
+                $_SESSION['user_created_by']
+            ]);
+            $availableFeatures['support'] = ($stmt->fetchColumn() == 'yes');
         } else {
             $availableFeatures['support'] = false;
         }
@@ -163,7 +161,7 @@ function customerHasDomain($domainName, $customerId)
     $domainName = encode_idna($domainName);
 
     // Check in domain table
-    $stmt = exec_query("SELECT 'found' FROM domain WHERE domain_admin_id = ? AND domain_name = ?", [
+    $stmt = exec_query("SELECT 1 FROM domain WHERE domain_admin_id = ? AND domain_name = ?", [
         $customerId, $domainName
     ]);
 
@@ -206,7 +204,8 @@ function customerHasDomain($domainName, $customerId)
     // Check in subdomain_alias table
     $stmt = exec_query(
         "
-            SELECT 1 FROM domain AS t1
+            SELECT 1
+            FROM domain AS t1
             JOIN domain_aliasses AS t2 ON(t2.domain_id = t1.domain_id)
             JOIN subdomain_alias AS t3 ON(t3.alias_id = t2.alias_id)
             WHERE t1.domain_admin_id = ? AND CONCAT(t3.subdomain_alias_name, '.', t2.alias_name) = ?
@@ -224,7 +223,6 @@ function customerHasDomain($domainName, $customerId)
 /**
  * Get mount points
  *
- * @throws iMSCP_Exception_Database
  * @param int $domainId Main domain unique identifier
  * @return array List of mount points
  */
@@ -307,7 +305,7 @@ function getDomainMountpoint($domainId, $domainType, $ownerId)
         throw new iMSCPException("Couldn't find domain data");
     }
 
-    return $stmt->fetchRow(PDO::FETCH_NUM);
+    return $stmt->fetch(PDO::FETCH_NUM);
 }
 
 /**
@@ -409,9 +407,10 @@ function deleteSubdomain($id)
         showBadRequestErrorPage();
     }
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch();
 
-    $db = Database::getInstance();
+    /** @var iMSCP_Database $db */
+    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -432,10 +431,10 @@ function deleteSubdomain($id)
                 WHERE userid LIKE CONCAT('%@', ?)
                 LIMIT 1
             ",
-            $row['subdomain_name']
+            [$row['subdomain_name']]
         );
         if ($stmt->rowCount()) {
-            $ftpGroupData = $stmt->fetchRow(PDO::FETCH_ASSOC);
+            $ftpGroupData = $stmt->fetch();
             $members = array_filter(
                 preg_split('/,/', $ftpGroupData['members'], -1, PREG_SPLIT_NO_EMPTY),
                 function ($member) use ($row) {
@@ -444,9 +443,9 @@ function deleteSubdomain($id)
             );
 
             if (empty($members)) {
-                exec_query('DELETE FROM ftp_group WHERE groupname = ?', $ftpGroupData['groupname']);
-                exec_query('DELETE FROM quotalimits WHERE name = ?', $ftpGroupData['groupname']);
-                exec_query('DELETE FROM quotatallies WHERE name = ?', $ftpGroupData['groupname']);
+                exec_query('DELETE FROM ftp_group WHERE groupname = ?', [$ftpGroupData['groupname']]);
+                exec_query('DELETE FROM quotalimits WHERE name = ?', [$ftpGroupData['groupname']]);
+                exec_query('DELETE FROM quotatallies WHERE name = ?', [$ftpGroupData['groupname']]);
             } else {
                 exec_query('UPDATE ftp_group SET members = ? WHERE groupname = ?', [
                     implode(',', $members), $ftpGroupData['groupname']
@@ -457,16 +456,16 @@ function deleteSubdomain($id)
         }
 
         // Delete PHP ini entries
-        exec_query("DELETE FROM php_ini WHERE domain_id = ? AND domain_type = 'sub'", $id);
+        exec_query("DELETE FROM php_ini WHERE domain_id = ? AND domain_type = 'sub'", [$id]);
 
         // Schedule FTP accounts deletion
-        exec_query("UPDATE ftp_users SET status = 'todelete' WHERE userid LIKE ?", '%@' . $row['subdomain_name']);
+        exec_query("UPDATE ftp_users SET status = 'todelete' WHERE userid LIKE ?", ['%@' . $row['subdomain_name']]);
 
         // Schedule mail accounts deletion
-        exec_query("UPDATE mail_users SET status = 'todelete' WHERE sub_id = ? AND mail_type LIKE '%subdom_%'", $id);
+        exec_query("UPDATE mail_users SET status = 'todelete' WHERE sub_id = ? AND mail_type LIKE '%subdom_%'", [$id]);
 
         // Schedule SSL certificates deletion
-        exec_query("UPDATE ssl_certs SET status = 'todelete' WHERE domain_id = ? AND domain_type = 'sub'", $id);
+        exec_query("UPDATE ssl_certs SET status = 'todelete' WHERE domain_id = ? AND domain_type = 'sub'", [$id]);
 
         // Schedule protected area deletion        
         exec_query("UPDATE htaccess SET status = 'todelete' WHERE dmn_id = ? AND path LIKE ?", [
@@ -474,7 +473,7 @@ function deleteSubdomain($id)
         ]);
 
         // Schedule subdomain deletion
-        exec_query("UPDATE subdomain SET subdomain_status = 'todelete' WHERE subdomain_id = ?", $id);
+        exec_query("UPDATE subdomain SET subdomain_status = 'todelete' WHERE subdomain_id = ?", [$id]);
 
         EventsManager::getInstance()->dispatch(Events::onAfterDeleteSubdomain, [
             'subdomainId'   => $id,
@@ -529,8 +528,10 @@ function deleteSubdomainAlias($id)
         showBadRequestErrorPage();
     }
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-    $db = Database::getInstance();
+    $row = $stmt->fetch();
+
+    /** @var iMSCP_Database $db */
+    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -554,7 +555,7 @@ function deleteSubdomainAlias($id)
             $row['subdomain_alias_name']
         );
         if ($stmt->rowCount()) {
-            $ftpGroupData = $stmt->fetchRow(PDO::FETCH_ASSOC);
+            $ftpGroupData = $stmt->fetch();
             $members = array_filter(
                 preg_split('/,/', $ftpGroupData['members'], -1, PREG_SPLIT_NO_EMPTY),
                 function ($member) use ($row) {

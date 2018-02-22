@@ -19,10 +19,10 @@
  */
 
 use iMSCP\Crypt as Crypt;
-use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
 use Zend_Form as Form;
 
 /***********************************************************************************************************************
@@ -41,22 +41,26 @@ function updateUserData(Form $form, $userId)
 {
     $data = exec_query(
         'SELECT admin_name FROM admin WHERE admin_id = ? AND created_by = ?', [$userId, $_SESSION['user_id']]
-    )->fetchRow();
+    )->fetch();
 
     if (!$data) {
         showBadRequestErrorPage();
     }
 
     if (!$form->isValid($_POST)) {
-        foreach ($form->getMessages() as $fieldname => $msgsStack) {
-            set_page_message(reset($msgsStack), 'error');
+        foreach ($form->getMessages() as $msgsStack) {
+            foreach ($msgsStack as $msg) {
+                set_page_message(tohtml($msg), 'error');
+            }
         }
 
         return;
     }
 
-    $passwordUpdated = ($form->getValue('admin_pass') !== '');
-    $db = Database::getInstance();
+    $passwordUpdated = $form->getValue('admin_pass') !== '';
+
+    /** @var iMSCP_Database $db */
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -75,7 +79,7 @@ function updateUserData(Form $form, $userId)
                 WHERE admin_id = ?
             ",
             [
-                $passwordUpdated ? NULL : Crypt::apr1MD5($form->getValue('admin_pass')), $form->getValue('fname'),
+                $passwordUpdated ? Crypt::apr1MD5($form->getValue('admin_pass')) : NULL, $form->getValue('fname'),
                 $form->getValue('lname'), $form->getValue('firm'), $form->getValue('zip'), $form->getValue('city'),
                 $form->getValue('state'), $form->getValue('country'), encode_idna($form->getValue('email')),
                 $form->getValue('phone'), $form->getValue('fax'), $form->getValue('street1'), $form->getValue('street2'),
@@ -85,7 +89,7 @@ function updateUserData(Form $form, $userId)
 
 
         // Force user to login again (needed due to possible password or email change)
-        exec_query('DELETE FROM login WHERE user_name = ?', $data['admin_name']);
+        exec_query('DELETE FROM login WHERE user_name = ?', [$data['admin_name']]);
 
         EventsManager::getInstance()->dispatch(Events::onAfterEditUser, [
             'userId'   => $userId,
@@ -150,7 +154,7 @@ function generatePage(TemplateEngine $tpl, Form $form, $userId)
         [$userId, $_SESSION['user_id']]
     );
 
-    if (!($data = $stmt->fetchRow())) {
+    if (!($data = $stmt->fetch())) {
         showBadRequestErrorPage();
     }
 

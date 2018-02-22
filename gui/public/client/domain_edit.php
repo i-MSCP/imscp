@@ -54,7 +54,7 @@ function _client_getDomainData($domainId)
         return false;
     }
 
-    $domainData = $stmt->fetchRow();
+    $domainData = $stmt->fetch();
     $domainData['domain_name_utf8'] = decode_idna($domainData['domain_name']);
     return $domainData;
 }
@@ -128,7 +128,7 @@ function client_generatePage($tpl)
     ]);
 
     // Cover the case where URL forwarding feature is activated and that the
-    // default /htdocs directory doesn't exists yet
+    // default /htdocs directory doesn't exist yet
     if ($domainData['url_forward'] != 'no') {
         $vfs = new VirtualFileSystem($_SESSION['user_logged']);
 

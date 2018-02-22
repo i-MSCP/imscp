@@ -31,8 +31,17 @@ use iMSCP::Database;
 use iMSCP::EventManager;
 use iMSCP::Plugins;
 use JSON;
+use LWP::Simple qw/ $ua get /;
 use version;
 use parent 'Common::Object';
+
+# Set timeout for LWP::Simple
+$ua->timeout( 3 );
+$ua->agent( 'i-MSCP/1.5' );
+$ua->ssl_opts(
+    verify_hostname => 0,
+    SSL_verify_mode => 0x00
+);
 
 =head1 DESCRIPTION
 
@@ -71,7 +80,6 @@ sub process
     my $rs = $self->_loadData( $pluginId );
     return $rs if $rs;
 
-    local $@;
     eval {
         $self->{'pluginData'}->{$_} = decode_json( $self->{'pluginData'}->{$_} ) for qw/ info config config_prev /;
     };
@@ -118,6 +126,14 @@ sub process
             ),
             $pluginId
         );
+
+        unless ( defined $main::execmode && $main::execmode eq 'setup' ) {
+            my $httpScheme = $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'};
+            my $url = "${httpScheme}127.0.0.1:" . ( $httpScheme eq 'http://'
+                ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'} : $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'}
+            ) . '/fcache.php?id=iMSCP_Plugin_Manager_Metadata';
+            get( $url ) or die( "Couldn't trigger flush of frontEnd cache" );
+        }
     };
     if ( $@ ) {
         error( $@ );
@@ -166,7 +182,6 @@ sub _loadData
 {
     my ($self, $pluginId) = @_;
 
-    local $@;
     my $pluginData = eval {
         local $self->{'dbh'}->{'RaiseError'} = 1;
         $self->{'dbh'}->selectrow_hashref(
@@ -284,7 +299,6 @@ sub _change
         $self->{'pluginData'}->{'config_prev'} = $self->{'pluginData'}->{'config'};
         $self->{'pluginData'}->{'info'}->{'__need_change__'} = JSON::false;
 
-        local $@;
         eval {
             local $self->{'dbh'}->{'RaiseError'} = 1;
             $self->{'dbh'}->do(
@@ -324,7 +338,6 @@ sub _update
 
     $self->{'pluginData'}->{'info'}->{'version'} = $self->{'pluginData'}->{'info'}->{'__nversion__'};
 
-    local $@;
     eval {
         local $self->{'dbh'}->{'RaiseError'} = 1;
         $self->{'dbh'}->do(
@@ -402,8 +415,6 @@ sub _run
 sub _executePluginAction
 {
     my ($self, $action, $fromVersion, $toVersion) = @_;
-
-    local $@;
 
     unless ( $self->{'pluginInstance'} ) {
         $self->{'pluginInstance'} = eval {

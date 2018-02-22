@@ -18,28 +18,38 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/**
- * Base class for events thrown in the iMSCP_Database component
- */
-class iMSCP_Database_Events_Database extends iMSCP_Events_Event
-{
-    /**
-     * Returns the database instance in which this event was dispatched.
-     *
-     * @return iMSCP_Database
-     */
-    public function getDb()
-    {
-        return $this->getParam('context');
+use iMSCP_Registry as Registry;
+use Zend_Cache_Core as Cache;
+
+require_once 'imscp-lib.php';
+
+if (strtolower($_SERVER['REQUEST_METHOD']) !== 'get') {
+    showBadRequestErrorPage();
+}
+
+$id = isset($_GET['id']) ? clean_input((string)$_GET['id']) : NULL;
+
+/** @var Cache $cache */
+$cache = Registry::get('iMSCP_Application')->getCache();
+
+if (NULL !== $id) {
+    if ($cache->test($id)) {
+        if (!($ret = $cache->remove($id))) {
+            showErrorPage(500);
+        }
+    } else {
+        exit("No cache with ID $id has been found");
     }
 
-    /**
-     * Returns the query string.
-     *
-     * @return string
-     */
-    public function getQueryString()
-    {
-        return $this->getParam('query');
+    if($cache->test($id)) {
+        print "Found again";
     }
+
+    exit('OK');
 }
+
+if (!($ret = $cache->clean())) {
+    showErrorPage(500);
+}
+
+exit('OK');

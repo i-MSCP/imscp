@@ -30,9 +30,9 @@
  */
 function generatePage($tpl)
 {
-    $stmt = exec_query(
-        'SELECT id, name, status FROM hosting_plans WHERE reseller_id = ? ORDER BY id', $_SESSION['user_id']
-    );
+    $stmt = exec_query('SELECT id, name, status FROM hosting_plans WHERE reseller_id = ? ORDER BY id', [
+        $_SESSION['user_id']
+    ]);
 
     if (!$stmt->rowCount()) {
         $tpl->assign('HOSTING_PLANS', '');
@@ -55,7 +55,7 @@ function generatePage($tpl)
         $translations['core']['hp_delete_confirmation'] = tr('Are you sure you want to delete this hosting plan?');
     });
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'ID'     => $row['id'],
             'NAME'   => tohtml($row['name']),

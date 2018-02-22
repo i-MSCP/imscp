@@ -82,7 +82,7 @@ if (!$stmt->rowCount()) {
     showBadRequestErrorPage();
 }
 
-$row = $stmt->fetchRow();
+$row = $stmt->fetch();
 
 client_updateHtaccessUser($domainId, $htuserId);
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<install>
-    <folders>${SYSTEM_CONF}/bind</folders>
-    <folders>${SYSTEM_CONF}/bind/backup</folders>
-    <folders>${SYSTEM_CONF}/bind/working</folders>
+<install reverse_if="'${NAMED_PACKAGE}' ne 'Servers::named::bind'">
+    <folder>${SYSTEM_CONF}/bind</folder>
+    <folder>${SYSTEM_CONF}/bind/backup</folder>
+    <folder>${SYSTEM_CONF}/bind/working</folder>
     <copy_config>${SYSTEM_CONF}/bind/parts</copy_config>
     <copy_config>${SYSTEM_CONF}/bind/bind.data.dist</copy_config>
     <copy_config>${SYSTEM_CONF}/bind/named.conf</copy_config>

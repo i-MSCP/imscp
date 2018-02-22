@@ -38,6 +38,9 @@ use iMSCP::Execute qw/ execute /;
 use iMSCP::Getopt;
 use iMSCP::Mail;
 use Servers::mta;
+use POSIX qw /locale_h /;
+
+setlocale(LC_MESSAGES, "C.UTF-8");
 
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -131,7 +134,6 @@ sub quotaFiles
 
             $totalDiskUsage = $webDiskUsage+$mailDiskUsage;
 
-            local $@;
             eval {
                 $dbh->begin_work();
                 $dbh->do(
@@ -205,7 +207,6 @@ sub quotaSql
             $sqlSize += $size;
             $size += $dmnData->{'domain_disk_usage'};
 
-            local $@;
             eval {
                 local $dbh->{'AutoCommit'} = 0;
 

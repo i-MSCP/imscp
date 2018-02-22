@@ -36,13 +36,13 @@ use iMSCP_Registry as Registry;
  */
 function updateSqlUserPassword($sqluId)
 {
-    $stmt = exec_query('SELECT sqlu_name, sqlu_host FROM sql_user WHERE sqlu_id = ?', $sqluId);
+    $stmt = exec_query('SELECT sqlu_name, sqlu_host FROM sql_user WHERE sqlu_id = ?', [$sqluId]);
 
     if (!$stmt->rowCount()) {
         showBadRequestErrorPage();
     }
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch();
 
     if (!isset($_POST['password'])
         || !isset($_POST['password_confirmation'])
@@ -114,13 +114,13 @@ function updateSqlUserPassword($sqluId)
  */
 function generatePage(TemplateEngine $tpl, $sqluId)
 {
-    $stmt = exec_query('SELECT sqlu_name, sqlu_host FROM sql_user WHERE sqlu_id = ?', $sqluId);
+    $stmt = exec_query('SELECT sqlu_name, sqlu_host FROM sql_user WHERE sqlu_id = ?', [$sqluId]);
 
     if (!$stmt->rowCount()) {
         showBadRequestErrorPage();
     }
 
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch();
     $tpl->assign([
         'USER_NAME' => tohtml($row['sqlu_name']),
         'SQLU_ID'   => tohtml($sqluId, 'htmlAttr')
@@ -135,8 +135,8 @@ function generatePage(TemplateEngine $tpl, $sqluId)
  */
 function checkSqlUserPerms($sqlUserId)
 {
-    return (bool)exec_query(
-        '
+    return exec_query(
+            '
             SELECT COUNT(t1.sqlu_id)
             FROM sql_user AS t1
             JOIN sql_database AS t2 USING(sqld_id)
@@ -144,8 +144,8 @@ function checkSqlUserPerms($sqlUserId)
             WHERE t1.sqlu_id = ?
             AND t3.domain_admin_id = ?
         ',
-        [$sqlUserId, $_SESSION['user_id']]
-    )->fetchRow(PDO::FETCH_COLUMN);
+            [$sqlUserId, $_SESSION['user_id']]
+        )->fetchColumn() > 0;
 }
 
 /***********************************************************************************************************************

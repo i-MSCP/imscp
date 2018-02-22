@@ -77,14 +77,14 @@ function _generateUserStatistics(TemplateEngine $tpl, $adminId)
  */
 function generatePage(TemplateEngine $tpl, $resellerId)
 {
-    $stmt = exec_query('SELECT admin_id FROM admin WHERE created_by = ?', $resellerId);
+    $stmt = exec_query('SELECT admin_id FROM admin WHERE created_by = ?', [$resellerId]);
 
     if (!$stmt->rowCount()) {
         $tpl->assign('RESELLER_USER_STATISTICS_BLOCK', '');
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         _generateUserStatistics($tpl, $row['admin_id']);
         $tpl->parse('RESELLER_USER_STATISTICS_BLOCK', '.reseller_user_statistics_block');
     }

@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Update_Database as DbUpdater;
+use iMSCP\Update\UpdateDatabase;
 
 define('IMSCP_SETUP', true);
 
@@ -27,7 +27,7 @@ function upddb_process()
     chdir(dirname(__FILE__));
     require_once '../../gui/library/imscp-lib.php';
 
-    $dbUpdater = DbUpdater::getInstance();
+    $dbUpdater = new UpdateDatabase();
 
     if ($dbUpdater->getLastAppliedUpdate() > $dbUpdater->getLastUpdate()) {
         throw new iMSCP_Exception('An i-MSCP downgrade attempt has been detected. Downgrade is not supported.');

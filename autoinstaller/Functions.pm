@@ -61,7 +61,7 @@ my $eventManager;
 
  Load main i-MSCP configuration
 
- Return undef
+ Return void
 
 =cut
 
@@ -107,7 +107,6 @@ sub loadConfig
     $main::imscpConfig{'DISTRO_RELEASE'} = iMSCP::LsbRelease->getInstance()->getRelease( 'short', 'force_numeric' );
 
     $eventManager = iMSCP::EventManager->getInstance();
-    undef;
 }
 
 =item build( )
@@ -122,11 +121,16 @@ sub build
 {
     newDebug( 'imscp-build.log' );
 
-    if ( !iMSCP::Getopt->preseed && !( $main::imscpConfig{'FRONTEND_SERVER'} && $main::imscpConfig{'FTPD_SERVER'}
-        && $main::imscpConfig{'HTTPD_SERVER'} && $main::imscpConfig{'NAMED_SERVER'} && $main::imscpConfig{'MTA_SERVER'}
-        && $main::imscpConfig{'PHP_SERVER'} && $main::imscpConfig{'PO_SERVER'} && $main::imscpConfig{'SQL_SERVER'} )
+    if ( $main::imscpConfig{'FRONTEND_SERVER'} eq '' || $main::imscpConfig{'FTPD_SERVER'} eq ''
+        || $main::imscpConfig{'HTTPD_SERVER'} eq '' || $main::imscpConfig{'NAMED_SERVER'} eq ''
+        || $main::imscpConfig{'MTA_SERVER'} eq '' || $main::imscpConfig{'PHP_SERVER'} eq ''
+        || $main::imscpConfig{'PO_SERVER'} eq '' || $main::imscpConfig{'SQL_SERVER'} eq ''
+        || $main::imscpConfig{'FRONTEND_PACKAGE'} eq '' || $main::imscpConfig{'FTPD_PACKAGE'} eq ''
+        || $main::imscpConfig{'HTTPD_PACKAGE'} eq '' || $main::imscpConfig{'NAMED_PACKAGE'} eq ''
+        || $main::imscpConfig{'MTA_PACKAGE'} eq '' || $main::imscpConfig{'PHP_PACKAGE'} eq ''
+        || $main::imscpConfig{'PO_PACKAGE'} eq '' || $main::imscpConfig{'SQL_PACKAGE'} eq ''
     ) {
-        iMSCP::Getopt->noprompt( 0 );
+        iMSCP::Getopt->noprompt( 0 ) unless iMSCP::Getopt->preseed;
         $main::skippackages = 0;
     }
 
@@ -154,8 +158,8 @@ sub build
 
     my @steps = (
         [ \&_buildDistributionFiles, 'Building distribution files' ],
-        ( ( $main::skippackages || $main::buildonly )
-            ? () : [ \&_installDistroPackages, 'Installing distribution packages' ]
+        ( ( $main::skippackages )
+            ? () : [ \&_installDistributionPackages, 'Installing distribution packages' ]
         ),
         [ \&_checkRequirements, 'Checking for requirements' ],
         [ \&_compileDaemon, 'Compiling daemon' ],
@@ -164,7 +168,7 @@ sub build
     );
 
     $rs ||= $eventManager->trigger( 'preBuild', \@steps );
-    $rs ||= _getDistroAdapter()->preBuild( \@steps );
+    $rs ||= _getDistributionAdapter()->preBuild( \@steps );
     return $rs if $rs;
 
     my ($step, $nbSteps) = ( 1, scalar @steps );
@@ -178,7 +182,7 @@ sub build
     iMSCP::Dialog->getInstance()->endGauge();
 
     $rs = $eventManager->trigger( 'postBuild' );
-    $rs ||= _getDistroAdapter()->postBuild();
+    $rs ||= _getDistributionAdapter()->postBuild();
     return $rs if $rs;
 
     undef $autoinstallerAdapterInstance;
@@ -211,7 +215,6 @@ sub build
         @config{ keys %{$config} } = values %{$config};
         untie %config;
     }
-    undef %confmap;
 
     endDebug();
 }
@@ -274,7 +277,7 @@ EOF
     );
 
     my $rs = $eventManager->trigger( 'preInstall', \@steps );
-    $rs ||= _getDistroAdapter()->preInstall( \@steps );
+    $rs ||= _getDistributionAdapter()->preInstall( \@steps );
     return $rs if $rs;
 
     my $step = 1;
@@ -289,7 +292,7 @@ EOF
     iMSCP::Dialog->getInstance()->endGauge();
 
     $rs = $eventManager->trigger( 'postInstall' );
-    $rs ||= _getDistroAdapter()->postInstall();
+    $rs ||= _getDistributionAdapter()->postInstall();
     return $rs if $rs;
 
     require Net::LibIDN;
@@ -298,7 +301,7 @@ EOF
     my $port = $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://'
         ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
         : $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
-    my $vhost = idn_to_unicode( $main::imscpConfig{'BASE_SERVER_VHOST'}, 'utf-8' );
+    my $vhost = idn_to_unicode( $main::imscpConfig{'BASE_SERVER_VHOST'}, 'utf-8' ) // '';
 
     iMSCP::Dialog->getInstance()->infobox( <<"EOF" );
 
@@ -330,7 +333,7 @@ EOF
 
 sub _installPreRequiredPackages
 {
-    _getDistroAdapter()->installPreRequiredPackages();
+    _getDistributionAdapter()->installPreRequiredPackages();
 }
 
 =item _showWelcomeMsg( \%dialog )
@@ -361,8 +364,8 @@ i-MSCP was designed for professional Hosting Service Providers (HSPs), Internet 
 
 Unless otherwise stated all code is licensed under GPL 2.0 and has the following copyright:
 
-        \\ZbCopyright 2010-2017, Laurent Declercq (i-MSCP)
-        All rights reserved\\ZB
+\\ZbCopyright 2010-2017, Laurent Declercq (i-MSCP)
+All rights reserved\\ZB
 EOF
 }
 
@@ -382,7 +385,7 @@ sub _showUpdateWarning
     if ( $main::imscpConfig{'Version'} !~ /git/i ) {
         $warning = <<"EOF";
 
-Before continue, be sure to have read the errata file:
+Before you continue, be sure to have read the errata file which is located at
 
     \\Zbhttps://github.com/i-MSCP/imscp/blob/1.5.x/docs/1.5.x_errata.md\\ZB
 EOF
@@ -390,11 +393,11 @@ EOF
     } else {
         $warning = <<"EOF";
 
-The installer detected that you intends to install i-MSCP \\ZbGit\\ZB version.
+The installer has detected that you intend to install an i-MSCP development version.
 
-We would remind you that the Git version can be highly unstable and that the i-MSCP team do not provides any support for it.
+We would remind you that development versions can be highly unstable and that they are not supported by the i-MSCP team.
 
-Before continue, be sure to have read the errata file:
+Before you continue, be sure to have read the errata file:
 
     \\Zbhttps://github.com/i-MSCP/imscp/blob/1.5.x/docs/1.5.x_errata.md\\ZB
 EOF
@@ -430,18 +433,20 @@ sub _confirmDistro
 
     $dialog->infobox( "\nDetecting target distribution..." );
 
-    my $lsbRelease = iMSCP::LsbRelease->getInstance();
-    my $distroID = $lsbRelease->getId( 'short' );
-    my $distroCodename = ucfirst( $lsbRelease->getCodename( 'short' ));
-    my $distroRelease = $lsbRelease->getRelease( 'short' );
+    if ( $main::imscpConfig{'DISTRO_ID'} =~ /^(?:de(?:bi|vu)an|ubuntu)$/
+        && $main::imscpConfig{'DISTRO_RELEASE'} ne 'n/a'
+        && $main::imscpConfig{'DISTRO_CODENAME'} ne 'n/a'
+    ) {
+        my $packagesFile = "$main::imscpConfig{'DISTRO_ID'}-$main::imscpConfig{'DISTRO_CODENAME'}.xml";
 
-    if ( $distroID ne 'n/a' && $distroCodename ne 'n/a' && $distroID =~ /^(?:de(?:bi|vu)an|ubuntu)$/i ) {
-        unless ( -f "$FindBin::Bin/autoinstaller/Packages/" . lc( $distroID ) . '-' . lc( $distroCodename ) . '.xml' ) {
+        unless ( -f "$FindBin::Bin/autoinstaller/Packages/$packagesFile" ) {
             $dialog->msgbox( <<"EOF" );
 
-\\Z1$distroID $distroCodename ($distroRelease) not supported yet\\Zn
+\\Z1@{[ ucfirst $main::imscpConfig{'DISTRO_ID'} ]}  $main::imscpConfig{'DISTRO_RELEASE'}/@{[ $main::imscpConfig{'DISTRO_CODENAME'} =~ s/\b(\w)/\u$1/gr ]} not supported yet\\Zn
 
-We are sorry but your $distroID version is not supported.
+We are sorry but no packages file has been found for your @{[ ucfirst $main::imscpConfig{'DISTRO_ID'} ]} version.
+
+This either means that your distribution is far too recent or that support for it has been dropped.
 
 Thanks for choosing i-MSCP.
 EOF
@@ -451,7 +456,7 @@ EOF
 
         my $rs = $dialog->yesno( <<"EOF" );
 
-$distroID $distroCodename ($distroRelease) has been detected. Is this ok?
+@{[ ucfirst $main::imscpConfig{'DISTRO_ID'} ]} $main::imscpConfig{'DISTRO_RELEASE'}/@{[ $main::imscpConfig{'DISTRO_CODENAME'} =~ s/\b(\w)/\u$1/gr ]} has been detected. Is this ok?
 EOF
 
         $dialog->msgbox( <<"EOF" ) if $rs;
@@ -460,7 +465,7 @@ EOF
 
 We are sorry but the installer has failed to detect your distribution.
 
-Only \\ZuDebian-like\\Zn operating systems are supported.
+Please report the problem to i-MSCP team.
 
 Thanks for choosing i-MSCP.
 EOF
@@ -514,18 +519,17 @@ EOF
     0;
 }
 
-=item _installDistroPackages( )
+=item _installDistributionPackages( )
 
- Trigger packages installation/uninstallation tasks from distro autoinstaller adapter
+ Install distribution packages
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _installDistroPackages
+sub _installDistributionPackages
 {
-    my $rs = _getDistroAdapter()->installPackages();
-    $rs ||= _getDistroAdapter()->uninstallPackages();
+    _getDistributionAdapter()->installPackages();
 }
 
 =item _checkRequirements( )
@@ -551,25 +555,9 @@ sub _checkRequirements
 
 sub _buildDistributionFiles
 {
-    my $rs = _buildLayout();
-    $rs ||= _buildConfigFiles();
+    my $rs = _buildConfigFiles();
     $rs ||= _buildEngineFiles();
     $rs ||= _buildFrontendFiles();
-}
-
-=item _buildLayout( )
-
- Build layout
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _buildLayout
-{
-    my $distroLayout = "$FindBin::Bin/autoinstaller/Layout/" . iMSCP::LsbRelease->getInstance()->getId( 'short' ) . '.xml';
-    my $defaultLayout = "$FindBin::Bin/autoinstaller/Layout/Debian.xml";
-    _processXmlFile( -f $distroLayout ? $distroLayout : $defaultLayout );
 }
 
 =item _buildConfigFiles( )
@@ -582,27 +570,24 @@ sub _buildLayout
 
 sub _buildConfigFiles
 {
-    my $distroConfigDir = "$FindBin::Bin/configs/" . lc( iMSCP::LsbRelease->getInstance()->getId( 'short' ));
-    my $defaultConfigDir = "$FindBin::Bin/configs/debian";
-    my $confDir = -d $distroConfigDir ? $distroConfigDir : $defaultConfigDir;
+    my $masterConfDir = "$FindBin::Bin/configs/debian";
+    my $distConfdir = $main::imscpConfig{'DISTRO_ID'} ne 'debian' &&
+            -d "$FindBin::Bin/configs/$main::imscpConfig{'DISTRO_ID'}"
+        ? "$FindBin::Bin/configs/$main::imscpConfig{'DISTRO_ID'}" : $masterConfDir;
 
-    local $CWD = $confDir;
-    my $file = -f "$distroConfigDir/install.xml" ? "$distroConfigDir/install.xml" : "$defaultConfigDir/install.xml";
-    my $rs = _processXmlFile( $file );
+    my $installFilePath = $distConfdir ne $masterConfDir && -f "$distConfdir/install.xml"
+        ? "$distConfdir/install.xml" : "$masterConfDir/install.xml";
+
+    my $rs = _processXmlInstallFile( $installFilePath );
     return $rs if $rs;
 
-    for ( iMSCP::Dir->new( dirname => $defaultConfigDir )->getDirs() ) {
-        # Override sub config dir path if it is available in selected distro, else set it to default path
-        $confDir = -d "$distroConfigDir/$_" ? "$distroConfigDir/$_" : "$defaultConfigDir/$_";
+    for ( iMSCP::Dir->new( dirname => $masterConfDir )->getDirs() ) {
+        $installFilePath = $distConfdir ne $masterConfDir && -f "$distConfdir/$_/install.xml"
+            ? "$distConfdir/$_/install.xml" : "$masterConfDir/$_/install.xml";
 
-        local $CWD = $confDir;
+        next unless -f $installFilePath;
 
-        $file = -f "$distroConfigDir/$_/install.xml"
-            ? "$distroConfigDir/$_/install.xml" : "$defaultConfigDir/$_/install.xml";
-
-        next unless -f $file;
-
-        $rs = _processXmlFile( $file );
+        $rs = _processXmlInstallFile( $installFilePath );
         return $rs if $rs;
     }
 
@@ -619,14 +604,12 @@ sub _buildConfigFiles
 
 sub _buildEngineFiles
 {
-    local $CWD = "$FindBin::Bin/engine";
-    my $rs = _processXmlFile( "$FindBin::Bin/engine/install.xml" );
+    my $rs = _processXmlInstallFile( "$FindBin::Bin/engine/install.xml" );
     return $rs if $rs;
 
     for ( iMSCP::Dir->new( dirname => "$FindBin::Bin/engine" )->getDirs() ) {
         next unless -f "$FindBin::Bin/engine/$_/install.xml";
-        local $CWD = "$FindBin::Bin/engine/$_";
-        $rs = _processXmlFile( "$FindBin::Bin/engine/$_/install.xml" );
+        $rs = _processXmlInstallFile( "$FindBin::Bin/engine/$_/install.xml" );
         return $rs if $rs;
     }
 
@@ -644,7 +627,6 @@ sub _buildEngineFiles
 sub _buildFrontendFiles
 {
     iMSCP::Dir->new( dirname => "$FindBin::Bin/gui" )->rcopy( "$main::{'SYSTEM_ROOT'}/gui", { preserve => 'no' } );
-    0;
 }
 
 =item _compileDaemon( )
@@ -779,7 +761,7 @@ sub _removeObsoleteFiles
         iMSCP::Dir->new( dirname => $_ )->remove();
     }
 
-    for("$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_disabled_ssl.tpl",
+    for( "$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_disabled_ssl.tpl",
         "$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_redirect.tpl",
         "$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_redirect_ssl.tpl",
         "$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_ssl.tpl",
@@ -815,77 +797,60 @@ sub _removeObsoleteFiles
     0;
 }
 
-=item _processXmlFile( $filepath )
+=item _processXmlInstallFile( $installFilePath )
 
  Process an install.xml file or distribution layout.xml file
 
- Param string $filepath xml file path
- Return int 0 on success, other on failure ; A fatal error is raised in case a variable cannot be exported
+ Param string $installFilePath XML installation file path
+ Return int 0 on success, other on failure
 
 =cut
 
-sub _processXmlFile
+sub _processXmlInstallFile
 {
-    my ($file) = @_;
-
-    unless ( -f $file ) {
-        error( sprintf( "File %s doesn't exists", $file ));
-        return 1;
-    }
+    my ($installFilePath) = @_;
 
     eval "use XML::Simple; 1";
     fatal( "Couldn't load the XML::Simple perl module" ) if $@;
     my $xml = XML::Simple->new( ForceArray => 1, ForceContent => 1 );
-    my $data = eval { $xml->XMLin( $file, VarAttr => 'export' ) };
+    my $node = eval { $xml->XMLin( $installFilePath, VarAttr => 'export' ) };
     if ( $@ ) {
         error( $@ );
         return 1;
     }
 
+    # Jump in parent directory
+    local $CWD = dirname( $installFilePath );
+
     # Permissions hardening
     local $UMASK = 027;
 
-    # Process xml 'folders' nodes if any
-    for ( @{$data->{'folders'}} ) {
-        $_->{'content'} = _expandVars( $_->{'content'} );
-        $main::{$_->{'export'}} = $_->{'content'} if defined $_->{'export'};
-        my $rs = _processFolder( $_ );
-        return $rs if $rs;
+    # Process 'folder' nodes if any
+    if ( $node->{'folder'} ) {
+        for ( @{$node->{'folder'}} ) {
+            $_->{'content'} = _expandVars( $_->{'content'} );
+            $main::{$_->{'export'}} = $_->{'content'} if defined $_->{'export'};
+            my $rs = _processFolderNode( $_ );
+            return $rs if $rs;
+        }
     }
 
-    # Process xml 'copy_config' nodes if any
-    for ( @{$data->{'copy_config'}} ) {
-        $_->{'content'} = _expandVars( $_->{'content'} );
-        my $rs = _copyConfig( $_ );
-        return $rs if $rs;
+    # Process 'copy_config' nodes if any
+    if ( $node->{'copy_config'} ) {
+        for ( @{$node->{'copy_config'}} ) {
+            $_->{'content'} = _expandVars( $_->{'content'} );
+            my $rs = _processCopyConfigNode( $_ );
+            return $rs if $rs;
+        }
     }
 
-    # Process xml 'copy' nodes if any
-    for ( @{$data->{'copy'}} ) {
-        $_->{'content'} = _expandVars( $_->{'content'} );
-        my $rs = _copy( $_ );
-        return $rs if $rs;
-    }
-
-    # Process xml 'create_file' nodes if any
-    for ( @{$data->{'create_file'}} ) {
-        $_->{'content'} = _expandVars( $_->{'content'} );
-        my $rs = _createFile( $_ );
-        return $rs if $rs;
-    }
-
-    # Process xml 'chmod_file' nodes if any
-    for ( @{$data->{'chmod_file'}} ) {
-        $_->{'content'} = _expandVars( $_->{'content'} );
-        my $rs = _chmodFile( $_ ) if $_->{'content'};
-        return $rs if $rs;
-    }
-
-    # Process xml 'chmod_file' nodes if any
-    for ( @{$data->{'chown_file'}} ) {
-        $_->{'content'} = _expandVars( $_->{'content'} );
-        my $rs = _chownFile( $_ );
-        return $rs if $rs;
+    # Process 'copy' nodes if any
+    if ( $node->{'copy'} ) {
+        for ( @{$node->{'copy'}} ) {
+            $_->{'content'} = _expandVars( $_->{'content'} );
+            my $rs = _processCopyNode( $_ );
+            return $rs if $rs;
+        }
     }
 
     0;
@@ -918,100 +883,115 @@ sub _expandVars
     $string;
 }
 
-=item _processFolder( \%data )
+=item _processFolderNode( \%node )
 
- Process a folder node from an install.xml file
+ Process the given folder node
 
- Process the xml folder node by creating the described directory.
+ Node attributes:
+  user: Target directory owner
+  group: Target directory group
+  mode: Target directory mode
 
- Param hashref %data
- Return int 0 on success, other on failure
+ Param hashref \%node Node
+ Return int 0 on success, other or die on failure
 
 =cut
 
-sub _processFolder
+sub _processFolderNode
 {
-    my ($data) = @_;
+    my ($node) = @_;
 
-    my $dir = iMSCP::Dir->new( dirname => $data->{'content'} );
-
-    # Needed to be sure to not keep any file from a previous build that has failed
-    if ( defined $main::{'INST_PREF'} && $main::{'INST_PREF'} eq $data->{'content'} ) {
-        $dir->remove();
-    }
-
+    my $dir = iMSCP::Dir->new( dirname => $node->{'content'} );
+    $dir->remove() if $node->{'pre_remove'};
     $dir->make(
         {
-            user  => defined $data->{'user'} ? _expandVars( $data->{'owner'} ) : undef,
-            group => defined $data->{'group'} ? _expandVars( $data->{'group'} ) : undef,
-            mode  => defined $data->{'mode'} ? oct( $data->{'mode'} ) : undef
+            user  => defined $node->{'user'} ? _expandVars( $node->{'owner'} ) : undef,
+            group => defined $node->{'group'} ? _expandVars( $node->{'group'} ) : undef,
+            mode  => defined $node->{'mode'} ? oct( $node->{'mode'} ) : undef
         }
     );
 }
 
-=item _copyConfig( \%data )
+=item _processCopyConfigNode( \%node )
 
- Process a copy_config node from an install.xml file
+ Process the givencopy_config node
 
- Param hashref %data
- Return int 0 on success, other on failure
+ Node attributes:
+  copy_if: Copy the file or directory only if the condition is met, delete it
+           otherwise, unless the keep_if_exists attribute is TRUE
+  keep_if_exist If the file or directory, never delete it
+  user: Target file or directory owner
+  group: Target file or directory group
+  mode: Target file or directory mode
+
+ Param hashref \%node Node
+ Return int 0 on success, other or die on failure
 
 =cut
 
-sub _copyConfig
+sub _processCopyConfigNode
 {
-    my ($data) = @_;
+    my ($node) = @_;
 
-    if ( defined $data->{'if'} && !eval _expandVars( $data->{'if'} ) ) {
-        return 0 if $data->{'kept'};
-        ( my $syspath = $data->{'content'} ) =~ s/^$main::{'INST_PREF'}//;
-        return 0 unless $syspath ne '/' && -f $syspath;
+    if ( defined $node->{'copy_if'} && !eval _expandVars( $node->{'copy_if'} )
+    ) {
+        return 0 if $node->{'keep_if_exist'};
+        ( my $syspath = $node->{'content'} ) =~ s/^$main::{'INST_PREF'}//;
+        return 0 unless $syspath ne '/' && -e $syspath;
+        return iMSCP::Dir->new( dirname => $syspath )->remove() if -d _;
         return iMSCP::File->new( filename => $syspath )->delFile();
     }
 
-    my ($name, $path) = fileparse( $data->{'content'} );
-    my $distribution = lc( iMSCP::LsbRelease->getInstance()->getId( 'short' ));
-    ( my $alternativeFolder = $CWD ) =~ s/$distribution/debian/;
-    my $source = -f $name ? $name : "$alternativeFolder/$name";
+    my ($name, $path) = fileparse( $node->{'content'} );
+
+    # If $name isn't in current directory, take it from master configuration directory
+    my $source = -e $name
+        ? $name : $CWD =~ s%^($FindBin::Bin/configs/)$main::imscpConfig{'DISTRO_ID'}%${1}debian%r . "/$name";
+
+    # Override target name if requested
+    $name = $node->{'copy_as'} if defined $node->{'copy_as'};
 
     if ( -d $source ) {
         iMSCP::Dir->new( dirname => $source )->rcopy( "$path/$name", { preserve => 'no' } );
     } else {
-        my $rs = iMSCP::File->new( filename => $source )->copyFile( $path, { preserve => 'no' } );
+        my $rs = iMSCP::File->new( filename => $source )->copyFile( "$path/$name", { preserve => 'no' } );
         return $rs if $rs;
     }
 
-    return 0 unless defined $data->{'user'} || defined $data->{'group'} || defined $data->{'mode'};
+    return 0 unless defined $node->{'user'} || defined $node->{'group'} || defined $node->{'mode'};
 
     my $file = iMSCP::File->new( filename => -e "$path/$name" ? "$path/$name" : $path );
 
-    if ( defined $data->{'user'} || defined $data->{'group'} ) {
+    if ( defined $node->{'user'} || defined $node->{'group'} ) {
         my $rs = $file->owner(
-            ( defined $data->{'user'} ? _expandVars( $data->{'user'} ) : -1 ),
-            ( defined $data->{'group'} ? _expandVars( $data->{'group'} ) : -1 )
+            ( defined $node->{'user'} ? _expandVars( $node->{'user'} ) : -1 ),
+            ( defined $node->{'group'} ? _expandVars( $node->{'group'} ) : -1 )
         );
         return $rs if $rs;
     }
 
-    return 0 unless defined $data->{'mode'};
-
-    $file->mode( oct( $data->{'mode'} ));
+    defined $node->{'mode'} ? $file->mode( oct( $node->{'mode'} )) : 0;
 }
 
-=item _copy( \%data )
+=item _processCopyNode( \%node )
 
- Process the copy node from an install.xml file
+ Process the given copy node
 
- Param hashref %data
- Return int 0 on success, other on failure
+ Node attributes:
+  user: Target file or directory owner
+  group: Target file or directory group
+  mode: Target file or directory mode
+
+ Param hashref \%node Node
+ Return int 0 on success, other or die on failure
 
 =cut
 
-sub _copy
+sub _processCopyNode
 {
-    my ($data) = @_;
+    my ($node) = @_;
 
-    my ($name, $path) = fileparse( $data->{'content'} );
+    my ($name, $path) = fileparse( $node->{'content'} );
 
     if ( -d $name ) {
         iMSCP::Dir->new( dirname => $name )->rcopy( "$path/$name", { preserve => 'no' } );
@@ -1020,104 +1000,39 @@ sub _copy
         return $rs if $rs;
     }
 
-    return 0 unless defined $data->{'user'} || defined $data->{'group'} || defined $data->{'mode'};
+    return 0 unless defined $node->{'user'} || defined $node->{'group'} || defined $node->{'mode'};
 
     my $file = iMSCP::File->new( filename => -e "$path/$name" ? "$path/$name" : $path );
 
-    if ( defined $data->{'user'} || defined $data->{'group'} ) {
+    if ( defined $node->{'user'} || defined $node->{'group'} ) {
         my $rs = $file->owner(
-            ( defined $data->{'user'} ? _expandVars( $data->{'user'} ) : -1 ),
-            ( defined $data->{'group'} ? _expandVars( $data->{'group'} ) : -1 )
+            ( defined $node->{'user'} ? _expandVars( $node->{'user'} ) : -1 ),
+            ( defined $node->{'group'} ? _expandVars( $node->{'group'} ) : -1 )
         );
         return $rs if $rs;
     }
 
-    return 0 unless defined defined $data->{'mode'};
-
-    $file->mode( oct( $data->{'mode'} )) if defined $data->{'mode'};
+    defined $node->{'mode'} ? $file->mode( oct( $node->{'mode'} )) : 0;
 }
 
-=item _createFile( \%data )
+=item _getDistributionAdapter( )
 
- Create a file
+ Return distribution autoinstaller adapter instance
 
- Param hashref %data
- Return int 0 on success, other on failure
+ Return autoinstaller::Adapter::Abstract, die on failure
 
 =cut
 
-sub _createFile
+sub _getDistributionAdapter
 {
-    my ($data) = @_;
+    return $autoinstallerAdapterInstance if $autoinstallerAdapterInstance;
 
-    iMSCP::File->new( filename => $data->{'content'} )->save();
-}
+    my $adapterName = ucfirst( $main::imscpConfig{'DISTRO_ID'} ) . 'Adapter';
+    my $file = "$FindBin::Bin/autoinstaller/Adapter/$adapterName.pm";
+    my $adapterClass = "autoinstaller::Adapter::${adapterName}";
 
-=item _chownFile( )
-
- Change file/directory owner and/or group recursively
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _chownFile
-{
-    my ($data) = @_;
-
-    return 0 unless defined $data->{'owner'} && defined $data->{'group'};
-
-    my $rs = execute( "chown $data->{'owner'}:$data->{'group'} $data->{'content'}", \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr || 'Unknown error' ) if $rs;
-    $rs;
-}
-
-=item _chmodFile( \%data )
-
- Process chmod_file from an install.xml file
-
- Param hashref %data
- Return int 0 on success, other on failure
-
-=cut
-
-sub _chmodFile
-{
-    my ($data) = @_;
-
-    return 0 unless defined $data->{'mode'};
-
-    my $rs = execute( "chmod $data->{'mode'} $data->{'content'}", \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr || 'Unknown error' ) if $rs;
-    $rs;
-}
-
-=item _getDistroAdapter( )
-
- Return distro autoinstaller adapter instance
-
- Return autoinstaller::Adapter::Abstract
-
-=cut
-
-sub _getDistroAdapter
-{
-    return $autoinstallerAdapterInstance if defined $autoinstallerAdapterInstance;
-
-    my $distribution = iMSCP::LsbRelease->getInstance()->getId( 'short' );
-
-    eval {
-        my $file = "$FindBin::Bin/autoinstaller/Adapter/${distribution}Adapter.pm";
-        my $adapterClass = "autoinstaller::Adapter::${distribution}Adapter";
-
-        require $file;
-        $autoinstallerAdapterInstance = $adapterClass->new()
-    };
-
-    fatal( sprintf( "Couldn't instantiate %s autoinstaller adapter: %s", $distribution, $@ )) if $@;
-    $autoinstallerAdapterInstance;
+    require $file;
+    $autoinstallerAdapterInstance = $adapterClass->new();
 }
 
 =back

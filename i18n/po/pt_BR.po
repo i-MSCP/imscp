@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-08 08:36+0000\n"
+"POT-Creation-Date: 2017-10-01 16:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Alan Lira <atglira@gmail.com>, 2017\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/i-mscp/teams/576/pt_BR/)\n"
@@ -1736,11 +1736,11 @@ msgid "Details"
 msgstr "Detalhes"
 
 #, php-format
-msgid "Directory %s doesn't exists."
-msgstr "O diretório %s não existe."
+msgid "Directory %s doesn't exist."
+msgstr ""
 
 #, php-format
-msgid "Directory '%s' doesn't exists."
+msgid "Directory '%s' doesn't exist."
 msgstr ""
 
 #, php-format
@@ -2560,15 +2560,6 @@ msgid ""
 "and line breaks are allowed."
 msgstr ""
 
-msgid "Invalid city."
-msgstr ""
-
-msgid "Invalid company."
-msgstr ""
-
-msgid "Invalid country."
-msgstr ""
-
 msgid "Invalid domain name."
 msgstr "Nome de domínio inválido."
 
@@ -2582,17 +2573,11 @@ msgstr "Usuário de e-mail inválido."
 msgid "Invalid field: %s"
 msgstr ""
 
-msgid "Invalid first name."
-msgstr ""
-
 msgid "Invalid gender."
 msgstr ""
 
 msgid "Invalid group name!"
 msgstr "Lista de e-mails"
-
-msgid "Invalid last name."
-msgstr ""
 
 msgid "Invalid menu order."
 msgstr "Ordem de menu inválido."
@@ -2617,23 +2602,11 @@ msgstr "Chave  ou senha privada inválida."
 msgid "Invalid service name: %s"
 msgstr ""
 
-msgid "Invalid state/province."
-msgstr ""
-
-msgid "Invalid street 1."
-msgstr ""
-
-msgid "Invalid street 2."
-msgstr ""
-
 msgid "Invalid target."
 msgstr "Destino inválido."
 
 msgid "Invalid username."
 msgstr "Usuário inválido."
-
-msgid "Invalid zipcode."
-msgstr ""
 
 msgid "Kernel Version"
 msgstr "Versão do Kernel"
@@ -3027,9 +3000,6 @@ msgstr ""
 
 msgid "No anti-rootkits logs"
 msgstr "Não há registros de anti-rootkits"
-
-msgid "No available"
-msgstr "não disponível"
 
 msgid "No custom menu found."
 msgstr "Nenhum menu personalizado encontrado."
@@ -4528,11 +4498,9 @@ msgstr ""
 
 #, php-format
 msgid ""
-"The directory %s doesn't exists. Please create that directory using your "
-"file manager."
+"The directory %s doesn't exist. Please create that directory using your file"
+" manager."
 msgstr ""
-"O diretório %s não existe. Por favor, crie esse diretório usando o "
-"gerenciador de arquivos."
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -5187,9 +5155,6 @@ msgstr "Id do revendedor errado."
 
 msgid "Wrong security code"
 msgstr "Código de segurança incorreto"
-
-msgid "Wrong software id."
-msgstr "Id do software errado."
 
 msgid "Wrong syntax for new expire date."
 msgstr "Sintax para nova data de expiração incorreta."

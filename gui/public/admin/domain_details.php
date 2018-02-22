@@ -38,10 +38,10 @@
 function admin_gen_mail_quota_limit_mgs($customerId)
 {
     $domainProps = get_domain_default_props($customerId);
-    $mailQuota = exec_query(
-        'SELECT IFNULL(SUM(quota), 0) FROM mail_users WHERE domain_id = ?', $domainProps['domain_id']
-    )->fetchRow(PDO::FETCH_COLUMN);
-    
+    $mailQuota = exec_query('SELECT IFNULL(SUM(quota), 0) FROM mail_users WHERE domain_id = ?', [
+        $domainProps['domain_id']
+    ])->fetchColumn();
+
     return [bytesHuman($mailQuota), ($domainProps['mail_quota'] == 0) ? '∞' : bytesHuman($domainProps['mail_quota'])];
 }
 
@@ -54,20 +54,20 @@ function admin_gen_mail_quota_limit_mgs($customerId)
  */
 function admin_generatePage($tpl, $domainId)
 {
-    $stmt = exec_query('SELECT * FROM domain WHERE domain_id = ?', $domainId);
+    $stmt = exec_query('SELECT * FROM domain WHERE domain_id = ?', [$domainId]);
 
     if (!$stmt->rowCount()) {
         showBadRequestErrorPage();
     }
 
-    $domainData = $stmt->fetchRow();
+    $domainData = $stmt->fetch();
 
     // Domain IP address info
-    $stmt = exec_query("SELECT ip_number FROM server_ips WHERE ip_id = ?", $domainData['domain_ip_id']);
+    $stmt = exec_query("SELECT ip_number FROM server_ips WHERE ip_id = ?", [$domainData['domain_ip_id']]);
     if (!$stmt->rowCount()) {
         $domainIpAddr = tr('Not found.');
     } else {
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
         $domainIpAddr = $row['ip_number'];
     }
 

@@ -52,7 +52,7 @@ SERVERS
     Changed: DNS records for alternative URLs are now added as subdomain DNS record without www and ftp records (Bind9)
     Fixed: Calling createUser()/dropUser() with `RaiseError' flag set to 1 raise an error (SQL server impl.)
     Fixed: Couldn't switch from external to local DNS server
-    Fixed: Invalid ssl_protocols setting: Unknown protocol 'SSLv2' when Dovecot is built against libssl >= 1.1.x
+    Fixed: Invalid ssl_protocols setting: Unknown protocol 'SSLv2' when Dovecot is built against libssl ≥ 1.1.x
     Fixed: Make use of POSTCONF(1) to remove unwanted parameters (Postfix)
     Fixed: Never process the same zone twice for SOA addition (Bind9)
     Review: Engine permissions (Bind9)
@@ -500,7 +500,7 @@ FRONTEND
     Fixed: {CUSTOMER} template variable is not replaced in reseller alias order email notification
     Fixed: Administrators cannot switch onto reseller/customer interface when database update is available
     Fixed: Don't list software that require database for customers that have not SQL feature enabled
-    Fixed: `iMSCP_Exception_Production' class not compatible with PHP >= 7.0
+    Fixed: `iMSCP_Exception_Production' class not compatible with PHP ≥ 7.0
     Fixed: Infobox for new alias orders must be static (reseller/index.php)
     Fixed: IP address input field is too small (admin/ip_manage.php)
     Fixed: Store compressed IPv6 (ip_manage.php)
@@ -514,8 +514,8 @@ FRONTEND
 INSTALLER
     Fixed: APT GPG keys not updated when required
     Fixed: Missing `mysql' group; the `mysql' group is only created by the mysql-server package (SQL remote server impl.)
-    Fixed: Patch for Apache 2 mod_proxy_fcgi module not required if Apache version is >= 2.4.24
-    Fixed: Patches for libpam-mysql not required if libpam-mysql version is >= 0.8.0
+    Fixed: Patch for Apache 2 mod_proxy_fcgi module not required if Apache version is ≥ 2.4.24
+    Fixed: Patches for libpam-mysql not required if libpam-mysql version is ≥ 0.8.0
     Fixed: Several files containing critical data are created world-readable, giving time to other processes to read them
     Fixed: `W: Download is performed unsandboxed as root as file...' warning with newest APT versions
     Moved: Distribution package files from ./docs directory to ./autoinstaller/Packages directory

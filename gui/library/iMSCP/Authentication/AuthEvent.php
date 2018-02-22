@@ -18,59 +18,73 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Events_Event as Event;
+use iMSCP_Authentication as AuthService;
 use iMSCP_Authentication_Result as AuthResult;
+use iMSCP_Events as Events;
+use iMSCP_Events_Event as Event;
 
 /**
  * Class iMSCP_Authentication_AuthEvent
  */
-class iMSCP_Authentication_AuthEvent  extends Event
+class iMSCP_Authentication_AuthEvent extends Event
 {
     /**
      * @var string Event name
      */
-    protected $name = iMSCP_Events::onAuthentication;
-    
-    /** @var  iMSCP_Authentication */
-    protected $authentication;
+    protected $name = Events::onAuthentication;
 
     /**
-     * @var iMSCP_Authentication_Result
+     * @var AuthService
      */
-    protected $authenticationResult = null;
+    protected $authService;
 
+    /**
+     * @var AuthResult
+     */
+    protected $authenticationResult = NULL;
+
+    public function __construct(AuthService $authService)
+    {
+        $this->authService = $authService;
+    }
+
+    /**
+     * Get authentication service
+     *
+     * @return AuthService
+     */
     public function getAuthenticationService()
     {
-        return $this->authentication;
+        return $this->authService;
     }
-    
+
     /**
      * Has authentication result?
-     * 
+     *
      * @return bool
      */
     public function hasAuthenticationResult()
     {
-        return $this->authenticationResult !== null;
-    }
-
-    /**
-     * Set authentication result
-     * 
-     * @param iMSCP_Authentication_Result $authResult
-     */
-    public function setAuthenticationResult(AuthResult $authResult)
-    {
-        $this->authenticationResult = $authResult;
+        return $this->authenticationResult !== NULL;
     }
 
     /**
      * Get authentication result
-     * 
-     * @return iMSCP_Authentication_Result
+     *
+     * @return AuthResult
      */
     public function getAuthenticationResult()
     {
         return $this->authenticationResult;
+    }
+
+    /**
+     * Set authentication result
+     *
+     * @param AuthResult $authResult
+     */
+    public function setAuthenticationResult(AuthResult $authResult)
+    {
+        $this->authenticationResult = $authResult;
     }
 }

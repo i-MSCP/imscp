@@ -272,7 +272,7 @@ sub AUTOLOAD
     no strict 'refs';
     *{$AUTOLOAD} = sub {
         shift;
-        return $options->{$field} unless @_;
+        return $options->{$field} // 0 unless @_;
         $options->{$field} = shift;
     };
     goto &{$AUTOLOAD};

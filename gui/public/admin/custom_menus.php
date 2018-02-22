@@ -38,7 +38,7 @@ function admin_generateMenusList($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         if ($row['menu_level'] == 'A') {
             $row['menu_level'] = tr('Administrator');
         } elseif ($row['menu_level'] == 'R') {
@@ -85,14 +85,14 @@ function admin_generateForm($tpl)
     ];
 
     if (empty($_POST) && isset($_GET['edit_id'])) {
-        $stmt = exec_query('SELECT * FROM custom_menus WHERE menu_id = ?', intval($_GET['edit_id']));
+        $stmt = exec_query('SELECT * FROM custom_menus WHERE menu_id = ?', [intval($_GET['edit_id'])]);
 
         if (!$stmt->rowCount()) {
             set_page_message(tr("The menu you are trying to edit doesn't exist."), 'error');
             redirectTo('custom_menus.php');
         }
 
-        $customMenu = $stmt->fetchRow();
+        $customMenu = $stmt->fetch();
     } elseif (!empty($_POST)) {
         $customMenu = $_POST;
     }
@@ -263,8 +263,7 @@ function admin_updateMenu($menuId)
  */
 function admin_deleteMenu($menuId)
 {
-    $stmt = exec_query('DELETE FROM custom_menus WHERE menu_id = ?', intval($menuId));
-
+    $stmt = exec_query('DELETE FROM custom_menus WHERE menu_id = ?', [intval($menuId)]);
     if ($stmt->rowCount()) {
         set_page_message(tr('Custom menu successfully deleted.'), 'success');
     }

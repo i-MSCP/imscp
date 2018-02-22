@@ -49,20 +49,21 @@ if (!$stmt->rowCount()) {
     showBadRequestErrorPage();
 }
 
-$row = $stmt->fetchRow();
+$row = $stmt->fetch();
 $groupname = $row['groupname'];
 
-$db = iMSCP_Database::getInstance();
+/** @var iMSCP_Database $db */
+$db = Registry::get('iMSCP_Application')->getDatabase();
 
 try {
     $db->beginTransaction();
 
     EventsManager::getInstance()->dispatch(Events::onBeforeDeleteFtp, ['ftpUserId' => $userid]);
 
-    $stmt = exec_query('SELECT members FROM ftp_group WHERE groupname = ?', $groupname);
+    $stmt = exec_query('SELECT members FROM ftp_group WHERE groupname = ?', [$groupname]);
 
     if ($stmt->rowCount()) {
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
         $members = preg_split('/,/', $row['members'], -1, PREG_SPLIT_NO_EMPTY);
         $member = array_search($userid, $members);
 
@@ -70,18 +71,18 @@ try {
             unset($members[$member]);
 
             if (empty($members)) {
-                exec_query('DELETE FROM ftp_group WHERE groupname = ?', $groupname);
-                exec_query('DELETE FROM quotalimits WHERE name = ?', $groupname);
-                exec_query('DELETE FROM quotatallies WHERE name = ?', $groupname);
+                exec_query('DELETE FROM ftp_group WHERE groupname = ?', [$groupname]);
+                exec_query('DELETE FROM quotalimits WHERE name = ?', [$groupname]);
+                exec_query('DELETE FROM quotatallies WHERE name = ?', [$groupname]);
             } else {
                 exec_query('UPDATE ftp_group SET members = ? WHERE groupname = ?', [
-                    implode(',', $members), $groupname]
+                        implode(',', $members), $groupname]
                 );
             }
         }
     }
 
-    exec_query("UPDATE ftp_users SET status = 'todelete' WHERE userid = ?", $userid);
+    exec_query("UPDATE ftp_users SET status = 'todelete' WHERE userid = ?", [$userid]);
 
     $cfg = Registry::get('config');
 

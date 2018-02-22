@@ -19,12 +19,11 @@
  */
 
 use iMSCP\Crypt as Crypt;
-use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
-use Zend_Form as Form;
 use iMSCP_Registry as Registry;
+use Zend_Form as Form;
 
 /***********************************************************************************************************************
  * Functions
@@ -40,14 +39,17 @@ use iMSCP_Registry as Registry;
 function addAdminUser(Form $form)
 {
     if (!$form->isValid($_POST)) {
-        foreach ($form->getMessages() as $fieldname => $msgsStack) {
-            set_page_message(reset($msgsStack), 'error');
+        foreach ($form->getMessages() as $msgsStack) {
+            foreach ($msgsStack as $msg) {
+                set_page_message(tohtml($msg), 'error');
+            }
         }
 
         return;
     }
-    
-    $db = Database::getInstance();
+
+    /** @var iMSCP_Database $db */
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -74,7 +76,7 @@ function addAdminUser(Form $form)
             ]
         );
 
-        $adminId = $db->insertId();
+        $adminId = $db->lastInsertId();
         $cfg = Registry::get('config');
 
         exec_query('INSERT INTO user_gui_props (user_id, lang, layout) VALUES (?, ?, ?)', [

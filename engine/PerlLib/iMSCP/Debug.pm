@@ -157,7 +157,7 @@ sub endDebug
     my $logDir = $main::imscpConfig{'LOG_DIR'} || '/tmp';
     if ( $logDir ne '/tmp' && !-d $logDir ) {
         require iMSCP::Dir;
-        local $@;
+
         eval {
             iMSCP::Dir->new( dirname => $logDir )->make(
                 {

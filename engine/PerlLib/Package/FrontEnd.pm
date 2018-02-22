@@ -111,7 +111,6 @@ sub postinstall
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndPostInstall' );
     return $rs if $rs;
 
-    local $@;
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
         $serviceMngr->enable( $self->{'config'}->{'HTTPD_SNAME'} );
@@ -548,7 +547,6 @@ sub startNginx
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndStartNginx' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->start( $self->{'config'}->{'HTTPD_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -573,7 +571,6 @@ sub stopNginx
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndStopNginx' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->stop( "$self->{'config'}->{'HTTPD_SNAME'}" ); };
     if ( $@ ) {
         error( $@ );
@@ -598,7 +595,6 @@ sub reloadNginx
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndReloadNginx' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->reload( $self->{'config'}->{'HTTPD_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -623,7 +619,6 @@ sub restartNginx
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndRestartNginx' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->restart( $self->{'config'}->{'HTTPD_SNAME'} ); };
     if ( $@ ) {
         error( $@ );
@@ -648,7 +643,6 @@ sub startPhpFpm
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndStartPhpFpm' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->start( 'imscp_panel' ); };
     if ( $@ ) {
         error( $@ );
@@ -673,7 +667,6 @@ sub stopPhpFpm
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndStopPhpFpm' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->stop( 'imscp_panel' ); };
     if ( $@ ) {
         error( $@ );
@@ -698,7 +691,6 @@ sub reloadPhpFpm
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndReloadPhpFpm' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->reload( 'imscp_panel' ); };
     if ( $@ ) {
         error( $@ );
@@ -723,7 +715,6 @@ sub restartPhpFpm
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndRestartPhpFpm' );
     return $rs if $rs;
 
-    local $@;
     eval { iMSCP::Service->getInstance()->restart( 'imscp_panel' ); };
     if ( $@ ) {
         error( $@ );
@@ -768,10 +759,11 @@ sub buildConfFile
     return $rs if $rs;
 
     $cfgTpl = $self->_buildConf( $cfgTpl, $filename, $tplVars );
-    $cfgTpl =~ s/\n{2,}/\n\n/g; # Remove any duplicate blank lines
 
     $rs = $self->{'eventManager'}->trigger( 'afterFrontEndBuildConfFile', \$cfgTpl, $filename, $tplVars, $options );
     return $rs if $rs;
+
+    $cfgTpl =~ s/^\s*(?:[#;].*)?\n//gmi; # Final cleanup
 
     $options->{'destination'} ||= "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$filename";
 

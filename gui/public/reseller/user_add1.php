@@ -195,8 +195,8 @@ function reseller_generatePage($tpl)
         'CHTPL2_VAL'           => (isset($_POST['chtpl']) && $_POST['chtpl'] == '_yes_') ? '' : ' checked'
     ]);
 
-    $stmt = exec_query('SELECT id, name FROM hosting_plans WHERE reseller_id = ? AND status = ? ORDER BY name', [
-        $_SESSION['user_id'], '1'
+    $stmt = exec_query("SELECT id, name FROM hosting_plans WHERE reseller_id = ? AND status = 1 ORDER BY name", [
+        $_SESSION['user_id']
     ]);
 
     if (!$stmt->rowCount()) {
@@ -204,7 +204,7 @@ function reseller_generatePage($tpl)
         return;
     }
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $hpId = isset($_POST['dmn_tpl']) ? $_POST['dmn_tpl'] : '';
         $tpl->assign([
             'HP_NAME'     => tohtml($row['name']),

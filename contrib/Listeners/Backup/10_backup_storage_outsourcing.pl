@@ -17,6 +17,7 @@
 
 package Listener::Backup::Storage::Outsourcing;
 
+
 # Stores customer backup directories elsewhere on local file system
 #
 # Howto setup and activate
@@ -24,6 +25,8 @@ package Listener::Backup::Storage::Outsourcing;
 # 2. Edit the /etc/imscp/listeners.d/10_backup_storage_outsourcing.pl file
 #    and set the $STORAGE_ROOT_PATH variable below according your needs
 # 3. Trigger an i-MSCP reconfiguration: perl /var/www/imscp/engine/setup/imscp-reconfigure -danv
+
+our $VERSION = '1.0.0';
 
 use strict;
 use warnings;
@@ -56,7 +59,6 @@ unless ( $STORAGE_ROOT_PATH eq '' ) {
     iMSCP::EventManager->getInstance()->register(
         'onBoot',
         sub {
-            local $@;
             eval {
                 # Make sure that the root path for outsourced backup directories
                 # exists and that it is set with expected ownership and permissions
@@ -98,7 +100,6 @@ unless ( $STORAGE_ROOT_PATH eq '' ) {
 
             return 0 unless $data->{'DOMAIN_TYPE'} eq 'dmn';
 
-            local $@;
             eval {
                 my $backupDirHandle = iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/backups" );
 
@@ -159,7 +160,6 @@ unless ( $STORAGE_ROOT_PATH eq '' ) {
             $rs ||= umount( $fsFile );
             return $rs if $rs;
 
-            local $@;
             eval { iMSCP::Dir->new( dirname => "$STORAGE_ROOT_PATH/$data->{'DOMAIN_NAME'}" )->remove(); };
             if ( $@ ) {
                 error( $@ );

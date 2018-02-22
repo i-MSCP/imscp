@@ -90,45 +90,65 @@ sub showDialog
     my ($self, $dialog) = @_;
 
     my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER' );
-    my $dbUser = main::setupGetQuestion( 'DOVECOT_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || 'imscp_srv_user' );
+    my $dbUser = main::setupGetQuestion(
+        'DOVECOT_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || ( iMSCP::Getopt->preseed ? 'imscp_srv_user' : '' )
+    );
     my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
     my $dbPass = main::setupGetQuestion(
         'DOVECOT_SQL_PASSWORD',
-        ( ( iMSCP::Getopt->preseed ) ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
+        ( iMSCP::Getopt->preseed ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
     );
+
+    $iMSCP::Dialog::InputValidation::lastValidationError = '';
 
     if ( $main::reconfigure =~ /^(?:po|servers|all|forced)$/
         || !isValidUsername( $dbUser )
-        || !isStringNotInList( $dbUser, 'root', 'debian-sys-maint', $masterSqlUser, 'vlogger_user' )
-        || !isValidPassword( $dbPass )
+        || !isStringNotInList( lc $dbUser, 'root', 'debian-sys-maint', lc $masterSqlUser, 'vlogger_user' )
         || !isAvailableSqlUser( $dbUser )
     ) {
-        my ($rs, $msg) = ( 0, '' );
+        my $rs = 0;
 
         do {
-            ( $rs, $dbUser ) = $dialog->inputbox( <<"EOF", $dbUser );
-
-Please enter a username for the Dovecot SQL user:$msg
-EOF
-            $msg = '';
-            if ( !isValidUsername( $dbUser )
-                || !isStringNotInList( $dbUser, 'root', 'debian-sys-maint', $masterSqlUser, 'vlogger_user' )
-                || !isAvailableSqlUser( $dbUser )
-            ) {
-                $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
+            if ( $dbUser eq '' ) {
+                $iMSCP::Dialog::InputValidation::lastValidationError = '';
+                $dbUser = 'imscp_srv_user';
             }
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
 
-        unless ( defined $main::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
-            do {
-                ( $rs, $dbPass ) = $dialog->inputbox( <<"EOF", $dbPass || randomStr( 16, iMSCP::Crypt::ALNUM ));
-
-Please enter a password for the Dovecot SQL user:$msg
+            ( $rs, $dbUser ) = $dialog->inputbox( <<"EOF", $dbUser );
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter a username for the Dovecot SQL user (leave empty for default):
 EOF
-                $msg = isValidPassword( $dbPass ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
-            } while $rs < 30 && $msg;
-            return $rs if $rs >= 30;
+        } while $rs < 30
+            && ( !isValidUsername( $dbUser )
+            || !isStringNotInList( lc $dbUser, 'root', 'debian-sys-maint', lc $masterSqlUser, 'vlogger_user' )
+            || !isAvailableSqlUser( $dbUser )
+        );
+
+        return $rs unless $rs < 30;
+    }
+
+    main::setupSetQuestion( 'DOVECOT_SQL_USER', $dbUser );
+
+    if ( $main::reconfigure =~ /^(?:po|servers|all|forced)$/
+        || !isValidPassword( $dbPass )
+    ) {
+        unless ( defined $main::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
+            my $rs = 0;
+
+            do {
+                if ( $dbPass eq '' ) {
+                    $iMSCP::Dialog::InputValidation::lastValidationError = '';
+                    $dbPass = randomStr( 16, iMSCP::Crypt::ALNUM );
+                }
+
+                ( $rs, $dbPass ) = $dialog->inputbox( <<"EOF", $dbPass );
+$iMSCP::Dialog::InputValidation::lastValidationError
+Please enter a password for the Dovecot SQL user (leave empty for autogeneration):
+EOF
+            } while $rs < 30
+                && !isValidPassword( $dbPass );
+
+            return $rs unless $rs < 30;
 
             $main::sqlUsers{$dbUser . '@' . $dbUserHost} = $dbPass;
         } else {
@@ -140,7 +160,6 @@ EOF
         $main::sqlUsers{$dbUser . '@' . $dbUserHost} = $dbPass;
     }
 
-    main::setupSetQuestion( 'DOVECOT_SQL_USER', $dbUser );
     main::setupSetQuestion( 'DOVECOT_SQL_PASSWORD', $dbPass );
     0;
 }
@@ -383,7 +402,6 @@ sub _setupSqlUser
     my $rs = $self->{'eventManager'}->trigger( 'beforePoSetupDb', $dbUser, $dbOldUser, $dbPass, $dbUserHost );
     return $rs if $rs;
 
-    local $@;
     eval {
         my $sqlServer = Servers::sqld->factory();
 
@@ -440,7 +458,6 @@ sub _buildConf
     ( my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'} ) =~ s%('|"|\\)%\\$1%g;
 
     my $data = {
-        DATABASE_TYPE                 => main::setupGetQuestion( 'DATABASE_TYPE' ),
         DATABASE_HOST                 => main::setupGetQuestion( 'DATABASE_HOST' ),
         DATABASE_PORT                 => main::setupGetQuestion( 'DATABASE_PORT' ),
         DATABASE_NAME                 => $dbName,

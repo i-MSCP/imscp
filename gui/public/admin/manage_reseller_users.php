@@ -18,10 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
+use iMSCP_Registry as Registry;
 
 /***********************************************************************************************************************
  * Functions
@@ -38,7 +38,8 @@ use iMSCP_pTemplate as TemplateEngine;
  */
 function moveCustomer($customerId, $fromResellerId, $toResellerId)
 {
-    $db = Database::getInstance();
+    /** @var iMSCP_Database $db */
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $toRprops = imscp_getResellerProperties($fromResellerId);
@@ -69,14 +70,14 @@ function moveCustomer($customerId, $fromResellerId, $toResellerId)
                 FROM domain
                 WHERE domain_admin_id = ?
             ',
-            $customerId
+            [$customerId]
         );
 
         if (!$stmt->rowCount()) {
             throw new Exception(tr("Couldn't find domain properties for customer with ID %d.", $customerId));
         }
 
-        $cProps = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $cProps = $stmt->fetchAll();
         $db->beginTransaction();
 
         // For each item (sub, mail, ftp....), adjust (TO) reseller limits
@@ -217,8 +218,9 @@ function moveCustomers()
  */
 function generatePage(TemplateEngine $tpl)
 {
-    $resellers = $stmt = execute_query("SELECT admin_id, admin_name FROM admin  WHERE admin_type = 'reseller'")
-        ->fetchAll(PDO::FETCH_ASSOC);
+    $resellers = $stmt = execute_query(
+        "SELECT admin_id, admin_name FROM admin WHERE admin_type = 'reseller'"
+    )->fetchAll();
     $fromResellerId = isset($_POST['from_reseller']) ? intval($_POST['from_reseller']) : $resellers[0]['admin_id'];
     $toResellerId = isset($_POST['to_reseller']) ? intval($_POST['to_reseller']) : $resellers[1]['admin_id'];
 
@@ -247,8 +249,8 @@ function generatePage(TemplateEngine $tpl)
             AND admin_type = 'user'
             AND admin_status <> 'todelete'
         ",
-        $fromResellerId
-    )->fetchAll(PDO::FETCH_ASSOC);
+        [$fromResellerId]
+    )->fetchAll();
 
     if (empty($customers)) {
         $tpl->assign('FROM_RESELLER_CUSTOMERS_LIST', '');
@@ -262,7 +264,7 @@ function generatePage(TemplateEngine $tpl)
             'CUSTOMER_NAME'             => tohtml(decode_idna($customer['admin_name'])),
             'RESELLER_CUSTOMER_CHECKED' => in_array($customer['admin_id'], $selectedCustomers) ? ' checked' : ''
         ]);
-        $tpl->parse('FROM_RESELLER_CUSTOMER_ID', '.from_reseller_customer_item');
+        $tpl->parse('FROM_RESELLER_CUSTOMER_ITEM', '.from_reseller_customer_item');
     }
 }
 

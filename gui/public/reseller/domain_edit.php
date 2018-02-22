@@ -18,7 +18,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_PHPini as PhpIni;
@@ -47,9 +46,9 @@ function getMailData($domainId, $mailQuota)
                 FROM mail_users
                 WHERE domain_id = ?
             ',
-            $domainId
+            [$domainId]
         );
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
 
         $mailData = [
             'quota_sum'    => bytesHuman($row['quota']),
@@ -69,7 +68,7 @@ function getMailData($domainId, $mailQuota)
  */
 function reseller_getResellerProps($resellerId)
 {
-    $stmt = exec_query(
+    return exec_query(
         '
             SELECT reseller_id, current_sub_cnt, max_sub_cnt, current_als_cnt, max_als_cnt, current_mail_cnt,
                 max_mail_cnt, current_ftp_cnt, max_ftp_cnt, current_sql_db_cnt, max_sql_db_cnt, current_sql_user_cnt,
@@ -77,10 +76,8 @@ function reseller_getResellerProps($resellerId)
                 software_allowed
             FROM reseller_props WHERE reseller_id = ?
         ',
-        $resellerId
-    );
-
-    return $stmt->fetchRow();
+        [$resellerId]
+    )->fetch();
 }
 
 /**
@@ -102,9 +99,9 @@ function reseller_getDomainProps($domainId)
             JOIN admin ON(admin_id = domain_admin_id)
             WHERE domain_id = ?
         ',
-        $domainId
+        [$domainId]
     );
-    $data = $stmt->fetchRow();
+    $data = $stmt->fetch();
     $data['mail_quota'] = $data['mail_quota'] / 1048576;
 
     $trafficData = getClientMonthlyTrafficStats($domainId);
@@ -145,7 +142,7 @@ function &getData($domainId, $forUpdate = false)
         ',
         [$statusOk, $statusOk, $statusOk, $domainId, $_SESSION['user_id']]
     );
-    $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
+    $row = $stmt->fetch();
 
     if ($row['domain_status'] == '') {
         set_page_message(tr("The domain you are trying to edit doesn't exist."), 'error');
@@ -615,13 +612,14 @@ function generateFeaturesForm(TemplateEngine $tpl, &$data)
  * Check and updates domain data
  *
  * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  * @param int $domainId Domain unique identifier
  * @return bool
  */
 function reseller_checkAndUpdateData($domainId)
 {
-    $db = Database::getInstance();
+    /** @var iMSCP_Database $db */
+    $db = Registry::get('iMSCP_Application')->getDatabase();
+
     $errFieldsStack = [];
 
     try {
@@ -940,8 +938,8 @@ function reseller_checkAndUpdateData($domainId)
             if ($data['domain_dns'] != $data['fallback_domain_dns'] && $data['domain_dns'] == 'no') {
                 // Support for custom DNS records is now disabled - We must delete all custom DNS entries
                 // (except those that are protected), and update the DNS zone file
-                exec_query('DELETE FROM domain_dns WHERE domain_id = ? AND owned_by = ?', [
-                    $domainId, 'custom_dns_feature'
+                exec_query("DELETE FROM domain_dns WHERE domain_id = ? AND owned_by = 'custom_dns_feature'", [
+                    $domainId
                 ]);
                 $needDaemonRequest = true;
             }
@@ -981,17 +979,17 @@ function reseller_checkAndUpdateData($domainId)
 
             if ($needDaemonRequest) {
                 exec_query(
-                    '
+                    "
                         UPDATE domain_aliasses
-                        SET alias_ip_id = ?, alias_status = ?
+                        SET alias_ip_id = ?, alias_status = 'tochange'
                         WHERE domain_id = ?
-                        AND alias_status <> ?
-                    ',
-                    [$data['domain_ip_id'], 'tochange', $domainId, 'ordered']
+                        AND alias_status <> 'ordered'
+                    ",
+                    [$data['domain_ip_id'], $domainId]
                 );
                 exec_query(
-                    'UPDATE domain_aliasses SET alias_ip_id = ? WHERE domain_id = ? AND alias_status = ?',
-                    [$data['domain_ip_id'], $domainId, 'ordered']
+                    "UPDATE domain_aliasses SET alias_ip_id = ? WHERE domain_id = ? AND alias_status = 'ordered'",
+                    [$data['domain_ip_id'], $domainId]
                 );
             }
 
@@ -1003,18 +1001,15 @@ function reseller_checkAndUpdateData($domainId)
             // Update Ftp quota limit if needed
             if ($data['domain_disk_limit'] != $data['fallback_domain_disk_limit']) {
                 exec_query(
-                    '
+                    "
                         REPLACE INTO quotalimits (
                             name, quota_type, per_session, limit_type, bytes_in_avail, bytes_out_avail,
                             bytes_xfer_avail, files_in_avail, files_out_avail, files_xfer_avail
                         ) VALUES (
-                            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                            ?, 'group', 'false', 'hard', ?, 0, 0, 0, 0, 0
                         )
-                    ',
-                    [
-                        $data['domain_name'], 'group', 'false', 'hard', $data['domain_disk_limit'] * 1048576, 0, 0, 0,
-                        0, 0
-                    ]
+                    ",
+                    [$data['domain_name'], $data['domain_disk_limit'] * 1048576]
                 );
             }
 

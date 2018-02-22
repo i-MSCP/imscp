@@ -39,27 +39,17 @@ class iMSCP_Authentication
      *
      * @var iMSCP_Authentication
      */
-    protected static $instance = NULL;
+    protected static $instance;
 
     /**
      * @var EventManagerInterface
      */
-    protected $eventManager = NULL;
+    protected $eventManager;
 
     /**
      * Singleton pattern implementation -  makes "new" unavailable
      */
     protected function __construct()
-    {
-
-    }
-
-    /**
-     * Singleton pattern implementation -  makes "clone" unavailable
-     *
-     * @return void
-     */
-    protected function __clone()
     {
 
     }
@@ -76,6 +66,55 @@ class iMSCP_Authentication
         }
 
         return self::$instance;
+    }
+
+    /**
+     * Process authentication
+     *
+     * @trigger onBeforeAuthentication
+     * @trigger onAuthentication
+     * @trigger onAfterAuthentication
+     * @return iMSCP_Authentication_Result
+     */
+    public function authenticate()
+    {
+        $em = $this->getEventManager();
+        $response = $em->dispatch(Events::onBeforeAuthentication, ['context' => $this]);
+
+        if (!$response->isStopped()) {
+            $authEvent = new AuthEvent($this);
+
+            // Process authentication through registered handlers
+            //
+            // In versions pre1.3.9, the auth result was pulled from the
+            // response object. To stay compatible with plugins that were
+            // developed for versions pre1.3.9, we first try to pull the auth
+            // result from the response object and if it is not defined, we
+            // pull it from the new auth event that has been introduced in
+            // version 1.3.9.
+            //
+            // Plugin that make use of the new auth event must requires at
+            // least the i-MSCP API 1.0.7.
+            $response = $em->dispatch($authEvent, ['context' => $this]);
+            $authResult = $response->last() ?: $authEvent->getAuthenticationResult();
+
+            // Covers case where none of authentication handlers has set an
+            // auth result
+            if (!$authResult instanceof AuthResult) {
+                $authResult = new AuthResult(AuthResult::FAILURE_UNCATEGORIZED, NULL, tr('Unknown reason.'));
+            }
+
+            if ($authResult->isValid()) {
+                // Prevent multiple successive calls from storing inconsistent results
+                $this->unsetIdentity();
+                $this->setIdentity($authResult->getIdentity());
+            }
+        } else {
+            $authResult = new AuthResult(AuthResult::FAILURE_UNCATEGORIZED, NULL, $response->last());
+        }
+
+        $em->dispatch(Events::onAfterAuthentication, ['context' => $this, 'authResult' => $authResult]);
+        return $authResult;
     }
 
     /**
@@ -99,75 +138,29 @@ class iMSCP_Authentication
     }
 
     /**
-     * Process authentication
+     * Unset the current identity
      *
-     * @trigger onBeforeAuthentication
-     * @trigger onAuthentication
-     * @trigger onAfterAuthentication
-     * @return iMSCP_Authentication_Result
+     * @trigger onBeforeUnsetIdentity
+     * @trigger onAfterUnserIdentity
+     * @return void
      */
-    public function authenticate()
+    public function unsetIdentity()
     {
-        $em = $this->getEventManager();
-        $response = $em->dispatch(Events::onBeforeAuthentication, ['context' => $this]);
+        $this->getEventManager()->dispatch(Events::onBeforeUnsetIdentity, ['context' => $this]);
 
-        if (!$response->isStopped()) {
-            $authEvent = new AuthEvent();
+        exec_query('DELETE FROM login WHERE session_id = ?', [session_id()]);
 
-            // Process authentication through registered handlers
-            // Note: In versions pre1.3.9, the auth result was pulled from the response object. To stay compatible with
-            // plugins that were developed for versions pre1.3.9, we first try to pull the auth result from the response
-            // object and if it is not defined, we pull it from the new auth event that has been introduced in version
-            // 1.3.9. Plugin that make use of the new auth event must requires the i-MSCP API 1.0.7.
-            $response = $em->dispatch($authEvent, ['context' => $this]);
-            $authResult = $response->last() ?: $authEvent->getAuthenticationResult();
+        $preserveList = [
+            'user_def_lang', 'user_theme', 'user_theme_color', 'show_main_menu_labels', 'pageMessages'
+        ];
 
-            // Covers case where no one of authentication handlers has set an authentication result
-            if (!$authResult instanceof AuthResult) {
-                $authResult = new AuthResult(AuthResult::FAILURE_UNCATEGORIZED, NULL, tr('Unknown reason.'));
+        foreach (array_keys($_SESSION) as $sessionVariable) {
+            if (!in_array($sessionVariable, $preserveList)) {
+                unset($_SESSION[$sessionVariable]);
             }
-
-            if ($authResult->isValid()) {
-                $this->unsetIdentity(); // Prevent multiple successive calls from storing inconsistent results
-                $this->setIdentity($authResult->getIdentity());
-            }
-        } else {
-            $authResult = new AuthResult(AuthResult::FAILURE_UNCATEGORIZED, NULL, $response->last());
         }
 
-        $em->dispatch(Events::onAfterAuthentication, ['context' => $this, 'authResult' => $authResult]);
-        return $authResult;
-    }
-
-    /**
-     * Returns true if and only if an identity is available from storage
-     *
-     * @return boolean
-     */
-    public function hasIdentity()
-    {
-        if (!isset($_SESSION['user_id'])) {
-            return false;
-        }
-
-        return (bool)exec_query('SELECT COUNT(session_id) FROM login WHERE session_id = ? AND ipaddr = ?', [
-            session_id(), getipaddr()
-        ])->fetchRow(PDO::FETCH_COLUMN);
-    }
-
-    /**
-     * Returns the identity from storage if any, redirect to login page otherwise
-     *
-     * @return stdClass
-     */
-    public function getIdentity()
-    {
-        if (!isset($_SESSION['user_identity'])) {
-            $this->unsetIdentity(); // Make sure that all identity data are removed
-            redirectTo('/index.php');
-        }
-
-        return $_SESSION['user_identity'];
+        $this->getEventManager()->dispatch(Events::onAfterUnsetIdentity, ['context' => $this]);
     }
 
     /**
@@ -211,28 +204,43 @@ class iMSCP_Authentication
     }
 
     /**
-     * Unset the current identity
+     * Returns true if and only if an identity is available from storage
      *
-     * @trigger onBeforeUnsetIdentity
-     * @trigger onAfterUnserIdentity
-     * @return void
+     * @return boolean
      */
-    public function unsetIdentity()
+    public function hasIdentity()
     {
-        $this->getEventManager()->dispatch(Events::onBeforeUnsetIdentity, ['context' => $this]);
-
-        exec_query('DELETE FROM login WHERE session_id = ?', session_id());
-
-        $preserveList = [
-            'user_def_lang', 'user_theme', 'user_theme_color', 'show_main_menu_labels', 'pageMessages'
-        ];
-
-        foreach (array_keys($_SESSION) as $sessionVariable) {
-            if (!in_array($sessionVariable, $preserveList)) {
-                unset($_SESSION[$sessionVariable]);
-            }
+        if (!isset($_SESSION['user_id'])) {
+            return false;
         }
 
-        $this->getEventManager()->dispatch(Events::onAfterUnsetIdentity, ['context' => $this]);
+        return exec_query('SELECT COUNT(session_id) FROM login WHERE session_id = ? AND ipaddr = ?', [
+                session_id(), getipaddr()
+            ])->fetchColumn() > 0;
+    }
+
+    /**
+     * Returns the identity from storage if any, redirect to login page otherwise
+     *
+     * @return stdClass
+     */
+    public function getIdentity()
+    {
+        if (!isset($_SESSION['user_identity'])) {
+            $this->unsetIdentity(); // Make sure that all identity data are removed
+            redirectTo('/index.php');
+        }
+
+        return $_SESSION['user_identity'];
+    }
+
+    /**
+     * Singleton pattern implementation -  makes "clone" unavailable
+     *
+     * @return void
+     */
+    protected function __clone()
+    {
+
     }
 }

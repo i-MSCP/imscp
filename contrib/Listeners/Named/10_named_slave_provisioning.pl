@@ -1,6 +1,6 @@
 # i-MSCP Listener::Named::Slave::Provisioning listener file
-# Copyright (C) 2015 UncleJ, Arthur Mayer <mayer.arthur@gmail.com>
 # Copyright (C) 2016-2017 Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2015 UncleJ, Arthur Mayer <mayer.arthur@gmail.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,9 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
+# FIXME: Provide better implementation, using more robust method such as metaslave
+# See http://jpmens.net/2013/02/13/automatic-provisioning-of-slave-dns-servers/
+
 #
 ## Provides slave DNS server(s) provisioning service.
 ## This listener file requires i-MSCP 1.2.12 or newer.
@@ -26,56 +29,57 @@
 
 package Listener::Named::Slave::Provisioning;
 
+our $VERSION = '1.0.1';
+
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ error /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::File;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ getBloc replaceBloc /;
+use iMSCP::Crypt qw/ htpasswd /;
 
 #
-## HTTP (Basic) authentication parameters
-## Those parameters are used to restrict access to the provisioning script which
-## is available through HTTP(s)
+## Configuration parameters
 #
+
+# HTTP (Basic) authentication parameters
+# These parameters are used to restrict access to the provisioning script which
+# is available through HTTP(s)
 
 # Authentication username
 # Leave empty to disable authentication
-my $authUsername = '';
+my $AUTH_USERNAME = '';
 
 # Authentication password
-# Either an encrypted or plain password
-# If an encrypted password, don't forget to set the $isAuthPasswordEncrypted parameter value to 1
-my $authPassword = '';
+# Either an hashed or plain password.
+# In case of an hashed password, don't forget to set the
+# $AUTH_PASSWORD_IS_HASHED parameter value to 1
+# Plain password are automatically hashed using APR1 MD5 algorithm.
+my $AUTH_PASSWORD = '';
 
-# Tells whether or not the provided authentication password is encrypted
-my $isAuthPasswordEncrypted = 0;
+# Tells whether or not the provided authentication password is hashed.
+my $AUTH_PASSWORD_IS_HASHED = 0;
 
 # Protected area identifier
 my $realm = 'i-MSCP provisioning service for slave DNS servers';
 
 #
-## Other parameters
-#
-
-#
 ## Please, don't edit anything below this line
 #
 
-# Create the .htpasswd file to restrict access to the provisioning script
+# Routine that create the .htpasswd file for HTTP (Basic) authentication
 sub createHtpasswdFile
 {
-    if ($authUsername =~ /:/) {
+    if ( index( $AUTH_USERNAME, ':' ) != -1 ) {
         error( "htpasswd: username contains illegal character ':'" );
         return 1;
     }
 
-    require iMSCP::Crypt;
     my $file = iMSCP::File->new( filename => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning/.htpasswd" );
-    $file->set( "$authUsername:".($isAuthPasswordEncrypted ? $authPassword : iMSCP::Crypt::htpasswd( $authPassword )) );
-
-    $rs = $file->save();
+    $file->set( "$AUTH_USERNAME:" . ( $AUTH_PASSWORD_IS_HASHED ? $AUTH_PASSWORD : htpasswd( $AUTH_PASSWORD ) ));
+    my $rs = $file->save();
     $rs ||= $file->owner(
         "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
         "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}"
@@ -93,7 +97,9 @@ iMSCP::EventManager->getInstance()->register(
     sub {
         my ($tplContent, $tplName) = @_;
 
-        return 0 unless grep($_ eq $tplName, '00_master.nginx', '00_master_ssl.nginx');
+        return 0 unless ( $tplName eq '00_master.nginx'
+            && main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) ne 'https://'
+        ) || $tplName eq '00_master_ssl.nginx';
 
         my $locationSnippet = <<"EOF";
     location ^~ /provisioning/ {
@@ -109,24 +115,20 @@ iMSCP::EventManager->getInstance()->register(
     }
 EOF
 
-        $$tplContent = replaceBloc(
+        ${$tplContent} = replaceBloc(
             "# SECTION custom BEGIN.\n",
             "# SECTION custom END.\n",
-            "    # SECTION custom BEGIN.\n".
-                getBloc(
-                    "# SECTION custom BEGIN.\n",
-                    "# SECTION custom END.\n",
-                    $$tplContent
-                ).
-                "$locationSnippet\n".
-                "    # SECTION custom END.\n",
-            $$tplContent
+            "    # SECTION custom BEGIN.\n"
+                . getBloc( "# SECTION custom BEGIN.\n", "# SECTION custom END.\n", ${$tplContent} )
+                . "$locationSnippet\n"
+                . "    # SECTION custom END.\n",
+            ${$tplContent}
         );
         0;
     }
-) if $authUsername;
+) if defined $AUTH_USERNAME;
 
-# Listener that is responsible to create provisioning script
+# Event listener that create the provisioning script
 iMSCP::EventManager->getInstance()->register( 'afterFrontEndInstall', sub {
         my $fileContent = <<'EOF';
 <?php
@@ -145,12 +147,12 @@ echo "\tmasters { $masterDnsServerIp; };\n";
 echo "\tallow-notify { $masterDnsServerIp; };\n";
 echo "};\n";
 echo "// END CONFIGURATION FOR MAIN DOMAIN\n\n";
-$stmt = exec_query('SELECT domain_id, domain_name FROM domain');
+$stmt = execute_query('SELECT domain_id, domain_name FROM domain');
 $rowCount = $stmt->rowCount();
 if ($rowCount > 0) {
     echo "// $rowCount HOSTED DOMAINS LISTED ON $config->SERVER_HOSTNAME [$masterDnsServerIp]\n";
 
-    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+    while ($row = $stmt->fetchRow()) {
         echo "zone \"{$row['domain_name']}\" {\n";
         echo "\ttype slave;\n";
         echo "\tfile \"/var/cache/bind/{$row['domain_name']}.db\";\n";
@@ -161,11 +163,11 @@ if ($rowCount > 0) {
 
     echo "// END DOMAINS LIST\n\n";
 }
-$stmt = exec_query('SELECT alias_id, alias_name FROM domain_aliasses');
+$stmt = execute_query('SELECT alias_id, alias_name FROM domain_aliasses');
 $rowCount = $stmt->rowCount();
 if ($rowCount > 0) {
-    echo "// $rowCount HOSTED ALIASES LISTED ON $config->SERVER_HOSTNAME [$masterDnsServerIp\n";
-    while ($row = $stmt->fetchRow(PDO::FETCH_ASSOC)) {
+    echo "// $rowCount HOSTED ALIASES LISTED ON $config->SERVER_HOSTNAME [$masterDnsServerIp]\n";
+    while ($row = $stmt->fetchRow()) {
         echo "zone \"{$row['alias_name']}\" {\n";
         echo "\ttype slave;\n";
         echo "\tfile \"/var/cache/bind/{$row['alias_name']}.db\";\n";
@@ -176,7 +178,6 @@ if ($rowCount > 0) {
     echo "// END ALIASES LIST\n";
 }
 EOF
-
         my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning" )->make(
             {
                 user  => "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
@@ -185,14 +186,13 @@ EOF
             }
         );
 
-        $rs ||= createHtpasswdFile() if $authUsername;
+        $rs ||= createHtpasswdFile() if defined $AUTH_USERNAME;
         return $rs if $rs;
 
         my $file = iMSCP::File->new(
             filename => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning/slave_provisioning.php"
         );
         $file->set( $fileContent );
-
         $rs = $file->save();
         $rs ||= $file->owner(
             "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",

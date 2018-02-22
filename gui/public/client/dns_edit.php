@@ -20,6 +20,7 @@
 
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_Registry as Registry;
 use Net_DNS2_Exception as DnsResolverException;
 use Net_DNS2_Resolver as DnsResolver;
 
@@ -548,7 +549,7 @@ function client_saveDnsRecord($dnsRecordId)
                 showBadRequestErrorPage();
             }
 
-            $row = $stmt->fetchRow();
+            $row = $stmt->fetch();
             $domainName = $row['alias_name'];
             $domainId = $row['alias_id'];
         }
@@ -570,7 +571,7 @@ function client_saveDnsRecord($dnsRecordId)
             showBadRequestErrorPage();
         }
 
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
         $domainId = $row['alias_id'] ? $row['alias_id'] : $row['domain_id'];
         $domainName = $row['domain_name'];
         $dnsRecordType = $row['domain_type'];
@@ -766,7 +767,8 @@ function client_saveDnsRecord($dnsRecordId)
     $dnsRecordName .= '.'; // Add trailing dot
     $dnsRecordName .= "\t$ttl"; // Add TTL
 
-    $db = iMSCP_Database::getInstance();
+    /** @var iMSCP_Database $db */
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -795,8 +797,19 @@ function client_saveDnsRecord($dnsRecordId)
                 ]
             );
 
+            // Also update status of any DNS resource record with error
+            exec_query(
+                "
+                  UPDATE domain_dns
+                  SET domain_dns_status = 'tochange'
+                  WHERE domain_id = ?
+                  AND domain_dns_status NOT IN('ok', 'toadd', 'tochange', 'todelete', 'disabled')
+                ",
+                [$mainDmnId]
+            );
+
             EventsManager::getInstance()->dispatch(Events::onAfterAddCustomDNSrecord, [
-                'id'       => $db->insertId(),
+                'id'       => $db->lastInsertId(),
                 'domainId' => $mainDmnId,
                 'aliasId'  => $domainId,
                 'name'     => $dnsRecordName,
@@ -830,9 +843,9 @@ function client_saveDnsRecord($dnsRecordId)
                   UPDATE domain_dns
                   SET domain_dns_status = 'tochange'
                   WHERE domain_id = ?
-                  AND domain_dns_status NOT IN('ok', 'toadd', 'tochange', 'todelete')
+                  AND domain_dns_status NOT IN('ok', 'toadd', 'tochange', 'todelete', 'disabled')
                 ",
-                $mainDmnId
+                [$mainDmnId]
             );
 
             EventsManager::getInstance()->dispatch(Events::onAfterEditCustomDNSrecord, [
@@ -895,7 +908,7 @@ function generatePage($tpl, $dnsRecordId)
         $domainId = client_getPost('zone_id', '0');
         $selectOptions = "\n";
 
-        while ($data = $stmt->fetchRow()) {
+        while ($data = $stmt->fetch()) {
             $selectOptions .= "\t\t\t\t\t" . '<option value="' . $data['domain_id'] . '"' .
                 ($data['domain_id'] == $domainId ? ' selected' : '') . '>' . decode_idna($data['domain_name'])
                 . "</option>\n";
@@ -915,7 +928,7 @@ function generatePage($tpl, $dnsRecordId)
             showBadRequestErrorPage();
         }
 
-        $data = $stmt->fetchRow();
+        $data = $stmt->fetch();
         $tpl->assign([
             'ADD_RECORD'        => '',
             'DNS_TYPE_DISABLED' => ' disabled'

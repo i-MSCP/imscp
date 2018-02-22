@@ -80,9 +80,9 @@ function reseller_sendToCustomers($senderName, $senderEmail, $subject, $body)
             WHERE created_by = ?
             GROUP BY email
         ",
-        $_SESSION['user_id']
+        [$_SESSION['user_id']]
     );
-    while ($rcptToData = $stmt->fetchRow()) {
+    while ($rcptToData = $stmt->fetch()) {
         reseller_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData);
     }
 }
@@ -185,8 +185,10 @@ function reseller_generatePageData($tpl)
     $body = isset($_POST['body']) ? $_POST['body'] : '';
 
     if ($senderName == '' && $senderEmail == '') {
-        $stmt = exec_query('SELECT admin_name, fname, lname, email FROM admin WHERE admin_id = ?', $_SESSION['user_id']);
-        $row = $stmt->fetchRow();
+        $stmt = exec_query('SELECT admin_name, fname, lname, email FROM admin WHERE admin_id = ?', [
+            $_SESSION['user_id']
+        ]);
+        $row = $stmt->fetch();
 
         if (!empty($row['fname']) && !empty($row['lname'])) {
             $senderName = $row['fname'] . ' ' . $row['lname'];

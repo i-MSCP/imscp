@@ -24,6 +24,8 @@
 
 package Listener::Named::Rrl;
 
+our $VERSION = '1.0.0';
+
 use strict;
 use warnings;
 use File::Basename;

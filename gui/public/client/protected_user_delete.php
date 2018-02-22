@@ -27,47 +27,50 @@ if (!customerHasFeature('protected_areas') || !isset($_GET['uname'])) {
     showBadRequestErrorPage();
 }
 
-try {
-    iMSCP_Database::getInstance()->beginTransaction();
+/** @var iMSCP_Database $db */
+$db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
 
+try {
+    $db->beginTransaction();
     $htuserId = intval($_GET['uname']);
     $domainId = get_user_domain_id($_SESSION['user_id']);
-
     $stmt = exec_query('SELECT uname FROM htaccess_users WHERE dmn_id = ? AND id = ?', [$domainId, $htuserId]);
 
     if (!$stmt->rowCount()) {
         showBadRequestErrorPage();
     }
 
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
     $htuserName = $row['uname'];
 
     // Remove the user from any group for which it is member and schedule .htgroup file change
-    $stmt = exec_query('SELECT id, members FROM htaccess_groups WHERE dmn_id = ?', $domainId);
+    $stmt = exec_query('SELECT id, members FROM htaccess_groups WHERE dmn_id = ?', [$domainId]);
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $htuserList = explode(',', $row['members']);
-        $candidate = array_search($row['id'], $members);
+        $candidate = array_search($row['id'], $htuserList);
 
-        if ($candidate === false)
+        if ($candidate === false) {
             continue;
+        }
 
-        unset($members[$candidate]);
+        unset($htuserList[$candidate]);
 
-        exec_query('UPDATE htaccess_groups SET members = ?, status = ? WHERE id = ?', [
-            implode(',', $htuserList), 'tochange', $row['id']
+        exec_query("UPDATE htaccess_groups SET members = ?, status = 'tochange' WHERE id = ?", [
+            implode(',', $htuserList), $row['id']
         ]);
     }
 
     // Schedule deletion or update of any .htaccess files in which the htuser was used
-    $stmt = exec_query('SELECT * FROM htaccess WHERE dmn_id = ?', $domainId);
+    $stmt = exec_query('SELECT * FROM htaccess WHERE dmn_id = ?', [$domainId]);
 
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $htuserList = explode(',', $row['user_id']);
         $candidate = array_search($htuserId, $htuserList);
 
-        if ($key == false)
+        if ($candidate == false) {
             continue;
+        }
 
         unset($htuserList[$candidate]);
 
@@ -82,17 +85,14 @@ try {
     }
 
     // Schedule htuser deletion
-    $stmt = exec_query('UPDATE htaccess_users SET status = ? WHERE id = ? AND dmn_id = ?', [
-        'todelete', $htuserId, $domainId
-    ]);
+    exec_query("UPDATE htaccess_users SET status = 'todelete' WHERE id = ? AND dmn_id = ?", [$htuserId, $domainId]);
 
-    iMSCP_Database::getInstance()->commit();
-
+    $db->commit();
     set_page_message(tr('User scheduled for deletion.'), 'success');
     send_request();
     write_log(sprintf('%s deletes user ID (protected areas): %s', $_SESSION['user_logged'], $htuserName), E_USER_NOTICE);
 } catch (iMSCP_Exception_Database $e) {
-    iMSCP_Database::getInstance()->rollBack();
+    $db->rollBack();
     set_page_message(tr('An unexpected error occurred. Please contact your reseller.'), 'error');
     write_log(sprintf('Could not delete htaccess user: %s', $e->getMessage()));
 }

@@ -94,7 +94,6 @@ sub process
         return 0;
     }
 
-    local $@;
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         $self->{'_dbh'}->do( @sql );
@@ -119,7 +118,6 @@ sub disable
 {
     my ($self) = @_;
 
-    local $@;
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
 
@@ -161,7 +159,6 @@ sub _loadData
 {
     my ($self, $aliasId) = @_;
 
-    local $@;
     eval {
         local $self->{'_dbh'}->{'RaiseError'} = 1;
         my $row = $self->{'_dbh'}->selectrow_hashref(
@@ -243,7 +240,8 @@ sub _getData
             DOMAIN_ADMIN_ID         => $self->{'domain_admin_id'},
             DOMAIN_NAME             => $self->{'alias_name'},
             DOMAIN_NAME_UNICODE     => idn_to_unicode( $self->{'alias_name'}, 'utf-8' ),
-            DOMAIN_IP               => $self->{'ip_number'},
+            DOMAIN_IP               => $main::imscpConfig{'BASE_SERVER_IP'} eq '0.0.0.0'
+                ? '0.0.0.0' : $self->{'ip_number'},
             DOMAIN_TYPE             => 'als',
             PARENT_DOMAIN_NAME      => $self->{'alias_name'},
             ROOT_DOMAIN_NAME        => $self->{'user_home'},

@@ -41,7 +41,12 @@ use iMSCP::Ext2Attributes qw/ isImmutable setImmutable clearImmutable /;
 use iMSCP::Getopt;
 use iMSCP::Mail;
 use Servers::mta;
-use POSIX qw/ strftime /;
+use POSIX qw/ strftime locale_h /;
+
+setlocale(LC_MESSAGES, "C.UTF-8");
+
+$ENV{'LANG'} = 'C.UTF-8';
+$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
 my $command = {
     bzip2  => {
@@ -157,10 +162,11 @@ sub backupDatabases
     }
 
     for my $dbName( keys %{$rows} ) {
-        local $@;
         eval { $db->dumpdb( $dbName, $bkpDir ); };
-        warning( $@ );
-        next if $@;
+        if ( $@ ) {
+            error( $@ );
+            next if $@;
+        }
 
         # Encode slashes as SOLIDUS unicode character
         # Encode dots as Full stop unicode character
@@ -210,24 +216,18 @@ sub backupMaildirs
                 FROM domain
                 WHERE domain_id = ?
                 AND domain_status <> 'todelete'
-    
                 UNION ALL
-    
                 SELECT CONCAT(subdomain_name, '.', domain_name)
                 FROM subdomain
                 JOIN domain USING(domain_id)
                 WHERE domain_id = ?
                 AND subdomain_status <> 'todelete'
-    
                 UNION ALL
-    
                 SELECT alias_name
                 FROM domain_aliasses
                 WHERE domain_id = ?
                 AND alias_status <> 'todelete'
-    
                 UNION ALL
-    
                 SELECT CONCAT(subdomain_alias_name, '.', alias_name)
                 FROM subdomain_alias
                 JOIN domain_aliasses USING(alias_id)
@@ -263,8 +263,8 @@ sub backupMaildirs
         error( $stderr || 'Unknown error' ) if $rs > 1;
 
         my $file = iMSCP::File->new( filename => "$bkpDir/$bkpArchName" );
-        $rs ||= $file->owner( $user, $group );
-        $rs = $file->mode( 0640 );
+        $rs = $file->owner( $user, $group );
+        $rs ||= $file->mode( 0640 );
     }
 }
 
@@ -318,7 +318,6 @@ sub backupAll
         my $user = $dmnData->{'admin_sys_name'};
         my $group = $dmnData->{'admin_sys_gname'};
 
-        local $@;
         eval {
             unless ( -d $bkpDir ) {
                 my $isProtectedHomedir = 0;

@@ -22,6 +22,8 @@ package Listener::Postfix::Transport::Table;
 ## Allows to add entries in the postfix transport(5) table
 #
 
+our $VERSION = '1.0.0';
+
 use strict;
 use warnings;
 use iMSCP::EventManager;

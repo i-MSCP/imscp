@@ -25,6 +25,8 @@ package Package::Backup;
 
 use strict;
 use warnings;
+use iMSCP::Dialog::InputValidation;
+use iMSCP::Getopt;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -72,10 +74,10 @@ sub imscpBackupDialog
 {
     my (undef, $dialog) = @_;
 
-    my $backupImscp = main::setupGetQuestion( 'BACKUP_IMSCP' );
+    my $backupImscp = main::setupGetQuestion( 'BACKUP_IMSCP', iMSCP::Getopt->preseed ? 'yes' : '' );
 
     if ( $main::reconfigure =~ /^(?:backup|all|forced)$/
-        || $backupImscp !~ /^(?:yes|no)$/
+        || !isStringInList( $backupImscp, 'yes', 'no' )
     ) {
         ( my $rs, $backupImscp ) = $dialog->radiolist( <<"EOF", [ 'yes', 'no' ], $backupImscp ne 'no' ? 'yes' : 'no' );
 
@@ -83,7 +85,7 @@ sub imscpBackupDialog
 
 Do you want to activate the backup feature for i-MSCP?
 
-The backup feature for i-MSCP allows the daily save of all i-MSCP configuration files and its database. It's greatly recommended to activate this feature.
+The backup feature for i-MSCP allows the daily save of all i-MSCP configuration files and its database.
 EOF
         return $rs if $rs >= 30;
     }
@@ -105,10 +107,10 @@ sub customerBackupDialog
 {
     my (undef, $dialog) = @_;
 
-    my $backupDomains = main::setupGetQuestion( 'BACKUP_DOMAINS' );
+    my $backupDomains = main::setupGetQuestion( 'BACKUP_DOMAINS', iMSCP::Getopt->preseed ? 'yes' : '' );
 
     if ( $main::reconfigure =~ /^(?:backup|all|forced)$/
-        || $backupDomains !~ /^(?:yes|no)$/
+        || !isStringInList( $backupDomains, 'yes', 'no' )
     ) {
         ( my $rs, $backupDomains ) = $dialog->radiolist(
             <<"EOF", [ 'yes', 'no' ], $backupDomains ne 'no' ? 'yes' : 'no' );
@@ -124,7 +126,7 @@ This feature allows resellers to enable backup for their customers such as:
  - SQL databases only
  - None (no backup)
 EOF
-        return $rs if $rs >= 30;
+        return $rs unless $rs < 30;
     }
 
     main::setupSetQuestion( 'BACKUP_DOMAINS', $backupDomains );

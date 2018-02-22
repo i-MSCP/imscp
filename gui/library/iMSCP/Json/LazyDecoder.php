@@ -60,6 +60,35 @@ class LazyDecoder implements \ArrayAccess, \Countable
     /**
      * {@inheritdoc}
      */
+    public function &offsetGet($key)
+    {
+        if (!$this->decoded) {
+            $this->decode();
+        }
+
+        $ret = NULL;
+        if (!$this->offsetExists($key)) {
+            return $ret;
+        }
+        $ret =& $this->container[$key];
+        return $ret;
+    }
+
+    /**
+     * Decode json data
+     *
+     * @return void
+     */
+    protected function decode()
+    {
+        $this->container = call_user_func_array('json_decode', $this->parameters);
+        $this->parameters = NULL;
+        $this->decoded = true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function offsetExists($key)
     {
         if (!$this->decoded) {
@@ -72,23 +101,6 @@ class LazyDecoder implements \ArrayAccess, \Countable
     /**
      * {@inheritdoc}
      */
-    public function &offsetGet($key)
-    {
-        if (!$this->decoded) {
-            $this->decode();
-        }
-
-        $ret = null;
-        if (!$this->offsetExists($key)) {
-            return $ret;
-        }
-        $ret =& $this->container[$key];
-        return $ret;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function offsetSet($key, $value)
     {
         if (!$this->decoded) {
@@ -96,20 +108,6 @@ class LazyDecoder implements \ArrayAccess, \Countable
         }
 
         $this->container[$key] = $value;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function offsetUnset($key)
-    {
-        if (!$this->decoded) {
-            $this->decode();
-        }
-
-        if ($this->offsetExists($key)) {
-            unset($this->container[$key]);
-        }
     }
 
     /**
@@ -147,6 +145,20 @@ class LazyDecoder implements \ArrayAccess, \Countable
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function offsetUnset($key)
+    {
+        if (!$this->decoded) {
+            $this->decode();
+        }
+
+        if ($this->offsetExists($key)) {
+            unset($this->container[$key]);
+        }
+    }
+
+    /**
      * Return array representation of this object
      *
      * @return array|string
@@ -158,17 +170,5 @@ class LazyDecoder implements \ArrayAccess, \Countable
         }
 
         return $this->container;
-    }
-
-    /**
-     * Decode json data
-     *
-     * @return void
-     */
-    protected function decode()
-    {
-        $this->container = call_user_func_array('json_decode', $this->parameters);
-        $this->parameters = null;
-        $this->decoded = true;
     }
 }

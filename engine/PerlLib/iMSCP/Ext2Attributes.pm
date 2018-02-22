@@ -55,8 +55,6 @@ BEGIN
         my $bitness = Bit::Vector->Long_Bits();
         my $module = "iMSCP::Ext2Attributes::Ext2Fs$bitness";
 
-        local $@;
-
         if ( eval "require $module" ) {
             $module->import();
         } else {

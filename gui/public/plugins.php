@@ -30,9 +30,11 @@ if (($urlComponents = parse_url($_SERVER['REQUEST_URI'])) === false
     showBadRequestErrorPage();
 }
 
+$urlComponents['path'] = rtrim($urlComponents['path'], '/');
+
 /** @var iMSCP_Plugin_Manager $pluginManager */
-$pluginManager = Registry::get('pluginManager');
-$plugins = $pluginManager->pluginGetLoaded('Action');
+$pluginManager = Registry::get('iMSCP_Application')->getPluginManager();
+$plugins = $pluginManager->pluginGetLoaded();
 
 if (empty($plugins)) {
     showNotFoundErrorPage();

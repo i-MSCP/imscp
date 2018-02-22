@@ -50,12 +50,15 @@ use iMSCP::Stepper;
 use iMSCP::SystemUser;
 use Servers::sqld;
 use Servers::sqld;
+use POSIX qw /locale_h /;
+
+setlocale(LC_MESSAGES, "C.UTF-8");
 
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
 # Set backend mode
-$main::execmode = 'uninstall' unless defined $main::execmode;;
+$main::execmode = 'uninstall' unless defined $main::execmode;
 
 newDebug( 'imscp-uninstall.log' );
 
@@ -70,7 +73,6 @@ sub process
 {
     _userDialog();
 
-    local $@;
     my $row = eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
@@ -147,7 +149,6 @@ EOF
 
 sub _removeCustomers
 {
-    local $@;
     eval {
         {
             my $tables = {
@@ -257,7 +258,7 @@ sub _uninstallServices
             return $rs if $rs;
         }
 
-        if ( "/lib/systemd/system/$service.service" ) {
+        if ( -f "/lib/systemd/system/$service.service" ) {
             $serviceMngr->enable( $service ) if $serviceMngr->isSystemd();
         }
     }
@@ -285,7 +286,6 @@ sub _removeSysctlFile
 
 sub _removeSqlData
 {
-    local $@;
     eval {
         my $sqlServer = Servers::sqld->factory();
         my $dbh = iMSCP::Database->factory()->getRawDb();

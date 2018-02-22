@@ -367,7 +367,6 @@ sub _addAwstatsConfig
         return 1;
     }
 
-    local $@;
     my $row = eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'} = 1;
@@ -380,7 +379,7 @@ sub _addAwstatsConfig
         error( $@ );
         return 1;
     } elsif ( !$row ) {
-        error( sprintf( "Couldn't retrieve data from admin whith ID %d", $data->{'DOMAIN_ADMIN_ID'} ));
+        error( sprintf( "Couldn't retrieve data for admin with ID %d", $data->{'DOMAIN_ADMIN_ID'} ));
         return 1;
     }
 

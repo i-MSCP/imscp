@@ -19,7 +19,6 @@
  */
 
 use iMSCP_Authentication as Authentication;
-use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
@@ -37,10 +36,10 @@ use iMSCP_Registry as Registry;
  */
 function send_alias_order_email($aliasName)
 {
-    $stmt = exec_query(
-        'SELECT admin_name, created_by, fname, lname, email FROM admin WHERE admin_id = ?', $_SESSION['user_id']
-    );
-    $row = $stmt->fetchRow();
+    $stmt = exec_query('SELECT admin_name, created_by, fname, lname, email FROM admin WHERE admin_id = ?', [
+        $_SESSION['user_id']
+    ]);
+    $row = $stmt->fetch();
     $data = get_alias_order_email($row['created_by']);
     $ret = send_mail([
         'mail_id'      => 'alias-order-msg',
@@ -97,27 +96,27 @@ function getDomainsList()
             FROM subdomain AS t1
             JOIN domain AS t2 USING(domain_id)
             WHERE t1.domain_id = :domain_id
-            AND t1.subdomain_status = :status_ok
+            AND t1.subdomain_status = 'ok'
             AND t1.subdomain_url_forward = 'no'
             UNION ALL
             SELECT alias_name AS name, alias_mount AS mount_point
             FROM domain_aliasses
             WHERE domain_id = :domain_id
-            AND alias_status = :status_ok
+            AND alias_status = 'ok'
             AND url_forward = 'no'
             UNION ALL
             SELECT CONCAT(t1.subdomain_alias_name, '.', t2.alias_name) AS name, t1.subdomain_alias_mount AS mount_point
             FROM subdomain_alias AS t1
             JOIN domain_aliasses AS t2 USING(alias_id)
             WHERE t2.domain_id = :domain_id
-            AND t1.subdomain_alias_status = :status_ok
+            AND t1.subdomain_alias_status = 'ok'
             AND t1.subdomain_alias_url_forward = 'no'
         ",
-        ['domain_id' => $mainDmnProps['domain_id'], 'status_ok' => 'ok']
+        ['domain_id' => $mainDmnProps['domain_id']]
     );
 
     if ($stmt->rowCount()) {
-        $domainsList = array_merge($domainsList, $stmt->fetchAll(PDO::FETCH_ASSOC));
+        $domainsList = array_merge($domainsList, $stmt->fetchAll());
         usort($domainsList, function ($a, $b) {
             return strnatcmp(decode_idna($a['name']), decode_idna($b['name']));
         });
@@ -303,7 +302,9 @@ function addDomainAlias()
     }
 
     $isSuUser = isset($_SESSION['logged_from_type']); # See http://youtrack.i-mscp.net/issue/IP-1486
-    $db = Database::getInstance();
+
+    /** @var iMSCP_Database $db */
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -333,7 +334,7 @@ function addDomainAlias()
             ]
         );
 
-        $id = $db->insertId();
+        $id = $db->lastInsertId();
 
         // Create the phpini entry for that domain alias
         $phpini = iMSCP_PHPini::getInstance();

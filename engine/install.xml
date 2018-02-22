@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders export="SYSTEM_ENGINE_ROOT">${SYSTEM_ROOT}/engine</folders>
-    <folders>${SYSTEM_ENGINE_ROOT}/backup</folders>
-    <folders>${SYSTEM_ENGINE_ROOT}/messenger</folders>
-    <folders>${SYSTEM_ENGINE_ROOT}/quota</folders>
-    <folders>${SYSTEM_ENGINE_ROOT}/traffic</folders>
-    <folders>${SYSTEM_ENGINE_ROOT}/setup</folders>
-    <folders>${SYSTEM_ENGINE_ROOT}/tools</folders>
-    <folders>${SYSTEM_ENGINE_ROOT}/traffic</folders>
+    <folder export="SYSTEM_ENGINE_ROOT">${SYSTEM_ROOT}/engine</folder>
+    <folder>${SYSTEM_ENGINE_ROOT}/backup</folder>
+    <folder>${SYSTEM_ENGINE_ROOT}/messenger</folder>
+    <folder>${SYSTEM_ENGINE_ROOT}/quota</folder>
+    <folder>${SYSTEM_ENGINE_ROOT}/traffic</folder>
+    <folder>${SYSTEM_ENGINE_ROOT}/setup</folder>
+    <folder>${SYSTEM_ENGINE_ROOT}/tools</folder>
+    <folder>${SYSTEM_ENGINE_ROOT}/traffic</folder>
     <copy>${SYSTEM_ENGINE_ROOT}/imscp-pkt-mngr</copy>
     <copy>${SYSTEM_ENGINE_ROOT}/imscp-rqst-mngr</copy>
     <copy>${SYSTEM_ENGINE_ROOT}/imscp-sw-mngr</copy>

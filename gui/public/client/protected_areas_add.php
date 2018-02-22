@@ -53,7 +53,6 @@ function isAllowedDir($directory)
 /**
  * Add/update protected area
  *
- * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  * @return void
  */
@@ -100,7 +99,7 @@ function handleProtectedArea()
 
     $vfs = new VirtualFileSystem($_SESSION['user_logged']);
     if ($protectedAreaPath !== '/' && !$vfs->exists($protectedAreaPath, VirtualFileSystem::VFS_TYPE_DIR)) {
-        set_page_message(tr("Directory '%s' doesn't exists.", $protectedAreaPath), 'error');
+        set_page_message(tr("Directory '%s' doesn't exist.", $protectedAreaPath), 'error');
         return;
     }
 
@@ -114,7 +113,7 @@ function handleProtectedArea()
               WHERE id IN(' . implode(',', array_map('quoteValue', (array)$_POST['users'])) . ')
               AND dmn_id = ?
             ',
-            $mainDmnProps['domain_id']
+            [$mainDmnProps['domain_id']]
         );
         if (!$stmt->rowCount()) {
             showBadRequestErrorPage();
@@ -130,7 +129,7 @@ function handleProtectedArea()
               WHERE id IN(' . implode(',', array_map('quoteValue', (array)$_POST['groups'])) . ')
               AND dmn_id = ?
             ',
-            $mainDmnProps['domain_id']
+            [$mainDmnProps['domain_id']]
         );
         if (!$stmt->rowCount()) {
             showBadRequestErrorPage();
@@ -140,7 +139,8 @@ function handleProtectedArea()
         $userIdList = 0;
     }
 
-    $db = iMSCP_Database::getInstance();
+    /** @var iMSCP_Database $db */
+    $db = iMSCP_Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();
@@ -156,17 +156,14 @@ function handleProtectedArea()
         }
 
         exec_query(
-            '
+            "
                 INSERT INTO htaccess (
                     dmn_id, user_id, group_id, auth_type, auth_name, path, status
                 ) VALUES (
-                    ?, ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, 'Basic', ?, ?, 'toadd'
                 )
-            ',
-            [
-                $mainDmnProps['domain_id'], $userIdList, $groupIdList, 'Basic', $protectedAreaName, $protectedAreaPath,
-                'toadd'
-            ]
+            ",
+            [$mainDmnProps['domain_id'], $userIdList, $groupIdList, $protectedAreaName, $protectedAreaPath]
         );
 
         $db->commit();
@@ -213,7 +210,7 @@ function generatePage($tpl)
             showBadRequestErrorPage();
         }
 
-        $row = $stmt->fetchRow();
+        $row = $stmt->fetch();
         $tpl->assign('ID', $row['id']);
         $userIds = $row['user_id'];
         $groupIds = $row['group_id'];
@@ -252,7 +249,7 @@ function generatePage($tpl)
         ]);
     }
 
-    $stmt = exec_query('SELECT * FROM htaccess_users WHERE dmn_id = ?', $mainDmnProps['domain_id']);
+    $stmt = exec_query('SELECT * FROM htaccess_users WHERE dmn_id = ?', [$mainDmnProps['domain_id']]);
     if (!$stmt->rowCount()) {
         set_page_message(tr('You must first create a user.'), 'error');
         redirectTo('protected_areas.php');
@@ -260,7 +257,7 @@ function generatePage($tpl)
 
     # Create htuser list
     $userIds = isset($_POST['users']) ? (array)$_POST['users'] : explode(',', $userIds);
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $tpl->assign([
             'USER_VALUE'    => tohtml($row['id']),
             'USER_LABEL'    => tohtml($row['uname']),
@@ -270,7 +267,7 @@ function generatePage($tpl)
     }
 
     # Create htgroup list
-    $stmt = exec_query('SELECT * FROM htaccess_groups WHERE dmn_id = ?', $mainDmnProps['domain_id']);
+    $stmt = exec_query('SELECT * FROM htaccess_groups WHERE dmn_id = ?', [$mainDmnProps['domain_id']]);
     if (!$stmt->rowCount()) {
         $tpl->assign([
             'AUTH_SELECTORS_JS'      => '',
@@ -281,7 +278,7 @@ function generatePage($tpl)
     } else {
         $tpl->assign('TR_AUTHENTICATION_DATA', tr('Authentication users/groups'));
         $groupIds = isset($_POST['groups']) ? (array)$_POST['groups'] : explode(',', $groupIds);
-        while ($row = $stmt->fetchRow()) {
+        while ($row = $stmt->fetch()) {
             $tpl->assign([
                 'GROUP_VALUE'    => tohtml($row['id']),
                 'GROUP_LABEL'    => tohtml($row['ugroup']),

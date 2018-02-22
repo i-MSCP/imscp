@@ -6,8 +6,9 @@ Set of listener files for i-MSCP.
 
 ## Installation
 
-To install a listener file, you must upload it in the **/etc/imscp/listeners.d** directory, and edit the configuration
-parameters inside it if any. Once done, you should rerun the i-MSCP installer.
+To install a listener file, you must upload it in the `/etc/imscp/listeners.d`
+directory, and edit the configuration parameters inside it if any. Once done,
+you should rerun the i-MSCP installer.
 
 ## Apache2 listener files
 
@@ -21,7 +22,8 @@ Allows to overwrite Apache2 ServerAlias directive.
 
 ### 30_apache2_tools_proxy.pl
 
-Allows to redirect/proxy i-MSCP tools (pma,webmail...) in customers Apache2 vhost files.
+Allows to redirect/proxy i-MSCP tools (pma,webmail...) in customers Apache2
+vhost files.
 
 ### 40_apache2_security_headers.pl
 
@@ -37,12 +39,13 @@ Allows storage of customer backup directories elsewhere on the file system.
 
 ### 10_dovecot_compress.pl
 
-Activates the Dovecot compress plugin to reduce the bandwidth usage of IMAP, and also compresses the stored mails.
+Activates the Dovecot compress plugin to reduce the bandwidth usage of IMAP,
+and also compresses the stored mails.
 
 For more information please consult:
 
- * http://wiki2.dovecot.org/Plugins/Compress
- * http://wiki2.dovecot.org/Plugins/Zlib
+* http://wiki2.dovecot.org/Plugins/Compress
+* http://wiki2.dovecot.org/Plugins/Zlib
 
 ### 20_dovecot_connections.pl
 
@@ -50,8 +53,8 @@ Allows to increase the mail_max_userip_connections parameter value.
 
 ### 30_dovecot_namespace.pl
 
-Creates the INBOX. as a compatibility name, so old clients can continue using it while new clients will use the empty
-prefix namespace.
+Creates the INBOX. as a compatibility name, so old clients can continue using
+it while new clients will use the empty prefix namespace.
 
 ### 40_dovecot_pfs.pl
 
@@ -59,12 +62,14 @@ Activates the Perfect Forward Secrecy logging.
 
 ### 50_dovecot_plaintext.pl
 
-Disables plaintext logins and enforce TLS. Also remove the cram-md5 and digest-md5 authentication mechanisms that are no
-longer supported in i-MSCP 1.3.x.
+Disables plaintext logins and enforce TLS. Also remove the cram-md5 and
+digest-md5 authentication mechanisms that are no longer supported in i-MSCP
+1.3.x.
 
 ### 60_dovecot_service_login.pl (requires Dovecot 2.1.0 or newer)
 
-Allows to modify default service-login configuration options. This listener file.
+Allows to modify default service-login configuration options. This listener
+file.
 
 ## FrontEnd listener files
 
@@ -82,8 +87,9 @@ Listener file that implements RRL (Response-Rate-Limiting)
 
 Listener file that allows to set identical NS entries in all zones
 
-**Warning:**  Warning: Don't forget to declare your slave DNS servers to i-MSCP. Don't forget also to activate IPv6
-support if needed. All this can be done by reconfiguring the `named` service as follow:
+Warning: Don't forget to declare your slave DNS servers toi-MSCP. Don't forget
+also to activate IPv6 support if needed. All this can be done by reconfiguring
+the `named` service as follow:
 
 ```
    perl /var/www/imscp/engine/setup/imscp-reconfigure -dr named
@@ -128,12 +134,14 @@ Replaces package file with custom one.
 
 ### 10_php_confoptions_override.pl
 
-Allows to add or override PHP configuration options globally or per domain.
+Allows to add or override PHP directives values globally or per domain,
+depending on PHP INI level in use.
 
-Be aware that only Fcgid and PHP-FPM Apache2 httpd server implementations are supported.
+Be aware that only Fcgid and PHP-FPM Apache2 httpd server implementations are
+supported.
 
-Note: When you want operate on a per domain basis, don't forget to set the PHP configuration level to 'per_site'. You
-can do this by running:
+Note: When you want operate on a per domain basis, don't forget to set the PHP
+configuration level to 'per_site'. You can do this by running:
 
 ```
 # perl /var/www/imscp/engine/setup/imscp-reconfigure -dar php
@@ -143,8 +151,8 @@ can do this by running:
 
 Allows to override PHP-FPM settings in pool configuration files.
 
-Note: When you want operate on a per domain basis, don't forget to set the PHP configuration level to 'per_site'. You
-can do this by running:
+Note: When you want operate on a per domain basis, don't forget to set the PHP
+configuration level to 'per_site'. You can do this by running:
 
 ```
 # perl /var/www/imscp/engine/setup/imscp-reconfigure -dar php
@@ -193,11 +201,11 @@ Adds self-generated EDH parameter files for Perfect Forward Secrecy (PFS).
 First, you must create the files before activating this listener:
 
 ```
-# cd /etc/postfix
-# umask 022
-# openssl dhparam -out dh512.tmp 512 && mv dh512.tmp dh512.pem
-# openssl dhparam -out dh2048.tmp 2048 && mv dh2048.tmp dh2048.pem
-# chmod 644 dh512.pem dh2048.pem
+cd /etc/postfix
+umask 022
+openssl dhparam -out dh512.tmp 512 && mv dh512.tmp dh512.pem
+openssl dhparam -out dh2048.tmp 2048 && mv dh2048.tmp dh2048.pem
+chmod 644 dh512.pem dh2048.pem
 ```
 
 ### 70_postfix_submission_tls.pl

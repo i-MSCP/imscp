@@ -43,14 +43,14 @@ $stmt = exec_query(
     [$catchallId, $_SESSION['user_id']]
 );
 
-if ($stmt->fetchRow(PDO::FETCH_COLUMN) == 0) {
+if ($stmt->fetchColumn() < 1) {
     showBadRequestErrorPage();
 }
 
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteMailCatchall, [
     'mailCatchallId' => $catchallId
 ]);
-exec_query("UPDATE mail_users SET status = 'todelete' WHERE mail_id = ?", $catchallId);
+exec_query("UPDATE mail_users SET status = 'todelete' WHERE mail_id = ?", [$catchallId]);
 iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMailCatchall, [
     'mailCatchallId' => $catchallId
 ]);

@@ -241,7 +241,6 @@ sub setupImportSqlSchema
         return 1;
     }
 
-    local $@;
     eval {
         my $dbh = $db->getRawDb();
         local $dbh->{'RaiseError'} = 1;
@@ -272,8 +271,8 @@ sub setupSetPermissions
         my $stderr;
         $rs = executeNoWait(
             [ 'perl', "$main::imscpConfig{'ENGINE_ROOT_DIR'}/setup/$script", @options ],
-            ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                ? undef
+            ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose
+                ? sub {}
                 : sub {
                     return unless ( shift ) =~ /^(.*)\t(.*)\t(.*)/;
                     step( undef, $1, $2, $3 );
@@ -375,9 +374,6 @@ sub setupRegisterPluginListeners
     return $rs if $rs;
 
     my ($db, $pluginNames) = ( iMSCP::Database->factory(), undef );
-
-    local $@;
-
     my $oldDbName = eval { $db->useDatabase( setupGetQuestion( 'DATABASE_NAME' )); };
     return 0 if $@; # Fresh install case
 

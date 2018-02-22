@@ -48,9 +48,9 @@ function generateDomainTypeList($mainDmnId, $tpl)
             LEFT JOIN subdomain_alias AS t4 ON(t4.alias_id = t3.alias_id)
             WHERE t1.domain_id = ?
         ',
-        $mainDmnId
+        [$mainDmnId]
     );
-    $row = $stmt->fetchRow();
+    $row = $stmt->fetch();
 
     $domains = [
         ['count' => '1', 'type' => 'dmn', 'tr' => tr('Domain')],
@@ -121,7 +121,7 @@ function getDomainList($mainDmnName, $mainDmnId, $dmnType = 'dmn')
     }
 
     $dmnList = [];
-    while ($row = $stmt->fetchRow()) {
+    while ($row = $stmt->fetch()) {
         $domainName = decode_idna($row['name']);
         $dmnList[] = [
             'domain_name_val' => $domainName,
@@ -188,7 +188,7 @@ function addAccount()
     if ($homeDir !== '/'
         && !$vfs->exists($homeDir, VirtualFileSystem::VFS_TYPE_DIR)
     ) {
-        set_page_message(tr("Directory '%s' doesn't exists.", $homeDir), 'error');
+        set_page_message(tr("Directory '%s' doesn't exist.", $homeDir), 'error');
         return false;
     }
 
@@ -204,11 +204,12 @@ function addAccount()
             LEFT JOIN quotalimits AS t3 ON (t3.name = t1.admin_name)
             WHERE t1.admin_id = ?
         ',
-        $_SESSION['user_id']
+        [$_SESSION['user_id']]
     );
-    $row1 = $stmt->fetchRow();
+    $row1 = $stmt->fetch();
 
-    $db = iMSCP_Database::getInstance();
+    /** @var iMSCP_Database $db */
+    $db = Registry::get('iMSCP_Application')->getDatabase();
 
     try {
         $db->beginTransaction();

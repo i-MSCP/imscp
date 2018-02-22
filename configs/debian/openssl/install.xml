@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders>${SYSTEM_CONF}/openssl</folders>
+    <folder>${SYSTEM_CONF}/openssl</folder>
     <copy_config>${SYSTEM_CONF}/openssl/openssl.cnf.tpl</copy_config>
 </install>

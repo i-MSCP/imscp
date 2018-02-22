@@ -37,7 +37,7 @@ function loadHostingPlan()
         return false;
     }
 
-    $data = $stmt->fetchRow();
+    $data = $stmt->fetch();
     $name = $data['name'];
     $description = $data['description'];
     $status = $data['status'];

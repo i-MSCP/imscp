@@ -29,6 +29,7 @@ use File::Basename;
 use iMSCP::Crypt qw/ randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug;
+use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
@@ -87,12 +88,15 @@ sub showDialog
 {
     my ($self, $dialog) = @_;
 
-    my $confLevel = main::setupGetQuestion( 'PHP_CONFIG_LEVEL', $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} );
+    my $confLevel = main::setupGetQuestion(
+        'PHP_CONFIG_LEVEL', $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} || ( iMSCP::Getopt->preseed ? 'per_site' : '' )
+    );
 
     if ( $main::reconfigure =~ /^(?:httpd|php|servers|all|forced)$/
-        || $confLevel !~ /^per_(?:site|domain|user)$/
+        || !isStringInList( $confLevel, 'per_site', 'per_domain', 'per_user' )
     ) {
         $confLevel =~ s/_/ /;
+
         ( my $rs, $confLevel ) = $dialog->radiolist(
             <<"EOF", [ 'per_site', 'per_domain', 'per_user' ], $confLevel =~ /^per (?:user|domain)$/ ? $confLevel : 'per site' );
 
@@ -104,7 +108,7 @@ Please choose the PHP configuration level you want use. Available levels are:
 \\Z4Per user:\\Zn One php.ini file per user
 \\Z4Per site:\\Zn One php.ini file per domain
 EOF
-        return $rs if $rs >= 30;
+        return $rs unless $rs < 30;
     }
 
     ( $self->{'phpConfig'}->{'PHP_CONFIG_LEVEL'} = $confLevel ) =~ s/ /_/;
@@ -187,7 +191,7 @@ sub _guessSystemPhpVariables
 
     unless ( -d $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} ) {
         $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = '';
-        die( sprintf( "Couldn't guess `%s' PHP configuration parameter value: directory doesn't exists.", $_ ));
+        die( sprintf( "Couldn't guess `%s' PHP configuration parameter value: directory doesn't exist.", $_ ));
     }
 
     $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php$phpVersion" );
@@ -486,7 +490,6 @@ sub _setupVlogger
     my $rs = main::setupImportSqlSchema( $db, "$self->{'apacheCfgDir'}/vlogger.sql" );
     return $rs if $rs;
 
-    local $@;
     eval {
         my $sqlServer = Servers::sqld->factory();
 
@@ -615,7 +618,7 @@ sub _cleanup
 
     # FPM
     unlink grep !/www\.conf$/, glob "$self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'}/*.conf";
-    local $@;
+
     eval {
         my $serviceMngr = iMSCP::Service->getInstance();
         $serviceMngr->stop( sprintf( 'php%s-fpm', $self->{'phpConfig'}->{'PHP_VERSION'} ));
