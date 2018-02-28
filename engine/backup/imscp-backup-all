@@ -166,10 +166,14 @@ sub backupDatabases
         # Encode dots as Full stop unicode character
         ( my $encodedDbName = $dbName ) =~ s%([./])%{ '/', '@002f', '.', '@002e' }->{$1}%ge;
         my $dbDumpFilePath = File::Spec->catfile( $bkpDir, $encodedDbName . '.sql' );
+        my $bkpDate = strftime "%Y.%m.%d-%H-%M", localtime( );
+        my $bkpArchPath = File::Spec->catfile( $bkpDir, 'sql-backup-'.$encodedDbName.'-'.$bkpDate.'.sql' );
 
         my $file = iMSCP::File->new( filename => $dbDumpFilePath );
         my $rs = $file->owner( $user, $group );
         $rs ||= $file->mode( 0640 );
+        $rs ||= $file->moveFile( $bkpArchPath );
+        $dbDumpFilePath = $bkpArchPath;
 
         next if $rs || $cmpAlgo eq 'no';
 
