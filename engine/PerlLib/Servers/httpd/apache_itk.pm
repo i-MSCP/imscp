@@ -1715,17 +1715,6 @@ sub _addFiles
         } else {
             $fixPermissions = 1;
         }
-
-        if ( $self->{'config'}->{'MOUNT_CUSTOMER_LOGS'} ne 'yes' ) {
-            $rs = $self->umountLogsFolder( $data );
-            return $rs if $rs;
-
-            iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/logs" )->remove();
-            iMSCP::Dir->new( dirname => "$tmpDir/logs" )->remove();
-        } elsif ( !-d "$tmpDir/logs" ) {
-            error( "The `domain' Web folder skeleton must provides the `logs' directory." );
-            return 1;
-        }
     }
 
     my $parentDir = dirname( $data->{'WEB_DIR'} );
@@ -1745,6 +1734,17 @@ sub _addFiles
     }
 
     clearImmutable( $data->{'WEB_DIR'} ) if -d $data->{'WEB_DIR'};
+
+    if ($data->{'DOMAIN_TYPE'} eq 'dmn' && $self->{'config'}->{'MOUNT_CUSTOMER_LOGS'} ne 'yes') {
+        $rs = $self->umountLogsFolder($data);
+        return $rs if $rs;
+
+        iMSCP::Dir->new(dirname => "$data->{'WEB_DIR'}/logs")->remove();
+        iMSCP::Dir->new(dirname => "$tmpDir/logs")->remove();
+    } elsif ( $data->{'DOMAIN_TYPE'} eq 'dmn' && !-d "$tmpDir/logs" ) {
+        error("Web folder skeleton must provides the `logs' directory.");
+        return 1;
+    }
 
     # Copy Web folder
     iMSCP::Dir->new( dirname => $tmpDir )->rcopy( $data->{'WEB_DIR'}, { preserve => 'no' } );
