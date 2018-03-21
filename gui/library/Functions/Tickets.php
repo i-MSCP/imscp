@@ -553,7 +553,7 @@ function hasTicketSystem($userId = NULL)
 
     $stmt = exec_query('SELECT support_system FROM reseller_props WHERE reseller_id = ?', $userId);
 
-    if (!$stmt->rowCount() || $stmt->fetchRow(PDO::FETCH_COLUMN == 'no')) {
+    if (!$stmt->rowCount() || $stmt->fetchRow(PDO::FETCH_COLUMN) == 'no') {
         return false;
     }
 
