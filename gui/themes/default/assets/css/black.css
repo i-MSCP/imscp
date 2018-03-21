@@ -122,7 +122,7 @@ h3 span {
 
 thead,
 tfoot {
-    border-color: #000000;
+    border-color: transparent;
     background: #000000 url(../images/black/jquery-ui/ui-bg_glass_40_000000_1x400.png) 50% 50% repeat-x;
     color: #ffffff;
 }

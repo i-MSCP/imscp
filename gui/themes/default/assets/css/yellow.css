@@ -122,7 +122,7 @@ h3 span {
 /* Tables */
 thead,
 tfoot {
-    border-color: #85742f;
+    border-color: transparent;
     background: #85742f url(../images/yellow/jquery-ui/ui-bg_glass_40_85742f_1x400.png) 50% 50% repeat-x;
     color: #ffffff;
 }
