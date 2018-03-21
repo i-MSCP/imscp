@@ -228,19 +228,24 @@ abstract class iMSCP_Plugin
         $config = include($file);
         iMSCP_Utility_OpcodeCache::clearAllActive($file); // Be sure to load newest version on next call
 
+        # See https://wiki.i-mscp.net/doku.php?id=plugins:configuration
+
         $file = PERSISTENT_PATH . "/plugins/$pluginName.php";
 
         if (@is_readable($file)) {
             $localConfig = include($file);
             iMSCP_Utility_OpcodeCache::clearAllActive($file); // Be sure to load newest version on next call
 
-            if (array_key_exists('__REMOVE__', $localConfig) && is_array($localConfig['__REMOVE__'])) {
-                $config = utils_arrayDiffRecursive($config, $localConfig['__REMOVE__']);
-
-                if (array_key_exists('__OVERRIDE__', $localConfig) && is_array($localConfig['__OVERRIDE__'])) {
-                    $config = utils_arrayMergeRecursive($config, $localConfig['__OVERRIDE__']);
+            // Remove item(s) first (if needed)
+            if (array_key_exists('__REMOVE__', $localConfig)) {
+                if (is_array($localConfig['__REMOVE__'])) {
+                    $config = utils_arrayDiffRecursive($config, $localConfig['__REMOVE__']);
                 }
+
+                unset($localConfig['__REMOVE__']);
             }
+
+            $config = utils_arrayMergeRecursive($config, $localConfig);
         }
 
         return $config;
