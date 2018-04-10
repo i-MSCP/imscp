@@ -168,11 +168,11 @@ sub restore
         # Restore know databases only
         local $self->{'_dbh'}->{'RaiseError'} = 1;
 
-        my @rows = $self->{'_dbh'}->selectall_array(
+        my $rows = $self->{'_dbh'}->selectall_arrayref(
             'SELECT sqld_name FROM sql_database WHERE domain_id = ?', { Slice => {} }, $self->{'domain_id'}
         );
 
-        for my $row( @rows ) {
+        for my $row( @{ $rows } ) {
             # Encode slashes as SOLIDUS unicode character
             # Encode dots as Full stop unicode character
             ( my $encodedDbName = $row->{'sqld_name'} ) =~ s%([./])%{ '/', '@002f', '.', '@002e' }->{$1}%ge;

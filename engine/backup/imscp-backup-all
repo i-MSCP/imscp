@@ -159,7 +159,7 @@ sub backupDatabases
     for my $dbName( keys %{$rows} ) {
         local $@;
         eval { $db->dumpdb( $dbName, $bkpDir ); };
-        warning( $@ );
+        warning( $@ ) if $@;
         next if $@;
 
         # Encode slashes as SOLIDUS unicode character
