@@ -31,6 +31,9 @@ use iMSCP\VirtualFileSystem as VirtualFileSystem;
  * @param int $subdomainId Subdomain unique identifier
  * @param string $subdomainType Subdomain Type
  * @return array|bool Subdomain data or FALSE on error
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
+ * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  */
 function _client_getSubdomainData($subdomainId, $subdomainType)

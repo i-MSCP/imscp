@@ -32,6 +32,7 @@ use iMSCP_pTemplate as TemplateEngine;
  * @param int $startDate UNIX timestamp representing a start date
  * @param int $endDate UNIX timestamp representing an end date
  * @return array
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function getServerTraffic($startDate, $endDate)

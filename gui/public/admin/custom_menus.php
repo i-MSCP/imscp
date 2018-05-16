@@ -164,6 +164,7 @@ function admin_generateForm($tpl)
  * @param int $menuOrder Menu order
  * @return bool TRUE if menu data are valid, FALSE otherwise
  * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function admin_isValidMenu($menuName, $menuLink, $menuTarget, $menuLevel, $menuOrder)
 {
@@ -208,7 +209,9 @@ function admin_isValidMenu($menuName, $menuLink, $menuTarget, $menuLevel, $menuO
  *
  * @return bool TRUE on success, FALSE otherwise
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
+ * @throws iMSCP_Exception
  */
 function admin_addMenu()
 {
@@ -242,7 +245,9 @@ function admin_addMenu()
  * @param int $menuId menu unique identifier
  * @return bool TRUE on success, FALSE otherwise
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
+ * @throws iMSCP_Exception
  */
 function admin_updateMenu($menuId)
 {
@@ -274,6 +279,7 @@ function admin_updateMenu($menuId)
  * @param int $menuId menu unique identifier
  * @return void
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function admin_deleteMenu($menuId)

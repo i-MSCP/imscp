@@ -76,7 +76,8 @@ function clean_input($input)
  * @param string $input String to filter
  * @param string $default Default value if $input is empty after filtering
  * @return string containing only digits
- *
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function filter_digits($input, $default = NULL)
 {
@@ -223,6 +224,7 @@ function validates_username($username, $min_char = 2, $max_char = 30)
  * @param string $email Email addresse to check
  * @param bool $localPartOnly If true, check only the local part
  * @return bool
+ * @throws Zend_Validate_Exception
  */
 function chk_email($email, $localPartOnly = false)
 {

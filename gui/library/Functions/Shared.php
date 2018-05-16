@@ -109,6 +109,7 @@ function createDefaultMailAccounts($mainDmnId, $userEmail, $dmnName, $forwardTyp
  * Delete all autoreplies log for which no mail address is found in the mail_users database table
  *
  * @return void
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function delete_autoreplies_log_entries()
@@ -130,6 +131,7 @@ function delete_autoreplies_log_entries()
  *
  * @param int $userId User unique identifier
  * @return string Username
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function get_user_name($userId)
@@ -155,6 +157,7 @@ function get_user_name($userId)
  * @param string $domainName Domain name to match
  * @param int $resellerId Reseller unique identifier
  * @return bool TRUE if the domain already exist, FALSE otherwise
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function imscp_domain_exists($domainName, $resellerId)
@@ -247,6 +250,9 @@ function imscp_domain_exists($domainName, $resellerId)
  * @param int $domainAdminId Customer unique identifier
  * @param int|null $createdBy OPTIONAL reseller unique identifier
  * @return array Returns an associative array where each key is a domain propertie name.
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
+ * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  */
 function get_domain_default_props($domainAdminId, $createdBy = NULL)
@@ -345,6 +351,7 @@ function translate_dmn_status($status, $showError = false)
  *
  * @param int $resellerId unique reseller identifier
  * @return void
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function update_reseller_c_props($resellerId)
@@ -512,6 +519,7 @@ function change_domain_status($customerId, $action)
  * @param int $dmnId Domain unique identifier
  * @param int $userId Sql user unique identifier
  * @return bool TRUE on success, FALSE otherwise
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Events_Manager_Exception
  * @throws iMSCP_Exception_Database
  */
@@ -578,6 +586,7 @@ function sql_delete_user($dmnId, $userId)
  * @param int $dmnId Domain unique identifier
  * @param int $dbId Databse unique identifier
  * @return bool TRUE on success, false otherwise
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Events_Manager_Exception
  * @throws iMSCP_Exception_Database
  */
@@ -984,6 +993,7 @@ function imscp_getResellerProperties($resellerId, $forceReload = false)
  * @param  int $resellerId Reseller unique identifier.
  * @param  string $props String containing new properties, each semicolon separated
  * @return iMSCP_Database_ResultSet|null
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function update_reseller_props($resellerId, $props)
@@ -1046,6 +1056,7 @@ function update_reseller_props($resellerId, $props)
  * @param int $newQuota New quota limit in bytes
  * @return void
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function sync_mailboxes_quota($domainId, $newQuota)
@@ -1980,6 +1991,7 @@ function get_webdepot_software_list($tpl, $userId)
  * @param string $repositoryIndexFile Repository index file URI
  * @param string $webRepositoryLastUpdate Web repository last update
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function update_webdepot_software_list($repositoryIndexFile, $webRepositoryLastUpdate)
@@ -1992,12 +2004,14 @@ function update_webdepot_software_list($repositoryIndexFile, $webRepositoryLastU
     $webRepositoryIndexFile->load($repositoryIndexFile);
     $webRepositoryIndexFile = simplexml_import_dom($webRepositoryIndexFile);
 
+    /** @noinspection PhpUndefinedFieldInspection */
     if (utf8_decode($webRepositoryIndexFile->LAST_UPDATE->DATE) != $webRepositoryLastUpdate) {
         $truncatequery = 'TRUNCATE TABLE `web_software_depot`';
         exec_query($truncatequery);
 
         $badSoftwarePackageDefinition = 0;
 
+        /** @noinspection PhpUndefinedFieldInspection */
         foreach ($webRepositoryIndexFile->PACKAGE as $package) {
             if (!empty($package->INSTALL_TYPE) && !empty($package->TITLE) && !empty($package->VERSION) &&
                 !empty($package->LANGUAGE) && !empty($package->TYPE) && !empty($package->DESCRIPTION) &&
@@ -2025,6 +2039,7 @@ function update_webdepot_software_list($repositoryIndexFile, $webRepositoryLastU
             }
         }
         if (!$badSoftwarePackageDefinition) {
+            /** @noinspection PhpUndefinedFieldInspection */
             exec_query('UPDATE `web_software_options` SET `webdepot_last_update` = ?', [
                 $webRepositoryIndexFile->LAST_UPDATE->DATE
             ]);
@@ -2169,10 +2184,11 @@ function send_request()
  * wrapped by the iMSCP_Database_ResultSet object.
  *
  * @see Database::execute()
- * @throws DatabaseException
  * @param string $query Sql statement to be executed
  * @param array|int|string $parameters OPTIONAL parameters - See Database::execute()
  * @return iMSCP_Database_ResultSet     An iMSCP_Database_ResultSet object
+ * @throws iMSCP_Events_Exception
+ * @throws iMSCP_Exception_Database
  */
 function execute_query($query, $parameters = NULL)
 {
@@ -2204,10 +2220,11 @@ function execute_query($query, $parameters = NULL)
 /**
  * Convenience method to prepare and execute a query.
  *
- * @throws DatabaseException When query fail
  * @param string $query Sql statement
  * @param string|int|array $bind Data to bind to the placeholders
  * @return iMSCP_Database_ResultSet|null A iMSCP_Database_ResultSet object that represents a result set
+ * @throws iMSCP_Events_Exception
+ * @throws iMSCP_Exception_Database When query fail
  */
 function exec_query($query, $bind = NULL)
 {

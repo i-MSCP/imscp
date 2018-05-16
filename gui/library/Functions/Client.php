@@ -162,6 +162,7 @@ function customerHasMailOrExtMailFeatures()
  * @param int $customerId Customer unique identifier
  * @return bool TRUE if the given customer is the owner of the given domain, FALSE otherwise
  * TODO add admin_id as foreign key in all domain tables too avoid too many jointures
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function customerHasDomain($domainName, $customerId)
@@ -230,9 +231,10 @@ function customerHasDomain($domainName, $customerId)
 /**
  * Get mount points
  *
- * @throws iMSCP_Exception_Database
  * @param int $domainId Main domain unique identifier
  * @return array List of mount points
+ * @throws iMSCP_Events_Exception
+ * @throws iMSCP_Exception_Database
  */
 function getMountpoints($domainId)
 {
@@ -637,6 +639,9 @@ function deleteSubdomainAlias($id)
  * Check if SQL databases limit of the given customer is reached
  *
  * @return bool TRUE if SQL database limit is reached, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
+ * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  */
 function customerSqlDbLimitIsReached()

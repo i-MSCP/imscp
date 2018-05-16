@@ -566,6 +566,7 @@ function debugger_changePluginItemStatus($pluginName, $table, $field, $itemId)
  * @param  string $tableName i-MSCP database table name
  * @return int Number of request
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function debugger_countRequests($statusField = NULL, $tableName = NULL)

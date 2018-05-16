@@ -173,6 +173,8 @@ function _admin_deleteResellerSwPackages($userId, array $swPackages)
  * @param int $userId User unique identifier
  * @return bool TRUE if deletion can be done, FALSE otherwise
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
+ * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  */
 function admin_validateUserDeletion($userId)

@@ -34,6 +34,7 @@ use iMSCP_Registry as Registry;
  * @param int $startDate An UNIX timestamp representing a start date
  * @param int $endDate An UNIX timestamp representing an end date
  * @return array
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function getDomainTraffic($domainId, $startDate, $endDate)

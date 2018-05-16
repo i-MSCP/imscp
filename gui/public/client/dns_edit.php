@@ -236,6 +236,7 @@ function client_validate_AAAA($ip, &$errorString)
  * @param string &$errorString Reference to variable, which contain error string
  * @return bool TRUE if the record is valid, FALSE otherwise
  * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function client_validate_MX($pref, $host, &$errorString)
 {
@@ -354,6 +355,7 @@ function client_validateAndFormat_TXT(&$data, &$errorString)
  * @param string $errorString Error string
  * @return bool
  * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function client_validate_SRV($srvName, $proto, $priority, $weight, $port, $host, &$errorString)
 {
@@ -407,6 +409,8 @@ function client_validate_SRV($srvName, $proto, $priority, $weight, $port, $host,
  *
  * @param int $ttl TTL value
  * @return int TTL
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function client_validate_TTL($ttl)
 {
@@ -884,6 +888,8 @@ function client_saveDnsRecord($dnsRecordId)
  * @param iMSCP_pTemplate $tpl
  * @param int $dnsRecordId DNS record unique identifier (0 for new record)
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  */

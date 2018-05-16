@@ -39,6 +39,7 @@ use iMSCP_Utility_OpcodeCache as OpcodeCacheUtils;
  * @param PluginManager $pluginManager
  * @return bool TRUE on success, FALSE on failure
  * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function uploadPlugin($pluginManager)
 {
@@ -277,6 +278,7 @@ function generatePage($tpl, $pluginManager)
  * @param string $action Action Plugin action name ( install|uninstall|update|change|enable|disable|delete|protect )
  * @return bool TRUE if the plugin action is allowed, FALSE otherwise
  * @throws Zend_Exception
+ * @throws iMSCP_Exception
  * @throws iMSCP_Plugin_Exception
  */
 function checkAction($pluginManager, $pluginName, $action)
@@ -374,6 +376,7 @@ function checkAction($pluginManager, $pluginName, $action)
  * @param string $action Action ( install|uninstall|update|change|enable|disable|delete|protect )
  * @return void
  * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function doAction($pluginManager, $pluginName, $action)
 {
@@ -498,6 +501,7 @@ function doAction($pluginManager, $pluginName, $action)
  * @param PluginManager $pluginManager
  * @return void
  * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function doBulkAction($pluginManager)
 {

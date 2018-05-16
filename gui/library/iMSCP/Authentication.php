@@ -148,6 +148,7 @@ class iMSCP_Authentication
      *
      * @return boolean
      * @throws Zend_Exception
+     * @throws iMSCP_Events_Exception
      * @throws iMSCP_Exception_Database
      */
     public function hasIdentity()
@@ -167,6 +168,7 @@ class iMSCP_Authentication
      * @return stdClass
      * @throws iMSCP_Events_Manager_Exception
      * @throws iMSCP_Exception_Database
+     * @throws iMSCP_Events_Exception
      */
     public function getIdentity()
     {
@@ -186,6 +188,7 @@ class iMSCP_Authentication
      * @param stdClass $identity Identity data
      * @return void
      * @throws Zend_Exception
+     * @throws iMSCP_Events_Exception
      * @throws iMSCP_Events_Manager_Exception
      * @throws iMSCP_Exception_Database
      */
@@ -227,6 +230,7 @@ class iMSCP_Authentication
      * @trigger onBeforeUnsetIdentity
      * @trigger onAfterUnserIdentity
      * @return void
+     * @throws iMSCP_Events_Exception
      * @throws iMSCP_Events_Manager_Exception
      * @throws iMSCP_Exception_Database
      */

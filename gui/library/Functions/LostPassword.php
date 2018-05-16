@@ -83,6 +83,7 @@ function createImage($strSessionVar)
  *
  * @param int $ttl
  * @return void
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function removeOldKeys($ttl)
@@ -99,6 +100,7 @@ function removeOldKeys($ttl)
  * @param string $adminName
  * @param string $uniqueKey
  * @return void
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function setUniqKey($adminName, $uniqueKey)
@@ -143,6 +145,7 @@ function setPassword($userType, $uniqueKey, $userPassword)
  *
  * @param string $uniqueKey
  * @return bool TRUE if the key exists, FALSE otherwise
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function uniqueKeyExists($uniqueKey)
@@ -157,6 +160,7 @@ function uniqueKeyExists($uniqueKey)
  *
  * @return string Unique key
  * @throws iMSCP_Exception_Database
+ * @throws iMSCP_Events_Exception
  */
 function uniqkeygen()
 {

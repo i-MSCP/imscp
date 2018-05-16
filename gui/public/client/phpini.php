@@ -65,9 +65,10 @@ function isDomainStatusOk($domainId, $domainType)
 /**
  * Get domain data
  *
- * @throws iMSCP_Exception_Database
  * @param string $configLevel PHP configuration level
  * @return array
+ * @throws iMSCP_Events_Exception
+ * @throws iMSCP_Exception_Database
  */
 function getDomainData($configLevel)
 {

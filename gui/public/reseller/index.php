@@ -33,6 +33,7 @@ use iMSCP_Registry as Registry;
  *
  * @return void
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function generateSupportQuestionsMessage()
@@ -55,6 +56,7 @@ function generateSupportQuestionsMessage()
  *
  * @return void
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function generateOrdersAliasesMessage()

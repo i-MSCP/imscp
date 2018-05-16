@@ -221,6 +221,7 @@ function updateTicket($ticketId, $userId, $urgency, $subject, $message, $ticketL
  *
  * @param int $ticketId Ticket unique identifier
  * @return void
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function deleteTicket($ticketId)
@@ -234,6 +235,7 @@ function deleteTicket($ticketId)
  * @param string $status Ticket status ('open' or 'closed')
  * @param int $userId The user's ID
  * @return void
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function deleteTickets($status, $userId)
@@ -410,6 +412,7 @@ function reopenTicket($ticketId)
  * @param int $ticketId Ticket unique identifier
  * @return int ticket status identifier
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function getTicketStatus($ticketId)
@@ -441,6 +444,7 @@ function getTicketStatus($ticketId)
  * @param int $ticketId Ticket unique identifier
  * @param int $ticketStatus New status identifier
  * @return bool TRUE if ticket status was changed, FALSE otherwise
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function changeTicketStatus($ticketId, $ticketStatus)
@@ -464,6 +468,7 @@ function changeTicketStatus($ticketId, $ticketStatus)
  * @param int $ticketId Ticket id
  * @return int User's level (1 = user, 2 = super) or FALSE if ticket is not found
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function getUserLevel($ticketId)
@@ -511,6 +516,7 @@ function getTicketUrgency($ticketUrgency)
  * @param int $ticketId Id of the ticket to display
  * @return mixed Formatted ticket sender or FALSE if ticket is not found.
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function _getTicketSender($ticketId)
@@ -544,6 +550,7 @@ function _getTicketSender($ticketId)
  * @param int $ticketId Ticket to get last date for
  * @return string Last modification date of a ticket
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function _ticketGetLastDate($ticketId)
@@ -571,6 +578,7 @@ function _ticketGetLastDate($ticketId)
  *                    if admin
  * @return bool TRUE if support ticket system is available, FALSE otherwise
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function hasTicketSystem($userId = NULL)

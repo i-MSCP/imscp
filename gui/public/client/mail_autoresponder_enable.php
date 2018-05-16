@@ -37,6 +37,7 @@ use iMSCP_pTemplate as TemplateEngine;
  *
  * @param int $mailAccountId Mail account unique identifier
  * @return string|false string if all conditions are meet, FALSE otherwise
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function checkMailAccount($mailAccountId)

@@ -139,6 +139,7 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      *
      * For a single parameter, only a Database instance is accepted.
      *
+     * @noinspection PhpMissingParentConstructorInspection
      * @throws iMSCPException
      * @param Database|array $params A Database instance or an array of
      *                               parameters that contains at least a

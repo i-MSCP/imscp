@@ -102,6 +102,7 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
      * @param PluginManager $pluginManager
      * @param string $targetForm Target form (login|captcha)
      * @throws Zend_Exception
+     * @throws iMSCP_Events_Exception
      * @throws iMSCP_Exception_Database
      * @throws iMSCP_Plugin_Exception
      * @çeturn void
@@ -134,6 +135,7 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
      * Initialization
      *
      * @return void
+     * @throws iMSCP_Events_Exception
      * @throws iMSCP_Exception_Database
      */
     protected function init()
@@ -198,6 +200,7 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
      * @return null|string
      * @throws Zend_Exception
      * @throws iMSCP_Exception_Database
+     * @throws iMSCP_Events_Exception
      */
     public function onBeforeAuthentication($event)
     {
@@ -259,6 +262,7 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
      *
      * @return void
      * @throws iMSCP_Exception_Database
+     * @throws iMSCP_Events_Exception
      */
     public function logAttempt()
     {
@@ -284,6 +288,7 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
      * Increase login|captcha attempts by 1 for $_ipAddr
      *
      * @return void
+     * @throws iMSCP_Events_Exception
      * @throws iMSCP_Exception_Database
      */
     protected function updateRecord()
@@ -303,6 +308,7 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
      * Create bruteforce detection record
      *
      * @return void
+     * @throws iMSCP_Events_Exception
      * @throws iMSCP_Exception_Database
      */
     protected function createRecord()

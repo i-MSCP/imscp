@@ -22,6 +22,8 @@
  * Class iMSCP_Events_Listener_SplPriorityQueue
  *
  * Allows to keep order for listeners with same priority (FIFO order).
+ * 
+ * @noinspection PhpUndefinedClassInspection
  */
 class iMSCP_Events_Listener_SplPriorityQueue extends SplPriorityQueue
 {
@@ -39,6 +41,7 @@ class iMSCP_Events_Listener_SplPriorityQueue extends SplPriorityQueue
      */
     public function insert($listener, $priority)
     {
+        /** @noinspection PhpUndefinedClassInspection */
         parent::insert($listener, [$priority, $this->seed--]);
     }
 }

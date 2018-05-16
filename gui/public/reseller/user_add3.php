@@ -257,6 +257,10 @@ function addCustomer(Form $form)
  * @param  TemplateEngine $tpl Template engine
  * @param Form $form
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generatePage(TemplateEngine $tpl, Form $form)
 {

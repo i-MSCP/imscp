@@ -33,6 +33,7 @@ use iMSCP_Registry as Registry;
  * @param int $softwareMasterId
  * @param bool $softwareDeleted
  * @return void
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function update_existing_client_installations_res_upload(
@@ -81,6 +82,7 @@ function update_existing_client_installations_res_upload(
  * @param int $softwareMasterId
  * @param int $resellerId
  * @return void
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function update_existing_client_installations_sw_depot($softwareId, $softwareMasterId, $resellerId)
@@ -221,8 +223,10 @@ i-MSCP Mailer'),
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @return int
- * @throws iMSCP_Exception_Database
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function get_avail_software($tpl)
 {
@@ -278,6 +282,8 @@ function get_avail_software($tpl)
  * @param iMSCP_pTemplate $tpl template engine
  * @return int
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  */
 function get_avail_softwaredepot($tpl)
@@ -444,8 +450,10 @@ function get_avail_softwaredepot($tpl)
  * @param iMSCP_pTemplate $tpl Template engine
  * @param int $resellerId
  * @return int
- * @throws iMSCP_Exception_Database
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function get_installed_res_software($tpl, $resellerId)
 {
@@ -557,8 +565,10 @@ function get_installed_res_software($tpl, $resellerId)
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @return int
- * @throws iMSCP_Exception_Database
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function get_reseller_software($tpl)
 {
@@ -643,8 +653,10 @@ function get_reseller_software($tpl)
  * @param iMSCP_pTemplate $tpl Template engine
  * @param int $softwareId
  * @return int
- * @throws iMSCP_Exception_Database
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function get_reseller_rights($tpl, $softwareId)
 {
@@ -692,8 +704,10 @@ function get_reseller_rights($tpl, $softwareId)
  * @param iMSCP_pTemplate $tpl Template engine
  * @param int $softwareId software unique identifier
  * @return void
- * @throws iMSCP_Exception_Database
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function get_reseller_list($tpl, $softwareId)
 {
@@ -813,6 +827,7 @@ i-MSCP Mailer'),
  *
  * @param int $userId
  * @return string yes if reseller has access to the web software repository, no otherwise
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function ask_reseller_is_allowed_web_depot($userId)
@@ -1014,8 +1029,10 @@ function get_avail_software_reseller($tpl, $userId)
  * @param int $dmnId Domain unique identifier
  * @param iMSCP_pTemplate $tpl Template engine instance
  * @return array
- * @throws iMSCP_Exception_Database
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function gen_user_software_action($softwareId, $dmnId, $tpl)
 {
@@ -1095,8 +1112,10 @@ function gen_user_software_action($softwareId, $dmnId, $tpl)
  * @param int $domainId Domain unique identifier
  * @param int $resellerId Reseller unique identifier
  * @return int Total number of available software
- * @throws iMSCP_Exception_Database
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function gen_software_list($tpl, $domainId, $resellerId)
 {
@@ -1230,6 +1249,7 @@ function gen_software_list($tpl, $domainId, $resellerId)
  * @param  $softwareId
  * @param $dmnCreatedId
  * @return bool
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function check_software_avail($softwareId, $dmnCreatedId)
@@ -1246,8 +1266,10 @@ function check_software_avail($softwareId, $dmnCreatedId)
  * @param $dmnId
  * @param int $softwareId
  * @return void
- * @throws iMSCP_Exception_Database
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function check_is_installed($tpl, $dmnId, $softwareId)
 {
@@ -1526,6 +1548,7 @@ function gen_user_domain_list($tpl, $customerId)
  * @param string $dbPass Database password
  * @return bool
  * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function check_db_connection($dbName, $dbUser, $dbPass)
 {

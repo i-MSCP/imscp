@@ -40,6 +40,7 @@ use iMSCP_Registry as Registry;
  * @param string $index Item index on update, empty value otherwise
  * @return bool TRUE if valid, FALSE otherwise
  * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function validatesService($name, $ip, $port, $protocol, $show, $index = '')
 {

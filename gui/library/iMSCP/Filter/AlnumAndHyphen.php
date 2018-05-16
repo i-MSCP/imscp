@@ -38,7 +38,9 @@ class iMSCP_Filter_AlnumAndHyphen extends Zend_Filter_Alnum
      */
     public function filter($value)
     {
+        /** @noinspection PhpDeprecationInspection */
         $whiteSpace = $this->allowWhiteSpace ? '\s' : '';
+
         if (!self::$_unicodeEnabled) {
             // POSIX named classes are not supported, use alternative a-zA-Z0-9 match
             $pattern = '/[^a-zA-Z0-9' . $whiteSpace . '-]/';

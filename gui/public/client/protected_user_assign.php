@@ -29,6 +29,8 @@
  * @param int $domainId Domain unique identifier
  * @return string
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
+ * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  */
 function client_getHtaccessUsername($htuserId, $domainId)

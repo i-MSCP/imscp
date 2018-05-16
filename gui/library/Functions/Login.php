@@ -37,6 +37,7 @@ use iMSCP_Registry as Registry;
  * @throws Zend_Exception
  * @throws iMSCP_Exception_Database
  * @throws iMSCP_Plugin_Exception
+ * @throws iMSCP_Events_Exception
  */
 function init_login($eventManager)
 {
@@ -58,8 +59,9 @@ function init_login($eventManager)
  * Credentials authentication handler
  *
  * @param AuthEvent $authEvent
- * @throws iMSCP_Exception_Database
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
+ * @throws iMSCP_Exception_Database
  */
 function login_credentials(AuthEvent $authEvent)
 {
@@ -202,6 +204,7 @@ function login_checkDomainAccount($event)
  *
  * @return void
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function do_session_timeout()
@@ -219,6 +222,9 @@ function do_session_timeout()
  * @param string $userLevel User level (admin|reseller|user)
  * @param bool $preventExternalLogin If TRUE, external login is disallowed
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  */
 function check_login($userLevel, $preventExternalLogin = true)
@@ -352,9 +358,12 @@ function change_user_interface($fromId, $toId)
 /**
  * Redirects to user ui level
  *
- * @throws iMSCPException in case ui level is unknown
  * @param string $actionScript Action script on which user should be redirected
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception in case ui level is unknown
+ * @throws iMSCP_Exception_Database
  */
 function redirectToUiLevel($actionScript = 'index.php')
 {

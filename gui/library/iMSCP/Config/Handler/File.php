@@ -118,6 +118,8 @@ class iMSCP_Config_Handler_File extends ConfigHandler
      * Default file path is set to {/usr/local}/etc/imscp/imscp.conf depending
      * of distribution.
      *
+     * @noinspection PhpMissingParentConstructorInspection
+     * 
      * @param string $pathFile Configuration file path
      * @throws iMSCP_Exception
      */

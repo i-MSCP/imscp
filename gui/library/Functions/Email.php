@@ -77,6 +77,7 @@ function get_email_tpl_data($userId, $tplName)
  *                     - subject: Subject
  *                     - message: Message
  * @return void
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function set_email_tpl_data($userId, $tplName, $data)
@@ -146,6 +147,7 @@ i-MSCP Mailer');
  *                     - message: Message
  * @return void
  * @throws iMSCP_Exception_Database
+ * @throws iMSCP_Events_Exception
  */
 function set_welcome_email($userId, $data)
 {
@@ -202,6 +204,7 @@ i-MSCP Mailer');
  *                     - message: Message
  * @return void
  * @throws iMSCP_Exception_Database
+ * @throws iMSCP_Events_Exception
  */
 function set_lostpassword_activation_email($adminId, $data)
 {
@@ -258,6 +261,7 @@ i-MSCP Mailer');
  *                     - message: Message
  * @return void
  * @throws iMSCP_Exception_Database
+ * @throws iMSCP_Events_Exception
  */
 function set_lostpassword_password_email($userId, $data)
 {

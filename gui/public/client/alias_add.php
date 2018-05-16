@@ -72,6 +72,9 @@ function send_alias_order_email($aliasName)
  * Get domains list
  *
  * @return array Domains list
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
+ * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  */
 function getDomainsList()

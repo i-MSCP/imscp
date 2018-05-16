@@ -21,7 +21,7 @@
 /**
  * Class iMSCP_Events_Listener_ResponseCollection
  * 
- * 
+ * @noinspection PhpUndefinedClassInspection
  */
 class iMSCP_Events_Listener_ResponseCollection extends SplStack
 {
@@ -59,6 +59,7 @@ class iMSCP_Events_Listener_ResponseCollection extends SplStack
      */
     public function first()
     {
+        /** @noinspection PhpUndefinedClassInspection */
         return parent::bottom();
     }
 
@@ -76,6 +77,7 @@ class iMSCP_Events_Listener_ResponseCollection extends SplStack
             return NULL;
         }
 
+        /** @noinspection PhpUndefinedClassInspection */
         return parent::top();
     }
 

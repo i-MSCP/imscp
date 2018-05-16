@@ -25,6 +25,7 @@ use iMSCP_Registry as Registry;
  *
  * @param int $minNbResellers Minimum number of resellers
  * @return bool TRUE if the system has a least the given number of registered resellers, FALSE otherwise
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function systemHasResellers($minNbResellers = 1)
@@ -44,6 +45,7 @@ function systemHasResellers($minNbResellers = 1)
  *
  * @param int $minNbCustomers Minimum number of customers
  * @return bool TRUE if system has a least the given number of registered customers, FALSE otherwise
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function systemHasCustomers($minNbCustomers = 1)
@@ -65,6 +67,7 @@ function systemHasCustomers($minNbCustomers = 1)
  *
  * @return bool
  * @throws iMSCP_Exception_Database
+ * @throws iMSCP_Events_Exception
  */
 function systemHasAdminsOrResellersOrCustomers()
 {
@@ -76,6 +79,7 @@ function systemHasAdminsOrResellersOrCustomers()
  *
  * @return bool
  * @throws iMSCP_Exception_Database
+ * @throws iMSCP_Events_Exception
  */
 function systemHasResellersOrCustomers()
 {
@@ -86,6 +90,7 @@ function systemHasResellersOrCustomers()
  * Whether or not system as many admins
  *
  * @return bool
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function systemHasManyAdmins()

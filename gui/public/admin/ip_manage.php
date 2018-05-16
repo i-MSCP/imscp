@@ -221,6 +221,7 @@ function generateDevicesList($tpl)
  * @param string $ipCard IP network card
  * @return bool TRUE if data are valid, FALSE otherwise
  * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function checkIpData($ipAddr, $ipNetmask, $ipConfigMode, $ipCard)
 {

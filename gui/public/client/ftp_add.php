@@ -83,6 +83,9 @@ function generateDomainTypeList($mainDmnId, $tpl)
  * @param string $mainDmnId Customer main domain id
  * @param string $dmnType Domain type (dmn|sub|als|alssub) for which list must be generated
  * @return array Domain list
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
+ * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  */
 function getDomainList($mainDmnName, $mainDmnId, $dmnType = 'dmn')

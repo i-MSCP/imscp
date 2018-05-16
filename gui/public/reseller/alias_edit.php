@@ -30,6 +30,7 @@ use iMSCP\VirtualFileSystem as VirtualFileSystem;
  * @access private
  * @param int $domainAliasId Subdomain unique identifier
  * @return array|bool Domain alias data. If any error occurs FALSE is returned
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function _reseller_getAliasData($domainAliasId)

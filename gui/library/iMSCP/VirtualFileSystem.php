@@ -405,6 +405,7 @@ class VirtualFileSystem
      *
      * @return void
      * @throws DatabaseException
+     * @throws \iMSCP_Events_Exception
      */
     protected function removeFtpUser()
     {

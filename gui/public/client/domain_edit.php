@@ -30,6 +30,7 @@ use iMSCP\VirtualFileSystem as VirtualFileSystem;
  * @access private
  * @param int $domainId Domain unique identifier
  * @return array|bool Domain data or FALSE on error
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function _client_getDomainData($domainId)

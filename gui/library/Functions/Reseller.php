@@ -241,6 +241,7 @@ function resellerHasFeature($featureName, $forceReload = false)
  * @param int $minNbCustomers Minimum number of customers
  * @return bool TRUE if the logged-in reseller has a least the given number of
  *              registered customer, FALSE otherwise
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function resellerHasCustomers($minNbCustomers = 1)

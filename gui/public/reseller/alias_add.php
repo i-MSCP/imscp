@@ -26,6 +26,9 @@
  * Get customers list
  *
  * @return array Domains list
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
+ * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  */
 function getCustomersList()
@@ -61,6 +64,9 @@ function getCustomersList()
  *
  * @param int $customerId Customer unique identifier
  * @return array Domains list
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
+ * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  */
 function getDomainsList($customerId)
@@ -148,6 +154,7 @@ function getJsonDomainsList($customerId)
  * @return void
  * @throws iMSCP_Events_Manager_Exception
  * @throws iMSCP_Exception
+ * @throws Zend_Exception
  */
 function generatePage($tpl)
 {

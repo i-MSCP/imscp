@@ -87,6 +87,7 @@ class iMSCP_PHPini
      *
      * @param int|null $resellerId Reseller unique identifier
      * @return void
+     * @throws iMSCP_Events_Exception
      * @throws iMSCP_Exception_Database
      */
     public function loadResellerPermissions($resellerId = NULL)
@@ -143,6 +144,7 @@ class iMSCP_PHPini
      *
      * @param int $resellerId Reseller unique identifier
      * @return void
+     * @throws iMSCP_Events_Exception
      * @throws iMSCP_Exception_Database
      */
     public function saveResellerPermissions($resellerId)
@@ -329,6 +331,7 @@ class iMSCP_PHPini
      *
      * @param int $clientId Client unique identifier
      * @return bool Boolean indicating whether or not a backend request is needed
+     * @throws iMSCP_Events_Exception
      * @throws iMSCP_Exception_Database
      */
     public function saveClientPermissions($clientId)

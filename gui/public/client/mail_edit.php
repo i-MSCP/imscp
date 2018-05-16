@@ -29,6 +29,8 @@ use iMSCP\Crypt as Crypt;
  *
  * @param int $mailId Mail account unique identifier
  * @return array mail account data
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  */

@@ -32,6 +32,7 @@ use Zend_Navigation as Navigation;
  * @param  int $userId User unique identifier
  * @return array
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function get_user_gui_props($userId)
@@ -92,6 +93,7 @@ function set_page_message($message, $level = 'info')
  * @return void
  * @throws Zend_Exception
  * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  */
 function generatePageMessage(TemplateEngine $tpl)
 {
@@ -262,8 +264,9 @@ function layout_getAvailableColorSet()
  *
  * @param int $userId user unique identifier
  * @return string User layout color
- * @throws iMSCP_Exception_Database
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
+ * @throws iMSCP_Exception_Database
  */
 function layout_getUserLayoutColor($userId)
 {
@@ -296,9 +299,10 @@ function layout_getUserLayoutColor($userId)
  * @param iMSCP_Events_Event $event
  * @return void
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  * @todo Use cookies to store user UI properties (Remember me implementation?)
- * @throws iMSCP_Events_Manager_Exception
  */
 function layout_init($event)
 {
@@ -341,6 +345,7 @@ function layout_init($event)
  * @param string $color Layout color
  * @return bool TRUE on success false otherwise
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function layout_setUserLayoutColor($userId, $color)
@@ -394,6 +399,7 @@ function layout_setUserLayoutColor($userId, $color)
  * @param bool $returnDefault Tell whether or not default logo must be returned
  * @return string User logo path.
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  * @todo cache issues
  */
@@ -616,6 +622,7 @@ function layout_LoadNavigation()
  *
  * @param int $userId User unique identifier
  * @return bool
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function layout_isMainMenuLabelsVisible($userId)
@@ -635,6 +642,7 @@ function layout_isMainMenuLabelsVisible($userId)
  * @param int $userId User unique identifier
  * @param int $visibility (0|1)
  * @return void
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function layout_setMainMenuLabelsVisibility($userId, $visibility)
@@ -653,6 +661,7 @@ function layout_setMainMenuLabelsVisibility($userId, $visibility)
  *
  * @return void
  * @throws iMSCP_Exception_Database
+ * @throws iMSCP_Events_Exception
  */
 function layout_setMainMenuLabelsVisibilityEvt()
 {

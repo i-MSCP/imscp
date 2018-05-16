@@ -1,5 +1,4 @@
-<?php /** @noinspection ALL */
-/** @noinspection ALL */
+<?php
 
 /**
  * i-MSCP - internet Multi Server Control Panel
@@ -34,6 +33,9 @@ use Zend_Navigation as Navigation;
  *
  * @param  TemplateEngine $tpl
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  */
 function generateLoggedFrom(TemplateEngine $tpl)
 {
@@ -59,6 +61,9 @@ function generateLoggedFrom(TemplateEngine $tpl)
  * @param  TemplateEngine $tpl
  * @param  string $selectedLanguage Selected language
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  */
 function generateLanguagesList(TemplateEngine $tpl, $selectedLanguage)
 {
@@ -81,6 +86,9 @@ function generateLanguagesList(TemplateEngine $tpl, $selectedLanguage)
  * @param int $year Selected year (4 digits expected)
  * @param int $nPastYears Number of past years to display in years select list
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  */
 function generateDMYlists(TemplateEngine $tpl, $day, $month, $year, $nPastYears)
 {
@@ -128,9 +136,13 @@ function generateDMYlists(TemplateEngine $tpl, $day, $month, $year, $nPastYears)
 /**
  * Generate navigation
  *
- * @throws iMSCPException
  * @param TemplateEngine $tpl
  * @return void
+ * @throws Zend_Exception
+ * @throws Zend_Navigation_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generateNavigation(TemplateEngine $tpl)
 {
@@ -370,6 +382,10 @@ function getCustomMenus($userLevel)
  *
  * @param  TemplateEngine $tpl
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function gen_admin_list(TemplateEngine $tpl)
 {
@@ -415,8 +431,12 @@ function gen_admin_list(TemplateEngine $tpl)
 /**
  * Generate reseller list
  *
- * @param  TemplateEngine $tpl
+ * @param TemplateEngine $tpl
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function gen_reseller_list(TemplateEngine $tpl)
 {
@@ -463,6 +483,9 @@ function gen_reseller_list(TemplateEngine $tpl)
  * @param string|null $searchValue Value to search
  * @param string|null $searchStatus Status to search
  * @return array Array containing count and search queries
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function get_search_user_queries($sLimit, $eLimit, $searchField = NULL, $searchValue = NULL, $searchStatus = NULL)
 {
@@ -530,6 +553,8 @@ function get_search_user_queries($sLimit, $eLimit, $searchField = NULL, $searchV
  * @param string|null $searchValue Value to search
  * @param string|null $searchStatus Status to search
  * @return void
+ * @throws iMSCP_Exception
+ * @throws Zend_Exception
  */
 function gen_search_user_fields(TemplateEngine $tpl, $searchField = NULL, $searchValue = NULL, $searchStatus = NULL)
 {
@@ -602,6 +627,9 @@ function gen_search_user_fields(TemplateEngine $tpl, $searchField = NULL, $searc
  * @param TemplateEngine $tpl
  * @param int $domainId Domain unique identifier
  * @return void
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function gen_user_domain_aliases_list(TemplateEngine $tpl, $domainId)
 {
@@ -633,6 +661,10 @@ function gen_user_domain_aliases_list(TemplateEngine $tpl, $domainId)
  *
  * @param TemplateEngine $tpl
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function gen_user_list(TemplateEngine $tpl)
 {
@@ -783,6 +815,10 @@ function gen_user_list(TemplateEngine $tpl)
  *
  * @param  TemplateEngine $tpl
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function get_admin_manage_users(TemplateEngine $tpl)
 {
@@ -800,6 +836,10 @@ function get_admin_manage_users(TemplateEngine $tpl)
  * @param int $resellerId Reseller unique identifier
  * @param int $domainIp Identifier of the selected domain IP
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function reseller_generate_ip_list(TemplateEngine $tpl, $resellerId, $domainIp)
 {
@@ -829,6 +869,7 @@ function reseller_generate_ip_list(TemplateEngine $tpl, $resellerId, $domainIp)
  * @param bool $json Does the data must be encoded to JSON?
  * @param array $override Allow to override or add plugin translation
  * @return string|array
+ * @throws Zend_Exception
  */
 function getDataTablesPluginTranslations($json = true, array $override = [])
 {
@@ -868,6 +909,7 @@ function getDataTablesPluginTranslations($json = true, array $override = [])
  * @param int $code Code of error page to show (400, 403 or 404)
  * @throws iMSCPException
  * @return void
+ * @throws Zend_Exception
  */
 function showErrorPage($code)
 {
@@ -917,6 +959,8 @@ EOF
  * Show 400 error page
  *
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function showBadRequestErrorPage()
 {
@@ -927,6 +971,8 @@ function showBadRequestErrorPage()
  * Show 404 error page
  *
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function showNotFoundErrorPage()
 {
@@ -937,6 +983,8 @@ function showNotFoundErrorPage()
  * Show 404 error page
  *
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function showForbiddenErrorPage()
 {

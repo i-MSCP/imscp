@@ -69,6 +69,7 @@ function getMailData($domainId, $mailQuota)
  *
  * @param int $resellerId Reseller id
  * @return array Reseller properties
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function reseller_getResellerProps($resellerId)
@@ -94,6 +95,7 @@ function reseller_getResellerProps($resellerId)
  * @return array Array containing domain properties
  * @throws Zend_Date_Exception
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function reseller_getDomainProps($domainId)

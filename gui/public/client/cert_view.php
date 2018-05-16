@@ -33,6 +33,7 @@ use iMSCP_pTemplate as TemplateEngine;
  * @param int $domainId Domain entity unique identifier
  * @param string $domainType Domain entity type to update (dmn|als|sub|alssub)
  * @return string|false Domain name or FALSE if the domain name is not found or not owned by logged-in customer
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function _client_getDomainName($domainId, $domainType)
@@ -88,10 +89,11 @@ function _client_getDomainName($domainId, $domainType)
 /**
  * Update status for the given domain
  *
- * @throws iMSCP_Exception_Database
  * @param int $domainId Domain entity unique identifier
  * @param string $domainType Domain entity type to update (dmn|als|sub|alssub)
  * @return void
+ * @throws iMSCP_Events_Exception
+ * @throws iMSCP_Exception_Database
  */
 function _client_updateDomainStatus($domainId, $domainType)
 {

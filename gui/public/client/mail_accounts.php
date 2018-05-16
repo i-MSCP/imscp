@@ -40,6 +40,7 @@ use iMSCP_Registry as Registry;
  *
  * @param int $mainDmnId Main domain id
  * @return int Number of default mail accounts
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function countDefaultMailAccounts($mainDmnId)

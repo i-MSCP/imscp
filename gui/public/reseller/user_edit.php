@@ -128,6 +128,9 @@ function updateUserData(Form $form, $userId)
  * @param int $userId User unique identifier
  *
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
+ * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  */
 function generatePage(TemplateEngine $tpl, Form $form, $userId)

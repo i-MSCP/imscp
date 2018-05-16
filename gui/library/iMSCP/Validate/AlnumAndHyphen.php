@@ -65,6 +65,7 @@ class iMSCP_Validate_AlnumAndHyphen extends Zend_Validate_Alnum
             self::$_filter = new iMSCP_Filter_AlnumAndHyphen();
         }
 
+        /** @noinspection PhpDeprecationInspection */
         self::$_filter->allowWhiteSpace = $this->allowWhiteSpace;
 
         if ($value != self::$_filter->filter($value)) {

@@ -37,6 +37,8 @@ use Zend_Validate_Hostname as ValidateHostname;
  * @param int $sqldId Database unique identifier
  * @return void
  * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
+ * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  */
 function checkSqlUserPermissions(TemplateEngine $tpl, $sqldId)
@@ -70,6 +72,8 @@ function checkSqlUserPermissions(TemplateEngine $tpl, $sqldId)
  * @param TemplateEngine $tpl
  * @param int $sqldId Database unique identifier
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Events_Manager_Exception
  * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
@@ -120,6 +124,7 @@ function generateSqlUserList(TemplateEngine $tpl, $sqldId)
  * @param string $sqlUser SQL user name
  * @param string $sqlUserHost SQL user host
  * @return bool TRUE if the given sql user already exists, FALSE otherwise
+ * @throws iMSCP_Events_Exception
  * @throws iMSCP_Exception_Database
  */
 function isSqlUser($sqlUser, $sqlUserHost)
