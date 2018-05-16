@@ -19,6 +19,7 @@ FRONTEND
     Fixed: Localization routing
     Fixed: Possible double POST request submission in restore backup interface
     Fixed: Unhandled 'torestore' status leading to cosmetic issues in GUI when a domain is being restored
+    Fixed: Wrong usage of strstr() function (SystemInfo class)
 
 PLUGINS
     Fixed: Local plugin configuration files are not merged as expected
