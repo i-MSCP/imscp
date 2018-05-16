@@ -136,24 +136,25 @@ DNS.2 = www.{DOMAIN_NAME}
 EOF;
 
     if ($domainType == 'dmn') {
-        $altNames .= "\nDNS.3 = {ADMIN_SYS_NAME}.{BASE_SERVER_VHOST}\n";
+        $altNames .= "\nDNS.3 = dmn{DOMAIN_ID}.{BASE_SERVER_VHOST}\n";
     } elseif ($domainType == 'als') {
-        $altNames .= "\nDNS.3 = {ADMIN_SYS_NAME}als$domainId.{BASE_SERVER_VHOST}\n";
+        $altNames .= "\nDNS.3 = als{DOMAIN_ID}.{BASE_SERVER_VHOST}\n";
     } elseif ($domainType == 'sub') {
-        $altNames .= "\nDNS.3 = {ADMIN_SYS_NAME}sub$domainId.{BASE_SERVER_VHOST}\n";
+        $altNames .= "\nDNS.3 = sub{DOMAIN_ID}.{BASE_SERVER_VHOST}\n";
     } else {
-        $altNames .= "\nDNS.3 = {ADMIN_SYS_NAME}alssub$domainId.{BASE_SERVER_VHOST}\n";
+        $altNames .= "\nDNS.3 = alssub{DOMAIN_ID}.{BASE_SERVER_VHOST}\n";
     }
 
+    ini_set('display_errors', 1);
     $sslTpl = new TemplateEngine();
     $sslTpl->setRootDir($config['CONF_DIR'] . '/openssl');
-    $sslTpl->define('tpl', 'openssl.cnf.tpl');
+    $sslTpl->define_dynamic('tpl', 'openssl.cnf.tpl');
     $sslTpl->assign([
         'COMMON_NAME'       => $data['domain_name'],
         'EMAIL_ADDRESS'     => $data['email'],
         'DOMAIN_NAME'       => $data['domain_name'],
         'ALT_NAMES'         => $altNames,
-        'ADMIN_SYS_NAME'    => $data['admin_sys_name'],
+        'DOMAIN_ID'         => $domainId,
         'BASE_SERVER_VHOST' => $config['BASE_SERVER_VHOST']
     ]);
     $sslTpl->parse('TPL', 'tpl');

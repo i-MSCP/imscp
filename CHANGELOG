@@ -15,6 +15,7 @@ DATABASE
 FRONTEND
     Backport: Fix for #IP-1749 (User profile fields validation too strict from 1.6.x branch)
     Cosmetic: Remove borders in table header/footer (layout)
+    Fixed: Couldn't generate self-signed SSL certificate - Couldn't write in temporary SSL configuration file
     Fixed: Couldn't access support section when logged as reseller
     Fixed: Couldn't update customer password when logged in as administrator or reseller
     Fixed: IDE inspections (PhpStorm)
