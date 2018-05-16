@@ -31,10 +31,14 @@
 
 /**
  * Generate layout color form
- * 
+ *
  * @since iMSCP 1.0.1.6
  * @param $tpl iMSCP_pTemplate Template engine instance
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function reseller_generateLayoutColorForm($tpl)
 {

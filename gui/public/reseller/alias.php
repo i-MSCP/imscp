@@ -26,6 +26,9 @@
  * Get table data
  *
  * @return array
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function reseller_getDatatable()
 {

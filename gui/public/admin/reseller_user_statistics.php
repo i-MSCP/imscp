@@ -32,6 +32,10 @@ use iMSCP_pTemplate as TemplateEngine;
  * @param TemplateEngine $tpl Template engine instance
  * @param int $adminId User unique identifier
  * @return void
+ * @throws Zend_Date_Exception
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function _generateUserStatistics(TemplateEngine $tpl, $adminId)
 {
@@ -74,6 +78,9 @@ function _generateUserStatistics(TemplateEngine $tpl, $adminId)
  * @param TemplateEngine $tpl Template engine instance
  * @param int $resellerId Reseller unique identifier
  * @return void
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generatePage(TemplateEngine $tpl, $resellerId)
 {

@@ -32,6 +32,10 @@ use iMSCP_Registry as Registry;
  * Update SQL user password
  *
  * @param int $sqluId SQL user unique identifier
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  * @çeturn void
  */
 function updateSqlUserPassword($sqluId)
@@ -111,6 +115,8 @@ function updateSqlUserPassword($sqluId)
  * @param TemplateEngine $tpl
  * @param int $sqluId SQL user unique identifier
  * @return void
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generatePage(TemplateEngine $tpl, $sqluId)
 {
@@ -132,6 +138,7 @@ function generatePage(TemplateEngine $tpl, $sqluId)
  *
  * @param  int $sqlUserId SQL user unique identifier
  * @return bool TRUE if the logged-in user has permission on SQL user, FALSE otherwise
+ * @throws iMSCP_Exception_Database
  */
 function checkSqlUserPerms($sqlUserId)
 {

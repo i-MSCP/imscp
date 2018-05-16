@@ -29,6 +29,9 @@ use iMSCP\VirtualFileSystem as VirtualFileSystem;
  *
  * @param int $eid Error page unique identifier
  * @return bool TRUE on success, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function writeErrorPage($eid)
 {
@@ -41,6 +44,9 @@ function writeErrorPage($eid)
  *
  * @param int $eid Error page unique identifier
  * @return TRUE on success, FALSE on failure
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function editErrorPage($eid)
 {
@@ -63,6 +69,9 @@ function editErrorPage($eid)
  * @param iMSCP_pTemplate $tpl
  * @param int $eid Error page unique identifier
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl, $eid)
 {

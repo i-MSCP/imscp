@@ -35,6 +35,9 @@
  * @param int $trafficLimit Monthly traffic limit
  * @param int $trafficWarning Traffic warning
  * @return bool TRUE on success FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function admin_updateServerTrafficSettings($trafficLimit, $trafficWarning)
 {
@@ -85,6 +88,8 @@ function admin_updateServerTrafficSettings($trafficLimit, $trafficWarning)
  * @param int $trafficLimit Monthly traffic limit
  * @param int $trafficWarning Traffic warning
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function admin_generatePage($tpl, $trafficLimit, $trafficWarning)
 {

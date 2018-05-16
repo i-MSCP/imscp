@@ -33,6 +33,9 @@ use iMSCP_pTemplate as TemplateEngine;
  * @param int $resellerId Reseller unique identifier
  * @param string $resellerName Reseller name
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function _generateResellerStatistics(TemplateEngine $tpl, $resellerId, $resellerName)
 {
@@ -94,6 +97,10 @@ function _generateResellerStatistics(TemplateEngine $tpl, $resellerId, $reseller
  *
  * @param TemplateEngine $tpl Template engine instance
  * @return void
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
+ * @throws Zend_Exception
  */
 function generatePage(TemplateEngine $tpl)
 {

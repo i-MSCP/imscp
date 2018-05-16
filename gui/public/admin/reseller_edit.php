@@ -37,6 +37,9 @@ use Zend_Form as Form;
  * @param int $resellerId Domain unique identifier
  * @param bool $forUpdate Tell whether or not data are fetched for update
  * @return array Reference to array of data
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function getFormData($resellerId, $forUpdate = false)
 {
@@ -189,6 +192,9 @@ function getFormData($resellerId, $forUpdate = false)
  *
  * @param TemplateEngine $tpl Template engine instance
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  */
 function generateIpListForm(TemplateEngine $tpl)
 {
@@ -229,6 +235,8 @@ function generateIpListForm(TemplateEngine $tpl)
  *
  * @param TemplateEngine $tpl Template engine instance
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function generateLimitsForm(TemplateEngine $tpl)
 {
@@ -263,6 +271,8 @@ function generateLimitsForm(TemplateEngine $tpl)
  *
  * @param TemplateEngine $tpl Template engine instance
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function generateFeaturesForm(TemplateEngine $tpl)
 {
@@ -759,6 +769,7 @@ function updateResellerUser(Form $form)
  * @param bool $unlimitedService Tells whether or not the service is set as unlimited for a reseller's customer
  * @param String $serviceName Service name for which new limit is verified
  * @return bool TRUE if new limit is valid, FALSE otherwise
+ * @throws Zend_Exception
  */
 function checkResellerLimit($newLimit, $assignedByReseller, $consumedByCustomers, $unlimitedService, $serviceName)
 {
@@ -836,6 +847,7 @@ function generatePage(TemplateEngine $tpl, Form $form)
 {
     global $resellerId;
 
+    /** @noinspection PhpUndefinedFieldInspection */
     $tpl->form = $form;
 
     if (empty($_POST)) {

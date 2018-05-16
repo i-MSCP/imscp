@@ -394,6 +394,7 @@ class iMSCP_pTemplate
      * @param string $tname
      * @param bool $addFlag
      * @return bool
+     * @throws iMSCP_Exception
      */
     public function parse_dynamic($pname, $tname, $addFlag)
     {
@@ -457,6 +458,8 @@ class iMSCP_pTemplate
      *
      * @param string $pname
      * @param string $tname
+     * @throws iMSCP_Events_Manager_Exception
+     * @throws iMSCP_Exception
      */
     public function parse($pname, $tname)
     {

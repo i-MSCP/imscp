@@ -20,6 +20,8 @@
 
 /**
  * Class iMSCP_Events_Listener_ResponseCollection
+ * 
+ * 
  */
 class iMSCP_Events_Listener_ResponseCollection extends SplStack
 {

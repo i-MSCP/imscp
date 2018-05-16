@@ -36,6 +36,9 @@ use Zend_Form as Form;
  * Retrieve form data
  *
  * @return array Reference to array of data
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function getFormData()
 {
@@ -109,6 +112,9 @@ function getFormData()
  *
  * @param TemplateEngine $tpl Template engine instance
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  */
 function generateIpListForm(TemplateEngine $tpl)
 {
@@ -141,6 +147,8 @@ function generateIpListForm(TemplateEngine $tpl)
  *
  * @param TemplateEngine $tpl Template engine instance
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function generateLimitsForm(TemplateEngine $tpl)
 {
@@ -173,6 +181,8 @@ function generateLimitsForm(TemplateEngine $tpl)
  *
  * @param TemplateEngine $tpl Template engine instance
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function generateFeaturesForm(TemplateEngine $tpl)
 {
@@ -472,6 +482,7 @@ function addResellerUser(Form $form)
  */
 function generatePage(TemplateEngine $tpl, Form $form)
 {
+    /** @noinspection PhpUndefinedFieldInspection */
     $tpl->form = $form;
 
     generateIpListForm($tpl);

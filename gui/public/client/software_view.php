@@ -27,6 +27,9 @@
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
  * @return int software unique identifier
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_generatePage($tpl)
 {

@@ -69,6 +69,9 @@ class iMSCP_Update_Version extends iMSCP_Update
      * Check for available update
      *
      * @return bool TRUE if an update is available, FALSE otherwise
+     * @throws Zend_Exception
+     * @throws iMSCP_Exception
+     * @throws iMSCP_Exception_Database
      */
     public function isAvailableUpdate()
     {
@@ -95,6 +98,9 @@ class iMSCP_Update_Version extends iMSCP_Update
      *
      * @param bool $forceReload Whether data must be reloaded from Github
      * @return array|bool An array containing update info on success, false on failure
+     * @throws Zend_Exception
+     * @throws iMSCP_Exception
+     * @throws iMSCP_Exception_Database
      */
     public function getUpdateInfo($forceReload = false)
     {
@@ -165,6 +171,9 @@ class iMSCP_Update_Version extends iMSCP_Update
      * Return build number for the last available i-MSCP version
      *
      * @return string
+     * @throws Zend_Exception
+     * @throws iMSCP_Exception
+     * @throws iMSCP_Exception_Database
      */
     public function getNextUpdate()
     {
@@ -179,8 +188,8 @@ class iMSCP_Update_Version extends iMSCP_Update
     /**
      * Returns last applied update
      *
-     * @throws iMSCP_Update_Exception When unable to retrieve last applied update
      * @return string
+     * @throws Zend_Exception
      */
     public function getLastAppliedUpdate()
     {

@@ -30,6 +30,8 @@ use iMSCP\VirtualFileSystem as VirtualFileSystem;
  * @access private
  * @param int $domainAliasId Subdomain unique identifier
  * @return array|bool Domain alias data or FALSE on error
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function _client_getAliasData($domainAliasId)
 {
@@ -64,6 +66,11 @@ function _client_getAliasData($domainAliasId)
  *
  * @param $tpl iMSCP_pTemplate
  * @return void
+ * @throws Zend_Exception
+ * @throws Zend_Uri_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
+ * @throws iMSCP_Uri_Exception
  */
 function client_generatePage($tpl)
 {
@@ -153,6 +160,10 @@ function client_generatePage($tpl)
  * Edit domain alias
  *
  * @return bool TRUE on success, FALSE on failure
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_editDomainAlias()
 {

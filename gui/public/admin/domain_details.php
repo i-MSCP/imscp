@@ -34,6 +34,9 @@
  *
  * @param int $customerId Customer unique identifier
  * @return array
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function admin_gen_mail_quota_limit_mgs($customerId)
 {
@@ -51,6 +54,10 @@ function admin_gen_mail_quota_limit_mgs($customerId)
  * @param iMSCP_pTemplate $tpl Template instance engine
  * @param int $domainId Domain unique identifier
  * @return void
+ * @throws Zend_Date_Exception
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function admin_generatePage($tpl, $domainId)
 {
@@ -77,9 +84,9 @@ function admin_generatePage($tpl, $domainId)
         $domainData['domain_status'] == 'torestore' || $domainData['domain_status'] == 'tochange' ||
         $domainData['domain_status'] == 'toenable' || $domainData['domain_status'] == 'todisable'
     ) {
-        $domainStatus = '<span style="color:green">' . tohtml(translate_dmn_status($domainData['domain_status'])) . '</span>';
+        $domainStatus = '<span style="color:green;">' . tohtml(translate_dmn_status($domainData['domain_status'])) . '</span>';
     } else {
-        $domainStatus = '<b><font size="3" color="red">' . $domainData['domain_status'] . "</font></b>";
+        $domainStatus = '<span style="color:red;font-weight: bold;">' . $domainData['domain_status'] . "</font>";
     }
 
     // Get total monthly traffic usage in bytes

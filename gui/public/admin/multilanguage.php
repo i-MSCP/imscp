@@ -31,6 +31,9 @@ use iMSCP_Registry as Registry;
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  */
 function admin_generateLanguagesList($tpl)
 {

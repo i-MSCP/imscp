@@ -182,11 +182,13 @@ class iMSCP_Events_Aggregator implements iMSCP_Events_Manager_Interface
             }
 
             return $events;
-        } elseif (isset($this->events[$type])) {
-            return $this->events[$type];
-        } else {
-            return [];
         }
+        
+        if (isset($this->events[$type])) {
+            return $this->events[$type];
+        }
+
+        return [];
     }
 
     /**
@@ -210,7 +212,7 @@ class iMSCP_Events_Aggregator implements iMSCP_Events_Manager_Interface
      * Retrieve all listeners which listen to a particular event
      *
      * @param string|null $event Event name
-     * @return SplPriorityQueue
+     * @return iMSCP_Events_Listener_PriorityQueue
      */
     public function getListeners($event)
     {

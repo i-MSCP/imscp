@@ -31,6 +31,10 @@
  * @param string $body Body
  * @param array $rcptToData Recipient data
  * @return bool TRUE on success, FALSE on failure
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function admin_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData)
 {
@@ -66,6 +70,10 @@ function admin_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData
  * @param string $subject Subject
  * @param string $body Body
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function admin_sendToAdministrators($senderName, $senderEmail, $subject, $body)
 {
@@ -95,6 +103,10 @@ function admin_sendToAdministrators($senderName, $senderEmail, $subject, $body)
  * @param string $subject Subject
  * @param string $body Body
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function admin_sendToResellers($senderName, $senderEmail, $subject, $body)
 {
@@ -123,6 +135,10 @@ function admin_sendToResellers($senderName, $senderEmail, $subject, $body)
  * @param string $subject Subject
  * @param string $body Body
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function admin_sendToCustomers($senderName, $senderEmail, $subject, $body)
 {
@@ -151,6 +167,7 @@ function admin_sendToCustomers($senderName, $senderEmail, $subject, $body)
  * @param string $subject Subject
  * @param string $body Body
  * @return bool TRUE if circular is valid, FALSE otherwise
+ * @throws Zend_Exception
  */
 function admin_isValidCircular($senderName, $senderEmail, $subject, $body)
 {
@@ -185,6 +202,10 @@ function admin_isValidCircular($senderName, $senderEmail, $subject, $body)
  * Send circular
  *
  * @return bool TRUE on success, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function admin_sendCircular()
 {
@@ -263,6 +284,10 @@ function admin_sendCircular()
  *
  * @param iMSCP_pTemplate $tpl
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl)
 {

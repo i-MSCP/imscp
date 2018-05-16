@@ -113,6 +113,7 @@ class iMSCP_I18n_Parser_Gettext
      * Returns headers
      *
      * @return string A string that contains gettext file headers, each separed by EOL
+     * @throws iMSCP_i18n_Parser_Exception
      */
     public function getHeaders()
     {
@@ -128,6 +129,7 @@ class iMSCP_I18n_Parser_Gettext
      *
      * @return array An array of pairs key/value where the keys are the original strings (msgid) and the values, the
      *               translated strings (msgstr)
+     * @throws iMSCP_i18n_Parser_Exception
      */
     public function getTranslationTable()
     {
@@ -142,6 +144,8 @@ class iMSCP_I18n_Parser_Gettext
      * Retruns project id version header value
      *
      * @return string Project id version header value
+     * @throws iMSCP_i18n_Parser_Exception
+     * @throws iMSCP_i18n_Parser_Exception
      */
     public function getProjectIdVersion()
     {
@@ -152,6 +156,8 @@ class iMSCP_I18n_Parser_Gettext
      * Returns report msgid bugs value header value
      *
      * @return string R eport msgid bugs header value
+     * @throws iMSCP_i18n_Parser_Exception
+     * @throws iMSCP_i18n_Parser_Exception
      */
     public function getReportMsgidBugs()
     {
@@ -162,6 +168,8 @@ class iMSCP_I18n_Parser_Gettext
      * Returns pot creation date header value
      *
      * @return string POT creation date header value
+     * @throws iMSCP_i18n_Parser_Exception
+     * @throws iMSCP_i18n_Parser_Exception
      */
     public function getPotCreationDate()
     {
@@ -172,6 +180,8 @@ class iMSCP_I18n_Parser_Gettext
      * Returns po creation date header value
      *
      * @return string PO creation date header value
+     * @throws iMSCP_i18n_Parser_Exception
+     * @throws iMSCP_i18n_Parser_Exception
      */
     public function getPoRevisionDate()
     {
@@ -182,6 +192,8 @@ class iMSCP_I18n_Parser_Gettext
      * Returns last translator header value
      *
      * @return string Last translator header value
+     * @throws iMSCP_i18n_Parser_Exception
+     * @throws iMSCP_i18n_Parser_Exception
      */
     public function getLastTranslator()
     {
@@ -192,6 +204,7 @@ class iMSCP_I18n_Parser_Gettext
      * Returns language team header value
      *
      * @return string language team header value
+     * @throws iMSCP_i18n_Parser_Exception
      */
     public function getLanguageTeam()
     {
@@ -202,6 +215,7 @@ class iMSCP_I18n_Parser_Gettext
      * Returns mime version header value
      *
      * @return string Mime version header value
+     * @throws iMSCP_i18n_Parser_Exception
      */
     public function getMimeVersion()
     {
@@ -212,6 +226,7 @@ class iMSCP_I18n_Parser_Gettext
      * Returns content type header value
      *
      * @return string Content type header value
+     * @throws iMSCP_i18n_Parser_Exception
      */
     public function getContentType()
     {
@@ -222,6 +237,7 @@ class iMSCP_I18n_Parser_Gettext
      * Returns content transfer encoding header value
      *
      * @return string Content transfer encoding header value
+     * @throws iMSCP_i18n_Parser_Exception
      */
     public function getContentTransferEncoding()
     {
@@ -232,6 +248,7 @@ class iMSCP_I18n_Parser_Gettext
      * Returns language header value
      *
      * @return string Language header value
+     * @throws iMSCP_i18n_Parser_Exception
      */
     public function getLanguage()
     {
@@ -242,6 +259,7 @@ class iMSCP_I18n_Parser_Gettext
      * Returns plural forms header value
      *
      * @return string Plural forms header value
+     * @throws iMSCP_i18n_Parser_Exception
      */
     public function getPluralForms()
     {
@@ -252,6 +270,7 @@ class iMSCP_I18n_Parser_Gettext
      * Returns number of stranslated strings
      *
      * @return int Number of translated strings
+     * @throws iMSCP_i18n_Parser_Exception
      */
     public function getNumberOfTranslatedStrings()
     {
@@ -353,6 +372,7 @@ class iMSCP_I18n_Parser_Gettext
      *
      * @param string $header header name
      * @return string header value
+     * @throws iMSCP_i18n_Parser_Exception
      */
     protected function _getHeaderValue($header)
     {

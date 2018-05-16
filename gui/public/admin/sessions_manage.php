@@ -33,6 +33,10 @@
  * Kill user session
  *
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function kill_session()
 {
@@ -73,6 +77,10 @@ function kill_session()
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_generatePage($tpl)
 {

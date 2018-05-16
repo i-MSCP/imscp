@@ -20,7 +20,6 @@
 
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_Exception as iMSCPException;
 
 /***********************************************************************************************************************
  * Functions
@@ -37,6 +36,7 @@ use iMSCP_Exception as iMSCPException;
  *
  * @param int $mailAccountId Mail account unique identifier
  * @return bool TRUE if all conditions are meet, FALSE otherwise
+ * @throws iMSCP_Exception_Database
  */
 function checkMailAccount($mailAccountId)
 {
@@ -58,9 +58,11 @@ function checkMailAccount($mailAccountId)
 /**
  * Deactivate autoresponder of the given mail account
  *
- * @throws iMSCPException
  * @param int $mailAccountId Mail account id
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function deactivateAutoresponder($mailAccountId)
 {

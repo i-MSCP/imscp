@@ -114,9 +114,11 @@ function getDomainData($configLevel)
 /**
  * Update PHP configuration options
  *
- * @throws iMSCP_Exception
  * @param iMSCP_PHPini $phpini PHP editor instance
  * @param string $configLevel PHP configuration level
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  * @çeturn void
  */
 function updatePhpConfig($phpini, $configLevel)
@@ -217,6 +219,10 @@ function updatePhpConfig($phpini, $configLevel)
  * @param iMSCP_Config_Handler_File $config Configuration handler
  * @param string $configLevel PHP configuration level
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl, $phpini, $config, $configLevel)
 {

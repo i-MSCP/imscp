@@ -28,6 +28,8 @@
  * @param int $htuserId Htaccess user unique identifier
  * @param int $domainId Domain unique identifier
  * @return string
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_getHtaccessUsername($htuserId, $domainId)
 {
@@ -54,6 +56,10 @@ function client_getHtaccessUsername($htuserId, $domainId)
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_generatePage($tpl)
 {
@@ -128,6 +134,9 @@ function client_generatePage($tpl)
  * Assign a specific htaccess user to a specific htaccess group
  *
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_addHtaccessUserToHtaccessGroup()
 {
@@ -184,6 +193,9 @@ function client_addHtaccessUserToHtaccessGroup()
  * Remove user from a specific group
  *
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_removeHtaccessUserFromHtaccessGroup()
 {

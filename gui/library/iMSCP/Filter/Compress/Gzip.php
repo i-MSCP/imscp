@@ -164,6 +164,7 @@ class iMSCP_Filter_Compress_Gzip
      * @param string $data Data to be compressed
      * @param string $filePath File path to be used for gz file creation]
      * @return string|bool Encoded string in gzip file format, FALSE on failure
+     * @throws iMSCP_Exception
      */
     public function filter($data, $filePath = '')
     {

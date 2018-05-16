@@ -28,6 +28,7 @@
  * @access private
  * @param string $status User status
  * @return array
+ * @throws Zend_Exception
  */
 function _client_generateUserAction($status)
 {
@@ -49,6 +50,7 @@ function _client_generateUserAction($status)
  * @access private
  * @param string $status Group status
  * @return array
+ * @throws Zend_Exception
  */
 function _client_generateHtgroupAction($status)
 {
@@ -64,6 +66,10 @@ function _client_generateHtgroupAction($status)
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_generateUsersList($tpl)
 {
@@ -103,6 +109,10 @@ function client_generateUsersList($tpl)
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_generateGroupsList($tpl)
 {

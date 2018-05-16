@@ -29,6 +29,8 @@
  * @param string $status Domain status
  * @param string $redirectUrl Target URL for redirect request
  * @return array
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function generateDomainRedirectAndEditLink($id, $status, $redirectUrl)
 {
@@ -52,6 +54,10 @@ function generateDomainRedirectAndEditLink($id, $status, $redirectUrl)
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generateDomainsList($tpl)
 {
@@ -130,6 +136,9 @@ function generateDomainsList($tpl)
  * @param int $id Alias unique identifier
  * @param string $status Alias status
  * @return array
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generateDomainAliasAction($id, $status)
 {
@@ -158,6 +167,8 @@ function generateDomainAliasAction($id, $status)
  * @param string $status Alias status
  * @param string $redirectUrl Target URL for redirect request
  * @return array
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function generateDomainAliasRedirectAndEditLink($id, $status, $redirectUrl)
 {
@@ -189,6 +200,10 @@ function generateDomainAliasRedirectAndEditLink($id, $status, $redirectUrl)
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generateDomainAliasesList($tpl)
 {
@@ -294,6 +309,9 @@ function generateDomainAliasesList($tpl)
  * @param string $subdomainType Subdomain type (dmn|als)
  * @param string $status Subdomain status
  * @return array
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generateSubdomainAction($id, $subdomainType, $status)
 {
@@ -329,6 +347,8 @@ function generateSubdomainAction($id, $subdomainType, $status)
  * @param string $status Subdomain status
  * @param string $redirectUrl Target URL for redirect request
  * @return array
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function generateSubdomainRedirectAndEditLink($id, $subdomainType, $status, $redirectUrl)
 {
@@ -352,6 +372,10 @@ function generateSubdomainRedirectAndEditLink($id, $subdomainType, $status, $red
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generateSubdomainsList($tpl)
 {
@@ -488,6 +512,8 @@ function generateSubdomainsList($tpl)
  * @param string $status Custom DNS record status
  * @param string $ownedBy Owner of the DNS record
  * @return array
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function generateCustomDnsRecordAction($action, $id, $status, $ownedBy = 'custom_dns_feature')
 {
@@ -511,6 +537,10 @@ function generateCustomDnsRecordAction($action, $id, $status, $ownedBy = 'custom
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generateCustomDnsRecordsList($tpl)
 {

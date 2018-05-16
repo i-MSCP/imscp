@@ -26,6 +26,8 @@
  * Generates support questions notice for administrator
  *
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function admin_generateSupportQuestionsMessage()
 {
@@ -48,6 +50,7 @@ function admin_generateSupportQuestionsMessage()
  * Generates update messages for both database updates and i-MSCP updates.
  *
  * @return void
+ * @throws Zend_Exception
  */
 function admin_generateUpdateMessages()
 {
@@ -71,6 +74,9 @@ function admin_generateUpdateMessages()
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function admin_getAdminGeneralInfo($tpl)
 {
@@ -96,6 +102,10 @@ function admin_getAdminGeneralInfo($tpl)
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
+ * @throws Zend_Date_Exception
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function admin_generateServerTrafficInfo($tpl)
 {

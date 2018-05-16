@@ -33,6 +33,11 @@ use Zend_Form as Form;
  *
  * @param Form $form
  * @return void
+ * @throws Zend_Exception
+ * @throws Zend_Form_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function updatePersonalData(Form $form)
 {
@@ -84,9 +89,11 @@ function updatePersonalData(Form $form)
  * @param TemplateEngine $tpl
  * @param Form $form
  * @return void
+ * @throws iMSCP_Exception_Database
  */
 function generatePage(TemplateEngine $tpl, Form $form)
 {
+    /** @noinspection PhpUndefinedFieldInspection */
     $tpl->form = $form;
 
     if (!empty($_POST)) {

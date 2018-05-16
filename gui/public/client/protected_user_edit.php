@@ -31,6 +31,9 @@ use iMSCP\Crypt as Crypt;
  * @param int $domainId Domain unique identifier
  * @param int $htuserId Htaccess user unique identifier
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_updateHtaccessUser($domainId, $htuserId)
 {

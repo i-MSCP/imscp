@@ -29,6 +29,9 @@ use iMSCP\VirtualFileSystem as VirtualFileSystem;
  *
  * @param null|iMSCP_pTemplate $tpl
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function setFtpRootDir($tpl = NULL)
 {
@@ -85,10 +88,12 @@ function setFtpRootDir($tpl = NULL)
 /**
  * Generate Page
  *
- * @throws iMSCP_Exception
  * @param iMSCP_pTemplate $tpl
  * @param int $softwareId Software unique identifier
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_generatePage($tpl, $softwareId)
 {

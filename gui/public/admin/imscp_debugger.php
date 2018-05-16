@@ -34,6 +34,10 @@
  *
  * @param  iMSCP_pTemplate $tpl Template engine instance
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function debugger_getUserErrors($tpl)
 {
@@ -69,6 +73,10 @@ function debugger_getUserErrors($tpl)
  *
  * @param  iMSCP_pTemplate $tpl Template engine instance
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function debugger_getDmnErrors($tpl)
 {
@@ -104,6 +112,10 @@ function debugger_getDmnErrors($tpl)
  *
  * @param  iMSCP_pTemplate $tpl Template engine instance
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function debugger_getAlsErrors($tpl)
 {
@@ -140,6 +152,10 @@ function debugger_getAlsErrors($tpl)
  *
  * @param  iMSCP_pTemplate $tpl Template engine instance
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function debugger_getSubErrors($tpl)
 {
@@ -177,6 +193,10 @@ function debugger_getSubErrors($tpl)
  *
  * @param  iMSCP_pTemplate $tpl Template engine instance
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function debugger_getAlssubErrors($tpl)
 {
@@ -214,6 +234,10 @@ function debugger_getAlssubErrors($tpl)
  *
  * @param  iMSCP_pTemplate $tpl Template engine instance
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function debugger_getCustomDNSErrors($tpl)
 {
@@ -250,6 +274,10 @@ function debugger_getCustomDNSErrors($tpl)
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function debugger_getHtaccessErrors($tpl)
 {
@@ -292,6 +320,9 @@ function debugger_getHtaccessErrors($tpl)
  * Get FTP user errors
  *
  * @param iMSCP_pTemplate $tpl
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  */
 function debugger_getFtpUserErrors($tpl)
@@ -327,9 +358,12 @@ function debugger_getFtpUserErrors($tpl)
 /**
  * Get mails errors
  *
- * @throws iMSCP_Exception
  * @param iMSCP_pTemplate $tpl Template engine instance
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function debugger_getMailsErrors($tpl)
 {
@@ -420,6 +454,10 @@ function debugger_getMailsErrors($tpl)
  *
  * @param  iMSCP_pTemplate $tpl Template engine instance
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function debugger_getIpErrors($tpl)
 {
@@ -456,6 +494,9 @@ function debugger_getIpErrors($tpl)
  *
  * @param iMSCP_pTemplate $tpl
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  */
 function debugger_getPluginItemErrors($tpl)
 {
@@ -500,6 +541,8 @@ function debugger_getPluginItemErrors($tpl)
  * @param string $field Status field name
  * @param int $itemId item unique identifier
  * @return bool
+ * @throws Zend_Exception
+ * @throws iMSCP_Plugin_Exception
  */
 function debugger_changePluginItemStatus($pluginName, $table, $field, $itemId)
 {
@@ -522,6 +565,8 @@ function debugger_changePluginItemStatus($pluginName, $table, $field, $itemId)
  * @param string $statusField status database field name
  * @param  string $tableName i-MSCP database table name
  * @return int Number of request
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function debugger_countRequests($statusField = NULL, $tableName = NULL)
 {

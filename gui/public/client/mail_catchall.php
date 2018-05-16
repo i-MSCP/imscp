@@ -37,6 +37,9 @@ use iMSCP_pTemplate as TemplateEngine;
  * @param int $domainId
  * @param string $mailStatus
  * @param string $mailType
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  */
 function generateCatchallItem($tpl, $domainName, $mailId, $mailAcc, $domainId, $mailStatus, $mailType)
 {
@@ -83,6 +86,10 @@ function generateCatchallItem($tpl, $domainName, $mailId, $mailAcc, $domainId, $
  * Generate page
  *
  * @param TemplateEngine $tpl
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  * @çeturn void
  */
 function generatePage($tpl)

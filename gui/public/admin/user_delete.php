@@ -32,9 +32,10 @@
 /**
  * Deletes an admin or reseller user
  *
+ * @param int $userId User unique identifier
+ * @throws Zend_Exception
  * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
- * @param int $userId User unique identifier
  */
 function admin_deleteUser($userId)
 {
@@ -143,6 +144,9 @@ function admin_deleteUser($userId)
  * @param int $userId Reseller unique identifier
  * @param array $swPackages Array that contains software package to remove
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function _admin_deleteResellerSwPackages($userId, array $swPackages)
 {
@@ -168,6 +172,8 @@ function _admin_deleteResellerSwPackages($userId, array $swPackages)
  *
  * @param int $userId User unique identifier
  * @return bool TRUE if deletion can be done, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function admin_validateUserDeletion($userId)
 {

@@ -64,6 +64,7 @@ class iMSCP_Config_Handler implements ArrayAccess
      *
      * @param string $key Configuration parameter key name
      * @return mixed Configuration parameter value
+     * @throws iMSCP_Exception
      */
     public function __get($key)
     {
@@ -163,6 +164,7 @@ class iMSCP_Config_Handler implements ArrayAccess
      *
      * @param  mixed $offset The offset to retrieve
      * @return mixed Offset value
+     * @throws iMSCP_Exception
      */
     public function offsetGet($offset)
     {

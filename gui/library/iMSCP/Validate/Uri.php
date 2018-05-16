@@ -36,7 +36,6 @@ class iMSCP_Validate_Uri extends Zend_Validate_Abstract
      * getMessages() will return an array of messages that explain why the
      * validation failed.
      *
-     * @throws Zend_Validate_Exception If validation of $value is impossible
      * @param  string $uri URI to be validated
      * @return boolean
      */

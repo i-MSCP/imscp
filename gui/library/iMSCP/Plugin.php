@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 /**
  * i-MSCP - internet Multi Server Control Panel
  * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>

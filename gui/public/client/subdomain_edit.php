@@ -31,6 +31,7 @@ use iMSCP\VirtualFileSystem as VirtualFileSystem;
  * @param int $subdomainId Subdomain unique identifier
  * @param string $subdomainType Subdomain Type
  * @return array|bool Subdomain data or FALSE on error
+ * @throws iMSCP_Exception_Database
  */
 function _client_getSubdomainData($subdomainId, $subdomainType)
 {
@@ -91,6 +92,11 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
  *
  * @param $tpl iMSCP_pTemplate
  * @return void
+ * @throws Zend_Exception
+ * @throws Zend_Uri_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
+ * @throws iMSCP_Uri_Exception
  */
 function client_generatePage($tpl)
 {
@@ -182,6 +188,10 @@ function client_generatePage($tpl)
  * Edit subdomain
  *
  * @return bool TRUE on success, FALSE on failure
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_editSubdomain()
 {

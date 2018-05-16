@@ -33,6 +33,10 @@ use iMSCP_Registry as Registry;
  *
  * @param string $userid Ftp userid
  * @return bool TRUE on success, FALSE on failure
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function updateFtpAccount($userid)
 {
@@ -117,6 +121,9 @@ function updateFtpAccount($userid)
  * @param iMSCP_pTemplate $tpl Template engine instance
  * @param string $ftpUserId Ftp userid
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl, $ftpUserId)
 {

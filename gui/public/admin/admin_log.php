@@ -69,6 +69,8 @@ function admin_sendJsonResponse($statusCode = 200, array $data = [])
  *
  * @throws iMSCP_Exception
  * @return void
+ * @throws Zend_Exception
+ * @throws Zend_Exception
  */
 function admin_clearLogs()
 {
@@ -121,6 +123,8 @@ function admin_clearLogs()
  * Get logs
  *
  * @throws iMSCP_Exception
+ * @throws Zend_Exception
+ * @throws Zend_Exception
  */
 function admin_getLogs()
 {

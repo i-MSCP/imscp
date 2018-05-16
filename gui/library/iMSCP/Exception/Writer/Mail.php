@@ -37,6 +37,9 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer_Abstract
      *
      * @param iMSCP_Exception_Event $event
      * @return void
+     * @throws Zend_Exception
+     * @throws iMSCP_Events_Manager_Exception
+     * @throws iMSCP_Exception
      */
     public function onUncaughtException(iMSCP_Exception_Event $event)
     {
@@ -87,6 +90,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer_Abstract
      *
      * @param Exception $exception An exception object
      * @return array Array containing mail data
+     * @throws Zend_Exception
      */
     protected function prepareMailData($exception)
     {

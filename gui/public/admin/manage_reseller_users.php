@@ -176,6 +176,8 @@ function moveCustomer($customerId, $fromResellerId, $toResellerId)
  * Move selected customers
  *
  * @return bool TRUE on success, other on failure
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function moveCustomers()
 {
@@ -214,6 +216,9 @@ function moveCustomers()
  *
  * @param TemplateEngine $tpl
  * @return void
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generatePage(TemplateEngine $tpl)
 {

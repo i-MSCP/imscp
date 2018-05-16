@@ -87,6 +87,7 @@ class iMSCP_PHPini
      *
      * @param int|null $resellerId Reseller unique identifier
      * @return void
+     * @throws iMSCP_Exception_Database
      */
     public function loadResellerPermissions($resellerId = NULL)
     {
@@ -142,6 +143,7 @@ class iMSCP_PHPini
      *
      * @param int $resellerId Reseller unique identifier
      * @return void
+     * @throws iMSCP_Exception_Database
      */
     public function saveResellerPermissions($resellerId)
     {
@@ -327,6 +329,7 @@ class iMSCP_PHPini
      *
      * @param int $clientId Client unique identifier
      * @return bool Boolean indicating whether or not a backend request is needed
+     * @throws iMSCP_Exception_Database
      */
     public function saveClientPermissions($clientId)
     {
@@ -353,6 +356,7 @@ class iMSCP_PHPini
      * @param string $permission Permission name
      * @param string $value Permission value
      * @return void
+     * @throws iMSCP_Exception
      */
     public function setClientPermission($permission, $value)
     {
@@ -715,11 +719,13 @@ class iMSCP_PHPini
     /**
      * Update client domain INI options for the given client
      *
-     * @throws iMSCP_Exception_Database
      * @param null|array $domainIni New Domain INI values
      * @param int $clientId Client identifier
      * @param bool $needChange OPTIONAL whether or not client domains must be updated
      * @return bool Boolean indicating whether or not a backend request is needed
+     * @throws Zend_Exception
+     * @throws iMSCP_Exception
+     * @throws iMSCP_Exception_Database
      */
     public function updateClientDomainIni($domainIni, $clientId, $needChange = false)
     {
@@ -801,8 +807,10 @@ class iMSCP_PHPini
      *
      * @param int $resellerId Reseller unique identifier
      * @param int $clientId OPTIONAL client unique identifier (Client for which PHP permissions must be synchronized)
-     * @throws iMSCP_Exception_Database
      * @return bool Boolean indicating whether or not a backend request is needed
+     * @throws iMSCP_Exception
+     * @throws iMSCP_Exception_Database
+     * @throws Zend_Exception
      */
     public function syncClientPermissionsWithResellerPermissions($resellerId, $clientId = NULL)
     {
@@ -1004,6 +1012,8 @@ class iMSCP_PHPini
      * Return current PHP ini level
      *
      * @return string
+     * @throws Zend_Exception
+     * @throws iMSCP_Exception
      */
     protected function getIniLevel()
     {

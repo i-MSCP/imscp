@@ -118,6 +118,7 @@ class iMSCP_Config
      * @param string $index Configuration parameter key name
      * @param string $className iMSCP_Config_Handler class name
      * @return mixed Configuration parameter value
+     * @throws iMSCP_Exception
      */
     public static function get($index, $className = self::FILE)
     {
@@ -132,6 +133,7 @@ class iMSCP_Config
      * @param mixed $value Configuration parameter value
      * @param string $className iMSCP_Config_Handler class name
      * @return void
+     * @throws iMSCP_Exception
      */
     public static function set($index, $value, $className = self::FILE)
     {
@@ -145,6 +147,7 @@ class iMSCP_Config
      * @param string $index Configuration parameter key name
      * @param string $className iMSCP_Config_Handler class name
      * @return void
+     * @throws iMSCP_Exception
      */
     public static function del($index, $className = self::FILE)
     {

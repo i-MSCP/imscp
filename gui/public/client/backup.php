@@ -34,6 +34,9 @@
  *
  * @param int $userId Customer unique identifier
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function scheduleBackupRestoration($userId)
 {

@@ -50,6 +50,7 @@ define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
  * @param string $forwardType Forward type(MT_NORMAL_FORWARD|MT_ALIAS_FORWARD|MT_SUBDOM_FORWARD|MT_ALSSUB_FORWARD)
  * @param int $subId OPTIONAL Sub-ID if default mail accounts are being created for a domain alias or subdomain
  * @return void
+ * @throws Zend_Exception
  */
 function createDefaultMailAccounts($mainDmnId, $userEmail, $dmnName, $forwardType = MT_NORMAL_FORWARD, $subId = 0)
 {
@@ -108,6 +109,7 @@ function createDefaultMailAccounts($mainDmnId, $userEmail, $dmnName, $forwardTyp
  * Delete all autoreplies log for which no mail address is found in the mail_users database table
  *
  * @return void
+ * @throws iMSCP_Exception_Database
  */
 function delete_autoreplies_log_entries()
 {
@@ -128,6 +130,7 @@ function delete_autoreplies_log_entries()
  *
  * @param int $userId User unique identifier
  * @return string Username
+ * @throws iMSCP_Exception_Database
  */
 function get_user_name($userId)
 {
@@ -152,6 +155,7 @@ function get_user_name($userId)
  * @param string $domainName Domain name to match
  * @param int $resellerId Reseller unique identifier
  * @return bool TRUE if the domain already exist, FALSE otherwise
+ * @throws iMSCP_Exception_Database
  */
 function imscp_domain_exists($domainName, $resellerId)
 {
@@ -243,6 +247,7 @@ function imscp_domain_exists($domainName, $resellerId)
  * @param int $domainAdminId Customer unique identifier
  * @param int|null $createdBy OPTIONAL reseller unique identifier
  * @return array Returns an associative array where each key is a domain propertie name.
+ * @throws iMSCP_Exception_Database
  */
 function get_domain_default_props($domainAdminId, $createdBy = NULL)
 {
@@ -304,6 +309,7 @@ function get_user_domain_id($customeId)
  * @param string $status Item status to translate
  * @param bool $showError Whether or not show true error string
  * @return string Translated status
+ * @throws Zend_Exception
  */
 function translate_dmn_status($status, $showError = false)
 {
@@ -314,6 +320,7 @@ function translate_dmn_status($status, $showError = false)
             return tr('Addition in progress...');
         case 'tochange':
         case 'tochangepwd':
+        case 'torestore':
             return tr('Modification in progress...');
         case 'todelete':
             return tr('Deletion in progress...');
@@ -338,6 +345,7 @@ function translate_dmn_status($status, $showError = false)
  *
  * @param int $resellerId unique reseller identifier
  * @return void
+ * @throws iMSCP_Exception_Database
  */
 function update_reseller_c_props($resellerId)
 {
@@ -377,10 +385,12 @@ function update_reseller_c_props($resellerId)
 /**
  * Activate or deactivate the given customer account
  *
- * @throws iMSCPException|DatabaseException
  * @param int $customerId Customer unique identifier
  * @param string $action Action to schedule
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function change_domain_status($customerId, $action)
 {
@@ -499,10 +509,11 @@ function change_domain_status($customerId, $action)
 /**
  * Deletes an SQL user
  *
- * @throws DatabaseException
  * @param int $dmnId Domain unique identifier
  * @param int $userId Sql user unique identifier
  * @return bool TRUE on success, FALSE otherwise
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception_Database
  */
 function sql_delete_user($dmnId, $userId)
 {
@@ -567,6 +578,8 @@ function sql_delete_user($dmnId, $userId)
  * @param int $dmnId Domain unique identifier
  * @param int $dbId Databse unique identifier
  * @return bool TRUE on success, false otherwise
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception_Database
  */
 function delete_sql_database($dmnId, $dbId)
 {
@@ -611,10 +624,12 @@ function delete_sql_database($dmnId, $dbId)
 /**
  * Deletes the given customer
  *
- * @throws iMSCPException
  * @param integer $customerId Customer unique identifier
  * @param boolean $checkCreatedBy Tell whether or not customer must have been created by logged-in user
  * @return bool TRUE on success, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function deleteCustomer($customerId, $checkCreatedBy = false)
 {
@@ -786,13 +801,15 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
 /**
  * Delete the given domain alias, including any entity that belong to it
  *
- * @throws DatabaseException|iMSCPException
  * @param int $customerId Customer unique identifier
  * @param int $mainDomainId Customer main domain identifier
  * @param int $aliasId Domain alias unique identifier
  * @param string $aliasName Domain alias name
  * @param string $aliasMount Domain alias mount point
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function deleteDomainAlias($customerId, $mainDomainId, $aliasId, $aliasName, $aliasMount)
 {
@@ -937,10 +954,12 @@ function deleteDomainAlias($customerId, $mainDomainId, $aliasId, $aliasName, $al
 /**
  * Returns properties for the given reseller
  *
- * @throws iMSCPException When reseller properties are not found
  * @param int $resellerId Reseller unique identifier
  * @param bool $forceReload Whether or not force properties reload from database
  * @return array
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception When reseller properties are not found
+ * @throws iMSCP_Exception_Database
  */
 function imscp_getResellerProperties($resellerId, $forceReload = false)
 {
@@ -963,8 +982,9 @@ function imscp_getResellerProperties($resellerId, $forceReload = false)
  * Update reseller properties
  *
  * @param  int $resellerId Reseller unique identifier.
- * @param  array $props Array that contain new properties values
+ * @param  string $props String containing new properties, each semicolon separated
  * @return iMSCP_Database_ResultSet|null
+ * @throws iMSCP_Exception_Database
  */
 function update_reseller_props($resellerId, $props)
 {
@@ -1025,6 +1045,8 @@ function update_reseller_props($resellerId, $props)
  * @param int $domainId Customer main domain unique identifier
  * @param int $newQuota New quota limit in bytes
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function sync_mailboxes_quota($domainId, $newQuota)
 {
@@ -1113,7 +1135,7 @@ function array_decode_idna($array, $asPath = false)
 /**
  * Must be documented
  *
- * @param array $array Indexed array that containt
+ * @param array|string $array Indexed array that containt
  * @param bool $asPath
  * @return array|string
  */
@@ -1178,6 +1200,7 @@ function decode_idna($string)
  *                               FALSE on failure.
  *
  * @return string|bool File destination path on success, FALSE otherwise
+ * @throws Zend_Exception
  */
 function utils_uploadFile($inputFieldName, $destPath)
 {
@@ -1255,7 +1278,6 @@ function utils_getMaxFileUpload()
  * See http://fr2.php.net/manual/en/faq.using.php#faq.using.shorthandbytes for
  * further explaination
  *
- * @throws iMSCPException
  * @param int|string PHP directive value
  * @return int Value in bytes
  */
@@ -1687,6 +1709,9 @@ function getRequestBaseUrl()
  * @param string $msg Message
  * @param int $logLevel Log level
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function write_log($msg, $logLevel = E_USER_WARNING)
 {
@@ -1762,6 +1787,10 @@ i-MSCP Mailer'),
  * @param string $ulname User lastname
  * @param string $utype User type
  * @return bool TRUE on success, FALSE on failure
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function send_add_user_auto_msg($adminId, $uname, $upass, $uemail, $ufname, $ulname, $utype)
 {
@@ -1885,6 +1914,9 @@ function check_package_is_installed($packageInstallType, $packageName, $packageV
  * @param iMSCP_pTemplate $tpl Template engine
  * @param int $userId User unique identifier
  * @return int
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function get_webdepot_software_list($tpl, $userId)
 {
@@ -1947,6 +1979,8 @@ function get_webdepot_software_list($tpl, $userId)
  *
  * @param string $repositoryIndexFile Repository index file URI
  * @param string $webRepositoryLastUpdate Web repository last update
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function update_webdepot_software_list($repositoryIndexFile, $webRepositoryLastUpdate)
 {
@@ -2024,6 +2058,9 @@ function generate_software_upload_token()
  *
  * @param resource &$socket
  * @return bool TRUE on success, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function daemon_readAnswer(&$socket)
 {
@@ -2052,6 +2089,9 @@ function daemon_readAnswer(&$socket)
  * @param resource &$socket
  * @param string $command Command
  * @return bool TRUE on success, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function daemon_sendCommand(&$socket, $command)
 {
@@ -2082,6 +2122,9 @@ function daemon_sendCommand(&$socket, $command)
  * Send a request to the daemon
  *
  * @return bool TRUE on success, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function send_request()
 {
@@ -2190,6 +2233,7 @@ function exec_query($query, $bind = NULL)
  *
  * @param  string $identifier Identifier to quote
  * @return string quoted identifier
+ * @throws iMSCP_Exception_Database
  */
 function quoteIdentifier($identifier)
 {
@@ -2208,6 +2252,7 @@ function quoteIdentifier($identifier)
  * @param mixed $value Value to quote
  * @param int $parameterType Parameter type
  * @return mixed quoted value
+ * @throws iMSCP_Exception_Database
  */
 function quoteValue($value, $parameterType = PDO::PARAM_STR)
 {
@@ -2379,12 +2424,13 @@ if (!function_exists('http_build_url')) {
  * with the horrible names: bytes, kibibytes, mebibytes, etc.
  *
  * @see http://physics.nist.gov/cuu/Units/binary.html
- * @throws iMSCPException if power or unit value is unknown
  * @param int|float $bytes Bytes value to convert
  * @param string $unit OPTIONAL Unit to calculate to
  * @param int $decimals OPTIONAL Number of decimal to be show
  * @param int $power OPTIONAL Power to use for conversion (1024 or 1000)
  * @return string
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception if power or unit value is unknown
  */
 function bytesHuman($bytes, $unit = NULL, $decimals = 2, $power = 1024)
 {
@@ -2490,6 +2536,8 @@ function bytesHuman($bytes, $unit = NULL, $decimals = 2, $power = 1024)
  * @param int $decimals OPTIONAL Number of decimal to be show
  * @param int $power OPTIONAL Power to use for conversion (1024 or 1000)
  * @return string
+ * @throws iMSCP_Exception
+ * @throws Zend_Exception
  */
 function mebibytesHuman($mebibyte, $unit = NULL, $decimals = 2, $power = 1024)
 {
@@ -2504,6 +2552,8 @@ function mebibytesHuman($mebibyte, $unit = NULL, $decimals = 2, $power = 1024)
  * @param bool $autosize calculate value in different unit (default false)
  * @param string $to OPTIONAL Unit to calclulate to ('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB')
  * @return String
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function translate_limit_value($value, $autosize = false, $to = NULL)
 {
@@ -2538,6 +2588,8 @@ function translate_limit_value($value, $autosize = false, $to = NULL)
  * @param int $month OPTIONAL a month (date('n')
  * @param int $year OPTIONAL A year (date('Y'))
  * @return int
+ * @throws Zend_Date_Exception
+ * @throws Zend_Exception
  */
 function getFirstDayOfMonth($month = NULL, $year = NULL)
 {
@@ -2558,6 +2610,8 @@ function getFirstDayOfMonth($month = NULL, $year = NULL)
  * @param int $month OPTIONAL a month (date('n')
  * @param int $year OPTIONAL A year (date('Y'))
  * @return int
+ * @throws Zend_Date_Exception
+ * @throws Zend_Exception
  */
 function getLastDayOfMonth($month = NULL, $year = NULL)
 {
@@ -2576,6 +2630,7 @@ function getLastDayOfMonth($month = NULL, $year = NULL)
  * Get list of available webmail
  *
  * @return array
+ * @throws Zend_Exception
  */
 function getWebmailList()
 {
@@ -2594,6 +2649,7 @@ function getWebmailList()
  * Returns the user Ip address
  *
  * @return string User's Ip address
+ * @throws Zend_Exception
  */
 function getIpAddr()
 {

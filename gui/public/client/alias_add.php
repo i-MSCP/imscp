@@ -34,6 +34,10 @@ use iMSCP_Registry as Registry;
  *
  * @param  string $aliasName
  * @return bool TRUE on success, FALSE on failure
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function send_alias_order_email($aliasName)
 {
@@ -68,6 +72,7 @@ function send_alias_order_email($aliasName)
  * Get domains list
  *
  * @return array Domains list
+ * @throws iMSCP_Exception_Database
  */
 function getDomainsList()
 {
@@ -131,6 +136,8 @@ function getDomainsList()
  *
  * @param $tpl TemplateEngine
  * @return void
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  */
 function generatePage(TemplateEngine $tpl)
 {
@@ -189,6 +196,9 @@ function generatePage(TemplateEngine $tpl)
  * Add new domain alias
  *
  * @return bool TRUE on success, FALSE on failure
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function addDomainAlias()
 {

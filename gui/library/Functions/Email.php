@@ -77,6 +77,7 @@ function get_email_tpl_data($userId, $tplName)
  *                     - subject: Subject
  *                     - message: Message
  * @return void
+ * @throws iMSCP_Exception_Database
  */
 function set_email_tpl_data($userId, $tplName, $data)
 {
@@ -101,6 +102,8 @@ function set_email_tpl_data($userId, $tplName, $data)
  *                - sender_email: Sender email
  *                - subject:      Subject
  *                - message:      Message
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function get_welcome_email($userId)
 {
@@ -142,6 +145,7 @@ i-MSCP Mailer');
  *                     - subject: Subject
  *                     - message: Message
  * @return void
+ * @throws iMSCP_Exception_Database
  */
 function set_welcome_email($userId, $data)
 {
@@ -158,6 +162,8 @@ function set_welcome_email($userId, $data)
  *                - sender_email: Sender email
  *                - subject:      Subject
  *                - message:      Message
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function get_lostpassword_activation_email($userId)
 {
@@ -195,6 +201,7 @@ i-MSCP Mailer');
  *                     - subject: Subject
  *                     - message: Message
  * @return void
+ * @throws iMSCP_Exception_Database
  */
 function set_lostpassword_activation_email($adminId, $data)
 {
@@ -211,6 +218,8 @@ function set_lostpassword_activation_email($adminId, $data)
  *                - sender_email: Sender email
  *                - subject:      Subject
  *                - message:      Message
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function get_lostpassword_password_email($userId)
 {
@@ -248,6 +257,7 @@ i-MSCP Mailer');
  *                     - subject: Subject
  *                     - message: Message
  * @return void
+ * @throws iMSCP_Exception_Database
  */
 function set_lostpassword_password_email($userId, $data)
 {
@@ -264,6 +274,8 @@ function set_lostpassword_password_email($userId, $data)
  *                - sender_email: Sender email
  *                - subject:      Subject
  *                - message:      Message
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function get_alias_order_email($resellerId)
 {
@@ -334,7 +346,6 @@ function encode_mime_header($string, $charset = 'UTF-8')
 /**
  * Send a mail using given data
  *
- * @throws iMSCPException
  * @param array $data An associative array containing mail data:
  *  - mail_id      : Email identifier
  *  - fname        : OPTIONAL Receiver firstname
@@ -349,6 +360,9 @@ function encode_mime_header($string, $charset = 'UTF-8')
  *                   and values, the replacement values. Those placeholders
  *                   take precedence on the default placeholders.
  * @return bool TRUE on success, FALSE on failure
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  */
 function send_mail($data)
 {

@@ -28,9 +28,11 @@ use iMSCP_pTemplate as TemplateEngine;
 
 /**
  * Can add SQL user for the given SQL database?
- * 
+ *
  * @param int $sqldId SQL database unique identifier
  * @return bool
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function canAddSQLUserForDatabase($sqldId)
 {
@@ -67,6 +69,10 @@ function canAddSQLUserForDatabase($sqldId)
  * @param TemplateEngine $tpl Template engine
  * @param int $sqldId Database unique identifier
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generateDatabaseSqlUserList(TemplateEngine $tpl, $sqldId)
 {
@@ -105,6 +111,10 @@ function generateDatabaseSqlUserList(TemplateEngine $tpl, $sqldId)
  *
  * @param TemplateEngine $tpl Template engine
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generatePage(TemplateEngine $tpl)
 {

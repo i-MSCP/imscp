@@ -119,6 +119,7 @@ class iMSCP_Config_Handler_File extends ConfigHandler
      * of distribution.
      *
      * @param string $pathFile Configuration file path
+     * @throws iMSCP_Exception
      */
     public function __construct($pathFile = NULL)
     {

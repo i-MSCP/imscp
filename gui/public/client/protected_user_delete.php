@@ -47,12 +47,12 @@ try {
 
     while ($row = $stmt->fetchRow()) {
         $htuserList = explode(',', $row['members']);
-        $candidate = array_search($row['id'], $members);
+        $candidate = array_search($row['id'], $htuserList);
 
         if ($candidate === false)
             continue;
 
-        unset($members[$candidate]);
+        unset($htuserList[$candidate]);
 
         exec_query('UPDATE htaccess_groups SET members = ?, status = ? WHERE id = ?', [
             implode(',', $htuserList), 'tochange', $row['id']
@@ -66,7 +66,7 @@ try {
         $htuserList = explode(',', $row['user_id']);
         $candidate = array_search($htuserId, $htuserList);
 
-        if ($key == false)
+        if ($candidate == false)
             continue;
 
         unset($htuserList[$candidate]);

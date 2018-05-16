@@ -33,6 +33,7 @@ use iMSCP_pTemplate as TemplateEngine;
  * @param int $catchallDomainId Domain unique identifier
  * @param int $catchalType Catch-all type
  * @return string Catch-all domain name if owner is verified, FALSE otherwise
+ * @throws iMSCP_Exception_Database
  */
 function getCatchallDomain($catchallDomainId, $catchalType)
 {
@@ -91,6 +92,10 @@ function getCatchallDomain($catchallDomainId, $catchalType)
  * @param string $catchallDomain Catch all domain name
  * @param string $catchallType Catch-all type
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function addCatchallAccount($catchallDomainId, $catchallDomain, $catchallType)
 {
@@ -199,6 +204,9 @@ function addCatchallAccount($catchallDomainId, $catchallDomain, $catchallType)
  * @param int $catchallDomainId Catch-all domain unique identifier
  * @param string $catchallType Catch-all type
  * @return void
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl, $catchallDomainId, $catchallType)
 {

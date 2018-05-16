@@ -53,6 +53,10 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer_Abstract
      *
      * @param iMSCP_Exception_Event $event
      * @return void
+     * @throws Zend_Exception
+     * @throws iMSCP_Events_Manager_Exception
+     * @throws iMSCP_Exception_Database
+     * @throws iMSCP_Exception
      */
     public function onUncaughtException(iMSCP_Exception_Event $event)
     {
@@ -140,6 +144,9 @@ HTML;
      * Render exception template file
      *
      * @return void
+     * @throws Zend_Exception
+     * @throws iMSCP_Events_Manager_Exception
+     * @throws iMSCP_Exception
      */
     protected function render()
     {

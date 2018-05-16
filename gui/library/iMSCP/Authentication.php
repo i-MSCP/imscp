@@ -105,6 +105,10 @@ class iMSCP_Authentication
      * @trigger onAuthentication
      * @trigger onAfterAuthentication
      * @return iMSCP_Authentication_Result
+     * @throws Zend_Exception
+     * @throws iMSCP_Events_Manager_Exception
+     * @throws iMSCP_Exception_Database
+     * @throws iMSCP_Events_Exception
      */
     public function authenticate()
     {
@@ -143,6 +147,8 @@ class iMSCP_Authentication
      * Returns true if and only if an identity is available from storage
      *
      * @return boolean
+     * @throws Zend_Exception
+     * @throws iMSCP_Exception_Database
      */
     public function hasIdentity()
     {
@@ -159,6 +165,8 @@ class iMSCP_Authentication
      * Returns the identity from storage if any, redirect to login page otherwise
      *
      * @return stdClass
+     * @throws iMSCP_Events_Manager_Exception
+     * @throws iMSCP_Exception_Database
      */
     public function getIdentity()
     {
@@ -177,6 +185,9 @@ class iMSCP_Authentication
      * @trigger onAfterSetIdentify
      * @param stdClass $identity Identity data
      * @return void
+     * @throws Zend_Exception
+     * @throws iMSCP_Events_Manager_Exception
+     * @throws iMSCP_Exception_Database
      */
     public function setIdentity($identity)
     {
@@ -216,6 +227,8 @@ class iMSCP_Authentication
      * @trigger onBeforeUnsetIdentity
      * @trigger onAfterUnserIdentity
      * @return void
+     * @throws iMSCP_Events_Manager_Exception
+     * @throws iMSCP_Exception_Database
      */
     public function unsetIdentity()
     {

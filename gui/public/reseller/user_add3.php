@@ -36,6 +36,7 @@ use Zend_Form as Form;
  * Get data from previous step
  *
  * @return bool
+ * @throws Zend_Exception
  */
 function getPreviousStepData()
 {
@@ -262,6 +263,7 @@ function generatePage(TemplateEngine $tpl, Form $form)
     global $hpId, $dmnName, $domainIp;
 
     $form->setDefault('admin_name', $dmnName);
+    /** @noinspection PhpUndefinedFieldInspection */
     $tpl->form = $form;
 
     reseller_generate_ip_list($tpl, $_SESSION['user_id'], $domainIp);

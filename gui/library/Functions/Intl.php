@@ -33,6 +33,7 @@ use Zend_Translate as Translator;
  * @param string $messageId Translation string, or Array for plural translations
  * @param mixed $substitution,... Substitution value(s)
  * @return string
+ * @throws Zend_Exception
  */
 function tr($messageId, $substitution = NULL)
 {
@@ -74,6 +75,7 @@ function tr($messageId, $substitution = NULL)
  * @param string $plural Plural translation string
  * @param integer $number Number for detecting the correct plural
  * @return string
+ * @throws Zend_Exception
  */
 function ntr($singular, $plural, $number)
 {
@@ -115,8 +117,9 @@ function replace_html($string)
 /**
  * Build languages index from machine object files
  *
- * @throws iMSCPException
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_i18n_Exception
  */
 function i18n_buildLanguageIndex()
 {
@@ -186,6 +189,8 @@ function i18n_buildLanguageIndex()
  *
  * @param bool $localesOnly Flag indicating whether or not only list of locales must be returned
  * @return array Array that contains information about available languages
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function i18n_getAvailableLanguages($localesOnly = false)
 {
@@ -224,6 +229,8 @@ function i18n_getAvailableLanguages($localesOnly = false)
  * Import Machine object file in languages directory
  *
  * @return bool TRUE on success, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_i18n_Exception
  */
 function i18n_importMachineObjectFile()
 {
@@ -294,6 +301,9 @@ function i18n_importMachineObjectFile()
  * Change panel default language
  *
  * @return bool TRUE if language name is valid, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function i18n_changeDefaultLanguage()
 {
@@ -341,8 +351,9 @@ function i18n_changeDefaultLanguage()
  * @param string|null $scan If set to NULL, no scanning of the directory structure will be done. If set to
  *                          Translator::LOCALE_DIRECTORY the locale will be detected within the directory.
  *                          If set to Translator::LOCALE_FILENAME the locale will be detected within the filename.
- * @throws iMSCPException
  * @return void
+ * @throws Zend_Exception
+ * @throws Zend_Translate_Exception
  */
 function l10n_addTranslations($dirPath, $type = 'Array', $tag = 'iMSCP_Translate', $scan = Translator::LOCALE_FILENAME)
 {
@@ -390,6 +401,8 @@ function l10n_addTranslations($dirPath, $type = 'Array', $tag = 'iMSCP_Translate
  *
  * @return string JS object as string
  * TODO ASSETIC management
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
  */
 function i18n_getJsTranslations()
 {

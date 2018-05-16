@@ -223,6 +223,8 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      * @param string $key Configuration parameter key name
      * @param mixed $value Configuration parameter value
      * @return void
+     * @throws iMSCP_Exception_Database
+     * @throws iMSCP_Events_Exception
      */
     public function __set($key, $value)
     {
@@ -235,6 +237,8 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      * @param string $key Configuration parameter key name
      * @param mixed $value Configuration parameter value
      * @return void
+     * @throws iMSCP_Exception_Database
+     * @throws iMSCP_Events_Exception
      */
     public function set($key, $value)
     {
@@ -338,6 +342,8 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      *
      * @param string $key Configuration parameter key name
      * @return void
+     * @throws iMSCP_Exception_Database
+     * @throws iMSCP_Events_Exception
      */
     public function __unset($key)
     {
@@ -351,6 +357,7 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      * from the database.
      *
      * @return void
+     * @throws iMSCP_Exception
      */
     public function forceReload()
     {
@@ -414,6 +421,8 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      *
      * @param string $key Configuration parameter key name
      * @return void
+     * @throws iMSCP_Exception_Database
+     * @throws iMSCP_Events_Exception
      */
     public function del($key)
     {
@@ -451,6 +460,7 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      *
      * @throws DatabaseException
      * @return void
+     * @throws iMSCP_Events_Exception
      */
     protected function _insert()
     {
@@ -473,6 +483,7 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      *
      * @throws DatabaseException
      * @return void
+     * @throws iMSCP_Events_Exception
      */
     protected function _update()
     {
@@ -495,6 +506,7 @@ class iMSCP_Config_Handler_Db extends ConfigHandler implements Iterator, Seriali
      *
      * @throws DatabaseException
      * @return void
+     * @throws iMSCP_Events_Exception
      */
     protected function _delete()
     {

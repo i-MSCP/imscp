@@ -155,6 +155,7 @@ function tourl($string)
  * @param string $unallowedChars RegExp for unallowed characters
  * @param bool $noErrorMsg Whether or not error message should be discarded
  * @return bool TRUE if the password is valid, FALSE otherwise
+ * @throws Zend_Exception
  */
 function checkPasswordSyntax($password, $unallowedChars = '/[^\x21-\x7e]/', $noErrorMsg = false)
 {
@@ -239,6 +240,7 @@ function chk_email($email, $localPartOnly = false)
  *
  * @param string $domainName Domain name
  * @return bool TRUE if the given domain name is valid, FALSE otherwise
+ * @throws Zend_Exception
  */
 function isValidDomainName($domainName)
 {
@@ -338,6 +340,7 @@ function imscp_limit_check($data, $extra = -1)
  * @param  string $pathFile File to check for mimetype
  * @param  array|string $mimeTypes Accepted mimetype(s)
  * @return bool TRUE if the file match the givem mimetype(s), FALSE otherwise
+ * @throws Zend_Validate_Exception
  */
 function checkMimeType($pathFile, array $mimeTypes)
 {
@@ -357,6 +360,8 @@ function checkMimeType($pathFile, array $mimeTypes)
  * @param bool $usernameRequired Flag indicating whether username is required
  * @param bool $passwordRequired Flag indicating whether password is required
  * @return Zend_Form
+ * @throws Zend_Exception
+ * @throws Zend_Form_Exception
  */
 function getUserLoginDataForm($usernameRequired = true, $passwordRequired = true)
 {
@@ -426,6 +431,8 @@ function getUserLoginDataForm($usernameRequired = true, $passwordRequired = true
  * Get user personal data form
  *
  * @return Zend_Form
+ * @throws Zend_Exception
+ * @throws Zend_Form_Exception
  */
 function getUserPersonalDataForm()
 {

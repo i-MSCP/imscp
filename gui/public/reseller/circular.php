@@ -31,6 +31,10 @@
  * @param string $body Body
  * @param array $rcptToData Recipient data
  * @return bool TRUE on success, FALSE on failure
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function reseller_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToData)
 {
@@ -66,6 +70,10 @@ function reseller_sendEmail($senderName, $senderEmail, $subject, $body, $rcptToD
  * @param string $subject Subject
  * @param string $body Body
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function reseller_sendToCustomers($senderName, $senderEmail, $subject, $body)
 {
@@ -95,6 +103,7 @@ function reseller_sendToCustomers($senderName, $senderEmail, $subject, $body)
  * @param string $subject Subject
  * @param string $body Body
  * @return bool TRUE if circular is valid, FALSE otherwise
+ * @throws Zend_Exception
  */
 function reseller_isValidCircular($senderName, $senderEmail, $subject, $body)
 {
@@ -126,6 +135,10 @@ function reseller_isValidCircular($senderName, $senderEmail, $subject, $body)
  * Send circular
  *
  * @return bool TRUE on success, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function reseller_sendCircular()
 {
@@ -176,6 +189,9 @@ function reseller_sendCircular()
  *
  * @param iMSCP_pTemplate $tpl
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function reseller_generatePageData($tpl)
 {

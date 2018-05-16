@@ -26,6 +26,7 @@
  * Get domains list
  *
  * @return array Domains list
+ * @throws iMSCP_Exception_Database
  */
 function getDomainsList()
 {
@@ -85,6 +86,8 @@ function getDomainsList()
  *
  * @param $tpl iMSCP_pTemplate
  * @return void
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  */
 function generatePage($tpl)
 {
@@ -149,6 +152,9 @@ function generatePage($tpl)
  * Add new subdomain
  *
  * @return bool TRUE on success, FALSE on failure
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function addSubdomain()
 {

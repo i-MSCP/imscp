@@ -93,6 +93,7 @@ class Application
      * Application constructor
      *
      * @param string $environment
+     * @throws \Zend_Loader_Exception_InvalidArgumentException
      */
     public function __construct($environment)
     {
@@ -136,6 +137,7 @@ class Application
      * Retrieve autoloader instance
      *
      * @return \Zend_Loader_StandardAutoloader
+     * @throws \Zend_Loader_Exception_InvalidArgumentException
      */
     public function getAutoloader()
     {
@@ -166,6 +168,7 @@ class Application
      * Retrieve application cache
      *
      * @return \Zend_Cache_Core
+     * @throws \Zend_Cache_Exception
      */
     public function getCache()
     {
@@ -260,9 +263,15 @@ class Application
     /**
      * Bootstrap application
      *
-     * @throws iMSCPException
      * @param string $configFilePath Configuration file path
      * @return self
+     * @throws DatabaseException
+     * @throws \Zend_Cache_Exception
+     * @throws \Zend_Locale_Exception
+     * @throws \Zend_Session_Exception
+     * @throws \Zend_Translate_Exception
+     * @throws \iMSCP_Events_Manager_Exception
+     * @throws iMSCPException
      */
     public function bootstrap($configFilePath)
     {
@@ -356,6 +365,8 @@ class Application
      *
      * @param string $configFilePath Main configuration file path
      * @return void
+     * @throws \Zend_Cache_Exception
+     * @throws iMSCPException
      */
     protected function loadConfig($configFilePath)
     {
@@ -576,8 +587,10 @@ class Application
     /**
      * Establishes the connection to the database
      *
-     * @throws iMSCPException if connection to the database cannot be established
      * @return void
+     * @throws DatabaseException
+     * @throws \Zend_Cache_Exception
+     * @throws iMSCPException if connection to the database cannot be established
      */
     protected function initDatabase()
     {
@@ -627,6 +640,8 @@ class Application
      * Resulting merge is put in cache unless DEBUG mode is enabled.
      *
      * @return void
+     * @throws \Zend_Cache_Exception
+     * @throws iMSCPException
      */
     protected function mergeConfig()
     {
@@ -652,8 +667,9 @@ class Application
     /**
      * Start the session
      *
-     * @throws iMSCPException if session directory is not writable
      * @return void
+     * @throws \Zend_Session_Exception
+     * @throws iMSCPException if session directory is not writable
      */
     protected function startSession()
     {
@@ -685,6 +701,8 @@ class Application
      * Set user's GUI properties
      *
      * @return void
+     * @throws DatabaseException
+     * @throws iMSCPException
      */
     protected function setUserGuiProperties()
     {
@@ -796,6 +814,7 @@ class Application
         ]);
 
         // Locale fallbacks
+        /** @noinspection PhpUndefinedMethodInspection */
         if (!$this->translator->isAvailable($locale->getLanguage()) && !$this->translator->isAvailable($locale)) {
             if (in_array($locale->getLanguage(), array_keys($localesRouting))) {
                 $this->translator->getAdapter()->setLocale($localesRouting[$locale->getLanguage()]);

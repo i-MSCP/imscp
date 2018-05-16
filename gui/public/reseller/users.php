@@ -33,6 +33,7 @@
  * Checks for external event
  *
  * @return void
+ * @throws Zend_Exception
  */
 function check_external_events()
 {

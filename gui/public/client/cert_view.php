@@ -33,6 +33,7 @@ use iMSCP_pTemplate as TemplateEngine;
  * @param int $domainId Domain entity unique identifier
  * @param string $domainType Domain entity type to update (dmn|als|sub|alssub)
  * @return string|false Domain name or FALSE if the domain name is not found or not owned by logged-in customer
+ * @throws iMSCP_Exception_Database
  */
 function _client_getDomainName($domainId, $domainType)
 {
@@ -114,9 +115,12 @@ function _client_updateDomainStatus($domainId, $domainType)
 /**
  * Generate temporary openssl configuration file
  *
- * @throws iMSCP_Exception_Database
  * @param array $data User data
  * @return bool|string Path to generate openssl temporary file, FALSE on failure
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function _client_generateOpenSSLConfFile($data)
 {
@@ -175,6 +179,9 @@ EOF;
  *
  * @param string $domainName Domain name
  * @return bool TRUE on success, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_generateSelfSignedCert($domainName)
 {
@@ -239,11 +246,12 @@ function client_generateSelfSignedCert($domainName)
 /**
  * Add or update an SSL certificate
  *
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  * @param int $domainId domain unique identifier
  * @param string $domainType Domain type (dmn|als|sub|alssub)
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_addSslCert($domainId, $domainType)
 {
@@ -423,11 +431,12 @@ function client_addSslCert($domainId, $domainType)
 /**
  * Delete an SSL certificate
  *
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  * @param int $domainId domain unique identifier
  * @param string $domainType Domain type (dmn, als, sub, alssub)
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_deleteSslCert($domainId, $domainType)
 {
@@ -469,12 +478,13 @@ function client_deleteSslCert($domainId, $domainType)
 /**
  * Generate page
  *
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  * @param TemplateEngine $tpl
  * @param int $domainId Domain entity unique identifier
  * @param string $domainType Domain entity type
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_generatePage(TemplateEngine $tpl, $domainId, $domainType)
 {

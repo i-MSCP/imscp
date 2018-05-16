@@ -68,6 +68,10 @@ function sendJsonResponse($statusCode = 200, array $data = [])
  *
  * @param TemplateEngine $tpl Template engine
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl)
 {
@@ -91,6 +95,10 @@ function generatePage($tpl)
  *
  * @param TemplateEngine $tpl Template engine
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generateIpsList($tpl)
 {
@@ -178,6 +186,9 @@ function generateIpsList($tpl)
  *
  * @param TemplateEngine $tpl Template engine
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  */
 function generateDevicesList($tpl)
 {
@@ -209,6 +220,7 @@ function generateDevicesList($tpl)
  * @param string $ipConfigMode IP configuration mode
  * @param string $ipCard IP network card
  * @return bool TRUE if data are valid, FALSE otherwise
+ * @throws Zend_Exception
  */
 function checkIpData($ipAddr, $ipNetmask, $ipConfigMode, $ipCard)
 {
@@ -278,7 +290,7 @@ function editIpAddr()
         $row = $stmt->fetchRow();
         $ipNetmask = isset($_POST['ip_netmask'])
             ? clean_input($_POST['ip_netmask'])
-            : ($net->getIpPrefixLength($row['ip_number']) ?: ($row['ip_netmask'] ?: ($net->getVersion() == 4 ? 24 : 64)));
+            : ($net->getIpPrefixLength($row['ip_number']) ?: ($row['ip_netmask'] ?: ($net->getVersion($row['ip_number']) == 4 ? 24 : 64)));
         $ipCard = isset($_POST['ip_card']) ? clean_input($_POST['ip_card']) : $row['ip_card'];
         $ipConfigMode = isset($_POST['ip_config_mode'][$ipId])
             ? clean_input($_POST['ip_config_mode'][$ipId]) : $row['ip_config_mode'];
@@ -314,6 +326,10 @@ function editIpAddr()
  * Add IP addr
  *
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function addIpAddr()
 {

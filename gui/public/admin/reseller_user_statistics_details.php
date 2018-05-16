@@ -34,6 +34,7 @@ use iMSCP_Registry as Registry;
  * @param int $startDate An UNIX timestamp representing a start date
  * @param int $endDate An UNIX timestamp representing an end date
  * @return array
+ * @throws iMSCP_Exception_Database
  */
 function getUserTraffic($domainId, $startDate, $endDate)
 {
@@ -64,6 +65,11 @@ function getUserTraffic($domainId, $startDate, $endDate)
  *
  * @param TemplateEngine $tpl Template engine instance
  * @return void
+ * @throws Zend_Date_Exception
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generatePage(TemplateEngine $tpl)
 {

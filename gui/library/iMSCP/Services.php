@@ -87,6 +87,7 @@ class iMSCP_Services implements iterator, countable
      * Get service listening port
      *
      * @return int
+     * @throws iMSCP_Exception
      */
     public function getPort()
     {
@@ -97,6 +98,7 @@ class iMSCP_Services implements iterator, countable
      * Get service protocol
      *
      * @return string
+     * @throws iMSCP_Exception
      */
     public function getProtocol()
     {
@@ -107,6 +109,7 @@ class iMSCP_Services implements iterator, countable
      * Get service name
      *
      * @return string
+     * @throws iMSCP_Exception
      */
     public function getName()
     {
@@ -117,6 +120,7 @@ class iMSCP_Services implements iterator, countable
      * Check if the service is visible
      *
      * @return bool TRUE if the service is visible, FALSE otherwise
+     * @throws iMSCP_Exception
      */
     public function isVisible()
     {
@@ -127,6 +131,7 @@ class iMSCP_Services implements iterator, countable
      * Get service IP
      *
      * @return array
+     * @throws iMSCP_Exception
      */
     public function getIp()
     {
@@ -138,6 +143,8 @@ class iMSCP_Services implements iterator, countable
      *
      * @param bool $refresh Flag indicating whether or not cached values must be refreshed
      * @return bool return TRUE if the service is currently running, FALSE otherwise
+     * @throws Zend_Cache_Exception
+     * @throws iMSCP_Exception
      */
     public function isRunning($refresh = false)
     {
@@ -149,6 +156,8 @@ class iMSCP_Services implements iterator, countable
      *
      * @param bool $refresh Flag indicating whether or not cached values must be refreshed
      * @return bool return TRUE if the service is currently down, FALSE otherwise
+     * @throws Zend_Cache_Exception
+     * @throws iMSCP_Exception
      */
     public function isDown($refresh = false)
     {
@@ -159,6 +168,7 @@ class iMSCP_Services implements iterator, countable
      * Returns the current element
      *
      * @return mixed Returns the current element
+     * @throws iMSCP_Exception
      */
     public function current()
     {
@@ -241,6 +251,8 @@ class iMSCP_Services implements iterator, countable
      *
      * @param bool $refresh Flag indicating whether or not cached values must be refreshed
      * @return bool TRUE if the service is currently running, FALSE otherwise
+     * @throws Zend_Cache_Exception
+     * @throws iMSCP_Exception
      */
     private function getStatus($refresh = false)
     {

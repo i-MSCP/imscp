@@ -152,6 +152,7 @@ class iMSCP_SystemInfo
      * Reads /proc/cpuinfo and parses its content
      *
      * @return array Cpu Information
+     * @throws Zend_Exception
      */
     private function _getCPUInfo()
     {
@@ -371,6 +372,7 @@ class iMSCP_SystemInfo
      * Reads /proc/version and parses its content
      *
      * @return string Translated Kernel information
+     * @throws Zend_Exception
      */
     private function _getKernelInfo()
     {
@@ -402,6 +404,7 @@ class iMSCP_SystemInfo
      * and Load 15 min
      *
      * @return array Load average
+     * @throws Zend_Exception
      */
     private function _getLoadInfo()
     {
@@ -435,6 +438,7 @@ class iMSCP_SystemInfo
      * Reads /proc/meminfo and parses its content into Total, Used and Free Ram
      *
      * @return array Memory information
+     * @throws Zend_Exception
      */
     private function _getRAMInfo()
     {
@@ -512,6 +516,7 @@ class iMSCP_SystemInfo
      * Swaps
      *
      * @return array Swap information
+     * @throws Zend_Exception
      */
     private function _getSwapInfo()
     {
@@ -589,6 +594,7 @@ class iMSCP_SystemInfo
      * the format: # [[Day[s]] # Hour[s]] # Minute[s].
      *
      * @return string Translated Uptime information
+     * @throws Zend_Exception
      */
     private function _getUptime()
     {
@@ -654,6 +660,7 @@ class iMSCP_SystemInfo
      *
      * @param string $filename Path to file
      * @return bool|string
+     * @throws Zend_Exception
      */
     protected function read($filename)
     {

@@ -38,6 +38,7 @@ use iMSCP_Utility_OpcodeCache as OpcodeCacheUtils;
  *
  * @param PluginManager $pluginManager
  * @return bool TRUE on success, FALSE on failure
+ * @throws Zend_Exception
  */
 function uploadPlugin($pluginManager)
 {
@@ -125,6 +126,7 @@ function uploadPlugin($pluginManager)
  *
  * @param string $pluginStatus Plugin status to translate
  * @return string Translated plugin status
+ * @throws Zend_Exception
  */
 function translateStatus($pluginStatus)
 {
@@ -158,6 +160,10 @@ function translateStatus($pluginStatus)
  * @param TemplateEngine $tpl Template engine instance
  * @param PluginManager $pluginManager
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Plugin_Exception
  */
 function generatePage($tpl, $pluginManager)
 {
@@ -270,6 +276,8 @@ function generatePage($tpl, $pluginManager)
  * @param string $pluginName Name of plugin on which the action is being performed
  * @param string $action Action Plugin action name ( install|uninstall|update|change|enable|disable|delete|protect )
  * @return bool TRUE if the plugin action is allowed, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Plugin_Exception
  */
 function checkAction($pluginManager, $pluginName, $action)
 {
@@ -365,6 +373,7 @@ function checkAction($pluginManager, $pluginName, $action)
  * @param string $pluginName Plugin name
  * @param string $action Action ( install|uninstall|update|change|enable|disable|delete|protect )
  * @return void
+ * @throws Zend_Exception
  */
 function doAction($pluginManager, $pluginName, $action)
 {
@@ -488,6 +497,7 @@ function doAction($pluginManager, $pluginName, $action)
  *
  * @param PluginManager $pluginManager
  * @return void
+ * @throws Zend_Exception
  */
 function doBulkAction($pluginManager)
 {
@@ -511,8 +521,9 @@ function doBulkAction($pluginManager)
  * Update plugin list
  *
  * @param PluginManager $pluginManager
- * @param iMSCP
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
  */
 function updatePluginList($pluginManager)
 {

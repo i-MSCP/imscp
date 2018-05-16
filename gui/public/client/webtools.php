@@ -33,6 +33,9 @@
  * Hide disabled feature.
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_hideDisabledFeatures($tpl)
 {

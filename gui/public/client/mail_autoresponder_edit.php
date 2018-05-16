@@ -36,6 +36,7 @@ use iMSCP_pTemplate as TemplateEngine;
  *
  * @param int $mailAccountId Mail account unique identifier
  * @return bool TRUE if all conditions are meet, FALSE otherwise
+ * @throws iMSCP_Exception_Database
  */
 function checkMailAccount($mailAccountId)
 {
@@ -59,6 +60,9 @@ function checkMailAccount($mailAccountId)
  * @param int $mailAccountId Mail account id
  * @param string $autoresponderMessage Auto-responder message
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function updateAutoresponderMessage($mailAccountId, $autoresponderMessage)
 {
@@ -86,6 +90,8 @@ function updateAutoresponderMessage($mailAccountId, $autoresponderMessage)
  * @param TemplateEngine $tpl Template engine instance
  * @param int $mailAccountId Mail account id
  * @return void
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl, $mailAccountId)
 {

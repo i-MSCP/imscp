@@ -85,6 +85,9 @@ class VirtualFileSystem
      * Destructor, ensure that we logout and remove the temporary user
      *
      * @return void
+     * @throws DatabaseException
+     * @throws \Zend_Exception
+     * @throws \iMSCP_Exception
      */
     public function __destruct()
     {
@@ -95,6 +98,9 @@ class VirtualFileSystem
      * Open the virtual file system
      *
      * @return boolean TRUE on success, FALSE on failure
+     * @throws DatabaseException
+     * @throws \Zend_Exception
+     * @throws \iMSCP_Exception
      */
     public function open()
     {
@@ -137,6 +143,9 @@ class VirtualFileSystem
      * Closes the virtual file system
      *
      * @return void
+     * @throws DatabaseException
+     * @throws \Zend_Exception
+     * @throws \iMSCP_Exception
      */
     public function close()
     {
@@ -158,6 +167,9 @@ class VirtualFileSystem
      *
      * @param string $dirname OPTIONAL Directory path inside the virtual file system
      * @return array|bool An array of directory entries on success, FALSE on failure
+     * @throws DatabaseException
+     * @throws \Zend_Exception
+     * @throws \iMSCP_Exception
      */
     public function ls($dirname = '/')
     {
@@ -207,6 +219,9 @@ class VirtualFileSystem
      * @param string $file File path inside the virtual file system
      * @param int $type OPTIONAL Type of the file to match
      * @return boolean TRUE if file exists, FALSE otherwise
+     * @throws DatabaseException
+     * @throws \Zend_Exception
+     * @throws \iMSCP_Exception
      */
     public function exists($file, $type = NULL)
     {
@@ -244,6 +259,9 @@ class VirtualFileSystem
      * @param string $file VFS file path
      * @param int $transferMode OPTIONAL VFS transfer mode
      * @return string|bool File content on success, FALSE on failure
+     * @throws DatabaseException
+     * @throws \Zend_Exception
+     * @throws \iMSCP_Exception
      */
     public function get($file, $transferMode = self::VFS_ASCII)
     {
@@ -293,6 +311,9 @@ class VirtualFileSystem
      * @param string $content File content
      * @param int $transferMode VFS transfer mode
      * @return boolean TRUE on success, FALSE on failure
+     * @throws DatabaseException
+     * @throws \Zend_Exception
+     * @throws \iMSCP_Exception
      */
     public function put($file, $content, $transferMode = self::VFS_ASCII)
     {
@@ -338,8 +359,10 @@ class VirtualFileSystem
     /**
      * Create a FTP user for accessing this virtual file system
      *
-     * @throws DatabaseException
      * @return bool TRUE on success, FALSE on failure
+     * @throws DatabaseException
+     * @throws \Zend_Exception
+     * @throws \iMSCP_Exception
      */
     protected function createFtpUser()
     {
@@ -381,6 +404,7 @@ class VirtualFileSystem
      * Removes the FTP user associated with this virtual file system
      *
      * @return void
+     * @throws DatabaseException
      */
     protected function removeFtpUser()
     {
@@ -392,6 +416,9 @@ class VirtualFileSystem
      *
      * @param string $message Message to write
      * @param int $level OPTIONAL Message level
+     * @throws DatabaseException
+     * @throws \Zend_Exception
+     * @throws \iMSCP_Exception
      */
     protected function writeLog($message, $level = E_USER_ERROR)
     {

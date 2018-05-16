@@ -29,6 +29,7 @@ use iMSCP_Registry as Registry;
  * @param int|string $hp Hosting plan unique identifier or string representin
  *                       hosting plan properties to check against
  * @return bool TRUE if none of the given hosting plan limits is exceeding limits of the given reseller, FALSE otherwise
+ * @throws Zend_Exception
  */
 function reseller_limits_check($resellerId, $hp)
 {
@@ -189,11 +190,12 @@ function reseller_limits_check($resellerId, $hp)
 /**
  * Tells whether or not the given feature is available for the reseller
  *
- * @throws iMSCPException When $featureName is not known
  * @param string $featureName Feature name
  * @param bool $forceReload If true force data to be reloaded
  * @return bool TRUE if $featureName is available for reseller, FALSE otherwise
  * TODO add hosting_plan feature
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception When $featureName is not known
  */
 function resellerHasFeature($featureName, $forceReload = false)
 {
@@ -239,6 +241,7 @@ function resellerHasFeature($featureName, $forceReload = false)
  * @param int $minNbCustomers Minimum number of customers
  * @return bool TRUE if the logged-in reseller has a least the given number of
  *              registered customer, FALSE otherwise
+ * @throws iMSCP_Exception_Database
  */
 function resellerHasCustomers($minNbCustomers = 1)
 {

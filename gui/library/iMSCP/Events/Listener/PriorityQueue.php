@@ -37,8 +37,6 @@ class iMSCP_Events_Listener_PriorityQueue implements Countable, IteratorAggregat
 
     /**
      * Constructor
-     *
-     * @return iMSCP_Events_Listener_PriorityQueue
      */
     public function __construct()
     {

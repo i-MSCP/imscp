@@ -32,6 +32,7 @@ use iMSCP_pTemplate as TemplateEngine;
  * Get domains list
  *
  * @return array Domains list
+ * @throws iMSCP_Exception_Database
  */
 function getDomainsList()
 {
@@ -78,6 +79,10 @@ function getDomainsList()
  * Add mail account
  *
  * @return bool TRUE on success, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function addMailAccount()
 {
@@ -293,6 +298,10 @@ function addMailAccount()
  * Generate page
  *
  * @param TemplateEngine $tpl
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl)
 {

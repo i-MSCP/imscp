@@ -18,8 +18,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Registry as Registry;
-
 /**
  * Class iMSCP_Exception_Production
  */
@@ -30,10 +28,11 @@ class iMSCP_Exception_Production extends iMSCP_Exception
      *
      * Note: We cannot enforce type declaration of Exception since we want be compatible with both PHP5 and PHP 7.
      *       See http://php.net/manual/fr/migration70.incompatible.php
-     * 
+     *
      * @param string $message
      * @param int $code
      * @param Exception|Throwable $previous OPTIONAL Previous exception
+     * @throws Zend_Exception
      */
     public function __construct($message = '', $code = 0, $previous = null)
     {

@@ -29,6 +29,8 @@ use iMSCP\Crypt as Crypt;
  *
  * @param int $mailId Mail account unique identifier
  * @return array mail account data
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_getEmailAccountData($mailId)
 {
@@ -52,8 +54,11 @@ function client_getEmailAccountData($mailId)
 /**
  * Edit mail account
  *
- * @throws iMSCP_Exception
  * @return bool TRUE on success, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_editMailAccount()
 {
@@ -255,6 +260,9 @@ function client_editMailAccount()
  * Generate page
  *
  * @param iMSCP_pTemplate $tpl
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_generatePage($tpl)
 {

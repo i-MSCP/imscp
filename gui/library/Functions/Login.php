@@ -34,6 +34,9 @@ use iMSCP_Registry as Registry;
  *
  * @param iMSCP_Events_Manager_Interface $eventManager
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
+ * @throws iMSCP_Plugin_Exception
  */
 function init_login($eventManager)
 {
@@ -55,6 +58,8 @@ function init_login($eventManager)
  * Credentials authentication handler
  *
  * @param AuthEvent $authEvent
+ * @throws iMSCP_Exception_Database
+ * @throws Zend_Exception
  */
 function login_credentials(AuthEvent $authEvent)
 {
@@ -146,6 +151,9 @@ function login_credentials(AuthEvent $authEvent)
  *
  * @param Event $event
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function login_checkDomainAccount($event)
 {
@@ -193,6 +201,8 @@ function login_checkDomainAccount($event)
  * Session garbage collector
  *
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function do_session_timeout()
 {
@@ -208,6 +218,8 @@ function do_session_timeout()
  *
  * @param string $userLevel User level (admin|reseller|user)
  * @param bool $preventExternalLogin If TRUE, external login is disallowed
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function check_login($userLevel, $preventExternalLogin = true)
 {
@@ -262,6 +274,9 @@ function check_login($userLevel, $preventExternalLogin = true)
  * @param int $fromId User ID to switch from
  * @param int $toId User ID to switch on
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function change_user_interface($fromId, $toId)
 {

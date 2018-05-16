@@ -32,6 +32,10 @@ use iMSCP_Services as Services;
  *
  * @param TemplateEngine $tpl
  * @return void
+ * @throws Zend_Cache_Exception
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  */
 function generatePage(TemplateEngine $tpl)
 {

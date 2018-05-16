@@ -27,6 +27,8 @@
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_generatePageLists($tpl)
 {

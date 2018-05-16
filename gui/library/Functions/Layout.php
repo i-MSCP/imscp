@@ -31,6 +31,8 @@ use Zend_Navigation as Navigation;
  *
  * @param  int $userId User unique identifier
  * @return array
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function get_user_gui_props($userId)
 {
@@ -67,6 +69,7 @@ function get_user_gui_props($userId)
  * @param string $message $message Message to display
  * @param string $level Message level (static_)?(info|warning|error|success)
  * @return void
+ * @throws Zend_Exception
  */
 function set_page_message($message, $level = 'info')
 {
@@ -87,6 +90,8 @@ function set_page_message($message, $level = 'info')
  *
  * @param TemplateEngine $tpl
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
  */
 function generatePageMessage(TemplateEngine $tpl)
 {
@@ -160,6 +165,8 @@ function format_message($messages)
  *
  * @param  string $menuLink Menu link
  * @return mixed
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function get_menu_vars($menuLink)
 {
@@ -222,6 +229,7 @@ function get_menu_vars($menuLink)
  * Returns available color set for current layout
  *
  * @return array
+ * @throws Zend_Exception
  */
 function layout_getAvailableColorSet()
 {
@@ -254,6 +262,8 @@ function layout_getAvailableColorSet()
  *
  * @param int $userId user unique identifier
  * @return string User layout color
+ * @throws iMSCP_Exception_Database
+ * @throws Zend_Exception
  */
 function layout_getUserLayoutColor($userId)
 {
@@ -285,7 +295,10 @@ function layout_getUserLayoutColor($userId)
  *
  * @param iMSCP_Events_Event $event
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  * @todo Use cookies to store user UI properties (Remember me implementation?)
+ * @throws iMSCP_Events_Manager_Exception
  */
 function layout_init($event)
 {
@@ -327,6 +340,8 @@ function layout_init($event)
  * @param int $userId User unique identifier
  * @param string $color Layout color
  * @return bool TRUE on success false otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function layout_setUserLayoutColor($userId, $color)
 {
@@ -378,6 +393,8 @@ function layout_setUserLayoutColor($userId, $color)
  *                               user
  * @param bool $returnDefault Tell whether or not default logo must be returned
  * @return string User logo path.
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  * @todo cache issues
  */
 function layout_getUserLogo($searchForCreator = true, $returnDefault = true)
@@ -435,6 +452,9 @@ function layout_getUserLogo($searchForCreator = true, $returnDefault = true)
  * Note: Only administrators and resellers can have their own logo.
  *
  * @return bool TRUE on success, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
+ * @throws iMSCP_Exception
  */
 function layout_updateUserLogo()
 {
@@ -503,6 +523,9 @@ function layout_updateUserLogo()
  * @param bool $onlyFile OPTIONAL Tell whether or not only logo file must be
  *                       deleted
  * @return bool TRUE on success, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function layout_deleteUserLogo($logoFilePath = NULL, $onlyFile = false)
 {
@@ -541,6 +564,7 @@ function layout_deleteUserLogo($logoFilePath = NULL, $onlyFile = false)
  *
  * @param string $logoPath Logo path to match against
  * @return bool TRUE if $logoPath is a user's logo, FALSE otherwise
+ * @throws Zend_Exception
  */
 function layout_isUserLogo($logoPath)
 {
@@ -557,6 +581,8 @@ function layout_isUserLogo($logoPath)
  * Load navigation file for current UI level
  *
  * @return void
+ * @throws Zend_Exception
+ * @throws Zend_Navigation_Exception
  */
 function layout_LoadNavigation()
 {
@@ -590,6 +616,7 @@ function layout_LoadNavigation()
  *
  * @param int $userId User unique identifier
  * @return bool
+ * @throws iMSCP_Exception_Database
  */
 function layout_isMainMenuLabelsVisible($userId)
 {
@@ -608,6 +635,7 @@ function layout_isMainMenuLabelsVisible($userId)
  * @param int $userId User unique identifier
  * @param int $visibility (0|1)
  * @return void
+ * @throws iMSCP_Exception_Database
  */
 function layout_setMainMenuLabelsVisibility($userId, $visibility)
 {
@@ -624,6 +652,7 @@ function layout_setMainMenuLabelsVisibility($userId, $visibility)
  * Sets main menu visibility for current environment
  *
  * @return void
+ * @throws iMSCP_Exception_Database
  */
 function layout_setMainMenuLabelsVisibilityEvt()
 {

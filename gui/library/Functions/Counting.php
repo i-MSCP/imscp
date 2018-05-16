@@ -27,6 +27,7 @@ use iMSCP_Registry as Registry;
  * deleted
  *
  * @return int Count of administrator accounts
+ * @throws iMSCP_Exception_Database
  */
 function get_administrators_count()
 {
@@ -37,6 +38,7 @@ function get_administrators_count()
  * Retrieve count of reseller accounts, exluding those that are being deleted
  *
  * @return int Count of reseller accounts
+ * @throws iMSCP_Exception_Database
  */
 function get_resellers_count()
 {
@@ -47,6 +49,7 @@ function get_resellers_count()
  * Retrieve count of customers accounts, exluding those that are being deleted
  *
  * @return int Count of customer accounts
+ * @throws iMSCP_Exception_Database
  */
 function get_customers_count()
 {
@@ -57,6 +60,7 @@ function get_customers_count()
  * Retrieve count of domains, exluding those that are being deleted
  *
  * @return int Count of domains
+ * @throws iMSCP_Exception_Database
  */
 function get_domains_count()
 {
@@ -68,6 +72,7 @@ function get_domains_count()
  *
  *
  * @return int Count of subdomains
+ * @throws iMSCP_Exception_Database
  */
 function get_subdomains_count()
 {
@@ -79,6 +84,7 @@ function get_subdomains_count()
  * Retrieve count of domain aliases, excluding those that are ordered or being deleted
  *
  * @return int Count of domain aliases
+ * @throws iMSCP_Exception_Database
  */
 function get_domain_aliases_count()
 {
@@ -91,6 +97,8 @@ function get_domain_aliases_count()
  * Default mail accounts are counted or not, depending of administrator settings.
  *
  * @return int Count of mail accounts
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function get_mail_accounts_count()
 {
@@ -122,6 +130,7 @@ function get_mail_accounts_count()
  * Retrieve count of FTP users, exluding those that are being deleted
  *
  * @return int Count of FTP users
+ * @throws iMSCP_Exception_Database
  */
 function get_ftp_users_count()
 {
@@ -132,6 +141,7 @@ function get_ftp_users_count()
  * Retrieve count of SQL databases
  *
  * @return int Count of SQL databases;
+ * @throws iMSCP_Exception_Database
  */
 function get_sql_databases_count()
 {
@@ -142,6 +152,7 @@ function get_sql_databases_count()
  * Retrieve count of SQL users
  *
  * @return int Count of SQL users
+ * @throws iMSCP_Exception_Database
  */
 function get_sql_users_count()
 {
@@ -156,6 +167,7 @@ function get_sql_users_count()
  * @param string $idField Identifier field
  * @param string $where OPTIONAL Where clause
  * @return int Count of objects
+ * @throws iMSCP_Exception_Database
  */
 function get_objects_count($table, $idField, $where = '')
 {
@@ -173,6 +185,8 @@ function get_objects_count($table, $idField, $where = '')
  * @return array An array containing count of administrators, resellers,
  *              customers, domains, subdomains, domain aliases, mail accounts,
  *              FTP users, SQL databases and SQL users
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function get_objects_counts()
 {
@@ -198,6 +212,7 @@ function get_objects_counts()
  *
  * @param int $resellerId Reseller unique identifier
  * @return int Count of subdomains
+ * @throws iMSCP_Exception_Database
  */
 function get_reseller_customers_count($resellerId)
 {
@@ -212,6 +227,7 @@ function get_reseller_customers_count($resellerId)
  *
  * @param int $resellerId Reseller unique identifier
  * @return int Count of subdomains
+ * @throws iMSCP_Exception_Database
  */
 function get_reseller_domains_count($resellerId)
 {
@@ -232,6 +248,7 @@ function get_reseller_domains_count($resellerId)
  *
  * @param int $resellerId Reseller unique identifier
  * @return int Count of subdomains
+ * @throws iMSCP_Exception_Database
  */
 function get_reseller_subdomains_count($resellerId)
 {
@@ -267,6 +284,7 @@ function get_reseller_subdomains_count($resellerId)
  *
  * @param int $resellerId Reseller unique identifier
  * @return int Count of domain aliases
+ * @throws iMSCP_Exception_Database
  */
 function get_reseller_domain_aliases_count($resellerId)
 {
@@ -291,6 +309,8 @@ function get_reseller_domain_aliases_count($resellerId)
  *
  * @param int $resellerId Domain unique identifier
  * @return int Count of mail accounts
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function get_reseller_mail_accounts_count($resellerId)
 {
@@ -330,6 +350,7 @@ function get_reseller_mail_accounts_count($resellerId)
  *
  * @param int $resellerId Reseller unique identifier
  * @return int Count of FTP users
+ * @throws iMSCP_Exception_Database
  */
 function get_reseller_ftp_users_count($resellerId)
 {
@@ -344,6 +365,7 @@ function get_reseller_ftp_users_count($resellerId)
  *
  * @param int $resellerId Reseller unique identifier
  * @return int Count of SQL databases
+ * @throws iMSCP_Exception_Database
  */
 function get_reseller_sql_databases_count($resellerId)
 {
@@ -364,6 +386,7 @@ function get_reseller_sql_databases_count($resellerId)
  *
  * @param int $resellerId Domain unique identifier
  * @return int Count of SQL users
+ * @throws iMSCP_Exception_Database
  */
 function get_reseller_sql_users_count($resellerId)
 {
@@ -389,6 +412,8 @@ function get_reseller_sql_users_count($resellerId)
  * @return array An array containing count of customers, domains, subdomains,
  *               domain aliases, mail accounts, FTP users, SQL databases and
  *               SQL users
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function get_reseller_objects_counts($resellerId)
 {
@@ -412,6 +437,7 @@ function get_reseller_objects_counts($resellerId)
  *
  * @param int $domainId Customer main domain unique identifier
  * @return int Count of subdomains
+ * @throws iMSCP_Exception_Database
  */
 function get_customer_subdomains_count($domainId)
 {
@@ -437,6 +463,7 @@ function get_customer_subdomains_count($domainId)
  *
  * @param int $domainId Customer main domain unique identifier
  * @return int Count of domain aliases
+ * @throws iMSCP_Exception_Database
  */
 function get_customer_domain_aliases_count($domainId)
 {
@@ -454,6 +481,8 @@ function get_customer_domain_aliases_count($domainId)
  *
  * @param int $domainId Customer main domain unique identifier
  * @return int Count of mail accounts
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function get_customer_mail_accounts_count($domainId)
 {
@@ -487,6 +516,7 @@ function get_customer_mail_accounts_count($domainId)
  *
  * @param int $customerId Customer unique identifier
  * @return int Count of FTP users
+ * @throws iMSCP_Exception_Database
  */
 function get_customer_ftp_users_count($customerId)
 {
@@ -500,6 +530,7 @@ function get_customer_ftp_users_count($customerId)
  *
  * @param int $domainId Customer main domain unique identifier
  * @return int Count of SQL databases
+ * @throws iMSCP_Exception_Database
  */
 function get_customer_sql_databases_count($domainId)
 {
@@ -513,6 +544,7 @@ function get_customer_sql_databases_count($domainId)
  *
  * @param int $domainId Customer main domain unique identifier
  * @return int Count of SQL users
+ * @throws iMSCP_Exception_Database
  */
 function get_customer_sql_users_count($domainId)
 {
@@ -530,6 +562,9 @@ function get_customer_sql_users_count($domainId)
  * @param int $customerId Customer unique identifier
  * @return array An array containing count of subdomains, domain aliases, mail
  *               accounts, FTP users, SQL databases and SQL users
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function get_customer_objects_counts($customerId)
 {

@@ -40,6 +40,7 @@ use iMSCP_Registry as Registry;
  *
  * @param int $mainDmnId Main domain id
  * @return int Number of default mail accounts
+ * @throws iMSCP_Exception_Database
  */
 function countDefaultMailAccounts($mainDmnId)
 {
@@ -80,6 +81,9 @@ function countDefaultMailAccounts($mainDmnId)
  * @param string $mailStatus Mail account status
  * @param int $mailAutoResponder Flag indicating whether or not autoresponder is enabled
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  */
 function generateDynamicTplParts($tpl, $mailAcc, $mailType, $mailStatus, $mailAutoResponder)
 {
@@ -159,6 +163,10 @@ function generateDynamicTplParts($tpl, $mailAcc, $mailType, $mailStatus, $mailAu
  * @param TemplateEngine $tpl Template engine
  * @param int $mainDmnId Customer main domain unique identifier
  * @return int number of mail accounts
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generateMailAccountsList($tpl, $mainDmnId)
 {
@@ -312,6 +320,9 @@ function generateMailAccountsList($tpl, $mainDmnId)
  *
  * @param TemplateEngine $tpl Reference to the pTemplate object
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl)
 {

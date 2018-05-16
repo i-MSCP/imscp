@@ -32,6 +32,8 @@ use iMSCP_Registry as Registry;
  * Notice reseller about any new support questions and answers.
  *
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generateSupportQuestionsMessage()
 {
@@ -52,6 +54,8 @@ function generateSupportQuestionsMessage()
  * Generates message for new domain aliases orders.
  *
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generateOrdersAliasesMessage()
 {
@@ -82,6 +86,8 @@ function generateOrdersAliasesMessage()
  * @param int $trafficUsageBytes Current traffic usage
  * @param int $trafficLimitBytes Traffic max usage
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function generateTrafficUsageBar($tpl, $trafficUsageBytes, $trafficLimitBytes)
 {
@@ -103,6 +109,8 @@ function generateTrafficUsageBar($tpl, $trafficUsageBytes, $trafficLimitBytes)
  * @param int $diskspaceUsageBytes Disk usage
  * @param int $diskspaceLimitBytes Max disk usage
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function generateDiskUsageBar($tpl, $diskspaceUsageBytes, $diskspaceLimitBytes)
 {
@@ -124,6 +132,10 @@ function generateDiskUsageBar($tpl, $diskspaceUsageBytes, $diskspaceLimitBytes)
  * @param int $resellerId Reseller unique identifier
  * @param string $resellerName Reseller name
  * @return void
+ * @throws Zend_Date_Exception
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl, $resellerId, $resellerName)
 {

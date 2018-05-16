@@ -130,6 +130,8 @@ $tpl->assign('TR_PAGE_TITLE', tohtml(tr('Admin / Users / Add Admin')));
 
 generateNavigation($tpl);
 generatePageMessage($tpl);
+
+/** @noinspection PhpUndefinedFieldInspection */
 $tpl->form = $form;
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

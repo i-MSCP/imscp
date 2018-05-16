@@ -99,9 +99,11 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
     /**
      * Constructor
      *
-     * @throws iMSCP_Plugin_Exception
      * @param PluginManager $pluginManager
      * @param string $targetForm Target form (login|captcha)
+     * @throws Zend_Exception
+     * @throws iMSCP_Exception_Database
+     * @throws iMSCP_Plugin_Exception
      * @çeturn void
      */
     public function __construct(PluginManager $pluginManager, $targetForm = 'login')
@@ -132,6 +134,7 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
      * Initialization
      *
      * @return void
+     * @throws iMSCP_Exception_Database
      */
     protected function init()
     {
@@ -193,6 +196,8 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
      *
      * @param iMSCP_Events_Event $event
      * @return null|string
+     * @throws Zend_Exception
+     * @throws iMSCP_Exception_Database
      */
     public function onBeforeAuthentication($event)
     {
@@ -209,6 +214,7 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
      * Is blocked IP address?
      *
      * @return bool TRUE if the client is blocked
+     * @throws Zend_Exception
      */
     public function isBlocked()
     {
@@ -229,6 +235,7 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
      * Is waiting IP address?
      *
      * @return bool TRUE if the client have to wait for a next login/captcha attempts, FALSE otherwise
+     * @throws Zend_Exception
      */
     public function isWaiting()
     {
@@ -251,6 +258,7 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
      * Log a login or captcha attempt
      *
      * @return void
+     * @throws iMSCP_Exception_Database
      */
     public function logAttempt()
     {
@@ -276,6 +284,7 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
      * Increase login|captcha attempts by 1 for $_ipAddr
      *
      * @return void
+     * @throws iMSCP_Exception_Database
      */
     protected function updateRecord()
     {
@@ -294,6 +303,7 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
      * Create bruteforce detection record
      *
      * @return void
+     * @throws iMSCP_Exception_Database
      */
     protected function createRecord()
     {

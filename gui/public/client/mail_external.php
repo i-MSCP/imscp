@@ -28,6 +28,7 @@
  * @param string $action Action to be done (activate|deactivate)
  * @param int $domainId Domain unique identifier
  * @param string $domainType Domain type
+ * @throws Zend_Exception
  * @throws iMSCP_Exception
  * @throws iMSCP_Exception_Database
  */
@@ -80,6 +81,9 @@ function updateExternalMailFeature($action, $domainId, $domainType)
  * @param string $status Item status
  * @param string $type Domain type (normal for domain or alias for domain alias)
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  */
 function generateItem($tpl, $externalMail, $domainId, $domainName, $status, $type)
 {
@@ -125,6 +129,10 @@ function generateItem($tpl, $externalMail, $domainId, $domainName, $status, $typ
  * @param int $domainId Domain id
  * @param string $domainName Domain name
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generateItemList($tpl, $domainId, $domainName)
 {
@@ -154,6 +162,10 @@ function generateItemList($tpl, $domainId, $domainName)
  *
  * @param iMSCP_ptemplate $tpl
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl)
 {

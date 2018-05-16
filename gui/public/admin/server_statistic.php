@@ -32,6 +32,7 @@ use iMSCP_pTemplate as TemplateEngine;
  * @param int $startDate UNIX timestamp representing a start date
  * @param int $endDate UNIX timestamp representing an end date
  * @return array
+ * @throws iMSCP_Exception_Database
  */
 function getServerTraffic($startDate, $endDate)
 {
@@ -72,6 +73,10 @@ function getServerTraffic($startDate, $endDate)
  * @param int $day Selected day
  * @param int $month Selected month
  * @param int $year Selected year
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generateServerStatsByDay(TemplateEngine $tpl, $day, $month, $year)
 {
@@ -149,6 +154,11 @@ function generateServerStatsByDay(TemplateEngine $tpl, $day, $month, $year)
  * @param TemplateEngine $tpl
  * @param int $month Selected month
  * @param int $year Selected year
+ * @throws Zend_Date_Exception
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generateServerStatsByMonth(TemplateEngine $tpl, $month, $year)
 {
@@ -226,6 +236,11 @@ function generateServerStatsByMonth(TemplateEngine $tpl, $month, $year)
  *
  * @param TemplateEngine $tpl template engine instance
  * @return void
+ * @throws Zend_Date_Exception
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generatePage(TemplateEngine $tpl)
 {

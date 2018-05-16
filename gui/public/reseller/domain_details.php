@@ -34,6 +34,9 @@
  *
  * @param int $customerId Customer unique identifier
  * @return array
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function reseller_gen_mail_quota_limit_mgs($customerId)
 {
@@ -51,6 +54,10 @@ function reseller_gen_mail_quota_limit_mgs($customerId)
  * @param iMSCP_pTemplate $tpl Template instance engine
  * @param int $domainId Domain unique identifier
  * @return void
+ * @throws Zend_Date_Exception
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function reseller_generatePage($tpl, $domainId)
 {

@@ -32,6 +32,9 @@ use iMSCP_Registry as Registry;
  * Add SQL database
  *
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function addSqlDb()
 {
@@ -97,6 +100,9 @@ function addSqlDb()
  *
  * @param TemplateEngine $tpl
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  */
 function generatePage(TemplateEngine $tpl)
 {

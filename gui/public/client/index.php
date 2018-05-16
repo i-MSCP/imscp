@@ -35,6 +35,7 @@
  * @param $num
  * @param $limit
  * @return string
+ * @throws Zend_Exception
  */
 function gen_num_limit_msg($num, $limit)
 {
@@ -53,6 +54,9 @@ function gen_num_limit_msg($num, $limit)
  * Generate mail quota limit msg
  *
  * @return string
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function gen_mail_quota_limit_mgs()
 {
@@ -72,6 +76,8 @@ function gen_mail_quota_limit_mgs()
  * Generates notice for support system
  *
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_generateSupportSystemNotices()
 {
@@ -98,6 +104,8 @@ function client_generateSupportSystemNotices()
  * @param int $usage Usage in bytes
  * @param int $maxUsage Max usage in bytes
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function client_generateTrafficUsageBar($tpl, $usage, $maxUsage)
 {
@@ -126,6 +134,8 @@ function client_generateTrafficUsageBar($tpl, $usage, $maxUsage)
  * @param int $usage Usage in bytes
  * @param int $maxUsage Max usage in bytes
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function client_generateDiskUsageBar($tpl, $usage, $maxUsage)
 {
@@ -152,6 +162,9 @@ function client_generateDiskUsageBar($tpl, $usage, $maxUsage)
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  * @todo hide features that are not available for reseller
  */
 function client_generateFeatureStatus($tpl)
@@ -211,6 +224,9 @@ function client_generateFeatureStatus($tpl)
  *
  * @param int $domainId Domain unique identifier
  * @return array An array that contain traffic information
+ * @throws Zend_Date_Exception
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_makeTrafficUsage($domainId)
 {
@@ -269,6 +285,8 @@ function _client_getDomainRemainingTime($domainExpireDate)
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_generateDomainExpiresInformation($tpl)
 {

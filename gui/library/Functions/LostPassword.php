@@ -25,9 +25,10 @@ use iMSCP_Registry as Registry;
 /**
  * Create captcha image
  *
- * @throws iMSCP_Exception
  * @param  string $strSessionVar
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function createImage($strSessionVar)
 {
@@ -82,6 +83,7 @@ function createImage($strSessionVar)
  *
  * @param int $ttl
  * @return void
+ * @throws iMSCP_Exception_Database
  */
 function removeOldKeys($ttl)
 {
@@ -97,6 +99,7 @@ function removeOldKeys($ttl)
  * @param string $adminName
  * @param string $uniqueKey
  * @return void
+ * @throws iMSCP_Exception_Database
  */
 function setUniqKey($adminName, $uniqueKey)
 {
@@ -112,6 +115,9 @@ function setUniqKey($adminName, $uniqueKey)
  * @param string $uniqueKey
  * @param string $userPassword
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
+ * @throws iMSCP_Exception
  */
 function setPassword($userType, $uniqueKey, $userPassword)
 {
@@ -137,6 +143,7 @@ function setPassword($userType, $uniqueKey, $userPassword)
  *
  * @param string $uniqueKey
  * @return bool TRUE if the key exists, FALSE otherwise
+ * @throws iMSCP_Exception_Database
  */
 function uniqueKeyExists($uniqueKey)
 {
@@ -149,6 +156,7 @@ function uniqueKeyExists($uniqueKey)
  * generate unique key
  *
  * @return string Unique key
+ * @throws iMSCP_Exception_Database
  */
 function uniqkeygen()
 {
@@ -164,6 +172,9 @@ function uniqkeygen()
  *
  * @param string $adminName
  * @return bool TRUE on success, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function sendPasswordRequestValidation($adminName)
 {
@@ -214,6 +225,9 @@ function sendPasswordRequestValidation($adminName)
  *
  * @param string $uniqueKey
  * @return bool TRUE when new password is sent successfully, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function sendPassword($uniqueKey)
 {

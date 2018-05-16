@@ -99,6 +99,7 @@ class iMSCP_Validate
      * @param string $email email address to be validated
      * @param array $options Validator options OPTIONAL
      * @return bool TRUE if email address is valid, FALSE otherwise
+     * @throws Zend_Validate_Exception
      */
     public function email($email, $options = [])
     {
@@ -121,6 +122,7 @@ class iMSCP_Validate
      * @param string $hostname Hostname to be validated
      * @param array $options Validator options OPTIONAL
      * @return bool TRUE if hostname is valid, FALSE otherwise
+     * @throws Zend_Validate_Exception
      */
     public function hostname($hostname, $options = [])
     {
@@ -138,6 +140,7 @@ class iMSCP_Validate
      * @param string $ip Ip address to be validated
      * @param array $options Validator options OPTIONAL
      * @return bool TRUE if ip address is valid, FALSE otherwise
+     * @throws Zend_Validate_Exception
      */
     public function ip($ip, $options = [])
     {
@@ -167,6 +170,7 @@ class iMSCP_Validate
      *
      * @static
      * @return string
+     * @throws iMSCP_Exception
      */
     public function getLastValidationMessages()
     {
@@ -185,8 +189,8 @@ class iMSCP_Validate
      * @param string $validatorName $validatorName Zend validator name
      * @param mixed $input Input data to be validated
      * @param array $options Options to pass to validator
-     * @throws iMSCP_Exception
      * @return bool bool TRUE if input data are valid, FALSE otherwise
+     * @throws Zend_Validate_Exception
      */
     protected function _processValidation($validatorName, $input, $options)
     {
@@ -194,9 +198,11 @@ class iMSCP_Validate
         $validator = self::getZendValidator($validatorName);
 
         // Getting validator default options
+        /** @noinspection PhpUndefinedMethodInspection */
         $defaultOptions = $validator->getOptions();
 
         // Setup validator options
+        /** @noinspection PhpUndefinedMethodInspection */
         $validator->setOptions((array)$options);
 
         // Process validation
@@ -207,6 +213,7 @@ class iMSCP_Validate
         }
 
         // Reset default options on validator
+        /** @noinspection PhpUndefinedMethodInspection */
         $validator->setOptions($defaultOptions);
         return $retVal;
     }
@@ -218,6 +225,7 @@ class iMSCP_Validate
      * @param mixed $value2 Value
      * @param string|array $messages OPTIONAL Error message(s)
      * @return bool
+     * @throws Zend_Exception
      */
     public function assertEquals($value1, $value2, $messages = NULL)
     {
@@ -240,6 +248,7 @@ class iMSCP_Validate
      * @param mixed $value2 Value
      * @param string|array $messages OPTIONAL Error message(s)
      * @return bool
+     * @throws Zend_Exception
      */
     public function assertNotEquals($value1, $value2, $messages = NULL)
     {
@@ -265,6 +274,7 @@ class iMSCP_Validate
      * @param bool $strict Whether the check should be made in strict mode
      * @param array|string $messages OPTIONAL Error message(s)
      * @return bool
+     * @throws Zend_Exception
      */
     public function assertContains($value, array $stack, $strict = true, $messages = NULL)
     {
@@ -287,6 +297,7 @@ class iMSCP_Validate
      * @param array $stack Value stack
      * @param array|string $messages OPTIONAL Error message(s)
      * @return bool
+     * @throws Zend_Exception
      */
     public function assertNotContains($value, array $stack, $messages = NULL)
     {

@@ -90,7 +90,7 @@ function getQuotedAndUnquotedStrings($string)
  */
 function client_getPost($varname, $defaultValue = '')
 {
-    return (isset($_POST[$varname])) ? clean_input($_POST[$varname]) : $defaultValue;
+    return isset($_POST[$varname]) ? clean_input($_POST[$varname]) : $defaultValue;
 }
 
 /**
@@ -105,6 +105,7 @@ function client_getPost($varname, $defaultValue = '')
  * @param bool $isNewRecord
  * @param string &$errorString Reference to error string
  * @return bool TRUE if a conflict is found, FALSE otherwise
+ * @throws Zend_Exception
  */
 function hasConflict($rrName, $rrType, $isNewRecord, &$errorString)
 {
@@ -135,6 +136,7 @@ function hasConflict($rrName, $rrType, $isNewRecord, &$errorString)
  * @param string $name Name
  * @param string &$errorString Error string
  * @return bool TRUE if name is valid, FALSE otherwise
+ * @throws Zend_Exception
  */
 function client_validate_NAME($name, &$errorString)
 {
@@ -160,6 +162,7 @@ function client_validate_NAME($name, &$errorString)
  * @param string $cname Cname
  * @param string &$errorString Error string
  * @return bool TRUE if cname is valid, FALSE otherwise
+ * @throws Zend_Exception
  */
 function client_validate_CNAME($cname, &$errorString)
 {
@@ -185,6 +188,7 @@ function client_validate_CNAME($cname, &$errorString)
  * @param string $ip IPv4 address
  * @param string &$errorString Error string
  * @return bool
+ * @throws Zend_Exception
  */
 function client_validate_A($ip, &$errorString)
 {
@@ -204,9 +208,10 @@ function client_validate_A($ip, &$errorString)
 /**
  * Validate IP address for a AAAA DNS resource record
  *
- * @param array $ip IPv6 address
+ * @param string $ip IPv6 address
  * @param string &$errorString Reference to variable, which contain error string
  * @return bool TRUE if the record is valid, FALSE otherwise
+ * @throws Zend_Exception
  */
 function client_validate_AAAA($ip, &$errorString)
 {
@@ -230,6 +235,7 @@ function client_validate_AAAA($ip, &$errorString)
  * @param string $host MX host
  * @param string &$errorString Reference to variable, which contain error string
  * @return bool TRUE if the record is valid, FALSE otherwise
+ * @throws Zend_Exception
  */
 function client_validate_MX($pref, $host, &$errorString)
 {
@@ -256,6 +262,7 @@ function client_validate_MX($pref, $host, &$errorString)
  * @param string $host MX host
  * @param string &$errorString Reference to variable, which contain error string
  * @return bool TRUE if the record is valid, FALSE otherwise
+ * @throws Zend_Exception
  */
 function client_validate_NS($host, &$errorString)
 {
@@ -278,6 +285,7 @@ function client_validate_NS($host, &$errorString)
  * @param string $data DNS record data
  * @param string &$errorString Reference to variable, which contain error string
  * @return bool TRUE if the record is valid, FALSE otherwise
+ * @throws Zend_Exception
  */
 function client_validateAndFormat_TXT(&$data, &$errorString)
 {
@@ -345,6 +353,7 @@ function client_validateAndFormat_TXT(&$data, &$errorString)
  * @param string $host Target host
  * @param string $errorString Error string
  * @return bool
+ * @throws Zend_Exception
  */
 function client_validate_SRV($srvName, $proto, $priority, $weight, $port, $host, &$errorString)
 {
@@ -421,8 +430,7 @@ function client_create_options($data, $value = NULL)
     reset($data);
 
     foreach ($data as $item) {
-        $options .= "\t\t\t\t\t" . '<option value="' . $item . '"' . ($item == $value ? ' selected' : '') . '>' . $item
-            . "</option>\n";
+        $options .= "\t\t\t\t\t" . '<option value="' . $item . '"' . ($item == $value ? ' selected' : '') . '>' . $item . "</option>\n";
     }
 
     return $options;
@@ -513,10 +521,11 @@ function client_decodeDnsRecordData($data)
 /**
  * Check and save DNS record
  *
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  * @param int $dnsRecordId DNS record unique identifier (0 for new record)
  * @return bool
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function client_saveDnsRecord($dnsRecordId)
 {
@@ -875,6 +884,8 @@ function client_saveDnsRecord($dnsRecordId)
  * @param iMSCP_pTemplate $tpl
  * @param int $dnsRecordId DNS record unique identifier (0 for new record)
  * @return void
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generatePage($tpl, $dnsRecordId)
 {

@@ -27,6 +27,8 @@
  *
  * @param iMSCP_pTemplate $tpl
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function generatePhpBlock($tpl)
 {
@@ -147,6 +149,8 @@ function generatePhpBlock($tpl)
  *
  * @param iMSCP_pTemplate $tpl
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function generatePage($tpl)
 {
@@ -250,6 +254,8 @@ function generatePage($tpl)
  * Check input data
  *
  * @return bool TRUE if data are valid, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function checkInputData()
 {
@@ -431,6 +437,9 @@ function checkInputData()
  * Add hosting plan
  *
  * @return bool TRUE on success, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function addHostingPlan()
 {

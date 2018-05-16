@@ -39,6 +39,7 @@ use iMSCP_Registry as Registry;
  * @param bool $show Tell whether or not service must be show on status page
  * @param string $index Item index on update, empty value otherwise
  * @return bool TRUE if valid, FALSE otherwise
+ * @throws Zend_Exception
  */
 function validatesService($name, $ip, $port, $protocol, $show, $index = '')
 {
@@ -94,6 +95,9 @@ function validatesService($name, $ip, $port, $protocol, $show, $index = '')
  *
  * @param string $serviceName Service name
  * @return bool TRUE on success, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function deleteService($serviceName)
 {
@@ -115,9 +119,11 @@ function deleteService($serviceName)
 /**
  * Adds or updates services ports
  *
- * @throws iMSCPException
  * @param string $mode Mode in witch act (add or update)
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function addOrUpdateServices($mode = 'add')
 {
@@ -233,6 +239,9 @@ function addOrUpdateServices($mode = 'add')
  *
  * @param TemplateEngine $tpl
  * @return void;
+ * @throws Zend_Exception
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  */
 function generatePage($tpl)
 {

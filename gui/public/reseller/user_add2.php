@@ -47,6 +47,8 @@ function getFirstStepData()
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function generatePage($tpl)
 {
@@ -244,6 +246,8 @@ function generatePage($tpl)
  * Get hosting plan data
  *
  * @return void
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function getHostingPlanData()
 {
@@ -293,6 +297,8 @@ function getHostingPlanData()
  * Check input data
  *
  * @return bool TRUE if all data are valid, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function checkInputData()
 {

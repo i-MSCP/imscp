@@ -35,6 +35,9 @@ use iMSCP_Registry as Registry;
  * @param int $domainId Domain id
  * @param int $mailQuota Mail quota limit
  * @return array An array which contain in order sum of all mailbox quota, current quota limit, number of mailboxes)
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function getMailData($domainId, $mailQuota)
 {
@@ -66,6 +69,7 @@ function getMailData($domainId, $mailQuota)
  *
  * @param int $resellerId Reseller id
  * @return array Reseller properties
+ * @throws iMSCP_Exception_Database
  */
 function reseller_getResellerProps($resellerId)
 {
@@ -88,6 +92,9 @@ function reseller_getResellerProps($resellerId)
  *
  * @param int $domainId Domain id
  * @return array Array containing domain properties
+ * @throws Zend_Date_Exception
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function reseller_getDomainProps($domainId)
 {
@@ -118,6 +125,9 @@ function reseller_getDomainProps($domainId)
  * @param int $domainId Domain unique identifier
  * @param bool $forUpdate Tell whether or not data are fetched for update
  * @return array Reference to array of data
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function &getData($domainId, $forUpdate = false)
 {
@@ -281,6 +291,9 @@ function generatePage(TemplateEngine $tpl, &$data)
  * @param TemplateEngine $tpl
  * @param array $data Domain data
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generateLimitsForm(TemplateEngine $tpl, &$data)
 {
@@ -421,6 +434,8 @@ function generateLimitsForm(TemplateEngine $tpl, &$data)
  * @param TemplateEngine $tpl
  * @param array $data Domain data
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
  */
 function generateFeaturesForm(TemplateEngine $tpl, &$data)
 {
@@ -614,10 +629,11 @@ function generateFeaturesForm(TemplateEngine $tpl, &$data)
 /**
  * Check and updates domain data
  *
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  * @param int $domainId Domain unique identifier
  * @return bool
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function reseller_checkAndUpdateData($domainId)
 {
@@ -1058,6 +1074,7 @@ function reseller_checkAndUpdateData($domainId)
  * @param int $resellerLimit Limit for reseller
  * @param int $translatedServiceName Translation of service name
  * @return bool TRUE if new limit is valid, FALSE otherwise
+ * @throws Zend_Exception
  */
 function isValidServiceLimit(
     $newCustomerLimit, $customerConsumption, $customerLimit, $resellerConsumption, $resellerLimit,

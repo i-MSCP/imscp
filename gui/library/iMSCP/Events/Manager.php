@@ -45,6 +45,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
      * @param string|iMSCP_Events_Description $event Event name or iMSCP_Events_Description object
      * @param array|ArrayAccess $arguments Array of arguments (eg. an associative array)
      * @return iMSCP_Events_Listener_ResponseCollection
+     * @throws iMSCP_Events_Exception
      */
     public function dispatch($event, $arguments = [])
     {
@@ -80,6 +81,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
      * @param callable|object $listener PHP callback or object which implement method with same name as event
      * @param int $priority Higher values have higher priority
      * @return iMSCP_Events_Listener|iMSCP_Events_Listener[]
+     * @throws iMSCP_Events_Listener_Exception
      */
     public function registerListener($event, $listener, $priority = 1)
     {

@@ -45,6 +45,7 @@ class iMSCP_Events_Event implements iMSCP_Events_Description
      *
      * @param string $name Event name
      * @param array|ArrayAccess $params
+     * @throws iMSCP_Events_Exception
      */
     public function __construct($name = NULL, $params = NULL)
     {

@@ -26,6 +26,7 @@
  * Get customers list
  *
  * @return array Domains list
+ * @throws iMSCP_Exception_Database
  */
 function getCustomersList()
 {
@@ -60,6 +61,7 @@ function getCustomersList()
  *
  * @param int $customerId Customer unique identifier
  * @return array Domains list
+ * @throws iMSCP_Exception_Database
  */
 function getDomainsList($customerId)
 {
@@ -123,6 +125,7 @@ function getDomainsList($customerId)
  *
  * @param int $customerId Customer unique identifier
  * @return string Json Domains list
+ * @throws iMSCP_Exception
  */
 function getJsonDomainsList($customerId)
 {
@@ -143,6 +146,8 @@ function getJsonDomainsList($customerId)
  *
  * @param $tpl iMSCP_pTemplate
  * @return void
+ * @throws iMSCP_Events_Manager_Exception
+ * @throws iMSCP_Exception
  */
 function generatePage($tpl)
 {

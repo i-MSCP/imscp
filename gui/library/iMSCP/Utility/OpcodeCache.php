@@ -147,7 +147,9 @@ class iMSCP_Utility_OpcodeCache
                 'canInvalidate' => false,
                 'error'         => false,
                 'clearCallback' => function () {
-                    eaccelerator_clear();
+                    if (function_exists('eaccelerator_clear')) {
+                        eaccelerator_clear();
+                    }
                 }
             ],
 
@@ -160,7 +162,9 @@ class iMSCP_Utility_OpcodeCache
                 'canInvalidate' => false,
                 'error'         => false,
                 'clearCallback' => function () {
-                    accelerator_reset();
+                    if(function_exists('accelerator_reset')) {
+                        accelerator_reset();
+                    }
                 }
             ],
         ];

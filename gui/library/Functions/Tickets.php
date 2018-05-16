@@ -31,6 +31,9 @@ use iMSCP_Registry as Registry;
  * @param String $message Ticket's message
  * @param int $userLevel User's level (client = 1; reseller = 2)
  * @return bool TRUE on success, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function createTicket($userId, $adminId, $urgency, $subject, $message, $userLevel)
 {
@@ -68,6 +71,9 @@ function createTicket($userId, $adminId, $urgency, $subject, $message, $userLeve
  * @param int $ticketId Id of the ticket to display
  * @param int $userId Id of the user
  * @return bool TRUE if ticket is found, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function showTicketContent($tpl, $ticketId, $userId)
 {
@@ -127,6 +133,9 @@ function showTicketContent($tpl, $ticketId, $userId)
  * @param int $ticketLevel The tickets's level (1 = user; 2 = super)
  * @param int $userLevel The user's level (1 = client; 2 = reseller; 3 = admin)
  * @return bool TRUE on success, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function updateTicket($ticketId, $userId, $urgency, $subject, $message, $ticketLevel, $userLevel)
 {
@@ -212,6 +221,7 @@ function updateTicket($ticketId, $userId, $urgency, $subject, $message, $ticketL
  *
  * @param int $ticketId Ticket unique identifier
  * @return void
+ * @throws iMSCP_Exception_Database
  */
 function deleteTicket($ticketId)
 {
@@ -224,6 +234,7 @@ function deleteTicket($ticketId)
  * @param string $status Ticket status ('open' or 'closed')
  * @param int $userId The user's ID
  * @return void
+ * @throws iMSCP_Exception_Database
  */
 function deleteTickets($status, $userId)
 {
@@ -241,6 +252,9 @@ function deleteTickets($status, $userId)
  * @param String $userLevel User level
  * @param String $status Status of the tickets to be showed: 'open' or 'closed'
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function generateTicketList($tpl, $userId, $start, $count, $userLevel, $status)
 {
@@ -346,6 +360,9 @@ function generateTicketList($tpl, $userId, $start, $count, $userLevel, $status)
  *
  * @param int $ticketId Ticket id
  * @return bool TRUE on success, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function closeTicket($ticketId)
 {
@@ -364,6 +381,9 @@ function closeTicket($ticketId)
  *
  * @param int $ticketId Ticket id
  * @return bool TRUE on success, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function reopenTicket($ticketId)
 {
@@ -389,6 +409,8 @@ function reopenTicket($ticketId)
  *
  * @param int $ticketId Ticket unique identifier
  * @return int ticket status identifier
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function getTicketStatus($ticketId)
 {
@@ -419,6 +441,7 @@ function getTicketStatus($ticketId)
  * @param int $ticketId Ticket unique identifier
  * @param int $ticketStatus New status identifier
  * @return bool TRUE if ticket status was changed, FALSE otherwise
+ * @throws iMSCP_Exception_Database
  */
 function changeTicketStatus($ticketId, $ticketStatus)
 {
@@ -440,6 +463,8 @@ function changeTicketStatus($ticketId, $ticketStatus)
  *
  * @param int $ticketId Ticket id
  * @return int User's level (1 = user, 2 = super) or FALSE if ticket is not found
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function getUserLevel($ticketId)
 {
@@ -459,6 +484,7 @@ function getUserLevel($ticketId)
  *
  * @param int $ticketUrgency Values from 1 to 4
  * @return string Translated priority string
+ * @throws Zend_Exception
  */
 function getTicketUrgency($ticketUrgency)
 {
@@ -484,6 +510,8 @@ function getTicketUrgency($ticketUrgency)
  * @usedby _showTicketReplies()
  * @param int $ticketId Id of the ticket to display
  * @return mixed Formatted ticket sender or FALSE if ticket is not found.
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function _getTicketSender($ticketId)
 {
@@ -515,6 +543,8 @@ function _getTicketSender($ticketId)
  * @usedby generateTicketList
  * @param int $ticketId Ticket to get last date for
  * @return string Last modification date of a ticket
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function _ticketGetLastDate($ticketId)
 {
@@ -540,6 +570,8 @@ function _ticketGetLastDate($ticketId)
  * @param int $userId OPTIONAL Id of the user created the current user or null
  *                    if admin
  * @return bool TRUE if support ticket system is available, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function hasTicketSystem($userId = NULL)
 {
@@ -567,6 +599,9 @@ function hasTicketSystem($userId = NULL)
  * @usedby showTicketContent()
  * @param iMSCP_pTemplate $tpl The Template object
  * @param int $ticketId Id of the ticket to display
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  * @çeturn void
  */
 function _showTicketReplies($tpl, $ticketId)
@@ -607,6 +642,9 @@ function _showTicketReplies($tpl, $ticketId)
  * @param int $ticketStatus ticket status
  * @param int $urgency ticket urgency
  * @return bool TRUE on success, FALSE on failure
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function sendTicketNotification($toId, $ticketSubject, $ticketMessage, $ticketStatus, $urgency)
 {

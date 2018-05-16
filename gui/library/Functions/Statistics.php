@@ -35,6 +35,9 @@ function getPercentUsage($usage, $usageMax)
  *
  * @param int $domainId Customer main domain ID
  * @return array An array container Web, FTP, SMTP, POP and total traffic (for the current month)
+ * @throws Zend_Date_Exception
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function getClientMonthlyTrafficStats($domainId)
 {
@@ -71,6 +74,9 @@ function getClientMonthlyTrafficStats($domainId)
  *
  * @param int $clientId User unique identifier
  * @return array
+ * @throws Zend_Date_Exception
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function getClientTrafficAndDiskStats($clientId)
 {
@@ -93,11 +99,13 @@ function getClientTrafficAndDiskStats($clientId)
 
 /**
  * Get counts of consumed and max items for the given customer
- * 
+ *
  * Note: For disk and traffic, only limit are returned.
  *
  * @param  int $clientId Client unique identifier
  * @return array
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function getClientItemCountsAndLimits($clientId)
 {
@@ -140,6 +148,8 @@ function getClientItemCountsAndLimits($clientId)
  *
  * @param  int $resellerId Reseller unique indentifier
  * @return array An array containing total consumed for each items
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception_Database
  */
 function getResellerStats($resellerId)
 {

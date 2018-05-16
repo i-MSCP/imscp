@@ -43,6 +43,7 @@ class iMSCP_Events_Listener
      *
      * @param string|array|object|callable $listener PHP callback
      * @param array $metadata Listener metadata
+     * @throws iMSCP_Events_Listener_Exception
      */
     public function __construct($listener, array $metadata = [])
     {
@@ -85,6 +86,8 @@ class iMSCP_Events_Listener
      *
      * @param  array $args Arguments to pass to listener
      * @return mixed
+     * @throws ReflectionException
+     * @throws iMSCP_Events_Listener_Exception
      */
     public function call(array $args = [])
     {
@@ -148,6 +151,8 @@ class iMSCP_Events_Listener
      * Invoke as functor
      *
      * @return mixed
+     * @throws ReflectionException
+     * @throws iMSCP_Events_Listener_Exception
      */
     public function __invoke()
     {
@@ -186,6 +191,7 @@ class iMSCP_Events_Listener
      *
      * @param string $handler
      * @return bool|array
+     * @throws ReflectionException
      * @throws iMSCP_Events_Listener_Exception if invalid
      */
     protected function validateStringCallbackFor54($handler)

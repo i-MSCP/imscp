@@ -128,10 +128,13 @@ function updateUserData(Form $form, $userId)
  * @param int $userId User unique identifier
  *
  * @return void
+ * @throws iMSCP_Exception_Database
  */
 function generatePage(TemplateEngine $tpl, Form $form, $userId)
 {
+    /** @noinspection PhpUndefinedFieldInspection */
     $tpl->form = $form;
+    /** @noinspection PhpUndefinedFieldInspection */
     $tpl->editId = $userId;
 
     if (!empty($_POST)) {

@@ -143,6 +143,7 @@ class iMSCP_Database
      * @param string $connection OPTIONAL Connection key name
      * @param array $options OPTIONAL Driver options
      * @return iMSCP_Database An iMSCP_Database instance that represents the connection to the database
+     * @throws iMSCP_Exception
      */
     public static function connect($user, $pass, $type, $host, $name, $connection = 'default', $options = NULL)
     {
@@ -203,6 +204,7 @@ class iMSCP_Database
      * @param array $options OPTIONAL Attribute values for the PDOStatement object
      * @return PDOStatement|false A PDOStatement instance or FALSE on failure. If prepared statements are emulated by PDO,
      *                        FALSE is never returned.
+     * @throws iMSCP_Events_Exception
      */
     public function prepare($sql, $options = NULL)
     {
@@ -237,6 +239,8 @@ class iMSCP_Database
      * @param null $parameters
      * @return ResultSet|false
      * @throws iMSCP_Exception_Database
+     * @throws iMSCP_Events_Exception
+     * @throws iMSCP_Events_Exception
      */
     public function execute($stmt, $parameters = NULL)
     {

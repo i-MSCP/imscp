@@ -30,6 +30,7 @@ use iMSCP_Registry as Registry;
  * @param string $mailAcc Mail account name
  * @param  string $mailType Mail account type
  * @return string Translated mail account type
+ * @throws Zend_Exception
  */
 function user_trans_mail_type($mailAcc, $mailType)
 {
@@ -65,10 +66,12 @@ function user_trans_mail_type($mailAcc, $mailType)
 /**
  * Tells whether or not the current customer can access to the given feature(s)
  *
- * @throws iMSCPException When $featureName is not known
  * @param array|string $featureNames Feature name(s) (insensitive case)
  * @param bool $forceReload If true force data to be reloaded
  * @return bool TRUE if $featureName is available for customer, FALSE otherwise
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception When $featureName is not known
+ * @throws iMSCP_Exception_Database
  */
 function customerHasFeature($featureNames, $forceReload = false)
 {
@@ -144,6 +147,8 @@ function customerHasFeature($featureNames, $forceReload = false)
 /**
  * Tells whether or not the current customer can access the mail or external mail feature.
  * @return bool
+ * @throws iMSCP_Exception
+ * @throws Zend_Exception
  */
 function customerHasMailOrExtMailFeatures()
 {
@@ -157,6 +162,7 @@ function customerHasMailOrExtMailFeatures()
  * @param int $customerId Customer unique identifier
  * @return bool TRUE if the given customer is the owner of the given domain, FALSE otherwise
  * TODO add admin_id as foreign key in all domain tables too avoid too many jointures
+ * @throws iMSCP_Exception_Database
  */
 function customerHasDomain($domainName, $customerId)
 {
@@ -388,6 +394,9 @@ function parseMaildirsize($maildirsizeFilePath, $refreshData = false)
  *
  * @param int $id Subdomain unique identifier
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function deleteSubdomain($id)
 {
@@ -505,6 +514,9 @@ function deleteSubdomain($id)
  *
  * @param int $id Subdomain alias unique identifier
  * @return void
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
  */
 function deleteSubdomainAlias($id)
 {
@@ -625,6 +637,7 @@ function deleteSubdomainAlias($id)
  * Check if SQL databases limit of the given customer is reached
  *
  * @return bool TRUE if SQL database limit is reached, FALSE otherwise
+ * @throws iMSCP_Exception_Database
  */
 function customerSqlDbLimitIsReached()
 {
