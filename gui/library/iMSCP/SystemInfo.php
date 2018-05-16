@@ -32,7 +32,7 @@ class iMSCP_SystemInfo
      *
      * @var string
      */
-    protected $_os;
+    protected $os;
 
     /**
      * CPU info
@@ -94,7 +94,7 @@ class iMSCP_SystemInfo
      */
     public function __construct()
     {
-        $this->_os = php_uname('s');
+        $this->os = php_uname('s');
         $this->cpu = $this->_getCPUInfo();
         $this->filesystem = $this->_getFileSystemInfo();
         $this->kernel = $this->_getKernelInfo();
@@ -136,13 +136,11 @@ class iMSCP_SystemInfo
             array_shift($filePartitionInfo);
 
             $filePartitionInfo = array_combine(
-                ['mount', 'fstype', 'size', 'used', 'free', 'percent', 'disk'],
-                preg_split('/\s+/', trim($filePartitionInfo[0]))
+                ['mount', 'fstype', 'size', 'used', 'free', 'percent', 'disk'], preg_split('/\s+/', trim($filePartitionInfo[0]))
             );
 
             $filePartitionInfo['percent'] = str_replace('%', '', $filePartitionInfo['percent']);
         }
-
 
         return $filePartitionInfo;
     }
@@ -157,155 +155,150 @@ class iMSCP_SystemInfo
     private function _getCPUInfo()
     {
         $cpu = [
-            'model' => tr('N/A'), 'cpus' => tr('N/A'), 'cpuspeed' => tr('N/A'), 'cache' => tr('N/A'),
+            'model'    => tr('N/A'),
+            'cpus'     => tr('N/A'),
+            'cpuspeed' => tr('N/A'),
+            'cache'    => tr('N/A'),
             'bogomips' => tr('N/A')
         ];
 
-        if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
+        if ($this->os == 'FreeBSD' || $this->os == 'OpenBSD' || $this->os == 'NetBSD') {
             $tmp = [];
-
             $pattern = [
-                '/CPU: (.*) \((.*)-MHz (.*)\)/', // FreeBSD
-                '/^cpu(.*) (.*) MHz/', // OpenBSD
-                '/^cpu(.*)\, (.*) MHz/' // NetBSD
+                'FreeBSD' => '/CPU: (.*) \((.*)-MHz (.*)\)/', // FreeBSD
+                'OpenBSD' => '/^cpu(.*) (.*) MHz/', // OpenBSD
+                'NetBSD'  => '/^cpu(.*)\, (.*) MHz/' // NetBSD
             ];
 
             if ($cpu['model'] = $this->sysctl('hw.model')) {
                 $cpu["cpus"] = $this->sysctl('hw.ncpu');
-
                 // Read dmesg bot log on reboot
                 $dmesg = $this->read('/var/run/dmesg.boot');
-
                 if (empty($this->_error)) {
                     $dmesgArr = explode('rebooting', $dmesg);
                     $dmesgInfo = explode("\n", $dmesgArr[count($dmesgArr) - 1]);
-
                     foreach ($dmesgInfo as $di) {
-                        if (preg_match($pattern, $di, $tmp)) {
+                        if (preg_match($pattern[$this->os], $di, $tmp)) {
                             $cpu['cpuspeed'] = round($tmp[2]);
                             break;
                         }
                     }
                 }
             }
-        } else {
-            $cpuRaw = $this->read('/proc/cpuinfo');
-            if (empty($this->_error)) {
-                // parse line for line
-                $cpu_info = explode("\n", $cpuRaw);
 
-                // initialize Values:
-                $cpu['cpus'] = 0;
-                $cpu['bogomips'] = 0;
+            return $cpu;
+        }
 
+        $cpuRaw = $this->read('/proc/cpuinfo');
+        if (empty($this->_error)) {
+            // parse line for line
+            $cpu_info = explode("\n", $cpuRaw);
+            // initialize Values:
+            $cpu['cpus'] = 0;
+            $cpu['bogomips'] = 0;
+
+            foreach ($cpu_info as $ci) {
+                $line = preg_split('/\s+:\s+/', trim($ci));
+
+                // Every architecture has its own scheme, it's not granted
+                // that this list is complete. If there are any values
+                // missing, let us know about them. They will be added in a
+                // upcoming release.
+                switch ($line[0]) {
+                    case 'model name':
+                        $cpu['model'] = $line[1];
+                        break;
+                    case 'cpu': // PPC
+                        $cpu['model'] = $line[1];
+                        break;
+                    case 'revision': // PPC
+                        $cpu['model'] .= ' ( rev: ' . $line[1] . ')';
+                        break;
+                    case 'cpu model': // Alpha 2.2.x
+                        $cpu['model'] .= ' (' . $line[1] . ')';
+                        break;
+                    case 'system type': // Alpha 2.2.x
+                        $cpu['model'] .= ', ' . $line[1] . ' ';
+                        break;
+                    case 'platform string': // Alpha 2.2.x
+                        $cpu['model'] .= ' (' . $line[1] . ')';
+                        break;
+                    case 'processor':
+                        $cpu['cpus'] += 1;
+                        break;
+                    case 'ncpus probed': // Linux sparc64 & sparc32
+                        $cpu["cpus"] = $line[1];
+                        break;
+                    case 'cpu MHz':
+                        $cpu["cpuspeed"] = sprintf("%.2f", $line[1]);
+                        break;
+                    case 'clock': // PPC
+                        $cpu['cpuspeed'] = sprintf('%.2f', $line[1]);
+                        break;
+                    case 'Cpu0ClkTck': // Linux sparc64
+                        $cpu['cpuspeed'] = sprintf('%.2f', hexdec($line[1]) / 1000000);
+                        break;
+                    case 'cache size':
+                        $cpu['cache'] = $line[1];
+                        break;
+                    case 'L2 cache': // PPC
+                        $cpu['cache'] = $line[1];
+                        break;
+                    case 'bogomips':
+                        $cpu["bogomips"] += $line[1];
+                        break;
+                    case 'BogoMIPS': // Alpha 2.2.x
+                        $cpu['bogomips'] += $line[1];
+                        break;
+                    case 'BogoMips': // Sparc
+                        $cpu['bogomips'] += $line[1];
+                        break;
+                    case 'Cpu0Bogo': // Linux sparc64 & sparc32
+                        $cpu['bogomips'] += $line[1];
+                        break;
+                }
+            }
+
+            // sparc64 specific implementation
+            // Originally made by Sven Blumenstein <bazik@gentoo.org> in
+            // 2004 Modified by Tom Weustink <freshy98@gmx.net> in 2004
+            $sparclist = [
+                'SUNW,UltraSPARC@0,0', 'SUNW,UltraSPARC-II@0,0', 'SUNW,UltraSPARC@1c,0', 'SUNW,UltraSPARC-IIi@1c,0',
+                'SUNW,UltraSPARC-II@1c,0', 'SUNW,UltraSPARC-IIe@0,0'
+            ];
+
+            foreach ($sparclist as $sparc) {
+                $raw = $this->read('/proc/openprom/' . $sparc . '/ecache-size');
+                if (empty($this->_error) && !empty($raw)) {
+                    $cpu['cache'] = base_convert($raw, 16, 10) / 1024 . ' KB';
+                }
+            }
+
+            // XScale specifict implementation
+            if ($cpu['cpus'] == 0) {
                 foreach ($cpu_info as $ci) {
                     $line = preg_split('/\s+:\s+/', trim($ci));
 
-                    // Every architecture has its own scheme, it's not granted
-                    // that this list is complete. If there are any values
-                    // missing, let us know about them. They will be added in a
-                    // upcoming release.
                     switch ($line[0]) {
-                        case 'model name':
-                            $cpu['model'] = $line[1];
-                            break;
-                        case 'cpu': // PPC
-                            $cpu['model'] = $line[1];
-                            break;
-                        case 'revision': // PPC
-                            $cpu['model'] .= ' ( rev: ' . $line[1] . ')';
-                            break;
-                        case 'cpu model': // Alpha 2.2.x
-                            $cpu['model'] .= ' (' . $line[1] . ')';
-                            break;
-                        case 'system type': // Alpha 2.2.x
-                            $cpu['model'] .= ', ' . $line[1] . ' ';
-                            break;
-                        case 'platform string': // Alpha 2.2.x
-                            $cpu['model'] .= ' (' . $line[1] . ')';
-                            break;
-                        case 'processor':
+                        case 'Processor':
                             $cpu['cpus'] += 1;
+                            $cpu['model'] = $line[1];
                             break;
-                        case 'ncpus probed': // Linux sparc64 & sparc32
-                            $cpu["cpus"] = $line[1];
+                        // Wrong description for CPU speed; no bogoMIPS
+                        // available
+                        case 'BogoMIPS':
+                            $cpu['cpuspeed'] = $line[1];
                             break;
-                        case 'cpu MHz':
-                            $cpu["cpuspeed"] = sprintf("%.2f", $line[1]);
-                            break;
-                        case 'clock': // PPC
-                            $cpu['cpuspeed'] = sprintf('%.2f', $line[1]);
-                            break;
-                        case 'Cpu0ClkTck': // Linux sparc64
-                            $cpu['cpuspeed'] = sprintf(
-                                '%.2f',
-                                hexdec($line[1]) / 1000000
-                            );
-                            break;
-                        case 'cache size':
+                        case 'I size':
                             $cpu['cache'] = $line[1];
                             break;
-                        case 'L2 cache': // PPC
-                            $cpu['cache'] = $line[1];
-                            break;
-                        case 'bogomips':
-                            $cpu["bogomips"] += $line[1];
-                            break;
-                        case 'BogoMIPS': // Alpha 2.2.x
-                            $cpu['bogomips'] += $line[1];
-                            break;
-                        case 'BogoMips': // Sparc
-                            $cpu['bogomips'] += $line[1];
-                            break;
-                        case 'Cpu0Bogo': // Linux sparc64 & sparc32
-                            $cpu['bogomips'] += $line[1];
+                        case 'D size':
+                            $cpu['cache'] += $line[1];
                             break;
                     }
                 }
 
-                // sparc64 specific implementation
-                // Originally made by Sven Blumenstein <bazik@gentoo.org> in
-                // 2004 Modified by Tom Weustink <freshy98@gmx.net> in 2004
-                $sparclist = [
-                    'SUNW,UltraSPARC@0,0', 'SUNW,UltraSPARC-II@0,0', 'SUNW,UltraSPARC@1c,0', 'SUNW,UltraSPARC-IIi@1c,0',
-                    'SUNW,UltraSPARC-II@1c,0', 'SUNW,UltraSPARC-IIe@0,0'
-                ];
-
-                foreach ($sparclist as $sparc) {
-                    $raw = $this->read(
-                        '/proc/openprom/' . $sparc . '/ecache-size'
-                    );
-
-                    if (empty($this->_error) && !empty($raw)) {
-                        $cpu['cache'] = base_convert($raw, 16, 10) / 1024 . ' KB';
-                    }
-                }
-
-                // XScale specifict implementation
-                if ($cpu['cpus'] == 0) {
-                    foreach ($cpu_info as $ci) {
-                        $line = preg_split('/\s+:\s+/', trim($ci));
-
-                        switch ($line[0]) {
-                            case 'Processor':
-                                $cpu['cpus'] += 1;
-                                $cpu['model'] = $line[1];
-                                break;
-                            // Wrong description for CPU speed; no bogoMIPS
-                            // available
-                            case 'BogoMIPS':
-                                $cpu['cpuspeed'] = $line[1];
-                                break;
-                            case 'I size':
-                                $cpu['cache'] = $line[1];
-                                break;
-                            case 'D size':
-                                $cpu['cache'] += $line[1];
-                                break;
-                        }
-                    }
-                    $cpu['cache'] = $cpu['cache'] / 1024 . ' KB';
-                }
+                $cpu['cache'] = $cpu['cache'] / 1024 . ' KB';
             }
         }
 
@@ -328,8 +321,8 @@ class iMSCP_SystemInfo
 
         /* Read output of df command from stdout
          * Args:
-         *	T: Show File System type
-         *	P: Show in POSIX format
+         *  T: Show File System type
+         *  P: Show in POSIX format
          */
         $pipes = []; // satisfy warning
         $proc = proc_open('df -TP', $descriptorSpec, $pipes);
@@ -348,13 +341,11 @@ class iMSCP_SystemInfo
 
             $i = 0;
             foreach ($fs_info as $fs) {
-                if (empty($fs)) {
+                if (empty($fs))
                     continue;
-                }
 
                 $line = preg_split('/\s+/', trim($fs));
                 $i++;
-
                 $filesystem[$i]['mount'] = $line[0];
                 $filesystem[$i]['fstype'] = $line[1];
                 $filesystem[$i]['disk'] = $line[6];
@@ -378,20 +369,20 @@ class iMSCP_SystemInfo
     {
         $kernel = tr('N/A');
 
-        if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
+        if ($this->os == 'FreeBSD' || $this->os == 'OpenBSD' || $this->os == 'NetBSD') {
             if ($kernelRaw = $this->sysctl('kern.version')) {
                 $kernel_arr = explode(':', $kernelRaw);
                 $kernel = $kernel_arr[0] . $kernel_arr[1] . ':' . $kernel_arr[2];
             }
-        } else {
-            $kernelRaw = $this->read('/proc/version');
-            if (empty($this->_error)) {
-                if (preg_match('/version (.*?) /', $kernelRaw, $kernel_info)) {
-                    $kernel = $kernel_info[1];
+            return $kernel;
+        }
 
-                    if (strpos($kernelRaw, 'SMP') !== false) {
-                        $kernel .= ' (SMP)';
-                    }
+        $kernelRaw = $this->read('/proc/version');
+        if (empty($this->_error)) {
+            if (preg_match('/version (.*?) /', $kernelRaw, $kernel_info)) {
+                $kernel = $kernel_info[1];
+                if (strpos($kernelRaw, 'SMP') !== false) {
+                    $kernel .= ' (SMP)';
                 }
             }
         }
@@ -410,25 +401,24 @@ class iMSCP_SystemInfo
     {
         $load = [tr('N/A'), tr('N/A'), tr('N/A')];
 
-        if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
+        if ($this->os == 'FreeBSD' || $this->os == 'OpenBSD' || $this->os == 'NetBSD') {
             if ($loadRaw = $this->sysctl('vm.loadavg')) {
                 $loadRaw = preg_replace('/{\s/', '', $loadRaw);
                 $loadRaw = preg_replace('/\s}/', '', $loadRaw);
                 $load = explode(' ', $loadRaw);
             }
-        } else {
-            $loadRaw = $this->read('/proc/loadavg');
+            return $load;
+        }
 
-            if (empty($this->_error)) {
-                // $load[0] - Load 1 Min
-                // $load[1] - Load 5 Min
-                // $load[2] - Load 15 Min
-                // $load[3] - <running processes>/<total processes> <last PID>
-                $load = preg_split('/\s/', $loadRaw, 4);
-
-                // Only load values are needed
-                unset($load[3]);
-            }
+        $loadRaw = $this->read('/proc/loadavg');
+        if (empty($this->_error)) {
+            // $load[0] - Load 1 Min
+            // $load[1] - Load 5 Min
+            // $load[2] - Load 15 Min
+            // $load[3] - <running processes>/<total processes> <last PID>
+            $load = preg_split('/\s/', $loadRaw, 4);
+            // Only load values are needed
+            unset($load[3]);
         }
 
         return $load;
@@ -442,14 +432,18 @@ class iMSCP_SystemInfo
      */
     private function _getRAMInfo()
     {
-        $ram = ['total' => 0, 'free' => 0, 'used' => 0];
+        $ram = [
+            'total' => 0,
+            'free'  => 0,
+            'used'  => 0
+        ];
 
-        if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
-            if ($ramRaw = $this->sysctl("hw.physmem")) {
+        if ($this->os == 'FreeBSD' || $this->os == 'OpenBSD' || $this->os == 'NetBSD') {
+            if ($ramRaw = $this->sysctl('hw.physmem')) {
                 $descriptorSpec = [
                     0 => ['pipe', 'r'], // stdin is a pipe that the child will read from
                     1 => ['pipe', 'w'], // stdout is a pipe that the child will write to
-                    2 => ['pipe', 'a']     // stderr is a pipe that he cild will write to
+                    2 => ['pipe', 'a']  // stderr is a pipe that he cild will write to
                 ];
 
                 $pipes = [];
@@ -476,36 +470,35 @@ class iMSCP_SystemInfo
                 $ram['total'] = $ramRaw / 1024;
                 $ram['used'] = $ram['total'] - $ram['free'];
             }
-        } else {
-            $ramRaw = $this->read('/proc/meminfo');
 
-            if (empty($this->_error)) {
-                // parse line for line
-                $ramInfo = explode("\n", $ramRaw);
+            return $ram;
+        }
 
-                foreach ($ramInfo as $ri) {
-                    $line = preg_split('/:\s+/', trim($ri));
+        $ramRaw = $this->read('/proc/meminfo');
 
-                    switch ($line[0]) {
-                        case 'MemTotal':
-                            $ram['total'] = strstr($line[1], ' kB', 2);
-                            break;
-                        case 'MemFree':
-                            $ram['free'] = strstr($line[1], ' kB', 2);
-                            break;
-                        case 'Buffers':
-                            $ram['buffers'] = strstr($line[1], ' kB', 2);
-                            break;
-                        case 'Cached':
-                            $ram['cached'] = strstr($line[1], ' kB', 2);
-                            break;
-                    }
+        if (empty($this->_error)) {
+            foreach (explode("\n", $ramRaw) as $ri) {
+                list($type, $kb) = preg_split('/\s+/', $line = str_replace(':', '', $ri), 3);
+
+                switch ($type) {
+                    case 'MemTotal':
+                        $ram['total'] = (int)$kb;
+                        break;
+                    case 'MemFree':
+                        $ram['free'] = (int)$kb;
+                        break;
+                    case 'Buffers':
+                        $ram['buffers'] = (int)$kb;
+                        break;
+                    case 'Cached':
+                        $ram['cached'] = (int)$kb;
+                        break;
                 }
-
-                # TODO report fixes below for freeBSD (see #812)
-                $ram['used'] = ($ram['total'] - $ram['free']) - ($ram['buffers'] + $ram['cached']);
-                $ram['free'] = $ram['total'] - $ram['used'];
             }
+
+            # TODO report fixes below for freeBSD (see #812)
+            $ram['used'] = ($ram['total'] - $ram['free']) - ($ram['buffers'] + $ram['cached']);
+            $ram['free'] = $ram['total'] - $ram['used'];
         }
 
         return $ram;
@@ -520,16 +513,20 @@ class iMSCP_SystemInfo
      */
     private function _getSwapInfo()
     {
-        $swap = ['total' => 0, 'free' => 0, 'used' => 0];
+        $swap = [
+            'total' => 0,
+            'free'  => 0,
+            'used'  => 0
+        ];
 
-        if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
+        if ($this->os == 'FreeBSD' || $this->os == 'OpenBSD' || $this->os == 'NetBSD') {
             $descriptorSpec = [
                 0 => ['pipe', 'r'], // stdin is a pipe that the child will read from
                 1 => ['pipe', 'w'], // stdout is a pipe that the child will write to
                 2 => ['pipe', 'a'] // stderr is a pipe that he cild will write to
             ];
 
-            if ($this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
+            if ($this->os == 'OpenBSD' || $this->os == 'NetBSD') {
                 $args = '-l -k';
             } else {
                 $args = '-k';
@@ -541,11 +538,9 @@ class iMSCP_SystemInfo
             if (is_resource($proc)) {
                 // Read data from stream (Pipe 1)
                 $raw = stream_get_contents($pipes[1]);
-
                 // Close pipe and stream
                 fclose($pipes[1]);
                 proc_close($proc);
-
                 // parse line for line
                 $swapInfo = explode("\n", $raw);
 
@@ -564,22 +559,23 @@ class iMSCP_SystemInfo
                 $ram['free'] = $line[5];
             }
 
-        } else {
-            $stdout = $this->read('/proc/swaps');
-            if (empty($this->_error)) {
-                // parse line for line
-                $swapInfo = explode("\n", $stdout);
+            return $swap;
+        }
 
-                // First line only contains Legend
-                array_shift($swapInfo);
+        $stdout = $this->read('/proc/swaps');
+        if (empty($this->_error)) {
+            // parse line for line
+            $swapInfo = explode("\n", $stdout);
 
-                foreach ($swapInfo as $si) {
-                    if (!empty($si)) {
-                        $line = preg_split('/\s+/', trim($si));
-                        $swap['total'] += $line[2];
-                        $swap['used'] += $line[3];
-                        $swap['free'] = $swap['total'] - $swap['used'];
-                    }
+            // First line only contains Legend
+            array_shift($swapInfo);
+
+            foreach ($swapInfo as $si) {
+                if (!empty($si)) {
+                    $line = preg_split('/\s+/', trim($si));
+                    $swap['total'] += $line[2];
+                    $swap['used'] += $line[3];
+                    $swap['free'] = $swap['total'] - $swap['used'];
                 }
             }
         }
@@ -600,9 +596,9 @@ class iMSCP_SystemInfo
     {
         $uptime = 0;
 
-        if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
+        if ($this->os == 'FreeBSD' || $this->os == 'OpenBSD' || $this->os == 'NetBSD') {
             if ($stdout = $this->sysctl("kern.boottime")) {
-                switch ($this->_os) {
+                switch ($this->os) {
                     case 'FreeBSD':
                         $uptimeArr = explode(' ', $stdout);
                         $uptimeTmp = preg_replace('/{\s/', '', $uptimeArr[3]);
@@ -616,7 +612,6 @@ class iMSCP_SystemInfo
             }
         } else {
             $stdout = $this->read('/proc/uptime');
-
             if (empty($this->_error)) {
                 $uptime = explode(' ', $stdout);
 
@@ -693,7 +688,6 @@ class iMSCP_SystemInfo
         if (is_resource($proc)) {
             // Read data from stream (Pipe 1)
             $stdout = stream_get_contents($pipes[1]);
-
             // Close pipe and stream
             fclose($pipes[1]);
             proc_close($proc);
