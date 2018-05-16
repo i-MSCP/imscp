@@ -7,6 +7,7 @@
 BACKEND
     Backport: Fix for #IP-1758 (Could not remove HTTPD log directory -- The immutable bit is removed too late) from 1.6.x branch
     Fixed: Couldn't restore backup archive - Can't locate object method "selectall_array" via package "DBI::db" (restore backup feature)
+    Fixed: Default PHP INI values (PHP Editor)
 
 DATABASE
     Backport: Fix for #IP-1742 (i-MSCP upgrade error - Unknown 'mail_user' database table in database update r254) from 1.6.x branch

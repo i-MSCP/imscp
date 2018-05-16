@@ -339,9 +339,7 @@ sub _getData
             "SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = 'dmn'", undef, $self->{'domain_id'}
         ) || {};
 
-        my $haveCert = ( defined $self->{'certificate'}
-            && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'domain_name'}.pem"
-        );
+        my $haveCert = ( defined $self->{'certificate'} && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'domain_name'}.pem" );
         my $allowHSTS = ( $haveCert && $self->{'allow_hsts'} eq 'on' );
         my $hstsMaxAge = ( $allowHSTS ) ? $self->{'hsts_max_age'} : 0;
         my $hstsIncludeSubDomains = ( $allowHSTS && $self->{'hsts_include_subdomains'} eq 'on' )
@@ -380,21 +378,18 @@ sub _getData
             FORWARD                 => $self->{'url_forward'} || 'no',
             FORWARD_TYPE            => $self->{'type_forward'} || '',
             FORWARD_PRESERVE_HOST   => $self->{'host_forward'} || 'Off',
-            DISABLE_FUNCTIONS       => $phpini->{'disable_functions'}
-                // 'exec,passthru,phpinfo,popen,proc_open,show_source,shell,shell_exec,symlink,system',
-            MAX_EXECUTION_TIME      => $phpini->{'max_execution_time'} // 30,
-            MAX_INPUT_TIME          => $phpini->{'max_input_time'} // 60,
-            MEMORY_LIMIT            => $phpini->{'memory_limit'} // 128,
+            DISABLE_FUNCTIONS       => $phpini->{'disable_functions'} // '',
+            MAX_EXECUTION_TIME      => $phpini->{'max_execution_time'} || 30,
+            MAX_INPUT_TIME          => $phpini->{'max_input_time'} || 60,
+            MEMORY_LIMIT            => $phpini->{'memory_limit'} || 128,
             ERROR_REPORTING         => $phpini->{'error_reporting'} || 'E_ALL & ~E_DEPRECATED & ~E_STRICT',
             DISPLAY_ERRORS          => $phpini->{'display_errors'} || 'off',
-            POST_MAX_SIZE           => $phpini->{'post_max_size'} // 8,
-            UPLOAD_MAX_FILESIZE     => $phpini->{'upload_max_filesize'} // 2,
+            POST_MAX_SIZE           => $phpini->{'post_max_size'} || 8,
+            UPLOAD_MAX_FILESIZE     => $phpini->{'upload_max_filesize'} || 2,
             ALLOW_URL_FOPEN         => $phpini->{'allow_url_fopen'} || 'off',
             PHP_FPM_LISTEN_PORT     => ( $phpini->{'id'} // 1 )-1,
             EXTERNAL_MAIL           => $self->{'external_mail'},
-            MAIL_ENABLED            => ( $self->{'external_mail'} eq 'off'
-                && ( $self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0 )
-            )
+            MAIL_ENABLED            => ( $self->{'external_mail'} eq 'off' && ( $self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0 ) )
         }
     } unless %{$self->{'_data'}};
 
