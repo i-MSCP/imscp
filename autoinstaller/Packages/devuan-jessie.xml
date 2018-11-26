@@ -433,11 +433,7 @@
         <package>libxml-parser-perl</package>
         <package>libxml-simple-perl</package>
     </perl>
-    <ssl
-            pinning_package="openssl libssl-dev"
-            pinning_pin="release o=Debian,n=jessie"
-            pinning_pin_priority="1002"
-    >
+    <ssl>
         <package>libssl-dev</package>
         <package>openssl</package>
     </ssl>
