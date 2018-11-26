@@ -253,7 +253,7 @@ sub _loadData
 
         unless ( $row ) {
             # Delete orphaned SSL certificate
-            $self->{'_dbh'}->do( 'DELETE FROM FROM ssl_certs WHERE cert_id = ?', undef, $certificateId );
+            $self->{'_dbh'}->do( 'DELETE FROM ssl_certs WHERE cert_id = ?', undef, $certificateId );
         } else {
             %{$self} = ( %{$self}, %{$row} );
         }
