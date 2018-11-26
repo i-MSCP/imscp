@@ -53,7 +53,7 @@ sub start
 
         # Creating IMSCP_INPUT and IMSCP_OUTPUT chains for incoming/outgoing traffic logging
         for ( qw/ IMSCP_INPUT IMSCP_OUTPUT / ) {
-            my $rs = execute( "$exec -t filter -N $_", \ my $stdout, \ my $stderr );
+            my $rs = execute( "$exec -w -t filter -N $_", \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
@@ -61,7 +61,7 @@ sub start
 
         # Adding rules to pass incoming/outgoing traffic through our chains, excluding traffic from/to `lo' interface
         for ( '-I INPUT ! -i lo -j IMSCP_INPUT', '-I OUTPUT ! -o lo -j IMSCP_OUTPUT' ) {
-            my $rs = execute( "$exec -t filter $_", \ my $stdout, \ my $stderr );
+            my $rs = execute( "$exec -w -t filter $_", \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
@@ -71,13 +71,13 @@ sub start
             defined or next;
 
             # Adding rule for logging incoming traffic to the given port
-            my $rs = execute( "$exec -t filter -I IMSCP_INPUT -p tcp --dport $_", \ my $stdout, \ my $stderr );
+            my $rs = execute( "$exec -w -t filter -I IMSCP_INPUT -p tcp --dport $_", \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
 
             # Adding rule for logging outgoing traffic from the given port
-            $rs = execute( "$exec -t filter -I IMSCP_OUTPUT -p tcp --sport $_", \$stdout, \$stderr );
+            $rs = execute( "$exec -w -t filter -I IMSCP_OUTPUT -p tcp --sport $_", \$stdout, \$stderr );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
@@ -85,20 +85,20 @@ sub start
 
         for ( qw/ 25 465 587 / ) {
             # Adding a rule for logging incoming traffic from the given port
-            my $rs = execute( "$exec -t filter -I IMSCP_INPUT -p tcp --sport $_", \ my $stdout, \ my $stderr );
+            my $rs = execute( "$exec -w -t filter -I IMSCP_INPUT -p tcp --sport $_", \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
 
             # Adding a rule for logging outgoing traffic to the given port
-            $rs = execute( "$exec -t filter -I IMSCP_OUTPUT -p tcp --dport $_", \$stdout, \$stderr );
+            $rs = execute( "$exec -w -t filter -I IMSCP_OUTPUT -p tcp --dport $_", \$stdout, \$stderr );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
         }
 
         for ( qw/ IMSCP_INPUT IMSCP_OUTPUT / ) {
-            my $rs = execute( "$exec -t filter -A $_ -j RETURN", \ my $stdout, \ my $stderr );
+            my $rs = execute( "$exec -w -t filter -A $_ -j RETURN", \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
@@ -133,7 +133,7 @@ sub stop
         # Delete i-MSCP rules on INPUT and OUTPUT chains if any
         if ( $data{'delete'} ) {
             for( @{$data{'delete'}} ) {
-                $rs = execute( "$exec -t filter -D $_", \$stdout, \$stderr );
+                $rs = execute( "$exec -w -t filter -D $_", \$stdout, \$stderr );
                 debug( $stdout ) if $stdout;
                 error( $stderr || 'Unknown error' ) if $rs;
                 return $rs if $rs;
@@ -143,12 +143,12 @@ sub stop
         # Flush and delete i-MSCP chains if any
         if ( $data{'flush'} ) {
             for( keys %{$data{'flush'}} ) {
-                $rs = execute( "$exec -t filter -F $_", \$stdout, \$stderr );
+                $rs = execute( "$exec -w -t filter -F $_", \$stdout, \$stderr );
                 debug( $stdout ) if $stdout;
                 error( $stderr || 'Unknown error' ) if $rs;
                 return $rs if $rs;
 
-                $rs ||= execute( "$exec -t filter -X $_", \$stdout, \$stderr );
+                $rs ||= execute( "$exec -w -t filter -X $_", \$stdout, \$stderr );
                 debug( $stdout ) if $stdout;
                 error( $stderr || 'Unknown error' ) if $rs;
                 return $rs if $rs;
