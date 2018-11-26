@@ -52,7 +52,7 @@ my $STORAGE_ROOT_PATH = '';
 #
 
 # Don't register event listeners if the listener file is not configured yet
-unless ( $STORAGE_ROOT_PATH eq '' ) {
+if ( $> == 0 && length $STORAGE_ROOT_PATH ) {
     iMSCP::EventManager->getInstance()->register(
         'onBoot',
         sub {
