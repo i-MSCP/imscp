@@ -2,7 +2,7 @@
 
 int read_data(int sockfd, char *buffer, size_t n)
 {
-    ssize_t i, retval;
+    size_t i, retval;
     char c, *p;
     p = buffer;
 

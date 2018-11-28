@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,10 +17,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+CC = gcc 
+CFLAGS = -g -O2 -ansi -fstack-protector-strong -Wall -Wextra -Wstrict-prototypes\
+         -Wmissing-prototypes -Wformat -Werror=format-security -pedantic-errors
 EXEC = imscp_daemon
-CC = gcc -ansi -Wall -Wstrict-prototypes -pedantic $(CFLAGS)
-CFLAGS = -g -O2
-
 OBJECTS = daemon_cmd.o daemon_conn.o daemon_init.o daemon_main.o daemon_msg.o\
           daemon_notify.o daemon_signals.o daemon_sock_io.o
 

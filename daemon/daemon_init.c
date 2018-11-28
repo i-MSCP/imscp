@@ -98,10 +98,7 @@ void daemon_init(void)
     /* continue as daemon process */
 
     /* set new file permissions */
-    if(umask(0) == -1) {
-        perror("Couldn't umask()");
-        notify(-1);
-    }
+    umask(0);
 
     /* change working directory to root directory */
     if(chdir("/") == -1) {

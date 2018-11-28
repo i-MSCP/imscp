@@ -4,6 +4,10 @@
 Git 1.5.x
 ------------------------------------------------------------------------------------------------------------------------
 
+DAEMON
+    Fixed: FTBFS with GCC from Ubuntu 18.04 - Undeclared identifiers: SIGCHLD, SIGPIPE
+    Fixed: Comparison between signed and unsigned integer expressions
+
 DISTRIBUTIONS
     Added support for Ubuntu Bionic Beaver (18.04)
 
