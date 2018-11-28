@@ -10,6 +10,7 @@ DAEMON
 
 DISTRIBUTIONS
     Added: Support for Ubuntu Bionic Beaver (18.04)
+    Added: 'ntp' package (all distributions) - Clock synchronization is an important factor for i-MSCP
     Added: 'unzip' distribution package (all distributions) - required by composer
 
 YOUTRACK

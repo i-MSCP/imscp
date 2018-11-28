@@ -439,6 +439,7 @@
         <package>lzma</package>
         <package>make</package>
         <package>mawk</package>
+        <package>ntp</package>
         <package>patch</package>
         <package>pbuilder</package>
         <package>pbzip2</package>
