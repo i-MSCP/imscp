@@ -4,13 +4,17 @@
 Git 1.5.x
 ------------------------------------------------------------------------------------------------------------------------
 
+DISTRIBUTIONS
+    Added support for Ubuntu Bionic Beaver (18.04)
+
 YOUTRACK
+    IP-1770 Contrib - 10_backup_storage_outsourcing.pl - Operation not permitted
     IP-1802 Traffic logger should wait for the xtables lock
     IP-1803 Wrong SQL query in SSLcertificate.pm module
     IP-1804 Cannot add catchall for subdomains - Call to a member function fetchRow on string
     IP-1809 Missing logrotate in LXC container
     IP-1811 APT pinning conflict with libssl-dev
-    IP-1770 Contrib - 10_backup_storage_outsourcing.pl - Operation not permitted
+    IP-1812 Missing support for Ubuntu Bionic Beaver (18.04)
 
 ------------------------------------------------------------------------------------------------------------------------
 1.5.3
