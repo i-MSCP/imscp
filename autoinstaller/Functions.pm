@@ -153,11 +153,9 @@ sub build
         || $main::reconfigure ne 'none';
 
     my @steps = (
-        [ \&_buildDistributionFiles, 'Building distribution files' ],
-        ( ( $main::skippackages || $main::buildonly )
-            ? () : [ \&_installDistroPackages, 'Installing distribution packages' ]
-        ),
+        ( $main::skippackages ? () : [ \&_installDistroPackages, 'Installing distribution packages' ] ),
         [ \&_checkRequirements, 'Checking for requirements' ],
+        [ \&_buildDistributionFiles, 'Building distribution files' ],
         [ \&_compileDaemon, 'Compiling daemon' ],
         [ \&_removeObsoleteFiles, 'Removing obsolete files' ],
         [ \&_savePersistentData, 'Saving persistent data' ]
