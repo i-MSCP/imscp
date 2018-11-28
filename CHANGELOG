@@ -15,6 +15,7 @@ DISTRIBUTIONS
 
 INSTALLER
     Fixed: Build only mode is broken on fresh installation: Couldn't find the 'PHP' command in search path...
+    Fixed: Keep any installed PHP packages as those can have been installed manually or by 3rd-party software
 
 YOUTRACK
     IP-1770 Contrib - 10_backup_storage_outsourcing.pl - Operation not permitted

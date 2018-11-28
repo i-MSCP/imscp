@@ -517,22 +517,22 @@ sub _processPackagesFile
     while ( my ($section, $data) = each( %{$pkgData} ) ) {
         # List of packages to install
         if ( defined $data->{'package'} ) {
-            for( @{$data->{'package'}} ) {
-                $self->_parsePackageNode( $_, $self->{'packagesToInstall'} );
+            for my $package( @{$data->{'package'}} ) {
+                $self->_parsePackageNode( $package, $self->{'packagesToInstall'} );
             }
         }
 
         # List of packages to install (delayed)
         if ( defined $data->{'package_delayed'} ) {
-            for( @{$data->{'package_delayed'}} ) {
-                $self->_parsePackageNode( $_, $self->{'packagesToInstallDelayed'} );
+            for my $package( @{$data->{'package_delayed'}} ) {
+                $self->_parsePackageNode( $package, $self->{'packagesToInstallDelayed'} );
             }
         }
 
         # List of conflicting packages which must be pre-removed
         if ( defined $data->{'package_conflict'} ) {
-            for( @{$data->{'package_conflict'}} ) {
-                push @{$self->{'packagesToPreUninstall'}}, ref $_ eq 'HASH' ? $_->{'content'} : $_;
+            for my $package( @{$data->{'package_conflict'}} ) {
+                push @{$self->{'packagesToPreUninstall'}}, ref $package eq 'HASH' ? $package->{'content'} : $package;
             }
         }
 
@@ -557,21 +557,21 @@ sub _processPackagesFile
         $sAlt = '' if $sAlt ne '' && !grep($_ eq $sAlt, keys %{$data});
 
         # Map of alternative descriptions to alternative names
-        my %altDescs;
-        for( keys %{$data} ) {
+        my %altDesc;
+        for my $alt( keys %{$data} ) {
             # Skip unsupported alternatives by arch
-            if ( defined $data->{$_}->{'required_arch'}
-                && $arch ne $data->{$_}->{'required_arch'}
+            if ( defined $data->{$alt}->{'required_arch'}
+                && $arch ne $data->{$alt}->{'required_arch'}
             ) {
                 next;
             }
 
-            $altDescs{$data->{$_}->{'description'} || $_} = $_;
+            $altDesc{$data->{$alt}->{'description'} || $alt} = $alt;
 
             # If there is no alternative set yet, set selected alternative 
             # to default alternative and force dialog to make user able to change it
-            if ( $sAlt eq '' && $data->{$_}->{'default'} ) {
-                $sAlt = $_;
+            if ( $sAlt eq '' && $data->{$alt}->{'default'} ) {
+                $sAlt = $alt;
                 $needDialog = 1;
             }
         }
@@ -579,47 +579,47 @@ sub _processPackagesFile
         # Filter unallowed alternatives
         unless ( $needDialog || !$data->{$sAlt}->{'allow_switch'} ) {
             my @allowedAlts = ( split( ',', $data->{$sAlt}->{'allow_switch'} ), $sAlt );
-            while ( my ($altDesc, $altName) = each( %altDescs ) ) {
-                delete $altDescs{$altDesc} unless grep( $altName eq $_, @allowedAlts );
+            while ( my ($altDesc, $altName) = each( %altDesc ) ) {
+                delete $altDesc{$altDesc} unless grep( $altName eq $_, @allowedAlts );
             }
         }
 
         # If there are more than one alternative available and if dialog is
         # forced, or if user explicitely asked for reconfiguration of that
         # alternative, show dialog for alternative selection
-        if ( keys %altDescs > 1
+        if ( keys %altDesc > 1
             && ( $needDialog || grep( $_ eq $main::reconfigure, ( $section, 'servers', 'all' ) ) )
         ) {
             ( my $ret, $sAlt ) = $dialog->radiolist(
-                <<"EOF", [ keys %altDescs ], $data->{$sAlt}->{'description'} || $sAlt );
+                <<"EOF", [ keys %altDesc ], $data->{$sAlt}->{'description'} || $sAlt );
 
 Please make your choice for the $section alternative:
 EOF
             return $ret if $ret; # Handle ESC case
 
             # Set real alternative name
-            $sAlt = $altDescs{$sAlt};
+            $sAlt = $altDesc{$sAlt};
         }
 
         # Packages to install for the selected alternative
         if ( defined $data->{$sAlt}->{'package'} ) {
-            for( @{$data->{$sAlt}->{'package'}} ) {
-                $self->_parsePackageNode( $_, $self->{'packagesToInstall'} );
+            for my $package( @{$data->{$sAlt}->{'package'}} ) {
+                $self->_parsePackageNode( $package, $self->{'packagesToInstall'} );
             }
         }
 
         # Package to install (delayed) for the selected alternative
         if ( defined $data->{$sAlt}->{'package_delayed'} ) {
-            for( @{$data->{$sAlt}->{'package_delayed'}} ) {
-                $self->_parsePackageNode( $_, $self->{'packagesToInstallDelayed'} );
+            for my $package( @{$data->{$sAlt}->{'package_delayed'}} ) {
+                $self->_parsePackageNode( $package, $self->{'packagesToInstallDelayed'} );
             }
         }
 
         # Conflicting packages that must be pre-removed for the selected
         # alternative.
         if ( defined $data->{$sAlt}->{'package_conflict'} ) {
-            for( @{$data->{$sAlt}->{'package_conflict'}} ) {
-                push @{$self->{'packagesToPreUninstall'}}, ref $_ eq 'HASH' ? $_->{'content'} : $_;
+            for my $package( @{$data->{$sAlt}->{'package_conflict'}} ) {
+                push @{$self->{'packagesToPreUninstall'}}, ref $package eq 'HASH' ? $package->{'content'} : $package;
             }
         }
 
@@ -650,31 +650,28 @@ EOF
         }
 
         # Schedule removal of APT repositories and packages that belongs to
-        # unselected alternatives
+        # unselected alternatives, unless keep_if_installed set
+        my @packagesToInstall = (
+            @{$self->{'packagesToInstall'}}, @{$self->{'packagesToInstallDelayed'}},
+            keys %{$self->{'packagesToRebuild'}}
+        );
         while ( my ($alt, $altData) = each( %{$data} ) ) {
-            next if $alt eq $sAlt;
+            next if $alt eq $sAlt || $altData->{'keep_if_installed'};
 
             # APT repositories to remove
-            for( qw / repository repository_conflict / ) {
-                next unless defined $altData->{$_};
-                push @{$self->{'aptRepositoriesToRemove'}}, $altData->{$_};
+            for my $repository( qw / repository repository_conflict / ) {
+                next unless defined $altData->{$repository};
+                push @{$self->{'aptRepositoriesToRemove'}}, $altData->{$repository};
             }
 
             # Packages to uninstall
-            for( qw / package package_delayed / ) {
-                next unless defined $altData->{$_};
+            for my $node( qw / package package_delayed / ) {
+                next unless defined $altData->{$node};
 
-                for( @{$altData->{$_}} ) {
-                    my $pkg = ref $_ eq 'HASH' ? $_->{'content'} : $_;
-                    next if grep(
-                        $pkg eq $_,
-                        (
-                            @{$self->{'packagesToInstall'}},
-                            @{$self->{'packagesToInstallDelayed'}},
-                            keys %{$self->{'packagesToRebuild'}}
-                        )
-                    );
-                    push @{$self->{'packagesToUninstall'}}, $pkg;
+                for my $package( @{$altData->{$node}} ) {
+                    $package = ref $package eq 'HASH' ? $package->{'content'} : $package;
+                    next if grep($package eq $_, @packagesToInstall);
+                    push @{$self->{'packagesToUninstall'}}, $package;
                 }
             }
         }
@@ -704,6 +701,11 @@ EOF
         @{$_} = grep(exists $apkgs{$_}, @{$_});
     }
 
+    $dialog->endGauge();
+    use Data::Dumper;
+    print Dumper($self->{'packagesToUninstall'});
+    exit;
+    
     $dialog->set( 'no-cancel', '' );
     0;
 }
