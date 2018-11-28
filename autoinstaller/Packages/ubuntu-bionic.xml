@@ -424,6 +424,7 @@
         <package>ssh</package>
         <package>sudo</package>
         <package>tar</package>
+        <package>unzip</package>
     </other>
     <sendmail>
         <package_conflict>sendmail</package_conflict>

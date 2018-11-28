@@ -9,7 +9,8 @@ DAEMON
     Fixed: Comparison between signed and unsigned integer expressions
 
 DISTRIBUTIONS
-    Added support for Ubuntu Bionic Beaver (18.04)
+    Added: Support for Ubuntu Bionic Beaver (18.04)
+    Added: 'unzip' distribution package (all distributions) - required by composer
 
 YOUTRACK
     IP-1770 Contrib - 10_backup_storage_outsourcing.pl - Operation not permitted
