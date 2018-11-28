@@ -650,13 +650,13 @@ EOF
         }
 
         # Schedule removal of APT repositories and packages that belongs to
-        # unselected alternatives, unless keep_if_installed set
+        # unselected alternatives, unless keep_installed flag is set
         my @packagesToInstall = (
             @{$self->{'packagesToInstall'}}, @{$self->{'packagesToInstallDelayed'}},
             keys %{$self->{'packagesToRebuild'}}
         );
         while ( my ($alt, $altData) = each( %{$data} ) ) {
-            next if $alt eq $sAlt || $altData->{'keep_if_installed'};
+            next if $alt eq $sAlt || $altData->{'keep_installed'};
 
             # APT repositories to remove
             for my $repository( qw / repository repository_conflict / ) {
@@ -701,11 +701,6 @@ EOF
         @{$_} = grep(exists $apkgs{$_}, @{$_});
     }
 
-    $dialog->endGauge();
-    use Data::Dumper;
-    print Dumper($self->{'packagesToUninstall'});
-    exit;
-    
     $dialog->set( 'no-cancel', '' );
     0;
 }

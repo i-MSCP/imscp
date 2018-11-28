@@ -58,7 +58,7 @@
                 pinning_package="*"
                 pinning_pin="origin packages.sury.org"
                 pinning_pin_priority="1001"
-                keep_if_installed="1"
+                keep_installed="1"
         >
             <package>php5.6</package>
             <package>php5.6-cgi</package>
@@ -97,7 +97,7 @@
                 pinning_package="*"
                 pinning_pin="origin packages.sury.org"
                 pinning_pin_priority="1001"
-                keep_if_installed="1"
+                keep_installed="1"
         >
             <package>php7.0</package>
             <package post_install_tasks="update-alternatives --set php /usr/bin/php7.0">php7.0-cli</package>
@@ -137,7 +137,7 @@
                 pinning_package="*"
                 pinning_pin="origin packages.sury.org"
                 pinning_pin_priority="1001"
-                keep_if_installed="1"
+                keep_installed="1"
         >
             <package>php7.1</package>
             <package post_install_tasks="update-alternatives --set php /usr/bin/php7.1">php7.1-cli</package>
