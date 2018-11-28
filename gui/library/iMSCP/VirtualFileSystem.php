@@ -77,7 +77,7 @@ class VirtualFileSystem
     {
         set_time_limit(0);
         ignore_user_abort(true);
-        $this->user = (string)$user;
+        $this->user = encode_idna((string)$user);
         $this->rootDir = (string)$rootDir;
     }
 

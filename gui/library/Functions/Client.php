@@ -499,7 +499,7 @@ function deleteSubdomain($id)
         write_log(
             sprintf(
                 'Deletion of the %s subdomain has been scheduled by %s', decode_idna($row['subdomain_alias_name']),
-                decode_idna($_SESSION['user_logged'])
+                $_SESSION['user_logged']
             ),
             E_USER_NOTICE
         );
@@ -622,7 +622,7 @@ function deleteSubdomainAlias($id)
         write_log(
             sprintf(
                 'Deletion of the %s subdomain has been scheduled by %s', decode_idna($row['subdomain_alias_name']),
-                decode_idna($_SESSION['user_logged'])
+                $_SESSION['user_logged']
             ),
             E_USER_NOTICE
         );

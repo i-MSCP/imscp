@@ -26,6 +26,7 @@ YOUTRACK
     IP-1802 Traffic logger should wait for the xtables lock
     IP-1803 Wrong SQL query in SSLcertificate.pm module
     IP-1804 Cannot add catchall for subdomains - Call to a member function fetchRow on string
+    IP-1806 Client - Domain Edit - Document Root Edit - FTP (VFS) - Could not retrieve directories - ASCII username expected
     IP-1809 Missing logrotate in LXC container
     IP-1811 APT pinning conflict with libssl-dev
     IP-1812 Missing support for Ubuntu Bionic Beaver (18.04)

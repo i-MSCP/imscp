@@ -84,6 +84,7 @@ function kill_session()
  */
 function client_generatePage($tpl)
 {
+    $userLoggedASCII = encode_idna($_SESSION['user_logged']);
     $currentUserSessionId = session_id();
     $stmt = exec_query('SELECT session_id, user_name, lastaccess FROM login');
 
@@ -99,7 +100,7 @@ function client_generatePage($tpl)
         } else {
             $tpl->assign([
                 'ADMIN_USERNAME' => $username
-                    . (($username == $_SESSION['user_logged'] && $currentUserSessionId !== $sessionId)
+                    . (($username == $userLoggedASCII && $currentUserSessionId !== $sessionId)
                         ? ' (' . tr('from other browser') . ')' : ''
                     ),
                 'LOGIN_TIME'     => date('G:i:s', $row['lastaccess'])
