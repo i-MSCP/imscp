@@ -379,9 +379,8 @@ sub _installPackages
 {
     my (undef, @packages) = @_;
 
-    iMSCP::Dialog->getInstance->endGauge() unless iMSCP::Getopt->noprompt;
+    iMSCP::Dialog->getInstance->endGauge();
 
-    local $ENV{'LANG'} = 'C';
     local $ENV{'UCF_FORCE_CONFFNEW'} = 1;
     local $ENV{'UCF_FORCE_CONFFMISS'} = 1;
 
@@ -423,7 +422,7 @@ sub _removePackages
     @packages = split /\n/, $stdout;
     return 0 unless @packages;
 
-    iMSCP::Dialog->getInstance()->endGauge() unless iMSCP::Getopt->noprompt;
+    iMSCP::Dialog->getInstance()->endGauge();
 
     $rs = execute(
         [

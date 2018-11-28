@@ -65,7 +65,6 @@ sub installPreRequiredPackages
 
     local $ENV{'UCF_FORCE_CONFFNEW'} = 1;
     local $ENV{'UCF_FORCE_CONFFMISS'} = 1;
-    local $ENV{'LANG'} = 'C';
 
     my $stdout;
     $rs = execute(
@@ -167,8 +166,6 @@ EOF
     my $nPackages = scalar keys %{$self->{'packagesPreInstallTasks'}};
     my $cPackage = 1;
 
-    local $ENV{'LANG'} = 'C';
-
     startDetail();
 
     {
@@ -182,13 +179,10 @@ EOF
                         $self->{'packagesPreInstallTasks'}->{$package},
                         ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout ), \ my $stderr
                     );
-                    error(
-                        $stderr || sprintf( "Unknown error while executing preinstall tasks for the `%s' package",
-                            $package )
-                    ) if $rs;
+                    error( $stderr || sprintf( "Unknown error while executing preinstall tasks for the '%s' package", $package )) if $rs;
                     $rs;
                 },
-                sprintf( "Executing preinstall tasks for the `%s' package... Please be patient.", $package ),
+                sprintf( "Executing preinstall tasks for the '%s' package... Please be patient.", $package ),
                 $nPackages,
                 $cPackage
             );
@@ -209,6 +203,8 @@ EOF
     debug( $stderr ) if $stderr;
 
     {
+        iMSCP::Dialog->getInstance()->endGauge();
+
         local $ENV{'UCF_FORCE_CONFFNEW'} = 1;
         local $ENV{'UCF_FORCE_CONFFMISS'} = 1;
 
@@ -249,13 +245,10 @@ EOF
                         ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout ),
                         \ $stderr
                     );
-                    error( $stderr || sprintf(
-                        "Unknown error while executing postinstall tasks for the `%s' package",
-                        $package
-                    )) if $rs;
+                    error( $stderr || sprintf( "Unknown error while executing postinstall tasks for the '%s' package", $package )) if $rs;
                     $rs;
                 },
-                sprintf( "Executing postinstall tasks for the `%s' package... Please be patient.", $package ),
+                sprintf( "Executing postinstall tasks for the '%s' package... Please be patient.", $package ),
                 $nPackages,
                 $cPackage
             );
@@ -308,7 +301,7 @@ sub uninstallPackages
             execute( [ 'apt-mark', 'unhold', @{$packagesToUninstall} ], \ $stdout, \ $stderr );
             debug( $stderr ) if $stderr;
 
-            iMSCP::Dialog->getInstance()->endGauge() unless iMSCP::Getopt->noprompt;
+            iMSCP::Dialog->getInstance()->endGauge();
 
             $rs = execute(
                 [
@@ -720,8 +713,6 @@ sub _updateAptSourceList
 {
     my ($self) = @_;
 
-    local $ENV{'LANG'} = 'C';
-
     my $file = iMSCP::File->new( filename => '/etc/apt/sources.list' );
     my $fileContent = $file->get();
 
@@ -921,9 +912,7 @@ EOF
 
 sub _updatePackagesIndex
 {
-    iMSCP::Dialog->getInstance()->endGauge() if !iMSCP::Getopt->noprompt && iMSCP::ProgramFinder::find( 'dialog' );
-
-    local $ENV{'LANG'} = 'C';
+    iMSCP::Dialog->getInstance()->endGauge() if iMSCP::ProgramFinder::find( 'dialog' );
 
     my $stdout;
     my $rs = execute(
@@ -1112,8 +1101,6 @@ sub _rebuildAndInstallPackage
         error( 'Unsupported patch format.' );
         return 1;
     }
-
-    local $ENV{'LANG'} = 'C';
 
     my $lsbRelease = iMSCP::LsbRelease->getInstance();
     $patchesDir = "$FindBin::Bin/configs/" . lc( $lsbRelease->getId( 1 )) . "/$patchesDir";
