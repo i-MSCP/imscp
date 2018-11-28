@@ -2,7 +2,8 @@
 
 ## Supported Debian versions
 
-Any released version >= 8.x (Debian Jessie)
+- Debian Jessie (8.x),
+- Debian Stretch (9.x)
 
 ## Installation
 
@@ -20,18 +21,18 @@ apt-get -y --auto-remove --no-install-recommends install ca-certificates perl \
 whiptail wget
 ```
 
-### 3. Download and untar the distribution files
+### 3. Download and un-tar the distribution files
 
 ```
 cd /usr/local/src
-wget https://github.com/i-MSCP/imscp/archive/1.5.1.tar.gz
-tar -xzf 1.5.1.tar.gz
+wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
+tar -xzf <version>.tar.gz
 ```
 
 ### 4. Change to the newly created directory
 
 ```
-cd imscp-1.5.1
+cd imscp-<version>
 ```
 
 ### 5. Install i-MSCP by running its installer
@@ -45,7 +46,7 @@ perl imscp-autoinstall -d
 ### 1. Make sure to read the errata file
 
 Before upgrading, you must not forget to read the
-[errata file](https://github.com/i-MSCP/imscp/blob/1.5.1/docs/1.5.x_errata.md)
+[errata file](https://github.com/i-MSCP/imscp/blob/<version>/docs/1.5.x_errata.md)
 
 
 ### 2. Make sure to make a backup of your data
@@ -68,18 +69,18 @@ apt-get update
 apt-get --assume-yes --auto-remove --no-install-recommends dist-upgrade
 ```
 
-### 4. Download and untar the distribution files
+### 4. Download and un-tar the distribution files
 
 ```
 cd /usr/local/src
-wget https://github.com/i-MSCP/imscp/archive/1.5.1.tar.gz
-tar -xzf 1.5.1.tar.gz
+wget https://github.com/i-MSCP/imscp/archive/<version>.tar.gz
+tar -xzf <version>.tar.gz
 ```
 
 ### 5. Change to the newly created directory
 
 ```
-cd imscp-1.5.1
+cd imscp-<version>
 ```
 
 ### 6. Update i-MSCP by running its installer
