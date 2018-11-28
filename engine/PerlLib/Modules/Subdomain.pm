@@ -239,7 +239,7 @@ sub _getData
             DISABLE_FUNCTIONS       => $phpini->{'disable_functions'} || '',
             MAX_EXECUTION_TIME      => $phpini->{'max_execution_time'} || 30,
             MAX_INPUT_TIME          => $phpini->{'max_input_time'} || 60,
-            MEMORY_LIMIT            => $phpini->{'memory_limit'} | 128,
+            MEMORY_LIMIT            => $phpini->{'memory_limit'} || 128,
             ERROR_REPORTING         => $phpini->{'error_reporting'} || 'E_ALL & ~E_DEPRECATED & ~E_STRICT',
             DISPLAY_ERRORS          => $phpini->{'display_errors'} || 'off',
             POST_MAX_SIZE           => $phpini->{'post_max_size'} || 8,

@@ -4,6 +4,9 @@
 Git 1.5.x
 ------------------------------------------------------------------------------------------------------------------------
 
+BACKEND
+    Fixed: Use of uninitialized value in bitwise or ( |) (PHP memory_limit, Subdomain module)
+
 DAEMON
     Fixed: Comparison between signed and unsigned integer expressions
     Fixed: FTBFS with GCC from Ubuntu 18.04 - Undeclared identifiers: SIGCHLD, SIGPIPE
