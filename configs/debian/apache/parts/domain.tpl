@@ -3,19 +3,19 @@
     ServerName {DOMAIN_NAME}
     ServerAlias {SERVER_ALIASES}
 
-    DocumentRoot {DOCUMENT_ROOT}
+    DocumentRoot "{DOCUMENT_ROOT}"
 
     # Reset list of resources to look for when the client requests a directory
     DirectoryIndex disabled
     
     LogLevel error
-    ErrorLog {HTTPD_LOG_DIR}/{DOMAIN_NAME}/error.log
+    ErrorLog "{HTTPD_LOG_DIR}/{DOMAIN_NAME}/error.log"
 
-    Alias /errors/ {HOME_DIR}/errors/
+    Alias "/errors/" "{HOME_DIR}/errors/"
 
     # SECTION ssl BEGIN.
     SSLEngine On
-    SSLCertificateFile      {CERTIFICATE}
+    SSLCertificateFile      "{CERTIFICATE}"
 
     Header always set Strict-Transport-Security "max-age={HSTS_MAX_AGE}{HSTS_INCLUDE_SUBDOMAINS}"
     # SECTION ssl END.
@@ -37,14 +37,14 @@
     # SECTION php_fpm END.
     # SECTION php_on END.
 
-    <Directory {DOCUMENT_ROOT}>
+    <Directory "{DOCUMENT_ROOT}">
         Options FollowSymLinks
         # SECTION php_on BEGIN.
         DirectoryIndex index.php
         AllowOverride All
         # SECTION fcgid BEGIN.
         Options +ExecCGI
-        FCGIWrapper {PHP_FCGI_STARTER_DIR}/{FCGID_NAME}/php-fcgi-starter
+        FCGIWrapper "{PHP_FCGI_STARTER_DIR}/{FCGID_NAME}/php-fcgi-starter"
         # SECTION fcgid END.
         # SECTION itk BEGIN.
         php_admin_value open_basedir "{HOME_DIR}/:{PEAR_DIR}/:dev/random:/dev/urandom"
@@ -76,8 +76,8 @@
     </Directory>
 
     # SECTION cgi BEGIN.
-    Alias /cgi-bin/ {WEB_DIR}/cgi-bin/
-    <Directory {WEB_DIR}/cgi-bin>
+    Alias "/cgi-bin/" "{WEB_DIR}/cgi-bin/"
+    <Directory "{WEB_DIR}/cgi-bin">
         AllowOverride AuthConfig Indexes Limit Options=Indexes,MultiViews \
             Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule Nonfatal=Override
         DirectoryIndex index.cgi index.pl index.py index.rb
@@ -101,7 +101,7 @@
     # SECTION dmn END.
 
     # SECTION fwd BEGIN.
-    <Directory {DOCUMENT_ROOT}>
+    <Directory "{DOCUMENT_ROOT}">
         Options FollowSymLinks
         AllowOverride AuthConfig Indexes Limit Options=Indexes,MultiViews \
             Fileinfo=RewriteEngine,RewriteOptions,RewriteBase,RewriteCond,RewriteRule Nonfatal=Override
@@ -109,7 +109,7 @@
     </Directory>
 
     # SECTION std_fwd BEGIN.
-    RedirectMatch {FORWARD_TYPE} ^/((?!(?:errors|\.well-known)/).*) {FORWARD}$1
+    RedirectMatch {FORWARD_TYPE} "^/((?!(?:errors|\.well-known)/).*)" "{FORWARD}$1"
     # SECTION std_fwd END.
     # SECTION proxy_fwd BEGIN.
     # SECTION ssl_proxy BEGIN.
@@ -118,13 +118,13 @@
     RequestHeader set X-Forwarded-Proto "http"
     RequestHeader set X-Forwarded-Port 80
     ProxyPreserveHost {FORWARD_PRESERVE_HOST}
-    ProxyPassMatch ^/((?!(?:errors|\.well-known)/).*) {FORWARD}$1 retry=30 timeout=7200
-    ProxyPassReverse / {FORWARD}
+    ProxyPassMatch "^/((?!(?:errors|\.well-known)/).*)" "{FORWARD}$1" retry=30 timeout=7200
+    ProxyPassReverse "/" "{FORWARD}"
     # SECTION proxy_fwd END.
     # SECTION fwd END.
 
     # SECTION addons BEGIN.
     # SECTION addons END.
 
-    Include {HTTPD_CUSTOM_SITES_DIR}/{DOMAIN_NAME}.conf
+    Include "{HTTPD_CUSTOM_SITES_DIR}/{DOMAIN_NAME}.conf"
 </VirtualHost>

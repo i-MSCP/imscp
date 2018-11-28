@@ -7,6 +7,9 @@ Git 1.5.x
 BACKEND
     Fixed: Use of uninitialized value in bitwise or ( |) (PHP memory_limit, Subdomain module)
 
+CONFIG
+    Fixed: Paths must be quoted in Apache2 vhost file to prevent spaces being interpreted as end of argument
+
 DAEMON
     Fixed: Comparison between signed and unsigned integer expressions
     Fixed: FTBFS with GCC from Ubuntu 18.04 - Undeclared identifiers: SIGCHLD, SIGPIPE
@@ -75,7 +78,7 @@ SCRIPTS
 2017-09-08: Laurent Declercq
     RELEASE i-MSCP 1.5.1
 
-Bakend
+BACKEND
     Fixed: Can't call method "isEmpty" on an undefined value when a listener self un-register (iMSCP::EventManager)
 
 FRONTEND
