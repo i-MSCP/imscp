@@ -109,7 +109,7 @@
     </Directory>
 
     # SECTION std_fwd BEGIN.
-    RedirectMatch {FORWARD_TYPE} "^/((?!(?:errors|\.well-known)/).*)" "{FORWARD}$1"
+    RedirectMatch {FORWARD_TYPE} "^/((?!(?:errors|\.well-known)/acme-challenge/).*)" "{FORWARD}$1"
     # SECTION std_fwd END.
     # SECTION proxy_fwd BEGIN.
     # SECTION ssl_proxy BEGIN.
@@ -118,7 +118,7 @@
     RequestHeader set X-Forwarded-Proto "{X_FORWARDED_PROTOCOL}"
     RequestHeader set X-Forwarded-Port {X_FORWARDED_PORT}
     ProxyPreserveHost {FORWARD_PRESERVE_HOST}
-    ProxyPassMatch "^/((?!(?:errors|\.well-known)/).*)" "{FORWARD}$1" retry=30 timeout=7200
+    ProxyPassMatch "^/((?!(?:errors|\.well-known)/acme-challenge/).*)" "{FORWARD}$1" retry=30 timeout=7200
     ProxyPassReverse "/" "{FORWARD}"
     # SECTION proxy_fwd END.
     # SECTION fwd END.
