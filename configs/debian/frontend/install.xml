@@ -11,7 +11,7 @@
     <copy_config>${SYSTEM_CONF}/frontend/00_master.nginx</copy_config>
     <copy_config>${SYSTEM_CONF}/frontend/00_master_ssl.nginx</copy_config>
     <copy_config>${SYSTEM_CONF}/frontend/frontend.data.dist</copy_config>
-    <copy_config>${LOCAL_USR_LIB}/imscp_panel/imscp_panel_reopenlogs</copy_config>
+    <copy_config mode="0750">${LOCAL_USR_LIB}/imscp_panel/imscp_panel_reopenlogs</copy_config>
     <copy_config>${SYSTEM_CONF}/frontend/imscp_fastcgi.nginx</copy_config>
     <copy_config>${ROOT_CONF}/logrotate.d/imscp_panel</copy_config>
     <copy_config>${SYSTEM_CONF}/frontend/imscp_php.nginx</copy_config>

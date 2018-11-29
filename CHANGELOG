@@ -28,6 +28,7 @@ DISTRIBUTIONS
 FRONTEND
     Fixed: $ORIGIN value is empty in Custom DNS records edit UI
     Fixed: Closing button being removed in all dialog UI while it must be removed only in alert and confirmation dialogs
+    Fixed: Couldn't execute /usr/local/lib/imscp_panel/imscp_panel_reopenlogs logrotate script
     Fixed: Prevent edition of custom DNS records which are not owned by the custom DNS feature
 
 INSTALLER
