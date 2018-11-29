@@ -1,11 +1,11 @@
 =head1 NAME
 
- iMSCP::Provider::Service::Upstart - Base service provider for `upstart' jobs
+ iMSCP::Provider::Service::Upstart - Upstart init provider
 
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,12 +25,14 @@ package iMSCP::Provider::Service::Upstart;
 
 use strict;
 use warnings;
-use File::Basename;
+use Carp 'croak';
+use File::Basename qw/ basename dirname/;
 use File::Spec;
-use iMSCP::Execute;
+use iMSCP::Boolean;
+use iMSCP::Debug qw/ debug getMessageByType /;
 use iMSCP::File;
 use version;
-use parent 'iMSCP::Provider::Service::Sysvinit';
+use parent 'iMSCP::Provider::Service::Abstract';
 
 # Commands used in that package
 our %COMMANDS = (
@@ -43,7 +45,6 @@ our %COMMANDS = (
 );
 
 # Private variables
-my $UPSTART_VERSION;
 my $START_ON = qr/^\s*start\s+on/;
 my $COMMENTED_START_ON = qr/^\s*#+\s*start\s+on/;
 my $MANUAL = qr/^\s*manual\s*/m;
@@ -51,12 +52,12 @@ my $MANUAL = qr/^\s*manual\s*/m;
 # Paths where job files must be searched
 my @JOBFILEPATHS = ( '/etc/init' );
 
-# Operate against system upstart, not session (see See IP-1514)
+# Operate against system Upstart, not session (See IP-1514)
 delete $ENV{'UPSTART_SESSION'};
 
 =head1 DESCRIPTION
 
- Base service provider for `upstart' jobs.
+ Upstart init provider.
 
  See: http://upstart.ubuntu.com
 
@@ -66,22 +67,24 @@ delete $ENV{'UPSTART_SESSION'};
 
 =item isEnabled( $job )
 
- See iMSCP::Provider::Service::Interface
+ See iMSCP::Provider::Service::Interface::isEnabled()
 
 =cut
 
 sub isEnabled
 {
-    my ($self, $job) = @_;
+    my ( $self, $job ) = @_;
 
-    defined $job or die( 'parameter $job is not defined' );
+    defined $job or croak( 'Missing or undefined $job parameter' );
 
     if ( $self->_versionIsPre067() ) {
-        return $self->_isEnabledPre067( $self->_readJobFile( $job ));
+        $self->_isEnabledPre067( $self->_readJobFile( $job ));
+        return;
     }
 
     if ( $self->_versionIsPre090() ) {
-        return $self->_isEnabledPre090( $self->_readJobFile( $job ));
+        $self->_isEnabledPre090( $self->_readJobFile( $job ));
+        return;
     }
 
     $self->_isEnabledPost090( $self->_readJobFile( $job ), $self->_readJobOverrideFile( $job ));
@@ -89,18 +92,19 @@ sub isEnabled
 
 =item enable( $job )
 
- See iMSCP::Provider::Service::Interface
+ See iMSCP::Provider::Service::Interface::enable()
 
 =cut
 
 sub enable
 {
-    my ($self, $job) = @_;
+    my ( $self, $job ) = @_;
 
-    defined $job or die( 'parameter $job is not defined' );
+    defined $job or croak( 'Missing or undefined $job parameter' );
 
     if ( $self->_versionIsPre090() ) {
-        return $self->_enablePre090( $job, $self->_readJobFile( $job ));
+        $self->_enablePre090( $job, $self->_readJobFile( $job ));
+        return;
     }
 
     $self->_enablePost090( $job, $self->_readJobFile( $job ), $self->_readJobOverrideFile( $job ));
@@ -108,22 +112,24 @@ sub enable
 
 =item disable( $job )
 
- See iMSCP::Provider::Service::Interface
+ See iMSCP::Provider::Service::Interface::disable()
 
 =cut
 
 sub disable
 {
-    my ($self, $job) = @_;
+    my ( $self, $job ) = @_;
 
-    defined $job or die( 'parameter $job is not defined' );
+    defined $job or croak( 'Missing or undefined $job parameter' );
 
     if ( $self->_versionIsPre067() ) {
-        return $self->_disablePre067( $job, $self->_readJobFile( $job ));
+        $self->_disablePre067( $job, $self->_readJobFile( $job ));
+        return;
     }
 
     if ( $self->_versionIsPre090() ) {
-        return $self->_disablePre090( $job, $self->_readJobFile( $job ));
+        $self->_disablePre090( $job, $self->_readJobFile( $job ));
+        return;
     }
 
     $self->_disablePost090( $job, $self->_readJobOverrideFile( $job ));
@@ -131,47 +137,45 @@ sub disable
 
 =item remove( $job )
 
- See iMSCP::Provider::Service::Interface
+ See iMSCP::Provider::Service::Interface::remove()
 
 =cut
 
 sub remove
 {
-    my ($self, $job) = @_;
+    my ( $self, $job ) = @_;
 
-    defined $job or die( 'parameter $job is not defined' );
+    defined $job or croak( 'Missing or undefined $job parameter' );
 
-    return 0 unless $self->stop( $job );
+    $self->stop( $job ) if $self->hasService( $job );
 
-    local $@;
-    for ( qw/ conf override / ) {
-        my $jobFilePath = eval { $self->getJobFilePath( $job, $_ ); };
-        if ( defined $jobFilePath ) {
-            return 0 if iMSCP::File->new( filename => $jobFilePath )->delFile();
-        }
+    # Even if there is no job file, there can be still orphaned job override
+    # file which we need to remove. Thus, we always process both files.
+
+    for my $type ( qw/ conf override / ) {
+        next unless my $jobFilePath = eval { $self->resolveJob( $job, $type, TRUE ); };
+        debug( sprintf( "Removing the %s Upstart job file", $jobFilePath ));
+        iMSCP::File->new( filename => $jobFilePath )->delFile() == 0 or croak(
+            getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error'
+        );
     }
-
-    1;
 }
 
-=item start( $service )
+=item start( $job )
 
- See iMSCP::Provider::Service::Interface
+ See iMSCP::Provider::Service::Interface::start()
 
 =cut
 
 sub start
 {
-    my ($self, $job) = @_;
+    my ( $self, $job ) = @_;
 
-    defined $job or die( 'parameter $job is not defined' );
+    defined $job or croak( 'Missing or undefined $job parameter' );
 
-    if ( $self->_isUpstart( $job ) ) {
-        unless ( $self->isRunning( $job ) ) {
-            return $self->_exec( $COMMANDS{'start'}, $job ) == 0;
-        }
-
-        return 1;
+    if ( $self->hasService( $job ) ) {
+        $self->_exec( [ $COMMANDS{'start'}, $job ] ) unless $self->isRunning( $job );
+        return;
     }
 
     $self->SUPER::start( $job );
@@ -179,22 +183,19 @@ sub start
 
 =item stop( $job )
 
- See iMSCP::Provider::Service::Interface
+ See iMSCP::Provider::Service::Interface::stop()
 
 =cut
 
 sub stop
 {
-    my ($self, $job) = @_;
+    my ( $self, $job ) = @_;
 
-    defined $job or die( 'parameter $job is not defined' );
+    defined $job or croak( 'Missing or undefined $job parameter' );
 
-    if ( $self->_isUpstart( $job ) ) {
-        if ( $self->isRunning( $job ) ) {
-            return $self->_exec( $COMMANDS{'stop'}, $job ) == 0;
-        }
-
-        return 1;
+    if ( $self->hasService( $job ) ) {
+        $self->_exec( [ $COMMANDS{'stop'}, $job ] ) if $self->isRunning( $job );
+        return;
     }
 
     $self->SUPER::stop( $job );
@@ -202,102 +203,134 @@ sub stop
 
 =item restart( $job )
 
- See iMSCP::Provider::Service::Interface
+ See iMSCP::Provider::Service::Interface::restart()
 
 =cut
 
 sub restart
 {
-    my ($self, $job) = @_;
+    my ( $self, $job ) = @_;
 
-    defined $job or die( 'parameter $job is not defined' );
+    defined $job or croak( 'Missing or undefined $job parameter' );
 
-    if ( $self->_isUpstart( $job ) ) {
+    if ( $self->hasService( $job ) ) {
         if ( $self->isRunning( $job ) ) {
-            return $self->_exec( $COMMANDS{'restart'}, $job ) == 0
+            $self->_exec( [ $COMMANDS{'restart'}, $job ] );
+        } else {
+            $self->start( $job );
         }
 
-        return $self->start( $job );
+        return;
     }
 
     $self->SUPER::restart( $job );
 }
 
-=item reload( $service )
+=item reload( $job )
 
- See iMSCP::Provider::Service::Interface
+ See iMSCP::Provider::Service::Interface::reload()
 
 =cut
 
 sub reload
 {
-    my ($self, $job) = @_;
+    my ( $self, $job ) = @_;
 
-    defined $job or die( 'parameter $job is not defined' );
+    defined $job or croak( 'Missing or undefined $job parameter' );
 
-    if ( $self->_isUpstart( $job ) ) {
+    if ( $self->hasService( $job ) ) {
         if ( $self->isRunning( $job ) ) {
-            return $self->_exec( $COMMANDS{'reload'}, $job ) == 0;
+            # We need to catch STDERR as we do do want croak on failure
+            my $ret = $self->_exec( [ $COMMANDS{'reload'}, $job ], undef, \my $stderr );
+
+            # If the reload action failed, we try a restart instead. This cover
+            # case where the reload action is not supported.
+            $self->restart( $job ) unless $ret;
+            return;
         }
 
-        return $self->start( $job );
+        $self->start( $job );
+        return;
     }
 
     $self->SUPER::reload( $job );
-
 }
 
-=item isRunning( $service )
+=item isRunning( $job )
 
- See iMSCP::Provider::Service::Interface
+ See iMSCP::Provider::Service::Interface::isRunning()
 
 =cut
 
 sub isRunning
 {
-    my ($self, $service) = @_;
+    my ( $self, $job ) = @_;
 
-    defined $service or die( 'parameter $service is not defined' );
+    defined $job or croak( 'Missing or undefined $job parameter' );
 
-    if ( $self->_isUpstart( $service ) ) {
-        execute( "$COMMANDS{'status'} $service 2>/dev/null", \ my $stdout );
+    if ( $self->hasService( $job ) ) {
+        $self->_exec( [ $COMMANDS{'status'}, $job ], \my $stdout );
         return $stdout =~ /start/;
     }
 
-    $self->SUPER::isRunning( $service );
+    $self->SUPER::isRunning( $job );
 }
 
-=item hasService( $service )
+=item hasService( $job )
 
- See iMSCP::Provider::Service::Interface
+ See iMSCP::Provider::Service::Interface::hasService()
 
 =cut
 
 sub hasService
 {
-    my ($self, $service) = @_;
+    my ( $self, $job ) = @_;
 
-    defined $service or die( 'parameter $service is not defined' );
-    $self->_isUpstart( $service );
+    defined $job or croak( 'Missing or undefined $job parameter' );
+
+    eval { $self->resolveJob( $job, undef, TRUE ); };
 }
 
-=item getJobFilePath( $job [, $jobFileType = 'conf' ] )
+=item resolveJob( $job [, $type = 'conf' [, $nocache ] ] )
 
- Get full path of the job configuration file or job override file which belongs to the given job
+ Resolve the given Upstart job
 
  Param string $job Job name
- Param string $jobFileType OPTIONAL Job file type (conf|override) - Default to 'conf'
- Return string job file path on success, die on failure
+ Param string $type OPTIONAL Job file type (conf|override)
+ Param boolean $nocache OPTIONAL If true, no cache will be used
+ Return string Full Upstart job file path on success, croak on failure
 
 =cut
 
-sub getJobFilePath
+sub resolveJob
 {
-    my ($self, $job, $jobFileType) = @_;
+    my ( $self, $job, $type, $nocache ) = @_;
+    $type //= 'conf';
 
-    defined $job or die( 'parameter $job is not defined' );
-    $jobFileType ||= 'conf';
-    $self->_searchJobFile( $job, $jobFileType );
+    defined $job or croak( 'Missing or undefined $job parameter' );
+
+    CORE::state %resolved;
+
+    my $jobFile = $job . '.' . $type;
+
+    if ( $nocache ) {
+        delete $resolved{$jobFile};
+    } elsif ( exists $resolved{$jobFile} ) {
+        $resolved{$jobFile} or croak( sprintf( "Couldn't resolve the %s Upstart job file", $jobFile ));
+        return $resolved{$jobFile};
+    }
+
+    for my $path ( @JOBFILEPATHS ) {
+        my $filepath = File::Spec->join( $path, $jobFile );
+        $resolved{$jobFile} = $filepath if -f $filepath;
+    }
+
+    if ( $nocache ) {
+        $resolved{$jobFile} or croak( sprintf( "Couldn't resolve the %s Upstart job file", $jobFile ));
+        return delete $resolved{$jobFile};
+    }
+
+    $resolved{$jobFile} or croak( sprintf( "Couldn't resolve the %s Upstart job file", $jobFile ));
 }
 
 =back
@@ -316,113 +349,101 @@ sub getJobFilePath
 
 sub _getVersion
 {
-    ( $UPSTART_VERSION ) = `initctl --version` =~ /initctl \(upstart\s+([^\)]*)\)/ unless $UPSTART_VERSION;
-    $UPSTART_VERSION;
-}
+    CORE::state $version;
 
-=item _isUpstart( $service )
-
- Is the given job an upstart job?
-
- Param string $job Job name
- Return bool TRUE if the given job is managed by an upstart job, FALSE otherwise
-
-=cut
-
-sub _isUpstart
-{
-    my ($self, $job) = @_;
-
-    local $@;
-    eval { $self->_searchJobFile( $job ); };
+    ( $version ) = `initctl --version` =~ /initctl \(upstart\s+([^\)]*)\)/ unless $version;
+    $version;
 }
 
 =item _versionIsPre067( )
 
- Is upstart version pre 0.6.7?
+ Is Upstart version pre 0.6.7?
 
- Return bool TRUE if upstart version is pre 0.6.7, FALSE otherwise
+ Return boolean TRUE if Upstart version is pre 0.6.7, FALSE otherwise
 
 =cut
 
 sub _versionIsPre067
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     version->parse( $self->_getVersion()) < version->parse( '0.6.7' );
 }
 
 =item _versionIsPre090( )
 
- Is upstart version pre 0.9.0?
+ Is Upstart version pre 0.9.0?
 
- Return bool TRUE if upstart version is pre 0.9.0, FALSE otherwise
+ Return boolean TRUE if Upstart version is pre 0.9.0, FALSE otherwise
 
 =cut
 
 sub _versionIsPre090
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     version->parse( $self->_getVersion()) < version->parse( '0.9.0' );
 }
 
 =item _versionIsPost090( )
 
- Is upstart version post 0.9.0?
+ Is Upstart version post 0.9.0?
 
- Return bool TRUE if upstart version is post 0.9.0, FALSE otherwise
+ Return boolean TRUE if Upstart version is post 0.9.0, FALSE otherwise
 
 =cut
 
 sub _versionIsPost090
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     version->parse( $self->_getVersion()) >= version->parse( '0.9.0' );
 }
 
 =item _isEnabledPre067( $jobFileContent )
 
- Is the given job enabled for upstart versions < 0.6.7?
+ Is the given job enabled for Upstart versions < 0.6.7?
 
  Param string $jobFileContent job file content
- Return bool TRUE if the given job is enabled, FALSE otherwise
+ Return boolean TRUE if the given job is enabled, FALSE otherwise
 
 =cut
 
 sub _isEnabledPre067
 {
-    my (undef, $jobFileContent) = @_;
+    my ( $self, $jobFileContent ) = @_;
 
-    # Upstart version < 0.6.7 means no `manual' stanza.
+    defined $jobFileContent or croak( 'Missing or undefined $jobFileContent parameter' );
+
+    # Upstart version < 0.6.7 means no 'manual' stanza.
     $jobFileContent =~ /$START_ON/;
 }
 
 =item _isEnabledPre090( $jobFileContent )
 
- Is the given job enabled for upstart versions < 0.9.0?
+ Is the given job enabled for Upstart versions < 0.9.0?
 
  Param string $jobFileContent job file content
- Return bool TRUE if the given job is enabled, FALSE otherwise
+ Return boolean TRUE if the given job is enabled, FALSE otherwise
 
 =cut
 
 sub _isEnabledPre090
 {
-    my (undef, $jobFileContent) = @_;
+    my ( $self, $jobFileContent ) = @_;
+
+    defined $jobFileContent or croak( 'Missing or undefined $jobFileContent parameter' );
 
     # Upstart versions < 0.9.0 means no override files. Thus,
-    # we check to see if an uncommented `start on' or `manual'
-    # stanza is the last one in the file. The last one in the
-    # file wins.
-    open my $fh, '<', \$jobFileContent or die ( sprintf( "Couldn't open in-memory file handle: %s", $! ));
-    my $enabled = 0;
-    while ( <$fh> ) {
-        if ( /$START_ON/ ) {
-            $enabled = 1;
-        } elsif ( /$MANUAL/ ) {
-            $enabled = 0;
+    # we check to see if an uncommented 'start on' or 'manual'
+    # stanza is the last one in the job file. The last one wins.
+    open my $fh, '<', \$jobFileContent or croak( sprintf( "Couldn't open in-memory file handle: %s", $! ));
+    my $enabled = FALSE;
+    while ( my $line = <$fh> ) {
+        if ( $line =~ /$START_ON/ ) {
+            $enabled = TRUE;
+        } elsif ( $line =~ /$MANUAL/ ) {
+            $enabled = FALSE;
         }
     }
 
@@ -431,30 +452,33 @@ sub _isEnabledPre090
 
 =item _isEnabledPost090( $jobFileContent, $jobOverrideFileContent )
 
- Is the given job enabled for upstart versions >= 0.9.0?
+ Is the given job enabled for Upstart versions >= 0.9.0?
 
  Param string $jobFileContent job file content
  Param string $jobOverrideFileContent job override file content
- Return bool TRUE if the given job is enabled, FALSE otherwise
+ Return boolean TRUE if the given job is enabled, FALSE otherwise
 
 =cut
 
 sub _isEnabledPost090
 {
-    my (undef, $jobFileContent, $jobOverrideFileContent) = @_;
+    my ( $self, $jobFileContent, $jobOverrideFileContent ) = @_;
 
-    # Upstart versions >= 0.9.0 has `manual' stanzas and override
-    # files. Thus, we check to see if an uncommented `start on' or
-    # `manual' stanza is the last one in the conf file and any
-    # override files. The last one in the file wins.
-    my $enabled = 0;
-    for ( \$jobFileContent, \$jobOverrideFileContent ) {
-        open my $fh, '<', $_ or die ( sprintf( "Couldn't open in-memory file handle: %s", $! ));
-        while ( <$fh> ) {
-            if ( /$START_ON/ ) {
-                $enabled = 1;
-            } elsif ( /$MANUAL/ ) {
-                $enabled = 0;
+    defined $jobFileContent or croak( 'Missing or undefined $jobFileContent parameter' );
+    defined $jobOverrideFileContent or croak( 'Missing or undefined $jobOverrideFileContent parameter' );
+
+    # Upstart versions >= 0.9.0 has 'manual' stanzas and job override
+    # files. Thus, we check to see if an uncommented 'start on' or
+    # 'manual' stanza is the last one in the conf file and any
+    # override files. The last one wins.
+    my $enabled = FALSE;
+    for my $fcontent ( \$jobFileContent, \$jobOverrideFileContent ) {
+        open my $fh, '<', $fcontent or croak( sprintf( "Couldn't open in-memory file handle: %s", $! ));
+        while ( my $line = <$fh> ) {
+            if ( $line =~ /$START_ON/ ) {
+                $enabled = TRUE;
+            } elsif ( $line =~ /$MANUAL/ ) {
+                $enabled = FALSE;
             }
         }
     }
@@ -464,22 +488,25 @@ sub _isEnabledPost090
 
 =item _enablePre090( $job, $jobFileContent )
 
- Enable the given job for upstart versions < 0.9.0
+ Enable the given job for Upstart versions < 0.9.0
 
  Param string $job Job name
  Param string $jobFileContent job file content
- Return bool TRUE on success, die on failure
+ Return boolean TRUE on success, croak on failure
 
 =cut
 
 sub _enablePre090
 {
-    my ($self, $job, $jobFileContent) = @_;
+    my ( $self, $job, $jobFileContent ) = @_;
 
-    # Remove `manual' stanzas if any
+    defined $job or croak( 'Missing or undefined $job parameter' );
+    defined $jobFileContent or croak( 'Missing or undefined $jobFileContent parameter' );
+
+    # Remove 'manual' stanzas if any
     $jobFileContent = $self->_removeManualStanzaFrom( $jobFileContent );
 
-    # Add or uncomment `START ON' stanza if needed
+    # Add or uncomment 'START ON' stanza if needed
     unless ( $self->_isEnabledPre090( $jobFileContent ) ) {
         $jobFileContent = ( $jobFileContent =~ /$COMMENTED_START_ON/ )
             ? $self->_uncommentStartOnStanzaIn( $jobFileContent )
@@ -491,23 +518,27 @@ sub _enablePre090
 
 =item _enablePost090( $job, $jobFileContent, $jobOverrideFileContent )
 
- Enable the given job for upstart versions >= 0.9.0
+ Enable the given job for Upstart versions >= 0.9.0
 
  Param string $job Job name
  Param string $jobFileContent job file content
  Param string $jobOverrideFileContent job override file content
- Return bool TRUE on success, die on failure
+ Return boolean TRUE on success, croak on failure
 
 =cut
 
 sub _enablePost090
 {
-    my ($self, $job, $jobFileContent, $jobOverrideFileContent) = @_;
+    my ( $self, $job, $jobFileContent, $jobOverrideFileContent ) = @_;
 
-    # Remove `manual' stanzas if any
+    defined $job or croak( 'Missing or undefined $job parameter' );
+    defined $jobFileContent or croak( 'Missing or undefined $jobFileContent parameter' );
+    defined $jobOverrideFileContent or croak( 'Missing or undefined $jobOverrideFileContent parameter' );
+
+    # Remove 'manual' stanzas if any
     $jobOverrideFileContent = $self->_removeManualStanzaFrom( $jobOverrideFileContent );
 
-    # Add or uncomment `START ON' stanza if needed
+    # Add or uncomment 'START ON' stanza if needed
     unless ( $self->_isEnabledPost090( $jobFileContent, $jobOverrideFileContent ) ) {
         if ( $jobFileContent =~ /$START_ON/ ) {
             $jobOverrideFileContent .= $self->_extractStartOnStanzaFrom( $jobFileContent );
@@ -521,17 +552,20 @@ sub _enablePost090
 
 =item _disablePre067( $service, $jobFileContent )
 
- Disable the given job for upstart versions < 0.6.7
+ Disable the given job for Upstart versions < 0.6.7
 
  Param string $job Job name
  Param string $jobFileContent job file content
- Return bool TRUE on success, die on failure
+ Return boolean TRUE on success, croak on failure
 
 =cut
 
 sub _disablePre067
 {
-    my ($self, $job, $jobFileContent) = @_;
+    my ( $self, $job, $jobFileContent ) = @_;
+
+    defined $job or croak( 'Missing or undefined $job parameter' );
+    defined $jobFileContent or croak( 'Missing or undefined $jobFileContent parameter' );
 
     $jobFileContent = $self->_commentStartOnStanza( $jobFileContent );
     $self->_writeFile( $job . '.conf', $jobFileContent );
@@ -539,34 +573,40 @@ sub _disablePre067
 
 =item _disablePre090( $service, $jobFileContent )
 
- Disable the given job for upstart versions < 0.9.0
+ Disable the given job for Upstart versions < 0.9.0
 
  Param string $job Job name
  Param string $jobFileContent job file content
- Return bool TRUE on success, die on failure
+ Return boolean TRUE on success, croak on failure
 
 =cut
 
 sub _disablePre090
 {
-    my ($self, $job, $jobFileContent) = @_;
+    my ( $self, $job, $jobFileContent ) = @_;
+
+    defined $job or croak( 'Missing or undefined $job parameter' );
+    defined $jobFileContent or croak( 'Missing or undefined $jobFileContent parameter' );
 
     $self->_writeFile( $job . '.conf', $self->_ensureDisabledWithManualStanza( $jobFileContent ));
 }
 
 =item _disablePost090( $service, $jobOverrideFileContent )
 
- Disable the given job for upstart versions >= 0.9.0
+ Disable the given job for Upstart versions >= 0.9.0
 
  Param string $job Job name
  Param string $jobOverrideFileContent job $jobOverrideFileContent file content
- Return bool TRUE on success, die on failure
+ Return boolean TRUE on success, croak on failure
 
 =cut
 
 sub _disablePost090
 {
-    my ($self, $job, $jobOverrideFileContent) = @_;
+    my ( $self, $job, $jobOverrideFileContent ) = @_;
+
+    defined $job or croak( 'Missing or undefined $job parameter' );
+    defined $jobOverrideFileContent or croak( 'Missing or undefined $jobOverrideFileContent parameter' );
 
     $self->_writeFile( $job . '.override', $self->_ensureDisabledWithManualStanza( $jobOverrideFileContent ));
 }
@@ -582,7 +622,11 @@ sub _disablePost090
 
 sub _uncomment
 {
-    $_[1] =~ s/^(\s*)#+/$1/r;
+    my ( $self, $line ) = @_;
+
+    defined $line or croak( 'Missing or undefined $line parameter' );
+
+    $line =~ s/^(\s*)#+/$1/r;
 }
 
 =item _removeTrailingCommentsFromCommentedLine( $line )
@@ -596,7 +640,11 @@ sub _uncomment
 
 sub _removeTrailingCommentsFromCommentedLine
 {
-    $_[1] =~ s/^(\s*#+\s*[^#]*).*/$1/r;
+    my ( $self, $line ) = @_;
+
+    defined $line or croak( 'Missing or undefined $line parameter' );
+
+    $line =~ s/^(\s*#+\s*[^#]*).*/$1/r;
 }
 
 =item _removeTrailingComments( $line )
@@ -610,7 +658,11 @@ sub _removeTrailingCommentsFromCommentedLine
 
 sub _removeTrailingComments
 {
-    $_[1] =~ s/^(\s*[^#]*).*/$1/r;
+    my ( $self, $line ) = @_;
+
+    defined $line or croak( 'Missing or undefined $line parameter' );
+
+    $line =~ s/^(\s*[^#]*).*/$1/r;
 }
 
 =item _countUnbalancedRoundBrackets( $line )
@@ -624,159 +676,150 @@ sub _removeTrailingComments
 
 sub _countUnbalancedRoundBrackets
 {
-    ( $_[1] =~ tr/(// )-( $_[1] =~ tr/)// );
+    my ( $self, $line ) = @_;
+
+    defined $line or croak( 'Missing or undefined $line parameter' );
+
+    ( $line =~ tr/(// )-( $line =~ tr/)// );
 }
 
 =item _removeManualStanzaFrom( $string )
 
- Remove any upstart `manual' stanza from the given $string
+ Remove any Upstart 'manual' stanza from the given $string
 
  Param string $string String to process
- Return string String without upstart `manual' stanza
+ Return string String without Upstart 'manual' stanza
 
 =cut
 
 sub _removeManualStanzaFrom
 {
-    $_[1] =~ s/$MANUAL//gr;
+    my ( $self, $line ) = @_;
+
+    defined $line or croak( 'Missing or undefined $line parameter' );
+
+    $line =~ s/$MANUAL//gr;
 }
 
 =item _commentStartOnStanza( $text )
 
- Comment any upstart `start on' stanza in the given text
+ Comment any Upstart 'start on' stanza in the given text
 
  Param string $text Text to process
- Return string Text with commented upstart `start on' stanza if any
+ Return string Text with commented Upstart 'start on' stanza if any
 
 =cut
 
 sub _commentStartOnStanza
 {
-    my ($self, $text) = @_;
+    my ( $self, $text ) = @_;
+
+    defined $text or croak( 'Missing or undefined $text parameter' );
 
     my $roundBrackets = 0;
 
-    join '',
-        map {
-            if ( $roundBrackets > 0 || /$START_ON/ ) {
-                # If there are more opening round brackets than closing
-                # round brackets, we need to comment out a multiline
-                # `start on' stanza
-                $roundBrackets += $self->_countUnbalancedRoundBrackets( $self->_removeTrailingComments( $_ ));
-                '#' . $_;
-            } else {
-                $_;
-            }
-        } split /^/, $text;
+    join '', map {
+        if ( $roundBrackets > 0 || /$START_ON/ ) {
+            # If there are more opening round brackets than closing
+            # round brackets, we need to comment out a multiline
+            # 'start on' stanza
+            $roundBrackets += $self->_countUnbalancedRoundBrackets( $self->_removeTrailingComments( $_ ));
+            '#' . $_;
+        } else {
+            $_;
+        }
+    } split /^/, $text;
 }
 
 =item _uncommentStartOnStanzaIn( $text )
 
- Uncomment any upstart `start on' stanza in the given text
+ Uncomment any Upstart 'start on' stanza in the given text
 
  Param string Text to process
- Return string Text with uncommented upstart `start on' stanza if any
+ Return string Text with uncommented Upstart 'start on' stanza if any
 
 =cut
 
 sub _uncommentStartOnStanzaIn
 {
-    my ($self, $text) = @_;
+    my ( $self, $text ) = @_;
+
+    defined $text or croak( 'Missing or undefined $text parameter' );
 
     my $roundBrackets = 0;
-    join '',
-        map {
-            if ( $roundBrackets > 0 || /$COMMENTED_START_ON/ ) {
-                # If there are more opening round brackets than closing
-                # round brackets, we need to comment out a multiline
-                # `start on' stanza
-                $roundBrackets += $self->_countUnbalancedRoundBrackets(
-                    $self->_removeTrailingCommentsFromCommentedLine( $_ )
-                );
-                $self->_uncomment( $_ );
-            } else {
-                $_;
-            }
-        } split /^/, $text;
+    join '', map {
+        if ( $roundBrackets > 0 || /$COMMENTED_START_ON/ ) {
+            # If there are more opening round brackets than closing
+            # round brackets, we need to comment out a multiline
+            # 'start on' stanza
+            $roundBrackets += $self->_countUnbalancedRoundBrackets(
+                $self->_removeTrailingCommentsFromCommentedLine( $_ )
+            );
+            $self->_uncomment( $_ );
+        } else {
+            $_;
+        }
+    } split /^/, $text;
 }
 
 =item _extractStartOnStanzaFrom( $string )
 
- Extract the upstart `start on' stanza from the given string if any
+ Extract the Upstart 'start on' stanza from the given string if any
 
  Param string $string String to process
- Return string Text without any upstart `start in stanza'
+ Return string Text without any Upstart 'start in stanza'
 
 =cut
 
 sub _extractStartOnStanzaFrom
 {
-    my ($self, $string) = @_;
+    my ( $self, $string ) = @_;
+
+    defined $string or croak( 'Missing or undefined $string parameter' );
 
     my $roundBrackets = 0;
-    join '',
-        map {
-            if ( $roundBrackets > 0 || /$START_ON/ ) {
-                $roundBrackets += $self->_countUnbalancedRoundBrackets( $self->_removeTrailingComments( $_ ));
-                $_;
-            }
-        } split /^/, $string;
+    join '', map {
+        if ( $roundBrackets > 0 || /$START_ON/ ) {
+            $roundBrackets += $self->_countUnbalancedRoundBrackets( $self->_removeTrailingComments( $_ ));
+            $_;
+        }
+    } split /^/, $string;
 }
 
 =item _addDefaultStartOnStanzaTo( $string )
 
- Add default upstart `start on' stanza to the given string
+ Add default Upstart 'start on' stanza to the given string
 
- Param string $string String into which default `start on' stanza must be added
- Return string Text with upstart default `start on' stanza
+ Param string $string String into which default 'start on' stanza must be added
+ Return string Text with Upstart default 'start on' stanza
 
 =cut
 
 sub _addDefaultStartOnStanzaTo
 {
-    my $string = $_[1];
+    my ( $self, $string ) = @_;
+
+    defined $string or croak( 'Missing or undefined $string parameter' );
 
     $string . "\nstart on runlevel [2345]\n";
 }
 
 =item _ensureDisabledWithManualStanza( $string )
 
- Ensure that the given string contains the upstart `manual' stanza
+ Ensure that the given string contains the Upstart 'manual' stanza
 
  Param string $string String to process
- Return string String with upstart `manual' stanza
+ Return string String with Upstart 'manual' stanza
 
 =cut
 
 sub _ensureDisabledWithManualStanza
 {
-    my ($self, $string) = @_;
+    my ( $self, $string ) = @_;
+
+    defined $string or croak( 'Missing or undefined $string parameter' );
 
     $self->_removeManualStanzaFrom( $string ) . "manual\n";
-}
-
-=item _searchJobFile( $job, $jobFileType )
-
- Search the job configuration file or job override file which belongs to the given job in all available paths
-
- Param string $job Job name
- Param string $jobFileType Job file type ('conf'|'override')
- Return string Job file path on success, die on failure
-
-=cut
-
-sub _searchJobFile
-{
-    my (undef, $job, $jobFileType) = @_;
-
-    my $jobFile = $job . '.' . ( $jobFileType || 'conf' );
-
-    for my $path( @JOBFILEPATHS ) {
-        my $filepath = File::Spec->join( $path, $jobFile );
-        return $filepath if -f $filepath;
-    }
-
-    die( sprintf( "Couldn't find the upstart `%s' job file", $jobFile ));
 }
 
 =item _readJobFile( $job )
@@ -790,15 +833,18 @@ sub _searchJobFile
 
 sub _readJobFile
 {
-    my ($self, $job) = @_;
+    my ( $self, $job ) = @_;
 
-    my $filepath = $self->getJobFilePath( $job );
-    iMSCP::File->new( filename => $filepath )->get() or die( sprintf( "Couldn't read `%s' file", $filepath ));
+    defined $job or croak( 'Missing or undefined $job parameter' );
+
+    my $fileC = iMSCP::File->new( filename => $self->resolveJob( $job ))->get();
+    defined $fileC or croak( getMessageByType( 'error', { amount => 1, remove => TRUE } ));
+    $fileC;
 }
 
 =item _readJobOverrideFile( $job )
 
- Read the job override file which belongs to the given job
+ Read the job override file which belongs to the given job if any
 
  Param string job Job name
  Return string Job override file content on success, die on failure
@@ -807,45 +853,51 @@ sub _readJobFile
 
 sub _readJobOverrideFile
 {
-    my ($self, $job) = @_;
+    my ( $self, $job ) = @_;
 
-    local $@;
-    my $filepath = eval { $self->getJobFilePath( $job, 'override' ) };
-    if ( defined $filepath ) {
-        my $fileContent = iMSCP::File->new( filename => $filepath )->get();
-        defined $fileContent or die( sprintf( "Couldn't read `%s' file", $filepath ));
-        return $fileContent;
-    }
+    defined $job or croak( 'Missing or undefined $job parameter' );
 
-    '';
+    my $filepath = eval { $self->resolveJob( $job, 'override' ); };
+    return '' unless defined $filepath;
+
+    my $fileC = iMSCP::File->new( filename => $filepath )->get();
+    defined $fileC or croak( getMessageByType( 'error', { amount => 1, remove => TRUE } ));
+    $fileC;
 }
 
-=item _writeFile( $filename, $fileContent )
+=item _writeFile( $file, $fileC )
 
  Write the given job file (job configuration file or job override file)
 
- Param string $filename file name
- Param string $fileContent file content
- Return bool TRUE on success, die on failure
+ Param string $filename File name
+ Param string fileC File content
+ Return boolean TRUE on success, croak on failure
 
 =cut
 
 sub _writeFile
 {
-    my ($self, $filename, $fileContent) = @_;
+    my ( $self, $file, $fileC ) = @_;
 
-    my $jobDir = dirname( $self->getJobFilePath( basename( $filename, '.conf', '.override' )));
-    my $filepath = File::Spec->join( $jobDir, $filename );
-    my $file = iMSCP::File->new( filename => $filepath );
+    defined $file or croak( 'Missing or undefined $file parameter' );
+    defined $fileC or croak( 'Missing or undefined $fileC parameter' );
 
-    if ( $fileContent ne '' ) {
-        $file->set( $fileContent );
-        $file->save() == 0 && $file->mode( 0644 ) == 0 or die( sprintf( "Couldn't write `%s' file", $filepath ));
+    my $jobDir = dirname( $self->resolveJob( basename( $file, '.conf', '.override' )));
+    my $filepath = File::Spec->join( $jobDir, $file );
+
+    if ( length $fileC ) {
+        $file = iMSCP::File->new( filename => $filepath );
+        $file->set( $fileC );
+        my $rs ||= $file->save();
+        $rs ||= $file->mode( 0644 );
+        $rs == 0 or croak( getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' );
     } elsif ( $filepath =~ /\.override$/ && -f $filepath ) {
-        $file->delFile() == 0 or die( sprintf( "Couldn't unlink `%s' file", $filepath ));
-    } else {
-        1;
+        iMSCP::File->new( filename => $filepath )->delFile() == 0 or croak(
+            getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error'
+        );
     }
+
+    1;
 }
 
 =back

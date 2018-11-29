@@ -5,10 +5,13 @@ Git 1.5.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
+    Fixed: Mask/Unmask units after/prior disabling/enabling them (Systemd service provider)
+    Fixed: Missing support for various systemd unit files such as device, mount point, swap file... (Systemd init provider)
+    Fixed: Resolve units before acting on them due to https://github.com/systemd/systemd/issues/7875 (Systemd service provider)
     Fixed: Use of uninitialized value in bitwise or ( |) (PHP memory_limit, Subdomain module)
 
 CONFIG
-    Fixed: Paths must be quoted in Apache2 vhost file to prevent spaces being interpreted as end of argument
+    Fixed: Paths must be quoted in Apache2 configuration files to prevent spaces being interpreted as end of argument
 
 DAEMON
     Fixed: Comparison between signed and unsigned integer expressions
