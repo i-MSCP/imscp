@@ -27,6 +27,7 @@ DISTRIBUTIONS
 
 FRONTEND
     Fixed: Closing button being removed in all dialog UI while it must be removed only in alert and confirmation dialogs
+    Fixed: $ORIGIN value is empty in Custom DNS records edit UI
 
 INSTALLER
     Fixed: Build only mode is broken on fresh installation: Couldn't find the 'PHP' command in search path...

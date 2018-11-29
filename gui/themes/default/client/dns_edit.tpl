@@ -1,10 +1,12 @@
 
 <script>
+    <!-- BDP: add_record_js -->
     $(function () {
         $("#zone_id").on("change", function () {
-            $("#origin").html('<strong>' + $(this).find("option:selected").text() + '.</strong>');
+            $("#origin").html($(this).find("option:selected").text());
         }).trigger('change');
     });
+    <!-- EDP: add_record_js -->
 
     var inputFields = ['name', 'ip_address', 'ip_address_v6', 'srv_name', 'srv_protocol', 'srv_ttl', 'srv_prio',
         'srv_weight', 'srv_host', 'srv_port', 'cname', 'txt_data'];
@@ -79,7 +81,7 @@
     <?= tr('$ORIGIN is automatically appended to unqualified names, hosts and canonical names') ?>.<br>
     <?= tr('If the name field is filled with the @ sign or left blank, it will be automatically substituted by $ORIGIN value.') ?>
     <br>
-    <?= tr('$ORIGIN value is currently set to: %s', '<span id="origin"></span>') ?>
+    <?= tr('$ORIGIN value is currently set to: %s', '<span id="origin" style="font-weight:bold;">{ORIGIN}</span>') ?>
 </p>
 
 <form name="edit_dns_frm" method="post" action="{ACTION_MODE}">

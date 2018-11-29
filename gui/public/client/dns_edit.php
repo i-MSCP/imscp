@@ -919,6 +919,7 @@ function generatePage($tpl, $dnsRecordId)
         }
 
         $tpl->assign([
+            'ORIGIN'            => '',
             'SELECT_ZONES'      => $selectOptions,
             'DNS_TYPE_DISABLED' => ''
         ]);
@@ -933,8 +934,17 @@ function generatePage($tpl, $dnsRecordId)
         }
 
         $data = $stmt->fetchRow();
+
+        if($data['alias_id'] == 0) {
+            $origin = exec_query('SELECT domain_name FROM domain WHERE domain_id = ?',[ $mainDomainId ])->fetchRow(\PDO::FETCH_COLUMN);
+        } else {
+            $origin = exec_query("SELECT alias_name FROM domain_aliasses WHERE alias_id = ?", [$data['alias_id']])->fetchRow(\PDO::FETCH_COLUMN);
+        }
+
         $tpl->assign([
+            'ADD_RECORD_JS'     => '',
             'ADD_RECORD'        => '',
+            'ORIGIN'            => tohtml(decode_idna($origin)),
             'DNS_TYPE_DISABLED' => ' disabled'
         ]);
     }
@@ -998,10 +1008,11 @@ if (!empty($_POST)) {
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic([
-    'layout'       => 'shared/layouts/ui.tpl',
-    'page'         => 'client/dns_edit.tpl',
-    'page_message' => 'layout',
-    'logged_from'  => 'page'
+    'layout'        => 'shared/layouts/ui.tpl',
+    'page'          => 'client/dns_edit.tpl',
+    'page_message'  => 'layout',
+    'add_record'    => 'page',
+    'add_record_js' => 'page'
 ]);
 $tpl->assign([
     'TR_PAGE_TITLE'        => ($dnsRecordId > 0)
