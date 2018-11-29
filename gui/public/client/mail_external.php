@@ -61,7 +61,7 @@ function updateExternalMailFeature($action, $domainId, $domainType)
     }
 
     if ($action == 'activate') {
-        write_log(sprintf('External mail feature has been activared by %s', $_SESSION['user_logged']));
+        write_log(sprintf('External mail feature has been activated by %s', $_SESSION['user_logged']));
         set_page_message(tr('External mail server feature scheduled for activation.'), 'success');
         return;
     }
