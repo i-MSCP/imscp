@@ -584,6 +584,11 @@ function client_saveDnsRecord($dnsRecordId)
         }
 
         $row = $stmt->fetchRow();
+
+        if ($row['owned_by'] != 'custom_dns_feature') {
+            showBadRequestErrorPage();
+        }
+
         $domainId = $row['alias_id'] ? $row['alias_id'] : $row['domain_id'];
         $domainName = $row['domain_name'];
         $dnsRecordType = $row['domain_type'];
@@ -935,6 +940,10 @@ function generatePage($tpl, $dnsRecordId)
 
         $data = $stmt->fetchRow();
 
+        if ($data['owned_by'] != 'custom_dns_feature') {
+            showBadRequestErrorPage();
+        }
+
         if($data['alias_id'] == 0) {
             $origin = exec_query('SELECT domain_name FROM domain WHERE domain_id = ?',[ $mainDomainId ])->fetchRow(\PDO::FETCH_COLUMN);
         } else {
@@ -952,11 +961,6 @@ function generatePage($tpl, $dnsRecordId)
     list($name, $ipv4, $ipv6, $srvName, $srvProto, $srvTTL, $srvPriority, $srvWeight, $srvTargetPort, $srvTargetHost,
         $cname, $txt, $ownedBy
         ) = client_decodeDnsRecordData($data);
-
-    // Protection against edition (eg. for external mail MX record)
-    if ($ownedBy != 'custom_dns_feature') {
-        showBadRequestErrorPage();
-    }
 
     $dnsTypes = client_create_options(
         ['A', 'AAAA', 'SRV', 'CNAME', 'MX', 'NS', 'SPF', 'TXT'],
