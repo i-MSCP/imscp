@@ -25,6 +25,9 @@ DISTRIBUTIONS
     Added: 'unzip' distribution package (all distributions) - required by composer
     Fixed: Encoding issues with setup dialog
 
+FRONTEND
+    Fixed: Closing button being removed in all dialog UI while it must be removed only in alert and confirmation dialogs
+
 INSTALLER
     Fixed: Build only mode is broken on fresh installation: Couldn't find the 'PHP' command in search path...
     Fixed: Keep any installed PHP packages as those can have been installed manually or by 3rd-party software

@@ -182,8 +182,8 @@
             resizable: false,
             witdh: 'auto',
             closeOnEscape: false,
-            open: function (event, ui) {
-                $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+            open: function () {
+                $(this).closest(".ui-dialog").find(".ui-dialog-titlebar-close").hide();
             },
             buttons: [
                 {
@@ -209,8 +209,8 @@
                 resizable: false,
                 witdh: 'auto',
                 closeOnEscape: false,
-                open: function (event, ui) {
-                    $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+                open: function () {
+                    $(this).closest(".ui-dialog").find(".ui-dialog-titlebar-close").hide();
                 },
                 buttons: [
                     {
