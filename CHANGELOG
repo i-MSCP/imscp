@@ -11,6 +11,7 @@ BACKEND
     Fixed: Use of uninitialized value in bitwise or ( |) (PHP memory_limit, Subdomain module)
 
 CONFIG
+    Fixed: Bad value for X-Forward-* headers (Proxy feature / Apache2 ssl vhosts)
     Fixed: Paths must be quoted in Apache2 configuration files to prevent spaces being interpreted as end of argument
 
 DAEMON

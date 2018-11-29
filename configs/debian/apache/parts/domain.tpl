@@ -115,8 +115,8 @@
     # SECTION ssl_proxy BEGIN.
     SSLProxyEngine on
     # SECTION ssl_proxy END.
-    RequestHeader set X-Forwarded-Proto "http"
-    RequestHeader set X-Forwarded-Port 80
+    RequestHeader set X-Forwarded-Proto "{X_FORWARDED_PROTOCOL}"
+    RequestHeader set X-Forwarded-Port {X_FORWARDED_PORT}
     ProxyPreserveHost {FORWARD_PRESERVE_HOST}
     ProxyPassMatch "^/((?!(?:errors|\.well-known)/).*)" "{FORWARD}$1" retry=30 timeout=7200
     ProxyPassReverse "/" "{FORWARD}"
