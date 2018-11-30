@@ -80,7 +80,7 @@ function generateDomainsList($tpl)
         $redirectUrl = decode_idna($redirectUrl);
 
         if ($row['domain_status'] == 'ok') {
-            if ($cfg['CLIENT_DOMAIN_ALT_URLS']) {
+            if ($cfg['CLIENT_WEBSITES_ALT_URLS'] == 'yes') {
                 $alternateUrlHost = 'dmn' . $row['domain_id'] . '.' . $baseServerVhostUtf8;
                 $tpl->assign([
                     'ALTERNATE_URL'         => tohtml($alternateUrlHost, 'htmlAttr'),
@@ -246,7 +246,7 @@ function generateDomainAliasesList($tpl)
         $redirectUrl = decode_idna($redirectUrl);
 
         if ($isStatusOk) {
-            if ($cfg['CLIENT_DOMAIN_ALT_URLS']) {
+            if ($cfg['CLIENT_WEBSITES_ALT_URLS'] == 'yes') {
                 $alternateUrlHost = 'als' . $row['alias_id'] . '.' . $baseServerVhostUtf8;
                 $tpl->assign([
                     'ALTERNATE_URL'         => tohtml($alternateUrlHost, 'htmlAttr'),
@@ -444,7 +444,7 @@ function generateSubdomainsList($tpl)
         $redirectUrl = decode_idna($redirectUrl);
 
         if ($isStatusOk) {
-            if ($cfg['CLIENT_DOMAIN_ALT_URLS']) {
+            if ($cfg['CLIENT_WEBSITES_ALT_URLS'] == 'yes') {
                 $alternateUrlHost = ($row['sub_type'] == 'dmn' ? 'sub' : 'alssub') . $row['subdomain_id'] . '.'
                     . $baseServerVhostUtf8;
 
@@ -703,7 +703,7 @@ iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', 
 
 global $baseServerVhostUtf8;
 
-if (iMSCP_Registry::get('config')->get('CLIENT_DOMAIN_ALT_URLS')) {
+if (iMSCP_Registry::get('config')->get('CLIENT_WEBSITES_ALT_URLS') == 'yes') {
     $baseServerVhostUtf8 = decode_idna(iMSCP_Registry::get('config')->get('BASE_SERVER_VHOST'));
 }
 

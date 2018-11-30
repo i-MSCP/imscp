@@ -501,23 +501,24 @@ sub askAltUrlsFeature
 {
     my (undef, $dialog) = @_;
 
-    my $altUrlsFeature = main::setupGetQuestion( 'CLIENT_DOMAIN_ALT_URLS', 1 );
+    my $value = main::setupGetQuestion( 'CLIENT_WEBSITES_ALT_URLS' );
 
     if ( $main::reconfigure =~ /^(?:panel|alt_urls_feature|all|forced)$/
-        || !isNumber( $altUrlsFeature )
-        || !isNumberInRange( $altUrlsFeature, 0, 1 )
+        || isStringNotInList( $value, 'yes', 'no' )
     ) {
-        $altUrlsFeature = 1 if !isNumber( $altUrlsFeature ) || !isNumberInRange( $altUrlsFeature, 0, 1 );
-        $altUrlsFeature = $dialog->yesno( <<'EOF', !$altUrlsFeature );
+        my $rs = $dialog->yesno( <<'EOF', $value eq 'no' );
 
-Do you want to enable the alternative URLs feature for client domains?
+Do you want to enable the alternative URLs feature for client websites?
 
-The alternative URLs feature allows clients accessing their Websites through alternative URLs such as http://dmn1.panel.domain.tld
+Alternative URLs make the clients able to access their websites (domains) through control panel subdomains such as dmn1.panel.domain.tld.
+
+This feature is useful for clients who have not yet updated their DNS so that their domain name points to the IP address of the server that has been assigned to them. 
 EOF
-        return $altUrlsFeature if $altUrlsFeature >= 30;
+        return $rs unless $rs < 30;
+        $value = $rs ? 'no' : 'yes';
     }
 
-    main::setupSetQuestion( 'CLIENT_DOMAIN_ALT_URLS', $altUrlsFeature ? 0 : 1 );
+    main::setupSetQuestion( 'CLIENT_WEBSITES_ALT_URLS', $value );
     0;
 }
 

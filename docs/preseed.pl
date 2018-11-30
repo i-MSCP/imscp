@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2017.07.05
+# Last update: 2018.11.30
 
 %main::questions = (
     #
@@ -137,9 +137,9 @@
     # SSL certificate path (only relevant for trusted SSL certificate)
     PANEL_SSL_CERTIFICATE_PATH          => '',
     
-    # Alternative URLs feature for client domains
-    # Possible values: 1 for enabling, 0 for disabling
-    CLIENT_DOMAIN_ALT_URLS              => 1,
+    # Alternative URLs feature for client websites
+    # Possible values: yes, no
+    CLIENT_WEBSITES_ALT_URLS            => 'yes',
 
     # Control panel default access mode (only relevant if SSL is enabled)
     # Possible values: http://, https://

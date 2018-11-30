@@ -34,7 +34,12 @@ FRONTEND
 
 INSTALLER
     Fixed: Build only mode is broken on fresh installation: Couldn't find the 'PHP' command in search path...
+    Fixed: 'CLIENT_DOMAIN_ALT_URLS' configuration parameter resetted to 0 (disabled) while running installer
+    Fixed: 'CLIENT_DOMAIN_ALT_URLS' parameter is not set on fresh installations
+    Fixed: Inconsistency with other parameters (CLIENT_DOMAIN_ALT_URLS parameter -- yes/no vs 1/0)
     Fixed: Keep any installed PHP packages as those can have been installed manually or by 3rd-party software
+    Fixed: Setup dialog for the alternative URLs feature is not shown on fresh installations
+    Renamed: 'CLIENT_DOMAIN_ALT_URLS' configuration parameter to 'CLIENT_WEBSITES_ALT_URLS'
 
 YOUTRACK
     IP-1770 Contrib - 10_backup_storage_outsourcing.pl - Operation not permitted

@@ -236,7 +236,7 @@ sub postaddDmn
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostAddDmn', $data );
     return $rs if $rs;
 
-    if ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'}
+    if ( $main::imscpConfig{'CLIENT_WEBSITES_ALT_URLS'} eq 'yes'
         && $self->{'config'}->{'BIND_MODE'} eq 'master'
         && defined $data->{'ALIAS'}
     ) {
@@ -351,7 +351,7 @@ sub postdeleteDmn
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostDelDmn', $data );
     return $rs if $rs;
 
-    if ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'}
+    if ( $main::imscpConfig{'CLIENT_WEBSITES_ALT_URLS'} eq 'yes'
         && $self->{'config'}->{'BIND_MODE'} eq 'master'
         && defined $data->{'ALIAS'}
     ) {
@@ -491,7 +491,7 @@ sub postaddSub
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostAddSub', $data );
     return $rs if $rs;
 
-    if ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'}
+    if ( $main::imscpConfig{'CLIENT_WEBSITES_ALT_URLS'} eq 'yes'
         && $self->{'config'}->{'BIND_MODE'} eq 'master'
         && defined $data->{'ALIAS'}
     ) {
@@ -618,7 +618,7 @@ sub postdeleteSub
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostDelSub', $data );
     return $rs if $rs;
 
-    if ( $main::imscpConfig{'CLIENT_DOMAIN_ALT_URLS'}
+    if ( $main::imscpConfig{'CLIENT_WEBSITES_ALT_URLS'} eq 'yes'
         && $self->{'config'}->{'BIND_MODE'} eq 'master'
         && defined $data->{'ALIAS'}
     ) {
