@@ -834,6 +834,9 @@ EOF
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
+
+            # Workaround https://bugs.launchpad.net/ubuntu/+source/gnupg2/+bug/1633754
+            execute( [ '/usr/bin/pkill', '-TERM', 'dirmngr' ], \$stdout, \$stderr );
         } elsif ( $repository->{'repository_key_uri'} ) {
             # Add the repository key by fetching it first from the given URI
             my $keyFile = File::Temp->new( UNLINK => 1 );

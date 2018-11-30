@@ -20,6 +20,7 @@ DAEMON
     Fixed: FTBFS with GCC from Ubuntu 18.04 - Undeclared identifiers: SIGCHLD, SIGPIPE
 
 DISTRIBUTIONS
+    Added: 'dirmngr' distribution package (all distributions)
     Added: Support for Ubuntu Bionic Beaver (18.04)
     Added: 'ntp' package (all distributions) - Clock synchronization is an important factor for i-MSCP
     Added: 'unzip' distribution package (all distributions) - required by composer
@@ -36,6 +37,7 @@ INSTALLER
     Fixed: Build only mode is broken on fresh installation: Couldn't find the 'PHP' command in search path...
     Fixed: 'CLIENT_DOMAIN_ALT_URLS' configuration parameter resetted to 0 (disabled) while running installer
     Fixed: 'CLIENT_DOMAIN_ALT_URLS' parameter is not set on fresh installations
+    Fixed: DIRMNGR(8) daemon not being terminated when expected (APT key management)
     Fixed: Inconsistency with other parameters (CLIENT_DOMAIN_ALT_URLS parameter -- yes/no vs 1/0)
     Fixed: Keep any installed PHP packages as those can have been installed manually or by 3rd-party software
     Fixed: Setup dialog for the alternative URLs feature is not shown on fresh installations

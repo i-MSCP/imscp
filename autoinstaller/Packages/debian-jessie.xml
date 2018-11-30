@@ -452,6 +452,7 @@
         <package>cron</package>
         <package>curl</package>
         <package>devscripts</package>
+        <package>dirmngr</package>
         <package>dnsutils</package>
         <package>dpkg-dev</package>
         <package>findutils</package>
