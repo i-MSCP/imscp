@@ -15,6 +15,9 @@ CONFIG
     Fixed: Do not discard paths other than '/errors/' and '/.well-known/acme-challenge/' on redirect/proxy (Apache2)
     Fixed: Paths must be quoted in Apache2 configuration files to prevent spaces being interpreted as end of argument
 
+CONTRIB
+    Fixed: Prevent uninstallation of the 'libsasl2-modules' distribution package (10_postfix_smarthost.pl listener file)
+
 DAEMON
     Fixed: Comparison between signed and unsigned integer expressions
     Fixed: FTBFS with GCC from Ubuntu 18.04 - Undeclared identifiers: SIGCHLD, SIGPIPE
