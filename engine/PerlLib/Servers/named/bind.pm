@@ -893,12 +893,12 @@ sub _addDmnConfig
 
     if ( $self->{'config'}->{'BIND_MODE'} eq 'master' ) {
         if ( $self->{'config'}->{'SECONDARY_DNS'} ne 'no' ) {
-            $tags->{'SECONDARY_DNS'} = join( '; ', split( ';', $self->{'config'}->{'SECONDARY_DNS'} )) . '; localhost;';
+            $tags->{'SECONDARY_DNS'} = join( '; ', split( /(?:[;,]| )/, $self->{'config'}->{'SECONDARY_DNS'} )) . '; localhost;';
         } else {
             $tags->{'SECONDARY_DNS'} = 'localhost;';
         }
     } else {
-        $tags->{'PRIMARY_DNS'} = join( '; ', split( ';', $self->{'config'}->{'PRIMARY_DNS'} )) . ';';
+        $tags->{'PRIMARY_DNS'} = join( '; ', split( /(?:[;,]| )/, $self->{'config'}->{'PRIMARY_DNS'} )) . ';';
     }
 
     $tplCfgEntryContent = "// imscp [$data->{'DOMAIN_NAME'}] entry BEGIN\n"
@@ -1022,7 +1022,7 @@ sub _addDmnDb
     unless ( $nsRecordB eq '' && $glueRecordB eq '' ) {
         my @nsIPs = (
             $domainIP,
-            ( ( $self->{'config'}->{'SECONDARY_DNS'} eq 'no' ) ? () : split ';', $self->{'config'}->{'SECONDARY_DNS'} )
+            ( ( $self->{'config'}->{'SECONDARY_DNS'} eq 'no' ) ? () : split /(?:[;,]| )/, $self->{'config'}->{'SECONDARY_DNS'} )
         );
 
         my ($nsRecords, $glueRecords) = ( '', '' );

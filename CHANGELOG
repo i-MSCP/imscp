@@ -40,6 +40,7 @@ INSTALLER
     Fixed: DIRMNGR(8) daemon not being terminated when expected (APT key management)
     Fixed: Inconsistency with other parameters (CLIENT_DOMAIN_ALT_URLS parameter -- yes/no vs 1/0)
     Fixed: Keep any installed PHP packages as those can have been installed manually or by 3rd-party software
+    Fixed: Missing or bad entry found in your preseed file due to unhandled space separator (Slave DNS server)
     Fixed: Setup dialog for the alternative URLs feature is not shown on fresh installations
     Renamed: 'CLIENT_DOMAIN_ALT_URLS' configuration parameter to 'CLIENT_WEBSITES_ALT_URLS'
 

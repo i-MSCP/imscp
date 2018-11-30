@@ -120,8 +120,8 @@ sub askDnsServerIps
 
     my $dnsServerMode = $self->{'config'}->{'BIND_MODE'};
 
-    my @masterDnsIps = split ';', main::setupGetQuestion( 'PRIMARY_DNS', $self->{'config'}->{'PRIMARY_DNS'} );
-    my @slaveDnsIps = split ';', main::setupGetQuestion( 'SECONDARY_DNS', $self->{'config'}->{'SECONDARY_DNS'} );
+    my @masterDnsIps = split /(?:[;,]| )/, main::setupGetQuestion( 'PRIMARY_DNS', $self->{'config'}->{'PRIMARY_DNS'} );
+    my @slaveDnsIps = split /(?:[;,]| )/, main::setupGetQuestion( 'SECONDARY_DNS', $self->{'config'}->{'SECONDARY_DNS'} );
 
     my ($rs, $answer, $msg) = ( 0, '', '' );
 
@@ -183,9 +183,9 @@ EOF
     if ( $rs < 30 ) {
         if ( $dnsServerMode eq 'master' ) {
             $self->{'config'}->{'PRIMARY_DNS'} = 'no';
-            $self->{'config'}->{'SECONDARY_DNS'} = "@slaveDnsIps" ne 'no' ? join ';', @slaveDnsIps : 'no';
+            $self->{'config'}->{'SECONDARY_DNS'} = "@slaveDnsIps" ne 'no' ? join ' ', @slaveDnsIps : 'no';
         } else {
-            $self->{'config'}->{'PRIMARY_DNS'} = join ';', @masterDnsIps;
+            $self->{'config'}->{'PRIMARY_DNS'} = join ' ', @masterDnsIps;
             $self->{'config'}->{'SECONDARY_DNS'} = 'no';
         }
     }
