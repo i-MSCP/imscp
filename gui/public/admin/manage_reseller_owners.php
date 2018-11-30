@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,10 +22,6 @@ use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_pTemplate as TemplateEngine;
-
-/***********************************************************************************************************************
- * Functions
- */
 
 /**
  * Move the given reseller from the given administrator to the given administrator
@@ -56,18 +52,16 @@ function moveReseller($resellerId, $fromAdministratorId, $toAdministratorId)
     } catch (Exception $e) {
         $db->rollBack();
         write_log(sprintf("Couldn't move reseller with ID %d: %s", $resellerId, $e->getMessage()));
-        throw new Exception(
-            tr("Couldn't move reseller with ID %d: %s", $resellerId, $e->getMessage()), $e->getCode(), $e
-        );
+        throw new Exception(tr("Couldn't move reseller with ID %d: %s", $resellerId, $e->getMessage()), $e->getCode(), $e);
     }
 }
 
 /**
  * Move selected resellers
  *
- * @return bool TRUE on success, other on failure
  * @throws Zend_Exception
  * @throws iMSCP_Exception
+ * @return void
  */
 function moveResellers()
 {
@@ -93,12 +87,12 @@ function moveResellers()
         foreach ($_POST['administrator_resellers'] as $resellerId) {
             moveReseller(intval($resellerId), $fromAdministratorId, $toAdministratorId);
         }
+        set_page_message(tr('Reseller(s) successfully moved.'), 'success');
+        redirectTo('users.php');
     } catch (Exception $e) {
         set_page_message(tohtml($e->getMessage()), 'error');
-        return false;
+        redirectTo('manage_reseller_owners.php');
     }
-
-    return true;
 }
 
 /**
@@ -112,42 +106,36 @@ function moveResellers()
  */
 function generatePage(TemplateEngine $tpl)
 {
-    $administrators = $stmt = execute_query("SELECT admin_id, admin_name FROM admin WHERE admin_type = 'admin'")
-        ->fetchAll(PDO::FETCH_ASSOC);
-    $fromAdministratorId = isset($_POST['from_administrator'])
-        ? intval($_POST['from_administrator']) : $administrators[0]['admin_id'];
-    $toAdministratorId = isset($_POST['to_administrator'])
-        ? intval($_POST['to_administrator']) : $administrators[1]['admin_id'];
+    $administrators = $stmt = execute_query("SELECT admin_id, admin_name FROM admin WHERE admin_type = 'admin'")->fetchAll();
+    $fromAdministratorId = isset($_POST['from_administrator']) ? intval($_POST['from_administrator']) : $administrators[0]['admin_id'];
+    $toAdministratorId = isset($_POST['to_administrator']) ? intval($_POST['to_administrator']) : $administrators[1]['admin_id'];
 
     // Generate From/To reseller lists
     foreach ($administrators as $administrator) {
         $tpl->assign([
             'FROM_ADMINISTRATOR_ID'       => tohtml($administrator['admin_id'], 'htmlAttr'),
             'FROM_ADMINISTRATOR_NAME'     => tohtml($administrator['admin_name']),
-            'FROM_ADMINISTRATOR_SELECTED' => ($fromAdministratorId == $administrator['admin_id']) ? ' selected' : ''
+            'FROM_ADMINISTRATOR_SELECTED' => $fromAdministratorId == $administrator['admin_id'] ? ' selected' : ''
         ]);
         $tpl->parse('FROM_ADMINISTRATOR_ITEM', '.from_administrator_item');
         $tpl->assign([
             'TO_ADMINISTRATOR_ID'       => tohtml($administrator['admin_id'], 'htmlAttr'),
             'TO_ADMINISTRATOR_NAME'     => tohtml($administrator['admin_name']),
-            'TO_ADMINISTRATOR_SELECTED' => ($toAdministratorId == $administrator['admin_id']) ? ' selected' : ''
+            'TO_ADMINISTRATOR_SELECTED' => $toAdministratorId == $administrator['admin_id'] ? ' selected' : ''
         ]);
         $tpl->parse('TO_ADMINISTRATOR_ITEM', '.to_administrator_item');
     }
 
     // Generate resellers list for the selected (FROM) administrator
-    $resellers = exec_query(
-        "SELECT admin_id, admin_name FROM admin WHERE created_by = ? AND admin_type = 'reseller'",
-        $fromAdministratorId
-    )->fetchAll(PDO::FETCH_ASSOC);
+    $resellers = exec_query("SELECT admin_id, admin_name FROM admin WHERE created_by = ? AND admin_type = 'reseller'", [$fromAdministratorId]);
 
-    if (empty($resellers)) {
+    if (!$resellers->rowCount()) {
         $tpl->assign('FROM_ADMINISTRATOR_RESELLERS_LIST', '');
         return;
     }
 
     $selectedResellers = isset($_POST['administrator_resellers']) ? $_POST['administrator_resellers'] : [];
-    foreach ($resellers as $reseller) {
+    while ($reseller = $resellers->fetchRow()) {
         $tpl->assign([
             'RESELLER_ID'                    => tohtml($reseller['admin_id'], 'htmlAttr'),
             'RESELLER_NAME'                  => tohtml(decode_idna($reseller['admin_name'])),
@@ -157,26 +145,17 @@ function generatePage(TemplateEngine $tpl)
     }
 }
 
-/***********************************************************************************************************************
- * Main
- *
- */
-
 require 'imscp-lib.php';
 
 check_login('admin');
 EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 systemHasManyAdmins() or showBadRequestErrorPage();
 
-if (isset($_POST['uaction'])
-    && $_POST['uaction'] == 'move_resellers'
-    && moveResellers()
-) {
-    set_page_message(tr('Reseller(s) successfully moved.'), 'success');
-    redirectTo('users.php');
+if (isset($_POST['uaction']) && $_POST['uaction'] == 'move_resellers') {
+    moveResellers();
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                            => 'shared/layouts/ui.tpl',
     'page'                              => 'admin/manage_reseller_owners.phtml',

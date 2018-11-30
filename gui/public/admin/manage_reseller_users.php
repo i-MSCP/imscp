@@ -21,11 +21,9 @@
 use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
+use iMSCP_PHPini as PhpEditor;
 use iMSCP_pTemplate as TemplateEngine;
-
-/***********************************************************************************************************************
- * Functions
- */
+use iMSCP_Registry as Registry;
 
 /**
  * Move the given customer from the given reseller to the given reseller
@@ -41,8 +39,8 @@ function moveCustomer($customerId, $fromResellerId, $toResellerId)
     $db = Database::getInstance();
 
     try {
-        $toRprops = imscp_getResellerProperties($fromResellerId);
-        $cToRLimits = [
+        $toResellerProps = imscp_getResellerProperties($toResellerId);
+        $customerToResellerLimits = [
             'domain_subd_limit'    => ['current_sub_cnt', 'max_sub_cnt'],
             'domain_alias_limit'   => ['current_als_cnt', 'max_als_cnt'],
             'domain_mailacc_limit' => ['current_mail_cnt', 'max_mail_cnt'],
@@ -52,7 +50,7 @@ function moveCustomer($customerId, $fromResellerId, $toResellerId)
             'domain_traffic_limit' => ['current_traff_amnt', 'max_traff_amnt'],
             'domain_disk_limit'    => ['current_disk_amnt', 'max_disk_amnt']
         ];
-        $cPermsToRPerms = [
+        $resellerToCustomerPerms = [
             'domain_software_allowed'       => 'software_allowed',
             'phpini_perm_system'            => 'php_ini_system',
             'phpini_perm_allow_url_fopen'   => 'php_ini_al_allow_url_fopen',
@@ -60,6 +58,7 @@ function moveCustomer($customerId, $fromResellerId, $toResellerId)
             'phpini_perm_disable_functions' => 'php_ini_al_disable_functions',
             'phpini_perm_mail_function'     => 'php_ini_al_mail_function'
         ];
+
         $stmt = exec_query(
             '
                 SELECT domain_subd_limit, domain_alias_limit, domain_mailacc_limit, domain_ftpacc_limit,
@@ -69,94 +68,92 @@ function moveCustomer($customerId, $fromResellerId, $toResellerId)
                 FROM domain
                 WHERE domain_admin_id = ?
             ',
-            $customerId
+            [$customerId]
         );
 
         if (!$stmt->rowCount()) {
             throw new Exception(tr("Couldn't find domain properties for customer with ID %d.", $customerId));
         }
 
-        $cProps = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $customerProps = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $db->beginTransaction();
 
-        // For each item (sub, mail, ftp....), adjust (TO) reseller limits
-        // according customer limits
-        foreach ($cToRLimits as $cLimit => $rLimit) {
-            if ($toRprops[$rLimit[1]] == 0 || $cProps[$cLimit] == -1) {
-                // Reseller is not limited for the item, or the customer has no
-                // rights for the item. There is no need to go further
+        // For each item (sub, mail, ftp....), we adjust the target reseller
+        // limits according the customer limits. We cannot do the reverse side
+        // because this would involve too much works and unpredictable result.
+        // Most of time, the administrator do not want downgrade limits of
+        // customers.
+        foreach ($customerToResellerLimits as $customerLimit => $resellerLimit) {
+            if ($toResellerProps[$resellerLimit[1]] == 0 || $customerProps[$customerLimit] == -1) {
+                // The target reseller is not limited for the item, or the
+                // customer has no rights for the item.
                 continue;
             }
-
-            if ($cProps[$cLimit] == 0) {
-                // Customer is not limited for the item. Reseller must not be
-                // limited.
-                // Fixme: It would be better to update reseller limit based on
-                // count of consumed item by customer and to limit the customer
-                // as well.
-                $toRprops[$rLimit[1]] = 0;
+            if ($customerProps[$customerLimit] == 0) {
+                // Customer is not limited for the item. The target reseller
+                // must not be limited.
+                $toResellerProps[$resellerLimit[1]] = 0;
                 continue;
             }
-
-            if ($toRprops[$rLimit[1]] == -1) {
-                // Reseller has no rights for the item but customer.
-                // Reseller limit must be at least equal to customer limit.
-                $toRprops[$rLimit[1]] = $cProps[$cLimit];
+            if ($toResellerProps[$resellerLimit[1]] == -1) {
+                // The target reseller has no rights for the item but customer.
+                // The Target reseller limit must be at least equal to customer
+                // limit.
+                $toResellerProps[$resellerLimit[1]] = $customerProps[$customerLimit];
                 continue;
             }
-
-            if (($toRprops[$rLimit[1]] - $toRprops[$rLimit[0]]) < $cProps[$cLimit]) {
-                // Reseller limit after soustracting total consumed items,
-                // taking into account customer limit would be negative.
-                // Reseller limit must be increased up to customer limit.
-                $toRprops[$rLimit[1]] += $cProps[$cLimit] - ($toRprops[$rLimit[1]] - $toRprops[$rLimit[0]]);
+            if (($toResellerProps[$resellerLimit[1]] - $toResellerProps[$resellerLimit[0]]) < $customerProps[$customerLimit]) {
+                // The target reseller limit after subtraction of total consumed
+                // items, taking into account the customer limit would be
+                // negative. The target reseller limit must be increased up to customer limit.
+                $toResellerProps[$resellerLimit[1]] += $customerProps[$customerLimit] - (
+                        $toResellerProps[$resellerLimit[1]] - $toResellerProps[$resellerLimit[0]]);
             }
         }
 
-        // Adjust (TO) reseller permissions according customer permmissions when necessary
-        foreach ($cPermsToRPerms as $cPerm => $rPerm) {
-            if ($toRprops[$rPerm] == 'no' && $cProps[$cPerm] == 'yes') {
-                $toRprops[$rPerm] = 'yes';
+        // Adjust the customer permissions according target reseller permissions
+        foreach ($resellerToCustomerPerms as $resellerPerms => $customerPerm) {
+            if ($customerProps[$customerPerm] == 'yes' && $toResellerProps[$resellerPerms] != 'yes') {
+                $customerProps[$customerPerm] = 'no';
             }
         }
 
-        // Adjust customer PHP permissions
-        iMSCP_PHPini::getInstance()->syncClientPermissionsWithResellerPermissions($toResellerId, $customerId);
+        // The customer IP address must be in the target reseller IP addresses list
+        $newResellerIps = explode(';', $toResellerProps['reseller_ips']);
+        $newResellerIps[] = $customerProps['domain_ip_id'];
+        sort($newResellerIps, SORT_NUMERIC);
+        $toResellerProps['reseller_ips'] = implode(';', array_unique($newResellerIps)) . ';';
+        unset($newResellerIps);
 
-        // Customer IP must be in reseller IP addresses list
-        $toRprops['reseller_ips'] = implode(
-            ';', array_unique(explode(';', $toRprops['reseller_ips'] . $cProps['domain_ip_id'] . ';'))
-        );
-
-        // Move customer to (TO) reseller
+        // Move the customer to the target reseller
         exec_query('UPDATE admin SET created_by = ? WHERE admin_id = ?', [$toResellerId, $customerId]);
 
-        // Update (TO) reseller limits and permissions and IP addresses list 
+        // Update the customer permissions according the target reseller permissions
+        exec_query('UPDATE domain SET domain_software_allowed = ? WHERE domain_admin_id = ?', [
+            $customerProps['domain_software_allowed'], $customerId
+        ]);
+        PhpEditor::getInstance()->syncClientPermissionsWithResellerPermissions($toResellerId, $customerId);
+
+        // Update the target reseller limits, permissions and IP addresses 
         exec_query(
             '
                 UPDATE reseller_props 
-                SET
-                    max_sub_cnt = ?, max_als_cnt = ?, max_mail_cnt = ?, max_ftp_cnt = ?, max_sql_db_cnt = ?,
-                    max_sql_user_cnt = ?, max_traff_amnt = ?, max_disk_amnt = ?, reseller_ips = ?, software_allowed = ?,
-                    php_ini_system = ?, php_ini_al_allow_url_fopen= ?, php_ini_al_display_errors= ?,
-                    php_ini_al_disable_functions= ?, php_ini_al_mail_function = ?
+                SET max_sub_cnt = ?, max_als_cnt = ?, max_mail_cnt = ?, max_ftp_cnt = ?, max_sql_db_cnt = ?, max_sql_user_cnt = ?, max_traff_amnt = ?,
+                    max_disk_amnt = ?, reseller_ips = ?, software_allowed = ?
                 WHERE reseller_id = ?
             ',
             [
-                $toRprops['max_sub_cnt'], $toRprops['max_als_cnt'], $toRprops['max_mail_cnt'], $toRprops['max_ftp_cnt'],
-                $toRprops['max_sql_db_cnt'], $toRprops['max_sql_user_cnt'], $toRprops['max_traff_amnt'],
-                $toRprops['max_disk_amnt'], $toRprops['reseller_ips'], $toRprops['software_allowed'],
-                $toRprops['php_ini_system'], $toRprops['php_ini_al_allow_url_fopen'],
-                $toRprops['php_ini_al_display_errors'], $toRprops['php_ini_al_disable_functions'],
-                $toRprops['php_ini_al_mail_function'], $toResellerId
+                $toResellerProps['max_sub_cnt'], $toResellerProps['max_als_cnt'], $toResellerProps['max_mail_cnt'], $toResellerProps['max_ftp_cnt'],
+                $toResellerProps['max_sql_db_cnt'], $toResellerProps['max_sql_user_cnt'], $toResellerProps['max_traff_amnt'],
+                $toResellerProps['max_disk_amnt'], $toResellerProps['reseller_ips'], $toResellerProps['software_allowed'], $toResellerId
             ]
         );
 
-        // Recalculate count of assigned items for (TO/FROM) resellers
+        // Recalculate count of assigned items for both source and target resellers
         update_reseller_c_props($toResellerId);
         update_reseller_c_props($fromResellerId);
 
-        EventsManager::getInstance()->dispatch(Events::onMoveCustomer, [
+        Registry::get('iMSCP_Application')->getEventsManager()->dispatch(Events::onMoveCustomer, [
             'customerId'     => $customerId,
             'fromResellerId' => $fromResellerId,
             'toResellerId'   => $toResellerId
@@ -175,7 +172,7 @@ function moveCustomer($customerId, $fromResellerId, $toResellerId)
 /**
  * Move selected customers
  *
- * @return bool TRUE on success, other on failure
+ * @return void
  * @throws Zend_Exception
  * @throws iMSCP_Exception
  */
@@ -203,12 +200,13 @@ function moveCustomers()
         foreach ($_POST['reseller_customers'] as $customerId) {
             moveCustomer(intval($customerId), $fromResellerId, $toResellerId);
         }
+
+        set_page_message(tr('Customer(s) successfully moved.'), 'success');
+        redirectTo('users.php');
     } catch (Exception $e) {
         set_page_message(tohtml($e->getMessage()), 'error');
-        return false;
+        redirectTo('manage_reseller_users.php');
     }
-
-    return true;
 }
 
 /**
@@ -222,59 +220,46 @@ function moveCustomers()
  */
 function generatePage(TemplateEngine $tpl)
 {
-    $resellers = $stmt = execute_query("SELECT admin_id, admin_name FROM admin  WHERE admin_type = 'reseller'")
-        ->fetchAll(PDO::FETCH_ASSOC);
+    $resellers = $stmt = execute_query("SELECT admin_id, admin_name FROM admin WHERE admin_type = 'reseller'")->fetchAll();
     $fromResellerId = isset($_POST['from_reseller']) ? intval($_POST['from_reseller']) : $resellers[0]['admin_id'];
     $toResellerId = isset($_POST['to_reseller']) ? intval($_POST['to_reseller']) : $resellers[1]['admin_id'];
 
-    // Generate From/To reseller lists
+    // Generate source/target reseller lists
     foreach ($resellers as $reseller) {
         $tpl->assign([
             'FROM_RESELLER_ID'       => tohtml($reseller['admin_id'], 'htmlAttr'),
             'FROM_RESELLER_NAME'     => tohtml($reseller['admin_name']),
-            'FROM_RESELLER_SELECTED' => ($fromResellerId == $reseller['admin_id']) ? ' selected' : ''
+            'FROM_RESELLER_SELECTED' => $fromResellerId == $reseller['admin_id'] ? ' selected' : ''
         ]);
         $tpl->parse('FROM_RESELLER_ITEM', '.from_reseller_item');
         $tpl->assign([
             'TO_RESELLER_ID'       => tohtml($reseller['admin_id'], 'htmlAttr'),
             'TO_RESELLER_NAME'     => tohtml($reseller['admin_name']),
-            'TO_RESELLER_SELECTED' => ($toResellerId == $reseller['admin_id']) ? ' selected' : ''
+            'TO_RESELLER_SELECTED' => $toResellerId == $reseller['admin_id'] ? ' selected' : ''
         ]);
         $tpl->parse('TO_RESELLER_ITEM', '.to_reseller_item');
     }
 
     // Generate customers list for the selected (FROM) reseller
-    $customers = exec_query(
-        "
-            SELECT admin_id, admin_name
-            FROM admin
-            WHERE created_by = ?
-            AND admin_type = 'user'
-            AND admin_status <> 'todelete'
-        ",
+    $customers = exec_query("SELECT admin_id, admin_name FROM admin WHERE created_by = ? AND admin_type = 'user' AND admin_status <> 'todelete'", [
         $fromResellerId
-    )->fetchAll(PDO::FETCH_ASSOC);
+    ]);
 
-    if (empty($customers)) {
+    if (!$customers->rowCount()) {
         $tpl->assign('FROM_RESELLER_CUSTOMERS_LIST', '');
         return;
     }
 
     $selectedCustomers = isset($_POST['reseller_customers']) ? $_POST['reseller_customers'] : [];
-    foreach ($customers as $customer) {
+    while ($customer = $customers->fetchRow()) {
         $tpl->assign([
             'CUSTOMER_ID'               => tohtml($customer['admin_id'], 'htmlAttr'),
             'CUSTOMER_NAME'             => tohtml(decode_idna($customer['admin_name'])),
             'RESELLER_CUSTOMER_CHECKED' => in_array($customer['admin_id'], $selectedCustomers) ? ' checked' : ''
         ]);
-        $tpl->parse('FROM_RESELLER_CUSTOMER_ID', '.from_reseller_customer_item');
+        $tpl->parse('FROM_RESELLER_CUSTOMER_ITEM', '.from_reseller_customer_item');
     }
 }
-
-/***********************************************************************************************************************
- * Main
- *
- */
 
 require 'imscp-lib.php';
 
@@ -282,15 +267,11 @@ check_login('admin');
 EventsManager::getInstance()->dispatch(Events::onAdminScriptStart);
 systemHasResellers(2) or showBadRequestErrorPage();
 
-if (isset($_POST['uaction'])
-    && $_POST['uaction'] == 'move_customers'
-    && moveCustomers()
-) {
-    set_page_message(tr('Customer(s) successfully moved.'), 'success');
-    redirectTo('users.php');
+if (isset($_POST['uaction']) && $_POST['uaction'] == 'move_customers') {
+    moveCustomers();
 }
 
-$tpl = new iMSCP_pTemplate();
+$tpl = new TemplateEngine();
 $tpl->define_dynamic([
     'layout'                       => 'shared/layouts/ui.tpl',
     'page'                         => 'admin/manage_reseller_users.phtml',
