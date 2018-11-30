@@ -295,8 +295,7 @@ function client_generatePage($tpl)
             $mailQuotaLimitBytes = $customerEmailQuotaLimitBytes - $customerMailboxesQuotaSumBytes;
             $mailMaxQuotaLimitMib = $mailQuotaLimitBytes / 1048576;
             $mailQuotaLimitMiB = ($mailData['quota'] > 0 && $mailData['quota'] < $mailQuotaLimitBytes)
-                ? $mailData['quota'] / 1048576
-                : min(10, $mailMaxQuotaLimitMib);
+                ? $mailData['quota'] / 1048576 : $mailMaxQuotaLimitMib;
             $mailTypeForwardOnly = false;
         } else {
             set_page_message(tr('You cannot make this account a normal mail account because you have already assigned all your mail quota. If you want make this account a normal mail account, you must first lower the quota assigned to one of your other mail account.'), 'static_info');
