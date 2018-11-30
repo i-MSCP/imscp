@@ -7,7 +7,7 @@ Git 1.5.x
 BACKEND
     Fixed: Mask/Unmask units after/prior disabling/enabling them (Systemd service provider)
     Fixed: Missing support for various systemd unit files such as device, mount point, swap file... (Systemd init provider)
-    Fixed: Resolve units before acting on them due to https://github.com/systemd/systemd/issues/7875 (Systemd service provider)
+    Fixed: Resolve units before acting on them due to https://github.com/systemd/systemd/issues/7875 (Systemd init provider)
     Fixed: Use of uninitialized value in bitwise or ( |) (PHP memory_limit, Subdomain module)
 
 CONFIG
@@ -26,7 +26,8 @@ DISTRIBUTIONS
     Fixed: Encoding issues with setup dialog (LANG=C vs LANG=C.UTF8)
 
 FRONTEND
-    Fixed: $ORIGIN value is empty in Custom DNS records edit UI
+    Fixed: Always display IDNA in their punycode representation (custom DNS record add/edit UI)
+    Fixed: $ORIGIN value is empty (custom DNS records edit UI)
     Fixed: Closing button being removed in all dialog UI while it must be removed only in alert and confirmation dialogs
     Fixed: Couldn't execute /usr/local/lib/imscp_panel/imscp_panel_reopenlogs logrotate script
     Fixed: Prevent edition of custom DNS records which are not owned by the custom DNS feature

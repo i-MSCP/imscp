@@ -94,19 +94,17 @@
         </tr>
         </thead>
         <tbody>
-        <!-- BDP: add_record -->
         <tr>
             <td>
                 <label for="zone_id">{TR_ZONE}</label>
                 <span class="icon i_help" title="{TR_ZONE_HELP}"></span>
             </td>
             <td>
-                <select id="zone_id" name="zone_id">
+                <select id="zone_id" name="zone_id"{SELECT_ZONES_ATTRS}>
                     {SELECT_ZONES}
                 </select>
             </td>
         </tr>
-        <!-- EDP: add_record -->
         <tr id="tr_dns_srv_name">
             <td><label for="dns_srv_name">{TR_DNS_SRV_NAME}</label></td>
             <td>

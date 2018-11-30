@@ -606,6 +606,7 @@ function client_saveDnsRecord($dnsRecordId)
         $dnsRecordName .= '.' . $domainName . '.';
     }
 
+    // Convert to punycode representation
     $dnsRecordName = encode_idna($dnsRecordName);
 
     # Disallow out-of-zone record
@@ -657,7 +658,7 @@ function client_saveDnsRecord($dnsRecordId)
             // Remove trailing dot for validation process (will be re-added after)
             $dnsRecordData = rtrim($dnsRecordData, '.');
 
-            // Convert to punycode
+            // Convert to punycode representation
             $dnsRecordData = encode_idna($dnsRecordData);
 
             // Process validation
@@ -680,7 +681,7 @@ function client_saveDnsRecord($dnsRecordId)
             // Remove trailing dot for validation process (will be re-added after)
             $host = rtrim($host, '.');
 
-            // Convert to punycode
+            // Convert to punycode representation
             $host = encode_idna($host);
 
             // Process validation
@@ -702,7 +703,7 @@ function client_saveDnsRecord($dnsRecordId)
             // Remove trailing dot for validation process (will be re-added after)
             $host = rtrim($host, '.');
 
-            // Convert to punycode
+            // Convert to punycode representation
             $host = encode_idna($host);
 
             // Process validation
@@ -737,7 +738,7 @@ function client_saveDnsRecord($dnsRecordId)
             // Remove trailing dot for validation process (will be re-added after)
             $srvTarget = rtrim($srvTarget, '.');
 
-            // Convert to punycode
+            // Convert to punycode representation
             $srvTarget = encode_idna($srvTarget);
 
             // Process validation
@@ -924,9 +925,10 @@ function generatePage($tpl, $dnsRecordId)
         }
 
         $tpl->assign([
-            'ORIGIN'            => '',
-            'SELECT_ZONES'      => $selectOptions,
-            'DNS_TYPE_DISABLED' => ''
+            'ORIGIN'             => '',
+            'SELECT_ZONES'       => $selectOptions,
+            'SELECT_ZONES_ATTRS' => '',
+            'DNS_TYPE_DISABLED'  => ''
         ]);
     } // Edit DNS record
     else {
@@ -940,28 +942,30 @@ function generatePage($tpl, $dnsRecordId)
 
         $data = $stmt->fetchRow();
 
-        if ($data['owned_by'] != 'custom_dns_feature') {
-            showBadRequestErrorPage();
-        }
-
         if($data['alias_id'] == 0) {
-            $origin = exec_query('SELECT domain_name FROM domain WHERE domain_id = ?',[ $mainDomainId ])->fetchRow(\PDO::FETCH_COLUMN);
+            $origin = exec_query('SELECT domain_name FROM domain WHERE domain_id = ?', [ $mainDomainId ])->fetchRow(\PDO::FETCH_COLUMN);
         } else {
             $origin = exec_query("SELECT alias_name FROM domain_aliasses WHERE alias_id = ?", [$data['alias_id']])->fetchRow(\PDO::FETCH_COLUMN);
         }
 
+        $idnaOrigin = decode_idna($origin);
         $tpl->assign([
-            'ADD_RECORD_JS'     => '',
-            'ADD_RECORD'        => '',
-            'ORIGIN'            => tohtml(decode_idna($origin)),
-            'DNS_TYPE_DISABLED' => ' disabled'
+            'ADD_RECORD_JS'      => '',
+            'SELECT_ZONES'       => "\t\t\t\t\t<option value=\"{$data['domain_id']}\" selected >" . $idnaOrigin . "</option>\n",
+            'SELECT_ZONES_ATTRS' => ' disabled readonly',
+            'TR_ZONE_HELP'       => tohtml($idnaOrigin),
+            'ORIGIN'             => tohtml($origin),
+            'DNS_TYPE_DISABLED'  => ' disabled'
         ]);
     }
 
     list($name, $ipv4, $ipv6, $srvName, $srvProto, $srvTTL, $srvPriority, $srvWeight, $srvTargetPort, $srvTargetHost,
-        $cname, $txt, $ownedBy
-        ) = client_decodeDnsRecordData($data);
+        $cname, $txt, $ownedBy) = client_decodeDnsRecordData($data);
 
+    if ($ownedBy != 'custom_dns_feature') {
+        showBadRequestErrorPage();
+    }
+    
     $dnsTypes = client_create_options(
         ['A', 'AAAA', 'SRV', 'CNAME', 'MX', 'NS', 'SPF', 'TXT'],
         client_getPost('type', $data['domain_type'])
@@ -969,9 +973,9 @@ function generatePage($tpl, $dnsRecordId)
     $dnsClasses = client_create_options(['IN'], client_getPost('class', $data['domain_class']));
     $tpl->assign([
         'ID'                      => tohtml($dnsRecordId),
-        'DNS_SRV_NAME'            => tohtml(client_getPost('dns_srv_name', decode_idna($srvName))),
+        'DNS_SRV_NAME'            => tohtml(client_getPost('dns_srv_name', $srvName)),
         'SELECT_DNS_SRV_PROTOCOL' => client_create_options(['tcp', 'udp', 'tls'], client_getPost('srv_proto', $srvProto)),
-        'DNS_NAME'                => tohtml(client_getPost('dns_name', decode_idna($name))),
+        'DNS_NAME'                => tohtml(client_getPost('dns_name', $name)),
         'DNS_TTL'                 => tohtml(client_getPost('dns_ttl', $srvTTL)),
         'SELECT_DNS_TYPE'         => $dnsTypes,
         'SELECT_DNS_CLASS'        => $dnsClasses,
@@ -980,8 +984,8 @@ function generatePage($tpl, $dnsRecordId)
         'DNS_SRV_PRIO'            => tohtml(client_getPost('dns_srv_prio', $srvPriority)),
         'DNS_SRV_WEIGHT'          => tohtml(client_getPost('dns_srv_weight', $srvWeight)),
         'DNS_SRV_PORT'            => tohtml(client_getPost('dns_srv_port', $srvTargetPort)),
-        'DNS_SRV_HOST'            => tohtml(client_getPost('dns_srv_host', decode_idna($srvTargetHost))),
-        'DNS_CNAME'               => tohtml(client_getPost('dns_cname', decode_idna($cname))),
+        'DNS_SRV_HOST'            => tohtml(client_getPost('dns_srv_host', $srvTargetHost)),
+        'DNS_CNAME'               => tohtml(client_getPost('dns_cname', $cname)),
         'DNS_TXT_DATA'            => tohtml(client_getPost('dns_txt_data', $txt))
     ]);
 }
@@ -1015,7 +1019,6 @@ $tpl->define_dynamic([
     'layout'        => 'shared/layouts/ui.tpl',
     'page'          => 'client/dns_edit.tpl',
     'page_message'  => 'layout',
-    'add_record'    => 'page',
     'add_record_js' => 'page'
 ]);
 $tpl->assign([
