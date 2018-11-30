@@ -38,6 +38,7 @@ INSTALLER
 YOUTRACK
     IP-1770 Contrib - 10_backup_storage_outsourcing.pl - Operation not permitted
     IP-1787 Typo in external mail feature activation
+    IP-1791 Error message when calculating disk quota - Cannot start new SQL transaction on an automatic reconnect
     IP-1792 When changing the document root of a domain with a folder that holds a space in its name, the Apache2 server is crashing
     IP-1802 Traffic logger should wait for the xtables lock
     IP-1803 Wrong SQL query in SSLcertificate.pm module

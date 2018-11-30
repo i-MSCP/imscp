@@ -73,8 +73,9 @@ sub connect
     my ($self) = @_;
 
     my $dsn = "dbi:mysql:database=$self->{'db'}->{'DATABASE_NAME'}" .
-        ( $self->{'db'}->{'DATABASE_HOST'} ? ';host=' . $self->{'db'}->{'DATABASE_HOST'} : '' ) .
-        ( $self->{'db'}->{'DATABASE_PORT'} ? ';port=' . $self->{'db'}->{'DATABASE_PORT'} : '' );
+        ( $self->{'db'}->{'DATABASE_HOST'} ? ';host=' . $self->{'db'}->{'DATABASE_HOST'} : '' )
+        . ( $self->{'db'}->{'DATABASE_PORT'} ? ';port=' . $self->{'db'}->{'DATABASE_PORT'} : '' )
+        . ";mysql_init_command=SET NAMES utf8, SESSION sql_mode = 'NO_AUTO_CREATE_USER', SESSION group_concat_max_len = 65535";
 
     if ( $self->{'connection'}
         && $self->{'_dsn'} eq $dsn
@@ -386,14 +387,16 @@ sub _init
         DATABASE_SETTINGS => {
             AutoCommit           => 1,
             AutoInactiveDestroy  => 1,
-            Callbacks            => {
-                connected => sub {
-                    $_[0]->do( "SET SESSION sql_mode = 'NO_AUTO_CREATE_USER', SESSION group_concat_max_len = 65535" );
-                    return;
-                }
-            },
+            # Now in DSN
+            #Callbacks            => {
+            #    connected => sub {
+            #        $_[0]->do( "SET SESSION sql_mode = 'NO_AUTO_CREATE_USER', SESSION group_concat_max_len = 65535" );
+            #        return;
+            #    }
+            #},
             mysql_auto_reconnect => 1,
-            mysql_enable_utf8    => 1,
+            # Now in DSN
+            #mysql_enable_utf8    => 1,
             PrintError           => 0,
             RaiseError           => 1,
         }
@@ -404,6 +407,32 @@ sub _init
     $self->{'_currentUser'} = '';
     $self->{'_currentPassword'} = '';
     $self;
+}
+
+=back
+
+=head1 MONKEY PATCHES
+
+=over 4
+
+=item begin_work( )
+
+ Monkey patch for https://github.com/perl5-dbi/DBD-mysql/issues/202
+
+=cut
+
+{
+    no warnings qw/ once redefine /;
+
+    *DBD::_::db::begin_work = sub {
+        my $dbh = shift;
+        return $dbh->set_err($DBI::stderr, 'Already in a transaction')
+            unless $dbh->FETCH('AutoCommit');
+        $dbh->ping(); # Make sure that connection is alive (mysql_auto_reconnect)
+        $dbh->STORE('AutoCommit', 0); # will croak if driver doesn't support it
+        $dbh->STORE('BegunWork',  1); # trigger post commit/rollback action
+        return 1;
+    };
 }
 
 =back
