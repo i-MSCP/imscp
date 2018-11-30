@@ -1562,14 +1562,15 @@ function isJson($string)
  */
 function isSecureRequest()
 {
-    if ((!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off')
-        || (
-            !empty($_SERVER['HTTP_X_FORWARDED_PROTO'])
-            && in_array(strtolower(
-                current(explode(',', $_SERVER['HTTP_X_FORWARDED_PROTO']))), ['https', 'on', 'ssl', '1']
-            )
-        )
-    ) {
+    if (empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+        if (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') {
+            return true;
+        }
+
+        return false;
+    }
+
+    if (in_array(strtolower(current(explode(',', $_SERVER['HTTP_X_FORWARDED_PROTO']))), ['https', 'on', 'ssl', '1'])) {
         return true;
     }
 

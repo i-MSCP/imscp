@@ -48,6 +48,7 @@ INSTALLER
     Renamed: 'CLIENT_DOMAIN_ALT_URLS' configuration parameter to 'CLIENT_WEBSITES_ALT_URLS'
 
 YOUTRACK
+    IP-1689 Password reset conflict with PanelRedirect
     IP-1770 Contrib - 10_backup_storage_outsourcing.pl - Operation not permitted
     IP-1787 Typo in external mail feature activation
     IP-1791 Error message when calculating disk quota - Cannot start new SQL transaction on an automatic reconnect
@@ -165,7 +166,7 @@ FRONTEND
     Added: Routing for languages without territory information: eg. `de' will be routed to `de_DE' (autodetection)
     Added: Setting that allows administrator to protect/unprotect default mail accounts against both edition and deletion
     Added: Support for multiple <character-string>s in TXT/SPF DNS resource records (Custom DNS interface)
-    Added: Translaltion resources for Zend validators
+    Added: Translation resources for Zend validators
     Cosmetics: Make use of the mathematical infinity symbol (∞) in place of the `Unlimited' translation string
     Deprecated: iMSCP_Database::getRawInstance() method -- will be removed in a later release
     Deprecated: Usage of customer ID field -- will be removed in a later release
