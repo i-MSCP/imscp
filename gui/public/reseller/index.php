@@ -96,7 +96,7 @@ function generateTrafficUsageBar($tpl, $trafficUsageBytes, $trafficLimitBytes)
     $trafficUsagePercent = getPercentUsage($trafficUsageBytes, $trafficLimitBytes);
     $trafficUsageData = ($trafficLimitBytes > 0)
         ? sprintf('[%s / %s]', bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes))
-        : sprintf('[%s / ∞]', bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes));
+        : sprintf('[%s / ∞]', bytesHuman($trafficUsageBytes));
     $tpl->assign([
         'TRAFFIC_PERCENT_WIDTH' => tohtml($trafficUsagePercent, 'htmlAttr'),
         'TRAFFIC_PERCENT'       => tohtml($trafficUsagePercent),
