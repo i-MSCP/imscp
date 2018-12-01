@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,6 +22,12 @@ use iMSCP_Update_Database as DbUpdater;
 
 define('IMSCP_SETUP', true);
 
+/**
+ * @throws Zend_Exception
+ * @throws iMSCP_Exception
+ * @throws iMSCP_Exception_Database
+ * @throws iMSCP_i18n_Exception
+ */
 function upddb_process()
 {
     chdir(dirname(__FILE__));
@@ -38,6 +44,7 @@ function upddb_process()
         exit(1);
     }
 
+    // FIXME: Not really the right place... Should be done in dedicated script...
     i18n_buildLanguageIndex();
 }
 

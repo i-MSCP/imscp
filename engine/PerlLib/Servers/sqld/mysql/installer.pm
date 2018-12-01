@@ -314,7 +314,7 @@ sub preinstall
     $rs ||= $self->_updateServerConfig();
     $rs ||= $self->_setupMasterSqlUser();
     $rs ||= $self->_setupSecureInstallation();
-    $rs ||= $self->_setupDatbase();
+    $rs ||= $self->_setupDatabase();
     $rs ||= $self->_oldEngineCompatibility();
 }
 
@@ -782,7 +782,7 @@ sub _setupSecureInstallation
     $self->{'eventManager'}->getInstance()->trigger( 'afterSetupSecureSqlInstallation' );
 }
 
-=item _setupDatbase( )
+=item _setupDatabase( )
 
  Setup database
  
@@ -790,7 +790,7 @@ sub _setupSecureInstallation
 
 =cut
 
-sub _setupDatbase
+sub _setupDatabase
 {
     my ($self) = @_;
 
@@ -829,7 +829,7 @@ sub _setupDatbase
     # database revision in the main database.sql file.
     my $rs = $self->{'eventManager'}->getInstance()->trigger( 'beforeSetupUpdateDatabase' );
     $rs ||= execute(
-        "php -d date.timezone=UTC $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php", \ my $stdout, \ my $stderr
+        "php -d date.timezone=UTC $main::imscpConfig{'ROOT_DIR'}/engine/setup/imscp-update-db.php", \ my $stdout, \ my $stderr
     );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;

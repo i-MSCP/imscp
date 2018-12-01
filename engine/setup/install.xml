@@ -5,5 +5,5 @@
     <copy>${SYSTEM_ENGINE_ROOT}/setup/imscp-uninstall</copy>
     <copy>${SYSTEM_ENGINE_ROOT}/setup/set-engine-permissions.pl</copy>
     <copy>${SYSTEM_ENGINE_ROOT}/setup/set-gui-permissions.pl</copy>
-    <copy>${SYSTEM_ENGINE_ROOT}/setup/updDB.php</copy>
+    <copy>${SYSTEM_ENGINE_ROOT}/setup/imscp-update-db.php</copy>
 </install>
