@@ -114,7 +114,7 @@ function client_generateTrafficUsageBar($tpl, $usage, $maxUsage)
     $trafficUsagePercent = getPercentUsage($usage, $maxUsage);
     $trafficUsageData = ($maxUsage > 0)
         ? sprintf('[%s / %s]', bytesHuman($usage), bytesHuman($maxUsage))
-        : sprintf('[%s / ∞]', bytesHuman($usage), bytesHuman($maxUsage));
+        : sprintf('[%s / ∞]', bytesHuman($usage));
     $tpl->assign([
         'TRAFFIC_PERCENT_WIDTH' => tohtml($trafficUsagePercent, 'htmlAttr'),
         'TRAFFIC_PERCENT'       => tohtml($trafficUsagePercent),
@@ -144,7 +144,7 @@ function client_generateDiskUsageBar($tpl, $usage, $maxUsage)
     $diskUsagePercent = getPercentUsage($usage, $maxUsage);
     $diskUsageData = ($maxUsage > 0)
         ? sprintf('[%s / %s]', bytesHuman($usage), bytesHuman($maxUsage))
-        : sprintf('[%s / ∞]', bytesHuman($usage), bytesHuman($maxUsage));
+        : sprintf('[%s / ∞]', bytesHuman($usage));
     $tpl->assign([
         'DISK_PERCENT_WIDTH' => tohtml($diskUsagePercent, 'htmlAttr'),
         'DISK_PERCENT'       => tohtml($diskUsagePercent),
