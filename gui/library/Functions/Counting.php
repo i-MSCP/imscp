@@ -23,7 +23,7 @@ use iMSCP_Registry as Registry;
 // Global counting functions
 
 /**
- * Retrieve count of administrator accounts, exluding those that are being
+ * Retrieve count of administrator accounts, excluding those that are being
  * deleted
  *
  * @return int Count of administrator accounts
@@ -36,7 +36,7 @@ function get_administrators_count()
 }
 
 /**
- * Retrieve count of reseller accounts, exluding those that are being deleted
+ * Retrieve count of reseller accounts, excluding those that are being deleted
  *
  * @return int Count of reseller accounts
  * @throws iMSCP_Exception_Database
@@ -48,7 +48,7 @@ function get_resellers_count()
 }
 
 /**
- * Retrieve count of customers accounts, exluding those that are being deleted
+ * Retrieve count of customers accounts, excluding those that are being deleted
  *
  * @return int Count of customer accounts
  * @throws iMSCP_Exception_Database
@@ -60,7 +60,7 @@ function get_customers_count()
 }
 
 /**
- * Retrieve count of domains, exluding those that are being deleted
+ * Retrieve count of domains, excluding those that are being deleted
  *
  * @return int Count of domains
  * @throws iMSCP_Exception_Database
@@ -72,7 +72,7 @@ function get_domains_count()
 }
 
 /**
- * Retrieve count of subdomains, exluding those that are being deleted
+ * Retrieve count of subdomains, excluding those that are being deleted
  *
  *
  * @return int Count of subdomains
@@ -98,7 +98,7 @@ function get_domain_aliases_count()
 }
 
 /**
- * Retrieve count of mail accounts, exluding those that are being deleted
+ * Retrieve count of mail accounts, excluding those that are being deleted
  *
  * Default mail accounts are counted or not, depending of administrator settings.
  *
@@ -134,7 +134,7 @@ function get_mail_accounts_count()
 }
 
 /**
- * Retrieve count of FTP users, exluding those that are being deleted
+ * Retrieve count of FTP users, excluding those that are being deleted
  *
  * @return int Count of FTP users
  * @throws iMSCP_Exception_Database
