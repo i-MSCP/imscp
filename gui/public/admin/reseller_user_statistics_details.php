@@ -97,7 +97,7 @@ function generatePage(TemplateEngine $tpl)
     generateDMYlists($tpl, 0, $month, $year, $nPastYears);
 
     $stmt = exec_query(
-        'SELECT COUNT(dtraff_id) FROM domain_traffic WHERE domain_id = ? AND dtraff_time BETWEEN ? AND ?',
+        'SELECT COUNT(domain_id) FROM domain_traffic WHERE domain_id = ? AND dtraff_time BETWEEN ? AND ?',
         [$domainId, getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)]
     );
 

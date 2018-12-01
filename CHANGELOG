@@ -18,6 +18,10 @@ CONFIG
 CONTRIB
     Fixed: Prevent uninstallation of the 'libsasl2-modules' distribution package (10_postfix_smarthost.pl listener file)
 
+DATABASE
+    Review: domain_traffic table schema (removed PK (dtraff_id), removed UK (traff_time), added compound PK (domain_id, dtraff_time))
+    Review: server_traffic table schema (removed PK (straff_id), removed UK (traff_time), added PK (traff_time))
+
 DAEMON
     Fixed: Comparison between signed and unsigned integer expressions
     Fixed: FTBFS with GCC from Ubuntu 18.04 - Undeclared identifiers: SIGCHLD, SIGPIPE

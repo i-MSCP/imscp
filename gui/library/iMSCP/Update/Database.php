@@ -64,7 +64,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 271;
+    protected $lastUpdate = 273;
 
     /**
      * Singleton - Make new unavailable
@@ -1901,6 +1901,63 @@ class iMSCP_Update_Database extends iMSCP_Update
             ];
         } catch (Exception $e) {
             throw new RuntimeException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    /**
+     * Schema review (domain_traffic table):
+     *  - Fix for #IP-1756:
+     *   - Remove PK (dtraff_id)
+     *   - Remove UK (domain_id, dtraff_time)
+     *   - Add compound PK (domain_id, dtraff_time)
+     *
+     * @return null|string SQL statement to be executed
+     */
+    protected function r272()
+    {
+        try {
+            if (NULL !== ($statement = $this->dropColumn('domain_traffic', 'dtraff_id'))) {
+                exec_query($statement);
+            }
+
+            if (NULL !== ($statement = $this->dropIndexByName('domain_traffic', 'i_unique_timestamp'))) {
+                exec_query($statement);
+            }
+
+            return $this->addIndex('domain_traffic', ['domain_id', 'dtraff_time']);
+        } catch (Exception $e) {
+            throw new RuntimeException($e->getMessage());
+        }
+    }
+
+    /**
+     * Schema review (server_traffic table):
+     *  - Remove PK (dtraff_id)
+     *  - Remove UK (traff_time)
+     *  - Add PK (traff_time)
+     *
+     * @return array SQL statements to be executed
+     */
+    protected function r273()
+    {
+        try {
+            if (NULL !== ($statement = $this->dropColumn('server_traffic', 'straff_id'))) {
+                exec_query($statement);
+            }
+
+            if ($statements = $this->dropIndexByColumn('server_traffic', 'traff_time')) {
+                foreach ($statements as $statement) {
+                    exec_query($statement);
+                }
+            }
+
+            return [
+                // All parts of a PRIMARY KEY must be NOT NULL
+                'ALTER TABLE server_traffic MODIFY `traff_time` INT(10) UNSIGNED NOT NULL',
+                $this->addIndex('server_traffic', 'traff_time')
+            ];
+        } catch (Exception $e) {
+            throw new RuntimeException($e->getMessage());
         }
     }
 }
