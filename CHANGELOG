@@ -42,6 +42,7 @@ FRONTEND
     Fixed: Prevent edition of custom DNS records which are not owned by the custom DNS feature
 
 INSTALLER
+    Enhancement: Optimize the SQL database upon setup process but not if the last optimization date is less than 24 hours
     Fixed: Build only mode is broken on fresh installation: Couldn't find the 'PHP' command in search path...
     Fixed: 'CLIENT_DOMAIN_ALT_URLS' configuration parameter resetted to 0 (disabled) while running installer
     Fixed: 'CLIENT_DOMAIN_ALT_URLS' parameter is not set on fresh installations

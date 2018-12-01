@@ -18,6 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use iMSCP_Registry as Registry;
 use iMSCP_Update_Database as DbUpdater;
 
 define('IMSCP_SETUP', true);
@@ -28,7 +29,7 @@ define('IMSCP_SETUP', true);
  * @throws iMSCP_Exception_Database
  * @throws iMSCP_i18n_Exception
  */
-function upddb_process()
+function update()
 {
     chdir(dirname(__FILE__));
     require_once '../../gui/library/imscp-lib.php';
@@ -44,16 +45,22 @@ function upddb_process()
         exit(1);
     }
 
+    // Optimize the database unless last optimization date is less than 24 hours
+    $lastOptimization = intval(Registry::get('config')['DATABASE_LAST_OPTIMIZATION']);
+    if (time() >= $lastOptimization + 86400) {
+        $dbUpdater->optimizeTables();
+    }
+
     // FIXME: Not really the right place... Should be done in dedicated script...
     i18n_buildLanguageIndex();
 }
 
 try {
     if (version_compare(PHP_VERSION, '7', '<')) {
-        upddb_process();
+        update();
     } else {
         try {
-            upddb_process();
+            update();
         } catch (Throwable $e) {
             throw new Exception($e->getMessage(), $e->getCode(), $e);
 

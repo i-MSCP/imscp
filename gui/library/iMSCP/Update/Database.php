@@ -233,6 +233,23 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
+     * Optimize all tables inside database
+     *
+     * return void
+     */
+    public function optimizeTables()
+    {
+        try {
+            $stmt = execute_query('SHOW TABLES');
+            while ($table = $stmt->fetchRow(PDO::FETCH_COLUMN)) {
+                execute_query(sprintf('OPTIMIZE LOCAL TABLE %s', quoteIdentifier($table)));
+            }
+        } catch (Exception $e) {
+            throw new RuntimeException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    /**
      * Does the given table is known?
      *
      * @param string $table Table name
@@ -269,7 +286,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      * @param string $table Table name
      * @return string SQL statement to be executed
      */
-    public function dropTable($table)
+    protected function dropTable($table)
     {
         try {
             return sprintf('DROP TABLE IF EXISTS %s', quoteIdentifier($table));

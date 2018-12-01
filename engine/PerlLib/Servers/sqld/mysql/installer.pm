@@ -833,6 +833,9 @@ sub _setupDatabase
     );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
+
+    $main::imscpConfig{'DATABASE_LAST_OPTIMIZATION'} = time() unless $rs;
+    
     $rs ||= $self->{'eventManager'}->getInstance()->trigger( 'afterSetupUpdateDatabase' );
 }
 
