@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,9 +25,9 @@ package Modules::ServerIP;
 
 use strict;
 use warnings;
+use iMSCP::Boolean;
 use iMSCP::Debug qw/ error getLastError getMessageByType warning /;
-use iMSCP::Net;
-use iMSCP::Provider::NetworkInterface;
+use iMSCP::Networking;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -62,7 +62,7 @@ sub getType
 
 sub process
 {
-    my ($self, $ipId) = @_;
+    my ( $self, $ipId ) = @_;
 
     my $rs = $self->_loadData( $ipId );
     return $rs if $rs;
@@ -70,22 +70,19 @@ sub process
     my @sql;
     if ( $self->{'_data'}->{'ip_status'} =~ /^to(?:add|change)$/ ) {
         $rs = $self->add();
-        @sql = ( 'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $ipId );
+        @sql = ( 'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', undef, $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok', $ipId );
     } elsif ( $self->{'_data'}->{'ip_status'} eq 'todelete' ) {
         $rs = $self->delete();
         @sql = $rs
-            ? ( 'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', undef,
-                getLastError( 'error' ) || 'Unknown error', $ipId )
+            ? ( 'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', undef, getLastError( 'error' ) || 'Unknown error', $ipId )
             : ( 'DELETE FROM server_ips WHERE ip_id = ?', undef, $ipId );
     } else {
         warning( sprintf( 'Unknown action (%s) for server IP with ID %s', $self->{'_data'}->{'ip_status'}, $ipId ));
         return 0;
     }
 
-    local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         $self->{'_dbh'}->do( @sql );
     };
     if ( $@ ) {
@@ -106,26 +103,18 @@ sub process
 
 sub add
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    local $@;
     eval {
-        $self->{'eventManager'}->trigger( 'beforeAddIpAddr', $self->{'_data'} ) == 0 or die(
-            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-        );
+        my $ret = $self->{'eventManager'}->trigger( 'beforeAddIpAddr', $self->{'_data'} );
 
-        if ( $self->{'_data'}->{'ip_card'} ne 'any' && $self->{'_data'}->{'ip_address'} ne '0.0.0.0' ) {
-            iMSCP::Provider::NetworkInterface->getInstance()->addIpAddr( $self->{'_data'} );
-            iMSCP::Net->getInstance()->resetInstance();
+        unless ( $ret || $self->{'_data'}->{'ip_card'} eq 'any' || $self->{'_data'}->{'ip_address'} eq '0.0.0.0' ) {
+            iMSCP::Networking->getInstance()->addIpAddress( $self->{'_data'} );
         }
 
-        $self->SUPER::add() == 0 or die(
-            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-        );
-
-        $self->{'eventManager'}->trigger( 'afterAddIpAddr', $self->{'_data'} ) == 0 or die(
-            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-        );
+        $ret ||= $self->SUPER::add();
+        $ret ||= $self->{'eventManager'}->trigger( 'afterAddIpAddr', $self->{'_data'} );
+        $ret == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' );
     };
     if ( $@ ) {
         error( $@ );
@@ -145,26 +134,18 @@ sub add
 
 sub delete
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    local $@;
     eval {
-        $self->{'eventManager'}->trigger( 'beforeRemoveIpAddr', $self->{'_data'} ) == 0 or die(
-            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-        );
+        my $ret = $self->{'eventManager'}->trigger( 'beforeRemoveIpAddr', $self->{'_data'} );
 
-        if ( $self->{'_data'}->{'ip_card'} ne 'any' && $self->{'_data'}->{'ip_address'} ne '0.0.0.0' ) {
-            iMSCP::Provider::NetworkInterface->getInstance()->removeIpAddr( $self->{'_data'} );
-            iMSCP::Net->getInstance()->resetInstance();
+        unless ( $ret || $self->{'_data'}->{'ip_card'} eq 'any' || $self->{'_data'}->{'ip_address'} eq '0.0.0.0' ) {
+            iMSCP::Networking->getInstance()->removeIpAddress( $self->{'_data'} );
         }
 
-        $self->SUPER::delete() == 0 or die(
-            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-        );
-
-        $self->{'eventManager'}->trigger( 'afterRemoveIpAddr', $self->{'_data'} ) == 0 or die(
-            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-        );
+        $ret ||= $self->SUPER::delete();
+        $ret ||= $self->{'eventManager'}->trigger( 'afterRemoveIpAddr', $self->{'_data'} );
+        $ret == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' );
     };
     if ( $@ ) {
         error( $@ );
@@ -191,18 +172,12 @@ sub delete
 
 sub _loadData
 {
-    my ($self, $ipId) = @_;
+    my ( $self, $ipId ) = @_;
 
-    local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         $self->{'_data'} = $self->{'_dbh'}->selectrow_hashref(
-            '
-                SELECT ip_id, ip_card, ip_number AS ip_address, ip_netmask, ip_config_mode, ip_status
-                FROM server_ips
-                WHERE ip_id = ?
-            ',
-            undef, $ipId
+            'SELECT ip_id, ip_card, ip_number AS ip_address, ip_netmask, ip_config_mode, ip_status FROM server_ips WHERE ip_id = ?', undef, $ipId
         );
         $self->{'_data'} or die( sprintf( 'Data not found for server IP address (ID %d)', $ipId ));
     };
@@ -225,7 +200,7 @@ sub _loadData
 
 sub _getData
 {
-    my ($self, $action) = @_;
+    my ( $self, $action ) = @_;
 
     $self->{'_data'}->{'action'} = $action;
     $self->{'_data'};

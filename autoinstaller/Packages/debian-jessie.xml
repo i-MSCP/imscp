@@ -459,9 +459,8 @@
         <package>gcc</package>
         <package>git</package>
         <package>gzip</package>
-        <package>ifupdown</package>
         <package>iptables</package>
-        <package>iproute</package>
+        <package>iproute2</package>
         <package>ispell</package>
         <package>libc6-dev</package>
         <package>locales-all</package>
