@@ -6,7 +6,7 @@ Git 1.5.x
 
 BACKEND
     Added: Netplan networking configuration provider (networkd renderer is assumed)
-    Fixed: Mask/Unmask units after/prior disabling/enabling them (Systemd service provider)
+    Fixed: Mask/Unmask units after/prior disabling/enabling them (Systemd init provider)
     Fixed: Missing support for various systemd unit files such as device, mount point, swap file... (Systemd init provider)
     Fixed: Resolve units before acting on them due to https://github.com/systemd/systemd/issues/7875 (Systemd init provider)
     Fixed: Use of uninitialized value in bitwise or ( |) (PHP memory_limit, Subdomain module)
@@ -41,7 +41,7 @@ FRONTEND
     Fixed: $ORIGIN value is empty (custom DNS records edit UI)
     Fixed: Closing button being removed in all dialog UI while it must be removed only in alert and confirmation dialogs
     Fixed: Couldn't execute /usr/local/lib/imscp_panel/imscp_panel_reopenlogs logrotate script
-    Fixed: Fixed: Parameter is not mapped to any conversion specification (reseller/index.php, client/index)
+    Fixed: Parameter is not mapped to any conversion specification (reseller/index.php, client/index)
     Fixed: Prevent edition of custom DNS records which are not owned by the custom DNS feature
 
 INSTALLER
