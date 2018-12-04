@@ -55,7 +55,7 @@ sub get
     return $self->{'fileContent'} if defined $self->{'fileContent'};
 
     unless ( defined $self->{'filename'} ) {
-        error( "Attribut `filename' is not set." );
+        error( "Attribute `filename' is not set." );
         return undef;
     }
 
@@ -122,7 +122,7 @@ sub save
     my ($self) = @_;
 
     unless ( defined $self->{'filename'} ) {
-        error( "Attribut `filename' is not set." );
+        error( "Attribute `filename' is not set." );
         return undef;
     }
 
@@ -151,7 +151,7 @@ sub delFile
     my ($self) = @_;
 
     unless ( defined $self->{'filename'} ) {
-        error( "Attribut `filename' is not set." );
+        error( "Attribute `filename' is not set." );
         return 1;
     }
 
@@ -179,7 +179,7 @@ sub mode
     my ($self, $mode) = @_;
 
     unless ( defined $self->{'filename'} ) {
-        error( "Attribut `filename' is not set." );
+        error( "Attribute `filename' is not set." );
         return 1;
     }
 
@@ -215,7 +215,7 @@ sub owner
     my ($self, $owner, $group) = @_;
 
     unless ( defined $self->{'filename'} ) {
-        error( "Attribut `filename' is not set." );
+        error( "Attribute `filename' is not set." );
         return 1;
     }
 
@@ -261,7 +261,7 @@ sub copyFile
     $options = {} unless $options && ref $options eq 'HASH';
 
     unless ( defined $self->{'filename'} ) {
-        error( "Attribut `filename' is not set." );
+        error( "Attribute `filename' is not set." );
         return 1;
     }
 
@@ -310,7 +310,7 @@ sub moveFile
     my ($self, $destination) = @_;
 
     unless ( defined $self->{'filename'} ) {
-        error( "Attribut `filename' is not set." );
+        error( "Attribute `filename' is not set." );
         return 1;
     }
 
