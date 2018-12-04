@@ -118,14 +118,14 @@ sub _updateConfig
     my $file = iMSCP::File->new( filename => '/etc/network/interfaces' );
     defined( my $fileCR = $file->getAsRef()) or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ));
 
-    local $data->{'ip_id'} = $data->{'ip_id'}+1000;
-    
+    my $ipID = $data->{'ip_id'}+1000;
+
     # Remove previous entry
     #  - We search also by ip_id for backward compatibility
     #  - Tag ending dot has been added lately, hence the optional match
     ${ $fileCR } = replaceBloc(
-        qr/(?:^\n)?# i-MSCP \[(?:.*\Q:$data->{'ip_id'}\E|\Q$data->{'ip_address'}\E)\] entry BEGIN\.?\n/m,
-        qr/# i-MSCP \[(?:.*\Q:$data->{'ip_id'}\E|\Q$data->{'ip_address'}\E)\] entry ENDING\.?\n/,
+        qr/(?:^\n)?# i-MSCP \[(?:.*\Q:$ipID\E|\Q$data->{'ip_address'}\E)\] entry BEGIN\.?\n/m,
+        qr/# i-MSCP \[(?:.*\Q:$ipID\E|\Q$data->{'ip_address'}\E)\] entry ENDING\.?\n/,
         '',
         ${ $fileCR }
     );
@@ -136,8 +136,8 @@ sub _updateConfig
 
 # i-MSCP [$data->{'ip_address'}] entry BEGIN.
 iface $data->{'ip_card'} @{ [ $addrVersion eq 'ipv4' ? 'inet' : 'inet6' ] } manual
-  up   ip @{ [ $addrVersion eq 'ipv4' ? '-4' : '-6' ] } addr add $data->{'ip_address'}/$data->{'ip_netmask'} dev \$IFACE@{[ $addrVersion eq 'ipv4' ? ' label $IFACE:'.$data->{'ip_id'} : '' ]}
-  down ip addr del $data->{'ip_address'}/$data->{'ip_netmask'} dev \$IFACE@{ [ $addrVersion eq 'ipv4' ? ' label $IFACE:'.$data->{'ip_id'} : '' ] }
+  up   ip @{ [ $addrVersion eq 'ipv4' ? '-4' : '-6' ] } addr add $data->{'ip_address'}/$data->{'ip_netmask'} dev \$IFACE
+  down ip addr del $data->{'ip_address'}/$data->{'ip_netmask'} dev \$IFACE
 # i-MSCP [$data->{'ip_address'}] entry ENDING.
 EOF
     }
