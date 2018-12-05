@@ -263,9 +263,9 @@ sub _init
     my $distID = iMSCP::LsbRelease->getInstance()->getId( 'short' );
 
     if ( $distID =~ /^(?:FreeBSD|DragonFly)$/ ) {
-        $distID = [ '/etc/rc.d', '/usr/local/etc/rc.d' ];
+        $self->{'sysvinitscriptpaths'} = [ '/etc/rc.d', '/usr/local/etc/rc.d' ];
     } elsif ( $distID eq 'HP-UX' ) {
-        $distID = [ '/sbin/init.d' ];
+        $self->{'sysvinitscriptpaths'} = [ '/sbin/init.d' ];
     } elsif ( $distID eq 'Archlinux' ) {
         $self->{'sysvinitscriptpaths'} = [ '/etc/rc.d' ];
     } else {
