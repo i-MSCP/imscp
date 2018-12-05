@@ -338,8 +338,8 @@ function generateNavigation(TemplateEngine $tpl)
         'TR_MENU_LOGOUT' => tr('Logout'),
         'VERSION'        => (isset($cfg['Version']) && $cfg['Version'] != '')
             ? $cfg['Version'] : tohtml(tr('Unknown')),
-        'BUILDDATE'      => (isset($cfg['BuildDate']) && $cfg['BuildDate'] != '')
-            ? $cfg['BuildDate'] : tohtml(tr('Unavailable')),
+        'BUILDDATE'      => (isset($cfg['Build']) && $cfg['Build'] != '')
+            ? $cfg['Build'] : tohtml(tr('Unavailable')),
         'CODENAME'       => (isset($cfg['CodeName']) && $cfg['CodeName'] != '')
             ? $cfg['CodeName'] : tohtml(tr('Unknown'))
     ]);
