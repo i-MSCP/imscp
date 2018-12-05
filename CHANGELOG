@@ -14,6 +14,7 @@ BACKEND
     Fixed: Resolve units before acting on them due to https://github.com/systemd/systemd/issues/7875 (Systemd init provider)
     Fixed: Use of uninitialized value in bitwise or ( |) (PHP memory_limit, Subdomain module)
     Fixed: Virtual (aliased) interfaces (interface:integer) is an IFCONFIG(8) specific concept. IFCONFIG(8) is deprecated in favor of IP(8).
+    Review: Make use of a well-known (fixed) composer.phar version (1.8.0)
     Rewritten: Ifupdown networking configuration provider
 
 CONFIG
