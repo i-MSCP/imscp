@@ -26,7 +26,7 @@ package iMSCP::Provider::Service::Systemd;
 use strict;
 use warnings;
 use Carp 'croak';
-use File::Basename;
+use File::Basename qw/ basename fileparse /;
 use File::Spec;
 use iMSCP::Boolean;
 use iMSCP::Debug qw/ debug getMessageByType /;

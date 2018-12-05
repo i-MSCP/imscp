@@ -26,7 +26,7 @@ package iMSCP::Provider::Service::Upstart;
 use strict;
 use warnings;
 use Carp 'croak';
-use File::Basename qw/ basename dirname/;
+use File::Basename qw/ basename dirname /;
 use File::Spec;
 use iMSCP::Boolean;
 use iMSCP::Debug qw/ debug getMessageByType /;
@@ -472,8 +472,8 @@ sub _isEnabledPost090
     # 'manual' stanza is the last one in the conf file and any
     # override files. The last one wins.
     my $enabled = FALSE;
-    for my $fcontent ( \$jobFileContent, \$jobOverrideFileContent ) {
-        open my $fh, '<', $fcontent or croak( sprintf( "Couldn't open in-memory file handle: %s", $! ));
+    for my $fileC ( \$jobFileContent, \$jobOverrideFileContent ) {
+        open my $fh, '<', $fileC or croak( sprintf( "Couldn't open in-memory file handle: %s", $! ));
         while ( my $line = <$fh> ) {
             if ( $line =~ /$START_ON/ ) {
                 $enabled = TRUE;
