@@ -78,8 +78,11 @@ YOUTRACK
     IP-1812 Missing support for Ubuntu Bionic Beaver (18.04)
 
 ------------------------------------------------------------------------------------------------------------------------
-1.5.3
+1.5.3 (build 2018051600)
 ------------------------------------------------------------------------------------------------------------------------
+
+2017-09-08: Laurent Declercq
+    RELEASE i-MSCP 1.5.3 (build 2018051600)
 
 BACKEND
     Backport: Fix for #IP-1758 (Could not remove HTTPD log directory -- The immutable bit is removed too late) from 1.6.x branch
@@ -115,11 +118,11 @@ SCRIPTS
     Canceled release
 
 ------------------------------------------------------------------------------------------------------------------------
-1.5.1
+1.5.1 (build 2017090800)
 ------------------------------------------------------------------------------------------------------------------------
 
 2017-09-08: Laurent Declercq
-    RELEASE i-MSCP 1.5.1
+    RELEASE i-MSCP 1.5.1 (build 2017090800)
 
 BACKEND
     Fixed: Can't call method "isEmpty" on an undefined value when a listener self un-register (iMSCP::EventManager)
@@ -136,11 +139,11 @@ FRONTEND
     Rewritten: Customer and reseller assignments features (admin UI level)
 
 ------------------------------------------------------------------------------------------------------------------------
-1.5.0
+1.5.0 (build 2017090500)
 ------------------------------------------------------------------------------------------------------------------------
 
 2017-09-05: Laurent Declercq
-    RELEASE i-MSCP 1.5.0
+    RELEASE i-MSCP 1.5.0 (build 2017090500)
 
 BACKEND
     Added: `apcu', `apc', `gmp' and `Zend Opcache' PHP modules to the list of required PHP module (iMSCP::Requirements)
@@ -153,7 +156,7 @@ BACKEND
     Fixed: Can't use an undefined value as a HASH reference (iMSCP::EventManager)
     Fixed: Couldn't remove IP address: Unknown action requested for server IP (Modules::ServerIP)
     Fixed: Don't set permissions on parent directories as this can lead to several permission issues (iMSCP::Dir::make)
-    Fixed: Permissions on files are always preverved when copying directory recursively
+    Fixed: Permissions on files are always preserved when copying directory recursively
     Fixed: Routines for Perl/PHP modules requirements checking are broken (iMSCP::Requirements)
     Fixed: Sets the SQL `group_concat_max_len' variable on a per session basis
     Fixed: Sets the SQL modes on a per session basis to `NO_AUTO_CREATE_USER' (backward compatibility with plugins)
@@ -177,7 +180,7 @@ FRONTEND
     Added: `onPageMessages event' --  Event that is triggered when page messages are being generated
     Added: Button to force refresh of service statuses as they are now cached for 20 minutes
     Added: iMSCP_Database::inTransaction() method
-    Added: Routing for languages without territory information: eg. `de' will be routed to `de_DE' (autodetection)
+    Added: Routing for languages without territory information: eg. `de' will be routed to `de_DE' (auto-detection)
     Added: Setting that allows administrator to protect/unprotect default mail accounts against both edition and deletion
     Added: Support for multiple <character-string>s in TXT/SPF DNS resource records (Custom DNS interface)
     Added: Translation resources for Zend validators
@@ -189,7 +192,7 @@ FRONTEND
     Enhancement: Make use of application cache for caching of service statuses (lifetime: 20 minutes)
     Enhancement: Make use of Zend APC cache backend; fallback to Zend File backend if APC extension isn't available
     Enhancement: Make customers able to delete their subdomains without first having to delete FTP and mail accounts
-    Enhancement: Make customers able to edit mail autoresponder message even if the autoresponder is not activated yet
+    Enhancement: Make customers able to edit mail auto-responder message even if the auto-responder is not activated yet
     Enhancement: Make customers able to select more than one catch-all address in catch-all addresses drop-down list
     Enhancement: Make customers able to show/hide default mail accounts
     Enhancement: Protect default mail accounts against change and deletion (default)
@@ -229,8 +232,8 @@ FRONTEND
     Review: Hide the i-MSCP update interface when Git version is in use (admin UI level)
     Review: Make use of short syntax for arrays
     Review: Make use of Zend_Controller_Action_Helper_FlashMessenger for page messages
-    Review: Show an explicite warning when the legacy and unsecure telnet server is running (service statuses)
-    Review: Skip the intermediate edit page when mail autoresponder is being enabled and that the message is already set
+    Review: Show an explicit warning when the legacy and un-secure telnet server is running (service statuses)
+    Review: Skip the intermediate edit page when mail auto-responder is being enabled and that the message is already set
     Rewritten: Add administrator interface (admin level)
     Rewritten: Edit user and personal data interfaces (all UI levels)
     Rewritten: Password update interface (all UI levels)
@@ -242,7 +245,7 @@ INSTALLER
     Fixed: Hide notice about user/group changes (Courier)
     Fixed: Missing LOGROTATE(8) configuration file for RSYSLOGD(8) (Debian 9/Stretch; Ubuntu 16.04/Xenial)
     Fixed: Removal of obsolete files must be done before saving the persistent data, else some files won't be deleted
-    Review: Raise GNU Wget timeout for slow DNS resolvers (Debian apdater)
+    Review: Raise GNU Wget timeout for slow DNS resolvers (Debian adapter)
     Securiry: Permissions hardening - Files and folders are now copied with UMASK(2) 027 instead of 022
 
 PACKAGES
@@ -253,14 +256,14 @@ PLUGINS
     Updated: Plugin API to version 1.5.0
 
 SCRIPTS
-    Removed: Explicite unlocking of locked files -- Files are automatically unlocked
+    Removed: Explicit unlocking of locked files -- Files are automatically unlocked
     Fixed: logresolvemerge.pl: Script is broken
 
 SERVERS
     Changed: Mount courier-authdaemon rundir on var/run/courier/authdaemon instead of private/authdaemon (Postfix/Cyrus-SASL)
     Changed: The `postfix' user is now added in the `mail' group instead of the `daemon' group (Postfix/Cyrus-SASL)
     Changed: The ownership for the /var/run/courier/authdaemon directory is now `daemon:mail' (courier-authdaemon)
-    Fixed: `.htgroup' and `.htpasswd' files are reseted when the main domain is being changed (Httpd servers)
+    Fixed: `.htgroup' and `.htpasswd' files are resetted when the main domain is being changed (Httpd servers)
     Fixed: Couldn't connect to FTP server through IPv6 (vsftpd)
     Fixed: Couldn't generate /etc/courier/dhparams.pem file: Unknown security parameter string: 2048 (Courier)
     Fixed: Postfix parameters are not removed when using Regexp (Servers::mta::postfix::postconf -- Regression fix)
