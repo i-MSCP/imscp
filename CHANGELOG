@@ -4,6 +4,9 @@
 Git 1.5.x
 ------------------------------------------------------------------------------------------------------------------------
 
+ARTIFACTS
+    Removed: latest.txt file (no longer used)
+
 BACKEND
     Added: Netplan networking configuration provider (networkd renderer is assumed)
     Fixed: Mask/Unmask units after/prior disabling/enabling them (Systemd init provider)
@@ -17,6 +20,7 @@ CONFIG
     Fixed: Bad value for X-Forward-* headers (Proxy feature / Apache2 ssl vhosts)
     Fixed: Do not discard paths other than '/errors/' and '/.well-known/acme-challenge/' on redirect/proxy (Apache2)
     Fixed: Paths must be quoted in Apache2 configuration files to prevent spaces being interpreted as end of argument
+    Renamed: 'BuildDate' main configuration parameter to 'Build'
 
 CONTRIB
     Fixed: Prevent uninstallation of the 'libsasl2-modules' distribution package (10_postfix_smarthost.pl listener file)

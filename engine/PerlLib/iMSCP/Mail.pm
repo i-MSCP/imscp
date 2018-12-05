@@ -129,7 +129,7 @@ This is an automatic email sent by i-MSCP:
 Server name: $main::imscpConfig{'SERVER_HOSTNAME'}
 Server IP: $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}
 Version: $main::imscpConfig{'Version'}
-Build: $main::imscpConfig{'BuildDate'}
+Build: $main::imscpConfig{'Build'}
 Message severity: $severity
 
 ==========================================================================

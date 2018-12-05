@@ -77,7 +77,7 @@ use iMSCP_Exception as iMSCPException;
  * @property int DATABASE_REVISION Last database revision
  * @property int CRITICAL_UPDATE_REVISION Last critical update revision
  * @property string BASE_SERVER_IP Base server IP
- * @property int BuildDate i-MSCP package Build date
+ * @property int Build i-MSCP package Build date
  * @property string TIMEZONE timezone
  * @property int DEBUG Debug mode
  * @property string DEFAULT_ADMIN_ADDRESS Default mail address for administrator

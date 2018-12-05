@@ -1781,7 +1781,7 @@ i-MSCP Mailer'),
             '{SERVER_IP}'        => $cfg['BASE_SERVER_PUBLIC_IP'],
             '{CLIENT_IP}'        => getIpAddr() ? getIpAddr() : 'unknown',
             '{VERSION}'          => $cfg['Version'],
-            '{BUILDDATE}'        => $cfg['BuildDate'] ?: tr('Unavailable'),
+            '{BUILDDATE}'        => $cfg['Build'] ?: tr('Unavailable'),
             '{MESSAGE_SEVERITY}' => $severity,
             '{MESSAGE}'          => $msg
         ],

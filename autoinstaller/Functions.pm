@@ -91,7 +91,7 @@ sub loadConfig
         # Merge old configuration in new configuration, excluding upstream defined values
         while ( my ($key, $value) = each( %main::imscpOldConfig ) ) {
             next unless exists $main::imscpConfig{$key};
-            next if $key =~ /^(?:BuildDate|Version|CodeName|PluginApi|THEME_ASSETS_VERSION)$/;
+            next if $key =~ /^(?:Build|Version|CodeName|PluginApi|THEME_ASSETS_VERSION)$/;
             $main::imscpConfig{$key} = $value;
         }
 
