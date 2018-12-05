@@ -94,6 +94,7 @@ sub _init
 
         if ( iMSCP::Getopt->cleanPackageCache ) {
             $skipPackagesUpdate = FALSE;
+
             my $rs = $self->_cleanCache();
             return $rs if $rs;
         }
@@ -183,7 +184,7 @@ sub _checkComposerVersion
     ) == 0 or die( $stderr || 'Unknown error' );
     debug( $stdout ) if $stdout;
 
-    ( my ( $version ) = $stdout =~ /^Composer version (\d\.\d\.\d)\s+/ ) or die( "Couldn't get composer.phar version" );
+    ( my ( $version ) = $stdout =~ /^Composer\s+version\s+(\d\.\d\.\d)\s+/ ) or die( "Couldn't get composer.phar version" );
 
     return FALSE if version->parse( $version ) != version->parse( $self->{'composer_version'} );
 
@@ -194,7 +195,7 @@ sub _checkComposerVersion
 
  Check package version requirements
 
- Return int TRUE if all requirements are met, FALSE otherwise
+ Return boolean TRUE if all requirements are met, FALSE otherwise
 
 =cut
 
