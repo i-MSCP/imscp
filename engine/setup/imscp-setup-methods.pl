@@ -43,8 +43,10 @@ sub setupInstallFiles
     my $rs = iMSCP::EventManager->getInstance()->trigger( 'beforeSetupInstallFiles', $main::{'INST_PREF'} );
     return $rs if $rs;
 
-    # i-MSCP daemon must be stopped before changing any file on the files system
-    iMSCP::Service->getInstance()->stop( 'imscp_daemon' );
+    if ( iMSCP::Service->getInstance()->hasService( 'imscp_daemon' ) ) {
+        # i-MSCP daemon must be stopped before changing any file on the files system
+        iMSCP::Service->getInstance()->stop( 'imscp_daemon' );
+    }
 
     # Process cleanup to avoid any security risks and conflicts
     for( qw/ daemon engine gui / ) {
