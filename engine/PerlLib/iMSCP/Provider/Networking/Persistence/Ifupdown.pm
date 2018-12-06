@@ -29,6 +29,7 @@ use Carp 'croak';
 use iMSCP::Boolean;
 use iMSCP::Debug 'getMessageByType';
 use iMSCP::File;
+use iMSCP::Net;
 use iMSCP::ProgramFinder;
 use iMSCP::Service;
 use iMSCP::TemplateParser 'replaceBloc';
@@ -131,7 +132,7 @@ sub _updateConfig
     );
 
     if ( $action eq 'add' ) {
-        my $addrVersion = $self->{'net'}->getAddrVersion( $data->{'ip_address'} );
+        my $addrVersion = iMSCP::Net->getInstance()->getAddrVersion( $data->{'ip_address'} );
         ${ $fileCR } .= <<"EOF";
 
 # i-MSCP [$data->{'ip_address'}] entry BEGIN.

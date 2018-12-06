@@ -12,6 +12,7 @@ BACKEND
     Fixed: Mask/Unmask units after/prior disabling/enabling them (Systemd init provider)
     Fixed: Missing support for various systemd unit files such as device, mount point, swap file... (Systemd init provider)
     Fixed: Resolve units before acting on them due to https://github.com/systemd/systemd/issues/7875 (Systemd init provider)
+    Fixed: SHA384 is not supported by your openssl extension, could not verify the phar file integrity (Composer)
     Fixed: Use of uninitialized value in bitwise or ( |) (PHP memory_limit, Subdomain module)
     Fixed: Virtual (aliased) interfaces (interface:integer) is an IFCONFIG(8) specific concept. IFCONFIG(8) is deprecated in favor of IP(8).
     Review: Make use of a well-known (fixed) composer.phar version (1.8.0)
