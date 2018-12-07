@@ -25,14 +25,14 @@ whiptail wget
 
 ```
 cd /usr/local/src
-wget https://github.com/i-MSCP/imscp/archive/<release_tag>.tar.gz
-tar -xzf imscp-<release_tag>.tar.gz
+wget https://github.com/i-MSCP/imscp/archive/1.5.3-2018120700.tar.gz
+tar -xzf imscp-1.5.3-2018120700.tar.gz
 ```
 
 ### 4. Change to the newly created directory
 
 ```
-cd imscp-<release_tag>
+cd imscp-1.5.3-2018120700
 ```
 
 ### 5. Install i-MSCP by running its installer
@@ -46,7 +46,7 @@ perl imscp-autoinstall -d
 ### 1. Make sure to read the errata file
 
 Before upgrading, you must not forget to read the
-[errata file](https://github.com/i-MSCP/imscp/blob/<release_tag>/docs/<release_branch>_errata.md)
+[errata file](https://github.com/i-MSCP/imscp/blob/1.5.3-2018120700/docs/1.5.x_errata.md)
 
 ### 2. Make sure to make a backup of your data
 
@@ -72,14 +72,14 @@ apt-get --assume-yes --auto-remove --no-install-recommends dist-upgrade
 
 ```
 cd /usr/local/src
-wget https://github.com/i-MSCP/imscp/archive/<release_tag>.tar.gz
-tar -xzf imscp-<release_tag>.tar.gz
+wget https://github.com/i-MSCP/imscp/archive/1.5.3-2018120700.tar.gz
+tar -xzf imscp-1.5.3-2018120700.tar.gz
 ```
 
 ### 5. Change to the newly created directory
 
 ```
-cd imscp-<release_tag>
+cd imscp-1.5.3-2018120700
 ```
 
 ### 6. Update i-MSCP by running its installer
