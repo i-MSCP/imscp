@@ -1,8 +1,11 @@
 i-MSCP ChangeLog
 
 ------------------------------------------------------------------------------------------------------------------------
-Git 1.5.x
+1.5.3 (build 2018120800)
 ------------------------------------------------------------------------------------------------------------------------
+
+2018-12-08: Laurent Declercq
+    RELEASE i-MSCP 1.5.3 (build 2018120800)
 
 BACKEND
     Fixed: Couldn't install composer packages on fresh installation nor switch them (regression fix)
