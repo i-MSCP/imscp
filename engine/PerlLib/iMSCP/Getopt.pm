@@ -69,8 +69,8 @@ sub parse
         print STDERR wrap( '', '', <<"EOF" );
 
 $usage
- -a,    --skip-package-update   Skip i-MSCP packages update.
- -c,    --clean-package-cache   Cleanup i-MSCP package cache.
+ -a,    --skip-package-update   Skip composer packages update.
+ -c,    --clean-package-cache   Cleanup composer package cache.
  -d,    --debug                 Force debug mode.
  -h,-?  --help                  Show this help.
  -l,    --listener <file>       Path to listener file.
