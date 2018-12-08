@@ -172,7 +172,6 @@ sub start
 
     defined $job or croak( 'Missing or undefined $job parameter' );
 
-    print $self->isRunning( $job );
     $self->_exec( [ $COMMANDS{'start'}, $job ] ) unless $self->isRunning( $job );
 }
 
