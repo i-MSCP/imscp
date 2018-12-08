@@ -94,7 +94,6 @@ sub _init
 
         if ( iMSCP::Getopt->cleanPackageCache ) {
             $skipPackagesUpdate = FALSE;
-
             my $rs = $self->_cleanCache();
             return $rs if $rs;
         }
@@ -111,15 +110,27 @@ sub _init
             return 1;
         }
 
-        #return 0 if $skipPackagesUpdate;
-
         startDetail;
-        my $rs = step( sub { $self->_getComposer(); }, 'Installing composer.phar from http://getcomposer.org', 3, 1 );
-        $rs ||= step( sub {
-            return 0 if $self->_checkRequirements();
-            1;
-        }, 'Checking composer package requirements', 3, 2 );
-        $rs ||= step( sub { $self->_installPackages(); }, 'Installing/Updating composer packages from Github', 3, 3 );
+        my ( $steps, $step ) = ( 3, 1 );
+        if ( $skipPackagesUpdate ) {
+            my $rs = step( sub {
+                unless ( eval { $self->_checkComposerVersion(); } ) {
+                    error( "composer.phar not found. Please retry without the '-a' option." );
+                    return 1;
+                }
+                return 0 if $self->_checkRequirements( $steps, $step );
+                1;
+            }, 'Checking composer package requirements', $steps, $step++ );
+            if ( $rs ) {
+                endDetail;
+                return $rs;
+            }
+        } else {
+            $steps--;
+        }
+
+        my $rs = step( sub { $self->_getComposer( $steps, $step ); }, 'Installing composer.phar from http://getcomposer.org', $steps, $step++ );
+        $rs ||= step( sub { $self->_installPackages( $steps, $step ); }, 'Installing/Updating composer packages from Github', $steps, $step );
         endDetail;
         $rs;
     } ) if defined $main::execmode && $main::execmode eq 'setup';
@@ -127,17 +138,19 @@ sub _init
     $self;
 }
 
-=item _getComposer( )
+=item _getComposer( $steps, $step )
 
  Get composer.phar
 
+ Param int $steps Total steps
+ Param int $step Step number
  Return 0 on success, other on failure
 
 =cut
 
 sub _getComposer
 {
-    my ( $self ) = @_;
+    my ( $self, $steps, $step ) = @_;
 
     return 0 if eval { $self->_checkComposerVersion(); };
     if ( $@ ) {
@@ -151,10 +164,13 @@ sub _getComposer
 
     $rs = executeNoWait(
         sprintf( $self->{'su_cmd_pattern'}, escapeShell(
-            "curl --connect-timeout 20 --silent --show-error http://getcomposer.org/installer | "
-                . "$self->{'php_cmd_prefix'} -- --no-ansi --version=$self->{'composer_version'}"
+            "curl --connect-timeout 20 --silent --show-error http://getcomposer.org/installer | $self->{'php_cmd_prefix'} -- --no-ansi"
+                . " --version=$self->{'composer_version'}"
         )),
-        ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : sub { step( undef, $msgHeader . ( shift ) . $msgFooter, 3, 1 ); } ),
+        ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
+            ? undef
+            : sub { step( undef, $msgHeader . $_[0] . $msgFooter, $steps, $step ); }
+        ),
         sub { $stderr .= shift; }
     );
 
@@ -191,33 +207,33 @@ sub _checkComposerVersion
     TRUE;
 }
 
-=item _checkRequirements( )
+=item _checkRequirements( $steps, $step )
 
  Check package version requirements
 
+ Param int $steps Total steps
  Return boolean TRUE if all requirements are met, FALSE otherwise
 
 =cut
 
 sub _checkRequirements
 {
-    my ( $self ) = @_;
+    my ( $self, $steps, $step ) = @_;
 
     return 0 unless -d $self->{'packages_dir'};
 
-    my $msgHeader = "Checking composer package requirements\n\n";
-    my $stderr;
-
     for ( @{ $self->{'packages'} } ) {
         my ( $package, $version ) = $_ =~ /"(.*)":\s*"(.*)"/;
-        my $msg = $msgHeader . "Checking package $package ($version)\n\n";
         my $rs = executeNoWait(
             sprintf( $self->{'su_cmd_pattern'}, escapeShell(
-                "$self->{'php_cmd_prefix'} $main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar show --no-ansi " .
-                    "--no-interaction --working-dir=$self->{'packages_dir'} $package $version"
+                "$self->{'php_cmd_prefix'} $main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar show --no-ansi --no-interaction"
+                    . " --working-dir=$self->{'packages_dir'} $package $version"
             )),
-            ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : sub { step( undef, $msg, 3, 2 ); } ),
-            sub { $stderr .= shift; }
+            ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
+                ? undef
+                : sub { step( undef, "Checking composer package requirements\n\n Checking package $package ($version)\n\n", $steps, $step ); }
+            ),
+            sub {}
         );
         if ( $rs ) {
             error( sprintf( "Package %s (%s) not found. Please retry without the '-a' option.", $package, $version ));
@@ -228,17 +244,19 @@ sub _checkRequirements
     TRUE;
 }
 
-=item _installPackages( )
+=item _installPackages( $steps, $step )
 
  Install or update packages
 
+ Param int $steps Total steps
+ Param int $step Step number
  Return 0 on success, other on failure
 
 =cut
 
 sub _installPackages
 {
-    my ( $self ) = @_;
+    my ( $self, $steps, $step ) = @_;
 
     my $rs = $self->_buildComposerFile();
     return $rs if $rs;
@@ -249,11 +267,14 @@ sub _installPackages
     # Note: Any progress/status info goes to stderr (See https://github.com/composer/composer/issues/3795)
     $rs = executeNoWait(
         sprintf( $self->{'su_cmd_pattern'}, escapeShell(
-            "$self->{'php_cmd_prefix'} $main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar update --no-ansi "
-                . "--no-interaction --working-dir=$self->{'packages_dir'}"
+            "$self->{'php_cmd_prefix'} $main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar update --no-ansi --no-interaction"
+                . " --working-dir=$self->{'packages_dir'}"
         )),
         sub {},
-        ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : sub { step( undef, $msgHeader . ( shift ) . $msgFooter, 3, 3 ); } )
+        ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
+            ? undef
+            : sub { step( undef, $msgHeader . $_[0] . $msgFooter, $steps, $step ); }
+        )
     );
 
     error( "Couldn't install/update i-MSCP packages from GitHub" ) if $rs;
@@ -307,9 +328,9 @@ sub _cleanCache
     my ( $self ) = @_;
 
     eval {
-        iMSCP::Dir->new( dirname => "$main::imscpConfig{'IMSCP_HOMEDIR'}/.cache" )->remove();
-        iMSCP::Dir->new( dirname => "$main::imscpConfig{'IMSCP_HOMEDIR'}/.composer" )->remove();
-        iMSCP::Dir->new( dirname => $self->{'packages_dir'} )->remove();
+        for my $dir ( "$main::imscpConfig{'IMSCP_HOMEDIR'}/.cache", "$main::imscpConfig{'IMSCP_HOMEDIR'}/.composer", $self->{'packages_dir'} ) {
+            iMSCP::Dir->new( dirname => $dir )->remove();
+        }
     };
     if ( $@ ) {
         error( $@ );
