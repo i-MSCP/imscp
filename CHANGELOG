@@ -7,6 +7,9 @@ Git 1.5.x
 BACKEND
     Fixed: Couldn't install composer packages on fresh installation nor switch them (regression fix)
 
+DAEMON
+    Fixed: Unknown 'stack-protector-strong' GCC option - option has been introduced in GCC 4.9 (regression fix)
+
 YOUTRACK
     IP-1813 FrontEnd - Update notifier - Missing build number handling
 

@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 CC = gcc 
-CFLAGS = -g -O2 -ansi -fstack-protector-strong -Wall -Wextra -Wstrict-prototypes\
+CFLAGS = -g -O2 -ansi -fstack-protector -Wall -Wextra -Wstrict-prototypes\
          -Wmissing-prototypes -Wformat -Werror=format-security -pedantic-errors
 EXEC = imscp_daemon
 OBJECTS = daemon_cmd.o daemon_conn.o daemon_init.o daemon_main.o daemon_msg.o\
