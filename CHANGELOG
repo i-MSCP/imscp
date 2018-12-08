@@ -7,6 +7,9 @@ Git 1.5.x
 BACKEND
     Fixed: Couldn't install composer packages on fresh installation nor switch them (regression fix)
 
+YOUTRACK
+    IP-1813 FrontEnd - Update notifier - Missing build number handling
+
 ------------------------------------------------------------------------------------------------------------------------
 1.5.3 (build 2018120700)
 ------------------------------------------------------------------------------------------------------------------------

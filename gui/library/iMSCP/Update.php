@@ -57,7 +57,7 @@ abstract class iMSCP_Update
      * Apply all available update
      *
      * @abstract
-     * @return bool TRUE on success, FALSE othewise
+     * @return bool TRUE on success, FALSE otherwise
      */
     abstract public function applyUpdates();
 

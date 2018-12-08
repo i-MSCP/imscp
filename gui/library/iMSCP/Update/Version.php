@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -66,26 +66,15 @@ class iMSCP_Update_Version extends iMSCP_Update
     }
 
     /**
-     * Check for available update
-     *
-     * @return bool TRUE if an update is available, FALSE otherwise
-     * @throws Zend_Exception
-     * @throws iMSCP_Exception
-     * @throws iMSCP_Exception_Database
+     * @inheritdoc
      */
     public function isAvailableUpdate()
     {
-        if (version_compare($this->getNextUpdate(), $this->getLastAppliedUpdate(), '>')) {
-            return true;
-        }
-
-        return false;
+        return version_compare($this->getNextUpdate(), $this->getLastAppliedUpdate(), '>');
     }
 
     /**
-     * Apply all available update
-     *
-     * @return bool TRUE on success, FALSE othewise
+     * @inheritdoc
      */
     public function applyUpdates()
     {
@@ -94,13 +83,42 @@ class iMSCP_Update_Version extends iMSCP_Update
     }
 
     /**
+     * @inheritdoc
+     */
+    public function getNextUpdate()
+    {
+        $updateInfo = $this->getUpdateInfo();
+        if (is_array($updateInfo) && isset($updateInfo['tag_name'])) {
+            list($version, $build) = array_pad(explode('-', $updateInfo['tag_name']), 2, '0000000000');
+            return "$version-$build";
+        }
+
+        // We are safe here
+        return $this->getLastAppliedUpdate();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getLastAppliedUpdate()
+    {
+        $cfg = iMSCP_Registry::get('config');
+        if (stripos($cfg['Version'], 'git') === false) {
+            return $cfg['Version'] . '-' . $cfg['Build'] ?: '0000000000';
+        }
+
+        // Case where the version in use has not been officially released (eg. git branch).
+        return '999.999.999-0000000000';
+    }
+
+    /**
      * Get update info from GitHub (using the GitHub API)
      *
-     * @param bool $forceReload Whether data must be reloaded from Github
-     * @return array|bool An array containing update info on success, false on failure
      * @throws Zend_Exception
      * @throws iMSCP_Exception
      * @throws iMSCP_Exception_Database
+     * @param bool $forceReload Whether data must be reloaded from Github
+     * @return array|bool An array containing update info on success, false on failure
      */
     public function getUpdateInfo($forceReload = false)
     {
@@ -138,7 +156,7 @@ class iMSCP_Update_Version extends iMSCP_Update
             // Retrieving latest release info from GitHub
             $info = @file_get_contents('https://api.github.com/repos/i-MSCP/imscp/releases/latest', false, $context);
             if ($info === false) {
-                $this->setError(tr('Unable to get update info from Github'));
+                $this->setError(tr('Unable to get update info from GitHub'));
             } elseif (!isJson($info)) {
                 $this->setError(tr('Invalid payload received from GitHub'));
                 return false;
@@ -147,7 +165,7 @@ class iMSCP_Update_Version extends iMSCP_Update
             if (file_exists($file)) {
                 if (!@unlink($file)) {
                     $this->setError(tr('Unable to delete i-MSCP info file.'));
-                    write_log(sprintf('Unable to deelte i-MSCP info file.'), E_USER_ERROR);
+                    write_log(sprintf('Unable to delete i-MSCP info file.'), E_USER_ERROR);
                     return false;
                 }
             }
@@ -165,40 +183,5 @@ class iMSCP_Update_Version extends iMSCP_Update
 
         $this->updateInfo = json_decode($info, true);
         return $this->updateInfo;
-    }
-
-    /**
-     * Return build number for the last available i-MSCP version
-     *
-     * @return string
-     * @throws Zend_Exception
-     * @throws iMSCP_Exception
-     * @throws iMSCP_Exception_Database
-     */
-    public function getNextUpdate()
-    {
-        $updateInfo = $this->getUpdateInfo();
-        if (is_array($updateInfo) && isset($updateInfo['tag_name'])) {
-            return $updateInfo['tag_name'];
-        }
-
-        return $this->getLastAppliedUpdate(); // We are safe here
-    }
-
-    /**
-     * Returns last applied update
-     *
-     * @return string
-     * @throws Zend_Exception
-     */
-    public function getLastAppliedUpdate()
-    {
-        /** @var $cfg iMSCP_Config_Handler_File */
-        $cfg = iMSCP_Registry::get('config');
-        if (isset($cfg['Version']) && stripos($cfg['Version'], 'git') === false) {
-            return $cfg['Version'];
-        }
-
-        return '99'; // Case where the version in use has not been officially released (eg. git branch).
     }
 }
