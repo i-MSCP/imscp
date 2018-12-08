@@ -6,6 +6,8 @@ Git 1.5.x
 
 BACKEND
     Fixed: Couldn't install composer packages on fresh installation nor switch them (regression fix)
+    Fixed: SysVinit provider not initialized when called from Debian Upstart init provider (regression fix)
+    Fixed: The iMSCP::Provider::Service::Debian::Upstart class must implement the stop() method (regression fix)
 
 DAEMON
     Fixed: Unknown 'stack-protector-strong' GCC option - option has been introduced in GCC 4.9 (regression fix)

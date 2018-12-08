@@ -151,7 +151,6 @@ sub remove
 
     # Even if there is no job file, there can be still orphaned job override
     # file which we need to remove. Thus, we always process both files.
-
     for my $type ( qw/ conf override / ) {
         next unless my $jobFilePath = eval { $self->resolveJob( $job, $type, TRUE ); };
         debug( sprintf( "Removing the %s Upstart job file", $jobFilePath ));
@@ -173,12 +172,9 @@ sub start
 
     defined $job or croak( 'Missing or undefined $job parameter' );
 
-    if ( $self->hasService( $job ) ) {
-        $self->_exec( [ $COMMANDS{'start'}, $job ] ) unless $self->isRunning( $job );
-        return;
-    }
-
-    $self->SUPER::start( $job );
+    print "god god god\n";
+    print $self->isRunning( $job );
+    $self->_exec( [ $COMMANDS{'start'}, $job ] ) unless $self->isRunning( $job );
 }
 
 =item stop( $job )
@@ -193,12 +189,7 @@ sub stop
 
     defined $job or croak( 'Missing or undefined $job parameter' );
 
-    if ( $self->hasService( $job ) ) {
-        $self->_exec( [ $COMMANDS{'stop'}, $job ] ) if $self->isRunning( $job );
-        return;
-    }
-
-    $self->SUPER::stop( $job );
+    $self->_exec( [ $COMMANDS{'stop'}, $job ] ) if $self->isRunning( $job );
 }
 
 =item restart( $job )
@@ -213,17 +204,7 @@ sub restart
 
     defined $job or croak( 'Missing or undefined $job parameter' );
 
-    if ( $self->hasService( $job ) ) {
-        if ( $self->isRunning( $job ) ) {
-            $self->_exec( [ $COMMANDS{'restart'}, $job ] );
-        } else {
-            $self->start( $job );
-        }
-
-        return;
-    }
-
-    $self->SUPER::restart( $job );
+    $self->isRunning( $job ) ? $self->_exec( [ $COMMANDS{'restart'}, $job ] ) : $self->_exec( [ $COMMANDS{'start'}, $job ] );
 }
 
 =item reload( $job )
@@ -238,22 +219,16 @@ sub reload
 
     defined $job or croak( 'Missing or undefined $job parameter' );
 
-    if ( $self->hasService( $job ) ) {
-        if ( $self->isRunning( $job ) ) {
-            # We need to catch STDERR as we do do want croak on failure
-            my $ret = $self->_exec( [ $COMMANDS{'reload'}, $job ], undef, \my $stderr );
-
-            # If the reload action failed, we try a restart instead. This cover
-            # case where the reload action is not supported.
-            $self->restart( $job ) unless $ret;
-            return;
-        }
-
-        $self->start( $job );
+    if ( $self->isRunning( $job ) ) {
+        # We need to catch STDERR as we do do want croak on failure
+        my $ret = $self->_exec( [ $COMMANDS{'reload'}, $job ], undef, \my $stderr );
+        # If the reload action failed, we try a restart instead. This cover
+        # case where the reload action is not supported.
+        $self->restart( $job ) unless $ret;
         return;
     }
 
-    $self->SUPER::reload( $job );
+    $self->start( $job );
 }
 
 =item isRunning( $job )
@@ -268,12 +243,8 @@ sub isRunning
 
     defined $job or croak( 'Missing or undefined $job parameter' );
 
-    if ( $self->hasService( $job ) ) {
-        $self->_exec( [ $COMMANDS{'status'}, $job ], \my $stdout );
-        return $stdout =~ /start/;
-    }
-
-    $self->SUPER::isRunning( $job );
+    $self->_exec( [ $COMMANDS{'status'}, $job ], \my $stdout );
+    return $stdout =~ /start/;
 }
 
 =item hasService( $job )
@@ -837,7 +808,7 @@ sub _readJobFile
 
     defined $job or croak( 'Missing or undefined $job parameter' );
 
-    my $fileC = iMSCP::File->new( filename => $self->resolveJob( $job ))->get();
+    my $fileC = iMSCP::File->new( filename => $self->resolveJob( $job, undef, TRUE ))->get();
     defined $fileC or croak( getMessageByType( 'error', { amount => 1, remove => TRUE } ));
     $fileC;
 }
@@ -857,7 +828,7 @@ sub _readJobOverrideFile
 
     defined $job or croak( 'Missing or undefined $job parameter' );
 
-    my $filepath = eval { $self->resolveJob( $job, 'override' ); };
+    my $filepath = eval { $self->resolveJob( $job, 'override', TRUE ); };
     return '' unless defined $filepath;
 
     my $fileC = iMSCP::File->new( filename => $filepath )->get();

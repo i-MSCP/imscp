@@ -53,8 +53,7 @@ sub isEnabled
 
     defined $job or croak( 'parameter $job is not defined' );
 
-    return $self->SUPER::isEnabled( $job ) if $self->hasService( $job );
-
+    return $self->SUPER::isEnabled( $job ) if $self->SUPER::hasService( $job );
     $self->iMSCP::Provider::Service::Debian::SysVinit::isEnabled( $job );
 }
 
@@ -70,8 +69,13 @@ sub enable
 
     defined $job or croak( 'parameter $job is not defined' );
 
-    $self->SUPER::enable( $job ) if $self->hasService( $job );
-    $self->iMSCP::Provider::Service::Debian::SysVinit::enable( $job ) if $self->iMSCP::Provider::Service::Debian::SysVinit::hasService( $job );
+    if ( $self->SUPER::hasService( $job ) ) {
+        $self->SUPER::enable( $job );
+        $self->iMSCP::Provider::Service::Debian::SysVinit::enable( $job ) if $self->iMSCP::Provider::Service::Debian::SysVinit::hasService( $job );
+        return;
+    }
+
+    $self->iMSCP::Provider::Service::Debian::SysVinit::enable( $job );
 }
 
 =item disable( $job )
@@ -86,8 +90,13 @@ sub disable
 
     defined $job or croak( 'parameter $job is not defined' );
 
-    $self->SUPER::disable( $job ) if $self->hasService( $job );
-    $self->iMSCP::Provider::Service::Debian::SysVinit::disable( $job ) if $self->iMSCP::Provider::Service::Debian::SysVinit::hasService( $job );
+    if ( $self->SUPER::hasService( $job ) ) {
+        $self->SUPER::disable( $job );
+        $self->iMSCP::Provider::Service::Debian::SysVinit::disable( $job ) if $self->iMSCP::Provider::Service::Debian::SysVinit::hasService( $job );
+        return;
+    }
+
+    $self->iMSCP::Provider::Service::Debian::SysVinit::disable( $job );
 }
 
 =item remove( $job )
@@ -106,6 +115,105 @@ sub remove
     $self->iMSCP::Provider::Service::Debian::SysVinit::remove( $job );
 }
 
+=item start( $job )
+
+ See iMSCP::Provider::Service::Interface::start()
+
+=cut
+
+sub start
+{
+    my ( $self, $job ) = @_;
+
+    defined $job or croak( 'Missing or undefined $job parameter' );
+
+    if ( $self->SUPER::hasService( $job ) ) {
+        $self->SUPER::start( $job );
+        return;
+    }
+
+    $self->iMSCP::Provider::Service::Debian::SysVinit::start( $job );
+}
+
+=item stop( $job )
+
+ See iMSCP::Provider::Service::Interface::stop()
+
+=cut
+
+sub stop
+{
+    my ( $self, $job ) = @_;
+
+    defined $job or croak( 'Missing or undefined $job parameter' );
+
+    if ( $self->SUPER::hasService( $job ) ) {
+        $self->SUPER::stop( $job );
+        return;
+    }
+
+    $self->iMSCP::Provider::Service::Debian::SysVinit::stop( $job );
+}
+
+=item restart( $job )
+
+ See iMSCP::Provider::Service::Interface::restart()
+
+=cut
+
+sub restart
+{
+    my ( $self, $job ) = @_;
+
+    defined $job or croak( 'Missing or undefined $job parameter' );
+
+    if ( $self->SUPER::hasService( $job ) ) {
+        $self->SUPER::restart( $job );
+        return;
+    }
+
+    $self->iMSCP::Provider::Service::Debian::SysVinit::restart( $job );
+}
+
+=item reload( $job )
+
+ See iMSCP::Provider::Service::Interface::reload()
+
+=cut
+
+sub reload
+{
+    my ( $self, $job ) = @_;
+
+    defined $job or croak( 'Missing or undefined $job parameter' );
+
+    if ( $self->SUPER::hasService( $job ) ) {
+        $self->SUPER::reload( $job );
+        return;
+    }
+
+    $self->iMSCP::Provider::Service::Debian::SysVinit::reload( $job );
+}
+
+=item isRunning( $job )
+
+ See iMSCP::Provider::Service::Interface::isRunning()
+
+=cut
+
+sub isRunning
+{
+    my ( $self, $job ) = @_;
+
+    defined $job or croak( 'Missing or undefined $job parameter' );
+
+    if ( $self->SUPER::hasService( $job ) ) {
+        return $self->SUPER::isRunning( $job );
+    }
+
+    $self->iMSCP::Provider::Service::Debian::SysVinit::isRunning( $job );
+}
+
 =item hasService( $job )
 
  See iMSCP::Provider::Service::Interface::hasService()
@@ -119,6 +227,26 @@ sub hasService
     defined $job or croak( 'parameter $job is not defined' );
 
     $self->SUPER::hasService( $job ) || $self->iMSCP::Provider::Service::Debian::SysVinit::hasService( $job );
+}
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init( )
+
+ See iMSCP::Provider::Service::Debian::SysVinit::_init()
+
+=cut
+
+sub _init
+{
+    my ( $self ) = @_;
+
+    # Make sure to initialize underlying SysVinit init provider (multiple inheritance)
+    $self->iMSCP::Provider::Service::Debian::SysVinit::_init();
 }
 
 =back
