@@ -110,27 +110,24 @@ sub _init
             return 1;
         }
 
-        startDetail;
-        my ( $steps, $step ) = ( 3, 1 );
         if ( $skipPackagesUpdate ) {
+            startDetail;
             my $rs = step( sub {
-                unless ( eval { $self->_checkComposerVersion(); } ) {
-                    error( "composer.phar not found. Please retry without the '-a' option." );
-                    return 1;
-                }
-                return 0 if $self->_checkRequirements( $steps, $step );
+                return 0 if eval { $self->_checkComposerVersion(); };
+                error( "composer.phar not found. Please retry without the '-a' option." );
                 1;
-            }, 'Checking composer package requirements', $steps, $step++ );
-            if ( $rs ) {
-                endDetail;
-                return $rs;
-            }
-        } else {
-            $steps--;
+            }, 'Checking composer.phar version', 2, 1 );
+            $rs ||= step( sub {
+                return 0 if $self->_checkRequirements( 2, 2 );
+                1;
+            }, 'Checking composer package requirements', 2, 2 );
+            endDetail;
+            return $rs;
         }
 
-        my $rs = step( sub { $self->_getComposer( $steps, $step ); }, 'Installing composer.phar from http://getcomposer.org', $steps, $step++ );
-        $rs ||= step( sub { $self->_installPackages( $steps, $step ); }, 'Installing/Updating composer packages from Github', $steps, $step );
+        startDetail;
+        my $rs = step( sub { $self->_getComposer( 1, 1 ); }, 'Installing composer.phar from http://getcomposer.org', 2, 1 );
+        $rs ||= step( sub { $self->_installPackages( 2, 2 ); }, 'Installing/Updating composer packages from Github', 2, 2 );
         endDetail;
         $rs;
     } ) if defined $main::execmode && $main::execmode eq 'setup';
