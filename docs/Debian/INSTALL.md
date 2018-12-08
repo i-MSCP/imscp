@@ -2,7 +2,7 @@
 
 ## Supported Debian versions
 
-- Debian Jessie (8.x),
+- Debian Jessie (8.x)
 - Debian Stretch (9.x)
 
 ## Installation
