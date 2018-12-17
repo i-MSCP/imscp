@@ -70,6 +70,7 @@
             >
                 php5.6-common
             </package>
+            <package post_install_tasks="phpenmod bz2">php5.6-bz2</package>
             <package post_install_tasks="phpenmod curl">php5.6-curl</package>
             <package post_install_tasks="phpenmod gd">php5.6-gd</package>
             <package post_install_tasks="phpenmod gmp">php5.6-gmp</package>
@@ -109,6 +110,7 @@
             >
                 php7.0-common
             </package>
+            <package post_install_tasks="phpenmod bz2">php7.0-bz2</package>
             <package post_install_tasks="phpenmod curl">php7.0-curl</package>
             <package post_install_tasks="phpenmod gd">php7.0-gd</package>
             <package post_install_tasks="phpenmod gmp">php7.0-gmp</package>
@@ -149,6 +151,7 @@
             >
                 php7.1-common
             </package>
+            <package post_install_tasks="phpenmod bz2">php7.1-bz2</package>
             <package post_install_tasks="phpenmod curl">php7.1-curl</package>
             <package post_install_tasks="phpenmod gd">php7.1-gd</package>
             <package post_install_tasks="phpenmod gmp">php7.1-gmp</package>
