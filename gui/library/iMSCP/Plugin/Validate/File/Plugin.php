@@ -24,7 +24,6 @@
  * Class iMSCP_Validate_File_Plugin
  *
  * Validate an i-MSCP plugin archive
- *
  */
 class iMSCP_Plugin_Validate_File_Plugin extends Zend_Validate_Abstract
 {
@@ -147,19 +146,19 @@ class iMSCP_Plugin_Validate_File_Plugin extends Zend_Validate_Abstract
             return $this->_throw($file, self::NOT_PLUGIN);
         }
 
-        if ($file['type'] === 'application/zip') {
+        if ($file['type'] == 'application/zip') {
             if (!extension_loaded('zip')) {
-                throw new Zend_Validate_Exception('This validator needs the zip and bz2 PHP extensions');
+                throw new Zend_Validate_Exception(tr('Missing %s PHP extension.', 'zip'));
             }
 
             $arch = new ZipArchive();
             $ret = $arch->open($value);
 
             if ($ret !== true) {
-                throw new Zend_Validate_Exception($this->_zipErrorString($ret));
+                throw new Zend_Validate_Exception(tr('Error while opening the %s plugin archive.', $name));
             }
 
-            if (false == $arch->locateName("$name/$name.php") || false == ($info = $arch->getFromName("$name/info.php"))) {
+            if (false == @$arch->locateName("$name/$name.php") || false == ($info = @$arch->getFromName("$name/info.php"))) {
                 return $this->_throw($file, self::NOT_PLUGIN);
             }
 
@@ -168,31 +167,31 @@ class iMSCP_Plugin_Validate_File_Plugin extends Zend_Validate_Abstract
             try {
                 Zend_Loader::loadClass('Archive_Tar');
             } catch (Zend_Exception $e) {
-                throw new Zend_Validate_Exception('This filter needs PEARs Archive_Tar', 0, $e);
+                throw new Zend_Validate_Exception(tr('Missing PEAR Archive_Tar.'));
             }
-
+            
             if (!extension_loaded($file['type'] == 'application/x-gzip' ? 'zlib' : 'bz2')) {
-                throw new Zend_Validate_Exception(sprintf(
-                    'This validator needs the %s PHP extension', $file['type'] == 'application/x-gzip' ? 'zlib' : 'bz2'
+                throw new Zend_Validate_Exception(tr('Missing %s PHP extension.', $file['type'] == 'application/x-gzip' ? 'zlib' : 'bz2'
                 ));
             }
 
-            $arch = new Archive_Tar($value);
+            $arch = new Archive_Tar($value, $file['type'] == 'application/x-gzip' ? 'gz' : 'bz2');
             if (false === $arch->extractInString("$name/$name.php") || false == ($info = $arch->extractInString("$name/info.php"))) {
                 return $this->_throw($file, self::NOT_PLUGIN);
             }
         }
 
-        return $this->_checkInfo(eval('?>' . $info), $name);
+        return $this->_checkPlugin($name, eval('?>' . $info));
     }
 
     /**
-     * Check plugin info file
-     * @param array $info
-     * @param string $name
-     * @return bool|false
+     * Internal method to check plugin info file
+     *
+     * @param string $name Plugin name
+     * @param array $info Plugin info
+     * @return boolean
      */
-    protected function _checkInfo($info, $name)
+    protected function _checkPlugin($name, $info)
     {
         if (!is_array($info)) {
             return $this->_throw(['name' => $name], self::NOT_PLUGIN);
@@ -212,7 +211,7 @@ class iMSCP_Plugin_Validate_File_Plugin extends Zend_Validate_Abstract
                     }
                     break;
                 case 'version':
-                    if (!is_string($info[$key]) || !preg_match('/\d+\.\d+\.\d+/', $info['version'])) {
+                    if (!is_string($info[$key]) || !preg_match('/^\d+\.\d+\.\d+$/', $info['version'])) {
                         return $this->_throw(['name' => 'version'], self::INVALID_PLUGIN_INFO);
                     }
                     break;
@@ -222,36 +221,39 @@ class iMSCP_Plugin_Validate_File_Plugin extends Zend_Validate_Abstract
                     }
                     break;
                 case 'require_api':
-                    if (!is_string($info[$key]) || !preg_match('/\d+\.\d+\.\d+/', $info['require_api'])) {
+                    if (!is_string($info[$key]) || !preg_match('/^\d+\.\d+\.\d+$/', $info['require_api'])) {
                         return $this->_throw(['name' => 'require_api'], self::INVALID_PLUGIN_INFO);
                     }
 
                     if (version_compare($info['require_api'], $pm->pluginGetApiVersion(), '>')) {
-                        return $this->_throw(['name' => 'require_api'], self::NOT_COMPATIBLE);
+                        return $this->_throw(['name' => $name], self::NOT_COMPATIBLE);
                     }
             }
         }
 
-        if ($pm->pluginIsKnown($name)) {
-            $pluginInfo = $pm->pluginGetInfo($info['name']);
-            if (version_compare($info['version'] . '.' . $info['build'], $pluginInfo['version'] . '.' . $pluginInfo['build'], '<')) {
-                return $this->_throw(['name' => $name], self::NOT_DOWNGRADABLE);
-            }
+        if (!$pm->pluginIsKnown($name)) {
+            return true;
+        }
 
-            if ($pm->pluginIsProtected($info['name'])) {
-                return $this->_throw(['name' => $name], self::NOT_ALLOWED_PROTECTED);
-            }
+        $pluginInfo = $pm->pluginGetInfo($name);
 
-            if (!in_array($pm->pluginGetStatus($info['name']), ['uninstalled', 'disabled', 'enabled'])) {
-                return $this->_throw(['name' => $name], self::NOT_ALLOWED_PENDING);
-            }
+        if (version_compare($info['version'] . '.' . $info['build'], $pluginInfo['version'] . '.' . $pluginInfo['build'], '<')) {
+            return $this->_throw(['name' => $name], self::NOT_DOWNGRADABLE);
+        }
+
+        if ($pm->pluginIsProtected($info['name'])) {
+            return $this->_throw(['name' => $name], self::NOT_ALLOWED_PROTECTED);
+        }
+
+        if (!in_array($pm->pluginGetStatus($info['name']), ['uninstalled', 'disabled', 'enabled'])) {
+            return $this->_throw(['name' => $name], self::NOT_ALLOWED_PENDING);
         }
 
         return true;
     }
 
     /**
-     * Throws an error of the given type
+     * Internal method to throws an error of the given type
      *
      * @param  array $file
      * @param  string $errorType
@@ -265,65 +267,5 @@ class iMSCP_Plugin_Validate_File_Plugin extends Zend_Validate_Abstract
 
         $this->_error($errorType);
         return false;
-    }
-
-    /**
-     * Returns the proper string based on the given error constant
-     *
-     * @param string $error
-     * @return string
-     */
-    protected function _zipErrorString($error)
-    {
-        switch ($error) {
-            case ZipArchive::ER_MULTIDISK :
-                return 'Multidisk ZIP Archives not supported';
-            case ZipArchive::ER_RENAME :
-                return 'Failed to rename the temporary file for ZIP';
-            case ZipArchive::ER_CLOSE :
-                return 'Failed to close the ZIP Archive';
-            case ZipArchive::ER_SEEK :
-                return 'Failure while seeking the ZIP Archive';
-            case ZipArchive::ER_READ :
-                return 'Failure while reading the ZIP Archive';
-            case ZipArchive::ER_WRITE :
-                return 'Failure while writing the ZIP Archive';
-            case ZipArchive::ER_CRC :
-                return 'CRC failure within the ZIP Archive';
-            case ZipArchive::ER_ZIPCLOSED :
-                return 'ZIP Archive already closed';
-            case ZipArchive::ER_NOENT :
-                return 'No such file within the ZIP Archive';
-            case ZipArchive::ER_EXISTS :
-                return 'ZIP Archive already exists';
-            case ZipArchive::ER_OPEN :
-                return 'Can not open ZIP Archive';
-            case ZipArchive::ER_TMPOPEN :
-                return 'Failure creating temporary ZIP Archive';
-            case ZipArchive::ER_ZLIB :
-                return 'ZLib Problem';
-            case ZipArchive::ER_MEMORY :
-                return 'Memory allocation problem while working on a ZIP Archive';
-            case ZipArchive::ER_CHANGED :
-                return 'ZIP Entry has been changed';
-            case ZipArchive::ER_COMPNOTSUPP :
-                return 'Compression method not supported within ZLib';
-            case ZipArchive::ER_EOF :
-                return 'Premature EOF within ZIP Archive';
-            case ZipArchive::ER_INVAL :
-                return 'Invalid argument for ZLIB';
-            case ZipArchive::ER_NOZIP :
-                return 'Given file is no zip archive';
-            case ZipArchive::ER_INTERNAL :
-                return 'Internal error while working on a ZIP Archive';
-            case ZipArchive::ER_INCONS :
-                return 'Inconsistent ZIP archive';
-            case ZipArchive::ER_REMOVE :
-                return 'Can not remove ZIP Archive';
-            case ZipArchive::ER_DELETED :
-                return 'ZIP Entry has been deleted';
-            default :
-                return 'Unknown error within ZIP Archive';
-        }
     }
 }
