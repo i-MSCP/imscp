@@ -29,7 +29,8 @@ class iMSCP_Plugin_Filter_File_Plugin implements Zend_Filter_Interface
      * @var array Validator options
      */
     protected $_options = [
-        'destination' => NULL
+        'destination' => NULL,
+        'magicFile'   => NULL
     ];
 
     /**
@@ -44,6 +45,11 @@ class iMSCP_Plugin_Filter_File_Plugin implements Zend_Filter_Interface
         } elseif (!is_array($options)) {
             $options = func_get_args();
             $temp['destination'] = array_shift($options);
+
+            if (!empty($options)) {
+                $temp['magicFile'] = array_shift($options);
+            }
+
             $options = $temp;
         }
 
@@ -62,7 +68,7 @@ class iMSCP_Plugin_Filter_File_Plugin implements Zend_Filter_Interface
     }
 
     /**
-     * Sets the options for this validator
+     * Sets the options for this filter
      *
      * @param array $options
      * @return iMSCP_Plugin_Filter_File_Plugin
@@ -73,11 +79,15 @@ class iMSCP_Plugin_Filter_File_Plugin implements Zend_Filter_Interface
             $this->setDestination($options['destination']);
         }
 
+        if (array_key_exists('magicFile', $options)) {
+            $this->setDestination($options['magicFile']);
+        }
+
         return $this;
     }
 
     /**
-     * Returns destination option
+     * Returns the 'destination' option
      *
      * @return string
      */
@@ -87,14 +97,14 @@ class iMSCP_Plugin_Filter_File_Plugin implements Zend_Filter_Interface
     }
 
     /**
-     * Set the destination option
+     * Set the 'destination' option
      *
      * @param string $destination
      * @return iMSCP_Plugin_Filter_File_Plugin
      */
     public function setDestination($destination)
     {
-        if ($destination === NULL) {
+        if (NULL === $destination) {
             $destination = GUI_ROOT_DIR . DIRECTORY_SEPARATOR . 'plugins';
         }
 
@@ -110,12 +120,45 @@ class iMSCP_Plugin_Filter_File_Plugin implements Zend_Filter_Interface
     }
 
     /**
+     * Returns 'magicFile' option
+     *
+     * @return string|null
+     */
+    public function getMagicFile()
+    {
+        return $this->_options['magicFile'];
+    }
+
+    /**
+     * Set the 'magicFile' option
+     *
+     * @param null|string $magicFile
+     * @return iMSCP_Plugin_Filter_File_Plugin
+     */
+    public function setMagicFile($magicFile)
+    {
+        if (NULL === $magicFile) {
+            $this->_options['magicFile'] = NULL;
+        }
+
+        $magicFile = (string)$magicFile;
+
+        if (!is_file($magicFile) || !is_readable($magicFile)) {
+            throw new Zend_Filter_Exception(tr("Invalid 'magicFile' option: '%s' is not a file or is not readable.", $magicFile));
+        }
+
+        $this->_options['magicFile'] = utils_normalizePath($magicFile);
+
+        return $this;
+    }
+
+    /**
      * @inheritdoc
      * @return string
      */
     public function filter($value)
     {
-        $umask = umask(027);
+        umask(027);
         $name = explode('.', basename($value))[0];
         $destination = $this->getDestination();
 
@@ -172,7 +215,6 @@ class iMSCP_Plugin_Filter_File_Plugin implements Zend_Filter_Interface
             throw $e;
         }
 
-        umask($umask);
         @unlink($value);
         @utils_removeDir($destination . DIRECTORY_SEPARATOR . $name . '-old');
         iMSCP_Utility_OpcodeCache::clearAllActive();
@@ -191,8 +233,8 @@ class iMSCP_Plugin_Filter_File_Plugin implements Zend_Filter_Interface
         if (class_exists('finfo', false)) {
             $const = defined('FILEINFO_MIME_TYPE') ? FILEINFO_MIME_TYPE : FILEINFO_MIME;
 
-            if (!empty($value['options']['magicFile'])) {
-                $mime = @finfo_open($const, $value['options']['magicFile']);
+            if (!empty($this->getMagicFile())) {
+                $mime = @finfo_open($const, $this->getMagicFile());
             }
 
             if (empty($mime)) {
