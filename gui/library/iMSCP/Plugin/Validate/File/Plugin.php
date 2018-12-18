@@ -35,7 +35,6 @@ class iMSCP_Plugin_Validate_File_Plugin extends Zend_Validate_Abstract
     const NOT_COMPATIBLE = 'pluginNotCompatible';
     const NOT_ALLOWED_PROTECTED = 'pluginIsProtected';
     const NOT_ALLOWED_PENDING = 'pluginHasPendingTask';
-    const NOT_DOWNGRADABLE = 'pluginNotDowngradable';
     const MISSING_PLUGIN_INFO = 'pluginMissingInfo';
     const INVALID_PLUGIN_INFO = 'invalidPluginInfo';
 
@@ -48,7 +47,6 @@ class iMSCP_Plugin_Validate_File_Plugin extends Zend_Validate_Abstract
         self::NOT_COMPATIBLE        => "Plugin '%value%' is not compatible with this i-MSCP version.",
         self::NOT_ALLOWED_PROTECTED => "Plugin '%value%' cannot be updated because it is protected.",
         self::NOT_ALLOWED_PENDING   => "Plugin '%value%' cannot be updated due to pending task.",
-        self::NOT_DOWNGRADABLE      => "Plugin '%value%' cannot be downgraded.",
         self::MISSING_PLUGIN_INFO   => "Plugin '%value%' info field is missing.",
         self::INVALID_PLUGIN_INFO   => "Plugin '%value%' info field is invalid.",
     ];
@@ -169,10 +167,9 @@ class iMSCP_Plugin_Validate_File_Plugin extends Zend_Validate_Abstract
             } catch (Zend_Exception $e) {
                 throw new Zend_Validate_Exception(tr('Missing PEAR Archive_Tar.'));
             }
-            
+
             if (!extension_loaded($file['type'] == 'application/x-gzip' ? 'zlib' : 'bz2')) {
-                throw new Zend_Validate_Exception(tr('Missing %s PHP extension.', $file['type'] == 'application/x-gzip' ? 'zlib' : 'bz2'
-                ));
+                throw new Zend_Validate_Exception(tr('Missing %s PHP extension.', $file['type'] == 'application/x-gzip' ? 'zlib' : 'bz2'));
             }
 
             $arch = new Archive_Tar($value, $file['type'] == 'application/x-gzip' ? 'gz' : 'bz2');
@@ -185,16 +182,16 @@ class iMSCP_Plugin_Validate_File_Plugin extends Zend_Validate_Abstract
     }
 
     /**
-     * Internal method to check plugin info file
+     * Internal method to check plugin
      *
-     * @param string $name Plugin name
+     * @param string $pluginName Plugin name
      * @param array $info Plugin info
      * @return boolean
      */
-    protected function _checkPlugin($name, $info)
+    protected function _checkPlugin($pluginName, $info)
     {
         if (!is_array($info)) {
-            return $this->_throw(['name' => $name], self::NOT_PLUGIN);
+            return $this->_throw(['name' => $pluginName], self::NOT_PLUGIN);
         }
 
         $pm = $this->getPluginManager();
@@ -206,7 +203,7 @@ class iMSCP_Plugin_Validate_File_Plugin extends Zend_Validate_Abstract
 
             switch ($key) {
                 case 'name':
-                    if (!is_string($info[$key]) || $info['name'] !== $name) {
+                    if (!is_string($info[$key]) || $info['name'] !== $pluginName) {
                         return $this->_throw(['name' => 'name'], self::INVALID_PLUGIN_INFO);
                     }
                     break;
@@ -224,29 +221,21 @@ class iMSCP_Plugin_Validate_File_Plugin extends Zend_Validate_Abstract
                     if (!is_string($info[$key]) || !preg_match('/^\d+\.\d+\.\d+$/', $info['require_api'])) {
                         return $this->_throw(['name' => 'require_api'], self::INVALID_PLUGIN_INFO);
                     }
-
-                    if (version_compare($info['require_api'], $pm->pluginGetApiVersion(), '>')) {
-                        return $this->_throw(['name' => $name], self::NOT_COMPATIBLE);
-                    }
             }
         }
 
-        if (!$pm->pluginIsKnown($name)) {
+        $pm->pluginCheckCompat($pluginName, $info);
+
+        if (!$pm->pluginIsKnown($pluginName)) {
             return true;
         }
 
-        $pluginInfo = $pm->pluginGetInfo($name);
-
-        if (version_compare($info['version'] . '.' . $info['build'], $pluginInfo['version'] . '.' . $pluginInfo['build'], '<')) {
-            return $this->_throw(['name' => $name], self::NOT_DOWNGRADABLE);
-        }
-
         if ($pm->pluginIsProtected($info['name'])) {
-            return $this->_throw(['name' => $name], self::NOT_ALLOWED_PROTECTED);
+            return $this->_throw(['name' => $pluginName], self::NOT_ALLOWED_PROTECTED);
         }
 
         if (!in_array($pm->pluginGetStatus($info['name']), ['uninstalled', 'disabled', 'enabled'])) {
-            return $this->_throw(['name' => $name], self::NOT_ALLOWED_PENDING);
+            return $this->_throw(['name' => $pluginName], self::NOT_ALLOWED_PENDING);
         }
 
         return true;
