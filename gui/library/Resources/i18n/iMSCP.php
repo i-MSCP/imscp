@@ -27,7 +27,7 @@ tr('_: Localised language');
 tr('Your i-MSCP version is not compatible with this plugin. Try with a newer version.');
 
 // iMSCP/Validate/File/Plugin.php
-tr("File '%value%' doesn't look like an i-MSCP plugin archive");
+tr("File '%value%' doesn't look like an i-MSCP plugin archive.");
 tr("File '%value%' is not readable or does not exist.");
 tr("Plugin '%value%' is not compatible with this i-MSCP version.");
 tr("Plugin '%value%' cannot be updated because it is protected.");
