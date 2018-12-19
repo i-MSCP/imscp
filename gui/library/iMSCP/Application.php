@@ -894,16 +894,15 @@ class Application
             return;
         }
 
-        /** @var \iMSCP_Plugin_Manager $pluginManager */
-        $pluginManager = Registry::set('pluginManager', new PluginManager($this->getConfig()['PLUGINS_DIR']));
-
-        foreach ($pluginManager->pluginGetList() as $pluginName) {
-            if ($pluginManager->pluginHasError($pluginName)) {
+        /** @var \iMSCP_Plugin_Manager $pm */
+        $pm = Registry::set('pluginManager', new PluginManager());
+        foreach ($pm->pluginGetList() as $plugin) {
+            if ($pm->pluginHasError($plugin)) {
                 continue;
             }
 
-            if (!$pluginManager->pluginLoad($pluginName)) {
-                throw new iMSCPException(sprintf("Couldn't load plugin: %s", $pluginName));
+            if (!$pm->pluginLoad($plugin)) {
+                throw new iMSCPException(sprintf("Couldn't load plugin: %s", $plugin));
             }
         }
     }

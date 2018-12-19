@@ -22,8 +22,6 @@
 
 /**
  * Class iMSCP_Validate_File_Plugin
- *
- * Validate an i-MSCP plugin archive
  */
 class iMSCP_Plugin_Validate_File_Plugin extends Zend_Validate_Abstract
 {
@@ -55,7 +53,7 @@ class iMSCP_Plugin_Validate_File_Plugin extends Zend_Validate_Abstract
      * @var array Validator options
      */
     protected $_options = [
-        'plugin_manager' => NULL,
+        'plugin_manager' => NULL
     ];
 
     /**
@@ -67,7 +65,7 @@ class iMSCP_Plugin_Validate_File_Plugin extends Zend_Validate_Abstract
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } else if (!is_array($options)) {
+        } elseif (!is_array($options)) {
             $options = func_get_args();
             $temp['plugin_manager'] = array_shift($options);
             $options = $temp;
@@ -135,14 +133,14 @@ class iMSCP_Plugin_Validate_File_Plugin extends Zend_Validate_Abstract
     public function isValid($value, $file = NULL)
     {
         if (!Zend_Loader::isReadable($value)) {
-            return $this->_throw($file, self::NOT_READABLE);
+            return $this->_throw($file['name'], self::NOT_READABLE);
+        }
+
+        if (!in_array($file['type'], ['application/zip', 'application/x-gzip', 'application/x-bzip2'])) {
+            return $this->_throw($file['name'], self::NOT_PLUGIN);
         }
 
         $name = explode('.', $file['name'])[0];
-
-        if (!in_array($file['type'], ['application/zip', 'application/x-gzip', 'application/x-bzip2'])) {
-            return $this->_throw($file, self::NOT_PLUGIN);
-        }
 
         if ($file['type'] == 'application/zip') {
             if (!extension_loaded('zip')) {
@@ -150,14 +148,13 @@ class iMSCP_Plugin_Validate_File_Plugin extends Zend_Validate_Abstract
             }
 
             $arch = new ZipArchive();
-            $ret = $arch->open($value);
 
-            if ($ret !== true) {
+            if (true !== $arch->open($value)) {
                 throw new Zend_Validate_Exception(tr('Error while opening the %s plugin archive.', $name));
             }
 
-            if (false == @$arch->locateName("$name/$name.php") || false == ($info = @$arch->getFromName("$name/info.php"))) {
-                return $this->_throw($file, self::NOT_PLUGIN);
+            if (false === @$arch->locateName("$name/$name.php") || false == ($info = @$arch->getFromName("$name/info.php"))) {
+                return $this->_throw($file['name'], self::NOT_PLUGIN);
             }
 
             $arch->close();
@@ -174,7 +171,7 @@ class iMSCP_Plugin_Validate_File_Plugin extends Zend_Validate_Abstract
 
             $arch = new Archive_Tar($value, $file['type'] == 'application/x-gzip' ? 'gz' : 'bz2');
             if (false === $arch->extractInString("$name/$name.php") || false == ($info = $arch->extractInString("$name/info.php"))) {
-                return $this->_throw($file, self::NOT_PLUGIN);
+                return $this->_throw($file['name'], self::NOT_PLUGIN);
             }
         }
 
@@ -191,35 +188,40 @@ class iMSCP_Plugin_Validate_File_Plugin extends Zend_Validate_Abstract
     protected function _checkPlugin($pluginName, $info)
     {
         if (!is_array($info)) {
-            return $this->_throw(['name' => $pluginName], self::NOT_PLUGIN);
+            return $this->_throw($pluginName, self::NOT_PLUGIN);
         }
 
         $pm = $this->getPluginManager();
 
-        foreach (['name', 'desc', 'version', 'build', 'require_api'] as $key) {
-            if (!isset($info[$key])) {
-                return $this->_throw(['name' => $key], self::MISSING_PLUGIN_INFO);
+        foreach (['name', 'desc', 'version', 'build', 'require_api'] as $field) {
+            if (!isset($info[$field])) {
+                return $this->_throw($field, self::MISSING_PLUGIN_INFO);
             }
 
-            switch ($key) {
+            switch ($field) {
                 case 'name':
-                    if (!is_string($info[$key]) || $info['name'] !== $pluginName) {
-                        return $this->_throw(['name' => 'name'], self::INVALID_PLUGIN_INFO);
+                    if (!is_string($info[$field]) || $info[$field] !== $pluginName) {
+                        return $this->_throw($field, self::INVALID_PLUGIN_INFO);
+                    }
+                    break;
+                case 'desc':
+                    if (!is_string($info[$field])) {
+                        return $this->_throw($field, self::INVALID_PLUGIN_INFO);
                     }
                     break;
                 case 'version':
-                    if (!is_string($info[$key]) || !preg_match('/^\d+\.\d+\.\d+$/', $info['version'])) {
-                        return $this->_throw(['name' => 'version'], self::INVALID_PLUGIN_INFO);
+                    if (!is_string($info[$field]) || !preg_match('/^\d+\.\d+\.\d+$/', $info[$field])) {
+                        return $this->_throw($field, self::INVALID_PLUGIN_INFO);
                     }
                     break;
                 case 'build':
-                    if (!is_string($info[$key]) || !preg_match('/^\d{10}$/', $info['build'])) {
-                        return $this->_throw(['name' => 'build'], self::INVALID_PLUGIN_INFO);
+                    if (!is_string($info[$field]) || !preg_match('/^\d{10}$/', $info[$field])) {
+                        return $this->_throw($field, self::INVALID_PLUGIN_INFO);
                     }
                     break;
                 case 'require_api':
-                    if (!is_string($info[$key]) || !preg_match('/^\d+\.\d+\.\d+$/', $info['require_api'])) {
-                        return $this->_throw(['name' => 'require_api'], self::INVALID_PLUGIN_INFO);
+                    if (!is_string($info[$field]) || !preg_match('/^\d+\.\d+\.\d+$/', $info[$field])) {
+                        return $this->_throw($field, self::INVALID_PLUGIN_INFO);
                     }
             }
         }
@@ -231,11 +233,11 @@ class iMSCP_Plugin_Validate_File_Plugin extends Zend_Validate_Abstract
         }
 
         if ($pm->pluginIsProtected($info['name'])) {
-            return $this->_throw(['name' => $pluginName], self::NOT_ALLOWED_PROTECTED);
+            return $this->_throw($pluginName, self::NOT_ALLOWED_PROTECTED);
         }
 
         if (!in_array($pm->pluginGetStatus($info['name']), ['uninstalled', 'disabled', 'enabled'])) {
-            return $this->_throw(['name' => $pluginName], self::NOT_ALLOWED_PENDING);
+            return $this->_throw($pluginName, self::NOT_ALLOWED_PENDING);
         }
 
         return true;
@@ -244,16 +246,13 @@ class iMSCP_Plugin_Validate_File_Plugin extends Zend_Validate_Abstract
     /**
      * Internal method to throws an error of the given type
      *
-     * @param  array $file
+     * @param  string $value
      * @param  string $errorType
      * @return false
      */
-    protected function _throw($file, $errorType)
+    protected function _throw($value, $errorType)
     {
-        if ($file !== NULL) {
-            $this->_value = $file['name'];
-        }
-
+        $this->_value = (string)$value;
         $this->_error($errorType);
         return false;
     }

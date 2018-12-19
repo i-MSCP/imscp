@@ -32,7 +32,7 @@ class LazyDecoder implements \ArrayAccess, \Countable
     protected $container;
 
     /**
-     * @var bool Whether or not Json string has been decoded
+     * @var bool Whether or not JSON string has been decoded
      */
     protected $decoded = false;
 
@@ -50,11 +50,7 @@ class LazyDecoder implements \ArrayAccess, \Countable
      */
     public function __construct($json, $depth = 512, $options = 0)
     {
-        if (version_compare(PHP_VERSION, '5.4', '<')) {
-            $this->parameters = [$json, true, $depth];
-        } else {
-            $this->parameters = [$json, true, $depth, $options];
-        }
+        $this->parameters = [$json, true, $depth, $options];
     }
 
     /**
@@ -149,9 +145,9 @@ class LazyDecoder implements \ArrayAccess, \Countable
     /**
      * Return array representation of this object
      *
-     * @return array|string
+     * @return array
      */
-    public function toArray()
+    public function &toArray()
     {
         if (!$this->decoded) {
             $this->decode();

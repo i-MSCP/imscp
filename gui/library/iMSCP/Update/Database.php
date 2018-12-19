@@ -64,7 +64,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 273;
+    protected $lastUpdate = 274;
 
     /**
      * Singleton - Make new unavailable
@@ -1290,7 +1290,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r230()
     {
-        return $sqlQueries = [
+        return [
             $this->dropColumn('domain', 'external_mail_dns_ids'),
             $this->dropColumn('domain_aliasses', 'external_mail_dns_ids'),
             "DELETE FROM domain_dns WHERE owned_by = 'ext_mail_feature'",
@@ -1319,8 +1319,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function r232()
     {
-        $primaryIP = quoteValue(Registry::get('config')['BASE_SERVER_IP']);
-        return "UPDATE server_ips SET ip_config_mode = 'manual' WHERE ip_number = $primaryIP";
+        return "UPDATE server_ips SET ip_config_mode = 'manual' WHERE ip_number = " . quoteValue(Registry::get('config')['BASE_SERVER_IP']);
     }
 
     /**
@@ -1973,6 +1972,33 @@ class iMSCP_Update_Database extends iMSCP_Update
                 'ALTER TABLE server_traffic MODIFY `traff_time` INT(10) UNSIGNED NOT NULL',
                 $this->addIndex('server_traffic', 'traff_time')
             ];
+        } catch (Exception $e) {
+            throw new RuntimeException($e->getMessage());
+        }
+    }
+
+    /**
+     * Add plugin '__nbuild__' info field
+     * Remove plugin '__need_change__' info field
+     *
+     * @return null
+     */
+    protected function r274()
+    {
+        try {
+            $stmt = execute_query('SELECT plugin_id, plugin_info FROM plugin');
+            while ($row = $stmt->fetchRow()) {
+                $info = json_decode($row['plugin_info']);
+
+                if (isset($info['__nbuild__'])) {
+                    continue;
+                }
+
+                $info['__nbuild__'] = isset($info['build']) ? $info['build'] : '0000000000';
+                unset($info['__need_change__']);
+                exec_query('UPDATE plugin SET plugin_info = ? WHERE plugin_id = ?', [json_encode($info), $row['plugin_id']]);
+            }
+            return NULL;
         } catch (Exception $e) {
             throw new RuntimeException($e->getMessage());
         }

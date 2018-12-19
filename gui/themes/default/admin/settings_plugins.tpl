@@ -29,9 +29,9 @@
                 minWidth: 500,
                 buttons: [
                     {
-                        text: imscp_i18n.core.force_retry,
+                        text: imscp_i18n.core.retry,
                         click: function () {
-                            window.location.replace("?retry=" + pluginName)
+                            window.location.replace("?action=retry&plugin=" + pluginName)
                         }
                     },
                     {
@@ -48,7 +48,7 @@
 
         $('#bulk_actions').on("change", function () {
             var $button = $("#bulk_actions_submit");
-            if ($(this).val() == 'noaction') {
+            if ($(this).val() === 'noaction') {
                 $button.prop("disabled", true);
             } else {
                 $button.prop("disabled", false);
@@ -87,11 +87,11 @@
             <td><p style="font-size: 110%"><strong>{PLUGIN_NAME}</strong></p></td>
             <td>
                 <p class="bold" style="font-size: 110%">{PLUGIN_DESCRIPTION}</p>
-                <span class="italic" style="font-size: 90%">
-                    <span class="bold">{TR_VERSION} {PLUGIN_VERSION}</span> (Build {PLUGIN_BUILD})<br>
+                <div style="font-size: 90%">
+                    {TR_VERSION} {PLUGIN_VERSION} (Build {PLUGIN_BUILD})<br>
                     <a href="mailto:{PLUGIN_MAILTO}">{TR_BY} {PLUGIN_AUTHOR}</a> |
                     <a href="{PLUGIN_SITE}" target="_blank">{TR_VISIT_PLUGIN_SITE}</a>
-                </span>
+                </div>
             </td>
             <td>
                 {PLUGIN_STATUS}
@@ -101,12 +101,12 @@
             </td>
             <td>
                 <!-- BDP: plugin_activate_link -->
-                <a style="vertical-align: middle;" class="icon i_open" href="settings_plugins.php?{ACTIVATE_ACTION}={PLUGIN_NAME}" title="{TR_ACTIVATE_TOOLTIP}"></a>
-                <a style="vertical-align: middle;" class="icon i_close" href="settings_plugins.php?{UNINSTALL_ACTION}={PLUGIN_NAME}" title="{TR_UNINSTALL_TOOLTIP}"></a>
+                <a style="vertical-align: middle;" class="icon i_open" href="settings_plugins.php?action={ACTIVATE_ACTION}&plugin={PLUGIN_NAME}" title="{TR_ACTIVATE_TOOLTIP}"></a>
+                <a style="vertical-align: middle;" class="icon i_close" href="settings_plugins.php?action={UNINSTALL_ACTION}&plugin={PLUGIN_NAME}" title="{TR_UNINSTALL_TOOLTIP}"></a>
                 <!-- EDP: plugin_activate_link -->
                 <!-- BDP: plugin_deactivate_link -->
-                <a style="vertical-align: middle;" class="icon i_close" href="settings_plugins.php?disable={PLUGIN_NAME}" title="{TR_DEACTIVATE_TOOLTIP}"></a>
-                <a style="vertical-align: middle;" class="icon i_lock" href="settings_plugins.php?protect={PLUGIN_NAME}" title="{TR_PROTECT_TOOLTIP}"></a>
+                <a style="vertical-align: middle;" class="icon i_close" href="settings_plugins.php?action=disable&plugin={PLUGIN_NAME}" title="{TR_DEACTIVATE_TOOLTIP}"></a>
+                <a style="vertical-align: middle;" class="icon i_lock" href="settings_plugins.php?action=protect&plugin={PLUGIN_NAME}" title="{TR_PROTECT_TOOLTIP}"></a>
                 <!-- EDP: plugin_deactivate_link -->
                 <!-- BDP: plugin_protected_link -->
                 <span style="vertical-align: middle;" class="icon i_unlock" title="{TR_UNPROTECT_TOOLTIP}">&nbsp;</span>
@@ -131,7 +131,7 @@
 </form>
 <!-- EDP: plugins_block -->
 <div class="buttons">
-    <a href="settings_plugins.php?update_plugin_list=1" class="link_as_button">{TR_UPDATE_PLUGIN_LIST}</a>
+    <a href="settings_plugins.php?sync=1" class="link_as_button">{TR_SYNC_PLUGINS_DATA}</a>
 </div>
 <br>
 <h2 class="plugin"><span>{TR_PLUGIN_UPLOAD}</span></h2>
@@ -149,6 +149,7 @@
                 <span class="icon i_help" title="{TR_PLUGIN_ARCHIVE_TOOLTIP}"></span>
             </td>
             <td>
+                <input type="hidden" name="MAX_FILE_SIZE" value="{MAX_FILE_SIZE}">
                 <input type="file" name="plugin_archive">
                 <input type="submit" value="{TR_UPLOAD}">
             </td>

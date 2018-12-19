@@ -79,8 +79,8 @@ class iMSCP_Plugin_Filter_File_Plugin implements Zend_Filter_Interface
             $this->setDestination($options['destination']);
         }
 
-        if (array_key_exists('magicFile', $options)) {
-            $this->setDestination($options['magicFile']);
+        if (array_key_exists('magic_file', $options)) {
+            $this->setDestination($options['magic_file']);
         }
 
         return $this;
@@ -120,17 +120,17 @@ class iMSCP_Plugin_Filter_File_Plugin implements Zend_Filter_Interface
     }
 
     /**
-     * Returns 'magicFile' option
+     * Returns 'magic_file' option
      *
      * @return string|null
      */
     public function getMagicFile()
     {
-        return $this->_options['magicFile'];
+        return $this->_options['magic_file'];
     }
 
     /**
-     * Set the 'magicFile' option
+     * Set the 'magic_file' option
      *
      * @param null|string $magicFile
      * @return iMSCP_Plugin_Filter_File_Plugin
@@ -138,16 +138,16 @@ class iMSCP_Plugin_Filter_File_Plugin implements Zend_Filter_Interface
     public function setMagicFile($magicFile)
     {
         if (NULL === $magicFile) {
-            $this->_options['magicFile'] = NULL;
+            $this->_options['magic_file'] = NULL;
         }
 
         $magicFile = (string)$magicFile;
 
         if (!is_file($magicFile) || !is_readable($magicFile)) {
-            throw new Zend_Filter_Exception(tr("Invalid 'magicFile' option: '%s' is not a file or is not readable.", $magicFile));
+            throw new Zend_Filter_Exception(tr("Invalid 'magic_file' option: '%s' is not a file or is not readable.", $magicFile));
         }
 
-        $this->_options['magicFile'] = utils_normalizePath($magicFile);
+        $this->_options['magic_file'] = utils_normalizePath($magicFile);
 
         return $this;
     }
@@ -176,7 +176,7 @@ class iMSCP_Plugin_Filter_File_Plugin implements Zend_Filter_Interface
 
                 $arch = new ZipArchive();
 
-                if (false === $arch->open($value)) {
+                if (true !== $arch->open($value)) {
                     throw new Zend_Filter_Exception(tr('Error while opening the %s plugin archive.', $name));
                 }
 
@@ -267,7 +267,9 @@ class iMSCP_Plugin_Filter_File_Plugin implements Zend_Filter_Interface
      */
     protected function _backupPluginDir($pluginDir)
     {
-        @utils_removeDir($pluginDir . '-old');
+        if (!@utils_removeDir($pluginDir . '-old')) {
+            return false;
+        }
 
         if (!is_dir($pluginDir)) {
             return true;
@@ -280,16 +282,16 @@ class iMSCP_Plugin_Filter_File_Plugin implements Zend_Filter_Interface
      * Internal method to restore old plugin directory on failure
      *
      * @param string $pluginDir Plugin directory
-     * @return bool
+     * @return void
      */
     protected function _restorePluginDir($pluginDir)
     {
         @utils_removeDir($pluginDir);
 
-        if (!is_dir($pluginDir)) {
-            return true;
+        if (!is_dir($pluginDir . '-old')) {
+            return;
         }
 
-        return @rename($pluginDir . '-old', $pluginDir);
+        @rename($pluginDir . '-old', $pluginDir);
     }
 }

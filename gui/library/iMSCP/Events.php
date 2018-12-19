@@ -647,24 +647,24 @@ class iMSCP_Events
     const onAfterPluginsRoute = 'onAfterPluginsRoute';
 
     /**
-     * Event triggered before plugin list update
+     * Event triggered before plugin data synchronization
      *
      * iMSCP_Events_Event object parameter:
      *  - pluginManager : iMSCP_Plugin_Manager instance
      *
      * @const string
      */
-    const onBeforeUpdatePluginList = 'onBeforeUpdatePluginList';
+    const onBeforeSyncPluginData = 'onBeforeSyncPluginData';
 
     /**
-     * Event triggered after plugin list update
+     * Event triggered after plugin data synchronization
      *
      * iMSCP_Events_Event object parameter:
      *  - pluginManager : iMSCP_Plugin_Manager instance
      *
      * @const string
      */
-    const onAfterUpdatePluginList = 'onAfterUpdatePluginList';
+    const onAfterSyncPluginData = 'onAfterSyncPluginData';
 
     /**
      * Event triggered before plugin installation
@@ -829,6 +829,7 @@ class iMSCP_Events
      *
      * iMSCP_Events_Event object parameter:
      *  - pluginName : Plugin name
+     *  - pluginLocker: Locker name
      *
      * @const string
      */
@@ -838,7 +839,8 @@ class iMSCP_Events
      * Event triggered ater plugin locking
      *
      * iMSCP_Events_Event object parameter:
-     *  - pluginName : Plugin name
+     *  - pluginName  : Plugin name
+     *  - pluginLocker: Locker name
      *
      * @const string
      */
@@ -848,7 +850,8 @@ class iMSCP_Events
      * Event triggered before plugin unlocking
      *
      * iMSCP_Events_Event object parameter:
-     *  - pluginName : Plugin name
+     *  - pluginName  : Plugin name
+     *  - pluginLocker: Locker name
      *
      * @const string
      */
@@ -859,6 +862,7 @@ class iMSCP_Events
      *
      * iMSCP_Events_Event object parameter:
      *  - pluginName : Plugin name
+     *  - pluginLocker: Locker name
      *
      * @const string
      */

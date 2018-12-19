@@ -1223,7 +1223,7 @@ function utils_uploadFile($inputFieldName, $destPath)
             return false;
         }
 
-        if (!is_string($destPath) && is_array($destPath)) {
+        if (is_array($destPath)) {
             if (!($destPath = call_user_func_array(array_shift($destPath), $destPath))) {
                 return false;
             }
@@ -1383,7 +1383,7 @@ function utils_removeDir($directory)
     $directory = rtrim($directory, '/');
 
     if (!is_dir($directory)) {
-        return false;
+        return true;
     }
 
     if (!is_readable($directory)) {
