@@ -396,10 +396,6 @@ sub _execAction
     ( $action ne 'run' || $self->{'plugin'}->{'FORCE_RETVAL'} ) ? $rs : 0
 }
 
-=item
-
-=cut
-
 =back
 
 =head1 AUTHOR
