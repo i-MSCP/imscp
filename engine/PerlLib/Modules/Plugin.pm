@@ -26,8 +26,8 @@ package Modules::Plugin;
 use strict;
 use warnings;
 use iMSCP::Boolean;
-use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::Database;
+use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::EventManager;
 use iMSCP::Plugins;
 use JSON;
@@ -38,13 +38,6 @@ use parent 'Common::Object';
 
  This module provides the backend side of the i-MSCP plugin manager. It is
  responsible to execute actions on a particular plugin according its state.
- 
- The plugin is instantiated with the following parameters:
-  action      : Plugin action
-  config      : Plugin current configuration
-  config_prev : Plugin previous configuration
-  eventManager: EventManager instance
-  info        : Plugin info
 
 =head1 PUBLIC METHODS
 
@@ -71,17 +64,12 @@ sub process
     return $rs if $rs;
 
     # Determine plugin action according current plugin state
-    my $action;
     if ( $self->{'data'}->{'plugin_status'} eq 'enabled' ) {
-        $self->{'pluginAction'} = 'run';
-        $action = '_run'
-    } elsif ( $self->{'data'}->{'plugin_status'} =~ /^to(install|change|update|uninstall|enable|disable)$/ ) {
-        $self->{'pluginAction'} = $1;
-        $action = '_' . $1;
-
-        if ( grep ( $_ eq $action, 'update', 'change' ) ) {
+        $self->{'action'} = 'run';
+    } elsif ( ( $self->{'action'} ) = $self->{'data'}->{'plugin_status'} =~ /^to(install|change|update|uninstall|enable|disable)$/ ) {
+        if ( grep ( $_ eq $self->{'action'}, 'update', 'change' ) ) {
             # Determine whether or not there are plugin config changes
-            $self->{'pluginHasConfigChanges'} = $self->{'data'}->{'plugin_config'} ne $self->{'data'}->{'plugin_config_prev'};
+            $self->{'hasConfigChanges'} = $self->{'data'}->{'plugin_config'} ne $self->{'data'}->{'plugin_config_prev'};
         }
     } else {
         error( sprintf( 'Unknown plugin status: %s', $self->{'data'}->{'plugin_status'} ));
@@ -97,7 +85,7 @@ sub process
         }
     }
 
-    $rs = $self->$action();
+    $rs = $self->can( '_' . $self->{'action'} )->( $self );
     $rs ||= $self->{'eventManager'}->trigger( 'onBeforeSetPluginStatus', $self->{'data'}->{'plugin_name'}, \$self->{'data'}->{'plugin_status'} );
 
     eval {
@@ -108,11 +96,11 @@ sub process
             ( $rs
                 ? getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error'
                 : ( $self->{'data'}->{'plugin_status'} eq 'todisable'
-                        ? 'disabled'
-                        : ( $self->{'data'}->{'plugin_status'} eq 'touninstall'
-                            ? ( $self->{'data'}->{'plugin_info'}->{'__installable__'} ? 'uninstalled' : 'disabled' )
-                            : 'enabled'
-                        )
+                    ? 'disabled'
+                    : ( $self->{'data'}->{'plugin_status'} eq 'touninstall'
+                        ? ( $self->{'data'}->{'plugin_info'}->{'__installable__'} ? 'uninstalled' : 'disabled' )
+                        : 'enabled'
+                    )
                 )
             ),
             $pluginId
@@ -136,6 +124,13 @@ sub process
 
  Initialize instance
 
+ The plugin is instantiated with the following parameters:
+  action      : Plugin action
+  config      : Plugin current configuration
+  config_prev : Plugin previous configuration
+  eventManager: EventManager instance
+  info        : Plugin info
+
  Return Modules::Plugin
 
 =cut
@@ -147,9 +142,9 @@ sub _init
     $self->{'data'} = {};
     $self->{'dbh'} = iMSCP::Database->factory()->getRawDb();
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'pluginAction'} = undef;
-    $self->{'pluginInstance'} = undef;
-    $self->{'pluginHasConfigChanges'} = FALSE;
+    $self->{'action'} = undef;
+    $self->{'plugin'} = undef;
+    $self->{'hasConfigChanges'} = FALSE;
     $self;
 }
 
@@ -195,7 +190,7 @@ sub _install
     my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'onBeforeInstallPlugin', $self->{'data'}->{'plugin_name'} );
-    $rs ||= $self->execAction( 'install' );
+    $rs ||= $self->_execAction( 'install' );
     $rs ||= $self->{'eventManager'}->trigger( 'onAfterInstallPlugin', $self->{'data'}->{'plugin_name'} );
     $rs ||= $self->_enable();
 }
@@ -213,7 +208,7 @@ sub _uninstall
     my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'onBeforeUninstallPlugin', $self->{'data'}->{'plugin_name'} );
-    $rs ||= $self->execAction( 'uninstall' );
+    $rs ||= $self->_execAction( 'uninstall' );
     $rs ||= $self->{'eventManager'}->trigger( 'onAfterUninstallPlugin', $self->{'data'}->{'plugin_name'} );
 }
 
@@ -230,7 +225,7 @@ sub _enable
     my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'onBeforeEnablePlugin', $self->{'data'}->{'plugin_name'} );
-    $rs ||= $self->execAction( 'enable' );
+    $rs ||= $self->_execAction( 'enable' );
     $rs ||= $self->{'eventManager'}->trigger( 'onAfterEnablePlugin', $self->{'data'}->{'plugin_name'} );
 }
 
@@ -247,7 +242,7 @@ sub _disable
     my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'onBeforeDisablePlugin', $self->{'data'}->{'plugin_name'} );
-    $rs ||= $self->execAction( 'disable' );
+    $rs ||= $self->_execAction( 'disable' );
     $rs ||= $self->{'eventManager'}->trigger( 'onAfterDisablePlugin', $self->{'data'}->{'plugin_name'} );
 }
 
@@ -268,12 +263,12 @@ sub _change
     my $rs = 0;
     $rs = $self->_disable() unless $isSubAction;
     $rs ||= $self->{'eventManager'}->trigger( 'onBeforeChangePlugin', $self->{'data'}->{'plugin_name'} );
-    $rs ||= $self->execAction( 'change' );
+    $rs ||= $self->_execAction( 'change' );
     $rs ||= $self->{'eventManager'}->trigger( 'onAfterChangePlugin', $self->{'data'}->{'plugin_name'} );
     $rs ||= $self->_enable() unless $isSubAction;
     return $rs if $rs;
 
-    if ( $self->{'pluginHasConfigChanges'} ) {
+    if ( $self->{'hasConfigChanges'} ) {
         eval {
             $self->{'data'}->{'plugin_config_prev'} = $self->{'data'}->{'plugin_config'};
             local $self->{'dbh'}->{'RaiseError'} = TRUE;
@@ -302,7 +297,7 @@ sub _update
 
     my $rs = $self->_disable();
     $rs ||= $self->{'eventManager'}->trigger( 'onBeforeUpdatePlugin', $self->{'data'}->{'plugin_name'} );
-    $rs ||= $self->execAction(
+    $rs ||= $self->_execAction(
         'update',
         $self->{'data'}->{'plugin_info'}->{'version'} . '.' . $self->{'data'}->{'plugin_info'}->{'build'},
         $self->{'data'}->{'plugin_info'}->{'__nversion__'} . '.' . $self->{'data'}->{'plugin_info'}->{'__nbuild__'}
@@ -310,10 +305,10 @@ sub _update
     return $rs if $rs;
 
     eval {
-        $self->{'data'}->{'plugin_info'}->{'version'} = $self->{'data'}->{'plugin_info'}->{'__nversion__'};
-        $self->{'data'}->{'plugin_info'}->{'build'} = $self->{'data'}->{'plugin_info'}->{'__nbuild__'};
-
         local $self->{'dbh'}->{'RaiseError'} = TRUE;
+        @{ $self->{'data'}->{'plugin_info'} }{qw/ version build /} = (
+            $self->{'data'}->{'plugin_info'}->{'__nversion__'}, $self->{'data'}->{'plugin_info'}->{'__nbuild__'}
+        );
         $self->{'dbh'}->do(
             'UPDATE plugin SET plugin_info = ? WHERE plugin_id = ?',
             undef,
@@ -327,13 +322,13 @@ sub _update
     }
 
     $rs = $self->{'eventManager'}->trigger( 'onAfterUpdatePlugin', $self->{'data'}->{'plugin_name'} );
-    $rs ||= $self->_change( TRUE ) if $self->{'pluginHasConfigChanges'};
+    $rs ||= $self->_change( TRUE ) if $self->{'hasConfigChanges'};
     $rs ||= $self->_enable();
 }
 
 =item _run( )
 
- Run plugin item tasks
+ Execute plugin run() action
 
  Return int 0 on success, other on failure
 
@@ -344,11 +339,11 @@ sub _run
     my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'onBeforeRunPlugin', $self->{'data'}->{'plugin_name'} );
-    $rs ||= $self->execAction( 'run' );
+    $rs ||= $self->_execAction( 'run' );
     $rs ||= $self->{'eventManager'}->trigger( 'onAfterRunPlugin', $self->{'data'}->{'plugin_name'} );
 }
 
-=item execAction( $action [, $fromVersion = undef [, $toVersion = undef ] ] )
+=item _execAction( $action [, $fromVersion = undef [, $toVersion = undef ] ] )
 
  Execute the given plugin action
 
@@ -359,19 +354,19 @@ sub _run
 
 =cut
 
-sub execAction
+sub _execAction
 {
     my ( $self, $action, $fromVersion, $toVersion ) = @_;
 
-    unless ( $self->{'pluginInstance'} ) {
-        $self->{'pluginInstance'} = eval {
+    unless ( $self->{'plugin'} ) {
+        $self->{'plugin'} = eval {
             # Turn any warning from plugin into exception
             local $SIG{'__WARN__'} = sub { die shift };
             my $pluginClass = iMSCP::Plugins->getInstance()->getClass( $self->{'data'}->{'plugin_name'} );
             return undef unless $pluginClass->can( $action ); # Do not instantiate plugin when not necessary
             ( $pluginClass->can( 'getInstance' ) || $pluginClass->can( 'new' ) || die( 'Bad plugin class' ) )->(
                 $pluginClass,
-                action       => $self->{'pluginAction'},
+                action       => $self->{'action'},
                 config       => $self->{'data'}->{'plugin_config'},
                 config_prev  => $self->{'data'}->{'plugin_config_prev'},
                 eventManager => $self->{'eventManager'},
@@ -383,13 +378,13 @@ sub execAction
             return 1;
         }
 
-        return 0 unless $self->{'pluginInstance'};
+        return 0 unless $self->{'plugin'};
     }
 
-    return 0 unless my $subref = $self->{'pluginInstance'}->can( $action );
+    return 0 unless my $subref = $self->{'plugin'}->can( $action );
 
-    debug( sprintf( "Executing %s( ) action on %s", $action, ref $self->{'pluginInstance'} ));
-    my $rs = eval { $subref->( $self->{'pluginInstance'}, $fromVersion, $toVersion ); };
+    debug( sprintf( "Executing %s( ) action on %s plugin", $action, ref $self->{'plugin'} ));
+    my $rs = eval { $subref->( $self->{'plugin'}, $fromVersion, $toVersion ); };
     if ( $@ ) {
         error( $@ );
         return 1;
@@ -398,8 +393,12 @@ sub execAction
     # Return value from the run() action is ignored by default because it's the responsability of the plugins to set
     # error status for their items. However a plugin can force return value by setting the FORCE_RETVAL attribute to
     # a TRUE
-    ( $action ne 'run' || $self->{'pluginInstance'}->{'FORCE_RETVAL'} ) ? $rs : 0
+    ( $action ne 'run' || $self->{'plugin'}->{'FORCE_RETVAL'} ) ? $rs : 0
 }
+
+=item
+
+=cut
 
 =back
 

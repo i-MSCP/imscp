@@ -219,7 +219,7 @@ class iMSCP_Plugin_Filter_File_Plugin implements Zend_Filter_Interface
         @utils_removeDir($destination . DIRECTORY_SEPARATOR . $name . '-old');
         iMSCP_Utility_OpcodeCache::clearAllActive();
 
-        return $destination;
+        return $destination . DIRECTORY_SEPARATOR . $name;
     }
 
     /**

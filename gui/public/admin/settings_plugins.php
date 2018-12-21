@@ -54,7 +54,7 @@ function execPluginAction(iMSCP_Plugin_Manager $pm, $action, $plugin)
  */
 function generatePage(iMSCP_pTemplate $tpl, iMSCP_Plugin_Manager $pm)
 {
-    $plugins = $pm->pluginGetList('Action', false);
+    $plugins = $pm->pluginGetList(false);
 
     if (empty($plugins)) {
         $tpl->assign('PLUGINS_BLOCK', '');
@@ -169,7 +169,7 @@ if (!empty($_POST) || !empty($_FILES) || !empty($_GET)) {
             $plugin = clean_input($_GET['plugin']);
             $action = clean_input($_GET['action']);
             if ($action == 'retry') {
-                $action = substr($pm->pluginGetStatus($plugin), 2);
+                $action = $pm->pluginGuessAction($plugin);
             }
             execPluginAction($pm, $action, $plugin);
         } elseif (isset($_POST['bulk_actions'])) {

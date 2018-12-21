@@ -82,15 +82,15 @@ abstract class iMSCP_Plugin
      *
      * Need return an associative array with the following info:
      *
+     * name: Plugin name
+     * desc: Plugin short description (text only)
+     * url: Plugin site (default: https://www.i-mscp.net)
      * author: Plugin author name(s) (default: i-MSCP Team)
      * email: Plugin author email (default: team@i-mscp.net)
      * version: Plugin version
      * build: Last build of the plugin in YYYYMMDDNN format
      * require_api: Required i-MSCP plugin API version
-     * name: Plugin name
-     * desc: Plugin short description (text only)
-     * url: Plugin site (default: https://www.i-mscp.net)
-     * priority: OPTIONAL Plugin priority for backend processing
+     * priority: Plugin priority for backend processing (default: 0)
      *
      * A plugin can provide any other info for its own needs. However, the
      * following keywords are reserved for internal use:
@@ -218,9 +218,7 @@ abstract class iMSCP_Plugin
         }
 
         if (!@is_readable($file)) {
-            throw new iMSCP_Plugin_Exception(
-                tr('Unable to read the plugin %s file. Please check file permissions', $file)
-            );
+            throw new iMSCP_Plugin_Exception(tr('Unable to read the plugin %s file. Please check file permissions', $file));
         }
 
         $config = include($file);
