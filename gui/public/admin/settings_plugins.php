@@ -173,7 +173,7 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onAdminScriptStar
 /** @var iMSCP_Plugin_Manager $pm */
 $pm = iMSCP_Registry::get('pluginManager');
 
-if (!empty($_POST) || !empty($_FILES) || !empty($_GET)) {
+if (!empty($_POST) || !empty($_FILES['plugin_archive']) || !empty($_GET)) {
     try {
         if (!empty($_FILES['plugin_archive'])) {
             $pm->pluginUpload();

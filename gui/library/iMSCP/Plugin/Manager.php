@@ -1076,7 +1076,7 @@ class iMSCP_Plugin_Manager
      */
     public function pluginCheckCompat($plugin, array $infoNew)
     {
-        if (!isset($info['require_api']) || version_compare($this->pluginGetApiVersion(), $infoNew['require_api'], '<')) {
+        if (!isset($infoNew['require_api']) || version_compare($this->pluginGetApiVersion(), $infoNew['require_api'], '<')) {
             throw new iMSCP_Plugin_Exception(
                 tr('The %s plugin version %s (build %d) is not compatible with your i-MSCP version.', $plugin, $infoNew['version'], $infoNew['build'])
             );
@@ -1218,8 +1218,8 @@ class iMSCP_Plugin_Manager
                 ',
                 [
                     // Insert data
-                    $data['name'], $data['type'], $data['info'], $data['config'], $data['config_prev'], $data['priority'], $data['status'],
-                    $data['backend'], $data['lockers'],
+                    $data['name'], $data['info'], $data['config'], $data['config_prev'], $data['priority'], $data['status'], $data['backend'],
+                    $data['lockers'],
                     // Update data
                     $data['info'], $data['config'], $data['config_prev'], $data['priority'], $data['status'], $data['backend'], $data['lockers']
                 ]
