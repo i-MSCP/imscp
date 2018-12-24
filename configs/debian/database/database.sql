@@ -82,7 +82,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
   ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
   ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
   ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-  ('DATABASE_REVISION', '274');
+  ('DATABASE_REVISION', '276');
 
 -- --------------------------------------------------------
 
@@ -425,7 +425,6 @@ CREATE TABLE IF NOT EXISTS `php_ini` (
 CREATE TABLE IF NOT EXISTS `plugin` (
   `plugin_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `plugin_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `plugin_type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `plugin_info` text COLLATE utf8_unicode_ci NOT NULL,
   `plugin_config` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `plugin_config_prev` text COLLATE utf8_unicode_ci DEFAULT NULL,

@@ -1,4 +1,4 @@
-<?php /** @noinspection ALL */
+<?php
 /**
  * i-MSCP - internet Multi Server Control Panel
  * Copyright (C) 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
@@ -16,6 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @noinspection PhpUnhandledExceptionInspection PhpDocMissingThrowsInspection
  */
 
 /**
@@ -27,43 +29,38 @@
 abstract class iMSCP_Plugin
 {
     /**
-     * @var array Plugin configuration parameters
-     */
-    private $config = [];
-
-    /**
-     * @var array Plugin previous configuration parameters
-     */
-    private $configPrev = [];
-
-    /**
-     * @var bool TRUE if plugin configuration is loaded, FALSE otherwise
-     */
-    private $isLoadedConfig = false;
-
-    /**
      * @var string Plugin name
      */
-    private $pluginName;
+    protected $pluginName;
 
     /**
-     * @var string $Plungin name
+     * @var array Plugin info
      */
-    private $pluginType;
+    protected $info;
+
+    /**
+     * @var array Plugin configuration
+     */
+    protected $config;
+
+    /**
+     * @var array Plugin previous configuration
+     */
+    protected $configPrev;
 
     /**
      * @var iMSCP_Plugin_Manager
      */
-    private $pluginManager;
+    protected $pm;
 
     /**
      * Constructor
      *
-     * @param iMSCP_Plugin_Manager $pluginManager
+     * @param iMSCP_Plugin_Manager $pm
      */
     public function __construct(iMSCP_Plugin_Manager $pm)
     {
-        $this->pluginManager = $pm;
+        $this->pm = $pm;
         $this->init();
     }
 
@@ -74,88 +71,7 @@ abstract class iMSCP_Plugin
      */
     public function getPluginManager()
     {
-        return $this->pluginManager;
-    }
-
-    /**
-     * Returns plugin general information
-     *
-     * Need return an associative array with the following info:
-     *
-     * name: Plugin name
-     * desc: Plugin short description (text only)
-     * url: Plugin site (default: https://www.i-mscp.net)
-     * author: Plugin author name(s) (default: i-MSCP Team)
-     * email: Plugin author email (default: team@i-mscp.net)
-     * version: Plugin version
-     * build: Last build of the plugin in YYYYMMDDNN format
-     * require_api: Required i-MSCP plugin API version
-     * priority: Plugin priority for backend processing (default: 0)
-     *
-     * A plugin can provide any other info for its own needs. However, the
-     * following keywords are reserved for internal use:
-     *
-     *  __nversion__      : Plugin newest version
-     *  __nbuild__        : Plugin newest build
-     *  __installable__   : Whether or not the plugin is installable
-     *  __uninstallable__ : Whether or not the plugin can be uninstalled
-     * __need_change__    : Wheter or not the plugin need change
-     * db_schema_version  : Last applied database migration
-     *
-     * @throws iMSCP_Plugin_Exception in case plugin info file cannot be read
-     * @return array An array containing information about plugin
-     */
-    function getInfo()
-    {
-        $file = $this->getPluginManager()->pluginGetRootDir() . '/' . $this->getName() . '/info.php';
-        $info = [];
-
-        if (@is_readable($file)) {
-            $info = include($file);
-            iMSCP_Utility_OpcodeCache::clearAllActive($file); // Be sure to load newest version on next call
-        } else {
-            if (file_exists($file)) {
-                throw new iMSCP_Plugin_Exception(tr('Unable to read the %s file.', $file));
-            }
-
-            set_page_message(
-                tr(
-                    '%s::getInfo() not implemented and %s not found. This is a bug in the %s plugin which must be reported to the author(s).',
-                    get_class($this),
-                    $file,
-                    $this->getName()
-                ),
-                'warning'
-            );
-        }
-
-        return array_merge(
-            [
-                'author'      => 'i-MSCP Team',
-                'email'       => 'team@i-mscp.net',
-                'version'     => '0.0.0',
-                'build'       => '0000000000',
-                'require_api' => '999.999.999',
-                'name'        => $this->getName(),
-                'desc'        => tr('Not provided'),
-                'url'         => 'https://www.i-mscp.net'
-            ],
-            $info
-        );
-    }
-
-    /**
-     * Returns plugin type
-     *
-     * @return string
-     */
-    final public function getType()
-    {
-        if (NULL === $this->pluginType) {
-            list(, , $this->pluginType) = explode('_', get_parent_class($this), 3);
-        }
-
-        return $this->pluginType;
+        return $this->pm;
     }
 
     /**
@@ -166,49 +82,88 @@ abstract class iMSCP_Plugin
     final public function getName()
     {
         if (NULL === $this->pluginName) {
-            list(, , $this->pluginName) = explode('_', get_class($this), 3);
+            $this->pluginName = explode('_', get_class($this), 3)[2];
         }
 
         return $this->pluginName;
     }
 
     /**
-     * Return plugin configuration
+     * Returns plugin info from plugin info.php file
      *
-     * @return array An associative array which contain plugin configuration
-     */
-    final public function getConfig()
-    {
-        if (!$this->isLoadedConfig) {
-            $this->loadConfig();
-        }
-
-        return $this->config;
-    }
-
-    /**
-     * Return previous plugin configuration
+     * Plugin info.php file need return an associative array with the following
+     * info:
      *
-     * @return array An associative array which contain plugin previous configuration
-     */
-    final public function getConfigPrev()
-    {
-        if (!$this->isLoadedConfig) {
-            $this->loadConfig();
-        }
-
-        return $this->configPrev;
-    }
-
-    /**
-     * Return plugin configuration from file
+     * name: Plugin name
+     * desc: Plugin short description (text only)
+     * url: Plugin site (default: https://www.i-mscp.net)
+     * author: Plugin author name(s) (default: i-MSCP Team)
+     * email: Plugin author email (default: team@i-mscp.net)
+     * version: Plugin version
+     * build: Last build of the plugin in YYYYMMDDNN format
+     * require_api: Required i-MSCP plugin API version
+     * priority: Plugin processing priority (default: 0)
      *
-     * @throws iMSCP_Plugin_Exception in case plugin configuration file is not readable
+     * A plugin can provide any other info for its own needs. However, the
+     * following keywords are reserved for internal use:
+     *
+     *  __nversion__      : Plugin newest version
+     *  __nbuild__        : Plugin newest build
+     *  __installable__   : Whether or not the plugin is installable
+     *  __uninstallable__ : Whether or not the plugin can be uninstalled
+     *  __migration__     : Last applied database migration if any
+     *
      * @return array
      */
-    final public function getConfigFromFile()
+    public function getInfoFromFile()
     {
-        $this->isLoadedConfig = false;
+        $file = $this->getPluginManager()->pluginGetRootDir() . '/' . $this->getName() . '/info.php';
+
+        if (!@is_readable($file)) {
+            throw new iMSCP_Plugin_Exception(tr("Couldn't read the %s plugin info.php file.", $this->getName()));
+        }
+
+        // Be sure to load newest version on next call
+        iMSCP_Utility_OpcodeCache::clearAllActive($file);
+
+        return array_merge(
+            [
+                'url'      => 'https://www.i-mscp.net',
+                'author'   => 'i-MSCP Team',
+                'email'    => 'team@i-mscp.net',
+                'priority' => 0
+            ],
+            include $file
+        );
+    }
+
+    /**
+     * Return plugin info from database (or from plugin info.php file if new plugin or no data found)
+     *
+     * @return array
+     */
+    public function &getInfo()
+    {
+        if (NULL === $this->info) {
+            if (!$this->getPluginManager()->pluginIsKnown($this->getName())) {
+                $this->info = $this->getInfoFromFile();
+            } else {
+                $stmt = exec_query('SELECT plugin_info FROM plugin WHERE plugin_name = ?', $this->getName());
+                $this->info = $stmt->rowCount() ? json_decode($stmt->fetchRow(PDO::FETCH_COLUMN), true) : $this->getInfoFromFile();
+            }
+        }
+
+        return $this->info;
+    }
+
+    /**
+     * Return plugin configuration from plugin config.php file (and local configuration file if any)
+     *
+     * @return array
+     */
+    public function getConfigFromFile()
+    {
+        $pm = $this->getPluginManager();
         $pluginName = $this->getName();
         $file = $this->getPluginManager()->pluginGetRootDir() . "/$pluginName/config.php";
         $config = [];
@@ -221,15 +176,13 @@ abstract class iMSCP_Plugin
             throw new iMSCP_Plugin_Exception(tr('Unable to read the plugin %s file. Please check file permissions', $file));
         }
 
-        $config = include($file);
+        $config = include $file;
         iMSCP_Utility_OpcodeCache::clearAllActive($file); // Be sure to load newest version on next call
 
         # See https://wiki.i-mscp.net/doku.php?id=plugins:configuration
-
-        $file = PERSISTENT_PATH . "/plugins/$pluginName.php";
-
+        $file = $pm->pluginGetPersistentDataDir() . "/plugins/$pluginName.php";
         if (@is_readable($file)) {
-            $localConfig = include($file);
+            $localConfig = include $file;
             iMSCP_Utility_OpcodeCache::clearAllActive($file); // Be sure to load newest version on next call
 
             // Remove item(s) first (if needed)
@@ -248,56 +201,67 @@ abstract class iMSCP_Plugin
     }
 
     /**
+     * Return plugin config from database (or from plugin config.php file if new plugin or no data found)
+     *
+     * @return array
+     */
+    public function &getConfig()
+    {
+        if (NULL === $this->config) {
+            if (!$this->getPluginManager()->pluginIsKnown($this->getName())) {
+                $this->config = $this->getConfigFromFile();
+            } else {
+                $stmt = exec_query('SELECT plugin_config FROM plugin WHERE plugin_name = ?', $this->getName());
+                $this->config = $stmt->rowCount() ? json_decode($stmt->fetchRow(PDO::FETCH_COLUMN), true) : $this->getConfigFromFile();
+            }
+        }
+
+        return $this->config;
+    }
+
+    /**
+     * Return plugin previous config from database (or plugin config if new plugin or no data found)
+     *
+     * @return array
+     */
+    public function &getConfigPrev()
+    {
+        if (NULL === $this->configPrev) {
+            if (!$this->getPluginManager()->pluginIsKnown($this->getName())) {
+                $this->configPrev = $this->getConfig();
+            } else {
+                $stmt = exec_query('SELECT plugin_config_prev FROM plugin WHERE plugin_name = ?', $this->getName());
+                $this->configPrev = $stmt->rowCount() ? json_decode($stmt->fetchRow(PDO::FETCH_COLUMN), true) : $this->getConfig();
+            }
+        }
+
+        return $this->configPrev;
+    }
+
+    /**
      * Returns the given plugin configuration
      *
-     * @param string $paramName Configuration parameter name
+     * @param string $param Configuration parameter name
      * @param mixed $default Default value returned in case $paramName is not found
      * @return mixed Configuration parameter value or $default if $paramName not found
      */
-    final public function getConfigParam($paramName, $default = NULL)
+    public function getConfigParam($param, $default = NULL)
     {
-        if (!$this->isLoadedConfig) {
-            $this->loadConfig();
-        }
-
-        return isset($this->config[$paramName]) ? $this->config[$paramName] : $default;
+        $config =& $this->getConfig();
+        return isset($config[$param]) ? $config[$param] : $default;
     }
 
     /**
      * Returns the given previous plugin configuration
      *
-     * @param string $paramName Configuration parameter name
+     * @param string $param Configuration parameter name
      * @param mixed $default Default value returned if $paramName is not found
      * @return mixed Configuration parameter value
      */
-    final public function getConfigPrevParam($paramName, $default = NULL)
+    public function getConfigPrevParam($param, $default = NULL)
     {
-        if (!$this->isLoadedConfig) {
-            $this->loadConfig();
-        }
-
-        return isset($this->configPrev[$paramName]) ? $this->configPrev[$paramName] : $default;
-    }
-
-    /**
-     * Load plugin configuration from database
-     *
-     * @return void
-     */
-    final protected function loadConfig()
-    {
-        $stmt = exec_query('SELECT plugin_config, plugin_config_prev FROM plugin WHERE plugin_name = ?', $this->getName());
-
-        if ($stmt->rowCount()) {
-            $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
-            $this->config = json_decode($row['plugin_config'], true);
-            $this->configPrev = json_decode($row['plugin_config_prev'], true);
-            $this->isLoadedConfig = true;
-            return;
-        }
-
-        $this->config = [];
-        $this->configPrev = [];
+        $configPrev =& $this->getConfigPrev();
+        return isset($configPrev[$param]) ? $configPrev[$param] : $default;
     }
 
     /**
@@ -318,11 +282,10 @@ abstract class iMSCP_Plugin
      * This method is automatically called by the plugin manager when the
      * plugin is being installed.
      *
-     * @throws iMSCP_Plugin_Exception
-     * @param iMSCP_Plugin_Manager $pluginManager
+     * @param iMSCP_Plugin_Manager $pm
      * @return void
      */
-    public function install(iMSCP_Plugin_Manager $pluginManager)
+    public function install(iMSCP_Plugin_Manager $pm)
     {
     }
 
@@ -332,11 +295,10 @@ abstract class iMSCP_Plugin
      * This method is automatically called by the plugin manager when the
      * plugin is being enabled (activated).
      *
-     * @throws iMSCP_Plugin_Exception
-     * @param iMSCP_Plugin_Manager $pluginManager
+     * @param iMSCP_Plugin_Manager $pm
      * @return void
      */
-    public function enable(iMSCP_Plugin_Manager $pluginManager)
+    public function enable(iMSCP_Plugin_Manager $pm)
     {
     }
 
@@ -346,11 +308,10 @@ abstract class iMSCP_Plugin
      * This method is automatically called by the plugin manager when the
      * plugin is being disabled (deactivated).
      *
-     * @throws iMSCP_Plugin_Exception
-     * @param iMSCP_Plugin_Manager $pluginManager
+     * @param iMSCP_Plugin_Manager $pm
      * @return void
      */
-    public function disable(iMSCP_Plugin_Manager $pluginManager)
+    public function disable(iMSCP_Plugin_Manager $pm)
     {
     }
 
@@ -360,13 +321,12 @@ abstract class iMSCP_Plugin
      * This method is automatically called by the plugin manager when the
      * plugin is being updated.
      *
-     * @throws iMSCP_Plugin_Exception
-     * @param iMSCP_Plugin_Manager $pluginManager
+     * @param iMSCP_Plugin_Manager $pm
      * @param string $fromVersion Version from which plugin update is initiated
      * @param string $toVersion Version to which plugin is updated
      * @return void
      */
-    public function update(iMSCP_Plugin_Manager $pluginManager, $fromVersion, $toVersion)
+    public function update(iMSCP_Plugin_Manager $pm, $fromVersion, $toVersion)
     {
     }
 
@@ -376,11 +336,10 @@ abstract class iMSCP_Plugin
      * This method is automatically called by the plugin manager when the
      * plugin is being uninstalled.
      *
-     * @throws iMSCP_Plugin_Exception
-     * @param iMSCP_Plugin_Manager $pluginManager
+     * @param iMSCP_Plugin_Manager $pm
      * @return void
      */
-    public function uninstall(iMSCP_Plugin_Manager $pluginManager)
+    public function uninstall(iMSCP_Plugin_Manager $pm)
     {
     }
 
@@ -390,11 +349,10 @@ abstract class iMSCP_Plugin
      * This method is automatically called by the plugin manager when the
      * plugin is being deleted.
      *
-     * @throws iMSCP_Plugin_Exception
-     * @param iMSCP_Plugin_Manager $pluginManager
+     * @param iMSCP_Plugin_Manager $pm
      * @return void
      */
-    public function delete(iMSCP_Plugin_Manager $pluginManager)
+    public function delete(iMSCP_Plugin_Manager $pm)
     {
     }
 
@@ -403,7 +361,7 @@ abstract class iMSCP_Plugin
      *
      * This method is called by the i-MSCP debugger.
      *
-     * Note: *MUST* be implemented by any plugin which manage its own items.
+     * Note: *SHOULD* be implemented by plugins that manage their own items.
      *
      * @return array
      */
@@ -417,7 +375,7 @@ abstract class iMSCP_Plugin
      *
      * This method is called by the i-MSCP debugger.
      *
-     * Note: *MUST* be implemented by any plugin which manage its own items.
+     * Note: *SHOULD* be implemented by plugins that manage their own items.
      *
      * @param string $table Table name
      * @param string $field Status field name
@@ -433,7 +391,7 @@ abstract class iMSCP_Plugin
      *
      * This method is called by the i-MSCP debugger.
      *
-     * Note: *MUST* be implemented by any plugin which manage its own items.
+     * Note: *SHOULD* be implemented by plugins that manage own items.
      *
      * @return int
      */
@@ -450,8 +408,8 @@ abstract class iMSCP_Plugin
      *
      * This method considers each migration as being a new 'version' of the
      * database schema. A schema starts off with nothing in it, and each
-     * migation modifies it to add or remove tables, columns, or entries. Each
-     * time a new migration is applied, the 'db_schema_version' info field is
+     * migration modifies it to add or remove tables, columns, or entries. Each
+     * time a new migration is applied, the '__migration__' info field is
      * updated. This allow to keep track of the last applied database
      * migration.
      *
@@ -505,72 +463,75 @@ abstract class iMSCP_Plugin
      * );
      * </code>
      *
-     * @throws iMSCP_Plugin_Exception When an error occurs
-     * @param string $migrationMode Migration mode (up|down)
+     * @throws iMSCP_Plugin_Exception on error
+     * @param string $mode Migration mode (up|down)
      * @return void
      */
-    protected function migrateDb($migrationMode = 'up')
+    public function migrateDb($mode = 'up')
     {
-        ignore_user_abort(true);
+        if (!in_array($mode, ['up', 'down'])) {
+            throw new iMSCP_Plugin_Exception('Unknown migration mode');
+        }
 
         $pluginName = $this->getName();
-        $pluginManager = $this->getPluginManager();
-        $sqlDir = $pluginManager->pluginGetRootDir() . '/' . $pluginName . '/sql';
+        $pm = $this->getPluginManager();
+        $sqlDir = $pm->pluginGetRootDir() . '/' . $pluginName . '/sql';
 
         if (!@is_dir($sqlDir)) {
             throw new iMSCP_Plugin_Exception(tr("Directory %s doesn't exists.", $sqlDir));
         }
 
-        $pluginInfo = $pluginManager->pluginGetInfo($pluginName);
-        $dbSchemaVersion = isset($pluginInfo['db_schema_version']) ? $pluginInfo['db_schema_version'] : '000';
-        $migrationFiles = [];
+        $pluginInfo = $this->getInfo();
+        $migration = isset($pluginInfo['__migration__']) ? $pluginInfo['__migration__'] : '000';
+        $migrations = [];
 
-        /** @var $migrationFileInfo DirectoryIterator */
-        foreach (new DirectoryIterator($sqlDir) as $migrationFileInfo) {
-            if (!$migrationFileInfo->isDot()) {
-                $migrationFiles[] = $migrationFileInfo->getRealPath();
-            }
+        foreach (new RegexIterator(new DirectoryIterator($sqlDir), '/(\d+)_.+\.php$/i', RegexIterator::GET_MATCH) as $v) {
+            $migrations[$v[1]] = $sqlDir . '/' . $v[0];
         }
+        natsort($migrations);
+        $migrations = array_filter($migrations, function ($v) use ($mode, $migration) {
+            return $mode == 'up' ? $v > $migration : $v < $migration;
+        }, ARRAY_FILTER_USE_KEY);
 
-        natsort($migrationFiles);
-
-        if ($migrationMode == 'down') {
-            $migrationFiles = array_reverse($migrationFiles);
+        if ($mode == 'down') {
+            $migrations = array_reverse($migrations);
         }
 
         $db = iMSCP_Database::getInstance();
 
         try {
-            foreach ($migrationFiles as $migrationFile) {
-                if (!@is_readable($migrationFile)) {
-                    throw new iMSCP_Plugin_Exception(tr('Migration file %s is not readable.', $migrationFile));
+            ignore_user_abort(true);
+
+            foreach ($migrations as $migration => $file) {
+                if (!@is_readable($file)) {
+                    throw new iMSCP_Plugin_Exception(tr('Migration file %s is not readable.', $file));
                 }
 
-                if (!preg_match('/(\d+)_[^\/]+\.php$/i', $migrationFile, $version)) {
-                    throw new iMSCP_Plugin_Exception(tr("File %s doesn't look like a migration file.", $migrationFile));
+                $data = include $file;
+
+                if (!isset($data[$mode])) {
+                    continue;
                 }
 
-                if (($migrationMode == 'up' && $version[1] > $dbSchemaVersion)
-                    || ($migrationMode == 'down' && $version[1] <= $dbSchemaVersion)
-                ) {
-                    $migrationFilesContent = include($migrationFile);
-                    if (isset($migrationFilesContent[$migrationMode])) {
-                        $stmt = $db->prepare($migrationFilesContent[$migrationMode]);
-                        $db->execute($stmt);
-                        while ($stmt->nextRowset()) {
-                            /* https://bugs.php.net/bug.php?id=61613 */
-                        };
-                    }
-
-                    $dbSchemaVersion = $version[1];
-                }
+                $stmt = $db->prepare($data[$mode]);
+                $db->execute($stmt);
+                /** @noinspection PhpStatementHasEmptyBodyInspection */
+                while ($stmt->nextRowset()) {
+                    /* https://bugs.php.net/bug.php?id=61613 */
+                };
             }
 
-            $pluginInfo['db_schema_version'] = ($migrationMode == 'up') ? $dbSchemaVersion : '000';
-            $pluginManager->pluginUpdateInfo($pluginName, $pluginInfo->toArray());
+            if ($mode == 'up') {
+                $pluginInfo['__migration__'] = $migration;
+            } else {
+                unset($pluginInfo['__migration__']);
+            }
+
+            $pm->pluginUpdateInfo($pluginName, $pluginInfo);
         } catch (Exception $e) {
-            $pluginInfo['db_schema_version'] = $dbSchemaVersion;
-            $pluginManager->pluginUpdateInfo($pluginName, $pluginInfo->toArray());
+            // On error set __migration__ field to last successfully applied migration
+            $pluginInfo['__migration__'] = printf("%'.03d", $mode == 'up' ? --$migration : ++$migration);
+            $pm->pluginUpdateInfo($pluginName, $pluginInfo);
             throw new iMSCP_Plugin_Exception($e->getMessage(), $e->getCode(), $e);
         }
     }

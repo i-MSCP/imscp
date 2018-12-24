@@ -32,9 +32,9 @@ tr("File '%value%' is not readable or does not exist.");
 tr("Plugin '%value%' is not compatible with this i-MSCP version.");
 tr("Plugin '%value%' cannot be updated because it is protected.");
 tr("Plugin '%value%' cannot be updated due to pending task.");
-tr("Plugin '%value%' cannot be downgraded.");
-tr("Plugin '%value%' info field is missing.");
+tr("Plugin '%value%' file is invalid.");
 tr("Plugin '%value%' info field is invalid.");
+tr("Plugin '%value%' info field is missing.");
 
 // Zend/Validate/File/Count.php
 tr("Too many files, maximum '%max%' are allowed but '%count%' are given");

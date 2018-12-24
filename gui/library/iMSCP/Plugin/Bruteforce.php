@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,41 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @noinspection PhpUnhandledExceptionInspection PhpDocMissingThrowsInspection
  */
-
-use iMSCP_Events as Events;
-use iMSCP_Events_Manager_Interface as EventManagerInterface;
-use iMSCP_Plugin_Action as PluginAction;
-use iMSCP_Plugin_Exception as PluginException;
-use iMSCP_Plugin_Manager as PluginManager;
-use iMSCP_Registry as Registry;
 
 /**
  * Class iMSCP_Plugin_Bruteforce
- *
- * Provides countermeasures against brute-force and dictionary attacks.
- *
- * This class can be used in two different ways:
- *  - As a plugin that listen to the onBeforeAuthentication event which is triggered by authentication service class
- *  - As a simple component
  */
-class iMSCP_Plugin_Bruteforce extends PluginAction
+class iMSCP_Plugin_Bruteforce extends iMSCP_Plugin_Action
 {
-    /**
-     * @var int Tells whether or not waiting time between login|captcha attempts is enabled
-     */
-    protected $waitTimeEnabled = 0;
-
-    /**
-     * @var int Blocking time in minutes
-     */
-    protected $blockingTime = 0;
-
-    /**
-     * @var int Waiting time in seconds between each login|captcha attempts
-     */
-    protected $waitingTime = 0;
-
     /**
      * @var int Max. login/captcha attempts before blocking time is taking effect
      */
@@ -64,7 +38,7 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
     /**
      * @var string Target form (login|captcha)
      */
-    protected $targetForm = 'login';
+    protected $target = 'login';
 
     /**
      * @var int Time during which an IP address is blocked
@@ -75,11 +49,6 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
      * @var int Time to wait before a new login|captcha attempts
      */
     protected $isWaitingFor = 0;
-
-    /**
-     * @var int Max. attempts before waiting time is taking effect
-     */
-    protected $maxAttemptsBeforeWaitingTime = 0;
 
     /**
      * @var bool Tells whether or not a login attempt has been recorded
@@ -97,53 +66,30 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
     protected $message;
 
     /**
-     * Constructor
-     *
-     * @param PluginManager $pluginManager
-     * @param string $targetForm Target form (login|captcha)
-     * @throws Zend_Exception
-     * @throws iMSCP_Events_Exception
-     * @throws iMSCP_Exception_Database
-     * @throws iMSCP_Plugin_Exception
-     * @çeturn void
+     * @inheritdoc
      */
-    public function __construct(PluginManager $pluginManager, $targetForm = 'login')
+    public function __construct(iMSCP_Plugin_Manager $pm, $target = 'login')
     {
-        $cfg = Registry::get('config');
+        $target = (string)$target;
 
-        if ($targetForm == 'login') {
-            $this->maxAttemptsBeforeBlocking = $cfg['BRUTEFORCE_MAX_LOGIN'];
-        } elseif ($targetForm == 'captcha') {
-            $this->maxAttemptsBeforeBlocking = $cfg['BRUTEFORCE_MAX_CAPTCHA'];
-        } else {
-            throw new PluginException(tr('Unknown bruteforce detection type: %s', $targetForm));
+        if (!in_array($target, ['login', 'captcha'])) {
+            throw new iMSCP_Plugin_Exception(tr('Unknown bruteforce detection type: %s', $target));
         }
 
+        $this->maxAttemptsBeforeBlocking = $this->getConfigParam($target == 'login' ? 'BRUTEFORCE_MAX_LOGIN' : 'BRUTEFORCE_MAX_CAPTCHA', 5);
         $this->clientIpAddr = getIpAddr();
-        $this->targetForm = $targetForm;
+        $this->target = $target;
         $this->sessionId = session_id();
-        $this->waitTimeEnabled = $cfg['BRUTEFORCE_BETWEEN'];
-        $this->maxAttemptsBeforeWaitingTime = $cfg['BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT'];
-        $this->waitingTime = $cfg['BRUTEFORCE_BETWEEN_TIME'];
-        $this->blockingTime = $cfg['BRUTEFORCE_BLOCK_TIME'];
-
-        exec_query('DELETE FROM login WHERE UNIX_TIMESTAMP() > (lastaccess + ?)', $this->blockingTime * 60);
-        parent::__construct($pluginManager);
+        exec_query('DELETE FROM login WHERE UNIX_TIMESTAMP() > (lastaccess + ?)', $this->getConfigParam('BRUTEFORCE_BLOCK_TIME', 15) * 60);
+        parent::__construct($pm);
     }
 
     /**
-     * Initialization
-     *
-     * @return void
-     * @throws iMSCP_Events_Exception
-     * @throws iMSCP_Exception_Database
+     * @inheritdoc
      */
     protected function init()
     {
-        $stmt = exec_query(
-            'SELECT lastaccess, login_count, captcha_count FROM login WHERE ipaddr = ? AND user_name IS NULL',
-            $this->clientIpAddr
-        );
+        $stmt = exec_query('SELECT lastaccess, login_count, captcha_count FROM login WHERE ipaddr = ? AND user_name IS NULL', $this->clientIpAddr);
 
         if (!$stmt->rowCount()) {
             return;
@@ -152,45 +98,77 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
         $row = $stmt->fetchRow();
         $this->recordExists = true;
 
-        if ($row[$this->targetForm . '_count'] >= $this->maxAttemptsBeforeBlocking) {
-            $this->isBlockedFor = $row['lastaccess'] + ($this->blockingTime * 60);
+        if ($row[$this->target . '_count'] >= $this->maxAttemptsBeforeBlocking) {
+            $this->isBlockedFor = $row['lastaccess'] + ($this->getConfigParam('BRUTEFORCE_BLOCK_TIME', 15) * 60);
             return;
         }
 
-        if ($this->waitTimeEnabled && $row[$this->targetForm . '_count'] >= $this->maxAttemptsBeforeWaitingTime) {
-            $this->isWaitingFor = $row['lastaccess'] + $this->waitingTime;
+        if ($this->getConfigParam('BRUTEFORCE_BETWEEN', 1)
+            && $row[$this->target . '_count'] >= $this->getConfigParam('BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT', 2)
+        ) {
+            $this->isWaitingFor = $row['lastaccess'] + $this->getConfigParam('BRUTEFORCE_BETWEEN_TIME', 30);
             return;
         }
     }
 
     /**
-     * Returns plugin general information
-     *
-     * @return array
+     * @inheritdoc
      */
-    public function getInfo()
+    public function getInfoFromFile()
     {
-        return [
-            'author'      => 'Laurent Declercq',
-            'email'       => 'l.declercq@nuxwin.com',
-            'version'     => '0.0.6',
-            'require_api' => '1.0.0',
-            'date'        => '2016-12-22',
-            'name'        => 'Bruteforce',
-            'desc'        => 'Provides countermeasures against brute-force and dictionary attacks.',
-            'url'         => 'http://www.i-mscp.net'
-        ];
+        if (NULL === $this->info) {
+            $this->info = [
+                'name'        => 'Bruteforce',
+                'desc'        => 'Provides countermeasures against brute-force and dictionary attacks.',
+                'url'         => 'http://www.i-mscp.net',
+                'version'     => '1.0.0',
+                'build'       => '2018122300',
+                'require_api' => '1.0.0',
+                'author'      => 'Laurent Declercq',
+                'email'       => 'l.declercq@nuxwin.com',
+                'priority'    => 0
+            ];
+        }
+
+        return $this->info;
     }
 
     /**
-     * Register listeners
-     *
-     * @param EventManagerInterface $eventsManager
+     * @inheritdoc
      */
-    public function register(EventManagerInterface $eventsManager)
+    public function &getInfo()
+    {
+        return $this->getInfoFromFile();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function &getConfig()
+    {
+        if (NULL === $this->config) {
+            $config = iMSCP_Registry::get('config');
+            $this->config = [
+                'BRUTEFORCE'                          => $config['BRUTEFORCE'],
+                'BRUTEFORCE_BETWEEN'                  => $config['BRUTEFORCE_BETWEEN'],
+                'BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT' => $config['BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT'],
+                'BRUTEFORCE_BETWEEN_TIME'             => $config['BRUTEFORCE_BETWEEN_TIME'],
+                'BRUTEFORCE_BLOCK_TIME'               => $config['BRUTEFORCE_BLOCK_TIME'],
+                'BRUTEFORCE_MAX_LOGIN'                => $config['BRUTEFORCE_MAX_LOGIN'],
+                'BRUTEFORCE_MAX_CAPTCHA'              => $config['BRUTEFORCE_MAX_CAPTCHA']
+            ];
+        }
+
+        return $this->config;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function register(iMSCP_Events_Manager_Interface $eventsManager)
     {
         // That plugin must acts early in the authentication process
-        $eventsManager->registerListener(Events::onBeforeAuthentication, $this, 100);
+        $eventsManager->registerListener(iMSCP_Events::onBeforeAuthentication, $this, 100);
     }
 
     /**
@@ -248,9 +226,7 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
 
         $time = time();
         if ($time < $this->isWaitingFor) {
-            $this->message = tr(
-                'You must wait %s minutes before the next attempt.', strftime('%M:%S', $this->isWaitingFor - $time)
-            );
+            $this->message = tr('You must wait %s minutes before the next attempt.', strftime('%M:%S', $this->isWaitingFor - $time));
             return true;
         }
 
@@ -295,10 +271,8 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
     {
         exec_query(
             "
-                UPDATE login
-                SET lastaccess = UNIX_TIMESTAMP(), {$this->targetForm}_count = {$this->targetForm}_count + 1
-                WHERE ipaddr= ?
-                AND user_name IS NULL
+                UPDATE login SET lastaccess = UNIX_TIMESTAMP(), {$this->target}_count = {$this->target}_count + 1
+                WHERE ipaddr= ? AND user_name IS NULL
             ",
             $this->clientIpAddr
         );
@@ -314,11 +288,7 @@ class iMSCP_Plugin_Bruteforce extends PluginAction
     protected function createRecord()
     {
         exec_query(
-            "
-                REPLACE INTO login (session_id, ipaddr, {$this->targetForm}_count, user_name, lastaccess) VALUES (
-                    ?, ?, 1, NULL, UNIX_TIMESTAMP()
-                )
-            ",
+            "REPLACE INTO login (session_id, ipaddr, {$this->target}_count, user_name, lastaccess) VALUES (?, ?, 1, NULL, UNIX_TIMESTAMP())",
             [$this->sessionId, $this->clientIpAddr]
         );
     }

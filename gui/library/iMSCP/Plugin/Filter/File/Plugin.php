@@ -22,6 +22,8 @@
 
 /**
  * Class iMSCP_Plugin_Filter_File_Plugin
+ *
+ * Filter that extract upload plugin archive into plugins directory
  */
 class iMSCP_Plugin_Filter_File_Plugin implements Zend_Filter_Interface
 {
@@ -30,7 +32,7 @@ class iMSCP_Plugin_Filter_File_Plugin implements Zend_Filter_Interface
      */
     protected $_options = [
         'destination' => NULL,
-        'magicFile'   => NULL
+        'magic_file'  => NULL
     ];
 
     /**
@@ -47,7 +49,7 @@ class iMSCP_Plugin_Filter_File_Plugin implements Zend_Filter_Interface
             $temp['destination'] = array_shift($options);
 
             if (!empty($options)) {
-                $temp['magicFile'] = array_shift($options);
+                $temp['magic_file'] = array_shift($options);
             }
 
             $options = $temp;

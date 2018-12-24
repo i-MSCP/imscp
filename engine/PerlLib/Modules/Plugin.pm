@@ -124,13 +124,6 @@ sub process
 
  Initialize instance
 
- The plugin is instantiated with the following parameters:
-  action      : Plugin action
-  config      : Plugin current configuration
-  config_prev : Plugin previous configuration
-  eventManager: EventManager instance
-  info        : Plugin info
-
  Return Modules::Plugin
 
 =cut
@@ -346,10 +339,17 @@ sub _run
 =item _execAction( $action [, $fromVersion = undef [, $toVersion = undef ] ] )
 
  Execute the given plugin action
+ 
+ The plugin is instanciated with the following parameters:
+  action      : Plugin action (install,uninstall,enable,disable,update,change)
+  config      : Plugin current configuration
+  config_prev : Plugin previous configuration
+  eventManager: EventManager instance
+  info        : Plugin info
 
  Param string $action Action to execute on the plugin
- Param string $fromVersion Version from which the plugin is being updated
- Param string $toVersion Version to which the plugin is being updated
+ Param string $fromVersion Version from which the plugin is being updated (update action only, undefined otherwise)
+ Param string $toVersion Version to which the plugin is being updated (update action only, undefined otherwise)
  Return int 0 on success, other on failure
 
 =cut
@@ -363,7 +363,7 @@ sub _execAction
             # Turn any warning from plugin into exception
             local $SIG{'__WARN__'} = sub { die shift };
             my $pluginClass = iMSCP::Plugins->getInstance()->getClass( $self->{'data'}->{'plugin_name'} );
-            return undef unless $pluginClass->can( $action ); # Do not instantiate plugin when not necessary
+            return unless $pluginClass->can( $action ); # Do not instantiate plugin when not necessary
             ( $pluginClass->can( 'getInstance' ) || $pluginClass->can( 'new' ) || die( 'Bad plugin class' ) )->(
                 $pluginClass,
                 action       => $self->{'action'},
@@ -378,7 +378,7 @@ sub _execAction
             return 1;
         }
 
-        return 0 unless $self->{'plugin'};
+        return 0 unless defined $self->{'plugin'};
     }
 
     return 0 unless my $subref = $self->{'plugin'}->can( $action );

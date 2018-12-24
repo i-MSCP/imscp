@@ -17,6 +17,8 @@ PLUGINS
     Fixed: Info fields (name, desc, version, build, require_api) must be validated (upload action)
     Deprecated: 'date' info field (version and build fields are sufficient)
     Deprecated: Internal '__need_change__' info field. Plugin data are now compared at runtime
+    Dropped: 'plugin_type' database table column
+    Renamed: Internal 'db_schema_version' info field to '__migration__'
     Review: Don't make use of PharData to extract plugin archives. Make use of ZipArchive and Archive_Tar instead (Validator, Filter)
 
 ------------------------------------------------------------------------------------------------------------------------

@@ -59,12 +59,12 @@ class iMSCP_Update_Database extends iMSCP_Update
      *
      * @var bool
      */
-    protected $_daemonRequest = false;
+    protected $daemonRequest = false;
 
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 274;
+    protected $lastUpdate = 276;
 
     /**
      * Singleton - Make new unavailable
@@ -211,7 +211,7 @@ class iMSCP_Update_Database extends iMSCP_Update
             }
         }
 
-        if (PHP_SAPI != 'cli' && $this->_daemonRequest) {
+        if (PHP_SAPI != 'cli' && $this->daemonRequest) {
             send_request();
         }
 
@@ -1988,7 +1988,7 @@ class iMSCP_Update_Database extends iMSCP_Update
         try {
             $stmt = execute_query('SELECT plugin_id, plugin_info FROM plugin');
             while ($row = $stmt->fetchRow()) {
-                $info = json_decode($row['plugin_info']);
+                $info = json_decode($row['plugin_info'], true);
 
                 if (isset($info['__nbuild__'])) {
                     continue;
@@ -2002,5 +2002,41 @@ class iMSCP_Update_Database extends iMSCP_Update
         } catch (Exception $e) {
             throw new RuntimeException($e->getMessage());
         }
+    }
+
+    /**
+     * Rename internal 'db_schema_version' plugin info field to '__migration__'
+     *
+     * @return null
+     */
+    protected function r275()
+    {
+        try {
+            $stmt = execute_query('SELECT plugin_id, plugin_info FROM plugin');
+            while ($row = $stmt->fetchRow()) {
+                $info = json_decode($row['plugin_info'], true);
+
+                if (!isset($info['db_schema_version'])) {
+                    continue;
+                }
+
+                $info['__migration__'] = $info['db_schema_version'];
+                unset($info['db_schema_version']);
+                exec_query('UPDATE plugin SET plugin_info = ? WHERE plugin_id = ?', [json_encode($info), $row['plugin_id']]);
+            }
+            return NULL;
+        } catch (Exception $e) {
+            throw new RuntimeException($e->getMessage());
+        }
+    }
+
+    /**
+     * Drop plugin.plugin_type column
+     *
+     * @return string|null
+     */
+    protected function r276()
+    {
+        return $this->dropColumn('plugin', 'plugin_type');
     }
 }

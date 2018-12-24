@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,11 +32,6 @@ class LazyDecoder implements \ArrayAccess, \Countable
     protected $container;
 
     /**
-     * @var bool Whether or not JSON string has been decoded
-     */
-    protected $decoded = false;
-
-    /**
      * @var array json_decode parameters
      */
     protected $parameters;
@@ -58,7 +53,7 @@ class LazyDecoder implements \ArrayAccess, \Countable
      */
     public function offsetExists($key)
     {
-        if (!$this->decoded) {
+        if (null === $this->container) {
             $this->decode();
         }
 
@@ -70,7 +65,7 @@ class LazyDecoder implements \ArrayAccess, \Countable
      */
     public function &offsetGet($key)
     {
-        if (!$this->decoded) {
+        if (null === $this->container) {
             $this->decode();
         }
 
@@ -87,7 +82,7 @@ class LazyDecoder implements \ArrayAccess, \Countable
      */
     public function offsetSet($key, $value)
     {
-        if (!$this->decoded) {
+        if (null === $this->container) {
             $this->decode();
         }
 
@@ -99,7 +94,7 @@ class LazyDecoder implements \ArrayAccess, \Countable
      */
     public function offsetUnset($key)
     {
-        if (!$this->decoded) {
+        if (null === $this->container) {
             $this->decode();
         }
 
@@ -113,7 +108,7 @@ class LazyDecoder implements \ArrayAccess, \Countable
      */
     public function count()
     {
-        if (!$this->decoded) {
+        if (null === $this->container) {
             $this->decode();
         }
 
@@ -149,7 +144,7 @@ class LazyDecoder implements \ArrayAccess, \Countable
      */
     public function &toArray()
     {
-        if (!$this->decoded) {
+        if (null === $this->container) {
             $this->decode();
         }
 
@@ -165,6 +160,5 @@ class LazyDecoder implements \ArrayAccess, \Countable
     {
         $this->container = call_user_func_array('json_decode', $this->parameters);
         $this->parameters = null;
-        $this->decoded = true;
     }
 }

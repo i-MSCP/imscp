@@ -860,7 +860,7 @@ class Application
             }
 
             try {
-                $pm->pluginLoad($plugin);
+                $pm->pluginGet($plugin);
             } catch (PluginException $e) {
                 if (!is_xhr() && ($_SESSION['user_type'] == 'admin' || (isset($_SESSION['logged_from_type']) && $_SESSION['logged_from_type'] == 'admin'))) {
                     set_page_message($e->getMessage(), 'static_error');

@@ -63,9 +63,17 @@ function generatePage(iMSCP_pTemplate $tpl, iMSCP_Plugin_Manager $pm)
     }
 
     natsort($plugins);
-
+    $loadedPlugins = 0;
     foreach ($plugins as $plugin) {
-        $info = $pm->pluginGetInfo($plugin);
+        try {
+            $pluginInstance = $pm->pluginGet($plugin);
+        } catch (iMSCP_Plugin_Exception $e) {
+            set_page_message($e->getMessage(), 'static_error');
+            continue;
+        }
+
+        $loadedPlugins++;
+        $info =& $pluginInstance->getInfo();
         $status = $pm->pluginGetStatus($plugin);
 
         if (is_array($info['author'])) {
@@ -149,6 +157,12 @@ function generatePage(iMSCP_pTemplate $tpl, iMSCP_Plugin_Manager $pm)
 
         $tpl->parse('PLUGIN_BLOCK', '.plugin_block');
     }
+
+    if ($loadedPlugins < 1) {
+        $tpl->assign('PLUGINS_BLOCK', '');
+        set_page_message(tr('Plugin list is empty.'), 'static_info');
+        return;
+    }
 }
 
 require 'imscp-lib.php';
@@ -161,7 +175,7 @@ $pm = iMSCP_Registry::get('pluginManager');
 
 if (!empty($_POST) || !empty($_FILES) || !empty($_GET)) {
     try {
-        if (!empty($_FILES)) {
+        if (!empty($_FILES['plugin_archive'])) {
             $pm->pluginUpload();
         } elseif (isset($_GET['sync'])) {
             $pm->pluginSyncData();
