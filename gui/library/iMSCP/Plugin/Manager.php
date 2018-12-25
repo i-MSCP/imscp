@@ -82,7 +82,7 @@ class iMSCP_Plugin_Manager
      */
     public function __construct()
     {
-        $this->em = iMSCP_Events_Aggregator::getInstance()->addEvents('pluginManager', $this->events);
+        $this->em = iMSCP_Events_Aggregator::getInstance()->addEvents(__CLASS__, $this->events);
         $this->pluginLoadDataFromDatabase();
         spl_autoload_register([$this, 'autoload']);
     }
@@ -245,9 +245,10 @@ class iMSCP_Plugin_Manager
      * Get instance of the given plugin
      *
      * @param string $plugin Plugin name
+     * @param bool $registerListeners Flag indicating whether or not plugin event listeners must be registered
      * @return iMSCP_Plugin|iMSCP_Plugin_Action
      */
-    public function pluginGet($plugin)
+    public function pluginGet($plugin, $registerListeners = false)
     {
         if ($this->pluginIsLoaded($plugin)) {
             return $this->plugins[$plugin];
@@ -261,7 +262,7 @@ class iMSCP_Plugin_Manager
 
         $this->plugins[$plugin] = new $class($this);
 
-        if ($this->pluginIsKnown($plugin) && $this->pluginIsEnabled($plugin)) {
+        if ($registerListeners) {
             $this->plugins[$plugin]->register($this->getEventManager());
         }
 
@@ -559,7 +560,7 @@ class iMSCP_Plugin_Manager
         }
 
         try {
-            $pluginInstance = $this->pluginGet($plugin);
+            $pluginInstance = $this->pluginGet($plugin, true);
             $this->pluginSetStatus($plugin, 'toinstall');
             $responses = $this->em->dispatch(iMSCP_Events::onBeforeInstallPlugin, [
                 'pluginManager' => $this,
@@ -701,6 +702,8 @@ class iMSCP_Plugin_Manager
         }
 
         try {
+            $pluginInstance = $this->pluginGet($plugin, true);
+
             if (!$isSubAction) {
                 if ($this->pluginRequireUpdate($plugin)) {
                     $this->pluginSetStatus($plugin, 'toupdate');
@@ -714,8 +717,6 @@ class iMSCP_Plugin_Manager
                     return;
                 }
             }
-
-            $pluginInstance = $this->pluginGet($plugin);
 
             if (!$isSubAction) {
                 $this->pluginSetStatus($plugin, 'toenable');
@@ -943,7 +944,7 @@ class iMSCP_Plugin_Manager
         }
 
         try {
-            $pluginInstance = $this->pluginGet($plugin);
+            $pluginInstance = $this->pluginGet($plugin, true);
             $this->pluginSetStatus($plugin, 'todelete');
             $responses = $this->em->dispatch(iMSCP_Events::onBeforeDeletePlugin, [
                 'pluginManager' => $this,
