@@ -24,6 +24,6 @@ professionals.
 Unless otherwise stated all code is licensed under GPL 2.0 and has the following copyright:
 
 ```
-    Copyright 2010-2017, Laurent Declercq (i-MSCP)
+    © 2010-2018, Laurent Declercq, i-MSCP™
     All rights reserved
 ```

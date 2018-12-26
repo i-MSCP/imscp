@@ -24,7 +24,9 @@
         <div id="logo"><span>internet Multi Server Control Panel</span></div>
         <div id="copyright">
             <a href="https://www.i-mscp.net" tabindex="8" title="i-MSCP">
-                © 2010-<script>document.write(String((new Date()).getFullYear()))</script> i-MSCP Team<br>All Rights Reserved
+                © 2010-<script>document.write(String((new Date()).getFullYear()))</script> Laurent Declercq, i-MSCP™
+                <br>
+                All Rights Reserved
             </a>
         </div>
     </div>

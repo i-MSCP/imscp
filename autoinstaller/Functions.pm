@@ -359,7 +359,7 @@ i-MSCP was designed for professional Hosting Service Providers (HSPs), Internet 
 
 Unless otherwise stated all code is licensed under GPL 2.0 and has the following copyright:
 
-        \\ZbCopyright 2010-2017, Laurent Declercq (i-MSCP)
+        \\Zb© @{[ (localtime)[5]+1900 ]}-, Laurent Declercq, i-MSCP™
         All rights reserved\\ZB
 EOF
 }
