@@ -23,6 +23,7 @@ PLUGINS
     Updated: Plugin API to version 1.5.1
 
 YOUTRACK
+     IP-1815 Circular feature - Unexpected exception raised - `username' parameter is not defined or not a string
      IP-1816 Cosmetic - Copyright date on i-MSCP sign-in screen not up-to-date
 
 ------------------------------------------------------------------------------------------------------------------------

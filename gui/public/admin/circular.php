@@ -83,7 +83,7 @@ function admin_sendToAdministrators($senderName, $senderEmail, $subject, $body)
 
     $stmt = execute_query(
         "
-            SELECT MIN(admin_name), MIN(fname), MIN(lname), email
+            SELECT MIN(admin_name) as admin_name, MIN(fname) as fname, MIN(lname) as lname, email
             FROM admin
             WHERE admin_type = 'admin'
             GROUP BY email
@@ -116,7 +116,7 @@ function admin_sendToResellers($senderName, $senderEmail, $subject, $body)
 
     $stmt = execute_query(
         "
-            SELECT MIN(admin_name), MIN(fname), MIN(lname), email
+            SELECT MIN(admin_name) as admin_name, MIN(fname) as fname, MIN(lname) as lname, email
             FROM admin
             WHERE admin_type = 'reseller'
             GROUP BY email
@@ -148,7 +148,7 @@ function admin_sendToCustomers($senderName, $senderEmail, $subject, $body)
 
     $stmt = execute_query(
         "
-            SELECT MIN(admin_name), MIN(fname), MIN(lname), email
+            SELECT MIN(admin_name) as admin_name, MIN(fname) as fname, MIN(lname) as lname, email
             FROM admin
             WHERE admin_type = 'user'
             GROUP BY email

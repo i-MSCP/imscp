@@ -83,7 +83,7 @@ function reseller_sendToCustomers($senderName, $senderEmail, $subject, $body)
 
     $stmt = exec_query(
         "
-            SELECT MIN(admin_name), MIN(fname), MIN(lname), email
+            SELECT MIN(admin_name) as admin_name, MIN(fname) as fname, MIN(lname) as lname, email
             FROM admin
             WHERE created_by = ?
             GROUP BY email

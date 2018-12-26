@@ -371,7 +371,7 @@ function encode_mime_header($string, $charset = 'UTF-8')
 function send_mail($data)
 {
     $data = new ArrayObject($data);
-    $response = EventsManager::getInstance()->dispatch(Events::onSendMail, ['mail_data' => new ArrayObject($data)]);
+    $response = EventsManager::getInstance()->dispatch(Events::onSendMail, ['mail_data' => $data]);
 
     if ($response->isStopped()) { // Allow third-party components to short-circuit this event.
         return true;
@@ -379,7 +379,7 @@ function send_mail($data)
 
     foreach (['mail_id', 'username', 'email', 'subject', 'message'] as $parameter) {
         if (!isset($data[$parameter]) || !is_string($data[$parameter])) {
-            throw new  iMSCPException(sprintf("`%s' parameter is not defined or not a string", $parameter));
+            throw new iMSCPException(sprintf("`%s' parameter is not defined or not a string", $parameter));
         }
     }
 
