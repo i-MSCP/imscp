@@ -21,8 +21,12 @@
 <div class="wrapper">
     <!-- BDP: header_block -->
     <div id="header">
-        <div id="logo"><span>{productLongName}</span></div>
-        <div id="copyright"><span><a href="{productLink}" target="blank">{productCopyright}</a></span></div>
+        <div id="logo"><span>internet Multi Server Control Panel</span></div>
+        <div id="copyright">
+            <a href="https://www.i-mscp.net" tabindex="8" title="i-MSCP">
+                © 2010-<script>document.write(String((new Date()).getFullYear()))</script> i-MSCP Team<br>All Rights Reserved
+            </a>
+        </div>
     </div>
     <!-- EDP: header_block -->
     <div id="content">

@@ -67,9 +67,6 @@ $tpl->define_dynamic([
 $tpl->assign([
     'TR_PAGE_TITLE'    => tr('i-MSCP - Multi Server Control Panel / Lost Password'),
     'CONTEXT_CLASS'    => '',
-    'productLongName'  => tr('internet Multi Server Control Panel'),
-    'productLink'      => 'https://www.i-mscp.net',
-    'productCopyright' => tr('© 2010-2017 i-MSCP Team<br>All Rights Reserved'),
     'TR_CAPCODE'       => tr('Security code'),
     'GET_NEW_IMAGE'    => tr('Get a new security code'),
     'CAPTCHA_WIDTH'    => tohtml($cfg['LOSTPASSWORD_CAPTCHA_WIDTH'], 'htmlAttr'),

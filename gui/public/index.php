@@ -65,12 +65,6 @@ $tpl->define_dynamic([
     'lostpwd_button' => 'page'
 ]);
 
-$tpl->assign([
-    'productLongName'  => tr('internet Multi Server Control Panel'),
-    'productLink'      => 'https://www.i-mscp.net',
-    'productCopyright' => tr('© 2010-2017 i-MSCP Team<br>All Rights Reserved')
-]);
-
 $cfg = Registry::get('config');
 
 if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {

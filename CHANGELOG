@@ -22,6 +22,9 @@ PLUGINS
     Review: Don't make use of PharData to extract plugin archives. Make use of ZipArchive and Archive_Tar instead (Validator, Filter)
     Updated: Plugin API to version 1.5.1
 
+YOUTRACK
+     IP-1816 Cosmetic - Copyright date on i-MSCP sign-in screen not up-to-date
+
 ------------------------------------------------------------------------------------------------------------------------
 1.5.3 (build 2018120800)
 ------------------------------------------------------------------------------------------------------------------------
