@@ -10,16 +10,17 @@ INSTALLER
 PLUGINS
     Added: Archive validator and filter
     Added: Internal '__nbuild__' info field
+    Deprecated: 'date' info field (version and build fields are sufficient)
+    Deprecated: Internal '__need_change__' info field. Plugin data are now compared at runtime
+    Dropped: 'plugin_type' database table column
     Fixed: 'build' field is not taken in consideration. Full version (version.build) must be passed-in to update routines (frontEnd, Backend)
     Fixed: Configuration changes not detected in some contexts - Make use of identity comparison operator
     Fixed: Updating a plugin when a task is already pending for it, even if it is in error state, can lead to an inconsistent state
     Fixed: Updating a plugin configuration while a task is already pending for it can lead to inconsistent state
     Fixed: Info fields (name, desc, version, build, require_api) must be validated (upload action)
-    Deprecated: 'date' info field (version and build fields are sufficient)
-    Deprecated: Internal '__need_change__' info field. Plugin data are now compared at runtime
-    Dropped: 'plugin_type' database table column
     Renamed: Internal 'db_schema_version' info field to '__migration__'
     Review: Don't make use of PharData to extract plugin archives. Make use of ZipArchive and Archive_Tar instead (Validator, Filter)
+    Updated: Plugin API to version 1.5.1
 
 ------------------------------------------------------------------------------------------------------------------------
 1.5.3 (build 2018120800)
