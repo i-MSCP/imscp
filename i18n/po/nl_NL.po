@@ -1,16 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR i-MSCP Team - All rights reserved
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the i-MSCP package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# i-MSCP <team@i-mscp.net>, 2018
+# Djawi de Boer <hank09878@gmail.com>, 2018
+# Thom Heemstra <thom@heemstra.xyz>, 2018
+# Laurent Declercq <l.declercq@nuxwin.com>, 2018
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-08 08:36+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: i-MSCP <team@i-mscp.net>, 2017\n"
+"POT-Creation-Date: 2018-12-27 11:21+0100\n"
+"PO-Revision-Date: 2018-12-27 10:18+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>, 2018\n"
 "Language-Team: Dutch (Netherlands) (https://www.transifex.com/i-mscp/teams/576/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -77,10 +83,6 @@ msgid "%s account successfully deleted."
 msgstr "%s account is verwijderd."
 
 #, php-format
-msgid "%s doens't look like an i-MSCP plugin archive."
-msgstr "%s lijkt niet op een i-MSCP invoegtoepassingsarchief."
-
-#, php-format
 msgid "%s doesn't exist or is empty."
 msgstr "%s bestaat niet of is leeg."
 
@@ -137,14 +139,6 @@ msgstr ""
 "%s: U kunt een dienst of onderdeel welke reeds aan klanten van de "
 "wederverkoper worden verkocht niet uitschakelen."
 
-#, php-format
-msgid ""
-"%s::getInfo() not implemented and %s not found. This is a bug in the %s "
-"plugin which must be reported to the author(s)."
-msgstr ""
-"%s::getInfo() niet geïmplementeerd en %s niet gevonden. Dit is een bug in de"
-" invoegtoepassing %s welke bij de maker(s) gemeld dient te worden."
-
 msgid "(default)"
 msgstr "(standaard)"
 
@@ -154,6 +148,9 @@ msgstr "(uit %s gevonden eenheden)"
 
 msgid "(usually named"
 msgstr "(de backups hebben de volgende naam"
+
+msgid "A PHP extension returned an error while uploading the file '%value%'"
+msgstr ""
 
 msgid "A PHP extension stopped the file upload."
 msgstr "Een PHP-uitbreiding heeft de upload gestopt."
@@ -200,11 +197,13 @@ msgstr "Accounttype"
 msgid "Action"
 msgstr "Actie"
 
-msgid "Action has been stopped."
-msgstr "Actie is gestopt."
+#, php-format
+msgid "Action '%s' successfully executed for the %s plugin."
+msgstr ""
 
-msgid "Action has failed."
-msgstr "Fout bij uitvoeren van actie."
+#, php-format
+msgid "Action '%s' successfully scheduled for the %s plugin."
+msgstr ""
 
 msgid "Actions"
 msgstr "Acties"
@@ -429,7 +428,7 @@ msgid "Admin / Users / Circular"
 msgstr "Beheerder / Gebruikers / E-mail rondsturen"
 
 msgid "Admin / Users / Customer Assignments"
-msgstr ""
+msgstr "Beheerder / Gebruikers / Klanttoewijzingen"
 
 msgid "Admin / Users / Edit Reseller"
 msgstr "Beheerder / Gebruikers / Wederverkoper aanpassen"
@@ -447,7 +446,7 @@ msgid "Admin / Users / Overview / Edit Customer"
 msgstr "Beheerder / Gebruikers / Overzicht / Bewerk gebruiker"
 
 msgid "Admin / Users / Reseller Assignments"
-msgstr ""
+msgstr "Beheerder / Gebruikers / Wederverkoperstoewijzingen"
 
 msgid "Admin / Users / Sessions"
 msgstr "Beheerder / Gebruikers / Sessies"
@@ -707,10 +706,10 @@ msgid ""
 msgstr "Weet u zeker dat u dit pakket vanuit de online softwareberging."
 
 msgid "Are you sure you want to move the selected customers?"
-msgstr ""
+msgstr "Weet u zeker dat u de geselecteerde klanten wilt verplaatsen?"
 
 msgid "Are you sure you want to move the selected resellers?"
-msgstr ""
+msgstr "Weet u zeker dat u de geselecteerde wederverkopers wilt verplaatsen?"
 
 msgid "Are you sure you want to restore the backup?"
 msgstr "Weet u zeker dat u deze back-up wilt herstellen?"
@@ -815,11 +814,15 @@ msgid ""
 "Below you can move customers from a reseller to another reseller by "
 "selecting them and clicking the submit button."
 msgstr ""
+"Hieronder kunt u klanten van de ene naar de andere wederverkoper "
+"verplaatsen, door ze te selecteren en vervolgens op te slaan."
 
 msgid ""
 "Below you can move resellers from an administrator to another administrator "
 "by selecting them and clicking the submit button."
 msgstr ""
+"Hieronder kunt u wederverkopers van de ene naar de andere beheerder "
+"verplaatsen, door ze te selecteren en vervolgens op te slaan."
 
 msgid ""
 "Below, you can activate the external mail feature for one or many of your "
@@ -918,6 +921,12 @@ msgstr "Aanpassen"
 
 msgid "Change status of this item for a new attempt"
 msgstr "Verander de status van dit object voor een nieuwe poging."
+
+#, php-format
+msgid ""
+"Changes for the %s plugin were ignored as there is a pending task for this "
+"one. Please retry once the task is completed."
+msgstr ""
 
 msgid "Check for update"
 msgstr "Controleer op updates"
@@ -1201,14 +1210,6 @@ msgstr ""
 "fout opgetreden."
 
 #, php-format
-msgid "Could not backup current `%s' plugin directory."
-msgstr "Kon geen back-up maken van de %s invoegtoepassingsmap."
-
-#, php-format
-msgid "Could not change the %s plugin: %s"
-msgstr "Kon de %s invoegtoepassing niet wijzigen: %s"
-
-#, php-format
 msgid "Could not connect to the `%s' database. Please check the password."
 msgstr "Kon niet verbinden met de `%s' database. Controleer uw wachtwoord."
 
@@ -1231,18 +1232,6 @@ msgstr ""
 "Verwijderen van SSL-certificaat is mislukt. Er is een onverwachte fout "
 "opgetreden."
 
-#, php-format
-msgid "Could not delete the %s plugin: %s"
-msgstr "Konn de plugin %s niet verwijderen: %s"
-
-#, php-format
-msgid "Could not disable the %s plugin: %s"
-msgstr "Kon de %s invoegtoepassing niet uitschakelen: %s"
-
-#, php-format
-msgid "Could not enable the %s plugin: %s"
-msgstr "Kon de %s invoegtoepassing niet inschakelen: %s"
-
 msgid "Could not find any network interface. You cannot add new IP addresses."
 msgstr ""
 "Kon deze netwerkinterface niet vinden. U kunt geen nieuwe IP-adressen "
@@ -1253,28 +1242,8 @@ msgstr ""
 "Genereren van SSL-certificaat is mislukt. Er is een onverwachte fout "
 "opgetreden."
 
-#, php-format
-msgid "Could not install the %s plugin: %s"
-msgstr "Kon de invoegtoepassing %s niet installeren: %s"
-
-#, php-format
-msgid "Could not protect the %s plugin: %s"
-msgstr "Kon de invoegtoepassing %s niet beveiligen: %s"
-
-#, php-format
-msgid "Could not restore %s plugin directory"
-msgstr "Kon de %s invoegtoepassingsmap niet terugzetten"
-
 msgid "Could not retrieve directories."
 msgstr "Kon mappen niet verkrijgen."
-
-#, php-format
-msgid "Could not uninstall the %s plugin: %s"
-msgstr "Kon de %s invoegtoepassing niet deïnstalleren: %s"
-
-#, php-format
-msgid "Could not update the %s plugin: %s"
-msgstr "Kon de %s invoegtoepassing niet bijwerken: %s"
 
 msgid "Could not upload file."
 msgstr "Kon bestand niet uploaden."
@@ -1288,6 +1257,10 @@ msgid ""
 msgstr "Kon bestand niet uploaden. Maximale grootte (%1$d MB) is bereikt."
 
 #, php-format
+msgid "Couldn't backup the current %s plugin directory."
+msgstr ""
+
+#, php-format
 msgid "Couldn't create the %s database."
 msgstr "Kon de %s database niet aanmaken."
 
@@ -1298,20 +1271,38 @@ msgid "Couldn't delete subdomain. An unexpected error occurred."
 msgstr "Door een onbekende fout kon dit subdomein niet verwijderd worden."
 
 #, php-format
+msgid ""
+"Couldn't delete the %s plugin. You should fix the file permissions and try "
+"again."
+msgstr ""
+
+#, php-format
 msgid "Couldn't find domain properties for customer with ID %d."
+msgstr "Kon domeineigenschappen niet vinden voor klant met ID: %d"
+
+#, php-format
+msgid "Couldn't load the %s plugin - Plugin class not found."
 msgstr ""
 
 #, php-format
 msgid "Couldn't move customer with ID %d: %s"
-msgstr ""
+msgstr "Kon klant niet verplaatsen, betreft ID %d:%s"
 
 #, php-format
 msgid "Couldn't move reseller with ID %d: %s"
+msgstr "Kon wederverkoper niet verplaatsen, betreft ID %d:%s"
+
+#, php-format
+msgid "Couldn't read the %s plugin info.php file."
 msgstr ""
 
 #, php-format
 msgid "Couldn't validate DNS resource record: %s"
 msgstr "Kon de DNS-record niet valideren: %s"
+
+#, php-format
+msgid "Couldn't write the %s file."
+msgstr ""
 
 msgid "Count default mail accounts"
 msgstr "Aantal standaard e-mailaccounts"
@@ -1398,7 +1389,7 @@ msgid "Customer level"
 msgstr "Klantniveau"
 
 msgid "Customer name"
-msgstr ""
+msgstr "Klantnaam"
 
 msgid "Customer successfully scheduled for addition."
 msgstr "Klant wordt toegevoegd."
@@ -1893,6 +1884,10 @@ msgid "Directory %s doesn't exists."
 msgstr "Map %s bestaat niet."
 
 #, php-format
+msgid "Directory '%s' doesn't exist or is not writable"
+msgstr ""
+
+#, php-format
 msgid "Directory '%s' doesn't exists."
 msgstr "Map '%s' bestaat niet."
 
@@ -2072,6 +2067,14 @@ msgstr "Domeinen per pagina"
 msgid "Done"
 msgstr "Gereed"
 
+#, php-format
+msgid "Downgrade of the %s plugin is forbidden."
+msgstr ""
+
+#, php-format
+msgid "Downgrade of the %s plugin to version %s (build %s) is forbidden."
+msgstr ""
+
 msgid "Download"
 msgstr "Download"
 
@@ -2185,6 +2188,14 @@ msgstr "Errorpaginas"
 msgid "Error reporting"
 msgstr "Foutrapportering"
 
+#, php-format
+msgid "Error while extracting the %s plugin archive."
+msgstr ""
+
+#, php-format
+msgid "Error while opening the %s plugin archive."
+msgstr ""
+
 msgid "Error: Remote File not found!"
 msgstr "Fout: Extern bestand niet gevonden!"
 
@@ -2267,9 +2278,35 @@ msgstr "Vrouw"
 msgid "File %s doesn't exist or cannot be reached!"
 msgstr "Bestand %s bestaat niet of kan niet benaderd worden!"
 
-#, php-format
-msgid "File %s doesn't look like a migration file."
-msgstr "Het bestand %s lijkt niet op een migratiebestand."
+msgid "File '%value%' can't be written"
+msgstr ""
+
+msgid "File '%value%' doesn't look like an i-MSCP plugin archive."
+msgstr ""
+
+msgid "File '%value%' exceeds the defined form size"
+msgstr ""
+
+msgid "File '%value%' exceeds the defined ini size"
+msgstr ""
+
+msgid "File '%value%' is not readable or does not exist"
+msgstr ""
+
+msgid "File '%value%' is not readable or does not exist."
+msgstr ""
+
+msgid "File '%value%' was illegally uploaded. This could be a possible attack"
+msgstr ""
+
+msgid "File '%value%' was not found"
+msgstr ""
+
+msgid "File '%value%' was not uploaded"
+msgstr ""
+
+msgid "File '%value%' was only partially uploaded"
+msgstr ""
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
@@ -2320,9 +2357,6 @@ msgstr "Verboden"
 msgid "Force refresh"
 msgstr "Forceer verversing"
 
-msgid "Force retry"
-msgstr "Forceren opnieuw proberen"
-
 msgid ""
 "Force synching of mailboxes quota info. Quota info are automatically synced "
 "every 5 minutes."
@@ -2362,7 +2396,7 @@ msgid "From"
 msgstr "Van"
 
 msgid "From administrator"
-msgstr ""
+msgstr "Van beheerder"
 
 msgid "From reseller"
 msgstr "Van wederverkoper"
@@ -2697,6 +2731,15 @@ msgstr "Interne serverfout"
 msgid "Internationalization"
 msgstr "Internationalisering"
 
+#, php-format
+msgid ""
+"Invalid 'destination' option: '%s' is not a directory or is not writable."
+msgstr ""
+
+#, php-format
+msgid "Invalid 'magic_file' option: '%s' is not a file or is not readable."
+msgstr ""
+
 msgid "Invalid FTP username."
 msgstr "Ongeldige FTP-gebruikersnaam"
 
@@ -2727,15 +2770,6 @@ msgstr ""
 "Ongeldig(e) teken(s) ingevoerd in het '%s'-veld. Enkel ASCII-tekens en "
 "lijnonderbrekingen mogen gebruikt worden."
 
-msgid "Invalid city."
-msgstr "Plaats ongeldig"
-
-msgid "Invalid company."
-msgstr "Bedrijf ongeldig"
-
-msgid "Invalid country."
-msgstr "Land ongeldig"
-
 msgid "Invalid domain name."
 msgstr "Ongeldige domeinnaam."
 
@@ -2749,17 +2783,11 @@ msgstr "Foutieve e-mailgebruikersnaam"
 msgid "Invalid field: %s"
 msgstr "%s ongeldig"
 
-msgid "Invalid first name."
-msgstr "Voornaam ongeldig"
-
 msgid "Invalid gender."
 msgstr "Geslacht ongeldig"
 
 msgid "Invalid group name!"
 msgstr "Ongeldige groepsnaam!"
-
-msgid "Invalid last name."
-msgstr "Achternaam ongeldig"
 
 msgid "Invalid menu order."
 msgstr "Ongeldige menuvolgorde."
@@ -2773,10 +2801,6 @@ msgstr "Ongeldige informatie ontvangen van GitHub"
 msgid "Invalid phone."
 msgstr "Foutief telefoonnummer"
 
-#, php-format
-msgid "Invalid plugin directory: %s"
-msgstr "Foutieve invoegtoepassingsmap: %s"
-
 msgid "Invalid private key or passphrase."
 msgstr "Ongeldige privésleutel of wachtwoordzin."
 
@@ -2784,23 +2808,11 @@ msgstr "Ongeldige privésleutel of wachtwoordzin."
 msgid "Invalid service name: %s"
 msgstr "Servicenaam foutief: %s"
 
-msgid "Invalid state/province."
-msgstr "Foutieve Staat/provincie"
-
-msgid "Invalid street 1."
-msgstr "Foutief straatadres (1)"
-
-msgid "Invalid street 2."
-msgstr "Foutief straatadres (2)"
-
 msgid "Invalid target."
 msgstr "Doel is ongeldig"
 
 msgid "Invalid username."
 msgstr "Ongeldige gebruikersnaam."
-
-msgid "Invalid zipcode."
-msgstr "Postcode ongeldig"
 
 msgid "Kernel Version"
 msgstr "Kernelversie"
@@ -3058,6 +3070,10 @@ msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
 msgstr ""
 "Maximale externe bestandsgrootte (%s) is bereikt. Uw externe bestand is %s"
 
+msgid ""
+"Maximum allowed size for file '%value%' is '%max%' but '%size%' detected"
+msgstr ""
+
 msgid "Maximum number of captcha validation attempts"
 msgstr "Maximaal aantal CAPTCHA-pogingen"
 
@@ -3094,11 +3110,25 @@ msgstr "MB"
 msgid "Migration file %s is not readable."
 msgstr "Migratiebestand %s is niet leesbaar."
 
+msgid ""
+"Minimum expected size for file '%value%' is '%min%' but '%size%' detected"
+msgstr ""
+
 msgid "Minute"
 msgstr "Minuut"
 
 msgid "Minutes"
 msgstr "Minuten"
+
+#, php-format
+msgid "Missing %s PHP extension."
+msgstr ""
+
+msgid "Missing PEAR Archive_Tar."
+msgstr ""
+
+msgid "Missing PEARs Archive_Tar."
+msgstr ""
 
 msgid "Missing search criteria."
 msgstr "Missende zoekcriteria"
@@ -3144,10 +3174,10 @@ msgid "Mount point"
 msgstr "Aanhechtingspunt"
 
 msgid "Move selected customers"
-msgstr ""
+msgstr "Verplaatst geselecteerde klanten"
 
 msgid "Move selected resellers"
-msgstr ""
+msgstr "Verplaatst geselecteerde wederverkopers"
 
 msgid "N/A"
 msgstr "N/B"
@@ -3166,6 +3196,10 @@ msgstr "Netwerkinterface (NIC)"
 
 msgid "Never"
 msgstr "Nooit"
+
+#, php-format
+msgid "New %s plugin data were successfully stored."
+msgstr ""
 
 msgid "New SQL user data"
 msgstr "Nieuwe SQL-gebruikersinformatie"
@@ -3198,14 +3232,15 @@ msgstr "Geen account gevonden"
 msgid "No anti-rootkits logs"
 msgstr "Geen anti-rootkit log"
 
-msgid "No available"
-msgstr "Geen beschikbaar"
+#, php-format
+msgid "No changes were detected for the %s plugin."
+msgstr ""
 
 msgid "No custom menu found."
 msgstr "Geen eigen menu gevonden."
 
 msgid "No customer found for the selected reseller."
-msgstr ""
+msgstr "Geen klant gevonden voor deze wederverkoper."
 
 msgid "No domain available for new software instance."
 msgstr "Geen domein beschikbaar voor nieuwe software."
@@ -3229,7 +3264,7 @@ msgid "No reseller available to add the permissions."
 msgstr "Geen wederverkoper beschikbaar om rechten toe te voegen."
 
 msgid "No reseller found for the selected administrator."
-msgstr ""
+msgstr "Geen wederverkoper gevonden voor deze beheerder."
 
 msgid "No reseller with activated software installer found!"
 msgstr "Geen wederverkoper met geactiveerde software gevonden."
@@ -3256,6 +3291,9 @@ msgid "No statistics found for the given period. Try another period."
 msgstr ""
 "Geen statistieken gevonden voor de betreffende periode. Probeer een andere "
 "periode."
+
+msgid "No temporary directory was found for file '%value%'"
+msgstr ""
 
 msgid "No update available"
 msgstr "Geen updates beschikbaar"
@@ -3289,9 +3327,6 @@ msgstr "Niet gevonden"
 
 msgid "Not found."
 msgstr "Niet gevonden."
-
-msgid "Not provided"
-msgstr "Niet opgegeven"
 
 msgid "Not used"
 msgstr "Niet gebruikt"
@@ -3333,9 +3368,6 @@ msgstr "Enkel nummers tussen 0 en 65535 zijn toegestaan."
 
 msgid "Only positive numbers are allowed."
 msgstr "Enkel positieve nummers toegestaan."
-
-msgid "Only tar.gz and tar.bz2 archives are supported."
-msgstr "Enkel tar.gz- en tar.bz2-archieven worden geaccepteerd."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "Enkel tar.gz-, tar.bz2- en zip-archieven worden geaccepteerd."
@@ -3597,182 +3629,32 @@ msgid "Plugin"
 msgstr "Invoegtoepassing"
 
 #, php-format
-msgid "Plugin %s activated."
-msgstr "Invoegtoepassing %s geactiveerd"
-
-#, php-format
-msgid "Plugin %s cannot be activated."
-msgstr "Invoegtoepassing %s kan niet worden geactiveerd."
-
-#, php-format
-msgid "Plugin %s cannot be deactivated."
-msgstr "Invoegtoepassing %s kan niet worden geadectiveerd."
-
-#, php-format
-msgid "Plugin %s cannot be deleted."
-msgstr "Invoegtoepassing %s kan niet worden verwijderd."
-
-#, php-format
-msgid "Plugin %s cannot be installed."
-msgstr "Invoegtoepassing %s kan niet worden geïnstalleerd."
-
-#, php-format
-msgid "Plugin %s cannot be protected."
-msgstr "Invoegtoepassing %s kan niet worden beveiligd."
-
-#, php-format
-msgid "Plugin %s cannot be reconfigured."
-msgstr "Invoegtoepassing %s kan niet opnieuw geconfigureerd worden."
-
-#, php-format
-msgid "Plugin %s cannot be uninstalled."
-msgstr "Invoegtoepassing %s kan niet worden gedeïnstalleerd."
-
-#, php-format
-msgid "Plugin %s cannot be updated."
-msgstr "Invoegtoepassing %s kon niet worden bijgewerkt"
-
-#, php-format
-msgid "Plugin %s deactivated."
-msgstr "Invoegtoepassing %s gedeactiveerd."
-
-#, php-format
-msgid "Plugin %s deleted."
-msgstr "Invoegtoepassing %s verwijderd"
-
-#, php-format
-msgid "Plugin %s installed."
-msgstr "Invoegtoepassing %s geïnstalleerd."
-
-#, php-format
-msgid "Plugin %s is protected."
-msgstr "Invoegtoepassing %s is beveiligd."
-
-#, php-format
-msgid "Plugin %s protected."
-msgstr "Invoegtoepassing %s beveiligd."
-
-#, php-format
-msgid "Plugin %s reconfigured."
-msgstr "Invoegtoepassing %s is opnieuw geconfigureerd."
-
-#, php-format
-msgid "Plugin %s scheduled for activation."
-msgstr "Invoegtoepassing %s wordt gedeactiveerd."
-
-#, php-format
-msgid "Plugin %s scheduled for change."
-msgstr "Invoegtoepassing %s wordt aangepast."
-
-#, php-format
-msgid "Plugin %s scheduled for deactivation."
-msgstr "Invoegtoepassing %s wordt gedeactiveerd."
-
-#, php-format
-msgid "Plugin %s scheduled for installation."
-msgstr "Invoegtoepassing %s wordt geïnstalleerd."
-
-#, php-format
-msgid "Plugin %s scheduled for uninstallation."
-msgstr "Invoegtoepassing %s wordt verwijderd."
-
-#, php-format
-msgid "Plugin %s scheduled for update."
-msgstr "Invoegtoepassing %s wordt bijgewerkt."
-
-#, php-format
-msgid "Plugin %s uninstalled."
-msgstr "Invoegtoepassing %s verwijderd."
-
-#, php-format
-msgid "Plugin %s updated."
-msgstr "Invoegtoepassing %s bijgewerkt."
-
-#, php-format
-msgid "Plugin Manager: Could not change the %s plugin: %s"
-msgstr "Invoegtoepassingsbeheerder: Kon de %s plugin niet aanpassen: %s"
-
-#, php-format
-msgid ""
-"Plugin Manager: Could not delete %s plugin files. You should run the set-"
-"gui-permissions.pl script and try again."
+msgid "Plugin '%s' has been successfully protected."
 msgstr ""
-"Invoegtoepassingsbeheerder: Kon de bestanden van de %s invoegtoepassing niet"
-" verwijderen. Draai set-gui-permissions.pl en probeer opnieuw."
 
-#, php-format
-msgid "Plugin Manager: Could not load plugin %s"
-msgstr "Invoegtoepassingsbeheerder: Kon de %s invoegtoepassing niet laden"
-
-#, php-format
-msgid ""
-"Plugin Manager: Could not uninstall the %s plugin. Plugin has been locked by"
-" another plugin."
+msgid "Plugin '%value%' cannot be updated because it is protected."
 msgstr ""
-"Invoegtoepassingsbeheerder:  Kon de %s invoegtoepassing niet laden. De "
-"invoegtoepassing is beveiligd door een andere plugin."
 
-#, php-format
-msgid "Plugin Manager: Could not update the %s plugin: %s"
+msgid "Plugin '%value%' cannot be updated due to pending task."
 msgstr ""
-"Invoegtoepassingsbeheerder: Kon de %s invoegtoepassing niet bijwerken: %s"
 
-#, php-format
-msgid "Plugin Manager: Could not write the %s file for protected plugins."
+msgid "Plugin '%value%' file is invalid."
 msgstr ""
-"Invoegtoepassingsbeheerder: Kon niet schrijven naar het %s bestand voor "
-"beveiligde invoegtoepassingen."
 
-#, php-format
-msgid "Plugin Manager: Directory %s doesn't exist or is not writable"
+msgid "Plugin '%value%' info field is invalid."
 msgstr ""
-"Invoegtoepassingsbeheerder: : De %s map bestaat niet of kan niet beschreven "
-"worden."
 
-#, php-format
-msgid "Plugin Manager: Downgrade of %s plugin is not allowed."
+msgid "Plugin '%value%' info field is missing."
 msgstr ""
-"Invoegtoepassingen: Downgrade van de %s invoegtoepassing is niet toegestaan."
 
-#, php-format
-msgid "Plugin Manager: Plugin %s is not loaded"
-msgstr "Invoegtoepassingsbeheerder: De %s invoegtoepassing is niet geladen"
-
-#, php-format
-msgid "Plugin Manager: Unknown plugin %s"
-msgstr "Invoegtoepassingsbeheerder: Onbekende invoegtoepassing %s"
-
-#, php-format
-msgid "Plugin activation has failed: %s"
-msgstr "Activeren van invoegtoepassing is mislukt: %s"
+msgid "Plugin '%value%' is not compatible with this i-MSCP version."
+msgstr ""
 
 msgid "Plugin archive"
 msgstr "Invoegtoepassingsarchief"
 
-msgid "Plugin archive exceeds the maximum upload size"
-msgstr "Invoegtoepassingsarchief overschrijdt de maximumgrootte."
-
-#, php-format
-msgid "Plugin change has failed: %s"
-msgstr "Aanpassen van invoegtoepassing is mislukt: %s"
-
-#, php-format
-msgid "Plugin deactivation has failed: %s"
-msgstr "Uitschakelen van invoegtoepassing is mislukt: %s"
-
-#, php-format
-msgid "Plugin deletion has failed: %s"
-msgstr "Verwijderen van invoegtoepassing is mislukt: %s"
-
 msgid "Plugin errors"
 msgstr "Invoegtoepassingsfouten"
-
-msgid "Plugin has been successfully uploaded."
-msgstr "Invoegtoepassing succesvol geüpload."
-
-#, php-format
-msgid "Plugin installation has failed: %s"
-msgstr "Installatie van invoegtoepassing is mislukt: %s"
 
 msgid "Plugin item errors"
 msgstr "Invoegtoepassingsfout"
@@ -3782,14 +3664,6 @@ msgstr "Invoegtoepassingslijst is leeg."
 
 msgid "Plugin management"
 msgstr "Invoegtoepassingen"
-
-#, php-format
-msgid "Plugin uninstallation has failed: %s"
-msgstr "Deïnstallatie van invoegtoepassing is mislukt: %s"
-
-#, php-format
-msgid "Plugin update has failed: %s"
-msgstr "Bijwerken van invoegtoepassing is mislukt: %s"
 
 msgid "Plugins Upload"
 msgstr "Invoegtoepassingsupload"
@@ -3805,14 +3679,6 @@ msgstr ""
 " met eigen functies. Invoegtoepassingen worden los van de i-MSCP-core "
 "gebouwd door vele ontwikkelaars over de wereld. Vind deze invoegtoepassingen"
 " door te surfen naar %s."
-
-#, php-format
-msgid ""
-"Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
-" %s plugin(s) reconfigured, and %s plugin(s) deleted."
-msgstr ""
-"Invoegtoepassingslijst is bijgewerkt: %s nieuwe invoegtoepassing(en) "
-"gevonden, %s bijgewerkt, %s opnieuw geconfigureerd en %s verwijderd."
 
 msgid "Port"
 msgstr "Poort"
@@ -4130,7 +3996,7 @@ msgid "Reseller's layout color successfully updated."
 msgstr "Lay-outkleur van wederverkoper succesvol bijgewerkt."
 
 msgid "Reseller(s) successfully moved."
-msgstr ""
+msgstr "Wederverkoper(s) zijn verplaatst."
 
 msgid "Reseller/IP usage statistics"
 msgstr "Wederverkoper / Statistieken IP-gebruik"
@@ -4149,6 +4015,9 @@ msgstr "Herstel"
 
 msgid "Restore backup"
 msgstr "Herstel laatste back-up"
+
+msgid "Retry"
+msgstr ""
 
 msgid "Rights"
 msgstr "Rechten"
@@ -4599,6 +4468,9 @@ msgstr "Verander van gebruiker"
 msgid "Sync quota info"
 msgstr "Synchroniseer quota-informatie"
 
+msgid "Synchronize Plugins"
+msgstr ""
+
 msgid "System"
 msgstr "Systeem"
 
@@ -4679,14 +4551,26 @@ msgstr ""
 "gelimiteerd bent."
 
 #, php-format
-msgid "The %s plugin version %s is not compatible with your i-MSCP version."
+msgid "The %s plugin changes were ignored as this one is protected."
 msgstr ""
-"De %s-invoegtoepassingsversie %s is niet compatibel met de gebruikte i-MSCP-"
-"versie."
+
+#, php-format
+msgid ""
+"The %s plugin version %s (build %d) is not compatible with your i-MSCP "
+"version."
+msgstr ""
 
 #, php-format
 msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr "Het vertalingsbestand %s wordt overgeslagen: Vertaaltabel is leeg."
+
+#, php-format
+msgid "The '%s' action has been stopped for the %s plugin."
+msgstr ""
+
+#, php-format
+msgid "The '%s' action is forbidden for the %s plugin."
+msgstr ""
 
 #, php-format
 msgid "The '%s' field cannot be empty."
@@ -4969,6 +4853,12 @@ msgstr ""
 "Om de beveiliging van deze invoegtoepassing op te heffen dient u het bestand"
 " %s aan te passen"
 
+msgid "Too few files, minimum '%min%' are expected but '%count%' are given"
+msgstr ""
+
+msgid "Too many files, maximum '%max%' are allowed but '%count%' are given"
+msgstr ""
+
 msgid "Total"
 msgstr "Totaal"
 
@@ -5041,8 +4931,8 @@ msgstr "Kon het i-MSCP-informatiebestand niet verwijderen."
 msgid "Unable to get the IP address list. Please fix this problem."
 msgstr "Kon de lijst met IP-adressen niet verkrijgen, verhelp dit probleem."
 
-msgid "Unable to get update info from Github"
-msgstr "Kan update-informatie niet uit Github verkrijgen"
+msgid "Unable to get update info from GitHub"
+msgstr ""
 
 msgid "Unable to load i-MSCP info file."
 msgstr "Kon het i-MSCP-informatiebestand niet laden"
@@ -5052,10 +4942,6 @@ msgstr "Kan bestand niet verplaatsen."
 
 msgid "Unable to read Web software repository index file."
 msgstr "Kan index-bestand van softwareberging niet uitlezen."
-
-#, php-format
-msgid "Unable to read the %s file."
-msgstr "Kan het bestand %s niet lezen"
 
 #, php-format
 msgid "Unable to read the plugin %s file. Please check file permissions"
@@ -5151,11 +5037,18 @@ msgstr "Onbekende handeling: %s"
 msgid "Unknown bruteforce detection type: %s"
 msgstr "Onbekend bruteforce detectietype: %s"
 
+msgid "Unknown error while uploading file '%value%'"
+msgstr ""
+
 msgid "Unknown language name."
 msgstr "Onbekende naam van taal."
 
 msgid "Unknown layout color."
 msgstr "Onbekende lay-outkleur"
+
+#, php-format
+msgid "Unknown plugin: %s"
+msgstr ""
 
 msgid "Unknown reason."
 msgstr "Onbekende reden."
@@ -5167,6 +5060,10 @@ msgstr "Onbekende naam voor service '%s'."
 msgid "Unknown status"
 msgstr "Onbekende status"
 
+#, php-format
+msgid "Unknown status '%s' for the %s plugin"
+msgstr ""
+
 msgid "Unknown type."
 msgstr "Onbekend type."
 
@@ -5175,9 +5072,6 @@ msgstr "Onbekende gebruikersnaam."
 
 msgid "Update"
 msgstr "Opslaan"
-
-msgid "Update Plugins"
-msgstr "Werk invoegtoepassingen bij"
 
 msgid "Update SQL user password"
 msgstr "Werk SQL-gebruikerswachtwoord bij"
@@ -5401,6 +5295,9 @@ msgid ""
 " reseller are automatically extended when necessary, according the customer "
 "own limits and permissions."
 msgstr ""
+"Wanneer u een klant verplaatst naar een andere wederverkoper, dan worden de "
+"limieten en toestemmingen van deze wederverkoper automatisch uitgebreid, "
+"zodat de klant dezelfde rechten en limieten behoud."
 
 msgid "Wrong or unallowed IP address."
 msgstr "Fout of niet toegestaan IP-adres."
@@ -5547,9 +5444,6 @@ msgstr "U kunt geen vervaldatum in het verleden instellen."
 msgid "You cannot unassign an IP address already in use."
 msgstr ""
 "IP-adressen welke zijn toegewezen aan wederverkopers kunt u niet intrekken."
-
-msgid "You cannot update a protected plugin."
-msgstr "U kunt geen beschermde invoegtoepassing bijwerken."
 
 msgid "You do not have DNS resource records."
 msgstr "U heeft geen DNS-records."
@@ -5729,7 +5623,7 @@ msgid "You must select at least one catch-all address."
 msgstr "U dient minimaal één catch-all adres te selecteren."
 
 msgid "You must select at least one customer."
-msgstr ""
+msgstr "U dient minimaal één klant te kiezen."
 
 msgid "You must select at least one mail account to delete."
 msgstr "U moet minstens één e-mailaccount selecteren om te verwijderen."
@@ -5738,7 +5632,7 @@ msgid "You must select at least one plugin."
 msgstr "Selecteer minimaal 1 invoegtoepassing."
 
 msgid "You must select at least one reseller."
-msgstr ""
+msgstr "U dient minimaal één wederverkoper te kiezen."
 
 msgid "You must specify a message."
 msgstr "U dient een bericht te specificeren."
@@ -5967,9 +5861,6 @@ msgstr "geïnstalleerd"
 msgid "installing"
 msgstr "aan het installeren"
 
-msgid "internet Multi Server Control Panel"
-msgstr "internet Multi Server Control Panel"
-
 msgid "kB"
 msgstr "kB"
 
@@ -6053,10 +5944,10 @@ msgid "that match with"
 msgstr "die overeenkomen met"
 
 msgid "to administrator"
-msgstr ""
+msgstr "aan beheerder"
 
 msgid "to reseller"
-msgstr ""
+msgstr "aan wederverkoper"
 
 msgid "traffic"
 msgstr "Verkeer"
@@ -6075,6 +5966,3 @@ msgstr "ja"
 
 msgid "{USERNAME} user statistics"
 msgstr "Gebruikersstatistieken voor {USERNAME} "
-
-msgid "© 2010-2017 i-MSCP Team<br>All Rights Reserved"
-msgstr "© 2010-2017 i-MSCP Team<br>Alle rechten voorbehouden"

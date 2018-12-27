@@ -1,16 +1,26 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR i-MSCP Team - All rights reserved
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the i-MSCP package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# Tommaso, 2018
+# DrPan <giuseppe.pannullo@gmail.com>, 2018
+# Stefano, 2018
+# theprincy <powerpcweb@gmail.com>, 2018
+# i-MSCP <team@i-mscp.net>, 2018
+# Reto Kessler <kess78@gmail.com>, 2018
+# Umberto Bubaweb <demoweb@live.it>, 2018
+# Laurent Declercq <l.declercq@nuxwin.com>, 2018
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-08 08:36+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Tommaso <redmail@hotmail.it>, 2017\n"
+"POT-Creation-Date: 2018-12-27 11:21+0100\n"
+"PO-Revision-Date: 2018-12-27 10:18+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>, 2018\n"
 "Language-Team: Italian (Italy) (https://www.transifex.com/i-mscp/teams/576/it_IT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -78,10 +88,6 @@ msgid "%s account successfully deleted."
 msgstr "%s account eliminati con successo."
 
 #, php-format
-msgid "%s doens't look like an i-MSCP plugin archive."
-msgstr "%s non sempre un archivio di plugin per i-MSCP."
-
-#, php-format
 msgid "%s doesn't exist or is empty."
 msgstr "%s non esiste o è vuota."
 
@@ -138,14 +144,6 @@ msgstr ""
 "%s: Non è possibile disattivare un servizio già venduto ai clienti del "
 "rivenditore."
 
-#, php-format
-msgid ""
-"%s::getInfo() not implemented and %s not found. This is a bug in the %s "
-"plugin which must be reported to the author(s)."
-msgstr ""
-"getInfo() non implementato in %s e %s non trovato. <br /> Questo è un bug "
-"nel plugin %s e dovrebbe essere segnalato all'autore del plugin."
-
 msgid "(default)"
 msgstr "(default)"
 
@@ -155,6 +153,9 @@ msgstr "(Filtrato da %s record totali)"
 
 msgid "(usually named"
 msgstr "(solitamente chiamato "
+
+msgid "A PHP extension returned an error while uploading the file '%value%'"
+msgstr ""
 
 msgid "A PHP extension stopped the file upload."
 msgstr "Una estensione di PHP blocca il caricamento del file."
@@ -201,11 +202,13 @@ msgstr "Account tipo"
 msgid "Action"
 msgstr "Azione"
 
-msgid "Action has been stopped."
-msgstr "L'azione è stata correttamente fermata."
+#, php-format
+msgid "Action '%s' successfully executed for the %s plugin."
+msgstr ""
 
-msgid "Action has failed."
-msgstr "Azione fallita"
+#, php-format
+msgid "Action '%s' successfully scheduled for the %s plugin."
+msgstr ""
 
 msgid "Actions"
 msgstr "Azioni"
@@ -428,7 +431,7 @@ msgid "Admin / Users / Circular"
 msgstr "Admin / Utenti / Circolare"
 
 msgid "Admin / Users / Customer Assignments"
-msgstr ""
+msgstr "Admin / Utenti / Assegna clienti"
 
 msgid "Admin / Users / Edit Reseller"
 msgstr "Admin / Utenti / Edita Rivenditore"
@@ -446,7 +449,7 @@ msgid "Admin / Users / Overview / Edit Customer"
 msgstr "Admin / Utenti / Panoramica / Modifica Cliente"
 
 msgid "Admin / Users / Reseller Assignments"
-msgstr ""
+msgstr "Admin / Utenti / Assegna rivenditori"
 
 msgid "Admin / Users / Sessions"
 msgstr "Admin / Utenti / Sessioni"
@@ -707,10 +710,10 @@ msgid ""
 msgstr "Sicuro che vuoi installare questo pacchetto dal tuo repository Web?"
 
 msgid "Are you sure you want to move the selected customers?"
-msgstr ""
+msgstr "Sicuro di voler spostare il cliente selezionato?"
 
 msgid "Are you sure you want to move the selected resellers?"
-msgstr ""
+msgstr "Sicuro di voler spostare il rivenditore selezionato?"
 
 msgid "Are you sure you want to restore the backup?"
 msgstr "Siete sicuri di voler ripristinare il backup?"
@@ -815,11 +818,15 @@ msgid ""
 "Below you can move customers from a reseller to another reseller by "
 "selecting them and clicking the submit button."
 msgstr ""
+"Di seguito puoi spostare i clienti da un rivenditore ad un altro rivenditore"
+" selezionandoli e facendo clic sul pulsante Invia."
 
 msgid ""
 "Below you can move resellers from an administrator to another administrator "
 "by selecting them and clicking the submit button."
 msgstr ""
+"Di seguito puoi spostare i rivenditori da un amministratore a un altro "
+"amministratore selezionandoli e facendo clic sul pulsante Invia."
 
 msgid ""
 "Below, you can activate the external mail feature for one or many of your "
@@ -919,6 +926,12 @@ msgstr "Modifica"
 
 msgid "Change status of this item for a new attempt"
 msgstr "Cambia lo stato di questo oggetto per un nuovo tentativo"
+
+#, php-format
+msgid ""
+"Changes for the %s plugin were ignored as there is a pending task for this "
+"one. Please retry once the task is completed."
+msgstr ""
 
 msgid "Check for update"
 msgstr "Controllo aggiornamenti"
@@ -1203,16 +1216,6 @@ msgstr ""
 " errore instteso."
 
 #, php-format
-msgid "Could not backup current `%s' plugin directory."
-msgstr ""
-"Non è stato possibile eseguire il backup della directory corrente `%s' del "
-"plugin"
-
-#, php-format
-msgid "Could not change the %s plugin: %s"
-msgstr "Non è stato possibile cambiare il plugin %s: %s"
-
-#, php-format
 msgid "Could not connect to the `%s' database. Please check the password."
 msgstr ""
 "Impossibile connettersi al database  `%s' . Per favore controlla la password"
@@ -1237,18 +1240,6 @@ msgstr ""
 "Non è stato possibile cancellare il certificato SSL. Si è verificato un "
 "errore inatteso."
 
-#, php-format
-msgid "Could not delete the %s plugin: %s"
-msgstr "Non è stato possibile cancellare il plugin %s: %s"
-
-#, php-format
-msgid "Could not disable the %s plugin: %s"
-msgstr "Non è stato possibile disabilitare il plugin %s: %s"
-
-#, php-format
-msgid "Could not enable the %s plugin: %s"
-msgstr "Non è stato possibile abilitare il plugin %s: %s"
-
 msgid "Could not find any network interface. You cannot add new IP addresses."
 msgstr ""
 "Non è stato trovata nessuna interfaccia di rete. Non puoi aggiungere nuovi "
@@ -1259,28 +1250,8 @@ msgstr ""
 "Non è stato possibile generare il certificato SSL. Si è verificato un errore"
 " inatteso."
 
-#, php-format
-msgid "Could not install the %s plugin: %s"
-msgstr "Non è stato possibile installare il plugin %s: %s"
-
-#, php-format
-msgid "Could not protect the %s plugin: %s"
-msgstr "Non è stato possibile proteggere il plugin %s: %s"
-
-#, php-format
-msgid "Could not restore %s plugin directory"
-msgstr "Non è stato possibile ripristinare la directory del plugin %s"
-
 msgid "Could not retrieve directories."
 msgstr "Impossibile recuperare le directory."
-
-#, php-format
-msgid "Could not uninstall the %s plugin: %s"
-msgstr "Non è stato possibile disinstallare il plugin %s: %s"
-
-#, php-format
-msgid "Could not update the %s plugin: %s"
-msgstr "Non è stato possibile aggiornare il plugin %s: %s"
 
 msgid "Could not upload file."
 msgstr "Impossibile caricare i file."
@@ -1294,6 +1265,10 @@ msgid ""
 msgstr ""
 "Non è possibile caricare il file. È stata raggiunta la massima dimensione "
 "file (%1$d MB)."
+
+#, php-format
+msgid "Couldn't backup the current %s plugin directory."
+msgstr ""
 
 #, php-format
 msgid "Couldn't create the %s database."
@@ -1310,20 +1285,38 @@ msgstr ""
 "inatteso."
 
 #, php-format
+msgid ""
+"Couldn't delete the %s plugin. You should fix the file permissions and try "
+"again."
+msgstr ""
+
+#, php-format
 msgid "Couldn't find domain properties for customer with ID %d."
+msgstr "Impossibile trovare le proprietà del dominio del cliente con ID %d."
+
+#, php-format
+msgid "Couldn't load the %s plugin - Plugin class not found."
 msgstr ""
 
 #, php-format
 msgid "Couldn't move customer with ID %d: %s"
-msgstr ""
+msgstr "Impossibile spostare il cliente con ID %d : %s"
 
 #, php-format
 msgid "Couldn't move reseller with ID %d: %s"
+msgstr "Impossibile spostare il rivenditore con ID %d :%s"
+
+#, php-format
+msgid "Couldn't read the %s plugin info.php file."
 msgstr ""
 
 #, php-format
 msgid "Couldn't validate DNS resource record: %s"
 msgstr "Non è stato possibile validare il record della risorsa DNS: %s"
+
+#, php-format
+msgid "Couldn't write the %s file."
+msgstr ""
 
 msgid "Count default mail accounts"
 msgstr "Conteggio indirizzi email di default"
@@ -1411,7 +1404,7 @@ msgid "Customer level"
 msgstr "Livello cliente"
 
 msgid "Customer name"
-msgstr ""
+msgstr "Nome cliente"
 
 msgid "Customer successfully scheduled for addition."
 msgstr ""
@@ -1918,6 +1911,10 @@ msgid "Directory %s doesn't exists."
 msgstr "La directory %s non esiste."
 
 #, php-format
+msgid "Directory '%s' doesn't exist or is not writable"
+msgstr ""
+
+#, php-format
 msgid "Directory '%s' doesn't exists."
 msgstr "La directory '%s' non esiste."
 
@@ -2098,6 +2095,14 @@ msgstr "Domini per pagina"
 msgid "Done"
 msgstr "Fatto"
 
+#, php-format
+msgid "Downgrade of the %s plugin is forbidden."
+msgstr ""
+
+#, php-format
+msgid "Downgrade of the %s plugin to version %s (build %s) is forbidden."
+msgstr ""
+
 msgid "Download"
 msgstr "Scarica"
 
@@ -2211,6 +2216,14 @@ msgstr "Pagine di errore"
 msgid "Error reporting"
 msgstr "Messaggio di errore"
 
+#, php-format
+msgid "Error while extracting the %s plugin archive."
+msgstr ""
+
+#, php-format
+msgid "Error while opening the %s plugin archive."
+msgstr ""
+
 msgid "Error: Remote File not found!"
 msgstr "Errore: file non trovato "
 
@@ -2296,9 +2309,35 @@ msgstr "Femminile"
 msgid "File %s doesn't exist or cannot be reached!"
 msgstr "File %s non esiste o non è raggiungibile!"
 
-#, php-format
-msgid "File %s doesn't look like a migration file."
-msgstr "File %s non sembra un file di migrazione."
+msgid "File '%value%' can't be written"
+msgstr ""
+
+msgid "File '%value%' doesn't look like an i-MSCP plugin archive."
+msgstr ""
+
+msgid "File '%value%' exceeds the defined form size"
+msgstr ""
+
+msgid "File '%value%' exceeds the defined ini size"
+msgstr ""
+
+msgid "File '%value%' is not readable or does not exist"
+msgstr ""
+
+msgid "File '%value%' is not readable or does not exist."
+msgstr ""
+
+msgid "File '%value%' was illegally uploaded. This could be a possible attack"
+msgstr ""
+
+msgid "File '%value%' was not found"
+msgstr ""
+
+msgid "File '%value%' was not uploaded"
+msgstr ""
+
+msgid "File '%value%' was only partially uploaded"
+msgstr ""
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
@@ -2349,9 +2388,6 @@ msgstr "Proibito"
 msgid "Force refresh"
 msgstr "Forza il refresh"
 
-msgid "Force retry"
-msgstr "Forza nuovo tentativo"
-
 msgid ""
 "Force synching of mailboxes quota info. Quota info are automatically synced "
 "every 5 minutes."
@@ -2392,7 +2428,7 @@ msgid "From"
 msgstr "Da"
 
 msgid "From administrator"
-msgstr ""
+msgstr "Dall' amministratore"
 
 msgid "From reseller"
 msgstr "Dal rivenditore"
@@ -2728,6 +2764,15 @@ msgstr "Errore interno di sistema"
 msgid "Internationalization"
 msgstr "Internazionalizzazione"
 
+#, php-format
+msgid ""
+"Invalid 'destination' option: '%s' is not a directory or is not writable."
+msgstr ""
+
+#, php-format
+msgid "Invalid 'magic_file' option: '%s' is not a file or is not readable."
+msgstr ""
+
 msgid "Invalid FTP username."
 msgstr "Nome utente FTP non valido."
 
@@ -2758,15 +2803,6 @@ msgstr ""
 "Carattere non valido trovato nel campo '%s' . Sono consentiti solo caratteri"
 " ASCII stampabili e interruzioni di riga."
 
-msgid "Invalid city."
-msgstr "Città non valida"
-
-msgid "Invalid company."
-msgstr "Nome azienda non valido"
-
-msgid "Invalid country."
-msgstr "Nazione non valida"
-
 msgid "Invalid domain name."
 msgstr "Nome dominio non valido."
 
@@ -2780,17 +2816,11 @@ msgstr "Email utente non valido."
 msgid "Invalid field: %s"
 msgstr "Campo %s non valido."
 
-msgid "Invalid first name."
-msgstr "Nome non valido."
-
 msgid "Invalid gender."
 msgstr "Sesso non valido"
 
 msgid "Invalid group name!"
 msgstr "Nome gruppo non valido!"
-
-msgid "Invalid last name."
-msgstr "Cognome non valido"
 
 msgid "Invalid menu order."
 msgstr "Ordine del menù non valido."
@@ -2804,10 +2834,6 @@ msgstr "Payload ricevuto da GitHub non valido"
 msgid "Invalid phone."
 msgstr "Telefono non valido"
 
-#, php-format
-msgid "Invalid plugin directory: %s"
-msgstr "Directory del plugin non valida: %s"
-
 msgid "Invalid private key or passphrase."
 msgstr "Private key o passphrase non valida"
 
@@ -2815,23 +2841,11 @@ msgstr "Private key o passphrase non valida"
 msgid "Invalid service name: %s"
 msgstr "Il nome '%s' non è un nome di servizio valido."
 
-msgid "Invalid state/province."
-msgstr "Stato/provincia non valido"
-
-msgid "Invalid street 1."
-msgstr "Indirizzo 1 non valido"
-
-msgid "Invalid street 2."
-msgstr "Indirizzo 2 non valido."
-
 msgid "Invalid target."
 msgstr "Obiettivo non valido."
 
 msgid "Invalid username."
 msgstr "Nome utente non valido."
-
-msgid "Invalid zipcode."
-msgstr "Cap non valido"
 
 msgid "Kernel Version"
 msgstr "Versione del kernel"
@@ -3095,6 +3109,10 @@ msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
 msgstr ""
 "La dimensione massima (%s) del file remoto è raggiunta. Il file remoto è %s"
 
+msgid ""
+"Maximum allowed size for file '%value%' is '%max%' but '%size%' detected"
+msgstr ""
+
 msgid "Maximum number of captcha validation attempts"
 msgstr "Numero massimo di tentativi di validazione captcha"
 
@@ -3132,11 +3150,25 @@ msgstr "MiB"
 msgid "Migration file %s is not readable."
 msgstr "Il file migrazione  %s non è leggibile"
 
+msgid ""
+"Minimum expected size for file '%value%' is '%min%' but '%size%' detected"
+msgstr ""
+
 msgid "Minute"
 msgstr "Minuto"
 
 msgid "Minutes"
 msgstr "Minuti"
+
+#, php-format
+msgid "Missing %s PHP extension."
+msgstr ""
+
+msgid "Missing PEAR Archive_Tar."
+msgstr ""
+
+msgid "Missing PEARs Archive_Tar."
+msgstr ""
 
 msgid "Missing search criteria."
 msgstr "Criteri di ricerca mancanti."
@@ -3184,10 +3216,10 @@ msgid "Mount point"
 msgstr "Mount point"
 
 msgid "Move selected customers"
-msgstr ""
+msgstr "Spostare i clienti selezionati"
 
 msgid "Move selected resellers"
-msgstr ""
+msgstr "Spostare i rivenditori selezionati"
 
 msgid "N/A"
 msgstr "N/D"
@@ -3208,6 +3240,10 @@ msgstr "Interfaccia di rete (NIC)"
 
 msgid "Never"
 msgstr "Mai"
+
+#, php-format
+msgid "New %s plugin data were successfully stored."
+msgstr ""
 
 msgid "New SQL user data"
 msgstr "Nuovi dati utente SQL"
@@ -3240,14 +3276,15 @@ msgstr "Nessun account cliente trovato."
 msgid "No anti-rootkits logs"
 msgstr "Messun logs Anti-Rootkits"
 
-msgid "No available"
-msgstr "No disponibile"
+#, php-format
+msgid "No changes were detected for the %s plugin."
+msgstr ""
 
 msgid "No custom menu found."
 msgstr "Nessun menù personalizzato trovato."
 
 msgid "No customer found for the selected reseller."
-msgstr ""
+msgstr "Nessun cliente trovate per il rivenditore selezionato"
 
 msgid "No domain available for new software instance."
 msgstr "Nessun dominio disponibile per l'istanza del nuovo software."
@@ -3271,7 +3308,7 @@ msgid "No reseller available to add the permissions."
 msgstr "Nessun rivenditore disponibile per aggiungere i permessi."
 
 msgid "No reseller found for the selected administrator."
-msgstr ""
+msgstr "Nessun rivenditore trovato per amministratore selezionato"
 
 msgid "No reseller with activated software installer found!"
 msgstr "Nessun rivenditore trovato con un'installazione software attiva!"
@@ -3298,6 +3335,9 @@ msgid "No statistics found for the given period. Try another period."
 msgstr ""
 "Non sono state trovate statistiche per il periodo specificato. Provare un "
 "altro periodo."
+
+msgid "No temporary directory was found for file '%value%'"
+msgstr ""
 
 msgid "No update available"
 msgstr "Nessun aggiornamento disponibile"
@@ -3331,9 +3371,6 @@ msgstr "Non trovato"
 
 msgid "Not found."
 msgstr "Non trovato."
-
-msgid "Not provided"
-msgstr "Non fornito"
 
 msgid "Not used"
 msgstr "Non utilizzato"
@@ -3373,9 +3410,6 @@ msgstr "Solo i numeri compresi tra 0 e 65535 sono permessi."
 
 msgid "Only positive numbers are allowed."
 msgstr "Sono permessi solo numeri positivi."
-
-msgid "Only tar.gz and tar.bz2 archives are supported."
-msgstr "Solo gli archivi tar.gz e tar.bz2 sono supportati."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "Solo gli archivi tar.gz, tar.bz2 e zip sono accettati."
@@ -3636,178 +3670,32 @@ msgid "Plugin"
 msgstr "Plugin"
 
 #, php-format
-msgid "Plugin %s activated."
-msgstr "Plugin %s attivato"
-
-#, php-format
-msgid "Plugin %s cannot be activated."
-msgstr "Plugin %s non può essere abilitato."
-
-#, php-format
-msgid "Plugin %s cannot be deactivated."
-msgstr "Plugin %s non può essere disattivato."
-
-#, php-format
-msgid "Plugin %s cannot be deleted."
-msgstr "Plugin %s non può essere cancellato."
-
-#, php-format
-msgid "Plugin %s cannot be installed."
-msgstr "Plugin %s non può essere installato."
-
-#, php-format
-msgid "Plugin %s cannot be protected."
-msgstr "Plugin %s non può essere protetto."
-
-#, php-format
-msgid "Plugin %s cannot be reconfigured."
-msgstr "Plugin %s non può essere riconfigurato."
-
-#, php-format
-msgid "Plugin %s cannot be uninstalled."
-msgstr "Plugin %s non può essere disinstallato."
-
-#, php-format
-msgid "Plugin %s cannot be updated."
-msgstr "Plugin %s non può essere aggiornato."
-
-#, php-format
-msgid "Plugin %s deactivated."
-msgstr "Plugin %s disattivato."
-
-#, php-format
-msgid "Plugin %s deleted."
-msgstr "Plugin %s cancellato."
-
-#, php-format
-msgid "Plugin %s installed."
-msgstr "Plugin %s installato."
-
-#, php-format
-msgid "Plugin %s is protected."
-msgstr "Il plugin %s è protetto."
-
-#, php-format
-msgid "Plugin %s protected."
-msgstr "Plugin %s protetto."
-
-#, php-format
-msgid "Plugin %s reconfigured."
-msgstr "Plugin %s riconfigurato."
-
-#, php-format
-msgid "Plugin %s scheduled for activation."
-msgstr "Il plugin %s è stato programmato per attivazione."
-
-#, php-format
-msgid "Plugin %s scheduled for change."
-msgstr "Il plugin %s è stato programmato per l'aggiornamento."
-
-#, php-format
-msgid "Plugin %s scheduled for deactivation."
-msgstr "Plugin %s programmato per la disattivazione."
-
-#, php-format
-msgid "Plugin %s scheduled for installation."
-msgstr "Il plugin %s è stato programmato correttamente per l'installazione."
-
-#, php-format
-msgid "Plugin %s scheduled for uninstallation."
-msgstr "Plugin %s programmato per la disinstallazione."
-
-#, php-format
-msgid "Plugin %s scheduled for update."
-msgstr "Il plugin %s è stato programmato correttamente per l'aggiornamento."
-
-#, php-format
-msgid "Plugin %s uninstalled."
-msgstr "Plugin %s è stato disinstallato."
-
-#, php-format
-msgid "Plugin %s updated."
-msgstr "Plugin %s è stato aggiornato."
-
-#, php-format
-msgid "Plugin Manager: Could not change the %s plugin: %s"
-msgstr "Gestore Plugin: Non è stato possibile cambiare il plugin %s: %s"
-
-#, php-format
-msgid ""
-"Plugin Manager: Could not delete %s plugin files. You should run the set-"
-"gui-permissions.pl script and try again."
+msgid "Plugin '%s' has been successfully protected."
 msgstr ""
-"Gestore Plugin: Non è stato possibile eliminare i files del plugin %s. "
-"Esegui lo script set-gui-permissions.pl e riprova di nuovo."
 
-#, php-format
-msgid "Plugin Manager: Could not load plugin %s"
-msgstr "Gestore Plugin: Non è stato possibile caricare il plugin %s"
-
-#, php-format
-msgid ""
-"Plugin Manager: Could not uninstall the %s plugin. Plugin has been locked by"
-" another plugin."
+msgid "Plugin '%value%' cannot be updated because it is protected."
 msgstr ""
-"Gestore Plugin: Non è stato possibile disinstallare il plugin %s. Il plugin "
-"è stato bloccato da un altro plugin."
 
-#, php-format
-msgid "Plugin Manager: Could not update the %s plugin: %s"
-msgstr "Gestore Plugin: Non è stato possibile aggiornare il plugin %s: %s"
-
-#, php-format
-msgid "Plugin Manager: Could not write the %s file for protected plugins."
+msgid "Plugin '%value%' cannot be updated due to pending task."
 msgstr ""
-"Gestore Plugin: Non è stato possibile scrivere il file %s per i plugins "
-"protetti."
 
-#, php-format
-msgid "Plugin Manager: Directory %s doesn't exist or is not writable"
-msgstr "Gestore Plugin: La directory %s non esiste o non è scrivibile"
+msgid "Plugin '%value%' file is invalid."
+msgstr ""
 
-#, php-format
-msgid "Plugin Manager: Downgrade of %s plugin is not allowed."
-msgstr "Plugin Manager: Downgrade per questo plugin %s non è permesso"
+msgid "Plugin '%value%' info field is invalid."
+msgstr ""
 
-#, php-format
-msgid "Plugin Manager: Plugin %s is not loaded"
-msgstr "Gestore Plugin: Il plugin %s non è caricato"
+msgid "Plugin '%value%' info field is missing."
+msgstr ""
 
-#, php-format
-msgid "Plugin Manager: Unknown plugin %s"
-msgstr "Gestore Plugin: Plugin sconosciuto %s"
-
-#, php-format
-msgid "Plugin activation has failed: %s"
-msgstr "L'attivazione del plugin è fallita: %s"
+msgid "Plugin '%value%' is not compatible with this i-MSCP version."
+msgstr ""
 
 msgid "Plugin archive"
 msgstr "Archivio Plugin"
 
-msgid "Plugin archive exceeds the maximum upload size"
-msgstr "L'archivio del plugin eccede la dimensione massima di caricamento"
-
-#, php-format
-msgid "Plugin change has failed: %s"
-msgstr "La modifica del plugin è fallita: %s"
-
-#, php-format
-msgid "Plugin deactivation has failed: %s"
-msgstr "La disattivazione del plugin è fallita: %s"
-
-#, php-format
-msgid "Plugin deletion has failed: %s"
-msgstr "L'eliminazione del plugin è fallita: %s"
-
 msgid "Plugin errors"
 msgstr "Errori Plugin"
-
-msgid "Plugin has been successfully uploaded."
-msgstr "Plugin è stato caricato con successo"
-
-#, php-format
-msgid "Plugin installation has failed: %s"
-msgstr "L'installazione del plugin è fallita: %s"
 
 msgid "Plugin item errors"
 msgstr "Errori Plugin"
@@ -3817,14 +3705,6 @@ msgstr "La lista dei plugin è vuota."
 
 msgid "Plugin management"
 msgstr "Gestione Plugin"
-
-#, php-format
-msgid "Plugin uninstallation has failed: %s"
-msgstr "La disinstallazione del plugin è fallita: %s"
-
-#, php-format
-msgid "Plugin update has failed: %s"
-msgstr "L'aggiornamento del plugin è fallito: %s"
 
 msgid "Plugins Upload"
 msgstr "Plugin Scaricati"
@@ -3840,15 +3720,6 @@ msgstr ""
 "caratteristiche personalizzate. I plugin sono sviluppati in modo "
 "indipendente dal nucleo applicazione i-MSCP da migliaia di sviluppatori in "
 "tutto il mondo. Potete trovare nuovi plugin da installare sfogliando la %s ."
-
-#, php-format
-msgid ""
-"Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
-" %s plugin(s) reconfigured, and %s plugin(s) deleted."
-msgstr ""
-"La lista dei plugin è stata corretamente aggiornata: %s nuovi plugin(s) "
-"trovati, %s plugin(s) aggiornati, %s plugin(s) modificati e %s plugin(s) "
-"eliminati."
 
 msgid "Port"
 msgstr "Porta"
@@ -4172,7 +4043,7 @@ msgid "Reseller's layout color successfully updated."
 msgstr "Layout del rivenditore aggiornato con successo."
 
 msgid "Reseller(s) successfully moved."
-msgstr ""
+msgstr "Rivenditore(i) spostato(i) con successo"
 
 msgid "Reseller/IP usage statistics"
 msgstr "Statistiche di utilizzo Rivenditori/IP"
@@ -4191,6 +4062,9 @@ msgstr "Ripristina"
 
 msgid "Restore backup"
 msgstr "Ripristina il backup"
+
+msgid "Retry"
+msgstr ""
 
 msgid "Rights"
 msgstr "Permessi"
@@ -4640,6 +4514,9 @@ msgstr "Passa a interfaccia utente"
 msgid "Sync quota info"
 msgstr "Sincronizza info quota"
 
+msgid "Synchronize Plugins"
+msgstr ""
+
 msgid "System"
 msgstr "Info di sistema"
 
@@ -4722,15 +4599,27 @@ msgstr ""
 "limitato per questo servizio."
 
 #, php-format
-msgid "The %s plugin version %s is not compatible with your i-MSCP version."
+msgid "The %s plugin changes were ignored as this one is protected."
 msgstr ""
-"Il plugin %s versione %s non è compatibile con questa  versione di di "
-"i-MSCP."
+
+#, php-format
+msgid ""
+"The %s plugin version %s (build %d) is not compatible with your i-MSCP "
+"version."
+msgstr ""
 
 #, php-format
 msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr ""
 "Il file di traduzione %s è stato ignorato: tabella di traduzione vuota"
+
+#, php-format
+msgid "The '%s' action has been stopped for the %s plugin."
+msgstr ""
+
+#, php-format
+msgid "The '%s' action is forbidden for the %s plugin."
+msgstr ""
 
 #, php-format
 msgid "The '%s' field cannot be empty."
@@ -5014,6 +4903,12 @@ msgstr ""
 "Per rimuovere la protezione di questo plugin, è necessario modificare il %s "
 "del file"
 
+msgid "Too few files, minimum '%min%' are expected but '%count%' are given"
+msgstr ""
+
+msgid "Too many files, maximum '%max%' are allowed but '%count%' are given"
+msgstr ""
+
 msgid "Total"
 msgstr "Totale"
 
@@ -5088,8 +4983,8 @@ msgstr ""
 "Impossibile ottenere l'elenco degli indirizzi IP. Si prega di risolvere "
 "questo problema."
 
-msgid "Unable to get update info from Github"
-msgstr "Impossibile ottenere informazioni di aggiornamento da Github"
+msgid "Unable to get update info from GitHub"
+msgstr ""
 
 msgid "Unable to load i-MSCP info file."
 msgstr "Impossibile caricare il file info i-MSCP"
@@ -5099,10 +4994,6 @@ msgstr "Non è possibile spostare il file."
 
 msgid "Unable to read Web software repository index file."
 msgstr "Impossibile leggere il file indice del repository software web."
-
-#, php-format
-msgid "Unable to read the %s file."
-msgstr "Impossibile leggere il file %s"
 
 #, php-format
 msgid "Unable to read the plugin %s file. Please check file permissions"
@@ -5198,11 +5089,18 @@ msgstr "Azione sconosciuta: %s"
 msgid "Unknown bruteforce detection type: %s"
 msgstr "Tipo di rilevamento bruteforce sconosciuto: %s"
 
+msgid "Unknown error while uploading file '%value%'"
+msgstr ""
+
 msgid "Unknown language name."
 msgstr "Nome linguaggio sconosciuto."
 
 msgid "Unknown layout color."
 msgstr "Sconosciuto colore layout."
+
+#, php-format
+msgid "Unknown plugin: %s"
+msgstr ""
 
 msgid "Unknown reason."
 msgstr "Ragione sconosciuta."
@@ -5214,6 +5112,10 @@ msgstr "Il nome '%s' non è un nome di servizio valido."
 msgid "Unknown status"
 msgstr "Stato sconosciuto"
 
+#, php-format
+msgid "Unknown status '%s' for the %s plugin"
+msgstr ""
+
 msgid "Unknown type."
 msgstr "Tipo sconosciuto."
 
@@ -5222,9 +5124,6 @@ msgstr "Username sconosciuto."
 
 msgid "Update"
 msgstr "Aggiorna"
-
-msgid "Update Plugins"
-msgstr "Aggiorna Plugins"
 
 msgid "Update SQL user password"
 msgstr "Aggiorna password Utente SQL"
@@ -5449,6 +5348,9 @@ msgid ""
 " reseller are automatically extended when necessary, according the customer "
 "own limits and permissions."
 msgstr ""
+"Quando sposti un cliente ad un altro rivenditore, i limiti e le "
+"autorizzazioni di tale rivenditore vengono automaticamente estesi quando "
+"necessario, in base ai limiti e alle autorizzazioni del cliente."
 
 msgid "Wrong or unallowed IP address."
 msgstr "Indirizzo IP errato oppure non autorizzato."
@@ -5593,9 +5495,6 @@ msgstr "Non è possibile impostare una data di scadenza passata."
 
 msgid "You cannot unassign an IP address already in use."
 msgstr "Non puoi disassegnare un indirizzo IP ancora in uso. "
-
-msgid "You cannot update a protected plugin."
-msgstr "Non puoi aggiornare un plugin protetto."
 
 msgid "You do not have DNS resource records."
 msgstr "Tu non hai nessun record DNS"
@@ -5776,7 +5675,7 @@ msgid "You must select at least one catch-all address."
 msgstr "È necessario selezionare almeno un indirizzo catch-all."
 
 msgid "You must select at least one customer."
-msgstr ""
+msgstr "È necessario selezionare almeno un cliente."
 
 msgid "You must select at least one mail account to delete."
 msgstr ""
@@ -5787,7 +5686,7 @@ msgid "You must select at least one plugin."
 msgstr "È necessario selezionare almeno un plugin."
 
 msgid "You must select at least one reseller."
-msgstr ""
+msgstr "È necessario selezionare almeno un rivenditore."
 
 msgid "You must specify a message."
 msgstr "Devi specificare un messaggio."
@@ -6021,9 +5920,6 @@ msgstr "installato"
 msgid "installing"
 msgstr "installazion"
 
-msgid "internet Multi Server Control Panel"
-msgstr "internet Multi Server Control Panel"
-
 msgid "kB"
 msgstr "kB"
 
@@ -6107,10 +6003,10 @@ msgid "that match with"
 msgstr "that match with"
 
 msgid "to administrator"
-msgstr ""
+msgstr "all amministratore"
 
 msgid "to reseller"
-msgstr ""
+msgstr "al cliente"
 
 msgid "traffic"
 msgstr "traffico"
@@ -6129,6 +6025,3 @@ msgstr "sì"
 
 msgid "{USERNAME} user statistics"
 msgstr "{USERNAME} statistiche utente"
-
-msgid "© 2010-2017 i-MSCP Team<br>All Rights Reserved"
-msgstr "© 2010-2017 i-MSCP Team<br>Tutti i Diritti Riservati"

@@ -1,16 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR i-MSCP Team - All rights reserved
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the i-MSCP package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# Jari <info@jkwebdesign.fi>, 2018
+# i-MSCP <team@i-mscp.net>, 2018
+# Toni Rissanen <toni.rissanen@arkku.net>, 2018
+# Laurent Declercq <l.declercq@nuxwin.com>, 2018
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-08 08:36+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Jari <info@jkwebdesign.fi>, 2017\n"
+"POT-Creation-Date: 2018-12-27 11:21+0100\n"
+"PO-Revision-Date: 2018-12-27 10:18+0000\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>, 2018\n"
 "Language-Team: Finnish (Finland) (https://www.transifex.com/i-mscp/teams/576/fi_FI/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -75,10 +81,6 @@ msgid "%s account successfully deleted."
 msgstr "%s tili on poistettu onnistuneesti."
 
 #, php-format
-msgid "%s doens't look like an i-MSCP plugin archive."
-msgstr ""
-
-#, php-format
 msgid "%s doesn't exist or is empty."
 msgstr "%s ei ole olemassa tai on tyhjä."
 
@@ -131,12 +133,6 @@ msgstr ""
 "%s: Et voi poistaa palvelua käytöstä, koska se on jo myyty jälleenmyyjän "
 "asiakkaille."
 
-#, php-format
-msgid ""
-"%s::getInfo() not implemented and %s not found. This is a bug in the %s "
-"plugin which must be reported to the author(s)."
-msgstr ""
-
 msgid "(default)"
 msgstr ""
 
@@ -146,6 +142,9 @@ msgstr ""
 
 msgid "(usually named"
 msgstr "(nimetty yleensä "
+
+msgid "A PHP extension returned an error while uploading the file '%value%'"
+msgstr ""
 
 msgid "A PHP extension stopped the file upload."
 msgstr "PHP:n laajennus pysäytti tiedoston lähetyksen."
@@ -192,11 +191,13 @@ msgstr "Tilin tyyppi"
 msgid "Action"
 msgstr "Toiminto"
 
-msgid "Action has been stopped."
-msgstr "Toiminto on pysäytetty"
+#, php-format
+msgid "Action '%s' successfully executed for the %s plugin."
+msgstr ""
 
-msgid "Action has failed."
-msgstr "Toiminto epäonnistui."
+#, php-format
+msgid "Action '%s' successfully scheduled for the %s plugin."
+msgstr ""
 
 msgid "Actions"
 msgstr "Toimenpiteet"
@@ -896,6 +897,12 @@ msgstr "Muuta"
 msgid "Change status of this item for a new attempt"
 msgstr ""
 
+#, php-format
+msgid ""
+"Changes for the %s plugin were ignored as there is a pending task for this "
+"one. Please retry once the task is completed."
+msgstr ""
+
 msgid "Check for update"
 msgstr "Tarkista päivitykset"
 
@@ -1166,14 +1173,6 @@ msgid "Could not add/update SSL certificate. An unexpected error occurred."
 msgstr ""
 
 #, php-format
-msgid "Could not backup current `%s' plugin directory."
-msgstr ""
-
-#, php-format
-msgid "Could not change the %s plugin: %s"
-msgstr ""
-
-#, php-format
 msgid "Could not connect to the `%s' database. Please check the password."
 msgstr ""
 
@@ -1189,45 +1188,13 @@ msgstr ""
 msgid "Could not delete SSL certificate. An unexpected error occurred."
 msgstr ""
 
-#, php-format
-msgid "Could not delete the %s plugin: %s"
-msgstr ""
-
-#, php-format
-msgid "Could not disable the %s plugin: %s"
-msgstr ""
-
-#, php-format
-msgid "Could not enable the %s plugin: %s"
-msgstr ""
-
 msgid "Could not find any network interface. You cannot add new IP addresses."
 msgstr ""
 
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr ""
 
-#, php-format
-msgid "Could not install the %s plugin: %s"
-msgstr ""
-
-#, php-format
-msgid "Could not protect the %s plugin: %s"
-msgstr ""
-
-#, php-format
-msgid "Could not restore %s plugin directory"
-msgstr ""
-
 msgid "Could not retrieve directories."
-msgstr ""
-
-#, php-format
-msgid "Could not uninstall the %s plugin: %s"
-msgstr ""
-
-#, php-format
-msgid "Could not update the %s plugin: %s"
 msgstr ""
 
 msgid "Could not upload file."
@@ -1243,6 +1210,10 @@ msgstr ""
 "Tiedostoa ei voitu lähettää. Tiedoston maksimikoko (%1$d MB) on ylitetty."
 
 #, php-format
+msgid "Couldn't backup the current %s plugin directory."
+msgstr ""
+
+#, php-format
 msgid "Couldn't create the %s database."
 msgstr ""
 
@@ -1253,7 +1224,17 @@ msgid "Couldn't delete subdomain. An unexpected error occurred."
 msgstr ""
 
 #, php-format
+msgid ""
+"Couldn't delete the %s plugin. You should fix the file permissions and try "
+"again."
+msgstr ""
+
+#, php-format
 msgid "Couldn't find domain properties for customer with ID %d."
+msgstr ""
+
+#, php-format
+msgid "Couldn't load the %s plugin - Plugin class not found."
 msgstr ""
 
 #, php-format
@@ -1265,7 +1246,15 @@ msgid "Couldn't move reseller with ID %d: %s"
 msgstr ""
 
 #, php-format
+msgid "Couldn't read the %s plugin info.php file."
+msgstr ""
+
+#, php-format
 msgid "Couldn't validate DNS resource record: %s"
+msgstr ""
+
+#, php-format
+msgid "Couldn't write the %s file."
 msgstr ""
 
 msgid "Count default mail accounts"
@@ -1712,6 +1701,10 @@ msgid "Directory %s doesn't exists."
 msgstr "Kansiota %s ei ole olemassa."
 
 #, php-format
+msgid "Directory '%s' doesn't exist or is not writable"
+msgstr ""
+
+#, php-format
 msgid "Directory '%s' doesn't exists."
 msgstr "Kansiota '%s' ei ole olemassa."
 
@@ -1891,6 +1884,14 @@ msgstr "Domaineja sivulla"
 msgid "Done"
 msgstr "Valmis"
 
+#, php-format
+msgid "Downgrade of the %s plugin is forbidden."
+msgstr ""
+
+#, php-format
+msgid "Downgrade of the %s plugin to version %s (build %s) is forbidden."
+msgstr ""
+
 msgid "Download"
 msgstr "Lataa"
 
@@ -2004,6 +2005,14 @@ msgstr "Virhesivut"
 msgid "Error reporting"
 msgstr "Virheraportointi"
 
+#, php-format
+msgid "Error while extracting the %s plugin archive."
+msgstr ""
+
+#, php-format
+msgid "Error while opening the %s plugin archive."
+msgstr ""
+
 msgid "Error: Remote File not found!"
 msgstr "Virhe: tiedostoa ei löytynyt!"
 
@@ -2086,9 +2095,35 @@ msgstr "Nainen"
 msgid "File %s doesn't exist or cannot be reached!"
 msgstr "Tiedostoa %s ei ole olemassa tai sitä ei voida ladata!"
 
-#, php-format
-msgid "File %s doesn't look like a migration file."
-msgstr "Tiedosto %s ei näytä migraatio-tiedostolta."
+msgid "File '%value%' can't be written"
+msgstr ""
+
+msgid "File '%value%' doesn't look like an i-MSCP plugin archive."
+msgstr ""
+
+msgid "File '%value%' exceeds the defined form size"
+msgstr ""
+
+msgid "File '%value%' exceeds the defined ini size"
+msgstr ""
+
+msgid "File '%value%' is not readable or does not exist"
+msgstr ""
+
+msgid "File '%value%' is not readable or does not exist."
+msgstr ""
+
+msgid "File '%value%' was illegally uploaded. This could be a possible attack"
+msgstr ""
+
+msgid "File '%value%' was not found"
+msgstr ""
+
+msgid "File '%value%' was not uploaded"
+msgstr ""
+
+msgid "File '%value%' was only partially uploaded"
+msgstr ""
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
@@ -2138,9 +2173,6 @@ msgstr "Kielletty"
 
 msgid "Force refresh"
 msgstr ""
-
-msgid "Force retry"
-msgstr "Pakota uudelleen"
 
 msgid ""
 "Force synching of mailboxes quota info. Quota info are automatically synced "
@@ -2510,6 +2542,15 @@ msgstr "Palvelimen sisäinen virhe"
 msgid "Internationalization"
 msgstr "Kansainvälistäminen"
 
+#, php-format
+msgid ""
+"Invalid 'destination' option: '%s' is not a directory or is not writable."
+msgstr ""
+
+#, php-format
+msgid "Invalid 'magic_file' option: '%s' is not a file or is not readable."
+msgstr ""
+
 msgid "Invalid FTP username."
 msgstr "Virheellinen FTP-käyttäjätunnus"
 
@@ -2538,15 +2579,6 @@ msgid ""
 "and line breaks are allowed."
 msgstr ""
 
-msgid "Invalid city."
-msgstr ""
-
-msgid "Invalid company."
-msgstr ""
-
-msgid "Invalid country."
-msgstr ""
-
 msgid "Invalid domain name."
 msgstr "Virheellinen domain-tunnus."
 
@@ -2560,17 +2592,11 @@ msgstr "Virheellinen käyttäjänimi sähköpostille."
 msgid "Invalid field: %s"
 msgstr ""
 
-msgid "Invalid first name."
-msgstr ""
-
 msgid "Invalid gender."
 msgstr ""
 
 msgid "Invalid group name!"
 msgstr "Väärä ryhmännimi!"
-
-msgid "Invalid last name."
-msgstr ""
 
 msgid "Invalid menu order."
 msgstr "Virheellinen navigaatiojärjestys"
@@ -2584,10 +2610,6 @@ msgstr "Virheellinen tietosisältä vastaanotettu GitHub:sta."
 msgid "Invalid phone."
 msgstr ""
 
-#, php-format
-msgid "Invalid plugin directory: %s"
-msgstr "Virheellinen lisäosa-hakemisto: %s"
-
 msgid "Invalid private key or passphrase."
 msgstr "Virheellinen yksityinen avain tai salasana."
 
@@ -2595,23 +2617,11 @@ msgstr "Virheellinen yksityinen avain tai salasana."
 msgid "Invalid service name: %s"
 msgstr ""
 
-msgid "Invalid state/province."
-msgstr ""
-
-msgid "Invalid street 1."
-msgstr ""
-
-msgid "Invalid street 2."
-msgstr ""
-
 msgid "Invalid target."
 msgstr "Virheellinen kohde."
 
 msgid "Invalid username."
 msgstr "Virheellinen käyttäjänimi."
-
-msgid "Invalid zipcode."
-msgstr ""
 
 msgid "Kernel Version"
 msgstr "Kernelin versio"
@@ -2864,6 +2874,10 @@ msgstr "Maksimi tiedoston koko (%s) on saavutettu. Tiedostosi koko on %s"
 msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
 msgstr "Maksimi tiedoston koko (%s) on saavutettu. Tiedostosi koko on %s"
 
+msgid ""
+"Maximum allowed size for file '%value%' is '%max%' but '%size%' detected"
+msgstr ""
+
 msgid "Maximum number of captcha validation attempts"
 msgstr "Maksimimäärä CAPTCHA-yrityksiä"
 
@@ -2899,11 +2913,25 @@ msgstr "MB"
 msgid "Migration file %s is not readable."
 msgstr "Migraatio-tiedosto %s ei ole luettavissa."
 
+msgid ""
+"Minimum expected size for file '%value%' is '%min%' but '%size%' detected"
+msgstr ""
+
 msgid "Minute"
 msgstr "Minuttia"
 
 msgid "Minutes"
 msgstr "Minuttia"
+
+#, php-format
+msgid "Missing %s PHP extension."
+msgstr ""
+
+msgid "Missing PEAR Archive_Tar."
+msgstr ""
+
+msgid "Missing PEARs Archive_Tar."
+msgstr ""
 
 msgid "Missing search criteria."
 msgstr ""
@@ -2973,6 +3001,10 @@ msgstr ""
 msgid "Never"
 msgstr "Ei asetettu"
 
+#, php-format
+msgid "New %s plugin data were successfully stored."
+msgstr ""
+
 msgid "New SQL user data"
 msgstr "Uuden SQL-käyttäjän tiedot"
 
@@ -3004,8 +3036,9 @@ msgstr ""
 msgid "No anti-rootkits logs"
 msgstr "Ei merkintöjä"
 
-msgid "No available"
-msgstr "Ei saatavilla"
+#, php-format
+msgid "No changes were detected for the %s plugin."
+msgstr ""
 
 msgid "No custom menu found."
 msgstr "Ei valinnaisia valikoita"
@@ -3061,6 +3094,9 @@ msgstr "Ei aktivointia odottavia ohjelmistoja"
 msgid "No statistics found for the given period. Try another period."
 msgstr "Tilastoja ei löydy annetulle ajanjaksolle. Kokeile toista ajanjaksoa."
 
+msgid "No temporary directory was found for file '%value%'"
+msgstr ""
+
 msgid "No update available"
 msgstr "Päivityksiä ei ole saatavilla"
 
@@ -3093,9 +3129,6 @@ msgstr "Ei löydy"
 
 msgid "Not found."
 msgstr "Ei löydy."
-
-msgid "Not provided"
-msgstr "Ei toimitettu"
 
 msgid "Not used"
 msgstr "Ei käytössä"
@@ -3133,9 +3166,6 @@ msgstr "Vain numerot väliltä 0-65535 on sallittu."
 
 msgid "Only positive numbers are allowed."
 msgstr "Vain positiiviset numerot ovat sallittuja"
-
-msgid "Only tar.gz and tar.bz2 archives are supported."
-msgstr "Vain tar.gz ja tar.bz2 paketit ovat tuettuja."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "Vain tar.gz ja tar.bz2 paketit ovat hyväksyttäviä."
@@ -3396,176 +3426,32 @@ msgid "Plugin"
 msgstr "Liitännäinen"
 
 #, php-format
-msgid "Plugin %s activated."
-msgstr "Liitännäinen '%s' aktivoitu."
-
-#, php-format
-msgid "Plugin %s cannot be activated."
-msgstr "Liitännäistä '%s' ei voi aktivoida."
-
-#, php-format
-msgid "Plugin %s cannot be deactivated."
-msgstr "Liitännäistä '%s' ei voi poistaa käytöstä."
-
-#, php-format
-msgid "Plugin %s cannot be deleted."
-msgstr "Liitännäistä '%s' ei voi poistaa."
-
-#, php-format
-msgid "Plugin %s cannot be installed."
-msgstr "Liitännäistä '%s' ei voi asentaa."
-
-#, php-format
-msgid "Plugin %s cannot be protected."
-msgstr "Liitännäistä '%s' ei voi suojata."
-
-#, php-format
-msgid "Plugin %s cannot be reconfigured."
-msgstr "Lisäosaa %s ei voida uudelleen konfiguroida."
-
-#, php-format
-msgid "Plugin %s cannot be uninstalled."
-msgstr "Liitännäisen '%s' asennusta ei voi poistaa."
-
-#, php-format
-msgid "Plugin %s cannot be updated."
-msgstr "Liitännäistä '%s' ei voi päivittää."
-
-#, php-format
-msgid "Plugin %s deactivated."
-msgstr "Liitännäinen '%s' poistettu käytöstä."
-
-#, php-format
-msgid "Plugin %s deleted."
-msgstr "Liitännäinen '%s' poistettu."
-
-#, php-format
-msgid "Plugin %s installed."
-msgstr "Liitännäinen '%s' asennettu."
-
-#, php-format
-msgid "Plugin %s is protected."
-msgstr "Liitännäinen '%s' on suojattu."
-
-#, php-format
-msgid "Plugin %s protected."
-msgstr "Liitännäinen '%s' suojattu."
-
-#, php-format
-msgid "Plugin %s reconfigured."
-msgstr "Lisäosa %s uudelleen rekonfiguroitu."
-
-#, php-format
-msgid "Plugin %s scheduled for activation."
-msgstr "Liitännäinen '%s' aktivoidaan."
-
-#, php-format
-msgid "Plugin %s scheduled for change."
-msgstr "Muutos ajastettu liitännäiselle '%s'."
-
-#, php-format
-msgid "Plugin %s scheduled for deactivation."
-msgstr "Käytöstä poisto ajastettu liitännäiselle '%s'."
-
-#, php-format
-msgid "Plugin %s scheduled for installation."
-msgstr "Asennus ajastettu liitännäiselle '%s'."
-
-#, php-format
-msgid "Plugin %s scheduled for uninstallation."
-msgstr "Asennuksen poisto ajastettu liitännäiselle '%s'."
-
-#, php-format
-msgid "Plugin %s scheduled for update."
-msgstr "Päivitys ajastettu liitännäiselle '%s'."
-
-#, php-format
-msgid "Plugin %s uninstalled."
-msgstr "Liitännäinen '%s' poistettu."
-
-#, php-format
-msgid "Plugin %s updated."
-msgstr "Liitännäinen '%s' päivitetty."
-
-#, php-format
-msgid "Plugin Manager: Could not change the %s plugin: %s"
-msgstr "Lisäosien hallinta: Ei voitu vaihtaa %s lisäosaa: %s"
-
-#, php-format
-msgid ""
-"Plugin Manager: Could not delete %s plugin files. You should run the set-"
-"gui-permissions.pl script and try again."
-msgstr ""
-"Lisäosien hallinta: Ei voitu poistaa %s lisäosan tiedostoja. Suorita set-"
-"gul-permission.pl -skripta ja kokeile uudelleen."
-
-#, php-format
-msgid "Plugin Manager: Could not load plugin %s"
-msgstr "Lisäosien hallinta: Ei voitu ladata lisäosaa %s"
-
-#, php-format
-msgid ""
-"Plugin Manager: Could not uninstall the %s plugin. Plugin has been locked by"
-" another plugin."
-msgstr ""
-"Lisäosien hallinta: Ei voitu poistaa lisätää %s. Lisäosa on lukittu toisen "
-"lisäosan toimesta."
-
-#, php-format
-msgid "Plugin Manager: Could not update the %s plugin: %s"
-msgstr "Lisäosien hallinta: Ei voitu päivittää %s lisäosaa: %s"
-
-#, php-format
-msgid "Plugin Manager: Could not write the %s file for protected plugins."
+msgid "Plugin '%s' has been successfully protected."
 msgstr ""
 
-#, php-format
-msgid "Plugin Manager: Directory %s doesn't exist or is not writable"
+msgid "Plugin '%value%' cannot be updated because it is protected."
 msgstr ""
 
-#, php-format
-msgid "Plugin Manager: Downgrade of %s plugin is not allowed."
+msgid "Plugin '%value%' cannot be updated due to pending task."
 msgstr ""
 
-#, php-format
-msgid "Plugin Manager: Plugin %s is not loaded"
+msgid "Plugin '%value%' file is invalid."
 msgstr ""
 
-#, php-format
-msgid "Plugin Manager: Unknown plugin %s"
+msgid "Plugin '%value%' info field is invalid."
 msgstr ""
 
-#, php-format
-msgid "Plugin activation has failed: %s"
+msgid "Plugin '%value%' info field is missing."
+msgstr ""
+
+msgid "Plugin '%value%' is not compatible with this i-MSCP version."
 msgstr ""
 
 msgid "Plugin archive"
 msgstr "Liitännäiskirjasto"
 
-msgid "Plugin archive exceeds the maximum upload size"
-msgstr ""
-
-#, php-format
-msgid "Plugin change has failed: %s"
-msgstr ""
-
-#, php-format
-msgid "Plugin deactivation has failed: %s"
-msgstr ""
-
-#, php-format
-msgid "Plugin deletion has failed: %s"
-msgstr ""
-
 msgid "Plugin errors"
 msgstr "Liitännäisten virheet"
-
-msgid "Plugin has been successfully uploaded."
-msgstr ""
-
-#, php-format
-msgid "Plugin installation has failed: %s"
-msgstr ""
 
 msgid "Plugin item errors"
 msgstr "Liitännäisten virheet"
@@ -3576,14 +3462,6 @@ msgstr "Liitännäisten lista on tyhjä."
 msgid "Plugin management"
 msgstr "Lisäosien hallinta"
 
-#, php-format
-msgid "Plugin uninstallation has failed: %s"
-msgstr ""
-
-#, php-format
-msgid "Plugin update has failed: %s"
-msgstr ""
-
 msgid "Plugins Upload"
 msgstr "Liitännäisten lataus palvelimelle"
 
@@ -3593,12 +3471,6 @@ msgid ""
 "Plugins are developed independently from the core i-MSCP application by "
 "thousands of developers all over the world. You can find new plugins to "
 "install by browsing the %s."
-msgstr ""
-
-#, php-format
-msgid ""
-"Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
-" %s plugin(s) reconfigured, and %s plugin(s) deleted."
 msgstr ""
 
 msgid "Port"
@@ -3932,6 +3804,9 @@ msgstr "Palauta"
 
 msgid "Restore backup"
 msgstr "Palauta varmuuskopio"
+
+msgid "Retry"
+msgstr ""
 
 msgid "Rights"
 msgstr "Käyttöoikeudet"
@@ -4382,6 +4257,9 @@ msgstr "Vaihda käyttäjän käyttöliittymään"
 msgid "Sync quota info"
 msgstr ""
 
+msgid "Synchronize Plugins"
+msgstr ""
+
 msgid "System"
 msgstr "Järjestelmä"
 
@@ -4454,11 +4332,25 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid "The %s plugin version %s is not compatible with your i-MSCP version."
+msgid "The %s plugin changes were ignored as this one is protected."
+msgstr ""
+
+#, php-format
+msgid ""
+"The %s plugin version %s (build %d) is not compatible with your i-MSCP "
+"version."
 msgstr ""
 
 #, php-format
 msgid "The %s translation file has been ignored: Translation table is empty."
+msgstr ""
+
+#, php-format
+msgid "The '%s' action has been stopped for the %s plugin."
+msgstr ""
+
+#, php-format
+msgid "The '%s' action is forbidden for the %s plugin."
 msgstr ""
 
 #, php-format
@@ -4716,6 +4608,12 @@ msgstr "Tukipyyntöä ID:llä '%d' ei löydy."
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr "Poistaaksesi tämän liitännäisen suojauksen, muokkaa tiedostoa %s"
 
+msgid "Too few files, minimum '%min%' are expected but '%count%' are given"
+msgstr ""
+
+msgid "Too many files, maximum '%max%' are allowed but '%count%' are given"
+msgstr ""
+
 msgid "Total"
 msgstr "Yhteensä"
 
@@ -4788,7 +4686,7 @@ msgstr ""
 msgid "Unable to get the IP address list. Please fix this problem."
 msgstr ""
 
-msgid "Unable to get update info from Github"
+msgid "Unable to get update info from GitHub"
 msgstr ""
 
 msgid "Unable to load i-MSCP info file."
@@ -4798,10 +4696,6 @@ msgid "Unable to move file."
 msgstr ""
 
 msgid "Unable to read Web software repository index file."
-msgstr ""
-
-#, php-format
-msgid "Unable to read the %s file."
 msgstr ""
 
 #, php-format
@@ -4886,11 +4780,18 @@ msgstr "Tunnistamaton toiminto: %s"
 msgid "Unknown bruteforce detection type: %s"
 msgstr ""
 
+msgid "Unknown error while uploading file '%value%'"
+msgstr ""
+
 msgid "Unknown language name."
 msgstr "Tuntematon kielitiedosto"
 
 msgid "Unknown layout color."
 msgstr "Tuntematon käyttöliittymän väri."
+
+#, php-format
+msgid "Unknown plugin: %s"
+msgstr ""
 
 msgid "Unknown reason."
 msgstr "Tuntematon syy."
@@ -4902,6 +4803,10 @@ msgstr "Tuntematon palvelu: '%s'."
 msgid "Unknown status"
 msgstr "Tuntematon tila"
 
+#, php-format
+msgid "Unknown status '%s' for the %s plugin"
+msgstr ""
+
 msgid "Unknown type."
 msgstr "Tuntematon tyyppi"
 
@@ -4910,9 +4815,6 @@ msgstr "Tuntematon käyttäjätunnus"
 
 msgid "Update"
 msgstr "Päivitä"
-
-msgid "Update Plugins"
-msgstr "Päivitä liitännäiset"
 
 msgid "Update SQL user password"
 msgstr "Vaihda SQL-käyttäjän salasana"
@@ -5267,9 +5169,6 @@ msgstr "Et voi asettaa vanhentumispäivää menneisyyteen."
 
 msgid "You cannot unassign an IP address already in use."
 msgstr "Et voi poistaa IP-osoitetta, joka on jo käytössä."
-
-msgid "You cannot update a protected plugin."
-msgstr "Et voi päivittää suojattua lisäosaa."
 
 msgid "You do not have DNS resource records."
 msgstr "Sinulla ei ole DNS-tietueita tallennettuna."
@@ -5661,9 +5560,6 @@ msgstr "asennettu"
 msgid "installing"
 msgstr "asentaa"
 
-msgid "internet Multi Server Control Panel"
-msgstr "internet Multi Server Hallintapaneeli"
-
 msgid "kB"
 msgstr "kB"
 
@@ -5769,6 +5665,3 @@ msgstr "kyllä"
 
 msgid "{USERNAME} user statistics"
 msgstr "{USERNAME} käyttäjätilastot"
-
-msgid "© 2010-2017 i-MSCP Team<br>All Rights Reserved"
-msgstr ""

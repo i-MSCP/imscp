@@ -1,16 +1,23 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR i-MSCP Team - All rights reserved
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the i-MSCP package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# Thom Heemstra <thom@heemstra.xyz>, 2018
+# Laurent Declercq <l.declercq@nuxwin.com>, 2018
+# Cool <barni@telia.com>, 2018
+# Lukasz Nowak <theqkash@theqkash.pl>, 2018
+# i-MSCP <team@i-mscp.net>, 2018
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.5.x\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2017-09-08 08:36+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Thom Heemstra <thom@heemstra.xyz>, 2017\n"
+"POT-Creation-Date: 2018-12-27 11:21+0100\n"
+"PO-Revision-Date: 2018-12-27 10:18+0000\n"
+"Last-Translator: i-MSCP <team@i-mscp.net>, 2018\n"
 "Language-Team: Swedish (Sweden) (https://www.transifex.com/i-mscp/teams/576/sv_SE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -77,10 +84,6 @@ msgid "%s account successfully deleted."
 msgstr "%s konto raderades."
 
 #, php-format
-msgid "%s doens't look like an i-MSCP plugin archive."
-msgstr "%s ser inte ut som en i-MSCP plugin arkiv."
-
-#, php-format
 msgid "%s doesn't exist or is empty."
 msgstr "%s finns inte eller är tom"
 
@@ -137,14 +140,6 @@ msgstr ""
 "%s: Du kan inte inaktivera tjänster som är redan sålt till återförsäljarens "
 "kunder."
 
-#, php-format
-msgid ""
-"%s::getInfo() not implemented and %s not found. This is a bug in the %s "
-"plugin which must be reported to the author(s)."
-msgstr ""
-"%s::getInfo () inte genomförts och %s hittades inte. Detta är en bugg i %s "
-"plugin som måste rapporteras till författaren."
-
 msgid "(default)"
 msgstr ""
 
@@ -154,6 +149,9 @@ msgstr "(filtered from %s total records)"
 
 msgid "(usually named"
 msgstr "(vanligtvis kallad"
+
+msgid "A PHP extension returned an error while uploading the file '%value%'"
+msgstr ""
 
 msgid "A PHP extension stopped the file upload."
 msgstr "A PHP extension stopped the file upload."
@@ -200,11 +198,13 @@ msgstr "Konto typ"
 msgid "Action"
 msgstr "Process"
 
-msgid "Action has been stopped."
-msgstr "Åtgärden har stoppats."
+#, php-format
+msgid "Action '%s' successfully executed for the %s plugin."
+msgstr ""
 
-msgid "Action has failed."
-msgstr "Åtgärden misslyckades."
+#, php-format
+msgid "Action '%s' successfully scheduled for the %s plugin."
+msgstr ""
 
 msgid "Actions"
 msgstr "Åtgärder"
@@ -915,6 +915,12 @@ msgstr "Ändra"
 msgid "Change status of this item for a new attempt"
 msgstr "Ändra status till den här artikeln för ett nytt försök"
 
+#, php-format
+msgid ""
+"Changes for the %s plugin were ignored as there is a pending task for this "
+"one. Please retry once the task is completed."
+msgstr ""
+
 msgid "Check for update"
 msgstr "Leta efter uppdatering"
 
@@ -1197,14 +1203,6 @@ msgstr ""
 "uppstod."
 
 #, php-format
-msgid "Could not backup current `%s' plugin directory."
-msgstr "Det gick inte att säkerhetskopiera %s plugin katalog."
-
-#, php-format
-msgid "Could not change the %s plugin: %s"
-msgstr "Det gick inte att ändra %s plugins: %s"
-
-#, php-format
 msgid "Could not connect to the `%s' database. Please check the password."
 msgstr ""
 
@@ -1220,18 +1218,6 @@ msgstr "Det gick inte att ta bort SQL användare. Ett oväntat fel uppstod."
 msgid "Could not delete SSL certificate. An unexpected error occurred."
 msgstr "Det gick inte att ta bort SSL-certifikat. Ett oväntat fel uppstod."
 
-#, php-format
-msgid "Could not delete the %s plugin: %s"
-msgstr "Det gick inte att ta bort %s plugin: %s"
-
-#, php-format
-msgid "Could not disable the %s plugin: %s"
-msgstr "Det gick inte att inaktivera %s plugin: %s"
-
-#, php-format
-msgid "Could not enable the %s plugin: %s"
-msgstr "Det gick inte att aktivera %s plugin: %s"
-
 msgid "Could not find any network interface. You cannot add new IP addresses."
 msgstr ""
 "Det gick inte att hitta någon nätverksgränssnitt . Du kan inte lägga till "
@@ -1240,28 +1226,8 @@ msgstr ""
 msgid "Could not generate SSL certificate. An unexpected error occurred."
 msgstr "Det gick inte att generera SSL-certifikat. Ett oväntat fel uppstod."
 
-#, php-format
-msgid "Could not install the %s plugin: %s"
-msgstr "Det gick inte att installera %s plugin: %s"
-
-#, php-format
-msgid "Could not protect the %s plugin: %s"
-msgstr "Det gick inte att skydda %s plugin: %s"
-
-#, php-format
-msgid "Could not restore %s plugin directory"
-msgstr "Kunde inte återställa %s plugin katalog"
-
 msgid "Could not retrieve directories."
 msgstr "Det gick inte att hämta kataloger."
-
-#, php-format
-msgid "Could not uninstall the %s plugin: %s"
-msgstr "Det gick inte att avinstallera %s plugin: %s"
-
-#, php-format
-msgid "Could not update the %s plugin: %s"
-msgstr "Det gick inte att uppdatera %s plugin: %s"
 
 msgid "Could not upload file."
 msgstr "Kunde inte ladda upp filen."
@@ -1275,6 +1241,10 @@ msgid ""
 msgstr "Kunde inte ladda upp filen. Max upload filesize (%1$d MB) har nåtts."
 
 #, php-format
+msgid "Couldn't backup the current %s plugin directory."
+msgstr ""
+
+#, php-format
 msgid "Couldn't create the %s database."
 msgstr ""
 
@@ -1285,7 +1255,17 @@ msgid "Couldn't delete subdomain. An unexpected error occurred."
 msgstr ""
 
 #, php-format
+msgid ""
+"Couldn't delete the %s plugin. You should fix the file permissions and try "
+"again."
+msgstr ""
+
+#, php-format
 msgid "Couldn't find domain properties for customer with ID %d."
+msgstr ""
+
+#, php-format
+msgid "Couldn't load the %s plugin - Plugin class not found."
 msgstr ""
 
 #, php-format
@@ -1297,7 +1277,15 @@ msgid "Couldn't move reseller with ID %d: %s"
 msgstr ""
 
 #, php-format
+msgid "Couldn't read the %s plugin info.php file."
+msgstr ""
+
+#, php-format
 msgid "Couldn't validate DNS resource record: %s"
+msgstr ""
+
+#, php-format
+msgid "Couldn't write the %s file."
 msgstr ""
 
 msgid "Count default mail accounts"
@@ -1892,6 +1880,10 @@ msgid "Directory %s doesn't exists."
 msgstr "Katalog %s inte existerar."
 
 #, php-format
+msgid "Directory '%s' doesn't exist or is not writable"
+msgstr ""
+
+#, php-format
 msgid "Directory '%s' doesn't exists."
 msgstr "Katalogen '%s' existerar inte."
 
@@ -2071,6 +2063,14 @@ msgstr "Domäner per sida"
 msgid "Done"
 msgstr "Klar"
 
+#, php-format
+msgid "Downgrade of the %s plugin is forbidden."
+msgstr ""
+
+#, php-format
+msgid "Downgrade of the %s plugin to version %s (build %s) is forbidden."
+msgstr ""
+
 msgid "Download"
 msgstr "Ladda ner"
 
@@ -2184,6 +2184,14 @@ msgstr "Felsidor"
 msgid "Error reporting"
 msgstr "Felrapportering"
 
+#, php-format
+msgid "Error while extracting the %s plugin archive."
+msgstr ""
+
+#, php-format
+msgid "Error while opening the %s plugin archive."
+msgstr ""
+
 msgid "Error: Remote File not found!"
 msgstr "Fel: Remote File not found!"
 
@@ -2266,9 +2274,35 @@ msgstr "Kvinna"
 msgid "File %s doesn't exist or cannot be reached!"
 msgstr "Fil %s existerar eller kan inte nås!"
 
-#, php-format
-msgid "File %s doesn't look like a migration file."
-msgstr "Filen %s ser inte ut som ett migreringsfil."
+msgid "File '%value%' can't be written"
+msgstr ""
+
+msgid "File '%value%' doesn't look like an i-MSCP plugin archive."
+msgstr ""
+
+msgid "File '%value%' exceeds the defined form size"
+msgstr ""
+
+msgid "File '%value%' exceeds the defined ini size"
+msgstr ""
+
+msgid "File '%value%' is not readable or does not exist"
+msgstr ""
+
+msgid "File '%value%' is not readable or does not exist."
+msgstr ""
+
+msgid "File '%value%' was illegally uploaded. This could be a possible attack"
+msgstr ""
+
+msgid "File '%value%' was not found"
+msgstr ""
+
+msgid "File '%value%' was not uploaded"
+msgstr ""
+
+msgid "File '%value%' was only partially uploaded"
+msgstr ""
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
@@ -2318,9 +2352,6 @@ msgstr "Förbjudet"
 
 msgid "Force refresh"
 msgstr ""
-
-msgid "Force retry"
-msgstr "Force retry"
 
 msgid ""
 "Force synching of mailboxes quota info. Quota info are automatically synced "
@@ -2689,6 +2720,15 @@ msgstr "Internal Server Error"
 msgid "Internationalization"
 msgstr "Internationalisering"
 
+#, php-format
+msgid ""
+"Invalid 'destination' option: '%s' is not a directory or is not writable."
+msgstr ""
+
+#, php-format
+msgid "Invalid 'magic_file' option: '%s' is not a file or is not readable."
+msgstr ""
+
 msgid "Invalid FTP username."
 msgstr "Ogiltigt FTP användarnamn."
 
@@ -2715,15 +2755,6 @@ msgid ""
 "and line breaks are allowed."
 msgstr ""
 
-msgid "Invalid city."
-msgstr ""
-
-msgid "Invalid company."
-msgstr ""
-
-msgid "Invalid country."
-msgstr ""
-
 msgid "Invalid domain name."
 msgstr "Ogiltigt domännamn."
 
@@ -2737,17 +2768,11 @@ msgstr "Ogiltig e-mail användarnamn."
 msgid "Invalid field: %s"
 msgstr ""
 
-msgid "Invalid first name."
-msgstr ""
-
 msgid "Invalid gender."
 msgstr ""
 
 msgid "Invalid group name!"
 msgstr "Ogiltigt gruppnamn!"
-
-msgid "Invalid last name."
-msgstr ""
 
 msgid "Invalid menu order."
 msgstr "Invalid menu order."
@@ -2761,10 +2786,6 @@ msgstr "Ogiltigt nyttolast som mottas från GitHub"
 msgid "Invalid phone."
 msgstr ""
 
-#, php-format
-msgid "Invalid plugin directory: %s"
-msgstr "Ogiltig instickskatalog : %s"
-
 msgid "Invalid private key or passphrase."
 msgstr "Ogiltig privat nyckel eller lösenordsfras."
 
@@ -2772,23 +2793,11 @@ msgstr "Ogiltig privat nyckel eller lösenordsfras."
 msgid "Invalid service name: %s"
 msgstr ""
 
-msgid "Invalid state/province."
-msgstr ""
-
-msgid "Invalid street 1."
-msgstr ""
-
-msgid "Invalid street 2."
-msgstr ""
-
 msgid "Invalid target."
 msgstr "Invalid target."
 
 msgid "Invalid username."
 msgstr "Ogiltigt användarnamn."
-
-msgid "Invalid zipcode."
-msgstr ""
 
 msgid "Kernel Version"
 msgstr "Kernel Version"
@@ -3042,6 +3051,10 @@ msgstr "Max. fjärr filstorlek (%s) är nådd. Din fjärrfilen är %s."
 msgid "Max. remote filesize (%s) is reached. Your remote file is %s"
 msgstr "Max. fjärr filstorlek (%s) är nådd. Din fjärr fil är %s"
 
+msgid ""
+"Maximum allowed size for file '%value%' is '%max%' but '%size%' detected"
+msgstr ""
+
 msgid "Maximum number of captcha validation attempts"
 msgstr "Maximum number of captcha validation attempts"
 
@@ -3077,11 +3090,25 @@ msgstr "MiB"
 msgid "Migration file %s is not readable."
 msgstr "Migrations filen %s är inte läsbar."
 
+msgid ""
+"Minimum expected size for file '%value%' is '%min%' but '%size%' detected"
+msgstr ""
+
 msgid "Minute"
 msgstr "Minut"
 
 msgid "Minutes"
 msgstr "Minuter"
+
+#, php-format
+msgid "Missing %s PHP extension."
+msgstr ""
+
+msgid "Missing PEAR Archive_Tar."
+msgstr ""
+
+msgid "Missing PEARs Archive_Tar."
+msgstr ""
 
 msgid "Missing search criteria."
 msgstr ""
@@ -3150,6 +3177,10 @@ msgstr "Nätverksgränssnitt (NIC)"
 msgid "Never"
 msgstr "Aldrig"
 
+#, php-format
+msgid "New %s plugin data were successfully stored."
+msgstr ""
+
 msgid "New SQL user data"
 msgstr "Ny Sql användardata"
 
@@ -3181,8 +3212,9 @@ msgstr ""
 msgid "No anti-rootkits logs"
 msgstr "No anti-rootkits logs"
 
-msgid "No available"
-msgstr "Inte tillgänglig"
+#, php-format
+msgid "No changes were detected for the %s plugin."
+msgstr ""
 
 msgid "No custom menu found."
 msgstr "Inget eget meny hittades."
@@ -3239,6 +3271,9 @@ msgid "No statistics found for the given period. Try another period."
 msgstr ""
 "Ingen statistik finns för angiven tidsperiod. Försök med en annan period."
 
+msgid "No temporary directory was found for file '%value%'"
+msgstr ""
+
 msgid "No update available"
 msgstr "Inga uppdateringar tillgängliga."
 
@@ -3271,9 +3306,6 @@ msgstr "Hittades inte"
 
 msgid "Not found."
 msgstr "Not found."
-
-msgid "Not provided"
-msgstr "Not provided"
 
 msgid "Not used"
 msgstr "Inte i bruk."
@@ -3313,9 +3345,6 @@ msgstr "Endast siffror i intervallet 0 till 65535 är tillåtna."
 
 msgid "Only positive numbers are allowed."
 msgstr "Endast positiva tal är tillåtna."
-
-msgid "Only tar.gz and tar.bz2 archives are supported."
-msgstr "Endast tar.gz och tar.bz2 arkiv stöds."
 
 msgid "Only tar.gz, tar.bz2 and zip archives are accepted."
 msgstr "Endast tar.gz, tar.bz2 och zip arkiv accepteras"
@@ -3576,176 +3605,32 @@ msgid "Plugin"
 msgstr "Plugin"
 
 #, php-format
-msgid "Plugin %s activated."
-msgstr "Plugin %s activated."
-
-#, php-format
-msgid "Plugin %s cannot be activated."
-msgstr "Plugin %s kan inte aktiveras."
-
-#, php-format
-msgid "Plugin %s cannot be deactivated."
-msgstr "Plugin %s kan inte stängas av."
-
-#, php-format
-msgid "Plugin %s cannot be deleted."
-msgstr "Plugin %s cannot be deleted."
-
-#, php-format
-msgid "Plugin %s cannot be installed."
-msgstr "Plugin %s kan inte installeras."
-
-#, php-format
-msgid "Plugin %s cannot be protected."
-msgstr "Plugin %s kan inte skyddas."
-
-#, php-format
-msgid "Plugin %s cannot be reconfigured."
-msgstr "Plugin %s kan inte konfigureras."
-
-#, php-format
-msgid "Plugin %s cannot be uninstalled."
-msgstr "Plugin %s kan inte avinstalleras."
-
-#, php-format
-msgid "Plugin %s cannot be updated."
-msgstr "Plugin %s cannot be updated."
-
-#, php-format
-msgid "Plugin %s deactivated."
-msgstr "Plugin %s deactivated."
-
-#, php-format
-msgid "Plugin %s deleted."
-msgstr "Plugin %s deleted."
-
-#, php-format
-msgid "Plugin %s installed."
-msgstr "Plugin %s installed."
-
-#, php-format
-msgid "Plugin %s is protected."
-msgstr "Plugin %s is protected."
-
-#, php-format
-msgid "Plugin %s protected."
-msgstr "Plugin %s protected."
-
-#, php-format
-msgid "Plugin %s reconfigured."
-msgstr "Plugin %s omkonfigureras."
-
-#, php-format
-msgid "Plugin %s scheduled for activation."
-msgstr "Plugin %s scheduled for activation."
-
-#, php-format
-msgid "Plugin %s scheduled for change."
-msgstr "Plugin %s scheduled for change."
-
-#, php-format
-msgid "Plugin %s scheduled for deactivation."
-msgstr "Plugin %s scheduled for deactivation."
-
-#, php-format
-msgid "Plugin %s scheduled for installation."
-msgstr "Plugin %s scheduled for installation."
-
-#, php-format
-msgid "Plugin %s scheduled for uninstallation."
-msgstr "Plugin %s scheduled for uninstallation."
-
-#, php-format
-msgid "Plugin %s scheduled for update."
-msgstr "Plugin %s scheduled for update."
-
-#, php-format
-msgid "Plugin %s uninstalled."
-msgstr "Plugin %s uninstalled."
-
-#, php-format
-msgid "Plugin %s updated."
-msgstr "Plugin %s updated."
-
-#, php-format
-msgid "Plugin Manager: Could not change the %s plugin: %s"
-msgstr "Plugin Manager: Kunde inte ändra %s plugin: %s"
-
-#, php-format
-msgid ""
-"Plugin Manager: Could not delete %s plugin files. You should run the set-"
-"gui-permissions.pl script and try again."
+msgid "Plugin '%s' has been successfully protected."
 msgstr ""
-"Plugin Manager: Kunde inte radera %s plugin-filer. Du bör köra set-gui-"
-"permissions.pl skriptet och försök igen."
 
-#, php-format
-msgid "Plugin Manager: Could not load plugin %s"
-msgstr "Plugin Manager: Kunde inte ladda insticksprogram %s"
-
-#, php-format
-msgid ""
-"Plugin Manager: Could not uninstall the %s plugin. Plugin has been locked by"
-" another plugin."
+msgid "Plugin '%value%' cannot be updated because it is protected."
 msgstr ""
-"Plugin Manager: Kunde inte avinstallera %s plugin. Plugin har låsts av en "
-"annan plugin."
 
-#, php-format
-msgid "Plugin Manager: Could not update the %s plugin: %s"
-msgstr "Plugin Manager: Kunde inte uppdatera %s plugin: %s"
+msgid "Plugin '%value%' cannot be updated due to pending task."
+msgstr ""
 
-#, php-format
-msgid "Plugin Manager: Could not write the %s file for protected plugins."
-msgstr "Plugin Manager: Kunde inte skriva %s filen för skyddade plugins."
+msgid "Plugin '%value%' file is invalid."
+msgstr ""
 
-#, php-format
-msgid "Plugin Manager: Directory %s doesn't exist or is not writable"
-msgstr "Plugin Manager: Directory %s existerar inte eller är inte skrivbar"
+msgid "Plugin '%value%' info field is invalid."
+msgstr ""
 
-#, php-format
-msgid "Plugin Manager: Downgrade of %s plugin is not allowed."
-msgstr "Plugin Manager: nedgradering av %s plugin är inte tillåtet."
+msgid "Plugin '%value%' info field is missing."
+msgstr ""
 
-#, php-format
-msgid "Plugin Manager: Plugin %s is not loaded"
-msgstr "Plugin Manager: Plugin %s är inte laddad"
-
-#, php-format
-msgid "Plugin Manager: Unknown plugin %s"
-msgstr "Plugin Manager: Okänd plugin %s"
-
-#, php-format
-msgid "Plugin activation has failed: %s"
-msgstr "Plugin aktivering misslyckades: %s"
+msgid "Plugin '%value%' is not compatible with this i-MSCP version."
+msgstr ""
 
 msgid "Plugin archive"
 msgstr "Plugin archive"
 
-msgid "Plugin archive exceeds the maximum upload size"
-msgstr "Plugin arkivet överskrider den maximala uppladdningsstorleken"
-
-#, php-format
-msgid "Plugin change has failed: %s"
-msgstr "Plugin förändring har misslyckats: %s"
-
-#, php-format
-msgid "Plugin deactivation has failed: %s"
-msgstr "Plugin avaktivering har misslyckats: %s"
-
-#, php-format
-msgid "Plugin deletion has failed: %s"
-msgstr "Plugin radering misslyckades: %s"
-
 msgid "Plugin errors"
 msgstr "Plugin errors"
-
-msgid "Plugin has been successfully uploaded."
-msgstr "Plugin har laddats upp."
-
-#, php-format
-msgid "Plugin installation has failed: %s"
-msgstr "Plugin installationen har misslyckats: %s"
 
 msgid "Plugin item errors"
 msgstr "Plugin item errors"
@@ -3755,14 +3640,6 @@ msgstr "Plugin list is empty."
 
 msgid "Plugin management"
 msgstr "Plugin management"
-
-#, php-format
-msgid "Plugin uninstallation has failed: %s"
-msgstr "Plugin avinstallationen har misslyckats: %s"
-
-#, php-format
-msgid "Plugin update has failed: %s"
-msgstr "Plugin uppdatering har misslyckats: %s"
 
 msgid "Plugins Upload"
 msgstr "Plugins Upload"
@@ -3778,14 +3655,6 @@ msgstr ""
 "Plugins are developed independently from the core i-MSCP application by "
 "thousands of developers all over the world. You can find new plugins to "
 "install by browsing the %s."
-
-#, php-format
-msgid ""
-"Plugins list has been updated: %s new plugin(s) found, %s plugin(s) updated,"
-" %s plugin(s) reconfigured, and %s plugin(s) deleted."
-msgstr ""
-"Plugins listan har uppdaterats: %s nya plugin (s) hittades, %s plugin (s) "
-"uppdateras %s plugin (s) konfigureras och %s plugin (s) raderas."
 
 msgid "Port"
 msgstr "Port"
@@ -4119,6 +3988,9 @@ msgstr "Återställ"
 
 msgid "Restore backup"
 msgstr "Återställ backup"
+
+msgid "Retry"
+msgstr ""
 
 msgid "Rights"
 msgstr "Rights"
@@ -4563,6 +4435,9 @@ msgstr "Växla till användargränssnitt"
 msgid "Sync quota info"
 msgstr ""
 
+msgid "Synchronize Plugins"
+msgstr ""
+
 msgid "System"
 msgstr "System"
 
@@ -4642,12 +4517,26 @@ msgstr ""
 "for this service."
 
 #, php-format
-msgid "The %s plugin version %s is not compatible with your i-MSCP version."
-msgstr "%s plugin version %s är inte kompatibel med din i-MSCP version."
+msgid "The %s plugin changes were ignored as this one is protected."
+msgstr ""
+
+#, php-format
+msgid ""
+"The %s plugin version %s (build %d) is not compatible with your i-MSCP "
+"version."
+msgstr ""
 
 #, php-format
 msgid "The %s translation file has been ignored: Translation table is empty."
 msgstr "%s översättningsfil har ignorerats: Översättning tabellen är tom."
+
+#, php-format
+msgid "The '%s' action has been stopped for the %s plugin."
+msgstr ""
+
+#, php-format
+msgid "The '%s' action is forbidden for the %s plugin."
+msgstr ""
 
 #, php-format
 msgid "The '%s' field cannot be empty."
@@ -4922,6 +4811,12 @@ msgstr "Ticket med Id '%d' hittades inte."
 msgid "To unprotect this plugin, you must edit the %s file"
 msgstr "To unprotect this plugin, you must edit the %s file"
 
+msgid "Too few files, minimum '%min%' are expected but '%count%' are given"
+msgstr ""
+
+msgid "Too many files, maximum '%max%' are allowed but '%count%' are given"
+msgstr ""
+
 msgid "Total"
 msgstr "Totalt"
 
@@ -4994,8 +4889,8 @@ msgstr "Det går inte att ta bort i-MSCP info fil."
 msgid "Unable to get the IP address list. Please fix this problem."
 msgstr "Unable to get the IP address list. Please fix this problem."
 
-msgid "Unable to get update info from Github"
-msgstr "Unable to get update info from Github"
+msgid "Unable to get update info from GitHub"
+msgstr ""
 
 msgid "Unable to load i-MSCP info file."
 msgstr "Det gick inte att läsa i-MSCP info fil."
@@ -5005,10 +4900,6 @@ msgstr "Det gick inte att flytta filen."
 
 msgid "Unable to read Web software repository index file."
 msgstr "Det går inte att läsa index-fil för Web mjukvaran."
-
-#, php-format
-msgid "Unable to read the %s file."
-msgstr "Det går inte att läsa %s filen."
 
 #, php-format
 msgid "Unable to read the plugin %s file. Please check file permissions"
@@ -5096,11 +4987,18 @@ msgstr "Okänd åtgärd:%s"
 msgid "Unknown bruteforce detection type: %s"
 msgstr "Okänd typ bruteforce upptäckt: %s"
 
+msgid "Unknown error while uploading file '%value%'"
+msgstr ""
+
 msgid "Unknown language name."
 msgstr "Okänt språk namn."
 
 msgid "Unknown layout color."
 msgstr "Okänt layout färg."
+
+#, php-format
+msgid "Unknown plugin: %s"
+msgstr ""
 
 msgid "Unknown reason."
 msgstr "Okänd orsak."
@@ -5112,6 +5010,10 @@ msgstr "Okänd tjänst namn ' %s'."
 msgid "Unknown status"
 msgstr "Unknown status"
 
+#, php-format
+msgid "Unknown status '%s' for the %s plugin"
+msgstr ""
+
 msgid "Unknown type."
 msgstr "Okänd typ."
 
@@ -5120,9 +5022,6 @@ msgstr "Okänt användarnamn."
 
 msgid "Update"
 msgstr "Uppdatera"
-
-msgid "Update Plugins"
-msgstr "Uppdatera Plugins"
 
 msgid "Update SQL user password"
 msgstr "Update SQL user password"
@@ -5478,9 +5377,6 @@ msgstr "You cannot set expire date in past."
 
 msgid "You cannot unassign an IP address already in use."
 msgstr "You cannot unassign an IP address already in use."
-
-msgid "You cannot update a protected plugin."
-msgstr "Du kan inte uppdatera en skyddad plugin."
 
 msgid "You do not have DNS resource records."
 msgstr "Du har inte DNS-urkunder för resursen."
@@ -5879,9 +5775,6 @@ msgstr "installed"
 msgid "installing"
 msgstr "installing"
 
-msgid "internet Multi Server Control Panel"
-msgstr "Internet Multi Server Control Panel"
-
 msgid "kB"
 msgstr "kB"
 
@@ -5987,6 +5880,3 @@ msgstr "ja"
 
 msgid "{USERNAME} user statistics"
 msgstr "{USERNAME} användarstatistik"
-
-msgid "© 2010-2017 i-MSCP Team<br>All Rights Reserved"
-msgstr "© 2010-2017 i-MSCP Team<br>All Rights Reserved"
