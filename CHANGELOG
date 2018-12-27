@@ -6,6 +6,7 @@ Git 1.5.x
 
 INSTALLER
     Fixed: The '--skip-package-update' option has no effect (regression fix)
+    Removed: Post installation scripts for php-apcu and php-apcu-bc Debian packages (all distributions)
 
 PLUGINS
     Added: Archive validator and filter
