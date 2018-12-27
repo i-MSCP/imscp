@@ -1948,7 +1948,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
     /**
      * Schema review (server_traffic table):
-     *  - Remove PK (dtraff_id)
+     *  - Remove PK (straff_id)
      *  - Remove UK (traff_time)
      *  - Add PK (traff_time)
      *
