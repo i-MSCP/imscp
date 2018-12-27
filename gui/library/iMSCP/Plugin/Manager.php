@@ -168,6 +168,17 @@ class iMSCP_Plugin_Manager
     }
 
     /**
+     * Get plugins root directory
+     *
+     * @return string
+     * @deprecated Replaced by pluginGetRootDir()
+     */
+    public function pluginGetDirectory()
+    {
+        return $this->pluginGetRootDir();
+    }
+
+    /**
      * Sets persistent data directory
      *
      * @param $persistentDataDir
