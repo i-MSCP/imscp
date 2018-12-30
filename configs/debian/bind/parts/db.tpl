@@ -30,6 +30,3 @@ smtp	IN	{BASE_SERVER_IP_TYPE}	{BASE_SERVER_IP}
 ; sub [{SUBDOMAIN_NAME}] entry BEGIN
 ; sub [{SUBDOMAIN_NAME}] entry ENDING
 ; sub entries ENDING
-$ORIGIN {DOMAIN_NAME}.
-; custom DNS entries BEGIN
-; custom DNS entries ENDING

@@ -27,6 +27,7 @@ use strict;
 use warnings;
 use Encode qw/ encode_utf8 /;
 use File::Spec;
+use iMSCP::Boolean;
 use iMSCP::Debug qw/ error getLastError warning /;
 use parent 'Modules::Abstract';
 
@@ -51,45 +52,44 @@ sub getType
     'Htaccess';
 }
 
-=item process( $htaccessId )
+=item process( \%data )
 
  Process module
 
- Param int $htaccessId Htaccess unique identifier
+ Param hashref$data Htaccess data
  Return int 0 on success, other on failure
 
 =cut
 
 sub process
 {
-    my ($self, $htaccessId) = @_;
+    my ( $self, \%data ) = @_;
 
-    my $rs = $self->_loadData( $htaccessId );
+    my $rs = $self->_loadData( $data->{'id'} );
     return $rs if $rs;
 
     my @sql;
     if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
         $rs = $self->add();
-        @sql = ( 'UPDATE htaccess SET status = ? WHERE id = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $htaccessId );
+        @sql = ( 'UPDATE htaccess SET status = ? WHERE id = ?', undef, ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $data->{'id'} );
     } elsif ( $self->{'status'} eq 'todisable' ) {
         $rs = $self->disable();
-        @sql = ( 'UPDATE htaccess SET status = ? WHERE id = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $htaccessId );
+        @sql = (
+            'UPDATE htaccess SET status = ? WHERE id = ?', undef, ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $data->{'id'}
+        );
     } elsif ( $self->{'status'} eq 'todelete' ) {
         $rs = $self->delete();
         @sql = $rs
-            ? ( 'UPDATE htaccess SET status = ? WHERE id = ?', undef,
-                ( getLastError( 'error' ) || 'Unknown error' ), $htaccessId )
-            : ( 'DELETE FROM htaccess WHERE id = ?', undef, $htaccessId );
+            ? ( 'UPDATE htaccess SET status = ? WHERE id = ?', undef, ( getLastError( 'error' ) || 'Unknown error' ), $data->{'id'} )
+            : ( 'DELETE FROM htaccess WHERE id = ?', undef, $data->{'id'} );
     } else {
-        warning( sprintf( 'Unknown action (%s) for htaccess (ID %d)', $self->{'status'}, $htaccessId ));
+        warning( sprintf( 'Unknown action (%s) for htaccess (ID %d)', $self->{'status'}, $data->{'id'} ));
         return 0;
     }
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         $self->{'_dbh'}->do( @sql );
     };
     if ( $@ ) {
@@ -117,34 +117,25 @@ sub process
 
 sub _loadData
 {
-    my ($self, $htaccessId) = @_;
+    my ( $self, $htaccessId ) = @_;
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         my $row = $self->{'_dbh'}->selectrow_hashref(
             "
-                SELECT t3.id, t3.auth_type, t3.auth_name, t3.path, t3.status, t3.users, t3.groups,
-                    t4.domain_name, t4.domain_admin_id
+                SELECT t3.id, t3.auth_type, t3.auth_name, t3.path, t3.status, t3.users, t3.groups, t4.domain_name, t4.domain_admin_id
                 FROM (SELECT * FROM htaccess, (SELECT IFNULL(
                     (
                         SELECT group_concat(uname SEPARATOR ' ')
                         FROM htaccess_users
-                        WHERE id regexp (
-                            CONCAT('^(', (SELECT REPLACE((SELECT user_id FROM htaccess WHERE id = ?), ',', '|')), ')\$')
-                        )
+                        WHERE id regexp (CONCAT('^(', (SELECT REPLACE((SELECT user_id FROM htaccess WHERE id = ?), ',', '|')), ')\$'))
                         GROUP BY dmn_id
                     ), '') AS users) AS t1, (SELECT IFNULL(
                         (
                             SELECT group_concat(ugroup SEPARATOR ' ')
                             FROM htaccess_groups
-                            WHERE id regexp (
-                                CONCAT(
-                                    '^(',
-                                    (SELECT REPLACE((SELECT group_id FROM htaccess WHERE id = ?), ',', '|')),
-                                    ')\$'
-                                )
-                            )
+                            WHERE id regexp (CONCAT('^(', (SELECT REPLACE((SELECT group_id FROM htaccess WHERE id = ?), ',', '|')), ')\$'))
                             GROUP BY dmn_id
                         ), '') AS groups) AS t2
                     ) AS t3
@@ -154,7 +145,7 @@ sub _loadData
             undef, $htaccessId, $htaccessId, $htaccessId
         );
         $row or die( sprintf( 'Data not found for htaccess (ID %d)', $htaccessId ));
-        %{$self} = ( %{$self}, %{$row} );
+        %{ $self } = ( %{ $self }, %{ $row } );
     };
     if ( $@ ) {
         error( $@ );
@@ -175,7 +166,7 @@ sub _loadData
 
 sub _getData
 {
-    my ($self, $action) = @_;
+    my ( $self, $action ) = @_;
 
     $self->{'_data'} = do {
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
@@ -197,7 +188,7 @@ sub _getData
             HTUSERS         => $self->{'users'},
             HTGROUPS        => $self->{'groups'}
         }
-    } unless %{$self->{'_data'}};
+    } unless %{ $self->{'_data'} };
 
     $self->{'_data'};
 }

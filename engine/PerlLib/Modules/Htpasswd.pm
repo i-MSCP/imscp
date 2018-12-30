@@ -25,6 +25,7 @@ package Modules::Htpasswd;
 
 use strict;
 use warnings;
+use iMSCP::Boolean;
 use iMSCP::Debug qw/ error getLastError warning /;
 use parent 'Modules::Abstract';
 
@@ -49,45 +50,47 @@ sub getType
     'Htpasswd';
 }
 
-=item process( $htuserId )
+=item process( \%data )
 
  Process module
 
- Param int $htuserId Htuser unique identifier
+ Param hashref \%data Htuser data
  Return int 0 on success, other on failure
 
 =cut
 
 sub process
 {
-    my ($self, $htuserId) = @_;
+    my ( $self, $data ) = @_;
 
-    my $rs = $self->_loadData( $htuserId );
+    my $rs = $self->_loadData( $data->{'id'} );
     return $rs if $rs;
 
     my @sql;
     if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
         $rs = $self->add();
-        @sql = ( 'UPDATE htaccess_users SET status = ? WHERE id = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $htuserId );
+        @sql = (
+            'UPDATE htaccess_users SET status = ? WHERE id = ?', undef, ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $data->{'id'}
+        );
     } elsif ( $self->{'status'} eq 'todisable' ) {
         $rs = $self->disable();
-        @sql = ( 'UPDATE htaccess_users SET status = ? WHERE id = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $htuserId );
+        @sql = (
+            'UPDATE htaccess_users SET status = ? WHERE id = ?', undef,
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $data->{'id'}
+        );
     } elsif ( $self->{'status'} eq 'todelete' ) {
         $rs = $self->delete();
         @sql = $rs
-            ? ( 'UPDATE htaccess_users SET status = ? WHERE id = ?', undef,
-                getLastError( 'error' ) || 'Unknown error', $htuserId )
-            : ( 'DELETE FROM htaccess_users WHERE id = ?', undef, $htuserId );
+            ? ( 'UPDATE htaccess_users SET status = ? WHERE id = ?', undef, getLastError( 'error' ) || 'Unknown error', $data->{'id'} )
+            : ( 'DELETE FROM htaccess_users WHERE id = ?', undef, $data->{'id'} );
     } else {
-        warning( sprintf( 'Unknown action (%s) for htuser (ID %d)', $self->{'status'}, $htuserId ));
+        warning( sprintf( 'Unknown action (%s) for htuser (ID %d)', $self->{'status'}, $data->{'id'} ));
         return 0;
     }
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         $self->{'_dbh'}->do( @sql );
     };
     if ( $@ ) {
@@ -115,15 +118,14 @@ sub process
 
 sub _loadData
 {
-    my ($self, $htuserId) = @_;
+    my ( $self, $htuserId ) = @_;
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         my $row = $self->{'_dbh'}->selectrow_hashref(
             '
-                SELECT t1.uname, t1.upass, t1.status, t1.id, t2.domain_name, t2.domain_admin_id,
-                    t2.web_folder_protection
+                SELECT t1.uname, t1.upass, t1.status, t1.id, t2.domain_name, t2.domain_admin_id, t2.web_folder_protection
                 FROM htaccess_users AS t1
                 JOIN domain AS t2 ON (t1.dmn_id = t2.domain_id)
                 WHERE t1.id = ?
@@ -131,7 +133,7 @@ sub _loadData
             undef, $htuserId
         );
         $row or die( sprintf( 'Data not found for htuser (ID %d)', $htuserId ));
-        %{$self} = ( %{$self}, %{$row} );
+        %{ $self } = ( %{ $self }, %{ $row } );
     };
     if ( $@ ) {
         error( $@ );
@@ -152,7 +154,7 @@ sub _loadData
 
 sub _getData
 {
-    my ($self, $action) = @_;
+    my ( $self, $action ) = @_;
 
     $self->{'_data'} = do {
         my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
@@ -170,7 +172,7 @@ sub _getData
             HTUSER_DMN            => $self->{'domain_name'},
             WEB_FOLDER_PROTECTION => $self->{'web_folder_protection'}
         }
-    } unless %{$self->{'_data'}};
+    } unless %{ $self->{'_data'} };
 
     $self->{'_data'};
 }

@@ -4,6 +4,11 @@ i-MSCP ChangeLog
 Git 1.5.x
 ------------------------------------------------------------------------------------------------------------------------
 
+BACKEND
+    Enhancement: Make it possible to override any default DNS resource record (Bind9 server implementation)
+    Fixed: Error output is badly captured, leading to 'Unknown error' (named-compilezone / Bind9 server implementation)
+    Review: Pass the full item data row to backend modules
+
 INSTALLER
     Fixed: The '--skip-package-update' option has no effect (regression fix)
     Removed: Post installation scripts for php-apcu and php-apcu-bc Debian packages (all distributions)
@@ -23,9 +28,13 @@ PLUGINS
     Review: Don't make use of PharData to extract plugin archives. Make use of ZipArchive and Archive_Tar instead (Validator, Filter)
     Updated: Plugin API to version 1.5.1
 
+LISTENER:
+    Removed: 10_named_override_default_rr.pl (now included in core)
+
 YOUTRACK
-     IP-1815 Circular feature - Unexpected exception raised - `username' parameter is not defined or not a string
-     IP-1816 Cosmetic - Copyright date on i-MSCP sign-in screen not up-to-date
+    IP-1801 Backend workflow for custom DNS records get bypassed on domain or alias change, leading to events not being triggered
+    IP-1815 Circular feature - Unexpected exception raised - `username' parameter is not defined or not a string
+    IP-1816 Cosmetic - Copyright date on i-MSCP sign-in screen not up-to-date
 
 ------------------------------------------------------------------------------------------------------------------------
 1.5.3 (build 2018120800)

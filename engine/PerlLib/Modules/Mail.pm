@@ -25,6 +25,7 @@ package Modules::Mail;
 
 use strict;
 use warnings;
+use iMSCP::Boolean;
 use iMSCP::Debug qw/ error getLastError warning /;
 use parent 'Modules::Abstract';
 
@@ -49,46 +50,48 @@ sub getType
     'Mail';
 }
 
-=item process( $mailId )
+=item process( \%data )
 
  Process module
 
- Param int $mailId Mail unique identifier
+ Param hashref \%data Mail data
  Return int 0 on success, other on failure
 
 =cut
 
 sub process
 {
-    my ($self, $mailId) = @_;
+    my ( $self, $data ) = @_;
 
-    my $rs = $self->_loadData( $mailId );
+    my $rs = $self->_loadData( $data->{'id'} );
     return $rs if $rs;
 
     my @sql;
     if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
         $rs = $self->add();
-        @sql = ( 'UPDATE mail_users SET status = ? WHERE mail_id = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $mailId );
+        @sql = (
+            'UPDATE mail_users SET status = ? WHERE mail_id = ?', undef, ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $data->{'id'}
+        );
     } elsif ( $self->{'status'} eq 'todelete' ) {
         $rs = $self->delete();
         @sql = $rs
-            ? ( 'UPDATE mail_users SET status = ? WHERE mail_id = ?', undef,
-                ( getLastError( 'error' ) || 'Unknown error' ), $mailId )
-            : ( 'DELETE FROM mail_users WHERE mail_id = ?', undef, $self->{'mail_id'} );
+            ? ( 'UPDATE mail_users SET status = ? WHERE mail_id = ?', undef, ( getLastError( 'error' ) || 'Unknown error' ), $data->{'id'} )
+            : ( 'DELETE FROM mail_users WHERE mail_id = ?', undef, $data->{'id'} );
 
     } elsif ( $self->{'status'} eq 'todisable' ) {
         $rs = $self->disable();
-        @sql = ( 'UPDATE mail_users SET status = ? WHERE mail_id = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $mailId );
+        @sql = (
+            'UPDATE mail_users SET status = ? WHERE mail_id = ?', undef,
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $data->{'id'}
+        );
     } else {
-        warning( sprintf( 'Unknown action (%s) for mail user (ID %d)', $self->{'status'}, $mailId ));
+        warning( sprintf( 'Unknown action (%s) for mail user (ID %d)', $self->{'status'}, $data->{'id'} ));
         return 0;
     }
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         $self->{'_dbh'}->do( @sql );
     };
     if ( $@ ) {
@@ -116,22 +119,21 @@ sub process
 
 sub _loadData
 {
-    my ($self, $mailId) = @_;
+    my ( $self, $mailId ) = @_;
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         my $row = $self->{'_dbh'}->selectrow_hashref(
             '
-                SELECT mail_id, mail_acc, mail_pass, mail_forward, mail_type, mail_auto_respond, status, quota,
-                    mail_addr
+                SELECT mail_id, mail_acc, mail_pass, mail_forward, mail_type, mail_auto_respond, status, quota, mail_addr
                 FROM mail_users
                 WHERE mail_id = ?
             ',
             undef, $mailId
         );
         $row or die( sprintf( 'Data not found for mail user (ID %d)', $mailId ));
-        %{$self} = ( %{$self}, %{$row} );
+        %{ $self } = ( %{ $self }, %{ $row } );
     };
     if ( $@ ) {
         error( $@ );
@@ -152,10 +154,10 @@ sub _loadData
 
 sub _getData
 {
-    my ($self, $action) = @_;
+    my ( $self, $action ) = @_;
 
     $self->{'_data'} = do {
-        my ($user, $domain) = split '@', $self->{'mail_addr'};
+        my ( $user, $domain ) = split '@', $self->{'mail_addr'};
 
         {
             ACTION                  => $action,
@@ -171,7 +173,7 @@ sub _getData
             MAIL_ADDR               => $self->{'mail_addr'},
             MAIL_CATCHALL           => ( index( $self->{'mail_type'}, 'catchall' ) != -1 ) ? $self->{'mail_acc'} : undef
         }
-    } unless %{$self->{'_data'}};
+    } unless %{ $self->{'_data'} };
 
     $self->{'_data'};
 }

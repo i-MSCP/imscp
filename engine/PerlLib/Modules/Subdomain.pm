@@ -26,6 +26,7 @@ package Modules::Subdomain;
 use strict;
 use warnings;
 use File::Spec;
+use iMSCP::Boolean;
 use iMSCP::Debug qw/ debug error getLastError warning /;
 use Net::LibIDN qw/ idn_to_unicode /;
 use Servers::httpd;
@@ -52,51 +53,55 @@ sub getType
     'Sub';
 }
 
-=item process( $subdomainId )
+=item process( \%data )
 
  Process module
 
- Param int $subdomainId Subdomain unique identifier
+ Param hashref \%data Subdomain unique data
  Return int 0 on success, other on failure
 
 =cut
 
 sub process
 {
-    my ($self, $subdomainId) = @_;
+    my ( $self, $data ) = @_;
 
-    my $rs = $self->_loadData( $subdomainId );
+    my $rs = $self->_loadData( $data->{'id'} );
     return $rs if $rs;
 
     my @sql;
     if ( $self->{'subdomain_status'} =~ /^to(?:add|change|enable)$/ ) {
         $rs = $self->add();
-        @sql = ( 'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $subdomainId );
+        @sql = (
+            'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?', undef,
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $data->{'id'}
+        );
     } elsif ( $self->{'subdomain_status'} eq 'todelete' ) {
         $rs = $self->delete();
-        @sql = $rs
-            ? ( 'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?', undef,
-                ( getLastError( 'error' ) || 'Unknown error' ), $subdomainId )
-            : ( 'DELETE FROM subdomain WHERE subdomain_id = ?', undef, $subdomainId );
+        @sql = $rs ? (
+            'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?', undef,
+            ( getLastError( 'error' ) || 'Unknown error' ), $data->{'id'}
+        ) : ( 'DELETE FROM subdomain WHERE subdomain_id = ?', undef, $data->{'id'} );
     } elsif ( $self->{'subdomain_status'} eq 'todisable' ) {
         $rs = $self->disable();
-        @sql = ( 'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $subdomainId );
+        @sql = (
+            'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?', undef,
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $data->{'id'}
+        );
     } elsif ( $self->{'subdomain_status'} eq 'torestore' ) {
         $rs = $self->restore();
-        @sql = ( 'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $subdomainId );
-    } else {
-        warning(
-            sprintf( 'Unknown action (%s) for subdomain (ID %d)', $self->{'subdomain_alias_status'}, $subdomainId )
+        @sql = (
+            'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?', undef,
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $data->{'id'}
         );
+    } else {
+        warning( sprintf( 'Unknown action (%s) for subdomain (ID %d)', $self->{'subdomain_alias_status'}, $data->{'id'} ));
         return 0;
     }
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         $self->{'_dbh'}->do( @sql );
     };
     if ( $@ ) {
@@ -124,29 +129,25 @@ sub process
 
 sub _loadData
 {
-    my ($self, $subdomainId) = @_;
+    my ( $self, $subdomainId ) = @_;
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         my $row = $self->{'_dbh'}->selectrow_hashref(
             "
                 SELECT t1.*,
-                    t2.domain_name AS user_home, t2.domain_admin_id, t2.domain_mailacc_limit, t2.domain_php, t2.domain_cgi,
-                    t2.external_mail, t2.web_folder_protection,
+                    t2.domain_name AS user_home, t2.domain_admin_id, t2.domain_mailacc_limit, t2.domain_php, t2.domain_cgi, t2.external_mail,
+                    t2.web_folder_protection,
                     IFNULL(t3.ip_number, '0.0.0.0') AS ip_number,
-                    t4.private_key, t4.certificate, t4.ca_bundle, t4.allow_hsts, t4.hsts_max_age,
-                    t4.hsts_include_subdomains,
+                    t4.private_key, t4.certificate, t4.ca_bundle, t4.allow_hsts, t4.hsts_max_age, t4.hsts_include_subdomains,
                     t5.mail_on_domain
                 FROM subdomain AS t1
                 JOIN domain AS t2 USING(domain_id)
                 JOIN server_ips AS t3 ON (t3.ip_id = t2.domain_ip_id)
                 LEFT JOIN ssl_certs AS t4 ON(t4.domain_id = t1.subdomain_id AND t4.domain_type = 'sub' AND t4.status = 'ok')
                 LEFT JOIN (
-                    SELECT sub_id, COUNT(sub_id) AS mail_on_domain
-                    FROM mail_users
-                    WHERE mail_type LIKE 'subdom\\_%'
-                    GROUP BY sub_id
+                    SELECT sub_id, COUNT(sub_id) AS mail_on_domain FROM mail_users WHERE mail_type LIKE 'subdom\\_%' GROUP BY sub_id
                 ) AS t5 ON (t5.sub_id = t1.subdomain_id)
                 WHERE t1.subdomain_id = ?
             ",
@@ -154,7 +155,7 @@ sub _loadData
             $subdomainId
         );
         $row or die( sprintf( 'Data not found for subdomain (ID %d)', $subdomainId ));
-        %{$self} = ( %{$self}, %{$row} );
+        %{ $self } = ( %{ $self }, %{ $row } );
     };
     if ( $@ ) {
         error( $@ );
@@ -175,7 +176,7 @@ sub _loadData
 
 sub _getData
 {
-    my ($self, $action) = @_;
+    my ( $self, $action ) = @_;
 
     $self->{'_data'} = do {
         my $httpd = Servers::httpd->factory();
@@ -187,20 +188,19 @@ sub _getData
         my $confLevel = $httpd->{'phpConfig'}->{'PHP_CONFIG_LEVEL'};
         $confLevel = $confLevel =~ /^per_(?:user|domain)$/ ? 'dmn' : 'sub';
 
-        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         my $phpini = $self->{'_dbh'}->selectrow_hashref(
             'SELECT * FROM php_ini WHERE domain_id = ? AND domain_type = ?',
-            undef, ( $confLevel eq 'dmn' ? $self->{'domain_id'} : $self->{'subdomain_id'} ), $confLevel
+            undef,
+            ( $confLevel eq 'dmn' ? $self->{'domain_id'} : $self->{'subdomain_id'} ), $confLevel
         ) || {};
 
-        my $haveCert = (
-            defined $self->{'certificate'}
-                && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'subdomain_name'}.$self->{'user_home'}.pem"
-        );
-        my $allowHSTS = ( $haveCert && $self->{'allow_hsts'} eq 'on' );
-        my $hstsMaxAge = ( $allowHSTS ) ? $self->{'hsts_max_age'} : 0;
-        my $hstsIncludeSubDomains = ( $allowHSTS && $self->{'hsts_include_subdomains'} eq 'on' )
-            ? '; includeSubDomains' : ( ( $allowHSTS ) ? '' : '; includeSubDomains' );
+        my $haveCert = defined $self->{'certificate'}
+            && -f "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs/$self->{'subdomain_name'}.$self->{'user_home'}.pem";
+        my $allowHSTS = $haveCert && $self->{'allow_hsts'} eq 'on';
+        my $hstsMaxAge = $allowHSTS ? $self->{'hsts_max_age'} : 0;
+        my $hstsIncludeSubDomains = $allowHSTS && $self->{'hsts_include_subdomains'} eq 'on'
+            ? '; includeSubDomains' : ( $allowHSTS ? '' : '; includeSubDomains' );
 
         {
             ACTION                  => $action,
@@ -210,8 +210,7 @@ sub _getData
             BASE_SERVER_PUBLIC_IP   => $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'},
             DOMAIN_ADMIN_ID         => $self->{'domain_admin_id'},
             DOMAIN_NAME             => $self->{'subdomain_name'} . '.' . $self->{'user_home'},
-            DOMAIN_NAME_UNICODE     =>
-            idn_to_unicode( $self->{'subdomain_name'} . '.' . $self->{'user_home'}, 'utf-8' ),
+            DOMAIN_NAME_UNICODE     => idn_to_unicode( $self->{'subdomain_name'} . '.' . $self->{'user_home'}, 'utf-8' ),
             DOMAIN_IP               => $self->{'ip_number'},
             DOMAIN_TYPE             => 'sub',
             PARENT_DOMAIN_NAME      => $self->{'user_home'},
@@ -249,7 +248,7 @@ sub _getData
             EXTERNAL_MAIL           => $self->{'external_mail'},
             MAIL_ENABLED            => ( $self->{'external_mail'} eq 'off' && ( $self->{'mail_on_domain'} || $self->{'domain_mailacc_limit'} >= 0 ) )
         }
-    } unless %{$self->{'_data'}};
+    } unless %{ $self->{'_data'} };
 
     $self->{'_data'};
 }
@@ -264,12 +263,12 @@ sub _getData
 
 sub _sharedMountPoint
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    local $self->{'_dbh'}->{'RaiseError'} = 1;
+    local $self->{'_dbh'}->{'RaiseError'} = TRUE;
 
     my $regexp = "^$self->{'subdomain_mount'}(/.*|\$)";
-    my ($nbSharedMountPoints) = $self->{'_dbh'}->selectrow_array(
+    my ( $nbSharedMountPoints ) = $self->{'_dbh'}->selectrow_array(
         "
             SELECT COUNT(mount_point) AS nb_mount_points FROM (
                 SELECT alias_mount AS mount_point FROM domain_aliasses

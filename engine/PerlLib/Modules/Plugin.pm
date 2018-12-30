@@ -43,7 +43,7 @@ use parent 'Common::Object';
 
 =over 4
 
-=item process( $pluginId )
+=item process( \%data )
 
  Load plugin data and execute action according its state
 
@@ -51,16 +51,16 @@ use parent 'Common::Object';
  returned to the caller. Only the plugin status is updated with the error
  message (since v1.4.4).
 
- Param int Plugin unique identifier
+ Param hashref \%data Plugin data
  Return int 0 on success, other on failure
 
 =cut
 
 sub process
 {
-    my ( $self, $pluginId ) = @_;
+    my ( $self, $data ) = @_;
 
-    my $rs = $self->_loadData( $pluginId );
+    my $rs = $self->_loadData( $data->{'id'} );
     return $rs if $rs;
 
     # Determine plugin action according current plugin state
@@ -98,12 +98,11 @@ sub process
                 : ( $self->{'data'}->{'plugin_status'} eq 'todisable'
                     ? 'disabled'
                     : ( $self->{'data'}->{'plugin_status'} eq 'touninstall'
-                        ? ( $self->{'data'}->{'plugin_info'}->{'__installable__'} ? 'uninstalled' : 'disabled' )
-                        : 'enabled'
+                        ? ( $self->{'data'}->{'plugin_info'}->{'__installable__'} ? 'uninstalled' : 'disabled' ) : 'enabled'
                     )
                 )
             ),
-            $pluginId
+            $data->{'id'}
         );
     };
     if ( $@ ) {
@@ -158,8 +157,7 @@ sub _loadData
         local $self->{'dbh'}->{'RaiseError'} = TRUE;
         ( $self->{'data'} = $self->{'dbh'}->selectrow_hashref(
             'SELECT plugin_id, plugin_name, plugin_info, plugin_config, plugin_config_prev, plugin_status FROM plugin WHERE plugin_id = ?',
-            undef,
-            $pluginId
+            undef, $pluginId
         ) ) or die( sprintf( 'Data not found for plugin with ID: %d', $pluginId ));
     };
     if ( $@ ) {
