@@ -123,7 +123,7 @@ sub STORE
     my ($self, $param, $value) = @_;
 
     !$self->{'readonly'} || $self->{'temporary'} or die(
-        sprintf( "Couldn't store value for the `%s' parameter: config object is readonly", $param )
+        sprintf( "Couldn't store value for the '%s' parameter: config object is readonly", $param )
     );
 
     return $self->_insertConfig( $param, $value ) unless exists $self->{'configValues'}->{$param};

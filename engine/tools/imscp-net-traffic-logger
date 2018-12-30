@@ -59,7 +59,7 @@ sub start
             return $rs if $rs;
         }
 
-        # Adding rules to pass incoming/outgoing traffic through our chains, excluding traffic from/to `lo' interface
+        # Adding rules to pass incoming/outgoing traffic through our chains, excluding traffic from/to 'lo' interface
         for ( '-I INPUT ! -i lo -j IMSCP_INPUT', '-I OUTPUT ! -o lo -j IMSCP_OUTPUT' ) {
             my $rs = execute( "$exec -w -t filter $_", \ my $stdout, \ my $stderr );
             debug( $stdout ) if $stdout;

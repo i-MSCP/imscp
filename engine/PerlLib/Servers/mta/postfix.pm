@@ -359,7 +359,7 @@ sub addDmn
 {
     my ($self, $data) = @_;
 
-    # Do not list `SERVER_HOSTNAME' in BOTH `mydestination' and `virtual_mailbox_domains'
+    # Do not list 'SERVER_HOSTNAME' in BOTH 'mydestination' and 'virtual_mailbox_domains'
     return 0 if $data->{'DOMAIN_NAME'} eq $main::imscpConfig{'SERVER_HOSTNAME'};
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddDmn', $data );
@@ -438,7 +438,7 @@ sub addSub
 {
     my ($self, $data) = @_;
 
-    # Do not list `SERVER_HOSTNAME' in BOTH `mydestination' and `virtual_mailbox_domains'
+    # Do not list 'SERVER_HOSTNAME' in BOTH 'mydestination' and 'virtual_mailbox_domains'
     return 0 if $data->{'DOMAIN_NAME'} eq $main::imscpConfig{'SERVER_HOSTNAME'};
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddSub', $data );
@@ -585,7 +585,7 @@ sub addMail
                 . "\t" # Separator
                 . join ',', (
                     # Mail account only case:
-                    #  Postfix lookup in `virtual_alias_maps' first. Thus, if there
+                    #  Postfix lookup in 'virtual_alias_maps' first. Thus, if there
                     #  is a catchall defined for the domain, any mail for the mail
                     #  account will be catched by the catchall. To prevent this
                     #  behavior, we must also add an entry in the virtual alias map.
@@ -897,14 +897,14 @@ sub postmap
   - before : OPTIONAL Option that allows to add values before the given value (expressed as a Regexp)
   - after  : OPTIONAL Option that allows to add values after the given value (expressed as a Regexp)
 
-  `replace' action versus `remove' action
-    The `replace' action replace the full value of the given parameter while the `remove' action only remove the
+  'replace' action versus 'remove' action
+    The 'replace' action replace the full value of the given parameter while the 'remove' action only remove the
     specified value portion in the parameter value. Note that when the resulting value is an empty value, the paramerter
-    is removed from the configuration file unless the `empty' flag has been specified.
+    is removed from the configuration file unless the 'empty' flag has been specified.
 
-  `before' and `after' options:
-    The `before' and `after' options are only relevant for the `add' action. Note also that the `before' option has a
-    highter precedence than the `after' option.
+  'before' and 'after' options:
+    The 'before' and 'after' options are only relevant for the 'add' action. Note also that the 'before' option has a
+    highter precedence than the 'after' option.
   
   Unknown postfix parameters
     Unknown Postfix parameter are silently ignored
@@ -913,8 +913,8 @@ sub postmap
 
     Adding parameters
 
-    Let's assume that we want add both, the `check_client_access <table>' value and the `check_recipient_access <table>'
-    value to the `smtpd_recipient_restrictions' parameter, before the `check_policy_service ...' service.
+    Let's assume that we want add both, the 'check_client_access <table>' value and the 'check_recipient_access <table>'
+    value to the 'smtpd_recipient_restrictions' parameter, before the 'check_policy_service ...' service.
     The following would do the job:
 
     Servers::mta::postfix->getInstance(
@@ -973,7 +973,7 @@ sub postconf
                 my (@vls, @rpls) = ( split( /,\s*/, $v ), () );
 
                 defined $params{$p}->{'values'} && ref $params{$p}->{'values'} eq 'ARRAY' or die(
-                    sprintf( "Missing or invalid `values' for the %s parameter. Expects an array of values", $p )
+                    sprintf( "Missing or invalid 'values' for the %s parameter. Expects an array of values", $p )
                 );
 
                 for $v( @{$params{$p}->{'values'}} ) {

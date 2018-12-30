@@ -373,7 +373,7 @@ sub _writeLogfile
         return 0;
     }
 
-    print output( sprintf( "Couldn't open log file `%s' for writing: %s", $logfilePath, $! ), 'error' );
+    print output( sprintf( "Couldn't open log file '%s' for writing: %s", $logfilePath, $! ), 'error' );
     0;
 }
 

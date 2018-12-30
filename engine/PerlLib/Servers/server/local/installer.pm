@@ -159,7 +159,7 @@ sub primaryIpDialog
 
 Please select your server primary IP address:
 
-The \\Zb`None'\\Zn option means that i-MSCP will configures the services to listen on all interfaces.
+The \\Zb'None'\\Zn option means that i-MSCP will configures the services to listen on all interfaces.
 Note that this options is more suitable for Cloud computing services such as Scaleway and Amazon EC2.
 EOF
             $lanIP = '0.0.0.0' if $lanIP && $lanIP eq 'None';
@@ -401,7 +401,7 @@ sub _setupPrimaryIP
     local $@;
     eval {
         my $netCard = ( $primaryIP eq '0.0.0.0' ) ? 'any' : iMSCP::Net->getInstance()->getAddrDevice( $primaryIP );
-        defined $netCard or die( sprintf( "Couldn't find network card for the `%s' IP address", $primaryIP ));
+        defined $netCard or die( sprintf( "Couldn't find network card for the '%s' IP address", $primaryIP ));
 
         my $db = iMSCP::Database->factory();
         my $oldDbName = $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ));

@@ -63,7 +63,7 @@ sub factory
         fatal( $@ ) if $@;
 
         my $rs = $main::imscpOldConfig{'NAMED_PACKAGE'}->getInstance()->uninstall();
-        fatal( sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'NAMED_PACKAGE'} )) if $rs;
+        fatal( sprintf( "Couldn't uninstall the '%s' server", $main::imscpOldConfig{'NAMED_PACKAGE'} )) if $rs;
     }
 
     eval "require $package";

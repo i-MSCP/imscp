@@ -73,7 +73,7 @@ use constant {
     MS_MGC_VAL      => 0xc0ed0000, # Magic flag number to indicate "new" flags
     MS_MGC_MSK      => 0xffff0000, # Magic flag number mask
 
-    # Possible value for FLAGS parameter of `umount2' (see sys/mount.h)
+    # Possible value for FLAGS parameter of 'umount2' (see sys/mount.h)
     MNT_FORCE       => 1,
     MNT_DETACH      => 2,
     MNT_EXPIRE      => 4,
@@ -188,7 +188,7 @@ sub mount( $ )
 
     for( qw/ fs_spec fs_file fs_vfstype fs_mntops / ) {
         next if defined $fields->{$_};
-        error( sprintf( "`%s' field is not defined", $_ ));
+        error( sprintf( "'%s' field is not defined", $_ ));
         return 1;
     }
 

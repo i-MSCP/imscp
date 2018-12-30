@@ -67,13 +67,13 @@ sub setRights
         ref $options eq 'HASH' && %{$options} or die( '$options parameter is not defined' );
 
         if ( defined $options->{'mode'} && ( defined $options->{'dirmode'} || defined $options->{'filemode'} ) ) {
-            die( '`mode` option is not allowed when using dirmode/filemode options' );
+            die( "'mode' option is not allowed when using dirmode/filemode options" );
         }
 
         my $uid = $options->{'user'} ? getpwnam( $options->{'user'} ) : -1;
         my $gid = $options->{'group'} ? getgrnam( $options->{'group'} ) : -1;
-        defined $uid or die( sprintf( 'user option refers to inexistent user: %s', $options->{'user'} ));
-        defined $gid or die( sprintf( 'group option refers to inexistent group: %s', $options->{'group'} ));
+        defined $uid or die( sprintf( 'user option refers to non-existent user: %s', $options->{'user'} ));
+        defined $gid or die( sprintf( 'group option refers to non-existent group: %s', $options->{'group'} ));
 
         my $mode = defined $options->{'mode'} ? oct( $options->{'mode'} ) : undef;
         my $dirmode = defined $options->{'dirmode'} ? oct( $options->{'dirmode'} ) : undef;

@@ -169,7 +169,7 @@ sub _checkPrograms
 
     for ( keys %{$self->{'programs'}} ) {
         iMSCP::ProgramFinder::find( lc $_ ) or die(
-            sprintf( "Couldn't find the `%s' command in search path", $_ )
+            sprintf( "Couldn't find the '%s' command in search path", $_ )
         );
 
         next unless $self->{'programs'}->{$_}->{'version_command'};
@@ -212,7 +212,7 @@ sub _checkPerlModules
         sprintf( "The following Perl modules are not installed: %s\n", join ', ', @missingModules )
     );
 
-    die( sprintf( "The `%s' Perl module is not installed\n", pop @missingModules ));
+    die( sprintf( "The '%s' Perl module is not installed\n", pop @missingModules ));
 }
 
 =item _checkPhpModules( )
@@ -243,7 +243,7 @@ sub _checkPhpModules
         sprintf( "The following PHP modules are not installed or not enabled: %s\n", join ', ', @missingModules )
     );
 
-    die( sprintf( "The `%s' PHP module is not installed or not enabled.\n", pop @missingModules ));
+    die( sprintf( "The '%s' PHP module is not installed or not enabled.\n", pop @missingModules ));
 }
 
 =item _programVersions( $versionCommand, $versionRegexp, $minVersion [, $maxVersion ] )

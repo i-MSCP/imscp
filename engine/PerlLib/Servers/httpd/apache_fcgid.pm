@@ -440,7 +440,7 @@ sub disableDmn
         return $rs if $rs;
     }
 
-    # Transitional - Remove deprecated `domain_disable_page' directory if any
+    # Transitional - Remove deprecated 'domain_disable_page' directory if any
     if ( $data->{'DOMAIN_TYPE'} eq 'dmn' && -d $data->{'WEB_DIR'} ) {
         clearImmutable( $data->{'WEB_DIR'} );
         iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/domain_disable_page" )->remove();
@@ -1726,7 +1726,7 @@ sub _addFiles
                 return $rs if $rs;
             }
         } else {
-            error( "Web folder skeleton must provides the `htdocs' directory." );
+            error( "Web folder skeleton must provides the 'htdocs' directory." );
             return 1;
         }
 
@@ -1740,7 +1740,7 @@ sub _addFiles
         if ( -d "$data->{'WEB_DIR'}/errors" && !iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/errors" )->isEmpty() ) {
             iMSCP::Dir->new( dirname => "$tmpDir/errors" )->remove();
         } elsif ( !-d "$tmpDir/errors" ) {
-            error( "The `domain' Web folder skeleton must provides the `errors' directory." );
+            error( "The 'domain' Web folder skeleton must provides the 'errors' directory." );
             return 1;
         } else {
             $fixPermissions = 1;
@@ -1772,7 +1772,7 @@ sub _addFiles
         iMSCP::Dir->new(dirname => "$data->{'WEB_DIR'}/logs")->remove();
         iMSCP::Dir->new(dirname => "$tmpDir/logs")->remove();
     } elsif ( $data->{'DOMAIN_TYPE'} eq 'dmn' && !-d "$tmpDir/logs" ) {
-        error("Web folder skeleton must provides the `logs' directory.");
+        error("Web folder skeleton must provides the 'logs' directory.");
         return 1;
     }
 
@@ -1781,7 +1781,7 @@ sub _addFiles
 
     # Cleanup (Transitional)
     if ( $data->{'DOMAIN_TYPE'} eq 'dmn' ) {
-        # Remove deprecated `domain_disable_page' directory if any
+        # Remove deprecated 'domain_disable_page' directory if any
         iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/domain_disable_page" )->remove();
     } elsif ( !$data->{'SHARED_MOUNT_POINT'} ) {
         # Remove deprecated phptmp directory if any

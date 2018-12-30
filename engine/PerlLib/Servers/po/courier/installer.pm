@@ -492,7 +492,7 @@ sub _setupSASL
 {
     my ($self) = @_;
 
-    # Add postfix user in `mail' group to make it able to access
+    # Add postfix user in 'mail' group to make it able to access
     # authdaemon rundir
     my $rs = iMSCP::SystemUser->new()->addToGroup(
         $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}, $self->{'mta'}->{'config'}->{'POSTFIX_USER'}

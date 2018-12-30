@@ -143,7 +143,7 @@ sub _buildConf
     $file->set( $cfgTpl );
 
     $rs = $file->save();
-    $rs ||= $file->owner( $rootUName, $rootGName ); # The `mysql' group is only created by mysql-server package
+    $rs ||= $file->owner( $rootUName, $rootGName ); # The 'mysql' group is only created by mysql-server package
     $rs ||= $file->mode( 0640 );
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldBuildConf' );
 }

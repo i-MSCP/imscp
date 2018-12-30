@@ -415,7 +415,7 @@ sub enableSites
         my $link = $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'} . '/' . basename( $site, '.conf' );
 
         unless ( -f $target ) {
-            error( sprintf( "Site `%s` doesn't exist", $site ));
+            error( sprintf( "Site '%s' doesn't exist", $site ));
             return 1;
         }
 

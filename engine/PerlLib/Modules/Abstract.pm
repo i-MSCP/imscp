@@ -69,7 +69,7 @@ sub process
 
 =item add( )
 
- Execute the `add' action on servers, packages
+ Execute the 'add' action on servers, packages
 
  Should be executed for items with 'toadd|tochange|toenable' status.
 
@@ -84,7 +84,7 @@ sub add
 
 =item delete( )
 
- Execute the `delete' action on servers, packages
+ Execute the 'delete' action on servers, packages
 
  Should be executed for items with 'todelete' status.
 
@@ -99,7 +99,7 @@ sub delete
 
 =item restore( )
 
- Execute the `restore' action on servers, packages
+ Execute the 'restore' action on servers, packages
 
  Should be executed for items with 'torestore' status.
 
@@ -114,7 +114,7 @@ sub restore
 
 =item disable( )
 
- Execute the `disable' action on servers, packages
+ Execute the 'disable' action on servers, packages
 
  Should be executed for items with 'todisable' status.
 
@@ -168,7 +168,7 @@ sub _execAction
     if ( $pkgType eq 'server' ) {
         for ( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
             ( my $subref = $_->can( $action ) ) or next;
-            debug( sprintf( "Executing `%s' action on %s", $action, $_ ));
+            debug( sprintf( "Executing '%s' action on %s", $action, $_ ));
             my $rs = $subref->( $_->factory(), $self->_getData( $action ));
             return $rs if $rs;
         }
@@ -178,7 +178,7 @@ sub _execAction
 
     for ( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
         ( my $subref = $_->can( $action ) ) or next;
-        debug( sprintf( "Executing `%s' action on %s", $action, $_ ));
+        debug( sprintf( "Executing '%s' action on %s", $action, $_ ));
         my $rs = $subref->( $_->getInstance(), $self->_getData( $action ));
         return $rs if $rs;
     }

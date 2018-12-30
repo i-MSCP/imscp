@@ -498,7 +498,7 @@ sub _updateDatabase
 
     local $@;
     eval {
-        # Ensure tha users.mail_host entries are set with expected hostname (default to `localhost')
+        # Ensure tha users.mail_host entries are set with expected hostname (default to 'localhost')
         my $hostname = 'localhost';
         $self->{'eventManager'}->trigger( 'beforeUpdateRoundCubeMailHostEntries', \$hostname ) == 0 or die(
             getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'

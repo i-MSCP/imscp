@@ -576,7 +576,7 @@ sub dpkgPostInvokeTasks
         my $v1 = $self->getFullPhpVersionFor( $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} );
         my $v2 = $self->getFullPhpVersionFor( '/usr/local/sbin/imscp_panel' );
         return 0 unless defined $v1 && defined $v2 && $v1 ne $v2; # Don't act when not necessary
-        debug( sprintf( "Updating imscp_panel service PHP binary from version `%s' to version `%s'", $v2, $v1 ));
+        debug( sprintf( "Updating imscp_panel service PHP binary from version '%s' to version '%s'", $v2, $v1 ));
     }
 
     my $rs = $self->_copyPhpBinary();
@@ -892,7 +892,7 @@ sub _copyPhpBinary
     return $rs if $rs;
 
     if ( $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} eq '' ) {
-        error( "PHP `PHP_FPM_BIN_PATH' configuration parameter is not set." );
+        error( "PHP 'PHP_FPM_BIN_PATH' configuration parameter is not set." );
         return 1;
     }
 

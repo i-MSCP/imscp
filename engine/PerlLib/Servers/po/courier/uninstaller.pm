@@ -147,7 +147,7 @@ sub _removeConfig
 
     iMSCP::Dir->new( dirname => $fsFile )->remove();
 
-    # Remove the `postfix' user from the `mail' group
+    # Remove the 'postfix' user from the 'mail' group
     $rs = iMSCP::SystemUser->new()->removeFromGroup(
         $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}, $self->{'mta'}->{'config'}->{'POSTFIX_USER'}
     );
