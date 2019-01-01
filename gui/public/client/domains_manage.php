@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by i-MSCP Team
+ * Copyright (C) 2010-2019 by i-MSCP Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -702,9 +702,8 @@ iMSCP_Events_Aggregator::getInstance()->registerListener('onGetJsTranslations', 
 });
 
 global $baseServerVhostUtf8;
-
-if (iMSCP_Registry::get('config')->get('CLIENT_WEBSITES_ALT_URLS') == 'yes') {
-    $baseServerVhostUtf8 = decode_idna(iMSCP_Registry::get('config')->get('BASE_SERVER_VHOST'));
+if (iMSCP_Registry::get('config')['CLIENT_WEBSITES_ALT_URLS'] == 'yes') {
+    $baseServerVhostUtf8 = decode_idna(iMSCP_Registry::get('config')['BASE_SERVER_VHOST']);
 }
 
 generateNavigation($tpl);

@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2015 by i-MSCP Team
+ * Copyright (C) 2010-2019 by i-MSCP Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,8 +22,9 @@ return [
     'theme_name'      => 'default',
     'theme_version'   => '1.0.0',
     'theme_authors'   => [
-        'Henrik Schytte' => 'henrik@schytte.net',
-        'Marc Pujol'     => 'kilburn@la3.org'
+        'Henrik Schytte'   => 'henrik@schytte.net',
+        'Laurent Declercq' => 'l.declercq@nuxwin.com',
+        'Marc Pujol'       => 'kilburn@la3.org'
     ],
     'theme_licence'   => 'GPLv2++',
     'theme_color_set' => ['black', 'blue', 'green', 'red', 'yellow']
