@@ -11,7 +11,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -32,9 +32,10 @@ use warnings;
 use File::Basename;
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use iMSCP::Boolean;
 use iMSCP::Bootstrapper;
 use iMSCP::Debug qw/ debug error getMessageByType newDebug setVerbose /;
-use iMSCP::Execute qw/ execute /;
+use iMSCP::Execute 'execute';
 use iMSCP::Getopt;
 use iMSCP::Mail;
 use Servers::mta;
@@ -70,7 +71,7 @@ sub quotaFiles
 
         my $virtualMailDir = Servers::mta->factory()->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
 
-        while ( my ($dmnId, $dmnData) = each( %{$rows} ) ) {
+        while ( my ( $dmnId, $dmnData ) = each( %{ $rows } ) ) {
             my $totalDiskUsage = my $webDiskUsage = my $mailDiskUsage = 0;
             my @items = (
                 { webdir => "$main::imscpConfig{'USER_WEB_DIR'}/$dmnData->{'domain_name'}" },
@@ -85,17 +86,13 @@ sub quotaFiles
                         FROM domain_aliasses
                         WHERE domain_id = ?
                         AND alias_status <> 'todelete'
-        
                         UNION ALL
-        
                         SELECT CONCAT(subdomain_name, '.', domain_name) AS domain_name
                         FROM subdomain
                         JOIN domain USING(domain_id)
                         WHERE domain_id = ?
                         AND subdomain_status <> 'todelete'
-        
                         UNION ALL
-        
                         SELECT CONCAT(subdomain_alias_name, '.',  alias_name) AS domain_name
                         FROM subdomain_alias
                         JOIN domain_aliasses USING(alias_id)
@@ -107,23 +104,20 @@ sub quotaFiles
             };
             if ( $@ ) {
                 error( $@ );
-            } elsif ( %{$rows2} ) {
-                push @items, { maildir => "$virtualMailDir/$_" } for keys %{$rows2};
+            } elsif ( %{ $rows2 } ) {
+                push @items, { maildir => "$virtualMailDir/$_" } for keys %{ $rows2 };
             }
 
-            for( @items ) {
-                my ($dirType, $dir) = %{$_};
+            for ( @items ) {
+                my ( $dirType, $dir ) = %{ $_ };
                 next unless -d $dir;
 
                 if ( $dirType eq 'webdir' ) {
-                    my $rs = execute(
-                        [ 'du', '--exclude=backups/*', '--exclude=logs/*', '-s', '-B1', $dir ], \ my $stdout,
-                        \ my $stderr
-                    );
+                    my $rs = execute( [ 'du', '--exclude=backups/*', '--exclude=logs/*', '-s', '-B1', $dir ], \my $stdout, \my $stderr );
                     error( $stderr || 'Unknown error' ) if $rs;
                     $webDiskUsage = $1 if $stdout && $stdout =~ /^(\d+)/;
                 } else {
-                    my $rs = execute( [ 'du', '-s', '-B1', $dir ], \ my $stdout, \ my $stderr );
+                    my $rs = execute( [ 'du', '-s', '-B1', $dir ], \my $stdout, \my $stderr );
                     error( $stderr || 'Unknown error' ) if $rs;
                     $mailDiskUsage += $1 if $stdout && $stdout =~ /^(\d+)/;
                 }
@@ -135,17 +129,10 @@ sub quotaFiles
             eval {
                 $dbh->begin_work();
                 $dbh->do(
-                    '
-                        UPDATE domain
-                        SET domain_disk_usage = ?, domain_disk_file = ?, domain_disk_mail = ?
-                        WHERE domain_id = ?
-                    ',
+                    'UPDATE domain SET domain_disk_usage = ?, domain_disk_file = ?, domain_disk_mail = ? WHERE domain_id = ?',
                     undef, $totalDiskUsage, $webDiskUsage, $mailDiskUsage, $dmnId
                 );
-                $dbh->do(
-                    'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?',
-                    undef, $totalDiskUsage, $dmnData->{'domain_name'}
-                );
+                $dbh->do( 'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?', undef, $totalDiskUsage, $dmnData->{'domain_name'} );
                 $dbh->commit();
             };
             if ( $@ ) {
@@ -172,34 +159,24 @@ sub quotaSql
         local $dbh->{'RaiseError'} = 1;
 
         my $rows = $dbh->selectall_hashref(
-            "
-                SELECT domain_id, domain_name, domain_disk_usage
-                FROM domain
-                WHERE domain_status NOT IN ('disabled', 'todelete')
-            ",
-            'domain_id'
+            "SELECT domain_id, domain_name, domain_disk_usage FROM domain WHERE domain_status NOT IN ('disabled', 'todelete')", 'domain_id'
         );
 
-        return 0 unless %{$rows};
+        return 0 unless %{ $rows };
 
         my $databases = $dbh->selectcol_arrayref( 'SHOW DATABASES' );
 
-        while ( my ($dmnId, $dmnData) = each( %{$rows} ) ) {
-            my ($size, $sqlSize) = ( 0, 0 );
+        while ( my ( $dmnId, $dmnData ) = each( %{ $rows } ) ) {
+            my ( $size, $sqlSize ) = ( 0, 0 );
+            my $customerDatabases = $dbh->selectall_hashref( 'SELECT sqld_name FROM sql_database WHERE domain_id = ?', 'sqld_name', undef, $dmnId );
 
-            my $customerDatabases = $dbh->selectall_hashref(
-                'SELECT sqld_name FROM sql_database WHERE domain_id = ?', 'sqld_name', undef, $dmnId
-            );
+            for my $sqlDbName ( keys %{ $customerDatabases } ) {
+                next unless grep ($_ eq $sqlDbName, @{ $databases });
 
-            for my $sqlDbName ( keys %{$customerDatabases} ) {
-                next unless grep($_ eq $sqlDbName, @{$databases});
+                my $sqlDbTables = $dbh->selectall_hashref( "SHOW TABLE STATUS FROM " . $dbh->quote_identifier( $sqlDbName ), 1 );
 
-                my $sqlDbTables = $dbh->selectall_hashref(
-                    "SHOW TABLE STATUS FROM " . $dbh->quote_identifier( $sqlDbName ), 1
-                );
-
-                next unless %{$sqlDbTables};
-                $size += $_->{'Data_length'}+$_->{'Index_length'} for values %{$sqlDbTables};
+                next unless %{ $sqlDbTables };
+                $size += $_->{'Data_length'}+$_->{'Index_length'} for values %{ $sqlDbTables };
             }
 
             $sqlSize += $size;
@@ -209,13 +186,8 @@ sub quotaSql
             eval {
                 local $dbh->{'AutoCommit'} = 0;
 
-                $dbh->do(
-                    'UPDATE domain SET domain_disk_usage = ?, domain_disk_sql = ? WHERE domain_id = ?',
-                    undef, $size, $sqlSize, $dmnId
-                );
-                $dbh->do(
-                    'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?', undef, $size, $dmnData->{'domain_name'}
-                );
+                $dbh->do( 'UPDATE domain SET domain_disk_usage = ?, domain_disk_sql = ? WHERE domain_id = ?', undef, $size, $sqlSize, $dmnId );
+                $dbh->do( 'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?', undef, $size, $dmnData->{'domain_name'} );
                 $dbh->commit();
             };
             if ( $@ ) {
@@ -229,7 +201,7 @@ sub quotaSql
 
 newDebug( 'imscp-dsk-quota.log' );
 
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq{
 
 Script which computes customer's quota.
 
@@ -245,13 +217,11 @@ setVerbose( iMSCP::Getopt->verbose );
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-dsk-quota.lock', 'nowait' );
 
-$bootstrapper->boot(
-    {
-        mode            => 'backend',
-        nolock          => 1,
-        config_readonly => 1
-    }
-);
+$bootstrapper->boot( {
+    mode            => 'backend',
+    nolock          => 1,
+    config_readonly => 1
+} );
 
 quotaFiles();
 quotaSql();

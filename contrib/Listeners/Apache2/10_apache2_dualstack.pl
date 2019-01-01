@@ -1,5 +1,5 @@
 # i-MSCP Listener::Apache2::DualStack listener file
-# Copyright (C) 2010-2017 Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public

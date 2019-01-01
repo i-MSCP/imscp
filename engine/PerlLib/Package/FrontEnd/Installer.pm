@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -77,8 +77,7 @@ sub registerSetupListeners
                 sub { $self->askMasterAdminEmail( @_ ) },
                 sub { $self->askDomain( @_ ) },
                 sub { $self->askSsl( @_ ) },
-                sub { $self->askHttpPorts( @_ ) },
-                sub { $self->askAltUrlsFeature( @_ ) };
+                sub { $self->askHttpPorts( @_ ) };
             0;
         }
     );
@@ -485,40 +484,6 @@ EOF
     }
 
     main::setupSetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT', $httpsPort );
-    0;
-}
-
-=item askAltUrlsFeature( \%dialog )
-
- Ask for alternative URL feature
-
- Param iMSCP::Dialog \%dialog
- Return int 0 or 30
-
-=cut
-
-sub askAltUrlsFeature
-{
-    my (undef, $dialog) = @_;
-
-    my $value = main::setupGetQuestion( 'CLIENT_WEBSITES_ALT_URLS' );
-
-    if ( $main::reconfigure =~ /^(?:panel|alt_urls_feature|all|forced)$/
-        || isStringNotInList( $value, 'yes', 'no' )
-    ) {
-        my $rs = $dialog->yesno( <<'EOF', $value eq 'no' );
-
-Do you want to enable the alternative URLs feature for client websites?
-
-Alternative URLs make the clients able to access their websites (domains) through control panel subdomains such as dmn1.panel.domain.tld.
-
-This feature is useful for clients who have not yet updated their DNS so that their domain name points to the IP address of the server that has been assigned to them. 
-EOF
-        return $rs unless $rs < 30;
-        $value = $rs ? 'no' : 'yes';
-    }
-
-    main::setupSetQuestion( 'CLIENT_WEBSITES_ALT_URLS', $value );
     0;
 }
 

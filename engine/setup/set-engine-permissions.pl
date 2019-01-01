@@ -11,7 +11,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -45,7 +45,7 @@ $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 newDebug( 'imscp-set-engine-permissions.log' );
 
 $main::execmode = 'backend';
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq{
 
 Set i-MSCP engine permissions.
 
@@ -78,12 +78,12 @@ $bootstrapper->boot(
 my $rs = 0;
 my @items = ();
 
-for my $server( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
+for my $server ( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
     ( my $subref = $server->can( 'setEnginePermissions' ) ) or next;
     push @items, [ $server, sub { $subref->( $server->factory()); } ];
 }
 
-for my $package( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
+for my $package ( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
     ( my $subref = $package->can( 'setEnginePermissions' ) ) or next;
     push @items, [ $package, sub { $subref->( $package->getInstance()); } ];
 }
@@ -161,7 +161,7 @@ $rs |= setRights(
 
 $count++;
 
-for( @items ) {
+for ( @items ) {
     debug( sprintf( 'Setting %s engine permissions', $_->[0] ));
     printf( "Setting %s engine permissions\t%s\t%s\n", $_->[0], $totalItems, $count ) if $main::execmode eq 'setup';
     $rs |= $_->[1]->();

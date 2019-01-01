@@ -1,5 +1,5 @@
 # i-MSCP Listener::Bind9::DualStack listener file
-# Copyright (C) 2010-2017 Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2018 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -23,10 +23,11 @@ package Listener::Bind9::DualStack;
 
 use strict;
 use warnings;
+use iMSCP::Boolean;
 use iMSCP::EventManager;
 use iMSCP::TemplateParser;
 use iMSCP::Net;
-use List::MoreUtils qw/ uniq /;
+use List::MoreUtils 'uniq';
 
 #
 ## Configuration variables
@@ -49,100 +50,71 @@ my @additionalIPs = ( 'IP1', 'IP2' );
 ## Please, don't edit anything below this line
 #
 
-iMSCP::EventManager->getInstance( )->register(
-    'afterNamedAddDmnDb',
-    sub {
-        my ($tplDbFileContent, $data) = @_;
+iMSCP::EventManager->getInstance()->register( 'afterNamedAddDmnDb', sub {
+    my ( $fileC, $data ) = @_;
 
-        my $net = iMSCP::Net->getInstance( );
-        my @ipList = uniq(
-            map $net->normalizeAddr( $_ ), grep {
+    my $net = iMSCP::Net->getInstance();
+    my @ipList = uniq( map $net->normalizeAddr( $_ ), grep { $net->getAddrType( $_ ) =~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/ } (
+        @additionalIPs,
+        ( $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} && ref $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} eq 'ARRAY'
+            ? @{ $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} } : ()
+        )
+    ));
 
-                $net->getAddrType( $_ ) =~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/
-            } (
-                @additionalIPs,
-                ($perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}
-                        && ref $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} eq 'ARRAY'
-                    ? @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}}
-                    : ()
-                )
-            )
-        );
+    return 0 unless @ipList;
 
-        return 0 unless @ipList;
+    my @formattedEntries = ();
 
-        my @formattedEntries = ( );
-
-        for my $ip(@ipList) {
-            for my $name('@', 'ftp', 'mail', 'imap', 'pop', 'pop3', 'relay', 'smtp') {
-                push @formattedEntries, $net->getAddrVersion( $ip ) eq 'ipv6'
-                        ? "$name\tIN\tAAAA\t$ip\n" : "$name\tIN\tA\t$ip\n";
-            }
+    for my $ip ( @ipList ) {
+        for my $name ( '@', 'ftp', 'mail', 'imap', 'pop', 'pop3', 'relay', 'smtp' ) {
+            push @formattedEntries, $net->getAddrVersion( $ip ) eq 'ipv6' ? "$name\tIN\tAAAA\t$ip" : "$name\tIN\tA\t$ip";
         }
-
-        ${$tplDbFileContent} = replaceBloc(
-            "; custom DNS entries BEGIN\n",
-            "; custom DNS entries ENDING\n",
-            "; dualstack DNS entries BEGIN\n"
-                .join( '', @formattedEntries )
-                ."; dualstack DNS entries END\n",
-            ${$tplDbFileContent},
-            'PreserveTags'
-        );
-
-        0;
     }
-);
 
-iMSCP::EventManager->getInstance( )->register(
-    'afterNamedAddSub',
-    sub {
-        my ($wrkDbFileContent, $data) = @_;
+    ${ $fileC } = replaceBloc( "; dualstack DNS entries BEGIN\n", "; dualstack DNS entries END\n", '' );
+    ${ $fileC } .= <<"EOF";
+; dualstack DNS entries BEGIN
+@{ [ join( "\n", @formattedEntries ) ] }
+; dualstack DNS entries ENDING
+EOF
+    0;
+} );
 
-        my $net = iMSCP::Net->getInstance( );
-        my @ipList = uniq(
-            map $net->normalizeAddr( $_ ), grep {
-                $net->getAddrType( $_ ) =~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/
-            } (
-                @additionalIPs,
-                ($perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}
-                        && ref $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} eq 'ARRAY'
-                    ? @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}}
-                    : ()
-                )
-            )
-        );
+iMSCP::EventManager->getInstance( )->register( 'afterNamedAddSub', sub {
+    my ( $fileC, $data ) = @_;
 
-        return 0 unless @ipList;
+    my $net = iMSCP::Net->getInstance();
+    my @ipList = uniq( map $net->normalizeAddr( $_ ), grep { $net->getAddrType( $_ ) =~ /^(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)$/ } (
+        @additionalIPs,
+        ( $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} && ref $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} eq 'ARRAY'
+            ? @{ $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}} } : ()
+        )
+    ));
 
-        my @formattedEntries = ( );
+    return 0 unless @ipList;
 
-        for my $ip(@ipList) {
-            for my $name('@', 'ftp', 'mail', 'imap', 'pop', 'pop3', 'relay', 'smtp') {
-                push @formattedEntries, $net->getAddrVersion( $ip ) eq 'ipv6'
-                        ? "$name\tIN\tAAAA\t$ip\n" : "$name\tIN\tA\t$ip\n";
-            }
+    my @formattedEntries = ();
+
+    for my $ip ( @ipList ) {
+        for my $name ( '@', 'ftp', 'mail', 'imap', 'pop', 'pop3', 'relay', 'smtp' ) {
+            push @formattedEntries, $net->getAddrVersion( $ip ) eq 'ipv6' ? "$name\tIN\tAAAA\t$ip\n" : "$name\tIN\tA\t$ip\n";
         }
-
-        ${$wrkDbFileContent} = replaceBloc(
-            "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
-            "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
-            "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n"
-                .getBloc(
-                "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
-                "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
-                ${$wrkDbFileContent}
-            )
-                ."; dualstack DNS entries BEGIN\n"
-                .join( '', @formattedEntries )
-                ."; dualstack DNS entries END\n"
-                ."; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
-            ${$wrkDbFileContent}
-        );
-
-        0;
     }
-);
+
+    ${ $fileC } = replaceBloc(
+        "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n",
+        "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
+        "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n"
+            . getBloc( "; sub [$data->{'DOMAIN_NAME'}] entry BEGIN\n", "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n", ${ $fileC } )
+            . "; dualstack DNS entries BEGIN\n"
+            . join( '', @formattedEntries )
+            . "; dualstack DNS entries END\n"
+            . "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
+        ${ $fileC }
+    );
+
+    0;
+} );
 
 1;
 __END__

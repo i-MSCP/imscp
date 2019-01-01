@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -267,9 +267,7 @@ sub _init
     } = ();
 
     # Quick fix for disabling Pydio package if PHP >= 7 is detected
-    if ( defined $main::execmode && $main::execmode eq 'setup' ) {
-        delete $self->{'PACKAGES'}->{'Pydio'} if version->parse( $self->_getPhpVersion()) >= version->parse( '7.0.0' );
-    }
+    delete $self->{'PACKAGES'}->{'Pydio'} if $main::execmode eq 'setup' && version->parse( $self->_getPhpVersion()) >= version->parse( '7.0.0' );
 
     $self;
 }

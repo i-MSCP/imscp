@@ -11,7 +11,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -76,8 +76,7 @@ require iMSCP::Getopt->listener if iMSCP::Getopt->listener;
 
 # handle noprompt option
 if ( iMSCP::Getopt->noprompt ) {
-    debugRegisterCallBack(
-        sub {
+    debugRegisterCallBack( sub {
             print STDOUT output( 'i-MSCP has been successfully installed/updated.', 'ok' ) unless $?;
 
             # We exit with status 5 from iMSCP::Dialog in noninteractive mode
@@ -88,8 +87,7 @@ if ( iMSCP::Getopt->noprompt ) {
                     print STDERR output( 'Missing or bad entry found in configuration file.', 'fatal' );
                 }
             }
-        }
-    );
+        } );
     print STDOUT output( 'Installation in progress... Please wait.', 'info' );
 }
 
@@ -128,8 +126,7 @@ EOF
     return $rs if $rs || iMSCP::Getopt->noprompt;
 
     my $port = $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://'
-        ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
-        : $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
+        ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'} : $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
     my $vhost = idn_to_unicode( $main::imscpConfig{'BASE_SERVER_VHOST'}, 'utf-8' );
 
     iMSCP::Dialog->getInstance()->infobox( <<"EOF" );

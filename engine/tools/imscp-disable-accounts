@@ -11,7 +11,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -63,17 +63,14 @@ sub run
             'domain_id'
         );
 
-        return 0 unless %{$rows};
+        return 0 unless %{ $rows };
 
-        for ( keys %{$rows} ) {
+        for ( keys %{ $rows } ) {
             eval {
                 $dbh->begin_work();
 
                 if ( $row->{'value'} ) { # SMTP/IMAP/POP disabled
-                    $dbh->do(
-                        'UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ?',
-                        undef, 'todisable', 'no', $_
-                    );
+                    $dbh->do( 'UPDATE mail_users SET status = ?, po_active = ? WHERE domain_id = ?', undef, 'todisable', 'no', $_ );
                 } else { # IMAP/POP disabled
                     $dbh->do( 'UPDATE mail_users SET po_active = ? WHERE domain_id = ?', undef, 'no', $_ );
                 }
@@ -108,7 +105,7 @@ sub run
 
 newDebug( 'imscp-disable-accounts.log' );
 
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq{
 
 Script that disable expired customer accounts
 

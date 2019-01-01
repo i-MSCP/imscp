@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -130,7 +130,7 @@ sub _init
         $rs ||= step( sub { $self->_installPackages( 2, 2 ); }, 'Installing/Updating composer packages from Github', 2, 2 );
         endDetail;
         $rs;
-    } ) if defined $main::execmode && $main::execmode eq 'setup';
+    } ) if $main::execmode eq 'setup';
 
     $self;
 }

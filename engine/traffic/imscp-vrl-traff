@@ -53,25 +53,15 @@ sub run
     # Get list of domains for which traffic must be collected
     my $sth = $dbh->prepare(
         "
-           SELECT domain_id AS upper_domain_id, domain_name
-           FROM domain
-           WHERE domain_status <> 'todelete'
-
+           SELECT domain_id AS upper_domain_id, domain_name FROM domain WHERE domain_status <> 'todelete'
            UNION ALL
-
-           SELECT domain_id AS upper_domain_id, alias_name
-           FROM domain_aliasses
-           WHERE alias_status <> 'todelete'
-
+           SELECT domain_id AS upper_domain_id, alias_name FROM domain_aliasses WHERE alias_status <> 'todelete'
            UNION ALL
-
            SELECT domain_id AS upper_domain_id, CONCAT(subdomain_name, '.', domain_name)
            FROM subdomain
            JOIN domain USING (domain_id)
            WHERE subdomain_status <> 'todelete'
-
            UNION ALL
-
            SELECT domain_id AS upper_domain_id, CONCAT(subdomain_alias_name, '.', alias_name)
            FROM subdomain_alias
            JOIN domain_aliasses USING (alias_id)
@@ -83,21 +73,20 @@ sub run
         return 1;
     }
     my $domains = $sth->fetchall_hashref( 'domain_name' );
-    return 0 unless %{$domains};
+    return 0 unless %{ $domains };
 
-    my %domains = map { $_ => 0 } keys %{$domains};
+    my %domains = map { $_ => 0 } keys %{ $domains };
     my $timestamp = time();
     my $halfTimestamp = $timestamp-( $timestamp % 1800 );
     my %trafficDb;
 
     # Collects traffic data from each server implementing the getTraffic() method
-    for my $server( 'Servers::httpd', 'Servers::ftpd', 'Servers::mta', 'Servers::po' ) {
+    for my $server ( 'Servers::httpd', 'Servers::ftpd', 'Servers::mta', 'Servers::po' ) {
         next unless $server->can( 'getTraffic' );
         eval {
             # Initialize intermediate traffic database
-            tie %{$trafficDb{$server}},
-                'iMSCP::Config', fileName => "$main::imscpConfig{'IMSCP_HOMEDIR'}/$server-vrl-traff.db", nodie => 1;
-            %{$trafficDb{$server}} = ( %domains, %{$trafficDb{$server}} );
+            tie %{ $trafficDb{$server} }, 'iMSCP::Config', fileName => "$main::imscpConfig{'IMSCP_HOMEDIR'}/$server-vrl-traff.db", nodie => 1;
+            %{ $trafficDb{$server} } = ( %domains, %{ $trafficDb{$server} } );
 
             # Collect traffic
             $server->factory()->getTraffic( $trafficDb{$server} );
@@ -113,7 +102,7 @@ sub run
 
     # Updates traffic data in i-MSCP database
 
-    while ( my ($domainName, $domainData) = each( %{$domains} ) ) {
+    while ( my ( $domainName, $domainData ) = each( %{ $domains } ) ) {
         # Don't process domain for which there are no traffic data
         next unless $trafficDb{'Servers::httpd'}->{$domainName} || $trafficDb{'Servers::ftpd'}->{$domainName}
             || $trafficDb{'Servers::mta'}->{$domainName} || $trafficDb{'Servers::po'}->{$domainName};
@@ -122,11 +111,8 @@ sub run
             '
                 INSERT INTO domain_traffic (
                     domain_id, dtraff_time, dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop
-                ) VALUES (
-                    ?, ?, ?, ?, ?, ?
-                ) ON DUPLICATE KEY UPDATE
-                    dtraff_web = dtraff_web + ?, dtraff_ftp = dtraff_ftp + ?, dtraff_mail = dtraff_mail + ?,
-                    dtraff_pop = dtraff_pop + ?
+                ) VALUES ( ?, ?, ?, ?, ?, ? ) ON DUPLICATE KEY UPDATE
+                    dtraff_web = dtraff_web + ?, dtraff_ftp = dtraff_ftp + ?, dtraff_mail = dtraff_mail + ?, dtraff_pop = dtraff_pop + ?
             ',
             undef, $domainData->{'upper_domain_id'}, $halfTimestamp, $trafficDb{'Servers::httpd'}->{$domainName}
             ,
@@ -148,11 +134,9 @@ sub run
 
     return $rs if $rs;
 
-    for my $server( 'Servers::httpd', 'Servers::ftpd', 'Servers::mta', 'Servers::po' ) {
-        untie( %{$trafficDb{$server}} );
-        $rs |= iMSCP::File->new(
-            filename => "$main::imscpConfig{'IMSCP_HOMEDIR'}/$server-vrl-traff.db"
-        )->delFile();
+    for my $server ( 'Servers::httpd', 'Servers::ftpd', 'Servers::mta', 'Servers::po' ) {
+        untie( %{ $trafficDb{$server} } );
+        $rs |= iMSCP::File->new( filename => "$main::imscpConfig{'IMSCP_HOMEDIR'}/$server-vrl-traff.db" )->delFile();
     }
 
     $rs |= iMSCP::EventManager->getInstance()->trigger( 'afterVrlTraffic' );
@@ -160,7 +144,7 @@ sub run
 
 newDebug( 'imscp-vrl-traff.log' );
 
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq{
 
 Script that collects i-MSCP customers' traffic data (http, ftp, imap/pop3, smtp).
 
@@ -175,13 +159,11 @@ setVerbose( iMSCP::Getopt->verbose );
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-vrl-traff.lock', 'nowait' );
-$bootstrapper->boot(
-    {
-        config_readonly => 1,
-        mode            => 'backend',
-        nolock          => 1
-    }
-);
+$bootstrapper->boot( {
+    config_readonly => 1,
+    mode            => 'backend',
+    nolock          => 1
+} );
 
 exit run();
 

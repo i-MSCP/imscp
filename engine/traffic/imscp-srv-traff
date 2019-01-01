@@ -49,11 +49,11 @@ sub run
     my $timestamp = time;
     $timestamp -= ( $timestamp % 1800 ); # Floor down for the last half'n hour
 
-    for my $exec( @EXECS ) {
+    for my $exec ( @EXECS ) {
         defined $exec or next;
 
         # Make sure that at least one of IMSCP_INPUT or IMSCP_OUTPUT chain exists
-        my $rs = execute( "$exec -S | grep -P -- '-N\\s+IMSCP_'", \ my $stdout, \ my $stderr );
+        my $rs = execute( "$exec -S | grep -P -- '-N\\s+IMSCP_'", \my $stdout, \my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr || 'Unknown error' ) if $rs > 1;
         return $rs if $rs > 1;
@@ -61,14 +61,14 @@ sub run
         next unless $stdout;
 
         my %chains = (
-            IMSCP_INPUT  => \ my $inputTraffic,
-            IMSCP_OUTPUT => \ my $outputTraffic
+            IMSCP_INPUT  => \my $inputTraffic,
+            IMSCP_OUTPUT => \my $outputTraffic
         );
 
         # Get input and output traffic data
         while ( $stdout =~ /-N\s+(.*)/gm ) {
             $rs = execute( "$exec -t filter -nvxL $1", $chains{$1}, \$stderr );
-            debug( ${$chains{$1}} ) if ${$chains{$1}};
+            debug( ${ $chains{$1} } ) if ${ $chains{$1} };
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
         }
@@ -85,14 +85,10 @@ sub run
     $dbh->do(
         '
             INSERT INTO server_traffic (
-                traff_time, bytes_in, bytes_out, bytes_mail_in, bytes_mail_out, bytes_pop_in, bytes_pop_out,
-                bytes_web_in, bytes_web_out
-            ) VALUES (
-                ?, ?, ?, ?, ?, ?, ?, ?, ?
-            ) ON DUPLICATE KEY UPDATE
-                bytes_in = bytes_in + ?, bytes_out = bytes_out + ?, bytes_mail_in = bytes_mail_in + ?,
-                bytes_mail_out = bytes_mail_out + ?, bytes_pop_in = bytes_pop_in + ?, bytes_pop_out = bytes_pop_out + ?,
-                bytes_web_in = bytes_web_in + ?, bytes_web_out = bytes_web_out + ?
+                traff_time, bytes_in, bytes_out, bytes_mail_in, bytes_mail_out, bytes_pop_in, bytes_pop_out, bytes_web_in, bytes_web_out
+            ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? ) ON DUPLICATE KEY UPDATE
+                bytes_in = bytes_in + ?, bytes_out = bytes_out + ?, bytes_mail_in = bytes_mail_in + ?, bytes_mail_out = bytes_mail_out + ?,
+                bytes_pop_in = bytes_pop_in + ?, bytes_pop_out = bytes_pop_out + ?, bytes_web_in = bytes_web_in + ?, bytes_web_out = bytes_web_out + ?
         ',
         undef,
         $timestamp,
@@ -114,21 +110,21 @@ sub _parseTrafficData
     my $frontEndHttpPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'};
     my $frontEndHttpsPort = $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
 
-    while ( ${$trafficData} =~ /^\s+\d+\s+(\d+).*?(?:(?:dpt|spt):(\d+))?$/gm ) {
-        my ($bytes, $port) = ( $1, $2 // 0 );
+    while ( ${ $trafficData } =~ /^\s+\d+\s+(\d+).*?(?:(?:dpt|spt):(\d+))?$/gm ) {
+        my ( $bytes, $port ) = ( $1, $2 // 0 );
         if ( $port > 0 ) {
-            ${$smtp} += $bytes if $port =~ /^(?:587|25|465)$/;
-            ${$po} += $bytes if $port =~ /^(?:110|995|143|993)$/;
-            ${$http} += $bytes if $port =~ /^(?:80|443|$frontEndHttpPort|$frontEndHttpsPort)$/;
+            ${ $smtp } += $bytes if $port =~ /^(?:587|25|465)$/;
+            ${ $po } += $bytes if $port =~ /^(?:110|995|143|993)$/;
+            ${ $http } += $bytes if $port =~ /^(?:80|443|$frontEndHttpPort|$frontEndHttpsPort)$/;
         } else {
-            ${$all} += $bytes;
+            ${ $all } += $bytes;
         }
     }
 }
 
 newDebug( 'imscp-srv-traff.log' );
 
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq{
 
 Script that collects i-MSCP server' traffic data.
 
@@ -144,17 +140,14 @@ setVerbose( iMSCP::Getopt->verbose );
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-srv-traff.lock', 'nowait' );
 
-$bootstrapper->boot(
-    {
-        config_readonly => 1,
-        mode            => 'backend',
-        nolock          => 1
-    }
-);
+$bootstrapper->boot( {
+    config_readonly => 1,
+    mode            => 'backend',
+    nolock          => 1
+} );
 
 @EXECS = (
-    iMSCP::ProgramFinder::find( 'iptables' ),
-    ( $main::imscpConfig{'IPV6_SUPPORT'} ? iMSCP::ProgramFinder::find( 'ip6tables' ) : undef )
+    iMSCP::ProgramFinder::find( 'iptables' ), ( $main::imscpConfig{'IPV6_SUPPORT'} ? iMSCP::ProgramFinder::find( 'ip6tables' ) : undef )
 );
 
 exit run();

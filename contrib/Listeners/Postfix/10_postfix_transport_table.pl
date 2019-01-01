@@ -1,5 +1,5 @@
 # i-MSCP Listener::Postfix::Transport::Table listener file
-# Copyright (C) 2017 Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2017-2019 Laurent Declercq <l.declercq@nuxwin.com>
 # Copyright (C) 2017 Matthew L. Hill <m.hill@innodapt.com>
 #
 # This library is free software; you can redistribute it and/or

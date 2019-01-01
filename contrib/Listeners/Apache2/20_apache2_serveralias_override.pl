@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2017 by Laurent Declercq <l.declercq@nnuxwin.com>
+# Copyright (C) 2017-2019 by Laurent Declercq <l.declercq@nnuxwin.com>
 # Copyright (C) 2013-2017 by Sascha Bay
 #
 # This program is free software; you can redistribute it and/or

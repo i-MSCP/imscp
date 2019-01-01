@@ -11,7 +11,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -42,7 +42,7 @@ $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
 sub run
 {
-    my ($action) = @_;
+    my ( $action ) = @_;
 
     my $rs = 0;
     my $fstab = "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf";
@@ -54,7 +54,7 @@ sub run
         next if /^(?:#|$)/; # Ignore comment and empty lines
         chomp;
         my $fields;
-        @{$fields}{ qw/ fs_spec fs_file fs_vfstype fs_mntops ignore_failures / } = split;
+        @{ $fields }{ qw/ fs_spec fs_file fs_vfstype fs_mntops ignore_failures / } = split;
 
         if ( $action eq 'start' ) {
             next if $fields->{'fs_mntops'} =~ /\bnoauto\b/;
@@ -71,7 +71,7 @@ sub run
 
 newDebug( 'imscp_mountall.log' );
 
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]... start|stop', basename( $0 )) . qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]... start|stop', basename( $0 )) . qq{
 
 Mount or umount filesystems by reading entries from i-MSCP fstab-like file.
 
@@ -95,15 +95,13 @@ setVerbose( iMSCP::Getopt->verbose );
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-mountall.lock', 'nowait' );
 
-$bootstrapper->boot(
-    {
-        config_readonly => 1,
-        mode            => 'backend',
-        nodatabase      => 1,
-        nokeys          => 1,
-        nolock          => 1
-    }
-);
+$bootstrapper->boot( {
+    config_readonly => 1,
+    mode            => 'backend',
+    nodatabase      => 1,
+    nokeys          => 1,
+    nolock          => 1
+} );
 
 exit run( $action );
 

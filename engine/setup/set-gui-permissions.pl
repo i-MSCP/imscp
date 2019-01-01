@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -45,7 +45,7 @@ $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 newDebug( 'imscp-set-gui-permissions.log' );
 
 $main::execmode = 'backend';
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq{
 
 Set i-MSCP gui permissions.
 
@@ -63,25 +63,23 @@ setVerbose( iMSCP::Getopt->verbose );
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-set-engine-permissions.lock', 'nowait' );
 
-$bootstrapper->boot(
-    {
-        mode            => $main::execmode,
-        nolock          => 1,
-        nodatabase      => 1,
-        nokeys          => 1,
-        config_readonly => 1
-    }
-);
+$bootstrapper->boot( {
+    mode            => $main::execmode,
+    nolock          => 1,
+    nodatabase      => 1,
+    nokeys          => 1,
+    config_readonly => 1
+} );
 
 my $rs = 0;
 my @items = ();
 
-for my $server( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
+for my $server ( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
     ( my $subref = $server->can( 'setGuiPermissions' ) ) or next;
     push @items, [ $server, sub { $subref->( $server->factory()); } ];
 }
 
-for my $package( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
+for my $package ( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
     ( my $subref = $package->can( 'setGuiPermissions' ) ) or next;
     push @items, [ $package, sub { $subref->( $package->getInstance()); } ];
 }
@@ -90,7 +88,7 @@ iMSCP::EventManager->getInstance()->trigger( 'beforeSetGuiPermissions' );
 
 my $totalItems = scalar @items;
 my $count = 1;
-for( @items ) {
+for ( @items ) {
     debug( sprintf( 'Setting %s frontEnd permissions', $_->[0] ));
     printf( "Setting %s frontEnd permissions\t%s\t%s\n", $_->[0], $totalItems, $count ) if $main::execmode eq 'setup';
     $rs |= $_->[1]->();

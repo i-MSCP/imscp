@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -39,8 +39,8 @@ use constant BASE64 => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123
 
 our @EXPORT_OK = qw/
     randomStr md5 sha256 sha512 bcrypt apr1MD5 htpasswd verify hashEqual encryptBlowfishCBC decryptBlowfishCBC
-    encryptRijndaelCBC decryptRijndaelCBC
-    /;
+    encryptRijndaelCBC decryptRijndaelCBC ALNUM ALPHA64 BASE64
+/;
 
 =head1 DESCRIPTION
 
@@ -62,7 +62,7 @@ our @EXPORT_OK = qw/
 
 sub randomStr( $;$ )
 {
-    my ($length, $charList) = ( shift, shift // BASE64 );
+    my ( $length, $charList ) = ( shift, shift // BASE64 );
 
     $length =~ /^[\d]+$/ or croak( 'Bad length parameter. Numeric value expected' );
     $length = int( $length );
@@ -98,7 +98,7 @@ sub randomStr( $;$ )
 
 sub md5( $;$ )
 {
-    my ($password, $salt) = @_;
+    my ( $password, $salt ) = @_;
 
     if ( defined $salt ) {
         length $salt >= 8 or croak( 'The salt length must be at least 8 bytes long' );
@@ -122,7 +122,7 @@ sub md5( $;$ )
 
 sub sha256( $;$$ )
 {
-    my ($password, $rounds, $salt) = @_;
+    my ( $password, $rounds, $salt ) = @_;
 
     $rounds //= 5000;
     $rounds =~ /^[\d]+$/ or croak( 'Bad rounds parameter. Numeric value expected.' );
@@ -150,9 +150,9 @@ sub sha256( $;$$ )
 
 =cut
 
-sub sha512($;$$)
+sub sha512( $;$$ )
 {
-    my ($password, $rounds, $salt) = @_;
+    my ( $password, $rounds, $salt ) = @_;
 
     $rounds //= 5000;
     $rounds =~ /^[\d]+$/ or croak( 'Bad rounds parameter. Numeric value expected.' );
@@ -179,9 +179,9 @@ sub sha512($;$$)
  Returns string, croak on failure
 =cut
 
-sub bcrypt($;$$)
+sub bcrypt( $;$$ )
 {
-    my ($password, $cost, $salt) = @_;
+    my ( $password, $cost, $salt ) = @_;
 
     $cost //= 10;
     $cost =~ /^[\d]+$/ or croak( 'Bad cost parameter. Numeric value expected.' );
@@ -212,11 +212,11 @@ sub bcrypt($;$$)
 
 sub apr1MD5( $;$ )
 {
-    my ($password, $salt) = @_;
+    my ( $password, $salt ) = @_;
 
     if ( $salt ) {
         length $salt == 8 or croak( 'The salt length for md5 (APR1) algorithm must be 8 bytes long' );
-        my $regexp = qr/[^${\( ALPHA64 )}]/;
+        my $regexp = qr/[^${ \( ALPHA64 ) }]/;
         $salt !~ /$regexp/ or croak( 'The salt must be a string in the alphabet "./0-9A-Za-z"' );
     } else {
         $salt = randomStr( 8, ALPHA64 );
@@ -273,7 +273,7 @@ sub apr1MD5( $;$ )
 
 sub htpasswd( $;$$ )
 {
-    my ($password, $cost, $salt, $format) = @_;
+    my ( $password, $cost, $salt, $format ) = @_;
     $format //= 'md5';
 
     if ( $format eq 'bcrypt' ) {
@@ -283,7 +283,7 @@ sub htpasswd( $;$$ )
     if ( $format eq 'crypt' ) {
         if ( $salt ) {
             length $salt == 2 or croak( 'The salt length must be 2 bytes long' );
-            my $regexp = qr/[^${\( ALPHA64 )}]/;
+            my $regexp = qr/[^${ \( ALPHA64 ) }]/;
             $salt !~ /$regexp/ or croak( 'The salt must be a string in the alphabet "./0-9A-Za-z"' );
         } else {
             $salt = randomStr( 2, ALPHA64 );
@@ -317,7 +317,7 @@ sub htpasswd( $;$$ )
 
 sub verify( $$ )
 {
-    my ($password, $hash) = @_;
+    my ( $password, $hash ) = @_;
 
     if ( substr( $hash, 0, 5 ) eq '{SHA}' ) { # htpasswd sha1 hashed password
         return hashEqual( $hash, '{SHA}' . encode_base64( Digest::SHA::sha1( $password ), '' ));
@@ -349,7 +349,7 @@ sub verify( $$ )
 
 sub hashEqual( $$ )
 {
-    my ($knownString, $userString) = @_;
+    my ( $knownString, $userString ) = @_;
 
     return unless defined $userString;
 
@@ -460,7 +460,7 @@ sub decryptRijndaelCBC( $$$ )
 
 sub _encryptCBC( $$$$ )
 {
-    my ($algorithm, $key, $iv, $data) = @_;
+    my ( $algorithm, $key, $iv, $data ) = @_;
 
     encode_base64(
         Crypt::CBC->new(
@@ -493,7 +493,7 @@ sub _encryptCBC( $$$$ )
 
 sub _decryptCBC( $$$$ )
 {
-    my ($algorithm, $key, $iv, $data) = @_;
+    my ( $algorithm, $key, $iv, $data ) = @_;
 
     Crypt::CBC->new(
         -cipher      => $algorithm,
@@ -523,7 +523,7 @@ sub _toAlphabet64( $ )
     my $string = shift;
 
     $string = reverse( substr( encode_base64( $string, '' ), 2 ));
-    eval "\$string =~ tr#${\(BASE64)}#${\(ALPHA64)}#";
+    eval "\$string =~ tr#${ \( BASE64 ) }#${ \( ALPHA64 ) }#";
     $string;
 }
 
