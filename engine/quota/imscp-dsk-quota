@@ -124,9 +124,9 @@ sub _getSqlDiskSpaceUsage
  Update quota information for the given domain aggregate
 
  Param hashref \%domainData Domain aggreate data
- Param string $webDiskSpaceUsage Web disk space usage in bytes
- Param string $mailDiskSpaceUsage Mail disk space usage in bytes
- Param string $sqlDiskSpaceUsage SQL disk space usage in bytes
+ Param int $webDiskSpaceUsage Web disk space usage in bytes
+ Param int $mailDiskSpaceUsage Mail disk space usage in bytes
+ Param int $sqlDiskSpaceUsage SQL disk space usage in bytes
  Return int Disk space usage in bytes, die on failure
 
 =cut
