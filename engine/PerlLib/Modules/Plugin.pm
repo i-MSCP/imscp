@@ -97,9 +97,10 @@ sub process
                 $data->{'id'}
             );
         } );
+        0;
     } catch {
         error( $_ );
-        return 1;
+        1;
     };
 }
 
@@ -339,7 +340,7 @@ sub _execAction
     my ( $self, $action, $fromVersion, $toVersion ) = @_;
 
     unless ( defined $self->{'plugin'} ) {
-        my $rs = try {
+        return 1 if try {
             # Turn any warning from plugin into exception
             local $SIG{'__WARN__'} = sub { die shift };
             my $pluginClass = iMSCP::Plugins->getInstance()->getClass( $self->{'data'}->{'plugin_name'} );
@@ -358,23 +359,25 @@ sub _execAction
             1;
         };
 
-        return $rs unless defined $self->{'plugin'};
+        return 0 unless defined $self->{'plugin'};
     }
 
     return 0 unless my $subref = $self->{'plugin'}->can( $action );
 
     debug( sprintf( "Executing %s( ) action on %s plugin", $action, ref $self->{'plugin'} ));
-    my $rs = try {
+
+    my $ret = try {
         $subref->( $self->{'plugin'}, $fromVersion, $toVersion );
     } catch {
         error( $@ );
         1;
     };
 
-    # Return value from the run() action is ignored by default because it's the responsability of the plugins to set
-    # error status for their items. However a plugin can force return value by setting the FORCE_RETVAL attribute to
-    # a TRUE
-    ( $action ne 'run' || $self->{'plugin'}->{'FORCE_RETVAL'} ) ? $rs : 0
+    # Return value from the run() action is ignored by default because it's the
+    # responsibility of the plugins to set  error status for their items.
+    # However a plugin can force return value by setting the FORCE_RETVAL
+    #  attribute to TRUE
+    ( $action ne 'run' || $self->{'plugin'}->{'FORCE_RETVAL'} ) ? $ret : 0
 }
 
 =back
