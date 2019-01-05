@@ -422,7 +422,7 @@
         <package>libdate-simple-perl</package>
         <package>libdatetime-perl</package>
         <package>libdbd-mysql-perl</package>
-        <package>libdbi-perl</package>
+        <package>libdbix-connector-perl</package>
         <package>libdigest-md5-perl</package>
         <package>libemail-valid-perl</package>
         <package>libfile-copy-recursive-perl</package>
@@ -435,6 +435,7 @@
         <package>libnet-libidn-perl</package>
         <package>libsort-naturally-perl</package>
         <package>libtimedate-perl</package>
+        <package>libtry-tiny-perl</package>
         <package>libunix-mknod-perl</package>
         <package>libwww-perl</package>
         <package>libxml-parser-perl</package>
