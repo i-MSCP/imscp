@@ -48,9 +48,6 @@ use Try::Tiny;
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
-# Set execution mode
-$::execmode = 'backend' unless defined $::execmode;
-
 =over
 
 =item _getWebDiskSpaceUsage( $dir )
@@ -68,10 +65,12 @@ sub _getWebDiskSpaceUsage
 
     return 0 unless -d $dir;
 
-    my $rs = execute( [ '/usr/bin/du', '--exclude=backups/*', '--exclude=logs/*', '-s', '-B1', $dir ], \my $stdout, \my $stderr );
-    die( $stderr || 'Unknown error' ) if $rs;
+    my $stderr;
+    execute( [ '/usr/bin/du', "--exclude=$dir/backups", "--exclude=$dir/logs", '-s', '-B1', $dir ], \my $stdout, \$stderr ) == 0 or die(
+        $stderr || 'Unknown error'
+    );
     my ( $bytes ) = $stdout =~ /^(\d+)/;
-    return $bytes // 0;
+    $bytes // 0;
 }
 
 =item _getMailDiskSpaceUsage( $dir )
@@ -89,10 +88,10 @@ sub _getMailDiskSpaceUsage
 
     return 0 unless -d $dir;
 
-    my $rs = execute( [ '/usr/bin/du', '-s', '-B1', $dir ], \my $stdout, \my $stderr );
-    die( $stderr || 'Unknown error' ) if $rs;
+    my $stderr;
+    execute( [ '/usr/bin/du', '-s', '-B1', $dir ], \my $stdout, \$stderr ) == 0 or die( $stderr || 'Unknown error' );
     my ( $bytes ) = $stdout =~ /^(\d+)/;
-    return $bytes // 0;
+    $bytes // 0;
 }
 
 =item _getSqlDiskSpaceUsage( $dbName )
