@@ -26,7 +26,8 @@ package Modules::Htgroup;
 use strict;
 use warnings;
 use iMSCP::Boolean;
-use iMSCP::Debug qw/ error getLastError warning /;
+use iMSCP::Debug qw/ error getMessageByType /;
+use Try::Tiny;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -63,42 +64,35 @@ sub process
 {
     my ( $self, $data ) = @_;
 
-    my $rs = $self->_loadData( $data->{'id'} );
-    return $rs if $rs;
+    try {
+        $self->_loadData( $data->{'id'} );
 
-    my @sql;
-    if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
-        $rs = $self->add();
-        @sql = (
-            'UPDATE htaccess_groups SET status = ? WHERE id = ?', undef, ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $data->{'id'}
-        );
-    } elsif ( $self->{'status'} eq 'todisable' ) {
-        $rs = $self->disable();
-        @sql = (
-            'UPDATE htaccess_groups SET status = ? WHERE id = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $data->{'id'}
-        );
-    } elsif ( $self->{'status'} eq 'todelete' ) {
-        $rs = $self->delete();
-        @sql = $rs
-            ? ( 'UPDATE htaccess_groups SET status = ? WHERE id = ?', undef, getLastError( 'error' ) || 'Unknown error', $data->{'id'} )
-            : ( 'DELETE FROM htaccess_groups WHERE id = ?', undef, $data->{'id'} );
-    } else {
-        warning( sprintf( 'Unknown action (%s) for htgroup (ID %d)', $self->{'status'}, $data->{'id'} ));
-        return 0;
-    }
-
-    local $@;
-    eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-        $self->{'_dbh'}->do( @sql );
+        my ( @sql, $rs );
+        if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
+            $rs = $self->add();
+            @sql = (
+                'UPDATE htaccess_groups SET status = ? WHERE id = ?', undef,
+                ( $rs ? getMessageByType( 'error', { amount => 1 } ) || 'Unknown error' : 'ok' ), $data->{'id'}
+            );
+        } elsif ( $self->{'status'} eq 'todisable' ) {
+            $rs = $self->disable();
+            @sql = (
+                'UPDATE htaccess_groups SET status = ? WHERE id = ?', undef,
+                ( $rs ? getMessageByType( 'error', { amount => 1 } ) || 'Unknown error' : 'disabled' ), $data->{'id'}
+            );
+        } else {
+            $rs = $self->delete();
+            @sql = $rs ? (
+                'UPDATE htaccess_groups SET status = ? WHERE id = ?', undef,
+                getMessageByType( 'error', { amount => 1 } ) || 'Unknown error', $data->{'id'}
+            ) : ( 'DELETE FROM htaccess_groups WHERE id = ?', undef, $data->{'id'} );
+        }
+        $self->{'_conn'}->run( fixup => sub { $_->do( @sql ); } );
+        $rs;
+    } catch {
+        error( $_ );
+        1;
     };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $rs;
 }
 
 =back
@@ -112,7 +106,7 @@ sub process
  Load data
 
  Param int $htgroupId $Htgroup unique identifier
- Return int 0 on success, other on failure
+ Return void, die on failure
 
 =cut
 
@@ -120,10 +114,8 @@ sub _loadData
 {
     my ( $self, $htgroupId ) = @_;
 
-    local $@;
-    eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-        my $row = $self->{'_dbh'}->selectrow_hashref(
+    my $row = $self->{'_conn'}->run( fixup => sub {
+        $_->selectrow_hashref(
             "
                 SELECT t2.id, t2.ugroup, t2.status, t2.users, t3.domain_name, t3.domain_admin_id, t3.web_folder_protection
                 FROM (SELECT * from htaccess_groups, (SELECT IFNULL(
@@ -139,15 +131,9 @@ sub _loadData
             ",
             undef, $htgroupId, $htgroupId
         );
-        $row or die( sprintf( 'Data not found for htgroup (ID %d)', $htgroupId ));
-        %{ $self } = ( %{ $self }, %{ $row } );
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    0;
+    } );
+    $row or die( sprintf( 'Data not found for htgroup (ID %d)', $htgroupId ));
+    %{ $self } = ( %{ $self }, %{ $row } );
 }
 
 =item _getData( $action )
@@ -164,16 +150,14 @@ sub _getData
     my ( $self, $action ) = @_;
 
     $self->{'_data'} = do {
-        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-            ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'} );
-
+        my $ug = $::imscpConfig{'SYSTEM_USER_PREFIX'} . ( $::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'} );
         {
             ACTION                => $action,
             STATUS                => $self->{'status'},
             DOMAIN_ADMIN_ID       => $self->{'domain_admin_id'},
-            USER                  => $userName,
-            GROUP                 => $groupName,
-            WEB_DIR               => "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}",
+            USER                  => $ug,
+            GROUP                 => $ug,
+            WEB_DIR               => "$::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}",
             HTGROUP_NAME          => $self->{'ugroup'},
             HTGROUP_USERS         => $self->{'users'},
             HTGROUP_DMN           => $self->{'domain_name'},

@@ -25,10 +25,11 @@ package Modules::Htaccess;
 
 use strict;
 use warnings;
-use Encode qw/ encode_utf8 /;
+use Encode 'encode_utf8';
 use File::Spec;
 use iMSCP::Boolean;
-use iMSCP::Debug qw/ error getLastError warning /;
+use iMSCP::Debug qw/ error getMessageByType /;
+use Try::Tiny;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -63,41 +64,38 @@ sub getType
 
 sub process
 {
-    my ( $self, \%data ) = @_;
+    my ( $self, $data ) = @_;
 
-    my $rs = $self->_loadData( $data->{'id'} );
-    return $rs if $rs;
+    try {
+        $self->_loadData( $data->{'id'} );
 
-    my @sql;
-    if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
-        $rs = $self->add();
-        @sql = ( 'UPDATE htaccess SET status = ? WHERE id = ?', undef, ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $data->{'id'} );
-    } elsif ( $self->{'status'} eq 'todisable' ) {
-        $rs = $self->disable();
-        @sql = (
-            'UPDATE htaccess SET status = ? WHERE id = ?', undef, ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $data->{'id'}
-        );
-    } elsif ( $self->{'status'} eq 'todelete' ) {
-        $rs = $self->delete();
-        @sql = $rs
-            ? ( 'UPDATE htaccess SET status = ? WHERE id = ?', undef, ( getLastError( 'error' ) || 'Unknown error' ), $data->{'id'} )
-            : ( 'DELETE FROM htaccess WHERE id = ?', undef, $data->{'id'} );
-    } else {
-        warning( sprintf( 'Unknown action (%s) for htaccess (ID %d)', $self->{'status'}, $data->{'id'} ));
-        return 0;
-    }
+        my ( @sql, $rs );
+        if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
+            $rs = $self->add();
+            @sql = (
+                'UPDATE htaccess SET status = ? WHERE id = ?', undef,
+                ( $rs ? getMessageByType( 'error', { amount => 1 } ) || 'Unknown error' : 'ok' ), $data->{'id'}
+            );
+        } elsif ( $self->{'status'} eq 'todisable' ) {
+            $rs = $self->disable();
+            @sql = (
+                'UPDATE htaccess SET status = ? WHERE id = ?', undef,
+                ( $rs ? getMessageByType( 'error', { amount => 1 } ) || 'Unknown error' : 'disabled' ), $data->{'id'}
+            );
+        } else {
+            $rs = $self->delete();
+            @sql = $rs ? (
+                'UPDATE htaccess SET status = ? WHERE id = ?', undef,
+                getMessageByType( 'error', { amount => 1 } ) || 'Unknown error', $data->{'id'}
+            ) : ( 'DELETE FROM htaccess WHERE id = ?', undef, $data->{'id'} );
+        }
 
-    local $@;
-    eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-        $self->{'_dbh'}->do( @sql );
+        $self->{'_conn'}->run( fixup => sub { $_->do( @sql ); } );
+        $rs;
+    } catch {
+        error( $_ );
+        1;
     };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $rs;
 }
 
 =back
@@ -111,7 +109,7 @@ sub process
  Load data
 
  Param int $htaccessId Htaccess unique identifier
- Return int 0 on success, other on failure
+ Return void, die on failure
 
 =cut
 
@@ -119,10 +117,8 @@ sub _loadData
 {
     my ( $self, $htaccessId ) = @_;
 
-    local $@;
-    eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-        my $row = $self->{'_dbh'}->selectrow_hashref(
+    my $row = $self->{'_conn'}->run( fixup => sub {
+        $_->selectrow_hashref(
             "
                 SELECT t3.id, t3.auth_type, t3.auth_name, t3.path, t3.status, t3.users, t3.groups, t4.domain_name, t4.domain_admin_id
                 FROM (SELECT * FROM htaccess, (SELECT IFNULL(
@@ -144,15 +140,9 @@ sub _loadData
             ",
             undef, $htaccessId, $htaccessId, $htaccessId
         );
-        $row or die( sprintf( 'Data not found for htaccess (ID %d)', $htaccessId ));
-        %{ $self } = ( %{ $self }, %{ $row } );
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    0;
+    } );
+    $row or die( sprintf( 'Data not found for htaccess (ID %d)', $htaccessId ));
+    %{ $self } = ( %{ $self }, %{ $row } );
 }
 
 =item _getData( $action )
@@ -169,17 +159,15 @@ sub _getData
     my ( $self, $action ) = @_;
 
     $self->{'_data'} = do {
-        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-            ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'} );
-        my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
-        my $pathDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}/$self->{'path'}" );
-
+        my $ug = $::imscpConfig{'SYSTEM_USER_PREFIX'} . ( $::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'} );
+        my $homeDir = File::Spec->canonpath( "$::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
+        my $pathDir = File::Spec->canonpath( "$::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}/$self->{'path'}" );
         {
             ACTION          => $action,
             STATUS          => $self->{'status'},
             DOMAIN_ADMIN_ID => $self->{'domain_admin_id'},
-            USER            => $userName,
-            GROUP           => $groupName,
+            USER            => $ug,
+            GROUP           => $ug,
             AUTH_TYPE       => $self->{'auth_type'},
             AUTH_NAME       => encode_utf8( $self->{'auth_name'} ),
             AUTH_PATH       => $pathDir,

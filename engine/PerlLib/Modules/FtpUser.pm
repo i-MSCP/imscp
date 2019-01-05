@@ -26,7 +26,8 @@ package Modules::FtpUser;
 use strict;
 use warnings;
 use iMSCP::Boolean;
-use iMSCP::Debug qw/ error getLastError warning /;
+use iMSCP::Debug qw/ error getMessageByType /;
+use Try::Tiny;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -63,42 +64,36 @@ sub process
 {
     my ( $self, $data ) = @_;
 
-    my $rs = $self->_loadData( $data->{'id'} );
-    return $rs if $rs;
+    try {
+        $self->_loadData( $data->{'id'} );
 
-    my @sql;
-    if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
-        $rs = $self->add();
-        @sql = (
-            'UPDATE ftp_users SET status = ? WHERE userid = ?', undef, ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $data->{'id'}
-        );
-    } elsif ( $self->{'status'} eq 'todisable' ) {
-        $rs = $self->disable();
-        @sql = (
-            'UPDATE ftp_users SET status = ? WHERE userid = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $data->{'id'}
-        );
-    } elsif ( $self->{'status'} eq 'todelete' ) {
-        $rs = $self->delete();
-        @sql = $rs
-            ? ( 'UPDATE ftp_users SET status = ? WHERE userid = ?', undef, ( getLastError( 'error' ) || 'Unknown error' ), $data->{'id'} )
-            : ( 'DELETE FROM ftp_users WHERE userid = ?', undef, $data->{'id'} );
-    } else {
-        warning( sprintf( 'Unknown action (%s) for ftp user (ID %d)', $self->{'status'}, $data->{'id'} ));
-        return 0;
-    }
+        my ( @sql, $rs );
+        if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
+            $rs = $self->add();
+            @sql = (
+                'UPDATE ftp_users SET status = ? WHERE userid = ?', undef,
+                ( $rs ? getMessageByType( 'error', { amount => 1 } ) || 'Unknown error' : 'ok' ), $data->{'id'}
+            );
+        } elsif ( $self->{'status'} eq 'todisable' ) {
+            $rs = $self->disable();
+            @sql = (
+                'UPDATE ftp_users SET status = ? WHERE userid = ?', undef,
+                ( $rs ? getMessageByType( 'error', { amount => 1 } ) || 'Unknown error' : 'disabled' ), $data->{'id'}
+            );
+        } else {
+            $rs = $self->delete();
+            @sql = $rs ? (
+                'UPDATE ftp_users SET status = ? WHERE userid = ?', undef,
+                getMessageByType( 'error', { amount => 1 } ) || 'Unknown error', $data->{'id'}
+            ) : ( 'DELETE FROM ftp_users WHERE userid = ?', undef, $data->{'id'} );
+        }
 
-    local $@;
-    eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-        $self->{'_dbh'}->do( @sql );
+        $self->{'_conn'}->run( fixup => sub { $_->do( @sql ); } );
+        $rs;
+    } catch {
+        error( $_ );
+        1;
     };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $rs;
 }
 
 =back
@@ -112,7 +107,7 @@ sub process
  Load data
 
  Param int $ftpUserId Ftp user unique identifier
- Return int 0 on success, other on failure
+ Return void, die on failure
 
 =cut
 
@@ -120,19 +115,9 @@ sub _loadData
 {
     my ( $self, $ftpUserId ) = @_;
 
-    local $@;
-    eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-        my $row = $self->{'_dbh'}->selectrow_hashref( 'SELECT * FROM ftp_users WHERE userid = ?', undef, $ftpUserId );
-        $row or die( sprintf( 'Data not found for ftp user (ID %d)', $ftpUserId ));
-        %{ $self } = ( %{ $self }, %{ $row } );
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    0;
+    my $row = $self->{'_conn'}->run( fixup => sub { $_->selectrow_hashref( 'SELECT * FROM ftp_users WHERE userid = ?', undef, $ftpUserId ); } );
+    $row or die( sprintf( 'Data not found for ftp user (ID %d)', $ftpUserId ));
+    %{ $self } = ( %{ $self }, %{ $row } );
 }
 
 =item _getData( $action )
@@ -149,8 +134,7 @@ sub _getData
     my ( $self, $action ) = @_;
 
     $self->{'_data'} = do {
-        my $userName = my $groupName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'} );
-
+        my $ug = $::imscpConfig{'SYSTEM_USER_PREFIX'} . ( $::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'} );
         {
             ACTION         => $action,
             STATUS         => $self->{'status'},
@@ -162,8 +146,8 @@ sub _getData
             HOMEDIR        => $self->{'homedir'},
             USER_SYS_GID   => $self->{'uid'},
             USER_SYS_GID   => $self->{'gid'},
-            USER_SYS_NAME  => $userName,
-            USER_SYS_GNAME => $groupName
+            USER_SYS_NAME  => $ug,
+            USER_SYS_GNAME => $ug
         }
     } unless %{ $self->{'_data'} };
 

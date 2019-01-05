@@ -146,7 +146,7 @@ sub _init
     my ( $self ) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'_dbh'} = iMSCP::Database->factory()->getRawDb();
+    $self->{'_conn'} = iMSCP::Database->factory()->getConnector();
     $self->{'_data'} = {};
     $self;
 }
@@ -166,20 +166,20 @@ sub _execAction
     my ( $self, $action, $pkgType ) = @_;
 
     if ( $pkgType eq 'server' ) {
-        for ( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
-            ( my $subref = $_->can( $action ) ) or next;
-            debug( sprintf( "Executing '%s' action on %s", $action, $_ ));
-            my $rs = $subref->( $_->factory(), $self->_getData( $action ));
+        for my $server ( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
+            ( my $subref = $server->can( $action ) ) or next;
+            debug( sprintf( "Executing '%s' action on %s", $action, $server ));
+            my $rs = $subref->( $server->factory(), $self->_getData( $action ));
             return $rs if $rs;
         }
 
         return 0;
     }
 
-    for ( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
-        ( my $subref = $_->can( $action ) ) or next;
-        debug( sprintf( "Executing '%s' action on %s", $action, $_ ));
-        my $rs = $subref->( $_->getInstance(), $self->_getData( $action ));
+    for my $package ( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
+        ( my $subref = $package->can( $action ) ) or next;
+        debug( sprintf( "Executing '%s' action on %s", $action, $package ));
+        my $rs = $subref->( $package->getInstance(), $self->_getData( $action ));
         return $rs if $rs;
     }
 
@@ -202,18 +202,18 @@ sub _execAllActions
     my $moduleType = $self->getType();
 
     if ( $action =~ /^(?:add|restore)$/ ) {
-        for ( 'pre', '', 'post' ) {
-            my $rs = $self->_execAction( "$_$action$moduleType", 'server' );
-            $rs ||= $self->_execAction( "$_$action$moduleType", 'package' );
+        for my $actionPrefix ( 'pre', '', 'post' ) {
+            my $rs = $self->_execAction( "$actionPrefix$action$moduleType", 'server' );
+            $rs ||= $self->_execAction( "$actionPrefix$action$moduleType", 'package' );
             return $rs if $rs;
         }
 
         return 0;
     }
 
-    for ( 'pre', '', 'post' ) {
-        my $rs = $self->_execAction( "$_$action$moduleType", 'package' );
-        $rs ||= $self->_execAction( "$_$action$moduleType", 'server' );
+    for my $actionPrefix ( 'pre', '', 'post' ) {
+        my $rs = $self->_execAction( "$actionPrefix$action$moduleType", 'package' );
+        $rs ||= $self->_execAction( "$actionPrefix$action$moduleType", 'server' );
         return $rs if $rs;
     }
 

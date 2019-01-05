@@ -26,7 +26,8 @@ package Modules::Mail;
 use strict;
 use warnings;
 use iMSCP::Boolean;
-use iMSCP::Debug qw/ error getLastError warning /;
+use iMSCP::Debug qw/ error getMessageByType /;
+use Try::Tiny;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -63,43 +64,36 @@ sub process
 {
     my ( $self, $data ) = @_;
 
-    my $rs = $self->_loadData( $data->{'id'} );
-    return $rs if $rs;
+    try {
+        $self->_loadData( $data->{'id'} );
 
-    my @sql;
-    if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
-        $rs = $self->add();
-        @sql = (
-            'UPDATE mail_users SET status = ? WHERE mail_id = ?', undef, ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $data->{'id'}
-        );
-    } elsif ( $self->{'status'} eq 'todelete' ) {
-        $rs = $self->delete();
-        @sql = $rs
-            ? ( 'UPDATE mail_users SET status = ? WHERE mail_id = ?', undef, ( getLastError( 'error' ) || 'Unknown error' ), $data->{'id'} )
-            : ( 'DELETE FROM mail_users WHERE mail_id = ?', undef, $data->{'id'} );
+        my ( @sql, $rs );
+        if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
+            $rs = $self->add();
+            @sql = (
+                'UPDATE mail_users SET status = ? WHERE mail_id = ?', undef,
+                ( $rs ? getMessageByType( 'error', { amount => 1 } ) || 'Unknown error' : 'ok' ), $data->{'id'}
+            );
+        } elsif ( $self->{'status'} eq 'todisable' ) {
+            $rs = $self->disable();
+            @sql = (
+                'UPDATE mail_users SET status = ? WHERE mail_id = ?', undef,
+                ( $rs ? getMessageByType( 'error', { amount => 1 } ) || 'Unknown error' : 'disabled' ), $data->{'id'}
+            );
+        } else {
+            $rs = $self->delete();
+            @sql = $rs ? (
+                'UPDATE mail_users SET status = ? WHERE mail_id = ?', undef,
+                getMessageByType( 'error', { amount => 1 } ) || 'Unknown error', $data->{'id'}
+            ) : ( 'DELETE FROM mail_users WHERE mail_id = ?', undef, $data->{'id'} );
+        }
 
-    } elsif ( $self->{'status'} eq 'todisable' ) {
-        $rs = $self->disable();
-        @sql = (
-            'UPDATE mail_users SET status = ? WHERE mail_id = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $data->{'id'}
-        );
-    } else {
-        warning( sprintf( 'Unknown action (%s) for mail user (ID %d)', $self->{'status'}, $data->{'id'} ));
-        return 0;
-    }
-
-    local $@;
-    eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-        $self->{'_dbh'}->do( @sql );
+        $self->{'_conn'}->run( fixup => sub { $_->do( @sql ); } );
+        $rs;
+    } catch {
+        error( $_ );
+        1;
     };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $rs;
 }
 
 =back
@@ -113,7 +107,7 @@ sub process
  Load data
 
  Param int $mailId Mail unique identifier
- Return int 0 on success, other on failure
+ Return void, die on failure
 
 =cut
 
@@ -121,10 +115,8 @@ sub _loadData
 {
     my ( $self, $mailId ) = @_;
 
-    local $@;
-    eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-        my $row = $self->{'_dbh'}->selectrow_hashref(
+    my $row = $self->{'_conn'}->run( fixup => sub {
+        $_->selectrow_hashref(
             '
                 SELECT mail_id, mail_acc, mail_pass, mail_forward, mail_type, mail_auto_respond, status, quota, mail_addr
                 FROM mail_users
@@ -132,15 +124,9 @@ sub _loadData
             ',
             undef, $mailId
         );
-        $row or die( sprintf( 'Data not found for mail user (ID %d)', $mailId ));
-        %{ $self } = ( %{ $self }, %{ $row } );
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    0;
+    } );
+    $row or die( sprintf( 'Data not found for mail user (ID %d)', $mailId ));
+    %{ $self } = ( %{ $self }, %{ $row } );
 }
 
 =item _getData( $action )
@@ -158,7 +144,6 @@ sub _getData
 
     $self->{'_data'} = do {
         my ( $user, $domain ) = split '@', $self->{'mail_addr'};
-
         {
             ACTION                  => $action,
             STATUS                  => $self->{'status'},

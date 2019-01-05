@@ -28,6 +28,7 @@ use warnings;
 use iMSCP::Boolean;
 use iMSCP::Debug qw/ error getMessageByType /;
 use Text::Balanced qw/ extract_multiple extract_delimited /;
+use Try::Tiny;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -67,62 +68,50 @@ sub process
 {
     my ( $self, $data ) = @_;
 
-    my $rs = $self->_loadData( $data->{'id'}, $data->{'type'} );
-    return $rs if $rs;
+    try {
+        $self->_loadData( $data->{'id'}, $data->{'type'} );
 
-    if ( $self->add() ) {
-        print "NUXWIN I'm there\n";
-        local $@;
-        eval {
-            local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-            $self->{'_dbh'}->do(
-                "
-                    UPDATE domain_dns
-                    SET domain_dns_status = ?
-                    WHERE @{ [ $data->{'type'} eq 'domain' ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?' ] }
-                    AND domain_dns_status <> 'disabled'
-                ",
-                undef, ( getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Invalid DNS resource record' ), $data->{'id'}
-            );
-        };
-        if ( $@ ) {
-            error( $@ );
-            return 1;
+        if ( $self->add() ) {
+            $self->{'_conn'}->run( fixup => sub {
+                $_->do(
+                    "
+                        UPDATE domain_dns
+                        SET domain_dns_status = ?
+                        WHERE @{ [ $data->{'type'} eq 'domain' ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?' ] }
+                        AND domain_dns_status <> 'disabled'
+                    ",
+                    undef, getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error', $data->{'id'}
+                );
+            } );
+
+            return 0;
         }
 
-        return 0;
-    }
-
-    local $@;
-    eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-        $self->{'_dbh'}->begin_work();
-        $self->{'_dbh'}->do(
-            "
-                UPDATE domain_dns
-                SET domain_dns_status = IF(
-                    domain_dns_status = 'todisable', 'disabled', IF(domain_dns_status NOT IN('todelete', 'disabled'), 'ok', domain_dns_status)
-                )
-                WHERE @{ [ $data->{'type'} eq 'domain' ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?' ] }
-            ",
-            undef, $data->{'id'}
-        );
-        $self->{'_dbh'}->do(
-            "
-                DELETE FROM domain_dns
-                WHERE @{ [ $data->{'type'} eq 'domain' ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?' ] }
-                AND domain_dns_status = 'todelete'
-            ", undef, $data->{'id'}
-        );
-        $self->{'_dbh'}->commit();
+        $self->{'_conn'}->txn( fixup => sub {
+            $_->do(
+                "
+                    UPDATE domain_dns
+                    SET domain_dns_status = IF(
+                        domain_dns_status = 'todisable', 'disabled', IF(domain_dns_status NOT IN('todelete', 'disabled'), 'ok', domain_dns_status)
+                    )
+                    WHERE @{ [ $data->{'type'} eq 'domain' ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?' ] }
+                ",
+                undef, $data->{'id'}
+            );
+            $_->do(
+                "
+                    DELETE FROM domain_dns
+                    WHERE @{ [ $data->{'type'} eq 'domain' ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?' ] }
+                    AND domain_dns_status = 'todelete'
+                ",
+                undef, $data->{'id'}
+            );
+        } );
+        0
+    } catch {
+        error( $_ );
+        1;
     };
-    if ( $@ ) {
-        $self->{'_dbh'}->rollback();
-        error( $@ );
-        return 1;
-    }
-
-    0;
 }
 
 =back
@@ -153,7 +142,7 @@ sub _init
 
  Param int $domainId Domain unique identifier
  Param string $domainType Domain Type (alias|domain)
- Return int 0 on success, other on failure
+ Return void, die on failure
 
 =cut
 
@@ -161,9 +150,8 @@ sub _loadData
 {
     my ( $self, $domainId, $domainType ) = @_;
 
-    eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-        my $rows = $self->{'_dbh'}->selectall_arrayref(
+    my $rows = $self->{'_conn'}->run( fixup => sub {
+        $_->selectall_arrayref(
             "
                 SELECT SUBSTRING_INDEX(domain_dns, '\t', 1), SUBSTRING_INDEX(domain_dns, '\t', -1), domain_class, domain_type, domain_text,
                     domain_dns_status
@@ -173,58 +161,51 @@ sub _loadData
             ",
             undef, $domainId
         );
-        @{ $rows } or die( sprintf( 'Data not found for custom DNS records (%s/%d)', $domainType, $domainId ));
+    } );
+    @{ $rows } or die( sprintf( 'Data not found for custom DNS records (%s/%d)', $domainType, $domainId ));
 
-        if ( $domainType eq 'domain' ) {
-            $self->{'zone'} = $self->{'_dbh'}->selectcol_arrayref( 'SELECT domain_name FROM domain WHERE domain_id = ?', undef, $domainId )->[0];
-        } else {
-            $self->{'zone'} = $self->{'_dbh'}->selectcol_arrayref( 'SELECT alias_name FROM domain_aliasses WHERE alias_id = ?', undef, $domainId )->[0];
-        }
+    ( $self->{'zone'} ) = $self->{'_conn'}->run( fixup => sub {
+        return @{ $_->selectcol_arrayref( 'SELECT domain_name FROM domain WHERE domain_id = ?', undef, $domainId ) } if $domainType eq 'domain';
+        @{ $_->selectcol_arrayref( 'SELECT alias_name FROM domain_aliasses WHERE alias_id = ?', undef, $domainId ) };
+    } );
 
-        defined $self->{'zone'} or die( sprintf( 'Zone not found for custom DNS records (%s/%d)', $domainType, $domainId ));
+    defined $self->{'zone'} or die( sprintf( 'Zone not found for custom DNS records (%s/%d)', $domainType, $domainId ));
 
-        # 1. Filter DNS records that must be disabled or deleted
-        # 2. For TXT/SPF records, split data field into several
-        #    <character-string>s when <character-string> is longer than 255
-        #    bytes. See: https://tools.ietf.org/html/rfc4408#section-3.1.3
-        for my $rr ( @{ $rows } ) {
-            # Skip DNS RR that must be disabled or deleted
-            next if grep ( $_ eq $rr->[5], 'todisable', 'todelete' );
+    # 1. Filter DNS records that must be disabled or deleted
+    # 2. For TXT/SPF records, split data field into several
+    #    <character-string>s when <character-string> is longer than 255
+    #    bytes. See: https://tools.ietf.org/html/rfc4408#section-3.1.3
+    for my $rr ( @{ $rows } ) {
+        # Skip DNS RR that must be disabled or deleted
+        next if grep ( $_ eq $rr->[5], 'todisable', 'todelete' );
 
-            if ( $rr->[3] eq 'TXT' || $rr->[3] eq 'SPF' ) {
-                # Turn line-breaks into whitespaces
-                $rr->[4] =~ s/\R+/ /g;
-                # Remove leading and trailing whitespaces
-                $rr->[4] =~ s/^\s+|\s+$//;
-                # Make sure to work with quoted <character-string>
-                $rr->[4] = qq/"$rr->[4]"/ unless $rr->[4] =~ /^".*"$/;
+        if ( $rr->[3] eq 'TXT' || $rr->[3] eq 'SPF' ) {
+            # Turn line-breaks into whitespaces
+            $rr->[4] =~ s/\R+/ /g;
+            # Remove leading and trailing whitespaces
+            $rr->[4] =~ s/^\s+|\s+$//;
+            # Make sure to work with quoted <character-string>
+            $rr->[4] = qq/"$rr->[4]"/ unless $rr->[4] =~ /^".*"$/;
 
-                # Split data field into several <character-string>s when
-                # <character-string> is longer than 255 bytes, excluding delimiters.
-                # See: https://tools.ietf.org/html/rfc4408#section-3.1.3
-                if ( length $rr->[4] > 257 ) {
-                    # Extract all quoted <character-string>s, excluding delimiters
-                    $rr =~ s/^"(.*)"$/$1/ for my @chunks = extract_multiple( $rr->[4], [ sub { extract_delimited( $_[0], '"' ) } ], undef, 1 );
-                    $rr->[4] = join '', @chunks if @chunks;
-                    undef @chunks;
+            # Split data field into several <character-string>s when
+            # <character-string> is longer than 255 bytes, excluding delimiters.
+            # See: https://tools.ietf.org/html/rfc4408#section-3.1.3
+            if ( length $rr->[4] > 257 ) {
+                # Extract all quoted <character-string>s, excluding delimiters
+                $rr =~ s/^"(.*)"$/$1/ for my @chunks = extract_multiple( $rr->[4], [ sub { extract_delimited( $_[0], '"' ) } ], undef, 1 );
+                $rr->[4] = join '', @chunks if @chunks;
+                undef @chunks;
 
-                    for ( my $i = 0, my $length = length $_->[4]; $i < $length; $i += 255 ) {
-                        push( @chunks, substr( $rr->[4], $i, 255 ));
-                    }
-
-                    $rr->[4] = join ' ', map ( qq/"$_"/, @chunks );
+                for ( my $i = 0, my $length = length $_->[4]; $i < $length; $i += 255 ) {
+                    push( @chunks, substr( $rr->[4], $i, 255 ));
                 }
+
+                $rr->[4] = join ' ', map ( qq/"$_"/, @chunks );
             }
-
-            push @{ $self->{'dns_records'} }, [ ( @{ $rr } )[0 .. 4] ];
         }
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
 
-    0;
+        push @{ $self->{'dns_records'} }, [ ( @{ $rr } )[0 .. 4] ];
+    }
 }
 
 =item _getData( $action )
@@ -240,13 +221,11 @@ sub _getData
 {
     my ( $self, $action ) = @_;
 
-    $self->{'_data'} = do {
-        {
-            ACTION      => $action,
-            DNS_RECORDS => $self->{'dns_records'},
-            ZONE_NAME   => $self->{'zone'}
-        }
-    } unless %{ $self->{'_data'} };
+    $self->{'_data'} = do { {
+        ACTION      => $action,
+        DNS_RECORDS => $self->{'dns_records'},
+        ZONE_NAME   => $self->{'zone'}
+    } } unless %{ $self->{'_data'} };
 
     $self->{'_data'};
 }

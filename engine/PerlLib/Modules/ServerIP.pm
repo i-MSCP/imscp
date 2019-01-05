@@ -26,8 +26,9 @@ package Modules::ServerIP;
 use strict;
 use warnings;
 use iMSCP::Boolean;
-use iMSCP::Debug qw/ error getLastError getMessageByType warning /;
+use iMSCP::Debug qw/ error getMessageByType /;
 use iMSCP::Networking;
+use Try::Tiny;
 use parent 'Modules::Abstract';
 
 =head1 DESCRIPTION
@@ -64,35 +65,30 @@ sub process
 {
     my ( $self, $data ) = @_;
 
-    my $rs = $self->_loadData( $data->{'id'} );
-    return $rs if $rs;
+    try {
+        $self->_loadData( $data->{'id'} );
 
-    my @sql;
-    if ( $self->{'_data'}->{'ip_status'} =~ /^to(?:add|change)$/ ) {
-        $rs = $self->add();
-        @sql = (
-            'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', undef, $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok', $data->{'id'}
-        );
-    } elsif ( $self->{'_data'}->{'ip_status'} eq 'todelete' ) {
-        $rs = $self->delete();
-        @sql = $rs
-            ? ( 'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', undef, getLastError( 'error' ) || 'Unknown error', $data->{'id'} )
-            : ( 'DELETE FROM server_ips WHERE ip_id = ?', undef, $data->{'id'} );
-    } else {
-        warning( sprintf( 'Unknown action (%s) for server IP with ID %s', $self->{'_data'}->{'ip_status'}, $data->{'id'} ));
-        return 0;
-    }
+        my ( @sql, $rs );
+        if ( $self->{'_data'}->{'ip_status'} =~ /^to(?:add|change)$/ ) {
+            $rs = $self->add();
+            @sql = (
+                'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', undef,
+                ( $rs ? getMessageByType( 'error', { amount => 1 } ) || 'Unknown error' : 'ok' ), $data->{'id'}
+            );
+        } else {
+            $rs = $self->delete();
+            @sql = $rs ? (
+                'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', undef,
+                getMessageByType( 'error', { amount => 1 } ) || 'Unknown error', $data->{'id'}
+            ) : ( 'DELETE FROM server_ips WHERE ip_id = ?', undef, $data->{'id'} );
+        }
 
-    eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-        $self->{'_dbh'}->do( @sql );
+        $self->{'_conn'}->run( fixup => sub { $_->do( @sql ); } );
+        $rs;
+    } catch {
+        error( $_ );
+        1;
     };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $rs;
 }
 
 =item add( )
@@ -107,23 +103,17 @@ sub add
 {
     my ( $self ) = @_;
 
-    eval {
+    try {
         my $ret = $self->{'eventManager'}->trigger( 'beforeAddIpAddr', $self->{'_data'} );
-
         unless ( $ret || $self->{'_data'}->{'ip_card'} eq 'any' || $self->{'_data'}->{'ip_address'} eq '0.0.0.0' ) {
             iMSCP::Networking->getInstance()->addIpAddress( $self->{'_data'} );
         }
-
         $ret ||= $self->SUPER::add();
         $ret ||= $self->{'eventManager'}->trigger( 'afterAddIpAddr', $self->{'_data'} );
-        $ret == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' );
+    } catch {
+        error( $_ );
+        1;
     };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    0;
 }
 
 =item delete( )
@@ -138,23 +128,17 @@ sub delete
 {
     my ( $self ) = @_;
 
-    eval {
+    try {
         my $ret = $self->{'eventManager'}->trigger( 'beforeRemoveIpAddr', $self->{'_data'} );
-
         unless ( $ret || $self->{'_data'}->{'ip_card'} eq 'any' || $self->{'_data'}->{'ip_address'} eq '0.0.0.0' ) {
             iMSCP::Networking->getInstance()->removeIpAddress( $self->{'_data'} );
         }
-
         $ret ||= $self->SUPER::delete();
         $ret ||= $self->{'eventManager'}->trigger( 'afterRemoveIpAddr', $self->{'_data'} );
-        $ret == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' );
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
+    } catch {
+        error( $_ );
+        1;
     }
-
-    0;
 }
 
 =back
@@ -168,7 +152,7 @@ sub delete
  Load data
 
  Param int $ipId Server IP unique identifier
- Return data on success, die on failure
+ Return void, die on failure
 
 =cut
 
@@ -176,19 +160,12 @@ sub _loadData
 {
     my ( $self, $ipId ) = @_;
 
-    eval {
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-        $self->{'_data'} = $self->{'_dbh'}->selectrow_hashref(
+    $self->{'_data'} = $self->{'_conn'}->run( fixup => sub {
+        $_->selectrow_hashref(
             'SELECT ip_id, ip_card, ip_number AS ip_address, ip_netmask, ip_config_mode, ip_status FROM server_ips WHERE ip_id = ?', undef, $ipId
         );
-        $self->{'_data'} or die( sprintf( 'Data not found for server IP address (ID %d)', $ipId ));
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    0;
+    } );
+    $self->{'_data'} or die( sprintf( 'Data not found for server IP address (ID %d)', $ipId ));
 }
 
 =item _getData( $action )
