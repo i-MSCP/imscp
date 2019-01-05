@@ -293,7 +293,7 @@ sub _update
     } catch {
         error( $_ );
         $rs = 1;
-    }
+    };
 
     $rs ||= $self->{'eventManager'}->trigger( 'onAfterUpdatePlugin', $self->{'data'}->{'plugin_name'} );
     $rs ||= $self->_change( TRUE ) if $self->{'hasConfigChanges'};
