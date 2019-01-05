@@ -25,7 +25,7 @@ package Servers::server;
 
 use strict;
 use warnings;
-use iMSCP::Debug qw/ fatal /;
+use iMSCP::Debug 'fatal';
 
 # system server instance
 my $instance;
@@ -68,7 +68,7 @@ sub factory
 
 sub can
 {
-    my (undef, $method) = @_;
+    my ( undef, $method ) = @_;
 
     my $package = "Servers::server::local";
     eval "require $package";

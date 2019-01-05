@@ -25,7 +25,7 @@ package Servers::ftpd;
 
 use strict;
 use warnings;
-use iMSCP::Debug qw/ fatal /;
+use iMSCP::Debug 'fatal';
 
 # ftpd server instance
 my $instance;
@@ -52,18 +52,16 @@ sub factory
 {
     return $instance if defined $instance;
 
-    my $package = $main::imscpConfig{'FTPD_PACKAGE'} || 'Servers::noserver';
+    my $package = $::imscpConfig{'FTPD_PACKAGE'} || 'Servers::noserver';
 
-    if ( %main::imscpOldConfig
-        && exists $main::imscpOldConfig{'FTPD_PACKAGE'}
-        && $main::imscpOldConfig{'FTPD_PACKAGE'} ne ''
-        && $main::imscpOldConfig{'FTPD_PACKAGE'} ne $package
+    if ( %::imscpOldConfig && exists $::imscpOldConfig{'FTPD_PACKAGE'} && $::imscpOldConfig{'FTPD_PACKAGE'} ne ''
+        && $::imscpOldConfig{'FTPD_PACKAGE'} ne $package
     ) {
-        eval "require $main::imscpOldConfig{'FTPD_PACKAGE'}";
+        eval "require $::imscpOldConfig{'FTPD_PACKAGE'}";
         fatal( $@ ) if $@;
 
-        my $rs = $main::imscpOldConfig{'FTPD_PACKAGE'}->getInstance()->uninstall();
-        fatal( sprintf( "Couldn't uninstall the '%s' server", $main::imscpOldConfig{'FTPD_PACKAGE'} )) if $rs;
+        my $rs = $::imscpOldConfig{'FTPD_PACKAGE'}->getInstance()->uninstall();
+        fatal( sprintf( "Couldn't uninstall the '%s' server", $::imscpOldConfig{'FTPD_PACKAGE'} )) if $rs;
     }
 
     eval "require $package";
@@ -82,9 +80,9 @@ sub factory
 
 sub can
 {
-    my (undef, $method) = @_;
+    my ( undef, $method ) = @_;
 
-    my $package = $main::imscpConfig{'FTPD_PACKAGE'} || 'Servers::noserver';
+    my $package = $::imscpConfig{'FTPD_PACKAGE'} || 'Servers::noserver';
     eval "require $package";
     fatal( $@ ) if $@;
     $package->can( $method );
@@ -105,7 +103,7 @@ sub getPriority
 
 END
     {
-        return if $? || !$instance || $main::execmode eq 'setup';
+        return if $? || !$instance || $::execmode eq 'setup';
 
         if ( $instance->{'start'} ) {
             $? = $instance->start();

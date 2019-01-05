@@ -25,7 +25,7 @@ package Servers::sqld;
 
 use strict;
 use warnings;
-use iMSCP::Debug qw/ fatal /;
+use iMSCP::Debug 'fatal';
 
 # sqld server instance
 my $instance;
@@ -50,7 +50,7 @@ sub factory
 {
     return $instance if $instance;
 
-    my $package = $main::imscpConfig{'SQL_PACKAGE'} || 'Servers::noserver';
+    my $package = $::imscpConfig{'SQL_PACKAGE'} || 'Servers::noserver';
     eval "require $package";
     fatal( $@ ) if $@;
     $instance = $package->getInstance();
@@ -67,9 +67,9 @@ sub factory
 
 sub can
 {
-    my (undef, $method) = @_;
+    my ( undef, $method ) = @_;
 
-    my $package = $main::imscpConfig{'SQL_PACKAGE'} || 'Servers::noserver';
+    my $package = $::imscpConfig{'SQL_PACKAGE'} || 'Servers::noserver';
     eval "require $package";
     fatal( $@ ) if $@;
     $package->can( $method );

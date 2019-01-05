@@ -25,7 +25,7 @@ package Servers::po;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug 'fatal';
 
 # po server instance
 my $instance;
@@ -52,18 +52,16 @@ sub factory
 {
     return $instance if $instance;
 
-    my $package = $main::imscpConfig{'PO_PACKAGE'} || 'Servers::noserver';
+    my $package = $::imscpConfig{'PO_PACKAGE'} || 'Servers::noserver';
 
-    if ( %main::imscpOldConfig
-        && exists $main::imscpOldConfig{'PO_PACKAGE'}
-        && $main::imscpOldConfig{'PO_PACKAGE'} ne ''
-        && $main::imscpOldConfig{'PO_PACKAGE'} ne $package
+    if ( %::imscpOldConfig && exists $::imscpOldConfig{'PO_PACKAGE'} && $::imscpOldConfig{'PO_PACKAGE'} ne ''
+        && $::imscpOldConfig{'PO_PACKAGE'} ne $package
     ) {
-        eval "require $main::imscpOldConfig{'PO_PACKAGE'}";
+        eval "require $::imscpOldConfig{'PO_PACKAGE'}";
         fatal( $@ ) if $@;
 
-        my $rs = $main::imscpOldConfig{'PO_PACKAGE'}->getInstance()->uninstall();
-        fatal( sprintf( "Couldn't uninstall the '%s' server", $main::imscpOldConfig{'PO_PACKAGE'} )) if $rs;
+        my $rs = $::imscpOldConfig{'PO_PACKAGE'}->getInstance()->uninstall();
+        fatal( sprintf( "Couldn't uninstall the '%s' server", $::imscpOldConfig{'PO_PACKAGE'} )) if $rs;
     }
 
     eval "require $package";
@@ -82,9 +80,9 @@ sub factory
 
 sub can
 {
-    my (undef, $method) = @_;
+    my ( undef, $method ) = @_;
 
-    my $package = $main::imscpConfig{'PO_PACKAGE'} || 'Servers::noserver';
+    my $package = $::imscpConfig{'PO_PACKAGE'} || 'Servers::noserver';
     eval "require $package";
     fatal( $@ ) if $@;
     $package->can( $method );
@@ -105,7 +103,7 @@ sub getPriority
 
 END
     {
-        return if $? || !$instance || $main::execmode eq 'setup';
+        return if $? || !$instance || $::execmode eq 'setup';
 
         $? = $instance->restart() if $instance->{'restart'};
     }
@@ -119,3 +117,4 @@ END
 =cut
 
 1;
+__END__

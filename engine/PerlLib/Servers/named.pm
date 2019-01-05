@@ -25,7 +25,7 @@ package Servers::named;
 
 use strict;
 use warnings;
-use iMSCP::Debug qw/ fatal /;
+use iMSCP::Debug 'fatal';
 
 # named server instance
 my $instance;
@@ -52,18 +52,16 @@ sub factory
 {
     return $instance if $instance;
 
-    my $package = $main::imscpConfig{'NAMED_PACKAGE'} || 'Servers::noserver';
+    my $package = $::imscpConfig{'NAMED_PACKAGE'} || 'Servers::noserver';
 
-    if ( %main::imscpOldConfig
-        && exists $main::imscpOldConfig{'NAMED_PACKAGE'}
-        && $main::imscpOldConfig{'NAMED_PACKAGE'} ne ''
-        && $main::imscpOldConfig{'NAMED_PACKAGE'} ne $package
+    if ( %::imscpOldConfig && exists $::imscpOldConfig{'NAMED_PACKAGE'} && $::imscpOldConfig{'NAMED_PACKAGE'} ne ''
+        && $::imscpOldConfig{'NAMED_PACKAGE'} ne $package
     ) {
         eval "require $main::imscpOldConfig{'NAMED_PACKAGE'}";
         fatal( $@ ) if $@;
 
         my $rs = $main::imscpOldConfig{'NAMED_PACKAGE'}->getInstance()->uninstall();
-        fatal( sprintf( "Couldn't uninstall the '%s' server", $main::imscpOldConfig{'NAMED_PACKAGE'} )) if $rs;
+        fatal( sprintf( "Couldn't uninstall the '%s' server", $::imscpOldConfig{'NAMED_PACKAGE'} )) if $rs;
     }
 
     eval "require $package";
@@ -82,9 +80,9 @@ sub factory
 
 sub can
 {
-    my (undef, $method) = @_;
+    my ( undef, $method ) = @_;
 
-    my $package = $main::imscpConfig{'NAMED_PACKAGE'} || 'Servers::noserver';
+    my $package = $::imscpConfig{'NAMED_PACKAGE'} || 'Servers::noserver';
     eval "require $package";
     fatal( $@ ) if $@;
 
@@ -106,7 +104,7 @@ sub getPriority
 
 END
     {
-        return if $? || !$instance || $main::execmode eq 'setup';
+        return if $? || !$instance || $::execmode eq 'setup';
 
         if ( $instance->{'restart'} ) {
             $? = $instance->restart();
