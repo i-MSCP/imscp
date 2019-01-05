@@ -27,6 +27,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+# FIXME: /usr/bin/du command is really time consuming and involve several
+# I/O operations. Best would be to implement quota(1). 
+
 use strict;
 use warnings;
 use File::Basename;
@@ -34,11 +37,13 @@ use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 use iMSCP::Boolean;
 use iMSCP::Bootstrapper;
+use iMSCP::Database;
 use iMSCP::Debug qw/ error getMessageByType newDebug setVerbose /;
 use iMSCP::Execute 'execute';
 use iMSCP::Getopt;
-use iMSCP::Mail;
+use iMSCP::Mail 'sendErrorMessage';
 use Servers::mta;
+use Try::Tiny;
 
 $ENV{'LANG'} = 'C.UTF-8';
 $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
@@ -46,84 +51,82 @@ $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 # Set execution mode
 $::execmode = 'backend' unless defined $::execmode;
 
-=head1 DESCRIPTION
+=over
 
- Computes customer's quota data.
-
-=head1 PUBLIC METHODS
-
-=over 4
-
-=item _getWebDiskSpaceUsage( $directory )
+=item _getWebDiskSpaceUsage( $dir )
 
  Get disk space usage for the given Web directory, excluding backups and logs subdirectories
 
- Param string $directory Web directory
+ Param string $dir Web directory
  Return int Disk space usage in bytes, die on failure
 
 =cut
 
 sub _getWebDiskSpaceUsage
 {
-    my ( $directory ) = @_;
+    my ( $dir ) = @_;
 
-    return 0 unless -d $directory;
+    return 0 unless -d $dir;
 
-    my $rs = execute( [ '/usr/bin/du', '--exclude=backups/*', '--exclude=logs/*', '-s', '-B1', $directory ], \my $stdout, \my $stderr );
+    my $rs = execute( [ '/usr/bin/du', '--exclude=backups/*', '--exclude=logs/*', '-s', '-B1', $dir ], \my $stdout, \my $stderr );
     die( $stderr || 'Unknown error' ) if $rs;
     my ( $bytes ) = $stdout =~ /^(\d+)/;
-    $bytes // 0;
+    return $bytes // 0;
 }
 
-=item _getMailDiskSpaceUsage( $directory )
+=item _getMailDiskSpaceUsage( $dir )
 
  Get disk space usage for the given mail directory
 
- Param string $directory Mail directory
+ Param string $dir Mail directory
  Return int Disk space usage in bytes, die on failure
 
 =cut
 
 sub _getMailDiskSpaceUsage
 {
-    my ( $directory ) = @_;
+    my ( $dir ) = @_;
 
-    return 0 unless -d $directory;
+    return 0 unless -d $dir;
 
-    my $rs = execute( [ '/usr/bin/du', '-s', '-B1', $directory ], \my $stdout, \my $stderr );
+    my $rs = execute( [ '/usr/bin/du', '-s', '-B1', $dir ], \my $stdout, \my $stderr );
     die( $stderr || 'Unknown error' ) if $rs;
     my ( $bytes ) = $stdout =~ /^(\d+)/;
-    $bytes // 0;
+    return $bytes // 0;
 }
 
-=item _getSqlDiskSpaceUsage( $sqlDbName )
+=item _getSqlDiskSpaceUsage( $dbName )
 
  Get disk space usage for the given SQL database
 
- Param string $sqlDbName SQL database name
+ Param string $dbName SQL database name
  Return int Disk space usage in bytes, die on failure
 
 =cut
 
 sub _getSqlDiskSpaceUsage
 {
-    my ( $sqlDbName ) = @_;
-
-    my $dbh = iMSCP::Database->factory()->getRawDb();
-    my $statusData = eval { $dbh->selectall_arrayref( "SHOW TABLE STATUS FROM @{ [ $dbh->quote_identifier( $sqlDbName ) ] }", { Slice => {} } ); };
-    die if $@ && $@ !~ /unknown database/i;
-    return 0 if $@;
+    my ( $dbName ) = @_;
 
     my $bytes = 0;
-    $bytes += $_->{'Data_length'}+$_->{'Index_length'} for @{ $statusData };
+
+    try {
+        my $data = iMSCP::Database->factory()->getConnector()->run( sub {
+            $_->selectall_arrayref( "SHOW TABLE STATUS FROM @{ [ $_->quote_identifier( $dbName ) ] }", { Slice => {} } );
+        } );
+        $bytes += $_->{'Data_length'}+$_->{'Index_length'} for @{ $data };
+    } catch {
+        /unknown database/i or die $_;
+    };
+
     $bytes;
 }
 
-=item _updateDomainQuotaDataInDatabase( \%domainData, $webDiskSpaceUsage, $mailDiskSpaceUsage, $sqlDiskSpaceUsage )
+=item _updateDomainQuotaDataInDatabase( \%data, $webDiskSpaceUsage, $mailDiskSpaceUsage, $sqlDiskSpaceUsage )
 
- Update quota information for the given domain aggregate
+ Update quota information in database for the given domain aggregate
 
- Param hashref \%domainData Domain aggreate data
+ Param hashref \%data Domain aggreate data
  Param int $webDiskSpaceUsage Web disk space usage in bytes
  Param int $mailDiskSpaceUsage Mail disk space usage in bytes
  Param int $sqlDiskSpaceUsage SQL disk space usage in bytes
@@ -133,75 +136,69 @@ sub _getSqlDiskSpaceUsage
 
 sub _updateDomainQuotaDataInDatabase
 {
-    my ( $domainData, $webDiskSpaceUsage, $mailDiskSpaceUsage, $sqlDiskSpaceUsage ) = @_;
+    my ( $data, $webDiskSpaceUsage, $mailDiskSpaceUsage, $sqlDiskSpaceUsage ) = @_;
 
-    my $dbh = iMSCP::Database->factory()->getRawDb();
-
-    local $@;
-    eval {
+    iMSCP::Database->factory()->getConnector()->txn( fixup => sub {
         my $diskSpaceUsage = $webDiskSpaceUsage+$mailDiskSpaceUsage+$sqlDiskSpaceUsage;
-        $dbh->begin_work();
-        $dbh->do(
+        $_->do(
             'UPDATE domain SET domain_disk_usage = ?, domain_disk_file = ?, domain_disk_mail = ?, domain_disk_sql = ? WHERE domain_id = ?',
-            undef, $diskSpaceUsage, $webDiskSpaceUsage, $mailDiskSpaceUsage, $sqlDiskSpaceUsage, $domainData->{'domain_id'}
+            undef, $diskSpaceUsage, $webDiskSpaceUsage, $mailDiskSpaceUsage, $sqlDiskSpaceUsage, $data->{'domain_id'}
         );
-        $dbh->do( 'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?', undef, $diskSpaceUsage, $domainData->{'domain_name'} );
-        $dbh->commit();
-    };
-    if ( $@ ) {
-        $dbh->rollback();
-        die;
-    }
+        $_->do( 'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?', undef, $diskSpaceUsage, $data->{'domain_name'} );
+    } );
+    return;
 }
 
-=item updateDomainQuotaData( \%domainData )
+=item updateDomainQuotaData( \%data )
 
  Update quotas data for the given domain aggregate
 
- Param hashref $domainData domain aggregate data
+ Param hashref \%data domain aggregate data
  Return void, die on failure
  
 =cut
 
 sub updateDomainQuotaData
 {
-    my ( $domainData ) = @_;
+    my ( $data ) = @_;
 
     # Web disk space usage
-    my ( $webDiskSpaceUsage ) = _getWebDiskSpaceUsage( $::imscpConfig{'USER_WEB_DIR'} . '/' . $domainData->{'domain_name'} );
+    my ( $webDiskSpaceUsage ) = _getWebDiskSpaceUsage( $::imscpConfig{'USER_WEB_DIR'} . '/' . $data->{'domain_name'} );
 
     # Mail disk space usage
     my $maildirRoot = Servers::mta->factory()->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
-    my $mailDiskSpaceUsage = _getMailDiskSpaceUsage( $maildirRoot . '/' . $domainData->{'domain_name'} );
-    my $dbh = iMSCP::Database->factory()->getRawDb();
-    my $rows = $dbh->selectcol_arrayref(
-        "
-            SELECT alias_name AS domain_name FROM domain_aliasses WHERE domain_id = ? AND alias_status <> 'todelete'
-            UNION ALL
-            SELECT CONCAT(t1.subdomain_name, '.', t2.domain_name) AS domain_name
-            FROM subdomain AS t1 JOIN domain AS t2 USING(domain_id) WHERE t1.domain_id = ? AND t1.subdomain_status <> 'todelete'
-            UNION ALL
-            SELECT CONCAT(t1.subdomain_alias_name, '.',  t2.alias_name) AS domain_name
-            FROM subdomain_alias AS t1 JOIN domain_aliasses AS t2 USING(alias_id) WHERE t2.domain_id = ? AND t1.subdomain_alias_status <> 'todelete'
-        ",
-        undef, $domainData->{'domain_id'}, $domainData->{'domain_id'}, $domainData->{'domain_id'}
-    );
+    my $mailDiskSpaceUsage = _getMailDiskSpaceUsage( $maildirRoot . '/' . $data->{'domain_name'} );
+    my $rows = iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+        $_->selectcol_arrayref(
+            "
+                SELECT alias_name AS domain_name FROM domain_aliasses WHERE domain_id = ? AND alias_status <> 'todelete'
+                UNION ALL
+                SELECT CONCAT(t1.subdomain_name, '.', t2.domain_name) AS domain_name
+                FROM subdomain AS t1 JOIN domain AS t2 USING(domain_id) WHERE t1.domain_id = ? AND t1.subdomain_status <> 'todelete'
+                UNION ALL
+                SELECT CONCAT(t1.subdomain_alias_name, '.',  t2.alias_name) AS domain_name
+                FROM subdomain_alias AS t1 JOIN domain_aliasses AS t2 USING(alias_id) WHERE t2.domain_id = ? AND t1.subdomain_alias_status <> 'todelete'
+            ",
+            undef, $data->{'domain_id'}, $data->{'domain_id'}, $data->{'domain_id'} );
+    } );
     $mailDiskSpaceUsage += _getMailDiskSpaceUsage( $maildirRoot . '/' . $_ ) for @{ $rows };
 
     # SQL disk space usage
-    $rows = $dbh->selectcol_arrayref( 'SELECT sqld_name FROM sql_database WHERE domain_id = ?', undef, $domainData->{'domain_id'} );
+    $rows = iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+        $_->selectcol_arrayref( 'SELECT sqld_name FROM sql_database WHERE domain_id = ?', undef, $data->{'domain_id'} );
+    } );
     my $sqlDiskSpaceUsage = 0;
     $sqlDiskSpaceUsage += _getSqlDiskSpaceUsage( $_ ) for @{ $rows };
 
     # Update domain quota data in database
-    _updateDomainQuotaDataInDatabase( $domainData, $webDiskSpaceUsage, $mailDiskSpaceUsage, $sqlDiskSpaceUsage )
+    _updateDomainQuotaDataInDatabase( $data, $webDiskSpaceUsage, $mailDiskSpaceUsage, $sqlDiskSpaceUsage );
 }
 
 newDebug( 'imscp-dsk-quota.log' );
 
 iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq{
 
-Computes customer's quota data.
+Update quota data for all domain aggregates.
 
 OPTIONS:
  -d,    --debug         Enable debug mode.
@@ -220,22 +217,24 @@ $bootstrapper->boot( {
     config_readonly => TRUE
 } );
 
-eval {
-    my $dbh = iMSCP::Database->factory()->getRawDb();
-    my $rows = $dbh->selectall_arrayref( "SELECT domain_id, domain_name FROM domain WHERE domain_status <> 'todelete'", { Slice => {} } );
-
-    for my $domainData ( @{ $rows } ) {
-        eval { updateDomainQuotaData( $domainData ); };
-        error( sprintf( "Couldn't compute quota data for the '%s' customer: %s", $domainData->{'domain_name'}, $@ )) if $@;
+try {
+    my $rows = iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+        $_->selectall_arrayref( "SELECT domain_id, domain_name FROM domain WHERE domain_status <> 'todelete'", { Slice => {} } );
+    } );
+    for my $data ( @{ $rows } ) {
+        try {
+            updateDomainQuotaData( $data );
+        } catch {
+            error( sprintf( "Couldn't update quota data for the '%s' domain aggregate: %s", $data->{'domain_name'}, $_ ), '' );
+        }
+    }
+} catch {
+    error( $_, '' );
+} finally {
+    if ( my @errors = getMessageByType( 'error', { remove => TRUE } ) ) {
+        sendErrorMessage( "@errors" );
     }
 };
-if ( $@ ) {
-    error( $@ );
-}
-
-if ( my @errors = getMessageByType( 'error' ) ) {
-    iMSCP::Mail->new()->errmsg( "@errors" );
-}
 
 =back
 
