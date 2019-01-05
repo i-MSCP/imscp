@@ -26,11 +26,13 @@ package iMSCP::Mail;
 use strict;
 use warnings;
 use Encode;
-use iMSCP::Debug;
+use iMSCP::Debug 'error';
 use iMSCP::ProgramFinder;
 use MIME::Entity;
 use Text::Wrap;
-use parent 'Common::Object';
+use parent 'Exporter';
+
+our @EXPORT_OK = qw/ sendInfoMessage sendErrorMessage sendWarningMessage /;
 
 $Text::Wrap::huge = 'wrap';
 $Text::Wrap::columns = 75;
@@ -38,114 +40,129 @@ $Text::Wrap::break = qr/[\s\n\|]/;
 
 =head1 DESCRIPTION
 
- Send warning or error message to system administrator
+ Send mail to system administrator
 
-=head1 PUBLIC METHODS
+=head1 PUBLIC FUNCTIONS
 
 =over 4
 
-=item errmsg( $message )
+=item sendInfoMessage( $subject, $message )
 
- Send an error message to system administrator
+ Send an informational message to system administrator
 
- Param string Error message to be sent
+ Param string $subject Message subject
+ Param string $body $message Body
  Return int 0 on success, other on failure
  
 =cut
 
-sub errmsg
+sub sendInfoMessage
 {
-    my ($self, $message) = @_;
+    my ( $subject, $message ) = @_;
 
-    defined $message or die( "$message parameter is not defined" );
-
-    my $functionName = ( caller( 1 ) )[3] || 'main';
-    $self->_sendMail( 'i-MSCP - An error has been raised', <<"EOF", 'error' );
-An error has been raised while executing function $functionName in $0:
-
-$message
-EOF
-    0;
+    _sendmail( $subject, $message, 'info' );
 }
 
-=item warnMsg( $message )
+=item sendWarningMessage( $message )
 
  Send a warning message to system administrator
 
- Param string $message Warning message to be sent
+ Param string $body Message body
  Return int 0 on success, other on failure
  
 =cut
 
-sub warnMsg
+sub sendWarningMessage
 {
-    my ($self, $message) = @_;
+    my ( $body ) = @_;
+    
+    _sendmail( 'Warning raised', <<"EOF", 'warning' );
+An unexpected warning has been raised in $0:
 
-    defined $message or die( "$message parameter is not defined" );
-
-    my $functionName = ( caller( 1 ) )[3] || 'main';
-    $self->_sendMail( 'i-MSCP - A warning has been raised', <<"EOF", 'warning' );
-A warning has been raised while executing function $functionName in $0:
-
-$message
+$body
 EOF
-    0;
+}
+
+=item sendErrorMessage( $body )
+
+ Send an error message to system administrator
+
+ Param string $body Message body
+ Return int 0 on success, other on failure
+ 
+=cut
+
+sub sendErrorMessage
+{
+    my ( $body ) = @_;
+
+    _sendmail( 'Error raised', <<"EOF", 'error' );
+An unexpected error has been raised in $0:
+
+$body
+EOF
 }
 
 =back
 
-=head1 PRIVATE METHODS
+=head1 PRIVATE FUNCTIONS
 
 =over 4
 
-=item _sendMail($subject, $message, $severity)
+=item _sendmail( $subject, $body, $severity )
 
- Send a message to system administrator
+ Send the given mail to system administrator
 
  Param string $subject Message subject
- Param string $message Message to be sent
+ Param string $message Message body to be sent
  Param string $severity Message severity
  Return int 0 on success, other on failure
  
 =cut
 
-sub _sendMail
+sub _sendmail
 {
-    my (undef, $subject, $message, $severity) = @_;
+    my ( $subject, $message, $severity ) = @_;
 
-    my $sendmail = iMSCP::ProgramFinder::find( 'sendmail' ) or die( "Couldn't find sendmail executable" );
-    my $host = $main::imscpConfig{'BASE_SERVER_VHOST'};
+    length $subject or die( '$subject parameter is not defined or invalid' );
+    length $message or die( '$message parameter is not defined or invalid' );
+    length $severity or die( '$severity parameter is not defined or invalid' );
+    
+    return 0 unless my $bin = iMSCP::ProgramFinder::find( 'sendmail' );
+
+    my $host = $::imscpConfig{'BASE_SERVER_VHOST'};
     my $out = MIME::Entity->new()->build(
         From       => "i-MSCP ($host) <noreply\@$host>",
-        To         => $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'},
-        Subject    => $subject,
+        To         => $::imscpConfig{'DEFAULT_ADMIN_ADDRESS'},
+        Subject    => "i-MSCP (backend) - $subject",
         Type       => 'text/plain; charset=utf-8',
         Encoding   => '8bit',
         Data       => encode( 'UTF-8', wrap( '', '', <<"EOF" )),
 Dear administrator,
 
-This is an automatic email sent by i-MSCP:
+This is an automatic email sent by i-MSCP backend:
  
-Server name: $main::imscpConfig{'SERVER_HOSTNAME'}
-Server IP: $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'}
-Version: $main::imscpConfig{'Version'}
-Build: $main::imscpConfig{'Build'}
+Server name: $::imscpConfig{'SERVER_HOSTNAME'}
+Server IP: $::imscpConfig{'BASE_SERVER_PUBLIC_IP'}
+Version: $::imscpConfig{'Version'}
+Build: @{ [ $::imscpConfig{'Build'} || 'Unavailable' ] }
 Message severity: $severity
 
 ==========================================================================
+
 $message
 ==========================================================================
 
 Please do not reply to this email.
 
 ___________________________
-i-MSCP Mailer
+i-MSCP Backend Mailer
 EOF
-        'X-Mailer' => 'i-MSCP Mailer (backend)'
+        'X-Mailer' => 'i-MSCP Backend Mailer'
     );
 
     my $fh;
-    unless ( open $fh, '|-', $sendmail, '-t', '-oi', '-f', "noreply\@$host" ) {
+    unless ( open $fh, '|-', $bin, '-t', '-oi', '-f', "noreply\@$host" ) {
         error( sprintf( "Couldn't send mail: %s", $! ));
         return 1;
     }
