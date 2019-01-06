@@ -97,20 +97,11 @@ sub getTrafficData
         IMSCP_OUTPUT => \my $output
     );
 
-    # Gets input/output traffic data from both IMSCP_INPUT and IMSCP_OUTPUT
-    # chains and reset them.
+    # Gets traffic data for both input/output chains and reset them.
     while ( my ( $chain, $stdout ) = each( %{chains} ) ) {
-        execute( "$bin -t filter -nvxL $chain", $stdout, \my $stderr );
+        execute( [ $bin, '-t', 'filter', '-w', '-Z', '-n', '-v', '-x', '-L', $chain ], $stdout, \my $stderr );
         debug( ${ $stdout } ) if length ${ $stdout };
-
-        if ( length $stderr ) {
-            # No chain found (or any other error)...
-            error( $stderr );
-            next;
-        }
-
-        execute( "$bin -t filter -Z $chain", undef, \$stderr );
-        error( $stderr ) if length $stderr;
+        error( $stderr ) if length $stderr; # No chain found (or any other error)...
     }
 
     # Parse input/output traffic data
@@ -150,8 +141,7 @@ try {
     return unless $data{'in'}->{'all'} > 0 || $data{'out'}->{'all'} > 0;
 
     # Update traffic data in database
-    iMSCP::Database->factory()->getConnector()->run( fixup => sub
-    {
+    iMSCP::Database->factory()->getConnector()->run( fixup => sub {
         my $timestamp = time();
         $timestamp -= ( $timestamp % 1800 ); # Floor down for the last half'n hour
         $_->do(
@@ -167,10 +157,10 @@ try {
             # Insert data
             $timestamp,
             $data{'in'}->{'all'}, $data{'out'}->{'all'}, $data{'in'}->{'smtp'}, $data{'out'}->{'smtp'}, $data{'in'}->{'po'}, $data{'out'}->{'po'},
-            $data{'in'}->{'web'}, $data{'in'}->{'web'},
+            $data{'in'}->{'web'}, $data{'out'}->{'web'},
             # On duplicate data
             $data{'in'}->{'all'}, $data{'out'}->{'all'}, $data{'in'}->{'smtp'}, $data{'out'}->{'smtp'}, $data{'in'}->{'po'}, $data{'out'}->{'po'},
-            $data{'in'}->{'web'}, $data{'out'}->{'web'},
+            $data{'in'}->{'web'}, $data{'out'}->{'web'}
         );
     } );
 } catch {
