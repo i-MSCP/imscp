@@ -38,7 +38,6 @@ use iMSCP::Database;
 use iMSCP::Debug qw/ debug error getMessageByType setVerbose newDebug /;
 use iMSCP::Execute 'execute';
 use iMSCP::Getopt;
-use iMSCP::Service;
 use iMSCP::ProgramFinder;
 use iMSCP::Mail 'sendErrorMessage';
 use Try::Tiny;
@@ -48,52 +47,50 @@ $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
 =over
 
-=item _parseTrafficData( \$data, \$smtp, \$po, \$http, \$all )
+=item _parseTrafficData( \$trafficData, $container )
 
  Parse the given input/output traffic data string
 
- Param scalarref $data Traffic data string as outputted by the iptable(8) -nvxL <chain> command
- Param scalarref $smtp SMTP traffic in bytes
- Param scalarref $po IMAP/POP traffic in bytes
- Param scalarref $http HTTP traffic in bytes
- Param scalarref $all All traffic in bytes
+ Param scalarref $trafficData Traffic data string as outputted by the iptable(8) -nvxL <chain> command
+ Param hashref \%container Traffic data container
  Return void
 
 =cut
 
 sub _parseTrafficData
 {
-    my ( $data, $smtp, $po, $http, $all ) = @_;
+    my ( $trafficData, $container ) = @_;
 
-    while ( ${ $data } =~ /^\s+\d+\s+(\d+).*?(?:(?:dpt|spt):(\d+))?$/gm ) {
+    while ( ${ $trafficData } =~ /^\s+\d+\s+(\d+).*?(?:(?:dpt|spt):(\d+))?$/gm ) {
         if ( $2 ) {
-            if ( grep ( $_ eq $2, 587, 25, 465) ) {
-                ${ $smtp } += $1
-            } elsif ( grep ( $_ eq $2, 110, 995, 143, 993) ) {
-                ${ $po } += $1;
+            if ( grep ( $_ eq $2, 587, 25, 465 ) ) {
+                $container->{'smtp'} += $1
+            } elsif ( grep ( $_ eq $2, 110, 995, 143, 993 ) ) {
+                $container->{'po'} += $1;
             } else {
-                ${ $http } += $1;
+                $container->{'web'} += $1;
             }
 
             next;
         }
 
-        ${ $all } += $1;
+        $container->{'all'} += $1;
     }
 }
 
-=item updateServerTrafficData( $bin )
+=item getTrafficData( $bin, \%container )
 
- Update server traffic data
+ Get traffic data from i-MSCP IPv4 or IPv6 input/output chains
 
  Param string $bin IPTABLES(8) binary path
- Return int 0 on success, other or die on failure
+ Param hashref \%container Traffic data container
+ Return void, die on failure
 
 =cut
 
-sub updateServerTrafficData
+sub getTrafficData
 {
-    my ( $bin ) = @_;
+    my ( $bin, $container ) = @_;
 
     my %chains = (
         IMSCP_INPUT  => \my $input,
@@ -117,35 +114,8 @@ sub updateServerTrafficData
     }
 
     # Parse input/output traffic data
-    my ( $smtpIn, $poIn, $httpIn, $allIn ) = ( 0, 0, 0, 0 );
-    my ( $smtpOut, $poOut, $httpOut, $allOut ) = ( 0, 0, 0, 0 );
-    _parseTrafficData( \$input, \$smtpIn, \$poIn, \$httpIn, \$allIn ) if length $input;
-    _parseTrafficData( \$output, \$smtpOut, \$poOut, \$httpOut, \$allOut ) if length $output;
-
-    return 0 unless $smtpIn > 0 || $poIn > 0 || $httpIn > 0 || $allIn > 0 || $smtpOut > 0 || $poOut > 0 || $httpOut > 0 || $allOut > 0;
-
-    # Update traffic data in database
-    iMSCP::Database->factory()->getConnector()->run( fixup => sub {
-        my $timestamp = time();
-        # Floor down for the last half'n hour
-        $timestamp -= ( $timestamp % 1800 );
-        $_->do(
-            '
-                INSERT INTO server_traffic (
-                    traff_time, bytes_in, bytes_out, bytes_mail_in, bytes_mail_out, bytes_pop_in, bytes_pop_out, bytes_web_in, bytes_web_out
-                ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? ) ON DUPLICATE KEY UPDATE
-                    bytes_in = bytes_in + ?, bytes_out = bytes_out + ?, bytes_mail_in = bytes_mail_in + ?, bytes_mail_out = bytes_mail_out + ?,
-                    bytes_pop_in = bytes_pop_in + ?, bytes_pop_out = bytes_pop_out + ?, bytes_web_in = bytes_web_in + ?,
-                    bytes_web_out = bytes_web_out + ?
-            ',
-            undef,
-            $timestamp,
-            $allIn, $allOut, $smtpIn, $smtpOut, $poIn, $poOut, $httpIn, $httpOut,
-            $allIn, $allOut, $smtpIn, $smtpOut, $poIn, $poOut, $httpIn, $httpOut
-        );
-    } );
-
-    0;
+    _parseTrafficData( \$input, $container->{'in'} ) if length $input;
+    _parseTrafficData( \$output, $container->{'out'} ) if length $output;
 }
 
 newDebug( 'imscp-server-traffic.log' );
@@ -171,10 +141,38 @@ $bootstrapper->boot( {
 } );
 
 try {
-    for my $bin ( iMSCP::ProgramFinder::find( 'iptables' ), $main::imscpConfig{'IPV6_SUPPORT'} && iMSCP::ProgramFinder::find( 'ip6tables' ) ) {
-        next unless $bin;
-        updateServerTrafficData( $bin ) == 0 or die( getMessageByType( 'error', { remove => TRUE } ));
+    my %data = ( 'in', { qw/ all 0 smtp 0 po 0 web 0 / }, 'out', { qw/ all 0 smtp 0 po 0 web 0 / } );
+
+    for my $bin ( iMSCP::ProgramFinder::find( 'iptables' ), $::imscpConfig{'IPV6_SUPPORT'} && iMSCP::ProgramFinder::find( 'ip6tables' ) ) {
+        getTrafficData( $bin, \%data ) if $bin;
     }
+
+    return unless $data{'in'}->{'all'} > 0 || $data{'out'}->{'all'} > 0;
+
+    # Update traffic data in database
+    iMSCP::Database->factory()->getConnector()->run( fixup => sub
+    {
+        my $timestamp = time();
+        $timestamp -= ( $timestamp % 1800 ); # Floor down for the last half'n hour
+        $_->do(
+            '
+                INSERT INTO server_traffic (
+                    traff_time, bytes_in, bytes_out, bytes_mail_in, bytes_mail_out, bytes_pop_in, bytes_pop_out, bytes_web_in, bytes_web_out
+                ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? ) ON DUPLICATE KEY UPDATE
+                    bytes_in = bytes_in + ?, bytes_out = bytes_out + ?, bytes_mail_in = bytes_mail_in + ?, bytes_mail_out = bytes_mail_out + ?,
+                    bytes_pop_in = bytes_pop_in + ?, bytes_pop_out = bytes_pop_out + ?, bytes_web_in = bytes_web_in + ?,
+                    bytes_web_out = bytes_web_out + ?
+            ',
+            undef,
+            # Insert data
+            $timestamp,
+            $data{'in'}->{'all'}, $data{'out'}->{'all'}, $data{'in'}->{'smtp'}, $data{'out'}->{'smtp'}, $data{'in'}->{'po'}, $data{'out'}->{'po'},
+            $data{'in'}->{'web'}, $data{'in'}->{'web'},
+            # On duplicate data
+            $data{'in'}->{'all'}, $data{'out'}->{'all'}, $data{'in'}->{'smtp'}, $data{'out'}->{'smtp'}, $data{'in'}->{'po'}, $data{'out'}->{'po'},
+            $data{'in'}->{'web'}, $data{'out'}->{'web'},
+        );
+    } );
 } catch {
     error( $_ );
 } finally {
