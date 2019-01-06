@@ -50,13 +50,13 @@ $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
 =item _parseTrafficData( \$data, \$smtp, \$po, \$http, \$all )
 
- Parse traffic data
+ Parse the given input/output traffic data string
 
- Param scalarref $data Traffic data
- Param scalarref $smtp SMTP traffic
- Param scalarref $po IMAP/POP traffic
- Param scalarref $http HTTP traffic
- Param scalarref $all All traffic
+ Param scalarref $data Traffic data string as outputted by the iptable(8) -nvxL <chain> command
+ Param scalarref $smtp SMTP traffic in bytes
+ Param scalarref $po IMAP/POP traffic in bytes
+ Param scalarref $http HTTP traffic in bytes
+ Param scalarref $all All traffic in bytes
  Return void
 
 =cut
@@ -102,27 +102,29 @@ sub updateServerTrafficData
 
     # Gets input/output traffic data from both IMSCP_INPUT and IMSCP_OUTPUT
     # chains and reset them.
-
     while ( my ( $chain, $stdout ) = each( %{chains} ) ) {
         execute( "$bin -t filter -nvxL $chain", $stdout, \my $stderr );
-        debug( ${ $stdout } ) if ${ $stdout };
-        error( $stderr ) && next if $stderr;
+        debug( ${ $stdout } ) if length ${ $stdout };
+
+        if ( length $stderr ) {
+            # No chain found (or any other error)...
+            error( $stderr );
+            next;
+        }
+
         execute( "$bin -t filter -Z $chain", undef, \$stderr );
-        error( $stderr ) if $stderr;
+        error( $stderr ) if length $stderr;
     }
 
     # Parse input/output traffic data
-
     my ( $smtpIn, $poIn, $httpIn, $allIn ) = ( 0, 0, 0, 0 );
     my ( $smtpOut, $poOut, $httpOut, $allOut ) = ( 0, 0, 0, 0 );
-
-    _parseTrafficData( \$input, \$smtpIn, \$poIn, \$httpIn, \$allIn ) if defined $input;
-    _parseTrafficData( \$output, \$smtpOut, \$poOut, \$httpOut, \$allOut ) if defined $output;
+    _parseTrafficData( \$input, \$smtpIn, \$poIn, \$httpIn, \$allIn ) if length $input;
+    _parseTrafficData( \$output, \$smtpOut, \$poOut, \$httpOut, \$allOut ) if length $output;
 
     return 0 unless $smtpIn > 0 || $poIn > 0 || $httpIn > 0 || $allIn > 0 || $smtpOut > 0 || $poOut > 0 || $httpOut > 0 || $allOut > 0;
 
     # Update traffic data in database
-
     iMSCP::Database->factory()->getConnector()->run( fixup => sub {
         my $timestamp = time();
         # Floor down for the last half'n hour
@@ -133,7 +135,8 @@ sub updateServerTrafficData
                     traff_time, bytes_in, bytes_out, bytes_mail_in, bytes_mail_out, bytes_pop_in, bytes_pop_out, bytes_web_in, bytes_web_out
                 ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? ) ON DUPLICATE KEY UPDATE
                     bytes_in = bytes_in + ?, bytes_out = bytes_out + ?, bytes_mail_in = bytes_mail_in + ?, bytes_mail_out = bytes_mail_out + ?,
-                    bytes_pop_in = bytes_pop_in + ?, bytes_pop_out = bytes_pop_out + ?, bytes_web_in = bytes_web_in + ?, bytes_web_out = bytes_web_out + ?
+                    bytes_pop_in = bytes_pop_in + ?, bytes_pop_out = bytes_pop_out + ?, bytes_web_in = bytes_web_in + ?,
+                    bytes_web_out = bytes_web_out + ?
             ',
             undef,
             $timestamp,
@@ -176,7 +179,7 @@ try {
     error( $_ );
 } finally {
     if ( my @errors = getMessageByType( 'error', { remove => TRUE } ) ) {
-        sendErrorMessage( "@errors" );
+        sendErrorMessage( join "\n", @errors );
     }
 };
 
