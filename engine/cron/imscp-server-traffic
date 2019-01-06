@@ -1,0 +1,192 @@
+#!/usr/bin/perl
+
+=head1 NAME
+
+ imscp-server-traffic - Update server' traffic data.
+
+=head1 SYNOPSIS
+
+ imscp-server-traffic [OPTION]...
+
+=cut
+
+# i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+use strict;
+use warnings;
+use FindBin;
+use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use File::Basename;
+use iMSCP::Boolean;
+use iMSCP::Bootstrapper;
+use iMSCP::Database;
+use iMSCP::Debug qw/ debug error getMessageByType setVerbose newDebug /;
+use iMSCP::Execute 'execute';
+use iMSCP::Getopt;
+use iMSCP::Service;
+use iMSCP::ProgramFinder;
+use iMSCP::Mail 'sendErrorMessage';
+use Try::Tiny;
+
+$ENV{'LANG'} = 'C.UTF-8';
+$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+
+=over
+
+=item _parseTrafficData( \$data, \$smtp, \$po, \$http, \$all )
+
+ Parse traffic data
+
+ Param scalarref $data Traffic data
+ Param scalarref $smtp SMTP traffic
+ Param scalarref $po IMAP/POP traffic
+ Param scalarref $http HTTP traffic
+ Param scalarref $all All traffic
+ Return void
+
+=cut
+
+sub _parseTrafficData
+{
+    my ( $data, $smtp, $po, $http, $all ) = @_;
+
+    while ( ${ $data } =~ /^\s+\d+\s+(\d+).*?(?:(?:dpt|spt):(\d+))?$/gm ) {
+        if ( $2 ) {
+            if ( grep ( $_ eq $2, 587, 25, 465) ) {
+                ${ $smtp } += $1
+            } elsif ( grep ( $_ eq $2, 110, 995, 143, 993) ) {
+                ${ $po } += $1;
+            } else {
+                ${ $http } += $1;
+            }
+
+            next;
+        }
+
+        ${ $all } += $1;
+    }
+}
+
+=item updateServerTrafficData( $bin )
+
+ Update server traffic data
+
+ Param string $bin IPTABLES(8) binary path
+ Return int 0 on success, other or die on failure
+
+=cut
+
+sub updateServerTrafficData
+{
+    my ( $bin ) = @_;
+
+    my %chains = (
+        IMSCP_INPUT  => \my $input,
+        IMSCP_OUTPUT => \my $output
+    );
+
+    # Gets input/output traffic data from both IMSCP_INPUT and IMSCP_OUTPUT
+    # chains and reset them.
+
+    while ( my ( $chain, $stdout ) = each( %{chains} ) ) {
+        execute( "$bin -t filter -nvxL $chain", $stdout, \my $stderr );
+        debug( ${ $stdout } ) if ${ $stdout };
+        error( $stderr ) && next if $stderr;
+        execute( "$bin -t filter -Z $chain", undef, \$stderr );
+        error( $stderr ) if $stderr;
+    }
+
+    # Parse input/output traffic data
+
+    my ( $smtpIn, $poIn, $httpIn, $allIn ) = ( 0, 0, 0, 0 );
+    my ( $smtpOut, $poOut, $httpOut, $allOut ) = ( 0, 0, 0, 0 );
+
+    _parseTrafficData( \$input, \$smtpIn, \$poIn, \$httpIn, \$allIn ) if defined $input;
+    _parseTrafficData( \$output, \$smtpOut, \$poOut, \$httpOut, \$allOut ) if defined $output;
+
+    return 0 unless $smtpIn > 0 || $poIn > 0 || $httpIn > 0 || $allIn > 0 || $smtpOut > 0 || $poOut > 0 || $httpOut > 0 || $allOut > 0;
+
+    # Update traffic data in database
+
+    iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+        my $timestamp = time();
+        # Floor down for the last half'n hour
+        $timestamp -= ( $timestamp % 1800 );
+        $_->do(
+            '
+                INSERT INTO server_traffic (
+                    traff_time, bytes_in, bytes_out, bytes_mail_in, bytes_mail_out, bytes_pop_in, bytes_pop_out, bytes_web_in, bytes_web_out
+                ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? ) ON DUPLICATE KEY UPDATE
+                    bytes_in = bytes_in + ?, bytes_out = bytes_out + ?, bytes_mail_in = bytes_mail_in + ?, bytes_mail_out = bytes_mail_out + ?,
+                    bytes_pop_in = bytes_pop_in + ?, bytes_pop_out = bytes_pop_out + ?, bytes_web_in = bytes_web_in + ?, bytes_web_out = bytes_web_out + ?
+            ',
+            undef,
+            $timestamp,
+            $allIn, $allOut, $smtpIn, $smtpOut, $poIn, $poOut, $httpIn, $httpOut,
+            $allIn, $allOut, $smtpIn, $smtpOut, $poIn, $poOut, $httpIn, $httpOut
+        );
+    } );
+
+    0;
+}
+
+newDebug( 'imscp-server-traffic.log' );
+
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq{
+
+Update server' traffic data.
+
+OPTIONS:
+ -d,    --debug         Enable debug mode.
+ -v,    --verbose       Enable verbose mode.},
+    'debug|d'   => \&iMSCP::Getopt::debug,
+    'verbose|v' => \&iMSCP::Getopt::verbose
+);
+
+setVerbose( iMSCP::Getopt->verbose );
+
+my $bootstrapper = iMSCP::Bootstrapper->getInstance();
+exit unless $bootstrapper->lock( '/var/lock/imscp-server-traffic.lock', TRUE );
+$bootstrapper->boot( {
+    config_readonly => TRUE,
+    nolock          => TRUE
+} );
+
+try {
+    for my $bin ( iMSCP::ProgramFinder::find( 'iptables' ), $main::imscpConfig{'IPV6_SUPPORT'} && iMSCP::ProgramFinder::find( 'ip6tables' ) ) {
+        next unless $bin;
+        updateServerTrafficData( $bin ) == 0 or die( getMessageByType( 'error', { remove => TRUE } ));
+    }
+} catch {
+    error( $_ );
+} finally {
+    if ( my @errors = getMessageByType( 'error', { remove => TRUE } ) ) {
+        sendErrorMessage( "@errors" );
+    }
+};
+
+=back
+
+=head1 AUTHOR
+
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
+
+1;
+__END__
