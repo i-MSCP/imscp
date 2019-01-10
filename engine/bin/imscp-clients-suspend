@@ -1,0 +1,122 @@
+#!/usr/bin/perl
+
+=head1 NAME
+
+ imscp-clients-suspend - Suspend expired client accounts
+
+=head1 SYNOPSIS
+
+ imscp-clients-suspend [OPTION]...
+
+=cut
+
+# i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+use strict;
+use warnings;
+use File::Basename 'basename';
+use FindBin;
+use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use iMSCP::Boolean;
+use iMSCP::Bootstrapper;
+use iMSCP::Database;
+use iMSCP::DbTasksProcessor;
+use iMSCP::Debug qw/ error getMessageByType newDebug setDebug setVerbose /;
+use iMSCP::Getopt;
+use iMSCP::Mail 'sendErrorMessage';
+use POSIX ();
+use Try::Tiny;
+
+try {
+    $ENV{'LANG'} = 'C.UTF-8';
+    $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+
+    my $basename = basename( $0 );
+    newDebug( $basename . '.log' );
+
+    iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', $basename ) . qq{
+
+Suspend expired client accounts
+
+OPTIONS:
+ -d,    --debug         Enable debug mode.
+ -v,    --verbose       Enable verbose mode.},
+        'debug|d'   => \&iMSCP::Getopt::debug,
+        'verbose|v' => \&iMSCP::Getopt::verbose
+    );
+
+    setDebug( iMSCP::Getopt->debug );
+    setVerbose( iMSCP::Getopt->verbose );
+
+    my $bootstrapper = iMSCP::Bootstrapper->getInstance();
+    return unless $bootstrapper->lock( $basename . '.lock', TRUE );
+    $bootstrapper->getInstance()->boot( { config_readonly => TRUE } );
+
+    my $conn = iMSCP::Database->factory()->getConnector();
+    my ( $hardSuspension ) = $conn->run( fixup => sub { $_->selectrow_arrayref( "SELECT value FROM config WHERE name = 'HARD_MAIL_SUSPENSION'" ); } );
+    my $rows = $conn->run( fixup => sub {
+        $_->selectcol_arrayref(
+            "SELECT domain_id FROM domain WHERE domain_expires <> '0' AND domain_expires < UNIX_TIMESTAMP() AND domain_status <> 'disabled'"
+        );
+    } );
+
+    for my $data ( @{ $rows } ) {
+        try {
+            $conn->txn( fixup => sub {
+                if ( $hardSuspension ) {
+                    $_->do( "UPDATE mail_users SET status = 'todisable', po_active = 'no' WHERE domain_id = ?", undef, $data->{'domain_id'} );
+                } else {
+                    $_->do( "UPDATE mail_users SET po_active = 'no' WHERE domain_id = ?", undef, $data->{'domain_id'} );
+                }
+
+                $_->do( "UPDATE domain SET domain_status = 'todisable' WHERE domain_id = ?", undef, $data->{'domain_id'} );
+                $_->do( "UPDATE subdomain SET subdomain_status = 'todisable' WHERE domain_id = ?", undef, $data->{'domain_id'} );
+                $_->do( "UPDATE domain_aliasses SET alias_status = 'todisable' WHERE domain_id = ?", undef, $data->{'domain_id'} );
+                $_->do(
+                    "
+                        UPDATE subdomain_alias AS t1
+                        JOIN domain_aliasses AS t2 using(alias_id)
+                        SET t1.subdomain_alias_status = 'todisable'
+                        WHERE t1.domain_id = ?
+                    ",
+                    undef, $data->{'domain_id'}
+                );
+            } );
+        } catch {
+            error( $_ );
+        };
+    }
+
+    iMSCP::DbTasksProcessor->getInstance()->processDbTasks();
+} catch {
+    error( $_ );
+} finally {
+    return unless length getMessageByType( 'error', { amount => 1 } );
+    exit 1 if POSIX::isatty( \*STDERR );
+    require iMSCP::Mail;
+    iMSCP::Mail::sendErrorMessage( join "\n", getMessageByType( 'error', { remove => TRUE } ));
+};
+
+=head1 AUTHOR
+
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
+
+1;
+__END__

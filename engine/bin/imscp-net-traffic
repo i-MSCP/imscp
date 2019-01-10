@@ -1,0 +1,229 @@
+#!/usr/bin/perl
+
+=head1 NAME
+
+ imscp-net-traffic - Add/Remove IPv4 and IPv6 filter rules to track incoming/outgoing traffic..
+
+=head1 SYNOPSIS
+
+ imscp-net-traffic [OPTION]... add|remove
+
+=cut
+
+# i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+use strict;
+use warnings;
+use File::Basename 'basename';
+use FindBin;
+use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use iMSCP::Boolean;
+use iMSCP::Debug qw/ debug error getMessageByType newDebug setDebug setVerbose /;
+use iMSCP::Bootstrapper;
+use iMSCP::Execute 'execute';
+use iMSCP::Getopt;
+use iMSCP::ProgramFinder;
+use POSIX ();
+use Try::Tiny;
+
+=over
+
+=item addRules( $bin )
+
+ Add IPv4 and IPv6 packet filter rules
+
+ Param string $bin IPTABLES(8) binary path
+ Return void, raise error on failure
+
+=cut
+
+sub addRules
+{
+    my ( $bin ) = @_;
+
+    # Creates both the IMSCP_INPUT and IMSCP_OUTPUT chains for traffic logging
+    for my $chain ( qw/ IMSCP_INPUT IMSCP_OUTPUT / ) {
+        my $rs = execute( [ $bin, '-w', '-t', 'filter', '-N', $chain ], \my $stdout, \my $stderr );
+        debug( $stdout ) if length $stdout;
+        error( $stderr || 'Unknown error' ) if $rs;
+        return if $rs;
+    }
+
+    # Adds rules to pass input/output traffic through our chains, excluding
+    # traffic from/to loopback interface
+    for my $rule ( [ '-I', 'INPUT', '!', '-i', 'lo', '-j', 'IMSCP_INPUT' ], [ '-I', 'OUTPUT', '!', '-o', 'lo', '-j', 'IMSCP_OUTPUT' ] ) {
+        my $rs = execute( [ $bin, '-w', '-t', 'filter', @{ $rule } ], \my $stdout, \my $stderr );
+        debug( $stdout ) if $stdout;
+        error( $stderr || 'Unknown error' ) if $rs;
+        return if $rs;
+    }
+
+    for my $port (
+        $::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}, $::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'}, 80, 443, 110, 143, 25, 465, 587, 995, 993, 20,
+        21
+    ) {
+        next unless length $port;
+
+        # Adding rule for logging incoming traffic on on $port
+        my $rs = execute( [ $bin, '-w', '-t', 'filter', '-I', 'IMSCP_INPUT', '-p', 'tcp', '--dport', $port ], \my $stdout, \my $stderr );
+        debug( $stdout ) if length $stdout;
+        error( $stderr || 'Unknown error' ) if $rs;
+        return if $rs;
+
+        # Adding rule for logging outgoing traffic from $port
+        $rs = execute( [ $bin, '-w', '-t', 'filter', '-I', 'IMSCP_OUTPUT', '-p', 'tcp', '--sport', $port ], \$stdout, \$stderr );
+        debug( $stdout ) if length $stdout;
+        error( $stderr || 'Unknown error' ) if $rs;
+        return if $rs;
+    }
+
+    for my $port ( 25, 465, 587 ) {
+        # Adds a rule for logging incoming traffic on $port
+        my $rs = execute( [ $bin, '-w', '-t', 'filter', '-I', 'IMSCP_INPUT', '-p', 'tcp', '--sport', $port ], \my $stdout, \my $stderr );
+        debug( $stdout ) if length $stdout;
+        error( $stderr || 'Unknown error' ) if $rs;
+        return if $rs;
+
+        # Adds a rule for logging outgoing traffic from $port
+        $rs = execute( [ $bin, '-w', '-t', 'filter', '-I', 'IMSCP_OUTPUT', '-p', 'tcp', '--dport', $port ], \$stdout, \$stderr );
+        debug( $stdout ) if length $stdout;
+        error( $stderr || 'Unknown error' ) if $rs;
+        return if $rs;
+    }
+
+    # Adds RETURN target for both the IMSCP_INPUT and IMSCP_OUTPUT chains
+    for my $chain ( qw/ IMSCP_INPUT IMSCP_OUTPUT / ) {
+        my $rs = execute( [ $bin, '-w', '-t', 'filter', '-A', $chain, '-j', 'RETURN' ], \my $stdout, \my $stderr );
+        debug( $stdout ) if length $stdout;
+        error( $stderr || 'Unknown error' ) if $rs;
+        return if $rs;
+    }
+}
+
+=item removeRules( $bin )
+
+ Remove IPv4 and IPv6 packet filter rules
+
+ Param string $bin IPTABLES(8) binary path
+ Return void, raise error on failure
+
+=cut
+
+sub removeRules
+{
+    my ( $bin ) = @_;
+
+    my $rs = execute( "$bin -S | grep --color=never 'IMSCP_\\(INPUT\\|OUTPUT\\)'", \my $stdout, \my $stderr );
+    debug( $stdout ) if $stdout;
+    error( $stderr || 'Unknown error' ) if $rs > 1;
+    return if $rs > 1 || !length $stdout;
+
+    my %data;
+    while ( $stdout =~ /^-(A|N)\s+(((?:IMSCP_)?(?:INPUT|OUTPUT)).*)/gm ) {
+        if ( $1 eq 'A' && index( $3, 'IMSCP' ) != 0 ) {
+            push @{ $data{'delete'} }, $2;
+            next;
+        }
+
+        $data{'flush'}->{$3} = TRUE unless $data{'flush'}->{$3};
+    };
+
+    if ( $data{'delete'} ) {
+        # Deletes rules from both the IMSCP_INPUT and IMSCP_OUTPUT chains
+        for my $rule ( @{ $data{'delete'} } ) {
+            $rs = execute( [ $bin, '-w', '-t', 'filter', '-D', split /\s+/, $rule ], \$stdout, \$stderr );
+            debug( $stdout ) if length $stdout;
+            error( $stderr || 'Unknown error' ) if $rs;
+            return if $rs;
+        }
+    }
+
+    return unless $data{'flush'};
+
+    # Flush and delete chains
+    for my $chain ( keys %{ $data{'flush'} } ) {
+        $rs = execute( [ $bin, '-w', '-t', 'filter', '-F', $chain ], \$stdout, \$stderr );
+        debug( $stdout ) if length $stdout;
+        error( $stderr || 'Unknown error' ) if $rs;
+        return if $rs;
+
+        $rs ||= execute( [ $bin, '-w', '-t', 'filter', '-X', $chain ], \$stdout, \$stderr );
+        debug( $stdout ) if length $stdout;
+        error( $stderr || 'Unknown error' ) if $rs;
+        return if $rs;
+    }
+}
+
+try {
+    $ENV{'LANG'} = 'C.UTF-8';
+    $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+
+    my $basename = basename( $0 );
+    newDebug( $basename . '.log' );
+
+    iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]... add|remove', $basename ) . qq{
+
+Add/Remove IPv4 and IPv6 packet filter rules to track incoming/outgoing traffic.
+
+OPTIONS:
+ -d,    --debug         Enable debug mode.
+ -v,    --verbose       Enable verbose mode.},
+        'debug|d'   => \&iMSCP::Getopt::debug,
+        'verbose|v' => \&iMSCP::Getopt::verbose
+    );
+
+    my ( $action ) = @ARGV;
+    $action && grep ( $_ eq $action, 'add', 'remove' ) or iMSCP::Getopt->showUsage();
+
+    setDebug( iMSCP::Getopt->debug );
+    setVerbose( iMSCP::Getopt->verbose );
+
+    my $bootstrapper = iMSCP::Bootstrapper->getInstance();
+    return unless $bootstrapper->lock( $basename . '.lock', TRUE );
+    $bootstrapper->boot( {
+        config_readonly => TRUE,
+        nolock          => TRUE
+    } );
+
+    my %dispatcher = (
+        add    => sub { removeRules( $_[0] ) || addRules( $_[0] ) },
+        remove => \&removeRules
+    );
+
+    for my $bin ( iMSCP::ProgramFinder::find( 'iptables' ), $::imscpConfig{'IPV6_SUPPORT'} && iMSCP::ProgramFinder::find( 'ip6tables' ) ) {
+        $dispatcher{ $action }->( $bin ) if length $bin;
+    }
+} catch {
+    error( $_ );
+} finally {
+    return unless length getMessageByType( 'error', { amount => 1 } );
+    exit 1 if POSIX::isatty( \*STDERR );
+    require iMSCP::Mail;
+    iMSCP::Mail::sendErrorMessage( join "\n", getMessageByType( 'error', { remove => TRUE } ));
+};
+
+=back
+
+=head1 AUTHOR
+
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
+
+1;
+__END__

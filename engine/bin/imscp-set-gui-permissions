@@ -1,0 +1,115 @@
+#!/usr/bin/perl
+
+=head1 NAME
+
+ imscp-set-gui-permissions Sets i-MSCP GUI permissions
+
+=head1 SYNOPSIS
+
+ imscp-set-gui-permissions [options]...
+
+=cut
+
+# i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+use strict;
+use warnings;
+use File::Basename 'basename';
+use FindBin;
+use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use iMSCP::Boolean;
+use iMSCP::Bootstrapper;
+use iMSCP::Debug qw/ debug error getMessageByType newDebug setDebug setVerbose /;
+use iMSCP::EventManager;
+use iMSCP::Getopt;
+use iMSCP::Servers;
+use iMSCP::Packages;
+use POSIX ();
+use Try::Tiny;
+
+try {
+
+    $ENV{'LANG'} = 'C.UTF-8';
+    $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+
+    # Sets default execution mode
+    $::execmode = 'backend';
+
+    my $basename = basename( $0 );
+    newDebug( $basename . '.log' );
+
+    iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', $basename ) . qq{
+
+Sets i-MSCP GUI permissions.
+
+OPTIONS
+ -s,    --setup           Setup mode.
+ -d,    --debug           Enable debug mode.
+ -v,    --verbose         Enable verbose mode
+ -x,    --fix-permissions Fix permissions recursively.},
+        'setup|s'           => sub { $::execmode = 'setup'; },
+        'debug|d'           => \&iMSCP::Getopt::debug,
+        'verbose|v'         => \&iMSCP::Getopt::verbose,
+        'fix-permissions|x' => \&iMSCP::Getopt::fixPermissions
+    );
+
+    setDebug( iMSCP::Getopt->debug );
+    setVerbose( iMSCP::Getopt->verbose );
+
+    my $bootstrapper = iMSCP::Bootstrapper->getInstance();
+    return unless $bootstrapper->lock( $basename . '.lock', TRUE );
+
+    $bootstrapper->boot( {
+        config_readonly => TRUE,
+        nolock          => TRUE
+    } );
+
+    my @items;
+    for my $server ( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
+        ( my $subref = $server->can( 'setGuiPermissions' ) ) or next;
+        push @items, [ $server, sub { $subref->( $server->factory()); } ];
+    }
+    for my $package ( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
+        ( my $subref = $package->can( 'setGuiPermissions' ) ) or next;
+        push @items, [ $package, sub { $subref->( $package->getInstance()); } ];
+    }
+
+    my ( $count, $countItems ) = ( 1, scalar @items );
+    for my $item ( @items ) {
+        debug( sprintf( 'Setting %s frontEnd permissions', $item->[0] ));
+        printf( "Setting %s frontEnd permissions\t%s\t%s\n", $item->[0], $countItems, $count ) if $::execmode eq 'setup';
+        $item->[1]->();
+        $count++;
+    }
+} catch {
+    error( $_ );
+} finally {
+    return unless length getMessageByType( 'error', { amount => 1 } );
+    exit 1 if POSIX::isatty( \*STDERR );
+    require iMSCP::Mail;
+    iMSCP::Mail::sendErrorMessage( join "\n", getMessageByType( 'error', { remove => TRUE } ));
+};
+
+=head1 AUTHOR
+
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
+
+1;
+__END__

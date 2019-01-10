@@ -1,0 +1,173 @@
+#!/usr/bin/perl
+
+=head1 NAME
+
+ imscp-clients-traffic - Update i-MSCP clients' HTTP, FTP, IMAP/POP and SMTP traffic data.
+
+=head1 SYNOPSIS
+
+ imscp-clients-traffic [OPTION]...
+
+=cut
+
+# i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+use strict;
+use warnings;
+use File::Basename 'basename';
+use FindBin;
+use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use iMSCP::Boolean;
+use iMSCP::Bootstrapper;
+use iMSCP::Config;
+use iMSCP::Database;
+use iMSCP::Debug qw/ debug error getMessageByType newDebug setDebug setVerbose /;
+use iMSCP::Getopt;
+use Servers::httpd;
+use Servers::ftpd;
+use Servers::mta;
+use Servers::po;
+use POSIX ();
+use Try::Tiny;
+
+try {
+    $ENV{'LANG'} = 'C.UTF-8';
+    $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+
+    my $basename = basename( $0 );
+    newDebug( $basename . '.log' );
+
+    iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', $basename ) . qq{
+
+Update i-MSCP clients' HTTP, FTP, IMAP/POP and SMTP traffic data.
+
+OPTIONS:
+ -d,    --debug         Enable debug mode.
+ -v,    --verbose       Enable verbose mode.},
+        'debug|d'   => \&iMSCP::Getopt::debug,
+        'verbose|v' => \&iMSCP::Getopt::verbose
+    );
+
+    setDebug( iMSCP::Getopt->debug );
+    setVerbose( iMSCP::Getopt->verbose );
+
+    my $bootstrapper = iMSCP::Bootstrapper->getInstance();
+    return unless $bootstrapper->lock( $basename . '.lock', TRUE );
+    $bootstrapper->boot( {
+        config_readonly => TRUE,
+        nolock          => TRUE
+    } );
+
+    # Get list of domains for which traffic must be collected
+    my $rows = iMSCP::Database->factory()->getConnector()->run( fixup => sub
+    {
+        $_->selectall_hashref(
+            "
+                SELECT domain_id AS pid, domain_name FROM domain WHERE domain_status <> 'todelete'
+                UNION ALL
+                SELECT domain_id AS pid, alias_name AS domain_name FROM domain_aliasses WHERE alias_status <> 'todelete'
+                UNION ALL
+                SELECT domain_id AS pid, CONCAT(subdomain_name, '.', domain_name) AS domain_name
+                FROM subdomain
+                JOIN domain USING (domain_id)
+                WHERE subdomain_status <> 'todelete'
+                UNION ALL
+                SELECT domain_id AS pid, CONCAT(subdomain_alias_name, '.', alias_name) AS domain_name
+                FROM subdomain_alias
+                JOIN domain_aliasses USING (alias_id)
+                WHERE subdomain_alias_status <> 'todelete'
+            ",
+            'domain_name'
+        );
+    } );
+
+    return unless %{ $rows };
+
+    # Collects traffic data in intermediate databases. These intermediate
+    # databases will be cleared out on success and kept on failure for later
+    # processing.
+    my %db;
+    for my $server ( 'Servers::httpd', 'Servers::ftpd', 'Servers::mta', 'Servers::po' ) {
+        last unless try {
+            next unless my $subref = $server->can( 'getTraffic' );
+            tie %{ $db{$server} }, 'iMSCP::Config', fileName => "$::imscpConfig{'IMSCP_HOMEDIR'}/$server-vrl-traff.db", nodie => TRUE;
+            %{ $db{$server} } = ( ( map { $_ => 0 } keys %{ $rows } ), %{ $db{$server} } );
+            $subref->( $server->factory(), $db{$server} );
+            TRUE;
+        } catch {
+            error( sprintf( "Couldn't collect traffic data for the %s server %s", $server, $_ ));
+            FALSE;
+        };
+    }
+
+    # Updates traffic data in i-MSCP database
+    my $timestamp = time();
+    $timestamp -= ( $timestamp % 1800 ); # Floor down for the last half'n hour
+    for my $domain ( keys %{ $rows } ) {
+        next unless $db{'Servers::httpd'}->{$domain} > 0 || $db{'Servers::ftpd'}->{$domain} > 0 || $db{'Servers::mta'}->{$domain} > 0
+            || $db{'Servers::po'}->{$domain} > 0;
+
+        next unless try {
+            iMSCP::Database->factory()->getConnector()->run( fixup => sub
+            {
+                $_->do(
+                    '
+                        INSERT INTO domain_traffic (
+                            domain_id, dtraff_time, dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop
+                        ) VALUES ( ?, ?, ?, ?, ?, ? ) ON DUPLICATE KEY UPDATE
+                            dtraff_web = dtraff_web + ?, dtraff_ftp = dtraff_ftp + ?, dtraff_mail = dtraff_mail + ?, dtraff_pop = dtraff_pop + ?
+                    ',
+                    undef, $rows->{$domain}->{'pid'}, $timestamp, $db{'Servers::httpd'}->{$domain}, $db{'Servers::ftpd'}->{$domain},
+                    $db{'Servers::mta'}->{$domain}, $db{'Servers::po'}->{$domain}, $db{'Servers::httpd'}->{$domain}, $db{'Servers::ftpd'}->{$domain},
+                    $db{'Servers::mta'}->{$domain}, $db{'Servers::po'}->{$domain}
+                );
+            } );
+            TRUE;
+        } catch {
+            error( sprintf( "Couldn't update traffic data for the %s domain aggregate: %s, $domain, $_" ));
+            FALSE;
+        };
+
+        $db{'Servers::httpd'}->{$domain} = 0;
+        $db{'Servers::ftpd'}->{$domain} = 0;
+        $db{'Servers::mta'}->{$domain} = 0;
+        $db{'Servers::po'}->{$domain} = 0;
+    }
+
+    # Delete intermediate traffic database
+    for my $server ( 'Servers::httpd', 'Servers::ftpd', 'Servers::mta', 'Servers::po' ) {
+        untie( %{ $db{$server} } );
+        iMSCP::File->new( filename => "$::imscpConfig{'IMSCP_HOMEDIR'}/$server-vrl-traff.db" )->delFile();
+    }
+} catch {
+    error( $_ );
+} finally {
+    return unless length getMessageByType( 'error', { amount => 1 } );
+    exit 1 if POSIX::isatty( \*STDERR );
+    require iMSCP::Mail;
+    iMSCP::Mail::sendErrorMessage( join "\n", getMessageByType( 'error', { remove => TRUE } ));
+};
+
+=head1 AUTHOR
+
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
+
+1;
+__END__

@@ -39,7 +39,6 @@ use iMSCP::Database;
 use iMSCP::Debug qw/ debug error getMessageByType newDebug setDebug setVerbose /;
 use iMSCP::Execute qw/ escapeShell execute /;
 use iMSCP::File;
-use iMSCP::Dir;
 use iMSCP::Getopt;
 use iMSCP::Umask '$UMASK';
 use POSIX ();
@@ -123,7 +122,7 @@ sub _backupConfig
 
 =item backup( )
 
- Backup database and configuration file
+ Backup configuration files and database
 
  Return void, raise an error or die on failure
 
@@ -178,7 +177,7 @@ OPTIONS:
 } catch {
     error( $_ );
 } finally {
-    return unless getMessageByType( 'error', { amount => 1 } );
+    return unless length getMessageByType( 'error', { amount => 1 } );
     exit 1 if POSIX::isatty( \*STDERR );
     require iMSCP::Mail;
     iMSCP::Mail::sendErrorMessage( join "\n", getMessageByType( 'error', { remove => TRUE } ));

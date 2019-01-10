@@ -1,0 +1,116 @@
+#!/usr/bin/perl
+
+=head1 NAME
+
+ imscp-mountall - Mount or umount filesystems by reading entries from i-MSCP fstab-like file
+
+=head1 SYNOPSIS
+
+ imscp-mountall [OPTION]... start|stop
+
+=cut
+
+# i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+use strict;
+use warnings;
+use File::Basename 'basename';
+use FindBin;
+use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use iMSCP::Boolean;
+use iMSCP::Bootstrapper;
+use iMSCP::Debug qw/ error getMessageByType newDebug setDebug setVerbose /;
+use iMSCP::Getopt;
+use iMSCP::Mount qw/ mount umount /;
+use POSIX ();
+use Try::Tiny;
+
+try {
+    $ENV{'LANG'} = 'C.UTF-8';
+    $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+
+    my $basename = basename( $0 );
+    newDebug( $basename . '.log' );
+
+    iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]... start|stop', $basename ) . qq{
+
+Mount or umount filesystems by reading entries from i-MSCP fstab-like file.
+
+This script doesn't check for already mounted filesystems. If it is run twice
+for the same action, there will be duplicate mounts.
+
+This script shouldn't be run manually. It is best run through the
+imscp_mountall service.
+
+OPTIONS:
+ -d,    --debug         Enable debug mode.
+ -v,    --verbose       Enable verbose mode.},
+        'debug|d'   => \&iMSCP::Getopt::debug,
+        'verbose|v' => \&iMSCP::Getopt::verbose
+    );
+
+    my ( $action ) = @ARGV;
+    defined $action && $action =~ /^(?:start|stop)$/ or iMSCP::Getopt->showUsage();
+
+    setDebug( iMSCP::Getopt->debug );
+    setVerbose( iMSCP::Getopt->verbose );
+
+    my $bootstrapper = iMSCP::Bootstrapper->getInstance();
+    return unless $bootstrapper->lock( $basename . '.lock', TRUE );
+    $bootstrapper->boot( {
+        config_readonly => TRUE,
+        nolock          => TRUE
+    } );
+
+    my $fstab = "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf";
+    return unless -f $fstab;
+
+    open my $fh, '<', $fstab or die( sprintf( "Couldn't open %s: %s", $fstab, $! ));
+    while ( <$fh> ) {
+        next if /^(?:#|$)/; # Ignore comment and empty lines
+        chomp;
+        my $fields;
+        @{ $fields }{ qw/ fs_spec fs_file fs_vfstype fs_mntops ignore_failures / } = split;
+
+        if ( $action eq 'start' ) {
+            next if $fields->{'fs_mntops'} =~ /\bnoauto\b/;
+            last if mount( $fields );
+            next;
+        }
+
+        last if umount( $fields->{'fs_file'} );
+    }
+
+    close( $fh );
+} catch {
+    error( $_ );
+} finally {
+    return unless length getMessageByType( 'error', { amount => 1 } );
+    exit 1 if POSIX::isatty( \*STDERR );
+    require iMSCP::Mail;
+    iMSCP::Mail::sendErrorMessage( join "\n", getMessageByType( 'error', { remove => TRUE } ));
+};
+
+=head1 AUTHOR
+
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
+
+1;
+__END__

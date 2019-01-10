@@ -29,21 +29,18 @@
 
 use strict;
 use warnings;
+use File::Basename 'basename';
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
-use File::Basename;
 use iMSCP::Boolean;
 use iMSCP::Bootstrapper;
 use iMSCP::Database;
-use iMSCP::Debug qw/ debug error getMessageByType setVerbose newDebug /;
+use iMSCP::Debug qw/ debug error getMessageByType setDebug setVerbose newDebug /;
 use iMSCP::Execute 'execute';
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
-use iMSCP::Mail 'sendErrorMessage';
+use POSIX ();
 use Try::Tiny;
-
-$ENV{'LANG'} = 'C.UTF-8';
-$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
 =over
 
@@ -78,7 +75,7 @@ sub _parseTrafficData
     }
 }
 
-=item getTrafficData( $bin, \%container )
+=item getTraffic( $bin, \%container )
 
  Get traffic data from i-MSCP IPv4 or IPv6 input/output chains
 
@@ -88,7 +85,7 @@ sub _parseTrafficData
 
 =cut
 
-sub getTrafficData
+sub getTraffic
 {
     my ( $bin, $container ) = @_;
 
@@ -98,50 +95,54 @@ sub getTrafficData
     );
 
     # Gets traffic data for both input/output chains and reset them.
-    while ( my ( $chain, $stdout ) = each( %{chains} ) ) {
+    while ( my ( $chain, $stdout ) = each( %chains ) ) {
         execute( [ $bin, '-t', 'filter', '-w', '-Z', '-n', '-v', '-x', '-L', $chain ], $stdout, \my $stderr );
         debug( ${ $stdout } ) if length ${ $stdout };
         error( $stderr ) if length $stderr; # No chain found (or any other error)...
     }
 
-    # Parse input/output traffic data
     _parseTrafficData( \$input, $container->{'in'} ) if length $input;
     _parseTrafficData( \$output, $container->{'out'} ) if length $output;
 }
 
-newDebug( 'imscp-server-traffic.log' );
+try {
+    $ENV{'LANG'} = 'C.UTF-8';
+    $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq{
+    my $basename = basename( $0 );
+    newDebug( $basename . '.log' );
+
+    iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', $basename ) . qq{
 
 Update server' traffic data.
 
 OPTIONS:
  -d,    --debug         Enable debug mode.
  -v,    --verbose       Enable verbose mode.},
-    'debug|d'   => \&iMSCP::Getopt::debug,
-    'verbose|v' => \&iMSCP::Getopt::verbose
-);
+        'debug|d'   => \&iMSCP::Getopt::debug,
+        'verbose|v' => \&iMSCP::Getopt::verbose
+    );
 
-setVerbose( iMSCP::Getopt->verbose );
+    setDebug( iMSCP::Getopt->debug );
+    setVerbose( iMSCP::Getopt->verbose );
 
-my $bootstrapper = iMSCP::Bootstrapper->getInstance();
-exit unless $bootstrapper->lock( '/var/lock/imscp-server-traffic.lock', TRUE );
-$bootstrapper->boot( {
-    config_readonly => TRUE,
-    nolock          => TRUE
-} );
+    my $bootstrapper = iMSCP::Bootstrapper->getInstance();
+    return unless $bootstrapper->lock( $basename . '.lock', TRUE );
+    $bootstrapper->boot( {
+        config_readonly => TRUE,
+        nolock          => TRUE
+    } );
 
-try {
     my %data = ( 'in', { qw/ all 0 smtp 0 po 0 web 0 / }, 'out', { qw/ all 0 smtp 0 po 0 web 0 / } );
 
     for my $bin ( iMSCP::ProgramFinder::find( 'iptables' ), $::imscpConfig{'IPV6_SUPPORT'} && iMSCP::ProgramFinder::find( 'ip6tables' ) ) {
-        getTrafficData( $bin, \%data ) if $bin;
+        getTraffic( $bin, \%data ) if $bin;
     }
 
     return unless $data{'in'}->{'all'} > 0 || $data{'out'}->{'all'} > 0;
 
-    # Update traffic data in database
-    iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+    iMSCP::Database->factory()->getConnector()->run( fixup => sub
+    {
         my $timestamp = time();
         $timestamp -= ( $timestamp % 1800 ); # Floor down for the last half'n hour
         $_->do(
@@ -166,9 +167,10 @@ try {
 } catch {
     error( $_ );
 } finally {
-    if ( my @errors = getMessageByType( 'error', { remove => TRUE } ) ) {
-        sendErrorMessage( join "\n", @errors );
-    }
+    return unless length getMessageByType( 'error', { amount => 1 } );
+    exit 1 if POSIX::isatty( \*STDERR );
+    require iMSCP::Mail;
+    iMSCP::Mail::sendErrorMessage( join "\n", getMessageByType( 'error', { remove => TRUE } ));
 };
 
 =back

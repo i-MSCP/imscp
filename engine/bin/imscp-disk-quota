@@ -2,11 +2,11 @@
 
 =head1 NAME
 
- imscp-dsk-quota Computes customer's quota data.
+ imscp-disk-quota Update quota data for all domain aggregates.
 
 =head1 SYNOPSIS
 
- imscp-dsk-quota [options]...
+ imscp-disk-quota [OPTION]...
 
 =cut
 
@@ -32,21 +32,18 @@
 
 use strict;
 use warnings;
-use File::Basename;
+use File::Basename 'basename';
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
 use iMSCP::Boolean;
 use iMSCP::Bootstrapper;
 use iMSCP::Database;
-use iMSCP::Debug qw/ error getMessageByType newDebug setVerbose /;
+use iMSCP::Debug qw/ error getMessageByType newDebug setDebug setVerbose /;
 use iMSCP::Execute 'execute';
 use iMSCP::Getopt;
-use iMSCP::Mail 'sendErrorMessage';
+use POSIX ();
 use Servers::mta;
 use Try::Tiny;
-
-$ENV{'LANG'} = 'C.UTF-8';
-$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
 =over
 
@@ -107,18 +104,17 @@ sub _getSqlDiskSpaceUsage
 {
     my ( $dbName ) = @_;
 
-    my $bytes = 0;
-
     try {
-        my $data = iMSCP::Database->factory()->getConnector()->run( sub {
+        my $data = iMSCP::Database->factory()->getConnector()->run( fixup => sub {
             $_->selectall_arrayref( "SHOW TABLE STATUS FROM @{ [ $_->quote_identifier( $dbName ) ] }", { Slice => {} } );
         } );
+        my $bytes = 0;
         $bytes += $_->{'Data_length'}+$_->{'Index_length'} for @{ $data };
+        $bytes;
     } catch {
         /unknown database/i or die $_;
+        0;
     };
-
-    $bytes;
 }
 
 =item _updateDomainQuotaDataInDatabase( \%data, $webDiskSpaceUsage, $mailDiskSpaceUsage, $sqlDiskSpaceUsage )
@@ -129,7 +125,7 @@ sub _getSqlDiskSpaceUsage
  Param int $webDiskSpaceUsage Web disk space usage in bytes
  Param int $mailDiskSpaceUsage Mail disk space usage in bytes
  Param int $sqlDiskSpaceUsage SQL disk space usage in bytes
- Return int Disk space usage in bytes, die on failure
+ Return void, die on failure
 
 =cut
 
@@ -145,7 +141,6 @@ sub _updateDomainQuotaDataInDatabase
         );
         $_->do( 'UPDATE quotatallies SET bytes_in_used = ? WHERE name = ?', undef, $diskSpaceUsage, $data->{'domain_name'} );
     } );
-    return;
 }
 
 =item updateDomainQuotaData( \%data )
@@ -193,30 +188,35 @@ sub updateDomainQuotaData
     _updateDomainQuotaDataInDatabase( $data, $webDiskSpaceUsage, $mailDiskSpaceUsage, $sqlDiskSpaceUsage );
 }
 
-newDebug( 'imscp-dsk-quota.log' );
+try {
+    $ENV{'LANG'} = 'C.UTF-8';
+    $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq{
+    my $basename = basename( $0 );
+    newDebug( $basename . '.log' );
+
+    iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', $basename ) . qq{
 
 Update quota data for all domain aggregates.
 
 OPTIONS:
  -d,    --debug         Enable debug mode.
  -v,    --verbose       Enable verbose mode.},
-    'debug|d'   => \&iMSCP::Getopt::debug,
-    'verbose|v' => \&iMSCP::Getopt::verbose
-);
+        'debug|d'   => \&iMSCP::Getopt::debug,
+        'verbose|v' => \&iMSCP::Getopt::verbose
+    );
 
-setVerbose( iMSCP::Getopt->verbose );
+    setDebug( iMSCP::Getopt->debug );
+    setVerbose( iMSCP::Getopt->verbose );
 
-my $bootstrapper = iMSCP::Bootstrapper->getInstance();
-exit unless $bootstrapper->lock( '/var/lock/imscp-dsk-quota.lock', 'nowait' );
+    my $bootstrapper = iMSCP::Bootstrapper->getInstance();
+    exit unless $bootstrapper->lock( $basename . '.lock', TRUE );
 
-$bootstrapper->boot( {
-    nolock          => TRUE,
-    config_readonly => TRUE
-} );
+    $bootstrapper->boot( {
+        nolock          => TRUE,
+        config_readonly => TRUE
+    } );
 
-try {
     my $rows = iMSCP::Database->factory()->getConnector()->run( fixup => sub {
         $_->selectall_arrayref( "SELECT domain_id, domain_name FROM domain WHERE domain_status <> 'todelete'", { Slice => {} } );
     } );
@@ -224,15 +224,16 @@ try {
         try {
             updateDomainQuotaData( $data );
         } catch {
-            error( sprintf( "Couldn't update quota data for the '%s' domain aggregate: %s", $data->{'domain_name'}, $_ ), '' );
-        }
+            error( sprintf( "Couldn't update quota data for the '%s' domain aggregate: %s", $data->{'domain_name'}, $_ ));
+        };
     }
 } catch {
-    error( $_, '' );
+    error( $_ );
 } finally {
-    if ( my @errors = getMessageByType( 'error', { remove => TRUE } ) ) {
-        sendErrorMessage( "@errors" );
-    }
+    return unless length getMessageByType( 'error', { amount => 1 } );
+    exit 1 if !POSIX::isatty( \*STDERR );
+    require iMSCP::Mail;
+    iMSCP::Mail::sendErrorMessage( join "\n", getMessageByType( 'error', { remove => TRUE } ));
 };
 
 =back

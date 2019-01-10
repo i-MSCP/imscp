@@ -1,5 +1,15 @@
 #!/usr/bin/perl
 
+=head1 NAME
+
+ imscp-vacation - Send vacation message
+
+=head1 SYNOPSIS
+
+ imscp-backend-rqst [options]...
+
+=cut
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
@@ -19,28 +29,32 @@
 
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
-use Encode qw/ encode /;
+use Encode 'encode';
+use iMSCP::Boolean;
 use iMSCP::Bootstrapper;
+use iMSCP::Debug qw/ setDebug setVerbose /;
 use Mail::Address;
 use MIME::Parser;
 use MIME::Entity;
+use Try::Tiny;
 
-iMSCP::Bootstrapper->getInstance()->boot(
-    {
-        mode            => 'backend',
-        nolock          => 1,
-        norequirements  => 1,
-        config_readonly => 1
-    }
-);
+try {
+    $ENV{'LANG'} = 'C.UTF-8';
+    $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
-eval {
-    my $dbh = iMSCP::Database->factory()->getRawDb();
-    $dbh->{'RaiseError'} = 1;
-    $dbh->do( "DELETE FROM `autoreplies_log` WHERE ADDTIME(`time`, '24:00:00') < NOW()" );
+    setDebug( FALSE );
+    setVerbose( FALSE );
+
+    iMSCP::Bootstrapper->getInstance()->boot( {
+        nolock          => TRUE,
+        norequirements  => TRUE,
+        config_readonly => TRUE
+    } );
+
+    my $conn = iMSCP::Database->factory()->getConnector();
+    $conn->run( fixup => sub { $_->do( "DELETE FROM `autoreplies_log` WHERE ADDTIME(`time`, '24:00:00') < NOW()" ); } );
 
     ( my $from = $ARGV[0] ) =~ s/imscp-arpl\.//;
-
     my $message = do {
         local $/;
         <STDIN>;
@@ -48,42 +62,41 @@ eval {
 
     # Setup MIME parser
     my $mimeParser = MIME::Parser->new();
-    $mimeParser->output_to_core( 1 );
-    $mimeParser->tmp_to_core( 1 );
+    $mimeParser->output_to_core( TRUE );
+    $mimeParser->tmp_to_core( TRUE );
 
     # Parse MIME message
     my $mimeEntity = $mimeParser->parse_data( $message ) or die( "Couldn't parse MIME message" );
     undef $mimeParser;
 
     # Retrieve MIME headers
-    my $mimeHeaders = $mimeEntity->head() or die( "Couldn't get MIME headers" );
+    my $headers = $mimeEntity->head() or die( "Couldn't get MIME headers" );
     undef $mimeEntity;
 
     # Return early if needed
-    return if ( $mimeHeaders->get( 'x-spam-flag' ) && $mimeHeaders->get( 'x-spam-flag' ) =~ /yes/i )
-        || ( $mimeHeaders->get( 'x-mailer' ) && $mimeHeaders->get( 'x-mailer' ) =~ /Auto-Reply/i )
-        || ( $mimeHeaders->get( 'auto-submitted' ) && $mimeHeaders->get( 'auto-submitted' ) =~ /auto-replied/i )
-        || ( $mimeHeaders->get( 'sender' ) && $mimeHeaders->get( 'sender' ) =~ /autoresponder/i )
-        || $mimeHeaders->get( 'x-autoresponse-from' );
+    return if ( $headers->get( 'x-spam-flag' ) && $headers->get( 'x-spam-flag' ) =~ /yes/i )
+        || ( $headers->get( 'x-mailer' ) && $headers->get( 'x-mailer' ) =~ /Auto-Reply/i )
+        || ( $headers->get( 'auto-submitted' ) && $headers->get( 'auto-submitted' ) =~ /auto-replied/i )
+        || ( $headers->get( 'sender' ) && $headers->get( 'sender' ) =~ /autoresponder/i )
+        || $headers->get( 'x-autoresponse-from' );
 
     # Get recipient address
-    my ($to) = Mail::Address->parse( $mimeHeaders->get( 'from' )) or die( "Couldn't parse 'From' MIME header" );
+    my ( $to ) = Mail::Address->parse( $headers->get( 'from' )) or die( "Couldn't parse 'From' MIME header" );
     $to = $to->address();
 
     # Get original subject
-    my $subject = $mimeHeaders->get( 'subject' );
-    undef $mimeHeaders;
+    my $subject = $headers->get( 'subject' );
+    undef $headers;
 
-    my $val = $dbh->selectrow_array(
-        "SELECT COUNT(`time`) FROM `autoreplies_log` WHERE `from` = ? AND `to` = ? AND ADDTIME(`time`, '24:00:00') > NOW()",
-        undef, $from, $to
-    );
+    my ( $val ) = @{ $conn->run( fixup => sub { $_->selectcol_arrayref(
+        "SELECT COUNT(`time`) FROM `autoreplies_log` WHERE `from` = ? AND `to` = ? AND ADDTIME(`time`, '24:00:00') > NOW()", undef, $from, $to
+    ); } ) };
 
     return if $val;
 
-    $val = $dbh->selectrow_array(
+    ( $val ) = @{ $conn->run( fixup => sub { $_->selectcol_arrayref(
         'SELECT mail_auto_respond_text FROM mail_users WHERE mail_addr = ? AND mail_auto_respond = 1', undef, $from
-    );
+    ); } ) };
 
     return unless $val;
 
@@ -118,9 +131,17 @@ eval {
     close $fh;
     undef $mimeEntity;
 
-    $dbh->do( 'INSERT INTO `autoreplies_log` (`time`, `from`, `to`) VALUES (NOW(),?,?)', undef, $from, $to );
-};
-if ( $@ ) {
-    print STDERR $@;
+    $conn->run( fixup => sub { $_->do( 'INSERT INTO `autoreplies_log` (`time`, `from`, `to`) VALUES (NOW(),?,?)', undef, $from, $to ); } );
+} catch {
+    print STDERR $_;
     exit 1;
-}
+};
+
+=head1 AUTHOR
+
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
+
+1;
+__END__

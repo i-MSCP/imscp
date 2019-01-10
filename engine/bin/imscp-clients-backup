@@ -281,7 +281,7 @@ OPTIONS:
 } catch {
     error( $_ );
 } finally {
-    return unless getMessageByType( 'error', { amount => 1 } );
+    return unless length getMessageByType( 'error', { amount => 1 } );
     exit 1 if POSIX::isatty( \*STDERR );
     require iMSCP::Mail;
     iMSCP::Mail::sendErrorMessage( join "\n", getMessageByType( 'error', { remove => TRUE } ));
