@@ -451,6 +451,7 @@
         <package>pbuilder</package>
         <package>pbzip2</package>
         <package>pigz</package>
+        <package>pixz</package>
         <package>ssh</package>
         <package>sudo</package>
         <package>tar</package>
