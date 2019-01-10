@@ -1,0 +1,193 @@
+#!/usr/bin/perl
+
+=head1 NAME
+
+ imscp-backup-imscp Backup control panel data (configuration files and database).
+
+=head1 SYNOPSIS
+
+ imscp-backup-imscp [OPTION]...
+
+=cut
+
+# i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010-2019 by internet Multi Server Control Panel
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+use strict;
+use warnings;
+use File::Basename 'basename';
+use File::Spec;
+use FindBin;
+use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use iMSCP::Boolean;
+use iMSCP::Bootstrapper;
+use iMSCP::Database;
+use iMSCP::Debug qw/ debug error getMessageByType newDebug setDebug setVerbose /;
+use iMSCP::Execute qw/ escapeShell execute /;
+use iMSCP::File;
+use iMSCP::Dir;
+use iMSCP::Getopt;
+use iMSCP::Umask '$UMASK';
+use POSIX ();
+use Try::Tiny;
+
+my %CMD = (
+    bzip2  => { qw% path /bin/bzip2 ext bz2 % },
+    pbzip2 => { qw% path /usr/bin/pbzip2 ext bz2 % },
+    gzip   => { qw% path /bin/gzip ext gz % },
+    pigz   => { qw% path /usr/bin/pigz ext gz % },
+    lzma   => { qw% path /usr/bin/lzma ext lzma % },
+    xz     => { qw% path /usr/bin/xz ext xz % },
+    pixz   => { qw% path /usr/bin/pixz ext xz % }
+);
+
+=over
+
+=item _backupDatabase( )
+
+ Backup control panel database
+
+ Return void, raise an error or die on failure
+
+=cut
+
+sub _backupDatabase
+{
+    iMSCP::Database->factory()->dumpdb( $::imscpConfig{'DATABASE_NAME'}, "$::imscpConfig{'ROOT_DIR'}/backups" );
+
+    # Encode slashes as SOLIDUS unicode character
+    # Encode dots as Full stop unicode character
+    ( my $dbName = $::imscpConfig{'DATABASE_NAME'} ) =~ s%([./])%{ '/', '@002f', '.', '@002e' }->{$1}%ge;
+    my $date = POSIX::strftime( '%Y.%m.%d-%H-%M', localtime());
+    return if iMSCP::File->new( filename => $::imscpConfig{'ROOT_DIR'} . '/backups/' . $dbName . '.sql' )->moveFile(
+        $::imscpConfig{'ROOT_DIR'} . '/backups/' . $dbName . '-' . $date . '.sql'
+    );
+
+    return if $::imscpConfig{'BACKUP_CMP_PROG'} eq 'no';
+
+    my $rs = execute(
+        [
+            $CMD{$::imscpConfig{'BACKUP_CMP_PROG'}}->{'path'}, ( $::imscpConfig{'BACKUP_CMP_PROG'} ne 'pixz' ? '--force' : () ),
+            ( grep ( $_ eq $::imscpConfig{'BACKUP_CMP_PROG'}, 'pbzip2', 'pigz', 'pixz' ) ? "-p$::imscpConfig{'BACKUP_CMP_MCORES'}" : () ),
+            "-$::imscpConfig{'BACKUP_CMP_LEVEL'}", $::imscpConfig{'ROOT_DIR'} . '/backups/' . $dbName . '-' . $date . '.sql'
+        ],
+        \my $stdout,
+        \my $stderr
+    );
+    debug( $stdout ) if $stdout;
+    error( sprintf( "Couldn't compress the '%s' database dump: %s", "$dbName-$date.sql", $stderr || 'Unknown error' )) if $rs;
+}
+
+=item _backupConfig( )
+
+ Backup control panel configuration files
+
+ Return void, raise an error on failure
+
+=cut
+
+sub _backupConfig
+{
+    local $UMASK = 077;
+    my $arch = "config-backup-@{ [ POSIX::strftime( '%Y.%m.%d-%H-%M', localtime ) ] }.tar";
+    my @command = (
+        '/bin/tar', '--create', '--preserve-permissions', '--exclude=?*[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]',
+        '--directory', escapeShell( $::imscpConfig{'CONF_DIR'} ), '.',
+        ( $::imscpConfig{'BACKUP_CMP_PROG'} eq 'no'
+            ? ( '--file', escapeShell( "$::imscpConfig{'ROOT_DIR'}/backups/$arch" ) )
+            : ( '|', $CMD{$::imscpConfig{'BACKUP_CMP_PROG'}}->{'path'},
+                ( grep ( $_ eq $::imscpConfig{'BACKUP_CMP_PROG'}, 'pbzip2', 'pigz', 'pixz' ) ? "-p$::imscpConfig{'BACKUP_CMP_MCORES'}" : () ),
+                "-$::imscpConfig{'BACKUP_CMP_LEVEL'}",
+                '>', escapeShell( "$::imscpConfig{'ROOT_DIR'}/backups/$arch.$CMD{$::imscpConfig{'BACKUP_CMP_PROG'}}->{'ext'}" )
+            )
+        )
+    );
+    my $rs = execute( "@command", \my $stdout, \my $stderr );
+    debug( $stdout ) if $stdout;
+    error( sprintf( "Couldn't backup control panel configuration files: %s", $stderr || 'Unknown error' )) if $rs > 1;
+}
+
+=item backup( )
+
+ Backup database and configuration file
+
+ Return void, raise an error or die on failure
+
+=cut
+
+sub backup
+{
+    return unless $::imscpConfig{'BACKUP_CP'} eq 'yes';
+
+    die( sprintf( "Missing or invalid 'BACKUP_CMP_PROG' configuration parameter" )) unless grep (
+        $_ eq $::imscpConfig{'BACKUP_CMP_PROG'}, keys %CMD, 'no'
+    );
+
+    if ( $::imscpConfig{'BACKUP_CMP_PROG'} ne 'no' ) {
+        die( sprintf( "Missing or invalid 'BACKUP_CMP_LEVEL' configuration parameter" )) if $::imscpConfig{'BACKUP_CMP_LEVEL'} !~ /^[1-9]$/;
+        die( sprintf( "Missing or invalid 'BACKUP_CMP_MCORES' configuration parameter" )) if $::imscpConfig{'BACKUP_CMP_MCORES'} !~ /^[1-9]$/;
+    }
+
+    _backupConfig();
+    _backupDatabase();
+}
+
+try {
+    $ENV{'LANG'} = 'C.UTF-8';
+    $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+
+    my $basename = basename( $0 );
+    newDebug( $basename . '.log' );
+
+    iMSCP::Getopt->parseNoDefault( sprintf( "Usage: perl %s [OPTION]...", $basename ) . qq{
+
+Backup control panel data (configuration files and database).
+
+OPTIONS:
+ -v,    --verbose       Enable verbose mode.},
+        'debug|d'   => \&iMSCP::Getopt::debug,
+        'verbose|v' => \&iMSCP::Getopt::verbose
+    );
+
+    setDebug( iMSCP::Getopt->debug );
+    setVerbose( iMSCP::Getopt->verbose );
+
+    my $bootstrapper = iMSCP::Bootstrapper->getInstance();
+    return unless $bootstrapper->lock( $basename . '.lock', TRUE );
+
+    $bootstrapper->boot( {
+        config_readonly => TRUE,
+        nolock          => TRUE
+    } );
+
+    backup();
+} catch {
+    error( $_ );
+} finally {
+    return unless getMessageByType( 'error', { amount => 1 } );
+    exit 1 if POSIX::isatty( \*STDERR );
+    require iMSCP::Mail;
+    iMSCP::Mail::sendErrorMessage( join "\n", getMessageByType( 'error', { remove => TRUE } ));
+};
+
+=back
+
+=head1 AUTHOR
+
+ i-MSCP Team <team@i-mscp.net>
+
+=cut

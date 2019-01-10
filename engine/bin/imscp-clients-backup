@@ -1,0 +1,299 @@
+#!/usr/bin/perl
+
+=head1 NAME
+
+ imscp-clients-backup Backup client data (Web data, mail data and databases).
+
+=head1 SYNOPSIS
+
+ imscp-clients-backup [OPTION]...
+
+=cut
+
+# i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+use strict;
+use warnings;
+use File::Basename 'basename';
+use File::Spec;
+use FindBin;
+use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use iMSCP::Bootstrapper;
+use iMSCP::Boolean;
+use iMSCP::Debug qw/ debug error getMessageByType newDebug setDebug setVerbose /;
+use iMSCP::Dir;
+use iMSCP::Execute qw/ escapeShell execute /;
+use iMSCP::Getopt;
+use iMSCP::Umask '$UMASK';
+use Servers::mta;
+use POSIX ();
+use Try::Tiny;
+
+my %CMD = (
+    bzip2  => { qw% path /bin/bzip2 ext bz2 % },
+    pbzip2 => { qw% path /usr/bin/pbzip2 ext bz2 % },
+    gzip   => { qw% path /bin/gzip ext gz % },
+    pigz   => { qw% path /usr/bin/pigz ext gz % },
+    lzma   => { qw% path /usr/bin/lzma ext lzma % },
+    xz     => { qw% path /usr/bin/xz ext xz % },
+    pixz   => { qw% path /usr/bin/pixz ext xz % }
+);
+
+=over
+
+=item backupDatabases( $id, $dir )
+
+ Backup client databases
+
+ Param string $id Domain aggregate unique identifier
+ Param string $dir Backup directory path
+ Return void, raise an error or die failure
+
+=cut
+
+sub _backupDatabases
+{
+    my ( $id, $dir ) = @_;
+
+    my $db = iMSCP::Database->factory();
+    my $rows = $db->getConnector()->run( fixup => sub {
+        $_->selectall_arrayref( 'SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?', { Slice => {} }, undef, $id );
+    } );
+
+    for my $row ( @{ $rows } ) {
+        next unless try {
+            $db->dumpdb( $row->{'sqld_name'}, $dir );
+            TRUE;
+        } catch {
+            error( $_ );
+            FALSE;
+        };
+
+        next $::imscpConfig{'BACKUP_CMP_PROG'} eq 'no';
+
+        # Encode slashes as SOLIDUS unicode character
+        # Encode dots as Full stop unicode character
+        ( my $dbName = $row->{'sqld_name'} ) =~ s%([./])%{ '/', '@002f', '.', '@002e' }->{$1}%ge;
+        my $rs = execute(
+            [
+                $CMD{$::imscpConfig{'BACKUP_CMP_PROG'}}->{'path'}, ( $::imscpConfig{'BACKUP_CMP_PROG'} ne 'pixz' ? '--force' : () ),
+                ( grep ( $_ eq $::imscpConfig{'BACKUP_CMP_PROG'}, 'pbzip2', 'pigz', 'pixz' ) ? "-p$::imscpConfig{'BACKUP_CMP_MCORES'}" : () ),
+                "-$::imscpConfig{'BACKUP_CMP_LEVEL'}", "$dbName.sql"
+            ],
+            \my $stdout,
+            \my $stderr
+        );
+        debug( $stdout ) if $stdout;
+        error( sprintf( "Couldn't compress the '%s' client database dump: %s", "$dbName.sql", $stderr || 'Unknown error' )) if $rs;
+    }
+}
+
+=item _backupMaildirs( $id, $dir, $cmp, $level, $ext )
+
+ Backup client mail directories
+
+ Param string $id Domain aggreate unique identifier
+ Param string $dir Backup directory
+ Return void, raise an error on failure
+
+=cut
+
+sub _backupMaildirs
+{
+    my ( $id, $dir ) = @_;
+
+    my @domains = iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+        @{ $_->selectcol_arrayref(
+            "
+                SELECT domain_name FROM domain WHERE domain_id = ? AND domain_status <> 'todelete'
+                UNION ALL
+                SELECT CONCAT(t1.subdomain_name, '.', t2.domain_name) AS domain_name
+                FROM subdomain AS t1
+                JOIN domain AS t2 USING(domain_id)
+                WHERE t1.domain_id = ?
+                AND t1.subdomain_status <> 'todelete'
+                UNION ALL
+                SELECT alias_name AS domain_name FROM domain_aliasses WHERE domain_id = ? AND alias_status <> 'todelete'
+                UNION ALL
+                SELECT CONCAT(t1.subdomain_alias_name, '.', t2.alias_name) AS domain_name
+                FROM subdomain_alias AS t1
+                JOIN domain_aliasses AS t2 USING(alias_id)
+                WHERE t1.domain_id = ?
+                AND t1.subdomain_alias_status <> 'todelete'
+            ",
+            undef, $id, $id, $id, $id
+        ); };
+    } );
+
+    my $maildirRoot = Servers::mta->factory()->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
+
+    for my $domain ( @domains ) {
+        my $maildir = File::Spec->canonpath( $maildirRoot . '/' . $domain );
+        next unless -d $maildir;
+
+        local $UMASK = 077;
+        my $arch = "mail-backup-$name-@{ [ POSIX::strftime( '%Y.%m.%d-%H-%M', localtime ) ] }.tar";
+        my @command = (
+            '/bin/tar', '--create', '--directory', escapeShell( $maildir ),
+            ( $::imscpConfig{'BACKUP_CMP_PROG'} eq 'no'
+                ? ( '--file', escapeShell( "$dir/$arch" ) )
+                : ( '|', $CMD{$::imscpConfig{'BACKUP_CMP_PROG'}}->{'path'},
+                    ( grep ( $_ eq $::imscpConfig{'BACKUP_CMP_PROG'}, 'pbzip2', 'pigz', 'pixz' ) ? "-p$::imscpConfig{'BACKUP_CMP_MCORES'}" : () ),
+                    "-$::imscpConfig{'BACKUP_CMP_LEVEL'}",
+                    '>', escapeShell( "$dir/$arch.$CMD{$::imscpConfig{'BACKUP_CMP_PROG'}}->{'ext'}" )
+                )
+            )
+        );
+        my $rs = execute( " @command", \my $stdout, \my $stderr );
+        debug( $stdout ) if $stdout;
+        error( sprintf( "Couldn't backup the '%s' client mail directory: %s", $maildir, $stderr || 'Unknown error' )) if $rs > 1;
+    }
+}
+
+=item backupHomedir( $name, $dir, $cmp, $level, $ext )
+
+ Backup client home directory
+
+ Param string $name Homedir name
+ Param string $dir Customer backup directory path
+ Return void, raise an error on failure
+
+=cut
+
+sub _backupHomedir
+{
+    my ( $name, $dir ) = @_;
+
+    local $UMASK = 077;
+    my $arch = "web-backup-$name-@{ [ POSIX::strftime( '%Y.%m.%d-%H-%M', localtime ) ] }.tar";
+    my @command = (
+        '/bin/tar', '--create', '--directory', escapeShell( "$::imscpConfig{'USER_WEB_DIR'}/name" ), '--exclude=./backups', '--exclude=./logs',
+        '--exclude=./phptmp', '.',
+        ( $::imscpConfig{'BACKUP_CMP_PROG'} eq 'no'
+            ? ( '--file', escapeShell( "$dir/$arch" ) )
+            : ( '|', $CMD{$::imscpConfig{'BACKUP_CMP_PROG'}}->{'path'},
+                ( grep ( $_ eq $::imscpConfig{'BACKUP_CMP_PROG'}, 'pbzip2', 'pigz', 'pixz' ) ? "-p$::imscpConfig{'BACKUP_CMP_MCORES'}" : () ),
+                "-$::imscpConfig{'BACKUP_CMP_LEVEL'}",
+                '>', escapeShell( "$dir/$arch.$CMD{$::imscpConfig{'BACKUP_CMP_PROG'}}->{'ext'}" )
+            )
+        )
+    );
+    my $rs = execute( "@command", \my $stdout, \my $stderr );
+    debug( $stdout ) if $stdout;
+    error( sprintf( "Couldn't backup the '%s' client homedir: %s", $name, $stderr || 'Unknown error' )) if $rs > 1;
+}
+
+=item backup( )
+
+ Backup clients data
+
+ Return void, raise an error or die on failure
+
+=cut
+
+sub backup
+{
+    return unless $::imscpConfig{'BACKUP_CLIENTS'} eq 'yes';
+
+    die( sprintf( "Missing or invalid 'BACKUP_CMP_PROG' configuration parameter" )) unless grep (
+        $_ eq $::imscpConfig{'BACKUP_CMP_PROG'}, keys %CMD, 'no'
+    );
+
+    if ( $::imscpConfig{'BACKUP_CMP_PROG'} ne 'no' ) {
+        die( sprintf( "Missing or invalid 'BACKUP_CMP_LEVEL' configuration parameter" )) if $::imscpConfig{'BACKUP_CMP_LEVEL'} !~ /^[1-9]$/;
+        die( sprintf( "Missing or invalid 'BACKUP_CMP_MCORES' configuration parameter" )) if $::imscpConfig{'BACKUP_CMP_MCORES'} !~ /^[1-9]$/;
+    }
+
+    my $rows = iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+        $_->selectall_arrayref(
+            "
+                SELECT domain_id, domain_name, domain_admin_id, allowbackup, admin_sys_name, admin_sys_gname
+                FROM domain
+                JOIN admin ON (admin_id = domain_admin_id)
+                WHERE domain_status NOT IN ('disabled', 'todelete')
+                AND allowbackup <> ''
+            ",
+            { Slice => {} }
+        );
+    } );
+
+    for my $data ( @{ $rows } ) {
+        next unless $data->{'allowbackup'} && $data->{'allowbackup'} =~ /\b(?:dmn|sql|mail)\b/;
+        my $dir = "$::imscpConfig{'USER_WEB_DIR'}/$data->{'domain_name'}/backups";
+        next unless -d $dir && try {
+            iMSCP::Dir->new( dirname => $dir )->clear( undef, qr/.*/ );
+            return TRUE;
+        } catch {
+            error( $_ );
+            FALSE;
+        };
+
+        _backupHomedir( $data->{'domain_name'}, $dir ) if index( $data->{'allowbackup'}, 'dmn' ) != -1;
+        _backupMaildirs( $data->{'domain_id'}, $dir ) if index( $data->{'allowbackup'}, 'mail' ) != -1;
+        _backupDatabases( $data->{'domain_id'}, $dir ) if index( $data->{'allowbackup'}, 'sql' ) != -1;
+    }
+}
+
+try {
+    $ENV{'LANG'} = 'C.UTF-8';
+    $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+
+    my $basename = basename( $0 );
+    newDebug( $basename . '.log' );
+
+    iMSCP::Getopt->parseNoDefault( sprintf( "Usage: perl %s [OPTION]...", $basename ) . qq{
+
+Backup client data (Web data, mail data and databases)
+
+OPTIONS:
+ -v,    --verbose       Enable verbose mode.},
+        'debug|d'   => \&iMSCP::Getopt::debug,
+        'verbose|v' => \&iMSCP::Getopt::verbose
+    );
+
+    setDebug( iMSCP::Getopt->debug );
+    setVerbose( iMSCP::Getopt->verbose );
+
+    my $bootstrapper = iMSCP::Bootstrapper->getInstance();
+    return unless $bootstrapper->lock( $basename . '.lock', TRUE );
+
+    $bootstrapper->boot( {
+        config_readonly => TRUE,
+        nolock          => TRUE
+    } );
+
+    backup();
+} catch {
+    error( $_ );
+} finally {
+    return unless getMessageByType( 'error', { amount => 1 } );
+    exit 1 if POSIX::isatty( \*STDERR );
+    require iMSCP::Mail;
+    iMSCP::Mail::sendErrorMessage( join "\n", getMessageByType( 'error', { remove => TRUE } ));
+};
+
+=back
+
+=head1 AUTHOR
+
+ Laurent Declercq <l.declercq@nuxwin.com>
+
+=cut
+
+1;
+__END__
