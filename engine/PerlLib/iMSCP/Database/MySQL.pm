@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Database::mysql - iMSCP MySQL database adapter
+ iMSCP::Database::MySQL - iMSCP MySQL database handler
 
 =cut
 
@@ -43,9 +43,7 @@ use parent 'Common::Object';
 
 =item getConnector( )
 
- Return DBIx::Connector instance
-
- Return DBIx::Connector on success, die on failure
+ Return DBIx::Connector instance, die on failure
 
 =cut
 
@@ -58,9 +56,12 @@ sub getConnector
 
 =item getRawDb( )
 
- Get raw DBI instance
-
- Return DBI instance, die on failure
+ Get underlying DBI instance
+ 
+ This method is deprecated and will be removed in a later version. Don't use it
+ in new code.
+ 
+ Return DBI, die on failure
 
 =cut
 
@@ -71,35 +72,12 @@ sub getRawDb
     $self->_conn()->dbh();
 }
 
-=item useDatabase( $dbName )
-
- Change database for the current connection
-
- Param string $dbName Database name
- Return string Old database on success, die on failure
-
-=cut
-
-sub useDatabase
-{
-    my ( $self, $dbName ) = @_;
-
-    length $dbName or die( '$dbName parameter is not defined or invalid' );
-
-    return $dbName if $dbName eq $self->{'DATABASE_NAME'};
-
-    my $oldDbName = $self->{'db'}->{'DATABASE_NAME'};
-    $self->_conn()->run( sub { $_->do( 'USE ' . $self->quoteIdentifier( $dbName )); } );
-    $self->{'DATABASE_NAME'} = $dbName;
-    $oldDbName;
-}
-
 =item startTransaction( )
 
  Start a database transaction
 
- This method is deprecated as of version 1.5.0 and will be removed in
- a later version. Don't use it in new code.
+ This method is deprecated and will be removed in a later version. Don't use it
+ in new code.
 
  Return void
  
@@ -116,8 +94,8 @@ sub startTransaction
 
  Terminate a transaction
 
- This method is deprecated as of version 1.5.0 and will be removed in
- a later version. Don't use it in new code.
+ This method is deprecated and will be removed in a later version. Don't use it
+ in new code.
 
  Return void
 
@@ -134,8 +112,8 @@ sub endTransaction
 
  Execute the given SQL statement
 
- This method is deprecated as of version 1.5.0 and will be removed in
- a later version. Don't use it in new code.
+ This method is deprecated and will be removed in a later version. Don't use it
+ in new code.
 
  Param int|string $key Query key
  Param string $query SQL statement to be executed
@@ -150,19 +128,71 @@ sub doQuery
 
     defined $query or die 'No SQL query provided';
 
+    local $@;
     my $qrs = $self->_conn()->run( fixup => sub {
         my $sth = $_->prepare( $query );
         $sth->execute( @bindValues );
         $sth->fetchall_hashref( $key ) || {};
     } );
-
     return $@ if $@;
     $qrs;
 }
 
-=item getDbTables( [ $dbName = $self->{'db'}->{'DATABASE_NAME'} ] )
+=item getDatabase( )
 
- Return list of table for the current selected database
+ Get current database
+
+ Return string current database
+
+=cut
+
+sub getDatabase
+{
+    $_[0]->{'DATABASE_NAME'};
+}
+
+=item isDatabase( $dbName )
+
+ Does the given database exists?
+
+ Param string $dbName Database name
+ Return TRUE if the given database exist, FALSE otherwise, die on failure
+
+=cut
+
+sub isDatabase
+{
+    my ( $self, $dbName ) = @_;
+
+    $self->_conn()->run( fixup => sub { $_->selectrow_hashref( 'SHOW DATABASES LIKE ?', undef, $dbName ) } ) ? TRUE : FALSE;
+}
+
+=item useDatabase( $dbName )
+
+ Change database for the current connection
+
+ Param string $dbName Database name
+ Return string Old database on success, die on failure
+
+=cut
+
+sub useDatabase
+{
+    my ( $self, $dbName ) = @_;
+
+    length $dbName or die( 'Missing or invalid $dbName parameter' );
+
+    return $dbName if $dbName eq $self->{'DATABASE_NAME'};
+
+    my $oldDbName = length $self->{'DATABASE_NAME'} ? $self->{'DATABASE_NAME'} : $dbName;
+    $self->_conn()->run( sub { $_->do( 'USE ' . $self->quoteIdentifier( $dbName )); } );
+    $self->{'DATABASE_NAME'} = $dbName;
+    $oldDbName;
+}
+
+=item getDbTables( [ $dbName = $self->{'DATABASE_NAME'} ] )
+
+ Return list of table for the current or given database
 
  Param string $dbName Database name
  Return arrayref on success, die on failure
@@ -172,38 +202,64 @@ sub doQuery
 sub getDbTables
 {
     my ( $self, $dbName ) = @_;
+    $dbName //= $self->{'DATABASE_NAME'};
 
-    my $oldDbname = $self->useDatabase( $dbName //= $self->{'db'}->{'DATABASE_NAME'} );
-    my $tables = $self->_conn()->run( fixup => sub { $_->getRawDb()->selectcol_arrayref( 'SHOW TABLES' ); } );
-    $self->useDatabase( $oldDbname ) if $oldDbname;
-    $tables;
+    length $dbName or die( 'No database selected and no database given' );
+
+    $self->_conn()->run( fixup => sub { $_->selectcol_arrayref( "SHOW TABLES FROM @{ [ $_->quote_identifier( $dbName ) ] }" ); } );
 }
 
-=item dumpdb( $dbName, $dbDumpTargetDir )
+=item databaseHasTables( $dbName [, @tables ] )
+
+ Does the given database has tables (or the given tables)?
+
+ Param string $dbName Database name
+ Param string @tables Table to look for
+ Return TRUE if the given database has tables, FALSE otherwise, die on failure
+
+=cut
+
+sub databaseHasTables
+{
+    my ( $self, $dbName, @tables ) = @_;
+
+    if ( @tables ) {
+        my $dbTables = $self->getDbTables();
+        for my $table ( @tables ) {
+            return FALSE unless grep ( $_ eq $table, @{ $dbTables } );
+        }
+
+        return TRUE;
+    }
+
+    @{ $self->getDbTables( $dbName ) } ? TRUE : FALSE;
+}
+
+=item dumpdb( $dbName, $targetDir )
 
  Dump the given database
 
  Param string $dbName Database name
- Param string $dbDumpTargetDir Database dump target directory
+ Param string $targetDir Database dump target directory
  Return void, die on failure
 
 =cut
 
 sub dumpdb
 {
-    my ( undef, $dbName, $dbDumpTargetDir ) = @_;
+    my ( undef, $dbName, $targetDir ) = @_;
 
     # Encode slashes as SOLIDUS unicode character
     # Encode dots as Full stop unicode character
     ( my $encodedDbName = $dbName ) =~ s%([./])%{ '/', '@002f', '.', '@002e' }->{$1}%ge;
 
-    debug( sprintf( "Dump '%s' database into %s", $dbName, $dbDumpTargetDir . '/' . $encodedDbName . '.sql' ));
+    debug( sprintf( "Dump '%s' database into %s", $dbName, $targetDir . '/' . $encodedDbName . '.sql' ));
 
     my $stderr;
     execute(
         [
-            'mysqldump', '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords', '--compress', '--quote-names', '-r',
-            "$dbDumpTargetDir/$encodedDbName.sql", '-B', $dbName
+            '/usr/bin/mysqldump', '--opt', '--complete-insert', '--add-drop-database', '--allow-keywords', '--compress', '--quote-names', '-r',
+            "$targetDir/$encodedDbName.sql", '-B', $dbName
         ],
         undef,
         \$stderr
@@ -214,6 +270,8 @@ sub dumpdb
 
  Quote the given identifier (database name, table name or column name)
 
+ This method is deprecated and will be removed in a later version. Don't use it
+ in new code.
 
  Param string $identifier Identifier to be quoted
  Return string Quoted identifier
@@ -230,6 +288,9 @@ sub quoteIdentifier
 =item quote( $string )
 
  Quote the given string
+
+ This method is deprecated and will be removed in a later version. Don't use it
+ in new code.
 
  Param string $string String to be quoted
  Return string Quoted string
@@ -261,10 +322,13 @@ sub _init
 {
     my ( $self ) = @_;
 
-    for my $param ( qw/ DATABASE_NAME DATABASE_HOST DATABASE_PORT DATABASE_USER DATABASE_PASSWORD / ) {
+    for my $param ( qw/ DATABASE_USER DATABASE_PASSWORD / ) {
         length $self->{$param} or die( sprintf( 'Missing or invalid %s parameter', $param ));
     }
 
+    $self->{'DATABASE_NAME'} //= '';
+    $self->{'DATABASE_HOST'} //= 'localhost';
+    $self->{'DATABASE_PORT'} //= 3306;
     $self;
 }
 
@@ -292,7 +356,7 @@ sub _conn
                 mysql_auto_reconnect => FALSE # Must be FALSE as reconnect is handled by DBIx::Connector
             }
         );
-        # Set default mode to 'fixup' to automatically reconnect
+        # Set default mode to 'fixup' for automatic reconnection
         $conn->mode( 'fixup' );
         $conn;
     }
