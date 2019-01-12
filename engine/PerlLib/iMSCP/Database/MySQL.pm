@@ -29,6 +29,7 @@ use DBIx::Connector;
 use iMSCP::Boolean;
 use iMSCP::Debug 'debug';
 use iMSCP::Execute 'execute';
+use Try::Tiny;
 use parent 'Common::Object';
 
 =head1 DESCRIPTION
@@ -126,16 +127,17 @@ sub doQuery
 {
     my ( $self, $key, $query, @bindValues ) = @_;
 
-    defined $query or die 'No SQL query provided';
+    try {
+        defined $query or die 'No SQL query provided';
 
-    local $@;
-    my $qrs = $self->_conn()->run( fixup => sub {
-        my $sth = $_->prepare( $query );
-        $sth->execute( @bindValues );
-        $sth->fetchall_hashref( $key ) || {};
-    } );
-    return $@ if $@;
-    $qrs;
+        $self->_conn()->run( fixup => sub {
+            my $sth = $_->prepare( $query );
+            $sth->execute( @bindValues );
+            $sth->fetchall_hashref( $key ) || {};
+        } );
+    } catch {
+        $_;
+    };
 }
 
 =item getDatabase( )
