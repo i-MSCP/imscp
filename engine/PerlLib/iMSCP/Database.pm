@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Database Database adapter factory
+ iMSCP::Database Database factory
 
 =cut
 
@@ -25,12 +25,40 @@ package iMSCP::Database;
 
 use strict;
 use warnings;
+use iMSCP::Debug 'debug';
+use iMSCP::Crypt qw/ decryptRijndaelCBC randomStr /;
+use iMSCP::Database::MySQL;
+use iMSCP::Database::Encryption;
+use Exporter 'import';
 
-my %adapterInstances;
+our @EXPORT = qw/ $DATABASE /;
+our $DATABASE;
+
+tie $DATABASE, 'iMSCP::Database::SCALAR' or die "Can't tie \$DATABASE";
+
+{
+    package iMSCP::Database::SCALAR;
+
+    sub TIESCALAR
+    {
+        bless [], $_[0];
+    }
+
+    sub FETCH
+    {
+        iMSCP::Database::->factory()->getDatabase();
+    }
+
+    sub STORE
+    {
+        return unless length $_[1];
+        iMSCP::Database::->factory()->useDatabase( $_[1] );
+    }
+}
 
 =head1 DESCRIPTION
 
- Database adapter factory.
+ Database factory
 
 =cut
 
@@ -38,24 +66,30 @@ my %adapterInstances;
 
 =over 4
 
-=item factory( $adapterName )
+=item factory( )
 
- Create and return a database adapter instance. Instance is created once
+ Create and return an iMSCP::Database::MySQL instance
+  
+ Instance is created once, using parameters from master i-MSCP configuration file.
 
- Param string $adapterName Adapter name
- Return an instance of the specified database adapter
+ Return iMSCP::Database::mysql, die on failure
 
 =cut
 
+my $INSTANCE;
+
 sub factory
 {
-    my $adapterName = $_[1] || $main::imscpConfig{'DATABASE_TYPE'};
-
-    return $adapterInstances{$adapterName} if $adapterInstances{$adapterName};
-
-    my $adapter = "iMSCP::Database::${adapterName}";
-    eval "require $adapter" or die( sprintf( "Couldn't load `%s` database adapter: %s", $adapter, $@ ));
-    $adapterInstances{$adapterName} = $adapter->getInstance();
+    $INSTANCE //= do {
+        my $enc = iMSCP::Database::Encryption->getInstance();
+        iMSCP::Database::MySQL->new(
+            DATABASE_HOST     => $::imscpConfig{'DATABASE_HOST'},
+            DATABASE_PORT     => $::imscpConfig{'DATABASE_PORT'},
+            DATABASE_NAME     => $::imscpConfig{'DATABASE_NAME'},
+            DATABASE_USER     => $::imscpConfig{'DATABASE_USER'},
+            DATABASE_PASSWORD => iMSCP::Crypt::decryptRijndaelCBC( $enc->getKey(), $enc->getIV(), $::imscpConfig{'DATABASE_PASSWORD'} )
+        );
+    };
 }
 
 =back
