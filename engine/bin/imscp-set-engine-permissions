@@ -6,7 +6,7 @@
 
 =head1 SYNOPSIS
 
- imscp-set-engine-permissions [options]...
+ imscp-set-engine-permissions [OPTION]...
 
 =cut
 

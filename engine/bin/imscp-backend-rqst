@@ -6,7 +6,7 @@
 
 =head1 SYNOPSIS
 
- imscp-backend-rqst [options]...
+ imscp-backend-rqst [OPTION]...
 
 =cut
 

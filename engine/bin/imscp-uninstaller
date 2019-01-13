@@ -19,11 +19,11 @@
 
 =head1 NAME
 
- imscp-uninstall Uninstall i-MSCP
+ imscp-uninstaller Uninstall i-MSCP
 
 =head1 SYNOPSIS
 
- imscp-uninstall [OPTION]...
+ imscp-uninstaller
 
 =cut
 

@@ -6,7 +6,7 @@
 
 =head1 SYNOPSIS
 
- imscp-set-gui-permissions [options]...
+ imscp-set-gui-permissions [OPTION]...
 
 =cut
 

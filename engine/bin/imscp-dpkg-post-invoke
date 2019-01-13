@@ -2,7 +2,7 @@
 
 =head1 NAME
 
- imscp-dpkg-post-invoke.pl - Process dpkg post invoke tasks
+ imscp-dpkg-post-invoke - Process dpkg post invoke tasks
 
 =head1 SYNOPSIS
 

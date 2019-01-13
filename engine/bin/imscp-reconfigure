@@ -6,7 +6,7 @@
 
 =head1 SYNOPSIS
 
- imscp-reconfigure [options]...
+ imscp-reconfigure [OPTION]...
 
 =cut
 

@@ -2,11 +2,11 @@
 
 =head1 NAME
 
- imscp-backup-imscp Backup control panel data (configuration files and database).
+ imscp-cp-backup Backup control panel data (configuration files and database).
 
 =head1 SYNOPSIS
 
- imscp-backup-imscp [OPTION]...
+ imscp-cp-backup [OPTION]...
 
 =cut
 
