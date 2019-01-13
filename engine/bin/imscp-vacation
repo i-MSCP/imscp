@@ -62,8 +62,8 @@ try {
 
     # Setup MIME parser
     my $mimeParser = MIME::Parser->new();
-    $mimeParser->output_to_core( TRUE );
-    $mimeParser->tmp_to_core( TRUE );
+    $mimeParser->output_to_core( FALSE );
+    $mimeParser->tmp_to_core( FALSE );
 
     # Parse MIME message
     my $mimeEntity = $mimeParser->parse_data( $message ) or die( "Couldn't parse MIME message" );

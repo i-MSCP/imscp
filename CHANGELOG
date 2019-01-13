@@ -6,11 +6,11 @@ Git 1.5.x
 
 BACKEND
     Added: Support for parallel, indexed xz compressor (Client data and control panel backup scripts)
-    
     Enhancement: Make it possible to change backup time for the control panel (control panel backup cron task)
     Enhancement: Make it possible to override any default DNS resource record (Bind9 server implementation)
     Enhancement: Make it possible to set number of CPU cores to use for parallel compressors (Client data and control panel backup scripts)
     Fixed: Can't locate object method "remove" via package "iMSCP::File" (iMSCP::Service)
+    Fixed: Don't output decoded body data to in-core data structures as this could lead to memory issues when dealing with big attachments (imscp-vacation).
     Fixed: Error output is badly captured, leading to 'Unknown error' (named-compilezone / Bind9 server implementation)
     Fixed: SysVinit scripts are always reported as enabled (Debian SysVinit init provider)
     Fixed: The 'is-enabled' support for SysVinit scripts isn't available in older systemd versions (Debian Systemd init provider)
@@ -36,7 +36,7 @@ BACKEND
     Rewritten: engine/tools/imscp-mountall -- now located at engine/bin/imscp-mountall
     Rewritten: engine/tools/imscp-net-traffic-logger -- now located at engine/bin/imscp-net-traffic
     Rewritten: engine/tools/imscp-rqst-mngr -- now located at engine/bin/imscp-backend-rqst
-    Rewritten: engine/quota/imscp-dsk-quota -- now located at engine/bin/imscp-disk-quota 
+    Rewritten: engine/quota/imscp-dsk-quota -- now located at engine/bin/imscp-disk-quota
 
 DISTRIBUTIONS
     Added: Support for Devuan 2.0 (ASCII)
