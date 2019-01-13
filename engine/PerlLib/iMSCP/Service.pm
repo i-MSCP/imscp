@@ -34,6 +34,7 @@ use iMSCP::Execute 'execute';
 use iMSCP::LsbRelease;
 use iMSCP::ProgramFinder;
 use Module::Load::Conditional 'can_load';
+use Try::Tiny;
 use parent qw/ Common::SingletonClass iMSCP::Provider::Service::Interface /;
 
 $Module::Load::Conditional::FIND_VERSION = FALSE;
@@ -71,10 +72,12 @@ sub enable
 {
     my ( $self, $service ) = @_;
 
-    defined $service or croak( 'Missing or undefined $service parameter' );
-
-    eval { $self->{'provider'}->enable( $service ); };
-    !$@ or croak( sprintf( "Couldn't enable the %s service: %s", $service, $@ ));
+    try {
+        defined $service or croak( 'Missing or undefined $service parameter' );
+        $self->{'provider'}->enable( $service );
+    } catch {
+        croak( sprintf( "Couldn't enable the %s service: %s", $service, $_ ));
+    };
 }
 
 =item disable( $service )
@@ -87,10 +90,12 @@ sub disable
 {
     my ( $self, $service ) = @_;
 
-    defined $service or croak( 'Missing or undefined $service parameter' );
-
-    eval { $self->{'provider'}->disable( $service ); };
-    !$@ or croak( sprintf( "Couldn't disable the %s service: %s", $service, $@ ));
+    try {
+        defined $service or croak( 'Missing or undefined $service parameter' );
+        $self->{'provider'}->disable( $service );
+    } catch {
+        croak( sprintf( "Couldn't disable the %s service: %s", $service, $_ ));
+    };
 }
 
 =item remove( $service )
@@ -108,9 +113,9 @@ sub remove
 {
     my ( $self, $service ) = @_;
 
-    defined $service or croak( 'Missing or undefined $service parameter' );
+    try {
+        defined $service or croak( 'Missing or undefined $service parameter' );
 
-    eval {
         $self->{'provider'}->remove( $service );
 
         unless ( $self->{'init'} eq 'Systemd' ) {
@@ -119,12 +124,10 @@ sub remove
             # Remove drop-in files if any
             for my $dir ( '/etc/systemd/system/', '/usr/local/lib/systemd/system/' ) {
                 my $dropInDir = $dir;
-                ( undef, undef, my $suffix ) = fileparse(
-                    $service, qw/ .automount .device .mount .path .scope .service .slice .socket .swap .timer /
-                );
+                ( undef, undef, my $suffix ) = fileparse( $service, qw/ .automount .device .mount .path .scope .service .slice .socket .swap .timer / );
                 $dropInDir .= $service . ( $suffix ? '' : '.service' ) . '.d';
                 next unless -d $dropInDir;
-                debug( sprintf( "Removing the %s systemd drop-in directory", $dropInDir ));
+                debug( sprintf( "Removing the %s Systemd drop-in directory", $dropInDir ));
                 iMSCP::Dir->new( dirname => $dropInDir )->remove();
             }
 
@@ -132,8 +135,8 @@ sub remove
             while ( my $unitFilePath = eval { $provider->resolveUnit( $service, TRUE, TRUE ) } ) {
                 # We do not want remove units that are shipped by distribution packages
                 last unless index( $unitFilePath, '/etc/systemd/system/' ) == 0 || index( $unitFilePath, '/usr/local/lib/systemd/system/' ) == 0;
-                debug( sprintf( 'Removing the %s unit', $unitFilePath ));
-                iMSCP::File->new( filename => $unitFilePath )->remove();
+                debug( sprintf( 'Removing the %s Systemd unit', $unitFilePath ));
+                iMSCP::File->new( filename => $unitFilePath )->delFile() == 0 or die( $self->_getLastError());
             }
         }
 
@@ -141,13 +144,14 @@ sub remove
             my $provider = $self->getProvider( 'Upstart' );
             for my $type ( qw/ conf override / ) {
                 if ( my $jobFilePath = eval { $provider->resolveJob( $service, $type, TRUE ); } ) {
-                    debug( sprintf( "Removing the %s upstart file", $jobFilePath ));
-                    iMSCP::File->new( filename => $jobFilePath )->remove();
+                    debug( sprintf( "Removing the %s Upstart file", $jobFilePath ));
+                    iMSCP::File->new( filename => $jobFilePath )->delFile() == 0 or die( $self->_getLastError());
                 }
             }
         }
+    } catch {
+        croak( sprintf( "Couldn't remove the %s service: %s", basename( $service, '.service' ), $_ ));
     };
-    !$@ or croak( sprintf( "Couldn't remove the %s service: %s", basename( $service, '.service' ), $@ ));
 }
 
 =item start( $service )
@@ -160,10 +164,12 @@ sub start
 {
     my ( $self, $service ) = @_;
 
-    defined $service or croak( 'Missing or undefined $service parameter' );
-
-    eval { $self->{'provider'}->start( $service ); };
-    !$@ or croak( sprintf( "Couldn't start the %s service: %s", $service, $@ ));
+    try {
+        defined $service or croak( 'Missing or undefined $service parameter' );
+        $self->{'provider'}->start( $service );
+    } catch {
+        croak( sprintf( "Couldn't start the %s service: %s", $service, $_ ));
+    };
 }
 
 =item stop( $service )
@@ -176,10 +182,12 @@ sub stop
 {
     my ( $self, $service ) = @_;
 
-    defined $service or croak( 'Missing or undefined $service parameter' );
-
-    eval { $self->{'provider'}->stop( $service ); };
-    !$@ or croak( sprintf( "Couldn't stop the %s service: %s", $service, $@ ));
+    try {
+        defined $service or croak( 'Missing or undefined $service parameter' );
+        $self->{'provider'}->stop( $service );
+    } catch {
+        croak( sprintf( "Couldn't stop the %s service: %s", $service, $_ ));
+    };
 }
 
 =item restart( $service )
@@ -192,10 +200,12 @@ sub restart
 {
     my ( $self, $service ) = @_;
 
-    defined $service or croak( 'Missing or undefined $service parameter' );
-
-    eval { $self->{'provider'}->restart( $service ); };
-    !$@ or croak( sprintf( "Couldn't restart the %s service: %s", $service, $@ ));
+    try {
+        defined $service or croak( 'Missing or undefined $service parameter' );
+        $self->{'provider'}->restart( $service );
+    } catch {
+        croak( sprintf( "Couldn't restart the %s service: %s", $service, $_ ));
+    };
 }
 
 =item reload( $service )
@@ -208,10 +218,12 @@ sub reload
 {
     my ( $self, $service ) = @_;
 
-    defined $service or croak( 'Missing or undefined $service parameter' );
-
-    eval { $self->{'provider'}->reload( $service ); };
-    !$@ or croak( sprintf( "Couldn't reload the %s service: %s", $service, $@ ));
+    try {
+        defined $service or croak( 'Missing or undefined $service parameter' );
+        $self->{'provider'}->reload( $service );
+    } catch {
+        croak( sprintf( "Couldn't reload the %s service: %s", $service, $_ ));
+    };
 }
 
 =item isRunning( $service )
@@ -225,7 +237,6 @@ sub isRunning
     my ( $self, $service ) = @_;
 
     defined $service or croak( 'Missing or undefined $service parameter' );
-
     $self->{'provider'}->isRunning( $service );
 }
 
@@ -240,7 +251,6 @@ sub hasService
     my ( $self, $service ) = @_;
 
     defined $service or croak( 'Missing or undefined $service parameter' );
-
     $self->{'provider'}->hasService( $service );
 }
 
