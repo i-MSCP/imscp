@@ -31,11 +31,11 @@ use parent qw/ iMSCP::Provider::Service::Systemd iMSCP::Provider::Service::Debia
 
 =head1 DESCRIPTION
 
- systemd init provider for Debian-like distributions.
+ Systemd init provider for Debian-like distributions.
  
  Difference with the iMSCP::Provider::Service::Systemd init provider is the
  support for the 'is-enabled' API call that is not available in older Systemd
- version, and the support for SysVinit script removal.
+ versions, and the support for SysVinit script removal.
 
  See:
   https://wiki.debian.org/systemd
@@ -66,6 +66,7 @@ sub isEnabled
     # systemd versions. Thus, if the previous command has failed, we need do
     # another check by relying on the Debian SysVinit init provider.
     if ( $ret && length $stderr ) {
+        # For the SysVinit scripts, we want operate only on services
         ( $unit, undef, my $suffix ) = fileparse( $unit, qr/\.[^.]*/ );
         return $self->iMSCP::Provider::Service::Debian::SysVinit::isEnabled( $unit ) if grep ( $suffix eq $_, '', '.service' );
 
