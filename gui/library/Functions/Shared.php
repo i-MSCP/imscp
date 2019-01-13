@@ -802,7 +802,7 @@ function deleteCustomer($customerId, $checkCreatedBy = false)
     // We are now ready to send a request to the daemon for delegated tasks.
     // Note: We are safe here. If the daemon doesn't answer, some entities will not be removed. In such case the
     // sysadmin will have to fix the problem causing deletion break and send a request to the daemon manually via the
-    // panel, or run the imscp-rqst-mngr script manually.
+    // panel, or run the imscp-backend-rqst script manually.
     send_request();
     return true;
 }

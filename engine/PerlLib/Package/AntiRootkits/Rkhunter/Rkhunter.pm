@@ -26,7 +26,7 @@ package Package::AntiRootkits::Rkhunter::Rkhunter;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Package::AntiRootkits::Rkhunter::Installer Package::AntiRootkits::Rkhunter::Uninstaller /;
-use iMSCP::Rights;
+use iMSCP::Rights 'setRights';
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -86,25 +86,19 @@ sub uninstall
 
 sub setEnginePermissions
 {
-    my $rs = setRights(
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl",
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'ROOT_USER'},
-            mode  => '0700'
-        }
-    );
+    my $rs = setRights( "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/bin/imscp-rkhunter", {
+        user  => $::imscpConfig{'ROOT_USER'},
+        group => $::imscpConfig{'ROOT_USER'},
+        mode  => '0700'
+    } );
 
-    return $rs if $rs || !-f $main::imscpConfig{'RKHUNTER_LOG'};
+    return $rs if $rs || !-f $::imscpConfig{'RKHUNTER_LOG'};
 
-    setRights(
-        $main::imscpConfig{'RKHUNTER_LOG'},
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'IMSCP_GROUP'},
-            mode  => '0640'
-        }
-    );
+    setRights( $::imscpConfig{'RKHUNTER_LOG'}, {
+        user  => $::imscpConfig{'ROOT_USER'},
+        group => $::imscpConfig{'IMSCP_GROUP'},
+        mode  => '0640'
+    } );
 }
 
 =item getDistroPackages( )

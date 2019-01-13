@@ -26,7 +26,9 @@ package Servers::sqld::percona;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Servers::sqld::percona::installer Servers::sqld::percona::uninstaller /;
+use iMSCP::Debug 'error';
 use iMSCP::Service;
+use Try::Tiny;
 use parent 'Servers::sqld::mysql';
 
 =head1 DESCRIPTION
@@ -47,7 +49,7 @@ use parent 'Servers::sqld::mysql';
 
 sub preinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'percona' );
     $rs ||= Servers::sqld::percona::installer->getInstance()->preinstall();
@@ -64,27 +66,27 @@ sub preinstall
 
 sub postinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'percona' );
+    try {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'percona' );
+        return $rs if $rs;
 
-    local $@;
-    eval { iMSCP::Service->getInstance()->enable( 'mysql' ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
+        iMSCP::Service->getInstance()->enable( 'mysql' );
 
-    $rs = $self->{'eventManager'}->register(
-        'beforeSetupRestartServices',
-        sub {
-            push @{$_[0]}, [ sub { $self->restart(); }, 'Percona' ];
-            0;
-        },
-        7
-    );
-
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'percona' );
+        $rs = $self->{'eventManager'}->register(
+            'beforeSetupRestartServices',
+            sub {
+                push @{ $_[0] }, [ sub { $self->restart(); }, 'Percona' ];
+                0;
+            },
+            7
+        );
+        $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'percona' );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item uninstall( )
@@ -97,7 +99,7 @@ sub postinstall
 
 sub uninstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'percona' );
     $rs ||= Servers::sqld::percona::uninstaller->getInstance()->uninstall();

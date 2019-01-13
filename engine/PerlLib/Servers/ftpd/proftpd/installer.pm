@@ -26,22 +26,24 @@ package Servers::ftpd::proftpd::installer;
 use strict;
 use warnings;
 use File::Basename;
+use iMSCP::Boolean;
 use iMSCP::Config;
-use iMSCP::Crypt qw/ randomStr /;
+use iMSCP::Crypt qw/ ALNUM randomStr /;
 use iMSCP::Database;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dialog::InputValidation;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use iMSCP::Execute 'execute';
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::TemplateParser;
-use iMSCP::Umask;
+use iMSCP::TemplateParser 'process';
+use iMSCP::Umask '$UMASK';
 use Servers::ftpd::proftpd;
 use Servers::sqld;
+use Try::Tiny;
 use parent 'Common::SingletonClass';
 
-%main::sqlUsers = () unless %main::sqlUsers;
+%::sqlUsers = () unless %::sqlUsers;
 
 =head1 DESCRIPTION
 
@@ -51,26 +53,25 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( \%em )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
+ Param iMSCP::EventManager \%em
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ($self, $eventManager) = @_;
+    my ( $self, $em ) = @_;
 
-    $eventManager->register(
-        'beforeSetupDialog',
-        sub {
-            push @{$_[0]}, sub { $self->sqlUserDialog( @_ ) }, sub { $self->passivePortRangeDialog( @_ ) };
-            0;
-        }
-    );
+    $em->register( 'beforeSetupDialog', sub {
+        push @{ $_[0] },
+            sub { $self->sqlUserDialog( @_ ) },
+            sub { $self->passivePortRangeDialog( @_ ) };
+        0;
+    } );
 }
 
 =item sqlUserDialog( \%dialog )
@@ -84,23 +85,20 @@ sub registerSetupListeners
 
 sub sqlUserDialog
 {
-    my ($self, $dialog) = @_;
+    my ( $self, $dialog ) = @_;
 
-    my $masterSqlUser = main::setupGetQuestion( 'DATABASE_USER' );
-    my $dbUser = main::setupGetQuestion( 'FTPD_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || 'imscp_srv_user' );
-    my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
-    my $dbPass = main::setupGetQuestion(
-        'FTPD_SQL_PASSWORD',
-        ( ( iMSCP::Getopt->preseed ) ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
+    my $masterSqlUser = ::setupGetQuestion( 'DATABASE_USER' );
+    my $dbUser = ::setupGetQuestion( 'FTPD_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || 'imscp_srv_user' );
+    my $dbUserHost = ::setupGetQuestion( 'DATABASE_USER_HOST' );
+    my $dbPass = ::setupGetQuestion(
+        'FTPD_SQL_PASSWORD', ( iMSCP::Getopt->preseed ? randomStr( 16, ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
     );
 
-    if ( $main::reconfigure =~ /^(?:ftpd|servers|all|forced)$/
-        || !isValidUsername( $dbUser )
-        || !isStringNotInList( $dbUser, 'root', 'debian-sys-maint', $masterSqlUser, 'vlogger_user' )
-        || !isValidPassword( $dbPass )
+    if ( $::reconfigure =~ /^(?:ftpd|servers|all|forced)$/ || !isValidUsername( $dbUser )
+        || !isStringNotInList( $dbUser, 'root', 'debian-sys-maint', $masterSqlUser, 'vlogger_user' ) || !isValidPassword( $dbPass )
         || !isAvailableSqlUser( $dbUser )
     ) {
-        my ($rs, $msg) = ( 0, '' );
+        my ( $rs, $msg ) = ( 0, '' );
 
         do {
             ( $rs, $dbUser ) = $dialog->inputbox( <<"EOF", $dbUser );
@@ -117,9 +115,9 @@ EOF
         } while $rs < 30 && $msg;
         return $rs if $rs >= 30;
 
-        unless ( defined $main::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
+        unless ( defined $::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
             do {
-                ( $rs, $dbPass ) = $dialog->inputbox( <<"EOF", $dbPass || randomStr( 16, iMSCP::Crypt::ALNUM ));
+                ( $rs, $dbPass ) = $dialog->inputbox( <<"EOF", $dbPass || randomStr( 16, ALNUM ));
 
 Please enter a password for the ProFTPD SQL user:$msg
 EOF
@@ -127,18 +125,18 @@ EOF
             } while $rs < 30 && $msg;
             return $rs if $rs >= 30;
 
-            $main::sqlUsers{$dbUser . '@' . $dbUserHost} = $dbPass;
+            $::sqlUsers{$dbUser . '@' . $dbUserHost} = $dbPass;
         } else {
-            $dbPass = $main::sqlUsers{$dbUser . '@' . $dbUserHost};
+            $dbPass = $::sqlUsers{$dbUser . '@' . $dbUserHost};
         }
-    } elsif ( defined $main::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
-        $dbPass = $main::sqlUsers{$dbUser . '@' . $dbUserHost};
+    } elsif ( defined $::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
+        $dbPass = $::sqlUsers{$dbUser . '@' . $dbUserHost};
     } else {
-        $main::sqlUsers{$dbUser . '@' . $dbUserHost} = $dbPass;
+        $::sqlUsers{$dbUser . '@' . $dbUserHost} = $dbPass;
     }
 
-    main::setupSetQuestion( 'FTPD_SQL_USER', $dbUser );
-    main::setupSetQuestion( 'FTPD_SQL_PASSWORD', $dbPass );
+    ::setupSetQuestion( 'FTPD_SQL_USER', $dbUser );
+    ::setupSetQuestion( 'FTPD_SQL_PASSWORD', $dbPass );
     0;
 }
 
@@ -153,20 +151,16 @@ EOF
 
 sub passivePortRangeDialog
 {
-    my ($self, $dialog) = @_;
+    my ( $self, $dialog ) = @_;
 
-    my $passivePortRange = main::setupGetQuestion(
-        'FTPD_PASSIVE_PORT_RANGE', $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'}
-    );
-    my ($startOfRange, $endOfRange);
+    my $passivePortRange = ::setupGetQuestion( 'FTPD_PASSIVE_PORT_RANGE', $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'} );
+    my ( $startOfRange, $endOfRange );
 
-    if ( !isValidNumberRange( $passivePortRange, \$startOfRange, \$endOfRange )
-        || !isNumberInRange( $startOfRange, 32768, 60999 )
-        || !isNumberInRange( $endOfRange, $startOfRange, 60999 )
-        || $main::reconfigure =~ /^(?:ftpd|servers|all|forced)$/
+    if ( !isValidNumberRange( $passivePortRange, \$startOfRange, \$endOfRange ) || !isNumberInRange( $startOfRange, 32768, 60999 )
+        || !isNumberInRange( $endOfRange, $startOfRange, 60999 ) || $::reconfigure =~ /^(?:ftpd|servers|all|forced)$/
     ) {
         $passivePortRange = '32768 60999' unless $startOfRange && $endOfRange;
-        my ($rs, $msg) = ( 0, '' );
+        my ( $rs, $msg ) = ( 0, '' );
 
         do {
             ( $rs, $passivePortRange ) = $dialog->inputbox( <<"EOF", $passivePortRange );
@@ -178,8 +172,7 @@ Please choose the passive port range for ProFTPD.
 Note that if you're behind a NAT, you must forward those ports to this server.$msg
 EOF
             $msg = '';
-            if ( !isValidNumberRange( $passivePortRange, \$startOfRange, \$endOfRange )
-                || !isNumberInRange( $startOfRange, 32768, 60999 )
+            if ( !isValidNumberRange( $passivePortRange, \$startOfRange, \$endOfRange ) || !isNumberInRange( $startOfRange, 32768, 60999 )
                 || !isNumberInRange( $endOfRange, $startOfRange, 60999 )
             ) {
                 $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
@@ -204,7 +197,7 @@ EOF
 
 sub install
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->_bkpConfFile( $self->{'config'}->{'FTPD_CONF_FILE'} );
     $rs ||= $self->_setVersion();
@@ -229,7 +222,7 @@ sub install
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'ftpd'} = Servers::ftpd::proftpd->getInstance();
@@ -250,14 +243,14 @@ sub _init
 
 sub _bkpConfFile
 {
-    my ($self, $cfgFile) = @_;
+    my ( $self, $cfgFile ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdBkpConfFile', $cfgFile );
     return $rs if $rs;
 
     if ( -f $cfgFile ) {
         my $file = iMSCP::File->new( filename => $cfgFile );
-        my ($filename, undef, $suffix) = fileparse( $cfgFile );
+        my ( $filename, undef, $suffix ) = fileparse( $cfgFile );
 
         unless ( -f "$self->{'bkpDir'}/$filename$suffix.system" ) {
             $rs = $file->copyFile( "$self->{'bkpDir'}/$filename$suffix.system", { preserve => 'no' } );
@@ -281,15 +274,15 @@ sub _bkpConfFile
 
 sub _setVersion
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = execute( 'proftpd -v', \ my $stdout, \ my $stderr );
+    my $rs = execute( [ 'proftpd', '-v' ], \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
     if ( $stdout !~ m%([\d.]+)% ) {
-        error( "Couldn't find ProFTPD version from `proftpd -v` command output." );
+        error( "Couldn't find ProFTPD version from 'proftpd -v' command output." );
         return 1;
     }
 
@@ -308,62 +301,47 @@ sub _setVersion
 
 sub _setupDatabase
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $dbName = main::setupGetQuestion( 'DATABASE_NAME' );
-    my $dbUser = main::setupGetQuestion( 'FTPD_SQL_USER' );
-    my $dbUserHost = main::setupGetQuestion( 'DATABASE_USER_HOST' );
-    my $oldDbUserHost = $main::imscpOldConfig{'DATABASE_USER_HOST'};
-    my $dbPass = main::setupGetQuestion( 'FTPD_SQL_PASSWORD' );
-    my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
+    try {
+        my $dbName = ::setupGetQuestion( 'DATABASE_NAME' );
+        my $dbUser = ::setupGetQuestion( 'FTPD_SQL_USER' );
+        my $dbUserHost = ::setupGetQuestion( 'DATABASE_USER_HOST' );
+        my $dbPass = ::setupGetQuestion( 'FTPD_SQL_PASSWORD' );
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdSetupDb', $dbUser, $dbPass );
-    return $rs if $rs;
-
-    local $@;
-    eval {
-        my $sqlServer = Servers::sqld->factory();
-
-        # Drop old SQL user if required
-        for my $sqlUser ( $dbOldUser, $dbUser ) {
-            next unless $sqlUser;
-
-            for my $host( $dbUserHost, $oldDbUserHost ) {
-                next if !$host
-                    || exists $main::sqlUsers{$sqlUser . '@' . $host} && !defined $main::sqlUsers{$sqlUser . '@' . $host};
-                $sqlServer->dropUser( $sqlUser, $host );
+        for my $sqlUser ( $self->{'config'}->{'DATABASE_USER'}, $dbUser ) {
+            next unless length $sqlUser;
+            for my $host ( $::imscpOldConfig{'DATABASE_USER_HOST'}, $dbUserHost ) {
+                next if !length $host || exists $::sqlUsers{$sqlUser . '@' . $host} && !defined $::sqlUsers{$sqlUser . '@' . $host};
+                Servers::sqld->factory()->dropUser( $sqlUser, $host );
             }
         }
 
-        # Create SQL user if required
-        if ( defined $main::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
-            debug( sprintf( 'Creating %s@%s SQL user', $dbUser, $dbUserHost ));
-            $sqlServer->createUser( $dbUser, $dbUserHost, $dbPass );
-            $main::sqlUsers{$dbUser . '@' . $dbUserHost} = undef;
+        if ( defined $::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
+            Servers::sqld->factory()->createUser( $dbUser, $dbUserHost, $dbPass );
+            $::sqlUsers{$dbUser . '@' . $dbUserHost} = undef;
         }
 
-        my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = 1;
+        iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+            my ( $dbh ) = @_;
+            for my $table ( 'ftp_users', 'ftp_group' ) {
+                # Backslash in database name must not be escaped. See https://bugs.mysql.com/bug.php?id=18660
+                $dbh->do( "GRANT SELECT ON @{ [ $dbh->quote_identifier( $dbName ) ] }.$table TO ?\@?", undef, $dbUser, $dbUserHost );
+            }
 
-        # Give required privileges to this SQL user
-        # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
-        my $quotedDbName = $dbh->quote_identifier( $dbName );
-        for ( 'ftp_users', 'ftp_group' ) {
-            $dbh->do( "GRANT SELECT ON $quotedDbName.$_ TO ?\@?", undef, $dbUser, $dbUserHost );
-        }
+            for my $table ( 'quotalimits', 'quotatallies' ) {
+                # Backslash in database name must not be escaped. See https://bugs.mysql.com/bug.php?id=18660
+                $dbh->do( "GRANT SELECT, INSERT, UPDATE ON @{ [ $dbh->quote_identifier( $dbName ) ] }.$table TO ?\@?", undef, $dbUser, $dbUserHost );
+            }
+        } );
 
-        for ( 'quotalimits', 'quotatallies' ) {
-            $dbh->do( "GRANT SELECT, INSERT, UPDATE ON $quotedDbName.$_ TO ?\@?", undef, $dbUser, $dbUserHost );
-        }
+        $self->{'config'}->{'DATABASE_USER'} = $dbUser;
+        $self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
+        $self->{'eventManager'}->trigger( 'afterFtpSetupDb', $dbUser, $dbPass );
+    } catch {
+        error( $_ );
+        1;
     };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'config'}->{'DATABASE_USER'} = $dbUser;
-    $self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
-    $self->{'eventManager'}->trigger( 'afterFtpSetupDb', $dbUser, $dbPass );
 }
 
 =item _buildConfigFile( )
@@ -376,46 +354,43 @@ sub _setupDatabase
 
 sub _buildConfigFile
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    # Escape any double-quotes and backslash (see #IP-1330)
+    # Escape any double-quotes and backslash. see #IP-1330
     ( my $dbUser = $self->{'config'}->{'DATABASE_USER'} ) =~ s%("|\\)%\\$1%g;
     ( my $dbPass = $self->{'config'}->{'DATABASE_PASSWORD'} ) =~ s%("|\\)%\\$1%g;
 
     my $data = {
-        IPV6_SUPPORT            => main::setupGetQuestion( 'IPV6_SUPPORT' ) ? 'on' : 'off',
-        HOSTNAME                => main::setupGetQuestion( 'SERVER_HOSTNAME' ),
-        DATABASE_NAME           => main::setupGetQuestion( 'DATABASE_NAME' ),
-        DATABASE_HOST           => main::setupGetQuestion( 'DATABASE_HOST' ),
-        DATABASE_PORT           => main::setupGetQuestion( 'DATABASE_PORT' ),
+        IPV6_SUPPORT            => ::setupGetQuestion( 'IPV6_SUPPORT' ) ? 'on' : 'off',
+        HOSTNAME                => ::setupGetQuestion( 'SERVER_HOSTNAME' ),
+        DATABASE_NAME           => ::setupGetQuestion( 'DATABASE_NAME' ),
+        DATABASE_HOST           => ::setupGetQuestion( 'DATABASE_HOST' ),
+        DATABASE_PORT           => ::setupGetQuestion( 'DATABASE_PORT' ),
         DATABASE_USER           => qq/"$dbUser"/,
         DATABASE_PASS           => qq/"$dbPass"/,
         FTPD_MIN_UID            => $self->{'config'}->{'MIN_UID'},
         FTPD_MIN_GID            => $self->{'config'}->{'MIN_GID'},
         FTPD_PASSIVE_PORT_RANGE => $self->{'config'}->{'FTPD_PASSIVE_PORT_RANGE'},
-        CONF_DIR                => $main::imscpConfig{'CONF_DIR'},
+        CONF_DIR                => $::imscpConfig{'CONF_DIR'},
         CERTIFICATE             => 'imscp_services',
-        SERVER_IDENT_MESSAGE    => '"[' . main::setupGetQuestion( 'SERVER_HOSTNAME' ) . '] i-MSCP FTP server."',
+        SERVER_IDENT_MESSAGE    => '"[' . ::setupGetQuestion( 'SERVER_HOSTNAME' ) . '] i-MSCP FTP server."',
         TLSOPTIONS              => 'NoCertRequest NoSessionReuseRequired',
         MAX_INSTANCES           => $self->{'config'}->{'MAX_INSTANCES'},
         MAX_CLIENT_PER_HOST     => $self->{'config'}->{'MAX_CLIENT_PER_HOST'}
     };
 
-    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'proftpd', 'proftpd.conf', \ my $cfgTpl, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'proftpd', 'proftpd.conf', \my $cfgTpl, $data );
     return $rs if $rs;
 
     unless ( defined $cfgTpl ) {
         $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.conf" )->get();
-        unless ( defined $cfgTpl ) {
-            error( sprintf( "Couldn't read to read the %s file", "$self->{'cfgDir'}/proftpd.conf" ));
-            return 1;
-        }
+        return 1 unless defined $cfgTpl;
     }
 
     $rs = $self->{'eventManager'}->trigger( 'beforeFtpdBuildConf', \$cfgTpl, 'proftpd.conf' );
     return $rs if $rs;
 
-    if ( main::setupGetQuestion( 'SERVICES_SSL_ENABLED' ) eq 'yes' ) {
+    if ( ::setupGetQuestion( 'SERVICES_SSL_ENABLED' ) eq 'yes' ) {
         $cfgTpl .= <<'EOF';
 
 # SSL configuration
@@ -436,13 +411,13 @@ sub _buildConfigFile
 EOF
     }
 
-    my $baseServerIp = main::setupGetQuestion( 'BASE_SERVER_IP' );
-    my $baseServerPublicIp = main::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
+    my $baseServerIp = ::setupGetQuestion( 'BASE_SERVER_IP' );
+    my $baseServerPublicIp = ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
 
     if ( $baseServerIp ne $baseServerPublicIp ) {
-        my @virtualHostIps = grep(
+        my @virtualHostIps = grep (
             $_ ne '0.0.0.0',
-            ( '127.0.0.1', ( main::setupGetQuestion( 'IPV6_SUPPORT' ) ? '::1' : () ), $baseServerIp )
+            ( '127.0.0.1', ( ::setupGetQuestion( 'IPV6_SUPPORT' ) ? '::1' : () ), $baseServerIp )
         );
         $cfgTpl .= <<"EOF";
 
@@ -461,12 +436,11 @@ EOF
     $rs = $self->{'eventManager'}->trigger( 'afterFtpdBuildConf', \$cfgTpl, 'proftpd.conf' );
     return $rs if $rs;
 
-    local $UMASK = 027; # proftpd.conf file must not be created/copied world-readable
-
+    local $UMASK = 027;
     my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/proftpd.conf" );
     $file->set( $cfgTpl );
     $rs = $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+    $rs ||= $file->owner( $::imscpConfig{'ROOT_USER'}, $::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0640 );
     $rs ||= $file->copyFile( $self->{'config'}->{'FTPD_CONF_FILE'} );
     return $rs if $rs;
@@ -474,13 +448,9 @@ EOF
     if ( -f "$self->{'config'}->{'FTPD_CONF_DIR'}/modules.conf" ) {
         $file = iMSCP::File->new( filename => "$self->{'config'}->{'FTPD_CONF_DIR'}/modules.conf" );
         my $cfgTplRef = $file->getAsRef();
-        unless ( defined $cfgTplRef ) {
-            error( sprintf( "Couldn't read %s file", "$self->{'config'}->{'FTPD_CONF_DIR'}/modules.conf" ));
-            return 1;
-        }
+        return 1 unless defined $cfgTplRef;
 
-        ${$cfgTplRef} =~ s/^(LoadModule\s+mod_tls_memcache.c)/#$1/m;
-
+        ${ $cfgTplRef } =~ s/^(LoadModule\s+mod_tls_memcache.c)/#$1/m;
         $rs ||= $file->save();
     }
 
@@ -497,17 +467,11 @@ EOF
 
 sub _oldEngineCompatibility
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdOldEngineCompatibility' );
-    return $rs if $rs;
+    return 0 unless -f "$self->{'cfgDir'}/proftpd.old.data";
 
-    if ( -f "$self->{'cfgDir'}/proftpd.old.data" ) {
-        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.old.data" )->delFile();
-        return $rs if $rs;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterFtpdOldEngineCompatibility' );
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/proftpd.old.data" )->delFile();
 }
 
 =back

@@ -73,42 +73,33 @@ sub process
 {
     my ( $self, $data ) = @_;
 
-    try {
-        $self->_loadData( $data->{'id'} );
+    $self->_loadData( $data->{'id'} );
 
-        my ( @sql, $rs );
-        if ( $self->{'domain_status'} =~ /^to(?:add|change|enable)$/ ) {
-            $rs = $self->add();
-            @sql = (
-                'UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef,
-                ( $rs ? getMessageByType( 'error', { amount => 1 } ) || 'Unknown error' : 'ok' ), $data->{'id'}
-            );
-        } elsif ( $self->{'domain_status'} eq 'todisable' ) {
-            $rs = $self->disable();
-            @sql = (
-                'UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef,
-                ( $rs ? getMessageByType( 'error', { amount => 1 } ) || 'Unknown error' : 'disabled' ), $data->{'id'}
-            );
-        } elsif ( $self->{'domain_status'} eq 'torestore' ) {
-            $rs = $self->restore();
-            @sql = (
-                'UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef,
-                ( $rs ? getMessageByType( 'error', { amount => 1 } ) || 'Unknown error' : 'ok' ), $data->{'id'}
-            );
-        } else {
-            $rs = $self->delete();
-            @sql = $rs ? (
-                'UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef,
-                getMessageByType( 'error', { amount => 1 } ) || 'Unknown error', $data->{'id'}
-            ) : ( 'DELETE FROM domain WHERE domain_id = ?', undef, $data->{'id'} );
-        }
+    my @sql;
+    if ( $self->{'domain_status'} =~ /^to(?:add|change|enable)$/ ) {
+        @sql = (
+            'UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef,
+            ( $self->add() ? getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' : 'ok' ), $data->{'id'}
+        );
+    } elsif ( $self->{'domain_status'} eq 'todisable' ) {
+        @sql = (
+            'UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef,
+            ( $self->disable() ? getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' : 'disabled' ), $data->{'id'}
+        );
+    } elsif ( $self->{'domain_status'} eq 'torestore' ) {
+        @sql = (
+            'UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef,
+            ( $self->restore() ? getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' : 'ok' ), $data->{'id'}
+        );
+    } else {
+        @sql = $self->delete() ? (
+            'UPDATE domain SET domain_status = ? WHERE domain_id = ?', undef,
+            getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error', $data->{'id'}
+        ) : ( 'DELETE FROM domain WHERE domain_id = ?', undef, $data->{'id'} );
+    }
 
-        $self->{'_conn'}->run( fixup => sub { $_->do( @sql ); } );
-        $rs;
-    } catch {
-        error( $_ );
-        1;
-    };
+    $self->{'_conn'}->run( fixup => sub { $_->do( @sql ); } );
+    0;
 }
 
 =item add( )
@@ -128,18 +119,20 @@ sub add
 
     return $self->SUPER::add() if $self->{'domain_status'} eq 'toadd' || $::execmode eq 'setup';
 
-    try {
+    return 1 unless try {
         $self->{'_conn'}->run( fixup => sub {
             $_->do(
                 "UPDATE domain_dns SET domain_dns_status = 'tochange' WHERE domain_id = ? AND alias_id = 0 AND domain_dns_status = 'ok'",
                 undef, $self->{'domain_id'}
             );
         } );
-        0;
+        TRUE;
     } catch {
         error( $_ );
-        1;
-    } || $self->SUPER::add();
+        FALSE;
+    };
+
+    $self->SUPER::add();
 }
 
 =item disable( )
@@ -154,18 +147,20 @@ sub disable
 {
     my ( $self ) = @_;
 
-    try {
+    return 1 unless try {
         $self->{'_conn'}->run( fixup => sub {
             $_->do(
                 "UPDATE subdomain SET subdomain_status = 'todisable' WHERE domain_id = ? AND subdomain_status <> 'todelete'", undef,
                 $self->{'domain_id'}
             );
         } );
-        0;
+        TRUE;
     } catch {
         error( $_ );
-        1;
-    } || $self->SUPER::disable();
+        FALSE;
+    };
+
+    $self->SUPER::disable();
 }
 
 =item restore( )
@@ -202,13 +197,13 @@ sub restore
     }
 
     # Restore first Web backup found
-    for my $backup ( iMSCP::Dir->new( dirname => $bkpDir )->getFiles() ) {
-        next if -l "$bkpDir/$backup"; # Don't follow symlinks (See #IP-990)
+    for my $arch ( iMSCP::Dir->new( dirname => $bkpDir )->getFiles() ) {
+        next if -l "$bkpDir/$arch"; # Don't follow symlinks (See #IP-990)
         next unless /^web-backup-.+?\.tar(?:\.(bz2|gz|lzma|xz))?$/;
 
         my $archType = $1 || '';
 
-        return 1 if try {
+        return unless try {
             {
                 # Since we are now using immutable bit to protect some folders, we must in order do the following
                 # to restore a backup archive:
@@ -234,7 +229,7 @@ sub restore
                 my $stderr;
                 execute(
                     [ '/bin/tar', '-x', '-p',
-                        $archType ne '' ? ( "--$archType", '-C', $homeDir, '-f', "$bkpDir/$backup" ) : ( '-C', $homeDir, '-f', "$bkpDir/$backup" ),
+                        $archType ne '' ? ( "--$archType", '-C', $homeDir, '-f', "$bkpDir/$arch" ) : ( '-C', $homeDir, '-f', "$bkpDir/$arch" ),
                     ],
                     \my $stdout,
                     \$stderr
@@ -253,19 +248,19 @@ sub restore
                 );
                 $_->do(
                     "
-                    UPDATE subdomain_alias AS t1
-                    JOIN domain_aliasses AS t2 USING(alias_id)
-                    SET t1.subdomain_alias_status = 'torestore'
-                    WHERE t2.domain_id = ?
-                    AND t1.subdomain_alias_status <> 'todelete'
-                ",
+                        UPDATE subdomain_alias AS t1
+                        JOIN domain_aliasses AS t2 USING(alias_id)
+                        SET t1.subdomain_alias_status = 'torestore'
+                        WHERE t2.domain_id = ?
+                        AND t1.subdomain_alias_status <> 'todelete'
+                    ",
                     undef, $self->{'domain_id'}
                 );
             } );
-            0;
+            TRUE;
         } catch {
             error( $_ );
-            1;
+            FALSE;
         };
 
         last;

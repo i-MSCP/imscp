@@ -26,7 +26,8 @@ package Package::FileManager::MonstaFTP::MonstaFTP;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Package::FileManager::MonstaFTP::Installer Package::FileManager::MonstaFTP::Uninstaller /;
-use iMSCP::Rights;
+use iMSCP::Boolean;
+use iMSCP::Rights 'setRights';
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -90,18 +91,15 @@ sub uninstall
 
 sub setGuiPermissions
 {
-    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $ug = $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-    setRights(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp",
-        {
-            user      => $panelUName,
-            group     => $panelGName,
-            dirmode   => '0550',
-            filemode  => '0440',
-            recursive => 1
-        }
-    );
+    setRights( "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", {
+        user      => $ug,
+        group     => $ug,
+        dirmode   => '0550',
+        filemode  => '0440',
+        recursive => TRUE
+    } );
 }
 
 =back

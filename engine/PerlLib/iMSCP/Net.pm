@@ -26,8 +26,9 @@ package iMSCP::Net;
 use strict;
 use warnings;
 use autouse 'Data::Validate::IP' => qw/ is_ipv4 is_ipv6 /;
-use iMSCP::Execute qw/ execute /;
-use Net::IP qw/ :PROC /;
+use iMSCP::Boolean;
+use iMSCP::Execute 'execute';
+use Net::IP ':PROC';
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -401,7 +402,7 @@ sub isDeviceUp
 {
     my ( $self, $dev ) = @_;
 
-    $self->{'devices'}->{$dev}->{'flags'} =~ /^(?:.*,)?UP(?:,.*)?$/ ? 1 : 0;
+    $self->{'devices'}->{$dev}->{'flags'} =~ /^(?:.*,)?UP(?:,.*)?$/ ? TRUE : FALSE;
 }
 
 =item isDeviceDown( $dev )
@@ -417,7 +418,7 @@ sub isDeviceDown
 {
     my ( $self, $dev ) = @_;
 
-    $self->{'devices'}->{$dev}->{'flags'} =~ /^(?:.*,)?UP(?:,.*)?$/ ? 0 : 1;
+    $self->{'devices'}->{$dev}->{'flags'} =~ /^(?:.*,)?UP(?:,.*)?$/ ? FALSE : TRUE;
 }
 
 =item resetInstance( )

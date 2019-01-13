@@ -58,8 +58,6 @@ use parent qw/ Common::Object iMSCP::Provider::Networking::Interface /;
 
 sub checkForOperability
 {
-    my ( $self ) = @_;
-
     return FALSE unless length iMSCP::ProgramFinder::find( 'netplan' );
 
     my $srvMngr = iMSCP::Service->getInstance();

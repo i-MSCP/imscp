@@ -19,7 +19,7 @@
 
 package iMSCP::Umask;
 
-use Exporter qw/ import /;
+use Exporter 'import';
 
 our @EXPORT = qw/ $UMASK /;
 our $UMASK;

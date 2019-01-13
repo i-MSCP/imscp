@@ -1,6 +1,6 @@
 =head1 NAME
 
- iMSCP::Mail - Send warning or error message to system administrator
+ iMSCP::Mail - Send email to system administrator
 
 =cut
 
@@ -75,7 +75,7 @@ sub sendInfoMessage
 sub sendWarningMessage
 {
     my ( $body ) = @_;
-    
+
     _sendmail( 'Warning raised', <<"EOF", 'warning' );
 An unexpected warning has been raised in $0:
 
@@ -116,7 +116,7 @@ EOF
  Param string $subject Message subject
  Param string $message Message body to be sent
  Param string $severity Message severity
- Return int 0 on success, other on failure
+ Return void, die on failure
  
 =cut
 
@@ -127,48 +127,51 @@ sub _sendmail
     length $subject or die( '$subject parameter is not defined or invalid' );
     length $message or die( '$message parameter is not defined or invalid' );
     length $severity or die( '$severity parameter is not defined or invalid' );
-    
-    return 0 unless my $bin = iMSCP::ProgramFinder::find( 'sendmail' );
 
-    my $host = $::imscpConfig{'BASE_SERVER_VHOST'};
+    return unless my $bin = iMSCP::ProgramFinder::find( 'sendmail' );
+
+    chomp( my $cpHost = $::imscpConfig{'BASE_SERVER_VHOST'} || `hostname -f` );
+    chomp( my $serverHost = $::imscpConfig{'SERVER_HOSTNAME'} || `hostname -f` );
+    chomp( my $serverIP = $::imscpConfig{'BASE_SERVER_PUBLIC_IP'} || `hostname -i` );
+    chomp( $message );
+
     my $out = MIME::Entity->new()->build(
-        From       => "i-MSCP ($host) <noreply\@$host>",
-        To         => $::imscpConfig{'DEFAULT_ADMIN_ADDRESS'},
+        From       => "i-MSCP ($cpHost) <noreply\@$cpHost>",
+        To         => $::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} || 'root@localhost',
         Subject    => "i-MSCP (backend) - $subject",
         Type       => 'text/plain; charset=utf-8',
         Encoding   => '8bit',
         Data       => encode( 'UTF-8', wrap( '', '', <<"EOF" )),
 Dear administrator,
 
-This is an automatic email sent by i-MSCP backend:
+This is an email automatically sent by i-MSCP.
  
-Server name: $::imscpConfig{'SERVER_HOSTNAME'}
-Server IP: $::imscpConfig{'BASE_SERVER_PUBLIC_IP'}
-Version: $::imscpConfig{'Version'}
+Server name: $serverHost
+Server IP: $serverIP
+Version: @{ [ $::imscpConfig{'Version'} || 'Unavailable' ] }
 Build: @{ [ $::imscpConfig{'Build'} || 'Unavailable' ] }
 Message severity: $severity
 
 ==========================================================================
 
 $message
+
 ==========================================================================
 
 Please do not reply to this email.
 
-___________________________
+_____________________________
 i-MSCP Backend Mailer
 EOF
         'X-Mailer' => 'i-MSCP Backend Mailer'
     );
 
     my $fh;
-    unless ( open $fh, '|-', $bin, '-t', '-oi', '-f', "noreply\@$host" ) {
-        error( sprintf( "Couldn't send mail: %s", $! ));
-        return 1;
+    unless ( open $fh, '|-', $bin, '-t', '-oi', '-f', "noreply\@$cpHost" ) {
+        die( sprintf( "Couldn't send mail: %s", $! ));
     }
     $out->print( $fh );
     close $fh;
-    0;
 }
 
 =back

@@ -19,7 +19,7 @@
 ## Allows to override PHP-FPM settings in pool configuration files
 ##
 ## Note: When you want operate on a per domain basis, don't forget to set the PHP configuration level to 'per_site'.
-## You can do this by running: perl /var/www/imscp/engine/setup/imscp-reconfigure -dar php
+## You can do this by running: perl /var/www/imscp/engine/bin/imscp-reconfigure -dar php
 #
 
 package Listener::PhpFpm::Settings::Override;

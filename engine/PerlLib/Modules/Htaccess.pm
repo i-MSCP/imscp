@@ -58,7 +58,7 @@ sub getType
  Process module
 
  Param hashref$data Htaccess data
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -66,36 +66,28 @@ sub process
 {
     my ( $self, $data ) = @_;
 
-    try {
-        $self->_loadData( $data->{'id'} );
+    $self->_loadData( $data->{'id'} );
 
-        my ( @sql, $rs );
-        if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
-            $rs = $self->add();
-            @sql = (
-                'UPDATE htaccess SET status = ? WHERE id = ?', undef,
-                ( $rs ? getMessageByType( 'error', { amount => 1 } ) || 'Unknown error' : 'ok' ), $data->{'id'}
-            );
-        } elsif ( $self->{'status'} eq 'todisable' ) {
-            $rs = $self->disable();
-            @sql = (
-                'UPDATE htaccess SET status = ? WHERE id = ?', undef,
-                ( $rs ? getMessageByType( 'error', { amount => 1 } ) || 'Unknown error' : 'disabled' ), $data->{'id'}
-            );
-        } else {
-            $rs = $self->delete();
-            @sql = $rs ? (
-                'UPDATE htaccess SET status = ? WHERE id = ?', undef,
-                getMessageByType( 'error', { amount => 1 } ) || 'Unknown error', $data->{'id'}
-            ) : ( 'DELETE FROM htaccess WHERE id = ?', undef, $data->{'id'} );
-        }
+    my @sql;
+    if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
+        @sql = (
+            'UPDATE htaccess SET status = ? WHERE id = ?', undef,
+            ( $self->add() ? getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' : 'ok' ), $data->{'id'}
+        );
+    } elsif ( $self->{'status'} eq 'todisable' ) {
+        @sql = (
+            'UPDATE htaccess SET status = ? WHERE id = ?', undef,
+            ( $self->disable() ? getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' : 'disabled' ), $data->{'id'}
+        );
+    } else {
+        @sql = $self->delete() ? (
+            'UPDATE htaccess SET status = ? WHERE id = ?', undef,
+            getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error', $data->{'id'}
+        ) : ( 'DELETE FROM htaccess WHERE id = ?', undef, $data->{'id'} );
+    }
 
-        $self->{'_conn'}->run( fixup => sub { $_->do( @sql ); } );
-        $rs;
-    } catch {
-        error( $_ );
-        1;
-    };
+    $self->{'_conn'}->run( fixup => sub { $_->do( @sql ); } );
+    0;
 }
 
 =back
@@ -160,8 +152,6 @@ sub _getData
 
     $self->{'_data'} = do {
         my $ug = $::imscpConfig{'SYSTEM_USER_PREFIX'} . ( $::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'} );
-        my $homeDir = File::Spec->canonpath( "$::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
-        my $pathDir = File::Spec->canonpath( "$::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}/$self->{'path'}" );
         {
             ACTION          => $action,
             STATUS          => $self->{'status'},
@@ -170,8 +160,8 @@ sub _getData
             GROUP           => $ug,
             AUTH_TYPE       => $self->{'auth_type'},
             AUTH_NAME       => encode_utf8( $self->{'auth_name'} ),
-            AUTH_PATH       => $pathDir,
-            HOME_PATH       => $homeDir,
+            AUTH_PATH       => File::Spec->canonpath( "$::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}/$self->{'path'}" ),
+            HOME_PATH       => File::Spec->canonpath( "$::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" ),
             DOMAIN_NAME     => $self->{'domain_name'},
             HTUSERS         => $self->{'users'},
             HTGROUPS        => $self->{'groups'}

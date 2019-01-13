@@ -1,6 +1,6 @@
 =head1 NAME
 
- Modules::Abstract - Base class for i-MSCP modules
+ Modules::Abstract - Abstract class for i-MSCP modules
 
 =cut
 
@@ -26,15 +26,16 @@ package Modules::Abstract;
 use strict;
 use warnings;
 use iMSCP::Database;
-use iMSCP::Debug qw/ debug fatal /;
+use iMSCP::Debug 'debug';
 use iMSCP::EventManager;
 use iMSCP::Packages;
 use iMSCP::Servers;
+use Try::Tiny;
 use parent 'Common::Object';
 
 =head1 DESCRIPTION
 
- i-MSCP modules abstract class.
+ Abstract class for i-MSCP modules.
 
 =head1 PUBLIC METHODS
 
@@ -50,7 +51,7 @@ use parent 'Common::Object';
 
 sub getType
 {
-    fatal( ref( $_[0] ) . ' module must implements the getType( ) method' );
+    die( sprintf( 'The %s module must implements the %s method', ref( $_[0] ), 'getType' ));
 }
 
 =item process( \%data )
@@ -64,7 +65,7 @@ sub getType
 
 sub process
 {
-    fatal( ref( $_[0] ) . ' module must implements the process( ) method' );
+    die( sprintf( 'The %s module must implements the %s method', ref( $_[0] ), 'process' ));
 }
 
 =item add( )
@@ -79,7 +80,7 @@ sub process
 
 sub add
 {
-    $_[0]->_execAllActions( 'add' );
+    $_[0]->_execAll( 'add' );
 }
 
 =item delete( )
@@ -94,7 +95,7 @@ sub add
 
 sub delete
 {
-    $_[0]->_execAllActions( 'delete' );
+    $_[0]->_execAll( 'delete' );
 }
 
 =item restore( )
@@ -109,7 +110,7 @@ sub delete
 
 sub restore
 {
-    $_[0]->_execAllActions( 'restore' );
+    $_[0]->_execAll( 'restore' );
 }
 
 =item disable( )
@@ -124,7 +125,7 @@ sub restore
 
 sub disable
 {
-    $_[0]->_execAllActions( 'disable' );
+    $_[0]->_execAll( 'disable' );
 }
 
 =back
@@ -151,7 +152,7 @@ sub _init
     $self;
 }
 
-=item _execAction( $action, $pkgType )
+=item _exec( $action, $pkgType )
 
  Execute the given $action on all $pkgType that implement it
 
@@ -161,7 +162,7 @@ sub _init
 
 =cut
 
-sub _execAction
+sub _exec
 {
     my ( $self, $action, $pkgType ) = @_;
 
@@ -186,7 +187,7 @@ sub _execAction
     0;
 }
 
-=item _execAllActions( $action )
+=item _execAll( $action )
 
  Execute pre$action, $action, post$action on servers, packages
 
@@ -195,29 +196,34 @@ sub _execAction
 
 =cut
 
-sub _execAllActions
+sub _execAll
 {
     my ( $self, $action ) = @_;
 
-    my $moduleType = $self->getType();
+    try {
+        my $moduleType = $self->getType();
 
-    if ( $action =~ /^(?:add|restore)$/ ) {
+        if ( $action =~ /^(?:add|restore)$/ ) {
+            for my $actionPrefix ( 'pre', '', 'post' ) {
+                my $rs = $self->_exec( "$actionPrefix$action$moduleType", 'server' );
+                $rs ||= $self->_exec( "$actionPrefix$action$moduleType", 'package' );
+                return $rs if $rs;
+            }
+
+            return 0;
+        }
+
         for my $actionPrefix ( 'pre', '', 'post' ) {
-            my $rs = $self->_execAction( "$actionPrefix$action$moduleType", 'server' );
-            $rs ||= $self->_execAction( "$actionPrefix$action$moduleType", 'package' );
+            my $rs = $self->_exec( "$actionPrefix$action$moduleType", 'package' );
+            $rs ||= $self->_exec( "$actionPrefix$action$moduleType", 'server' );
             return $rs if $rs;
         }
 
-        return 0;
-    }
-
-    for my $actionPrefix ( 'pre', '', 'post' ) {
-        my $rs = $self->_execAction( "$actionPrefix$action$moduleType", 'package' );
-        $rs ||= $self->_execAction( "$actionPrefix$action$moduleType", 'server' );
-        return $rs if $rs;
-    }
-
-    0;
+        0;
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item _getData( $action )

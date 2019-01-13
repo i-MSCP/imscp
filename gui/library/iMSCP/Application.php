@@ -588,10 +588,7 @@ class Application
                 $cache->save($plainPasswd, 'DATABASE_PASSWORD_PLAIN');
             }
 
-            $this->database = Database::connect(
-                $config['DATABASE_USER'], $plainPasswd, $config['DATABASE_TYPE'], $config['DATABASE_HOST'],
-                $config['DATABASE_NAME']
-            );
+            $this->database = Database::connect($config['DATABASE_USER'], $plainPasswd, 'mysql', $config['DATABASE_HOST'], $config['DATABASE_NAME']);
         } catch (\PDOException $e) {
             throw new DatabaseException(sprintf("Couldn't establish connection to the database: %s", $e->getMessage()), NULL, $e->getCode(), $e);
         }

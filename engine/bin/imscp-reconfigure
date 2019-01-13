@@ -29,76 +29,76 @@
 
 use strict;
 use warnings;
-use File::Basename;
+use File::Basename 'basename';
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
-use iMSCP::Debug;
+use iMSCP::Boolean;
+use iMSCP::Debug qw/ debugRegisterCallBack error newDebug output setDebug setVerbose /;
 use iMSCP::Dialog;
 use iMSCP::EventManager;
 use iMSCP::Getopt;
-use Net::LibIDN qw/ idn_to_unicode /;
+use Net::LibIDN 'idn_to_unicode';
+use POSIX ();
+use Try::Tiny;
 
-$ENV{'LANG'} = 'C.UTF-8';
-$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+try {
+    $ENV{'LANG'} = 'C.UTF-8';
+    $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+    $ENV{'IMSCP_SETUP'} = TRUE;
 
-# Needed to make any sub-process aware of i-MSCP setup process
-$ENV{'IMSCP_SETUP'} = 1;
+    # Sets execution mode
+    $::execmode = 'setup' unless defined $::execmode;
+    # Init variable that holds questions
+    %::questions = () unless %::questions;
 
-newDebug( 'imscp-setup.log' );
+    my $basename = basename( $0 );
+    newDebug( $basename . '.log' );
 
-# Set backend mode
-$main::execmode = 'setup' unless defined $main::execmode;
+    iMSCP::Getopt->parse( sprintf( 'Usage: perl %s [OPTION]...', $basename ));
 
-# Init variable that holds questions
-%main::questions = () unless %main::questions;
+    setDebug( iMSCP::Getopt->debug );
+    setVerbose( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose );
 
-# Parse command line options
-iMSCP::Getopt->parse( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )));
+    # Get reconfigure option
+    $::reconfigure = iMSCP::Getopt->reconfigure;
 
-# Set debug and verbose mode
-setDebug( iMSCP::Getopt->debug );
-setVerbose( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose );
+    # Handle preseed option
+    if ( iMSCP::Getopt->preseed ) {
+        require iMSCP::Getopt->preseed;
+        # The preseed option supersede the reconfigure option
+        iMSCP::Getopt->reconfigure( 'none' );
+        $::reconfigure = 'none';
+        iMSCP::Getopt->noprompt( TRUE );
+    }
 
-# Get reconfigure option
-$main::reconfigure = iMSCP::Getopt->reconfigure;
+    # Handle the listener option
+    require iMSCP::Getopt->listener if iMSCP::Getopt->listener;
 
-# Handle preseed option
-if ( iMSCP::Getopt->preseed ) {
-    require iMSCP::Getopt->preseed;
-    # The preseed option supersede the reconfigure option
-    iMSCP::Getopt->reconfigure( 'none' );
-    $main::reconfigure = 'none';
-    iMSCP::Getopt->noprompt( 1 );
-}
-
-# Handle the listener option
-require iMSCP::Getopt->listener if iMSCP::Getopt->listener;
-
-# handle noprompt option
-if ( iMSCP::Getopt->noprompt ) {
-    debugRegisterCallBack( sub {
+    # handle noprompt option
+    if ( iMSCP::Getopt->noprompt ) {
+        debugRegisterCallBack( sub {
             print STDOUT output( 'i-MSCP has been successfully installed/updated.', 'ok' ) unless $?;
 
             # We exit with status 5 from iMSCP::Dialog in noninteractive mode
             if ( $? == 5 ) {
                 if ( iMSCP::Getopt->preseed ) {
                     print STDERR output( 'Missing or bad entry found in your preseed file.', 'fatal' );
-                } else {
-                    print STDERR output( 'Missing or bad entry found in configuration file.', 'fatal' );
+                    return;
                 }
+
+                print STDERR output( 'Missing or bad entry found in configuration file.', 'fatal' );
             }
         } );
-    print STDOUT output( 'Installation in progress... Please wait.', 'info' );
-}
 
-sub run
-{
+        print STDOUT output( 'Installation in progress... Please wait.', 'info' );
+    }
+
     require "$FindBin::Bin/imscp-setup-methods.pl";
 
     my $rs = setupBoot();
     $rs ||= iMSCP::EventManager->getInstance()->trigger( 'beforeSetup' );
     $rs ||= setupRegisterListeners();
-    return $rs if $rs;
+    return if $rs;
 
     unless ( iMSCP::Getopt->noprompt ) {
         my $dialog = iMSCP::Dialog->getInstance();
@@ -106,13 +106,11 @@ sub run
         $dialog->set( 'yes-label', 'Continue' );
         $dialog->set( 'no-label', 'Abort' );
 
-        exit 0 if $dialog->yesno( <<"EOF", 'abort_by_default' );
+        return if $dialog->yesno( <<"EOF", 'abort_by_default' );
 
-Welcome to the \\Z1i-MSCP $main::imscpConfig{'Version'}\\Zn reconfiguration dialog.
+Welcome to the \\Z1i-MSCP $::imscpConfig{'Version'}\\Zn reconfiguration dialog.
 
 This program will reconfigures your i-MSCP instance.
-
-During the process, some or all services might require to be shutdown or restarted.
 
 You can now either continue or abort.
 EOF
@@ -121,32 +119,30 @@ EOF
     }
 
     $rs ||= setupDialog();
-    $rs = setupTasks();
+    $rs ||= setupTasks();
     $rs ||= iMSCP::EventManager->getInstance()->trigger( 'afterSetup' );
-    return $rs if $rs || iMSCP::Getopt->noprompt;
-
-    my $port = $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://'
-        ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'} : $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
-    my $vhost = idn_to_unicode( $main::imscpConfig{'BASE_SERVER_VHOST'}, 'utf-8' );
+    return if $rs || iMSCP::Getopt->noprompt;
 
     iMSCP::Dialog->getInstance()->infobox( <<"EOF" );
 
 \\Z1Congratulations\\Zn
 
 i-MSCP has been successfully reconfigured.
-
-Please connect to $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$vhost:$port and login with your administrator account.
-
-Thank you for choosing i-MSCP.
 EOF
-
-    0;
-}
-
-exit run();
+} catch {
+    error( $_ );
+} finally {
+    return unless length getMessageByType( 'error', { amount => 1 } );
+    exit 1 if POSIX::isatty( \*STDERR );
+    require iMSCP::Mail;
+    iMSCP::Mail::sendErrorMessage( join "\n", getMessageByType( 'error', { remove => TRUE } ));
+};
 
 =head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
+
+1;
+__END__

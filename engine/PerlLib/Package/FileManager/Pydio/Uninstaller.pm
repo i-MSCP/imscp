@@ -25,11 +25,12 @@ package Package::FileManager::Pydio::Uninstaller;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Boolean;
+use iMSCP::Debug 'error';
 use iMSCP::Dir;
 use iMSCP::File;
-use iMSCP::Execute;
 use Package::FrontEnd;
+use Try::Tiny;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -50,7 +51,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->_unregisterConfig();
     $rs ||= $self->_removeFiles();
@@ -72,7 +73,7 @@ sub uninstall
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'frontend'} = Package::FrontEnd->getInstance();
     $self;
@@ -88,25 +89,20 @@ sub _init
 
 sub _unregisterConfig
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     return 0 unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
 
-    my $file = iMSCP::File->new(
-        filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf"
-    );
-    my $fileContentRef = $file->getAsRef();
-    unless ( defined $fileContentRef ) {
-        error( sprintf( "Couldn't read %s file", $file->{'filename'} ));
-        return 1;
-    }
+    my $file = iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf" );
+    my $fileC = $file->getAsRef();
+    return 1 unless defined $fileC;
 
-    ${$fileContentRef} =~ s/[\t ]*include imscp_pydio.conf;\n//;
+    ${ $fileC } =~ s/[\t ]*include imscp_pydio.conf;\n//;
 
     my $rs = $file->save();
     return $rs if $rs;
 
-    $self->{'frontend'}->{'reload'} = 1;
+    $self->{'frontend'}->{'reload'} = TRUE;
     0;
 }
 
@@ -120,13 +116,16 @@ sub _unregisterConfig
 
 sub _removeFiles
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
-
-    return 0 unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pydio.conf";
-
-    iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pydio.conf" )->delFile();
+    try {
+        iMSCP::Dir->new( dirname => "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
+        return 0 unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pydio.conf";
+        iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pydio.conf" )->delFile();
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =back

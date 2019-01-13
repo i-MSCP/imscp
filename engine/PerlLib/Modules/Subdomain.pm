@@ -59,7 +59,7 @@ sub getType
  Process module
 
  Param hashref \%data Subdomain unique data
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -67,42 +67,33 @@ sub process
 {
     my ( $self, $data ) = @_;
 
-    try {
-        $self->_loadData( $data->{'id'} );
+    $self->_loadData( $data->{'id'} );
 
-        my ( @sql, $rs );
-        if ( $self->{'subdomain_status'} =~ /^to(?:add|change|enable)$/ ) {
-            $rs = $self->add();
-            @sql = (
-                'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?', undef,
-                ( $rs ? getMessageByType( 'error', { amount => 1 } ) || 'Unknown error' : 'ok' ), $data->{'id'}
-            );
-        } elsif ( $self->{'subdomain_status'} eq 'todisable' ) {
-            $rs = $self->disable();
-            @sql = (
-                'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?', undef,
-                ( $rs ? getMessageByType( 'error', { amount => 1 } ) || 'Unknown error' : 'disabled' ), $data->{'id'}
-            );
-        } elsif ( $self->{'subdomain_status'} eq 'torestore' ) {
-            $rs = $self->restore();
-            @sql = (
-                'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?', undef,
-                ( $rs ? getMessageByType( 'error', { amount => 1 } ) || 'Unknown error' : 'ok' ), $data->{'id'}
-            );
-        } else {
-            $rs = $self->delete();
-            @sql = $rs ? (
-                'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?', undef,
-                getMessageByType( 'error', { amount => 1 } ) || 'Unknown error', $data->{'id'}
-            ) : ( 'DELETE FROM subdomain WHERE subdomain_id = ?', undef, $data->{'id'} );
-        }
+    my @sql;
+    if ( $self->{'subdomain_status'} =~ /^to(?:add|change|enable)$/ ) {
+        @sql = (
+            'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?', undef,
+            ( $self->add() ? getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' : 'ok' ), $data->{'id'}
+        );
+    } elsif ( $self->{'subdomain_status'} eq 'todisable' ) {
+        @sql = (
+            'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?', undef,
+            ( $self->disable() ? getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' : 'disabled' ), $data->{'id'}
+        );
+    } elsif ( $self->{'subdomain_status'} eq 'torestore' ) {
+        @sql = (
+            'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?', undef,
+            ( $self->restore() ? getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' : 'ok' ), $data->{'id'}
+        );
+    } else {
+        @sql = $self->delete() ? (
+            'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?', undef,
+            getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error', $data->{'id'}
+        ) : ( 'DELETE FROM subdomain WHERE subdomain_id = ?', undef, $data->{'id'} );
+    }
 
-        $self->{'_conn'}->run( fixup => sub { $_->do( @sql ); } );
-        $rs;
-    } catch {
-        error( $_ );
-        1;
-    };
+    $self->{'_conn'}->run( fixup => sub { $_->do( @sql ); } );
+    0;
 }
 
 =item add( )
@@ -122,17 +113,19 @@ sub add
 
     return $self->SUPER::add() if $::execmode eq 'setup';
 
-    try {
+    return 1 unless try {
         $self->{'_conn'}->run( fixup => sub {
             $_->do( "UPDATE domain_dns SET domain_dns_status = 'tochange' WHERE domain_id = ? AND alias_id = 0 AND domain_dns_status = 'ok'", undef,
                 $self->{'domain_id'}
             );
         } );
-        0;
+        TRUE;
     } catch {
         error( $_ );
-        1;
-    } || $self->SUPER::add();
+        FALSE;
+    };
+
+    $self->SUPER::add();
 }
 
 =back

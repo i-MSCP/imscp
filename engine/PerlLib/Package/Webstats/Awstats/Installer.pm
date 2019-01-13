@@ -25,13 +25,12 @@ package Package::Webstats::Awstats::Installer;
 
 use strict;
 use warnings;
-use iMSCP::Database;
-use iMSCP::Debug;
+use iMSCP::Debug 'error';
 use iMSCP::Dir;
 use iMSCP::File;
-use iMSCP::TemplateParser;
 use Servers::cron;
 use Servers::httpd;
+use Try::Tiny;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -55,7 +54,7 @@ use parent 'Common::SingletonClass';
 
 sub install
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->_disableDefaultConfig();
     $rs ||= $self->_createCacheDir();
@@ -72,7 +71,7 @@ sub install
 
 sub postinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->_addAwstatsCronTask();
 }
@@ -93,7 +92,7 @@ sub postinstall
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'httpd'} = Servers::httpd->factory();
     $self;
@@ -109,16 +108,18 @@ sub _init
 
 sub _createCacheDir
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    iMSCP::Dir->new( dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'} )->make(
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
+    try {
+        iMSCP::Dir->new( dirname => $::imscpConfig{'AWSTATS_CACHE_DIR'} )->make( {
+            user  => $::imscpConfig{'ROOT_USER'},
             group => $self->{'httpd'}->getRunningGroup(),
             mode  => 02750
-        }
-    );
-    0;
+        } );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item _setupApache2( )
@@ -131,37 +132,27 @@ sub _createCacheDir
 
 sub _setupApache2
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     # Create Basic authentication file
-
     my $file = iMSCP::File->new( filename => "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats" );
     $file->set( '' ); # Make sure to start with an empty file on update/reconfiguration
     my $rs = $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $self->{'httpd'}->getRunningGroup());
+    $rs ||= $file->owner( $::imscpConfig{'ROOT_USER'}, $self->{'httpd'}->getRunningGroup());
     $rs ||= $file->mode( 0640 );
     return $rs if $rs;
 
     # Enable required Apache2 modules
-
-    $rs = $self->{'httpd'}->enableModules(
-        'rewrite', 'authn_core', 'authn_basic', 'authn_socache', 'proxy', 'proxy_http'
-    );
+    $rs = $self->{'httpd'}->enableModules( 'rewrite', 'authn_core', 'authn_basic', 'authn_socache', 'proxy', 'proxy_http' );
     return $rs if $rs;
 
     # Create Apache2 vhost
-
-    $self->{'httpd'}->setData(
-        {
-            AWSTATS_AUTH_USER_FILE_PATH => "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats",
-            AWSTATS_ENGINE_DIR          => $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
-            AWSTATS_WEB_DIR             => $main::imscpConfig{'AWSTATS_WEB_DIR'}
-        }
-    );
-
-    $rs = $self->{'httpd'}->buildConfFile(
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Config/01_awstats.conf"
-    );
+    $self->{'httpd'}->setData( {
+        AWSTATS_AUTH_USER_FILE_PATH => "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats",
+        AWSTATS_ENGINE_DIR          => $::imscpConfig{'AWSTATS_ENGINE_DIR'},
+        AWSTATS_WEB_DIR             => $::imscpConfig{'AWSTATS_WEB_DIR'}
+    } );
+    $rs = $self->{'httpd'}->buildConfFile( "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Config/01_awstats.conf" );
     $rs ||= $self->{'httpd'}->enableSites( '01_awstats.conf' );
 }
 
@@ -175,21 +166,21 @@ sub _setupApache2
 
 sub _disableDefaultConfig
 {
-    my $rs = 0;
 
-    if ( -f "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf" ) {
-        $rs = iMSCP::File->new( filename => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf" )->moveFile(
-            "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf.disabled"
+    if ( -f "$::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf" ) {
+        my $rs = iMSCP::File->new( filename => "$::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf" )->moveFile(
+            "$::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf.disabled"
         );
         return $rs if $rs;
     }
 
     my $cronDir = Servers::cron->factory()->{'config'}->{'CRON_D_DIR'};
     if ( -f "$cronDir/awstats" ) {
-        $rs = iMSCP::File->new( filename => "$cronDir/awstats" )->moveFile( "$cronDir/awstats.disable" );
+        my $rs = iMSCP::File->new( filename => "$cronDir/awstats" )->moveFile( "$cronDir/awstats.disable" );
+        return $rs if $rs;
     }
 
-    $rs;
+    0;
 }
 
 =item _addAwstatsCronTask( )
@@ -202,20 +193,18 @@ sub _disableDefaultConfig
 
 sub _addAwstatsCronTask
 {
-    Servers::cron->factory()->addTask(
-        {
-            TASKID  => 'Package::Webstats::Awstats',
-            MINUTE  => '15',
-            HOUR    => '3-21/6',
-            DAY     => '*',
-            MONTH   => '*',
-            DWEEK   => '*',
-            USER    => $main::imscpConfig{'ROOT_USER'},
-            COMMAND => 'nice -n 10 ionice -c2 -n5 ' .
-                "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_updateall.pl now " .
-                "-awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl > /dev/null 2>&1"
-        }
-    );
+    Servers::cron->factory()->addTask( {
+        TASKID  => 'Package::Webstats::Awstats',
+        MINUTE  => '15',
+        HOUR    => '3-21/6',
+        DAY     => '*',
+        MONTH   => '*',
+        DWEEK   => '*',
+        USER    => $::imscpConfig{'ROOT_USER'},
+        COMMAND => 'nice -n 10 ionice -c2 -n5 ' .
+            "perl $::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_updateall.pl now " .
+            "-awstatsprog=$::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl > /dev/null 2>&1"
+    } );
 }
 
 =back

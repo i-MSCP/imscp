@@ -26,8 +26,10 @@ package Servers::sqld::remote;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Servers::sqld::remote::installer Servers::sqld::remote::uninstaller /;
+use iMSCP::Boolean;
 use iMSCP::Database;
-use iMSCP::Rights;
+use iMSCP::Debug 'debug';
+use iMSCP::Rights 'setRights';
 use version;
 use parent 'Servers::sqld::mysql';
 
@@ -49,7 +51,7 @@ use parent 'Servers::sqld::mysql';
 
 sub preinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'remote' );
     $rs ||= Servers::sqld::remote::installer->getInstance()->preinstall();
@@ -66,7 +68,7 @@ sub preinstall
 
 sub postinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'remote' );
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'remote' );
@@ -82,7 +84,7 @@ sub postinstall
 
 sub uninstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'remote' );
     $rs ||= Servers::sqld::remote::uninstaller->getInstance()->uninstall();
@@ -112,25 +114,19 @@ sub restart
 
 sub setEnginePermissions
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldSetEnginePermissions' );
-    $rs ||= setRights(
-        "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf",
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'ROOT_GROUP'},
-            mode  => '0644'
-        }
-    );
-    $rs ||= setRights(
-        "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf",
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'ROOT_GROUP'},
-            mode  => '0640'
-        }
-    );
+    $rs ||= setRights( "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf", {
+        user  => $::imscpConfig{'ROOT_USER'},
+        group => $::imscpConfig{'ROOT_GROUP'},
+        mode  => '0644'
+    } );
+    $rs ||= setRights( "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf", {
+        user  => $::imscpConfig{'ROOT_USER'},
+        group => $::imscpConfig{'ROOT_GROUP'},
+        mode  => '0640'
+    } );
     $rs ||= $self->{'eventManager'}->trigger( 'afterSqldSetEnginePermissions' );
 }
 
@@ -147,25 +143,22 @@ sub setEnginePermissions
 
 sub createUser
 {
-    my ($self, $user, $host, $password) = @_;
+    my ( $self, $user, $host, $password ) = @_;
 
     defined $user or die( '$user parameter is not defined' );
     defined $host or die( '$host parameter is not defined' );
     defined $password or die( '$password parameter is not defined' );
 
-    eval {
-        my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = 1;
-        $dbh->do(
-            'CREATE USER ?@? IDENTIFIED BY ?'
-                . ( ( $self->getType() ne 'mariadb'
-                    && version->parse( $self->getVersion()) >= version->parse( '5.7.6' ) )
-                ? ' PASSWORD EXPIRE NEVER' : ''
+    debug( sprintf( 'Creating %s@%s SQL user', $user, $password ));
+
+    iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+        $_->do(
+            'CREATE USER ?@? IDENTIFIED BY ?' . (
+                $self->getType() ne 'mariadb' && version->parse( $self->getVersion()) >= version->parse( '5.7.6' ) ? ' PASSWORD EXPIRE NEVER' : ''
             ),
             undef, $user, $host, $password
         );
-    };
-    !$@ or die( sprintf( "Couldn't create the %s\@%s SQL user: %s", $user, $host, $@ ));
+    } );
     0;
 }
 

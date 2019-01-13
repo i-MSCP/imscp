@@ -25,7 +25,7 @@ package iMSCP::Syscall;
 
 use strict;
 use warnings;
-no warnings qw / portable /;
+no warnings 'portable';
 use iMSCP::Debug;
 
 {

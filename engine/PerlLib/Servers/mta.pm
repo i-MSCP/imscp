@@ -26,6 +26,7 @@ package Servers::mta;
 use strict;
 use warnings;
 use iMSCP::Debug 'fatal';
+use Try::Tiny;
 
 # mta server instance
 my $instance;
@@ -48,12 +49,15 @@ my $instance;
 
 sub factory
 {
-    return $instance if $instance;
+    return $instance if defined $instance;
 
-    my $package ||= $::imscpConfig{'MTA_PACKAGE'} || 'Servers::noserver';
-    eval "require $package";
-    fatal( $@ ) if $@;
-    $instance = $package->getInstance();
+    try {
+        my $package ||= $::imscpConfig{'MTA_PACKAGE'} || 'Servers::noserver';
+        eval "require $package" or die;
+        $instance = $package->getInstance();
+    } catch {
+        fatal( $_ );
+    };
 }
 
 =item can( $method )
@@ -69,11 +73,13 @@ sub can
 {
     my ( undef, $method ) = @_;
 
-    my $package = $::imscpConfig{'MTA_PACKAGE'} || 'Servers::noserver';
-    eval "require $package";
-    fatal( $@ ) if $@;
-
-    $package->can( $method );
+    try {
+        my $package = $::imscpConfig{'MTA_PACKAGE'} || 'Servers::noserver';
+        eval "require $package" or die;
+        $package->can( $method );
+    } catch {
+        fatal( $_ );
+    };
 }
 
 =item getPriority( )

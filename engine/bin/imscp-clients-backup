@@ -33,6 +33,7 @@ use File::Basename 'basename';
 use File::Spec;
 use FindBin;
 use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use iMSCP::Database;
 use iMSCP::Bootstrapper;
 use iMSCP::Boolean;
 use iMSCP::Debug qw/ debug error getMessageByType newDebug setDebug setVerbose /;
@@ -53,6 +54,7 @@ my %CMD = (
     xz     => { qw% path /usr/bin/xz ext xz % },
     pixz   => { qw% path /usr/bin/pixz ext xz % }
 );
+my $DATE = POSIX::strftime( '%Y.%m.%d-%H-%M', localtime());
 
 =over
 
@@ -72,8 +74,10 @@ sub _backupDatabases
 
     my $db = iMSCP::Database->factory();
     my $rows = $db->getConnector()->run( fixup => sub {
-        $_->selectall_arrayref( 'SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?', { Slice => {} }, undef, $id );
+        $_->selectall_arrayref( 'SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = ?', { Slice => {} }, $id );
     } );
+
+    local $UMASK = 077;
 
     for my $row ( @{ $rows } ) {
         next unless try {
@@ -84,16 +88,22 @@ sub _backupDatabases
             FALSE;
         };
 
-        next $::imscpConfig{'BACKUP_CMP_PROG'} eq 'no';
+        # Encode slashes as SOLIDUS unicode character
+        # Encode dots as Full stop unicode character
+        ( my $dbName = $::imscpConfig{'DATABASE_NAME'} ) =~ s%([./])%{ '/', '@002f', '.', '@002e' }->{$1}%ge;
+        next if iMSCP::File->new( filename => $::imscpConfig{'ROOT_DIR'} . '/backups/' . $dbName . '.sql' )->moveFile(
+            "$::imscpConfig{'ROOT_DIR'}/backups/$dbName-$DATE .sql"
+        );
+        
+        next if $::imscpConfig{'BACKUP_CMP_PROG'} eq 'no';
 
         # Encode slashes as SOLIDUS unicode character
         # Encode dots as Full stop unicode character
-        ( my $dbName = $row->{'sqld_name'} ) =~ s%([./])%{ '/', '@002f', '.', '@002e' }->{$1}%ge;
         my $rs = execute(
             [
                 $CMD{$::imscpConfig{'BACKUP_CMP_PROG'}}->{'path'}, ( $::imscpConfig{'BACKUP_CMP_PROG'} ne 'pixz' ? '--force' : () ),
                 ( grep ( $_ eq $::imscpConfig{'BACKUP_CMP_PROG'}, 'pbzip2', 'pigz', 'pixz' ) ? "-p$::imscpConfig{'BACKUP_CMP_MCORES'}" : () ),
-                "-$::imscpConfig{'BACKUP_CMP_LEVEL'}", "$dbName.sql"
+                "-$::imscpConfig{'BACKUP_CMP_LEVEL'}", "$::imscpConfig{'ROOT_DIR'}/backups/$dbName-$DATE .sql"
             ],
             \my $stdout,
             \my $stderr
@@ -103,7 +113,7 @@ sub _backupDatabases
     }
 }
 
-=item _backupMaildirs( $id, $dir, $cmp, $level, $ext )
+=item _backupMaildirs( $id, $dir )
 
  Backup client mail directories
 
@@ -133,7 +143,7 @@ sub _backupMaildirs
                 SELECT CONCAT(t1.subdomain_alias_name, '.', t2.alias_name) AS domain_name
                 FROM subdomain_alias AS t1
                 JOIN domain_aliasses AS t2 USING(alias_id)
-                WHERE t1.domain_id = ?
+                WHERE t2.domain_id = ?
                 AND t1.subdomain_alias_status <> 'todelete'
             ",
             undef, $id, $id, $id, $id
@@ -141,21 +151,18 @@ sub _backupMaildirs
     } );
 
     my $maildirRoot = Servers::mta->factory()->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'};
-
     for my $domain ( @domains ) {
         my $maildir = File::Spec->canonpath( $maildirRoot . '/' . $domain );
         next unless -d $maildir;
 
-        local $UMASK = 077;
-        my $arch = "mail-backup-$name-@{ [ POSIX::strftime( '%Y.%m.%d-%H-%M', localtime ) ] }.tar";
         my @command = (
-            '/bin/tar', '--create', '--directory', escapeShell( $maildir ),
+            '/bin/tar', '--create', '--directory', escapeShell( $maildir ), '.',
             ( $::imscpConfig{'BACKUP_CMP_PROG'} eq 'no'
-                ? ( '--file', escapeShell( "$dir/$arch" ) )
+                ? ( '--file', escapeShell( "$dir/mail-backup-$domain-$DATE.tar" ) )
                 : ( '|', $CMD{$::imscpConfig{'BACKUP_CMP_PROG'}}->{'path'},
                     ( grep ( $_ eq $::imscpConfig{'BACKUP_CMP_PROG'}, 'pbzip2', 'pigz', 'pixz' ) ? "-p$::imscpConfig{'BACKUP_CMP_MCORES'}" : () ),
                     "-$::imscpConfig{'BACKUP_CMP_LEVEL'}",
-                    '>', escapeShell( "$dir/$arch.$CMD{$::imscpConfig{'BACKUP_CMP_PROG'}}->{'ext'}" )
+                    '>', escapeShell( "$dir/mail-backup-$domain-$DATE.tar.$CMD{$::imscpConfig{'BACKUP_CMP_PROG'}}->{'ext'}" )
                 )
             )
         );
@@ -165,7 +172,7 @@ sub _backupMaildirs
     }
 }
 
-=item backupHomedir( $name, $dir, $cmp, $level, $ext )
+=item backupHomedir( $name, $dir )
 
  Backup client home directory
 
@@ -179,17 +186,15 @@ sub _backupHomedir
 {
     my ( $name, $dir ) = @_;
 
-    local $UMASK = 077;
-    my $arch = "web-backup-$name-@{ [ POSIX::strftime( '%Y.%m.%d-%H-%M', localtime ) ] }.tar";
     my @command = (
-        '/bin/tar', '--create', '--directory', escapeShell( "$::imscpConfig{'USER_WEB_DIR'}/name" ), '--exclude=./backups', '--exclude=./logs',
+        '/bin/tar', '--create', '--directory', escapeShell( "$::imscpConfig{'USER_WEB_DIR'}/$name" ), '--exclude=./backups', '--exclude=./logs',
         '--exclude=./phptmp', '.',
         ( $::imscpConfig{'BACKUP_CMP_PROG'} eq 'no'
-            ? ( '--file', escapeShell( "$dir/$arch" ) )
+            ? ( '--file', escapeShell( "$dir/web-backup-$DATE.tar" ) )
             : ( '|', $CMD{$::imscpConfig{'BACKUP_CMP_PROG'}}->{'path'},
                 ( grep ( $_ eq $::imscpConfig{'BACKUP_CMP_PROG'}, 'pbzip2', 'pigz', 'pixz' ) ? "-p$::imscpConfig{'BACKUP_CMP_MCORES'}" : () ),
                 "-$::imscpConfig{'BACKUP_CMP_LEVEL'}",
-                '>', escapeShell( "$dir/$arch.$CMD{$::imscpConfig{'BACKUP_CMP_PROG'}}->{'ext'}" )
+                '>', escapeShell( "$dir/web-backup-$DATE.tar.$CMD{$::imscpConfig{'BACKUP_CMP_PROG'}}->{'ext'}" )
             )
         )
     );
@@ -209,7 +214,7 @@ sub _backupHomedir
 sub backup
 {
     return unless $::imscpConfig{'BACKUP_CLIENTS'} eq 'yes';
-
+    
     die( sprintf( "Missing or invalid 'BACKUP_CMP_PROG' configuration parameter" )) unless grep (
         $_ eq $::imscpConfig{'BACKUP_CMP_PROG'}, keys %CMD, 'no'
     );
@@ -219,15 +224,11 @@ sub backup
         die( sprintf( "Missing or invalid 'BACKUP_CMP_MCORES' configuration parameter" )) if $::imscpConfig{'BACKUP_CMP_MCORES'} !~ /^[1-9]$/;
     }
 
+    local $UMASK = 077;
+
     my $rows = iMSCP::Database->factory()->getConnector()->run( fixup => sub {
         $_->selectall_arrayref(
-            "
-                SELECT domain_id, domain_name, domain_admin_id, allowbackup, admin_sys_name, admin_sys_gname
-                FROM domain
-                JOIN admin ON (admin_id = domain_admin_id)
-                WHERE domain_status NOT IN ('disabled', 'todelete')
-                AND allowbackup <> ''
-            ",
+            "SELECT domain_id, domain_name, domain_admin_id, allowbackup FROM domain WHERE domain_status NOT IN ('disabled', 'todelete')",
             { Slice => {} }
         );
     } );

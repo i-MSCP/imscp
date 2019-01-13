@@ -18,4 +18,3 @@ MTA_TRANSPORT_HASH = /etc/postfix/imscp/transport
 MTA_RELAY_HASH = /etc/postfix/imscp/relay_domains
 MTA_MAILBOX_UID_NAME = vmail
 MTA_MAILBOX_GID_NAME = mail
-MAIL_LOG_CONVERT_PATH = /usr/local/sbin/maillogconvert.pl

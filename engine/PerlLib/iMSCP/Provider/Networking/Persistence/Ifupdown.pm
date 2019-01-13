@@ -54,8 +54,6 @@ use parent qw/ Common::Object iMSCP::Provider::Networking::Interface /;
 
 sub checkForOperability
 {
-    my ( $self ) = @_;
-
     return FALSE unless length iMSCP::ProgramFinder::find( 'ifup' ) && length iMSCP::ProgramFinder::find( 'ifdown' );
 
     my $srvMngr = iMSCP::Service->getInstance();
@@ -114,7 +112,7 @@ sub removeIpAddress
 
 sub _updateConfig
 {
-    my ( $self, $action, $data ) = @_;
+    my ( undef, $action, $data ) = @_;
 
     my $file = iMSCP::File->new( filename => '/etc/network/interfaces' );
     defined( my $fileCR = $file->getAsRef()) or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ));

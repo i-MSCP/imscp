@@ -71,10 +71,10 @@ $main::fh_lock_file = undef;
 
 $main::log_dir = $main::cfg{'LOG_DIR'};
 $main::root_dir = $main::cfg{'ROOT_DIR'};
-$main::imscp = "$main::log_dir/imscp-rqst-mngr.el";
+$main::imscp = "$main::log_dir/imscp-backend-rqst.el";
 
-# imscp-serv-traff variable
-$main::imscp_srv_traff_el = "$main::log_dir/imscp-srv-traff.el";
+# imscp-server-traffic variable
+$main::imscp_srv_traff_el = "$main::log_dir/imscp-server-traffic.el";
 
 # Software installer log variables
 $main::imscp_pkt_mngr = "$main::root_dir/engine/imscp-pkt-mngr";

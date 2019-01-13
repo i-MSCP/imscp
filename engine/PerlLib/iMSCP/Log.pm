@@ -25,9 +25,10 @@ package iMSCP::Log;
 
 use strict;
 use warnings;
-use Params::Check qw[ check ];
+use iMSCP::Boolean;
+use Params::Check 'check';
 
-local $Params::Check::VERBOSE = 1;
+local $Params::Check::VERBOSE = TRUE;
 
 =head1 DESCRIPTION
 
@@ -55,8 +56,8 @@ sub new
     my $tmpl = {
         id    => {
             default     => 'dummy',
-            strict_type => 1,
-            required    => 1
+            strict_type => TRUE,
+            required    => TRUE
         },
         stack => {
             default => []
@@ -117,13 +118,13 @@ sub store
     my %hash = ();
     my $tmpl = {
         when    => {
-            default => scalar localtime,
-                strict_type => 1,
+            default     => scalar localtime,
+            strict_type => TRUE,
         },
         message => {
             default     => 'empty log',
-            strict_type => 1,
-            required    => 1
+            strict_type => TRUE,
+            required    => TRUE
         },
         tag     => { default => 'none' }
     };
@@ -145,7 +146,7 @@ sub store
         tag     => $args->{'tag'}
     };
 
-    push @{$self->{'stack'}}, $item;
+    push @{ $self->{'stack'} }, $item;
     1;
 }
 
@@ -201,10 +202,10 @@ sub retrieve
             default => undef
         },
         remove  => {
-            default => 0
+            default => FALSE
         },
         chrono  => {
-            default => 1
+            default => TRUE
         }
     };
 
@@ -220,14 +221,14 @@ sub retrieve
     );
 
     my @list = ();
-    for( @{$self->{'stack'}} ) {
+    for ( @{ $self->{'stack'} } ) {
         if ( $_->{'tag'} =~ /$args->{'tag'}/ && $_->{'message'} =~ /$args->{'message'}/ ) {
             push @list, $_;
             undef $_ if $args->{'remove'};
         }
     }
 
-    @{$self->{'stack'}} = grep(defined, @{$self->{'stack'}}) if $args->{'remove'};
+    @{ $self->{'stack'} } = grep (defined, @{ $self->{'stack'} }) if $args->{'remove'};
     my $amount = $args->{'amount'} || scalar @list;
     @list = ( $amount >= @list ) ? @list : @list[0 .. $amount-1] if @list;
     wantarray ? ( $args->{'chrono'} ) ? @list : reverse( @list ) : ( $args->{'chrono'} ) ? $list[0] : $list[$#list];
@@ -249,7 +250,7 @@ sub first
     my $self = shift;
 
     my $amt = @_ == 1 ? shift : 1;
-    $self->retrieve( amount => $amt, @_, chrono => 1 );
+    $self->retrieve( amount => $amt, @_, chrono => TRUE );
 }
 
 =item final( )
@@ -268,7 +269,7 @@ sub final
     my $self = shift;
 
     my $amt = @_ == 1 ? shift : 1;
-    $self->retrieve( amount => $amt, @_, chrono => 0 );
+    $self->retrieve( amount => $amt, @_, chrono => FALSE );
 }
 
 =item flush( )
@@ -279,7 +280,7 @@ sub final
 
 sub flush
 {
-    splice @{$_[0]->{'stack'}};
+    splice @{ $_[0]->{'stack'} };
 }
 
 =back

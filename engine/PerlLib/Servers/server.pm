@@ -26,6 +26,7 @@ package Servers::server;
 use strict;
 use warnings;
 use iMSCP::Debug 'fatal';
+use Try::Tiny;
 
 # system server instance
 my $instance;
@@ -50,11 +51,12 @@ sub factory
 {
     return $instance if defined $instance;
 
-    my $package = "Servers::server::local";
-
-    eval "require $package";
-    fatal( $@ ) if $@;
-    $instance = $package->getInstance();
+    try {
+        require Servers::server::local;
+        $instance = Servers::server::local->getInstance();
+    } catch {
+        fatal( $_ );
+    };
 }
 
 =item can( $method )
@@ -70,10 +72,12 @@ sub can
 {
     my ( undef, $method ) = @_;
 
-    my $package = "Servers::server::local";
-    eval "require $package";
-    fatal( $@ ) if $@;
-    $package->can( $method );
+    try {
+        require Servers::server::local;
+        Servers::server::local->can( $method );
+    } catch {
+        fatal( $_ );
+    };
 }
 
 =item getPriority( )

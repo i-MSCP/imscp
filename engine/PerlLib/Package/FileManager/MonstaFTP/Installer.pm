@@ -25,14 +25,16 @@ package Package::FileManager::MonstaFTP::Installer;
 
 use strict;
 use warnings;
+use iMSCP::Boolean;
 use iMSCP::Composer;
-use iMSCP::Debug;
+use iMSCP::Debug 'error';
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::File;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ getBloc process replaceBloc /;
 use JSON;
 use Package::FrontEnd;
+use Try::Tiny;
 use parent 'Common::SingletonClass';
 
 our $VERSION = '2.1.x';
@@ -55,7 +57,7 @@ our $VERSION = '2.1.x';
 
 sub preinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/monsta-ftp', $VERSION );
     $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
@@ -71,7 +73,7 @@ sub preinstall
 
 sub install
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->_installFiles();
     $rs ||= $self->_buildHttpdConfig();
@@ -96,22 +98,18 @@ sub install
 
 sub afterFrontEndBuildConfFile
 {
-    my ($tplContent, $tplName) = @_;
+    my ( $tplContent, $tplName ) = @_;
 
-    return 0 unless grep($_ eq $tplName, '00_master.nginx', '00_master_ssl.nginx');
+    return 0 unless grep ( $_ eq $tplName, '00_master.nginx', '00_master_ssl.nginx' );
 
-    ${$tplContent} = replaceBloc(
+    ${ $tplContent } = replaceBloc(
         "# SECTION custom BEGIN.\n",
         "# SECTION custom END.\n",
         "    # SECTION custom BEGIN.\n" .
-            getBloc(
-                "# SECTION custom BEGIN.\n",
-                "# SECTION custom END.\n",
-                ${$tplContent}
-            ) .
-            "    include imscp_monstaftp.conf;\n" .
-            "    # SECTION custom END.\n",
-        ${$tplContent}
+            getBloc( "# SECTION custom BEGIN.\n", "# SECTION custom END.\n", ${ $tplContent } )
+            . "    include imscp_monstaftp.conf;\n"
+            . "    # SECTION custom END.\n",
+        ${ $tplContent }
     );
     0;
 }
@@ -132,7 +130,7 @@ sub afterFrontEndBuildConfFile
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self;
@@ -148,21 +146,21 @@ sub _init
 
 sub _installFiles
 {
-    my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/monsta-ftp";
+    try {
+        my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/monsta-ftp";
 
-    unless ( -d $packageDir ) {
-        error( "Couldn't find the imscp/monsta-ftp package into the packages cache directory" );
-        return 1;
-    }
+        unless ( -d $packageDir ) {
+            error( "Couldn't find the imscp/monsta-ftp package into the packages cache directory" );
+            return 1;
+        }
 
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
-    iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' }
-    );
-    iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' }
-    );
-    0;
+        iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
+        iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' } );
+        iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' } );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item _buildHttpdConfig( )
@@ -178,12 +176,8 @@ sub _buildHttpdConfig
     my $frontEnd = Package::FrontEnd->getInstance();
     $frontEnd->buildConfFile(
         "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/monsta-ftp/iMSCP/nginx/imscp_monstaftp.conf",
-        {
-            GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'}
-        },
-        {
-            destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_monstaftp.conf"
-        }
+        { GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },
+        { destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_monstaftp.conf" }
     );
 }
 
@@ -197,28 +191,24 @@ sub _buildHttpdConfig
 
 sub _buildConfig
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $panelUName = my $panelGName =
-        $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $ug = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
     # config.php file
 
     my $conffile = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/settings/config.php";
     my $data = {
-        TIMEZONE => main::setupGetQuestion( 'TIMEZONE', 'UTC' ),
+        TIMEZONE => ::setupGetQuestion( 'TIMEZONE', 'UTC' ),
         TMP_PATH => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp"
     };
 
-    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'monstaftp', 'config.php', \ my $cfgTpl, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'monstaftp', 'config.php', \my $cfgTpl, $data );
     return $rs if $rs;
 
     unless ( defined $cfgTpl ) {
         $cfgTpl = iMSCP::File->new( filename => $conffile )->get();
-        unless ( defined $cfgTpl ) {
-            error( sprintf( "Couldn't read %s file", $conffile ));
-            return 1;
-        }
+        return 1 unless defined $cfgTpl;
     }
 
     $cfgTpl = process( $data, $cfgTpl );
@@ -226,11 +216,11 @@ sub _buildConfig
     my $file = iMSCP::File->new( filename => $conffile );
     $file->set( $cfgTpl );
     $rs = $file->save();
-    $rs ||= $file->owner( $panelUName, $panelGName );
+    $rs ||= $file->owner( $ug, $ug );
     $rs ||= $file->mode( 0440 );
     return $rs if $rs;
 
-    $conffile = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/settings/settings.json";
+    $conffile = "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/settings/settings.json";
     $data = {
         showDotFiles            => JSON::true,
         language                => 'en_us',
@@ -239,30 +229,27 @@ sub _buildConfig
         hideProUpgradeMessages  => JSON::true,
         disableMasterLogin      => JSON::true,
         connectionRestrictions  => {
-            types => [
-                'ftp'
-            ],
+            types => [ 'ftp' ],
             ftp   => {
                 host             => '127.0.0.1',
                 port             => 21,
                 # Enable passive mode excepted if the FTP daemon is vsftpd
                 # vsftpd doesn't allows to operate on a per IP basic (IP masquerading)
-                passive          => ( $main::imscpConfig{'FTPD_SERVER'} eq 'vsftpd' ) ? JSON::false : JSON::true,
-                ssl              => main::setupGetQuestion( 'SERVICES_SSL_ENABLED' ) eq 'yes'
-                    ? JSON::true : JSON::false,
+                passive          => $::imscpConfig{'FTPD_SERVER'} eq 'vsftpd' ? JSON::false : JSON::true,
+                ssl              => ::setupGetQuestion( 'SERVICES_SSL_ENABLED' ) eq 'yes' ? JSON::true : JSON::false,
                 initialDirectory => '/' # Home directory as set for the FTP user
             }
         }
     };
 
     undef $cfgTpl;
-    $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'monstaftp', 'settings.json', \ $cfgTpl, $data );
+    $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'monstaftp', 'settings.json', \$cfgTpl, $data );
     return $rs if $rs;
 
     $file = iMSCP::File->new( filename => $conffile );
-    $file->set( $cfgTpl || JSON->new()->utf8( 1 )->pretty( 1 )->encode( $data ));
+    $file->set( $cfgTpl || JSON->new()->utf8( TRUE )->pretty( TRUE )->encode( $data ));
     $rs = $file->save();
-    $rs ||= $file->owner( $panelUName, $panelGName );
+    $rs ||= $file->owner( $ug, $ug );
     $rs ||= $file->mode( 0440 );
 }
 

@@ -25,14 +25,15 @@ package Package::FileManager::Net2ftp::Installer;
 
 use strict;
 use warnings;
-use iMSCP::Crypt qw/ randomStr /;
-use iMSCP::Debug;
+use iMSCP::Crypt qw/ ALNUM randomStr /;
+use iMSCP::Debug 'error';
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Composer;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ replaceBloc process getBloc /;
 use iMSCP::File;
 use Package::FrontEnd;
+use Try::Tiny;
 use parent 'Common::SingletonClass';
 
 our $VERSION = '0.1.1.*@dev';
@@ -55,7 +56,7 @@ our $VERSION = '0.1.1.*@dev';
 
 sub preinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/net2ftp', $VERSION );
     $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
@@ -71,9 +72,9 @@ sub preinstall
 
 sub install
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->_installFiles ();
+    my $rs = $self->_installFiles();
     $rs ||= $self->_buildHttpdConfig();
     $rs ||= $self->_buildConfig();
 }
@@ -96,22 +97,18 @@ sub install
 
 sub afterFrontEndBuildConfFile
 {
-    my ($tplContent, $tplName) = @_;
+    my ( $tplContent, $tplName ) = @_;
 
-    return 0 unless grep($_ eq $tplName, '00_master.nginx', '00_master_ssl.nginx');
+    return 0 unless grep ( $_ eq $tplName, '00_master.nginx', '00_master_ssl.nginx' );
 
-    ${$tplContent} = replaceBloc(
+    ${ $tplContent } = replaceBloc(
         "# SECTION custom BEGIN.\n",
         "# SECTION custom END.\n",
         "    # SECTION custom BEGIN.\n" .
-            getBloc(
-                "# SECTION custom BEGIN.\n",
-                "# SECTION custom END.\n",
-                ${$tplContent}
-            ) .
-            "    include imscp_net2ftp.conf;\n" .
+            getBloc( "# SECTION custom BEGIN.\n", "# SECTION custom END.\n", ${ $tplContent } )
+            . "    include imscp_net2ftp.conf;\n" .
             "    # SECTION custom END.\n",
-        ${$tplContent}
+        ${ $tplContent }
     );
     0;
 }
@@ -132,7 +129,7 @@ sub afterFrontEndBuildConfFile
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self;
@@ -148,18 +145,19 @@ sub _init
 
 sub _installFiles
 {
-    my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/net2ftp";
+    try {
+        my $packageDir = "$::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/net2ftp";
+        unless ( -d $packageDir ) {
+            error( "Couldn't find the imscp/net2ftp package into the packages cache directory" );
+            return 1;
+        }
 
-    unless ( -d $packageDir ) {
-        error( "Couldn't find the imscp/net2ftp package into the packages cache directory" );
-        return 1;
-    }
-
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
-    iMSCP::Dir->new( dirname => "$packageDir" )->rcopy(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' }
-    );
-    0;
+        iMSCP::Dir->new( dirname => "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
+        iMSCP::Dir->new( dirname => "$packageDir" )->rcopy( "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' } );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item _buildHttpdConfig( )
@@ -174,13 +172,9 @@ sub _buildHttpdConfig
 {
     my $frontEnd = Package::FrontEnd->getInstance();
     $frontEnd->buildConfFile(
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager/Net2ftp/config/nginx/imscp_net2ftp.nginx",
-        {
-            GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'}
-        },
-        {
-            destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_net2ftp.conf"
-        }
+        "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager/Net2ftp/config/nginx/imscp_net2ftp.nginx",
+        { GUI_PUBLIC_DIR => $::imscpConfig{'GUI_PUBLIC_DIR'} },
+        { destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_net2ftp.conf" }
     );
 }
 
@@ -194,25 +188,21 @@ sub _buildHttpdConfig
 
 sub _buildConfig
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $ug = $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'};
     my $conffile = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/settings.inc.php";
     my $data = {
-        ADMIN_EMAIL     =>
-            $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} ? $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} : '',
-        MD5_SALT_STRING => randomStr( 16, iMSCP::Crypt::ALNUM )
+        ADMIN_EMAIL     => $::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} ? $::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} : '',
+        MD5_SALT_STRING => randomStr( 16, ALNUM )
     };
 
-    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'net2ftp', 'settings.inc.php', \ my $cfgTpl, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'net2ftp', 'settings.inc.php', \my $cfgTpl, $data );
     return $rs if $rs;
 
     unless ( defined $cfgTpl ) {
         $cfgTpl = iMSCP::File->new( filename => $conffile )->get();
-        unless ( defined $cfgTpl ) {
-            error( sprintf( "Couldn't read %s file", $conffile ));
-            return 1;
-        }
+        return 1 unless defined $cfgTpl;
     }
 
     $cfgTpl = process( $data, $cfgTpl );
@@ -220,7 +210,7 @@ sub _buildConfig
     my $file = iMSCP::File->new( filename => $conffile );
     $file->set( $cfgTpl );
     $rs = $file->save();
-    $rs ||= $file->owner( $panelUName, $panelGName );
+    $rs ||= $file->owner( $ug, $ug );
     $rs ||= $file->mode( 0640 );
 }
 

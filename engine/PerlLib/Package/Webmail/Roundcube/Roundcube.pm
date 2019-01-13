@@ -26,19 +26,22 @@ package Package::Webmail::Roundcube::Roundcube;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Package::Webmail::Roundcube::Installer Package::Webmail::Roundcube::Uninstaller /;
+use iMSCP::Boolean;
 use iMSCP::Config;
-use iMSCP::Debug;
-use iMSCP::Database;
-use iMSCP::Rights;
+use iMSCP::Database '$DATABASE';
+use iMSCP::Debug 'error';
+use iMSCP::Rights 'setRights';
+use Try::Tiny;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
  Roundcube package for i-MSCP.
 
- RoundCube Webmail is a browser-based multilingual IMAP client with an application-like user interface. It provides full
- functionality expected from an email client, including MIME support, address book, folder manipulation and message
- filters.
+ RoundCube Webmail is a browser-based multilingual IMAP client with an
+ application-like user interface. It provides full functionality expected from
+ an email client, including MIME support, address book, folder manipulation and
+ message filters.
 
  The user interface is fully skinnable using XHTML and CSS 2.
 
@@ -59,7 +62,7 @@ use parent 'Common::SingletonClass';
 
 sub showDialog
 {
-    my (undef, $dialog) = @_;
+    my ( undef, $dialog ) = @_;
 
     Package::Webmail::Roundcube::Installer->getInstance()->showDialog( $dialog );
 }
@@ -100,7 +103,7 @@ sub install
 
 sub uninstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     return 0 if $self->{'skip_uninstall'};
 
@@ -117,32 +120,26 @@ sub uninstall
 
 sub setGuiPermissions
 {
-    my $guiPublicDir = $main::imscpConfig{'GUI_PUBLIC_DIR'};
+    my $guiPublicDir = $::imscpConfig{'GUI_PUBLIC_DIR'};
 
     return 0 unless -d "$guiPublicDir/tools/webmail";
 
-    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $panelUName = my $panelGName = $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-    my $rs = setRights(
-        "$guiPublicDir/tools/webmail",
-        {
-            user      => $panelUName,
-            group     => $panelGName,
-            dirmode   => '0550',
-            filemode  => '0440',
-            recursive => 1
-        }
-    );
-    $rs ||= setRights(
-        "$guiPublicDir/tools/webmail/logs",
-        {
-            user      => $panelUName,
-            group     => $panelGName,
-            dirmode   => '0750',
-            filemode  => '0640',
-            recursive => 1
-        }
-    );
+    my $rs = setRights( "$guiPublicDir/tools/webmail", {
+        user      => $panelUName,
+        group     => $panelGName,
+        dirmode   => '0550',
+        filemode  => '0440',
+        recursive => TRUE
+    } );
+    $rs ||= setRights( "$guiPublicDir/tools/webmail/logs", {
+        user      => $panelUName,
+        group     => $panelGName,
+        dirmode   => '0750',
+        filemode  => '0640',
+        recursive => TRUE
+    } );
 }
 
 =item deleteMail( \%data )
@@ -156,25 +153,20 @@ sub setGuiPermissions
 
 sub deleteMail
 {
-    my (undef, $data) = @_;
+    my ( undef, $data ) = @_;
 
     return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
 
-    local $@;
-    eval {
-        my $db = iMSCP::Database->factory();
-        my $oldDbName = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'} . '_roundcube' );
-        my $dbh = $db->getRawDb();
-        local $dbh->{'RaiseError'} = 1;
-        $dbh->do( 'DELETE FROM users WHERE username = ?', undef, $data->{'MAIL_ADDR'} );
-        $db->useDatabase( $oldDbName ) if $oldDbName;
+    try {
+        local $DATABASE = $::imscpConfig{'DATABASE_NAME'} . '_roundcube';
+        iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+            $_->do( 'DELETE FROM users WHERE username = ?', undef, $data->{'MAIL_ADDR'} );
+        } );
+        0;
+    } catch {
+        error( $_ );
+        1;
     };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    0
 }
 
 =back
@@ -193,19 +185,19 @@ sub deleteMail
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/roundcube";
+    $self->{'cfgDir'} = "$::imscpConfig{'CONF_DIR'}/roundcube";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
 
     if ( -f "$self->{'cfgDir'}/roundcube.data" ) {
-        tie %{$self->{'config'}}, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/roundcube.data", readonly => 1;
-    } else {
-        $self->{'config'} = {};
-        $self->{'skip_uninstall'} = 1;
+        tie %{ $self->{'config'} }, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/roundcube.data", readonly => TRUE;
+        return $self;
     }
 
+    $self->{'config'} = {};
+    $self->{'skip_uninstall'} = TRUE;
     $self;
 }
 

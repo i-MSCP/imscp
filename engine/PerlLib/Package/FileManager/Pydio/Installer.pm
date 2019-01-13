@@ -25,12 +25,13 @@ package Package::FileManager::Pydio::Installer;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug 'error';
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Composer;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ getBloc replaceBloc /;
 use Package::FrontEnd;
+use Try::Tiny;
 use parent 'Common::SingletonClass';
 
 our $VERSION = '0.2.0.*@dev';
@@ -53,7 +54,7 @@ our $VERSION = '0.2.0.*@dev';
 
 sub preinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = iMSCP::Composer->getInstance()->registerPackage( 'imscp/ajaxplorer', $VERSION );
     $rs ||= $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
@@ -69,7 +70,7 @@ sub preinstall
 
 sub install
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->_installFiles();
     $rs ||= $self->_buildHttpdConfig();
@@ -93,22 +94,18 @@ sub install
 
 sub afterFrontEndBuildConfFile
 {
-    my ($tplContent, $tplName) = @_;
+    my ( $tplContent, $tplName ) = @_;
 
-    return 0 unless grep($_ eq $tplName, '00_master.nginx', '00_master_ssl.nginx');
+    return 0 unless grep ( $_ eq $tplName, '00_master.nginx', '00_master_ssl.nginx' );
 
-    ${$tplContent} = replaceBloc(
+    ${ $tplContent } = replaceBloc(
         "# SECTION custom BEGIN.\n",
         "# SECTION custom END.\n",
         "    # SECTION custom BEGIN.\n" .
-            getBloc(
-                "# SECTION custom BEGIN.\n",
-                "# SECTION custom END.\n",
-                ${$tplContent}
-            ) .
-            "    include imscp_pydio.conf;\n" .
+            getBloc( "# SECTION custom BEGIN.\n", "# SECTION custom END.\n", ${ $tplContent } )
+            . "    include imscp_pydio.conf;\n" .
             "    # SECTION custom END.\n",
-        ${$tplContent}
+        ${ $tplContent }
     );
     0;
 }
@@ -129,7 +126,7 @@ sub afterFrontEndBuildConfFile
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self;
@@ -145,20 +142,20 @@ sub _init
 
 sub _installFiles
 {
-    my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/ajaxplorer";
-    unless ( -d $packageDir ) {
-        error( "Couldn't find the imscp/ajaxplorer (Pydio) package into the packages cache directory" );
-        return 1;
-    }
+    try {
+        my $packageDir = "$::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/ajaxplorer";
+        unless ( -d $packageDir ) {
+            error( "Couldn't find the imscp/ajaxplorer (Pydio) package into the packages cache directory" );
+            return 1;
+        }
 
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
-    iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' }
-    );
-    iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' }
-    );
-    0;
+        iMSCP::Dir->new( dirname => "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
+        iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' } );
+        iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy( "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' } );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item _buildHttpdConfig( )
@@ -173,13 +170,9 @@ sub _buildHttpdConfig
 {
     my $frontEnd = Package::FrontEnd->getInstance();
     $frontEnd->buildConfFile(
-        "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/ajaxplorer/iMSCP/config/nginx/imscp_pydio.conf",
-        {
-            GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'}
-        },
-        {
-            destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pydio.conf"
-        }
+        "$::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/ajaxplorer/iMSCP/config/nginx/imscp_pydio.conf",
+        { GUI_PUBLIC_DIR => $::imscpConfig{'GUI_PUBLIC_DIR'} },
+        { destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_pydio.conf" }
     );
 }
 

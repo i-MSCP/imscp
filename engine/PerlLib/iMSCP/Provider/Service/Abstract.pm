@@ -30,8 +30,6 @@ use iMSCP::Debug 'debug';
 use iMSCP::Execute 'execute';
 use parent qw/ Common::SingletonClass iMSCP::Provider::Service::Interface /;
 
-my $EXEC_OUTPUT;
-
 =head1 DESCRIPTION
 
  Abstract class for init providers.
@@ -40,51 +38,29 @@ my $EXEC_OUTPUT;
 
 =over 4
 
-=item _exec( \@command, [ \$stdout [, \$stderr ]] )
+=item _exec( \@cmd|$cmd, [ \$stdout [, \$stderr ]] )
 
  Execute the given command
 
  It is possible to capture both STDOUT and STDERR output by providing scalar
- references. STDERR output is used for raising failure when the command status
- is other than 0 and if no scalar reference has been provided for its capture.
+ references. If an error occurs (command exit status other than 0), and if no
+ scalar reference has been provided for STDERR capture, an error is raised.
 
- Param array_ref \@command Command to execute
+ Param array_ref|string \@command|$cmd Command to execute
  Param scalar_ref \$stdout OPTIONAL Scalar reference for STDOUT capture
  Param scalar_ref \$stderr OPTIONAL Scalar reference for STDERR capture
- Return int Command exit status, croak on failure if the command status is other than 0 and if no scalar reference has been provided for STDERR
+ Return int Command exit status, croak on failure if the command status is other than 0 and if no scalar reference has been provided for STDERR capture
 
 =cut
 
 sub _exec
 {
-    my ( $self, $command, $stdout, $stderr ) = @_;
+    my ( undef, $cmd, $stdout, $stderr ) = @_;
 
-    my $ret = execute( $command, ref $stdout eq 'SCALAR' ? $stdout : \$stdout, ref $stderr eq 'SCALAR' ? $stderr : \$stderr );
+    my $ret = execute( $cmd, ref $stdout eq 'SCALAR' ? $stdout : \$stdout, ref $stderr eq 'SCALAR' ? $stderr : \$stderr );
     ref $stdout ? !length ${ $stdout } || debug( ${ $stdout } ) : !length $stdout || debug( $stdout );
-
-    # Raise a failure if command status is other than 0 and if no scalar
-    # reference has been provided for STDERR, giving choice to callers
     croak( $stderr || 'Unknown error' ) if $ret && ref $stderr ne 'SCALAR';
-
-    # We cache STDOUT output.
-    # see _getLastExecOutput()
-    $EXEC_OUTPUT = \( ref $stdout ? ${ $stdout } : $stdout );
     $ret;
-}
-
-=item _getLastExecOutput()
-
- Get output of last exec command
-
- return string Command STDOUT
-
-=cut
-
-sub _getLastExecOutput
-{
-    my ( $self ) = @_;
-
-    ${ $EXEC_OUTPUT };
 }
 
 =back

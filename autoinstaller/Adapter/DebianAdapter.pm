@@ -23,9 +23,10 @@ use strict;
 use warnings;
 use autouse 'iMSCP::Stepper' => qw/ startDetail endDetail step /;
 use Class::Autouse qw/ :nostat File::HomeDir /;
-use Fcntl qw/ :flock /;
+use Fcntl ':flock';
 use File::Temp;
 use FindBin;
+use iMSCP::Boolean;
 use iMSCP::Cwd;
 use iMSCP::Debug qw/ debug error output /;
 use iMSCP::Dialog;
@@ -56,15 +57,15 @@ use parent 'autoinstaller::Adapter::AbstractAdapter';
 
 sub installPreRequiredPackages
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     print STDOUT output( 'Satisfying prerequisites... Please wait.', 'info' );
 
     my $rs = $self->_updateAptSourceList();
     $rs ||= $self->_updatePackagesIndex();
 
-    local $ENV{'UCF_FORCE_CONFFNEW'} = 1;
-    local $ENV{'UCF_FORCE_CONFFMISS'} = 1;
+    local $ENV{'UCF_FORCE_CONFFNEW'} = TRUE;
+    local $ENV{'UCF_FORCE_CONFFMISS'} = TRUE;
 
     my $stdout;
     $rs = execute(
@@ -72,12 +73,11 @@ sub installPreRequiredPackages
             ( !iMSCP::Getopt->noprompt && iMSCP::ProgramFinder::find( 'debconf-apt-progress' )
                 ? ( 'debconf-apt-progress', '--logstderr', '--' ) : ()
             ),
-            'apt-get', '--assume-yes', '--option', 'DPkg::Options::=--force-confnew',
-            '--option', 'DPkg::Options::=--force-confmiss', '--auto-remove', '--purge', '--no-install-recommends',
-            'install', @{$self->{'preRequiredPackages'}}
+            'apt-get', '--assume-yes', '--option', 'DPkg::Options::=--force-confnew', '--option', 'DPkg::Options::=--force-confmiss', '--auto-remove',
+            '--purge', '--no-install-recommends', 'install', @{ $self->{'preRequiredPackages'} }
         ],
-        ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef ),
-        \ my $stderr
+        ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef ),
+        \my $stderr
     );
     error( sprintf( "Couldn't install pre-required packages: %s", $stderr || 'Unknown error' )) if $rs;
 
@@ -95,19 +95,17 @@ sub installPreRequiredPackages
 
 sub preBuild
 {
-    my ($self, $steps) = @_;
+    my ( $self, $steps ) = @_;
 
-    return 0 if $main::skippackages;
+    return 0 if $::skippackages;
 
-    unshift @{$steps},
-        (
-            [ sub { $self->_processPackagesFile() }, 'Process distribution packages file' ],
-            [ sub { $self->_prefillDebconfDatabase() }, 'Pre-fill Debconf database' ],
-            [ sub { $self->_processAptRepositories() }, 'Processing APT repositories' ],
-            [ sub { $self->_processAptPreferences() }, 'Processing APT preferences' ],
-            [ sub { $self->_updatePackagesIndex() }, 'Updating packages index' ]
-        );
-
+    unshift @{ $steps }, (
+        [ sub { $self->_processPackagesFile() }, 'Process distribution packages file' ],
+        [ sub { $self->_prefillDebconfDatabase() }, 'Pre-fill Debconf database' ],
+        [ sub { $self->_processAptRepositories() }, 'Processing APT repositories' ],
+        [ sub { $self->_processAptPreferences() }, 'Processing APT preferences' ],
+        [ sub { $self->_updatePackagesIndex() }, 'Updating packages index' ]
+    );
     0
 }
 
@@ -121,10 +119,10 @@ sub preBuild
 
 sub installPackages
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     # See https://people.debian.org/~hmh/invokerc.d-policyrc.d-specification.txt
-    my $policyrcd = File::Temp->new( UNLINK => 1 );
+    my $policyrcd = File::Temp->new( UNLINK => TRUE );
 
     # Prevents invoke-rc.d (which is invoked by package maintainer scripts) to start some services
     #
@@ -136,12 +134,12 @@ sub installPackages
     print $policyrcd <<'EOF';
 #!/bin/sh
 
-initscript=$1
+service=$1
 action=$2
 
 if [ "$action" = "start" ] || [ "$action" = "restart" ]; then
     for i in apache2 bind9 dovecot nginx; do
-        if [ "$initscript" = "$i" ]; then
+        if [ "$service" = "$i" ]; then
             exit 101;
         fi
     done
@@ -150,44 +148,37 @@ EOF
 
     $policyrcd->flush();
     $policyrcd->close();
-    chmod( 0750, $policyrcd->filename ) or die(
-        sprintf( "Couldn't change permissions on %s: %s", $policyrcd->filename, $! )
-    );
+    chmod( 0750, $policyrcd->filename ) or die( sprintf( "Couldn't change permissions on %s: %s", $policyrcd->filename, $! ));
 
     # See ZG-POLICY-RC.D(8)
     local $ENV{'POLICYRCD'} = $policyrcd->filename();
 
     my $rs = $self->uninstallPackages( $self->{'packagesToPreUninstall'} );
-    $rs ||= $self->{'eventManager'}->trigger(
-        'beforeInstallPackages', $self->{'packagesToInstall'}, $self->{'packagesToInstallDelayed'}
-    );
+    $rs ||= $self->{'eventManager'}->trigger( 'beforeInstallPackages', $self->{'packagesToInstall'}, $self->{'packagesToInstallDelayed'} );
     return $rs if $rs;
 
-    my $nPackages = scalar keys %{$self->{'packagesPreInstallTasks'}};
-    my $cPackage = 1;
+    my ( $nPackage, $countPackages ) = ( 1, scalar keys %{ $self->{'packagesPreInstallTasks'} } );
 
     startDetail();
 
     {
         local $CWD = "$FindBin::Bin/autoinstaller/preinstall";
 
-        for my $package( sort keys %{$self->{'packagesPreInstallTasks'}} ) {
+        for my $package ( sort keys %{ $self->{'packagesPreInstallTasks'} } ) {
             $rs ||= step(
                 sub {
                     my $stdout;
                     $rs = execute(
                         $self->{'packagesPreInstallTasks'}->{$package},
-                        ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout ), \ my $stderr
+                        ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \$stdout ), \my $stderr
                     );
                     error( $stderr || sprintf( "Unknown error while executing preinstall tasks for the '%s' package", $package )) if $rs;
                     $rs;
                 },
-                sprintf( "Executing preinstall tasks for the '%s' package... Please be patient.", $package ),
-                $nPackages,
-                $cPackage
+                sprintf( "Executing preinstall tasks for the '%s' package... Please be patient.", $package ), $countPackages, $nPackage
             );
             last if $rs;
-            $cPackage++;
+            $nPackage++;
         }
     }
 
@@ -195,72 +186,60 @@ EOF
     return $rs if $rs;
 
     # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
-    execute(
-        "apt-mark unhold @{$self->{'packagesToInstall'}} @{$self->{'packagesToInstallDelayed'}}",
-        \my $stdout,
-        \my $stderr
-    );
+    execute( "apt-mark unhold @{ $self->{'packagesToInstall'} } @{ $self->{'packagesToInstallDelayed'} }", \my $stdout, \my $stderr );
     debug( $stderr ) if $stderr;
 
     {
         iMSCP::Dialog->getInstance()->endGauge();
 
-        local $ENV{'UCF_FORCE_CONFFNEW'} = 1;
-        local $ENV{'UCF_FORCE_CONFFMISS'} = 1;
+        local $ENV{'UCF_FORCE_CONFFNEW'} = TRUE;
+        local $ENV{'UCF_FORCE_CONFFMISS'} = TRUE;
 
         my @cmd = (
-            ( !iMSCP::Getopt->noprompt ? ( 'debconf-apt-progress', '--logstderr', '--' ) : () ),
-            'apt-get', '--assume-yes', '--option', 'DPkg::Options::=--force-confnew', '--option',
-            'DPkg::Options::=--force-confmiss', '--option', 'Dpkg::Options::=--force-overwrite',
-            ( $main::forcereinstall ? '--reinstall' : () ), '--auto-remove', '--purge', '--no-install-recommends',
-            ( version->parse( `apt-get --version` =~ /^apt\s+(\d\.\d)/ ) < version->parse( '1.1' )
-                ? '--force-yes' : '--allow-downgrades'
-            ),
+            ( !iMSCP::Getopt->noprompt ? ( 'debconf-apt-progress', '--logstderr', '--' ) : () ), 'apt-get', '--assume-yes', '--option',
+            'DPkg::Options::=--force-confnew', '--option', 'DPkg::Options::=--force-confmiss', '--option', 'Dpkg::Options::=--force-overwrite',
+            ( $::forcereinstall ? '--reinstall' : () ), '--auto-remove', '--purge', '--no-install-recommends',
+            ( version->parse( `apt-get --version` =~ /^apt\s+(\d\.\d)/ ) < version->parse( '1.1' ) ? '--force-yes' : '--allow-downgrades' ),
             'install'
         );
 
-        for ( $self->{'packagesToInstall'}, $self->{'packagesToInstallDelayed'} ) {
-            next unless @{$_};
-            $rs = execute(
-                [ @cmd, @{$_} ], ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef ), \$stderr
-            );
+        for my $package ( $self->{'packagesToInstall'}, $self->{'packagesToInstallDelayed'} ) {
+            next unless @{ $package };
+            $rs = execute( [ @cmd, @{ $package } ], ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef ), \$stderr );
             error( sprintf( "Couldn't install packages: %s", $stderr || 'Unknown error' )) if $rs;
             return $rs if $rs;
         }
     }
 
-    $nPackages = scalar keys %{$self->{'packagesPostInstallTasks'}};
-    $cPackage = 1;
+    ( $nPackage, $countPackages ) = ( 1, scalar keys %{ $self->{'packagesPostInstallTasks'} } );
 
     startDetail();
 
     {
         local $CWD = "$FindBin::Bin/autoinstaller/postinstall";
 
-        for my $package( sort keys %{$self->{'packagesPostInstallTasks'}} ) {
+        for my $package ( sort keys %{ $self->{'packagesPostInstallTasks'} } ) {
             $rs ||= step(
                 sub {
                     $rs = execute(
                         $self->{'packagesPostInstallTasks'}->{$package},
-                        ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout ),
-                        \ $stderr
+                        ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \$stdout ),
+                        \$stderr
                     );
                     error( $stderr || sprintf( "Unknown error while executing postinstall tasks for the '%s' package", $package )) if $rs;
                     $rs;
                 },
-                sprintf( "Executing postinstall tasks for the '%s' package... Please be patient.", $package ),
-                $nPackages,
-                $cPackage
+                sprintf( "Executing postinstall tasks for the '%s' package... Please be patient.", $package ), $countPackages, $nPackage
             );
             last if $rs;
-            $cPackage++;
+            $nPackage++;
         }
     }
 
     endDetail();
     return $rs if $rs;
 
-    while ( my ($package, $metadata) = each( %{$self->{'packagesToRebuild'}} ) ) {
+    while ( my ( $package, $metadata ) = each( %{ $self->{'packagesToRebuild'} } ) ) {
         $rs = $self->_rebuildAndInstallPackage(
             $package, $metadata->{'pkg_src_name'}, $metadata->{'patches_directory'}, $metadata->{'discard_patches'},
             $metadata->{'patch_sys_type'}
@@ -282,34 +261,33 @@ EOF
 
 sub uninstallPackages
 {
-    my ($self, $packagesToUninstall) = @_;
+    my ( $self, $packagesToUninstall ) = @_;
 
     $packagesToUninstall ||= $self->{'packagesToUninstall'};
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeUninstallPackages', $packagesToUninstall );
     return $rs if $rs;
 
-    if ( @{$packagesToUninstall} ) {
+    if ( @{ $packagesToUninstall } ) {
         # Clear information about available packages
-        $rs = execute( 'dpkg --clear-avail', \ my $stdout, \ my $stderr );
+        $rs = execute( 'dpkg --clear-avail', \my $stdout, \my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr ) if $rs && $stderr;
         return $rs if $rs;
 
-        if ( @{$packagesToUninstall} ) {
+        if ( @{ $packagesToUninstall } ) {
             # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
-            execute( [ 'apt-mark', 'unhold', @{$packagesToUninstall} ], \ $stdout, \ $stderr );
+            execute( [ 'apt-mark', 'unhold', @{ $packagesToUninstall } ], \$stdout, \$stderr );
             debug( $stderr ) if $stderr;
 
             iMSCP::Dialog->getInstance()->endGauge();
 
             $rs = execute(
                 [
-                    ( !iMSCP::Getopt->noprompt ? ( 'debconf-apt-progress', '--logstderr', '--' ) : () ),
-                    'apt-get', '--assume-yes', '--auto-remove', '--purge', '--no-install-recommends', 'remove',
-                    @{$packagesToUninstall}
+                    ( !iMSCP::Getopt->noprompt ? ( 'debconf-apt-progress', '--logstderr', '--' ) : () ), 'apt-get', '--assume-yes', '--auto-remove',
+                    '--purge', '--no-install-recommends', 'remove', @{ $packagesToUninstall }
                 ],
-                ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef ),
+                ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef ),
                 \$stderr
             );
             error( sprintf( "Couldn't uninstall packages: %s", $stderr || 'Unknown error' )) if $rs;
@@ -318,7 +296,7 @@ sub uninstallPackages
             # Purge packages that were indirectly removed
             $rs = execute(
                 "apt-get -y purge \$(dpkg -l | grep ^rc | awk '{print \$2}')",
-                ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \ $stdout ),
+                ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : \$stdout ),
                 \$stderr
             );
             error( sprintf( "Couldn't purge packages that are in rc state: %s", $stderr || 'Unknown error' )) if $rs;
@@ -345,16 +323,15 @@ sub uninstallPackages
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
 
     $self->{'repositorySections'} = [ 'main', 'contrib', 'non-free' ];
     $self->{'preRequiredPackages'} = [
-        'apt-transport-https', 'binutils', 'ca-certificates', 'debconf-utils', 'dialog', 'dirmngr', 'dpkg-dev',
-        'libbit-vector-perl', 'libclass-insideout-perl', 'libclone-perl', 'liblchown-perl', 'liblist-moreutils-perl',
-        'libscalar-defer-perl', 'libsort-versions-perl', 'libxml-simple-perl', 'lsb-release', 'policyrcd-script-zg2',
-        'wget'
+        'apt-transport-https', 'binutils', 'ca-certificates', 'debconf-utils', 'dialog', 'dirmngr', 'dpkg-dev', 'libbit-vector-perl',
+        'libclass-insideout-perl', 'libclone-perl', 'liblchown-perl', 'liblist-moreutils-perl', 'libscalar-defer-perl', 'libsort-versions-perl',
+        'libxml-simple-perl', 'lsb-release', 'policyrcd-script-zg2', 'wget'
     ];
     $self->{'aptRepositoriesToRemove'} = [];
     $self->{'aptRepositoriesToAdd'} = [];
@@ -366,7 +343,7 @@ sub _init
     $self->{'packagesToRebuild'} = {};
     $self->{'packagesPreInstallTasks'} = {};
     $self->{'packagesPostInstallTasks'} = {};
-    $self->{'need_pbuilder_update'} = 1;
+    $self->{'need_pbuilder_update'} = TRUE;
 
     delete $ENV{'DEBCONF_FORCE_DIALOG'};
 
@@ -389,22 +366,19 @@ sub _init
 sub _setupGetAddrinfoPrecedence
 {
     my $file = iMSCP::File->new( filename => '/etc/gai.conf' );
-    my $fileContent = '';
+    my $fileC;
 
     if ( -f '/etc/gai.conf' ) {
-        $fileContent = $file->get();
-        unless ( defined $fileContent ) {
-            error( sprintf( "Couldn't read %s file ", $file->{'filename'} ));
-            return 1;
-        }
-
-        return 0 if $fileContent =~ m%^precedence\s+::ffff:0:0/96\s+100\n%m;
+        $fileC = $file->getAsRef();
+        return 1 unless defined $fileC;
+        return 0 if ${ $fileC } =~ m%^precedence\s+::ffff:0:0/96\s+100\n%m;
+    } else {
+        $file->set( '' );
+        $fileC = $file->getAsRef();
     }
 
     # Prefer IPv4
-    $fileContent .= "precedence ::ffff:0:0/96  100\n";
-
-    $file->set( $fileContent );
+    ${ $fileC } .= "precedence ::ffff:0:0/96  100\n";
     $file->save();
 }
 
@@ -420,11 +394,11 @@ sub _setupGetAddrinfoPrecedence
 
 sub _parsePackageNode
 {
-    my ($self, $node, $target) = @_;
+    my ( $self, $node, $target ) = @_;
 
     unless ( ref $node eq 'HASH' ) {
         # Package without further treatment
-        push @{$target}, $node;
+        push @{ $target }, $node;
         return;
     }
 
@@ -437,27 +411,23 @@ sub _parsePackageNode
             patch_sys_type    => $node->{'patch_sys_type'} || 'quilt'
         };
     } else {
-        push @{$target}, $node->{'content'};
+        push @{ $target }, $node->{'content'};
     }
 
     # Package preinstall tasks
-    if ( defined $node->{'pre_install_tasks'} ) {
-        $self->{'packagesPreInstallTasks'}->{$node->{'content'}} = $node->{'pre_install_tasks'}
-    }
+    $self->{'packagesPreInstallTasks'}->{$node->{'content'}} = $node->{'pre_install_tasks'} if defined $node->{'pre_install_tasks'};
 
     # Package postinstall tasks
-    if ( defined $node->{'post_install_tasks'} ) {
-        $self->{'packagesPostInstallTasks'}->{$node->{'content'}} = $node->{'post_install_tasks'}
-    }
+    $self->{'packagesPostInstallTasks'}->{$node->{'content'}} = $node->{'post_install_tasks'} if defined $node->{'post_install_tasks'};
+
 
     # Per package APT pinning
     if ( defined $node->{'pinning_package'} ) {
-        push @{$self->{'aptPreferences'}},
-            {
-                pinning_package      => $node->{'pinning_package'},
-                pinning_pin          => $node->{'pinning_pin'} || undef,
-                pinning_pin_priority => $node->{'pinning_pin_priority'} || undef
-            };
+        push @{ $self->{'aptPreferences'} }, {
+            pinning_package      => $node->{'pinning_package'},
+            pinning_pin          => $node->{'pinning_pin'} || undef,
+            pinning_pin_priority => $node->{'pinning_pin_priority'} || undef
+        };
     }
 }
 
@@ -471,17 +441,16 @@ sub _parsePackageNode
 
 sub _processPackagesFile
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'onBuildPackageList', \ my $packageFilePath );
+    my $rs = $self->{'eventManager'}->trigger( 'onBuildPackageList', \my $packageFilePath );
     return $rs if $rs;
 
     unless ( defined $packageFilePath ) {
         my $lsbRelease = iMSCP::LsbRelease->getInstance();
         my $distroID = $lsbRelease->getId( 'short' );
         my $distroCodename = $lsbRelease->getCodename( 'short' );
-        $packageFilePath = "$FindBin::Bin/autoinstaller/Packages/" . lc( $distroID ) . '-'
-            . lc( $distroCodename ) . '.xml';
+        $packageFilePath = "$FindBin::Bin/autoinstaller/Packages/" . lc( $distroID ) . '-' . lc( $distroCodename ) . '.xml';
     }
 
     my $arch = `dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null`;
@@ -490,13 +459,10 @@ sub _processPackagesFile
         return 1;
     }
 
-    eval "use XML::Simple; 1" or die( $@ );
-    my $xml = XML::Simple->new( NoEscape => 1 );
     my $pkgData = eval {
-        $xml->XMLin(
-            $packageFilePath,
-            ForceArray     => [ 'package', 'package_delayed', 'package_conflict' ],
-            NormaliseSpace => 2
+        require XML::Simple;
+        XML::Simple->new( NoEscape => TRUE )->XMLin(
+            $packageFilePath, ForceArray => [ 'package', 'package_delayed', 'package_conflict' ], NormaliseSpace => 2
         );
     };
     if ( $@ ) {
@@ -507,36 +473,35 @@ sub _processPackagesFile
     my $dialog = iMSCP::Dialog->getInstance();
     $dialog->set( 'no-cancel', '' );
 
-    while ( my ($section, $data) = each( %{$pkgData} ) ) {
+    while ( my ( $section, $data ) = each( %{ $pkgData } ) ) {
         # List of packages to install
         if ( defined $data->{'package'} ) {
-            for my $package( @{$data->{'package'}} ) {
+            for my $package ( @{ $data->{'package'} } ) {
                 $self->_parsePackageNode( $package, $self->{'packagesToInstall'} );
             }
         }
 
         # List of packages to install (delayed)
         if ( defined $data->{'package_delayed'} ) {
-            for my $package( @{$data->{'package_delayed'}} ) {
+            for my $package ( @{ $data->{'package_delayed'} } ) {
                 $self->_parsePackageNode( $package, $self->{'packagesToInstallDelayed'} );
             }
         }
 
         # List of conflicting packages which must be pre-removed
         if ( defined $data->{'package_conflict'} ) {
-            for my $package( @{$data->{'package_conflict'}} ) {
-                push @{$self->{'packagesToPreUninstall'}}, ref $package eq 'HASH' ? $package->{'content'} : $package;
+            for my $package ( @{ $data->{'package_conflict'} } ) {
+                push @{ $self->{'packagesToPreUninstall'} }, ref $package eq 'HASH' ? $package->{'content'} : $package;
             }
         }
 
         # Per package section APT pinning
         if ( defined $data->{'pinning_package'} ) {
-            push @{$self->{'aptPreferences'}},
-                {
-                    pinning_package      => $data->{'pinning_package'},
-                    pinning_pin          => $data->{'pinning_pin'} || undef,
-                    pinning_pin_priority => $data->{'pinning_pin_priority'} || undef,
-                };
+            push @{ $self->{'aptPreferences'} }, {
+                pinning_package      => $data->{'pinning_package'},
+                pinning_pin          => $data->{'pinning_pin'} || undef,
+                pinning_pin_priority => $data->{'pinning_pin_priority'} || undef,
+            };
         }
 
         next if defined $data->{'package'} || defined $data->{'package_delayed'} || defined $data->{'package_conflict'}
@@ -545,44 +510,37 @@ sub _processPackagesFile
         # Whether user must be asked for alternative or not
         my $needDialog = 0;
         # Retrieve selected alternative if any
-        my $sAlt = $main::questions{ uc( $section ) . '_SERVER' } || $main::imscpConfig{ uc( $section ) . '_SERVER' };
+        my $sAlt = $::questions{ uc( $section ) . '_SERVER' } || $::imscpConfig{ uc( $section ) . '_SERVER' };
         # Resets alternative if selected alternative is no longer available
-        $sAlt = '' if $sAlt ne '' && !grep($_ eq $sAlt, keys %{$data});
+        $sAlt = '' if $sAlt ne '' && !grep ($_ eq $sAlt, keys %{ $data });
 
         # Map of alternative descriptions to alternative names
         my %altDesc;
-        for my $alt( keys %{$data} ) {
+        for my $alt ( keys %{ $data } ) {
             # Skip unsupported alternatives by arch
-            if ( defined $data->{$alt}->{'required_arch'}
-                && $arch ne $data->{$alt}->{'required_arch'}
-            ) {
-                next;
-            }
-
+            next if defined $data->{$alt}->{'required_arch'} && $arch ne $data->{$alt}->{'required_arch'};
             $altDesc{$data->{$alt}->{'description'} || $alt} = $alt;
 
             # If there is no alternative set yet, set selected alternative 
             # to default alternative and force dialog to make user able to change it
             if ( $sAlt eq '' && $data->{$alt}->{'default'} ) {
                 $sAlt = $alt;
-                $needDialog = 1;
+                $needDialog = TRUE;
             }
         }
 
         # Filter unallowed alternatives
         unless ( $needDialog || !$data->{$sAlt}->{'allow_switch'} ) {
             my @allowedAlts = ( split( ',', $data->{$sAlt}->{'allow_switch'} ), $sAlt );
-            while ( my ($altDesc, $altName) = each( %altDesc ) ) {
-                delete $altDesc{$altDesc} unless grep( $altName eq $_, @allowedAlts );
+            while ( my ( $altDesc, $altName ) = each( %altDesc ) ) {
+                delete $altDesc{$altDesc} unless grep ( $altName eq $_, @allowedAlts );
             }
         }
 
         # If there are more than one alternative available and if dialog is
         # forced, or if user explicitely asked for reconfiguration of that
         # alternative, show dialog for alternative selection
-        if ( keys %altDesc > 1
-            && ( $needDialog || grep( $_ eq $main::reconfigure, ( $section, 'servers', 'all' ) ) )
-        ) {
+        if ( keys %altDesc > 1 && ( $needDialog || grep ( $_ eq $::reconfigure, ( $section, 'servers', 'all' ) ) ) ) {
             ( my $ret, $sAlt ) = $dialog->radiolist(
                 <<"EOF", [ keys %altDesc ], $data->{$sAlt}->{'description'} || $sAlt );
 
@@ -596,14 +554,14 @@ EOF
 
         # Packages to install for the selected alternative
         if ( defined $data->{$sAlt}->{'package'} ) {
-            for my $package( @{$data->{$sAlt}->{'package'}} ) {
+            for my $package ( @{ $data->{$sAlt}->{'package'} } ) {
                 $self->_parsePackageNode( $package, $self->{'packagesToInstall'} );
             }
         }
 
         # Package to install (delayed) for the selected alternative
         if ( defined $data->{$sAlt}->{'package_delayed'} ) {
-            for my $package( @{$data->{$sAlt}->{'package_delayed'}} ) {
+            for my $package ( @{ $data->{$sAlt}->{'package_delayed'} } ) {
                 $self->_parsePackageNode( $package, $self->{'packagesToInstallDelayed'} );
             }
         }
@@ -611,76 +569,70 @@ EOF
         # Conflicting packages that must be pre-removed for the selected
         # alternative.
         if ( defined $data->{$sAlt}->{'package_conflict'} ) {
-            for my $package( @{$data->{$sAlt}->{'package_conflict'}} ) {
-                push @{$self->{'packagesToPreUninstall'}}, ref $package eq 'HASH' ? $package->{'content'} : $package;
+            for my $package ( @{ $data->{$sAlt}->{'package_conflict'} } ) {
+                push @{ $self->{'packagesToPreUninstall'} }, ref $package eq 'HASH' ? $package->{'content'} : $package;
             }
         }
 
         # APT preferences to add for the selected alternative
         if ( defined $data->{$sAlt}->{'pinning_package'} ) {
-            push @{$self->{'aptPreferences'}},
-                {
-                    pinning_package      => $data->{$sAlt}->{'pinning_package'},
-                    pinning_pin          => $data->{$sAlt}->{'pinning_pin'} || undef,
-                    pinning_pin_priority => $data->{$sAlt}->{'pinning_pin_priority'} || undef,
-                }
+            push @{ $self->{'aptPreferences'} }, {
+                pinning_package      => $data->{$sAlt}->{'pinning_package'},
+                pinning_pin          => $data->{$sAlt}->{'pinning_pin'} || undef,
+                pinning_pin_priority => $data->{$sAlt}->{'pinning_pin_priority'} || undef,
+            }
         }
 
         # APT repository to add for the selected alternative
         if ( defined $data->{$sAlt}->{'repository'} ) {
-            push @{$self->{'aptRepositoriesToAdd'}},
-                {
-                    repository         => $data->{$sAlt}->{'repository'},
-                    repository_key_uri => $data->{$sAlt}->{'repository_key_uri'} || undef,
-                    repository_key_id  => $data->{$sAlt}->{'repository_key_id'} || undef,
-                    repository_key_srv => $data->{$sAlt}->{'repository_key_srv'} || undef
-                };
+            push @{ $self->{'aptRepositoriesToAdd'} }, {
+                repository         => $data->{$sAlt}->{'repository'},
+                repository_key_uri => $data->{$sAlt}->{'repository_key_uri'} || undef,
+                repository_key_id  => $data->{$sAlt}->{'repository_key_id'} || undef,
+                repository_key_srv => $data->{$sAlt}->{'repository_key_srv'} || undef
+            };
         }
 
         # Conflicting APT repositories to remove for the selected alternative
         if ( defined $data->{$sAlt}->{'repository_conflict'} ) {
-            push @{$self->{'aptRepositoriesToRemove'}}, $data->{$sAlt}->{'repository_conflict'}
+            push @{ $self->{'aptRepositoriesToRemove'} }, $data->{$sAlt}->{'repository_conflict'}
         }
 
         # Schedule removal of APT repositories and packages that belongs to
         # unselected alternatives, unless keep_installed flag is set
-        my @packagesToInstall = (
-            @{$self->{'packagesToInstall'}}, @{$self->{'packagesToInstallDelayed'}},
-            keys %{$self->{'packagesToRebuild'}}
-        );
-        while ( my ($alt, $altData) = each( %{$data} ) ) {
+        my @packagesToInstall = ( @{ $self->{'packagesToInstall'} }, @{ $self->{'packagesToInstallDelayed'} }, keys %{ $self->{'packagesToRebuild'} } );
+        while ( my ( $alt, $altData ) = each( %{ $data } ) ) {
             next if $alt eq $sAlt || $altData->{'keep_installed'};
 
             # APT repositories to remove
-            for my $repository( qw / repository repository_conflict / ) {
+            for my $repository ( qw/ repository repository_conflict / ) {
                 next unless defined $altData->{$repository};
-                push @{$self->{'aptRepositoriesToRemove'}}, $altData->{$repository};
+                push @{ $self->{'aptRepositoriesToRemove'} }, $altData->{$repository};
             }
 
             # Packages to uninstall
-            for my $node( qw / package package_delayed / ) {
+            for my $node ( qw/ package package_delayed / ) {
                 next unless defined $altData->{$node};
-
-                for my $package( @{$altData->{$node}} ) {
+                for my $package ( @{ $altData->{$node} } ) {
                     $package = ref $package eq 'HASH' ? $package->{'content'} : $package;
-                    next if grep($package eq $_, @packagesToInstall);
-                    push @{$self->{'packagesToUninstall'}}, $package;
+                    next if grep ($package eq $_, @packagesToInstall);
+                    push @{ $self->{'packagesToUninstall'} }, $package;
                 }
             }
         }
 
         # Set both alternative name and package name according selected alternative
-        $main::imscpConfig{uc( $section ) . '_SERVER'} = $sAlt;
-        $main::imscpConfig{uc( $section ) . '_PACKAGE'} = $data->{$sAlt}->{'class'} || $sAlt;
+        $::imscpConfig{uc( $section ) . '_SERVER'} = $sAlt;
+        $::imscpConfig{uc( $section ) . '_PACKAGE'} = $data->{$sAlt}->{'class'} || $sAlt;
     }
 
     require List::MoreUtils;
     List::MoreUtils->import( 'uniq' );
 
-    @{$self->{'packagesToPreUninstall'}} = sort(uniq( @{$self->{'packagesToPreUninstall'}} ));
-    @{$self->{'packagesToUninstall'}} = sort(uniq( @{$self->{'packagesToUninstall'}} ));
-    @{$self->{'packagesToInstall'}} = sort(uniq( @{$self->{'packagesToInstall'}} ));
-    @{$self->{'packagesToInstallDelayed'}} = sort(uniq( @{$self->{'packagesToInstallDelayed'}} ));
+    @{ $self->{'packagesToPreUninstall'} } = sort (uniq( @{ $self->{'packagesToPreUninstall'} } ));
+    @{ $self->{'packagesToUninstall'} } = sort (uniq( @{ $self->{'packagesToUninstall'} } ));
+    @{ $self->{'packagesToInstall'} } = sort (uniq( @{ $self->{'packagesToInstall'} } ));
+    @{ $self->{'packagesToInstallDelayed'} } = sort (uniq( @{ $self->{'packagesToInstallDelayed'} } ));
 
     # Filter packages that are no longer available
 
@@ -690,8 +642,8 @@ EOF
     @apkgs{split /\n/, $stdout} = undef;
     undef $stdout;
 
-    for( $self->{'packagesToPreUninstall'}, $self->{'packagesToUninstall'} ) {
-        @{$_} = grep(exists $apkgs{$_}, @{$_});
+    for my $package ( $self->{'packagesToPreUninstall'}, $self->{'packagesToUninstall'} ) {
+        @{ $package } = grep (exists $apkgs{$package}, @{ $package });
     }
 
     $dialog->set( 'no-cancel', '' );
@@ -711,57 +663,52 @@ EOF
 
 sub _updateAptSourceList
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $file = iMSCP::File->new( filename => '/etc/apt/sources.list' );
-    my $fileContent = $file->get();
+    my $fileC = $file->getAsRef();
+    return 1 unless defined $fileC;
 
-    for my $section( @{$self->{'repositorySections'}} ) {
+    for my $section ( @{ $self->{'repositorySections'} } ) {
         my @seenRepositories = ();
         my $foundSection = 0;
 
-        while ( $fileContent =~ /^deb\s+(?<uri>(?:https?|ftp)[^\s]+)\s+(?<dist>[^\s]+)\s+(?<components>.+)$/gm ) {
+        while ( ${ $fileC } =~ /^deb\s+(?<uri>(?:https?|ftp)[^\s]+)\s+(?<dist>[^\s]+)\s+(?<components>.+)$/gm ) {
             my $rf = $&;
             my %rc = %+;
-            next if grep($_ eq "$rc{'uri'} $rc{'dist'}", @seenRepositories);
+            next if grep ( $_ eq "$rc{'uri'} $rc{'dist'}", @seenRepositories );
             push @seenRepositories, "$rc{'uri'} $rc{'dist'}";
 
-            if ( $fileContent !~ /^deb\s+$rc{'uri'}\s+$rc{'dist'}\s+.*\b$section\b/m ) {
+            if ( ${ $fileC } !~ /^deb\s+$rc{'uri'}\s+$rc{'dist'}\s+.*\b$section\b/m ) {
                 my $rs = execute(
-                    [
-                        'wget', '--prefer-family=IPv4', '--timeout=30', '--spider',
-                        "$rc{'uri'}/dists/$rc{'dist'}/$section/" =~ s{([^:])//}{$1/}gr
-                    ],
-                    \ my $stdout,
-                    \ my $stderr
+                    [ 'wget', '--prefer-family=IPv4', '--timeout=30', '--spider', "$rc{'uri'}/dists/$rc{'dist'}/$section/" =~ s{([^:])//}{$1/}gr ],
+                    \my $stdout,
+                    \my $stderr
                 );
                 debug( $stdout ) if $stdout;
                 debug( $stderr || 'Unknown error' ) if $rs && $rs != 8;
                 next if $rs; # Don't check for source archive when binary archive has not been found
-                $foundSection = 1;
-                $fileContent =~ s/^($rf)$/$1 $section/m;
+                $foundSection = TRUE;
+                ${ $fileC } =~ s/^($rf)$/$1 $section/m;
                 $rf .= " $section";
             } else {
-                $foundSection = 1;
+                $foundSection = TRUE;
             }
 
-            if ( $foundSection && $fileContent !~ /^deb-src\s+$rc{'uri'}\s+$rc{'dist'}\s+.*\b$section\b/m ) {
+            if ( $foundSection && ${ $fileC } !~ /^deb-src\s+$rc{'uri'}\s+$rc{'dist'}\s+.*\b$section\b/m ) {
                 my $rs = execute(
-                    [
-                        'wget', '--prefer-family=IPv4', '--timeout=30', '--spider',
-                        "$rc{'uri'}/dists/$rc{'dist'}/$section/source/" =~ s{([^:])//}{$1/}gr
-                    ],
-                    \ my $stdout,
-                    \ my $stderr
+                    [ 'wget', '--prefer-family=IPv4', '--timeout=30', '--spider', "$rc{'uri'}/dists/$rc{'dist'}/$section/source/" =~ s{([^:])//}{$1/}gr ],
+                    \my $stdout,
+                    \my $stderr
                 );
                 debug( $stdout ) if $stdout;
                 debug( $stderr || 'Unknown error' ) if $rs && $rs != 8;
 
                 unless ( $rs ) {
-                    if ( $fileContent !~ /^deb-src\s+$rc{'uri'}\s+$rc{'dist'}\s.*/m ) {
-                        $fileContent =~ s/^($rf)/$1\ndeb-src $rc{'uri'} $rc{'dist'} $section/m;
+                    if ( ${ $fileC } !~ /^deb-src\s+$rc{'uri'}\s+$rc{'dist'}\s.*/m ) {
+                        ${ $fileC } =~ s/^($rf)/$1\ndeb-src $rc{'uri'} $rc{'dist'} $section/m;
                     } else {
-                        $fileContent =~ s/^($&)$/$1 $section/m;
+                        ${ $fileC } =~ s/^($&)$/$1 $section/m;
                     }
                 }
             }
@@ -773,7 +720,6 @@ sub _updateAptSourceList
         }
     }
 
-    $file->set( $fileContent );
     $file->save();
 }
 
@@ -787,31 +733,28 @@ sub _updateAptSourceList
 
 sub _processAptRepositories
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    return 0 unless @{$self->{'aptRepositoriesToRemove'}} || @{$self->{'aptRepositoriesToAdd'}};
+    return 0 unless @{ $self->{'aptRepositoriesToRemove'} } || @{ $self->{'aptRepositoriesToAdd'} };
 
     my $file = iMSCP::File->new( filename => '/etc/apt/sources.list' );
     my $rs = $file->copyFile( '/etc/apt/sources.list.bkp' );
     return $rs if $rs;
 
-    my $fileContent = $file->get();
-    unless ( defined $fileContent ) {
-        error( "Couldn't read /etc/apt/sources.list file" );
-        return 1;
-    }
+    my $fileC = $file->getAsRef();
+    return 1 unless defined $fileC;
 
     # Cleanup APT sources.list file
-    for my $repository( @{$self->{'aptRepositoriesToRemove'}}, @{$self->{'aptRepositoriesToAdd'}} ) {
+    for my $repository ( @{ $self->{'aptRepositoriesToRemove'} }, @{ $self->{'aptRepositoriesToAdd'} } ) {
         my $escapedRepository = ( ref $repository eq 'HASH' ) ? $repository->{'repository'} : $repository;
-        $fileContent =~ s/^\n?(?:#\s*)?deb(?:-src)?\s+\Q$escapedRepository\E.*?\n//gm;
+        ${ $fileC } =~ s/^\n?(?:#\s*)?deb(?:-src)?\s+\Q$escapedRepository\E.*?\n//gm;
     }
 
     # Add APT repositories
-    for my $repository( @{$self->{'aptRepositoriesToAdd'}} ) {
-        next if $fileContent =~ /^deb\s+$repository->{'repository'}/m;
+    for my $repository ( @{ $self->{'aptRepositoriesToAdd'} } ) {
+        next if $fileC =~ /^deb\s+$repository->{'repository'}/m;
 
-        $fileContent .= <<"EOF";
+        ${ $fileC } .= <<"EOF";
 
 deb $repository->{'repository'}
 deb-src $repository->{'repository'}
@@ -824,12 +767,9 @@ EOF
         if ( $repository->{'repository_key_srv'} && $repository->{'repository_key_id'} ) {
             # Add the repository key from the given key server
             $rs = execute(
-                [
-                    'apt-key', 'adv', '--recv-keys', '--keyserver', $repository->{'repository_key_srv'},
-                    $repository->{'repository_key_id'}
-                ],
-                \ my $stdout,
-                \ my $stderr
+                [ 'apt-key', 'adv', '--recv-keys', '--keyserver', $repository->{'repository_key_srv'}, $repository->{'repository_key_id'} ],
+                \my $stdout,
+                \my $stderr
             );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
@@ -839,27 +779,23 @@ EOF
             execute( [ '/usr/bin/pkill', '-TERM', 'dirmngr' ], \$stdout, \$stderr );
         } elsif ( $repository->{'repository_key_uri'} ) {
             # Add the repository key by fetching it first from the given URI
-            my $keyFile = File::Temp->new( UNLINK => 1 );
+            my $keyFile = File::Temp->new( UNLINK => TRUE );
             $rs = execute(
-                [
-                    'wget', '--prefer-family=IPv4', '--timeout=30', '-O', $keyFile->filename,
-                    $repository->{'repository_key_uri'}
-                ],
-                \ my $stdout,
-                \ my $stderr
+                [ 'wget', '--prefer-family=IPv4', '--timeout=30', '-O', $keyFile->filename, $repository->{'repository_key_uri'} ],
+                \my $stdout,
+                \my $stderr
             );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
 
-            $rs ||= execute( [ 'apt-key', 'add', $keyFile ], \ $stdout, \ $stderr );
+            $rs ||= execute( [ 'apt-key', 'add', $keyFile ], \$stdout, \$stderr );
             debug( $stdout ) if $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
         }
     }
 
-    $file->set( $fileContent );
     $file->save();
 }
 
@@ -873,17 +809,19 @@ EOF
 
 sub _processAptPreferences
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $fileContent = '';
+    my $file = iMSCP::File->new( filename => '/etc/apt/preferences.d/imscp' );
+    $file->set( '' );
+    my $fileC = $file->getAsRef();
 
-    for my $pref ( @{$self->{'aptPreferences'}} ) {
+    for my $pref ( @{ $self->{'aptPreferences'} } ) {
         unless ( $pref->{'pinning_pin'} || $pref->{'pinning_pin_priority'} ) {
             error( 'One of these attributes is missing: pinning_pin or pinning_pin_priority' );
             return 1;
         }
 
-        $fileContent .= <<"EOF";
+        ${ $fileC } .= <<"EOF";
 
 Package: $pref->{'pinning_package'}
 Pin: $pref->{'pinning_pin'}
@@ -891,13 +829,14 @@ Pin-Priority: $pref->{'pinning_pin_priority'}
 EOF
     }
 
-    my $file = iMSCP::File->new( filename => '/etc/apt/preferences.d/imscp' );
-
-    if ( $fileContent ) {
-        $fileContent =~ s/^\n//;
-        $file->set( $fileContent );
-
+    if ( length ${ $fileC } ) {
+        ${ $fileC } = <<"EOF";
+# apt_preferences(5) configuration file - auto-generated by i-MSCP
+#     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN 
+${ $fileC }
+EOF
         my $rs = $file->save();
+        $rs ||= $file->owner( $::imscpConfig{'ROOT_USER'}, $::imscpConfig{'ROOT_GROUP'} );
         $rs ||= $file->mode( 0644 );
         return $rs;
     }
@@ -920,7 +859,7 @@ sub _updatePackagesIndex
     my $stdout;
     my $rs = execute(
         [ ( !iMSCP::Getopt->noprompt ? ( 'debconf-apt-progress', '--logstderr', '--' ) : () ), 'apt-get', 'update' ],
-        ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \ $stdout : undef ), \ my $stderr
+        ( iMSCP::Getopt->noprompt && !iMSCP::Getopt->verbose ? \$stdout : undef ), \my $stderr
     );
     error( sprintf( "Couldn't update package index from remote repository: %s", $stderr || 'Unknown error' )) if $rs;
     debug( $stderr );
@@ -937,12 +876,12 @@ sub _updatePackagesIndex
 
 sub _prefillDebconfDatabase
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $fileContent = '';
+    my $fileC = '';
 
     # Pre-fill questions for Postfix SMTP server if required
-    if ( $main::imscpConfig{'MTA_PACKAGE'} eq 'Servers::mta::postfix' ) {
+    if ( $::imscpConfig{'MTA_PACKAGE'} eq 'Servers::mta::postfix' ) {
         chomp( my $mailname = `hostname --fqdn 2>/dev/null` || 'localdomain' );
         my $hostname = ( $mailname ne 'localdomain' ) ? $mailname : 'localhost';
         chomp( my $domain = `hostname --domain 2>/dev/null` || 'localdomain' );
@@ -952,7 +891,7 @@ sub _prefillDebconfDatabase
             ? join ', ', ( $mailname, 'localhost.' . $domain, ', localhost' )
             : join ', ', ( $mailname, $hostname, 'localhost.' . $domain . ', localhost' );
 
-        $fileContent .= <<"EOF";
+        $fileC .= <<"EOF";
 postfix postfix/main_mailer_type select Internet Site
 postfix postfix/mailname string $mailname
 postfix postfix/destinations string $destinations
@@ -960,15 +899,15 @@ EOF
     }
 
     # Pre-fill question for Proftpd FTP server if required
-    if ( $main::imscpConfig{'FTPD_PACKAGE'} eq 'Servers::ftpd::proftpd' ) {
-        $fileContent .= <<'EOF';
+    if ( $::imscpConfig{'FTPD_PACKAGE'} eq 'Servers::ftpd::proftpd' ) {
+        $fileC .= <<'EOF';
 proftpd-basic shared/proftpd/inetd_or_standalone select standalone
 EOF
     }
 
     # Pre-fill questions for Courier IMAP/POP server if required
-    if ( $main::imscpConfig{'PO_PACKAGE'} eq 'Servers::po::courier' ) {
-        $fileContent .= <<'EOF';
+    if ( $::imscpConfig{'PO_PACKAGE'} eq 'Servers::po::courier' ) {
+        $fileC .= <<'EOF';
 courier-base courier-base/courier-user note
 courier-base courier-base/webadmin-configmode boolean false
 courier-ssl courier-ssl/certnotice note
@@ -976,8 +915,8 @@ EOF
     }
 
     # Pre-fill questions for Dovecot IMAP/POP server if required
-    if ( $main::imscpConfig{'PO_PACKAGE'} eq 'Servers::po::dovecot' ) {
-        $fileContent .= <<'EOF';
+    if ( $::imscpConfig{'PO_PACKAGE'} eq 'Servers::po::dovecot' ) {
+        $fileC .= <<'EOF';
 dovecot-core dovecot-core/create-ssl-cert boolean true
 dovecot-core dovecot-core/ssl-cert-name string localhost
 EOF
@@ -985,30 +924,30 @@ EOF
 
     # Pre-fill question for sasl2-bin package if required
     if ( `echo GET cyrus-sasl2/purge-sasldb2 | debconf-communicate sasl2-bin 2>/dev/null` =~ /^0/ ) {
-        $fileContent .= <<'EOF'
+        $fileC .= <<'EOF'
 sasl2-bin cyrus-sasl2/purge-sasldb2 boolean true
 EOF
     }
 
     # Pre-fill questions for SQL server (MySQL, MariaDB or Percona) if required
-    if ( my ($sqlServerVendor, $sqlServerVersion) = $main::imscpConfig{'SQL_SERVER'} =~ /^(mysql|mariadb|percona)_(\d+\.\d+)/ ) {
-        if ( $main::imscpConfig{'DATABASE_PASSWORD'} ne '' && -d $main::imscpConfig{'DATABASE_DIR'} ) {
+    if ( my ( $sqlServerVendor, $sqlServerVersion ) = $::imscpConfig{'SQL_SERVER'} =~ /^(mysql|mariadb|percona)_(\d+\.\d+)/ ) {
+        if ( $::imscpConfig{'DATABASE_PASSWORD'} ne '' && -d $::imscpConfig{'DATABASE_DIR'} ) {
             # Only show critical questions
             $ENV{'DEBIAN_PRIORITY'} = 'critical';
 
             # Allow switching to other vendor (e.g: MariaDB 10.0 to MySQL >= 5.6)
-            # unlink glob "$main::imscpConfig{'DATABASE_DIR'}/debian-*.flag";
+            # unlink glob "::imscpConfig{'DATABASE_DIR'}/debian-*.flag";
 
             # Don't show SQL root password dialog from package maintainer script
             # when switching to another vendor or a newest version
             # <DATABASE_DIR>/debian-5.0.flag is the file checked by maintainer script
-            my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'DATABASE_DIR'}/debian-5.0.flag" )->save();
+            my $rs = iMSCP::File->new( filename => "$::imscpConfig{'DATABASE_DIR'}/debian-5.0.flag" )->save();
             return $rs if $rs;
         }
 
-        my ($qOwner, $qNamePrefix);
+        my ( $qOwner, $qNamePrefix );
         if ( $sqlServerVendor eq 'mysql' ) {
-            if ( grep($_ eq 'mysql-community-server', @{$self->{'packagesToInstall'}}) ) {
+            if ( grep ($_ eq 'mysql-community-server', @{ $self->{'packagesToInstall'} }) ) {
                 $qOwner = 'mysql-community-server';
                 $qNamePrefix = 'mysql-community-server';
             } else {
@@ -1024,47 +963,41 @@ EOF
         }
 
         # We do not want ask user for <DATABASE_DIR> removal (we want avoid mistakes as much as possible)
-        $fileContent .= <<"EOF";
+        $fileC .= <<"EOF";
 $qOwner $qNamePrefix/remove-data-dir boolean false
 $qOwner $qNamePrefix/postrm_remove_databases boolean false
 EOF
         # Preset root SQL password using value from preseed file if required
         if ( iMSCP::Getopt->preseed ) {
-            exit 5 unless exists $main::questions{'SQL_ROOT_PASSWORD'} & $main::questions{'SQL_ROOT_PASSWORD'} ne '';
+            exit 5 unless exists $::questions{'SQL_ROOT_PASSWORD'} & $::questions{'SQL_ROOT_PASSWORD'} ne '';
 
-            $fileContent .= <<"EOF";
-$qOwner $qNamePrefix/root_password password $main::questions{'SQL_ROOT_PASSWORD'}
-$qOwner $qNamePrefix/root-pass password $main::questions{'SQL_ROOT_PASSWORD'}
-$qOwner $qNamePrefix/root_password_again password $main::questions{'SQL_ROOT_PASSWORD'}
-$qOwner $qNamePrefix/re-root-pass password $main::questions{'SQL_ROOT_PASSWORD'}
+            $fileC .= <<"EOF";
+$qOwner $qNamePrefix/root_password password $::questions{'SQL_ROOT_PASSWORD'}
+$qOwner $qNamePrefix/root-pass password $::questions{'SQL_ROOT_PASSWORD'}
+$qOwner $qNamePrefix/root_password_again password $::questions{'SQL_ROOT_PASSWORD'}
+$qOwner $qNamePrefix/re-root-pass password $::questions{'SQL_ROOT_PASSWORD'}
 EOF
             # Register an event listener to empty the password fields in Debconf database after package installation
-            $self->{'eventManager'}->register(
-                'postBuild',
-                sub {
-                    for( 'root_password', 'root-pass', 'root_password_again', 're-root-pass' ) {
-                        my $rs = execute(
-                            "echo SET $qNamePrefix/$_ | debconf-communicate $qOwner", \ my $stdout, \ my $stderr
-                        );
-                        debug( $stdout ) if $stdout;
-                        error( $stderr || 'Unknown error' ) if $rs;
-                        return $rs if $rs;
-                    }
-
-                    0;
+            $self->{'eventManager'}->register( 'postBuild', sub {
+                for my $field ( 'root_password', 'root-pass', 'root_password_again', 're-root-pass' ) {
+                    my $rs = execute( "echo SET $qNamePrefix/$field | debconf-communicate $qOwner", \my $stdout, \my $stderr );
+                    debug( $stdout ) if $stdout;
+                    error( $stderr || 'Unknown error' ) if $rs;
+                    return $rs if $rs;
                 }
-            );
+                0;
+            } );
         }
     }
 
-    return 0 if $fileContent eq '';
+    return 0 unless length $fileC;
 
     my $debconfSelectionsFile = File::Temp->new();
-    print $debconfSelectionsFile $fileContent;
+    print $debconfSelectionsFile $fileC;
     $debconfSelectionsFile->flush();
     $debconfSelectionsFile->close();
 
-    my $rs = execute( [ 'debconf-set-selections', $debconfSelectionsFile->filename ], \ my $stdout, \ my $stderr );
+    my $rs = execute( [ 'debconf-set-selections', $debconfSelectionsFile->filename ], \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || "Couldn't pre-fill Debconf database" ) if $rs;
     $rs;
@@ -1087,7 +1020,7 @@ EOF
 
 sub _rebuildAndInstallPackage
 {
-    my ($self, $pkg, $pkgSrc, $patchesDir, $patchesToDiscard, $patchFormat) = @_;
+    my ( $self, $pkg, $pkgSrc, $patchesDir, $patchesToDiscard, $patchFormat ) = @_;
     $patchesDir ||= "$pkg/patches";
     $patchesToDiscard ||= [];
     $patchFormat ||= 'quilt';
@@ -1134,11 +1067,10 @@ sub _rebuildAndInstallPackage
     $rs = step(
         sub {
             if ( $self->{'need_pbuilder_update'} ) {
-                $self->{'need_pbuilder_update'} = 0;
+                $self->{'need_pbuilder_update'} = FALSE;
 
                 my $msgHeader = "Creating/Updating pbuilder environment\n\n - ";
                 my $msgFooter = "\n\nPlease be patient. This may take few minutes...";
-
                 my $stderr = '';
                 my $cmd = [
                     'pbuilder',
@@ -1151,10 +1083,9 @@ sub _rebuildAndInstallPackage
                     $cmd,
                     ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
                         ? undef : sub {
-                            return unless ( shift ) =~ /^i:\s*(.*)/i;
-                            step( undef, $msgHeader . ucfirst( $1 ) . $msgFooter, 5, 1 );
-                        }
-                    ),
+                        return unless ( shift ) =~ /^i:\s*(.*)/i;
+                        step( undef, $msgHeader . ucfirst( $1 ) . $msgFooter, 5, 1 );
+                    } ),
                     sub { $stderr .= shift; }
                 );
                 error( sprintf( "Couldn't create/update pbuilder environment: %s", $stderr || 'Unknown error' )) if $rs;
@@ -1177,8 +1108,7 @@ sub _rebuildAndInstallPackage
                 ),
                 sub { $stderr .= shift }
             );
-            error( sprintf( "Couldn't download %s Debian source package: %s", $pkgSrc,
-                $stderr || 'Unknown error' )) if $rs;
+            error( sprintf( "Couldn't download %s Debian source package: %s", $pkgSrc, $stderr || 'Unknown error' )) if $rs;
             $rs;
         },
         sprintf( 'Downloading %s %s source package', $pkgSrc, $lsbRelease->getId( 1 )), 5, 2
@@ -1190,26 +1120,18 @@ sub _rebuildAndInstallPackage
 
         $rs ||= step(
             sub {
-                my $serieFile = iMSCP::File->new(
-                    filename => "debian/patches/" . ( $patchFormat eq 'quilt' ? 'series' : '00list' )
-                );
-                my $serieFileContent = $serieFile->get();
-                unless ( defined $serieFileContent ) {
-                    error( sprintf( "Couldn't read %s", $serieFile->{'filename'} ));
-                    return 1;
-                }
+                my $file = iMSCP::File->new( filename => "debian/patches/" . ( $patchFormat eq 'quilt' ? 'series' : '00list' ));
+                my $fileC = $file->getAsRef();
+                return 1 unless defined $fileC;
 
-                for my $patch( sort { $a cmp $b } iMSCP::Dir->new( dirname => $patchesDir )->getFiles() ) {
-                    next if grep($_ eq $patch, @{$patchesToDiscard});
-                    $serieFileContent .= "$patch\n";
-                    $rs = iMSCP::File->new( filename => "$patchesDir/$patch" )->copyFile(
-                        "debian/patches/$patch", { preserve => 'no' }
-                    );
+                for my $patch ( sort { $a cmp $b } iMSCP::Dir->new( dirname => $patchesDir )->getFiles() ) {
+                    next if grep ( $_ eq $patch, @{ $patchesToDiscard } );
+                    ${ $fileC } .= "$patch\n";
+                    $rs = iMSCP::File->new( filename => "$patchesDir/$patch" )->copyFile( "debian/patches/$patch", { preserve => 'no' } );
                     return $rs if $rs;
                 }
 
-                $rs = $serieFile->set( $serieFileContent );
-                $rs ||= $serieFile->save();
+                $rs ||= $file->save();
                 return $rs if $rs;
 
                 my $stderr;
@@ -1222,33 +1144,28 @@ sub _rebuildAndInstallPackage
                 error( sprintf( "Couldn't add `imscp' local suffix: %s", $stderr || 'Unknown error' )) if $rs;
                 return $rs if $rs;
             },
-            sprintf( 'Patching %s %s source package...', $pkgSrc, $lsbRelease->getId( 1 )), 5, 3
+            sprintf( 'Patching %s %s source package...', $pkgSrc, $lsbRelease->getId( TRUE )), 5, 3
         );
         $rs ||= step(
             sub {
                 my $msgHeader = sprintf( "Building new %s %s package\n\n - ", $pkg, $lsbRelease->getId( 1 ));
                 my $msgFooter = "\n\nPlease be patient. This may take few seconds...";
                 my $stderr;
-
                 $rs = executeNoWait(
                     [
-                        'pdebuild',
-                        '--use-pdebuild-internal',
-                        '--configfile', "$FindBin::Bin/configs/" . lc( $lsbRelease->getId( 1 )) . '/pbuilder/pbuilderrc'
+                        'pdebuild', '--use-pdebuild-internal',
+                        '--configfile', "$FindBin::Bin/configs/" . lc( $lsbRelease->getId( TRUE )) . '/pbuilder/pbuilderrc'
                     ],
-                    ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                        ? undef : sub {
-                            return unless ( shift ) =~ /^i:\s*(.*)/i;
-                            step( undef, $msgHeader . ucfirst( $1 ) . $msgFooter, 5, 4 );
-                        }
-                    ),
-                    sub { $stderr .= shift }
+                    ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : sub {
+                        return unless ( shift ) =~ /^i:\s*(.*)/i;
+                        step( undef, $msgHeader . ucfirst( $1 ) . $msgFooter, 5, 4 );
+                    } ),
+                    sub { $stderr .= $_[0] }
                 );
-                error( sprintf( "Couldn't build local %s %s package: %s", $pkg, $lsbRelease->getId( 1 ),
-                    $stderr || 'Unknown error' )) if $rs;
+                error( sprintf( "Couldn't build local %s %s package: %s", $pkg, $lsbRelease->getId( TRUE ), $stderr || 'Unknown error' )) if $rs;
                 $rs;
             },
-            sprintf( 'Building local %s %s package', $pkg, $lsbRelease->getId( 1 )), 5, 4
+            sprintf( 'Building local %s %s package', $pkg, $lsbRelease->getId( TRUE )), 5, 4
         );
     }
 
@@ -1258,18 +1175,14 @@ sub _rebuildAndInstallPackage
             execute( [ 'apt-mark', 'unhold', $pkg ], \my $stdout, \my $stderr );
             debug( $stderr ) if $stderr;
 
-            my $msgHeader = sprintf( "Installing local %s %s package\n\n", $pkg, $lsbRelease->getId( 1 ));
+            my $msgHeader = sprintf( "Installing local %s %s package\n\n", $pkg, $lsbRelease->getId( TRUE ));
             $stderr = '';
-
             $rs = executeNoWait(
                 "dpkg --force-confnew -i /var/cache/pbuilder/result/${pkg}_*.deb",
-                ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                    ? undef : sub { step( undef, $msgHeader . ( shift ), 5, 5 ) }
-                ),
-                sub { $stderr .= shift }
+                ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : sub { step( undef, $msgHeader . ( shift ), 5, 5 ) } ),
+                sub { $stderr .= $_[0] }
             );
-            error( sprintf( "Couldn't install local %s %s package: %s", $pkg, $lsbRelease->getId( 1 ),
-                $stderr || 'Unknown error' )) if $rs;
+            error( sprintf( "Couldn't install local %s %s package: %s", $pkg, $lsbRelease->getId( TRUE ), $stderr || 'Unknown error' )) if $rs;
             return $rs if $rs;
 
             # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
@@ -1278,7 +1191,7 @@ sub _rebuildAndInstallPackage
             debug( $stderr ) if $stderr;
             0;
         },
-        sprintf( 'Installing local %s %s package', $pkg, $lsbRelease->getId( 1 )), 5, 5
+        sprintf( 'Installing local %s %s package', $pkg, $lsbRelease->getId( TRUE )), 5, 5
     );
     endDetail();
 

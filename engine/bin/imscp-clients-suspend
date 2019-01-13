@@ -68,7 +68,9 @@ OPTIONS:
     $bootstrapper->getInstance()->boot( { config_readonly => TRUE } );
 
     my $conn = iMSCP::Database->factory()->getConnector();
-    my ( $hardSuspension ) = $conn->run( fixup => sub { $_->selectrow_arrayref( "SELECT value FROM config WHERE name = 'HARD_MAIL_SUSPENSION'" ); } );
+    my ( $hardSuspension ) = $conn->run(
+        fixup => sub { @{ $_->selectcol_arrayref( "SELECT value FROM config WHERE name = 'HARD_MAIL_SUSPENSION'" ); }; }
+    ); 
     my $rows = $conn->run( fixup => sub {
         $_->selectcol_arrayref(
             "SELECT domain_id FROM domain WHERE domain_expires <> '0' AND domain_expires < UNIX_TIMESTAMP() AND domain_status <> 'disabled'"

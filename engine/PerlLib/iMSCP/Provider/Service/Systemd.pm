@@ -70,8 +70,8 @@ sub isEnabled
 
     defined $unit or croak( 'Missing or undefined $unit parameter' );
 
-    # We need to catch STDERR as we do not want croak on failure when
-    # command status is other than 0 but no STDERR
+    # We need to catch STDERR as we do not want croak on failure when command
+    # status is other than 0 but no STDERR
     my $ret = $self->_exec( [ $COMMANDS{'systemctl'}, 'is-enabled', $self->resolveUnit( $unit ) ], \my $stdout, \my $stderr );
     croak( $stderr ) if $ret && length $stderr;
 
@@ -98,7 +98,7 @@ sub enable
     $self->unmask( $unit );
 
     # We make use of the --force flag to overwrite any conflicting symlinks.
-    # This is particularly usefull in case the unit provides an alias that is
+    # This is particularly useful in case the unit provides an alias that is
     # also provided as a SysVinit script and which has been masked. For instance:
     # - mariadb.service unit that provides the mysql.service unit as alias
     # - mysql SysVinit script which is masked (/etc/systemd/system/mysql.service => /dev/null)
@@ -315,8 +315,8 @@ sub hasService
  systemd unit and that a SysVinit match the $unit name (without the .service
  suffix), its name or path is returned.
  
- Units are resolved only once. However, it is possible to force new resolving by
- passing the $nocache flag.
+ Units are resolved only once (result are put in cache). However, it is
+ possible to force new resolving by passing the $nocache flag.
 
  Param string $unit Unit name
  Param boolean withpath If TRUE, full unit path will be returned
@@ -362,7 +362,7 @@ sub resolveUnit
             }
         }
 
-        $resolved{$unit} = undef unless $nocache;
+        $resolved{$unit} = FALSE unless $nocache;
         croak( sprintf( "Couldn't resolve the %s unit: %s", $unit, $@ ));
     }
 

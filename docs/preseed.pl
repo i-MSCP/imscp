@@ -5,9 +5,9 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2018.11.30
+# Last update: 2019.01.10
 
-%main::questions = (
+%::questions = (
     #
     ## System configuration
     #
@@ -42,11 +42,11 @@
     # i-MSCP backup feature (database and configuration files)
     # Enable backup for i-MSCP
     # Possible values: yes, no
-    BACKUP_IMSCP                        => 'yes',
+    BACKUP_CP                           => 'yes',
 
     # Enable backup feature for customers
     # Possible values: yes, no
-    BACKUP_DOMAINS                      => 'yes',
+    BACKUP_CLIENTS                      => 'yes',
 
     #
     ## SQL server configuration parameters

@@ -58,7 +58,7 @@ sub getType
  Process module
 
  Param hashref \%data Domain alias data
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -66,42 +66,33 @@ sub process
 {
     my ( $self, $data ) = @_;
 
-    try {
-        $self->_loadData( $data->{'id'} );
+    $self->_loadData( $data->{'id'} );
 
-        my ( @sql, $rs );
-        if ( $self->{'alias_status'} =~ /^to(?:add|change|enable)$/ ) {
-            $rs = $self->add();
-            @sql = (
-                'UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', undef,
-                ( $rs ? getMessageByType( 'error', { amount => 1 } ) || 'Unknown error' : 'ok' ), $data->{'id'}
-            );
-        } elsif ( $self->{'alias_status'} eq 'todisable' ) {
-            $rs = $self->disable();
-            @sql = (
-                'UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', undef,
-                ( $rs ? getMessageByType( 'error', { amount => 1 } ) || 'Unknown error' : 'disabled' ), $data->{'id'}
-            );
-        } elsif ( $self->{'alias_status'} eq 'torestore' ) {
-            $rs = $self->restore();
-            @sql = (
-                'UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', undef,
-                ( $rs ? getMessageByType( 'error', { amount => 1 } ) || 'Unknown error' : 'ok' ), $data->{'id'}
-            );
-        } else {
-            $rs = $self->delete();
-            @sql = $rs ? (
-                'UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', undef,
-                getMessageByType( 'error', { amount => 1 } ) || 'Unknown error', $data->{'id'}
-            ) : ( 'DELETE FROM domain_aliasses WHERE alias_id = ?', undef, $data->{'id'} );
-        }
+    my @sql;
+    if ( $self->{'alias_status'} =~ /^to(?:add|change|enable)$/ ) {
+        @sql = (
+            'UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', undef,
+            ( $self->add() ? getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' : 'ok' ), $data->{'id'}
+        );
+    } elsif ( $self->{'alias_status'} eq 'todisable' ) {
+        @sql = (
+            'UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', undef,
+            ( $self->disable() ? getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' : 'disabled' ), $data->{'id'}
+        );
+    } elsif ( $self->{'alias_status'} eq 'torestore' ) {
+        @sql = (
+            'UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', undef,
+            ( $self->restore() ? getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' : 'ok' ), $data->{'id'}
+        );
+    } else {
+        @sql = $self->delete() ? (
+            'UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?', undef,
+            getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error', $data->{'id'}
+        ) : ( 'DELETE FROM domain_aliasses WHERE alias_id = ?', undef, $data->{'id'} );
+    }
 
-        $self->{'_conn'}->run( fixup => sub { $_->do( @sql ); } );
-        $rs;
-    } catch {
-        error( $_ );
-        1;
-    };
+    $self->{'_conn'}->run( fixup => sub { $_->do( @sql ); } );
+    0;
 }
 
 =item add( )
@@ -121,17 +112,19 @@ sub add
 
     return $self->SUPER::add() if $self->{'alias_status'} eq 'toadd' || $::execmode eq 'setup';
 
-    try {
+    return 1 unless try {
         $self->{'_conn'}->run( fixup => sub {
             $_->do(
                 "UPDATE domain_dns SET domain_dns_status = 'tochange' WHERE alias_id = ? AND domain_dns_status = 'ok'", undef, $self->{'alias_id'}
             );
         } );
-        0;
+        TRUE;
     } catch {
         error( $_ );
-        1;
-    } || $self->SUPER::add();
+        FALSE;
+    };
+
+    $self->SUPER::add();
 }
 
 =item disable( )
@@ -146,7 +139,7 @@ sub disable
 {
     my ( $self ) = @_;
 
-    try {
+    return 1 unless try {
         $self->{'_conn'}->run( fixup => sub {
             $_->do(
                 "UPDATE subdomain_alias SET subdomain_alias_status = 'todisable' WHERE alias_id = ? AND subdomain_alias_status <> 'todelete'",
@@ -154,11 +147,13 @@ sub disable
                 $self->{'alias_id'}
             );
         } );
-        0;
+        TRUE;
     } catch {
         error( $_ );
-        1;
-    } || $self->SUPER::disable();
+        FALSE;
+    };
+
+    $self->SUPER::disable();
 }
 
 =back

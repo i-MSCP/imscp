@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -41,6 +41,7 @@ use iMSCP::Net;
 use iMSCP::Rights 'setRights';
 use iMSCP::Service;
 use iMSCP::Umask '$UMASK';
+use Try::Tiny;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -112,25 +113,25 @@ sub postinstall
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostInstall' );
-    return $rs if $rs;
+    try {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostInstall' );
+        return $rs if $rs;
 
-    local $@;
-    eval { iMSCP::Service->getInstance()->enable( $self->{'config'}->{'NAMED_SNAME'} ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
+        iMSCP::Service->getInstance()->enable( $self->{'config'}->{'NAMED_SNAME'} );
 
-    $rs = $self->{'eventManager'}->register(
-        'beforeSetupRestartServices',
-        sub {
-            push @{ $_[0] }, [ sub { $self->restart(); }, 'Bind9' ];
-            0;
-        },
-        100
-    );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterNamedPostInstall' );
+        $rs = $self->{'eventManager'}->register(
+            'beforeSetupRestartServices',
+            sub {
+                push @{ $_[0] }, [ sub { $self->restart(); }, 'Bind9' ];
+                0;
+            },
+            100
+        );
+        $rs ||= $self->{'eventManager'}->trigger( 'afterNamedPostInstall' );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item uninstall( )
@@ -171,7 +172,7 @@ sub setEnginePermissions
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedSetEnginePermissions' );
     $rs ||= setRights( $self->{'config'}->{'BIND_CONF_DIR'}, {
-        user      => $main::imscpConfig{'ROOT_USER'},
+        user      => $::imscpConfig{'ROOT_USER'},
         group     => $self->{'config'}->{'BIND_GROUP'},
         dirmode   => '2750',
         filemode  => '0640',
@@ -188,14 +189,14 @@ sub setEnginePermissions
     }
 
     $rs = setRights( $self->{'config'}->{'BIND_DB_ROOT_DIR'}, {
-        user      => $main::imscpConfig{'ROOT_USER'},
+        user      => $::imscpConfig{'ROOT_USER'},
         group     => $self->{'config'}->{'BIND_GROUP'},
         dirmode   => '2770',
         filemode  => '0640',
         recursive => TRUE
     } );
     $rs ||= setRights( $self->{'wrkDir'}, {
-        user      => $main::imscpConfig{'ROOT_USER'},
+        user      => $::imscpConfig{'ROOT_USER'},
         group     => $self->{'config'}->{'BIND_GROUP'},
         dirmode   => '2770',
         filemode  => '0640',
@@ -233,41 +234,13 @@ sub addDmn
     $self->{'eventManager'}->trigger( 'afterNamedAddDmn', $data );
 }
 
-=item postaddDmn( \%data )
-
- Process postaddDmn tasks
-
- Param hashref \%data Domain data
- Return int 0 on success, other on failure
-
-=cut
-
-sub postaddDmn
-{
-    my ( $self, $data ) = @_;
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostAddDmn', $data );
-    return $rs if $rs;
-
-    if ( $main::imscpConfig{'CLIENT_WEBSITES_ALT_URLS'} eq 'yes' && $self->{'config'}->{'BIND_MODE'} eq 'master' && defined $data->{'ALIAS'} ) {
-        $rs = $self->addSub( {
-            PARENT_DOMAIN_NAME    => $main::imscpConfig{'BASE_SERVER_VHOST'},
-            DOMAIN_NAME           => $data->{'ALIAS'} . '.' . $main::imscpConfig{'BASE_SERVER_VHOST'},
-            MAIL_ENABLED          => FALSE,
-            DOMAIN_IP             => $data->{'BASE_SERVER_PUBLIC_IP'},
-            BASE_SERVER_PUBLIC_IP => $data->{'BASE_SERVER_PUBLIC_IP'},
-            OPTIONAL_ENTRIES      => FALSE
-        } );
-        return $rs if $rs;
-    }
-
-    $self->{'reload'} = TRUE;
-    $self->{'eventManager'}->trigger( 'afterNamedPostAddDmn', $data );
-}
-
 =item disableDmn( \%data )
 
  Process disableDmn tasks
+
+ When a domain is being disabled, we must ensure that the DNS data are still
+ present. This is only needed on setup or full reconfiguration, that is, when
+ DNS zone files get fully re-generated.
 
  Param hashref \%data Domain data
  Return int 0 on success, other on failure
@@ -278,31 +251,11 @@ sub disableDmn
 {
     my ( $self, $data ) = @_;
 
+    return 0 unless $::execmode eq 'setup';
+
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedDisableDmn', $data );
-    # When a domain is being disabled, we must ensure that the DNS data are
-    # still present for it.
     $rs ||= $self->addDmn( $data );
     $rs ||= $self->{'eventManager'}->trigger( 'afterNamedDisableDmn', $data );
-}
-
-=item postdisableDmn( \%data )
-
- Process postdisableDmn tasks
-
- Param hashref \%data Domain data
- Return int 0 on success, other on failure
-
-=cut
-
-sub postdisableDmn
-{
-    my ( $self, $data ) = @_;
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostDisableDmn', $data );
-
-    # See the disableDmn() method for explanation.
-    $rs ||= $self->postaddDmn( $data );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterNamedPostDisableDmn', $data );
 }
 
 =item deleteDmn( \%data )
@@ -318,7 +271,7 @@ sub deleteDmn
 {
     my ( $self, $data ) = @_;
 
-    return 0 if $data->{'PARENT_DOMAIN_NAME'} eq $main::imscpConfig{'BASE_SERVER_VHOST'} && !$data->{'FORCE_DELETION'};
+    return 0 if $data->{'PARENT_DOMAIN_NAME'} eq $::imscpConfig{'BASE_SERVER_VHOST'} && !$data->{'FORCE_DELETION'};
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedDelDmn', $data );
     $rs ||= $self->_deleteDmnConfig( $data );
@@ -333,36 +286,6 @@ sub deleteDmn
     }
 
     $self->{'eventManager'}->trigger( 'afterNamedDelDmn', $data );
-}
-
-=item postdeleteDmn( \%data )
-
- Process postdeleteDmn tasks
-
- Param hashref \%data Domain data
- Return int 0 on success, other on failure
-
-=cut
-
-sub postdeleteDmn
-{
-    my ( $self, $data ) = @_;
-
-    return 0 if $data->{'PARENT_DOMAIN_NAME'} eq $main::imscpConfig{'BASE_SERVER_VHOST'} && !$data->{'FORCE_DELETION'};
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostDelDmn', $data );
-    return $rs if $rs;
-
-    if ( $main::imscpConfig{'CLIENT_WEBSITES_ALT_URLS'} eq 'yes' && $self->{'config'}->{'BIND_MODE'} eq 'master' && defined $data->{'ALIAS'} ) {
-        $rs = $self->deleteSub( {
-            PARENT_DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
-            DOMAIN_NAME        => $data->{'ALIAS'} . '.' . $main::imscpConfig{'BASE_SERVER_VHOST'}
-        } );
-        return $rs if $rs;
-    }
-
-    $self->{'reload'} = TRUE;
-    $self->{'eventManager'}->trigger( 'afterNamedPostDelDmn', $data );
 }
 
 =item addSub( \%data )
@@ -416,9 +339,7 @@ sub addSub
         $subEntry = replaceBloc( "; sub MAIL entry BEGIN\n", "; sub MAIL entry ENDING\n", '', $subEntry );
     }
 
-    if ( defined $data->{'OPTIONAL_ENTRIES'} && !$data->{'OPTIONAL_ENTRIES'} ) {
-        $subEntry = replaceBloc( "; sub OPTIONAL entries BEGIN\n", "; sub OPTIONAL entries ENDING\n", '', $subEntry );
-    }
+    $subEntry = replaceBloc( "; sub OPTIONAL entries BEGIN\n", "; sub OPTIONAL entries ENDING\n", '', $subEntry ) unless $data->{'OPTIONAL_ENTRIES'};
 
     my $domainIP = $net->isRoutableAddr( $data->{'DOMAIN_IP'} ) ? $data->{'DOMAIN_IP'} : $data->{'BASE_SERVER_PUBLIC_IP'};
     $subEntry = process(
@@ -436,41 +357,13 @@ sub addSub
     $rs ||= $self->_compileZone( $data->{'PARENT_DOMAIN_NAME'}, $file->{'filename'} );
 }
 
-=item postaddSub( \%data )
-
- Process postaddSub tasks
-
- Param hashref \%data Subdomain data
- Return int 0 on success, other on failure
-
-=cut
-
-sub postaddSub
-{
-    my ( $self, $data ) = @_;
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostAddSub', $data );
-    return $rs if $rs;
-
-    if ( $main::imscpConfig{'CLIENT_WEBSITES_ALT_URLS'} eq 'yes' && $self->{'config'}->{'BIND_MODE'} eq 'master' && defined $data->{'ALIAS'} ) {
-        $rs = $self->addSub( {
-            PARENT_DOMAIN_NAME    => $main::imscpConfig{'BASE_SERVER_VHOST'},
-            DOMAIN_NAME           => $data->{'ALIAS'} . '.' . $main::imscpConfig{'BASE_SERVER_VHOST'},
-            MAIL_ENABLED          => FALSE,
-            DOMAIN_IP             => $data->{'BASE_SERVER_PUBLIC_IP'},
-            BASE_SERVER_PUBLIC_IP => $data->{'BASE_SERVER_PUBLIC_IP'},
-            OPTIONAL_ENTRIES      => FALSE
-        } );
-        return $rs if $rs;
-    }
-
-    $self->{'reload'} = TRUE;
-    $self->{'eventManager'}->trigger( 'afterNamedPostAddSub', $data );
-}
-
 =item disableSub( \%data )
 
  Process disableSub tasks
+
+ When a subdomain is being disabled, we must ensure that the DNS data are still
+ present. This is only needed on setup or full reconfiguration, that is, when
+ DNS zone files get fully re-generated.
 
  Param hashref \%data Domain data
  Return int 0 on success, other on failure
@@ -481,30 +374,11 @@ sub disableSub
 {
     my ( $self, $data ) = @_;
 
+    return 0 unless $::execmode eq 'setup';
+
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedDisableSub', $data );
-    # When a subdomain is being disabled, we must ensure that the DNS data are
-    # still present for it.
     $rs ||= $self->addSub( $data );
     $rs ||= $self->{'eventManager'}->trigger( 'afterNamedDisableSub', $data );
-}
-
-=item postdisableSub( \%data )
-
- Process postdisableSub tasks
-
- Param hashref \%data Domain data
- Return int 0 on success, other on failure
-
-=cut
-
-sub postdisableSub
-{
-    my ( $self, $data ) = @_;
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostDisableSub', $data );
-    # See the disableSub( ) method for explanation.
-    $rs ||= $self->postaddSub( $data );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterNamedPostDisableSub', $data );
 }
 
 =item deleteSub( \%data )
@@ -540,34 +414,6 @@ sub deleteSub
     $rs ||= $self->_compileZone( $data->{'PARENT_DOMAIN_NAME'}, $file->{'filename'} );
 }
 
-=item postdeleteSub( \%data )
-
- Process postdeleteSub tasks
-
- Param hashref \%data Subdomain data
- Return int 0 on success, other on failure
-
-=cut
-
-sub postdeleteSub
-{
-    my ( $self, $data ) = @_;
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedPostDelSub', $data );
-    return $rs if $rs;
-
-    if ( $main::imscpConfig{'CLIENT_WEBSITES_ALT_URLS'} eq 'yes' && $self->{'config'}->{'BIND_MODE'} eq 'master' && defined $data->{'ALIAS'} ) {
-        $rs = $self->deleteSub( {
-            PARENT_DOMAIN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'},
-            DOMAIN_NAME        => $data->{'ALIAS'} . '.' . $main::imscpConfig{'BASE_SERVER_VHOST'}
-        } );
-        return $rs if $rs;
-    }
-
-    $self->{'reload'} = TRUE;
-    $self->{'eventManager'}->trigger( 'afterNamedPostDelSub', $data );
-}
-
 =item addCustomDNS( \%data )
 
  Process addCustomDNS tasks
@@ -582,11 +428,6 @@ sub addCustomDNS
     my ( $self, $data ) = @_;
 
     return 0 unless $self->{'config'}->{'BIND_MODE'} eq 'master';
-
-    # Needed to re-add default DNS RR which are not longer overridden by custom
-    # DNS RR. Won't do anything if addDmn() as been already called.
-    #my $rs = $self->addDmn( $data );
-    #return $rs if $rs;
 
     my $file = iMSCP::File->new( filename => "$self->{'wrkDir'}/$data->{'ZONE_NAME'}.db" );
     my $fileC = $file->getAsRef();
@@ -606,17 +447,17 @@ sub addCustomDNS
         return 1;
     }
 
-    my $ret = '';
+    my $zone = '';
     my $origin = $data->{'ZONE_NAME'};
     LINE:
     while ( my $line = <$fh> ) {
         if ( $line =~ /^\$ORIGIN\s+([^\s;]+)/ || index( $line, '$' ) == 0 || index( $line, ';' ) != -1 || index( $line, ')' ) == 0 ) {
             $origin = $1 if defined $1;
-            $ret .= $line;
+            $zone .= $line;
             next LINE;
         }
 
-        chomp( my $defaultRR = $line );
+        my $defaultRR = $line;
 
         if ( @{ $data->{'DNS_RECORDS'} } ) {
             # Process $ORIGIN substitutions
@@ -626,32 +467,30 @@ sub addCustomDNS
             # Skip default DNS RR if it is overridden by a custom DNS RR
             for my $rr ( @{ $data->{'DNS_RECORDS'} } ) {
                 # Evaluates next custom DNS RR if no name/class/type matching
-                next if $defaultRR !~ /^$rr->[0](?:\s+\d+)?\s+$rr->[2]\s+$rr->[3]\s/;
+                next if $defaultRR !~ /^$rr->[0](?:\s+\d+[\S]*)?\s+$rr->[2]\s+$rr->[3]\s/;
                 # Skips the default DNS RR if there is a name/class/type
-                # matching and if the type is other than TXT.
+                # matching and if the type is other than TXT
                 next LINE if $rr->[3] ne 'TXT';
                 # Skips default DNS RR if there is a name/class/type matching
                 # and if the RDATA part of both DNS RR represent one of
                 # following DNS RR: spf, dkim, adsp
-                next LINE if ( index( $defaultRR, '"v=spf1' ) != -1 && index( $rr->[4], '"v=spf1' ) != -1 )
-                    || ( index( $defaultRR, '"v=DKIM1;' ) != -1 && index( $rr->[4], '"v=DKIM1;' ) != -1 )
-                    || ( index( $defaultRR, '"dkim=' ) != -1 && index( $rr->[4], '"dkim=' ) != -1 )
+                next LINE if ( index( $defaultRR, '"v=spf1' ) != -1 && index( $rr->[4], '"v=spf1' ) == 0 )
+                    || ( index( $defaultRR, '"v=DKIM1;' ) != -1 && index( $rr->[4], '"v=DKIM1;' ) == 0 )
+                    || ( index( $defaultRR, '"dkim=' ) != -1 && index( $rr->[4], '"dkim=' ) == 0 )
             }
         }
 
-        $ret .= $line;
+        $zone .= $line;
     }
 
     close( $fh );
-    chomp( $ret );
+    chomp( $zone );
 
     ${ $fileC } = <<"EOF";
-$ret
-; custom DNS entries BEGIN
+$zone
 @{ [ join( "\n", map { join "\t", @{ $_ } } @{ $data->{'DNS_RECORDS'} } ) ] }
-; custom DNS entries ENDING
 EOF
-    undef $ret;
+    undef $zone;
     $rs = $self->{'eventManager'}->trigger( 'afterNamedAddCustomDNS', $fileC, $data );
     return $rs if $rs;
 
@@ -676,17 +515,16 @@ sub restart
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedRestart' );
-    return $rs if $rs;
+    try {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeNamedRestart' );
+        return $rs if $rs;
 
-    local $@;
-    eval { iMSCP::Service->getInstance()->restart( $self->{'config'}->{'NAMED_SNAME'} ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterNamedRestart' );
+        iMSCP::Service->getInstance()->restart( $self->{'config'}->{'NAMED_SNAME'} );
+        $self->{'eventManager'}->trigger( 'afterNamedRestart' );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item reload( )
@@ -701,17 +539,16 @@ sub reload
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedReload' );
-    return $rs if $rs;
+    try {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeNamedReload' );
+        return $rs if $rs;
 
-    local $@;
-    eval { iMSCP::Service->getInstance()->reload( $self->{'config'}->{'NAMED_SNAME'} ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterNamedReload' );
+        iMSCP::Service->getInstance()->reload( $self->{'config'}->{'NAMED_SNAME'} );
+        $self->{'eventManager'}->trigger( 'afterNamedReload' );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =back
@@ -733,7 +570,7 @@ sub _init
     my ( $self ) = @_;
 
     @{ $self }{qw/ restart reload serials seen_zones eventManager /} = ( FALSE, FALSE, {}, {}, iMSCP::EventManager->getInstance() );
-    $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/bind";
+    $self->{'cfgDir'} = "$::imscpConfig{'CONF_DIR'}/bind";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'tplDir'} = "$self->{'cfgDir'}/parts";
@@ -741,8 +578,8 @@ sub _init
     tie %{ $self->{'config'} },
         'iMSCP::Config',
         fileName    => "$self->{'cfgDir'}/bind.data",
-        readonly    => !( defined $main::execmode && $main::execmode eq 'setup' ),
-        nodeferring => ( defined $main::execmode && $main::execmode eq 'setup' );
+        readonly    => $::execmode ne 'setup',
+        nodeferring => $::execmode eq 'setup';
     $self;
 }
 
@@ -761,14 +598,11 @@ sub _mergeConfig
     if ( -f "$self->{'cfgDir'}/bind.data" ) {
         tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/bind.data.dist";
         tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/bind.data", readonly => TRUE;
-
         debug( 'Merging old configuration with new configuration...' );
-
         while ( my ( $key, $value ) = each( %oldConfig ) ) {
             next unless exists $newConfig{$key};
             $newConfig{$key} = $value;
         }
-
         untie( %newConfig );
         untie( %oldConfig );
     }
@@ -947,7 +781,7 @@ sub _addDmnDb
         $tplFileC
     );
 
-    unless ( !defined $fileC || defined $main::execmode && $main::execmode eq 'setup' ) {
+    unless ( !defined $fileC || $::execmode eq 'setup' ) {
         # Retrieve subdomain DNS records from current zone version and
         # re-inject them in new zone version
         # FIXME: By doing this way, we bypass the addSub() workflow leading to
@@ -958,17 +792,6 @@ sub _addDmnDb
             getBloc( "; sub entries BEGIN\n", "; sub entries ENDING\n", ${ $fileC }, TRUE ),
             $tplFileC
         );
-
-        # Retrieve custom DNS records from current zone version and re-inject
-        # them in new zone version.
-        # See #IP-1801
-        # See https://youtrack.i-mscp.net/issue/IP-1801
-        #$tplDbFileC = replaceBloc(
-        #    "; custom DNS entries BEGIN\n",
-        #    "; custom DNS entries ENDING\n",
-        #    getBloc( "; custom DNS entries BEGIN\n", "; custom DNS entries ENDING\n", $wrkDbFileContent, 'with_tags' ),
-        #    $tplDbFileC
-        #);
     }
 
     $rs = $self->{'eventManager'}->trigger( 'afterNamedAddDmnDb', \$tplFileC, $data );

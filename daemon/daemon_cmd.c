@@ -6,7 +6,9 @@ int helo_command(int sockfd, char *buffer, char *cliaddr)
 
     if(ptr != buffer) {
         return -2;
-    } else {
+    }
+
+    {
         char *answer = (char *) calloc(MAX_MSG_SIZE, sizeof(char));
         strcat(answer, message(MSG_CMD_OK));
         strcat(answer, cliaddr);
@@ -65,7 +67,9 @@ int bye_command(int sockfd, char *buffer)
 
     if (ptr != buffer) {
         return -2;
-    } else {
+    }
+
+    {
         char *answer = (char *) calloc(MAX_MSG_SIZE, sizeof(char));
         strcat(answer, message(MSG_CMD_OK));
         strcat(answer, message(MSG_GOOD_BYE));

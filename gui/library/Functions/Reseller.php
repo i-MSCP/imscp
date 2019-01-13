@@ -220,7 +220,7 @@ function resellerHasFeature($featureName, $forceReload = false)
             'custom_dns_records' => ($cfg['NAMED_PACKAGE'] != 'Servers::noserver'),
             'aps'                => ($resellerProps['software_allowed'] != 'no'), // aps feature check must be revisted
             'external_mail'      => true,
-            'backup'             => ($cfg['BACKUP_DOMAINS'] != 'no'),
+            'backup'             => ($cfg['BACKUP_CLIENTS'] != 'no'),
             'support'            => ($cfg['IMSCP_SUPPORT_SYSTEM'] && $resellerProps['support_system'] == 'yes')
         ];
     }

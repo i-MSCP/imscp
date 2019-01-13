@@ -47,7 +47,7 @@ use parent 'Servers::sqld::mysql::installer';
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'sqld'} = Servers::sqld::mariadb->getInstance();

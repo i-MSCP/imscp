@@ -26,10 +26,12 @@ package Package::PhpMyAdmin;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Package::PhpMyAdmin::Installer Package::PhpMyAdmin::Uninstaller /;
+use iMSCP::Boolean;
 use iMSCP::Config;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::EventManager;
-use iMSCP::Rights;
+use iMSCP::Rights 'setRights';
+use Try::Tiny;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -66,20 +68,20 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( \%em )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
+ Param iMSCP::EventManager \%em
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my (undef, $eventManager) = @_;
+    my ( undef, $em ) = @_;
 
-    Package::PhpMyAdmin::Installer->getInstance()->registerSetupListeners( $eventManager );
+    Package::PhpMyAdmin::Installer->getInstance()->registerSetupListeners( $em );
 }
 
 =item preinstall( )
@@ -118,7 +120,7 @@ sub install
 
 sub uninstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     return 0 if $self->{'skip_uninstall'};
 
@@ -148,25 +150,21 @@ sub getPriority
 
 sub setGuiPermissions
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforePhpMyAdminSetGuiPermissions' );
-    return $rs if $rs || !-d "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
+    return $rs if $rs || !-d "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
 
     debug( "Setting permissions (event listener)" );
-    my $panelUName = my $panelGName =
-        $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $ug = $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-    $rs ||= setRights(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma",
-        {
-            user      => $panelUName,
-            group     => $panelGName,
-            dirmode   => '0550',
-            filemode  => '0440',
-            recursive => 1
-        }
-    );
+    $rs ||= setRights( "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma", {
+        user      => $ug,
+        group     => $ug,
+        dirmode   => '0550',
+        filemode  => '0440',
+        recursive => TRUE
+    } );
     $rs ||= $self->{'eventManager'}->trigger( 'afterPhpMyAdminSetGuiPermissions' );
 }
 
@@ -186,24 +184,25 @@ sub setGuiPermissions
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/pma";
+    $self->{'cfgDir'} = "$::imscpConfig{'CONF_DIR'}/pma";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->_mergeConfig() if -f "$self->{'cfgDir'}/phpmyadmin.data.dist";
-    eval {
-        tie %{$self->{'config'}},
+
+    try {
+        tie %{ $self->{'config'} },
             'iMSCP::Config',
             fileName    => "$self->{'cfgDir'}/phpmyadmin.data",
-            readonly    => $main::execmode ne 'setup',
-            nodeferring => $main::execmode eq 'setup';
+            readonly    => $::execmode ne 'setup',
+            nodeferring => $::execmode eq 'setup';
+    } catch {
+        $::execmode eq 'uninstall' or die $_;
+        $self->{'skip_uninstall'} = TRUE;
     };
-    if ( $@ ) {
-        die unless $main::execmode eq 'uninstall';
-        $self->{'skip_uninstall'} = 1;
-    }
+
     $self;
 }
 
@@ -217,27 +216,22 @@ sub _init
 
 sub _mergeConfig
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     if ( -f "$self->{'cfgDir'}/phpmyadmin.data" ) {
         tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.data.dist";
-        tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.data", readonly => 1;
-
+        tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.data", readonly => TRUE;
         debug( 'Merging old configuration with new configuration...' );
-
-        while ( my ($key, $value) = each( %oldConfig ) ) {
+        while ( my ( $key, $value ) = each( %oldConfig ) ) {
             next unless exists $newConfig{$key};
             $newConfig{$key} = $value;
         }
-
         untie( %newConfig );
         untie( %oldConfig );
     }
 
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/phpmyadmin.data.dist" )->moveFile(
-        "$self->{'cfgDir'}/phpmyadmin.data"
-    ) == 0 or die(
-        getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/phpmyadmin.data.dist" )->moveFile( "$self->{'cfgDir'}/phpmyadmin.data" ) == 0 or die(
+        getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error'
     );
 }
 

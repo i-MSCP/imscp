@@ -16,7 +16,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 DESC="i-MSCP traffic logger"
 NAME=imscp_traffic
 LFILE=/var/run/$NAME
-TOOLSDIR="/var/www/imscp/engine/tools"
+BINDIR="/var/www/imscp/engine/bin"
 
 . /lib/lsb/init-functions
 
@@ -36,13 +36,13 @@ check_for_upstart()
 
 do_start()
 {
-    perl ${TOOLSDIR}/imscp-net-traffic-logger start 2>/dev/null
+    perl ${BINDIR}/imscp-net-traffic add 2>/dev/null
     touch $LFILE
 }
 
 do_stop()
 {
-    perl ${TOOLSDIR}/imscp-net-traffic-logger stop 2>/dev/null
+    perl ${BINDIR}/imscp-net-traffic remove 2>/dev/null
     rm -f $LFILE
 }
 

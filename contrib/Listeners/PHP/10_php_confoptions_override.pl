@@ -20,7 +20,7 @@
 ##
 ## Be aware that only Fcgid and PHP-FPM Apache2 httpd server implementations are supported.
 ## Note: When you want operate on a per domain basis, don't forget to set the PHP configuration level to 'per_site'.
-## You can do this by running: perl /var/www/imscp/engine/setup/imscp-reconfigure -dar php
+## You can do this by running: perl /var/www/imscp/engine/bin/imscp-reconfigure -dar php
 #
 
 package Listener::Php::ConfOptions::Override;

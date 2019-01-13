@@ -26,7 +26,7 @@ package Package::AntiRootkits::Chkrootkit::Chkrootkit;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Package::AntiRootkits::Chkrootkit::Installer Package::AntiRootkits::Chkrootkit::Uninstaller /;
-use iMSCP::Rights;
+use iMSCP::Rights 'setRights';
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -89,14 +89,11 @@ sub uninstall
 
 sub setEnginePermissions
 {
-    setRights(
-        $main::imscpConfig{'CHKROOTKIT_LOG'},
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'IMSCP_GROUP'},
-            mode  => '0640'
-        }
-    );
+    setRights( $::imscpConfig{'CHKROOTKIT_LOG'}, {
+        user  => $::imscpConfig{'ROOT_USER'},
+        group => $::imscpConfig{'IMSCP_GROUP'},
+        mode  => '0640'
+    } );
 }
 
 =item getDistroPackages( )

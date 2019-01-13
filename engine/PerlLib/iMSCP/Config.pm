@@ -48,10 +48,9 @@ use parent 'Common::Object';
 
 sub flush
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    return 0 if $self->{'readonly'}
-        || !( $self->{'tieFileObject'}->{'defer'} || $self->{'tieFileObject'}->{'autodeferring'} );
+    return 0 if $self->{'readonly'} || !( $self->{'tieFileObject'}->{'defer'} || $self->{'tieFileObject'}->{'autodeferring'} );
 
     $self->{'tieFileObject'}->flush();
 }
@@ -93,18 +92,11 @@ sub TIEHASH
 
 sub FETCH
 {
-    my ($self, $param) = @_;
+    my ( $self, $param ) = @_;
 
     $self->{'configValues'}->{$param} // ( $self->{'nodie'}
         ? ''
-        : die(
-            sprintf(
-                'Accessing a non-existing parameter: %s in %s file from: %s (line %s)',
-                $param,
-                $self->{'fileName'},
-                ( caller )[1, 2]
-            )
-        )
+        : die( sprintf( 'Accessing a non-existing parameter: %s in %s file from: %s (line %s)', $param, $self->{'fileName'}, ( caller )[1, 2] ))
     );
 }
 
@@ -120,7 +112,7 @@ sub FETCH
 
 sub STORE
 {
-    my ($self, $param, $value) = @_;
+    my ( $self, $param, $value ) = @_;
 
     !$self->{'readonly'} || $self->{'temporary'} or die(
         sprintf( "Couldn't store value for the '%s' parameter: config object is readonly", $param )
@@ -140,9 +132,9 @@ sub STORE
 
 sub FIRSTKEY
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    $self->{'_list'} = [ sort keys %{$self->{'configValues'}} ];
+    $self->{'_list'} = [ sort keys %{ $self->{'configValues'} } ];
     $self->NEXTKEY;
 }
 
@@ -156,7 +148,7 @@ sub FIRSTKEY
 
 sub NEXTKEY
 {
-    shift @{$_[0]->{'_list'}};
+    shift @{ $_[0]->{'_list'} };
 }
 
 =item EXISTS( $param )
@@ -170,7 +162,7 @@ sub NEXTKEY
 
 sub EXISTS
 {
-    my ($self, $param) = @_;
+    my ( $self, $param ) = @_;
 
     exists $self->{'configValues'}->{$param};
 }
@@ -183,9 +175,9 @@ sub EXISTS
 
 sub CLEAR
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    @{$self->{'tiefile'}} = ();
+    @{ $self->{'tiefile'} } = ();
     $self->{'configValues'} = {};
     $self->{'lineMap'} = {};
     $self;
@@ -199,10 +191,10 @@ sub CLEAR
 
 sub DESTROY
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     undef $self->{'tieFileObject'};
-    untie( @{$self->{'tiefile'}} );
+    untie( @{ $self->{'tiefile'} } );
 }
 
 =item _init( )
@@ -215,11 +207,11 @@ sub DESTROY
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     defined $self->{'fileName'} or die( 'fileName attribut is not defined' );
 
-    @{$self->{'tiefile'}} = ();
+    @{ $self->{'tiefile'} } = ();
     $self->{'tieFileObject'} = undef;
     $self->{'configValues'} = {};
     $self->{'lineMap'} = {};
@@ -238,17 +230,14 @@ sub _init
 
 sub _loadConfig
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $mode = $self->{'nocreate'}
-        ? ( $self->{'readonly'} ? O_RDONLY : O_RDWR )
-        : ( $self->{'readonly'} ? O_RDONLY : O_RDWR | O_CREAT );
-
-    $self->{'tieFileObject'} = tie @{$self->{'tiefile'}}, 'Tie::File', $self->{'confFileName'}, mode => $mode;
+    my $mode = $self->{'nocreate'} ? ( $self->{'readonly'} ? O_RDONLY : O_RDWR ) : ( $self->{'readonly'} ? O_RDONLY : O_RDWR | O_CREAT );
+    $self->{'tieFileObject'} = tie @{ $self->{'tiefile'} }, 'Tie::File', $self->{'confFileName'}, mode => $mode;
     $self->{'tieFileObject'} or die( sprintf( "Couldn't tie %s file: %s", $self->{'confFileName'}, $! ));
     $self->{'tieFileObject'}->defer unless $self->{'nodeferring'} || $self->{'readonly'};
 
-    while ( my ($lineNo, $value) = each( @{$self->{'tiefile'}} ) ) {
+    while ( my ( $lineNo, $value ) = each( @{ $self->{'tiefile'} } ) ) {
         next unless $value =~ /^([^#\s=]+)\s*=\s*(.*)$/;
         $self->{'configValues'}->{$1} = $2;
         $self->{'lineMap'}->{$1} = $lineNo;
@@ -269,12 +258,12 @@ sub _loadConfig
 
 sub _insertConfig
 {
-    my ($self, $param, $value) = @_;
+    my ( $self, $param, $value ) = @_;
     $value //= '';
 
     unless ( $self->{'temporary'} ) {
-        push @{$self->{'tiefile'}}, "$param = $value";
-        $self->{'lineMap'}->{$param} = $#{$self->{'tiefile'}};
+        push @{ $self->{'tiefile'} }, "$param = $value";
+        $self->{'lineMap'}->{$param} = $#{ $self->{'tiefile'} };
     }
 
     $self->{'configValues'}->{$param} = $value;
@@ -292,10 +281,10 @@ sub _insertConfig
 
 sub _replaceConfig
 {
-    my ($self, $param, $value) = @_;
+    my ( $self, $param, $value ) = @_;
 
     $value //= '';
-    @{$self->{'tiefile'}}[$self->{'lineMap'}->{$param}] = "$param = $value" unless $self->{'temporary'};
+    @{ $self->{'tiefile'} }[$self->{'lineMap'}->{$param}] = "$param = $value" unless $self->{'temporary'};
     $self->{'configValues'}->{$param} = $value;
 }
 

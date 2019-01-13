@@ -25,13 +25,15 @@ package Package::Webmail::Roundcube::Uninstaller;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Boolean;
+use iMSCP::Debug 'error';
 use iMSCP::Dir;
 use iMSCP::File;
 use iMSCP::Database;
 use Package::FrontEnd;
 use Package::Webmail::Roundcube::Roundcube;
 use Servers::sqld;
+use Try::Tiny;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -52,9 +54,9 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    return 0 unless %{$self->{'config'}};
+    return 0 unless %{ $self->{'config'} };
 
     my $rs = $self->_removeSqlUser();
     $rs ||= $self->_removeSqlDatabase();
@@ -78,12 +80,11 @@ sub uninstall
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'frontend'} = Package::FrontEnd->getInstance();
     $self->{'roundcube'} = Package::Webmail::Roundcube::Roundcube->getInstance();
-    $self->{'db'} = iMSCP::Database->factory();
-    $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/roundcube";
+    $self->{'cfgDir'} = "$::imscpConfig{'CONF_DIR'}/roundcube";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
     $self->{'config'} = $self->{'roundcube'}->{'config'};
@@ -100,46 +101,43 @@ sub _init
 
 sub _removeSqlUser
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $sqlServer = Servers::sqld->factory();
-    return 0 unless $self->{'config'}->{'DATABASE_USER'};
+    try {
+        my $sqld = Servers::sqld->factory();
+        return 0 unless $self->{'config'}->{'DATABASE_USER'};
 
-    for(
-        $main::imscpConfig{'DATABASE_USER_HOST'}, $main::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1', '%'
-    ) {
-        next unless $_;
-        $sqlServer->dropUser( $self->{'config'}->{'DATABASE_USER'}, $_ );
-    }
+        for my $host ( $::imscpConfig{'DATABASE_USER_HOST'}, $::imscpConfig{'BASE_SERVER_IP'}, 'localhost', '127.0.0.1', '%' ) {
+            next unless length $host;
+            $sqld->dropUser( $self->{'config'}->{'DATABASE_USER'}, $host );
+        }
 
-    0;
+        0;
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item _removeSqlDatabase( )
 
  Remove database
 
- Return int 0
+ Return int 0 on success, other on failure
 
 =cut
 
 sub _removeSqlDatabase
 {
-    my ($self) = @_;
-
-    local $@;
-    eval {
-        my $dbh = $self->{'db'}->getRawDb();
-        $dbh->{'RaiseError'} = 1;
-        $dbh->do(
-            'DROP DATABASE IF EXISTS ' . $dbh->quote_identifier( $main::imscpConfig{'DATABASE_NAME'} . '_roundcube' )
-        );
+    try {
+        iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+            $_->do( "DROP DATABASE IF EXISTS @{ [ $_->quote_identifier( $::imscpConfig{'DATABASE_NAME'} . '_roundcube' ) ] }" );
+        } );
+        0;
+    } catch {
+        error( $_ );
+        1;
     };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-    0;
 }
 
 =item _unregisterConfig( )
@@ -152,25 +150,20 @@ sub _removeSqlDatabase
 
 sub _unregisterConfig
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     return 0 unless -f "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf";
 
-    my $file = iMSCP::File->new(
-        filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf"
-    );
-    my $fileContentRef = $file->getAsRef();
-    unless ( defined $fileContentRef ) {
-        error( sprintf( "Couldn't read %s file", $file->{'filename'} ));
-        return 1;
-    }
+    my $file = iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf" );
+    my $fileC = $file->getAsRef();
+    return 1 unless defined $fileC;
 
-    $fileContentRef =~ s/[\t ]*include imscp_roundcube.conf;\n//;
+    $fileC =~ s/[\t ]*include imscp_roundcube.conf;\n//;
 
     my $rs = $file->save();
     return $rs if $rs;
 
-    $self->{'frontend'}->{'reload'} = 1;
+    $self->{'frontend'}->{'reload'} = TRUE;
     0;
 }
 
@@ -178,24 +171,27 @@ sub _unregisterConfig
 
  Remove files
 
- Return int 0
+ Return int 0 on success, other on failure
 
 =cut
 
 sub _removeFiles
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail" )->remove();
+    try {
+        iMSCP::Dir->new( dirname => "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail" )->remove();
 
-    if ( -f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf" ) {
-        my $rs = iMSCP::File->new(
-            filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf"
-        )->delFile();
-        return $rs if $rs;
+        if ( -f "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf" ) {
+            my $rs = iMSCP::File->new( filename => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf" )->delFile();
+            return $rs if $rs;
+        };
+
+        iMSCP::Dir->new( dirname => $self->{'cfgDir'} )->remove();
+    } catch {
+        error( $_ );
+        1;
     };
-
-    iMSCP::Dir->new( dirname => $self->{'cfgDir'} )->remove();
 }
 
 =back

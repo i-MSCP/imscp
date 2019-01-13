@@ -60,7 +60,7 @@ sub getType
  Process module
 
  Param hashref \%data SSL certificate data
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -68,39 +68,27 @@ sub process
 {
     my ( $self, $data ) = @_;
 
-    try {
-        $self->_loadData( $data->{'id'} );
+    $self->_loadData( $data->{'id'} );
 
-        return 0 unless defined $self->{'domain_name'};
+    return 0 unless defined $self->{'domain_name'};
 
-        my ( @sql, $rs );
-        if ( $self->{'status'} =~ /^to(?:add|change)$/ ) {
-            $rs = $self->add();
-            @sql = ( 'UPDATE ssl_certs SET status = ? WHERE cert_id = ?', undef,
-                ( $rs
-                    ? ( getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' ) =~ s/iMSCP::OpenSSL::validateCertificate:\s+//r
-                    : 'ok'
-                ),
-                $data->{'id'} );
-        } else {
-            $rs = $self->delete();
-            @sql = $rs ? (
-                'UPDATE ssl_certs SET status = ? WHERE cert_id = ?', undef,
-                getMessageByType( 'error', { amount => 1 } ) || 'Unknown error', $data->{'id'}
-            ) : ( 'DELETE FROM ssl_certs WHERE cert_id = ?', undef, $data->{'id'} );
-        }
+    my @sql;
+    if ( $self->{'status'} =~ /^to(?:add|change)$/ ) {
+        @sql = ( 'UPDATE ssl_certs SET status = ? WHERE cert_id = ?', undef,
+            ( $self->add()
+                ? ( getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' ) =~ s/iMSCP::OpenSSL::validateCertificate:\s+//r
+                : 'ok'
+            ),
+            $data->{'id'} );
+    } else {
+        @sql = $self->delete() ? (
+            'UPDATE ssl_certs SET status = ? WHERE cert_id = ?', undef,
+            getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error', $data->{'id'}
+        ) : ( 'DELETE FROM ssl_certs WHERE cert_id = ?', undef, $data->{'id'} );
+    }
 
-        $self->{'_conn'}->run( fixup => sub { $_->do( @sql ); } );
-
-        # (since 1.2.16 - See #IP-1500)
-        # On toadd/tochange actions, return 0 to avoid any failure on update
-        # when a customer's SSL certificate is  expired or invalid. It is the
-        # customer responsibility to update the certificate through his UI.
-        $self->{'status'} =~ /^to(?:add|change)$/ ? 0 : $rs;
-    } catch {
-        error( $_ );
-        1;
-    };
+    $self->{'_conn'}->run( fixup => sub { $_->do( @sql ); } );
+    0;
 }
 
 =item add( )
@@ -201,16 +189,21 @@ sub _loadData
             $_->selectrow_hashref( 'SELECT alias_name AS domain_name FROM domain_aliasses WHERE alias_id = ?', undef, $self->{'domain_id'} );
         } elsif ( $self->{'domain_type'} eq 'sub' ) {
             $_->selectrow_hashref(
-                "SELECT CONCAT(subdomain_name, '.', domain_name) AS domain_name FROM subdomain JOIN domain USING(domain_id) WHERE subdomain_id = ?",
+                "
+                    SELECT CONCAT(t1.subdomain_name, '.', t2.domain_name) AS domain_name
+                    FROM subdomain AS t1
+                    JOIN domain AS t2 USING(domain_id)
+                    WHERE t1.subdomain_id = ?
+                ",
                 undef, $self->{'domain_id'}
             );
         } else {
             $_->selectrow_hashref(
                 "
-                    SELECT CONCAT(subdomain_alias_name, '.', alias_name) AS domain_name
-                    FROM subdomain_alias
-                    JOIN domain_aliasses USING(alias_id)
-                    WHERE subdomain_alias_id = ?
+                    SELECT CONCAT(t1.subdomain_alias_name, '.', t2.alias_name) AS domain_name
+                    FROM subdomain_alias AS t1
+                    JOIN domain_aliasses AS t2 USING(alias_id)
+                    WHERE t1.subdomain_alias_id = ?
                 ",
                 undef, $self->{'domain_id'}
             );

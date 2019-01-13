@@ -256,7 +256,7 @@ function &getData($domainId, $forUpdate = false)
             $data['domain_software_allowed'] = 'no';
         }
 
-        if (Registry::get('config')['BACKUP_DOMAINS'] == 'yes') {
+        if (Registry::get('config')['BACKUP_CLIENTS'] == 'yes') {
             $data['allowbackup'] = isset($_POST['allowbackup']) && is_array($_POST['allowbackup'])
                 ? array_intersect($_POST['allowbackup'], ['dmn', 'sql', 'mail']) : [];
         } else {
@@ -603,7 +603,7 @@ function generateFeaturesForm(TemplateEngine $tpl, &$data)
         ]);
     }
 
-    if (Registry::get('config')['BACKUP_DOMAINS'] == 'yes') {
+    if (Registry::get('config')['BACKUP_CLIENTS'] == 'yes') {
         // Backup support
         $tpl->assign([
             'TR_BACKUP'        => tohtml(tr('Backup')),

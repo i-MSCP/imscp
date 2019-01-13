@@ -56,34 +56,34 @@ our @EXPORT = qw/ execute executeNoWait escapeShell getExitCode /;
 
 sub execute( $;$$ )
 {
-    my ($command, $stdout, $stderr) = @_;
+    my ( $command, $stdout, $stderr ) = @_;
 
     defined( $command ) or die( 'Missing $command parameter' );
 
     if ( $stdout ) {
         ref $stdout eq 'SCALAR' or die( "Expects a scalar reference as second parameter for capture of STDOUT" );
-        ${$stdout} = '';
+        ${ $stdout } = '';
     }
 
     if ( $stderr ) {
         ref $stderr eq 'SCALAR' or die( "Expects a scalar reference as third parameter for capture of STDERR" );
-        ${$stderr} = '';
+        ${ $stderr } = '';
     }
 
     my $list = ref $command eq 'ARRAY';
-    debug( $list ? "@{$command}" : $command );
+    debug( $list ? "@{ $command }" : $command );
 
     if ( $stdout && $stderr ) {
-        ( ${$stdout}, ${$stderr} ) = capture sub { system( $list ? @{$command} : $command ); };
-        chomp( ${$stdout}, ${$stderr} );
+        ( ${ $stdout }, ${ $stderr } ) = capture sub { system( $list ? @{ $command } : $command ); };
+        chomp( ${ $stdout }, ${ $stderr } );
     } elsif ( $stdout ) {
-        ${$stdout} = capture_stdout sub { system( $list ? @{$command} : $command ); };
-        chomp( ${$stdout} );
+        ${ $stdout } = capture_stdout sub { system( $list ? @{ $command } : $command ); };
+        chomp( ${ $stdout } );
     } elsif ( $stderr ) {
-        ${$stderr} = capture_stderr sub { system( $list ? @{$command} : $command ); };
+        ${ $stderr } = capture_stderr sub { system( $list ? @{ $command } : $command ); };
         chomp( $stderr );
     } else {
-        system( $list ? @{$command} : $command ) != -1 or die( sprintf( "Couldn't execute command: %s", $! ));
+        system( $list ? @{ $command } : $command ) != -1 or die( sprintf( "Couldn't execute command: %s", $! ));
     }
 
     getExitCode();
@@ -102,7 +102,7 @@ sub execute( $;$$ )
 
 sub executeNoWait( $;$$ )
 {
-    my ($command, $subSTDOUT, $subSTDERR) = @_;
+    my ( $command, $subSTDOUT, $subSTDERR ) = @_;
 
     $subSTDOUT ||= $subSTDOUT = sub { print STDOUT @_ };
     ref $subSTDOUT eq 'CODE' or die( 'Expects CODE as second parameter for STDOUT processing' );
@@ -111,9 +111,9 @@ sub executeNoWait( $;$$ )
     ref $subSTDERR eq 'CODE' or die( 'Expects CODE as third parameter for STDERR processing' );
 
     my $list = ref $command eq 'ARRAY';
-    debug( $list ? "@{$command}" : $command );
+    debug( $list ? "@{ $command }" : $command );
 
-    my $pid = open3( my $stdin, my $stdout, my $stderr = gensym, $list ? @{$command} : $command );
+    my $pid = open3( my $stdin, my $stdout, my $stderr = gensym, $list ? @{ $command } : $command );
     close $stdin;
 
     my %buffers = ( $stdout => '', $stderr => '' );
@@ -176,7 +176,7 @@ sub escapeShell( $ )
 
 sub getExitCode( ;$ )
 {
-    my ($ret) = @_;
+    my ( $ret ) = @_;
     $ret //= $?;
 
     if ( $ret == -1 ) {
@@ -185,8 +185,7 @@ sub getExitCode( ;$ )
     }
 
     if ( $ret & 127 ) {
-        debug( sprintf( 'Command died with signal %d, %s coredump', ( $ret & 127 ),
-                ( $? & 128 ) ? 'with' : 'without' ));
+        debug( sprintf( 'Command died with signal %d, %s coredump', ( $ret & 127 ), ( $? & 128 ) ? 'with' : 'without' ));
         return $ret;
     }
 

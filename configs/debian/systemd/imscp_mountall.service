@@ -10,8 +10,8 @@ ConditionPathExists=/etc/imscp/mounts/mounts.conf
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/bin/perl /var/www/imscp/engine/tools/imscp-mountall start
-ExecStop=/usr/bin/perl /var/www/imscp/engine/tools/imscp-mountall stop
+ExecStart=/usr/bin/perl /var/www/imscp/engine/bin/imscp-mountall start
+ExecStop=/usr/bin/perl /var/www/imscp/engine/bin/imscp-mountall stop
 
 [Install]
 WantedBy=multi-user.target

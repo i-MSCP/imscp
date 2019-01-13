@@ -26,7 +26,8 @@ package Package::FileManager::Pydio::Pydio;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Package::FileManager::Pydio::Installer Package::FileManager::Pydio::Uninstaller /;
-use iMSCP::Rights;
+use iMSCP::Boolean;
+use iMSCP::Rights 'setRights';
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -91,27 +92,21 @@ sub uninstall
 
 sub setGuiPermissions
 {
-    my $panelUName = my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-    my $rs = setRights(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp",
-        {
-            user      => $panelUName,
-            group     => $panelGName,
-            dirmode   => '0550',
-            filemode  => '0440',
-            recursive => 1
-        }
-    );
-    $rs ||= setRights(
-        "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/data",
-        {
-            user      => $panelUName,
-            group     => $panelGName,
-            dirmode   => '0750',
-            filemode  => '0640',
-            recursive => 1
-        }
-    );
+    my $ug = $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $rs = setRights( "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", {
+        user      => $ug,
+        group     => $ug,
+        dirmode   => '0550',
+        filemode  => '0440',
+        recursive => TRUE
+    } );
+    $rs ||= setRights( "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/data", {
+        user      => $ug,
+        group     => $ug,
+        dirmode   => '0750',
+        filemode  => '0640',
+        recursive => TRUE
+    } );
 }
 
 =back

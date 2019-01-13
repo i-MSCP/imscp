@@ -25,12 +25,13 @@ package Package::Webstats::Awstats::Uninstaller;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
-use iMSCP::Execute;
+use iMSCP::Execute 'execute';
 use iMSCP::File;
 use Servers::httpd;
 use Servers::cron;
+use Try::Tiny;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -51,7 +52,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->_deleteFiles();
     $rs ||= $self->_removeVhost();
@@ -74,21 +75,26 @@ sub uninstall
 
 sub _deleteFiles
 {
-    my $httpd = Servers::httpd->factory();
+    try {
+        my $httpd = Servers::httpd->factory();
 
-    if ( -f "$httpd->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats" ) {
-        my $rs = iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats" )->delFile();
-        return $rs if $rs;
-    }
+        if ( -f "$httpd->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats" ) {
+            my $rs = iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats" )->delFile();
+            return $rs if $rs;
+        }
 
-    iMSCP::Dir->new( dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'} )->remove();
+        iMSCP::Dir->new( dirname => $::imscpConfig{'AWSTATS_CACHE_DIR'} )->remove();
 
-    return 0 unless -d $main::imscpConfig{'AWSTATS_CONFIG_DIR'};
+        return 0 unless -d $::imscpConfig{'AWSTATS_CONFIG_DIR'};
 
-    my $rs = execute( "rm -f $main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.*.conf", \ my $stdout, \ my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr || 'Unknown error' ) if $rs;
-    $rs;
+        my $rs = execute( "rm -f $::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.*.conf", \my $stdout, \my $stderr );
+        debug( $stdout ) if $stdout;
+        error( $stderr || 'Unknown error' ) if $rs;
+        $rs;
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item _removeVhost( )
@@ -106,9 +112,7 @@ sub _removeVhost
     return 0 unless -f "$httpd->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/01_awstats.conf";
 
     my $rs = $httpd->disableSites( '01_awstats.conf' );
-    $rs ||= iMSCP::File->new(
-        filename => "$httpd->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/01_awstats.conf"
-    )->delFile();
+    $rs ||= iMSCP::File->new( filename => "$httpd->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/01_awstats.conf" )->delFile();
 }
 
 =item _restoreDebianConfig( )
@@ -121,17 +125,17 @@ sub _removeVhost
 
 sub _restoreDebianConfig
 {
-    if ( -f "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf.disabled" ) {
-        my $rs = iMSCP::File->new(
-            filename => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf.disabled"
-        )->moveFile(
-            "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf"
+    if ( -f "$::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf.disabled" ) {
+        my $rs = iMSCP::File->new( filename => "$::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf.disabled" )->moveFile(
+            "$::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf"
         );
         return $rs if $rs;
     }
 
     my $cronDir = Servers::cron->factory()->{'config'}->{'CRON_D_DIR'};
+
     return 0 unless -f "$cronDir/awstats.disable";
+
     iMSCP::File->new( filename => "$cronDir/awstats.disable" )->moveFile( "$cronDir/awstats" );
 }
 

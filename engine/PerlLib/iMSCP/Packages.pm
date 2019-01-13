@@ -46,7 +46,7 @@ use parent 'Common::SingletonClass';
 
 sub getList
 {
-    @{$_[0]->{'packages'}};
+    @{ $_[0]->{'packages'} };
 }
 
 =item getListWithFullNames( )
@@ -59,7 +59,7 @@ sub getList
 
 sub getListWithFullNames
 {
-    @{$_[0]->{'packages_full_names'}};
+    @{ $_[0]->{'packages_full_names'} };
 }
 
 =back
@@ -72,31 +72,25 @@ sub getListWithFullNames
 
  Initialize instance
  
- Return iMSCP::Packages
+ Return iMSCP::Packages, die on failure
 
 =cut
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    $_ = basename( $_, '.pm' ) for @{$self->{'packages'}} = glob (
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/*.pm"
-    );
+    $_ = basename( $_, '.pm' ) for @{ $self->{'packages'} } = glob( "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/*.pm" );
 
     # Load all package classes
-    for ( @{$self->{'packages'}} ) {
+    for ( @{ $self->{'packages'} } ) {
         my $package = "Package::${_}";
         eval "require $package" or die( sprintf( "Couldn't load %s package class: %s", $package, $@ ));
     }
 
     # Sort packages in descending order of priority
-    @{$self->{'packages'}} = sort {
-        "Package::${b}"->getPriority() <=> "Package::${a}"->getPriority()
-    } @{$self->{'packages'}};
-
-    @{$self->{'packages_full_names'}} = map { "Package::${_}" } @{$self->{'packages'}};
-
+    @{ $self->{'packages'} } = sort { "Package::${b}"->getPriority() <=> "Package::${a}"->getPriority() } @{ $self->{'packages'} };
+    @{ $self->{'packages_full_names'} } = map { "Package::${_}" } @{ $self->{'packages'} };
     $self;
 }
 

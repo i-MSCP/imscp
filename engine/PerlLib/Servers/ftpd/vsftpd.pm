@@ -28,13 +28,15 @@ use warnings;
 use Class::Autouse qw/ :nostat Servers::ftpd::vsftpd::installer Servers::ftpd::vsftpd::uninstaller /;
 use File::Basename;
 use File::Temp;
+use iMSCP::Boolean;
 use iMSCP::Config;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::EventManager;
 use iMSCP::File;
-use iMSCP::Rights;
+use iMSCP::Rights 'setRights';
 use iMSCP::Service;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser 'process';
+use Try::Tiny;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -45,20 +47,20 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( \%em )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
+ Param iMSCP::EventManager \%em
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my (undef, $eventManager) = @_;
+    my ( undef, $em ) = @_;
 
-    Servers::ftpd::vsftpd::installer->getInstance()->registerSetupListeners( $eventManager );
+    Servers::ftpd::vsftpd::installer->getInstance()->registerSetupListeners( $em );
 }
 
 =item preinstall( )
@@ -71,10 +73,10 @@ sub registerSetupListeners
 
 sub preinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdPreinstall' );
-    $rs ||= $self->stop();
+    #$rs ||= $self->stop();
     $rs ||= $self->{'eventManager'}->trigger( 'afterFtpdPreinstall' );
 }
 
@@ -88,7 +90,7 @@ sub preinstall
 
 sub install
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdInstall', 'vsftpd' );
     $rs ||= Servers::ftpd::vsftpd::installer->getInstance()->install();
@@ -105,27 +107,28 @@ sub install
 
 sub postinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdPostInstall', 'vsftpd' );
+    try {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdPostInstall', 'vsftpd' );
+        return $rs if $rs;
 
-    local $@;
-    eval { iMSCP::Service->getInstance()->enable( $self->{'config'}->{'FTPD_SNAME'} ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
+        iMSCP::Service->getInstance()->enable( $self->{'config'}->{'FTPD_SNAME'} );
 
-    $rs = $self->{'eventManager'}->register(
-        'beforeSetupRestartServices',
-        sub {
-            # We must do a restart here because vsftpd from local package is started while installation
-            push @{$_[0]}, [ sub { $self->restart() }, 'VsFTPd server' ];
-            0
-        },
-        4
-    );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterFtpdPostInstall', 'vsftpd' );
+        $rs = $self->{'eventManager'}->register(
+            'beforeSetupRestartServices',
+            sub {
+                # We must do a restart here because vsftpd from local package is started while installation
+                push @{ $_[0] }, [ sub { $self->restart() }, 'VsFTPd server' ];
+                0
+            },
+            4
+        );
+        $rs ||= $self->{'eventManager'}->trigger( 'afterFtpdPostInstall', 'vsftpd' );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item uninstall( )
@@ -138,20 +141,19 @@ sub postinstall
 
 sub uninstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdUninstall', 'vsftpd' );
     $rs ||= Servers::ftpd::vsftpd::uninstaller->getInstance()->uninstall();
+    $rs ||= $self->{'eventManager'}->trigger( 'afterFtpdUninstall', 'vsftpd' );
 
     unless ( $rs || !iMSCP::Service->getInstance()->hasService( $self->{'config'}->{'FTPD_SNAME'} ) ) {
-        $self->{'restart'} = 1;
-    } else {
-        $self->{'start'} = 0;
-        $self->{'restart'} = 0;
-        $self->{'reload'} = 0;
+        $self->{'restart'} = TRUE;
+        return $rs;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'afterFtpdUninstall', 'vsftpd' );
+    @{ $self }{qw/ start restart reload /} = ( FALSE, FALSE, FALSE );
+    $rs;
 }
 
 =item setEnginePermissions( )
@@ -164,27 +166,21 @@ sub uninstall
 
 sub setEnginePermissions
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdSetEnginePermissions' );
-    $rs ||= setRights(
-        $self->{'config'}->{'FTPD_USER_CONF_DIR'},
-        {
-            user      => $main::imscpConfig{'ROOT_USER'},
-            group     => $main::imscpConfig{'ROOT_GROUP'},
-            dirmode   => '0750',
-            filemode  => '0640',
-            recursive => 1
-        }
-    );
-    $rs ||= setRights(
-        $self->{'config'}->{'FTPD_CONF_FILE'},
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'ROOT_GROUP'},
-            mode  => '0640'
-        }
-    );
+    $rs ||= setRights( $self->{'config'}->{'FTPD_USER_CONF_DIR'}, {
+        user      => $::imscpConfig{'ROOT_USER'},
+        group     => $::imscpConfig{'ROOT_GROUP'},
+        dirmode   => '0750',
+        filemode  => '0640',
+        recursive => TRUE
+    } );
+    $rs ||= setRights( $self->{'config'}->{'FTPD_CONF_FILE'}, {
+        user  => $::imscpConfig{'ROOT_USER'},
+        group => $::imscpConfig{'ROOT_GROUP'},
+        mode  => '0640'
+    } );
     $rs ||= $self->{'eventManager'}->trigger( 'afterFtpdSetEnginePermissions' );
 }
 
@@ -199,35 +195,27 @@ sub setEnginePermissions
 
 sub addUser
 {
-    my ($self, $data) = @_;
+    my ( $self, $data ) = @_;
 
     return 0 if $data->{'STATUS'} eq 'tochangepwd';
 
-    $self->{'eventManager'}->trigger( 'beforeFtpdAddUser', $data );
+    try {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdAddUser', $data );
+        return $rs if $rs;
 
-    my $dbh = iMSCP::Database->factory()->getRawDb();
+        iMSCP::Database->factory()->getConnector()->txn( fixup => sub {
+            $_->do(
+                'UPDATE ftp_users SET uid = ?, gid = ? WHERE admin_id = ?', undef, $data->{'USER_SYS_UID'}, $data->{'USER_SYS_GID'},
+                $data->{'USER_ID'}
+            );
+            $_->do( 'UPDATE ftp_group SET gid = ? WHERE groupname = ?', undef, $data->{'USER_SYS_GID'}, $data->{'USERNAME'} );
+        } );
 
-    local $@;
-    eval {
-        local $dbh->{'RaiseError'} = 1;
-
-        $dbh->begin_work();
-        $dbh->do(
-            'UPDATE ftp_users SET uid = ?, gid = ? WHERE admin_id = ?',
-            undef, $data->{'USER_SYS_UID'}, $data->{'USER_SYS_GID'}, $data->{'USER_ID'}
-        );
-        $dbh->do(
-            'UPDATE ftp_group SET gid = ? WHERE groupname = ?', undef, $data->{'USER_SYS_GID'}, $data->{'USERNAME'}
-        );
-        $dbh->commit();
+        $self->{'eventManager'}->trigger( 'AfterFtpdAddUser', $data );
+    } catch {
+        error( $_ );
+        1;
     };
-    if ( $@ ) {
-        $dbh->rollback();
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'eventManager'}->trigger( 'AfterFtpdAddUser', $data );
 }
 
 =item addFtpUser( \%data )
@@ -241,7 +229,7 @@ sub addUser
 
 sub addFtpUser
 {
-    my ($self, $data) = @_;
+    my ( $self, $data ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdAddFtpUser', $data );
     $rs ||= $self->_createFtpUserConffile( $data );
@@ -259,7 +247,7 @@ sub addFtpUser
 
 sub disableFtpUser
 {
-    my ($self, $data) = @_;
+    my ( $self, $data ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdDisableFtpUser', $data );
     $rs ||= $self->_deleteFtpUserConffile( $data );
@@ -277,7 +265,7 @@ sub disableFtpUser
 
 sub deleteFtpUser
 {
-    my ($self, $data) = @_;
+    my ( $self, $data ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdDeleteFtpUser', $data );
     $rs ||= $self->_deleteFtpUserConffile( $data );
@@ -294,19 +282,18 @@ sub deleteFtpUser
 
 sub start
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdStart' );
-    return $rs if $rs;
+    try {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdStart' );
+        return $rs if $rs;
 
-    local $@;
-    eval { iMSCP::Service->getInstance()->start( $self->{'config'}->{'FTPD_SNAME'} ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterFtpdStart' );
+        iMSCP::Service->getInstance()->start( $self->{'config'}->{'FTPD_SNAME'} );
+        $self->{'eventManager'}->trigger( 'afterFtpdStart' );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item stop( )
@@ -319,7 +306,7 @@ sub start
 
 sub stop
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdStop' );
     return $rs if $rs;
@@ -344,19 +331,18 @@ sub stop
 
 sub restart
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdRestart' );
-    return $rs if $rs;
+    try {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdRestart' );
+        return $rs if $rs;
 
-    local $@;
-    eval { iMSCP::Service->getInstance()->restart( $self->{'config'}->{'FTPD_SNAME'} ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterFtpdRestart' );
+        iMSCP::Service->getInstance()->restart( $self->{'config'}->{'FTPD_SNAME'} );
+        $self->{'eventManager'}->trigger( 'afterFtpdRestart' );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item reload( )
@@ -369,19 +355,18 @@ sub restart
 
 sub reload
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdReload' );
-    return $rs if $rs;
+    try {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdReload' );
+        return $rs if $rs;
 
-    local $@;
-    eval { iMSCP::Service->getInstance()->reload( $self->{'config'}->{'FTPD_SNAME'} ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterFtpdReload' );
+        iMSCP::Service->getInstance()->reload( $self->{'config'}->{'FTPD_SNAME'} );
+        $self->{'eventManager'}->trigger( 'afterFtpdReload' );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item getTraffic( $trafficDb )
@@ -389,13 +374,13 @@ sub reload
  Get VsFTPd traffic data
 
  Param hashref \%trafficDb Traffic database
- Die on failure
+ Return void, die on failure
 
 =cut
 
 sub getTraffic
 {
-    my ($self, $trafficDb) = @_;
+    my ( $self, $trafficDb ) = @_;
 
     my $logFile = $self->{'config'}->{'FTPD_TRAFF_LOG_PATH'};
 
@@ -408,9 +393,9 @@ sub getTraffic
     debug( sprintf( 'Processing FTP logs from the %s file', $logFile ));
 
     # Create snapshot of traffic data source file
-    my $snapshotFH = File::Temp->new( UNLINK => 1 );
+    my $snapshotFH = File::Temp->new( UNLINK => TRUE );
     iMSCP::File->new( filename => $logFile )->copyFile( $snapshotFH->filename, { preserve => 'no' } ) == 0 or die(
-        getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+        getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error'
     );
 
     # Reset log file
@@ -419,8 +404,7 @@ sub getTraffic
 
     # Extract FTP traffic data
     while ( <$snapshotFH> ) {
-        next unless /^(?:[^\s]+\s){7}(?<bytes>\d+)\s(?:[^\s]+\s){5}[^\s]+\@([^\s]+)/o
-            && exists $trafficDb->{$+{'domain'}};
+        next unless /^(?:[^\s]+\s){7}(?<bytes>\d+)\s(?:[^\s]+\s){5}[^\s]+\@([^\s]+)/o && exists $trafficDb->{$+{'domain'}};
         $trafficDb->{$+{'domain'}} += $+{'bytes'};
     }
 
@@ -443,20 +427,20 @@ sub getTraffic
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'start'} = 0;
-    $self->{'restart'} = 0;
-    $self->{'reload'} = 0;
-    $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/vsftpd";
+    $self->{'start'} = FALSE;
+    $self->{'restart'} = FALSE;
+    $self->{'reload'} = FALSE;
+    $self->{'cfgDir'} = "$::imscpConfig{'CONF_DIR'}/vsftpd";
     $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
     $self->_mergeConfig() if -f "$self->{'cfgDir'}/vsftpd.data.dist";
-    tie %{$self->{'config'}},
+    tie %{ $self->{'config'} },
         'iMSCP::Config',
         fileName    => "$self->{'cfgDir'}/vsftpd.data",
-        readonly    => $main::execmode ne 'setup',
-        nodeferring => $main::execmode eq 'setup';
+        readonly    => $::execmode ne 'setup',
+        nodeferring => $::execmode eq 'setup';
     $self;
 }
 
@@ -470,19 +454,16 @@ sub _init
 
 sub _mergeConfig
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     if ( -f "$self->{'cfgDir'}/vsftpd.data" ) {
         tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/vsftpd.data.dist";
-        tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/vsftpd.data", readonly => 1;
-
+        tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/vsftpd.data", readonly => TRUE;
         debug( 'Merging old configuration with new configuration...' );
-
-        while ( my ($key, $value) = each( %oldConfig ) ) {
+        while ( my ( $key, $value ) = each( %oldConfig ) ) {
             next unless exists $newConfig{$key};
             $newConfig{$key} = $value;
         }
-
         untie( %newConfig );
         untie( %oldConfig );
     }
@@ -490,7 +471,7 @@ sub _mergeConfig
     iMSCP::File->new( filename => "$self->{'cfgDir'}/vsftpd.data.dist" )->moveFile(
         "$self->{'cfgDir'}/vsftpd.data"
     ) == 0 or die(
-        getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+        getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error'
     );
 }
 
@@ -505,17 +486,14 @@ sub _mergeConfig
 
 sub _createFtpUserConffile
 {
-    my ($self, $data) = @_;
+    my ( $self, $data ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'vsftpd', 'vsftpd_user.conf', \ my $cfgTpl, $data );
+    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'vsftpd', 'vsftpd_user.conf', \my $cfgTpl, $data );
     return $rs if $rs;
 
     unless ( defined $cfgTpl ) {
         $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/vsftpd_user.conf" )->get();
-        unless ( defined $cfgTpl ) {
-            error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/vsftpd_user.conf" ));
-            return 1;
-        }
+        return 1 unless defined $cfgTpl;
     }
 
     $rs = $self->{'eventManager'}->trigger( 'beforeFtpdBuildConf', \$cfgTpl, 'vsftpd_user.conf' );
@@ -531,7 +509,7 @@ sub _createFtpUserConffile
     $file->save();
 }
 
-=item _deleteFtpUserConffile(\%data)
+=item _deleteFtpUserConffile( \%data )
 
  Delete user vsftpd configuration file
 
@@ -542,7 +520,7 @@ sub _createFtpUserConffile
 
 sub _deleteFtpUserConffile
 {
-    my ($self, $data) = @_;
+    my ( $self, $data ) = @_;
 
     return 0 unless -f "$self->{'config'}->{'FTPD_USER_CONF_DIR'}/$data->{'USERNAME'}";
 

@@ -25,10 +25,11 @@ package iMSCP::Stepper;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ error getLastError /;
 use iMSCP::Dialog;
 use iMSCP::Getopt;
 use Scalar::Defer;
+use Try::Tiny;
 use parent 'Exporter';
 
 our @EXPORT = qw/ startDetail endDetail step /;
@@ -111,21 +112,19 @@ sub step
 
 sub _callback
 {
-    my ($callback) = @_;
+    my ( $callback ) = @_;
 
     return 0 unless defined $callback;
 
-    local $@;
-    my $rs = eval { $callback->() };
-    if ( $@ ) {
-        error( $@ );
-        $rs = 1;
-    }
-
-    $rs;
+    try {
+        $callback->();
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
-=item _dialogstep
+=item _step
  
  See step( )
  
@@ -133,7 +132,7 @@ sub _callback
 
 sub _step
 {
-    my ($callback, $text, $nSteps, $nStep) = @_;
+    my ( $callback, $text, $nSteps, $nStep ) = @_;
 
     $last = sprintf( "\n\\ZbStep %s of %s\\Zn\n\n%s", $nStep, $nSteps, $text );
     my $msg = @all ? join( "\n", @all ) . "\n" . $last : $last;
@@ -148,9 +147,9 @@ sub _step
     return $rs unless $rs && $rs != 50;
 
     # Make error message free of any ANSI color and end of line codes
-    ( my $errorMessage = getLastError() ) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
-    $errorMessage = 'An unexpected error occurred...' unless $errorMessage;
-    $errorMessage =~ s/\n+$//;
+    ( my $error = getLastError() ) =~ s/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g;
+    $error = 'An unexpected error occurred...' unless length $error;
+    $error =~ s/\n+$//;
 
     $dialog->endGauge();
     $dialog->msgbox( <<"EOF" );
@@ -162,7 +161,7 @@ $text
 
 Error was:
 
-\\Z1$errorMessage\\Zn
+\\Z1$error\\Zn
 
 Please have a look at http://i-mscp.net/forum if you need help.
 EOF

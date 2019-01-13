@@ -25,17 +25,18 @@ package Servers::server::local::installer;
 
 use strict;
 use warnings;
-use iMSCP::Database;
 use DateTime::TimeZone;
+use iMSCP::Database '$DATABASE';
 use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dialog::InputValidation;
-use iMSCP::Execute qw/ execute /;
+use iMSCP::Execute 'execute';
 use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Net;
 use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
-use LWP::Simple qw/ get /;
+use LWP::Simple 'get';
+use Try::Tiny;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -46,32 +47,32 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( \%em )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
+ Param iMSCP::EventManager \%em
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ($self, $eventManager) = @_;
+    my ( $self, $em ) = @_;
 
     # Must be done here because installers can rely on this configuration parameter
-    main::setupSetQuestion( 'IPV6_SUPPORT', -f '/proc/net/if_inet6' ? 1 : 0 );
+    ::setupSetQuestion( 'IPV6_SUPPORT', -f '/proc/net/if_inet6' ? 1 : 0 );
 
-    $eventManager->register(
+    $em->register(
         'beforeSetupDialog',
         sub {
-            push @{$_[0]},
+            push @{ $_[0] },
                 sub { $self->hostnameDialog( @_ ) },
                 sub { $self->primaryIpDialog( @_ ) },
                 sub { $self->timezoneDialog( @_ ) };
             0;
         },
-        # We register these dialogs with a hightest priority to show them before any other server/package dialog
+        # We register these dialogs with a highest priority to show them before any other server/package dialog
         999
     );
 }
@@ -87,17 +88,15 @@ sub registerSetupListeners
 
 sub hostnameDialog
 {
-    my (undef, $dialog) = @_;
+    my ( undef, $dialog ) = @_;
 
-    my $hostname = main::setupGetQuestion( 'SERVER_HOSTNAME' );
+    my $hostname = ::setupGetQuestion( 'SERVER_HOSTNAME' );
 
-    if ( $main::reconfigure =~ /^(?:local_server|system_hostname|hostnames|all|forced)$/
-        || !isValidHostname( $hostname )
-    ) {
+    if ( $::reconfigure =~ /^(?:local_server|system_hostname|hostnames|all|forced)$/ || !isValidHostname( $hostname ) ) {
         chomp( $hostname = $hostname || `hostname --fqdn 2>/dev/null` || '' );
         $hostname = idn_to_unicode( $hostname, 'utf-8' );
 
-        my ($rs, $msg) = ( 0, '' );
+        my ( $rs, $msg ) = ( 0, '' );
         do {
             ( $rs, $hostname ) = $dialog->inputbox( <<"EOF", $hostname );
 
@@ -108,7 +107,7 @@ EOF
         return $rs if $rs >= 30;
     }
 
-    main::setupSetQuestion( 'SERVER_HOSTNAME', idn_to_ascii( $hostname, 'utf-8' ));
+    ::setupSetQuestion( 'SERVER_HOSTNAME', idn_to_ascii( $hostname, 'utf-8' ));
     0;
 }
 
@@ -123,39 +122,32 @@ EOF
 
 sub primaryIpDialog
 {
-    my (undef, $dialog) = @_;
+    my ( undef, $dialog ) = @_;
 
-    my @ipList = sort
-        grep(
-            isValidIpAddr( $_, qr/(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)/ ),
-            iMSCP::Net->getInstance()->getAddresses()
-        ),
-        'None';
+    my @ipList = sort grep (
+        isValidIpAddr( $_, qr/(?:PRIVATE|UNIQUE-LOCAL-UNICAST|PUBLIC|GLOBAL-UNICAST)/ ), iMSCP::Net->getInstance()->getAddresses()
+    ), 'None';
     unless ( @ipList ) {
         error( "Couldn't get list of server IP addresses. At least one IP address must be configured." );
         return 1;
     }
 
-    my $lanIP = main::setupGetQuestion( 'BASE_SERVER_IP' );
+    my $lanIP = ::setupGetQuestion( 'BASE_SERVER_IP' );
     $lanIP = 'None' if $lanIP eq '0.0.0.0';
-    my $wanIP = main::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
+    my $wanIP = ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
 
-    if ( iMSCP::Getopt->preseed
-        && !$wanIP
-        && ( !isValidIpAddr( $lanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ) )
-    ) {
+    if ( iMSCP::Getopt->preseed && !$wanIP && ( !isValidIpAddr( $lanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ) ) ) {
         chomp( $wanIP = get( 'https://ipinfo.io/ip' ) || '' );
     }
 
-    if ( $main::reconfigure =~ /^(?:local_server|primary_ip|all|forced)$/
-        || !grep( $_ eq $lanIP, @ipList )
+    if ( $::reconfigure =~ /^(?:local_server|primary_ip|all|forced)$/ || !grep ( $_ eq $lanIP, @ipList )
         || ( $wanIP ne $lanIP && !isValidIpAddr( $wanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ) )
     ) {
-        my ($rs, $msg) = ( 0, '' );
+        my ( $rs, $msg ) = ( 0, '' );
 
         do {
             ( $rs, $lanIP ) = $dialog->radiolist(
-                <<"EOF", [ @ipList ], grep( $_ eq $lanIP, @ipList ) ? $lanIP : $ipList[0] );
+                <<"EOF", [ @ipList ], grep ( $_ eq $lanIP, @ipList ) ? $lanIP : $ipList[0] );
 
 Please select your server primary IP address:
 
@@ -178,10 +170,7 @@ The IP address that you have selected is in private IP range.
 Please enter your public IP address (WAN IP), or leave blank to force usage of the private IP address:$msg
 EOF
                 $msg = '';
-                if ( $wanIP
-                    && $wanIP ne $lanIP
-                    && !isValidIpAddr( $wanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ )
-                ) {
+                if ( $wanIP && $wanIP ne $lanIP && !isValidIpAddr( $wanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ) ) {
                     $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
                 } elsif ( !$wanIP ) {
                     $wanIP = $lanIP;
@@ -204,8 +193,8 @@ EOF
         $lanIP = '0.0.0.0';
     }
 
-    main::setupSetQuestion( 'BASE_SERVER_IP', $lanIP );
-    main::setupSetQuestion( 'BASE_SERVER_PUBLIC_IP', $wanIP );
+    ::setupSetQuestion( 'BASE_SERVER_IP', $lanIP );
+    ::setupSetQuestion( 'BASE_SERVER_PUBLIC_IP', $wanIP );
     0;
 }
 
@@ -220,16 +209,14 @@ EOF
 
 sub timezoneDialog
 {
-    my (undef, $dialog) = @_;
+    my ( undef, $dialog ) = @_;
 
-    my $timezone = main::setupGetQuestion(
+    my $timezone = ::setupGetQuestion(
         'TIMEZONE', ( iMSCP::Getopt->preseed ) ? DateTime::TimeZone->new( name => 'local' )->name() : ''
     );
 
-    if ( $main::reconfigure =~ /^(?:local_server|timezone|all|forced)$/
-        || !isValidTimezone( $timezone )
-    ) {
-        my ($rs, $msg) = ( 0, '' );
+    if ( $::reconfigure =~ /^(?:local_server|timezone|all|forced)$/ || !isValidTimezone( $timezone ) ) {
+        my ( $rs, $msg ) = ( 0, '' );
         do {
             ( $rs, $timezone ) = $dialog->inputbox(
                 <<"EOF", $timezone || DateTime::TimeZone->new( name => 'local' )->name());
@@ -241,7 +228,7 @@ EOF
         return $rs if $rs >= 30;
     }
 
-    main::setupSetQuestion( 'TIMEZONE', $timezone );
+    ::setupSetQuestion( 'TIMEZONE', $timezone );
     0;
 }
 
@@ -255,26 +242,20 @@ EOF
 
 sub preinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSetupKernel' );
     return $rs if $rs;
 
-    if ( -f "$main::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf" ) {
+    if ( -f "$::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf" ) {
         # Don't catch any error here to avoid permission denied error on some
         # vps due to restrictions set by provider
-        $rs = execute(
-            "$main::imscpConfig{'CMD_SYSCTL'} -p $main::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf",
-            \ my $stdout,
-            \ my $stderr
-        );
+        $rs = execute( "$::imscpConfig{'CMD_SYSCTL'} -p $::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf", \my $stdout, \my $stderr );
         debug( $stdout ) if $stdout;
         debug( $stderr ) if $stderr;
     }
 
     $self->{'eventManager'}->trigger( 'afterSetupKernel' );
-
-    0;
 }
 
 =item install( )
@@ -287,7 +268,7 @@ sub preinstall
 
 sub install
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->_setupHostname();
     $rs ||= $self->_setupPrimaryIP();
@@ -309,7 +290,7 @@ sub install
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self;
@@ -325,10 +306,10 @@ sub _init
 
 sub _setupHostname
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $hostname = main::setupGetQuestion( 'SERVER_HOSTNAME' );
-    my $lanIP = main::setupGetQuestion( 'BASE_SERVER_IP' );
+    my $hostname = ::setupGetQuestion( 'SERVER_HOSTNAME' );
+    my $lanIP = ::setupGetQuestion( 'BASE_SERVER_IP' );
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSetupServerHostname', \$hostname, \$lanIP );
     return $rs if $rs;
@@ -356,7 +337,7 @@ EOF
     $file->set( $content );
 
     $rs = $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+    $rs ||= $file->owner( $::imscpConfig{'ROOT_USER'}, $::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
     return $rs if $rs;
 
@@ -364,7 +345,7 @@ EOF
     $file->set( $host );
 
     $rs = $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+    $rs ||= $file->owner( $::imscpConfig{'ROOT_USER'}, $::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
     return $rs if $rs;
 
@@ -372,11 +353,11 @@ EOF
     $file->set( $hostname );
 
     $rs = $file->save();
-    $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+    $rs ||= $file->owner( $::imscpConfig{'ROOT_USER'}, $::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
     return $rs if $rs;
 
-    $rs = execute( 'hostname -F /etc/hostname', \ my $stdout, \ my $stderr );
+    $rs = execute( 'hostname -F /etc/hostname', \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || "Couldn't set server hostname" ) if $rs;
     $rs ||= $self->{'eventManager'}->trigger( 'afterSetupServerHostname' );
@@ -392,38 +373,36 @@ EOF
 
 sub _setupPrimaryIP
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $primaryIP = main::setupGetQuestion( 'BASE_SERVER_IP' );
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSetupPrimaryIP', $primaryIP );
-    return $rs if $rs;
+    try {
+        my $primaryIP = ::setupGetQuestion( 'BASE_SERVER_IP' );
+        my $rs = $self->{'eventManager'}->trigger( 'beforeSetupPrimaryIP', $primaryIP );
+        return $rs if $rs;
 
-    local $@;
-    eval {
-        my $netCard = ( $primaryIP eq '0.0.0.0' ) ? 'any' : iMSCP::Net->getInstance()->getAddrDevice( $primaryIP );
+        my $netCard = $primaryIP eq '0.0.0.0' ? 'any' : iMSCP::Net->getInstance()->getAddrDevice( $primaryIP );
         defined $netCard or die( sprintf( "Couldn't find network card for the '%s' IP address", $primaryIP ));
 
-        my $db = iMSCP::Database->factory();
-        my $oldDbName = $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ));
+        {
+            local $DATABASE = ::setupGetQuestion( 'DATABASE_NAME' );
+            iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+                if ( $_->selectrow_hashref( 'SELECT 1 FROM server_ips WHERE ip_number = ?', undef, $primaryIP ) ) {
+                    $_->do( 'UPDATE server_ips SET ip_card = ? WHERE ip_number = ?', undef, $netCard, $primaryIP );
+                    return;
+                }
 
-        my $dbh = $db->getRawDb();
-        local $dbh->{'RaiseError'} = 1;
+                $_->do(
+                    'INSERT INTO server_ips (ip_number, ip_card, ip_config_mode, ip_status) VALUES(?, ?, ?, ?)', undef, $primaryIP, $netCard, 'manual',
+                    'ok'
+                );
+            } );
+        }
 
-        $dbh->selectrow_hashref( 'SELECT 1 FROM server_ips WHERE ip_number = ?', undef, $primaryIP )
-            ? $dbh->do( 'UPDATE server_ips SET ip_card = ? WHERE ip_number = ?', undef, $netCard, $primaryIP )
-            : $dbh->do(
-            'INSERT INTO server_ips (ip_number, ip_card, ip_config_mode, ip_status) VALUES(?, ?, ?, ?)',
-            undef, $primaryIP, $netCard, 'manual', 'ok'
-        );
-
-        $db->useDatabase( $oldDbName ) if $oldDbName;
+        $self->{'eventManager'}->trigger( 'afterSetupPrimaryIP', $primaryIP );
+    } catch {
+        error( $_ );
+        1;
     };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterSetupPrimaryIP', $primaryIP );
 }
 
 =back

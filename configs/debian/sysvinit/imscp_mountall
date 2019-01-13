@@ -15,7 +15,7 @@
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 NAME=imscp_mountall
 LFILE=/var/run/$NAME
-TOOLSDIR="/var/www/imscp/engine/tools"
+BINDIR="/var/www/imscp/engine/bin"
 
 . /lib/lsb/init-functions
 
@@ -35,13 +35,13 @@ check_for_upstart()
 
 do_start()
 {
-    perl ${TOOLSDIR}/imscp-mountall start 2>/dev/null
+    perl ${BINDIR}/imscp-mountall start 2>/dev/null
     touch $LFILE
 }
 
 do_stop()
 {
-    perl ${TOOLSDIR}/imscp-mountall stop 2>/dev/null
+    perl ${BINDIR}/imscp-mountall stop 2>/dev/null
     rm -f $LFILE
 }
 

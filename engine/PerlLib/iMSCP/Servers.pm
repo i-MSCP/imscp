@@ -46,7 +46,7 @@ use parent 'Common::SingletonClass';
 
 sub getList
 {
-    @{$_[0]->{'servers'}};
+    @{ $_[0]->{'servers'} };
 }
 
 =item getListWithFullNames( )
@@ -59,7 +59,7 @@ sub getList
 
 sub getListWithFullNames
 {
-    @{$_[0]->{'servers_full_names'}};
+    @{ $_[0]->{'servers_full_names'} };
 }
 
 =back
@@ -72,31 +72,27 @@ sub getListWithFullNames
 
  Initialize instance
 
- Return iMSCP::Servers
+ Return iMSCP::Servers, die on failure
 
 =cut
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    $_ = basename( $_, '.pm' ) for @{$self->{'servers'}} = grep { $_ !~ /noserver.pm$/ } glob(
+    $_ = basename( $_, '.pm' ) for @{ $self->{'servers'} } = grep { $_ !~ /noserver.pm$/ } glob(
         "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers/*.pm"
     );
 
     # Load all server classes
-    for ( @{$self->{'servers'}} ) {
+    for ( @{ $self->{'servers'} } ) {
         my $server = "Servers::${_}";
         eval "require $server" or die( sprintf( "Couldn't load %s server class: %s", $server, $@ ));
     }
 
     # Sort servers in descending order of priority
-    @{$self->{'servers'}} = sort {
-        "Servers::${b}"->getPriority() <=> "Servers::${a}"->getPriority()
-    } @{$self->{'servers'}};
-
-    @{$self->{'servers_full_names'}} = map { "Servers::${_}" } @{$self->{'servers'}};
-
+    @{ $self->{'servers'} } = sort { "Servers::${b}"->getPriority() <=> "Servers::${a}"->getPriority() } @{ $self->{'servers'} };
+    @{ $self->{'servers_full_names'} } = map { "Servers::${_}" } @{ $self->{'servers'} };
     $self;
 }
 

@@ -26,6 +26,7 @@ package Servers::ftpd;
 use strict;
 use warnings;
 use iMSCP::Debug 'fatal';
+use Try::Tiny;
 
 # ftpd server instance
 my $instance;
@@ -52,21 +53,24 @@ sub factory
 {
     return $instance if defined $instance;
 
-    my $package = $::imscpConfig{'FTPD_PACKAGE'} || 'Servers::noserver';
+    try {
+        my $package = $::imscpConfig{'FTPD_PACKAGE'} || 'Servers::noserver';
 
-    if ( %::imscpOldConfig && exists $::imscpOldConfig{'FTPD_PACKAGE'} && $::imscpOldConfig{'FTPD_PACKAGE'} ne ''
-        && $::imscpOldConfig{'FTPD_PACKAGE'} ne $package
-    ) {
-        eval "require $::imscpOldConfig{'FTPD_PACKAGE'}";
-        fatal( $@ ) if $@;
+        if ( %::imscpOldConfig && exists $::imscpOldConfig{'FTPD_PACKAGE'} && $::imscpOldConfig{'FTPD_PACKAGE'} ne ''
+            && $::imscpOldConfig{'FTPD_PACKAGE'} ne $package
+        ) {
 
-        my $rs = $::imscpOldConfig{'FTPD_PACKAGE'}->getInstance()->uninstall();
-        fatal( sprintf( "Couldn't uninstall the '%s' server", $::imscpOldConfig{'FTPD_PACKAGE'} )) if $rs;
-    }
+            eval "require $::imscpOldConfig{'FTPD_PACKAGE'}" or die;
+            $::imscpOldConfig{'FTPD_PACKAGE'}->getInstance()->uninstall() == 0 or die(
+                sprintf( "Couldn't uninstall the '%s' server", $::imscpOldConfig{'FTPD_PACKAGE'} )
+            );
+        }
 
-    eval "require $package";
-    fatal( $@ ) if $@;
-    $instance = $package->getInstance();
+        eval "require $package" or die;
+        $instance = $package->getInstance();
+    } catch {
+        fatal( $_ );
+    };
 }
 
 =item can( $method )
@@ -82,10 +86,13 @@ sub can
 {
     my ( undef, $method ) = @_;
 
-    my $package = $::imscpConfig{'FTPD_PACKAGE'} || 'Servers::noserver';
-    eval "require $package";
-    fatal( $@ ) if $@;
-    $package->can( $method );
+    try {
+        my $package = $::imscpConfig{'FTPD_PACKAGE'} || 'Servers::noserver';
+        eval "require $package" or die;
+        $package->can( $method );
+    } catch {
+        fatal( $_ );
+    };
 }
 
 =item getPriority( )

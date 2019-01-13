@@ -25,10 +25,11 @@ package iMSCP::Mount;
 
 use strict;
 use warnings;
-use Errno qw / EINVAL /;
+use Errno qw/ EINVAL /;
 use File::Spec;
 use File::stat ();
-use iMSCP::Debug;
+use iMSCP::Boolean;
+use iMSCP::Debug qw/ debug error /;
 use iMSCP::File;
 use iMSCP::Syscall;
 use Scalar::Defer;
@@ -40,20 +41,20 @@ our @EXPORT_OK = qw/ addMountEntry getMounts isMountpoint mount setPropagationFl
 # See http://man7.org/linux/man-pages/man2/mount.2.html for a description of these flags
 use constant {
     # These are the fs-independent mount-flags
-    MS_RDONLY      => 1, # Mount read-only.
-    MS_NOSUID      => 2, # Ignore suid and sgid bits.
-    MS_NODEV       => 4, # Disallow access to device special files.
-    MS_NOEXEC      => 8, # Disallow program execution.
-    MS_SYNCHRONOUS => 16, # Writes are synced at once.
-    MS_REMOUNT     => 32, # Alter flags of a mounted FS.
-    MS_MANDLOCK    => 64, # Allow mandatory locks on an FS.
-    MS_DIRSYNC     => 128, # Directory modifications are synchronous.
-    MS_NOATIME     => 1024, # Do not update access times.
-    MS_NODIRATIME  => 2048, # Do not update directory access times.
-    MS_BIND        => 4096, # Bind directory at different place.
-    MS_MOVE        => 8192, # Move a subtree.
-    MS_REC         => 16384, # Recursive loopback.
-    MS_SILENT      => 32768, # Be quiet.
+    MS_RDONLY      => 1,       # Mount read-only.
+    MS_NOSUID      => 2,       # Ignore suid and sgid bits.
+    MS_NODEV       => 4,       # Disallow access to device special files.
+    MS_NOEXEC      => 8,       # Disallow program execution.
+    MS_SYNCHRONOUS => 16,      # Writes are synced at once.
+    MS_REMOUNT     => 32,      # Alter flags of a mounted FS.
+    MS_MANDLOCK    => 64,      # Allow mandatory locks on an FS.
+    MS_DIRSYNC     => 128,     # Directory modifications are synchronous.
+    MS_NOATIME     => 1024,    # Do not update access times.
+    MS_NODIRATIME  => 2048,    # Do not update directory access times.
+    MS_BIND        => 4096,    # Bind directory at different place.
+    MS_MOVE        => 8192,    # Move a subtree.
+    MS_REC         => 16384,   # Recursive loopback.
+    MS_SILENT      => 32768,   # Be quiet.
     MS_POSIXACL    => 1 << 16, # VFS does not apply the umask.
     MS_UNBINDABLE  => 1 << 17, # Change to unbindable.
     MS_PRIVATE     => 1 << 18, # Change to private.
@@ -63,7 +64,7 @@ use constant {
     MS_KERNMOUNT   => 1 << 22, # This is a kern_mount call.
     MS_I_VERSION   => 1 << 23, # Update inode I_version field.
     MS_STRICTATIME => 1 << 24, # Always perform atime updates.
-    MS_LAZYTIME    => 1 << 25 # Update the time lazily. (since Linux 4.0)
+    MS_LAZYTIME    => 1 << 25  # Update the time lazily. (since Linux 4.0)
 };
 use constant {
     # Flags that can be altered by MS_REMOUNT (see sys/mount.h)
@@ -130,18 +131,17 @@ my %PROPAGATION_FLAGS = (
 );
 
 # Lazy-load mount entries
-my $MOUNTS = lazy
-    {
-        -f '/proc/self/mounts' or die( "Couldn't load mount entries. File /proc/self/mounts not found." );
-        open my $fh, '<', '/proc/self/mounts' or die( sprintf( "Couldn't read /proc/self/mounts file: %s", $! ));
-        my $entries;
-        while ( my $entry = <$fh> ) {
-            my $fsFile = ( split /\s+/, $entry )[1];
-            $entries->{$fsFile =~ s/\\040\(deleted\)$//r}++;
-        }
-        close( $fh );
-        $entries;
-    };
+my $MOUNTS = lazy {
+    -f '/proc/self/mounts' or die( "Couldn't load mount entries. File /proc/self/mounts not found." );
+    open my $fh, '<', '/proc/self/mounts' or die( sprintf( "Couldn't read /proc/self/mounts file: %s", $! ));
+    my $entries;
+    while ( my $entry = <$fh> ) {
+        my $fsFile = ( split /\s+/, $entry )[1];
+        $entries->{$fsFile =~ s/\\040\(deleted\)$//r}++;
+    }
+    close( $fh );
+    $entries;
+};
 
 # FH object to i-MSCP fstab-like file
 my $iMSCP_FSTAB_FH;
@@ -164,7 +164,7 @@ my $iMSCP_FSTAB_FH;
 
 sub getMounts
 {
-    reverse sort keys %{$MOUNTS};
+    reverse sort keys %{ $MOUNTS };
 }
 
 =item mount( \%fields )
@@ -183,10 +183,10 @@ sub getMounts
 
 sub mount( $ )
 {
-    my ($fields) = @_;
+    my ( $fields ) = @_;
     $fields = {} unless defined $fields && ref $fields eq 'HASH';
 
-    for( qw/ fs_spec fs_file fs_vfstype fs_mntops / ) {
+    for ( qw/ fs_spec fs_file fs_vfstype fs_mntops / ) {
         next if defined $fields->{$_};
         error( sprintf( "'%s' field is not defined", $_ ));
         return 1;
@@ -199,7 +199,7 @@ sub mount( $ )
 
     debug( "$fsSpec $fsFile $fsVfstype $fields->{'fs_mntops'}" );
 
-    my ($mflags, $pflags, $data) = _parseOptions( $fields->{'fs_mntops'} );
+    my ( $mflags, $pflags, $data ) = _parseOptions( $fields->{'fs_mntops'} );
     $mflags |= MS_MGC_VAL unless $mflags & MS_MGC_MSK;
 
     my @mountArgv;
@@ -224,9 +224,9 @@ sub mount( $ )
     push @mountArgv, [ 'none', $fsFile, 0, $pflags, 0 ] if $pflags;
 
     # Process the mount(2) calls
-    for( @mountArgv ) {
-        unless ( syscall( &iMSCP::Syscall::SYS_mount, @{$_} ) == 0 || $fields->{'ignore_failures'} ) {
-            error( sprintf( 'Error while executing mount(%s): %s', join( ', ', @{$_} ), $! || 'Unknown error' ));
+    for ( @mountArgv ) {
+        unless ( syscall( &iMSCP::Syscall::SYS_mount, @{ $_ } ) == 0 || $fields->{'ignore_failures'} ) {
+            error( sprintf( 'Error while executing mount(%s): %s', join( ', ', @{ $_ } ), $! || 'Unknown error' ));
             return 1;
         }
     }
@@ -249,17 +249,17 @@ sub mount( $ )
 
 sub umount( $;$ )
 {
-    my ($fsFile, $recursive) = @_;
+    my ( $fsFile, $recursive ) = @_;
 
     unless ( defined $fsFile ) {
         error( '$fsFile parameter is not defined' );
         return 1;
     }
 
-    $recursive //= 1; # Operation is recursive by default
+    $recursive //= TRUE; # Operation is recursive by default
     $fsFile = File::Spec->canonpath( $fsFile );
 
-    return 0 if $fsFile eq '/'; # Prevent umounting root fs
+    return 0 if $fsFile eq '/'; # Prevent un-mounting root fs
 
     unless ( $recursive ) {
         return 0 unless $MOUNTS->{$fsFile};
@@ -271,13 +271,13 @@ sub umount( $;$ )
                 error( sprintf( "Error while executing umount(%s): %s", $fsFile, $! || 'Unknown error' ));
                 return 1;
             }
-            ( $MOUNTS->{$fsFile} > 1 ) ? $MOUNTS->{$fsFile}-- : delete $MOUNTS->{$fsFile};
+            $MOUNTS->{$fsFile} > 1 ? $MOUNTS->{$fsFile}-- : delete $MOUNTS->{$fsFile};
         } while $MOUNTS->{$fsFile};
 
         return 0;
     }
 
-    for( reverse sort keys %{$MOUNTS} ) {
+    for ( reverse sort keys %{ $MOUNTS } ) {
         next unless /^\Q$fsFile\E(\/|$)/;
 
         do {
@@ -286,7 +286,7 @@ sub umount( $;$ )
                 error( sprintf( "Error while executing umount(%s): %s", $_, $! || 'Unknown error' ));
                 return 1;
             }
-            ( $MOUNTS->{$_} > 1 ) ? $MOUNTS->{$_}-- : delete $MOUNTS->{$_};
+            $MOUNTS->{$_} > 1 ? $MOUNTS->{$_}-- : delete $MOUNTS->{$_};
         } while $MOUNTS->{$_};
     }
 
@@ -299,12 +299,13 @@ sub umount( $;$ )
 
  Parameter string $fsFile Mount point
  Parameter string $flag Propagation flag as string (private,slave,shared,unbindable,rprivate,rslave,rshared,runbindable)
+ Return int 0 on success, other on failure
 
 =cut
 
-sub setPropagationFlag($;$)
+sub setPropagationFlag( $;$ )
 {
-    my ($fsFile, $pflag) = @_;
+    my ( $fsFile, $pflag ) = @_;
     $pflag ||= 'private';
 
     unless ( defined $fsFile ) {
@@ -342,19 +343,19 @@ sub setPropagationFlag($;$)
 
 =cut
 
-sub isMountpoint($)
+sub isMountpoint( $ )
 {
     my $path = shift;
 
     unless ( defined $path ) {
         error( '$path parameter is not defined' );
-        return 1;
+        return TRUE;
     }
 
     $path = File::Spec->canonpath( $path );
 
-    return 1 if $MOUNTS->{$path};
-    return 0 unless -d $path;
+    return TRUE if $MOUNTS->{$path};
+    return FALSE unless -d $path;
 
     my $st = File::stat::populate( CORE::stat( _ ));
     my $st2 = File::stat::stat( "$path/.." );
@@ -379,15 +380,15 @@ sub addMountEntry( $ )
         return 1;
     }
 
-    my $rs = removeMountEntry( $entry, 0 ); # Avoid duplicate entries
+    my $rs = removeMountEntry( $entry, FALSE ); # Avoid duplicate entries
     return $rs if $rs;
 
     my $fileContent = $iMSCP_FSTAB_FH->getAsRef();
-    ${$fileContent} .= "$entry\n";
+    ${ $fileContent } .= "$entry\n";
     $iMSCP_FSTAB_FH->save();
 }
 
-=item removeMountEntry( $entry [, $saveFile = true ] )
+=item removeMountEntry( $entry [, $saveFile = TRUE ] )
 
  Remove the given mount entry from the i-MSCP fstab-like file
 
@@ -399,26 +400,21 @@ sub addMountEntry( $ )
 
 sub removeMountEntry( $;$ )
 {
-    my ($entry, $saveFile) = @_;
-    $saveFile //= 1;
+    my ( $entry, $saveFile ) = @_;
+    $saveFile //= TRUE;
 
     unless ( defined $entry ) {
         error( '$entry parameter is not defined' );
         return 1;
     }
 
-    unless ( $iMSCP_FSTAB_FH ) {
-        $iMSCP_FSTAB_FH = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf" );
-    }
+    $iMSCP_FSTAB_FH = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf" ) unless $iMSCP_FSTAB_FH;
 
-    my $fileContent = $iMSCP_FSTAB_FH->getAsRef();
-    unless ( defined $fileContent ) {
-        error( sprintf( "Couldn't read %s file", $iMSCP_FSTAB_FH->{'filename'} ));
-        return 1;
-    }
+    my $fileC = $iMSCP_FSTAB_FH->getAsRef();
+    return 1 unless defined $fileC;
 
     $entry = quotemeta( $entry ) unless ref $entry eq 'Regexp';
-    ${$fileContent} =~ s/^$entry\n//gm;
+    ${ $fileC } =~ s/^$entry\n//gm;
     $saveFile ? $iMSCP_FSTAB_FH->save() : 0;
 }
 
@@ -445,14 +441,14 @@ sub _parseOptions( $ )
     my @options = map { s/\s+//gr } split ',', $options;
 
     # Parse mount flags (excluding any propagation flag)
-    my ($mflags, @roptions) = ( 0 );
+    my ( $mflags, @roptions ) = ( 0 );
     for ( @options ) {
         push( @roptions, $_ ) && next unless exists $MOUNT_FLAGS{$_};
         $mflags = $MOUNT_FLAGS{$_}->( $mflags );
     }
 
     # Parse propagation flags
-    my ($pflags, @data) = ( 0 );
+    my ( $pflags, @data ) = ( 0 );
     for ( @roptions ) {
         push( @data, $_ ) && next unless exists $PROPAGATION_FLAGS{$_};
         $pflags = $PROPAGATION_FLAGS{$_}->( $pflags );

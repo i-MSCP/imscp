@@ -60,7 +60,7 @@ sub getType
  It is the responsability of customers to fix their DNS resource records.
 
  Param hashref \%data Custom DNS record data
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -68,50 +68,45 @@ sub process
 {
     my ( $self, $data ) = @_;
 
-    try {
-        $self->_loadData( $data->{'id'}, $data->{'type'} );
+    $self->_loadData( $data->{'id'}, $data->{'type'} );
 
-        if ( $self->add() ) {
-            $self->{'_conn'}->run( fixup => sub {
-                $_->do(
-                    "
-                        UPDATE domain_dns
-                        SET domain_dns_status = ?
-                        WHERE @{ [ $data->{'type'} eq 'domain' ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?' ] }
-                        AND domain_dns_status <> 'disabled'
-                    ",
-                    undef, getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error', $data->{'id'}
-                );
-            } );
-
-            return 0;
-        }
-
-        $self->{'_conn'}->txn( fixup => sub {
+    if ( $self->add() ) {
+        $self->{'_conn'}->run( fixup => sub {
             $_->do(
                 "
                     UPDATE domain_dns
-                    SET domain_dns_status = IF(
-                        domain_dns_status = 'todisable', 'disabled', IF(domain_dns_status NOT IN('todelete', 'disabled'), 'ok', domain_dns_status)
-                    )
+                    SET domain_dns_status = ?
                     WHERE @{ [ $data->{'type'} eq 'domain' ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?' ] }
+                    AND domain_dns_status <> 'disabled'
                 ",
-                undef, $data->{'id'}
-            );
-            $_->do(
-                "
-                    DELETE FROM domain_dns
-                    WHERE @{ [ $data->{'type'} eq 'domain' ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?' ] }
-                    AND domain_dns_status = 'todelete'
-                ",
-                undef, $data->{'id'}
+                undef, getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error', $data->{'id'}
             );
         } );
-        0
-    } catch {
-        error( $_ );
-        1;
-    };
+
+        return 0;
+    }
+
+    $self->{'_conn'}->txn( fixup => sub {
+        $_->do(
+            "
+                UPDATE domain_dns
+                SET domain_dns_status = IF(
+                    domain_dns_status = 'todisable', 'disabled', IF(domain_dns_status NOT IN('todelete', 'disabled'), 'ok', domain_dns_status)
+                )
+                WHERE @{ [ $data->{'type'} eq 'domain' ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?' ] }
+            ",
+            undef, $data->{'id'}
+        );
+        $_->do(
+            "
+                DELETE FROM domain_dns
+                WHERE @{ [ $data->{'type'} eq 'domain' ? 'domain_id = ? AND alias_id = 0' : 'alias_id = ?' ] }
+                AND domain_dns_status = 'todelete'
+            ",
+            undef, $data->{'id'}
+        );
+    } );
+    0;
 }
 
 =back

@@ -26,18 +26,16 @@ package iMSCP::DbTasksProcessor;
 use strict;
 use warnings;
 use warnings;
-use Encode qw/ encode_utf8 /;
+use Encode 'encode_utf8';
 use iMSCP::Boolean;
 use iMSCP::Database;
-use iMSCP::Debug;
-use iMSCP::Execute;
-use iMSCP::Stepper;
+use iMSCP::Debug qw/ debug getMessageByType newDebug endDebug /;
+use iMSCP::Execute qw/ escapeShell execute /;
+use iMSCP::Stepper 'step';
 use JSON;
 use MIME::Base64 qw/ encode_base64 /;
+use Try::Tiny;
 use parent 'Common::SingletonClass';
-
-# Ensure backward compatibility with plugins
-BEGIN { *process = \&processDbTasks; }
 
 =head1 DESCRIPTION
 
@@ -61,7 +59,7 @@ sub processDbTasks
 
     # Process plugins tasks
     # Must always be processed first to allow the plugins registering their listeners on the event manager
-    $self->_processModuleDbTasks(
+    $self->_process(
         'Modules::Plugin',
         "
             SELECT plugin_id AS id, plugin_name AS name
@@ -74,7 +72,7 @@ sub processDbTasks
     );
 
     # Process server IP addresses
-    $self->_processModuleDbTasks(
+    $self->_process(
         'Modules::ServerIP',
         "
             SELECT ip_id AS id, ip_number AS name
@@ -85,7 +83,7 @@ sub processDbTasks
     );
 
     # Process SSL certificate toadd|tochange SSL certificates tasks
-    $self->_processModuleDbTasks(
+    $self->_process(
         'Modules::SSLcertificate',
         "
             SELECT cert_id AS id, domain_type AS name
@@ -97,21 +95,19 @@ sub processDbTasks
     );
 
     # Process toadd|tochange users tasks
-    $self->_processModuleDbTasks(
+    $self->_process(
         'Modules::User',
         "
-            SELECT admin_id AS id, admin_name AS name
-            FROM admin
-            WHERE admin_type = 'user'
-            AND admin_status IN ('toadd', 'tochange', 'tochangepwd')
+            SELECT admin_id AS id, admin_name AS name FROM admin
+            WHERE admin_type = 'user' AND admin_status IN ('toadd', 'tochange', 'tochangepwd')
             ORDER BY admin_id ASC
         ",
         FALSE
     );
 
     # Process toadd|tochange|torestore|toenable|todisable domain tasks
-    # For each entity, process only if the parent entity is in a consistent state
-    $self->_processModuleDbTasks(
+    # Process only if parent aggregate is in expected state
+    $self->_process(
         'Modules::Domain',
         "
             SELECT t1.domain_id AS id, t1.domain_name AS name
@@ -125,8 +121,8 @@ sub processDbTasks
     );
 
     # Process toadd|tochange|torestore|toenable|todisable subdomains tasks
-    # For each entity, process only if the parent entity is in a consistent state
-    $self->_processModuleDbTasks(
+    # Process only if parent aggregate is in expected state
+    $self->_process(
         'Modules::Subdomain',
         "
             SELECT t1.subdomain_id AS id, CONCAT(t1.subdomain_name, '.', t2.domain_name) AS name
@@ -140,8 +136,8 @@ sub processDbTasks
     );
 
     # Process toadd|tochange|torestore|toenable|todisable domain aliases tasks
-    # (for each entity, process only if the parent entity is in a consistent state)
-    $self->_processModuleDbTasks(
+    # Process only if parent aggregate is in expected state
+    $self->_process(
         'Modules::Alias',
         "
            SELECT t1.alias_id AS id, t1.alias_name AS name
@@ -155,8 +151,8 @@ sub processDbTasks
     );
 
     # Process toadd|tochange|torestore|toenable|todisable subdomains of domain aliases tasks
-    # For each entity, process only if the parent entity is in a consistent state
-    $self->_processModuleDbTasks(
+    # Process only if parent aggregate is in expected state
+    $self->_process(
         'Modules::SubAlias',
         "
             SELECT t1.subdomain_alias_id AS id, CONCAT(t1.subdomain_alias_name, '.', t2.alias_name) AS name
@@ -170,8 +166,8 @@ sub processDbTasks
     );
 
     # Process toadd|tochange|toenable||todisable|todelete custom DNS records which belong to domains
-    # For each entity, process only if the parent entity is in a consistent state
-    $self->_processModuleDbTasks(
+    # Process only if parent aggregate is in expected state
+    $self->_process(
         'Modules::CustomDNS',
         "
             SELECT t1.domain_id AS id, 'domain' AS type, t2.domain_name AS name
@@ -186,8 +182,8 @@ sub processDbTasks
     );
 
     # Process toadd|tochange|toenable|todisable|todelete custom DNS records which belong to domain aliases
-    # For each entity, process only if the parent entity is in a consistent state
-    $self->_processModuleDbTasks(
+    # Process only if parent aggregate is in expected state
+    $self->_process(
         'Modules::CustomDNS',
         "
             SELECT t1.alias_id AS id, 'alias' AS type, t2.alias_name AS name
@@ -202,8 +198,8 @@ sub processDbTasks
     );
 
     # Process toadd|tochange|toenable|todisable|todelete ftp users tasks
-    # For each entity, process only if the parent entity is in a consistent state
-    $self->_processModuleDbTasks(
+    # Process only if parent aggregate is in expected state
+    $self->_process(
         'Modules::FtpUser',
         "
             SELECT t1.userid AS id, t1.userid AS name
@@ -217,8 +213,8 @@ sub processDbTasks
     );
 
     # Process toadd|tochange|toenable|todisable|todelete mail tasks
-    # For each entity, process only if the parent entity is in a consistent state
-    $self->_processModuleDbTasks(
+    # Process only if parent aggregate is in expected state
+    $self->_process(
         'Modules::Mail',
         "
             SELECT t1.mail_id AS id, t1.mail_addr AS name
@@ -232,8 +228,8 @@ sub processDbTasks
     );
 
     # Process toadd|tochange|toenable|todisable|todelete Htpasswd tasks
-    # For each entity, process only if the parent entity is in a consistent state
-    $self->_processModuleDbTasks(
+    # Process only if parent aggregate is in expected state
+    $self->_process(
         'Modules::Htpasswd',
         "
             SELECT t1.id, t1.uname AS name
@@ -247,8 +243,8 @@ sub processDbTasks
     );
 
     # Process toadd|tochange|toenable|todisable|todelete Htgroup tasks
-    # For each entity, process only if the parent entity is in a consistent state
-    $self->_processModuleDbTasks(
+    # Process only if parent aggregate is in expected state
+    $self->_process(
         'Modules::Htgroup',
         "
             SELECT t1.id, t1.ugroup AS name
@@ -262,8 +258,8 @@ sub processDbTasks
     );
 
     # Process toadd|tochange|toenable|todisable|todelete Htaccess tasks
-    # For each entity, process only if the parent entity is in a consistent state
-    $self->_processModuleDbTasks(
+    # Process only if parent aggregate is in expected state
+    $self->_process(
         'Modules::Htaccess',
         "
             SELECT t1.id, t1.auth_name AS name
@@ -277,7 +273,7 @@ sub processDbTasks
     );
 
     # Process todelete subdomain aliases tasks
-    $self->_processModuleDbTasks(
+    $self->_process(
         'Modules::SubAlias',
         "
             SELECT t1.subdomain_alias_id AS id, concat(t1.subdomain_alias_name, '.', t2.alias_name) AS name
@@ -290,8 +286,8 @@ sub processDbTasks
     );
 
     # Process todelete domain aliases tasks
-    # For each entity, process only if the entity do not have any direct children
-    $self->_processModuleDbTasks(
+    # Process only if that aggregate has no subdomains
+    $self->_process(
         'Modules::Alias',
         "
             SELECT t1.alias_id AS id, t1.alias_name AS name
@@ -305,7 +301,7 @@ sub processDbTasks
     );
 
     # Process todelete subdomains tasks
-    $self->_processModuleDbTasks(
+    $self->_process(
         'Modules::Subdomain',
         "
             SELECT t1.subdomain_id AS id, CONCAT(t1.subdomain_name, '.', t2.domain_name) AS name
@@ -318,8 +314,9 @@ sub processDbTasks
     );
 
     # Process todelete domains tasks
-    # For each entity, process only if the entity do not have any direct children
-    $self->_processModuleDbTasks(
+    # Process only if parent aggregate is in expected state
+    # Process only if that aggregate is empty
+    $self->_process(
         'Modules::Domain',
         "
             SELECT t1.domain_id AS id, t1.domain_name AS name
@@ -333,8 +330,8 @@ sub processDbTasks
     );
 
     # Process todelete users tasks
-    # For each entity, process only if the entity do not have any direct children
-    $self->_processModuleDbTasks(
+    # Process only if that aggregate is empty
+    $self->_process(
         'Modules::User',
         "
             SELECT t1.admin_id AS id, t1.admin_name AS name
@@ -349,18 +346,19 @@ sub processDbTasks
     );
 
     # Process software packages tasks
-    local $self->{'_dbh'}->{'RaiseError'} = TRUE;
 
-    my $rows = $self->{'_dbh'}->selectall_hashref(
-        "
-            SELECT domain_id, alias_id, subdomain_id, subdomain_alias_id, software_id, path, software_prefix, db, database_user, database_tmp_pwd,
-                install_username, install_password, install_email, software_status, software_depot, software_master_id
-            FROM web_software_inst
-            WHERE software_status IN ('toadd', 'todelete')
-            ORDER BY domain_id ASC
-        ",
-        'software_id'
-    );
+    my $rows = $self->{'_conn'}->run( fixup => sub {
+        $_->selectall_hashref(
+            "
+                SELECT domain_id, alias_id, subdomain_id, subdomain_alias_id, software_id, path, software_prefix, db, database_user, database_tmp_pwd,
+                    install_username, install_password, install_email, software_status, software_depot, software_master_id
+                FROM web_software_inst
+                WHERE software_status IN ('toadd', 'todelete')
+                ORDER BY domain_id ASC
+            ",
+            'software_id'
+        );
+    } );
 
     if ( %{ $rows } ) {
         newDebug( 'imscp_sw_mngr_engine' );
@@ -378,7 +376,7 @@ sub processDbTasks
             );
 
             my ( $stdout, $stderr );
-            execute( "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-sw-mngr " . escapeShell( $pushString ), \$stdout, \$stderr ) == 0 or die(
+            execute( "perl $::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-sw-mngr " . escapeShell( $pushString ), \$stdout, \$stderr ) == 0 or die(
                 $stderr || 'Unknown error'
             );
             debug( $stdout ) if $stdout;
@@ -390,15 +388,17 @@ sub processDbTasks
     }
 
     # Process software tasks
-    $rows = $self->{'_dbh'}->selectall_hashref(
-        "
-            SELECT software_id, reseller_id, software_archive, software_status, software_depot
-            FROM web_software
-            WHERE software_status = 'toadd'
-            ORDER BY reseller_id ASC
-        ",
-        'software_id'
-    );
+    $rows = $self->{'_conn'}->run( fixup => sub {
+        $_->selectall_hashref(
+            "
+                SELECT software_id, reseller_id, software_archive, software_status, software_depot
+                FROM web_software
+                WHERE software_status = 'toadd'
+                ORDER BY reseller_id ASC
+            ",
+            'software_id'
+        );
+    } );
 
     if ( %{ $rows } ) {
         newDebug( 'imscp_pkt_mngr_engine.log' );
@@ -410,7 +410,7 @@ sub processDbTasks
             );
 
             my ( $stdout, $stderr );
-            execute( "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-pkt-mngr " . escapeShell( $pushString ), \$stdout, \$stderr ) == 0 or die(
+            execute( "perl $::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-pkt-mngr " . escapeShell( $pushString ), \$stdout, \$stderr ) == 0 or die(
                 $stderr || 'Unknown error'
             );
             debug( $stdout ) if $stdout;
@@ -442,93 +442,60 @@ sub _init
 {
     my ( $self ) = @_;
 
-    defined $self->{'mode'} or die( 'mode attribute is not defined' );
-    $self->{'_dbh'} = iMSCP::Database->factory()->getRawDb();
+    $self->{'_conn'} = iMSCP::Database->factory()->getConnector();
     $self;
 }
 
-=item _processModuleDbTasks( $module, $sql [, $perItemLogFile = FALSE ] )
+=item _process( $module, $sql [, $perItemLogFile = FALSE ] )
 
- Process db tasks from the given module
+ Process the given module tasks
 
  Param string $module Module name to process
  Param string $sql SQL statement for retrieval of list of items to process by the given module
  Param bool $perItemLogFile Flag indicating whether a log file must be created for each item (default is per module log file)
- Return int 1 if at least one item has been processed, 0 if no item has been processed, die on failure
+ Return void, die on failure
 
 =cut
 
-sub _processModuleDbTasks
+sub _process
 {
     my ( $self, $module, $sql, $perItemLogFile ) = @_;
+    
+    debug( sprintf( 'Processing %s tasks...', $module ));
 
-    eval {
-        debug( sprintf( 'Processing %s tasks...', $module ), ( caller( 2 ) )[3] );
-
-        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
-
-        my $sth = $self->{'_dbh'}->prepare( $sql );
+    my $sth = $self->{'_conn'}->run( fixup => sub {
+        my $sth = $_->prepare( $sql );
         $sth->execute();
+        $sth;
+    } );
 
-        my $countRows = $sth->rows();
-
-        unless ( $countRows ) {
-            debug( sprintf( 'No task to process for %s', $module ), ( caller( 2 ) )[3] );
-            return 0;
-        }
-
-        eval "require $module" or die;
-
-        my ( $nStep, $rs ) = ( 0, 0 );
-        my $needStepper = grep ( $self->{'mode'} eq $_, ( 'setup', 'uninstall' ) );
-
-        while ( my $row = $sth->fetchrow_hashref() ) {
-            my $name = encode_utf8( $row->{'name'} );
-
-            debug( sprintf( 'Processing %s tasks for: %s (ID %s)', $module, $name, $row->{'id'} ), ( caller( 2 ) )[3] );
-            newDebug( $module . ( $perItemLogFile ? "_${name}" : '' ) . '.log' );
-
-            if ( $needStepper ) {
-                $rs = step(
-                    sub { $self->_processModuleTasks( $module, $row ); },
-                    sprintf( 'Processing %s tasks for: %s (ID %s)', $module, $name, $row->{'id'} ),
-                    $countRows,
-                    ++$nStep
-                );
-            } else {
-                $rs = $self->_processModuleTasks( $module, $row );
-            }
-
-            $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' );
-            endDebug();
-        }
-    };
-    if ( $@ ) {
-        endDebug();
-        die;
+    my $countRows = $sth->rows();
+    unless ( $countRows ) {
+        debug( sprintf( 'No task to process for %s', $module ));
+        return;
     }
 
-    1;
-}
-
-=item _processModuleTasks ( $module, $data )
-
- Process module tasks for the given db item
-
- Param string $module Module name
- Param int $data item data
- Return int 0 on success, other or die on failure
-
-=cut
-
-sub _processModuleTasks
-{
-    my ( $self, $module, $data ) = @_;
-
-    # Only for backward compatibility with 3rd-party software.
-    # Will be removed when RaiseError will be default in version 1.5.0
-    local $self->{'_dbh'}->{'RaiseError'} = 0;
-    $module->new()->process( $data );
+    eval "require $module" or die $_;
+    my $nStep = 0;
+    my $needStepper = grep ( $::execmode eq $_, ( 'setup', 'uninstaller' ) );
+    while ( my $row = $sth->fetchrow_hashref() ) {
+        try {
+            my $name = encode_utf8( $row->{'name'} );
+            debug( sprintf( 'Processing %s tasks for: %s (ID %s)', $module, $name, $row->{'id'} ));
+            newDebug( $module . ( $perItemLogFile ? "_${name}" : '' ) . '.log' );
+            ( $needStepper
+                ? step(
+                    sub { $module->new()->process( $row ); },
+                    sprintf( 'Processing %s tasks for: %s (ID %s)', $module, $name, $row->{'id'} ), $countRows, ++$nStep
+                )
+                : $module->new()->process( $row )
+            ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' );
+        } catch {
+            die $_;
+        } finally {
+            endDebug();
+        };
+    }
 }
 
 =back

@@ -26,15 +26,16 @@ package iMSCP::Composer;
 use strict;
 use warnings;
 use iMSCP::Boolean;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dialog;
 use iMSCP::Dir;
-use iMSCP::Execute;
+use iMSCP::Execute qw/ escapeShell execute executeNoWait /;
 use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Stepper;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser 'process';
+use Try::Tiny;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -75,7 +76,7 @@ sub registerPackage
 
  Initialize instance
 
- Return iMSCP::Composer
+ Return iMSCP::Composer, die on failure
 
 =cut
 
@@ -85,9 +86,9 @@ sub _init
 
     $self->{'composer_version'} = '1.8.0';
     $self->{'packages'} = [];
-    $self->{'packages_dir'} = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages";
-    $self->{'su_cmd_pattern'} = "su --login $main::imscpConfig{'IMSCP_USER'} --shell /bin/sh -c %s";
-    $self->{'php_cmd_prefix'} = "php -d date.timezone=$main::imscpConfig{'TIMEZONE'} -d allow_url_fopen=1";
+    $self->{'packages_dir'} = "$::imscpConfig{'IMSCP_HOMEDIR'}/packages";
+    $self->{'su_cmd_pattern'} = "su --login $::imscpConfig{'IMSCP_USER'} --shell /bin/sh -c %s";
+    $self->{'php_cmd_prefix'} = "php -d date.timezone=$::imscpConfig{'TIMEZONE'} -d allow_url_fopen=1";
 
     iMSCP::EventManager->getInstance()->register( 'afterSetupPreInstallPackages', sub {
         my $skipPackagesUpdate = iMSCP::Getopt->skipPackageUpdate;
@@ -98,23 +99,23 @@ sub _init
             return $rs if $rs;
         }
 
-        eval {
+        return 1 unless try {
             iMSCP::Dir->new( dirname => $self->{'packages_dir'} )->make( {
-                user  => $main::imscpConfig{'IMSCP_USER'},
-                group => $main::imscpConfig{'IMSCP_GROUP'},
+                user  => $::imscpConfig{'IMSCP_USER'},
+                group => $::imscpConfig{'IMSCP_GROUP'},
                 mode  => 0755
             } );
+            TRUE;
+        } catch {
+            error( $_ );
+            FALSE;
         };
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        }
 
         if ( $skipPackagesUpdate ) {
             startDetail;
             my $rs = step( sub {
-                return 0 if eval { $self->_checkComposerVersion(); };
-                error( "composer.phar not found. Please retry without the '-a' option." );
+                return 0 if $self->_checkComposerVersion();
+                error( "composer.phar not found or outdated. Please retry without the '-a' option." );
                 1;
             }, 'Checking composer.phar version', 2, 1 );
             $rs ||= step( sub {
@@ -130,7 +131,7 @@ sub _init
         $rs ||= step( sub { $self->_installPackages( 2, 2 ); }, 'Installing/Updating composer packages from Github', 2, 2 );
         endDetail;
         $rs;
-    } ) if $main::execmode eq 'setup';
+    } ) if $::execmode eq 'setup';
 
     $self;
 }
@@ -149,26 +150,19 @@ sub _getComposer
 {
     my ( $self, $steps, $step ) = @_;
 
-    return 0 if eval { $self->_checkComposerVersion(); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
+    return 0 if $self->_checkComposerVersion();
 
     my $msgHeader = "Installing composer.phar from http://getcomposer.org\n\n";
     my $msgFooter = "\nDepending on your connection, this may take few seconds...";
-    my ( $rs, $stderr ) = ( 0, undef );
+    my $stderr;
 
-    $rs = executeNoWait(
+    my $rs = executeNoWait(
         sprintf( $self->{'su_cmd_pattern'}, escapeShell(
             "curl --connect-timeout 20 --silent --show-error http://getcomposer.org/installer | $self->{'php_cmd_prefix'} -- --no-ansi"
                 . " --version=$self->{'composer_version'}"
         )),
-        ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-            ? undef
-            : sub { step( undef, $msgHeader . $_[0] . $msgFooter, $steps, $step ); }
-        ),
-        sub { $stderr .= shift; }
+        ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : sub { step( undef, $msgHeader . $_[0] . $msgFooter, $steps, $step ); } ),
+        sub { $stderr .= $_[0]; }
     );
 
     error( sprintf( "Couldn't install composer.phar: %s", $stderr || 'Unknown error' )) if $rs;
@@ -179,7 +173,7 @@ sub _getComposer
 
  Check composer version
 
- Return boolean TRUE if composer version match with the expected one, FALSE otherwise, die on failure
+ Return boolean TRUE if composer version match with the expected one, FALSE otherwise
 
 =cut
 
@@ -187,20 +181,17 @@ sub _checkComposerVersion
 {
     my ( $self ) = @_;
 
-    return FALSE unless -x "$main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar";
+    return FALSE unless -x "$::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar";
 
-    my ( $stdout, $stderr );
-    execute(
-        sprintf( $self->{'su_cmd_pattern'}, escapeShell( "$self->{'php_cmd_prefix'} $main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar --version" )),
-        \$stdout,
-        \$stderr
-    ) == 0 or die( $stderr || 'Unknown error' );
+    return FALSE unless execute(
+        sprintf( $self->{'su_cmd_pattern'}, escapeShell( "$self->{'php_cmd_prefix'} $::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar --version" )),
+        \my $stdout,
+        \my $stderr
+    ) == 0;
     debug( $stdout ) if $stdout;
 
-    ( my ( $version ) = $stdout =~ /^Composer\s+version\s+(\d\.\d\.\d)\s+/ ) or die( "Couldn't get composer.phar version" );
-
+    return FALSE unless my ( $version ) = $stdout =~ /^Composer\s+version\s+(\d\.\d\.\d)\s+/;
     return FALSE if version->parse( $version ) != version->parse( $self->{'composer_version'} );
-
     TRUE;
 }
 
@@ -219,16 +210,15 @@ sub _checkRequirements
 
     return 0 unless -d $self->{'packages_dir'};
 
-    for ( @{ $self->{'packages'} } ) {
-        my ( $package, $version ) = $_ =~ /"(.*)":\s*"(.*)"/;
+    for my $package ( @{ $self->{'packages'} } ) {
+        ( $package, my $version ) = $package =~ /"(.*)":\s*"(.*)"/;
         my $rs = executeNoWait(
             sprintf( $self->{'su_cmd_pattern'}, escapeShell(
-                "$self->{'php_cmd_prefix'} $main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar show --no-ansi --no-interaction"
+                "$self->{'php_cmd_prefix'} $::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar show --no-ansi --no-interaction"
                     . " --working-dir=$self->{'packages_dir'} $package $version"
             )),
             ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                ? undef
-                : sub { step( undef, "Checking composer package requirements\n\n Checking package $package ($version)\n\n", $steps, $step ); }
+                ? undef : sub { step( undef, "Checking composer package requirements\n\n Checking package $package ($version)\n\n", $steps, $step ); }
             ),
             sub {}
         );
@@ -264,14 +254,11 @@ sub _installPackages
     # Note: Any progress/status info goes to stderr (See https://github.com/composer/composer/issues/3795)
     $rs = executeNoWait(
         sprintf( $self->{'su_cmd_pattern'}, escapeShell(
-            "$self->{'php_cmd_prefix'} $main::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar update --no-ansi --no-interaction"
+            "$self->{'php_cmd_prefix'} $::imscpConfig{'IMSCP_HOMEDIR'}/composer.phar update --no-ansi --no-interaction"
                 . " --working-dir=$self->{'packages_dir'}"
         )),
         sub {},
-        ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-            ? undef
-            : sub { step( undef, $msgHeader . $_[0] . $msgFooter, $steps, $step ); }
-        )
+        ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : sub { step( undef, $msgHeader . $_[0] . $msgFooter, $steps, $step ); } )
     );
 
     error( "Couldn't install/update i-MSCP packages from GitHub" ) if $rs;
@@ -324,17 +311,16 @@ sub _cleanCache
 {
     my ( $self ) = @_;
 
-    eval {
-        for my $dir ( "$main::imscpConfig{'IMSCP_HOMEDIR'}/.cache", "$main::imscpConfig{'IMSCP_HOMEDIR'}/.composer", $self->{'packages_dir'} ) {
+    try {
+        for my $dir ( "$::imscpConfig{'IMSCP_HOMEDIR'}/.cache", "$::imscpConfig{'IMSCP_HOMEDIR'}/.composer", $self->{'packages_dir'} ) {
             iMSCP::Dir->new( dirname => $dir )->remove();
         }
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
 
-    0;
+        0;
+    } catch {
+        error( $@ );
+        1;
+    };
 }
 
 =back

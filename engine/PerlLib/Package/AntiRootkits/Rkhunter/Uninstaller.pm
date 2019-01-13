@@ -46,7 +46,9 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-    $_[0]->_restoreDebianConfig();
+    my ( $self ) = @_;
+
+    $self->_restoreDebianConfig();
 }
 
 =back
@@ -67,36 +69,29 @@ sub _restoreDebianConfig
 {
     if ( -f '/etc/default/rkhunter' ) {
         my $file = iMSCP::File->new( filename => '/etc/default/rkhunter' );
-        my $fileContent = $file->get();
-        unless ( defined $fileContent ) {
-            error( "Couldn't read /etc/default/rkhunter file" );
-            return 1;
-        }
+        my $fileC = $file->getAsRef();
+        return 1 unless defined $fileC;
 
-        $fileContent =~ s/CRON_DAILY_RUN=".*"/CRON_DAILY_RUN=""/i;
-        $fileContent =~ s/CRON_DB_UPDATE=".*"/CRON_DB_UPDATE=""/i;
-        $file->set( $fileContent );
+        ${ $fileC } =~ s/(CRON_DAILY_RUN)=".*"/$1=""/;
+        ${ $fileC } =~ s/(CRON_DB_UPDATE)=".*"/$1=""/;
+
         my $rs = $file->save();
         return $rs if $rs;
     }
 
     if ( -f '/etc/cron.daily/rkhunter.disabled' ) {
-        my $rs = iMSCP::File->new( filename => '/etc/cron.daily/rkhunter.disabled' )->moveFile(
-            '/etc/cron.daily/rkhunter'
-        );
+        my $rs = iMSCP::File->new( filename => '/etc/cron.daily/rkhunter.disabled' )->moveFile( '/etc/cron.daily/rkhunter' );
         return $rs if $rs;
     }
 
     if ( -f '/etc/cron.weekly/rkhunter.disabled' ) {
-        my $rs = iMSCP::File->new( filename => '/etc/cron.weekly/rkhunter.disabled' )->moveFile(
-            '/etc/cron.weekly/rkhunter'
-        );
+        my $rs = iMSCP::File->new( filename => '/etc/cron.weekly/rkhunter.disabled' )->moveFile( '/etc/cron.weekly/rkhunter' );
         return $rs if $rs;
     }
 
-    if ( -f "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/rkhunter.disabled" ) {
-        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/rkhunter.disabled" )->moveFile(
-            "$main::imscpConfig{'LOGROTATE_CONF_DIR'}/rkhunter"
+    if ( -f "$::imscpConfig{'LOGROTATE_CONF_DIR'}/rkhunter.disabled" ) {
+        my $rs = iMSCP::File->new( filename => "$::imscpConfig{'LOGROTATE_CONF_DIR'}/rkhunter.disabled" )->moveFile(
+            "$::imscpConfig{'LOGROTATE_CONF_DIR'}/rkhunter"
         );
         return $rs if $rs;
     }

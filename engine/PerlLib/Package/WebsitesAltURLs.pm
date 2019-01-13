@@ -74,6 +74,24 @@ sub getPriority
     0;
 }
 
+=item preaddDmn( \%data )
+
+ Process preaddDmn tasks
+
+ Param hash \%data Domain data
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preaddDmn
+{
+    my ( $self ) = @_;
+
+    return 0 if $self->{'eventManager'}->hasListener( 'beforeHttpdBuildConfFile', \&_addServerAlias );
+
+    $self->{'eventManager'}->register( 'beforeHttpdBuildConfFile', \&_addServerAlias );
+}
+
 =item postaddDmn( \%data )
 
  Process postaddDmn tasks
@@ -136,7 +154,7 @@ sub postDeleteSub
 
 =back
 
-=head1 PRIVATE METHODS
+=head1 PRIVATE FUNCTIONS/METHODS
 
 =over 4
 
@@ -144,7 +162,7 @@ sub postDeleteSub
 
  Initialize instance
 
- Return void, die on failure
+ Return Package::WebsitesAltURLs, die on failure
 
 =cut
 
@@ -152,7 +170,7 @@ sub _init
 {
     my ( $self ) = @_;
 
-    iMSCP::EventManager->getInstance()->register( 'beforeHttpdBuildConfFile', \&_addServerAlias );
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self;
 }
 
@@ -171,7 +189,7 @@ sub _setupDialog
 
     my $value = ::setupGetQuestion( 'CLIENT_WEBSITES_ALT_URLS' );
 
-    if ( $main::reconfigure =~ /^(?:alt_urls_feature||all|forced)$/ || !grep ( $value eq $_, 'yes', 'no') ) {
+    if ( $::reconfigure =~ /^(?:alt_urls_feature||all|forced)$/ || !grep ( $value eq $_, 'yes', 'no') ) {
         my $rs = $dialog->yesno( <<'EOF', $value eq 'no', TRUE );
 
 Do you want to enable the alternative URLs for the client websites?
@@ -203,7 +221,7 @@ EOF
 sub _addServerAlias
 {
     my ( undef, $filename, $data ) = @_;
-
+    
     return 0 if $filename ne 'domain.tpl' || $::imscpConfig{'CLIENT_WEBSITES_ALT_URLS'} ne 'yes' || $data->{'ACTION'} !~ /^add(?:Dmn|Sub)$/;
 
     my $httpd = Servers::httpd->factory();

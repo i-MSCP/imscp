@@ -26,25 +26,27 @@ package Package::FrontEnd::Installer;
 use strict;
 use warnings;
 use File::Basename;
-use iMSCP::Crypt qw/ apr1MD5 randomStr /;
-use iMSCP::Database;
-use iMSCP::Debug;
+use iMSCP::Boolean;
+use iMSCP::Crypt qw/ ALNUM apr1MD5 randomStr /;
+use iMSCP::Database '$DATABASE';
+use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
-use iMSCP::Execute;
+use iMSCP::Execute 'execute';
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::OpenSSL;
 use iMSCP::Net;
+use iMSCP::OpenSSL;
 use iMSCP::ProgramFinder;
 use iMSCP::Service;
 use iMSCP::SystemUser;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ getBloc replaceBloc /;
 use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
 use Package::FrontEnd;
 use Servers::named;
 use Servers::mta;
 use Servers::httpd;
+use Try::Tiny;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -56,31 +58,28 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( \%em )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
+ Param iMSCP::EventManager \%em
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ($self, $eventManager) = @_;
+    my ( $self, $em ) = @_;
 
-    $eventManager->register(
-        'beforeSetupDialog',
-        sub {
-            push @{$_[0]},
-                sub { $self->askMasterAdminCredentials( @_ ) },
-                sub { $self->askMasterAdminEmail( @_ ) },
-                sub { $self->askDomain( @_ ) },
-                sub { $self->askSsl( @_ ) },
-                sub { $self->askHttpPorts( @_ ) };
-            0;
-        }
-    );
+    $em->register( 'beforeSetupDialog', sub {
+        push @{ $_[0] },
+            sub { $self->askMasterAdminCredentials( @_ ) },
+            sub { $self->askMasterAdminEmail( @_ ) },
+            sub { $self->askDomain( @_ ) },
+            sub { $self->askSsl( @_ ) },
+            sub { $self->askHttpPorts( @_ ) };
+        0;
+    } );
 }
 
 =item askMasterAdminCredentials( \%dialog )
@@ -94,45 +93,35 @@ sub registerSetupListeners
 
 sub askMasterAdminCredentials
 {
-    my (undef, $dialog) = @_;
+    my ( undef, $dialog ) = @_;
 
-    my ($username, $password) = ( '', '' );
-
-    my $db = iMSCP::Database->factory();
-
-    local $@;
-    eval { $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' )); };
-    $db = undef if $@;
+    my ( $username, $password ) = ( '', '' );
+    my $hasDatabase = try {
+        my $dbName = ::setupGetQuestion( 'DATABASE_NAME' );
+        my $db = iMSCP::Database->factory();
+        $db->isDatabase( $dbName ) && $db->databaseHasTables( $dbName, qw/ server_ips user_gui_props reseller_props / );
+    };
 
     if ( iMSCP::Getopt->preseed ) {
-        $username = main::setupGetQuestion( 'ADMIN_LOGIN_NAME' );
-        $password = main::setupGetQuestion( 'ADMIN_PASSWORD' );
-    } elsif ( $db ) {
-        local $@;
-        my $row = eval {
-            my $dbh = $db->getRawDb();
-            local $dbh->{'RaiseError'} = 1;
-            $dbh->selectrow_hashref(
-                "SELECT admin_name, admin_pass FROM admin WHERE created_by = 0 AND admin_type = 'admin'",
-            );
+        $username = ::setupGetQuestion( 'ADMIN_LOGIN_NAME' );
+        $password = ::setupGetQuestion( 'ADMIN_PASSWORD' );
+    } elsif ( $hasDatabase ) {
+        return 1 unless try {
+            ( $username, $password ) = @{ iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+                $_->selectrow_arrayref( "SELECT admin_name, admin_pass FROM admin WHERE created_by = 0 AND admin_type = 'admin'" );
+            } ) // [ '', '' ] };
+            TRUE;
+        } catch {
+            error( $_ );
+            FALSE;
         };
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        } elsif ( $row ) {
-            $username = $row->{'admin_name'} // '';
-            $password = $row->{'admin_pass'} // '';
-        }
     }
 
-    main::setupSetQuestion( 'ADMIN_OLD_LOGIN_NAME', $username );
+    ::setupSetQuestion( 'ADMIN_OLD_LOGIN_NAME', $username );
 
-    if ( $main::reconfigure =~ /^(?:admin|admin_credentials|all|forced)$/
-        || !isValidUsername( $username )
-        || $password eq ''
-    ) {
+    if ( $main::reconfigure =~ /^(?:admin|admin_credentials|all|forced)$/ || !isValidUsername( $username ) || $password eq '' ) {
         $password = '';
-        my ($rs, $msg) = ( 0, '' );
+        my ( $rs, $msg ) = ( 0, '' );
 
         do {
             ( $rs, $username ) = $dialog->inputbox( <<"EOF", $username || 'admin' );
@@ -142,27 +131,23 @@ EOF
             $msg = '';
             if ( !isValidUsername( $username ) ) {
                 $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
-            } elsif ( $db ) {
-                local $@;
-                my $row = eval {
-                    my $dbh = $db->getRawDb();
-                    local $dbh->{'RaiseError'} = 1;
-                    $dbh->selectrow_hashref(
-                        'SELECT 1 FROM admin WHERE admin_name = ? AND created_by <> 0', undef, $username
-                    );
+            } elsif ( $hasDatabase ) {
+                return 1 unless try {
+                    $msg = '\n\n\\Z1This username is not available.\\Zn\n\nPlease try again:' unless iMSCP::Database->factory()->getConnector()->run(
+                        fixup => sub {
+                            $_->selectrow_hashref( 'SELECT 1 FROM admin WHERE admin_name = ? AND created_by <> 0', undef, $username );
+                        } );
+                    TRUE;
+                } catch {
+                    error( $_ );
+                    FALSE;
                 };
-                if ( $@ ) {
-                    error( $@ );
-                    return 1;
-                } elsif ( $row ) {
-                    $msg = '\n\n\\Z1This username is not available.\\Zn\n\nPlease try again:'
-                }
             }
         } while $rs < 30 && $msg;
         return $rs if $rs >= 30;
 
         do {
-            ( $rs, $password ) = $dialog->inputbox( <<"EOF", randomStr( 16, iMSCP::Crypt::ALNUM ));
+            ( $rs, $password ) = $dialog->inputbox( <<"EOF", randomStr( 16, ALNUM ));
 
 Please enter a password for the master administrator:$msg
 EOF
@@ -173,8 +158,8 @@ EOF
         $password = '' unless iMSCP::Getopt->preseed
     }
 
-    main::setupSetQuestion( 'ADMIN_LOGIN_NAME', $username );
-    main::setupSetQuestion( 'ADMIN_PASSWORD', $password );
+    ::setupSetQuestion( 'ADMIN_LOGIN_NAME', $username );
+    ::setupSetQuestion( 'ADMIN_PASSWORD', $password );
     0;
 }
 
@@ -189,14 +174,12 @@ EOF
 
 sub askMasterAdminEmail
 {
-    my (undef, $dialog) = @_;
+    my ( undef, $dialog ) = @_;
 
-    my $email = main::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' );
+    my $email = ::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' );
 
-    if ( $main::reconfigure =~ /^(?:admin|admin_email|all|forced)$/
-        || !isValidEmail( $email )
-    ) {
-        my ($rs, $msg) = ( 0, '' );
+    if ( $::reconfigure =~ /^(?:admin|admin_email|all|forced)$/ || !isValidEmail( $email ) ) {
+        my ( $rs, $msg ) = ( 0, '' );
         do {
             ( $rs, $email ) = $dialog->inputbox( <<"EOF", $email );
 
@@ -207,7 +190,7 @@ EOF
         return $rs if $rs >= 30;
     }
 
-    main::setupSetQuestion( 'DEFAULT_ADMIN_ADDRESS', $email );
+    ::setupSetQuestion( 'DEFAULT_ADMIN_ADDRESS', $email );
     0;
 }
 
@@ -222,20 +205,18 @@ EOF
 
 sub askDomain
 {
-    my (undef, $dialog) = @_;
+    my ( undef, $dialog ) = @_;
 
-    my $domainName = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
+    my $domainName = ::setupGetQuestion( 'BASE_SERVER_VHOST' );
 
-    if ( $main::reconfigure =~ /^(?:panel|panel_hostname|hostnames|all|forced)$/
-        || !isValidDomain( $domainName )
-    ) {
+    if ( $::reconfigure =~ /^(?:panel|panel_hostname|hostnames|all|forced)$/ || !isValidDomain( $domainName ) ) {
         unless ( $domainName ) {
-            my @domainLabels = split /\./, main::setupGetQuestion( 'SERVER_HOSTNAME' );
+            my @domainLabels = split /\./, ::setupGetQuestion( 'SERVER_HOSTNAME' );
             $domainName = 'panel.' . join( '.', @domainLabels[1 .. $#domainLabels] );
         }
 
         $domainName = idn_to_unicode( $domainName, 'utf-8' );
-        my ($rs, $msg) = ( 0, '' );
+        my ( $rs, $msg ) = ( 0, '' );
         do {
             ( $rs, $domainName ) = $dialog->inputbox( <<"EOF", $domainName, 'utf-8' );
 
@@ -246,7 +227,7 @@ EOF
         return $rs if $rs >= 30;
     }
 
-    main::setupSetQuestion( 'BASE_SERVER_VHOST', idn_to_ascii( $domainName, 'utf-8' ));
+    ::setupSetQuestion( 'BASE_SERVER_VHOST', idn_to_ascii( $domainName, 'utf-8' ));
     0;
 }
 
@@ -261,22 +242,21 @@ EOF
 
 sub askSsl
 {
-    my (undef, $dialog) = @_;
+    my ( undef, $dialog ) = @_;
 
-    my $domainName = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
+    my $domainName = ::setupGetQuestion( 'BASE_SERVER_VHOST' );
     my $domainNameUnicode = idn_to_unicode( $domainName, 'utf-8' );
-    my $sslEnabled = main::setupGetQuestion( 'PANEL_SSL_ENABLED' );
-    my $selfSignedCertificate = main::setupGetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE', 'no' );
-    my $privateKeyPath = main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH', '/root' );
-    my $passphrase = main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PASSPHRASE' );
-    my $certificatePath = main::setupGetQuestion( 'PANEL_SSL_CERTIFICATE_PATH', '/root' );
-    my $caBundlePath = main::setupGetQuestion( 'PANEL_SSL_CA_BUNDLE_PATH', '/root' );
-    my $baseServerVhostPrefix = main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX', 'http://' );
+    my $sslEnabled = ::setupGetQuestion( 'PANEL_SSL_ENABLED' );
+    my $selfSignedCertificate = ::setupGetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE', 'no' );
+    my $privateKeyPath = ::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH', '/root' );
+    my $passphrase = ::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PASSPHRASE' );
+    my $certificatePath = ::setupGetQuestion( 'PANEL_SSL_CERTIFICATE_PATH', '/root' );
+    my $caBundlePath = ::setupGetQuestion( 'PANEL_SSL_CA_BUNDLE_PATH', '/root' );
+    my $baseServerVhostPrefix = ::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX', 'http://' );
     my $openSSL = iMSCP::OpenSSL->new();
 
-    if ( $main::reconfigure =~ /^(?:panel|panel_ssl|ssl|all|forced)$/
-        || $sslEnabled !~ /^(?:yes|no)$/
-        || ( $sslEnabled eq 'yes' && $main::reconfigure =~ /^(?:panel_hostname|hostnames)$/ )
+    if ( $::reconfigure =~ /^(?:panel|panel_ssl|ssl|all|forced)$/ || $sslEnabled !~ /^(?:yes|no)$/
+        || ( $sslEnabled eq 'yes' && $::reconfigure =~ /^(?:panel_hostname|hostnames)$/ )
     ) {
         my $rs = $dialog->yesno( <<'EOF', $sslEnabled eq 'no' ? 1 : 0 );
 
@@ -313,13 +293,7 @@ EOF
 
                     $msg = '';
                     if ( $openSSL->validatePrivateKey() ) {
-                        getMessageByType(
-                            'error',
-                            {
-                                amount => 1,
-                                remove => 1
-                            }
-                        );
+                        getMessageByType( 'error', { amount => 1, remove => TRUE } );
                         $msg = "\n\\Z1Invalid private key or passphrase.\\Zn\n\nPlease try again.";
                     }
                 } while $rs < 30 && $msg;
@@ -357,13 +331,7 @@ EOF
                     } while $rs < 30 && !( $certificatePath && -f $certificatePath );
                     return $rs if $rs >= 30;
 
-                    getMessageByType(
-                        'error',
-                        {
-                            amount => 1,
-                            remove => 1
-                        }
-                    );
+                    getMessageByType( 'error', { amount => 1, remove => TRUE } );
                     $openSSL->{'certificate_container_path'} = $certificatePath;
                 } while $rs < 30 && $openSSL->validateCertificate();
                 return $rs if $rs >= 30;
@@ -383,37 +351,31 @@ EOF
             $sslEnabled = 'no';
         }
     } elsif ( $sslEnabled eq 'yes' && !iMSCP::Getopt->preseed ) {
-        $openSSL->{'private_key_container_path'} = "$main::imscpConfig{'CONF_DIR'}/$domainName.pem";
-        $openSSL->{'ca_bundle_container_path'} = "$main::imscpConfig{'CONF_DIR'}/$domainName.pem";
-        $openSSL->{'certificate_container_path'} = "$main::imscpConfig{'CONF_DIR'}/$domainName.pem";
+        $openSSL->{'private_key_container_path'} = "$::imscpConfig{'CONF_DIR'}/$domainName.pem";
+        $openSSL->{'ca_bundle_container_path'} = "$::imscpConfig{'CONF_DIR'}/$domainName.pem";
+        $openSSL->{'certificate_container_path'} = "$::imscpConfig{'CONF_DIR'}/$domainName.pem";
 
         if ( $openSSL->validateCertificateChain() ) {
-            getMessageByType(
-                'error',
-                {
-                    amount => 1,
-                    remove => 1
-                }
-            );
+            getMessageByType( 'error', { amount => 1, remove => TRUE } );
             $dialog->msgbox( <<'EOF' );
 
 Your SSL certificate for the control panel is missing or invalid.
 EOF
-            main::setupSetQuestion( 'PANEL_SSL_ENABLED', '' );
-            goto &{askSsl};
+            ::setupSetQuestion( 'PANEL_SSL_ENABLED', '' );
+            goto &{ askSsl };
         }
 
         # In case the certificate is valid, we skip SSL setup process
-        main::setupSetQuestion( 'PANEL_SSL_SETUP', 'no' );
+        ::setupSetQuestion( 'PANEL_SSL_SETUP', 'no' );
     }
 
-    main::setupSetQuestion( 'PANEL_SSL_ENABLED', $sslEnabled );
-    main::setupSetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE', $selfSignedCertificate );
-    main::setupSetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH', $privateKeyPath );
-    main::setupSetQuestion( 'PANEL_SSL_PRIVATE_KEY_PASSPHRASE', $passphrase );
-    main::setupSetQuestion( 'PANEL_SSL_CERTIFICATE_PATH', $certificatePath );
-    main::setupSetQuestion( 'PANEL_SSL_CA_BUNDLE_PATH', $caBundlePath );
-    main::setupSetQuestion( 'BASE_SERVER_VHOST_PREFIX', $sslEnabled eq 'yes' ? $baseServerVhostPrefix : 'http://' );
+    ::setupSetQuestion( 'PANEL_SSL_ENABLED', $sslEnabled );
+    ::setupSetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE', $selfSignedCertificate );
+    ::setupSetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH', $privateKeyPath );
+    ::setupSetQuestion( 'PANEL_SSL_PRIVATE_KEY_PASSPHRASE', $passphrase );
+    ::setupSetQuestion( 'PANEL_SSL_CERTIFICATE_PATH', $certificatePath );
+    ::setupSetQuestion( 'PANEL_SSL_CA_BUNDLE_PATH', $caBundlePath );
+    ::setupSetQuestion( 'BASE_SERVER_VHOST_PREFIX', $sslEnabled eq 'yes' ? $baseServerVhostPrefix : 'http://' );
     0;
 }
 
@@ -428,16 +390,14 @@ EOF
 
 sub askHttpPorts
 {
-    my (undef, $dialog) = @_;
+    my ( undef, $dialog ) = @_;
 
-    my $httpPort = main::setupGetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT' );
-    my $httpsPort = main::setupGetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT' );
-    my $ssl = main::setupGetQuestion( 'PANEL_SSL_ENABLED' );
-    my ($rs, $msg) = ( 0, '' );
+    my $httpPort = ::setupGetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT' );
+    my $httpsPort = ::setupGetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT' );
+    my $ssl = ::setupGetQuestion( 'PANEL_SSL_ENABLED' );
+    my ( $rs, $msg ) = ( 0, '' );
 
-    if ( $main::reconfigure =~ /^(?:panel|panel_ports|all|forced)$/
-        || !isNumber( $httpPort )
-        || !isNumberInRange( $httpPort, 1025, 65535 )
+    if ( $::reconfigure =~ /^(?:panel|panel_ports|all|forced)$/ || !isNumber( $httpPort ) || !isNumberInRange( $httpPort, 1025, 65535 )
         || !isStringNotInList( $httpPort, $httpsPort )
     ) {
         do {
@@ -446,22 +406,17 @@ sub askHttpPorts
 Please enter the http port for the control panel:$msg
 EOF
             $msg = '';
-            if ( !isNumber( $httpPort )
-                || !isNumberInRange( $httpPort, 1025, 65535 )
-                || !isStringNotInList( $httpPort, $httpsPort )
-            ) {
+            if ( !isNumber( $httpPort ) || !isNumberInRange( $httpPort, 1025, 65535 ) || !isStringNotInList( $httpPort, $httpsPort ) ) {
                 $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             }
         } while $rs < 30 && $msg;
         return $rs if $rs >= 30;
     }
 
-    main::setupSetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT', $httpPort );
+    ::setupSetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT', $httpPort );
 
     if ( $ssl eq 'yes' ) {
-        if ( $main::reconfigure =~ /^(?:panel|panel_ports|all|forced)$/
-            || !isNumber( $httpsPort )
-            || !isNumberInRange( $httpsPort, 1025, 65535 )
+        if ( $::reconfigure =~ /^(?:panel|panel_ports|all|forced)$/ || !isNumber( $httpsPort ) || !isNumberInRange( $httpsPort, 1025, 65535 )
             || !isStringNotInList( $httpsPort, $httpPort )
         ) {
             do {
@@ -470,10 +425,7 @@ EOF
 Please enter the https port for the control panel:$msg
 EOF
                 $msg = '';
-                if ( !isNumber( $httpsPort )
-                    || !isNumberInRange( $httpsPort, 1025, 65535 )
-                    || !isStringNotInList( $httpsPort, $httpPort )
-                ) {
+                if ( !isNumber( $httpsPort ) || !isNumberInRange( $httpsPort, 1025, 65535 ) || !isStringNotInList( $httpsPort, $httpPort ) ) {
                     $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
                 }
             } while $rs < 30 && $msg;
@@ -483,7 +435,7 @@ EOF
         $httpsPort ||= 8443;
     }
 
-    main::setupSetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT', $httpsPort );
+    ::setupSetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT', $httpsPort );
     0;
 }
 
@@ -497,7 +449,7 @@ EOF
 
 sub install
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->_setupMasterAdmin();
     $rs ||= $self->_setupSsl();
@@ -524,13 +476,11 @@ sub install
 
 sub dpkgPostInvokeTasks
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'frontend'}->restartPhpFpm();
 
-    if ( -f '/usr/local/sbin/imscp_panel'
-        && ( $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} eq '' || !-f $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} )
-    ) {
+    if ( -f '/usr/local/sbin/imscp_panel' && ( $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} eq '' || !-f $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} ) ) {
         # Cover case where administrator removed the package
         my $rs = $self->{'frontend'}->stop();
         $rs ||= iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
@@ -566,7 +516,7 @@ sub dpkgPostInvokeTasks
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'frontend'} = Package::FrontEnd->getInstance();
     $self->{'phpConfig'} = Servers::httpd->factory()->{'phpConfig'};
@@ -586,53 +536,40 @@ sub _init
 
 sub _setupMasterAdmin
 {
-    my $login = main::setupGetQuestion( 'ADMIN_LOGIN_NAME' );
-    my $loginOld = main::setupGetQuestion( 'ADMIN_OLD_LOGIN_NAME' );
-    my $password = main::setupGetQuestion( 'ADMIN_PASSWORD' );
-    my $email = main::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' );
+    try {
+        my $login = ::setupGetQuestion( 'ADMIN_LOGIN_NAME' );
+        my $loginOld = ::setupGetQuestion( 'ADMIN_OLD_LOGIN_NAME' );
+        my $password = ::setupGetQuestion( 'ADMIN_PASSWORD' );
+        my $email = ::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' );
 
-    return 0 if $password eq '';
+        return 0 if $password eq '';
 
-    $password = apr1MD5( $password );
+        $password = apr1MD5( $password );
 
-    my $db = iMSCP::Database->factory();
-    my $dbh = $db->getRawDb();
+        local $DATABASE = ::setupGetQuestion( 'DATABASE_NAME' );
 
-    local $@;
-    eval {
-        my $oldDbName = $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ));
+        my ( $adminID ) = @{ iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+            $_->selectcol_arrayref( "SELECT admin_id FROM admin WHERE admin_name = ?", undef, $loginOld );
+        } ) };
 
-        {
-            local $dbh->{'RaiseError'} = 1;
-            $dbh->begin_work();
-
-            my $row = $dbh->selectrow_hashref( "SELECT admin_id FROM admin WHERE admin_name = ?", undef, $loginOld );
-
-            if ( $row ) {
-                $dbh->do(
-                    'UPDATE admin SET admin_name = ?, admin_pass = ?, email = ? WHERE admin_id = ?',
-                    undef, $login, $password, $email, $row->{'admin_id'}
+        if ( $adminID ) {
+            iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+                $_->do( 'UPDATE admin SET admin_name = ?, admin_pass = ?, email = ? WHERE admin_id = ?', undef, $login, $password, $email, $adminID );
+            } );
+        } else {
+            iMSCP::Database->factory()->getConnector()->txn( fixup => sub {
+                $_->do(
+                    "INSERT INTO admin (admin_name, admin_pass, admin_type, email) VALUES (?, ?, 'admin', ?)", undef, $login, $password, $email
                 );
-            } else {
-                $dbh->do(
-                    'INSERT INTO admin (admin_name, admin_pass, admin_type, email) VALUES (?, ?, ?, ?)',
-                    undef, $login, $password, 'admin', $email
-                );
-                $dbh->do( 'INSERT INTO user_gui_props SET user_id = LAST_INSERT_ID()' );
-            }
-
-            $dbh->commit();
+                $_->do( 'INSERT INTO user_gui_props SET user_id = LAST_INSERT_ID()' );
+            } );
         }
 
-        $db->useDatabase( $oldDbName ) if $oldDbName;
+        0;
+    } catch {
+        error( $_ );
+        1;
     };
-    if ( $@ ) {
-        $dbh->rollback();
-        error( $@ );
-        return 1;
-    }
-
-    0
 }
 
 =item _setupSsl( )
@@ -645,47 +582,48 @@ sub _setupMasterAdmin
 
 sub _setupSsl
 {
-    my $sslEnabled = main::setupGetQuestion( 'PANEL_SSL_ENABLED' );
-    my $oldCertificate = $main::imscpOldConfig{'BASE_SERVER_VHOST'};
-    my $domainName = main::setupGetQuestion( 'BASE_SERVER_VHOST' );
+    try {
+        my $sslEnabled = ::setupGetQuestion( 'PANEL_SSL_ENABLED' );
+        my $oldCertificate = $::imscpOldConfig{'BASE_SERVER_VHOST'};
+        my $domainName = ::setupGetQuestion( 'BASE_SERVER_VHOST' );
 
-    # Remove old certificate if any (handle case where panel hostname has been changed)
-    if ( $oldCertificate ne '' && $oldCertificate ne "$domainName.pem"
-        && -f "$main::imscpConfig{'CONF_DIR'}/$oldCertificate"
-    ) {
-        my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/$oldCertificate" )->delFile();
-        return $rs if $rs;
-    }
-
-    if ( $sslEnabled eq 'no' || main::setupGetQuestion( 'PANEL_SSL_SETUP', 'yes' ) eq 'no' ) {
-        if ( $sslEnabled eq 'no' && -f "$main::imscpConfig{'CONF_DIR'}/$domainName.pem" ) {
-            my $rs = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/$domainName.pem" )->delFile();
+        # Remove old certificate if any (handle case where panel hostname has been changed)
+        if ( $oldCertificate ne '' && $oldCertificate ne "$domainName.pem" && -f "$::imscpConfig{'CONF_DIR'}/$oldCertificate" ) {
+            my $rs = iMSCP::File->new( filename => "$::imscpConfig{'CONF_DIR'}/$oldCertificate" )->delFile();
             return $rs if $rs;
         }
 
-        return 0;
-    }
-
-    if ( main::setupGetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE' ) eq 'yes' ) {
-        return iMSCP::OpenSSL->new(
-            certificate_chains_storage_dir => $main::imscpConfig{'CONF_DIR'},
-            certificate_chain_name         => $domainName
-        )->createSelfSignedCertificate(
-            {
-                common_name => $domainName,
-                email       => main::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' )
+        if ( $sslEnabled eq 'no' || ::setupGetQuestion( 'PANEL_SSL_SETUP', 'yes' ) eq 'no' ) {
+            if ( $sslEnabled eq 'no' && -f "$::imscpConfig{'CONF_DIR'}/$domainName.pem" ) {
+                my $rs = iMSCP::File->new( filename => "$::imscpConfig{'CONF_DIR'}/$domainName.pem" )->delFile();
+                return $rs if $rs;
             }
-        );
-    }
 
-    iMSCP::OpenSSL->new(
-        certificate_chains_storage_dir => $main::imscpConfig{'CONF_DIR'},
-        certificate_chain_name         => $domainName,
-        private_key_container_path     => main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH' ),
-        private_key_passphrase         => main::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PASSPHRASE' ),
-        certificate_container_path     => main::setupGetQuestion( 'PANEL_SSL_CERTIFICATE_PATH' ),
-        ca_bundle_container_path       => main::setupGetQuestion( 'PANEL_SSL_CA_BUNDLE_PATH' )
-    )->createCertificateChain();
+            return 0;
+        }
+
+        if ( ::setupGetQuestion( 'PANEL_SSL_SELFSIGNED_CERTIFICATE' ) eq 'yes' ) {
+            return iMSCP::OpenSSL->new(
+                certificate_chains_storage_dir => $::imscpConfig{'CONF_DIR'},
+                certificate_chain_name         => $domainName
+            )->createSelfSignedCertificate( {
+                common_name => $domainName,
+                email       => ::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' )
+            } );
+        }
+
+        iMSCP::OpenSSL->new(
+            certificate_chains_storage_dir => $::imscpConfig{'CONF_DIR'},
+            certificate_chain_name         => $domainName,
+            private_key_container_path     => ::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PATH' ),
+            private_key_passphrase         => ::setupGetQuestion( 'PANEL_SSL_PRIVATE_KEY_PASSPHRASE' ),
+            certificate_container_path     => ::setupGetQuestion( 'PANEL_SSL_CERTIFICATE_PATH' ),
+            ca_bundle_container_path       => ::setupGetQuestion( 'PANEL_SSL_CA_BUNDLE_PATH' )
+        )->createCertificateChain();
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item _setHttpdVersion( )
@@ -698,9 +636,9 @@ sub _setupSsl
 
 sub _setHttpdVersion( )
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = execute( 'nginx -v', \ my $stdout, \ my $stderr );
+    my $rs = execute( [ 'nginx', '-v' ], \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
@@ -725,67 +663,50 @@ sub _setHttpdVersion( )
 
 sub _addMasterWebUser
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    local $@;
-    my $rs = eval {
+    try {
         my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndAddUser' );
         return $rs if $rs;
 
-        my $user = my $group = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+        my $ug = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-        my $db = iMSCP::Database->factory();
-        my $dbh = $db->getRawDb();
-        local $dbh->{'RaiseError'} = 1;
+        local $DATABASE = ::setupGetQuestion( 'DATABASE_NAME' );
 
-        $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' ));
-
-        my $row = $dbh->selectrow_hashref(
-            "
-                SELECT admin_sys_name, admin_sys_uid, admin_sys_gname
-                FROM admin
-                WHERE admin_type = 'admin'
-                AND created_by = 0
-                LIMIT 1
-            "
-        );
+        my $row = iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+            $_->selectrow_hashref(
+                "SELECT admin_sys_name, admin_sys_uid, admin_sys_gname FROM admin WHERE admin_type = 'admin' AND created_by = 0 LIMIT 1"
+            );
+        } );
         $row or die( "Couldn't find master administrator user in database" );
 
-        my ($oldUser, $uid, $gid) = ( $row->{'admin_sys_uid'} && $row->{'admin_sys_uid'} ne '0' )
-            ? ( getpwuid( $row->{'admin_sys_uid'} ) )[0, 2, 3] : ();
+        my ( $oldUser, $uid, $gid ) = $row->{'admin_sys_uid'} && $row->{'admin_sys_uid'} ne '0' ? ( getpwuid( $row->{'admin_sys_uid'} ) )[0, 2, 3] : ();
 
         $rs = iMSCP::SystemUser->new(
             username       => $oldUser,
             comment        => 'i-MSCP Control Panel Web User',
             home           => $main::imscpConfig{'GUI_ROOT_DIR'},
-            skipCreateHome => 1
-        )->addSystemUser( $user, $group );
+            skipCreateHome => TRUE
+        )->addSystemUser( $ug, $ug );
         return $rs if $rs;
 
-        ( $uid, $gid ) = ( getpwnam( $user ) )[2, 3];
+        ( $uid, $gid ) = ( getpwnam( $ug ) )[2, 3];
 
-        $dbh->do(
-            "
-                UPDATE admin
-                SET admin_sys_name = ?, admin_sys_uid = ?, admin_sys_gname = ?, admin_sys_gid = ?
-                WHERE admin_type = 'admin'
-            ",
-            undef, $user, $uid, $group, $gid
-        );
+        iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+            $_->do(
+                "UPDATE admin SET admin_sys_name = ?, admin_sys_uid = ?, admin_sys_gname = ?, admin_sys_gid = ? WHERE admin_type = 'admin'",
+                undef, $ug, $uid, $ug, $gid
+            );
+        } );
 
-        $rs = iMSCP::SystemUser->new( username => $user )->addToGroup( $main::imscpConfig{'IMSCP_GROUP'} );
-        $rs = iMSCP::SystemUser->new( username => $user )->addToGroup(
-            Servers::mta->factory()->{'config'}->{'MTA_MAILBOX_GID_NAME'}
-        );
-        $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'HTTPD_USER'} )->addToGroup( $group );
+        $rs = iMSCP::SystemUser->new( username => $ug )->addToGroup( $main::imscpConfig{'IMSCP_GROUP'} );
+        $rs = iMSCP::SystemUser->new( username => $ug )->addToGroup( Servers::mta->factory()->{'config'}->{'MTA_MAILBOX_GID_NAME'} );
+        $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'HTTPD_USER'} )->addToGroup( $ug );
         $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndAddUser' );
+    } catch {
+        error( $_ );
+        1;
     };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $rs;
 }
 
 =item _makeDirs( )
@@ -798,47 +719,47 @@ sub _addMasterWebUser
 
 sub _makeDirs
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndMakeDirs' );
-    return $rs if $rs;
+    try {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndMakeDirs' );
+        return $rs if $rs;
 
-    my $rootUName = $main::imscpConfig{'ROOT_USER'};
-    my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
+        my $rootUName = $main::imscpConfig{'ROOT_USER'};
+        my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
+        my $nginxTmpDir = $self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'};
+        $nginxTmpDir = $self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'} unless -d $nginxTmpDir;
 
-    my $nginxTmpDir = $self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'};
-    $nginxTmpDir = $self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'} unless -d $nginxTmpDir;
+        # Force re-creation of cache directory tree (needed to prevent any
+        # permissions problem from an old installation). See #IP-1530
+        iMSCP::Dir->new( dirname => $nginxTmpDir )->remove();
 
-    # Force re-creation of cache directory tree (needed to prevent any permissions problem from an old installation)
-    # See #IP-1530
-    iMSCP::Dir->new( dirname => $nginxTmpDir )->remove();
+        for my $dir ( [ $nginxTmpDir, $rootUName, $rootGName, 0755 ],
+            [ $self->{'config'}->{'HTTPD_CONF_DIR'}, $rootUName, $rootGName, 0755 ],
+            [ $self->{'config'}->{'HTTPD_LOG_DIR'}, $rootUName, $rootGName, 0755 ],
+            [ $self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}, $rootUName, $rootGName, 0755 ],
+            [ $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}, $rootUName, $rootGName, 0755 ]
+        ) {
+            iMSCP::Dir->new( dirname => $dir->[0] )->make( {
+                user  => $dir->[1],
+                group => $dir->[2],
+                mode  => $dir->[3]
+            } );
+        }
 
-    for ( [ $nginxTmpDir, $rootUName, $rootGName, 0755 ],
-        [ $self->{'config'}->{'HTTPD_CONF_DIR'}, $rootUName, $rootGName, 0755 ],
-        [ $self->{'config'}->{'HTTPD_LOG_DIR'}, $rootUName, $rootGName, 0755 ],
-        [ $self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}, $rootUName, $rootGName, 0755 ],
-        [ $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}, $rootUName, $rootGName, 0755 ]
-    ) {
-        iMSCP::Dir->new( dirname => $_->[0] )->make(
-            {
-                user  => $_->[1],
-                group => $_->[2],
-                mode  => $_->[3]
-            }
-        );
-    }
-
-    if ( iMSCP::Service->getInstance->isSystemd() ) {
-        iMSCP::Dir->new( dirname => '/run/imscp' )->make(
-            {
+        if ( iMSCP::Service->getInstance->isSystemd() ) {
+            iMSCP::Dir->new( dirname => '/run/imscp' )->make( {
                 user  => $self->{'config'}->{'HTTPD_USER'},
                 group => $self->{'config'}->{'HTTPD_GROUP'},
                 mode  => 0755
-            }
-        );
-    }
+            } );
+        }
 
-    $self->{'eventManager'}->trigger( 'afterFrontEndMakeDirs' );
+        $self->{'eventManager'}->trigger( 'afterFrontEndMakeDirs' );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item _copyPhpBinary( )
@@ -851,7 +772,7 @@ sub _makeDirs
 
 sub _copyPhpBinary
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndCopyPhpBinary' );
     return $rs if $rs;
@@ -862,12 +783,11 @@ sub _copyPhpBinary
     }
 
     if ( -f '/usr/local/sbin/imscp_panel' ) {
-        $rs ||= iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
+        $rs = iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
+        return $rs if $rs;
     }
 
-    $rs ||= iMSCP::File->new( filename => $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} )->copyFile(
-        '/usr/local/sbin/imscp_panel'
-    );
+    $rs = iMSCP::File->new( filename => $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} )->copyFile( '/usr/local/sbin/imscp_panel' );
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndCopyPhpBinary' );
 }
 
@@ -881,53 +801,50 @@ sub _copyPhpBinary
 
 sub _buildPhpConfig
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndBuildPhpConfig' );
     return $rs if $rs;
 
-    my $user = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-    my $group = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $user = $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $group = $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-    $rs = $self->{'frontend'}->buildConfFile(
-        "$self->{'cfgDir'}/php-fpm.conf",
+    $rs = $self->{'frontend'}->buildConfFile( "$self->{'cfgDir'}/php-fpm.conf",
         {
-            CHKROOTKIT_LOG            => $main::imscpConfig{'CHKROOTKIT_LOG'},
-            CONF_DIR                  => $main::imscpConfig{'CONF_DIR'},
-            DOMAIN                    => main::setupGetQuestion( 'BASE_SERVER_VHOST' ),
-            DISTRO_OPENSSL_CNF        => $main::imscpConfig{'DISTRO_OPENSSL_CNF'},
-            DISTRO_CA_BUNDLE          => $main::imscpConfig{'DISTRO_CA_BUNDLE'},
+            CHKROOTKIT_LOG            => $::imscpConfig{'CHKROOTKIT_LOG'},
+            CONF_DIR                  => $::imscpConfig{'CONF_DIR'},
+            DOMAIN                    => ::setupGetQuestion( 'BASE_SERVER_VHOST' ),
+            DISTRO_OPENSSL_CNF        => $::imscpConfig{'DISTRO_OPENSSL_CNF'},
+            DISTRO_CA_BUNDLE          => $::imscpConfig{'DISTRO_CA_BUNDLE'},
             FRONTEND_FCGI_CHILDREN    => $self->{'config'}->{'FRONTEND_FCGI_CHILDREN'},
             FRONTEND_FCGI_MAX_REQUEST => $self->{'config'}->{'FRONTEND_FCGI_MAX_REQUEST'},
             FRONTEND_GROUP            => $group,
             FRONTEND_USER             => $user,
-            HOME_DIR                  => $main::imscpConfig{'GUI_ROOT_DIR'},
+            HOME_DIR                  => $::imscpConfig{'GUI_ROOT_DIR'},
             MTA_VIRTUAL_MAIL_DIR      => Servers::mta->factory()->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
             PEAR_DIR                  => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
-            OTHER_ROOTKIT_LOG         => $main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne ''
-                ? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : '',
-            RKHUNTER_LOG              => $main::imscpConfig{'RKHUNTER_LOG'},
-            TIMEZONE                  => main::setupGetQuestion( 'TIMEZONE' ),
-            WEB_DIR                   => $main::imscpConfig{'GUI_ROOT_DIR'}
+            OTHER_ROOTKIT_LOG         => $::imscpConfig{'OTHER_ROOTKIT_LOG'} ne '' ? ":$::imscpConfig{'OTHER_ROOTKIT_LOG'}" : '',
+            RKHUNTER_LOG              => $::imscpConfig{'RKHUNTER_LOG'},
+            TIMEZONE                  => ::setupGetQuestion( 'TIMEZONE' ),
+            WEB_DIR                   => $::imscpConfig{'GUI_ROOT_DIR'}
         },
         {
-            destination => "/usr/local/etc/imscp_panel/php-fpm.conf",
-            user        => $main::imscpConfig{'ROOT_USER'},
-            group       => $main::imscpConfig{'ROOT_GROUP'},
+            destination => '/usr/local/etc/imscp_panel/php-fpm.conf',
+            user        => $::imscpConfig{'ROOT_USER'},
+            group       => $::imscpConfig{'ROOT_GROUP'},
             mode        => 0640
         }
     );
-    $rs ||= $self->{'frontend'}->buildConfFile(
-        "$self->{'cfgDir'}/php.ini",
+    $rs ||= $self->{'frontend'}->buildConfFile( "$self->{'cfgDir'}/php.ini",
         {
 
             PEAR_DIR => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
-            TIMEZONE => main::setupGetQuestion( 'TIMEZONE' )
+            TIMEZONE => ::setupGetQuestion( 'TIMEZONE' )
         },
         {
-            destination => "/usr/local/etc/imscp_panel/php.ini",
-            user        => $main::imscpConfig{'ROOT_USER'},
-            group       => $main::imscpConfig{'ROOT_GROUP'},
+            destination => '/usr/local/etc/imscp_panel/php.ini',
+            user        => $::imscpConfig{'ROOT_USER'},
+            group       => $::imscpConfig{'ROOT_GROUP'},
             mode        => 0640,
         }
     );
@@ -944,14 +861,13 @@ sub _buildPhpConfig
 
 sub _buildHttpdConfig
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndBuildHttpdConfig' );
     return $rs if $rs;
 
     # Build main nginx configuration file
-    $rs = $self->{'frontend'}->buildConfFile(
-        "$self->{'cfgDir'}/nginx.nginx",
+    $rs = $self->{'frontend'}->buildConfFile( "$self->{'cfgDir'}/nginx.nginx",
         {
             HTTPD_USER               => $self->{'config'}->{'HTTPD_USER'},
             HTTPD_WORKER_PROCESSES   => $self->{'config'}->{'HTTPD_WORKER_PROCESSES'},
@@ -965,123 +881,91 @@ sub _buildHttpdConfig
         },
         {
             destination => "$self->{'config'}->{'HTTPD_CONF_DIR'}/nginx.conf",
-            user        => $main::imscpConfig{'ROOT_USER'},
-            group       => $main::imscpConfig{'ROOT_GROUP'},
+            user        => $::imscpConfig{'ROOT_USER'},
+            group       => $::imscpConfig{'ROOT_GROUP'},
             mode        => 0644
         }
     );
 
     # Build FastCGI configuration file
-    $rs = $self->{'frontend'}->buildConfFile(
-        "$self->{'cfgDir'}/imscp_fastcgi.nginx",
-        {},
-        {
-            destination => "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf",
-            user        => $main::imscpConfig{'ROOT_USER'},
-            group       => $main::imscpConfig{'ROOT_GROUP'},
-            mode        => 0644
-        }
-    );
+    $rs = $self->{'frontend'}->buildConfFile( "$self->{'cfgDir'}/imscp_fastcgi.nginx", {}, {
+        destination => "$self->{'config'}->{'HTTPD_CONF_DIR'}/imscp_fastcgi.conf",
+        user        => $::imscpConfig{'ROOT_USER'},
+        group       => $::imscpConfig{'ROOT_GROUP'},
+        mode        => 0644
+    } );
 
     # Build PHP backend configuration file
-    $rs = $self->{'frontend'}->buildConfFile(
-        "$self->{'cfgDir'}/imscp_php.nginx",
-        {},
-        {
-            destination => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf",
-            user        => $main::imscpConfig{'ROOT_USER'},
-            group       => $main::imscpConfig{'ROOT_GROUP'},
-            mode        => 0644
-        }
-    );
+    $rs = $self->{'frontend'}->buildConfFile( "$self->{'cfgDir'}/imscp_php.nginx", {}, {
+        destination => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/imscp_php.conf",
+        user        => $::imscpConfig{'ROOT_USER'},
+        group       => $::imscpConfig{'ROOT_GROUP'},
+        mode        => 0644
+    } );
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndBuildHttpdConfig' );
     $rs ||= $self->{'eventManager'}->trigger( 'beforeFrontEndBuildHttpdVhosts' );
     return $rs if $rs;
 
     # Build frontEnd site files
-    my $baseServerIpVersion = iMSCP::Net->getInstance()->getAddrVersion( main::setupGetQuestion( 'BASE_SERVER_IP' ));
-    my $httpsPort = main::setupGetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT' );
+    my $baseServerIpVersion = iMSCP::Net->getInstance()->getAddrVersion( ::setupGetQuestion( 'BASE_SERVER_IP' ));
+    my $httpsPort = ::setupGetQuestion( 'BASE_SERVER_VHOST_HTTPS_PORT' );
     my $tplVars = {
-        BASE_SERVER_VHOST            => main::setupGetQuestion( 'BASE_SERVER_VHOST' ),
-        BASE_SERVER_IP               => ( $baseServerIpVersion eq 'ipv4' )
-            ? main::setupGetQuestion( 'BASE_SERVER_IP' ) =~ s/^\Q0.0.0.0\E$/*/r
-            : '[' . main::setupGetQuestion( 'BASE_SERVER_IP' ) . ']',
-        BASE_SERVER_VHOST_HTTP_PORT  => main::setupGetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT' ),
+        BASE_SERVER_VHOST            => ::setupGetQuestion( 'BASE_SERVER_VHOST' ),
+        BASE_SERVER_IP               => $baseServerIpVersion eq 'ipv4'
+            ? ::setupGetQuestion( 'BASE_SERVER_IP' ) =~ s/^\Q0.0.0.0\E$/*/r : '[' . ::setupGetQuestion( 'BASE_SERVER_IP' ) . ']',
+        BASE_SERVER_VHOST_HTTP_PORT  => ::setupGetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT' ),
         BASE_SERVER_VHOST_HTTPS_PORT => $httpsPort,
-        WEB_DIR                      => $main::imscpConfig{'GUI_ROOT_DIR'},
-        CONF_DIR                     => $main::imscpConfig{'CONF_DIR'},
-        PLUGINS_DIR                  => $main::imscpConfig{'PLUGINS_DIR'}
+        WEB_DIR                      => $::imscpConfig{'GUI_ROOT_DIR'},
+        CONF_DIR                     => $::imscpConfig{'CONF_DIR'},
+        PLUGINS_DIR                  => $::imscpConfig{'PLUGINS_DIR'}
     };
 
     $rs = $self->{'frontend'}->disableSites( 'default', '00_master.conf', '00_master_ssl.conf' );
-    $rs ||= $self->{'eventManager'}->register(
-        'beforeFrontEndBuildConf',
-        sub {
-            my ($cfgTpl, $tplName) = @_;
+    $rs ||= $self->{'eventManager'}->register( 'beforeFrontEndBuildConf', sub {
+        my ( $cfgTpl, $tplName ) = @_;
 
-            return 0 unless grep($_ eq $tplName, '00_master.nginx', '00_master_ssl.nginx');
+        return 0 unless grep ($_ eq $tplName, '00_master.nginx', '00_master_ssl.nginx');
 
-            if ( $baseServerIpVersion eq 'ipv6' || !main::setupGetQuestion( 'IPV6_SUPPORT' ) ) {
-                ${$cfgTpl} = replaceBloc(
-                    '# SECTION IPv6 BEGIN.',
-                    '# SECTION IPv6 END.',
-                    '',
-                    ${$cfgTpl}
-                );
-            }
+        if ( $baseServerIpVersion eq 'ipv6' || !::setupGetQuestion( 'IPV6_SUPPORT' ) ) {
+            ${ $cfgTpl } = replaceBloc( '# SECTION IPv6 BEGIN.', '# SECTION IPv6 END.', '', ${ $cfgTpl } );
+        }
 
-            return 0 unless $tplName eq '00_master.nginx'
-                && main::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) eq 'https://';
+        return 0 unless $tplName eq '00_master.nginx' && ::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX' ) eq 'https://';
 
-            ${$cfgTpl} = replaceBloc(
-                "# SECTION custom BEGIN.\n",
-                "# SECTION custom END.\n",
-                "    # SECTION custom BEGIN.\n" .
-                    getBloc(
-                        "# SECTION custom BEGIN.\n",
-                        "# SECTION custom END.\n",
-                        ${$cfgTpl}
-                    ) .
-                    <<'EOF'
+        ${ $cfgTpl } = replaceBloc(
+            "# SECTION custom BEGIN.\n",
+            "# SECTION custom END.\n",
+            "    # SECTION custom BEGIN.\n" .
+                getBloc( "# SECTION custom BEGIN.\n", "# SECTION custom END.\n", ${ $cfgTpl } )
+                . <<'EOF'
     return 302 https://{BASE_SERVER_VHOST}:{BASE_SERVER_VHOST_HTTPS_PORT}$request_uri;
 EOF
-                    . "    # SECTION custom END.\n",
-                ${$cfgTpl}
-            );
+                . "    # SECTION custom END.\n",
+            ${ $cfgTpl }
+        );
 
-            0;
-        }
-    );
-    $rs ||= $self->{'frontend'}->buildConfFile(
-        '00_master.nginx',
-        $tplVars,
-        {
-            destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf",
-            user        => $main::imscpConfig{'ROOT_USER'},
-            group       => $main::imscpConfig{'ROOT_GROUP'},
-            mode        => 0644
-        }
-    );
+        0;
+    } );
+    $rs ||= $self->{'frontend'}->buildConfFile( '00_master.nginx', $tplVars, {
+        destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf",
+        user        => $::imscpConfig{'ROOT_USER'},
+        group       => $::imscpConfig{'ROOT_GROUP'},
+        mode        => 0644
+    } );
     $rs ||= $self->{'frontend'}->enableSites( '00_master.conf' );
     return $rs if $rs;
 
-    if ( main::setupGetQuestion( 'PANEL_SSL_ENABLED' ) eq 'yes' ) {
-        $rs ||= $self->{'frontend'}->buildConfFile(
-            '00_master_ssl.nginx',
-            $tplVars,
-            {
-                destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf",
-                user        => $main::imscpConfig{'ROOT_USER'},
-                group       => $main::imscpConfig{'ROOT_GROUP'},
-                mode        => 0644
-            }
-        );
+    if ( ::setupGetQuestion( 'PANEL_SSL_ENABLED' ) eq 'yes' ) {
+        $rs ||= $self->{'frontend'}->buildConfFile( '00_master_ssl.nginx', $tplVars, {
+            destination => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf",
+            user        => $::imscpConfig{'ROOT_USER'},
+            group       => $::imscpConfig{'ROOT_GROUP'},
+            mode        => 0644
+        } );
         $rs ||= $self->{'frontend'}->enableSites( '00_master_ssl.conf' );
         return $rs if $rs;
     } elsif ( -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf" ) {
-        $rs = iMSCP::File->new(
-            filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf"
-        )->delFile();
+        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master_ssl.conf" )->delFile();
         return $rs if $rs;
     }
 
@@ -1106,19 +990,17 @@ EOF
 
 sub _addDnsZone
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedAddMasterZone' );
-    $rs ||= Servers::named->factory()->addDmn(
-        {
-            BASE_SERVER_VHOST     => main::setupGetQuestion( 'BASE_SERVER_VHOST' ),
-            BASE_SERVER_IP        => main::setupGetQuestion( 'BASE_SERVER_IP' ),
-            BASE_SERVER_PUBLIC_IP => main::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' ),
-            DOMAIN_NAME           => main::setupGetQuestion( 'BASE_SERVER_VHOST' ),
-            DOMAIN_IP             => main::setupGetQuestion( 'BASE_SERVER_IP' ),
-            MAIL_ENABLED          => 1
-        }
-    );
+    $rs ||= Servers::named->factory()->addDmn( {
+        BASE_SERVER_VHOST     => ::setupGetQuestion( 'BASE_SERVER_VHOST' ),
+        BASE_SERVER_IP        => ::setupGetQuestion( 'BASE_SERVER_IP' ),
+        BASE_SERVER_PUBLIC_IP => ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' ),
+        DOMAIN_NAME           => ::setupGetQuestion( 'BASE_SERVER_VHOST' ),
+        DOMAIN_IP             => ::setupGetQuestion( 'BASE_SERVER_IP' ),
+        MAIL_ENABLED          => TRUE
+    } );
     $rs ||= $self->{'eventManager'}->trigger( 'afterNamedAddMasterZone' );
 }
 
@@ -1132,18 +1014,15 @@ sub _addDnsZone
 
 sub _deleteDnsZone
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    return 0 unless $main::imscpOldConfig{'BASE_SERVER_VHOST'} &&
-        $main::imscpOldConfig{'BASE_SERVER_VHOST'} ne main::setupGetQuestion( 'BASE_SERVER_VHOST' );
+    return 0 unless $::imscpOldConfig{'BASE_SERVER_VHOST'} && $::imscpOldConfig{'BASE_SERVER_VHOST'} ne ::setupGetQuestion( 'BASE_SERVER_VHOST' );
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeNamedDeleteMasterZone' );
-    $rs ||= Servers::named->factory()->deleteDmn(
-        {
-            DOMAIN_NAME    => $main::imscpOldConfig{'BASE_SERVER_VHOST'},
-            FORCE_DELETION => 1
-        }
-    );
+    $rs ||= Servers::named->factory()->deleteDmn( {
+        DOMAIN_NAME    => $::imscpOldConfig{'BASE_SERVER_VHOST'},
+        FORCE_DELETION => TRUE
+    } );
     $rs ||= $self->{'eventManager'}->trigger( 'afterNamedDeleteMasterZone' );
 }
 
@@ -1158,9 +1037,9 @@ sub _deleteDnsZone
 
 sub getFullPhpVersionFor
 {
-    my (undef, $binaryPath) = @_;
+    my ( undef, $binaryPath ) = @_;
 
-    my $rs = execute( [ $binaryPath, '-nv' ], \ my $stdout, \ my $stderr );
+    my $rs = execute( [ $binaryPath, '-nv' ], \my $stdout, \my $stderr );
     error( $stderr || 'Unknown error' ) if $rs;
     return undef unless $stdout;
     $stdout =~ /PHP\s+([^\s]+)/;
@@ -1177,17 +1056,11 @@ sub getFullPhpVersionFor
 
 sub _cleanup
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndCleanup' );
-    return $rs if $rs;
+    return 0 unless -f "$self->{'cfgDir'}/frontend.old.data";
 
-    if ( -f "$self->{'cfgDir'}/frontend.old.data" ) {
-        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/frontend.old.data" )->delFile();
-        return $rs if $rs;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterFrontEndCleanup' );
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/frontend.old.data" )->delFile();
 }
 
 =back

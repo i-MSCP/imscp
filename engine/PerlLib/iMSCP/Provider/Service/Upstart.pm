@@ -273,7 +273,7 @@ sub hasService
 
 sub resolveJob
 {
-    my ( $self, $job, $type, $nocache ) = @_;
+    my ( undef, $job, $type, $nocache ) = @_;
     $type //= 'conf';
 
     defined $job or croak( 'Missing or undefined $job parameter' );
@@ -380,7 +380,7 @@ sub _versionIsPost090
 
 sub _isEnabledPre067
 {
-    my ( $self, $jobFileContent ) = @_;
+    my ( undef, $jobFileContent ) = @_;
 
     defined $jobFileContent or croak( 'Missing or undefined $jobFileContent parameter' );
 
@@ -399,7 +399,7 @@ sub _isEnabledPre067
 
 sub _isEnabledPre090
 {
-    my ( $self, $jobFileContent ) = @_;
+    my ( undef, $jobFileContent ) = @_;
 
     defined $jobFileContent or croak( 'Missing or undefined $jobFileContent parameter' );
 
@@ -431,7 +431,7 @@ sub _isEnabledPre090
 
 sub _isEnabledPost090
 {
-    my ( $self, $jobFileContent, $jobOverrideFileContent ) = @_;
+    my ( undef, $jobFileContent, $jobOverrideFileContent ) = @_;
 
     defined $jobFileContent or croak( 'Missing or undefined $jobFileContent parameter' );
     defined $jobOverrideFileContent or croak( 'Missing or undefined $jobOverrideFileContent parameter' );
@@ -591,7 +591,7 @@ sub _disablePost090
 
 sub _uncomment
 {
-    my ( $self, $line ) = @_;
+    my ( undef, $line ) = @_;
 
     defined $line or croak( 'Missing or undefined $line parameter' );
 
@@ -609,7 +609,7 @@ sub _uncomment
 
 sub _removeTrailingCommentsFromCommentedLine
 {
-    my ( $self, $line ) = @_;
+    my ( undef, $line ) = @_;
 
     defined $line or croak( 'Missing or undefined $line parameter' );
 
@@ -627,7 +627,7 @@ sub _removeTrailingCommentsFromCommentedLine
 
 sub _removeTrailingComments
 {
-    my ( $self, $line ) = @_;
+    my ( undef, $line ) = @_;
 
     defined $line or croak( 'Missing or undefined $line parameter' );
 
@@ -645,7 +645,7 @@ sub _removeTrailingComments
 
 sub _countUnbalancedRoundBrackets
 {
-    my ( $self, $line ) = @_;
+    my ( undef, $line ) = @_;
 
     defined $line or croak( 'Missing or undefined $line parameter' );
 
@@ -663,7 +663,7 @@ sub _countUnbalancedRoundBrackets
 
 sub _removeManualStanzaFrom
 {
-    my ( $self, $line ) = @_;
+    my ( undef, $line ) = @_;
 
     defined $line or croak( 'Missing or undefined $line parameter' );
 
@@ -766,7 +766,7 @@ sub _extractStartOnStanzaFrom
 
 sub _addDefaultStartOnStanzaTo
 {
-    my ( $self, $string ) = @_;
+    my ( undef, $string ) = @_;
 
     defined $string or croak( 'Missing or undefined $string parameter' );
 

@@ -53,7 +53,7 @@ use parent 'Common::Object';
  message (since v1.4.4).
 
  Param hashref \%data Plugin data
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -61,47 +61,46 @@ sub process
 {
     my ( $self, $data ) = @_;
 
-    try {
-        $self->_loadData( $data->{'id'} );
+    $self->_loadData( $data->{'id'} );
 
-        # Determine plugin action according current plugin state
-        if ( $self->{'data'}->{'plugin_status'} eq 'enabled' ) {
-            $self->{'action'} = 'run';
-        } elsif ( ( $self->{'action'} ) = $self->{'data'}->{'plugin_status'} =~ /^to(install|change|update|uninstall|enable|disable)$/ ) {
-            if ( grep ( $_ eq $self->{'action'}, 'update', 'change' ) ) {
-                # Determine whether or not there are plugin config changes
-                $self->{'hasConfigChanges'} = $self->{'data'}->{'plugin_config'} ne $self->{'data'}->{'plugin_config_prev'};
-            }
-        } else {
-            die( sprintf( 'Unknown plugin status: %s', $self->{'data'}->{'plugin_status'} ));
+    # Determine plugin action according current plugin state
+    if ( $self->{'data'}->{'plugin_status'} eq 'enabled' ) {
+        $self->{'action'} = 'run';
+    } elsif ( ( $self->{'action'} ) = $self->{'data'}->{'plugin_status'} =~ /^to(install|change|update|uninstall|enable|disable)$/ ) {
+        if ( grep ( $_ eq $self->{'action'}, 'update', 'change' ) ) {
+            # Determine whether or not there are plugin config changes
+            $self->{'hasConfigChanges'} = $self->{'data'}->{'plugin_config'} ne $self->{'data'}->{'plugin_config_prev'};
         }
+    } else {
+        die( sprintf( 'Unknown plugin status: %s', $self->{'data'}->{'plugin_status'} ));
+    }
 
-        # Decode plugin JSON data
-        for my $field ( qw/ plugin_info plugin_config plugin_config_prev / ) {
-            $self->{'data'}->{$field} = decode_json( $self->{'data'}->{$field} );
-        }
+    # Decode plugin JSON data
+    for my $field ( qw/ plugin_info plugin_config plugin_config_prev / ) {
+        $self->{'data'}->{$field} = decode_json( $self->{'data'}->{$field} );
+    }
 
-        my $rs = $self->can( '_' . $self->{'action'} )->( $self );
-        $rs ||= $self->{'eventManager'}->trigger( 'onBeforeSetPluginStatus', $self->{'data'}->{'plugin_name'}, \$self->{'data'}->{'plugin_status'} );
+    my $rs = $self->can( '_' . $self->{'action'} )->( $self );
+    $rs ||= $self->{'eventManager'}->trigger( 'onBeforeSetPluginStatus', $self->{'data'}->{'plugin_name'}, \$self->{'data'}->{'plugin_status'} );
 
-        $self->{'_conn'}->run( fixup = sub {
-            $_->do(
-                "UPDATE plugin SET @{ [ $rs ? 'plugin_error' : 'plugin_status' ] } = ? WHERE plugin_id = ?",
-                undef,
-                ( $rs
-                    ? getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error'
-                    : ( $self->{'data'}->{'plugin_status'} eq 'todisable'
-                    ? 'disabled' : ( $self->{'data'}->{'plugin_status'} eq 'touninstall'
-                    ? ( $self->{'data'}->{'plugin_info'}->{'__installable__'} ? 'uninstalled' : 'disabled' ) : 'enabled'
-                ) ) ),
-                $data->{'id'}
-            );
-        } );
-        0;
-    } catch {
-        error( $_ );
-        1;
-    };
+    $self->{'_conn'}->run( fixup = sub {
+        $_->do(
+            "UPDATE plugin SET @{ [ $rs ? 'plugin_error' : 'plugin_status' ] } = ? WHERE plugin_id = ?",
+            undef,
+            ( $rs
+                ? getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error'
+                : ( $self->{'data'}->{'plugin_status'} eq 'todisable'
+                    ? 'disabled'
+                    : ( $self->{'data'}->{'plugin_status'} eq 'touninstall'
+                        ? ( $self->{'data'}->{'plugin_info'}->{'__installable__'} ? 'uninstalled' : 'disabled' )
+                        : 'enabled'
+                    )
+                )
+            ),
+            $data->{'id'}
+        );
+    } );
+    0;
 }
 
 =back

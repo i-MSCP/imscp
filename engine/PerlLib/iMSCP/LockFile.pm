@@ -25,9 +25,10 @@ package iMSCP::LockFile;
 
 use strict;
 use warnings;
-use Errno qw / ENOENT EWOULDBLOCK /;
+use Errno qw/ ENOENT EWOULDBLOCK /;
 use Fcntl qw/ :flock /;
-use iMSCP::Debug qw/ debug /;
+use iMSCP::Boolean;
+use iMSCP::Debug 'debug';
 use parent 'Common::Object';
 
 =head1 DESCRIPTION
@@ -44,26 +45,23 @@ use parent 'Common::Object';
 
  Acquire the lock file
 
- Return int 1 if lock file has been acquired, 0 if lock file has not been acquired (non blocking)
- Die on failure
+ Return int 1 if lock file has been acquired, 0 if lock file has not been acquired (non blocking), die on failure
 
 =cut
 
 sub acquire
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     debug( sprintf( 'Acquiring exclusive lock on %s', $self->{'path'} ));
 
     while ( !$self->{'_fd'} ) {
         open my $fd, '>', $self->{'path'} or die( sprintf( "Couldn't open %s file", $self->{'path'} ));
-
         eval {
             return 0 unless $self->_tryLock( $fd );
             $self->{'_fd'} = $fd if $self->_lockSuccess( $fd );
             1;
         } or return 0;
-
         # Close the file if it is not the required one
         close( $fd ) unless $self->{'_fd'};
         die( $@ ) if $@
@@ -76,13 +74,13 @@ sub acquire
 
  Remove, close, and release the lock file
 
- Die on failure
+ Return void, die on failure
 
 =cut
 
 sub release
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     # Prevent lock from being released if the process is not the lock owner
     return unless $self->{'_owner'} == $$;
@@ -118,10 +116,10 @@ sub release
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'path'} ||= '/var/lock/imscp.lock';
-    $self->{'non_blocking'} ||= 0;
+    $self->{'non_blocking'} //= FALSE;
     $self->{'_fd'} = undef;
     $self->{'_owner'} = $$;
     $self;
@@ -139,7 +137,7 @@ sub _init
 
 sub _tryLock
 {
-    my ($self, $fd) = @_;
+    my ( $self, $fd ) = @_;
 
     return 1 if flock( $fd, LOCK_EX | ( $self->{'non_blocking'} ? LOCK_NB : 0 ));
 
@@ -164,7 +162,7 @@ sub _tryLock
 
 sub _lockSuccess
 {
-    my ($self, $fd) = @_;
+    my ( $self, $fd ) = @_;
 
     my @stat1 = CORE::stat( $self->{'path'} );
     unless ( @stat1 ) {

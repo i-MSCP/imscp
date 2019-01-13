@@ -28,14 +28,18 @@ use warnings;
 use Data::Validate::Domain qw/ is_domain is_hostname /;
 use DateTime::TimeZone;
 use Email::Valid;
-use iMSCP::Database;
+use iMSCP::Boolean;
+use iMSCP::Database '$DATABASE';
 use iMSCP::Net;
-use Net::LibIDN qw/ idn_to_ascii /;
+use Net::LibIDN 'idn_to_ascii';
+use Try::Tiny;
 use parent 'Exporter';
 
-our @EXPORT = qw/isValidUsername isValidPassword isValidEmail isValidHostname isValidDomain isValidIpAddr
-isValidTimezone isValidDbName isNumber isNumberInRange isStringNotInList isValidNumberRange isNotEmpty
-isAvailableSqlUser/;
+our @EXPORT = qw/
+    isValidUsername isValidPassword isValidEmail isValidHostname isValidDomain isValidIpAddr
+    isValidTimezone isValidDbName isNumber isNumberInRange isStringNotInList isValidNumberRange isNotEmpty
+    isAvailableSqlUser
+/;
 
 our $lastValidationError = '';
 
@@ -58,12 +62,12 @@ our $lastValidationError = '';
 
 sub isValidUsername( $ )
 {
-    my ($username) = @_;
+    my ( $username ) = @_;
 
     defined $username or die( 'Missing $username parameter' );
     my $length = length $username;
 
-    return 1 if $length >= 3 && $length <= 16 && $username =~ /^[\x30-\x39\x41-\x5a\x61-\x7a\x5f]+$/;
+    return TRUE if $length >= 3 && $length <= 16 && $username =~ /^[\x30-\x39\x41-\x5a\x61-\x7a\x5f]+$/;
 
     $lastValidationError = <<"EOF";
 
@@ -76,7 +80,7 @@ sub isValidUsername( $ )
 Please try again:
 EOF
 
-    0;
+    FALSE;
 }
 
 =item isValidPassword( $password )
@@ -90,12 +94,12 @@ EOF
 
 sub isValidPassword( $ )
 {
-    my ($password) = @_;
+    my ( $password ) = @_;
 
     defined $password or die( 'Missing $password parameter' );
     my $length = length $password;
 
-    return 1 if $length >= 6 && $length <= 32 && $password =~ /^[\x30-\x39\x41-\x5a\x61-\x7a]+$/;
+    return TRUE if $length >= 6 && $length <= 32 && $password =~ /^[\x30-\x39\x41-\x5a\x61-\x7a]+$/;
 
     $lastValidationError = <<"EOF";
 
@@ -108,7 +112,7 @@ sub isValidPassword( $ )
 Please try again:
 EOF
 
-    0;
+    FALSE;
 }
 
 =item isValidEmail( $email )
@@ -122,11 +126,11 @@ EOF
 
 sub isValidEmail( $ )
 {
-    my ($email) = @_;
+    my ( $email ) = @_;
 
     defined $email or die( 'Missing $email parameter' );
 
-    return 1 if Email::Valid->address( $email );
+    return TRUE if Email::Valid->address( $email );
 
     $lastValidationError = <<"EOF";
 
@@ -136,7 +140,7 @@ sub isValidEmail( $ )
 Please try again:
 EOF
 
-    0;
+    FALSE;
 }
 
 =item isValidHostname( $hostname )
@@ -150,11 +154,11 @@ EOF
 
 sub isValidHostname( $ )
 {
-    my ($hostname) = @_;
+    my ( $hostname ) = @_;
 
     defined $hostname or die( 'Missing $hostname parameter' );
 
-    return 1 if $hostname !~ /\.$/ && ( $hostname =~ tr/.// ) >= 2 && is_hostname( idn_to_ascii( $hostname, 'utf-8' ));
+    return TRUE if $hostname !~ /\.$/ && ( $hostname =~ tr/.// ) >= 2 && is_hostname( idn_to_ascii( $hostname, 'utf-8' ));
 
     $lastValidationError = <<"EOF";
 
@@ -167,7 +171,7 @@ sub isValidHostname( $ )
 Please try again:
 EOF
 
-    0;
+    FALSE;
 }
 
 =item isValidDomain( $domainName )
@@ -181,16 +185,11 @@ EOF
 
 sub isValidDomain( $ )
 {
-    my ($domainName) = @_;
+    my ( $domainName ) = @_;
 
     defined $domainName or die( 'Missing $domainName parameter' );
 
-    return 1 if $domainName !~ /\.$/ && is_domain(
-        idn_to_ascii( $domainName, 'utf-8' ),
-        {
-            domain_disable_tld_validation => 1
-        }
-    );
+    return 1 if $domainName !~ /\.$/ && is_domain( idn_to_ascii( $domainName, 'utf-8' ), { domain_disable_tld_validation => TRUE } );
 
     $lastValidationError = <<"EOF";
 
@@ -202,7 +201,7 @@ sub isValidDomain( $ )
 Please try again:
 EOF
 
-    0;
+    FALSE;
 }
 
 =item isValidIpAddr( $ipAddr [, $typeReg = ANY ] )
@@ -217,12 +216,12 @@ EOF
 
 sub isValidIpAddr( $;$ )
 {
-    my ($ipAddr, $typeReg) = @_;
+    my ( $ipAddr, $typeReg ) = @_;
 
     defined $ipAddr or die( 'Missing $ipAddr parameter' );
 
     my $net = iMSCP::Net->getInstance();
-    return 1 if $net->isValidAddr( $ipAddr ) && ( !defined $typeReg || $net->getAddrType( $ipAddr ) =~ /^$typeReg$/ );
+    return TRUE if $net->isValidAddr( $ipAddr ) && ( !defined $typeReg || $net->getAddrType( $ipAddr ) =~ /^$typeReg$/ );
 
     $lastValidationError = <<"EOF";
 
@@ -232,7 +231,7 @@ sub isValidIpAddr( $;$ )
 Please try again:
 EOF
 
-    0;
+    FALSE;
 }
 
 =item isValidDbName( $dbName )
@@ -244,14 +243,14 @@ EOF
 
 =cut
 
-sub isValidDbName($)
+sub isValidDbName( $ )
 {
-    my ($dbName) = @_;
+    my ( $dbName ) = @_;
 
     defined $dbName or die( 'Missing $dbName parameter' );
     my $length = length $dbName;
 
-    return 1 if $length >= 3 && $length <= 16 && $dbName =~ /^[\x30-\x39\x41-\x5a\x61-\x7a\x5f]+$/;
+    return TRUE if $length >= 3 && $length <= 16 && $dbName =~ /^[\x30-\x39\x41-\x5a\x61-\x7a\x5f]+$/;
 
     $lastValidationError = <<"EOF";
 
@@ -264,7 +263,7 @@ sub isValidDbName($)
 Please try again:
 EOF
 
-    0;
+    FALSE;
 }
 
 =item isValidTimezone( $timezone )
@@ -278,11 +277,11 @@ EOF
 
 sub isValidTimezone
 {
-    my ($timezone) = @_;
+    my ( $timezone ) = @_;
 
     defined $timezone or die( 'Missing $timezone parameter' );
 
-    return 1 if DateTime::TimeZone->is_valid_name( $timezone );
+    return TRUE if DateTime::TimeZone->is_valid_name( $timezone );
 
     $lastValidationError = <<"EOF";
 
@@ -294,7 +293,7 @@ sub isValidTimezone
 Please try again:
 EOF
 
-    0;
+    FALSE;
 }
 
 =item isNumber( $number )
@@ -306,13 +305,13 @@ EOF
 
 =cut
 
-sub isNumber($)
+sub isNumber( $ )
 {
-    my ($number) = @_;
+    my ( $number ) = @_;
 
     defined $number or die( 'Missing $timezone parameter' );
 
-    return 1 if $number =~ /^[\x30-\x39]+$/;
+    return TRUE if $number =~ /^[\x30-\x39]+$/;
 
     $lastValidationError = <<"EOF";
 
@@ -322,7 +321,7 @@ sub isNumber($)
 Please try again:
 EOF
 
-    0;
+    FALSE;
 }
 
 =item isValidNumberRange( $numberRange, \$n1, \$n2 )
@@ -338,13 +337,13 @@ EOF
 
 sub isValidNumberRange( $$$ )
 {
-    my ($numberRange, $n1, $n2) = @_;
+    my ( $numberRange, $n1, $n2 ) = @_;
 
     defined $numberRange or die( 'Missing $numberRange parameter' );
     defined $n1 or die( 'Missing $n1 parameter' );
     defined $n2 or die( 'Missing $n2 parameter' );
 
-    return 1 if ( ${$n1}, ${$n2} ) = $numberRange =~ /^([\x30-\x39]+)\s+([\x30-\x39]+)$/;
+    return TRUE if ( ${ $n1 }, ${ $n2 } ) = $numberRange =~ /^([\x30-\x39]+)\s+([\x30-\x39]+)$/;
 
     $lastValidationError = <<"EOF";
 
@@ -356,7 +355,7 @@ sub isValidNumberRange( $$$ )
 Please try again:
 EOF
 
-    0;
+    FALSE;
 }
 
 =item isNumberInRange( $number, $start, $end )
@@ -372,14 +371,14 @@ EOF
 
 sub isNumberInRange( $$$ )
 {
-    my ($number, $start, $end) = @_;
+    my ( $number, $start, $end ) = @_;
 
     defined $number or die( 'Missing $number parameter' );
     defined $start or die( 'Missing $start parameter' );
     defined $end or die( 'Missing $end parameter' );
 
     no warnings;
-    return 1 if defined $number && $number >= $start && $number <= $end;
+    return TRUE if defined $number && $number >= $start && $number <= $end;
 
     $lastValidationError = <<"EOF";
 
@@ -391,7 +390,7 @@ sub isNumberInRange( $$$ )
 Please try again:
 EOF
 
-    0;
+    FALSE;
 }
 
 =item isStringNotInList( $string, @stringList )
@@ -408,11 +407,11 @@ EOF
 
 sub isStringNotInList( $@ )
 {
-    my ($string, @stringList) = @_;
+    my ( $string, @stringList ) = @_;
 
     defined $string or die( 'Missing $string parameter' );
 
-    return 1 unless grep { lc $string eq lc $_ } @stringList;
+    return TRUE unless grep { lc $string eq lc $_ } @stringList;
 
     my $entries = join ', ', @stringList;
     $lastValidationError = <<"EOF";
@@ -425,7 +424,7 @@ sub isStringNotInList( $@ )
 Please try again:
 EOF
 
-    0;
+    FALSE;
 }
 
 =item isNotEmpty( $string )
@@ -439,11 +438,11 @@ EOF
 
 sub isNotEmpty( $ )
 {
-    my ($string) = @_;
+    my ( $string ) = @_;
 
     defined $string or die( 'Missing $string parameter' );
 
-    return 1 if !$string || $string =~ /[^\s]/;
+    return TRUE if !length $string || $string =~ /[^\s]/;
 
     $lastValidationError = <<"EOF";
 
@@ -453,7 +452,7 @@ sub isNotEmpty( $ )
 Please try again:
 EOF
 
-    0;
+    FALSE;
 }
 
 =item isAvailableSqlUser( $username )
@@ -467,40 +466,33 @@ EOF
 
 =cut
 
-sub isAvailableSqlUser ( $ )
+sub isAvailableSqlUser( $ )
 {
-    my ($username) = @_;
+    my ( $username ) = @_;
 
-    defined $username or die( 'Missing $username parameter' );
+    length $username or die( 'Missing or invalid $username parameter' );
 
-    my $db = iMSCP::Database->factory();
-
-    local $@;
-    my $oldDbName = eval { $db->useDatabase( main::setupGetQuestion( 'DATABASE_NAME' )); };
-    if ( $@ ) {
-        return 1 if $@ =~ /unknown database/i; # On fresh installation, there is no database yet
-        die;
-    }
-
-    my $dbh = $db->getRawDb();
-    $dbh->{'RaiseError'} = 1;
-    my $row = $dbh->selectrow_hashref( 'SELECT 1 FROM sql_user WHERE sqlu_name = ? LIMIT 1', undef, $username );
-
-    $db->useDatabase( $oldDbName ) if $oldDbName;
-
-    return 1 unless $row;
+    return TRUE if try {
+        local $DATABASE = ::setupGetQuestion( 'DATABASE_NAME' );
+        iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+            $_->selectrow_hashref( 'SELECT 1 FROM sql_user WHERE sqlu_name = ? LIMIT 1', undef, $username );
+        } ) ? FALSE : TRUE;
+    } catch {
+        return TRUE if /unknown database/i; # On fresh installation, there is no database yet
+        die $_;
+    };
 
     $lastValidationError = <<"EOF";
 
 
 \\Z1Invalid SQL username.\\Zn
 
- - The given SQL user is already used by one of your customers.
+ - The given SQL user isn't available.
 
 Please try again:
 EOF
 
-    0;
+    FALSE;
 }
 
 =back

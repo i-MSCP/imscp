@@ -25,7 +25,6 @@ package iMSCP::TemplateParser;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
 use parent 'Exporter';
 
 our @EXPORT = qw/ process getBloc replaceBloc /;
@@ -51,11 +50,11 @@ our @EXPORT = qw/ process getBloc replaceBloc /;
 
 sub process( $$ )
 {
-    my ($data, $template) = @_;
+    my ( $data, $template ) = @_;
 
     return $template unless ref $data eq 'HASH';
 
-    while ( my ($placeholder, $value) = each( %{$data} ) ) {
+    while ( my ( $placeholder, $value ) = each( %{ $data } ) ) {
         next unless defined $value;
         $template =~ s/(?<!%)\Q{$placeholder}\E/$value/gim
     }
@@ -77,14 +76,11 @@ sub process( $$ )
 
 sub getBloc( $$$;$ )
 {
-    my ($beginTag, $endingTag, $template, $includeTags) = @_;
+    my ( $beginTag, $endingTag, $template, $includeTags ) = @_;
 
     $beginTag = "\Q$beginTag\E" unless ref $beginTag eq 'Regexp';
     $endingTag = "\Q$endingTag\E" unless ref $endingTag eq 'Regexp';
-    ( $includeTags
-        ? $template =~ /([\t ]*$beginTag.*?[\t ]*$endingTag)/s
-        : $template =~ /[\t ]*$beginTag(.*?)[\t ]*$endingTag/s
-    ) ? $1 : '';
+    ( $includeTags ? $template =~ /([\t ]*$beginTag.*?[\t ]*$endingTag)/s : $template =~ /[\t ]*$beginTag(.*?)[\t ]*$endingTag/s ) ? $1 : '';
 }
 
 =item replaceBloc( $beginTag, $endingTag, $repl, $template [, $preserveTags = false ] )
@@ -105,7 +101,7 @@ sub getBloc( $$$;$ )
 
 sub replaceBloc( $$$$;$ )
 {
-    my ($beginTag, $endingTag, $repl, $template, $preserveTags) = @_;
+    my ( $beginTag, $endingTag, $repl, $template, $preserveTags ) = @_;
 
     if ( $preserveTags ) {
         $beginTag = "(\Q$beginTag\E)" unless ref $beginTag eq 'Regexp';

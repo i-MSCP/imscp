@@ -27,7 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug qw/ debugRegisterCallBack /;
 use Text::Wrap;
-use fields qw / cleanPackageCache debug fixPermissions listener noprompt preseed reconfigure skipPackageUpdate verbose /;
+use fields qw/ cleanPackageCache debug fixPermissions listener noprompt preseed reconfigure skipPackageUpdate verbose /;
 
 $Text::Wrap::columns = 80;
 $Text::Wrap::break = qr/[\s\n\|]/;
@@ -62,7 +62,7 @@ my $showUsage;
 
 sub parse
 {
-    my ($class, $usage, @options) = @_;
+    my ( $class, $usage, @options ) = @_;
 
     $showUsage = sub {
         my $exitCode = shift || 0;
@@ -128,7 +128,7 @@ EOF
 
 sub parseNoDefault
 {
-    my ($class, $usage, @options) = @_;
+    my ( $class, $usage, @options ) = @_;
 
     $showUsage = sub {
         my $exitCode = shift || 0;
@@ -168,7 +168,7 @@ EOF
 
 sub showUsage
 {
-    my (undef, $exitCode) = @_;
+    my ( undef, $exitCode ) = @_;
 
     $exitCode //= 1;
     ref $showUsage eq 'CODE' or die( 'ShowUsage( ) is not defined.' );
@@ -193,7 +193,7 @@ our @reconfigurationItems = sort(
 
 sub reconfigure
 {
-    my (undef, $item) = @_;
+    my ( undef, $item ) = @_;
 
     return $options->{'reconfigure'} ||= 'none' unless defined $item;
 
@@ -212,7 +212,7 @@ EOF
         $item = 'all';
     }
 
-    $item eq 'none' || grep($_ eq $item, @reconfigurationItems) or die(
+    $item eq 'none' || grep ($_ eq $item, @reconfigurationItems) or die(
         sprintf( "Error: '%s' is not a valid argument for the --reconfigure option.", $item )
     );
     $options->{'reconfigure'} = $item;
@@ -229,7 +229,7 @@ EOF
 
 sub preseed
 {
-    my (undef, $file) = @_;
+    my ( undef, $file ) = @_;
 
     return $options->{'preseed'} unless defined $file;
 
@@ -248,7 +248,7 @@ sub preseed
 
 sub listener
 {
-    my (undef, $file) = @_;
+    my ( undef, $file ) = @_;
 
     return $options->{'listener'} unless defined $file;
 
@@ -270,12 +270,12 @@ sub AUTOLOAD
     ( my $field = our $AUTOLOAD ) =~ s/.*://;
 
     no strict 'refs';
-    *{$AUTOLOAD} = sub {
+    *{ $AUTOLOAD } = sub {
         shift;
         return $options->{$field} unless @_;
         $options->{$field} = shift;
     };
-    goto &{$AUTOLOAD};
+    goto &{ $AUTOLOAD };
 }
 
 =head1 AUTHOR

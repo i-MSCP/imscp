@@ -19,8 +19,7 @@ package iMSCP::Requirements;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
-use iMSCP::Execute;
+use iMSCP::Execute 'execute';
 use iMSCP::ProgramFinder;
 use Module::Load::Conditional 'check_install';
 use version;
@@ -44,7 +43,7 @@ use parent 'Common::Object';
 
 sub all
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->user();
     $self->_checkPrograms();
@@ -80,19 +79,14 @@ sub user
 
 sub checkVersion
 {
-    my (undef, $version, $minVersion, $maxVersion) = @_;
+    my ( undef, $version, $minVersion, $maxVersion ) = @_;
 
     if ( version->parse( $version ) < version->parse( $minVersion ) ) {
         die( sprintf( "version %s is too old. Minimum supported version is %s\n", $version, $minVersion ));
     }
 
     if ( $maxVersion && version->parse( $version ) > version->parse( $maxVersion ) ) {
-        die(
-            sprintf(
-                "version %s is not supported. Supported versions are %s to %s\n", $version, $minVersion,
-                $maxVersion
-            )
-        );
+        die( sprintf( "version %s is not supported. Supported versions are %s to %s\n", $version, $minVersion, $maxVersion ));
     }
 
     undef;
@@ -114,7 +108,7 @@ sub checkVersion
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'programs'} = {
         PHP  => {
@@ -165,25 +159,20 @@ sub _init
 
 sub _checkPrograms
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    for ( keys %{$self->{'programs'}} ) {
-        iMSCP::ProgramFinder::find( lc $_ ) or die(
-            sprintf( "Couldn't find the '%s' command in search path", $_ )
-        );
-
-        next unless $self->{'programs'}->{$_}->{'version_command'};
-
+    for my $prog ( keys %{ $self->{'programs'} } ) {
+        iMSCP::ProgramFinder::find( lc $prog ) or die( sprintf( "Couldn't find the '%s' command in search path", $prog ));
+        next unless $self->{'programs'}->{$prog}->{'version_command'};
         eval {
             $self->_programVersions(
-                $self->{'programs'}->{$_}->{'version_command'},
-                $self->{'programs'}->{$_}->{'version_regexp'},
-                $self->{'programs'}->{$_}->{'min_version'},
-                $self->{'programs'}->{$_}->{'max_version'}
+                $self->{'programs'}->{$prog}->{'version_command'},
+                $self->{'programs'}->{$prog}->{'version_regexp'},
+                $self->{'programs'}->{$prog}->{'min_version'},
+                $self->{'programs'}->{$prog}->{'max_version'}
             );
         };
-
-        die( sprintf( "%s: %s\n", $_, $@ )) if $@;
+        die( sprintf( "%s: %s\n", $prog, $@ )) if $@;
     }
 
     undef;
@@ -199,19 +188,16 @@ sub _checkPrograms
 
 sub _checkPerlModules
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my @missingModules = ();
-    while ( my ($moduleName, $moduleVersion) = each %{$self->{'programs'}->{'Perl'}->{'modules'}} ) {
+    while ( my ( $moduleName, $moduleVersion ) = each %{ $self->{'programs'}->{'Perl'}->{'modules'} } ) {
         push( @missingModules, $moduleName ) unless check_install( module => $moduleName, version => $moduleVersion );
     }
 
     return undef unless @missingModules;
 
-    @missingModules < 2 or die(
-        sprintf( "The following Perl modules are not installed: %s\n", join ', ', @missingModules )
-    );
-
+    @missingModules < 2 or die( sprintf( "The following Perl modules are not installed: %s\n", join ', ', @missingModules ));
     die( sprintf( "The '%s' Perl module is not installed\n", pop @missingModules ));
 }
 
@@ -225,24 +211,19 @@ sub _checkPerlModules
 
 sub _checkPhpModules
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    open my $fh, '-|', 'php', '-d', 'date.timezone=UTC', '-m' or die(
-        sprintf( "Couldn't pipe to php command: %s", $! )
-    );
+    open my $fh, '-|', 'php', '-d', 'date.timezone=UTC', '-m' or die( sprintf( "Couldn't pipe to php command: %s", $! ));
     chomp( my @modules = <$fh> );
 
     my @missingModules = ();
-    for my $module( @{$self->{'programs'}->{'PHP'}->{'modules'}} ) {
-        push @missingModules, $module unless grep(lc( $_ ) eq lc( $module ), @modules);
+    for my $module ( @{ $self->{'programs'}->{'PHP'}->{'modules'} } ) {
+        push @missingModules, $module unless grep (lc( $_ ) eq lc( $module ), @modules);
     }
 
     return undef unless @missingModules;
 
-    @missingModules < 2 or die(
-        sprintf( "The following PHP modules are not installed or not enabled: %s\n", join ', ', @missingModules )
-    );
-
+    @missingModules < 2 or die( sprintf( "The following PHP modules are not installed or not enabled: %s\n", join ', ', @missingModules ));
     die( sprintf( "The '%s' PHP module is not installed or not enabled.\n", pop @missingModules ));
 }
 
@@ -260,9 +241,9 @@ sub _checkPhpModules
 
 sub _programVersions
 {
-    my ($self, $versionCommand, $versionRegexp, $minversion, $maxVersion) = @_;
+    my ( $self, $versionCommand, $versionRegexp, $minversion, $maxVersion ) = @_;
 
-    execute( $versionCommand, \ my $stdout );
+    execute( $versionCommand, \my $stdout );
 
     die( "Couldn't find version. No output\n" ) unless $stdout;
 

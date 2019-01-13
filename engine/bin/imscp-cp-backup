@@ -53,6 +53,7 @@ my %CMD = (
     xz     => { qw% path /usr/bin/xz ext xz % },
     pixz   => { qw% path /usr/bin/pixz ext xz % }
 );
+my $DATE = POSIX::strftime( '%Y.%m.%d-%H-%M', localtime());
 
 =over
 
@@ -71,9 +72,8 @@ sub _backupDatabase
     # Encode slashes as SOLIDUS unicode character
     # Encode dots as Full stop unicode character
     ( my $dbName = $::imscpConfig{'DATABASE_NAME'} ) =~ s%([./])%{ '/', '@002f', '.', '@002e' }->{$1}%ge;
-    my $date = POSIX::strftime( '%Y.%m.%d-%H-%M', localtime());
     return if iMSCP::File->new( filename => $::imscpConfig{'ROOT_DIR'} . '/backups/' . $dbName . '.sql' )->moveFile(
-        $::imscpConfig{'ROOT_DIR'} . '/backups/' . $dbName . '-' . $date . '.sql'
+        "$::imscpConfig{'ROOT_DIR'}/backups/$dbName-$DATE.sql"
     );
 
     return if $::imscpConfig{'BACKUP_CMP_PROG'} eq 'no';
@@ -82,13 +82,13 @@ sub _backupDatabase
         [
             $CMD{$::imscpConfig{'BACKUP_CMP_PROG'}}->{'path'}, ( $::imscpConfig{'BACKUP_CMP_PROG'} ne 'pixz' ? '--force' : () ),
             ( grep ( $_ eq $::imscpConfig{'BACKUP_CMP_PROG'}, 'pbzip2', 'pigz', 'pixz' ) ? "-p$::imscpConfig{'BACKUP_CMP_MCORES'}" : () ),
-            "-$::imscpConfig{'BACKUP_CMP_LEVEL'}", $::imscpConfig{'ROOT_DIR'} . '/backups/' . $dbName . '-' . $date . '.sql'
+            "-$::imscpConfig{'BACKUP_CMP_LEVEL'}", "$::imscpConfig{'ROOT_DIR'}/backups/$dbName-$DATE.sql"
         ],
         \my $stdout,
         \my $stderr
     );
     debug( $stdout ) if $stdout;
-    error( sprintf( "Couldn't compress the '%s' database dump: %s", "$dbName-$date.sql", $stderr || 'Unknown error' )) if $rs;
+    error( sprintf( "Couldn't compress the '%s' database dump: %s", "$dbName-$DATE.sql", $stderr || 'Unknown error' )) if $rs;
 }
 
 =item _backupConfig( )
@@ -101,17 +101,15 @@ sub _backupDatabase
 
 sub _backupConfig
 {
-    local $UMASK = 077;
-    my $arch = "config-backup-@{ [ POSIX::strftime( '%Y.%m.%d-%H-%M', localtime ) ] }.tar";
     my @command = (
         '/bin/tar', '--create', '--preserve-permissions', '--exclude=?*[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]',
         '--directory', escapeShell( $::imscpConfig{'CONF_DIR'} ), '.',
         ( $::imscpConfig{'BACKUP_CMP_PROG'} eq 'no'
-            ? ( '--file', escapeShell( "$::imscpConfig{'ROOT_DIR'}/backups/$arch" ) )
+            ? ( '--file', escapeShell( "$::imscpConfig{'ROOT_DIR'}/backups/config-backup-$DATE.tar" ) )
             : ( '|', $CMD{$::imscpConfig{'BACKUP_CMP_PROG'}}->{'path'},
                 ( grep ( $_ eq $::imscpConfig{'BACKUP_CMP_PROG'}, 'pbzip2', 'pigz', 'pixz' ) ? "-p$::imscpConfig{'BACKUP_CMP_MCORES'}" : () ),
                 "-$::imscpConfig{'BACKUP_CMP_LEVEL'}",
-                '>', escapeShell( "$::imscpConfig{'ROOT_DIR'}/backups/$arch.$CMD{$::imscpConfig{'BACKUP_CMP_PROG'}}->{'ext'}" )
+                '>', escapeShell( "$::imscpConfig{'ROOT_DIR'}/backups/config-backup-$DATE.tar.$CMD{$::imscpConfig{'BACKUP_CMP_PROG'}}->{'ext'}" )
             )
         )
     );
@@ -140,6 +138,8 @@ sub backup
         die( sprintf( "Missing or invalid 'BACKUP_CMP_LEVEL' configuration parameter" )) if $::imscpConfig{'BACKUP_CMP_LEVEL'} !~ /^[1-9]$/;
         die( sprintf( "Missing or invalid 'BACKUP_CMP_MCORES' configuration parameter" )) if $::imscpConfig{'BACKUP_CMP_MCORES'} !~ /^[1-9]$/;
     }
+
+    local $UMASK = 077;
 
     _backupConfig();
     _backupDatabase();

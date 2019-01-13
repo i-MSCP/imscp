@@ -58,7 +58,7 @@ sub getType
  Process module
 
  Param hashref \%data User data
- Return int 0 on success, other on failure
+ Return int 0 on success, die on failure
 
 =cut
 
@@ -66,30 +66,23 @@ sub process
 {
     my ( $self, $data ) = @_;
 
-    try {
-        $self->_loadData( $data->{'id'} );
+    $self->_loadData( $data->{'id'} );
 
-        my ( @sql, $rs );
-        if ( $self->{'admin_status'} =~ /^to(?:add|change(?:pwd)?)$/ ) {
-            $rs = $self->add();
-            @sql = (
-                'UPDATE admin SET admin_status = ? WHERE admin_id = ?', undef,
-                ( $rs ? getMessageByType( 'error', { amount => 1 } ) || 'Unknown error' : 'ok' ), $data->{'id'}
-            );
-        } else {
-            $rs = $self->delete();
-            @sql = $rs ? (
-                'UPDATE admin SET admin_status = ? WHERE admin_id = ?', undef,
-                getMessageByType( 'error', { amount => 1 } ) || 'Unknown error', $data->{'id'}
-            ) : ( 'DELETE FROM admin WHERE admin_id = ?', undef, $data->{'id'} );
-        }
+    my @sql;
+    if ( $self->{'admin_status'} =~ /^to(?:add|change(?:pwd)?)$/ ) {
+        @sql = (
+            'UPDATE admin SET admin_status = ? WHERE admin_id = ?', undef,
+            ( $self->add() ? getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' : 'ok' ), $data->{'id'}
+        );
+    } else {
+        @sql = $self->delete() ? (
+            'UPDATE admin SET admin_status = ? WHERE admin_id = ?', undef,
+            getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error', $data->{'id'}
+        ) : ( 'DELETE FROM admin WHERE admin_id = ?', undef, $data->{'id'} );
+    }
 
-        $self->{'_conn'}->run( fixup => sub { $_->do( @sql ); } );
-        $rs;
-    } catch {
-        error( $_ );
-        return 1;
-    };
+    $self->{'_conn'}->run( fixup => sub { $_->do( @sql ); } );
+    0;
 }
 
 =item add( )
@@ -106,7 +99,7 @@ sub add
 
     return $self->SUPER::add() if $self->{'admin_status'} eq 'tochangepwd';
 
-    try {
+    return 1 unless try {
         my $ug = $::imscpConfig{'SYSTEM_USER_PREFIX'} . ( $::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'} );
         my $home = "$::imscpConfig{'USER_WEB_DIR'}/$self->{'admin_name'}";
         my $rs = $self->{'eventManager'}->trigger( 'onBeforeAddImscpUnixUser', $self->{'admin_id'}, $ug, \my $pwd, $home, \my $skel, \my $shell );
@@ -133,11 +126,13 @@ sub add
             );
         } );
         @{ $self }{ qw/ admin_sys_name admin_sys_uid admin_sys_gname admin_sys_gid / } = ( $ug, $uid, $ug, $gid );
-        0;
+        TRUE;
     } catch {
         error( $_ );
-        1;
-    } || $self->SUPER::add();
+        FALSE;
+    };
+
+    $self->SUPER::add();
 }
 
 =item delete( )

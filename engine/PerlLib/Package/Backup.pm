@@ -35,28 +35,25 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( \%em )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
+ Param iMSCP::EventManager \%em
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ($self, $eventManager) = @_;
+    my ( $self, $em ) = @_;
 
-    $eventManager->register(
-        'beforeSetupDialog',
-        sub {
-            push @{$_[0]},
-                sub { $self->imscpBackupDialog( @_ ) },
-                sub { $self->customerBackupDialog( @_ ) };
-            0;
-        }
-    );
+    $em->register( 'beforeSetupDialog', sub {
+        push @{ $_[0] },
+            sub { $self->imscpBackupDialog( @_ ) },
+            sub { $self->customerBackupDialog( @_ ) };
+        0;
+    } );
 }
 
 =item imscpBackupDialog( \%dialog )
@@ -70,13 +67,11 @@ sub registerSetupListeners
 
 sub imscpBackupDialog
 {
-    my (undef, $dialog) = @_;
+    my ( undef, $dialog ) = @_;
 
-    my $backupImscp = main::setupGetQuestion( 'BACKUP_IMSCP' );
+    my $backupImscp = ::setupGetQuestion( 'BACKUP_CP' );
 
-    if ( $main::reconfigure =~ /^(?:backup|all|forced)$/
-        || $backupImscp !~ /^(?:yes|no)$/
-    ) {
+    if ( $::reconfigure =~ /^(?:backup|all|forced)$/ || $backupImscp !~ /^(?:yes|no)$/ ) {
         ( my $rs, $backupImscp ) = $dialog->radiolist( <<"EOF", [ 'yes', 'no' ], $backupImscp ne 'no' ? 'yes' : 'no' );
 
 \\Z4\\Zb\\Zui-MSCP Backup Feature\\Zn
@@ -88,7 +83,7 @@ EOF
         return $rs if $rs >= 30;
     }
 
-    main::setupSetQuestion( 'BACKUP_IMSCP', $backupImscp );
+    ::setupSetQuestion( 'BACKUP_CP', $backupImscp );
     0;
 }
 
@@ -103,19 +98,16 @@ EOF
 
 sub customerBackupDialog
 {
-    my (undef, $dialog) = @_;
+    my ( undef, $dialog ) = @_;
 
-    my $backupDomains = main::setupGetQuestion( 'BACKUP_DOMAINS' );
+    my $backupDomains = ::setupGetQuestion( 'BACKUP_CLIENTS' );
 
-    if ( $main::reconfigure =~ /^(?:backup|all|forced)$/
-        || $backupDomains !~ /^(?:yes|no)$/
-    ) {
-        ( my $rs, $backupDomains ) = $dialog->radiolist(
-            <<"EOF", [ 'yes', 'no' ], $backupDomains ne 'no' ? 'yes' : 'no' );
+    if ( $::reconfigure =~ /^(?:backup|all|forced)$/ || $backupDomains !~ /^(?:yes|no)$/ ) {
+        ( my $rs, $backupDomains ) = $dialog->radiolist( <<"EOF", [ 'yes', 'no' ], $backupDomains ne 'no' ? 'yes' : 'no' );
 
 \\Z4\\Zb\\ZuDomains Backup Feature\\Zn
 
-Do you want to activate the backup feature for customers?
+Do you want to activate the backup feature for the clients?
 
 This feature allows resellers to enable backup for their customers such as:
 
@@ -127,7 +119,7 @@ EOF
         return $rs if $rs >= 30;
     }
 
-    main::setupSetQuestion( 'BACKUP_DOMAINS', $backupDomains );
+    ::setupSetQuestion( 'BACKUP_CLIENTS', $backupDomains );
     0;
 }
 

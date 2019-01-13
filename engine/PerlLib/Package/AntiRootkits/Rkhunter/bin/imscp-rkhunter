@@ -2,11 +2,11 @@
 
 =head1 NAME
 
- imscp-dpkg-post-invoke.pl - Process dpkg post invoke tasks
+ imscp-rkhunter - Process rkhunter(8) checks
 
 =head1 SYNOPSIS
 
- imscp-dpkg-post-invoke [options]...
+ imscp-rkhunter [OPTION]...
 
 =cut
 
@@ -30,22 +30,22 @@
 use strict;
 use warnings;
 use FindBin;
-use lib "/var/www/imscp/engine/PerlLib", "/var/www/imscp/engine/PerlVendor";
 use File::Basename;
-use iMSCP::Debug;
+use lib "$FindBin::Bin/../../../../../PerlLib", "$FindBin::Bin/../../../../../PerlVendor";
+use iMSCP::Boolean;
+use iMSCP::Debug qw/ debug error getMessageByType newDebug setVerbose /;
 use iMSCP::Bootstrapper;
-use iMSCP::Getopt;
-use iMSCP::Servers;
-use iMSCP::Packages;
+use iMSCP::Execute 'execute';
+use iMSCP::File;
+use iMSCP::ProgramFinder;
+use iMSCP::Mail 'sendErrorMessage';
+use Try::Tiny;
 
-$ENV{'LANG'} = 'C.UTF-8';
-$ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
-
-newDebug( 'imscp-dpkg-post-invoke.log' );
+newDebug( 'imscp-rkhunter.log' );
 
 iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq{
 
-Process dpkg post invoke tasks
+Process rkhunter(8) checks.
 
 OPTIONS:
  -d,    --debug         Enable debug mode.
@@ -57,36 +57,38 @@ OPTIONS:
 setVerbose( iMSCP::Getopt->verbose );
 
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
-exit unless $bootstrapper->lock( '/var/lock/imscp-dpkg-post-invoke.lock', 'nowait' );
-
-$bootstrapper->getInstance()->boot( {
-    config_readonly => 1,
-    mode            => 'backend',
-    nolock          => 1
+exit unless $bootstrapper->lock( '/var/lock/imscp-rkhunter.lock', TRUE );
+$bootstrapper->boot( {
+    config_readonly => TRUE,
+    nolock          => TRUE
 } );
 
-my $rs = 0;
-my @items = ();
+try {
+    return unless my $bin = iMSCP::ProgramFinder::find( 'rkhunter' );
 
-for ( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
-    next unless $_->can( 'dpkgPostInvokeTasks' );
-    push @items, $_->factory();
-}
+    my $logFile = $::imscpConfig{'RKHUNTER_LOG'} || '/var/log/rkhunter.log';
+    my $stderr;
+    execute( [ $bin, '--cronjob', '--logfile', $logFile ], undef, \$stderr );
+    error( $stderr ) if $stderr;
 
-for ( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
-    next unless $_->can( 'dpkgPostInvokeTasks' );
-    push @items, $_->getInstance();
-}
+    return unless -f $logFile;
 
-for ( @items ) {
-    debug( sprintf( 'Executing %s dpkg post-invoke tasks', ref ));
-    $rs |= $_->dpkgPostInvokeTasks();
-}
-
-exit $rs;
+    my $file = iMSCP::File->new( filename => $logFile );
+    my $rs = $file->owner( $::imscpConfig{'ROOT_USER'}, $::imscpConfig{'IMSCP_GROUP'} );
+    $rs ||= $file->mode( 0640 );
+} catch {
+    error( $_ );
+} finally {
+    if ( my @errors = getMessageByType( 'error', { remove => TRUE } ) ) {
+        sendErrorMessage( "@errors" );
+    }
+};
 
 =head1 AUTHOR
 
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
+
+1;
+__END__

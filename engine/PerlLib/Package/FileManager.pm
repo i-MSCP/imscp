@@ -25,10 +25,11 @@ package Package::FileManager;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::Execute;
+use iMSCP::Execute 'execute';
+use Try::Tiny;
 use version;
 use parent 'Common::SingletonClass';
 
@@ -42,26 +43,23 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( \%em )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
+ Param iMSCP::EventManager \%em
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ($self, $eventManager) = @_;
+    my ( $self, $em ) = @_;
 
-    $eventManager->register(
-        'beforeSetupDialog',
-        sub {
-            push @{$_[0]}, sub { $self->showDialog( @_ ) };
-            0;
-        }
-    );
+    $em->register( 'beforeSetupDialog', sub {
+        push @{ $_[0] }, sub { $self->showDialog( @_ ) };
+        0;
+    } );
 }
 
 =item showDialog( \%dialog )
@@ -75,33 +73,31 @@ sub registerSetupListeners
 
 sub showDialog
 {
-    my ($self, $dialog) = @_;
+    my ( $self, $dialog ) = @_;
 
-    my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
+    try {
+        my $package = ::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
 
-    my $rs = 0;
-    if ( $main::reconfigure =~ /^(?:filemanager|all|forced)$/ || !$package || !exists $self->{'PACKAGES'}->{$package} ) {
-        ( $rs, $package ) = $dialog->radiolist(
-            <<"EOF", [ keys %{$self->{'PACKAGES'}} ], exists $self->{'PACKAGES'}->{$package} ? $package : ( keys %{$self->{'PACKAGES'}} )[0] );
+        my $rs = 0;
+        if ( $::reconfigure =~ /^(?:filemanager|all|forced)$/ || !$package || !exists $self->{'PACKAGES'}->{$package} ) {
+            ( $rs, $package ) = $dialog->radiolist(
+                <<"EOF", [ keys %{ $self->{'PACKAGES'} } ], exists $self->{'PACKAGES'}->{$package} ? $package : ( keys %{ $self->{'PACKAGES'} } )[0] );
 
 Please select the Ftp Web file manager package you want to install:
 EOF
-    }
+        }
 
-    return $rs unless $rs < 30;
+        return $rs unless $rs < 30;
 
-    main::setupSetQuestion( 'FILEMANAGER_PACKAGE', $package );
-
-    $package = "Package::FileManager::${package}::${package}";
-    eval "require $package";
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    return 0 unless my $subref = $package->can( 'showDialog' );
-    debug( sprintf( 'Executing showDialog action on %s', $package ));
-    $subref->( $package->getInstance(), $dialog );
+        ::setupSetQuestion( 'FILEMANAGER_PACKAGE', $package );
+        $package = "Package::FileManager::${package}::${package}";
+        eval "require $package" or die;
+        return 0 unless my $subref = $package->can( 'showDialog' );
+        $subref->( $package->getInstance(), $dialog );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item preinstall( )
@@ -116,35 +112,35 @@ EOF
 
 sub preinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $oldPackage = exists $main::imscpOldConfig{'FILEMANAGER_ADDON'}
-        ? $main::imscpOldConfig{'FILEMANAGER_ADDON'} # backward compatibility with 1.1.x Serie (upgrade process)
-        : $main::imscpOldConfig{'FILEMANAGER_PACKAGE'};
+    try {
+        my $oldPackage = exists $::imscpOldConfig{'FILEMANAGER_ADDON'}
+            ? $::imscpOldConfig{'FILEMANAGER_ADDON'} # backward compatibility with 1.1.x Serie (upgrade process)
+            : $::imscpOldConfig{'FILEMANAGER_PACKAGE'};
 
-    # Ensure backward compatibility
-    if ( $oldPackage eq 'AjaXplorer' ) {
-        $oldPackage = 'Pydio';
-    } elsif ( $oldPackage eq 'Net2FTP' ) {
-        $oldPackage = 'Net2ftp';
-    }
+        # Ensure backward compatibility
+        if ( $oldPackage eq 'AjaXplorer' ) {
+            $oldPackage = 'Pydio';
+        } elsif ( $oldPackage eq 'Net2FTP' ) {
+            $oldPackage = 'Net2ftp';
+        }
 
-    my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
-    if ( $oldPackage ne '' && $oldPackage ne $package ) {
-        my $rs = $self->uninstall( $oldPackage );
-        return $rs if $rs;
-    }
+        my $package = ::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
+        if ( $oldPackage ne '' && $oldPackage ne $package ) {
+            my $rs = $self->uninstall( $oldPackage );
+            return $rs if $rs;
+        }
 
-    $package = "Package::FileManager::${package}::${package}";
-    eval "require $package";
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
+        $package = "Package::FileManager::${package}::${package}";
+        eval "require $package" or die;
 
-    return 0 unless my $subref = $package->can( 'preinstall' );
-    debug( sprintf( 'Executing preinstall action on %s', $package ));
-    $subref->( $package->getInstance());
+        return 0 unless my $subref = $package->can( 'preinstall' );
+        $subref->( $package->getInstance());
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item install( )
@@ -157,17 +153,16 @@ sub preinstall
 
 sub install
 {
-    my $package = main::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
-    $package = "Package::FileManager::${package}::${package}";
-    eval "require $package";
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    return 0 unless my $subref = $package->can( 'install' );
-    debug( sprintf( 'Executing install action on %s', $package ));
-    $subref->( $package->getInstance());
+    try {
+        my $package = ::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
+        $package = "Package::FileManager::${package}::${package}";
+        eval "require $package" or die;
+        return 0 unless my $subref = $package->can( 'install' );
+        $subref->( $package->getInstance());
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item uninstall( [ $package ])
@@ -181,21 +176,20 @@ sub install
 
 sub uninstall
 {
-    my (undef, $package) = @_;
+    my ( undef, $package ) = @_;
 
-    $package ||= $main::imscpConfig{'FILEMANAGER_PACKAGE'};
-    return 0 unless $package;
+    try {
+        $package ||= $::imscpConfig{'FILEMANAGER_PACKAGE'};
+        return 0 unless $package;
 
-    $package = "Package::FileManager::${package}::${package}";
-    eval "require $package";
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    return 0 unless my $subref = $package->can( 'uninstall' );
-    debug( sprintf( 'Executing uninstall action on %s', $package ));
-    $subref->( $package->getInstance());
+        $package = "Package::FileManager::${package}::${package}";
+        eval "require $package" or die;
+        return 0 unless my $subref = $package->can( 'uninstall' );
+        $subref->( $package->getInstance());
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item getPriority( )
@@ -221,26 +215,26 @@ sub getPriority
 
 sub setGuiPermissions
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFileManagerSetGuiPermissions' );
-    return $rs if $rs;
+    try {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeFileManagerSetGuiPermissions' );
+        return $rs if $rs;
 
-    my $package = $main::imscpConfig{'FILEMANAGER_PACKAGE'};
-    return 0 unless exists $self->{'PACKAGES'}->{$package};
+        my $package = $::imscpConfig{'FILEMANAGER_PACKAGE'};
+        return 0 unless exists $self->{'PACKAGES'}->{$package};
 
-    $package = "Package::FileManager::${package}::${package}";
-    eval "require $package";
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
+        $package = "Package::FileManager::${package}::${package}";
+        eval "require $package" or die;
 
-    return 0 unless my $subref = $package->can( 'setGuiPermissions' );
+        return 0 unless my $subref = $package->can( 'setGuiPermissions' );
 
-    debug( sprintf( 'Executing setGuiPermissions action on %s', $package ));
-    $rs = $subref->( $package->getInstance());
-    $rs ||= $self->{'eventManager'}->trigger( 'afterFileManagerSetGuiPermissions' );
+        $rs = $subref->( $package->getInstance());
+        $rs ||= $self->{'eventManager'}->trigger( 'afterFileManagerSetGuiPermissions' );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =back
@@ -259,16 +253,13 @@ sub setGuiPermissions
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    @{$self->{'PACKAGES'}}{
-        iMSCP::Dir->new( dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager" )->getDirs()
-    } = ();
+    @{ $self->{'PACKAGES'} }{iMSCP::Dir->new( dirname => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/FileManager" )->getDirs()} = ();
 
     # Quick fix for disabling Pydio package if PHP >= 7 is detected
-    delete $self->{'PACKAGES'}->{'Pydio'} if $main::execmode eq 'setup' && version->parse( $self->_getPhpVersion()) >= version->parse( '7.0.0' );
-
+    delete $self->{'PACKAGES'}->{'Pydio'} if $::execmode eq 'setup' && version->parse( $self->_getPhpVersion()) >= version->parse( '7.0.0' );
     $self;
 }
 
@@ -282,14 +273,12 @@ sub _init
 
 sub _getPhpVersion
 {
-    my $rs = execute( 'php -nv', \ my $stdout, \ my $stderr );
+    my $rs = execute( 'php -nv', \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
-    $stdout =~ /PHP\s+([\d.]+)/ or die(
-        sprintf( "Couldn't find PHP version from `php -nv` command output: %s", $stdout )
-    );
+    $stdout =~ /PHP\s+([\d.]+)/ or die( sprintf( "Couldn't find PHP version from `php -nv` command output: %s", $stdout ));
     $1;
 }
 

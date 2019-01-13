@@ -26,7 +26,7 @@ package iMSCP::SystemGroup;
 use strict;
 use warnings;
 use iMSCP::Debug qw/ debug error /;
-use iMSCP::Execute qw/ execute /;
+use iMSCP::Execute 'execute';
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -49,7 +49,7 @@ use parent 'Common::SingletonClass';
 
 sub addSystemGroup
 {
-    my (undef, $groupname, $systemgroup) = @_;
+    my ( undef, $groupname, $systemgroup ) = @_;
 
     unless ( defined $groupname ) {
         error( 'Missing $groupname parameter' );
@@ -61,9 +61,7 @@ sub addSystemGroup
         return 1;
     }
 
-    my $rs = execute(
-        [ '/usr/sbin/groupadd', '-f', ( $systemgroup ? '-r' : () ), $groupname ], \ my $stdout, \ my $stderr
-    );
+    my $rs = execute( [ '/usr/sbin/groupadd', '-f', ( $systemgroup ? '-r' : () ), $groupname ], \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     $rs;
@@ -80,7 +78,7 @@ sub addSystemGroup
 
 sub delSystemGroup
 {
-    my (undef, $groupname) = @_;
+    my ( undef, $groupname ) = @_;
 
     unless ( defined $groupname ) {
         error( '$groupname parameter is not defined' );
@@ -92,9 +90,9 @@ sub delSystemGroup
         return 1;
     }
 
-    my $rs = execute( [ '/usr/sbin/groupdel', $groupname ], \ my $stdout, \ my $stderr );
+    my $rs = execute( [ '/usr/sbin/groupdel', $groupname ], \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
-    unless ( grep($_ == $rs, 0, 6) ) {
+    unless ( grep ( $_ == $rs, 0, 6 ) ) {
         error( $stderr || 'Unknown error' );
         return $rs;
     }

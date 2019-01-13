@@ -28,6 +28,7 @@ use warnings;
 use Class::Autouse qw/ :nostat Servers::mta::postfix::installer Servers::mta::postfix::uninstaller /;
 use File::Basename;
 use File::Temp;
+use iMSCP::Boolean;
 use iMSCP::Config;
 use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::Dir;
@@ -35,12 +36,12 @@ use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute executeNoWait /;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::Rights;
+use iMSCP::Rights 'setRights';
 use iMSCP::Service;
 use Tie::File;
+use Try::Tiny;
 use parent 'Common::SingletonClass';
 
-# Selfref for use in END block
 my $instance;
 
 =head1 DESCRIPTION
@@ -61,10 +62,10 @@ my $instance;
 
 sub preinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaPreInstall', 'postfix' );
-    $rs ||= $self->stop();
+    #$rs ||= $self->stop();
     $rs ||= $rs = Servers::mta::postfix::installer->getInstance()->preinstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaPreInstall', 'postfix' );
 }
@@ -79,7 +80,7 @@ sub preinstall
 
 sub install
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaInstall', 'postfix' );
     $rs ||= Servers::mta::postfix::installer->getInstance()->install();
@@ -96,43 +97,43 @@ sub install
 
 sub postinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaPostinstall', 'postfix' );
-    return $rs if $rs;
+    try {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeMtaPostinstall', 'postfix' );
+        return $rs if $rs;
 
-    local $@;
-    eval { iMSCP::Service->getInstance()->enable( $self->{'config'}->{'MTA_SNAME'} ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
+        iMSCP::Service->getInstance()->enable( $self->{'config'}->{'MTA_SNAME'} );
 
-    $rs = $self->{'eventManager'}->register(
-        'beforeSetupRestartServices',
-        sub {
-            push @{$_[0]},
-                [
-                    sub {
-                        for( keys %{$self->{'_postmap'}} ) {
-                            if ( $self->{'_maps'}->{$_} ) {
-                                $rs = $self->{'_maps'}->{$_}->mode( 0640 );
+        $rs = $self->{'eventManager'}->register(
+            'beforeSetupRestartServices',
+            sub {
+                push @{ $_[0] },
+                    [
+                        sub {
+                            for ( keys %{ $self->{'_postmap'} } ) {
+                                if ( $self->{'_maps'}->{$_} ) {
+                                    $rs = $self->{'_maps'}->{$_}->mode( 0640 );
+                                    last if $rs;
+                                }
+
+                                $rs = $self->postmap( $_ );
                                 last if $rs;
                             }
 
-                            $rs = $self->postmap( $_ );
-                            last if $rs;
-                        }
-
-                        $rs ||= $self->start();
-                    },
-                    'Postfix'
-                ];
-            0;
-        },
-        6
-    );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterMtaPostinstall', 'postfix' );
+                            $rs ||= $self->start();
+                        },
+                        'Postfix'
+                    ];
+                0;
+            },
+            6
+        );
+        $rs ||= $self->{'eventManager'}->trigger( 'afterMtaPostinstall', 'postfix' );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item uninstall( )
@@ -145,19 +146,18 @@ sub postinstall
 
 sub uninstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaUninstall', 'postfix' );
     $rs ||= Servers::mta::postfix::uninstaller->getInstance()->uninstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaUninstall', 'postfix' );
 
     unless ( $rs || !iMSCP::Service->getInstance()->hasService( $self->{'config'}->{'MTA_SNAME'} ) ) {
-        $self->{'restart'} = 1;
-    } else {
-        $self->{'restart'} = 0;
-        $self->{'reload'} = 0;
+        $self->{'restart'} = TRUE;
+        return $rs;
     }
 
+    @{ $self }{qw/ restart reload /} = ( FALSE, FALSE );
     $rs;
 }
 
@@ -171,78 +171,50 @@ sub uninstall
 
 sub setEnginePermissions
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaSetEnginePermissions' );
-    # eg. /etc/postfix/main.cf
-    $rs ||= setRights(
-        $self->{'config'}->{'POSTFIX_CONF_FILE'},
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'ROOT_GROUP'},
-            mode  => '0644'
-        }
+    $rs ||= setRights( $self->{'config'}->{'POSTFIX_CONF_FILE'}, {
+        user  => $::imscpConfig{'ROOT_USER'},
+        group => $::imscpConfig{'ROOT_GROUP'},
+        mode  => '0644'
+    } );
+    $rs ||= setRights( $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'}, {
+        user  => $::imscpConfig{'ROOT_USER'},
+        group => $::imscpConfig{'ROOT_GROUP'},
+        mode  => '0644'
+    } );
+    $rs ||= setRights( $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'}, {
+        user  => $::imscpConfig{'ROOT_USER'},
+        group => $::imscpConfig{'ROOT_GROUP'},
+        mode  => '0644'
+    }
     );
-    # eg. /etc/postfix/master.cf
-    $rs ||= setRights(
-        $self->{'config'}->{'POSTFIX_MASTER_CONF_FILE'},
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'ROOT_GROUP'},
-            mode  => '0644'
-        }
+    $rs ||= setRights( $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, {
+        user      => $::imscpConfig{'ROOT_USER'},
+        group     => $::imscpConfig{'ROOT_GROUP'},
+        dirmode   => '0750',
+        filemode  => '0640',
+        recursive => TRUE
+    } );
+    $rs ||= setRights( "$main::imscpConfig{'ENGINE_ROOT_DIR'}/bin/imscp-vacation", {
+        user      => $::imscpConfig{'ROOT_USER'},
+        group     => $::imscpConfig{'IMSCP_GROUP'},
+        mode   => '0750',
+    }
     );
-    # eg. /etc/aliases
-    $rs ||= setRights(
-        $self->{'config'}->{'MTA_LOCAL_ALIAS_HASH'},
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'ROOT_GROUP'},
-            mode  => '0644'
-        }
-    );
-    # eg. /etc/postfix/imscp
-    $rs ||= setRights(
-        $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'},
-        {
-            user      => $main::imscpConfig{'ROOT_USER'},
-            group     => $main::imscpConfig{'ROOT_GROUP'},
-            dirmode   => '0750',
-            filemode  => '0640',
-            recursive => 1
-        }
-    );
-    # eg. /var/www/imscp/engine/messenger
-    $rs ||= setRights(
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/messenger",
-        {
-            user      => $main::imscpConfig{'ROOT_USER'},
-            group     => $main::imscpConfig{'IMSCP_GROUP'},
-            dirmode   => '0750',
-            filemode  => '0750',
-            recursive => 1
-        }
-    );
-    # eg. /var/mail/virtual
-    $rs ||= setRights(
-        $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
-        {
-            user      => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-            group     => $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
-            dirmode   => '0750',
-            filemode  => '0640',
-            recursive => iMSCP::Getopt->fixPermissions
-        }
-    );
-    # eg. /usr/sbin/maillogconvert.pl
-    $rs ||= setRights(
-        $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'},
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'ROOT_GROUP'},
-            mode  => '0750'
-        }
-    );
+    $rs ||= setRights( $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}, {
+        user      => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+        group     => $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+        dirmode   => '0750',
+        filemode  => '0640',
+        recursive => iMSCP::Getopt->fixPermissions
+    } );
+    $rs ||= setRights( "$main::imscpConfig{'ENGINE_ROOT_DIR'}/bin/imscp-maillogconvert", {
+        user  => $main::imscpConfig{'ROOT_USER'},
+        group => $main::imscpConfig{'ROOT_GROUP'},
+        mode  => '0750'
+    } );
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaSetEnginePermissions' );
 }
 
@@ -256,19 +228,18 @@ sub setEnginePermissions
 
 sub start
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaStart' );
-    return $rs if $rs;
+    try {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeMtaStart' );
+        return $rs if $rs;
 
-    local $@;
-    eval { iMSCP::Service->getInstance()->start( $self->{'config'}->{'MTA_SNAME'} ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterMtaStart' );
+        iMSCP::Service->getInstance()->start( $self->{'config'}->{'MTA_SNAME'} );
+        $self->{'eventManager'}->trigger( 'afterMtaStart' );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item stop( )
@@ -281,19 +252,18 @@ sub start
 
 sub stop
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaStop' );
-    return $rs if $rs;
+    try {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeMtaStop' );
+        return $rs if $rs;
 
-    local $@;
-    eval { iMSCP::Service->getInstance()->stop( $self->{'config'}->{'MTA_SNAME'} ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterMtaStop' );
+        iMSCP::Service->getInstance()->stop( $self->{'config'}->{'MTA_SNAME'} );
+        $self->{'eventManager'}->trigger( 'afterMtaStop' );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item restart( )
@@ -306,19 +276,18 @@ sub stop
 
 sub restart
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaRestart' );
-    return $rs if $rs;
+    try {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeMtaRestart' );
+        return $rs if $rs;
 
-    local $@;
-    eval { iMSCP::Service->getInstance()->restart( $self->{'config'}->{'MTA_SNAME'} ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterMtaRestart' );
+        iMSCP::Service->getInstance()->restart( $self->{'config'}->{'MTA_SNAME'} );
+        $self->{'eventManager'}->trigger( 'afterMtaRestart' );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item reload( )
@@ -331,19 +300,18 @@ sub restart
 
 sub reload
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaReload' );
-    return $rs if $rs;
+    try {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeMtaReload' );
+        return $rs if $rs;
 
-    local $@;
-    eval { iMSCP::Service->getInstance()->reload( $self->{'config'}->{'MTA_SNAME'} ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterMtaReload' );
+        iMSCP::Service->getInstance()->reload( $self->{'config'}->{'MTA_SNAME'} );
+        $self->{'eventManager'}->trigger( 'afterMtaReload' );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item addDmn( \%data )
@@ -357,15 +325,13 @@ sub reload
 
 sub addDmn
 {
-    my ($self, $data) = @_;
+    my ( $self, $data ) = @_;
 
     # Do not list 'SERVER_HOSTNAME' in BOTH 'mydestination' and 'virtual_mailbox_domains'
-    return 0 if $data->{'DOMAIN_NAME'} eq $main::imscpConfig{'SERVER_HOSTNAME'};
+    return 0 if $data->{'DOMAIN_NAME'} eq $::imscpConfig{'SERVER_HOSTNAME'};
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddDmn', $data );
-    $rs ||= $self->deleteMapEntry(
-        $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/
-    );
+    $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
 
     if ( $data->{'MAIL_ENABLED'} ) { # Mail is managed by this server
@@ -388,14 +354,12 @@ sub addDmn
 
 sub disableDmn
 {
-    my ($self, $data) = @_;
+    my ( $self, $data ) = @_;
 
-    return 0 if $data->{'DOMAIN_NAME'} eq $main::imscpConfig{'SERVER_HOSTNAME'};
+    return 0 if $data->{'DOMAIN_NAME'} eq $::imscpConfig{'SERVER_HOSTNAME'};
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDisableDmn', $data );
-    $rs ||= $self->deleteMapEntry(
-        $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/
-    );
+    $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
     $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaDisableDmn', $data );
 }
@@ -411,18 +375,20 @@ sub disableDmn
 
 sub deleteDmn
 {
-    my ($self, $data) = @_;
+    my ( $self, $data ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDelDmn', $data );
-    $rs ||= $self->deleteMapEntry(
-        $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/
-    );
-    $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
-    return $rs if $rs;
+    try {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDelDmn', $data );
+        $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
+        $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_RELAY_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
+        return $rs if $rs;
 
-    iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}" )->remove();
-
-    $self->{'eventManager'}->trigger( 'afterMtaDelDmn', $data );
+        iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}" )->remove();
+        $self->{'eventManager'}->trigger( 'afterMtaDelDmn', $data );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item addSub( \%data )
@@ -436,20 +402,14 @@ sub deleteDmn
 
 sub addSub
 {
-    my ($self, $data) = @_;
+    my ( $self, $data ) = @_;
 
     # Do not list 'SERVER_HOSTNAME' in BOTH 'mydestination' and 'virtual_mailbox_domains'
-    return 0 if $data->{'DOMAIN_NAME'} eq $main::imscpConfig{'SERVER_HOSTNAME'};
+    return 0 if $data->{'DOMAIN_NAME'} eq $::imscpConfig{'SERVER_HOSTNAME'};
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddSub', $data );
-    $rs ||= $self->deleteMapEntry(
-        $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/
-    );
-
-    if ( $data->{'MAIL_ENABLED'} ) {
-        $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, "$data->{'DOMAIN_NAME'}\tOK" );
-    }
-
+    $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
+    $rs ||= $self->addMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, "$data->{'DOMAIN_NAME'}\tOK" ) if $data->{'MAIL_ENABLED'};
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaAddSub', $data );
 }
 
@@ -464,14 +424,12 @@ sub addSub
 
 sub disableSub
 {
-    my ($self, $data) = @_;
+    my ( $self, $data ) = @_;
 
-    return 0 if $data->{'DOMAIN_NAME'} eq $main::imscpConfig{'SERVER_HOSTNAME'};
+    return 0 if $data->{'DOMAIN_NAME'} eq $::imscpConfig{'SERVER_HOSTNAME'};
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDisableSub', $data );
-    $rs ||= $self->deleteMapEntry(
-        $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/
-    );
+    $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaDisableSub', $data );
 }
 
@@ -486,17 +444,19 @@ sub disableSub
 
 sub deleteSub
 {
-    my ($self, $data) = @_;
+    my ( $self, $data ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDelSub', $data );
-    $rs ||= $self->deleteMapEntry(
-        $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/
-    );
-    return $rs if $rs;
+    try {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDelSub', $data );
+        $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_DMN_HASH'}, qr/\Q$data->{'DOMAIN_NAME'}\E\s+[^\n]*/ );
+        return $rs if $rs;
 
-    iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}" )->remove();
-
-    $self->{'eventManager'}->trigger( 'afterMtaDelSub', $data );
+        iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}" )->remove();
+        $self->{'eventManager'}->trigger( 'afterMtaDelSub', $data );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item addMail( \%data )
@@ -510,80 +470,66 @@ sub deleteSub
 
 sub addMail
 {
-    my ($self, $data) = @_;
+    my ( $self, $data ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddMail', $data );
-    return $rs if $rs;
-
-    if ( $data->{'MAIL_CATCHALL'} ) {
-        $rs = $self->addMapEntry(
-            $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, "$data->{'MAIL_ADDR'}\t$data->{'MAIL_CATCHALL'}"
-        );
-        return $rs if $rs;
-    } else {
-        my $isMailAccount = index( $data->{'MAIL_TYPE'}, '_mail' ) != -1
-            && $data->{'DOMAIN_NAME'} ne $main::imscpConfig{'SERVER_HOSTNAME'};
-        my $isForwardAccount = index( $data->{'MAIL_TYPE'}, '_forward' ) != -1;
-
-        return 0 unless $isMailAccount || $isForwardAccount;
-
-        $rs = $self->deleteMapEntry(
-            $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+[^\n]*/
-        );
-        $rs ||= $self->deleteMapEntry(
-            $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+[^\n]*/
-        );
+    try {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeMtaAddMail', $data );
         return $rs if $rs;
 
-        my $responderEntry = "$data->{'MAIL_ACC'}\@imscp-arpl.$data->{'DOMAIN_NAME'}";
-        $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_TRANSPORT_HASH'}, qr/\Q$responderEntry\E\s+[^\n]*/ );
-        return $rs if $rs;
-
-        if ( $isMailAccount ) {
-            my $maildir = "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
-
-            # Create mailbox
-
-            for( $data->{'DOMAIN_NAME'}, "$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}" ) {
-                iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$_" )->make(
-                    {
-                        user           => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-                        group          => $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
-                        mode           => 0750,
-                        fixpermissions => iMSCP::Getopt->fixPermissions
-                    }
-                );
-            }
-
-            for ( qw/ cur new tmp / ) {
-                iMSCP::Dir->new( dirname => "$maildir/$_" )->make(
-                    {
-                        user           => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-                        group          => $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
-                        mode           => 0750,
-                        fixpermissions => iMSCP::Getopt->fixPermissions
-                    }
-                );
-            }
-
-            # Add virtual mailbox map entry
-            $rs = $self->addMapEntry(
-                $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'},
-                "$data->{'MAIL_ADDR'}\t$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}/"
-            );
+        if ( $data->{'MAIL_CATCHALL'} ) {
+            $rs = $self->addMapEntry( $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, "$data->{'MAIL_ADDR'}\t$data->{'MAIL_CATCHALL'}" );
             return $rs if $rs;
         } else {
-            iMSCP::Dir->new(
-                dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}"
-            )->remove();
-        }
+            my $isMailAccount = index( $data->{'MAIL_TYPE'}, '_mail' ) != -1 && $data->{'DOMAIN_NAME'} ne $main::imscpConfig{'SERVER_HOSTNAME'};
+            my $isForwardAccount = index( $data->{'MAIL_TYPE'}, '_forward' ) != -1;
 
-        # Add virtual alias map entry
-        $rs = $self->addMapEntry(
-            $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'},
-            $data->{'MAIL_ADDR'} # Recipient
-                . "\t" # Separator
-                . join ',', (
+            return 0 unless $isMailAccount || $isForwardAccount;
+
+            $rs = $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+[^\n]*/ );
+            $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+[^\n]*/ );
+            return $rs if $rs;
+
+            my $responderEntry = "$data->{'MAIL_ACC'}\@imscp-arpl.$data->{'DOMAIN_NAME'}";
+            $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_TRANSPORT_HASH'}, qr/\Q$responderEntry\E\s+[^\n]*/ );
+            return $rs if $rs;
+
+            if ( $isMailAccount ) {
+                my $maildir = "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}";
+
+                # Create mailbox
+                for my $dir ( $data->{'DOMAIN_NAME'}, "$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}" ) {
+                    iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$dir" )->make( {
+                        user           => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+                        group          => $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+                        mode           => 0750,
+                        fixpermissions => iMSCP::Getopt->fixPermissions
+                    } );
+                }
+
+                for my $dir ( qw/ cur new tmp / ) {
+                    iMSCP::Dir->new( dirname => "$maildir/$dir" )->make( {
+                        user           => $self->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+                        group          => $self->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+                        mode           => 0750,
+                        fixpermissions => iMSCP::Getopt->fixPermissions
+                    } );
+                }
+
+                # Add virtual mailbox map entry
+                $rs = $self->addMapEntry(
+                    $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'}, "$data->{'MAIL_ADDR'}\t$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}/"
+                );
+                return $rs if $rs;
+            } else {
+                iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}" )->remove();
+            }
+
+            # Add virtual alias map entry
+            $rs = $self->addMapEntry(
+                $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'},
+                $data->{'MAIL_ADDR'} # Recipient
+                    . "\t"           # Separator
+                    . join ',', (
                     # Mail account only case:
                     #  Postfix lookup in 'virtual_alias_maps' first. Thus, if there
                     #  is a catchall defined for the domain, any mail for the mail
@@ -595,20 +541,24 @@ sub addMail
                     ( $isMailAccount ? $data->{'MAIL_ADDR'} : () ),
                     # Add forward addresses in case of forward account
                     ( $isForwardAccount ? $data->{'MAIL_FORWARD'} : () ),
-                    # Add autoresponder entry if it is enabled for this account
+                    # Add auto-responder entry if it is enabled for this account
                     ( $data->{'MAIL_HAS_AUTO_RESPONDER'} ? $responderEntry : () )
                 )
-        );
-        return $rs if $rs;
-
-        if ( $data->{'MAIL_HAS_AUTO_RESPONDER'} ) {
-            # Add transport map entry for autoresponder
-            $rs = $self->addMapEntry( $self->{'config'}->{'MTA_TRANSPORT_HASH'}, "$responderEntry\timscp-arpl:" );
+            );
             return $rs if $rs;
-        }
-    }
 
-    $self->{'eventManager'}->trigger( 'afterMtaAddMail', $data );
+            if ( $data->{'MAIL_HAS_AUTO_RESPONDER'} ) {
+                # Add transport map entry for auto-responder
+                $rs = $self->addMapEntry( $self->{'config'}->{'MTA_TRANSPORT_HASH'}, "$responderEntry\timscp-arpl:" );
+                return $rs if $rs;
+            }
+        }
+
+        $self->{'eventManager'}->trigger( 'afterMtaAddMail', $data );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item disableMail( \%data )
@@ -622,22 +572,16 @@ sub addMail
 
 sub disableMail
 {
-    my ($self, $data) = @_;
+    my ( $self, $data ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDisableMail', $data );
     return $rs if $rs;
 
     if ( $data->{'MAIL_CATCHALL'} ) {
-        $rs ||= $self->deleteMapEntry(
-            $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+\Q$data->{'MAIL_CATCHALL'}/
-        );
+        $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+\Q$data->{'MAIL_CATCHALL'}/ );
     } else {
-        $rs ||= $self->deleteMapEntry(
-            $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+[^\n]*/
-        );
-        $rs ||= $self->deleteMapEntry(
-            $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+[^\n]*/
-        );
+        $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+[^\n]*/ );
+        $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+[^\n]*/ );
         return $rs if $rs;
 
         my $responderEntry = "$data->{'MAIL_ACC'}\@imscp-arpl.$data->{'DOMAIN_NAME'}";
@@ -658,34 +602,31 @@ sub disableMail
 
 sub deleteMail
 {
-    my ($self, $data) = @_;
+    my ( $self, $data ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDelMail', $data );
-    return $rs if $rs;
-
-    if ( $data->{'MAIL_CATCHALL'} ) {
-        $rs ||= $self->deleteMapEntry(
-            $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+\Q$data->{'MAIL_CATCHALL'}/
-        );
-    } else {
-        $rs ||= $self->deleteMapEntry(
-            $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+[^\n]*/
-        );
-        $rs ||= $self->deleteMapEntry(
-            $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+[^\n]*/
-        );
+    try {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeMtaDelMail', $data );
         return $rs if $rs;
 
-        my $responderEntry = "$data->{'MAIL_ACC'}\@imscp-arpl.$data->{'DOMAIN_NAME'}";
-        $rs = $self->deleteMapEntry( $self->{'config'}->{'MTA_TRANSPORT_HASH'}, qr/\Q$responderEntry\E\s+[^\n]*/ );
-        return $rs if $rs;
+        if ( $data->{'MAIL_CATCHALL'} ) {
+            $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+\Q$data->{'MAIL_CATCHALL'}/ );
+        } else {
+            $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_MAILBOX_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+[^\n]*/ );
+            $rs ||= $self->deleteMapEntry( $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, qr/\Q$data->{'MAIL_ADDR'}\E\s+[^\n]*/ );
+            return $rs if $rs;
 
-        iMSCP::Dir->new(
-            dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}"
-        )->remove();
-    }
+            my $responderEntry = "$data->{'MAIL_ACC'}\@imscp-arpl.$data->{'DOMAIN_NAME'}";
+            $rs = $self->deleteMapEntry( $self->{'config'}->{'MTA_TRANSPORT_HASH'}, qr/\Q$responderEntry\E\s+[^\n]*/ );
+            return $rs if $rs;
 
-    $rs ||= $self->{'eventManager'}->trigger( 'afterMtaDelMail', $data );
+            iMSCP::Dir->new( dirname => "$self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}/$data->{'DOMAIN_NAME'}/$data->{'MAIL_ACC'}" )->remove();
+        }
+
+        $rs ||= $self->{'eventManager'}->trigger( 'afterMtaDelMail', $data );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item getTraffic( $trafficDb [, $trafficDataSrc, $indexDb ] )
@@ -695,34 +636,31 @@ sub deleteMail
  Param hashref \%trafficDb Traffic database
  Param string $logFile Path to SMTP log file from which traffic data must be extracted (only when self-called)
  Param hashref $trafficIndexDb Traffic index database (only when self-called)
- Die on failure
+ Return void, die on failure
 
 =cut
 
 sub getTraffic
 {
-    my ($self, $trafficDb, $logFile, $trafficIndexDb) = @_;
+    my ( $self, $trafficDb, $logFile, $trafficIndexDb ) = @_;
 
-    $logFile ||= "$main::imscpConfig{'TRAFF_LOG_DIR'}/$main::imscpConfig{'MAIL_TRAFF_LOG'}";
+    $logFile ||= "$::imscpConfig{'TRAFF_LOG_DIR'}/$::imscpConfig{'MAIL_TRAFF_LOG'}";
 
     # The log file exists and is not empty
     if ( -f -s $logFile ) {
         # We use an index database file to keep trace of the last processed log
-        $trafficIndexDb or tie %{$trafficIndexDb},
-            'iMSCP::Config', fileName => "$main::imscpConfig{'IMSCP_HOMEDIR'}/traffic_index.db", nodie => 1;
+        $trafficIndexDb or tie %{ $trafficIndexDb }, 'iMSCP::Config', fileName => "$::imscpConfig{'IMSCP_HOMEDIR'}/traffic_index.db", nodie => TRUE;
 
-        my ($idx, $idxContent) = ( $trafficIndexDb->{'smtp_lineNo'} || 0, $trafficIndexDb->{'smtp_lineContent'} );
+        my ( $idx, $idxContent ) = ( $trafficIndexDb->{'smtp_lineNo'} || 0, $trafficIndexDb->{'smtp_lineContent'} );
 
         # Create a snapshot of current log file state
         my $snapshotFH = File::Temp->new( UNLINK => 1 );
         iMSCP::File->new( filename => $logFile )->copyFile( $snapshotFH->filename, { preserve => 'no' } ) == 0 or die(
-            getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
+            getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error'
         );
 
         # Tie the snapshot for easy handling
-        tie my @snapshot, 'Tie::File', $snapshotFH, memory => 10_485_760 or die(
-            sprintf( "Couldn't tie %s file", $snapshotFH )
-        );
+        tie my @snapshot, 'Tie::File', $snapshotFH, memory => 10_485_760 or die( sprintf( "Couldn't tie %s file", $snapshotFH ));
 
         # We keep trace of the index for the live log file only
         unless ( $logFile =~ /\.1$/ ) {
@@ -735,11 +673,9 @@ sub getTraffic
         # We have already seen the log file in the past. We must skip logs that were already processed
         if ( $snapshot[$idx] && $snapshot[$idx] eq $idxContent ) {
             debug( sprintf( 'Skipping logs that were already processed (lines %d to %d)', 1, ++$idx ));
-
             my $logsFound = ( @snapshot = @snapshot[$idx .. $#snapshot] ) > 0;
             untie( @snapshot );
             $snapshotFH->close();
-
             unless ( $logsFound ) {
                 debug( sprintf( 'No new SMTP logs found in %s file for processing', $logFile ));
                 return;
@@ -754,9 +690,9 @@ sub getTraffic
             $snapshotFH->close();
         }
 
-        # Extract and standardize SMTP logs using maillogconvert.pl script
-        open my $fh, '-|', "maillogconvert.pl standard < $snapshotFH 2>/dev/null" or die(
-            sprintf( "Couldn't pipe to maillogconvert.pl command for reading: %s", $! )
+        # Extract and standardize SMTP logs
+        open my $fh, '-|', "$::imscpConfig{'ENGINE_ROOT_DIR'}/bin/imscp-maillogconvert standard < $snapshotFH 2>/dev/null" or die(
+            sprintf( "Couldn't pipe to %s command for reading: %s", "$::imscpConfig{'ENGINE_ROOT_DIR'}/bin/imscp-maillogconvert", $! )
         );
 
         while ( <$fh> ) {
@@ -766,7 +702,6 @@ sub getTraffic
             # date       hour     from            to            relay_s            relay_r            proto  extinfo code size
             # 2017-04-17 13:31:50 from@domain.tld to@domain.tld relay_s.domain.tld relay_r.domain.tld SMTP   -       1    1001
             next unless /\@(?<from>[^\s]+)[^\@]+\@(?<to>[^\s]+)\s+(?<relay_s>[^\s]+)\s+(?<relay_r>[^\s]+).*?(?<size>\d+)$/o;
-
             $trafficDb->{$+{'from'}} += $+{'size'} if exists $trafficDb->{$+{'from'}};
             $trafficDb->{$+{'to'}} += $+{'size'} if exists $trafficDb->{$+{'to'}};
         }
@@ -797,32 +732,29 @@ sub getTraffic
 
 sub addMapEntry
 {
-    my ($self, $mapPath, $entry) = @_;
+    my ( $self, $mapPath, $entry ) = @_;
 
-    local $@;
-    my $file = eval { $self->_getMapFileObject( $mapPath ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
+    try {
+        my $file = $self->_getMapFileObject( $mapPath );
 
-    return 0 unless defined $entry;
+        return 0 unless defined $entry;
 
-    my $mapFileContentRef = $file->getAsRef();
-    unless ( defined $mapFileContentRef ) {
-        error( sprintf( "Couldn't read %s file", $file->{'filename'} ));
-        return 1;
-    }
+        my $mapFileContentRef = $file->getAsRef();
+        return 1 unless defined $mapFileContentRef;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeAddPostfixMapEntry', $mapPath, $entry );
-    return $rs if $rs;
+        my $rs = $self->{'eventManager'}->trigger( 'beforeAddPostfixMapEntry', $mapPath, $entry );
+        return $rs if $rs;
 
-    ${$mapFileContentRef} =~ s/^\Q$entry\E\n//gim;
-    ${$mapFileContentRef} .= "$entry\n";
+        ${ $mapFileContentRef } =~ s/^\Q$entry\E\n//gim;
+        ${ $mapFileContentRef } .= "$entry\n";
 
-    $rs ||= $file->save();
-    $self->{'_postmap'}->{$mapPath} = 1 unless $rs || $self->{'_postmap'}->{$mapPath};
-    $rs ||= $self->{'eventManager'}->trigger( 'afterAddPostfixMapEntry', $mapPath, $entry );
+        $rs ||= $file->save();
+        $self->{'_postmap'}->{$mapPath} = 1 unless $rs || $self->{'_postmap'}->{$mapPath};
+        $rs ||= $self->{'eventManager'}->trigger( 'afterAddPostfixMapEntry', $mapPath, $entry );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item deleteMapEntry( $mapPath, $entry )
@@ -837,31 +769,27 @@ sub addMapEntry
 
 sub deleteMapEntry
 {
-    my ($self, $mapPath, $entry) = @_;
+    my ( $self, $mapPath, $entry ) = @_;
 
-    local $@;
-    my $file = eval { $self->_getMapFileObject( $mapPath ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
+    try {
+        my $file = $self->_getMapFileObject( $mapPath );
+        my $mapFileContentRef = $file->getAsRef();
+        return 1 unless defined $mapFileContentRef;
 
-    my $mapFileContentRef = $file->getAsRef();
-    unless ( defined $mapFileContentRef ) {
-        error( sprintf( "Couldn't read %s file", $file->{'filename'} ));
-        return 1;
-    }
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeDeletePostfixMapEntry', $mapPath, $entry );
-    return $rs if $rs;
-
-    if ( ${$mapFileContentRef} =~ s/^$entry\n//gim ) {
-        $rs = $file->save();
-        $self->{'_postmap'}->{$mapPath} = 1 unless $rs || $self->{'_postmap'}->{$mapPath};
+        my $rs = $self->{'eventManager'}->trigger( 'beforeDeletePostfixMapEntry', $mapPath, $entry );
         return $rs if $rs;
-    }
 
-    $self->{'eventManager'}->trigger( 'afterDeletePostfixMapEntry', $mapPath, $entry );
+        if ( ${ $mapFileContentRef } =~ s/^$entry\n//gim ) {
+            $rs = $file->save();
+            $self->{'_postmap'}->{$mapPath} = 1 unless $rs || $self->{'_postmap'}->{$mapPath};
+            return $rs if $rs;
+        }
+
+        $self->{'eventManager'}->trigger( 'afterDeletePostfixMapEntry', $mapPath, $entry );
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =item postmap( $mapPath [, $mapType = 'hash' ] )
@@ -876,10 +804,10 @@ sub deleteMapEntry
 
 sub postmap
 {
-    my (undef, $mapPath, $mapType) = @_;
+    my ( undef, $mapPath, $mapType ) = @_;
     $mapType ||= 'hash';
 
-    my $rs = execute( "postmap $mapType:$mapPath", \ my $stdout, \ my $stderr );
+    my $rs = execute( "postmap $mapType:$mapPath", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     $rs;
@@ -948,10 +876,9 @@ sub postmap
 
 sub postconf
 {
-    my ($self, %params) = @_;
+    my ( $self, %params ) = @_;
 
-    local $@;
-    eval {
+    try {
         %params or die( 'Missing parameters ' );
 
         my @pToDel = ();
@@ -964,31 +891,31 @@ sub postconf
             sprintf( "Couldn't touch %s file: %s", $self->{'config'}->{'POSTFIX_CONF_FILE'} )
         );
 
-        my ($stdout, $stderr);
+        my ( $stdout, $stderr );
         executeNoWait(
             [ 'postconf', '-c', $conffile, keys %params ],
             sub {
                 return unless ( my $p, my $v ) = $_[0] =~ /^([^=]+)\s+=\s*(.*)/;
 
-                my (@vls, @rpls) = ( split( /,\s*/, $v ), () );
+                my ( @vls, @rpls ) = ( split( /,\s*/, $v ), () );
 
                 defined $params{$p}->{'values'} && ref $params{$p}->{'values'} eq 'ARRAY' or die(
                     sprintf( "Missing or invalid 'values' for the %s parameter. Expects an array of values", $p )
                 );
 
-                for $v( @{$params{$p}->{'values'}} ) {
+                for $v ( @{ $params{$p}->{'values'} } ) {
                     if ( !$params{$p}->{'action'} || $params{$p}->{'action'} eq 'add' ) {
                         unless ( $params{$p}->{'before'} || $params{$p}->{'after'} ) {
-                            next if grep( $_ eq $v, @vls );
+                            next if grep ( $_ eq $v, @vls );
                             push @vls, $v;
                             next;
                         }
 
                         # If the parameter already exists, we delete it as someone could want move it
-                        @vls = grep( $_ ne $v, @vls );
+                        @vls = grep ( $_ ne $v, @vls );
                         my $regexp = $params{$p}->{'before'} || $params{$p}->{'after'};
                         ref $regexp eq 'Regexp' or die( 'Invalid before|after option. Expects a Regexp' );
-                        my ($idx) = grep ( $vls[$_] =~ /^$regexp$/, 0 .. ( @vls-1 ) );
+                        my ( $idx ) = grep ( $vls[$_] =~ /^$regexp$/, 0 .. ( @vls-1 ) );
                         defined $idx
                             ? splice( @vls, ( $params{$p}->{'before'} ? $idx : ++$idx ), 0, $v ) : push @vls, $v;
                     } elsif ( $params{$p}->{'action'} eq 'replace' ) {
@@ -1009,32 +936,26 @@ sub postconf
                 }
             },
             sub { $stderr .= shift }
-        ) == 0 or die(
-            $stderr || 'Unknown error'
-        );
+        ) == 0 or die( $stderr || 'Unknown error' );
 
         if ( %params ) {
             my $cmd = [ 'postconf', '-e', '-c', $conffile ];
-            while ( my ($param, $value) = each %params ) { push @{$cmd}, "$param=$value" };
+            while ( my ( $param, $value ) = each %params ) { push @{ $cmd }, "$param=$value" };
             execute( $cmd, \$stdout, \$stderr ) == 0 or die( $stderr || 'Unknown error' );
             debug( $stdout ) if $stdout;
         }
 
         if ( @pToDel ) {
-            execute( [ 'postconf', '-X', '-c', $conffile, @pToDel ], \$stdout, \$stderr ) == 0 or die(
-                $stderr || 'Unknown error'
-            );
+            execute( [ 'postconf', '-X', '-c', $conffile, @pToDel ], \$stdout, \$stderr ) == 0 or die( $stderr || 'Unknown error' );
             debug( $stdout ) if $stdout;
         };
 
-        $self->{'reload'} = 1;
+        $self->{'reload'} = TRUE;
+        0;
+    } catch {
+        error( $_ );
+        1;
     };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    0;
 }
 
 =back
@@ -1053,20 +974,20 @@ sub postconf
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $instance = $self; # Self ref for use in END block
 
-    $self->{'restart'} = 0;
-    $self->{'reload'} = 0;
+    $self->{'restart'} = FALSE;
+    $self->{'reload'} = FALSE;
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'cfgDir'} = "$main::imscpConfig{'CONF_DIR'}/postfix";
+    $self->{'cfgDir'} = "$::imscpConfig{'CONF_DIR'}/postfix";
     $self->_mergeConfig() if -f "$self->{'cfgDir'}/postfix.data.dist";
-    tie %{$self->{'config'}},
+    tie %{ $self->{'config'} },
         'iMSCP::Config',
         fileName    => "$self->{'cfgDir'}/postfix.data",
-        readonly    => $main::execmode ne 'setup',
-        nodeferring => $main::execmode eq 'setup';
+        readonly    => $::execmode ne 'setup',
+        nodeferring => $::execmode eq 'setup';
     $self->{'_maps'} = {};
     $self;
 }
@@ -1081,26 +1002,21 @@ sub _init
 
 sub _mergeConfig
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     if ( -f "$self->{'cfgDir'}/postfix.data" ) {
         tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/postfix.data.dist";
-        tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/postfix.data", readonly => 1;
-
+        tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/postfix.data", readonly => TRUE;
         debug( 'Merging old configuration with new configuration...' );
-
-        while ( my ($key, $value) = each( %oldConfig ) ) {
+        while ( my ( $key, $value ) = each( %oldConfig ) ) {
             next unless exists $newConfig{$key};
             $newConfig{$key} = $value;
         }
-
-        untie ( %newConfig );
+        untie( %newConfig );
         untie( %oldConfig );
     }
 
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/postfix.data.dist" )->moveFile(
-        "$self->{'cfgDir'}/postfix.data"
-    ) == 0 or die(
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/postfix.data.dist" )->moveFile( "$self->{'cfgDir'}/postfix.data" ) == 0 or die(
         getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
     );
 }
@@ -1116,21 +1032,18 @@ sub _mergeConfig
 
 sub _getMapFileObject
 {
-    my ($self, $mapPath) = @_;
+    my ( $self, $mapPath ) = @_;
 
     $self->{'_maps'}->{$mapPath} ||= do {
         my $file = iMSCP::File->new( filename => $mapPath );
 
         unless ( -f $mapPath ) {
-            $file->set( <<"EOF"
+            $file->set( <<"EOF");
 # Postfix @{ [ basename( $mapPath ) ] } map - auto-generated by i-MSCP
 #     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN
 
 EOF
-            );
-            $file->save() == 0 && $file->mode( 0640 ) == 0 or die(
-                getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-            );
+            $file->save() == 0 && $file->mode( 0640 ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' );
             $self->{'_postmap'}->{$mapPath} = 1;
         }
 
@@ -1146,11 +1059,11 @@ EOF
 
 END
     {
-        return if $? || !$instance || $main::execmode eq 'setup';
+        return if $? || !$instance || $::execmode eq 'setup';
 
-        my ($ret, $rs) = ( 0, 0 );
+        my ( $ret, $rs ) = ( 0, 0 );
 
-        for( keys %{$instance->{'_postmap'}} ) {
+        for ( keys %{ $instance->{'_postmap'} } ) {
             if ( $instance->{'_maps'}->{$_} ) {
                 $rs = $instance->{'_maps'}->{$_}->mode( 0640 );
                 $ret ||= $rs;

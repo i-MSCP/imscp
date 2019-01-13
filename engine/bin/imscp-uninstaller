@@ -1,0 +1,316 @@
+#!/usr/bin/perl
+
+# i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010-2019 by internet Multi Server Control Panel
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+=head1 NAME
+
+ imscp-uninstall Uninstall i-MSCP
+
+=head1 SYNOPSIS
+
+ imscp-uninstall [OPTION]...
+
+=cut
+
+use strict;
+use warnings;
+use FindBin;
+use lib "$FindBin::Bin/../PerlLib", "$FindBin::Bin/../PerlVendor";
+use File::Basename 'basename';
+use iMSCP::Boolean;
+use iMSCP::Bootstrapper;
+use iMSCP::Database;
+use iMSCP::DbTasksProcessor;
+use iMSCP::Debug qw/ error newDebug getMessageByType /;
+use iMSCP::Dialog;
+use iMSCP::Dir;
+use iMSCP::Ext2Attributes 'clearImmutable';
+use iMSCP::File;
+use iMSCP::Getopt;
+use iMSCP::Mount 'umount';
+use iMSCP::Packages;
+use iMSCP::Servers;
+use iMSCP::Service;
+use iMSCP::Stepper;
+use iMSCP::SystemUser;
+use Servers::sqld;
+
+use Try::Tiny;
+
+=over
+
+=item _removeClients( )
+
+ Remove clients
+
+ Return void, raise an error or die on failure
+
+=cut
+
+sub _removeClients
+{
+    iMSCP::Database->factory()->run( fixup => sub {
+        my ( $dbh ) = @_;
+        my $tables = {
+            admin           => [ 'admin_status', "WHERE admin_type = 'user'" ],
+            domain          => 'domain_status',
+            domain_aliasses => 'alias_status',
+            subdomain       => 'subdomain_status',
+            subdomain_alias => 'subdomain_alias_status',
+            mail_users      => 'status',
+            htaccess        => 'status',
+            htaccess_groups => 'status',
+            htaccess_users  => 'status',
+            ssl_certs       => 'status'
+        };
+
+        while ( my ( $table, $field ) = each %{ $tables } ) {
+            my $condition = '';
+            ( $field, $condition ) = ( $field->[0], $field->[1] ) if ref $field eq 'ARRAY';
+            ( $table, $field ) = ( $dbh->quote_identifier( $table ), $dbh->quote_identifier( $field ) );
+            $dbh->do( "UPDATE $table SET $field = 'todelete' $condition" );
+        }
+    } );
+
+    startDetail();
+
+    try {
+        iMSCP::DbTasksProcessor->getInstance()->processDbTasks();
+    } catch {
+        error( $_ );
+    } finally {
+        endDetail();
+    };
+}
+
+=item _uninstallPackages( )
+
+ Uninstall packages
+
+ Return void, raise an error on failure
+
+=cut
+
+sub _uninstallPackages
+{
+    startDetail();
+
+    try {
+        my @packages = iMSCP::Packages->getInstance()->getListWithFullNames();
+        my ( $nStep, $countSteps ) = ( 1, scalar @packages );
+
+        for my $package ( @packages ) {
+            ( my $subref = $package->can( 'uninstall' ) ) or $nStep++ && next;
+            step(
+                sub { $subref->( $package->getInstance()) }, sprintf( 'Executing %s uninstallation tasks...', $package ), $countSteps, $nStep
+            ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' );
+        }
+    } catch {
+        error( $_ );
+    } finally {
+        endDetail();
+    };
+}
+
+=item _uninstallServers( )
+
+ Uninstall servers
+
+ Return void, raise an error on failure
+
+=cut
+
+sub _uninstallServers
+{
+    startDetail();
+
+    try {
+        my @servers = iMSCP::Servers->getInstance()->getListWithFullNames();
+        my ( $nStep, $countSteps ) = ( 1, scalar @servers );
+
+        for my $server ( @servers ) {
+            ( my $subref = $server->can( 'uninstall' ) ) or $nStep++ && next;
+            step(
+                sub { $subref->( $server->factory()) }, sprintf( 'Executing %s uninstallation tasks...', $server ), $countSteps, $nStep
+            ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' );
+            $nStep++;
+        }
+    } catch {
+        error( $_ );
+    } finally {
+        endDetail();
+    };
+}
+
+=item _uninstallServices( )
+
+ Uninstall services
+
+ Return void, raise an error or die on failure
+
+=cut
+
+sub _uninstallServices
+{
+    my $serviceMngr = iMSCP::Service->getInstance();
+    $serviceMngr->remove( $_ ) for 'imscp_daemon', 'imscp_traffic', 'imscp_mountall';
+
+    for my $service ( 'bind9', 'bind9-resolvconf' ) {
+        $serviceMngr->getInstance()->disable( $service ) if $serviceMngr->service->isSystemd();
+
+        return if -f "/etc/systemd/system/$service.service" && iMSCP::File->new( filename => "/etc/systemd/system/$service.service" )->delFile();
+
+        $serviceMngr->getInstance()->enable( $service ) if -f "/lib/systemd/system/$service.service" && $serviceMngr->isSystemd();
+    }
+}
+
+=item _removeSqlData( )
+
+ Remove SQL users and database
+
+ Return void, raise an error or die on failure
+
+=cut
+
+sub _removeSqlData
+{
+    my $conn = iMSCP::Database->factory()->getConnector();
+    my $sqld = Servers::sqld->factory();
+
+    # Drop SQL databases
+
+    for my $dbName (
+        @{ $conn->run( fixup => sub { $_->selectcol_arrayref( 'SELECT sqld_name FROM sql_database' ); } ) },
+        $::imscpConfig{'DATABASE_NAME'}
+    ) {
+        $conn->run( fixup => sub { $_->do( "DROP DATABASE IF EXISTS @{ [ $_->quote_identifier( $dbName ) ] }" ); } );
+    }
+
+    # Drop SQL users
+
+    for my $row (
+        @{ $conn->run( fixup => sub { $_->selectall_arrayref( 'SELECT DISTINCT sqlu_name, sqlu_host FROM sql_user', { Slice => {} } ); } ) }
+    ) {
+        $sqld->dropUser( $row->{'sqlu_name'}, $row->{'sqlu_host'} );
+    }
+
+    $sqld->dropUser( $::imscpConfig{'DATABASE_USER'}, $::imscpConfig{'DATABASE_USER_HOST'} );
+}
+
+=item _removeFiles()
+
+ Remove files
+
+ Return void, raise an error or die on failure
+
+=cut
+
+sub _removeFiles
+{
+    chdir( '/' );
+
+    for my $file ( '/etc/cron.d/imscp', "$::imscpConfig{'LOGROTATE_CONF_DIR'}/imscp", '/etc/sysctl.d/imscp.conf', '/etc/apt/apt.conf.d/90imscp' ) {
+        next unless -f $file;
+        return if iMSCP::File->new( filename => $file )->delFile();
+    }
+
+    for my $dir ( $::imscpConfig{'CONF_DIR'}, $::imscpConfig{'USER_WEB_DIR'}, $::imscpConfig{'LOG_DIR'}, $::imscpConfig{'ROOT_DIR'} ) {
+        if( $dir eq $::imscpConfig{'USER_WEB_DIR'}) {
+            return unless umount( $dir );
+            clearImmutable( $dir, TRUE );
+        }
+
+        iMSCP::Dir->new( dirname => $dir )->remove();
+    }
+}
+
+try {
+    $ENV{'LANG'} = 'C.UTF-8';
+    $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
+
+    # Sets execution mode
+    $::execmode = 'uninstaller' unless defined $::execmode;
+
+    my $basename = basename( $0 );
+    newDebug( $basename . '.log' );
+
+    iMSCP::Getopt->debug( TRUE );
+    iMSCP::Bootstrapper->getInstance()->boot();
+
+    my $dialog = iMSCP::Dialog->getInstance();
+    $dialog->set( 'title', 'i-MSCP Uninstaller Dialog' );
+
+    return if $dialog->yesno( <<"EOF", TRUE );
+
+Welcome to the i-MSCP uninstaller.
+
+This program will uninstall i-MSCP from your server.
+
+Do you want to continue?
+EOF
+
+    if ( iMSCP::Database->factory()->run( fixup => sub { $_->selectrow_hashref( "SELECT 1 FROM plugin WHERE plugin_status <> 'uninstalled'" ); } ) ) {
+        $dialog->infobox( <<'EOF' );
+\Z1Uninstallation aborted.\Zn
+
+You must first uninstall all i-MSCP plugins through control panel Web UI.
+EOF
+        return;
+    }
+
+    my @steps = (
+        [ \&_removeClients, 'Removing clients' ],
+        [ \&_uninstallPackages, 'Uninstalling packages' ],
+        [ \&_uninstallServers, 'Uninstalling servers' ],
+        [ \&_uninstallServices, 'Uninstalling services' ],
+        [ \&_removeSqlData, 'Removing SQL data' ],
+        [ sub { iMSCP::SystemUser->new( force => TRUE )->delSystemUser( $::imscpConfig{'IMSCP_USER'} ) }, 'Removing system user' ],
+        [ \&_removeFiles, 'Removing files' ],
+    );
+
+    my ( $nStep, $countSteps ) = ( 1, scalar @steps );
+    for my $step ( @steps ) {
+        my $rs = step( @{ $step }, $countSteps, $nStep );
+        return if $rs;
+        $step++;
+    }
+
+    $dialog->endGauge();
+    $dialog->infobox( <<'EOF' );
+
+\Z1Congratulations\Zn
+
+i-MSCP has been successfully uninstalled.
+EOF
+} catch {
+    error( $_ );
+} finally {
+    return unless length getMessageByType( 'error', { amount => 1 } );
+    exit 1;
+};
+
+=back
+
+=head1 AUTHOR
+
+ i-MSCP Team <team@i-mscp.net>
+
+=cut
+
+1;
+__END__

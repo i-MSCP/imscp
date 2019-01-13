@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,15 +19,17 @@ package Servers::httpd::apache_fcgid::uninstaller;
 
 use strict;
 use warnings;
+use iMSCP::Debug 'error';
 use iMSCP::Dir;
 use iMSCP::File;
 use Servers::httpd::apache_fcgid;
 use Servers::sqld;
+use Try::Tiny;
 use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->_removeVloggerSqlUser();
     $rs ||= $self->_removeDirs();
@@ -37,7 +39,7 @@ sub uninstall
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'httpd'} = Servers::httpd::apache_fcgid->getInstance();
     $self->{'apacheCfgDir'} = $self->{'httpd'}->{'apacheCfgDir'};
@@ -48,34 +50,38 @@ sub _init
 
 sub _removeVloggerSqlUser
 {
-    if ( $main::imscpConfig{'DATABASE_USER_HOST'} eq 'localhost' ) {
+    if ( $::imscpConfig{'DATABASE_USER_HOST'} eq 'localhost' ) {
         return Servers::sqld->factory()->dropUser( 'vlogger_user', '127.0.0.1' );
     }
 
-    Servers::sqld->factory()->dropUser( 'vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'} );
+    Servers::sqld->factory()->dropUser( 'vlogger_user', $::imscpConfig{'DATABASE_USER_HOST'} );
 }
 
 sub _removeDirs
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    for ( $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}, $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'} ) {
-        iMSCP::Dir->new( dirname => $_ )->remove();
-    }
-
-    0;
+    try {
+        for my $dir ( $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}, $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'} ) {
+            iMSCP::Dir->new( dirname => $dir )->remove();
+        }
+        0;
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 sub _fastcgiConf
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'httpd'}->disableModules( 'fcgid_imscp' );
     return $rs if $rs;
 
-    for ( 'fcgid_imscp.conf', 'fcgid_imscp.load' ) {
-        next unless -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_";
-        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$_" )->delFile();
+    for my $file ( 'fcgid_imscp.conf', 'fcgid_imscp.load' ) {
+        next unless -f "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$file";
+        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_MODS_AVAILABLE_DIR'}/$file" )->delFile();
         return $rs if $rs;
     }
 
@@ -84,13 +90,11 @@ sub _fastcgiConf
 
 sub _vHostConf
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     if ( -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf" ) {
         my $rs = $self->{'httpd'}->disableSites( '00_nameserver.conf' );
-        $rs ||= iMSCP::File->new(
-            filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf"
-        )->delFile();
+        $rs ||= iMSCP::File->new( filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf" )->delFile();
         return $rs if $rs;
     }
 
@@ -103,9 +107,9 @@ sub _vHostConf
         return $rs if $rs;
     }
 
-    for ( '000-default', 'default' ) {
-        next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
-        my $rs = $self->{'httpd'}->enableSites( $_ );
+    for my $file ( '000-default', 'default' ) {
+        next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$file";
+        my $rs = $self->{'httpd'}->enableSites( $file );
         return $rs if $rs;
     }
 

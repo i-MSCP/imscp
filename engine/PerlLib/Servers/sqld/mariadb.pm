@@ -26,8 +26,11 @@ package Servers::sqld::mariadb;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Servers::sqld::mariadb::installer Servers::sqld::mariadb::uninstaller /;
+use iMSCP::Boolean;
 use iMSCP::Service;
 use iMSCP::Database;
+use iMSCP::Debug qw/ debug error /;
+use Try::Tiny;
 use parent 'Servers::sqld::mysql';
 
 =head1 DESCRIPTION
@@ -48,7 +51,7 @@ use parent 'Servers::sqld::mysql';
 
 sub preinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'mariadb' );
     $rs ||= Servers::sqld::mariadb::installer->getInstance()->preinstall();
@@ -65,27 +68,27 @@ sub preinstall
 
 sub postinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'mariadb' );
+    try {
+        my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'mariadb' );
+        return $rs if $rs;
 
-    local $@;
-    eval { iMSCP::Service->getInstance()->enable( 'mysql' ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
+        iMSCP::Service->getInstance()->enable( 'mysql' );
+
+        $rs = $self->{'eventManager'}->register(
+            'beforeSetupRestartServices',
+            sub {
+                push @{ $_[0] }, [ sub { $self->restart(); }, 'MariaDB' ];
+                0;
+            },
+            7
+        );
+        $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'mariadb' );
+    } catch {
+        error( $_ );
+        1;
     }
-
-    $rs = $self->{'eventManager'}->register(
-        'beforeSetupRestartServices',
-        sub {
-            push @{$_[0]}, [ sub { $self->restart(); }, 'MariaDB' ];
-            0;
-        },
-        7
-    );
-
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'mariadb' );
 }
 
 =item uninstall( )
@@ -98,7 +101,7 @@ sub postinstall
 
 sub uninstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'mariadb' );
     $rs ||= Servers::sqld::mariadb::uninstaller->getInstance()->uninstall();
@@ -118,18 +121,17 @@ sub uninstall
 
 sub createUser
 {
-    my (undef, $user, $host, $password) = @_;
+    my ( undef, $user, $host, $password ) = @_;
 
     defined $user or die( '$user parameter is not defined' );
     defined $host or die( '$host parameter is not defined' );
     defined $user or die( '$password parameter is not defined' );
 
-    eval {
-        my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = 1;
-        $dbh->do( 'CREATE USER ?@? IDENTIFIED BY ?', undef, $user, $host, $password );
-    };
-    !$@ or die( sprintf( "Couldn't create the %s\@%s SQL user: %s", $user, $host, $@ ));
+    debug( sprintf( 'Creating %s@%s SQL user', $user, $password ));
+
+    iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+        $_->do( 'CREATE USER ?@? IDENTIFIED BY ?', undef, $user, $host, $password );
+    } );
     0;
 }
 

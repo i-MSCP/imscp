@@ -38,4 +38,4 @@ lmtp      unix  -       -       y       -       -       lmtp
 anvil     unix  -       -       y       -       1       anvil
 scache    unix  -       -       y       -       1       scache
 imscp-arpl unix  -      n       n       -       -       pipe
- flags=O user={MTA_MAILBOX_UID_NAME}:{IMSCP_GROUP} argv={ARPL_PATH} $recipient
+ flags=O user={MTA_MAILBOX_UID_NAME}:{IMSCP_GROUP} argv={ENGINE_ROOT_DIR}/bin/imscp-vacation $recipient

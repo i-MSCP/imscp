@@ -124,7 +124,7 @@ sub preInstall
 
 =cut
 
-sub postInstall()
+sub postInstall
 {
     0;
 }
