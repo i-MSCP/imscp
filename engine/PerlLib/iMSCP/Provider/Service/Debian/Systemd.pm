@@ -61,21 +61,22 @@ sub isEnabled
     my $ret = $self->_exec(
         [ $iMSCP::Provider::Service::Systemd::COMMANDS{'systemctl'}, 'is-enabled', $self->resolveUnit( $unit ) ], \my $stdout, \my $stderr
     );
-    die( $stderr ) if $ret && length $stderr;
 
-    # The indirect state indicates that the unit is not enabled.
-    return FALSE if $stdout eq 'indirect';
-
-    # The 'is-enabled' API call for SysVinit scripts is not implemented till
-    # the systemd version 220-1 (Debian package), that is, under the following
-    # distributions (main repository):
-    #  - Debian < 9 (Stretch)
-    #  - Ubuntu < 18.04 (Bionic Beaver)
-    if ( $ret > 0 && !length $self->_getLastExecOutput() ) {
-        # For the SysVinit scripts, we want operate only on services
+    # The 'is-enabled' support for SysV init scripts isn't available in older
+    # systemd versions. Thus, if the previous command has failed, we need do
+    # another check by relying on the Debian SysVInit init provider.
+    if ( $ret && length $stderr ) {
         ( $unit, undef, my $suffix ) = fileparse( $unit, qr/\.[^.]*/ );
         return $self->iMSCP::Provider::Service::Debian::SysVinit::isEnabled( $unit ) if grep ( $suffix eq $_, '', '.service' );
+
+        # Not a SysVinit script and the previous systemd 'is-enabled' command has
+        # failed. We propagate the error to caller.
+        die( $stderr );
     }
+
+    # The indirect state indicates that the unit is not enabled.
+    chomp( $stdout );
+    return FALSE if $stdout eq 'indirect';
 
     # The command status 0 indicate that the service is enabled
     $ret == 0;

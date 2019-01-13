@@ -61,7 +61,7 @@ sub isEnabled
 
     $self->hasService( $service ) or croak( sprintf( 'Unknown %s service', $service ));
 
-    scalar glob "/etc/rc[S5].d/S??$service" ? TRUE : FALSE;
+    scalar glob( "/etc/rc[S5].d/S??$service" ) ? TRUE : FALSE;
 }
 
 =item enable( $service )
