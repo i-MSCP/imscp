@@ -369,7 +369,7 @@ sub _addAwstatsConfig
             @{ $_->selectcol_arrayref( 'SELECT admin_name FROM admin WHERE admin_id = ?', undef, $data->{'DOMAIN_ADMIN_ID'} ) };
         } );
 
-        if ( $adminName ) {
+        unless ( defined $adminName ) {
             error( sprintf( "Couldn't retrieve data for admin with ID %d", $data->{'DOMAIN_ADMIN_ID'} ));
             return 1;
         }

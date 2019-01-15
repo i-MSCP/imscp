@@ -1765,7 +1765,7 @@ sub _addFiles
             # Set ownership for logs directory if any
             # logs root:vuxxx (no recursive)
             if ( -d "$data->{'WEB_DIR'}/logs" ) {
-                $rs = setRights( "$data->{'WEB_DIR'}/backup", {
+                $rs = setRights( "$data->{'WEB_DIR'}/backups", {
                     user  => $::imscpConfig{'ROOT_USER'},
                     group => $data->{'GROUP'},
                 } );
