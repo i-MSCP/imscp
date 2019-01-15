@@ -7,7 +7,7 @@ After=local-fs.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/bin/perl /var/www/imscp/engine/bin/imscp-net-traffif add
+ExecStart=/usr/bin/perl /var/www/imscp/engine/bin/imscp-net-traffic add
 ExecStop=/usr/bin/perl /var/www/imscp/engine/bin/imscp-net-traffic remove
 
 [Install]

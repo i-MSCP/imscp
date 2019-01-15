@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders>${SYSTEM_CONF}/skel</folders>
+    <folder>${SYSTEM_CONF}/skel</folder>
     <copy_config>${SYSTEM_CONF}/skel/alias</copy_config>
     <copy_config>${SYSTEM_CONF}/skel/domain</copy_config>
     <copy_config>${SYSTEM_CONF}/skel/domain_disabled_pages</copy_config>

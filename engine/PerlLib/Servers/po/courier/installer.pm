@@ -51,7 +51,7 @@ use Servers::sqld;
 use Try::Tiny;
 use parent 'Common::SingletonClass';
 
-%::sqlUsers = () unless %::sqlUsers;
+%::SQL_USERS = () unless %::SQL_USERS;
 
 =head1 DESCRIPTION
 
@@ -254,10 +254,10 @@ sub configurePostfix
     if ( $file eq 'master.cf' ) {
         ${ $fileC } .= process(
             {
-                MAILDROP_DELIVER_PATH   => $self->{'config'}->{'MAILDROP_DELIVER_PATH'},
-                MAILDROP_QUOTA_FILE     => "$self->{'cfgDir'}/maildrop-quota-warning",
-                MTA_MAILBOX_UID_NAME    => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
-                MTA_MAILBOX_GID_NAME    => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}
+                MAILDROP_DELIVER_PATH => $self->{'config'}->{'MAILDROP_DELIVER_PATH'},
+                MAILDROP_QUOTA_FILE   => "$self->{'cfgDir'}/maildrop-quota-warning",
+                MTA_MAILBOX_UID_NAME  => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_UID_NAME'},
+                MTA_MAILBOX_GID_NAME  => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}
             },
             <<'EOF'
 maildrop  unix  -       n       n       -       -       pipe
@@ -313,17 +313,16 @@ sub _setupAuthdaemonSqlUser
         my $dbUserHost = ::setupGetQuestion( 'DATABASE_USER_HOST' );
         my $dbPass = ::setupGetQuestion( 'AUTHDAEMON_SQL_PASSWORD' );
 
-        for my $sqlUser ( $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'}, $dbUser ) {
-            next unless length $sqlUser;
-            for my $host ( $::imscpOldConfig{'DATABASE_USER_HOST'}, $dbUserHost ) {
-                next if !length $host || exists $::sqlUsers{$sqlUser . '@' . $host} && !defined $::sqlUsers{$sqlUser . '@' . $host};
-                Servers::sqld->factory()->dropUser( $sqlUser, $host );
-            }
+        if ( length $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} && length $::imscpOldConfig{'DATABASE_USER_HOST'}
+            && $dbUser . $dbUserHost ne $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} . $::imscpOldConfig{'DATABASE_USER_HOST'}
+            && !exists $::SQL_USERS{$self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} . $::imscpOldConfig{'DATABASE_USER_HOST'}}
+        ) {
+            Servers::sqld->factory()->dropUser( $self->{'config'}->{'DATABASE_USER'}, $::imscpOldConfig{'DATABASE_USER_HOST'} );
         }
 
-        if ( defined $::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
+        unless ( exists $::SQL_USERS{$dbUser . $dbUserHost} ) {
             Servers::sqld->factory()->createUser( $dbUser, $dbUserHost, $dbPass );
-            $::sqlUsers{$dbUser . '@' . $dbUserHost} = undef;
+            undef $::SQL_USERS{$dbUser . $dbUserHost};
         }
 
         iMSCP::Database->factory()->getConnector()->run( fixup => sub {
@@ -331,8 +330,7 @@ sub _setupAuthdaemonSqlUser
             $_->do( "GRANT SELECT ON @{ [ $_->quote_identifier( $dbName ) ] }.mail_users TO ?\@?", undef, $dbUser, $dbUserHost );
         } );
 
-        $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} = $dbUser;
-        $self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'} = $dbPass;
+        @{ $self->{'config'} }{qw/ AUTHDAEMON_DATABASE_USER AUTHDAEMON_DATABASE_PASSWORD /} = ( $dbUser, $dbPass );
         0;
     } catch {
         error( $_ );
@@ -370,7 +368,7 @@ sub _buildConf
     };
 
     my %cfgFiles = (
-        authmysqlrc     => [
+        authmysqlrc => [
             "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/authmysqlrc", # Dest path
             $self->{'config'}->{'AUTHDAEMON_USER'},                # Owner
             $self->{'config'}->{'AUTHDAEMON_GROUP'},               # Group

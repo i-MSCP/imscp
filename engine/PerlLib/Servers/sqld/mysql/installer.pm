@@ -648,26 +648,21 @@ sub _setupMasterSqlUser
     my ( $self ) = @_;
 
     try {
-        my $user = ::setupGetQuestion( 'DATABASE_USER' );
-        my $userHost = ::setupGetQuestion( 'DATABASE_USER_HOST' );
+        my $dbUser = ::setupGetQuestion( 'DATABASE_USER' );
+        my $dbUserHost = ::setupGetQuestion( 'DATABASE_USER_HOST' );
         my $enc = iMSCP::Database::Encryption->getInstance();
-        my $pwd = decryptRijndaelCBC( $enc->getKey(), $enc->getIV(), ::setupGetQuestion( 'DATABASE_PASSWORD' ));
+        my $dbPass = decryptRijndaelCBC( $enc->getKey(), $enc->getIV(), ::setupGetQuestion( 'DATABASE_PASSWORD' ));
 
-        # Remove old user if any
-        for my $sqlUser ( $::imscpOldConfig{'DATABASE_USER'}, $user ) {
-            next unless length $sqlUser;
-            for my $host ( $userHost, $::imscpOldConfig{'DATABASE_USER_HOST'} ) {
-                next unless length $host;
-                $self->{'sqld'}->dropUser( $sqlUser, $host );
-            }
+        if ( length $::imscpOldConfig{'DATABASE_USER'} && length $::imscpOldConfig{'DATABASE_USER_HOST'}
+            && $dbUser . $dbUserHost ne $::imscpOldConfig{'DATABASE_USER'} . $::imscpOldConfig{'DATABASE_USER_HOST'}
+        ) {
+            $self->{'sqld'}->dropUser( $self->{'config'}->{'DATABASE_USER'}, $::imscpOldConfig{'DATABASE_USER_HOST'} );
         }
 
-        # Create user
-        $self->{'sqld'}->createUser( $user, $userHost, $pwd );
+        $self->{'sqld'}->createUser( $dbUser, $dbUserHost, $dbPass );
 
-        # Grant all privileges to that user (including GRANT option)
         iMSCP::Database->factory()->getConnector()->run( fixup => sub {
-            $_->do( 'GRANT ALL PRIVILEGES ON *.* TO ?@? WITH GRANT OPTION', undef, $user, $userHost );
+            $_->do( 'GRANT ALL PRIVILEGES ON *.* TO ?@? WITH GRANT OPTION', undef, $dbUser, $dbUserHost );
         } );
         0;
     } catch {
@@ -745,7 +740,7 @@ sub _setupDatabase
         unless ( $db->isDatabase( $dbName ) && $db->databaseHasTables( $dbName, qw/ server_ips user_gui_props reseller_props / ) ) {
             my $rs = $self->{'eventManager'}->getInstance()->trigger( 'beforeSetupDatabase', \$dbName );
             return $rs if $rs;
- 
+
             $db->getConnector()->run( fixup => sub {
                 $_->do( "CREATE DATABASE IF NOT EXISTS @{ [ $_->quote_identifier( $dbName ) ] } CHARACTER SET utf8 COLLATE utf8_unicode_ci;" );
             } );

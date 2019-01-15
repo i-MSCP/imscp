@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install>
-    <folders export="SYSTEM_ENGINE_ROOT">${SYSTEM_ROOT}/engine</folders>
-    <copy filemode="0755">${SYSTEM_ENGINE_ROOT}/bin</copy>
+    <folder export="SYSTEM_ENGINE_ROOT">${SYSTEM_ROOT}/engine</folder>
+    <copy filemode="0750" recursive="1">${SYSTEM_ENGINE_ROOT}/bin</copy>
     <copy>${SYSTEM_ENGINE_ROOT}/PerlLib</copy>
     <copy>${SYSTEM_ENGINE_ROOT}/PerlVendor</copy>
     <copy>${SYSTEM_ENGINE_ROOT}/imscp-pkt-mngr</copy>

@@ -32,7 +32,7 @@ use iMSCP::Boolean;
 use iMSCP::Bootstrapper;
 use iMSCP::Config;
 use iMSCP::Cwd '$CWD';
-use iMSCP::Debug qw/ debug error endDebug fatal newDebug /;
+use iMSCP::Debug qw/ debug error endDebug newDebug /;
 use iMSCP::Dialog;
 use iMSCP::Dir;
 use iMSCP::EventManager;
@@ -177,13 +177,13 @@ sub build
     $rs ||= _getDistroAdapter()->postBuild();
     return $rs if $rs;
 
-    undef $$ADAPTER;
+    undef ${ $ADAPTER };
 
     # Clean build directory (remove any .gitkeep file)
     find(
         sub {
             return unless $_ eq '.gitkeep';
-            unlink or fatal( sprintf( "Couldn't remove %s file: %s", $File::Find::name, $! ));
+            unlink or die( sprintf( "Couldn't remove %s file: %s", $File::Find::name, $! ));
         },
         $::{'INST_PREF'}
     );
@@ -191,13 +191,13 @@ sub build
     $rs = $EM->trigger( 'afterPostBuild' );
     return $rs if $rs;
 
-    my %confmap = (
+    my %confMap = (
         imscp    => \%::imscpConfig,
         imscpOld => \%::imscpOldConfig
     );
 
     # Write configuration
-    while ( my ( $name, $config ) = each %confmap ) {
+    while ( my ( $name, $config ) = each %confMap ) {
         if ( $name eq 'imscpOld' ) {
             local $UMASK = 027;
             iMSCP::File->new( filename => "$::{'SYSTEM_CONF'}/$name.conf" )->save();
@@ -241,7 +241,7 @@ sub install
     for my $job ( 'imscp-clients-backup', 'imscp-cp-backup', 'imscp-disk-quota', 'imscp-server-traffic', 'imscp-clients-traffic',
         'awstats_updateall.pl', 'imscp-clients-suspend', 'imscp'
     ) {
-        next if $bootstrapper->lock( "/var/lock/$job.lock", TRUE );
+        next if $bootstrapper->lock( "$job.lock", TRUE );
         push @runningJobs, $job,
     }
 
@@ -346,16 +346,18 @@ sub _showWelcomeMsg
 
 Welcome to the i-MSCP installer.
 
-i-MSCP (internet Multi Server Control Panel) is a software (OSS) easing shared hosting environments management on Linux servers. It comes with a large choice of modules for various services such as Apache2, ProFTPd, Dovecot, Courier, Bind9, and can be easily extended through plugins, or listener files using its events-based API.
+i-MSCP (internet Multi Server Control Panel) is an open source software (OSS) easing shared hosting environments management on Linux servers. It comes with a large choice of modules for various services such as Apache2, ProFTPd, Dovecot, Courier, Bind9, and can be easily extended through plugins, or listener files using its events-based API.
 
 i-MSCP was designed for professional Hosting Service Providers (HSPs), Internet Service Providers (ISPs) and IT professionals.
 
 \\Zb\\Z4License\\Zn\\ZB
 
-Unless otherwise stated all code is licensed under GPL 2.0 and has the following copyright:
+Unless otherwise stated all source code and material is licensed under LGPL 2.1 and has the following copyright:
 
   \\Zb© 2010-@{[ (localtime)[5]+1900 ]}, Laurent Declercq (i-MSCP™)
   All rights reserved\\ZB
+
+The design material and the "i-MSCP" trademark stay the property of their authors. Reuse of them without prior consent of their respective author is strictly prohibited.
 EOF
 }
 
@@ -383,9 +385,9 @@ EOF
     } else {
         $warning = <<"EOF";
 
-The installer detected that you intends to install i-MSCP \\ZbGit\\ZB version.
+The installer has detected that you intends to install an unreleased i-MSCP version.
 
-We would remind you that the Git version can be highly unstable and that the i-MSCP team do not provides any support for it.
+We would remind you that the development versions can be highly unstable and that the i-MSCP team do not provides any support for them.
 
 Before continue, be sure to have read the errata file:
 
@@ -525,7 +527,7 @@ sub _installDistroPackages
 
  Check for requirements
 
- Return undef if all requirements are met, throw a fatal error otherwise
+ Return undef if all requirements are met, die otherwise
 
 =cut
 
@@ -632,7 +634,12 @@ sub _buildEngineFiles
 
 sub _buildFrontendFiles
 {
-    iMSCP::Dir->new( dirname => "$FindBin::Bin/gui" )->rcopy( "$::{'SYSTEM_ROOT'}/gui", { preserve => 'no' } );
+    eval { iMSCP::Dir->new( dirname => "$FindBin::Bin/gui" )->rcopy( "$::{'SYSTEM_ROOT'}/gui", { preserve => 'no' } ); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
     0;
 }
 
@@ -646,20 +653,23 @@ sub _buildFrontendFiles
 
 sub _compileDaemon
 {
+
     local $CWD = "$FindBin::Bin/daemon";
 
-    my $rs = execute( 'make clean imscp_daemon', \my $stdout, \my $stderr );
+    my $rs = execute( [ '/usr/bin/make', 'clean', 'imscp_daemon' ], \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
     iMSCP::Dir->new( dirname => "$::{'SYSTEM_ROOT'}/daemon" )->make();
+
     $rs = iMSCP::File->new( filename => 'imscp_daemon' )->copyFile( "$::{'SYSTEM_ROOT'}/daemon", { preserve => 'no' } );
     $rs ||= iMSCP::Rights::setRights( "$::{'SYSTEM_ROOT'}/daemon/imscp_daemon", {
         user  => $::imscpConfig{'ROOT_GROUP'},
         group => $::imscpConfig{'ROOT_GROUP'},
         mode  => '0750'
-    } )
+    } );
+
 }
 
 =item _savePersistentData( )
@@ -804,7 +814,7 @@ sub _removeObsoleteFiles
  Process an install.xml file or distribution layout.xml file
 
  Param string $filepath xml file path
- Return int 0 on success, other on failure ; A fatal error is raised in case a variable cannot be exported
+ Return int 0 on success, other on failure, die when a variable cannot be exported
 
 =cut
 
@@ -817,20 +827,15 @@ sub _processXmlFile
         return 1;
     }
 
-    eval "use XML::Simple; 1";
-    fatal( "Couldn't load the XML::Simple perl module" ) if $@;
-    my $xml = XML::Simple->new( ForceArray => TRUE, ForceContent => TRUE );
-    my $data = eval { $xml->XMLin( $file, VarAttr => 'export' ) };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
     # Permissions hardening
     local $UMASK = 027;
 
-    # Process xml 'folders' nodes if any
-    for my $node ( @{ $data->{'folders'} } ) {
+    require XML::Simple;
+    my $xml = XML::Simple->new( ForceArray => TRUE, ForceContent => TRUE );
+    my $data = $xml->XMLin( $file, VarAttr => 'export' );
+
+    # Process xml 'folder' nodes if any
+    for my $node ( @{ $data->{'folder'} } ) {
         $node->{'content'} = _expandVars( $node->{'content'} );
         $::{$node->{'export'}} = $node->{'content'} if defined $node->{'export'};
         my $rs = _processFolder( $node );
@@ -848,27 +853,6 @@ sub _processXmlFile
     for my $node ( @{ $data->{'copy'} } ) {
         $node->{'content'} = _expandVars( $node->{'content'} );
         my $rs = _copy( $node );
-        return $rs if $rs;
-    }
-
-    # Process xml 'create_file' nodes if any
-    for my $node ( @{ $data->{'create_file'} } ) {
-        $node->{'content'} = _expandVars( $node->{'content'} );
-        my $rs = _createFile( $node );
-        return $rs if $rs;
-    }
-
-    # Process xml 'chmod_file' nodes if any
-    for my $node ( @{ $data->{'chmod_file'} } ) {
-        $node->{'content'} = _expandVars( $node->{'content'} );
-        my $rs = _chmodFile( $node ) if $node->{'content'};
-        return $rs if $rs;
-    }
-
-    # Process xml 'chmod_file' nodes if any
-    for my $node ( @{ $data->{'chown_file'} } ) {
-        $node->{'content'} = _expandVars( $node->{'content'} );
-        my $rs = _chownFile( $node );
         return $rs if $rs;
     }
 
@@ -895,7 +879,7 @@ sub _expandVars
         } elsif ( defined $::imscpConfig{$var} ) {
             $string =~ s/\$\{$var\}/$::imscpConfig{$var}/g;
         } else {
-            fatal( "Couldn't expand variable \${$var}. Variable not found." );
+            die( "Couldn't expand variable \${$var}. Variable not found." );
         }
     }
 
@@ -942,9 +926,9 @@ sub _copyConfig
 
     if ( defined $data->{'if'} && !eval _expandVars( $data->{'if'} ) ) {
         return 0 if $data->{'kept'};
-        ( my $syspath = $data->{'content'} ) =~ s/^$::{'INST_PREF'}//;
-        return 0 unless $syspath ne '/' && -f $syspath;
-        return iMSCP::File->new( filename => $syspath )->delFile();
+        ( my $sysPath = $data->{'content'} ) =~ s/^$::{'INST_PREF'}//;
+        return 0 unless $sysPath ne '/' && -f $sysPath;
+        return iMSCP::File->new( filename => $sysPath )->delFile();
     }
 
     my ( $name, $path ) = fileparse( $data->{'content'} );
@@ -959,20 +943,17 @@ sub _copyConfig
         return $rs if $rs;
     }
 
-    return 0 unless defined $data->{'user'} || defined $data->{'group'} || defined $data->{'mode'};
+    return 0 unless defined $data->{'user'} || defined $data->{'group'} || defined $data->{'mode'} || defined $data->{'filemode'}
+        || defined $data->{'dirmode'};
 
-    my $file = iMSCP::File->new( filename => -e "$path/$name" ? "$path/$name" : $path );
-
-    if ( defined $data->{'user'} || defined $data->{'group'} ) {
-        my $rs = $file->owner(
-            ( defined $data->{'user'} ? _expandVars( $data->{'user'} ) : -1 ), ( defined $data->{'group'} ? _expandVars( $data->{'group'} ) : -1 )
-        );
-        return $rs if $rs;
-    }
-
-    return 0 unless defined $data->{'mode'};
-
-    $file->mode( oct( $data->{'mode'} ));
+    setRights( "$path/$name" ? "$path/$name" : $path, {
+        user      => defined $data->{'user'} ? _expandVars( $data->{'user'} ) : undef,
+        group     => defined $data->{'group'} ? _expandVars( $data->{'group'} ) : undef,
+        mode      => $data->{'mode'},
+        filemode  => $data->{'filemode'},
+        dirmode   => $data->{'dirmode'},
+        recursive => $data->{'recursive'}
+    } );
 }
 
 =item _copy( \%data )
@@ -997,77 +978,17 @@ sub _copy
         return $rs if $rs;
     }
 
-    return 0 unless defined $data->{'user'} || defined $data->{'group'} || defined $data->{'mode'};
+    return 0 unless defined $data->{'user'} || defined $data->{'group'} || defined $data->{'mode'} || defined $data->{'filemode'}
+        || defined $data->{'dirmode'};
 
-    my $file = iMSCP::File->new( filename => -e "$path/$name" ? "$path/$name" : $path );
-
-    if ( defined $data->{'user'} || defined $data->{'group'} ) {
-        my $rs = $file->owner(
-            ( defined $data->{'user'} ? _expandVars( $data->{'user'} ) : -1 ), ( defined $data->{'group'} ? _expandVars( $data->{'group'} ) : -1 )
-        );
-        return $rs if $rs;
-    }
-
-    return 0 unless defined defined $data->{'mode'};
-
-    $file->mode( oct( $data->{'mode'} )) if defined $data->{'mode'};
-}
-
-=item _createFile( \%data )
-
- Create a file
-
- Param hashref %data
- Return int 0 on success, other on failure
-
-=cut
-
-sub _createFile
-{
-    my ( $data ) = @_;
-
-    iMSCP::File->new( filename => $data->{'content'} )->save();
-}
-
-=item _chownFile( )
-
- Change file/directory owner and/or group recursively
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _chownFile
-{
-    my ( $data ) = @_;
-
-    return 0 unless defined $data->{'owner'} && defined $data->{'group'};
-
-    my $rs = execute( "chown $data->{'owner'}:$data->{'group'} $data->{'content'}", \my $stdout, \my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr || 'Unknown error' ) if $rs;
-    $rs;
-}
-
-=item _chmodFile( \%data )
-
- Process chmod_file from an install.xml file
-
- Param hashref %data
- Return int 0 on success, other on failure
-
-=cut
-
-sub _chmodFile
-{
-    my ( $data ) = @_;
-
-    return 0 unless defined $data->{'mode'};
-
-    my $rs = execute( "chmod $data->{'mode'} $data->{'content'}", \my $stdout, \my $stderr );
-    debug( $stdout ) if $stdout;
-    error( $stderr || 'Unknown error' ) if $rs;
-    $rs;
+    setRights( "$path/$name" ? "$path/$name" : $path, {
+        user      => defined $data->{'user'} ? _expandVars( $data->{'user'} ) : undef,
+        group     => defined $data->{'group'} ? _expandVars( $data->{'group'} ) : undef,
+        mode      => $data->{'mode'},
+        filemode  => $data->{'filemode'},
+        dirmode   => $data->{'dirmode'},
+        recursive => $data->{'recursive'}
+    } );
 }
 
 =item _getDistroAdapter( )
@@ -1080,7 +1001,7 @@ sub _chmodFile
 
 sub _getDistroAdapter
 {
-    return $$ADAPTER if defined $$ADAPTER;
+    return ${ $ADAPTER } if defined ${ $ADAPTER };
 
     my $distribution = iMSCP::LsbRelease->getInstance()->getId( 'short' );
 
@@ -1088,11 +1009,11 @@ sub _getDistroAdapter
         my $file = "$FindBin::Bin/autoinstaller/Adapter/${distribution}Adapter.pm";
         my $adapterClass = "autoinstaller::Adapter::${distribution}Adapter";
         require $file;
-        $$ADAPTER = $adapterClass->new()
+        ${ $ADAPTER } = $adapterClass->new()
     };
 
-    fatal( sprintf( "Couldn't instantiate %s autoinstaller adapter: %s", $distribution, $@ )) if $@;
-    $$ADAPTER;
+    die( sprintf( "Couldn't instantiate %s autoinstaller adapter: %s", $distribution, $@ )) if $@;
+    ${ $ADAPTER };
 }
 
 =back

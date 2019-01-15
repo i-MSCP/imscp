@@ -196,13 +196,13 @@ sub createUser
 {
     my ( $self, $user, $host, $password ) = @_;
 
-    defined $user or die( '$user parameter is not defined' );
-    defined $host or die( '$host parameter is not defined' );
-    defined $password or die( '$password parameter is not defined' );
-
-    debug( sprintf( 'Creating %s@%s SQL user', $user, $password ));
+    length $user or die( 'Missing or invalid $user parameter' );
+    length $host or die( 'Missing or invalid $host parameter' );
+    length $password or die( 'Missing or invalid $password parameter' );
 
     iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+        return if $_->selectrow_hashref( 'SELECT 1 FROM mysql.user WHERE user = ? AND host = ?', undef, $user, $host );
+        debug( sprintf( 'Creating %s@%s SQL user', $user, $host ));
         $_->do(
             'CREATE USER ?@? IDENTIFIED BY ?' . ( version->parse( $self->getVersion()) >= version->parse( '5.7.6' ) ? ' PASSWORD EXPIRE NEVER' : '' ),
             undef, $user, $host, $password
@@ -225,17 +225,15 @@ sub dropUser
 {
     my ( undef, $user, $host ) = @_;
 
-    defined $user or die( '$user parameter not defined' );
-    defined $host or die( '$host parameter not defined' );
+    length $user or die( 'Missing or invalid $user parameter' );
+    length $host or die( 'Missing or invalid $host parameter' );
 
     return 0 if $user =~ /^(?:debian-sys-maint|mysql\.sys|root)$/; # Prevent deletion of system SQL users
 
-    debug( sprintf( 'Creating %s@%s SQL user', $user, $host ));
-
     iMSCP::Database->factory()->getConnector()->run( fixup => sub {
-        $_->do( 'DROP USER ?@?', undef, $user, $host ) if $_->selectrow_hashref(
-            'SELECT 1 FROM mysql.user WHERE user = ? AND host = ?', undef, $user, $host
-        );
+        return unless $_->selectrow_hashref( 'SELECT 1 FROM mysql.user WHERE user = ? AND host = ?', undef, $user, $host );
+        debug( sprintf( 'Dropping %s@%s SQL user', $user, $host ));
+        $_->do( 'DROP USER ?@?', undef, $user, $host );
     } );
 
     0;

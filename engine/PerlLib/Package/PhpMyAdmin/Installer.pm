@@ -46,7 +46,7 @@ use Try::Tiny;
 use version;
 use parent 'Common::SingletonClass';
 
-%::sqlUsers = () unless %::sqlUsers;
+%::SQL_USERS = () unless %::SQL_USERS;
 
 =head1 DESCRIPTION
 
@@ -299,17 +299,16 @@ sub _setupSqlUser
         my $dbUserHost = ::setupGetQuestion( 'DATABASE_USER_HOST' );
         my $dbPass = ::setupGetQuestion( 'PHPMYADMIN_SQL_PASSWORD' );
 
-        for my $sqlUser ( $self->{'config'}->{'DATABASE_USER'}, $dbUser ) {
-            next unless length $sqlUser;
-            for my $host ( $dbUserHost, $::imscpOldConfig{'DATABASE_USER_HOST'} ) {
-                next if !length $host || exists $::sqlUsers{$sqlUser . '@' . $host} && !defined $::sqlUsers{$sqlUser . '@' . $host};
-                Servers::sqld->factory()->dropUser( $sqlUser, $host );
-            }
+        if ( length $self->{'config'}->{'DATABASE_USER'} && length $::imscpOldConfig{'DATABASE_USER_HOST'}
+            && $dbUser . $dbUserHost ne $self->{'config'}->{'DATABASE_USER'} . $::imscpOldConfig{'DATABASE_USER_HOST'}
+            && !exists $::SQL_USERS{$self->{'config'}->{'DATABASE_USER'} . $::imscpOldConfig{'DATABASE_USER_HOST'}}
+        ) {
+            Servers::sqld->factory()->dropUser( $self->{'config'}->{'DATABASE_USER'}, $::imscpOldConfig{'DATABASE_USER_HOST'} );
         }
 
-        if ( defined $::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
+        unless ( exists $::SQL_USERS{$dbUser . $dbUserHost} ) {
             Servers::sqld->factory()->createUser( $dbUser, $dbUserHost, $dbPass );
-            $::sqlUsers{$dbUser . '@' . $dbUserHost} = undef;
+            undef $::SQL_USERS{$dbUser . $dbUserHost};
         }
 
         iMSCP::Database->factory()->getConnector()->run( fixup => sub {
@@ -334,10 +333,9 @@ sub _setupSqlUser
             }
 
             $_->do( "GRANT ALL PRIVILEGES ON @{ [ $_->quote_identifier( $dbName ) =~ s/([%_])/\\$1/gr ] }.* TO ?\@?", undef, $dbUser, $dbUserHost );
-        });
+        } );
 
-        $self->{'config'}->{'DATABASE_USER'} = $dbUser;
-        $self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
+        @{ $self->{'config'} }{qw/ DATABASE_NAME DATABASE_PASSWORD /} = ( $dbUser, $dbPass );
         0;
     } catch {
         error( $_ );
@@ -356,30 +354,25 @@ sub _setupSqlUser
 sub _setupDatabase
 {
     try {
-        my $phpmyadminDir = "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
-        my $phpmyadminDbName = ::setupGetQuestion( 'DATABASE_NAME' ) . '_pma';
+        my $dbName = ::setupGetQuestion( 'DATABASE_NAME' ) . '_pma';
 
-        # FIXME: Database shouldn't be reseted on every update/reconfiguration
+        # FIXME: Database shouldn't be resetted on every update/reconfiguration
         iMSCP::Database->factory()->getConnector()->run( fixup => sub {
-            $_->do( "DROP DATABASE IF EXISTS @{ [ $_->quote_identifier( $phpmyadminDbName ) ] }");
-        });
+            $_->do( "DROP DATABASE IF EXISTS @{ [ $_->quote_identifier( $dbName ) ] }" );
+        } );
 
-        # Create database
-
-        my $schemaFilePath = "$phpmyadminDir/sql/create_tables.sql";
-
-        my $file = iMSCP::File->new( filename => $schemaFilePath );
+        my $file = iMSCP::File->new( filename => "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma/sql/create_tables.sql" );
         my $fileC = $file->getAsRef();
         return 1 unless defined $fileC;
 
-        ${ $fileC } =~ s/^(-- Database :) `phpmyadmin`/$1 `$phpmyadminDbName`/im;
-        ${ $fileC } =~ s/^(CREATE DATABASE IF NOT EXISTS) `phpmyadmin`/$1 `$phpmyadminDbName`/im;
-        ${ $fileC } =~ s/^(USE) phpmyadmin;/$1 `$phpmyadminDbName`;/im;
+        ${ $fileC } =~ s/^(-- Database :) `phpmyadmin`/$1 `$dbName`/im;
+        ${ $fileC } =~ s/^(CREATE DATABASE IF NOT EXISTS) `phpmyadmin`/$1 `$dbName`/im;
+        ${ $fileC } =~ s/^(USE) phpmyadmin;/$1 `$dbName`;/im;
 
         my $rs = $file->save();
         return $rs if $rs;
 
-        $rs = execute( "cat $schemaFilePath | mysql", \my $stdout, \my $stderr );
+        $rs = execute( "/bin/cat $::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma/sql/create_tables.sql | /usr/bin/mysql", \my $stdout, \my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr || 'Unknown error' ) if $rs;
         $rs;

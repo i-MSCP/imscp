@@ -145,13 +145,13 @@ sub createUser
 {
     my ( $self, $user, $host, $password ) = @_;
 
-    defined $user or die( '$user parameter is not defined' );
-    defined $host or die( '$host parameter is not defined' );
-    defined $password or die( '$password parameter is not defined' );
-
-    debug( sprintf( 'Creating %s@%s SQL user', $user, $password ));
+    length $user or die( 'Missing or invalid $user parameter' );
+    length $host or die( 'Missing or invalid $host parameter' );
+    length $password or die( 'Missing or invalid $password parameter' );
 
     iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+        return if $_->selectrow_hashref( 'SELECT 1 FROM mysql.user WHERE user = ? AND host = ?', undef, $user, $host );
+        debug( sprintf( 'Creating %s@%s SQL user', $user, $host ));
         $_->do(
             'CREATE USER ?@? IDENTIFIED BY ?' . (
                 $self->getType() ne 'mariadb' && version->parse( $self->getVersion()) >= version->parse( '5.7.6' ) ? ' PASSWORD EXPIRE NEVER' : ''

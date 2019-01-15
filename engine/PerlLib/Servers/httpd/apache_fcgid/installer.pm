@@ -428,39 +428,42 @@ sub _setupVlogger
     my ( $self ) = @_;
 
     try {
-        my $host = ::setupGetQuestion( 'DATABASE_HOST' );
-        $host = $host eq 'localhost' ? '127.0.0.1' : $host;
-        my $port = ::setupGetQuestion( 'DATABASE_PORT' );
+        my $dbHost = ::setupGetQuestion( 'DATABASE_HOST' );
+        $dbHost = $dbHost eq 'localhost' ? '127.0.0.1' : $dbHost;
+
+        my $dbPort = ::setupGetQuestion( 'DATABASE_PORT' );
+
         my $dbName = ::setupGetQuestion( 'DATABASE_NAME' );
-        my $user = 'vlogger_user';
-        my $userHost = ::setupGetQuestion( 'DATABASE_USER_HOST' );
+
+        my $dbUser = 'vlogger_user';
+
+        my $dbHost = ::setupGetQuestion( 'DATABASE_USER_HOST' );
         $userHost = '127.0.0.1' if $userHost eq 'localhost';
-        my $oldUserHost = $::imscpOldConfig{'DATABASE_USER_HOST'};
+
         my $pass = randomStr( 16, ALNUM );
 
         my $db = iMSCP::Database->factory();
         my $rs = ::setupImportSqlSchema( $db, "$self->{'apacheCfgDir'}/vlogger.sql" );
         return $rs if $rs;
 
-        my $sqld = Servers::sqld->factory();
-        for my $oldHost ( $userHost, $oldUserHost, 'localhost' ) {
+        for my $oldHost ( $userHost, $::imscpOldConfig{'DATABASE_USER_HOST'}, 'localhost' ) {
             next unless length $oldHost;
-            $sqld->dropUser( $user, $oldHost );
+            Servers::sqld->factory()->dropUser( 'vlogger_user', $oldHost );
         }
 
-        $sqld->createUser( $user, $userHost, $pass );
+        Servers::sqld->factory()->createUser( 'vlogger_user', $userHost, $pass );
 
-        iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+        $db->getConnector()->run( fixup => sub {
             # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
-            $_->do( "GRANT SELECT, INSERT, UPDATE ON @{ [ $_->quote_identifier( $dbName ) ] }.httpd_vlogger TO ?\@?", undef, $user, $userHost );
+            $_->do( "GRANT SELECT, INSERT, UPDATE ON @{ [ $_->quote_identifier( $dbName ) ] }.httpd_vlogger TO ?\@?", undef, 'vlogger_user', $userHost );
         } );
 
         $self->{'httpd'}->setData( {
             DATABASE_NAME     => $dbName,
-            DATABASE_HOST     => $host,
-            DATABASE_PORT     => $port,
-            DATABASE_USER     => $user,
-            DATABASE_PASSWORD => $pass
+            DATABASE_HOST     => $dbHost,
+            DATABASE_PORT     => $dbPort,
+            DATABASE_USER     => $dbUser,
+            DATABASE_PASSWORD => 'vlogger_user'
         } );
         $self->{'httpd'}->buildConfFile( "$self->{'apacheCfgDir'}/vlogger.conf.tpl", { SKIP_TEMPLATE_CLEANER => TRUE }, {
             destination => "$self->{'apacheCfgDir'}/vlogger.conf"

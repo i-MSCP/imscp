@@ -508,22 +508,20 @@ sub _setupVlogger
         my $user = 'vlogger_user';
         my $userHost = ::setupGetQuestion( 'DATABASE_USER_HOST' );
         $userHost = '127.0.0.1' if $userHost eq 'localhost';
-        my $oldUserHost = $::imscpOldConfig{'DATABASE_USER_HOST'};
         my $pass = randomStr( 16, ALNUM );
 
         my $db = iMSCP::Database->factory();
         my $rs = ::setupImportSqlSchema( $db, "$self->{'apacheCfgDir'}/vlogger.sql" );
         return $rs if $rs;
 
-        my $sqld = Servers::sqld->factory();
-        for my $oldHost ( $userHost, $oldUserHost, 'localhost' ) {
-            next unless $oldHost;
-            $sqld->dropUser( $user, $oldHost );
+        for my $oldHost ( $userHost, $::imscpOldConfig{'DATABASE_USER_HOST'}, 'localhost' ) {
+            next unless length $oldHost;
+            Servers::sqld->factory()->dropUser( $user, $oldHost );
         }
 
-        $sqld->createUser( $user, $userHost, $pass );
+        Servers::sqld->factory()->createUser( $user, $userHost, $pass );
 
-        iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+        $db->getConnector()->run( fixup => sub {
             # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
             $_->do( "GRANT SELECT, INSERT, UPDATE ON @{ [ $_->quote_identifier( $dbName ) ] }.httpd_vlogger TO ?\@?", undef, $user, $userHost );
         } );

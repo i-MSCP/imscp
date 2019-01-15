@@ -35,6 +35,7 @@
 
 use strict;
 use warnings;
+#use Carp::Always;
 use FindBin;
 use File::Basename;
 use lib $FindBin::Bin, "$FindBin::Bin/engine/PerlLib", "$FindBin::Bin/engine/PerlVendor";
@@ -43,7 +44,6 @@ use iMSCP::Debug qw/ newDebug setDebug setVerbose debugRegisterCallBack output /
 use iMSCP::Dialog;
 use iMSCP::Getopt;
 use iMSCP::Requirements;
-use Carp::Always;
 use autoinstaller::Functions qw/ loadConfig build install /;
 
 $ENV{'LANG'} = 'C.UTF-8';

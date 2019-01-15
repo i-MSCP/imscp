@@ -43,7 +43,7 @@ use Servers::sqld;
 use Try::Tiny;
 use parent 'Common::SingletonClass';
 
-%::sqlUsers = () unless %::sqlUsers;
+%::SQL_USERS = () unless %::SQL_USERS;
 
 =head1 DESCRIPTION
 
@@ -309,17 +309,16 @@ sub _setupDatabase
         my $dbUserHost = ::setupGetQuestion( 'DATABASE_USER_HOST' );
         my $dbPass = ::setupGetQuestion( 'FTPD_SQL_PASSWORD' );
 
-        for my $sqlUser ( $self->{'config'}->{'DATABASE_USER'}, $dbUser ) {
-            next unless length $sqlUser;
-            for my $host ( $::imscpOldConfig{'DATABASE_USER_HOST'}, $dbUserHost ) {
-                next if !length $host || exists $::sqlUsers{$sqlUser . '@' . $host} && !defined $::sqlUsers{$sqlUser . '@' . $host};
-                Servers::sqld->factory()->dropUser( $sqlUser, $host );
-            }
+        if ( length $self->{'config'}->{'DATABASE_USER'} && length $::imscpOldConfig{'DATABASE_USER_HOST'}
+            && $dbUser . $dbUserHost ne $self->{'config'}->{'DATABASE_USER'} . $::imscpOldConfig{'DATABASE_USER_HOST'}
+            && !exists $::SQL_USERS{$self->{'config'}->{'DATABASE_USER'} . $::imscpOldConfig{'DATABASE_USER_HOST'}}
+        ) {
+            Servers::sqld->factory()->dropUser( $self->{'config'}->{'DATABASE_USER'}, $::imscpOldConfig{'DATABASE_USER_HOST'} );
         }
 
-        if ( defined $::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
+        unless ( exists $::SQL_USERS{$dbUser . $dbUserHost} ) {
             Servers::sqld->factory()->createUser( $dbUser, $dbUserHost, $dbPass );
-            $::sqlUsers{$dbUser . '@' . $dbUserHost} = undef;
+            undef $::SQL_USERS{$dbUser . $dbUserHost};
         }
 
         iMSCP::Database->factory()->getConnector()->run( fixup => sub {
@@ -335,9 +334,8 @@ sub _setupDatabase
             }
         } );
 
-        $self->{'config'}->{'DATABASE_USER'} = $dbUser;
-        $self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
-        $self->{'eventManager'}->trigger( 'afterFtpSetupDb', $dbUser, $dbPass );
+        @{ $self->{'config'} }{qw/ DATABASE_NAME DATABASE_PASSWORD /} = ( $dbUser, $dbPass );
+        0;
     } catch {
         error( $_ );
         1;
