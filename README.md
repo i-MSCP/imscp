@@ -32,6 +32,5 @@ following copyright:
 ```
 
 The design material and the "i-MSCP" trademark stay the property of their
-authors. Reuse of them without prior consent of their respective author is
+authors. Reuse of them without prior consent of their respective authors is
 strictly prohibited.
-

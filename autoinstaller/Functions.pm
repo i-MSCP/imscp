@@ -357,7 +357,7 @@ Unless otherwise stated all source code and material is licensed under LGPL 2.1 
   \\Zb© 2010-@{[ (localtime)[5]+1900 ]}, Laurent Declercq (i-MSCP™)
   All rights reserved\\ZB
 
-The design material and the "i-MSCP" trademark stay the property of their authors. Reuse of them without prior consent of their respective author is strictly prohibited.
+The design material and the "i-MSCP" trademark stay the property of their authors. Reuse of them without prior consent of their respective authors is strictly prohibited.
 EOF
 }
 
