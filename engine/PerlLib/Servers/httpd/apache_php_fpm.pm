@@ -181,13 +181,7 @@ sub setEnginePermissions
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdSetEnginePermissions' );
-    $rs ||= setRights( '/usr/local/sbin/vlogger', {
-        user  => $::imscpConfig{'ROOT_USER'},
-        group => $::imscpConfig{'ROOT_GROUP'},
-        mode  => '0750'
-    } );
-    $rs ||= setRights( $self->{'config'}->{'HTTPD_LOG_DIR'}, {
+    my $rs = setRights( $self->{'config'}->{'HTTPD_LOG_DIR'}, {
         user      => $::imscpConfig{'ROOT_USER'},
         group     => $::imscpConfig{'ROOT_GROUP'},
         dirmode   => '0755',
@@ -205,7 +199,6 @@ sub setEnginePermissions
         filemode  => '0440',
         recursive => iMSCP::Getopt->fixPermissions
     } );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdSetEnginePermissions' );
 }
 
 =item addUser( \%data )
@@ -835,12 +828,12 @@ sub buildConf
             ${ $cfgTpl } = replaceBloc( "# SECTION fwd BEGIN.\n", "# SECTION fwd END.\n", '', ${ $cfgTpl } );
         } elsif ( grep ( $_ eq $data->{'VHOST_TYPE'}, 'domain_fwd', 'domain_ssl_fwd', 'domain_disabled_fwd' ) ) {
             # Remove ssl section if needed
-            $cfgTpl = replaceBloc( "# SECTION ssl BEGIN.\n", "# SECTION ssl END.\n", '', ${ $cfgTpl } ) unless $data->{'VHOST_TYPE'} eq 'domain_ssl_fwd';
+            ${ $cfgTpl } = replaceBloc( "# SECTION ssl BEGIN.\n", "# SECTION ssl END.\n", '', ${ $cfgTpl } ) unless $data->{'VHOST_TYPE'} eq 'domain_ssl_fwd';
             # Remove domain section
-            $cfgTpl = replaceBloc( "# SECTION dmn BEGIN.\n", "# SECTION dmn END.\n", '', ${ $cfgTpl } );
+            ${ $cfgTpl } = replaceBloc( "# SECTION dmn BEGIN.\n", "# SECTION dmn END.\n", '', ${ $cfgTpl } );
         } elsif ( grep ( $_ eq $data->{'VHOST_TYPE'}, 'domain_ssl', 'domain_disabled_ssl' ) ) {
             # Remove forward section
-            $cfgTpl = replaceBloc( "# SECTION fwd BEGIN.\n", "# SECTION fwd END.\n", '', ${ $cfgTpl } );
+            ${ $cfgTpl } = replaceBloc( "# SECTION fwd BEGIN.\n", "# SECTION fwd END.\n", '', ${ $cfgTpl } );
         }
     }
 
@@ -896,12 +889,13 @@ sub buildConfFile
         }
 
         my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdBuildConfFile', $cfgTpl, $file, $data, $options );
-        $rs || ( ${ $cfgTpl } = $self->buildConf( $cfgTpl, $file, $data ) );
-        $rs = $self->{'eventManager'}->trigger( 'afterHttpdBuildConfFile', $cfgTpl, $file, $data, $options );
+        $rs || $self->buildConf( $cfgTpl, $file, $data );
+        $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildConfFile', $cfgTpl, $file, $data, $options );
         $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ));
 
         local $UMASK = 022;
         $file = iMSCP::File->new( filename => $options->{'destination'} // "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$file" );
+        $file->set( ${ $cfgTpl } );
         $rs ||= $file->save();
         $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ));
 
@@ -1758,7 +1752,7 @@ sub _addFiles
             $rs = setRights( "$data->{'WEB_DIR'}/logs", {
                 user  => $::imscpConfig{'ROOT_USER'},
                 group => $data->{'GROUP'},
-                mode  => '02750'
+                mode  => '2750'
             } );
             return $rs if $rs;
 

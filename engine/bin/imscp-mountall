@@ -47,7 +47,7 @@ try {
     my $basename = basename( $0 );
     newDebug( $basename . '.log' );
 
-    iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]... start|stop', $basename ) . qq{
+    iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: %s [OPTION]... start|stop', $basename ) . qq{
 
 Mount or umount filesystems by reading entries from i-MSCP fstab-like file.
 

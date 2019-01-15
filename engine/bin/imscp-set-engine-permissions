@@ -52,7 +52,7 @@ try {
     my $basename = basename( $0 );
     newDebug( $basename . '.log' );
 
-    iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', $basename ) . qq{
+    iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: %s [OPTION]...', $basename ) . qq{
 
 Sets i-MSCP engine permissions.
 
@@ -112,13 +112,21 @@ OPTIONS:
         group     => $::imscpConfig{'IMSCP_GROUP'},
         mode      => '0750',
         recursive => TRUE
-    }
-    );
+    } );
     # e.g: /var/www/imscp/engine
     setRights( "$::imscpConfig{'ROOT_DIR'}/engine", {
         user      => $::imscpConfig{'ROOT_USER'},
         group     => $::imscpConfig{'IMSCP_GROUP'},
-        mode      => '0750',
+        dirmode   => '0750',
+        filemode  => '0640',
+        recursive => TRUE
+    } );
+    # e.g: /var/www/imscp/engine/bin
+    setRights( "$::imscpConfig{'ROOT_DIR'}/engine/bin", {
+        user      => $::imscpConfig{'ROOT_USER'},
+        group     => $::imscpConfig{'IMSCP_GROUP'},
+        dirmode   => '0750',
+        filemode  => '0750',
         recursive => TRUE
     } );
     # e.g: /var/www/virtual

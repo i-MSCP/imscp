@@ -192,7 +192,7 @@ postfix, sendmail or qmail servers) into a human readable format.
 The output format is also ready to be used by a log analyzer, like AWStats.
 
 Usage:
-  perl imscp-maillogconvert [standard|vadmin] [year] < logfile > output
+  imscp-maillogconvert [standard|vadmin] [year] < logfile > output
 
 The first parameter specifies what format the mail logfile is :
   standard - logfile is standard postfix,sendmail,qmail or mdaemon log format

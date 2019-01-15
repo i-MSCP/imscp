@@ -180,16 +180,10 @@ sub setEnginePermissions
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdSetEnginePermissions' );
-    $rs ||= setRights( $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}, {
+    my $rs = setRights( $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}, {
         user  => $::imscpConfig{'ROOT_USER'},
         group => $::imscpConfig{'ROOT_GROUP'},
         mode  => '0555'
-    } );
-    $rs ||= setRights( '/usr/local/sbin/vlogger', {
-        user  => $::imscpConfig{'ROOT_USER'},
-        group => $::imscpConfig{'ROOT_GROUP'},
-        mode  => '0750'
     } );
     $rs ||= setRights( $self->{'config'}->{'HTTPD_LOG_DIR'}, {
         user      => $::imscpConfig{'ROOT_USER'},
@@ -210,7 +204,6 @@ sub setEnginePermissions
         filemode  => '0440',
         recursive => iMSCP::Getopt->fixPermissions
     } );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdSetEnginePermissions' );
 }
 
 =item addUser( \%data )
@@ -901,12 +894,13 @@ sub buildConfFile
         }
 
         my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdBuildConfFile', $cfgTpl, $file, $data, $options );
-        $rs || ( ${ $cfgTpl } = $self->buildConf( $cfgTpl, $file, $data ) );
-        $rs = $self->{'eventManager'}->trigger( 'afterHttpdBuildConfFile', $cfgTpl, $file, $data, $options );
+        $rs || $self->buildConf( $cfgTpl, $file, $data );
+        $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildConfFile', $cfgTpl, $file, $data, $options );
         $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ));
 
         local $UMASK = 022;
         $file = iMSCP::File->new( filename => $options->{'destination'} // "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$file" );
+        $file->set( ${ $cfgTpl } );
         $rs ||= $file->save();
         $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ));
 
@@ -1740,7 +1734,7 @@ sub _addFiles
             $rs = setRights( "$data->{'WEB_DIR'}/logs", {
                 user  => $::imscpConfig{'ROOT_USER'},
                 group => $data->{'GROUP'},
-                mode  => '02750'
+                mode  => '2750'
             } );
             return $rs if $rs;
 

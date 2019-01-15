@@ -43,7 +43,7 @@ use Try::Tiny;
 
 newDebug( 'imscp-rkhunter.log' );
 
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq{
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: %s [OPTION]...', basename( $0 )) . qq{
 
 Process rkhunter(8) checks.
 

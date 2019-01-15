@@ -304,9 +304,6 @@ sub setEnginePermissions
     my ( $self ) = @_;
 
     try {
-        my $rs = $self->{'eventManager'}->trigger( 'beforeAntiRootkisSetGuiPermissions' );
-        return $rs if $rs;
-
         my %selectedPackages;
         @{selectedPackages}{ split ',', $::imscpConfig{'ANTI_ROOTKITS_PACKAGES'} } = ();
 
@@ -315,11 +312,9 @@ sub setEnginePermissions
             $package = "Package::AntiRootkits::${package}::${package}";
             eval "require $package" or die;
             ( my $subref = $package->can( 'setEnginePermissions' ) ) or next;
-            $rs = $subref->( $package->getInstance());
+            my $rs = $subref->( $package->getInstance());
             return $rs if $rs;
         }
-
-        $self->{'eventManager'}->trigger( 'afterAntiRootkisSetGuiPermissions' );
     } catch {
         error( $_ );
         1;

@@ -36,13 +36,13 @@ check_for_upstart()
 
 do_start()
 {
-    perl ${BINDIR}/imscp-net-traffic add 2>/dev/null
+    ${BINDIR}/imscp-net-traffic add 2>/dev/null
     touch $LFILE
 }
 
 do_stop()
 {
-    perl ${BINDIR}/imscp-net-traffic remove 2>/dev/null
+    ${BINDIR}/imscp-net-traffic remove 2>/dev/null
     rm -f $LFILE
 }
 

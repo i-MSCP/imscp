@@ -65,7 +65,7 @@ $::buildonly = FALSE;
 $::forcereinstall = FALSE;
 $::skippackages = FALSE;
 
-iMSCP::Getopt->parse( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq{
+iMSCP::Getopt->parse( sprintf( 'Usage: %s [OPTION]...', basename( $0 )) . qq{
  -b,    --build-only            Process build steps only.
  -f,    --force-reinstall       Force re-installation of distro packages.
  -s,    --skip-distro-packages  Do not install/update distro packages.},
@@ -139,7 +139,7 @@ Please run the following commands from your console:
   # rm -fR $::imscpConfig{'ROOT_DIR'}/{daemon,engine,gui}
   # cp -fR $::{'INST_PREF'}/* /
   # rm -fR $::{'INST_PREF'}
-  # perl $::imscpConfig{'ROOT_DIR'}/engine/bin/imscp-reconfigure -d
+  # $::imscpConfig{'ROOT_DIR'}/engine/bin/imscp-reconfigure -d
 
 For any problem, have a look at https://i-mscp.net
 

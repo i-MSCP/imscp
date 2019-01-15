@@ -295,15 +295,13 @@ sub setEnginePermissions
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeCronSetEnginePermissions' );
-    return $rs if $rs || !-f "$self->{'config'}->{'CRON_D_DIR'}/imscp";
+    return 0 unless -f "$self->{'config'}->{'CRON_D_DIR'}/imscp";
 
-    $rs = setRights( "$self->{'config'}->{'CRON_D_DIR'}/imscp", {
+    setRights( "$self->{'config'}->{'CRON_D_DIR'}/imscp", {
         user  => $::imscpConfig{'ROOT_USER'},
         group => $::imscpConfig{'ROOT_GROUP'},
         mode  => '0640'
     } );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterCronSetEnginePermissions' );
 }
 
 =back

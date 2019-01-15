@@ -54,7 +54,7 @@ try {
     my $basename = basename( $0 );
     newDebug( $basename . '.log' );
 
-    iMSCP::Getopt->parse( sprintf( 'Usage: perl %s [OPTION]...', $basename ));
+    iMSCP::Getopt->parse( sprintf( 'Usage: %s [OPTION]...', $basename ));
 
     setDebug( iMSCP::Getopt->debug );
     setVerbose( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose );

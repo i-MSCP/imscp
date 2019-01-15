@@ -257,7 +257,7 @@ try {
     my $basename = basename( $0 );
     newDebug( $basename . '.log' );
 
-    iMSCP::Getopt->parseNoDefault( sprintf( "Usage: perl %s [OPTION]...", $basename ) . qq{
+    iMSCP::Getopt->parseNoDefault( sprintf( "Usage: %s [OPTION]...", $basename ) . qq{
 
 Backup client data (Web data, mail data and databases)
 

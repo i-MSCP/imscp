@@ -364,10 +364,11 @@ sub _buildApacheConfFiles
     }
 
     $self->{'httpd'}->setData( {
+        ENGINE_ROOT_DIR        => $::imscpConfig{'ENGINE_ROOT_DIR'},
         HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
         HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
         HTTPD_ROOT_DIR         => $self->{'config'}->{'HTTPD_ROOT_DIR'},
-        VLOGGER_CONF           => "$self->{'apacheCfgDir'}/vlogger.conf"
+        VLOGGER_CONF           => "$self->{'apacheCfgDir'}/imscp-vlogger.conf"
     } );
     $rs ||= $self->{'httpd'}->buildConfFile( '00_nameserver.conf', );
     $rs ||= $self->{'httpd'}->buildConfFile( '00_imscp.conf', {}, {
@@ -421,40 +422,43 @@ sub _setupVlogger
     my ( $self ) = @_;
 
     try {
-        my $host = ::setupGetQuestion( 'DATABASE_HOST' );
-        $host = $host eq 'localhost' ? '127.0.0.1' : $host;
-        my $port = ::setupGetQuestion( 'DATABASE_PORT' );
+        my $dbHost = ::setupGetQuestion( 'DATABASE_HOST' );
+        my $dbPort = ::setupGetQuestion( 'DATABASE_PORT' );
         my $dbName = ::setupGetQuestion( 'DATABASE_NAME' );
-        my $user = 'vlogger_user';
-        my $userHost = ::setupGetQuestion( 'DATABASE_USER_HOST' );
-        $userHost = '127.0.0.1' if $userHost eq 'localhost';
-        my $pass = randomStr( 16, ALNUM );
+        my $dbUser = 'vlogger_user';
+        my $dbUserHost = ::setupGetQuestion( 'DATABASE_USER_HOST' );
+        my $dbPass = randomStr( 16, ALNUM );
 
-        my $db = iMSCP::Database->factory();
-        my $rs = ::setupImportSqlSchema( $db, "$self->{'apacheCfgDir'}/vlogger.sql" );
+        # Because imscp-vlogger script call CHROOT(2), it cannot access MySQL server through UDS
+        # Thus, we need force connection through TCP
+        $dbHost = '127.0.0.1' if $dbHost eq 'localhost';
+        $dbUserHost = '127.0.0.1' if $dbUserHost eq 'localhost';
+
+        my $rs = ::setupImportSqlSchema( iMSCP::Database->factory(), "$self->{'apacheCfgDir'}/imscp-vlogger.sql" );
         return $rs if $rs;
 
-        for my $oldHost ( $userHost, $::imscpOldConfig{'DATABASE_USER_HOST'}, 'localhost' ) {
-            next unless length $oldHost;
-            Servers::sqld->factory()->dropUser( $user, $oldHost );
+        if ( length $::imscpOldConfig{'DATABASE_USER_HOST'} && $dbUserHost ne $::imscpOldConfig{'DATABASE_USER_HOST'} ) {
+            Servers::sqld->factory()->dropUser( $dbUser, $::imscpOldConfig{'DATABASE_USER_HOST'} );
         }
 
-        Servers::sqld->factory()->createUser( $user, $userHost, $pass );
+        Servers::sqld->factory()->createUser( $dbUser, $dbUserHost, $dbPass );
 
-        $db->getConnector()->run( fixup => sub {
+        iMSCP::Database->factory()->getConnector()->run( fixup => sub {
             # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
-            $_->do( "GRANT SELECT, INSERT, UPDATE ON @{ [ $_->quote_identifier( $dbName ) ] }.httpd_vlogger TO ?\@?", undef, $user, $userHost );
+            $_->do(
+                "GRANT SELECT, INSERT, UPDATE ON @{ [ $_->quote_identifier( $dbName ) ] }.httpd_vlogger TO ?\@?", undef, $dbUser, $dbUserHost
+            );
         } );
 
         $self->{'httpd'}->setData( {
+            DATABASE_HOST     => $dbHost,
+            DATABASE_PORT     => $dbPort,
             DATABASE_NAME     => $dbName,
-            DATABASE_HOST     => $host,
-            DATABASE_PORT     => $port,
-            DATABASE_USER     => $user,
-            DATABASE_PASSWORD => $pass
+            DATABASE_USER     => $dbUser,
+            DATABASE_PASSWORD => $dbPass
         } );
-        $self->{'httpd'}->buildConfFile( "$self->{'apacheCfgDir'}/vlogger.conf.tpl", { SKIP_TEMPLATE_CLEANER => TRUE }, {
-            destination => "$self->{'apacheCfgDir'}/vlogger.conf"
+        $self->{'httpd'}->buildConfFile( "$self->{'apacheCfgDir'}/imscp-vlogger.conf.tpl", { SKIP_TEMPLATE_CLEANER => TRUE }, {
+            destination => "$self->{'apacheCfgDir'}/imscp-vlogger.conf"
         } );
     } catch {
         error( $_ );

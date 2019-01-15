@@ -191,9 +191,7 @@ sub setEnginePermissions
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndSetEnginePermissions' );
-
-    $rs ||= setRights( $self->{'config'}->{'HTTPD_CONF_DIR'}, {
+    my $rs = setRights( $self->{'config'}->{'HTTPD_CONF_DIR'}, {
         user      => $::imscpConfig{'ROOT_USER'},
         group     => $::imscpConfig{'ROOT_GROUP'},
         dirmode   => '0755',
@@ -260,7 +258,7 @@ sub setEnginePermissions
         }
     }
 
-    $self->{'eventManager'}->trigger( 'afterFrontEndSetEnginePermissions' );
+    0;
 }
 
 =item setGuiPermissions( )

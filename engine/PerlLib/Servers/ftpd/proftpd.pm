@@ -168,13 +168,11 @@ sub setEnginePermissions
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdSetEnginePermissions' );
-    $rs ||= setRights( $self->{'config'}->{'FTPD_CONF_FILE'}, {
+    setRights( $self->{'config'}->{'FTPD_CONF_FILE'}, {
         user  => $::imscpConfig{'ROOT_USER'},
         group => $::imscpConfig{'ROOT_GROUP'},
         mode  => '0640'
     } );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterFtpdSetEnginePermissions' );
 }
 
 =item addUser( \%data )

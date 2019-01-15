@@ -274,8 +274,7 @@ sub setEnginePermissions
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoSetEnginePermissions' );
-    $rs ||= setRights( $self->{'config'}->{'DOVECOT_CONF_DIR'}, {
+    my $rs = setRights( $self->{'config'}->{'DOVECOT_CONF_DIR'}, {
         user  => $::imscpConfig{'ROOT_USER'},
         group => $::imscpConfig{'ROOT_GROUP'},
         mode  => '0755'
@@ -295,7 +294,6 @@ sub setEnginePermissions
         group => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
         mode  => '0750'
     } );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPoSetEnginePermissions' );
 }
 
 =item start( )

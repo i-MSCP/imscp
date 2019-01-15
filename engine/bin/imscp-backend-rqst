@@ -47,7 +47,7 @@ try {
     my $basename = basename( $0 );
     newDebug( $basename . '.log' );
 
-    iMSCP::Getopt->parseNoDefault( sprintf( "Usage: perl %s [OPTIONS]...", $basename ) . qq{
+    iMSCP::Getopt->parseNoDefault( sprintf( "Usage: %s [OPTIONS]...", $basename ) . qq{
 
 Execute backend requests.
 

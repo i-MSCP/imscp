@@ -176,7 +176,7 @@ try {
     my $basename = basename( $0 );
     newDebug( $basename . '.log' );
 
-    iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]... add|remove', $basename ) . qq{
+    iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: %s [OPTION]... add|remove', $basename ) . qq{
 
 Add/Remove IPv4 and IPv6 packet filter rules to track incoming/outgoing traffic.
 

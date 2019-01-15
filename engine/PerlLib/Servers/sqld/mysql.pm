@@ -143,8 +143,7 @@ sub setEnginePermissions
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldSetEnginePermissions' );
-    $rs ||= setRights( "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf", {
+    my $rs = setRights( "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf", {
         user  => $::imscpConfig{'ROOT_USER'},
         group => $::imscpConfig{'ROOT_GROUP'},
         mode  => '0644'
@@ -154,7 +153,6 @@ sub setEnginePermissions
         group => $self->{'config'}->{'SQLD_GROUP'},
         mode  => '0640'
     } );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldSetEnginePermissions' );
 }
 
 =item restart( )

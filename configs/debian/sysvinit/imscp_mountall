@@ -35,13 +35,13 @@ check_for_upstart()
 
 do_start()
 {
-    perl ${BINDIR}/imscp-mountall start 2>/dev/null
+    ${BINDIR}/imscp-mountall start 2>/dev/null
     touch $LFILE
 }
 
 do_stop()
 {
-    perl ${BINDIR}/imscp-mountall stop 2>/dev/null
+    ${BINDIR}/imscp-mountall stop 2>/dev/null
     rm -f $LFILE
 }
 

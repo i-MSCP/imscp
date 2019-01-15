@@ -89,7 +89,7 @@ sub setEnginePermissions
     my $rs = setRights( "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/bin/imscp-rkhunter", {
         user  => $::imscpConfig{'ROOT_USER'},
         group => $::imscpConfig{'ROOT_USER'},
-        mode  => '0700'
+        mode  => '0750'
     } );
 
     return $rs if $rs || !-f $::imscpConfig{'RKHUNTER_LOG'};

@@ -170,8 +170,7 @@ sub setEnginePermissions
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeNamedSetEnginePermissions' );
-    $rs ||= setRights( $self->{'config'}->{'BIND_CONF_DIR'}, {
+    my $rs = setRights( $self->{'config'}->{'BIND_CONF_DIR'}, {
         user      => $::imscpConfig{'ROOT_USER'},
         group     => $self->{'config'}->{'BIND_GROUP'},
         dirmode   => '2750',
@@ -181,7 +180,7 @@ sub setEnginePermissions
     return $rs if $rs;
 
     if ( -f "$self->{'config'}->{'BIND_CONF_DIR'}/rndc.key" ) {
-        $rs ||= setRights( "$self->{'config'}->{'BIND_CONF_DIR'}/rndc.key", {
+        $rs = setRights( "$self->{'config'}->{'BIND_CONF_DIR'}/rndc.key", {
             user  => $self->{'config'}->{'BIND_USER'},
             group => $self->{'config'}->{'BIND_GROUP'},
         } );
@@ -202,7 +201,6 @@ sub setEnginePermissions
         filemode  => '0640',
         recursive => TRUE
     } );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterNamedSetEnginePermissions' );
 }
 
 =item addDmn( \%data )

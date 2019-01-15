@@ -30,7 +30,7 @@ use Encode 'encode_utf8';
 use iMSCP::Boolean;
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug getMessageByType newDebug endDebug /;
-use iMSCP::Execute qw/ escapeShell execute /;
+use iMSCP::Execute 'execute';
 use iMSCP::Stepper 'step';
 use JSON;
 use MIME::Base64 qw/ encode_base64 /;
@@ -376,7 +376,7 @@ sub processDbTasks
             );
 
             my ( $stdout, $stderr );
-            execute( "perl $::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-sw-mngr " . escapeShell( $pushString ), \$stdout, \$stderr ) == 0 or die(
+            execute( [  "$::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-sw-mngr", $pushString ], \$stdout, \$stderr ) == 0 or die(
                 $stderr || 'Unknown error'
             );
             debug( $stdout ) if $stdout;
@@ -410,13 +410,11 @@ sub processDbTasks
             );
 
             my ( $stdout, $stderr );
-            execute( "perl $::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-pkt-mngr " . escapeShell( $pushString ), \$stdout, \$stderr ) == 0 or die(
+            execute( [ "$::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-pkt-mngr", $pushString ], \$stdout, \$stderr ) == 0 or die(
                 $stderr || 'Unknown error'
             );
             debug( $stdout ) if $stdout;
-            execute( "rm -fR /tmp/sw-$_->{'software_archive'}-$_->{'software_id'}", \$stdout, \$stderr ) == 0 or die(
-                $stderr || 'Unknown error'
-            );
+            execute( "rm -fR /tmp/sw-$_->{'software_archive'}-$_->{'software_id'}", \$stdout, \$stderr ) == 0 or die( $stderr || 'Unknown error' );
             debug( $stdout ) if $stdout;
         }
 

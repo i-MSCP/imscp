@@ -135,7 +135,7 @@ sub _addCronTask
         MONTH   => '',
         DWEEK   => '',
         USER    => $::imscpConfig{'ROOT_USER'},
-        COMMAND => "nice -n 10 ionice -c2 -n5 perl $::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/bin/imscp-rkhunter > /dev/null 2>&1"
+        COMMAND => "nice -n 10 ionice -c2 -n5 $::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/bin/imscp-rkhunter > /dev/null 2>&1"
     } );
 }
 
@@ -159,7 +159,7 @@ sub _scheduleCheck
     return $rs if $rs;
 
     $rs = execute(
-        "echo 'perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/bin/imscp-rkhunter > /dev/null 2>&1' | at now + 10 minutes",
+        "echo '$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/bin/imscp-rkhunter > /dev/null 2>&1' | at now + 10 minutes",
         \my $stdout,
         \my $stderr
     );

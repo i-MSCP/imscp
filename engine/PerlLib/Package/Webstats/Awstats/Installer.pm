@@ -152,7 +152,7 @@ sub _setupApache2
         AWSTATS_ENGINE_DIR          => $::imscpConfig{'AWSTATS_ENGINE_DIR'},
         AWSTATS_WEB_DIR             => $::imscpConfig{'AWSTATS_WEB_DIR'}
     } );
-    $rs = $self->{'httpd'}->buildConfFile( "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Config/01_awstats.conf" );
+    $rs = $self->{'httpd'}->buildConfFile( "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/config/01_awstats.conf" );
     $rs ||= $self->{'httpd'}->enableSites( '01_awstats.conf' );
 }
 
@@ -166,7 +166,6 @@ sub _setupApache2
 
 sub _disableDefaultConfig
 {
-
     if ( -f "$::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf" ) {
         my $rs = iMSCP::File->new( filename => "$::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf" )->moveFile(
             "$::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf.disabled"
@@ -202,7 +201,7 @@ sub _addAwstatsCronTask
         DWEEK   => '*',
         USER    => $::imscpConfig{'ROOT_USER'},
         COMMAND => 'nice -n 10 ionice -c2 -n5 ' .
-            "perl $::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_updateall.pl now " .
+            "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/bin/awstats_updateall.pl now " .
             "-awstatsprog=$::imscpConfig{'AWSTATS_ENGINE_DIR'}/awstats.pl > /dev/null 2>&1"
     } );
 }

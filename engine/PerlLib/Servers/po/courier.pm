@@ -187,11 +187,8 @@ sub setEnginePermissions
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoSetEnginePermissions' );
-    return $rs if $rs;
-
     if ( -d $self->{'config'}->{'AUTHLIB_SOCKET_DIR'} ) {
-        $rs ||= setRights( $self->{'config'}->{'AUTHLIB_SOCKET_DIR'}, {
+        my $rs ||= setRights( $self->{'config'}->{'AUTHLIB_SOCKET_DIR'}, {
             user  => $self->{'config'}->{'AUTHDAEMON_USER'},
             group => $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
             mode  => '0750'
@@ -199,7 +196,7 @@ sub setEnginePermissions
         return $rs if $rs;
     }
 
-    $rs = setRights( "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/authmysqlrc", {
+    my $rs = setRights( "$self->{'config'}->{'AUTHLIB_CONF_DIR'}/authmysqlrc", {
         user  => $self->{'config'}->{'AUTHDAEMON_USER'},
         group => $self->{'config'}->{'AUTHDAEMON_GROUP'},
         mode  => '0660'
@@ -220,7 +217,7 @@ sub setEnginePermissions
         return $rs if $rs;
     }
 
-    $self->{'eventManager'}->trigger( 'afterPoSetEnginePermissions' );
+    0;
 }
 
 =item addMail( \%data )

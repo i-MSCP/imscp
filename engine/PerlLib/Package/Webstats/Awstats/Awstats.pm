@@ -109,15 +109,16 @@ sub setEnginePermissions
 {
     my ( $self ) = @_;
 
-    my $rs = setRights( "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/Scripts/awstats_updateall.pl", {
-        user  => $::imscpConfig{'ROOT_USER'},
-        group => $::imscpConfig{'ROOT_USER'},
-        mode  => '0700'
+    my $rs = setRights( "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats/bin", {
+        user      => $::imscpConfig{'ROOT_USER'},
+        group     => $::imscpConfig{'ROOT_USER'},
+        mode      => '0750',
+        recursive => TRUE
     } );
     $rs ||= setRights( $::imscpConfig{'AWSTATS_CACHE_DIR'}, {
         user      => $::imscpConfig{'ROOT_USER'},
         group     => $self->{'httpd'}->getRunningGroup(),
-        dirmode   => '02750',
+        dirmode   => '2750',
         filemode  => '0640',
         recursive => iMSCP::Getopt->fixPermissions
     }
@@ -361,8 +362,8 @@ sub _addAwstatsConfig
     my ( $self, $data ) = @_;
 
     try {
-        my $awstatsPackageRootDir = "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats";
-        my $fileC = iMSCP::File->new( filename => "$awstatsPackageRootDir/Config/awstats.imscp_tpl.conf" )->getAsRef();
+        my $packageDir = "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats";
+        my $fileC = iMSCP::File->new( filename => "$packageDir/config/awstats.imscp_tpl.conf" )->getAsRef();
         return 1 unless defined $fileC;
 
         my ( $adminName ) = iMSCP::Database->factory()->getConnector()->run( fixup => sub {
@@ -374,18 +375,19 @@ sub _addAwstatsConfig
             return 1;
         }
 
-        my $tags = {
-            ALIAS               => $data->{'ALIAS'},
-            AUTH_USER           => $adminName,
-            AWSTATS_CACHE_DIR   => $::imscpConfig{'AWSTATS_CACHE_DIR'},
-            AWSTATS_ENGINE_DIR  => $::imscpConfig{'AWSTATS_ENGINE_DIR'},
-            AWSTATS_WEB_DIR     => $::imscpConfig{'AWSTATS_WEB_DIR'},
-            CMD_LOGRESOLVEMERGE => "perl $awstatsPackageRootDir/Scripts/logresolvemerge.pl",
-            DOMAIN_NAME         => $data->{'DOMAIN_NAME'},
-            LOG_DIR             => "$self->{'httpd'}->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}"
-        };
-
-        ${ $fileC } = process( $tags, ${ $fileC } );
+        ${ $fileC } = process(
+            {
+                ALIAS               => $data->{'ALIAS'},
+                AUTH_USER           => $adminName,
+                AWSTATS_CACHE_DIR   => $::imscpConfig{'AWSTATS_CACHE_DIR'},
+                AWSTATS_ENGINE_DIR  => $::imscpConfig{'AWSTATS_ENGINE_DIR'},
+                AWSTATS_WEB_DIR     => $::imscpConfig{'AWSTATS_WEB_DIR'},
+                CMD_LOGRESOLVEMERGE => "$packageDir/bin/logresolvemerge.pl",
+                DOMAIN_NAME         => $data->{'DOMAIN_NAME'},
+                LOG_DIR             => "$self->{'httpd'}->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}"
+            },
+            ${ $fileC }
+        );
 
         my $file = iMSCP::File->new( filename => "$::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DOMAIN_NAME'}.conf" );
         my $rs = $file->save();
