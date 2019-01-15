@@ -229,8 +229,8 @@ sub owner
         return 1;
     }
 
-    my $uid = ( ( $owner =~ /^\d+$/ ) ? $owner : getpwnam( $owner ) ) // -1;
-    my $gid = ( ( $group =~ /^\d+$/ ) ? $group : getgrnam( $group ) ) // -1;
+    my $uid = ( $owner =~ /^\d+$/ ? $owner : getpwnam( $owner ) ) // -1;
+    my $gid = ( $group =~ /^\d+$/ ? $group : getgrnam( $group ) ) // -1;
 
     unless ( lchown( $uid, $gid, $self->{'filename'} ) ) {
         error( sprintf( "Couldn't change '%s' file ownership: %s", $self->{'filename'}, $! ));

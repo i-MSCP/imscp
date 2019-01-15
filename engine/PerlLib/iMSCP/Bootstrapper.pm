@@ -117,30 +117,37 @@ sub loadMainConfig
         temporary   => $options->{'config_temporary'} // FALSE;
 }
 
-=item lock( [ $lockFile = '/var/lock/imscp.lock [, $nowait = FALSE ] ] )
+=item lock( [ $file = '/var/lock/imscp.lock [, $nowait = FALSE ] ] )
 
  Lock a file
 
+ Param string $file Lock file Either a lock file name or full lock file path
  Param bool $nowait OPTIONAL Whether or not to wait for lock (Default: FALSE)
- Return int 1 if lock file has been acquired, 0 if lock file has not been acquired (nowait case)
- die on failure
+ Return int 1 if lock file has been acquired, 0 if lock file has not been acquired (nowait case), die on failure
 
 =cut
 
 sub lock
 {
-    my ( $self, $lockFile, $nowait ) = @_;
-    $lockFile //= 'imscp.lock';
+    my ( $self, $file, $nowait ) = @_;
+    $file //= 'imscp.lock';
+    $nowait //= FALSE;
 
-    my ( $filename, $path ) = fileparse(  $lockFile );
-    $path = '/var/lock/' if $path eq './';
-    $lockFile = File::Spec->canonpath( $path.'/'.$filename );
+    ( $file, my $path ) = fileparse( $file );
 
-    return 1 if exists $self->{'locks'}->{$lockFile};
+    if ( $path eq './' ) {
+        $path = '/var/lock';
+    } elsif ( index( $path, '/' ) != 0 ) {
+        $path = File::Spec->catdir( '/var/lock', $path );
+    }
 
-    my $lock = iMSCP::LockFile->new( path => $lockFile, non_blocking => $nowait );
+    $file = File::Spec->catfile( $path, $file );
+
+    return 1 if exists $self->{'locks'}->{$file};
+
+    my $lock = iMSCP::LockFile->new( path => $file, non_blocking => $nowait );
     my $ret = $lock->acquire();
-    $self->{'locks'}->{$lockFile} = $lock if $ret;
+    $self->{'locks'}->{$file} = $lock if $ret;
     $ret;
 }
 

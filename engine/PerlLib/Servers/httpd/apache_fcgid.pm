@@ -813,52 +813,55 @@ sub deleteHtaccess
     0;
 }
 
-=item buildConf( $cfgTpl, $filename [, \%data ] )
+=item buildConf( \$cfgTpl, $file [, \%data ] )
 
  Build the given configuration template
 
- Param string $cfgTpl Template content
- Param string $filename template filename
- Param hash \%data OPTIONAL Data as provided by Alias|Domain|Subdomain|SubAlias modules or installer
- Return string Template content
+ Param scalarref \$cfgTpl Template content
+ Param string $file template filename
+ Param hashref \%data OPTIONAL Data as provided by Alias|Domain|Subdomain|SubAlias modules or installer
+ Return void, die on failure
 
 =cut
 
 sub buildConf
 {
-    my ( $self, $cfgTpl, $filename, $data ) = @_;
-
+    my ( $self, $cfgTpl, $file, $data ) = @_;
     $data ||= {};
 
-    if ( grep ( $_ eq $filename, ( 'domain.tpl', 'domain_disabled.tpl' ) ) ) {
+    ref $cfgTpl eq 'SCALAR' && length ${ $cfgTpl } or die( 'Invalid $cfgTpl parameter. SCALAR reference expected' );
+    ref $file eq '' && length $file or die( 'Invalid $file parameter. Not empty string expected' );
+    ref $data eq 'HASH' or die( 'Invalid $data parameter. HASH reference expected' );
+
+    if ( grep ( $_ eq $file, 'domain.tpl', 'domain_disabled.tpl' ) ) {
         if ( grep ( $_ eq $data->{'VHOST_TYPE'}, ( 'domain', 'domain_disabled' ) ) ) {
             # Remove ssl and forward sections
-            $cfgTpl = replaceBloc( "# SECTION ssl BEGIN.\n", "# SECTION ssl END.\n", '', $cfgTpl );
-            $cfgTpl = replaceBloc( "# SECTION fwd BEGIN.\n", "# SECTION fwd END.\n", '', $cfgTpl );
-        } elsif ( grep ( $_ eq $data->{'VHOST_TYPE'}, ( 'domain_fwd', 'domain_ssl_fwd', 'domain_disabled_fwd' ) ) ) {
-            # Remove ssl if needed
-            $cfgTpl = replaceBloc( "# SECTION ssl BEGIN.\n", "# SECTION ssl END.\n", '', $cfgTpl ) unless $data->{'VHOST_TYPE'} eq 'domain_ssl_fwd';
+            ${ $cfgTpl } = replaceBloc( "# SECTION ssl BEGIN.\n", "# SECTION ssl END.\n", '', ${ $cfgTpl } );
+            ${ $cfgTpl } = replaceBloc( "# SECTION fwd BEGIN.\n", "# SECTION fwd END.\n", '', ${ $cfgTpl } );
+        } elsif ( grep ( $_ eq $data->{'VHOST_TYPE'}, 'domain_fwd', 'domain_ssl_fwd', 'domain_disabled_fwd' ) ) {
+            # Remove ssl section if needed
+            ${ $cfgTpl } = replaceBloc( "# SECTION ssl BEGIN.\n", "# SECTION ssl END.\n", '', ${ $cfgTpl } ) unless $data->{'VHOST_TYPE'} eq 'domain_ssl_fwd';
             # Remove domain section
-            $cfgTpl = replaceBloc( "# SECTION dmn BEGIN.\n", "# SECTION dmn END.\n", '', $cfgTpl );
-        } elsif ( grep ( $_ eq $data->{'VHOST_TYPE'}, ( 'domain_ssl', 'domain_disabled_ssl' ) ) ) {
+            ${ $cfgTpl } = replaceBloc( "# SECTION dmn BEGIN.\n", "# SECTION dmn END.\n", '', ${ $cfgTpl } );
+        } elsif ( grep ( $_ eq $data->{'VHOST_TYPE'}, 'domain_ssl', 'domain_disabled_ssl' ) ) {
             # Remove forward section
-            $cfgTpl = replaceBloc( "# SECTION fwd BEGIN.\n", "# SECTION fwd END.\n", '', $cfgTpl );
+            ${ $cfgTpl } = replaceBloc( "# SECTION fwd BEGIN.\n", "# SECTION fwd END.\n", '', ${ $cfgTpl } );
         }
     }
 
-    $self->{'eventManager'}->trigger( 'beforeHttpdBuildConf', \$cfgTpl, $filename, $data );
-    $cfgTpl = process( $self->{'data'}, $cfgTpl );
-    $self->{'eventManager'}->trigger( 'afterHttpdBuildConf', \$cfgTpl, $filename, $data );
-    $cfgTpl;
+    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdBuildConf', $cfgTpl, $file, $data );
+    $rs || ( ${ $cfgTpl } = process( $self->{'data'}, ${ $cfgTpl } ) );
+    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildConf', $cfgTpl, $file, $data );
+    $rs == 0 or die( getMessageByType( 'error ', { amount => 1, remove => TRUE } ));
 }
 
 =item buildConfFile( $file [, \%data = { } [, \%options = { } ] ] )
 
  Build the given configuration file
 
- Param string $file Absolute path to config file or config filename relative to the i-MSCP apache config directory
- Param hash \%data OPTIONAL Data as provided by Alias|Domain|Subdomain|SubAlias modules or installer
- Param hash \%options OPTIONAL Options:
+ Param string $file Absolute configuration file path, or a configuration file path relative to the i-MSCP Apache configuration directory
+ Param hashref \%data OPTIONAL Data as provided by Alias|Domain|Subdomain|SubAlias modules or installer
+ Param hashref \%options OPTIONAL Options:
   - destination: Destination file path (default to $self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/<filebasename>)
   - user: File owner
   - group: File group
@@ -870,33 +873,58 @@ sub buildConf
 sub buildConfFile
 {
     my ( $self, $file, $data, $options ) = @_;
+    $data //= {};
+    $options //= {};
 
-    $data ||= {};
-    $options ||= {};
-    my ( $filename, $path ) = fileparse( $file );
+    try {
+        ref $file eq '' && length $file or die( 'Invalid $file parameter. Not empty string expected' );
+        ref $data eq 'HASH' or die( 'Invalid $data parameter. HASH reference expected' );
+        ref $options eq 'HASH' or die( 'Invalid $data parameter. HASH reference expected' );
 
-    my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'apache_fcgid', $filename, \my $cfgTpl, $data, $options );
-    return $rs if $rs;
+        ( $file, my $path ) = fileparse( $file );
+        my $cfgTpl = \my $cfgTplC;
 
-    unless ( defined $cfgTpl ) {
-        $file = File::Spec->canonpath( "$self->{'apacheCfgDir'}/$filename" ) if $path eq './';
-        $cfgTpl = iMSCP::File->new( filename => $file )->get();
-        return 1 unless defined $cfgTpl;
-    }
+        $self->{'eventManager'}->trigger( 'onLoadTemplate', 'apache_fcgid', $file, $cfgTpl, $data, $options ) == 0 or die(
+            getMessageByType( 'error', { amount => 1, remove => TRUE } )
+        );
 
-    $rs = $self->{'eventManager'}->trigger( 'beforeHttpdBuildConfFile', \$cfgTpl, $filename, $data, $options );
-    return $rs if $rs;
+        unless ( defined $cfgTplC ) {
+            if ( $path eq './' ) {
+                $path = $self->{'apacheCfgDir'};
+            } elsif ( index( $path, '/' ) != 0 ) {
+                $path = File::Spec->catdir( $self->{'apacheCfgDir'}, $path );
+            }
 
-    $cfgTpl = $self->buildConf( $cfgTpl, $filename, $data );
+            defined( $cfgTpl = iMSCP::File->new( filename => File::Spec->catfile( $path, $file ))->getAsRef()) or die(
+                getMessageByType( 'error', { amount => 1, remove => TRUE } )
+            );
+        }
 
-    $rs = $self->{'eventManager'}->trigger( 'afterHttpdBuildConfFile', \$cfgTpl, $filename, $data, $options );
-    return $rs if $rs;
+        my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdBuildConfFile', $cfgTpl, $file, $data, $options );
+        $rs || ( ${ $cfgTpl } = $self->buildConf( $cfgTpl, $file, $data ) );
+        $rs = $self->{'eventManager'}->trigger( 'afterHttpdBuildConfFile', $cfgTpl, $file, $data, $options );
+        $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ));
 
-    $file = iMSCP::File->new( filename => $options->{'destination'} // "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$filename" );
-    $rs = $file->set( $cfgTpl );
-    $rs ||= $file->save();
-    $rs ||= $file->owner( $options->{'user'} // $::imscpConfig{'ROOT_USER'}, $options->{'group'} // $::imscpConfig{'ROOT_GROUP'} );
-    $rs ||= $file->mode( $options->{'mode'} // 0644 );
+        local $UMASK = 022;
+        $file = iMSCP::File->new( filename => $options->{'destination'} // "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$file" );
+        $rs ||= $file->save();
+        $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ));
+
+        if ( defined $options->{'user'} || defined $options->{'group'} ) {
+            $file->owner( $options->{'user'} // $::imscpConfig{'ROOT_USER'}, $options->{'group'} // $::imscpConfig{'ROOT_GROUP'} ) == 0 or die(
+                getMessageByType( 'error', { amount => 1, remove => TRUE } )
+            );
+        }
+
+        if ( defined $options->{'mode'} && $options->{'mode'} != 0644 ) {
+            $file->mode( $options->{'mode'} ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ));
+        }
+
+        0;
+    } catch {
+        error( sprintf( "Couldn't build configuration file: %s", $_ ));
+        return 1;
+    };
 }
 
 =item getData( )
@@ -1598,7 +1626,7 @@ sub _addFiles
         my $tmpDir = File::Temp->newdir();
         iMSCP::Dir->new( dirname => $skelDir )->rcopy( $tmpDir, { preserve => 'no' } );
 
-        # Build default page if needed (if htdocs doesn't exists or is empty)
+        # Build default page if the document root doesn't exist or is empty
         if ( !-d "$data->{'WEB_DIR'}/htdocs" || iMSCP::Dir->new( dirname => "$data->{'WEB_DIR'}/htdocs" )->isEmpty() ) {
             if ( -d "$tmpDir/htdocs" ) {
                 # Test needed in case admin removed the index.html file from the skeleton
