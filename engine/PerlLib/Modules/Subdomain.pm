@@ -206,7 +206,6 @@ sub _getData
         my $hstsIncludeSubDomains = $allowHSTS && $self->{'hsts_include_subdomains'} eq 'on'
             ? '; includeSubDomains' : ( $allowHSTS ? '' : '; includeSubDomains' );
         {
-            ACTION                  => $action,
             STATUS                  => $self->{'subdomain_status'},
             BASE_SERVER_VHOST       => $::imscpConfig{'BASE_SERVER_VHOST'},
             BASE_SERVER_IP          => $::imscpConfig{'BASE_SERVER_IP'},
@@ -235,7 +234,6 @@ sub _getData
             HSTS_SUPPORT            => $allowHSTS,
             HSTS_MAX_AGE            => $hstsMaxAge,
             HSTS_INCLUDE_SUBDOMAINS => $hstsIncludeSubDomains,
-            ALIAS                   => 'sub' . $self->{'subdomain_id'},
             FORWARD                 => $self->{'subdomain_url_forward'} || 'no',
             FORWARD_TYPE            => $self->{'subdomain_type_forward'} || '',
             FORWARD_PRESERVE_HOST   => $self->{'subdomain_host_forward'} || 'Off',
@@ -254,6 +252,7 @@ sub _getData
         }
     } unless %{ $self->{'_data'} };
 
+    $self->{'_data'}->{'ACTION'} = $action;
     $self->{'_data'};
 }
 

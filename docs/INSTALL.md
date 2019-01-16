@@ -16,7 +16,7 @@ apt-get --assume-yes dist-upgrade
 ## II. Install the pre-required packages
 
 ```
-apt-get --assume-yes  install ca-certificates perl whiptail wget
+apt-get --assume-yes install ca-certificates perl whiptail wget
 ```
 
 ## III. Download and un-tar the distribution files

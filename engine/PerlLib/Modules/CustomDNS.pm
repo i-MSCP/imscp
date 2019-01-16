@@ -217,11 +217,11 @@ sub _getData
     my ( $self, $action ) = @_;
 
     $self->{'_data'} = do { {
-        ACTION      => $action,
         DNS_RECORDS => $self->{'dns_records'},
         ZONE_NAME   => $self->{'zone'}
     } } unless %{ $self->{'_data'} };
 
+    $self->{'_data'}->{'ACTION'} = $action;
     $self->{'_data'};
 }
 

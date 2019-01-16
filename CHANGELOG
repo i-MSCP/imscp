@@ -5,38 +5,20 @@ Git 1.5.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
-    Added: Support for parallel, indexed xz compressor (Client data and control panel backup scripts)
     Enhancement: Make it possible to change backup time for the control panel (control panel backup cron task)
     Enhancement: Make it possible to override any default DNS resource record (Bind9 server implementation)
-    Enhancement: Make it possible to set number of CPU cores to use for parallel compressors (Client data and control panel backup scripts)
     Fixed: Can't locate object method "remove" via package "iMSCP::File" (iMSCP::Service)
-    Fixed: Don't output decoded body data to in-core data structures as this could lead to memory issues when dealing with big attachments (imscp-vacation).
+    Fixed: Don't flush server data as those can be required in other layers (Httpd server implementations)
     Fixed: Error output is badly captured, leading to 'Unknown error' (named-compilezone / Bind9 server implementation)
     Fixed: SysVinit scripts are always reported as enabled (Debian SysVinit init provider)
     Fixed: The 'is-enabled' support for SysVinit scripts isn't available in older systemd versions (Debian Systemd init provider)
-    Moved: engine/setup/imscp-reconfigure to engine/bin/imscp-reconfigure
     Moved: engine/setup/imscp-setup-methods.pl to engine/bin/imscp-setup-methods.pl
-    Moved: engine/setup/imscp-uninstall to engine/bin/imscp-uninstaller
     Renamed: iMSCP::Database::MySQL package to iMSCP::Database::MySQL
+    Review: Don't propagate entity processing failures to DB task processor. Update entities status with error only.
     Review: Engine permissions (Bind9 server implementation)
-    Review: Don't propagate recoverable failures to DB task processor. Update entities status with error only.
-    Review: Pass the full item data row to backend modules (iMSCP::DbTasksProcessor)
-    Review: Make use of DBIx::Connector - Fast, safe DBI connection and transaction management
     Review: iMSCP::Database::MySQL no longer a singleton
-    Rewritten: engine/backup/imscp-backup-all -- now located at engine/bin/imscp-clients-backup
-    Rewritten: engine/backup/imscp-backup-imscp -- now located at engine/bin/imscp-cp-backup
-    Rewritten: engine/messenger/imscp-arpl-msgr -- now located at engine/bin/imscp-vacation
-    Rewritten: engine/setup/imscp-reconfigure -- now located at engine/bin/imscp-reconfigure
-    Rewritten: engine/setup/set-engine-permissions -- now located at engine/bin/imscp-set-engine-permissions
-    Rewritten: engine/setup/set-gui-permissions -- now located at engine/bin/imscp-set-gui-permissions
-    Rewritten: engine/traffic/imscp-srv-traff -- now located at engine/bin/imscp-server-traffic
-    Rewritten: engine/traffic/imscp-vrl-traff -- now located at engine/bin/imscp-clients-traffic
-    Rewritten: engine/tools/imscp-disable-accounts -- now located at engine/bin/imscp-clients-suspend
-    Rewritten: engine/tools/imscp-dpkg-post-invoke.pl -- now located at engine/bin/imscp-dpkg-post-invoke
-    Rewritten: engine/tools/imscp-mountall -- now located at engine/bin/imscp-mountall
-    Rewritten: engine/tools/imscp-net-traffic-logger -- now located at engine/bin/imscp-net-traffic
-    Rewritten: engine/tools/imscp-rqst-mngr -- now located at engine/bin/imscp-backend-rqst
-    Rewritten: engine/quota/imscp-dsk-quota -- now located at engine/bin/imscp-disk-quota
+    Review: Make use of DBIx::Connector - Fast, safe DBI connection and transaction management
+    Review: Pass the full item data row to backend modules (iMSCP::DbTasksProcessor)
 
 DISTRIBUTIONS
     Added: Support for Devuan 2.0 (ASCII)
@@ -68,6 +50,27 @@ PLUGINS
     Renamed: Internal 'db_schema_version' info field to '__migration__'
     Review: Don't make use of PharData to extract plugin archives. Make use of ZipArchive and Archive_Tar instead (Validator, Filter)
     Updated: Plugin API to version 1.5.1
+
+SCRIPTS
+    Added: Support for parallel, indexed xz compressor (backup scripts)
+    Enhancement: Make it possible to set number of CPU cores to use for parallel compressors (backup scripts)
+    Fixed: Don't output decoded body data to in-core data structures as this could lead to memory issues when dealing with big attachments (imscp-vacation).
+    Moved: engine/setup/imscp-reconfigure to engine/bin/imscp-reconfigure
+    Moved: engine/setup/imscp-uninstall to engine/bin/imscp-uninstaller
+    Rewritten: engine/backup/imscp-backup-all -- now located at engine/bin/imscp-clients-backup
+    Rewritten: engine/backup/imscp-backup-imscp -- now located at engine/bin/imscp-cp-backup
+    Rewritten: engine/messenger/imscp-arpl-msgr -- now located at engine/bin/imscp-vacation
+    Rewritten: engine/setup/imscp-reconfigure -- now located at engine/bin/imscp-reconfigure
+    Rewritten: engine/setup/set-engine-permissions -- now located at engine/bin/imscp-set-engine-permissions
+    Rewritten: engine/setup/set-gui-permissions -- now located at engine/bin/imscp-set-gui-permissions
+    Rewritten: engine/traffic/imscp-srv-traff -- now located at engine/bin/imscp-server-traffic
+    Rewritten: engine/traffic/imscp-vrl-traff -- now located at engine/bin/imscp-clients-traffic
+    Rewritten: engine/tools/imscp-disable-accounts -- now located at engine/bin/imscp-clients-suspend
+    Rewritten: engine/tools/imscp-dpkg-post-invoke.pl -- now located at engine/bin/imscp-dpkg-post-invoke
+    Rewritten: engine/tools/imscp-mountall -- now located at engine/bin/imscp-mountall
+    Rewritten: engine/tools/imscp-net-traffic-logger -- now located at engine/bin/imscp-net-traffic
+    Rewritten: engine/tools/imscp-rqst-mngr -- now located at engine/bin/imscp-backend-rqst
+    Rewritten: engine/quota/imscp-dsk-quota -- now located at engine/bin/imscp-disk-quota
 
 YOUTRACK
     IP-1801 Backend workflow for custom DNS records get bypassed on domain or alias change, leading to events not being triggered

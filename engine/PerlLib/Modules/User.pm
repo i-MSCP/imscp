@@ -210,7 +210,6 @@ sub _getData
     $self->{'_data'} = do {
         my $user = my $group = $::imscpConfig{'SYSTEM_USER_PREFIX'} . ( $::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'} );
         {
-            ACTION        => $action,
             STATUS        => $self->{'admin_status'},
             USER_ID       => $self->{'admin_id'},
             USER_SYS_UID  => $self->{'admin_sys_uid'},
@@ -222,6 +221,7 @@ sub _getData
         }
     } unless %{ $self->{'_data'} };
 
+    $self->{'_data'}->{'ACTION'} = $action;
     $self->{'_data'};
 }
 

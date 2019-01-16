@@ -137,7 +137,6 @@ sub _getData
     $self->{'_data'} = do {
         my ( $user, $domain ) = split '@', $self->{'mail_addr'};
         {
-            ACTION                  => $action,
             STATUS                  => $self->{'status'},
             DOMAIN_NAME             => $domain,
             MAIL_ACC                => $user,
@@ -152,6 +151,7 @@ sub _getData
         }
     } unless %{ $self->{'_data'} };
 
+    $self->{'_data'}->{'ACTION'} = $action;
     $self->{'_data'};
 }
 
