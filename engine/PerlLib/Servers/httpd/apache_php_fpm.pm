@@ -219,7 +219,6 @@ sub addUser
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdAddUser', $data );
     $self->setData( $data );
     $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'HTTPD_USER'} )->addToGroup( $data->{'GROUP'} );
-    $rs ||= $self->flushData();
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdAddUser', $data );
     $self->{'restart'} = TRUE unless $rs;
     $rs;
@@ -262,7 +261,6 @@ sub addDmn
     $self->setData( $data );
     $rs ||= $self->_addCfg( $data );
     $rs ||= $self->_addFiles( $data );
-    $rs ||= $self->flushData();
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdAddDmn', $data );
     $self->{'restart'} = TRUE unless $rs;
     $rs;
@@ -284,7 +282,6 @@ sub restoreDmn
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdRestoreDmn', $data );
     $self->setData( $data );
     $rs ||= $self->_addFiles( $data );
-    $rs ||= $self->flushData();
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdRestoreDmn', $data );
 }
 
@@ -387,7 +384,6 @@ sub disableDmn
             setImmutable( $data->{'WEB_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
         }
 
-        $self->flushData();
         $self->{'eventManager'}->trigger( 'afterHttpdDisableDmn', $data );
     } catch {
         error( $_ );
@@ -476,7 +472,6 @@ sub addSub
     $self->setData( $data );
     $rs ||= $self->_addCfg( $data );
     $rs ||= $self->_addFiles( $data );
-    $rs ||= $self->flushData();
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdAddSub', $data );
     $self->{'restart'} = TRUE unless $rs;
     $rs;
@@ -498,7 +493,6 @@ sub restoreSub
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdRestoreSub', $data );
     $self->setData( $data );
     $rs ||= $self->_addFiles( $data );
-    $rs ||= $self->flushData();
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdRestoreSub', $data );
 }
 
@@ -710,7 +704,6 @@ sub addHtaccess
     return 0 unless -d $data->{'AUTH_PATH'};
 
     my $filepath = "$data->{'AUTH_PATH'}/.htaccess";
-
     my $isImmutable = isImmutable( $data->{'AUTH_PATH'} );
     clearImmutable( $data->{'AUTH_PATH'} ) if $isImmutable;
 
@@ -838,7 +831,7 @@ sub buildConf
     }
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdBuildConf', $cfgTpl, $file, $data );
-    $rs || ( ${ $cfgTpl } = process( $self->{'data'}, ${ $cfgTpl } ) );
+    $rs || ( ${ $cfgTpl } = process( $self->getData(), ${ $cfgTpl } ) );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildConf', $cfgTpl, $file, $data );
     $rs == 0 or die( getMessageByType( 'error ', { amount => 1, remove => TRUE } ));
 }
@@ -944,22 +937,6 @@ sub setData
     my ( $self, $data ) = @_;
 
     @{ $self->{'data'} }{keys %{ $data }} = values %{ $data };
-    0;
-}
-
-=item flushData( )
-
- Flush all data set via the setData( ) method
-
- Return int 0
-
-=cut
-
-sub flushData
-{
-    my ( $self ) = @_;
-
-    delete $self->{'data'};
     0;
 }
 

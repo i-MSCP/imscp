@@ -224,7 +224,6 @@ sub addUser
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdAddUser', $data );
     $self->setData( $data );
     $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'HTTPD_USER'} )->addToGroup( $data->{'GROUP'} );
-    $rs ||= $self->flushData();
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdAddUser', $data );
     $self->{'restart'} = TRUE unless $rs;
     $rs;
@@ -267,7 +266,6 @@ sub addDmn
     $self->setData( $data );
     $rs ||= $self->_addCfg( $data );
     $rs ||= $self->_addFiles( $data );
-    $rs ||= $self->flushData();
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdAddDmn', $data );
     $self->{'restart'} = TRUE unless $rs;
     $rs;
@@ -289,7 +287,6 @@ sub restoreDmn
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdRestoreDmn', $data );
     $self->setData( $data );
     $rs ||= $self->_addFiles( $data );
-    $rs ||= $self->flushData();
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdRestoreDmn', $data );
 }
 
@@ -391,7 +388,6 @@ sub disableDmn
             setImmutable( $data->{'WEB_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
         }
 
-        $self->flushData();
         $self->{'eventManager'}->trigger( 'afterHttpdDisableDmn', $data );
     } catch {
         error( $_ );
@@ -481,7 +477,6 @@ sub addSub
     $self->setData( $data );
     $rs ||= $self->_addCfg( $data );
     $rs ||= $self->_addFiles( $data );
-    $rs ||= $self->flushData();
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdAddSub', $data );
     $self->{'restart'} = TRUE unless $rs;
     $rs;
@@ -503,7 +498,6 @@ sub restoreSub
     my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdRestoreSub', $data );
     $self->setData( $data );
     $rs ||= $rs = $self->_addFiles( $data );
-    $rs ||= $self->flushData();
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdRestoreSub', $data );
 }
 
@@ -949,22 +943,6 @@ sub setData
     my ( $self, $data ) = @_;
 
     @{ $self->{'data'} }{keys %{ $data }} = values %{ $data };
-    0;
-}
-
-=item flushData( )
-
- Flush all data set via the setData( ) method
-
- Return int 0
-
-=cut
-
-sub flushData
-{
-    my ( $self ) = @_;
-
-    delete $self->{'data'};
     0;
 }
 
