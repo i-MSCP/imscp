@@ -144,7 +144,7 @@ LogSeparator=" "
 # Example: "ftp.domain.com"
 # Example: "domain.com"
 #
-SiteDomain="{DOMAIN_NAME}"
+SiteDomain="{SITE_DOMAIN}"
 
 # Enter here all other possible domain names, addresses or virtual host
 # aliases someone can use to access your site. Try to keep only the minimum
@@ -158,7 +158,7 @@ SiteDomain="{DOMAIN_NAME}"
 # Note: You can also use @/mypath/myfile if list of aliases are in a file.
 # Example: "www.myserver.com localhost 127.0.0.1 REGEX[mydomain\.(net|org)$]"
 #
-HostAliases="www.{DOMAIN_NAME} {ALIAS}.{DOMAIN_NAME}"
+HostAliases="{HOST_ALIASES}"
 
 # If you want to have hosts reported by name instead of ip address, AWStats
 # need to make reverse DNS lookups (if not already done in your log file).

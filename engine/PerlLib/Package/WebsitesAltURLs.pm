@@ -71,7 +71,7 @@ sub registerInstallerDialogs
 
 sub getPriority
 {
-    0;
+    10;
 }
 
 =item preaddDmn( \%data )
@@ -87,9 +87,7 @@ sub preaddDmn
 {
     my ( $self ) = @_;
 
-    return 0 if $self->{'eventManager'}->hasListener( 'beforeHttpdBuildConfFile', \&_addServerAlias );
-
-    $self->{'eventManager'}->register( 'beforeHttpdBuildConfFile', \&_addServerAlias );
+    $self->_registerEventListener();
 }
 
 =item postaddDmn( \%data )
@@ -120,6 +118,22 @@ sub postdeleteDmn
     my ( $self, $data ) = @_;
 
     $self->_deleteDnsRR( $data );
+}
+
+=item preaddSub( \%data )
+
+ Process preaddSub tasks
+
+ Param hash \%data Domain data
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preaddSub
+{
+    my ( $self ) = @_;
+
+    $self->_registerEventListener();
 }
 
 =item postaddSub( \%data )
@@ -174,6 +188,24 @@ sub _init
     $self;
 }
 
+=item _registerEventListener()
+
+ Register event listener for AWStats section injection in Apache2 vhost files
+
+ Return 0 on success, other on failure
+
+=cut
+
+sub _registerEventListener
+{
+    my ( $self ) = @_;
+
+    return 0 if $self->{'_listener'};
+
+    $self->{'_listener'} = TRUE;
+    $self->{'eventManager'}->register( 'beforeHttpdBuildConf', \&_addServerAlias );
+}
+
 =item _setupDialog( $dialog )
 
  Setup dialog - Ask for client Websites alternative URLs
@@ -208,7 +240,7 @@ EOF
 
 =item _addServerAlias( \$cfgTpl, $filename, \%data, $options )
 
- Add server alias for client domain/subdomain alternative URL in httpd vhost file
+ Add server alias for client domain/subdomain alternative URL
 
  Param scalarref Httpd configuration file content
  Param string Httpd configuration filename
@@ -221,7 +253,7 @@ EOF
 sub _addServerAlias
 {
     my ( undef, $filename, $data ) = @_;
-    
+
     return 0 if $filename ne 'domain.tpl' || $::imscpConfig{'CLIENT_WEBSITES_ALT_URLS'} ne 'yes' || $data->{'ACTION'} !~ /^add(?:Dmn|Sub)$/;
 
     my $httpd = Servers::httpd->factory();

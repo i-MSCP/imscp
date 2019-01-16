@@ -32,11 +32,12 @@ use iMSCP::Debug 'error';
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute;
-use iMSCP::Ext2Attributes qw( setImmutable clearImmutable );
+use iMSCP::Ext2Attributes qw/ setImmutable clearImmutable /;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::Rights 'setRights';
 use iMSCP::TemplateParser qw/ process replaceBloc getBloc /;
+use iMSCP::Umask '$UMASK';
 use Servers::cron;
 use Servers::httpd;
 use Try::Tiny;
@@ -115,14 +116,20 @@ sub setEnginePermissions
         mode      => '0750',
         recursive => TRUE
     } );
+    $rs ||= setRights( $::imscpConfig{'AWSTATS_CONFIG_DIR'}, {
+        user      => $::imscpConfig{'ROOT_USER'},
+        group     => $self->{'httpd'}->getRunningGroup(),
+        dirmode   => '2750',
+        filemode  => '0640',
+        recursive => iMSCP::Getopt->fixPermissions
+    } );
     $rs ||= setRights( $::imscpConfig{'AWSTATS_CACHE_DIR'}, {
         user      => $::imscpConfig{'ROOT_USER'},
         group     => $self->{'httpd'}->getRunningGroup(),
         dirmode   => '2750',
         filemode  => '0640',
         recursive => iMSCP::Getopt->fixPermissions
-    }
-    );
+    } );
     $rs ||= setRights( "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats", {
         user  => $::imscpConfig{'ROOT_USER'},
         group => $self->{'httpd'}->getRunningGroup(),
@@ -158,18 +165,15 @@ sub addUser
 
     my $filepath = "$self->{'httpd'}->{'config'}->{'HTTPD_CONF_DIR'}/.imscp_awstats";
     my $file = iMSCP::File->new( filename => $filepath );
-    $file->set( '' ) unless -f $filepath;
     my $fileC = $file->getAsRef();
     return 1 unless defined $fileC;
 
-    ${ $fileC } =~ s/^$data->{'USERNAME'}:[^\n]*\n//gim;
+    ${ $fileC } =~ s/^$data->{'USERNAME'}:[^\n]*\n//gm;
     ${ $fileC } .= "$data->{'USERNAME'}:$data->{'PASSWORD_HASH'}\n";
 
     my $rs = $file->save();
-    return $rs if $rs;
-
-    $self->{'httpd'}->{'restart'} = TRUE;
-    0;
+    $rs || ( $self->{'httpd'}->{'restart'} = TRUE ); # FIXME Is that really needed?
+    $rs;
 }
 
 =item preaddDmn( \%data )
@@ -185,9 +189,7 @@ sub preaddDmn
 {
     my ( $self ) = @_;
 
-    return 0 if $self->{'eventManager'}->hasListener( 'afterHttpdBuildConf', \&_addAwstatsSection );
-
-    $self->{'eventManager'}->register( 'afterHttpdBuildConf', \&_addAwstatsSection );
+    $self->_registerEventListener();
 }
 
 =item addDmn( \%data )
@@ -203,18 +205,7 @@ sub addDmn
 {
     my ( $self, $data ) = @_;
 
-    try {
-        my $rs = $self->_addAwstatsConfig( $data );
-        $rs ||= clearImmutable( $data->{'HOME_DIR'} );
-        return $rs if $rs;
-
-        iMSCP::Dir->new( dirname => "$data->{'HOME_DIR'}/statistics" )->remove(); # Transitional
-        setImmutable( $data->{'HOME_DIR'} ) if $data->{'WEB_FOLDER_PROTECTION'} eq 'yes';
-        0;
-    } catch {
-        error( $_ );
-        1;
-    };
+    $self->_buildAWStatsConfig( $data );
 }
 
 =item deleteDmn( \%data )
@@ -228,33 +219,25 @@ sub addDmn
 
 sub deleteDmn
 {
-    my ( undef, $data ) = @_;
+    my ( $self, $data ) = @_;
 
-    try {
-        if ( -f "$::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DOMAIN_NAME'}.conf" ) {
-            my $rs = iMSCP::File->new( filename => "$::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DOMAIN_NAME'}.conf" )->delFile();
-            return $rs if $rs;
-        }
+    $self->_deleteAWStatsFiles( $data->{'DOMAIN_NAME'} );
+}
 
-        return 0 unless -d $::imscpConfig{'AWSTATS_CACHE_DIR'};
+=item preaddSub( \%data )
 
-        my @cacheFiles = iMSCP::Dir->new( {
-            dirname  => $::imscpConfig{'AWSTATS_CACHE_DIR'},
-            fileType => '^(?:awstats[0-9]+|dnscachelastupdate)' . quotemeta( ".$data->{'DOMAIN_NAME'}.txt" )
-        } )->getFiles();
+ Process preaddSub tasks
 
-        return 0 unless @cacheFiles;
+ Param hash \%data Subdomain data
+ Return int 0 on success, other on failure
 
-        for my $file ( @cacheFiles ) {
-            my $rs = iMSCP::File->new( filename => "$::imscpConfig{'AWSTATS_CACHE_DIR'}/$file" )->delFile();
-            return $rs if $rs;
-        }
+=cut
 
-        0;
-    } catch {
-        error( $_ );
-        1;
-    };
+sub preaddSub
+{
+    my ( $self ) = @_;
+
+    $self->_registerEventListener();
 }
 
 =item addSub( \%data )
@@ -270,7 +253,7 @@ sub addSub
 {
     my ( $self, $data ) = @_;
 
-    $self->addDmn( $data );
+    $self->_buildAWStatsConfig( $data );
 }
 
 =item deleteSub( \%data )
@@ -286,7 +269,7 @@ sub deleteSub
 {
     my ( $self, $data ) = @_;
 
-    $self->deleteDmn( $data );
+    $self->_deleteAWStatsFiles( $data->{'DOMAIN_NAME'} );
 }
 
 =back
@@ -312,22 +295,40 @@ sub _init
     $self;
 }
 
-=item _addAwstatsSection( \$cfgTpl, $filename, \%data )
+=item _registerEventListener()
 
- Insert Apache configuration snipped for AWStats in the given domain vhost file.
+ Register event listener for AWStats section injection in Apache2 vhost files
+
+ Return 0 on success, other on failure
+
+=cut
+
+sub _registerEventListener
+{
+    my ( $self ) = @_;
+
+    return 0 if $self->{'_listener'};
+
+    $self->{'_listener'} = TRUE;
+    $self->{'eventManager'}->register( 'afterHttpdBuildConf', \&_injectAWStatsSectionInApache2Vhost );
+}
+
+=item _injectAWStatsSectionInApache2Vhost( \$cfgTpl, $tplName, \%data )
+
+ Listener that injects AWStats section in Apache2 vhost file for the given domain (or subdomain)
 
  Param string \$cfgTpl Template file content
- Param string $filename Template filename
- Param hash \%data Domain data
+ Param string $tplName Template filename
+ Param hash \%data Domain or subdomain data
  Return int 0 on success, 1 on failure
 
 =cut
 
-sub _addAwstatsSection
+sub _injectAWStatsSectionInApache2Vhost
 {
     my ( $cfgTpl, $tplName, $data ) = @_;
 
-    return 0 if $tplName ne 'domain.tpl' || $data->{'FORWARD'} ne 'no';
+    return 0 unless $tplName eq 'domain.tpl' && $data->{'FORWARD'} eq 'no';
 
     ${ $cfgTpl } = replaceBloc(
         "# SECTION addons BEGIN.\n",
@@ -345,54 +346,89 @@ EOF
             . "    # SECTION addons END.\n",
         ${ $cfgTpl }
     );
+
     0;
 }
 
-=item _addAwstatsConfig( \%data )
+=item _buildAWStatsConfig( \%data )
 
- Add awstats configuration file for the given domain
+ Build awstats configuration file for the given domain (or subdomain)
 
- Param hash \%data Domain data
+ Param hash \%data Domain or subdomain data
  Return int 0 on success, other on failure
 
 =cut
 
-sub _addAwstatsConfig
+sub _buildAWStatsConfig
 {
     my ( $self, $data ) = @_;
 
     try {
-        my $packageDir = "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats";
-        my $fileC = iMSCP::File->new( filename => "$packageDir/config/awstats.imscp_tpl.conf" )->getAsRef();
-        return 1 unless defined $fileC;
-
-        my ( $adminName ) = iMSCP::Database->factory()->getConnector()->run( fixup => sub {
+        my ( $authUser ) = iMSCP::Database->factory()->getConnector()->run( fixup => sub {
             @{ $_->selectcol_arrayref( 'SELECT admin_name FROM admin WHERE admin_id = ?', undef, $data->{'DOMAIN_ADMIN_ID'} ) };
         } );
+        defined $authUser or die( sprintf( "Couldn't retrieve data for admin with ID %d", $data->{'DOMAIN_ADMIN_ID'} ));
 
-        unless ( defined $adminName ) {
-            error( sprintf( "Couldn't retrieve data for admin with ID %d", $data->{'DOMAIN_ADMIN_ID'} ));
-            return 1;
-        }
+        my $packageDir = "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/Webstats/Awstats";
+        my $file = iMSCP::File->new( filename => "$packageDir/config/awstats_config.tpl" );
+        return 1 unless defined( my $fileC = $file->getAsRef());
 
         ${ $fileC } = process(
             {
-                ALIAS               => $data->{'ALIAS'},
-                AUTH_USER           => $adminName,
+                AUTH_USER           => $authUser,
                 AWSTATS_CACHE_DIR   => $::imscpConfig{'AWSTATS_CACHE_DIR'},
                 AWSTATS_ENGINE_DIR  => $::imscpConfig{'AWSTATS_ENGINE_DIR'},
                 AWSTATS_WEB_DIR     => $::imscpConfig{'AWSTATS_WEB_DIR'},
                 CMD_LOGRESOLVEMERGE => "$packageDir/bin/logresolvemerge.pl",
-                DOMAIN_NAME         => $data->{'DOMAIN_NAME'},
-                LOG_DIR             => "$self->{'httpd'}->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}"
+                HOST_ALIASES        => $self->{'httpd'}->getData()->{'SERVER_ALIASES'},
+                LOG_DIR             => "$self->{'httpd'}->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}",
+                SITE_DOMAIN         => $data->{'DOMAIN_NAME'}
             },
             ${ $fileC }
         );
 
-        my $file = iMSCP::File->new( filename => "$::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DOMAIN_NAME'}.conf" );
-        my $rs = $file->save();
-        $rs ||= $file->owner( $::imscpConfig{'ROOT_USER'}, $::imscpConfig{'ROOT_GROUP'} );
-        $rs ||= $file->mode( 0644 );
+        local $UMASK = 027;
+        $file->{'filename'} = "$::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$data->{'DOMAIN_NAME'}.conf";
+        $file->save();
+    } catch {
+        error( $_ );
+        1;
+    };
+}
+
+=item _deleteAWStatsFiles( $domain )
+
+ Delete any AWStats file for the given domain (or subdomain)
+
+ - AWStats configuration file
+ - AWStats cache files
+
+ Param Regexp $domain Domain name
+ Return 0 on success, other on failure
+
+=cut
+
+sub _deleteAWStatsFiles( )
+{
+    my ( undef, $domain ) = @_;
+
+    try {
+        if ( -f "$::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$domain.conf" ) {
+            my $rs = iMSCP::File->new( filename => "$::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.$domain.conf" )->delFile();
+            return $rs if $rs;
+        }
+
+        return 0 unless -d $::imscpConfig{'AWSTATS_CACHE_DIR'};
+
+        for my $file ( iMSCP::Dir->new(
+            dirname  => $::imscpConfig{'AWSTATS_CACHE_DIR'},
+            fileType => qr/^(?:awstats[0-9]+|dnscachelastupdate)\Q.$domain.txt\E/
+        )->getFiles() ) {
+            my $rs = iMSCP::File->new( filename => "$::imscpConfig{'AWSTATS_CACHE_DIR'}/$file" )->delFile();
+            return $rs if $rs;
+        }
+
+        0;
     } catch {
         error( $_ );
         1;
