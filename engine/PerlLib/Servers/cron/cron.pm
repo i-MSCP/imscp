@@ -44,30 +44,6 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item preinstall( )
-
- Process preinstall tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub preinstall
-{
-    my ( $self ) = @_;
-
-    try {
-        my $rs = $self->{'eventManager'}->trigger( 'beforeCronPreinstall', 'cron' );
-        return $rs if $rs;
-
-        #iMSCP::Service->getInstance()->stop( 'cron' );
-        $self->{'eventManager'}->trigger( 'afterCronPreinstall', 'cron' );
-    } catch {
-        error( $_ );
-        1;
-    };
-}
-
 =item install( )
 
  Process install tasks

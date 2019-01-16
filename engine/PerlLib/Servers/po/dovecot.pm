@@ -82,7 +82,6 @@ sub preinstall
 
     try {
         my $rs = $self->{'eventManager'}->trigger( 'beforePoPreinstall', 'dovecot' );
-        #$rs ||= $self->stop();
         return $rs if $rs;
 
         my $serviceMngr = iMSCP::Service->getInstance();
@@ -97,8 +96,7 @@ sub preinstall
             $serviceMngr->disable( 'dovecot.socket' );
         }
 
-        #$self->stop();
-        $rs ||= $self->{'eventManager'}->trigger( 'afterPoPreinstall', 'dovecot' );
+        $self->{'eventManager'}->trigger( 'afterPoPreinstall', 'dovecot' );
     } catch {
         error( $_ );
         1;

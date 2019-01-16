@@ -65,7 +65,6 @@ sub preinstall
     my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeMtaPreInstall', 'postfix' );
-    #$rs ||= $self->stop();
     $rs ||= $rs = Servers::mta::postfix::installer->getInstance()->preinstall();
     $rs ||= $self->{'eventManager'}->trigger( 'afterMtaPreInstall', 'postfix' );
 }

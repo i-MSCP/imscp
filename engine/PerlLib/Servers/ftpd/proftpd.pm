@@ -63,23 +63,6 @@ sub registerSetupListeners
     Servers::ftpd::proftpd::installer->getInstance()->registerSetupListeners( $em );
 }
 
-=item preinstall( )
-
- Process preinstall tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub preinstall
-{
-    my ( $self ) = @_;
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFtpdPreinstall' );
-    #$rs ||= $self->stop();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterFtpdPreinstall' );
-}
-
 =item install( )
 
  Process install tasks

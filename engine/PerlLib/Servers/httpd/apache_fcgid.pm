@@ -76,23 +76,6 @@ sub registerSetupListeners
     Servers::httpd::apache_fcgid::installer->getInstance()->registerSetupListeners( $em );
 }
 
-=item preinstall( )
-
- Process preinstall tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub preinstall
-{
-    my ( $self ) = @_;
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdPreinstall', 'apache_fcgid' );
-    #$rs ||= $self->stop();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdPreinstall', 'apache_fcgid' );
-}
-
 =item install( )
 
  Process install tasks

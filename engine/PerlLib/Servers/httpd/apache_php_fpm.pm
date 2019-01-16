@@ -76,23 +76,6 @@ sub registerSetupListeners
     Servers::httpd::apache_php_fpm::installer->getInstance()->registerSetupListeners( $em );
 }
 
-=item preinstall( )
-
- Process preinstall tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub preinstall
-{
-    my ( $self ) = @_;
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeHttpdPreInstall', 'apache_php_fpm' );
-    #$rs ||= $self->stop();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdPreInstall', 'apache_php_fpm' );
-}
-
 =item install( )
 
  Process install tasks

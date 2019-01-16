@@ -68,23 +68,6 @@ sub registerSetupListeners
     Servers::po::courier::installer->getInstance()->registerSetupListeners( $em );
 }
 
-=item preinstall( )
-
- Process preinstall tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub preinstall
-{
-    my ( $self ) = @_;
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforePoPreinstall', 'courier' );
-    #$rs ||= $self->stop();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPoPreinstall', 'courier' );
-}
-
 =item install( )
 
  Process install tasks
