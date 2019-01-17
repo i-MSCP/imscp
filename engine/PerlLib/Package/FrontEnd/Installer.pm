@@ -483,7 +483,7 @@ sub dpkgPostInvokeTasks
             unless ( -f $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} ) {
                 # Cover case where administrator removed the package
                 # That should never occurs but...
-                my $rs = $self->stop();
+                my $rs = $self->{'frontend'}->stop();
                 $rs ||= iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
                 return $rs;
             }
@@ -498,11 +498,10 @@ sub dpkgPostInvokeTasks
             debug( sprintf( "Updating i-MSCP frontEnd PHP-FPM binary from version %s to version %s", $v2, $v1 ));
         }
 
-        my $rs = $self->stopPhpFpm();
-        $rs ||= $self->_copyPhpBinary();
+        my $rs = $self->_copyPhpBinary();
         return $rs if $rs || !-f '/usr/local/etc/imscp_panel/php-fpm.conf';
 
-        $self->startPhpFpm();
+        $self->{'frontend'}->restart();
     } catch {
         error( $_ );
         1;
