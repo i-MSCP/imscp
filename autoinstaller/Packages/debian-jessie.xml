@@ -83,8 +83,6 @@
             <package post_install_tasks="phpenmod apcu">php-apcu</package>
             <package>php-pear</package>
             <package>libapache2-mod-php5.6</package>
-            <package_conflict>php5-common</package_conflict>
-            <package_conflict>libapache2-mod-php5</package_conflict>
         </php5.6>
         <php7.0
                 description="PHP 7.0"
@@ -124,8 +122,6 @@
             <package post_install_tasks="phpenmod apcu_bc">php-apcu-bc</package>
             <package>php-pear</package>
             <package>libapache2-mod-php7.0</package>
-            <package_conflict>php5-common</package_conflict>
-            <package_conflict>libapache2-mod-php5</package_conflict>
         </php7.0>
         <php7.1
                 description="PHP 7.1"
@@ -165,8 +161,6 @@
             <package post_install_tasks="phpenmod apcu_bc">php-apcu-bc</package>
             <package>php-pear</package>
             <package>libapache2-mod-php7.1</package>
-            <package_conflict>php5-common</package_conflict>
-            <package_conflict>libapache2-mod-php5</package_conflict>
         </php7.1>
         <php7.2
                 description="PHP 7.2"
@@ -205,8 +199,6 @@
             <package post_install_tasks="phpenmod apcu_bc">php-apcu-bc</package>
             <package>php-pear</package>
             <package>libapache2-mod-php7.2</package>
-            <package_conflict>php5-common</package_conflict>
-            <package_conflict>libapache2-mod-php5</package_conflict>
         </php7.2>
         <php7.3
                 description="PHP 7.3"
