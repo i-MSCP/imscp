@@ -86,7 +86,7 @@ sub checkVersion
     }
 
     if ( $maxVersion && version->parse( $version ) > version->parse( $maxVersion ) ) {
-        die( sprintf( "version %s is not supported. Supported versions are %s to %s\n", $version, $minVersion, $maxVersion ));
+        die( sprintf( "version %s is not supported. Supported versions are %s up to %s\n", $version, $minVersion, $maxVersion ));
     }
 
     undef;
@@ -115,12 +115,11 @@ sub _init
             version_command => 'php -nv 2> /dev/null',
             version_regexp  => qr/PHP\s+([\d.]+)/,
             min_version     => '5.6.0',
-            max_version     => '7.1.999', # Arbitrary minor version is intentional. We only want reject PHP >= 7.2
+            max_version     => '7.3.999', # Arbitrary minor version is intentional. We only want reject PHP >= 7.3
             modules         => [
-                'apc', 'apcu', 'ctype', 'curl', 'date', 'dom', 'fileinfo', 'filter', 'ftp', 'gd', 'gettext', 'gmp',
-                'hash', 'iconv', 'imap', 'intl', 'json', 'libxml', 'mbstring', 'mcrypt', 'mysqlnd', 'mysqli', 'openssl',
-                'pcntl', 'pcre', 'PDO', 'pdo_mysql', 'Phar', 'posix', 'pspell', 'Reflection', 'session', 'SimpleXML',
-                'sockets', 'SPL', 'xml', 'xmlreader', 'xmlwriter', 'zip', 'zlib', 'Zend OPcache'
+                'bz2', 'apc', 'apcu', 'ctype', 'curl', 'date', 'dom', 'fileinfo', 'filter', 'ftp', 'gd', 'gettext', 'gmp', 'hash', 'iconv', 'imap',
+                'intl', 'json', 'libxml', 'mbstring', 'mysqlnd', 'mysqli', 'openssl', 'pcntl', 'pcre', 'PDO', 'pdo_mysql', 'Phar', 'posix', 'pspell',
+                'Reflection', 'session', 'SimpleXML', 'sockets', 'SPL', 'xml', 'xmlreader', 'xmlwriter', 'zip', 'zlib', 'Zend OPcache'
             ]
         },
         Perl => {

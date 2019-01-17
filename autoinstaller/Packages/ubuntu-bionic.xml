@@ -176,11 +176,11 @@
                 keep_installed="1"
         >
             <package>php7.2</package>
-            <package post_install_tasks="update-alternatives --set php /usr/bin/php7.1">php7.2-cli</package>
+            <package post_install_tasks="update-alternatives --set php /usr/bin/php7.2">php7.2-cli</package>
             <package>php7.2-cgi</package>
             <package>php7.2-fpm</package>
             <package
-                    post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets; update-alternatives --set phar /usr/bin/phar7.1; update-alternatives --set phar.phar /usr/bin/phar.phar7.1"
+                    post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets; update-alternatives --set phar /usr/bin/phar7.2; update-alternatives --set phar.phar /usr/bin/phar.phar7.2"
             >
                 php7.2-common
             </package>
@@ -214,11 +214,11 @@
                 keep_installed="1"
         >
             <package>php7.3</package>
-            <package post_install_tasks="update-alternatives --set php /usr/bin/php7.1">php7.3-cli</package>
+            <package post_install_tasks="update-alternatives --set php /usr/bin/php7.3">php7.3-cli</package>
             <package>php7.3-cgi</package>
             <package>php7.3-fpm</package>
             <package
-                    post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets; update-alternatives --set phar /usr/bin/phar7.1; update-alternatives --set phar.phar /usr/bin/phar.phar7.1"
+                    post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets; update-alternatives --set phar /usr/bin/phar7.3; update-alternatives --set phar.phar /usr/bin/phar.phar7.3"
             >
                 php7.3-common
             </package>

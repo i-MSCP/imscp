@@ -29,7 +29,7 @@ use parent 'Servers::noserver';
 
  i-MSCP PHP server implementation.
  
- This class does nothing yet.
+ This class doesn't do anything yet.
 
 =head1 PUBLIC METHODS
 
