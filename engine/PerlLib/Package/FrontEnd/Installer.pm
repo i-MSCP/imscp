@@ -478,27 +478,35 @@ sub dpkgPostInvokeTasks
 {
     my ( $self ) = @_;
 
-    if ( -f '/usr/local/sbin/imscp_panel' ) {
-        unless ( -f $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} ) {
-            # Cover case where administrator removed the package
-            $self->stop();
-            my $rs = iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->remove();
-            return $rs if $rs;
+    try {
+        if ( -f '/usr/local/sbin/imscp_panel' ) {
+            unless ( -f $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} ) {
+                # Cover case where administrator removed the package
+                # That should never occurs but...
+                my $rs = $self->stop();
+                $rs ||= iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
+                return $rs;
+            }
+
+            my $v1 = $self->_getFullPhpVersionFor( $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} );
+            my $v2 = $self->_getFullPhpVersionFor( '/usr/local/sbin/imscp_panel' );
+            if ( $v1 eq $v2 ) {
+                debug( sprintf( "i-MSCP frontEnd PHP-FPM binary is up-to-date: %s", $v2 ));
+                return 0;
+            }
+
+            debug( sprintf( "Updating i-MSCP frontEnd PHP-FPM binary from version %s to version %s", $v2, $v1 ));
         }
 
-        my $v1 = $self->_getFullPhpVersionFor( $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} );
-        my $v2 = $self->_getFullPhpVersionFor( '/usr/local/sbin/imscp_panel' );
-        return unless defined $v1 && defined $v2 && $v1 ne $v2; # Don't act when not necessary
-        debug( sprintf( "Updating i-MSCP frontEnd PHP-FPM binary from version %s to version %s", $v2, $v1 ));
-    }
+        my $rs = $self->stopPhpFpm();
+        $rs ||= $self->_copyPhpBinary();
+        return $rs if $rs || !-f '/usr/local/etc/imscp_panel/php-fpm.conf';
 
-    my $rs = $self->stopPhpFpm();
-    $rs ||= $self->_copyPhpBinary();
-    return $rs if $rs;
-
-    return 0 unless -f '/usr/local/etc/imscp_panel/php-fpm.conf';
-
-    $self->startPhpFpm();
+        $self->startPhpFpm();
+    } catch {
+        error( $_ );
+        1;
+    };
 }
 
 =back
@@ -1015,23 +1023,23 @@ sub _deleteDnsZone
     $rs ||= $self->{'eventManager'}->trigger( 'afterNamedDeleteMasterZone' );
 }
 
-=item _getFullPhpVersionFor( $binaryPath )
+=item _getFullPhpVersionFor( $binary )
 
  Get full PHP version for the given PHP binary
 
- Param string $binaryPath Path to PHP binary
- Return int 0 on success, other on failure
+ Param string $binary PHP binary path
+ Return PHP full version on success, die on failure
 
 =cut
 
 sub _getFullPhpVersionFor
 {
-    my ( undef, $binaryPath ) = @_;
+    my ( undef, $binary ) = @_;
 
-    my $rs = execute( [ $binaryPath, '-nv' ], \my $stdout, \my $stderr );
-    error( $stderr || 'Unknown error' ) if $rs;
-    return undef unless $stdout;
-    $stdout =~ /PHP\s+([^\s]+)/;
+    my ( $stdout, $stderr );
+    execute( [ $binary, '-nv' ], \$stdout, \$stderr ) == 0 && $stdout =~ /PHP\s+([^\s]+)/ or die(
+        sprintf( "Couldn't retrieve PHP version: %s", $stderr || 'Unknown error' )
+    );
     $1;
 }
 
