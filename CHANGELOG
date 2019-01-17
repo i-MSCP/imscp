@@ -12,6 +12,7 @@ BACKEND
     Fixed: Error output is badly captured, leading to 'Unknown error' (named-compilezone / Bind9 server implementation)
     Fixed: SysVinit scripts are always reported as enabled (Debian SysVinit init provider)
     Fixed: The 'is-enabled' support for SysVinit scripts isn't available in older systemd versions (Debian Systemd init provider)
+    Fixed: The 'imscp_panel' service is always restarted even when it should not (FrontEnd dpkg(1) post invoke tasks)
     Moved: engine/setup/imscp-setup-methods.pl to engine/PerlLib/imscp-setup-methods.pl
     Removed: Deprecated VHCS/ispCP core libraries (those were required by software installer only)
     Removed: Software installer scripts (management scripts)

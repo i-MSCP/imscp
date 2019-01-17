@@ -478,26 +478,27 @@ sub dpkgPostInvokeTasks
 {
     my ( $self ) = @_;
 
-    $self->{'frontend'}->restartPhpFpm();
-
-    if ( -f '/usr/local/sbin/imscp_panel' && ( $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} eq '' || !-f $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} ) ) {
-        # Cover case where administrator removed the package
-        my $rs = $self->{'frontend'}->stop();
-        $rs ||= iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
-        return $rs;
-    }
-
     if ( -f '/usr/local/sbin/imscp_panel' ) {
-        my $v1 = $self->getFullPhpVersionFor( $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} );
-        my $v2 = $self->getFullPhpVersionFor( '/usr/local/sbin/imscp_panel' );
-        return 0 unless defined $v1 && defined $v2 && $v1 ne $v2; # Don't act when not necessary
-        debug( sprintf( "Updating imscp_panel service PHP binary from version '%s' to version '%s'", $v2, $v1 ));
+        unless ( -f $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} ) {
+            # Cover case where administrator removed the package
+            $self->stop();
+            my $rs = iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->remove();
+            return $rs if $rs;
+        }
+
+        my $v1 = $self->_getFullPhpVersionFor( $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} );
+        my $v2 = $self->_getFullPhpVersionFor( '/usr/local/sbin/imscp_panel' );
+        return unless defined $v1 && defined $v2 && $v1 ne $v2; # Don't act when not necessary
+        debug( sprintf( "Updating i-MSCP frontEnd PHP-FPM binary from version %s to version %s", $v2, $v1 ));
     }
 
-    my $rs = $self->_copyPhpBinary();
-    return $rs if $rs || !-f '/usr/local/etc/imscp_panel/php-fpm.conf';
+    my $rs = $self->stopPhpFpm();
+    $rs ||= $self->_copyPhpBinary();
+    return $rs if $rs;
 
-    $self->{'frontend'}->restartPhpFpm();
+    return 0 unless -f '/usr/local/etc/imscp_panel/php-fpm.conf';
+
+    $self->startPhpFpm();
 }
 
 =back
@@ -772,21 +773,12 @@ sub _copyPhpBinary
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndCopyPhpBinary' );
-    return $rs if $rs;
-
-    if ( $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} eq '' ) {
+    unless ( length $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} ) {
         error( "PHP 'PHP_FPM_BIN_PATH' configuration parameter is not set." );
         return 1;
     }
 
-    if ( -f '/usr/local/sbin/imscp_panel' ) {
-        $rs = iMSCP::File->new( filename => '/usr/local/sbin/imscp_panel' )->delFile();
-        return $rs if $rs;
-    }
-
-    $rs = iMSCP::File->new( filename => $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} )->copyFile( '/usr/local/sbin/imscp_panel' );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndCopyPhpBinary' );
+    iMSCP::File->new( filename => $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} )->copyFile( '/usr/local/sbin/imscp_panel', { preserve => 'yes' } );
 }
 
 =item _buildPhpConfig( )
@@ -1023,7 +1015,7 @@ sub _deleteDnsZone
     $rs ||= $self->{'eventManager'}->trigger( 'afterNamedDeleteMasterZone' );
 }
 
-=item getFullPhpVersionFor( $binaryPath )
+=item _getFullPhpVersionFor( $binaryPath )
 
  Get full PHP version for the given PHP binary
 
@@ -1032,7 +1024,7 @@ sub _deleteDnsZone
 
 =cut
 
-sub getFullPhpVersionFor
+sub _getFullPhpVersionFor
 {
     my ( undef, $binaryPath ) = @_;
 

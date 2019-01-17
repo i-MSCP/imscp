@@ -142,11 +142,7 @@ sub postinstall
 
 sub dpkgPostInvokeTasks
 {
-    my ( $self ) = @_;
-
-    my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndDpkgPostInvokeTasks' );
-    $rs ||= Package::FrontEnd::Installer->getInstance()->dpkgPostInvokeTasks();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndDpkgPostInvokeTasks' );
+    Package::FrontEnd::Installer->getInstance()->dpkgPostInvokeTasks();
 }
 
 =item uninstall( )
