@@ -53,7 +53,7 @@ function getFirstStepData()
 function generatePage($tpl)
 {
     global $hpName, $php, $cgi, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $traffic, $diskspace, $backup, $dns,
-           $aps, $extMail, $webFolderProtection;
+           $extMail, $webFolderProtection;
 
     $cfg = iMSCP_Registry::get('config');
 
@@ -104,15 +104,6 @@ function generatePage($tpl)
 
     if (!resellerHasFeature('sql')) {
         $tpl->assign('SQL_FEATURE', '');
-    }
-
-    if (!resellerHasFeature('aps')) {
-        $tpl->assign('APS_FEATURE', '');
-    } else {
-        $tpl->assign([
-            'VL_SOFTWAREY' => $aps == '_yes_' ? ' checked' : '',
-            'VL_SOFTWAREN' => $aps == '_yes_' ? '' : ' checked'
-        ]);
     }
 
     if (!resellerHasFeature('backup')) {
@@ -254,7 +245,7 @@ function generatePage($tpl)
 function getHostingPlanData()
 {
     global $hpId, $hpName, $php, $cgi, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $traffic, $diskspace, $backup,
-           $dns, $aps, $extMail, $webFolderProtection;
+           $dns, $extMail, $webFolderProtection;
 
     if ($hpId == 0) {
         return;
@@ -271,7 +262,7 @@ function getHostingPlanData()
     $data = $stmt->fetchRow();
 
     list(
-        $php, $cgi, $sub, $als, $mail, $ftp, $sqld, $sqlu, $traffic, $diskspace, $backup, $dns, $aps, $phpEditor,
+        $php, $cgi, $sub, $als, $mail, $ftp, $sqld, $sqlu, $traffic, $diskspace, $backup, $dns, $phpEditor,
         $phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniDisableFunctions, $phpiniMailFunction, $phpiniPostMaxSize,
         $phpiniUploadMaxFileSize, $phpiniMaxExecutionTime, $phpiniMaxInputTime, $phpiniMemoryLimit, $extMail,
         $webFolderProtection, $mailQuota
@@ -304,7 +295,7 @@ function getHostingPlanData()
  */
 function checkInputData()
 {
-    global $php, $cgi, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $traffic, $diskspace, $backup, $dns, $aps,
+    global $php, $cgi, $sub, $als, $mail, $mailQuota, $ftp, $sqld, $sqlu, $traffic, $diskspace, $backup, $dns,
            $extMail, $webFolderProtection;
 
     $sub = isset($_POST['nreseller_max_subdomain_cnt']) ? clean_input($_POST['nreseller_max_subdomain_cnt']) : $sub;
@@ -320,7 +311,6 @@ function checkInputData()
     $cgi = isset($_POST['cgi']) ? clean_input($_POST['cgi']) : $cgi;
     $dns = isset($_POST['dns']) ? clean_input($_POST['dns']) : $dns;
     $backup = isset($_POST['backup']) && is_array($_POST['backup']) ? $_POST['backup'] : $backup;
-    $aps = isset($_POST['software_allowed']) ? clean_input($_POST['software_allowed']) : $aps;
     $extMail = isset($_POST['external_mail']) ? clean_input($_POST['external_mail']) : $extMail;
     $webFolderProtection = isset($_POST['web_folder_protection']) ? clean_input($_POST['web_folder_protection']) : $webFolderProtection;
 
@@ -328,13 +318,8 @@ function checkInputData()
     $cgi = $cgi === '_yes_' ? '_yes_' : '_no_';
     $dns = resellerHasFeature('custom_dns_records') && $dns === '_yes_' ? '_yes_' : '_no_';
     $backup = resellerHasFeature('backup') ? array_intersect($backup, ['_dmn_', '_sql_', '_mail_']) : [];
-    $aps = resellerHasFeature('aps') && $aps === '_yes_' ? '_yes_' : '_no_';
     $extMail = $extMail === '_yes_' ? '_yes_' : '_no_';
     $webFolderProtection = $webFolderProtection === '_yes_' ? '_yes_' : '_no_';
-
-    if ($aps == '_yes_') { // Ensure that PHP is enabled when software installer is enabled
-        $php = '_yes_';
-    }
 
     $errFieldsStack = [];
 
@@ -487,7 +472,7 @@ iMSCP_Events_Aggregator::getInstance()->dispatch(iMSCP_Events::onResellerScriptS
 global $dmnName, $hpId;
 $hpName = 'Custom';
 $sub = $als = $mail = $mailQuota = $ftp = $sqld = $sqlu = $traffic = $diskspace = '0';
-$php = $cgi = $dns = $aps = $extMail = '_no_';
+$php = $cgi = $dns = $extMail = '_no_';
 $webFolderProtection = '_yes_';
 $backup = [];
 
@@ -509,7 +494,7 @@ if (isset($_POST['uaction'])
     if (checkInputData()) {
         $_SESSION['step_two_data'] = "$dmnName;0";
         $_SESSION['ch_hpprops'] =
-            "$php;$cgi;$sub;$als;$mail;$ftp;$sqld;$sqlu;$traffic;$diskspace;" . implode('|', $backup) . ";$dns;$aps;" .
+            "$php;$cgi;$sub;$als;$mail;$ftp;$sqld;$sqlu;$traffic;$diskspace;" . implode('|', $backup) . ";$dns;" .
             $phpini->getClientPermission('phpiniSystem') . ';' .
             $phpini->getClientPermission('phpiniAllowUrlFopen') . ';' .
             $phpini->getClientPermission('phpiniDisplayErrors') . ';' .
@@ -543,7 +528,6 @@ $tpl->define_dynamic([
     'ext_mail_feature'                   => 'page',
     'ftp_feature'                        => 'page',
     'sql_feature'                        => 'page',
-    'aps_feature'                        => 'page',
     'backup_feature'                     => 'page',
     'php_editor_block'                   => 'page',
     'php_editor_permissions_block'       => 'php_editor_block',
@@ -582,8 +566,7 @@ $tpl->assign([
     'TR_FEATURES'                   => tr('Features'),
     'TR_LIMITS'                     => tr('Limits'),
     'TR_WEB_FOLDER_PROTECTION'      => tr('Web folder protection'),
-    'TR_WEB_FOLDER_PROTECTION_HELP' => tr('If set to `yes`, Web folders will be protected against deletion.'),
-    'TR_SOFTWARE_SUPP'              => tr('Software installer')
+    'TR_WEB_FOLDER_PROTECTION_HELP' => tr('If set to `yes`, Web folders will be protected against deletion.')
 ]);
 
 generateNavigation($tpl);

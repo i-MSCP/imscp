@@ -64,7 +64,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * @var int Last database update revision
      */
-    protected $lastUpdate = 276;
+    protected $lastUpdate = 278;
 
     /**
      * Singleton - Make new unavailable
@@ -2038,5 +2038,37 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected function r276()
     {
         return $this->dropColumn('plugin', 'plugin_type');
+    }
+
+    /**
+     * Remove all software installer related tables and columns
+     *
+     * @return array SQL statements to be executed
+     */
+    protected function r277()
+    {
+        return [
+            // Columns in domain table
+            $this->dropColumn('domain', 'domain_software_allowed'),
+            // Columns in reseller_props table
+            $this->dropColumn('reseller_props', 'software_allowed'),
+            $this->dropColumn('reseller_props', 'softwaredepot_allowed'),
+            $this->dropColumn('reseller_props', 'websoftwaredepot_allowed'),
+            // Tables
+            $this->dropTable('web_software'),
+            $this->dropTable('web_software_inst'),
+            $this->dropTable('web_software_depot'),
+            $this->dropTable('web_software_options')
+        ];
+    }
+
+    /**
+     * Reset hosting_plans table due to major changes
+     *
+     * @return string SQL statements to be executed
+     */
+    protected function r278()
+    {
+        return 'TRUNCATE hosting_plans';
     }
 }

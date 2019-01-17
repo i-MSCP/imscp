@@ -102,7 +102,7 @@ sub authdaemonSqlUserDialog
         'AUTHDAEMON_SQL_PASSWORD', ( iMSCP::Getopt->preseed ? randomStr( 16, ALNUM ) : $self->{'config'}->{'AUTHDAEMON_DATABASE_PASSWORD'} )
     );
 
-    if ( $::reconfigure =~ /^(?:po|servers|all|forced)$/ || !isValidUsername( $dbUser )
+    if ( iMSCP::Getopt->reconfigure =~ /^(?:po|servers|all|forced)$/ || !isValidUsername( $dbUser )
         || !isStringNotInList( $dbUser, 'root', 'debian-sys-maint', $masterSqlUser, 'vlogger_user' ) || !isValidPassword( $dbPass )
         || !isAvailableSqlUser( $dbUser )
     ) {

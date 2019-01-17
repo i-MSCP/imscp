@@ -29,6 +29,7 @@ use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute 'execute';
+use iMSCP::Getopt;
 use Try::Tiny;
 use version;
 use parent 'Common::SingletonClass';
@@ -79,7 +80,7 @@ sub showDialog
         my $package = ::setupGetQuestion( 'FILEMANAGER_PACKAGE' );
 
         my $rs = 0;
-        if ( $::reconfigure =~ /^(?:filemanager|all|forced)$/ || !$package || !exists $self->{'PACKAGES'}->{$package} ) {
+        if ( iMSCP::Getopt->reconfigure =~ /^(?:filemanager|all|forced)$/ || !$package || !exists $self->{'PACKAGES'}->{$package} ) {
             ( $rs, $package ) = $dialog->radiolist(
                 <<"EOF", [ keys %{ $self->{'PACKAGES'} } ], exists $self->{'PACKAGES'}->{$package} ? $package : ( keys %{ $self->{'PACKAGES'} } )[0] );
 

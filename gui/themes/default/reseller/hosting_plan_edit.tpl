@@ -272,19 +272,6 @@
             </td>
         </tr>
         <!-- EDP: custom_dns_records_feature -->
-        <!-- BDP: aps_feature -->
-        <tr>
-            <td>{TR_SOFTWARE_SUPP}</td>
-            <td>
-                <div class="radio">
-                    <input type="radio" name="softwares_installer" value="_yes_" id="softwares_installer_yes"{SOFTWARE_YES}>
-                    <label for="softwares_installer_yes">{TR_YES}</label>
-                    <input type="radio" name="softwares_installer" value="_no_" id="softwares_installer_no"{SOFTWARE_NO}>
-                    <label for="softwares_installer_no">{TR_NO}</label>
-                </div>
-            </td>
-        </tr>
-        <!-- EDP: aps_feature -->
         <!-- BDP: ext_mail_feature -->
         <tr>
             <td>{TR_EXTMAIL}</td>

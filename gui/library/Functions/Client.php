@@ -89,35 +89,26 @@ function customerHasFeature($featureNames, $forceReload = false)
                 || $dmnProps['phpini_perm_system'] == 'yes'
                 || $cfg['ENABLE_SSL']) ? true : false,
             */
-            'external_mail'      => ($dmnProps['domain_external_mail'] == 'yes'),
-            'php'                => ($dmnProps['domain_php'] == 'yes'),
-            'php_editor'         => (
-                $dmnProps['phpini_perm_system'] == 'yes'
-                && $dmnProps['phpini_perm_allow_url_fopen'] == 'yes'
-                || $dmnProps['phpini_perm_display_errors'] == 'yes'
-                || in_array($dmnProps['phpini_perm_disable_functions'], ['yes', 'exec'])
-            ),
-            'cgi'                => ($dmnProps['domain_cgi'] == 'yes'),
-            'ftp'                => ($dmnProps['domain_ftpacc_limit'] != '-1'),
-            'sql'                => ($dmnProps['domain_sqld_limit'] != '-1'),
-            'mail'               => ($dmnProps['domain_mailacc_limit'] != '-1'),
-            'subdomains'         => ($dmnProps['domain_subd_limit'] != '-1'),
-            'domain_aliases'     => ($dmnProps['domain_alias_limit'] != '-1'),
-            'custom_dns_records' => ($dmnProps['domain_dns'] != 'no' && $cfg['NAMED_PACKAGE'] != 'Servers::noserver'),
-            'webstats'           => ($cfg['WEBSTATS_PACKAGES'] != 'No'),
-            'backup'             => ($cfg['BACKUP_CLIENTS'] != 'no' && $dmnProps['allowbackup'] != ''),
+            'external_mail'      => $dmnProps['domain_external_mail'] == 'yes',
+            'php'                => $dmnProps['domain_php'] == 'yes',
+            'php_editor'         => $dmnProps['phpini_perm_system'] == 'yes' && $dmnProps['phpini_perm_allow_url_fopen'] == 'yes'
+                || $dmnProps['phpini_perm_display_errors'] == 'yes' || in_array($dmnProps['phpini_perm_disable_functions'], ['yes', 'exec']),
+            'cgi'                => $dmnProps['domain_cgi'] == 'yes',
+            'ftp'                => $dmnProps['domain_ftpacc_limit'] != '-1',
+            'sql'                => $dmnProps['domain_sqld_limit'] != '-1',
+            'mail'               => $dmnProps['domain_mailacc_limit'] != '-1',
+            'subdomains'         => $dmnProps['domain_subd_limit'] != '-1',
+            'domain_aliases'     => $dmnProps['domain_alias_limit'] != '-1',
+            'custom_dns_records' => $dmnProps['domain_dns'] != 'no' && $cfg['NAMED_PACKAGE'] != 'Servers::noserver',
+            'webstats'           => $cfg['WEBSTATS_PACKAGES'] != 'No',
+            'backup'             => $cfg['BACKUP_CLIENTS'] != 'no' && $dmnProps['allowbackup'] != '',
             'protected_areas'    => true,
             'custom_error_pages' => true,
-            'aps'                => (
-                $dmnProps['domain_software_allowed'] != 'no' && $dmnProps['domain_ftpacc_limit'] != '-1'
-            ),
-            'ssl'                => ($cfg['ENABLE_SSL'] == 1)
+            'ssl'                => $cfg['ENABLE_SSL'] == 1
         ];
 
         if ($cfg['IMSCP_SUPPORT_SYSTEM']) {
-            $stmt = exec_query(
-                'SELECT support_system FROM reseller_props WHERE reseller_id = ?', $_SESSION['user_created_by']
-            );
+            $stmt = exec_query('SELECT support_system FROM reseller_props WHERE reseller_id = ?', $_SESSION['user_created_by']);
             $row = $stmt->fetchRow(PDO::FETCH_ASSOC);
             $availableFeatures['support'] = ($row['support_system'] == 'yes');
         } else {
@@ -130,9 +121,7 @@ function customerHasFeature($featureNames, $forceReload = false)
         $featureName = strtolower($featureName);
 
         if ($debug && !array_key_exists($featureName, $availableFeatures)) {
-            throw new iMSCPException(
-                sprintf("Feature %s is not known by the customerHasFeature() function.", $featureName)
-            );
+            throw new iMSCPException(sprintf("Feature %s is not known by the customerHasFeature() function.", $featureName));
         }
 
         if (!$availableFeatures[$featureName]) {
@@ -436,13 +425,7 @@ function deleteSubdomain($id)
 
         // Delete FTP groups and FTP accounting/limit data
         $stmt = exec_query(
-            "
-                SELECT groupname, members
-                FROM ftp_group
-                JOIN ftp_users USING(gid)
-                WHERE userid LIKE CONCAT('%@', ?)
-                LIMIT 1
-            ",
+            "SELECT groupname, members FROM ftp_group JOIN ftp_users USING(gid) WHERE userid LIKE CONCAT('%@', ?) LIMIT 1",
             $row['subdomain_name']
         );
         if ($stmt->rowCount()) {

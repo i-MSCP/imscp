@@ -43,31 +43,25 @@ $tpl->define_dynamic([
 ]);
 $tpl->assign('TR_PAGE_TITLE', tr('Admin / System Tools / Anti-Rootkits Logs'));
 
-$antiRootkits = [];
 
-if (isset($config['ANTI_ROOTKITS_PACKAGES'])) {
-    $antiRootkits = explode(',', $config['ANTI_ROOTKITS_PACKAGES']);
-}
-
-$antiRootkits[] = 'Other';
-$antiRootkitLogFiles = [
+$packages = explode(',', $config['ANTI_ROOTKITS_PACKAGES']);
+$logFiles = [
     'Chkrootkit' => 'CHKROOTKIT_LOG',
-    'Rkhunter'   => 'RKHUNTER_LOG',
-    'Other'      => 'OTHER_ROOTKIT_LOG'
+    'Rkhunter'   => 'RKHUNTER_LOG'
 ];
 
-foreach ($antiRootkitLogFiles as $antiRootkit => $logVar) {
-    if (!in_array($antiRootkit, $antiRootkits) || !isset($config[$logVar]) || $config[$logVar] == '') {
-        unset($antiRootkitLogFiles[$antiRootkit]);
+foreach ($logFiles as $package => $logFileVar) {
+    if (!in_array($package, $packages) || !isset($config[$logFileVar]) || $config[$logFileVar] == '') {
+        unset($logFiles[$package]);
     }
 }
 
-if (!empty($antiRootkitLogFiles)) {
+if (!empty($logFiles)) {
     /** @var Zend_Cache_Core $cache */
     $cache = iMSCP_Registry::get('iMSCP_Application')->getCache();
 
-    foreach ($antiRootkitLogFiles AS $antiRootkit => $logVar) {
-        $logFile = $config[$logVar];
+    foreach ($logFiles AS $package => $logFile) {
+        $logFile = $config[$logFileVar];
         $cacheId = 'iMSCP_Rootkit_'. pathinfo($logFile, PATHINFO_FILENAME);
 
         if(!($content = $cache->load($cacheId))) {
@@ -81,7 +75,7 @@ if (!empty($antiRootkitLogFiles)) {
                 $replace = [];
 
                 // rkhunter-like log colouring
-                if ($antiRootkit == 'Rkhunter') {
+                if ($package == 'Rkhunter') {
                     $search [] = '/[^\-]WARNING/i';
                     $replace[] = '<strong style="color:orange">$0</strong>';
                     $search [] = '/([^a-z])(OK)([^a-z])/i';
@@ -102,7 +96,7 @@ if (!empty($antiRootkitLogFiles)) {
                     $replace[] = '<strong style="color:red">$0</strong>';
                     $search [] = '/0[ \t]+vulnerable/i';
                     $replace[] = '<span style="color:green">$0</span>';
-                } elseif ($antiRootkit == 'Chkrootkit') {
+                } elseif ($package == 'Chkrootkit') {
                     // chkrootkit-like log colouring
                     $search [] = '/([^a-z][ \t]+)(INFECTED)/i';
                     $replace[] = '$1<strong style="color:red">$2</strong>';
@@ -139,7 +133,7 @@ if (!empty($antiRootkitLogFiles)) {
         $tpl->parse('ANTIROOTKITS_LOG', '.antirootkits_log');
     }
 
-    $tpl->assign('NB_LOG', sizeof($antiRootkitLogFiles));
+    $tpl->assign('NB_LOG', count($logFiles));
 } else {
     $tpl->assign('ANTIROOTKITS_LOG', '');
     set_page_message(tr('No anti-rootkits logs'), 'static_info');

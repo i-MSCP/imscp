@@ -77,7 +77,7 @@ OPTIONS:
         nolock          => TRUE
     } );
 
-    my $fstab = "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf";
+    my $fstab = "$::imscpConfig{'CONF_DIR'}/mounts/mounts.conf";
     return unless -f $fstab;
 
     open my $fh, '<', $fstab or die( sprintf( "Couldn't open %s: %s", $fstab, $! ));

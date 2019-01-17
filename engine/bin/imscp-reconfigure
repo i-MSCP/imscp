@@ -59,41 +59,27 @@ try {
     setDebug( iMSCP::Getopt->debug );
     setVerbose( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose );
 
-    # Get reconfigure option
-    $::reconfigure = iMSCP::Getopt->reconfigure;
-
-    # Handle preseed option
     if ( iMSCP::Getopt->preseed ) {
         require iMSCP::Getopt->preseed;
         # The preseed option supersede the reconfigure option
         iMSCP::Getopt->reconfigure( 'none' );
-        $::reconfigure = 'none';
         iMSCP::Getopt->noprompt( TRUE );
     }
 
-    # Handle the listener option
-    require iMSCP::Getopt->listener if iMSCP::Getopt->listener;
-
-    # handle noprompt option
     if ( iMSCP::Getopt->noprompt ) {
         debugRegisterCallBack( sub {
-            print STDOUT output( 'i-MSCP has been successfully installed/updated.', 'ok' ) unless $?;
-
-            # We exit with status 5 from iMSCP::Dialog in noninteractive mode
-            if ( $? == 5 ) {
-                if ( iMSCP::Getopt->preseed ) {
-                    print STDERR output( 'Missing or bad entry found in your preseed file.', 'fatal' );
-                    return;
-                }
-
-                print STDERR output( 'Missing or bad entry found in configuration file.', 'fatal' );
+            return unless $? == 5;
+            
+            if ( iMSCP::Getopt->preseed ) {
+                print STDERR output( 'Missing or bad entry found in your preseed file.', 'fatal' );
+                return;
             }
-        } );
 
-        print STDOUT output( 'Installation in progress... Please wait.', 'info' );
+             print STDERR output( 'Missing or bad entry found in configuration file.', 'fatal' );
+        } );
     }
 
-    require "$FindBin::Bin/imscp-setup-methods.pl";
+    require 'imscp-setup-methods.pl';
 
     my $rs = setupBoot();
     $rs ||= iMSCP::EventManager->getInstance()->trigger( 'beforeSetup' );
@@ -106,7 +92,7 @@ try {
         $dialog->set( 'yes-label', 'Continue' );
         $dialog->set( 'no-label', 'Abort' );
 
-        return if $dialog->yesno( <<"EOF", 'abort_by_default' );
+        return if $dialog->yesno( <<"EOF", TRUE );
 
 Welcome to the \\Z1i-MSCP $::imscpConfig{'Version'}\\Zn reconfiguration dialog.
 

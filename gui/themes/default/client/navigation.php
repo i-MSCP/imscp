@@ -370,29 +370,6 @@ return [
                     ],
                 ],
             ],
-            'softwares'          => [
-                'label'              => tr('Software'),
-                'uri'                => '/client/software.php',
-                'title_class'        => 'apps_installer',
-                'privilege_callback' => [
-                    'name'  => 'customerHasFeature',
-                    'param' => 'aps'
-                ],
-                'pages'              => [
-                    'software_view'    => [
-                        'label'       => tr('Software details'),
-                        'uri'         => '/client/software_view.php',
-                        'title_class' => 'apps_installer',
-                        'visible'     => '0'
-                    ],
-                    'software_install' => [
-                        'label'       => tr('Software installation'),
-                        'uri'         => '/client/software_install.php',
-                        'visible'     => '0',
-                        'title_class' => 'apps_installer'
-                    ]
-                ]
-            ],
             'daily_backup'       => [
                 'label'              => tr('Daily backup'),
                 'uri'                => '/client/backup.php',

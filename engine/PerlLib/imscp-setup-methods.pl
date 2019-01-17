@@ -119,12 +119,12 @@ sub setupDialog
         return $rs if $rs && $rs < 30;
 
         if ( $rs == 30 ) {
-            $::reconfigure = 'forced' if $::reconfigure eq 'none';
+            iMSCP::Getopt->reconfigure( 'forced' ) if iMSCP::Getopt->reconfigure eq 'none';
             $state--;
             next;
         }
 
-        $::reconfigure = 'none' if $::reconfigure eq 'forced';
+        iMSCP::Getopt->reconfigure( 'none' ) if iMSCP::Getopt->reconfigure eq 'forced';
         $state++;
     }
 

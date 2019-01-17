@@ -54,7 +54,7 @@ iMSCP::EventManager->getInstance()->register(
             return 0;
         }
 
-        my $cfgProxy = ($main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes') ? "    SSLProxyEngine On\n" : '';
+        my $cfgProxy = ($::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes') ? "    SSLProxyEngine On\n" : '';
         $cfgProxy .= <<'EOF';
     ProxyPass /ftp/ {HTTP_URI_SCHEME}{HTTP_HOST}:{HTTP_PORT}/ftp/ retry=1 acquire=3000 timeout=600 Keepalive=On
     ProxyPassReverse /ftp/ {HTTP_URI_SCHEME}{HTTP_HOST}:{HTTP_PORT}/ftp/
@@ -74,11 +74,10 @@ EOF
                 ).
                 process(
                     {
-                        HTTP_URI_SCHEME => ($main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes') ? 'https://' : 'http://',
-                        HTTP_HOST       => $main::imscpConfig{'BASE_SERVER_VHOST'},
-                        HTTP_PORT       => ($main::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes')
-                            ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'}
-                            : $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
+                        HTTP_URI_SCHEME => $::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes' ? 'https://' : 'http://',
+                        HTTP_HOST       => $::imscpConfig{'BASE_SERVER_VHOST'},
+                        HTTP_PORT       => $::imscpConfig{'PANEL_SSL_ENABLED'} eq 'yes'
+                            ? $::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'} : $::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
                     },
                     $cfgProxy
                 )

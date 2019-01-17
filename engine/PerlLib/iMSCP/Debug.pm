@@ -155,18 +155,16 @@ sub endDebug
         $self->{'loggers'}->[0]->store( %{ $message } );
     }
 
-    my $logDir = $main::imscpConfig{'LOG_DIR'} || '/tmp';
+    my $logDir = $::imscpConfig{'LOG_DIR'} || '/tmp';
     if ( $logDir ne '/tmp' && !-d $logDir ) {
         require iMSCP::Dir;
         local $@;
         eval {
-            iMSCP::Dir->new( dirname => $logDir )->make(
-                {
-                    user  => $main::imscpConfig{'ROOT_USER'},
-                    group => $main::imscpConfig{'ROOT_GROUP'},
-                    mode  => 0750
-                }
-            );
+            iMSCP::Dir->new( dirname => $logDir )->make( {
+                user  => $::imscpConfig{'ROOT_USER'},
+                group => $::imscpConfig{'ROOT_GROUP'},
+                mode  => 0750
+            } );
         };
         $logDir = '/tmp' if $@;
     }

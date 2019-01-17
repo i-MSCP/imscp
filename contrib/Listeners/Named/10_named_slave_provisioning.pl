@@ -72,13 +72,13 @@ sub createHtpasswdFile
     }
 
     require iMSCP::Crypt;
-    my $file = iMSCP::File->new( filename => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning/.htpasswd" );
+    my $file = iMSCP::File->new( filename => "$::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning/.htpasswd" );
     $file->set( "$authUsername:".($isAuthPasswordEncrypted ? $authPassword : iMSCP::Crypt::htpasswd( $authPassword )) );
 
-    $rs = $file->save();
+    my $rs = $file->save();
     $rs ||= $file->owner(
-        "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
-        "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}"
+        "$::imscpConfig{'SYSTEM_USER_PREFIX'}$::imscpConfig{'SYSTEM_USER_MIN_UID'}",
+        "$::imscpConfig{'SYSTEM_USER_PREFIX'}$::imscpConfig{'SYSTEM_USER_MIN_UID'}"
     );
     $rs ||= $file->mode( 0640 );
 }
@@ -104,7 +104,7 @@ iMSCP::EventManager->getInstance()->register(
             satisfy any;
             deny all;
             auth_basic "$realm";
-            auth_basic_user_file $main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning/.htpasswd;
+            auth_basic_user_file $::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning/.htpasswd;
         }
     }
 EOF
@@ -177,10 +177,10 @@ if ($rowCount > 0) {
 }
 EOF
 
-        my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning" )->make(
+        my $rs = iMSCP::Dir->new( dirname => "$::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning" )->make(
             {
-                user  => "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
-                group => "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
+                user  => "$::imscpConfig{'SYSTEM_USER_PREFIX'}$::imscpConfig{'SYSTEM_USER_MIN_UID'}",
+                group => "$::imscpConfig{'SYSTEM_USER_PREFIX'}$::imscpConfig{'SYSTEM_USER_MIN_UID'}",
                 mode  => 0550
             }
         );
@@ -189,14 +189,14 @@ EOF
         return $rs if $rs;
 
         my $file = iMSCP::File->new(
-            filename => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning/slave_provisioning.php"
+            filename => "$::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning/slave_provisioning.php"
         );
         $file->set( $fileContent );
 
         $rs = $file->save();
         $rs ||= $file->owner(
-            "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
-            "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}"
+            "$::imscpConfig{'SYSTEM_USER_PREFIX'}$::imscpConfig{'SYSTEM_USER_MIN_UID'}",
+            "$::imscpConfig{'SYSTEM_USER_PREFIX'}$::imscpConfig{'SYSTEM_USER_MIN_UID'}"
         );
         $rs ||= $file->mode( 0640 );
     }

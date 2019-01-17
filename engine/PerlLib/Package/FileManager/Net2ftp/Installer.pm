@@ -191,7 +191,7 @@ sub _buildConfig
     my ( $self ) = @_;
 
     my $ug = $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'};
-    my $conffile = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/settings.inc.php";
+    my $conffile = "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/settings.inc.php";
     my $data = {
         ADMIN_EMAIL     => $::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} ? $::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} : '',
         MD5_SALT_STRING => randomStr( 16, ALNUM )

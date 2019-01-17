@@ -540,7 +540,7 @@ sub _processPackagesFile
         # If there are more than one alternative available and if dialog is
         # forced, or if user explicitely asked for reconfiguration of that
         # alternative, show dialog for alternative selection
-        if ( keys %altDesc > 1 && ( $needDialog || grep ( $_ eq $::reconfigure, ( $section, 'servers', 'all' ) ) ) ) {
+        if ( keys %altDesc > 1 && ( $needDialog || grep ( $_ eq iMSCP::Getopt->reconfigure, ( $section, 'servers', 'all' ) ) ) ) {
             ( my $ret, $sAlt ) = $dialog->radiolist(
                 <<"EOF", [ keys %altDesc ], $data->{$sAlt}->{'description'} || $sAlt );
 

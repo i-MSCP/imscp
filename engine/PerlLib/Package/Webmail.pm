@@ -30,6 +30,7 @@ use iMSCP::Debug 'error';
 use iMSCP::Dir;
 use iMSCP::Execute 'execute';
 use iMSCP::EventManager;
+use iMSCP::Getopt;
 use Try::Tiny;
 use parent 'Common::SingletonClass';
 
@@ -80,7 +81,7 @@ sub showDialog
         @{selectedPackages}{ split ',', ::setupGetQuestion( 'WEBMAIL_PACKAGES' ) } = ();
 
         my $rs = 0;
-        if ( $::reconfigure =~ /^(?:webmails|all|forced)$/ || !%selectedPackages
+        if ( iMSCP::Getopt->reconfigure =~ /^(?:webmails|all|forced)$/ || !%selectedPackages
             || grep { !exists $self->{'PACKAGES'}->{$_} && $_ ne 'No' } keys %selectedPackages
         ) {
             ( $rs, my $packages ) = $dialog->checkbox(

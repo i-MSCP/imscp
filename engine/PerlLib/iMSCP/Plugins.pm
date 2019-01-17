@@ -25,6 +25,7 @@ package iMSCP::Plugins;
 
 use strict;
 use warnings;
+use iMSCP::Boolean;
 use File::Basename;
 use parent 'Common::SingletonClass';
 
@@ -46,7 +47,7 @@ use parent 'Common::SingletonClass';
 
 sub getList
 {
-    @{ $_[0]->{'availables_plugins'} };
+    @{ $_[0]->{'available_plugins'} };
 }
 
 =item getClass( $pluginName )
@@ -65,9 +66,9 @@ sub getClass
     my ( $self, $pluginName ) = @_;
 
     unless ( $self->{'loaded_plugins'}->{$pluginName} ) {
-        grep ( $_ eq $pluginName, @{ $self->{'availables_plugins'} } ) or die( sprintf( "Plugin %s isn't available", $pluginName ));
-        require "$main::imscpConfig{'PLUGINS_DIR'}/$pluginName/backend/$pluginName.pm";
-        $self->{'loaded_plugins'}->{$pluginName} = 1;
+        grep ( $_ eq $pluginName, @{ $self->{'available_plugins'} } ) or die( sprintf( "Plugin %s isn't available", $pluginName ));
+        require "$::imscpConfig{'PLUGINS_DIR'}/$pluginName/backend/$pluginName.pm";
+        $self->{'loaded_plugins'}->{$pluginName} = TRUE;
     }
 
     "Plugin::$pluginName";
@@ -91,7 +92,7 @@ sub _init
 {
     my ( $self ) = @_;
 
-    $_ = basename( $_, '.pm' ) for @{ $self->{'availables_plugins'} } = glob( "$main::imscpConfig{'PLUGINS_DIR'}/*/backend/*.pm" );
+    $_ = basename( $_, '.pm' ) for @{ $self->{'available_plugins'} } = glob( "$::imscpConfig{'PLUGINS_DIR'}/*/backend/*.pm" );
     $self->{'loaded_plugins'} = {};
     $self;
 }

@@ -92,7 +92,7 @@ sub hostnameDialog
 
     my $hostname = ::setupGetQuestion( 'SERVER_HOSTNAME' );
 
-    if ( $::reconfigure =~ /^(?:local_server|system_hostname|hostnames|all|forced)$/ || !isValidHostname( $hostname ) ) {
+    if ( iMSCP::Getopt->reconfigure =~ /^(?:local_server|system_hostname|hostnames|all|forced)$/ || !isValidHostname( $hostname ) ) {
         chomp( $hostname = $hostname || `hostname --fqdn 2>/dev/null` || '' );
         $hostname = idn_to_unicode( $hostname, 'utf-8' );
 
@@ -140,7 +140,7 @@ sub primaryIpDialog
         chomp( $wanIP = get( 'https://ipinfo.io/ip' ) || '' );
     }
 
-    if ( $::reconfigure =~ /^(?:local_server|primary_ip|all|forced)$/ || !grep ( $_ eq $lanIP, @ipList )
+    if ( iMSCP::Getopt->reconfigure =~ /^(?:local_server|primary_ip|all|forced)$/ || !grep ( $_ eq $lanIP, @ipList )
         || ( $wanIP ne $lanIP && !isValidIpAddr( $wanIP, qr/(?:PUBLIC|GLOBAL-UNICAST)/ ) )
     ) {
         my ( $rs, $msg ) = ( 0, '' );
@@ -215,7 +215,7 @@ sub timezoneDialog
         'TIMEZONE', ( iMSCP::Getopt->preseed ) ? DateTime::TimeZone->new( name => 'local' )->name() : ''
     );
 
-    if ( $::reconfigure =~ /^(?:local_server|timezone|all|forced)$/ || !isValidTimezone( $timezone ) ) {
+    if ( iMSCP::Getopt->reconfigure =~ /^(?:local_server|timezone|all|forced)$/ || !isValidTimezone( $timezone ) ) {
         my ( $rs, $msg ) = ( 0, '' );
         do {
             ( $rs, $timezone ) = $dialog->inputbox(
@@ -250,7 +250,7 @@ sub preinstall
     if ( -f "$::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf" ) {
         # Don't catch any error here to avoid permission denied error on some
         # vps due to restrictions set by provider
-        $rs = execute( "$::imscpConfig{'CMD_SYSCTL'} -p $::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf", \my $stdout, \my $stderr );
+        $rs = execute( "/sbin/sysctl -p $::imscpConfig{'SYSCTL_CONF_DIR'}/imscp.conf", \my $stdout, \my $stderr );
         debug( $stdout ) if $stdout;
         debug( $stderr ) if $stderr;
     }

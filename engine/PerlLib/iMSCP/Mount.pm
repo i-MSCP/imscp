@@ -408,7 +408,7 @@ sub removeMountEntry( $;$ )
         return 1;
     }
 
-    $iMSCP_FSTAB_FH = iMSCP::File->new( filename => "$main::imscpConfig{'CONF_DIR'}/mounts/mounts.conf" ) unless $iMSCP_FSTAB_FH;
+    $iMSCP_FSTAB_FH = iMSCP::File->new( filename => "$::imscpConfig{'CONF_DIR'}/mounts/mounts.conf" ) unless $iMSCP_FSTAB_FH;
 
     my $fileC = $iMSCP_FSTAB_FH->getAsRef();
     return 1 unless defined $fileC;

@@ -428,7 +428,7 @@ sub _init
     $self->{'autoreset'} = 0;
     $self->{'lines'} = undef;
     $self->{'columns'} = undef;
-    $self->{'_opts'}->{'backtitle'} ||= "i-MSCP - internet Multi Server Control Panel ($main::imscpConfig{'Version'})";
+    $self->{'_opts'}->{'backtitle'} ||= "i-MSCP - internet Multi Server Control Panel ($::imscpConfig{'Version'})";
     $self->{'_opts'}->{'title'} ||= 'i-MSCP Installer';
     $self->{'_opts'}->{'colors'} = '';
     $self->{'_opts'}->{'ok-label'} ||= 'Ok';

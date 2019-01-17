@@ -55,19 +55,19 @@ sub addSystemUser
     $username //= $self->{'username'};
     my $oldUsername = $self->{'username'} // $username;
 
-    unless ( defined $username ) {
-        error( 'Missing $username parameter' );
+    unless ( length $username ) {
+        error( 'Missing or invalid $username parameter' );
         return 1;
     }
 
-    if ( $username eq $main::imscpConfig{'ROOT_USER'} ) {
-        error( sprintf( '%s user is prohibited', $main::imscpConfig{'ROOT_USER'} ));
+    if ( $username eq $::imscpConfig{'ROOT_USER'} ) {
+        error( sprintf( '%s user is prohibited', $::imscpConfig{'ROOT_USER'} ));
         return 1;
     }
 
     $self->{'username'} = $username;
 
-    my $home = $self->{'home'} // "$main::imscpConfig{'USER_WEB_DIR'}/$username";
+    my $home = $self->{'home'} // "$::imscpConfig{'USER_WEB_DIR'}/$username";
     my $isImmutableHome = -d $home && isImmutable( $home );
 
     clearImmutable( $home ) if $isImmutableHome;
@@ -97,7 +97,7 @@ sub addSystemUser
             ];
     } else {
         if ( $userProps[2] == 0 ) {
-            error( sprintf( '%s user modification is prohibited', $main::imscpConfig{'ROOT_USER'} ));
+            error( sprintf( '%s user modification is prohibited', $::imscpConfig{'ROOT_USER'} ));
             return 1;
         }
 
@@ -118,7 +118,7 @@ sub addSystemUser
                 || getgrnam( $self->{'group'} ) ne $userProps[3] )
                 ? ( '-g', $self->{'group'} ) : () ),
             ( defined $self->{'home'} && $self->{'home'} ne $userProps[7]
-                ? ( '-d', $self->{'home'} // "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'username'}", '-m' ) : () ),
+                ? ( '-d', $self->{'home'} // "$::imscpConfig{'USER_WEB_DIR'}/$self->{'username'}", '-m' ) : () ),
             ( defined $self->{'shell'} && $self->{'shell'} ne $userProps[8] ? ( '-s', $self->{'shell'} ) : () ),
             ( $username ne $oldUsername ? ( '-l', $username ) : () ),
             $oldUsername,
@@ -166,8 +166,8 @@ sub delSystemUser
         return 1;
     }
 
-    if ( $username eq $main::imscpConfig{'ROOT_USER'} ) {
-        error( sprintf( '%s user deletion is prohibited', $main::imscpConfig{'ROOT_USER'} ));
+    if ( $username eq $::imscpConfig{'ROOT_USER'} ) {
+        error( sprintf( '%s user deletion is prohibited', $::imscpConfig{'ROOT_USER'} ));
         return 1;
     }
 

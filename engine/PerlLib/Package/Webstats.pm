@@ -85,7 +85,7 @@ sub showDialog
         @{selectedPackages}{ split ',', ::setupGetQuestion( 'WEBSTATS_PACKAGES' ) } = ();
 
         my $rs = 0;
-        if ( $::reconfigure =~ /^(?:webstats|all|forced)$/ || !%selectedPackages
+        if ( iMSCP::Getopt->reconfigure =~ /^(?:webstats|all|forced)$/ || !%selectedPackages
             || grep { !exists $self->{'PACKAGES'}->{$_} && $_ ne 'No' } keys %selectedPackages
         ) {
             ( $rs, my $packages ) = $dialog->checkbox(

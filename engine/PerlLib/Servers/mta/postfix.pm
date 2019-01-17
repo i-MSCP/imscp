@@ -194,7 +194,7 @@ sub setEnginePermissions
         filemode  => '0640',
         recursive => TRUE
     } );
-    $rs ||= setRights( "$main::imscpConfig{'ENGINE_ROOT_DIR'}/bin/imscp-vacation", {
+    $rs ||= setRights( "$::imscpConfig{'ENGINE_ROOT_DIR'}/bin/imscp-vacation", {
         user  => $::imscpConfig{'ROOT_USER'},
         group => $::imscpConfig{'IMSCP_GROUP'},
         mode  => '0750',
@@ -206,9 +206,9 @@ sub setEnginePermissions
         filemode  => '0640',
         recursive => iMSCP::Getopt->fixPermissions
     } );
-    $rs ||= setRights( "$main::imscpConfig{'ENGINE_ROOT_DIR'}/bin/imscp-maillogconvert", {
-        user  => $main::imscpConfig{'ROOT_USER'},
-        group => $main::imscpConfig{'ROOT_GROUP'},
+    $rs ||= setRights( "$::imscpConfig{'ENGINE_ROOT_DIR'}/bin/imscp-maillogconvert", {
+        user  => $::imscpConfig{'ROOT_USER'},
+        group => $::imscpConfig{'ROOT_GROUP'},
         mode  => '0750'
     } );
 }
@@ -475,7 +475,7 @@ sub addMail
             $rs = $self->addMapEntry( $self->{'config'}->{'MTA_VIRTUAL_ALIAS_HASH'}, "$data->{'MAIL_ADDR'}\t$data->{'MAIL_CATCHALL'}" );
             return $rs if $rs;
         } else {
-            my $isMailAccount = index( $data->{'MAIL_TYPE'}, '_mail' ) != -1 && $data->{'DOMAIN_NAME'} ne $main::imscpConfig{'SERVER_HOSTNAME'};
+            my $isMailAccount = index( $data->{'MAIL_TYPE'}, '_mail' ) != -1 && $data->{'DOMAIN_NAME'} ne $::imscpConfig{'SERVER_HOSTNAME'};
             my $isForwardAccount = index( $data->{'MAIL_TYPE'}, '_forward' ) != -1;
 
             return 0 unless $isMailAccount || $isForwardAccount;

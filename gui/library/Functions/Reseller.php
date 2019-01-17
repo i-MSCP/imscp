@@ -206,22 +206,21 @@ function resellerHasFeature($featureName, $forceReload = false)
         $cfg = Registry::get('config');
         $resellerProps = imscp_getResellerProperties($_SESSION['user_id']);
         $availableFeatures = [
-            'domains'            => ($resellerProps['max_dmn_cnt'] != '-1'),
-            'subdomains'         => ($resellerProps['max_sub_cnt'] != '-1'),
-            'domain_aliases'     => ($resellerProps['max_als_cnt'] != '-1'),
-            'mail'               => ($resellerProps['max_mail_cnt'] != '-1'),
-            'ftp'                => ($resellerProps['max_ftp_cnt'] != '-1'),
-            'sql'                => ($resellerProps['max_sql_db_cnt'] != '-1'), // TODO to be removed
-            'sql_db'             => ($resellerProps['max_sql_db_cnt'] != '-1'),
-            'sql_user'           => ($resellerProps['max_sql_user_cnt'] != '-1'),
+            'domains'            => $resellerProps['max_dmn_cnt'] != '-1',
+            'subdomains'         => $resellerProps['max_sub_cnt'] != '-1',
+            'domain_aliases'     => $resellerProps['max_als_cnt'] != '-1',
+            'mail'               => $resellerProps['max_mail_cnt'] != '-1',
+            'ftp'                => $resellerProps['max_ftp_cnt'] != '-1',
+            'sql'                => $resellerProps['max_sql_db_cnt'] != '-1', // TODO to be removed
+            'sql_db'             => $resellerProps['max_sql_db_cnt'] != '-1',
+            'sql_user'           => $resellerProps['max_sql_user_cnt'] != '-1',
             'php'                => true,
-            'php_editor'         => ($resellerProps['php_ini_system'] == 'yes'),
+            'php_editor'         => $resellerProps['php_ini_system'] == 'yes',
             'cgi'                => true,
-            'custom_dns_records' => ($cfg['NAMED_PACKAGE'] != 'Servers::noserver'),
-            'aps'                => ($resellerProps['software_allowed'] != 'no'), // aps feature check must be revisted
+            'custom_dns_records' => $cfg['NAMED_PACKAGE'] != 'Servers::noserver',
             'external_mail'      => true,
-            'backup'             => ($cfg['BACKUP_CLIENTS'] != 'no'),
-            'support'            => ($cfg['IMSCP_SUPPORT_SYSTEM'] && $resellerProps['support_system'] == 'yes')
+            'backup'             => $cfg['BACKUP_CLIENTS'] != 'no',
+            'support'            => $cfg['IMSCP_SUPPORT_SYSTEM'] && $resellerProps['support_system'] == 'yes'
         ];
     }
 

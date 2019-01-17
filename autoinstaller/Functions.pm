@@ -135,7 +135,7 @@ sub build
 
     my $dialog = iMSCP::Dialog->getInstance();
 
-    unless ( iMSCP::Getopt->noprompt || $::reconfigure ne 'none' ) {
+    unless ( iMSCP::Getopt->noprompt || iMSCP::Getopt->reconfigure ne 'none' ) {
         $rs = _showWelcomeMsg( $dialog );
         return $rs if $rs;
 
@@ -148,7 +148,7 @@ sub build
         return $rs if $rs;
     }
 
-    $rs = _askInstallerMode( $dialog ) unless iMSCP::Getopt->noprompt || $::buildonly || $::reconfigure ne 'none';
+    $rs = _askInstallerMode( $dialog ) unless iMSCP::Getopt->noprompt || $::buildonly || iMSCP::Getopt->reconfigure ne 'none';
 
     my @steps = (
         ( $::skippackages ? () : [ \&_installDistroPackages, 'Installing distribution packages' ] ),
@@ -225,7 +225,7 @@ sub install
 
     {
         package main;
-        require "$FindBin::Bin/engine/imscp-setup-methods.pl";
+        require 'imscp-setup-methods.pl';
     }
 
     # Not really the right place to do that job but we have not really choice because this must be done before
@@ -399,7 +399,7 @@ EOF
 
     $dialog->set( 'yes-label', 'Continue' );
     $dialog->set( 'no-label', 'Abort' );
-    return 50 if $dialog->yesno( <<"EOF", 'abort_by_default' );
+    return 50 if $dialog->yesno( <<"EOF", TRUE );
 
 \\Zb\\Z1WARNING - PLEASE READ CAREFULLY\\Zn\\ZB
 $warning

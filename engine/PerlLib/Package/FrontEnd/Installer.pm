@@ -119,7 +119,7 @@ sub askMasterAdminCredentials
 
     ::setupSetQuestion( 'ADMIN_OLD_LOGIN_NAME', $username );
 
-    if ( $main::reconfigure =~ /^(?:admin|admin_credentials|all|forced)$/ || !isValidUsername( $username ) || $password eq '' ) {
+    if ( iMSCP::Getopt->reconfigure =~ /^(?:admin|admin_credentials|all|forced)$/ || !isValidUsername( $username ) || $password eq '' ) {
         $password = '';
         my ( $rs, $msg ) = ( 0, '' );
 
@@ -178,7 +178,7 @@ sub askMasterAdminEmail
 
     my $email = ::setupGetQuestion( 'DEFAULT_ADMIN_ADDRESS' );
 
-    if ( $::reconfigure =~ /^(?:admin|admin_email|all|forced)$/ || !isValidEmail( $email ) ) {
+    if ( iMSCP::Getopt->reconfigure =~ /^(?:admin|admin_email|all|forced)$/ || !isValidEmail( $email ) ) {
         my ( $rs, $msg ) = ( 0, '' );
         do {
             ( $rs, $email ) = $dialog->inputbox( <<"EOF", $email );
@@ -209,7 +209,7 @@ sub askDomain
 
     my $domainName = ::setupGetQuestion( 'BASE_SERVER_VHOST' );
 
-    if ( $::reconfigure =~ /^(?:panel|panel_hostname|hostnames|all|forced)$/ || !isValidDomain( $domainName ) ) {
+    if ( iMSCP::Getopt->reconfigure =~ /^(?:panel|panel_hostname|hostnames|all|forced)$/ || !isValidDomain( $domainName ) ) {
         unless ( $domainName ) {
             my @domainLabels = split /\./, ::setupGetQuestion( 'SERVER_HOSTNAME' );
             $domainName = 'panel.' . join( '.', @domainLabels[1 .. $#domainLabels] );
@@ -255,8 +255,8 @@ sub askSsl
     my $baseServerVhostPrefix = ::setupGetQuestion( 'BASE_SERVER_VHOST_PREFIX', 'http://' );
     my $openSSL = iMSCP::OpenSSL->new();
 
-    if ( $::reconfigure =~ /^(?:panel|panel_ssl|ssl|all|forced)$/ || $sslEnabled !~ /^(?:yes|no)$/
-        || ( $sslEnabled eq 'yes' && $::reconfigure =~ /^(?:panel_hostname|hostnames)$/ )
+    if ( iMSCP::Getopt->reconfigure =~ /^(?:panel|panel_ssl|ssl|all|forced)$/ || $sslEnabled !~ /^(?:yes|no)$/
+        || ( $sslEnabled eq 'yes' && iMSCP::Getopt->reconfigure =~ /^(?:panel_hostname|hostnames)$/ )
     ) {
         my $rs = $dialog->yesno( <<'EOF', $sslEnabled eq 'no' ? 1 : 0 );
 
@@ -397,7 +397,7 @@ sub askHttpPorts
     my $ssl = ::setupGetQuestion( 'PANEL_SSL_ENABLED' );
     my ( $rs, $msg ) = ( 0, '' );
 
-    if ( $::reconfigure =~ /^(?:panel|panel_ports|all|forced)$/ || !isNumber( $httpPort ) || !isNumberInRange( $httpPort, 1025, 65535 )
+    if ( iMSCP::Getopt->reconfigure =~ /^(?:panel|panel_ports|all|forced)$/ || !isNumber( $httpPort ) || !isNumberInRange( $httpPort, 1025, 65535 )
         || !isStringNotInList( $httpPort, $httpsPort )
     ) {
         do {
@@ -416,8 +416,8 @@ EOF
     ::setupSetQuestion( 'BASE_SERVER_VHOST_HTTP_PORT', $httpPort );
 
     if ( $ssl eq 'yes' ) {
-        if ( $::reconfigure =~ /^(?:panel|panel_ports|all|forced)$/ || !isNumber( $httpsPort ) || !isNumberInRange( $httpsPort, 1025, 65535 )
-            || !isStringNotInList( $httpsPort, $httpPort )
+        if ( iMSCP::Getopt->reconfigure =~ /^(?:panel|panel_ports|all|forced)$/ || !isNumber( $httpsPort )
+            || !isNumberInRange( $httpsPort, 1025, 65535 ) || !isStringNotInList( $httpsPort, $httpPort )
         ) {
             do {
                 ( $rs, $httpsPort ) = $dialog->inputbox( <<"EOF", $httpsPort ? $httpsPort : 8443 );
@@ -669,7 +669,7 @@ sub _addMasterWebUser
         my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndAddUser' );
         return $rs if $rs;
 
-        my $ug = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+        my $ug = $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
         local $DATABASE = ::setupGetQuestion( 'DATABASE_NAME' );
 
@@ -685,7 +685,7 @@ sub _addMasterWebUser
         $rs = iMSCP::SystemUser->new(
             username       => $oldUser,
             comment        => 'i-MSCP Control Panel Web User',
-            home           => $main::imscpConfig{'GUI_ROOT_DIR'},
+            home           => $::imscpConfig{'GUI_ROOT_DIR'},
             skipCreateHome => TRUE
         )->addSystemUser( $ug, $ug );
         return $rs if $rs;
@@ -699,7 +699,7 @@ sub _addMasterWebUser
             );
         } );
 
-        $rs = iMSCP::SystemUser->new( username => $ug )->addToGroup( $main::imscpConfig{'IMSCP_GROUP'} );
+        $rs = iMSCP::SystemUser->new( username => $ug )->addToGroup( $::imscpConfig{'IMSCP_GROUP'} );
         $rs = iMSCP::SystemUser->new( username => $ug )->addToGroup( Servers::mta->factory()->{'config'}->{'MTA_MAILBOX_GID_NAME'} );
         $rs ||= iMSCP::SystemUser->new( username => $self->{'config'}->{'HTTPD_USER'} )->addToGroup( $ug );
         $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndAddUser' );
@@ -725,8 +725,6 @@ sub _makeDirs
         my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndMakeDirs' );
         return $rs if $rs;
 
-        my $rootUName = $main::imscpConfig{'ROOT_USER'};
-        my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
         my $nginxTmpDir = $self->{'config'}->{'HTTPD_CACHE_DIR_DEBIAN'};
         $nginxTmpDir = $self->{'config'}->{'HTTPD_CACHE_DIR_NGINX'} unless -d $nginxTmpDir;
 
@@ -734,11 +732,11 @@ sub _makeDirs
         # permissions problem from an old installation). See #IP-1530
         iMSCP::Dir->new( dirname => $nginxTmpDir )->remove();
 
-        for my $dir ( [ $nginxTmpDir, $rootUName, $rootGName, 0755 ],
-            [ $self->{'config'}->{'HTTPD_CONF_DIR'}, $rootUName, $rootGName, 0755 ],
-            [ $self->{'config'}->{'HTTPD_LOG_DIR'}, $rootUName, $rootGName, 0755 ],
-            [ $self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}, $rootUName, $rootGName, 0755 ],
-            [ $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}, $rootUName, $rootGName, 0755 ]
+        for my $dir ( [ $nginxTmpDir, $::imscpConfig{'ROOT_USER'}, $::imscpConfig{'ROOT_GROUP'}, 0755 ],
+            [ $self->{'config'}->{'HTTPD_CONF_DIR'}, $::imscpConfig{'ROOT_USER'}, $::imscpConfig{'ROOT_GROUP'}, 0755 ],
+            [ $self->{'config'}->{'HTTPD_LOG_DIR'}, $::imscpConfig{'ROOT_USER'}, $::imscpConfig{'ROOT_GROUP'}, 0755 ],
+            [ $self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}, $::imscpConfig{'ROOT_USER'}, $::imscpConfig{'ROOT_GROUP'}, 0755 ],
+            [ $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}, $::imscpConfig{'ROOT_USER'}, $::imscpConfig{'ROOT_GROUP'}, 0755 ]
         ) {
             iMSCP::Dir->new( dirname => $dir->[0] )->make( {
                 user  => $dir->[1],
@@ -823,7 +821,6 @@ sub _buildPhpConfig
             HOME_DIR                  => $::imscpConfig{'GUI_ROOT_DIR'},
             MTA_VIRTUAL_MAIL_DIR      => Servers::mta->factory()->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
             PEAR_DIR                  => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
-            OTHER_ROOTKIT_LOG         => $::imscpConfig{'OTHER_ROOTKIT_LOG'} ne '' ? ":$::imscpConfig{'OTHER_ROOTKIT_LOG'}" : '',
             RKHUNTER_LOG              => $::imscpConfig{'RKHUNTER_LOG'},
             TIMEZONE                  => ::setupGetQuestion( 'TIMEZONE' ),
             WEB_DIR                   => $::imscpConfig{'GUI_ROOT_DIR'}

@@ -83,7 +83,7 @@ sub showDialog
         @{selectedPackages}{ split ',', ::setupGetQuestion( 'ANTI_ROOTKITS_PACKAGES' ) } = ();
 
         my $rs = 0;
-        if ( $::reconfigure =~ /^(?:antirootkits|all|forced)$/ || !%selectedPackages
+        if ( iMSCP::Getopt->reconfigure =~ /^(?:antirootkits|all|forced)$/ || !%selectedPackages
             || grep { !exists $self->{'PACKAGES'}->{$_} && $_ ne 'No' } keys %selectedPackages
         ) {
             ( $rs, my $packages ) = $dialog->checkbox(

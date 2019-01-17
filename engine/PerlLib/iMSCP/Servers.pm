@@ -81,7 +81,7 @@ sub _init
     my ( $self ) = @_;
 
     $_ = basename( $_, '.pm' ) for @{ $self->{'servers'} } = grep { $_ !~ /noserver.pm$/ } glob(
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers/*.pm"
+        "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers/*.pm"
     );
 
     # Load all server classes

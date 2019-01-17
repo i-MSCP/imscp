@@ -12,7 +12,9 @@ BACKEND
     Fixed: Error output is badly captured, leading to 'Unknown error' (named-compilezone / Bind9 server implementation)
     Fixed: SysVinit scripts are always reported as enabled (Debian SysVinit init provider)
     Fixed: The 'is-enabled' support for SysVinit scripts isn't available in older systemd versions (Debian Systemd init provider)
-    Moved: engine/setup/imscp-setup-methods.pl to engine/bin/imscp-setup-methods.pl
+    Moved: engine/setup/imscp-setup-methods.pl to engine/PerlLib/imscp-setup-methods.pl
+    Removed: Deprecated VHCS/ispCP core libraries (those were required by software installer only)
+    Removed: Software installer scripts (management scripts)
     Renamed: iMSCP::Database::MySQL package to iMSCP::Database::MySQL
     Review: Don't propagate entity processing failures to DB task processor. Update entities status with error only.
     Review: Engine permissions (Bind9 server implementation)
@@ -24,9 +26,13 @@ DISTRIBUTIONS
     Added: Support for Devuan 2.0 (ASCII)
     Added: 'pixz' distribution package (all distributions)
 
+FRONTEND
+    Removed: Software installer
+
 INSTALLER
     Fixed: The '--skip-package-update' option has no effect (regression fix)
     Removed: Post installation scripts for php-apcu and php-apcu-bc Debian packages (all distributions)
+    Removed: '--listener' command line option
     Review: Don't stop FTP, httpd, IMAP/POP, SMTP and  services on update
 
 LISTENER

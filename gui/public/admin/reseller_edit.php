@@ -125,8 +125,7 @@ function getFormData($resellerId, $forUpdate = false)
     foreach (
         [
             'max_dmn_cnt', 'max_sub_cnt', 'max_als_cnt', 'max_mail_cnt', 'max_ftp_cnt', 'max_sql_db_cnt',
-            'max_sql_user_cnt', 'max_traff_amnt', 'max_disk_amnt', 'software_allowed', 'softwaredepot_allowed',
-            'websoftwaredepot_allowed', 'support_system'
+            'max_sql_user_cnt', 'max_traff_amnt', 'max_disk_amnt', 'support_system'
         ] as $key
     ) {
         if (isset($_POST[$key])) {
@@ -308,15 +307,6 @@ function generateFeaturesForm(TemplateEngine $tpl)
         'MAX_EXECUTION_TIME'               => tohtml($data['max_execution_time']),
         'TR_MAX_INPUT_TIME'                => tr('PHP %s configuration option', '<b>max_input_time</b>'),
         'MAX_INPUT_TIME'                   => tohtml($data['max_input_time']),
-        'TR_SOFTWARES_INSTALLER'           => tr('Software installer'),
-        'SOFTWARES_INSTALLER_YES'          => $data['software_allowed'] == 'yes' ? ' checked' : '',
-        'SOFTWARES_INSTALLER_NO'           => $data['software_allowed'] != 'yes' ? ' checked' : '',
-        'TR_SOFTWARES_REPOSITORY'          => tr('Software repository'),
-        'SOFTWARES_REPOSITORY_YES'         => $data['softwaredepot_allowed'] == 'yes' ? ' checked' : '',
-        'SOFTWARES_REPOSITORY_NO'          => $data['softwaredepot_allowed'] != 'yes' ? ' checked' : '',
-        'TR_WEB_SOFTWARES_REPOSITORY'      => tr('Web software repository'),
-        'WEB_SOFTWARES_REPOSITORY_YES'     => $data['websoftwaredepot_allowed'] == 'yes' ? ' checked' : '',
-        'WEB_SOFTWARES_REPOSITORY_NO'      => $data['websoftwaredepot_allowed'] != 'yes' ? ' checked' : '',
         'TR_SUPPORT_SYSTEM'                => tr('Support system'),
         'SUPPORT_SYSTEM_YES'               => $data['support_system'] == 'yes' ? ' checked' : '',
         'SUPPORT_SYSTEM_NO'                => $data['support_system'] != 'yes' ? ' checked' : '',
@@ -344,7 +334,6 @@ function generateFeaturesForm(TemplateEngine $tpl)
             'TR_PHP_INI_AL_DISABLE_FUNCTIONS'  => tr('Can edit the PHP %s configuration option', '<b>disable_functions</b>'),
             'PHP_INI_AL_DISABLE_FUNCTIONS_YES' => $data['php_ini_al_disable_functions'] == 'yes' ? ' checked' : '',
             'PHP_INI_AL_DISABLE_FUNCTIONS_NO'  => $data['php_ini_al_disable_functions'] != 'yes' ? ' checked' : '',
-
             'TR_PHP_INI_AL_MAIL_FUNCTION'  => tr('Can use the PHP %s function', '<b>mail</b>'),
             'PHP_INI_AL_MAIL_FUNCTION_YES' => $data['php_ini_al_mail_function'] == 'yes' ? ' checked' : '',
             'PHP_INI_AL_MAIL_FUNCTION_NO'  => $data['php_ini_al_mail_function'] != 'yes' ? ' checked' : '',
@@ -376,19 +365,19 @@ function updateResellerUser(Form $form)
 
         $stmt = exec_query(
             "
-            SELECT
-                IFNULL(SUM(t1.domain_subd_limit), 0) AS subdomains,
-                IFNULL(SUM(t1.domain_alias_limit), 0) AS domainAliases,
-                IFNULL(SUM(t1.domain_mailacc_limit), 0) AS mailAccounts,
-                IFNULL(SUM(t1.domain_ftpacc_limit), 0) AS ftpAccounts,
-                IFNULL(SUM(t1.domain_sqld_limit), 0) AS sqlDatabases,
-                IFNULL(SUM(t1.domain_sqlu_limit), 0) AS sqlUsers,
-                IFNULL(SUM(t1.domain_traffic_limit), 0) AS traffic,
-                IFNULL(SUM(t1.domain_disk_limit), 0) AS diskspace
-            FROM domain AS t1
-            JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
-            WHERE t2.created_by = ?
-        ",
+                SELECT
+                    IFNULL(SUM(t1.domain_subd_limit), 0) AS subdomains,
+                    IFNULL(SUM(t1.domain_alias_limit), 0) AS domainAliases,
+                    IFNULL(SUM(t1.domain_mailacc_limit), 0) AS mailAccounts,
+                    IFNULL(SUM(t1.domain_ftpacc_limit), 0) AS ftpAccounts,
+                    IFNULL(SUM(t1.domain_sqld_limit), 0) AS sqlDatabases,
+                    IFNULL(SUM(t1.domain_sqlu_limit), 0) AS sqlUsers,
+                    IFNULL(SUM(t1.domain_traffic_limit), 0) AS traffic,
+                    IFNULL(SUM(t1.domain_disk_limit), 0) AS diskspace
+                FROM domain AS t1
+                JOIN admin AS t2 ON(t2.admin_id = t1.domain_admin_id)
+                WHERE t2.created_by = ?
+            ",
             $resellerId
         );
 
@@ -445,8 +434,7 @@ function updateResellerUser(Form $form)
         // Check for max subdomains limit
         if (imscp_limit_check($data['max_sub_cnt'])) {
             $rs = checkResellerLimit(
-                $data['max_sub_cnt'], $data['current_sub_cnt'], $data['nbSubdomains'], $unlimitedItems['subdomains'],
-                tr('subdomains')
+                $data['max_sub_cnt'], $data['current_sub_cnt'], $data['nbSubdomains'], $unlimitedItems['subdomains'], tr('subdomains')
             );
         } else {
             set_page_message(tr('Incorrect limit for %s.', tr('subdomains')), 'error');
@@ -460,8 +448,7 @@ function updateResellerUser(Form $form)
         // check for max domain aliases limit
         if (imscp_limit_check($data['max_als_cnt'])) {
             $rs = checkResellerLimit(
-                $data['max_als_cnt'], $data['current_als_cnt'], $data['nbDomainAliases'],
-                $unlimitedItems['domainAliases'], tr('domain aliases')
+                $data['max_als_cnt'], $data['current_als_cnt'], $data['nbDomainAliases'], $unlimitedItems['domainAliases'], tr('domain aliases')
             );
         } else {
             set_page_message(tr('Incorrect limit for %s.', tr('domain aliases')), 'error');
@@ -475,8 +462,7 @@ function updateResellerUser(Form $form)
         // Check for max mail accounts limit
         if (imscp_limit_check($data['max_mail_cnt'])) {
             $rs = checkResellerLimit(
-                $data['max_mail_cnt'], $data['current_mail_cnt'], $data['nbMailAccounts'],
-                $unlimitedItems['mailAccounts'], tr('mail')
+                $data['max_mail_cnt'], $data['current_mail_cnt'], $data['nbMailAccounts'], $unlimitedItems['mailAccounts'], tr('mail')
             );
         } else {
             set_page_message(tr('Incorrect limit for %s.', tr('mail accounts')), 'error');
@@ -490,8 +476,7 @@ function updateResellerUser(Form $form)
         // Check for max FTP accounts limit
         if (imscp_limit_check($data['max_ftp_cnt'])) {
             $rs = checkResellerLimit(
-                $data['max_ftp_cnt'], $data['current_ftp_cnt'], $data['nbFtpAccounts'], $unlimitedItems['ftpAccounts'],
-                tr('Ftp')
+                $data['max_ftp_cnt'], $data['current_ftp_cnt'], $data['nbFtpAccounts'], $unlimitedItems['ftpAccounts'], tr('Ftp')
             );
         } else {
             set_page_message(tr('Incorrect limit for %s.', tr('Ftp accounts')), 'error');
@@ -510,8 +495,7 @@ function updateResellerUser(Form $form)
             $rs = false;
         } else {
             $rs = checkResellerLimit(
-                $data['max_sql_db_cnt'], $data['current_sql_db_cnt'], $unlimitedItems['nbSqlDatabases'],
-                $data['sqlDatabases'], tr('SQL databases')
+                $data['max_sql_db_cnt'], $data['current_sql_db_cnt'], $unlimitedItems['nbSqlDatabases'], $data['sqlDatabases'], tr('SQL databases')
             );
         }
 
@@ -527,8 +511,7 @@ function updateResellerUser(Form $form)
             $rs = false;
         } else {
             $rs = checkResellerLimit(
-                $data['max_sql_user_cnt'], $data['current_sql_user_cnt'], $data['nbSqlUsers'],
-                $unlimitedItems['sqlUsers'], tr('SQL users')
+                $data['max_sql_user_cnt'], $data['current_sql_user_cnt'], $data['nbSqlUsers'], $unlimitedItems['sqlUsers'], tr('SQL users')
             );
         }
 
@@ -539,8 +522,7 @@ function updateResellerUser(Form $form)
         // Check for max monthly traffic limit
         if (imscp_limit_check($data['max_traff_amnt'], NULL)) {
             $rs = checkResellerLimit(
-                $data['max_traff_amnt'], $data['current_traff_amnt'], $data['totalTraffic'] / 1048576,
-                $unlimitedItems['traffic'], tr('traffic')
+                $data['max_traff_amnt'], $data['current_traff_amnt'], $data['totalTraffic'] / 1048576, $unlimitedItems['traffic'], tr('traffic')
             );
         } else {
             set_page_message(tr('Incorrect limit for %s.', tr('traffic')), 'error');
@@ -554,8 +536,7 @@ function updateResellerUser(Form $form)
         // Check for max disk space limit
         if (imscp_limit_check($data['max_disk_amnt'], NULL)) {
             $rs = checkResellerLimit(
-                $data['max_disk_amnt'], $data['current_disk_amnt'], $data['totalDiskspace'] / 1048576,
-                $unlimitedItems['diskspace'], tr('disk space')
+                $data['max_disk_amnt'], $data['current_disk_amnt'], $data['totalDiskspace'] / 1048576, $unlimitedItems['diskspace'], tr('disk space')
             );
         } else {
             set_page_message(tr('Incorrect limit for %s.', tr('disk space')), 'error');
@@ -656,8 +637,7 @@ function updateResellerUser(Form $form)
                     SET
                         max_dmn_cnt = ?, max_sub_cnt = ?, max_als_cnt = ?, max_mail_cnt = ?, max_ftp_cnt = ?,
                         max_sql_db_cnt = ?, max_sql_user_cnt = ?, max_traff_amnt = ?, max_disk_amnt = ?,
-                        reseller_ips = ?, software_allowed = ?, softwaredepot_allowed = ?,
-                        websoftwaredepot_allowed = ?, support_system = ?, php_ini_system = ?,
+                        reseller_ips = ?,support_system = ?, php_ini_system = ?,
                         php_ini_al_disable_functions = ?, php_ini_al_mail_function = ?,
                         php_ini_al_allow_url_fopen = ?, php_ini_al_display_errors = ?, php_ini_max_post_max_size = ?,
                         php_ini_max_upload_max_filesize = ?, php_ini_max_max_execution_time = ?,
@@ -668,8 +648,7 @@ function updateResellerUser(Form $form)
                 [
                     $data['max_dmn_cnt'], $data['max_sub_cnt'], $data['max_als_cnt'], $data['max_mail_cnt'],
                     $data['max_ftp_cnt'], $data['max_sql_db_cnt'], $data['max_sql_user_cnt'], $data['max_traff_amnt'],
-                    $data['max_disk_amnt'], implode(';', $resellerIps) . ';', $data['software_allowed'],
-                    $data['softwaredepot_allowed'], $data['websoftwaredepot_allowed'], $data['support_system'],
+                    $data['max_disk_amnt'], implode(';', $resellerIps) . ';', $data['support_system'],
                     $phpini->getResellerPermission('phpiniSystem'),
                     $phpini->getResellerPermission('phpiniDisableFunctions'),
                     $phpini->getResellerPermission('phpiniMailFunction'),
@@ -689,38 +668,6 @@ function updateResellerUser(Form $form)
                 $needDaemonRequest = true;
             } else {
                 $needDaemonRequest = false;
-            }
-
-            // Updating software installer properties
-            if ($data['software_allowed'] == 'no') {
-                exec_query(
-                    '
-                        UPDATE domain
-                        JOIN admin ON(admin_id = domain_admin_id)
-                        SET domain_software_allowed = ?
-                        WHERE created_by = ?
-                    ',
-                    [$data['softwaredepot_allowed'], $resellerId]
-                );
-            }
-
-            if ($data['websoftwaredepot_allowed'] == 'no') {
-                $stmt = exec_query(
-                    'SELECT software_id FROM web_software WHERE software_depot = ? AND reseller_id = ?',
-                    ['yes', $resellerId]
-                );
-
-                if ($stmt->rowCount()) {
-                    while ($row = $stmt->fetchRow()) {
-                        exec_query('UPDATE web_software_inst SET software_res_del = ? WHERE software_id = ?', [
-                            '1', $row['software_id']
-                        ]);
-                    }
-
-                    exec_query('DELETE FROM web_software WHERE software_depot = ? AND reseller_id = ?', [
-                        'yes', $resellerId
-                    ]);
-                }
             }
 
             // Force user to login again (needed due to possible password or email change)

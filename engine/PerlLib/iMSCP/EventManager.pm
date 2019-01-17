@@ -257,7 +257,7 @@ sub _init
     $self->{'events'} = {};
     $self->{'nonces'} = {};
 
-    while ( <$main::imscpConfig{'CONF_DIR'}/listeners.d/*.pl> ) {
+    while ( <$::imscpConfig{'CONF_DIR'}/listeners.d/*.pl> ) {
         debug( sprintf( 'Loading %s listener file', $_ ));
         require $_;
     }

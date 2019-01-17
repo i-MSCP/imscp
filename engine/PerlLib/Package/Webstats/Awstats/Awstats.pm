@@ -352,7 +352,7 @@ EOF
 
 =item _buildAWStatsConfig( \%data )
 
- Build awstats configuration file for the given domain (or subdomain)
+ Build AWStats configuration file for the given domain (or subdomain)
 
  Param hash \%data Domain or subdomain data
  Return int 0 on success, other on failure

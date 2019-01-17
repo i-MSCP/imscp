@@ -274,24 +274,6 @@ return [
                 'uri'         => '/admin/settings_ports.php',
                 'title_class' => 'general'
             ],
-            'softwares_management' => [
-                'label'       => tr('Software management'),
-                'uri'         => '/admin/software_manage.php',
-                'title_class' => 'apps_installer',
-                'pages'       => [
-                    'softwares_permissions' => [
-                        'label'       => tr('Software permissions'),
-                        'uri'         => '/admin/software_rights.php',
-                        'visible'     => '0',
-                        'title_class' => 'apps_installer'
-                    ]
-                ]
-            ],
-            'softwares_options'    => [
-                'label'       => tr('Software options'),
-                'uri'         => '/admin/software_options.php',
-                'title_class' => 'apps_installer'
-            ],
             'plugins_management'   => [
                 'label'       => tr('Plugin management'),
                 'uri'         => '/admin/settings_plugins.php',

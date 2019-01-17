@@ -274,7 +274,7 @@ sub createSelfSignedCertificate
     $data->{'common_name'} or die( 'Missing common_name parameter' );
     $data->{'email'} or die( 'Missing email parameter' );
 
-    my $openSSLConffileTpl = "$main::imscpConfig{'CONF_DIR'}/openssl/openssl.cnf.tpl";
+    my $openSSLConffileTpl = "$::imscpConfig{'CONF_DIR'}/openssl/openssl.cnf.tpl";
     my $commonName = $data->{'wildcard'} ? '*.' . $data->{'common_name'} : $data->{'common_name'};
 
     # Load openssl configuration template file for self-signed SSL certificates

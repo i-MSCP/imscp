@@ -159,7 +159,7 @@ sub _scheduleCheck
     return $rs if $rs;
 
     $rs = execute(
-        "echo '$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/bin/imscp-rkhunter > /dev/null 2>&1' | at now + 10 minutes",
+        "echo '$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/bin/imscp-rkhunter > /dev/null 2>&1' | at now + 10 minutes",
         \my $stdout,
         \my $stderr
     );

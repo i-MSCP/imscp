@@ -25,6 +25,7 @@ package Package::Backup;
 
 use strict;
 use warnings;
+use iMSCP::Getopt;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -71,7 +72,7 @@ sub imscpBackupDialog
 
     my $backupImscp = ::setupGetQuestion( 'BACKUP_CP' );
 
-    if ( $::reconfigure =~ /^(?:backup|all|forced)$/ || $backupImscp !~ /^(?:yes|no)$/ ) {
+    if ( iMSCP::Getopt->reconfigure =~ /^(?:backup|all|forced)$/ || $backupImscp !~ /^(?:yes|no)$/ ) {
         ( my $rs, $backupImscp ) = $dialog->radiolist( <<"EOF", [ 'yes', 'no' ], $backupImscp ne 'no' ? 'yes' : 'no' );
 
 \\Z4\\Zb\\Zui-MSCP Backup Feature\\Zn
@@ -102,7 +103,7 @@ sub customerBackupDialog
 
     my $backupDomains = ::setupGetQuestion( 'BACKUP_CLIENTS' );
 
-    if ( $::reconfigure =~ /^(?:backup|all|forced)$/ || $backupDomains !~ /^(?:yes|no)$/ ) {
+    if ( iMSCP::Getopt->reconfigure =~ /^(?:backup|all|forced)$/ || $backupDomains !~ /^(?:yes|no)$/ ) {
         ( my $rs, $backupDomains ) = $dialog->radiolist( <<"EOF", [ 'yes', 'no' ], $backupDomains ne 'no' ? 'yes' : 'no' );
 
 \\Z4\\Zb\\ZuDomains Backup Feature\\Zn

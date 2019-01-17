@@ -147,16 +147,16 @@ sub _init
 sub _installFiles
 {
     try {
-        my $packageDir = "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/monsta-ftp";
+        my $packageDir = "$::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/monsta-ftp";
 
         unless ( -d $packageDir ) {
             error( "Couldn't find the imscp/monsta-ftp package into the packages cache directory" );
             return 1;
         }
 
-        iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
-        iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' } );
-        iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy( "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' } );
+        iMSCP::Dir->new( dirname => "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
+        iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' } );
+        iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy( "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' } );
     } catch {
         error( $_ );
         1;
@@ -175,8 +175,8 @@ sub _buildHttpdConfig
 {
     my $frontEnd = Package::FrontEnd->getInstance();
     $frontEnd->buildConfFile(
-        "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/monsta-ftp/iMSCP/nginx/imscp_monstaftp.conf",
-        { GUI_PUBLIC_DIR => $main::imscpConfig{'GUI_PUBLIC_DIR'} },
+        "$::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/monsta-ftp/iMSCP/nginx/imscp_monstaftp.conf",
+        { GUI_PUBLIC_DIR => $::imscpConfig{'GUI_PUBLIC_DIR'} },
         { destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_monstaftp.conf" }
     );
 }
@@ -193,14 +193,14 @@ sub _buildConfig
 {
     my ( $self ) = @_;
 
-    my $ug = $main::imscpConfig{'SYSTEM_USER_PREFIX'} . $main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $ug = $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
     # config.php file
 
-    my $conffile = "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/settings/config.php";
+    my $conffile = "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/settings/config.php";
     my $data = {
         TIMEZONE => ::setupGetQuestion( 'TIMEZONE', 'UTC' ),
-        TMP_PATH => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp"
+        TMP_PATH => "$::imscpConfig{'GUI_ROOT_DIR'}/data/tmp"
     };
 
     my $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'monstaftp', 'config.php', \my $cfgTpl, $data );

@@ -59,7 +59,7 @@ sub uninstall
     my ( $self ) = @_;
 
     # In setup context, processing must be delayed, else we won't be able to connect to SQL server
-    if ( $main::execmode eq 'setup' ) {
+    if ( $::execmode eq 'setup' ) {
         return iMSCP::EventManager->getInstance()->register( 'afterSqldPreinstall', sub {
             my $rs = $self->_dropSqlUser();
             $rs ||= $self->_removeConfig();
@@ -109,7 +109,7 @@ sub _dropSqlUser
 
     try {
         # In setup context, take value from old conffile, else take value from current conffile
-        my $dbUserHost = $main::execmode eq 'setup' ? $main::imscpOldConfig{'DATABASE_USER_HOST'} : $main::imscpConfig{'DATABASE_USER_HOST'};
+        my $dbUserHost = $::execmode eq 'setup' ? $::imscpOldConfig{'DATABASE_USER_HOST'} : $::imscpConfig{'DATABASE_USER_HOST'};
         return 0 unless $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} && $dbUserHost;
 
         Servers::sqld->factory()->dropUser( $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'}, $dbUserHost );
@@ -160,7 +160,7 @@ sub _removeConfig
             $file->set( $fileContent );
 
             $rs = $file->save();
-            $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
+            $rs ||= $file->owner( $::imscpConfig{'ROOT_USER'}, $::imscpConfig{'ROOT_GROUP'} );
             $rs ||= $file->mode( 0644 );
             return $rs if $rs;
         }

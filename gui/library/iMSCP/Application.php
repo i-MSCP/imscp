@@ -339,7 +339,6 @@ class Application
         require_once LIBRARY_PATH . '/Functions/Login.php';
         require_once LIBRARY_PATH . '/Functions/Reseller.php';
         require_once LIBRARY_PATH . '/Functions/Shared.php';
-        require_once LIBRARY_PATH . '/Functions/SoftwareInstaller.php';
         require_once LIBRARY_PATH . '/Functions/Statistics.php';
         require_once LIBRARY_PATH . '/Functions/View.php';
     }

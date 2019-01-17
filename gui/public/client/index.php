@@ -181,7 +181,6 @@ function client_generateFeatureStatus($tpl)
             'CGI_FEATURE_STATUS'                   => customerHasFeature('cgi') ? $trYes : $trNo,
             'CUSTOM_DNS_RECORDS_FEATURE_STATUS'    => customerHasFeature('custom_dns_records') ? $trYes : $trNo,
             'EXTERNAL_MAIL_SERVERS_FEATURE_STATUS' => customerHasFeature('external_mail') ? $trYes : $trNo,
-            'APP_INSTALLER_FEATURE_STATUS'         => customerHasFeature('aps') ? $trYes : $trNo,
             'WEBSTATS_FEATURE_STATUS'              => customerHasFeature('webstats') ? $trYes : $trNo
         ]
     );

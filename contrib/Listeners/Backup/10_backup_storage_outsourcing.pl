@@ -58,8 +58,8 @@ if ( $> == 0 && length $STORAGE_ROOT_PATH ) {
             # Make sure that the root path for outsourced backup directories
             # exists and that it is set with expected ownership and permissions
             iMSCP::Dir->new( dirname => $STORAGE_ROOT_PATH )->make( {
-                user  => $main::imscpConfig{'ROOT_USER'},
-                group => $main::imscpConfig{'ROOT_GROUP'},
+                user  => $::imscpConfig{'ROOT_USER'},
+                group => $::imscpConfig{'ROOT_GROUP'},
                 mode  => 0750
             } );
         };

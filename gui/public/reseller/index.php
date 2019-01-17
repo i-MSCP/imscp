@@ -235,10 +235,6 @@ function generatePage($tpl, $resellerId, $resellerName)
         'PHP_EDITOR_STATUS' => ($resellerProperties['php_ini_system'] == 'yes')
             ? '<span style="color:green;">' . tohtml(tr('Enabled')) . '</span>'
             : '<span style="color:red;">' . tohtml(tr('Disabled')) . '</span>',
-        'TR_APS'            => tr('Software installer'),
-        'APS_STATUS'        => ($resellerProperties['software_allowed'] == 'yes')
-            ? '<span style="color:green;">' . tohtml(tr('Enabled')) . '</span>'
-            : '<span style="color:red;">' . tohtml(tr('Disabled')) . '</span>',
         'TR_TRAFFIC_USAGE'  => tohtml(tr('Monthly traffic usage')),
         'TR_DISK_USAGE'     => tohtml(tr('Disk usage')),
     ]);

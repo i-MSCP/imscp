@@ -51,7 +51,6 @@ function moveCustomer($customerId, $fromResellerId, $toResellerId)
             'domain_disk_limit'    => ['current_disk_amnt', 'max_disk_amnt']
         ];
         $resellerToCustomerPerms = [
-            'domain_software_allowed'       => 'software_allowed',
             'phpini_perm_system'            => 'php_ini_system',
             'phpini_perm_allow_url_fopen'   => 'php_ini_al_allow_url_fopen',
             'phpini_perm_display_errors'    => 'php_ini_al_display_errors',
@@ -63,7 +62,7 @@ function moveCustomer($customerId, $fromResellerId, $toResellerId)
             '
                 SELECT domain_subd_limit, domain_alias_limit, domain_mailacc_limit, domain_ftpacc_limit,
                     domain_sqld_limit, domain_sqlu_limit, domain_traffic_limit, domain_disk_limit, domain_ip_id,
-                    domain_software_allowed, phpini_perm_system, phpini_perm_allow_url_fopen, 
+                    phpini_perm_system, phpini_perm_allow_url_fopen, 
                     phpini_perm_display_errors, phpini_perm_disable_functions, phpini_perm_mail_function
                 FROM domain
                 WHERE domain_admin_id = ?
@@ -129,9 +128,6 @@ function moveCustomer($customerId, $fromResellerId, $toResellerId)
         exec_query('UPDATE admin SET created_by = ? WHERE admin_id = ?', [$toResellerId, $customerId]);
 
         // Update the customer permissions according the target reseller permissions
-        exec_query('UPDATE domain SET domain_software_allowed = ? WHERE domain_admin_id = ?', [
-            $customerProps['domain_software_allowed'], $customerId
-        ]);
         PhpEditor::getInstance()->syncClientPermissionsWithResellerPermissions($toResellerId, $customerId);
 
         // Update the target reseller limits, permissions and IP addresses 
@@ -139,13 +135,13 @@ function moveCustomer($customerId, $fromResellerId, $toResellerId)
             '
                 UPDATE reseller_props 
                 SET max_sub_cnt = ?, max_als_cnt = ?, max_mail_cnt = ?, max_ftp_cnt = ?, max_sql_db_cnt = ?, max_sql_user_cnt = ?, max_traff_amnt = ?,
-                    max_disk_amnt = ?, reseller_ips = ?, software_allowed = ?
+                    max_disk_amnt = ?, reseller_ips = ?
                 WHERE reseller_id = ?
             ',
             [
                 $toResellerProps['max_sub_cnt'], $toResellerProps['max_als_cnt'], $toResellerProps['max_mail_cnt'], $toResellerProps['max_ftp_cnt'],
                 $toResellerProps['max_sql_db_cnt'], $toResellerProps['max_sql_user_cnt'], $toResellerProps['max_traff_amnt'],
-                $toResellerProps['max_disk_amnt'], $toResellerProps['reseller_ips'], $toResellerProps['software_allowed'], $toResellerId
+                $toResellerProps['max_disk_amnt'], $toResellerProps['reseller_ips'], $toResellerId
             ]
         );
 

@@ -22,7 +22,6 @@ use iMSCP\Crypt as Crypt;
 use iMSCP_Database as Database;
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_Exception as iMSCPException;
 use iMSCP_PHPini as PhpIni;
 use iMSCP_pTemplate as TemplateEngine;
 use iMSCP_Registry as Registry;
@@ -70,9 +69,6 @@ function getFormData()
             'max_sql_user_cnt'             => '0',
             'max_traff_amnt'               => '0',
             'max_disk_amnt'                => '0',
-            'software_allowed'             => 'no',
-            'softwaredepot_allowed'        => 'no',
-            'websoftwaredepot_allowed'     => 'no',
             'support_system'               => 'yes',
             'php_ini_system'               => $phpini->getResellerPermission('phpiniSystem'),
             'php_ini_al_allow_url_fopen'   => $phpini->getResellerPermission('phpiniAllowUrlFopen'),
@@ -213,15 +209,6 @@ function generateFeaturesForm(TemplateEngine $tpl)
         'MAX_EXECUTION_TIME'               => tohtml($data['max_execution_time']),
         'TR_MAX_INPUT_TIME'                => tr('PHP %s configuration option', '<b>max_input_time</b>'),
         'MAX_INPUT_TIME'                   => tohtml($data['max_input_time']),
-        'TR_SOFTWARES_INSTALLER'           => tr('Software installer'),
-        'SOFTWARES_INSTALLER_YES'          => $data['software_allowed'] == 'yes' ? ' checked' : '',
-        'SOFTWARES_INSTALLER_NO'           => $data['software_allowed'] != 'yes' ? ' checked' : '',
-        'TR_SOFTWARES_REPOSITORY'          => tr('Software repository'),
-        'SOFTWARES_REPOSITORY_YES'         => $data['softwaredepot_allowed'] == 'yes' ? ' checked' : '',
-        'SOFTWARES_REPOSITORY_NO'          => $data['softwaredepot_allowed'] != 'yes' ? ' checked' : '',
-        'TR_WEB_SOFTWARES_REPOSITORY'      => tr('Web software repository'),
-        'WEB_SOFTWARES_REPOSITORY_YES'     => $data['websoftwaredepot_allowed'] == 'yes' ? ' checked' : '',
-        'WEB_SOFTWARES_REPOSITORY_NO'      => $data['websoftwaredepot_allowed'] != 'yes' ? ' checked' : '',
         'TR_SUPPORT_SYSTEM'                => tr('Support system'),
         'SUPPORT_SYSTEM_YES'               => $data['support_system'] == 'yes' ? ' checked' : '',
         'SUPPORT_SYSTEM_NO'                => $data['support_system'] != 'yes' ? ' checked' : '',
@@ -412,22 +399,18 @@ function addResellerUser(Form $form)
                         reseller_id, reseller_ips, max_dmn_cnt, current_dmn_cnt, max_sub_cnt, current_sub_cnt,
                         max_als_cnt, current_als_cnt, max_mail_cnt, current_mail_cnt, max_ftp_cnt, current_ftp_cnt,
                         max_sql_db_cnt, current_sql_db_cnt, max_sql_user_cnt, current_sql_user_cnt, max_traff_amnt,
-                        current_traff_amnt, max_disk_amnt, current_disk_amnt, support_system,
-                        software_allowed, softwaredepot_allowed, websoftwaredepot_allowed, php_ini_system,
+                        current_traff_amnt, max_disk_amnt, current_disk_amnt, support_system, php_ini_system,
                         php_ini_al_disable_functions, php_ini_al_mail_function, php_ini_al_allow_url_fopen,
                         php_ini_al_display_errors, php_ini_max_post_max_size, php_ini_max_upload_max_filesize,
                         php_ini_max_max_execution_time, php_ini_max_max_input_time, php_ini_max_memory_limit
                     ) VALUES (
-                        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                        ?, ?
+                        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                     )
                 ',
                 [
                     $resellerId, implode(';', $resellerIps) . ';', $data['max_dmn_cnt'], '0', $data['max_sub_cnt'], '0',
                     $data['max_als_cnt'], '0', $data['max_mail_cnt'], '0', $data['max_ftp_cnt'], '0', $data['max_sql_db_cnt'],
-                    '0', $data['max_sql_user_cnt'], '0', $data['max_traff_amnt'], '0', $data['max_disk_amnt'], '0',
-                    $data['support_system'], $data['software_allowed'], $data['softwaredepot_allowed'],
-                    $data['websoftwaredepot_allowed'],
+                    '0', $data['max_sql_user_cnt'], '0', $data['max_traff_amnt'], '0', $data['max_disk_amnt'], '0', $data['support_system'],
                     $phpini->getResellerPermission('phpiniSystem'),
                     $phpini->getResellerPermission('phpiniDisableFunctions'),
                     $phpini->getResellerPermission('phpiniMailFunction'),
@@ -440,12 +423,6 @@ function addResellerUser(Form $form)
                     $phpini->getResellerPermission('phpiniMemoryLimit')
                 ]
             );
-
-            // Creating Software repository for reseller if needed
-            if ($data['software_allowed'] == 'yes' && !@mkdir($cfg['GUI_APS_DIR'] . '/' . $resellerId, 0750, true)) {
-                write_log('System was unable to create directory for reseller software repository', E_USER_ERROR);
-                throw new iMSCPException(sprintf('Could not create directory for software repository'));
-            }
 
             EventsManager::getInstance()->dispatch(Events::onAfterAddUser, [
                 'userId'   => $resellerId,

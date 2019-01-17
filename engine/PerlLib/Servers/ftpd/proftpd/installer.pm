@@ -94,7 +94,7 @@ sub sqlUserDialog
         'FTPD_SQL_PASSWORD', ( iMSCP::Getopt->preseed ? randomStr( 16, ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
     );
 
-    if ( $::reconfigure =~ /^(?:ftpd|servers|all|forced)$/ || !isValidUsername( $dbUser )
+    if ( iMSCP::Getopt->reconfigure =~ /^(?:ftpd|servers|all|forced)$/ || !isValidUsername( $dbUser )
         || !isStringNotInList( $dbUser, 'root', 'debian-sys-maint', $masterSqlUser, 'vlogger_user' ) || !isValidPassword( $dbPass )
         || !isAvailableSqlUser( $dbUser )
     ) {
@@ -157,7 +157,7 @@ sub passivePortRangeDialog
     my ( $startOfRange, $endOfRange );
 
     if ( !isValidNumberRange( $passivePortRange, \$startOfRange, \$endOfRange ) || !isNumberInRange( $startOfRange, 32768, 60999 )
-        || !isNumberInRange( $endOfRange, $startOfRange, 60999 ) || $::reconfigure =~ /^(?:ftpd|servers|all|forced)$/
+        || !isNumberInRange( $endOfRange, $startOfRange, 60999 ) || iMSCP::Getopt->reconfigure =~ /^(?:ftpd|servers|all|forced)$/
     ) {
         $passivePortRange = '32768 60999' unless $startOfRange && $endOfRange;
         my ( $rs, $msg ) = ( 0, '' );

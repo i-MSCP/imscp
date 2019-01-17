@@ -39,8 +39,8 @@ use iMSCP::EventManager;
 # Note that domain names must be in ASCII format.
 my %SETTINGS = (
     # Global PHP-FPM settings - Any setting added here will apply to all domains (globally).
-    '*'                    => {
-        'pm'                      => 'ondemand',
+    '*'               => {
+        pm                        => 'ondemand',
         'pm.max_children'         => 6,
         'pm.start_servers '       => 1,
         'pm.min_spare_servers'    => 1,
@@ -48,10 +48,9 @@ my %SETTINGS = (
         'pm.process_idle_timeout' => '60s',
         'pm.max_requests'         => 1000
     },
-
     # Per domain PHP-FPM settings - Any setting added here will apply to the `test.domain.tld' domains only
     'test.domain.tld' => {
-        'pm'                   => 'dynamic',
+        pm                     => 'dynamic',
         'pm.max_children'      => 10,
         'pm.start_servers '    => 2,
         'pm.min_spare_servers' => 1,
@@ -63,30 +62,27 @@ my %SETTINGS = (
 ## Please, don't edit anything below this line
 #
 
-iMSCP::EventManager->getInstance()->register(
-    'beforeHttpdBuildConfFile',
-    sub {
-        my ($tplContent, $tplName, $data) = @_;
+iMSCP::EventManager->getInstance()->register( 'beforeHttpdBuildConfFile', sub {
+    my ( $tplContent, $tplName, $data ) = @_;
 
-        return 0 unless $tplName eq 'pool.conf' && $main::imscpConfig{'HTTPD_SERVER'} eq 'apache_php_fpm';
+    return 0 unless $tplName eq 'pool.conf' && $::imscpConfig{'HTTPD_SERVER'} eq 'apache_php_fpm';
 
-        # Apply global PHP-FPM settings
-        if (exists $SETTINGS{'*'}) {
-            while(my ($setting, $value) = each( %{$SETTINGS{'*'}} )) {
-                $$tplContent =~ s/^\Q$setting\E\s+=.*?\n/$setting = $value\n/gm;
-            }
+    # Apply global PHP-FPM settings
+    if ( exists $SETTINGS{'*'} ) {
+        while ( my ( $setting, $value ) = each( %{ $SETTINGS{'*'} } ) ) {
+            ${ $tplContent } =~ s/^\Q$setting\E\s+=.*?\n/$setting = $value\n/gm;
         }
-
-        return 0 unless exists $SETTINGS{$data->{'DOMAIN_NAME'}};
-
-        # Apply per domain PHP-FPM settings
-        while(my ($setting, $value) = each( %{$SETTINGS{$data->{'DOMAIN_NAME'}}} )) {
-            $$tplContent =~ s/^\Q$setting\E\s+=.*?\n/$setting = $value\n/gm;
-        }
-
-        0;
     }
-);
+
+    return 0 unless exists $SETTINGS{$data->{'DOMAIN_NAME'}};
+
+    # Apply per domain PHP-FPM settings
+    while ( my ( $setting, $value ) = each( %{ $SETTINGS{$data->{'DOMAIN_NAME'}} } ) ) {
+        ${ $tplContent } =~ s/^\Q$setting\E\s+=.*?\n/$setting = $value\n/gm;
+    }
+
+    0;
+} );
 
 1;
 __END__

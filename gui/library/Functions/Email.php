@@ -43,7 +43,8 @@ function get_email_tpl_data($userId, $tplName)
             FROM admin
             LEFT JOIN email_tpls ON(owner_id = IF(admin_type = 'admin', 0, admin_id) AND name = ?)
             WHERE admin_id = ?
-        ", [$tplName, $userId]
+        ",
+        [$tplName, $userId]
     );
 
     if (!$stmt->rowCount()) {

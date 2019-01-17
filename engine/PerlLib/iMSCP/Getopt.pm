@@ -27,7 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug qw/ debugRegisterCallBack /;
 use Text::Wrap;
-use fields qw/ cleanPackageCache debug fixPermissions listener noprompt preseed reconfigure skipPackageUpdate verbose /;
+use fields qw/ cleanPackageCache debug fixPermissions noprompt preseed reconfigure skipPackageUpdate verbose /;
 
 $Text::Wrap::columns = 80;
 $Text::Wrap::break = qr/[\s\n\|]/;
@@ -73,7 +73,6 @@ $usage
  -c,    --clean-package-cache   Cleanup composer package cache.
  -d,    --debug                 Force debug mode.
  -h,-?  --help                  Show this help.
- -l,    --listener <file>       Path to listener file.
  -n,    --noprompt              Switch to non-interactive mode.
  -p,    --preseed <file>        Path to preseed file.
  -r,    --reconfigure [item]    Type `help` for list of allowed items.
@@ -102,7 +101,6 @@ EOF
         'debug|d', sub { $options->{'debug'} = 1 },
         'help|?|h', sub { $class->showUsage() },
         'fix-permissions|x', sub { $options->{'fixPermissions'} = 1 },
-        'listener|l=s', sub { $class->listener( $_[1] ) },
         'noprompt|n', sub { $options->{'noprompt'} = 1 },
         'preseed|p=s', sub { $class->preseed( $_[1] ) },
         'reconfigure|r:s', sub { $class->reconfigure( $_[1] ) },
@@ -235,25 +233,6 @@ sub preseed
 
     -f $file or die( sprintf( 'Preseed file not found: %s', $file ));
     $options->{'preseed'} = $file;
-}
-
-=item listener( [ $file = undef ] )
-
- Accessor/Mutator for the listener command line option
-
- Param string $file OPTIONAL Listener file path
- Return string Path to listener file or undef
-
-=cut
-
-sub listener
-{
-    my ( undef, $file ) = @_;
-
-    return $options->{'listener'} unless defined $file;
-
-    -f $file or die( sprintf( 'Listener file not found: %s', $file ));
-    $options->{'listener'} = $file;
 }
 
 =back

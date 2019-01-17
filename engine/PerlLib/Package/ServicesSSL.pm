@@ -84,8 +84,8 @@ sub servicesSslDialog
     my $caBundlePath = ::setupGetQuestion( 'SERVICES_SSL_CA_BUNDLE_PATH', '/root' );
     my $openSSL = iMSCP::OpenSSL->new();
 
-    if ( $::reconfigure =~ /^(?:services_ssl|ssl|all|forced)$/ || $sslEnabled !~ /^(?:yes|no)$/
-        || ( $sslEnabled eq 'yes' && $::reconfigure =~ /^(?:system_hostname|hostnames)$/ )
+    if ( iMSCP::Getopt->reconfigure =~ /^(?:services_ssl|ssl|all|forced)$/ || $sslEnabled !~ /^(?:yes|no)$/
+        || ( $sslEnabled eq 'yes' && iMSCP::Getopt->reconfigure =~ /^(?:system_hostname|hostnames)$/ )
     ) {
         my $rs = $dialog->yesno( <<'EOF', $sslEnabled eq 'no' ? 1 : 0 );
 

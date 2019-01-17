@@ -29,15 +29,6 @@ return [
                 'uri'         => '/reseller/index.php',
                 'title_class' => 'general'
             ],
-            'software_upload' => [
-                'label'              => tr('Software upload'),
-                'uri'                => '/reseller/software_upload.php',
-                'title_class'        => 'apps_installer',
-                'privilege_callback' => [
-                    'name'  => 'resellerHasFeature',
-                    'param' => 'aps'
-                ]
-            ]
         ]
     ],
     'customers'     => [

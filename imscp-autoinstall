@@ -77,79 +77,48 @@ iMSCP::Getopt->parse( sprintf( 'Usage: %s [OPTION]...', basename( $0 )) . qq{
 setDebug( iMSCP::Getopt->debug );
 setVerbose( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose );
 
-$::reconfigure = iMSCP::Getopt->reconfigure;
-
 if ( iMSCP::Getopt->preseed ) {
     require iMSCP::Getopt->preseed;
     # The preseed option supersede the reconfigure option
     iMSCP::Getopt->reconfigure( 'none' );
-    $::reconfigure = 'none';
     iMSCP::Getopt->noprompt( TRUE );
 }
 
 loadConfig();
 
-# Handle the listener option
-require iMSCP::Getopt->listener if iMSCP::Getopt->listener;
-
 if ( iMSCP::Getopt->noprompt ) {
-    debugRegisterCallBack( sub
-    {
-        if ( $? ) {
-            # We exit with status 5 from iMSCP::Dialog in noninteractive mode
-            if ( $? == 5 ) {
-                if ( iMSCP::Getopt->preseed ) {
-                    print STDERR output( 'Missing or bad entry found in your preseed file.', 'fatal' );
-                    return;
-                }
+    debugRegisterCallBack( sub {
+        return unless $? == 5;
 
-                print STDERR output( 'Missing or bad entry found in configuration file.', 'fatal' );
-            }
-
+        if ( iMSCP::Getopt->preseed ) {
+            print STDERR output( 'Missing or bad entry found in your preseed file.', 'fatal' );
             return;
         }
 
-        unless ( $::buildonly ) {
-            print STDOUT output( 'i-MSCP has been successfully installed/updated.', 'ok' );
-            return;
-        }
+        print STDERR output( 'Missing or bad entry found in configuration file.', 'fatal' );
 
-        print STDOUT output( 'i-MSCP has been successfully built.', 'ok' );
     } );
-
-    unless ( $::buildonly ) {
-        print STDOUT output( 'Installation in progress... Please wait.', 'info' );
-    } else {
-        print STDOUT output( 'Build steps in progress... Please wait.', 'info' )
-    }
 }
 
 my $ret = build();
+exit $ret if $ret;
+exit install() unless $::buildonly;
 
-unless ( $ret ) {
-    unless ( $::buildonly ) {
-        $ret = install();
-    } else {
-        iMSCP::Dialog->getInstance()->msgbox( <<"EOF" );
+iMSCP::Dialog->getInstance()->msgbox( <<"EOF" );
 
 \\Z4\\ZuBuild Steps Successful\\Zn
 
-Please run the following commands from your console:
+Please execute the following commands from your console:
 
-  # rm -fR $::imscpConfig{'ROOT_DIR'}/{daemon,engine,gui}
-  # cp -fR $::{'INST_PREF'}/* /
-  # rm -fR $::{'INST_PREF'}
-  # $::imscpConfig{'ROOT_DIR'}/engine/bin/imscp-reconfigure -d
+ # rm -fR $::imscpConfig{'ROOT_DIR'}/{daemon,engine,gui}
+ # cp -fR $::{'INST_PREF'}/* /
+ # rm -fR $::{'INST_PREF'}
+ # $::imscpConfig{'ROOT_DIR'}/engine/bin/imscp-reconfigure -d
 
 For any problem, have a look at https://i-mscp.net
 
 Thank you for choosing i-MSCP.
 EOF
-
-    }
-}
-
-exit $ret;
 
 =head1 AUTHOR
 

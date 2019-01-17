@@ -28,6 +28,7 @@ use warnings;
 use Class::Autouse qw/ :nostat Servers::httpd Servers::named /;
 use iMSCP::Boolean;
 use iMSCP::EventManager;
+use iMSCP::Getopt;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -35,7 +36,7 @@ use parent 'Common::SingletonClass';
  Alternative URLs for client websites.
  
  Alternative URLs make the clients able to access their Websites (domains)
- through a control panel subdomains such as dmn1.panel.domain.tld.
+ through a control panel subdomain such as dmn1.panel.domain.tld.
 
  This feature is useful for clients who have not yet updated their DNS so that
  their domain name points to the IP address of the server that has been
@@ -71,7 +72,7 @@ sub registerInstallerDialogs
 
 sub getPriority
 {
-    10;
+    0;
 }
 
 =item preaddDmn( \%data )
@@ -221,7 +222,7 @@ sub _setupDialog
 
     my $value = ::setupGetQuestion( 'CLIENT_WEBSITES_ALT_URLS' );
 
-    if ( $::reconfigure =~ /^(?:alt_urls_feature||all|forced)$/ || !grep ( $value eq $_, 'yes', 'no') ) {
+    if ( iMSCP::Getopt->reconfigure =~ /^(?:alt_urls_feature||all|forced)$/ || !grep ( $value eq $_, 'yes', 'no') ) {
         my $rs = $dialog->yesno( <<'EOF', $value eq 'no', TRUE );
 
 Do you want to enable the alternative URLs for the client websites?

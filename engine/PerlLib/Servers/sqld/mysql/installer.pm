@@ -101,7 +101,7 @@ sub masterSqlUserDialog
     $rs = $self->_askSqlRootUser( $dialog ) if iMSCP::Getopt->preseed;
     return $rs if $rs;
 
-    if ( $::reconfigure =~ /(?:sql|servers|all|forced)$/ || !isNotEmpty( $hostname ) || !isNotEmpty( $port ) || !isNotEmpty( $user )
+    if ( iMSCP::Getopt->reconfigure =~ /(?:sql|servers|all|forced)$/ || !isNotEmpty( $hostname ) || !isNotEmpty( $port ) || !isNotEmpty( $user )
         || !isStringNotInList( $user, 'debian-sys-maint', 'imscp_srv_user', 'mysql.user', 'root', 'vlogger_user' )
         || !isNotEmpty( $pwd ) || ( !iMSCP::Getopt->preseed && !$self->_tryDbConnect( $hostname, $port, $user, $pwd ) )
     ) {
@@ -166,7 +166,7 @@ sub sqlUserHostDialog
         $hostname = ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
     }
 
-    if ( $::reconfigure =~ /^(?:sql|servers|all|forced)$/ ||
+    if ( iMSCP::Getopt->reconfigure =~ /^(?:sql|servers|all|forced)$/ ||
         ( $hostname ne '%' && !isValidHostname( $hostname ) && !isValidIpAddr( $hostname, qr/^(?:PUBLIC|GLOBAL-UNICAST)$/ ) )
     ) {
         my ( $rs, $msg ) = ( 0, '' );
@@ -203,12 +203,10 @@ sub databaseNameDialog
     my $dbName = ::setupGetQuestion( 'DATABASE_NAME', 'imscp' );
     my $db = iMSCP::Database->factory();
 
-    if ( $::reconfigure =~ /^(?:sql|servers|all|forced)$/
-        || (
+    if ( iMSCP::Getopt->reconfigure =~ /^(?:sql|servers|all|forced)$/ || (
         ( !$db->isDatabase( $dbName ) || !$db->databaseHasTables( $dbName, qw/ server_ips user_gui_props reseller_props / ) )
             && !iMSCP::Getopt->preseed
-    )
-    ) {
+    ) ) {
         my ( $rs, $msg ) = ( 0, '' );
         do {
             ( $rs, $dbName ) = $dialog->inputbox( <<"EOF", $dbName );
@@ -263,7 +261,7 @@ sub databasePrefixDialog
 
     my $prefix = ::setupGetQuestion( 'MYSQL_PREFIX' );
 
-    if ( $::reconfigure =~ /^(?:sql|servers|all|forced)$/ || $prefix !~ /^(?:behind|infront|none)$/ ) {
+    if ( iMSCP::Getopt->reconfigure =~ /^(?:sql|servers|all|forced)$/ || $prefix !~ /^(?:behind|infront|none)$/ ) {
         ( my $rs, $prefix ) = $dialog->radiolist( <<"EOF", [ 'infront', 'behind', 'none' ], $prefix =~ /^(?:behind|infront)$/ ? $prefix : 'none' );
 
 \\Z4\\Zb\\ZuMySQL Database Prefix/Suffix\\Zn
@@ -754,7 +752,7 @@ sub _setupDatabase
         # In all cases, we process database update. This is important because sometime some developer forget to update the
         # database revision in the main database.sql file.
         my $rs = $self->{'eventManager'}->getInstance()->trigger( 'beforeSetupUpdateDatabase' );
-        $rs ||= execute( "php -d date.timezone=UTC $::imscpConfig{'ROOT_DIR'}/engine/bin/imscp-update-db.php", \my $stdout, \my $stderr );
+        $rs ||= execute( "$::imscpConfig{'ROOT_DIR'}/engine/bin/imscp-update-db.php", \my $stdout, \my $stderr );
         debug( $stdout ) if $stdout;
         error( $stderr || 'Unknown error' ) if $rs;
 

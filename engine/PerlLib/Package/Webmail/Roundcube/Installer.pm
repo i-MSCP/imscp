@@ -78,7 +78,7 @@ sub showDialog
         'ROUNDCUBE_SQL_PASSWORD', ( iMSCP::Getopt->preseed ? randomStr( 16, ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
     );
 
-    if ( $::reconfigure =~ /^(?:webmails|all|forced)$/ || !isValidUsername( $dbUser )
+    if ( iMSCP::Getopt->reconfigure =~ /^(?:webmails|all|forced)$/ || !isValidUsername( $dbUser )
         || !isStringNotInList( $dbUser, 'root', 'debian-sys-maint', $masterSqlUser, 'vlogger_user' ) || !isValidPassword( $dbPass )
         || !isAvailableSqlUser( $dbUser )
     ) {

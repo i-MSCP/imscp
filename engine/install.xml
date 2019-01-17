@@ -4,9 +4,4 @@
     <copy filemode="0750" recursive="1">${SYSTEM_ENGINE_ROOT}/bin</copy>
     <copy>${SYSTEM_ENGINE_ROOT}/PerlLib</copy>
     <copy>${SYSTEM_ENGINE_ROOT}/PerlVendor</copy>
-    <copy>${SYSTEM_ENGINE_ROOT}/imscp-pkt-mngr</copy>
-    <copy>${SYSTEM_ENGINE_ROOT}/imscp-setup-methods.pl</copy>
-    <copy>${SYSTEM_ENGINE_ROOT}/imscp-sw-mngr</copy>
-    <copy>${SYSTEM_ENGINE_ROOT}/imscp_common_code.pl</copy>
-    <copy>${SYSTEM_ENGINE_ROOT}/imscp_common_methods.pl</copy>
 </install>
