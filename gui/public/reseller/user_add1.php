@@ -179,14 +179,10 @@ function reseller_generatePage($tpl)
 
     $tpl->assign([
         'DOMAIN_NAME_VALUE'    => (isset($_POST['dmn_name'])) ? tohtml($_POST['dmn_name']) : '',
-        'FORWARD_URL_YES'      => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes')
-            ? ' checked' : '',
-        'FORWARD_URL_NO'       => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes')
-            ? '' : ' checked',
-        'HTTP_YES'             => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'http://')
-            ? ' selected' : '',
-        'HTTPS_YES'            => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'https://')
-            ? ' selected' : '',
+        'FORWARD_URL_YES'      => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? ' checked' : '',
+        'FORWARD_URL_NO'       => (isset($_POST['url_forwarding']) && $_POST['url_forwarding'] == 'yes') ? '' : ' checked',
+        'HTTP_YES'             => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'http://') ? ' selected' : '',
+        'HTTPS_YES'            => (isset($_POST['forward_url_scheme']) && $_POST['forward_url_scheme'] == 'https://') ? ' selected' : '',
         'FORWARD_URL'          => (isset($_POST['forward_url'])) ? tohtml($_POST['forward_url']) : '',
         'FORWARD_TYPE_301'     => ($forwardType == '301') ? ' checked' : '',
         'FORWARD_TYPE_302'     => ($forwardType == '302') ? ' checked' : '',
@@ -215,7 +211,7 @@ function reseller_generatePage($tpl)
         $tpl->assign([
             'HP_NAME'     => tohtml($row['name']),
             'HP_ID'       => tohtml($row['id']),
-            'HP_SELECTED' => ($row['id'] == $hpId) ? ' selected' : ''
+            'HP_SELECTED' => $row['id'] == $hpId ? ' selected' : ''
         ]);
         $tpl->parse('HOSTING_PLAN_ENTRY_BLOCK', '.hosting_plan_entry_block');
     }

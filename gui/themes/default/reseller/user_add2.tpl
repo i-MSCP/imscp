@@ -210,7 +210,7 @@
                             <td><input type="number" name="post_max_size" id="post_max_size" min="1" max="{POST_MAX_SIZE_LIMIT}" value="{POST_MAX_SIZE}"> <span>{TR_MIB}</span></td>
                         </tr>
                         <tr>
-                            <td><label for="upload_max_filesize">{TR_UPLOAD_MAX_FILEZISE}</label></td>
+                            <td><label for="upload_max_filesize">{TR_UPLOAD_MAX_FILESIZE}</label></td>
                             <td><input type="number" name="upload_max_filesize" id="upload_max_filesize" min="1" max="{UPLOAD_MAX_FILESIZE_LIMIT}" value="{UPLOAD_MAX_FILESIZE}"> <span>{TR_MIB}</span></td>
                         </tr>
                         </tbody>
