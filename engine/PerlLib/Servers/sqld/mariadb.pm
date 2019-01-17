@@ -128,7 +128,12 @@ sub createUser
     length $password or die( 'Missing or invalid $password parameter' );
 
     iMSCP::Database->factory()->getConnector()->run( fixup => sub {
-        return if $_->selectrow_hashref( 'SELECT 1 FROM mysql.user WHERE user = ? AND host = ?', undef, $user, $host );
+        if ( $_->selectrow_hashref( 'SELECT 1 FROM mysql.user WHERE user = ? AND host = ?', undef, $user, $host ) ) {
+            debug( sprintf( 'Updating %s@%s SQL user password', $user, $host ));
+            $_->do( 'SET PASSWORD FOR ?@? = PASSWORD(?)', undef, $user, $host, $password );
+            return;
+        }
+
         debug( sprintf( 'Creating %s@%s SQL user', $user, $host ));
         $_->do( 'CREATE USER ?@? IDENTIFIED BY ?', undef, $user, $host, $password );
     } );
