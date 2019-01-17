@@ -331,8 +331,8 @@ sub _buildFastCgiConfFiles
         PHP_VERSION => $self->{'phpConfig'}->{'PHP_VERSION'}
     } );
     $rs = $self->{'httpd'}->disableModules(
-        'actions', 'fastcgi', 'fcgid', 'fcgid_imscp', 'suexec', 'php5', 'php5_cgi', 'php5filter', 'php5.6', 'php7.0', 'php7.1', 'proxy_fcgi',
-        'proxy_handler', 'mpm_itk', 'mpm_event', 'mpm_prefork', 'mpm_worker'
+        'actions', 'fastcgi', 'fcgid', 'fcgid_imscp', 'suexec', 'php5', 'php5_cgi', 'php5filter', 'php5.6', 'php7.0', 'php7.1', 'php7.2', 'php7.3',
+        'proxy_fcgi', 'proxy_handler', 'mpm_itk', 'mpm_event', 'mpm_prefork', 'mpm_worker'
     );
     $rs ||= $self->{'httpd'}->enableModules( 'authz_groupfile', 'mpm_event', 'proxy_fcgi', 'suexec', 'version' );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildFastCgiConfFiles' );
@@ -448,7 +448,9 @@ sub _buildApacheConfFiles
     $rs ||= $self->{'httpd'}->enableSites( '00_nameserver.conf' );
     $rs ||= $self->{'httpd'}->enableConfs( '00_imscp.conf' );
     $rs ||= $self->{'httpd'}->disableConfs(
-        'php5.6-cgi.conf', 'php7.0-cgi.conf', 'php7.1-cgi.conf', 'php5.6-fpm.conf', 'php7.0-fpm.conf', 'php7.1-fpm.conf', 'serve-cgi-bin.conf'
+        'php5.6-cgi.conf', 'php7.0-cgi.conf', 'php7.1-cgi.conf', 'php7.2-cgi.conf', 'php7.3-cgi.conf',
+        'php5.6-fpm.conf', 'php7.0-fpm.conf', 'php7.1-fpm.conf', 'php7.2-fpm.conf', 'php7.3-fpm.conf',
+        'serve-cgi-bin.conf'
     );
     $rs ||= $self->{'httpd'}->disableSites( 'default', 'default-ssl', '000-default.conf', 'default-ssl.conf' );
     $rs ||= $self->{'eventManager'}->trigger( 'afterHttpdBuildApacheConfFiles' );

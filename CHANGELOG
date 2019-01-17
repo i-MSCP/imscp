@@ -5,6 +5,7 @@ Git 1.5.x
 ------------------------------------------------------------------------------------------------------------------------
 
 BACKEND
+    Added: Support for PHP 7.2 , 7.3
     Enhancement: Make it possible to change backup time for the control panel (control panel backup cron task)
     Enhancement: Make it possible to override any default DNS resource record (Bind9 server implementation)
     Fixed: Can't locate object method "remove" via package "iMSCP::File" (iMSCP::Service)
@@ -24,6 +25,7 @@ BACKEND
     Review: Pass the full item data row to backend modules (iMSCP::DbTasksProcessor)
 
 DISTRIBUTIONS
+    Added: Packages for PHP 7.2, 7.3 (all distributions)
     Added: Support for Devuan 2.0 (ASCII)
     Added: 'pixz' distribution package (all distributions)
 
