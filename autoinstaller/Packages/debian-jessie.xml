@@ -245,8 +245,6 @@
             <package post_install_tasks="phpenmod apcu_bc">php-apcu-bc</package>
             <package>php-pear</package>
             <package>libapache2-mod-php7.3</package>
-            <package_conflict>php5-common</package_conflict>
-            <package_conflict>libapache2-mod-php5</package_conflict>
         </php7.3>
     </php>
     <po>
