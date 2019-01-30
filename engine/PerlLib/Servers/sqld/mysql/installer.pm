@@ -349,8 +349,8 @@ sub _askSqlRootUser
         # If authentication is made through unix socket, password is normally not required.
         # We try a connect without password with 'root' as user and we return on success
         for my $host ( 'localhost', '127.0.0.1' ) {
-            next if $self->_tryDbConnect( $host, $port, $user, $pwd );
-            ::setupSetQuestion( 'DATABASE_HOST', $_ );
+            next if !$self->_tryDbConnect( $host, $port, $user, $pwd );
+            ::setupSetQuestion( 'DATABASE_HOST', $host );
             ::setupSetQuestion( 'DATABASE_PORT', $port );
             ::setupSetQuestion( 'SQL_ROOT_USER', $user );
             ::setupSetQuestion( 'SQL_ROOT_PASSWORD', $pwd );
