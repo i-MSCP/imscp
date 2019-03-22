@@ -1,6 +1,6 @@
 =head1 NAME
 
- Package::SqlAdminTools::PhpMyAdmin - PhpMyAdmin package
+ Package::SqlAdminTools::PhpMyAdmin::PhpMyAdmin - PhpMyAdmin package
 
 =cut
 

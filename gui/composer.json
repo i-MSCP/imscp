@@ -66,7 +66,7 @@
   },
   "autoload": {
     "psr-0": {
-      "Zend": "library/vendor/Zend/library",
+      "Zend": "library/vendor/Zend/library/",
       "iMSCP": "library/iMSCP/"
     },
     "psr-4": {
@@ -74,21 +74,21 @@
     },
     "files": [
       "library/Functions/Admin.php",
-      "library//Functions/Client.php",
-      "library//Functions/Counting.php",
-      "library//Functions/Email.php",
-      "library//Functions/Input.php",
-      "library//Functions/Intl.php",
-      "library//Functions/Layout.php",
-      "library//Functions/Login.php",
-      "library//Functions/Reseller.php",
-      "library//Functions/Shared.php",
-      "library//Functions/SoftwareInstaller.php",
-      "library//Functions/Statistics.php",
-      "library//Functions/View.php"
+      "library/Functions/Client.php",
+      "library/Functions/Counting.php",
+      "library/Functions/Email.php",
+      "library/Functions/Input.php",
+      "library/Functions/Intl.php",
+      "library/Functions/Layout.php",
+      "library/Functions/Login.php",
+      "library/Functions/Reseller.php",
+      "library/Functions/Shared.php",
+      "library/Functions/SoftwareInstaller.php",
+      "library/Functions/Statistics.php",
+      "library/Functions/View.php"
     ]
   },
   "include-path": [
-    "library/vendor/Zend/library"
+    "library/vendor/Zend/library/"
   ]
 }
