@@ -1,11 +1,11 @@
 =head1 NAME
 
- iMSCP::Packages - Package that allows to load and get list of available i-MSCP packages
+ iMSCP::Packages - Library for loading and retrieval of i-MSCP packages
 
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,12 +25,13 @@ package iMSCP::Packages;
 
 use strict;
 use warnings;
-use File::Basename;
+use File::Basename 'dirname';
+use iMSCP::Cwd '$CWD';
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Package that allows to load and get list of available i-MSCP packages
+ Library for loading and retrieval of i-MSCP packages.
 
 =head1 PUBLIC METHODS
 
@@ -38,28 +39,15 @@ use parent 'Common::SingletonClass';
 
 =item getList( )
 
- Get package list
+ Get list of packages sorted in descending order of priority
 
- Return package list, sorted in descending order of priority
+ Return List of packages
 
 =cut
 
 sub getList
 {
-    @{$_[0]->{'packages'}};
-}
-
-=item getListWithFullNames( )
-
- Get package list with full names, sorted in descending order of priority
-
- Return package list
-
-=cut
-
-sub getListWithFullNames
-{
-    @{$_[0]->{'packages_full_names'}};
+    @{ $_[0]->{'__packages__'} };
 }
 
 =back
@@ -78,25 +66,12 @@ sub getListWithFullNames
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    $_ = basename( $_, '.pm' ) for @{$self->{'packages'}} = glob (
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/*.pm"
-    );
-
-    # Load all package classes
-    for ( @{$self->{'packages'}} ) {
-        my $package = "Package::${_}";
-        eval "require $package" or die( sprintf( "Couldn't load %s package class: %s", $package, $@ ));
-    }
-
-    # Sort packages in descending order of priority
-    @{$self->{'packages'}} = sort {
-        "Package::${b}"->getPriority() <=> "Package::${a}"->getPriority()
-    } @{$self->{'packages'}};
-
-    @{$self->{'packages_full_names'}} = map { "Package::${_}" } @{$self->{'packages'}};
-
+    local $CWD = dirname( __FILE__ ) . '/../Package/';
+    s/(.*)\.pm$/Package::$1/ for @{ $self->{'__packages__'} } = grep (!/^AbstractPackageCollection\.pm$/, <*.pm>);
+    eval "require $_; 1" or die( sprintf( "Couldn't load %s package class: %s", $_, $@ )) for @{ $self->{'__packages__'} };
+    @{ $self->{'__packages__'} } = sort { $b->getPriority() <=> $a->getPriority() } @{ $self->{'__packages__'} };
     $self;
 }
 

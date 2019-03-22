@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,8 +18,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+/** @noinspection PhpDocMissingThrowsInspection PhpUnhandledExceptionInspection */
+
 namespace iMSCP;
 
+use Composer\Autoload\ClassLoader;
 use iMSCP_Config_Handler_Db as ConfigDb;
 use iMSCP_Config_Handler_File as ConfigFile;
 use iMSCP_Database as Database;
@@ -31,16 +34,19 @@ use iMSCP_Exception_Database as DatabaseException;
 use iMSCP_Exception_Handler as ExceptionHandler;
 use iMSCP_Plugin_Manager as PluginManager;
 use iMSCP_Registry as Registry;
+use Slim\App as SlimApplication;
+use Slim\Container;
 use Zend_Cache as Cache;
 use Zend_Loader_AutoloaderFactory as AutoloaderFactory;
 use Zend_Locale as Locale;
 use Zend_Session as Session;
 use Zend_Translate as Translator;
 
+
 //use Zend_Translate_Adapter_Array as TranslatorArray;
 
 /**
- * Class Appplication
+ * Class Application
  */
 class Application
 {
@@ -52,7 +58,22 @@ class Application
     /**
      * @var \Zend_Loader_StandardAutoloader
      */
-    protected $autoloader;
+    protected $zendAutoloader;
+
+    /**
+     * @var ClassLoader
+     */
+    protected $composerAutoloader;
+
+    /**
+     * @var Container
+     */
+    protected $container;
+
+    /**
+     * @var SlimApplication
+     */
+    protected $slimApplication;
 
     /**
      * @var EventsManager
@@ -85,6 +106,11 @@ class Application
     protected $translator;
 
     /**
+     * @var PluginManager
+     */
+    protected $pluginManager;
+
+    /**
      * @static boolean Flag indicating whether application has been bootstrapped
      */
     protected $bootstrapped = false;
@@ -92,34 +118,15 @@ class Application
     /**
      * Application constructor
      *
+     * @param ClassLoader $autoloader
      * @param string $environment
-     * @throws \Zend_Loader_Exception_InvalidArgumentException
      */
-    public function __construct($environment)
+    public function __construct(ClassLoader $autoloader, $environment)
     {
+        $this->composerAutoloader = $autoloader;
+        $this->getAutoloader(); // Only for backward compatibility with plugins
         $this->environment = (string)$environment;
 
-        require_once 'Zend/Loader/AutoloaderFactory.php';
-
-        AutoloaderFactory::factory([
-            AutoloaderFactory::STANDARD_AUTOLOADER => [
-                'autoregister_zf'     => true,
-                'fallback_autoloader' => true,
-                'namespaces'          => [
-                    'iMSCP'           => LIBRARY_PATH . '/iMSCP',
-                    'Mso\IdnaConvert' => LIBRARY_PATH . '/vendor/idna_convert/src/Mso/IdnaConvert'
-                ],
-                'prefixes'            => [
-                    'iMSCP' => LIBRARY_PATH . '/iMSCP',
-                    'Crypt' => LIBRARY_PATH . '/vendor/phpseclib/Crypt',
-                    'File'  => LIBRARY_PATH . '/vendor/phpseclib/File',
-                    'Math'  => LIBRARY_PATH . '/vendor/phpseclib/Math',
-                    'Net'   => LIBRARY_PATH . '/vendor/Net'
-                ]
-            ]
-        ]);
-
-        // Make application available through registry
         Registry::set('iMSCP_Application', $this);
     }
 
@@ -136,18 +143,57 @@ class Application
     /**
      * Retrieve autoloader instance
      *
+     * Only kept to ensure backward compatibility with plugins.
+     *
      * @return \Zend_Loader_StandardAutoloader
-     * @throws \Zend_Loader_Exception_InvalidArgumentException
+     * @deprecated Composer autoloader should be used instead
      */
     public function getAutoloader()
     {
-        if (NULL === $this->autoloader) {
-            $this->autoloader = AutoloaderFactory::getRegisteredAutoloader(
+        if (NULL === $this->zendAutoloader) {
+            AutoloaderFactory::factory();
+            $this->zendAutoloader = AutoloaderFactory::getRegisteredAutoloader(
                 AutoloaderFactory::STANDARD_AUTOLOADER
             );
         }
 
-        return $this->autoloader;
+        return $this->zendAutoloader;
+    }
+
+    /**
+     * Get composer autoloader
+     *
+     * @return ClassLoader
+     */
+    public function getComposerAutoloader()
+    {
+        return $this->composerAutoloader;
+    }
+
+    /**
+     * @return Container
+     */
+    public function getContainer()
+    {
+        if (NULL === $this->container) {
+            $this->container = new Container();
+        }
+
+        return $this->container;
+    }
+
+    /**
+     * Get Slim application
+     * @return SlimApplication
+     */
+    public function getSlimApplication()
+    {
+        $container = $this->getContainer();
+        $container['autoloader'] = $this->getComposerAutoloader();
+
+        (new ServiceProvider())->register($this->container);
+
+        return new SlimApplication($container);
     }
 
     /**
@@ -168,7 +214,6 @@ class Application
      * Retrieve application cache
      *
      * @return \Zend_Cache_Core
-     * @throws \Zend_Cache_Exception
      */
     public function getCache()
     {
@@ -203,7 +248,6 @@ class Application
     /**
      * Retrieve main configuration
      *
-     * @throws iMSCPException if the configuration is not available yet
      * @return ConfigFile
      */
     public function getConfig()
@@ -218,7 +262,6 @@ class Application
     /**
      * Retrieve database configuration
      *
-     * @throws iMSCPException if the configuration is not available yet
      * @return ConfigDb
      */
     public function getDbConfig()
@@ -233,7 +276,6 @@ class Application
     /**
      * Retrieve database instance
      *
-     * @throws iMSCPException if the Database instance is not available yet
      * @return Database
      */
     public function getDatabase()
@@ -248,7 +290,6 @@ class Application
     /**
      * Retrieve translator instance
      *
-     * @throws iMSCPException if the translator instance is not available yet
      * @return Translator
      */
     public function getTranslator()
@@ -265,13 +306,6 @@ class Application
      *
      * @param string $configFilePath Configuration file path
      * @return self
-     * @throws DatabaseException
-     * @throws \Zend_Cache_Exception
-     * @throws \Zend_Locale_Exception
-     * @throws \Zend_Session_Exception
-     * @throws \Zend_Translate_Exception
-     * @throws \iMSCP_Events_Manager_Exception
-     * @throws iMSCPException
      */
     public function bootstrap($configFilePath)
     {
@@ -282,7 +316,6 @@ class Application
         $this->setErrorHandling();
         $this->setEncoding();
         $this->startSession();
-        $this->loadCoreFunctions();
         $this->loadConfig($configFilePath);
         $this->setTimezone();
         $this->initDatabase();
@@ -305,25 +338,32 @@ class Application
      */
     protected function setErrorHandling()
     {
-        // Set default exception handler
-        Registry::set('exceptionHandler', new ExceptionHandler());
-
-        ini_set('log_errors', 1);
-        //ini_set('error_log', GUI_ROOT_DIR . '/data/logs/errors.log');
-        ini_set('display_errors', 1);
-
         if ($this->getEnvironment() == 'production') {
-            error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE & ~E_USER_NOTICE & ~E_DEPRECATED & ~E_USER_DEPRECATED);
-            return;
+            error_reporting(E_ALL & ~E_NOTICE & ~E_USER_NOTICE & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+            ini_set('display_errors', 0);
+            //ini_set('log_errors', 1);
+            //ini_set('error_log', GUI_ROOT_DIR . '/data/logs/errors.log');
+        } else {
+            error_reporting(E_ALL);
+            ini_set('display_errors', 1);
         }
 
-        error_reporting(E_ALL);
+        $exceptionHandler = new ExceptionHandler();
+
+        set_error_handler(function ($severity, $message, $file, $line) use ($exceptionHandler) {
+            if (!(error_reporting() & $severity)) {
+                return;
+            }
+
+            $exceptionHandler->handleException(new \ErrorException($message, 0, $severity, $file, $line));
+        });
+
+        Registry::set('exceptionHandler', $exceptionHandler);
     }
 
     /**
      * Set internal encoding
      *
-     * @throws iMSCPException if mbstring extension is not available
      * @return void
      */
     protected function setEncoding()
@@ -339,34 +379,10 @@ class Application
     }
 
     /**
-     * Load core functions
-     *
-     * @return void
-     */
-    public function loadCoreFunctions()
-    {
-        require_once LIBRARY_PATH . '/Functions/Admin.php';
-        require_once LIBRARY_PATH . '/Functions/Client.php';
-        require_once LIBRARY_PATH . '/Functions/Counting.php';
-        require_once LIBRARY_PATH . '/Functions/Email.php';
-        require_once LIBRARY_PATH . '/Functions/Input.php';
-        require_once LIBRARY_PATH . '/Functions/Intl.php';
-        require_once LIBRARY_PATH . '/Functions/Layout.php';
-        require_once LIBRARY_PATH . '/Functions/Login.php';
-        require_once LIBRARY_PATH . '/Functions/Reseller.php';
-        require_once LIBRARY_PATH . '/Functions/Shared.php';
-        require_once LIBRARY_PATH . '/Functions/SoftwareInstaller.php';
-        require_once LIBRARY_PATH . '/Functions/Statistics.php';
-        require_once LIBRARY_PATH . '/Functions/View.php';
-    }
-
-    /**
      * Load config
      *
      * @param string $configFilePath Main configuration file path
      * @return void
-     * @throws \Zend_Cache_Exception
-     * @throws iMSCPException
      */
     protected function loadConfig($configFilePath)
     {
@@ -571,7 +587,6 @@ class Application
     /**
      * Sets timezone
      *
-     * @throws iMSCPException
      * @return void
      */
     protected function setTimezone()
@@ -588,9 +603,6 @@ class Application
      * Establishes the connection to the database
      *
      * @return void
-     * @throws DatabaseException
-     * @throws \Zend_Cache_Exception
-     * @throws iMSCPException if connection to the database cannot be established
      */
     protected function initDatabase()
     {
@@ -640,8 +652,6 @@ class Application
      * Resulting merge is put in cache unless DEBUG mode is enabled.
      *
      * @return void
-     * @throws \Zend_Cache_Exception
-     * @throws iMSCPException
      */
     protected function mergeConfig()
     {
@@ -668,8 +678,6 @@ class Application
      * Start the session
      *
      * @return void
-     * @throws \Zend_Session_Exception
-     * @throws iMSCPException if session directory is not writable
      */
     protected function startSession()
     {
@@ -701,8 +709,6 @@ class Application
      * Set user's GUI properties
      *
      * @return void
-     * @throws DatabaseException
-     * @throws iMSCPException
      */
     protected function setUserGuiProperties()
     {
@@ -742,8 +748,6 @@ class Application
      * Initialize localization
      *
      * @return void
-     * @throws \Zend_Locale_Exception
-     * @throws \Zend_Translate_Exception
      */
     protected function initLocalization()
     {
@@ -803,14 +807,14 @@ class Application
 
         // Setup translator
         $this->translator = new Translator([
-            'adapter' => 'gettext',
-            'locale' => $locale,
-            'content' => GUI_ROOT_DIR . '/i18n/locales',
+            'adapter'        => 'gettext',
+            'locale'         => $locale,
+            'content'        => GUI_ROOT_DIR . '/i18n/locales',
             'disableNotices' => true,
-            'scan' => Translator::LOCALE_DIRECTORY,
-            # Fallbacks for languages without territory information
+            'scan'           => Translator::LOCALE_DIRECTORY,
+            # Fallback for languages without territory information
             # (eg: 'de' will be routed to 'de_DE')
-            'route' => $localesRouting
+            'route'          => $localesRouting
         ]);
 
         // Locale fallbacks
@@ -883,9 +887,24 @@ class Application
     }
 
     /**
+     * Get plugin manager
+     *
+     * @return PluginManager
+     */
+    public function getPluginManager()
+    {
+        if (NULL === $this->pluginManager) {
+            $this->pluginManager = new PluginManager($this->getConfig()['PLUGINS_DIR']);
+            /** @var \iMSCP_Plugin_Manager $pluginManager */
+            Registry::set('pluginManager', $this->pluginManager); // BC
+        }
+
+        return $this->pluginManager;
+    }
+
+    /**
      * Load plugins
      *
-     * @throws iMSCPException When a plugin cannot be loaded
      * @return void
      */
     protected function loadPlugins()
@@ -893,9 +912,7 @@ class Application
         if (PHP_SAPI == 'cli') {
             return;
         }
-
-        /** @var \iMSCP_Plugin_Manager $pluginManager */
-        $pluginManager = Registry::set('pluginManager', new PluginManager($this->getConfig()['PLUGINS_DIR']));
+        $pluginManager = $this->getPluginManager();
 
         foreach ($pluginManager->pluginGetList() as $pluginName) {
             if ($pluginManager->pluginHasError($pluginName)) {

@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -61,7 +61,7 @@ sub isEnabled
 
     $self->hasService( $service ) or croak( sprintf( 'Unknown %s service', $service ));
 
-    scalar glob "/etc/rc[S5].d/S??$service" ? TRUE : FALSE;
+    scalar glob( "/etc/rc[S5].d/S??$service" ) ? TRUE : FALSE;
 }
 
 =item enable( $service )

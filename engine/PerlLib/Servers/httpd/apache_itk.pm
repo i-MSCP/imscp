@@ -484,7 +484,7 @@ sub deleteDmn
             my $dir = iMSCP::Dir->new( dirname => $parentDir );
             if ( $dir->isEmpty() ) {
                 clearImmutable( dirname( $parentDir ));
-                $dir->remove();;
+                $dir->remove();
             }
         }
 

@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,13 +26,9 @@ class iMSCP_Exception_Event extends iMSCP_Events_Event
     /**
      * Constructor
      *
-     * Note: We cannot enforce type declaraction of Exception since we want be compatible with both PHP5 and PHP 7.
-     *       See http://php.net/manual/fr/migration70.incompatible.php
-     *
-     * @param Exception|Throwable $exception
-     * @throws iMSCP_Events_Exception
+     * @param Throwable $exception
      */
-    public function __construct($exception)
+    public function __construct(\Throwable $exception)
     {
         parent::__construct('onUncaughtException', ['exception' => $exception]);
     }

@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright 2010-2017 Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright 2010-2019 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -120,11 +120,11 @@ sub _init
         PHP  => {
             version_command => 'php -nv 2> /dev/null',
             version_regexp  => qr/PHP\s+([\d.]+)/,
-            min_version     => '5.6.0',
-            max_version     => '7.1.999', # Arbitrary minor version is intentional. We only want reject PHP >= 7.2
+            min_version     => '7.3.0',
+            max_version     => '7.3.999',
             modules         => [
                 'apc', 'apcu', 'ctype', 'curl', 'date', 'dom', 'fileinfo', 'filter', 'ftp', 'gd', 'gettext', 'gmp',
-                'hash', 'iconv', 'imap', 'intl', 'json', 'libxml', 'mbstring', 'mcrypt', 'mysqlnd', 'mysqli', 'openssl',
+                'hash', 'iconv', 'imap', 'intl', 'json', 'libxml', 'mbstring', 'mysqlnd', 'mysqli', 'openssl',
                 'pcntl', 'pcre', 'PDO', 'pdo_mysql', 'Phar', 'posix', 'pspell', 'Reflection', 'session', 'SimpleXML',
                 'sockets', 'SPL', 'xml', 'xmlreader', 'xmlwriter', 'zip', 'zlib', 'Zend OPcache'
             ]

@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2018.11.30
+# Last update: 2019.03.20
 
 %main::questions = (
     #
@@ -53,9 +53,9 @@
     #
 
     # SQL server implementation
-    # Please consult the ../autoinstaller/Packages/<distro>-<codename>.xml file
-    # for available options.
-    SQL_SERVER                          => 'mysql_5.5',
+    # Available SQL server vendors and versions depend on your distribution.
+    # Please consult the autoinstaller/Packages/<distro>-<codename>.xml file.
+    SQL_SERVER                          => '',
 
     # Database name
     DATABASE_NAME                       => 'imscp',
@@ -89,11 +89,11 @@
     # Leave this parameter empty for automatic password generation.
     DATABASE_PASSWORD                   => '',
 
-    # Database user host (only relevant for remote SQL server)
+    # Database user host
     # That is the host from which SQL users created by i-MSCP are allowed to
     # connect to the SQL server.
     # Possible values: A valid hostname or IP address
-    DATABASE_USER_HOST                  => '',
+    DATABASE_USER_HOST                  => 'localhost',
 
     # Enable or disable prefix/suffix for customer SQL database names
     # Possible values: behind, infront, none
@@ -136,7 +136,7 @@
 
     # SSL certificate path (only relevant for trusted SSL certificate)
     PANEL_SSL_CERTIFICATE_PATH          => '',
-    
+
     # Alternative URLs feature for client websites
     # Possible values: yes, no
     CLIENT_WEBSITES_ALT_URLS            => 'yes',
@@ -199,9 +199,9 @@
     ## PHP configuration parameters
     #
 
-    # PHP version to use
-    # Popssible values: php5.6, php7.0, php7.1
-    PHP_SERVER                          => 'php5.6',
+    # PHP version for customers
+    # Possible values: php5.6, php7.0, php7.1n php7.2, php7.3
+    PHP_SERVER                          => 'php7.3',
 
     # PHP configuration level
     # Possible values: per_user, per_domain, per_site
@@ -296,13 +296,20 @@
     ## Packages configuration parameters
     #
 
-    # Webstats package
-    # Possible values: Awstats, No
-    WEBSTATS_PACKAGES                   => 'Awstats',
+    # Web statistic packages
+    # Possible values: 'No' or a list of packages, each comma separated
+    # Available packages are: AWStats
+    WEB_STATISTIC_PACKAGES              => 'AWStats',
 
-    # FTP Web file manager packages
-    # Possible values: Pydio (only if PHP < 7.0), Net2ftp and MonstaFTP
-    FILEMANAGER_PACKAGE                 => 'MonstaFTP',
+    # Web FTP clients
+    # Possible values: 'No' or a list of packages, each comma separated
+    # Available packages are: MonstaFTP
+    WEB_FTP_CLIENT_PACKAGES             => 'MonstaFTP',
+
+    #SQL administrator tool packages
+    # Possible values: 'No' or a list of packages, each comma separated
+    # Available packages are: PhpMyAdmin
+    SQL_ADMIN_TOOL_PACKAGES             => 'PhpMyAdmin',
 
     # SQL user for PhpMyAdmin
     PHPMYADMIN_SQL_USER                 => 'imscp_srv_user',
@@ -310,9 +317,10 @@
     # Leave this parameter empty for automatic password generation.
     PHPMYADMIN_SQL_PASSWORD             => '',
 
-    # Webmmail packages
+    # Webmail client packages
     # Possible values: 'No' or a list of packages, each comma separated
-    WEBMAIL_PACKAGES                    => 'RainLoop,Roundcube',
+    # Available packages are: Rainloop, Roundcube
+    WEB_MAIL_CLIENT_PACKAGES            => 'RainLoop,Roundcube',
 
     # SQL user for Roundcube package (only if you use Roundcube)
     ROUNDCUBE_SQL_USER                  => 'imscp_srv_user',
@@ -326,9 +334,10 @@
     # Leave this parameter empty for automatic password generation.
     RAINLOOP_SQL_PASSWORD               => '',
 
-    # Anti-rootkits packages
+    # Antirootkits packages
     # Possible values: 'No' or a list of packages, each comma separated
-    ANTI_ROOTKITS_PACKAGES              => 'Chkrootkit,Rkhunter'
+    # Available packages are: Chkrootkit, Rkhunter
+    ANTI_ROOTKIT_PACKAGES               => 'Chkrootkit,Rkhunter'
 );
 
 1;

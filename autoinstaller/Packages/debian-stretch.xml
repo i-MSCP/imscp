@@ -47,28 +47,20 @@
             </package>
         </apache_php_fpm>
     </httpd>
-    <php>
-        <php5.6
-                default="1"
-                description="PHP 5.6"
-                class="Servers::php"
-                repository_conflict="http://packages.dotdeb.org"
-                repository="https://packages.sury.org/php/ stretch main"
-                repository_key_uri="https://packages.sury.org/php/apt.gpg"
-                pinning_package="*"
-                pinning_pin="origin packages.sury.org"
-                pinning_pin_priority="1001"
-                keep_installed="1"
-        >
+    <php
+            repository_conflict="http://packages.dotdeb.org"
+            repository="https://packages.sury.org/php/ stretch main"
+            repository_key_uri="https://packages.sury.org/php/apt.gpg"
+            pinning_package="*"
+            pinning_pin="origin packages.sury.org"
+            pinning_pin_priority="1001"
+    >
+        <php5.6 description="PHP 5.6" class="Servers::php" keep_installed="1">
             <package>php5.6</package>
             <package>php5.6-cgi</package>
-            <package post_install_tasks="update-alternatives --set php /usr/bin/php5.6">php5.6-cli</package>
+            <package>php5.6-cli</package>
             <package>php5.6-fpm</package>
-            <package
-                    post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets; update-alternatives --set phar /usr/bin/phar5.6; update-alternatives --set phar.phar /usr/bin/phar.phar5.6"
-            >
-                php5.6-common
-            </package>
+            <package post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php5.6-common</package>
             <package post_install_tasks="phpenmod curl">php5.6-curl</package>
             <package post_install_tasks="phpenmod gd">php5.6-gd</package>
             <package post_install_tasks="phpenmod gmp">php5.6-gmp</package>
@@ -82,32 +74,18 @@
             <package post_install_tasks="phpenmod pspell">php5.6-pspell</package>
             <package post_install_tasks="phpenmod dom xml xmlreader xmlwriter">php5.6-xml</package>
             <package post_install_tasks="phpenmod zip">php5.6-zip</package>
-            <package post_install_tasks="sh php_apcu.sh 5.6">php-apcu</package>
+            <package post_install_tasks="phpenmod apcu">php-apcu</package>
             <package>php-pear</package>
             <package>libapache2-mod-php5.6</package>
             <package_conflict>php5-common</package_conflict>
             <package_conflict>libapache2-mod-php5</package_conflict>
         </php5.6>
-        <php7.0
-                description="PHP 7.0"
-                class="Servers::php"
-                repository_conflict="http://packages.dotdeb.org"
-                repository="https://packages.sury.org/php/ stretch main"
-                repository_key_uri="https://packages.sury.org/php/apt.gpg"
-                pinning_package="*"
-                pinning_pin="origin packages.sury.org"
-                pinning_pin_priority="1001"
-                keep_installed="1"
-        >
+        <php7.0 description="PHP 7.0" class="Servers::php" keep_installed="1">
             <package>php7.0</package>
+            <package>php7.0-cli</package>
             <package>php7.0-cgi</package>
-            <package post_install_tasks="update-alternatives --set php /usr/bin/php7.0">php7.0-cli</package>
             <package>php7.0-fpm</package>
-            <package
-                    post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets; update-alternatives --set phar /usr/bin/phar7.0; update-alternatives --set phar.phar /usr/bin/phar.phar7.0"
-            >
-                php7.0-common
-            </package>
+            <package post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php7.0-common</package>
             <package post_install_tasks="phpenmod curl">php7.0-curl</package>
             <package post_install_tasks="phpenmod gd">php7.0-gd</package>
             <package post_install_tasks="phpenmod gmp">php7.0-gmp</package>
@@ -121,33 +99,19 @@
             <package post_install_tasks="phpenmod pspell">php7.0-pspell</package>
             <package post_install_tasks="phpenmod dom xml xmlreader xmlwriter">php7.0-xml</package>
             <package post_install_tasks="phpenmod zip">php7.0-zip</package>
-            <package post_install_tasks="sh php_apcu.sh 7.0">php-apcu</package>
-            <package post_install_tasks="sh php_apcu_bc.sh 7.0">php-apcu-bc</package>
+            <package post_install_tasks="phpenmod apcu">php-apcu</package>
+            <package post_install_tasks="phpenmod apcu_bc">php-apcu-bc</package>
             <package>php-pear</package>
             <package>libapache2-mod-php7.0</package>
             <package_conflict>php5-common</package_conflict>
             <package_conflict>libapache2-mod-php5</package_conflict>
         </php7.0>
-        <php7.1
-                description="PHP 7.1"
-                class="Servers::php"
-                repository_conflict="http://packages.dotdeb.org"
-                repository="https://packages.sury.org/php/ stretch main"
-                repository_key_uri="https://packages.sury.org/php/apt.gpg"
-                pinning_package="*"
-                pinning_pin="origin packages.sury.org"
-                pinning_pin_priority="1001"
-                keep_installed="1"
-        >
+        <php7.1 description="PHP 7.1" class="Servers::php" keep_installed="1">
             <package>php7.1</package>
-            <package post_install_tasks="update-alternatives --set php /usr/bin/php7.1">php7.1-cli</package>
+            <package>php7.1-cli</package>
             <package>php7.1-cgi</package>
             <package>php7.1-fpm</package>
-            <package
-                    post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets; update-alternatives --set phar /usr/bin/phar7.1; update-alternatives --set phar.phar /usr/bin/phar.phar7.1"
-            >
-                php7.1-common
-            </package>
+            <package post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php7.1-common</package>
             <package post_install_tasks="phpenmod curl">php7.1-curl</package>
             <package post_install_tasks="phpenmod gd">php7.1-gd</package>
             <package post_install_tasks="phpenmod gmp">php7.1-gmp</package>
@@ -161,13 +125,63 @@
             <package post_install_tasks="phpenmod pspell">php7.1-pspell</package>
             <package post_install_tasks="phpenmod dom xml xmlreader xmlwriter">php7.1-xml</package>
             <package post_install_tasks="phpenmod zip">php7.1-zip</package>
-            <package post_install_tasks="sh php_apcu.sh 7.1">php-apcu</package>
-            <package post_install_tasks="sh php_apcu_bc.sh 7.1">php-apcu-bc</package>
+            <package post_install_tasks="phpenmod apcu">php-apcu</package>
+            <package post_install_tasks="phpenmod apcu_bc">php-apcu-bc</package>
             <package>php-pear</package>
             <package>libapache2-mod-php7.1</package>
             <package_conflict>php5-common</package_conflict>
             <package_conflict>libapache2-mod-php5</package_conflict>
         </php7.1>
+        <php7.2 description="PHP 7.2" class="Servers::php" keep_installed="1">
+            <package>php7.2</package>
+            <package>php7.2-cli</package>
+            <package>php7.2-cgi</package>
+            <package>php7.2-fpm</package>
+            <package post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php7.2-common</package>
+            <package post_install_tasks="phpenmod curl">php7.2-curl</package>
+            <package post_install_tasks="phpenmod gd">php7.2-gd</package>
+            <package post_install_tasks="phpenmod gmp">php7.2-gmp</package>
+            <package post_install_tasks="phpenmod imap">php7.2-imap</package>
+            <package post_install_tasks="phpenmod intl">php7.2-intl</package>
+            <package post_install_tasks="phpenmod json">php7.2-json</package>
+            <package post_install_tasks="phpenmod mbstring">php7.2-mbstring</package>
+            <package post_install_tasks="phpenmod mysqlnd mysqli pdo_mysql">php7.2-mysql</package>
+            <package post_install_tasks="phpenmod opcache">php7.2-opcache</package>
+            <package post_install_tasks="phpenmod pspell">php7.2-pspell</package>
+            <package post_install_tasks="phpenmod dom xml xmlreader xmlwriter">php7.2-xml</package>
+            <package post_install_tasks="phpenmod zip">php7.2-zip</package>
+            <package post_install_tasks="phpenmod apcu">php-apcu</package>
+            <package post_install_tasks="phpenmod apcu_bc">php-apcu-bc</package>
+            <package>php-pear</package>
+            <package>libapache2-mod-php7.2</package>
+        </php7.2>
+        <php7.3 default="1" description="PHP 7.3" class="Servers::php" install_always="1">
+            <package>php7.3</package>
+            <package post_install_tasks="update-alternatives --set php /usr/bin/php7.3">php7.3-cli</package>
+            <package>php7.3-cgi</package>
+            <package>php7.3-fpm</package>
+            <package
+                    post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets; update-alternatives --set phar /usr/bin/phar7.3; update-alternatives --set phar.phar /usr/bin/phar.phar7.3"
+            >
+                php7.3-common
+            </package>
+            <package post_install_tasks="phpenmod curl">php7.3-curl</package>
+            <package post_install_tasks="phpenmod gd">php7.3-gd</package>
+            <package post_install_tasks="phpenmod gmp">php7.3-gmp</package>
+            <package post_install_tasks="phpenmod imap">php7.3-imap</package>
+            <package post_install_tasks="phpenmod intl">php7.3-intl</package>
+            <package post_install_tasks="phpenmod json">php7.3-json</package>
+            <package post_install_tasks="phpenmod mbstring">php7.3-mbstring</package>
+            <package post_install_tasks="phpenmod mysqlnd mysqli pdo_mysql">php7.3-mysql</package>
+            <package post_install_tasks="phpenmod opcache">php7.3-opcache</package>
+            <package post_install_tasks="phpenmod pspell">php7.3-pspell</package>
+            <package post_install_tasks="phpenmod dom xml xmlreader xmlwriter">php7.3-xml</package>
+            <package post_install_tasks="phpenmod zip">php7.3-zip</package>
+            <package post_install_tasks="phpenmod apcu">php-apcu</package>
+            <package post_install_tasks="phpenmod apcu_bc">php-apcu-bc</package>
+            <package>php-pear</package>
+            <package>libapache2-mod-php7.3</package>
+        </php7.3>
     </php>
     <po>
         <courier

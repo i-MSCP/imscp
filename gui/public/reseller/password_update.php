@@ -28,7 +28,7 @@ use iMSCP_Events_Aggregator as EventsManager;
 require_once 'imscp-lib.php';
 check_login('reseller');
 EventsManager::getInstance()->dispatch(Events::onResellerScriptStart);
-require_once '../shared/password_update.php';
+require_once __DIR__.'/../shared/password_update.php';
 $tpl->assign('TR_PAGE_TITLE', tohtml(tr('Reseller / Profile / Password')));
 $tpl->parse('LAYOUT_CONTENT', 'page');
 EventsManager::getInstance()->dispatch(Events::onResellerScriptEnd, ['templateEngine' => $tpl]);

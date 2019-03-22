@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -336,7 +336,7 @@ sub _buildFastCgiConfFiles
     $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
     $rs ||= $file->mode( 0644 );
     $rs = $self->{'httpd'}->disableModules(
-        'actions', 'fastcgi', 'fcgid', 'fcgid_imscp', 'php5', 'php5_cgi', 'php5filter', 'php5.6', 'php7.0', 'php7.1',
+        'actions', 'fastcgi', 'fcgid', 'fcgid_imscp', 'php5', 'php5_cgi', 'php5filter', 'php5.6', 'php7.0', 'php7.1', 'php7.2', 'php7.3',
         'proxy_fcgi', 'proxy_handler', 'mpm_itk', 'mpm_event', 'mpm_prefork', 'mpm_worker'
     );
     $rs ||= $self->{'httpd'}->enableModules( 'actions', 'authz_groupfile', 'fcgid_imscp', 'mpm_event', 'version' );
@@ -419,8 +419,11 @@ sub _buildApacheConfFiles
     $rs ||= $self->{'httpd'}->enableSites( '00_nameserver.conf' );
     $rs ||= $self->{'httpd'}->enableConfs( '00_imscp.conf' );
     $rs ||= $self->{'httpd'}->disableConfs(
-        'php5.6-cgi.conf', 'php7.0-cgi.conf', 'php7.1-cgi.conf',
-        'php5.6-fpm.conf', 'php7.0-fpm.conf', 'php7.1-fpm.conf',
+        'php5.6-cgi.conf', 'php5.6-fpm.conf',
+        'php7.0-cgi.conf', 'php7.0-fpm.conf',
+        'php7.1-cgi.conf', 'php7.1-fpm.conf',
+        'php7.3-cgi.conf', 'php7.2-fpm.conf',
+        'php7.3-cgi.conf', 'php7.3-fpm.conf',
         'serve-cgi-bin.conf'
     );
     $rs ||= $self->{'httpd'}->disableSites( 'default', 'default-ssl', '000-default.conf', 'default-ssl.conf' );

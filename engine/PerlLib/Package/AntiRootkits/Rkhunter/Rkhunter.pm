@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -86,36 +86,30 @@ sub uninstall
 
 sub setEnginePermissions
 {
-    my $rs = setRights(
-        "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl",
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'ROOT_USER'},
-            mode  => '0700'
-        }
-    );
+    my $rs = setRights( "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/AntiRootkits/Rkhunter/Cron.pl", {
+        user  => $::imscpConfig{'ROOT_USER'},
+        group => $::imscpConfig{'ROOT_USER'},
+        mode  => '0700'
+    } );
 
-    return $rs if $rs || !-f $main::imscpConfig{'RKHUNTER_LOG'};
+    return $rs if $rs || !-f $::imscpConfig{'RKHUNTER_LOG'};
 
-    setRights(
-        $main::imscpConfig{'RKHUNTER_LOG'},
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'IMSCP_GROUP'},
-            mode  => '0640'
-        }
-    );
+    setRights( $::imscpConfig{'RKHUNTER_LOG'}, {
+        user  => $::imscpConfig{'ROOT_USER'},
+        group => $::imscpConfig{'IMSCP_GROUP'},
+        mode  => '0640'
+    } );
 }
 
-=item getDistroPackages( )
+=item getDistributionPackages( )
 
- Get list of Debian packages
+ Get list of distribution packages
 
  Return list List of packages
 
 =cut
 
-sub getDistroPackages
+sub getDistributionPackages
 {
     'rkhunter';
 }

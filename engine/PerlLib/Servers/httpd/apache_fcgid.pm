@@ -505,9 +505,7 @@ sub deleteDmn
 
     iMSCP::Dir->new( dirname => "$data->{'HOME_DIR'}/logs/$data->{'DOMAIN_NAME'}" )->remove();
     iMSCP::Dir->new( dirname => "$self->{'config'}->{'HTTPD_LOG_DIR'}/$data->{'DOMAIN_NAME'}" )->remove();
-    iMSCP::Dir->new(
-        dirname => "$self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}/$data->{'DOMAIN_NAME'}"
-    )->remove();
+    iMSCP::Dir->new( dirname => "$self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'}/$data->{'DOMAIN_NAME'}" )->remove();
 
     $rs = $self->{'eventManager'}->trigger( 'afterHttpdDelDmn', $data );
     $self->{'restart'} = 1 unless $rs;

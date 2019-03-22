@@ -1,8 +1,7 @@
 <?php
-
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+/** @noinspection PhpUnhandledExceptionInspection PhpDocMissingThrowsInspection */
+
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
@@ -27,33 +28,6 @@ use iMSCP_Registry as Registry;
 use Zend_Navigation as Navigation;
 
 // Common
-
-/**
- * Generate logged from block
- *
- * @param  TemplateEngine $tpl
- * @return void
- * @throws Zend_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- */
-function generateLoggedFrom(TemplateEngine $tpl)
-{
-    $tpl->define_dynamic('logged_from', 'layout');
-
-    if (!isset($_SESSION['logged_from'])
-        || !isset($_SESSION['logged_from_id'])
-    ) {
-        $tpl->assign('LOGGED_FROM', '');
-        return;
-    }
-
-    $tpl->assign([
-        'YOU_ARE_LOGGED_AS' => tr('%1$s you are now logged as %2$s', $_SESSION['logged_from'], $_SESSION['user_logged']),
-        'TR_GO_BACK'        => tr('Back')
-    ]);
-    $tpl->parse('LOGGED_FROM', 'logged_from');
-}
 
 /**
  * Generates list of available languages
@@ -70,7 +44,7 @@ function generateLanguagesList(TemplateEngine $tpl, $selectedLanguage)
     foreach (i18n_getAvailableLanguages() as $language) {
         $tpl->assign([
             'LANG_VALUE'    => tohtml($language['locale'], 'htmlAttr'),
-            'LANG_SELECTED' => ($language['locale'] == $selectedLanguage) ? ' selected' : '',
+            'LANG_SELECTED' => $language['locale'] == $selectedLanguage ? ' selected' : '',
             'LANG_NAME'     => tohtml($language['language'])
         ]);
         $tpl->parse('DEF_LANGUAGE', '.def_language');
@@ -138,43 +112,24 @@ function generateDMYlists(TemplateEngine $tpl, $day, $month, $year, $nPastYears)
  *
  * @param TemplateEngine $tpl
  * @return void
- * @throws Zend_Exception
- * @throws Zend_Navigation_Exception
- * @throws iMSCP_Events_Manager_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
  */
 function generateNavigation(TemplateEngine $tpl)
 {
     EventsManager::getInstance()->dispatch(Events::onBeforeGenerateNavigation, ['templateEngine' => $tpl]);
 
-    $cfg = Registry::get('config');
-    $tpl->define_dynamic([
-        'main_menu'        => 'layout',
-        'main_menu_block'  => 'main_menu',
-        'menu'             => 'layout',
-        'left_menu_block'  => 'menu',
-        'breadcrumbs'      => 'layout',
-        'breadcrumb_block' => 'breadcrumbs'
-    ]);
-
-    generateLoggedFrom($tpl);
-
     /** @var $navigation Navigation */
     $navigation = Registry::get('navigation');
 
     // Dynamic links (only at customer level)
-    if ($_SESSION['user_type'] == 'user') {
+    if ($_SESSION['user_type'] === 'user') {
         $domainProperties = get_domain_default_props($_SESSION['user_id']);
         $tpl->assign('WEBSTATS_PATH', 'http://' . decode_idna($domainProperties['domain_name']) . '/stats/');
 
         if (customerHasFeature('mail')) {
             $webmails = getWebmailList();
-
             if (!empty($webmails)) {
                 $page1 = $navigation->findOneBy('class', 'email');
                 $page2 = $navigation->findOneBy('class', 'webtools');
-
                 foreach ($webmails as $webmail) {
                     $page = [
                         'label'  => tr('%s webmail', $webmail),
@@ -188,161 +143,87 @@ function generateNavigation(TemplateEngine $tpl)
         }
     }
 
-    // Dynamic links (All levels)
-    $tpl->assign([
-        'SUPPORT_SYSTEM_PATH'   => 'ticket_system.php',
-        'SUPPORT_SYSTEM_TARGET' => '_self'
-    ]);
+    $cfg = Registry::get('config');
 
-    // Remove support system page if feature is globally disabled
-    if (!$cfg['IMSCP_SUPPORT_SYSTEM']) {
-        $navigation->removePage($navigation->findOneBy('class', 'support'));
+    if ($cfg['IMSCP_SUPPORT_SYSTEM']) {
+        // Dynamic links (All levels)
+        $tpl->assign([
+            'SUPPORT_SYSTEM_PATH'   => 'ticket_system.php',
+            'SUPPORT_SYSTEM_TARGET' => '_self'
+        ]);
     }
 
     // Custom menus
-    if (NULL != ($customMenus = getCustomMenus($_SESSION['user_type']))) {
+    if ($customMenus = getCustomMenus($_SESSION['user_type'])) {
         foreach ($customMenus as $customMenu) {
             $navigation->addPage([
                 'order'  => $customMenu['menu_order'],
                 'label'  => tohtml($customMenu['menu_name']),
-                'uri'    => get_menu_vars($customMenu['menu_link']),
-                'target' => (!empty($customMenu['menu_target']) ? tohtml($customMenu['menu_target']) : '_self'),
+                //'uri'    => get_menu_vars($customMenu['menu_link']),
+                'uri'    => $customMenu['menu_link'],
+                'target' => !empty($customMenu['menu_target'] ? tohtml($customMenu['menu_target']) : '_self'),
                 'class'  => 'custom_link'
             ]);
         }
     }
 
-    /** @var $activePage Zend_Navigation_Page_Uri */
-    foreach ($navigation->findAllBy('uri', $_SERVER['SCRIPT_NAME']) as $activePage) {
-        $activePage->setActive();
-    }
+    $currentUriPath = parse_url((new Zend_Controller_Request_Http)->getRequestUri(), PHP_URL_PATH);
+    $acl = new Zend_Acl();
+    $acl->addRole($_SESSION['user_type']);
 
-    $query = (!empty($_GET)) ? '?' . http_build_query($_GET) : '';
-
-    /** @var $page Zend_Navigation_Page */
-    foreach ($navigation as $page) {
-        if (NULL !== ($callbacks = $page->get('privilege_callback'))) {
-            $callbacks = (isset($callbacks['name'])) ? [$callbacks] : $callbacks;
-
-            foreach ($callbacks as $callback) {
-                if (is_callable($callback['name'])) {
-                    if (!call_user_func_array(
-                        $callback['name'], isset($callback['param']) ? (array)$callback['param'] : []
-                    )
-                    ) {
-                        continue 2;
-                    }
-                } else {
-                    $name = (is_array($callback['name'])) ? $callback['name'][1] : $callback['name'];
-                    throw new iMSCPException(sprintf('Privileges callback is not callable: %s', $name));
-                }
-            }
+    /** @var Zend_Navigation_Page_Uri $page */
+    foreach($navigation as $page) {
+        $page->setCurrentUriPath($currentUriPath);
+        $resource = $page->getResource();
+        $assertion = $page->get('assertion');
+        if ($resource && $assertion) {
+            $acl->addResource($resource);
+            $acl->allow($_SESSION['user_type'], $resource, $page->getPrivilege(), new $assertion);
+            continue;
         }
 
-        if ($page->isVisible()) {
-            $tpl->assign([
-                'HREF'                    => $page->getHref(),
-                'CLASS'                   => $page->getClass()
-                    . (($_SESSION['show_main_menu_labels']) ? ' show_labels' : ''),
-                'IS_ACTIVE_CLASS'         => ($page->isActive(true)) ? 'active' : 'dummy',
-                'TARGET'                  => ($page->getTarget()) ? tohtml($page->getTarget()) : '_self',
-                'MAIN_MENU_LABEL_TOOLTIP' => tohtml($page->getLabel(), 'htmlAttr'),
-                'MAIN_MENU_LABEL'         => ($_SESSION['show_main_menu_labels']) ? tohtml($page->getLabel()) : ''
-            ]);
+        //if(!$page->isActive(true)) {
+        //    //continue;
+        //}
 
-            // Add page to main menu
-            $tpl->parse('MAIN_MENU_BLOCK', '.main_menu_block');
+        foreach (new RecursiveIteratorIterator($page, RecursiveIteratorIterator::SELF_FIRST) as $childPage) {
+            $childPage->setCurrentUriPath($currentUriPath);
+            $resource = $childPage->getResource();
+            $assertion = $childPage->get('assertion');
+            if ($resource && $assertion) {
+                $acl->addResource($resource);
+                $acl->allow($_SESSION['user_type'], $resource, $childPage->getPrivilege(), new $assertion);
+                continue;
+            }
 
-            if ($page->isActive(true)) {
-                $tpl->assign([
-                    'TR_SECTION_TITLE'    => tohtml($page->getLabel()),
-                    'SECTION_TITLE_CLASS' => $page->getClass()
-                ]);
-
-                // Add page to breadcrumb
-                $tpl->assign('BREADCRUMB_LABEL', tohtml($page->getLabel()));
-                $tpl->parse('BREADCRUMB_BLOCK', '.breadcrumb_block');
-
-                if ($page->hasPages()) {
-                    $iterator = new RecursiveIteratorIterator($page, RecursiveIteratorIterator::SELF_FIRST);
-
-                    /** @var $subpage Zend_Navigation_Page_Uri */
-                    foreach ($iterator as $subpage) {
-                        if (NULL !== ($callbacks = $subpage->get('privilege_callback'))) {
-                            $callbacks = (isset($callbacks['name'])) ? [$callbacks] : $callbacks;
-
-                            foreach ($callbacks AS $callback) {
-                                if (is_callable($callback['name'])) {
-                                    if (!call_user_func_array(
-                                        $callback['name'],
-                                        isset($callback['param']) ? (array)$callback['param'] : [])
-                                    ) {
-                                        continue 2;
-                                    }
-                                } else {
-                                    $name = (is_array($callback['name'])) ? $callback['name'][1] : $callback['name'];
-                                    throw new iMSCPException(sprintf('Privileges callback is not callable: %s', $name));
-                                }
-                            }
-                        }
-
-                        $tpl->assign([
-                            'HREF'            => $subpage->getHref(),
-                            'IS_ACTIVE_CLASS' => ($subpage->isActive(true)) ? 'active' : 'dummy',
-                            'LEFT_MENU_LABEL' => tohtml($subpage->getLabel()),
-                            'TARGET'          => ($subpage->getTarget()) ? $subpage->getTarget() : '_self'
-                        ]);
-
-                        if ($subpage->isVisible()) {
-                            // Add subpage to left menu
-                            $tpl->parse('LEFT_MENU_BLOCK', '.left_menu_block');
-                        }
-
-                        if ($subpage->isActive(true)) {
-                            $tpl->assign([
-                                'TR_TITLE'    => ($subpage->get('dynamic_title'))
-                                    ? $subpage->get('dynamic_title')
-                                    : tohtml($subpage->getLabel()),
-                                'TITLE_CLASS' => $subpage->get('title_class')
-                            ]);
-
-                            if (!$subpage->hasPages()) {
-                                $tpl->assign('HREF', $subpage->getHref() . "$query");
-                            }
-
-                            // add subpage to breadcrumbs
-                            if (NULL != ($label = $subpage->get('dynamic_title'))) {
-                                $tpl->assign('BREADCRUMB_LABEL', $label);
-                            } else {
-                                $tpl->assign('BREADCRUMB_LABEL', tohtml($subpage->getLabel()));
-                            }
-
-                            $tpl->parse('BREADCRUMB_BLOCK', '.breadcrumb_block');
+            // Only for backward compatibility with plugins. Will be removed in a later release.
+            if ($callbacks = $childPage->get('privilege_callback')) {
+                $callbacks = (isset($callbacks['name'])) ? [$callbacks] : $callbacks;
+                $resource = $childPage->getUri();
+                $assertion = new \iMSCP\Assertion\CallbackAssertion(function () use ($callbacks) {
+                    foreach ($callbacks as $callback) {
+                        if (!call_user_func_array($callback['name'], isset($callback['param']) ? (array)$callback['param'] : [])) {
+                            return false;
                         }
                     }
 
-                    $tpl->parse('MENU', 'menu');
-                } else {
-                    $tpl->assign('MENU', '');
-                }
+                    return true;
+                });
+                $childPage->setResource($resource);
+                $acl->addResource($resource);
+                $acl->allow($_SESSION['user_type'], $resource, $childPage->getPrivilege(), $assertion);
             }
         }
     }
 
-    $tpl->parse('MAIN_MENU', 'main_menu');
-    $tpl->parse('BREADCRUMBS', 'breadcrumbs');
-    $tpl->parse('MENU', 'menu');
+    /** @var Zend_View_Helper_Navigation $navigationHelper */
+    $navigationHelper = new Zend_View_Helper_Navigation();
+    $navigationHelper->setContainer($navigation)
+        ->setAcl($acl)
+        ->setRole($_SESSION['user_type'])
+        ->setView(new Zend_View());
 
-    // Static variables
-    $tpl->assign([
-        'TR_MENU_LOGOUT' => tr('Logout'),
-        'VERSION'        => (isset($cfg['Version']) && $cfg['Version'] != '')
-            ? $cfg['Version'] : tohtml(tr('Unknown')),
-        'BUILDDATE'      => (isset($cfg['Build']) && $cfg['Build'] != '')
-            ? $cfg['Build'] : tohtml(tr('Unavailable')),
-        'CODENAME'       => (isset($cfg['CodeName']) && $cfg['CodeName'] != '')
-            ? $cfg['CodeName'] : tohtml(tr('Unknown'))
-    ]);
+    $tpl->navigation = $navigationHelper;
 
     EventsManager::getInstance()->dispatch(Events::onAfterGenerateNavigation, ['templateEngine' => $tpl]);
 }
@@ -414,7 +295,7 @@ function gen_admin_list(TemplateEngine $tpl)
             'ADMINISTRATOR_CREATED_ON' => tohtml(($row['domain_created'] == 0)
                 ? tr('N/A') : date($cfg['DATE_FORMAT'], $row['domain_created'])
             ),
-            'ADMINISTRATPR_CREATED_BY' => tohtml(is_null($row['created_by']) ? tr('System') : $row['created_by']),
+            'ADMINISTRATOR_CREATED_BY' => tohtml(is_null($row['created_by']) ? tr('System') : $row['created_by']),
             'ADMINISTRATOR_ID'         => $row['admin_id']
         ]);
 
@@ -949,6 +830,7 @@ EOF
     }
 
     if (!is_xhr()) {
+        /** @noinspection PhpIncludeInspection */
         include(Registry::get('config')['GUI_ROOT_DIR'] . "/public/errordocs/$code.html");
     }
 

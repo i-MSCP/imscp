@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -480,8 +480,7 @@ sub _processPackagesFile
         my $lsbRelease = iMSCP::LsbRelease->getInstance();
         my $distroID = $lsbRelease->getId( 'short' );
         my $distroCodename = $lsbRelease->getCodename( 'short' );
-        $packageFilePath = "$FindBin::Bin/autoinstaller/Packages/" . lc( $distroID ) . '-'
-            . lc( $distroCodename ) . '.xml';
+        $packageFilePath = "$FindBin::Bin/autoinstaller/Packages/" . lc( $distroID ) . '-' . lc( $distroCodename ) . '.xml';
     }
 
     my $arch = `dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null`;
@@ -493,11 +492,7 @@ sub _processPackagesFile
     eval "use XML::Simple; 1" or die( $@ );
     my $xml = XML::Simple->new( NoEscape => 1 );
     my $pkgData = eval {
-        $xml->XMLin(
-            $packageFilePath,
-            ForceArray     => [ 'package', 'package_delayed', 'package_conflict' ],
-            NormaliseSpace => 2
-        );
+        $xml->XMLin( $packageFilePath, ForceArray     => [ 'package', 'package_delayed', 'package_conflict' ], NormaliseSpace => 2 );
     };
     if ( $@ ) {
         error( $@ );
@@ -508,39 +503,63 @@ sub _processPackagesFile
     $dialog->set( 'no-cancel', '' );
 
     while ( my ($section, $data) = each( %{$pkgData} ) ) {
-        # List of packages to install
+        # Packages to install
         if ( defined $data->{'package'} ) {
             for my $package( @{$data->{'package'}} ) {
                 $self->_parsePackageNode( $package, $self->{'packagesToInstall'} );
             }
         }
 
-        # List of packages to install (delayed)
+        # Packages to install (delayed)
         if ( defined $data->{'package_delayed'} ) {
             for my $package( @{$data->{'package_delayed'}} ) {
                 $self->_parsePackageNode( $package, $self->{'packagesToInstallDelayed'} );
             }
         }
 
-        # List of conflicting packages which must be pre-removed
+        # Conflicting packages to pre-remove
         if ( defined $data->{'package_conflict'} ) {
             for my $package( @{$data->{'package_conflict'}} ) {
                 push @{$self->{'packagesToPreUninstall'}}, ref $package eq 'HASH' ? $package->{'content'} : $package;
             }
         }
 
-        # Per package section APT pinning
-        if ( defined $data->{'pinning_package'} ) {
-            push @{$self->{'aptPreferences'}},
-                {
-                    pinning_package      => $data->{'pinning_package'},
-                    pinning_pin          => $data->{'pinning_pin'} || undef,
-                    pinning_pin_priority => $data->{'pinning_pin_priority'} || undef,
-                };
+        # APT repository
+        if ( defined $data->{'repository'} ) {
+            push @{ $self->{'aptRepositoriesToAdd'} }, {
+                repository         => $data->{'repository'},
+                repository_key_uri => $data->{'repository_key_uri'} || undef,
+                repository_key_id  => $data->{'repository_key_id'} || undef,
+                repository_key_srv => $data->{'repository_key_srv'} || undef
+            };
         }
 
-        next if defined $data->{'package'} || defined $data->{'package_delayed'} || defined $data->{'package_conflict'}
-            || defined $data->{'pinning_package'};
+        # APT preferences (pinning)
+        if ( defined $data->{'pinning_package'} ) {
+            push @{ $self->{'aptPreferences'} }, {
+                pinning_package      => $data->{'pinning_package'},
+                pinning_pin          => $data->{'pinning_pin'} || undef,
+                pinning_pin_priority => $data->{'pinning_pin_priority'} || undef,
+            };
+        }
+
+        # Conflicting APT repositories to remove
+        if ( defined $data->{'repository_conflict'} ) {
+            push @{ $self->{'aptRepositoriesToRemove'} }, $data->{'repository_conflict'}
+        }
+        
+        # Delete data already processed
+        delete @{ $data }{
+            qw/ package package_delayed package_conflict
+                pinning_package pinning_pin pinning_pin_priority
+                repository repository_key_uri repository_key_id repository_key_srv
+                fallback_repository fallback_repository_key_uri fallback_repository_key_id fallback_repository_key_srv
+                repository_conflict
+            /
+        };
+
+        # Jump to next section, unless the section defines alternatives
+        next unless %{ $data };
 
         # Whether user must be asked for alternative or not
         my $needDialog = 0;
@@ -553,9 +572,7 @@ sub _processPackagesFile
         my %altDesc;
         for my $alt( keys %{$data} ) {
             # Skip unsupported alternatives by arch
-            if ( defined $data->{$alt}->{'required_arch'}
-                && $arch ne $data->{$alt}->{'required_arch'}
-            ) {
+            if ( defined $data->{$alt}->{'required_arch'} && $arch ne $data->{$alt}->{'required_arch'} ) {
                 next;
             }
 
@@ -577,14 +594,17 @@ sub _processPackagesFile
             }
         }
 
+        my @selectedAlts;
+        # Adds any alternative that must be always installed into stack of selected alternatives
+        for (values(%altDesc)) {
+            push @selectedAlts, $_ if $data->{$_}->{'install_always'};
+        }
+        
         # If there are more than one alternative available and if dialog is
-        # forced, or if user explicitely asked for reconfiguration of that
+        # forced, or if user explicitly asked for reconfiguration of that
         # alternative, show dialog for alternative selection
-        if ( keys %altDesc > 1
-            && ( $needDialog || grep( $_ eq $main::reconfigure, ( $section, 'servers', 'all' ) ) )
-        ) {
-            ( my $ret, $sAlt ) = $dialog->radiolist(
-                <<"EOF", [ keys %altDesc ], $data->{$sAlt}->{'description'} || $sAlt );
+        if ( keys %altDesc > 1 && ( $needDialog || grep( $_ eq $main::reconfigure, ( $section, 'servers', 'all' ) ) ) ) {
+            ( my $ret, $sAlt ) = $dialog->radiolist( <<"EOF", [ keys %altDesc ], $data->{$sAlt}->{'description'} || $sAlt );
 
 Please make your choice for the $section alternative:
 EOF
@@ -592,64 +612,64 @@ EOF
 
             # Set real alternative name
             $sAlt = $altDesc{$sAlt};
+            push @selectedAlts, $sAlt unless grep($_ eq $sAlt, @selectedAlts);
+        } else {
+            push @selectedAlts, $sAlt unless grep($_ eq $sAlt, @selectedAlts);
         }
 
-        # Packages to install for the selected alternative
-        if ( defined $data->{$sAlt}->{'package'} ) {
-            for my $package( @{$data->{$sAlt}->{'package'}} ) {
-                $self->_parsePackageNode( $package, $self->{'packagesToInstall'} );
-            }
-        }
-
-        # Package to install (delayed) for the selected alternative
-        if ( defined $data->{$sAlt}->{'package_delayed'} ) {
-            for my $package( @{$data->{$sAlt}->{'package_delayed'}} ) {
-                $self->_parsePackageNode( $package, $self->{'packagesToInstallDelayed'} );
-            }
-        }
-
-        # Conflicting packages that must be pre-removed for the selected
-        # alternative.
-        if ( defined $data->{$sAlt}->{'package_conflict'} ) {
-            for my $package( @{$data->{$sAlt}->{'package_conflict'}} ) {
-                push @{$self->{'packagesToPreUninstall'}}, ref $package eq 'HASH' ? $package->{'content'} : $package;
-            }
-        }
-
-        # APT preferences to add for the selected alternative
-        if ( defined $data->{$sAlt}->{'pinning_package'} ) {
-            push @{$self->{'aptPreferences'}},
-                {
-                    pinning_package      => $data->{$sAlt}->{'pinning_package'},
-                    pinning_pin          => $data->{$sAlt}->{'pinning_pin'} || undef,
-                    pinning_pin_priority => $data->{$sAlt}->{'pinning_pin_priority'} || undef,
+        # Process stack of selected alternatives
+        for (@selectedAlts) {
+            # Packages to install for the selected alternative
+            if ( defined $data->{$_}->{'package'} ) {
+                for my $package ( @{ $data->{$_}->{'package'} } ) {
+                    $self->_parsePackageNode( $package, $self->{'packagesToInstall'} );
                 }
-        }
+            }
 
-        # APT repository to add for the selected alternative
-        if ( defined $data->{$sAlt}->{'repository'} ) {
-            push @{$self->{'aptRepositoriesToAdd'}},
-                {
-                    repository         => $data->{$sAlt}->{'repository'},
-                    repository_key_uri => $data->{$sAlt}->{'repository_key_uri'} || undef,
-                    repository_key_id  => $data->{$sAlt}->{'repository_key_id'} || undef,
-                    repository_key_srv => $data->{$sAlt}->{'repository_key_srv'} || undef
+            # Package to install (delayed)
+            if ( defined $data->{$_}->{'package_delayed'} ) {
+                for my $package ( @{ $data->{$_}->{'package_delayed'} } ) {
+                    $self->_parsePackageNode( $package, $self->{'packagesToInstallDelayed'} );
+                }
+            }
+
+            # Conflicting packages that must be pre-removed
+            if ( defined $data->{$_}->{'package_conflict'} ) {
+                for my $package ( @{ $data->{$_}->{'package_conflict'} } ) {
+                    push @{ $self->{'packagesToPreUninstall'} }, ref $package eq 'HASH' ? $package->{'content'} : $package;
+                }
+            }
+
+            # APT preferences  (pinning
+            if ( defined $data->{$_}->{'pinning_package'} ) {
+                push @{ $self->{'aptPreferences'} }, {
+                    pinning_package      => $data->{$_}->{'pinning_package'},
+                    pinning_pin          => $data->{$_}->{'pinning_pin'} || undef,
+                    pinning_pin_priority => $data->{$_}->{'pinning_pin_priority'} || undef,
                 };
-        }
+            }
 
-        # Conflicting APT repositories to remove for the selected alternative
-        if ( defined $data->{$sAlt}->{'repository_conflict'} ) {
-            push @{$self->{'aptRepositoriesToRemove'}}, $data->{$sAlt}->{'repository_conflict'}
+            # APT repository
+            if ( defined $data->{$_}->{'repository'} ) {
+                push @{ $self->{'aptRepositoriesToAdd'} }, {
+                    repository         => $data->{$_}->{'repository'},
+                    repository_key_uri => $data->{$_}->{'repository_key_uri'} || undef,
+                    repository_key_id  => $data->{$_}->{'repository_key_id'} || undef,
+                    repository_key_srv => $data->{$_}->{'repository_key_srv'} || undef
+                };
+            }
+
+            # Conflicting APT repositories to remove
+            if ( defined $data->{$_}->{'repository_conflict'} ) {
+                push @{ $self->{'aptRepositoriesToRemove'} }, $data->{$_}->{'repository_conflict'}
+            }
         }
 
         # Schedule removal of APT repositories and packages that belongs to
-        # unselected alternatives, unless keep_installed flag is set
-        my @packagesToInstall = (
-            @{$self->{'packagesToInstall'}}, @{$self->{'packagesToInstallDelayed'}},
-            keys %{$self->{'packagesToRebuild'}}
-        );
+        # unselected alternatives, unless keep_installed or install_always flag is set
+        my @packagesToInstall = ( @{$self->{'packagesToInstall'}}, @{$self->{'packagesToInstallDelayed'}}, keys %{$self->{'packagesToRebuild'}} );
         while ( my ($alt, $altData) = each( %{$data} ) ) {
-            next if $alt eq $sAlt || $altData->{'keep_installed'};
+            next if $alt eq $sAlt || $altData->{'keep_installed'} || $altData->{'install_always'};
 
             # APT repositories to remove
             for my $repository( qw / repository repository_conflict / ) {
@@ -660,7 +680,6 @@ EOF
             # Packages to uninstall
             for my $node( qw / package package_delayed / ) {
                 next unless defined $altData->{$node};
-
                 for my $package( @{$altData->{$node}} ) {
                     $package = ref $package eq 'HASH' ? $package->{'content'} : $package;
                     next if grep($package eq $_, @packagesToInstall);

@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -96,7 +96,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer_Abstract
         $tpl = $this->templateEngine;
 
         # Fallback to inline template in case something goes wrong with template engine
-        if (null === $tpl) {
+        if (NULL === $tpl) {
             echo <<<HTML
 <!DOCTYPE html>
 <html>
@@ -150,15 +150,15 @@ HTML;
      */
     protected function render()
     {
-        if(!iMSCP_Registry::isRegistered('db')) {
+        if (!iMSCP_Registry::isRegistered('db')) {
             return;
         }
 
         $tpl = new iMSCP_pTemplate();
         $tpl->define_dynamic([
-            'layout' => 'shared/layouts/simple.tpl',
-            'page' => $this->templateFile,
-            'page_message' => 'layout',
+            'layout'         => 'shared/layouts/simple.tpl',
+            'page'           => $this->templateFile,
+            'page_message'   => 'layout',
             'backlink_block' => 'page'
         ]);
 
@@ -169,13 +169,13 @@ HTML;
         }
 
         $tpl->assign([
-            'TR_PAGE_TITLE' => 'i-MSCP - internet Multi Server Control Panel - Fatal Error',
-            'HEADER_BLOCK' => '',
-            'BOX_MESSAGE_TITLE' => 'An unexpected error occurred',
-            'PAGE_MESSAGE' => '',
-            'BOX_MESSAGE' => $this->message,
+            'TR_PAGE_TITLE'           => 'i-MSCP - internet Multi Server Control Panel - Fatal Error',
+            'HEADER_BLOCK'            => '',
+            'BOX_MESSAGE_TITLE'       => 'An unexpected error occurred',
+            'PAGE_MESSAGE'            => '',
+            'BOX_MESSAGE'             => $this->message,
             'BACK_BUTTON_DESTINATION' => $backButtonDestination,
-            'TR_BACK' => 'Back'
+            'TR_BACK'                 => 'Back'
         ]);
         $tpl->parse('LAYOUT_CONTENT', 'page');
         $this->templateEngine = $tpl;

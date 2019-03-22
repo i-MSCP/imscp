@@ -172,7 +172,7 @@ sub _updateServerConfig
 
     eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'};
+        local $dbh->{'RaiseError'} = 1;
 
         # Disable unwanted plugins (bc reasons)
         for ( qw/ cracklib_password_check simple_password_check validate_password / ) {

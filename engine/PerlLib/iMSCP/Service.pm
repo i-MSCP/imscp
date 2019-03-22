@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -133,7 +133,7 @@ sub remove
                 # We do not want remove units that are shipped by distribution packages
                 last unless index( $unitFilePath, '/etc/systemd/system/' ) == 0 || index( $unitFilePath, '/usr/local/lib/systemd/system/' ) == 0;
                 debug( sprintf( 'Removing the %s unit', $unitFilePath ));
-                iMSCP::File->new( filename => $unitFilePath )->remove();
+                iMSCP::File->new( filename => $unitFilePath )->delFile();
             }
         }
 
@@ -142,7 +142,7 @@ sub remove
             for my $type ( qw/ conf override / ) {
                 if ( my $jobFilePath = eval { $provider->resolveJob( $service, $type, TRUE ); } ) {
                     debug( sprintf( "Removing the %s upstart file", $jobFilePath ));
-                    iMSCP::File->new( filename => $jobFilePath )->remove();
+                    iMSCP::File->new( filename => $jobFilePath )->delFile();
                 }
             }
         }

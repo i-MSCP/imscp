@@ -21,9 +21,11 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2019 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
+
+/** @noinspection PhpDocMissingThrowsInspection PhpUnhandledExceptionInspection */
 
 use iMSCP_Events as Events;
 use iMSCP_Events_Aggregator as EventsManager;
@@ -32,6 +34,8 @@ use iMSCP_Registry as Registry;
 
 /**
  * Class iMSCP_pTemplate
+ * 
+ * @property Zend_View_Helper_Navigation navigation
  */
 class iMSCP_pTemplate
 {
@@ -370,7 +374,12 @@ class iMSCP_pTemplate
         ]);
 
         ob_start();
-        $this->run(utils_normalizePath($this->rootDir . '/' . $fname));
+        try {
+            $this->run(utils_normalizePath($this->rootDir . '/' . $fname));
+        } catch (\Throwable $e) {
+            ob_end_clean();
+            throw $e;
+        } 
         $fileContent = ob_get_clean();
         $this->eventManager->dispatch(Events::onAfterLoadTemplateFile, [
             'context'         => $this,
@@ -509,11 +518,12 @@ class iMSCP_pTemplate
             || strpos($this->dtplName[$tname], '.phtml') !== false
             || $this->find_origin($tname)
         ) {
+            
             // dynamic NO FILE - dynamic FILE
             if (!$this->parse_dynamic($pname, $tname, $addFlag)) {
                 return;
             }
-
+            
             $this->lastParsed = $this->namespace[$pname];
             return;
         }
@@ -787,6 +797,7 @@ class iMSCP_pTemplate
      */
     protected function run($scriptPath)
     {
+        /** @noinspection PhpIncludeInspection */
         include $scriptPath;
     }
 }

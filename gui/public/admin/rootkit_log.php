@@ -21,7 +21,7 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2017 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2019 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -45,15 +45,14 @@ $tpl->assign('TR_PAGE_TITLE', tr('Admin / System Tools / Anti-Rootkits Logs'));
 
 $antiRootkits = [];
 
-if (isset($config['ANTI_ROOTKITS_PACKAGES'])) {
-    $antiRootkits = explode(',', $config['ANTI_ROOTKITS_PACKAGES']);
+if (isset($config['ANTI_ROOTKIT_PACKAGES'])) {
+    $antiRootkits = explode(',', $config['ANTI_ROOTKIT_PACKAGES']);
 }
 
 $antiRootkits[] = 'Other';
 $antiRootkitLogFiles = [
     'Chkrootkit' => 'CHKROOTKIT_LOG',
-    'Rkhunter'   => 'RKHUNTER_LOG',
-    'Other'      => 'OTHER_ROOTKIT_LOG'
+    'Rkhunter'   => 'RKHUNTER_LOG'
 ];
 
 foreach ($antiRootkitLogFiles as $antiRootkit => $logVar) {

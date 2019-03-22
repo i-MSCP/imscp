@@ -1,11 +1,11 @@
 =head1 NAME
 
- iMSCP::Plugins - Package that allows to get list of available plugins and their class names
+ iMSCP::Plugins - Library for loading and retrieval of i-MSCP plugins
 
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,12 +25,13 @@ package iMSCP::Plugins;
 
 use strict;
 use warnings;
-use File::Basename;
+use iMSCP::Boolean;
+use File::Basename 'basename';
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Package that allows to get list of available plugins and their class names
+ Library for loading and retrieval of i-MSCP plugins.
 
 =head1 PUBLIC METHODS
 
@@ -46,7 +47,7 @@ use parent 'Common::SingletonClass';
 
 sub getList
 {
-    @{$_[0]->{'availables_plugins'}};
+    @{ $_[0]->{'__plugins__'} };
 }
 
 =item getClass( $pluginName )
@@ -61,15 +62,12 @@ sub getList
 
 sub getClass
 {
-    my ($self, $pluginName) = @_;
+    my ( $self, $pluginName ) = @_;
 
-    unless ( $self->{'loaded_plugins'}->{$pluginName} ) {
-        grep( $_ eq $pluginName, @{$self->{'availables_plugins'}} ) or die (
-            sprintf( "Plugin %s isn't available", $pluginName )
-        );
-
+    unless ( $self->{'__loaded__'}->{$pluginName} ) {
+        grep ( $_ eq $pluginName, @{ $self->{'__plugins__'} } ) or die( sprintf( "Plugin %s isn't available", $pluginName ));
         require "$main::imscpConfig{'PLUGINS_DIR'}/$pluginName/backend/$pluginName.pm";
-        $self->{'loaded_plugins'}->{$pluginName} = 1;
+        $self->{'__loaded__'}->{$pluginName} = TRUE;
     }
 
     "Plugin::$pluginName";
@@ -91,12 +89,10 @@ sub getClass
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    $_ = basename( $_, '.pm' ) for @{$self->{'availables_plugins'}} = glob(
-        "$main::imscpConfig{'PLUGINS_DIR'}/*/backend/*.pm"
-    );
-    $self->{'loaded_plugins'} = {};
+    $_ = basename( $_, '.pm' ) for @{ $self->{'__plugins__'} } = glob( "$::imscpConfig{'PLUGINS_DIR'}/*/backend/*.pm" );
+    $self->{'__loaded__'} = {};
     $self;
 }
 

@@ -96,7 +96,7 @@ use iMSCP_Exception as iMSCPException;
  * @property bool MAIN_MENU_SHOW_LABELS Tells whether or not labels must be showed for main menu links
  * @property string FTP_USERNAME_SEPARATOR Ftp username separator
  * @property string BACKUP_DOMAINS (yes|no)
- * @property string WEBSTATS_PACKAGES (No|<webstats_package_name>)
+ * @property string WEB_STATISTIC_PACKAGES (no|<web_statistic_package_name>)
  * @property string CONF_DIR i-MSCP configuration directory (eg. /etc/imscp)
  * @property string USER_WEB_DIR Directory which holds i-MSCP customer user Web directories
  * @property int THEME_ASSETS_VERSION unique string used for assets cache busting

@@ -19,11 +19,6 @@
  */
 
 /**
- * @see Zend_Filter_Alnum
- */
-require_once 'Zend/Filter/Alnum.php';
-
-/**
  * Class iMSCP_Filter_AlnumAndHyphen
  */
 class iMSCP_Filter_AlnumAndHyphen extends Zend_Filter_Alnum

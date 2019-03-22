@@ -44,6 +44,11 @@ class Zend_Navigation_Page_Uri extends Zend_Navigation_Page
     protected $_uri = null;
 
     /**
+     * @var string
+     */
+    protected $_currentUriPath;
+
+    /**
      * Sets page URI
      *
      * @param  string $uri                page URI, must a string or null
@@ -81,7 +86,7 @@ class Zend_Navigation_Page_Uri extends Zend_Navigation_Page
     {
         $uri = $this->getUri();
         
-        $fragment = $this->getFragment();       
+        $fragment = $this->getFragment();
         if (null !== $fragment) {
             if ('#' == substr($uri, -1)) {
                 return $uri . $fragment;
@@ -93,8 +98,46 @@ class Zend_Navigation_Page_Uri extends Zend_Navigation_Page
         return $uri;
     }
 
-    // Public methods:
+    /**
+     * Returns whether page should be considered active or not
+     *
+     * This method will compare the page properties against the request uri.
+     *
+     * @param bool $recursive
+     *            [optional] whether page should be considered
+     *            active if any child pages are active. Default is
+     *            false.
+     * @return bool whether page should be considered active or not
+     */
+    public function isActive($recursive = false)
+    {
 
+        if (! $this->_active) {
+            //if ($this->getRequest() instanceof Zend_Controller_Request_Http) {
+            if (null !== $this->_currentUriPath) {
+                //if (parse_url($this->getRequest()->getRequestUri(), PHP_URL_PATH) == $this->getUri()) {
+                if ($this->_currentUriPath == $this->getUri()) {
+                    $this->_active = true;
+                    return true;
+                }
+            }
+        }
+
+        return parent::isActive($recursive);
+    }
+
+
+    public function getCurrentUriPath()
+    {
+        return $this->_currentUriPath;
+    }
+    
+    public function setCurrentUriPath($uriPath = null)
+    {
+        $this->_currentUriPath = $uriPath;
+        return $this;
+    }
+    
     /**
      * Returns an array representation of the page
      *

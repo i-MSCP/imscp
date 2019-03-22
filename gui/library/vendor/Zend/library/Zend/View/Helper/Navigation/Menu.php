@@ -635,6 +635,7 @@ class Zend_View_Helper_Navigation_Menu
                                           $parentClass,
                                           $renderParentClass)
     {
+
         if (!$active = $this->findActive($container, $minDepth - 1, $maxDepth)) {
             return '';
         }
@@ -909,6 +910,7 @@ class Zend_View_Helper_Navigation_Menu
         $options = $this->_normalizeOptions($options);
 
         if ($options['onlyActiveBranch'] && !$options['renderParents']) {
+
             $html = $this->_renderDeepestMenu(
                 $container,
                 $options['ulClass'],

@@ -666,7 +666,7 @@ sub _updateServerConfig
 
     eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'};
+        local $dbh->{'RaiseError'} = 1;
 
         # Disable unwanted plugins (bc reasons)
         for ( qw/ cracklib_password_check simple_password_check validate_password / ) {
@@ -714,11 +714,11 @@ sub _setupMasterSqlUser
     # Create user
     $self->{'sqld'}->createUser( $user, $userHost, $pwd );
 
-    # Grant all privileges to that user (including GRANT otpion)
+    # Grant all privileges to that user (including GRANT option)
     local $@;
     eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'};
+        local $dbh->{'RaiseError'}  = 1;
         $dbh->do( 'GRANT ALL PRIVILEGES ON *.* TO ?@? WITH GRANT OPTION', undef, $user, $userHost );
     };
     if ( $@ ) {
@@ -755,7 +755,7 @@ sub _setupSecureInstallation
         my $oldDbName = $db->useDatabase( 'mysql' );
 
         my $dbh = $db->getRawDb();
-        local $dbh->{'RaiseError'};
+        local $dbh->{'RaiseError'} = 1;
 
         # Remove anonymous users
         $dbh->do( "DELETE FROM user WHERE User = ''" );
@@ -878,7 +878,7 @@ sub _setupIsImscpDb
     my $db = iMSCP::Database->factory();
     my $dbh = $db->getRawDb();
 
-    local $dbh->{'RaiseError'};
+    local $dbh->{'RaiseError'} = 1;
     return 0 unless $dbh->selectrow_hashref( 'SHOW DATABASES LIKE ?', undef, $dbName );
 
     my $tables = $db->getDbTables( $dbName );

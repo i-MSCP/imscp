@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright 2010-2017 by internet Multi Server Control Panel
+# Copyright 2010-2019 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -359,7 +359,7 @@ i-MSCP was designed for professional Hosting Service Providers (HSPs), Internet 
 
 Unless otherwise stated all code is licensed under GPL 2.0 and has the following copyright:
 
-        \\ZbCopyright 2010-2017, Laurent Declercq (i-MSCP)
+        \\ZbCopyright 2010-2019, Laurent Declercq (i-MSCP)
         All rights reserved\\ZB
 EOF
 }
@@ -722,7 +722,12 @@ sub _savePersistentData
         "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent", { preserve => 'no' }
     ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent";
 
-    # Save software (older path ./gui/data/softwares) to new path (./gui/data/persistent/softwares)
+    # Save GUI bin directory
+    iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/bin" )->rcopy(
+        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/bin", { preserve => 'no' }
+    ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/bin";
+
+    # Save software (older path ./gui/data/software) to new path (./gui/data/persistent/software)
     iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/data/softwares" )->rcopy(
         "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/softwares", { preserve => 'no' }
     ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/data/softwares";
@@ -772,7 +777,9 @@ sub _removeObsoleteFiles
         "$main::imscpConfig{'CONF_DIR'}/postfix/working",
         "$main::imscpConfig{'CONF_DIR'}/skel/domain/domain_disable_page",
         "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/.composer",
-        "$main::imscpConfig{'LOG_DIR'}/imscp-arpl-msgr"
+        "$main::imscpConfig{'LOG_DIR'}/imscp-arpl-msgr",
+        '/var/local/imscp/.composer',
+        '/var/local/imscp/packages'
     ) {
         iMSCP::Dir->new( dirname => $_ )->remove();
     }
@@ -802,8 +809,8 @@ sub _removeObsoleteFiles
         "/etc/systemd/system/php5-fpm.override",
         "/etc/init/php5-fpm.override", # Removed in 1.4.x
         "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf",
-        "/usr/local/lib/imscp_panel/imscp_panel_checkconf" # Removed in 1.4.x,
-
+        '/usr/local/lib/imscp_panel/imscp_panel_checkconf', # Removed in 1.4.x,
+        '/var/local/imscp/composer.phar'
     ) {
         next unless -f;
         my $rs = iMSCP::File->new( filename => $_ )->delFile();

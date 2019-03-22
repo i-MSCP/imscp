@@ -30,13 +30,11 @@ return [
                 'title_class' => 'general'
             ],
             'software_upload' => [
-                'label'              => tr('Software upload'),
-                'uri'                => '/reseller/software_upload.php',
-                'title_class'        => 'apps_installer',
-                'privilege_callback' => [
-                    'name'  => 'resellerHasFeature',
-                    'param' => 'aps'
-                ]
+                'label'       => tr('Software upload'),
+                'uri'         => '/reseller/software_upload.php',
+                'title_class' => 'apps_installer',
+                'resource'    => 'aps',
+                'assertion'   => \iMSCP\Assertion\ResellerHasApsFeatureAssertion::class
             ]
         ]
     ],
@@ -53,19 +51,16 @@ return [
                     'domain_detail' => [
                         'label'       => tr('Domain details'),
                         'uri'         => '/reseller/domain_details.php',
-                        'visible'     => '0',
                         'title_class' => 'domains'
                     ],
                     'domain_edit'   => [
                         'label'       => tr('Edit domain'),
                         'uri'         => '/reseller/domain_edit.php',
-                        'visible'     => '0',
                         'title_class' => 'domains'
                     ],
                     'customer_edit' => [
                         'label'       => tr('Edit customer'),
                         'uri'         => '/reseller/user_edit.php',
-                        'visible'     => '0',
                         'title_class' => 'user_blue'
                     ]
                 ]
@@ -78,47 +73,35 @@ return [
                     'add_customer_p2' => [
                         'label'       => tr('Add customer - Next step'),
                         'uri'         => '/reseller/user_add2.php',
-                        'visible'     => '0',
                         'title_class' => 'user'
                     ],
                     'add_customer_p3' => [
                         'label'       => tr('Add customer - Next step'),
                         'uri'         => '/reseller/user_add3.php',
-                        'visible'     => '0',
                         'title_class' => 'user'
                     ],
                     'add_customer_p4' => [
                         'label'       => tr('Add customer - Next step'),
                         'uri'         => '/reseller/user_add4.php',
-                        'visible'     => '0',
                         'title_class' => 'user'
                     ]
                 ]
             ],
             'manage_aliasses'   => [
-                'label'              => tr('Domain aliases'),
-                'uri'                => '/reseller/alias.php',
-                'title_class'        => 'domains',
-                'privilege_callback' => [
-                    [
-                        'name'  => 'resellerHasFeature',
-                        'param' => 'domain_aliases'
-                    ],
-                    [
-                        'name' => 'resellerHasCustomers'
-                    ]
-                ],
-                'pages'              => [
+                'label'       => tr('Domain aliases'),
+                'uri'         => '/reseller/alias.php',
+                'title_class' => 'domains',
+                'resource'    => 'domain_aliases',
+                'assertion'   => \iMSCP\Assertion\ResellerHasDomainAliasesFeatureAssertion::class,
+                'pages'       => [
                     'add_alias'  => [
                         'label'       => tr('Add domain alias'),
                         'uri'         => '/reseller/alias_add.php',
-                        'visible'     => '0',
                         'title_class' => 'domains'
                     ],
                     'edit_alias' => [
                         'label'       => tr('Edit domain alias'),
                         'uri'         => '/reseller/alias_edit.php',
-                        'visible'     => '0',
                         'title_class' => 'domains'
                     ]
                 ]
@@ -134,12 +117,11 @@ return [
                 'title_class' => 'email'
             ],
             'circular'          => [
-                'label'              => tr('Circular'),
-                'uri'                => '/reseller/circular.php',
-                'title_class'        => 'email',
-                'privilege_callback' => [
-                    'name' => 'resellerHasCustomers'
-                ]
+                'label'       => tr('Circular'),
+                'uri'         => '/reseller/circular.php',
+                'title_class' => 'email',
+                'resource'    => 'circular',
+                'assertion'   => \iMSCP\Assertion\ResellerHasCircularFeatureAssertion::class
             ]
         ]
     ],
@@ -157,7 +139,6 @@ return [
                         'label'       => tr('Edit hosting plan'),
                         'uri'         => '/reseller/hosting_plan_edit.php',
                         'title_class' => 'hosting_plans',
-                        'visible'     => '0'
                     ]
                 ]
             ],
@@ -170,13 +151,12 @@ return [
         ]
     ],
     'statistics'    => [
-        'label'              => tr('Statistics'),
-        'uri'                => '/reseller/user_statistics.php',
-        'class'              => 'statistics',
-        'privilege_callback' => [
-            'name' => 'resellerHasCustomers'
-        ],
-        'pages'              => [
+        'label'     => tr('Statistics'),
+        'uri'       => '/reseller/user_statistics.php',
+        'class'     => 'statistics',
+        'resource'  => 'user_statistics',
+        'assertion' => \iMSCP\Assertion\ResellerCanViewCustomerStatisticsAssertion::class,
+        'pages'     => [
             'user_statistics' => [
                 'label'       => tr('User statistics'),
                 'uri'         => '/reseller/user_statistics.php',
@@ -185,7 +165,6 @@ return [
                     'user_statistics_details' => [
                         'label'       => tr('{USERNAME} user statistics'),
                         'uri'         => '/reseller/user_statistics_details.php',
-                        'visible'     => '0',
                         'title_class' => 'stats'
                     ]
                 ]
@@ -197,21 +176,14 @@ return [
             ]
         ]
     ],
-    'supports'      => [
-        'label'              => tr('Support'),
-        'uri'                => '{SUPPORT_SYSTEM_PATH}',
-        'target'             => '{SUPPORT_SYSTEM_TARGET}',
-        'class'              => 'support',
-        'privilege_callback' => [
-            [
-                'name'  => 'resellerHasFeature',
-                'param' => 'support'
-            ],
-            [
-                'name' => 'resellerHasCustomers'
-            ]
-        ],
-        'pages'              => [
+    'support'      => [
+        'label'     => tr('Support'),
+        'uri'       => '{SUPPORT_SYSTEM_PATH}',
+        'target'    => '{SUPPORT_SYSTEM_TARGET}',
+        'class'     => 'support',
+        'resource'  => 'support',
+        'assertion' => \iMSCP\Assertion\ResellerHasSupportFeatureAssertion::class,
+        'pages'     => [
             'tickets_open'   => [
                 'label'       => tr('Open tickets'),
                 'uri'         => '/reseller/ticket_system.php',
@@ -231,7 +203,6 @@ return [
                 'label'       => tr('View ticket'),
                 'uri'         => '/reseller/ticket_view.php',
                 'title_class' => 'support',
-                'visible'     => '0'
             ]
         ]
     ],

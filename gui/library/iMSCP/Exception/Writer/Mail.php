@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -55,6 +55,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer_Abstract
 
         // Load footprints cache file
         if (is_readable($footprintsCacheFile)) {
+            /** @noinspection PhpIncludeInspection */
             $footprints = include($footprintsCacheFile);
 
             if (!is_array($footprints)) {
@@ -88,11 +89,11 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer_Abstract
     /**
      * Prepare the mail to be send
      *
-     * @param Exception $exception An exception object
+     * @param Throwable $exception An exception object
      * @return array Array containing mail data
      * @throws Zend_Exception
      */
-    protected function prepareMailData($exception)
+    protected function prepareMailData(\Throwable $exception)
     {
         $data = [];
         if (!iMSCP_Registry::isRegistered('config')) {
@@ -139,12 +140,12 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer_Abstract
         }
 
         return [
-            'mail_id' => 'exception-notification',
-            'footprint' => sha1($message),
-            'username' => 'administrator',
-            'email' => $config['DEFAULT_ADMIN_ADDRESS'],
-            'subject' => 'i-MSCP - An exception has been thrown',
-            'message' => <<<EOF
+            'mail_id'      => 'exception-notification',
+            'footprint'    => sha1($message),
+            'username'     => 'administrator',
+            'email'        => $config['DEFAULT_ADMIN_ADDRESS'],
+            'subject'      => 'i-MSCP - An exception has been thrown',
+            'message'      => <<<EOF
 Dear {NAME},
 
 An exception has been thrown in file {FILE} at line {LINE}:
@@ -170,12 +171,12 @@ Please do not reply to this email.
 ___________________________
 i-MSCP Mailer
 EOF
-        ,
+            ,
             'placeholders' => [
-                '{FILE}' => $exception->getFile(),
-                '{LINE}' => $exception->getLine(),
-                '{EXCEPTION}' => $message,
-                '{BACKTRACE}' => $backtraces,
+                '{FILE}'         => $exception->getFile(),
+                '{LINE}'         => $exception->getLine(),
+                '{EXCEPTION}'    => $message,
+                '{BACKTRACE}'    => $backtraces,
                 '{CONTEXT_INFO}' => $contextInfo
             ]
         ];

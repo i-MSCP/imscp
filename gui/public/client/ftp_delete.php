@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -84,13 +84,6 @@ try {
     exec_query("UPDATE ftp_users SET status = 'todelete' WHERE userid = ?", $userid);
 
     $cfg = Registry::get('config');
-
-    if (isset($cfg['FILEMANAGER_PACKAGE']) && $cfg['FILEMANAGER_PACKAGE'] == 'Pydio') {
-        $userPrefDir = $cfg['GUI_PUBLIC_DIR'] . '/tools/ftp/data/plugins/auth.serial/' . $userid;
-        if (is_dir($userPrefDir)) {
-            utils_removeDir($userPrefDir);
-        }
-    }
 
     EventsManager::getInstance()->dispatch(Events::onAfterDeleteFtp, ['ftpUserId' => $userid]);
 

@@ -18,8 +18,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Registry as Registry;
-
 return [
     'general'    => [
         'label' => tr('General'),
@@ -47,81 +45,66 @@ return [
                         'label'       => tr('Edit domain'),
                         'uri'         => '/client/domain_edit.php',
                         'title_class' => 'domains',
-                        'visible'     => '0'
                     ],
                     'domain_alias_edit'      => [
                         'label'       => tr('Edit domain alias'),
                         'uri'         => '/client/alias_edit.php',
                         'title_class' => 'domains',
-                        'visible'     => '0'
                     ],
                     'subdomain_edit'         => [
                         'label'       => tr('Edit subdomain'),
                         'uri'         => '/client/subdomain_edit.php',
                         'title_class' => 'domains',
-                        'visible'     => '0'
                     ],
                     'custom_dns_record_edit' => [
                         'label'       => tr('Edit DNS resource record'),
                         'uri'         => '/client/dns_edit.php',
                         'title_class' => 'domains',
-                        'visible'     => '0'
                     ],
                     'cert_view'              => [
                         'dynamic_title' => '{TR_DYNAMIC_TITLE}',
                         'uri'           => '/client/cert_view.php',
                         'title_class'   => 'domains',
-                        'visible'       => '0'
                     ]
                 ]
             ],
             'add_domain_alias'      => [
-                'label'              => tr('Add domain alias'),
-                'uri'                => '/client/alias_add.php',
-                'title_class'        => 'domains',
-                'privilege_callback' => [
-                    'name'  => 'customerHasFeature',
-                    'param' => 'domain_aliases'
-                ]
+                'label'       => tr('Add domain alias'),
+                'uri'         => '/client/alias_add.php',
+                'title_class' => 'domains',
+                'resource'    => 'domain_aliases',
+                'assertion'   => \iMSCP\Assertion\ClientHasDomainAliasesFeatureAssertion::class,
             ],
             'add_subdomain'         => [
-                'label'              => tr('Add subdomain'),
-                'uri'                => '/client/subdomain_add.php',
-                'title_class'        => 'domains',
-                'privilege_callback' => [
-                    'name'  => 'customerHasFeature',
-                    'param' => 'subdomains'
-                ]
+                'label'       => tr('Add subdomain'),
+                'uri'         => '/client/subdomain_add.php',
+                'title_class' => 'domains',
+                'resource'    => 'subdomains',
+                'assertion'   => \iMSCP\Assertion\ClientHasSubdomainsFeatureAssertion::class,
             ],
             'add_custom_dns_record' => [
-                'label'              => tr('Add DNS resource record'),
-                'uri'                => '/client/dns_add.php',
-                'title_class'        => 'domains',
-                'privilege_callback' => [
-                    'name'  => 'customerHasFeature',
-                    'param' => 'custom_dns_records'
-                ]
+                'label'       => tr('Add DNS resource record'),
+                'uri'         => '/client/dns_add.php',
+                'title_class' => 'domains',
+                'resource'    => 'custom_dns_records',
+                'assertion'   => \iMSCP\Assertion\ClientHasCustomDnsFeatureAssertion::class,
             ],
             'php_settings'          => [
-                'label'              => tr('PHP settings'),
-                'uri'                => '/client/phpini.php',
-                'title_class'        => 'domains',
-                'privilege_callback' => [
-                    'name'  => 'customerHasFeature',
-                    'param' => 'php_editor'
-                ]
+                'label'       => tr('PHP settings'),
+                'uri'         => '/client/phpini.php',
+                'title_class' => 'domains',
+                'resource'    => 'php_editor',
+                'assertion'   => \iMSCP\Assertion\ClientHasPhpEditorFeatureAssertion::class,
             ]
         ]
     ],
     'ftp'        => [
-        'label'              => tr('Ftp'),
-        'uri'                => '/client/ftp_accounts.php',
-        'class'              => 'ftp',
-        'privilege_callback' => [
-            'name'  => 'customerHasFeature',
-            'param' => 'ftp'
-        ],
-        'pages'              => [
+        'label'     => tr('Ftp'),
+        'uri'       => '/client/ftp_accounts.php',
+        'class'     => 'ftp',
+        'resource'  => 'ftp',
+        'assertion' => \iMSCP\Assertion\ClientHasFtpFeatureAssertion::class,
+        'pages'     => [
             'overview'        => [
                 'label'       => tr('Overview'),
                 'uri'         => '/client/ftp_accounts.php',
@@ -130,7 +113,6 @@ return [
                     'ftp_account_edit' => [
                         'label'       => tr('Edit FTP account'),
                         'uri'         => '/client/ftp_edit.php',
-                        'visible'     => '0',
                         'title_class' => 'ftp'
                     ]
                 ]
@@ -148,14 +130,12 @@ return [
         ]
     ],
     'databases'  => [
-        'label'              => tr('Databases'),
-        'uri'                => '/client/sql_manage.php',
-        'class'              => 'database',
-        'privilege_callback' => [
-            'name'  => 'customerHasFeature',
-            'param' => 'sql'
-        ],
-        'pages'              => [
+        'label'     => tr('Databases'),
+        'uri'       => '/client/sql_manage.php',
+        'class'     => 'database',
+        'resource'  => 'databases',
+        'assertion' => \iMSCP\Assertion\ClientHasSqlFeatureAssertion::class,
+        'pages'     => [
             'overview'         => [
                 'label'       => tr('Overview'),
                 'uri'         => '/client/sql_manage.php',
@@ -164,37 +144,21 @@ return [
                     'add_sql_user'             => [
                         'label'       => tr('Add SQL user'),
                         'uri'         => '/client/sql_user_add.php',
-                        'visible'     => '0',
                         'title_class' => 'user'
                     ],
                     'update_sql_user_password' => [
                         'label'       => tr('Update SQL user password'),
                         'uri'         => '/client/sql_change_password.php',
-                        'visible'     => '0',
                         'title_class' => 'password'
                     ]
                 ]
             ],
             'add_sql_database' => [
-                'label'              => tr('Add SQL database'),
-                'uri'                => '/client/sql_database_add.php',
-                'title_class'        => 'sql',
-                'privilege_callback' => [
-                    'name' => function () {
-                        if (customerSqlDbLimitIsReached()) {
-                            if(Registry::get('navigation')->findOneBy('uri', '/client/sql_manage.php')->isActive()) {
-                                set_page_message(
-                                    tr("SQL databases limit is reached. You cannot add new SQL databases."),
-                                    'static_info'
-                                );
-                            }
-
-                            return false;
-                        }
-
-                        return true;
-                    }
-                ]
+                'label'       => tr('Add SQL database'),
+                'uri'         => '/client/sql_database_add.php',
+                'title_class' => 'sql',
+                'resource'    => 'add_sql_database',
+                'assertion'   => \iMSCP\Assertion\ClientCanAddSqlDatabasesAssertion::class,
             ],
             'phpmyadmin'       => [
                 'label'  => tr('PhpMyAdmin'),
@@ -204,13 +168,12 @@ return [
         ]
     ],
     'mail'       => [
-        'label'              => tr('Mail'),
-        'uri'                => '/client/mail_accounts.php',
-        'class'              => 'email',
-        'privilege_callback' => [
-            'name' => 'customerHasMailOrExtMailFeatures'
-        ],
-        'pages'              => [
+        'label'     => tr('Mail'),
+        'uri'       => '/client/mail_accounts.php',
+        'class'     => 'email',
+        'resource'  => 'mail',
+        'assertion' => \iMSCP\Assertion\ClientHasMailOrExternalMailFeatureAssertion::class,
+        'pages'     => [
             'overview'              => [
                 'label'       => tr('Overview'),
                 'uri'         => '/client/mail_accounts.php',
@@ -219,57 +182,47 @@ return [
                     'mail_account_edit'    => [
                         'label'       => tr('Edit mail account'),
                         'uri'         => '/client/mail_edit.php',
-                        'visible'     => '0',
                         'title_class' => 'email'
                     ],
                     'enable_autoresponder' => [
                         'label'       => tr('Activate autoresponder'),
                         'uri'         => '/client/mail_autoresponder_enable.php',
-                        'visible'     => '0',
                         'title_class' => 'email'
                     ],
                     'edit_autoresponder'   => [
                         'label'       => tr('Edit autoresponder'),
                         'uri'         => '/client/mail_autoresponder_edit.php',
-                        'visible'     => '0',
                         'title_class' => 'email'
                     ]
                 ]
             ],
             'add_email_account'     => [
-                'label'              => tr('Add mail account'),
-                'uri'                => '/client/mail_add.php',
-                'title_class'        => 'email',
-                'privilege_callback' => [
-                    'name'  => 'customerHasFeature',
-                    'param' => 'mail'
-                ],
+                'label'       => tr('Add mail account'),
+                'uri'         => '/client/mail_add.php',
+                'title_class' => 'email',
+                'resource'    => 'add_email_account',
+                'assertion'   => \iMSCP\Assertion\ClientHasMailFeatureAssertion::class,
             ],
             'catchall'              => [
-                'label'              => tr('Catch-all accounts'),
-                'uri'                => '/client/mail_catchall.php',
-                'title_class'        => 'email',
-                'privilege_callback' => [
-                    'name'  => 'customerHasFeature',
-                    'param' => 'mail'
-                ],
-                'pages'              => [
+                'label'       => tr('Catch-all accounts'),
+                'uri'         => '/client/mail_catchall.php',
+                'title_class' => 'email',
+                'resource'    => 'catchall',
+                'assertion'   => \iMSCP\Assertion\ClientHasMailFeatureAssertion::class,
+                'pages'       => [
                     'add_catchall' => [
                         'label'       => tr('Add catch-all account'),
                         'uri'         => '/client/mail_catchall_add.php',
-                        'visible'     => '0',
                         'title_class' => 'email'
                     ]
                 ]
             ],
             'external_mail_servers' => [
-                'label'              => tr('External mail feature'),
-                'uri'                => '/client/mail_external.php',
-                'title_class'        => 'email',
-                'privilege_callback' => [
-                    'name'  => 'customerHasFeature',
-                    'param' => 'external_mail'
-                ]
+                'label'       => tr('External mail feature'),
+                'uri'         => '/client/mail_external.php',
+                'title_class' => 'email',
+                'resource'    => 'external_mail',
+                'assertion'   => \iMSCP\Assertion\ClientHasExternalMailFeatureAssertion::class
             ]
         ]
     ],
@@ -284,13 +237,11 @@ return [
                 'title_class' => 'stats'
             ],
             'webstats' => [
-                'label'              => tr('Web statistics'),
-                'uri'                => '{WEBSTATS_PATH}',
-                'target'             => '_blank',
-                'privilege_callback' => [
-                    'name'  => 'customerHasFeature',
-                    'param' => 'webstats'
-                ]
+                'label'     => tr('Web statistics'),
+                'uri'       => '{WEBSTATS_PATH}',
+                'target'    => '_blank',
+                'resource'  => 'webstats',
+                'assertion' => \iMSCP\Assertion\ClientHasWebstatsFeatureAssertion::class,
             ]
         ]
     ],
@@ -305,142 +256,117 @@ return [
                 'title_class' => 'tools'
             ],
             'protected_areas'    => [
-                'label'              => tr('Protected areas'),
-                'uri'                => '/client/protected_areas.php',
-                'title_class'        => 'htaccess',
-                'privilege_callback' => [
-                    'name'  => 'customerHasFeature',
-                    'param' => 'protected_areas'
-                ],
-                'pages'              => [
+                'label'       => tr('Protected areas'),
+                'uri'         => '/client/protected_areas.php',
+                'title_class' => 'htaccess',
+                'resource'    => 'protected_areas',
+                'assertion'   => \iMSCP\Assertion\ClientHasProtectedAreasFeatureAssertion::class,
+                'pages'       => [
                     'add_protected_area'               => [
                         'dynamic_title' => '{TR_DYNAMIC_TITLE}',
                         'uri'           => '/client/protected_areas_add.php',
                         'title_class'   => 'htaccess',
-                        'visible'       => '0'
                     ],
                     'manage_htaccess_users_and_groups' => [
                         'label'       => tr('Manage htaccess users and groups'),
                         'uri'         => '/client/protected_user_manage.php',
                         'title_class' => 'users',
-                        'visible'     => '0',
                         'pages'       => [
                             'assign_htaccess_group' => [
                                 'label'       => tr('Assign group'),
                                 'uri'         => '/client/protected_user_assign.php',
                                 'title_class' => 'users',
-                                'visible'     => '0'
                             ],
                             'edit_htaccess_user'    => [
                                 'label'       => tr('Edit htaccess user'),
                                 'uri'         => '/client/protected_user_edit.php',
                                 'title_class' => 'users',
-                                'visible'     => '0'
                             ],
                             'add_htaccess_user'     => [
                                 'label'       => tr('Add Htaccess user'),
                                 'uri'         => '/client/protected_user_add.php',
                                 'title_class' => 'users',
-                                'visible'     => '0'
                             ],
                             'add_htaccess_group'    => [
                                 'label'       => tr('Add Htaccess group'),
                                 'uri'         => '/client/protected_group_add.php',
                                 'title_class' => 'users',
-                                'visible'     => '0'
                             ]
                         ]
                     ]
                 ]
             ],
             'custom_error_pages' => [
-                'label'              => tr('Custom error pages'),
-                'uri'                => '/client/error_pages.php',
-                'title_class'        => 'errors',
-                'privilege_callback' => [
-                    'name'  => 'customerHasFeature',
-                    'param' => 'custom_error_pages'
-                ],
-                'pages'              => [
+                'label'       => tr('Custom error pages'),
+                'uri'         => '/client/error_pages.php',
+                'title_class' => 'errors',
+                'resource'    => 'custom_error_pages',
+                'assertion'   => \iMSCP\Assertion\ClientHasCustomErrorPagesFeatureAssertion::class,
+                'pages'       => [
                     'custom_error_page_edit' => [
                         'label'       => tr('Edit custom error page'),
                         'uri'         => '/client/error_edit.php',
-                        'visible'     => '0',
                         'title_class' => 'errors'
                     ],
                 ],
             ],
             'softwares'          => [
-                'label'              => tr('Software'),
-                'uri'                => '/client/software.php',
-                'title_class'        => 'apps_installer',
-                'privilege_callback' => [
-                    'name'  => 'customerHasFeature',
-                    'param' => 'aps'
-                ],
-                'pages'              => [
+                'label'       => tr('Software'),
+                'uri'         => '/client/software.php',
+                'title_class' => 'apps_installer',
+                'resource'    => 'aps',
+                'assertion'   => \iMSCP\Assertion\ClientHasApsFeatureAssertion::class,
+                'pages'       => [
                     'software_view'    => [
                         'label'       => tr('Software details'),
                         'uri'         => '/client/software_view.php',
                         'title_class' => 'apps_installer',
-                        'visible'     => '0'
                     ],
                     'software_install' => [
                         'label'       => tr('Software installation'),
                         'uri'         => '/client/software_install.php',
-                        'visible'     => '0',
                         'title_class' => 'apps_installer'
                     ]
                 ]
             ],
             'daily_backup'       => [
-                'label'              => tr('Daily backup'),
-                'uri'                => '/client/backup.php',
-                'title_class'        => 'hdd',
-                'privilege_callback' => [
-                    'name'  => 'customerHasFeature',
-                    'param' => 'backup'
-                ],
+                'label'       => tr('Daily backup'),
+                'uri'         => '/client/backup.php',
+                'title_class' => 'hdd',
+                'resource'    => 'backup',
+                'assertion'   => \iMSCP\Assertion\ClientHasBackupFeatureAssertion::class,
             ],
             'file_manager'       => [
-                'label'              => tr('FileManager'),
-                'uri'                => '/ftp/',
-                'target'             => '_blank',
-                'privilege_callback' => [
-                    'name'  => 'customerHasFeature',
-                    'param' => 'ftp'
-                ],
+                'label'     => tr('FileManager'),
+                'uri'       => '/ftp/',
+                'target'    => '_blank',
+                'resource'  => 'file_manager',
+                'assertion' => \iMSCP\Assertion\ClientHasFtpFeatureAssertion::class,
             ],
             'phpmyadmin'         => [
-                'label'              => tr('PhpMyAdmin'),
-                'uri'                => '/pma/',
-                'target'             => '_blank',
-                'privilege_callback' => [
-                    'name'  => 'customerHasFeature',
-                    'param' => 'sql'
-                ]
+                'label'     => tr('PhpMyAdmin'),
+                'uri'       => '/pma/',
+                'target'    => '_blank',
+                'resource'  => 'phpmyadmin',
+                'assertion' => \iMSCP\Assertion\ClientHasSqlFeatureAssertion::class,
             ],
             'webstats'           => [
-                'label'              => tr('Web statistics'),
-                'uri'                => '{WEBSTATS_PATH}',
-                'target'             => '_blank',
-                'privilege_callback' => [
-                    'name'  => 'customerHasFeature',
-                    'param' => 'webstats'
-                ]
+                'label'     => tr('Web statistics'),
+                'uri'       => '{WEBSTATS_PATH}',
+                'target'    => '_blank',
+                'resource'  => 'webstats',
+                'assertion' => \iMSCP\Assertion\ClientHasWebstatsFeatureAssertion::class,
             ]
         ]
     ],
     'support'    => [
-        'label'              => tr('Support'),
-        'uri'                => '{SUPPORT_SYSTEM_PATH}',
-        'target'             => '{SUPPORT_SYSTEM_TARGET}',
-        'class'              => 'support',
-        'privilege_callback' => [
-            'name'  => 'customerHasFeature',
-            'param' => 'support'
-        ],
-        'pages'              => [
+        'label'     => tr('Support'),
+        'uri'       => '{SUPPORT_SYSTEM_PATH}',
+        'target'    => '{SUPPORT_SYSTEM_TARGET}',
+        'class'     => 'support',
+        'resource'  => 'support',
+        'assertion' => \iMSCP\Assertion\ClientHasSupportFeatureAssertion::class,
+        'pages'     => [
             'tickets_open'   => [
                 'label'       => tr('Open tickets'),
                 'uri'         => '/client/ticket_system.php',
@@ -460,7 +386,6 @@ return [
                 'label'       => tr('View ticket'),
                 'uri'         => '/client/ticket_view.php',
                 'title_class' => 'support',
-                'visible'     => '0'
             ]
         ]
     ],

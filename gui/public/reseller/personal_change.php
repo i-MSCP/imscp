@@ -28,7 +28,7 @@ use iMSCP_Events_Aggregator as EventsManager;
 require_once 'imscp-lib.php';
 check_login('reseller');
 EventsManager::getInstance()->dispatch(Events::onResellerScriptStart);
-require_once '../shared/personal_change.php';
+require_once __DIR__.'/../shared/personal_change.php';
 $tpl->assign('TR_PAGE_TITLE', tohtml(tr('Reseller / Profile / Personal Data')));
 $tpl->parse('LAYOUT_CONTENT', 'page');
 EventsManager::getInstance()->dispatch(Events::onResellerScriptEnd, ['templateEngine' => $tpl]);

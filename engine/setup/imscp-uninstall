@@ -162,24 +162,24 @@ sub _removeCustomers
                 htaccess_users  => 'status',
                 ssl_certs       => 'status'
             };
-            my $aditionalCondition;
+            my $additionalCondition;
 
             my $db = iMSCP::Database->factory();
             my $oldDbName = $db->useDatabase( $main::imscpConfig{'DATABASE_NAME'} );
 
             my $dbh = $db->getRawDb();
-            local $dbh->{'RaiseError'};
+            local $dbh->{'RaiseError'} = 1;
 
             while ( my ($table, $field) = each %{$tables} ) {
                 if ( ref $field eq 'ARRAY' ) {
-                    $aditionalCondition = $field->[1];
+                    $additionalCondition = $field->[1];
                     $field = $field->[0];
                 } else {
-                    $aditionalCondition = ''
+                    $additionalCondition = ''
                 }
 
                 ( $table, $field ) = ( $dbh->quote_identifier( $table ), $dbh->quote_identifier( $field ) );
-                $dbh->do( "UPDATE $table SET $field = 'todelete' $aditionalCondition" );
+                $dbh->do( "UPDATE $table SET $field = 'todelete' $additionalCondition" );
             }
 
             $db->useDatabase( $oldDbName ) if $oldDbName;
@@ -201,7 +201,7 @@ sub _uninstallPackages
 {
     startDetail();
 
-    my @packages = iMSCP::Packages->getInstance()->getListWithFullNames();
+    my @packages = iMSCP::Packages->getInstance()->getList();
     my $nbSteps = scalar @packages;
     my ($step, $rs) = ( 1, 0 );
 
@@ -224,7 +224,7 @@ sub _uninstallServers
 {
     startDetail();
 
-    my @servers = iMSCP::Servers->getInstance()->getListWithFullNames();
+    my @servers = iMSCP::Servers->getInstance()->getList();
     my $nbSteps = scalar @servers;
     my ($step, $rs) = ( 1, 0 );
 

@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,27 +18,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-namespace iMSCP;
+/** @noinspection PhpIncludeInspection */
 
-// Define application paths
 defined('GUI_ROOT_DIR') || define('GUI_ROOT_DIR', dirname(__DIR__));
 defined('LIBRARY_PATH') || define('LIBRARY_PATH', GUI_ROOT_DIR . '/library');
 defined('CACHE_PATH') || define('CACHE_PATH', GUI_ROOT_DIR . '/data/cache');
 defined('PERSISTENT_PATH') || define('PERSISTENT_PATH', GUI_ROOT_DIR . '/data/persistent');
 defined('CONFIG_FILE_PATH') || define('CONFIG_FILE_PATH', getenv('IMSCP_CONF') ?: '/etc/imscp/imscp.conf');
+defined('APPLICATION_ENV') || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
-// Define application environment
-defined('APPLICATION_ENV') || define(
-    'APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production')
-);
+//chdir(dirname(__DIR__));
 
-// Setup include path
-set_include_path(implode(PATH_SEPARATOR, array_unique(array_merge(
-    [LIBRARY_PATH, LIBRARY_PATH . '/vendor/Zend/library'], explode(PATH_SEPARATOR, get_include_path())
-))));
-
-require_once 'iMSCP/Application.php';
-
-// Bootstrap application
-$application = new Application(APPLICATION_ENV);
-$application->bootstrap(CONFIG_FILE_PATH);
+(function () {
+    $autoloader = require __DIR__ . '/../vendor/autoload.php';
+    $app = new iMSCP\Application($autoloader, APPLICATION_ENV);
+    $app->bootstrap(CONFIG_FILE_PATH);
+})();

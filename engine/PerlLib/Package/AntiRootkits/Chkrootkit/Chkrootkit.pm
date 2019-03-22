@@ -1,11 +1,11 @@
 =head1 NAME
 
- Package::AntiRootkits::Chkrootkit::Chkrootkit - i-MSCP Chkrootkit package
+ Package::AntiRootkits::Chkrootkit::Chkrootkit - Chkrootkit package
 
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -30,8 +30,6 @@ use iMSCP::Rights;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
-
- i-MSCP Chkrootkit package.
 
  The chkrootkit security scanner searches the local system for signs that it is infected with a 'rootkit'. Rootkits are
  set of programs and hacks designed to take control of a target machine by using known security flaws.
@@ -89,25 +87,22 @@ sub uninstall
 
 sub setEnginePermissions
 {
-    setRights(
-        $main::imscpConfig{'CHKROOTKIT_LOG'},
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'IMSCP_GROUP'},
-            mode  => '0640'
-        }
-    );
+    setRights( $::imscpConfig{'CHKROOTKIT_LOG'}, {
+        user  => $::imscpConfig{'ROOT_USER'},
+        group => $::imscpConfig{'IMSCP_GROUP'},
+        mode  => '0640'
+    } );
 }
 
-=item getDistroPackages( )
+=item getDistributionPackages( )
 
- Get list of Debian packages
+ Get list of distribution packages
 
  Return list List of packages
 
 =cut
 
-sub getDistroPackages
+sub getDistributionPackages
 {
     'chkrootkit';
 }

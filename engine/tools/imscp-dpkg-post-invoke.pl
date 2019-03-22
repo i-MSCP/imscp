@@ -70,12 +70,12 @@ $bootstrapper->getInstance()->boot(
 my $rs = 0;
 my @items = ();
 
-for ( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
+for ( iMSCP::Servers->getInstance()->getList() ) {
     next unless $_->can( 'dpkgPostInvokeTasks' );
     push @items, $_->factory();
 }
 
-for ( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
+for ( iMSCP::Packages->getInstance()->getList() ) {
     next unless $_->can( 'dpkgPostInvokeTasks' );
     push @items, $_->getInstance();
 }

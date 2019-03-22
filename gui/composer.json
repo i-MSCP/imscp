@@ -1,0 +1,94 @@
+{
+  "name": "imscp/imscp-frontend",
+  "description": "i-MSCP frontEnd",
+  "keywords": [
+    "i-MSCP",
+    "frontend",
+    "PHP"
+  ],
+  "homepage": "https://wwww.i-mscp.net/",
+  "license": "LGPL-2.1-only",
+  "authors": [
+    {
+      "name": "Laurent Declercq",
+      "email": "l.declercq@nuxwin.com",
+      "homepage": "https://www.i-mscp.net/"
+    }
+  ],
+  "support": {
+    "issues": "https://youtrack.i-mscp.net/issues",
+    "source": "https://github.com/i-MSCP/imscp/tree/1.5.3/gui/",
+    "forum": "https://wwww.i-mscp.net/"
+  },
+  "config": {
+    "sort-packages": true,
+    "discard-changes": true,
+    "htaccess-protect": false,
+    "optimize-autoloader": true,
+    "apcu-autoloader": true,
+    "classmap-authoritative": false,
+    "preferred-install": "dist",
+    "process-timeout": 5000,
+    "use-include-path": false,
+    "vendor-dir": "$HOME/vendor"
+  },
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=7.3 <7.4",
+    "ext-ctype": "*",
+    "ext-curl": "*",
+    "ext-dom": "*",
+    "ext-fileinfo": "*",
+    "ext-ftp": "*",
+    "ext-gd": "*",
+    "ext-gettext": "*",
+    "ext-gmp": "*",
+    "ext-iconv": "*",
+    "ext-imap": "*",
+    "ext-intl": "*",
+    "ext-json": "*",
+    "ext-mbstring": "*",
+    "ext-pdo": "*",
+    "ext-pdo_mysql": "*",
+    "ext-phar": "*",
+    "ext-posix": "*",
+    "ext-pspell": "*",
+    "ext-sockets": "*",
+    "ext-xml": "*",
+    "ext-xmlreader": "*",
+    "ext-xmlwriter": "*",
+    "ext-zip": "*",
+    "algo26-matthias/idna-convert": "^2.1",
+    "clancats/hydrahon": "^1.1",
+    "pear/net_dns2": "^1.4",
+    "phpseclib/phpseclib": "^2.0",
+    "slim/slim": "^3.12"
+  },
+  "autoload": {
+    "psr-0": {
+      "Zend": "library/vendor/Zend/library",
+      "iMSCP": "library/iMSCP/"
+    },
+    "psr-4": {
+      "iMSCP\\": "library/"
+    },
+    "files": [
+      "library/Functions/Admin.php",
+      "library//Functions/Client.php",
+      "library//Functions/Counting.php",
+      "library//Functions/Email.php",
+      "library//Functions/Input.php",
+      "library//Functions/Intl.php",
+      "library//Functions/Layout.php",
+      "library//Functions/Login.php",
+      "library//Functions/Reseller.php",
+      "library//Functions/Shared.php",
+      "library//Functions/SoftwareInstaller.php",
+      "library//Functions/Statistics.php",
+      "library//Functions/View.php"
+    ]
+  },
+  "include-path": [
+    "library/vendor/Zend/library"
+  ]
+}

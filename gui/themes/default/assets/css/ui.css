@@ -18,7 +18,7 @@
  * @category    iMSCP
  * @package     iMSCP_Core
  * @subpackage  Layout
- * @copyright   2010-2015 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2019 by i-MSCP | http://i-mscp.net
  * @link        http://i-mscp.net
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @author      i-MSCP Team
@@ -132,10 +132,11 @@ a {
 }
 
 /* Main menu */
+
 .main_menu {
     float: right;
     height: 64px;
-    padding-left: 5px;
+    padding-left: 12px;
 }
 
 .main_menu ul {
@@ -155,22 +156,26 @@ a {
     background: no-repeat center center;
     text-align: center;
     text-decoration: none;
-    margin: 6px 0.3em 0 0.3em;
+    margin: 6px 12px 0 0.3em;
     min-width: 35px;
     border: 1px solid transparent;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
+    text-indent: -1999px;
+    overflow: hidden;
 }
 
 .main_menu ul li a:hover {
     text-decoration: none;
 }
 
-.main_menu ul li .show_labels {
+.main_menu ul.show_labels li a {
     background-color: transparent;
     background-position: center top;
     line-height: 70px;
+    text-indent: initial;
+    overflow: initial;
 }
 
 /* Main menu icons */
@@ -295,80 +300,91 @@ a {
     height: 30px;
     line-height: 30px;
     padding-left: 197px;
-    /*z-index: 2;*/
+    /*z-index: 5000;*/
 }
 
 /** Section */
 .location-area {
     position: absolute;
-    left: 0.5em;
+    display: inline-block;
+    left: 0;
     top: 0;
-    height: 30px;
+    /*height: 300px;*/
     /*z-index: 1000;*/
 }
 
 .location-area h1 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    /*height: 30px;*/
+    margin-left: 0.5em;
+    /*border: red 1px dashed;*/
+}
+
+.location-area h1 a {
+    display: inline-block;
     background: no-repeat left center;
     height: 30px;
     font-size: 1.3em;
     font-weight: bold;
-    padding-left: 36px;
+    padding-left: 34px;
     font-variant: small-caps;
 }
 
-.location-area .custom_link {
+.location-area h1 a.custom_link {
     background-image: url(../images/menu/custom_link.png);
 }
 
-.location-area .database {
+.location-area h1 a.database {
     background-image: url(../images/menu/database.png);
 }
 
-.location-area .domains {
+.location-area h1 a.domains {
     background-image: url(../images/menu/domains.png);
 }
 
-.location-area .email {
+.location-area h1 a.email {
     background-image: url(../images/menu/email.png);
 }
 
-.location-area .ftp {
+.location-area h1 a.ftp {
     background-image: url(../images/menu/ftp.png);
 }
 
-.location-area .general {
+.location-area h1 a.general {
     background-image: url(../images/menu/general.png);
 }
 
-.location-area .hosting_plans {
+.location-area h1 a.hosting_plans {
     background-image: url(../images/menu/hosting_plans.png);
 }
 
-.location-area .manage_users {
+.location-area h1 a.manage_users {
     background-image: url(../images/menu/manage_users.png);
 }
 
-.location-area .purchasing {
+.location-area h1 a.purchasing {
     background-image: url(../images/menu/purchasing.png);
 }
 
-.location-area .settings {
+.location-area h1 a.settings {
     background-image: url(../images/menu/settings.png);
 }
 
-.location-area .statistics {
+.location-area h1 a.statistics {
     background-image: url(../images/menu/statistics.png);
 }
 
-.location-area .support {
+.location-area h1 a.support {
     background-image: url(../images/menu/support.png);
 }
 
-.location-area .profile {
+.location-area h1 a.profile {
     background-image: url(../images/menu/profile.png);
 }
 
-.location-area .webtools {
+.location-area h1 a.webtools {
     background-image: url(../images/menu/webtools.png);
 }
 

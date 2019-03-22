@@ -19,11 +19,6 @@
  */
 
 /**
- * @see Zend_Validate_Alnum
- */
-require_once 'Zend/Validate/Alnum.php';
-
-/**
  * Class iMSCP_Validate_AlnumAndHyphen
  */
 class iMSCP_Validate_AlnumAndHyphen extends Zend_Validate_Alnum
@@ -61,7 +56,6 @@ class iMSCP_Validate_AlnumAndHyphen extends Zend_Validate_Alnum
             /**
              * @see iMSCP_Filter_AlnumAndHyphen
              */
-            require_once 'iMSCP/Filter/AlnumAndHyphen.php';
             self::$_filter = new iMSCP_Filter_AlnumAndHyphen();
         }
 

@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,64 +18,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Registry as Registry;
-use iMSCP_Update_Database as DbUpdater;
-
 define('IMSCP_SETUP', true);
 
-/**
- * @throws Zend_Exception
- * @throws iMSCP_Exception
- * @throws iMSCP_Exception_Database
- * @throws iMSCP_i18n_Exception
- */
-function update()
-{
+try {
     chdir(dirname(__FILE__));
     require_once '../../gui/library/imscp-lib.php';
 
-    $dbUpdater = DbUpdater::getInstance();
+    $dbUpdater = iMSCP_Update_Database::getInstance();
 
     if ($dbUpdater->getLastAppliedUpdate() > $dbUpdater->getLastUpdate()) {
-        throw new iMSCP_Exception('An i-MSCP downgrade attempt has been detected. Downgrade is not supported.');
+        throw new iMSCP_Exception('An i-MSCP downgrade attempt has been detected. Downgrade not supported.');
     }
 
     if (!$dbUpdater->applyUpdates()) {
-        fwrite(STDERR, sprintf("[ERROR] %s\n", $dbUpdater->getError()));
-        exit(1);
+        throw new \RuntimeException($dbUpdater->getError());
     }
 
     // Optimize the database unless last optimization date is less than 24 hours
-    $lastOptimization = intval(Registry::get('config')['DATABASE_LAST_OPTIMIZATION']);
+    $lastOptimization = intval(iMSCP_Registry::get('config')['DATABASE_LAST_OPTIMIZATION']);
     if (time() >= $lastOptimization + 86400) {
         $dbUpdater->optimizeTables();
     }
 
-    // FIXME: Not really the right place... Should be done in dedicated script...
     i18n_buildLanguageIndex();
-}
-
-try {
-    if (version_compare(PHP_VERSION, '7', '<')) {
-        update();
-    } else {
-        try {
-            update();
-        } catch (Throwable $e) {
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
-
-        }
-    }
-} catch (Exception $e) {
-    $prevException = $e->getPrevious();
-
-    fwrite(
-        STDERR,
-        sprintf(
-            "[ERROR] %s \n\nStack trace:\n\n%s\n",
-            $e->getMessage(),
-            ($prevException) ? $prevException->getTraceAsString() : $e->getTraceAsString()
-        )
-    );
+} catch (\Throwable $e) {
+    fwrite(STDERR, sprintf("[ERROR] %s \n\nStack trace:\n\n%s\n", $e->getMessage(), $e->getTraceAsString()));
     exit(1);
 }

@@ -1,11 +1,11 @@
 =head1 NAME
 
- Package::AntiRootkits::Chkrootkit::Uninstaller - i-MSCP Chkrootkit package uninstaller
+ Package::AntiRootkits::Chkrootkit::Uninstaller - Chkrootkit package uninstaller
 
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

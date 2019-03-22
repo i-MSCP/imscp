@@ -1,11 +1,11 @@
 =head1 NAME
 
- Package::AntiRootkits::Chkrootkit::Installer - i-MSCP Chkrootkit package installer
+ Package::AntiRootkits::Chkrootkit::Installer - Chkrootkit package installer
 
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -62,7 +62,7 @@ sub preinstall
 
 sub postinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->_addCronTask();
     $rs ||= $self->_scheduleCheck();
@@ -99,18 +99,16 @@ sub _disableDebianConfig
 
 sub _addCronTask
 {
-    Servers::cron->factory()->addTask(
-        {
-            TASKID  => 'Package::AntiRootkits::Chkrootkit',
-            MINUTE  => '@weekly',
-            HOUR    => '',
-            DAY     => '',
-            MONTH   => '',
-            DWEEK   => '',
-            USER    => $main::imscpConfig{'ROOT_USER'},
-            COMMAND => "nice -n 10 ionice -c2 -n5 bash chkrootkit -e > $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1"
-        }
-    );
+    Servers::cron->factory()->addTask( {
+        TASKID  => 'Package::AntiRootkits::Chkrootkit',
+        MINUTE  => '@weekly',
+        HOUR    => '',
+        DAY     => '',
+        MONTH   => '',
+        DWEEK   => '',
+        USER    => $::imscpConfig{'ROOT_USER'},
+        COMMAND => "/usr/bin/nice -n 10 /usr/bin/ionice -c2 -n5 /bin/bash /usr/sbin/chkrootkit -e > $::imscpConfig{'CHKROOTKIT_LOG'} 2>&1"
+    } );
 }
 
 =item _scheduleCheck( )
@@ -123,19 +121,15 @@ sub _addCronTask
 
 sub _scheduleCheck
 {
-    return 0 if -f -s $main::imscpConfig{'CHKROOTKIT_LOG'};
+    return 0 if -f -s $::imscpConfig{'CHKROOTKIT_LOG'};
 
-    # Create an emtpy file to avoid planning multiple check if installer is run many time
-    my $file = iMSCP::File->new( filename => $main::imscpConfig{'CHKROOTKIT_LOG'} );
+    # Create an empty file to avoid planning multiple check if installer is run many time
+    my $file = iMSCP::File->new( filename => $::imscpConfig{'CHKROOTKIT_LOG'} );
     $file->set( "Check scheduled...\n" );
     my $rs = $file->save();
     return $rs if $rs;
 
-    $rs = execute(
-        "echo 'bash chkrootkit -e > $main::imscpConfig{'CHKROOTKIT_LOG'} 2>&1' | at now + 10 minutes",
-        \ my $stdout,
-        \ my $stderr
-    );
+    $rs = execute( "echo '/bin/bash /usr/sbin/chkrootkit -e > $::imscpConfig{'CHKROOTKIT_LOG'} 2>&1' | /usr/bin/at now + 10 minutes", \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     $rs;

@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,65 +18,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-use iMSCP_Events as Events;
-use iMSCP_Events_Aggregator as EventsManager;
-use iMSCP_Registry as Registry;
+/** @noinspection PhpUnhandledExceptionInspection */
 
-require_once 'imscp-lib.php';
+require_once __DIR__.'/../library/imscp-lib.php';
 
-if (($urlComponents = parse_url($_SERVER['REQUEST_URI'])) === false
-    || !isset($urlComponents['path'])
-) {
-    showBadRequestErrorPage();
-}
-
-/** @var iMSCP_Plugin_Manager $pluginManager */
-$pluginManager = Registry::get('pluginManager');
-$plugins = $pluginManager->pluginGetLoaded('Action');
-
-if (empty($plugins)) {
-    showNotFoundErrorPage();
-}
-
-$eventsManager = EventsManager::getInstance();
-$responses = $eventsManager->dispatch(Events::onBeforePluginsRoute, [
-    'pluginManager' => $pluginManager
-]);
-
-if ($responses->isStopped()) {
-    showNotFoundErrorPage();
-}
-
-$pluginActionScriptPath = NULL;
-foreach ($plugins as $plugin) {
-    if ($pluginActionScriptPath = $plugin->route($urlComponents)) {
-        break;
-    }
-
-    foreach ($plugin->getRoutes() as $pluginRoute => $scriptPath) {
-        if ($pluginRoute == $urlComponents['path']) {
-            $pluginActionScriptPath = $scriptPath;
-            $_SERVER['SCRIPT_NAME'] = $pluginRoute;
-            break;
-        }
-    }
-
-    if ($pluginActionScriptPath) {
-        break;
-    }
-}
-
-if (NULL === $pluginActionScriptPath) {
-    showNotFoundErrorPage();
-}
-
-$eventsManager->dispatch(Events::onAfterPluginsRoute, [
-    'pluginManager' => $pluginManager,
-    'scriptPath'    => $pluginActionScriptPath
-]);
-
-if (!is_file($pluginActionScriptPath)) {
-    showNotFoundErrorPage();
-}
-
-include $pluginActionScriptPath;
+(function() {
+    /** @var \iMSCP\Application $app */
+    $app = iMSCP_Registry::get('iMSCP_Application');
+    $slim = $app->getSlimApplication();
+    (new \iMSCP\Plugin\PluginServiceProvidersInjector())($slim->getContainer(), $app->getPluginManager());
+    (new \iMSCP\Plugin\PluginRoutesInjector())($slim, $app->getPluginManager());
+    $slim->run();
+})();

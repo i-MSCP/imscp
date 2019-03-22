@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,7 +24,7 @@ return [
         'uri'   => '/admin/index.php',
         'class' => 'general',
         'pages' => [
-            'overview'      => [
+            'overview'          => [
                 'label'       => tr('Overview'),
                 'uri'         => '/admin/index.php',
                 'title_class' => 'general'
@@ -34,7 +34,7 @@ return [
                 'uri'         => '/admin/service_statuses.php',
                 'title_class' => 'serverstatus'
             ],
-            'admin_log'     => [
+            'admin_log'         => [
                 'label'       => tr('Admin log'),
                 'uri'         => '/admin/admin_log.php',
                 'title_class' => 'adminlog'
@@ -55,19 +55,16 @@ return [
                         'dynamic_title' => '{TR_DYNAMIC_TITLE}',
                         'uri'           => '/admin/user_edit.php',
                         'title_class'   => '{DYNAMIC_TITLE_CLASS}',
-                        'visible'       => '0'
                     ],
                     'reseller_edit' => [
                         'label'       => tr('Edit reseller'),
                         'uri'         => '/admin/reseller_edit.php',
                         'title_class' => 'user_green',
-                        'visible'     => '0'
                     ],
                     'domain_detail' => [
                         'label'       => tr('Domain details'),
                         'uri'         => '/admin/domain_details.php',
                         'title_class' => 'general',
-                        'visible'     => '0'
                     ]
                 ]
             ],
@@ -82,34 +79,25 @@ return [
                 'title_class' => 'user_green'
             ],
             'resellers_assignment' => [
-                'label'              => tr('Reseller assignments'),
-                'uri'                => '/admin/manage_reseller_owners.php',
-                'title_class'        => 'users2',
-                'privilege_callback' => [
-                    [
-                        'name' => 'systemHasManyAdmins',
-                    ],
-                    [
-                        'name' => 'systemHasResellers'
-                    ]
-                ]
+                'label'       => tr('Reseller assignments'),
+                'uri'         => '/admin/manage_reseller_owners.php',
+                'title_class' => 'users2',
+                'resource'    => 'resellers_assignment',
+                'assertion'   => \iMSCP\Assertion\AdminCanMoveResellersAssertion::class,
             ],
             'customers_assignment' => [
-                'label'              => tr('Customer assignments'),
-                'uri'                => '/admin/manage_reseller_users.php',
-                'title_class'        => 'users2',
-                'privilege_callback' => [
-                    'name'  => 'systemHasResellers',
-                    'param' => '2'
-                ]
+                'label'       => tr('Customer assignments'),
+                'uri'         => '/admin/manage_reseller_users.php',
+                'title_class' => 'users2',
+                'resource'    => 'customers_assignment',
+                'assertion'   => \iMSCP\Assertion\AdminCanMoveCustomersAssertion::class
             ],
             'circular'             => [
-                'label'              => tr('Circular'),
-                'uri'                => '/admin/circular.php',
-                'title_class'        => 'email',
-                'privilege_callback' => [
-                    'name' => 'systemHasAdminsOrResellersOrCustomers'
-                ]
+                'label'       => tr('Circular'),
+                'uri'         => '/admin/circular.php',
+                'title_class' => 'email',
+                'resource'    => 'circular',
+                'assertion'   => \iMSCP\Assertion\AdminHasCircularFeatureAssertion::class,
             ],
             'sessions_management'  => [
                 'label'       => tr('Sessions'),
@@ -134,14 +122,11 @@ return [
                 'title_class' => 'maintenancemode'
             ],
             'updates'              => [
-                'label'              => tr('i-MSCP updates'),
-                'uri'                => '/admin/imscp_updates.php',
-                'title_class'        => 'update',
-                'privilege_callback' => [
-                    'name' => function () {
-                        return stripos(iMSCP_Registry::get('config')['Version'], 'git') === false;
-                    }
-                ]
+                'label'       => tr('i-MSCP updates'),
+                'uri'         => '/admin/imscp_updates.php',
+                'title_class' => 'update',
+                'resource'    => 'imscp_updates',
+                'assertion'   => \iMSCP\Assertion\AdminCanViewImscpUpdatesAssertion::class,
             ],
             'debugger'             => [
                 'label'       => tr('Debugger'),
@@ -149,12 +134,11 @@ return [
                 'title_class' => 'debugger'
             ],
             'rootkits_log'         => [
-                'label'              => tr('Anti-Rootkits Logs'),
-                'uri'                => '/admin/rootkit_log.php',
-                'title_class'        => 'general',
-                'privilege_callback' => [
-                    'name' => 'systemHasAntiRootkits'
-                ]
+                'label'       => tr('Anti-Rootkits Logs'),
+                'uri'         => '/admin/rootkit_log.php',
+                'title_class' => 'general',
+                'resource'    => 'antirootkits',
+                'assertion'   => \iMSCP\Assertion\AdminCanViewAntiAntiRootkitsAssertion::class
             ]
         ]
     ],
@@ -169,23 +153,20 @@ return [
                 'title_class' => 'stats'
             ],
             'resellers_statistics' => [
-                'label'              => tr('Reseller statistics'),
-                'uri'                => '/admin/reseller_statistics.php',
-                'title_class'        => 'stats',
-                'privilege_callback' => [
-                    'name' => 'systemHasResellers',
-                ],
-                'pages'              => [
+                'label'       => tr('Reseller statistics'),
+                'uri'         => '/admin/reseller_statistics.php',
+                'title_class' => 'stats',
+                'resource'    => 'reseller_statistics',
+                'assertion'   => \iMSCP\Assertion\AdminCanViewResellerStatisticsAssertion::class,
+                'pages'       => [
                     'reseller_user_statistics' => [
                         'label'       => tr('User statistics'),
                         'uri'         => '/admin/reseller_user_statistics.php',
-                        'visible'     => '0',
                         'title_class' => 'stats',
                         'pages'       => [
                             'reseller_user_statistics_detail' => [
                                 'label'       => tr('{USERNAME} user statistics'),
                                 'uri'         => '/admin/reseller_user_statistics_details.php',
-                                'visible'     => '0',
                                 'title_class' => 'stats'
                             ]
                         ]
@@ -193,23 +174,21 @@ return [
                 ]
             ],
             'ip_usage'             => [
-                'label'              => tr('IP usage'),
-                'uri'                => '/admin/ip_usage.php',
-                'title_class'        => 'ip',
-                'privilege_callback' => [
-                    'name' => 'systemHasCustomers'
-                ]
+                'label'       => tr('IP usage'),
+                'uri'         => '/admin/ip_usage.php',
+                'title_class' => 'ip',
+                'resource'    => 'ip_usage',
+                'assertion'   => \iMSCP\Assertion\AdminCanViewIpUsageStatisticsAssertion::class
             ]
         ]
     ],
     'support'      => [
-        'label'              => tr('Support'),
-        'uri'                => '/admin/ticket_system.php',
-        'class'              => 'support',
-        'privilege_callback' => [
-            'name' => 'systemHasResellers'
-        ],
-        'pages'              => [
+        'label'     => tr('Support'),
+        'uri'       => '/admin/ticket_system.php',
+        'class'     => 'support',
+        'resource'  => 'support',
+        'assertion' => \iMSCP\Assertion\AdminHasSupportFeatureAssertion::class,
+        'pages'     => [
             'open_tickets'   => [
                 'label'       => tr('Open tickets'),
                 'uri'         => '/admin/ticket_system.php',
@@ -224,7 +203,6 @@ return [
                 'label'       => tr('View ticket'),
                 'uri'         => '/admin/ticket_view.php',
                 'title_class' => 'support',
-                'visible'     => '0'
             ]
         ]
     ],
@@ -282,7 +260,6 @@ return [
                     'softwares_permissions' => [
                         'label'       => tr('Software permissions'),
                         'uri'         => '/admin/software_rights.php',
-                        'visible'     => '0',
                         'title_class' => 'apps_installer'
                     ]
                 ]

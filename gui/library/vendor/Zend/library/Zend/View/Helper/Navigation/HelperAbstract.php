@@ -825,7 +825,6 @@ abstract class Zend_View_Helper_Navigation_HelperAbstract
     {
         // accept by default
         $accept = true;
-
         if (!$page->isVisible(false) && !$this->getRenderInvisible()) {
             // don't accept invisible pages
             $accept = false;
@@ -862,7 +861,7 @@ abstract class Zend_View_Helper_Navigation_HelperAbstract
             // no acl registered means don't use acl
             return true;
         }
-
+        
         $role = $this->getRole();
         $resource = $page->getResource();
         $privilege = $page->getPrivilege();

@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -113,16 +113,5 @@ function systemHasManyAdmins()
  */
 function systemHasAntiRootkits()
 {
-    $config = Registry::get('config');
-
-    if ((isset($config['ANTI_ROOTKITS_PACKAGES']) && $config['ANTI_ROOTKITS_PACKAGES'] != 'No'
-            && $config['ANTI_ROOTKITS_PACKAGES'] != ''
-            && ((isset($config['CHKROOTKIT_LOG']) && $config['CHKROOTKIT_LOG'] != '')
-                || (isset($config['RKHUNTER_LOG']) && $config['RKHUNTER_LOG'] != '')))
-        || isset($config['OTHER_ROOTKIT_LOG']) && $config['OTHER_ROOTKIT_LOG'] != ''
-    ) {
-        return true;
-    }
-
-    return false;
+    return Registry::get('config')['ANTI_ROOTKIT_PACKAGES'] != 'No';
 }

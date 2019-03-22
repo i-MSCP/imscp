@@ -165,7 +165,7 @@ sub _execAction
     my ($self, $action, $pkgType) = @_;
 
     if ( $pkgType eq 'server' ) {
-        for  ( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
+        for  ( iMSCP::Servers->getInstance()->getList() ) {
             ( my $subref = $_->can( $action ) ) or next;
             debug( sprintf( "Executing `%s' action on %s", $action, $_ ));
             my $rs = $subref->( $_->factory(), $self->_getData( $action ));
@@ -175,7 +175,7 @@ sub _execAction
         return 0;
     }
 
-    for ( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
+    for ( iMSCP::Packages->getInstance()->getList() ) {
         ( my $subref = $_->can( $action ) ) or next;
         debug( sprintf( "Executing `%s' action on %s", $action, $_ ));
         my $rs = $subref->( $_->getInstance(), $self->_getData( $action ));

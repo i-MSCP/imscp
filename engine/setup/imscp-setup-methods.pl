@@ -20,6 +20,7 @@
 use strict;
 use warnings;
 use iMSCP::Bootstrapper;
+use iMSCP::Composer;
 use iMSCP::Database;
 use iMSCP::DbTasksProcessor;
 use iMSCP::Debug;
@@ -86,14 +87,16 @@ sub setupRegisterListeners
 {
     my $eventManager = iMSCP::EventManager->getInstance();
 
-    for ( iMSCP::Servers->getInstance()->getListWithFullNames() ) {
+    for ( iMSCP::Servers->getInstance()->getList() ) {
         ( my $subref = $_->can( 'registerSetupListeners' ) ) or next;
+        debug( sprintf( 'Registering setup listeners for %s', $_ ));
         my $rs = $subref->( $_->factory(), $eventManager );
         return $rs if $rs;
     }
 
-    for ( iMSCP::Packages->getInstance()->getListWithFullNames() ) {
+    for ( iMSCP::Packages->getInstance()->getList() ) {
         ( my $subref = $_->can( 'registerSetupListeners' ) ) or next;
+        debug( sprintf( 'Registering setup listeners for %s', $_ ));
         my $rs = $subref->( $_->getInstance(), $eventManager );
         return $rs if $rs;
     }
@@ -142,6 +145,7 @@ sub setupTasks
         [ \&setupSaveConfig, 'Saving configuration' ],
         [ \&setupCreateMasterUser, 'Creating system master user' ],
         [ \&setupCoreServices, 'Setup core services' ],
+#        [ \&setupPhpDependencyManager, 'Setup PHP dependency manager (composer)' ],
         [ \&setupRegisterPluginListeners, 'Registering plugin setup listeners' ],
         [ \&setupServersAndPackages, 'Processing servers/packages' ],
         [ \&setupSetPermissions, 'Setting up permissions' ],
@@ -227,6 +231,35 @@ sub setupCoreServices
 {
     my $serviceMngr = iMSCP::Service->getInstance();
     $serviceMngr->enable( $_ ) for 'imscp_daemon', 'imscp_traffic', 'imscp_mountall';
+    0;
+}
+
+sub setupPhpDependencyManager
+{
+    eval {
+        my $composer = iMSCP::Composer->new( composer_phar => '/usr/local/bin/composer' );
+        $composer->setStdRoutines(
+            sub {
+                chomp $_[0];
+                return unless length $_[0];
+
+                step( undef, <<"EOT", 1, 1 );
+Installing/Updating global PHP dependency manager
+$_[0]
+Depending on your connection speed, this may take few seconds...
+EOT
+            },
+            sub {}
+        );
+        startDetail;
+        $composer->installComposer( $::imscpConfig{'COMPOSER_VERSION'} );
+        endDetail;
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
     0;
 }
 
@@ -323,7 +356,7 @@ sub setupDbTasks
             my $oldDbName = $db->useDatabase( setupGetQuestion( 'DATABASE_NAME' ));
 
             my $dbh = $db->getRawDb();
-            local $dbh->{'RaiseError'};
+            local $dbh->{'RaiseError'} = 1;
 
             while ( my ($table, $field) = each %{$tables} ) {
                 if ( ref $field eq 'ARRAY' ) {
@@ -385,7 +418,7 @@ sub setupRegisterPluginListeners
 
     eval {
         my $dbh = $db->getRawDb();
-        $dbh->{'RaiseError'} = 1;
+        local $dbh->{'RaiseError'} = 1;
         $pluginNames = $dbh->selectcol_arrayref( "SELECT plugin_name FROM plugin WHERE plugin_status = 'enabled'" );
         $db->useDatabase( $oldDbName ) if $oldDbName;
     };
@@ -413,8 +446,8 @@ sub setupRegisterPluginListeners
 sub setupServersAndPackages
 {
     my $eventManager = iMSCP::EventManager->getInstance();
-    my @servers = iMSCP::Servers->getInstance()->getListWithFullNames();
-    my @packages = iMSCP::Packages->getInstance()->getListWithFullNames();
+    my @servers = iMSCP::Servers->getInstance()->getList();
+    my @packages = iMSCP::Packages->getInstance()->getList();
     my $nSteps = @servers+@packages;
     my $rs = 0;
 

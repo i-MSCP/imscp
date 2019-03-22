@@ -24,7 +24,7 @@ use iMSCP_Events_Aggregator as EventsManager;
 use iMSCP_Exception as iMSCPException;
 use iMSCP_Exception_Database as DatabaseException;
 use iMSCP_Registry as Registry;
-use Mso\IdnaConvert\IdnaConvert;
+use Algo26\IdnaConvert\IdnaConvert;
 
 // Available mail types
 define('MT_NORMAL_MAIL', 'normal_mail');
@@ -2654,10 +2654,8 @@ function getWebmailList()
 {
     $config = Registry::get('config');
 
-    if (isset($config['WEBMAIL_PACKAGES'])
-        && strtolower($config['WEBMAIL_PACKAGES']) != 'no'
-    ) {
-        return explode(',', $config['WEBMAIL_PACKAGES']);
+    if (isset($config['WEB_MAIL_CLIENT_PACKAGES']) && strtolower($config['WEB_MAIL_CLIENT_PACKAGES']) != 'no') {
+        return explode(',', $config['WEB_MAIL_CLIENT_PACKAGES']);
     }
 
     return [];
