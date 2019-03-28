@@ -1,6 +1,6 @@
 =head1 NAME
 
- Package::AntiRootkits::Chkrootkit::Uninstaller - Chkrootkit package uninstaller
+ Package::NoHandler - NoHandler package
 
 =cut
 
@@ -21,52 +21,42 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-package Package::AntiRootkits::Chkrootkit::Uninstaller;
+package Package::NoHandler;
 
 use strict;
 use warnings;
-use iMSCP::File;
-use parent 'Common::SingletonClass';
+use parent 'Common::Object';
 
 =head1 DESCRIPTION
-
- Chkrootkit package uninstaller.
 
 =head1 PUBLIC METHODS
 
 =over 4
 
-=item uninstall( )
+=item can( $method )
 
- Process uninstallation tasks
+ Whether this handler has the given method
 
- Return int 0 on success, other on failure
+ Return undef
 
 =cut
 
-sub uninstall
+sub can
 {
-    $_[0]->_restoreDebianConfig();
+    undef;
 }
 
-=back
+=item AUTOLOAD
 
-=head1 PRIVATE METHODS
+ Provide autoloading
 
-=over 4
-
-=item _restoreDebianConfig( )
-
- Restore default configuration
-
- Return int 0 on success, other on failure
+ Return int 0
 
 =cut
 
-sub _restoreDebianConfig
+sub AUTOLOAD
 {
-    return 0 unless -f '/etc/cron.daily/chkrootkit.disabled';
-    iMSCP::File->new( filename => '/etc/cron.daily/chkrootkit.disabled' )->moveFile( '/etc/cron.daily/chkrootkit' );
+    0;
 }
 
 =back

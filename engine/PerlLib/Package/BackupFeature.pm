@@ -48,20 +48,20 @@ sub getPriority
     -20;
 }
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( \%em )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
+ Param iMSCP::EventManager \%em
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ( $self, $eventManager ) = @_;
+    my ( $self, $em ) = @_;
 
-    $eventManager->register( 'beforeSetupDialog', sub {
+    $em->registerOne( 'beforeSetupDialog', sub {
         push @{ $_[0] },
             sub { $self->imscpBackupDialog( @_ ) },
             sub { $self->customerBackupDialog( @_ ) };
@@ -74,7 +74,7 @@ sub registerSetupListeners
  Ask for i-MSCP backup
 
  Param iMSCP::Dialog \%dialog
- Return int 0 or 30
+ Return int 0 NEXT, 30 BACKUP, 50 ESC
 
 =cut
 
@@ -107,7 +107,7 @@ EOF
  Ask for customer backup
 
  Param iMSCP::Dialog \%dialog
- Return int 0 or 30
+ Return int 0 NEXT, 30 BACKUP, 50 ESC
 
 =cut
 

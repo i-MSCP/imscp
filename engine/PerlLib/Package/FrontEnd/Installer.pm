@@ -59,20 +59,20 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( \%em )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
+ Param iMSCP::EventManager \%em
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ( $self, $eventManager ) = @_;
+    my ( $self, $em ) = @_;
 
-    my $rs = $eventManager->register( 'beforeSetupDialog', sub {
+    my $rs = $em->registerOne( 'beforeSetupDialog', sub {
         push @{ $_[0] },
             sub { $self->askMasterAdminCredentials( @_ ) },
             sub { $self->askMasterAdminEmail( @_ ) },
@@ -82,38 +82,41 @@ sub registerSetupListeners
             sub { $self->askAltUrlsFeature( @_ ) };
         0;
     } );
-    $rs ||= $eventManager->registerOne( 'beforeSetupPreInstallServers', sub {
+    $rs ||= $em->registerOne( 'beforeSetupPreInstallServers', sub {
         $rs = $self->_createMasterWebUser();
         $rs ||= $self->setGuiPermissions();
         return $rs if $rs;
 
-        eval {
-            my $composer = iMSCP::Composer->new(
-                user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
-                composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
-            );
+        unless ( iMSCP::Getopt->skipComposerUpdate ) {
+            eval {
+                my $composer = iMSCP::Composer->new(
+                    user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
+                    composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
+                );
+                $composer->installComposer( $::imscpConfig{'COMPOSER_VERSION'} );
+                $composer->clearCache() if iMSCP::Getopt->clearComposerCache;
+                $composer->setStdRoutines( sub {}, sub {
+                    chomp $_[0];
+                    return unless length $_[0];
 
-            $composer->installComposer($::imscpConfig{'COMPOSER_VERSION'});
-            $composer->setStdRoutines( sub {}, sub {
-                chomp $_[0];
-                return unless length $_[0];
-
-                step( undef, <<"EOT", 1, 1 )
+                    debug($_[0]);
+                    step( undef, <<"EOT", 1, 1 )
 Installing/Updating PHP dependencies...
 
 $_[0]
 
-Depending on your connection speed, this may take few minutes...
+Depending on your internet connection speed, this may take few seconds...
 EOT
-            } );
+                } );
 
-            startDetail;
-            $composer->install( TRUE );
-            endDetail;
-        };
-        if ( $@ ) {
-            error( $@ );
-            return 1;
+                startDetail;
+                $composer->update( TRUE );
+                endDetail;
+            };
+            if ( $@ ) {
+                error( $@ );
+                return 1;
+            }
         }
 
         0;
@@ -539,38 +542,6 @@ sub preinstall
 
     my $rs = $self->{'eventManager'}->trigger( 'beforeFrontEndPreInstall' );
     $rs ||= $self->{'frontend'}->stop();
-    $rs ||= $self->{'eventManager'}->registerOne( 'afterSetupPreInstallPackages', sub {
-        eval {
-            my $composer = iMSCP::Composer->new(
-                user                 => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
-                composer_home        => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
-            );
-            $composer->clearCache() if iMSCP::Getopt->cleanPackageCache;
-            $composer->setStdRoutines( sub {}, sub {
-                chomp $_[0];
-                return unless length $_[0];
-
-                step( undef, <<"EOT", 1, 1 )
-Updating PHP dependencies according the selected packages
-
-$_[0]
-
-Depending on your connection speed, this may take few minutes...
-EOT
-            } );
-
-            startDetail;
-            $composer->update( TRUE );
-            endDetail;
-        };
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        }
-
-        0;
-    } );
-
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontEndPreInstall' );
 }
 
@@ -746,6 +717,14 @@ sub setGuiPermissions
         filemode  => '0640',
         recursive => TRUE
     } );
+    $rs ||= setRights( "$::imscpConfig{'GUI_ROOT_DIR'}/bin", {
+        filemode  => '0750',
+        recursive => TRUE
+    } );
+    $rs ||= setRights( "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/bin", {
+        filemode  => '0750',
+        recursive => TRUE
+    } ) if -d "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/bin";
     $rs ||= $self->{'eventManager'}->trigger( 'afterFrontendSetGuiPermissions' );
 }
 

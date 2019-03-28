@@ -76,7 +76,7 @@ sub registerSetupListeners
 
 =item preinstall( )
 
- Process preinstall tasks
+ Process pre-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -89,7 +89,7 @@ sub preinstall
 
 =item install( )
 
- Process install tasks
+ Process installation tasks
 
  Return int 0 on success, other on failure
 
@@ -102,7 +102,7 @@ sub install
 
 =item postinstall( )
 
- Process postinstall tasks
+ Process post-installation tasks
 
  Return int 0 on success, other on failure
 

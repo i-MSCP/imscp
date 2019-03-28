@@ -46,25 +46,41 @@ my $dbInitialized = undef;
 
 =over 4
 
-=item showDialog( \%dialog )
+=item registerSetupListeners( \%em )
 
- Show dialog
+ Register setup event listeners
 
- Param iMSCP::Dialog \%dialog
- Return int 0 or 30
+ Param iMSCP::EventManager \%em
+ Return int 0 on success, other on failure
 
 =cut
 
-sub showDialog
+sub registerSetupListeners
+{
+    my ( undef, $em ) = @_;
+
+    Package::WebmailClients::RainLoop::Installer->getInstance()->registerSetupListeners( $em );
+}
+
+=item setupDialog( \%dialog )
+
+ Setup dialog
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 NEXT, 30 BACKUP, 50 ESC
+
+=cut
+
+sub setupDialog
 {
     my ( undef, $dialog ) = @_;
 
-    Package::WebmailClients::RainLoop::Installer->getInstance()->showDialog( $dialog );
+    Package::WebmailClients::RainLoop::Installer->getInstance()->setupDialog( $dialog );
 }
 
 =item preinstall( )
 
- Process preinstall tasks
+ Process pre-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -77,7 +93,7 @@ sub preinstall
 
 =item install( )
 
- Process install tasks
+ Process installation tasks
 
  Return int 0 on success, other on failure
 
@@ -90,7 +106,7 @@ sub install
 
 =item uninstall( )
 
- Process uninstall tasks
+ Process uninstallation tasks
 
  Return int 0 on success, other on failure
 
@@ -107,7 +123,7 @@ sub uninstall
 
 =item setGuiPermissions( )
 
- Set gui permissions
+ Set GUI permissions
 
  Return int 0 on success, other on failure
 

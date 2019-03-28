@@ -42,9 +42,25 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
+=item registerSetupListeners( \%em )
+
+ Register setup event listeners
+
+ Param iMSCP::EventManager \%em
+ Return int 0 on success, other on failure
+
+=cut
+
+sub registerSetupListeners
+{
+    my ( undef, $em ) = @_;
+
+    Package::WebFtpClients::MonstaFTP::Installer->getInstance()->registerSetupListeners( $em );
+}
+
 =item preinstall( )
 
- Process preinstall tasks
+ Process pre-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -57,7 +73,7 @@ sub preinstall
 
 =item install( )
 
- Process install tasks
+ Process installation tasks
 
  Return int 0 on success, other on failure
 
@@ -70,7 +86,7 @@ sub install
 
 =item uninstall( )
 
- Process uninstall tasks
+ Process uninstallation tasks
 
  Return int 0 on success, other on failure
 
@@ -83,7 +99,7 @@ sub uninstall
 
 =item setGuiPermissions( )
 
- Set file permissions
+ Set GUI permissions
 
  Return int 0 on success, other on failure
 

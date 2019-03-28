@@ -43,7 +43,7 @@ use parent 'Common::SingletonClass';
 
 =item uninstall( )
 
- Process uninstall tasks
+ Process uninstallation tasks
 
  Return int 0 on success, other on failure
 
@@ -52,6 +52,10 @@ use parent 'Common::SingletonClass';
 sub uninstall
 {
     my ( $self ) = @_;
+
+    my $rs = $self->_unregisterConfig();
+    $rs ||= $self->_removeFiles();
+    return $rs if $rs;
 
     eval {
         iMSCP::Composer->new(
@@ -67,8 +71,7 @@ sub uninstall
         return 1;
     }
 
-    my $rs = $self->_unregisterConfig();
-    $rs ||= $self->_removeFiles();
+    0;
 }
 
 =back

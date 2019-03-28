@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,7 +26,6 @@ package Modules::Abstract;
 use strict;
 use warnings;
 use iMSCP::Database;
-use iMSCP::Debug qw/ debug fatal /;
 use iMSCP::EventManager;
 use iMSCP::Packages;
 use iMSCP::Servers;
@@ -50,7 +49,7 @@ use parent 'Common::Object';
 
 sub getType
 {
-    fatal( ref( $_[0] ) . ' module must implements the getType( ) method' );
+    die( ref( $_[0] ) . ' module must implements the getType( ) method' );
 }
 
 =item process( )
@@ -63,7 +62,7 @@ sub getType
 
 sub process
 {
-    fatal( ref( $_[0] ) . ' module must implements the process( ) method' );
+    die( ref( $_[0] ) . ' module must implements the process( ) method' );
 }
 
 =item add( )
@@ -142,7 +141,7 @@ sub disable
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'_dbh'} = iMSCP::Database->factory()->getRawDb();
@@ -162,23 +161,21 @@ sub _init
 
 sub _execAction
 {
-    my ($self, $action, $pkgType) = @_;
+    my ( $self, $action, $pkgType ) = @_;
 
     if ( $pkgType eq 'server' ) {
-        for  ( iMSCP::Servers->getInstance()->getList() ) {
-            ( my $subref = $_->can( $action ) ) or next;
-            debug( sprintf( "Executing `%s' action on %s", $action, $_ ));
-            my $rs = $subref->( $_->factory(), $self->_getData( $action ));
+        for my $server( iMSCP::Servers->getInstance()->getList() ) {
+            ( my $sub = $server->can( $action ) ) or next;
+            my $rs = $sub->( $server->factory(), $self->_getData( $action ));
             return $rs if $rs;
         }
 
         return 0;
     }
 
-    for ( iMSCP::Packages->getInstance()->getList() ) {
-        ( my $subref = $_->can( $action ) ) or next;
-        debug( sprintf( "Executing `%s' action on %s", $action, $_ ));
-        my $rs = $subref->( $_->getInstance(), $self->_getData( $action ));
+    for my $package( iMSCP::Packages->getInstance()->getList() ) {
+        ( my $sub = $package->can( $action ) ) or next;
+        my $rs = $sub->( $package->getInstance(), $self->_getData( $action ));
         return $rs if $rs;
     }
 
@@ -196,12 +193,12 @@ sub _execAction
 
 sub _execAllActions
 {
-    my ($self, $action) = @_;
+    my ( $self, $action ) = @_;
 
     my $moduleType = $self->getType();
 
     if ( $action =~ /^(?:add|restore)$/ ) {
-        for( 'pre', '', 'post' ) {
+        for ( 'pre', '', 'post' ) {
             my $rs = $self->_execAction( "$_$action$moduleType", 'server' );
             $rs ||= $self->_execAction( "$_$action$moduleType", 'package' );
             return $rs if $rs;
@@ -210,7 +207,7 @@ sub _execAllActions
         return 0;
     }
 
-    for( 'pre', '', 'post' ) {
+    for ( 'pre', '', 'post' ) {
         my $rs = $self->_execAction( "$_$action$moduleType", 'package' );
         $rs ||= $self->_execAction( "$_$action$moduleType", 'server' );
         return $rs if $rs;

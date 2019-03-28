@@ -111,12 +111,11 @@ class Zend_Navigation_Page_Uri extends Zend_Navigation_Page
      */
     public function isActive($recursive = false)
     {
-
         if (! $this->_active) {
             //if ($this->getRequest() instanceof Zend_Controller_Request_Http) {
             if (null !== $this->_currentUriPath) {
                 //if (parse_url($this->getRequest()->getRequestUri(), PHP_URL_PATH) == $this->getUri()) {
-                if ($this->_currentUriPath == $this->getUri()) {
+                if ($this->_currentUriPath === $this->getUri()) {
                     $this->_active = true;
                     return true;
                 }
@@ -125,7 +124,6 @@ class Zend_Navigation_Page_Uri extends Zend_Navigation_Page
 
         return parent::isActive($recursive);
     }
-
 
     public function getCurrentUriPath()
     {

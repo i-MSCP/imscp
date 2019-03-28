@@ -431,11 +431,10 @@ sub _executePluginAction
         return 0 unless $self->{'pluginInstance'};
     }
 
-    my $subref = $self->{'pluginInstance'}->can( $action );
-    return 0 unless $subref;
+    my $sub = $self->{'pluginInstance'}->can( $action );
+    return 0 unless $sub;
 
-    debug( sprintf( "Executing %s( ) action on %s", $action, ref $self->{'pluginInstance'} ));
-    my $rs = eval { $subref->( $self->{'pluginInstance'}, $fromVersion, $toVersion ); };
+    my $rs = eval { $sub->( $self->{'pluginInstance'}, $fromVersion, $toVersion ); };
     if ( $@ ) {
         error( $@ );
         return 1;

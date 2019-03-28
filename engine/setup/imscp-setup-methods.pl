@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declecq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -87,17 +87,15 @@ sub setupRegisterListeners
 {
     my $eventManager = iMSCP::EventManager->getInstance();
 
-    for ( iMSCP::Servers->getInstance()->getList() ) {
-        ( my $subref = $_->can( 'registerSetupListeners' ) ) or next;
-        debug( sprintf( 'Registering setup listeners for %s', $_ ));
-        my $rs = $subref->( $_->factory(), $eventManager );
+    for my $server( iMSCP::Servers->getInstance()->getList() ) {
+        ( my $sub = $server->can( 'registerSetupListeners' ) ) or next;
+        my $rs = $sub->( $server->factory(), $eventManager );
         return $rs if $rs;
     }
 
-    for ( iMSCP::Packages->getInstance()->getList() ) {
-        ( my $subref = $_->can( 'registerSetupListeners' ) ) or next;
-        debug( sprintf( 'Registering setup listeners for %s', $_ ));
-        my $rs = $subref->( $_->getInstance(), $eventManager );
+    for my $package( iMSCP::Packages->getInstance()->getList() ) {
+        ( my $sub = $package->can( 'registerSetupListeners' ) ) or next;
+        my $rs = $sub->( $package->getInstance(), $eventManager );
         return $rs if $rs;
     }
 
@@ -186,13 +184,11 @@ sub setupSaveConfig
     return $rs if $rs;
 
     # Re-open main configuration file in read/write mode
-    iMSCP::Bootstrapper->getInstance()->loadMainConfig(
-        {
-            nocreate        => 1,
-            nodeferring     => 1,
-            config_readonly => 0
-        }
-    );
+    iMSCP::Bootstrapper->getInstance()->loadMainConfig( {
+        nocreate        => 1,
+        nodeferring     => 1,
+        config_readonly => 0
+    } );
 
     while ( my ($key, $value) = each( %main::questions ) ) {
         next unless exists $main::imscpConfig{$key};
@@ -350,7 +346,7 @@ sub setupDbTasks
                 htaccess_users  => 'status',
                 server_ips      => 'ip_status'
             };
-            my $aditionalCondition;
+            my $additionalCondition;
 
             my $db = iMSCP::Database->factory();
             my $oldDbName = $db->useDatabase( setupGetQuestion( 'DATABASE_NAME' ));
@@ -360,10 +356,10 @@ sub setupDbTasks
 
             while ( my ($table, $field) = each %{$tables} ) {
                 if ( ref $field eq 'ARRAY' ) {
-                    $aditionalCondition = $field->[1];
+                    $additionalCondition = $field->[1];
                     $field = $field->[0];
                 } else {
-                    $aditionalCondition = ''
+                    $additionalCondition = ''
                 }
 
                 ( $table, $field ) = ( $dbh->quote_identifier( $table ), $dbh->quote_identifier( $field ) );
@@ -374,10 +370,10 @@ sub setupDbTasks
                         WHERE $field NOT IN(
                             'toadd', 'torestore', 'toenable', 'todisable', 'disabled', 'ordered', 'todelete'
                         )
-                        $aditionalCondition
+                        $additionalCondition
                     "
                 );
-                $dbh->do( "UPDATE $table SET $field = 'todisable' WHERE $field = 'disabled' $aditionalCondition" );
+                $dbh->do( "UPDATE $table SET $field = 'todisable' WHERE $field = 'disabled' $additionalCondition" );
             }
 
             $dbh->do(
@@ -434,8 +430,8 @@ sub setupRegisterPluginListeners
         for my $pluginName( $plugins->getList() ) {
             next unless grep( $_ eq $pluginName, @{$pluginNames} );
             my $pluginClass = $plugins->getClass( $pluginName );
-            ( my $subref = $pluginClass->can( 'registerSetupListeners' ) ) or next;
-            $rs = $subref->( $pluginClass, $eventManager );
+            ( my $sub = $pluginClass->can( 'registerSetupListeners' ) ) or next;
+            $rs = $sub->( $pluginClass, $eventManager );
             last if $rs;
         }
     }
@@ -446,10 +442,13 @@ sub setupRegisterPluginListeners
 sub setupServersAndPackages
 {
     my $eventManager = iMSCP::EventManager->getInstance();
+    
+    my $rs = $eventManager->trigger('beforeSetupServersAndPackages');
+    return $rs if $rs;
+
     my @servers = iMSCP::Servers->getInstance()->getList();
     my @packages = iMSCP::Packages->getInstance()->getList();
     my $nSteps = @servers+@packages;
-    my $rs = 0;
 
     for my $task( qw/ PreInstall Install PostInstall / ) {
         my $lcTask = lc( $task );
@@ -460,11 +459,9 @@ sub setupServersAndPackages
         startDetail();
         my $nStep = 1;
 
-        for ( @servers ) {
-            ( my $subref = $_->can( $lcTask ) ) or $nStep++ && next;
-            $rs = step(
-                sub { $subref->( $_->factory()) }, sprintf( "Executing %s %s tasks...", $_, $lcTask ), $nSteps, $nStep
-            );
+        for my $server( @servers ) {
+            ( my $sub = $server->can( $lcTask ) ) or $nStep++ && next;
+            $rs = step( sub { $sub->( $server->factory()) }, sprintf( "Executing %s %s tasks...", $server, $lcTask ), $nSteps, $nStep );
             last if $rs;
             $nStep++;
         }
@@ -474,12 +471,9 @@ sub setupServersAndPackages
             $rs ||= $eventManager->trigger( 'beforeSetup' . $task . 'Packages' );
 
             unless ( $rs ) {
-                for ( @packages ) {
-                    ( my $subref = $_->can( $lcTask ) ) or $nStep++ && next;
-                    $rs = step(
-                        sub { $subref->( $_->getInstance()) },
-                        sprintf( "Executing %s %s tasks...", $_, $lcTask ), $nSteps, $nStep
-                    );
+                for my $package( @packages ) {
+                    ( my $sub = $package->can( $lcTask ) ) or $nStep++ && next;
+                    $rs = step( sub { $sub->( $package->getInstance()) }, sprintf( "Executing %s %s tasks...", $package, $lcTask ), $nSteps, $nStep );
                     last if $rs;
                     $nStep++;
                 }
@@ -491,7 +485,7 @@ sub setupServersAndPackages
         last if $rs;
     }
 
-    $rs;
+    $rs ||= $eventManager->trigger('afterSetupServersAndPackages');
 }
 
 sub setupRestartServices

@@ -51,26 +51,23 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( \%em )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
+ Param iMSCP::EventManager \%em
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ($self, $eventManager) = @_;
+    my ( $self, $em ) = @_;
 
-    $eventManager->register(
-        'beforeSetupDialog',
-        sub {
-            push @{$_[0]}, sub { $self->sqlUserDialog( @_ ) }, sub { $self->passivePortRangeDialog( @_ ) };
-            0;
-        }
-    );
+    $em->registerOne( 'beforeSetupDialog', sub {
+        push @{ $_[0] }, sub { $self->sqlUserDialog( @_ ) }, sub { $self->passivePortRangeDialog( @_ ) };
+        0;
+    } );
 }
 
 =item sqlUserDialog( \%dialog )
@@ -78,7 +75,7 @@ sub registerSetupListeners
  Ask for ProFTPD SQL user
 
  Param iMSCP::Dialog \%dialog
- Return int 0 on success, other on failure
+ Return int 0 NEXT, 30 BACKUP, 50 ESC
 
 =cut
 
@@ -147,7 +144,7 @@ EOF
  Ask for ProtFTPD port range to use for passive data transfers
 
  Param iMSCP::Dialog \%dialog
- Return int 0 on success, other on failure
+ Return int 0 NEXT, 30 BACKUP, 50 ESC
 
 =cut
 

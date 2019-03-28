@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -2645,20 +2645,55 @@ function getLastDayOfMonth($month = NULL, $year = NULL)
 }
 
 /**
- * Get list of available webmail
+ * Return list of available SQL administration tool packages
  *
  * @return array
  * @throws Zend_Exception
  */
-function getWebmailList()
+function getSqlAdminToolPackages()
 {
-    $config = Registry::get('config');
+    return array_filter(explode(',', \iMSCP_Registry::get('config')['SQL_ADMIN_TOOL_PACKAGES']), function ($value) {
+        return $value != 'No';
+    });
+}
 
-    if (isset($config['WEB_MAIL_CLIENT_PACKAGES']) && strtolower($config['WEB_MAIL_CLIENT_PACKAGES']) != 'no') {
-        return explode(',', $config['WEB_MAIL_CLIENT_PACKAGES']);
-    }
+/**
+ * Return list of available Web-based FTP client packages
+ *
+ * @return array
+ * @throws Zend_Exception
+ */
+function getWebFtpClientPackages()
+{
+    return array_filter(explode(',', \iMSCP_Registry::get('config')['WEB_FTP_CLIENT_PACKAGES']), function ($value) {
+        return $value != 'No';
+    });
+}
 
-    return [];
+/**
+ * Return list of available Webmail client packages
+ *
+ * @return array
+ * @throws Zend_Exception
+ */
+function getWebmailClientPackages()
+{
+    return array_filter(explode(',', \iMSCP_Registry::get('config')['WEB_MAIL_CLIENT_PACKAGES']), function ($value) {
+        return $value != 'No';
+    });
+}
+
+/**
+ * Return list of available Web statistic packages
+ *
+ * @return array
+ * @throws Zend_Exception
+ */
+function getWebStatisticPackages()
+{
+    return array_filter(explode(',', \iMSCP_Registry::get('config')['WEB_STATISTIC_PACKAGES']), function ($value) {
+        return $value != 'No';
+    });
 }
 
 /**

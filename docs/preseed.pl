@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2019.03.20
+# Last update: 2019.03.28
 
 %main::questions = (
     #
@@ -299,16 +299,19 @@
     # Web statistic packages
     # Possible values: 'No' or a list of packages, each comma separated
     # Available packages are: AWStats
+    # Warning: Package names are case-sensitive
     WEB_STATISTIC_PACKAGES              => 'AWStats',
 
     # Web FTP clients
     # Possible values: 'No' or a list of packages, each comma separated
     # Available packages are: MonstaFTP
+    # Warning: Package names are case-sensitive
     WEB_FTP_CLIENT_PACKAGES             => 'MonstaFTP',
 
     #SQL administrator tool packages
     # Possible values: 'No' or a list of packages, each comma separated
     # Available packages are: PhpMyAdmin
+    # Warning: Package names are case-sensitive
     SQL_ADMIN_TOOL_PACKAGES             => 'PhpMyAdmin',
 
     # SQL user for PhpMyAdmin
@@ -320,6 +323,7 @@
     # Webmail client packages
     # Possible values: 'No' or a list of packages, each comma separated
     # Available packages are: Rainloop, Roundcube
+    # Warning: Package names are case-sensitive
     WEB_MAIL_CLIENT_PACKAGES            => 'RainLoop,Roundcube',
 
     # SQL user for Roundcube package (only if you use Roundcube)
@@ -337,6 +341,7 @@
     # Antirootkits packages
     # Possible values: 'No' or a list of packages, each comma separated
     # Available packages are: Chkrootkit, Rkhunter
+    # Warning: Package names are case-sensitive
     ANTI_ROOTKIT_PACKAGES               => 'Chkrootkit,Rkhunter'
 );
 

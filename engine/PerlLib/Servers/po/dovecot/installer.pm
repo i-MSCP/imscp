@@ -52,40 +52,37 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( \%em )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
+ Param iMSCP::EventManager \%em
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ($self, $eventManager) = @_;
+    my ( $self, $em ) = @_;
 
-    my $rs = $eventManager->register(
-        'beforeSetupDialog',
-        sub {
-            push @{$_[0]}, sub { $self->showDialog( @_ ) };
-            0;
-        }
-    );
-    $rs ||= $eventManager->register( 'beforeMtaBuildMainCfFile', sub { $self->configurePostfix( @_ ); } );
-    $rs ||= $eventManager->register( 'beforeMtaBuildMasterCfFile', sub { $self->configurePostfix( @_ ); } );
+    my $rs = $em->registerOne( 'beforeSetupDialog', sub {
+        push @{ $_[0] }, sub { $self->setupDialog( @_ ) };
+        0;
+    } );
+    $rs ||= $em->register( 'beforeMtaBuildMainCfFile', sub { $self->configurePostfix( @_ ); } );
+    $rs ||= $em->register( 'beforeMtaBuildMasterCfFile', sub { $self->configurePostfix( @_ ); } );
 }
 
-=item showDialog( \%dialog )
+=item setupDialog( \%dialog )
 
- Ask user for Dovecot restricted SQL user
+ Setup dialog
 
  Param iMSCP::Dialog \%dialog
- Return int 0 on success, other on failure
+ Return int 0 NEXT, 30 BACKUP, 50 ESC
 
 =cut
 
-sub showDialog
+sub setupDialog
 {
     my ($self, $dialog) = @_;
 

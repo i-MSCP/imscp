@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2d787a1155c7e0dba6a03dab87a4e7e3",
+    "content-hash": "502d78047f0fc436cb8274d927c5fa56",
     "packages": [
         {
             "name": "algo26-matthias/idna-convert",
@@ -131,6 +131,71 @@
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
             "time": "2017-02-14T19:40:03+00:00"
+        },
+        {
+            "name": "imscp/composer-installers",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/i-MSCP/composer-installers.git",
+                "reference": "d7874ad960e2e433d324895276512782d1cb670a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/i-MSCP/composer-installers/zipball/d7874ad960e2e433d324895276512782d1cb670a",
+                "reference": "d7874ad960e2e433d324895276512782d1cb670a",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.1",
+                "php": "^7.1"
+            },
+            "conflict": {
+                "composer/installers": "*"
+            },
+            "replace": {
+                "roundcube/plugin-installer": "*"
+            },
+            "require-dev": {
+                "composer/composer": "^1.8",
+                "imscp/imscp-coding-standard": "^1.0",
+                "phpunit/phpunit": "^7.5.6",
+                "roave/security-advisories": "dev-master"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "iMSCP\\Composer\\Plugin",
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "iMSCP\\Composer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1-only"
+            ],
+            "authors": [
+                {
+                    "name": "Laurent Declercq",
+                    "email": "l.declercq@nuxwin.com",
+                    "homepage": "https://www.i-mscp.net"
+                }
+            ],
+            "description": "i-MSCP composer installers",
+            "homepage": "https://www.i-mscp.net/",
+            "keywords": [
+                "imscp",
+                "installers",
+                "library",
+                "plugins",
+                "roundcube",
+                "tools"
+            ],
+            "time": "2019-03-14T09:40:29+00:00"
         },
         {
             "name": "nikic/fast-route",
@@ -543,8 +608,12 @@
     "prefer-lowest": false,
     "platform": {
         "php": ">=7.3 <7.4",
+        "ext-apc": "*",
+        "ext-apcu": "*",
+        "ext-bz2": "*",
         "ext-ctype": "*",
         "ext-curl": "*",
+        "ext-date": "*",
         "ext-dom": "*",
         "ext-fileinfo": "*",
         "ext-ftp": "*",
@@ -555,17 +624,26 @@
         "ext-imap": "*",
         "ext-intl": "*",
         "ext-json": "*",
+        "ext-libxml": "*",
         "ext-mbstring": "*",
+        "ext-pcre": "*",
+        "ext-openssl": "*",
         "ext-pdo": "*",
         "ext-pdo_mysql": "*",
         "ext-phar": "*",
         "ext-posix": "*",
         "ext-pspell": "*",
+        "ext-reflection": "*",
+        "ext-session": "*",
+        "ext-simplexml": "*",
         "ext-sockets": "*",
+        "ext-sodium": "*",
+        "ext-spl": "*",
         "ext-xml": "*",
         "ext-xmlreader": "*",
         "ext-xmlwriter": "*",
-        "ext-zip": "*"
+        "ext-zip": "*",
+        "ext-zlib": "*"
     },
     "platform-dev": []
 }

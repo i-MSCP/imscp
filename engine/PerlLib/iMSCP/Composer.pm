@@ -320,6 +320,7 @@ sub clearCache
                 @{ $self->{'_php_cmd'} },
                 $self->{'composer_phar'}, 'clear-cache',
                 "--working-dir=$self->{'composer_working_dir'}",
+                '--no-interaction',
                 '--no-ansi'
             ),
             $self->{'_stdout'},
@@ -371,7 +372,7 @@ sub getComposerVersion
     my ( $self ) = @_;
 
     my $rs = execute( $self->_getSuCmd(
-        @{ $self->{'_php_cmd'} }, $self->{'composer_phar'}, '--no-ansi', '--version' ),
+        @{ $self->{'_php_cmd'} }, $self->{'composer_phar'}, '--no-interaction', '--no-ansi', '--version' ),
         \my $stdout,
         \my $stderr
     );

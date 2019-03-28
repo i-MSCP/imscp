@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -121,11 +121,6 @@ return [
                 'label'       => tr('Add FTP account'),
                 'uri'         => '/client/ftp_add.php',
                 'title_class' => 'ftp'
-            ],
-            'file_manager'    => [
-                'label'  => tr('FileManager'),
-                'uri'    => '/ftp/',
-                'target' => '_blank'
             ]
         ]
     ],
@@ -159,11 +154,6 @@ return [
                 'title_class' => 'sql',
                 'resource'    => 'add_sql_database',
                 'assertion'   => \iMSCP\Assertion\ClientCanAddSqlDatabasesAssertion::class,
-            ],
-            'phpmyadmin'       => [
-                'label'  => tr('PhpMyAdmin'),
-                'uri'    => '/pma/',
-                'target' => '_blank'
             ]
         ]
     ],
@@ -235,13 +225,6 @@ return [
                 'label'       => tr('Traffic statistics'),
                 'uri'         => '/client/traffic_statistics.php',
                 'title_class' => 'stats'
-            ],
-            'webstats' => [
-                'label'     => tr('Web statistics'),
-                'uri'       => '{WEBSTATS_PATH}',
-                'target'    => '_blank',
-                'resource'  => 'webstats',
-                'assertion' => \iMSCP\Assertion\ClientHasWebstatsFeatureAssertion::class,
             ]
         ]
     ],
@@ -335,27 +318,6 @@ return [
                 'title_class' => 'hdd',
                 'resource'    => 'backup',
                 'assertion'   => \iMSCP\Assertion\ClientHasBackupFeatureAssertion::class,
-            ],
-            'file_manager'       => [
-                'label'     => tr('FileManager'),
-                'uri'       => '/ftp/',
-                'target'    => '_blank',
-                'resource'  => 'file_manager',
-                'assertion' => \iMSCP\Assertion\ClientHasFtpFeatureAssertion::class,
-            ],
-            'phpmyadmin'         => [
-                'label'     => tr('PhpMyAdmin'),
-                'uri'       => '/pma/',
-                'target'    => '_blank',
-                'resource'  => 'phpmyadmin',
-                'assertion' => \iMSCP\Assertion\ClientHasSqlFeatureAssertion::class,
-            ],
-            'webstats'           => [
-                'label'     => tr('Web statistics'),
-                'uri'       => '{WEBSTATS_PATH}',
-                'target'    => '_blank',
-                'resource'  => 'webstats',
-                'assertion' => \iMSCP\Assertion\ClientHasWebstatsFeatureAssertion::class,
             ]
         ]
     ],

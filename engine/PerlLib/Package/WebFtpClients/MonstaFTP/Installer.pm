@@ -44,9 +44,45 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
+=item registerSetupListeners( \%em )
+
+ Register setup event listeners
+
+ Param iMSCP::EventManager \%em
+ Return int 0 on success, other on failure
+
+=cut
+
+sub registerSetupListeners
+{
+    my ( undef, $em ) = @_;
+
+    return 0 if iMSCP::Getopt->skipComposerUpdate;
+
+    $em->registerOne( 'beforeSetupPreInstallServers', sub {
+        eval {
+            require iMSCP::Composer;
+
+            iMSCP::Composer->new(
+                user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
+                composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
+                composer_json => 'composer.json'
+            )
+                ->require( 'imscp/phpmyadmin', '^1.0' )
+                ->dumpComposerJson();
+        };
+        if ( $@ ) {
+            error( $@ );
+            return 1;
+        }
+
+        0;
+    }, 10 );
+}
+
 =item preinstall( )
 
- Process preinstall tasks
+ Process pre-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -56,26 +92,12 @@ sub preinstall
 {
     my ( $self ) = @_;
 
-    eval {
-        iMSCP::Composer->new(
-            user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
-            composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
-            composer_json => 'composer.json'
-        )
-            ->require( 'imscp/monsta-ftp', '^1.0' )
-            ->dumpComposerJson();
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
     $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 
 =item install( )
 
- Process install tasks
+ Process installation tasks
 
  Return int 0 on success, other on failure
 

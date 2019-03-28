@@ -11,7 +11,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -43,7 +43,7 @@ $ENV{'PATH'} = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
 
 newDebug( 'imscp-dpkg-post-invoke.log' );
 
-iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq {
+iMSCP::Getopt->parseNoDefault( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq{
 
 Process dpkg post invoke tasks
 
@@ -59,30 +59,27 @@ setVerbose( iMSCP::Getopt->verbose );
 my $bootstrapper = iMSCP::Bootstrapper->getInstance();
 exit unless $bootstrapper->lock( '/var/lock/imscp-dpkg-post-invoke.lock', 'nowait' );
 
-$bootstrapper->getInstance()->boot(
-    {
-        config_readonly => 1,
-        mode            => 'backend',
-        nolock          => 1
-    }
-);
+$bootstrapper->getInstance()->boot( {
+    config_readonly => 1,
+    mode            => 'backend',
+    nolock          => 1
+} );
 
 my $rs = 0;
 my @items = ();
 
-for ( iMSCP::Servers->getInstance()->getList() ) {
-    next unless $_->can( 'dpkgPostInvokeTasks' );
-    push @items, $_->factory();
+for my $server ( iMSCP::Servers->getInstance()->getList() ) {
+    next unless $server->can( 'dpkgPostInvokeTasks' );
+    push @items, $server->factory();
 }
 
-for ( iMSCP::Packages->getInstance()->getList() ) {
-    next unless $_->can( 'dpkgPostInvokeTasks' );
-    push @items, $_->getInstance();
+for my $package ( iMSCP::Packages->getInstance()->getList() ) {
+    next unless $package->can( 'dpkgPostInvokeTasks' );
+    push @items, $package->getInstance();
 }
 
-for( @items ) {
-    debug( sprintf( 'Executing %s dpkg post-invoke tasks', ref ));
-    $rs |= $_->dpkgPostInvokeTasks();
+for my $item( @items ) {
+    $rs |= $item->dpkgPostInvokeTasks();
 }
 
 exit $rs;
@@ -92,3 +89,6 @@ exit $rs;
  Laurent Declercq <l.declercq@nuxwin.com>
 
 =cut
+
+1;
+__END__

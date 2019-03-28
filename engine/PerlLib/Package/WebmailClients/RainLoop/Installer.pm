@@ -55,16 +55,52 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item showDialog( \%dialog )
+=item registerSetupListeners( \%em )
 
- Show dialog
+ Register setup event listeners
 
- Param iMSCP::Dialog \%dialog
- Return int 0 or 30
+ Param iMSCP::EventManager \%em
+ Return int 0 on success, other on failure
 
 =cut
 
-sub showDialog
+sub registerSetupListeners
+{
+    my ( undef, $em ) = @_;
+
+    return 0 if iMSCP::Getopt->skipComposerUpdate;
+
+    $em->registerOne( 'beforeSetupPreInstallServers', sub {
+        eval {
+            require iMSCP::Composer;
+
+            iMSCP::Composer->new(
+                user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
+                composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
+                composer_json => 'composer.json'
+            )
+                ->require( 'imscp/phpmyadmin', '^1.0' )
+                ->dumpComposerJson();
+        };
+        if ( $@ ) {
+            error( $@ );
+            return 1;
+        }
+
+        0;
+    }, 10 );
+}
+
+=item setupDialog( \%dialog )
+
+ Setup dialog
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 NEXT, 30 BACKUP, 50 ESC
+
+=cut
+
+sub setupDialog
 {
     my ( $self, $dialog ) = @_;
 
@@ -122,7 +158,7 @@ EOF
 
 =item preinstall( )
 
- Process preinstall tasks
+ Process pre-installation tasks
 
  Return int 0
 
@@ -132,26 +168,12 @@ sub preinstall
 {
     my ( $self ) = @_;
 
-    eval {
-        iMSCP::Composer->new(
-            user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
-            composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
-            composer_json => 'composer.json'
-        )
-            ->require( 'imscp/rainloop', '^1.0' )
-            ->dumpComposerJson();
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
     $self->{'eventManager'}->register( 'afterFrontEndBuildConfFile', \&afterFrontEndBuildConfFile );
 }
 
 =item install( 
 
- Process install tasks
+ Process installation tasks
 
  Return int 0 on success, other on failure
 

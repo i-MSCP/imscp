@@ -48,29 +48,26 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( \%em )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
+ Param iMSCP::EventManager \%em
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ($self, $eventManager) = @_;
+    my ( $self, $em ) = @_;
 
-    $eventManager->register(
-        'beforeSetupDialog',
-        sub {
-            push @{$_[0]},
-                sub { $self->askDnsServerMode( @_ ) },
-                sub { $self->askIPv6Support( @_ ) },
-                sub { $self->askLocalDnsResolver( @_ ) };
-            0;
-        }
-    );
+    $em->registerOne( 'beforeSetupDialog', sub {
+        push @{ $_[0] },
+            sub { $self->askDnsServerMode( @_ ) },
+            sub { $self->askIPv6Support( @_ ) },
+            sub { $self->askLocalDnsResolver( @_ ) };
+        0;
+    } );
 }
 
 =item askDnsServerMode( \%dialog )
@@ -78,7 +75,7 @@ sub registerSetupListeners
  Ask user for DNS server type to configure
 
  Param iMSCP::Dialog \%dialog
- Return int 0 on success, other on failure
+ Return int 0 NEXT, 30 BACKUP, 50 ESC
 
 =cut
 
@@ -110,7 +107,7 @@ EOF
  Ask user for DNS server adresses IP
 
  Param iMSCP::Dialog \%dialog
- Return int 0 on success, other on failure
+ Return int 0 NEXT, 30 BACKUP, 50 ESC
 
 =cut
 
@@ -198,7 +195,7 @@ EOF
  Ask user for DNS server IPv6 support
 
  Param iMSCP::Dialog \%dialog
- Return int 0 on success, other on failure
+ Return int 0 NEXT, 30 BACKUP, 50 ESC
 
 =cut
 
@@ -230,7 +227,7 @@ EOF
  Ask user for local DNS resolver
 
  Param iMSCP::Dialog \%dialog
- Return int 0 on success, other on failure
+ Return int 0 NEXT, 30 BACKUP, 50 ESC
 
 =cut
 

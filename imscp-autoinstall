@@ -69,11 +69,11 @@ $main::skippackages = 0;
 # Parse autoinstaller options
 iMSCP::Getopt->parse( sprintf( 'Usage: perl %s [OPTION]...', basename( $0 )) . qq {
  -b,    --build-only            Process build steps only.
- -f,    --force-reinstall       Force re-installation of distro packages.
- -s,    --skip-distro-packages  Do not install/update distro packages.},
+ -f,    --force-reinstall       Force re-installation of distribution packages.
+ -s,    --skip-dist-packages    Do not install distribution packages.},
     'build-only|b'           => \$main::buildonly,
     'force-reinstall|f'      => \$main::forcereinstall,
-    'skip-distro-packages|s' => \$main::skippackages
+    '--skip-dist-packages|s' => \$main::skippackages
 );
 
 # Set debug and verbose mode

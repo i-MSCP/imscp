@@ -27,7 +27,7 @@ use strict;
 use warnings;
 use iMSCP::Debug qw/ debugRegisterCallBack /;
 use Text::Wrap;
-use fields qw / cleanPackageCache debug fixPermissions listener noprompt preseed reconfigure skipPackageUpdate verbose /;
+use fields qw / clearComposerCache debug fixPermissions listener noprompt preseed reconfigure skipComposerUpdate verbose /;
 
 $Text::Wrap::columns = 80;
 $Text::Wrap::break = qr/[\s\n\|]/;
@@ -69,8 +69,8 @@ sub parse
         print STDERR wrap( '', '', <<"EOF" );
 
 $usage
- -a,    --skip-package-update   Skip composer packages update.
- -c,    --clean-package-cache   Cleanup composer package cache.
+ -a,    --skip-composer-update  Skip composer update.
+ -c,    --clear-composer-cache  Clear composer cache.
  -d,    --debug                 Force debug mode.
  -h,-?  --help                  Show this help.
  -l,    --listener <file>       Path to listener file.
@@ -98,7 +98,7 @@ EOF
     require Getopt::Long;
     Getopt::Long::Configure( 'bundling' );
     Getopt::Long::GetOptions(
-        'clean-package-cache|c', sub { $options->{'cleanPackageCache'} = 1 },
+        'clear-composer-cache|c', sub { $options->{'clearComposerCache'} = 1 },
         'debug|d', sub { $options->{'debug'} = 1 },
         'help|?|h', sub { $class->showUsage() },
         'fix-permissions|x', sub { $options->{'fixPermissions'} = 1 },
@@ -106,7 +106,7 @@ EOF
         'noprompt|n', sub { $options->{'noprompt'} = 1 },
         'preseed|p=s', sub { $class->preseed( $_[1] ) },
         'reconfigure|r:s', sub { $class->reconfigure( $_[1] ) },
-        'skip-package-update|a', sub { $options->{'skipPackageUpdate'} = 1 },
+        'skip-composer-update|a', sub { $options->{'skipComposerUpdate'} = 1 },
         'verbose|v', sub { $options->{'verbose'} = 1 },
         @options,
     ) or $class->showUsage( 1 );

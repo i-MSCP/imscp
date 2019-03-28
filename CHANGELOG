@@ -10,9 +10,12 @@ BACKEND
     Fixed: SysVinit script are always reported as enabled (Debian SysVinit init provider)
     Fixed: The 'imscp_panel' service is always restarted even when it should not (FrontEnd dpkg(1) post invoke tasks)
     Fixed: The 'is-enabled' support for SysVinit scripts isn't available in older systemd version (Debian Systemd init provider)
+    Rewritten: Packages
 
 DISTRIBUTIONS
+    Added: bz2 PHP extension (all distributions, all PHP versions)
     Added: Support for PHP 7.2, 7.3
+    Added: sodium PHP extension (all distributions, all PHP versions except 5.6)
 
 FRONTEND
     Added: ACL assertions for navigation

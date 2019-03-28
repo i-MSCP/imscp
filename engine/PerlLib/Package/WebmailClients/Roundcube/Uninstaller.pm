@@ -46,7 +46,7 @@ use parent 'Common::SingletonClass';
 
 =item uninstall( )
 
- Process uninstall tasks
+ Process uninstallation tasks
 
  Return int 0 on success, other on failure
 
@@ -57,6 +57,12 @@ sub uninstall
     my ( $self ) = @_;
 
     return 0 unless %{ $self->{'config'} };
+
+    my $rs = $self->_removeSqlUser();
+    $rs ||= $self->_removeSqlDatabase();
+    $rs ||= $self->_unregisterConfig();
+    $rs ||= $self->_removeFiles();
+    return $rs if $rs;
 
     eval {
         iMSCP::Composer->new(
@@ -72,10 +78,7 @@ sub uninstall
         return 1;
     }
 
-    my $rs = $self->_removeSqlUser();
-    $rs ||= $self->_removeSqlDatabase();
-    $rs ||= $self->_unregisterConfig();
-    $rs ||= $self->_removeFiles();
+    0;
 }
 
 =back

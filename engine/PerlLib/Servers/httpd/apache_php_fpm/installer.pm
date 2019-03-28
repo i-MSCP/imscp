@@ -79,7 +79,7 @@ sub registerSetupListeners
  Ask for PHP configuration level to use
 
  Param iMSCP::Dialog \%dialog
- Return int 0 to go on next question, 30 to go back to the previous question
+ Return int 0 NEXT, 30 BACKUP, 50 ESC
 
 =cut
 
@@ -114,7 +114,7 @@ EOF
  Ask for FPM listen mode
 
  Param iMSCP::Dialog \%dialog
- Return int 0 to go on next question, 30 to go back to the previous question
+ Return int 0 NEXT, 30 BACKUP, 50 ESC
 
 =cut
 

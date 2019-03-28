@@ -76,13 +76,13 @@ sub loadConfig
     tie %main::imscpConfig, 'iMSCP::Config', fileName => $newConffile, readonly => 1, temporary => 1;
 
     # Load old configuration
-    if ( -f "$main::imscpConfig{'CONF_DIR'}/imscpOld.conf" ) { # Recovering following an installation or upgrade failure
+    if ( -f "$::imscpConfig{'CONF_DIR'}/imscpOld.conf" ) { # Recovering following an installation or upgrade failure
         tie %main::imscpOldConfig,
-            'iMSCP::Config', fileName => "$main::imscpConfig{'CONF_DIR'}/imscpOld.conf", readonly => 1, temporary => 1;
-    } elsif ( -f "$main::imscpConfig{'CONF_DIR'}/imscp.conf" ) { # Upgrade case
+            'iMSCP::Config', fileName => "$::imscpConfig{'CONF_DIR'}/imscpOld.conf", readonly => 1, temporary => 1;
+    } elsif ( -f "$::imscpConfig{'CONF_DIR'}/imscp.conf" ) { # Upgrade case
         tie %main::imscpOldConfig,
-            'iMSCP::Config', fileName => "$main::imscpConfig{'CONF_DIR'}/imscp.conf", readonly => 1, temporary => 1;
-    } else { # Frech installation case
+            'iMSCP::Config', fileName => "$::imscpConfig{'CONF_DIR'}/imscp.conf", readonly => 1, temporary => 1;
+    } else { # Fresh installation case
         %main::imscpOldConfig = %main::imscpConfig;
     }
 
@@ -90,21 +90,21 @@ sub loadConfig
         debug( 'Merging old configuration with new configuration...' );
         # Merge old configuration in new configuration, excluding upstream defined values
         while ( my ($key, $value) = each( %main::imscpOldConfig ) ) {
-            next unless exists $main::imscpConfig{$key};
+            next unless exists $::imscpConfig{$key};
             next if $key =~ /^(?:Build|Version|CodeName|PluginApi|THEME_ASSETS_VERSION)$/;
-            $main::imscpConfig{$key} = $value;
+            $::imscpConfig{$key} = $value;
         }
 
         # Make sure that all configuration parameter exists
         while ( my ($param, $value) = each( %main::imscpConfig ) ) {
-            $main::imscpOldConfig{$param} = $value unless exists $main::imscpOldConfig{$param};
+            $::imscpOldConfig{$param} = $value unless exists $::imscpOldConfig{$param};
         }
     }
 
     # Set system based values
-    $main::imscpConfig{'DISTRO_ID'} = lc( iMSCP::LsbRelease->getInstance()->getId( 'short' ));
-    $main::imscpConfig{'DISTRO_CODENAME'} = lc( iMSCP::LsbRelease->getInstance()->getCodename( 'short' ));
-    $main::imscpConfig{'DISTRO_RELEASE'} = iMSCP::LsbRelease->getInstance()->getRelease( 'short', 'force_numeric' );
+    $::imscpConfig{'DISTRO_ID'} = lc( iMSCP::LsbRelease->getInstance()->getId( 'short' ));
+    $::imscpConfig{'DISTRO_CODENAME'} = lc( iMSCP::LsbRelease->getInstance()->getCodename( 'short' ));
+    $::imscpConfig{'DISTRO_RELEASE'} = iMSCP::LsbRelease->getInstance()->getRelease( 'short', 'force_numeric' );
 
     $eventManager = iMSCP::EventManager->getInstance();
     undef;
@@ -122,21 +122,21 @@ sub build
 {
     newDebug( 'imscp-build.log' );
 
-    if ( !iMSCP::Getopt->preseed && !( $main::imscpConfig{'FRONTEND_SERVER'} && $main::imscpConfig{'FTPD_SERVER'}
-        && $main::imscpConfig{'HTTPD_SERVER'} && $main::imscpConfig{'NAMED_SERVER'} && $main::imscpConfig{'MTA_SERVER'}
-        && $main::imscpConfig{'PHP_SERVER'} && $main::imscpConfig{'PO_SERVER'} && $main::imscpConfig{'SQL_SERVER'} )
+    if ( !iMSCP::Getopt->preseed && !( $::imscpConfig{'FRONTEND_SERVER'} && $::imscpConfig{'FTPD_SERVER'}
+        && $::imscpConfig{'HTTPD_SERVER'} && $::imscpConfig{'NAMED_SERVER'} && $::imscpConfig{'MTA_SERVER'}
+        && $::imscpConfig{'PHP_SERVER'} && $::imscpConfig{'PO_SERVER'} && $::imscpConfig{'SQL_SERVER'} )
     ) {
         iMSCP::Getopt->noprompt( 0 );
-        $main::skippackages = 0;
+        $::skippackages = 0;
     }
 
     my $rs = 0;
-    $rs = _installPreRequiredPackages() unless $main::skippackages;
+    $rs = _installPreRequiredPackages() unless $::skippackages;
     return $rs if $rs;
 
     my $dialog = iMSCP::Dialog->getInstance();
 
-    unless ( iMSCP::Getopt->noprompt || $main::reconfigure ne 'none' ) {
+    unless ( iMSCP::Getopt->noprompt || $::reconfigure ne 'none' ) {
         $rs = _showWelcomeMsg( $dialog );
         return $rs if $rs;
 
@@ -149,11 +149,11 @@ sub build
         return $rs if $rs;
     }
 
-    $rs = _askInstallerMode( $dialog ) unless iMSCP::Getopt->noprompt || $main::buildonly
-        || $main::reconfigure ne 'none';
+    $rs = _askInstallerMode( $dialog ) unless iMSCP::Getopt->noprompt || $::buildonly
+        || $::reconfigure ne 'none';
 
     my @steps = (
-        ( $main::skippackages ? () : [ \&_installDistroPackages, 'Installing distribution packages' ] ),
+        ( $::skippackages ? () : [ \&_installDistroPackages, 'Installing distribution packages' ] ),
         [ \&_checkRequirements, 'Checking for requirements' ],
         [ \&_buildDistributionFiles, 'Building distribution files' ],
         [ \&_compileDaemon, 'Compiling daemon' ],
@@ -187,7 +187,7 @@ sub build
             return unless $_ eq '.gitkeep';
             unlink or fatal( sprintf( "Couldn't remove %s file: %s", $File::Find::name, $! ));
         },
-        $main::{'INST_PREF'}
+        $::{'INST_PREF'}
     );
 
     $rs = $eventManager->trigger( 'afterPostBuild' );
@@ -202,10 +202,10 @@ sub build
     while ( my ($name, $config) = each %confmap ) {
         if ( $name eq 'imscpOld' ) {
             local $UMASK = 027;
-            iMSCP::File->new( filename => "$main::{'SYSTEM_CONF'}/$name.conf" )->save();
+            iMSCP::File->new( filename => "$::{'SYSTEM_CONF'}/$name.conf" )->save();
         }
 
-        tie my %config, 'iMSCP::Config', fileName => "$main::{'SYSTEM_CONF'}/$name.conf";
+        tie my %config, 'iMSCP::Config', fileName => "$::{'SYSTEM_CONF'}/$name.conf";
         @config{ keys %{$config} } = values %{$config};
         untie %config;
     }
@@ -293,10 +293,10 @@ EOF
     require Net::LibIDN;
     Net::LibIDN->import( 'idn_to_unicode' );
 
-    my $port = $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://'
-        ? $main::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
-        : $main::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
-    my $vhost = idn_to_unicode( $main::imscpConfig{'BASE_SERVER_VHOST'}, 'utf-8' );
+    my $port = $::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} eq 'http://'
+        ? $::imscpConfig{'BASE_SERVER_VHOST_HTTP_PORT'}
+        : $::imscpConfig{'BASE_SERVER_VHOST_HTTPS_PORT'};
+    my $vhost = idn_to_unicode( $::imscpConfig{'BASE_SERVER_VHOST'}, 'utf-8' );
 
     iMSCP::Dialog->getInstance()->infobox( <<"EOF" );
 
@@ -304,7 +304,7 @@ EOF
 
 i-MSCP has been successfully installed/updated.
 
-Please connect to $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$vhost:$port and login with your administrator account.
+Please connect to $::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$vhost:$port and login with your administrator account.
 
 Thank you for choosing i-MSCP.
 EOF
@@ -377,7 +377,7 @@ sub _showUpdateWarning
     my ($dialog) = @_;
 
     my $warning = '';
-    if ( $main::imscpConfig{'Version'} !~ /git/i ) {
+    if ( $::imscpConfig{'Version'} !~ /git/i ) {
         $warning = <<"EOF";
 
 Before continue, be sure to have read the errata file:
@@ -507,7 +507,7 @@ EOF
 
     return 50 if $rs;
 
-    $main::buildonly = $mode eq 'manual' ? 1 : 0;
+    $::buildonly = $mode eq 'manual' ? 1 : 0;
     $dialog->set( 'cancel-label', 'Back' );
     0;
 }
@@ -641,7 +641,7 @@ sub _buildEngineFiles
 
 sub _buildFrontendFiles
 {
-    iMSCP::Dir->new( dirname => "$FindBin::Bin/gui" )->rcopy( "$main::{'SYSTEM_ROOT'}/gui", { preserve => 'no' } );
+    iMSCP::Dir->new( dirname => "$FindBin::Bin/gui" )->rcopy( "$::{'SYSTEM_ROOT'}/gui", { preserve => 'no' } );
     0;
 }
 
@@ -662,15 +662,15 @@ sub _compileDaemon
     error( $stderr || 'Unknown error' ) if $rs;
     return $rs if $rs;
 
-    iMSCP::Dir->new( dirname => "$main::{'SYSTEM_ROOT'}/daemon" )->make();
+    iMSCP::Dir->new( dirname => "$::{'SYSTEM_ROOT'}/daemon" )->make();
     $rs = iMSCP::File->new( filename => 'imscp_daemon' )->copyFile(
-        "$main::{'SYSTEM_ROOT'}/daemon", { preserve => 'no' }
+        "$::{'SYSTEM_ROOT'}/daemon", { preserve => 'no' }
     );
     $rs ||= iMSCP::Rights::setRights(
-        "$main::{'SYSTEM_ROOT'}/daemon/imscp_daemon",
+        "$::{'SYSTEM_ROOT'}/daemon/imscp_daemon",
         {
-            user  => $main::imscpConfig{'ROOT_GROUP'},
-            group => $main::imscpConfig{'ROOT_GROUP'},
+            user  => $::imscpConfig{'ROOT_GROUP'},
+            group => $::imscpConfig{'ROOT_GROUP'},
             mode  => '0750'
         }
     )
@@ -686,64 +686,78 @@ sub _compileDaemon
 
 sub _savePersistentData
 {
-    my $destdir = $main::{'INST_PREF'};
+    my $destdir = $::{'INST_PREF'};
 
     # Move old skel directory to new location
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/apache/skel" )->rcopy(
-        "$main::imscpConfig{'CONF_DIR'}/skel", { preserve => 'no' }
-    ) if -d "$main::imscpConfig{'CONF_DIR'}/apache/skel";
+    iMSCP::Dir->new( dirname => "$::imscpConfig{'CONF_DIR'}/apache/skel" )->rcopy(
+        "$::imscpConfig{'CONF_DIR'}/skel", { preserve => 'no' }
+    ) if -d "$::imscpConfig{'CONF_DIR'}/apache/skel";
 
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/skel" )->rcopy(
-        "$destdir$main::imscpConfig{'CONF_DIR'}/skel", { preserve => 'no' }
-    ) if -d "$main::imscpConfig{'CONF_DIR'}/skel";
+    iMSCP::Dir->new( dirname => "$::imscpConfig{'CONF_DIR'}/skel" )->rcopy(
+        "$destdir$::imscpConfig{'CONF_DIR'}/skel", { preserve => 'no' }
+    ) if -d "$::imscpConfig{'CONF_DIR'}/skel";
 
     # Move old listener files to new location
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'CONF_DIR'}/hooks.d" )->rcopy(
-        "$main::imscpConfig{'CONF_DIR'}/listeners.d", { preserve => 'no' }
-    ) if -d "$main::imscpConfig{'CONF_DIR'}/hooks.d";
+    iMSCP::Dir->new( dirname => "$::imscpConfig{'CONF_DIR'}/hooks.d" )->rcopy(
+        "$::imscpConfig{'CONF_DIR'}/listeners.d", { preserve => 'no' }
+    ) if -d "$::imscpConfig{'CONF_DIR'}/hooks.d";
 
     # Save ISP logos (older location)
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/themes/user_logos" )->rcopy(
-        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/ispLogos", { preserve => 'no' }
-    ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/themes/user_logos";
+    iMSCP::Dir->new( dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/themes/user_logos" )->rcopy(
+        "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/ispLogos", { preserve => 'no' }
+    ) if -d "$::imscpConfig{'GUI_ROOT_DIR'}/themes/user_logos";
 
     # Save ISP logos (new location)
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/data/ispLogos" )->rcopy(
-        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/ispLogos", { preserve => 'no' }
-    ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/data/ispLogos";
+    iMSCP::Dir->new( dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/data/ispLogos" )->rcopy(
+        "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/ispLogos", { preserve => 'no' }
+    ) if -d "$::imscpConfig{'GUI_ROOT_DIR'}/data/ispLogos";
 
     # Save GUI logs
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/data/logs" )->rcopy(
-        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/logs", { preserve => 'no' }
-    ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/data/logs";
+    iMSCP::Dir->new( dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/data/logs" )->rcopy(
+        "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/logs", { preserve => 'no' }
+    ) if -d "$::imscpConfig{'GUI_ROOT_DIR'}/data/logs";
 
     # Save persistent data
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent" )->rcopy(
-        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent", { preserve => 'no' }
-    ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent";
+    iMSCP::Dir->new( dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent" )->rcopy(
+        "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent", { preserve => 'no' }
+    ) if -d "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent";
+    
+    # Save vendor data
+    iMSCP::Dir->new( dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/vendor" )->rcopy(
+        "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/vendor", { preserve => 'no' }
+    ) if -d "$::imscpConfig{'GUI_ROOT_DIR'}/vendor";
 
     # Save GUI bin directory
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/bin" )->rcopy(
-        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/bin", { preserve => 'no' }
-    ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/bin";
+    iMSCP::Dir->new( dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/bin" )->rcopy(
+        "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/bin", { preserve => 'no' }
+    ) if -d "$::imscpConfig{'GUI_ROOT_DIR'}/bin";
 
     # Save software (older path ./gui/data/software) to new path (./gui/data/persistent/software)
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/data/softwares" )->rcopy(
-        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/data/persistent/softwares", { preserve => 'no' }
-    ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/data/softwares";
+    iMSCP::Dir->new( dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/data/softwares" )->rcopy(
+        "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/softwares", { preserve => 'no' }
+    ) if -d "$::imscpConfig{'GUI_ROOT_DIR'}/data/softwares";
 
     # Save plugins
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'PLUGINS_DIR'}" )->rcopy(
-        "$destdir$main::imscpConfig{'PLUGINS_DIR'}", { preserve => 'no' }
-    ) if -d $main::imscpConfig{'PLUGINS_DIR'};
+    iMSCP::Dir->new( dirname => "$::imscpConfig{'PLUGINS_DIR'}" )->rcopy(
+        "$destdir$::imscpConfig{'PLUGINS_DIR'}", { preserve => 'no' }
+    ) if -d $::imscpConfig{'PLUGINS_DIR'};
 
-    # Quick fix for #IP-1340 (Removes old filemanager directory which is no longer used)
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools/filemanager" )->remove();
-
-    # Save tools
-    iMSCP::Dir->new( dirname => "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools" )->rcopy(
-        "$destdir$main::imscpConfig{'ROOT_DIR'}/gui/public/tools", { preserve => 'no' }
-    ) if -d "$main::imscpConfig{'ROOT_DIR'}/gui/public/tools";
+    # Save package handlers (cover uninstallation case)
+    for my $packageTypeDir ( iMSCP::Dir->new( dirname => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package" )->getDirs() ) {
+        for my $packageDir ( iMSCP::Dir->new( dirname => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/$packageTypeDir" )->getDirs() ) {
+            for my $handlerFile (
+                iMSCP::Dir->new( 
+                    dirname  => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/$packageTypeDir/$packageDir", 
+                    fileType => qr/^Handler\.pm/ 
+                )->getFiles()
+            ) {
+                my $rs = iMSCP::File->new(
+                    filename => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/$packageTypeDir/$packageDir/$handlerFile"
+                )->copyFile( "$destdir$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/$packageTypeDir/$packageDir/$handlerFile" );
+                return $rs if $rs;
+            }
+        }
+    }
 
     0;
 }
@@ -758,57 +772,58 @@ sub _savePersistentData
 
 sub _removeObsoleteFiles
 {
-    for( "$main::imscpConfig{'CACHE_DATA_DIR'}/addons",
-        "$main::imscpConfig{'CONF_DIR'}/apache/backup",
-        "$main::imscpConfig{'CONF_DIR'}/apache/skel/alias/phptmp",
-        "$main::imscpConfig{'CONF_DIR'}/apache/skel/subdomain/phptmp",
-        "$main::imscpConfig{'CONF_DIR'}/apache/working",
-        "$main::imscpConfig{'CONF_DIR'}/cron.d",
-        "$main::imscpConfig{'CONF_DIR'}/fcgi",
-        "$main::imscpConfig{'CONF_DIR'}/hooks.d",
-        "$main::imscpConfig{'CONF_DIR'}/init.d",
-        "$main::imscpConfig{'CONF_DIR'}/nginx",
-        "$main::imscpConfig{'CONF_DIR'}/php-fpm",
-        "$main::imscpConfig{'CONF_DIR'}/courier/backup",
-        "$main::imscpConfig{'CONF_DIR'}/courier/working",
-        "$main::imscpConfig{'CONF_DIR'}/postfix/backup",
-        "$main::imscpConfig{'CONF_DIR'}/postfix/imscp",
-        "$main::imscpConfig{'CONF_DIR'}/postfix/parts",
-        "$main::imscpConfig{'CONF_DIR'}/postfix/working",
-        "$main::imscpConfig{'CONF_DIR'}/skel/domain/domain_disable_page",
-        "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/.composer",
-        "$main::imscpConfig{'LOG_DIR'}/imscp-arpl-msgr",
+    for( "$::imscpConfig{'CACHE_DATA_DIR'}/addons",
+        "$::imscpConfig{'CONF_DIR'}/apache/backup",
+        "$::imscpConfig{'CONF_DIR'}/apache/skel/alias/phptmp",
+        "$::imscpConfig{'CONF_DIR'}/apache/skel/subdomain/phptmp",
+        "$::imscpConfig{'CONF_DIR'}/apache/working",
+        "$::imscpConfig{'CONF_DIR'}/cron.d",
+        "$::imscpConfig{'CONF_DIR'}/fcgi",
+        "$::imscpConfig{'CONF_DIR'}/hooks.d",
+        "$::imscpConfig{'CONF_DIR'}/init.d",
+        "$::imscpConfig{'CONF_DIR'}/nginx",
+        "$::imscpConfig{'CONF_DIR'}/php-fpm",
+        "$::imscpConfig{'CONF_DIR'}/courier/backup",
+        "$::imscpConfig{'CONF_DIR'}/courier/working",
+        "$::imscpConfig{'CONF_DIR'}/postfix/backup",
+        "$::imscpConfig{'CONF_DIR'}/postfix/imscp",
+        "$::imscpConfig{'CONF_DIR'}/postfix/parts",
+        "$::imscpConfig{'CONF_DIR'}/postfix/working",
+        "$::imscpConfig{'CONF_DIR'}/skel/domain/domain_disable_page",
+        "$::imscpConfig{'IMSCP_HOMEDIR'}/packages/.composer",
+        "$::imscpConfig{'LOG_DIR'}/imscp-arpl-msgr",
         '/var/local/imscp/.composer',
-        '/var/local/imscp/packages'
+        '/var/local/imscp/packages',
+        "$::imscpConfig{'CONF_DIR'}/pma"
     ) {
         iMSCP::Dir->new( dirname => $_ )->remove();
     }
 
-    for("$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_disabled_ssl.tpl",
-        "$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_redirect.tpl",
-        "$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_redirect_ssl.tpl",
-        "$main::imscpConfig{'CONF_DIR'}/apache/parts/domain_ssl.tpl",
-        "$main::imscpConfig{'CONF_DIR'}/vsftpd/imscp_allow_writeable_root.patch",
-        "$main::imscpConfig{'CONF_DIR'}/vsftpd/imscp_pthread_cancel.patch",
-        "$main::imscpConfig{'CONF_DIR'}/apache/parts/php5.itk.ini",
-        "$main::imscpConfig{'CONF_DIR'}/dovecot/dovecot.conf.2.0",
-        "$main::imscpConfig{'CONF_DIR'}/dovecot/dovecot.conf.2.1",
+    for("$::imscpConfig{'CONF_DIR'}/apache/parts/domain_disabled_ssl.tpl",
+        "$::imscpConfig{'CONF_DIR'}/apache/parts/domain_redirect.tpl",
+        "$::imscpConfig{'CONF_DIR'}/apache/parts/domain_redirect_ssl.tpl",
+        "$::imscpConfig{'CONF_DIR'}/apache/parts/domain_ssl.tpl",
+        "$::imscpConfig{'CONF_DIR'}/vsftpd/imscp_allow_writeable_root.patch",
+        "$::imscpConfig{'CONF_DIR'}/vsftpd/imscp_pthread_cancel.patch",
+        "$::imscpConfig{'CONF_DIR'}/apache/parts/php5.itk.ini",
+        "$::imscpConfig{'CONF_DIR'}/dovecot/dovecot.conf.2.0",
+        "$::imscpConfig{'CONF_DIR'}/dovecot/dovecot.conf.2.1",
         '/etc/default/imscp_panel',
-        "$main::imscpConfig{'CONF_DIR'}/frontend/00_master.conf",
-        "$main::imscpConfig{'CONF_DIR'}/frontend/00_master_ssl.conf",
-        "$main::imscpConfig{'CONF_DIR'}/frontend/imscp_fastcgi.conf",
-        "$main::imscpConfig{'CONF_DIR'}/frontend/imscp_php.conf",
-        "$main::imscpConfig{'CONF_DIR'}/frontend/nginx.conf",
-        "$main::imscpConfig{'CONF_DIR'}/frontend/php-fcgi-starter",
-        "$main::imscpConfig{'CONF_DIR'}/listeners.d/README",
-        "$main::imscpConfig{'CONF_DIR'}/skel/domain/.htgroup",
-        "$main::imscpConfig{'CONF_DIR'}/skel/domain/.htpasswd",
-        "$main::imscpConfig{'IMSCP_HOMEDIR'}/packages/composer.phar",
+        "$::imscpConfig{'CONF_DIR'}/frontend/00_master.conf",
+        "$::imscpConfig{'CONF_DIR'}/frontend/00_master_ssl.conf",
+        "$::imscpConfig{'CONF_DIR'}/frontend/imscp_fastcgi.conf",
+        "$::imscpConfig{'CONF_DIR'}/frontend/imscp_php.conf",
+        "$::imscpConfig{'CONF_DIR'}/frontend/nginx.conf",
+        "$::imscpConfig{'CONF_DIR'}/frontend/php-fcgi-starter",
+        "$::imscpConfig{'CONF_DIR'}/listeners.d/README",
+        "$::imscpConfig{'CONF_DIR'}/skel/domain/.htgroup",
+        "$::imscpConfig{'CONF_DIR'}/skel/domain/.htpasswd",
+        "$::imscpConfig{'IMSCP_HOMEDIR'}/packages/composer.phar",
         '/usr/sbin/maillogconvert.pl',
         # Due to a mistake in previous i-MSCP versions (Upstart conffile copied into systemd confdir)
         "/etc/systemd/system/php5-fpm.override",
         "/etc/init/php5-fpm.override", # Removed in 1.4.x
-        "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf",
+        "$::imscpConfig{'CONF_DIR'}/imscp.old.conf",
         '/usr/local/lib/imscp_panel/imscp_panel_checkconf', # Removed in 1.4.x,
         '/var/local/imscp/composer.phar'
     ) {
@@ -853,7 +868,7 @@ sub _processXmlFile
     # Process xml 'folders' nodes if any
     for ( @{$data->{'folders'}} ) {
         $_->{'content'} = _expandVars( $_->{'content'} );
-        $main::{$_->{'export'}} = $_->{'content'} if defined $_->{'export'};
+        $::{$_->{'export'}} = $_->{'content'} if defined $_->{'export'};
         my $rs = _processFolder( $_ );
         return $rs if $rs;
     }
@@ -911,10 +926,10 @@ sub _expandVars
     $string //= '';
 
     while ( my ($var) = $string =~ /\$\{([^\}]+)\}/g ) {
-        if ( defined $main::{$var} ) {
-            $string =~ s/\$\{$var\}/$main::{$var}/g;
-        } elsif ( defined $main::imscpConfig{$var} ) {
-            $string =~ s/\$\{$var\}/$main::imscpConfig{$var}/g;
+        if ( defined $::{$var} ) {
+            $string =~ s/\$\{$var\}/$::{$var}/g;
+        } elsif ( defined $::imscpConfig{$var} ) {
+            $string =~ s/\$\{$var\}/$::imscpConfig{$var}/g;
         } else {
             fatal( "Couldn't expand variable \${$var}. Variable not found." );
         }
@@ -941,7 +956,7 @@ sub _processFolder
     my $dir = iMSCP::Dir->new( dirname => $data->{'content'} );
 
     # Needed to be sure to not keep any file from a previous build that has failed
-    if ( defined $main::{'INST_PREF'} && $main::{'INST_PREF'} eq $data->{'content'} ) {
+    if ( defined $::{'INST_PREF'} && $::{'INST_PREF'} eq $data->{'content'} ) {
         $dir->remove();
     }
 
@@ -969,7 +984,7 @@ sub _copyConfig
 
     if ( defined $data->{'if'} && !eval _expandVars( $data->{'if'} ) ) {
         return 0 if $data->{'kept'};
-        ( my $syspath = $data->{'content'} ) =~ s/^$main::{'INST_PREF'}//;
+        ( my $syspath = $data->{'content'} ) =~ s/^$::{'INST_PREF'}//;
         return 0 unless $syspath ne '/' && -f $syspath;
         return iMSCP::File->new( filename => $syspath )->delFile();
     }

@@ -39,7 +39,7 @@ use parent 'Common::SingletonClass';
 
 =item preinstall( )
 
- Process preinstall tasks
+ Process pre-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -52,7 +52,7 @@ sub preinstall
 
 =item postinstall( )
 
- Process post install tasks
+ Process post-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -65,7 +65,7 @@ sub postinstall
 
 =item uninstall( )
 
- Process uninstall tasks
+ Process uninstallation tasks
 
  Return int 0 on success, other on failure
 
@@ -78,7 +78,7 @@ sub uninstall
 
 =item setEnginePermissions( )
 
- Set files permissions.
+ Set engine permissions.
 
  Return int 0 on success, other on failure
 

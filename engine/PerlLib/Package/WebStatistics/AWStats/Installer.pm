@@ -47,7 +47,7 @@ use parent 'Common::SingletonClass';
 
 =item install( )
 
- Process install tasks
+ Process installation tasks
 
  Return int 0 on success, other on failure
 
@@ -64,7 +64,7 @@ sub install
 
 =item postinstall( )
 
- Process post install tasks
+ Process post-installation tasks
 
  Return int 0 on success, other on failure
 

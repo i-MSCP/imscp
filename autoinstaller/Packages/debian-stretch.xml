@@ -61,6 +61,7 @@
             <package>php5.6-cli</package>
             <package>php5.6-fpm</package>
             <package post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php5.6-common</package>
+            <package post_install_tasks="phpenmod bz2">php5.6-bz2</package>
             <package post_install_tasks="phpenmod curl">php5.6-curl</package>
             <package post_install_tasks="phpenmod gd">php5.6-gd</package>
             <package post_install_tasks="phpenmod gmp">php5.6-gmp</package>
@@ -86,6 +87,7 @@
             <package>php7.0-cgi</package>
             <package>php7.0-fpm</package>
             <package post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php7.0-common</package>
+            <package post_install_tasks="phpenmod bz2">php7.0-bz2</package>
             <package post_install_tasks="phpenmod curl">php7.0-curl</package>
             <package post_install_tasks="phpenmod gd">php7.0-gd</package>
             <package post_install_tasks="phpenmod gmp">php7.0-gmp</package>
@@ -97,6 +99,7 @@
             <package post_install_tasks="phpenmod mysqlnd mysqli pdo_mysql">php7.0-mysql</package>
             <package post_install_tasks="phpenmod opcache">php7.0-opcache</package>
             <package post_install_tasks="phpenmod pspell">php7.0-pspell</package>
+            <package post_install_tasks="phpenmod sodium">php7.0-sodium</package>
             <package post_install_tasks="phpenmod dom xml xmlreader xmlwriter">php7.0-xml</package>
             <package post_install_tasks="phpenmod zip">php7.0-zip</package>
             <package post_install_tasks="phpenmod apcu">php-apcu</package>
@@ -112,6 +115,7 @@
             <package>php7.1-cgi</package>
             <package>php7.1-fpm</package>
             <package post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php7.1-common</package>
+            <package post_install_tasks="phpenmod bz2">php7.1-bz2</package>
             <package post_install_tasks="phpenmod curl">php7.1-curl</package>
             <package post_install_tasks="phpenmod gd">php7.1-gd</package>
             <package post_install_tasks="phpenmod gmp">php7.1-gmp</package>
@@ -123,6 +127,7 @@
             <package post_install_tasks="phpenmod mysqlnd mysqli pdo_mysql">php7.1-mysql</package>
             <package post_install_tasks="phpenmod opcache">php7.1-opcache</package>
             <package post_install_tasks="phpenmod pspell">php7.1-pspell</package>
+            <package post_install_tasks="phpenmod sodium">php7.1-sodium</package>
             <package post_install_tasks="phpenmod dom xml xmlreader xmlwriter">php7.1-xml</package>
             <package post_install_tasks="phpenmod zip">php7.1-zip</package>
             <package post_install_tasks="phpenmod apcu">php-apcu</package>
@@ -138,6 +143,7 @@
             <package>php7.2-cgi</package>
             <package>php7.2-fpm</package>
             <package post_install_tasks="phpenmod ctype fileinfo ftp gettext iconv pdo phar posix sockets">php7.2-common</package>
+            <package post_install_tasks="phpenmod bz2">php7.2-bz2</package>
             <package post_install_tasks="phpenmod curl">php7.2-curl</package>
             <package post_install_tasks="phpenmod gd">php7.2-gd</package>
             <package post_install_tasks="phpenmod gmp">php7.2-gmp</package>
@@ -148,6 +154,7 @@
             <package post_install_tasks="phpenmod mysqlnd mysqli pdo_mysql">php7.2-mysql</package>
             <package post_install_tasks="phpenmod opcache">php7.2-opcache</package>
             <package post_install_tasks="phpenmod pspell">php7.2-pspell</package>
+            <package post_install_tasks="phpenmod sodium">php7.1-sodium</package>
             <package post_install_tasks="phpenmod dom xml xmlreader xmlwriter">php7.2-xml</package>
             <package post_install_tasks="phpenmod zip">php7.2-zip</package>
             <package post_install_tasks="phpenmod apcu">php-apcu</package>
@@ -165,6 +172,7 @@
             >
                 php7.3-common
             </package>
+            <package post_install_tasks="phpenmod bz2">php7.3-bz2</package>
             <package post_install_tasks="phpenmod curl">php7.3-curl</package>
             <package post_install_tasks="phpenmod gd">php7.3-gd</package>
             <package post_install_tasks="phpenmod gmp">php7.3-gmp</package>

@@ -36,6 +36,26 @@ use iMSCP::Execute 'execute';
 use iMSCP::Getopt;
 use parent 'Common::SingletonClass';
 
+use subs qw/
+    preinstall install postinstall uninstall
+
+    preaddDomain preaddCustomDNS preaddFtpUser preaddHtaccess preaddHtgroup preaddHtpasswd preaddMail preaddServerIP preaddSSLcertificate preaddSub preaddUser
+    addDomain addCustomDNS addFtpUser addHtaccess addHtgroup addHtpasswd addMail addServerIP addSSLcertificate addSub addUser
+    postaddDomain postaddCustomDNS postaddFtpUser postaddHtaccess postaddHtgroup postaddHtpasswd postaddMail postaddServerIP postaddSSLcertificate postaddSub postaddUser
+
+    predeleteDmn predeleteCustomDNS predeleteFtpUser predeleteHtaccess predeleteHtgroup predeleteHtpasswd predeleteMail predeleteServerIP predeleteSSLcertificate predeleteSub predeleteUser
+    deleteDmn deleteCustomDNS deleteFtpUser deleteHtaccess deleteHtgroup deleteHtpasswd deleteMail deleteServerIP deleteSSLcertificate deleteSub deleteUser
+    postdeleteDmn postdeleteCustomDNS postdeleteFtpUser postdeleteHtaccess postdeleteHtgroup postdeleteHtpasswd postdeleteMail postdeleteServerIP postdeleteSSLcertificate postdeleteSub postdeleteUser
+
+    prerestoreDmn prerestoreCustomDNS prerestoreFtpUser prerestoreHtaccess prerestoreHtgroup prerestoreHtpasswd prerestoreMail prerestoreServerIP prerestoreSSLcertificate prerestoreSub prerestoreUser
+    restoreDmn restoreCustomDNS restoreFtpUser restoreHtaccess restoreHtgroup restoreHtpasswd restoreMail restoreServerIP restoreSSLcertificate restoreSub restoreUser
+    postrestoreDmn postrestoreCustomDNS postrestoreFtpUser postrestoreHtaccess postrestoreHtgroup postrestoreHtpasswd postrestoreMail postrestoreServerIP postrestoreSSLcertificate postrestoreSub postrestoreUser
+
+    predisableDmn predisableCustomDNS predisableFtpUser predisableHtaccess predisableHtgroup predisableHtpasswd predisableMail predisableServerIP predisableSSLcertificate predisableSub predisableUser
+    disableDmn disableCustomDNS disableFtpUser disableHtaccess disableHtgroup disableHtpasswd disableMail disableServerIP disableSSLcertificate disableSub disableUser
+    postdisableDmn postdisableCustomDNS postdisableFtpUser postdisableHtaccess postdisableHtgroup postdisableHtpasswd postdisableMail postdisableServerIP dpostisableSSLcertificate postdisableSub postdisableUser
+/;
+
 =head1 DESCRIPTION
 
  Abstract package collection.
@@ -57,35 +77,67 @@ sub getPriority
     0;
 }
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( \%em )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
+ Param iMSCP::EventManager \%em
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ( $self, $eventManager ) = @_;
+    my ( $self, $em ) = @_;
 
-    $eventManager->register( 'beforeSetupDialog', sub {
-        push @{ $_[0] }, sub { $self->showDialog( @_ ) };
+    my $rs = $em->registerOne( 'beforeSetupDialog', sub {
+        push @{ $_[0] }, sub { $self->setupDialog( @_ ) };
+        0;
+    } );
+    $rs ||= $em->registerOne( 'beforeSetupServersAndPackages', sub {
+        my @selectedPackages = split ',', ::setupGetQuestion( $self->getConfVarname());
+
+        for my $package ( split ',', $::imscpConfig{ $self->getConfVarname() } ) {
+            next if $package eq 'No';
+            my $packageInstance = $self->_getPackageInstance( $package );
+            ( my $sub = $packageInstance->can( 'registerSetupListeners' ) ) or next;
+            $rs = $sub->( $packageInstance, $em );
+            return $rs if $rs;
+        }
+
+        my @distributionPackages;
+        for my $package ( array_diff( @selectedPackages, @{ $self->{'PACKAGES'} } ) ) {
+            next if $package eq 'No';
+            my $packageInstance = $self->_getPackageInstance( $package );
+
+            if ( my $sub = $packageInstance->can( 'uninstall' ) ) {
+                $rs = $sub->( $packageInstance );
+                return $rs if $rs;
+            }
+
+            ( my $sub = $packageInstance->can( 'getDistributionPackages' ) ) or next;
+            push @distributionPackages, $sub->( $packageInstance );
+        }
+
+        unless ( $::skippackages ) {
+            $rs = $self->_purgeDistributionPackages( @distributionPackages );
+            return $rs if $rs;
+        }
+
         0;
     } );
 }
 
-=item showDialog( \%dialog )
+=item setupDialog( \%dialog )
 
- Show setup dialog
+ Setup dialog
 
  Param iMSCP::Dialog \%dialog
  Return int 0 NEXT, 30 BACKUP, 50 ESC
 
 =cut
 
-sub showDialog
+sub setupDialog
 {
     my ( $self, $dialog ) = @_;
 
@@ -106,21 +158,12 @@ EOF
 
     ::setupSetQuestion( $self->getConfVarname(), @selectedPackages );
 
-    for my $package ( @selectedPackages ) {
-        next if $package eq 'No';
-        $package = $self->_getPackageInstance( $package );
-        ( my $sub = $package->can( 'showDialog' ) ) or next;
-        debug( sprintf( 'Executing showDialog action on %s', ref $package ));
-        my $rs = $sub->( $package, $dialog );
-        return $rs if $rs;
-    }
-
     0;
 }
 
 =item preinstall( )
 
- Process preinstall tasks
+ Process pre-installation tasks
 
  Return int 0 on success, other on failure
 
@@ -130,42 +173,12 @@ sub preinstall
 {
     my ( $self ) = @_;
 
-    my @selectedPackages = split ',', ::setupGetQuestion( $self->getConfVarname());
-    my @unselectedPackages = array_diff( @selectedPackages, @{ $self->{'PACKAGES'} } );
-
     my @distributionPackages;
-    for my $package ( @unselectedPackages ) {
+    for my $package ( split ',', $::imscpConfig{ $self->getConfVarname() } ) {
         next if $package eq 'No';
         my $packageInstance = $self->_getPackageInstance( $package );
-
-        if ( my $sub = $packageInstance->can( 'uninstall' ) ) {
-            debug( sprintf( 'Executing uninstall action on %s package', $package ));
-            my $rs = $sub->( $packageInstance );
-            return $rs if $rs;
-        }
-
-        ( my $sub = $packageInstance->can( 'getDistributionPackages' ) ) or next;
-        push @distributionPackages, $sub->( $packageInstance );
-    }
-
-    unless ( $::skippackages ) {
-        my $rs = $self->_purgeDistributionPackages( @distributionPackages );
-        return $rs if $rs;
-    }
-
-    @distributionPackages = ();
-    for my $package ( @selectedPackages ) {
-        next if $package eq 'No';
-        my $packageInstance = $self->_getPackageInstance( $package );
-
-        if ( my $sub = $packageInstance->can( 'registerSetupListeners' ) ) {
-            debug( sprintf( 'Registering setup listeners for %s package', $package ));
-            my $rs = $sub->( $packageInstance, $self->{'eventManager'} );
-            return $rs if $rs;
-        }
 
         if ( my $sub = $packageInstance->can( 'preinstall' ) ) {
-            debug( sprintf( 'Executing preinstall action on %s package', $package ));
             my $rs = $sub->( $packageInstance );
             return $rs if $rs;
         }
@@ -243,8 +256,7 @@ sub AUTOLOAD
     for my $package ( split ',', $::imscpConfig{ $self->getConfVarname() } ) {
         next if $package eq 'No';
         my $packageInstance = $self->_getPackageInstance( $package );
-        ( my $sub = $package->can( $method ) ) or next;
-        debug( sprintf( 'Executing the %s action on %s package', $method, $package ));
+        ( my $sub = $packageInstance->can( $method ) ) or next;
         my $rs = $sub->( $packageInstance, @_ );
         return $rs if $rs;
     }
@@ -269,9 +281,7 @@ sub _init
     my ( $self ) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    @{ $self->{'PACKAGES'} } = (
-        iMSCP::Dir->new( dirname => "@{ [ dirname __FILE__ ] }/@{ [ ( ref $self ) =~ s/.*:://r ] }" )->getDirs(), 'No'
-    );
+    @{ $self->{'PACKAGES'} } = ( iMSCP::Dir->new( dirname => "@{ [ dirname __FILE__ ] }/@{ [ ( ref $self ) =~ s/.*:://r ] }" )->getDirs(), 'No' );
     $self;
 }
 
@@ -351,8 +361,8 @@ sub _purgeDistributionPackages
 
  Get instance of the given package
 
- Param string $package Package name
- Return Package instance
+ Param string $package Package short name
+ Return Package::AbstractPackageCollection
 
 =cut
 
@@ -360,8 +370,9 @@ sub _getPackageInstance
 {
     my ( $self, $package ) = @_;
 
-    $self->{'__package_instances__'}->{$package} ||= do {
+    $self->{'_package_instances'}->{$package} //= do {
         $package = "@{ [ ref $self ] }::$package::$package";
+
         eval "require $package";
         if ( $@ ) {
             error( $@ );

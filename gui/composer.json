@@ -17,26 +17,29 @@
   ],
   "support": {
     "issues": "https://youtrack.i-mscp.net/issues",
-    "source": "https://github.com/i-MSCP/imscp/tree/1.5.3/gui/",
+    "source": "https://github.com/i-MSCP/imscp",
     "forum": "https://wwww.i-mscp.net/"
   },
   "config": {
     "sort-packages": true,
-    "discard-changes": true,
+    "discard-changes": "stash",
     "htaccess-protect": false,
     "optimize-autoloader": true,
     "apcu-autoloader": true,
     "classmap-authoritative": false,
     "preferred-install": "dist",
     "process-timeout": 5000,
-    "use-include-path": false,
-    "vendor-dir": "$HOME/vendor"
+    "use-include-path": false
   },
   "minimum-stability": "stable",
   "require": {
     "php": ">=7.3 <7.4",
+    "ext-apc": "*",
+    "ext-apcu": "*",
+    "ext-bz2": "*",
     "ext-ctype": "*",
     "ext-curl": "*",
+    "ext-date": "*",
     "ext-dom": "*",
     "ext-fileinfo": "*",
     "ext-ftp": "*",
@@ -47,19 +50,29 @@
     "ext-imap": "*",
     "ext-intl": "*",
     "ext-json": "*",
+    "ext-libxml": "*",
     "ext-mbstring": "*",
+    "ext-pcre": "*",
+    "ext-openssl": "*",
     "ext-pdo": "*",
     "ext-pdo_mysql": "*",
     "ext-phar": "*",
     "ext-posix": "*",
     "ext-pspell": "*",
+    "ext-reflection": "*",
+    "ext-session": "*",
+    "ext-simplexml": "*",
     "ext-sockets": "*",
+    "ext-sodium": "*",
+    "ext-spl": "*",
     "ext-xml": "*",
     "ext-xmlreader": "*",
     "ext-xmlwriter": "*",
     "ext-zip": "*",
+    "ext-zlib": "*",
     "algo26-matthias/idna-convert": "^2.1",
     "clancats/hydrahon": "^1.1",
+    "imscp/composer-installers": "^1.0",
     "pear/net_dns2": "^1.4",
     "phpseclib/phpseclib": "^2.0",
     "slim/slim": "^3.12"
@@ -90,5 +103,12 @@
   },
   "include-path": [
     "library/vendor/Zend/library/"
-  ]
+  ],
+  "extra": {
+    "installer-paths": {
+      "vendor/{$vendor}/{$name}": [
+        "imscp/phpmyadmin"
+      ]
+    }
+  }
 }

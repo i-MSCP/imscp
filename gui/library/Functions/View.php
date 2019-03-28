@@ -120,29 +120,6 @@ function generateNavigation(TemplateEngine $tpl)
     /** @var $navigation Navigation */
     $navigation = Registry::get('navigation');
 
-    // Dynamic links (only at customer level)
-    if ($_SESSION['user_type'] === 'user') {
-        $domainProperties = get_domain_default_props($_SESSION['user_id']);
-        $tpl->assign('WEBSTATS_PATH', 'http://' . decode_idna($domainProperties['domain_name']) . '/stats/');
-
-        if (customerHasFeature('mail')) {
-            $webmails = getWebmailList();
-            if (!empty($webmails)) {
-                $page1 = $navigation->findOneBy('class', 'email');
-                $page2 = $navigation->findOneBy('class', 'webtools');
-                foreach ($webmails as $webmail) {
-                    $page = [
-                        'label'  => tr('%s webmail', $webmail),
-                        'uri'    => '/' . (($webmail == 'Roundcube') ? 'webmail' : strtolower($webmail)) . '/',
-                        'target' => '_blank',
-                    ];
-                    $page1->addPage($page);
-                    $page2->addPage($page);
-                }
-            }
-        }
-    }
-
     $cfg = Registry::get('config');
 
     if ($cfg['IMSCP_SUPPORT_SYSTEM']) {
@@ -159,7 +136,6 @@ function generateNavigation(TemplateEngine $tpl)
             $navigation->addPage([
                 'order'  => $customMenu['menu_order'],
                 'label'  => tohtml($customMenu['menu_name']),
-                //'uri'    => get_menu_vars($customMenu['menu_link']),
                 'uri'    => $customMenu['menu_link'],
                 'target' => !empty($customMenu['menu_target'] ? tohtml($customMenu['menu_target']) : '_self'),
                 'class'  => 'custom_link'
@@ -172,19 +148,14 @@ function generateNavigation(TemplateEngine $tpl)
     $acl->addRole($_SESSION['user_type']);
 
     /** @var Zend_Navigation_Page_Uri $page */
-    foreach($navigation as $page) {
+    foreach ($navigation as $page) {
         $page->setCurrentUriPath($currentUriPath);
         $resource = $page->getResource();
         $assertion = $page->get('assertion');
         if ($resource && $assertion) {
             $acl->addResource($resource);
             $acl->allow($_SESSION['user_type'], $resource, $page->getPrivilege(), new $assertion);
-            continue;
         }
-
-        //if(!$page->isActive(true)) {
-        //    //continue;
-        //}
 
         foreach (new RecursiveIteratorIterator($page, RecursiveIteratorIterator::SELF_FIRST) as $childPage) {
             $childPage->setCurrentUriPath($currentUriPath);
@@ -198,7 +169,7 @@ function generateNavigation(TemplateEngine $tpl)
 
             // Only for backward compatibility with plugins. Will be removed in a later release.
             if ($callbacks = $childPage->get('privilege_callback')) {
-                $callbacks = (isset($callbacks['name'])) ? [$callbacks] : $callbacks;
+                $callbacks = isset($callbacks['name']) ? [$callbacks] : $callbacks;
                 $resource = $childPage->getUri();
                 $assertion = new \iMSCP\Assertion\CallbackAssertion(function () use ($callbacks) {
                     foreach ($callbacks as $callback) {
@@ -212,6 +183,65 @@ function generateNavigation(TemplateEngine $tpl)
                 $childPage->setResource($resource);
                 $acl->addResource($resource);
                 $acl->allow($_SESSION['user_type'], $resource, $childPage->getPrivilege(), $assertion);
+            }
+        }
+    }
+
+    // Dynamic pages (user level)
+    if ($_SESSION['user_type'] === 'user') {
+        if ($sqlAdminToolPackages = getSqlAdminToolPackages()) {
+            $acl->addResource('sql_admin_tool');
+            $acl->allow($_SESSION['user_type'], 'sql_admin_tool', NULL, new \iMSCP\Assertion\ClientHasSqlFeatureAssertion());
+            $parentPage = $navigation->findOneBy('class', 'database');
+            foreach ($sqlAdminToolPackages as $sqlAdminToolPackage) {
+                $parentPage->addPage([
+                    'label'    => $sqlAdminToolPackage,
+                    'uri'      => '/' . strtolower($sqlAdminToolPackage) . '/',
+                    'target'   => '_blank',
+                    'resource' => 'sql_admin_tool'
+                ]);
+            }
+        }
+
+        if ($webFtpClientPackages = getWebFtpClientPackages()) {
+            $acl->addResource('web_ftp');
+            $acl->allow($_SESSION['user_type'], 'web_ftp', NULL, new \iMSCP\Assertion\ClientHasFtpFeatureAssertion());
+            $parentPage = $navigation->findOneBy('class', 'ftp');
+            foreach ($webFtpClientPackages as $webFtpClientPackage) {
+                $parentPage->addPage([
+                    'label'    => $webFtpClientPackage,
+                    'uri'      => '/' . strtolower($webFtpClientPackage) . '/',
+                    'target'   => '_blank',
+                    'resource' => 'web_ftp'
+                ]);
+            }
+        }
+
+        if ($webmailClientPackages = getWebmailClientPackages()) {
+            $acl->addResource('webmail');
+            $acl->allow($_SESSION['user_type'], 'webmail', NULL, new \iMSCP\Assertion\ClientHasMailFeatureAssertion());
+            $parentPage = $navigation->findOneBy('class', 'email');
+            foreach ($webmailClientPackages as $webmailClientPackage) {
+                $parentPage->addPage([
+                    'label'    => $webmailClientPackage,
+                    'uri'      => '/' . strtolower($webmailClientPackage) . '/',
+                    'target'   => '_blank',
+                    'resource' => 'webmail'
+                ]);
+            }
+        }
+
+        if ($webStatisticPackages = getWebStatisticPackages()) {
+            $acl->addResource('webstats');
+            $acl->allow($_SESSION['user_type'], 'webstats', NULL, new \iMSCP\Assertion\ClientHasWebstatsFeatureAssertion());
+            $parentPage = $navigation->findOneBy('class', 'statistics');
+            foreach ($webStatisticPackages as $webStatisticPackage) {
+                $parentPage->addPage([
+                    'label'     => $webStatisticPackage,
+                    'uri'       => decode_idna(get_domain_default_props($_SESSION['user_id'])['domain_name']) . '/' . strtolower($webStatisticPackage) . '/',
+                    'target'    => '_blank',
+                    'resource'  => 'webstats'
+                ]);
             }
         }
     }

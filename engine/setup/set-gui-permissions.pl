@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -77,13 +77,13 @@ my $rs = 0;
 my @items = ();
 
 for my $server( iMSCP::Servers->getInstance()->getList() ) {
-    ( my $subref = $server->can( 'setGuiPermissions' ) ) or next;
-    push @items, [ $server, sub { $subref->( $server->factory()); } ];
+    ( my $sub = $server->can( 'setGuiPermissions' ) ) or next;
+    push @items, [ $server, sub { $sub->( $server->factory()); } ];
 }
 
 for my $package( iMSCP::Packages->getInstance()->getList() ) {
-    ( my $subref = $package->can( 'setGuiPermissions' ) ) or next;
-    push @items, [ $package, sub { $subref->( $package->getInstance()); } ];
+    ( my $sub = $package->can( 'setGuiPermissions' ) ) or next;
+    push @items, [ $package, sub { $sub->( $package->getInstance()); } ];
 }
 
 iMSCP::EventManager->getInstance()->trigger( 'beforeSetGuiPermissions' );

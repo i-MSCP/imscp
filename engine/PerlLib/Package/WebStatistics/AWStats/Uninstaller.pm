@@ -43,7 +43,7 @@ use parent 'Common::SingletonClass';
 
 =item uninstall( )
 
- Process AWStats package uninstall tasks
+ Process uninstallation tasks
 
  Return int 0 on success, other on failure
 

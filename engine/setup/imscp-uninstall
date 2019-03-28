@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by internet Multi Server Control Panel
+# Copyright (C) 2010-2019 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -206,9 +206,9 @@ sub _uninstallPackages
     my ($step, $rs) = ( 1, 0 );
 
     for my $package( @packages ) {
-        ( my $subref = $package->can( 'uninstall' ) ) or $step++ && next;
+        ( my $sub = $package->can( 'uninstall' ) ) or $step++ && next;
         $rs = step(
-            sub { $subref->( $package->getInstance()) },
+            sub { $sub->( $package->getInstance()) },
             sprintf( 'Executing %s uninstall tasks...', $package ),
             $nbSteps,
             $step
@@ -229,9 +229,9 @@ sub _uninstallServers
     my ($step, $rs) = ( 1, 0 );
 
     for my $server( @servers ) {
-        ( my $subref = $server->can( 'uninstall' ) ) or $step++ && next;
+        ( my $sub = $server->can( 'uninstall' ) ) or $step++ && next;
         $rs = step(
-            sub { $subref->( $server->factory()) },
+            sub { $sub->( $server->factory()) },
             sprintf( 'Executing %s uninstall tasks...', $server ),
             $nbSteps,
             $step

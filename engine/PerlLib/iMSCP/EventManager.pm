@@ -28,7 +28,7 @@ use warnings;
 use autouse Clone => qw/ clone /;
 use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::EventManager::ListenerPriorityQueue;
-use Scalar::Util qw / blessed /;
+use Scalar::Util 'blessed';
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -91,7 +91,7 @@ sub register
             return;
         }
 
-        unless ( $self->{'events'}->{$eventNames} ) {
+        unless ( exists $self->{'events'}->{$eventNames} ) {
             $self->{'events'}->{$eventNames} = iMSCP::EventManager::ListenerPriorityQueue->new();
         }
 

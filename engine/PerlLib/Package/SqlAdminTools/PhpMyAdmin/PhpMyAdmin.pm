@@ -25,13 +25,37 @@ package Package::SqlAdminTools::PhpMyAdmin::PhpMyAdmin;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ :nostat Package::SqlAdminTools::PhpMyAdmin::Installer Package::SqlAdminTools::PhpMyAdmin::Uninstaller /;
+use File::Basename 'dirname';
+use Class::Autouse qw/ :nostat iMSCP::Composer /;
 use iMSCP::Boolean;
-use iMSCP::Config;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error /;
 use iMSCP::EventManager;
-use iMSCP::Rights;
+use iMSCP::File;
+use iMSCP::Getopt;
+use JSON;
 use parent 'Common::SingletonClass';
+
+use subs qw/
+    preinstall install postinstall uninstall
+
+    preaddDomain preaddCustomDNS preaddFtpUser preaddHtaccess preaddHtgroup preaddHtpasswd preaddMail preaddServerIP preaddSSLcertificate preaddSub preaddUser
+    addDomain addCustomDNS addFtpUser addHtaccess addHtgroup addHtpasswd addMail addServerIP addSSLcertificate addSub addUser
+    postaddDomain postaddCustomDNS postaddFtpUser postaddHtaccess postaddHtgroup postaddHtpasswd postaddMail postaddServerIP postaddSSLcertificate postaddSub postaddUser
+
+    predeleteDmn predeleteCustomDNS predeleteFtpUser predeleteHtaccess predeleteHtgroup predeleteHtpasswd predeleteMail predeleteServerIP predeleteSSLcertificate predeleteSub predeleteUser
+    deleteDmn deleteCustomDNS deleteFtpUser deleteHtaccess deleteHtgroup deleteHtpasswd deleteMail deleteServerIP deleteSSLcertificate deleteSub deleteUser
+    postdeleteDmn postdeleteCustomDNS postdeleteFtpUser postdeleteHtaccess postdeleteHtgroup postdeleteHtpasswd postdeleteMail postdeleteServerIP postdeleteSSLcertificate postdeleteSub postdeleteUser
+
+    prerestoreDmn prerestoreCustomDNS prerestoreFtpUser prerestoreHtaccess prerestoreHtgroup prerestoreHtpasswd prerestoreMail prerestoreServerIP prerestoreSSLcertificate prerestoreSub prerestoreUser
+    restoreDmn restoreCustomDNS restoreFtpUser restoreHtaccess restoreHtgroup restoreHtpasswd restoreMail restoreServerIP restoreSSLcertificate restoreSub restoreUser
+    postrestoreDmn postrestoreCustomDNS postrestoreFtpUser postrestoreHtaccess postrestoreHtgroup postrestoreHtpasswd postrestoreMail postrestoreServerIP postrestoreSSLcertificate postrestoreSub postrestoreUser
+
+    predisableDmn predisableCustomDNS predisableFtpUser predisableHtaccess predisableHtgroup predisableHtpasswd predisableMail predisableServerIP predisableSSLcertificate predisableSub predisableUser
+    disableDmn disableCustomDNS disableFtpUser disableHtaccess disableHtgroup disableHtpasswd disableMail disableServerIP disableSSLcertificate disableSub disableUser
+    postdisableDmn postdisableCustomDNS postdisableFtpUser postdisableHtaccess postdisableHtgroup postdisableHtpasswd postdisableMail postdisableServerIP dpostisableSSLcertificate postdisableSub postdisableUser
+/;
+
+my $composerPackageVersionConstraint = '^1.0';
 
 =head1 DESCRIPTION
 
@@ -65,65 +89,6 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
-
- Register setup event listeners
-
- Param iMSCP::EventManager \%eventManager
- Return int 0 on success, other on failure
-
-=cut
-
-sub registerSetupListeners
-{
-    my ( undef, $eventManager ) = @_;
-
-    Package::SqlAdminTools::PhpMyAdmin::Installer->getInstance()->registerSetupListeners( $eventManager );
-}
-
-=item preinstall( )
-
- Process preinstall tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub preinstall
-{
-    Package::SqlAdminTools::PhpMyAdmin::Installer->getInstance()->preinstall();
-}
-
-=item install( )
-
- Process install tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub install
-{
-    Package::SqlAdminTools::PhpMyAdmin::Installer->getInstance()->install();
-}
-
-=item uninstall( )
-
- Process uninstall tasks
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub uninstall
-{
-    my ( $self ) = @_;
-
-    return 0 if $self->{'skip_uninstall'};
-
-    Package::SqlAdminTools::PhpMyAdmin::Uninstaller->getInstance()->uninstall();
-}
-
 =item getPriority( )
 
  Get package priority
@@ -137,32 +102,126 @@ sub getPriority
     0;
 }
 
-=item setGuiPermissions( )
+=item registerSetupListeners( \%em )
 
- Set gui permissions
+ Register setup event listeners
+
+ Param iMSCP::EventManager \%em
+ Return int 0 on success, other on failure
+
+=cut
+
+sub registerSetupListeners
+{
+    my ( undef, $em ) = @_;
+
+    return 0 if iMSCP::Getopt->skipComposerUpdate;
+
+    $em->registerOne( 'beforeSetupPreInstallServers', sub {
+        eval {
+            iMSCP::Composer->new(
+                user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
+                composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
+                composer_json => 'composer.json'
+            )
+                ->require( 'imscp/phpmyadmin', $composerPackageVersionConstraint )
+                ->dumpComposerJson();
+        };
+        if ( $@ ) {
+            error( $@ );
+            return 1;
+        }
+
+        0;
+    }, 10 );
+}
+
+=item preinstall( )
+
+ Process pre-installation tasks
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub setGuiPermissions
+sub preinstall
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforePhpMyAdminSetGuiPermissions' );
-    return $rs if $rs || !-d "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma";
+    if ( -f "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/phpmyadmin/src/Handler.pm" ) {
+        my $rs = iMSCP::File->new(
+            filename => "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/phpmyadmin/src/Handler.pm"
+        )->copyFile( "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/SqlAdminTools/PhpMyAdmin/Handler.pm" );
+        return $rs if $rs;
+    }
 
-    debug( "Setting permissions (event listener)" );
-    my $panelUName = my $panelGName = $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    if ( my $sub = $self->_getHandler()->can( 'preinstall' ) ) {
+        return $sub->( $self->_getHandler());
+    }
 
-    $rs ||= setRights( "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/pma", {
-        user      => $panelUName,
-        group     => $panelGName,
-        dirmode   => '0550',
-        filemode  => '0440',
-        recursive => TRUE
-    } );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterPhpMyAdminSetGuiPermissions' );
+    0;
+}
+
+=item uninstall( )
+
+ Process uninstallation tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub uninstall
+{
+    my ( $self ) = @_;
+
+    if ( my $sub = $self->_getHandler()->can( 'uninstall' ) ) {
+        my $rs = $sub->( $self->_getHandler());
+        return $rs if $rs;
+    }
+
+    if ( -f "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/SqlAdminTools/PhpMyAdmin/Handler.pm" ) {
+        return iMSCP::File->new( filename => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/SqlAdminTools/PhpMyAdmin/Handler.pm" )->delFile();
+    }
+
+    eval {
+        iMSCP::Composer->new(
+            user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
+            composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
+            composer_json => 'composer.json'
+        )
+            ->remove( 'imscp/phpmyadmin' )
+            ->dumpComposerJson();
+
+        0;
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    0;
+}
+
+=item AUTOLOAD
+
+ Provide autoloading
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub AUTOLOAD
+{
+    my $self = shift;
+    ( my $method = our $AUTOLOAD ) =~ s/.*:://;
+
+    my $handlerInstance = $self->_getHandler();
+
+    if ( my $sub = $handlerInstance->can( $method ) ) {
+        return $sub->( $handlerInstance, @_ );
+    }
+
+    0;
 }
 
 =back
@@ -175,7 +234,7 @@ sub setGuiPermissions
 
  Initialize instance
 
- Return Package::PhpMyAdmin
+ Return Package::SqlAdminTools::PhpMyAdmin::PhpMyAdmin
 
 =cut
 
@@ -184,54 +243,32 @@ sub _init
     my ( $self ) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    $self->{'cfgDir'} = "$::imscpConfig{'CONF_DIR'}/pma";
-    $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-    $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
-    $self->_mergeConfig() if -f "$self->{'cfgDir'}/phpmyadmin.data.dist";
-    eval {
-        tie %{ $self->{'config'} },
-            'iMSCP::Config',
-            fileName    => "$self->{'cfgDir'}/phpmyadmin.data",
-            readonly    => !( defined $::execmode && $::execmode eq 'setup' ),
-            nodeferring => ( defined $::execmode && $::execmode eq 'setup' );
-    };
-    if ( $@ ) {
-        die unless defined $::execmode && $::execmode eq 'uninstall';
-        $self->{'skip_uninstall'} = TRUE;
-    }
-    $self;
 }
 
-=item _mergeConfig
+=item _getHandler( )
 
- Merge distribution configuration with production configuration
+ Get PhpMyAdmin package handler
 
- Die on failure
+ Return Package::SqlAdminTools::PhpMyAdmin::Handler|Package::NoHandler
 
 =cut
 
-sub _mergeConfig
+sub _getHandler
 {
     my ( $self ) = @_;
 
-    if ( -f "$self->{'cfgDir'}/phpmyadmin.data" ) {
-        tie my %newConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.data.dist";
-        tie my %oldConfig, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/phpmyadmin.data", readonly => 1;
-
-        debug( 'Merging old configuration with new configuration...' );
-
-        while ( my ( $key, $value ) = each( %oldConfig ) ) {
-            next unless exists $newConfig{$key};
-            $newConfig{$key} = $value;
+    $self->{'_handler'} //= do {
+        local $@;
+        # We need process this way because @INC entries are not always identical (setup/reconfiguration vs production)
+        # handlers are always installed in production directory (e.g. /var/www/imscp/engine/PerlLib/Package/<PackageType>/<Package>/)
+        eval { require "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/SqlAdminTools/PhpMyAdmin/Handler.pm" };
+        if ( $@ ) {
+            require Package::NoHandler;
+            return Package::NoHandler->new();
         }
 
-        untie( %newConfig );
-        untie( %oldConfig );
-    }
-
-    iMSCP::File->new( filename => "$self->{'cfgDir'}/phpmyadmin.data.dist" )->moveFile( "$self->{'cfgDir'}/phpmyadmin.data" ) == 0 or die(
-        getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error'
-    );
+        Package::SqlAdminTools::PhpMyAdmin::Handler->new();
+    };
 }
 
 =back
