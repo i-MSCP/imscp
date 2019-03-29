@@ -130,7 +130,7 @@ sub new
     $self;
 }
 
-=item installComposer( [, $version = latest ] )
+=item installComposer( [ $version = latest ] )
 
  Install the given composer version
 
@@ -202,12 +202,12 @@ sub require
 
     if ( $dev ) {
         $self->remove( $package, TRUE ); # Make sure to not add the same package twice
-        $self->{'composer_json'}->{'require_dev'}->{$package} = $version ||= 'dev-master';
+        $self->{'composer_json'}->{'require_dev'}->{$package} = $version // 'dev-master';
         return;
     }
 
     $self->remove( $package ); # Make sure to not add the same package twice
-    $self->{'composer_json'}->{'require'}->{$package} = $version ||= 'dev-master';
+    $self->{'composer_json'}->{'require'}->{$package} = $version // 'dev-master';
     $self;
 }
 
@@ -216,7 +216,7 @@ sub require
  Remove a package from the requirements
 
  Param string $package Package name
- Param bool $dev OPTIONAL Flag indicating if $package is a dev requirement package
+ Param bool $dev OPTIONAL Flag indicating if $package is a development requirement
  Return iMSCP::Composer, die on failure
 
 =cut
@@ -268,7 +268,7 @@ sub install
     $self;
 }
 
-=item update( [ $nodev = false [, $noautoloader = false [, @packages ] ] ] )
+=item update( [ $nodev = false [, $noautoloader = false [, @packages = () ] ] ] )
 
  Update packages
 
@@ -298,7 +298,7 @@ sub update
             ),
             $self->{'_stdout'},
             $self->{'_stderr'}
-        ) == 0 or die( "Couldn't Update composer packages" );
+        ) == 0 or die( "Couldn't update composer packages" );
     } );
 
     $self;
@@ -327,7 +327,7 @@ sub clearCache
             ),
             $self->{'_stdout'},
             $self->{'_stderr'}
-        ) == 0 or die( "Couldn't clear composer's internal package cache" );
+        ) == 0 or die( "Couldn't clear composer cache" );
 
         # See https://getcomposer.org/doc/06-config.md#vendor-dir
         my $vendorDir = "$self->{'composer_working_dir'}/vendor";
