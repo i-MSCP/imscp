@@ -72,14 +72,12 @@ sub registerSetupListeners
 
     $em->registerOne( 'beforeSetupPreInstallServers', sub {
         eval {
-            require iMSCP::Composer;
-
             iMSCP::Composer->new(
                 user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
                 composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
                 composer_json => 'composer.json'
             )
-                ->require( 'imscp/phpmyadmin', '^1.0' )
+                ->require( 'imscp/rainloop', '0.2.0.x-dev' )
                 ->dumpComposerJson();
         };
         if ( $@ ) {
@@ -265,14 +263,14 @@ sub _installFiles
 {
     my ( $self ) = @_;
 
-    my $srcDir = "$::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/rainloop";
+    my $srcDir = "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/rainloop";
 
     unless ( -d $srcDir ) {
-        error( "Couldn't find the imscp/rainloop package in the packages cache directory" );
+        error( "Couldn't find the imscp/rainloop package in the $::imscpConfig{'GUI_ROOT_DIR'}/vendor directory" );
         return 1;
     }
 
-    my $destDir = "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop";
+    my $destDir = "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/rainloop";
 
     # Remove unwanted file to avoid hash naming convention for data directory
     if ( -f "$destDir/data/DATA.php" ) {
@@ -400,9 +398,8 @@ sub _buildConfig
 {
     my ( $self ) = @_;
 
-    my $confDir = "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop/data/_data_/_default_/configs";
-    my $panelUName = my $panelGName =
-        $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $confDir = "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/rainloop/data/_data_/_default_/configs";
+    my $panelUName = my $panelGName = $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
     for my $confFile ( 'application.ini', 'plugin-imscp-change-password.ini' ) {
         my $data = {
@@ -448,7 +445,7 @@ sub _setVersion
 {
     my ( $self ) = @_;
 
-    my $packageDir = "$::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/rainloop";
+    my $packageDir = "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/rainloop";
     my $json = iMSCP::File->new( filename => "$packageDir/composer.json" )->get();
     return 1 unless defined $json;
 
@@ -470,7 +467,7 @@ sub _removeOldVersionFiles
 {
     my ( $self ) = @_;
 
-    my $versionsDir = "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop/rainloop/v";
+    my $versionsDir = "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/rainloop/rainloop/v";
 
     for my $versionDir ( iMSCP::Dir->new( dirname => $versionsDir )->getDirs() ) {
         next if $versionDir eq $self->{'config'}->{'RAINLOOP_VERSION'};
@@ -492,7 +489,7 @@ sub _buildHttpdConfig
 
     $self->{'frontend'}->buildConfFile(
         "$self->{'cfgDir'}/nginx/imscp_rainloop.conf",
-        { GUI_PUBLIC_DIR => $::imscpConfig{'GUI_PUBLIC_DIR'} },
+        { GUI_PUBLIC_DIR => "$::imscpConfig{'GUI_ROOT_DIR'}/public" },
         { destination => "$self->{'frontend'}->{'config'}->{'HTTPD_CONF_DIR'}/imscp_rainloop.conf" }
     );
 }

@@ -132,20 +132,18 @@ sub uninstall
 
 sub setGuiPermissions
 {
-    my $guiPublicDir = $::imscpConfig{'GUI_PUBLIC_DIR'};
-
-    return 0 unless -d "$guiPublicDir/tools/webmail";
+    return 0 unless -d "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/roundcube";
 
     my $panelUName = my $panelGName = $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-    my $rs = setRights( "$guiPublicDir/tools/webmail", {
+    my $rs = setRights( "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/roundcube", {
         user      => $panelUName,
         group     => $panelGName,
         dirmode   => '0550',
         filemode  => '0440',
         recursive => TRUE
     } );
-    $rs ||= setRights( "$guiPublicDir/tools/webmail/logs", {
+    $rs ||= setRights( "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/roundcube/logs", {
         user      => $panelUName,
         group     => $panelGName,
         dirmode   => '0750',

@@ -109,7 +109,7 @@ sub setGuiPermissions
 {
     my $panelUName = my $panelGName = $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'};
 
-    setRights( "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", {
+    setRights( "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/monstaftp", {
         user      => $panelUName,
         group     => $panelGName,
         dirmode   => '0550',

@@ -37,6 +37,8 @@ use iMSCP::Getopt;
 use parent 'Common::SingletonClass';
 
 use subs qw/
+    registerSetupListeners setupDialog
+
     preinstall install postinstall uninstall
 
     preaddDomain preaddCustomDNS preaddFtpUser preaddHtaccess preaddHtgroup preaddHtpasswd preaddMail preaddServerIP preaddSSLcertificate preaddSub preaddUser
@@ -156,7 +158,17 @@ EOF
         @selectedPackages = @{ $packages } ? @{ $packages } : 'No';
     }
 
-    ::setupSetQuestion( $self->getConfVarname(), @selectedPackages );
+    ::setupSetQuestion( $self->getConfVarname(), join ',', @selectedPackages );
+    
+    for my $package( @selectedPackages ) {
+        next if $package eq 'No';
+        my $packageInstance = $self->_getPackageInstance( $package );
+
+        if ( my $sub = $packageInstance->can( 'setupDialog' ) ) {
+            my $rs = $sub->( $packageInstance, $dialog );
+            return $rs if $rs;
+        }
+    }
 
     0;
 }

@@ -72,7 +72,7 @@ sub createHtpasswdFile
     }
 
     require iMSCP::Crypt;
-    my $file = iMSCP::File->new( filename => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning/.htpasswd" );
+    my $file = iMSCP::File->new( filename => "$main::imscpConfig{'GUI_ROOT_DIR'}/public/provisioning/.htpasswd" );
     $file->set( "$authUsername:".($isAuthPasswordEncrypted ? $authPassword : iMSCP::Crypt::htpasswd( $authPassword )) );
 
     $rs = $file->save();
@@ -104,7 +104,7 @@ iMSCP::EventManager->getInstance()->register(
             satisfy any;
             deny all;
             auth_basic "$realm";
-            auth_basic_user_file $main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning/.htpasswd;
+            auth_basic_user_file $main::imscpConfig{'GUI_ROOT_DIR'}/public/provisioning/.htpasswd;
         }
     }
 EOF
@@ -177,7 +177,7 @@ if ($rowCount > 0) {
 }
 EOF
 
-        my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning" )->make(
+        my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_ROOT_DIR'}/public/provisioning" )->make(
             {
                 user  => "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
                 group => "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
@@ -189,7 +189,7 @@ EOF
         return $rs if $rs;
 
         my $file = iMSCP::File->new(
-            filename => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/provisioning/slave_provisioning.php"
+            filename => "$main::imscpConfig{'GUI_ROOT_DIR'}/public/provisioning/slave_provisioning.php"
         );
         $file->set( $fileContent );
 

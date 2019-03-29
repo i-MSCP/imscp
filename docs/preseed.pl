@@ -322,7 +322,7 @@
 
     # Webmail client packages
     # Possible values: 'No' or a list of packages, each comma separated
-    # Available packages are: Rainloop, Roundcube
+    # Available packages are: RainLoop, Roundcube
     # Warning: Package names are case-sensitive
     WEB_MAIL_CLIENT_PACKAGES            => 'RainLoop,Roundcube',
 

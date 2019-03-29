@@ -72,14 +72,12 @@ sub registerSetupListeners
 
     $em->registerOne( 'beforeSetupPreInstallServers', sub {
         eval {
-            require iMSCP::Composer;
-
             iMSCP::Composer->new(
                 user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
                 composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
                 composer_json => 'composer.json'
             )
-                ->require( 'imscp/phpmyadmin', '^1.0' )
+                ->require( 'imscp/roundcube', '1.2.x-dev' )
                 ->dumpComposerJson();
         };
         if ( $@ ) {
@@ -108,7 +106,7 @@ sub setupDialog
     my $dbUser = ::setupGetQuestion( 'ROUNDCUBE_SQL_USER', $self->{'config'}->{'DATABASE_USER'} || 'imscp_srv_user' );
     my $dbUserHost = ::setupGetQuestion( 'DATABASE_USER_HOST' );
     my $dbPass = ::setupGetQuestion(
-        'ROUNDCUBE_SQL_PASSWORD', ( ( iMSCP::Getopt->preseed ) ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
+        'ROUNDCUBE_SQL_PASSWORD', ( iMSCP::Getopt->preseed ? randomStr( 16, iMSCP::Crypt::ALNUM ) : $self->{'config'}->{'DATABASE_PASSWORD'} )
     );
 
     if ( $::reconfigure =~ /^(?:webmail_client_packages|addons|all|forced)$/ || !isValidUsername( $dbUser )
@@ -183,7 +181,7 @@ sub install
 {
     my ( $self ) = @_;
 
-    my $rs = $self->_backupConfigFile( "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php" );
+    my $rs = $self->_backupConfigFile( "$::imscpConfig{'GUI_ROOT_DIR'}/public/roundcube/config/config.inc.php" );
     $rs ||= $self->_installFiles();
     $rs ||= $self->_mergeConfig();
     $rs ||= $self->_setupDatabase();
@@ -287,14 +285,14 @@ sub _installFiles
 {
     my ( $self ) = @_;
 
-    my $packageDir = "$::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/roundcube";
+    my $packageDir = "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/roundcube";
 
     unless ( -d $packageDir ) {
-        error( "Couldn't find the imscp/roundcube package into the packages cache directory" );
+        error( "Couldn't find the imscp/roundcube package in the $::imscpConfig{'GUI_ROOT_DIR'}/vendor directory" );
         return 1;
     }
 
-    my $destDir = "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
+    my $destDir = "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/roundcube";
 
     iMSCP::Dir->new( dirname => $destDir )->remove();
     iMSCP::Dir->new( dirname => "$packageDir/iMSCP/config" )->rcopy( $self->{'cfgDir'}, { preserve => 'no' } );
@@ -344,7 +342,7 @@ sub _setupDatabase
 {
     my ( $self ) = @_;
 
-    my $roundcubeDir = "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
+    my $roundcubeDir = "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/roundcube";
     my $imscpDbName = ::setupGetQuestion( 'DATABASE_NAME' );
     my $roundcubeDbName = $imscpDbName . '_roundcube';
     my $dbUser = ::setupGetQuestion( 'ROUNDCUBE_SQL_USER' );
@@ -379,9 +377,9 @@ sub _setupDatabase
 
         # Drop old SQL user if required
         for my $sqlUser ( $dbOldUser, $dbUser ) {
-            next unless $sqlUser;
+            next unless length $sqlUser;
             for my $host ( $dbUserHost, $oldDbUserHost ) {
-                next if !$host || exists $::sqlUsers{$sqlUser . '@' . $host} && !defined $::sqlUsers{$sqlUser . '@' . $host};
+                next if !length $host || exists $::sqlUsers{$sqlUser . '@' . $host} && !defined $::sqlUsers{$sqlUser . '@' . $host};
                 $sqlServer->dropUser( $sqlUser, $host );
             }
         }
@@ -457,7 +455,7 @@ sub _buildRoundcubeConfig
     $rs = $file->save();
     $rs ||= $file->owner( $panelUName, $panelGName );
     $rs ||= $file->mode( 0640 );
-    $rs ||= $file->copyFile( "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php" );
+    $rs ||= $file->copyFile( "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/roundcube/config/config.inc.php" );
 }
 
 =item _updateDatabase( )
@@ -472,7 +470,7 @@ sub _updateDatabase
 {
     my ( $self ) = @_;
 
-    my $roundcubeDir = "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail";
+    my $roundcubeDir = "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/roundcube";
     my $roundcubeDbName = ::setupGetQuestion( 'DATABASE_NAME' ) . '_roundcube';
     my $fromVersion = $self->{'config'}->{'ROUNDCUBE_VERSION'} || '0.8.4';
 
@@ -528,7 +526,7 @@ sub _setVersion
 {
     my ( $self ) = @_;
 
-    my $repoDir = "$::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/roundcube";
+    my $repoDir = "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/roundcube";
     my $json = iMSCP::File->new( filename => "$repoDir/composer.json" )->get();
     return 1 unless defined $json;
 
@@ -564,6 +562,14 @@ sub _buildHttpdConfig
     $rs ||= iMSCP::File->new( filename => "$self->{'wrkDir'}/imscp_roundcube.conf" )->copyFile(
         "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf", { preserve => 'no' }
     );
+    return $rs if $rs;
+
+    my $file = iMSCP::File->new( filename => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_roundcube.conf" );
+    return 1 unless defined( my $fileC = $file->getAsRef());
+
+    ${ $fileC } =~ s/\bwebmail\b/roundcube/g;
+
+    $file->save();
 }
 
 =item _cleanup( )

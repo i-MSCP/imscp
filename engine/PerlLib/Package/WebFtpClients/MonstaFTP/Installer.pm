@@ -61,14 +61,12 @@ sub registerSetupListeners
 
     $em->registerOne( 'beforeSetupPreInstallServers', sub {
         eval {
-            require iMSCP::Composer;
-
             iMSCP::Composer->new(
                 user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
                 composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
                 composer_json => 'composer.json'
             )
-                ->require( 'imscp/phpmyadmin', '^1.0' )
+                ->require( 'imscp/monsta-ftp', '2.1.x-dev' )
                 ->dumpComposerJson();
         };
         if ( $@ ) {
@@ -178,16 +176,16 @@ sub _init
 
 sub _installFiles
 {
-    my $packageDir = "$::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/monsta-ftp";
+    my $packageDir = "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/monsta-ftp";
 
     unless ( -d $packageDir ) {
-        error( "Couldn't find the imscp/monsta-ftp package into the packages cache directory" );
+        error( "Couldn't find the imscp/monsta-ftp package in the $::imscpConfig{'GUI_ROOT_DIR'}/vendor directory" );
         return 1;
     }
 
-    iMSCP::Dir->new( dirname => "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp" )->remove();
-    iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' } );
-    iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy( "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp", { preserve => 'no' } );
+    iMSCP::Dir->new( dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/monstaftp" )->remove();
+    iMSCP::Dir->new( dirname => "$packageDir/src" )->rcopy( "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/monstaftp", { preserve => 'no' } );
+    iMSCP::Dir->new( dirname => "$packageDir/iMSCP/src" )->rcopy( "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/monstaftp", { preserve => 'no' } );
 }
 
 =item _buildHttpdConfig( )
@@ -202,10 +200,17 @@ sub _buildHttpdConfig
 {
     my $frontEnd = Package::FrontEnd->getInstance();
     $frontEnd->buildConfFile(
-        "$::imscpConfig{'IMSCP_HOMEDIR'}/packages/vendor/imscp/monsta-ftp/iMSCP/nginx/imscp_monstaftp.conf",
-        { GUI_PUBLIC_DIR => $::imscpConfig{'GUI_PUBLIC_DIR'} },
+        "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/monsta-ftp/iMSCP/nginx/imscp_monstaftp.conf",
+        { GUI_PUBLIC_DIR => "$::imscpConfig{'GUI_ROOT_DIR'}/public" },
         { destination => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_monstaftp.conf" }
     );
+
+    my $file = iMSCP::File->new( filename => "$frontEnd->{'config'}->{'HTTPD_CONF_DIR'}/imscp_monstaftp.conf" );
+    return 1 unless defined( my $fileC = $file->getAsRef());
+
+    ${ $fileC } =~ s/\bftp\b/monstaftp/g;
+
+    $file->save();
 }
 
 =item _buildConfig( )
@@ -224,7 +229,7 @@ sub _buildConfig
 
     # config.php file
 
-    my $conffile = "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/settings/config.php";
+    my $conffile = "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/monstaftp/settings/config.php";
     my $data = {
         TIMEZONE => ::setupGetQuestion( 'TIMEZONE', 'UTC' ),
         TMP_PATH => "$::imscpConfig{'GUI_ROOT_DIR'}/data/tmp"
@@ -247,7 +252,7 @@ sub _buildConfig
     $rs ||= $file->mode( 0440 );
     return $rs if $rs;
 
-    $conffile = "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/ftp/settings/settings.json";
+    $conffile = "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/monstaftp/settings/settings.json";
     $data = {
         showDotFiles            => JSON::true,
         language                => 'en_us',

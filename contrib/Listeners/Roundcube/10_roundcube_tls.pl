@@ -1,5 +1,6 @@
 # i-MSCP Listener::Roundcube::TLS listener file
 # Copyright (C) 2015-2017 Rene Schuster <mail@reneschuster.de>
+# Copyright (C) 2019 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -29,32 +30,23 @@ use iMSCP::EventManager;
 ## Please, don't edit anything below this line unless you known what you're doing
 #
 
-iMSCP::EventManager->getInstance()->register(
-    'afterSetupTasks',
-    sub {
-        my $file = iMSCP::File->new(
-            filename => "$main::imscpConfig{'GUI_PUBLIC_DIR'}/tools/webmail/config/config.inc.php"
-        );
-        my $fileContent = $file->get();
-        unless (defined $fileContent) {
-            error( sprintf( "Couldn't read %s file", $file->{'filename'} ) );
-            return 1;
-        }
+iMSCP::EventManager->getInstance()->register( 'afterSetupTasks', sub
+{
+    my $file = iMSCP::File->new(
+        filename => "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/roundcube/config/config.inc.php"
+    );
+    return 1 unless defined( my $fileContent = $file->getAsRef());
 
-        $fileContent =~ s/(\$config\['(?:default_host|smtp_server)?'\]\s+=\s+').*(';)/$1tls:\/\/$main::imscpConfig{'BASE_SERVER_VHOST'}$2/g;
-        $file->set( $fileContent );
-        $file->save();
-    }
-);
+    ${ $fileContent } =~ s/(\$config\['(?:default_host|smtp_server)?'\]\s+=\s+').*(';)/$1tls:\/\/$::imscpConfig{'BASE_SERVER_VHOST'}$2/g;
 
-iMSCP::EventManager->getInstance()->register(
-    'beforeUpdateRoundCubeMailHostEntries',
-    sub {
-        my $hostname = shift;
-        ${$hostname} = $main::imscpConfig{'BASE_SERVER_VHOST'};
-        0;
-    }
-);
+    $file->save();
+} );
+
+iMSCP::EventManager->getInstance()->register( 'beforeUpdateRoundCubeMailHostEntries', sub {
+    my ( $hostname ) = @_;
+    ${ $hostname } = $::imscpConfig{'BASE_SERVER_VHOST'};
+    0;
+} );
 
 1;
 __END__

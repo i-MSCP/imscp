@@ -131,17 +131,17 @@ sub uninstall
 
 sub setGuiPermissions
 {
-    return 0 unless -d "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop";
+    return 0 unless -d "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/rainloop";
 
     my $panelUName = my $panelGName = $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'};
-    my $rs = setRights( "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop", {
+    my $rs = setRights( "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/rainloop", {
         user      => $panelUName,
         group     => $panelGName,
         dirmode   => '0550',
         filemode  => '0440',
         recursive => TRUE
     } );
-    $rs ||= setRights( "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop/data", {
+    $rs ||= setRights( "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/rainloop/data", {
         user      => $panelUName,
         group     => $panelGName,
         dirmode   => '0750',
@@ -197,7 +197,7 @@ sub deleteMail
         return 1;
     }
 
-    my $storageDir = "$::imscpConfig{'GUI_PUBLIC_DIR'}/tools/rainloop/data/_data_/_default_/storage";
+    my $storageDir = "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/rainloop/data/_data_/_default_/storage";
     ( my $email = $data->{'MAIL_ADDR'} ) =~ s/[^a-z0-9\-\.@]+/_/;
     ( my $storagePath = substr( $email, 0, 2 ) ) =~ s/\@$//;
 

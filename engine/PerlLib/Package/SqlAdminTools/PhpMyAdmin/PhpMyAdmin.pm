@@ -36,6 +36,8 @@ use JSON;
 use parent 'Common::SingletonClass';
 
 use subs qw/
+    registerSetupListeners setupDialog
+
     preinstall install postinstall uninstall
 
     preaddDomain preaddCustomDNS preaddFtpUser preaddHtaccess preaddHtgroup preaddHtpasswd preaddMail preaddServerIP preaddSSLcertificate preaddSub preaddUser
@@ -136,6 +138,20 @@ sub registerSetupListeners
     }, 10 );
 }
 
+=item setupDialog( \%dialog )
+
+ Setup dialog
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 NEXT, 30 BACKUP, 50 ESC
+
+=cut
+
+sub setupDialog
+{
+    0;
+}
+
 =item preinstall( )
 
  Process pre-installation tasks
@@ -153,6 +169,9 @@ sub preinstall
             filename => "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/phpmyadmin/src/Handler.pm"
         )->copyFile( "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/SqlAdminTools/PhpMyAdmin/Handler.pm" );
         return $rs if $rs;
+    } else {
+        error( "Couldn't find the PhpMyAdmin package handler in the $::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/phpmyadmin/src directory" );
+        return 1;
     }
 
     if ( my $sub = $self->_getHandler()->can( 'preinstall' ) ) {
