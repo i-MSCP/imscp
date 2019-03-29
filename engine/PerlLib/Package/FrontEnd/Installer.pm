@@ -110,7 +110,7 @@ EOT
                 } );
 
                 startDetail;
-                $composer->update( TRUE );
+                $composer->update( TRUE, FALSE, 'imscp/*' );
                 endDetail;
             };
             if ( $@ ) {

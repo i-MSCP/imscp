@@ -143,7 +143,6 @@ sub setupTasks
         [ \&setupSaveConfig, 'Saving configuration' ],
         [ \&setupCreateMasterUser, 'Creating system master user' ],
         [ \&setupCoreServices, 'Setup core services' ],
-#        [ \&setupPhpDependencyManager, 'Setup PHP dependency manager (composer)' ],
         [ \&setupRegisterPluginListeners, 'Registering plugin setup listeners' ],
         [ \&setupServersAndPackages, 'Processing servers/packages' ],
         [ \&setupSetPermissions, 'Setting up permissions' ],
@@ -227,35 +226,6 @@ sub setupCoreServices
 {
     my $serviceMngr = iMSCP::Service->getInstance();
     $serviceMngr->enable( $_ ) for 'imscp_daemon', 'imscp_traffic', 'imscp_mountall';
-    0;
-}
-
-sub setupPhpDependencyManager
-{
-    eval {
-        my $composer = iMSCP::Composer->new( composer_phar => '/usr/local/bin/composer' );
-        $composer->setStdRoutines(
-            sub {
-                chomp $_[0];
-                return unless length $_[0];
-
-                step( undef, <<"EOT", 1, 1 );
-Installing/Updating global PHP dependency manager
-$_[0]
-Depending on your connection speed, this may take few seconds...
-EOT
-            },
-            sub {}
-        );
-        startDetail;
-        $composer->installComposer( $::imscpConfig{'COMPOSER_VERSION'} );
-        endDetail;
-    };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
     0;
 }
 

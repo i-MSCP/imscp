@@ -268,19 +268,20 @@ sub install
     $self;
 }
 
-=item update( [ $nodev = false, [ $noautoloader = false] ])
+=item update( [ $nodev = false [, $noautoloader = false [, @packages ] ] ] )
 
  Update packages
 
  Param bool $nodev OPTIONAL Flag indicating whether require-dev packages must be discarded
  Param bool $noautoloader OPTIONAL Flag indicating whether or not autoloader generation must be skipped
+ Param list @packages OPTIONAL List of packages to operate on (default is to operate on all packages)
  Return iMSCP::Composer, die on failure
 
 =cut
 
 sub update
 {
-    my ( $self, $nodev, $noautoloader ) = @_;
+    my ( $self, $nodev, $noautoloader, @packages ) = @_;
 
     $self->_sandbox( sub {
         $self->_removeAutoloader() if $noautoloader;
@@ -292,7 +293,8 @@ sub update
                 $self->{'composer_phar'}, 'update',
                 "--working-dir=$self->{'composer_working_dir'}",
                 '--no-progress', '--no-ansi', '--no-interaction', '--no-suggest',
-                ( $nodev ? '--no-dev' : () ), ( $noautoloader ? '--no-autoloader' : () )
+                ( $nodev ? '--no-dev' : () ), ( $noautoloader ? '--no-autoloader' : () ),
+                @packages
             ),
             $self->{'_stdout'},
             $self->{'_stderr'}
