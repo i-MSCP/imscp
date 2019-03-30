@@ -83,7 +83,12 @@ sub registerSetupListeners
         0;
     } );
     $rs ||= $em->registerOne( 'beforeSetupPreInstallServers', sub {
-        $rs = $self->_createMasterWebUser();
+        $rs = setRights( $::imscpConfig{'ROOT_DIR'}, {
+            user  => $::imscpConfig{'ROOT_USER'},
+            group => $::imscpConfig{'ROOT_GROUP'},
+            mode  => '0755'
+        } );
+        $rs ||= $self->_createMasterWebUser();
         $rs ||= $self->setGuiPermissions();
     }, 20 );
     $rs ||= $em->registerOne( 'beforeSetupPreInstallServers', sub {
