@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -72,8 +72,8 @@ sub setRights
 
         my $uid = $options->{'user'} ? getpwnam( $options->{'user'} ) : -1;
         my $gid = $options->{'group'} ? getgrnam( $options->{'group'} ) : -1;
-        defined $uid or die( sprintf( 'user option refers to inexistent user: %s', $options->{'user'} ));
-        defined $gid or die( sprintf( 'group option refers to inexistent group: %s', $options->{'group'} ));
+        defined $uid or die( sprintf( 'user option refers to nonexistent user: %s', $options->{'user'} ));
+        defined $gid or die( sprintf( 'group option refers to nonexistent group: %s', $options->{'group'} ));
 
         my $mode = defined $options->{'mode'} ? oct( $options->{'mode'} ) : undef;
         my $dirmode = defined $options->{'dirmode'} ? oct( $options->{'dirmode'} ) : undef;
@@ -88,7 +88,7 @@ sub setRights
                             lchown $uid, $gid, $_ or die( sprintf( "Couldn't set user/group on %s: %s", $_, $! ));
                         }
 
-                        return if -l; # We do not call chmod on symkink targets
+                        return if -l; # We do not call chmod on symlink targets
 
                         if ( $mode ) {
                             chmod $mode, $_ or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ));
@@ -110,7 +110,7 @@ sub setRights
             lchown $uid, $gid, $target or die( sprintf( "Couldn't set user/group on %s: %s", $target, $! ));
         }
 
-        unless ( -l $target ) { # We do not call chmod on symkink targets
+        unless ( -l $target ) { # We do not call chmod on symlink targets
             if ( $mode ) {
                 chmod $mode, $target or die( sprintf( "Couldn't set mode on %s: %s", $_, $! ));
             } elsif ( $dirmode && -d _ ) {

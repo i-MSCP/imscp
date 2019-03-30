@@ -36,6 +36,7 @@ use iMSCP::Dir;
 use iMSCP::Execute qw/ execute executeNoWait /;
 use iMSCP::File;
 use iMSCP::ProgramFinder;
+use iMSCP::Rights 'setRights';
 use JSON qw/ from_json to_json /;
 use LWP::UserAgent ();
 use version;
@@ -143,44 +144,47 @@ sub installComposer
 {
     my ( $self, $version ) = @_;
 
-    $self->_sandbox( sub {
-        if ( length $version && -x $self->{'composer_phar'} && version->parse( $self->getComposerVersion()) == version->parse( $version ) ) {
-            $self->{'_stdout'}( sprintf( "PHP dependency manager version is already %s. Installation skipped.", $version ));
-            return;
-        }
+    if ( length $version && -x $self->{'composer_phar'} && version->parse( $self->getComposerVersion()) == version->parse( $version ) ) {
+        $self->{'_stdout'}( sprintf( "PHP dependency manager version is already %s. Installation skipped.", $version ));
+        return;
+    }
 
-        iMSCP::Dir->new( dirname => $self->{'composer_home'} )->clear( undef, qr/\.(?:phar|pub)$/ ) if -d $self->{'composer_home'};
+    iMSCP::Dir->new( dirname => $self->{'composer_home'} )->clear( undef, qr/\.(?:phar|pub)$/ ) if -d $self->{'composer_home'};
 
-        my $ua = LWP::UserAgent->new( agent => "iMSCP/$::imscpConfig{'Version'}", timeout => 30, env_proxy => TRUE );
-        my $installer = File::Temp->new();
-        $installer->close();
+    my $ua = LWP::UserAgent->new( agent => "iMSCP/$::imscpConfig{'Version'}", timeout => 30, env_proxy => TRUE );
+    my $installer = File::Temp->new();
+    $installer->close();
 
-        # Download composer installer
-        my $response;
-        ( $response = $ua->get( 'https://getcomposer.org/installer', ':content_file' => $installer->filename ) )->is_success or die( sprintf(
-            "Couldn't download the PHP dependency manager installer: %s", $response->status_line
-        ));
-        # Download composer installer signature for verification
-        ( $response = $ua->get( 'https://composer.github.io/installer.sig' ) )->is_success or die( sprintf(
-            "Couldn't download signature for the PHP dependency manager installer: %s", $response->status_line
-        ));
-        # Verify composer installer signature
-        chomp( my $sig = $response->decoded_content );
-        $sig eq Digest::SHA->new( 'sha384' )->addfile( $installer->filename )->hexdigest() or die(
-            "Couldn't verify signature for the PHP dependency manager installer."
-        );
-        # Install PHP dependency manager
-        my ( $filename, $installDir ) = fileparse( $self->{'composer_phar'} );
-        iMSCP::Dir->new( dirname => $installDir )->make() unless -d $installDir;
-        executeNoWait(
-            $self->_getSuCmd(
-                @{ $self->{'_php_cmd'} }, $installer->filename, '--',
-                '--no-ansi', "--install-dir=$installDir", "--filename=$filename", ( length $version ? "--version=$version" : () )
-            ),
-            $self->{'_stdout'},
-            $self->{'_stderr'}
-        ) == 0 or die( "Couldn't install the PHP dependency manager." );
-    } );
+    # Download composer installer
+    my $response;
+    ( $response = $ua->get( 'https://getcomposer.org/installer', ':content_file' => $installer->filename()) )->is_success or die( sprintf(
+        "Couldn't download the PHP dependency manager installer: %s", $response->status_line
+    ));
+    # Download composer installer signature for verification
+    ( $response = $ua->get( 'https://composer.github.io/installer.sig' ) )->is_success or die( sprintf(
+        "Couldn't download signature for the PHP dependency manager installer: %s", $response->status_line
+    ));
+    # Verify composer installer signature
+    chomp( my $sig = $response->decoded_content );
+    $sig eq Digest::SHA->new( 'sha384' )->addfile( $installer->filename())->hexdigest() or die(
+        "Couldn't verify signature for the PHP dependency manager installer."
+    );
+    # Make sure that running user can access PHP dependency manager installer
+    setRights( $installer->filename(), {
+        user  => $self->{'user'},
+        group => $self->{'group'}
+    } ) == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ));
+    # Install PHP dependency manager
+    my ( $filename, $installDir ) = fileparse( $self->{'composer_phar'} );
+    iMSCP::Dir->new( dirname => $installDir )->make() unless -d $installDir;
+    executeNoWait(
+        $self->_getSuCmd(
+            @{ $self->{'_php_cmd'} }, $installer->filename(), '--',
+            '--no-ansi', "--install-dir=$installDir", "--filename=$filename", ( length $version ? "--version=$version" : () )
+        ),
+        $self->{'_stdout'},
+        $self->{'_stderr'}
+    ) == 0 or die( "Couldn't install the PHP dependency manager." );
 
     $self;
 }
@@ -248,22 +252,20 @@ sub install
 {
     my ( $self, $nodev, $noautoloader ) = @_;
 
-    $self->_sandbox( sub {
-        $self->_removeAutoloader() if $noautoloader;
-        $self->dumpComposerJson();
+    $self->_removeAutoloader() if $noautoloader;
+    $self->dumpComposerJson();
 
-        executeNoWait(
-            $self->_getSuCmd(
-                @{ $self->{'_php_cmd'} },
-                $self->{'composer_phar'}, 'install',
-                "--working-dir=$self->{'composer_working_dir'}",
-                '--no-progress', '--no-ansi', '--no-interaction', '--no-suggest',
-                ( $nodev ? '--no-dev' : () ), ( $noautoloader ? '--no-autoloader' : () ),
-            ),
-            $self->{'_stdout'},
-            $self->{'_stderr'}
-        ) == 0 or die( "Couldn't install composer packages" );
-    } );
+    executeNoWait(
+        $self->_getSuCmd(
+            @{ $self->{'_php_cmd'} },
+            $self->{'composer_phar'}, 'install',
+            "--working-dir=$self->{'composer_working_dir'}",
+            '--no-progress', '--no-ansi', '--no-interaction', '--no-suggest',
+            ( $nodev ? '--no-dev' : () ), ( $noautoloader ? '--no-autoloader' : () ),
+        ),
+        $self->{'_stdout'},
+        $self->{'_stderr'}
+    ) == 0 or die( "Couldn't install composer packages" );
 
     $self;
 }
@@ -283,23 +285,21 @@ sub update
 {
     my ( $self, $nodev, $noautoloader, @packages ) = @_;
 
-    $self->_sandbox( sub {
-        $self->_removeAutoloader() if $noautoloader;
-        $self->dumpComposerJson();
+    $self->_removeAutoloader() if $noautoloader;
+    $self->dumpComposerJson();
 
-        executeNoWait(
-            $self->_getSuCmd(
-                @{ $self->{'_php_cmd'} },
-                $self->{'composer_phar'}, 'update',
-                "--working-dir=$self->{'composer_working_dir'}",
-                '--no-progress', '--no-ansi', '--no-interaction', '--no-suggest',
-                ( $nodev ? '--no-dev' : () ), ( $noautoloader ? '--no-autoloader' : () ),
-                @packages
-            ),
-            $self->{'_stdout'},
-            $self->{'_stderr'}
-        ) == 0 or die( "Couldn't update composer packages" );
-    } );
+    executeNoWait(
+        $self->_getSuCmd(
+            @{ $self->{'_php_cmd'} },
+            $self->{'composer_phar'}, 'update',
+            "--working-dir=$self->{'composer_working_dir'}",
+            '--no-progress', '--no-ansi', '--no-interaction', '--no-suggest',
+            ( $nodev ? '--no-dev' : () ), ( $noautoloader ? '--no-autoloader' : () ),
+            @packages
+        ),
+        $self->{'_stdout'},
+        $self->{'_stderr'}
+    ) == 0 or die( "Couldn't update composer packages" );
 
     $self;
 }
@@ -316,27 +316,25 @@ sub clearCache
 {
     my ( $self ) = @_;
 
-    $self->_sandbox( sub {
-        executeNoWait(
-            $self->_getSuCmd(
-                @{ $self->{'_php_cmd'} },
-                $self->{'composer_phar'}, 'clear-cache',
-                "--working-dir=$self->{'composer_working_dir'}",
-                '--no-interaction',
-                '--no-ansi'
-            ),
-            $self->{'_stdout'},
-            $self->{'_stderr'}
-        ) == 0 or die( "Couldn't clear composer cache" );
+    executeNoWait(
+        $self->_getSuCmd(
+            @{ $self->{'_php_cmd'} },
+            $self->{'composer_phar'}, 'clear-cache',
+            "--working-dir=$self->{'composer_working_dir'}",
+            '--no-interaction',
+            '--no-ansi'
+        ),
+        $self->{'_stdout'},
+        $self->{'_stderr'}
+    ) == 0 or die( "Couldn't clear composer cache" );
 
-        # See https://getcomposer.org/doc/06-config.md#vendor-dir
-        my $vendorDir = "$self->{'composer_working_dir'}/vendor";
-        my $composerJson = $self->{'composer_json'};
-        if ( $composerJson->{'config'}->{'vendor-dir'} ) {
-            ( $vendorDir = $composerJson->{'config'}->{'vendor-dir'} ) =~ s%(?:\$HOME|~)%$self->{'composer_home'}%g;
-        }
-        iMSCP::Dir->new( dirname => $vendorDir )->remove();
-    } );
+    # See https://getcomposer.org/doc/06-config.md#vendor-dir
+    my $vendorDir = "$self->{'composer_working_dir'}/vendor";
+    my $composerJson = $self->{'composer_json'};
+    if ( $composerJson->{'config'}->{'vendor-dir'} ) {
+        ( $vendorDir = $composerJson->{'config'}->{'vendor-dir'} ) =~ s%(?:\$HOME|~)%$self->{'composer_home'}%g;
+    }
+    iMSCP::Dir->new( dirname => $vendorDir )->remove();
 
     $self;
 }
@@ -401,7 +399,7 @@ sub setStdRoutines
     $subStdout ||= sub {
         chomp $_[0];
         return unless length $_[0];
-        debug $_[0], ( caller( 3 ) )[3]
+        debug $_[0], ( caller( 2 ) )[3]
     };
     ref $subStdout eq 'CODE' or croak( 'Expects a routine as first parameter for STDOUT processing' );
     $self->{'_stdout'} = $subStdout;
@@ -409,7 +407,7 @@ sub setStdRoutines
     $subStderr ||= sub {
         chomp $_[0];
         return unless length $_[0];
-        debug $_[0], ( caller( 3 ) )[3]
+        debug $_[0], ( caller( 2 ) )[3]
     };
     ref $subStderr eq 'CODE' or croak( 'Expects a routine as second parameter for STDERR processing' );
     $self->{'_stderr'} = $subStderr;
@@ -539,27 +537,6 @@ sub _getSuCmd
     }
 
     [ '/bin/su', '-l', $self->{'user'}, '-s', '/bin/sh', '-c', "COMPOSER_HOME=$self->{'composer_home'} @_" ];
-}
-
-=item _sandbox( )
-
- Execute the given subroutine with privileges of provider user/group
-
- Return mixed, die on failure
-
-=cut
-
-sub _sandbox
-{
-    my ( $self, $sub ) = @_;
-
-    local $!;
-    local $) = $self->{'_egid'};
-    die( sprintf( "Couldn't setgid to %s: %s", $self->{'group'}, $! )) if $!;
-    local $> = $self->{'_euid'};
-    die( sprintf( "Couldn't setuid to %s: %s", $self->{'user'}, $! )) if $!;
-
-    $sub->();
 }
 
 =back
