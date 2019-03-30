@@ -742,19 +742,21 @@ sub _savePersistentData
         "$destdir$::imscpConfig{'PLUGINS_DIR'}", { preserve => 'no' }
     ) if -d $::imscpConfig{'PLUGINS_DIR'};
 
-    # Save package handlers (cover uninstallation case)
-    for my $packageTypeDir ( iMSCP::Dir->new( dirname => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package" )->getDirs() ) {
-        for my $packageDir ( iMSCP::Dir->new( dirname => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/$packageTypeDir" )->getDirs() ) {
-            for my $handlerFile (
-                iMSCP::Dir->new( 
-                    dirname  => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/$packageTypeDir/$packageDir", 
-                    fileType => qr/^Handler\.pm/ 
-                )->getFiles()
-            ) {
-                my $rs = iMSCP::File->new(
-                    filename => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/$packageTypeDir/$packageDir/$handlerFile"
-                )->copyFile( "$destdir$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/$packageTypeDir/$packageDir/$handlerFile" );
-                return $rs if $rs;
+    if ( -d "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package" ) {
+        # Save package handlers (cover uninstallation case)
+        for my $packageTypeDir ( iMSCP::Dir->new( dirname => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package" )->getDirs() ) {
+            for my $packageDir ( iMSCP::Dir->new( dirname => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/$packageTypeDir" )->getDirs() ) {
+                for my $handlerFile (
+                    iMSCP::Dir->new(
+                        dirname  => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/$packageTypeDir/$packageDir",
+                        fileType => qr/^Handler\.pm/
+                    )->getFiles()
+                ) {
+                    my $rs = iMSCP::File->new(
+                        filename => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/$packageTypeDir/$packageDir/$handlerFile"
+                    )->copyFile( "$destdir$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/$packageTypeDir/$packageDir/$handlerFile" );
+                    return $rs if $rs;
+                }
             }
         }
     }

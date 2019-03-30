@@ -194,13 +194,13 @@ class iMSCP_Update_Database extends iMSCP_Update
 
                 $this->dbConfig['DATABASE_REVISION'] = $revision;
 
-                # Make sure that we are still in transaction due to possible implicite commit
+                # Make sure that we are still in transaction due to possible implicit commit
                 # See https://dev.mysql.com/doc/refman/5.7/en/implicit-commit.html
                 if ($db->inTransaction()) {
                     $db->commit();
                 }
             } catch (Exception $e) {
-                # Make sure that we are still in transaction due to possible implicite commit
+                # Make sure that we are still in transaction due to possible implicit commit
                 # See https://dev.mysql.com/doc/refman/5.7/en/implicit-commit.html
                 if ($db->inTransaction()) {
                     $db->rollBack();
