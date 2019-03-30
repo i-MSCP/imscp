@@ -85,38 +85,38 @@ sub registerSetupListeners
     $rs ||= $em->registerOne( 'beforeSetupPreInstallServers', sub {
         $rs = $self->_createMasterWebUser();
         $rs ||= $self->setGuiPermissions();
-        return $rs if $rs;
+    }, 20 );
+    $rs ||= $em->registerOne( 'beforeSetupPreInstallServers', sub {
+        return 0 if iMSCP::Getopt->skipComposerUpdate;
 
-        unless ( iMSCP::Getopt->skipComposerUpdate ) {
-            eval {
-                my $composer = iMSCP::Composer->new(
-                    user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
-                    composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
-                );
-                $composer->installComposer( $::imscpConfig{'COMPOSER_VERSION'} );
-                $composer->clearCache() if iMSCP::Getopt->clearComposerCache;
-                $composer->setStdRoutines( sub {}, sub {
-                    chomp $_[0];
-                    return unless length $_[0];
+        eval {
+            my $composer = iMSCP::Composer->new(
+                user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
+                composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
+            );
+            $composer->installComposer( $::imscpConfig{'COMPOSER_VERSION'} );
+            $composer->clearCache() if iMSCP::Getopt->clearComposerCache;
+            $composer->setStdRoutines( sub {}, sub {
+                chomp $_[0];
+                return unless length $_[0];
 
-                    debug($_[0]);
-                    step( undef, <<"EOT", 1, 1 )
+                debug( $_[0] );
+                step( undef, <<"EOT", 1, 1 )
 Installing/Updating PHP dependencies...
 
 $_[0]
 
 Depending on your internet connection speed, this may take few seconds...
 EOT
-                } );
+            } );
 
-                startDetail;
-                $composer->update( TRUE, FALSE, 'imscp/*' );
-                endDetail;
-            };
-            if ( $@ ) {
-                error( $@ );
-                return 1;
-            }
+            startDetail;
+            $composer->update( TRUE, FALSE, 'imscp/*' );
+            endDetail;
+        };
+        if ( $@ ) {
+            error( $@ );
+            return 1;
         }
 
         0;

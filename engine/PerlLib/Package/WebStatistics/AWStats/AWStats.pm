@@ -347,7 +347,7 @@ sub _addAwstatsConfig
 {
     my ( $self, $data ) = @_;
 
-    my $awstatsPackageRootDir = "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebStatistics/Awstats";
+    my $awstatsPackageRootDir = "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebStatistics/AWStats";
     my $tplFileContent = iMSCP::File->new( filename => "$awstatsPackageRootDir/Config/awstats.imscp_tpl.conf" )->get();
     return 1 unless defined $tplFileContent;
 
