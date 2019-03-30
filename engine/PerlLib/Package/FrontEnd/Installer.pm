@@ -29,7 +29,7 @@ use File::Basename;
 use iMSCP::Boolean;
 use iMSCP::Crypt qw/ apr1MD5 randomStr /;
 use iMSCP::Database;
-use iMSCP::Debug qw/ debug error /;
+use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
 use iMSCP::Execute 'execute';
