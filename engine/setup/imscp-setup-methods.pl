@@ -276,11 +276,11 @@ sub setupSetPermissions
             ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
                 ? undef
                 : sub {
-                    return unless ( shift ) =~ /^(.*)\t(.*)\t(.*)/;
-                    step( undef, $1, $2, $3 );
+                    return unless $_[0] =~ /^(.*)\t(.*)\t(.*)/;
+                    step( undef, "$1", "$2", "$3" );
                 }
             ),
-            sub { $stderr .= shift; }
+            sub { $stderr .= $_[0]; }
         );
 
         endDetail();

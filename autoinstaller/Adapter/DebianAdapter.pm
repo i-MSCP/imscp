@@ -1169,12 +1169,13 @@ sub _rebuildAndInstallPackage
                 $rs = executeNoWait(
                     $cmd,
                     ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                        ? undef : sub {
-                            return unless ( shift ) =~ /^i:\s*(.*)/i;
+                        ? undef
+                        : sub {
+                            return unless $_[0] =~ /^i:\s*(.*)/i;
                             step( undef, $msgHeader . ucfirst( $1 ) . $msgFooter, 5, 1 );
                         }
                     ),
-                    sub { $stderr .= shift; }
+                    sub { $stderr .= $_[0]; }
                 );
                 error( sprintf( "Couldn't create/update pbuilder environment: %s", $stderr || 'Unknown error' )) if $rs;
                 return $rs if $rs;
@@ -1192,9 +1193,10 @@ sub _rebuildAndInstallPackage
             $rs = executeNoWait(
                 [ 'apt-get', '-y', 'source', $pkgSrc ],
                 ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                    ? undef : sub { step( undef, $msgHeader . ( ( shift ) =~ s/^\s*//r ) . $msgFooter, 5, 2 ); }
+                    ? undef
+                    : sub { step( undef, $msgHeader . ( $_[0] =~ s/^\s*//r ) . $msgFooter, 5, 2 ); }
                 ),
-                sub { $stderr .= shift }
+                sub { $stderr .= $_[0] }
             );
             error( sprintf( "Couldn't download %s Debian source package: %s", $pkgSrc,
                 $stderr || 'Unknown error' )) if $rs;
@@ -1256,12 +1258,13 @@ sub _rebuildAndInstallPackage
                         '--configfile', "$FindBin::Bin/configs/" . lc( $lsbRelease->getId( 1 )) . '/pbuilder/pbuilderrc'
                     ],
                     ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                        ? undef : sub {
-                            return unless ( shift ) =~ /^i:\s*(.*)/i;
+                        ? undef
+                        : sub {
+                            return unless $_[0] =~ /^i:\s*(.*)/i;
                             step( undef, $msgHeader . ucfirst( $1 ) . $msgFooter, 5, 4 );
                         }
                     ),
-                    sub { $stderr .= shift }
+                    sub { $stderr .= $_[0] }
                 );
                 error( sprintf( "Couldn't build local %s %s package: %s", $pkg, $lsbRelease->getId( 1 ),
                     $stderr || 'Unknown error' )) if $rs;
@@ -1283,9 +1286,10 @@ sub _rebuildAndInstallPackage
             $rs = executeNoWait(
                 "dpkg --force-confnew -i /var/cache/pbuilder/result/${pkg}_*.deb",
                 ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose
-                    ? undef : sub { step( undef, $msgHeader . ( shift ), 5, 5 ) }
+                    ? undef
+                    : sub { step( undef, $msgHeader . $_[0], 5, 5 ) }
                 ),
-                sub { $stderr .= shift }
+                sub { $stderr .= $_[0] }
             );
             error( sprintf( "Couldn't install local %s %s package: %s", $pkg, $lsbRelease->getId( 1 ),
                 $stderr || 'Unknown error' )) if $rs;

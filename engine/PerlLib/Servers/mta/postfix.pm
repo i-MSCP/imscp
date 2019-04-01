@@ -1004,7 +1004,7 @@ sub postconf
                     delete $params{$p};
                 }
             },
-            sub { $stderr .= shift }
+            sub { $stderr .= $_[0] }
         ) == 0 or die(
             $stderr || 'Unknown error'
         );

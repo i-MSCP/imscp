@@ -103,45 +103,39 @@ sub execute( $;$$ )
 sub executeNoWait( $;$$ )
 {
     my ($command, $subSTDOUT, $subSTDERR) = @_;
+    $subSTDOUT //= sub { print STDOUT @_ };
+    $subSTDERR //= sub { print STDERR @_ };
 
-    $subSTDOUT ||= $subSTDOUT = sub { print STDOUT @_ };
-    ref $subSTDOUT eq 'CODE' or die( 'Expects CODE as second parameter for STDOUT processing' );
+    ref $subSTDOUT eq 'CODE' or croak( 'Invalid $subSTDOUT parameter. CODE expected.' );
+    ref $subSTDERR eq 'CODE' or croak( 'Invalid $subSTDERR parameter. CODE expected.' );
 
-    $subSTDERR ||= $subSTDERR = sub { print STDERR @_ };
-    ref $subSTDERR eq 'CODE' or die( 'Expects CODE as third parameter for STDERR processing' );
+    $command = [ $command ] unless ref $command eq 'ARRAY';
 
-    my $list = ref $command eq 'ARRAY';
-    debug( $list ? "@{$command}" : $command );
+    debug( "@{ $command }" );
 
-    my $pid = open3( my $stdin, my $stdout, my $stderr = gensym, $list ? @{$command} : $command );
-    close $stdin;
+    my $pid = open3 my $stdin, my $stdout, my $stderr = gensym, @{ $command };
+    $stdin->close();
+
+    $stdout->autoflush();
+    $stderr->autoflush();
 
     my %buffers = ( $stdout => '', $stderr => '' );
     my $sel = IO::Select->new( $stdout, $stderr );
-
     while ( my @ready = $sel->can_read ) {
         for my $fh ( @ready ) {
-            # Read 1 byte at a time to avoid ending with multiple lines
-            my $ret = sysread( $fh, my $nextbyte, 1 );
-
-            next if $!{'EINTR'}; # Ignore signal interrupt
-
-            defined $ret or die( $! ); # Something is going wrong; Best is to abort early
-
-            if ( $ret == 0 ) {
-                # EOL
-                $sel->remove( $fh );
-                close( $fh );
-                next;
-            }
-
-            $buffers{$fh} .= $nextbyte;
-
-            next unless $buffers{$fh} =~ /\n\z/;
-            $fh == $stdout ? $subSTDOUT->( $buffers{$fh} ) : $subSTDERR->( $buffers{$fh} );
-            $buffers{$fh} = ''; # Reset buffer for next line
+            my $readBytes = sysread $fh, $buffers{$fh}, 4096, length $buffers{$fh};
+            next if $!{'EINTR'};                                                                            # Ignore signal interrupt
+            defined $readBytes or die $!;                                                                   # Something is going wrong; abort early
+            $fh eq $stdout ? $subSTDOUT->( "$1" ) : $subSTDERR->( "$1" ) while $buffers{$fh} =~ s/(.*\n)//; # Process any lines from buffer
+            next unless $readBytes == 0;                                                                    # EOF
+            delete $buffers{$fh};
+            $sel->remove( $fh );
+            close $fh;
         }
     }
+
+    $stdout->close();
+    $stderr->close();
 
     waitpid( $pid, 0 );
     getExitCode();

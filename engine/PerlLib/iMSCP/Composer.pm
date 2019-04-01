@@ -397,17 +397,17 @@ sub setStdRoutines
     my ( $self, $subStdout, $subStderr ) = @_;
 
     $subStdout ||= sub {
-        chomp $_[0];
+        chomp( $_[0] );
         return unless length $_[0];
-        debug $_[0], ( caller( 2 ) )[3]
+        debug( $_[0] );
     };
     ref $subStdout eq 'CODE' or croak( 'Expects a routine as first parameter for STDOUT processing' );
     $self->{'_stdout'} = $subStdout;
 
     $subStderr ||= sub {
-        chomp $_[0];
+        chomp( $_[0] );
         return unless length $_[0];
-        debug $_[0], ( caller( 2 ) )[3]
+        debug ( $_[0] );
     };
     ref $subStderr eq 'CODE' or croak( 'Expects a routine as second parameter for STDERR processing' );
     $self->{'_stderr'} = $subStderr;
@@ -522,7 +522,7 @@ sub _removeAutoloader( )
  Return SU command
 
  Param list @_ Command
- Return arrayref command
+ Return array command
 
 =cut
 

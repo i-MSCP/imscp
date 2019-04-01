@@ -186,10 +186,10 @@ sub endDebug
 sub debug
 {
     my ($message, $caller) = @_;
-    $caller //= ( caller( 1 ) )[3] || 'main';
+    $caller = !defined $caller || $caller ? getCaller() : '';
 
-    $self->{'logger'}()->store( message => "$caller: $message", tag => 'debug' ) if $self->{'debug'};
-    print STDOUT output( "$caller: $message", 'debug' ) if $self->{'verbose'};
+    $self->{'logger'}()->store( message => $caller . $message, tag => 'debug' ) if $self->{'debug'};
+    print STDOUT output( $caller . $message, 'debug' ) if $self->{'verbose'};
     undef;
 }
 
@@ -206,9 +206,9 @@ sub debug
 sub warning
 {
     my ($message, $caller) = @_;
-    $caller //= ( caller( 1 ) )[3] || 'main';
+    $caller = !defined $caller || $caller ? getCaller() : '';
 
-    $self->{'logger'}()->store( message => "$caller: $message", tag => 'warn' );
+    $self->{'logger'}()->store( message => $caller . $message, tag => 'warn' );
     undef;
 }
 
@@ -225,9 +225,9 @@ sub warning
 sub error
 {
     my ($message, $caller) = @_;
-    $caller //= ( caller( 1 ) )[3] || 'main';
+    $caller = !defined $caller || $caller ? getCaller() : '';
 
-    $self->{'logger'}()->store( message => "$caller: $message", tag => 'error' );
+    $self->{'logger'}()->store( message => $caller . $message, tag => 'error' );
     undef;
 }
 
@@ -244,9 +244,9 @@ sub error
 sub fatal
 {
     my ($message, $caller) = @_;
-    $caller //= ( caller( 1 ) )[3] || 'main';
+    $caller = !defined $caller || $caller ? getCaller() : '';
 
-    $self->{'logger'}()->store( message => "$caller: $message", tag => 'fatal' );
+    $self->{'logger'}()->store( message => $caller . $message, tag => 'fatal' );
     exit 255;
 }
 
@@ -339,6 +339,23 @@ sub debugRegisterCallBack
 
     push @{$self->{'debug_callbacks'}}, $callback;
     0;
+}
+
+=item getCaller()
+
+ Return first subroutine caller or main, excluding eval and __ANON__
+ Return string
+
+=cut
+
+sub getCaller
+{
+    my $caller;
+    my $stackIDX = 2;
+    do {
+        $caller = ( ( caller $stackIDX++ )[3] || 'main' );
+    } while $caller eq '(eval)' || index( $caller, '__ANON__' ) != -1;
+    $caller . ': ';
 }
 
 =back

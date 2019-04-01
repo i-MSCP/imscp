@@ -99,23 +99,26 @@ sub registerSetupListeners
                 user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
                 composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
             );
-            $composer->installComposer( $::imscpConfig{'COMPOSER_VERSION'} );
-            $composer->clearCache() if iMSCP::Getopt->clearComposerCache;
-            $composer->setStdRoutines( sub {}, sub {
-                chomp $_[0];
-                return unless length $_[0];
+            $composer->setStdRoutines(
+                sub {},
+                sub {
+                    chomp( $_[0] );
+                    return unless length $_[0];
 
-                debug( $_[0] );
-                step( undef, <<"EOT", 1, 1 )
-Installing/Updating PHP dependencies...
+                    debug( $_[0] );
+                    step( undef, <<"EOT", 1, 1 );
+Installing/Updating i-MSCP frontEnd PHP dependencies...
 
 $_[0]
 
 Depending on your internet connection speed, this may take few seconds...
 EOT
-            } );
+                }
+            );
 
             startDetail;
+            $composer->installComposer( $::imscpConfig{'COMPOSER_VERSION'} );
+            $composer->clearCache() if iMSCP::Getopt->clearComposerCache;
             $composer->update( TRUE, FALSE, 'imscp/*' );
             endDetail;
         };
@@ -424,7 +427,7 @@ EOF
 Your SSL certificate for the control panel is missing or invalid.
 EOF
             ::setupSetQuestion( 'PANEL_SSL_ENABLED', '' );
-            goto &{ askSsl };
+            goto &{askSsl};
         }
 
         # In case the certificate is valid, we skip SSL setup process

@@ -32,7 +32,6 @@ use iMSCP::Debug qw/ debug error /;
 use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Getopt;
-use JSON;
 use parent 'Common::SingletonClass';
 
 use subs qw/
@@ -57,7 +56,7 @@ use subs qw/
     postdisableDmn postdisableCustomDNS postdisableFtpUser postdisableHtaccess postdisableHtgroup postdisableHtpasswd postdisableMail postdisableServerIP dpostisableSSLcertificate postdisableSub postdisableUser
 /;
 
-my $composerPackageVersionConstraint = '^1.0';
+my $packageVersionConstraint = '^1.0';
 
 =head1 DESCRIPTION
 
@@ -126,7 +125,7 @@ sub registerSetupListeners
                 composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
                 composer_json => 'composer.json'
             )
-                ->require( 'imscp/phpmyadmin', $composerPackageVersionConstraint )
+                ->require( 'imscp/phpmyadmin', $packageVersionConstraint )
                 ->dumpComposerJson();
         };
         if ( $@ ) {
@@ -210,8 +209,6 @@ sub uninstall
         )
             ->remove( 'imscp/phpmyadmin' )
             ->dumpComposerJson();
-
-        0;
     };
     if ( $@ ) {
         error( $@ );
