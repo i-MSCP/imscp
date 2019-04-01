@@ -25,13 +25,39 @@ package Package::WebmailClients::Roundcube::Roundcube;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ :nostat Package::WebmailClients::Roundcube::Installer Package::WebmailClients::Roundcube::Uninstaller /;
+use File::Basename 'dirname';
+use Class::Autouse qw/ :nostat iMSCP::Composer /;
 use iMSCP::Boolean;
-use iMSCP::Config;
-use iMSCP::Debug;
-use iMSCP::Database;
-use iMSCP::Rights;
+use iMSCP::Debug qw/ debug error /;
+use iMSCP::EventManager;
+use iMSCP::File;
+use iMSCP::Getopt;
+use JSON;
 use parent 'Common::SingletonClass';
+
+use subs qw/
+    registerSetupListeners setupDialog
+
+    preinstall install postinstall uninstall
+
+    preaddDomain preaddCustomDNS preaddFtpUser preaddHtaccess preaddHtgroup preaddHtpasswd preaddMail preaddServerIP preaddSSLcertificate preaddSub preaddUser
+    addDomain addCustomDNS addFtpUser addHtaccess addHtgroup addHtpasswd addMail addServerIP addSSLcertificate addSub addUser
+    postaddDomain postaddCustomDNS postaddFtpUser postaddHtaccess postaddHtgroup postaddHtpasswd postaddMail postaddServerIP postaddSSLcertificate postaddSub postaddUser
+
+    predeleteDmn predeleteCustomDNS predeleteFtpUser predeleteHtaccess predeleteHtgroup predeleteHtpasswd predeleteMail predeleteServerIP predeleteSSLcertificate predeleteSub predeleteUser
+    deleteDmn deleteCustomDNS deleteFtpUser deleteHtaccess deleteHtgroup deleteHtpasswd deleteMail deleteServerIP deleteSSLcertificate deleteSub deleteUser
+    postdeleteDmn postdeleteCustomDNS postdeleteFtpUser postdeleteHtaccess postdeleteHtgroup postdeleteHtpasswd postdeleteMail postdeleteServerIP postdeleteSSLcertificate postdeleteSub postdeleteUser
+
+    prerestoreDmn prerestoreCustomDNS prerestoreFtpUser prerestoreHtaccess prerestoreHtgroup prerestoreHtpasswd prerestoreMail prerestoreServerIP prerestoreSSLcertificate prerestoreSub prerestoreUser
+    restoreDmn restoreCustomDNS restoreFtpUser restoreHtaccess restoreHtgroup restoreHtpasswd restoreMail restoreServerIP restoreSSLcertificate restoreSub restoreUser
+    postrestoreDmn postrestoreCustomDNS postrestoreFtpUser postrestoreHtaccess postrestoreHtgroup postrestoreHtpasswd postrestoreMail postrestoreServerIP postrestoreSSLcertificate postrestoreSub postrestoreUser
+
+    predisableDmn predisableCustomDNS predisableFtpUser predisableHtaccess predisableHtgroup predisableHtpasswd predisableMail predisableServerIP predisableSSLcertificate predisableSub predisableUser
+    disableDmn disableCustomDNS disableFtpUser disableHtaccess disableHtgroup disableHtpasswd disableMail disableServerIP disableSSLcertificate disableSub disableUser
+    postdisableDmn postdisableCustomDNS postdisableFtpUser postdisableHtaccess postdisableHtgroup postdisableHtpasswd postdisableMail postdisableServerIP dpostisableSSLcertificate postdisableSub postdisableUser
+/;
+
+my $packageVersionConstraint = '1.3.x-dev';
 
 =head1 DESCRIPTION
 
@@ -47,6 +73,19 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
+=item getPriority( )
+
+ Get package priority
+
+ Return int package priority
+
+=cut
+
+sub getPriority
+{
+    0;
+}
+
 =item registerSetupListeners( \%em )
 
  Register setup event listeners
@@ -60,7 +99,25 @@ sub registerSetupListeners
 {
     my ( undef, $em ) = @_;
 
-    Package::WebmailClients::Roundcube::Installer->getInstance()->registerSetupListeners( $em );
+    return 0 if iMSCP::Getopt->skipComposerUpdate;
+
+    $em->registerOne( 'beforeSetupPreInstallServers', sub {
+        eval {
+            iMSCP::Composer->new(
+                user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
+                composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
+                composer_json => 'composer.json'
+            )
+                ->require( 'imscp/roundcube', $packageVersionConstraint )
+                ->dumpComposerJson();
+        };
+        if ( $@ ) {
+            error( $@ );
+            return 1;
+        }
+
+        0;
+    }, 10 );
 }
 
 =item setupDialog( \%dialog )
@@ -74,9 +131,7 @@ sub registerSetupListeners
 
 sub setupDialog
 {
-    my ( undef, $dialog ) = @_;
-
-    Package::WebmailClients::Roundcube::Installer->getInstance()->setupDialog( $dialog );
+    0;
 }
 
 =item preinstall( )
@@ -89,20 +144,23 @@ sub setupDialog
 
 sub preinstall
 {
-    Package::WebmailClients::Roundcube::Installer->getInstance()->preinstall();
-}
+    my ( $self ) = @_;
 
-=item install( )
+    if ( -f "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/roundcube/src/Handler.pm" ) {
+        my $rs = iMSCP::File->new(
+            filename => "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/roundcube/src/Handler.pm"
+        )->copyFile( "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebmailClients/Roundcube/Handler.pm" );
+        return $rs if $rs;
+    } else {
+        error( "Couldn't find the Roundcube package handler in the $::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/roundcube/src directory" );
+        return 1;
+    }
 
- Process installation tasks
+    if ( my $sub = $self->_getHandler()->can( 'preinstall' ) ) {
+        return $sub->( $self->_getHandler());
+    }
 
- Return int 0 on success, other on failure
-
-=cut
-
-sub install
-{
-    Package::WebmailClients::Roundcube::Installer->getInstance()->install();
+    0;
 }
 
 =item uninstall( )
@@ -117,71 +175,52 @@ sub uninstall
 {
     my ( $self ) = @_;
 
-    return 0 if $self->{'skip_uninstall'};
+    if ( my $sub = $self->_getHandler()->can( 'uninstall' ) ) {
+        my $rs = $sub->( $self->_getHandler());
+        return $rs if $rs;
+    }
 
-    Package::WebmailClients::Roundcube::Uninstaller->getInstance()->uninstall();
-}
+    if ( -f "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebmailClients/Roundcube/Handler.pm" ) {
+        return iMSCP::File->new( filename => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebmailClients/Roundcube/Handler.pm" )->delFile();
+    }
 
-=item setGuiPermissions( )
-
- Set GUI permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setGuiPermissions
-{
-    return 0 unless -d "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/roundcube";
-
-    my $panelUName = my $panelGName = $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'};
-
-    my $rs = setRights( "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/roundcube", {
-        user      => $panelUName,
-        group     => $panelGName,
-        dirmode   => '0550',
-        filemode  => '0440',
-        recursive => TRUE
-    } );
-    $rs ||= setRights( "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/roundcube/logs", {
-        user      => $panelUName,
-        group     => $panelGName,
-        dirmode   => '0750',
-        filemode  => '0640',
-        recursive => TRUE
-    } );
-}
-
-=item deleteMail( \%data )
-
- Process deleteMail tasks
-
- Param hash \%data Mail data
- Return int 0 on success, other on failure
-
-=cut
-
-sub deleteMail
-{
-    my ( undef, $data ) = @_;
-
-    return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
-
-    local $@;
     eval {
-        my $db = iMSCP::Database->factory();
-        my $oldDbName = $db->useDatabase( $::imscpConfig{'DATABASE_NAME'} . '_roundcube' );
-        my $dbh = $db->getRawDb();
-        local $dbh->{'RaiseError'} = TRUE;
-        $dbh->do( 'DELETE FROM users WHERE username = ?', undef, $data->{'MAIL_ADDR'} );
-        $db->useDatabase( $oldDbName ) if $oldDbName;
+        iMSCP::Composer->new(
+            user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
+            composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
+            composer_json => 'composer.json'
+        )
+            ->remove( 'imscp/roundcube' )
+            ->dumpComposerJson();
     };
     if ( $@ ) {
         error( $@ );
         return 1;
     }
 
-    0
+    0;
+}
+
+=item AUTOLOAD
+
+ Provide autoloading
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub AUTOLOAD
+{
+    my $self = shift;
+    ( my $method = our $AUTOLOAD ) =~ s/.*:://;
+
+    my $handlerInstance = $self->_getHandler();
+
+    if ( my $sub = $handlerInstance->can( $method ) ) {
+        return $sub->( $handlerInstance, @_ );
+    }
+
+    0;
 }
 
 =back
@@ -202,18 +241,33 @@ sub _init
 {
     my ( $self ) = @_;
 
-    $self->{'cfgDir'} = "$::imscpConfig{'CONF_DIR'}/roundcube";
-    $self->{'bkpDir'} = "$self->{'cfgDir'}/backup";
-    $self->{'wrkDir'} = "$self->{'cfgDir'}/working";
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+}
 
-    if ( -f "$self->{'cfgDir'}/roundcube.data" ) {
-        tie %{ $self->{'config'} }, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/roundcube.data", readonly => TRUE;
-    } else {
-        $self->{'config'} = {};
-        $self->{'skip_uninstall'} = TRUE;
-    }
+=item _getHandler( )
 
-    $self;
+ Get Roundcube package handler
+
+ Return Package::WebmailClients::Roundcube::Handler|Package::NoHandler
+
+=cut
+
+sub _getHandler
+{
+    my ( $self ) = @_;
+
+    $self->{'_handler'} //= do {
+        local $@;
+        # We need process this way because @INC entries are not always identical (setup/reconfiguration vs production)
+        # handlers are always installed in production directory (e.g. /var/www/imscp/engine/PerlLib/Package/<PackageType>/<Package>/)
+        eval { require "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebmailClients/Roundcube/Handler.pm" };
+        if ( $@ ) {
+            require Package::NoHandler;
+            return Package::NoHandler->new();
+        }
+
+        Package::WebmailClients::Roundcube::Handler->new();
+    };
 }
 
 =back
