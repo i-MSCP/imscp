@@ -22,6 +22,7 @@ FRONTEND
     Added: Route injector service for i-MSCP plugins
     Added: Service provider injector for i-MSCP plugins
     Added: ServiceProvider for overriding of default Slim error handlers
+    Fixed: Hide E_STRICT, E_NOTICE, E_WARNING and E_DEPRECATED even for addons
     Fixed: Output buffer must be erased when an exception is throw while template rendering
     Review: Load all dependencies using the PHP dependency manager (composer), except ZF1
 
