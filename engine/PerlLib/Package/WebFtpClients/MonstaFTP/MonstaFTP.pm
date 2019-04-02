@@ -1,6 +1,6 @@
 =head1 NAME
 
- Package::WebFtpClients::MonstaFTP::MonstaFTP - i-MSCP package
+ Package::WebFtpClients::MonstaFTP::MonstaFTP - MonstaFTP package
 
 =cut
 
@@ -25,10 +25,40 @@ package Package::WebFtpClients::MonstaFTP::MonstaFTP;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ :nostat Package::WebFtpClients::MonstaFTP::Installer Package::WebFtpClients::MonstaFTP::Uninstaller /;
+use File::Basename 'dirname';
+use Class::Autouse qw/ :nostat iMSCP::Composer /;
 use iMSCP::Boolean;
-use iMSCP::Rights;
+use iMSCP::Debug qw/ debug error /;
+use iMSCP::EventManager;
+use iMSCP::File;
+use iMSCP::Getopt;
 use parent 'Common::SingletonClass';
+
+use subs qw/
+    registerSetupListeners setupDialog
+
+    preinstall install postinstall uninstall
+
+    setGuiPermissions setEnginePermissions
+
+    preaddDomain preaddCustomDNS preaddFtpUser preaddHtaccess preaddHtgroup preaddHtpasswd preaddMail preaddServerIP preaddSSLcertificate preaddSub preaddUser
+    addDomain addCustomDNS addFtpUser addHtaccess addHtgroup addHtpasswd addMail addServerIP addSSLcertificate addSub addUser
+    postaddDomain postaddCustomDNS postaddFtpUser postaddHtaccess postaddHtgroup postaddHtpasswd postaddMail postaddServerIP postaddSSLcertificate postaddSub postaddUser
+
+    predeleteDmn predeleteCustomDNS predeleteFtpUser predeleteHtaccess predeleteHtgroup predeleteHtpasswd predeleteMail predeleteServerIP predeleteSSLcertificate predeleteSub predeleteUser
+    deleteDmn deleteCustomDNS deleteFtpUser deleteHtaccess deleteHtgroup deleteHtpasswd deleteMail deleteServerIP deleteSSLcertificate deleteSub deleteUser
+    postdeleteDmn postdeleteCustomDNS postdeleteFtpUser postdeleteHtaccess postdeleteHtgroup postdeleteHtpasswd postdeleteMail postdeleteServerIP postdeleteSSLcertificate postdeleteSub postdeleteUser
+
+    prerestoreDmn prerestoreCustomDNS prerestoreFtpUser prerestoreHtaccess prerestoreHtgroup prerestoreHtpasswd prerestoreMail prerestoreServerIP prerestoreSSLcertificate prerestoreSub prerestoreUser
+    restoreDmn restoreCustomDNS restoreFtpUser restoreHtaccess restoreHtgroup restoreHtpasswd restoreMail restoreServerIP restoreSSLcertificate restoreSub restoreUser
+    postrestoreDmn postrestoreCustomDNS postrestoreFtpUser postrestoreHtaccess postrestoreHtgroup postrestoreHtpasswd postrestoreMail postrestoreServerIP postrestoreSSLcertificate postrestoreSub postrestoreUser
+
+    predisableDmn predisableCustomDNS predisableFtpUser predisableHtaccess predisableHtgroup predisableHtpasswd predisableMail predisableServerIP predisableSSLcertificate predisableSub predisableUser
+    disableDmn disableCustomDNS disableFtpUser disableHtaccess disableHtgroup disableHtpasswd disableMail disableServerIP disableSSLcertificate disableSub disableUser
+    postdisableDmn postdisableCustomDNS postdisableFtpUser postdisableHtaccess postdisableHtgroup postdisableHtpasswd postdisableMail postdisableServerIP dpostisableSSLcertificate postdisableSub postdisableUser
+/;
+
+my $packageVersionConstraint = '2.9.x-dev';
 
 =head1 DESCRIPTION
 
@@ -41,6 +71,19 @@ use parent 'Common::SingletonClass';
 =head1 PUBLIC METHODS
 
 =over 4
+
+=item getPriority( )
+
+ Get package priority
+
+ Return int package priority
+
+=cut
+
+sub getPriority
+{
+    0;
+}
 
 =item registerSetupListeners( \%em )
 
@@ -55,7 +98,39 @@ sub registerSetupListeners
 {
     my ( undef, $em ) = @_;
 
-    Package::WebFtpClients::MonstaFTP::Installer->getInstance()->registerSetupListeners( $em );
+    return 0 if iMSCP::Getopt->skipComposerUpdate;
+
+    $em->registerOne( 'beforeSetupPreInstallServers', sub {
+        eval {
+            iMSCP::Composer->new(
+                user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
+                composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
+                composer_json => 'composer.json'
+            )
+                ->require( 'imscp/monsta-ftp', $packageVersionConstraint )
+                ->dumpComposerJson();
+        };
+        if ( $@ ) {
+            error( $@ );
+            return 1;
+        }
+
+        0;
+    }, 10 );
+}
+
+=item setupDialog( \%dialog )
+
+ Setup dialog
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 NEXT, 30 BACKUP, 50 ESC
+
+=cut
+
+sub setupDialog
+{
+    0;
 }
 
 =item preinstall( )
@@ -68,20 +143,23 @@ sub registerSetupListeners
 
 sub preinstall
 {
-    Package::WebFtpClients::MonstaFTP::Installer->getInstance()->preinstall();
-}
+    my ( $self ) = @_;
 
-=item install( )
+    if ( -f "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/monsta-ftp/src/Handler.pm" ) {
+        my $rs = iMSCP::File->new(
+            filename => "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/monsta-ftp/src/Handler.pm"
+        )->copyFile( "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebFtpClients/MonstaFTP/Handler.pm" );
+        return $rs if $rs;
+    } else {
+        error( "Couldn't find the MonstaFTP package handler in the $::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/monsta-ftp/src directory" );
+        return 1;
+    }
 
- Process installation tasks
+    if ( my $sub = $self->_getHandler()->can( 'preinstall' ) ) {
+        return $sub->( $self->_getHandler());
+    }
 
- Return int 0 on success, other on failure
-
-=cut
-
-sub install
-{
-    Package::WebFtpClients::MonstaFTP::Installer->getInstance()->install();
+    0;
 }
 
 =item uninstall( )
@@ -94,28 +172,101 @@ sub install
 
 sub uninstall
 {
-    Package::WebFtpClients::MonstaFTP::Uninstaller->getInstance()->uninstall();
+    my ( $self ) = @_;
+
+    if ( my $sub = $self->_getHandler()->can( 'uninstall' ) ) {
+        my $rs = $sub->( $self->_getHandler());
+        return $rs if $rs;
+    }
+
+    if ( -f "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebFtpClients/MonstaFTP/Handler.pm" ) {
+        return iMSCP::File->new( filename => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebFtpClients/MonstaFTP/Handler.pm" )->delFile();
+    }
+
+    eval {
+        iMSCP::Composer->new(
+            user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
+            composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
+            composer_json => 'composer.json'
+        )
+            ->remove( 'imscp/monsta-ftp' )
+            ->dumpComposerJson();
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    0;
 }
 
-=item setGuiPermissions( )
+=item AUTOLOAD
 
- Set GUI permissions
+ Provide autoloading
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub setGuiPermissions
+sub AUTOLOAD
 {
-    my $panelUName = my $panelGName = $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'};
+    my $self = shift;
+    ( my $method = our $AUTOLOAD ) =~ s/.*:://;
 
-    setRights( "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/monstaftp", {
-        user      => $panelUName,
-        group     => $panelGName,
-        dirmode   => '0550',
-        filemode  => '0440',
-        recursive => TRUE
-    } );
+    my $handlerInstance = $self->_getHandler();
+
+    if ( my $sub = $handlerInstance->can( $method ) ) {
+        return $sub->( $handlerInstance, @_ );
+    }
+
+    0;
+}
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init( )
+
+ Initialize instance
+
+ Return Package::WebFtpClients::MonstaFTP::MonstaFTP
+
+=cut
+
+sub _init
+{
+    my ( $self ) = @_;
+
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+}
+
+=item _getHandler( )
+
+ Get MonstaFTP package handler
+
+ Return Package::WebFtpClients::MonstaFTP::Handler|Package::NoHandler
+
+=cut
+
+sub _getHandler
+{
+    my ( $self ) = @_;
+
+    $self->{'_handler'} //= do {
+        local $@;
+        # We need process this way because @INC entries are not always identical (setup/reconfiguration vs production)
+        # handlers are always installed in production directory (e.g. /var/www/imscp/engine/PerlLib/Package/<PackageType>/<Package>/)
+        eval { require "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebFtpClients/MonstaFTP/Handler.pm" };
+        if ( $@ ) {
+            require Package::NoHandler;
+            return Package::NoHandler->new();
+        }
+
+        Package::WebFtpClients::MonstaFTP::Handler->new();
+    };
 }
 
 =back

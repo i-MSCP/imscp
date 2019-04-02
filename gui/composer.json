@@ -107,6 +107,7 @@
   "extra": {
     "installer-paths": {
       "vendor/{$vendor}/{$name}": [
+        "imscp/monsta-ftp",
         "imscp/phpmyadmin",
         "imscp/roundcube"
       ]
