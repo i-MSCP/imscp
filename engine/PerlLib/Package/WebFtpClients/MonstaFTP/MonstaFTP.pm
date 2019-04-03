@@ -58,7 +58,7 @@ use subs qw/
     postdisableDmn postdisableCustomDNS postdisableFtpUser postdisableHtaccess postdisableHtgroup postdisableHtpasswd postdisableMail postdisableServerIP dpostisableSSLcertificate postdisableSub postdisableUser
 /;
 
-my $packageVersionConstraint = '2.9.x-dev';
+my $packageVersionConstraint = '^1.0';
 
 =head1 DESCRIPTION
 
