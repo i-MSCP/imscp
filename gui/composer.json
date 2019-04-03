@@ -22,7 +22,7 @@
   },
   "config": {
     "sort-packages": true,
-    "discard-changes": "stash",
+    "discard-changes": true,
     "htaccess-protect": false,
     "optimize-autoloader": true,
     "apcu-autoloader": true,
