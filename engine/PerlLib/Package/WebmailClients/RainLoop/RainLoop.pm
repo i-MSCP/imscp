@@ -25,16 +25,25 @@ package Package::WebmailClients::RainLoop::RainLoop;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ :nostat Package::WebmailClients::RainLoop::Installer Package::WebmailClients::RainLoop::Uninstaller /;
+use Class::Autouse qw/ :nostat iMSCP::Composer /;
 use iMSCP::Boolean;
-use iMSCP::Config;
-use iMSCP::Debug;
-use iMSCP::Database;
-use iMSCP::Dir;
-use iMSCP::Rights;
+use iMSCP::Debug 'error';
+use iMSCP::EventManager;
+use iMSCP::File;
+use iMSCP::Getopt;
+use JSON;
 use parent 'Common::SingletonClass';
+use subs qw/
+    registerSetupListeners
+    preinstall install postinstall uninstall
+    setGuiPermissions setEnginePermissions
+    preaddMail addMail postaddMail
+    predeleteMail deleteMail postdeleteMail
+    prerestoreMail restoreMail postrestoreMail
+    predisableMail disableMail postdisableMail
+/;
 
-my $dbInitialized = undef;
+my $packageVersionConstraint = '^1.0';
 
 =head1 DESCRIPTION
 
@@ -45,6 +54,19 @@ my $dbInitialized = undef;
 =head1 PUBLIC METHODS
 
 =over 4
+
+=item getPriority( )
+
+ Get package priority
+
+ Return int package priority
+
+=cut
+
+sub getPriority
+{
+    0;
+}
 
 =item registerSetupListeners( \%em )
 
@@ -59,23 +81,25 @@ sub registerSetupListeners
 {
     my ( undef, $em ) = @_;
 
-    Package::WebmailClients::RainLoop::Installer->getInstance()->registerSetupListeners( $em );
-}
+    return 0 if iMSCP::Getopt->skipComposerUpdate;
 
-=item setupDialog( \%dialog )
+    $em->registerOne( 'beforeSetupPreInstallServers', sub {
+        eval {
+            iMSCP::Composer->new(
+                user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
+                composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
+                composer_json => 'composer.json'
+            )
+                ->require( 'imscp/rainloop', $packageVersionConstraint )
+                ->dumpComposerJson();
+        };
+        if ( $@ ) {
+            error( $@ );
+            return 1;
+        }
 
- Setup dialog
-
- Param iMSCP::Dialog \%dialog
- Return int 0 NEXT, 30 BACKUP, 50 ESC
-
-=cut
-
-sub setupDialog
-{
-    my ( undef, $dialog ) = @_;
-
-    Package::WebmailClients::RainLoop::Installer->getInstance()->setupDialog( $dialog );
+        0;
+    }, 10 );
 }
 
 =item preinstall( )
@@ -88,20 +112,30 @@ sub setupDialog
 
 sub preinstall
 {
-    Package::WebmailClients::RainLoop::Installer->getInstance()->preinstall();
-}
+    my ( $self ) = @_;
 
-=item install( )
+    unless ( -f "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/rainloop/src/Handler.pm" ) {
+        error( "Couldn't find the RainLoop package handler in the $::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/rainloop/src directory" );
+        return 1;
+    }
 
- Process installation tasks
+    my $rs = iMSCP::File->new(
+        filename => "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/rainloop/src/Handler.pm"
+    )->copyFile( "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebmailClients/RainLoop/Handler.pm" );
+    return $rs if $rs;
 
- Return int 0 on success, other on failure
+    local $@;
+    my $handler = eval { $self->_getHandler(); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
 
-=cut
+    if ( my $sub = $handler->can( 'preinstall' ) ) {
+        return $sub->( $handler );
+    }
 
-sub install
-{
-    Package::WebmailClients::RainLoop::Installer->getInstance()->install();
+    0;
 }
 
 =item uninstall( )
@@ -116,97 +150,59 @@ sub uninstall
 {
     my ( $self ) = @_;
 
-    return 0 if $self->{'skip_uninstall'};
-
-    Package::WebmailClients::RainLoop::Uninstaller->getInstance()->uninstall();
-}
-
-=item setGuiPermissions( )
-
- Set GUI permissions
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub setGuiPermissions
-{
-    return 0 unless -d "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/rainloop";
-
-    my $panelUName = my $panelGName = $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'};
-    my $rs = setRights( "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/rainloop", {
-        user      => $panelUName,
-        group     => $panelGName,
-        dirmode   => '0550',
-        filemode  => '0440',
-        recursive => TRUE
-    } );
-    $rs ||= setRights( "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/rainloop/data", {
-        user      => $panelUName,
-        group     => $panelGName,
-        dirmode   => '0750',
-        filemode  => '0640',
-        recursive => TRUE
-    } );
-}
-
-=item deleteMail( \%data )
-
- Process deleteMail tasks
-
- Param hash \%data Mail data
- Return int 0 on success, other on failure
-
-=cut
-
-sub deleteMail
-{
-    my ( undef, $data ) = @_;
-
-    return 0 unless $data->{'MAIL_TYPE'} =~ /_mail/;
+    return 0 unless -f "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebmailClients/RainLoop/Handler.pm";
 
     local $@;
+    my $handler = eval { $self->_getHandler(); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    if ( my $sub = $handler->can( 'uninstall' ) ) {
+        my $rs = $sub->( $handler );
+        return $rs if $rs;
+    }
+
     eval {
-        my $db = iMSCP::Database->factory();
-        my $dbh = $db->getRawDb();
-        local $dbh->{'RaiseError'} = TRUE;
-
-        unless ( $dbInitialized ) {
-            my $quotedRainLoopDbName = $dbh->quote_identifier( $::imscpConfig{'DATABASE_NAME'} . '_rainloop' );
-            my $row = $dbh->selectrow_hashref( "SHOW TABLES FROM $quotedRainLoopDbName" );
-            $dbInitialized = 1 if $row;
-        }
-
-        if ( $dbInitialized ) {
-            my $oldDbName = $db->useDatabase( $::imscpConfig{'DATABASE_NAME'} . '_rainloop' );
-            $dbh->do(
-                '
-                    DELETE u, c, p
-                    FROM rainloop_users u
-                    LEFT JOIN rainloop_ab_contacts c USING(id_user)
-                    LEFT JOIN rainloop_ab_properties p USING(id_user)
-                    WHERE rl_email = ?
-                ',
-                undef, $data->{'MAIL_ADDR'}
-            );
-            $db->useDatabase( $oldDbName ) if $oldDbName;
-        }
+        iMSCP::Composer->new(
+            user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
+            composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
+            composer_json => 'composer.json'
+        )
+            ->remove( 'imscp/rainloop' )
+            ->dumpComposerJson();
     };
     if ( $@ ) {
         error( $@ );
         return 1;
     }
 
-    my $storageDir = "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/rainloop/data/_data_/_default_/storage";
-    ( my $email = $data->{'MAIL_ADDR'} ) =~ s/[^a-z0-9\-\.@]+/_/;
-    ( my $storagePath = substr( $email, 0, 2 ) ) =~ s/\@$//;
+    iMSCP::File->new( filename => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebmailClients/RainLoop/Handler.pm" )->delFile();
+}
 
-    for my $storageType ( qw/ cfg data files / ) {
-        iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath/$email" )->remove();
-        next unless -d "$storageDir/$storageType/$storagePath";
-        my $dir = iMSCP::Dir->new( dirname => "$storageDir/$storageType/$storagePath" );
-        next unless $dir->isEmpty();
-        $dir->remove();
+=item AUTOLOAD
+
+ Provides autoloading
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub AUTOLOAD
+{
+    my $self = shift;
+    ( my $method = our $AUTOLOAD ) =~ s/.*:://;
+
+    local $@;
+    my $handler = eval { $self->_getHandler(); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    if ( my $sub = $handler->can( $method ) ) {
+        return $sub->( $handler, @_ );
     }
 
     0;
@@ -222,7 +218,7 @@ sub deleteMail
 
  Initialize instance
 
- Return Package::Webmail::RainLoop::RainLoop
+ Return Package::WebmailClients::RainLoop::RainLoop
 
 =cut
 
@@ -230,16 +226,25 @@ sub _init
 {
     my ( $self ) = @_;
 
-    $self->{'cfgDir'} = "$::imscpConfig{'CONF_DIR'}/rainloop";
+    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+}
 
-    if ( -f "$self->{'cfgDir'}/rainloop.data" ) {
-        tie %{ $self->{'config'} }, 'iMSCP::Config', fileName => "$self->{'cfgDir'}/rainloop.data", readonly => TRUE;
-    } else {
-        $self->{'config'} = {};
-        $self->{'skip_uninstall'} = TRUE;
-    }
+=item _getHandler( )
 
-    $self;
+ Get RainLoop package handler instance
+
+ Return Package::WebmailClients::RainLoop::Handler|Package::NoHandler, die on failure
+
+=cut
+
+sub _getHandler
+{
+    my ( $self ) = @_;
+
+    $self->{'_handler'} //= do {
+        require "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebmailClients/RainLoop/Handler.pm";
+        Package::WebmailClients::RainLoop::Handler->new();
+    };
 }
 
 =back
