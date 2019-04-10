@@ -19,7 +19,7 @@ EOF
 
 # jessie-updates repository dropped by Debian FTP masters team on march 2019
 # See https://lists.debian.org/debian-devel-announce/2019/03/msg00006.html
-if [ "$CODENAME" != "jessies" ]; then
+if [ "$CODENAME" != "jessie" ]; then
     cat >> "$APTCONFDIR/sources.list" <<EOF
 
 deb $MIRRORSITE ${CODENAME}-updates main contrib non-free
