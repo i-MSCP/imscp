@@ -723,7 +723,9 @@ sub _savePersistentData
     ) if -d "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent";
 
     # Save RainLoop data directory to new location if any
-    if ( -d "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/rainloop/data" ) {
+    if ( !-l "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/rainloop" &&
+        -d "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/rainloop/data"
+    ) {
         iMSCP::Dir->new( dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/rainloop/data" )->rcopy(
             "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/rainloop", { preserve => 'no' }
         );
@@ -737,7 +739,6 @@ sub _savePersistentData
 
         if ( -d "$dataDir/_default_" ) {
             iMSCP::Dir->new( dirname => "$dataDir/_default_" )->moveDir( "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/rainloop/imscp" );
-            iMSCP::Dir->new( dirname => "$dataDir/_default_" )->remove();
         }
     }
 
