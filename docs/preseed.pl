@@ -5,7 +5,7 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2019.03.28
+# Last update: 2019.04.09
 
 %main::questions = (
     #
@@ -293,7 +293,7 @@
     SERVICES_SSL_CERTIFICATE_PATH       => '',
 
     #
-    ## Packages configuration parameters
+    ## Packages (addons)
     #
 
     # Web statistic packages
@@ -314,29 +314,11 @@
     # Warning: Package names are case-sensitive
     SQL_ADMIN_TOOL_PACKAGES             => 'PhpMyAdmin',
 
-    # SQL user for PhpMyAdmin
-    PHPMYADMIN_SQL_USER                 => 'imscp_srv_user',
-    # Only ASCII alphabet characters and numbers are allowed in password.
-    # Leave this parameter empty for automatic password generation.
-    PHPMYADMIN_SQL_PASSWORD             => '',
-
     # Webmail client packages
     # Possible values: 'No' or a list of packages, each comma separated
     # Available packages are: RainLoop, Roundcube
     # Warning: Package names are case-sensitive
     WEB_MAIL_CLIENT_PACKAGES            => 'RainLoop,Roundcube',
-
-    # SQL user for Roundcube package (only if you use Roundcube)
-    ROUNDCUBE_SQL_USER                  => 'imscp_srv_user',
-    # Only ASCII alphabet characters and numbers are allowed in password.
-    # Leave this parameter empty for automatic password generation.
-    ROUNDCUBE_SQL_PASSWORD              => '',
-
-    # SQL user for Rainloop package (only relevant if you use Rainloop)
-    RAINLOOP_SQL_USER                   => 'imscp_srv_user',
-    # Only ASCII alphabet characters and numbers are allowed in password.
-    # Leave this parameter empty for automatic password generation.
-    RAINLOOP_SQL_PASSWORD               => '',
 
     # Antirootkits packages
     # Possible values: 'No' or a list of packages, each comma separated

@@ -688,7 +688,7 @@ sub _savePersistentData
 {
     my $destdir = $::{'INST_PREF'};
 
-    # Move old skel directory to new location
+    # Move old skeleton directory to new location
     iMSCP::Dir->new( dirname => "$::imscpConfig{'CONF_DIR'}/apache/skel" )->rcopy(
         "$::imscpConfig{'CONF_DIR'}/skel", { preserve => 'no' }
     ) if -d "$::imscpConfig{'CONF_DIR'}/apache/skel";
@@ -721,7 +721,31 @@ sub _savePersistentData
     iMSCP::Dir->new( dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent" )->rcopy(
         "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent", { preserve => 'no' }
     ) if -d "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent";
-    
+
+    # Save RainLoop data directory to new location if any
+    if ( -d "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/rainloop/data" ) {
+        iMSCP::Dir->new( dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/rainloop/data" )->rcopy(
+            "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/rainloop", { preserve => 'no' }
+        );
+
+        my $dataDir;
+        if ( -d "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/rainloop/_data_11c052c218cd2a2febbfb268624efdc1" ) {
+            $dataDir = "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/rainloop/_data_11c052c218cd2a2febbfb268624efdc1";
+        } else {
+            $dataDir = "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/rainloop/_data_";
+        }
+
+        if ( -d "$dataDir/_default_" ) {
+            iMSCP::Dir->new( dirname => "$dataDir/_default_" )->moveDir( "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/rainloop/imscp" );
+            iMSCP::Dir->new( dirname => "$dataDir/_default_" )->remove();
+        }
+    }
+
+    # Save software (older path ./gui/data/software) to new path (./gui/data/persistent/software)
+    iMSCP::Dir->new( dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/data/softwares" )->rcopy(
+        "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/softwares", { preserve => 'no' }
+    ) if -d "$::imscpConfig{'GUI_ROOT_DIR'}/data/softwares";
+
     # Save vendor data
     iMSCP::Dir->new( dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/vendor" )->rcopy(
         "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/vendor", { preserve => 'no' }
@@ -732,18 +756,13 @@ sub _savePersistentData
         "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/bin", { preserve => 'no' }
     ) if -d "$::imscpConfig{'GUI_ROOT_DIR'}/bin";
 
-    # Save software (older path ./gui/data/software) to new path (./gui/data/persistent/software)
-    iMSCP::Dir->new( dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/data/softwares" )->rcopy(
-        "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/softwares", { preserve => 'no' }
-    ) if -d "$::imscpConfig{'GUI_ROOT_DIR'}/data/softwares";
-
     # Save plugins
     iMSCP::Dir->new( dirname => "$::imscpConfig{'PLUGINS_DIR'}" )->rcopy(
         "$destdir$::imscpConfig{'PLUGINS_DIR'}", { preserve => 'no' }
     ) if -d $::imscpConfig{'PLUGINS_DIR'};
 
+    # Save package handlers if any
     if ( -d "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package" ) {
-        # Save package handlers (cover uninstallation case)
         for my $packageTypeDir ( iMSCP::Dir->new( dirname => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package" )->getDirs() ) {
             for my $packageDir ( iMSCP::Dir->new( dirname => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/$packageTypeDir" )->getDirs() ) {
                 for my $handlerFile (
@@ -796,7 +815,9 @@ sub _removeObsoleteFiles
         "$::imscpConfig{'LOG_DIR'}/imscp-arpl-msgr",
         '/var/local/imscp/.composer',
         '/var/local/imscp/packages',
-        "$::imscpConfig{'CONF_DIR'}/pma"
+        "$::imscpConfig{'CONF_DIR'}/pma",
+        "$::imscpConfig{'CONF_DIR'}/roundcube",
+        "$::imscpConfig{'CONF_DIR'}/rainloop"
     ) {
         iMSCP::Dir->new( dirname => $_ )->remove();
     }

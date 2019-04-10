@@ -28,14 +28,13 @@ use warnings;
 use Class::Autouse qw/ :nostat Package::WebStatistics::AWStats::Installer Package::WebStatistics::AWStats::Uninstaller /;
 use iMSCP::Boolean;
 use iMSCP::Database;
-use iMSCP::Debug;
+use iMSCP::Debug 'error';
 use iMSCP::Dir;
 use iMSCP::EventManager;
-use iMSCP::Execute;
 use iMSCP::Ext2Attributes qw( setImmutable clearImmutable );
 use iMSCP::File;
-use iMSCP::Rights;
-use iMSCP::TemplateParser;
+use iMSCP::Rights 'setRights';
+use iMSCP::TemplateParser qw/ getBloc process replaceBloc /;
 use Servers::cron;
 use Servers::httpd;
 use version;
@@ -233,9 +232,8 @@ sub deleteDmn
 
     return 0 unless @awstatsCacheFiles;
 
-    for ( @awstatsCacheFiles ) {
-        my $file = iMSCP::File->new( filename => "$awstatsCacheDir/$_" );
-        my $rs = $file->delFile();
+    for my $cacheFile ( @awstatsCacheFiles ) {
+        my $rs = iMSCP::File->new( filename => "$awstatsCacheDir/$cacheFile" )->delFile();
         return $rs if $rs;
     }
 

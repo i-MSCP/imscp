@@ -26,7 +26,7 @@ package Package::AntiRootkits::Chkrootkit::Chkrootkit;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Package::AntiRootkits::Chkrootkit::Installer Package::AntiRootkits::Chkrootkit::Uninstaller /;
-use iMSCP::Rights;
+use iMSCP::Rights 'setRights';
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -96,9 +96,9 @@ sub setEnginePermissions
 
 =item getDistributionPackages( )
 
- Get list of distribution packages
+ Get list of distribution packages to install or uninstall, depending on context
 
- Return list List of packages
+ Return List of distribution packages
 
 =cut
 

@@ -109,6 +109,7 @@
       "vendor/{$vendor}/{$name}": [
         "imscp/monsta-ftp",
         "imscp/phpmyadmin",
+        "imscp/rainloop",
         "imscp/roundcube"
       ]
     }

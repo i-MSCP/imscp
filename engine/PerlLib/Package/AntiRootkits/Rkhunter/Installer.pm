@@ -25,10 +25,9 @@ package Package::AntiRootkits::Rkhunter::Installer;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error /;
+use iMSCP::Execute 'execute';
 use iMSCP::File;
-use iMSCP::TemplateParser;
-use iMSCP::Execute;
 use Servers::cron;
 use parent 'Common::SingletonClass';
 

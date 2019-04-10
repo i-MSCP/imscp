@@ -18,7 +18,7 @@ DISTRIBUTIONS
     Added: sodium PHP extension (all distributions, all PHP versions except 5.6)
 
 FRONTEND
-    Added: ACL assertions for navigation
+    Added: ACL assertions for the navigation
     Added: Route injector service for i-MSCP plugins
     Added: Service provider injector for i-MSCP plugins
     Added: ServiceProvider for overriding of default Slim error handlers
@@ -32,7 +32,7 @@ INSTALLER
     Review: Always install PHP 7.3, regardless of the selected PHP version (frontEnd requirement)
 
 PLUGINS
-    Enhancement: Run frontend applications through the Slim microframework (with backward compatibility in mind)
+    Enhancement: Run frontEnd applications through the Slim microframework (with backward compatibility in mind)
         See http://www.slimframework.com/ for further details about offered possibilities
 
 VENDOR

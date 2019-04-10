@@ -26,10 +26,8 @@ package Package::WebStatistics::AWStats::Installer;
 use strict;
 use warnings;
 use iMSCP::Database;
-use iMSCP::Debug;
 use iMSCP::Dir;
 use iMSCP::File;
-use iMSCP::TemplateParser;
 use Servers::cron;
 use Servers::httpd;
 use version;
@@ -176,10 +174,7 @@ sub _disableDefaultConfig
     }
 
     my $cronDir = Servers::cron->factory()->{'config'}->{'CRON_D_DIR'};
-    if ( -f "$cronDir/awstats" ) {
-        $rs = iMSCP::File->new( filename => "$cronDir/awstats" )->moveFile( "$cronDir/awstats.disable" );
-    }
-
+    $rs = iMSCP::File->new( filename => "$cronDir/awstats" )->moveFile( "$cronDir/awstats.disable" ) if -f "$cronDir/awstats";
     $rs;
 }
 

@@ -28,16 +28,15 @@ use warnings;
 use Array::Utils qw/ array_diff array_minus intersect /;
 use File::Basename 'dirname';
 use iMSCP::Boolean;
-use iMSCP::Debug qw/ debug error /;
+use iMSCP::Debug  'error';
 use iMSCP::Dialog;
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::Execute 'execute';
 use iMSCP::Getopt;
 use parent 'Common::SingletonClass';
-
 use subs qw/
-    registerSetupListeners setupDialog
+    registerSetupListeners
 
     preinstall install postinstall uninstall
 
@@ -101,18 +100,32 @@ sub registerSetupListeners
     $rs ||= $em->registerOne( 'beforeSetupServersAndPackages', sub {
         my @selectedPackages = split ',', ::setupGetQuestion( $self->getConfVarname());
 
-        for my $package ( split ',', $::imscpConfig{ $self->getConfVarname() } ) {
+        for my $package ( @selectedPackages ) {
             next if $package eq 'No';
-            my $packageInstance = $self->_getPackageInstance( $package );
+
+            local $@;
+            my $packageInstance = eval { $self->_getPackage( $package ); };
+            if ( $@ ) {
+                error( $@ );
+                return 1;
+            }
+
             ( my $sub = $packageInstance->can( 'registerSetupListeners' ) ) or next;
             $rs = $sub->( $packageInstance, $em );
             return $rs if $rs;
         }
 
         my @distributionPackages;
+
         for my $package ( array_diff( @selectedPackages, @{ $self->{'PACKAGES'} } ) ) {
             next if $package eq 'No';
-            my $packageInstance = $self->_getPackageInstance( $package );
+
+            local $@;
+            my $packageInstance = eval { $self->_getPackage( $package ); };
+            if ( $@ ) {
+                error( $@ );
+                return 1;
+            }
 
             if ( my $sub = $packageInstance->can( 'uninstall' ) ) {
                 $rs = $sub->( $packageInstance );
@@ -123,12 +136,7 @@ sub registerSetupListeners
             push @distributionPackages, $sub->( $packageInstance );
         }
 
-        unless ( $::skippackages ) {
-            $rs = $self->_purgeDistributionPackages( @distributionPackages );
-            return $rs if $rs;
-        }
-
-        0;
+        $self->_purgeDistributionPackages( @distributionPackages );
     } );
 }
 
@@ -137,7 +145,7 @@ sub registerSetupListeners
  Setup dialog
 
  Param iMSCP::Dialog \%dialog
- Return int 0 NEXT, 30 BACKUP, 50 ESC
+ Return int 0 NEXT, 1 FAILURE, 30 BACKUP, 50 ESC
 
 =cut
 
@@ -161,10 +169,16 @@ EOF
     }
 
     ::setupSetQuestion( $self->getConfVarname(), join ',', @selectedPackages );
-    
-    for my $package( @selectedPackages ) {
+
+    for my $package ( @selectedPackages ) {
         next if $package eq 'No';
-        my $packageInstance = $self->_getPackageInstance( $package );
+
+        local $@;
+        my $packageInstance = eval { $self->_getPackage( $package ); };
+        if ( $@ ) {
+            error( $@ );
+            return 1;
+        }
 
         if ( my $sub = $packageInstance->can( 'setupDialog' ) ) {
             my $rs = $sub->( $packageInstance, $dialog );
@@ -188,25 +202,31 @@ sub preinstall
     my ( $self ) = @_;
 
     my @distributionPackages;
+
     for my $package ( split ',', $::imscpConfig{ $self->getConfVarname() } ) {
         next if $package eq 'No';
-        my $packageInstance = $self->_getPackageInstance( $package );
+
+        local $@;
+        my $packageInstance = eval { $self->_getPackage( $package ); };
+        if ( $@ ) {
+            error( $@ );
+            return 1;
+        }
 
         if ( my $sub = $packageInstance->can( 'preinstall' ) ) {
             my $rs = $sub->( $packageInstance );
             return $rs if $rs;
         }
 
-        ( my $sub = $packageInstance->can( 'getDistributionPackages' ) ) or next;
-        push @distributionPackages, $sub->( $packageInstance );
+        unless ( $::skippackages ) {
+            ( my $sub = $packageInstance->can( 'getDistributionPackages' ) ) or next;
+            push @distributionPackages, $sub->( $packageInstance );
+        }
     }
 
-    unless ( $::skippackages ) {
-        my $rs = $self->_installDistributionPackages( @distributionPackages );
-        return $rs if $rs;
-    }
+    return 0 if $::skippackages;
 
-    0;
+    $self->_installDistributionPackages( @distributionPackages );
 }
 
 =item getConfVarname( )
@@ -221,7 +241,7 @@ sub getConfVarname
 {
     my ( $self ) = @_;
 
-    die( "The @{ [ ref $self ] } package must implements the getCOnfVarname() method." );
+    die( "The @{ [ ref $self ] } package must implements the getConfVarname() method." );
 }
 
 =item getOptName( )
@@ -269,7 +289,14 @@ sub AUTOLOAD
 
     for my $package ( split ',', $::imscpConfig{ $self->getConfVarname() } ) {
         next if $package eq 'No';
-        my $packageInstance = $self->_getPackageInstance( $package );
+
+        local $@;
+        my $packageInstance = eval { $self->_getPackage( $package ); };
+        if ( $@ ) {
+            error( $@ );
+            return 1;
+        }
+
         ( my $sub = $packageInstance->can( $method ) ) or next;
         my $rs = $sub->( $packageInstance, @_ );
         return $rs if $rs;
@@ -295,7 +322,9 @@ sub _init
     my ( $self ) = @_;
 
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-    @{ $self->{'PACKAGES'} } = ( iMSCP::Dir->new( dirname => "@{ [ dirname __FILE__ ] }/@{ [ ( ref $self ) =~ s/.*:://r ] }" )->getDirs(), 'No' );
+    @{ $self->{'PACKAGES'} } = (
+        iMSCP::Dir->new( dirname => "@{ [ dirname __FILE__ ] }/@{ [ ( ref $self ) =~ s/.*:://r ] }" )->getDirs(), 'No'
+    );
     $self;
 }
 
@@ -371,28 +400,23 @@ sub _purgeDistributionPackages
     $rs;
 }
 
-=item _getPackageInstance( $package )
+=item _getPackage( $package )
 
  Get instance of the given package
 
  Param string $package Package short name
- Return Package::AbstractPackageCollection
+ Return Package::AbstractPackageCollection, die on failure
 
 =cut
 
-sub _getPackageInstance
+sub _getPackage
 {
     my ( $self, $package ) = @_;
 
-    $self->{'_package_instances'}->{$package} //= do {
+    $self->{'_packages'}->{$package} //= do {
         $package = "@{ [ ref $self ] }::$package::$package";
-
         eval "require $package";
-        if ( $@ ) {
-            error( $@ );
-            return 1;
-        }
-
+        die if $@;
         $package->getInstance();
     };
 }

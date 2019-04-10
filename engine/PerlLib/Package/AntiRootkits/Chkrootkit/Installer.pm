@@ -25,9 +25,9 @@ package Package::AntiRootkits::Chkrootkit::Installer;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error /;
+use iMSCP::Execute 'execute';
 use iMSCP::File;
-use iMSCP::Execute;
 use Servers::cron;
 use parent 'Common::SingletonClass';
 

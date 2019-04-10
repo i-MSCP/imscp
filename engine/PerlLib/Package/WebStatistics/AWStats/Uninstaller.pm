@@ -25,9 +25,9 @@ package Package::WebStatistics::AWStats::Uninstaller;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
-use iMSCP::Execute;
+use iMSCP::Execute 'execute';
 use iMSCP::File;
 use Servers::httpd;
 use Servers::cron;
@@ -81,7 +81,12 @@ sub _deleteFiles
         return $rs if $rs;
     }
 
-    iMSCP::Dir->new( dirname => $::imscpConfig{'AWSTATS_CACHE_DIR'} )->remove();
+    local $@;
+    eval { iMSCP::Dir->new( dirname => $::imscpConfig{'AWSTATS_CACHE_DIR'} )->remove(); };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
 
     return 0 unless -d $::imscpConfig{'AWSTATS_CONFIG_DIR'};
 

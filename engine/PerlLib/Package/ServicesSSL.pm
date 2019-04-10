@@ -200,7 +200,7 @@ EOF
 Your SSL certificate for the FTP and MAIL services is missing or invalid.
 EOF
             ::setupSetQuestion( 'SERVICES_SSL_ENABLED', '' );
-            goto &{ servicesSslDialog };
+            goto &{servicesSslDialog};
         }
 
         # In case the certificate is valid, we skip SSL setup process
