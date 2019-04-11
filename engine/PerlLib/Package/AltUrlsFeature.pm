@@ -73,7 +73,7 @@ sub registerSetupListeners
     } );
 }
 
-=item postaddDmn( \%data )
+=item addDmn( \%data )
 
  Add control panel subdomain (A/AAAA) DNS record for client website alternative URL
 
@@ -192,7 +192,7 @@ sub disableSub
 
 sub _addServerAlias
 {
-    my ( $self, undef, $$tplName, $data ) = @_;
+    my ( $self, undef, $tplName, $data ) = @_;
 
     return 0 unless $$tplName eq 'domain.tpl' && $::imscpConfig{'CLIENT_WEBSITES_ALT_URLS'} eq 'yes';
 
