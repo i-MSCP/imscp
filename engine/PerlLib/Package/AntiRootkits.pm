@@ -1,6 +1,6 @@
 =head1 NAME
 
- Package::AntiRootkits - Anti-Rootkits package
+ Package::AntiRootkits - Anti-Rootkits packages
 
 =cut
 
@@ -29,7 +29,7 @@ use parent 'Package::AbstractPackageCollection';
 
 =head1 DESCRIPTION
 
- Provides Anti-Rootkits features.
+ Provides Anti-Rootkits packages.
 
 =head1 PUBLIC METHODS
 

@@ -366,9 +366,7 @@ sub disableDmn
             HTTP_URI_SCHEME => 'http://',
             HTTPD_LOG_DIR   => $self->{'config'}->{'HTTPD_LOG_DIR'},
             USER_WEB_DIR    => $main::imscpConfig{'USER_WEB_DIR'},
-            SERVER_ALIASES  => "www.$data->{'DOMAIN_NAME'}" . ( $main::imscpConfig{'CLIENT_WEBSITES_ALT_URLS'} eq 'yes'
-                ? " $data->{'ALIAS'}.$main::imscpConfig{'BASE_SERVER_VHOST'}" : ''
-            )
+            SERVER_ALIASES  => "www.$data->{'DOMAIN_NAME'}"
         }
     );
 
@@ -972,11 +970,24 @@ sub buildConfFile
     $rs ||= $fileHandler->mode( $options->{'mode'} // 0644 );
 }
 
+=item getData( )
+
+ Get server data
+
+ Return hashref
+
+=cut
+
+sub getData
+{
+    $_[0]->{'data'};
+}
+
 =item setData( \%data )
 
- Make the given data available for this server
+ Set server data
 
- Param hash \%data Server data
+ Param hashref \%data Server data
  Return int 0
 
 =cut
@@ -1535,9 +1546,7 @@ sub _addCfg
             HTTPD_CUSTOM_SITES_DIR => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'},
             HTTPD_LOG_DIR          => $self->{'config'}->{'HTTPD_LOG_DIR'},
             PHP_FCGI_STARTER_DIR   => $self->{'phpConfig'}->{'PHP_FCGI_STARTER_DIR'},
-            SERVER_ALIASES         => "www.$data->{'DOMAIN_NAME'}" . ( $main::imscpConfig{'CLIENT_WEBSITES_ALT_URLS'} eq 'yes'
-                ? " $data->{'ALIAS'}.$main::imscpConfig{'BASE_SERVER_VHOST'}" : ''
-            )
+            SERVER_ALIASES         => "www.$data->{'DOMAIN_NAME'}"
         }
     );
 

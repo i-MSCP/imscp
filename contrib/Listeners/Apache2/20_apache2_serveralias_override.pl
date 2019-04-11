@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2017 by Laurent Declercq <l.declercq@nnuxwin.com>
+# Copyright (C) 2017-2019 by Laurent Declercq <l.declercq@nnuxwin.com>
 # Copyright (C) 2013-2017 by Sascha Bay
 #
 # This program is free software; you can redistribute it and/or
@@ -22,7 +22,10 @@
 
 package Listener::Apache2::ServerAlias::Override;
 
+use strict;
+use warnings;
 use iMSCP::EventManager;
+use Servers::httpd;
 
 #
 ## Configuration variables
@@ -30,26 +33,31 @@ use iMSCP::EventManager;
 
 # Map Apache2 vhosts (domains) to additional server aliases 
 my %serverAliases = (
-    'example1.com' => 'example1.in example1.br', # Add example1.in and example1.br server aliases to exemple1.com vhost
-    'example2.com' => 'example2.in example2.br' # Add example2.in and example2.br server aliases to exemple2.com vhost
+    # Add example1.in and example1.br server aliases to example1.com vhost
+    'example1.com' => 'example1.in example1.br',
+    # Add example2.in and example2.br server aliases to example2.com vhost
+    'example2.com' => 'example2.in example2.br'
 );
 
 #
 ## Please, don't edit anything below this line
 #
 
-iMSCP::EventManager->getInstance()->register(
-    'afterHttpdBuildConf',
-    sub {
-        my ($tplContent, $tplName, $data) = @_;
+iMSCP::EventManager->getInstance()->register( 'beforeHttpdBuildConfFile', sub {
+    my ( undef, $tplName, $data ) = @_;
 
-        return 0 unless $tplName eq 'domain.tpl'
-            && $serverAliases{$data->{'DOMAIN_NAME'}};
+    return 0 unless $tplName eq 'domain.tpl'
+        && length $serverAliases{$data->{'DOMAIN_NAME'}};
 
-        ${$tplContent} =~ s/^(\s+ServerAlias.*)/$1 $serverAliases{$data->{'DOMAIN_NAME'}}/m;
-        0;
-    }
-);
+    my $httpd = Servers::httpd->factory();
+    my $serverData = $httpd->getData();
+
+    $httpd->setData( {
+        SERVER_ALIASES => length $serverData->{'SERVER_ALIASES'}
+            ? $serverData->{'SERVER_ALIASES'} . ' ' . $serverAliases{$data->{'DOMAIN_NAME'}}
+            : $serverAliases{$data->{'DOMAIN_NAME'}}
+    } );
+} );
 
 1;
 __END__

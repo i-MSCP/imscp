@@ -29,7 +29,7 @@ use parent 'Package::AbstractPackageCollection';
 
 =head1 DESCRIPTION
 
- Provides SQL administration tools.
+ Provides SQL administration tool packages.
 
 =head1 PUBLIC METHODS
 

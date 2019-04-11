@@ -1,6 +1,6 @@
 =head1 NAME
 
- Package::WebStatistics - Web Statistics
+ Package::WebStatistics - Web Statistics packages
 
 =cut
 
@@ -29,7 +29,7 @@ use parent 'Package::AbstractPackageCollection';
 
 =head1 DESCRIPTION
 
- Provides Web statistics.
+ Provides Web statistics packages.
 
 =head1 PUBLIC METHODS
 

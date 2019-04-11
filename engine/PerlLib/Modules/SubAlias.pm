@@ -222,6 +222,7 @@ sub _getData
             BASE_SERVER_IP          => $main::imscpConfig{'BASE_SERVER_IP'},
             BASE_SERVER_PUBLIC_IP   => $main::imscpConfig{'BASE_SERVER_PUBLIC_IP'},
             DOMAIN_ADMIN_ID         => $self->{'domain_admin_id'},
+            DOMAIN_ID               => $self->{'subdomain_alias_id'},
             DOMAIN_NAME             => $self->{'subdomain_alias_name'} . '.' . $self->{'alias_name'},
             DOMAIN_NAME_UNICODE     => idn_to_unicode(
                 $self->{'subdomain_alias_name'} . '.' . $self->{'alias_name'}, 'utf-8'
@@ -246,7 +247,6 @@ sub _getData
             HSTS_SUPPORT            => $allowHSTS,
             HSTS_MAX_AGE            => $hstsMaxAge,
             HSTS_INCLUDE_SUBDOMAINS => $hstsIncludeSubDomains,
-            ALIAS                   => 'alssub' . $self->{'subdomain_alias_id'},
             FORWARD                 => $self->{'subdomain_alias_url_forward'} || 'no',
             FORWARD_TYPE            => $self->{'subdomain_alias_type_forward'} || '',
             FORWARD_PRESERVE_HOST   => $self->{'subdomain_alias_host_forward'} || 'Off',

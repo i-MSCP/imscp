@@ -1,6 +1,6 @@
 =head1 NAME
 
- Package::WebFtpClients - Web-based FTP clients
+ Package::WebFtpClients - Web-based FTP client packages
 
 =cut
 
@@ -29,7 +29,7 @@ use parent 'Package::AbstractPackageCollection';
 
 =head1 DESCRIPTION
 
- Provide Web-based FTP clients. 
+ Provide Web-based FTP client packages. 
 
 =head1 PUBLIC METHODS
 

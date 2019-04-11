@@ -110,8 +110,8 @@ sub setupDialog
     return $rs if $rs;
 
     # Implements a simple state machine (backup capability)
-    # Any dialog subroutine *should* allow user to step back by returning 30 when 'back' button is pushed
-    # In case of yesno dialog box, there is no back button. Instead, user can back up using the ESC keystroke
+    # Any dialog subroutine *SHOULD* allow to step back by returning 30 when 'back' button is pushed
+    # In case of a 'yesno' dialog box, there is no back button. Instead, user can back up using the ESC keystroke
     # In any other context, the ESC keystroke allows user to abort.
     my ($state, $nbDialog, $dialog) = ( 0, scalar @{$dialogStack}, iMSCP::Dialog->getInstance() );
     while ( $state < $nbDialog ) {

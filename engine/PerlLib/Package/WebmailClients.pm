@@ -1,6 +1,6 @@
 =head1 NAME
 
- Package::WebmailClients - Webmail clients
+ Package::WebmailClients - Webmail client packages
 
 =cut
 
@@ -29,7 +29,7 @@ use parent 'Package::AbstractPackageCollection';
 
 =head1 DESCRIPTION
 
- Provides Web-based mail clients.
+ Provides webmail client packages.
 
 =head1 PUBLIC METHODS
 
