@@ -194,7 +194,8 @@ sub _addServerAlias
 {
     my ( $self, undef, $tplName, $data ) = @_;
 
-    return 0 unless $$tplName eq 'domain.tpl' && $::imscpConfig{'CLIENT_WEBSITES_ALT_URLS'} eq 'yes';
+    return 0 unless $tplName eq 'domain.tpl'
+        && $::imscpConfig{'CLIENT_WEBSITES_ALT_URLS'} eq 'yes';
 
     my $serverData = $self->{'httpd'}->getData();
     my $alias = "$data->{'DOMAIN_TYPE'}$data->{'DOMAIN_ID'}.$::imscpConfig{'BASE_SERVER_VHOST'}";
