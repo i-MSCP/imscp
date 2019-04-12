@@ -27,7 +27,7 @@ use strict;
 use warnings;
 use Cwd;
 use File::Basename;
-use iMSCP::Crypt qw/ randomStr /;
+use iMSCP::Crypt 'randomStr';
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Dir;
@@ -205,33 +205,36 @@ sub _init
 
 sub _guessSystemPhpVariables
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my ($phpVersion) = `php -nv 2> /dev/null` =~ /^PHP\s+(\d+.\d+)/ or die( "Couldn't guess system PHP version" );
+    ( $self->{'phpConfig'}->{'PHP_VERSION'} ) = $::imscpConfig{'PHP_SERVER'}
+        =~ /(\d+.\d+)$/ or die( "Couldn't guess system PHP version" );
 
-    $self->{'phpConfig'}->{'PHP_VERSION'} = $phpVersion;
+    $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find(
+        "php$self->{'phpConfig'}->{'PHP_VERSION'}"
+    ) or die( "Couldn't find system php (cli) binary" );
 
-    my ($phpConfDir) = `php -ni 2> /dev/null | grep '(php.ini) Path'` =~ /([^\s]+)$/ or die(
-        "Couldn't guess system PHP configuration directory path"
-    );
+    my ( $phpCliConfDir ) = `$self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} -ni 2> /dev/null | grep '(php.ini) Path'`
+        =~ /([^\s]+)$/ or die( "Couldn't guess system PHP configuration root directory" );
 
-    my $phpConfBaseDir = dirname( $phpConfDir );
-    $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = $phpConfBaseDir;
-    $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = "$phpConfBaseDir/fpm/pool.d";
+    $self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'} = dirname( $phpCliConfDir );
 
-    unless ( -d $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} ) {
-        $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = '';
-        die( sprintf( "Couldn't guess `%s' PHP configuration parameter value: directory doesn't exists.", $_ ));
+    if ( -d "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d" ) {
+        $self->{'phpConfig'}->{'PHP_FPM_POOL_DIR_PATH'} = "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d";
+    } else {
+        die( sprintf(
+            "Couldn't guess php (fpm) pool configuration directory: Directory %s doesn't exist.",
+            "$self->{'phpConfig'}->{'PHP_CONF_DIR_PATH'}/fpm/pool.d"
+        ));
     }
 
-    $self->{'phpConfig'}->{'PHP_CLI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php$phpVersion" );
-    $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-cgi$phpVersion" );
-    $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find( "php-fpm$phpVersion" );
+    $self->{'phpConfig'}->{'PHP_FCGI_BIN_PATH'} = iMSCP::ProgramFinder::find(
+        "php-cgi$self->{'phpConfig'}->{'PHP_VERSION'}"
+    ) or die( "Couldn't find system php (cgi-fcgi) binary" );
 
-    for( qw/ PHP_CLI_BIN_PATH PHP_FCGI_BIN_PATH PHP_FPM_BIN_PATH / ) {
-        next if $self->{'phpConfig'}->{$_};
-        die( sprintf( "Couldn't guess `%s' PHP configuration parameter value.", $_ ));
-    }
+    $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} = iMSCP::ProgramFinder::find(
+        "php-fpm$self->{'phpConfig'}->{'PHP_VERSION'}"
+    ) or die( "Couldn't find system php (fpm-fcgi) binary" );
 
     0;
 }

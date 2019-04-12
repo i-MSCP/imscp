@@ -1,46 +1,29 @@
-##
-#### PHP common parameters
-##
+## PHP common parameters
 
 PHP_CONFIG_LEVEL =
 PHP_CONF_DIR_PATH =
 PHP_PEAR_DIR = /usr/share/php
 PHP_VERSION =
 
-##
-### PHP opcode cache parameters (OPcache, APC)
-### Note: Only relevant if you use PHP as Apache2 module (ITK), or through PHP-FPM
-##
-
+# Only relevant with PHP run as Apache2 module, or through PHP-FPM
 PHP_OPCODE_CACHE_ENABLED = 1
 PHP_OPCODE_CACHE_MAX_MEMORY = 128
 
-##
-#### PHP CLI specific
-##
+## PHP CLI parameters
 
 PHP_CLI_BIN_PATH =
 
-##
-#### PHP FCGI specific
-##
+## PHP FCGI parameters
 
 PHP_FCGI_BIN_PATH =
 PHP_FCGI_CHILDREN = 0
 PHP_FCGI_MAX_REQUESTS = 1000
 PHP_FCGI_STARTER_DIR = /var/www/fcgi
 
-##
-#### PHP FPM specific
-##
+## PHP FPM parameters
 
 PHP_FPM_BIN_PATH =
 PHP_FPM_POOL_DIR_PATH =
-
-#
-## FPM global parameters
-#
-
 PHP_FPM_LOG_LEVEL = error
 PHP_FPM_EMERGENCY_RESTART_THRESHOLD = 10
 PHP_FPM_EMERGENCY_RESTART_INTERVAL = 1m
@@ -48,11 +31,7 @@ PHP_FPM_PROCESS_CONTROL_TIMEOUT = 60s
 PHP_FPM_PROCESS_MAX = 0
 PHP_FPM_RLIMIT_FILES = 4096
 
-#
-## PHP-FPM pool parameters
-#
-
-# Listen mode (FPM FastCGI addresse type):
+# Listen mode (FPM FastCGI addresses type):
 # Available modes:
 #  - 'tcp' (e.g. 192.168.1.136:9001)
 #  - 'uds' (e.g. /run/php/php<version>-fpm-domain.tld.sock)

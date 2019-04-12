@@ -1,6 +1,4 @@
-#
-## HTTPD (Nginx) variables
-#
+## HTTPD (Nginx) parameters
 
 HTTPD_NAME = Nginx
 HTTPD_VERSION =
@@ -22,8 +20,10 @@ HTTPD_CACHE_DIR_NGINX = /var/cache/nginx
 HTTPD_PID_FILE = /var/run/nginx.pid
 
 #
-## FCGI variables
+## PHP-FPM parameters
 #
 
-FRONTEND_FCGI_CHILDREN = 5
-FRONTEND_FCGI_MAX_REQUEST = 1000
+PHP_FPM_BIN_PATH = /usr/sbin/php-fpm7.3
+PHP_PEAR_DIR = /usr/share/php
+PHP_FPM_MAX_CHILDREN = 5
+PHP_FPM_MAX_REQUESTS = 1000

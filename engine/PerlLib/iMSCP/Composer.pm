@@ -121,11 +121,7 @@ sub new
         length $self->{'composer_phar'} ? $self->{'composer_phar'} : "$homeDir/bin/composer.phar",
         $homeDir . '/bin'
     );
-    $self->{'_php_cmd'} = [
-        ( iMSCP::ProgramFinder::find( 'php' ) or croak( "Couldn't find php executable in \$PATH" ) ),
-        '-d',
-        'allow_url_fopen=1'
-    ];
+    $self->{'_php_cmd'} = [ '/usr/bin/php', '-d', 'allow_url_fopen=1' ];
     $self->loadComposerJson();
     $self->setStdRoutines();
     $self;

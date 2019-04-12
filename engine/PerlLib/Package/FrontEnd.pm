@@ -244,7 +244,7 @@ sub dpkgPostInvokeTasks
     my ( $self ) = @_;
 
     if ( -f '/usr/local/sbin/imscp_panel' ) {
-        unless ( -f $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} ) {
+        unless ( -f $self->{'config'}->{'PHP_FPM_BIN_PATH'} ) {
             # Cover case where administrator removed the package
             # That should never occurs but...
             my $rs = $self->stop();
@@ -255,7 +255,7 @@ sub dpkgPostInvokeTasks
         }
 
         my $v1 = $self->getFullPhpVersionFor(
-            $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'}
+            $self->{'config'}->{'PHP_FPM_BIN_PATH'}
         );
         my $v2 = $self->getFullPhpVersionFor(
             '/usr/local/sbin/imscp_panel'
@@ -484,7 +484,7 @@ sub enableSites
             . basename( $site, '.conf' );
 
         unless ( -f $target ) {
-            error( sprintf( "Site `%s` doesn't exist", $site ));
+            error( sprintf( "Site '%s' doesn't exist", $site ));
             return 1;
         }
 
@@ -496,7 +496,7 @@ sub enableSites
                 $self->{'config'}->{'HTTPD_SITES_ENABLED_DIR'}
             ), $link )
         ) {
-            error( sprintf( "Couldn't enable `%s` site: %s", $site, $! ));
+            error( sprintf( "Couldn't enable '%s' site: %s", $site, $! ));
             return 1;
         }
 
@@ -903,7 +903,6 @@ sub _init
     my ( $self ) = @_;
 
     @{ $self }{qw/ start reload restart /} = ( FALSE, FALSE, FALSE );
-    $self->{'phpConfig'} = Servers::httpd->factory()->{'phpConfig'};
     $self->{'events'} = iMSCP::EventManager->getInstance();
     $self->{'cfgDir'} = "$::imscpConfig{'CONF_DIR'}/frontend";
     $self->_mergeConfig() if -f "$self->{'cfgDir'}/frontend.data.dist";
@@ -1666,13 +1665,13 @@ sub _copyPhpBinary
 {
     my ( $self ) = @_;
 
-    unless ( length $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'} ) {
+    unless ( length $self->{'config'}->{'PHP_FPM_BIN_PATH'} ) {
         error( "PHP 'PHP_FPM_BIN_PATH' configuration parameter is not set." );
         return 1;
     }
 
     iMSCP::File->new(
-        filename => $self->{'phpConfig'}->{'PHP_FPM_BIN_PATH'}
+        filename => $self->{'config'}->{'PHP_FPM_BIN_PATH'}
     )->copyFile(
         '/usr/local/sbin/imscp_panel', { preserve => 'yes' }
     );
@@ -1706,13 +1705,13 @@ sub _buildPhpConfig
             DOMAIN                    => ::setupGetQuestion( 'BASE_SERVER_VHOST' ),
             DISTRO_OPENSSL_CNF        => $::imscpConfig{'DISTRO_OPENSSL_CNF'},
             DISTRO_CA_BUNDLE          => $::imscpConfig{'DISTRO_CA_BUNDLE'},
-            FRONTEND_FCGI_CHILDREN    => $self->{'config'}->{'FRONTEND_FCGI_CHILDREN'},
-            FRONTEND_FCGI_MAX_REQUEST => $self->{'config'}->{'FRONTEND_FCGI_MAX_REQUEST'},
+            FRONTEND_FCGI_CHILDREN    => $self->{'config'}->{'PHP_FPM_MAX_CHILDREN'},
+            FRONTEND_FCGI_MAX_REQUEST => $self->{'config'}->{'PHP_FPM_MAX_REQUESTS'},
             FRONTEND_GROUP            => $group,
             FRONTEND_USER             => $user,
             HOME_DIR                  => $::imscpConfig{'GUI_ROOT_DIR'},
             MTA_VIRTUAL_MAIL_DIR      => Servers::mta->factory()->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'},
-            PEAR_DIR                  => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
+            PEAR_DIR                  => $self->{'config'}->{'PHP_PEAR_DIR'},
             RKHUNTER_LOG              => $::imscpConfig{'RKHUNTER_LOG'},
             TIMEZONE                  => ::setupGetQuestion( 'TIMEZONE' ),
             WEB_DIR                   => $::imscpConfig{'GUI_ROOT_DIR'}
@@ -1728,7 +1727,7 @@ sub _buildPhpConfig
         "$self->{'cfgDir'}/php.ini",
         {
 
-            PEAR_DIR => $self->{'phpConfig'}->{'PHP_PEAR_DIR'},
+            PEAR_DIR => $self->{'config'}->{'PHP_PEAR_DIR'},
             TIMEZONE => ::setupGetQuestion( 'TIMEZONE' )
         },
         {

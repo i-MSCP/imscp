@@ -28,8 +28,9 @@ FRONTEND
     Review: Load all dependencies using the PHP dependency manager (composer), except ZF1
 
 INSTALLER
-    Changed: Required PHP version for the frontEnd is now 7.3
+    Changed: All PHP versions are now always installed
     Changed: Default selected PHP version for customers is now 7.3
+    Changed: Required PHP version for the frontEnd is now 7.3
     Fixed: jessie-updates repository (previously known as debian-volatile repository) no longer available (pbuilder conffile / Debian)
     Review: Always install PHP 7.3, regardless of the selected PHP version (frontEnd requirement)
 
