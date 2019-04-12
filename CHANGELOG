@@ -47,6 +47,7 @@ VENDOR
 
 YOUTRACK
     IP-1815 Circular feature - Unexpected exception raised - `username' parameter is not defined or not a string
+    IP-1816 Cosmetic - Copyright date on i-MSCP sign-in screen not up-to-date
 
 ------------------------------------------------------------------------------------------------------------------------
 1.5.3 (build 2018120800)
