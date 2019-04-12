@@ -25,14 +25,18 @@ package Package::AntiRootkits::Chkrootkit::Chkrootkit;
 
 use strict;
 use warnings;
-use Class::Autouse qw/ :nostat Package::AntiRootkits::Chkrootkit::Installer Package::AntiRootkits::Chkrootkit::Uninstaller /;
+use iMSCP::Debug qw/ debug error /;
+use iMSCP::Execute 'execute';
+use iMSCP::File;
 use iMSCP::Rights 'setRights';
+use Servers::cron;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- The chkrootkit security scanner searches the local system for signs that it is infected with a 'rootkit'. Rootkits are
- set of programs and hacks designed to take control of a target machine by using known security flaws.
+ The chkrootkit security scanner searches the local system for signs that it is
+ infected with a 'rootkit'. Rootkits are set of programs and hacks designed to
+ take control of a target machine by using known security flaws.
 
 =head1 PUBLIC METHODS
 
@@ -48,7 +52,9 @@ use parent 'Common::SingletonClass';
 
 sub preinstall
 {
-    Package::AntiRootkits::Chkrootkit::Installer->getInstance()->preinstall();
+    my ( $self ) = @_;
+
+    $self->_disableDebianConfig();
 }
 
 =item postinstall( )
@@ -61,7 +67,10 @@ sub preinstall
 
 sub postinstall
 {
-    Package::AntiRootkits::Chkrootkit::Installer->getInstance()->postinstall();
+    my ( $self ) = @_;
+
+    my $rs = $self->_addCronTask();
+    $rs ||= $self->_scheduleCheck();
 }
 
 =item uninstall( )
@@ -74,7 +83,9 @@ sub postinstall
 
 sub uninstall
 {
-    Package::AntiRootkits::Chkrootkit::Uninstaller->getInstance()->uninstall();
+    my ( $self ) = @_;
+
+    $self->_restoreDebianConfig();
 }
 
 =item setEnginePermissions( )
@@ -105,6 +116,100 @@ sub setEnginePermissions
 sub getDistributionPackages
 {
     'chkrootkit';
+}
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _disableDebianConfig( )
+
+ Disable default configuration as provided by the chkrootkit Debian package
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _disableDebianConfig
+{
+    return 0 unless -f '/etc/cron.daily/chkrootkit';
+
+    iMSCP::File->new(
+        filename => '/etc/cron.daily/chkrootkit'
+    )->moveFile(
+        '/etc/cron.daily/chkrootkit.disabled'
+    );
+}
+
+=item _addCronTask( )
+
+ Add cron task
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _addCronTask
+{
+    Servers::cron->factory()->addTask( {
+        TASKID  => 'Package::AntiRootkits::Chkrootkit',
+        MINUTE  => '@weekly',
+        HOUR    => '',
+        DAY     => '',
+        MONTH   => '',
+        DWEEK   => '',
+        USER    => $::imscpConfig{'ROOT_USER'},
+        COMMAND => "/usr/bin/nice -n 10 /usr/bin/ionice -c2 -n5 /bin/bash /usr/sbin/chkrootkit -e > $::imscpConfig{'CHKROOTKIT_LOG'} 2>&1"
+    } );
+}
+
+=item _scheduleCheck( )
+
+ Schedule check if log file doesn't exist or is empty
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _scheduleCheck
+{
+    return 0 if -f -s $::imscpConfig{'CHKROOTKIT_LOG'};
+
+    # Create an empty file to avoid planning multiple check if installer is run many time
+    my $file = iMSCP::File->new( filename => $::imscpConfig{'CHKROOTKIT_LOG'} );
+    $file->set( "Check scheduled...\n" );
+    my $rs = $file->save();
+    return $rs if $rs;
+
+    $rs = execute(
+        "echo '/bin/bash /usr/sbin/chkrootkit -e > $::imscpConfig{'CHKROOTKIT_LOG'} 2>&1' | /usr/bin/at now + 10 minutes",
+        \my $stdout,
+        \my $stderr
+    );
+    debug( $stdout ) if $stdout;
+    error( $stderr || 'Unknown error' ) if $rs;
+    $rs;
+}
+
+=item _restoreDebianConfig( )
+
+ Restore default configuration
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub _restoreDebianConfig
+{
+    return 0 unless -f '/etc/cron.daily/chkrootkit.disabled';
+
+    iMSCP::File->new(
+        filename => '/etc/cron.daily/chkrootkit.disabled'
+    )->moveFile(
+        '/etc/cron.daily/chkrootkit'
+    );
 }
 
 =back

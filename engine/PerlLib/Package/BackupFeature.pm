@@ -25,11 +25,13 @@ package Package::BackupFeature;
 
 use strict;
 use warnings;
+use iMSCP::Boolean;
+use Servers::cron;
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Provides backup features.
+ Provides backup feature.
 
 =head1 PUBLIC METHODS
 
@@ -48,94 +50,162 @@ sub getPriority
     -20;
 }
 
-=item registerSetupListeners( \%em )
+=item registerSetupListeners( \%events )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%em
+ Param iMSCP::EventManager \%events
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ( $self, $em ) = @_;
+    my ( $self, $events ) = @_;
 
-    $em->registerOne( 'beforeSetupDialog', sub {
+    $events->registerOne( 'beforeSetupDialog', sub {
         push @{ $_[0] },
-            sub { $self->imscpBackupDialog( @_ ) },
-            sub { $self->customerBackupDialog( @_ ) };
+            sub { $self->_dialogForCpBackup( @_ ) },
+            sub { $self->_dialogForClientBackup( @_ ) };
         0;
     } );
 }
 
-=item imscpBackupDialog( \%dialog )
+=item install( )
 
- Ask for i-MSCP backup
+ Installation tasks
 
- Param iMSCP::Dialog \%dialog
- Return int 0 NEXT, 30 BACKUP, 50 ESC
+ Return int 0 on success, other on failure
 
 =cut
 
-sub imscpBackupDialog
+sub install
 {
-    my ( undef, $dialog ) = @_;
+    my $cron = Servers::cron->factory();
 
-    my $backupImscp = ::setupGetQuestion( 'BACKUP_IMSCP' );
-
-    if ( $::reconfigure =~ /^(?:backup|all|forced)$/
-        || $backupImscp !~ /^(?:yes|no)$/
-    ) {
-        ( my $rs, $backupImscp ) = $dialog->radiolist( <<"EOF", [ 'yes', 'no' ], $backupImscp ne 'no' ? 'yes' : 'no' );
-
-\\Z4\\Zb\\Zui-MSCP Backup Feature\\Zn
-
-Do you want to activate the backup feature for i-MSCP?
-
-The backup feature for i-MSCP allows the daily save of all i-MSCP configuration files and its database. It's greatly recommended to activate this feature.
-EOF
-        return $rs if $rs >= 30;
+    if ( $::imscpConfig{'BACKUP_IMSCP'} eq 'yes' ) {
+        # Cron task for the control panel (conffiles and database)
+        my $rs = $cron->addTask( {
+            TASKID  => __PACKAGE__ . '::ControlPanel',
+            MINUTE  => '@daily',
+            COMMAND => "/usr/bin/perl $::imscpConfig{'BACKUP_ROOT_DIR'}/imscp-backup-imscp > "
+                . "$::imscpConfig{'LOG_DIR'}/imscp-backup-imscp.log 2>&1"
+        } );
+        # Cron task for deletion of outdated control panel backups
+        $rs ||= $cron->addTask( {
+            TASKID  => __PACKAGE__ . '::ControlPanel::Gc',
+            MINUTE  => '@weekly',
+            COMMAND => "/usr/bin/find $::imscpConfig{'BACKUP_FILE_DIR'} "
+                . "-type f -mtime +7 -exec rm -- {} +"
+        } );
+        return $rs if $rs;
     }
 
-    ::setupSetQuestion( 'BACKUP_IMSCP', $backupImscp );
+    if ( $::imscpConfig{'BACKUP_DOMAINS'} eq 'yes' ) {
+        # Cron task for client backups
+        my $rs = $cron->addTask( {
+            TASKID  => __PACKAGE__ . '::Clients',
+            MINUTE  => $::imscpConfig{'BACKUP_MINUTE'},
+            HOUR    => $::imscpConfig{'BACKUP_HOUR'},
+            COMMAND => "/usr/bin/nice -n 10 /usr/bin/ionice -c2 -n5 "
+                . "/usr/bin/perl $::imscpConfig{'BACKUP_ROOT_DIR'}/imscp-backup-all > "
+                . "$::imscpConfig{'LOG_DIR'}/imscp-backup-all.log 2>&1"
+        } );
+        return $rs if $rs;
+    }
+
+    # Cron task for deletion of outdated server backup files
+    $cron->addTask( {
+        TASKID  => __PACKAGE__ . '::Servers::Gc',
+        MINUTE  => '@weekly',
+        COMMAND => "/usr/bin/find $::imscpConfig{'CONF_DIR'}/*/backup -type f "
+            . "-mtime +7 -regextype sed -regex '.*/.*[0-9]\{10\}\$' -exec rm -- {} +"
+    } );
+}
+
+=item uninstall( )
+
+ Uninstallation tasks
+
+ Return int 0 on success, other on failure
+
+=cut
+
+sub uninstall
+{
+    my $cron = Servers::cron->factory();
+
+    for my $taskID ( qw/ ControlPanel ControlPanel::Gc Clients Servers::Gc / ) {
+        my $rs = ${ $cron }->deleteTask( { TASKID => __PACKAGE__ . "::${taskID}" } );
+        return $rs if $rs;
+    }
+
     0;
 }
 
-=item customerBackupDialog( \%dialog )
+=back
 
- Ask for customer backup
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _dialogForCpBackup( \%dialog )
+
+ Setup dialog for control panel backup feature
 
  Param iMSCP::Dialog \%dialog
  Return int 0 NEXT, 30 BACKUP, 50 ESC
 
 =cut
 
-sub customerBackupDialog
+sub _dialogForCpBackup
 {
     my ( undef, $dialog ) = @_;
 
-    my $backupDomains = ::setupGetQuestion( 'BACKUP_DOMAINS' );
+    my $value = ::setupGetQuestion( 'BACKUP_IMSCP' );
 
-    if ( $::reconfigure =~ /^(?:backup|all|forced)$/ || $backupDomains !~ /^(?:yes|no)$/ ) {
-        ( my $rs, $backupDomains ) = $dialog->radiolist(
-            <<"EOF", [ 'yes', 'no' ], $backupDomains ne 'no' ? 'yes' : 'no' );
-
-\\Z4\\Zb\\ZuDomains Backup Feature\\Zn
-
-Do you want to activate the backup feature for customers?
-
-This feature allows resellers to enable backup for their customers such as:
-
- - Full (domains and SQL databases)
- - Domains only (Web files)
- - SQL databases only
- - None (no backup)
+    if ( grep ($_ eq $::reconfigure, qw/ backup all forced /)
+        || !grep ($_ eq $value, 'yes', 'no')
+    ) {
+        my $rs = $dialog->yesno( <<'EOF', $value eq 'no', TRUE );
+Do you want to enable daily backup feature for the control panel (database and configuration files)?
 EOF
-        return $rs if $rs >= 30;
+        return $rs unless $rs < 30;
+        $value = $rs ? 'no' : 'yes'
     }
 
-    ::setupSetQuestion( 'BACKUP_DOMAINS', $backupDomains );
+    ::setupSetQuestion( 'BACKUP_IMSCP', $value );
+    0;
+}
+
+=item _dialogForClientBackup( \%dialog )
+
+ Setup dialog for clent backup feature
+
+ Param iMSCP::Dialog \%dialog
+ Return int 0 NEXT, 30 BACKUP, 50 ESC
+
+=cut
+
+sub _dialogForClientBackup
+{
+    my ( undef, $dialog ) = @_;
+
+    my $value = ::setupGetQuestion( 'BACKUP_DOMAINS' );
+
+    if ( grep ($_ eq $::reconfigure, qw/ backup all forced /)
+        || !grep ($_ eq $value, 'yes', 'no')
+    ) {
+        my $rs = $dialog->yesno( <<'EOF', $value eq 'no', TRUE );
+Do you want to enable the backup feature for the clients?
+
+When this feature is enabled, resellers can enable backup feature for their clients.
+EOF
+        return $rs unless $rs < 30;
+        $value = $rs ? 'no' : 'yes'
+    }
+
+    ::setupSetQuestion( 'BACKUP_DOMAINS', $value );
     0;
 }
 

@@ -95,7 +95,6 @@ EOF
         [ \&_uninstallPackages, 'Uninstalling i-MSCP packages' ],
         [ \&_uninstallServers, 'Uninstalling i-MSCP servers' ],
         [ \&_uninstallServices, 'Uninstalling i-MSCP services' ],
-        [ \&_removeCrontabFile, 'Removing i-MSCP crontab file' ],
         [ \&_removeLogrotateFile, 'Removing i-MSCP logrotate file' ],
         [ \&_removeSysctlFile, 'Removing i-MSCP sysctl file' ],
         [ \&_removeSqlData, 'Removing i-MSCP SQL data' ],
@@ -263,12 +262,6 @@ sub _uninstallServices
     }
 
     0;
-}
-
-sub _removeCrontabFile
-{
-    return 0 unless -f '/etc/cron.d/imscp';
-    iMSCP::File->new( filename => '/etc/cron.d/imscp' )->delFile();
 }
 
 sub _removeLogrotateFile

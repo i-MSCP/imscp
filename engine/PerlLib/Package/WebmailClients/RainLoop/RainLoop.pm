@@ -28,7 +28,6 @@ use warnings;
 use Class::Autouse qw/ :nostat iMSCP::Composer /;
 use iMSCP::Boolean;
 use iMSCP::Debug 'error';
-use iMSCP::EventManager;
 use iMSCP::File;
 use iMSCP::Getopt;
 use JSON;
@@ -68,22 +67,22 @@ sub getPriority
     0;
 }
 
-=item registerSetupListeners( \%em )
+=item registerSetupListeners( \%events )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%em
+ Param iMSCP::EventManager \%events
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ( undef, $em ) = @_;
+    my ( undef, $events ) = @_;
 
     return 0 if iMSCP::Getopt->skipComposerUpdate;
 
-    $em->registerOne( 'beforeSetupPreInstallServers', sub {
+    $events->registerOne( 'beforeSetupPreInstallServers', sub {
         eval {
             iMSCP::Composer->new(
                 user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
@@ -213,21 +212,6 @@ sub AUTOLOAD
 =head1 PRIVATE METHODS
 
 =over 4
-
-=item _init( )
-
- Initialize instance
-
- Return Package::WebmailClients::RainLoop::RainLoop
-
-=cut
-
-sub _init
-{
-    my ( $self ) = @_;
-
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
-}
 
 =item _getHandler( )
 

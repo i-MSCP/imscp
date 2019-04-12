@@ -224,8 +224,8 @@ sub addDmn
 
  Process disableDmn tasks
 
- On a reconfiguration, we need make sure that DNS record are being added, even
- for disabled domains.
+ On a reconfiguration, we need make sure that DNS record are added, even for
+ disabled domains.
 
  Param hash \%data Domain data
  Return int 0 on success, other on failure
@@ -387,8 +387,8 @@ sub addSub
 
  Process disableSub tasks
 
- On a reconfiguration, we need make sure that DNS record are being added, even
- for disabled subdomains.
+ On a reconfiguration, we need make sure that DNS record are added, even for
+ disabled subdomains.
 
  Param hash \%data Domain data
  Return int 0 on success, other on failure

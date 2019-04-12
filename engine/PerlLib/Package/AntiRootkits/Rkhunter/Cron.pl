@@ -22,9 +22,9 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../../../../PerlLib", "$FindBin::Bin/../../../../PerlVendor";
 use iMSCP::Boolean;
-use iMSCP::Debug;
 use iMSCP::Bootstrapper;
-use iMSCP::Execute;
+use iMSCP::Debug 'debug';
+use iMSCP::Execute 'execute';
 use iMSCP::File;
 use iMSCP::ProgramFinder;
 
@@ -41,12 +41,13 @@ exit 0 unless iMSCP::ProgramFinder::find( 'rkhunter' );
 
 my $logFile = $::imscpConfig{'RKHUNTER_LOG'} || '/var/log/rkhunter.log';
 
-# Error handling is specific with rkhunter. Therefore, we do not handle the exit code, but we write the output
-# into the imscp-rkhunter-package.log file. This is calqued on the cron task as provided by the Rkhunter Debian
-# package except that instead of sending an email on error or warning, we write in log file.
-execute( "/usr/bin/rkhunter --cronjob --logfile $logFile", \my $stdout, \my $stderr );
-debug( $stdout ) if $stdout;
-debug( $stderr ) if $stderr;
+execute(
+    [ '/usr/bin/rkhunter', '--cronjob', '--logfile', $logFile ],
+    \my $stdout,
+    \my $stderr
+);
+debug( $stdout ) if length $stdout;
+debug( $stderr ) if length $stderr;
 
 exit 0 unless -f $logFile;
 

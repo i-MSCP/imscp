@@ -26,7 +26,7 @@ package Package::AltUrlsFeature;
 use strict;
 use warnings;
 use iMSCP::Boolean;
-use iMSCP::Dialog::InputValidation;
+use iMSCP::Dialog::InputValidation 'isStringNotInList';
 use iMSCP::EventManager;
 use Servers::httpd;
 use Servers::named;
@@ -35,7 +35,7 @@ use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
- Provides alternative URLs feature for client websites.
+ Provides alternative URLs for client websites.
 
 =head1 PUBLIC METHODS
 
@@ -54,21 +54,21 @@ sub getPriority
     -20;
 }
 
-=item registerSetupListeners( \%em )
+=item registerSetupListeners( \%events )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%em
+ Param iMSCP::EventManager \%events
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ( $self, $em ) = @_;
+    my ( $self, $events ) = @_;
 
-    $em->registerOne( 'beforeSetupDialog', sub {
-        push @{ $_[0] }, sub { $self->_dialogForAltUrlsFeature( @_ ) };
+    $events->registerOne( 'beforeSetupDialog', sub {
+        push @{ $_[0] }, sub { $self->_dialogForAltUrlsFeature( @_ ); };
         0;
     } );
 }
@@ -109,8 +109,8 @@ sub deleteDmn
 
  See Package::AltUrlsFeature::addDmn()
 
- On a reconfiguration, we need make sure that DNS record are being added, even
- for disabled domains.
+ On a reconfiguration, we need make sure that DNS record are added, even for
+ disabled domains.
 
 =cut
 
@@ -159,8 +159,8 @@ sub deleteSub
 
  See Package::AltUrlsFeature::addSub()
  
- On a reconfiguration, we need make sure that DNS record are being added, even
- for disabled subdomains.
+ On a reconfiguration, we need make sure that DNS record are added, even for
+ disabled subdomains.
 
 =cut
 
@@ -259,7 +259,7 @@ Alternative URLs make the clients able to access their websites through control 
 
   \\Zbdmn1.@{ [ ::setupGetQuestion( 'BASE_SERVER_VHOST') ] }\\ZB
 
-This feature is useful for customers who have not yet configured their DNS, or for the DNS propagation time.
+This feature is useful for client who have not yet configured their DNS, or for the DNS propagation time.
         
 If you make use of an external DNS server for the control panel domain, don't forget to add a wildcard DNS such as:
 

@@ -54,20 +54,20 @@ sub getPriority
     -10;
 }
 
-=item registerSetupListeners( \%em )
+=item registerSetupListeners( \%events )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%em
+ Param iMSCP::EventManager \%events
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ( $self, $em ) = @_;
+    my ( $self, $events ) = @_;
 
-    $em->registerOne( 'beforeSetupDialog', sub {
+    $events->registerOne( 'beforeSetupDialog', sub {
         push @{ $_[0] }, sub { $self->servicesSslDialog( @_ ) };
         0;
     } );

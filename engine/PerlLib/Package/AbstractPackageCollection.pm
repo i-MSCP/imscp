@@ -31,7 +31,6 @@ use iMSCP::Boolean;
 use iMSCP::Debug  'error';
 use iMSCP::Dialog;
 use iMSCP::Dir;
-use iMSCP::EventManager;
 use iMSCP::Execute 'execute';
 use iMSCP::Getopt;
 use parent 'Common::SingletonClass';
@@ -80,24 +79,24 @@ sub getPriority
     0;
 }
 
-=item registerSetupListeners( \%em )
+=item registerSetupListeners( \%events )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%em
+ Param iMSCP::EventManager \%events
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ( $self, $em ) = @_;
+    my ( $self, $events ) = @_;
 
-    my $rs = $em->registerOne( 'beforeSetupDialog', sub {
+    my $rs = $events->registerOne( 'beforeSetupDialog', sub {
         push @{ $_[0] }, sub { $self->setupDialog( @_ ) };
         0;
     } );
-    $rs ||= $em->registerOne( 'beforeSetupServersAndPackages', sub {
+    $rs ||= $events->registerOne( 'beforeSetupServersAndPackages', sub {
         my @selectedPackages = split ',', ::setupGetQuestion( $self->getConfVarname());
 
         for my $package ( @selectedPackages ) {
@@ -111,7 +110,7 @@ sub registerSetupListeners
             }
 
             ( my $sub = $packageInstance->can( 'registerSetupListeners' ) ) or next;
-            $rs = $sub->( $packageInstance, $em );
+            $rs = $sub->( $packageInstance, $events );
             return $rs if $rs;
         }
 
@@ -321,7 +320,6 @@ sub _init
 {
     my ( $self ) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     @{ $self->{'PACKAGES'} } = (
         iMSCP::Dir->new( dirname => "@{ [ dirname __FILE__ ] }/@{ [ ( ref $self ) =~ s/.*:://r ] }" )->getDirs(), 'No'
     );
@@ -343,7 +341,7 @@ sub _installDistributionPackages
 
     return unless @packages;
 
-    iMSCP::Dialog->getInstance->endGauge();
+    iMSCP::Dialog->getInstance()->endGauge();
 
     local $ENV{'UCF_FORCE_CONFFNEW'} = TRUE;
     local $ENV{'UCF_FORCE_CONFFMISS'} = TRUE;
