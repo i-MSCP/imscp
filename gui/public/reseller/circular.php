@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+ * Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -83,7 +83,7 @@ function reseller_sendToCustomers($senderName, $senderEmail, $subject, $body)
 
     $stmt = exec_query(
         "
-            SELECT MIN(admin_name), MIN(fname), MIN(lname), email
+            SELECT MIN(admin_name) as admin_name, MIN(fname) as fname, MIN(lname) as lname, email
             FROM admin
             WHERE created_by = ?
             GROUP BY email

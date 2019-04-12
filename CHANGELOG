@@ -45,6 +45,9 @@ VENDOR
     Review: phpseclib library is now installed through composer (PHP dependency)
     Review: Net_DNS2 library is now installed through composer (PHP dependency)
 
+YOUTRACK
+    IP-1815 Circular feature - Unexpected exception raised - `username' parameter is not defined or not a string
+
 ------------------------------------------------------------------------------------------------------------------------
 1.5.3 (build 2018120800)
 ------------------------------------------------------------------------------------------------------------------------
