@@ -247,7 +247,7 @@ sub dpkgPostInvokeTasks
         unless ( -f $self->{'config'}->{'PHP_FPM_BIN_PATH'} ) {
             # Cover case where administrator removed the package
             # That should never occurs but...
-            my $rs = $self->stop();
+            my $rs = $self->stopPhpFpm();
             $rs ||= iMSCP::File->new(
                 filename => '/usr/local/sbin/imscp_panel'
             )->delFile();
@@ -277,7 +277,7 @@ sub dpkgPostInvokeTasks
     my $rs = $self->_copyPhpBinary();
     return $rs if $rs || !-f '/usr/local/etc/imscp_panel/php-fpm.conf';
 
-    $rs ||= $self->restartPhpFpm();
+    $rs ||= $self->startPhpFpm();
 }
 
 =item uninstall( )
@@ -314,7 +314,6 @@ sub setEnginePermissions
     my $rs = $self->{'events'}->trigger(
         'beforeFrontEndSetEnginePermissions'
     );
-
     $rs ||= setRights( $self->{'config'}->{'HTTPD_CONF_DIR'}, {
         user      => $::imscpConfig{'ROOT_USER'},
         group     => $::imscpConfig{'ROOT_GROUP'},
@@ -1670,7 +1669,9 @@ sub _copyPhpBinary
         return 1;
     }
 
-    iMSCP::File->new(
+    # service must be stopped. We can't copy over a busy file
+    my $rs = $self->stopPhpFpm();
+    $rs ||= iMSCP::File->new(
         filename => $self->{'config'}->{'PHP_FPM_BIN_PATH'}
     )->copyFile(
         '/usr/local/sbin/imscp_panel', { preserve => 'yes' }
