@@ -1732,7 +1732,7 @@ sub _buildPhpConfig
             TIMEZONE => ::setupGetQuestion( 'TIMEZONE' )
         },
         {
-            destination => "/usr/local/etc/imscp_panel/php.ini",
+            destination => '/usr/local/etc/imscp_panel/php.ini',
             user        => $::imscpConfig{'ROOT_USER'},
             group       => $::imscpConfig{'ROOT_GROUP'},
             mode        => 0640,
