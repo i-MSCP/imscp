@@ -251,7 +251,7 @@ function generatePage($tpl, $catchallDomainId, $catchallType)
                 "
                     SELECT mail_id, mail_addr
                     FROM mail_users
-                    WHERE domain_id
+                    WHERE domain_id = ?
                     AND sub_id = ?
                     AND mail_type RLIKE ?
                     AND status = 'ok'",
