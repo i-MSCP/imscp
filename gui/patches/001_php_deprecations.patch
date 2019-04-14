@@ -1,0 +1,35 @@
+diff --git a/library/Zend/Cache/Backend.php b/library/Zend/Cache/Backend.php
+index 83f1af5f1..e64ebc142 100644
+--- a/vendor/zendframework/zendframework1/library/Zend/Cache/Backend.php
++++ b/library/vendor/Zend/library/Zend/Cache/Backend.php
+@@ -76,7 +76,7 @@ class Zend_Cache_Backend
+     public function setDirectives($directives)
+     {
+         if (!is_array($directives)) Zend_Cache::throwException('Directives parameter must be an array');
+-        while (list($name, $value) = each($directives)) {
++        foreach($directives as $name => $value) {
+             if (!is_string($name)) {
+                 Zend_Cache::throwException("Incorrect option name : $name");
+             }
+diff --git a/library/Zend/Form.php b/library/Zend/Form.php
+index 0512dc850..f16b05f54 100644
+--- a/vendor/zendframework/zendframework1/library/Zend/Form.php
++++ b/library/vendor/Zend/library/Zend/Form.php
+@@ -1170,7 +1170,7 @@ class Zend_Form implements Iterator, Countable, Zend_Validate_Interface
+                 } else {
+                     switch ($argc) {
+                         case 0:
+-                            continue;
++                            break;
+                         case (1 <= $argc):
+                             $type = array_shift($spec);
+                         case (2 <= $argc):
+@@ -1687,7 +1687,7 @@ class Zend_Form implements Iterator, Countable, Zend_Validate_Interface
+                 $order = null;
+                 switch ($argc) {
+                     case 0:
+-                        continue;
++                        break;
+                     case (1 <= $argc):
+                         $subForm = array_shift($spec);
+ 
