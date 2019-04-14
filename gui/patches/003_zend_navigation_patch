@@ -1,7 +1,7 @@
 diff --git a/library/Zend/Navigation/Page/Uri.php b/library/Zend/Navigation/Page/Uri.php
 index 130b0d4d1..9f2b12605 100644
---- a/vendor/zendframework/zendframework1/library/Zend/Navigation/Page/Uri.php
-+++ b/library/vendor/Zend/library/Zend/Navigation/Page/Uri.php
+--- a/library/Zend/Navigation/Page/Uri.php
++++ b/library/Zend/Navigation/Page/Uri.php
 @@ -44,6 +44,11 @@ class Zend_Navigation_Page_Uri extends Zend_Navigation_Page
      protected $_uri = null;
  

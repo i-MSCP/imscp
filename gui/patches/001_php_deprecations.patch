@@ -1,7 +1,7 @@
 diff --git a/library/Zend/Cache/Backend.php b/library/Zend/Cache/Backend.php
 index 83f1af5f1..e64ebc142 100644
---- a/vendor/zendframework/zendframework1/library/Zend/Cache/Backend.php
-+++ b/library/vendor/Zend/library/Zend/Cache/Backend.php
+--- a/library/Zend/Cache/Backend.php
++++ b/library/Zend/Cache/Backend.php
 @@ -76,7 +76,7 @@ class Zend_Cache_Backend
      public function setDirectives($directives)
      {
@@ -13,8 +13,8 @@ index 83f1af5f1..e64ebc142 100644
              }
 diff --git a/library/Zend/Form.php b/library/Zend/Form.php
 index 0512dc850..f16b05f54 100644
---- a/vendor/zendframework/zendframework1/library/Zend/Form.php
-+++ b/library/vendor/Zend/library/Zend/Form.php
+--- a/library/Zend/Form.php
++++ b/library/Zend/Form.php
 @@ -1170,7 +1170,7 @@ class Zend_Form implements Iterator, Countable, Zend_Validate_Interface
                  } else {
                      switch ($argc) {

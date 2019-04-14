@@ -1,7 +1,7 @@
-diff --git a/library/Zend/Form/Element.php b/library/Zend/library/Zend/Form/Element.php
+diff --git a/library/Zend/Form/Element.php b/library/Zend/Form/Element.php
 index 26bad9af3..b1e57af3c 100644
 --- a/library/Zend/Form/Element.php
-+++ b/library/Zend/library/Zend/Form/Element.php
++++ b/library/Zend/Form/Element.php
 @@ -1312,7 +1312,7 @@ class Zend_Form_Element implements Zend_Validate_Interface
       * Remove a single validator by name
       *
