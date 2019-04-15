@@ -19,7 +19,7 @@ BACKEND
 DISTRIBUTIONS
     Added: bz2 PHP extension (all distributions, all PHP versions)
     Added: Support for PHP 7.2, 7.3
-    Added: sodium PHP extension (all distributions, all PHP versions except 5.6)
+    Added: sodium PHP extension (all distributions, all PHP versions except 5.6)
     Dropped: Support for Ubuntu Trusty Thar (14.04)
 
 FRONTEND
@@ -28,8 +28,8 @@ FRONTEND
     Added: Route injector service for i-MSCP plugins
     Added: Service provider injector for i-MSCP plugins
     Added: ServiceProvider for overriding of default Slim error handlers
-    Fixed: Invalid parameter number: number of bound variables does not match number of tokens (client/mail_catchall_add.php)
     Fixed: Hide E_STRICT, E_NOTICE, E_WARNING and E_DEPRECATED even for addons
+    Fixed: Invalid parameter number: number of bound variables does not match number of tokens (client/mail_catchall_add.php)
     Fixed: Output buffer must be erased when an exception is throw while template rendering
     Review: Install dependencies through the PHP dependency manager (composer)
 
