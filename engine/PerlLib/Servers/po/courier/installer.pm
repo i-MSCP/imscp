@@ -584,14 +584,18 @@ sub _buildDHparametersFile
             }
 
             my $output = '';
-            my $outputHandler = sub {
+            my $stdRoutine = sub {
                 return if $_[0] =~ /^[.+]/;
-                $output .= $_[0];
-                step( undef, "Generating DH parameter file\n\n$output", 1, 1 );
+                chomp( $_[0] );
+                step( undef, <<"EOF", 1, 1 );
+Generating DH parameter file
+
+$_[0]
+EOF
             };
 
             my $rs = executeNoWait(
-                $cmd, ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : $outputHandler ), $outputHandler
+                $cmd, ( iMSCP::Getopt->noprompt && iMSCP::Getopt->verbose ? undef : $stdRoutine ), $stdRoutine
             );
             error( $output || 'Unknown error' ) if $rs;
             $rs ||= iMSCP::File->new( filename => $tmpFile->filename )->moveFile(

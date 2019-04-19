@@ -81,11 +81,11 @@ iMSCP::EventManager->getInstance( )->register(
         }
 
         ${$tplDbFileContent} = replaceBloc(
-            "; custom DNS entries BEGIN\n",
-            "; custom DNS entries ENDING\n",
-            "; dualstack DNS entries BEGIN\n"
+            "; custom DNS records BEGIN\n",
+            "; custom DNS records ENDING\n",
+            "; dualstack DNS records BEGIN\n"
                 .join( '', @formattedEntries )
-                ."; dualstack DNS entries END\n",
+                ."; dualstack DNS records END\n",
             ${$tplDbFileContent},
             'PreserveTags'
         );
@@ -133,9 +133,9 @@ iMSCP::EventManager->getInstance( )->register(
                 "; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
                 ${$wrkDbFileContent}
             )
-                ."; dualstack DNS entries BEGIN\n"
+                ."; dualstack DNS records BEGIN\n"
                 .join( '', @formattedEntries )
-                ."; dualstack DNS entries END\n"
+                ."; dualstack DNS records END\n"
                 ."; sub [$data->{'DOMAIN_NAME'}] entry ENDING\n",
             ${$wrkDbFileContent}
         );

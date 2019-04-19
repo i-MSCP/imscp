@@ -844,7 +844,9 @@ function client_saveDnsRecord($dnsRecordId)
             );
 
             // Also update status of any DNS resource record with error
-            exec_query(
+            // Not needed as the CustomDNS module select all records, except those with
+            # 'todisable', 'todelete' and 'disabled' status
+            /*exec_query(
                 "
                   UPDATE domain_dns
                   SET domain_dns_status = 'tochange'
@@ -853,6 +855,7 @@ function client_saveDnsRecord($dnsRecordId)
                 ",
                 $mainDmnId
             );
+            */
 
             EventsManager::getInstance()->dispatch(Events::onAfterEditCustomDNSrecord, [
                 'id'       => $dnsRecordId,

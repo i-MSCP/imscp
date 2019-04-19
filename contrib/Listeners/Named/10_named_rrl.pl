@@ -26,9 +26,9 @@ package Listener::Named::Rrl;
 
 use strict;
 use warnings;
-use File::Basename;
+use File::Basename 'basename';
 use iMSCP::EventManager;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser 'replaceBloc';
 use Servers::named;
 
 #
@@ -42,24 +42,24 @@ my $responsesPerSecond = 10;
 ## Please, don't edit anything below this line
 #
 
-iMSCP::EventManager->getInstance()->register(
-    'afterNamedBuildConf',
-    sub {
-        my ($tplContent, $tplName) = @_;
+iMSCP::EventManager->getInstance()->register( 'afterNamedBuildConf', sub {
+    my ( $tplContent, $tplName ) = @_;
 
-        return 0 unless $tplName eq basename( Servers::named->factory()->{'config'}->{'BIND_OPTIONS_CONF_FILE'} );
+    return 0 unless $tplName eq basename(
+        Servers::named->factory()->{'config'}->{'BIND_OPTIONS_CONF_FILE'}
+    );
 
-        $$tplContent = replaceBloc(
-            "// imscp [{ENTRY_ID}] entry BEGIN\n",
-            "// imscp [{ENTRY_ID}] entry ENDING\n", <<"EOF", $$tplContent, 'preserveTags' );
+    ${ $tplContent } = replaceBloc(
+        "// imscp [{ENTRY_ID}] entry BEGIN\n",
+        "// imscp [{ENTRY_ID}] entry ENDING\n",
+        <<"EOF", ${ $tplContent }, 'preserveTags' );
         rate-limit {
             responses-per-second $responsesPerSecond;
         };
 
 EOF
-        0;
-    }
-);
+    0;
+} );
 
 1;
 __END__

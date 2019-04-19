@@ -56,58 +56,78 @@ our @EXPORT = qw/ execute executeNoWait escapeShell getExitCode /;
 
 sub execute( $;$$ )
 {
-    my ($command, $stdout, $stderr) = @_;
+    my ( $command, $stdout, $stderr ) = @_;
 
     defined( $command ) or die( 'Missing $command parameter' );
 
     if ( $stdout ) {
-        ref $stdout eq 'SCALAR' or die( "Expects a scalar reference as second parameter for capture of STDOUT" );
-        ${$stdout} = '';
+        ref $stdout eq 'SCALAR' or die(
+            "Expects a scalar reference as second parameter STDOUT capture"
+        );
+        ${ $stdout } = '';
     }
 
     if ( $stderr ) {
-        ref $stderr eq 'SCALAR' or die( "Expects a scalar reference as third parameter for capture of STDERR" );
-        ${$stderr} = '';
+        ref $stderr eq 'SCALAR' or die(
+            "Expects a scalar reference as second parameter STDERR capture"
+        );
+        ${ $stderr } = '';
     }
 
     my $list = ref $command eq 'ARRAY';
-    debug( $list ? "@{$command}" : $command );
+    debug( $list ? "@{ $command }" : $command );
 
     if ( $stdout && $stderr ) {
-        ( ${$stdout}, ${$stderr} ) = capture sub { system( $list ? @{$command} : $command ); };
-        chomp( ${$stdout}, ${$stderr} );
+        ( ${ $stdout }, ${ $stderr } ) = capture sub {
+            system( $list ? @{ $command } : $command );
+        };
+        chomp( ${ $stdout }, ${ $stderr } );
     } elsif ( $stdout ) {
-        ${$stdout} = capture_stdout sub { system( $list ? @{$command} : $command ); };
-        chomp( ${$stdout} );
+        ${ $stdout } = capture_stdout sub {
+            system( $list ? @{ $command } : $command );
+        };
+        chomp( ${ $stdout } );
     } elsif ( $stderr ) {
-        ${$stderr} = capture_stderr sub { system( $list ? @{$command} : $command ); };
+        ${ $stderr } = capture_stderr sub {
+            system( $list ? @{ $command } : $command );
+        };
         chomp( $stderr );
     } else {
-        system( $list ? @{$command} : $command ) != -1 or die( sprintf( "Couldn't execute command: %s", $! ));
+        system( $list ? @{ $command } : $command ) != -1 or die( sprintf(
+            "Couldn't execute command: %s", $!
+        ));
     }
 
     getExitCode();
 }
 
-=item executeNoWait( $command [, $subSTDOUT = CODE [, $subSTDERR = CODE ] ] )
+=item executeNoWait(
+    $command
+    [, $subSTDOUT = sub { print STDOUT $_[0]; }
+    [, $subSTDERR = sub { print STDERR $_[0]; } ] ]
+)
 
- Execute the given command without wait, processing command STDOUT|STDERR line by line
+ Execute the given command without wait
 
  Param string|array $command Command to execute
- Param CODE OPTIONAL Subroutine for processing of command STDOUT line by line (default: print to STDOUT)
- Param CODE OPTIONAL Subroutine for processing of command STDERR (line by line) (default: print to STDERR)
+ Param CODE OPTIONAL Subroutine for processing of command STDOUT (line by line)
+ Param CODE OPTIONAL Subroutine for processing of command STDERR (line by line)
  Return int Command exit code or die on failure
 
 =cut
 
 sub executeNoWait( $;$$ )
 {
-    my ($command, $subSTDOUT, $subSTDERR) = @_;
-    $subSTDOUT //= sub { print STDOUT @_ };
-    $subSTDERR //= sub { print STDERR @_ };
+    my ( $command, $subSTDOUT, $subSTDERR ) = @_;
+    $subSTDOUT //= sub { print STDOUT $_[0] };
+    $subSTDERR //= sub { print STDERR $_[0] . "\n" };
 
-    ref $subSTDOUT eq 'CODE' or croak( 'Invalid $subSTDOUT parameter. CODE expected.' );
-    ref $subSTDERR eq 'CODE' or croak( 'Invalid $subSTDERR parameter. CODE expected.' );
+    ref $subSTDOUT eq 'CODE' or croak(
+        'Invalid $subSTDOUT parameter. CODE expected.'
+    );
+    ref $subSTDERR eq 'CODE' or croak(
+        'Invalid $subSTDERR parameter. CODE expected.'
+    );
 
     $command = [ $command ] unless ref $command eq 'ARRAY';
 
@@ -116,26 +136,33 @@ sub executeNoWait( $;$$ )
     my $pid = open3 my $stdin, my $stdout, my $stderr = gensym, @{ $command };
     $stdin->close();
 
-    $stdout->autoflush();
-    $stderr->autoflush();
-
     my %buffers = ( $stdout => '', $stderr => '' );
     my $sel = IO::Select->new( $stdout, $stderr );
-    while ( my @ready = $sel->can_read ) {
+    while ( my @ready = $sel->can_read() ) {
         for my $fh ( @ready ) {
-            my $readBytes = sysread $fh, $buffers{$fh}, 4096, length $buffers{$fh};
-            next if $!{'EINTR'};                                                                            # Ignore signal interrupt
-            defined $readBytes or die $!;                                                                   # Something is going wrong; abort early
-            $fh eq $stdout ? $subSTDOUT->( "$1" ) : $subSTDERR->( "$1" ) while $buffers{$fh} =~ s/(.*\n)//; # Process any lines from buffer
-            next unless $readBytes == 0;                                                                    # EOF
-            delete $buffers{$fh};
+            my $bytes = sysread $fh, $buffers{$fh}, 4096, length $buffers{$fh};
+            next if $!{'EINTR'};      # Ignore signal interrupt
+            defined $bytes or die $!; # Something is going wrong; abort early
+
+            # Process any lines from buffer
+            while ( $buffers{$fh} =~ s/^([^\n]*\n)//o ) {
+                next unless length $1;
+                $fh eq $stdout ? $subSTDOUT->( "$1" ) : $subSTDERR->( "$1" )
+            }
+
+            next unless $bytes == 0; # EOF
+
+            # Process remaining bytes in buffers if any
+            if ( length $buffers{$fh} ) {
+                $fh eq $stdout
+                    ? $subSTDOUT->( delete $buffers{$fh} )
+                    : $subSTDERR->( delete $buffers{$fh} );
+            }
+
             $sel->remove( $fh );
             close $fh;
         }
     }
-
-    $stdout->close();
-    $stderr->close();
 
     waitpid( $pid, 0 );
     getExitCode();
@@ -170,7 +197,7 @@ sub escapeShell( $ )
 
 sub getExitCode( ;$ )
 {
-    my ($ret) = @_;
+    my ( $ret ) = @_;
     $ret //= $?;
 
     if ( $ret == -1 ) {
@@ -179,8 +206,10 @@ sub getExitCode( ;$ )
     }
 
     if ( $ret & 127 ) {
-        debug( sprintf( 'Command died with signal %d, %s coredump', ( $ret & 127 ),
-                ( $? & 128 ) ? 'with' : 'without' ));
+        debug( sprintf( 'Command died with signal %d, %s core dump',
+            ( $ret & 127 ),
+            ( $? & 128 ) ? 'with' : 'without'
+        ));
         return $ret;
     }
 

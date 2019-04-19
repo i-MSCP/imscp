@@ -73,6 +73,17 @@ sub _init
     $self;
 }
 
+=item DESTROY
+
+ Due to autoloading
+
+=cut
+
+sub DESTROY
+{
+    # Nothing todo
+}
+
 =back
 
 =head1 AUTHOR

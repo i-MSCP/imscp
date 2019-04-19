@@ -49,20 +49,21 @@ use parent 'Common::Object';
 
 sub getType
 {
-    die( ref( $_[0] ) . ' module must implements the getType( ) method' );
+    die( ref( $_[0] ) . ' module must implements the getType() method' );
 }
 
-=item process( )
+=item process( \%data )
 
  Process add|delete|restore|disable action according item status.
 
+ Param hashref \%data Item data
  Return int 0 on success, other on failure
 
 =cut
 
 sub process
 {
-    die( ref( $_[0] ) . ' module must implements the process( ) method' );
+    die( ref( $_[0] ) . ' module must implements the process() method' );
 }
 
 =item add( )
@@ -164,7 +165,7 @@ sub _execAction
     my ( $self, $action, $pkgType ) = @_;
 
     if ( $pkgType eq 'server' ) {
-        for my $server( iMSCP::Servers->getInstance()->getList() ) {
+        for my $server ( iMSCP::Servers->getInstance()->getList() ) {
             ( my $sub = $server->can( $action ) ) or next;
             my $rs = $sub->( $server->factory(), $self->_getData( $action ));
             return $rs if $rs;
@@ -173,7 +174,7 @@ sub _execAction
         return 0;
     }
 
-    for my $package( iMSCP::Packages->getInstance()->getList() ) {
+    for my $package ( iMSCP::Packages->getInstance()->getList() ) {
         ( my $sub = $package->can( $action ) ) or next;
         my $rs = $sub->( $package->getInstance(), $self->_getData( $action ));
         return $rs if $rs;

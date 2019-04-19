@@ -256,9 +256,7 @@ sub listener
     $options->{'listener'} = $file;
 }
 
-=back
-
-=head1 AUTOLOAD
+=item AUTOLOAD
 
  Handles all option fields, by creating accessor methods for them the
  first time they are accessed.
@@ -277,6 +275,19 @@ sub AUTOLOAD
     };
     goto &{$AUTOLOAD};
 }
+
+=item DESTROY
+
+ Due to autoloading
+
+=cut
+
+sub DESTROY
+{
+    # Nothing todo
+}
+
+=back
 
 =head1 AUTHOR
 

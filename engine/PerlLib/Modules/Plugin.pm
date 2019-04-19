@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -51,7 +51,7 @@ use parent 'Common::Object';
 
 =over 4
 
-=item process( $pluginId )
+=item process( \%data )
 
  Load plugin data and execute action according its state
 
@@ -59,16 +59,16 @@ use parent 'Common::Object';
  returned to the caller. Only the plugin status is updated with the error
  message (since v1.4.4).
 
- Param int Plugin unique identifier
+ Param hashref \%data Plugin data
  Return int 0 on success, other on failure
 
 =cut
 
 sub process
 {
-    my ($self, $pluginId) = @_;
+    my ( $self, $data ) = @_;
 
-    my $rs = $self->_loadData( $pluginId );
+    my $rs = $self->_loadData( $data->{'id'} );
     return $rs if $rs;
 
     local $@;
@@ -116,7 +116,7 @@ sub process
                 ? getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
                 : $plugin_next_state_map{$self->{'pluginData'}->{'plugin_status'}}
             ),
-            $pluginId
+            $data->{'id'}
         );
     };
     if ( $@ ) {
@@ -143,7 +143,7 @@ sub process
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'dbh'} = iMSCP::Database->factory()->getRawDb();
     $self->{'eventManager'} = iMSCP::EventManager->getInstance();
@@ -164,7 +164,7 @@ sub _init
 
 sub _loadData
 {
-    my ($self, $pluginId) = @_;
+    my ( $self, $pluginId ) = @_;
 
     local $@;
     my $pluginData = eval {
@@ -203,7 +203,7 @@ sub _loadData
 
 sub _install
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'onBeforeInstallPlugin', $self->{'pluginData'}->{'plugin_name'} );
     $rs ||= $self->_executePluginAction( 'install' );
@@ -221,7 +221,7 @@ sub _install
 
 sub _uninstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'onBeforeUninstallPlugin', $self->{'pluginData'}->{'plugin_name'} );
     $rs ||= $self->_executePluginAction( 'uninstall' );
@@ -238,7 +238,7 @@ sub _uninstall
 
 sub _enable
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'onBeforeEnablePlugin', $self->{'pluginData'}->{'plugin_name'} );
     $rs ||= $self->_executePluginAction( 'enable' );
@@ -255,7 +255,7 @@ sub _enable
 
 sub _disable
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'onBeforeDisablePlugin', $self->{'pluginData'}->{'plugin_name'} );
     $rs ||= $self->_executePluginAction( 'disable' );
@@ -272,7 +272,7 @@ sub _disable
 
 sub _change
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->_disable();
     $rs ||= $self->{'eventManager'}->trigger( 'onBeforeChangePlugin', $self->{'pluginData'}->{'plugin_name'} );
@@ -313,7 +313,7 @@ sub _change
 
 sub _update
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->_disable();
     $rs ||= $self->{'eventManager'}->trigger( 'onBeforeUpdatePlugin', $self->{'pluginData'}->{'plugin_name'} );
@@ -381,7 +381,7 @@ sub _update
 
 sub _run
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->{'eventManager'}->trigger( 'onBeforeRunPlugin', $self->{'pluginData'}->{'plugin_name'} );
     $rs ||= $self->_executePluginAction( 'run' );
@@ -401,7 +401,7 @@ sub _run
 
 sub _executePluginAction
 {
-    my ($self, $action, $fromVersion, $toVersion) = @_;
+    my ( $self, $action, $fromVersion, $toVersion ) = @_;
 
     local $@;
 

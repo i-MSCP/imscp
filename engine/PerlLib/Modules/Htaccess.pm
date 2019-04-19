@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,8 +25,9 @@ package Modules::Htaccess;
 
 use strict;
 use warnings;
-use Encode qw/ encode_utf8 /;
+use Encode 'encode_utf8';
 use File::Spec;
+use iMSCP::Boolean;
 use iMSCP::Debug qw/ error getLastError warning /;
 use parent 'Modules::Abstract';
 
@@ -51,45 +52,45 @@ sub getType
     'Htaccess';
 }
 
-=item process( $htaccessId )
+=item process( \%data )
 
  Process module
 
- Param int $htaccessId Htaccess unique identifier
+ Param hashref $data Htaccess data
  Return int 0 on success, other on failure
 
 =cut
 
 sub process
 {
-    my ($self, $htaccessId) = @_;
+    my ( $self, $data ) = @_;
 
-    my $rs = $self->_loadData( $htaccessId );
+    my $rs = $self->_loadData( $data->{'id'} );
     return $rs if $rs;
 
     my @sql;
     if ( $self->{'status'} =~ /^to(?:add|change|enable)$/ ) {
         $rs = $self->add();
         @sql = ( 'UPDATE htaccess SET status = ? WHERE id = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $htaccessId );
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok' ), $data->{'id'} );
     } elsif ( $self->{'status'} eq 'todisable' ) {
         $rs = $self->disable();
         @sql = ( 'UPDATE htaccess SET status = ? WHERE id = ?', undef,
-            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $htaccessId );
+            ( $rs ? getLastError( 'error' ) || 'Unknown error' : 'disabled' ), $data->{'id'} );
     } elsif ( $self->{'status'} eq 'todelete' ) {
         $rs = $self->delete();
         @sql = $rs
             ? ( 'UPDATE htaccess SET status = ? WHERE id = ?', undef,
-                ( getLastError( 'error' ) || 'Unknown error' ), $htaccessId )
-            : ( 'DELETE FROM htaccess WHERE id = ?', undef, $htaccessId );
+            ( getLastError( 'error' ) || 'Unknown error' ), $data->{'id'} )
+            : ( 'DELETE FROM htaccess WHERE id = ?', undef, $data->{'id'} );
     } else {
-        warning( sprintf( 'Unknown action (%s) for htaccess (ID %d)', $self->{'status'}, $htaccessId ));
+        warning( sprintf( 'Unknown action (%s) for htaccess (ID %d)', $self->{'status'}, $data->{'id'} ));
         return 0;
     }
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         $self->{'_dbh'}->do( @sql );
     };
     if ( $@ ) {
@@ -117,11 +118,11 @@ sub process
 
 sub _loadData
 {
-    my ($self, $htaccessId) = @_;
+    my ( $self, $htaccessId ) = @_;
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         my $row = $self->{'_dbh'}->selectrow_hashref(
             "
                 SELECT t3.id, t3.auth_type, t3.auth_name, t3.path, t3.status, t3.users, t3.groups,
@@ -154,7 +155,7 @@ sub _loadData
             undef, $htaccessId, $htaccessId, $htaccessId
         );
         $row or die( sprintf( 'Data not found for htaccess (ID %d)', $htaccessId ));
-        %{$self} = ( %{$self}, %{$row} );
+        %{ $self } = ( %{ $self }, %{ $row } );
     };
     if ( $@ ) {
         error( $@ );
@@ -175,13 +176,13 @@ sub _loadData
 
 sub _getData
 {
-    my ($self, $action) = @_;
+    my ( $self, $action ) = @_;
 
     $self->{'_data'} = do {
-        my $groupName = my $userName = $main::imscpConfig{'SYSTEM_USER_PREFIX'} .
-            ( $main::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'} );
-        my $homeDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
-        my $pathDir = File::Spec->canonpath( "$main::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}/$self->{'path'}" );
+        my $groupName = my $userName = $::imscpConfig{'SYSTEM_USER_PREFIX'} .
+            ( $::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'domain_admin_id'} );
+        my $homeDir = File::Spec->canonpath( "$::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}" );
+        my $pathDir = File::Spec->canonpath( "$::imscpConfig{'USER_WEB_DIR'}/$self->{'domain_name'}/$self->{'path'}" );
 
         {
             ACTION          => $action,
@@ -197,7 +198,7 @@ sub _getData
             HTUSERS         => $self->{'users'},
             HTGROUPS        => $self->{'groups'}
         }
-    } unless %{$self->{'_data'}};
+    } unless %{ $self->{'_data'} };
 
     $self->{'_data'};
 }

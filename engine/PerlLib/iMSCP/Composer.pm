@@ -67,12 +67,16 @@ use fields qw/
  Constructor
 
  Parameters:
-  - user                 : OPTIONAL Name of unix user under which composer.phar should be run
-  - group                : OPTIONAL Name of unix group under which composer.phar should be run 
-  - composer_home        : OPTIONAL Path to composer home directory. If not an absolute path, it will be relative to <user_home>
-  - composer_working_dir : OPTIONAL Path to composer working directory. If not an absolute path, it will be relative to <user_home>
-  - composer_phar        : OPTIONAL Path to composer.phar. If not an absolute path, it will be relative to <user_home>/bin
-  - composer_json        : OPTIONAL Path to composer.json. If not an absolute path, it will be relative to <composer_working_dir>
+  - user                 : Unix user under which composer.phar should be run
+  - group                : Unix group under which composer.phar should be run 
+  - composer_home        : Composer home directory. If not an absolute path, it
+                           will be relative to <user_home>
+  - composer_working_dir : Composer working directory. If not an absolute path,
+                           it will be relative to <user_home>
+  - composer_phar        : Composer.phar. If not an absolute path, it will be
+                           relative to <user_home>/bin
+  - composer_json        : composer.json. If not an absolute path, it will be
+                           relative to <composer_working_dir>
  Return iMSCP::Composer, die on failure
 
 =cut
@@ -86,10 +90,13 @@ sub new
     $self = fields::new( $self );
     %{ $self } = ref $_[0] eq 'HASH' ? %{ $_[0] } : @_ if @_;
 
-    my ( @pwent ) = ( length $self->{'user'} ? getpwnam( $self->{'user'} ) : getpwuid( $> ) ) or croak(
+    my ( @pwent ) = ( length $self->{'user'}
+        ? getpwnam( $self->{'user'} )
+        : getpwuid( $> )
+    ) or croak(
         ( length $self->{'user'}
-            ? sprintf( "Couldn't find %s user in password database", $self->{'user'} )
-            : sprintf( "Couldn't find user with ID %d in password database", $> )
+            ? sprintf( "Couldn't find the '%s' Unix user", $self->{'user'} )
+            : sprintf( "Couldn't find Unix user with ID %d", $> )
         )
     );
 
@@ -110,15 +117,18 @@ sub new
     my $homeDir = $pwent[7] || '';
 
     $self->{'composer_home'} = File::Spec->rel2abs(
-        length $self->{'composer_home'} ? $self->{'composer_home'} : "$homeDir/.composer",
+        length $self->{'composer_home'}
+            ? $self->{'composer_home'} : "$homeDir/.composer",
         $homeDir
     );
     $self->{'composer_working_dir'} = File::Spec->rel2abs(
-        length $self->{'composer_working_dir'} ? $self->{'composer_working_dir'} : $homeDir,
+        length $self->{'composer_working_dir'}
+            ? $self->{'composer_working_dir'} : $homeDir,
         $homeDir
     );
     $self->{'composer_phar'} = File::Spec->rel2abs(
-        length $self->{'composer_phar'} ? $self->{'composer_phar'} : "$homeDir/bin/composer.phar",
+        length $self->{'composer_phar'}
+            ? $self->{'composer_phar'} : "$homeDir/bin/composer.phar",
         $homeDir . '/bin'
     );
     $self->{'_php_cmd'} = [ '/usr/bin/php', '-d', 'allow_url_fopen=1' ];
@@ -140,29 +150,50 @@ sub installComposer
 {
     my ( $self, $version ) = @_;
 
-    if ( length $version && -x $self->{'composer_phar'} && version->parse( $self->getComposerVersion()) == version->parse( $version ) ) {
-        $self->{'_stdout'}( sprintf( "PHP dependency manager version is already %s. Installation skipped.", $version ));
+    if ( length $version
+        && -x $self->{'composer_phar'}
+        && version->parse( $self->getComposerVersion()) == version->parse( $version )
+    ) {
+        $self->{'_stdout'}( sprintf(
+            "PHP dependency manager version is already %s. Installation skipped.",
+            $version
+        ));
         return;
     }
 
-    iMSCP::Dir->new( dirname => $self->{'composer_home'} )->clear( undef, qr/\.(?:phar|pub)$/ ) if -d $self->{'composer_home'};
+    iMSCP::Dir->new(
+        dirname => $self->{'composer_home'}
+    )->clear( undef, qr/\.(?:phar|pub)$/ ) if -d $self->{'composer_home'};
 
-    my $ua = LWP::UserAgent->new( agent => "iMSCP/$::imscpConfig{'Version'}", timeout => 30, env_proxy => TRUE );
+    my $ua = LWP::UserAgent->new(
+        agent     => "iMSCP/$::imscpConfig{'Version'}",
+        timeout   => 30,
+        env_proxy => TRUE
+    );
     my $installer = File::Temp->new();
     $installer->close();
 
     # Download composer installer
     my $response;
-    ( $response = $ua->get( 'https://getcomposer.org/installer', ':content_file' => $installer->filename()) )->is_success or die( sprintf(
-        "Couldn't download the PHP dependency manager installer: %s", $response->status_line
+    ( $response = $ua->get(
+        'https://getcomposer.org/installer',
+        ':content_file' => $installer->filename()
+    ) )->is_success or die( sprintf(
+        "Couldn't download the PHP dependency manager installer: %s",
+        $response->status_line
     ));
     # Download composer installer signature for verification
-    ( $response = $ua->get( 'https://composer.github.io/installer.sig' ) )->is_success or die( sprintf(
-        "Couldn't download signature for the PHP dependency manager installer: %s", $response->status_line
+    ( $response = $ua->get(
+        'https://composer.github.io/installer.sig'
+    ) )->is_success or die( sprintf(
+        "Couldn't download signature for the PHP dependency manager installer: %s",
+        $response->status_line
     ));
     # Verify composer installer signature
     chomp( my $sig = $response->decoded_content );
-    $sig eq Digest::SHA->new( 'sha384' )->addfile( $installer->filename())->hexdigest() or die(
+    $sig eq Digest::SHA->new( 'sha384' )->addfile(
+        $installer->filename()
+    )->hexdigest() or die(
         "Couldn't verify signature for the PHP dependency manager installer."
     );
     # Make sure that running user can access PHP dependency manager installer
@@ -176,7 +207,10 @@ sub installComposer
     executeNoWait(
         $self->_getSuCmd(
             @{ $self->{'_php_cmd'} }, $installer->filename(), '--',
-            '--no-ansi', "--install-dir=$installDir", "--filename=$filename", ( length $version ? "--version=$version" : () )
+            '--no-ansi',
+            "--install-dir=$installDir",
+            "--filename=$filename",
+            ( length $version ? "--version=$version" : () )
         ),
         $self->{'_stdout'},
         $self->{'_stderr'}
@@ -201,13 +235,21 @@ sub require
     my ( $self, $package, $version, $dev ) = @_;
 
     if ( $dev ) {
-        $self->remove( $package, TRUE ); # Make sure to not add the same package twice
-        $self->{'composer_json'}->{'require_dev'}->{$package} = $version // 'dev-master';
+        # Make sure to not add the same package twice
+        $self->remove( $package, TRUE );
+        $self
+            ->{'composer_json'}
+            ->{'require_dev'}
+            ->{$package} = $version // 'dev-master';
         return;
     }
 
-    $self->remove( $package ); # Make sure to not add the same package twice
-    $self->{'composer_json'}->{'require'}->{$package} = $version // 'dev-master';
+    # Make sure to not add the same package twice
+    $self->remove( $package );
+    $self
+        ->{'composer_json'}
+        ->{'require'}
+        ->{$package} = $version // 'dev-master';
     $self;
 }
 
@@ -238,8 +280,9 @@ sub remove
 
  Install dependencies
 
- Param bool $nodev OPTIONAL Flag indicating whether require-dev packages must be discarded
- Param bool $noautoloader OPTIONAL Flag indicating whether or not autoloader generation must be skipped
+ Param bool $nodev Flag indicating whether the dev packages must be ignored
+ Param bool $noautoloader Flag indicating whether or not autoloader generation
+                          must be skipped
  Return iMSCP::Composer, die on failure
 
 =cut
@@ -256,8 +299,13 @@ sub install
             @{ $self->{'_php_cmd'} },
             $self->{'composer_phar'}, 'install',
             "--working-dir=$self->{'composer_working_dir'}",
-            '--no-progress', '--no-ansi', '--no-interaction', '--no-suggest',
-            ( $nodev ? '--no-dev' : () ), ( $noautoloader ? '--no-autoloader' : () ),
+            '--no-progress',
+            '--no-ansi',
+            '--no-interaction',
+            '--no-suggest',
+            ( $nodev ? '--no-dev' : () ),
+            ( $noautoloader ? '--no-autoloader' : () ),
+            '-vv',
         ),
         $self->{'_stdout'},
         $self->{'_stderr'}
@@ -266,13 +314,19 @@ sub install
     $self;
 }
 
-=item update( [ $nodev = false [, $noautoloader = false [, @packages = () ] ] ] )
+=item update(
+    [ $nodev = false
+    [, $noautoloader = false
+    [, @packages = ALL PACKAGES ] ] ]
+)
 
  Update packages
 
- Param bool $nodev OPTIONAL Flag indicating whether require-dev packages must be discarded
- Param bool $noautoloader OPTIONAL Flag indicating whether or not autoloader generation must be skipped
- Param list @packages OPTIONAL List of packages to operate on (default is to operate on all packages)
+ Param bool $nodev Flag indicating whether the dev packages must be ignored
+ Param bool $noautoloader Flag indicating whether or not autoloader generation
+                          must be skipped
+ Param list @packages List of packages to operate on (default is to operate on
+                      all packages)
  Return iMSCP::Composer, die on failure
 
 =cut
@@ -289,8 +343,13 @@ sub update
             @{ $self->{'_php_cmd'} },
             $self->{'composer_phar'}, 'update',
             "--working-dir=$self->{'composer_working_dir'}",
-            '--no-progress', '--no-ansi', '--no-interaction', '--no-suggest',
-            ( $nodev ? '--no-dev' : () ), ( $noautoloader ? '--no-autoloader' : () ),
+            '--no-progress',
+            '--no-ansi',
+            '--no-interaction',
+            '--no-suggest',
+            ( $nodev ? '--no-dev' : () ),
+            ( $noautoloader ? '--no-autoloader' : () ),
+            '-vv',
             @packages
         ),
         $self->{'_stdout'},
@@ -318,7 +377,8 @@ sub clearCache
             $self->{'composer_phar'}, 'clear-cache',
             "--working-dir=$self->{'composer_working_dir'}",
             '--no-interaction',
-            '--no-ansi'
+            '--no-ansi',
+            '-vv'
         ),
         $self->{'_stdout'},
         $self->{'_stderr'}
@@ -328,7 +388,8 @@ sub clearCache
     my $vendorDir = "$self->{'composer_working_dir'}/vendor";
     my $composerJson = $self->{'composer_json'};
     if ( $composerJson->{'config'}->{'vendor-dir'} ) {
-        ( $vendorDir = $composerJson->{'config'}->{'vendor-dir'} ) =~ s%(?:\$HOME|~)%$self->{'composer_home'}%g;
+        ( $vendorDir = $composerJson->{'config'}->{'vendor-dir'} )
+            =~ s%(?:\$HOME|~)%$self->{'composer_home'}%g;
     }
     iMSCP::Dir->new( dirname => $vendorDir )->remove();
 
@@ -339,7 +400,7 @@ sub clearCache
 
  Return composer.json file as string
 
- Param bool $hashref OPTIONAL Whether composer.json must be returned as a hash reference (default: FALSE)
+ Param bool $hashref Whether composer.json must be returned as a hash reference
  Return string|hashref, croak on failure
 
 =cut
@@ -367,23 +428,39 @@ sub getComposerVersion
 {
     my ( $self ) = @_;
 
-    my $rs = execute( $self->_getSuCmd(
-        @{ $self->{'_php_cmd'} }, $self->{'composer_phar'}, '--no-interaction', '--no-ansi', '--version' ),
+    my $rs = execute(
+        $self->_getSuCmd(
+            @{ $self->{'_php_cmd'} }, $self->{'composer_phar'},
+            '--no-interaction',
+            '--no-ansi',
+            '--version'
+        ),
         \my $stdout,
         \my $stderr
     );
     debug( $stdout ) if length $stdout;
-    $rs == 0 or die( sprintf( "Couldn't get composer (%s) version: %s", $self->{'composer_phar'}, $stderr ));
+    $rs == 0 or die( sprintf(
+        "Couldn't get composer (%s) version: %s",
+        $self->{'composer_phar'},
+        $stderr || 'Unknown error'
+    ));
     ( $stdout =~ /version\s+([\d.]+)/ );
-    $1 or die( sprintf( "Couldn't parse composer (%s) version from version string: %s", $self->{'composer_phar'}, $stdout // '' ));
+    $1 or die( sprintf(
+        "Couldn't parse composer (%s) version from version string: %s",
+        $self->{'composer_phar'},
+        $stdout // 'EMPTY STRING'
+    ));
 }
 
-=item setStdRoutines( [ $subStdout = sub { print STDOUT @_ } [, $subStderr = sub { print STDERR @_ }  ] ] )
+=item setStdRoutines(
+    [ $subStdout = sub { print STDOUT $_[0]; }
+    [, $subStderr = sub { print STDERR $_[0]; } ] ]
+)
 
- Set routines for STDOUT/STDERR processing
+ Set routines for processing of STDOUT/STDERR (line by line) 
 
- Param CODE $subStdout OPTIONAL Routine for processing of command STDOUT
- Param CODE $subStderr OPTIONAL Routine for processing of command STDERR
+ Param CODE $subStdout Routine for processing of command STDOUT (line by line)
+ Param CODE $subStderr Routine for processing of command STDERR (line by line)
  Return iMSCP::Composer, croak on invalid arguments
 
 =cut
@@ -392,20 +469,15 @@ sub setStdRoutines
 {
     my ( $self, $subStdout, $subStderr ) = @_;
 
-    $subStdout ||= sub {
-        chomp( $_[0] );
-        return unless length $_[0];
-        debug( $_[0] );
-    };
-    ref $subStdout eq 'CODE' or croak( 'Expects a routine as first parameter for STDOUT processing' );
+    $subStdout ||= sub { print STDOUT $_[0]; };
+    ref $subStdout eq 'CODE' or croak(
+        'Expects a routine as first parameter for STDOUT processing'
+    );
     $self->{'_stdout'} = $subStdout;
-
-    $subStderr ||= sub {
-        chomp( $_[0] );
-        return unless length $_[0];
-        debug ( $_[0] );
-    };
-    ref $subStderr eq 'CODE' or croak( 'Expects a routine as second parameter for STDERR processing' );
+    $subStderr ||= sub { print STDERR $_[0]; };
+    ref $subStderr eq 'CODE' or croak(
+        'Expects a routine as second parameter for STDERR processing'
+    );
     $self->{'_stderr'} = $subStderr;
     $self;
 }
@@ -426,13 +498,19 @@ sub loadComposerJson
 
     return unless length $self->{'composer_json'};
 
-    $self->{'composer_json'} = File::Spec->rel2abs( $self->{'composer_json'}, $self->{'composer_working_dir'} );
+    $self->{'composer_json'} = File::Spec->rel2abs(
+        $self->{'composer_json'}, $self->{'composer_working_dir'}
+    );
 
-    defined( $self->{'composer_json'} = iMSCP::File->new( filename => $self->{'composer_json'} )->get()) or die(
+    defined( $self->{'composer_json'} = iMSCP::File->new(
+        filename => $self->{'composer_json'} )->get()
+    ) or die(
         getMessageByType( 'error', { amount => 1, remove => TRUE } )
     );
 
-    $self->{'composer_json'} = from_json( $self->{'composer_json'}, { utf8 => TRUE } );
+    $self->{'composer_json'} = from_json(
+        $self->{'composer_json'}, { utf8 => TRUE }
+    );
     $self;
 }
 
@@ -452,11 +530,15 @@ sub dumpComposerJson
 
     return unless ref $self->{'composer_json'} eq 'HASH';
 
-    my $file = iMSCP::File->new( filename => "$self->{'composer_working_dir'}/composer.json" );
+    my $file = iMSCP::File->new(
+        filename => "$self->{'composer_working_dir'}/composer.json"
+    );
     my $rs = $file->set( $self->getComposerJson());
     $rs ||= $file->save();
     $rs ||= $file->owner( $self->{'_euid'}, $self->{'_egid'} );
-    $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ));
+    $rs == 0 or die( getMessageByType(
+        'error', { amount => 1, remove => TRUE }
+    ));
 
     $self;
 }
@@ -501,15 +583,19 @@ sub _removeAutoloader( )
     my ( $self ) = @_;
 
     if ( -d "$self->{'composer_working_dir'}/vendor/composer" ) {
-        iMSCP::Dir->new( dirname => "$self->{'composer_working_dir'}/vendor/composer" )->clear(
+        iMSCP::Dir->new(
+            dirname => "$self->{'composer_working_dir'}/vendor/composer"
+        )->clear(
             undef, qr/^(ClassLoader|autoload_.*)\.php$/
         );
     }
 
     if ( -f "$self->{'composer_working_dir'}/vendor/autoload.php" ) {
-        iMSCP::File->new( filename => "$self->{'composer_working_dir'}/vendor/autoload.php" )->delFile() == 0 or die(
-            getMessageByType( 'error', { amount => 1, remove => TRUE } )
-        );
+        iMSCP::File->new(
+            filename => "$self->{'composer_working_dir'}/vendor/autoload.php"
+        )->delFile() == 0 or die( getMessageByType(
+            'error', { amount => 1, remove => TRUE }
+        ));
     }
 }
 
@@ -532,7 +618,11 @@ sub _getSuCmd
         return \@_;
     }
 
-    [ '/bin/su', '-l', $self->{'user'}, '-s', '/bin/sh', '-c', "COMPOSER_HOME=$self->{'composer_home'} @_" ];
+    [
+        '/bin/su', '-l', $self->{'user'},
+        '-s', '/bin/sh',
+        '-c', "COMPOSER_HOME=$self->{'composer_home'} @_"
+    ];
 }
 
 =back

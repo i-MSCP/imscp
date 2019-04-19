@@ -956,7 +956,7 @@ function reseller_checkAndUpdateData($domainId)
             }
 
             if ($data['domain_dns'] != $data['fallback_domain_dns'] && $data['domain_dns'] == 'no') {
-                // Support for custom DNS records is now disabled - We must delete all custom DNS entries
+                // Support for custom DNS records is now disabled - We must delete all custom DNS records
                 // (except those that are protected), and update the DNS zone file
                 exec_query('DELETE FROM domain_dns WHERE domain_id = ? AND owned_by = ?', [
                     $domainId, 'custom_dns_feature'

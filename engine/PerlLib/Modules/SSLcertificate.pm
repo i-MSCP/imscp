@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@ package Modules::SSLcertificate;
 
 use strict;
 use warnings;
+use iMSCP::Boolean;
 use iMSCP::Debug qw/ error getLastError getMessageByType warning /;
 use iMSCP::Dir;
 use iMSCP::File;
@@ -53,20 +54,20 @@ sub getType
     'SSLcertificate';
 }
 
-=item process( $certificateId )
+=item process( \%data )
 
  Process module
 
- Param int $certificateId SSL certificate unique identifier
+ Param hashref \%data SSL certificate data
  Return int 0 on success, other on failure
 
 =cut
 
 sub process
 {
-    my ($self, $certificateId) = @_;
+    my ( $self, $data ) = @_;
 
-    my $rs = $self->_loadData( $certificateId );
+    my $rs = $self->_loadData( $data->{'id'} );
     return $rs if $rs || !$self->{'domain_name'};
 
     my @sql;
@@ -75,24 +76,24 @@ sub process
         @sql = ( 'UPDATE ssl_certs SET status = ? WHERE cert_id = ?', undef,
             ( $rs
                 ? ( getMessageByType( 'error', { amount => 1, remove => 1 } )
-                    || 'Unknown error' ) =~ s/iMSCP::OpenSSL::validateCertificate:\s+//r
+                || 'Unknown error' ) =~ s/iMSCP::OpenSSL::validateCertificate:\s+//r
                 : 'ok'
             ),
-            $certificateId );
+            $data->{'id'} );
     } elsif ( $self->{'status'} eq 'todelete' ) {
         $rs = $self->delete();
         @sql = $rs
             ? ( 'UPDATE ssl_certs SET status = ? WHERE cert_id = ?', undef,
-                getLastError( 'error' ) || 'Unknown error', $certificateId )
-            : ( 'DELETE FROM ssl_certs WHERE cert_id = ?', undef, $certificateId );
+            getLastError( 'error' ) || 'Unknown error', $data->{'id'} )
+            : ( 'DELETE FROM ssl_certs WHERE cert_id = ?', undef, $data->{'id'} );
     } else {
-        warning( sprintf( 'Unknown action (%s) for SSL certificate (ID %d)', $self->{'status'}, $certificateId ));
+        warning( sprintf( 'Unknown action (%s) for SSL certificate (ID %d)', $self->{'status'}, $data->{'id'} ));
         return 0;
     }
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         $self->{'_dbh'}->do( @sql );
     };
     if ( $@ ) {
@@ -116,20 +117,20 @@ sub process
 
 sub add
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     # Remove previous SSL certificate if any
     my $rs = $self->delete();
     return $rs if $rs;
 
     # Private key
-    my $privateKeyContainer = File::Temp->new( UNLINK => 1 );
+    my $privateKeyContainer = File::Temp->new( UNLINK => TRUE );
     print $privateKeyContainer $self->{'private_key'};
     $privateKeyContainer->flush();
     $privateKeyContainer->close();
 
     # Certificate
-    my $certificateContainer = File::Temp->new( UNLINK => 1 );
+    my $certificateContainer = File::Temp->new( UNLINK => TRUE );
     print $certificateContainer $self->{'certificate'};
     $certificateContainer->flush();
     $certificateContainer->close();
@@ -137,7 +138,7 @@ sub add
     # CA Bundle (intermediate certificate(s))
     my $caBundleContainer;
     if ( $self->{'ca_bundle'} ) {
-        $caBundleContainer = File::Temp->new( UNLINK => 1 );
+        $caBundleContainer = File::Temp->new( UNLINK => TRUE );
         print $caBundleContainer $self->{'ca_bundle'};
         $caBundleContainer->flush();
         $caBundleContainer->close();
@@ -169,7 +170,7 @@ sub add
 
 sub delete
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     return 0 unless -f "$self->{'certsDir'}/$self->{'domain_name'}.pem";
     iMSCP::File->new( filename => "$self->{'certsDir'}/$self->{'domain_name'}.pem" )->delFile();
@@ -185,17 +186,14 @@ sub delete
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    $self->{'certsDir'} = "$main::imscpConfig{'GUI_ROOT_DIR'}/data/certs";
-    iMSCP::Dir->new( dirname => $self->{'certsDir'} )->make(
-        {
-
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'ROOT_GROUP'},
-            mode  => 0750
-        }
-    );
+    $self->{'certsDir'} = "$::imscpConfig{'GUI_ROOT_DIR'}/data/certs";
+    iMSCP::Dir->new( dirname => $self->{'certsDir'} )->make( {
+        user  => $::imscpConfig{'ROOT_USER'},
+        group => $::imscpConfig{'ROOT_GROUP'},
+        mode  => 0750
+    } );
     $self->SUPER::_init();
 }
 
@@ -210,16 +208,16 @@ sub _init
 
 sub _loadData
 {
-    my ($self, $certificateId) = @_;
+    my ( $self, $certificateId ) = @_;
 
     local $@;
     eval {
-        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
         my $row = $self->{'_dbh'}->selectrow_hashref(
             'SELECT * FROM ssl_certs WHERE cert_id = ?', undef, $certificateId
         );
         $row or die( sprintf( 'Data not found for SSL certificate (ID %d)', $certificateId ));
-        %{$self} = ( %{$self}, %{$row} );
+        %{ $self } = ( %{ $self }, %{ $row } );
 
         if ( $self->{'domain_type'} eq 'dmn' ) {
             $row = $self->{'_dbh'}->selectrow_hashref(
@@ -255,7 +253,7 @@ sub _loadData
             # Delete orphaned SSL certificate
             $self->{'_dbh'}->do( 'DELETE FROM ssl_certs WHERE cert_id = ?', undef, $certificateId );
         } else {
-            %{$self} = ( %{$self}, %{$row} );
+            %{ $self } = ( %{ $self }, %{ $row } );
         }
     };
     if ( $@ ) {

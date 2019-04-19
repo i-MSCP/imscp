@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,7 +25,8 @@ package iMSCP::DbTasksProcessor;
 
 use strict;
 use warnings;
-use Encode qw / encode_utf8 /;
+use Encode 'encode_utf8';
+use iMSCP::Boolean;
 use iMSCP::Database;
 use iMSCP::Debug;
 use iMSCP::Execute;
@@ -55,7 +56,7 @@ BEGIN { *process = \&processDbTasks; }
 
 sub processDbTasks
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     # Process plugins tasks
     # Must always be processed first to allow the plugins registering their listeners on the event manager
@@ -68,7 +69,7 @@ sub processDbTasks
             AND plugin_error IS NULL AND plugin_backend = 'yes'
             ORDER BY plugin_priority DESC
         ",
-        'per_item_log_file'
+        TRUE
     );
 
     # Process server IP addresses
@@ -78,7 +79,8 @@ sub processDbTasks
             SELECT ip_id AS id, ip_number AS name
             FROM server_ips
             WHERE ip_status IN( 'toadd', 'tochange', 'todelete' )
-        "
+        ",
+        FALSE
     );
 
     # Process SSL certificate toadd|tochange SSL certificates tasks
@@ -87,8 +89,10 @@ sub processDbTasks
         "
             SELECT cert_id AS id, domain_type AS name
             FROM ssl_certs
-            WHERE status IN ('toadd', 'tochange', 'todelete') ORDER BY cert_id ASC
-        "
+            WHERE status IN ('toadd', 'tochange', 'todelete')
+            ORDER BY cert_id ASC
+        ",
+        FALSE
     );
 
     # Process toadd|tochange users tasks
@@ -100,48 +104,51 @@ sub processDbTasks
             WHERE admin_type = 'user'
             AND admin_status IN ('toadd', 'tochange', 'tochangepwd')
             ORDER BY admin_id ASC
-        "
+        ",
+        FALSE
     );
 
     # Process toadd|tochange|torestore|toenable|todisable domain tasks
-    # For each entitty, process only if the parent entity is in a consistent state
+    # For each entity, process only if the parent entity is in a consistent state
     $self->_processModuleDbTasks(
         'Modules::Domain',
         "
-            SELECT domain_id AS id, domain_name AS name
-            FROM domain
-            JOIN admin ON(admin_id = domain_admin_id)
-            WHERE domain_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
-            AND admin_status IN('ok', 'disabled')
-            ORDER BY domain_id ASC
-        "
+            SELECT t1.domain_id AS id, t1.domain_name AS name
+            FROM domain AS t1
+            JOIN admin AS t2 ON(admin_id = domain_admin_id)
+            WHERE t1.domain_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
+            AND t2.admin_status IN('ok', 'disabled')
+            ORDER BY t1.domain_id ASC
+        ",
+        FALSE
     );
 
     # Process toadd|tochange|torestore|toenable|todisable subdomains tasks
-    # For each entitty, process only if the parent entity is in a consistent state
+    # For each entity, process only if the parent entity is in a consistent state
     $self->_processModuleDbTasks(
         'Modules::Subdomain',
         "
-            SELECT subdomain_id AS id, CONCAT(subdomain_name, '.', domain_name) AS name
-            FROM subdomain
-            JOIN domain USING(domain_id)
-            WHERE subdomain_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
-            AND domain_status IN('ok', 'disabled')
-            ORDER BY subdomain_id ASC
-        "
+            SELECT t1.subdomain_id AS id, CONCAT(t1.subdomain_name, '.', t2.domain_name) AS name
+            FROM subdomain AS t1
+            JOIN domain AS t2 USING(domain_id)
+            WHERE t1.subdomain_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
+            AND t2.domain_status IN('ok', 'disabled')
+            ORDER BY t1.subdomain_id ASC
+        ",
+        FALSE
     );
 
     # Process toadd|tochange|torestore|toenable|todisable domain aliases tasks
-    # (for each entitty, process only if the parent entity is in a consistent state)
+    # (for each entity, process only if the parent entity is in a consistent state)
     $self->_processModuleDbTasks(
         'Modules::Alias',
         "
-           SELECT alias_id AS id, alias_name AS name
-           FROM domain_aliasses
-           JOIN domain USING(domain_id)
-           WHERE alias_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
-           AND domain_status IN('ok', 'disabled')
-           ORDER BY alias_id ASC
+            SELECT t1.alias_id AS id, t1.alias_name AS name
+            FROM domain_aliasses AS t1
+            JOIN domain AS t2 USING(domain_id)
+            WHERE t1.alias_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
+            AND t2.domain_status IN('ok', 'disabled')
+            ORDER BY t1.alias_id ASC
         "
     );
 
@@ -150,123 +157,133 @@ sub processDbTasks
     $self->_processModuleDbTasks(
         'Modules::SubAlias',
         "
-            SELECT subdomain_alias_id AS id, CONCAT(subdomain_alias_name, '.', alias_name) AS name
-            FROM subdomain_alias
-            JOIN domain_aliasses USING(alias_id)
-            WHERE subdomain_alias_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
-            AND alias_status IN('ok', 'disabled')
-            ORDER BY subdomain_alias_id ASC
-        "
+            SELECT t1.subdomain_alias_id AS id, CONCAT(t1.subdomain_alias_name, '.', t2.alias_name) AS name
+            FROM subdomain_alias AS t1
+            JOIN domain_aliasses AS t2 USING(alias_id)
+            WHERE t1.subdomain_alias_status IN ('toadd', 'tochange', 'torestore', 'toenable', 'todisable')
+            AND t2.alias_status IN('ok', 'disabled')
+            ORDER BY t1.subdomain_alias_id ASC
+        ",
+        FALSE
     );
 
     # Process toadd|tochange|toenable||todisable|todelete custom DNS records which belong to domains
-    # For each entitty, process only if the parent entity is in a consistent state
+    # For each entity, process only if the parent entity is in a consistent state
     $self->_processModuleDbTasks(
         'Modules::CustomDNS',
         "
-            SELECT DISTINCT CONCAT('domain_', domain_id) AS id, domain_name AS name
-            FROM domain_dns
-            JOIN domain USING(domain_id)
-            WHERE domain_dns_status IN ('toadd', 'tochange', 'toenable', 'todisable', 'todelete')
-            AND alias_id = '0'
-            AND domain_status IN('ok', 'disabled')
+            SELECT t1.domain_id AS id, 'domain' AS type, t2.domain_name AS name
+            FROM domain_dns AS t1
+            JOIN domain AS t2 USING(domain_id)
+            WHERE t1.domain_dns_status IN ('toadd', 'tochange', 'toenable', 'todisable', 'todelete')
+            AND t1.alias_id = 0
+            AND t2.domain_status IN('ok', 'disabled')
+            LIMIT 1
         "
     );
 
     # Process toadd|tochange|toenable|todisable|todelete custom DNS records which belong to domain aliases
-    # For each entitty, process only if the parent entity is in a consistent state
+    # For each entity, process only if the parent entity is in a consistent state
     $self->_processModuleDbTasks(
         'Modules::CustomDNS',
         "
-            SELECT DISTINCT CONCAT('alias_', alias_id) AS id, alias_name AS name
-            FROM domain_dns
-            JOIN domain_aliasses USING(alias_id)
-            WHERE domain_dns_status IN ('toadd', 'tochange', 'toenable', 'todisable', 'todelete')
-            AND alias_id <> '0'
-            AND alias_status IN('ok', 'disabled')
-        "
+            SELECT t1.alias_id AS id, 'alias' AS type, t2.alias_name AS name
+            FROM domain_dns AS t1
+            JOIN domain_aliasses AS t2 USING(alias_id)
+            WHERE t1.domain_dns_status IN ('toadd', 'tochange', 'toenable', 'todisable', 'todelete')
+            AND t1.alias_id <> 0
+            AND t2.alias_status IN('ok', 'disabled')
+            LIMIT 1
+        ",
+        FALSE
     );
 
     # Process toadd|tochange|toenable|todisable|todelete ftp users tasks
-    # For each entitty, process only if the parent entity is in a consistent state
+    # For each entity, process only if the parent entity is in a consistent state
     $self->_processModuleDbTasks(
         'Modules::FtpUser',
         "
-            SELECT userid AS id, userid AS name
-            FROM ftp_users
-            JOIN domain ON(domain_admin_id = admin_id)
-            WHERE status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
-            AND domain_status IN('ok', 'todelete', 'disabled')
-            ORDER BY userid ASC
-        "
+            SELECT t1.userid AS id, t1.userid AS name
+            FROM ftp_users AS t1
+            JOIN domain AS t2 ON(t2.domain_admin_id = t1.admin_id)
+            WHERE t1.status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
+            AND t2.domain_status IN('ok', 'todelete', 'disabled')
+            ORDER BY t1.userid ASC
+        ",
+        FALSE
     );
 
     # Process toadd|tochange|toenable|todisable|todelete mail tasks
-    # For each entitty, process only if the parent entity is in a consistent state
+    # For each entity, process only if the parent entity is in a consistent state
     $self->_processModuleDbTasks(
         'Modules::Mail',
         "
-            SELECT mail_id AS id, mail_addr AS name
-            FROM mail_users
-            JOIN domain USING(domain_id)
-            WHERE status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
-            AND domain_status IN('ok', 'todelete', 'disabled')
-            ORDER BY mail_id ASC
-        "
+            SELECT t1.mail_id AS id, t1.mail_addr AS name
+            FROM mail_users AS t1
+            JOIN domain AS t2 USING(domain_id)
+            WHERE t1.status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
+            AND t2.domain_status IN('ok', 'todelete', 'disabled')
+            ORDER BY t1.mail_id ASC
+        ",
+        FALSE
     );
 
-    # Process toadd|tochange|toenable|todisable|todelete Htusers tasks
-    # For each entitty, process only if the parent entity is in a consistent state
+    # Process toadd|tochange|toenable|todisable|todelete Htpasswd tasks
+    # For each entity, process only if the parent entity is in a consistent state
     $self->_processModuleDbTasks(
         'Modules::Htpasswd',
         "
-            SELECT id, uname AS name
-            FROM htaccess_users
-            JOIN domain ON(domain_id = dmn_id)
-            WHERE status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
-            AND domain_status IN('ok', 'todelete', 'disabled')
-            ORDER BY id ASC
-        "
+            SELECT t1.id, t1.uname AS name
+            FROM htaccess_users AS t1
+            JOIN domain AS t2 ON(t2.domain_id = t1.dmn_id)
+            WHERE t1.status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
+            AND t2.domain_status IN('ok', 'todelete', 'disabled')
+            ORDER BY t1.id ASC
+        ",
+        FALSE
     );
 
-    # Process toadd|tochange|toenable|todisable|todelete Htgroups tasks
-    # For each entitty, process only if the parent entity is in a consistent state
+    # Process toadd|tochange|toenable|todisable|todelete Htgroup tasks
+    # For each entity, process only if the parent entity is in a consistent state
     $self->_processModuleDbTasks(
         'Modules::Htgroup',
         "
-            SELECT id, ugroup AS name
-            FROM htaccess_groups
-            JOIN domain ON(domain_id = dmn_id)
-            WHERE status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
-            AND domain_status IN('ok', 'todelete', 'disabled')
-            ORDER BY id ASC
-        "
+            SELECT t1.id, t1.ugroup AS name
+            FROM htaccess_groups AS t1
+            JOIN domain AS t2 ON(t2.domain_id = t1.dmn_id)
+            WHERE t1.status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
+            AND t2.domain_status IN('ok', 'todelete', 'disabled')
+            ORDER BY t1.id ASC
+        ",
+        FALSE
     );
 
     # Process toadd|tochange|toenable|todisable|todelete Htaccess tasks
-    # For each entitty, process only if the parent entity is in a consistent state
+    # For each entity, process only if the parent entity is in a consistent state
     $self->_processModuleDbTasks(
         'Modules::Htaccess',
         "
-            SELECT id, auth_name AS name
-            FROM htaccess
-            JOIN domain ON(domain_id = dmn_id)
-            WHERE status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
-            AND domain_status IN('ok', 'todelete', 'disabled')
-            ORDER BY id ASC
-        "
+            SELECT t1.id, t1.auth_name AS name
+            FROM htaccess AS t1
+            JOIN domain AS t2 ON(t2.domain_id = t1.dmn_id)
+            WHERE t1.status IN ('toadd', 'tochange', 'toenable', 'todelete', 'todisable')
+            AND t2.domain_status IN('ok', 'todelete', 'disabled')
+            ORDER BY t1.id ASC
+        ",
+        FALSE
     );
 
     # Process todelete subdomain aliases tasks
     $self->_processModuleDbTasks(
         'Modules::SubAlias',
         "
-            SELECT subdomain_alias_id AS id, concat(subdomain_alias_name, '.', alias_name) AS name
-            FROM subdomain_alias
-            JOIN domain_aliasses USING(alias_id)
-            WHERE subdomain_alias_status = 'todelete'
-            ORDER BY subdomain_alias_id ASC
-        "
+            SELECT t1.subdomain_alias_id AS id, concat(t1.subdomain_alias_name, '.', t2.alias_name) AS name
+            FROM subdomain_alias AS t1
+            JOIN domain_aliasses AS t2 USING(alias_id)
+            WHERE t1.subdomain_alias_status = 'todelete'
+            ORDER BY t1.subdomain_alias_id ASC
+        ",
+        FALSE
     );
 
     # Process todelete domain aliases tasks
@@ -274,25 +291,27 @@ sub processDbTasks
     $self->_processModuleDbTasks(
         'Modules::Alias',
         "
-            SELECT alias_id AS id, alias_name AS name
-            FROM domain_aliasses
-            LEFT JOIN (SELECT DISTINCT alias_id FROM subdomain_alias) AS subdomain_alias  USING(alias_id)
-            WHERE alias_status = 'todelete'
-            AND subdomain_alias.alias_id IS NULL
-            ORDER BY alias_id ASC
-        "
+            SELECT t1.alias_id AS id, t1.alias_name AS name
+            FROM domain_aliasses AS t1
+            LEFT JOIN (SELECT DISTINCT alias_id FROM subdomain_alias) AS t2 USING(alias_id)
+            WHERE t1.alias_status = 'todelete'
+            AND t2.alias_id IS NULL
+            ORDER BY t1.alias_id ASC
+        ",
+        FALSE
     );
 
     # Process todelete subdomains tasks
     $self->_processModuleDbTasks(
         'Modules::Subdomain',
         "
-            SELECT subdomain_id AS id, CONCAT(subdomain_name, '.', domain_name) AS name
-            FROM subdomain
-            JOIN domain USING(domain_id)
-            WHERE subdomain_status = 'todelete'
-            ORDER BY subdomain_id ASC
-        "
+            SELECT t1.subdomain_id AS id, CONCAT(t1.subdomain_name, '.', t2.domain_name) AS name
+            FROM subdomain AS t1
+            JOIN domain AS t2 USING(domain_id)
+            WHERE t1.subdomain_status = 'todelete'
+            ORDER BY t1.subdomain_id ASC
+        ",
+        FALSE
     );
 
     # Process todelete domains tasks
@@ -300,13 +319,14 @@ sub processDbTasks
     $self->_processModuleDbTasks(
         'Modules::Domain',
         "
-            SELECT domain_id AS id, domain_name AS name
-            FROM domain
-            LEFT JOIN (SELECT DISTINCT domain_id FROM subdomain) as subdomain USING (domain_id)
-            WHERE domain_status = 'todelete'
-            AND subdomain.domain_id IS NULL
-            ORDER BY domain_id ASC
-        "
+            SELECT t1.domain_id AS id, t1.domain_name AS name
+            FROM domain AS t1
+            LEFT JOIN (SELECT DISTINCT domain_id FROM subdomain) as t2 USING (domain_id)
+            WHERE t1.domain_status = 'todelete'
+            AND t2.domain_id IS NULL
+            ORDER BY t1.domain_id ASC
+        ",
+        FALSE
     );
 
     # Process todelete users tasks
@@ -314,18 +334,18 @@ sub processDbTasks
     $self->_processModuleDbTasks(
         'Modules::User',
         "
-            SELECT admin_id AS id, admin_name AS name
-            FROM admin
-            LEFT JOIN domain ON(domain_admin_id = admin_id)
-            WHERE admin_type = 'user'
-            AND admin_status = 'todelete'
-            AND domain_id IS NULL
-            ORDER BY admin_id ASC
+            SELECT t1.admin_id AS id, t1.admin_name AS name
+            FROM admin AS t1
+            LEFT JOIN domain t2 ON(t2.domain_admin_id = t1.admin_id)
+            WHERE t1.admin_type = 'user'
+            AND t1.admin_status = 'todelete'
+            AND t2.domain_id IS NULL
+            ORDER BY t1.admin_id ASC
         "
     );
 
-    # Process software package tasks
-    local $self->{'_dbh'}->{'RaiseError'} = 1;
+    # Process software packages tasks
+    local $self->{'_dbh'}->{'RaiseError'} = TRUE;
 
     my $rows = $self->{'_dbh'}->selectall_hashref(
         "
@@ -339,10 +359,10 @@ sub processDbTasks
         'software_id'
     );
 
-    if ( %{$rows} ) {
+    if ( %{ $rows } ) {
         newDebug( 'imscp_sw_mngr_engine' );
 
-        for ( values %{$rows} ) {
+        for ( values %{ $rows } ) {
             my $pushString = encode_base64(
                 encode_json(
                     [
@@ -356,7 +376,7 @@ sub processDbTasks
                 ''
             );
 
-            my ($stdout, $stderr);
+            my ( $stdout, $stderr );
             execute(
                 "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-sw-mngr " . escapeShell( $pushString ), \$stdout,
                 \$stderr
@@ -382,10 +402,10 @@ sub processDbTasks
         'software_id'
     );
 
-    if ( %{$rows} ) {
+    if ( %{ $rows } ) {
         newDebug( 'imscp_pkt_mngr_engine.log' );
 
-        for ( values %{$rows} ) {
+        for ( values %{ $rows } ) {
             my $pushstring = encode_base64(
                 encode_json(
                     [
@@ -396,7 +416,7 @@ sub processDbTasks
                 ''
             );
 
-            my ($stdout, $stderr);
+            my ( $stdout, $stderr );
             execute(
                 "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-pkt-mngr " . escapeShell( $pushstring ), \$stdout,
                 \$stderr
@@ -428,32 +448,32 @@ sub processDbTasks
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     defined $self->{'mode'} or die( 'mode attribute is not defined' );
     $self->{'_dbh'} = iMSCP::Database->factory()->getRawDb();
     $self;
 }
 
-=item _processModuleDbTasks( $module, $sql [, $perItemLogFile = FALSE ] )
+=item _processModuleDbTasks( $module, $sql [, $perTaskLogFile = FALSE ] )
 
  Process db tasks from the given module
 
  Param string $module Module name to process
  Param string $sql SQL statement for retrieval of list of items to process by the given module
- Param bool $perItemLogFile Enable per item log file (default is per module log file)
+ Param bool $perTaskLogFile Flag indicating whether a log file must be created for each task (default is per module log file)
  Return int 1 if at least one item has been processed, 0 if no item has been processed, die on failure
 
 =cut
 
 sub _processModuleDbTasks
 {
-    my ($self, $module, $sql, $perItemLogFile) = @_;
+    my ( $self, $module, $sql, $perTaskLogFile ) = @_;
 
     eval {
         debug( sprintf( 'Processing %s tasks...', $module ), ( caller( 2 ) )[3] );
 
-        local $self->{'_dbh'}->{'RaiseError'} = 1;
+        local $self->{'_dbh'}->{'RaiseError'} = TRUE;
 
         my $sth = $self->{'_dbh'}->prepare( $sql );
         $sth->execute();
@@ -467,27 +487,27 @@ sub _processModuleDbTasks
 
         eval "require $module" or die;
 
-        my ($nStep, $rs) = ( 0, 0 );
-        my $needStepper = grep( $self->{'mode'} eq $_, ( 'setup', 'uninstall' ) );
+        my ( $nStep, $rs ) = ( 0, 0 );
+        my $needStepper = grep ( $self->{'mode'} eq $_, 'setup', 'uninstall' );
 
         while ( my $row = $sth->fetchrow_hashref() ) {
             my $name = encode_utf8( $row->{'name'} );
 
             debug( sprintf( 'Processing %s tasks for: %s (ID %s)', $module, $name, $row->{'id'} ), ( caller( 2 ) )[3] );
-            newDebug( $module . ( ( $perItemLogFile ) ? "_${name}" : '' ) . '.log' );
+            newDebug( $module . ( $perTaskLogFile ? "_${name}" : '' ) . '.log' );
 
             if ( $needStepper ) {
                 $rs = step(
-                    sub { $self->_processModuleTasks( $module, $row->{'id'} ); },
+                    sub { $self->_processModuleTasks( $module, $row ); },
                     sprintf( 'Processing %s tasks for: %s (ID %s)', $module, $name, $row->{'id'} ),
                     $countRows,
                     ++$nStep
                 );
             } else {
-                $rs = $self->_processModuleTasks( $module, $row->{'id'} );
+                $rs = $self->_processModuleTasks( $module, $row );
             }
 
-            $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error' );
+            $rs == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' );
             endDebug();
         }
     };
@@ -499,25 +519,25 @@ sub _processModuleDbTasks
     1;
 }
 
-=item _processModuleTasks ( $module, $dbItemId )
+=item _processModuleTasks ( $module, $data )
 
  Process module tasks for the given db item
 
  Param string $module Module name
- Param int $dbItemId Database item unique identifier
+ Param int $data item data
  Return int 0 on success, other or die on failure
 
 =cut
 
 sub _processModuleTasks
 {
-    my ($self, $module, $dbItemId) = @_;
+    my ( $self, $module, $data ) = @_;
 
     # Only for backward compatibility with 3rd-party software.
-    # Will be removed when RaiseError will be default in version 1.5.0
-    local $self->{'_dbh'}->{'RaiseError'} = 0;
+    # Will be removed when RaiseError will be default
+    local $self->{'_dbh'}->{'RaiseError'} = FALSE;
 
-    $module->new()->process( $dbItemId );
+    $module->new()->process( $data );
 }
 
 =back

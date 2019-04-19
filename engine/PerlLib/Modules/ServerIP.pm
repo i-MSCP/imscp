@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -51,33 +51,37 @@ sub getType
     'ServerIP';
 }
 
-=item process( $ipId )
+=item process( \%data )
 
  Process module
 
- Param string $ipId Server IP unique identifier
+ Param hashref \%data Server IP data
  Return int 0 on success, other on failure
 
 =cut
 
 sub process
 {
-    my ( $self, $ipId ) = @_;
+    my ( $self, $data ) = @_;
 
-    my $rs = $self->_loadData( $ipId );
+    my $rs = $self->_loadData( $data->{'id'} );
     return $rs if $rs;
 
     my @sql;
     if ( $self->{'_data'}->{'ip_status'} =~ /^to(?:add|change)$/ ) {
         $rs = $self->add();
-        @sql = ( 'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', undef, $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok', $ipId );
+        @sql = ( 'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?',
+            undef,
+            $rs ? getLastError( 'error' ) || 'Unknown error' : 'ok', $data->{'id'}
+        );
     } elsif ( $self->{'_data'}->{'ip_status'} eq 'todelete' ) {
         $rs = $self->delete();
-        @sql = $rs
-            ? ( 'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?', undef, getLastError( 'error' ) || 'Unknown error', $ipId )
-            : ( 'DELETE FROM server_ips WHERE ip_id = ?', undef, $ipId );
+        @sql = $rs ? ( 'UPDATE server_ips SET ip_status = ? WHERE ip_id = ?',
+            undef, getLastError( 'error' ) || 'Unknown error',
+            $data->{'id'}
+        ) : ( 'DELETE FROM server_ips WHERE ip_id = ?', undef, $data->{'id'} );
     } else {
-        warning( sprintf( 'Unknown action (%s) for server IP with ID %s', $self->{'_data'}->{'ip_status'}, $ipId ));
+        warning( sprintf( 'Unknown action (%s) for server IP with ID %s', $self->{'_data'}->{'ip_status'}, $data->{'id'} ));
         return 0;
     }
 

@@ -742,6 +742,8 @@ sub _savePersistentData
         if ( -d "$dataDir/_default_" ) {
             iMSCP::Dir->new( dirname => "$dataDir/_default_" )->moveDir( "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/rainloop/imscp" );
         }
+
+        iMSCP::Dir->new( dirname => $dataDir )->remove();
     }
 
     # Save software (older path ./gui/data/software) to new path (./gui/data/persistent/software)

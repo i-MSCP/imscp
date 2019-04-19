@@ -1,6 +1,6 @@
-; sub [{SUBDOMAIN_NAME}] entry BEGIN
+; subdomain [{SUBDOMAIN_NAME}] records BEGIN
 $ORIGIN {SUBDOMAIN_NAME}.
-; sub MAIL entry BEGIN
+; subdomain MAIL records BEGIN
 @	IN	MX	10 mail
 @	IN	TXT	"v=spf1 include:{DOMAIN_NAME} -all"
 mail	IN	{BASE_SERVER_IP_TYPE}	{BASE_SERVER_IP}
@@ -9,10 +9,10 @@ pop		IN	{BASE_SERVER_IP_TYPE}	{BASE_SERVER_IP}
 pop3	IN	{BASE_SERVER_IP_TYPE}	{BASE_SERVER_IP}
 relay	IN	{BASE_SERVER_IP_TYPE}	{BASE_SERVER_IP}
 smtp	IN	{BASE_SERVER_IP_TYPE}	{BASE_SERVER_IP}
-; sub MAIL entry ENDING
+; subdomain MAIL records ENDING
 @	IN	{IP_TYPE}	{DOMAIN_IP}
-; sub OPTIONAL entries BEGIN
+; subdomain OPTIONAL records BEGIN
 www	IN	CNAME	@
 ftp	IN	{IP_TYPE}	{DOMAIN_IP}
-; sub OPTIONAL entries ENDING
-; sub [{SUBDOMAIN_NAME}] entry ENDING
+; subdomain OPTIONAL records ENDING
+; subdomain [{SUBDOMAIN_NAME}] records ENDING

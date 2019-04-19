@@ -259,7 +259,7 @@ Alternative URLs make the clients able to access their websites through control 
 
   \\Zbdmn1.@{ [ ::setupGetQuestion( 'BASE_SERVER_VHOST') ] }\\ZB
 
-This feature is useful for client who have not yet configured their DNS, or for the DNS propagation time.
+This feature is useful for clients who have not yet configured their DNS.
         
 If you make use of an external DNS server for the control panel domain, don't forget to add a wildcard DNS such as:
 
@@ -294,7 +294,7 @@ sub _addDnsRecord
         DOMAIN_IP             => $data->{'DOMAIN_IP'},
         BASE_SERVER_PUBLIC_IP => $data->{'BASE_SERVER_PUBLIC_IP'},
         MAIL_ENABLED          => FALSE,
-        OPTIONAL_ENTRIES      => FALSE
+        OPTIONAL_RECORDS      => FALSE
     } );
 }
 

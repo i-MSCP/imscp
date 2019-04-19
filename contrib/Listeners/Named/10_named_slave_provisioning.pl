@@ -1,6 +1,6 @@
 # i-MSCP Listener::Named::Slave::Provisioning listener file
 # Copyright (C) 2015 UncleJ, Arthur Mayer <mayer.arthur@gmail.com>
-# Copyright (C) 2016-2017 Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2016-2019 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -28,11 +28,11 @@ package Listener::Named::Slave::Provisioning;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
+use iMSCP::Debug 'error';
 use iMSCP::Dir;
 use iMSCP::EventManager;
 use iMSCP::File;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ replaceBloc getBloc /;
 
 #
 ## HTTP (Basic) authentication parameters
@@ -66,19 +66,27 @@ my $realm = 'i-MSCP provisioning service for slave DNS servers';
 # Create the .htpasswd file to restrict access to the provisioning script
 sub createHtpasswdFile
 {
-    if ($authUsername =~ /:/) {
+    if ( $authUsername =~ /:/ ) {
         error( "htpasswd: username contains illegal character ':'" );
         return 1;
     }
 
     require iMSCP::Crypt;
-    my $file = iMSCP::File->new( filename => "$main::imscpConfig{'GUI_ROOT_DIR'}/public/provisioning/.htpasswd" );
-    $file->set( "$authUsername:".($isAuthPasswordEncrypted ? $authPassword : iMSCP::Crypt::htpasswd( $authPassword )) );
+    my $file = iMSCP::File->new(
+        filename => "$::imscpConfig{'GUI_ROOT_DIR'}/public/provisioning/.htpasswd"
+    );
+    $file->set(
+        "$authUsername:" . ( $isAuthPasswordEncrypted
+            ? $authPassword : iMSCP::Crypt::htpasswd( $authPassword )
+        )
+    );
 
-    $rs = $file->save();
+    my $rs = $file->save();
     $rs ||= $file->owner(
-        "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
-        "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}"
+        $::imscpConfig{'SYSTEM_USER_PREFIX'}
+            .$::imscpConfig{'SYSTEM_USER_MIN_UID'},
+        $::imscpConfig{'SYSTEM_USER_PREFIX'}
+            .$::imscpConfig{'SYSTEM_USER_MIN_UID'}
     );
     $rs ||= $file->mode( 0640 );
 }
@@ -90,10 +98,13 @@ sub createHtpasswdFile
 # Listener that is responsible to add authentication configuration
 iMSCP::EventManager->getInstance()->register(
     'afterFrontEndBuildConfFile',
-    sub {
-        my ($tplContent, $tplName) = @_;
+    sub
+    {
+        my ( $tplContent, $tplName ) = @_;
 
-        return 0 unless grep($_ eq $tplName, '00_master.nginx', '00_master_ssl.nginx');
+        return 0 unless grep (
+            $_ eq $tplName, '00_master.nginx', '00_master_ssl.nginx'
+        );
 
         my $locationSnippet = <<"EOF";
     location ^~ /provisioning/ {
@@ -104,23 +115,23 @@ iMSCP::EventManager->getInstance()->register(
             satisfy any;
             deny all;
             auth_basic "$realm";
-            auth_basic_user_file $main::imscpConfig{'GUI_ROOT_DIR'}/public/provisioning/.htpasswd;
+            auth_basic_user_file $::imscpConfig{'GUI_ROOT_DIR'}/public/provisioning/.htpasswd;
         }
     }
 EOF
 
-        $$tplContent = replaceBloc(
+        ${ $tplContent } = replaceBloc(
             "# SECTION custom BEGIN.\n",
             "# SECTION custom END.\n",
-            "    # SECTION custom BEGIN.\n".
-                getBloc(
-                    "# SECTION custom BEGIN.\n",
-                    "# SECTION custom END.\n",
-                    $$tplContent
-                ).
-                "$locationSnippet\n".
-                "    # SECTION custom END.\n",
-            $$tplContent
+            "    # SECTION custom BEGIN.\n"
+                . getBloc(
+                "# SECTION custom BEGIN.\n",
+                "# SECTION custom END.\n",
+                ${ $tplContent }
+            )
+                . "$locationSnippet\n"
+                . "    # SECTION custom END.\n",
+            ${ $tplContent }
         );
         0;
     }
@@ -128,7 +139,7 @@ EOF
 
 # Listener that is responsible to create provisioning script
 iMSCP::EventManager->getInstance()->register( 'afterFrontEndInstall', sub {
-        my $fileContent = <<'EOF';
+    my $fileContent = <<'EOF';
 <?php
 require '../../library/imscp-lib.php';
 $config = iMSCP_Registry::get('config');
@@ -177,29 +188,33 @@ if ($rowCount > 0) {
 }
 EOF
 
-        my $rs = iMSCP::Dir->new( dirname => "$main::imscpConfig{'GUI_ROOT_DIR'}/public/provisioning" )->make(
-            {
-                user  => "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
-                group => "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
-                mode  => 0550
-            }
-        );
+    my $rs = iMSCP::Dir->new(
+        dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/public/provisioning"
+    )->make( {
+        user  => $::imscpConfig{'SYSTEM_USER_PREFIX'}
+            . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
+        group => $::imscpConfig{'SYSTEM_USER_PREFIX'}
+            . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
+        mode  => 0550
+    } );
 
-        $rs ||= createHtpasswdFile() if $authUsername;
-        return $rs if $rs;
+    $rs ||= createHtpasswdFile() if $authUsername;
+    return $rs if $rs;
 
-        my $file = iMSCP::File->new(
-            filename => "$main::imscpConfig{'GUI_ROOT_DIR'}/public/provisioning/slave_provisioning.php"
-        );
-        $file->set( $fileContent );
+    my $file = iMSCP::File->new(
+        filename => "$::imscpConfig{'GUI_ROOT_DIR'}/public/provisioning/slave_provisioning.php"
+    );
+    $file->set( $fileContent );
 
-        $rs = $file->save();
-        $rs ||= $file->owner(
-            "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}",
-            "$main::imscpConfig{'SYSTEM_USER_PREFIX'}$main::imscpConfig{'SYSTEM_USER_MIN_UID'}"
-        );
-        $rs ||= $file->mode( 0640 );
-    }
+    $rs = $file->save();
+    $rs ||= $file->owner(
+        $::imscpConfig{'SYSTEM_USER_PREFIX'}
+            . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
+        $::imscpConfig{'SYSTEM_USER_PREFIX'}
+            . $::imscpConfig{'SYSTEM_USER_MIN_UID'}
+    );
+    $rs ||= $file->mode( 0640 );
+}
 );
 
 1;
