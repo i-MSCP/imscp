@@ -5,7 +5,7 @@ APTCONFDIR=$(pwd)/.imscp
 CODENAME=$(lsb_release -cs)
 DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--variant=buildd" "--keyring=/usr/share/keyrings/ubuntu-archive-keyring.gpg")
 DEBBUILDOPTS=-b
-MIRRORSITE=http://mirrors.kernel.org/ubuntu/
+MIRRORSITE=http://archive.ubuntu.com/ubuntu/
 HOOKDIR=""
 
 mkdir -p $APTCONFDIR
