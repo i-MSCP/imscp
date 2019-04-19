@@ -18,6 +18,7 @@ BACKEND
 
 DISTRIBUTIONS
     Added: bz2 PHP extension (all distributions, all PHP versions)
+    Added: Support for Devuan ASCII
     Added: Support for PHP 7.2, 7.3
     Added: sodium PHP extension (all distributions, all PHP versions except 5.6)
     Dropped: Support for Ubuntu Trusty Thar (14.04)
