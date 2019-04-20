@@ -36,7 +36,7 @@ try {
 
     // Optimize the database unless last optimization date is less than 24 hours
     $lastOptimization = intval(iMSCP_Registry::get('config')['DATABASE_LAST_OPTIMIZATION']);
-    if (time() >= $lastOptimization + 604800) {
+    if (time() > $lastOptimization + 604800) {
         $dbUpdater->optimizeTables();
     }
 
