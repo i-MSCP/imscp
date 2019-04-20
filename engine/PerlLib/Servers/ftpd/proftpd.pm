@@ -26,15 +26,13 @@ package Servers::ftpd::proftpd;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Servers::ftpd::proftpd::installer Servers::ftpd::proftpd::uninstaller /;
-use File::Basename;
 use File::Temp;
 use iMSCP::Boolean;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ debug error getMessageByType /;
 use iMSCP::Config;
 use iMSCP::EventManager;
-use iMSCP::Execute;
 use iMSCP::File;
-use iMSCP::Rights;
+use iMSCP::Rights 'setRights';
 use iMSCP::Service;
 use parent 'Common::SingletonClass';
 
@@ -163,8 +161,9 @@ sub uninstall
     $rs ||= $self->{'events'}->trigger(
         'afterFtpdUninstall', 'proftpd'
     );
+    return $rs if $rs;
 
-    unless ( $rs || !iMSCP::Service->getInstance()->hasService(
+    if ( iMSCP::Service->getInstance()->hasService(
         $self->{'config'}->{'FTPD_SNAME'}
     ) ) {
         $self->{'restart'} = TRUE;
@@ -172,7 +171,7 @@ sub uninstall
         @{ $self }{qw/ start restart reload /} = ( FALSE, FALSE, FALSE );
     }
 
-    $rs;
+    0;
 }
 
 =item setEnginePermissions( )
@@ -517,6 +516,8 @@ sub _mergeConfig
             next unless exists $newConfig{$key};
             $newConfig{$key} = $value;
         }
+
+        %{ $self->{'oldConfig'} } = ( %oldConfig );
 
         untie( %newConfig );
         untie( %oldConfig );

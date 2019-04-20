@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@ use warnings;
 use Cwd;
 use File::Basename;
 use iMSCP::Boolean;
-use iMSCP::Crypt 'randomStr';
+use iMSCP::Crypt qw/ decryptRijndaelCBC encryptRijndaelCBC randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dialog::InputValidation;
@@ -41,8 +41,6 @@ use Servers::ftpd::vsftpd;
 use Servers::sqld;
 use version;
 use parent 'Common::SingletonClass';
-
-%main::sqlUsers = () unless %main::sqlUsers;
 
 =head1 DESCRIPTION
 
@@ -67,85 +65,9 @@ sub registerSetupListeners
 
     $em->registerOne( 'beforeSetupDialog', sub {
         push @{ $_[0] },
-            sub { $self->sqlUserDialog( @_ ) },
             sub { $self->passivePortRangeDialog( @_ ) };
         0;
     } );
-}
-
-=item sqlUserDialog( \%dialog )
-
- Show dialog
-
- Param iMSCP::Dialog \%dialog
- Return int 0 NEXT, 30 BACKUP, 50 ESC
-
-=cut
-
-sub sqlUserDialog
-{
-    my ( $self, $dialog ) = @_;
-
-    my $masterSqlUser = ::setupGetQuestion( 'DATABASE_USER' );
-    my $dbUser = ::setupGetQuestion(
-        'FTPD_SQL_USER', $self->{'config'}->{'DATABASE_USER'}
-        || 'imscp_srv_user'
-    );
-    my $dbUserHost = ::setupGetQuestion( 'DATABASE_USER_HOST' );
-    my $dbPass = ::setupGetQuestion(
-        'FTPD_SQL_PASSWORD',
-        ( iMSCP::Getopt->preseed
-            ? randomStr( 16, iMSCP::Crypt::ALNUM )
-            : $self->{'config'}->{'DATABASE_PASSWORD'}
-        )
-    );
-
-    if ( $::reconfigure =~ /^(?:ftpd|servers|all|forced)$/
-        || !isValidUsername( $dbUser )
-        || !isStringNotInList( $dbUser, 'root', 'debian-sys-maint', $masterSqlUser, 'vlogger_user' )
-        || !isValidPassword( $dbPass )
-        || !isAvailableSqlUser( $dbUser )
-    ) {
-        my ( $rs, $msg ) = ( 0, '' );
-
-        do {
-            ( $rs, $dbUser ) = $dialog->inputbox( <<"EOF", $dbUser );
-
-Please enter a username for the VsFTPd SQL user:$msg
-EOF
-            $msg = '';
-            if ( !isValidUsername( $dbUser )
-                || !isStringNotInList( $dbUser, 'root', 'debian-sys-maint', $masterSqlUser, 'vlogger_user' )
-                || !isAvailableSqlUser( $dbUser )
-            ) {
-                $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
-            }
-        } while $rs < 30 && $msg;
-        return $rs if $rs >= 30;
-
-        unless ( defined $::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
-            do {
-                ( $rs, $dbPass ) = $dialog->inputbox( <<"EOF", $dbPass || randomStr( 16, iMSCP::Crypt::ALNUM ));
-
-Please enter a password for the VsFTPd SQL user:$msg
-EOF
-                $msg = isValidPassword( $dbPass ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
-            } while $rs < 30 && $msg;
-            return $rs if $rs >= 30;
-
-            $::sqlUsers{$dbUser . '@' . $dbUserHost} = $dbPass;
-        } else {
-            $dbPass = $::sqlUsers{$dbUser . '@' . $dbUserHost};
-        }
-    } elsif ( defined $::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
-        $dbPass = $::sqlUsers{$dbUser . '@' . $dbUserHost};
-    } else {
-        $::sqlUsers{$dbUser . '@' . $dbUserHost} = $dbPass;
-    }
-
-    ::setupSetQuestion( 'FTPD_SQL_USER', $dbUser );
-    ::setupSetQuestion( 'FTPD_SQL_PASSWORD', $dbPass );
-    0;
 }
 
 =item passivePortRangeDialog( \%dialog )
@@ -264,7 +186,7 @@ sub _setVersion
     return $rs if $rs;
 
     if ( $stdout !~ m%([\d.]+)% ) {
-        error( "Couldn't find VsFTPd version from `vsftpd -v 0>&1` command output." );
+        error( "Couldn't find VsFTPd version from 'vsftpd -v 0>&1' command output." );
         return 1;
     }
 
@@ -285,60 +207,115 @@ sub _setupDatabase
 {
     my ( $self ) = @_;
 
-    my $dbName = ::setupGetQuestion( 'DATABASE_NAME' );
-    my $dbUser = ::setupGetQuestion( 'FTPD_SQL_USER' );
-    my $dbUserHost = ::setupGetQuestion( 'DATABASE_USER_HOST' );
-    my $oldDbUserHost = $::imscpOldConfig{'DATABASE_USER_HOST'};
-    my $dbPass = ::setupGetQuestion( 'FTPD_SQL_PASSWORD' );
-    my $dbOldUser = $self->{'config'}->{'DATABASE_USER'};
-
-    $self->{'events'}->trigger( 'beforeFtpdSetupDb', $dbUser, $dbPass );
-
-    local $@;
-    eval {
-        my $sqlServer = Servers::sqld->factory();
-
-        # Drop old SQL user if required
-        for my $sqlUser ( $dbOldUser, $dbUser ) {
-            next unless $sqlUser;
-
-            for my $host ( $dbUserHost, $oldDbUserHost ) {
-                next if !$host || (
-                    exists $::sqlUsers{$sqlUser . '@' . $host}
-                        && !defined $::sqlUsers{$sqlUser . '@' . $host}
-                );
-                $sqlServer->dropUser( $sqlUser, $host );
-            }
-        }
-
-        # Create SQL user if required
-        if ( defined $::sqlUsers{$dbUser . '@' . $dbUserHost} ) {
-            debug( sprintf( 'Creating %s@%s SQL user', $dbUser, $dbUserHost ));
-            $sqlServer->createUser( $dbUser, $dbUserHost, $dbPass );
-            $::sqlUsers{$dbUser . '@' . $dbUserHost} = undef;
-        }
-
+    my $rs = eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
         local $dbh->{'RaiseError'} = TRUE;
 
-        # Give required privileges to this SQL user
-        # No need to escape wildcard characters. See https://bugs.mysql.com/bug.php?id=18660
-        my $quotedDbName = $dbh->quote_identifier( $dbName );
-        $dbh->do(
-            "GRANT SELECT ON $quotedDbName.ftp_users TO ?\@?",
-            undef,
-            $dbUser,
-            $dbUserHost
+        my %config = @{ $dbh->selectcol_arrayref(
+            "
+                SELECT `name`, `value`
+                FROM `config`
+                WHERE `name` LIKE 'VSFTPD_SQL_%'
+            ",
+            { Columns => [ 1, 2 ] }
+        ) };
+
+        ( $config{'VSFTPD_SQL_USER'} = decryptRijndaelCBC(
+            $::imscpDBKey,
+            $::imscpDBiv,
+            $config{'VSFTPD_SQL_USER'} // ''
+        ) || 'vsftpd_' . randomStr( 9, iMSCP::Crypt::ALPHA64 ) );
+
+        ( $config{'VSFTPD_SQL_USER_PASSWD'} = decryptRijndaelCBC(
+            $::imscpDBKey,
+            $::imscpDBiv,
+            $config{'VSFTPD_SQL_USER_PASSWD'} // ''
+        ) || randomStr( 16, iMSCP::Crypt::ALPHA64 ) );
+
+        (
+            $self->{'_vsftpd_sql_user'},
+            $self->{'_vsftpd_sql_user_passwd'}
+        ) = (
+            $config{'VSFTPD_SQL_USER'}, $config{'VSFTPD_SQL_USER_PASSWD'}
         );
+
+        $dbh->do(
+            '
+                INSERT INTO `config` (`name`,`value`)
+                VALUES (?,?),(?,?)
+                ON DUPLICATE KEY UPDATE `name` = `name`
+            ',
+            undef,
+            'VSFTPD_SQL_USER',
+            encryptRijndaelCBC(
+                $::imscpDBKey,
+                $::imscpDBiv,
+                $config{'VSFTPD_SQL_USER'}
+            ),
+            'VSFTPD_SQL_USER_PASSWD',
+            encryptRijndaelCBC(
+                $::imscpDBKey,
+                $::imscpDBiv,
+                $config{'VSFTPD_SQL_USER_PASSWD'}
+            )
+        );
+
+        my $sqlServer = Servers::sqld->factory();
+
+        for my $host (
+            $::imscpOldConfig{'DATABASE_USER_HOST'},
+            ::setupGetQuestion( 'DATABASE_USER_HOST' )
+        ) {
+            next unless length $host;
+            for my $user (
+                $config{'VSFTPD_SQL_USER'},
+                $self->{'ftpd'}->{'oldConfig'}->{'DATABASE_USER'} # Transitional
+            ) {
+                next unless length $user;
+                $sqlServer->dropUser( $user, $host );
+            }
+        }
+
+        $sqlServer->createUser(
+            $config{'VSFTPD_SQL_USER'},
+            ::setupGetQuestion( 'DATABASE_USER_HOST' ),
+            $config{'VSFTPD_SQL_USER_PASSWD'},
+        );
+
+        for my $table ( 'ftp_users', 'ftp_group' ) {
+            $dbh->do(
+                "
+                    GRANT SELECT
+                    ON `@{ [ ::setupGetQuestion( 'DATABASE_NAME' ) ] }`.`$table`
+                    TO ?\@?
+                ",
+                undef,
+                $config{'VSFTPD_SQL_USER'},
+                ::setupGetQuestion( 'DATABASE_USER_HOST' )
+            );
+        }
+
+        for my $table ( 'quotalimits', 'quotatallies' ) {
+            $dbh->do(
+                "
+                    GRANT SELECT, INSERT, UPDATE
+                    ON `@{ [ ::setupGetQuestion( 'DATABASE_NAME' ) ] }`.`$table`
+                    TO ?\@?
+                ",
+                undef,
+                $config{'VSFTPD_SQL_USER'},
+                ::setupGetQuestion( 'DATABASE_USER_HOST' )
+            );
+        }
+
+        0;
     };
     if ( $@ ) {
         error( $@ );
-        return 1;
+        $rs = 1;
     }
 
-    $self->{'config'}->{'DATABASE_USER'} = $dbUser;
-    $self->{'config'}->{'DATABASE_PASSWORD'} = $dbPass;
-    $self->{'events'}->trigger( 'afterFtpSetupDb', $dbUser, $dbPass );
+    $rs;
 }
 
 =item _buildConfigFile( )
@@ -365,8 +342,8 @@ sub _buildConfigFile
         DATABASE_NAME          => ::setupGetQuestion( 'DATABASE_NAME' ),
         DATABASE_HOST          => ::setupGetQuestion( 'DATABASE_HOST' ),
         DATABASE_PORT          => ::setupGetQuestion( 'DATABASE_PORT' ),
-        DATABASE_USER          => $self->{'config'}->{'DATABASE_USER'},
-        DATABASE_PASS          => $self->{'config'}->{'DATABASE_PASSWORD'},
+        DATABASE_USER          => $self->{'_vsftpd_sql_user'},
+        DATABASE_PASS          => $self->{'_vsftpd_sql_user_passwd'},
         FTPD_BANNER            => $self->{'config'}->{'FTPD_BANNER'},
         FRONTEND_USER_SYS_NAME => $::imscpConfig{'SYSTEM_USER_PREFIX'}
             . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
@@ -572,7 +549,7 @@ sub _oldEngineCompatibility
 {
     my ( $self ) = @_;
 
-    return unless -f "$self->{'cfgDir'}/vsftpd.old.data";
+    return 0 unless -f "$self->{'cfgDir'}/vsftpd.old.data";
 
     iMSCP::File->new(
         filename => "$self->{'cfgDir'}/vsftpd.old.data"

@@ -40,6 +40,7 @@ INSTALLER
     Changed: Required PHP version for the frontEnd is now 7.3
     Fixed: jessie-updates repository (previously known as debian-volatile repository) no longer available (pbuilder conffile / Debian)
     Review: Always install PHP 7.3, regardless of the selected PHP version (frontEnd requirement)
+    Review: SQL users for various services such as proftpd, vsftpd, dovecot, courier-authdaemon are now randomly generated
 
 LISTENER:
     Removed: 10_named_override_default_rr.pl (now included in core)

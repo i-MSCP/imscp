@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,7 +25,6 @@ package Servers::server;
 
 use strict;
 use warnings;
-use iMSCP::Debug qw/ fatal /;
 
 # system server instance
 my $instance;
@@ -53,7 +52,7 @@ sub factory
     my $package = "Servers::server::local";
 
     eval "require $package";
-    fatal( $@ ) if $@;
+    die( $@ ) if $@;
     $instance = $package->getInstance();
 }
 
@@ -72,7 +71,7 @@ sub can
 
     my $package = "Servers::server::local";
     eval "require $package";
-    fatal( $@ ) if $@;
+    die( $@ ) if $@;
     $package->can( $method );
 }
 

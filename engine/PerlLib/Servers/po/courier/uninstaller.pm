@@ -25,13 +25,15 @@ package Servers::po::courier::uninstaller;
 
 use strict;
 use warnings;
-use iMSCP::Config;
-use iMSCP::Debug;
-use iMSCP::EventManager;
+use File::Spec;
+use iMSCP::Boolean;
+use iMSCP::Crypt 'decryptRijndaelCBC';
+use iMSCP::Database;
+use iMSCP::Debug 'error';
 use iMSCP::File;
 use iMSCP::Mount qw/ removeMountEntry umount /;
 use iMSCP::SystemUser;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser qw/ getBloc replaceBloc process /;
 use Servers::mta;
 use Servers::po::courier;
 use Servers::sqld;
@@ -55,21 +57,18 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    # In setup context, processing must be delayed, else we won't be able to connect to SQL server
-    if ( $main::execmode eq 'setup' ) {
-        return iMSCP::EventManager->getInstance()->register(
+    # In setup context, uninstallation must be delayed, else we won't be able
+    # to connect to SQL server
+    if ( $::execmode eq 'setup' ) {
+        return $self->{'events'}->getInstance()->register(
             'afterSqldPreinstall',
-            sub {
-                my $rs ||= $self->_dropSqlUser();
-                $rs ||= $self->_removeConfig();
-            }
+            sub { $self->_uninstall(); }
         );
     }
 
-    my $rs = $self->_dropSqlUser();
-    $rs ||= $self->_removeConfig();
+    $self->_uninstall();
 }
 
 =back
@@ -88,114 +87,135 @@ sub uninstall
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'po'} = Servers::po::courier->getInstance();
     $self->{'mta'} = Servers::mta->factory();
+    $self->{'events'} = $self->{'po'}->{'events'};
     $self->{'cfgDir'} = $self->{'po'}->{'cfgDir'};
     $self->{'config'} = $self->{'po'}->{'config'};
     $self;
 }
 
-=item _dropSqlUser( )
+=item _uninstall( )
 
- Drop SQL user
+ Uninstallation tasks
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _dropSqlUser
+sub _uninstall
 {
-    my ($self) = @_;
-
-    # In setup context, take value from old conffile, else take value from current conffile
-    my $dbUserHost = ( $main::execmode eq 'setup' )
-        ? $main::imscpOldConfig{'DATABASE_USER_HOST'} : $main::imscpConfig{'DATABASE_USER_HOST'};
-
-    return 0 unless $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'} && $dbUserHost;
+    my ( $self ) = @_;
 
     local $@;
-    eval { Servers::sqld->factory()->dropUser( $self->{'config'}->{'AUTHDAEMON_DATABASE_USER'}, $dbUserHost ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
+    my $rs = eval {
+        my $dbh = iMSCP::Database->factory()->getRawDb();
+        local $dbh->{'RaiseError'} = TRUE;
 
-    0;
-}
+        my ( $courierAuthdaemonSqlUser ) = @{ $dbh->selectcol_arrayref(
+            "
+                SELECT `value`
+                FROM `config`
+                WHERE `name` = 'COURIER_AUTHDAEMON_SQL_USER'
+            "
+        ) };
 
-=item _removeConfig( )
+        if ( defined $courierAuthdaemonSqlUser ) {
+            $courierAuthdaemonSqlUser = decryptRijndaelCBC(
+                $::imscpDBKey, $::imscpDBiv, $courierAuthdaemonSqlUser
+            );
 
- Remove configuration
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _removeConfig
-{
-    my ($self) = @_;
-
-    # Umount the courier-authdaemond rundir from the Postfix chroot
-    my $fsFile = File::Spec->canonpath(
-        "$self->{'mta'}->{'config'}->{'POSTFIX_QUEUE_DIR'}/$self->{'config'}->{'AUTHLIB_SOCKET_DIR'}"
-    );
-    my $rs = removeMountEntry( qr%.*?[ \t]+\Q$fsFile\E(?:/|[ \t]+)[^\n]+% );
-    $rs ||= umount( $fsFile );
-    return $rs if $rs;
-
-    iMSCP::Dir->new( dirname => $fsFile )->remove();
-
-    # Remove the `postfix' user from the `mail' group
-    $rs = iMSCP::SystemUser->new()->removeFromGroup(
-        $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'}, $self->{'mta'}->{'config'}->{'POSTFIX_USER'}
-    );
-    return $rs if $rs;
-
-    # Remove i-MSCP configuration stanza from the courier-imap daemon configuration file
-    if ( -f "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd" ) {
-        my $file = iMSCP::File->new( filename => "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd" );
-        my $fileContent = $file->get();
-        unless ( defined $fileContent ) {
-            error( sprintf( "Couldn't read %s file", $file->{'filename'} ));
-            return 1;
+            for my $host (
+                $::imscpOldConfig{'DATABASE_USER_HOST'},
+                $::imscpConfig{'DATABASE_USER_HOST'}
+            ) {
+                next unless length $host;
+                Servers::sqld->factory()->dropUser(
+                    $courierAuthdaemonSqlUser, $host
+                );
+            }
         }
 
-        $fileContent = replaceBloc(
-            qr/(:?^\n)?# Servers::po::courier::installer - BEGIN\n/m,
-            qr/# Servers::po::courier::installer - ENDING\n/,
-            '',
-            $fileContent
+        $dbh->do(
+            "DELETE FROM `config` WHERE `name` LIKE 'COURIER_AUTHDAEMON_SQL_%'"
         );
 
-        $file->set( $fileContent );
-
-        $rs = $file->save();
-        $rs ||= $file->owner( $main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'} );
-        $rs ||= $file->mode( 0644 );
+        # Umount the courier-authdaemon rundir from the Postfix chroot
+        my $fsFile = File::Spec->canonpath(
+            "$self->{'mta'}->{'config'}->{'POSTFIX_QUEUE_DIR'}/$self->{'config'}->{'AUTHLIB_SOCKET_DIR'}"
+        );
+        my $rs = removeMountEntry( qr%.*?[ \t]+\Q$fsFile\E(?:/|[ \t]+)[^\n]+% );
+        $rs ||= umount( $fsFile );
         return $rs if $rs;
+
+        iMSCP::Dir->new( dirname => $fsFile )->remove();
+
+        # Remove the `postfix' user from the `mail' group
+        $rs = iMSCP::SystemUser->new()->removeFromGroup(
+            $self->{'mta'}->{'config'}->{'MTA_MAILBOX_GID_NAME'},
+            $self->{'mta'}->{'config'}->{'POSTFIX_USER'}
+        );
+        return $rs if $rs;
+
+        # Remove i-MSCP configuration stanza from the courier-imap daemon
+        # configuration file
+        if ( -f "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd" ) {
+            my $file = iMSCP::File->new(
+                filename => "$self->{'config'}->{'COURIER_CONF_DIR'}/imapd"
+            );
+            return 1 unless defined( my $fileContent = $file->get());
+
+            $fileContent = replaceBloc(
+                qr/(:?^\n)?# Servers::po::courier::installer - BEGIN\n/m,
+                qr/# Servers::po::courier::installer - ENDING\n/,
+                '',
+                $fileContent
+            );
+
+            $file->set( $fileContent );
+
+            $rs = $file->save();
+            $rs ||= $file->owner(
+                $::imscpConfig{'ROOT_USER'}, $::imscpConfig{'ROOT_GROUP'}
+            );
+            $rs ||= $file->mode( 0644 );
+            return $rs if $rs;
+        }
+
+        # Remove the configuration file for SASL
+        if ( -f "$self->{'config'}->{'SASL_CONF_DIR'}/smtpd.conf" ) {
+            $rs = iMSCP::File->new(
+                filename => "$self->{'config'}->{'SASL_CONF_DIR'}/smtpd.conf"
+            )->delFile();
+            return $rs if $rs;
+        }
+
+        # Remove the systemd-tmpfiles file
+        if ( -f '/etc/tmpfiles.d/courier-authdaemon.conf' ) {
+            $rs = iMSCP::File->new(
+                filename => '/etc/tmpfiles.d/courier-authdaemon.conf'
+            )->delFile();
+            return $rs if $rs;
+        }
+
+        # Remove the quota warning script
+        if ( -f $self->{'config'}->{'QUOTA_WARN_MSG_PATH'} ) {
+            $rs = iMSCP::File->new(
+                filename => $self->{'config'}->{'QUOTA_WARN_MSG_PATH'}
+            )->delFile();
+            return $rs if $rs;
+        }
+
+        0;
+    };
+    if ( $@ ) {
+        error( $@ );
+        $rs = 1;
     }
 
-    # Remove the configuration file for SASL
-    if ( -f "$self->{'config'}->{'SASL_CONF_DIR'}/smtpd.conf" ) {
-        $rs = iMSCP::File->new( filename => "$self->{'config'}->{'SASL_CONF_DIR'}/smtpd.conf" )->delFile();
-        return $rs if $rs;
-    }
-
-    # Remove the systemd-tmpfiles file
-    if ( -f '/etc/tmpfiles.d/courier-authdaemon.conf' ) {
-        $rs = iMSCP::File->new( filename => '/etc/tmpfiles.d/courier-authdaemon.conf' )->delFile();
-        return $rs if $rs;
-    }
-
-    # Remove the quota warning script
-    if ( -f $self->{'config'}->{'QUOTA_WARN_MSG_PATH'} ) {
-        $rs = iMSCP::File->new( filename => $self->{'config'}->{'QUOTA_WARN_MSG_PATH'} )->delFile();
-        return $rs if $rs;
-    }
-
-    0;
+    $rs;
 }
 
 =back

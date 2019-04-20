@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,6 +25,10 @@ package Servers::httpd::apache_php_fpm::uninstaller;
 
 use strict;
 use warnings;
+use iMSCP::Boolean;
+use iMSCP::Crypt 'decryptRijndaelCBC';
+use iMSCP::Database;
+use iMSCP::Debug 'error';
 use iMSCP::Dir;
 use iMSCP::File;
 use Servers::httpd::apache_php_fpm;
@@ -49,12 +53,91 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->_removeVloggerSqlUser();
-    $rs ||= $self->_removeDirs();
-    $rs ||= $self->_restoreApacheConfig();
-    $rs ||= $self->_restorePhpfpmConfig();
+    local $@;
+    my $rs = eval {
+        my $dbh = iMSCP::Database->factory()->getRawDb();
+        local $dbh->{'RaiseError'} = TRUE;
+
+        my ( $vloggerSqlUser ) = @{ $dbh->selectcol_arrayref(
+            "
+                SELECT `value`
+                FROM `config`
+                WHERE `name` = 'APACHE_VLOGGER_SQL_USER'
+            "
+        ) };
+
+        if ( defined $vloggerSqlUser ) {
+            $vloggerSqlUser = decryptRijndaelCBC(
+                $::imscpDBKey, $::imscpDBiv, $vloggerSqlUser
+            );
+
+            for my $host (
+                $::imscpOldConfig{'DATABASE_USER_HOST'},
+                $::imscpConfig{'DATABASE_USER_HOST'}
+            ) {
+                next unless length $host;
+                Servers::sqld->factory()->dropUser( $vloggerSqlUser, $host );
+            }
+        }
+
+        $dbh->do(
+            "DELETE FROM `config` WHERE `name` LIKE 'APACHE_VLOGGER_SQL_%'"
+        );
+
+        iMSCP::Dir->new(
+            dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}
+        )->remove();
+
+        if ( -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf" ) {
+            my $rs = $self->{'httpd'}->disableSites( '00_nameserver.conf' );
+            $rs ||= iMSCP::File->new(
+                filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf"
+            )->delFile();
+            return $rs if $rs;
+        }
+
+        my $confDir = -d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available"
+            ? "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available"
+            : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d";
+
+        if ( -f "$confDir/00_imscp.conf" ) {
+            my $rs = $self->{'httpd'}->disableConfs( '00_imscp.conf' );
+            $rs ||= iMSCP::File->new(
+                filename => "$confDir/00_imscp.conf"
+            )->delFile();
+            return $rs if $rs;
+        }
+
+        iMSCP::Dir->new(
+            dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'}
+        )->remove();
+
+        for my $site ( '000-default', 'default' ) {
+            next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$site";
+            my $rs = $self->{'httpd'}->enableSites( $site );
+            return $rs if $rs;
+        }
+
+        for my $version (
+            iMSCP::Dir->new( dirname => '/etc/php' )->getDirs()
+        ) {
+            next unless -f "/etc/init/php$version-fpm.override";
+            my $rs = iMSCP::File->new(
+                filename => "/etc/init/php$version-fpm.override"
+            )->delFile();
+            return $rs if $rs;
+        }
+
+        0;
+    };
+    if ( $@ ) {
+        error( $@ );
+        $rs = 1;
+    }
+
+    $rs;
 }
 
 =back
@@ -73,103 +156,11 @@ sub uninstall
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'httpd'} = Servers::httpd::apache_php_fpm->getInstance();
     $self->{'config'} = $self->{'httpd'}->{'config'};
-    $self->{'phpConfig'} = $self->{'httpd'}->{'phpConfig'};
     $self;
-}
-
-=item _removeVloggerSqlUser( )
-
- Remove vlogger SQL user
-
- Return int 0
-
-=cut
-
-sub _removeVloggerSqlUser
-{
-    if ( $main::imscpConfig{'DATABASE_USER_HOST'} eq 'localhost' ) {
-        return Servers::sqld->factory()->dropUser( 'vlogger_user', '127.0.0.1' );
-    }
-
-    Servers::sqld->factory()->dropUser( 'vlogger_user', $main::imscpConfig{'DATABASE_USER_HOST'} );
-}
-
-=item _removeDirs( )
-
- Remove Apache directories
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _removeDirs
-{
-    my ($self) = @_;
-
-    iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove();
-    0;
-}
-
-=item _restoreApacheConfig( )
-
- Restore Apache configuration
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _restoreApacheConfig
-{
-    my ($self) = @_;
-
-    if ( -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf" ) {
-        my $rs = $self->{'httpd'}->disableSites( '00_nameserver.conf' );
-        $rs ||= iMSCP::File->new(
-            filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_nameserver.conf"
-        )->delFile();
-        return $rs if $rs;
-    }
-
-    my $confDir = -d "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available"
-        ? "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf-available" : "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d";
-
-    if ( -f "$confDir/00_imscp.conf" ) {
-        my $rs = $self->{'httpd'}->disableConfs( '00_imscp.conf' );
-        $rs ||= iMSCP::File->new( filename => "$confDir/00_imscp.conf" )->delFile();
-        return $rs if $rs;
-    }
-
-    iMSCP::Dir->new( dirname => $self->{'config'}->{'HTTPD_CUSTOM_SITES_DIR'} )->remove();
-
-    for ( '000-default', 'default' ) {
-        next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$_";
-        $rs = $self->{'httpd'}->enableSites( $_ );
-        return $rs if $rs;
-    }
-
-    0;
-}
-
-=item restorePhpfpmConfig( )
-
- Restore PHP-FPM configuration
-
- Return int 0 on success, other on failure
-
-=cut
-
-sub _restorePhpfpmConfig
-{
-
-    for( '5.6', '7.0', '7.1' ) {
-        next unless -f "/etc/init/php$_-fpm.override";
-        my $rs = iMSCP::File->new( filename => "/etc/init/php$_-fpm.override" )->delFile();
-        return $rs if $rs;
-    }
 }
 
 =back

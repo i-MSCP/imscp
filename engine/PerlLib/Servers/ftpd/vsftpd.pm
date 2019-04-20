@@ -26,16 +26,15 @@ package Servers::ftpd::vsftpd;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Servers::ftpd::vsftpd::installer Servers::ftpd::vsftpd::uninstaller /;
-use File::Basename;
 use File::Temp;
 use iMSCP::Boolean;
 use iMSCP::Config;
-use iMSCP::Debug;
+use iMSCP::Debug qw/ error debug getMessageByType /;
 use iMSCP::EventManager;
 use iMSCP::File;
-use iMSCP::Rights;
+use iMSCP::Rights 'setRights';
 use iMSCP::Service;
-use iMSCP::TemplateParser;
+use iMSCP::TemplateParser 'process';
 use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
@@ -146,8 +145,9 @@ sub uninstall
 
     my $rs = $self->{'events'}->trigger( 'beforeFtpdUninstall', 'vsftpd' );
     $rs ||= Servers::ftpd::vsftpd::uninstaller->getInstance()->uninstall();
+    return $rs if $rs;
 
-    unless ( $rs || !iMSCP::Service->getInstance()->hasService(
+    if ( iMSCP::Service->getInstance()->hasService(
         $self->{'config'}->{'FTPD_SNAME'}
     ) ) {
         $self->{'restart'} = TRUE;
@@ -155,7 +155,7 @@ sub uninstall
         @{ $self }{qw/ start restart reload /} = ( FALSE, FALSE, FALSE );
     }
 
-    $rs ||= $self->{'events'}->trigger( 'afterFtpdUninstall', 'vsftpd' );
+    $self->{'events'}->trigger( 'afterFtpdUninstall', 'vsftpd' );
 }
 
 =item setEnginePermissions( )
@@ -181,8 +181,7 @@ sub setEnginePermissions
         user  => $::imscpConfig{'ROOT_USER'},
         group => $::imscpConfig{'ROOT_GROUP'},
         mode  => '0640'
-    }
-    );
+    } );
 }
 
 =item addUser( \%data )
@@ -200,13 +199,14 @@ sub addUser
 
     return 0 if $data->{'STATUS'} eq 'tochangepwd';
 
-    $self->{'events'}->trigger( 'beforeFtpdAddUser', $data );
+    my $rs = $self->{'events'}->trigger( 'beforeFtpdAddUser', $data );
+    return $rs if $rs;
 
     my $dbh = iMSCP::Database->factory()->getRawDb();
 
     local $@;
     eval {
-        local $dbh->{'RaiseError'} = 1;
+        local $dbh->{'RaiseError'} = TRUE;
 
         $dbh->begin_work();
         $dbh->do(
@@ -432,7 +432,9 @@ sub getTraffic
 
     # Reset log file
     # FIXME: We should really avoid truncating. Instead, we should use logrotate.
-    truncate( $logFile, 0 ) or die( sprintf( "Couldn't truncate %s file: %s", $logFile, $! ));
+    truncate( $logFile, 0 ) or die( sprintf(
+        "Couldn't truncate %s file: %s", $logFile, $!
+    ));
 
     # Extract FTP traffic data
     while ( <$snapshotFH> ) {
@@ -499,6 +501,8 @@ sub _mergeConfig
             next unless exists $newConfig{$key};
             $newConfig{$key} = $value;
         }
+
+        %{ $self->{'oldConfig'} } = ( %oldConfig );
 
         untie( %newConfig );
         untie( %oldConfig );

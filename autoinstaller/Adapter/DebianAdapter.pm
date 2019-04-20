@@ -112,29 +112,28 @@ sub preBuild
 
     return 0 if $::skippackages;
 
-    unshift @{ $steps },
-        (
-            [
-                sub { $self->_processPackagesFile() },
-                'Process distribution packages file'
-            ],
-            [
-                sub { $self->_prefillDebconfDatabase() },
-                'Pre-fill Debconf database'
-            ],
-            [
-                sub { $self->_processAptRepositories() },
-                'Processing APT repositories'
-            ],
-            [
-                sub { $self->_processAptPreferences() },
-                'Processing APT preferences'
-            ],
-            [
-                sub { $self->_updatePackagesIndex() },
-                'Updating packages index'
-            ]
-        );
+    unshift @{ $steps }, (
+        [
+            sub { $self->_processPackagesFile() },
+            'Process distribution packages file'
+        ],
+        [
+            sub { $self->_prefillDebconfDatabase() },
+            'Pre-fill Debconf database'
+        ],
+        [
+            sub { $self->_processAptRepositories() },
+            'Processing APT repositories'
+        ],
+        [
+            sub { $self->_processAptPreferences() },
+            'Processing APT preferences'
+        ],
+        [
+            sub { $self->_updatePackagesIndex() },
+            'Updating packages index'
+        ]
+    );
 
     0
 }
@@ -171,7 +170,7 @@ fi
 EOF
     $policyrcd->flush();
     $policyrcd->close();
-    chmod( 0750, $policyrcd->filename() ) or die( sprintf(
+    chmod( 0750, $policyrcd->filename()) or die( sprintf(
         "Couldn't change permissions on %s: %s", $policyrcd->filename(), $!
     ));
 
@@ -359,8 +358,8 @@ sub uninstallPackages
     if ( @{ $packagesToUninstall } ) {
         # Clear information about available packages
         $rs = execute( 'dpkg --clear-avail', \my $stdout, \my $stderr );
-        debug( $stdout ) if $stdout;
-        error( $stderr ) if $rs && $stderr;
+        debug( $stdout ) if length $stdout;
+        error( $stderr ) if $rs && length $stderr;
         return $rs if $rs;
 
         if ( @{ $packagesToUninstall } ) {
@@ -481,12 +480,7 @@ sub _setupGetAddrinfoPrecedence
     my $fileContent = '';
 
     if ( -f '/etc/gai.conf' ) {
-        $fileContent = $file->get();
-        unless ( defined $fileContent ) {
-            error( sprintf( "Couldn't read %s file ", $file->{'filename'} ));
-            return 1;
-        }
-
+        return 1 unless defined( $fileContent = $file->get() );
         return 0 if $fileContent =~ m%^precedence\s+::ffff:0:0/96\s+100\n%m;
     }
 
@@ -572,8 +566,8 @@ sub _processPackagesFile
 
     unless ( defined $packageFilePath ) {
         my $lsbRelease = iMSCP::LsbRelease->getInstance();
-        my $distroID = $lsbRelease->getId( 'short' );
-        my $distroCodename = $lsbRelease->getCodename( 'short' );
+        my $distroID = $lsbRelease->getId( TRUE );
+        my $distroCodename = $lsbRelease->getCodename( TRUE );
         $packageFilePath = "$FindBin::Bin/autoinstaller/Packages/"
             . lc( $distroID ) . '-' . lc( $distroCodename ) . '.xml';
     }
@@ -898,7 +892,7 @@ sub _updateAptSourceList
                     \my $stdout,
                     \my $stderr
                 );
-                debug( $stdout ) if $stdout;
+                debug( $stdout ) if length $stdout;
                 debug( $stderr || 'Unknown error' ) if $rs && $rs != 8;
                 next if $rs; # Don't check for source archive when binary archive has not been found
                 $foundSection = 1;
@@ -920,7 +914,7 @@ sub _updateAptSourceList
                     \my $stdout,
                     \my $stderr
                 );
-                debug( $stdout ) if $stdout;
+                debug( $stdout ) if length $stdout;
                 debug( $stderr || 'Unknown error' ) if $rs && $rs != 8;
 
                 unless ( $rs ) {
@@ -1008,7 +1002,7 @@ EOF
                 \my $stdout,
                 \my $stderr
             );
-            debug( $stdout ) if $stdout;
+            debug( $stdout ) if length $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
 
@@ -1033,12 +1027,12 @@ EOF
                 \my $stdout,
                 \my $stderr
             );
-            debug( $stdout ) if $stdout;
+            debug( $stdout ) if length $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
 
             $rs ||= execute( [ 'apt-key', 'add', $keyFile ], \$stdout, \$stderr );
-            debug( $stdout ) if $stdout;
+            debug( $stdout ) if length $stdout;
             error( $stderr || 'Unknown error' ) if $rs;
             return $rs if $rs;
         }
@@ -1256,7 +1250,7 @@ EOF
                             \my $stdout,
                             \my $stderr
                         );
-                        debug( $stdout ) if $stdout;
+                        debug( $stdout ) if length $stdout;
                         error( $stderr || 'Unknown error' ) if $rs;
                         return $rs if $rs;
                     }
@@ -1279,7 +1273,7 @@ EOF
         \my $stdout,
         \my $stderr
     );
-    debug( $stdout ) if $stdout;
+    debug( $stdout ) if length $stdout;
     error( $stderr || "Couldn't pre-fill Debconf database" ) if $rs;
     $rs;
 }
@@ -1478,7 +1472,7 @@ EOF
                     ),
                     \$stderr
                 );
-                debug( $stdout ) if $stdout;
+                debug( $stdout ) if length $stdout;
                 error( sprintf(
                     "Couldn't add `imscp' local suffix: %s",
                     $stderr || 'Unknown error'
@@ -1561,8 +1555,8 @@ EOF
 
             # Ignore exit code due to https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1258958 bug
             execute( [ 'apt-mark', 'hold', $pkg ], \$stdout, \$stderr );
-            debug( $stdout ) if $stdout;
-            debug( $stderr ) if $stderr;
+            debug( $stdout ) if length $stdout;
+            debug( $stderr ) if length $stderr;
             0;
         },
         sprintf( 'Installing local %s %s package', $pkg, $distID ), 5, 5

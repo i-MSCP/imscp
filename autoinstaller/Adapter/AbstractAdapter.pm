@@ -29,8 +29,8 @@ use parent 'Common::Object';
 
 =head1 DESCRIPTION
 
- Abstract class for distro autoinstaller adapters. Any distro autoinstaller adapter class *should* implement methods of
- this class.
+ Abstract class for distro autoinstaller adapters. Any distro autoinstaller
+ adapter class *should* implement methods of this class.
 
 =head1 PUBLIC METHODS
 

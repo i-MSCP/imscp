@@ -1205,6 +1205,8 @@ sub _mergeConfig
             $newConfig{$key} = $value;
         }
 
+        %{ $self->{'oldConfig'} } = ( %oldConfig );
+
         untie( %newConfig );
         untie( %oldConfig );
     }

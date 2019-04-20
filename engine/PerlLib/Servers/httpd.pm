@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,7 +25,6 @@ package Servers::httpd;
 
 use strict;
 use warnings;
-use iMSCP::Debug qw/ fatal /;
 
 # httpd server instance
 my $instance;
@@ -50,9 +49,9 @@ sub factory
 {
     return $instance if $instance;
 
-    my $package = $main::imscpConfig{'HTTPD_PACKAGE'} || 'Servers::noserver';
+    my $package = $::imscpConfig{'HTTPD_PACKAGE'} || 'Servers::noserver';
     eval "require $package";
-    fatal( $@ ) if $@;
+    die( $@ ) if $@;
     $instance = $package->getInstance();
 }
 
@@ -69,9 +68,9 @@ sub can
 {
     my (undef, $method) = @_;
 
-    my $package = $main::imscpConfig{'HTTPD_PACKAGE'} || 'Servers::noserver';
+    my $package = $::imscpConfig{'HTTPD_PACKAGE'} || 'Servers::noserver';
     eval "require $package";
-    fatal( $@ ) if $@;
+    die( $@ ) if $@;
     $package->can( $method );
 }
 
@@ -90,7 +89,7 @@ sub getPriority
 
 END
     {
-        return if $? || !$instance || ( $main::execmode && $main::execmode eq 'setup' );
+        return if $? || !$instance || ( $::execmode && $::execmode eq 'setup' );
 
         if ( $instance->{'start'} ) {
             $? = $instance->start();

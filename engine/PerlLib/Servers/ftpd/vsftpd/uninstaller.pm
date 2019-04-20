@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,6 +26,9 @@ package Servers::ftpd::vsftpd::uninstaller;
 use strict;
 use warnings;
 use File::Basename qw/ basename dirname /;
+use iMSCP::Boolean;
+use iMSCP::Crypt 'decryptRijndaelCBC';
+use iMSCP::Database;
 use iMSCP::Debug 'error';
 use iMSCP::Dir;
 use iMSCP::File;
@@ -52,19 +55,16 @@ sub uninstall
 {
     my ( $self ) = @_;
 
-    # In setup context, processing must be delayed, else we won't be able to connect to SQL server
+    # In setup context, uninstallation must be delayed, else we won't be able
+    # to connect to SQL server
     if ( $::execmode eq 'setup' ) {
         return $self->{'events'}->getInstance()->register(
             'afterSqldPreinstall',
-            sub {
-                my $rs ||= $self->_dropSqlUser();
-                $rs ||= $self->_removeConfig();
-            }
+            sub { $self->_uninstall(); }
         );
     }
 
-    my $rs = $self->_dropSqlUser();
-    $rs ||= $self->_removeConfig();
+    $self->_uninstall();
 }
 
 =back
@@ -93,98 +93,96 @@ sub _init
     $self;
 }
 
-=item _dropSqlUser( )
+=item _uninstall( )
 
- Drop SQL user
-
- Return int 0 on success, 1 on failure
-
-=cut
-
-sub _dropSqlUser
-{
-    my ( $self ) = @_;
-
-    # In setup context, take value from old conffile, else take value from current conffile
-    my $dbUserHost = ( $::execmode eq 'setup' )
-        ? $::imscpOldConfig{'DATABASE_USER_HOST'}
-        : $::imscpConfig{'DATABASE_USER_HOST'};
-
-    return 0 unless $self->{'config'}->{'DATABASE_USER'} && $dbUserHost;
-
-    local $@;
-    eval { Servers::sqld->factory()->dropUser(
-        $self->{'config'}->{'DATABASE_USER'}, $dbUserHost
-    ); };
-    if ( $@ ) {
-        error( $@ );
-        return 1;
-    }
-
-    0;
-}
-
-=item _removeConfig( )
-
- Remove configuration
+ Uninstallation tasks
 
  Return int 0 on success, other on failure
 
 =cut
 
-sub _removeConfig
+sub _uninstall
 {
     my ( $self ) = @_;
 
-    for ( $self->{'config'}->{'FTPD_CONF_FILE'},
-        $self->{'config'}->{'FTPD_PAM_CONF_FILE'}
-    ) {
-        # Setup context means switching to another FTP server. In such case, we
-        # simply delete the files
-        if ( $::execmode eq 'setup' ) {
-            if ( -f $self->{'config'}->{'FTPD_CONF_FILE'} ) {
-                my $rs = iMSCP::File->new(
-                    filename => $self->{'config'}->{'FTPD_CONF_FILE'}
-                )->delFile();
-                return $rs if $rs;
+    local $@;
+    my $rs = eval {
+        my $dbh = iMSCP::Database->factory()->getRawDb();
+        local $dbh->{'RaiseError'} = TRUE;
+
+        my ( $vsftpdSqlUser ) = @{ $dbh->selectcol_arrayref(
+            "
+                SELECT `value`
+                FROM `config`
+                WHERE `name` = 'VSFTPD_SQL_USER'
+            "
+        ) };
+
+        if ( defined $vsftpdSqlUser ) {
+            vsftpdSqlUser = decryptRijndaelCBC(
+                $::imscpDBKey, $::imscpDBiv, $vsftpdSqlUser
+            );
+
+            for my $host (
+                $::imscpOldConfig{'DATABASE_USER_HOST'},
+                $::imscpConfig{'DATABASE_USER_HOST'}
+            ) {
+                next unless length $host;
+                Servers::sqld->factory()->dropUser( $vsftpdSqlUser, $host );
+            }
+        }
+
+        $dbh->do(
+            "DELETE FROM `config` WHERE `name` LIKE 'VSFTPD_SQL_%'"
+        );
+
+        for my $file ( $self->{'config'}->{'FTPD_CONF_FILE'},
+            $self->{'config'}->{'FTPD_PAM_CONF_FILE'}
+        ) {
+            # Setup context means switching to another FTP server. In such
+            # case, we simply delete the files
+            if ( $::execmode eq 'setup' ) {
+                if ( -f $self->{'config'}->{'FTPD_CONF_FILE'} ) {
+                    my $rs = iMSCP::File->new(
+                        filename => $self->{'config'}->{'FTPD_CONF_FILE'}
+                    )->delFile();
+                    return $rs if $rs;
+                }
+
+                my $filename = basename( $file );
+                if ( -f "$self->{'bkpDir'}/$filename.system" ) {
+                    my $rs = iMSCP::File->new(
+                        filename => "$self->{'bkpDir'}/$filename.system"
+                    )->delFile();
+                    return $rs if $rs;
+                }
+
+                next;
             }
 
+            my $dirname = dirname( $self->{'config'}->{'FTPD_CONF_FILE'} );
             my $filename = basename( $_ );
-            if ( -f "$self->{'bkpDir'}/$filename.system" ) {
+
+            if ( -d $dirname && -f "$self->{'bkpDir'}/$filename.system" ) {
                 my $rs = iMSCP::File->new(
                     filename => "$self->{'bkpDir'}/$filename.system"
-                )->delFile();
+                )->copyFile(
+                    $self->{'config'}->{'FTPD_CONF_FILE'}, { preserve => 'no' }
+                );
                 return $rs if $rs;
             }
-
-            next;
         }
 
-        my $dirname = dirname( $self->{'config'}->{'FTPD_CONF_FILE'} );
-        my $filename = basename( $_ );
-
-        if ( -d $dirname && -f "$self->{'bkpDir'}/$filename.system" ) {
-            my $rs = iMSCP::File->new(
-                filename => "$self->{'bkpDir'}/$filename.system"
-            )->copyFile(
-                $self->{'config'}->{'FTPD_CONF_FILE'}, { preserve => 'no' }
-            );
-            return $rs if $rs;
-        }
-    }
-
-    local $@;
-    eval {
         iMSCP::Dir->new(
             dirname => $self->{'config'}->{'FTPD_USER_CONF_DIR'}
         )->remove();
     };
     if ( $@ ) {
         error( $@ );
-        return 1;
+        $rs = 1;
     }
 
-    0;
+    $rs;
 }
 
 =back

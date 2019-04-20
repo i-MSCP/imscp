@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,7 +25,6 @@ package Servers::named;
 
 use strict;
 use warnings;
-use iMSCP::Debug qw/ fatal /;
 
 # named server instance
 my $instance;
@@ -52,22 +51,22 @@ sub factory
 {
     return $instance if $instance;
 
-    my $package = $main::imscpConfig{'NAMED_PACKAGE'} || 'Servers::noserver';
+    my $package = $::imscpConfig{'NAMED_PACKAGE'} || 'Servers::noserver';
 
     if ( %main::imscpOldConfig
-        && exists $main::imscpOldConfig{'NAMED_PACKAGE'}
-        && $main::imscpOldConfig{'NAMED_PACKAGE'} ne ''
-        && $main::imscpOldConfig{'NAMED_PACKAGE'} ne $package
+        && exists $::imscpOldConfig{'NAMED_PACKAGE'}
+        && $::imscpOldConfig{'NAMED_PACKAGE'} ne ''
+        && $::imscpOldConfig{'NAMED_PACKAGE'} ne $package
     ) {
-        eval "require $main::imscpOldConfig{'NAMED_PACKAGE'}";
-        fatal( $@ ) if $@;
+        eval "require $::imscpOldConfig{'NAMED_PACKAGE'}";
+        die( $@ ) if $@;
 
-        my $rs = $main::imscpOldConfig{'NAMED_PACKAGE'}->getInstance()->uninstall();
-        fatal( sprintf( "Couldn't uninstall the `%s' server", $main::imscpOldConfig{'NAMED_PACKAGE'} )) if $rs;
+        my $rs = $::imscpOldConfig{'NAMED_PACKAGE'}->getInstance()->uninstall();
+        die( sprintf( "Couldn't uninstall the `%s' server", $::imscpOldConfig{'NAMED_PACKAGE'} )) if $rs;
     }
 
     eval "require $package";
-    fatal( $@ ) if $@;
+    die( $@ ) if $@;
     $instance = $package->getInstance();
 }
 
@@ -84,9 +83,9 @@ sub can
 {
     my (undef, $method) = @_;
 
-    my $package = $main::imscpConfig{'NAMED_PACKAGE'} || 'Servers::noserver';
+    my $package = $::imscpConfig{'NAMED_PACKAGE'} || 'Servers::noserver';
     eval "require $package";
-    fatal( $@ ) if $@;
+    die( $@ ) if $@;
 
     $package->can( $method );
 }
@@ -106,7 +105,7 @@ sub getPriority
 
 END
     {
-        return if $? || !$instance || ( $main::execmode && $main::execmode eq 'setup' );
+        return if $? || !$instance || ( $::execmode && $::execmode eq 'setup' );
 
         if ( $instance->{'restart'} ) {
             $? = $instance->restart();

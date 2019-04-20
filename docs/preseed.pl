@@ -5,9 +5,9 @@
 # See documentation at http://wiki.i-mscp.net/doku.php?id=start:preseeding
 #
 # Author: Laurent Declercq <l.declercq@nuxwin.com>
-# Last update: 2019.04.09
+# Last update: 2019.04.20
 
-%main::questions = (
+%::questions = (
     #
     ## System configuration
     #
@@ -200,7 +200,7 @@
     #
 
     # PHP version for customers
-    # Possible values: php5.6, php7.0, php7.1n php7.2, php7.3
+    # Possible values: php5.6, php7.0, php7.1, php7.2, php7.3
     PHP_SERVER                          => 'php7.3',
 
     # PHP configuration level
@@ -219,13 +219,6 @@
     # FTPd server implementation
     # Possible values: proftpd, vsftpd
     FTPD_SERVER                         => 'proftpd',
-
-    # FTP SQL user
-    # Only ASCII alphabet characters and numbers are allowed in password.
-    FTPD_SQL_USER                       => 'imscp_srv_user',
-    # Only ASCII alphabet characters and numbers are allowed in password.
-    # Leave this parameter empty for automatic password generation.
-    FTPD_SQL_PASSWORD                   => '',
 
     # Passive port range
     # Possible values: A valid port range in range 32768-60999
@@ -247,21 +240,6 @@
     # POP/IMAP servers implementation
     # Possible values: courier, dovecot
     PO_SERVER                           => 'dovecot',
-
-    # Authdaemon SQL user
-    # Only ASCII alphabet characters and numbers are allowed in password.
-    AUTHDAEMON_SQL_USER                 => 'imscp_srv_user',
-    # Only ASCII alphabet characters and numbers are allowed in password.
-    # Leave this parameter empty for automatic password generation.
-    AUTHDAEMON_SQL_PASSWORD             => '',
-
-    # Dovecot SQL user
-    # Only relevant with 'dovecot' server implementation
-    # Only ASCII alphabet characters and numbers are allowed in password.
-    DOVECOT_SQL_USER                    => 'imscp_srv_user',
-    # Only ASCII alphabet characters and numbers are allowed in password.
-    # Leave this parameter empty for automatic password generation.
-    DOVECOT_SQL_PASSWORD                => '',
 
     #
     ## SSL configuration for FTP, IMAP/POP and SMTP services

@@ -352,7 +352,7 @@ chdir($LOGDIR);
 # cannot longer be resolved, leading to `Unknown MySQL server host' error.
 # FIXME: Retrieve SQL server hostname and resolve it before the chroot() call,
 # then use the resulting IP for connection.
-#chroot('.');  
+#chroot('.');
 
 my %logs = ();
 my %tracker = ();
