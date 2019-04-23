@@ -109,7 +109,7 @@ sub preinstall
 
  Initialize instance
 
- Return Servers::httpd::apache_php_fpm
+ Return Servers::php
 
 =cut
 
