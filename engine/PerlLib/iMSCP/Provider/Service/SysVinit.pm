@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -58,9 +58,11 @@ sub remove
     $self->stop( $service );
 
     debug( sprintf( "Removing the %s SysVinit script", $service ));
-    iMSCP::File->new( filename => $self->resolveSysVinitScript( $service, TRUE ))->delFile() == 0 or croak(
-        getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error'
-    );
+    iMSCP::File->new(
+        filename => $self->resolveSysVinitScript( $service, TRUE )
+    )->delFile() == 0 or croak( getMessageByType(
+        'error', { amount => 1, remove => TRUE }
+    ) || 'Unknown error' );
 }
 
 =item start( $service )
@@ -110,7 +112,9 @@ sub restart
     defined $service or croak( 'Missing or undefined $service parameter' );
 
     if ( $self->isRunning( $service ) ) {
-        $self->_exec( [ $self->resolveSysVinitScript( $service ), 'restart' ] );
+        $self->_exec( [
+            $self->resolveSysVinitScript( $service ), 'restart'
+        ] );
         return;
     }
 
@@ -132,7 +136,11 @@ sub reload
 
     if ( $self->isRunning( $service ) ) {
         # We need to catch STDERR as we do do want croak on failure
-        my $ret = $self->_exec( [ $self->resolveSysVinitScript( $service ), 'reload' ], undef, \my $stderr );
+        my $ret = $self->_exec(
+            [ $self->resolveSysVinitScript( $service ), 'reload' ],
+            undef,
+            \my $stderr
+        );
 
         # If the reload action failed, we try a restart instead. This cover
         # case where the reload action is not supported.
@@ -159,7 +167,11 @@ sub isRunning
     unless ( defined $self->{'_pid_pattern'} ) {
         # We need to catch STDERR as we do not croak on failure when command
         # status is other than 0 but no STDERR
-        my $ret = $self->_exec( [ $self->resolveSysVinitScript( $service ), 'status' ], undef, \my $stderr );
+        my $ret = $self->_exec(
+            [ $self->resolveSysVinitScript( $service ), 'status' ],
+            undef,
+            \my $stderr
+        );
         croak( $stderr ) if $ret && length $stderr;
         return $ret == 0;
     }
@@ -199,7 +211,9 @@ sub setPidPattern
 
     defined $pattern or croak( 'Missing or undefined $pattern parameter' );
 
-    $self->{'_pid_pattern'} = ref $pattern eq 'Regexp' ? $pattern : qr/$pattern/;
+    $self->{'_pid_pattern'} = ref $pattern eq 'Regexp'
+        ? $pattern
+        : qr/$pattern/;
 }
 
 =item resolveSysVinitScript( $service [, $nocache =  FALSE ] )
@@ -221,7 +235,9 @@ sub resolveSysVinitScript
     if ( $nocache ) {
         delete $resolved{$service};
     } elsif ( exists $resolved{$service} ) {
-        $resolved{$service} or croak( sprintf( "Couldn't resolve the %s SysVinit script", $service ));
+        $resolved{$service} or croak( sprintf(
+            "Couldn't resolve the %s SysVinit script", $service
+        ));
         return $resolved{$service};
     }
 
@@ -235,11 +251,15 @@ sub resolveSysVinitScript
     }
 
     if ( $nocache ) {
-        $resolved{$service} or croak( sprintf( "Couldn't resolve the %s SysVinit script", $service ));
+        $resolved{$service} or croak( sprintf(
+            "Couldn't resolve the %s SysVinit script", $service
+        ));
         return delete $resolved{$service};
     }
 
-    $resolved{$service} or croak( sprintf( "Couldn't resolve the %s SysVinit script", $service ));
+    $resolved{$service} or croak( sprintf(
+        "Couldn't resolve the %s SysVinit script", $service
+    ));
 }
 
 =back
@@ -263,7 +283,10 @@ sub _init
     my $distID = iMSCP::LsbRelease->getInstance()->getId( 'short' );
 
     if ( $distID =~ /^(?:FreeBSD|DragonFly)$/ ) {
-        $self->{'sysvinitscriptpaths'} = [ '/etc/rc.d', '/usr/local/etc/rc.d' ];
+        $self->{'sysvinitscriptpaths'} = [
+            '/etc/rc.d',
+            '/usr/local/etc/rc.d'
+        ];
     } elsif ( $distID eq 'HP-UX' ) {
         $self->{'sysvinitscriptpaths'} = [ '/sbin/init.d' ];
     } elsif ( $distID eq 'Archlinux' ) {
@@ -289,7 +312,9 @@ sub _getPs
 
     if ( $distID eq 'OpenWrt' ) {
         'ps www';
-    } elsif ( grep ( $distID eq $_, qw/ FreeBSD NetBSD OpenBSD Darwin DragonFly / ) ) {
+    } elsif ( grep ( $distID eq $_, qw/
+        FreeBSD NetBSD OpenBSD Darwin DragonFly
+    / ) ) {
         'ps auxwww';
     } else {
         'ps -ef'
@@ -312,7 +337,9 @@ sub _getPid
     defined $pattern or croak( 'Missing or undefined $pattern parameter' );
 
     my $ps = $self->_getPs();
-    open my $fh, '-|', $ps or croak( sprintf( "Couldn't pipe to %s: %s", $ps, $! ));
+    open my $fh, '-|', $ps or croak( sprintf(
+        "Couldn't pipe to %s: %s", $ps, $!
+    ));
 
     while ( my $line = <$fh> ) {
         next unless $line =~ /$pattern/;

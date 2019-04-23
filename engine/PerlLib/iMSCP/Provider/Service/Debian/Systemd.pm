@@ -59,7 +59,13 @@ sub isEnabled
     # We need to catch STDERR as we do not want raise failure when command
     # status is other than 0 but no STDERR
     my $ret = $self->_exec(
-        [ $iMSCP::Provider::Service::Systemd::COMMANDS{'systemctl'}, 'is-enabled', $self->resolveUnit( $unit ) ], \my $stdout, \my $stderr
+        [
+            $iMSCP::Provider::Service::Systemd::COMMANDS{'systemctl'},
+            'is-enabled',
+            $self->resolveUnit( $unit )
+        ],
+        \my $stdout,
+        \my $stderr
     );
 
     # The 'is-enabled' support for SysV init scripts isn't available in older
@@ -67,7 +73,9 @@ sub isEnabled
     # another check by relying on the Debian SysVInit init provider.
     if ( $ret && length $stderr ) {
         ( $unit, undef, my $suffix ) = fileparse( $unit, qr/\.[^.]*/ );
-        return $self->iMSCP::Provider::Service::Debian::SysVinit::isEnabled( $unit ) if grep ( $suffix eq $_, '', '.service' );
+        return $self->iMSCP::Provider::Service::Debian::SysVinit::isEnabled(
+            $unit
+        ) if grep ( $suffix eq $_, '', '.service' );
 
         # Not a SysVinit script and the previous systemd 'is-enabled' command has
         # failed. We propagate the error to caller.
@@ -96,7 +104,9 @@ sub remove
 
     # For the SysVinit scripts, we want operate only on services
     my ( $init, undef, $suffix ) = fileparse( $unit, qr/\.[^.]*/ );
-    $self->iMSCP::Provider::Service::Debian::SysVinit::remove( $init ) if grep ( $suffix eq $_, '', '.service' );
+    $self->iMSCP::Provider::Service::Debian::SysVinit::remove(
+        $init
+    ) if grep ( $suffix eq $_, '', '.service' );
     $self->SUPER::remove( $unit );
 }
 

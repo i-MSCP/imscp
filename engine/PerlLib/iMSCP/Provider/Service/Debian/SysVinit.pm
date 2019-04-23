@@ -59,7 +59,9 @@ sub isEnabled
 
     defined $service or croak( 'Missing or undefined $service parameter' );
 
-    $self->hasService( $service ) or croak( sprintf( 'Unknown %s service', $service ));
+    $self->hasService( $service ) or croak( sprintf(
+        'Unknown %s service', $service
+    ));
 
     scalar glob( "/etc/rc[S5].d/S??$service" ) ? TRUE : FALSE;
 }

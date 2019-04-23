@@ -55,26 +55,6 @@ sub factory
     $instance = $package->getInstance();
 }
 
-=item can( $method )
-
- Checks if the mta server package provides the given method
-
- Param string $method Method name
- Return subref|undef
-
-=cut
-
-sub can
-{
-    my (undef, $method) = @_;
-
-    my $package = $::imscpConfig{'MTA_PACKAGE'} || 'Servers::noserver';
-    eval "require $package";
-    die( $@ ) if $@;
-
-    $package->can( $method );
-}
-
 =item getPriority( )
 
  Get server priority
@@ -86,6 +66,26 @@ sub can
 sub getPriority
 {
     40;
+}
+
+=item can( $method )
+
+ Checks if the mta server package provides the given method
+
+ Param string $method Method name
+ Return subref|undef
+
+=cut
+
+sub can
+{
+    my ( undef, $method ) = @_;
+
+    my $package = $::imscpConfig{'MTA_PACKAGE'} || 'Servers::noserver';
+    eval "require $package";
+    die( $@ ) if $@;
+
+    $package->can( $method );
 }
 
 END

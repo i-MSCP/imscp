@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -47,7 +47,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->_removeConfig();
 }
@@ -68,7 +68,7 @@ sub uninstall
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'sqld'} = Servers::sqld::mysql->getInstance();
     $self;
@@ -84,11 +84,13 @@ sub _init
 
 sub _removeConfig
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     return 0 unless -f "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf";
 
-    iMSCP::File->new( filename => "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf" )->delFile();
+    iMSCP::File->new(
+        filename => "$self->{'sqld'}->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf"
+    )->delFile();
 }
 
 =back

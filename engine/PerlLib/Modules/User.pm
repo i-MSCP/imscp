@@ -115,7 +115,7 @@ sub add
         . ( $::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'} );
     my $home = "$::imscpConfig{'USER_WEB_DIR'}/$self->{'admin_name'}";
 
-    my $rs = $self->{'eventManager'}->trigger(
+    my $rs = $self->{'events'}->trigger(
         'onBeforeAddImscpUnixUser', $self->{'admin_id'}, $user, \my $pwd, $home, \my $skelPath, \my $shell
     );
     return $rs if $rs;
@@ -171,11 +171,11 @@ sub delete
     my $user = my $group = $::imscpConfig{'SYSTEM_USER_PREFIX'}
         . ( $::imscpConfig{'SYSTEM_USER_MIN_UID'}+$self->{'admin_id'} );
 
-    my $rs = $self->{'eventManager'}->trigger( 'onBeforeDeleteImscpUnixUser', $user );
+    my $rs = $self->{'events'}->trigger( 'onBeforeDeleteImscpUnixUser', $user );
     $rs ||= $self->SUPER::delete();
-    $rs ||= iMSCP::SystemUser->new( force => 1 )->delSystemUser( $user );
+    $rs ||= iMSCP::SystemUser->new( force => TRUE )->delSystemUser( $user );
     $rs ||= iMSCP::SystemGroup->getInstance()->delSystemGroup( $group );
-    $rs ||= $self->{'eventManager'}->trigger( 'onAfterDeleteImscpUnixUser', $group );
+    $rs ||= $self->{'events'}->trigger( 'onAfterDeleteImscpUnixUser', $group );
 }
 
 =back

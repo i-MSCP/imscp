@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,8 +25,8 @@ package iMSCP::Dialog;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
-use iMSCP::Execute;
+use iMSCP::Debug qw/ error fatal debugRegisterCallBack /;
+use iMSCP::Execute qw/ escapeShell execute /;
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
 use parent 'Common::SingletonClass';
@@ -58,7 +58,11 @@ sub resetLabels
         help   => 'Help',
         extra  => undef
     );
-    $_[0]->{'_opts'}->{"$_-label"} = $defaultLabels{$_} for keys %defaultLabels;
+
+    for my $label ( keys %defaultLabels ) {
+        $_[0]->{'_opts'}->{"$label-label"} = $defaultLabels{$label}
+    }
+
     0;
 }
 
@@ -73,10 +77,10 @@ sub resetLabels
 
 sub fselect
 {
-    my ($self, $file) = @_;
+    my ( $self, $file ) = @_;
 
     $self->{'lines'} = $self->{'lines'}-8;
-    my ($ret, $output) = $self->_execute( $file, undef, 'fselect' );
+    my ( $ret, $output ) = $self->_execute( $file, undef, 'fselect' );
     $self->{'lines'} = $self->{'lines'}+8;
     wantarray ? ( $ret, $output ) : $output;
 }
@@ -94,13 +98,21 @@ sub fselect
 
 sub radiolist
 {
-    my ($self, $text, $choices, $default) = @_;
+    my ( $self, $text, $choices, $default ) = @_;
 
-    my (@init, %choices);
-    $choices{s/_/ /gr} = $_ for @{$choices};
+    my ( @init, %choices );
+    $choices{s/_/ /gr} = $_ for @{ $choices };
     ( $default ||= '' ) =~ s/_/ /g;
-    push @init, ( escapeShell( $_ ), "''", $default eq $_ ? 'on' : 'off' ) for sort keys %choices;
-    my ($ret, $output) = $self->_textbox( $text, 'radiolist', scalar @{$choices} . " @init" );
+
+    for my $choice ( sort keys %choices ) {
+        push @init, (
+            escapeShell( $choice ), "''", $default eq $choice ? 'on' : 'off'
+        );
+    }
+
+    my ( $ret, $output ) = $self->_textbox(
+        $text, 'radiolist', scalar @{ $choices } . " @init"
+    );
     wantarray ? ( $ret, $choices{$output} ) : $choices{$output};
 }
 
@@ -117,15 +129,21 @@ sub radiolist
 
 sub checkbox
 {
-    my ($self, $text, $choices, @defaults) = @_;
+    my ( $self, $text, $choices, @defaults ) = @_;
 
-    my (@init, %choices);
-    $choices{s/_/ /gr} = $_ for @{$choices};
+    my ( @init, %choices );
+    $choices{s/_/ /gr} = $_ for @{ $choices };
     my %defaults = map { s/_/ /gr => 1 } @defaults;
-    push @init, ( escapeShell( $_ ), "''", $defaults{$_} ? 'on' : 'off' ) for sort keys %choices;
-    my ($ret, $output) = $self->_textbox( $text, 'checklist', scalar @{$choices} . " @init" );
-    @{$choices} = ();
-    push @{$choices}, $choices{$_} = $_ for split /\n/, $output;
+
+    for my $choice ( sort keys %choices ) {
+        push @init, ( escapeShell( $choice ), "''", $defaults{$choice} ? 'on' : 'off' );
+    }
+
+    my ( $ret, $output ) = $self->_textbox(
+        $text, 'checklist', scalar @{ $choices } . " @init"
+    );
+    @{ $choices } = ();
+    push @{ $choices }, $choices{$_} = $_ for split /\n/, $output;
     wantarray ? ( $ret, $choices ) : $choices;
 }
 
@@ -140,7 +158,7 @@ sub checkbox
 
 sub tailbox
 {
-    my ($self, $file) = @_;
+    my ( $self, $file ) = @_;
 
     ( $self->_execute( $file, undef, 'tailbox' ) )[0];
 }
@@ -156,7 +174,7 @@ sub tailbox
 
 sub editbox
 {
-    my ($self, $file) = @_;
+    my ( $self, $file ) = @_;
 
     $self->_execute( $file, undef, 'editbox' );
 }
@@ -172,10 +190,10 @@ sub editbox
 
 sub dselect
 {
-    my ($self, $directory) = @_;
+    my ( $self, $directory ) = @_;
 
     $self->{'lines'} = $self->{'lines'}-8;
-    my ($ret, $output) = $self->_execute( $directory, undef, 'dselect' );
+    my ( $ret, $output ) = $self->_execute( $directory, undef, 'dselect' );
     $self->{'lines'} = $self->{'lines'}+8;
     wantarray ? ( $ret, $output ) : $output;
 }
@@ -191,7 +209,7 @@ sub dselect
 
 sub msgbox
 {
-    my ($self, $text) = @_;
+    my ( $self, $text ) = @_;
 
     ( $self->_textbox( $text, 'msgbox' ) )[0];
 }
@@ -208,7 +226,7 @@ sub msgbox
 
 sub yesno
 {
-    my ($self, $text, $defaultno) = @_;
+    my ( $self, $text, $defaultno ) = @_;
 
     $self->{'_opts'}->{'defaultno'} = $defaultno ? '' : undef;
     my $ret = ( $self->_textbox( $text, 'yesno' ) )[0];
@@ -228,7 +246,7 @@ sub yesno
 
 sub inputbox
 {
-    my ($self, $text, $init) = @_;
+    my ( $self, $text, $init ) = @_;
 
     $init //= '';
     $self->_textbox( $text, 'inputbox', escapeShell( $init ));
@@ -246,7 +264,7 @@ sub inputbox
 
 sub passwordbox
 {
-    my ($self, $text, $init) = @_;
+    my ( $self, $text, $init ) = @_;
 
     $init //= '';
     $self->{'_opts'}->{'insecure'} = '';
@@ -264,12 +282,12 @@ sub passwordbox
 
 sub infobox
 {
-    my ($self, $text) = @_;
+    my ( $self, $text ) = @_;
 
     my $clear = $self->{'_opts'}->{'clear'};
     $self->{'_opts'}->{'clear'} = undef;
 
-    my ($ret) = $self->_textbox( $text, 'infobox' );
+    my ( $ret ) = $self->_textbox( $text, 'infobox' );
 
     $self->{'_opts'}->{'clear'} = $clear;
     $ret;
@@ -287,7 +305,7 @@ sub infobox
 
 sub startGauge
 {
-    my ($self, $text, $percent) = @_;
+    my ( $self, $text, $percent ) = @_;
 
     return 0 if iMSCP::Getopt->noprompt || $self->{'gauge'};
 
@@ -318,11 +336,13 @@ sub startGauge
 
 sub setGauge
 {
-    my ($self, $percent, $text) = @_;
+    my ( $self, $percent, $text ) = @_;
 
     return 0 if iMSCP::Getopt->noprompt || !$self->{'gauge'};
 
-    print { $self->{'gauge'} } sprintf( "XXX\n%d\n%s\nXXX\n", $percent, $text );
+    print { $self->{'gauge'} } sprintf(
+        "XXX\n%d\n%s\nXXX\n", $percent, $text
+    );
     0
 }
 
@@ -336,7 +356,7 @@ sub setGauge
 
 sub endGauge
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     return 0 if iMSCP::Getopt->noprompt || !$self->{'gauge'};
 
@@ -355,7 +375,7 @@ sub endGauge
 
 sub hasGauge
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     return 0 if iMSCP::Getopt->noprompt;
 
@@ -374,7 +394,7 @@ sub hasGauge
 
 sub set
 {
-    my ($self, $option, $value) = @_;
+    my ( $self, $option, $value ) = @_;
 
     return undef unless $option && exists $self->{'_opts'}->{$option};
 
@@ -399,7 +419,7 @@ sub set
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     # These environment variable screws up at least whiptail with the
     # way we call it. Posix does not allow safe arg passing like
@@ -410,11 +430,11 @@ sub _init
     # Detect all the ways people have managed to screw up their
     # terminals (so far...)
     if ( !exists $ENV{'TERM'} || !defined $ENV{'TERM'} || $ENV{'TERM'} eq '' ) {
-        fatal ( 'TERM is not set, so the dialog frontend is not usable.' );
+        fatal( 'TERM is not set, so the dialog frontend is not usable.' );
     } elsif ( $ENV{'TERM'} =~ /emacs/i ) {
-        fatal ( 'Dialog frontend is incompatible with emacs shell buffers' );
+        fatal( 'Dialog frontend is incompatible with emacs shell buffers' );
     } elsif ( $ENV{'TERM'} eq 'dumb' || $ENV{'TERM'} eq 'unknown' ) {
-        fatal ( 'Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.' );
+        fatal( 'Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.' );
     }
 
     # Return specific exit status when ESC is pressed
@@ -428,7 +448,7 @@ sub _init
     $self->{'autoreset'} = 0;
     $self->{'lines'} = undef;
     $self->{'columns'} = undef;
-    $self->{'_opts'}->{'backtitle'} ||= "i-MSCP - internet Multi Server Control Panel ($main::imscpConfig{'Version'})";
+    $self->{'_opts'}->{'backtitle'} ||= "i-MSCP - internet Multi Server Control Panel ($::imscpConfig{'Version'})";
     $self->{'_opts'}->{'title'} ||= 'i-MSCP Installer Dialog';
     $self->{'_opts'}->{'colors'} = '';
     $self->{'_opts'}->{'ok-label'} ||= 'Ok';
@@ -478,7 +498,7 @@ sub _init
 
 sub _resize
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $lines;
     if ( exists $ENV{'LINES'} ) {
@@ -497,7 +517,7 @@ sub _resize
     }
 
     if ( $lines < 24 || $cols < 80 ) {
-        fatal ( 'A screen at least 24 lines tall and 80 columns wide is required. Please enlarge your screen.' );
+        fatal( 'A screen at least 24 lines tall and 80 columns wide is required. Please enlarge your screen.' );
     }
 
     $self->{'lines'} = $lines-2;
@@ -516,7 +536,7 @@ sub _resize
 
 sub _findBin
 {
-    my ($self, $variant) = @_;
+    my ( $self, $variant ) = @_;
 
     my $bindPath = iMSCP::ProgramFinder::find( $variant ) or die(
         sprintf( "Couldn't find dialog program: %s", $variant )
@@ -536,7 +556,7 @@ sub _findBin
 
 sub _stripFormats
 {
-    my (undef, $string) = @_;
+    my ( undef, $string ) = @_;
 
     $string =~ s/\\Z[0-9bBuUrRn]//gmi;
     $string;
@@ -553,15 +573,15 @@ sub _stripFormats
 
 sub _buildCommonCommandOptions
 {
-    my ($self, $noEscape) = @_;
+    my ( $self, $noEscape ) = @_;
 
     my @options = map {
         defined $self->{'_opts'}->{$_}
             ? ( "--$_", ( $noEscape )
-                ? ( $self->{'_opts'}->{$_} eq '' ? () : $self->{'_opts'}->{$_} )
-                : ( $self->{'_opts'}->{$_} eq '' ? () : escapeShell( $self->{'_opts'}->{$_} ) ) )
+            ? ( $self->{'_opts'}->{$_} eq '' ? () : $self->{'_opts'}->{$_} )
+            : ( $self->{'_opts'}->{$_} eq '' ? () : escapeShell( $self->{'_opts'}->{$_} ) ) )
             : ()
-    } keys %{$self->{'_opts'}};
+    } keys %{ $self->{'_opts'} };
 
     wantarray ? @options : "@options";
 }
@@ -576,9 +596,9 @@ sub _buildCommonCommandOptions
 
 sub _restoreDefaults
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    for my $prop ( keys %{$self->{'_opts'}} ) {
+    for my $prop ( keys %{ $self->{'_opts'} } ) {
         $self->{'_opts'}->{$prop} = undef unless $prop =~ /^(?:title|backtitle|colors)$/;
     }
 
@@ -598,7 +618,7 @@ sub _restoreDefaults
 
 sub _execute
 {
-    my ($self, $text, $init, $type) = @_;
+    my ( $self, $text, $init, $type ) = @_;
 
     $self->endGauge(); # Ensure that no gauge is currently running...
 
@@ -622,7 +642,11 @@ sub _execute
     my $height = ( $self->{'autosize'} ) ? 0 : $self->{'lines'};
     my $width = ( $self->{'autosize'} ) ? 0 : $self->{'columns'};
 
-    my $ret = execute( "$self->{'bin'} $command --$type $text $height $width $init", undef, \ my $output );
+    my $ret = execute(
+        "$self->{'bin'} $command --$type $text $height $width $init",
+        undef,
+        \my $output
+    );
 
     $self->{'_opts'}->{'separate-output'} = undef;
     $self->_init() if $self->{'autoreset'};
@@ -653,12 +677,12 @@ sub _execute
 
 sub _textbox
 {
-    my ($self, $text, $type, $init) = @_;
+    my ( $self, $text, $type, $init ) = @_;
 
     $init //= 0;
     my $autosize = $self->{'autosize'};
     $self->{'autosize'} = undef;
-    my ($ret, $output) = $self->_execute( $text, $init, $type );
+    my ( $ret, $output ) = $self->_execute( $text, $init, $type );
     $self->{'autosize'} = $autosize;
     wantarray ? ( $ret, $output ) : $output;
 }

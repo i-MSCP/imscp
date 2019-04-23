@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by internet Multi Server Control Panel
+# Copyright (C) 2010-2019 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,10 +25,11 @@ package Servers::mta::postfix::uninstaller;
 
 use strict;
 use warnings;
-use File::Basename;
+use File::Basename 'basename';
+use iMSCP::Boolean;
 use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dir;
-use iMSCP::Execute qw/ execute /;
+use iMSCP::Execute 'execute';
 use iMSCP::File;
 use iMSCP::SystemUser;
 use Servers::mta::postfix;
@@ -52,7 +53,7 @@ use parent 'Common::SingletonClass';
 
 sub uninstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     my $rs = $self->_restoreConffiles();
     $rs ||= $self->_buildAliasesFile();
@@ -76,7 +77,7 @@ sub uninstall
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'mta'} = Servers::mta::postfix->getInstance();
     $self->{'config'} = $self->{'mta'}->{'config'};
@@ -93,11 +94,19 @@ sub _init
 
 sub _restoreConffiles
 {
-    return 0 unless -d "/etc/postfix";
+    return 0 unless -d '/etc/postfix';
 
-    for ( '/usr/share/postfix/main.cf.debian', '/usr/share/postfix/master.cf.dist' ) {
-        next unless -f;
-        my $rs = iMSCP::File->new( filename => $_ )->copyFile( '/etc/postfix/' . basename( $_ ), { preserve => 'no' } );
+    for my $file (
+        '/usr/share/postfix/main.cf.debian',
+        '/usr/share/postfix/master.cf.dist'
+    ) {
+        next unless -f $file;
+        my $rs = iMSCP::File->new(
+            filename => $file
+        )->copyFile(
+            '/etc/postfix/' . basename( $file ),
+            { preserve => 'no' }
+        );
         return $rs if $rs;
     }
 
@@ -114,7 +123,7 @@ sub _restoreConffiles
 
 sub _buildAliasesFile
 {
-    my $rs = execute( 'newaliases', \ my $stdout, \ my $stderr );
+    my $rs = execute( 'newaliases', \my $stdout, \my $stderr );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     $rs;
@@ -130,7 +139,11 @@ sub _buildAliasesFile
 
 sub _removeUser
 {
-    iMSCP::SystemUser->new( force => 'yes' )->delSystemUser( $_[0]->{'config'}->{'MTA_MAILBOX_UID_NAME'} );
+    iMSCP::SystemUser->new(
+        force => TRUE
+    )->delSystemUser(
+        $_[0]->{'config'}->{'MTA_MAILBOX_UID_NAME'}
+    );
 }
 
 =item _removeFiles( )
@@ -143,15 +156,27 @@ sub _removeUser
 
 sub _removeFiles
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    for ( $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'}, $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'} ) {
-        iMSCP::Dir->new( dirname => $_ )->remove();
+    local $@;
+    eval {
+        for my $dir (
+            $self->{'config'}->{'MTA_VIRTUAL_CONF_DIR'},
+            $self->{'config'}->{'MTA_VIRTUAL_MAIL_DIR'}
+        ) {
+            iMSCP::Dir->new( dirname => $dir )->remove();
+        }
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
     }
 
     return 0 unless -f $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'};
 
-    iMSCP::File->new( filename => $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'} )->delFile();
+    iMSCP::File->new(
+        filename => $self->{'config'}->{'MAIL_LOG_CONVERT_PATH'}
+    )->delFile();
 }
 
 =back

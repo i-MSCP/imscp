@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2018 Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -46,7 +46,10 @@ sub checkForOperability
 {
     my ( $self ) = @_;
 
-    die( sprintf( 'The %s class must implement the checkForOperability() class method', $self ));
+    die( sprintf(
+        'The %s class must implement the checkForOperability() class method',
+        $self
+    ));
 }
 
 =back
@@ -73,7 +76,9 @@ sub addIpAddress
 {
     my ( $self ) = @_;
 
-    die( sprintf( 'The %s class must implement the addIpAddress() method', ref $self ));
+    die( sprintf(
+        'The %s class must implement the addIpAddress() method', ref $self
+    ));
 }
 
 =item removeIpAddr( \%data )
@@ -94,7 +99,9 @@ sub removeIpAddress
 {
     my ( $self ) = @_;
 
-    die( sprintf( 'The %s class must implement the removeIpAddress() method', ref $self ));
+    die( sprintf(
+        'The %s class must implement the removeIpAddress() method', ref $self
+    ));
 }
 
 =back

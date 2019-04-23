@@ -25,17 +25,17 @@ package Servers::sqld::mysql::installer;
 
 use strict;
 use warnings;
+use iMSCP::Boolean;
 use iMSCP::Crypt qw/ encryptRijndaelCBC decryptRijndaelCBC randomStr /;
 use iMSCP::Database;
 use iMSCP::Debug qw/ debug error /;
 use iMSCP::Dialog::InputValidation;
 use iMSCP::Dir;
-use iMSCP::EventManager;
-use iMSCP::Execute qw/ execute /;
+use iMSCP::Execute qw/ execute escapeShell /;
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::ProgramFinder;
-use iMSCP::TemplateParser qw/ process /;
+use iMSCP::TemplateParser 'process';
 use iMSCP::Umask;
 use Net::LibIDN qw/ idn_to_ascii idn_to_unicode /;
 use Servers::sqld::mysql;
@@ -50,20 +50,20 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%em )
+=item registerSetupListeners( \%events )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%em
+ Param iMSCP::EventManager \%events
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my ( $self, $em ) = @_;
+    my ( $self, $events ) = @_;
 
-    $em->registerOne( 'beforeSetupDialog', sub {
+    $events->registerOne( 'beforeSetupDialog', sub {
         push @{ $_[0] },
             sub { $self->masterSqlUserDialog( @_ ) },
             sub { $self->sqlUserHostDialog( @_ ) },
@@ -91,9 +91,14 @@ sub masterSqlUserDialog
     my $user = ::setupGetQuestion( 'DATABASE_USER', 'imscp_user' );
     $user = 'imscp_user' if lc( $user ) eq 'root'; # Handle upgrade case
     my $pwd = ::setupGetQuestion(
-        'DATABASE_PASSWORD', ( iMSCP::Getopt->preseed ) ? randomStr( 16, iMSCP::Crypt::ALNUM ) : ''
+        'DATABASE_PASSWORD',
+        ( iMSCP::Getopt->preseed ) ? randomStr( 16, iMSCP::Crypt::ALNUM ) : ''
     );
-    $pwd = decryptRijndaelCBC( $::imscpDBKey, $::imscpDBiv, $pwd ) unless $pwd eq '' || iMSCP::Getopt->preseed;
+
+    if ( length $pwd && !iMSCP::Getopt->preseed ) {
+        $pwd = decryptRijndaelCBC( $::imscpDBKey, $::imscpDBiv, $pwd );
+    }
+
     my $rs = 0;
 
     $rs = $self->_askSqlRootUser( $dialog ) if iMSCP::Getopt->preseed;
@@ -103,7 +108,7 @@ sub masterSqlUserDialog
         || !isNotEmpty( $hostname )
         || !isNotEmpty( $port )
         || !isNotEmpty( $user )
-        || !isStringNotInList( $user, 'debian-sys-maint', 'imscp_srv_user', 'mysql.user', 'root', 'vlogger_user' )
+        || !isStringNotInList( $user, qw/ debian-sys-maint mysql.user root / )
         || !isNotEmpty( $pwd )
         || ( !iMSCP::Getopt->preseed && $self->_tryDbConnect( $hostname, $port, $user, $pwd ) )
     ) {
@@ -118,8 +123,7 @@ Please enter a username for the master i-MSCP SQL user:$msg
 EOF
             $msg = '';
             if ( !isValidUsername( $user )
-                || !isStringNotInList( $user, 'debian-sys-maint', 'imscp_srv_user', 'mysql.user', 'root',
-                'vlogger_user' )
+                || !isStringNotInList( $user, qw/ debian-sys-maint mysql.user root / )
             ) {
                 $msg = $iMSCP::Dialog::InputValidation::lastValidationError;
             }
@@ -128,22 +132,31 @@ EOF
 
         $pwd = isValidPassword( $pwd ) ? $pwd : '';
         do {
-            ( $rs, $pwd ) = $dialog->inputbox( <<"EOF", $pwd || randomStr( 16, iMSCP::Crypt::ALNUM ));
+            ( $rs, $pwd ) = $dialog->inputbox(
+                <<"EOF", $pwd || randomStr( 16, iMSCP::Crypt::ALNUM ));
 
 Please enter a password for the master i-MSCP SQL user:$msg
 EOF
-            $msg = isValidPassword( $pwd ) ? '' : $iMSCP::Dialog::InputValidation::lastValidationError;
+            $msg = isValidPassword( $pwd )
+                ? ''
+                : $iMSCP::Dialog::InputValidation::lastValidationError;
         } while $rs < 30 && $msg;
         return $rs if $rs >= 30;
     }
 
     ::setupSetQuestion( 'DATABASE_USER', $user );
-    ::setupSetQuestion( 'DATABASE_PASSWORD', encryptRijndaelCBC( $::imscpDBKey, $::imscpDBiv, $pwd ));
+    ::setupSetQuestion(
+        'DATABASE_PASSWORD',
+        encryptRijndaelCBC( $::imscpDBKey, $::imscpDBiv, $pwd )
+    );
     # Substitute SQL root user data with i-MSCP master user data if needed
-    ::setupSetQuestion( 'SQL_ROOT_USER', ::setupGetQuestion( 'SQL_ROOT_USER', $user ));
-    ::setupSetQuestion( 'SQL_ROOT_PASSWORD', ::setupGetQuestion( 'SQL_ROOT_PASSWORD', $pwd ));
+    ::setupSetQuestion(
+        'SQL_ROOT_USER', ::setupGetQuestion( 'SQL_ROOT_USER', $user )
+    );
+    ::setupSetQuestion(
+        'SQL_ROOT_PASSWORD', ::setupGetQuestion( 'SQL_ROOT_PASSWORD', $pwd )
+    );
     0;
-
 }
 
 =item sqlUserHostDialog( \%dialog )
@@ -164,7 +177,9 @@ sub sqlUserHostDialog
         return 0;
     }
 
-    my $hostname = ::setupGetQuestion( 'DATABASE_USER_HOST', ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' ));
+    my $hostname = ::setupGetQuestion(
+        'DATABASE_USER_HOST', ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' )
+    );
     if ( grep ($hostname eq $_, ( 'localhost', '127.0.0.1', '::1' )) ) {
         $hostname = ::setupGetQuestion( 'BASE_SERVER_PUBLIC_IP' );
     }
@@ -177,7 +192,8 @@ sub sqlUserHostDialog
     ) {
         my ( $rs, $msg ) = ( 0, '' );
         do {
-            ( $rs, $hostname ) = $dialog->inputbox( <<"EOF", idn_to_unicode( $hostname, 'utf-8' ));
+            ( $rs, $hostname ) = $dialog->inputbox(
+                <<"EOF", idn_to_unicode( $hostname, 'utf-8' ));
 
 Please enter the host from which SQL users created by i-MSCP must be allowed to connect:$msg
 EOF
@@ -192,7 +208,9 @@ EOF
         return $rs if $rs >= 30;
     }
 
-    ::setupSetQuestion( 'DATABASE_USER_HOST', idn_to_ascii( $hostname, 'utf-8' ));
+    ::setupSetQuestion(
+        'DATABASE_USER_HOST', idn_to_ascii( $hostname, 'utf-8' )
+    );
     0;
 }
 
@@ -239,7 +257,7 @@ EOF
             && $dbName ne $oldDbName
             && $self->setupIsImscpDb( $oldDbName )
         ) {
-            if ( $dialog->yesno( <<"EOF", 1 ) ) {
+            if ( $dialog->yesno( <<"EOF", TRUE ) ) {
 A database '$::imscpConfig{'DATABASE_NAME'}' for i-MSCP already exists.
 
 Are you sure you want to create a new database for i-MSCP?
@@ -333,8 +351,8 @@ sub _init
 {
     my ( $self ) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'sqld'} = Servers::sqld::mysql->getInstance();
+    $self->{'events'} = $self->{'sqld'}->{'events'};
     $self->{'cfgDir'} = $self->{'sqld'}->{'cfgDir'};
     $self->{'config'} = $self->{'sqld'}->{'config'};
     $self;
@@ -351,7 +369,9 @@ sub _askSqlRootUser
     my ( $self, $dialog ) = @_;
 
     my $hostname = ::setupGetQuestion(
-        'DATABASE_HOST', ( $::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::remote' ) ? '' : 'localhost'
+        'DATABASE_HOST',
+        ( $::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::remote' )
+            ? '' : 'localhost'
     );
     if ( $::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::remote'
         && grep { $hostname eq $_ } ( 'localhost', '127.0.0.1', '::1' )
@@ -363,12 +383,13 @@ sub _askSqlRootUser
     my $pwd = ::setupGetQuestion( 'SQL_ROOT_PASSWORD' );
 
     if ( $hostname eq 'localhost' ) {
-        # If authentication is made through unix socket, password is normally not required.
-        # We try a connect without password with 'root' as user and we return on success
-        for ( 'localhost', '127.0.0.1' ) {
-            next if $self->_tryDbConnect( $_, $port, $user, $pwd );
+        # If authentication is made through unix socket, password is normally
+        # not required. We try a connect without password with 'root' as user
+        # and we return on success
+        for my $host ( 'localhost', '127.0.0.1' ) {
+            next if $self->_tryDbConnect( $host, $port, $user, $pwd );
             ::setupSetQuestion( 'DATABASE_TYPE', 'mysql' );
-            ::setupSetQuestion( 'DATABASE_HOST', $_ );
+            ::setupSetQuestion( 'DATABASE_HOST', $host );
             ::setupSetQuestion( 'DATABASE_PORT', $port );
             ::setupSetQuestion( 'SQL_ROOT_USER', $user );
             ::setupSetQuestion( 'SQL_ROOT_PASSWORD', $pwd );
@@ -428,7 +449,9 @@ EOF
     } while $rs < 30 && $msg;
     return $rs if $rs >= 30;
 
-    if ( my $connectError = $self->_tryDbConnect( idn_to_ascii( $hostname, 'utf-8' ), $port, $user, $pwd ) ) {
+    if ( my $connectError = $self->_tryDbConnect(
+        idn_to_ascii( $hostname, 'utf-8' ), $port, $user, $pwd
+    ) ) {
         chomp( $connectError );
 
         $rs = $dialog->msgbox( <<"EOF" );
@@ -473,8 +496,10 @@ sub _setTypeAndVersion
     eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
 
-        local $dbh->{'RaiseError'} = 1;
-        my $row = $dbh->selectrow_hashref( 'SELECT @@version, @@version_comment' ) or die(
+        local $dbh->{'RaiseError'} = TRUE;
+        my $row = $dbh->selectrow_hashref(
+            'SELECT @@version, @@version_comment'
+        ) or die(
             "Could't find SQL server type and version"
         );
 
@@ -517,7 +542,7 @@ sub _buildConf
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldBuildConf' );
+    my $rs = $self->{'events'}->trigger( 'beforeSqldBuildConf' );
     return $rs if $rs;
 
     my $rootUName = $::imscpConfig{'ROOT_USER'};
@@ -526,17 +551,24 @@ sub _buildConf
     my $confDir = $self->{'config'}->{'SQLD_CONF_DIR'};
 
     # Make sure that the conf.d directory exists
-    iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make(
-        {
+    local $@;
+    eval {
+        iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make( {
             user  => $rootUName,
             group => $rootGName,
             mode  => 0755
-        }
-    );
+        } );
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
 
     # Create the /etc/mysql/my.cnf file if missing
     unless ( -f "$confDir/my.cnf" ) {
-        $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'my.cnf', \my $cfgTpl, {} );
+        $rs = $self->{'events'}->trigger(
+            'onLoadTemplate', 'mysql', 'my.cnf', \my $cfgTpl, {}
+        );
         return $rs if $rs;
 
         unless ( defined $cfgTpl ) {
@@ -554,15 +586,17 @@ sub _buildConf
         return $rs if $rs;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'imscp.cnf', \my $cfgTpl, {} );
+    $rs ||= $self->{'events'}->trigger(
+        'onLoadTemplate', 'mysql', 'imscp.cnf', \my $cfgTpl, {}
+    );
     return $rs if $rs;
 
     unless ( defined $cfgTpl ) {
-        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp.cnf" )->get();
-        unless ( defined $cfgTpl ) {
-            error( sprintf( "Couldn't read %s", "$self->{'cfgDir'}/imscp.cnf" ));
-            return 1;
-        }
+        return 1 unless defined(
+            $cfgTpl = iMSCP::File->new(
+                filename => "$self->{'cfgDir'}/imscp.cnf"
+            )->get()
+        );
     }
 
     $cfgTpl .= <<'EOF';
@@ -573,11 +607,9 @@ max_allowed_packet = 500M
 EOF
 
     ( my $user = ::setupGetQuestion( 'DATABASE_USER' ) ) =~ s/"/\\"/g;
-    (
-        my $pwd = decryptRijndaelCBC(
-            $::imscpDBKey, $::imscpDBiv, ::setupGetQuestion( 'DATABASE_PASSWORD' )
-        )
-    ) =~ s/"/\\"/g;
+    ( my $pwd = decryptRijndaelCBC(
+        $::imscpDBKey, $::imscpDBiv, ::setupGetQuestion( 'DATABASE_PASSWORD' )
+    ) ) =~ s/"/\\"/g;
     my $variables = {
         DATABASE_HOST     => ::setupGetQuestion( 'DATABASE_HOST' ),
         DATABASE_PORT     => ::setupGetQuestion( 'DATABASE_PORT' ),
@@ -591,10 +623,12 @@ EOF
         $cfgTpl .= "innodb_use_native_aio = $innoDbUseNativeAIO\n";
     }
 
-    # Fix For: The 'INFORMATION_SCHEMA.SESSION_VARIABLES' feature is disabled; see the documentation for
-    # 'show_compatibility_56' (3167) - Occurs when executing mysqldump with Percona server 5.7.x
+    # Fix For: The 'INFORMATION_SCHEMA.SESSION_VARIABLES' feature is disabled;
+    # see the documentation for 'show_compatibility_56' (3167) - Occurs when
+    # executing mysqldump with Percona server 5.7.x
     if ( $::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::percona'
-        && version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.7.6' ) ) {
+        && version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.7.6' )
+    ) {
         $cfgTpl .= "show_compatibility_56 = 1\n";
     }
 
@@ -617,7 +651,7 @@ EOF
     $rs = $file->save();
     $rs ||= $file->owner( $rootUName, $mysqlGName );
     $rs ||= $file->mode( 0640 );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldBuildConf' );
+    $rs ||= $self->{'events'}->trigger( 'afterSqldBuildConf' );
 }
 
 =item _updateServerConfig( )
@@ -635,9 +669,13 @@ sub _updateServerConfig
 {
     my ( $self ) = @_;
 
-    if ( iMSCP::ProgramFinder::find( 'dpkg' ) && iMSCP::ProgramFinder::find( 'mysql_upgrade' ) ) {
+    if ( iMSCP::ProgramFinder::find( 'dpkg' )
+        && iMSCP::ProgramFinder::find( 'mysql_upgrade' )
+    ) {
         my $rs = execute(
-            "dpkg -l mysql-community* percona-server-* | cut -d' ' -f1 | grep -q 'ii'", \my $stdout, \my $stderr
+            "dpkg -l mysql-community* percona-server-* | cut -d' ' -f1 | grep -q 'ii'",
+            \my $stdout,
+            \my $stderr
         );
         debug( $stdout ) if $stdout;
         debug( $stderr ) if $stderr;
@@ -647,8 +685,13 @@ sub _updateServerConfig
         unless ( $rs ) {
             # Filter all "duplicate column", "duplicate key" and "unknown column"
             # errors as the command is designed to be idempotent.
-            $rs = execute( "mysql_upgrade 2>&1 | egrep -v '^(1|\@had|ERROR (1054|1060|1061))'", \$stdout );
-            error( sprintf( "Couldn't upgrade SQL server system tables: %s", $stdout )) if $rs;
+            $rs = execute(
+                "mysql_upgrade 2>&1 | egrep -v '^(1|\@had|ERROR (1054|1060|1061))'",
+                \$stdout
+            );
+            error( sprintf(
+                "Couldn't upgrade SQL server system tables: %s", $stdout
+            )) if $rs;
             return $rs if $rs;
             debug( $stdout ) if $stdout;
         }
@@ -663,13 +706,16 @@ sub _updateServerConfig
 
     eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = 1;
+        local $dbh->{'RaiseError'} = TRUE;
 
         # Disable unwanted plugins (bc reasons)
-        for ( qw/ cracklib_password_check simple_password_check validate_password / ) {
-            $dbh->do( "UNINSTALL PLUGIN $_" ) if $dbh->selectrow_hashref(
-                "SELECT name FROM mysql.plugin WHERE name = '$_'"
+        for my $plugin ( qw/
+            cracklib_password_check simple_password_check validate_password
+        / ) {
+            next unless $dbh->selectrow_hashref(
+                "SELECT name FROM mysql.plugin WHERE name = '$plugin'"
             );
+            $dbh->do( "UNINSTALL PLUGIN $plugin" )
         }
     };
     if ( $@ ) {
@@ -695,15 +741,16 @@ sub _setupMasterSqlUser
     my $user = ::setupGetQuestion( 'DATABASE_USER' );
     my $userHost = ::setupGetQuestion( 'DATABASE_USER_HOST' );
     my $oldUserHost = $::imscpOldConfig{'DATABASE_USER_HOST'};
-    my $pwd = decryptRijndaelCBC( $::imscpDBKey, $::imscpDBiv, ::setupGetQuestion( 'DATABASE_PASSWORD' ));
+    my $pwd = decryptRijndaelCBC(
+        $::imscpDBKey, $::imscpDBiv, ::setupGetQuestion( 'DATABASE_PASSWORD' )
+    );
     my $oldUser = $::imscpOldConfig{'DATABASE_USER'};
 
     # Remove old user if any
     for my $sqlUser ( $oldUser, $user ) {
-        next unless $sqlUser;
-
+        next unless length $sqlUser;
         for my $host ( $userHost, $oldUserHost ) {
-            next unless $host;
+            next unless length $host;
             $self->{'sqld'}->dropUser( $sqlUser, $host );
         }
     }
@@ -715,11 +762,18 @@ sub _setupMasterSqlUser
     local $@;
     eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = 1;
-        $dbh->do( 'GRANT ALL PRIVILEGES ON *.* TO ?@? WITH GRANT OPTION', undef, $user, $userHost );
+        local $dbh->{'RaiseError'} = TRUE;
+        $dbh->do(
+            'GRANT ALL PRIVILEGES ON *.* TO ?@? WITH GRANT OPTION',
+            undef,
+            $user,
+            $userHost
+        );
     };
     if ( $@ ) {
-        error( sprintf( "Couldn't grant privileges to master i-MSCP SQL user: %s", $@ ));
+        error( sprintf(
+            "Couldn't grant privileges to master i-MSCP SQL user: %s", $@
+        ));
         return 1;
     }
 
@@ -744,7 +798,9 @@ sub _setupSecureInstallation
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->getInstance()->trigger( 'beforeSetupSecureSqlInstallation' );
+    my $rs = $self->{'events'}->getInstance()->trigger(
+        'beforeSetupSecureSqlInstallation'
+    );
     return $rs if $rs;
 
     eval {
@@ -752,20 +808,24 @@ sub _setupSecureInstallation
         my $oldDbName = $db->useDatabase( 'mysql' );
 
         my $dbh = $db->getRawDb();
-        local $dbh->{'RaiseError'} = 1;
+        local $dbh->{'RaiseError'} = TRUE;
 
         # Remove anonymous users
         $dbh->do( "DELETE FROM user WHERE User = ''" );
-
         # Remove test database if any
         $dbh->do( 'DROP DATABASE IF EXISTS `test`' );
-
         # Remove privileges on test database
         $dbh->do( "DELETE FROM db WHERE Db = 'test' OR Db = 'test\\_%'" );
 
         # Disallow remote root login
         if ( $::imscpConfig{'SQL_PACKAGE'} ne 'Servers::sqld::remote' ) {
-            $dbh->do( "DELETE FROM user WHERE User = 'root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')" );
+            $dbh->do(
+                "
+                    DELETE FROM user
+                    WHERE User = 'root'
+                    AND Host NOT IN ('localhost', '127.0.0.1', '::1')
+                "
+            );
         }
 
         $dbh->do( 'FLUSH PRIVILEGES' );
@@ -776,7 +836,9 @@ sub _setupSecureInstallation
         return 1;
     }
 
-    $self->{'eventManager'}->getInstance()->trigger( 'afterSetupSecureSqlInstallation' );
+    $self->{'events'}->getInstance()->trigger(
+        'afterSetupSecureSqlInstallation'
+    );
 }
 
 =item _setupDatabase( )
@@ -794,16 +856,23 @@ sub _setupDatabase
     my $dbName = ::setupGetQuestion( 'DATABASE_NAME' );
 
     unless ( $self->_setupIsImscpDb( $dbName ) ) {
-        my $rs = $self->{'eventManager'}->getInstance()->trigger( 'beforeSetupDatabase', \$dbName );
+        my $rs = $self->{'events'}->getInstance()->trigger(
+            'beforeSetupDatabase', \$dbName
+        );
         return $rs if $rs;
 
         my $db = iMSCP::Database->factory();
 
         eval {
             my $dbh = $db->getRawDb();
-            local $dbh->{'RaiseError'} = 1;
+            local $dbh->{'RaiseError'} = TRUE;
             my $qdbName = $dbh->quote_identifier( $dbName );
-            $dbh->do( "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;" );
+            $dbh->do(
+                "
+                    CREATE DATABASE $qdbName
+                    CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+                "
+            );
         };
         if ( $@ ) {
             error( $@ );
@@ -817,16 +886,29 @@ sub _setupDatabase
             return 1;
         }
 
-        $rs = ::setupImportSqlSchema( $db, "$::imscpConfig{'CONF_DIR'}/database/database.sql" );
-        $rs ||= $self->{'eventManager'}->getInstance()->trigger( 'afterSetupDatabase', \$dbName );
+        $rs = execute(
+            '/usr/bin/mysql ' . escapeShell( $dbName ) . ' < '
+                . "$::imscpConfig{'CONF_DIR'}/database/database.sql",
+            \my $stdout,
+            \my $stderr
+        );
+        debug( $stdout ) if length $stdout;
+        error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
+
+        $self->{'events'}->getInstance()->trigger(
+            'afterSetupDatabase', \$dbName
+        );
     }
 
-    # In all cases, we process database update. This is important because sometime some developer forget to update the
-    # database revision in the main database.sql file.
-    my $rs = $self->{'eventManager'}->getInstance()->trigger( 'beforeSetupUpdateDatabase' );
+    # In all cases, we process database update. This is important because
+    # sometime some developer forget to update the  database revision in
+    # the main database.sql file.
+    my $rs = $self->{'events'}->getInstance()->trigger(
+        'beforeSetupUpdateDatabase'
+    );
     $rs ||= execute(
-        [ 
+        [
             '/usr/bin/php',
             '-d', 'date.timezone=UTC',
             "$::imscpConfig{'ROOT_DIR'}/engine/setup/imscp-update-db.php"
@@ -839,7 +921,9 @@ sub _setupDatabase
 
     $::imscpConfig{'DATABASE_LAST_OPTIMIZATION'} = time() unless $rs;
 
-    $rs ||= $self->{'eventManager'}->getInstance()->trigger( 'afterSetupUpdateDatabase' );
+    $rs ||= $self->{'events'}->getInstance()->trigger(
+        'afterSetupUpdateDatabase'
+    );
 }
 
 =item _isMysqldInsideCt( )
@@ -854,7 +938,11 @@ sub _isMysqldInsideCt
 {
     return 0 unless -f '/proc/user_beancounters';
 
-    my $rs = execute( 'cat /proc/1/status | grep --color=never envID', \my $stdout, \my $stderr );
+    my $rs = execute(
+        'cat /proc/1/status | grep --color=never envID',
+        \my $stdout,
+        \my $stderr
+    );
     debug( $stdout ) if $stdout;
     debug( $stderr ) if $rs && $stderr;
     return $rs if $rs;
@@ -881,8 +969,10 @@ sub _setupIsImscpDb
     my $db = iMSCP::Database->factory();
     my $dbh = $db->getRawDb();
 
-    local $dbh->{'RaiseError'} = 1;
-    return 0 unless $dbh->selectrow_hashref( 'SHOW DATABASES LIKE ?', undef, $dbName );
+    local $dbh->{'RaiseError'} = TRUE;
+    return 0 unless $dbh->selectrow_hashref(
+        'SHOW DATABASES LIKE ?', undef, $dbName
+    );
 
     my $tables = $db->getDbTables( $dbName );
     return 0 unless @{ $tables };
@@ -929,15 +1019,9 @@ sub _oldEngineCompatibility
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldOldEngineCompatibility' );
-    return $rs if $rs;
+    return 0 unless -f "$self->{'cfgDir'}/mysql.old.data";
 
-    if ( -f "$self->{'cfgDir'}/mysql.old.data" ) {
-        $rs = iMSCP::File->new( filename => "$self->{'cfgDir'}/mysql.old.data" )->delFile();
-        return $rs if $rs;
-    }
-
-    $self->{'eventManager'}->trigger( 'afterSqldOldEngineCompatibility' );
+    iMSCP::File->new( filename => "$self->{'cfgDir'}/mysql.old.data" )->delFile();
 }
 
 =back

@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -48,7 +48,9 @@ sub isEnabled
 {
     my ( $self ) = @_;
 
-    croak( sprintf( 'The %s class must implement the isEnabled() method', ref $self ));
+    croak( sprintf(
+        'The %s class must implement the isEnabled() method', ref $self
+    ));
 }
 
 =item enable( $service )
@@ -68,7 +70,9 @@ sub enable
 {
     my ( $self ) = @_;
 
-    croak( sprintf( 'The %s class must implement the enable() method', ref $self ));
+    croak( sprintf(
+        'The %s class must implement the enable() method', ref $self
+    ));
 }
 
 =item disable( $service )
@@ -89,7 +93,9 @@ sub disable
 {
     my ( $self ) = @_;
 
-    croak( sprintf( 'The %s class must implement the disable() method', ref $self ));
+    croak( sprintf(
+        'The %s class must implement the disable() method', ref $self
+    ));
 }
 
 =item remove( $service )
@@ -111,7 +117,9 @@ sub remove
 {
     my ( $self ) = @_;
 
-    croak( sprintf( 'The %s class must implement the remove() method', ref $self ));
+    croak( sprintf(
+        'The %s class must implement the remove() method', ref $self
+    ));
 }
 
 =item start( $service )
@@ -129,7 +137,9 @@ sub start
 {
     my ( $self ) = @_;
 
-    croak( sprintf( 'The %s class must implement the start() method', ref $self ));
+    croak( sprintf(
+        'The %s class must implement the start() method', ref $self
+    ));
 }
 
 =item stop( $service )
@@ -147,7 +157,9 @@ sub stop
 {
     my ( $self ) = @_;
 
-    croak( sprintf( 'The %s class must implement the stop() method', ref $self ));
+    croak( sprintf(
+        'The %s class must implement the stop() method', ref $self
+    ));
 }
 
 =item restart( $service )
@@ -165,7 +177,9 @@ sub restart
 {
     my ( $self ) = @_;
 
-    croak( sprintf( 'The %s class must implement the restart() method', ref $self ));
+    croak( sprintf(
+        'The %s class must implement the restart() method', ref $self
+    ));
 }
 
 =item reload( $service )
@@ -184,7 +198,9 @@ sub reload
 {
     my ( $self ) = @_;
 
-    croak( sprintf( 'The %s class must implement the reload() method', ref $self ));
+    croak( sprintf(
+        'The %s class must implement the reload() method', ref $self
+    ));
 }
 
 =item isRunning( $service )
@@ -200,7 +216,9 @@ sub isRunning
 {
     my ( $self ) = @_;
 
-    croak( sprintf( 'The %s class must implement the isRunning() method', ref $self ));
+    croak( sprintf(
+        'The %s class must implement the isRunning() method', ref $self
+    ));
 }
 
 =item hasService( $service )
@@ -222,7 +240,9 @@ sub hasService
 {
     my ( $self ) = @_;
 
-    croak( sprintf( 'The %s class must implement the hasService() method', ref $self ));
+    croak( sprintf(
+        'The %s class must implement the hasService() method', ref $self
+    ));
 }
 
 =back

@@ -26,7 +26,7 @@ package autoinstaller::Functions;
 use strict;
 use warnings;
 use autouse 'iMSCP::Stepper' => qw/ step /;
-use File::Basename;
+use File::Basename 'fileparse';
 use File::Find;
 use iMSCP::Boolean;
 use iMSCP::Bootstrapper;
@@ -40,7 +40,7 @@ use iMSCP::Execute 'execute';
 use iMSCP::File;
 use iMSCP::Getopt;
 use iMSCP::LsbRelease;
-use iMSCP::Umask;
+use iMSCP::Umask '$UMASK';
 use iMSCP::Rights 'setRights';
 use version;
 use parent 'Exporter';
@@ -48,7 +48,6 @@ use parent 'Exporter';
 our @EXPORT_OK = qw/ loadConfig build install /;
 
 my $autoinstallerAdapterInstance;
-my $eventManager;
 
 =head1 DESCRIPTION
 
@@ -126,9 +125,6 @@ sub loadConfig
     $::imscpConfig{'DISTRO_RELEASE'} = iMSCP::LsbRelease
         ->getInstance()
         ->getRelease( TRUE, TRUE );
-
-    $eventManager = iMSCP::EventManager->getInstance();
-    undef;
 }
 
 =item build( )
@@ -153,8 +149,8 @@ sub build
         && $::imscpConfig{'PO_SERVER'}
         && $::imscpConfig{'SQL_SERVER'}
     ) ) {
-        iMSCP::Getopt->noprompt( 0 );
-        $::skippackages = 0;
+        iMSCP::Getopt->noprompt( FALSE );
+        $::skippackages = FALSE;
     }
 
     my $rs = 0;
@@ -206,13 +202,13 @@ sub build
         ]
     );
 
-    $rs ||= $eventManager->trigger( 'preBuild', \@steps );
+    $rs ||= iMSCP::EventManager->getInstance()->trigger( 'preBuild', \@steps );
     $rs ||= _getDistroAdapter()->preBuild( \@steps );
     return $rs if $rs;
 
     my ( $step, $nbSteps ) = ( 1, scalar @steps );
-    for ( @steps ) {
-        $rs = step( @{ $_ }, $nbSteps, $step );
+    for my $task( @steps ) {
+        $rs = step( @{ $task }, $nbSteps, $step );
         error( 'An error occurred while performing build steps' )
             if $rs && $rs != 50;
         return $rs if $rs;
@@ -221,7 +217,7 @@ sub build
 
     iMSCP::Dialog->getInstance()->endGauge();
 
-    $rs = $eventManager->trigger( 'postBuild' );
+    $rs = iMSCP::EventManager->getInstance()->trigger( 'postBuild' );
     $rs ||= _getDistroAdapter()->postBuild();
     return $rs if $rs;
 
@@ -238,16 +234,16 @@ sub build
         $::{'INST_PREF'}
     );
 
-    $rs = $eventManager->trigger( 'afterPostBuild' );
+    $rs = iMSCP::EventManager->getInstance()->trigger( 'afterPostBuild' );
     return $rs if $rs;
 
-    my %confmap = (
+    my %confMap = (
         imscp    => \%::imscpConfig,
         imscpOld => \%::imscpOldConfig
     );
 
     # Write configuration
-    while ( my ( $name, $config ) = each %confmap ) {
+    while ( my ( $name, $config ) = each %confMap ) {
         if ( $name eq 'imscpOld' ) {
             local $UMASK = 027;
             iMSCP::File->new(
@@ -260,7 +256,6 @@ sub build
         @config{ keys %{ $config } } = values %{ $config };
         untie %config;
     }
-    undef % confmap;
 
     endDebug();
 }
@@ -282,8 +277,8 @@ sub install
         require "$FindBin::Bin/engine/setup/imscp-setup-methods.pl";
     }
 
-    # Not really the right place to do that job but we have not really choice because this must be done before
-    # installation of new files
+    # Not really the right place to do that job but we have not really choice
+    # because this must be done before installation of new files
     my $serviceMngr = iMSCP::Service->getInstance();
     if ( $serviceMngr->hasService( 'imscp_network' ) ) {
         $serviceMngr->remove( 'imscp_network' );
@@ -347,14 +342,16 @@ EOF
         ]
     );
 
-    my $rs = $eventManager->trigger( 'preInstall', \@steps );
+    my $rs = iMSCP::EventManager->getInstance()->trigger(
+        'preInstall', \@steps
+    );
     $rs ||= _getDistroAdapter()->preInstall( \@steps );
     return $rs if $rs;
 
     my $step = 1;
     my $nbSteps = scalar @steps;
-    for ( @steps ) {
-        $rs = step( @{ $_ }, $nbSteps, $step );
+    for my $task( @steps ) {
+        $rs = step( @{ $task }, $nbSteps, $step );
         error( 'An error occurred while performing installation steps' ) if $rs;
         return $rs if $rs;
         $step++;
@@ -362,7 +359,7 @@ EOF
 
     iMSCP::Dialog->getInstance()->endGauge();
 
-    $rs = $eventManager->trigger( 'postInstall' );
+    $rs = iMSCP::EventManager->getInstance()->trigger( 'postInstall' );
     $rs ||= _getDistroAdapter()->postInstall();
     return $rs if $rs;
 
@@ -455,12 +452,12 @@ sub _showUpdateWarning
     my ( $dialog ) = @_;
 
     my $warning = '';
-    if ( $::imscpConfig{'Version'} !~ /git/i ) {
+    if ( index( $::imscpConfig{'Version'}, 'Git') == -1 ) {
         $warning = <<"EOF";
 
 Before continue, be sure to have read the errata file:
 
-    \\Zbhttps://github.com/i-MSCP/imscp/blob/1.5.x/docs/1.5.x_errata.md\\ZB
+    \\Zbhttps://github.com/i-MSCP/imscp/blob/1.5.3-maintenance/docs/1.5.x_errata.md\\ZB
 EOF
 
     } else {
@@ -472,7 +469,7 @@ We would remind you that the Git version can be highly unstable and that the i-M
 
 Before continue, be sure to have read the errata file:
 
-    \\Zbhttps://github.com/i-MSCP/imscp/blob/1.5.x/docs/1.5.x_errata.md\\ZB
+    \\Zbhttps://github.com/i-MSCP/imscp/blob/1.5.3-maintenance/docs/1.5.x_errata.md\\ZB
 EOF
     }
 
@@ -480,7 +477,7 @@ EOF
 
     $dialog->set( 'yes-label', 'Continue' );
     $dialog->set( 'no-label', 'Abort' );
-    return 50 if $dialog->yesno( <<"EOF", 'abort_by_default' );
+    return 50 if $dialog->yesno( <<"EOF", TRUE );
 
 \\Zb\\Z1WARNING - PLEASE READ CAREFULLY\\Zn\\ZB
 $warning
@@ -511,7 +508,9 @@ sub _confirmDistro
     my $distroCodename = ucfirst( $lsbRelease->getCodename( TRUE ));
     my $distroRelease = $lsbRelease->getRelease( TRUE );
 
-    if ( $distroID ne 'n/a' && $distroCodename ne 'n/a' && $distroID =~ /^(?:de(?:bi|vu)an|ubuntu)$/i ) {
+    if ( $distroID ne 'n/a' && $distroCodename ne 'n/a'
+        && $distroID =~ /^(?:de(?:bi|vu)an|ubuntu)$/i
+    ) {
         unless ( -f "$FindBin::Bin/autoinstaller/Packages/" . lc( $distroID )
             . '-' . lc( $distroCodename ) . '.xml'
         ) {
@@ -577,7 +576,8 @@ sub _askInstallerMode
 
     $dialog->set( 'cancel-label', 'Abort' );
 
-    my ( $rs, $mode ) = $dialog->radiolist( <<"EOF", [ 'auto', 'manual' ], 'auto' );
+    my ( $rs, $mode ) = $dialog->radiolist(
+        <<"EOF", [ 'auto', 'manual' ], 'auto' );
 
 Please choose the installer mode:
 
@@ -594,7 +594,8 @@ EOF
 
 =item _installDistroPackages( )
 
- Trigger packages installation/uninstallation tasks from distro autoinstaller adapter
+ Trigger packages installation/uninstallation tasks from distro autoinstaller
+ adapter
 
  Return int 0 on success, other on failure
 
@@ -672,7 +673,9 @@ sub _buildConfigFiles
     my $rs = _processXmlFile( $file );
     return $rs if $rs;
 
-    for my $dir ( iMSCP::Dir->new( dirname => $defaultConfigDir )->getDirs() ) {
+    for my $dir ( iMSCP::Dir->new(
+        dirname => $defaultConfigDir
+    )->getDirs() ) {
         # Override sub config dir path if it is available in selected distro,
         # else set it to default path
         $confDir = -d "$distroConfigDir/$dir"
@@ -805,28 +808,32 @@ sub _savePersistentData
     iMSCP::Dir->new(
         dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/themes/user_logos"
     )->rcopy(
-        "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/ispLogos", { preserve => 'no' }
+        "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/ispLogos",
+        { preserve => 'no' }
     ) if -d "$::imscpConfig{'GUI_ROOT_DIR'}/themes/user_logos";
 
     # Save ISP logos (new location)
     iMSCP::Dir->new(
         dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/data/ispLogos"
     )->rcopy(
-        "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/ispLogos", { preserve => 'no' }
+        "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/ispLogos",
+        { preserve => 'no' }
     ) if -d "$::imscpConfig{'GUI_ROOT_DIR'}/data/ispLogos";
 
     # Save GUI logs
     iMSCP::Dir->new(
         dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/data/logs"
     )->rcopy(
-        "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/logs", { preserve => 'no' }
+        "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/logs",
+        { preserve => 'no' }
     ) if -d "$::imscpConfig{'GUI_ROOT_DIR'}/data/logs";
 
     # Save persistent data
     iMSCP::Dir->new(
         dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent"
     )->rcopy(
-        "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent", { preserve => 'no' }
+        "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent",
+        { preserve => 'no' }
     ) if -d "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent";
 
     # Save RainLoop data directory to new location if any
@@ -836,7 +843,8 @@ sub _savePersistentData
         iMSCP::Dir->new(
             dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/public/tools/rainloop/data"
         )->rcopy(
-            "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/rainloop", { preserve => 'no' }
+            "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/rainloop",
+            { preserve => 'no' }
         );
 
         my $dataDir;
@@ -857,11 +865,13 @@ sub _savePersistentData
         iMSCP::Dir->new( dirname => $dataDir )->remove();
     }
 
-    # Save software (older path ./gui/data/software) to new path (./gui/data/persistent/software)
+    # Save software (older path ./gui/data/software) to new path
+    # (./gui/data/persistent/software)
     iMSCP::Dir->new(
         dirname => "$::imscpConfig{'GUI_ROOT_DIR'}/data/softwares"
     )->rcopy(
-        "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/softwares", { preserve => 'no' }
+        "$destdir$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/softwares",
+        { preserve => 'no' }
     ) if -d "$::imscpConfig{'GUI_ROOT_DIR'}/data/softwares";
 
     # Save vendor data
@@ -905,7 +915,9 @@ sub _savePersistentData
                 ) {
                     my $rs = iMSCP::File->new(
                         filename => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/$packageTypeDir/$packageDir/$handlerFile"
-                    )->copyFile( "$destdir$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/$packageTypeDir/$packageDir/$handlerFile" );
+                    )->copyFile(
+                        "$destdir$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/$packageTypeDir/$packageDir/$handlerFile"
+                    );
                     return $rs if $rs;
                 }
             }
@@ -925,7 +937,7 @@ sub _savePersistentData
 
 sub _removeObsoleteFiles
 {
-    for ( "$::imscpConfig{'CACHE_DATA_DIR'}/addons",
+    for my $dir( "$::imscpConfig{'CACHE_DATA_DIR'}/addons",
         "$::imscpConfig{'CONF_DIR'}/apache/backup",
         "$::imscpConfig{'CONF_DIR'}/apache/skel/alias/phptmp",
         "$::imscpConfig{'CONF_DIR'}/apache/skel/subdomain/phptmp",
@@ -951,10 +963,10 @@ sub _removeObsoleteFiles
         "$::imscpConfig{'CONF_DIR'}/roundcube",
         "$::imscpConfig{'CONF_DIR'}/rainloop"
     ) {
-        iMSCP::Dir->new( dirname => $_ )->remove();
+        iMSCP::Dir->new( dirname => $dir )->remove();
     }
 
-    for ( "$::imscpConfig{'CONF_DIR'}/apache/parts/domain_disabled_ssl.tpl",
+    for my $file( "$::imscpConfig{'CONF_DIR'}/apache/parts/domain_disabled_ssl.tpl",
         "$::imscpConfig{'CONF_DIR'}/apache/parts/domain_redirect.tpl",
         "$::imscpConfig{'CONF_DIR'}/apache/parts/domain_redirect_ssl.tpl",
         "$::imscpConfig{'CONF_DIR'}/apache/parts/domain_ssl.tpl",
@@ -975,15 +987,16 @@ sub _removeObsoleteFiles
         "$::imscpConfig{'CONF_DIR'}/skel/domain/.htpasswd",
         "$::imscpConfig{'IMSCP_HOMEDIR'}/packages/composer.phar",
         '/usr/sbin/maillogconvert.pl',
-        # Due to a mistake in previous i-MSCP versions (Upstart conffile copied into systemd confdir)
+        # Due to a mistake in previous i-MSCP versions (Upstart conffile copied
+        # into systemd confdir)
         "/etc/systemd/system/php5-fpm.override",
         "/etc/init/php5-fpm.override", # Removed in 1.4.x
         "$::imscpConfig{'CONF_DIR'}/imscp.old.conf",
         '/usr/local/lib/imscp_panel/imscp_panel_checkconf', # Removed in 1.4.x,
         '/var/local/imscp/composer.phar'
     ) {
-        next unless -f;
-        my $rs = iMSCP::File->new( filename => $_ )->delFile();
+        next unless -f $file;
+        my $rs = iMSCP::File->new( filename => $file )->delFile();
         return $rs if $rs;
     }
 
@@ -1118,11 +1131,14 @@ sub _processFolder
 
     $dir->make( {
         user  => defined $data->{'user'}
-            ? _expandVars( $data->{'owner'} ) : undef,
+            ? _expandVars( $data->{'owner'} )
+            : undef,
         group => defined $data->{'group'}
-            ? _expandVars( $data->{'group'} ) : undef,
+            ? _expandVars( $data->{'group'} )
+            : undef,
         mode  => defined $data->{'mode'}
-            ? oct( $data->{'mode'} ) : undef
+            ? oct( $data->{'mode'} )
+            : undef
     } );
 }
 
@@ -1141,9 +1157,9 @@ sub _copyConfig
 
     if ( defined $data->{'if'} && !eval _expandVars( $data->{'if'} ) ) {
         return 0 if $data->{'kept'};
-        ( my $syspath = $data->{'content'} ) =~ s/^$::{'INST_PREF'}//;
-        return 0 unless $syspath ne '/' && -f $syspath;
-        return iMSCP::File->new( filename => $syspath )->delFile();
+        ( my $sysPath = $data->{'content'} ) =~ s/^$::{'INST_PREF'}//;
+        return 0 unless $sysPath ne '/' && -f $sysPath;
+        return iMSCP::File->new( filename => $sysPath )->delFile();
     }
 
     my ( $name, $path ) = fileparse( $data->{'content'} );
@@ -1175,8 +1191,12 @@ sub _copyConfig
 
     if ( defined $data->{'user'} || defined $data->{'group'} ) {
         my $rs = $file->owner(
-            ( defined $data->{'user'} ? _expandVars( $data->{'user'} ) : -1 ),
-            ( defined $data->{'group'} ? _expandVars( $data->{'group'} ) : -1 )
+            ( defined $data->{'user'}
+                ? _expandVars( $data->{'user'} ) : -1
+            ),
+            ( defined $data->{'group'}
+                ? _expandVars( $data->{'group'} ) : -1
+            )
         );
         return $rs if $rs;
     }
@@ -1202,15 +1222,11 @@ sub _copy
     my ( $name, $path ) = fileparse( $data->{'content'} );
 
     if ( -d $name ) {
-        iMSCP::Dir->new(
-            dirname => $name
-        )->rcopy(
+        iMSCP::Dir->new( dirname => $name )->rcopy(
             "$path/$name", { preserve => 'no' }
         );
     } else {
-        my $rs = iMSCP::File->new(
-            filename => $name
-        )->copyFile(
+        my $rs = iMSCP::File->new( filename => $name )->copyFile(
             $path, { preserve => 'no' }
         );
         return $rs if $rs;
@@ -1311,23 +1327,22 @@ sub _chmodFile
 
 sub _getDistroAdapter
 {
-    return $autoinstallerAdapterInstance
-        if defined $autoinstallerAdapterInstance;
+    CORE::state $adapter;
 
-    my $distribution = iMSCP::LsbRelease->getInstance()->getId( TRUE );
+    $adapter //= do {
+        eval {
+            my $distID = iMSCP::LsbRelease->getInstance()->getId( TRUE );
+            my $file = "$FindBin::Bin/autoinstaller/Adapter/${distID}Adapter.pm";
+            my $distAdapter = "autoinstaller::Adapter::${distID}Adapter";
+            require $file;
+            $distAdapter->new()
+        } or die( sprintf(
+            "Couldn't instantiate %s autoinstaller adapter: %s",
+            iMSCP::LsbRelease->getInstance()->getId( TRUE ),
+            $@
+        ));
 
-    eval {
-        my $file = "$FindBin::Bin/autoinstaller/Adapter/${distribution}Adapter.pm";
-        my $adapterClass = "autoinstaller::Adapter::${distribution}Adapter";
-
-        require $file;
-        $autoinstallerAdapterInstance = $adapterClass->new()
     };
-
-    die( sprintf(
-        "Couldn't instantiate %s autoinstaller adapter: %s", $distribution, $@
-    )) if $@;
-    $autoinstallerAdapterInstance;
 }
 
 =back

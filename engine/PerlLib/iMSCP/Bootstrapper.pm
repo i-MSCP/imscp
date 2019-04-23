@@ -109,9 +109,9 @@ sub loadMainConfig
     my (undef, $options) = @_;
 
     require iMSCP::Config;
-    untie %main::imscpConfig;
+    untie %::imscpConfig;
     tie
-        %main::imscpConfig,
+        %::imscpConfig,
         'iMSCP::Config',
         fileName    => ( $^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/' ) . 'imscp/imscp.conf',
         nocreate    => $options->{'nocreate'} // TRUE,

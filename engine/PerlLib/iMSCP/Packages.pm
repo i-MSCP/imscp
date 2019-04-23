@@ -69,9 +69,19 @@ sub _init
     my ( $self ) = @_;
 
     local $CWD = dirname( __FILE__ ) . '/../Package/';
-    s/(.*)\.pm$/Package::$1/ for @{ $self->{'__packages__'} } = grep (!/^AbstractPackageCollection\.pm$/, <*.pm>);
-    eval "require $_; 1" or die( sprintf( "Couldn't load %s package class: %s", $_, $@ )) for @{ $self->{'__packages__'} };
-    @{ $self->{'__packages__'} } = sort { $b->getPriority() <=> $a->getPriority() } @{ $self->{'__packages__'} };
+
+    s/(.*)\.pm$/Package::$1/ for @{ $self->{'__packages__'} } = grep (
+        !/^AbstractPackageCollection\.pm$/, <*.pm>
+    );
+
+    eval "require $_; 1" or die( sprintf(
+        "Couldn't load %s package class: %s", $_, $@
+    )) for @{ $self->{'__packages__'} };
+
+    @{ $self->{'__packages__'} } = sort {
+        $b->getPriority() <=> $a->getPriority()
+    } @{ $self->{'__packages__'} };
+
     $self;
 }
 

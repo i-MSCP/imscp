@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -36,20 +36,22 @@ use parent 'Common::SingletonClass';
 
 =over 4
 
-=item registerSetupListeners( \%eventManager )
+=item registerSetupListeners( \%events )
 
  Register setup event listeners
 
- Param iMSCP::EventManager \%eventManager
+ Param iMSCP::EventManager \%events
  Return int 0 on success, other on failure
 
 =cut
 
 sub registerSetupListeners
 {
-    my (undef, $eventManager) = @_;
+    my ( undef, $events ) = @_;
 
-    Servers::server::local::installer->getInstance()->registerSetupListeners( $eventManager );
+    Servers::server::local::installer->getInstance()->registerSetupListeners(
+        $events
+    );
 }
 
 =item preinstall( )
@@ -62,11 +64,11 @@ sub registerSetupListeners
 
 sub preinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeServerPreInstall', 'local' );
+    my $rs = $self->{'events'}->trigger( 'beforeServerPreInstall', 'local' );
     $rs ||= Servers::server::local::installer->getInstance()->preinstall();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterServerPreInstall', 'local' );
+    $rs ||= $self->{'events'}->trigger( 'afterServerPreInstall', 'local' );
 }
 
 =item install( )
@@ -79,11 +81,11 @@ sub preinstall
 
 sub install
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeServerInstall', 'local' );
+    my $rs = $self->{'events'}->trigger( 'beforeServerInstall', 'local' );
     $rs ||= Servers::server::local::installer->getInstance()->install();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterServerInstall', 'local' );
+    $rs ||= $self->{'events'}->trigger( 'afterServerInstall', 'local' );
 }
 
 =back
@@ -102,9 +104,9 @@ sub install
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'events'} = iMSCP::EventManager->getInstance();
     $self;
 }
 

@@ -26,7 +26,7 @@ package Servers::mta::postfix;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Servers::mta::postfix::installer Servers::mta::postfix::uninstaller /;
-use File::Basename;
+use File::Basename 'basename';
 use File::Temp;
 use iMSCP::Boolean;
 use iMSCP::Config;
@@ -36,7 +36,7 @@ use iMSCP::EventManager;
 use iMSCP::Execute qw/ execute executeNoWait /;
 use iMSCP::File;
 use iMSCP::Getopt;
-use iMSCP::Rights;
+use iMSCP::Rights 'setRights';
 use iMSCP::Service;
 use Tie::File;
 use parent 'Common::SingletonClass';
@@ -154,9 +154,9 @@ sub uninstall
     my $rs = $self->{'events'}->trigger( 'beforeMtaUninstall', 'postfix' );
     $rs ||= Servers::mta::postfix::uninstaller->getInstance()->uninstall();
     $rs ||= $self->{'events'}->trigger( 'afterMtaUninstall', 'postfix' );
+    return $rs if $rs;
 
-    unless ( $rs
-        || !iMSCP::Service->getInstance()->hasService(
+    if ( iMSCP::Service->getInstance()->hasService(
         $self->{'config'}->{'MTA_SNAME'}
     ) ) {
         $self->{'restart'} = TRUE;
@@ -164,7 +164,7 @@ sub uninstall
         @{ $self }{qw/ restart reload /} = ( FALSE, FALSE );
     }
 
-    $rs;
+    0;
 }
 
 =item setEnginePermissions( )
@@ -965,7 +965,11 @@ sub postmap
     my ( undef, $mapPath, $mapType ) = @_;
     $mapType ||= 'hash';
 
-    my $rs = execute( "postmap $mapType:$mapPath", \my $stdout, \my $stderr );
+    my $rs = execute(
+        [ 'postmap', "$mapType:$mapPath" ],
+        \my $stdout,
+        \my $stderr
+    );
     debug( $stdout ) if $stdout;
     error( $stderr || 'Unknown error' ) if $rs;
     $rs;
@@ -973,60 +977,66 @@ sub postmap
 
 =item postconf( $conffile, %params )
 
- Provides an interface to POSTCONF(1) for editing parameters in Postfix main.cf configuration file
+ Provides an interface to POSTCONF(1) for editing parameters in Postfix main.cf file
 
- Param hash %params A hash where each key is a Postfix parameter name and the value, a hashes describing in order:
-  - action : Action to be performed (add|replace|remove) -- Default add
-  - values : An array containing parameter value(s) to add, replace or remove. For values to be removed, both strings
-             and Regexp are supported.
-  - empty  : OPTIONAL Flag that allows to force adding of empty parameter
-  - before : OPTIONAL Option that allows to add values before the given value (expressed as a Regexp)
-  - after  : OPTIONAL Option that allows to add values after the given value (expressed as a Regexp)
+ Param hash %params A hash where each keys is a Postfix parameter name and the
+ value, a hashes describing in order:
+  - action (string)  : Action to be performed (add|replace|remove) -- Default
+    action is 'add'.
+  - values (array)  : Array containing parameter value(s) to add, replace or
+    remove. For values to be removed, both string and Regexp are supported.
+  - empty (bool)    : OPTIONAL Flag allowing addition of an empty parameter
+  - before (regexp) : OPTIONAL Option that allows to add values before the given value
+  - after  (regexp  : OPTIONAL Option that allows to add values after the given value
 
-  `replace' action versus `remove' action
-    The `replace' action replace the full value of the given parameter while the `remove' action only remove the
-    specified value portion in the parameter value. Note that when the resulting value is an empty value, the paramerter
-    is removed from the configuration file unless the `empty' flag has been specified.
+  'replace' action versus 'remove' action
+    The 'replace' action replace the full value of the given parameter while
+    the 'remove' action only remove the specified value portion in the parameter
+    value. When the resulting value is an empty value, the paramerter is removed
+    from the configuration file unless the 'empty' flag has been specified.
 
-  `before' and `after' options:
-    The `before' and `after' options are only relevant for the `add' action. Note also that the `before' option has a
-    highter precedence than the `after' option.
+  'before' and 'after' options:
+    The 'before' and 'after' options are only relevant for the 'add' action.
+    The 'before' option has a highter precedence than the 'after' option.
   
   Unknown postfix parameters
-    Unknown Postfix parameter are silently ignored
+    Unknown Postfix parameter are silently ignored.
 
-  Usage example:
+  Usage examples:
 
-    Adding parameters
+    Let's assume we want add both, the 'check_client_access <table>' value and 
+    the 'check_recipient_access <table>' value to the 'smtpd_recipient_restrictions'
+    parameter, before the 'check_policy_service ...' service. The following would do
+    the job:
 
-    Let's assume that we want add both, the `check_client_access <table>' value and the `check_recipient_access <table>'
-    value to the `smtpd_recipient_restrictions' parameter, before the `check_policy_service ...' service.
-    The following would do the job:
+    Adding value to parameters
 
-    Servers::mta::postfix->getInstance(
-        (
-            smtpd_recipient_restrictions => {
-                action => 'add',
-                values => [ 'check_client_access <table>', 'check_recipient_access <table>' ],
-                before => qr/check_policy_service\s+.*/,
-            }
-        )
-    );
+    Servers::mta::postfix->getInstance( (
+        smtpd_recipient_restrictions => {
+            action => 'add',
+            values => [ 'check_client_access <table>', 'check_recipient_access <table>' ],
+            before => qr/check_policy_service\s+.*/,
+        }
+    ));
  
-    Removing parameters
+    Removing value from parameters
+    
+    Let's assume we want to remove the 'unix:/opendkim/opendkim.sock' value
+    from both the 'smtpd_milters' and the 'non_smtpd_milters' configuration
+    parameter:
 
-    Servers::mta::postfix->getInstance(
-        (
-            smtpd_milters     => {
-                action => 'remove',
-                values => [ qr%\Qunix:/opendkim/opendkim.sock\E% ] # Using Regexp
-            },
-            non_smtpd_milters => {
-                action => 'remove',
-                values => [ 'unix:/opendkim/opendkim.sock' ] # Using string
-            }
-        )
-    )
+    Servers::mta::postfix->getInstance( (
+        smtpd_milters     => {
+            action => 'remove',
+            # Using a Regexp matching
+            values => [ qr%\Qunix:/opendkim/opendkim.sock\E% ]
+        },
+        non_smtpd_milters => {
+            action => 'remove',
+            # Using a string matching
+            values => [ 'unix:/opendkim/opendkim.sock' ]
+        }
+    ) );
 
  Return int 0 on success, other failure
 
@@ -1059,9 +1069,10 @@ sub postconf
                 my ( @vls, @rpls ) = ( split( /,\s*/, $v ), () );
 
                 defined $params{$p}->{'values'}
-                    && ref $params{$p}->{'values'} eq 'ARRAY' or die(
-                    sprintf( "Missing or invalid `values' for the %s parameter. Expects an array of values", $p )
-                );
+                    && ref $params{$p}->{'values'} eq 'ARRAY' or die( sprintf(
+                    "Missing or invalid 'values' for the '%s' parameter. Array expected.",
+                    $p
+                ));
 
                 for $v ( @{ $params{$p}->{'values'} } ) {
                     if ( !$params{$p}->{'action'}
@@ -1079,7 +1090,7 @@ sub postconf
                         my $regexp = $params{$p}->{'before'}
                             || $params{$p}->{'after'};
                         ref $regexp eq 'Regexp' or die(
-                            'Invalid before|after option. Expects a Regexp'
+                            "'Invalid 'before' or 'after' option. Regexp expected."
                         );
                         my ( $idx ) = grep (
                             $vls[$_] =~ /^$regexp$/, 0 .. ( @vls-1 )
@@ -1091,21 +1102,20 @@ sub postconf
                         push @rpls, $v;
                     } elsif ( $params{$p}->{'action'} eq 'remove' ) {
                         @vls = ref $v eq 'Regexp'
-                            ? grep ($_ !~ $v, @vls)
-                            : grep ($_ ne $v, @vls);
+                            ? grep ($_ !~ $v, @vls) : grep ($_ ne $v, @vls);
                     } else {
                         die( sprintf(
-                            'Unknown action %s for the  %s parameter',
+                            "Unknown action '%s' for the '%s' parameter",
                             $params{$p}->{'action'},
                             $p
                         ));
                     }
                 }
 
-                my $forceEmpty = $params{$p}->{'empty'};
+                my $empty = $params{$p}->{'empty'};
                 $params{$p} = join ', ', @rpls ? @rpls : @vls;
 
-                unless ( $forceEmpty || $params{$p} ne '' ) {
+                unless ( $empty || $params{$p} ne '' ) {
                     push @pToDel, $p;
                     delete $params{$p};
                 }

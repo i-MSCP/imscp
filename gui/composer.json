@@ -1,6 +1,7 @@
 {
   "name": "imscp/imscp-frontend",
   "description": "i-MSCP frontEnd",
+  "type": "project",
   "keywords": [
     "i-MSCP",
     "frontend",

@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,8 +26,9 @@ package Servers::sqld::remote;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Servers::sqld::remote::installer Servers::sqld::remote::uninstaller /;
+use iMSCP::Boolean;
 use iMSCP::Database;
-use iMSCP::Rights;
+use iMSCP::Rights 'setRights';
 use version;
 use parent 'Servers::sqld::mysql';
 
@@ -49,11 +50,11 @@ use parent 'Servers::sqld::mysql';
 
 sub preinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'remote' );
+    my $rs = $self->{'events'}->trigger( 'beforeSqldPreinstall', 'remote' );
     $rs ||= Servers::sqld::remote::installer->getInstance()->preinstall();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPreinstall', 'remote' )
+    $rs ||= $self->{'events'}->trigger( 'afterSqldPreinstall', 'remote' )
 }
 
 =item postinstall( )
@@ -66,10 +67,10 @@ sub preinstall
 
 sub postinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'remote' );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'remote' );
+    my $rs = $self->{'events'}->trigger( 'beforeSqldPostInstall', 'remote' );
+    $rs ||= $self->{'events'}->trigger( 'afterSqldPostInstall', 'remote' );
 }
 
 =item uninstall( )
@@ -82,11 +83,11 @@ sub postinstall
 
 sub uninstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'remote' );
+    my $rs = $self->{'events'}->trigger( 'beforeSqldUninstall', 'remote' );
     $rs ||= Servers::sqld::remote::uninstaller->getInstance()->uninstall();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldUninstall', 'remote' );
+    $rs ||= $self->{'events'}->trigger( 'afterSqldUninstall', 'remote' );
 }
 
 =item restart( )
@@ -112,26 +113,20 @@ sub restart
 
 sub setEnginePermissions
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldSetEnginePermissions' );
-    $rs ||= setRights(
-        "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf",
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'ROOT_GROUP'},
-            mode  => '0644'
-        }
-    );
-    $rs ||= setRights(
-        "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf",
-        {
-            user  => $main::imscpConfig{'ROOT_USER'},
-            group => $main::imscpConfig{'ROOT_GROUP'},
-            mode  => '0640'
-        }
-    );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldSetEnginePermissions' );
+    my $rs = $self->{'events'}->trigger( 'beforeSqldSetEnginePermissions' );
+    $rs ||= setRights( "$self->{'config'}->{'SQLD_CONF_DIR'}/my.cnf", {
+        user  => $main::imscpConfig{'ROOT_USER'},
+        group => $main::imscpConfig{'ROOT_GROUP'},
+        mode  => '0644'
+    } );
+    $rs ||= setRights( "$self->{'config'}->{'SQLD_CONF_DIR'}/conf.d/imscp.cnf", {
+        user  => $main::imscpConfig{'ROOT_USER'},
+        group => $main::imscpConfig{'ROOT_GROUP'},
+        mode  => '0640'
+    } );
+    $rs ||= $self->{'events'}->trigger( 'afterSqldSetEnginePermissions' );
 }
 
 =item createUser( $user, $host, $password )
@@ -147,7 +142,7 @@ sub setEnginePermissions
 
 sub createUser
 {
-    my ($self, $user, $host, $password) = @_;
+    my ( $self, $user, $host, $password ) = @_;
 
     defined $user or die( '$user parameter is not defined' );
     defined $host or die( '$host parameter is not defined' );
@@ -155,11 +150,11 @@ sub createUser
 
     eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = 1;
+        local $dbh->{'RaiseError'} = TRUE;
         $dbh->do(
             'CREATE USER ?@? IDENTIFIED BY ?'
-                . ( ( $self->getType() ne 'mariadb'
-                    && version->parse( $self->getVersion()) >= version->parse( '5.7.6' ) )
+                . ( $self->getType() ne 'mariadb'
+                && version->parse( $self->getVersion()) >= version->parse( '5.7.6' )
                 ? ' PASSWORD EXPIRE NEVER' : ''
             ),
             undef, $user, $host, $password

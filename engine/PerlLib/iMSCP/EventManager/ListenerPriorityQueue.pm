@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@ package iMSCP::EventManager::ListenerPriorityQueue;
 
 use strict;
 use warnings;
-use List::Util qw/ max /;
+use List::Util 'max';
 use Scalar::Util qw/ looks_like_number /;
 
 =head1 DESCRIPTION
@@ -93,14 +93,16 @@ sub addListener
 
     defined $listener or die '$listener parameter is not defined';
     $priority //= 1;
-    looks_like_number $priority && ( $priority > -1001 && $priority < 1001 ) or die(
+    looks_like_number $priority
+        && ( $priority > -1001 && $priority < 1001 ) or die(
         'Invalid $priority. Expects an integer in range [-1000 .. 1000]'
     );
     ref $listener eq 'CODE' or die 'Invalid $listener. Expects CODE reference';
     $self->removeListener( $listener ) if $self->hasListener( $listener );
     $self->{'priorities'}->{$listener} = $priority;
     push @{ $self->{'queue'}->{$priority} }, $listener;
-    $self->{'highest_priority'} = max $priority, $self->{'highest_priority'} // $priority;
+    $self->{'highest_priority'} =
+        max $priority, $self->{'highest_priority'} // $priority;
     $self;
 }
 
@@ -120,7 +122,9 @@ sub removeListener
     ref $listener eq 'CODE' or die 'Invalid $listener. Expects CODE reference';
     my $oldPriority = $self->{'priorities'}->{$listener};
     return 0 unless defined $oldPriority;
-    $self->{'queue'}->{$oldPriority} = [ grep { $_ ne $listener } @{ $self->{'queue'}->{$oldPriority} } ];
+    $self->{'queue'}->{$oldPriority} = [
+        grep { $_ ne $listener } @{ $self->{'queue'}->{$oldPriority} }
+    ];
     delete $self->{'priorities'}->{$listener};
     return 1 if @{ $self->{'queue'}->{$oldPriority} };
     delete $self->{'queue'}->{$oldPriority};

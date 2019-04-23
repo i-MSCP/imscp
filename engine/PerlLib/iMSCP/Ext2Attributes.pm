@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -30,8 +30,8 @@ use strict;
 use warnings;
 use Bit::Vector;
 use File::Find 'finddepth';
-use iMSCP::Debug;
-use iMSCP::Execute;
+use iMSCP::Boolean;
+use iMSCP::Debug qw/ debug error /;
 no warnings 'File::Find';
 use Fcntl qw/ O_RDONLY O_NONBLOCK O_LARGEFILE /;
 use parent qw( Exporter );
@@ -46,36 +46,35 @@ use vars qw( @EXPORT_OK );
     setAppendOnly clearAppendOnly isAppendOnly
     setNoDump clearNoDump isNoDump
     setNoAtime clearNoAtime isNoAtime
-    );
+);
 
 my $isSupported = undef;
 
-BEGIN
-    {
-        my $bitness = Bit::Vector->Long_Bits();
-        my $module = "iMSCP::Ext2Attributes::Ext2Fs$bitness";
+BEGIN {
+    my $bitness = Bit::Vector->Long_Bits();
+    my $module = "iMSCP::Ext2Attributes::Ext2Fs$bitness";
 
-        local $@;
+    local $@;
 
-        if ( eval "require $module" ) {
-            $module->import();
-        } else {
-            $isSupported = 0;
-            no strict 'refs';
-            my $dummy = sub { 'dummy' };
+    if ( eval "require $module" ) {
+        $module->import();
+    } else {
+        $isSupported = 0;
+        no strict 'refs';
+        my $dummy = sub { 'dummy' };
 
-            *{__PACKAGE__ . '::EXT2_SECRM_FL'} = $dummy;
-            *{__PACKAGE__ . '::EXT2_UNRM_FL'} = $dummy;
-            *{__PACKAGE__ . '::EXT2_COMPR_FL'} = $dummy;
-            *{__PACKAGE__ . '::EXT2_SYNC_FL'} = $dummy;
-            *{__PACKAGE__ . '::EXT2_IMMUTABLE_FL'} = $dummy;
-            *{__PACKAGE__ . '::EXT2_APPEND_FL'} = $dummy;
-            *{__PACKAGE__ . '::EXT2_NODUMP_FL'} = $dummy;
-            *{__PACKAGE__ . '::EXT2_NOATIME_FL'} = $dummy;
-            *{__PACKAGE__ . '::EXT2_IOC_GETFLAGS'} = $dummy;
-            *{__PACKAGE__ . '::EXT2_IOC_SETFLAGS'} = $dummy;
-        }
+        *{ __PACKAGE__ . '::EXT2_SECRM_FL' } = $dummy;
+        *{ __PACKAGE__ . '::EXT2_UNRM_FL' } = $dummy;
+        *{ __PACKAGE__ . '::EXT2_COMPR_FL' } = $dummy;
+        *{ __PACKAGE__ . '::EXT2_SYNC_FL' } = $dummy;
+        *{ __PACKAGE__ . '::EXT2_IMMUTABLE_FL' } = $dummy;
+        *{ __PACKAGE__ . '::EXT2_APPEND_FL' } = $dummy;
+        *{ __PACKAGE__ . '::EXT2_NODUMP_FL' } = $dummy;
+        *{ __PACKAGE__ . '::EXT2_NOATIME_FL' } = $dummy;
+        *{ __PACKAGE__ . '::EXT2_IOC_GETFLAGS' } = $dummy;
+        *{ __PACKAGE__ . '::EXT2_IOC_SETFLAGS' } = $dummy;
     }
+}
 
 =head1 DESCRIPTION
 
@@ -199,22 +198,30 @@ This function takes a filename and returns true if the immutable flag is set and
 =cut
 
 for my $fname ( keys %constants ) {
-    my $set = sub {
-        my ($name, $recursive) = @_;
+    my $set = sub
+    {
+        my ( $name, $recursive ) = @_;
 
         return 0 unless _isSupported();
 
         if ( $recursive ) {
-            debug( sprintf( 'Adding %s flag on %s recursively', $fname, $name ));
+            debug( sprintf(
+                'Adding %s flag on %s recursively', $fname, $name
+            ));
             File::Find::finddepth(
                 sub {
                     my $flags;
 
                     if ( _getAttributes( $_, \$flags ) == -1 ) {
-                        error( sprintf( 'An error occurred while reading flags on %s: %s', $name, $! ));
+                        error( sprintf(
+                            'An error occurred while reading flags on %s: %s',
+                            $name,
+                            $!
+                        ));
                     }
 
-                    _setAttributes( $_, $flags | $constants{$fname} ) if defined $flags;
+                    _setAttributes( $_, $flags | $constants{$fname} )
+                        if defined $flags;
                 },
                 $name
             );
@@ -222,30 +229,41 @@ for my $fname ( keys %constants ) {
             debug( sprintf( 'Adding %s flag on %s', $fname, $name ));
             my $flags;
             if ( _getAttributes( $name, \$flags ) == -1 ) {
-                error( sprintf( 'An error occurred while reading flags on %s: %s', $name, $! ));
+                error( sprintf(
+                    'An error occurred while reading flags on %s: %s', $name, $!
+                ));
             }
 
-            _setAttributes( $name, $flags | $constants{$fname} ) if defined $flags;
+            _setAttributes( $name, $flags | $constants{$fname} )
+                if defined $flags;
         }
 
         0;
     };
 
-    my $clear = sub {
-        my ($name, $recursive) = @_;
+    my $clear = sub
+    {
+        my ( $name, $recursive ) = @_;
 
         return 0 unless _isSupported();
 
         if ( $recursive ) {
-            debug( sprintf( 'Removing %s flag on %s recursively', $fname, $name ));
+            debug( sprintf(
+                'Removing %s flag on %s recursively', $fname, $name
+            ));
             File::Find::finddepth(
                 sub {
                     my $flags;
                     if ( _getAttributes( $_, \$flags ) == -1 ) {
-                        error( sprintf( 'An error occurred while reading flags on %s:', $name, $! ));
+                        error( sprintf(
+                            'An error occurred while reading flags on %s:',
+                            $name,
+                            $!
+                        ));
                     }
 
-                    _setAttributes( $_, $flags & ~$constants{$fname} ) if defined $flags;
+                    _setAttributes( $_, $flags & ~$constants{$fname} )
+                        if defined $flags;
                 },
                 $name
             );
@@ -253,32 +271,42 @@ for my $fname ( keys %constants ) {
             debug( sprintf( 'Removing %s flag on %s', $fname, $name ));
             my $flags;
             if ( _getAttributes( $name, \$flags ) == -1 ) {
-                error( sprintf( 'An error occurred while reading flags on %s: %s', $name, $! ));
+                error( sprintf(
+                    'An error occurred while reading flags on %s: %s',
+                    $name,
+                    $!
+                ));
             }
 
-            _setAttributes( $name, $flags & ~$constants{$fname} ) if defined $flags;
+            _setAttributes( $name, $flags & ~$constants{$fname} )
+                if defined $flags;
         }
 
         0;
     };
 
-    my $is = sub {
+    my $is = sub
+    {
         my $name = $_[0];
 
         return 0 unless _isSupported();
 
         my $flags;
         if ( _getAttributes( $name, \$flags ) == -1 ) {
-            error( sprintf( 'An error occurred while reading flags on %s: %s', $name, $! ));
+            error( sprintf(
+                'An error occurred while reading flags on %s: %s',
+                $name,
+                $!
+            ));
         }
 
         ( defined $flags && $flags & $constants{$fname} );
     };
 
     no strict 'refs';
-    *{__PACKAGE__ . '::set' . $fname } = $set;
-    *{__PACKAGE__ . '::clear' . $fname } = $clear;
-    *{__PACKAGE__ . '::is' . $fname } = $is;
+    *{ __PACKAGE__ . '::set' . $fname } = $set;
+    *{ __PACKAGE__ . '::clear' . $fname } = $clear;
+    *{ __PACKAGE__ . '::is' . $fname } = $is;
 }
 
 =item _getAttributes( $name, \$flags )
@@ -293,15 +321,15 @@ for my $fname ( keys %constants ) {
 
 sub _getAttributes
 {
-    my ($name, $flags) = @_;
+    my ( $name, $flags ) = @_;
 
-    my ($fd, $r, $f, $errno) = ( undef, 0, pack( 'i', 0 ), 0 );
+    my ( $fd, $r, $f, $errno ) = ( undef, 0, pack( 'i', 0 ), 0 );
 
     return -1 unless sysopen( $fd, $name, O_RDONLY | O_NONBLOCK | O_LARGEFILE );
 
     $r = sprintf '%d', ioctl( $fd, EXT2_IOC_GETFLAGS, $f ) || -1;
     $errno = $! if $r == -1;
-    ${$flags} = unpack 'i', $f;
+    ${ $flags } = unpack 'i', $f;
     close $fd;
     $! = $errno if $errno;
     $r;
@@ -319,9 +347,9 @@ sub _getAttributes
 
 sub _setAttributes
 {
-    my ($name, $flags) = @_;
+    my ( $name, $flags ) = @_;
 
-    my ($fd, $r, $f, $errno) = ( undef, 0, pack( 'i', $flags ), 0 );
+    my ( $fd, $r, $f, $errno ) = ( undef, 0, pack( 'i', $flags ), 0 );
 
     return -1 unless sysopen( $fd, $name, O_RDONLY | O_NONBLOCK | O_LARGEFILE );
 
@@ -340,9 +368,9 @@ sub _isSupported
 {
     unless ( defined $isSupported ) {
         unless ( _getAttributes( $main::imscpConfig{'USER_WEB_DIR'} ) == -1 ) {
-            $isSupported = 1;
+            $isSupported = TRUE;
         } else {
-            $isSupported = 0;
+            $isSupported = FALSE;
         }
     }
 

@@ -312,7 +312,7 @@ sub dumpdb
     # Encode dots as Full stop unicode character
     ( my $encodedDbName = $dbName ) =~ s%([./])%{ '/', '@002f', '.', '@002e' }->{$1}%ge;
 
-    debug( sprintf( 'Dump `%s` database into %s', $dbName, $dbDumpTargetDir . '/' . $encodedDbName . '.sql' ));
+    debug( sprintf( "Dump '%s' database into %s", $dbName, $dbDumpTargetDir . '/' . $encodedDbName . '.sql' ));
 
     my $stderr;
     execute(
@@ -323,7 +323,7 @@ sub dumpdb
         undef,
         \ $stderr
     ) == 0 or die(
-        sprintf( "Couldn't dump the `%s` database: %s", $dbName, $stderr || 'Unknown error' )
+        sprintf( "Couldn't dump the '%s' database: %s", $dbName, $stderr || 'Unknown error' )
     );
 }
 

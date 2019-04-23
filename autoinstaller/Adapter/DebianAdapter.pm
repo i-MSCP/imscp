@@ -23,7 +23,8 @@ use strict;
 use warnings;
 use autouse 'iMSCP::Stepper' => qw/ startDetail endDetail step /;
 use Class::Autouse qw/ :nostat File::HomeDir /;
-use Fcntl qw/ :flock /;
+use File::Basename 'dirname';
+use Fcntl ':flock';
 use File::Temp;
 use FindBin;
 use iMSCP::Boolean;
@@ -153,19 +154,19 @@ sub installPackages
     # See https://people.debian.org/~hmh/invokerc.d-policyrc.d-specification.txt
     my $policyrcd = File::Temp->new( UNLINK => TRUE );
 
-    # Prevents invoke-rc.d to start some services
-    print $policyrcd <<'EOF';
+    # Prevents INVOKE-RC.D(8) to start managed services
+    print $policyrcd <<"EOF";
 #!/bin/sh
 
-initscript=$1
-action=$2
+initscript=\$1
+action=\$2
 
-if [ "$action" = "start" ] || [ "$action" = "restart" ]; then
-    for i in apache2 bind9 courier-authdaemon courier-imap courier-imap-ssl courier-pop courier-pop-ssl cron dovecot cour nginx postfix proftpd vsftpd; do
-        if [ "$initscript" = "$i" ]; then
-            exit 101;
-        fi
-    done
+if [ "\$action" = "start" ] || [ "\$action" = "restart" ]; then
+  for i in `cat @{ [ dirname( __FILE__ ) ] }/managed_services.txt`; do
+    if [ "\$initscript" = "\$i" ]; then
+      exit 101;
+    fi
+  done
 fi
 EOF
     $policyrcd->flush();
@@ -1333,7 +1334,7 @@ sub _rebuildAndInstallPackage
 
     my $srcDownloadDir = File::Temp->newdir( CLEANUP => 1 );
 
-    # Fix `W: Download is performed un-sandboxed as root as file...' warning
+    # Fix 'W: Download is performed un-sandboxed as root as file...' warning
     # with newest APT versions
     if ( ( undef, undef, my $uid ) = getpwnam( '_apt' ) ) {
         unless ( chown $uid, -1, $srcDownloadDir ) {
@@ -1474,7 +1475,7 @@ EOF
                 );
                 debug( $stdout ) if length $stdout;
                 error( sprintf(
-                    "Couldn't add `imscp' local suffix: %s",
+                    "Couldn't add 'imscp' local suffix: %s",
                     $stderr || 'Unknown error'
                 )) if $rs;
                 return $rs if $rs;

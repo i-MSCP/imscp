@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,9 +25,10 @@ package iMSCP::Dir;
 
 use strict;
 use warnings;
-use File::Copy qw/ mv /;
+use File::Copy 'mv';
 use File::Path qw/ mkpath remove_tree /;
-use iMSCP::Debug qw / getLastError /;
+use iMSCP::Boolean;
+use iMSCP::Debug 'getLastError';
 use iMSCP::File;
 use parent 'Common::Object';
 
@@ -50,15 +51,19 @@ use parent 'Common::Object';
 
 sub getFiles
 {
-    my ($self, $dirname) = @_;
+    my ( $self, $dirname ) = @_;
     $dirname //= $self->{'dirname'};
 
-    defined $dirname or die( '$dirname parameter is not defined.' );
+    defined $dirname or die( "The 'dirname' attribute is not defined." );
 
-    opendir my $dh, $dirname or die( sprintf( "Couldn't open `%s' directory: %s", $dirname, $! ));
+    opendir my $dh, $dirname or die( sprintf(
+        "Couldn't open '%s' directory: %s", $dirname, $!
+    ));
     my $dotReg = qr/^\.{1,2}\z/s;
     my @files = grep { !/$dotReg/ && -f "$dirname/$_" } readdir( $dh );
-    @files = $self->{'fileType'} ? grep( /$self->{'fileType'}$/, @files ) : @files;
+    @files = $self->{'fileType'}
+        ? grep ( /$self->{'fileType'}$/, @files )
+        : @files;
     closedir( $dh );
     @files;
 }
@@ -74,12 +79,14 @@ sub getFiles
 
 sub getDirs
 {
-    my ($self, $dirname) = @_;
+    my ( $self, $dirname ) = @_;
     $dirname //= $self->{'dirname'};
 
-    defined $dirname or die( '$dirname parameter is not defined.' );
+    defined $dirname or die( "The 'dirname' attribute is not defined." );
 
-    opendir my $dh, $dirname or die( sprintf( "Couldn't open `%s' directory: %s", $dirname, $! ));
+    opendir my $dh, $dirname or die( sprintf(
+        "Couldn't open '%s' directory: %s", $dirname, $!
+    ));
     my @dirs = grep { !/^\.{1,2}\z/s && -d "$dirname/$_" } readdir( $dh );
     closedir( $dh );
     @dirs;
@@ -96,13 +103,15 @@ sub getDirs
 
 sub getAll
 {
-    my ($self, $dirname) = @_;
+    my ( $self, $dirname ) = @_;
     $dirname //= $self->{'dirname'};
 
-    defined $dirname or die( '$dirname parameter is not defined.' );
+    defined $dirname or die( "The 'dirname' attribute is not defined." );
 
-    opendir my $dh, $dirname or die( sprintf( "Couldn't open `%s' directory: %s", $dirname, $! ));
-    my @files = grep( !/^\.{1,2}\z/s, readdir( $dh ) );
+    opendir my $dh, $dirname or die( sprintf(
+        "Couldn't open '%s' directory: %s", $dirname, $!
+    ));
+    my @files = grep ( !/^\.{1,2}\z/s, readdir( $dh ) );
     closedir( $dh );
     @files;
 }
@@ -118,14 +127,16 @@ sub getAll
 
 sub isEmpty
 {
-    my ($self, $dirname) = @_;
+    my ( $self, $dirname ) = @_;
     $dirname //= $self->{'dirname'};
 
-    defined $dirname or die( '$dirname parameter is not defined.' );
+    defined $dirname or die( "The 'dirname' attribute is not defined." );
 
     my $dotReg = qr/^\.{1,2}\z/s;
 
-    opendir my $dh, $dirname or die( sprintf( "Couldn't open `%s' directory: %s", $dirname, $! ));
+    opendir my $dh, $dirname or die( sprintf(
+        "Couldn't open '%s' directory: %s", $dirname, $!
+    ));
     while ( my $entry = readdir $dh ) {
         next if $entry =~ /$dotReg/;
         closedir $dh;
@@ -147,16 +158,20 @@ sub isEmpty
 
 sub clear
 {
-    my ($self, $dirname, $regexp ) = @_;
+    my ( $self, $dirname, $regexp ) = @_;
     $dirname //= $self->{'dirname'};
 
-    defined $dirname or die( '$dirname parameter is not defined.' );
-    !defined $regexp || ref $regexp eq 'Regexp' or die( 'Invalid $regexp parameter. Expects a Regexp ' );
+    defined $dirname or die( "The 'dirname' attribute is not defined." );
+    !defined $regexp || ref $regexp eq 'Regexp' or die(
+        'Invalid $regexp parameter. Expects a Regexp.'
+    );
 
-    -d $dirname or die( '$dirname is not a directory' );
+    -d $dirname or die( '$dirname is not a directory.' );
 
     if ( $regexp ) {
-        opendir my $dh, $dirname or die( sprintf( "Couldn't open `%s' directory: %s", $dirname, $! ));
+        opendir my $dh, $dirname or die( sprintf(
+            "Couldn't open '%s' directory: %s", $dirname, $!
+        ));
 
         my $dotReg = qr/^\.{1,2}\z/s;
 
@@ -169,7 +184,9 @@ sub clear
                 next;
             }
 
-            unlink $filePath or die( sprintf( "Couldn't remove the %s file: %s", $filePath, $! ));
+            unlink $filePath or die( sprintf(
+                "Couldn't remove the '%s' file: %s", $filePath, $!
+            ));
         }
 
         closedir( $dh );
@@ -179,7 +196,7 @@ sub clear
     $self->{'dirname'} = $dirname;
 
     my $opts = {};
-    @{$opts}{ qw / mode user group /} = ( stat( $dirname ) )[2, 4, 5];
+    @{ $opts }{ qw/ mode user group /} = ( stat( $dirname ) )[2, 4, 5];
     $opts->{'mode'} &= 07777;
 
     $self->remove( $dirname );
@@ -198,12 +215,14 @@ sub clear
 
 sub mode
 {
-    my ($self, $mode, $dirname) = @_;
+    my ( $self, $mode, $dirname ) = @_;
     $dirname //= $self->{'dirname'};
 
-    defined $mode or die( '$mode parameter is not defined.' );
-    defined $dirname or die( '$dirname parameter is not defined.' );
-    chmod $mode, $dirname or die( sprintf( "Couldn't change `%s' directory permissions: %s", $dirname, $! ));
+    defined $mode or die( "The '\$mode' parameter is missing." );
+    defined $dirname or die( "The 'dirname' attribute is not defined." );
+    chmod $mode, $dirname or die( sprintf(
+        "Couldn't change '%s' directory permissions: %s", $dirname, $!
+    ));
     0;
 }
 
@@ -220,17 +239,19 @@ sub mode
 
 sub owner
 {
-    my ($self, $owner, $group, $dirname) = @_;
+    my ( $self, $owner, $group, $dirname ) = @_;
     $dirname //= $self->{'dirname'};
 
-    defined $owner or die( '$owner parameter is not defined.' );
-    defined $group or die( '$group parameter is not defined.' );
-    defined $dirname or die( '$dirname parameter is not defined.' );
+    defined $owner or die( "The '\$owner' parameter is missing." );
+    defined $group or die( "The '\$group' parameter is missing." );
+    defined $dirname or die( "The 'dirname' attribute is not defined." );
 
     my $uid = $owner =~ /^\d+$/ ? $owner : getpwnam( $owner ) // -1;
     my $gid = $group =~ /^\d+$/ ? $group : getgrnam( $group ) // -1;
 
-    chown $uid, $gid, $dirname or die( sprintf( "Couldn't change `%s' directory ownership: %s", $dirname, $! ));
+    chown $uid, $gid, $dirname or die( sprintf(
+        "Couldn't change '%s' directory ownership: %s", $dirname, $!
+    ));
     0;
 }
 
@@ -249,36 +270,51 @@ sub owner
 
 sub make
 {
-    my ($self, $options) = @_;
+    my ( $self, $options ) = @_;
 
-    defined $self->{'dirname'} or die( '`dirname` attribute is not defined.' );
+    defined $self->{'dirname'} or die(
+        "The 'dirname' attribute is not defined."
+    );
     $options = {} unless $options && ref $options eq 'HASH';
 
     unless ( -d $self->{'dirname'} ) {
-        my @createdDirs = mkpath( $self->{'dirname'}, { error => \ my $errStack } );
+        my @createdDirs = mkpath(
+            $self->{'dirname'}, { error => \my $errStack }
+        );
 
-        if ( @{$errStack} ) {
+        if ( @{ $errStack } ) {
             my $errorStr = '';
 
-            for my $diag ( @{$errStack} ) {
-                my ($file, $message) = %{$diag};
-                $errorStr .= ( $file eq '' ) ? "general error: $message\n" : "problem creating $file: $message\n";
+            for my $diag ( @{ $errStack } ) {
+                my ( $file, $message ) = %{ $diag };
+                $errorStr .= ( $file eq '' )
+                    ? "general error: $message\n"
+                    : "problem creating $file: $message\n";
             }
 
-            die( sprintf( "Couldn't create `%s' directory: %s", $self->{'dirname'}, $errorStr ));
+            die( sprintf(
+                "Couldn't create '%s' directory: %s",
+                $self->{'dirname'},
+                $errorStr
+            ));
         }
 
         # Setting ownership and permissions on parent directories can lead
         # to several permission issues. Starting with version 1.5.0, the
         # ownership and permissions on created parent directories are set as
         # root:root 0755 (assuming UMASK 022).
-        $options->{'fixpermissions'} = 1 if @createdDirs;
+        $options->{'fixpermissions'} = TRUE if @createdDirs;
     }
 
-    return 0 if defined $options->{'fixpermissions'} && !$options->{'fixpermissions'};
+    return 0 if defined $options->{'fixpermissions'}
+        && !$options->{'fixpermissions'};
 
     if ( defined $options->{'user'} || defined $options->{'group'} ) {
-        $self->owner( $options->{'user'} // -1, $options->{'group'} // -1, $self->{'dirname'} );
+        $self->owner(
+            $options->{'user'} // -1,
+            $options->{'group'} // -1,
+            $self->{'dirname'}
+        );
     }
 
     $self->mode( $options->{'mode'} ) if defined $options->{'mode'};
@@ -297,23 +333,27 @@ sub make
 
 sub remove
 {
-    my ($self, $dirname) = @_;
+    my ( $self, $dirname ) = @_;
     $dirname //= $self->{'dirname'};
 
-    defined $dirname or die( '$dirname parameter is not defined.' );
+    defined $dirname or die( "The 'dirname' attribute is not defined." );
 
     return 0 unless -d $dirname;
 
-    remove_tree( $dirname, { error => \ my $errStack } );
+    remove_tree( $dirname, { error => \my $errStack } );
 
-    if ( @{$errStack} ) {
+    if ( @{ $errStack } ) {
         my $errorStr = '';
-        for my $diag ( @{$errStack} ) {
-            my ($file, $message) = %{$diag};
-            $errorStr .= ( $file eq '' ) ? "general error: $message\n" : "problem unlinking $file: $message\n";
+        for my $diag ( @{ $errStack } ) {
+            my ( $file, $message ) = %{ $diag };
+            $errorStr .= ( $file eq '' )
+                ? "general error: $message\n"
+                : "problem unlinking $file: $message\n";
         }
 
-        die( sprintf( "Couldn't remove the `%s' directory: %s", $dirname, $errorStr ));
+        die( sprintf(
+            "Couldn't remove the '%s' directory: %s", $dirname, $errorStr
+        ));
     }
 
     0;
@@ -332,24 +372,30 @@ sub remove
 
 sub rcopy
 {
-    my ($self, $destDir, $options) = @_;
+    my ( $self, $destDir, $options ) = @_;
 
     $options = {} unless $options && ref $options eq 'HASH';
 
-    defined $destDir or die( '$destDir parameter is not defined' );
-    defined $self->{'dirname'} or die( '`dirname` attribute is not defined' );
+    defined $destDir or die( "The '\$destDir' parameter is not defined." );
+    defined $self->{'dirname'} or die( "The 'dirname' attribute is not defined." );
 
     unless ( -d $destDir ) {
         my $opts = {};
-        unless ( defined $options->{'preserve'} && $options->{'preserve'} eq 'no' ) {
-            @{$opts}{ qw / mode user group /} = ( stat( $self->{'dirname'} ) )[2, 4, 5];
+        unless ( defined $options->{'preserve'}
+            && $options->{'preserve'} eq 'no'
+        ) {
+            @{ $opts }{ qw/ mode user group /} = (
+                stat( $self->{'dirname'} )
+            )[2, 4, 5];
             $opts->{'mode'} &= 07777;
         }
 
         iMSCP::Dir->new( dirname => $destDir )->make( $opts );
     }
 
-    opendir my $dh, $self->{'dirname'} or die( sprintf( "Couldn't open `%s' directory: %s", $self->{'dirname'}, $! ));
+    opendir my $dh, $self->{'dirname'} or die( sprintf(
+        "Couldn't open '%s' directory: %s", $self->{'dirname'}, $!
+    ));
 
     my $dotReg = qr/^\.{1,2}\z/s;
 
@@ -364,9 +410,11 @@ sub rcopy
             next;
         }
 
-        iMSCP::File->new( filename => $src )->copyFile( $dst, $options ) == 0 or die(
-            sprintf( "Couldn't copy `%s' file to `%s': %s", $src, $dst, getLastError())
-        );
+        iMSCP::File->new(
+            filename => $src
+        )->copyFile( $dst, $options ) == 0 or die( sprintf(
+            "Couldn't copy '%s' file to '%s': %s", $src, $dst, getLastError()
+        ));
     }
 
     closedir $dh;
@@ -384,15 +432,17 @@ sub rcopy
 
 sub moveDir
 {
-    my ($self, $destDir) = @_;
+    my ( $self, $destDir ) = @_;
 
-    defined $destDir or die( '$destDir attribute is not defined.' );
-    defined $self->{'dirname'} or die( '`dirname` attribute is not defined.' );
+    defined $destDir or die( "The '\$destDir' parameter is missing." );
+    defined $self->{'dirname'} or die( "The 'dirname' attribute is not defined." );
 
-    -d $self->{'dirname'} or die( sprintf( "Directory %s doesn't exits", $self->{'dirname'} ));
-    mv( $self->{'dirname'}, $destDir ) or die(
-        sprintf( "Couldn't move `%s' directory to `%s': %s", $self->{'dirname'}, $destDir, $! )
-    );
+    -d $self->{'dirname'} or die( sprintf(
+        "Directory '%s' doesn't exits", $self->{'dirname'}
+    ));
+    mv( $self->{'dirname'}, $destDir ) or die( sprintf(
+        "Couldn't move '%s' directory to 's': %s", $self->{'dirname'}, $destDir, $!
+    ));
     0;
 }
 
@@ -412,7 +462,7 @@ sub moveDir
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'dirname'} //= undef;
     $self;

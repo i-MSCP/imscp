@@ -62,31 +62,12 @@ sub factory
         die( $@ ) if $@;
 
         my $rs = $::imscpOldConfig{'PO_PACKAGE'}->getInstance()->uninstall();
-        die( sprintf( "Couldn't uninstall the `%s' server", $::imscpOldConfig{'PO_PACKAGE'} )) if $rs;
+        die( sprintf( "Couldn't uninstall the '%s' server", $::imscpOldConfig{'PO_PACKAGE'} )) if $rs;
     }
 
     eval "require $package";
     die( $@ ) if $@;
     $instance = $package->getInstance();
-}
-
-=item can( $method )
-
- Checks if the po server package provides the given method
-
- Param string $method Method name
- Return subref|undef
-
-=cut
-
-sub can
-{
-    my (undef, $method) = @_;
-
-    my $package = $::imscpConfig{'PO_PACKAGE'} || 'Servers::noserver';
-    eval "require $package";
-    die( $@ ) if $@;
-    $package->can( $method );
 }
 
 =item getPriority( )
@@ -100,6 +81,25 @@ sub can
 sub getPriority
 {
     30;
+}
+
+=item can( $method )
+
+ Checks if the po server package provides the given method
+
+ Param string $method Method name
+ Return subref|undef
+
+=cut
+
+sub can
+{
+    my ( undef, $method ) = @_;
+
+    my $package = $::imscpConfig{'PO_PACKAGE'} || 'Servers::noserver';
+    eval "require $package";
+    die( $@ ) if $@;
+    $package->can( $method );
 }
 
 END

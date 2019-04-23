@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -49,9 +49,9 @@ sub preinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'percona' );
+    my $rs = $self->{'events'}->trigger( 'beforeSqldPreinstall', 'percona' );
     $rs ||= Servers::sqld::percona::installer->getInstance()->preinstall();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPreinstall', 'percona' )
+    $rs ||= $self->{'events'}->trigger( 'afterSqldPreinstall', 'percona' )
 }
 
 =item postinstall( )
@@ -66,7 +66,7 @@ sub postinstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'percona' );
+    my $rs = $self->{'events'}->trigger( 'beforeSqldPostInstall', 'percona' );
 
     local $@;
     eval { iMSCP::Service->getInstance()->enable( 'mysql' ); };
@@ -75,7 +75,7 @@ sub postinstall
         return 1;
     }
 
-    $rs = $self->{'eventManager'}->register(
+    $rs = $self->{'events'}->register(
         'beforeSetupRestartServices',
         sub {
             push @{$_[0]}, [ sub { $self->restart(); }, 'Percona' ];
@@ -84,7 +84,7 @@ sub postinstall
         7
     );
 
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'percona' );
+    $rs ||= $self->{'events'}->trigger( 'afterSqldPostInstall', 'percona' );
 }
 
 =item uninstall( )
@@ -99,9 +99,9 @@ sub uninstall
 {
     my ($self) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'percona' );
+    my $rs = $self->{'events'}->trigger( 'beforeSqldUninstall', 'percona' );
     $rs ||= Servers::sqld::percona::uninstaller->getInstance()->uninstall();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldUninstall', 'percona' );
+    $rs ||= $self->{'events'}->trigger( 'afterSqldUninstall', 'percona' );
 }
 
 =back

@@ -55,25 +55,6 @@ sub factory
     $instance = $package->getInstance();
 }
 
-=item can( $method )
-
- Checks if the httpd server package provides the given method
-
- Param string $method Method name
- Return subref|undef
-
-=cut
-
-sub can
-{
-    my (undef, $method) = @_;
-
-    my $package = $::imscpConfig{'HTTPD_PACKAGE'} || 'Servers::noserver';
-    eval "require $package";
-    die( $@ ) if $@;
-    $package->can( $method );
-}
-
 =item getPriority( )
 
  Get server priority
@@ -85,6 +66,25 @@ sub can
 sub getPriority
 {
     70;
+}
+
+=item can( $method )
+
+ Checks if the httpd server package provides the given method
+
+ Param string $method Method name
+ Return subref|undef
+
+=cut
+
+sub can
+{
+    my ( undef, $method ) = @_;
+
+    my $package = $::imscpConfig{'HTTPD_PACKAGE'} || 'Servers::noserver';
+    eval "require $package";
+    die( $@ ) if $@;
+    $package->can( $method );
 }
 
 END

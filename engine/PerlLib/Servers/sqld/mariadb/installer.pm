@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,7 +25,6 @@ package Servers::sqld::mariadb::installer;
 
 use strict;
 use warnings;
-use iMSCP::EventManager;
 use Servers::sqld::mariadb;
 use parent 'Servers::sqld::mysql::installer';
 
@@ -47,10 +46,10 @@ use parent 'Servers::sqld::mysql::installer';
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'sqld'} = Servers::sqld::mariadb->getInstance();
+    $self->{'events'} = $self->{'sqld'}->{'events'};
     $self->{'cfgDir'} = $self->{'sqld'}->{'cfgDir'};
     $self->{'config'} = $self->{'sqld'}->{'config'};
     $self;

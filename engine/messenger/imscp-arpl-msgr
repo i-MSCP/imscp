@@ -67,7 +67,7 @@ eval {
         || $mimeHeaders->get( 'x-autoresponse-from' );
 
     # Get recipient address
-    my ($to) = Mail::Address->parse( $mimeHeaders->get( 'from' )) or die( "Couldn't parse `From' MIME header" );
+    my ($to) = Mail::Address->parse( $mimeHeaders->get( 'from' )) or die( "Couldn't parse 'From' MIME header" );
     $to = $to->address();
 
     # Get original subject

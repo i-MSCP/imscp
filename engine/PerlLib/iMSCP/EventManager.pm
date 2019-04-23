@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -57,9 +57,11 @@ sub hasListener
 {
     my ( $self, $event, $listener ) = @_;
 
-    defined $event or die 'Missing $eventNames parameter';
+    defined $event or die 'Missing $eventNames parameter.';
 
-    $self->{'events'}->{$event} && $self->{'events'}->{$event}->hasListener( $listener );
+    $self->{'events'}->{$event} && $self->{'events'}->{$event}->hasListener(
+        $listener
+    );
 }
 
 =item register( $events, $listener [, priority = 1 [, $once = FALSE ] ] )
@@ -80,20 +82,22 @@ sub register
 
     local $@;
     eval {
-        defined $events or die 'Missing $eventNames parameter';
+        defined $events or die 'Missing $eventNames parameter.';
 
         if ( ref $events eq 'ARRAY' ) {
             for ( @{ $events } ) {
                 $self->register( $_, $listener, $priority, $once ) == 0 or die(
-                    getMessageByType( 'error', { amount => 1, remove => 1 } ) || 'Unknown error'
-                );
+                    getMessageByType(
+                        'error', { amount => 1, remove => 1 }
+                    ) || 'Unknown error' );
             }
 
             return;
         }
 
         unless ( exists $self->{'events'}->{$events} ) {
-            $self->{'events'}->{$events} = iMSCP::EventManager::ListenerPriorityQueue->new();
+            $self->{'events'}->{$events} =
+                iMSCP::EventManager::ListenerPriorityQueue->new();
         }
 
         $listener = sub { $listener->$events( @_ ) } if blessed $listener;
@@ -156,12 +160,15 @@ sub unregister
 
         return unless $self->{'events'}->{$event};
 
-        $self->{'events'}->{$event}->removeListener( $listener ) if $self->{'events'}->{$event};
-        delete $self->{'events'}->{$event} if $self->{'events'}->{$event}->isEmpty();
+        $self->{'events'}->{$event}->removeListener( $listener )
+            if $self->{'events'}->{$event};
+        delete $self->{'events'}->{$event}
+            if $self->{'events'}->{$event}->isEmpty();
 
         if ( $self->{'once'}->{$event}->{$listener} ) {
             delete $self->{'once'}->{$event}->{$listener};
-            delete $self->{'once'}->{$event} unless %{ $self->{'once'}->{$event} };
+            delete $self->{'once'}->{$event}
+                unless %{ $self->{'once'}->{$event} };
         }
     };
     if ( $@ ) {

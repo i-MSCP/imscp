@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -55,7 +55,7 @@ $Text::Wrap::break = qr/[\s\n\|]/;
 
 sub errmsg
 {
-    my ($self, $message) = @_;
+    my ( $self, $message ) = @_;
 
     defined $message or die( "$message parameter is not defined" );
 
@@ -79,7 +79,7 @@ EOF
 
 sub warnMsg
 {
-    my ($self, $message) = @_;
+    my ( $self, $message ) = @_;
 
     defined $message or die( "$message parameter is not defined" );
 
@@ -111,7 +111,7 @@ EOF
 
 sub _sendMail
 {
-    my (undef, $subject, $message, $severity) = @_;
+    my ( undef, $subject, $message, $severity ) = @_;
 
     my $sendmail = iMSCP::ProgramFinder::find( 'sendmail' ) or die( "Couldn't find sendmail executable" );
     my $host = $main::imscpConfig{'BASE_SERVER_VHOST'};

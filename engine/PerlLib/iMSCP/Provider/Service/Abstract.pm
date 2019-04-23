@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -51,7 +51,8 @@ my $EXEC_OUTPUT;
  Param array_ref \@command Command to execute
  Param scalar_ref \$stdout OPTIONAL Scalar reference for STDOUT capture
  Param scalar_ref \$stderr OPTIONAL Scalar reference for STDERR capture
- Return int Command exit status, croak on failure if the command status is other than 0 and if no scalar reference has been provided for STDERR
+ Return int Command exit status, croak on failure if the command status is other
+            than 0 and if no scalar reference has been provided for STDERR
 
 =cut
 
@@ -59,8 +60,14 @@ sub _exec
 {
     my ( $self, $command, $stdout, $stderr ) = @_;
 
-    my $ret = execute( $command, ref $stdout eq 'SCALAR' ? $stdout : \$stdout, ref $stderr eq 'SCALAR' ? $stderr : \$stderr );
-    ref $stdout ? !length ${ $stdout } || debug( ${ $stdout } ) : !length $stdout || debug( $stdout );
+    my $ret = execute(
+        $command,
+        ref $stdout eq 'SCALAR' ? $stdout : \$stdout,
+        ref $stderr eq 'SCALAR' ? $stderr : \$stderr
+    );
+    ref $stdout
+        ? !length ${ $stdout } || debug( ${ $stdout } )
+        : !length $stdout || debug( $stdout );
 
     # Raise a failure if command status is other than 0 and if no scalar
     # reference has been provided for STDERR, giving choice to callers

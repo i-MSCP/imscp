@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,9 +25,9 @@ package iMSCP::LockFile;
 
 use strict;
 use warnings;
-use Errno qw / ENOENT EWOULDBLOCK /;
-use Fcntl qw/ :flock /;
-use iMSCP::Debug qw/ debug /;
+use Errno qw/ ENOENT EWOULDBLOCK /;
+use Fcntl ':flock';
+use iMSCP::Debug 'debug';
 use parent 'Common::Object';
 
 =head1 DESCRIPTION
@@ -51,12 +51,14 @@ use parent 'Common::Object';
 
 sub acquire
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     debug( sprintf( 'Acquiring exclusive lock on %s', $self->{'path'} ));
 
     while ( !$self->{'_fd'} ) {
-        open my $fd, '>', $self->{'path'} or die( sprintf( "Couldn't open %s file", $self->{'path'} ));
+        open my $fd, '>', $self->{'path'} or die( sprintf(
+            "Couldn't open '%s' file", $self->{'path'}
+        ));
 
         eval {
             return 0 unless $self->_tryLock( $fd );
@@ -82,7 +84,7 @@ sub acquire
 
 sub release
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     # Prevent lock from being released if the process is not the lock owner
     return unless $self->{'_owner'} == $$;
@@ -97,7 +99,9 @@ sub release
     # process A: check device and inode
     # process B: delete file
     # process C: open and lock a different file at the same path
-    unlink( $self->{'path'} ) or die( sprintf( "Couldn't unlink the %s file: %s", $self->{'path'}, $! ));
+    unlink( $self->{'path'} ) or die( sprintf(
+        "Couldn't unlink the '%s' file: %s", $self->{'path'}, $!
+    ));
     close $self->{'_fd'};
     undef $self->{'_fd'};
 }
@@ -118,7 +122,7 @@ sub release
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'path'} ||= '/var/lock/imscp.lock';
     $self->{'non_blocking'} ||= 0;
@@ -139,12 +143,18 @@ sub _init
 
 sub _tryLock
 {
-    my ($self, $fd) = @_;
+    my ( $self, $fd ) = @_;
 
-    return 1 if flock( $fd, LOCK_EX | ( $self->{'non_blocking'} ? LOCK_NB : 0 ));
+    return 1 if flock(
+        $fd, LOCK_EX | ( $self->{'non_blocking'} ? LOCK_NB : 0 )
+    );
 
-    $!{'EWOULDBLOCK'} or die( sprintf( "Couldn't acquire exclusive lock on %s: %s", $self->{'path'}, $! ));
-    debug( sprintf( "A lock on %s is held by another process.", $self->{'path'} ));
+    $!{'EWOULDBLOCK'} or die( sprintf(
+        "Couldn't acquire exclusive lock on %s: %s", $self->{'path'}, $!
+    ));
+    debug( sprintf(
+        "A lock on %s is held by another process.", $self->{'path'}
+    ));
     0;
 }
 
@@ -164,7 +174,7 @@ sub _tryLock
 
 sub _lockSuccess
 {
-    my ($self, $fd) = @_;
+    my ( $self, $fd ) = @_;
 
     my @stat1 = CORE::stat( $self->{'path'} );
     unless ( @stat1 ) {

@@ -23,7 +23,7 @@
     BASE_SERVER_IP                      => '',
 
     # WAN IP (only relevant if your primary IP is in private range)
-    # You can force usage of a private IP by putting BASE_SERVER_IP IP value
+    # You can force usage of a private IP by putting BASE_SERVER_IP value
     # instead of a public IP. You can also leave this parameter empty for
     # automatic detection of your public IP using ipinfo.io Web service.
     # Possible values: Ipv4 or IPv6
@@ -222,7 +222,8 @@
 
     # Passive port range
     # Possible values: A valid port range in range 32768-60999
-    # Don't forgot to forward TCP traffic on those ports on your server if you're behind a firewall
+    # Don't forgot to forward TCP traffic on those ports on your server if
+    # you're behind a firewall
     FTPD_PASSIVE_PORT_RANGE             => '32800 33800',
 
     #

@@ -68,7 +68,7 @@ sub process
 
 =item add( )
 
- Execute the `add' action on servers, packages
+ Execute the 'add' action on servers, packages
 
  Should be executed for items with 'toadd|tochange|toenable' status.
 
@@ -83,7 +83,7 @@ sub add
 
 =item delete( )
 
- Execute the `delete' action on servers, packages
+ Execute the 'delete' action on servers, packages
 
  Should be executed for items with 'todelete' status.
 
@@ -98,7 +98,7 @@ sub delete
 
 =item restore( )
 
- Execute the `restore' action on servers, packages
+ Execute the 'restore' action on servers, packages
 
  Should be executed for items with 'torestore' status.
 
@@ -113,7 +113,7 @@ sub restore
 
 =item disable( )
 
- Execute the `disable' action on servers, packages
+ Execute the 'disable' action on servers, packages
 
  Should be executed for items with 'todisable' status.
 
@@ -144,7 +144,7 @@ sub _init
 {
     my ( $self ) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'events'} = iMSCP::EventManager->getInstance();
     $self->{'_dbh'} = iMSCP::Database->factory()->getRawDb();
     $self->{'_data'} = {};
     $self;

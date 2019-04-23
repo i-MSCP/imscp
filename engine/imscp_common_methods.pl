@@ -201,13 +201,13 @@ sub get_file
     }
 
     unless ( -f $fname ) {
-        push_el( \@main::el, 'get_file()', "[ERROR] File `$fname' does not exist !" );
+        push_el( \@main::el, 'get_file()', "[ERROR] File '$fname' does not exist !" );
         return 1;
     }
 
     my $fh;
     unless ( open( $fh, '<', $fname ) ) {
-        push_el( \@main::el, 'get_file()', "[ERROR] Couldn't open `$fname' for reading: $!" );
+        push_el( \@main::el, 'get_file()', "[ERROR] Couldn't open '$fname' for reading: $!" );
         return 1;
     }
 
@@ -313,7 +313,7 @@ sub sys_command
         return 0;
     }
 
-    push_el( \@main::el, 'sys_command()', "[ERROR] External command `$cmd' exited with value $exit_value !" );
+    push_el( \@main::el, 'sys_command()', "[ERROR] External command '$cmd' exited with value $exit_value !" );
     -1;
 }
 

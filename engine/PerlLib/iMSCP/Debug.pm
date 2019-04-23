@@ -30,8 +30,10 @@ use iMSCP::Boolean;
 use iMSCP::Log;
 use parent 'Exporter';
 
-our @EXPORT = qw/ debug warning error fatal newDebug endDebug getMessage getLastError getMessageByType setVerbose
-    setDebug debugRegisterCallBack output silent /;
+our @EXPORT = qw/
+    debug warning error fatal newDebug endDebug getMessage getLastError
+    getMessageByType setVerbose setDebug debugRegisterCallBack output silent
+/;
 
 BEGIN {
     $SIG{'__DIE__'} = sub {
@@ -127,7 +129,8 @@ sub newDebug
 {
     my ( $loggerID ) = @_;
 
-    fatal( "A log file unique identifier is expected" ) unless length $loggerID;
+    fatal( "A log file unique identifier is expected" )
+        unless length $loggerID;
 
     for my $logger ( @{ $self->{'loggers'} } ) {
         $logger->getId() ne $loggerID or die(
@@ -156,7 +159,8 @@ sub endDebug
     # Remove logger from loggers stack
     pop @{ $self->{'loggers'} };
 
-    # warn, error and fatal log messages must be always stored in default logger for later processing
+    # warn, error and fatal log messages must be always stored in default
+    # logger for later processing
     for ( $logger->retrieve( tag => qr/(?:warn|error|fatal)/ ) ) {
         $self->{'loggers'}->[0]->store( %{ $_ } );
     }
@@ -193,7 +197,9 @@ sub debug
     my ( $message, $caller ) = @_;
     $caller = !defined $caller || $caller ? getCaller() : '';
 
-    $self->{'logger'}()->store( message => $caller . $message, tag => 'debug' ) if $self->{'debug'};
+    $self->{'logger'}()->store(
+        message => $caller . $message, tag => 'debug'
+    ) if $self->{'debug'};
     print STDOUT output( $caller . $message, 'debug' ) if $self->{'verbose'};
     undef;
 }
@@ -395,7 +401,10 @@ sub _writeLogfile
         return 0;
     }
 
-    print output( sprintf( "Couldn't open log file `%s' for writing: %s", $logfilePath, $! ), 'error' );
+    print output( sprintf(
+        "Couldn't open log file '%s' for writing: %s", $logfilePath, $! ),
+        'error'
+    );
     0;
 }
 
@@ -436,7 +445,9 @@ END {
         $countLoggers--;
     }
 
-    for ( $self->{'logger'}()->retrieve( tag => qr/(?:warn|error|fatal)/, remove => TRUE ) ) {
+    for ( $self->{'logger'}()->retrieve(
+        tag => qr/(?:warn|error|fatal)/, remove => TRUE
+    ) ) {
         print STDERR output( $_->{'message'}, $_->{'tag'} );
     }
 

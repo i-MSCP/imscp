@@ -123,7 +123,7 @@ sub STORE
     my ($self, $param, $value) = @_;
 
     !$self->{'readonly'} || $self->{'temporary'} or die(
-        sprintf( "Couldn't store value for the `%s' parameter: config object is readonly", $param )
+        sprintf( "Couldn't store value for the '%s' parameter: config object is readonly", $param )
     );
 
     return $self->_insertConfig( $param, $value ) unless exists $self->{'configValues'}->{$param};
@@ -217,7 +217,7 @@ sub _init
 {
     my ($self) = @_;
 
-    defined $self->{'fileName'} or die( 'fileName attribut is not defined' );
+    defined $self->{'fileName'} or die( 'fileName attribute is not defined' );
 
     @{$self->{'tiefile'}} = ();
     $self->{'tieFileObject'} = undef;

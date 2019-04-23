@@ -116,7 +116,7 @@ sub _callback
     return 0 unless defined $callback;
 
     local $@;
-    my $rs = eval { $callback->() };
+    my $rs = eval { $callback->(); };
     if ( $@ ) {
         error( $@ );
         $rs = 1;

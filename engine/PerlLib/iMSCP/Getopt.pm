@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,9 +25,13 @@ package iMSCP::Getopt;
 
 use strict;
 use warnings;
+use iMSCP::Boolean;
 use iMSCP::Debug qw/ debugRegisterCallBack /;
 use Text::Wrap;
-use fields qw / clearComposerCache debug fixPermissions listener noprompt preseed reconfigure skipComposerUpdate verbose /;
+use fields qw/
+    clearComposerCache debug fixPermissions noprompt preseed reconfigure
+    skipComposerUpdate verbose
+/;
 
 $Text::Wrap::columns = 80;
 $Text::Wrap::break = qr/[\s\n\|]/;
@@ -48,11 +52,12 @@ my $showUsage;
 
  Parses command line options in @ARGV with GetOptions from Getopt::Long
 
- The first parameter should be basic usage text for the program. Usage text for the globally supported options will be
- prepended to this if usage help must be printed.
+ The first parameter should be basic usage text for the program. Usage text
+ for the globally supported options will be prepended to this if usage help
+ must be printed.
 
- If any additonal parameters are passed to this function, they are also passed to GetOptions. This can be used to handle
- additional options.
+ If any additonal parameters are passed to this function, they are also passed
+ to GetOptions. This can be used to handle additional options.
 
  Param string $usage Usage text
  Param list @options OPTIONAL Additional options
@@ -62,7 +67,7 @@ my $showUsage;
 
 sub parse
 {
-    my ($class, $usage, @options) = @_;
+    my ( $class, $usage, @options ) = @_;
 
     $showUsage = sub {
         my $exitCode = shift || 0;
@@ -73,10 +78,9 @@ $usage
  -c,    --clear-composer-cache  Clear composer cache.
  -d,    --debug                 Force debug mode.
  -h,-?  --help                  Show this help.
- -l,    --listener <file>       Path to listener file.
  -n,    --noprompt              Switch to non-interactive mode.
  -p,    --preseed <file>        Path to preseed file.
- -r,    --reconfigure [item]    Type `help` for list of allowed items.
+ -r,    --reconfigure [item]    Type 'help' for list of allowed items.
  -v,    --verbose               Enable verbose mode.
  -x,    --fix-permissions       Fix permissions recursively.
 
@@ -98,27 +102,28 @@ EOF
     require Getopt::Long;
     Getopt::Long::Configure( 'bundling' );
     Getopt::Long::GetOptions(
-        'clear-composer-cache|c', sub { $options->{'clearComposerCache'} = 1 },
-        'debug|d', sub { $options->{'debug'} = 1 },
+        'clear-composer-cache|c', sub { $options->{'clearComposerCache'} = TRUE },
+        'debug|d', sub { $options->{'debug'} = TRUE },
         'help|?|h', sub { $class->showUsage() },
-        'fix-permissions|x', sub { $options->{'fixPermissions'} = 1 },
-        'listener|l=s', sub { $class->listener( $_[1] ) },
-        'noprompt|n', sub { $options->{'noprompt'} = 1 },
+        'fix-permissions|x', sub { $options->{'fixPermissions'} = TRUE },
+        'noprompt|n', sub { $options->{'noprompt'} = TRUE },
         'preseed|p=s', sub { $class->preseed( $_[1] ) },
         'reconfigure|r:s', sub { $class->reconfigure( $_[1] ) },
-        'skip-composer-update|a', sub { $options->{'skipComposerUpdate'} = 1 },
-        'verbose|v', sub { $options->{'verbose'} = 1 },
+        'skip-composer-update|a', sub { $options->{'skipComposerUpdate'} = TRUE },
+        'verbose|v', sub { $options->{'verbose'} = TRUE },
         @options,
-    ) or $class->showUsage( 1 );
+    ) or $class->showUsage( TRUE );
 
     undef;
 }
 
 =item parseNoDefault( $usage, @options )
 
- Parses command line options in @ARGV with GetOptions from Getopt::Long. Default options are excluded
+ Parses command line options in @ARGV with GetOptions from Getopt::Long.
+ Default options are excluded
 
- The first parameter should be basic usage text for the program. Any following parameters are passed to to GetOptions.
+ The first parameter should be basic usage text for the program. Any
+ following parameters are passed to to GetOptions.
 
  Param string $usage Usage text
  Param list @options Options
@@ -128,7 +133,7 @@ EOF
 
 sub parseNoDefault
 {
-    my ($class, $usage, @options) = @_;
+    my ( $class, $usage, @options ) = @_;
 
     $showUsage = sub {
         my $exitCode = shift || 0;
@@ -153,7 +158,9 @@ EOF
 
     require Getopt::Long;
     Getopt::Long::Configure( 'bundling' );
-    Getopt::Long::GetOptions( 'help|?|h', sub { $class->showUsage() }, @options ) or $class->showUsage( 1 );
+    Getopt::Long::GetOptions(
+        'help|?|h', sub { $class->showUsage() }, @options
+    ) or $class->showUsage( TRUE );
     undef;
 }
 
@@ -168,7 +175,7 @@ EOF
 
 sub showUsage
 {
-    my (undef, $exitCode) = @_;
+    my ( undef, $exitCode ) = @_;
 
     $exitCode //= 1;
     ref $showUsage eq 'CODE' or die( 'ShowUsage( ) is not defined.' );
@@ -176,10 +183,13 @@ sub showUsage
 }
 
 our @reconfigurationItems = sort(
-    'all', 'servers', 'addons', 'httpd', 'mta', 'po', 'ftpd', 'named', 'sql', 'hostnames', 'system_hostname', 'panel_hostname', 'panel_ports',
-    'primary_ip', 'admin', 'admin_credentials', 'admin_email', 'php', 'timezone', 'panel', 'panel_ssl', 'system_server', 'services_ssl', 'ssl',
-    'backup', 'alt_urls_feature', 'antirootkit_packages', 'sql_admin_tool_packages', 'web_ftp_client_packages', 'webmail_client_packages',
-    'web_statistic_packages'
+    'all', 'servers', 'addons', 'httpd', 'mta', 'po', 'ftpd', 'named', 'sql',
+    'hostnames', 'system_hostname', 'panel_hostname', 'panel_ports',
+    'primary_ip', 'admin', 'admin_credentials', 'admin_email', 'php',
+    'timezone', 'panel', 'panel_ssl', 'system_server', 'services_ssl', 'ssl',
+    'backup', 'alt_urls_feature', 'antirootkit_packages',
+    'sql_admin_tool_packages', 'web_ftp_client_packages',
+    'webmail_client_packages', 'web_statistic_packages'
 );
 
 =item reconfigure( [ $item = 'none' ] )
@@ -193,7 +203,7 @@ our @reconfigurationItems = sort(
 
 sub reconfigure
 {
-    my (undef, $item) = @_;
+    my ( undef, $item ) = @_;
 
     return $options->{'reconfigure'} ||= 'none' unless defined $item;
 
@@ -212,7 +222,7 @@ EOF
         $item = 'all';
     }
 
-    $item eq 'none' || grep($_ eq $item, @reconfigurationItems) or die(
+    $item eq 'none' || grep ($_ eq $item, @reconfigurationItems) or die(
         sprintf( "Error: '%s' is not a valid argument for the --reconfigure option.", $item )
     );
     $options->{'reconfigure'} = $item;
@@ -229,31 +239,12 @@ EOF
 
 sub preseed
 {
-    my (undef, $file) = @_;
+    my ( undef, $file ) = @_;
 
     return $options->{'preseed'} unless defined $file;
 
     -f $file or die( sprintf( 'Preseed file not found: %s', $file ));
     $options->{'preseed'} = $file;
-}
-
-=item listener( [ $file = undef ] )
-
- Accessor/Mutator for the listener command line option
-
- Param string $file OPTIONAL Listener file path
- Return string Path to listener file or undef
-
-=cut
-
-sub listener
-{
-    my (undef, $file) = @_;
-
-    return $options->{'listener'} unless defined $file;
-
-    -f $file or die( sprintf( 'Listener file not found: %s', $file ));
-    $options->{'listener'} = $file;
 }
 
 =item AUTOLOAD
@@ -268,12 +259,12 @@ sub AUTOLOAD
     ( my $field = our $AUTOLOAD ) =~ s/.*://;
 
     no strict 'refs';
-    *{$AUTOLOAD} = sub {
+    *{ $AUTOLOAD } = sub {
         shift;
         return $options->{$field} unless @_;
         $options->{$field} = shift;
     };
-    goto &{$AUTOLOAD};
+    goto &{ $AUTOLOAD };
 }
 
 =item DESTROY

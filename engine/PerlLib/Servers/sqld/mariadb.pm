@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,6 +26,7 @@ package Servers::sqld::mariadb;
 use strict;
 use warnings;
 use Class::Autouse qw/ :nostat Servers::sqld::mariadb::installer Servers::sqld::mariadb::uninstaller /;
+use iMSCP::Boolean;
 use iMSCP::Service;
 use iMSCP::Database;
 use parent 'Servers::sqld::mysql';
@@ -48,11 +49,11 @@ use parent 'Servers::sqld::mysql';
 
 sub preinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPreinstall', 'mariadb' );
+    my $rs = $self->{'events'}->trigger( 'beforeSqldPreinstall', 'mariadb' );
     $rs ||= Servers::sqld::mariadb::installer->getInstance()->preinstall();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPreinstall', 'mariadb' )
+    $rs ||= $self->{'events'}->trigger( 'afterSqldPreinstall', 'mariadb' )
 }
 
 =item postinstall( )
@@ -65,9 +66,9 @@ sub preinstall
 
 sub postinstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldPostInstall', 'mariadb' );
+    my $rs = $self->{'events'}->trigger( 'beforeSqldPostInstall', 'mariadb' );
 
     local $@;
     eval { iMSCP::Service->getInstance()->enable( 'mysql' ); };
@@ -76,16 +77,16 @@ sub postinstall
         return 1;
     }
 
-    $rs = $self->{'eventManager'}->register(
+    $rs = $self->{'events'}->register(
         'beforeSetupRestartServices',
         sub {
-            push @{$_[0]}, [ sub { $self->restart(); }, 'MariaDB' ];
+            push @{ $_[0] }, [ sub { $self->restart(); }, 'MariaDB' ];
             0;
         },
         7
     );
 
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldPostInstall', 'mariadb' );
+    $rs ||= $self->{'events'}->trigger( 'afterSqldPostInstall', 'mariadb' );
 }
 
 =item uninstall( )
@@ -98,11 +99,11 @@ sub postinstall
 
 sub uninstall
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldUninstall', 'mariadb' );
+    my $rs = $self->{'events'}->trigger( 'beforeSqldUninstall', 'mariadb' );
     $rs ||= Servers::sqld::mariadb::uninstaller->getInstance()->uninstall();
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldUninstall', 'mariadb' );
+    $rs ||= $self->{'events'}->trigger( 'afterSqldUninstall', 'mariadb' );
 }
 
 =item createUser( $user, $host, $password )
@@ -118,7 +119,7 @@ sub uninstall
 
 sub createUser
 {
-    my (undef, $user, $host, $password) = @_;
+    my ( undef, $user, $host, $password ) = @_;
 
     defined $user or die( '$user parameter is not defined' );
     defined $host or die( '$host parameter is not defined' );
@@ -126,10 +127,18 @@ sub createUser
 
     eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = 1;
-        $dbh->do( 'CREATE USER ?@? IDENTIFIED BY ?', undef, $user, $host, $password );
+        local $dbh->{'RaiseError'} = TRUE;
+        $dbh->do(
+            'CREATE USER ?@? IDENTIFIED BY ?',
+            undef,
+            $user,
+            $host,
+            $password
+        );
     };
-    !$@ or die( sprintf( "Couldn't create the %s\@%s SQL user: %s", $user, $host, $@ ));
+    !$@ or die( sprintf(
+        "Couldn't create the %s\@%s SQL user: %s", $user, $host, $@
+    ));
     0;
 }
 

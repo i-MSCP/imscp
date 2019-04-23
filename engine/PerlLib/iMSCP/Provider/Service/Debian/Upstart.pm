@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2018 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -71,7 +71,8 @@ sub enable
 
     if ( $self->SUPER::hasService( $job ) ) {
         $self->SUPER::enable( $job );
-        $self->iMSCP::Provider::Service::Debian::SysVinit::enable( $job ) if $self->iMSCP::Provider::Service::Debian::SysVinit::hasService( $job );
+        $self->iMSCP::Provider::Service::Debian::SysVinit::enable( $job )
+            if $self->iMSCP::Provider::Service::Debian::SysVinit::hasService( $job );
         return;
     }
 
@@ -92,7 +93,8 @@ sub disable
 
     if ( $self->SUPER::hasService( $job ) ) {
         $self->SUPER::disable( $job );
-        $self->iMSCP::Provider::Service::Debian::SysVinit::disable( $job ) if $self->iMSCP::Provider::Service::Debian::SysVinit::hasService( $job );
+        $self->iMSCP::Provider::Service::Debian::SysVinit::disable( $job )
+            if $self->iMSCP::Provider::Service::Debian::SysVinit::hasService( $job );
         return;
     }
 
@@ -226,7 +228,8 @@ sub hasService
 
     defined $job or croak( 'parameter $job is not defined' );
 
-    $self->SUPER::hasService( $job ) || $self->iMSCP::Provider::Service::Debian::SysVinit::hasService( $job );
+    $self->SUPER::hasService( $job )
+        || $self->iMSCP::Provider::Service::Debian::SysVinit::hasService( $job );
 }
 
 =back
@@ -245,7 +248,8 @@ sub _init
 {
     my ( $self ) = @_;
 
-    # Make sure to initialize underlying SysVinit init provider (multiple inheritance)
+    # Make sure to initialize underlying SysVinit init provider
+    # (multiple inheritance)
     $self->iMSCP::Provider::Service::Debian::SysVinit::_init();
 }
 

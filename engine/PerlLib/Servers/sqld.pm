@@ -55,25 +55,6 @@ sub factory
     $instance = $package->getInstance();
 }
 
-=item can( $method )
-
- Checks if the sqld server package provides the given method
-
- Param string $method Method name
- Return subref|undef
-
-=cut
-
-sub can
-{
-    my (undef, $method) = @_;
-
-    my $package = $::imscpConfig{'SQL_PACKAGE'} || 'Servers::noserver';
-    eval "require $package";
-    die( $@ ) if $@;
-    $package->can( $method );
-}
-
 =item getPriority( )
 
  Get server priority
@@ -85,6 +66,25 @@ sub can
 sub getPriority
 {
     80;
+}
+
+=item can( $method )
+
+ Checks if the sqld server package provides the given method
+
+ Param string $method Method name
+ Return subref|undef
+
+=cut
+
+sub can
+{
+    my ( undef, $method ) = @_;
+
+    my $package = $::imscpConfig{'SQL_PACKAGE'} || 'Servers::noserver';
+    eval "require $package";
+    die( $@ ) if $@;
+    $package->can( $method );
 }
 
 =back

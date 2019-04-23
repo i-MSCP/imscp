@@ -26,7 +26,7 @@ package iMSCP::Service;
 use strict;
 use warnings;
 use Carp 'croak';
-use File::Basename;
+use File::Basename qw/ basename fileparse /;
 use iMSCP::Boolean;
 use iMSCP::Debug qw/ debug getMessageByType /;
 use iMSCP::Dir;
@@ -74,7 +74,9 @@ sub enable
     defined $service or croak( 'Missing or undefined $service parameter' );
 
     eval { $self->{'provider'}->enable( $service ); };
-    !$@ or croak( sprintf( "Couldn't enable the %s service: %s", $service, $@ ));
+    !$@ or croak( sprintf(
+        "Couldn't enable the %s service: %s", $service, $@
+    ));
 }
 
 =item disable( $service )
@@ -90,7 +92,9 @@ sub disable
     defined $service or croak( 'Missing or undefined $service parameter' );
 
     eval { $self->{'provider'}->disable( $service ); };
-    !$@ or croak( sprintf( "Couldn't disable the %s service: %s", $service, $@ ));
+    !$@ or croak( sprintf(
+        "Couldn't disable the %s service: %s", $service, $@
+    ));
 }
 
 =item remove( $service )
@@ -117,21 +121,31 @@ sub remove
             my $provider = $self->getProvider( 'Systemd' );
 
             # Remove drop-in files if any
-            for my $dir ( '/etc/systemd/system/', '/usr/local/lib/systemd/system/' ) {
+            for my $dir (
+                '/etc/systemd/system/',
+                '/usr/local/lib/systemd/system/'
+            ) {
                 my $dropInDir = $dir;
                 ( undef, undef, my $suffix ) = fileparse(
-                    $service, qw/ .automount .device .mount .path .scope .service .slice .socket .swap .timer /
-                );
+                    $service, qw/
+                    .automount .device .mount .path .scope .service .slice
+                    .socket .swap .timer
+                / );
                 $dropInDir .= $service . ( $suffix ? '' : '.service' ) . '.d';
                 next unless -d $dropInDir;
-                debug( sprintf( "Removing the %s systemd drop-in directory", $dropInDir ));
+                debug( sprintf(
+                    "Removing the %s systemd drop-in directory", $dropInDir
+                ));
                 iMSCP::Dir->new( dirname => $dropInDir )->remove();
             }
 
             # Remove systemd unit files if any
-            while ( my $unitFilePath = eval { $provider->resolveUnit( $service, TRUE, TRUE ) } ) {
+            while ( my $unitFilePath = eval {
+                $provider->resolveUnit( $service, TRUE, TRUE );
+            } ) {
                 # We do not want remove units that are shipped by distribution packages
-                last unless index( $unitFilePath, '/etc/systemd/system/' ) == 0 || index( $unitFilePath, '/usr/local/lib/systemd/system/' ) == 0;
+                last unless index( $unitFilePath, '/etc/systemd/system/' ) == 0
+                    || index( $unitFilePath, '/usr/local/lib/systemd/system/' ) == 0;
                 debug( sprintf( 'Removing the %s unit', $unitFilePath ));
                 iMSCP::File->new( filename => $unitFilePath )->delFile();
             }
@@ -140,14 +154,22 @@ sub remove
         unless ( $self->{'init'} eq 'Upstart' ) {
             my $provider = $self->getProvider( 'Upstart' );
             for my $type ( qw/ conf override / ) {
-                if ( my $jobFilePath = eval { $provider->resolveJob( $service, $type, TRUE ); } ) {
-                    debug( sprintf( "Removing the %s upstart file", $jobFilePath ));
+                if ( my $jobFilePath = eval {
+                    $provider->resolveJob( $service, $type, TRUE );
+                } ) {
+                    debug( sprintf(
+                        "Removing the %s upstart file", $jobFilePath
+                    ));
                     iMSCP::File->new( filename => $jobFilePath )->delFile();
                 }
             }
         }
     };
-    !$@ or croak( sprintf( "Couldn't remove the %s service: %s", basename( $service, '.service' ), $@ ));
+    !$@ or croak( sprintf(
+        "Couldn't remove the %s service: %s",
+        basename( $service, '.service' ),
+        $@
+    ));
 }
 
 =item start( $service )
@@ -163,7 +185,9 @@ sub start
     defined $service or croak( 'Missing or undefined $service parameter' );
 
     eval { $self->{'provider'}->start( $service ); };
-    !$@ or croak( sprintf( "Couldn't start the %s service: %s", $service, $@ ));
+    !$@ or croak( sprintf(
+        "Couldn't start the %s service: %s", $service, $@
+    ));
 }
 
 =item stop( $service )
@@ -179,7 +203,9 @@ sub stop
     defined $service or croak( 'Missing or undefined $service parameter' );
 
     eval { $self->{'provider'}->stop( $service ); };
-    !$@ or croak( sprintf( "Couldn't stop the %s service: %s", $service, $@ ));
+    !$@ or croak( sprintf(
+        "Couldn't stop the %s service: %s", $service, $@
+    ));
 }
 
 =item restart( $service )
@@ -195,7 +221,9 @@ sub restart
     defined $service or croak( 'Missing or undefined $service parameter' );
 
     eval { $self->{'provider'}->restart( $service ); };
-    !$@ or croak( sprintf( "Couldn't restart the %s service: %s", $service, $@ ));
+    !$@ or croak( sprintf(
+        "Couldn't restart the %s service: %s", $service, $@
+    ));
 }
 
 =item reload( $service )
@@ -211,7 +239,9 @@ sub reload
     defined $service or croak( 'Missing or undefined $service parameter' );
 
     eval { $self->{'provider'}->reload( $service ); };
-    !$@ or croak( sprintf( "Couldn't reload the %s service: %s", $service, $@ ));
+    !$@ or croak( sprintf(
+        "Couldn't reload the %s service: %s", $service, $@
+    ));
 }
 
 =item isRunning( $service )
@@ -274,7 +304,7 @@ sub isSysVinit
 
  Is upstart used as init system, that is, the program running with PID 1?
 
- Return boolean TRUE if Upstart is is the current init system, FALSE otherwise
+ Return boolean TRUE if Upstart is the current init system, FALSE otherwise
 
 =cut
 
@@ -311,16 +341,18 @@ sub getProvider
 
     $providerName //= $self->{'init'};
 
-    my $id = iMSCP::LsbRelease->getInstance->getId( 'short' );
+    my $id = iMSCP::LsbRelease->getInstance->getId( TRUE );
     $id = 'Debian' if grep ( lc $id eq $_, 'devuan', 'ubuntu' );
     my $provider = "iMSCP::Provider::Service::${id}::${providerName}";
 
     unless ( can_load( modules => { $provider => undef } ) ) {
         # Fallback to the base provider
         $provider = "iMSCP::Provider::Service::${providerName}";
-        can_load( modules => { $provider => undef } ) or croak(
-            sprintf( "Couldn't load the '%s' service provider: %s", $provider, $Module::Load::Conditional::ERROR )
-        );
+        can_load( modules => { $provider => undef } ) or croak( sprintf(
+            "Couldn't load the '%s' service provider: %s",
+            $provider,
+            $Module::Load::Conditional::ERROR
+        ));
     }
 
     $provider->getInstance();
@@ -368,7 +400,8 @@ sub _init
 sub _detectInit
 {
     return 'Systemd' if -d '/run/systemd/system';
-    return 'Upstart' if iMSCP::ProgramFinder::find( 'initctl' ) && execute( 'initctl version 2>/dev/null | grep -q upstart' ) == 0;
+    return 'Upstart' if iMSCP::ProgramFinder::find( 'initctl' )
+        && execute( 'initctl version 2>/dev/null | grep -q upstart' ) == 0;
     'SysVinit';
 }
 
@@ -382,7 +415,9 @@ sub _detectInit
 
 sub _getLastError
 {
-    getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error';
+    getMessageByType(
+        'error', { amount => 1, remove => TRUE }
+    ) || 'Unknown error';
 }
 
 =back

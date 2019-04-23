@@ -1,0 +1,17 @@
+apache2
+bind9
+courier-authdaemon
+courier-imap
+courier-imap-ssl
+courier-pop
+courier-pop-ssl
+cron dovecot
+nginx
+php5.6-fpm
+php7.0-fpm
+php7.1-fpm
+php7.2-fpm
+php7.3-fpm
+postfix
+proftpd
+vsftpd

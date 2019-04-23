@@ -41,7 +41,7 @@ fi
 rm -fR /tmp/imscp_apache2_src*
 SRC_DIR=$(mktemp -p /tmp -d imscp_apache2_src.XXXXXX)
 
-# Fix `W: Download is performed unsandboxed as root as file...' warning with
+# Fix 'W: Download is performed unsandboxed as root as file...' warning with
 # newest APT versions
 if id "_apt" >/dev/null 2>&1; then
     chown _apt ${SRC_DIR}

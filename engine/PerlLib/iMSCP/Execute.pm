@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -62,14 +62,14 @@ sub execute( $;$$ )
 
     if ( $stdout ) {
         ref $stdout eq 'SCALAR' or die(
-            "Expects a scalar reference as second parameter STDOUT capture"
+            "Expects a scalar reference as second parameter STDOUT capture."
         );
         ${ $stdout } = '';
     }
 
     if ( $stderr ) {
         ref $stderr eq 'SCALAR' or die(
-            "Expects a scalar reference as second parameter STDERR capture"
+            "Expects a scalar reference as second parameter STDERR capture."
         );
         ${ $stderr } = '';
     }

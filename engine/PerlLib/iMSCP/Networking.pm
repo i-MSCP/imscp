@@ -71,25 +71,40 @@ sub addIpAddress
 {
     my ( $self, $data ) = @_;
 
-    defined $data && ref $data eq 'HASH' or croak( '$data parameter is not defined or invalid' );
+    defined $data && ref $data eq 'HASH' or croak(
+        '$data parameter is not defined or invalid'
+    );
 
     for my $param ( qw/ ip_id ip_card ip_address ip_config_mode / ) {
-        defined $data->{$param} or croak( sprintf( 'The %s parameter is not defined', $param ));
+        defined $data->{$param} or croak( sprintf(
+            'The %s parameter is not defined', $param
+        ));
     }
 
-    $data->{'ip_id'} =~ /^\d+$/ or croak( 'ip_id parameter must be an integer' );
-    $self->{'net'}->isValidAddr( $data->{'ip_address'} ) or croak( sprintf( 'The %s IP address is not valid', $data->{'ip_address'} ));
-    $self->{'net'}->isKnownDevice( $data->{'ip_card'} ) or croak( sprintf( 'The %s network interface is unknown', $data->{'ip_card'} ));
-    $self->{'net'}->upDevice( $data->{'ip_card'} ) if $self->{'net'}->isDeviceDown( $data->{'ip_card'} );
+    $data->{'ip_id'} =~ /^\d+$/ or croak(
+        'ip_id parameter must be an integer'
+    );
+    $self->{'net'}->isValidAddr( $data->{'ip_address'} ) or croak( sprintf(
+        'The %s IP address is not valid', $data->{'ip_address'}
+    ));
+    $self->{'net'}->isKnownDevice( $data->{'ip_card'} ) or croak( sprintf(
+        'The %s network interface is unknown', $data->{'ip_card'}
+    ));
+    $self->{'net'}->upDevice( $data->{'ip_card'} )
+        if $self->{'net'}->isDeviceDown( $data->{'ip_card'} );
 
-    local $data->{'ip_address'} = $self->{'net'}->normalizeAddr( $data->{'ip_address'} );
+    local $data->{'ip_address'} = $self->{'net'}->normalizeAddr(
+        $data->{'ip_address'}
+    );
 
     my $addrVersion = $self->{'net'}->getAddrVersion( $data->{'ip_address'} );
     $data->{'ip_netmask'} //= $addrVersion eq 'ipv4' ? 24 : 64;
 
     if ( $data->{'ip_config_mode'} eq 'auto' ) {
         $self->{'net'}->delAddr( $data->{'ip_address'} ); # Cover update
-        $self->{'net'}->addAddr( $data->{'ip_address'}, $data->{'ip_netmask'}, $data->{'ip_card'} );
+        $self->{'net'}->addAddr(
+            $data->{'ip_address'}, $data->{'ip_netmask'}, $data->{'ip_card'}
+        );
     }
 
     $_->addIpAddress( $data ) for $self->_getProviders();
@@ -107,17 +122,27 @@ sub removeIpAddress
 {
     my ( $self, $data ) = @_;
 
-    defined $data && ref $data eq 'HASH' or croak( '$data parameter is not defined or invalid' );
+    defined $data && ref $data eq 'HASH' or croak(
+        '$data parameter is not defined or invalid'
+    );
 
     for my $param ( qw/ ip_id ip_card ip_address ip_config_mode / ) {
-        defined $data->{$param} or croak( sprintf( 'The %s parameter is not defined', $param ));
+        defined $data->{$param} or croak( sprintf(
+            'The %s parameter is not defined', $param
+        ));
     }
 
-    $data->{'ip_id'} =~ /^\d+$/ or croak( 'ip_id parameter must be an integer' );
+    $data->{'ip_id'} =~ /^\d+$/ or croak(
+        'ip_id parameter must be an integer'
+    );
 
-    local $data->{'ip_address'} = $self->{'net'}->normalizeAddr( $data->{'ip_address'} );
+    local $data->{'ip_address'} = $self->{'net'}->normalizeAddr(
+        $data->{'ip_address'}
+    );
 
-    $self->{'net'}->delAddr( $data->{'ip_address'} ) if $data->{'ip_config_mode'} eq 'auto';
+    $self->{'net'}->delAddr(
+        $data->{'ip_address'}
+    ) if $data->{'ip_config_mode'} eq 'auto';
 
     $_->removeIpAddress( $data ) for $self->_getProviders();
 
@@ -158,16 +183,21 @@ sub _getProviders
 
     return @providers if @providers;
 
-    for my $providerName ( map { basename( $_, '.pm' ) } glob( dirname( __FILE__ ) . '/Provider/Networking/Persistence/*.pm' ) ) {
+    for my $providerName ( map {
+        basename( $_, '.pm' )
+    } glob( dirname( __FILE__ ) . '/Provider/Networking/Persistence/*.pm' ) ) {
         my $provider = "iMSCP::Provider::Networking::Persistence::${providerName}";
-        can_load( modules => { $provider => undef } ) or die(
-            sprintf( "Couldn't load the '%s' networking configuration provider: %s", $provider, $Module::Load::Conditional::ERROR )
-        );
+        can_load( modules => { $provider => undef } ) or die( sprintf(
+            "Couldn't load the '%s' networking configuration provider: %s",
+            $provider, $Module::Load::Conditional::ERROR
+        ));
         next unless $provider->checkForOperability();
         push @providers, $provider->new();
     }
 
-    @providers or die( 'No networking configuration provider (persistence layer) can operate on the system.' );
+    @providers or die(
+        'No networking configuration provider (persistence layer) can operate on the system.'
+    );
     @providers;
 }
 

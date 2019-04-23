@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2018 Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -56,7 +56,8 @@ sub checkForOperability
 {
     my ( $self ) = @_;
 
-    return FALSE unless length iMSCP::ProgramFinder::find( 'ifup' ) && length iMSCP::ProgramFinder::find( 'ifdown' );
+    return FALSE unless length iMSCP::ProgramFinder::find( 'ifup' )
+        && length iMSCP::ProgramFinder::find( 'ifdown' );
 
     my $srvMngr = iMSCP::Service->getInstance();
     $srvMngr->hasService( 'networking' ) && $srvMngr->isEnabled( 'networking' );
@@ -78,7 +79,9 @@ sub addIpAddress
 {
     my ( $self, $data ) = @_;
 
-    $self->_updateConfig( $data->{'ip_config_mode'} eq 'auto' ? 'add' : 'remove', $data );
+    $self->_updateConfig( $data->{'ip_config_mode'} eq 'auto'
+        ? 'add' : 'remove', $data
+    );
     $self;
 }
 
@@ -117,7 +120,9 @@ sub _updateConfig
     my ( $self, $action, $data ) = @_;
 
     my $file = iMSCP::File->new( filename => '/etc/network/interfaces' );
-    defined( my $fileCR = $file->getAsRef()) or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ));
+    defined( my $fileCR = $file->getAsRef()) or die( getMessageByType(
+        'error', { amount => 1, remove => TRUE }
+    ));
 
     my $ipID = $data->{'ip_id'}+1000;
 
@@ -132,7 +137,9 @@ sub _updateConfig
     );
 
     if ( $action eq 'add' ) {
-        my $addrVersion = iMSCP::Net->getInstance()->getAddrVersion( $data->{'ip_address'} );
+        my $addrVersion = iMSCP::Net->getInstance()->getAddrVersion(
+            $data->{'ip_address'}
+        );
         ${ $fileCR } .= <<"EOF";
 
 # i-MSCP [$data->{'ip_address'}] entry BEGIN.
@@ -143,7 +150,9 @@ iface $data->{'ip_card'} @{ [ $addrVersion eq 'ipv4' ? 'inet' : 'inet6' ] } manu
 EOF
     }
 
-    $file->save() == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ));
+    $file->save() == 0 or die( getMessageByType(
+        'error', { amount => 1, remove => TRUE }
+    ));
 }
 
 =back

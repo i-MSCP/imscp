@@ -110,14 +110,14 @@ sub add
     my ( $self ) = @_;
 
     eval {
-        my $ret = $self->{'eventManager'}->trigger( 'beforeAddIpAddr', $self->{'_data'} );
+        my $ret = $self->{'events'}->trigger( 'beforeAddIpAddr', $self->{'_data'} );
 
         unless ( $ret || $self->{'_data'}->{'ip_card'} eq 'any' || $self->{'_data'}->{'ip_address'} eq '0.0.0.0' ) {
             iMSCP::Networking->getInstance()->addIpAddress( $self->{'_data'} );
         }
 
         $ret ||= $self->SUPER::add();
-        $ret ||= $self->{'eventManager'}->trigger( 'afterAddIpAddr', $self->{'_data'} );
+        $ret ||= $self->{'events'}->trigger( 'afterAddIpAddr', $self->{'_data'} );
         $ret == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' );
     };
     if ( $@ ) {
@@ -141,14 +141,14 @@ sub delete
     my ( $self ) = @_;
 
     eval {
-        my $ret = $self->{'eventManager'}->trigger( 'beforeRemoveIpAddr', $self->{'_data'} );
+        my $ret = $self->{'events'}->trigger( 'beforeRemoveIpAddr', $self->{'_data'} );
 
         unless ( $ret || $self->{'_data'}->{'ip_card'} eq 'any' || $self->{'_data'}->{'ip_address'} eq '0.0.0.0' ) {
             iMSCP::Networking->getInstance()->removeIpAddress( $self->{'_data'} );
         }
 
         $ret ||= $self->SUPER::delete();
-        $ret ||= $self->{'eventManager'}->trigger( 'afterRemoveIpAddr', $self->{'_data'} );
+        $ret ||= $self->{'events'}->trigger( 'afterRemoveIpAddr', $self->{'_data'} );
         $ret == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ) || 'Unknown error' );
     };
     if ( $@ ) {

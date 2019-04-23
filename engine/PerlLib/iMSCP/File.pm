@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by internet Multi Server Control Panel
+# Copyright (C) 2010-2019 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,10 +26,10 @@ package iMSCP::File;
 use strict;
 use warnings;
 use autouse Lchown => qw/ lchown /;
-use File::Basename qw/ basename /;
+use File::Basename 'basename';
 use File::Copy qw/ copy mv /;
 use File::Spec;
-use iMSCP::Debug qw/ error /;
+use iMSCP::Debug 'error';
 use parent 'Common::Object';
 
 =head1 DESCRIPTION
@@ -50,18 +50,20 @@ use parent 'Common::Object';
 
 sub get
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     return $self->{'fileContent'} if defined $self->{'fileContent'};
 
     unless ( defined $self->{'filename'} ) {
-        error( "Attribute `filename' is not set." );
+        error( "Attribute 'filename' is not set." );
         return undef;
     }
 
     my $fh;
     unless ( open( $fh, '<', $self->{'filename'} ) ) {
-        error( sprintf( "Couldn't open `%s' file for reading: %s", $self->{'filename'}, $! ));
+        error( sprintf(
+            "Couldn't open '%s' file for reading: %s", $self->{'filename'}, $!
+        ));
         return undef;
     }
 
@@ -81,7 +83,7 @@ sub get
 
 sub getAsRef
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     return \$self->{'fileContent'} if defined $self->{'fileContent'};
 
@@ -103,7 +105,7 @@ sub getAsRef
 
 sub set
 {
-    my ($self, $content) = @_;
+    my ( $self, $content ) = @_;
 
     $self->{'fileContent'} = $content // '';
     0;
@@ -119,16 +121,20 @@ sub set
 
 sub save
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     unless ( defined $self->{'filename'} ) {
-        error( "Attribute `filename' is not set." );
+        error( "Attribute 'filename' is not set." );
         return undef;
     }
 
     my $fh;
     unless ( open( $fh, '>', $self->{'filename'} ) ) {
-        error( sprintf( "Couldn't open `%s' file for writing: %s", $self->{'filename'}, $! ));
+        error( sprintf(
+            "Couldn't open '%s' file for writing: %s",
+            $self->{'filename'},
+            $!
+        ));
         return 1;
     }
 
@@ -148,15 +154,19 @@ sub save
 
 sub delFile
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     unless ( defined $self->{'filename'} ) {
-        error( "Attribute `filename' is not set." );
+        error( "Attribute 'filename' is not set." );
         return 1;
     }
 
     unless ( unlink( $self->{'filename'} ) ) {
-        error( sprintf( "Couldn't delete `%s' file: %s", $self->{'filename'}, $! ));
+        error( sprintf(
+            "Couldn't delete '%s' file: %s",
+            $self->{'filename'},
+            $!
+        ));
         return 1;
     }
 
@@ -176,10 +186,10 @@ sub delFile
 
 sub mode
 {
-    my ($self, $mode) = @_;
+    my ( $self, $mode ) = @_;
 
     unless ( defined $self->{'filename'} ) {
-        error( "Attribute `filename' is not set." );
+        error( "Attribute 'filename' is not set." );
         return 1;
     }
 
@@ -191,7 +201,11 @@ sub mode
     return 0 if -l $self->{'filename'};
 
     unless ( chmod( $mode, $self->{'filename'} ) ) {
-        error( sprintf( "Couldn't change `%s' file permissions: %s", $self->{'filename'}, $! ));
+        error( sprintf(
+            "Couldn't change '%s' file permissions: %s",
+            $self->{'filename'},
+            $!
+        ));
         return 1;
     }
 
@@ -212,10 +226,10 @@ sub mode
 
 sub owner
 {
-    my ($self, $owner, $group) = @_;
+    my ( $self, $owner, $group ) = @_;
 
     unless ( defined $self->{'filename'} ) {
-        error( "Attribute `filename' is not set." );
+        error( "Attribute 'filename' is not set." );
         return 1;
     }
 
@@ -233,7 +247,11 @@ sub owner
     my $gid = ( ( $group =~ /^\d+$/ ) ? $group : getgrnam( $group ) ) // -1;
 
     unless ( lchown( $uid, $gid, $self->{'filename'} ) ) {
-        error( sprintf( "Couldn't change `%s' file ownership: %s", $self->{'filename'}, $! ));
+        error( sprintf(
+            "Couldn't change '%s' file ownership: %s",
+            $self->{'filename'},
+            $!
+        ));
         return 1;
     }
 
@@ -256,40 +274,51 @@ sub owner
 
 sub copyFile
 {
-    my ($self, $destination, $options) = @_;
+    my ( $self, $destination, $options ) = @_;
 
     $options = {} unless $options && ref $options eq 'HASH';
 
     unless ( defined $self->{'filename'} ) {
-        error( "Attribute `filename' is not set." );
+        error( "Attribute 'filename' is not set." );
         return 1;
     }
 
     unless ( defined $destination && ref \$destination eq 'SCALAR' ) {
-        error( '$destination parameter is msissing or invalid.' );
+        error( '$destination parameter is missing or invalid.' );
         return 1;
     }
 
     unless ( copy( $self->{'filename'}, $destination ) ) {
-        error( sprintf( "Couldn't copy `%s' file to `%s': %s", $self->{'filename'}, $destination, $! ));
+        error( sprintf(
+            "Couldn't copy '%s' file to '%s': %s",
+            $self->{'filename'},
+            $destination,
+            $!
+        ));
         return 1;
     }
 
     return 0 if defined $options->{'preserve'} && $options->{'preserve'} eq 'no';
 
-    $destination = File::Spec->catfile( $destination, basename( $self->{'filename'} )) if -d $destination;
+    $destination = File::Spec->catfile(
+        $destination, basename( $self->{'filename'} )
+    ) if -d $destination;
 
-    my ($mode, $uid, $gid) = ( lstat( $self->{'filename'} ) )[2, 4, 5];
+    my ( $mode, $uid, $gid ) = ( lstat( $self->{'filename'} ) )[2, 4, 5];
 
     unless ( lchown( $uid, $gid, $destination ) ) {
-        error( sprintf( "Couldn't change `%s' file ownership: %s", $destination, $! ));
+        error( sprintf(
+            "Couldn't change '%s' file ownership: %s", $destination, $!
+        ));
         return 1;
     }
 
-    return if -l $destination; # We do not call chmod on symkink targets
+    return if -l $destination; # We do not call chmod on symlink targets
 
     unless ( chmod( $mode & 07777, $destination ) ) {
-        error( sprintf( "Couldn't change `%s' file permissions: %s", $destination, $! ));
+        error( sprintf(
+            "Couldn't change '%s' file permissions: %s", $destination, $!
+        ));
         return 1;
     }
 
@@ -307,20 +336,24 @@ sub copyFile
 
 sub moveFile
 {
-    my ($self, $destination) = @_;
+    my ( $self, $destination ) = @_;
 
     unless ( defined $self->{'filename'} ) {
-        error( "Attribute `filename' is not set." );
+        error( "Attribute 'filename' is not set." );
         return 1;
     }
 
     unless ( defined $destination && ref \$destination eq 'SCALAR' ) {
-        error( '$destination parameter is msissing or invalid.' );
+        error( '$destination parameter is missing or invalid.' );
         return 1;
     }
 
     unless ( mv( $self->{'filename'}, $destination ) ) {
-        error( sprintf( "Couldn't move `%s' file to `%s': %s", $self->{'filename'}, $destination, $! ));
+        error( sprintf(
+            "Couldn't move '%s' file to '%s': %s",
+            $self->{'filename'},
+            $destination, $!
+        ));
         return 1;
     }
 
@@ -343,7 +376,7 @@ sub moveFile
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     $self->{'filename'} //= undef;
     $self;

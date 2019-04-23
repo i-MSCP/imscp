@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@ package iMSCP::LsbRelease;
 
 use strict;
 use warnings;
+use iMSCP::Boolean;
 use IPC::Open3;
 use POSIX;
 use Symbol;
@@ -34,39 +35,41 @@ my $IS_DEVUAN = -f '/etc/devuan_version';
 # XXX: Update as needed
 # This should really be included in apt-cache policy output... it is already
 # in the Release file...
-my %RELEASE_CODENAME_LOOKUP = ( !$IS_DEVUAN )
-      ? (
-        '1.1' => 'buzz',
-        '1.2' => 'rex',
-        '1.3' => 'bo',
-        '2.0' => 'hamm',
-        '2.1' => 'slink',
-        '2.2' => 'potato',
-        '3.0' => 'woody',
-        '3.1' => 'sarge',
-        '4.0' => 'etch',
-        '5.0' => 'lenny',
-        '6.0' => 'squeeze',
-        '7'   => 'wheezy',
-        '8'   => 'jessie',
-        '9'   => 'stretch',
-        '10'  => 'buster',
-        '11'  => 'bullseye'
-    ) : (
-        '1' => 'jessie',
-        '2' => 'ascii'
-    );
+my %RELEASE_CODENAME_LOOKUP = !$IS_DEVUAN ? (
+    '1.1' => 'buzz',
+    '1.2' => 'rex',
+    '1.3' => 'bo',
+    '2.0' => 'hamm',
+    '2.1' => 'slink',
+    '2.2' => 'potato',
+    '3.0' => 'woody',
+    '3.1' => 'sarge',
+    '4.0' => 'etch',
+    '5.0' => 'lenny',
+    '6.0' => 'squeeze',
+    '7'   => 'wheezy',
+    '8'   => 'jessie',
+    '9'   => 'stretch',
+    '10'  => 'buster',
+    '11'  => 'bullseye',
+    '12'  => 'bookworm'
+) : (
+    '1' => 'jessie',
+    '2' => 'ascii',
+    '3' => 'beowulf',
+);
 
 my $TESTING_CODENAME = 'unknown.new.testing';
 
 my @RELEASES_ORDER = (
     ( map { $RELEASE_CODENAME_LOOKUP{$_} } sort keys %RELEASE_CODENAME_LOOKUP ),
-    'stable', 'testing', 'unstable', ( ( $IS_DEVUAN ) ? 'ceres' : 'sid' )
+    'stable', 'testing', 'unstable', ( $IS_DEVUAN ? 'ceres' : 'sid' )
 );
 
 =head1 DESCRIPTION
 
- This class provides distribution-specific information as provided by the lsb_release command.
+ This class provides distribution-specific information as provided by the
+ lsb_release command.
 
 =head1 PUBLIC METHODS
 
@@ -82,31 +85,32 @@ my @RELEASES_ORDER = (
 
 sub getInstance
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
     return $self if ref $self;
 
     no strict 'refs';
-    my $instance = \${"$self\::_instance"};
-    unless ( defined ${$instance} ) {
-        ${$instance} = bless {}, $self;
-        %{${$instance}->{'lsbInfo'}} = ${$instance}->getDistroInformation();
+    my $instance = \${ "$self\::_instance" };
+    unless ( defined ${ $instance } ) {
+        ${ $instance } = bless {}, $self;
+        %{ ${ $instance }->{'lsbInfo'} } =
+            ${ $instance }->getDistroInformation();
     }
 
-    ${$instance};
+    ${ $instance };
 }
 
 =item getId( [ $short = false ] )
 
  Get distributor ID
 
- Param bool $short OPTIONAL Weither or not short value must be returned (default FALSE)
+ Param bool $short OPTIONAL Weither or not short value must be returned
  Return string
 
 =cut
 
 sub getId
 {
-    my ($self, $short) = @_;
+    my ( $self, $short ) = @_;
 
     return $self->{'lsbInfo'}->{'ID'} || 'n/a' if $short;
     sprintf( "Distributor ID:\t%s", $self->{'lsbInfo'}->{'ID'} || 'n/a' );
@@ -116,14 +120,14 @@ sub getId
 
  Get description
 
- Param bool $short OPTIONAL Weither or not short value must be returned (default FALSE)
+ Param bool $short OPTIONAL Weither or not short value must be returned
  Return string
 
 =cut
 
 sub getDescription
 {
-    my ($self, $short) = @_;
+    my ( $self, $short ) = @_;
 
     return $self->{'lsbInfo'}->{'DESCRIPTION'} || 'n/a' if $short;
     sprintf( "Description:\t%s", $self->{'lsbInfo'}->{'DESCRIPTION'} || 'n/a' );
@@ -133,20 +137,20 @@ sub getDescription
 
  Get release
 
- Param bool $short OPTIONAL Weither or not short value must be returned (default FALSE)
- Param bool $forceNumeric Weither or not to force numeric value when possible (default FALSE)
+ Param bool $short OPTIONAL Weither or not short value must be returned 
+ Param bool $forceNumeric Weither or not to force numeric value when possible
  Return string
 
 =cut
 
 sub getRelease
 {
-    my ($self, $short, $forceNumeric) = @_;
+    my ( $self, $short, $forceNumeric ) = @_;
 
     my $release = $self->{'lsbInfo'}->{'RELEASE'} || 'n/a';
 
     if ( $forceNumeric && $release =~ /[^\d.]/ ) {
-        my $codename = $self->getCodename( 1 );
+        my $codename = $self->getCodename( TRUE );
         my %lookup = reverse( %RELEASE_CODENAME_LOOKUP );
         $release = sprintf( '%.1f', $lookup{$codename} ) if exists $lookup{$codename};
     }
@@ -159,14 +163,14 @@ sub getRelease
 
  Get codename
 
- Param bool $short OPTIONAL Weither or not short value must be returned (default FALSE)
+ Param bool $short OPTIONAL Weither or not short value must be returned
  Return string
 
 =cut
 
 sub getCodename
 {
-    my ($self, $short) = @_;
+    my ( $self, $short ) = @_;
 
     return $self->{'lsbInfo'}->{'CODENAME'} || 'n/a' if $short;
     sprintf( "Codename:\t%s", $self->{'lsbInfo'}->{'CODENAME'} || 'n/a' );
@@ -176,14 +180,14 @@ sub getCodename
 
  Get all distribution-specific information
 
- Param bool $short OPTIONAL Weither or not short value must be returned (default FALSE)
+ Param bool $short OPTIONAL Weither or not short value must be returned
  Return string
 
 =cut
 
 sub getAll
 {
-    my ($self, $short) = @_;
+    my ( $self, $short ) = @_;
 
     sprintf(
         "%s\n%s\n%s\n%s",
@@ -213,13 +217,13 @@ sub getAll
 
 sub getDistroInformation
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
     # Try to retrieve information from /etc/lsb-release first
     my %lsbInfo = $self->_getLsbInformation();
 
-    for ( 'ID', 'RELEASE', 'CODENAME', 'DESCRIPTION' ) {
-        next if exists $lsbInfo{$_};
+    for my $info ( 'ID', 'RELEASE', 'CODENAME', 'DESCRIPTION' ) {
+        next if exists $lsbInfo{$info};
         my %distInfo = $self->_guessDebianRelease();
         %lsbInfo = ( %distInfo, %lsbInfo );
         last;
@@ -244,34 +248,45 @@ sub getDistroInformation
 
 sub _lookupCodename
 {
-    my (undef, $release, $unknown) = @_;
+    my ( undef, $release, $unknown ) = @_;
 
     return $unknown unless $release =~ /(\d+)\.(\d+)(r(\d+))?/;
 
-    my $shortRelease = ( !$IS_DEVUAN && int( $1 ) < 7 ) ? sprintf '%s.%s', $1, $2 : sprintf '%s', $1;
+    my $shortRelease = ( !$IS_DEVUAN && int( $1 ) < 7 )
+        ? sprintf '%s.%s', $1, $2
+        : sprintf '%s', $1;
     $RELEASE_CODENAME_LOOKUP{$shortRelease} || $unknown;
 }
 
 =item _parsePolicyLine( $data )
 
- Parse a line from the apt-cache policy command output to retrieve distribution version, origin, suite, component and
- label field value
+ Parse a line from the apt-cache policy command output to retrieve distribution
+ version, origin, suite, component and label field value
 
  Return hash
 
 =cut
 
 # map short field names to long field names
-my %longnames = ( v => 'version', o => 'origin', a => 'suite', c => 'component', l => 'label' );
+my %longnames = (
+    v => 'version',
+    o => 'origin',
+    a => 'suite',
+    c => 'component',
+    l => 'label'
+);
 
 sub _parsePolicyLine
 {
     my @bits = split ',', $_[1];
 
     my %retval = ();
-    for( @bits ) {
-        my @kv = split '=', $_, 2;
-        $retval{$longnames{$kv[0]}} = $kv[1] if @kv > 1 && exists $longnames{$kv[0]};
+    for my $bit ( @bits ) {
+        my @kv = split '=', $bit, 2;
+
+        if ( @kv > 1 && exists $longnames{$kv[0]} ) {
+            $retval{$longnames{$kv[0]}} = $kv[1];
+        }
     }
 
     %retval;
@@ -290,8 +305,9 @@ sub _releaseIndex
     my $suite = $_[1]->{'suite'} || undef;
 
     if ( $suite ) {
-        return grep($_ eq $suite, @RELEASES_ORDER)
-            ? int( @RELEASES_ORDER-( grep { $RELEASES_ORDER[$_] eq $suite } 0 .. $#RELEASES_ORDER )[0] ) : $suite;
+        return grep ($_ eq $suite, @RELEASES_ORDER)
+            ? int( @RELEASES_ORDER-( grep { $RELEASES_ORDER[$_] eq $suite } 0 .. $#RELEASES_ORDER )[0] )
+            : $suite;
     }
 
     0;
@@ -309,7 +325,7 @@ sub _parseAptPolicy
 {
     my $self = $_[0];
 
-    my ($in, $out, $err) = ( undef, undef, gensym() );
+    my ( $in, $out, $err ) = ( undef, undef, gensym() );
     my $pid = open3( $in, $out, $err, 'LANG=C apt-cache policy' );
     close $in;
 
@@ -325,16 +341,18 @@ sub _parseAptPolicy
     close $out;
     close $err;
     waitpid( $pid, 0 ) or die "$!\n";
-    die( sprintf( "Couldn't parse APT policy: %s", $stderr || 'Unknown error' )) if $?;
+    die( sprintf(
+        "Couldn't parse APT policy: %s", $stderr || 'Unknown error'
+    )) if $?;
 
     my @data = ();
     my $priority;
 
-    for( split /\n/, $stdout ) {
-        s/^\s+|\s+$//g; # Remove leading and trailing whitespaces
-        $priority = int( $1 ) if /^(\d+)/;
-        if ( index( $_, 'release' ) == 0 ) {
-            my @bits = split ' ', $_, 2;
+    for my $line ( split /\n/, $stdout ) {
+        $line =~ s/^\s+|\s+$//g; # Remove leading and trailing whitespaces
+        $priority = int( $1 ) if $line =~ /^(\d+)/;
+        if ( index( $line, 'release' ) == 0 ) {
+            my @bits = split ' ', $line, 2;
             push @data, [ $priority, { $self->_parsePolicyLine( $bits[1] ) } ] if @bits > 1;
         }
     }
@@ -343,11 +361,15 @@ sub _parseAptPolicy
 }
 
 =item _guessReleaseFromApt(
-    [ $origin = 'Debian' [, $component = 'main' [, $ignoresuites = [ 'experimental' ] [, $label = 'Debian'
+    [ $origin = 'Debian'
+    [, $component = 'main'
+    [, $ignoresuites = 'experimental' ]
+    [, $label = 'Debian'
     [, $alternateOlabels = { 'Debian Ports' => 'ftp.debian-ports.org' } ] ] ] ] ]
 )
 
- Retrieve distribution information by parsing output from the apt-cache policy command
+ Retrieve distribution information by parsing output from the apt-cache policy
+ command
 
  Return hash
 
@@ -355,7 +377,7 @@ sub _parseAptPolicy
 
 sub _guessReleaseFromApt
 {
-    my ($self, $origin, $component, $ignoresuites, $label, $alternateOlabels) = @_;
+    my ( $self, $origin, $component, $ignoresuites, $label, $alternateOlabels ) = @_;
 
     $origin ||= 'Debian';
     $component ||= 'main';
@@ -390,7 +412,7 @@ sub _guessReleaseFromApt
     my $maxPriority = $releases[0]->[0];
     @releases = grep { $_->[0] == $maxPriority } @releases;
     @releases = sort { $self->_releaseIndex( $a->[1] ) cmp $self->_releaseIndex( $b->[1] ) } @releases;
-    %{$releases[0]->[1]};
+    %{ $releases[0]->[1] };
 }
 
 =item _guessDebianRelease( )
@@ -405,15 +427,16 @@ sub _guessDebianRelease
 {
     my $self = $_[0];
 
-    my %distInfo = ( ID => ( $IS_DEVUAN ) ? 'Devuan' : 'Debian' );
+    my %distInfo = ( ID => $IS_DEVUAN ? 'Devuan' : 'Debian' );
 
     # Use /etc/dpkg/origins/default to fetch the distribution name
-    my $etcDpkgOriginsDefauft = $ENV{'LSB_ETC_DPKG_ORIGINS_DEFAULT'} || '/etc/dpkg/origins/default';
+    my $etcDpkgOriginsDefauft = $ENV{'LSB_ETC_DPKG_ORIGINS_DEFAULT'}
+        || '/etc/dpkg/origins/default';
 
     if ( -f $etcDpkgOriginsDefauft ) {
         if ( open my $fh, '<', $etcDpkgOriginsDefauft ) {
             while ( my $line = <$fh> ) {
-                my ($header, $content) = split ':', $line, 2;
+                my ( $header, $content ) = split ':', $line, 2;
 
                 $header = lc( $header );
                 $content =~ s/^\s+|\s+$//g;
@@ -425,11 +448,13 @@ sub _guessDebianRelease
 
             close $fh;
         } else {
-            warn( sprintf( "Couldn't open %s: %s", $etcDpkgOriginsDefauft, $! ));
+            warn( sprintf(
+                "Couldn't open %s: %s", $etcDpkgOriginsDefauft, $!
+            ));
         }
     }
 
-    my ($kern) = uname();
+    my ( $kern ) = uname();
 
     if ( $kern =~ /^(?:Linux|Hurd|NetBSD)$/ ) {
         $distInfo{'OS'} = "GNU/$kern";
@@ -444,7 +469,7 @@ sub _guessDebianRelease
     $distInfo{'DESCRIPTION'} = sprintf( '%s %s', $distInfo{'ID'}, $distInfo{'OS'} );
 
     my $etcDebianVersion = $ENV{'LSB_ETC_DEBIAN_VERSION'}
-        || ( ( $IS_DEVUAN ) ? '/etc/devuan_version' : '/etc/debian_version' );
+        || ( $IS_DEVUAN ? '/etc/devuan_version' : '/etc/debian_version' );
 
     if ( -f $etcDebianVersion ) {
         my $release = 'unknown';
@@ -482,11 +507,10 @@ sub _guessDebianRelease
     # has an entry in his /etc/apt/sources.list but has not actually
     # upgraded the system.
     unless ( exists $distInfo{'CODENAME'} ) {
-        my %rInfo = ( $distInfo{'ID'} eq 'Devuan' )
-            ? $self->_guessReleaseFromApt(
-                'Devuan', 'main', 'experimental', 'Devuan', { 'Devuan Ports' => 'packages.devuan.org' }
-            )
-            : $self->_guessReleaseFromApt();
+        my %rInfo = $distInfo{'ID'} eq 'Devuan' ? $self->_guessReleaseFromApt(
+            'Devuan', 'main', 'experimental', 'Devuan',
+            { 'Devuan Ports' => 'packages.devuan.org' }
+        ) : $self->_guessReleaseFromApt();
 
         if ( %rInfo ) {
             my $release = $rInfo{'version'} || '';
@@ -502,7 +526,9 @@ sub _guessDebianRelease
             }
 
             if ( $release ) {
-                $distInfo{'CODENAME'} = $self->_lookupCodename( $release, 'n/a' );
+                $distInfo{'CODENAME'} = $self->_lookupCodename(
+                    $release, 'n/a'
+                );
             } else {
                 $release = $rInfo{'suite'} || 'unstable';
 
@@ -510,7 +536,7 @@ sub _guessDebianRelease
                     # Would be nice if I didn't have to hardcode this.
                     $distInfo{'CODENAME'} = $TESTING_CODENAME;
                 } else {
-                    $distInfo{'CODENAME'} = ( $IS_DEVUAN ) ? 'ceres' : 'sid';
+                    $distInfo{'CODENAME'} = $IS_DEVUAN ? 'ceres' : 'sid';
                 }
             }
 
@@ -545,15 +571,18 @@ sub _getLsbInformation
     if ( -f $etcLsbFile ) {
         if ( open my $fh, '<', $etcLsbFile ) {
             while ( my $line = <$fh> ) {
-                $line =~ s/^\s+|\s+$//g; # Remove trailing and leading whitespaces
+                # Remove trailing and leading whitespaces
+                $line =~ s/^\s+|\s+$//g;
 
-                next unless $line && index( $line, '=' ) != -1; # Skip invalid lines
+                # Skip invalid lines
+                next unless $line && index( $line, '=' ) != -1;
 
-                my ($var, $arg) = split '=', $line, 2;
+                my ( $var, $arg ) = split '=', $line, 2;
                 if ( index( $var, 'DISTRIB_' ) == 0 ) {
                     $var = substr( $var, 8 );
                     $arg = substr( $arg, 1, -1 ) if $arg =~ /^".*?"$/;
-                    $distInfo{$var} = $arg if $arg; # Ignore empty arguments
+                    # Ignore empty arguments
+                    $distInfo{$var} = $arg if $arg;
                 }
             }
 
@@ -570,11 +599,13 @@ sub _getLsbInformation
 
 =head1 NOTE
 
- This is a rewrite for i-MSCP of the lsb_release command as provided by the lsb-release Debian package.
+ This is a rewrite for i-MSCP of the lsb_release command as provided by the
+ lsb-release Debian package.
 
- Detection of systems using a mix of packages from various distributions or releases is something of a black art; the
- current heuristic tends to assume that the installation is of the earliest distribution which is still being used by apt
- but that heuristic is subject to error.
+ Detection of systems using a mix of packages from various distributions or
+ releases is something of a black art; the current heuristic tends to assume
+ that the installation is of the earliest distribution which is still being
+ used by apt but that heuristic is subject to error.
 
 =head1 AUTHOR
 

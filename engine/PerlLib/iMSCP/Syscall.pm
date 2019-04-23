@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,15 +25,20 @@ package iMSCP::Syscall;
 
 use strict;
 use warnings;
-no warnings qw / portable /;
+no warnings 'portable';
 use iMSCP::Debug;
 
 {
-    my $unload = sub {
-        delete @INC{qw< asm/unistd.ph asm/unistd_32.ph asm/unistd_64.ph bits/syscall.ph syscall.ph sys/syscall.ph _h2ph_pre.ph >};
+    my $unload = sub
+    {
+        delete @INC{qw<
+            asm/unistd.ph asm/unistd_32.ph asm/unistd_64.ph bits/syscall.ph
+            syscall.ph sys/syscall.ph _h2ph_pre.ph
+        >};
     };
 
-    # We need to force loading in case the header files have been already loaded from elsewhere
+    # We need to force loading in case the header files have been already
+    # loaded from elsewhere
     $unload->();
     local $@;
     eval {
@@ -43,7 +48,9 @@ use iMSCP::Debug;
         require 'sys/syscall.ph';
         1
     };
-    fatal( sprintf( "Couldn't load required Perl header files to perform syscalls: %s", $@ )) if $@;
+    fatal( sprintf(
+        "Couldn't load required Perl header files to perform syscalls: %s", $@
+    )) if $@;
     # We need to force unload to not disturb other modules
     $unload->();
 }

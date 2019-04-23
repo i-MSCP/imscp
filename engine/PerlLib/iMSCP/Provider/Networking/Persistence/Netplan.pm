@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2018 Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -63,7 +63,8 @@ sub checkForOperability
     return FALSE unless length iMSCP::ProgramFinder::find( 'netplan' );
 
     my $srvMngr = iMSCP::Service->getInstance();
-    $srvMngr->hasService( 'systemd-networkd' ) && $srvMngr->isEnabled( 'systemd-networkd' );
+    $srvMngr->hasService( 'systemd-networkd' )
+        && $srvMngr->isEnabled( 'systemd-networkd' );
 }
 
 =back
@@ -82,7 +83,9 @@ sub addIpAddress
 {
     my ( $self, $data ) = @_;
 
-    $self->_updateConfig( $data->{'ip_config_mode'} eq 'auto' ? 'add' : 'remove', $data );
+    $self->_updateConfig( $data->{'ip_config_mode'} eq 'auto'
+        ? 'add' : 'remove', $data
+    );
     $self;
 }
 
@@ -120,11 +123,15 @@ sub _updateConfig
 {
     my ( undef, $action, $data ) = @_;
 
-    my $file = iMSCP::File->new( filename => "/etc/netplan/99-imscp-$data->{'ip_id'}.yaml" );
+    my $file = iMSCP::File->new(
+        filename => "/etc/netplan/99-imscp-$data->{'ip_id'}.yaml"
+    );
 
     if ( $action eq 'remove' ) {
         if ( -f $file->{'filename'} ) {
-            $file->delFile() == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ));
+            $file->delFile() == 0 or die( getMessageByType(
+                'error', { amount => 1, remove => TRUE }
+            ));
         }
     } else {
         $file->set( <<"CONFIG" );
@@ -137,11 +144,17 @@ network:
        - $data->{'ip_address'}/$data->{'ip_netmask'}
 CONFIG
 
-        $file->save() == 0 or die( getMessageByType( 'error', { amount => 1, remove => TRUE } ));
+        $file->save() == 0 or die( getMessageByType(
+            'error', { amount => 1, remove => TRUE }
+        ));
     }
 
     my ( $stdout, $stderr );
-    execute( [ 'netplan', 'generate' ], \$stdout, \$stderr ) == 0 or die( $stderr || 'Unknown error ' );
+    execute(
+        [ 'netplan', 'generate' ], \$stdout, \$stderr
+    ) == 0 or die(
+        $stderr || 'Unknown error '
+    );
 }
 
 =back

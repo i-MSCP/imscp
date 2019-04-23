@@ -5,7 +5,7 @@
 =cut
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010-2017 by Laurent Declercq <l.declercq@nuxwin.com>
+# Copyright (C) 2010-2019 by Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,14 +25,14 @@ package Servers::sqld::remote::installer;
 
 use strict;
 use warnings;
-use iMSCP::Crypt qw/ decryptRijndaelCBC /;
+use iMSCP::Boolean;
+use iMSCP::Crypt 'decryptRijndaelCBC';
 use iMSCP::Database;
-use iMSCP::Debug qw/ error /;
+use iMSCP::Debug 'error';
 use iMSCP::Dir;
-use iMSCP::EventManager;
 use iMSCP::File;
-use iMSCP::TemplateParser qw/ process /;
-use iMSCP::Umask;
+use iMSCP::TemplateParser 'process';
+use iMSCP::Umask '$UMASK';
 use Servers::sqld::remote;
 use version;
 use parent 'Servers::sqld::mysql::installer';
@@ -55,10 +55,10 @@ use parent 'Servers::sqld::mysql::installer';
 
 sub _init
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
     $self->{'sqld'} = Servers::sqld::remote->getInstance();
+    $self->{'events'} = $self->{'sqld'}->{'events'};
     $self->{'cfgDir'} = $self->{'sqld'}->{'cfgDir'};
     $self->{'config'} = $self->{'sqld'}->{'config'};
     $self;
@@ -74,27 +74,34 @@ sub _init
 
 sub _buildConf
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'beforeSqldBuildConf' );
+    my $rs = $self->{'events'}->trigger( 'beforeSqldBuildConf' );
     return $rs if $rs;
 
-    my $rootUName = $main::imscpConfig{'ROOT_USER'};
-    my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
+    my $rootUName = $::imscpConfig{'ROOT_USER'};
+    my $rootGName = $::imscpConfig{'ROOT_GROUP'};
     my $confDir = $self->{'config'}->{'SQLD_CONF_DIR'};
 
-    # Make sure that the conf.d directory exists
-    iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make(
-        {
+    local $@;
+    eval {
+        # Make sure that the conf.d directory exists
+        iMSCP::Dir->new( dirname => "$confDir/conf.d" )->make( {
             user  => $rootUName,
             group => $rootGName,
             mode  => 0755
-        }
-    );
+        } );
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
 
     # Create the /etc/mysql/my.cnf file if missing
     unless ( -f "$confDir/my.cnf" ) {
-        $rs = $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'my.cnf', \ my $cfgTpl, {} );
+        $rs = $self->{'events'}->trigger(
+            'onLoadTemplate', 'mysql', 'my.cnf', \my $cfgTpl, {}
+        );
         return $rs if $rs;
 
         unless ( defined $cfgTpl ) {
@@ -112,25 +119,27 @@ sub _buildConf
         return $rs if $rs;
     }
 
-    $rs ||= $self->{'eventManager'}->trigger( 'onLoadTemplate', 'mysql', 'imscp.cnf', \ my $cfgTpl, {} );
+    $rs ||= $self->{'events'}->trigger(
+        'onLoadTemplate', 'mysql', 'imscp.cnf', \my $cfgTpl, {}
+    );
     return $rs if $rs;
 
     unless ( defined $cfgTpl ) {
-        $cfgTpl = iMSCP::File->new( filename => "$self->{'cfgDir'}/imscp.cnf" )->get();
-        unless ( defined $cfgTpl ) {
-            error( sprintf( "Couldn't read %s file", "$self->{'cfgDir'}/imscp.cnf" ));
-            return 1;
-        }
+        return 1 unless defined(
+            $cfgTpl = iMSCP::File->new(
+                filename => "$self->{'cfgDir'}/imscp.cnf"
+            )->get()
+        );
     }
 
-    ( my $user = main::setupGetQuestion( 'DATABASE_USER' ) ) =~ s/"/\\"/g;
-    ( my $pwd = decryptRijndaelCBC( $main::imscpDBKey, $main::imscpDBiv,
-        main::setupGetQuestion( 'DATABASE_PASSWORD' )) ) =~ s/"/\\"/g;
+    ( my $user = ::setupGetQuestion( 'DATABASE_USER' ) ) =~ s/"/\\"/g;
+    ( my $pwd = decryptRijndaelCBC( $::imscpDBKey, $::imscpDBiv,
+        ::setupGetQuestion( 'DATABASE_PASSWORD' )) ) =~ s/"/\\"/g;
 
     $cfgTpl = process(
         {
-            DATABASE_HOST     => main::setupGetQuestion( 'DATABASE_HOST' ),
-            DATABASE_PORT     => main::setupGetQuestion( 'DATABASE_PORT' ),
+            DATABASE_HOST     => ::setupGetQuestion( 'DATABASE_HOST' ),
+            DATABASE_PORT     => ::setupGetQuestion( 'DATABASE_PORT' ),
             DATABASE_PASSWORD => $pwd,
             DATABASE_USER     => $user
         },
@@ -141,11 +150,11 @@ sub _buildConf
 
     my $file = iMSCP::File->new( filename => "$confDir/conf.d/imscp.cnf" );
     $file->set( $cfgTpl );
-
     $rs = $file->save();
-    $rs ||= $file->owner( $rootUName, $rootGName ); # The `mysql' group is only created by mysql-server package
+    # The 'mysql' group is only created by mysql-server package
+    $rs ||= $file->owner( $rootUName, $rootGName );
     $rs ||= $file->mode( 0640 );
-    $rs ||= $self->{'eventManager'}->trigger( 'afterSqldBuildConf' );
+    $rs ||= $self->{'events'}->trigger( 'afterSqldBuildConf' );
 }
 
 =item _updateServerConfig( )
@@ -161,9 +170,9 @@ sub _buildConf
 
 sub _updateServerConfig
 {
-    my ($self) = @_;
+    my ( $self ) = @_;
 
-    if ( !( $main::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::mariadb'
+    if ( !( $::imscpConfig{'SQL_PACKAGE'} eq 'Servers::sqld::mariadb'
         && version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '10.0' ) )
         && !( version->parse( "$self->{'config'}->{'SQLD_VERSION'}" ) >= version->parse( '5.6.6' ) )
     ) {
@@ -172,13 +181,14 @@ sub _updateServerConfig
 
     eval {
         my $dbh = iMSCP::Database->factory()->getRawDb();
-        local $dbh->{'RaiseError'} = 1;
+        local $dbh->{'RaiseError'} = TRUE;
 
         # Disable unwanted plugins (bc reasons)
-        for ( qw/ cracklib_password_check simple_password_check validate_password / ) {
-            $dbh->do( "UNINSTALL PLUGIN $_" ) if $dbh->selectrow_hashref(
-                "SELECT name FROM mysql.plugin WHERE name = '$_'"
+        for my $plugin ( qw/ cracklib_password_check simple_password_check validate_password / ) {
+            next unless $dbh->selectrow_hashref(
+                "SELECT name FROM mysql.plugin WHERE name = '$plugin'"
             );
+            $dbh->do( "UNINSTALL PLUGIN $plugin" )
         }
     };
     if ( $@ ) {

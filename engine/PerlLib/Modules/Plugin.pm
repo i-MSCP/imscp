@@ -44,7 +44,7 @@ use parent 'Common::Object';
   action      : Plugin master action
   config      : Plugin current configuration
   config_prev : Plugin previous configuration
-  eventManager: EventManager instance
+  events: EventManager instance
   info        : Plugin info data
 
 =head1 PUBLIC METHODS
@@ -93,7 +93,7 @@ sub process
     }
 
     $rs = $self->$action();
-    $rs ||= $self->{'eventManager'}->trigger(
+    $rs ||= $self->{'events'}->trigger(
         'onBeforeSetPluginStatus', $self->{'pluginData'}->{'plugin_name'}, \$self->{'pluginData'}->{'plugin_status'}
     );
 
@@ -146,7 +146,7 @@ sub _init
     my ( $self ) = @_;
 
     $self->{'dbh'} = iMSCP::Database->factory()->getRawDb();
-    $self->{'eventManager'} = iMSCP::EventManager->getInstance();
+    $self->{'events'} = iMSCP::EventManager->getInstance();
     $self->{'pluginAction'} = undef;
     $self->{'pluginData'} = {};
     $self->{'pluginInstance'} = undef;
@@ -205,9 +205,9 @@ sub _install
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'onBeforeInstallPlugin', $self->{'pluginData'}->{'plugin_name'} );
+    my $rs = $self->{'events'}->trigger( 'onBeforeInstallPlugin', $self->{'pluginData'}->{'plugin_name'} );
     $rs ||= $self->_executePluginAction( 'install' );
-    $rs ||= $self->{'eventManager'}->trigger( 'onAfterInstallPlugin', $self->{'pluginData'}->{'plugin_name'} );
+    $rs ||= $self->{'events'}->trigger( 'onAfterInstallPlugin', $self->{'pluginData'}->{'plugin_name'} );
     $rs ||= $self->_enable();
 }
 
@@ -223,9 +223,9 @@ sub _uninstall
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'onBeforeUninstallPlugin', $self->{'pluginData'}->{'plugin_name'} );
+    my $rs = $self->{'events'}->trigger( 'onBeforeUninstallPlugin', $self->{'pluginData'}->{'plugin_name'} );
     $rs ||= $self->_executePluginAction( 'uninstall' );
-    $rs ||= $self->{'eventManager'}->trigger( 'onAfterUninstallPlugin', $self->{'pluginData'}->{'plugin_name'} );
+    $rs ||= $self->{'events'}->trigger( 'onAfterUninstallPlugin', $self->{'pluginData'}->{'plugin_name'} );
 }
 
 =item _enable( )
@@ -240,9 +240,9 @@ sub _enable
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'onBeforeEnablePlugin', $self->{'pluginData'}->{'plugin_name'} );
+    my $rs = $self->{'events'}->trigger( 'onBeforeEnablePlugin', $self->{'pluginData'}->{'plugin_name'} );
     $rs ||= $self->_executePluginAction( 'enable' );
-    $rs ||= $self->{'eventManager'}->trigger( 'onAfterEnablePlugin', $self->{'pluginData'}->{'plugin_name'} );
+    $rs ||= $self->{'events'}->trigger( 'onAfterEnablePlugin', $self->{'pluginData'}->{'plugin_name'} );
 }
 
 =item _disable( )
@@ -257,9 +257,9 @@ sub _disable
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'onBeforeDisablePlugin', $self->{'pluginData'}->{'plugin_name'} );
+    my $rs = $self->{'events'}->trigger( 'onBeforeDisablePlugin', $self->{'pluginData'}->{'plugin_name'} );
     $rs ||= $self->_executePluginAction( 'disable' );
-    $rs ||= $self->{'eventManager'}->trigger( 'onAfterDisablePlugin', $self->{'pluginData'}->{'plugin_name'} );
+    $rs ||= $self->{'events'}->trigger( 'onAfterDisablePlugin', $self->{'pluginData'}->{'plugin_name'} );
 }
 
 =item _change( )
@@ -275,9 +275,9 @@ sub _change
     my ( $self ) = @_;
 
     my $rs = $self->_disable();
-    $rs ||= $self->{'eventManager'}->trigger( 'onBeforeChangePlugin', $self->{'pluginData'}->{'plugin_name'} );
+    $rs ||= $self->{'events'}->trigger( 'onBeforeChangePlugin', $self->{'pluginData'}->{'plugin_name'} );
     $rs ||= $self->_executePluginAction( 'change' );
-    $rs ||= $self->{'eventManager'}->trigger( 'onAfterChangePlugin', $self->{'pluginData'}->{'plugin_name'} );
+    $rs ||= $self->{'events'}->trigger( 'onAfterChangePlugin', $self->{'pluginData'}->{'plugin_name'} );
     return $rs if $rs;
 
     if ( $self->{'pluginData'}->{'info'}->{'__need_change__'} ) {
@@ -316,7 +316,7 @@ sub _update
     my ( $self ) = @_;
 
     my $rs = $self->_disable();
-    $rs ||= $self->{'eventManager'}->trigger( 'onBeforeUpdatePlugin', $self->{'pluginData'}->{'plugin_name'} );
+    $rs ||= $self->{'events'}->trigger( 'onBeforeUpdatePlugin', $self->{'pluginData'}->{'plugin_name'} );
     $rs ||= $self->_executePluginAction(
         'update', $self->{'pluginData'}->{'info'}->{'version'}, $self->{'pluginData'}->{'info'}->{'__nversion__'}
     );
@@ -339,11 +339,11 @@ sub _update
         return 1;
     }
 
-    $rs = $self->{'eventManager'}->trigger( 'onAfterUpdatePlugin', $self->{'pluginData'}->{'plugin_name'} );
+    $rs = $self->{'events'}->trigger( 'onAfterUpdatePlugin', $self->{'pluginData'}->{'plugin_name'} );
     return $rs if $rs;
 
     if ( $self->{'pluginData'}->{'info'}->{'__need_change__'} ) {
-        $rs = $self->{'eventManager'}->trigger( 'onBeforeChangePlugin', $self->{'pluginData'}->{'plugin_name'} );
+        $rs = $self->{'events'}->trigger( 'onBeforeChangePlugin', $self->{'pluginData'}->{'plugin_name'} );
         $rs ||= $self->_executePluginAction( 'change' );
         return $rs if $rs;
 
@@ -364,7 +364,7 @@ sub _update
             return 1
         }
 
-        $rs = $self->{'eventManager'}->trigger( 'onAfterChangePlugin', $self->{'pluginData'}->{'plugin_name'} );
+        $rs = $self->{'events'}->trigger( 'onAfterChangePlugin', $self->{'pluginData'}->{'plugin_name'} );
         return $rs if $rs;
     }
 
@@ -383,9 +383,9 @@ sub _run
 {
     my ( $self ) = @_;
 
-    my $rs = $self->{'eventManager'}->trigger( 'onBeforeRunPlugin', $self->{'pluginData'}->{'plugin_name'} );
+    my $rs = $self->{'events'}->trigger( 'onBeforeRunPlugin', $self->{'pluginData'}->{'plugin_name'} );
     $rs ||= $self->_executePluginAction( 'run' );
-    $rs ||= $self->{'eventManager'}->trigger( 'onAfterRunPlugin', $self->{'pluginData'}->{'plugin_name'} );
+    $rs ||= $self->{'events'}->trigger( 'onAfterRunPlugin', $self->{'pluginData'}->{'plugin_name'} );
 }
 
 =item _executePluginAction( $action [, $fromVersion = undef [, $toVersion = undef ] ] )

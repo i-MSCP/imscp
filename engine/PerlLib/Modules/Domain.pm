@@ -487,7 +487,7 @@ sub _restoreDatabase
         } elsif ( $archFormat eq '.xz' ) {
             $cmd = 'xz -dc ';
         } else {
-            warning( sprintf( "Unsupported `%s' database dump archive format. skipping...", $archFormat ));
+            warning( sprintf( "Unsupported '%s' database dump archive format. skipping...", $archFormat ));
             return 0;
         }
     } else {
