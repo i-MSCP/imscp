@@ -25,17 +25,34 @@ package Servers::php;
 
 use strict;
 use warnings;
-use parent 'Servers::noserver';
+use iMSCP::Debug 'error';
+use iMSCP::Dir;
+use iMSCP::Service;
+use Servers::httpd;
+use parent 'Common::SingletonClass';
 
 =head1 DESCRIPTION
 
  i-MSCP PHP server implementation.
- 
- This class does nothing yet.
 
 =head1 PUBLIC METHODS
 
 =over 4
+
+=item factory( )
+
+ Create and return system server instance
+
+ Return local server instance
+
+=cut
+
+sub factory
+{
+    my ( $class ) = @_;
+
+    $class->getInstance();
+}
 
 =item getPriority( )
 
@@ -48,6 +65,59 @@ use parent 'Servers::noserver';
 sub getPriority
 {
     60;
+}
+
+=item preinstall( )
+
+ Pre-installation tasks
+ 
+ Return int 0 on success, other on failure
+
+=cut
+
+sub preinstall
+{
+    my ( $self ) = @_;
+
+    eval {
+        my $service = iMSCP::Service->getInstance();
+        for my $version (
+            iMSCP::Dir->new( dirname => '/etc/php' )->getDirs()
+        ) {
+            next unless $version =~ /^[0-9.]+$/
+                || $self->{'config'}->{'PHP_VERSION'} eq $version;
+
+            $service->stop( sprintf( 'php%s-fpm', $version ));
+            $service->disable( sprintf( 'php%s-fpm', $version ));
+        }
+    };
+    if ( $@ ) {
+        error( $@ );
+        return 1;
+    }
+
+    0;
+}
+
+=back
+
+=head1 PRIVATE METHODS
+
+=over 4
+
+=item _init( )
+
+ Initialize instance
+
+ Return Servers::httpd::apache_php_fpm
+
+=cut
+
+sub _init
+{
+    my ( $self ) = @_;
+
+    $self->{'config'} = Servers::httpd->factory()->{'phpConfig'};
 }
 
 =back
