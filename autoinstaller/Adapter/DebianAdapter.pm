@@ -439,7 +439,7 @@ sub _init
     $self->{'repositorySections'} = [ 'main', 'contrib', 'non-free' ];
     $self->{'preRequiredPackages'} = [
         'apt-transport-https', 'binutils', 'ca-certificates', 'debconf-utils',
-        'dialog', 'dirmngr', 'dpkg-dev', 'libbit-vector-perl',
+        'dialog', 'dirmngr', 'dpkg-dev', 'gnupg', 'libbit-vector-perl',
         'libclass-insideout-perl', 'libclone-perl', 'liblchown-perl',
         'liblist-moreutils-perl', 'libscalar-defer-perl',
         'libsort-versions-perl', 'libxml-simple-perl', 'lsb-release',

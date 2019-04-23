@@ -2,7 +2,6 @@
 
 ## Supported Ubuntu versions
 
-- Ubuntu Trusty Thar 14.04
 - Ubuntu Xenial Xerus 16.04
 - Ubuntu Bionic Beaver 18.04
 

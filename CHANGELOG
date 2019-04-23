@@ -21,7 +21,7 @@ DISTRIBUTIONS
     Added: Support for Debian Buster (10.x) - Experimental
     Added: Support for Devuan ASCII (2.x)
     Added: Support for PHP 7.2, 7.3
-    Added: sodium PHP extension (all distributions, all PHP versions except 5.6)
+    Added: sodium PHP extension (when available)
     Dropped: Support for Ubuntu Trusty Thar (14.04)
 
 FRONTEND
@@ -36,13 +36,13 @@ FRONTEND
     Review: Install dependencies through the PHP dependency manager (composer)
 
 INSTALLER
+    Added: 'gnupg' package to the list of pre-required packages (all distributions)
     Changed: All PHP versions are now always installed
     Changed: Default selected PHP version for customers is now 7.3
     Changed: Required PHP version for the frontEnd is now 7.3
     Fixed: jessie-updates repository (previously known as debian-volatile repository) no longer available (pbuilder conffile / Debian)
     Fixed: Update from security repositories won't be pulled (APT pinning)
     Removed: --listener command line option from both imscp-autoinstall and imscp-reconfigure scripts
-    Review: Always install PHP 7.3, regardless of the selected PHP version (frontEnd requirement)
     Review: SQL users for various services such as proftpd, vsftpd, dovecot, courier-authdaemon are now randomly generated
 
 LISTENER:
