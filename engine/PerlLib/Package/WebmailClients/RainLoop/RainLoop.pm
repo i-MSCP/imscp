@@ -42,7 +42,8 @@ use subs qw/
     predisableMail disableMail postdisableMail
 /;
 
-my $packageVersionConstraint = '^1.0';
+my $packageVersionConstraint = $ENV{'IMSCP_PKG_DEVELOPMENT'}
+    ? 'dev-dev' : '^1.0';
 
 =head1 DESCRIPTION
 
@@ -80,17 +81,29 @@ sub registerSetupListeners
 {
     my ( undef, $events ) = @_;
 
-    return 0 if iMSCP::Getopt->skipComposerUpdate;
-
     $events->registerOne( 'beforeSetupPreInstallServers', sub {
         eval {
-            iMSCP::Composer->new(
-                user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
+            my $composer = iMSCP::Composer->new(
+                user          => $::imscpConfig{'SYSTEM_USER_PREFIX'}
+                    . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
                 composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
                 composer_json => 'composer.json'
-            )
-                ->require( 'imscp/rainloop', $packageVersionConstraint )
-                ->dumpComposerJson();
+            );
+
+            if ( $ENV{'IMSCP_PKG_DEVELOPMENT'}
+                && -d '/github/official/imscp-rainloop'
+            ) {
+                push @{ $composer->getComposerJson( TRUE )->{'repositories'} }, {
+                    type    => 'path',
+                    url     => '/github/official/imscp-rainloop',
+                    options => {
+                        symlink => JSON::false
+                    }
+                };
+            }
+
+            $composer->require( 'imscp/rainloop', $packageVersionConstraint );
+            $composer->dumpComposerJson();
         };
         if ( $@ ) {
             error( $@ );
@@ -114,13 +127,18 @@ sub preinstall
     my ( $self ) = @_;
 
     unless ( -f "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/rainloop/src/Handler.pm" ) {
-        error( "Couldn't find the RainLoop package handler in the $::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/rainloop/src directory" );
+        error( sprintf(
+            "Couldn't find the RainLoop package handler in the %s directory",
+            "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/rainloop/src"
+        ));
         return 1;
     }
 
     my $rs = iMSCP::File->new(
         filename => "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/rainloop/src/Handler.pm"
-    )->copyFile( "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebmailClients/RainLoop/Handler.pm" );
+    )->copyFile(
+        "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebmailClients/RainLoop/Handler.pm"
+    );
     return $rs if $rs;
 
     local $@;
@@ -165,7 +183,8 @@ sub uninstall
 
     eval {
         iMSCP::Composer->new(
-            user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
+            user          => $::imscpConfig{'SYSTEM_USER_PREFIX'}
+                . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
             composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
             composer_json => 'composer.json'
         )
@@ -177,7 +196,9 @@ sub uninstall
         return 1;
     }
 
-    iMSCP::File->new( filename => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebmailClients/RainLoop/Handler.pm" )->delFile();
+    iMSCP::File->new(
+        filename => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebmailClients/RainLoop/Handler.pm"
+    )->delFile();
 }
 
 =item AUTOLOAD

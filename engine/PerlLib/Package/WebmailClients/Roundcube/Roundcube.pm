@@ -30,6 +30,7 @@ use iMSCP::Boolean;
 use iMSCP::Debug 'error';
 use iMSCP::File;
 use iMSCP::Getopt;
+use JSON;
 use parent 'Common::SingletonClass';
 use subs qw/
     registerSetupListeners
@@ -41,7 +42,8 @@ use subs qw/
     predisableMail disableMail postdisableMail
 /;
 
-my $packageVersionConstraint = '^1.0';
+my $packageVersionConstraint = $ENV{'IMSCP_PKG_DEVELOPMENT'}
+    ? '1.3.x-dev' : '^1.0';
 
 =head1 DESCRIPTION
 
@@ -83,17 +85,29 @@ sub registerSetupListeners
 {
     my ( undef, $events ) = @_;
 
-    return 0 if iMSCP::Getopt->skipComposerUpdate;
-
     $events->registerOne( 'beforeSetupPreInstallServers', sub {
         eval {
-            iMSCP::Composer->new(
-                user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
+            my $composer = iMSCP::Composer->new(
+                user          => $::imscpConfig{'SYSTEM_USER_PREFIX'}
+                    . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
                 composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
                 composer_json => 'composer.json'
-            )
-                ->require( 'imscp/roundcube', $packageVersionConstraint )
-                ->dumpComposerJson();
+            );
+
+            if ( $ENV{'IMSCP_PKG_DEVELOPMENT'}
+                && -d '/github/official/imscp-roundcube'
+            ) {
+                push @{ $composer->getComposerJson( TRUE )->{'repositories'} }, {
+                    type    => 'path',
+                    url     => '/github/official/imscp-roundcube',
+                    options => {
+                        symlink => JSON::false
+                    }
+                };
+            }
+
+            $composer->require( 'imscp/roundcube', $packageVersionConstraint );
+            $composer->dumpComposerJson();
         };
         if ( $@ ) {
             error( $@ );
@@ -117,13 +131,18 @@ sub preinstall
     my ( $self ) = @_;
 
     unless ( -f "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/roundcube/src/Handler.pm" ) {
-        error( "Couldn't find the Roundcube package handler in the $::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/roundcube/src directory" );
+        error( sprintf(
+            "Couldn't find the Roundcube package handler in the %s directory",
+            "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/roundcube/src"
+        ));
         return 1;
     }
 
     my $rs = iMSCP::File->new(
         filename => "$::imscpConfig{'GUI_ROOT_DIR'}/vendor/imscp/roundcube/src/Handler.pm"
-    )->copyFile( "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebmailClients/Roundcube/Handler.pm" );
+    )->copyFile(
+        "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebmailClients/Roundcube/Handler.pm"
+    );
     return $rs if $rs;
 
     local $@;
@@ -168,7 +187,8 @@ sub uninstall
 
     eval {
         iMSCP::Composer->new(
-            user          => $::imscpConfig{'SYSTEM_USER_PREFIX'} . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
+            user          => $::imscpConfig{'SYSTEM_USER_PREFIX'}
+                . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
             composer_home => "$::imscpConfig{'GUI_ROOT_DIR'}/data/persistent/.composer",
             composer_json => 'composer.json'
         )
@@ -180,7 +200,9 @@ sub uninstall
         return 1;
     }
 
-    iMSCP::File->new( filename => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebmailClients/Roundcube/Handler.pm" )->delFile();
+    iMSCP::File->new(
+        filename => "$::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Package/WebmailClients/Roundcube/Handler.pm"
+    )->delFile();
 }
 
 =item AUTOLOAD
