@@ -412,7 +412,7 @@ sub _getPackage
     my ( $self, $package ) = @_;
 
     $self->{'_packages'}->{$package} //= do {
-        $package = "@{ [ ref $self ] }::$package::$package";
+        $package = "@{ [ ref $self ] }::${package}::${package}";
         eval "require $package";
         die if $@;
         $package->getInstance();
