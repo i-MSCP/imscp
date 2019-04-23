@@ -277,7 +277,7 @@
                 description="MySQL 5.7 server"
                 class="Servers::sqld::mysql"
                 pinning_package="libmysqlclient20 mysql-client-5.7 mysql-common mysql-server-5.7"
-                pinning_pin="release o=Ubuntu,n=bionic"
+                pinning_pin="release o=Ubuntu"
                 pinning_pin_priority="1001"
                 allow_switch="remote_server"
         >
@@ -290,7 +290,7 @@
                 description="MariaDB 10.1 server"
                 class="Servers::sqld::mariadb"
                 pinning_package="libmysqlclient20 mariadb-client-10.1 mariadb-common mariadb-server-core-10.1 mysql-common"
-                pinning_pin="release o=Ubuntu,n=bionic"
+                pinning_pin="release o=Ubuntu"
                 pinning_pin_priority="1001"
                 allow_switch="mariadb_10.2,remote_server"
         >
@@ -307,7 +307,7 @@
                 repository_key_id="0xF1656F24C74CD1D8"
                 repository_key_srv="keyserver.ubuntu.com"
                 pinning_package="*"
-                pinning_pin="release o=MariaDB,n=bionic"
+                pinning_pin="release o=MariaDB"
                 pinning_pin_priority="1001"
                 allow_switch="remote_server"
         >
@@ -375,7 +375,7 @@
                 description="Remote MySQL server"
                 class="Servers::sqld::remote"
                 pinning_package="libmysqlclient20 mysql-client-5.7 mysql-common"
-                pinning_pin="release o=Ubuntu,n=bionic"
+                pinning_pin="release o=Ubuntu"
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.7,mariadb_10.0,mariadb_10.1,mariadb_10.2,percona_5.5,percona_5.6,percona_5.7"
         >

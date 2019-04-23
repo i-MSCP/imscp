@@ -303,7 +303,7 @@
                 description="MariaDB 10.1 server"
                 class="Servers::sqld::mariadb"
                 pinning_package="libmariadbclient18 mariadb-client-10.1 mariadb-common mariadb-server-core-10.1 mysql-common"
-                pinning_pin="release o=Debian,n=stretch"
+                pinning_pin="release o=Devuan"
                 pinning_pin_priority="1001"
                 allow_switch="mariadb_10.2,remote_server"
         >
@@ -320,13 +320,13 @@
                 repository_key_id="0xF1656F24C74CD1D8"
                 repository_key_srv="keyserver.ubuntu.com"
                 pinning_package="*"
-                pinning_pin="release o=MariaDB,n=stretch"
+                pinning_pin="release o=MariaDB"
                 pinning_pin_priority="1001"
                 allow_switch="remote_server"
         >
             <package
                     pinning_package="libmariadbclient18"
-                    pinning_pin="release o=Debian,n=stretch"
+                    pinning_pin="release o=Debian"
                     pinning_pin_priority="1002"
             >
                 libmariadbclient18
@@ -359,7 +359,7 @@
                 description="Remote SQL server"
                 class="Servers::sqld::remote"
                 pinning_package="libmariadbclient18 mariadb-client-10.1 mariadb-common mysql-common"
-                pinning_pin="release o=Debian,n=stretch"
+                pinning_pin="release o=Debian"
                 pinning_pin_priority="1001"
                 allow_switch="mariadb_10.1,mariadb_10.2,percona_5.7"
         >

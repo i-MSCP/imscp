@@ -271,7 +271,7 @@
                 description="MySQL 5.5 server"
                 class="Servers::sqld::mysql"
                 pinning_package="libmysqlclient18 mysql-client-5.5 mysql-common mysql-server-5.5"
-                pinning_pin="release o=Debian,n=jessie"
+                pinning_pin="release o=Debian"
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.6,mysql_5.7,remote_server"
         >
@@ -317,7 +317,7 @@
                 description="MariaDB 10.0 server"
                 class="Servers::sqld::mariadb"
                 pinning_package="libmysqlclient18 mariadb-client-10.0 mariadb-common mariadb-server-10.0 mysql-common"
-                pinning_pin="release o=Debian,n=jessie"
+                pinning_pin="release o=Debian"
                 pinning_pin_priority="1001"
                 allow_switch="mariadb_10.1,mariadb_10.2,remote_server"
         >
@@ -334,7 +334,7 @@
                 repository_key_id="0x84DF8D521BB943DB"
                 repository_key_srv="keyserver.ubuntu.com"
                 pinning_package="*"
-                pinning_pin="release o=MariaDB,n=jessie"
+                pinning_pin="release o=MariaDB"
                 pinning_pin_priority="1001"
                 allow_switch="mariadb_10.2,remote_server"
         >
@@ -352,7 +352,7 @@
                 repository_key_id="0x84DF8D521BB943DB"
                 repository_key_srv="keyserver.ubuntu.com"
                 pinning_package="*"
-                pinning_pin="release o=MariaDB,n=jessie"
+                pinning_pin="release o=MariaDB"
                 pinning_pin_priority="1001"
                 allow_switch="remote_server"
         >
@@ -421,7 +421,7 @@
                 description="Remote SQL server"
                 class="Servers::sqld::remote"
                 pinning_package="libmysqlclient18 mysql-client-5.5 mysql-common"
-                pinning_pin="release o=Debian,n=jessie"
+                pinning_pin="release o=Debian"
                 pinning_pin_priority="1001"
                 allow_switch="mysql_5.5,mysql_5.6,mysql_5.7,mariadb_10.0,mariadb_10.1,mariadb_10.2,percona_5.5,percona_5.6,percona_5.7"
         >
