@@ -136,7 +136,9 @@ sub _init
 
     delete @{ $self }{qw/ mysql_connect_timeout mysql_auto_reconnect /};
 
-    @{ $self }{qw/ mariadb_connect_timeout mariadb_auto_reconnect /} = ( 5, TRUE );
+    @{ $self }{qw/
+        mariadb_connect_timeout mariadb_auto_reconnect
+    /} = ( 5, TRUE );
 
     $self;
 }
