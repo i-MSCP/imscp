@@ -60,8 +60,8 @@ sub connect
         ( $self->{'db'}->{'DATABASE_HOST'} eq 'localhost'
             ? ()
             : ( length $self->{'db'}->{'DATABASE_PORT'}
-            ? "port=$self->{'db'}->{'DATABASE_PORT'}" : ()
-        )
+                ? "port=$self->{'db'}->{'DATABASE_PORT'}" : ()
+            )
         ),
         'mariadb_init_command=SET NAMES utf8, SESSION sql_mode = '
             . "'NO_AUTO_CREATE_USER', SESSION group_concat_max_len = 65535"
@@ -78,17 +78,17 @@ sub connect
     eval {
         $self->{'connection'}->disconnect() if $self->{'connection'};
         $self->{'connection'} = DBI->connect(
-            $dsn, $self->{'db'}->{'DATABASE_USER'}, $self->{'db'}->{'DATABASE_PASSWORD'},
+            $dsn,
+            $self->{'db'}->{'DATABASE_USER'},
+            $self->{'db'}->{'DATABASE_PASSWORD'},
             $self->{'db'}->{'DATABASE_SETTINGS'}
         );
     };
     return $@ if $@;
 
     @{ $self }{qw/ _dsn _currentUser _currentPassword connection /} = (
-        $dsn,
-        $self->{'db'}->{'DATABASE_USER'},
-        $self->{'db'}->{'DATABASE_PASSWORD'},
-        FALSE
+        $dsn, $self->{'db'}->{'DATABASE_USER'},
+        $self->{'db'}->{'DATABASE_PASSWORD'}, FALSE
     );
 }
 
