@@ -26,6 +26,7 @@ package iMSCP::Database::MariaDB;
 use strict;
 use warnings;
 use iMSCP::Boolean;
+use iMSCP::Net;
 use parent 'iMSCP::Database::MySQL';
 
 =head1 DESCRIPTION
@@ -34,7 +35,7 @@ use parent 'iMSCP::Database::MySQL';
 
 =cut
 
-=head1 FUNCTIONS
+=head1 PUBLIC METHODS
 
 =over 4
 
@@ -50,11 +51,21 @@ sub connect
 {
     my ( $self ) = @_;
 
-    my $dsn = "dbi:MariaDB:database=$self->{'db'}->{'DATABASE_NAME'}" .
-        ( length $self->{'db'}->{'DATABASE_HOST'} ? ';host=' . $self->{'db'}->{'DATABASE_HOST'} : '' )
-        . ( $self->{'db'}->{'DATABASE_HOST'} ne 'localhost' && length $self->{'db'}->{'DATABASE_PORT'}
-        ? ';port=' . $self->{'db'}->{'DATABASE_PORT'} : '' )
-        . ";mariadb_init_command=SET NAMES utf8, SESSION sql_mode = 'NO_AUTO_CREATE_USER', SESSION group_concat_max_len = 65535";
+    my $dsn = join ';', (
+        "dbi:MariaDB:database=$self->{'db'}->{'DATABASE_NAME'",
+        'host=' . ( index( $self->{'db'}->{'DATABASE_HOST'}, ':' ) != -1
+            ? '[' . $self->{'db'}->{'DATABASE_HOST'} . ']'
+            : $self->{'db'}->{'DATABASE_HOST'}
+        ),
+        ( $self->{'db'}->{'DATABASE_HOST'} eq 'localhost'
+            ? ()
+            : ( length $self->{'db'}->{'DATABASE_PORT'}
+            ? "port=$self->{'db'}->{'DATABASE_PORT'}" : ()
+        )
+        ),
+        'mariadb_init_command=SET NAMES utf8, SESSION sql_mode = '
+            . "'NO_AUTO_CREATE_USER', SESSION group_concat_max_len = 65535"
+    );
 
     if ( $self->{'connection'}
         && $self->{'_dsn'} eq $dsn
@@ -73,10 +84,12 @@ sub connect
     };
     return $@ if $@;
 
-    $self->{'_dsn'} = $dsn;
-    $self->{'_currentUser'} = $self->{'db'}->{'DATABASE_USER'};
-    $self->{'_currentPassword'} = $self->{'db'}->{'DATABASE_PASSWORD'};
-    $self->{'connection'}->{'RaiseError'} = FALSE;
+    @{ $self }{qw/ _dsn _currentUser _currentPassword connection /} = (
+        $dsn,
+        $self->{'db'}->{'DATABASE_USER'},
+        $self->{'db'}->{'DATABASE_PASSWORD'},
+        FALSE
+    );
 }
 
 =item endTransaction( )
@@ -94,9 +107,10 @@ sub endTransaction
 
     my $dbh = $self->getRawDb();
 
-    $dbh->{'AutoCommit'} = TRUE;
-    $dbh->{'RaiseError'} = FALSE;
-    $dbh->{'mariadb_auto_reconnect'} = TRUE;
+    @{ $dbh }{qw/ AutoCommit RaiseError mariadb_auto_reconnect /} = (
+        TRUE, FALSE, TRUE
+    );
+
     $self->{'connection'};
 }
 

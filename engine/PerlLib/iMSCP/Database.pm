@@ -25,8 +25,8 @@ package iMSCP::Database;
 
 use strict;
 use warnings;
-
-my %adapterInstances;
+use iMSCP::Boolean;
+use Module::Load::Conditional 'check_install';
 
 =head1 DESCRIPTION
 
@@ -38,26 +38,31 @@ my %adapterInstances;
 
 =over 4
 
-=item factory( $adapterName )
+=item factory( )
 
- Create and return a database adapter instance. Instance is created once
+ Create and return a database adapter instance.
 
- Param string $adapterName Adapter name
- Return an instance of the specified database adapter
+ Return iMSCP::Database::MariaDB|iMSCP::Database::MySQL
 
 =cut
 
 sub factory
 {
-    my $adapterName = $_[1] || $main::imscpConfig{'DATABASE_TYPE'};
+    CORE::state $adapter;
 
-    return $adapterInstances{$adapterName} if $adapterInstances{$adapterName};
+    $adapter //= do {
+        # The DBD::MariaDB driver is only available in recent distributions
+        # such as Debian Buster (10.x)
+        $adapter = !!check_install(
+            module => 'DBD::MariaDB', verbose => FALSE
+        ) ? 'iMSCP::Database::MariaDB' : 'iMSCP::Database::MySQL';
 
-    my $adapter = "iMSCP::Database::${adapterName}";
-    eval "require $adapter" or die( sprintf(
-        "Couldn't load '%s' database adapter: %s", $adapter, $@
-    ));
-    $adapterInstances{$adapterName} = $adapter->getInstance();
+        eval "require $adapter" or die( sprintf(
+            "Couldn't load the '%s' database adapter: %s", $adapter, $@
+        ));
+
+        $adapter->getInstance();
+    };
 }
 
 =back
