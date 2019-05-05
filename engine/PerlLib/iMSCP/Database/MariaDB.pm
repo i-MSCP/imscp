@@ -26,7 +26,6 @@ package iMSCP::Database::MariaDB;
 use strict;
 use warnings;
 use iMSCP::Boolean;
-use iMSCP::Net;
 use parent 'iMSCP::Database::MySQL';
 
 =head1 DESCRIPTION
@@ -134,9 +133,11 @@ sub _init
 
     $self->SUPER::_init();
 
-    delete @{ $self }{qw/ mysql_connect_timeout mysql_auto_reconnect /};
+    delete @{ $self->{'db'}->{'DATABASE_SETTINGS'} }{
+        qw/ mysql_connect_timeout mysql_auto_reconnect /
+    };
 
-    @{ $self }{qw/
+    @{ $self->{'db'}->{'DATABASE_SETTINGS'} }{qw/
         mariadb_connect_timeout mariadb_auto_reconnect
     /} = ( 5, TRUE );
 
