@@ -100,7 +100,7 @@ sub preinstall
         error( $stderr || 'Unknown error' ) if $rs;
         return $rs if $rs;
 
-        if ( $stdout =~ /^(\d+)/ && $1 > 0 ) {
+        if ( length $stdout && $stdout =~ /^(\d+)/ && $1 > 0 ) {
             if ( iMSCP::ProgramFinder::find( 'dialog' ) ) {
                 iMSCP::Dialog->getInstance()->error( <<"EOF" );
 \\Zb\\Z1The distribution is not up-to-date\\Zn
