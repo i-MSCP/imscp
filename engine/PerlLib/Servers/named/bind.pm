@@ -233,6 +233,7 @@ sub addDmn
     }
 
     $self->{'seen_zones'}->{$data->{'DOMAIN_NAME'}} = TRUE;
+    $self->{'reload'} = TRUE;
     $self->{'events'}->trigger( 'afterNamedAddDmn', $data );
 }
 
@@ -290,6 +291,7 @@ sub deleteDmn
         }
     }
 
+    $self->{'reload'} = TRUE;
     $self->{'events'}->trigger( 'afterNamedDelDmn', $data );
 }
 
@@ -405,6 +407,8 @@ sub addSub
     $rs ||= $self->_compileZone(
         $data->{'PARENT_DOMAIN_NAME'}, $file->{'filename'}
     );
+    $self->{'reload'} = TRUE unless $rs;
+    $rs;
 }
 
 =item disableSub( \%data )
@@ -467,6 +471,8 @@ sub deleteSub
     $rs = $self->{'events'}->trigger( 'afterNamedDelSub', \$fileC, $data );
     $rs ||= $file->save();
     $rs ||= $self->_compileZone( $data->{'PARENT_DOMAIN_NAME'}, $file->{'filename'} );
+    $self->{'reload'} = TRUE unless $rs;
+    $rs;
 }
 
 =item addCustomDNS( \%data )

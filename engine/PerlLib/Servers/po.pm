@@ -104,7 +104,9 @@ sub can
 
 END
     {
-        return if $? || !$instance || ( $::execmode && $::execmode eq 'setup' );
+        return if $? || !$instance || ( defined $::execmode
+            && $::execmode eq 'setup'
+        );
 
         $? = $instance->restart() if $instance->{'restart'};
     }
