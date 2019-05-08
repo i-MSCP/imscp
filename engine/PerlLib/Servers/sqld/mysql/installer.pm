@@ -293,7 +293,7 @@ sub _dialogForDatabaseName
     my ( $ret, $msg ) = ( 0, '' );
 
     if ( iMSCP::Getopt->preseed ) {
-        $msg = "\\Z1Database '$value' exists but doesn't looks like an i-MSCP database.\\Zn\n\n"
+        $msg = "\\Z1Database '$value' exists but doesn't looks like an i-MSCP database.\\Zn\n\n";
     }
 
     do {

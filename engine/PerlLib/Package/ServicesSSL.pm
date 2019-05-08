@@ -213,7 +213,7 @@ EOF
 ${msg}Please enter a path for the SSL certificate private key. Leave this field blank if you don't have one:
 EOF
         if ( $ret != 30 ) {
-            $pkPath =~s/^\s+|\s+$//g;
+            $pkPath =~ s/^\s+|\s+$//g;
             $msg = !length $pkPath || !-f $pkPath
                 ? "\\Z1Invalid SSL certificate private key path.\\Zn\n\n" : '';
         }
@@ -228,7 +228,7 @@ EOF
 ${msg}Please enter the passphrase for the SSL certificate private key. Leave this field blank if you don't have one:
 EOF
         if ( $ret != 30 ) {
-            $passphrase =~s/^\s+|\s+$//g;
+            $passphrase =~ s/^\s+|\s+$//g;
             @{ $openSSL }{qw/
                 private_key_container_path private_key_passphrase
             /} = (
@@ -255,7 +255,7 @@ EOF
 ${msg}Please enter a path for the SSL certificate CA bundle. Leave this field blank if you don't have one:
 EOF
         if ( $ret != 30 ) {
-            $caPath =~s/^\s+|\s+$//g;
+            $caPath =~ s/^\s+|\s+$//g;
             $msg = length $caPath && !-f $caPath
                 ? "\\Z1Invalid SSL certificate CA bundle path.\\Zn\n\n" : '';
         }
@@ -269,7 +269,7 @@ EOF
 ${msg}Please enter a path for the SSL certificate:
 EOF
         if ( $ret != 30 ) {
-            $crtPath =~s/^\s+|\s+$//g;
+            $crtPath =~ s/^\s+|\s+$//g;
             @{ $openSSL }{qw/
                 ca_bundle_container_path certificate_container_path
             /} = (
@@ -304,6 +304,10 @@ EOF
     );
 
     unless ( $openSSL->validateCertificateChain() ) {
+        if ( iMSCP::Getopt->preseed && $selfSignedCrt ) {
+            return 20;
+        }
+
         local $dialog->{'_opts'}->{
             $dialog->{'program'} eq 'dialog' ? 'ok-label' : 'ok-button'
         } = 'Reconfigure';
@@ -320,9 +324,7 @@ EOF
         goto &{_dialogForCpSSL};
     }
 
-    ::setupSetQuestion( 'SERVICES_SSL_HAS_VALID_CHAIN', iMSCP::Getopt->preseed()
-        ? 'no' : 'yes'
-    );
+    ::setupSetQuestion( 'SERVICES_SSL_HAS_VALID_CHAIN', 'yes' );
 
     END_SSL_DIALOG:
     0;

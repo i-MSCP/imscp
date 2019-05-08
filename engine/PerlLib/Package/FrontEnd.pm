@@ -1339,6 +1339,10 @@ EOF
     );
 
     unless ( $openSSL->validateCertificateChain() ) {
+        if ( iMSCP::Getopt->preseed && $selfSignedCrt ) {
+            return 20;
+        }
+
         local $dialog->{'_opts'}->{
             $dialog->{'program'} eq 'dialog' ? 'ok-label' : 'ok-button'
         } = 'Reconfigure';
@@ -1355,9 +1359,7 @@ EOF
         goto &{_dialogForCpSSL};
     }
 
-    ::setupSetQuestion( 'PANEL_SSL_HAS_VALID_CHAIN', iMSCP::Getopt->preseed()
-        ? 'no' : 'yes'
-    );
+    ::setupSetQuestion( 'PANEL_SSL_HAS_VALID_CHAIN', 'yes' );
 
     END_SSL_DIALOG:
     0;
