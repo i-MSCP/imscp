@@ -963,7 +963,7 @@ sub _getPackagesDialog
                     # In preseed mode, and if no alternative has been set in
                     # the preseed file, we automatically select the default, as
                     # set in the distribution packages file without asking user.
-                    # This affect only fresh installations.nano
+                    # This affect only fresh installations.
                     $needDialog = !iMSCP::Getopt->preseed;
                 }
             }
@@ -1265,10 +1265,6 @@ sub _processPackagesFile
             exists $availablePackages{$_}, @{ $packages }
         );
     }
-    
-    #use Data::Dumper;
-    #print Dumper($self->{'_dist'});
-    #exit;
 
     iMSCP::Dialog->getInstance()->endGauge();
     0;
