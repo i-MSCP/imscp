@@ -129,7 +129,7 @@ sub shutDown
     iMSCP::Dialog->getInstance()->note( <<"EOF" );
 \\Z1Congratulations\\Zn
 
-iMSCP has been successfully uninstalled.
+i-MSCP has been successfully uninstalled.
 EOF
     0;
 }
