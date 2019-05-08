@@ -92,6 +92,13 @@ sub uninstall
             return $rs if $rs;
         }
 
+        if ( -f '/usr/local/sbin/vlogger' ) {
+            my $rs = iMSCP::File->new(
+                filename => '/usr/local/sbin/vlogger'
+            )->delFile();
+            return $rs if $rs;
+        }
+
         0;
     };
     if ( $@ ) {
