@@ -69,7 +69,7 @@ sub startUp
 {
     iMSCP::Getopt->debug( TRUE ); # Enforce debug mode (logs)
     iMSCP::Bootstrapper->getInstance()->boot( {
-        mode => $::execmode,
+        mode => $::execmode
     } );
     0;
 }

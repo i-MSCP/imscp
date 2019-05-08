@@ -968,7 +968,7 @@ sub _dialogForMasterAdminUsername
     my ( undef, $dialog ) = @_;
 
     my $db = iMSCP::Database->factory();
-    
+
     local $@;
     eval { $db->useDatabase( ::setupGetQuestion( 'DATABASE_NAME' )); };
     $db = undef if $@;
@@ -2217,12 +2217,13 @@ sub _deconfigureHTTPD
 {
     my ( $self ) = @_;
 
-    my $rs = $self->disableSites( '00_master.conf' );
+    my $rs = $self->disableSites( '00_master.conf', '00_master_ssl.conf' );
     return $rs if $rs;
 
-    if ( -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf" ) {
+    for my $file ( qw/ 00_master.conf 00_master_ssl.conf / ) {
+        next unless -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$file";
         $rs = iMSCP::File->new(
-            filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/00_master.conf"
+            filename => "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/$file"
         )->delFile();
         return $rs if $rs;
     }
@@ -2244,15 +2245,17 @@ sub _deconfigureHTTPD
     if ( -f "$self->{'config'}->{'HTTPD_SITES_AVAILABLE_DIR'}/default" ) {
         # Nginx as provided by Debian
         $rs = $self->enableSites( 'default' );
-        return $rs if $rs;
-    } elsif ( "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf.disabled" ) {
+        return $rs;
+    }
+
+    if ( -f "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf.disabled" ) {
         # Nginx package as provided by Nginx
         $rs = iMSCP::File->new(
             filename => "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf.disabled"
         )->moveFile(
             "$self->{'config'}->{'HTTPD_CONF_DIR'}/conf.d/default.conf"
         );
-        return $rs if $rs;
+        return $rs;
     }
 
     0;

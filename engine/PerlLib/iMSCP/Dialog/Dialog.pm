@@ -55,7 +55,7 @@ sub select
 
     ref \$text eq 'SCALAR' or croak( '$text parameter is invalid.' );
     ref $choices eq 'HASH' && %{ $choices } or croak(
-        '\%choices parameter is undefined or invalid.'
+        '$choices parameter is undefined or invalid.'
     );
     ref \$defaultTag eq 'SCALAR' or croak(
         '$defaultTag parameter is invalid.'
@@ -153,7 +153,7 @@ sub multiselect
 
     ref \$text eq 'SCALAR' or croak( '$text parameter is invalid.' );
     ref $choices eq 'HASH' && %{ $choices } or croak(
-        '\%choices parameter is undefined or invalid.'
+        '$choices parameter is undefined or invalid.'
     );
     ref $defaultTags eq 'ARRAY' or croak(
         '\@defaultTags parameter is invalid.'
